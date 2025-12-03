@@ -1,29 +1,29 @@
 @interface PFAProcessedClockStatistics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PFAProcessedClockStatistics)initWithDictionary:(id)a3;
-- (PFAProcessedClockStatistics)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PFAProcessedClockStatistics)initWithDictionary:(id)dictionary;
+- (PFAProcessedClockStatistics)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addPublishedEventStatistics:(id)a3;
-- (void)addRedactedEventStatistics:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPublishedEventStatistics:(id)statistics;
+- (void)addRedactedEventStatistics:(id)statistics;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PFAProcessedClockStatistics
 
-- (PFAProcessedClockStatistics)initWithDictionary:(id)a3
+- (PFAProcessedClockStatistics)initWithDictionary:(id)dictionary
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v38.receiver = self;
   v38.super_class = PFAProcessedClockStatistics;
   v5 = [(PFAProcessedClockStatistics *)&v38 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"clockIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"clockIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,14 +31,14 @@
       [(PFAProcessedClockStatistics *)v5 setClockIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"messageCount"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"messageCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PFAProcessedClockStatistics setMessageCount:](v5, "setMessageCount:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"publishedEventStatistics"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"publishedEventStatistics"];
     objc_opt_class();
     v28 = v9;
     v29 = v8;
@@ -86,7 +86,7 @@
       v8 = v29;
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"redactedEventStatistics"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"redactedEventStatistics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -140,30 +140,30 @@
   return v5;
 }
 
-- (PFAProcessedClockStatistics)initWithJSON:(id)a3
+- (PFAProcessedClockStatistics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PFAProcessedClockStatistics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PFAProcessedClockStatistics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PFAProcessedClockStatistics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -177,32 +177,32 @@
 - (id)dictionaryRepresentation
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_clockIdentifier)
   {
-    v4 = [(PFAProcessedClockStatistics *)self clockIdentifier];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    clockIdentifier = [(PFAProcessedClockStatistics *)self clockIdentifier];
+    dictionaryRepresentation = [clockIdentifier dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"clockIdentifier"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"clockIdentifier"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"clockIdentifier"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"clockIdentifier"];
     }
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PFAProcessedClockStatistics messageCount](self, "messageCount")}];
-    [v3 setObject:v7 forKeyedSubscript:@"messageCount"];
+    [dictionary setObject:v7 forKeyedSubscript:@"messageCount"];
   }
 
   if ([(NSArray *)self->_publishedEventStatistics count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -222,16 +222,16 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          if (v14)
+          dictionaryRepresentation2 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v8 addObject:v14];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v15 = [MEMORY[0x1E695DFB0] null];
-            [v8 addObject:v15];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -241,12 +241,12 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"publishedEventStatistics"];
+    [dictionary setObject:array forKeyedSubscript:@"publishedEventStatistics"];
   }
 
   if ([(NSArray *)self->_redactedEventStatistics count])
   {
-    v16 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -266,16 +266,16 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
-          if (v22)
+          dictionaryRepresentation3 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v16 addObject:v22];
+            [array2 addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v23 = [MEMORY[0x1E695DFB0] null];
-            [v16 addObject:v23];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null3];
           }
         }
 
@@ -285,12 +285,12 @@
       while (v19);
     }
 
-    [v3 setObject:v16 forKeyedSubscript:@"redactedEventStatistics"];
+    [dictionary setObject:array2 forKeyedSubscript:@"redactedEventStatistics"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v25];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v25];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -311,28 +311,28 @@
   return v5 ^ v6 ^ [(NSArray *)self->_redactedEventStatistics hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(PFAProcessedClockStatistics *)self clockIdentifier];
-  v6 = [v4 clockIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  clockIdentifier = [(PFAProcessedClockStatistics *)self clockIdentifier];
+  clockIdentifier2 = [equalCopy clockIdentifier];
+  if ((clockIdentifier != 0) == (clockIdentifier2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(PFAProcessedClockStatistics *)self clockIdentifier];
-  if (v7)
+  clockIdentifier3 = [(PFAProcessedClockStatistics *)self clockIdentifier];
+  if (clockIdentifier3)
   {
-    v8 = v7;
-    v9 = [(PFAProcessedClockStatistics *)self clockIdentifier];
-    v10 = [v4 clockIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = clockIdentifier3;
+    clockIdentifier4 = [(PFAProcessedClockStatistics *)self clockIdentifier];
+    clockIdentifier5 = [equalCopy clockIdentifier];
+    v11 = [clockIdentifier4 isEqual:clockIdentifier5];
 
     if (!v11)
     {
@@ -344,7 +344,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_20;
   }
@@ -352,26 +352,26 @@
   if (*&self->_has)
   {
     messageCount = self->_messageCount;
-    if (messageCount != [v4 messageCount])
+    if (messageCount != [equalCopy messageCount])
     {
       goto LABEL_20;
     }
   }
 
-  v5 = [(PFAProcessedClockStatistics *)self publishedEventStatistics];
-  v6 = [v4 publishedEventStatistics];
-  if ((v5 != 0) == (v6 == 0))
+  clockIdentifier = [(PFAProcessedClockStatistics *)self publishedEventStatistics];
+  clockIdentifier2 = [equalCopy publishedEventStatistics];
+  if ((clockIdentifier != 0) == (clockIdentifier2 == 0))
   {
     goto LABEL_19;
   }
 
-  v13 = [(PFAProcessedClockStatistics *)self publishedEventStatistics];
-  if (v13)
+  publishedEventStatistics = [(PFAProcessedClockStatistics *)self publishedEventStatistics];
+  if (publishedEventStatistics)
   {
-    v14 = v13;
-    v15 = [(PFAProcessedClockStatistics *)self publishedEventStatistics];
-    v16 = [v4 publishedEventStatistics];
-    v17 = [v15 isEqual:v16];
+    v14 = publishedEventStatistics;
+    publishedEventStatistics2 = [(PFAProcessedClockStatistics *)self publishedEventStatistics];
+    publishedEventStatistics3 = [equalCopy publishedEventStatistics];
+    v17 = [publishedEventStatistics2 isEqual:publishedEventStatistics3];
 
     if (!v17)
     {
@@ -383,12 +383,12 @@
   {
   }
 
-  v5 = [(PFAProcessedClockStatistics *)self redactedEventStatistics];
-  v6 = [v4 redactedEventStatistics];
-  if ((v5 != 0) != (v6 == 0))
+  clockIdentifier = [(PFAProcessedClockStatistics *)self redactedEventStatistics];
+  clockIdentifier2 = [equalCopy redactedEventStatistics];
+  if ((clockIdentifier != 0) != (clockIdentifier2 == 0))
   {
-    v18 = [(PFAProcessedClockStatistics *)self redactedEventStatistics];
-    if (!v18)
+    redactedEventStatistics = [(PFAProcessedClockStatistics *)self redactedEventStatistics];
+    if (!redactedEventStatistics)
     {
 
 LABEL_23:
@@ -396,10 +396,10 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v19 = v18;
-    v20 = [(PFAProcessedClockStatistics *)self redactedEventStatistics];
-    v21 = [v4 redactedEventStatistics];
-    v22 = [v20 isEqual:v21];
+    v19 = redactedEventStatistics;
+    redactedEventStatistics2 = [(PFAProcessedClockStatistics *)self redactedEventStatistics];
+    redactedEventStatistics3 = [equalCopy redactedEventStatistics];
+    v22 = [redactedEventStatistics2 isEqual:redactedEventStatistics3];
 
     if (v22)
     {
@@ -419,15 +419,15 @@ LABEL_21:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PFAProcessedClockStatistics *)self clockIdentifier];
+  toCopy = to;
+  clockIdentifier = [(PFAProcessedClockStatistics *)self clockIdentifier];
 
-  if (v5)
+  if (clockIdentifier)
   {
-    v6 = [(PFAProcessedClockStatistics *)self clockIdentifier];
+    clockIdentifier2 = [(PFAProcessedClockStatistics *)self clockIdentifier];
     PBDataWriterWriteSubmessage();
   }
 
@@ -499,63 +499,63 @@ LABEL_21:
   }
 }
 
-- (void)addRedactedEventStatistics:(id)a3
+- (void)addRedactedEventStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   redactedEventStatistics = self->_redactedEventStatistics;
-  v8 = v4;
+  v8 = statisticsCopy;
   if (!redactedEventStatistics)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_redactedEventStatistics;
-    self->_redactedEventStatistics = v6;
+    self->_redactedEventStatistics = array;
 
-    v4 = v8;
+    statisticsCopy = v8;
     redactedEventStatistics = self->_redactedEventStatistics;
   }
 
-  [(NSArray *)redactedEventStatistics addObject:v4];
+  [(NSArray *)redactedEventStatistics addObject:statisticsCopy];
 }
 
-- (void)addPublishedEventStatistics:(id)a3
+- (void)addPublishedEventStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   publishedEventStatistics = self->_publishedEventStatistics;
-  v8 = v4;
+  v8 = statisticsCopy;
   if (!publishedEventStatistics)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_publishedEventStatistics;
-    self->_publishedEventStatistics = v6;
+    self->_publishedEventStatistics = array;
 
-    v4 = v8;
+    statisticsCopy = v8;
     publishedEventStatistics = self->_publishedEventStatistics;
   }
 
-  [(NSArray *)publishedEventStatistics addObject:v4];
+  [(NSArray *)publishedEventStatistics addObject:statisticsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v14.receiver = self;
   v14.super_class = PFAProcessedClockStatistics;
-  v5 = [(SISchemaInstrumentationMessage *)&v14 applySensitiveConditionsPolicy:v4];
-  v6 = [(PFAProcessedClockStatistics *)self clockIdentifier];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v14 applySensitiveConditionsPolicy:policyCopy];
+  clockIdentifier = [(PFAProcessedClockStatistics *)self clockIdentifier];
+  v7 = [clockIdentifier applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PFAProcessedClockStatistics *)self deleteClockIdentifier];
   }
 
-  v9 = [(PFAProcessedClockStatistics *)self publishedEventStatistics];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  publishedEventStatistics = [(PFAProcessedClockStatistics *)self publishedEventStatistics];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:publishedEventStatistics underConditions:policyCopy];
   [(PFAProcessedClockStatistics *)self setPublishedEventStatistics:v10];
 
-  v11 = [(PFAProcessedClockStatistics *)self redactedEventStatistics];
-  v12 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v11 underConditions:v4];
+  redactedEventStatistics = [(PFAProcessedClockStatistics *)self redactedEventStatistics];
+  v12 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:redactedEventStatistics underConditions:policyCopy];
   [(PFAProcessedClockStatistics *)self setRedactedEventStatistics:v12];
 
   return v5;

@@ -1,38 +1,38 @@
 @interface CKKSFixups
-+ (id)fixupOperation:(unint64_t)a3;
++ (id)fixupOperation:(unint64_t)operation;
 @end
 
 @implementation CKKSFixups
 
-+ (id)fixupOperation:(unint64_t)a3
++ (id)fixupOperation:(unint64_t)operation
 {
-  if (!a3)
+  if (!operation)
   {
     v4 = off_100343BC8;
     goto LABEL_12;
   }
 
-  if (a3 != 5)
+  if (operation != 5)
   {
-    if (a3 == 1)
+    if (operation == 1)
     {
       v4 = off_100343BD0;
       goto LABEL_12;
     }
 
-    if (a3 < 3)
+    if (operation < 3)
     {
       v4 = off_100343BD8;
       goto LABEL_12;
     }
 
-    if (a3 == 3)
+    if (operation == 3)
     {
       v4 = off_100343BE0;
       goto LABEL_12;
     }
 
-    if (a3 <= 4)
+    if (operation <= 4)
     {
       v4 = off_100343BE8;
 LABEL_12:

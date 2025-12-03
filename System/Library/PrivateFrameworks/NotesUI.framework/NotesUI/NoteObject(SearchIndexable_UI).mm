@@ -8,7 +8,7 @@
 {
   if (_os_feature_enabled_impl())
   {
-    v2 = [MEMORY[0x1E69B7B58] makeNoteSearchResultViewWithNote:a1 attachmentURL:0];
+    v2 = [MEMORY[0x1E69B7B58] makeNoteSearchResultViewWithNote:self attachmentURL:0];
   }
 
   else

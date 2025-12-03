@@ -1,24 +1,24 @@
 @interface NNMKProtoMailbox
-+ (id)protoMailboxFromMailbox:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)protoMailboxFromMailbox:(id)mailbox;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)mailbox;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSyncEnabled:(BOOL)a3;
-- (void)setHasSyncRequested:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSyncEnabled:(BOOL)enabled;
+- (void)setHasSyncRequested:(BOOL)requested;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NNMKProtoMailbox
 
-- (void)setHasSyncEnabled:(BOOL)a3
+- (void)setHasSyncEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSyncRequested:(BOOL)a3
+- (void)setHasSyncRequested:(BOOL)requested
 {
-  if (a3)
+  if (requested)
   {
     v3 = 8;
   }
@@ -67,20 +67,20 @@
   v8.receiver = self;
   v8.super_class = NNMKProtoMailbox;
   v4 = [(NNMKProtoMailbox *)&v8 description];
-  v5 = [(NNMKProtoMailbox *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NNMKProtoMailbox *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   accountId = self->_accountId;
   if (accountId)
   {
-    [v3 setObject:accountId forKey:@"accountId"];
+    [dictionary setObject:accountId forKey:@"accountId"];
   }
 
   mailboxId = self->_mailboxId;
@@ -155,26 +155,26 @@ LABEL_12:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_accountId)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_mailboxId)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_customName)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -182,7 +182,7 @@ LABEL_12:
   {
     filterType = self->_filterType;
     PBDataWriterWriteUint32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -203,7 +203,7 @@ LABEL_9:
 
   syncEnabled = self->_syncEnabled;
   PBDataWriterWriteBOOLField();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -219,50 +219,50 @@ LABEL_10:
 LABEL_19:
   type = self->_type;
   PBDataWriterWriteUint32Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
     syncRequested = self->_syncRequested;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_12:
   if (self->_url)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_accountId)
   {
-    [v4 setAccountId:?];
-    v4 = v6;
+    [toCopy setAccountId:?];
+    toCopy = v6;
   }
 
   if (self->_mailboxId)
   {
     [v6 setMailboxId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_customName)
   {
     [v6 setCustomName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 6) = self->_filterType;
-    *(v4 + 60) |= 1u;
+    *(toCopy + 6) = self->_filterType;
+    *(toCopy + 60) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -281,8 +281,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 56) = self->_syncEnabled;
-  *(v4 + 60) |= 4u;
+  *(toCopy + 56) = self->_syncEnabled;
+  *(toCopy + 60) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -296,35 +296,35 @@ LABEL_10:
   }
 
 LABEL_19:
-  *(v4 + 10) = self->_type;
-  *(v4 + 60) |= 2u;
+  *(toCopy + 10) = self->_type;
+  *(toCopy + 60) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
-    *(v4 + 57) = self->_syncRequested;
-    *(v4 + 60) |= 8u;
+    *(toCopy + 57) = self->_syncRequested;
+    *(toCopy + 60) |= 8u;
   }
 
 LABEL_12:
   if (self->_url)
   {
     [v6 setUrl:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_accountId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_accountId copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSString *)self->_mailboxId copyWithZone:a3];
+  v8 = [(NSString *)self->_mailboxId copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSString *)self->_customName copyWithZone:a3];
+  v10 = [(NSString *)self->_customName copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
@@ -376,23 +376,23 @@ LABEL_5:
   }
 
 LABEL_6:
-  v13 = [(NSString *)self->_url copyWithZone:a3];
+  v13 = [(NSString *)self->_url copyWithZone:zone];
   v14 = *(v5 + 48);
   *(v5 + 48) = v13;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   accountId = self->_accountId;
-  if (accountId | *(v4 + 1))
+  if (accountId | *(equalCopy + 1))
   {
     if (![(NSString *)accountId isEqual:?])
     {
@@ -401,7 +401,7 @@ LABEL_6:
   }
 
   mailboxId = self->_mailboxId;
-  if (mailboxId | *(v4 + 4))
+  if (mailboxId | *(equalCopy + 4))
   {
     if (![(NSString *)mailboxId isEqual:?])
     {
@@ -410,7 +410,7 @@ LABEL_6:
   }
 
   customName = self->_customName;
-  if (customName | *(v4 + 2))
+  if (customName | *(equalCopy + 2))
   {
     if (![(NSString *)customName isEqual:?])
     {
@@ -418,63 +418,63 @@ LABEL_6:
     }
   }
 
-  v8 = *(v4 + 60);
+  v8 = *(equalCopy + 60);
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_filterType != *(v4 + 6))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_filterType != *(equalCopy + 6))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 60) & 4) == 0)
+    if ((*(equalCopy + 60) & 4) == 0)
     {
       goto LABEL_31;
     }
 
-    v9 = *(v4 + 56);
+    v9 = *(equalCopy + 56);
     if (self->_syncEnabled)
     {
-      if ((*(v4 + 56) & 1) == 0)
+      if ((*(equalCopy + 56) & 1) == 0)
       {
         goto LABEL_31;
       }
     }
 
-    else if (*(v4 + 56))
+    else if (*(equalCopy + 56))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 60) & 4) != 0)
+  else if ((*(equalCopy + 60) & 4) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_type != *(v4 + 10))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_type != *(equalCopy + 10))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 8) == 0)
   {
-    if ((*(v4 + 60) & 8) == 0)
+    if ((*(equalCopy + 60) & 8) == 0)
     {
       goto LABEL_26;
     }
@@ -484,28 +484,28 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if ((*(v4 + 60) & 8) == 0)
+  if ((*(equalCopy + 60) & 8) == 0)
   {
     goto LABEL_31;
   }
 
-  v13 = *(v4 + 57);
+  v13 = *(equalCopy + 57);
   if (self->_syncRequested)
   {
-    if ((*(v4 + 57) & 1) == 0)
+    if ((*(equalCopy + 57) & 1) == 0)
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 57))
+  else if (*(equalCopy + 57))
   {
     goto LABEL_31;
   }
 
 LABEL_26:
   url = self->_url;
-  if (url | *(v4 + 6))
+  if (url | *(equalCopy + 6))
   {
     v11 = [(NSString *)url isEqual:?];
   }
@@ -577,34 +577,34 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ [(NSString *)self->_url hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(NNMKProtoMailbox *)self setAccountId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NNMKProtoMailbox *)self setMailboxId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NNMKProtoMailbox *)self setCustomName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if (v5)
   {
-    self->_filterType = *(v4 + 6);
+    self->_filterType = *(fromCopy + 6);
     *&self->_has |= 1u;
-    v5 = *(v4 + 60);
+    v5 = *(fromCopy + 60);
     if ((v5 & 4) == 0)
     {
 LABEL_9:
@@ -617,14 +617,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 60) & 4) == 0)
+  else if ((*(fromCopy + 60) & 4) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_syncEnabled = *(v4 + 56);
+  self->_syncEnabled = *(fromCopy + 56);
   *&self->_has |= 4u;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 2) == 0)
   {
 LABEL_10:
@@ -637,36 +637,36 @@ LABEL_10:
   }
 
 LABEL_19:
-  self->_type = *(v4 + 10);
+  self->_type = *(fromCopy + 10);
   *&self->_has |= 2u;
-  if ((*(v4 + 60) & 8) != 0)
+  if ((*(fromCopy + 60) & 8) != 0)
   {
 LABEL_11:
-    self->_syncRequested = *(v4 + 57);
+    self->_syncRequested = *(fromCopy + 57);
     *&self->_has |= 8u;
   }
 
 LABEL_12:
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(NNMKProtoMailbox *)self setUrl:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
 - (id)mailbox
 {
   v3 = objc_alloc_init(NNMKMailbox);
-  v4 = [(NNMKProtoMailbox *)self accountId];
-  [(NNMKMailbox *)v3 setAccountId:v4];
+  accountId = [(NNMKProtoMailbox *)self accountId];
+  [(NNMKMailbox *)v3 setAccountId:accountId];
 
-  v5 = [(NNMKProtoMailbox *)self mailboxId];
-  [(NNMKMailbox *)v3 setMailboxId:v5];
+  mailboxId = [(NNMKProtoMailbox *)self mailboxId];
+  [(NNMKMailbox *)v3 setMailboxId:mailboxId];
 
   [(NNMKMailbox *)v3 setType:[(NNMKProtoMailbox *)self type]];
   [(NNMKMailbox *)v3 setFilterType:[(NNMKProtoMailbox *)self filterType]];
-  v6 = [(NNMKProtoMailbox *)self customName];
-  [(NNMKMailbox *)v3 setCustomName:v6];
+  customName = [(NNMKProtoMailbox *)self customName];
+  [(NNMKMailbox *)v3 setCustomName:customName];
 
   [(NNMKMailbox *)v3 setSyncEnabled:[(NNMKProtoMailbox *)self syncEnabled]];
   [(NNMKMailbox *)v3 setSyncRequested:[(NNMKProtoMailbox *)self syncRequested]];
@@ -678,27 +678,27 @@ LABEL_12:
   return v3;
 }
 
-+ (id)protoMailboxFromMailbox:(id)a3
++ (id)protoMailboxFromMailbox:(id)mailbox
 {
-  v3 = a3;
+  mailboxCopy = mailbox;
   v4 = objc_alloc_init(NNMKProtoMailbox);
-  v5 = [v3 accountId];
-  [(NNMKProtoMailbox *)v4 setAccountId:v5];
+  accountId = [mailboxCopy accountId];
+  [(NNMKProtoMailbox *)v4 setAccountId:accountId];
 
-  v6 = [v3 mailboxId];
-  [(NNMKProtoMailbox *)v4 setMailboxId:v6];
+  mailboxId = [mailboxCopy mailboxId];
+  [(NNMKProtoMailbox *)v4 setMailboxId:mailboxId];
 
-  -[NNMKProtoMailbox setType:](v4, "setType:", [v3 type]);
-  -[NNMKProtoMailbox setFilterType:](v4, "setFilterType:", [v3 filterType]);
-  v7 = [v3 customName];
-  [(NNMKProtoMailbox *)v4 setCustomName:v7];
+  -[NNMKProtoMailbox setType:](v4, "setType:", [mailboxCopy type]);
+  -[NNMKProtoMailbox setFilterType:](v4, "setFilterType:", [mailboxCopy filterType]);
+  customName = [mailboxCopy customName];
+  [(NNMKProtoMailbox *)v4 setCustomName:customName];
 
-  -[NNMKProtoMailbox setSyncEnabled:](v4, "setSyncEnabled:", [v3 syncEnabled]);
-  -[NNMKProtoMailbox setSyncRequested:](v4, "setSyncRequested:", [v3 syncRequested]);
-  v8 = [v3 url];
+  -[NNMKProtoMailbox setSyncEnabled:](v4, "setSyncEnabled:", [mailboxCopy syncEnabled]);
+  -[NNMKProtoMailbox setSyncRequested:](v4, "setSyncRequested:", [mailboxCopy syncRequested]);
+  v8 = [mailboxCopy url];
 
-  v9 = [v8 absoluteString];
-  [(NNMKProtoMailbox *)v4 setUrl:v9];
+  absoluteString = [v8 absoluteString];
+  [(NNMKProtoMailbox *)v4 setUrl:absoluteString];
 
   return v4;
 }

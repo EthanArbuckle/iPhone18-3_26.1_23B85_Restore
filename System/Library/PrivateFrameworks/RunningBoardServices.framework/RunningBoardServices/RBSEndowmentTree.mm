@@ -1,51 +1,51 @@
 @interface RBSEndowmentTree
-+ (id)endowmentTreeForLinks:(id)a3;
-+ (id)endowmentTreeForNamespace:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)endowmentTreeForLinks:(id)links;
++ (id)endowmentTreeForNamespace:(id)namespace;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RBSEndowmentTree)initWithRBSXPCCoder:(id)a3;
-- (id)childrenLinks:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_addLink:(uint64_t)a1;
-- (void)_initWithLinks:(void *)a1;
-- (void)_initWithNamespace:(void *)a1;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (RBSEndowmentTree)initWithRBSXPCCoder:(id)coder;
+- (id)childrenLinks:(id)links;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_addLink:(uint64_t)link;
+- (void)_initWithLinks:(void *)links;
+- (void)_initWithNamespace:(void *)namespace;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSEndowmentTree
 
-+ (id)endowmentTreeForNamespace:(id)a3
++ (id)endowmentTreeForNamespace:(id)namespace
 {
-  v3 = a3;
-  v4 = [[RBSEndowmentTree alloc] _initWithNamespace:v3];
+  namespaceCopy = namespace;
+  v4 = [[RBSEndowmentTree alloc] _initWithNamespace:namespaceCopy];
 
   return v4;
 }
 
-+ (id)endowmentTreeForLinks:(id)a3
++ (id)endowmentTreeForLinks:(id)links
 {
-  v3 = a3;
-  v4 = [[RBSEndowmentTree alloc] _initWithLinks:v3];
+  linksCopy = links;
+  v4 = [[RBSEndowmentTree alloc] _initWithLinks:linksCopy];
 
   return v4;
 }
 
-- (id)childrenLinks:(id)a3
+- (id)childrenLinks:(id)links
 {
-  v4 = a3;
+  linksCopy = links;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   tree = self->_tree;
-  v7 = [v4 targetEnvironment];
-  v8 = [(NSMutableDictionary *)tree objectForKey:v7];
+  targetEnvironment = [linksCopy targetEnvironment];
+  v8 = [(NSMutableDictionary *)tree objectForKey:targetEnvironment];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __34__RBSEndowmentTree_childrenLinks___block_invoke;
   v14[3] = &unk_1E7276388;
-  v15 = v4;
+  v15 = linksCopy;
   v9 = v5;
   v16 = v9;
-  v10 = v4;
+  v10 = linksCopy;
   [v8 enumerateObjectsUsingBlock:v14];
   v11 = v16;
   v12 = v9;
@@ -66,10 +66,10 @@ void __34__RBSEndowmentTree_childrenLinks___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_12;
   }
@@ -83,7 +83,7 @@ LABEL_3:
   }
 
   endowmentNamespace = self->_endowmentNamespace;
-  v8 = v4->_endowmentNamespace;
+  v8 = equalCopy->_endowmentNamespace;
   if (endowmentNamespace != v8)
   {
     v6 = 0;
@@ -99,7 +99,7 @@ LABEL_3:
   }
 
   tree = self->_tree;
-  v10 = v4->_tree;
+  v10 = equalCopy->_tree;
   if (tree == v10)
   {
 LABEL_12:
@@ -127,7 +127,7 @@ LABEL_13:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(RBSEndowmentTree);
   objc_storeStrong(&v4->_tree, self->_tree);
@@ -135,27 +135,27 @@ LABEL_13:
   return v4;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   tree = self->_tree;
-  v5 = a3;
-  [v5 encodeObject:tree forKey:@"_tree"];
-  [v5 encodeObject:self->_endowmentNamespace forKey:@"_endowmentNamespace"];
+  coderCopy = coder;
+  [coderCopy encodeObject:tree forKey:@"_tree"];
+  [coderCopy encodeObject:self->_endowmentNamespace forKey:@"_endowmentNamespace"];
 }
 
-- (RBSEndowmentTree)initWithRBSXPCCoder:(id)a3
+- (RBSEndowmentTree)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = RBSEndowmentTree;
   v5 = [(RBSEndowmentTree *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_tree"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_tree"];
     tree = v5->_tree;
     v5->_tree = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_endowmentNamespace"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_endowmentNamespace"];
     endowmentNamespace = v5->_endowmentNamespace;
     v5->_endowmentNamespace = v8;
   }
@@ -163,13 +163,13 @@ LABEL_13:
   return v5;
 }
 
-- (void)_initWithNamespace:(void *)a1
+- (void)_initWithNamespace:(void *)namespace
 {
   v75 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (a1)
+  if (namespace)
   {
-    v71.receiver = a1;
+    v71.receiver = namespace;
     v71.super_class = RBSEndowmentTree;
     v5 = objc_msgSendSuper2(&v71, sel_init);
     v6 = v5;
@@ -239,8 +239,8 @@ LABEL_13:
                   v61 = 0u;
                   v62 = 0u;
                   v53 = v16;
-                  v17 = [v16 attributes];
-                  v18 = [v17 countByEnumeratingWithState:&v59 objects:v72 count:16];
+                  attributes = [v16 attributes];
+                  v18 = [attributes countByEnumeratingWithState:&v59 objects:v72 count:16];
                   if (v18)
                   {
                     v19 = v18;
@@ -252,7 +252,7 @@ LABEL_13:
                       {
                         if (*v60 != v20)
                         {
-                          objc_enumerationMutation(v17);
+                          objc_enumerationMutation(attributes);
                         }
 
                         v22 = *(*(&v59 + 1) + 8 * v21);
@@ -261,26 +261,26 @@ LABEL_13:
                         if (objc_opt_isKindOfClass())
                         {
                           v24 = v22;
-                          v25 = [v24 endowmentNamespace];
-                          v26 = [v25 isEqual:v4];
+                          endowmentNamespace = [v24 endowmentNamespace];
+                          v26 = [endowmentNamespace isEqual:v4];
 
                           if (v26)
                           {
-                            v27 = [v24 sourceEnvironment];
-                            if (!v27)
+                            sourceEnvironment = [v24 sourceEnvironment];
+                            if (!sourceEnvironment)
                             {
-                              v27 = [RBSEndowmentRootEnvironment copy];
+                              sourceEnvironment = [RBSEndowmentRootEnvironment copy];
                             }
 
-                            v56 = [v53 identifier];
-                            v28 = [v56 clientPid];
-                            v54 = [v53 target];
-                            v29 = [v54 environment];
-                            v30 = [v53 target];
-                            v31 = [v30 processIdentifier];
-                            v32 = +[RBSEndowmentLink endowmentLinkForNamespace:sourceEnvironment:sourcePid:targetEnvironment:targetPid:](RBSEndowmentLink, "endowmentLinkForNamespace:sourceEnvironment:sourcePid:targetEnvironment:targetPid:", v58, v27, v28, v29, [v31 pid]);
+                            identifier = [v53 identifier];
+                            clientPid = [identifier clientPid];
+                            target = [v53 target];
+                            environment = [target environment];
+                            target2 = [v53 target];
+                            processIdentifier = [target2 processIdentifier];
+                            v32 = +[RBSEndowmentLink endowmentLinkForNamespace:sourceEnvironment:sourcePid:targetEnvironment:targetPid:](RBSEndowmentLink, "endowmentLinkForNamespace:sourceEnvironment:sourcePid:targetEnvironment:targetPid:", v58, sourceEnvironment, clientPid, environment, [processIdentifier pid]);
 
-                            v33 = v27;
+                            v33 = sourceEnvironment;
                             [(RBSEndowmentTree *)v52 _addLink:v32];
 
                             goto LABEL_30;
@@ -295,20 +295,20 @@ LABEL_13:
                             goto LABEL_27;
                           }
 
-                          v34 = [v22 endowmentNamespace];
-                          v35 = [v34 isEqual:v4];
+                          endowmentNamespace2 = [v22 endowmentNamespace];
+                          v35 = [endowmentNamespace2 isEqual:v4];
 
                           v14 = 0x1E7275000;
                           if (v35)
                           {
                             v51 = [RBSEndowmentRootEnvironment copy];
-                            v57 = [v53 identifier];
-                            v50 = [v57 clientPid];
-                            v55 = [v53 target];
-                            v36 = [v55 environment];
-                            v37 = [v53 target];
-                            v38 = [v37 processIdentifier];
-                            v33 = +[RBSEndowmentLink endowmentLinkForNamespace:sourceEnvironment:sourcePid:targetEnvironment:targetPid:](RBSEndowmentLink, "endowmentLinkForNamespace:sourceEnvironment:sourcePid:targetEnvironment:targetPid:", v4, v51, v50, v36, [v38 pid]);
+                            identifier2 = [v53 identifier];
+                            clientPid2 = [identifier2 clientPid];
+                            target3 = [v53 target];
+                            environment2 = [target3 environment];
+                            target4 = [v53 target];
+                            processIdentifier2 = [target4 processIdentifier];
+                            v33 = +[RBSEndowmentLink endowmentLinkForNamespace:sourceEnvironment:sourcePid:targetEnvironment:targetPid:](RBSEndowmentLink, "endowmentLinkForNamespace:sourceEnvironment:sourcePid:targetEnvironment:targetPid:", v4, v51, clientPid2, environment2, [processIdentifier2 pid]);
 
                             [(RBSEndowmentTree *)v52 _addLink:v33];
 LABEL_30:
@@ -323,7 +323,7 @@ LABEL_27:
                       }
 
                       while (v19 != v21);
-                      v39 = [v17 countByEnumeratingWithState:&v59 objects:v72 count:16];
+                      v39 = [attributes countByEnumeratingWithState:&v59 objects:v72 count:16];
                       v19 = v39;
                     }
 
@@ -371,53 +371,53 @@ LABEL_38:
   return v6;
 }
 
-- (void)_initWithLinks:(void *)a1
+- (void)_initWithLinks:(void *)links
 {
   v3 = a2;
-  if (a1)
+  if (links)
   {
-    v12.receiver = a1;
+    v12.receiver = links;
     v12.super_class = RBSEndowmentTree;
-    a1 = objc_msgSendSuper2(&v12, sel_init);
-    if (a1)
+    links = objc_msgSendSuper2(&v12, sel_init);
+    if (links)
     {
-      v4 = [v3 anyObject];
-      v5 = [v4 endowmentNamespace];
-      v6 = a1[2];
-      a1[2] = v5;
+      anyObject = [v3 anyObject];
+      endowmentNamespace = [anyObject endowmentNamespace];
+      v6 = links[2];
+      links[2] = endowmentNamespace;
 
       v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v8 = a1[1];
-      a1[1] = v7;
+      v8 = links[1];
+      links[1] = v7;
 
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __35__RBSEndowmentTree__initWithLinks___block_invoke;
       v10[3] = &unk_1E7276360;
-      a1 = a1;
-      v11 = a1;
+      links = links;
+      linksCopy = links;
       [v3 enumerateObjectsUsingBlock:v10];
     }
   }
 
-  return a1;
+  return links;
 }
 
-- (void)_addLink:(uint64_t)a1
+- (void)_addLink:(uint64_t)link
 {
   v8 = a2;
-  if (a1)
+  if (link)
   {
-    v3 = *(a1 + 8);
-    v4 = [v8 sourceEnvironment];
-    v5 = [v3 objectForKey:v4];
+    v3 = *(link + 8);
+    sourceEnvironment = [v8 sourceEnvironment];
+    v5 = [v3 objectForKey:sourceEnvironment];
 
     if (!v5)
     {
       v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      v6 = *(a1 + 8);
-      v7 = [v8 sourceEnvironment];
-      [v6 setObject:v5 forKey:v7];
+      v6 = *(link + 8);
+      sourceEnvironment2 = [v8 sourceEnvironment];
+      [v6 setObject:v5 forKey:sourceEnvironment2];
     }
 
     [v5 addObject:v8];

@@ -8,17 +8,17 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(TUContactsDataProviderResult *)self contacts];
-  [v3 appendFormat:@" contacts=%@", v4];
+  contacts = [(TUContactsDataProviderResult *)self contacts];
+  [v3 appendFormat:@" contacts=%@", contacts];
 
-  v5 = [(TUContactsDataProviderResult *)self localizedName];
-  [v3 appendFormat:@" localizedName=%@", v5];
+  localizedName = [(TUContactsDataProviderResult *)self localizedName];
+  [v3 appendFormat:@" localizedName=%@", localizedName];
 
-  v6 = [(TUContactsDataProviderResult *)self companyName];
-  [v3 appendFormat:@" companyName=%@", v6];
+  companyName = [(TUContactsDataProviderResult *)self companyName];
+  [v3 appendFormat:@" companyName=%@", companyName];
 
-  v7 = [(TUContactsDataProviderResult *)self contactLabel];
-  [v3 appendFormat:@" contactLabel=%@", v7];
+  contactLabel = [(TUContactsDataProviderResult *)self contactLabel];
+  [v3 appendFormat:@" contactLabel=%@", contactLabel];
 
   [v3 appendFormat:@" legacyAddressBookIdentifier=%d", -[TUContactsDataProviderResult legacyAddressBookIdentifier](self, "legacyAddressBookIdentifier")];
   [v3 appendString:@">"];

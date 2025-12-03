@@ -1,13 +1,13 @@
 @interface NTKSolarFace
 + (id)_complicationSlotDescriptors;
-+ (id)_defaultSelectedComplicationSlotForDevice:(id)a3;
++ (id)_defaultSelectedComplicationSlotForDevice:(id)device;
 + (id)_orderedComplicationSlots;
-- (BOOL)_snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4;
+- (BOOL)_snapshotContext:(id)context isStaleRelativeToContext:(id)toContext;
 - (id)_complicationSlotDescriptors;
 - (id)_faceDescription;
 - (id)_faceDescriptionForLibrary;
 - (id)_faceDescriptionKey;
-- (id)_localizedNameForComplicationSlot:(id)a3;
+- (id)_localizedNameForComplicationSlot:(id)slot;
 - (id)orderedComplicationSlots;
 @end
 
@@ -15,18 +15,18 @@
 
 - (id)_faceDescriptionKey
 {
-  v3 = [(NTKSolarFace *)self device];
-  v4 = [v3 deviceCategory];
+  device = [(NTKSolarFace *)self device];
+  deviceCategory = [device deviceCategory];
 
-  if (v4 == &dword_0 + 1)
+  if (deviceCategory == &dword_0 + 1)
   {
     v5 = @"FACE_STYLE_SOLAR_GRAPH_GALLERY_DESCRIPTION";
   }
 
   else
   {
-    v6 = [(NTKSolarFace *)self device];
-    v7 = [v6 supportsPDRCapability:3171091165];
+    device2 = [(NTKSolarFace *)self device];
+    v7 = [device2 supportsPDRCapability:3171091165];
     v8 = @"FACE_STYLE_SOLAR_GRAPH_DESCRIPTION";
     if (v7)
     {
@@ -41,8 +41,8 @@
 
 - (id)_faceDescription
 {
-  v2 = [(NTKSolarFace *)self _faceDescriptionKey];
-  v3 = [NTKSolarFaceBundle localizedStringForKey:v2 comment:@"Solar face description"];
+  _faceDescriptionKey = [(NTKSolarFace *)self _faceDescriptionKey];
+  v3 = [NTKSolarFaceBundle localizedStringForKey:_faceDescriptionKey comment:@"Solar face description"];
 
   return v3;
 }
@@ -66,27 +66,27 @@
 
 - (id)_complicationSlotDescriptors
 {
-  v3 = [(NTKSolarFace *)self device];
-  v4 = [v3 pdrDeviceVersion];
+  device = [(NTKSolarFace *)self device];
+  pdrDeviceVersion = [device pdrDeviceVersion];
 
-  if (v4 >= 0x50000)
+  if (pdrDeviceVersion >= 0x50000)
   {
     v7.receiver = self;
     v7.super_class = NTKSolarFace;
-    v5 = [(NTKSolarFace *)&v7 _complicationSlotDescriptors];
+    _complicationSlotDescriptors = [(NTKSolarFace *)&v7 _complicationSlotDescriptors];
   }
 
   else
   {
-    v5 = &__NSDictionary0__struct;
+    _complicationSlotDescriptors = &__NSDictionary0__struct;
   }
 
-  return v5;
+  return _complicationSlotDescriptors;
 }
 
-+ (id)_defaultSelectedComplicationSlotForDevice:(id)a3
++ (id)_defaultSelectedComplicationSlotForDevice:(id)device
 {
-  if ([a3 pdrDeviceVersion] >= 0x50000)
+  if ([device pdrDeviceVersion] >= 0x50000)
   {
     v3 = NTKComplicationSlotTopRight;
   }
@@ -110,40 +110,40 @@
 
 - (id)orderedComplicationSlots
 {
-  v3 = [(NTKSolarFace *)self device];
-  v4 = [v3 pdrDeviceVersion];
+  device = [(NTKSolarFace *)self device];
+  pdrDeviceVersion = [device pdrDeviceVersion];
 
-  if (v4 >= 0x50000)
+  if (pdrDeviceVersion >= 0x50000)
   {
     v7.receiver = self;
     v7.super_class = NTKSolarFace;
-    v5 = [(NTKSolarFace *)&v7 orderedComplicationSlots];
+    orderedComplicationSlots = [(NTKSolarFace *)&v7 orderedComplicationSlots];
   }
 
   else
   {
-    v5 = 0;
+    orderedComplicationSlots = 0;
   }
 
-  return v5;
+  return orderedComplicationSlots;
 }
 
-- (id)_localizedNameForComplicationSlot:(id)a3
+- (id)_localizedNameForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKSolarFace *)self device];
-  v6 = [v5 pdrDeviceVersion];
+  slotCopy = slot;
+  device = [(NTKSolarFace *)self device];
+  pdrDeviceVersion = [device pdrDeviceVersion];
 
-  if (v6 >= 0x50000)
+  if (pdrDeviceVersion >= 0x50000)
   {
-    if ([v4 isEqualToString:NTKComplicationSlotTopRight])
+    if ([slotCopy isEqualToString:NTKComplicationSlotTopRight])
     {
       v8 = @"TOP";
     }
 
     else
     {
-      v9 = [v4 isEqualToString:NTKComplicationSlotBottom];
+      v9 = [slotCopy isEqualToString:NTKComplicationSlotBottom];
       v8 = @"BOTTOM";
       if (!v9)
       {
@@ -163,15 +163,15 @@
   return v7;
 }
 
-- (BOOL)_snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4
+- (BOOL)_snapshotContext:(id)context isStaleRelativeToContext:(id)toContext
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  toContextCopy = toContext;
   v10.receiver = self;
   v10.super_class = NTKSolarFace;
-  if (!-[NTKSolarFace _snapshotContext:isStaleRelativeToContext:](&v10, "_snapshotContext:isStaleRelativeToContext:", v6, v7) && [v6 calendarDateMatchesContext:v7] && objc_msgSend(v6, "localeMatchesContext:", v7) && objc_msgSend(v6, "timeZoneMatchesContext:", v7))
+  if (!-[NTKSolarFace _snapshotContext:isStaleRelativeToContext:](&v10, "_snapshotContext:isStaleRelativeToContext:", contextCopy, toContextCopy) && [contextCopy calendarDateMatchesContext:toContextCopy] && objc_msgSend(contextCopy, "localeMatchesContext:", toContextCopy) && objc_msgSend(contextCopy, "timeZoneMatchesContext:", toContextCopy))
   {
-    v8 = [v6 locationSignificantlyDiffersFromContext:v7];
+    v8 = [contextCopy locationSignificantlyDiffersFromContext:toContextCopy];
   }
 
   else
@@ -184,22 +184,22 @@
 
 - (id)_faceDescriptionForLibrary
 {
-  v3 = [(NTKSolarFace *)self device];
-  v4 = [v3 pdrDeviceVersion];
+  device = [(NTKSolarFace *)self device];
+  pdrDeviceVersion = [device pdrDeviceVersion];
 
-  if (v4 >> 17 > 2)
+  if (pdrDeviceVersion >> 17 > 2)
   {
-    v5 = 0;
+    _faceDescriptionForLibrary = 0;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = NTKSolarFace;
-    v5 = [(NTKSolarFace *)&v7 _faceDescriptionForLibrary];
+    _faceDescriptionForLibrary = [(NTKSolarFace *)&v7 _faceDescriptionForLibrary];
   }
 
-  return v5;
+  return _faceDescriptionForLibrary;
 }
 
 @end

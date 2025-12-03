@@ -1,27 +1,27 @@
 @interface PKTextInputDebugViewTableCell
-- (PKTextInputDebugViewTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PKTextInputDebugViewTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (PKTextInputDebugViewTableCellDelegate)delegate;
-- (void)_handleDetailsButton:(id)a3;
+- (void)_handleDetailsButton:(id)button;
 - (void)_setupContentViewsIfNeeded;
 - (void)_updateLabels;
-- (void)setShowDetailsButton:(BOOL)a3;
-- (void)setTitleText:(id)a3;
-- (void)setValueAttributedText:(id)a3;
+- (void)setShowDetailsButton:(BOOL)button;
+- (void)setTitleText:(id)text;
+- (void)setValueAttributedText:(id)text;
 @end
 
 @implementation PKTextInputDebugViewTableCell
 
-- (PKTextInputDebugViewTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKTextInputDebugViewTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = PKTextInputDebugViewTableCell;
-  v4 = [(PKTextInputDebugViewTableCell *)&v8 initWithStyle:1 reuseIdentifier:a4];
+  v4 = [(PKTextInputDebugViewTableCell *)&v8 initWithStyle:1 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(PKTextInputDebugViewTableCell *)v4 setOpaque:0];
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [(PKTextInputDebugViewTableCell *)v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PKTextInputDebugViewTableCell *)v5 setBackgroundColor:clearColor];
 
     [(PKTextInputDebugViewTableCell *)v5 setIndentationLevel:1];
   }
@@ -29,11 +29,11 @@
   return v5;
 }
 
-- (void)setValueAttributedText:(id)a3
+- (void)setValueAttributedText:(id)text
 {
-  if (self->_valueAttributedText != a3)
+  if (self->_valueAttributedText != text)
   {
-    v4 = [a3 copy];
+    v4 = [text copy];
     valueAttributedText = self->_valueAttributedText;
     self->_valueAttributedText = v4;
 
@@ -41,11 +41,11 @@
   }
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  if (self->_titleText != a3)
+  if (self->_titleText != text)
   {
-    v4 = [a3 copy];
+    v4 = [text copy];
     titleText = self->_titleText;
     self->_titleText = v4;
 
@@ -53,11 +53,11 @@
   }
 }
 
-- (void)setShowDetailsButton:(BOOL)a3
+- (void)setShowDetailsButton:(BOOL)button
 {
-  if (self->_showDetailsButton != a3)
+  if (self->_showDetailsButton != button)
   {
-    self->_showDetailsButton = a3;
+    self->_showDetailsButton = button;
     [(PKTextInputDebugViewTableCell *)self _updateLabels];
   }
 }
@@ -65,9 +65,9 @@
 - (void)_setupContentViewsIfNeeded
 {
   v64[4] = *MEMORY[0x1E69E9840];
-  v3 = [(PKTextInputDebugViewTableCell *)self _titleLabel];
+  _titleLabel = [(PKTextInputDebugViewTableCell *)self _titleLabel];
 
-  if (!v3)
+  if (!_titleLabel)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
     v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -83,35 +83,35 @@
     v8 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.1];
     [v5 setBackgroundColor:v8];
 
-    v9 = [(PKTextInputDebugViewTableCell *)self contentView];
-    [v9 addSubview:v5];
+    contentView = [(PKTextInputDebugViewTableCell *)self contentView];
+    [contentView addSubview:v5];
 
-    v56 = [v5 topAnchor];
-    v59 = [(PKTextInputDebugViewTableCell *)self contentView];
-    v54 = [v59 topAnchor];
-    v52 = [v56 constraintEqualToAnchor:v54 constant:10.0];
+    topAnchor = [v5 topAnchor];
+    contentView2 = [(PKTextInputDebugViewTableCell *)self contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v52 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
     v64[0] = v52;
-    v48 = [v5 leadingAnchor];
-    v50 = [(PKTextInputDebugViewTableCell *)self contentView];
-    v46 = [v50 leadingAnchor];
-    v10 = [v48 constraintEqualToAnchor:v46 constant:8.0];
+    leadingAnchor = [v5 leadingAnchor];
+    contentView3 = [(PKTextInputDebugViewTableCell *)self contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
     v64[1] = v10;
-    v11 = [v5 trailingAnchor];
-    v12 = [(PKTextInputDebugViewTableCell *)self contentView];
-    v13 = [v12 trailingAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13 constant:-8.0];
+    trailingAnchor = [v5 trailingAnchor];
+    contentView4 = [(PKTextInputDebugViewTableCell *)self contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
     v64[2] = v14;
-    v15 = [v5 heightAnchor];
-    v16 = [v15 constraintGreaterThanOrEqualToConstant:22.0];
+    heightAnchor = [v5 heightAnchor];
+    v16 = [heightAnchor constraintGreaterThanOrEqualToConstant:22.0];
     v64[3] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:4];
 
     [MEMORY[0x1E696ACD8] activateConstraints:v17];
   }
 
-  v18 = [(PKTextInputDebugViewTableCell *)self _valueLabel];
+  _valueLabel = [(PKTextInputDebugViewTableCell *)self _valueLabel];
 
-  if (!v18)
+  if (!_valueLabel)
   {
     v19 = objc_alloc(MEMORY[0x1E69DCC10]);
     v20 = [v19 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -124,37 +124,37 @@
     [v20 setFont:v22];
 
     [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v23 = [(PKTextInputDebugViewTableCell *)self contentView];
-    [v23 addSubview:v20];
+    contentView5 = [(PKTextInputDebugViewTableCell *)self contentView];
+    [contentView5 addSubview:v20];
 
-    v57 = [v20 topAnchor];
-    v60 = [(PKTextInputDebugViewTableCell *)self _titleLabel];
-    v55 = [v60 bottomAnchor];
-    v53 = [v57 constraintEqualToAnchor:v55 constant:6.0];
+    topAnchor3 = [v20 topAnchor];
+    _titleLabel2 = [(PKTextInputDebugViewTableCell *)self _titleLabel];
+    bottomAnchor = [_titleLabel2 bottomAnchor];
+    v53 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:6.0];
     v63[0] = v53;
-    v49 = [v20 bottomAnchor];
-    v51 = [(PKTextInputDebugViewTableCell *)self contentView];
-    v47 = [v51 bottomAnchor];
-    v45 = [v49 constraintEqualToAnchor:v47];
+    bottomAnchor2 = [v20 bottomAnchor];
+    contentView6 = [(PKTextInputDebugViewTableCell *)self contentView];
+    bottomAnchor3 = [contentView6 bottomAnchor];
+    v45 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v63[1] = v45;
-    v44 = [v20 leadingAnchor];
-    v24 = [(PKTextInputDebugViewTableCell *)self contentView];
-    v25 = [v24 leadingAnchor];
-    v26 = [v44 constraintEqualToAnchor:v25 constant:14.0];
+    leadingAnchor3 = [v20 leadingAnchor];
+    contentView7 = [(PKTextInputDebugViewTableCell *)self contentView];
+    leadingAnchor4 = [contentView7 leadingAnchor];
+    v26 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:14.0];
     v63[2] = v26;
-    v27 = [v20 trailingAnchor];
-    v28 = [(PKTextInputDebugViewTableCell *)self contentView];
-    v29 = [v28 trailingAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29 constant:-14.0];
+    trailingAnchor3 = [v20 trailingAnchor];
+    contentView8 = [(PKTextInputDebugViewTableCell *)self contentView];
+    trailingAnchor4 = [contentView8 trailingAnchor];
+    v30 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-14.0];
     v63[3] = v30;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:4];
 
     [MEMORY[0x1E696ACD8] activateConstraints:v31];
   }
 
-  v32 = [(PKTextInputDebugViewTableCell *)self _detailsButton];
+  _detailsButton = [(PKTextInputDebugViewTableCell *)self _detailsButton];
 
-  if (!v32)
+  if (!_detailsButton)
   {
     v61 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:13.0];
     v58 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"info.circle" withConfiguration:v61];
@@ -162,18 +162,18 @@
     [(PKTextInputDebugViewTableCell *)self set_detailsButton:v33];
     [v33 _setTouchInsets:{-5.0, -5.0, -5.0, -5.0}];
     [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v34 = [(PKTextInputDebugViewTableCell *)self contentView];
-    [v34 addSubview:v33];
+    contentView9 = [(PKTextInputDebugViewTableCell *)self contentView];
+    [contentView9 addSubview:v33];
 
-    v35 = [v33 centerYAnchor];
-    v36 = [(PKTextInputDebugViewTableCell *)self _titleLabel];
-    v37 = [v36 centerYAnchor];
-    v38 = [v35 constraintEqualToAnchor:v37];
+    centerYAnchor = [v33 centerYAnchor];
+    _titleLabel3 = [(PKTextInputDebugViewTableCell *)self _titleLabel];
+    centerYAnchor2 = [_titleLabel3 centerYAnchor];
+    v38 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v62[0] = v38;
-    v39 = [v33 trailingAnchor];
-    v40 = [(PKTextInputDebugViewTableCell *)self _titleLabel];
-    v41 = [v40 trailingAnchor];
-    v42 = [v39 constraintEqualToAnchor:v41 constant:-10.0];
+    trailingAnchor5 = [v33 trailingAnchor];
+    _titleLabel4 = [(PKTextInputDebugViewTableCell *)self _titleLabel];
+    trailingAnchor6 = [_titleLabel4 trailingAnchor];
+    v42 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-10.0];
     v62[1] = v42;
     v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:2];
 
@@ -184,23 +184,23 @@
 - (void)_updateLabels
 {
   [(PKTextInputDebugViewTableCell *)self _setupContentViewsIfNeeded];
-  v3 = [(PKTextInputDebugViewTableCell *)self titleText];
-  v4 = [(PKTextInputDebugViewTableCell *)self _titleLabel];
-  [v4 setText:v3];
+  titleText = [(PKTextInputDebugViewTableCell *)self titleText];
+  _titleLabel = [(PKTextInputDebugViewTableCell *)self _titleLabel];
+  [_titleLabel setText:titleText];
 
-  v5 = [(PKTextInputDebugViewTableCell *)self valueAttributedText];
-  v6 = [(PKTextInputDebugViewTableCell *)self _valueLabel];
-  [v6 setAttributedText:v5];
+  valueAttributedText = [(PKTextInputDebugViewTableCell *)self valueAttributedText];
+  _valueLabel = [(PKTextInputDebugViewTableCell *)self _valueLabel];
+  [_valueLabel setAttributedText:valueAttributedText];
 
-  LODWORD(v5) = [(PKTextInputDebugViewTableCell *)self showDetailsButton];
-  v7 = [(PKTextInputDebugViewTableCell *)self _detailsButton];
-  [v7 setHidden:v5 ^ 1];
+  LODWORD(valueAttributedText) = [(PKTextInputDebugViewTableCell *)self showDetailsButton];
+  _detailsButton = [(PKTextInputDebugViewTableCell *)self _detailsButton];
+  [_detailsButton setHidden:valueAttributedText ^ 1];
 }
 
-- (void)_handleDetailsButton:(id)a3
+- (void)_handleDetailsButton:(id)button
 {
-  v4 = [(PKTextInputDebugViewTableCell *)self delegate];
-  [v4 debugViewTableCellDidTapDetailsButton:self];
+  delegate = [(PKTextInputDebugViewTableCell *)self delegate];
+  [delegate debugViewTableCellDidTapDetailsButton:self];
 }
 
 - (PKTextInputDebugViewTableCellDelegate)delegate

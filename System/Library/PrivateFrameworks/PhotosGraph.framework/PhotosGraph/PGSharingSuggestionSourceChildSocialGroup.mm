@@ -1,19 +1,19 @@
 @interface PGSharingSuggestionSourceChildSocialGroup
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4;
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options;
 @end
 
 @implementation PGSharingSuggestionSourceChildSocialGroup
 
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v30 = a4;
-  v32 = v5;
-  v6 = [v5 momentNodes];
-  v33 = [v5 graph];
+  inputCopy = input;
+  optionsCopy = options;
+  v32 = inputCopy;
+  momentNodes = [inputCopy momentNodes];
+  graph = [inputCopy graph];
   v7 = objc_opt_new();
-  v31 = [v33 meNode];
+  meNode = [graph meNode];
   v45 = 0;
   v46 = &v45;
   v47 = 0x2020000000;
@@ -22,7 +22,7 @@
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v8 = v6;
+  v8 = momentNodes;
   v9 = [v8 countByEnumeratingWithState:&v41 objects:v50 count:16];
   if (v9)
   {
@@ -65,7 +65,7 @@
 
   if ([v7 count] <= 2 && objc_msgSend(v7, "count"))
   {
-    if (v31)
+    if (meNode)
     {
       v13 = 1;
     }
@@ -76,7 +76,7 @@
     }
 
     v14 = [MEMORY[0x277CBEB58] set];
-    [v33 socialGroupNodesSortedByImportance];
+    [graph socialGroupNodesSortedByImportance];
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
@@ -94,14 +94,14 @@ LABEL_16:
           objc_enumerationMutation(v15);
         }
 
-        v19 = [*(*(&v34 + 1) + 8 * v18) personNodes];
-        v20 = [v19 count];
+        personNodes = [*(*(&v34 + 1) + 8 * v18) personNodes];
+        v20 = [personNodes count];
         if (v20 != v13)
         {
           break;
         }
 
-        [v14 unionSet:v19];
+        [v14 unionSet:personNodes];
 
         if (v16 == ++v18)
         {
@@ -115,7 +115,7 @@ LABEL_16:
         }
       }
 
-      if ([v14 count] && !objc_msgSend(v14, "intersectsSet:", v19) || !objc_msgSend(v19, "intersectsSet:", v7))
+      if ([v14 count] && !objc_msgSend(v14, "intersectsSet:", personNodes) || !objc_msgSend(personNodes, "intersectsSet:", v7))
       {
 
         goto LABEL_36;
@@ -124,16 +124,16 @@ LABEL_16:
       if (v20 >= 6)
       {
         v24 = +[PGGraphPersonNode personScoreSortDescriptors];
-        v25 = [v19 sortedArrayUsingDescriptors:v24];
+        v25 = [personNodes sortedArrayUsingDescriptors:v24];
 
         v26 = MEMORY[0x277CBEB98];
         v27 = [v25 subarrayWithRange:{0, 5}];
         v28 = [v26 setWithArray:v27];
 
-        v19 = v28;
+        personNodes = v28;
       }
 
-      v21 = [(PGSharingSuggestionSource *)self suggestionResultsWithPersons:v19];
+      v21 = [(PGSharingSuggestionSource *)self suggestionResultsWithPersons:personNodes];
     }
 
     else

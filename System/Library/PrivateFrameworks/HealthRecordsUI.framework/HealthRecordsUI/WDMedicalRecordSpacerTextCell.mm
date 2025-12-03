@@ -1,22 +1,22 @@
 @interface WDMedicalRecordSpacerTextCell
 + (id)defaultReuseIdentifier;
-- (WDMedicalRecordSpacerTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WDMedicalRecordSpacerTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_setupSubviews;
-- (void)setTitle:(id)a3;
-- (void)setUseTallTopPadding:(BOOL)a3;
+- (void)setTitle:(id)title;
+- (void)setUseTallTopPadding:(BOOL)padding;
 @end
 
 @implementation WDMedicalRecordSpacerTextCell
 
-- (WDMedicalRecordSpacerTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WDMedicalRecordSpacerTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = WDMedicalRecordSpacerTextCell;
-  v4 = [(WDMedicalRecordSpacerTextCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WDMedicalRecordSpacerTextCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [(WDMedicalRecordSpacerTextCell *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(WDMedicalRecordSpacerTextCell *)v4 setBackgroundColor:clearColor];
 
     [(WDMedicalRecordSpacerTextCell *)v4 _setupSubviews];
   }
@@ -29,68 +29,68 @@
   v3 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(WDMedicalRecordSpacerTextCell *)self setTitleLabel:v3];
 
-  v4 = [(WDMedicalRecordSpacerTextCell *)self titleLabel];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [(WDMedicalRecordSpacerTextCell *)self titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v5 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD28] variant:1024];
-  v6 = [(WDMedicalRecordSpacerTextCell *)self titleLabel];
-  [v6 setFont:v5];
+  titleLabel2 = [(WDMedicalRecordSpacerTextCell *)self titleLabel];
+  [titleLabel2 setFont:v5];
 
-  v7 = [(WDMedicalRecordSpacerTextCell *)self contentView];
-  v8 = [(WDMedicalRecordSpacerTextCell *)self titleLabel];
-  [v7 addSubview:v8];
+  contentView = [(WDMedicalRecordSpacerTextCell *)self contentView];
+  titleLabel3 = [(WDMedicalRecordSpacerTextCell *)self titleLabel];
+  [contentView addSubview:titleLabel3];
 
-  v9 = [(WDMedicalRecordSpacerTextCell *)self titleLabel];
-  v10 = [v9 leadingAnchor];
-  v11 = [(WDMedicalRecordSpacerTextCell *)self contentView];
-  v12 = [v11 leadingAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 constant:18.0];
+  titleLabel4 = [(WDMedicalRecordSpacerTextCell *)self titleLabel];
+  leadingAnchor = [titleLabel4 leadingAnchor];
+  contentView2 = [(WDMedicalRecordSpacerTextCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:18.0];
   [v13 setActive:1];
 
-  v14 = [(WDMedicalRecordSpacerTextCell *)self titleLabel];
-  v15 = [v14 trailingAnchor];
-  v16 = [(WDMedicalRecordSpacerTextCell *)self contentView];
-  v17 = [v16 trailingAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:-18.0];
+  titleLabel5 = [(WDMedicalRecordSpacerTextCell *)self titleLabel];
+  trailingAnchor = [titleLabel5 trailingAnchor];
+  contentView3 = [(WDMedicalRecordSpacerTextCell *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-18.0];
   [v18 setActive:1];
 
-  v19 = [(WDMedicalRecordSpacerTextCell *)self titleLabel];
-  v20 = [v19 bottomAnchor];
-  v21 = [(WDMedicalRecordSpacerTextCell *)self contentView];
-  v22 = [v21 bottomAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22 constant:-9.0];
+  titleLabel6 = [(WDMedicalRecordSpacerTextCell *)self titleLabel];
+  bottomAnchor = [titleLabel6 bottomAnchor];
+  contentView4 = [(WDMedicalRecordSpacerTextCell *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-9.0];
   [v23 setActive:1];
 
-  v24 = [(WDMedicalRecordSpacerTextCell *)self titleLabel];
-  v25 = [v24 topAnchor];
-  v26 = [(WDMedicalRecordSpacerTextCell *)self contentView];
-  v27 = [v26 topAnchor];
-  v28 = [v25 constraintEqualToAnchor:v27 constant:20.0];
+  titleLabel7 = [(WDMedicalRecordSpacerTextCell *)self titleLabel];
+  topAnchor = [titleLabel7 topAnchor];
+  contentView5 = [(WDMedicalRecordSpacerTextCell *)self contentView];
+  topAnchor2 = [contentView5 topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
   [(WDMedicalRecordSpacerTextCell *)self setTopConstraint:v28];
 
-  v29 = [(WDMedicalRecordSpacerTextCell *)self topConstraint];
-  [v29 setActive:1];
+  topConstraint = [(WDMedicalRecordSpacerTextCell *)self topConstraint];
+  [topConstraint setActive:1];
 
   self->_useTallTopPadding = 0;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_title isEqualToString:?])
   {
-    objc_storeStrong(&self->_title, a3);
-    v5 = [(NSString *)self->_title localizedUppercaseString];
-    [(UILabel *)self->_titleLabel setText:v5];
+    objc_storeStrong(&self->_title, title);
+    localizedUppercaseString = [(NSString *)self->_title localizedUppercaseString];
+    [(UILabel *)self->_titleLabel setText:localizedUppercaseString];
   }
 }
 
-- (void)setUseTallTopPadding:(BOOL)a3
+- (void)setUseTallTopPadding:(BOOL)padding
 {
-  if (self->_useTallTopPadding != a3)
+  if (self->_useTallTopPadding != padding)
   {
-    self->_useTallTopPadding = a3;
-    if (a3)
+    self->_useTallTopPadding = padding;
+    if (padding)
     {
       v4 = 26.0;
     }
@@ -100,8 +100,8 @@
       v4 = 20.0;
     }
 
-    v5 = [(WDMedicalRecordSpacerTextCell *)self topConstraint];
-    [v5 setConstant:v4];
+    topConstraint = [(WDMedicalRecordSpacerTextCell *)self topConstraint];
+    [topConstraint setConstant:v4];
   }
 }
 

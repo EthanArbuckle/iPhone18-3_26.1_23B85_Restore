@@ -6,19 +6,19 @@
 
 - (id)debugDescription
 {
-  v3 = [(SearchSessionAnalytics *)self action];
-  if (v3 <= 3000)
+  action = [(SearchSessionAnalytics *)self action];
+  if (action <= 3000)
   {
-    if (v3 > 1500)
+    if (action > 1500)
     {
-      if (v3 <= 1503)
+      if (action <= 1503)
       {
-        if (v3 == 1501)
+        if (action == 1501)
         {
           v4 = @"TAP_DIRECTIONS";
         }
 
-        else if (v3 == 1502)
+        else if (action == 1502)
         {
           v4 = @"TAP_PROXIMITY_FIND";
         }
@@ -31,7 +31,7 @@
 
       else
       {
-        switch(v3)
+        switch(action)
         {
           case 2001:
             v4 = @"TAP_SEARCH_FIELD";
@@ -631,14 +631,14 @@
             v4 = @"SCROLL_FEATURED_COLLECTION_BACKWARD";
             goto LABEL_1425;
           default:
-            if (v3 == 1504)
+            if (action == 1504)
             {
               v4 = @"TAP_ENABLE_LOST_MODE";
             }
 
             else
             {
-              if (v3 != 1505)
+              if (action != 1505)
               {
                 goto LABEL_115;
               }
@@ -654,7 +654,7 @@
     else
     {
       v4 = @"UI_ACTION_UNKNOWN";
-      switch(v3)
+      switch(action)
       {
         case 0:
           goto LABEL_1425;
@@ -2847,7 +2847,7 @@
           v4 = @"TAP_GEO";
           break;
         default:
-          if (v3 != 1500)
+          if (action != 1500)
           {
             goto LABEL_115;
           }
@@ -2860,11 +2860,11 @@
     goto LABEL_1425;
   }
 
-  if (v3 > 9000)
+  if (action > 9000)
   {
-    if (v3 <= 12000)
+    if (action <= 12000)
     {
-      switch(v3)
+      switch(action)
       {
         case 10101:
           v4 = @"RAP_DIRECTIONS_INSTRUCTIONS_INCORRECT";
@@ -3140,7 +3140,7 @@
           v4 = @"RAP_SELECT_ENTRY_POINT_TYPE";
           break;
         default:
-          switch(v3)
+          switch(action)
           {
             case 9001:
               v4 = @"TAP_WIDGET_ITEM";
@@ -3340,7 +3340,7 @@
               v4 = @"TAP_ALLOW_LOCATION";
               break;
             default:
-              switch(v3)
+              switch(action)
               {
                 case 11001:
                   v4 = @"EXIT_MAPS_LOWER_WRIST";
@@ -3442,9 +3442,9 @@
       goto LABEL_1425;
     }
 
-    if (v3 > 16000)
+    if (action > 16000)
     {
-      switch(v3)
+      switch(action)
       {
         case 17001:
           v4 = @"START_DRAG";
@@ -3771,14 +3771,14 @@
           v4 = @"MAP_TAP_POI";
           break;
         default:
-          if (v3 == 16001)
+          if (action == 16001)
           {
             v4 = @"SEARCH_IN_MAPS";
           }
 
           else
           {
-            if (v3 != 90010)
+            if (action != 90010)
             {
               goto LABEL_115;
             }
@@ -3792,18 +3792,18 @@
       goto LABEL_1425;
     }
 
-    if (v3 <= 13004)
+    if (action <= 13004)
     {
-      if (v3 <= 12007)
+      if (action <= 12007)
       {
-        if (v3 <= 12003)
+        if (action <= 12003)
         {
-          if (v3 == 12001)
+          if (action == 12001)
           {
             v4 = @"VIEW_MORE_OPTIONS";
           }
 
-          else if (v3 == 12002)
+          else if (action == 12002)
           {
             v4 = @"SELECT_TIME";
           }
@@ -3814,9 +3814,9 @@
           }
         }
 
-        else if (v3 > 12005)
+        else if (action > 12005)
         {
-          if (v3 == 12006)
+          if (action == 12006)
           {
             v4 = @"EDIT_BOOKING";
           }
@@ -3827,7 +3827,7 @@
           }
         }
 
-        else if (v3 == 12004)
+        else if (action == 12004)
         {
           v4 = @"DECREASE_TABLE_SIZE";
         }
@@ -3840,11 +3840,11 @@
         goto LABEL_1425;
       }
 
-      if (v3 > 13000)
+      if (action > 13000)
       {
-        if (v3 > 13002)
+        if (action > 13002)
         {
-          if (v3 == 13003)
+          if (action == 13003)
           {
             v4 = @"SELECT_LABEL";
           }
@@ -3855,7 +3855,7 @@
           }
         }
 
-        else if (v3 == 13001)
+        else if (action == 13001)
         {
           v4 = @"SELECT_ADDRESS";
         }
@@ -3868,7 +3868,7 @@
         goto LABEL_1425;
       }
 
-      switch(v3)
+      switch(action)
       {
         case 0x2EE8:
           v4 = @"ADD_SPECIAL_REQUEST";
@@ -3882,13 +3882,13 @@
       }
     }
 
-    else if (v3 <= 14004)
+    else if (action <= 14004)
     {
-      if (v3 > 14000)
+      if (action > 14000)
       {
-        if (v3 > 14002)
+        if (action > 14002)
         {
-          if (v3 == 14003)
+          if (action == 14003)
           {
             v4 = @"BOOK_RIDE";
           }
@@ -3899,7 +3899,7 @@
           }
         }
 
-        else if (v3 == 14001)
+        else if (action == 14001)
         {
           v4 = @"VIEW_APP";
         }
@@ -3912,7 +3912,7 @@
         goto LABEL_1425;
       }
 
-      switch(v3)
+      switch(action)
       {
         case 0x32CD:
           v4 = @"EDIT_ITEMS";
@@ -3928,11 +3928,11 @@
 
     else
     {
-      if (v3 <= 14008)
+      if (action <= 14008)
       {
-        if (v3 > 14006)
+        if (action > 14006)
         {
-          if (v3 == 14007)
+          if (action == 14007)
           {
             v4 = @"ENABLE_ALL_RIDESHARE_APPS";
           }
@@ -3943,7 +3943,7 @@
           }
         }
 
-        else if (v3 == 14005)
+        else if (action == 14005)
         {
           v4 = @"CONTACT_DRIVER";
         }
@@ -3956,15 +3956,15 @@
         goto LABEL_1425;
       }
 
-      if (v3 > 15001)
+      if (action > 15001)
       {
-        if (v3 == 15002)
+        if (action == 15002)
         {
           v4 = @"ORB_POP";
           goto LABEL_1425;
         }
 
-        if (v3 == 15003)
+        if (action == 15003)
         {
           v4 = @"ORB_DISMISS";
           goto LABEL_1425;
@@ -3973,13 +3973,13 @@
 
       else
       {
-        if (v3 == 14009)
+        if (action == 14009)
         {
           v4 = @"SUBMIT_TRIP_FEEDBACK";
           goto LABEL_1425;
         }
 
-        if (v3 == 15001)
+        if (action == 15001)
         {
           v4 = @"ORB_PEEK";
           goto LABEL_1425;
@@ -3988,22 +3988,22 @@
     }
 
 LABEL_115:
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", v3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", action];
     goto LABEL_1425;
   }
 
-  if (v3 <= 6002)
+  if (action <= 6002)
   {
-    if (v3 > 4001)
+    if (action > 4001)
     {
-      if (v3 <= 4004)
+      if (action <= 4004)
       {
-        if (v3 == 4002)
+        if (action == 4002)
         {
           v4 = @"TAP_HEADING_ON";
         }
 
-        else if (v3 == 4003)
+        else if (action == 4003)
         {
           v4 = @"TAP_HEADING_OFF";
         }
@@ -4016,7 +4016,7 @@ LABEL_115:
 
       else
       {
-        switch(v3)
+        switch(action)
         {
           case 5001:
             v4 = @"SHOW_MAPS_SETTINGS";
@@ -4135,14 +4135,14 @@ LABEL_115:
             v4 = @"ELECT_CYCLING_MODE";
             break;
           default:
-            if (v3 == 4005)
+            if (action == 4005)
             {
               v4 = @"PUCK_SNAP";
             }
 
             else
             {
-              if (v3 != 4006)
+              if (action != 4006)
               {
                 goto LABEL_115;
               }
@@ -4157,7 +4157,7 @@ LABEL_115:
 
     else
     {
-      switch(v3)
+      switch(action)
       {
         case 3001:
           v4 = @"START_NAV";
@@ -4424,7 +4424,7 @@ LABEL_115:
           v4 = @"TAP_SHOW_ADVISORY_DETAILS";
           break;
         default:
-          if (v3 != 4001)
+          if (action != 4001)
           {
             goto LABEL_115;
           }
@@ -4435,15 +4435,15 @@ LABEL_115:
     }
   }
 
-  else if (v3 > 7000)
+  else if (action > 7000)
   {
-    if (v3 > 8000)
+    if (action > 8000)
     {
-      if (v3 <= 8005)
+      if (action <= 8005)
       {
-        if (v3 <= 8002)
+        if (action <= 8002)
         {
-          if (v3 == 8001)
+          if (action == 8001)
           {
             v4 = @"INVOKE_SIRI_SNIPPET";
           }
@@ -4454,12 +4454,12 @@ LABEL_115:
           }
         }
 
-        else if (v3 == 8003)
+        else if (action == 8003)
         {
           v4 = @"SHOW_PLACE_DETAILS";
         }
 
-        else if (v3 == 8004)
+        else if (action == 8004)
         {
           v4 = @"ANSWER_REROUTE_SUGGESTION";
         }
@@ -4472,14 +4472,14 @@ LABEL_115:
         goto LABEL_1425;
       }
 
-      if (v3 <= 8008)
+      if (action <= 8008)
       {
-        if (v3 == 8006)
+        if (action == 8006)
         {
           v4 = @"GET_NAV_STATUS";
         }
 
-        else if (v3 == 8007)
+        else if (action == 8007)
         {
           v4 = @"REPEAT_NAV_STATUS";
         }
@@ -4492,7 +4492,7 @@ LABEL_115:
         goto LABEL_1425;
       }
 
-      switch(v3)
+      switch(action)
       {
         case 0x1F49:
           v4 = @"INVOKE_SIRI";
@@ -4508,7 +4508,7 @@ LABEL_115:
       goto LABEL_115;
     }
 
-    switch(v3)
+    switch(action)
     {
       case 7001:
         v4 = @"EXPAND_TRANSIT_SYSTEM";
@@ -4607,7 +4607,7 @@ LABEL_115:
 
   else
   {
-    switch(v3)
+    switch(action)
     {
       case 6003:
         v4 = @"GET_DIRECTIONS";
@@ -4930,20 +4930,20 @@ LABEL_115:
   }
 
 LABEL_1425:
-  v5 = [(SearchSessionAnalytics *)self target];
-  if (v5 > 1000)
+  target = [(SearchSessionAnalytics *)self target];
+  if (target > 1000)
   {
-    if (v5 > 1400)
+    if (target > 1400)
     {
-      if (v5 > 1705)
+      if (target > 1705)
       {
-        if (v5 > 1806)
+        if (target > 1806)
         {
-          if (v5 <= 1899)
+          if (target <= 1899)
           {
-            if (v5 <= 1808)
+            if (target <= 1808)
             {
-              if (v5 == 1807)
+              if (target == 1807)
               {
                 v6 = @"MAPS_WEB_RELATED_PLACES_LIST";
               }
@@ -4956,13 +4956,13 @@ LABEL_1425:
               goto LABEL_1995;
             }
 
-            if (v5 == 1809)
+            if (target == 1809)
             {
               v6 = @"MAPS_WEB_DIRECTIONS";
               goto LABEL_1995;
             }
 
-            if (v5 == 1810)
+            if (target == 1810)
             {
               v6 = @"MAPS_WEB_SIDEBAR";
               goto LABEL_1995;
@@ -4971,9 +4971,9 @@ LABEL_1425:
 
           else
           {
-            if (v5 <= 1901)
+            if (target <= 1901)
             {
-              if (v5 == 1900)
+              if (target == 1900)
               {
                 v6 = @"FIND_MY_AIR_TAG_VIEW";
               }
@@ -4986,7 +4986,7 @@ LABEL_1425:
               goto LABEL_1995;
             }
 
-            switch(v5)
+            switch(target)
             {
               case 0x76E:
                 v6 = @"FIND_MY_ACCESSORY_VIEW";
@@ -5003,11 +5003,11 @@ LABEL_1425:
 
         else
         {
-          if (v5 > 1801)
+          if (target > 1801)
           {
-            if (v5 <= 1803)
+            if (target <= 1803)
             {
-              if (v5 == 1802)
+              if (target == 1802)
               {
                 v6 = @"MAPS_WEB_SEARCH";
               }
@@ -5018,12 +5018,12 @@ LABEL_1425:
               }
             }
 
-            else if (v5 == 1804)
+            else if (target == 1804)
             {
               v6 = @"MAPS_WEB_PUBLISHER";
             }
 
-            else if (v5 == 1805)
+            else if (target == 1805)
             {
               v6 = @"MAPS_WEB_GUIDE";
             }
@@ -5036,9 +5036,9 @@ LABEL_1425:
             goto LABEL_1995;
           }
 
-          if (v5 <= 1707)
+          if (target <= 1707)
           {
-            if (v5 == 1706)
+            if (target == 1706)
             {
               v6 = @"LOOK_AROUND_VIEW_PLACECARD";
             }
@@ -5051,13 +5051,13 @@ LABEL_1425:
             goto LABEL_1995;
           }
 
-          if (v5 == 1708)
+          if (target == 1708)
           {
             v6 = @"OFFLINE_BROWSE_ONLY_SEARCH_TRAY";
             goto LABEL_1995;
           }
 
-          if (v5 == 1801)
+          if (target == 1801)
           {
             v6 = @"MAPS_WEB_PLACE";
             goto LABEL_1995;
@@ -5065,13 +5065,13 @@ LABEL_1425:
         }
       }
 
-      else if (v5 > 1502)
+      else if (target > 1502)
       {
-        if (v5 > 1700)
+        if (target > 1700)
         {
-          if (v5 <= 1702)
+          if (target <= 1702)
           {
-            if (v5 == 1701)
+            if (target == 1701)
             {
               v6 = @"LOOK_AROUND_ACTION_SHEET";
             }
@@ -5082,12 +5082,12 @@ LABEL_1425:
             }
           }
 
-          else if (v5 == 1703)
+          else if (target == 1703)
           {
             v6 = @"LOOK_AROUND_PLATTER";
           }
 
-          else if (v5 == 1704)
+          else if (target == 1704)
           {
             v6 = @"LOOK_AROUND_PIP_UNAVAILABLE_ZOOM";
           }
@@ -5100,15 +5100,15 @@ LABEL_1425:
           goto LABEL_1995;
         }
 
-        if (v5 > 1600)
+        if (target > 1600)
         {
-          if (v5 == 1601)
+          if (target == 1601)
           {
             v6 = @"MENU_ITEM_DARK_MAP";
             goto LABEL_1995;
           }
 
-          if (v5 == 1700)
+          if (target == 1700)
           {
             v6 = @"LOOK_AROUND_PIP";
             goto LABEL_1995;
@@ -5117,13 +5117,13 @@ LABEL_1425:
 
         else
         {
-          if (v5 == 1503)
+          if (target == 1503)
           {
             v6 = @"PLACECARD_PHONE";
             goto LABEL_1995;
           }
 
-          if (v5 == 1504)
+          if (target == 1504)
           {
             v6 = @"PLACECARD_URL";
             goto LABEL_1995;
@@ -5133,11 +5133,11 @@ LABEL_1425:
 
       else
       {
-        if (v5 <= 1404)
+        if (target <= 1404)
         {
-          if (v5 > 1402)
+          if (target > 1402)
           {
-            if (v5 == 1403)
+            if (target == 1403)
             {
               v6 = @"ROUTING_TRAY_RIDESHARE_CONFIRMATION_REQUESTING";
             }
@@ -5148,7 +5148,7 @@ LABEL_1425:
             }
           }
 
-          else if (v5 == 1401)
+          else if (target == 1401)
           {
             v6 = @"ROUTING_TRAY_RIDESHARE_RIDE_OPTIONS";
           }
@@ -5161,9 +5161,9 @@ LABEL_1425:
           goto LABEL_1995;
         }
 
-        if (v5 <= 1406)
+        if (target <= 1406)
         {
-          if (v5 == 1405)
+          if (target == 1405)
           {
             v6 = @"ROUTING_TRAY_RIDESHARE_SURGE_PRICING_DIALOG";
           }
@@ -5176,7 +5176,7 @@ LABEL_1425:
           goto LABEL_1995;
         }
 
-        switch(v5)
+        switch(target)
         {
           case 0x57F:
             v6 = @"ROUTING_TRAY_RIDESHARE_ENABLE_ALL";
@@ -5191,11 +5191,11 @@ LABEL_1425:
       }
 
 LABEL_1994:
-      v6 = [NSString stringWithFormat:@"(unknown: %i)", v5];
+      v6 = [NSString stringWithFormat:@"(unknown: %i)", target];
       goto LABEL_1995;
     }
 
-    switch(v5)
+    switch(target)
     {
       case 1001:
         v6 = @"CARPLAY_NAV";
@@ -5625,7 +5625,7 @@ LABEL_1994:
   else
   {
     v6 = @"UI_TARGET_UNKNOWN";
-    switch(v5)
+    switch(target)
     {
       case 0:
         break;
@@ -7128,7 +7128,7 @@ LABEL_1994:
         v6 = @"SIRI_PLACE_SNIPPET";
         break;
       default:
-        if (v5 != 901)
+        if (target != 901)
         {
           goto LABEL_1994;
         }

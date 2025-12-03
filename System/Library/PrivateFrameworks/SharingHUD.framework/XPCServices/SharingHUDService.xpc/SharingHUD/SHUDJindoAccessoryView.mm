@@ -1,20 +1,20 @@
 @interface SHUDJindoAccessoryView
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
-- (void)setFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation SHUDJindoAccessoryView
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3.receiver = self;
   v3.super_class = SHUDJindoAccessoryView;
-  [(SHUDJindoAccessoryView *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SHUDJindoAccessoryView *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
-  [(SHUDJindoAccessoryView *)self sizeThatFits:a4, a3.width, a3.height];
+  [(SHUDJindoAccessoryView *)self sizeThatFits:mode, fits.width, fits.height];
   result.height = v5;
   result.width = v4;
   return result;

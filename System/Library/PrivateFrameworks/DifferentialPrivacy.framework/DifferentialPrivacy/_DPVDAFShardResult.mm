@@ -1,7 +1,7 @@
 @interface _DPVDAFShardResult
 - (NSArray)inputShares;
 - (_DPVDAFShardResult)init;
-- (_DPVDAFShardResult)initWithPublicShare:(id)a3 inputShares:(id)a4 nonce:(id)a5 dimension:(int64_t)a6 chunkLength:(int64_t)a7;
+- (_DPVDAFShardResult)initWithPublicShare:(id)share inputShares:(id)shares nonce:(id)nonce dimension:(int64_t)dimension chunkLength:(int64_t)length;
 @end
 
 @implementation _DPVDAFShardResult
@@ -15,12 +15,12 @@
   return v3;
 }
 
-- (_DPVDAFShardResult)initWithPublicShare:(id)a3 inputShares:(id)a4 nonce:(id)a5 dimension:(int64_t)a6 chunkLength:(int64_t)a7
+- (_DPVDAFShardResult)initWithPublicShare:(id)share inputShares:(id)shares nonce:(id)nonce dimension:(int64_t)dimension chunkLength:(int64_t)length
 {
   ObjectType = swift_getObjectType();
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  shareCopy = share;
+  sharesCopy = shares;
+  nonceCopy = nonce;
   v17 = sub_22628E7CC();
   v19 = v18;
 
@@ -35,8 +35,8 @@
   v25 = (self + OBJC_IVAR____DPVDAFShardResult_nonce);
   *v25 = v21;
   v25[1] = v23;
-  *(self + OBJC_IVAR____DPVDAFShardResult_dimension) = a6;
-  *(self + OBJC_IVAR____DPVDAFShardResult_chunkLength) = a7;
+  *(self + OBJC_IVAR____DPVDAFShardResult_dimension) = dimension;
+  *(self + OBJC_IVAR____DPVDAFShardResult_chunkLength) = length;
   v27.receiver = self;
   v27.super_class = ObjectType;
   return [(_DPVDAFShardResult *)&v27 init];

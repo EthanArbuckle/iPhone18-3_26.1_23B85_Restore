@@ -1,17 +1,17 @@
 @interface ASCWebKitSPISupport
-+ (BOOL)arePasskeysDisallowedForRelyingParty:(id)a3;
-+ (BOOL)canCurrentProcessAccessPasskeysForRelyingParty:(id)a3;
++ (BOOL)arePasskeysDisallowedForRelyingParty:(id)party;
++ (BOOL)canCurrentProcessAccessPasskeysForRelyingParty:(id)party;
 + (BOOL)shouldApplyWorkaroundFor134591531;
 + (BOOL)shouldUseAlternateCredentialStore;
-+ (id)alternateLargeBlobIfNecessaryForRelyingParty:(id)a3 clientDataHash:(id)a4;
-+ (id)asTransportsFrom:(id)a3;
-+ (id)entepriseAttestationIdentityPersistentReferenceForRelyingParty:(id)a3;
-+ (id)wkTransportsFrom:(id)a3;
-+ (void)getArePasskeysDisallowedForRelyingParty:(id)a3 withCompletionHandler:(id)a4;
-+ (void)getCanCurrentProcessAccessPasskeysForRelyingParty:(id)a3 withCompletionHandler:(id)a4;
-+ (void)getClientCapabilitiesForRelyingParty:(NSString *)a3 withCompletionHandler:(id)a4;
++ (id)alternateLargeBlobIfNecessaryForRelyingParty:(id)party clientDataHash:(id)hash;
++ (id)asTransportsFrom:(id)from;
++ (id)entepriseAttestationIdentityPersistentReferenceForRelyingParty:(id)party;
++ (id)wkTransportsFrom:(id)from;
++ (void)getArePasskeysDisallowedForRelyingParty:(id)party withCompletionHandler:(id)handler;
++ (void)getCanCurrentProcessAccessPasskeysForRelyingParty:(id)party withCompletionHandler:(id)handler;
++ (void)getClientCapabilitiesForRelyingParty:(NSString *)party withCompletionHandler:(id)handler;
 + (void)resetCredentialStore;
-+ (void)setShouldUseAlternateCredentialStore:(BOOL)a3;
++ (void)setShouldUseAlternateCredentialStore:(BOOL)store;
 @end
 
 @implementation ASCWebKitSPISupport
@@ -39,16 +39,16 @@
     goto LABEL_12;
   }
 
-  v5 = [MEMORY[0x1E696AE30] processInfo];
-  v6 = [v5 processName];
-  if (([v6 isEqualToString:@"AuthenticationServicesAgent"] & 1) == 0)
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  if (([processName isEqualToString:@"AuthenticationServicesAgent"] & 1) == 0)
   {
 
     goto LABEL_12;
   }
 
-  v7 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v8 = [v7 BOOLForKey:@"useLegacyPlatformAuthenticatorInternal"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v8 = [safari_browserDefaults BOOLForKey:@"useLegacyPlatformAuthenticatorInternal"];
 
   if (!v8)
   {
@@ -71,7 +71,7 @@ LABEL_5:
   return v4;
 }
 
-+ (void)setShouldUseAlternateCredentialStore:(BOOL)a3
++ (void)setShouldUseAlternateCredentialStore:(BOOL)store
 {
   v3 = WBS_LOG_CHANNEL_PREFIXAuthorization();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -81,23 +81,23 @@ LABEL_5:
   }
 }
 
-+ (BOOL)arePasskeysDisallowedForRelyingParty:(id)a3
++ (BOOL)arePasskeysDisallowedForRelyingParty:(id)party
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 bundleIdentifier];
-  if (([v6 isEqualToString:@"com.apple.AuthenticationServicesCore.AuthenticationServicesAgent"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", authenticationServicesViewServiceBundleIdentifier) & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"com.apple.Preferences"))
+  partyCopy = party;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  if (([bundleIdentifier isEqualToString:@"com.apple.AuthenticationServicesCore.AuthenticationServicesAgent"] & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", authenticationServicesViewServiceBundleIdentifier) & 1) != 0 || objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.Preferences"))
   {
 
 LABEL_5:
     v7 = +[ASFeatureManager sharedManager];
-    v8 = [v7 arePasskeysDisallowedForRelyingParty:v4];
+    v8 = [v7 arePasskeysDisallowedForRelyingParty:partyCopy];
     goto LABEL_6;
   }
 
-  v10 = [v5 safari_isSafariFamilyApplicationBundle];
+  safari_isSafariFamilyApplicationBundle = [mainBundle safari_isSafariFamilyApplicationBundle];
 
-  if (v10)
+  if (safari_isSafariFamilyApplicationBundle)
   {
     goto LABEL_5;
   }
@@ -122,7 +122,7 @@ LABEL_5:
   v15 = buf;
   v7 = v12;
   v14 = v7;
-  [a1 getArePasskeysDisallowedForRelyingParty:v4 withCompletionHandler:v13];
+  [self getArePasskeysDisallowedForRelyingParty:partyCopy withCompletionHandler:v13];
   dispatch_group_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v8 = v17[24];
 
@@ -132,11 +132,11 @@ LABEL_6:
   return v8 & 1;
 }
 
-+ (void)getArePasskeysDisallowedForRelyingParty:(id)a3 withCompletionHandler:(id)a4
++ (void)getArePasskeysDisallowedForRelyingParty:(id)party withCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = getArePasskeysDisallowedForRelyingParty_withCompletionHandler__onceToken;
-  v7 = a3;
+  partyCopy = party;
   if (v6 != -1)
   {
     +[ASCWebKitSPISupport getArePasskeysDisallowedForRelyingParty:withCompletionHandler:];
@@ -147,9 +147,9 @@ LABEL_6:
   v10[1] = 3221225472;
   v10[2] = __85__ASCWebKitSPISupport_getArePasskeysDisallowedForRelyingParty_withCompletionHandler___block_invoke_2;
   v10[3] = &unk_1E81602B0;
-  v11 = v5;
-  v9 = v5;
-  [v8 getArePasskeysDisallowedForRelyingParty:v7 withCompletionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [v8 getArePasskeysDisallowedForRelyingParty:partyCopy withCompletionHandler:v10];
 }
 
 uint64_t __85__ASCWebKitSPISupport_getArePasskeysDisallowedForRelyingParty_withCompletionHandler___block_invoke()
@@ -159,9 +159,9 @@ uint64_t __85__ASCWebKitSPISupport_getArePasskeysDisallowedForRelyingParty_withC
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)canCurrentProcessAccessPasskeysForRelyingParty:(id)a3
++ (BOOL)canCurrentProcessAccessPasskeysForRelyingParty:(id)party
 {
-  v4 = a3;
+  partyCopy = party;
   v5 = dispatch_group_create();
   v11 = 0;
   v12 = &v11;
@@ -175,19 +175,19 @@ uint64_t __85__ASCWebKitSPISupport_getArePasskeysDisallowedForRelyingParty_withC
   v10 = &v11;
   v6 = v5;
   v9 = v6;
-  [a1 getCanCurrentProcessAccessPasskeysForRelyingParty:v4 withCompletionHandler:v8];
+  [self getCanCurrentProcessAccessPasskeysForRelyingParty:partyCopy withCompletionHandler:v8];
   dispatch_group_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
-  LOBYTE(a1) = *(v12 + 24);
+  LOBYTE(self) = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
-  return a1;
+  return self;
 }
 
-+ (void)getCanCurrentProcessAccessPasskeysForRelyingParty:(id)a3 withCompletionHandler:(id)a4
++ (void)getCanCurrentProcessAccessPasskeysForRelyingParty:(id)party withCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = getCanCurrentProcessAccessPasskeysForRelyingParty_withCompletionHandler__onceToken;
-  v7 = a3;
+  partyCopy = party;
   if (v6 != -1)
   {
     +[ASCWebKitSPISupport getCanCurrentProcessAccessPasskeysForRelyingParty:withCompletionHandler:];
@@ -198,9 +198,9 @@ uint64_t __85__ASCWebKitSPISupport_getArePasskeysDisallowedForRelyingParty_withC
   v10[1] = 3221225472;
   v10[2] = __95__ASCWebKitSPISupport_getCanCurrentProcessAccessPasskeysForRelyingParty_withCompletionHandler___block_invoke_2;
   v10[3] = &unk_1E81602B0;
-  v11 = v5;
-  v9 = v5;
-  [v8 getCanCurrentProcessAccessPasskeysForRelyingParty:v7 withCompletionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [v8 getCanCurrentProcessAccessPasskeysForRelyingParty:partyCopy withCompletionHandler:v10];
 }
 
 uint64_t __95__ASCWebKitSPISupport_getCanCurrentProcessAccessPasskeysForRelyingParty_withCompletionHandler___block_invoke()
@@ -232,9 +232,9 @@ void __43__ASCWebKitSPISupport_resetCredentialStore__block_invoke()
   }
 }
 
-+ (id)alternateLargeBlobIfNecessaryForRelyingParty:(id)a3 clientDataHash:(id)a4
++ (id)alternateLargeBlobIfNecessaryForRelyingParty:(id)party clientDataHash:(id)hash
 {
-  v4 = a4;
+  hashCopy = hash;
   v5 = sub_1C2170174();
   v7 = v6;
 
@@ -243,36 +243,36 @@ void __43__ASCWebKitSPISupport_resetCredentialStore__block_invoke()
   return 0;
 }
 
-+ (id)entepriseAttestationIdentityPersistentReferenceForRelyingParty:(id)a3
++ (id)entepriseAttestationIdentityPersistentReferenceForRelyingParty:(id)party
 {
   v4 = objc_opt_self();
-  v5 = a3;
-  v6 = [v4 sharedManager];
-  v7 = [v6 entepriseAttestationIdentityPersistentReferenceForRelyingParty_];
+  partyCopy = party;
+  sharedManager = [v4 sharedManager];
+  entepriseAttestationIdentityPersistentReferenceForRelyingParty_ = [sharedManager entepriseAttestationIdentityPersistentReferenceForRelyingParty_];
 
-  if (v7)
+  if (entepriseAttestationIdentityPersistentReferenceForRelyingParty_)
   {
     v8 = sub_1C2170174();
     v10 = v9;
 
-    v7 = sub_1C2170154();
+    entepriseAttestationIdentityPersistentReferenceForRelyingParty_ = sub_1C2170154();
     sub_1C20D3174(v8, v10);
   }
 
-  return v7;
+  return entepriseAttestationIdentityPersistentReferenceForRelyingParty_;
 }
 
-+ (void)getClientCapabilitiesForRelyingParty:(NSString *)a3 withCompletionHandler:(id)a4
++ (void)getClientCapabilitiesForRelyingParty:(NSString *)party withCompletionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBF23490, &qword_1C2176890);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = party;
   v12[3] = v11;
-  v12[4] = a1;
+  v12[4] = self;
   v13 = sub_1C2170BE4();
   (*(*(v13 - 8) + 56))(v10, 1, 1, v13);
   v14 = swift_allocObject();
@@ -285,14 +285,14 @@ void __43__ASCWebKitSPISupport_resetCredentialStore__block_invoke()
   v15[3] = 0;
   v15[4] = &unk_1C21799C0;
   v15[5] = v14;
-  v16 = a3;
+  partyCopy = party;
   sub_1C2166D88(0, 0, v10, &unk_1C21768B0, v15);
 }
 
 + (BOOL)shouldApplyWorkaroundFor134591531
 {
-  v2 = [objc_opt_self() processInfo];
-  [v2 operatingSystemVersion];
+  processInfo = [objc_opt_self() processInfo];
+  [processInfo operatingSystemVersion];
 
   if (v4 == 15)
   {
@@ -305,7 +305,7 @@ void __43__ASCWebKitSPISupport_resetCredentialStore__block_invoke()
   }
 }
 
-+ (id)wkTransportsFrom:(id)a3
++ (id)wkTransportsFrom:(id)from
 {
   v3 = sub_1C2170B64();
   _sSo19ASCWebKitSPISupportC26AuthenticationServicesCoreE12wkTransports4fromSaySo8NSNumberCGSaySSG_tFZ_0(v3);
@@ -316,7 +316,7 @@ void __43__ASCWebKitSPISupport_resetCredentialStore__block_invoke()
   return v4;
 }
 
-+ (id)asTransportsFrom:(id)a3
++ (id)asTransportsFrom:(id)from
 {
   sub_1C2149AA4();
   v3 = sub_1C2170B64();

@@ -8,10 +8,10 @@
 - (CGRect)px_backdropPrimaryOcclusionRect;
 - (CGRect)px_callServicesOcclusionRect;
 - (CGRect)px_floatingObscurableBounds;
-- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)a3;
-- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)a3;
+- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)layout;
+- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)layout;
 - (CGRect)px_salientContentRectangle;
-- (CGRect)px_titleBoundsForLayout:(unint64_t)a3;
+- (CGRect)px_titleBoundsForLayout:(unint64_t)layout;
 - (NSURL)px_assetDirectory;
 - (UITraitCollection)px_traitCollection;
 - (double)px_backlightProgress;
@@ -28,7 +28,7 @@
 
 - (BOOL)px_isSnapshot
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100006B38();
 
   return v3 & 1;
@@ -36,7 +36,7 @@
 
 - (BOOL)px_isPreview
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100006B98();
 
   return v3 & 1;
@@ -44,7 +44,7 @@
 
 - (BOOL)px_isCallServices
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100006C04();
 
   return v3 & 1;
@@ -52,7 +52,7 @@
 
 - (BOOL)px_isBackdrop
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100006C5C();
 
   return v3 & 1;
@@ -60,7 +60,7 @@
 
 - (int64_t)px_boundingShape
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100006CB4();
 
   return v3;
@@ -72,7 +72,7 @@
   v4 = *(*(v3 - 8) + 64);
   __chkstk_darwin(v3 - 8);
   v6 = &v13 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_100006DC4(v6);
 
   v8 = sub_10002F1B4();
@@ -89,7 +89,7 @@
 
 - (int64_t)px_backlightLuminance
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100006E98();
 
   return v3;
@@ -97,7 +97,7 @@
 
 - (int64_t)px_significantEventsCounter
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100006F30();
 
   return v3;
@@ -105,7 +105,7 @@
 
 - (int64_t)px_contentsType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100006F7C();
 
   return v3;
@@ -123,7 +123,7 @@
 
 - (int64_t)px_deviceOrientation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100007064();
 
   return v3;
@@ -131,15 +131,15 @@
 
 - (UITraitCollection)px_traitCollection
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000070C0();
 
   return v3;
 }
 
-- (CGRect)px_titleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_titleBoundsForLayout:(unint64_t)layout
 {
-  sub_10000713C(self, a2, a3, sub_100007100);
+  sub_10000713C(self, a2, layout, sub_100007100);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -147,9 +147,9 @@
   return result;
 }
 
-- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)layout
 {
-  sub_10000713C(self, a2, a3, sub_100010A04);
+  sub_10000713C(self, a2, layout, sub_100010A04);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -157,9 +157,9 @@
   return result;
 }
 
-- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)layout
 {
-  sub_10000713C(self, a2, a3, sub_100010A04);
+  sub_10000713C(self, a2, layout, sub_100010A04);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -169,7 +169,7 @@
 
 - (unint64_t)effectiveMotionEffectsMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000071E4();
 
   return v3;
@@ -177,7 +177,7 @@
 
 - (double)px_unlockProgress
 {
-  v2 = self;
+  selfCopy = self;
   sub_100007290();
   v4 = v3;
 
@@ -186,7 +186,7 @@
 
 - (double)px_backlightProgress
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000072E4();
   v4 = v3;
 
@@ -235,7 +235,7 @@
 
 - (BOOL)px_isDepthEffectDisabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000745C();
 
   return v3 & 1;

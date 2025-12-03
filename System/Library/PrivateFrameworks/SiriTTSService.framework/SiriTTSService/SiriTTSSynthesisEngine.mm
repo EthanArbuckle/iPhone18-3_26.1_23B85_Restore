@@ -1,24 +1,24 @@
 @interface SiriTTSSynthesisEngine
-+ (BOOL)hasPhaticResponsesWithVoicePath:(id)a3;
-+ (BOOL)hasWordTimingSupportWithVoicePath:(id)a3;
++ (BOOL)hasPhaticResponsesWithVoicePath:(id)path;
++ (BOOL)hasWordTimingSupportWithVoicePath:(id)path;
 + (_NSRange)_gryphonVoiceCompatibility;
 - (AudioStreamBasicDescription)asbd;
-- (BOOL)_preheatWithError:(id *)a3;
-- (BOOL)_unlockedLoadResourceWithPath:(id)a3 error:(id *)a4;
-- (BOOL)_unlockedSynthesize:(id)a3 error:(id *)a4;
-- (BOOL)loadResourceWithPath:(id)a3 error:(id *)a4;
-- (BOOL)preheatWithError:(id *)a3;
+- (BOOL)_preheatWithError:(id *)error;
+- (BOOL)_unlockedLoadResourceWithPath:(id)path error:(id *)error;
+- (BOOL)_unlockedSynthesize:(id)synthesize error:(id *)error;
+- (BOOL)loadResourceWithPath:(id)path error:(id *)error;
+- (BOOL)preheatWithError:(id *)error;
 - (BOOL)supportPhaticResponse;
 - (BOOL)supportWordTiming;
-- (BOOL)synthesize:(id)a3 error:(id *)a4;
-- (SiriTTSSynthesisEngine)initWithVoicePath:(id)a3 resourcePath:(id)a4 error:(id *)a5;
+- (BOOL)synthesize:(id)synthesize error:(id *)error;
+- (SiriTTSSynthesisEngine)initWithVoicePath:(id)path resourcePath:(id)resourcePath error:(id *)error;
 - (id)_unlockedSynthesize:error:;
 - (uint64_t)_unlockedSynthesize:error:;
 - (void)_unlockedSynthesize:error:;
-- (void)_unlockedUnloadResource:(id)a3;
+- (void)_unlockedUnloadResource:(id)resource;
 - (void)dealloc;
-- (void)setAsbd:(AudioStreamBasicDescription *)a3;
-- (void)unloadResource:(id)a3;
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd;
+- (void)unloadResource:(id)resource;
 @end
 
 @implementation SiriTTSSynthesisEngine
@@ -34,7 +34,7 @@
 
 + (_NSRange)_gryphonVoiceCompatibility
 {
-  engine_description = TTSSynthesizer::get_engine_description(a1);
+  engine_description = TTSSynthesizer::get_engine_description(self);
   v2 = (HIDWORD(engine_description) - engine_description + 1);
   engine_description = engine_description;
   result.length = v2;
@@ -42,11 +42,11 @@
   return result;
 }
 
-- (void)setAsbd:(AudioStreamBasicDescription *)a3
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd
 {
-  v3 = *&a3->mSampleRate;
-  v4 = *&a3->mBytesPerPacket;
-  *&self->_asbd.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v3 = *&asbd->mSampleRate;
+  v4 = *&asbd->mBytesPerPacket;
+  *&self->_asbd.mBitsPerChannel = *&asbd->mBitsPerChannel;
   *&self->_asbd.mBytesPerPacket = v4;
   *&self->_asbd.mSampleRate = v3;
 }
@@ -93,15 +93,15 @@
   }
 }
 
-- (BOOL)preheatWithError:(id *)a3
+- (BOOL)preheatWithError:(id *)error
 {
   [(NSLock *)self->_lock lock];
-  LOBYTE(a3) = [(SiriTTSSynthesisEngine *)self _preheatWithError:a3];
+  LOBYTE(error) = [(SiriTTSSynthesisEngine *)self _preheatWithError:error];
   [(NSLock *)self->_lock unlock];
-  return a3;
+  return error;
 }
 
-- (BOOL)_preheatWithError:(id *)a3
+- (BOOL)_preheatWithError:(id *)error
 {
   v5 = *MEMORY[0x1E69E9840];
   TTSSynthesizer::preheat(self->_synthesizer);
@@ -110,48 +110,48 @@
   return result;
 }
 
-- (BOOL)synthesize:(id)a3 error:(id *)a4
+- (BOOL)synthesize:(id)synthesize error:(id *)error
 {
-  v6 = a3;
+  synthesizeCopy = synthesize;
   [(NSLock *)self->_lock lock];
-  LOBYTE(a4) = [(SiriTTSSynthesisEngine *)self _unlockedSynthesize:v6 error:a4];
+  LOBYTE(error) = [(SiriTTSSynthesisEngine *)self _unlockedSynthesize:synthesizeCopy error:error];
   [(NSLock *)self->_lock unlock];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)_unlockedSynthesize:(id)a3 error:(id *)a4
+- (BOOL)_unlockedSynthesize:(id)synthesize error:(id *)error
 {
   v117[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  synthesizeCopy = synthesize;
   synthesizer = self->_synthesizer;
-  [v6 privacySensitive];
+  [synthesizeCopy privacySensitive];
   TTSSynthesizer::set_censor_plaintext(synthesizer);
   v8 = self->_synthesizer;
-  [v6 profile];
+  [synthesizeCopy profile];
   TTSSynthesizer::set_neural_cost();
   v9 = self->_synthesizer;
-  [v6 neuralSentencePitch];
+  [synthesizeCopy neuralSentencePitch];
   TTSSynthesizer::set_global_property();
   v10 = self->_synthesizer;
-  [v6 neuralSentencePitchRange];
+  [synthesizeCopy neuralSentencePitchRange];
   TTSSynthesizer::set_global_property();
   v11 = self->_synthesizer;
-  [v6 neuralSentenceDuration];
+  [synthesizeCopy neuralSentenceDuration];
   TTSSynthesizer::set_global_property();
   v12 = self->_synthesizer;
-  [v6 neuralSentenceEnergy];
+  [synthesizeCopy neuralSentenceEnergy];
   TTSSynthesizer::set_global_property();
   v13 = self->_synthesizer;
-  [v6 neuralSentenceTilt];
+  [synthesizeCopy neuralSentenceTilt];
   TTSSynthesizer::set_global_property();
-  v14 = [v6 requestId];
+  requestId = [synthesizeCopy requestId];
 
-  if (v14)
+  if (requestId)
   {
     v15 = self->_synthesizer;
-    v16 = [v6 requestId];
-    std::string::basic_string[abi:ne200100]<0>(&__p, [v16 UTF8String]);
+    requestId2 = [synthesizeCopy requestId];
+    std::string::basic_string[abi:ne200100]<0>(&__p, [requestId2 UTF8String]);
     TTSSynthesizer::set_global_property();
     if (SHIBYTE(v96) < 0)
     {
@@ -160,59 +160,59 @@
   }
 
   v17 = self->_synthesizer;
-  [v6 disableThermalFallback];
+  [synthesizeCopy disableThermalFallback];
   TTSSynthesizer::set_global_property();
   v102 = 0;
   v103 = 0;
   v104 = 0;
-  [v6 rate];
+  [synthesizeCopy rate];
   if (v18 != 0.0)
   {
-    [v6 rate];
+    [synthesizeCopy rate];
     if (fabsf(v19 + -1.0) >= 0.01)
     {
       v20 = self->_synthesizer;
-      [v6 rate];
+      [synthesizeCopy rate];
       TTSSynthesizer::set_global_property();
     }
   }
 
-  [v6 pitch];
+  [synthesizeCopy pitch];
   if (v21 != 0.0)
   {
-    [v6 pitch];
+    [synthesizeCopy pitch];
     if (v22 != 1.0)
     {
       v23 = self->_synthesizer;
-      [v6 pitch];
+      [synthesizeCopy pitch];
       TTSSynthesizer::set_global_property();
     }
   }
 
-  [v6 volume];
+  [synthesizeCopy volume];
   if (v24 != 0.0)
   {
-    [v6 volume];
+    [synthesizeCopy volume];
     if (v25 != 0.8)
     {
       v26 = self->_synthesizer;
-      [v6 volume];
+      [synthesizeCopy volume];
       TTSSynthesizer::set_global_property();
     }
   }
 
   LOBYTE(__p) = 0;
   v101 = 0;
-  v27 = [v6 promptStyle];
-  v28 = v27 == 0;
+  promptStyle = [synthesizeCopy promptStyle];
+  v28 = promptStyle == 0;
 
   if (!v28)
   {
     v29 = self->_synthesizer;
     std::string::basic_string[abi:ne200100]<0>(&v85, "");
-    v30 = [v6 promptStyle];
-    v31 = v30;
-    std::string::basic_string[abi:ne200100]<0>(&v83, [v30 UTF8String]);
+    promptStyle2 = [synthesizeCopy promptStyle];
+    v31 = promptStyle2;
+    std::string::basic_string[abi:ne200100]<0>(&v83, [promptStyle2 UTF8String]);
     TTSSynthesizer::set_dynamic_prompts();
     if (v101 == v94)
     {
@@ -337,17 +337,17 @@
     }
 
     v37 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v36];
-    v38 = [v6 dynamicPromptHandler];
-    (v38)[2](v38, v35, v37);
+    dynamicPromptHandler = [synthesizeCopy dynamicPromptHandler];
+    (dynamicPromptHandler)[2](dynamicPromptHandler, v35, v37);
   }
 
-  v39 = [v6 audioHandler];
-  v40 = v39 == 0;
+  audioHandler = [synthesizeCopy audioHandler];
+  v40 = audioHandler == 0;
 
   if (!v40)
   {
     TTSSynthesizer::get_event_bus(&v85, self->_synthesizer);
-    v41 = v6;
+    v41 = synthesizeCopy;
     v117[0] = &unk_1F28C4A40;
     v117[1] = v41;
     v117[3] = v117;
@@ -365,13 +365,13 @@
     }
   }
 
-  v42 = [v6 promptHandler];
-  v43 = v42 == 0;
+  promptHandler = [synthesizeCopy promptHandler];
+  v43 = promptHandler == 0;
 
   if (!v43)
   {
     TTSSynthesizer::get_event_bus(&v85, self->_synthesizer);
-    v44 = v6;
+    v44 = synthesizeCopy;
     v116[0] = &unk_1F28C4AC0;
     v116[1] = v44;
     v116[3] = v116;
@@ -389,14 +389,14 @@
     }
   }
 
-  v45 = [v6 wordTimingsHandler];
-  v46 = v45 == 0;
+  wordTimingsHandler = [synthesizeCopy wordTimingsHandler];
+  v46 = wordTimingsHandler == 0;
 
   if (!v46)
   {
     mSampleRate = self->_asbd.mSampleRate;
     TTSSynthesizer::get_event_bus(&v85, self->_synthesizer);
-    v48 = v6;
+    v48 = synthesizeCopy;
     v112 = &unk_1F28C4B40;
     *&mSampleRate = mSampleRate;
     v113 = LODWORD(mSampleRate);
@@ -416,13 +416,13 @@
     }
   }
 
-  v49 = [v6 neuralFallbackHandler];
-  v50 = v49 == 0;
+  neuralFallbackHandler = [synthesizeCopy neuralFallbackHandler];
+  v50 = neuralFallbackHandler == 0;
 
   if (!v50)
   {
     TTSSynthesizer::get_event_bus(&v85, self->_synthesizer);
-    v51 = v6;
+    v51 = synthesizeCopy;
     v111[0] = &unk_1F28C4BC0;
     v111[1] = v51;
     v111[3] = v111;
@@ -440,13 +440,13 @@
     }
   }
 
-  v52 = [v6 useHydraFrontendHandler];
-  v53 = v52 == 0;
+  useHydraFrontendHandler = [synthesizeCopy useHydraFrontendHandler];
+  v53 = useHydraFrontendHandler == 0;
 
   if (!v53)
   {
     TTSSynthesizer::get_event_bus(&v85, self->_synthesizer);
-    v54 = v6;
+    v54 = synthesizeCopy;
     v110[0] = &unk_1F28C4C40;
     v110[1] = v54;
     v110[3] = v110;
@@ -464,13 +464,13 @@
     }
   }
 
-  v55 = [v6 synthesisIssueHandler];
-  v56 = v55 == 0;
+  synthesisIssueHandler = [synthesizeCopy synthesisIssueHandler];
+  v56 = synthesisIssueHandler == 0;
 
   if (!v56)
   {
     TTSSynthesizer::get_event_bus(&v85, self->_synthesizer);
-    v57 = v6;
+    v57 = synthesizeCopy;
     v109[0] = &unk_1F28C4CC0;
     v109[1] = v57;
     v109[3] = v109;
@@ -488,13 +488,13 @@
     }
   }
 
-  v58 = [v6 wordAlignmentFailureHandler];
-  v59 = v58 == 0;
+  wordAlignmentFailureHandler = [synthesizeCopy wordAlignmentFailureHandler];
+  v59 = wordAlignmentFailureHandler == 0;
 
   if (!v59)
   {
     TTSSynthesizer::get_event_bus(&v85, self->_synthesizer);
-    v60 = v6;
+    v60 = synthesizeCopy;
     v108[0] = &unk_1F28C4D40;
     v108[1] = v60;
     v108[3] = v108;
@@ -513,9 +513,9 @@
   }
 
   v61 = self->_synthesizer;
-  v62 = [v6 text];
-  v63 = v62;
-  std::string::basic_string[abi:ne200100]<0>(v88, [v62 UTF8String]);
+  text = [synthesizeCopy text];
+  v63 = text;
+  std::string::basic_string[abi:ne200100]<0>(v88, [text UTF8String]);
   v64 = TTSSynthesizer::synthesize_text();
   if (SHIBYTE(v89) < 0)
   {
@@ -562,14 +562,14 @@
   TTSSynthesizer::set_global_property();
   v75 = self->_synthesizer;
   TTSSynthesizer::set_global_property();
-  if (a4 && v64)
+  if (error && v64)
   {
     v76 = MEMORY[0x1E696ABC0];
     v106 = *MEMORY[0x1E696A588];
     v77 = [MEMORY[0x1E696AEC0] stringWithFormat:@"TTSSynthesizer::synthesize_text error: %@", 0];
     v107 = v77;
     v78 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v107 forKeys:&v106 count:1];
-    *a4 = [v76 errorWithDomain:@"SiriTTSSynthesisEngine" code:v64 userInfo:v78];
+    *error = [v76 errorWithDomain:@"SiriTTSSynthesisEngine" code:v64 userInfo:v78];
   }
 
   if (v101 == 1)
@@ -600,7 +600,7 @@
 {
   if (std::type_info::operator==[abi:ne200100](*(a2 + 8), "Z52-[SiriTTSSynthesisEngine _unlockedSynthesize:error:]E3$_0"))
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -618,26 +618,26 @@
 - (id)_unlockedSynthesize:error:
 {
   *a2 = &unk_1F28C4A40;
-  result = *(a1 + 8);
+  result = *(self + 8);
   a2[1] = result;
   return result;
 }
 
-- (void)unloadResource:(id)a3
+- (void)unloadResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   [(NSLock *)self->_lock lock];
-  [(SiriTTSSynthesisEngine *)self _unlockedUnloadResource:v4];
+  [(SiriTTSSynthesisEngine *)self _unlockedUnloadResource:resourceCopy];
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)_unlockedUnloadResource:(id)a3
+- (void)_unlockedUnloadResource:(id)resource
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  resourceCopy = resource;
+  v5 = resourceCopy;
+  if (resourceCopy)
   {
-    [v4 handle];
+    [resourceCopy handle];
     if (v8)
     {
       std::__shared_weak_count::__release_shared[abi:ne200100](v8);
@@ -656,26 +656,26 @@
   }
 }
 
-- (BOOL)loadResourceWithPath:(id)a3 error:(id *)a4
+- (BOOL)loadResourceWithPath:(id)path error:(id *)error
 {
-  v6 = a3;
+  pathCopy = path;
   [(NSLock *)self->_lock lock];
-  LOBYTE(a4) = [(SiriTTSSynthesisEngine *)self _unlockedLoadResourceWithPath:v6 error:a4];
+  LOBYTE(error) = [(SiriTTSSynthesisEngine *)self _unlockedLoadResourceWithPath:pathCopy error:error];
   [(NSLock *)self->_lock unlock];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)_unlockedLoadResourceWithPath:(id)a3 error:(id *)a4
+- (BOOL)_unlockedLoadResourceWithPath:(id)path error:(id *)error
 {
   v27[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  pathCopy = path;
   synthesizer = self->_synthesizer;
-  v8 = [v6 path];
-  std::string::basic_string[abi:ne200100]<0>(&v22, [v8 UTF8String]);
-  v9 = [v6 mimeType];
-  v10 = v9;
-  std::string::basic_string[abi:ne200100]<0>(&__p, [v9 UTF8String]);
+  path = [pathCopy path];
+  std::string::basic_string[abi:ne200100]<0>(&v22, [path UTF8String]);
+  mimeType = [pathCopy mimeType];
+  v10 = mimeType;
+  std::string::basic_string[abi:ne200100]<0>(&__p, [mimeType UTF8String]);
   TTSSynthesizer::load_voice_resource();
   if (v21 < 0)
   {
@@ -697,28 +697,28 @@
       atomic_fetch_add_explicit(&v25->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    [v6 setHandle:&v18];
+    [pathCopy setHandle:&v18];
     if (v19)
     {
       std::__shared_weak_count::__release_shared[abi:ne200100](v19);
     }
 
-    [(NSMutableArray *)self->_loadedResources addObject:v6];
+    [(NSMutableArray *)self->_loadedResources addObject:pathCopy];
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = MEMORY[0x1E696ABC0];
     v26[0] = @"path";
-    v13 = [v6 path];
-    v27[0] = v13;
+    path2 = [pathCopy path];
+    v27[0] = path2;
     v26[1] = @"mimeType";
-    v14 = [v6 mimeType];
+    mimeType2 = [pathCopy mimeType];
     v26[2] = *MEMORY[0x1E696A588];
-    v27[1] = v14;
+    v27[1] = mimeType2;
     v27[2] = @"TTSSynthesizer::load_voice_resource";
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:3];
-    *a4 = [v12 errorWithDomain:@"SiriTTSSynthesisEngine" code:1 userInfo:v15];
+    *error = [v12 errorWithDomain:@"SiriTTSSynthesisEngine" code:1 userInfo:v15];
   }
 
   if (v25)
@@ -776,36 +776,36 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (SiriTTSSynthesisEngine)initWithVoicePath:(id)a3 resourcePath:(id)a4 error:(id *)a5
+- (SiriTTSSynthesisEngine)initWithVoicePath:(id)path resourcePath:(id)resourcePath error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  resourcePathCopy = resourcePath;
   v15.receiver = self;
   v15.super_class = SiriTTSSynthesisEngine;
   v14 = [(SiriTTSSynthesisEngine *)&v15 init];
-  if (v7 && [v7 length])
+  if (pathCopy && [pathCopy length])
   {
     operator new();
   }
 
-  if (a5)
+  if (error)
   {
     v9 = MEMORY[0x1E696ABC0];
     v16 = *MEMORY[0x1E696A588];
     v17[0] = @"Empty voice path cannot be used.";
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    *a5 = [v9 errorWithDomain:@"SiriTTSSynthesisEngine" code:-1 userInfo:v10];
+    *error = [v9 errorWithDomain:@"SiriTTSSynthesisEngine" code:-1 userInfo:v10];
   }
 
   v11 = *MEMORY[0x1E69E9840];
   return 0;
 }
 
-+ (BOOL)hasWordTimingSupportWithVoicePath:(id)a3
++ (BOOL)hasWordTimingSupportWithVoicePath:(id)path
 {
-  v3 = a3;
-  std::string::basic_string[abi:ne200100]<0>(&__p, [v3 UTF8String]);
+  pathCopy = path;
+  std::string::basic_string[abi:ne200100]<0>(&__p, [pathCopy UTF8String]);
   has_word_timing_support = TTSSynthesizer::has_word_timing_support();
   if (v7 < 0)
   {
@@ -815,10 +815,10 @@
   return has_word_timing_support;
 }
 
-+ (BOOL)hasPhaticResponsesWithVoicePath:(id)a3
++ (BOOL)hasPhaticResponsesWithVoicePath:(id)path
 {
-  v3 = a3;
-  std::string::basic_string[abi:ne200100]<0>(&__p, [v3 UTF8String]);
+  pathCopy = path;
+  std::string::basic_string[abi:ne200100]<0>(&__p, [pathCopy UTF8String]);
   has_phatic_responses = TTSSynthesizer::has_phatic_responses();
   if (v7 < 0)
   {

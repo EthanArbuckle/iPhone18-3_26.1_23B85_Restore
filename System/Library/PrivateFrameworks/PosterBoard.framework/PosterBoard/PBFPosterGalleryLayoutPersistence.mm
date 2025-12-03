@@ -1,20 +1,20 @@
 @interface PBFPosterGalleryLayoutPersistence
-- (BOOL)saveGalleryLayout:(id)a3 returningPersistenceDate:(id *)a4 error:(id *)a5;
-- (PBFPosterGalleryLayoutPersistence)initWithURL:(id)a3;
-- (id)loadNewestUsableGalleryLayoutReturningPersistenceDate:(id *)a3 purgeableGalleryLayoutURLs:(id *)a4 error:(id *)a5;
+- (BOOL)saveGalleryLayout:(id)layout returningPersistenceDate:(id *)date error:(id *)error;
+- (PBFPosterGalleryLayoutPersistence)initWithURL:(id)l;
+- (id)loadNewestUsableGalleryLayoutReturningPersistenceDate:(id *)date purgeableGalleryLayoutURLs:(id *)ls error:(id *)error;
 @end
 
 @implementation PBFPosterGalleryLayoutPersistence
 
-- (PBFPosterGalleryLayoutPersistence)initWithURL:(id)a3
+- (PBFPosterGalleryLayoutPersistence)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = PBFPosterGalleryLayoutPersistence;
   v5 = [(PBFPosterGalleryLayoutPersistence *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
   }
@@ -22,33 +22,33 @@
   return v5;
 }
 
-- (id)loadNewestUsableGalleryLayoutReturningPersistenceDate:(id *)a3 purgeableGalleryLayoutURLs:(id *)a4 error:(id *)a5
+- (id)loadNewestUsableGalleryLayoutReturningPersistenceDate:(id *)date purgeableGalleryLayoutURLs:(id *)ls error:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   url = self->_url;
   v52 = 0;
-  v11 = [v9 contentsOfDirectoryAtURL:url includingPropertiesForKeys:0 options:5 error:&v52];
+  v11 = [defaultManager contentsOfDirectoryAtURL:url includingPropertiesForKeys:0 options:5 error:&v52];
   v12 = v52;
 
   if (v12)
   {
-    if (a5)
+    if (error)
     {
       v13 = v12;
-      a3 = 0;
-      *a5 = v12;
+      date = 0;
+      *error = v12;
     }
 
     else
     {
-      a3 = 0;
+      date = 0;
     }
 
     goto LABEL_39;
   }
 
-  v43 = a4;
+  lsCopy = ls;
   [v11 sortedArrayUsingComparator:&__block_literal_global_19];
   v48 = 0u;
   v49 = 0u;
@@ -59,11 +59,11 @@
   if (!v15)
   {
 
-    if (a3)
+    if (date)
     {
-      v42 = a3;
+      dateCopy2 = date;
       v17 = 0;
-      a3 = 0;
+      date = 0;
       v28 = 0;
       v29 = 0;
       goto LABEL_26;
@@ -72,7 +72,7 @@
     v17 = 0;
     v28 = 0;
 LABEL_33:
-    if (v43)
+    if (lsCopy)
     {
       goto LABEL_34;
     }
@@ -81,8 +81,8 @@ LABEL_33:
   }
 
   v16 = v15;
-  v41 = a5;
-  v42 = a3;
+  errorCopy = error;
+  dateCopy2 = date;
   v40 = v11;
   v17 = 0;
   v18 = *v49;
@@ -108,10 +108,10 @@ LABEL_6:
     v22 = MEMORY[0x277CCAAC8];
     v23 = objc_opt_class();
     v46 = v17;
-    a3 = [v22 unarchivedObjectOfClass:v23 fromData:v21 error:&v46];
+    date = [v22 unarchivedObjectOfClass:v23 fromData:v21 error:&v46];
     v24 = v46;
 
-    if (a3)
+    if (date)
     {
       goto LABEL_21;
     }
@@ -122,9 +122,9 @@ LABEL_6:
     v27 = [v25 unarchivedObjectOfClass:v26 fromData:v21 error:&v45];
     v17 = v45;
 
-    a3 = [v27 posterBoardRepresentation];
+    date = [v27 posterBoardRepresentation];
 
-    if (a3)
+    if (date)
     {
       break;
     }
@@ -139,17 +139,17 @@ LABEL_13:
         goto LABEL_6;
       }
 
-      a5 = v41;
-      if (v42)
+      error = errorCopy;
+      if (dateCopy2)
       {
-        a3 = 0;
+        date = 0;
         v28 = 0;
         v29 = 0;
         v11 = v40;
         goto LABEL_26;
       }
 
-      a3 = 0;
+      date = 0;
       v28 = 0;
       v11 = v40;
       goto LABEL_33;
@@ -162,17 +162,17 @@ LABEL_21:
   v28 = v20;
 
   v11 = v40;
-  a5 = v41;
-  if (!v42)
+  error = errorCopy;
+  if (!dateCopy2)
   {
     goto LABEL_27;
   }
 
   if (v28)
   {
-    v30 = [v28 lastPathComponent];
-    v31 = [v30 stringByDeletingPathExtension];
-    [v31 doubleValue];
+    lastPathComponent = [v28 lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+    [stringByDeletingPathExtension doubleValue];
     v33 = v32;
 
     v14 = v44;
@@ -187,11 +187,11 @@ LABEL_21:
   v17 = v24;
 LABEL_26:
   v34 = v29;
-  *v42 = v34;
+  *dateCopy2 = v34;
 
   v24 = v17;
 LABEL_27:
-  if (v43)
+  if (lsCopy)
   {
     if (v28)
     {
@@ -210,7 +210,7 @@ LABEL_34:
     v28 = 0;
 LABEL_35:
     v37 = v36;
-    *v43 = v36;
+    *lsCopy = v36;
   }
 
   else
@@ -219,15 +219,15 @@ LABEL_35:
   }
 
 LABEL_36:
-  if (a5)
+  if (error)
   {
     v38 = v17;
-    *a5 = v17;
+    *error = v17;
   }
 
 LABEL_39:
 
-  return a3;
+  return date;
 }
 
 uint64_t __124__PBFPosterGalleryLayoutPersistence_loadNewestUsableGalleryLayoutReturningPersistenceDate_purgeableGalleryLayoutURLs_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -244,18 +244,18 @@ uint64_t __124__PBFPosterGalleryLayoutPersistence_loadNewestUsableGalleryLayoutR
   return v9;
 }
 
-- (BOOL)saveGalleryLayout:(id)a3 returningPersistenceDate:(id *)a4 error:(id *)a5
+- (BOOL)saveGalleryLayout:(id)layout returningPersistenceDate:(id *)date error:(id *)error
 {
   v24 = 0;
-  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v24];
+  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:layout requiringSecureCoding:1 error:&v24];
   v9 = v24;
   v10 = v9;
   if (v8)
   {
-    v11 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     url = self->_url;
     v13 = MEMORY[0x277CCACA8];
-    [v11 timeIntervalSince1970];
+    [date timeIntervalSince1970];
     v15 = [v13 stringWithFormat:@"%f", v14];
     v16 = [(NSURL *)url URLByAppendingPathComponent:v15];
     v17 = [v16 URLByAppendingPathExtension:@"plist"];
@@ -266,30 +266,30 @@ uint64_t __124__PBFPosterGalleryLayoutPersistence_loadNewestUsableGalleryLayoutR
     v20 = v19;
     if (v18)
     {
-      v19 = v11;
-      a5 = a4;
-      if (!a4)
+      v19 = date;
+      error = date;
+      if (!date)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!a5)
+    else if (!error)
     {
 LABEL_9:
 
       goto LABEL_10;
     }
 
-    *a5 = v19;
+    *error = v19;
     goto LABEL_9;
   }
 
-  if (a5)
+  if (error)
   {
     v21 = v9;
     v18 = 0;
-    *a5 = v10;
+    *error = v10;
   }
 
   else

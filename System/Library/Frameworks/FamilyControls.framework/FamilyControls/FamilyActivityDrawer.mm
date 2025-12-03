@@ -1,31 +1,31 @@
 @interface FamilyActivityDrawer
-- (CGImage)imageWithStyle:(id)a3 tag:(id)a4 forRemote:(BOOL)a5;
+- (CGImage)imageWithStyle:(id)style tag:(id)tag forRemote:(BOOL)remote;
 - (_TtC19FamilyControlsAgent20FamilyActivityDrawer)init;
-- (id)drawingWithStyle:(id)a3 tag:(id)a4 forRemote:(BOOL)a5;
+- (id)drawingWithStyle:(id)style tag:(id)tag forRemote:(BOOL)remote;
 @end
 
 @implementation FamilyActivityDrawer
 
-- (id)drawingWithStyle:(id)a3 tag:(id)a4 forRemote:(BOOL)a5
+- (id)drawingWithStyle:(id)style tag:(id)tag forRemote:(BOOL)remote
 {
-  v6 = a3;
+  styleCopy = style;
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  v8 = sub_10001212C(v6, v10);
+  v8 = sub_10001212C(styleCopy, v10);
 
   sub_1000032BC(v10);
 
   return v8;
 }
 
-- (CGImage)imageWithStyle:(id)a3 tag:(id)a4 forRemote:(BOOL)a5
+- (CGImage)imageWithStyle:(id)style tag:(id)tag forRemote:(BOOL)remote
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_1000122F8(v8);
+  styleCopy = style;
+  tagCopy = tag;
+  selfCopy = self;
+  v10 = sub_1000122F8(tagCopy);
 
   return v10;
 }

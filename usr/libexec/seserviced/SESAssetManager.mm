@@ -1,12 +1,12 @@
 @interface SESAssetManager
-+ (BOOL)kickOffAndReturnError:(id *)a3;
++ (BOOL)kickOffAndReturnError:(id *)error;
 + (void)syncMobileAssetUserInitiated;
-- (void)handleDownloadedAsset:(id)a3;
+- (void)handleDownloadedAsset:(id)asset;
 @end
 
 @implementation SESAssetManager
 
-+ (BOOL)kickOffAndReturnError:(id *)a3
++ (BOOL)kickOffAndReturnError:(id *)error
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
   if (qword_100501C58 != -1)
@@ -39,7 +39,7 @@
   }
 }
 
-- (void)handleDownloadedAsset:(id)a3
+- (void)handleDownloadedAsset:(id)asset
 {
   v4 = type metadata accessor for URL();
   v5 = *(v4 - 8);
@@ -47,7 +47,7 @@
   __chkstk_darwin(v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_1002BA988(v8);
 
   (*(v5 + 8))(v8, v4);

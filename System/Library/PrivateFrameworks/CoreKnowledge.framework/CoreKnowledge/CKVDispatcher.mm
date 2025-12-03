@@ -1,32 +1,32 @@
 @interface CKVDispatcher
 + (id)sharedInstance;
-- (BOOL)_adminServiceShouldAcceptNewConnection:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_adminServiceShouldAcceptNewConnection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CKVDispatcher)init;
-- (CKVDispatcher)initWithQueue:(id)a3 adminServiceProvider:(id)a4 taskManager:(id)a5;
-- (id)_listenerWithMachServiceName:(id)a3 delegate:(id)a4;
-- (void)handleBridgeActivityUpdate:(id)a3;
-- (void)handleDarwinNotificationEventWithName:(id)a3 completion:(id)a4;
-- (void)handleDistributedNotificationEventWithName:(id)a3 completion:(id)a4;
+- (CKVDispatcher)initWithQueue:(id)queue adminServiceProvider:(id)provider taskManager:(id)manager;
+- (id)_listenerWithMachServiceName:(id)name delegate:(id)delegate;
+- (void)handleBridgeActivityUpdate:(id)update;
+- (void)handleDarwinNotificationEventWithName:(id)name completion:(id)completion;
+- (void)handleDistributedNotificationEventWithName:(id)name completion:(id)completion;
 - (void)registerXPCActivities;
-- (void)runMaintenanceWithShouldDefer:(id)a3 completion:(id)a4;
-- (void)runMigration:(id)a3;
+- (void)runMaintenanceWithShouldDefer:(id)defer completion:(id)completion;
+- (void)runMigration:(id)migration;
 - (void)setupXPCListeners;
 @end
 
 @implementation CKVDispatcher
 
-- (void)runMaintenanceWithShouldDefer:(id)a3 completion:(id)a4
+- (void)runMaintenanceWithShouldDefer:(id)defer completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   taskManager = self->_taskManager;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__CKVDispatcher_runMaintenanceWithShouldDefer_completion___block_invoke;
   v9[3] = &unk_1E831EA90;
-  v10 = v6;
-  v8 = v6;
-  [(CKVTaskManager *)taskManager handleTask:102 reason:14 shouldDefer:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(CKVTaskManager *)taskManager handleTask:102 reason:14 shouldDefer:defer completion:v9];
 }
 
 void __58__CKVDispatcher_runMaintenanceWithShouldDefer_completion___block_invoke(uint64_t a1)
@@ -60,16 +60,16 @@ uint64_t __58__CKVDispatcher_runMaintenanceWithShouldDefer_completion___block_in
   return result;
 }
 
-- (void)runMigration:(id)a3
+- (void)runMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   taskManager = self->_taskManager;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__CKVDispatcher_runMigration___block_invoke;
   v7[3] = &unk_1E831EA90;
-  v8 = v4;
-  v6 = v4;
+  v8 = migrationCopy;
+  v6 = migrationCopy;
   [(CKVTaskManager *)taskManager handleTask:103 reason:1 shouldDefer:0 completion:v7];
 }
 
@@ -96,21 +96,21 @@ uint64_t __30__CKVDispatcher_runMigration___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)handleDistributedNotificationEventWithName:(id)a3 completion:(id)a4
+- (void)handleDistributedNotificationEventWithName:(id)name completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  if (([v10 isEqualToString:@"com.apple.LaunchServices.applicationRegistered"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"com.apple.LaunchServices.applicationUnregistered"))
+  nameCopy = name;
+  completionCopy = completion;
+  if (([nameCopy isEqualToString:@"com.apple.LaunchServices.applicationRegistered"] & 1) != 0 || objc_msgSend(nameCopy, "isEqualToString:", @"com.apple.LaunchServices.applicationUnregistered"))
   {
     taskManager = self->_taskManager;
     v8 = 3;
     v9 = 5;
 LABEL_4:
-    [(CKVTaskManager *)taskManager handleTask:v8 reason:v9 shouldDefer:0 completion:v6];
+    [(CKVTaskManager *)taskManager handleTask:v8 reason:v9 shouldDefer:0 completion:completionCopy];
     goto LABEL_5;
   }
 
-  if (([v10 isEqualToString:@"ABDatabaseChangedExternallyNotificationPriv"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"ABDistributedDatabaseChangedNotificationPriv"))
+  if (([nameCopy isEqualToString:@"ABDatabaseChangedExternallyNotificationPriv"] & 1) != 0 || objc_msgSend(nameCopy, "isEqualToString:", @"ABDistributedDatabaseChangedNotificationPriv"))
   {
     taskManager = self->_taskManager;
     v8 = 2;
@@ -118,30 +118,30 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_5:
 }
 
-- (void)handleDarwinNotificationEventWithName:(id)a3 completion:(id)a4
+- (void)handleDarwinNotificationEventWithName:(id)name completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"com.apple.assistant.siri_settings_did_change"])
+  nameCopy = name;
+  completionCopy = completion;
+  if ([nameCopy isEqualToString:@"com.apple.assistant.siri_settings_did_change"])
   {
     taskManager = self->_taskManager;
     v9 = 1;
     v10 = 2;
 LABEL_11:
-    [(CKVTaskManager *)taskManager handleTask:v9 reason:v10 shouldDefer:0 completion:v7];
+    [(CKVTaskManager *)taskManager handleTask:v9 reason:v10 shouldDefer:0 completion:completionCopy];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:@"__ABDataBaseChangedByOtherProcessNotification"])
+  if ([nameCopy isEqualToString:@"__ABDataBaseChangedByOtherProcessNotification"])
   {
     taskManager = self->_taskManager;
     v9 = 2;
@@ -149,7 +149,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([v6 isEqualToString:@"INVoocabularyChangedNotification"])
+  if ([nameCopy isEqualToString:@"INVoocabularyChangedNotification"])
   {
     taskManager = self->_taskManager;
     v9 = 1;
@@ -157,7 +157,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([v6 isEqualToString:@"com.apple.homekit.sync-data-cache-updated"])
+  if ([nameCopy isEqualToString:@"com.apple.homekit.sync-data-cache-updated"])
   {
     taskManager = self->_taskManager;
     v9 = 4;
@@ -165,7 +165,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([v6 isEqualToString:@"com.apple.proactive.PersonalizationPortrait.namedEntitiesInvalidated"])
+  if ([nameCopy isEqualToString:@"com.apple.proactive.PersonalizationPortrait.namedEntitiesInvalidated"])
   {
     taskManager = self->_taskManager;
     v9 = 7;
@@ -173,20 +173,20 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E698D078]])
+  if ([nameCopy isEqualToString:*MEMORY[0x1E698D078]])
   {
     v11 = self->_taskManager;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __66__CKVDispatcher_handleDarwinNotificationEventWithName_completion___block_invoke;
     v13[3] = &unk_1E831EA90;
-    v14 = v7;
+    v14 = completionCopy;
     [(CKVTaskManager *)v11 handleTask:101 reason:8 shouldDefer:0 completion:v13];
 
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:@"com.apple.icloud.fmip.siri_data_changed"])
+  if ([nameCopy isEqualToString:@"com.apple.icloud.fmip.siri_data_changed"])
   {
     taskManager = self->_taskManager;
     v9 = 10;
@@ -194,7 +194,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([v6 isEqualToString:@"com.apple.CascadeSets.DonateNow"])
+  if ([nameCopy isEqualToString:@"com.apple.CascadeSets.DonateNow"])
   {
     v12 = CKLogContextVocabulary;
     if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_INFO))
@@ -207,9 +207,9 @@ LABEL_11:
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_12:
@@ -226,9 +226,9 @@ uint64_t __66__CKVDispatcher_handleDarwinNotificationEventWithName_completion___
   return result;
 }
 
-- (void)handleBridgeActivityUpdate:(id)a3
+- (void)handleBridgeActivityUpdate:(id)update
 {
-  if ([a3 isEqualToString:*MEMORY[0x1E69ABC68]])
+  if ([update isEqualToString:*MEMORY[0x1E69ABC68]])
   {
     taskManager = self->_taskManager;
 
@@ -236,21 +236,21 @@ uint64_t __66__CKVDispatcher_handleDarwinNotificationEventWithName_completion___
   }
 }
 
-- (BOOL)_adminServiceShouldAcceptNewConnection:(id)a3
+- (BOOL)_adminServiceShouldAcceptNewConnection:(id)connection
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 valueForEntitlement:@"com.apple.siri.vocabulary.admin"];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.siri.vocabulary.admin"];
 
   if (v5)
   {
     v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F485D650];
-    [v4 setExportedInterface:v6];
+    [connectionCopy setExportedInterface:v6];
 
-    v7 = [(CKVAdminServiceProvider *)self->_adminServiceProvider adminService];
-    [v4 setExportedObject:v7];
+    adminService = [(CKVAdminServiceProvider *)self->_adminServiceProvider adminService];
+    [connectionCopy setExportedObject:adminService];
 
-    [v4 resume];
+    [connectionCopy resume];
     v8 = CKLogContextVocabulary;
     if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_INFO))
     {
@@ -258,7 +258,7 @@ uint64_t __66__CKVDispatcher_handleDarwinNotificationEventWithName_completion___
       v13 = 136315394;
       v14 = "[CKVDispatcher _adminServiceShouldAcceptNewConnection:]";
       v15 = 1024;
-      v16 = [v4 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       v10 = "%s New connection established to process with pid=(%d)";
 LABEL_6:
       _os_log_impl(&dword_1C8683000, v9, OS_LOG_TYPE_INFO, v10, &v13, 0x12u);
@@ -274,7 +274,7 @@ LABEL_6:
       v13 = 136315394;
       v14 = "[CKVDispatcher _adminServiceShouldAcceptNewConnection:]";
       v15 = 1024;
-      v16 = [v4 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       v10 = "%s Connecting process with pid=(%d) is not entitled for vocabulary admin service - rejecting connection.";
       goto LABEL_6;
     }
@@ -283,14 +283,14 @@ LABEL_6:
   return v5 != 0;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (self->_adminServiceListener == v6)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if (self->_adminServiceListener == listenerCopy)
   {
-    v9 = [(CKVDispatcher *)self _adminServiceShouldAcceptNewConnection:v7];
+    v9 = [(CKVDispatcher *)self _adminServiceShouldAcceptNewConnection:connectionCopy];
   }
 
   else
@@ -301,7 +301,7 @@ LABEL_6:
       v11 = 136315394;
       v12 = "[CKVDispatcher listener:shouldAcceptNewConnection:]";
       v13 = 2112;
-      v14 = v6;
+      v14 = listenerCopy;
       _os_log_error_impl(&dword_1C8683000, v8, OS_LOG_TYPE_ERROR, "%s Unrecognized listener passed to delegate: %@", &v11, 0x16u);
     }
 
@@ -311,14 +311,14 @@ LABEL_6:
   return v9;
 }
 
-- (id)_listenerWithMachServiceName:(id)a3 delegate:(id)a4
+- (id)_listenerWithMachServiceName:(id)name delegate:(id)delegate
 {
   v5 = MEMORY[0x1E696B0D8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithMachServiceName:v7];
+  delegateCopy = delegate;
+  nameCopy = name;
+  v8 = [[v5 alloc] initWithMachServiceName:nameCopy];
 
-  [v8 setDelegate:v6];
+  [v8 setDelegate:delegateCopy];
   [v8 resume];
 
   return v8;
@@ -344,17 +344,17 @@ LABEL_6:
   objc_exception_throw(v2);
 }
 
-- (CKVDispatcher)initWithQueue:(id)a3 adminServiceProvider:(id)a4 taskManager:(id)a5
+- (CKVDispatcher)initWithQueue:(id)queue adminServiceProvider:(id)provider taskManager:(id)manager
 {
   v20 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  providerCopy = provider;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = CKVDispatcher;
   v12 = [(CKVDispatcher *)&v17 init];
   p_isa = &v12->super.isa;
-  if (!v12 || (objc_storeStrong(&v12->_queue, a3), objc_storeStrong(p_isa + 3, a4), objc_storeStrong(p_isa + 4, a5), p_isa[3]) && p_isa[4])
+  if (!v12 || (objc_storeStrong(&v12->_queue, queue), objc_storeStrong(p_isa + 3, provider), objc_storeStrong(p_isa + 4, manager), p_isa[3]) && p_isa[4])
   {
     v14 = p_isa;
   }

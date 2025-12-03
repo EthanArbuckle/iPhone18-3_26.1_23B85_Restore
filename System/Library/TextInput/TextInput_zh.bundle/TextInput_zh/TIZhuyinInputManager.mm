@@ -1,27 +1,27 @@
 @interface TIZhuyinInputManager
-- (BOOL)addNonZhuyinInput:(id)a3;
-- (BOOL)addZhuyinInput:(id)a3 withUpdatingComposedTextToClient:(BOOL)a4;
+- (BOOL)addNonZhuyinInput:(id)input;
+- (BOOL)addZhuyinInput:(id)input withUpdatingComposedTextToClient:(BOOL)client;
 - (BOOL)deleteFromInput;
 - (BOOL)forwardDeleteFromInput;
 - (BOOL)isCursorAtEnd;
 - (BOOL)revertCurrentCharacterToTonelessZhuyin;
-- (BOOL)shouldDirectlyCommitInput:(id)a3;
+- (BOOL)shouldDirectlyCommitInput:(id)input;
 - (BOOL)syllableBuffersValid;
 - (NSString)composedText;
 - (NSString)syllableBuffersAggregateString;
 - (TIZhuyinInputManager)init;
-- (id)convertToFullWidth:(id)a3;
-- (id)inputStringForCharacters:(id)a3;
-- (id)readingsLengths:(id)a3;
+- (id)convertToFullWidth:(id)width;
+- (id)inputStringForCharacters:(id)characters;
+- (id)readingsLengths:(id)lengths;
 - (unint64_t)bufferSplittingLengthsIndex;
 - (unint64_t)composedBufferCursorLocation;
-- (unint64_t)inputBufferIndexOf:(unint64_t)a3;
+- (unint64_t)inputBufferIndexOf:(unint64_t)of;
 - (unint64_t)syllableBuffersAggregateLength;
 - (void)moveCursorBackward;
 - (void)moveCursorForward;
 - (void)reset;
 - (void)resetSyllableBuffers;
-- (void)updateWithCandidate:(id)a3 isWholeInputCandidate:(BOOL)a4;
+- (void)updateWithCandidate:(id)candidate isWholeInputCandidate:(BOOL)inputCandidate;
 @end
 
 @implementation TIZhuyinInputManager
@@ -56,34 +56,34 @@
   return v3;
 }
 
-- (BOOL)addZhuyinInput:(id)a3 withUpdatingComposedTextToClient:(BOOL)a4
+- (BOOL)addZhuyinInput:(id)input withUpdatingComposedTextToClient:(BOOL)client
 {
-  v6 = a3;
-  if (![v6 length])
+  inputCopy = input;
+  if (![inputCopy length])
   {
     [TIZhuyinInputManager addZhuyinInput:a2 withUpdatingComposedTextToClient:self];
   }
 
-  v7 = [v6 characterAtIndex:0];
-  v8 = [(TIZhuyinInputManager *)self inputCursorLocation];
-  v9 = [(TIZhuyinInputManager *)self syllableBuffersAggregateLength];
-  v10 = [MEMORY[0x29EDB9F50] zhuyinPhonemeCharacterSet];
-  v11 = [v6 rangeOfCharacterFromSet:v10];
+  v7 = [inputCopy characterAtIndex:0];
+  inputCursorLocation = [(TIZhuyinInputManager *)self inputCursorLocation];
+  syllableBuffersAggregateLength = [(TIZhuyinInputManager *)self syllableBuffersAggregateLength];
+  zhuyinPhonemeCharacterSet = [MEMORY[0x29EDB9F50] zhuyinPhonemeCharacterSet];
+  v11 = [inputCopy rangeOfCharacterFromSet:zhuyinPhonemeCharacterSet];
 
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = [MEMORY[0x29EDB9F50] zhuyinConsonantCharacterSet];
-    v15 = [v6 rangeOfCharacterFromSet:v14];
+    zhuyinConsonantCharacterSet = [MEMORY[0x29EDB9F50] zhuyinConsonantCharacterSet];
+    v15 = [inputCopy rangeOfCharacterFromSet:zhuyinConsonantCharacterSet];
 
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v16 = [MEMORY[0x29EDB9F50] zhuyinMedialCharacterSet];
-      v17 = [v6 rangeOfCharacterFromSet:v16];
+      zhuyinMedialCharacterSet = [MEMORY[0x29EDB9F50] zhuyinMedialCharacterSet];
+      v17 = [inputCopy rangeOfCharacterFromSet:zhuyinMedialCharacterSet];
 
       if (v17 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v18 = [MEMORY[0x29EDB9F50] zhuyinVowelCharacterSet];
-        v19 = [v6 rangeOfCharacterFromSet:v18];
+        zhuyinVowelCharacterSet = [MEMORY[0x29EDB9F50] zhuyinVowelCharacterSet];
+        v19 = [inputCopy rangeOfCharacterFromSet:zhuyinVowelCharacterSet];
 
         if (v19 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -102,17 +102,17 @@
       [(TIZhuyinInputManager *)self setSyllableConsonantBuffer:v7];
     }
 
-    v23 = [(TIZhuyinInputManager *)self syllableBuffersOccupied];
-    v12 = [(TIZhuyinInputManager *)self inputBuffer];
-    v24 = [(TIZhuyinInputManager *)self syllableBuffersAggregateString];
-    if (v23)
+    syllableBuffersOccupied = [(TIZhuyinInputManager *)self syllableBuffersOccupied];
+    inputBuffer = [(TIZhuyinInputManager *)self inputBuffer];
+    syllableBuffersAggregateString = [(TIZhuyinInputManager *)self syllableBuffersAggregateString];
+    if (syllableBuffersOccupied)
     {
-      [v12 replaceCharactersInRange:v8 withString:{v9, v24}];
+      [inputBuffer replaceCharactersInRange:inputCursorLocation withString:{syllableBuffersAggregateLength, syllableBuffersAggregateString}];
     }
 
     else
     {
-      [v12 insertString:v24 atIndex:{-[TIZhuyinInputManager inputCursorLocation](self, "inputCursorLocation")}];
+      [inputBuffer insertString:syllableBuffersAggregateString atIndex:{-[TIZhuyinInputManager inputCursorLocation](self, "inputCursorLocation")}];
     }
 
     goto LABEL_21;
@@ -120,15 +120,15 @@
 
   if ([(TIZhuyinInputManager *)self syllableBuffersOccupied])
   {
-    if ([v6 isEqualToString:@" "])
+    if ([inputCopy isEqualToString:@" "])
     {
       v7 = [@"ˉ" characterAtIndex:0];
     }
 
     [(TIZhuyinInputManager *)self setSyllableToneBuffer:v7];
-    v12 = [(TIZhuyinInputManager *)self inputBuffer];
-    v13 = [(TIZhuyinInputManager *)self syllableBuffersAggregateString];
-    [v12 replaceCharactersInRange:v8 withString:{v9, v13}];
+    inputBuffer = [(TIZhuyinInputManager *)self inputBuffer];
+    syllableBuffersAggregateString2 = [(TIZhuyinInputManager *)self syllableBuffersAggregateString];
+    [inputBuffer replaceCharactersInRange:inputCursorLocation withString:{syllableBuffersAggregateLength, syllableBuffersAggregateString2}];
 
 LABEL_21:
 LABEL_22:
@@ -136,19 +136,19 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v20 = [(TIZhuyinInputManager *)self inputBuffer];
-  v21 = [v20 length];
+  inputBuffer2 = [(TIZhuyinInputManager *)self inputBuffer];
+  v21 = [inputBuffer2 length];
 
-  if (v21 && ([v6 isEqualToString:@" "] & 1) == 0)
+  if (v21 && ([inputCopy isEqualToString:@" "] & 1) == 0)
   {
-    v26 = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
-    v27 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
-    v28 = [v27 objectAtIndex:v26];
-    v29 = [v28 unsignedIntegerValue];
+    bufferSplittingLengthsIndex = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
+    inputBufferSplittingLengths = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
+    v28 = [inputBufferSplittingLengths objectAtIndex:bufferSplittingLengthsIndex];
+    unsignedIntegerValue = [v28 unsignedIntegerValue];
 
     if ([(TIZhuyinInputManager *)self inputCursorLocation])
     {
-      v30 = [(TIZhuyinInputManager *)self inputCursorLocation]- v29;
+      v30 = [(TIZhuyinInputManager *)self inputCursorLocation]- unsignedIntegerValue;
     }
 
     else
@@ -156,11 +156,11 @@ LABEL_22:
       v30 = 0;
     }
 
-    v31 = [(TIZhuyinInputManager *)self inputBuffer];
-    v32 = [v31 substringWithRange:{v30, v29}];
+    inputBuffer3 = [(TIZhuyinInputManager *)self inputBuffer];
+    v32 = [inputBuffer3 substringWithRange:{v30, unsignedIntegerValue}];
 
-    v33 = [MEMORY[0x29EDB9F50] zhuyinPhonemeCharacterSet];
-    v34 = [v32 rangeOfCharacterFromSet:v33];
+    zhuyinPhonemeCharacterSet2 = [MEMORY[0x29EDB9F50] zhuyinPhonemeCharacterSet];
+    v34 = [v32 rangeOfCharacterFromSet:zhuyinPhonemeCharacterSet2];
 
     if (v34 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -181,10 +181,10 @@ LABEL_22:
       v37[3] = &unk_29F37D440;
       objc_copyWeak(&v38, &location);
       v39 = v7;
-      [v32 enumerateSubstringsInRange:0 options:v29 usingBlock:{2, v37}];
-      v35 = [(TIZhuyinInputManager *)self inputBuffer];
-      v36 = [(TIZhuyinInputManager *)self syllableBuffersAggregateString];
-      [v35 insertString:v36 atIndex:{-[TIZhuyinInputManager inputCursorLocation](self, "inputCursorLocation")}];
+      [v32 enumerateSubstringsInRange:0 options:unsignedIntegerValue usingBlock:{2, v37}];
+      inputBuffer4 = [(TIZhuyinInputManager *)self inputBuffer];
+      syllableBuffersAggregateString3 = [(TIZhuyinInputManager *)self syllableBuffersAggregateString];
+      [inputBuffer4 insertString:syllableBuffersAggregateString3 atIndex:{-[TIZhuyinInputManager inputCursorLocation](self, "inputCursorLocation")}];
 
       objc_destroyWeak(&v38);
       objc_destroyWeak(&location);
@@ -193,7 +193,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v22 = ![(TIZhuyinInputManager *)self shouldDirectlyCommitInput:v6];
+  v22 = ![(TIZhuyinInputManager *)self shouldDirectlyCommitInput:inputCopy];
 LABEL_23:
 
   return v22;
@@ -246,28 +246,28 @@ void __72__TIZhuyinInputManager_addZhuyinInput_withUpdatingComposedTextToClient_
   }
 }
 
-- (void)updateWithCandidate:(id)a3 isWholeInputCandidate:(BOOL)a4
+- (void)updateWithCandidate:(id)candidate isWholeInputCandidate:(BOOL)inputCandidate
 {
-  v4 = a4;
-  v60 = a3;
+  inputCandidateCopy = inputCandidate;
+  candidateCopy = candidate;
   if ([(TIZhuyinInputManager *)self syllableBuffersValid])
   {
-    v6 = [(TIZhuyinInputManager *)self composedBuffer];
-    v7 = [v60 candidate];
-    if (v4)
+    composedBuffer = [(TIZhuyinInputManager *)self composedBuffer];
+    candidate = [candidateCopy candidate];
+    if (inputCandidateCopy)
     {
-      [v6 setString:v7];
+      [composedBuffer setString:candidate];
     }
 
     else
     {
-      [v6 insertString:v7 atIndex:{-[TIZhuyinInputManager composedBufferCursorLocation](self, "composedBufferCursorLocation")}];
+      [composedBuffer insertString:candidate atIndex:{-[TIZhuyinInputManager composedBufferCursorLocation](self, "composedBufferCursorLocation")}];
     }
 
-    v8 = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
+    bufferSplittingLengthsIndex = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
     if ([(TIZhuyinInputManager *)self composedBufferCursorLocation])
     {
-      v9 = v8 + 1;
+      v9 = bufferSplittingLengthsIndex + 1;
     }
 
     else
@@ -275,22 +275,22 @@ void __72__TIZhuyinInputManager_addZhuyinInput_withUpdatingComposedTextToClient_
       v9 = 0;
     }
 
-    v10 = [(TIZhuyinInputManager *)self syllableBuffersAggregateLength];
-    v11 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v10];
-    v12 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
-    v13 = v12;
-    if (v4)
+    syllableBuffersAggregateLength = [(TIZhuyinInputManager *)self syllableBuffersAggregateLength];
+    v11 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:syllableBuffersAggregateLength];
+    inputBufferSplittingLengths = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
+    v13 = inputBufferSplittingLengths;
+    if (inputCandidateCopy)
     {
-      v54 = v10;
+      v54 = syllableBuffersAggregateLength;
       v55 = v11;
-      [v12 removeAllObjects];
+      [inputBufferSplittingLengths removeAllObjects];
 
-      v57 = self;
-      v14 = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
-      [v14 removeAllObjects];
+      selfCopy = self;
+      composedBufferSplittingLengths = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
+      [composedBufferSplittingLengths removeAllObjects];
 
-      v15 = [v60 mecabraCandidatePointerValue];
-      [v15 unsignedLongLongValue];
+      mecabraCandidatePointerValue = [candidateCopy mecabraCandidatePointerValue];
+      [mecabraCandidatePointerValue unsignedLongLongValue];
 
       WordCount = MecabraCandidateGetWordCount();
       context = objc_autoreleasePoolPush();
@@ -305,15 +305,15 @@ void __72__TIZhuyinInputManager_addZhuyinInput_withUpdatingComposedTextToClient_
           WordLengthAtIndex = MecabraCandidateGetWordLengthAtIndex();
           v21 = WordLengthAtIndex;
           WordReadingLengthAtIndex = MecabraCandidateGetWordReadingLengthAtIndex();
-          v23 = [v60 candidate];
+          candidate2 = [candidateCopy candidate];
           v58 = v18;
-          v24 = [v23 substringWithRange:{v18, WordLengthAtIndex}];
+          v24 = [candidate2 substringWithRange:{v18, WordLengthAtIndex}];
 
-          v25 = [v60 input];
+          input = [candidateCopy input];
           v59 = WordReadingLengthAtIndex;
-          v26 = [v25 substringWithRange:{v19, WordReadingLengthAtIndex}];
+          v26 = [input substringWithRange:{v19, WordReadingLengthAtIndex}];
 
-          v27 = [MEMORY[0x29EDB8DE8] array];
+          array = [MEMORY[0x29EDB8DE8] array];
           if (WordLengthAtIndex)
           {
             v28 = 0;
@@ -322,7 +322,7 @@ void __72__TIZhuyinInputManager_addZhuyinInput_withUpdatingComposedTextToClient_
               [v24 rangeOfComposedCharacterSequenceAtIndex:v28];
               v30 = v29;
               v31 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v29];
-              [v27 addObject:v31];
+              [array addObject:v31];
 
               v28 += v30;
             }
@@ -332,37 +332,37 @@ void __72__TIZhuyinInputManager_addZhuyinInput_withUpdatingComposedTextToClient_
 
           if (MecabraCandidateWordAtIndexIsFromSystemDictionary())
           {
-            v32 = [(TIZhuyinInputManager *)v57 inputBufferSplittingLengths];
-            v33 = [(TIZhuyinInputManager *)v57 readingsLengths:v26];
-            [v32 addObjectsFromArray:v33];
+            inputBufferSplittingLengths2 = [(TIZhuyinInputManager *)selfCopy inputBufferSplittingLengths];
+            v33 = [(TIZhuyinInputManager *)selfCopy readingsLengths:v26];
+            [inputBufferSplittingLengths2 addObjectsFromArray:v33];
 
-            v34 = [(TIZhuyinInputManager *)v57 composedBufferSplittingLengths];
-            [v34 addObjectsFromArray:v27];
+            composedBufferSplittingLengths2 = [(TIZhuyinInputManager *)selfCopy composedBufferSplittingLengths];
+            [composedBufferSplittingLengths2 addObjectsFromArray:array];
           }
 
           else
           {
             v35 = MecabraCandidateCopySyllableLengthArrayForWordAtIndex();
-            v34 = v35;
-            if (v35 && (v36 = [v35 count], v36 != objc_msgSend(v27, "count")))
+            composedBufferSplittingLengths2 = v35;
+            if (v35 && (v36 = [v35 count], v36 != objc_msgSend(array, "count")))
             {
-              v40 = [(TIZhuyinInputManager *)v57 inputBufferSplittingLengths];
+              inputBufferSplittingLengths3 = [(TIZhuyinInputManager *)selfCopy inputBufferSplittingLengths];
               v41 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v59];
-              [v40 addObject:v41];
+              [inputBufferSplittingLengths3 addObject:v41];
 
-              v39 = [(TIZhuyinInputManager *)v57 composedBufferSplittingLengths];
+              composedBufferSplittingLengths3 = [(TIZhuyinInputManager *)selfCopy composedBufferSplittingLengths];
               v42 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v21];
-              [v39 addObject:v42];
+              [composedBufferSplittingLengths3 addObject:v42];
             }
 
             else
             {
-              v37 = [(TIZhuyinInputManager *)v57 inputBufferSplittingLengths];
-              v38 = [(TIZhuyinInputManager *)v57 readingsLengths:v26];
-              [v37 addObjectsFromArray:v38];
+              inputBufferSplittingLengths4 = [(TIZhuyinInputManager *)selfCopy inputBufferSplittingLengths];
+              v38 = [(TIZhuyinInputManager *)selfCopy readingsLengths:v26];
+              [inputBufferSplittingLengths4 addObjectsFromArray:v38];
 
-              v39 = [(TIZhuyinInputManager *)v57 composedBufferSplittingLengths];
-              [v39 addObjectsFromArray:v27];
+              composedBufferSplittingLengths3 = [(TIZhuyinInputManager *)selfCopy composedBufferSplittingLengths];
+              [composedBufferSplittingLengths3 addObjectsFromArray:array];
             }
           }
 
@@ -375,71 +375,71 @@ void __72__TIZhuyinInputManager_addZhuyinInput_withUpdatingComposedTextToClient_
       }
 
       objc_autoreleasePoolPop(context);
-      self = v57;
-      v10 = v54;
+      self = selfCopy;
+      syllableBuffersAggregateLength = v54;
       v11 = v55;
     }
 
     else
     {
-      v43 = [v12 count];
+      v43 = [inputBufferSplittingLengths count];
 
-      v44 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
-      v45 = v44;
+      inputBufferSplittingLengths5 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
+      v45 = inputBufferSplittingLengths5;
       if (v43 >= v9)
       {
-        [v44 insertObject:v11 atIndex:v9];
+        [inputBufferSplittingLengths5 insertObject:v11 atIndex:v9];
       }
 
       else
       {
-        [v44 addObject:v11];
+        [inputBufferSplittingLengths5 addObject:v11];
       }
 
       v46 = MEMORY[0x29EDBA070];
-      v47 = [v60 candidate];
-      v48 = [v46 numberWithUnsignedInteger:{objc_msgSend(v47, "length")}];
+      candidate3 = [candidateCopy candidate];
+      v48 = [v46 numberWithUnsignedInteger:{objc_msgSend(candidate3, "length")}];
 
-      v49 = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
-      v50 = [v49 count];
+      composedBufferSplittingLengths4 = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
+      v50 = [composedBufferSplittingLengths4 count];
 
-      v51 = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
-      v52 = v51;
+      composedBufferSplittingLengths5 = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
+      v52 = composedBufferSplittingLengths5;
       if (v50 >= v9)
       {
-        [v51 insertObject:v48 atIndex:v9];
+        [composedBufferSplittingLengths5 insertObject:v48 atIndex:v9];
       }
 
       else
       {
-        [v51 addObject:v48];
+        [composedBufferSplittingLengths5 addObject:v48];
       }
     }
 
-    [(TIZhuyinInputManager *)self setInputCursorLocation:[(TIZhuyinInputManager *)self inputCursorLocation]+ v10];
+    [(TIZhuyinInputManager *)self setInputCursorLocation:[(TIZhuyinInputManager *)self inputCursorLocation]+ syllableBuffersAggregateLength];
     [(TIZhuyinInputManager *)self resetSyllableBuffers];
   }
 }
 
-- (BOOL)addNonZhuyinInput:(id)a3
+- (BOOL)addNonZhuyinInput:(id)input
 {
-  v4 = a3;
-  v5 = [(TIZhuyinInputManager *)self shouldDirectlyCommitInput:v4];
+  inputCopy = input;
+  v5 = [(TIZhuyinInputManager *)self shouldDirectlyCommitInput:inputCopy];
   if (!v5 && ![(TIZhuyinInputManager *)self syllableBuffersOccupied])
   {
-    v6 = [(TIZhuyinInputManager *)self convertToFullWidth:v4];
-    v7 = [(TIZhuyinInputManager *)self inputBuffer];
-    [v7 insertString:v6 atIndex:{-[TIZhuyinInputManager inputCursorLocation](self, "inputCursorLocation")}];
+    v6 = [(TIZhuyinInputManager *)self convertToFullWidth:inputCopy];
+    inputBuffer = [(TIZhuyinInputManager *)self inputBuffer];
+    [inputBuffer insertString:v6 atIndex:{-[TIZhuyinInputManager inputCursorLocation](self, "inputCursorLocation")}];
 
-    v8 = [(TIZhuyinInputManager *)self composedBuffer];
-    [v8 insertString:v6 atIndex:{-[TIZhuyinInputManager composedBufferCursorLocation](self, "composedBufferCursorLocation")}];
+    composedBuffer = [(TIZhuyinInputManager *)self composedBuffer];
+    [composedBuffer insertString:v6 atIndex:{-[TIZhuyinInputManager composedBufferCursorLocation](self, "composedBufferCursorLocation")}];
 
     v9 = [v6 length];
     v10 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v9];
-    v11 = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
+    bufferSplittingLengthsIndex = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
     if ([(TIZhuyinInputManager *)self composedBufferCursorLocation])
     {
-      v12 = v11 + 1;
+      v12 = bufferSplittingLengthsIndex + 1;
     }
 
     else
@@ -447,25 +447,25 @@ void __72__TIZhuyinInputManager_addZhuyinInput_withUpdatingComposedTextToClient_
       v12 = 0;
     }
 
-    v13 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
-    v14 = [v13 count];
+    inputBufferSplittingLengths = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
+    v14 = [inputBufferSplittingLengths count];
 
-    v15 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
-    v16 = v15;
+    inputBufferSplittingLengths2 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
+    v16 = inputBufferSplittingLengths2;
     if (v14 >= v12)
     {
-      [v15 insertObject:v10 atIndex:v12];
+      [inputBufferSplittingLengths2 insertObject:v10 atIndex:v12];
 
-      v17 = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
-      [v17 insertObject:v10 atIndex:v12];
+      composedBufferSplittingLengths = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
+      [composedBufferSplittingLengths insertObject:v10 atIndex:v12];
     }
 
     else
     {
-      [v15 addObject:v10];
+      [inputBufferSplittingLengths2 addObject:v10];
 
-      v17 = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
-      [v17 addObject:v10];
+      composedBufferSplittingLengths = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
+      [composedBufferSplittingLengths addObject:v10];
     }
 
     [(TIZhuyinInputManager *)self setInputCursorLocation:[(TIZhuyinInputManager *)self inputCursorLocation]+ v9];
@@ -476,18 +476,18 @@ void __72__TIZhuyinInputManager_addZhuyinInput_withUpdatingComposedTextToClient_
 
 - (BOOL)deleteFromInput
 {
-  v3 = [(TIZhuyinInputManager *)self inputBuffer];
-  v4 = [v3 length];
+  inputBuffer = [(TIZhuyinInputManager *)self inputBuffer];
+  v4 = [inputBuffer length];
 
   if (v4)
   {
-    v5 = [(TIZhuyinInputManager *)self syllableBuffersOccupied];
-    v6 = [(TIZhuyinInputManager *)self inputCursorLocation];
-    if (v5)
+    syllableBuffersOccupied = [(TIZhuyinInputManager *)self syllableBuffersOccupied];
+    inputCursorLocation = [(TIZhuyinInputManager *)self inputCursorLocation];
+    if (syllableBuffersOccupied)
     {
-      v7 = v6 + [(TIZhuyinInputManager *)self syllableBuffersAggregateLength]- 1;
-      v8 = [(TIZhuyinInputManager *)self inputBuffer];
-      [v8 deleteCharactersInRange:{v7, 1}];
+      v7 = inputCursorLocation + [(TIZhuyinInputManager *)self syllableBuffersAggregateLength]- 1;
+      inputBuffer2 = [(TIZhuyinInputManager *)self inputBuffer];
+      [inputBuffer2 deleteCharactersInRange:{v7, 1}];
 
       if ([(TIZhuyinInputManager *)self syllableToneBuffer])
       {
@@ -510,32 +510,32 @@ void __72__TIZhuyinInputManager_addZhuyinInput_withUpdatingComposedTextToClient_
       }
     }
 
-    else if (v6)
+    else if (inputCursorLocation)
     {
-      v9 = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
-      v10 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
-      v11 = [v10 objectAtIndex:v9];
-      v12 = [v11 unsignedIntegerValue];
+      bufferSplittingLengthsIndex = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
+      inputBufferSplittingLengths = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
+      v11 = [inputBufferSplittingLengths objectAtIndex:bufferSplittingLengthsIndex];
+      unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-      v13 = [(TIZhuyinInputManager *)self inputCursorLocation]- v12;
-      v14 = [(TIZhuyinInputManager *)self inputBuffer];
-      [v14 deleteCharactersInRange:{v13, v12}];
+      v13 = [(TIZhuyinInputManager *)self inputCursorLocation]- unsignedIntegerValue;
+      inputBuffer3 = [(TIZhuyinInputManager *)self inputBuffer];
+      [inputBuffer3 deleteCharactersInRange:{v13, unsignedIntegerValue}];
 
-      v15 = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
-      v16 = [v15 objectAtIndex:v9];
-      v17 = [v16 unsignedIntegerValue];
+      composedBufferSplittingLengths = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
+      v16 = [composedBufferSplittingLengths objectAtIndex:bufferSplittingLengthsIndex];
+      unsignedIntegerValue2 = [v16 unsignedIntegerValue];
 
-      v18 = [(TIZhuyinInputManager *)self composedBufferCursorLocation]- v17;
-      v19 = [(TIZhuyinInputManager *)self composedBuffer];
-      [v19 deleteCharactersInRange:{v18, v17}];
+      v18 = [(TIZhuyinInputManager *)self composedBufferCursorLocation]- unsignedIntegerValue2;
+      composedBuffer = [(TIZhuyinInputManager *)self composedBuffer];
+      [composedBuffer deleteCharactersInRange:{v18, unsignedIntegerValue2}];
 
-      v20 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
-      [v20 removeObjectAtIndex:v9];
+      inputBufferSplittingLengths2 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
+      [inputBufferSplittingLengths2 removeObjectAtIndex:bufferSplittingLengthsIndex];
 
-      v21 = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
-      [v21 removeObjectAtIndex:v9];
+      composedBufferSplittingLengths2 = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
+      [composedBufferSplittingLengths2 removeObjectAtIndex:bufferSplittingLengthsIndex];
 
-      [(TIZhuyinInputManager *)self setInputCursorLocation:[(TIZhuyinInputManager *)self inputCursorLocation]- v12];
+      [(TIZhuyinInputManager *)self setInputCursorLocation:[(TIZhuyinInputManager *)self inputCursorLocation]- unsignedIntegerValue];
     }
   }
 
@@ -544,52 +544,52 @@ void __72__TIZhuyinInputManager_addZhuyinInput_withUpdatingComposedTextToClient_
 
 - (BOOL)forwardDeleteFromInput
 {
-  v3 = [(TIZhuyinInputManager *)self inputBuffer];
-  v4 = [v3 length];
+  inputBuffer = [(TIZhuyinInputManager *)self inputBuffer];
+  v4 = [inputBuffer length];
 
   if (v4)
   {
     if (![(TIZhuyinInputManager *)self syllableBuffersOccupied])
     {
-      v5 = [(TIZhuyinInputManager *)self inputCursorLocation];
-      v6 = [(TIZhuyinInputManager *)self inputBuffer];
-      v7 = [v6 length];
+      inputCursorLocation = [(TIZhuyinInputManager *)self inputCursorLocation];
+      inputBuffer2 = [(TIZhuyinInputManager *)self inputBuffer];
+      v7 = [inputBuffer2 length];
 
-      if (v5 < v7)
+      if (inputCursorLocation < v7)
       {
-        v8 = [(TIZhuyinInputManager *)self inputCursorLocation];
-        v9 = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
-        if (v8)
+        inputCursorLocation2 = [(TIZhuyinInputManager *)self inputCursorLocation];
+        bufferSplittingLengthsIndex = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
+        if (inputCursorLocation2)
         {
-          v10 = v9 + 1;
+          v10 = bufferSplittingLengthsIndex + 1;
         }
 
         else
         {
-          v10 = v9;
+          v10 = bufferSplittingLengthsIndex;
         }
 
-        v11 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
-        v12 = [v11 objectAtIndex:v10];
-        v13 = [v12 unsignedIntegerValue];
+        inputBufferSplittingLengths = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
+        v12 = [inputBufferSplittingLengths objectAtIndex:v10];
+        unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-        v14 = [(TIZhuyinInputManager *)self inputCursorLocation];
-        v15 = [(TIZhuyinInputManager *)self inputBuffer];
-        [v15 deleteCharactersInRange:{v14, v13}];
+        inputCursorLocation3 = [(TIZhuyinInputManager *)self inputCursorLocation];
+        inputBuffer3 = [(TIZhuyinInputManager *)self inputBuffer];
+        [inputBuffer3 deleteCharactersInRange:{inputCursorLocation3, unsignedIntegerValue}];
 
-        v16 = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
-        v17 = [v16 objectAtIndex:v10];
-        v18 = [v17 unsignedIntegerValue];
+        composedBufferSplittingLengths = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
+        v17 = [composedBufferSplittingLengths objectAtIndex:v10];
+        unsignedIntegerValue2 = [v17 unsignedIntegerValue];
 
-        v19 = [(TIZhuyinInputManager *)self composedBufferCursorLocation];
-        v20 = [(TIZhuyinInputManager *)self composedBuffer];
-        [v20 deleteCharactersInRange:{v19, v18}];
+        composedBufferCursorLocation = [(TIZhuyinInputManager *)self composedBufferCursorLocation];
+        composedBuffer = [(TIZhuyinInputManager *)self composedBuffer];
+        [composedBuffer deleteCharactersInRange:{composedBufferCursorLocation, unsignedIntegerValue2}];
 
-        v21 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
-        [v21 removeObjectAtIndex:v10];
+        inputBufferSplittingLengths2 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
+        [inputBufferSplittingLengths2 removeObjectAtIndex:v10];
 
-        v22 = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
-        [v22 removeObjectAtIndex:v10];
+        composedBufferSplittingLengths2 = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
+        [composedBufferSplittingLengths2 removeObjectAtIndex:v10];
       }
     }
   }
@@ -597,28 +597,28 @@ void __72__TIZhuyinInputManager_addZhuyinInput_withUpdatingComposedTextToClient_
   return v4 != 0;
 }
 
-- (unint64_t)inputBufferIndexOf:(unint64_t)a3
+- (unint64_t)inputBufferIndexOf:(unint64_t)of
 {
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
-  v5 = [(TIZhuyinInputManager *)self composedBuffer];
+  composedBuffer = [(TIZhuyinInputManager *)self composedBuffer];
   v6 = 0;
-  if ([v5 length] <= a3)
+  if ([composedBuffer length] <= of)
   {
-    v7 = [(TIZhuyinInputManager *)self composedBuffer];
-    v6 = a3 - [v7 length];
+    composedBuffer2 = [(TIZhuyinInputManager *)self composedBuffer];
+    v6 = of - [composedBuffer2 length];
   }
 
   v15 = v6;
-  v8 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
+  inputBufferSplittingLengths = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
   v11[0] = MEMORY[0x29EDCA5F8];
   v11[1] = 3221225472;
   v11[2] = __43__TIZhuyinInputManager_inputBufferIndexOf___block_invoke;
   v11[3] = &unk_29F37D468;
   v11[4] = &v12;
-  v11[5] = a3;
-  [v8 enumerateObjectsUsingBlock:v11];
+  v11[5] = of;
+  [inputBufferSplittingLengths enumerateObjectsUsingBlock:v11];
 
   v9 = v13[3];
   _Block_object_dispose(&v12, 8);
@@ -644,15 +644,15 @@ uint64_t __43__TIZhuyinInputManager_inputBufferIndexOf___block_invoke(uint64_t r
 
 - (BOOL)isCursorAtEnd
 {
-  v2 = self;
-  v3 = [(TIZhuyinInputManager *)self composedText];
-  v4 = [v3 length];
-  LOBYTE(v2) = v4 == [(TIZhuyinInputManager *)v2 cursorLocation];
+  selfCopy = self;
+  composedText = [(TIZhuyinInputManager *)self composedText];
+  v4 = [composedText length];
+  LOBYTE(selfCopy) = v4 == [(TIZhuyinInputManager *)selfCopy cursorLocation];
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)readingsLengths:(id)a3
+- (id)readingsLengths:(id)lengths
 {
   v11 = 0;
   v12 = &v11;
@@ -660,8 +660,8 @@ uint64_t __43__TIZhuyinInputManager_inputBufferIndexOf___block_invoke(uint64_t r
   v14 = __Block_byref_object_copy_;
   v15 = __Block_byref_object_dispose_;
   v3 = MEMORY[0x29EDB8DE8];
-  v4 = a3;
-  v16 = [v3 array];
+  lengthsCopy = lengths;
+  array = [v3 array];
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
@@ -670,7 +670,7 @@ uint64_t __43__TIZhuyinInputManager_inputBufferIndexOf___block_invoke(uint64_t r
   v9[1] = v9;
   v9[2] = 0x2020000000;
   v9[3] = 0;
-  v5 = [v4 length];
+  v5 = [lengthsCopy length];
   v8[0] = MEMORY[0x29EDCA5F8];
   v8[1] = 3221225472;
   v8[2] = __40__TIZhuyinInputManager_readingsLengths___block_invoke;
@@ -678,7 +678,7 @@ uint64_t __43__TIZhuyinInputManager_inputBufferIndexOf___block_invoke(uint64_t r
   v8[4] = v9;
   v8[5] = v10;
   v8[6] = &v11;
-  [v4 enumerateSubstringsInRange:0 options:v5 usingBlock:{2, v8}];
+  [lengthsCopy enumerateSubstringsInRange:0 options:v5 usingBlock:{2, v8}];
 
   v6 = v12[5];
   _Block_object_dispose(v9, 8);
@@ -714,10 +714,10 @@ LABEL_5:
   }
 }
 
-- (id)convertToFullWidth:(id)a3
+- (id)convertToFullWidth:(id)width
 {
-  v4 = a3;
-  v5 = [v4 characterAtIndex:0];
+  widthCopy = width;
+  v5 = [widthCopy characterAtIndex:0];
   if (v5 <= 90)
   {
     if (v5 > 59)
@@ -741,9 +741,9 @@ LABEL_5:
     {
       if (v5 == 34)
       {
-        v8 = [(TIZhuyinInputManager *)self leftDoubleQuotationMarkInserted];
+        leftDoubleQuotationMarkInserted = [(TIZhuyinInputManager *)self leftDoubleQuotationMarkInserted];
 
-        if (v8)
+        if (leftDoubleQuotationMarkInserted)
         {
           [(TIZhuyinInputManager *)self setLeftDoubleQuotationMarkInserted:0];
           v6 = @"”";
@@ -760,9 +760,9 @@ LABEL_5:
 
       if (v5 == 39)
       {
-        v7 = [(TIZhuyinInputManager *)self leftSingleQuotationMarkInserted];
+        leftSingleQuotationMarkInserted = [(TIZhuyinInputManager *)self leftSingleQuotationMarkInserted];
 
-        if (v7)
+        if (leftSingleQuotationMarkInserted)
         {
           [(TIZhuyinInputManager *)self setLeftSingleQuotationMarkInserted:0];
           v6 = @"’";
@@ -779,7 +779,7 @@ LABEL_5:
     }
 
 LABEL_23:
-    v6 = [v4 mutableCopy];
+    v6 = [widthCopy mutableCopy];
     CFStringTransform(v6, 0, *MEMORY[0x29EDB8FD8], 1u);
 
     goto LABEL_26;
@@ -823,18 +823,18 @@ LABEL_26:
   return v6;
 }
 
-- (BOOL)shouldDirectlyCommitInput:(id)a3
+- (BOOL)shouldDirectlyCommitInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   if ([(TIZhuyinInputManager *)self syllableBuffersOccupied])
   {
     goto LABEL_3;
   }
 
-  v5 = [(TIZhuyinInputManager *)self inputBuffer];
-  v6 = [v5 length];
+  inputBuffer = [(TIZhuyinInputManager *)self inputBuffer];
+  v6 = [inputBuffer length];
 
-  if (v6 || ([v4 isEqualToString:@" "] & 1) == 0 && (objc_msgSend(MEMORY[0x29EDB9F50], "zhuyinToneCharacterSet"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v4, "rangeOfCharacterFromSet:", v9), v9, v10 == 0x7FFFFFFFFFFFFFFFLL))
+  if (v6 || ([inputCopy isEqualToString:@" "] & 1) == 0 && (objc_msgSend(MEMORY[0x29EDB9F50], "zhuyinToneCharacterSet"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(inputCopy, "rangeOfCharacterFromSet:", v9), v9, v10 == 0x7FFFFFFFFFFFFFFFLL))
   {
 LABEL_3:
     v7 = 0;
@@ -850,17 +850,17 @@ LABEL_3:
 
 - (BOOL)revertCurrentCharacterToTonelessZhuyin
 {
-  v3 = [(TIZhuyinInputManager *)self inputBuffer];
-  v4 = [v3 length];
+  inputBuffer = [(TIZhuyinInputManager *)self inputBuffer];
+  v4 = [inputBuffer length];
 
   if (v4)
   {
     if ([(TIZhuyinInputManager *)self syllableBuffersOccupied])
     {
-      v5 = [(TIZhuyinInputManager *)self syllableBuffersAggregateLength];
-      if (v5)
+      syllableBuffersAggregateLength = [(TIZhuyinInputManager *)self syllableBuffersAggregateLength];
+      if (syllableBuffersAggregateLength)
       {
-        v6 = v5;
+        v6 = syllableBuffersAggregateLength;
         do
         {
           [(TIZhuyinInputManager *)self deleteFromInput];
@@ -873,14 +873,14 @@ LABEL_3:
 
     else
     {
-      v7 = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
-      v8 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
-      v9 = [v8 objectAtIndex:v7];
-      v10 = [v9 unsignedIntegerValue];
+      bufferSplittingLengthsIndex = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
+      inputBufferSplittingLengths = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
+      v9 = [inputBufferSplittingLengths objectAtIndex:bufferSplittingLengthsIndex];
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
 
       if ([(TIZhuyinInputManager *)self inputCursorLocation])
       {
-        v11 = [(TIZhuyinInputManager *)self inputCursorLocation]- v10;
+        v11 = [(TIZhuyinInputManager *)self inputCursorLocation]- unsignedIntegerValue;
       }
 
       else
@@ -888,8 +888,8 @@ LABEL_3:
         v11 = 0;
       }
 
-      v12 = [(TIZhuyinInputManager *)self inputBuffer];
-      v13 = [v12 substringWithRange:{v11, v10}];
+      inputBuffer2 = [(TIZhuyinInputManager *)self inputBuffer];
+      v13 = [inputBuffer2 substringWithRange:{v11, unsignedIntegerValue}];
 
       if ([(TIZhuyinInputManager *)self inputCursorLocation])
       {
@@ -907,7 +907,7 @@ LABEL_3:
       v15[2] = __62__TIZhuyinInputManager_revertCurrentCharacterToTonelessZhuyin__block_invoke;
       v15[3] = &unk_29F37D4B8;
       objc_copyWeak(&v16, &location);
-      [v13 enumerateSubstringsInRange:0 options:v10 - 1 usingBlock:{2, v15}];
+      [v13 enumerateSubstringsInRange:0 options:unsignedIntegerValue - 1 usingBlock:{2, v15}];
       objc_destroyWeak(&v16);
       objc_destroyWeak(&location);
     }
@@ -935,31 +935,31 @@ void __62__TIZhuyinInputManager_revertCurrentCharacterToTonelessZhuyin__block_in
 - (void)reset
 {
   [(TIZhuyinInputManager *)self resetSyllableBuffers];
-  v3 = [(TIZhuyinInputManager *)self inputBuffer];
-  [v3 setString:&stru_2A252F9A8];
+  inputBuffer = [(TIZhuyinInputManager *)self inputBuffer];
+  [inputBuffer setString:&stru_2A252F9A8];
 
   [(TIZhuyinInputManager *)self setInputCursorLocation:0];
-  v4 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
-  [v4 removeAllObjects];
+  inputBufferSplittingLengths = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
+  [inputBufferSplittingLengths removeAllObjects];
 
-  v5 = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
-  [v5 removeAllObjects];
+  composedBufferSplittingLengths = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
+  [composedBufferSplittingLengths removeAllObjects];
 
-  v6 = [(TIZhuyinInputManager *)self composedBuffer];
-  [v6 setString:&stru_2A252F9A8];
+  composedBuffer = [(TIZhuyinInputManager *)self composedBuffer];
+  [composedBuffer setString:&stru_2A252F9A8];
 }
 
 - (NSString)composedText
 {
-  v3 = [(TIZhuyinInputManager *)self composedBufferCursorLocation];
-  v4 = [(TIZhuyinInputManager *)self composedBuffer];
-  v5 = [v4 substringToIndex:v3];
+  composedBufferCursorLocation = [(TIZhuyinInputManager *)self composedBufferCursorLocation];
+  composedBuffer = [(TIZhuyinInputManager *)self composedBuffer];
+  v5 = [composedBuffer substringToIndex:composedBufferCursorLocation];
 
-  v6 = [(TIZhuyinInputManager *)self syllableBuffersAggregateString];
-  v7 = [v6 stringByReplacingOccurrencesOfString:@"ˉ" withString:@" "];
+  syllableBuffersAggregateString = [(TIZhuyinInputManager *)self syllableBuffersAggregateString];
+  v7 = [syllableBuffersAggregateString stringByReplacingOccurrencesOfString:@"ˉ" withString:@" "];
 
-  v8 = [(TIZhuyinInputManager *)self composedBuffer];
-  v9 = [v8 substringFromIndex:v3];
+  composedBuffer2 = [(TIZhuyinInputManager *)self composedBuffer];
+  v9 = [composedBuffer2 substringFromIndex:composedBufferCursorLocation];
 
   v10 = [v7 stringByAppendingString:v9];
   v11 = [v5 stringByAppendingString:v10];
@@ -973,15 +973,15 @@ void __62__TIZhuyinInputManager_revertCurrentCharacterToTonelessZhuyin__block_in
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v3 = [(TIZhuyinInputManager *)self inputCursorLocation];
-  if (v3)
+  inputCursorLocation = [(TIZhuyinInputManager *)self inputCursorLocation];
+  if (inputCursorLocation)
   {
-    v4 = v3;
+    v4 = inputCursorLocation;
     v9[0] = 0;
     v9[1] = v9;
     v9[2] = 0x2020000000;
     v9[3] = 0;
-    v5 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
+    inputBufferSplittingLengths = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
     v8[0] = MEMORY[0x29EDCA5F8];
     v8[1] = 3221225472;
     v8[2] = __51__TIZhuyinInputManager_bufferSplittingLengthsIndex__block_invoke;
@@ -989,7 +989,7 @@ void __62__TIZhuyinInputManager_revertCurrentCharacterToTonelessZhuyin__block_in
     v8[5] = &v10;
     v8[6] = v4;
     v8[4] = v9;
-    [v5 enumerateObjectsUsingBlock:v8];
+    [inputBufferSplittingLengths enumerateObjectsUsingBlock:v8];
 
     _Block_object_dispose(v9, 8);
   }
@@ -1020,15 +1020,15 @@ uint64_t __51__TIZhuyinInputManager_bufferSplittingLengthsIndex__block_invoke(vo
   v11 = 0;
   if ([(TIZhuyinInputManager *)self inputCursorLocation])
   {
-    v3 = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
-    v4 = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
+    bufferSplittingLengthsIndex = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
+    composedBufferSplittingLengths = [(TIZhuyinInputManager *)self composedBufferSplittingLengths];
     v7[0] = MEMORY[0x29EDCA5F8];
     v7[1] = 3221225472;
     v7[2] = __52__TIZhuyinInputManager_composedBufferCursorLocation__block_invoke;
     v7[3] = &unk_29F37D508;
     v7[4] = &v8;
-    v7[5] = v3;
-    [v4 enumerateObjectsUsingBlock:v7];
+    v7[5] = bufferSplittingLengthsIndex;
+    [composedBufferSplittingLengths enumerateObjectsUsingBlock:v7];
   }
 
   v5 = v9[3];
@@ -1050,11 +1050,11 @@ uint64_t __52__TIZhuyinInputManager_composedBufferCursorLocation__block_invoke(u
 
 - (BOOL)syllableBuffersValid
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(TIZhuyinInputManager *)v2 syllableToneBuffer])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(TIZhuyinInputManager *)selfCopy syllableToneBuffer])
   {
-    v3 = [(TIZhuyinInputManager *)v2 syllableConsonantBuffer]|| [(TIZhuyinInputManager *)v2 syllableMedialBuffer]|| [(TIZhuyinInputManager *)v2 syllableVowelBuffer]!= 0;
+    v3 = [(TIZhuyinInputManager *)selfCopy syllableConsonantBuffer]|| [(TIZhuyinInputManager *)selfCopy syllableMedialBuffer]|| [(TIZhuyinInputManager *)selfCopy syllableVowelBuffer]!= 0;
   }
 
   else
@@ -1062,83 +1062,83 @@ uint64_t __52__TIZhuyinInputManager_composedBufferCursorLocation__block_invoke(u
     v3 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (unint64_t)syllableBuffersAggregateLength
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(TIZhuyinInputManager *)v2 syllableConsonantBuffer];
-  v4 = [(TIZhuyinInputManager *)v2 syllableMedialBuffer];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  syllableConsonantBuffer = [(TIZhuyinInputManager *)selfCopy syllableConsonantBuffer];
+  syllableMedialBuffer = [(TIZhuyinInputManager *)selfCopy syllableMedialBuffer];
   v5 = 1;
-  if (v3)
+  if (syllableConsonantBuffer)
   {
     v5 = 2;
   }
 
-  if (v4)
+  if (syllableMedialBuffer)
   {
     v6 = v5;
   }
 
   else
   {
-    v6 = v3 != 0;
+    v6 = syllableConsonantBuffer != 0;
   }
 
-  if ([(TIZhuyinInputManager *)v2 syllableVowelBuffer])
+  if ([(TIZhuyinInputManager *)selfCopy syllableVowelBuffer])
   {
     ++v6;
   }
 
-  if ([(TIZhuyinInputManager *)v2 syllableToneBuffer])
+  if ([(TIZhuyinInputManager *)selfCopy syllableToneBuffer])
   {
     ++v6;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (NSString)syllableBuffersAggregateString
 {
-  v3 = [MEMORY[0x29EDBA050] string];
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(TIZhuyinInputManager *)v4 syllableConsonantBuffer])
+  string = [MEMORY[0x29EDBA050] string];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(TIZhuyinInputManager *)selfCopy syllableConsonantBuffer])
   {
-    [v3 appendFormat:@"%C", -[TIZhuyinInputManager syllableConsonantBuffer](v4, "syllableConsonantBuffer")];
+    [string appendFormat:@"%C", -[TIZhuyinInputManager syllableConsonantBuffer](selfCopy, "syllableConsonantBuffer")];
   }
 
-  if ([(TIZhuyinInputManager *)v4 syllableMedialBuffer])
+  if ([(TIZhuyinInputManager *)selfCopy syllableMedialBuffer])
   {
-    [v3 appendFormat:@"%C", -[TIZhuyinInputManager syllableMedialBuffer](v4, "syllableMedialBuffer")];
+    [string appendFormat:@"%C", -[TIZhuyinInputManager syllableMedialBuffer](selfCopy, "syllableMedialBuffer")];
   }
 
-  if ([(TIZhuyinInputManager *)v4 syllableVowelBuffer])
+  if ([(TIZhuyinInputManager *)selfCopy syllableVowelBuffer])
   {
-    [v3 appendFormat:@"%C", -[TIZhuyinInputManager syllableVowelBuffer](v4, "syllableVowelBuffer")];
+    [string appendFormat:@"%C", -[TIZhuyinInputManager syllableVowelBuffer](selfCopy, "syllableVowelBuffer")];
   }
 
-  if ([(TIZhuyinInputManager *)v4 syllableToneBuffer])
+  if ([(TIZhuyinInputManager *)selfCopy syllableToneBuffer])
   {
-    [v3 appendFormat:@"%C", -[TIZhuyinInputManager syllableToneBuffer](v4, "syllableToneBuffer")];
+    [string appendFormat:@"%C", -[TIZhuyinInputManager syllableToneBuffer](selfCopy, "syllableToneBuffer")];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return string;
 }
 
-- (id)inputStringForCharacters:(id)a3
+- (id)inputStringForCharacters:(id)characters
 {
   v22 = *MEMORY[0x29EDCA608];
-  v3 = [a3 stringByApplyingTransform:@"Han-Latin Latin-Bopomofo" reverse:0];;
-  v4 = [MEMORY[0x29EDB8DE8] array];
+  v3 = [characters stringByApplyingTransform:@"Han-Latin Latin-Bopomofo" reverse:0];;
+  array = [MEMORY[0x29EDB8DE8] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1167,12 +1167,12 @@ uint64_t __52__TIZhuyinInputManager_composedBufferCursorLocation__block_invoke(u
           if (v12 == 0x7FFFFFFFFFFFFFFFLL)
           {
             v13 = [v10 stringByAppendingString:@"ˉ"];
-            [v4 addObject:v13];
+            [array addObject:v13];
           }
 
           else
           {
-            [v4 addObject:v10];
+            [array addObject:v10];
           }
         }
       }
@@ -1183,7 +1183,7 @@ uint64_t __52__TIZhuyinInputManager_composedBufferCursorLocation__block_invoke(u
     while (v7);
   }
 
-  v14 = [v4 componentsJoinedByString:&stru_2A252F9A8];
+  v14 = [array componentsJoinedByString:&stru_2A252F9A8];
 
   v15 = *MEMORY[0x29EDCA608];
 
@@ -1192,8 +1192,8 @@ uint64_t __52__TIZhuyinInputManager_composedBufferCursorLocation__block_invoke(u
 
 - (void)moveCursorBackward
 {
-  v3 = [(TIZhuyinInputManager *)self inputBuffer];
-  v4 = [v3 length];
+  inputBuffer = [(TIZhuyinInputManager *)self inputBuffer];
+  v4 = [inputBuffer length];
 
   if (v4)
   {
@@ -1201,14 +1201,14 @@ uint64_t __52__TIZhuyinInputManager_composedBufferCursorLocation__block_invoke(u
     {
       if ([(TIZhuyinInputManager *)self inputCursorLocation])
       {
-        v5 = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
-        v6 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
-        v7 = [v6 count];
+        bufferSplittingLengthsIndex = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
+        inputBufferSplittingLengths = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
+        v7 = [inputBufferSplittingLengths count];
 
-        if (v5 < v7)
+        if (bufferSplittingLengthsIndex < v7)
         {
-          v9 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
-          v8 = [v9 objectAtIndex:v5];
+          inputBufferSplittingLengths2 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
+          v8 = [inputBufferSplittingLengths2 objectAtIndex:bufferSplittingLengthsIndex];
           -[TIZhuyinInputManager setInputCursorLocation:](self, "setInputCursorLocation:", -[TIZhuyinInputManager inputCursorLocation](self, "inputCursorLocation") - [v8 unsignedIntegerValue]);
         }
       }
@@ -1218,32 +1218,32 @@ uint64_t __52__TIZhuyinInputManager_composedBufferCursorLocation__block_invoke(u
 
 - (void)moveCursorForward
 {
-  v3 = [(TIZhuyinInputManager *)self inputBuffer];
-  v4 = [v3 length];
+  inputBuffer = [(TIZhuyinInputManager *)self inputBuffer];
+  v4 = [inputBuffer length];
 
   if (v4)
   {
     if (![(TIZhuyinInputManager *)self syllableBuffersOccupied])
     {
-      v5 = [(TIZhuyinInputManager *)self inputCursorLocation];
-      v6 = [(TIZhuyinInputManager *)self inputBuffer];
-      v7 = [v6 length];
+      inputCursorLocation = [(TIZhuyinInputManager *)self inputCursorLocation];
+      inputBuffer2 = [(TIZhuyinInputManager *)self inputBuffer];
+      v7 = [inputBuffer2 length];
 
-      if (v5 < v7)
+      if (inputCursorLocation < v7)
       {
-        v8 = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
+        bufferSplittingLengthsIndex = [(TIZhuyinInputManager *)self bufferSplittingLengthsIndex];
         if ([(TIZhuyinInputManager *)self inputCursorLocation])
         {
-          ++v8;
+          ++bufferSplittingLengthsIndex;
         }
 
-        v9 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
-        v10 = [v9 count];
+        inputBufferSplittingLengths = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
+        v10 = [inputBufferSplittingLengths count];
 
-        if (v8 < v10)
+        if (bufferSplittingLengthsIndex < v10)
         {
-          v12 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
-          v11 = [v12 objectAtIndex:v8];
+          inputBufferSplittingLengths2 = [(TIZhuyinInputManager *)self inputBufferSplittingLengths];
+          v11 = [inputBufferSplittingLengths2 objectAtIndex:bufferSplittingLengthsIndex];
           -[TIZhuyinInputManager setInputCursorLocation:](self, "setInputCursorLocation:", -[TIZhuyinInputManager inputCursorLocation](self, "inputCursorLocation") + [v11 unsignedIntegerValue]);
         }
       }

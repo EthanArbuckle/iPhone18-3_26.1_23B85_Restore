@@ -1,10 +1,10 @@
 @interface UIPageControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsUserInteractionEnabled;
 - (BOOL)canBecomeFocused;
 - (BOOL)isAccessibilityElement;
 - (CGRect)accessibilityFrame;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityPath;
 - (id)accessibilityUserInputLabels;
 - (id)accessibilityValue;
@@ -12,19 +12,19 @@
 - (int64_t)_accessibilityPageIndex;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)setCurrentPage:(int64_t)a3;
+- (void)setCurrentPage:(int64_t)page;
 @end
 
 @implementation UIPageControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v9 = location;
   v8 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v6 = @"UIPageControl";
   v3 = "v";
   [location[0] validateClass:"q" hasInstanceMethod:0 withFullSignature:?];
@@ -43,34 +43,34 @@
 - (int64_t)_accessibilityPageCount
 {
   v3 = [(UIPageControlAccessibility *)self safeValueForKey:@"numberOfPages"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x29EDC9740](v3);
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)_accessibilityPageIndex
 {
   v3 = [(UIPageControlAccessibility *)self safeValueForKey:@"currentPage"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x29EDC9740](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setCurrentPage:(int64_t)a3
+- (void)setCurrentPage:(int64_t)page
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  pageCopy = page;
   v4 = [(UIPageControlAccessibility *)self safeValueForKey:@"currentPage"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
   *&v3 = MEMORY[0x29EDC9740](v4).n128_u64[0];
-  v7 = v5;
-  v6.receiver = v10;
+  v7 = integerValue;
+  v6.receiver = selfCopy;
   v6.super_class = UIPageControlAccessibility;
-  [(UIPageControlAccessibility *)&v6 setCurrentPage:v8, v3];
-  if (v8 != v7)
+  [(UIPageControlAccessibility *)&v6 setCurrentPage:pageCopy, v3];
+  if (pageCopy != v7)
   {
-    [(UIPageControlAccessibility *)v10 _accessibilityCurrentPageDidChange];
+    [(UIPageControlAccessibility *)selfCopy _accessibilityCurrentPageDidChange];
   }
 }
 
@@ -89,7 +89,7 @@
 
 - (id)accessibilityPath
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v8[0] = [(UIPageControlAccessibility *)self safeValueForKey:@"_visualProvider"];
   NSClassFromString(&cfstr_Uiinteractivep.isa);
@@ -98,33 +98,33 @@
     v7 = [v8[0] safeUIViewForKey:@"contentView"];
     [v7 accessibilityFrame];
     rect = v12;
-    v10 = [MEMORY[0x29EDC7948] _bezierPathWithArcRoundedRect:v12.origin.x cornerRadius:{v12.origin.y, v12.size.width, v12.size.height, CGRectGetHeight(v12) / 2.0}];
+    accessibilityPath = [MEMORY[0x29EDC7948] _bezierPathWithArcRoundedRect:v12.origin.x cornerRadius:{v12.origin.y, v12.size.width, v12.size.height, CGRectGetHeight(v12) / 2.0}];
     v5 = 1;
     objc_storeStrong(&v7, 0);
   }
 
   else
   {
-    v4.receiver = v9;
+    v4.receiver = selfCopy;
     v4.super_class = UIPageControlAccessibility;
-    v10 = [(UIPageControlAccessibility *)&v4 accessibilityPath];
+    accessibilityPath = [(UIPageControlAccessibility *)&v4 accessibilityPath];
     v5 = 1;
   }
 
   objc_storeStrong(v8, 0);
-  v2 = v10;
+  v2 = accessibilityPath;
 
   return v2;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  v23 = a3;
-  v22 = self;
+  testCopy = test;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v20 = [(UIPageControlAccessibility *)v22 _accessibilityBoolValueForKey:@"AXInHitTestOverride"];
+  objc_storeStrong(location, event);
+  v20 = [(UIPageControlAccessibility *)selfCopy _accessibilityBoolValueForKey:@"AXInHitTestOverride"];
   v12 = 0;
   v8 = 0;
   if ((v20 & 1) == 0)
@@ -134,7 +134,7 @@
     v16 = 0;
     v17 = __62__UIPageControlAccessibility__accessibilityHitTest_withEvent___block_invoke;
     v18 = &unk_29F30CEB0;
-    v19 = MEMORY[0x29EDC9748](v22);
+    v19 = MEMORY[0x29EDC9748](selfCopy);
     v13 = &v19;
     v12 = 1;
     v8 = (__62__UIPageControlAccessibility__accessibilityHitTest_withEvent___block_invoke)();
@@ -142,9 +142,9 @@
 
   if (v8)
   {
-    [(UIPageControlAccessibility *)v22 _accessibilitySetBoolValue:1 forKey:?];
-    v11 = [(UIPageControlAccessibility *)v22 accessibilityHitTest:location[0] withEvent:v23.x, v23.y];
-    [(UIPageControlAccessibility *)v22 _accessibilitySetBoolValue:0 forKey:@"AXInHitTestOverride"];
+    [(UIPageControlAccessibility *)selfCopy _accessibilitySetBoolValue:1 forKey:?];
+    v11 = [(UIPageControlAccessibility *)selfCopy accessibilityHitTest:location[0] withEvent:testCopy.x, testCopy.y];
+    [(UIPageControlAccessibility *)selfCopy _accessibilitySetBoolValue:0 forKey:@"AXInHitTestOverride"];
     v24 = MEMORY[0x29EDC9748](v11);
     v10 = 1;
     objc_storeStrong(&v11, 0);
@@ -165,9 +165,9 @@
     UIAccessibilityPointForPoint();
     point.x = v4;
     point.y = v5;
-    if ([(UIPageControlAccessibility *)v22 isAccessibilityElement]&& ([(UIPageControlAccessibility *)v22 accessibilityFrame], CGRectContainsPoint(v26, point)))
+    if ([(UIPageControlAccessibility *)selfCopy isAccessibilityElement]&& ([(UIPageControlAccessibility *)selfCopy accessibilityFrame], CGRectContainsPoint(v26, point)))
     {
-      v24 = MEMORY[0x29EDC9748](v22);
+      v24 = MEMORY[0x29EDC9748](selfCopy);
     }
 
     else
@@ -272,21 +272,21 @@ void __62__UIPageControlAccessibility__accessibilityHitTest_withEvent___block_in
 
 - (BOOL)isAccessibilityElement
 {
-  v9 = [(UIPageControlAccessibility *)self isAccessibilityUserDefinedElement];
-  *&v2 = MEMORY[0x29EDC9740](v9).n128_u64[0];
-  if (v9)
+  isAccessibilityUserDefinedElement = [(UIPageControlAccessibility *)self isAccessibilityUserDefinedElement];
+  *&v2 = MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement).n128_u64[0];
+  if (isAccessibilityUserDefinedElement)
   {
-    v8 = [(UIPageControlAccessibility *)self isAccessibilityUserDefinedElement];
-    v11 = [v8 BOOLValue] & 1;
-    MEMORY[0x29EDC9740](v8);
+    isAccessibilityUserDefinedElement2 = [(UIPageControlAccessibility *)self isAccessibilityUserDefinedElement];
+    v11 = [isAccessibilityUserDefinedElement2 BOOLValue] & 1;
+    MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement2);
   }
 
   else
   {
     v6 = [(UIPageControlAccessibility *)self safeValueForKey:@"numberOfPages", v2];
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
     *&v3 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-    if (v7 >= 1)
+    if (integerValue >= 1)
     {
       v5 = [(UIPageControlAccessibility *)self safeValueForKey:@"hidden", v3];
       v11 = ([v5 BOOLValue] ^ 1) & 1;
@@ -304,13 +304,13 @@ void __62__UIPageControlAccessibility__accessibilityHitTest_withEvent___block_in
 
 - (id)accessibilityValue
 {
-  v18 = self;
+  selfCopy = self;
   v17[1] = a2;
-  v12 = [(UIPageControlAccessibility *)self accessibilityUserDefinedValue];
-  *&v2 = MEMORY[0x29EDC9740](v12).n128_u64[0];
-  if (v12)
+  accessibilityUserDefinedValue = [(UIPageControlAccessibility *)self accessibilityUserDefinedValue];
+  *&v2 = MEMORY[0x29EDC9740](accessibilityUserDefinedValue).n128_u64[0];
+  if (accessibilityUserDefinedValue)
   {
-    v19 = [(UIPageControlAccessibility *)v18 accessibilityUserDefinedValue];
+    accessibilityUserDefinedValue2 = [(UIPageControlAccessibility *)selfCopy accessibilityUserDefinedValue];
   }
 
   else
@@ -331,7 +331,7 @@ void __62__UIPageControlAccessibility__accessibilityHitTest_withEvent___block_in
       v9 = AXFormatInteger();
       [v13[0] currentProgress];
       v7 = AXFormatFloatWithPercentage();
-      v19 = AXCFormattedString();
+      accessibilityUserDefinedValue2 = AXCFormattedString();
       MEMORY[0x29EDC9740](v7);
       MEMORY[0x29EDC9740](v9);
       MEMORY[0x29EDC9740](v10);
@@ -343,7 +343,7 @@ void __62__UIPageControlAccessibility__accessibilityHitTest_withEvent___block_in
       v8 = accessibilityLocalizedString(@"page.control.format.text");
       v5 = AXFormatInteger();
       v6 = AXFormatInteger();
-      v19 = AXCFormattedString();
+      accessibilityUserDefinedValue2 = AXCFormattedString();
       MEMORY[0x29EDC9740](v6);
       MEMORY[0x29EDC9740](v5);
       MEMORY[0x29EDC9740](v8);
@@ -353,14 +353,14 @@ void __62__UIPageControlAccessibility__accessibilityHitTest_withEvent___block_in
     objc_storeStrong(v17, 0);
   }
 
-  v3 = v19;
+  v3 = accessibilityUserDefinedValue2;
 
   return v3;
 }
 
 - (BOOL)_accessibilityIsUserInteractionEnabled
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = UIPageControlAccessibility;
@@ -369,19 +369,19 @@ void __62__UIPageControlAccessibility__accessibilityHitTest_withEvent___block_in
 
 - (void)accessibilityIncrement
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   if ([(UIPageControlAccessibility *)self _accessibilityIsUserInteractionEnabled])
   {
-    v2 = [(UIPageControlAccessibility *)v8 safeValueForKey:@"currentPage"];
+    v2 = [(UIPageControlAccessibility *)selfCopy safeValueForKey:@"currentPage"];
     v6 = ([v2 integerValue] + 1);
-    v3 = [(UIPageControlAccessibility *)v8 safeValueForKey:@"numberOfPages", MEMORY[0x29EDC9740](v2).n128_f64[0]];
-    v4 = [v3 integerValue];
+    v3 = [(UIPageControlAccessibility *)selfCopy safeValueForKey:@"numberOfPages", MEMORY[0x29EDC9740](v2).n128_f64[0]];
+    integerValue = [v3 integerValue];
     MEMORY[0x29EDC9740](v3);
-    v5[2] = v4;
-    if (v6 < v4)
+    v5[2] = integerValue;
+    if (v6 < integerValue)
     {
-      v5[0] = MEMORY[0x29EDC9748](v8);
+      v5[0] = MEMORY[0x29EDC9748](selfCopy);
       v5[1] = v6;
       AXPerformSafeBlock();
       objc_storeStrong(v5, 0);
@@ -403,17 +403,17 @@ void __52__UIPageControlAccessibility_accessibilityIncrement__block_invoke(uint6
 
 - (void)accessibilityDecrement
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   if ([(UIPageControlAccessibility *)self _accessibilityIsUserInteractionEnabled])
   {
-    v2 = [(UIPageControlAccessibility *)v7 safeValueForKey:@"currentPage"];
+    v2 = [(UIPageControlAccessibility *)selfCopy safeValueForKey:@"currentPage"];
     v3 = [v2 integerValue] - 1;
     MEMORY[0x29EDC9740](v2);
     v5 = v3;
     if ((v3 & 0x8000000000000000) == 0)
     {
-      v4[0] = MEMORY[0x29EDC9748](v7);
+      v4[0] = MEMORY[0x29EDC9748](selfCopy);
       v4[1] = v5;
       AXPerformSafeBlock();
       objc_storeStrong(v4, 0);
@@ -435,19 +435,19 @@ void __52__UIPageControlAccessibility_accessibilityDecrement__block_invoke(uint6
 
 - (id)accessibilityUserInputLabels
 {
-  v13 = self;
+  selfCopy = self;
   v12[1] = a2;
   v11.receiver = self;
   v11.super_class = UIPageControlAccessibility;
   v12[0] = [(UIPageControlAccessibility *)&v11 accessibilityUserInputLabels];
   if (![v12[0] count])
   {
-    v10 = [(UIPageControlAccessibility *)v13 accessibilityLabel];
+    accessibilityLabel = [(UIPageControlAccessibility *)selfCopy accessibilityLabel];
     v2 = MEMORY[0x29ED3D9A0]();
     v3 = v12[0];
     v12[0] = v2;
     MEMORY[0x29EDC9740](v3);
-    *&v4 = MEMORY[0x29EDC9740](v10).n128_u64[0];
+    *&v4 = MEMORY[0x29EDC9740](accessibilityLabel).n128_u64[0];
     if (![v12[0] count])
     {
       v9 = accessibilityLocalizedString(@"page.control.text");
@@ -467,17 +467,17 @@ void __52__UIPageControlAccessibility_accessibilityDecrement__block_invoke(uint6
 
 - (BOOL)canBecomeFocused
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v3.receiver = self;
   v3.super_class = UIPageControlAccessibility;
-  v4 = [(UIPageControlAccessibility *)&v3 canBecomeFocused];
-  if (([(UIPageControlAccessibility *)v6 _accessibilityIsFKARunningForFocusItem]& 1) != 0)
+  canBecomeFocused = [(UIPageControlAccessibility *)&v3 canBecomeFocused];
+  if (([(UIPageControlAccessibility *)selfCopy _accessibilityIsFKARunningForFocusItem]& 1) != 0)
   {
-    v4 = 1;
+    canBecomeFocused = 1;
   }
 
-  return v4 & 1;
+  return canBecomeFocused & 1;
 }
 
 @end

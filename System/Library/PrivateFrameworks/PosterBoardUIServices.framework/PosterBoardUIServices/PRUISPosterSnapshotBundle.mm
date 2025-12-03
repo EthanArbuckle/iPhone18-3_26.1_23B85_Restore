@@ -1,24 +1,24 @@
 @interface PRUISPosterSnapshotBundle
-+ (PRUISPosterSnapshotBundle)snapshotBundleWithPUIPosterSnapshotBundle:(id)a3;
-+ (id)snapshotBundleAtURL:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (PRUISPosterSnapshotBundle)snapshotBundleWithPUIPosterSnapshotBundle:(id)bundle;
++ (id)snapshotBundleAtURL:(id)l error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)salientContentRectangle;
 - (CGSize)assetSize;
 - (NSArray)snapshotLevelSets;
 - (PRPosterContentOcclusionRectSet)contentOcclusionRectangles;
 - (PRPosterSnapshotBundle)prPosterSnapshotBundle;
-- (PRUISPosterSnapshotBundle)initWithURL:(id)a3;
-- (PRUISPosterSnapshotBundle)initWithUnderlyingSnapshotBundle:(id)a3;
+- (PRUISPosterSnapshotBundle)initWithURL:(id)l;
+- (PRUISPosterSnapshotBundle)initWithUnderlyingSnapshotBundle:(id)bundle;
 - (id)description;
-- (id)snapshotForLevelSet:(id)a3;
+- (id)snapshotForLevelSet:(id)set;
 @end
 
 @implementation PRUISPosterSnapshotBundle
 
-- (PRUISPosterSnapshotBundle)initWithUnderlyingSnapshotBundle:(id)a3
+- (PRUISPosterSnapshotBundle)initWithUnderlyingSnapshotBundle:(id)bundle
 {
-  v5 = a3;
-  if (v5)
+  bundleCopy = bundle;
+  if (bundleCopy)
   {
     v10.receiver = self;
     v10.super_class = PRUISPosterSnapshotBundle;
@@ -26,37 +26,37 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_underlyingSnapshotBundle, a3);
+      objc_storeStrong(&v6->_underlyingSnapshotBundle, bundle);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (PRUISPosterSnapshotBundle)initWithURL:(id)a3
+- (PRUISPosterSnapshotBundle)initWithURL:(id)l
 {
   v4 = MEMORY[0x1E69C55B8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithURL:v5];
+  lCopy = l;
+  v6 = [[v4 alloc] initWithURL:lCopy];
 
   v7 = [(PRUISPosterSnapshotBundle *)self initWithUnderlyingSnapshotBundle:v6];
   return v7;
 }
 
-+ (id)snapshotBundleAtURL:(id)a3 error:(id *)a4
++ (id)snapshotBundleAtURL:(id)l error:(id *)error
 {
-  v5 = [MEMORY[0x1E69C55B8] snapshotBundleAtURL:a3 error:a4];
+  v5 = [MEMORY[0x1E69C55B8] snapshotBundleAtURL:l error:error];
   if (v5)
   {
-    v6 = [[a1 alloc] initWithUnderlyingSnapshotBundle:v5];
+    v6 = [[self alloc] initWithUnderlyingSnapshotBundle:v5];
   }
 
   else
@@ -70,21 +70,21 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(PRUISPosterSnapshotBundle *)self bundleURL];
-  v5 = [v3 appendObject:v4 withName:@"bundleURL"];
+  bundleURL = [(PRUISPosterSnapshotBundle *)self bundleURL];
+  v5 = [v3 appendObject:bundleURL withName:@"bundleURL"];
 
-  v6 = [(PRUISPosterSnapshotBundle *)self infoDictionary];
-  [v3 appendDictionarySection:v6 withName:@"infoDictionary" skipIfEmpty:1];
+  infoDictionary = [(PRUISPosterSnapshotBundle *)self infoDictionary];
+  [v3 appendDictionarySection:infoDictionary withName:@"infoDictionary" skipIfEmpty:1];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 - (NSArray)snapshotLevelSets
 {
-  v2 = [(PUIPosterSnapshotBundle *)self->_underlyingSnapshotBundle snapshotLevelSets];
-  v3 = [v2 bs_mapNoNulls:&__block_literal_global_6];
+  snapshotLevelSets = [(PUIPosterSnapshotBundle *)self->_underlyingSnapshotBundle snapshotLevelSets];
+  v3 = [snapshotLevelSets bs_mapNoNulls:&__block_literal_global_6];
 
   return v3;
 }
@@ -120,12 +120,12 @@ PRUISPosterLevelSet *__46__PRUISPosterSnapshotBundle_snapshotLevelSets__block_in
 
 - (PRPosterContentOcclusionRectSet)contentOcclusionRectangles
 {
-  v2 = [(PUIPosterSnapshotBundle *)self->_underlyingSnapshotBundle contentOcclusionRectangles];
-  if (v2)
+  contentOcclusionRectangles = [(PUIPosterSnapshotBundle *)self->_underlyingSnapshotBundle contentOcclusionRectangles];
+  if (contentOcclusionRectangles)
   {
     v3 = objc_alloc(MEMORY[0x1E69C52F8]);
-    v4 = [v2 allRects];
-    v5 = [v3 initWithNameToRectMap:v4];
+    allRects = [contentOcclusionRectangles allRects];
+    v5 = [v3 initWithNameToRectMap:allRects];
   }
 
   else
@@ -136,24 +136,24 @@ PRUISPosterLevelSet *__46__PRUISPosterSnapshotBundle_snapshotLevelSets__block_in
   return v5;
 }
 
-- (id)snapshotForLevelSet:(id)a3
+- (id)snapshotForLevelSet:(id)set
 {
   underlyingSnapshotBundle = self->_underlyingSnapshotBundle;
   v4 = MEMORY[0x1E69C5590];
-  v5 = a3;
+  setCopy = set;
   v6 = [v4 alloc];
-  v7 = [v5 levels];
+  levels = [setCopy levels];
 
-  v8 = [v6 initWithSet:v7];
+  v8 = [v6 initWithSet:levels];
   v9 = [(PUIPosterSnapshotBundle *)underlyingSnapshotBundle snapshotForLevelSet:v8];
 
   return v9;
 }
 
-+ (PRUISPosterSnapshotBundle)snapshotBundleWithPUIPosterSnapshotBundle:(id)a3
++ (PRUISPosterSnapshotBundle)snapshotBundleWithPUIPosterSnapshotBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithUnderlyingSnapshotBundle:v4];
+  bundleCopy = bundle;
+  v5 = [[self alloc] initWithUnderlyingSnapshotBundle:bundleCopy];
 
   return v5;
 }
@@ -161,28 +161,28 @@ PRUISPosterLevelSet *__46__PRUISPosterSnapshotBundle_snapshotLevelSets__block_in
 - (PRPosterSnapshotBundle)prPosterSnapshotBundle
 {
   v2 = MEMORY[0x1E69C5330];
-  v3 = [(PRUISPosterSnapshotBundle *)self underlyingSnapshotBundle];
-  v4 = [v2 snapshotBundleWithPUIPosterSnapshotBundle:v3];
+  underlyingSnapshotBundle = [(PRUISPosterSnapshotBundle *)self underlyingSnapshotBundle];
+  v4 = [v2 snapshotBundleWithPUIPosterSnapshotBundle:underlyingSnapshotBundle];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if (v4)
+  else if (equalCopy)
   {
-    v6 = [(PRUISPosterSnapshotBundle *)v4 underlyingSnapshotBundle];
-    if (v6)
+    underlyingSnapshotBundle = [(PRUISPosterSnapshotBundle *)equalCopy underlyingSnapshotBundle];
+    if (underlyingSnapshotBundle)
     {
-      v7 = [(PRUISPosterSnapshotBundle *)self underlyingSnapshotBundle];
-      v8 = [v7 isEqual:v6];
+      underlyingSnapshotBundle2 = [(PRUISPosterSnapshotBundle *)self underlyingSnapshotBundle];
+      v8 = [underlyingSnapshotBundle2 isEqual:underlyingSnapshotBundle];
     }
 
     else

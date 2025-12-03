@@ -6,14 +6,14 @@
 
 - (uint64_t)hf_isBooleanSetting
 {
-  v2 = [a1 maximumValue];
-  if ([v2 isEqual:&unk_282524F78])
+  maximumValue = [self maximumValue];
+  if ([maximumValue isEqual:&unk_282524F78])
   {
-    v3 = [a1 minimumValue];
-    if ([v3 isEqual:&unk_282524F90])
+    minimumValue = [self minimumValue];
+    if ([minimumValue isEqual:&unk_282524F90])
     {
-      v4 = [a1 stepValue];
-      v5 = [v4 isEqual:&unk_282524F78];
+      stepValue = [self stepValue];
+      v5 = [stepValue isEqual:&unk_282524F78];
     }
 
     else

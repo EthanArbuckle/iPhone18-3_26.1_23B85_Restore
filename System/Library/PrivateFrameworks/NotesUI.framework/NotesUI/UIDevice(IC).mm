@@ -26,24 +26,24 @@
 
 + (BOOL)ic_isiPad
 {
-  v0 = [MEMORY[0x1E69DC938] currentDevice];
-  v1 = [v0 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v1 = [currentDevice userInterfaceIdiom] == 1;
 
   return v1;
 }
 
 + (BOOL)ic_isVision
 {
-  v0 = [MEMORY[0x1E69DC938] currentDevice];
-  v1 = [v0 userInterfaceIdiom] == 6;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v1 = [currentDevice userInterfaceIdiom] == 6;
 
   return v1;
 }
 
 + (BOOL)ic_isiPhone
 {
-  v0 = [MEMORY[0x1E69DC938] currentDevice];
-  v1 = [v0 userInterfaceIdiom] == 0;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v1 = [currentDevice userInterfaceIdiom] == 0;
 
   return v1;
 }
@@ -53,11 +53,11 @@
   v0 = 0;
   if (MGGetSInt32Answer() == 11)
   {
-    v1 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v1 nativeScale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen nativeScale];
     v3 = v2;
-    v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v4 scale];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 scale];
     v0 = vabdd_f64(v3, v5) < 0.00999999978;
   }
 
@@ -67,8 +67,8 @@
 + (uint64_t)ic_is12hrClock
 {
   v0 = MEMORY[0x1E696AB78];
-  v1 = [MEMORY[0x1E695DF58] currentLocale];
-  v2 = [v0 dateFormatFromTemplate:@"j" options:0 locale:v1];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v2 = [v0 dateFormatFromTemplate:@"j" options:0 locale:currentLocale];
 
   v3 = [v2 containsString:@"a"];
   return v3;

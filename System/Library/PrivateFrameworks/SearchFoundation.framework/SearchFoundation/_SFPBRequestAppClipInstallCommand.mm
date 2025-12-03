@@ -1,38 +1,38 @@
 @interface _SFPBRequestAppClipInstallCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRequestAppClipInstallCommand)initWithDictionary:(id)a3;
-- (_SFPBRequestAppClipInstallCommand)initWithFacade:(id)a3;
-- (_SFPBRequestAppClipInstallCommand)initWithJSON:(id)a3;
+- (_SFPBRequestAppClipInstallCommand)initWithDictionary:(id)dictionary;
+- (_SFPBRequestAppClipInstallCommand)initWithFacade:(id)facade;
+- (_SFPBRequestAppClipInstallCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setApplicationBundleIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setApplicationBundleIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRequestAppClipInstallCommand
 
-- (_SFPBRequestAppClipInstallCommand)initWithFacade:(id)a3
+- (_SFPBRequestAppClipInstallCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRequestAppClipInstallCommand *)self init];
   if (v5)
   {
-    v6 = [v4 url];
+    v6 = [facadeCopy url];
 
     if (v6)
     {
       v7 = [_SFPBURL alloc];
-      v8 = [v4 url];
+      v8 = [facadeCopy url];
       v9 = [(_SFPBURL *)v7 initWithNSURL:v8];
       [(_SFPBRequestAppClipInstallCommand *)v5 setUrl:v9];
     }
 
-    v10 = [v4 applicationBundleIdentifier];
+    applicationBundleIdentifier = [facadeCopy applicationBundleIdentifier];
 
-    if (v10)
+    if (applicationBundleIdentifier)
     {
-      v11 = [v4 applicationBundleIdentifier];
-      [(_SFPBRequestAppClipInstallCommand *)v5 setApplicationBundleIdentifier:v11];
+      applicationBundleIdentifier2 = [facadeCopy applicationBundleIdentifier];
+      [(_SFPBRequestAppClipInstallCommand *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier2];
     }
 
     v12 = v5;
@@ -41,15 +41,15 @@
   return v5;
 }
 
-- (_SFPBRequestAppClipInstallCommand)initWithDictionary:(id)a3
+- (_SFPBRequestAppClipInstallCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBRequestAppClipInstallCommand;
   v5 = [(_SFPBRequestAppClipInstallCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"url"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"url"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,7 +57,7 @@
       [(_SFPBRequestAppClipInstallCommand *)v5 setUrl:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"applicationBundleIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"applicationBundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,30 +71,30 @@
   return v5;
 }
 
-- (_SFPBRequestAppClipInstallCommand)initWithJSON:(id)a3
+- (_SFPBRequestAppClipInstallCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRequestAppClipInstallCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRequestAppClipInstallCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRequestAppClipInstallCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -107,44 +107,44 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_applicationBundleIdentifier)
   {
-    v4 = [(_SFPBRequestAppClipInstallCommand *)self applicationBundleIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
+    applicationBundleIdentifier = [(_SFPBRequestAppClipInstallCommand *)self applicationBundleIdentifier];
+    v5 = [applicationBundleIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
   }
 
   if (self->_url)
   {
     v6 = [(_SFPBRequestAppClipInstallCommand *)self url];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    dictionaryRepresentation = [v6 dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"url"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"url"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"url"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"url"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBRequestAppClipInstallCommand *)self url];
-  v6 = [v4 url];
-  if ((v5 != 0) == (v6 == 0))
+  applicationBundleIdentifier = [(_SFPBRequestAppClipInstallCommand *)self url];
+  applicationBundleIdentifier2 = [equalCopy url];
+  if ((applicationBundleIdentifier != 0) == (applicationBundleIdentifier2 == 0))
   {
     goto LABEL_11;
   }
@@ -154,7 +154,7 @@
   {
     v8 = v7;
     v9 = [(_SFPBRequestAppClipInstallCommand *)self url];
-    v10 = [v4 url];
+    v10 = [equalCopy url];
     v11 = [v9 isEqual:v10];
 
     if (!v11)
@@ -167,12 +167,12 @@
   {
   }
 
-  v5 = [(_SFPBRequestAppClipInstallCommand *)self applicationBundleIdentifier];
-  v6 = [v4 applicationBundleIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  applicationBundleIdentifier = [(_SFPBRequestAppClipInstallCommand *)self applicationBundleIdentifier];
+  applicationBundleIdentifier2 = [equalCopy applicationBundleIdentifier];
+  if ((applicationBundleIdentifier != 0) != (applicationBundleIdentifier2 == 0))
   {
-    v12 = [(_SFPBRequestAppClipInstallCommand *)self applicationBundleIdentifier];
-    if (!v12)
+    applicationBundleIdentifier3 = [(_SFPBRequestAppClipInstallCommand *)self applicationBundleIdentifier];
+    if (!applicationBundleIdentifier3)
     {
 
 LABEL_15:
@@ -180,10 +180,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBRequestAppClipInstallCommand *)self applicationBundleIdentifier];
-    v15 = [v4 applicationBundleIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = applicationBundleIdentifier3;
+    applicationBundleIdentifier4 = [(_SFPBRequestAppClipInstallCommand *)self applicationBundleIdentifier];
+    applicationBundleIdentifier5 = [equalCopy applicationBundleIdentifier];
+    v16 = [applicationBundleIdentifier4 isEqual:applicationBundleIdentifier5];
 
     if (v16)
     {
@@ -203,25 +203,25 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   v4 = [(_SFPBRequestAppClipInstallCommand *)self url];
   if (v4)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBRequestAppClipInstallCommand *)self applicationBundleIdentifier];
-  if (v5)
+  applicationBundleIdentifier = [(_SFPBRequestAppClipInstallCommand *)self applicationBundleIdentifier];
+  if (applicationBundleIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setApplicationBundleIdentifier:(id)a3
+- (void)setApplicationBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   applicationBundleIdentifier = self->_applicationBundleIdentifier;
   self->_applicationBundleIdentifier = v4;
 

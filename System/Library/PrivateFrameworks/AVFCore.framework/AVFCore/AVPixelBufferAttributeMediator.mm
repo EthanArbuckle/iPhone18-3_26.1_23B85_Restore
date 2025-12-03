@@ -2,8 +2,8 @@
 - (AVPixelBufferAttributeMediator)init;
 - (id)mediatedPixelBufferAttributes;
 - (void)dealloc;
-- (void)removeRequestedPixelBufferAttributesAttributesForKey:(id)a3;
-- (void)setRequestedPixelBufferAttributes:(id)a3 forKey:(id)a4;
+- (void)removeRequestedPixelBufferAttributesAttributesForKey:(id)key;
+- (void)setRequestedPixelBufferAttributes:(id)attributes forKey:(id)key;
 @end
 
 @implementation AVPixelBufferAttributeMediator
@@ -59,10 +59,10 @@
   [(AVPixelBufferAttributeMediator *)&v4 dealloc];
 }
 
-- (void)setRequestedPixelBufferAttributes:(id)a3 forKey:(id)a4
+- (void)setRequestedPixelBufferAttributes:(id)attributes forKey:(id)key
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (VTPixelBufferAttributesMediatorAddLayer(), !a3))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (VTPixelBufferAttributesMediatorAddLayer(), !attributes))
   {
 
     VTPixelBufferAttributesMediatorRemoveRequestedPixelBufferAttributesForKey();
@@ -75,7 +75,7 @@
   }
 }
 
-- (void)removeRequestedPixelBufferAttributesAttributesForKey:(id)a3
+- (void)removeRequestedPixelBufferAttributesAttributesForKey:(id)key
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())

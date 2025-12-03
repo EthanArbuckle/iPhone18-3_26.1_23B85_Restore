@@ -1,14 +1,14 @@
 @interface EscrowClientMetadataMO
-- (EscrowClientMetadataMO)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (EscrowClientMetadataMO)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation EscrowClientMetadataMO
 
-- (EscrowClientMetadataMO)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (EscrowClientMetadataMO)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for EscrowClientMetadataMO();
-  return [(EscrowClientMetadataMO *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(EscrowClientMetadataMO *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface UserDefaultObserver
 - (_TtC7SwiftUIP33_F2BB00CEA25D2617C18DE8984EB64B5319UserDefaultObserver)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)userDefaultsDidChange:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)userDefaultsDidChange:(id)change;
 @end
 
 @implementation UserDefaultObserver
@@ -23,7 +23,7 @@
 
   else
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   v9.receiver = self;
@@ -31,22 +31,22 @@
   [(UserDefaultObserver *)&v9 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a3)
+  if (path)
   {
     v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = v11;
-    if (a4)
+    if (object)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     memset(v17, 0, sizeof(v17));
-    v15 = a5;
-    v16 = self;
-    if (!a5)
+    changeCopy = change;
+    selfCopy = self;
+    if (!change)
     {
       goto LABEL_7;
     }
@@ -56,18 +56,18 @@ LABEL_6:
 
   v10 = 0;
   v12 = 0;
-  if (!a4)
+  if (!object)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   swift_unknownObjectRetain();
-  v13 = a5;
-  v14 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  if (a5)
+  if (change)
   {
 LABEL_4:
     type metadata accessor for NSKeyValueChangeKey(0);
@@ -76,19 +76,19 @@ LABEL_4:
   }
 
 LABEL_7:
-  specialized UserDefaultObserver.observeValue(forKeyPath:of:change:context:)(v10, v12, v17, a6);
+  specialized UserDefaultObserver.observeValue(forKeyPath:of:change:context:)(v10, v12, v17, context);
 
   outlined destroy of Any?(v17);
 }
 
-- (void)userDefaultsDidChange:(id)a3
+- (void)userDefaultsDidChange:(id)change
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   UserDefaultObserver.userDefaultsDidChange(_:)();
 
   (*(v5 + 8))(v7, v4);

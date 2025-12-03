@@ -1,38 +1,38 @@
 @interface TSDBitmapImageProvider
-+ (CGImage)CGImageForImageData:(id)a3;
-+ (CGImage)temporaryCGImageForImageData:(id)a3;
-+ (CGImageSource)p_newImageSourceFromCacheForData:(id)a3 withFilenameSuffix:(id)a4;
-+ (CGImageSource)p_newImageSourceFromFilePath:(id)a3;
-+ (CGImageSource)temporaryCGImageSourceForImageData:(id)a3;
-+ (CGSize)naturalSizeForImageData:(id)a3;
-+ (id)TSUImageForImageData:(id)a3;
-+ (void)clearCacheForData:(id)a3;
++ (CGImage)CGImageForImageData:(id)data;
++ (CGImage)temporaryCGImageForImageData:(id)data;
++ (CGImageSource)p_newImageSourceFromCacheForData:(id)data withFilenameSuffix:(id)suffix;
++ (CGImageSource)p_newImageSourceFromFilePath:(id)path;
++ (CGImageSource)temporaryCGImageSourceForImageData:(id)data;
++ (CGSize)naturalSizeForImageData:(id)data;
++ (id)TSUImageForImageData:(id)data;
++ (void)clearCacheForData:(id)data;
 - (BOOL)isValid;
-- (CGImage)CGImageForSize:(CGSize)a3 inContext:(CGContext *)a4 orLayer:(id)a5;
-- (CGImage)CGImageForSize:(CGSize)a3 lowQuality:(BOOL)a4;
-- (CGImage)p_loadOrCreateResampledImageWithScale:(unint64_t)a3 andCGImage:(CGImage *)a4;
-- (CGImage)p_newImageFromSource:(CGImageSource *)a3;
-- (CGImage)p_resampledImageOfSizeType:(int)a3;
+- (CGImage)CGImageForSize:(CGSize)size inContext:(CGContext *)context orLayer:(id)layer;
+- (CGImage)CGImageForSize:(CGSize)size lowQuality:(BOOL)quality;
+- (CGImage)p_loadOrCreateResampledImageWithScale:(unint64_t)scale andCGImage:(CGImage *)image;
+- (CGImage)p_newImageFromSource:(CGImageSource *)source;
+- (CGImage)p_resampledImageOfSizeType:(int)type;
 - (CGImageSource)p_newCGImageSource;
 - (CGImageSource)p_newCGImageSourceForTemporaryUse;
-- (CGImageSource)p_newImageOfSize:(CGSize)a3 andWriteToCacheWithSuffix:(id)a4;
+- (CGImageSource)p_newImageOfSize:(CGSize)size andWriteToCacheWithSuffix:(id)suffix;
 - (CGSize)dpiAdjustedFillSize;
 - (CGSize)dpiAdjustedNaturalSize;
 - (CGSize)naturalSize;
 - (unint64_t)imageDPI;
 - (unint64_t)imageGamut;
 - (void)dealloc;
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4;
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect;
 - (void)flush;
 - (void)i_commonInit;
-- (void)p_configureOrientationAndSizeFromImageSource:(CGImageSource *)a3 andImage:(CGImage *)a4;
+- (void)p_configureOrientationAndSizeFromImageSource:(CGImageSource *)source andImage:(CGImage *)image;
 - (void)p_loadFullSizedImageIfNecessary;
 - (void)p_loadSourceRefIfNecessary;
 @end
 
 @implementation TSDBitmapImageProvider
 
-+ (CGImage)CGImageForImageData:(id)a3
++ (CGImage)CGImageForImageData:(id)data
 {
   objc_opt_class();
   [+[TSDImageProviderPool sharedPool](TSDImageProviderPool "sharedPool")];
@@ -41,12 +41,12 @@
   return [v4 CGImageForNaturalSize];
 }
 
-+ (CGImage)temporaryCGImageForImageData:(id)a3
++ (CGImage)temporaryCGImageForImageData:(id)data
 {
-  v4 = [a3 type];
-  if (UTTypeConformsTo(v4, *MEMORY[0x277CC20B0]))
+  type = [data type];
+  if (UTTypeConformsTo(type, *MEMORY[0x277CC20B0]))
   {
-    v5 = [(TSDImageProvider *)[TSDBitmapImageProvider alloc] initWithImageData:a3];
+    v5 = [(TSDImageProvider *)[TSDBitmapImageProvider alloc] initWithImageData:data];
   }
 
   else
@@ -57,12 +57,12 @@
   return [(TSDBitmapImageProvider *)v5 CGImageForNaturalSize];
 }
 
-+ (CGImageSource)temporaryCGImageSourceForImageData:(id)a3
++ (CGImageSource)temporaryCGImageSourceForImageData:(id)data
 {
-  v4 = [a3 type];
-  if (UTTypeConformsTo(v4, *MEMORY[0x277CC20B0]))
+  type = [data type];
+  if (UTTypeConformsTo(type, *MEMORY[0x277CC20B0]))
   {
-    v5 = [(TSDImageProvider *)[TSDBitmapImageProvider alloc] initWithImageData:a3];
+    v5 = [(TSDImageProvider *)[TSDBitmapImageProvider alloc] initWithImageData:data];
   }
 
   else
@@ -73,9 +73,9 @@
   return [(TSDBitmapImageProvider *)v5 CGImageSource];
 }
 
-+ (id)TSUImageForImageData:(id)a3
++ (id)TSUImageForImageData:(id)data
 {
-  result = [a1 CGImageForImageData:a3];
+  result = [self CGImageForImageData:data];
   if (result)
   {
     v4 = result;
@@ -87,7 +87,7 @@
   return result;
 }
 
-+ (CGSize)naturalSizeForImageData:(id)a3
++ (CGSize)naturalSizeForImageData:(id)data
 {
   objc_opt_class();
   [+[TSDImageProviderPool sharedPool](TSDImageProviderPool "sharedPool")];
@@ -115,9 +115,9 @@
   [(TSDImageProvider *)&v5 i_commonInit];
   if (self->mImageLock)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBitmapImageProvider i_commonInit]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBitmapImageProvider.m"), 181, @"called i_common init twice on same object!"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBitmapImageProvider.m"), 181, @"called i_common init twice on same object!"}];
   }
 
   self->mImageLock = dispatch_semaphore_create(1);
@@ -189,24 +189,24 @@ void __33__TSDBitmapImageProvider_isValid__block_invoke(uint64_t a1)
   }
 }
 
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (![(TSDBitmapImageProvider *)self isValid])
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBitmapImageProvider drawImageInContext:rect:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBitmapImageProvider.m"), 234, @"shouldn't be drawing an invalid image provider"}];
+    [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBitmapImageProvider.m"), 234, @"shouldn't be drawing an invalid image provider"}];
   }
 
-  v12 = [(TSDBitmapImageProvider *)self CGImageForSize:a3 inContext:0 orLayer:width, height];
-  if (v12)
+  height = [(TSDBitmapImageProvider *)self CGImageForSize:context inContext:0 orLayer:width, height];
+  if (height)
   {
-    v13 = v12;
-    CGContextSaveGState(a3);
+    v13 = height;
+    CGContextSaveGState(context);
     v17.origin.x = x;
     v17.origin.y = y;
     v17.size.width = width;
@@ -217,36 +217,36 @@ void __33__TSDBitmapImageProvider_isValid__block_invoke(uint64_t a1)
     v18.size.width = width;
     v18.size.height = height;
     MaxY = CGRectGetMaxY(v18);
-    CGContextTranslateCTM(a3, 0.0, MinY + MaxY);
-    CGContextScaleCTM(a3, 1.0, -1.0);
+    CGContextTranslateCTM(context, 0.0, MinY + MaxY);
+    CGContextScaleCTM(context, 1.0, -1.0);
     [(TSDBitmapImageProvider *)self orientation];
     TSUImageOrientationTransform();
-    CGContextConcatCTM(a3, &v16);
+    CGContextConcatCTM(context, &v16);
     v19.origin.x = x;
     v19.origin.y = y;
     v19.size.width = width;
     v19.size.height = height;
-    CGContextDrawImage(a3, v19, v13);
-    CGContextRestoreGState(a3);
+    CGContextDrawImage(context, v19, v13);
+    CGContextRestoreGState(context);
   }
 }
 
-- (CGImage)CGImageForSize:(CGSize)a3 inContext:(CGContext *)a4 orLayer:(id)a5
+- (CGImage)CGImageForSize:(CGSize)size inContext:(CGContext *)context orLayer:(id)layer
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(TSDBitmapImageProvider *)self p_loadImageMetadata];
-  BitmapQualityInfo = TSDCGContextGetBitmapQualityInfo(a4);
-  if (a4)
+  BitmapQualityInfo = TSDCGContextGetBitmapQualityInfo(context);
+  if (context)
   {
-    if (a5)
+    if (layer)
     {
-      v11 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBitmapImageProvider CGImageForSize:inContext:orLayer:]"];
-      [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBitmapImageProvider.m"), 288, @"using context to determine requested image size. layer should be nil"}];
+      [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBitmapImageProvider.m"), 288, @"using context to determine requested image size. layer should be nil"}];
     }
 
-    if ((TSDCGContextIsPrintContext(a4) & 1) != 0 || TSDCGContextIsPDFContext(a4))
+    if ((TSDCGContextIsPrintContext(context) & 1) != 0 || TSDCGContextIsPDFContext(context))
     {
       [(TSDBitmapImageProvider *)self p_loadFullSizedImageIfNecessary];
       if (!BitmapQualityInfo)
@@ -255,10 +255,10 @@ void __33__TSDBitmapImageProvider_isValid__block_invoke(uint64_t a1)
       }
     }
 
-    v13 = TSDCGContextAssociatedScreenScale(a4);
+    v13 = TSDCGContextAssociatedScreenScale(context);
     v14 = TSDMultiplySizeScalar(width, height, v13);
     v16 = v15;
-    CGContextGetCTM(&v34, a4);
+    CGContextGetCTM(&v34, context);
     v17 = TSDTransformScale(&v34.a);
     v18 = v14;
     v19 = v16;
@@ -266,12 +266,12 @@ void __33__TSDBitmapImageProvider_isValid__block_invoke(uint64_t a1)
 
   else
   {
-    if (!a5)
+    if (!layer)
     {
       goto LABEL_11;
     }
 
-    [a5 contentsScale];
+    [layer contentsScale];
     v17 = v20;
     v18 = width;
     v19 = height;
@@ -295,25 +295,25 @@ LABEL_11:
   {
     if (width <= v30 && v31 >= 1.0 && height <= v31 && v30 >= 1.0)
     {
-      v32 = self;
+      selfCopy2 = self;
       v33 = 1;
-      return [(TSDBitmapImageProvider *)v32 p_resampledImageOfSizeType:v33, v30];
+      return [(TSDBitmapImageProvider *)selfCopy2 p_resampledImageOfSizeType:v33, v30];
     }
 
     [(TSDBitmapImageProvider *)self p_loadFullSizedImageIfNecessary];
     return self->mImage;
   }
 
-  v32 = self;
+  selfCopy2 = self;
   v33 = 2;
-  return [(TSDBitmapImageProvider *)v32 p_resampledImageOfSizeType:v33, v30];
+  return [(TSDBitmapImageProvider *)selfCopy2 p_resampledImageOfSizeType:v33, v30];
 }
 
-- (CGImage)CGImageForSize:(CGSize)a3 lowQuality:(BOOL)a4
+- (CGImage)CGImageForSize:(CGSize)size lowQuality:(BOOL)quality
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  qualityCopy = quality;
+  height = size.height;
+  width = size.width;
   [(TSDBitmapImageProvider *)self naturalSize];
   v10 = v9;
   if (width < v8)
@@ -333,8 +333,8 @@ LABEL_5:
 
     v14 = v13;
     v15 = ceilf(v14);
-    v16 = [(TSDImageProvider *)self imageData];
-    v17 = TSDResampledImageFromProvider(self, 0, [objc_msgSend(v16 "filename")], objc_msgSend(v16, "context"), v4 | 0x14, v12, v15);
+    imageData = [(TSDImageProvider *)self imageData];
+    v17 = TSDResampledImageFromProvider(self, 0, [objc_msgSend(imageData "filename")], objc_msgSend(imageData, "context"), qualityCopy | 0x14, v12, v15);
     if (v17)
     {
       v18 = v17;
@@ -342,7 +342,7 @@ LABEL_5:
 
     else
     {
-      v18 = v16;
+      v18 = imageData;
     }
 
     return [TSDBitmapImageProvider CGImageForImageData:v18];
@@ -363,11 +363,11 @@ LABEL_5:
   return [(TSDBitmapImageProvider *)self CGImageForNaturalSize];
 }
 
-- (CGImage)p_loadOrCreateResampledImageWithScale:(unint64_t)a3 andCGImage:(CGImage *)a4
+- (CGImage)p_loadOrCreateResampledImageWithScale:(unint64_t)scale andCGImage:(CGImage *)image
 {
   v19[3] = *MEMORY[0x277D85DE8];
   [(TSDBitmapImageProvider *)self naturalSize];
-  v9 = TSDMultiplySizeScalar(v7, v8, a3 / 100.0);
+  v9 = TSDMultiplySizeScalar(v7, v8, scale / 100.0);
   if (v9 <= v10)
   {
     v9 = v10;
@@ -382,11 +382,11 @@ LABEL_5:
   v18[2] = *MEMORY[0x277CD3660];
   v19[2] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:vcvtps_u32_f32(v11)];
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
-  v14 = [(TSDBitmapImageProvider *)self p_newCGImageSourceForTemporaryUse];
-  if (v14)
+  p_newCGImageSourceForTemporaryUse = [(TSDBitmapImageProvider *)self p_newCGImageSourceForTemporaryUse];
+  if (p_newCGImageSourceForTemporaryUse)
   {
-    v15 = v14;
-    ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(v14, 0, v13);
+    v15 = p_newCGImageSourceForTemporaryUse;
+    ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(p_newCGImageSourceForTemporaryUse, 0, v13);
     CFRelease(v15);
   }
 
@@ -395,24 +395,24 @@ LABEL_5:
     ThumbnailAtIndex = 0;
   }
 
-  *a4 = ThumbnailAtIndex;
+  *image = ThumbnailAtIndex;
   return ThumbnailAtIndex;
 }
 
-- (CGImage)p_resampledImageOfSizeType:(int)a3
+- (CGImage)p_resampledImageOfSizeType:(int)type
 {
   dispatch_semaphore_wait(self->mImageLock, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         dispatch_semaphore_signal(self->mImageLock);
 LABEL_13:
-        v9 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBitmapImageProvider p_resampledImageOfSizeType:]"];
-        [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBitmapImageProvider.m"), 466, @"Couldn't resample image for faster rendering"}];
+        [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBitmapImageProvider.m"), 466, @"Couldn't resample image for faster rendering"}];
         return self->mImage;
       }
 
@@ -420,7 +420,7 @@ LABEL_13:
       if (!mQuarterSizeImage)
       {
         p_mQuarterSizeImage = &self->mQuarterSizeImage;
-        v7 = self;
+        selfCopy3 = self;
         v8 = 25;
         goto LABEL_12;
       }
@@ -437,7 +437,7 @@ LABEL_9:
     }
 
     p_mQuarterSizeImage = &self->mHalfSizeImage;
-    v7 = self;
+    selfCopy3 = self;
     v8 = 50;
   }
 
@@ -450,12 +450,12 @@ LABEL_9:
     }
 
     p_mQuarterSizeImage = &self->mImage;
-    v7 = self;
+    selfCopy3 = self;
     v8 = 100;
   }
 
 LABEL_12:
-  mQuarterSizeImage = [(TSDBitmapImageProvider *)v7 p_loadOrCreateResampledImageWithScale:v8 andCGImage:p_mQuarterSizeImage];
+  mQuarterSizeImage = [(TSDBitmapImageProvider *)selfCopy3 p_loadOrCreateResampledImageWithScale:v8 andCGImage:p_mQuarterSizeImage];
   dispatch_semaphore_signal(self->mImageLock);
   if (!mQuarterSizeImage)
   {
@@ -498,11 +498,11 @@ LABEL_12:
   result = self->mDPI;
   if (!result)
   {
-    v4 = [(TSDBitmapImageProvider *)self p_newCGImageSourceForTemporaryUse];
-    if (v4)
+    p_newCGImageSourceForTemporaryUse = [(TSDBitmapImageProvider *)self p_newCGImageSourceForTemporaryUse];
+    if (p_newCGImageSourceForTemporaryUse)
     {
-      v5 = v4;
-      v6 = CGImageSourceCopyPropertiesAtIndex(v4, 0, 0);
+      v5 = p_newCGImageSourceForTemporaryUse;
+      v6 = CGImageSourceCopyPropertiesAtIndex(p_newCGImageSourceForTemporaryUse, 0, 0);
       CFRelease(v5);
       v7 = [-[__CFDictionary objectForKey:](v6 objectForKey:{*MEMORY[0x277CD2F28]), "unsignedIntegerValue"}];
       if (v6)
@@ -534,11 +534,11 @@ LABEL_12:
 
 - (CGSize)dpiAdjustedFillSize
 {
-  v3 = [(TSDBitmapImageProvider *)self imageDPI];
+  imageDPI = [(TSDBitmapImageProvider *)self imageDPI];
   [(TSDBitmapImageProvider *)self naturalSize];
-  if (v3 >= 0x49)
+  if (imageDPI >= 0x49)
   {
-    v6 = TSDMultiplySizeScalar(v4, v5, 72.0 / v3);
+    v6 = TSDMultiplySizeScalar(v4, v5, 72.0 / imageDPI);
 
     v4 = TSDCeilSize(v6);
   }
@@ -550,11 +550,11 @@ LABEL_12:
 
 - (CGSize)dpiAdjustedNaturalSize
 {
-  v3 = [(TSDBitmapImageProvider *)self imageDPI];
+  imageDPI = [(TSDBitmapImageProvider *)self imageDPI];
   v4 = 1.0;
-  if (v3 >= 0x79)
+  if (imageDPI >= 0x79)
   {
-    v4 = 72.0 / v3;
+    v4 = 72.0 / imageDPI;
   }
 
   if ([objc_msgSend(-[TSDImageProvider imageData](self "imageData")])
@@ -678,10 +678,10 @@ LABEL_16:
     dispatch_semaphore_wait(self->mImageLock, 0xFFFFFFFFFFFFFFFFLL);
     if (!self->mImageSource && self->super.mLoadState != 2)
     {
-      v3 = [(TSDBitmapImageProvider *)self p_newCGImageSource];
-      if (v3)
+      p_newCGImageSource = [(TSDBitmapImageProvider *)self p_newCGImageSource];
+      if (p_newCGImageSource)
       {
-        [(TSDBitmapImageProvider *)self p_configureOrientationAndSizeFromImageSource:v3 andImage:0];
+        [(TSDBitmapImageProvider *)self p_configureOrientationAndSizeFromImageSource:p_newCGImageSource andImage:0];
         v4 = 1;
       }
 
@@ -690,7 +690,7 @@ LABEL_16:
         v4 = 2;
       }
 
-      self->mImageSource = v3;
+      self->mImageSource = p_newCGImageSource;
       self->super.mLoadState = v4;
     }
 
@@ -702,14 +702,14 @@ LABEL_16:
 
 - (CGImageSource)p_newCGImageSource
 {
-  v2 = [(TSDImageProvider *)self imageData];
+  imageData = [(TSDImageProvider *)self imageData];
 
-  return [v2 newCGImageSource];
+  return [imageData newCGImageSource];
 }
 
-- (CGImage)p_newImageFromSource:(CGImageSource *)a3
+- (CGImage)p_newImageFromSource:(CGImageSource *)source
 {
-  if (!a3)
+  if (!source)
   {
     return 0;
   }
@@ -718,24 +718,24 @@ LABEL_16:
   v5 = [MEMORY[0x277CCABB0] numberWithBool:0];
   v6 = [v4 dictionaryWithObjectsAndKeys:{v5, *MEMORY[0x277CD3618], 0}];
 
-  return CGImageSourceCreateImageAtIndex(a3, 0, v6);
+  return CGImageSourceCreateImageAtIndex(source, 0, v6);
 }
 
-- (void)p_configureOrientationAndSizeFromImageSource:(CGImageSource *)a3 andImage:(CGImage *)a4
+- (void)p_configureOrientationAndSizeFromImageSource:(CGImageSource *)source andImage:(CGImage *)image
 {
-  v7 = CGImageSourceCopyPropertiesAtIndex(a3, 0, 0);
+  v7 = CGImageSourceCopyPropertiesAtIndex(source, 0, 0);
   if (!v7)
   {
     v9 = 0;
 LABEL_12:
-    if (!a4)
+    if (!image)
     {
-      a4 = [(TSDBitmapImageProvider *)self p_newImageFromSource:a3];
-      self->mImage = a4;
+      image = [(TSDBitmapImageProvider *)self p_newImageFromSource:source];
+      self->mImage = image;
     }
 
-    Width = CGImageGetWidth(a4);
-    Height = CGImageGetHeight(a4);
+    Width = CGImageGetWidth(image);
+    Height = CGImageGetHeight(image);
     goto LABEL_15;
   }
 
@@ -807,11 +807,11 @@ LABEL_15:
   self->mNaturalSize.height = Height;
 }
 
-+ (void)clearCacheForData:(id)a3
++ (void)clearCacheForData:(id)data
 {
-  if (([a3 isApplicationData] & 1) == 0)
+  if (([data isApplicationData] & 1) == 0)
   {
-    v5 = [a1 p_cacheStringForData:a3];
+    v5 = [self p_cacheStringForData:data];
     if (v5)
     {
       v6 = v5;
@@ -819,15 +819,15 @@ LABEL_15:
       v8 = [v6 stringByAppendingString:@"-25.png"];
       if ([v6 isAbsolutePath])
       {
-        v9 = [MEMORY[0x277CCAA00] defaultManager];
-        [v9 removeItemAtPath:v7 error:0];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        [defaultManager removeItemAtPath:v7 error:0];
 
-        [v9 removeItemAtPath:v8 error:0];
+        [defaultManager removeItemAtPath:v8 error:0];
       }
 
       else
       {
-        v10 = [objc_msgSend(a3 "context")];
+        v10 = [objc_msgSend(data "context")];
         [v10 writeData:0 atDocumentCachePath:v7];
 
         [v10 writeData:0 atDocumentCachePath:v8];
@@ -836,21 +836,21 @@ LABEL_15:
   }
 }
 
-+ (CGImageSource)p_newImageSourceFromCacheForData:(id)a3 withFilenameSuffix:(id)a4
++ (CGImageSource)p_newImageSourceFromCacheForData:(id)data withFilenameSuffix:(id)suffix
 {
-  result = [a1 p_cacheStringForData:?];
+  result = [self p_cacheStringForData:?];
   if (result)
   {
-    v8 = [(CGImageSource *)result stringByAppendingString:a4];
+    v8 = [(CGImageSource *)result stringByAppendingString:suffix];
     if ([v8 isAbsolutePath])
     {
 
-      return [a1 p_newImageSourceFromFilePath:v8];
+      return [self p_newImageSourceFromFilePath:v8];
     }
 
     else
     {
-      v9 = [objc_msgSend(a3 "context")];
+      v9 = [objc_msgSend(data "context")];
 
       return [v9 newImageSourceForDocumentCachePath:v8];
     }
@@ -859,9 +859,9 @@ LABEL_15:
   return result;
 }
 
-+ (CGImageSource)p_newImageSourceFromFilePath:(id)a3
++ (CGImageSource)p_newImageSourceFromFilePath:(id)path
 {
-  result = CFURLCreateWithFileSystemPath(*MEMORY[0x277CBECE8], a3, kCFURLPOSIXPathStyle, 0);
+  result = CFURLCreateWithFileSystemPath(*MEMORY[0x277CBECE8], path, kCFURLPOSIXPathStyle, 0);
   if (result)
   {
     v4 = result;
@@ -891,10 +891,10 @@ LABEL_15:
   }
 }
 
-- (CGImageSource)p_newImageOfSize:(CGSize)a3 andWriteToCacheWithSuffix:(id)a4
+- (CGImageSource)p_newImageOfSize:(CGSize)size andWriteToCacheWithSuffix:(id)suffix
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = MEMORY[0x277CBEAC0];
   v9 = [MEMORY[0x277CCABB0] numberWithBool:1];
   v10 = *MEMORY[0x277CD3568];
@@ -913,22 +913,22 @@ LABEL_15:
   v14 = v13;
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:vcvtps_u32_f32(v14)];
   v16 = [v8 dictionaryWithObjectsAndKeys:{v9, v10, v11, v12, v15, *MEMORY[0x277CD3660], 0}];
-  v17 = [(TSDBitmapImageProvider *)self p_newCGImageSourceForTemporaryUse];
-  if (v17)
+  p_newCGImageSourceForTemporaryUse = [(TSDBitmapImageProvider *)self p_newCGImageSourceForTemporaryUse];
+  if (p_newCGImageSourceForTemporaryUse)
   {
-    v18 = v17;
-    ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(v17, 0, v16);
+    v18 = p_newCGImageSourceForTemporaryUse;
+    ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(p_newCGImageSourceForTemporaryUse, 0, v16);
     CFRelease(v18);
     if (ThumbnailAtIndex)
     {
       v20 = MEMORY[0x277CE1E10];
-      if (a4 && (v21 = [objc_msgSend(objc_opt_class() p_cacheStringForData:{-[TSDImageProvider imageData](self, "imageData")), "stringByAppendingString:", a4}], (a4 = v21) != 0))
+      if (suffix && (v21 = [objc_msgSend(objc_opt_class() p_cacheStringForData:{-[TSDImageProvider imageData](self, "imageData")), "stringByAppendingString:", suffix}], (suffix = v21) != 0))
       {
         if ([v21 isAbsolutePath])
         {
-          v22 = [*v20 identifier];
-          v23 = CFURLCreateWithFileSystemPath(*MEMORY[0x277CBECE8], a4, kCFURLPOSIXPathStyle, 0);
-          v24 = CGImageDestinationCreateWithURL(v23, v22, 1uLL, 0);
+          identifier = [*v20 identifier];
+          v23 = CFURLCreateWithFileSystemPath(*MEMORY[0x277CBECE8], suffix, kCFURLPOSIXPathStyle, 0);
+          v24 = CGImageDestinationCreateWithURL(v23, identifier, 1uLL, 0);
           if (v24)
           {
             v25 = v24;
@@ -961,7 +961,7 @@ LABEL_19:
       CGImageDestinationFinalize(v31);
       CFRelease(v31);
       v28 = CGImageSourceCreateWithData(v30, 0);
-      if ((v29 & 1) == 0 && ([a4 isAbsolutePath] & 1) == 0)
+      if ((v29 & 1) == 0 && ([suffix isAbsolutePath] & 1) == 0)
       {
         [objc_msgSend(objc_msgSend(-[TSDImageProvider imageData](self "imageData")];
       }

@@ -13,8 +13,8 @@
 - (NSArray)identifiers;
 - (unsigned)currentIndex;
 - (unsigned)defaultIndex;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFModeItems
@@ -24,18 +24,18 @@
   v3 = objc_opt_class();
   if (v3 != objc_opt_class())
   {
-    v4.receiver = a1;
+    v4.receiver = self;
     v4.super_class = &OBJC_METACLASS___CAFModeItems;
     objc_msgSendSuper2(&v4, sel_load);
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -48,12 +48,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -69,13 +69,13 @@
 - (CAFArrayCharacteristic)identifiersCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000037"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000037"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000037"];
@@ -94,22 +94,22 @@
 
 - (NSArray)identifiers
 {
-  v2 = [(CAFModeItems *)self identifiersCharacteristic];
-  v3 = [v2 arrayValue];
+  identifiersCharacteristic = [(CAFModeItems *)self identifiersCharacteristic];
+  arrayValue = [identifiersCharacteristic arrayValue];
 
-  return v3;
+  return arrayValue;
 }
 
 - (CAFUInt32Characteristic)currentIndexCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000038"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000038"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000038"];
@@ -128,38 +128,38 @@
 
 - (unsigned)currentIndex
 {
-  v2 = [(CAFModeItems *)self currentIndexCharacteristic];
-  v3 = [v2 uint32Value];
+  currentIndexCharacteristic = [(CAFModeItems *)self currentIndexCharacteristic];
+  uint32Value = [currentIndexCharacteristic uint32Value];
 
-  return v3;
+  return uint32Value;
 }
 
 - (CAFUInt32Range)currentIndexRange
 {
-  v2 = [(CAFModeItems *)self currentIndexCharacteristic];
-  v3 = [v2 range];
+  currentIndexCharacteristic = [(CAFModeItems *)self currentIndexCharacteristic];
+  range = [currentIndexCharacteristic range];
 
-  return v3;
+  return range;
 }
 
 - (BOOL)currentIndexInvalid
 {
-  v2 = [(CAFModeItems *)self currentIndexCharacteristic];
-  v3 = [v2 isInvalid];
+  currentIndexCharacteristic = [(CAFModeItems *)self currentIndexCharacteristic];
+  isInvalid = [currentIndexCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (CAFUInt32Characteristic)defaultIndexCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000039"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000039"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000039"];
@@ -178,24 +178,24 @@
 
 - (unsigned)defaultIndex
 {
-  v2 = [(CAFModeItems *)self defaultIndexCharacteristic];
-  v3 = [v2 uint32Value];
+  defaultIndexCharacteristic = [(CAFModeItems *)self defaultIndexCharacteristic];
+  uint32Value = [defaultIndexCharacteristic uint32Value];
 
-  return v3;
+  return uint32Value;
 }
 
 - (CAFUInt32Range)defaultIndexRange
 {
-  v2 = [(CAFModeItems *)self defaultIndexCharacteristic];
-  v3 = [v2 range];
+  defaultIndexCharacteristic = [(CAFModeItems *)self defaultIndexCharacteristic];
+  range = [defaultIndexCharacteristic range];
 
-  return v3;
+  return range;
 }
 
 - (BOOL)hasDefaultIndex
 {
-  v2 = [(CAFModeItems *)self defaultIndexCharacteristic];
-  v3 = v2 != 0;
+  defaultIndexCharacteristic = [(CAFModeItems *)self defaultIndexCharacteristic];
+  v3 = defaultIndexCharacteristic != 0;
 
   return v3;
 }
@@ -203,13 +203,13 @@
 - (BOOL)registeredForIdentifiers
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000037"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000037"];
 
   return v10;
 }
@@ -217,13 +217,13 @@
 - (BOOL)registeredForCurrentIndex
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000038"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000038"];
 
   return v10;
 }
@@ -231,13 +231,13 @@
 - (BOOL)registeredForDefaultIndex
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000039"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000039"];
 
   return v10;
 }

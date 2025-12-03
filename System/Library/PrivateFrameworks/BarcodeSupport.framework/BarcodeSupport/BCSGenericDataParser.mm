@@ -1,13 +1,13 @@
 @interface BCSGenericDataParser
-+ (id)_parsedDataFromDDResult:(__DDResult *)a3 decodedString:(id)a4;
-+ (id)parseString:(id)a3;
++ (id)_parsedDataFromDDResult:(__DDResult *)result decodedString:(id)string;
++ (id)parseString:(id)string;
 @end
 
 @implementation BCSGenericDataParser
 
-+ (id)parseString:(id)a3
++ (id)parseString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
   if (v5)
   {
@@ -46,7 +46,7 @@
   }
 
   v16 = v15;
-  v17 = [v4 length];
+  v17 = [stringCopy length];
   v68 = 0;
   v69 = &v68;
   v70 = 0x2020000000;
@@ -66,7 +66,7 @@
     +[BCSGenericDataParser parseString:];
   }
 
-  v20 = (v18)(0, v4, 0, v17);
+  v20 = (v18)(0, stringCopy, 0, v17);
   if (!v20)
   {
     v43 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
@@ -161,7 +161,7 @@ LABEL_38:
   {
     v32 = [v27 objectAtIndexedSubscript:v30];
 
-    v33 = [a1 _parsedDataFromDDResult:v32 decodedString:v4];
+    v33 = [self _parsedDataFromDDResult:v32 decodedString:stringCopy];
     v34 = v33;
     if (v33)
     {
@@ -196,9 +196,9 @@ LABEL_40:
   return v31;
 }
 
-+ (id)_parsedDataFromDDResult:(__DDResult *)a3 decodedString:(id)a4
++ (id)_parsedDataFromDDResult:(__DDResult *)result decodedString:(id)string
 {
-  v5 = a4;
+  stringCopy = string;
   v44 = 0;
   v45 = &v44;
   v46 = 0x2020000000;
@@ -218,17 +218,17 @@ LABEL_40:
     +[BCSGenericDataParser _parsedDataFromDDResult:decodedString:];
   }
 
-  v9 = v5;
-  if (!v6(a3))
+  v9 = stringCopy;
+  if (!v6(result))
   {
-    if (v8 == [v5 length])
+    if (v8 == [stringCopy length])
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = v5;
+      v9 = stringCopy;
     }
   }
 
@@ -251,7 +251,7 @@ LABEL_40:
     +[BCSGenericDataParser _parsedDataFromDDResult:decodedString:];
   }
 
-  v12 = v10(a3);
+  v12 = v10(result);
   if ((v12 - 1) >= 2)
   {
     if (v12 != 3)
@@ -260,7 +260,7 @@ LABEL_40:
       goto LABEL_31;
     }
 
-    v14 = [getDDScannerResultClass() resultFromCoreResult:a3];
+    v14 = [getDDScannerResultClass() resultFromCoreResult:result];
     if (v14)
     {
       v18 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
@@ -282,19 +282,19 @@ LABEL_40:
 
   else
   {
-    v13 = _bcs_urlFromDDResult(a3);
+    v13 = _bcs_urlFromDDResult(result);
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 scheme];
-      v16 = [v15 lowercaseString];
+      scheme = [v13 scheme];
+      lowercaseString = [scheme lowercaseString];
 
-      if ([v16 isEqualToString:@"mailto"])
+      if ([lowercaseString isEqualToString:@"mailto"])
       {
         v17 = 3;
       }
 
-      else if ([v16 isEqualToString:@"tel"])
+      else if ([lowercaseString isEqualToString:@"tel"])
       {
         v17 = 4;
       }

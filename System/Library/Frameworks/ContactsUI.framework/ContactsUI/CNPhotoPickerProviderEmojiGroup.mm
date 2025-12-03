@@ -1,14 +1,14 @@
 @interface CNPhotoPickerProviderEmojiGroup
-- (CNPhotoPickerProviderEmojiGroup)initWithProviders:(id)a3 environment:(id)a4 allowAddItem:(BOOL)a5;
+- (CNPhotoPickerProviderEmojiGroup)initWithProviders:(id)providers environment:(id)environment allowAddItem:(BOOL)item;
 @end
 
 @implementation CNPhotoPickerProviderEmojiGroup
 
-- (CNPhotoPickerProviderEmojiGroup)initWithProviders:(id)a3 environment:(id)a4 allowAddItem:(BOOL)a5
+- (CNPhotoPickerProviderEmojiGroup)initWithProviders:(id)providers environment:(id)environment allowAddItem:(BOOL)item
 {
   v9.receiver = self;
   v9.super_class = CNPhotoPickerProviderEmojiGroup;
-  v5 = [(CNPhotoPickerProviderGroup *)&v9 initWithProviders:a3 groupType:3 environment:a4 allowAddItem:a5];
+  v5 = [(CNPhotoPickerProviderGroup *)&v9 initWithProviders:providers groupType:3 environment:environment allowAddItem:item];
   v6 = v5;
   if (v5)
   {

@@ -1,17 +1,17 @@
 @interface UIAlertController
-+ (id)controllerForDeletingStation:(id)a3 fromLibrary:(id)a4 deletionCompletion:(id)a5;
++ (id)controllerForDeletingStation:(id)station fromLibrary:(id)library deletionCompletion:(id)completion;
 @end
 
 @implementation UIAlertController
 
-+ (id)controllerForDeletingStation:(id)a3 fromLibrary:(id)a4 deletionCompletion:(id)a5
++ (id)controllerForDeletingStation:(id)station fromLibrary:(id)library deletionCompletion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
-  v9 = a3;
-  v10 = a4;
-  v11 = sub_100226384(v9, v10, sub_10019C604, v8);
+  stationCopy = station;
+  libraryCopy = library;
+  v11 = sub_100226384(stationCopy, libraryCopy, sub_10019C604, v8);
 
   return v11;
 }

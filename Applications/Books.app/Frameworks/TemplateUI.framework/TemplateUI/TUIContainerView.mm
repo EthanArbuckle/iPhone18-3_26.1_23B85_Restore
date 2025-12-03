@@ -1,69 +1,69 @@
 @interface TUIContainerView
-+ (id)renderModelWithSubviewsModel:(id)a3 style:(id)a4 identifier:(id)a5;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (TUIContainerView)initWithFrame:(CGRect)a3;
++ (id)renderModelWithSubviewsModel:(id)model style:(id)style identifier:(id)identifier;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (TUIContainerView)initWithFrame:(CGRect)frame;
 - (TUIViewFactory)factory;
-- (id)descendentViewWithIdentifier:(id)a3;
-- (id)descendentViewWithRefId:(id)a3;
+- (id)descendentViewWithIdentifier:(id)identifier;
+- (id)descendentViewWithRefId:(id)id;
 - (void)_resetStyling;
 - (void)_updateSubviews;
-- (void)appendRenderOverrideObservers:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)applyStyle:(id)a3;
-- (void)configureWithModel:(id)a3 outsets:(UIEdgeInsets)a4;
+- (void)appendRenderOverrideObservers:(id)observers;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)applyStyle:(id)style;
+- (void)configureWithModel:(id)model outsets:(UIEdgeInsets)outsets;
 - (void)invalidateShowContents;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setFactory:(id)a3;
+- (void)setFactory:(id)factory;
 - (void)viewDidEndDisplay;
 @end
 
 @implementation TUIContainerView
 
-+ (id)renderModelWithSubviewsModel:(id)a3 style:(id)a4 identifier:(id)a5
++ (id)renderModelWithSubviewsModel:(id)model style:(id)style identifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"TUIReuseIdentifierContainerView" identifier:v7 submodel:v9 style:v8];
+  identifierCopy = identifier;
+  styleCopy = style;
+  modelCopy = model;
+  v10 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"TUIReuseIdentifierContainerView" identifier:identifierCopy submodel:modelCopy style:styleCopy];
 
   return v10;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v16.receiver = self;
   v16.super_class = TUIContainerView;
-  v4 = a3;
-  [(TUIReusableBaseView *)&v16 applyLayoutAttributes:v4];
-  v5 = [v4 renderModel];
-  v6 = [v5 submodel];
-  [v4 outsets];
+  attributesCopy = attributes;
+  [(TUIReusableBaseView *)&v16 applyLayoutAttributes:attributesCopy];
+  renderModel = [attributesCopy renderModel];
+  submodel = [renderModel submodel];
+  [attributesCopy outsets];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  [(TUIContainerView *)self configureWithModel:v6 outsets:v8, v10, v12, v14];
-  v15 = [v5 style];
-  [(TUIContainerView *)self applyStyle:v15];
+  [(TUIContainerView *)self configureWithModel:submodel outsets:v8, v10, v12, v14];
+  style = [renderModel style];
+  [(TUIContainerView *)self applyStyle:style];
 }
 
-- (void)applyStyle:(id)a3
+- (void)applyStyle:(id)style
 {
-  v49 = a3;
+  styleCopy = style;
   [(TUIRenderStyling *)self->_currentStyle removeStylingFromView:self->_contentView];
-  [v49 applyStylingToView:self->_contentView];
-  objc_storeStrong(&self->_currentStyle, a3);
-  v5 = [(UIView *)self->_contentView layer];
-  v6 = [v5 compositingFilter];
+  [styleCopy applyStylingToView:self->_contentView];
+  objc_storeStrong(&self->_currentStyle, style);
+  layer = [(UIView *)self->_contentView layer];
+  compositingFilter = [layer compositingFilter];
 
-  LODWORD(v5) = TUILayerCompositingFilterNeedsBackdropLayer(v6);
-  v7 = [(TUIContainerView *)self layer];
-  [v7 setAllowsGroupBlending:(v6 == 0) | (v5 & 1)];
+  LODWORD(layer) = TUILayerCompositingFilterNeedsBackdropLayer(compositingFilter);
+  layer2 = [(TUIContainerView *)self layer];
+  [layer2 setAllowsGroupBlending:(compositingFilter == 0) | (layer & 1)];
 
   backdropView = self->_backdropView;
-  if (v5)
+  if (layer)
   {
     if (!backdropView)
     {
@@ -86,7 +86,7 @@
     self->_backdropView = 0;
   }
 
-  if (v6 && (-[UIView layer](self->_contentView, "layer"), v13 = objc_claimAutoreleasedReturnValue(), [v13 shadowOpacity], v15 = v14, v13, v15 > 0.0))
+  if (compositingFilter && (-[UIView layer](self->_contentView, "layer"), v13 = objc_claimAutoreleasedReturnValue(), [v13 shadowOpacity], v15 = v14, v13, v15 > 0.0))
   {
     if (!self->_shadowView)
     {
@@ -115,61 +115,61 @@
 
   if (self->_shadowView)
   {
-    v21 = [(UIView *)self->_contentView layer];
-    v22 = [v21 shadowColor];
-    v23 = [(UIView *)self->_shadowView layer];
-    [v23 setShadowColor:v22];
+    layer3 = [(UIView *)self->_contentView layer];
+    shadowColor = [layer3 shadowColor];
+    layer4 = [(UIView *)self->_shadowView layer];
+    [layer4 setShadowColor:shadowColor];
 
-    v24 = [(UIView *)self->_contentView layer];
-    [v24 shadowOffset];
+    layer5 = [(UIView *)self->_contentView layer];
+    [layer5 shadowOffset];
     v26 = v25;
     v28 = v27;
-    v29 = [(UIView *)self->_shadowView layer];
-    [v29 setShadowOffset:{v26, v28}];
+    layer6 = [(UIView *)self->_shadowView layer];
+    [layer6 setShadowOffset:{v26, v28}];
 
-    v30 = [(UIView *)self->_contentView layer];
-    [v30 shadowRadius];
+    layer7 = [(UIView *)self->_contentView layer];
+    [layer7 shadowRadius];
     v32 = v31;
-    v33 = [(UIView *)self->_shadowView layer];
-    [v33 setShadowRadius:v32];
+    layer8 = [(UIView *)self->_shadowView layer];
+    [layer8 setShadowRadius:v32];
 
-    v34 = [(UIView *)self->_contentView layer];
-    [v34 shadowOpacity];
+    layer9 = [(UIView *)self->_contentView layer];
+    [layer9 shadowOpacity];
     LODWORD(v32) = v35;
-    v36 = [(UIView *)self->_shadowView layer];
+    layer10 = [(UIView *)self->_shadowView layer];
     LODWORD(v37) = LODWORD(v32);
-    [v36 setShadowOpacity:v37];
+    [layer10 setShadowOpacity:v37];
 
-    v38 = [(UIView *)self->_contentView layer];
-    v39 = [v38 shadowPath];
-    v40 = [(UIView *)self->_shadowView layer];
-    [v40 setShadowPath:v39];
+    layer11 = [(UIView *)self->_contentView layer];
+    shadowPath = [layer11 shadowPath];
+    layer12 = [(UIView *)self->_shadowView layer];
+    [layer12 setShadowPath:shadowPath];
 
-    v41 = [(UIView *)self->_shadowView layer];
-    [v41 setPunchoutShadow:1];
+    layer13 = [(UIView *)self->_shadowView layer];
+    [layer13 setPunchoutShadow:1];
 
     v42 = +[UIColor blackColor];
-    v43 = [v42 CGColor];
-    v44 = [(UIView *)self->_contentView layer];
-    [v44 setShadowColor:v43];
+    cGColor = [v42 CGColor];
+    layer14 = [(UIView *)self->_contentView layer];
+    [layer14 setShadowColor:cGColor];
 
-    v45 = [(UIView *)self->_contentView layer];
-    [v45 setShadowOffset:{0.0, -3.0}];
+    layer15 = [(UIView *)self->_contentView layer];
+    [layer15 setShadowOffset:{0.0, -3.0}];
 
-    v46 = [(UIView *)self->_contentView layer];
-    [v46 setShadowRadius:3.0];
+    layer16 = [(UIView *)self->_contentView layer];
+    [layer16 setShadowRadius:3.0];
 
-    v47 = [(UIView *)self->_contentView layer];
-    [v47 setShadowOpacity:0.0];
+    layer17 = [(UIView *)self->_contentView layer];
+    [layer17 setShadowOpacity:0.0];
 
-    v48 = [(UIView *)self->_contentView layer];
-    [v48 setShadowPath:0];
+    layer18 = [(UIView *)self->_contentView layer];
+    [layer18 setShadowPath:0];
   }
 }
 
-- (void)setFactory:(id)a3
+- (void)setFactory:(id)factory
 {
-  obj = a3;
+  obj = factory;
   WeakRetained = objc_loadWeakRetained(&self->_factory);
 
   v5 = obj;
@@ -181,11 +181,11 @@
   }
 }
 
-- (TUIContainerView)initWithFrame:(CGRect)a3
+- (TUIContainerView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = TUIContainerView;
-  v3 = [(TUIContainerView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUIContainerView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -210,23 +210,23 @@
   self->_currentStyle = 0;
 
   [(UIView *)self->_contentView setBackgroundColor:0];
-  v4 = [(UIView *)self->_contentView layer];
-  [v4 setShadowOpacity:0.0];
+  layer = [(UIView *)self->_contentView layer];
+  [layer setShadowOpacity:0.0];
 
-  v5 = [(UIView *)self->_contentView layer];
-  [v5 setBorderWidth:0.0];
+  layer2 = [(UIView *)self->_contentView layer];
+  [layer2 setBorderWidth:0.0];
 
-  v6 = [(UIView *)self->_contentView layer];
-  [v6 setCornerRadius:0.0];
+  layer3 = [(UIView *)self->_contentView layer];
+  [layer3 setCornerRadius:0.0];
 
-  v7 = [(UIView *)self->_contentView layer];
-  [v7 setMasksToBounds:0];
+  layer4 = [(UIView *)self->_contentView layer];
+  [layer4 setMasksToBounds:0];
 
-  v8 = [(UIView *)self->_contentView layer];
-  [v8 setShadowPath:0];
+  layer5 = [(UIView *)self->_contentView layer];
+  [layer5 setShadowPath:0];
 
-  v9 = [(UIView *)self->_contentView layer];
-  [v9 setCompositingFilter:0];
+  layer6 = [(UIView *)self->_contentView layer];
+  [layer6 setCompositingFilter:0];
 
   [(_TUIBackdropView *)self->_backdropView removeFromSuperview];
   backdropView = self->_backdropView;
@@ -236,8 +236,8 @@
   shadowView = self->_shadowView;
   self->_shadowView = 0;
 
-  v12 = [(TUIContainerView *)self layer];
-  [v12 setAllowsGroupBlending:1];
+  layer7 = [(TUIContainerView *)self layer];
+  [layer7 setAllowsGroupBlending:1];
 }
 
 - (void)prepareForReuse
@@ -265,25 +265,25 @@
   v19 = 0;
   if (self->_model && (v3 = objc_loadWeakRetained(&self->_factory)) != 0 && (v4 = v3, v5 = [(TUIContainerView *)self showContents], v4, v5))
   {
-    v6 = [(TUIReusableBaseView *)self feedControllerHost];
-    v7 = [v6 renderOverrideProvider];
-    v8 = [v7 renderOverrides];
+    feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+    renderOverrideProvider = [feedControllerHost renderOverrideProvider];
+    renderOverrides = [renderOverrideProvider renderOverrides];
 
-    if (v8)
+    if (renderOverrides)
     {
-      v9 = [(TUIReusableBaseView *)self tui_querySectionUUID];
-      v10 = [(TUIReusableBaseView *)self tui_querySectionUID];
+      tui_querySectionUUID = [(TUIReusableBaseView *)self tui_querySectionUUID];
+      tui_querySectionUID = [(TUIReusableBaseView *)self tui_querySectionUID];
     }
 
     else
     {
-      v10 = 0;
-      v9 = 0;
+      tui_querySectionUID = 0;
+      tui_querySectionUUID = 0;
     }
 
     model = self->_model;
     WeakRetained = objc_loadWeakRetained(&self->_factory);
-    v16 = [(TUIRenderModelSubviews *)model configureSubviewsWithFactory:WeakRetained outsets:self host:v8 overrides:&v19 usedOverrides:v9 UUID:v10 uid:self->_outsets.top, self->_outsets.left, self->_outsets.bottom, self->_outsets.right];
+    v16 = [(TUIRenderModelSubviews *)model configureSubviewsWithFactory:WeakRetained outsets:self host:renderOverrides overrides:&v19 usedOverrides:tui_querySectionUUID UUID:tui_querySectionUID uid:self->_outsets.top, self->_outsets.left, self->_outsets.bottom, self->_outsets.right];
 
     v17 = [v16 copy];
     currentSubviews = self->_currentSubviews;
@@ -295,8 +295,8 @@
   else
   {
     v11 = objc_loadWeakRetained(&self->_factory);
-    v12 = [v11 subviewPool];
-    [v12 prepareToReuseHost:self];
+    subviewPool = [v11 subviewPool];
+    [subviewPool prepareToReuseHost:self];
 
     v13 = 0;
   }
@@ -317,24 +317,24 @@
   [(TUIContainerView *)&v3 layoutSubviews];
 }
 
-- (void)configureWithModel:(id)a3 outsets:(UIEdgeInsets)a4
+- (void)configureWithModel:(id)model outsets:(UIEdgeInsets)outsets
 {
-  right = a4.right;
-  left = a4.left;
-  bottom = a4.bottom;
-  top = a4.top;
-  v6 = a3;
-  v9 = v6;
-  if (self->_model != v6 || (v7.f64[0] = top, v7.f64[1] = left, v8.f64[0] = bottom, v8.f64[1] = right, (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_outsets.top, v7), vceqq_f64(*&self->_outsets.bottom, v8)))) & 1) == 0))
+  right = outsets.right;
+  left = outsets.left;
+  bottom = outsets.bottom;
+  top = outsets.top;
+  modelCopy = model;
+  v9 = modelCopy;
+  if (self->_model != modelCopy || (v7.f64[0] = top, v7.f64[1] = left, v8.f64[0] = bottom, v8.f64[1] = right, (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_outsets.top, v7), vceqq_f64(*&self->_outsets.bottom, v8)))) & 1) == 0))
   {
-    objc_storeStrong(&self->_model, a3);
+    objc_storeStrong(&self->_model, model);
     self->_outsets.top = top;
     self->_outsets.left = left;
     self->_outsets.bottom = bottom;
     self->_outsets.right = right;
     [(TUIContainerView *)self _updateSubviews];
 LABEL_4:
-    v6 = v9;
+    modelCopy = v9;
     goto LABEL_5;
   }
 
@@ -357,22 +357,22 @@ LABEL_5:
   }
 }
 
-- (id)descendentViewWithIdentifier:(id)a3
+- (id)descendentViewWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = TUIContainerView;
-  v5 = [(TUIReusableBaseView *)&v18 descendentViewWithIdentifier:v4];
+  v5 = [(TUIReusableBaseView *)&v18 descendentViewWithIdentifier:identifierCopy];
   if (!v5)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(TUIContainerView *)self tui_hostedSubviewsMap];
-    v7 = [v6 allValues];
+    tui_hostedSubviewsMap = [(TUIContainerView *)self tui_hostedSubviewsMap];
+    allValues = [tui_hostedSubviewsMap allValues];
 
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    v8 = [allValues countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -383,10 +383,10 @@ LABEL_5:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) descendentViewWithIdentifier:v4];
+          v12 = [*(*(&v14 + 1) + 8 * i) descendentViewWithIdentifier:identifierCopy];
           if (v12)
           {
             v5 = v12;
@@ -394,7 +394,7 @@ LABEL_5:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v14 objects:v19 count:16];
         if (v9)
         {
           continue;
@@ -411,22 +411,22 @@ LABEL_12:
   return v5;
 }
 
-- (id)descendentViewWithRefId:(id)a3
+- (id)descendentViewWithRefId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v18.receiver = self;
   v18.super_class = TUIContainerView;
-  v5 = [(TUIReusableBaseView *)&v18 descendentViewWithRefId:v4];
+  v5 = [(TUIReusableBaseView *)&v18 descendentViewWithRefId:idCopy];
   if (!v5)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(TUIContainerView *)self tui_hostedSubviewsMap];
-    v7 = [v6 allValues];
+    tui_hostedSubviewsMap = [(TUIContainerView *)self tui_hostedSubviewsMap];
+    allValues = [tui_hostedSubviewsMap allValues];
 
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    v8 = [allValues countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -437,10 +437,10 @@ LABEL_12:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) descendentViewWithRefId:v4];
+          v12 = [*(*(&v14 + 1) + 8 * i) descendentViewWithRefId:idCopy];
           if (v12)
           {
             v5 = v12;
@@ -448,7 +448,7 @@ LABEL_12:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v14 objects:v19 count:16];
         if (v9)
         {
           continue;
@@ -465,31 +465,31 @@ LABEL_12:
   return v5;
 }
 
-- (void)appendRenderOverrideObservers:(id)a3
+- (void)appendRenderOverrideObservers:(id)observers
 {
-  v4 = a3;
-  [v4 addObject:self];
-  v5 = [(TUIContainerView *)self tui_hostedSubviewsMap];
+  observersCopy = observers;
+  [observersCopy addObject:self];
+  tui_hostedSubviewsMap = [(TUIContainerView *)self tui_hostedSubviewsMap];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_48A1C;
   v7[3] = &unk_25F068;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = observersCopy;
+  v6 = observersCopy;
+  [tui_hostedSubviewsMap enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
   contentView = self->_contentView;
-  v8 = a4;
-  [(TUIContainerView *)v6 convertPoint:contentView toView:x, y];
-  LOBYTE(v6) = [(UIView *)contentView pointInside:v8 withEvent:?];
+  eventCopy = event;
+  [(TUIContainerView *)selfCopy convertPoint:contentView toView:x, y];
+  LOBYTE(selfCopy) = [(UIView *)contentView pointInside:eventCopy withEvent:?];
 
-  return v6;
+  return selfCopy;
 }
 
 - (TUIViewFactory)factory

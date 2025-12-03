@@ -1,34 +1,34 @@
 @interface APNSPackMetrics
-- (APNSPackMetrics)initWithDecoder:(id)a3;
-- (APNSPackMetrics)initWithEncoder:(id)a3;
+- (APNSPackMetrics)initWithDecoder:(id)decoder;
+- (APNSPackMetrics)initWithEncoder:(id)encoder;
 - (void)dealloc;
 @end
 
 @implementation APNSPackMetrics
 
-- (APNSPackMetrics)initWithEncoder:(id)a3
+- (APNSPackMetrics)initWithEncoder:(id)encoder
 {
-  v4 = a3;
+  encoderCopy = encoder;
   v7.receiver = self;
   v7.super_class = APNSPackMetrics;
   v5 = [(APNSPackMetrics *)&v7 init];
   if (v5)
   {
-    v5->_metrics = sub_10002F360([v4 encoder]);
+    v5->_metrics = sub_10002F360([encoderCopy encoder]);
   }
 
   return v5;
 }
 
-- (APNSPackMetrics)initWithDecoder:(id)a3
+- (APNSPackMetrics)initWithDecoder:(id)decoder
 {
-  v4 = a3;
+  decoderCopy = decoder;
   v7.receiver = self;
   v7.super_class = APNSPackMetrics;
   v5 = [(APNSPackMetrics *)&v7 init];
   if (v5)
   {
-    v5->_metrics = sub_10002AB34([v4 decoder]);
+    v5->_metrics = sub_10002AB34([decoderCopy decoder]);
   }
 
   return v5;

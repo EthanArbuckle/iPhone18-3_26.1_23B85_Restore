@@ -1,20 +1,20 @@
 @interface QoSMarkingController
 + (id)sharedController;
-- (BOOL)qosMarkingIsAppleAudioVideoCallsEnabled:(id)a3;
-- (BOOL)qosMarkingIsEnabled:(id)a3;
-- (BOOL)qosMarkingPolicyEnabled:(id)a3 forKey:(id)a4;
+- (BOOL)qosMarkingIsAppleAudioVideoCallsEnabled:(id)enabled;
+- (BOOL)qosMarkingIsEnabled:(id)enabled;
+- (BOOL)qosMarkingPolicyEnabled:(id)enabled forKey:(id)key;
 - (QoSMarkingController)init;
 - (id)createPolicySession;
-- (id)qosMarkingAllowListAppIdentifiers:(id)a3;
-- (void)addAllowListAppIdentifierPolicy:(id)a3 forApp:(id)a4 order:(unsigned int)a5;
-- (void)addAllowListPathPolicy:(id)a3 forPath:(id)a4 order:(unsigned int)a5;
-- (void)setEnabled:(id)a3;
-- (void)setEnabledAV:(id)a3;
-- (void)setInterfaces:(id)a3;
-- (void)setPolicy:(id)a3 forInterface:(id)a4;
-- (void)setPolicySessions:(id)a3;
-- (void)setRequested:(id)a3;
-- (void)updatePolicy:(id)a3 forInterface:(id)a4;
+- (id)qosMarkingAllowListAppIdentifiers:(id)identifiers;
+- (void)addAllowListAppIdentifierPolicy:(id)policy forApp:(id)app order:(unsigned int)order;
+- (void)addAllowListPathPolicy:(id)policy forPath:(id)path order:(unsigned int)order;
+- (void)setEnabled:(id)enabled;
+- (void)setEnabledAV:(id)v;
+- (void)setInterfaces:(id)interfaces;
+- (void)setPolicy:(id)policy forInterface:(id)interface;
+- (void)setPolicySessions:(id)sessions;
+- (void)setRequested:(id)requested;
+- (void)updatePolicy:(id)policy forInterface:(id)interface;
 @end
 
 @implementation QoSMarkingController
@@ -26,16 +26,16 @@
   return v2;
 }
 
-- (BOOL)qosMarkingPolicyEnabled:(id)a3 forKey:(id)a4
+- (BOOL)qosMarkingPolicyEnabled:(id)enabled forKey:(id)key
 {
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:v5];
+  keyCopy = key;
+  v6 = [enabled objectForKeyedSubscript:keyCopy];
   if (v6)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
@@ -54,35 +54,35 @@
         }
       }
 
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)qosMarkingIsEnabled:(id)a3
+- (BOOL)qosMarkingIsEnabled:(id)enabled
 {
   v3 = kSCPropNetQoSMarkingEnabled;
 
-  return [(QoSMarkingController *)self qosMarkingPolicyEnabled:a3 forKey:v3];
+  return [(QoSMarkingController *)self qosMarkingPolicyEnabled:enabled forKey:v3];
 }
 
-- (BOOL)qosMarkingIsAppleAudioVideoCallsEnabled:(id)a3
+- (BOOL)qosMarkingIsAppleAudioVideoCallsEnabled:(id)enabled
 {
   v3 = kSCPropNetQoSMarkingAppleAudioVideoCalls;
 
-  return [(QoSMarkingController *)self qosMarkingPolicyEnabled:a3 forKey:v3];
+  return [(QoSMarkingController *)self qosMarkingPolicyEnabled:enabled forKey:v3];
 }
 
-- (id)qosMarkingAllowListAppIdentifiers:(id)a3
+- (id)qosMarkingAllowListAppIdentifiers:(id)identifiers
 {
-  v3 = [a3 objectForKeyedSubscript:kSCPropNetQoSMarkingAllowListAppIdentifiers];
+  v3 = [identifiers objectForKeyedSubscript:kSCPropNetQoSMarkingAllowListAppIdentifiers];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v4 = sub_1000636BC();
@@ -196,27 +196,27 @@ LABEL_21:
   return v10;
 }
 
-- (void)addAllowListPathPolicy:(id)a3 forPath:(id)a4 order:(unsigned int)a5
+- (void)addAllowListPathPolicy:(id)policy forPath:(id)path order:(unsigned int)order
 {
-  v7 = a3;
-  v8 = a4;
-  v45 = [(NSMutableDictionary *)self->_policySessions objectForKeyedSubscript:v7];
+  policyCopy = policy;
+  pathCopy = path;
+  v45 = [(NSMutableDictionary *)self->_policySessions objectForKeyedSubscript:policyCopy];
   if (v45)
   {
-    v9 = [NEPolicyRouteRule routeRuleWithAction:3 forInterfaceName:v7];
+    v9 = [NEPolicyRouteRule routeRuleWithAction:3 forInterfaceName:policyCopy];
     v57 = v9;
     v10 = [NSArray arrayWithObjects:&v57 count:1];
     v44 = [NEPolicyResult routeRules:v10];
 
     v11 = +[NEPolicyCondition allInterfaces];
-    v12 = [NEProcessInfo copyUUIDsForExecutable:v8];
+    v12 = [NEProcessInfo copyUUIDsForExecutable:pathCopy];
     v13 = v12;
     v42 = v11;
     if (v12 && [v12 count])
     {
       v38 = v9;
-      v40 = v8;
-      v41 = v7;
+      v40 = pathCopy;
+      v41 = policyCopy;
       v55 = 0u;
       v56 = 0u;
       v53 = 0u;
@@ -245,7 +245,7 @@ LABEL_21:
           v51[0] = v18;
           v51[1] = v11;
           v20 = [NSArray arrayWithObjects:v51 count:2];
-          v21 = [v19 initWithOrder:a5 result:v44 conditions:v20];
+          v21 = [v19 initWithOrder:order result:v44 conditions:v20];
 
           v22 = [v45 addPolicy:v21];
           v23 = sub_1000636BC();
@@ -275,15 +275,15 @@ LABEL_21:
             v59 = 0uLL;
             os_log_type_enabled(v23, v24);
             v25 = v23;
-            v26 = [v17 UUIDString];
+            uUIDString = [v17 UUIDString];
             v47 = 138413058;
             v48 = v41;
             v49 = 1024;
-            *v50 = a5;
+            *v50 = order;
             *&v50[4] = 2112;
             *&v50[6] = v40;
             *&v50[14] = 2112;
-            *&v50[16] = v26;
+            *&v50[16] = uUIDString;
             LODWORD(v37) = 38;
             v36 = &v47;
             v27 = _os_log_send_and_compose_impl();
@@ -315,13 +315,13 @@ LABEL_21:
             v59 = 0uLL;
             os_log_type_enabled(v23, v28);
             v29 = v23;
-            v30 = [v17 UUIDString];
+            uUIDString2 = [v17 UUIDString];
             v47 = 138412802;
             v48 = v41;
             v49 = 2112;
             *v50 = v40;
             *&v50[8] = 2112;
-            *&v50[10] = v30;
+            *&v50[10] = uUIDString2;
             LODWORD(v37) = 32;
             v36 = &v47;
             v27 = _os_log_send_and_compose_impl();
@@ -342,8 +342,8 @@ LABEL_17:
         {
 LABEL_19:
 
-          v8 = v40;
-          v7 = v41;
+          pathCopy = v40;
+          policyCopy = v41;
           goto LABEL_27;
         }
       }
@@ -371,9 +371,9 @@ LABEL_19:
       v59 = 0u;
       os_log_type_enabled(v31, v32);
       v47 = 138412546;
-      v48 = v7;
+      v48 = policyCopy;
       v49 = 2112;
-      *v50 = v8;
+      *v50 = pathCopy;
       v33 = _os_log_send_and_compose_impl();
       __SC_log_send2();
       if (v33 != &v58)
@@ -407,7 +407,7 @@ LABEL_19:
       v59 = 0u;
       os_log_type_enabled(v11, v34);
       v47 = 138412290;
-      v48 = v7;
+      v48 = policyCopy;
       v35 = _os_log_send_and_compose_impl();
       __SC_log_send2();
       if (v35 != &v58)
@@ -420,11 +420,11 @@ LABEL_19:
 LABEL_27:
 }
 
-- (void)addAllowListAppIdentifierPolicy:(id)a3 forApp:(id)a4 order:(unsigned int)a5
+- (void)addAllowListAppIdentifierPolicy:(id)policy forApp:(id)app order:(unsigned int)order
 {
-  v7 = a3;
-  v40 = a4;
-  if ([v40 hasPrefix:@"/"])
+  policyCopy = policy;
+  appCopy = app;
+  if ([appCopy hasPrefix:@"/"])
   {
     if (qword_100081D58 != -1)
     {
@@ -433,27 +433,27 @@ LABEL_27:
 
     if (byte_100081D50)
     {
-      [(QoSMarkingController *)self addAllowListPathPolicy:v7 forPath:v40 order:a5];
+      [(QoSMarkingController *)self addAllowListPathPolicy:policyCopy forPath:appCopy order:order];
     }
 
     goto LABEL_32;
   }
 
-  v44 = [(NSMutableDictionary *)self->_policySessions objectForKeyedSubscript:v7];
+  v44 = [(NSMutableDictionary *)self->_policySessions objectForKeyedSubscript:policyCopy];
   if (v44)
   {
-    v8 = [NEPolicyRouteRule routeRuleWithAction:3 forInterfaceName:v7];
+    v8 = [NEPolicyRouteRule routeRuleWithAction:3 forInterfaceName:policyCopy];
     v56 = v8;
     v9 = [NSArray arrayWithObjects:&v56 count:1];
     v43 = [NEPolicyResult routeRules:v9];
 
     v42 = +[NEPolicyCondition allInterfaces];
-    v10 = [NEProcessInfo copyUUIDsForBundleID:v40 uid:0];
+    v10 = [NEProcessInfo copyUUIDsForBundleID:appCopy uid:0];
     v11 = v10;
     if (v10 && [v10 count])
     {
       v37 = v8;
-      v39 = v7;
+      v39 = policyCopy;
       v54 = 0u;
       v55 = 0u;
       v52 = 0u;
@@ -482,7 +482,7 @@ LABEL_27:
           v50[0] = v16;
           v50[1] = v42;
           v18 = [NSArray arrayWithObjects:v50 count:2];
-          v19 = [v17 initWithOrder:a5 result:v43 conditions:v18];
+          v19 = [v17 initWithOrder:order result:v43 conditions:v18];
 
           v20 = [v44 addPolicy:v19];
           v21 = sub_1000636BC();
@@ -512,15 +512,15 @@ LABEL_27:
             v58 = 0uLL;
             os_log_type_enabled(v21, v22);
             v23 = v21;
-            v24 = [v15 UUIDString];
+            uUIDString = [v15 UUIDString];
             v46 = 138413058;
             v47 = v39;
             v48 = 1024;
-            *v49 = a5;
+            *v49 = order;
             *&v49[4] = 2112;
-            *&v49[6] = v40;
+            *&v49[6] = appCopy;
             *&v49[14] = 2112;
-            *&v49[16] = v24;
+            *&v49[16] = uUIDString;
             LODWORD(v36) = 38;
             v35 = &v46;
             v25 = _os_log_send_and_compose_impl();
@@ -552,13 +552,13 @@ LABEL_27:
             v58 = 0uLL;
             os_log_type_enabled(v21, v26);
             v27 = v21;
-            v28 = [v15 UUIDString];
+            uUIDString2 = [v15 UUIDString];
             v46 = 138412802;
             v47 = v39;
             v48 = 2112;
-            *v49 = v40;
+            *v49 = appCopy;
             *&v49[8] = 2112;
-            *&v49[10] = v28;
+            *&v49[10] = uUIDString2;
             LODWORD(v36) = 32;
             v35 = &v46;
             v25 = _os_log_send_and_compose_impl();
@@ -578,7 +578,7 @@ LABEL_21:
         {
 LABEL_23:
 
-          v7 = v39;
+          policyCopy = v39;
           goto LABEL_32;
         }
       }
@@ -606,9 +606,9 @@ LABEL_23:
       v58 = 0u;
       os_log_type_enabled(v29, v30);
       v46 = 138412546;
-      v47 = v7;
+      v47 = policyCopy;
       v48 = 2112;
-      *v49 = v40;
+      *v49 = appCopy;
       v31 = _os_log_send_and_compose_impl();
       __SC_log_send2();
       if (v31 != &v57)
@@ -642,7 +642,7 @@ LABEL_23:
       v58 = 0u;
       os_log_type_enabled(v32, v33);
       v46 = 138412290;
-      v47 = v7;
+      v47 = policyCopy;
       v34 = _os_log_send_and_compose_impl();
       __SC_log_send2();
       if (v34 != &v57)
@@ -686,22 +686,22 @@ LABEL_32:
   return v3;
 }
 
-- (void)updatePolicy:(id)a3 forInterface:(id)a4
+- (void)updatePolicy:(id)policy forInterface:(id)interface
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_enabled objectForKeyedSubscript:v7];
+  policyCopy = policy;
+  interfaceCopy = interface;
+  v8 = [(NSMutableDictionary *)self->_enabled objectForKeyedSubscript:interfaceCopy];
   if (v8)
   {
     v9 = [(QoSMarkingController *)self qosMarkingIsEnabled:v8];
     v10 = v9 ^ 1;
     v11 = [(QoSMarkingController *)self qosMarkingIsAppleAudioVideoCallsEnabled:v8];
-    if (v6)
+    if (policyCopy)
     {
 LABEL_3:
-      LODWORD(v12) = [(QoSMarkingController *)self qosMarkingIsEnabled:v6];
+      LODWORD(v12) = [(QoSMarkingController *)self qosMarkingIsEnabled:policyCopy];
       v13 = v12 ^ 1;
-      v94 = [(QoSMarkingController *)self qosMarkingIsAppleAudioVideoCallsEnabled:v6];
+      v94 = [(QoSMarkingController *)self qosMarkingIsAppleAudioVideoCallsEnabled:policyCopy];
       goto LABEL_6;
     }
   }
@@ -711,7 +711,7 @@ LABEL_3:
     v11 = 0;
     v9 = 0;
     v10 = 0;
-    if (v6)
+    if (policyCopy)
     {
       goto LABEL_3;
     }
@@ -721,7 +721,7 @@ LABEL_3:
   LODWORD(v12) = 0;
   v13 = 0;
 LABEL_6:
-  if (v6)
+  if (policyCopy)
   {
     v14 = 1;
   }
@@ -731,7 +731,7 @@ LABEL_6:
     v14 = v9;
   }
 
-  if (v14 == 1 && v9 == v12 && v10 == v13 && ((v9 & v12) != 1 || ([v8 isEqual:v6] & 1) != 0))
+  if (v14 == 1 && v9 == v12 && v10 == v13 && ((v9 & v12) != 1 || ([v8 isEqual:policyCopy] & 1) != 0))
   {
     v15 = 0;
     if (!v12)
@@ -741,7 +741,7 @@ LABEL_6:
 
 LABEL_47:
     v39 = [(QoSMarkingController *)self qosMarkingAllowListAppIdentifiers:v8, v81, v83];
-    v40 = [(QoSMarkingController *)self qosMarkingAllowListAppIdentifiers:v6];
+    v40 = [(QoSMarkingController *)self qosMarkingAllowListAppIdentifiers:policyCopy];
     if ([v39 isEqual:v40] && v11 == v94)
     {
       goto LABEL_114;
@@ -753,7 +753,7 @@ LABEL_47:
       sub_100067124("net.qos.policy.restricted", 1);
     }
 
-    [(NSMutableDictionary *)self->_enabled setObject:v6 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_enabled setObject:policyCopy forKeyedSubscript:interfaceCopy];
     v41 = sub_1000636BC();
     v42 = _SC_syslog_os_log_mapping();
     v91 = v15;
@@ -785,7 +785,7 @@ LABEL_47:
       }
 
       LODWORD(v133[0]) = 138412546;
-      *(v133 + 4) = v7;
+      *(v133 + 4) = interfaceCopy;
       WORD6(v133[0]) = 2080;
       *(v133 + 14) = v43;
       LODWORD(v83) = 22;
@@ -800,7 +800,7 @@ LABEL_47:
       v39 = v88;
     }
 
-    v45 = [(NSMutableDictionary *)self->_policySessions objectForKeyedSubscript:v7];
+    v45 = [(NSMutableDictionary *)self->_policySessions objectForKeyedSubscript:interfaceCopy];
     v40 = v93;
     if (!v45)
     {
@@ -811,12 +811,12 @@ LABEL_47:
         goto LABEL_85;
       }
 
-      v57 = [(QoSMarkingController *)self createPolicySession];
-      if (!v57)
+      createPolicySession = [(QoSMarkingController *)self createPolicySession];
+      if (!createPolicySession)
       {
         v49 = sub_1000636BC();
         v59 = _SC_syslog_os_log_mapping();
-        v85 = v6;
+        v85 = policyCopy;
         if (__SC_log_enabled())
         {
           v131 = 0u;
@@ -837,7 +837,7 @@ LABEL_47:
           v118 = 0u;
           os_log_type_enabled(v49, v59);
           LODWORD(v133[0]) = 138412290;
-          *(v133 + 4) = v7;
+          *(v133 + 4) = interfaceCopy;
           LODWORD(v83) = 12;
           v81 = v133;
           v60 = _os_log_send_and_compose_impl();
@@ -862,7 +862,7 @@ LABEL_84:
         v40 = v93;
 
         v58 = v56;
-        v6 = v85;
+        policyCopy = v85;
 LABEL_85:
         enabledAV = self->_enabledAV;
         if (v94)
@@ -872,7 +872,7 @@ LABEL_85:
             sub_100067124("net.qos.policy.restrict_avapps", 0);
           }
 
-          [(NSMutableDictionary *)self->_enabledAV setObject:v6 forKeyedSubscript:v7, v81, v83];
+          [(NSMutableDictionary *)self->_enabledAV setObject:policyCopy forKeyedSubscript:interfaceCopy, v81, v83];
           if (v58)
           {
             goto LABEL_113;
@@ -904,7 +904,7 @@ LABEL_85:
                 }
 
                 v66 = (v68 + 1);
-                [(QoSMarkingController *)self addAllowListAppIdentifierPolicy:v7 forApp:*(*(&v104 + 1) + 8 * v67) order:v68];
+                [(QoSMarkingController *)self addAllowListAppIdentifierPolicy:interfaceCopy forApp:*(*(&v104 + 1) + 8 * v67) order:v68];
                 v67 = v67 + 1;
                 v68 = v66;
               }
@@ -939,7 +939,7 @@ LABEL_85:
                 }
 
                 v73 = (v75 + 1);
-                [(QoSMarkingController *)self addAllowListPathPolicy:v7 forPath:*(*(&v99 + 1) + 8 * v74) order:v75];
+                [(QoSMarkingController *)self addAllowListPathPolicy:interfaceCopy forPath:*(*(&v99 + 1) + 8 * v74) order:v75];
                 v74 = v74 + 1;
                 v75 = v73;
               }
@@ -962,7 +962,7 @@ LABEL_85:
 
         else
         {
-          [(NSMutableDictionary *)enabledAV removeObjectForKey:v7];
+          [(NSMutableDictionary *)enabledAV removeObjectForKey:interfaceCopy];
           if (![(NSMutableDictionary *)self->_enabledAV count])
           {
             sub_100067124("net.qos.policy.restrict_avapps", 1);
@@ -993,7 +993,7 @@ LABEL_85:
             v118 = 0u;
             os_log_type_enabled(v76, v77);
             LODWORD(v133[0]) = 138412290;
-            *(v133 + 4) = v7;
+            *(v133 + 4) = interfaceCopy;
             LODWORD(v83) = 12;
             v81 = v133;
             v78 = _os_log_send_and_compose_impl();
@@ -1016,8 +1016,8 @@ LABEL_114:
         goto LABEL_115;
       }
 
-      v45 = v57;
-      [(NSMutableDictionary *)self->_policySessions setObject:v57 forKeyedSubscript:v7];
+      v45 = createPolicySession;
+      [(NSMutableDictionary *)self->_policySessions setObject:createPolicySession forKeyedSubscript:interfaceCopy];
     }
 
     if (([v45 removeAllPolicies] & 1) == 0)
@@ -1044,7 +1044,7 @@ LABEL_114:
         v118 = 0u;
         os_log_type_enabled(v46, v47);
         LODWORD(v133[0]) = 138412290;
-        *(v133 + 4) = v7;
+        *(v133 + 4) = interfaceCopy;
         LODWORD(v84) = 12;
         v82 = v133;
         v48 = _os_log_send_and_compose_impl();
@@ -1072,7 +1072,7 @@ LABEL_114:
     v110 = 0u;
     v49 = v40;
     v50 = [v49 countByEnumeratingWithState:&v109 objects:v108 count:16];
-    v85 = v6;
+    v85 = policyCopy;
     if (v50)
     {
       v51 = v50;
@@ -1092,7 +1092,7 @@ LABEL_114:
           }
 
           v53 = (v55 + 1);
-          [(QoSMarkingController *)self addAllowListAppIdentifierPolicy:v7 forApp:*(*(&v109 + 1) + 8 * v54) order:v55];
+          [(QoSMarkingController *)self addAllowListAppIdentifierPolicy:interfaceCopy forApp:*(*(&v109 + 1) + 8 * v54) order:v55];
           v54 = v54 + 1;
           v55 = v53;
         }
@@ -1128,7 +1128,7 @@ LABEL_114:
 
   else
   {
-    if (!v6 && v8)
+    if (!policyCopy && v8)
     {
       v16 = sub_1000636BC();
       v17 = _SC_syslog_os_log_mapping();
@@ -1153,7 +1153,7 @@ LABEL_114:
         v118 = 0u;
         os_log_type_enabled(v16, v17);
         LODWORD(v133[0]) = 138412290;
-        *(v133 + 4) = v7;
+        *(v133 + 4) = interfaceCopy;
         LODWORD(v83) = 12;
         v81 = v133;
         v18 = _os_log_send_and_compose_impl();
@@ -1168,9 +1168,9 @@ LABEL_114:
       }
     }
 
-    [(NSMutableDictionary *)self->_policySessions removeObjectForKey:v7, v81, v83];
-    [(NSMutableDictionary *)self->_enabled removeObjectForKey:v7];
-    [(NSMutableDictionary *)self->_enabledAV removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->_policySessions removeObjectForKey:interfaceCopy, v81, v83];
+    [(NSMutableDictionary *)self->_enabled removeObjectForKey:interfaceCopy];
+    [(NSMutableDictionary *)self->_enabledAV removeObjectForKey:interfaceCopy];
   }
 
   v19 = socket(2, 2, 0);
@@ -1251,17 +1251,17 @@ LABEL_114:
       v118 = 0u;
       os_log_type_enabled(v21, v22);
       v23 = "disable";
-      if (v12 | (v6 == 0))
+      if (v12 | (policyCopy == 0))
       {
         v23 = "enable";
       }
 
       v24 = " (default)";
       LODWORD(v133[0]) = 138412802;
-      *(v133 + 4) = v7;
+      *(v133 + 4) = interfaceCopy;
       *(v133 + 14) = v23;
       WORD6(v133[0]) = 2080;
-      if (v6)
+      if (policyCopy)
       {
         v24 = "";
       }
@@ -1279,10 +1279,10 @@ LABEL_114:
       v11 = v92;
     }
 
-    v26 = [(__CFString *)v7 UTF8String];
+    uTF8String = [(__CFString *)interfaceCopy UTF8String];
     memset(v133, 0, sizeof(v133));
     __strlcpy_chk();
-    LODWORD(v133[1]) = v12 | (v6 == 0);
+    LODWORD(v133[1]) = v12 | (policyCopy == 0);
     if (ioctl(v20, 0xC02069B5uLL, v133) == -1)
     {
       v27 = sub_1000636BC();
@@ -1310,7 +1310,7 @@ LABEL_114:
         v30 = __error();
         v31 = strerror(*v30);
         v113 = 136315394;
-        v114 = v26;
+        v114 = uTF8String;
         v115 = 2080;
         v116 = v31;
         LODWORD(v83) = 22;
@@ -1356,9 +1356,9 @@ LABEL_115:
     }
   }
 
-  NetworkInterfaceEntity = SCDynamicStoreKeyCreateNetworkInterfaceEntity(0, kSCDynamicStoreDomainState, v7, kSCEntNetQoSMarkingPolicy);
+  NetworkInterfaceEntity = SCDynamicStoreKeyCreateNetworkInterfaceEntity(0, kSCDynamicStoreDomainState, interfaceCopy, kSCEntNetQoSMarkingPolicy);
   v80 = v12 ^ 1;
-  if (!v6)
+  if (!policyCopy)
   {
     v80 = 1;
   }
@@ -1370,7 +1370,7 @@ LABEL_115:
 
   else
   {
-    SCDynamicStoreSetValue(0, NetworkInterfaceEntity, v6);
+    SCDynamicStoreSetValue(0, NetworkInterfaceEntity, policyCopy);
   }
 
   CFRelease(NetworkInterfaceEntity);
@@ -1389,9 +1389,9 @@ LABEL_125:
   return v2;
 }
 
-- (void)setInterfaces:(id)a3
+- (void)setInterfaces:(id)interfaces
 {
-  v5 = a3;
+  interfacesCopy = interfaces;
   v6 = socket(2, 2, 0);
   if (v6 == -1)
   {
@@ -1434,15 +1434,15 @@ LABEL_125:
   else
   {
     v7 = v6;
-    v28 = self;
+    selfCopy = self;
     v8 = self->_interfaces;
-    objc_storeStrong(&self->_interfaces, a3);
+    objc_storeStrong(&self->_interfaces, interfaces);
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v27 = v5;
-    obj = v5;
+    v27 = interfacesCopy;
+    obj = interfacesCopy;
     v9 = [obj countByEnumeratingWithState:&v31 objects:v30 count:16];
     if (v9)
     {
@@ -1458,7 +1458,7 @@ LABEL_125:
           }
 
           v13 = *(*(&v31 + 1) + 8 * i);
-          v14 = [v13 UTF8String];
+          uTF8String = [v13 UTF8String];
           v55 = 0u;
           v56 = 0u;
           __strlcpy_chk();
@@ -1490,7 +1490,7 @@ LABEL_125:
               v20 = __error();
               v21 = strerror(*v20);
               v35 = 136315394;
-              v36 = v14;
+              v36 = uTF8String;
               v37 = 2080;
               v38 = v21;
               v22 = _os_log_send_and_compose_impl();
@@ -1507,9 +1507,9 @@ LABEL_125:
 
           else if (*(&v56 + 4) == 0x300000002 && ![(NSArray *)v8 containsObject:v13])
           {
-            v15 = [(NSMutableDictionary *)v28->_requested objectForKeyedSubscript:v13];
-            [(NSMutableDictionary *)v28->_requested removeObjectForKey:v13];
-            [(QoSMarkingController *)v28 setPolicy:v15 forInterface:v13];
+            v15 = [(NSMutableDictionary *)selfCopy->_requested objectForKeyedSubscript:v13];
+            [(NSMutableDictionary *)selfCopy->_requested removeObjectForKey:v13];
+            [(QoSMarkingController *)selfCopy setPolicy:v15 forInterface:v13];
           }
         }
 
@@ -1520,57 +1520,57 @@ LABEL_125:
     }
 
     close(v7);
-    v5 = v27;
+    interfacesCopy = v27;
   }
 }
 
-- (void)setPolicy:(id)a3 forInterface:(id)a4
+- (void)setPolicy:(id)policy forInterface:(id)interface
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7)
+  policyCopy = policy;
+  interfaceCopy = interface;
+  if (policyCopy)
   {
-    if ([(NSArray *)self->_interfaces containsObject:v6])
+    if ([(NSArray *)self->_interfaces containsObject:interfaceCopy])
     {
-      [(QoSMarkingController *)self updatePolicy:v7 forInterface:v6];
+      [(QoSMarkingController *)self updatePolicy:policyCopy forInterface:interfaceCopy];
     }
 
-    [(NSMutableDictionary *)self->_requested setObject:v7 forKey:v6, v7];
+    [(NSMutableDictionary *)self->_requested setObject:policyCopy forKey:interfaceCopy, policyCopy];
   }
 
   else
   {
-    [(QoSMarkingController *)self updatePolicy:0 forInterface:v6];
-    [(NSMutableDictionary *)self->_requested removeObjectForKey:v6];
+    [(QoSMarkingController *)self updatePolicy:0 forInterface:interfaceCopy];
+    [(NSMutableDictionary *)self->_requested removeObjectForKey:interfaceCopy];
   }
 }
 
-- (void)setPolicySessions:(id)a3
+- (void)setPolicySessions:(id)sessions
 {
   p_policySessions = &self->_policySessions;
 
-  objc_storeStrong(p_policySessions, a3);
+  objc_storeStrong(p_policySessions, sessions);
 }
 
-- (void)setRequested:(id)a3
+- (void)setRequested:(id)requested
 {
   p_requested = &self->_requested;
 
-  objc_storeStrong(p_requested, a3);
+  objc_storeStrong(p_requested, requested);
 }
 
-- (void)setEnabled:(id)a3
+- (void)setEnabled:(id)enabled
 {
   p_enabled = &self->_enabled;
 
-  objc_storeStrong(p_enabled, a3);
+  objc_storeStrong(p_enabled, enabled);
 }
 
-- (void)setEnabledAV:(id)a3
+- (void)setEnabledAV:(id)v
 {
   p_enabledAV = &self->_enabledAV;
 
-  objc_storeStrong(p_enabledAV, a3);
+  objc_storeStrong(p_enabledAV, v);
 }
 
 @end

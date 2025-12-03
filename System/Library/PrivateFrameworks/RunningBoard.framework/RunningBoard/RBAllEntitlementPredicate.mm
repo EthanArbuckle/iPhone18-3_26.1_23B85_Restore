@@ -1,6 +1,6 @@
 @interface RBAllEntitlementPredicate
-- (BOOL)matchesEntitlements:(id)a3;
-- (RBAllEntitlementPredicate)initWithDictionary:(id)a3 forDomain:(id)a4 attribute:(id)a5 errors:(id)a6;
+- (BOOL)matchesEntitlements:(id)entitlements;
+- (RBAllEntitlementPredicate)initWithDictionary:(id)dictionary forDomain:(id)domain attribute:(id)attribute errors:(id)errors;
 - (id)allEntitlements;
 - (id)description;
 - (unint64_t)count;
@@ -8,27 +8,27 @@
 
 @implementation RBAllEntitlementPredicate
 
-- (RBAllEntitlementPredicate)initWithDictionary:(id)a3 forDomain:(id)a4 attribute:(id)a5 errors:(id)a6
+- (RBAllEntitlementPredicate)initWithDictionary:(id)dictionary forDomain:(id)domain attribute:(id)attribute errors:(id)errors
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  domainCopy = domain;
+  attributeCopy = attribute;
+  errorsCopy = errors;
   v13 = MEMORY[0x277CBEB38];
-  v14 = a3;
-  v15 = [v13 dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [v13 dictionary];
   v23 = MEMORY[0x277D85DD0];
   v24 = 3221225472;
   v25 = __75__RBAllEntitlementPredicate_initWithDictionary_forDomain_attribute_errors___block_invoke;
   v26 = &unk_279B33888;
-  v27 = v10;
-  v28 = v11;
-  v29 = v12;
-  v30 = v15;
-  v16 = v15;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
-  [v14 enumerateKeysAndObjectsUsingBlock:&v23];
+  v27 = domainCopy;
+  v28 = attributeCopy;
+  v29 = errorsCopy;
+  v30 = dictionary;
+  v16 = dictionary;
+  v17 = errorsCopy;
+  v18 = attributeCopy;
+  v19 = domainCopy;
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:&v23];
 
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:{v16, v23, v24, v25, v26}];
   predicate = self->_predicate;
@@ -119,9 +119,9 @@ LABEL_12:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)matchesEntitlements:(id)a3
+- (BOOL)matchesEntitlements:(id)entitlements
 {
-  v4 = a3;
+  entitlementsCopy = entitlements;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -131,7 +131,7 @@ LABEL_12:
   v8[1] = 3221225472;
   v8[2] = __49__RBAllEntitlementPredicate_matchesEntitlements___block_invoke;
   v8[3] = &unk_279B338B0;
-  v6 = v4;
+  v6 = entitlementsCopy;
   v9 = v6;
   v10 = &v11;
   [(NSDictionary *)predicate enumerateKeysAndObjectsUsingBlock:v8];
@@ -237,8 +237,8 @@ void __44__RBAllEntitlementPredicate_allEntitlements__block_invoke(uint64_t a1, 
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(NSDictionary *)self->_predicate allKeys];
-  v5 = [v4 componentsJoinedByString:@" && "];
+  allKeys = [(NSDictionary *)self->_predicate allKeys];
+  v5 = [allKeys componentsJoinedByString:@" && "];
   v6 = [v3 initWithFormat:@"(%@)", v5];
 
   return v6;

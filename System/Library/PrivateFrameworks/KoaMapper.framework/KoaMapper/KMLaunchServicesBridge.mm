@@ -1,31 +1,31 @@
 @interface KMLaunchServicesBridge
 + (id)allInstalledAppBundleIdentifiers;
-- (BOOL)_checkAppValidity:(id)a3;
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4;
+- (BOOL)_checkAppValidity:(id)validity;
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block;
 - (KMLaunchServicesBridge)init;
-- (KMLaunchServicesBridge)initWithLanguageCode:(id)a3;
-- (id)_getOverrideByInfoPlist:(id)a3;
+- (KMLaunchServicesBridge)initWithLanguageCode:(id)code;
+- (id)_getOverrideByInfoPlist:(id)plist;
 @end
 
 @implementation KMLaunchServicesBridge
 
-- (id)_getOverrideByInfoPlist:(id)a3
+- (id)_getOverrideByInfoPlist:(id)plist
 {
-  v3 = [a3 infoDictionary];
-  v4 = [v3 objectForKey:@"SBIconVisibilitySetByAppPreference" ofClass:objc_opt_class()];
+  infoDictionary = [plist infoDictionary];
+  v4 = [infoDictionary objectForKey:@"SBIconVisibilitySetByAppPreference" ofClass:objc_opt_class()];
   if ([v4 BOOLValue])
   {
-    v5 = [v3 objectForKey:@"SBIconVisibilityDefaultVisible" ofClass:objc_opt_class()];
-    v6 = [v5 BOOLValue];
+    v5 = [infoDictionary objectForKey:@"SBIconVisibilityDefaultVisible" ofClass:objc_opt_class()];
+    bOOLValue = [v5 BOOLValue];
 
-    if (v6)
+    if (bOOLValue)
     {
       v7 = MEMORY[0x277CBEC38];
     }
 
     else
     {
-      v8 = [v3 objectForKey:@"SBIconVisibilityDefaultVisibleInstallTypes" ofClass:objc_opt_class()];
+      v8 = [infoDictionary objectForKey:@"SBIconVisibilityDefaultVisibleInstallTypes" ofClass:objc_opt_class()];
       if ([v8 count] && AFIsInternalInstall() && (objc_msgSend(v8, "containsObject:", @"internal") & 1) != 0)
       {
         v7 = MEMORY[0x277CBEC38];
@@ -33,7 +33,7 @@
 
       else
       {
-        v9 = [v3 objectForKey:@"SBIconVisibilityDefaultVisiblePlatforms" ofClass:objc_opt_class()];
+        v9 = [infoDictionary objectForKey:@"SBIconVisibilityDefaultVisiblePlatforms" ofClass:objc_opt_class()];
         if ([v9 count] && (v10 = MGGetStringAnswer(), v11 = objc_msgSend(v9, "containsObject:", v10), v10, (v11 & 1) != 0))
         {
           v7 = MEMORY[0x277CBEC38];
@@ -55,70 +55,70 @@
   return v7;
 }
 
-- (BOOL)_checkAppValidity:(id)a3
+- (BOOL)_checkAppValidity:(id)validity
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  v6 = [&unk_2867BE638 containsObject:v5];
+  validityCopy = validity;
+  bundleIdentifier = [validityCopy bundleIdentifier];
+  v6 = [&unk_2867BE638 containsObject:bundleIdentifier];
 
   if (v6)
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  else if ([v4 isLaunchProhibited])
+  else if ([validityCopy isLaunchProhibited])
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v8 = [(KMLaunchServicesBridge *)self _getOverrideByInfoPlist:v4];
+    v8 = [(KMLaunchServicesBridge *)self _getOverrideByInfoPlist:validityCopy];
     v9 = v8;
     if (v8)
     {
-      v7 = [v8 BOOLValue];
+      bOOLValue = [v8 BOOLValue];
     }
 
     else
     {
-      v10 = [v4 typeForInstallMachinery];
-      v11 = [v10 lowercaseString];
+      typeForInstallMachinery = [validityCopy typeForInstallMachinery];
+      lowercaseString = [typeForInstallMachinery lowercaseString];
 
-      if ([v11 isEqualToString:@"hidden"] & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"internal"))
+      if ([lowercaseString isEqualToString:@"hidden"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"internal"))
       {
-        v7 = 0;
+        bOOLValue = 0;
       }
 
-      else if ([v4 developerType] == 1)
+      else if ([validityCopy developerType] == 1)
       {
-        v13 = [v4 appTags];
-        v14 = [v13 containsObject:@"hidden"];
+        appTags = [validityCopy appTags];
+        v14 = [appTags containsObject:@"hidden"];
 
-        v7 = v14 ^ 1;
+        bOOLValue = v14 ^ 1;
       }
 
       else
       {
-        v7 = 1;
+        bOOLValue = 1;
       }
     }
   }
 
-  return v7 & 1;
+  return bOOLValue & 1;
 }
 
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  blockCopy = block;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v31 = self;
-  v6 = [(KMLaunchServicesBridge *)self _appEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v33 objects:v43 count:16];
+  selfCopy = self;
+  _appEnumerator = [(KMLaunchServicesBridge *)self _appEnumerator];
+  v7 = [_appEnumerator countByEnumeratingWithState:&v33 objects:v43 count:16];
   if (!v7)
   {
     v26 = 1;
@@ -128,8 +128,8 @@
   v8 = v7;
   v9 = 0;
   v10 = *v34;
-  v30 = v5;
-  v11 = v6;
+  v30 = blockCopy;
+  v11 = _appEnumerator;
   while (2)
   {
     for (i = 0; i != v8; ++i)
@@ -144,21 +144,21 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = [v13 bundleIdentifier];
-        v16 = [v15 length];
+        bundleIdentifier = [v13 bundleIdentifier];
+        v16 = [bundleIdentifier length];
 
         if (v16)
         {
-          if (![(KMLaunchServicesBridge *)v31 _checkAppValidity:v13])
+          if (![(KMLaunchServicesBridge *)selfCopy _checkAppValidity:v13])
           {
             goto LABEL_16;
           }
 
-          itemMapper = v31->_itemMapper;
-          additionalFields = v31->_additionalFields;
+          itemMapper = selfCopy->_itemMapper;
+          additionalFields = selfCopy->_additionalFields;
           v32 = v9;
           v19 = [(KVItemMapper *)itemMapper mapObject:v13 additionalFields:additionalFields error:&v32];
-          v6 = v32;
+          _appEnumerator = v32;
 
           if ([v19 count] != 1)
           {
@@ -170,7 +170,7 @@
               v39 = 2112;
               v40 = v19;
               v41 = 2112;
-              v42 = v6;
+              v42 = _appEnumerator;
               _os_log_error_impl(&dword_2559DF000, v27, OS_LOG_TYPE_ERROR, "%s Unexepected items: %@ error: %@", buf, 0x20u);
             }
 
@@ -179,8 +179,8 @@
             goto LABEL_24;
           }
 
-          v20 = [v19 firstObject];
-          v21 = v30[2](v30, v20);
+          firstObject = [v19 firstObject];
+          v21 = v30[2](v30, firstObject);
 
           if ((v21 & 1) == 0)
           {
@@ -191,7 +191,7 @@ LABEL_24:
             goto LABEL_25;
           }
 
-          v9 = v6;
+          v9 = _appEnumerator;
         }
 
         else
@@ -200,13 +200,13 @@ LABEL_24:
           if (os_log_type_enabled(KMLogContextCore, OS_LOG_TYPE_ERROR))
           {
             v24 = v23;
-            v25 = [v13 bundleIdentifier];
+            bundleIdentifier2 = [v13 bundleIdentifier];
             *buf = 136315650;
             v38 = "[KMLaunchServicesBridge enumerateItemsWithError:usingBlock:]";
             v39 = 2112;
             v40 = v13;
             v41 = 2112;
-            v42 = v25;
+            v42 = bundleIdentifier2;
             _os_log_error_impl(&dword_2559DF000, v24, OS_LOG_TYPE_ERROR, "%s bundle record: %@ has invalid bundle identifier (%@)", buf, 0x20u);
           }
         }
@@ -239,9 +239,9 @@ LABEL_16:
   }
 
   v26 = 1;
-  v6 = v9;
+  _appEnumerator = v9;
 LABEL_25:
-  v5 = v30;
+  blockCopy = v30;
 LABEL_26:
 
   v28 = *MEMORY[0x277D85DE8];
@@ -254,10 +254,10 @@ LABEL_26:
   objc_exception_throw(v2);
 }
 
-- (KMLaunchServicesBridge)initWithLanguageCode:(id)a3
+- (KMLaunchServicesBridge)initWithLanguageCode:(id)code
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  codeCopy = code;
   v21.receiver = self;
   v21.super_class = KMLaunchServicesBridge;
   v5 = [(KMLaunchServicesBridge *)&v21 init];
@@ -295,7 +295,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v4)
+  if (!codeCopy)
   {
     v17 = KMLogContextCore;
     if (!os_log_type_enabled(KMLogContextCore, OS_LOG_TYPE_ERROR))
@@ -313,7 +313,7 @@ LABEL_12:
 
   v9 = KVAdditionalFieldTypeToNumber();
   v22 = v9;
-  v23 = v4;
+  v23 = codeCopy;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
   additionalFields = v5->_additionalFields;
   v5->_additionalFields = v10;
@@ -355,10 +355,10 @@ LABEL_10:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = [v7 bundleIdentifier];
-          if (v9)
+          bundleIdentifier = [v7 bundleIdentifier];
+          if (bundleIdentifier)
           {
-            [v14 addObject:v9];
+            [v14 addObject:bundleIdentifier];
           }
 
           else

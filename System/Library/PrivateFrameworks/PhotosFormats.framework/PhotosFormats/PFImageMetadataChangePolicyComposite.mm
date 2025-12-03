@@ -1,23 +1,23 @@
 @interface PFImageMetadataChangePolicyComposite
-+ (id)policyWithPolicies:(id)a3;
-- (BOOL)metadataNeedsProcessing:(id)a3;
-- (PFImageMetadataChangePolicyComposite)initWithCoder:(id)a3;
-- (id)processMetadata:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)policyWithPolicies:(id)policies;
+- (BOOL)metadataNeedsProcessing:(id)processing;
+- (PFImageMetadataChangePolicyComposite)initWithCoder:(id)coder;
+- (id)processMetadata:(id)metadata;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PFImageMetadataChangePolicyComposite
 
-- (id)processMetadata:(id)a3
+- (id)processMetadata:(id)metadata
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  metadataCopy = metadata;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(PFImageMetadataChangePolicyComposite *)self policies];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  policies = [(PFImageMetadataChangePolicyComposite *)self policies];
+  v6 = [policies countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -28,37 +28,37 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(policies);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 metadataNeedsProcessing:v4])
+        if ([v10 metadataNeedsProcessing:metadataCopy])
         {
-          v11 = [v10 processMetadata:v4];
+          v11 = [v10 processMetadata:metadataCopy];
 
-          v4 = v11;
+          metadataCopy = v11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [policies countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  return v4;
+  return metadataCopy;
 }
 
-- (BOOL)metadataNeedsProcessing:(id)a3
+- (BOOL)metadataNeedsProcessing:(id)processing
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  processingCopy = processing;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(PFImageMetadataChangePolicyComposite *)self policies];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  policies = [(PFImageMetadataChangePolicyComposite *)self policies];
+  v6 = [policies countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -68,17 +68,17 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(policies);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) metadataNeedsProcessing:v4])
+        if ([*(*(&v10 + 1) + 8 * i) metadataNeedsProcessing:processingCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [policies countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -93,30 +93,30 @@ LABEL_11:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PFImageMetadataChangePolicyComposite *)self policies];
-  [v4 encodeObject:v5 forKey:@"policyList"];
+  coderCopy = coder;
+  policies = [(PFImageMetadataChangePolicyComposite *)self policies];
+  [coderCopy encodeObject:policies forKey:@"policyList"];
 }
 
-- (PFImageMetadataChangePolicyComposite)initWithCoder:(id)a3
+- (PFImageMetadataChangePolicyComposite)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"policyList"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"policyList"])
   {
-    v5 = [v4 decodeObjectForKey:@"policyList"];
+    v5 = [coderCopy decodeObjectForKey:@"policyList"];
     [(PFImageMetadataChangePolicyComposite *)self setPolicies:v5];
   }
 
   return self;
 }
 
-+ (id)policyWithPolicies:(id)a3
++ (id)policyWithPolicies:(id)policies
 {
-  v3 = a3;
+  policiesCopy = policies;
   v4 = objc_opt_new();
-  [v4 setPolicies:v3];
+  [v4 setPolicies:policiesCopy];
 
   return v4;
 }

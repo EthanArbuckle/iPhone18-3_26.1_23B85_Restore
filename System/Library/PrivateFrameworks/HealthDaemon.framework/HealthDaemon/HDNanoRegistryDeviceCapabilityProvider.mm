@@ -1,10 +1,10 @@
 @interface HDNanoRegistryDeviceCapabilityProvider
-- (HDNanoRegistryDeviceCapabilityProvider)initWithActivePairedDeviceProvider:(id)a3;
+- (HDNanoRegistryDeviceCapabilityProvider)initWithActivePairedDeviceProvider:(id)provider;
 - (id)activePairedDevice;
-- (id)isCapabilitySupportedOnActivePairedDevice:(id)a3 error:(id *)a4;
-- (void)_pairedOrActiveDevicesDidChange:(id)a3;
+- (id)isCapabilitySupportedOnActivePairedDevice:(id)device error:(id *)error;
+- (void)_pairedOrActiveDevicesDidChange:(id)change;
 - (void)dealloc;
-- (void)registerObserver:(id)a3 queue:(id)a4;
+- (void)registerObserver:(id)observer queue:(id)queue;
 - (void)resetCachedLastActivePairedDevice;
 @end
 
@@ -20,9 +20,9 @@ id __46__HDNanoRegistryDeviceCapabilityProvider_init__block_invoke()
   return v3;
 }
 
-- (HDNanoRegistryDeviceCapabilityProvider)initWithActivePairedDeviceProvider:(id)a3
+- (HDNanoRegistryDeviceCapabilityProvider)initWithActivePairedDeviceProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = HDNanoRegistryDeviceCapabilityProvider;
   v5 = [(HDNanoRegistryDeviceCapabilityProvider *)&v16 init];
@@ -40,7 +40,7 @@ id __46__HDNanoRegistryDeviceCapabilityProvider_init__block_invoke()
 
     v6->_lock._os_unfair_lock_opaque = 0;
     v6->_lock_isListeningForUpdates = 0;
-    v13 = _Block_copy(v4);
+    v13 = _Block_copy(providerCopy);
     activePairedDeviceProvider = v6->_activePairedDeviceProvider;
     v6->_activePairedDeviceProvider = v13;
   }
@@ -90,21 +90,21 @@ void __67__HDNanoRegistryDeviceCapabilityProvider__startListeningForUpdates__blo
   [(HDNanoRegistryDeviceCapabilityProvider *)&v4 dealloc];
 }
 
-- (void)_pairedOrActiveDevicesDidChange:(id)a3
+- (void)_pairedOrActiveDevicesDidChange:(id)change
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   _HKInitializeLogging();
   v5 = HKLogInfrastructure();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [changeCopy name];
     *buf = 138543618;
     v13 = v6;
     v14 = 2114;
-    v15 = v8;
+    v15 = name;
     _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notifying delegate for an active device change: %{public}@", buf, 0x16u);
   }
 
@@ -122,22 +122,22 @@ void __67__HDNanoRegistryDeviceCapabilityProvider__startListeningForUpdates__blo
 
 - (void)resetCachedLastActivePairedDevice
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 24));
-    v2 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    os_unfair_lock_lock((self + 24));
+    v2 = *(self + 32);
+    *(self + 32) = 0;
 
-    os_unfair_lock_unlock((a1 + 24));
+    os_unfair_lock_unlock((self + 24));
   }
 }
 
-- (id)isCapabilitySupportedOnActivePairedDevice:(id)a3 error:(id *)a4
+- (id)isCapabilitySupportedOnActivePairedDevice:(id)device error:(id *)error
 {
   v5 = MEMORY[0x277CCABB0];
-  v6 = a3;
-  v7 = [(HDNanoRegistryDeviceCapabilityProvider *)self activePairedDevice];
-  v8 = [v7 supportsCapability:v6];
+  deviceCopy = device;
+  activePairedDevice = [(HDNanoRegistryDeviceCapabilityProvider *)self activePairedDevice];
+  v8 = [activePairedDevice supportsCapability:deviceCopy];
 
   v9 = [v5 numberWithInt:v8];
 
@@ -164,7 +164,7 @@ void __67__HDNanoRegistryDeviceCapabilityProvider__startListeningForUpdates__blo
   return v3;
 }
 
-- (void)registerObserver:(id)a3 queue:(id)a4
+- (void)registerObserver:(id)observer queue:(id)queue
 {
   observers = self->_observers;
   v5[0] = MEMORY[0x277D85DD0];
@@ -172,7 +172,7 @@ void __67__HDNanoRegistryDeviceCapabilityProvider__startListeningForUpdates__blo
   v5[2] = __65__HDNanoRegistryDeviceCapabilityProvider_registerObserver_queue___block_invoke;
   v5[3] = &unk_278613968;
   v5[4] = self;
-  [(HKObserverSet *)observers registerObserver:a3 queue:a4 runIfFirstObserver:v5];
+  [(HKObserverSet *)observers registerObserver:observer queue:queue runIfFirstObserver:v5];
 }
 
 void __65__HDNanoRegistryDeviceCapabilityProvider_registerObserver_queue___block_invoke(uint64_t a1)

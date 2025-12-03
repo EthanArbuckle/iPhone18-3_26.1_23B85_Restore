@@ -127,9 +127,9 @@
   v25 = roundf(v9 * v17);
   [(NSNumber *)self->inputScale floatValue];
   v27 = v26;
-  v28 = [(NSNumber *)self->inputLocal BOOLValue];
+  bOOLValue = [(NSNumber *)self->inputLocal BOOLValue];
   v29 = v27;
-  if (!v28)
+  if (!bOOLValue)
   {
     v29 = 0.699999988;
   }
@@ -201,7 +201,7 @@
     while (v60 > 1);
   }
 
-  if (v28)
+  if (bOOLValue)
   {
     [(CIImage *)self->inputImage extent];
     v73 = v72;
@@ -211,10 +211,10 @@
     v77 = v76;
     [(CIImage *)v57 extent];
     v79 = [CIVector vectorWithX:v75 Y:v77 / v78];
-    v80 = [(CIImage *)v57 imageByClampingToExtent];
+    imageByClampingToExtent = [(CIImage *)v57 imageByClampingToExtent];
     v101 = @"inputScale";
     v102 = v79;
-    v81 = -[CIImage imageByApplyingFilter:withInputParameters:](v80, "imageByApplyingFilter:withInputParameters:", @"CISoftCubicUpsample", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v102 forKeys:&v101 count:1]);
+    v81 = -[CIImage imageByApplyingFilter:withInputParameters:](imageByClampingToExtent, "imageByApplyingFilter:withInputParameters:", @"CISoftCubicUpsample", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v102 forKeys:&v101 count:1]);
   }
 
   else
@@ -228,19 +228,19 @@
 
   v84 = v81;
   v85 = v5 + v5;
-  v86 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
+  imageByUnpremultiplyingAlpha = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
   if ([(NSNumber *)self->inputPerceptual BOOLValue])
   {
-    v86 = [(CIImage *)v86 imageByApplyingFilter:@"CILinearToSRGBToneCurve"];
+    imageByUnpremultiplyingAlpha = [(CIImage *)imageByUnpremultiplyingAlpha imageByApplyingFilter:@"CILinearToSRGBToneCurve"];
   }
 
   v87 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_CEstretch];
-  [(CIImage *)v86 extent];
+  [(CIImage *)imageByUnpremultiplyingAlpha extent];
   v89 = v88;
   v91 = v90;
   v93 = v92;
   v95 = v94;
-  v98[0] = v86;
+  v98[0] = imageByUnpremultiplyingAlpha;
   v98[1] = v84;
   *&v88 = v85;
   v98[2] = [MEMORY[0x1E696AD98] numberWithFloat:v88];

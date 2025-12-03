@@ -1,23 +1,23 @@
 @interface VNFaceLandmarkRegion2D
-- (BOOL)isEqual:(id)a3;
-- (VNFaceLandmarkRegion2D)initWithCoder:(id)a3;
-- (VNFaceLandmarkRegion2D)initWithOriginatingRequestSpecifier:(id)a3 faceBoundingBox:(CGRect)a4 pointCount:(unint64_t)a5;
-- (VNFaceLandmarkRegion2D)initWithOriginatingRequestSpecifier:(id)a3 faceBoundingBox:(CGRect)a4 pointsClassification:(int64_t)a5 points:pointCount:precisionEstimatesPerPoint:;
+- (BOOL)isEqual:(id)equal;
+- (VNFaceLandmarkRegion2D)initWithCoder:(id)coder;
+- (VNFaceLandmarkRegion2D)initWithOriginatingRequestSpecifier:(id)specifier faceBoundingBox:(CGRect)box pointCount:(unint64_t)count;
+- (VNFaceLandmarkRegion2D)initWithOriginatingRequestSpecifier:(id)specifier faceBoundingBox:(CGRect)box pointsClassification:(int64_t)classification points:pointCount:precisionEstimatesPerPoint:;
 - (const)normalizedPoints;
-- (const)normalizedPointsInTopLeftOrigin:(BOOL)a3 orientation:(unsigned int)a4;
+- (const)normalizedPointsInTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation;
 - (const)pointsInImageOfSize:(CGSize)imageSize;
-- (double)pointAtIndex:(unint64_t)a3;
+- (double)pointAtIndex:(unint64_t)index;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNFaceLandmarkRegion2D
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -26,22 +26,22 @@
   {
     v14.receiver = self;
     v14.super_class = VNFaceLandmarkRegion2D;
-    if ([(VNFaceLandmarkRegion *)&v14 isEqual:v4])
+    if ([(VNFaceLandmarkRegion *)&v14 isEqual:equalCopy])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = v4;
-        v6 = [(VNFaceLandmarkRegion *)self pointCount];
-        if (v6 == [(VNFaceLandmarkRegion *)v5 pointCount])
+        v5 = equalCopy;
+        pointCount = [(VNFaceLandmarkRegion *)self pointCount];
+        if (pointCount == [(VNFaceLandmarkRegion *)v5 pointCount])
         {
-          v7 = [(VNFaceLandmarkRegion2D *)self normalizedPoints];
-          v8 = [(VNFaceLandmarkRegion2D *)v5 normalizedPoints];
-          if (!v6)
+          normalizedPoints = [(VNFaceLandmarkRegion2D *)self normalizedPoints];
+          normalizedPoints2 = [(VNFaceLandmarkRegion2D *)v5 normalizedPoints];
+          if (!pointCount)
           {
 LABEL_8:
-            v10 = [(VNFaceLandmarkRegion2D *)self precisionEstimatesPerPoint];
-            v11 = [(VNFaceLandmarkRegion2D *)v5 precisionEstimatesPerPoint];
+            precisionEstimatesPerPoint = [(VNFaceLandmarkRegion2D *)self precisionEstimatesPerPoint];
+            precisionEstimatesPerPoint2 = [(VNFaceLandmarkRegion2D *)v5 precisionEstimatesPerPoint];
             v12 = VisionCoreEqualOrNilObjects();
 
 LABEL_12:
@@ -50,15 +50,15 @@ LABEL_12:
 
           while (1)
           {
-            v9 = vmovn_s64(vceqq_f64(*v7, *v8));
+            v9 = vmovn_s64(vceqq_f64(*normalizedPoints, *normalizedPoints2));
             if ((v9.i32[0] & v9.i32[1] & 1) == 0)
             {
               break;
             }
 
-            ++v8;
-            ++v7;
-            if (!--v6)
+            ++normalizedPoints2;
+            ++normalizedPoints;
+            if (!--pointCount)
             {
               goto LABEL_8;
             }
@@ -93,38 +93,38 @@ LABEL_13:
   [(VNFaceLandmarkRegion2D *)&v3 dealloc];
 }
 
-- (VNFaceLandmarkRegion2D)initWithOriginatingRequestSpecifier:(id)a3 faceBoundingBox:(CGRect)a4 pointsClassification:(int64_t)a5 points:pointCount:precisionEstimatesPerPoint:
+- (VNFaceLandmarkRegion2D)initWithOriginatingRequestSpecifier:(id)specifier faceBoundingBox:(CGRect)box pointsClassification:(int64_t)classification points:pointCount:precisionEstimatesPerPoint:
 {
   v8 = v7;
   v9 = v6;
   v10 = v5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v17 = a3;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  specifierCopy = specifier;
   v18 = v8;
   if (v10)
   {
     v26.receiver = self;
     v26.super_class = VNFaceLandmarkRegion2D;
-    v19 = [(VNFaceLandmarkRegion *)&v26 initWithOriginatingRequestSpecifier:v17 faceBoundingBox:v9 pointCount:x, y, width, height];
-    v20 = v19;
-    if (v19)
+    height = [(VNFaceLandmarkRegion *)&v26 initWithOriginatingRequestSpecifier:specifierCopy faceBoundingBox:v9 pointCount:x, y, width, height];
+    selfCopy = height;
+    if (height)
     {
-      v19->_pointsClassification = a5;
-      *&v19->_points[4] = v10;
+      height->_pointsClassification = classification;
+      *&height->_points[4] = v10;
       v21 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:4];
-      sizedPointsCache = v20->_sizedPointsCache;
-      v20->_sizedPointsCache = v21;
+      sizedPointsCache = selfCopy->_sizedPointsCache;
+      selfCopy->_sizedPointsCache = v21;
 
       v23 = [v18 copy];
-      precisionEstimatesPerPoint = v20->_precisionEstimatesPerPoint;
-      v20->_precisionEstimatesPerPoint = v23;
+      precisionEstimatesPerPoint = selfCopy->_precisionEstimatesPerPoint;
+      selfCopy->_precisionEstimatesPerPoint = v23;
 
-      [(VNFaceLandmarkRegion2D *)v20 _initLocks];
-      self = v20;
-      v20 = self;
+      [(VNFaceLandmarkRegion2D *)selfCopy _initLocks];
+      self = selfCopy;
+      selfCopy = self;
     }
 
     else
@@ -135,10 +135,10 @@ LABEL_13:
 
   else
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
 - (const)pointsInImageOfSize:(CGSize)imageSize
@@ -149,13 +149,13 @@ LABEL_13:
   v5 = [(NSMutableDictionary *)self->_sizedPointsCache objectForKeyedSubscript:v4];
   if (!v5)
   {
-    v6 = [(VNFaceLandmarkRegion *)self pointCount];
-    v7 = 16 * v6;
-    v8 = malloc_type_malloc(16 * v6, 0x1000040451B5BE8uLL);
+    pointCount = [(VNFaceLandmarkRegion *)self pointCount];
+    v7 = 16 * pointCount;
+    v8 = malloc_type_malloc(16 * pointCount, 0x1000040451B5BE8uLL);
     [VNError VNAssert:v8 != 0 log:@"failed to allocate internal points array"];
     v21 = v22;
     [(VNFaceLandmarkRegion *)self faceBoundingBox];
-    if (v6)
+    if (pointCount)
     {
       v13 = *&self->_points[4];
       v9.f64[1] = v10;
@@ -168,10 +168,10 @@ LABEL_13:
       {
         v18 = *v13++;
         *v17++ = vmlaq_f64(v15, v16, vcvtq_f64_f32(v18));
-        --v6;
+        --pointCount;
       }
 
-      while (v6);
+      while (pointCount);
     }
 
     v5 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v8 length:v7 freeWhenDone:1];
@@ -179,9 +179,9 @@ LABEL_13:
   }
 
   os_unfair_lock_unlock(&self->_pointsCalculatorLock);
-  v19 = [v5 bytes];
+  bytes = [v5 bytes];
 
-  return v19;
+  return bytes;
 }
 
 - (const)normalizedPoints
@@ -190,11 +190,11 @@ LABEL_13:
   v3 = [(NSMutableDictionary *)self->_sizedPointsCache objectForKeyedSubscript:&unk_1F19C15B8];
   if (!v3)
   {
-    v4 = [(VNFaceLandmarkRegion *)self pointCount];
-    v5 = 16 * v4;
-    v6 = malloc_type_malloc(16 * v4, 0x1000040451B5BE8uLL);
+    pointCount = [(VNFaceLandmarkRegion *)self pointCount];
+    v5 = 16 * pointCount;
+    v6 = malloc_type_malloc(16 * pointCount, 0x1000040451B5BE8uLL);
     [VNError VNAssert:v6 != 0 log:@"failed to allocate internal points array"];
-    if (v4)
+    if (pointCount)
     {
       v7 = (v6 + 8);
       v8 = (*&self->_points[4] + 4);
@@ -205,10 +205,10 @@ LABEL_13:
         v8 += 2;
         *v7 = v9;
         v7 += 2;
-        --v4;
+        --pointCount;
       }
 
-      while (v4);
+      while (pointCount);
     }
 
     v3 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v6 length:v5 freeWhenDone:1];
@@ -216,76 +216,76 @@ LABEL_13:
   }
 
   os_unfair_lock_unlock(&self->_pointsCalculatorLock);
-  v10 = [v3 bytes];
+  bytes = [v3 bytes];
 
-  return v10;
+  return bytes;
 }
 
-- (double)pointAtIndex:(unint64_t)a3
+- (double)pointAtIndex:(unint64_t)index
 {
-  v5 = [a1 pointCount];
+  pointCount = [self pointCount];
   result = 0.0;
-  if (v5 > a3)
+  if (pointCount > index)
   {
-    return *(a1[9] + 8 * a3);
+    return *(self[9] + 8 * index);
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = VNFaceLandmarkRegion2D;
-  [(VNFaceLandmarkRegion *)&v6 encodeWithCoder:v4];
-  [v4 encodeInt32:0 forKey:@"VNFaceLandmarkRegion2D"];
-  [v4 encodeInteger:self->_pointsClassification forKey:@"FLMReg2D_PtsClsf"];
+  [(VNFaceLandmarkRegion *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt32:0 forKey:@"VNFaceLandmarkRegion2D"];
+  [coderCopy encodeInteger:self->_pointsClassification forKey:@"FLMReg2D_PtsClsf"];
   v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:-[VNFaceLandmarkRegion2D points](self length:{"points"), 8 * -[VNFaceLandmarkRegion pointCount](self, "pointCount")}];
-  [v4 encodeObject:v5 forKey:@"FLMReg2D_PtsData"];
-  [v4 encodeObject:self->_precisionEstimatesPerPoint forKey:@"FLMs_PtsAE"];
+  [coderCopy encodeObject:v5 forKey:@"FLMReg2D_PtsData"];
+  [coderCopy encodeObject:self->_precisionEstimatesPerPoint forKey:@"FLMs_PtsAE"];
 }
 
-- (VNFaceLandmarkRegion2D)initWithCoder:(id)a3
+- (VNFaceLandmarkRegion2D)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = VNFaceLandmarkRegion2D;
-  v5 = [(VNFaceLandmarkRegion *)&v20 initWithCoder:v4];
+  v5 = [(VNFaceLandmarkRegion *)&v20 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_12;
   }
 
-  v6 = [v4 decodeInt32ForKey:@"VNFaceLandmarkRegion2D"];
+  v6 = [coderCopy decodeInt32ForKey:@"VNFaceLandmarkRegion2D"];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to unarchive VNFaceLandmarkRegion2D object due to coding version mismatch: Currently supported: %u; encoded: %u", 0, v6];
     v8 = [VNError errorForInternalErrorWithLocalizedDescription:v7];
-    [v4 failWithError:v8];
+    [coderCopy failWithError:v8];
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  if ([v4 containsValueForKey:@"FLMReg2D_PtsClsf"])
+  if ([coderCopy containsValueForKey:@"FLMReg2D_PtsClsf"])
   {
-    v5->_pointsClassification = [v4 decodeIntegerForKey:@"FLMReg2D_PtsClsf"];
+    v5->_pointsClassification = [coderCopy decodeIntegerForKey:@"FLMReg2D_PtsClsf"];
   }
 
-  v9 = [(VNFaceLandmarkRegion *)v5 pointCount];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FLMReg2D_PtsData"];
+  pointCount = [(VNFaceLandmarkRegion *)v5 pointCount];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FLMReg2D_PtsData"];
   v10 = [v7 length];
-  if (v10 != 8 * v9)
+  if (v10 != 8 * pointCount)
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to unarchive VNFaceLandmarkRegion2D object. Error: points buffer size mismatch (data size: %lu; expected: %lu)", v10, 8 * v9];
+    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to unarchive VNFaceLandmarkRegion2D object. Error: points buffer size mismatch (data size: %lu; expected: %lu)", v10, 8 * pointCount];
     v18 = [VNError errorForInternalErrorWithLocalizedDescription:v8];
-    [v4 failWithError:v18];
+    [coderCopy failWithError:v18];
 
     goto LABEL_10;
   }
 
-  v11 = malloc_type_calloc(v9, 8uLL, 0x100004000313F17uLL);
+  v11 = malloc_type_calloc(pointCount, 8uLL, 0x100004000313F17uLL);
   *&v5->_points[4] = v11;
   if (!v11)
   {
@@ -300,7 +300,7 @@ LABEL_12:
   v12 = MEMORY[0x1E695DFD8];
   v13 = objc_opt_class();
   v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-  v15 = [v4 decodeObjectOfClasses:v14 forKey:@"FLMs_PtsAE"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"FLMs_PtsAE"];
   precisionEstimatesPerPoint = v5->_precisionEstimatesPerPoint;
   v5->_precisionEstimatesPerPoint = v15;
 
@@ -311,73 +311,73 @@ LABEL_13:
   return v17;
 }
 
-- (VNFaceLandmarkRegion2D)initWithOriginatingRequestSpecifier:(id)a3 faceBoundingBox:(CGRect)a4 pointCount:(unint64_t)a5
+- (VNFaceLandmarkRegion2D)initWithOriginatingRequestSpecifier:(id)specifier faceBoundingBox:(CGRect)box pointCount:(unint64_t)count
 {
-  v5 = a3;
+  specifierCopy = specifier;
   v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"[VNFaceLandmarkRegion2D -initWithRequestRevision:faceBoundingBox:] is not available userInfo:{use class designated initializers", 0}];
   objc_exception_throw(v6);
 }
 
-- (const)normalizedPointsInTopLeftOrigin:(BOOL)a3 orientation:(unsigned int)a4
+- (const)normalizedPointsInTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation
 {
-  v5 = a3;
-  if (a4 - 2 < 7 || a3)
+  originCopy = origin;
+  if (orientation - 2 < 7 || origin)
   {
-    v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%d_%d", *&a4, a3];
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = objc_getAssociatedObject(v10, [VNFaceLandmarkRegion2D(OrientationAdditions) normalizedPointsInTopLeftOrigin:orientation:]::kNormalizedPointsDictionaryAssociatedObjectKey);
+    origin = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%d_%d", *&orientation, origin];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = objc_getAssociatedObject(selfCopy, [VNFaceLandmarkRegion2D(OrientationAdditions) normalizedPointsInTopLeftOrigin:orientation:]::kNormalizedPointsDictionaryAssociatedObjectKey);
     if (!v11)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      objc_setAssociatedObject(v10, [VNFaceLandmarkRegion2D(OrientationAdditions) normalizedPointsInTopLeftOrigin:orientation:]::kNormalizedPointsDictionaryAssociatedObjectKey, v11, 1);
+      objc_setAssociatedObject(selfCopy, [VNFaceLandmarkRegion2D(OrientationAdditions) normalizedPointsInTopLeftOrigin:orientation:]::kNormalizedPointsDictionaryAssociatedObjectKey, v11, 1);
     }
 
-    v12 = [v11 objectForKey:v9];
+    v12 = [v11 objectForKey:origin];
     if (!v12)
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = [(VNFaceLandmarkRegion *)v10 pointCount];
-      v15 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:16 * v14];
-      v16 = [v15 mutableBytes];
+      pointCount = [(VNFaceLandmarkRegion *)selfCopy pointCount];
+      v15 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:16 * pointCount];
+      mutableBytes = [v15 mutableBytes];
       v24 = 0u;
       v25 = 0u;
       v23 = 0u;
-      VNAffineTransformForVisionToTopLeftOriginOrientation(v5, a4, &v23);
-      v17 = [(VNFaceLandmarkRegion2D *)v10 normalizedPoints];
-      if (v14)
+      VNAffineTransformForVisionToTopLeftOriginOrientation(originCopy, orientation, &v23);
+      normalizedPoints = [(VNFaceLandmarkRegion2D *)selfCopy normalizedPoints];
+      if (pointCount)
       {
         v18 = v23;
         v19 = v24;
-        v20 = (v17 + 8);
+        v20 = (normalizedPoints + 8);
         v21 = v25;
         do
         {
-          *v16++ = vaddq_f64(v21, vmlaq_n_f64(vmulq_n_f64(v19, *v20), v18, *(v20 - 1)));
+          *mutableBytes++ = vaddq_f64(v21, vmlaq_n_f64(vmulq_n_f64(v19, *v20), v18, *(v20 - 1)));
           v20 += 2;
-          --v14;
+          --pointCount;
         }
 
-        while (v14);
+        while (pointCount);
       }
 
       v12 = [v15 copy];
-      [v11 setObject:v12 forKey:v9];
+      [v11 setObject:v12 forKey:origin];
 
       objc_autoreleasePoolPop(v13);
     }
 
-    v22 = [v12 bytes];
+    bytes = [v12 bytes];
 
-    objc_sync_exit(v10);
-    return v22;
+    objc_sync_exit(selfCopy);
+    return bytes;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
 
-    return [(VNFaceLandmarkRegion2D *)v7 normalizedPoints];
+    return [(VNFaceLandmarkRegion2D *)selfCopy2 normalizedPoints];
   }
 }
 

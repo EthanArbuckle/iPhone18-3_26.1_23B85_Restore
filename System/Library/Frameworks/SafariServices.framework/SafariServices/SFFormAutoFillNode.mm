@@ -1,76 +1,76 @@
 @interface SFFormAutoFillNode
-+ (id)autoFillNodeWithNodeHandle:(id)a3;
++ (id)autoFillNodeWithNodeHandle:(id)handle;
 - (CGRect)elementBounds;
-- (SFFormAutoFillNode)initWithJSWrapper:(OpaqueJSValue *)a3 inContext:(OpaqueJSContext *)a4;
-- (SFFormAutoFillNode)initWithNodeHandle:(id)a3;
+- (SFFormAutoFillNode)initWithJSWrapper:(OpaqueJSValue *)wrapper inContext:(OpaqueJSContext *)context;
+- (SFFormAutoFillNode)initWithNodeHandle:(id)handle;
 - (int64_t)htmlInputElementAutoFillButtonType;
 - (int64_t)htmlInputElementLastAutoFillButtonType;
-- (void)setHTMLInputElementAutoFilledWithAutomaticStrongPassword:(BOOL)a3;
-- (void)setSpinnerVisibilityOnHTMLInputElement:(BOOL)a3;
+- (void)setHTMLInputElementAutoFilledWithAutomaticStrongPassword:(BOOL)password;
+- (void)setSpinnerVisibilityOnHTMLInputElement:(BOOL)element;
 @end
 
 @implementation SFFormAutoFillNode
 
-+ (id)autoFillNodeWithNodeHandle:(id)a3
++ (id)autoFillNodeWithNodeHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithNodeHandle:v4];
+  handleCopy = handle;
+  v5 = [[self alloc] initWithNodeHandle:handleCopy];
 
   return v5;
 }
 
-- (SFFormAutoFillNode)initWithNodeHandle:(id)a3
+- (SFFormAutoFillNode)initWithNodeHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v10.receiver = self;
   v10.super_class = SFFormAutoFillNode;
   v6 = [(SFFormAutoFillNode *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_nodeHandle, a3);
+    objc_storeStrong(&v6->_nodeHandle, handle);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (SFFormAutoFillNode)initWithJSWrapper:(OpaqueJSValue *)a3 inContext:(OpaqueJSContext *)a4
+- (SFFormAutoFillNode)initWithJSWrapper:(OpaqueJSValue *)wrapper inContext:(OpaqueJSContext *)context
 {
-  v4 = a3;
-  v5 = self;
-  if (a3)
+  wrapperCopy = wrapper;
+  selfCopy = self;
+  if (wrapper)
   {
     v13.receiver = self;
     v13.super_class = SFFormAutoFillNode;
-    v5 = [(SFFormAutoFillNode *)&v13 init];
-    if (v5)
+    selfCopy = [(SFFormAutoFillNode *)&v13 init];
+    if (selfCopy)
     {
-      v7 = [MEMORY[0x1E696EB40] contextWithJSGlobalContextRef:JSContextGetGlobalContext(a4)];
+      v7 = [MEMORY[0x1E696EB40] contextWithJSGlobalContextRef:JSContextGetGlobalContext(context)];
       v8 = MEMORY[0x1E6985390];
-      v9 = [MEMORY[0x1E696EB58] valueWithJSValueRef:v4 inContext:v7];
+      v9 = [MEMORY[0x1E696EB58] valueWithJSValueRef:wrapperCopy inContext:v7];
       v10 = [v8 nodeHandleWithJSValue:v9 inContext:v7];
-      nodeHandle = v5->_nodeHandle;
-      v5->_nodeHandle = v10;
+      nodeHandle = selfCopy->_nodeHandle;
+      selfCopy->_nodeHandle = v10;
 
-      if (v5->_nodeHandle)
+      if (selfCopy->_nodeHandle)
       {
-        v4 = v5;
+        wrapperCopy = selfCopy;
       }
 
       else
       {
-        v4 = 0;
+        wrapperCopy = 0;
       }
     }
 
     else
     {
-      v4 = 0;
+      wrapperCopy = 0;
     }
   }
 
-  return v4;
+  return wrapperCopy;
 }
 
 - (CGRect)elementBounds
@@ -83,11 +83,11 @@
   return result;
 }
 
-- (void)setHTMLInputElementAutoFilledWithAutomaticStrongPassword:(BOOL)a3
+- (void)setHTMLInputElementAutoFilledWithAutomaticStrongPassword:(BOOL)password
 {
-  v3 = a3;
+  passwordCopy = password;
   nodeHandle = self->_nodeHandle;
-  if (a3)
+  if (password)
   {
     v6 = 3;
   }
@@ -100,41 +100,41 @@
   [(WKWebProcessPlugInNodeHandle *)nodeHandle setHTMLInputElementAutoFillButtonEnabledWithButtonType:v6];
   v7 = self->_nodeHandle;
 
-  [(WKWebProcessPlugInNodeHandle *)v7 setHTMLInputElementIsAutoFilled:v3];
+  [(WKWebProcessPlugInNodeHandle *)v7 setHTMLInputElementIsAutoFilled:passwordCopy];
 }
 
 - (int64_t)htmlInputElementAutoFillButtonType
 {
-  v2 = [(WKWebProcessPlugInNodeHandle *)self->_nodeHandle htmlInputElementAutoFillButtonType];
-  if ((v2 - 1) > 4)
+  htmlInputElementAutoFillButtonType = [(WKWebProcessPlugInNodeHandle *)self->_nodeHandle htmlInputElementAutoFillButtonType];
+  if ((htmlInputElementAutoFillButtonType - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_1D47DD048[v2 - 1];
+    return qword_1D47DD048[htmlInputElementAutoFillButtonType - 1];
   }
 }
 
 - (int64_t)htmlInputElementLastAutoFillButtonType
 {
-  v2 = [(WKWebProcessPlugInNodeHandle *)self->_nodeHandle htmlInputElementLastAutoFillButtonType];
-  if ((v2 - 1) > 4)
+  htmlInputElementLastAutoFillButtonType = [(WKWebProcessPlugInNodeHandle *)self->_nodeHandle htmlInputElementLastAutoFillButtonType];
+  if ((htmlInputElementLastAutoFillButtonType - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_1D47DD048[v2 - 1];
+    return qword_1D47DD048[htmlInputElementLastAutoFillButtonType - 1];
   }
 }
 
-- (void)setSpinnerVisibilityOnHTMLInputElement:(BOOL)a3
+- (void)setSpinnerVisibilityOnHTMLInputElement:(BOOL)element
 {
   nodeHandle = self->_nodeHandle;
-  if (a3)
+  if (element)
   {
     v4 = 5;
   }

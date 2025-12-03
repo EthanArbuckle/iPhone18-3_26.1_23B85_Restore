@@ -1,11 +1,11 @@
 @interface SaveImage
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (void)performActivity;
 @end
 
 @implementation SaveImage
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v3 = sub_24FEDE324();
   if (*(v3 + 16))
@@ -17,9 +17,9 @@
     if (v3)
     {
       sub_24FE62F4C(0, &qword_27F3A75F0, 0x277D755B8);
-      v4 = [v6 canLoadObjectOfClass_];
+      canLoadObjectOfClass_ = [v6 canLoadObjectOfClass_];
 
-      LOBYTE(v3) = v4;
+      LOBYTE(v3) = canLoadObjectOfClass_;
     }
   }
 
@@ -33,7 +33,7 @@
 
 - (void)performActivity
 {
-  v2 = self;
+  selfCopy = self;
   sub_24FECB748();
 }
 

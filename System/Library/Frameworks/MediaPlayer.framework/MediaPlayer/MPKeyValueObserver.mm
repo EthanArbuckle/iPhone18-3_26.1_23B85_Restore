@@ -1,8 +1,8 @@
 @interface MPKeyValueObserver
-- (MPKeyValueObserver)initWithObject:(id)a3 keyPath:(id)a4 options:(unint64_t)a5 handler:(id)a6;
+- (MPKeyValueObserver)initWithObject:(id)object keyPath:(id)path options:(unint64_t)options handler:(id)handler;
 - (id)object;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation MPKeyValueObserver
@@ -14,18 +14,18 @@
   return WeakRetained;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (MPKeyValueObserverContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (MPKeyValueObserverContext == context)
   {
     WeakRetained = objc_loadWeakRetained(&self->_object);
     v14 = WeakRetained;
-    if (WeakRetained == v11)
+    if (WeakRetained == objectCopy)
     {
-      v15 = [v10 isEqualToString:self->_keyPath];
+      v15 = [pathCopy isEqualToString:self->_keyPath];
 
       if (v15)
       {
@@ -42,7 +42,7 @@
   {
     v16.receiver = self;
     v16.super_class = MPKeyValueObserver;
-    [(MPKeyValueObserver *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(MPKeyValueObserver *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -56,27 +56,27 @@
   [(MPKeyValueObserver *)&v4 dealloc];
 }
 
-- (MPKeyValueObserver)initWithObject:(id)a3 keyPath:(id)a4 options:(unint64_t)a5 handler:(id)a6
+- (MPKeyValueObserver)initWithObject:(id)object keyPath:(id)path options:(unint64_t)options handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  objectCopy = object;
+  pathCopy = path;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = MPKeyValueObserver;
   v13 = [(MPKeyValueObserver *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_object, v10);
-    v15 = [v11 copy];
+    objc_storeWeak(&v13->_object, objectCopy);
+    v15 = [pathCopy copy];
     keyPath = v14->_keyPath;
     v14->_keyPath = v15;
 
-    v17 = _Block_copy(v12);
+    v17 = _Block_copy(handlerCopy);
     handler = v14->_handler;
     v14->_handler = v17;
 
-    [v10 addObserver:v14 forKeyPath:v11 options:a5 context:MPKeyValueObserverContext];
+    [objectCopy addObserver:v14 forKeyPath:pathCopy options:options context:MPKeyValueObserverContext];
   }
 
   return v14;

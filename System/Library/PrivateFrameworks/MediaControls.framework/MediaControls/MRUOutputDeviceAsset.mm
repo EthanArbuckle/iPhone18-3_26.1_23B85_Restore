@@ -2,33 +2,33 @@
 + (MRUOutputDeviceAsset)inCallAsset;
 + (MRUOutputDeviceAsset)sharingAsset;
 + (MRUOutputDeviceAsset)speakerAsset;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CCUICAPackageDescription)packageDescription;
-- (MRUOutputDeviceAsset)initWithOutputDeviceRoute:(id)a3;
-- (MRUOutputDeviceAsset)initWithPackageAsset:(id)a3 symbolName:(id)a4 image:(id)a5 type:(int64_t)a6 deviceCount:(unint64_t)a7;
-- (id)localizedDisplayTitleForAssetType:(int64_t)a3 deviceCount:(unint64_t)a4;
+- (MRUOutputDeviceAsset)initWithOutputDeviceRoute:(id)route;
+- (MRUOutputDeviceAsset)initWithPackageAsset:(id)asset symbolName:(id)name image:(id)image type:(int64_t)type deviceCount:(unint64_t)count;
+- (id)localizedDisplayTitleForAssetType:(int64_t)type deviceCount:(unint64_t)count;
 - (int64_t)kind;
-- (int64_t)outputDeviceAssetTypeForOutputDeviceRoute:(id)a3;
+- (int64_t)outputDeviceAssetTypeForOutputDeviceRoute:(id)route;
 @end
 
 @implementation MRUOutputDeviceAsset
 
 - (CCUICAPackageDescription)packageDescription
 {
-  v2 = [(MRUAsset *)self packageAsset];
-  v3 = [v2 packageDescription];
+  packageAsset = [(MRUAsset *)self packageAsset];
+  packageDescription = [packageAsset packageDescription];
 
-  return v3;
+  return packageDescription;
 }
 
 + (MRUOutputDeviceAsset)speakerAsset
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
   if (+[MRUFeatureFlagProvider isNewControlsEnabled])
   {
-    v5 = v4 == 1;
+    v5 = userInterfaceLayoutDirection == 1;
   }
 
   else
@@ -45,7 +45,7 @@
   {
     v6 = +[MRUFeatureFlagProvider isNewControlsEnabled];
     v7 = @"Volume";
-    if (v4 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v7 = @"VolumeRTL";
     }
@@ -62,30 +62,30 @@
   }
 
   v9 = [MRUCAPackageAsset packageNamed:v8];
-  v10 = [[a1 alloc] initWithPackageAsset:v9 symbolName:0 image:0 type:0 deviceCount:1];
+  v10 = [[self alloc] initWithPackageAsset:v9 symbolName:0 image:0 type:0 deviceCount:1];
 
   return v10;
 }
 
 + (MRUOutputDeviceAsset)inCallAsset
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[MRUAssetsProvider phone];
   v4 = [v2 initWithPackageAsset:0 symbolName:0 image:v3 type:1 deviceCount:1];
 
   return v4;
 }
 
-- (MRUOutputDeviceAsset)initWithPackageAsset:(id)a3 symbolName:(id)a4 image:(id)a5 type:(int64_t)a6 deviceCount:(unint64_t)a7
+- (MRUOutputDeviceAsset)initWithPackageAsset:(id)asset symbolName:(id)name image:(id)image type:(int64_t)type deviceCount:(unint64_t)count
 {
   v14.receiver = self;
   v14.super_class = MRUOutputDeviceAsset;
-  v9 = [(MRUAsset *)&v14 initWithPackageAsset:a3 symbolName:a4 image:a5];
+  v9 = [(MRUAsset *)&v14 initWithPackageAsset:asset symbolName:name image:image];
   v10 = v9;
   if (v9)
   {
-    v9->_type = a6;
-    v11 = [(MRUOutputDeviceAsset *)v9 localizedDisplayTitleForAssetType:a6 deviceCount:a7];
+    v9->_type = type;
+    v11 = [(MRUOutputDeviceAsset *)v9 localizedDisplayTitleForAssetType:type deviceCount:count];
     localizedDisplayTitle = v10->_localizedDisplayTitle;
     v10->_localizedDisplayTitle = v11;
   }
@@ -93,16 +93,16 @@
   return v10;
 }
 
-- (MRUOutputDeviceAsset)initWithOutputDeviceRoute:(id)a3
+- (MRUOutputDeviceAsset)initWithOutputDeviceRoute:(id)route
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MRUOutputDeviceAsset *)self outputDeviceAssetTypeForOutputDeviceRoute:v4];
+  routeCopy = route;
+  v5 = [(MRUOutputDeviceAsset *)self outputDeviceAssetTypeForOutputDeviceRoute:routeCopy];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 outputDevices];
-    v8 = [MEMORY[0x1E69B09B8] symbolNameForOutputDevices:v7];
+    outputDevices = [routeCopy outputDevices];
+    v8 = [MEMORY[0x1E69B09B8] symbolNameForOutputDevices:outputDevices];
     v9 = MCLogCategoryDefault();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -111,35 +111,35 @@
       v14 = 2114;
       v15 = v8;
       v16 = 2114;
-      v17 = v7;
+      v17 = outputDevices;
       _os_log_impl(&dword_1A20FC000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ output devices symbol: %{public}@ | routes: %{public}@", &v12, 0x20u);
     }
 
-    self = -[MRUOutputDeviceAsset initWithPackageAsset:symbolName:image:type:deviceCount:](self, "initWithPackageAsset:symbolName:image:type:deviceCount:", 0, v8, 0, v6, [v7 count]);
-    v10 = self;
+    self = -[MRUOutputDeviceAsset initWithPackageAsset:symbolName:image:type:deviceCount:](self, "initWithPackageAsset:symbolName:image:type:deviceCount:", 0, v8, 0, v6, [outputDevices count]);
+    selfCopy = self;
   }
 
   else
   {
-    v10 = [objc_opt_class() speakerAsset];
+    selfCopy = [objc_opt_class() speakerAsset];
   }
 
-  return v10;
+  return selfCopy;
 }
 
 + (MRUOutputDeviceAsset)sharingAsset
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[MRUAssetsProvider sharing];
   v4 = [v2 initWithPackageAsset:0 symbolName:0 image:v3 type:2 deviceCount:1];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -149,7 +149,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v13.receiver = self;
       v13.super_class = MRUOutputDeviceAsset;
       v6 = [(MRUAsset *)&v13 isEqual:v5];
@@ -163,16 +163,16 @@
         v7 = 0;
       }
 
-      v8 = [(MRUOutputDeviceAsset *)v5 localizedDisplayTitle];
-      v9 = v8;
-      if (v8 == self->_localizedDisplayTitle)
+      localizedDisplayTitle = [(MRUOutputDeviceAsset *)v5 localizedDisplayTitle];
+      v9 = localizedDisplayTitle;
+      if (localizedDisplayTitle == self->_localizedDisplayTitle)
       {
         v10 = 1;
       }
 
       else
       {
-        v10 = [(NSString *)v8 isEqual:?];
+        v10 = [(NSString *)localizedDisplayTitle isEqual:?];
       }
 
       v11 = v7 & v10;
@@ -189,111 +189,111 @@
 
 - (int64_t)kind
 {
-  v2 = [(MRUAsset *)self packageAsset];
-  v3 = v2 == 0;
+  packageAsset = [(MRUAsset *)self packageAsset];
+  v3 = packageAsset == 0;
 
   return v3;
 }
 
-- (int64_t)outputDeviceAssetTypeForOutputDeviceRoute:(id)a3
+- (int64_t)outputDeviceAssetTypeForOutputDeviceRoute:(id)route
 {
-  v3 = a3;
-  if ([v3 isAirpodsRoute])
+  routeCopy = route;
+  if ([routeCopy isAirpodsRoute])
   {
     v4 = 8;
   }
 
-  else if ([v3 isBeatsSoloRoute])
+  else if ([routeCopy isBeatsSoloRoute])
   {
     v4 = 10;
   }
 
-  else if ([v3 isB419Route])
+  else if ([routeCopy isB419Route])
   {
     v4 = 11;
   }
 
-  else if ([v3 isBeatsStudioRoute])
+  else if ([routeCopy isBeatsStudioRoute])
   {
     v4 = 12;
   }
 
-  else if ([v3 isBeatsXRoute])
+  else if ([routeCopy isBeatsXRoute])
   {
     v4 = 13;
   }
 
-  else if ([v3 isB494Route])
+  else if ([routeCopy isB494Route])
   {
     v4 = 17;
   }
 
   else
   {
-    if (objc_opt_respondsToSelector() & 1) != 0 && ([v3 isB498Route])
+    if (objc_opt_respondsToSelector() & 1) != 0 && ([routeCopy isB498Route])
     {
       goto LABEL_23;
     }
 
-    if ([v3 isB507Route])
+    if ([routeCopy isB507Route])
     {
       v4 = 16;
       goto LABEL_24;
     }
 
-    if (objc_opt_respondsToSelector() & 1) != 0 && ([v3 isB607Route])
+    if (objc_opt_respondsToSelector() & 1) != 0 && ([routeCopy isB607Route])
     {
       v4 = 18;
       goto LABEL_24;
     }
 
-    if ([v3 isPowerbeatsRoute] & 1) != 0 || (objc_msgSend(v3, "isB444Route") & 1) != 0 || (objc_msgSend(v3, "isB364Route"))
+    if ([routeCopy isPowerbeatsRoute] & 1) != 0 || (objc_msgSend(routeCopy, "isB444Route") & 1) != 0 || (objc_msgSend(routeCopy, "isB364Route"))
     {
 LABEL_23:
       v4 = 14;
       goto LABEL_24;
     }
 
-    if ([v3 isB372Route])
+    if ([routeCopy isB372Route])
     {
       v4 = 15;
     }
 
-    else if ([v3 isBeatsLegacyRoute])
+    else if ([routeCopy isBeatsLegacyRoute])
     {
       v4 = 9;
     }
 
-    else if ([v3 isCarplayRoute])
+    else if ([routeCopy isCarplayRoute])
     {
       v4 = 3;
     }
 
-    else if ([v3 isHearingDeviceRoute])
+    else if ([routeCopy isHearingDeviceRoute])
     {
       v4 = 4;
     }
 
     else
     {
-      if (([v3 isDeviceSpeakerRoute] & 1) == 0)
+      if (([routeCopy isDeviceSpeakerRoute] & 1) == 0)
       {
-        if ([v3 isJ327Route])
+        if ([routeCopy isJ327Route])
         {
           v4 = 7;
           goto LABEL_24;
         }
 
-        if ([v3 isAirPlayRoute] & 1) != 0 || (objc_msgSend(v3, "isClusterRoute") & 1) != 0 || (objc_msgSend(v3, "isMacRoute"))
+        if ([routeCopy isAirPlayRoute] & 1) != 0 || (objc_msgSend(routeCopy, "isClusterRoute") & 1) != 0 || (objc_msgSend(routeCopy, "isMacRoute"))
         {
           v4 = 19;
           goto LABEL_24;
         }
 
-        v6 = [v3 routeSubtype];
-        if ((v6 - 2) <= 0x13)
+        routeSubtype = [routeCopy routeSubtype];
+        if ((routeSubtype - 2) <= 0x13)
         {
-          v4 = qword_1A23077D8[v6 - 2];
+          v4 = qword_1A23077D8[routeSubtype - 2];
           goto LABEL_24;
         }
       }
@@ -307,10 +307,10 @@ LABEL_24:
   return v4;
 }
 
-- (id)localizedDisplayTitleForAssetType:(int64_t)a3 deviceCount:(unint64_t)a4
+- (id)localizedDisplayTitleForAssetType:(int64_t)type deviceCount:(unint64_t)count
 {
   v4 = &stru_1F1445548;
-  switch(a3)
+  switch(type)
   {
     case 0:
       v4 = +[MRUStringsProvider volumeSpeaker];
@@ -366,7 +366,7 @@ LABEL_24:
       v4 = +[MRUStringsProvider volumeAppleTV];
       break;
     case 21:
-      v4 = [MRUStringsProvider volumeTVWithDeviceCount:a4];
+      v4 = [MRUStringsProvider volumeTVWithDeviceCount:count];
       break;
     case 22:
       v4 = +[MRUStringsProvider volumeHomePod];

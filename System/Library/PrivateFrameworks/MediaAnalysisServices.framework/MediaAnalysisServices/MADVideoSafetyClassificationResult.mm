@@ -1,27 +1,27 @@
 @interface MADVideoSafetyClassificationResult
 - (BOOL)isSensitive;
-- (MADVideoSafetyClassificationResult)initWithCoder:(id)a3;
-- (MADVideoSafetyClassificationResult)initWithIsSensitiveNudity:(id)a3 isSensitiveGoreViolence:(id)a4 scoresForLabels:(id)a5;
+- (MADVideoSafetyClassificationResult)initWithCoder:(id)coder;
+- (MADVideoSafetyClassificationResult)initWithIsSensitiveNudity:(id)nudity isSensitiveGoreViolence:(id)violence scoresForLabels:(id)labels;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVideoSafetyClassificationResult
 
-- (MADVideoSafetyClassificationResult)initWithIsSensitiveNudity:(id)a3 isSensitiveGoreViolence:(id)a4 scoresForLabels:(id)a5
+- (MADVideoSafetyClassificationResult)initWithIsSensitiveNudity:(id)nudity isSensitiveGoreViolence:(id)violence scoresForLabels:(id)labels
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nudityCopy = nudity;
+  violenceCopy = violence;
+  labelsCopy = labels;
   v15.receiver = self;
   v15.super_class = MADVideoSafetyClassificationResult;
   v12 = [(MADVideoSafetyClassificationResult *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_isSensitiveNudity, a3);
-    objc_storeStrong(&v13->_isSensitiveGoreViolence, a4);
-    objc_storeStrong(&v13->_scoresForLabels, a5);
+    objc_storeStrong(&v12->_isSensitiveNudity, nudity);
+    objc_storeStrong(&v13->_isSensitiveGoreViolence, violence);
+    objc_storeStrong(&v13->_scoresForLabels, labels);
   }
 
   return v13;
@@ -39,20 +39,20 @@
   return [(NSNumber *)isSensitiveGoreViolence BOOLValue];
 }
 
-- (MADVideoSafetyClassificationResult)initWithCoder:(id)a3
+- (MADVideoSafetyClassificationResult)initWithCoder:(id)coder
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = MADVideoSafetyClassificationResult;
-  v5 = [(MADVideoResult *)&v16 initWithCoder:v4];
+  v5 = [(MADVideoResult *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IsSensitiveNudity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IsSensitiveNudity"];
     isSensitiveNudity = v5->_isSensitiveNudity;
     v5->_isSensitiveNudity = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IsSensitiveGoreViolence"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IsSensitiveGoreViolence"];
     isSensitiveGoreViolence = v5->_isSensitiveGoreViolence;
     v5->_isSensitiveGoreViolence = v8;
 
@@ -63,7 +63,7 @@
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:3];
     v12 = [v10 setWithArray:v11];
 
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"ScoresForLabels"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"ScoresForLabels"];
     scoresForLabels = v5->_scoresForLabels;
     v5->_scoresForLabels = v13;
   }
@@ -71,32 +71,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MADVideoSafetyClassificationResult;
-  v4 = a3;
-  [(MADVideoResult *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_isSensitiveNudity forKey:{@"IsSensitiveNudity", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_isSensitiveGoreViolence forKey:@"IsSensitiveGoreViolence"];
-  [v4 encodeObject:self->_scoresForLabels forKey:@"ScoresForLabels"];
+  coderCopy = coder;
+  [(MADVideoResult *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_isSensitiveNudity forKey:{@"IsSensitiveNudity", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_isSensitiveGoreViolence forKey:@"IsSensitiveGoreViolence"];
+  [coderCopy encodeObject:self->_scoresForLabels forKey:@"ScoresForLabels"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p", v5, self];
+  [string appendFormat:@"<%@ %p", v5, self];
 
-  [v3 appendFormat:@", isSensitiveNudity: %@", self->_isSensitiveNudity];
-  [v3 appendFormat:@", isSensitiveGoreViolence: %@", self->_isSensitiveGoreViolence];
+  [string appendFormat:@", isSensitiveNudity: %@", self->_isSensitiveNudity];
+  [string appendFormat:@", isSensitiveGoreViolence: %@", self->_isSensitiveGoreViolence];
   v6 = [(NSDictionary *)self->_scoresForLabels description];
-  [v3 appendFormat:@", scoresForLabels: %@", v6];
+  [string appendFormat:@", scoresForLabels: %@", v6];
 
-  [v3 appendString:@">"];
+  [string appendString:@">"];
 
-  return v3;
+  return string;
 }
 
 @end

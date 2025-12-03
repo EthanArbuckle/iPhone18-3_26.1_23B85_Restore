@@ -1,16 +1,16 @@
 @interface SBSUserNotificationSystemImageDefinition
-- (id)_initWithDictionary:(id)a3;
-- (id)_initWithSystemImageName:(id)a3 tintColor:(id)a4;
+- (id)_initWithDictionary:(id)dictionary;
+- (id)_initWithSystemImageName:(id)name tintColor:(id)color;
 - (id)build;
 @end
 
 @implementation SBSUserNotificationSystemImageDefinition
 
-- (id)_initWithSystemImageName:(id)a3 tintColor:(id)a4
+- (id)_initWithSystemImageName:(id)name tintColor:(id)color
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  nameCopy = name;
+  colorCopy = color;
+  if (!nameCopy)
   {
     [SBSUserNotificationSystemImageDefinition _initWithSystemImageName:a2 tintColor:self];
   }
@@ -21,26 +21,26 @@
   p_isa = &v10->super.super.super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_systemImageName, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v10->_systemImageName, name);
+    objc_storeStrong(p_isa + 2, color);
   }
 
   return p_isa;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SBSUserNotificationSystemImageDefinition;
-  v5 = [(SBSUserNotificationAssetDefinition *)&v12 _initWithDictionary:v4];
+  v5 = [(SBSUserNotificationAssetDefinition *)&v12 _initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 bs_safeStringForKey:@"SBSCFUNSystemImageName"];
+    v6 = [dictionaryCopy bs_safeStringForKey:@"SBSCFUNSystemImageName"];
     v7 = v5[1];
     v5[1] = v6;
 
-    v8 = [v4 bs_safeDictionaryForKey:@"SBSCFUNTintColor"];
+    v8 = [dictionaryCopy bs_safeDictionaryForKey:@"SBSCFUNTintColor"];
     if (v8)
     {
       v9 = [[SBSUserNotificationColorDefinition alloc] _initWithDictionary:v8];
@@ -56,8 +56,8 @@
 {
   v10.receiver = self;
   v10.super_class = SBSUserNotificationSystemImageDefinition;
-  v3 = [(SBSUserNotificationAssetDefinition *)&v10 build];
-  v4 = [v3 mutableCopy];
+  build = [(SBSUserNotificationAssetDefinition *)&v10 build];
+  v4 = [build mutableCopy];
 
   systemImageName = self->_systemImageName;
   if (systemImageName)
@@ -68,8 +68,8 @@
   tintColor = self->_tintColor;
   if (tintColor)
   {
-    v7 = [(SBSUserNotificationColorDefinition *)tintColor build];
-    [v4 setObject:v7 forKey:@"SBSCFUNTintColor"];
+    build2 = [(SBSUserNotificationColorDefinition *)tintColor build];
+    [v4 setObject:build2 forKey:@"SBSCFUNTintColor"];
   }
 
   v8 = [v4 copy];

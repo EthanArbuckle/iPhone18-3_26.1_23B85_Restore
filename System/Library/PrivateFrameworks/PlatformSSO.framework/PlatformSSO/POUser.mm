@@ -4,10 +4,10 @@
 - (NSString)loginUserName;
 - (NSString)uid;
 - (NSString)uniqueIdpIdentifier;
-- (POUser)initWithCoder:(id)a3;
+- (POUser)initWithCoder:(id)coder;
 - (id)copy;
 - (id)mutableCopy;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation POUser
@@ -15,8 +15,8 @@
 - (id)mutableCopy
 {
   v3 = objc_alloc_init(POMutableUser);
-  v4 = [(_POJWTBodyBase *)self data];
-  v5 = [v4 mutableCopy];
+  data = [(_POJWTBodyBase *)self data];
+  v5 = [data mutableCopy];
   [(_POJWTBodyBase *)v3 setData:v5];
 
   return v3;
@@ -25,8 +25,8 @@
 - (id)copy
 {
   v3 = objc_alloc_init(POUser);
-  v4 = [(_POJWTBodyBase *)self data];
-  v5 = [v4 mutableCopy];
+  data = [(_POJWTBodyBase *)self data];
+  v5 = [data mutableCopy];
   [(_POJWTBodyBase *)v3 setData:v5];
 
   return v3;
@@ -197,23 +197,23 @@ id __29__POUser_altSecurityIdentity__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (POUser)initWithCoder:(id)a3
+- (POUser)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_dataRepresentation);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = [(_POJWTBodyBase *)self initWithJWTData:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_POJWTBodyBase *)self dataRepresentation];
+  coderCopy = coder;
+  dataRepresentation = [(_POJWTBodyBase *)self dataRepresentation];
   v5 = NSStringFromSelector(sel_dataRepresentation);
-  [v4 encodeObject:v6 forKey:v5];
+  [coderCopy encodeObject:dataRepresentation forKey:v5];
 }
 
 @end

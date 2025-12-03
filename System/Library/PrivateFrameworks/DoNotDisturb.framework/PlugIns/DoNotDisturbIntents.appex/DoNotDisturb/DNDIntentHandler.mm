@@ -1,25 +1,25 @@
 @interface DNDIntentHandler
-- (void)handleToggleDoNotDisturb:(id)a3 completion:(id)a4;
+- (void)handleToggleDoNotDisturb:(id)disturb completion:(id)completion;
 @end
 
 @implementation DNDIntentHandler
 
-- (void)handleToggleDoNotDisturb:(id)a3 completion:(id)a4
+- (void)handleToggleDoNotDisturb:(id)disturb completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  disturbCopy = disturb;
+  completionCopy = completion;
   v7 = DNDIntentLog;
   if (os_log_type_enabled(DNDIntentLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v86 = v5;
+    v86 = disturbCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Handling intent: %{public}@", buf, 0xCu);
   }
 
-  v8 = [v5 userInteractive];
-  v9 = [v8 BOOLValue];
+  userInteractive = [disturbCopy userInteractive];
+  bOOLValue = [userInteractive BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = @"com.apple.donotdisturb.private.intents.user-interactive";
   }
@@ -30,15 +30,15 @@
   }
 
   v11 = [DNDModeSelectionService serviceForClientIdentifier:v10];
-  v12 = [v5 mode];
-  if ([v5 state] == 1)
+  mode = [disturbCopy mode];
+  if ([disturbCopy state] == 1)
   {
-    v13 = [v5 duration];
+    duration = [disturbCopy duration];
 
-    if (v13)
+    if (duration)
     {
-      v14 = [v5 duration];
-      [v14 doubleValue];
+      duration2 = [disturbCopy duration];
+      [duration2 doubleValue];
       v16 = v15;
 
       if (v16 > 0.0)
@@ -52,13 +52,13 @@ LABEL_57:
 
     else
     {
-      v36 = [v5 event];
+      event = [disturbCopy event];
 
-      if (!v36)
+      if (!event)
       {
-        v42 = [v5 location];
+        location = [disturbCopy location];
 
-        if (v42)
+        if (location)
         {
           +[DNDModeAssertionLifetime lifetimeWithCurrentLocation];
         }
@@ -71,32 +71,32 @@ LABEL_57:
         goto LABEL_57;
       }
 
-      v37 = [v5 event];
-      v38 = [v37 identifier];
+      event2 = [disturbCopy event];
+      identifier = [event2 identifier];
 
-      if (v38)
+      if (identifier)
       {
-        v39 = [v5 event];
-        v40 = [v39 identifier];
-        v41 = [DNDModeAssertionLifetime lifetimeUntilEndOfCalendarEventWithUniqueID:v40 occurrenceDate:0];
+        event3 = [disturbCopy event];
+        identifier2 = [event3 identifier];
+        v41 = [DNDModeAssertionLifetime lifetimeUntilEndOfCalendarEventWithUniqueID:identifier2 occurrenceDate:0];
 
 LABEL_58:
         v61 = objc_alloc_init(DNDMutableModeAssertionDetails);
         [v61 setIdentifier:@"com.apple.donotdisturb.private.intents"];
-        v62 = [v12 identifier];
-        [v61 setModeIdentifier:v62];
+        identifier3 = [mode identifier];
+        [v61 setModeIdentifier:identifier3];
 
         [v61 setLifetime:v41];
         v63 = DNDIntentLog;
         if (os_log_type_enabled(DNDIntentLog, OS_LOG_TYPE_DEFAULT))
         {
           v64 = v63;
-          v65 = [v12 displayString];
-          v66 = [v12 identifier];
+          displayString = [mode displayString];
+          identifier4 = [mode identifier];
           *buf = 138543874;
-          v86 = v65;
+          v86 = displayString;
           v87 = 2114;
-          v88 = v66;
+          v88 = identifier4;
           v89 = 2112;
           v90 = v41;
           _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "Activating mode: %{public}@ (%{public}@) with lifetime: %@", buf, 0x20u);
@@ -134,7 +134,7 @@ LABEL_34:
     goto LABEL_72;
   }
 
-  if ([v5 state] == 2)
+  if ([disturbCopy state] == 2)
   {
     v18 = DNDIntentLog;
     if (os_log_type_enabled(DNDIntentLog, OS_LOG_TYPE_DEFAULT))
@@ -164,9 +164,9 @@ LABEL_34:
 
   else
   {
-    v22 = [v5 state];
+    state = [disturbCopy state];
     v23 = DNDIntentLog;
-    if (v22 != 3)
+    if (state != 3)
     {
       if (os_log_type_enabled(DNDIntentLog, OS_LOG_TYPE_ERROR))
       {
@@ -179,22 +179,22 @@ LABEL_34:
     if (os_log_type_enabled(DNDIntentLog, OS_LOG_TYPE_DEFAULT))
     {
       v24 = v23;
-      v25 = [v12 displayString];
-      v26 = [v12 identifier];
+      displayString2 = [mode displayString];
+      identifier5 = [mode identifier];
       *buf = 138543618;
-      v86 = v25;
+      v86 = displayString2;
       v87 = 2114;
-      v88 = v26;
+      v88 = identifier5;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Toggling mode: %{public}@ (%{public}@) without lifetime", buf, 0x16u);
     }
 
     v81 = 0;
     v27 = [v11 activeModeAssertionWithError:&v81];
     v73 = v81;
-    v28 = [v27 details];
-    v29 = [v28 modeIdentifier];
-    v30 = [v12 identifier];
-    v31 = [v29 isEqualToString:v30];
+    details = [v27 details];
+    modeIdentifier = [details modeIdentifier];
+    identifier6 = [mode identifier];
+    v31 = [modeIdentifier isEqualToString:identifier6];
 
     if (v31)
     {
@@ -251,28 +251,28 @@ LABEL_34:
               objc_enumerationMutation(v44);
             }
 
-            v49 = [*(*(&v75 + 1) + 8 * i) modeIdentifier];
-            v50 = [v12 identifier];
-            v51 = [v49 isEqualToString:v50];
+            modeIdentifier2 = [*(*(&v75 + 1) + 8 * i) modeIdentifier];
+            identifier7 = [mode identifier];
+            v51 = [modeIdentifier2 isEqualToString:identifier7];
 
             if (v51)
             {
 
               v54 = objc_alloc_init(DNDMutableModeAssertionDetails);
               [v54 setIdentifier:@"com.apple.donotdisturb.private.intents"];
-              v55 = [v12 identifier];
-              [v54 setModeIdentifier:v55];
+              identifier8 = [mode identifier];
+              [v54 setModeIdentifier:identifier8];
 
               v56 = DNDIntentLog;
               if (os_log_type_enabled(DNDIntentLog, OS_LOG_TYPE_DEFAULT))
               {
                 v57 = v56;
-                v58 = [v12 displayString];
-                v59 = [v12 identifier];
+                displayString3 = [mode displayString];
+                identifier9 = [mode identifier];
                 *buf = 138543618;
-                v86 = v58;
+                v86 = displayString3;
                 v87 = 2114;
-                v88 = v59;
+                v88 = identifier9;
                 _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "Activating mode: %{public}@ (%{public}@) without lifetime", buf, 0x16u);
               }
 
@@ -332,7 +332,7 @@ LABEL_70:
 
 LABEL_72:
   v69 = [[DNDToggleDoNotDisturbIntentResponse alloc] initWithCode:v21 userActivity:0];
-  v6[2](v6, v69);
+  completionCopy[2](completionCopy, v69);
 }
 
 @end

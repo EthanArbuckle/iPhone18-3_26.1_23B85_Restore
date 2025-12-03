@@ -1,17 +1,17 @@
 @interface BKTapActionView
 - (CGSize)intrinsicContentSize;
-- (_TtC5Books15BKTapActionView)initWithCoder:(id)a3;
-- (_TtC5Books15BKTapActionView)initWithFrame:(CGRect)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (_TtC5Books15BKTapActionView)initWithCoder:(id)coder;
+- (_TtC5Books15BKTapActionView)initWithFrame:(CGRect)frame;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)be_singleTapAction;
 - (void)didMoveToWindow;
-- (void)fireAction:(id)a3;
+- (void)fireAction:(id)action;
 @end
 
 @implementation BKTapActionView
 
-- (_TtC5Books15BKTapActionView)initWithCoder:(id)a3
+- (_TtC5Books15BKTapActionView)initWithCoder:(id)coder
 {
   *&self->fixedSize[OBJC_IVAR____TtC5Books15BKTapActionView_listener] = 0;
   swift_unknownObjectWeakInit();
@@ -22,7 +22,7 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004EDF2C();
 }
 
@@ -47,10 +47,10 @@
   return result;
 }
 
-- (void)fireAction:(id)a3
+- (void)fireAction:(id)action
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC5Books15BKTapActionView_action);
-  v5 = self;
+  selfCopy = self;
 
   v3(v4);
 }
@@ -58,35 +58,35 @@
 - (void)be_singleTapAction
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC5Books15BKTapActionView_action);
-  v4 = self;
+  selfCopy = self;
 
   v2(v3);
 }
 
-- (_TtC5Books15BKTapActionView)initWithFrame:(CGRect)a3
+- (_TtC5Books15BKTapActionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_1004EE728(v8);
+  interactionCopy = interaction;
+  requestCopy = request;
+  regionCopy = region;
+  selfCopy = self;
+  v12 = sub_1004EE728(interactionCopy);
 
   return v12;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1004EE830(v6);
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
+  v9 = sub_1004EE830(interactionCopy);
 
   return v9;
 }

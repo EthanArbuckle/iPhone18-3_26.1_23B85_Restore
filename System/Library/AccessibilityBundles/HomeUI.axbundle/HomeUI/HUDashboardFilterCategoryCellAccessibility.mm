@@ -1,28 +1,28 @@
 @interface HUDashboardFilterCategoryCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation HUDashboardFilterCategoryCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUDashboardFilterCategoryCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"HomeUI.DashboardFilterCategoryCell[class].ContentView"];
-  [v3 validateClass:@"HomeUI.DashboardFilterCategoryCell[class].ContentView" hasSwiftField:@"config" withSwiftType:"ContentConfiguration"];
-  [v3 validateSwiftStruct:@"HomeUI.DashboardFilterCategoryCell[class].ContentConfiguration"];
-  [v3 validateSwiftStruct:@"HomeUI.DashboardFilterCategoryCell[class].ContentConfiguration" hasSwiftField:@"text" withSwiftType:"Optional<String>"];
-  [v3 validateSwiftStruct:@"HomeUI.DashboardFilterCategoryCell[class].ContentConfiguration" hasSwiftField:@"secondaryText" withSwiftType:"Optional<String>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUDashboardFilterCategoryCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"HomeUI.DashboardFilterCategoryCell[class].ContentView"];
+  [validationsCopy validateClass:@"HomeUI.DashboardFilterCategoryCell[class].ContentView" hasSwiftField:@"config" withSwiftType:"ContentConfiguration"];
+  [validationsCopy validateSwiftStruct:@"HomeUI.DashboardFilterCategoryCell[class].ContentConfiguration"];
+  [validationsCopy validateSwiftStruct:@"HomeUI.DashboardFilterCategoryCell[class].ContentConfiguration" hasSwiftField:@"text" withSwiftType:"Optional<String>"];
+  [validationsCopy validateSwiftStruct:@"HomeUI.DashboardFilterCategoryCell[class].ContentConfiguration" hasSwiftField:@"secondaryText" withSwiftType:"Optional<String>"];
 }
 
 - (id)accessibilityLabel
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 contentView];
-  v4 = [v3 safeSwiftValueForKey:@"config"];
+  contentView = [v2 contentView];
+  v4 = [contentView safeSwiftValueForKey:@"config"];
   v5 = __UIAccessibilityCastAsSwiftStruct();
 
   v6 = [v5 safeSwiftStringForKey:@"text"];

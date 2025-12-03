@@ -3,11 +3,11 @@
 + (id)sharedInstance;
 - (NSMutableDictionary)qualificationIDToQualificationRules;
 - (NSMutableDictionary)rootNodeIDToQualificationRules;
-- (id)qualificationRulesForQualificationID:(id)a3;
-- (id)qualificationRulesForRootNodeID:(id)a3;
+- (id)qualificationRulesForQualificationID:(id)d;
+- (id)qualificationRulesForRootNodeID:(id)d;
 - (id)regex;
-- (id)ruleWithString:(id)a3 withEntryDate:(id)a4;
-- (void)indexRule:(id)a3;
+- (id)ruleWithString:(id)string withEntryDate:(id)date;
+- (void)indexRule:(id)rule;
 @end
 
 @implementation PLAccountingQualificationRuleManager
@@ -17,9 +17,9 @@
   qualificationIDToQualificationRules = self->_qualificationIDToQualificationRules;
   if (!qualificationIDToQualificationRules)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_qualificationIDToQualificationRules;
-    self->_qualificationIDToQualificationRules = v4;
+    self->_qualificationIDToQualificationRules = dictionary;
 
     qualificationIDToQualificationRules = self->_qualificationIDToQualificationRules;
   }
@@ -29,11 +29,11 @@
 
 + (id)sharedInstance
 {
-  v3 = [MEMORY[0x277D3F2A0] sharedCore];
-  v4 = [v3 storage];
-  v5 = [v4 storageLocked];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  storageLocked = [storage storageLocked];
 
-  if (v5)
+  if (storageLocked)
   {
     v6 = 0;
   }
@@ -44,7 +44,7 @@
     block[1] = 3221225472;
     block[2] = __54__PLAccountingQualificationRuleManager_sharedInstance__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (sharedInstance_onceToken_1 != -1)
     {
       dispatch_once(&sharedInstance_onceToken_1, block);
@@ -61,9 +61,9 @@
   rootNodeIDToQualificationRules = self->_rootNodeIDToQualificationRules;
   if (!rootNodeIDToQualificationRules)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_rootNodeIDToQualificationRules;
-    self->_rootNodeIDToQualificationRules = v4;
+    self->_rootNodeIDToQualificationRules = dictionary;
 
     rootNodeIDToQualificationRules = self->_rootNodeIDToQualificationRules;
   }
@@ -79,20 +79,20 @@ uint64_t __54__PLAccountingQualificationRuleManager_sharedInstance__block_invoke
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)qualificationRulesForRootNodeID:(id)a3
+- (id)qualificationRulesForRootNodeID:(id)d
 {
-  v4 = a3;
-  v5 = [(PLAccountingQualificationRuleManager *)self rootNodeIDToQualificationRules];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  rootNodeIDToQualificationRules = [(PLAccountingQualificationRuleManager *)self rootNodeIDToQualificationRules];
+  v6 = [rootNodeIDToQualificationRules objectForKeyedSubscript:dCopy];
 
   return v6;
 }
 
-- (id)qualificationRulesForQualificationID:(id)a3
+- (id)qualificationRulesForQualificationID:(id)d
 {
-  v4 = a3;
-  v5 = [(PLAccountingQualificationRuleManager *)self qualificationIDToQualificationRules];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  qualificationIDToQualificationRules = [(PLAccountingQualificationRuleManager *)self qualificationIDToQualificationRules];
+  v6 = [qualificationIDToQualificationRules objectForKeyedSubscript:dCopy];
 
   return v6;
 }
@@ -115,25 +115,25 @@ uint64_t __54__PLAccountingQualificationRuleManager_sharedInstance__block_invoke
 + (id)rulesPath
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [MEMORY[0x277D3F208] kPLDeviceClassName];
-  v4 = [v2 stringWithFormat:@"Qualification_Rules_%@.txt", v3];
+  kPLDeviceClassName = [MEMORY[0x277D3F208] kPLDeviceClassName];
+  v4 = [v2 stringWithFormat:@"Qualification_Rules_%@.txt", kPLDeviceClassName];
 
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v6 = [(__CFString *)v4 stringByDeletingPathExtension];
-  v7 = [(__CFString *)v4 pathExtension];
-  v8 = [v5 pathForResource:v6 ofType:v7];
+  stringByDeletingPathExtension = [(__CFString *)v4 stringByDeletingPathExtension];
+  pathExtension = [(__CFString *)v4 pathExtension];
+  v8 = [v5 pathForResource:stringByDeletingPathExtension ofType:pathExtension];
 
   if (!v8)
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [MEMORY[0x277D3F208] kPLDeviceClassName];
-    v11 = [v9 stringWithFormat:@"ERROR: Could not find qualification rules file for %@", v10];
+    kPLDeviceClassName2 = [MEMORY[0x277D3F208] kPLDeviceClassName];
+    v11 = [v9 stringWithFormat:@"ERROR: Could not find qualification rules file for %@", kPLDeviceClassName2];
 
     v12 = MEMORY[0x277D3F178];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingQualificationRuleManager.m"];
-    v14 = [v13 lastPathComponent];
+    lastPathComponent = [v13 lastPathComponent];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLAccountingQualificationRuleManager rulesPath]"];
-    [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:78];
+    [v12 logMessage:v11 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:78];
 
     v16 = PLLogCommon();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -143,18 +143,18 @@ uint64_t __54__PLAccountingQualificationRuleManager_sharedInstance__block_invoke
 
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v4 = @"Qualification_Rules_N41.txt";
-    v18 = [@"Qualification_Rules_N41.txt" stringByDeletingPathExtension];
-    v19 = [@"Qualification_Rules_N41.txt" pathExtension];
-    v8 = [v17 pathForResource:v18 ofType:v19];
+    stringByDeletingPathExtension2 = [@"Qualification_Rules_N41.txt" stringByDeletingPathExtension];
+    pathExtension2 = [@"Qualification_Rules_N41.txt" pathExtension];
+    v8 = [v17 pathForResource:stringByDeletingPathExtension2 ofType:pathExtension2];
   }
 
   return v8;
 }
 
-- (id)ruleWithString:(id)a3 withEntryDate:(id)a4
+- (id)ruleWithString:(id)string withEntryDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  dateCopy = date;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -170,12 +170,12 @@ uint64_t __54__PLAccountingQualificationRuleManager_sharedInstance__block_invoke
 
     if (ruleWithString_withEntryDate__classDebugEnabled_0 == 1)
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"str=%@, entryDate=%@", v6, v7];
+      dateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"str=%@, entryDate=%@", stringCopy, dateCopy];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingQualificationRuleManager.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationRuleManager ruleWithString:withEntryDate:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:89];
+      [v10 logMessage:dateCopy fromFile:lastPathComponent fromFunction:v13 fromLineNumber:89];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -185,13 +185,13 @@ uint64_t __54__PLAccountingQualificationRuleManager_sharedInstance__block_invoke
     }
   }
 
-  v15 = [(PLAccountingQualificationRuleManager *)self regex];
-  v16 = [v15 firstMatchInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
+  regex = [(PLAccountingQualificationRuleManager *)self regex];
+  v16 = [regex firstMatchInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
 
   if (v16)
   {
     v17 = [v16 rangeAtIndex:1];
-    v19 = [v6 substringWithRange:{v17, v18}];
+    v19 = [stringCopy substringWithRange:{v17, v18}];
     v20 = +[PLAccountingNodeManager sharedInstance];
     v21 = [v20 nodeIDForNodeName:v19 isPermanent:1];
 
@@ -210,13 +210,13 @@ uint64_t __54__PLAccountingQualificationRuleManager_sharedInstance__block_invoke
 
       if (ruleWithString_withEntryDate__classDebugEnabled_35 == 1)
       {
-        v42 = v7;
+        v42 = dateCopy;
         v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"rootNodeName=%@, rootNodeID=%@", v19, v21];
         v24 = MEMORY[0x277D3F178];
         v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingQualificationRuleManager.m"];
-        v26 = [v25 lastPathComponent];
+        lastPathComponent2 = [v25 lastPathComponent];
         v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationRuleManager ruleWithString:withEntryDate:]"];
-        [v24 logMessage:v23 fromFile:v26 fromFunction:v27 fromLineNumber:100];
+        [v24 logMessage:v23 fromFile:lastPathComponent2 fromFunction:v27 fromLineNumber:100];
 
         v28 = PLLogCommon();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -224,14 +224,14 @@ uint64_t __54__PLAccountingQualificationRuleManager_sharedInstance__block_invoke
           [PLAccountingDependency activate];
         }
 
-        v7 = v42;
+        dateCopy = v42;
       }
     }
 
     if (v21)
     {
       v29 = [v16 rangeAtIndex:2];
-      v31 = [v6 substringWithRange:{v29, v30}];
+      v31 = [stringCopy substringWithRange:{v29, v30}];
       v32 = [PLAccountingEngine qualificationIDForQualificationName:v31];
       if ([MEMORY[0x277D3F180] debugEnabled])
       {
@@ -248,13 +248,13 @@ uint64_t __54__PLAccountingQualificationRuleManager_sharedInstance__block_invoke
 
         if (ruleWithString_withEntryDate__classDebugEnabled_42 == 1)
         {
-          v43 = v7;
+          v43 = dateCopy;
           v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"qualificationName=%@, qualificationID=%@", v31, v32];
           v34 = MEMORY[0x277D3F178];
           v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingQualificationRuleManager.m"];
-          v36 = [v35 lastPathComponent];
+          lastPathComponent3 = [v35 lastPathComponent];
           v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationRuleManager ruleWithString:withEntryDate:]"];
-          [v34 logMessage:v41 fromFile:v36 fromFunction:v37 fromLineNumber:105];
+          [v34 logMessage:v41 fromFile:lastPathComponent3 fromFunction:v37 fromLineNumber:105];
 
           v38 = PLLogCommon();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
@@ -262,13 +262,13 @@ uint64_t __54__PLAccountingQualificationRuleManager_sharedInstance__block_invoke
             [PLAccountingDependency activate];
           }
 
-          v7 = v43;
+          dateCopy = v43;
         }
       }
 
       if (v32)
       {
-        v39 = [[PLAccountingQualificationRuleEntry alloc] initWithRootNodeID:v21 withQualificationID:v32 withEntryDate:v7];
+        v39 = [[PLAccountingQualificationRuleEntry alloc] initWithRootNodeID:v21 withQualificationID:v32 withEntryDate:dateCopy];
       }
 
       else
@@ -312,26 +312,26 @@ uint64_t __69__PLAccountingQualificationRuleManager_ruleWithString_withEntryDate
   return result;
 }
 
-- (void)indexRule:(id)a3
+- (void)indexRule:(id)rule
 {
-  v4 = a3;
+  ruleCopy = rule;
   v36.receiver = self;
   v36.super_class = PLAccountingQualificationRuleManager;
-  [(PLAccountingRuleManager *)&v36 indexRule:v4];
-  v5 = v4;
-  v6 = [(PLAccountingQualificationRuleManager *)self rootNodeIDToQualificationRules];
-  v7 = [v5 rootNodeID];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  [(PLAccountingRuleManager *)&v36 indexRule:ruleCopy];
+  v5 = ruleCopy;
+  rootNodeIDToQualificationRules = [(PLAccountingQualificationRuleManager *)self rootNodeIDToQualificationRules];
+  rootNodeID = [v5 rootNodeID];
+  array = [rootNodeIDToQualificationRules objectForKeyedSubscript:rootNodeID];
 
-  if (!v8)
+  if (!array)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
-    v9 = [(PLAccountingQualificationRuleManager *)self rootNodeIDToQualificationRules];
-    v10 = [v5 rootNodeID];
-    [v9 setObject:v8 forKeyedSubscript:v10];
+    array = [MEMORY[0x277CBEB18] array];
+    rootNodeIDToQualificationRules2 = [(PLAccountingQualificationRuleManager *)self rootNodeIDToQualificationRules];
+    rootNodeID2 = [v5 rootNodeID];
+    [rootNodeIDToQualificationRules2 setObject:array forKeyedSubscript:rootNodeID2];
   }
 
-  [v8 addObject:v5];
+  [array addObject:v5];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v11 = objc_opt_class();
@@ -348,14 +348,14 @@ uint64_t __69__PLAccountingQualificationRuleManager_ruleWithString_withEntryDate
     if (indexRule__classDebugEnabled_0 == 1)
     {
       v12 = MEMORY[0x277CCACA8];
-      v13 = [(PLAccountingQualificationRuleManager *)self rootNodeIDToQualificationRules];
-      v14 = [v12 stringWithFormat:@"rootNodeIDToQualificationRules=%@", v13];
+      rootNodeIDToQualificationRules3 = [(PLAccountingQualificationRuleManager *)self rootNodeIDToQualificationRules];
+      v14 = [v12 stringWithFormat:@"rootNodeIDToQualificationRules=%@", rootNodeIDToQualificationRules3];
 
       v15 = MEMORY[0x277D3F178];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingQualificationRuleManager.m"];
-      v17 = [v16 lastPathComponent];
+      lastPathComponent = [v16 lastPathComponent];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationRuleManager indexRule:]"];
-      [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:127];
+      [v15 logMessage:v14 fromFile:lastPathComponent fromFunction:v18 fromLineNumber:127];
 
       v19 = PLLogCommon();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -365,19 +365,19 @@ uint64_t __69__PLAccountingQualificationRuleManager_ruleWithString_withEntryDate
     }
   }
 
-  v20 = [(PLAccountingQualificationRuleManager *)self qualificationIDToQualificationRules];
-  v21 = [v5 qualificationID];
-  v22 = [v20 objectForKeyedSubscript:v21];
+  qualificationIDToQualificationRules = [(PLAccountingQualificationRuleManager *)self qualificationIDToQualificationRules];
+  qualificationID = [v5 qualificationID];
+  array2 = [qualificationIDToQualificationRules objectForKeyedSubscript:qualificationID];
 
-  if (!v22)
+  if (!array2)
   {
-    v22 = [MEMORY[0x277CBEB18] array];
-    v23 = [(PLAccountingQualificationRuleManager *)self qualificationIDToQualificationRules];
-    v24 = [v5 qualificationID];
-    [v23 setObject:v22 forKeyedSubscript:v24];
+    array2 = [MEMORY[0x277CBEB18] array];
+    qualificationIDToQualificationRules2 = [(PLAccountingQualificationRuleManager *)self qualificationIDToQualificationRules];
+    qualificationID2 = [v5 qualificationID];
+    [qualificationIDToQualificationRules2 setObject:array2 forKeyedSubscript:qualificationID2];
   }
 
-  [v22 addObject:v5];
+  [array2 addObject:v5];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v25 = objc_opt_class();
@@ -394,14 +394,14 @@ uint64_t __69__PLAccountingQualificationRuleManager_ruleWithString_withEntryDate
     if (indexRule__classDebugEnabled_52 == 1)
     {
       v26 = MEMORY[0x277CCACA8];
-      v27 = [(PLAccountingQualificationRuleManager *)self qualificationIDToQualificationRules];
-      v28 = [v26 stringWithFormat:@"qualificationIDToQualificationRules=%@", v27];
+      qualificationIDToQualificationRules3 = [(PLAccountingQualificationRuleManager *)self qualificationIDToQualificationRules];
+      v28 = [v26 stringWithFormat:@"qualificationIDToQualificationRules=%@", qualificationIDToQualificationRules3];
 
       v29 = MEMORY[0x277D3F178];
       v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingQualificationRuleManager.m"];
-      v31 = [v30 lastPathComponent];
+      lastPathComponent2 = [v30 lastPathComponent];
       v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationRuleManager indexRule:]"];
-      [v29 logMessage:v28 fromFile:v31 fromFunction:v32 fromLineNumber:136];
+      [v29 logMessage:v28 fromFile:lastPathComponent2 fromFunction:v32 fromLineNumber:136];
 
       v33 = PLLogCommon();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))

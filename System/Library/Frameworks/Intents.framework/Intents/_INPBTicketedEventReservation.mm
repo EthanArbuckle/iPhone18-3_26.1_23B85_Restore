@@ -1,31 +1,31 @@
 @interface _INPBTicketedEventReservation
-- (BOOL)isEqual:(id)a3;
-- (_INPBTicketedEventReservation)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBTicketedEventReservation)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBTicketedEventReservation
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBTicketedEventReservation *)self event];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"event"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  event = [(_INPBTicketedEventReservation *)self event];
+  dictionaryRepresentation = [event dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"event"];
 
-  v6 = [(_INPBTicketedEventReservation *)self reservation];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"reservation"];
+  reservation = [(_INPBTicketedEventReservation *)self reservation];
+  dictionaryRepresentation2 = [reservation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"reservation"];
 
-  v8 = [(_INPBTicketedEventReservation *)self reservedSeat];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"reservedSeat"];
+  reservedSeat = [(_INPBTicketedEventReservation *)self reservedSeat];
+  dictionaryRepresentation3 = [reservedSeat dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"reservedSeat"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -35,28 +35,28 @@
   return v4 ^ [(_INPBSeat *)self->_reservedSeat hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBTicketedEventReservation *)self event];
-  v6 = [v4 event];
-  if ((v5 != 0) == (v6 == 0))
+  event = [(_INPBTicketedEventReservation *)self event];
+  event2 = [equalCopy event];
+  if ((event != 0) == (event2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBTicketedEventReservation *)self event];
-  if (v7)
+  event3 = [(_INPBTicketedEventReservation *)self event];
+  if (event3)
   {
-    v8 = v7;
-    v9 = [(_INPBTicketedEventReservation *)self event];
-    v10 = [v4 event];
-    v11 = [v9 isEqual:v10];
+    v8 = event3;
+    event4 = [(_INPBTicketedEventReservation *)self event];
+    event5 = [equalCopy event];
+    v11 = [event4 isEqual:event5];
 
     if (!v11)
     {
@@ -68,20 +68,20 @@
   {
   }
 
-  v5 = [(_INPBTicketedEventReservation *)self reservation];
-  v6 = [v4 reservation];
-  if ((v5 != 0) == (v6 == 0))
+  event = [(_INPBTicketedEventReservation *)self reservation];
+  event2 = [equalCopy reservation];
+  if ((event != 0) == (event2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBTicketedEventReservation *)self reservation];
-  if (v12)
+  reservation = [(_INPBTicketedEventReservation *)self reservation];
+  if (reservation)
   {
-    v13 = v12;
-    v14 = [(_INPBTicketedEventReservation *)self reservation];
-    v15 = [v4 reservation];
-    v16 = [v14 isEqual:v15];
+    v13 = reservation;
+    reservation2 = [(_INPBTicketedEventReservation *)self reservation];
+    reservation3 = [equalCopy reservation];
+    v16 = [reservation2 isEqual:reservation3];
 
     if (!v16)
     {
@@ -93,12 +93,12 @@
   {
   }
 
-  v5 = [(_INPBTicketedEventReservation *)self reservedSeat];
-  v6 = [v4 reservedSeat];
-  if ((v5 != 0) != (v6 == 0))
+  event = [(_INPBTicketedEventReservation *)self reservedSeat];
+  event2 = [equalCopy reservedSeat];
+  if ((event != 0) != (event2 == 0))
   {
-    v17 = [(_INPBTicketedEventReservation *)self reservedSeat];
-    if (!v17)
+    reservedSeat = [(_INPBTicketedEventReservation *)self reservedSeat];
+    if (!reservedSeat)
     {
 
 LABEL_20:
@@ -106,10 +106,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_INPBTicketedEventReservation *)self reservedSeat];
-    v20 = [v4 reservedSeat];
-    v21 = [v19 isEqual:v20];
+    v18 = reservedSeat;
+    reservedSeat2 = [(_INPBTicketedEventReservation *)self reservedSeat];
+    reservedSeat3 = [equalCopy reservedSeat];
+    v21 = [reservedSeat2 isEqual:reservedSeat3];
 
     if (v21)
     {
@@ -129,73 +129,73 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBTicketedEventReservation allocWithZone:](_INPBTicketedEventReservation init];
-  v6 = [(_INPBTicketedEvent *)self->_event copyWithZone:a3];
+  v6 = [(_INPBTicketedEvent *)self->_event copyWithZone:zone];
   [(_INPBTicketedEventReservation *)v5 setEvent:v6];
 
-  v7 = [(_INPBReservation *)self->_reservation copyWithZone:a3];
+  v7 = [(_INPBReservation *)self->_reservation copyWithZone:zone];
   [(_INPBTicketedEventReservation *)v5 setReservation:v7];
 
-  v8 = [(_INPBSeat *)self->_reservedSeat copyWithZone:a3];
+  v8 = [(_INPBSeat *)self->_reservedSeat copyWithZone:zone];
   [(_INPBTicketedEventReservation *)v5 setReservedSeat:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBTicketedEventReservation *)self data];
+  coderCopy = coder;
+  data = [(_INPBTicketedEventReservation *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBTicketedEventReservation)initWithCoder:(id)a3
+- (_INPBTicketedEventReservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBTicketedEventReservation *)self initWithData:v6];
+    self = [(_INPBTicketedEventReservation *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(_INPBTicketedEventReservation *)self event];
+  toCopy = to;
+  event = [(_INPBTicketedEventReservation *)self event];
 
-  if (v4)
+  if (event)
   {
-    v5 = [(_INPBTicketedEventReservation *)self event];
+    event2 = [(_INPBTicketedEventReservation *)self event];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBTicketedEventReservation *)self reservation];
+  reservation = [(_INPBTicketedEventReservation *)self reservation];
 
-  if (v6)
+  if (reservation)
   {
-    v7 = [(_INPBTicketedEventReservation *)self reservation];
+    reservation2 = [(_INPBTicketedEventReservation *)self reservation];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBTicketedEventReservation *)self reservedSeat];
+  reservedSeat = [(_INPBTicketedEventReservation *)self reservedSeat];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (reservedSeat)
   {
-    v10 = [(_INPBTicketedEventReservation *)self reservedSeat];
+    reservedSeat2 = [(_INPBTicketedEventReservation *)self reservedSeat];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 

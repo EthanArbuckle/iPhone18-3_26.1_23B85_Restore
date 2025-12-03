@@ -1,37 +1,37 @@
 @interface DNDSIntelligentBehaviorResolver
-- (int64_t)intelligentInterruptionBehaviorForClientEventDetails:(id)a3;
-- (int64_t)llmIntelligentBehavior:(id)a3;
+- (int64_t)intelligentInterruptionBehaviorForClientEventDetails:(id)details;
+- (int64_t)llmIntelligentBehavior:(id)behavior;
 @end
 
 @implementation DNDSIntelligentBehaviorResolver
 
-- (int64_t)intelligentInterruptionBehaviorForClientEventDetails:(id)a3
+- (int64_t)intelligentInterruptionBehaviorForClientEventDetails:(id)details
 {
-  v4 = a3;
-  v5 = [v4 forwardingBehavior];
+  detailsCopy = details;
+  forwardingBehavior = [detailsCopy forwardingBehavior];
 
-  if (v5)
+  if (forwardingBehavior)
   {
-    v6 = [v4 forwardingBehavior];
-    v7 = [v6 intelligentBehavior];
+    forwardingBehavior2 = [detailsCopy forwardingBehavior];
+    intelligentBehavior = [forwardingBehavior2 intelligentBehavior];
   }
 
   else if (+[DNDSPlatformEligibility isIntelligenceAvailable])
   {
-    v7 = [(DNDSIntelligentBehaviorResolver *)self llmIntelligentBehavior:v4];
+    intelligentBehavior = [(DNDSIntelligentBehaviorResolver *)self llmIntelligentBehavior:detailsCopy];
   }
 
   else
   {
-    v7 = 1;
+    intelligentBehavior = 1;
   }
 
-  return v7;
+  return intelligentBehavior;
 }
 
-- (int64_t)llmIntelligentBehavior:(id)a3
+- (int64_t)llmIntelligentBehavior:(id)behavior
 {
-  v3 = a3;
+  behaviorCopy = behavior;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -40,13 +40,13 @@
   [v4 setLive:0];
   [v4 setFetchAttributes:&unk_285C53BE8];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [v3 bundleIdentifier];
-  v7 = [v3 identifier];
-  v8 = [v5 stringWithFormat:@"%@:%@", v6, v7];
+  bundleIdentifier = [behaviorCopy bundleIdentifier];
+  identifier = [behaviorCopy identifier];
+  v8 = [v5 stringWithFormat:@"%@:%@", bundleIdentifier, identifier];
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [v3 bundleIdentifier];
-  v11 = [v9 stringWithFormat:@"%@ == %@ && %@ == %@", *MEMORY[0x277CC2770], @"com.apple.usernotifications", *MEMORY[0x277CC26C0], v10];
+  bundleIdentifier2 = [behaviorCopy bundleIdentifier];
+  v11 = [v9 stringWithFormat:@"%@ == %@ && %@ == %@", *MEMORY[0x277CC2770], @"com.apple.usernotifications", *MEMORY[0x277CC26C0], bundleIdentifier2];
 
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ == %@", *MEMORY[0x277CC3208], v8];
   [v4 setFilterQuery:v12];
@@ -58,7 +58,7 @@
     v25[2] = 0x3032000000;
     v25[3] = __Block_byref_object_copy__6;
     v25[4] = __Block_byref_object_dispose__6;
-    v26 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     v14 = dispatch_semaphore_create(0);
     [v13 setBundleIDs:&unk_285C53C00];
     v24[0] = MEMORY[0x277D85DD0];
@@ -72,7 +72,7 @@
     v19[2] = __58__DNDSIntelligentBehaviorResolver_llmIntelligentBehavior___block_invoke_2;
     v19[3] = &unk_278F8ACA0;
     v22 = v25;
-    v20 = v3;
+    v20 = behaviorCopy;
     v23 = &v27;
     v15 = v14;
     v21 = v15;

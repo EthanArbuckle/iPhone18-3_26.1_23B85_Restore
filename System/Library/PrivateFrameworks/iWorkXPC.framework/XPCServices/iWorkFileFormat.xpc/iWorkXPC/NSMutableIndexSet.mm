@@ -1,20 +1,20 @@
 @interface NSMutableIndexSet
-- (void)tsu_intersectionWithIndexSet:(id)a3;
-- (void)tsu_moveIndexesInRange:(_NSRange)a3 toOffset:(unint64_t)a4;
+- (void)tsu_intersectionWithIndexSet:(id)set;
+- (void)tsu_moveIndexesInRange:(_NSRange)range toOffset:(unint64_t)offset;
 @end
 
 @implementation NSMutableIndexSet
 
-- (void)tsu_moveIndexesInRange:(_NSRange)a3 toOffset:(unint64_t)a4
+- (void)tsu_moveIndexesInRange:(_NSRange)range toOffset:(unint64_t)offset
 {
-  length = a3.length;
-  location = a3.location;
-  if (a4 < a3.location || a4 - a3.location >= a3.length)
+  length = range.length;
+  location = range.location;
+  if (offset < range.location || offset - range.location >= range.length)
   {
-    v8 = a3.location + a3.length;
-    if (a3.location + a3.length != a4 && [(NSMutableIndexSet *)self firstIndex]!= 0x7FFFFFFFFFFFFFFFLL)
+    v8 = range.location + range.length;
+    if (range.location + range.length != offset && [(NSMutableIndexSet *)self firstIndex]!= 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (v8 >= a4)
+      if (v8 >= offset)
       {
         v9 = 0;
       }
@@ -24,7 +24,7 @@
         v9 = length;
       }
 
-      v10 = a4 - v9;
+      v10 = offset - v9;
       v12 = _NSConcreteStackBlock;
       v13 = 3221225472;
       v14 = sub_1000AB9B0;
@@ -42,13 +42,13 @@
   }
 }
 
-- (void)tsu_intersectionWithIndexSet:(id)a3
+- (void)tsu_intersectionWithIndexSet:(id)set
 {
-  v5 = a3;
+  setCopy = set;
   if ([(NSMutableIndexSet *)self count])
   {
     v4 = [[NSMutableIndexSet alloc] initWithIndexesInRange:{-[NSMutableIndexSet firstIndex](self, "firstIndex"), -[NSMutableIndexSet lastIndex](self, "lastIndex") - -[NSMutableIndexSet firstIndex](self, "firstIndex") + 1}];
-    [v4 removeIndexes:v5];
+    [v4 removeIndexes:setCopy];
     [(NSMutableIndexSet *)self removeIndexes:v4];
   }
 }

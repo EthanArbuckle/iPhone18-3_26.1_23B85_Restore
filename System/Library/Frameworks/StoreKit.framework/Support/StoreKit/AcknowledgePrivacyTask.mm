@@ -1,22 +1,22 @@
 @interface AcknowledgePrivacyTask
-- (AcknowledgePrivacyTask)initWithAccount:(id)a3;
+- (AcknowledgePrivacyTask)initWithAccount:(id)account;
 - (void)main;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation AcknowledgePrivacyTask
 
-- (AcknowledgePrivacyTask)initWithAccount:(id)a3
+- (AcknowledgePrivacyTask)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = AcknowledgePrivacyTask;
   v6 = [(Task *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
@@ -139,7 +139,7 @@ LABEL_27:
       }
 
       v15 = [[AMSAcknowledgePrivacyTask alloc] initWithPrivacyIdentifier:@"com.apple.onboarding.appstore" account:self->_account];
-      v16 = [v15 acknowledgePrivacy];
+      acknowledgePrivacy = [v15 acknowledgePrivacy];
     }
 
     else
@@ -168,9 +168,9 @@ LABEL_26:
   [(Task *)self completeWithError:v27];
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   if (qword_1003D3B68 != -1)
   {
     sub_1002C79E0();
@@ -189,10 +189,10 @@ LABEL_26:
   dispatch_semaphore_signal(self->_privacyPromptSemaphore);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  errorCopy = error;
   if (qword_1003D3B68 != -1)
   {
     sub_1002C79E0();
@@ -205,7 +205,7 @@ LABEL_26:
     v11 = 138543618;
     v12 = objc_opt_class();
     v13 = 2114;
-    v14 = v7;
+    v14 = errorCopy;
     v10 = v12;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Remote privacy handle did invalidate with error: %{public}@", &v11, 0x16u);
   }

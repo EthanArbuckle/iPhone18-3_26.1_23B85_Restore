@@ -1,20 +1,20 @@
 @interface APProtectedDestination
-- (APProtectedDestination)initWithString:(id)a3;
+- (APProtectedDestination)initWithString:(id)string;
 @end
 
 @implementation APProtectedDestination
 
-- (APProtectedDestination)initWithString:(id)a3
+- (APProtectedDestination)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = APProtectedDestination;
   v5 = [(APProtectedDestination *)&v9 init];
   if (v5)
   {
-    v6 = [v4 sha256hash];
+    sha256hash = [stringCopy sha256hash];
     value = v5->_value;
-    v5->_value = v6;
+    v5->_value = sha256hash;
   }
 
   return v5;

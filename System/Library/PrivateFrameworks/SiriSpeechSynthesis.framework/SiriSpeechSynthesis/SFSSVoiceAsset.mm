@@ -1,7 +1,7 @@
 @interface SFSSVoiceAsset
-+ (id)generateVoiceAssetFromVoiceKeyString:(id)a3;
-- (SFSSVoiceAsset)initWithPath:(id)a3;
-- (id)init:(id)a3 gender:(int64_t)a4 name:(id)a5 type:(int64_t)a6 footprint:(int64_t)a7 contentVersion:(int64_t)a8;
++ (id)generateVoiceAssetFromVoiceKeyString:(id)string;
+- (SFSSVoiceAsset)initWithPath:(id)path;
+- (id)init:(id)init gender:(int64_t)gender name:(id)name type:(int64_t)type footprint:(int64_t)footprint contentVersion:(int64_t)version;
 - (id)key;
 @end
 
@@ -16,31 +16,31 @@
   v7 = [SFSpeechSynthesisUtils typeStringFromType:self->_type];
   v8 = [SFSpeechSynthesisUtils footprintStringFromFootprint:self->_footprint];
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:self->_contentVersion];
-  v10 = [v9 stringValue];
-  v11 = [v3 stringWithFormat:@"%@:%@:%@:%@:%@:%@", language, v5, name, v7, v8, v10];
+  stringValue = [v9 stringValue];
+  v11 = [v3 stringWithFormat:@"%@:%@:%@:%@:%@:%@", language, v5, name, v7, v8, stringValue];
 
   return v11;
 }
 
-- (id)init:(id)a3 gender:(int64_t)a4 name:(id)a5 type:(int64_t)a6 footprint:(int64_t)a7 contentVersion:(int64_t)a8
+- (id)init:(id)init gender:(int64_t)gender name:(id)name type:(int64_t)type footprint:(int64_t)footprint contentVersion:(int64_t)version
 {
   v26 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
+  initCopy = init;
+  nameCopy = name;
   v23.receiver = self;
   v23.super_class = SFSSVoiceAsset;
   v16 = [(SFSSVoiceAsset *)&v23 init];
   if (v16)
   {
-    v17 = [v14 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+    v17 = [initCopy stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
     language = v16->_language;
     v16->_language = v17;
 
-    v16->_gender = a4;
-    objc_storeStrong(&v16->_name, a5);
-    v16->_footprint = a7;
-    v16->_type = a6;
-    v16->_contentVersion = a8;
+    v16->_gender = gender;
+    objc_storeStrong(&v16->_name, name);
+    v16->_footprint = footprint;
+    v16->_type = type;
+    v16->_contentVersion = version;
   }
 
   v19 = SFSSGetLogObject();
@@ -56,17 +56,17 @@
   return v16;
 }
 
-- (SFSSVoiceAsset)initWithPath:(id)a3
+- (SFSSVoiceAsset)initWithPath:(id)path
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = SFSSVoiceAsset;
   v6 = [(SFSSVoiceAsset *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetPath, a3);
+    objc_storeStrong(&v6->_assetPath, path);
     v8 = SFSSGetLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -81,9 +81,9 @@
   return v7;
 }
 
-+ (id)generateVoiceAssetFromVoiceKeyString:(id)a3
++ (id)generateVoiceAssetFromVoiceKeyString:(id)string
 {
-  v3 = [a3 componentsSeparatedByString:@":"];
+  v3 = [string componentsSeparatedByString:@":"];
   v4 = [v3 objectAtIndex:0];
   v5 = [v3 objectAtIndex:1];
   v6 = [SFSpeechSynthesisUtils genderFromString:v5];
@@ -96,9 +96,9 @@
   v11 = [SFSpeechSynthesisUtils footprintFromString:v10];
 
   v12 = [v3 objectAtIndex:5];
-  v13 = [v12 integerValue];
+  integerValue = [v12 integerValue];
 
-  v14 = [[SFSSVoiceAsset alloc] init:v4 gender:v6 name:v7 type:v9 footprint:v11 contentVersion:v13];
+  v14 = [[SFSSVoiceAsset alloc] init:v4 gender:v6 name:v7 type:v9 footprint:v11 contentVersion:integerValue];
 
   return v14;
 }

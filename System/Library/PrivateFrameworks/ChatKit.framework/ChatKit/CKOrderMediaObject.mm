@@ -1,39 +1,39 @@
 @interface CKOrderMediaObject
 + (id)UTITypes;
-+ (id)_modifyColor:(id)a3 lighten:(BOOL)a4;
-+ (id)_paddedImage:(id)a3 imageType:(unsigned __int8)a4 bubbleWidth:(double)a5;
-+ (void)_setTextForPresentationRow:(id)a3 representation:(id)a4;
-+ (void)_updatePresentationPropertiesForRow:(id)a3 representation:(id)a4;
++ (id)_modifyColor:(id)color lighten:(BOOL)lighten;
++ (id)_paddedImage:(id)image imageType:(unsigned __int8)type bubbleWidth:(double)width;
++ (void)_setTextForPresentationRow:(id)row representation:(id)representation;
++ (void)_updatePresentationPropertiesForRow:(id)row representation:(id)representation;
 - (BOOL)generatePreviewOutOfProcess;
 - (BOOL)isSupported;
 - (BOOL)shouldShowViewer;
-- (Class)balloonViewClassForWidth:(double)a3 orientation:(char)a4;
+- (Class)balloonViewClassForWidth:(double)width orientation:(char)orientation;
 - (Class)previewBalloonViewClass;
 - (FKOrderMessagesPreviewMetadata)metadata;
-- (id)_initWithOverrideFileURL:(id)a3;
-- (id)attachmentSummary:(unint64_t)a3;
+- (id)_initWithOverrideFileURL:(id)l;
+- (id)attachmentSummary:(unint64_t)summary;
 - (id)generatePreviewMetadata;
-- (id)generateThumbnailFillToSize:(CGSize)a3 contentAlignmentInsets:(UIEdgeInsets)a4;
-- (id)generateThumbnailForWidth:(double)a3 orientation:(char)a4;
+- (id)generateThumbnailFillToSize:(CGSize)size contentAlignmentInsets:(UIEdgeInsets)insets;
+- (id)generateThumbnailForWidth:(double)width orientation:(char)orientation;
 - (id)presentationPropertiesForReplyPreview;
-- (id)presentationPropertiesForWidth:(double)a3;
-- (id)previewForWidth:(double)a3 orientation:(char)a4;
+- (id)presentationPropertiesForWidth:(double)width;
+- (id)previewForWidth:(double)width orientation:(char)orientation;
 - (id)previewItemTitle;
 - (id)previewMetadata;
 @end
 
 @implementation CKOrderMediaObject
 
-- (id)_initWithOverrideFileURL:(id)a3
+- (id)_initWithOverrideFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = CKOrderMediaObject;
   v5 = [(CKOrderMediaObject *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CKOrderMediaObject *)v5 setOverrideFileURL:v4];
+    [(CKOrderMediaObject *)v5 setOverrideFileURL:lCopy];
   }
 
   return v6;
@@ -42,9 +42,9 @@
 - (BOOL)isSupported
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 supportsPassbookAttachments];
+  supportsPassbookAttachments = [v2 supportsPassbookAttachments];
 
-  return v3;
+  return supportsPassbookAttachments;
 }
 
 + (id)UTITypes
@@ -56,45 +56,45 @@
   return v2;
 }
 
-- (id)attachmentSummary:(unint64_t)a3
+- (id)attachmentSummary:(unint64_t)summary
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = IMSharedUtilitiesFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"%lu Orders" value:&stru_1F04268F8 table:@"IMSharedUtilities"];
-  v7 = [v4 localizedStringWithFormat:v6, a3];
+  summary = [v4 localizedStringWithFormat:v6, summary];
 
-  return v7;
+  return summary;
 }
 
 - (id)previewMetadata
 {
-  v3 = [(CKOrderMediaObject *)self overrideMetadataProperties];
-  v4 = v3;
-  if (v3)
+  overrideMetadataProperties = [(CKOrderMediaObject *)self overrideMetadataProperties];
+  v4 = overrideMetadataProperties;
+  if (overrideMetadataProperties)
   {
-    v5 = v3;
+    previewMetadata = overrideMetadataProperties;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CKOrderMediaObject;
-    v5 = [(CKMediaObject *)&v8 previewMetadata];
+    previewMetadata = [(CKMediaObject *)&v8 previewMetadata];
   }
 
-  v6 = v5;
+  v6 = previewMetadata;
 
   return v6;
 }
 
-- (id)previewForWidth:(double)a3 orientation:(char)a4
+- (id)previewForWidth:(double)width orientation:(char)orientation
 {
-  v4 = a4;
+  orientationCopy = orientation;
   if ([(CKOrderMediaObject *)self isSupported])
   {
     v9.receiver = self;
     v9.super_class = CKOrderMediaObject;
-    v7 = [(CKMediaObject *)&v9 previewForWidth:v4 orientation:a3];
+    v7 = [(CKMediaObject *)&v9 previewForWidth:orientationCopy orientation:width];
   }
 
   else
@@ -105,16 +105,16 @@
   return v7;
 }
 
-- (id)generateThumbnailForWidth:(double)a3 orientation:(char)a4
+- (id)generateThumbnailForWidth:(double)width orientation:(char)orientation
 {
-  v4 = a4;
+  orientationCopy = orientation;
   v7 = +[CKUIBehavior sharedBehaviors];
-  [v7 thumbnailFillSizeForWidth:a3 imageSize:{4.0, 3.0}];
+  [v7 thumbnailFillSizeForWidth:width imageSize:{4.0, 3.0}];
   v9 = v8;
   v11 = v10;
 
   v12 = +[CKUIBehavior sharedBehaviors];
-  [v12 thumbnailContentAlignmentInsetsForOrientation:v4];
+  [v12 thumbnailContentAlignmentInsetsForOrientation:orientationCopy];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -125,10 +125,10 @@
 
 - (BOOL)shouldShowViewer
 {
-  v2 = [(CKMediaObject *)self transfer];
-  v3 = [v2 isFileDataReady];
+  transfer = [(CKMediaObject *)self transfer];
+  isFileDataReady = [transfer isFileDataReady];
 
-  return v3;
+  return isFileDataReady;
 }
 
 - (id)previewItemTitle
@@ -151,9 +151,9 @@
   return [(CKMediaObject *)&v4 generatePreviewOutOfProcess];
 }
 
-- (Class)balloonViewClassForWidth:(double)a3 orientation:(char)a4
+- (Class)balloonViewClassForWidth:(double)width orientation:(char)orientation
 {
-  v4 = a4;
+  orientationCopy = orientation;
   if ([(CKOrderMediaObject *)self isSupported]&& ([(CKOrderMediaObject *)self previewMetadata], (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, v9 = [(CKMediaObject *)self shouldSuppressPreview], v8, !v9))
   {
     v10 = objc_opt_class();
@@ -163,7 +163,7 @@
   {
     v12.receiver = self;
     v12.super_class = CKOrderMediaObject;
-    v10 = [(CKMediaObject *)&v12 balloonViewClassForWidth:v4 orientation:a3];
+    v10 = [(CKMediaObject *)&v12 balloonViewClassForWidth:orientationCopy orientation:width];
   }
 
   return v10;
@@ -185,17 +185,17 @@
   return v3;
 }
 
-- (id)generateThumbnailFillToSize:(CGSize)a3 contentAlignmentInsets:(UIEdgeInsets)a4
+- (id)generateThumbnailFillToSize:(CGSize)size contentAlignmentInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  height = a3.height;
-  width = a3.width;
-  v11 = [(CKMediaObject *)self transcoderPreviewGenerationFailed];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  transcoderPreviewGenerationFailed = [(CKMediaObject *)self transcoderPreviewGenerationFailed];
   v12 = IMOSLoggingEnabled();
-  if (v11)
+  if (transcoderPreviewGenerationFailed)
   {
     if (v12)
     {
@@ -207,7 +207,7 @@
       }
     }
 
-    v14 = 0;
+    right = 0;
   }
 
   else
@@ -233,17 +233,17 @@
     }
 
     v17 = v16;
-    v14 = [CKWalletMediaObjectMetadataHandler generateThumbnailFillToSize:v16 contentAlignmentInsets:width presentationProperties:height, top, left, bottom, right];
+    right = [CKWalletMediaObjectMetadataHandler generateThumbnailFillToSize:v16 contentAlignmentInsets:width presentationProperties:height, top, left, bottom, right];
   }
 
-  return v14;
+  return right;
 }
 
 - (id)generatePreviewMetadata
 {
-  v3 = [(CKMediaObject *)self transcoderPreviewGenerationFailed];
+  transcoderPreviewGenerationFailed = [(CKMediaObject *)self transcoderPreviewGenerationFailed];
   v4 = IMOSLoggingEnabled();
-  if (v3)
+  if (transcoderPreviewGenerationFailed)
   {
     if (v4)
     {
@@ -270,32 +270,32 @@ LABEL_40:
     }
   }
 
-  v7 = [(CKOrderMediaObject *)self metadata];
+  metadata = [(CKOrderMediaObject *)self metadata];
 
-  if (!v7)
+  if (!metadata)
   {
     goto LABEL_40;
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v9 = [(CKOrderMediaObject *)self metadata];
-  v10 = [v9 headerImage];
+  metadata2 = [(CKOrderMediaObject *)self metadata];
+  headerImage = [metadata2 headerImage];
 
-  if (v10)
+  if (headerImage)
   {
-    v11 = [(CKOrderMediaObject *)self metadata];
-    v12 = [v11 headerImage];
-    v13 = [v12 data];
+    metadata3 = [(CKOrderMediaObject *)self metadata];
+    headerImage2 = [metadata3 headerImage];
+    data = [headerImage2 data];
 
-    if (v13)
+    if (data)
     {
-      CFDictionarySetValue(v8, *MEMORY[0x1E69A7E30], v13);
+      CFDictionarySetValue(v8, *MEMORY[0x1E69A7E30], data);
     }
 
     v14 = MEMORY[0x1E696AD98];
-    v15 = [(CKOrderMediaObject *)self metadata];
-    v16 = [v15 headerImage];
-    v17 = [v14 numberWithInt:{objc_msgSend(v16, "kind")}];
+    metadata4 = [(CKOrderMediaObject *)self metadata];
+    headerImage3 = [metadata4 headerImage];
+    v17 = [v14 numberWithInt:{objc_msgSend(headerImage3, "kind")}];
 
     if (v17)
     {
@@ -303,14 +303,14 @@ LABEL_40:
     }
   }
 
-  v18 = [(CKOrderMediaObject *)self metadata];
-  v19 = [v18 backgroundColor];
+  metadata5 = [(CKOrderMediaObject *)self metadata];
+  backgroundColor = [metadata5 backgroundColor];
 
-  if (v19)
+  if (backgroundColor)
   {
     v20 = MEMORY[0x1E69DC888];
-    v21 = [(CKOrderMediaObject *)self metadata];
-    v22 = [v20 colorWithCGColor:{objc_msgSend(v21, "backgroundColor")}];
+    metadata6 = [(CKOrderMediaObject *)self metadata];
+    v22 = [v20 colorWithCGColor:{objc_msgSend(metadata6, "backgroundColor")}];
     v23 = [CKWalletMediaObjectMetadataHandler colorDictionaryFromColor:v22];
 
     if (v23)
@@ -319,19 +319,19 @@ LABEL_40:
     }
   }
 
-  v24 = [(CKOrderMediaObject *)self metadata];
-  v25 = [v24 primaryText];
+  metadata7 = [(CKOrderMediaObject *)self metadata];
+  primaryText = [metadata7 primaryText];
 
-  if (v25)
+  if (primaryText)
   {
-    v26 = [(CKOrderMediaObject *)self metadata];
-    v27 = [v26 primaryText];
-    v28 = [v27 text];
+    metadata8 = [(CKOrderMediaObject *)self metadata];
+    primaryText2 = [metadata8 primaryText];
+    text = [primaryText2 text];
     v29 = MEMORY[0x1E69DC888];
-    v30 = [(CKOrderMediaObject *)self metadata];
-    v31 = [v30 primaryText];
-    v32 = [v29 colorWithCGColor:{objc_msgSend(v31, "overrideColor")}];
-    v33 = [CKWalletMediaObjectMetadataHandler dictionaryRepresentationForText:v28 optionalColor:v32];
+    metadata9 = [(CKOrderMediaObject *)self metadata];
+    primaryText3 = [metadata9 primaryText];
+    v32 = [v29 colorWithCGColor:{objc_msgSend(primaryText3, "overrideColor")}];
+    v33 = [CKWalletMediaObjectMetadataHandler dictionaryRepresentationForText:text optionalColor:v32];
 
     if (v33)
     {
@@ -344,19 +344,19 @@ LABEL_40:
     }
   }
 
-  v34 = [(CKOrderMediaObject *)self metadata];
-  v35 = [v34 secondaryText];
+  metadata10 = [(CKOrderMediaObject *)self metadata];
+  secondaryText = [metadata10 secondaryText];
 
-  if (v35)
+  if (secondaryText)
   {
-    v36 = [(CKOrderMediaObject *)self metadata];
-    v37 = [v36 secondaryText];
-    v38 = [v37 text];
+    metadata11 = [(CKOrderMediaObject *)self metadata];
+    secondaryText2 = [metadata11 secondaryText];
+    text2 = [secondaryText2 text];
     v39 = MEMORY[0x1E69DC888];
-    v40 = [(CKOrderMediaObject *)self metadata];
-    v41 = [v40 secondaryText];
-    v42 = [v39 colorWithCGColor:{objc_msgSend(v41, "overrideColor")}];
-    v43 = [CKWalletMediaObjectMetadataHandler dictionaryRepresentationForText:v38 optionalColor:v42];
+    metadata12 = [(CKOrderMediaObject *)self metadata];
+    secondaryText3 = [metadata12 secondaryText];
+    v42 = [v39 colorWithCGColor:{objc_msgSend(secondaryText3, "overrideColor")}];
+    v43 = [CKWalletMediaObjectMetadataHandler dictionaryRepresentationForText:text2 optionalColor:v42];
 
     if (v43)
     {
@@ -369,19 +369,19 @@ LABEL_40:
     }
   }
 
-  v44 = [(CKOrderMediaObject *)self metadata];
-  v45 = [v44 tertiaryText];
+  metadata13 = [(CKOrderMediaObject *)self metadata];
+  tertiaryText = [metadata13 tertiaryText];
 
-  if (v45)
+  if (tertiaryText)
   {
-    v46 = [(CKOrderMediaObject *)self metadata];
-    v47 = [v46 tertiaryText];
-    v48 = [v47 text];
+    metadata14 = [(CKOrderMediaObject *)self metadata];
+    tertiaryText2 = [metadata14 tertiaryText];
+    text3 = [tertiaryText2 text];
     v49 = MEMORY[0x1E69DC888];
-    v50 = [(CKOrderMediaObject *)self metadata];
-    v51 = [v50 tertiaryText];
-    v52 = [v49 colorWithCGColor:{objc_msgSend(v51, "overrideColor")}];
-    v53 = [CKWalletMediaObjectMetadataHandler dictionaryRepresentationForText:v48 optionalColor:v52];
+    metadata15 = [(CKOrderMediaObject *)self metadata];
+    tertiaryText3 = [metadata15 tertiaryText];
+    v52 = [v49 colorWithCGColor:{objc_msgSend(tertiaryText3, "overrideColor")}];
+    v53 = [CKWalletMediaObjectMetadataHandler dictionaryRepresentationForText:text3 optionalColor:v52];
 
     if (v53)
     {
@@ -413,8 +413,8 @@ LABEL_41:
   if (![(CKMediaObject *)self transcoderPreviewGenerationFailed])
   {
     v6 = MEMORY[0x1E695DEF0];
-    v7 = [(CKMediaObject *)self fileURL];
-    v8 = [v6 dataWithContentsOfURL:v7];
+    fileURL = [(CKMediaObject *)self fileURL];
+    v8 = [v6 dataWithContentsOfURL:fileURL];
 
     v19 = 0;
     v20 = &v19;
@@ -448,9 +448,9 @@ LABEL_41:
         v15 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
-          v16 = [v12 localizedDescription];
+          localizedDescription = [v12 localizedDescription];
           LODWORD(buf) = 138412290;
-          *(&buf + 4) = v16;
+          *(&buf + 4) = localizedDescription;
           _os_log_impl(&dword_19020E000, v15, OS_LOG_TYPE_INFO, "CKOrderMediaObject: Failed to load preview metadata in-process: %@", &buf, 0xCu);
         }
 
@@ -492,18 +492,18 @@ LABEL_21:
   return v5;
 }
 
-+ (id)_modifyColor:(id)a3 lighten:(BOOL)a4
++ (id)_modifyColor:(id)color lighten:(BOOL)lighten
 {
   v11 = 0;
   v12 = 0;
   v9 = 0;
   v10 = 0;
-  [a3 getHue:&v12 saturation:&v11 brightness:&v10 alpha:&v9];
+  [color getHue:&v12 saturation:&v11 brightness:&v10 alpha:&v9];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__CKOrderMediaObject__modifyColor_lighten___block_invoke;
   v7[3] = &__block_descriptor_65_e36___UIColor_16__0__UITraitCollection_8l;
-  v8 = a4;
+  lightenCopy = lighten;
   v7[4] = v11;
   v7[5] = v10;
   v7[6] = v12;
@@ -567,7 +567,7 @@ LABEL_9:
   return [v11 colorWithHue:v12 saturation:v10 brightness:v8 alpha:v13];
 }
 
-- (id)presentationPropertiesForWidth:(double)a3
+- (id)presentationPropertiesForWidth:(double)width
 {
   v42 = *MEMORY[0x1E69E9840];
   presentationProperties = self->_presentationProperties;
@@ -578,45 +578,45 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v6 = [(CKOrderMediaObject *)self previewMetadata];
+  previewMetadata = [(CKOrderMediaObject *)self previewMetadata];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = objc_alloc_init(MEMORY[0x1E696ED20]);
     [v7 setStyle:53];
-    v8 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69A7E30]];
-    v9 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69A7E38]];
+    v8 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E30]];
+    v9 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E38]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 intValue];
+      intValue = [v9 intValue];
     }
 
     else
     {
-      v10 = 0;
+      intValue = 0;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v13 = [MEMORY[0x1E69DCAB8] ckImageWithData:v8];
-      v14 = [objc_opt_class() _paddedImage:v13 imageType:v10 bubbleWidth:a3];
+      v14 = [objc_opt_class() _paddedImage:v13 imageType:intValue bubbleWidth:width];
 
       v15 = [objc_alloc(MEMORY[0x1E696EC68]) initWithPlatformImage:v14];
       [v7 setImage:v15];
     }
 
     v16 = *MEMORY[0x1E69A7DF8];
-    v17 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69A7DF8]];
+    v17 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7DF8]];
 
     if (v17)
     {
-      v18 = [v6 objectForKeyedSubscript:v16];
+      v18 = [previewMetadata objectForKeyedSubscript:v16];
       v19 = [CKWalletMediaObjectMetadataHandler colorFromDictionaryRepresentation:v18];
 
       [v7 setBackgroundColor:v19];
-      if (v10 == 1)
+      if (intValue == 1)
       {
         [v19 _luminance];
         v21 = [objc_opt_class() _modifyColor:v19 lighten:v20 > 0.5];
@@ -635,22 +635,22 @@ LABEL_18:
     [v7 setCaptionBar:v25];
 
     v26 = objc_opt_class();
-    v27 = [v7 captionBar];
-    v28 = [v27 top];
-    v29 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69A7E40]];
+    captionBar = [v7 captionBar];
+    v28 = [captionBar top];
+    v29 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E40]];
     [v26 _updatePresentationPropertiesForRow:v28 representation:v29];
 
     v30 = objc_opt_class();
-    v31 = [v7 captionBar];
-    v32 = [v31 bottom];
-    v33 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69A7E48]];
-    [v30 _updatePresentationPropertiesForRow:v32 representation:v33];
+    captionBar2 = [v7 captionBar];
+    bottom = [captionBar2 bottom];
+    v33 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E48]];
+    [v30 _updatePresentationPropertiesForRow:bottom representation:v33];
 
     v34 = objc_opt_class();
-    v35 = [v7 captionBar];
-    v36 = [v35 belowBottom];
-    v37 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69A7E50]];
-    [v34 _updatePresentationPropertiesForRow:v36 representation:v37];
+    captionBar3 = [v7 captionBar];
+    belowBottom = [captionBar3 belowBottom];
+    v37 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E50]];
+    [v34 _updatePresentationPropertiesForRow:belowBottom representation:v37];
 
     v38 = self->_presentationProperties;
     self->_presentationProperties = v7;
@@ -665,7 +665,7 @@ LABEL_18:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v40 = 138412290;
-      v41 = v6;
+      v41 = previewMetadata;
       _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "CKOrderMediaObject: Invalid metadata file %@", &v40, 0xCu);
     }
   }
@@ -679,7 +679,7 @@ LABEL_19:
 - (id)presentationPropertiesForReplyPreview
 {
   v26 = *MEMORY[0x1E69E9840];
-  v2 = [(CKOrderMediaObject *)self previewMetadata];
+  previewMetadata = [(CKOrderMediaObject *)self previewMetadata];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -688,24 +688,24 @@ LABEL_19:
     [v3 setCaptionBar:v4];
 
     v5 = objc_opt_class();
-    v6 = [v3 captionBar];
-    v7 = [v6 top];
-    v8 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69A7E40]];
+    captionBar = [v3 captionBar];
+    v7 = [captionBar top];
+    v8 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E40]];
     [v5 _setTextForPresentationRow:v7 representation:v8];
 
     v9 = objc_opt_class();
-    v10 = [v3 captionBar];
-    v11 = [v10 bottom];
-    v12 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69A7E48]];
-    [v9 _setTextForPresentationRow:v11 representation:v12];
+    captionBar2 = [v3 captionBar];
+    bottom = [captionBar2 bottom];
+    v12 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E48]];
+    [v9 _setTextForPresentationRow:bottom representation:v12];
 
     v13 = objc_opt_class();
-    v14 = [v3 captionBar];
-    v15 = [v14 belowBottom];
-    v16 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69A7E50]];
-    [v13 _setTextForPresentationRow:v15 representation:v16];
+    captionBar3 = [v3 captionBar];
+    belowBottom = [captionBar3 belowBottom];
+    v16 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E50]];
+    [v13 _setTextForPresentationRow:belowBottom representation:v16];
 
-    v17 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69A7E30]];
+    v17 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E30]];
     if (v17)
     {
       objc_opt_class();
@@ -714,8 +714,8 @@ LABEL_19:
         v18 = [MEMORY[0x1E69DCAB8] imageWithData:v17];
         v19 = [CKWalletMediaObjectMetadataHandler replyPreviewIconFromFullImage:v18];
         v20 = [objc_alloc(MEMORY[0x1E696EC68]) initWithPlatformImage:v19];
-        v21 = [v3 captionBar];
-        [v21 setLeadingIcon:v20];
+        captionBar4 = [v3 captionBar];
+        [captionBar4 setLeadingIcon:v20];
       }
     }
   }
@@ -728,7 +728,7 @@ LABEL_19:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         v24 = 138412290;
-        v25 = v2;
+        v25 = previewMetadata;
         _os_log_impl(&dword_19020E000, v22, OS_LOG_TYPE_INFO, "CKOrderMediaObject: Invalid metadata file %@", &v24, 0xCu);
       }
     }
@@ -739,74 +739,74 @@ LABEL_19:
   return v3;
 }
 
-+ (void)_updatePresentationPropertiesForRow:(id)a3 representation:(id)a4
++ (void)_updatePresentationPropertiesForRow:(id)row representation:(id)representation
 {
-  v5 = a3;
-  if (a4)
+  rowCopy = row;
+  if (representation)
   {
     v6 = *MEMORY[0x1E69A7E60];
-    v13 = v5;
-    v7 = a4;
-    v8 = [v7 objectForKeyedSubscript:v6];
-    v9 = [v13 leading];
-    [v9 setText:v8];
+    v13 = rowCopy;
+    representationCopy = representation;
+    v8 = [representationCopy objectForKeyedSubscript:v6];
+    leading = [v13 leading];
+    [leading setText:v8];
 
-    v10 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A7E58]];
+    v10 = [representationCopy objectForKeyedSubscript:*MEMORY[0x1E69A7E58]];
 
     if (v10)
     {
       v11 = [CKWalletMediaObjectMetadataHandler colorFromDictionaryRepresentation:v10];
-      v12 = [v13 leading];
-      [v12 setColor:v11];
+      leading2 = [v13 leading];
+      [leading2 setColor:v11];
     }
 
-    v5 = v13;
+    rowCopy = v13;
   }
 }
 
-+ (void)_setTextForPresentationRow:(id)a3 representation:(id)a4
++ (void)_setTextForPresentationRow:(id)row representation:(id)representation
 {
-  if (a4)
+  if (representation)
   {
     v5 = *MEMORY[0x1E69A7E60];
-    v6 = a3;
-    v8 = [a4 objectForKeyedSubscript:v5];
-    v7 = [v6 leading];
+    rowCopy = row;
+    v8 = [representation objectForKeyedSubscript:v5];
+    leading = [rowCopy leading];
 
-    [v7 setText:v8];
+    [leading setText:v8];
   }
 }
 
-+ (id)_paddedImage:(id)a3 imageType:(unsigned __int8)a4 bubbleWidth:(double)a5
++ (id)_paddedImage:(id)image imageType:(unsigned __int8)type bubbleWidth:(double)width
 {
-  v6 = a4;
+  typeCopy = type;
   v14 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v6 == 1)
+  imageCopy = image;
+  if (typeCopy == 1)
   {
-    v10 = (a5 + -100.0) * 0.5;
+    v10 = (width + -100.0) * 0.5;
     if (v10 < 20.0)
     {
       v10 = 20.0;
     }
 
-    v9 = [CKWalletMediaObjectMetadataHandler paddedImage:v7 horizontalPadding:v10 verticalPadding:?];
+    v9 = [CKWalletMediaObjectMetadataHandler paddedImage:imageCopy horizontalPadding:v10 verticalPadding:?];
   }
 
   else
   {
-    if (v6 && IMOSLoggingEnabled())
+    if (typeCopy && IMOSLoggingEnabled())
     {
       v8 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v13[0] = 67109120;
-        v13[1] = v6;
+        v13[1] = typeCopy;
         _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "CKOrderMediaObject: Invalid image type %d. Not applying padding.", v13, 8u);
       }
     }
 
-    v9 = v7;
+    v9 = imageCopy;
   }
 
   v11 = v9;

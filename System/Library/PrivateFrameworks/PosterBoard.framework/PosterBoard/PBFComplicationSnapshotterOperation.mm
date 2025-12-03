@@ -1,6 +1,6 @@
 @interface PBFComplicationSnapshotterOperation
 - (NSString)description;
-- (PBFComplicationSnapshotterOperation)initWithRequest:(id)a3 snapshotter:(id)a4;
+- (PBFComplicationSnapshotterOperation)initWithRequest:(id)request snapshotter:(id)snapshotter;
 - (void)_lock_snapshotterDidStart;
 - (void)_lock_snapshotterDidStop;
 - (void)_snapshotterDidStart;
@@ -11,11 +11,11 @@
 
 @implementation PBFComplicationSnapshotterOperation
 
-- (PBFComplicationSnapshotterOperation)initWithRequest:(id)a3 snapshotter:(id)a4
+- (PBFComplicationSnapshotterOperation)initWithRequest:(id)request snapshotter:(id)snapshotter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  requestCopy = request;
+  snapshotterCopy = snapshotter;
+  v10 = requestCopy;
   NSClassFromString(&cfstr_Pbfcomplicatio_1.isa);
   if (!v10)
   {
@@ -27,7 +27,7 @@
     [PBFComplicationSnapshotterOperation initWithRequest:a2 snapshotter:?];
   }
 
-  v11 = v9;
+  v11 = snapshotterCopy;
   NSClassFromString(&cfstr_Pbfcomplicatio_3.isa);
   if (!v11)
   {
@@ -48,8 +48,8 @@
     v12->_lock._os_unfair_lock_opaque = 0;
     v14 = dispatch_group_create();
     objc_storeStrong(&v13->_lock_group, v14);
-    objc_storeStrong(&v13->_request, a3);
-    objc_storeStrong(&v13->_snapshotter, a4);
+    objc_storeStrong(&v13->_request, request);
+    objc_storeStrong(&v13->_snapshotter, snapshotter);
     [(PBFComplicationSnapshotter *)v13->_snapshotter addObserver:v13];
     objc_initWeak(&location, v13);
     v17[0] = MEMORY[0x277D85DD0];
@@ -163,8 +163,8 @@ LABEL_17:
 
 - (void)cancel
 {
-  v3 = [(PBFComplicationSnapshotterOperation *)self snapshotter];
-  [v3 cancelWithReason:@"NSOperation was cancelled"];
+  snapshotter = [(PBFComplicationSnapshotterOperation *)self snapshotter];
+  [snapshotter cancelWithReason:@"NSOperation was cancelled"];
 
   v4.receiver = self;
   v4.super_class = PBFComplicationSnapshotterOperation;
@@ -177,9 +177,9 @@ LABEL_17:
   v4 = [v3 appendObject:self->_request withName:@"request"];
   [(PBFComplicationSnapshotter *)self->_snapshotter elapsedTime];
   v5 = [v3 appendFloat:@"elapsedTime" withName:?];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (void)_snapshotterDidStart

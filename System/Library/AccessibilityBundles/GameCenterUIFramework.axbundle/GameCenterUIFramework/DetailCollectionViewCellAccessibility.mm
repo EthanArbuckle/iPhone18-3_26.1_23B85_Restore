@@ -1,5 +1,5 @@
 @interface DetailCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)_axSwitch;
 - (id)accessibilityValue;
@@ -8,21 +8,21 @@
 
 @implementation DetailCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GameCenterUI.DetailCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterUI.DetailCollectionViewCell" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterUI.DetailCollectionViewCell" hasInstanceMethod:@"accessibilityAccessoryView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GameCenterUI.DetailCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.DetailCollectionViewCell" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.DetailCollectionViewCell" hasInstanceMethod:@"accessibilityAccessoryView" withFullSignature:{"@", 0}];
 }
 
 - (id)_axSwitch
 {
-  v2 = [(DetailCollectionViewCellAccessibility *)self _axAccessoryView];
+  _axAccessoryView = [(DetailCollectionViewCellAccessibility *)self _axAccessoryView];
   MEMORY[0x29C2D7090](@"UISwitch");
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = _axAccessoryView;
   }
 
   else
@@ -37,29 +37,29 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(DetailCollectionViewCellAccessibility *)self _axSwitch];
-  v4 = v3;
-  if (v3)
+  _axSwitch = [(DetailCollectionViewCellAccessibility *)self _axSwitch];
+  v4 = _axSwitch;
+  if (_axSwitch)
   {
-    v5 = [v3 accessibilityValue];
+    accessibilityValue = [_axSwitch accessibilityValue];
   }
 
   else
   {
-    v6 = [(DetailCollectionViewCellAccessibility *)self _axAccessoryView];
-    v5 = [v6 accessibilityLabel];
+    _axAccessoryView = [(DetailCollectionViewCellAccessibility *)self _axAccessoryView];
+    accessibilityValue = [_axAccessoryView accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityValue;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(DetailCollectionViewCellAccessibility *)self _axSwitch];
-  if (v3)
+  _axSwitch = [(DetailCollectionViewCellAccessibility *)self _axSwitch];
+  if (_axSwitch)
   {
-    v4 = [(DetailCollectionViewCellAccessibility *)self _axSwitch];
-    [v4 accessibilityActivationPoint];
+    _axSwitch2 = [(DetailCollectionViewCellAccessibility *)self _axSwitch];
+    [_axSwitch2 accessibilityActivationPoint];
     v6 = v5;
     v8 = v7;
   }
@@ -82,21 +82,21 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(DetailCollectionViewCellAccessibility *)self _axSwitch];
-  if (v3)
+  _axSwitch = [(DetailCollectionViewCellAccessibility *)self _axSwitch];
+  if (_axSwitch)
   {
-    v4 = [(DetailCollectionViewCellAccessibility *)self _axSwitch];
-    v5 = [v4 accessibilityTraits];
+    _axSwitch2 = [(DetailCollectionViewCellAccessibility *)self _axSwitch];
+    accessibilityTraits = [_axSwitch2 accessibilityTraits];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = DetailCollectionViewCellAccessibility;
-    v5 = *MEMORY[0x29EDC7F70] | [(DetailCollectionViewCellAccessibility *)&v7 accessibilityTraits];
+    accessibilityTraits = *MEMORY[0x29EDC7F70] | [(DetailCollectionViewCellAccessibility *)&v7 accessibilityTraits];
   }
 
-  return v5;
+  return accessibilityTraits;
 }
 
 @end

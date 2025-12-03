@@ -1,14 +1,14 @@
 @interface SCLPBScheduleRecurrence
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDay:(id)a3;
+- (int)StringAsDay:(id)day;
 - (int)day;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SCLPBScheduleRecurrence
@@ -26,40 +26,40 @@
   }
 }
 
-- (int)StringAsDay:(id)a3
+- (int)StringAsDay:(id)day
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SUNDAY"])
+  dayCopy = day;
+  if ([dayCopy isEqualToString:@"SUNDAY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MONDAY"])
+  else if ([dayCopy isEqualToString:@"MONDAY"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TUESDAY"])
+  else if ([dayCopy isEqualToString:@"TUESDAY"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"WEDNESDAY"])
+  else if ([dayCopy isEqualToString:@"WEDNESDAY"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"THURSDAY"])
+  else if ([dayCopy isEqualToString:@"THURSDAY"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"FRIDAY"])
+  else if ([dayCopy isEqualToString:@"FRIDAY"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SATURDAY"])
+  else if ([dayCopy isEqualToString:@"SATURDAY"])
   {
     v4 = 7;
   }
@@ -78,20 +78,20 @@
   v8.receiver = self;
   v8.super_class = SCLPBScheduleRecurrence;
   v4 = [(SCLPBScheduleRecurrence *)&v8 description];
-  v5 = [(SCLPBScheduleRecurrence *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SCLPBScheduleRecurrence *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   timeInterval = self->_timeInterval;
   if (timeInterval)
   {
-    v5 = [(SCLPBTimeInterval *)timeInterval dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"timeInterval"];
+    dictionaryRepresentation = [(SCLPBTimeInterval *)timeInterval dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeInterval"];
   }
 
   if (*&self->_has)
@@ -107,51 +107,51 @@
       v7 = off_279B6C780[v6];
     }
 
-    [v3 setObject:v7 forKey:@"day"];
+    [dictionary setObject:v7 forKey:@"day"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_timeInterval)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     day = self->_day;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_timeInterval)
   {
-    v5 = v4;
-    [v4 setTimeInterval:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setTimeInterval:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = self->_day;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 2) = self->_day;
+    *(toCopy + 24) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SCLPBTimeInterval *)self->_timeInterval copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SCLPBTimeInterval *)self->_timeInterval copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -164,16 +164,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   timeInterval = self->_timeInterval;
-  if (timeInterval | *(v4 + 2))
+  if (timeInterval | *(equalCopy + 2))
   {
     if (![(SCLPBTimeInterval *)timeInterval isEqual:?])
     {
@@ -181,10 +181,10 @@
     }
   }
 
-  v6 = (*(v4 + 24) & 1) == 0;
+  v6 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) != 0 && self->_day == *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) != 0 && self->_day == *(equalCopy + 2))
     {
       v6 = 1;
       goto LABEL_9;
@@ -215,11 +215,11 @@ LABEL_9:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   timeInterval = self->_timeInterval;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (timeInterval)
   {
     if (!v6)
@@ -227,7 +227,7 @@ LABEL_9:
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(SCLPBTimeInterval *)timeInterval mergeFrom:?];
   }
 
@@ -238,15 +238,15 @@ LABEL_9:
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(SCLPBScheduleRecurrence *)self setTimeInterval:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
-    self->_day = *(v4 + 2);
+    self->_day = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 

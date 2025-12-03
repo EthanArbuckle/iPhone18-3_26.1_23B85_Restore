@@ -1,5 +1,5 @@
 @interface CVAPortraitRequest
-- (CVAPortraitRequest)initWithMattingRequest:(id)a3 destinationColorPixelBuffer:(__CVBuffer *)a4 backgroundColorCube:(id)a5 foregroundColorCube:(id)a6 colorCubeIntensity:(float)a7 simulatedFocalRatio:(float)a8 sourceColorGain:(float)a9 sourceColorLux:(float)a10;
+- (CVAPortraitRequest)initWithMattingRequest:(id)request destinationColorPixelBuffer:(__CVBuffer *)buffer backgroundColorCube:(id)cube foregroundColorCube:(id)colorCube colorCubeIntensity:(float)intensity simulatedFocalRatio:(float)ratio sourceColorGain:(float)gain sourceColorLux:(float)self0;
 - (void)dealloc;
 @end
 
@@ -13,28 +13,28 @@
   [(CVAPortraitRequest *)&v3 dealloc];
 }
 
-- (CVAPortraitRequest)initWithMattingRequest:(id)a3 destinationColorPixelBuffer:(__CVBuffer *)a4 backgroundColorCube:(id)a5 foregroundColorCube:(id)a6 colorCubeIntensity:(float)a7 simulatedFocalRatio:(float)a8 sourceColorGain:(float)a9 sourceColorLux:(float)a10
+- (CVAPortraitRequest)initWithMattingRequest:(id)request destinationColorPixelBuffer:(__CVBuffer *)buffer backgroundColorCube:(id)cube foregroundColorCube:(id)colorCube colorCubeIntensity:(float)intensity simulatedFocalRatio:(float)ratio sourceColorGain:(float)gain sourceColorLux:(float)self0
 {
-  v19 = a3;
-  v20 = a5;
-  v21 = a6;
+  requestCopy = request;
+  cubeCopy = cube;
+  colorCubeCopy = colorCube;
   v27.receiver = self;
   v27.super_class = CVAPortraitRequest;
   v22 = [(CVAPortraitRequest *)&v27 init];
-  objc_storeStrong(&v22->_mattingRequest, a3);
-  v22->_destinationColorPixelBuffer = a4;
-  CVPixelBufferRetain(a4);
+  objc_storeStrong(&v22->_mattingRequest, request);
+  v22->_destinationColorPixelBuffer = buffer;
+  CVPixelBufferRetain(buffer);
   backgroundColorCube = v22->_backgroundColorCube;
-  v22->_backgroundColorCube = v20;
-  v24 = v20;
+  v22->_backgroundColorCube = cubeCopy;
+  v24 = cubeCopy;
 
   foregroundColorCube = v22->_foregroundColorCube;
-  v22->_foregroundColorCube = v21;
+  v22->_foregroundColorCube = colorCubeCopy;
 
-  v22->_colorCubeIntensity = a7;
-  v22->_simulatedFocalRatio = a8;
-  v22->_sourceColorGain = a9;
-  v22->_sourceColorLux = a10;
+  v22->_colorCubeIntensity = intensity;
+  v22->_simulatedFocalRatio = ratio;
+  v22->_sourceColorGain = gain;
+  v22->_sourceColorLux = lux;
 
   return v22;
 }

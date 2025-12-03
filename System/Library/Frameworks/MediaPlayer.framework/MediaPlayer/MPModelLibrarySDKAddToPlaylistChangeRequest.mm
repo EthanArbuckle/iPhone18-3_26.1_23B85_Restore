@@ -1,24 +1,24 @@
 @interface MPModelLibrarySDKAddToPlaylistChangeRequest
-- (MPModelLibrarySDKAddToPlaylistChangeRequest)initWithProductID:(id)a3 isCloudID:(BOOL)a4 playlist:(id)a5 completionHandler:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
+- (MPModelLibrarySDKAddToPlaylistChangeRequest)initWithProductID:(id)d isCloudID:(BOOL)iD playlist:(id)playlist completionHandler:(id)handler;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
 @end
 
 @implementation MPModelLibrarySDKAddToPlaylistChangeRequest
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(MPModelLibrarySDKAddToPlaylistChangeRequestOperation);
   [(MPModelLibrarySDKAddToPlaylistChangeRequestOperation *)v5 setRequest:self];
-  [(MPModelLibrarySDKAddToPlaylistChangeRequestOperation *)v5 setResponseHandler:v4];
+  [(MPModelLibrarySDKAddToPlaylistChangeRequestOperation *)v5 setResponseHandler:handlerCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v5 = [(NSString *)self->_productID copy];
@@ -35,23 +35,23 @@
   return v4;
 }
 
-- (MPModelLibrarySDKAddToPlaylistChangeRequest)initWithProductID:(id)a3 isCloudID:(BOOL)a4 playlist:(id)a5 completionHandler:(id)a6
+- (MPModelLibrarySDKAddToPlaylistChangeRequest)initWithProductID:(id)d isCloudID:(BOOL)iD playlist:(id)playlist completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  playlistCopy = playlist;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = MPModelLibrarySDKAddToPlaylistChangeRequest;
   v13 = [(MPModelLibrarySDKAddToPlaylistChangeRequest *)&v19 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [dCopy copy];
     productID = v13->_productID;
     v13->_productID = v14;
 
-    v13->_isCloudID = a4;
-    objc_storeStrong(&v13->_playlist, a5);
-    v16 = _Block_copy(v12);
+    v13->_isCloudID = iD;
+    objc_storeStrong(&v13->_playlist, playlist);
+    v16 = _Block_copy(handlerCopy);
     completionHandler = v13->_completionHandler;
     v13->_completionHandler = v16;
   }

@@ -1,41 +1,41 @@
 @interface NCNotificationListCountIndicatorViewController
 - (CGRect)visibleFrame;
-- (NCNotificationListCountIndicatorViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (NCNotificationListCountIndicatorViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NCNotificationListCountIndicatorViewControllerDelegate)delegate;
 - (NSString)incomingTitle;
 - (UIEdgeInsets)edgeInsets;
-- (void)adjustForLegibilitySettingsChange:(id)a3;
+- (void)adjustForLegibilitySettingsChange:(id)change;
 - (void)loadView;
-- (void)notificationListCountIndicatorViewLongPressed:(id)a3 presentingView:(id)a4;
-- (void)notificationListCountIndicatorViewTapped:(id)a3;
-- (void)setActiveDNDModeConfiguration:(id)a3;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setCount:(int64_t)a3;
-- (void)setDisplayStyleSetting:(int64_t)a3;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setIncomingTitle:(id)a3;
-- (void)setVisibleFrame:(CGRect)a3;
+- (void)notificationListCountIndicatorViewLongPressed:(id)pressed presentingView:(id)view;
+- (void)notificationListCountIndicatorViewTapped:(id)tapped;
+- (void)setActiveDNDModeConfiguration:(id)configuration;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setCount:(int64_t)count;
+- (void)setDisplayStyleSetting:(int64_t)setting;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setIncomingTitle:(id)title;
+- (void)setVisibleFrame:(CGRect)frame;
 - (void)viewDidLoad;
 @end
 
 @implementation NCNotificationListCountIndicatorViewController
 
-- (void)setCount:(int64_t)a3
+- (void)setCount:(int64_t)count
 {
   v4 = *(self + OBJC_IVAR___NCNotificationListCountIndicatorViewController_count);
-  *(self + OBJC_IVAR___NCNotificationListCountIndicatorViewController_count) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR___NCNotificationListCountIndicatorViewController_count) = count;
+  if (v4 != count)
   {
-    v5 = self;
+    selfCopy = self;
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CED8190);
     sub_21E8D919C(&unk_280D03F18, &qword_27CED8190);
     sub_21E929DB8();
   }
 }
 
-- (void)setIncomingTitle:(id)a3
+- (void)setIncomingTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_21E92A458();
     v6 = v5;
@@ -47,19 +47,19 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_21E786B68(v4, v6);
 }
 
-- (void)adjustForLegibilitySettingsChange:(id)a3
+- (void)adjustForLegibilitySettingsChange:(id)change
 {
-  v7 = self;
-  v4 = a3;
-  [(NCNotificationListCountIndicatorViewController *)v7 loadViewIfNeeded];
-  v5 = [(NCNotificationListCountIndicatorViewController *)v7 view];
-  if (v5)
+  selfCopy = self;
+  changeCopy = change;
+  [(NCNotificationListCountIndicatorViewController *)selfCopy loadViewIfNeeded];
+  view = [(NCNotificationListCountIndicatorViewController *)selfCopy view];
+  if (view)
   {
-    v6 = v5;
+    v6 = view;
     objc_opt_self();
     [swift_dynamicCastObjCClassUnconditional() adjustForLegibilitySettingsChange_];
   }
@@ -70,9 +70,9 @@
   }
 }
 
-- (NCNotificationListCountIndicatorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (NCNotificationListCountIndicatorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_21E92A458();
     v7 = v6;
@@ -84,22 +84,22 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return NCNotificationListCountIndicatorViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return NCNotificationListCountIndicatorViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   NCNotificationListCountIndicatorViewController.viewDidLoad()();
 }
 
 - (void)loadView
 {
   v3 = objc_allocWithZone(NCNotificationListCountIndicatorView);
-  v5 = self;
-  v4 = [v3 initWithFrame_];
-  [(NCNotificationListCountIndicatorViewController *)v5 setView:v4];
+  selfCopy = self;
+  initWithFrame_ = [v3 initWithFrame_];
+  [(NCNotificationListCountIndicatorViewController *)selfCopy setView:initWithFrame_];
 }
 
 - (NCNotificationListCountIndicatorViewControllerDelegate)delegate
@@ -109,11 +109,11 @@
   return Strong;
 }
 
-- (void)setActiveDNDModeConfiguration:(id)a3
+- (void)setActiveDNDModeConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = self;
-  sub_21E914D78(a3);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_21E914D78(configuration);
 }
 
 - (NSString)incomingTitle
@@ -132,10 +132,10 @@
   return v2;
 }
 
-- (void)setDisplayStyleSetting:(int64_t)a3
+- (void)setDisplayStyleSetting:(int64_t)setting
 {
-  v4 = self;
-  sub_21E914F48(a3);
+  selfCopy = self;
+  sub_21E914F48(setting);
 }
 
 - (UIEdgeInsets)edgeInsets
@@ -151,13 +151,13 @@
   return result;
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v9 = self;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  selfCopy = self;
   v7.f64[0] = top;
   v8.f64[0] = bottom;
   sub_21E915118(v7, left, v8, right);
@@ -176,18 +176,18 @@
   return result;
 }
 
-- (void)setVisibleFrame:(CGRect)a3
+- (void)setVisibleFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = *(self + OBJC_IVAR___NCNotificationListCountIndicatorViewController_visibleFrame);
   v8 = *(self + OBJC_IVAR___NCNotificationListCountIndicatorViewController_visibleFrame + 8);
   v9 = *(self + OBJC_IVAR___NCNotificationListCountIndicatorViewController_visibleFrame + 16);
   v10 = *(self + OBJC_IVAR___NCNotificationListCountIndicatorViewController_visibleFrame + 24);
-  *(self + OBJC_IVAR___NCNotificationListCountIndicatorViewController_visibleFrame) = a3;
-  v11 = self;
+  *(self + OBJC_IVAR___NCNotificationListCountIndicatorViewController_visibleFrame) = frame;
+  selfCopy = self;
   v13.origin.x = v7;
   v13.origin.y = v8;
   v13.size.width = v9;
@@ -204,15 +204,15 @@
   }
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  v3 = a3;
-  v6 = self;
-  [(NCNotificationListCountIndicatorViewController *)v6 loadViewIfNeeded];
-  v4 = [(NCNotificationListCountIndicatorViewController *)v6 view];
-  if (v4)
+  categoryCopy = category;
+  selfCopy = self;
+  [(NCNotificationListCountIndicatorViewController *)selfCopy loadViewIfNeeded];
+  view = [(NCNotificationListCountIndicatorViewController *)selfCopy view];
+  if (view)
   {
-    v5 = v4;
+    v5 = view;
     objc_opt_self();
     [swift_dynamicCastObjCClassUnconditional() setAdjustsFontForContentSizeCategory_];
   }
@@ -223,29 +223,29 @@
   }
 }
 
-- (void)notificationListCountIndicatorViewTapped:(id)a3
+- (void)notificationListCountIndicatorViewTapped:(id)tapped
 {
-  v4 = self;
-  v3 = [(NCNotificationListCountIndicatorViewController *)v4 delegate];
-  if (v3)
+  selfCopy = self;
+  delegate = [(NCNotificationListCountIndicatorViewController *)selfCopy delegate];
+  if (delegate)
   {
-    [(NCNotificationListCountIndicatorViewControllerDelegate *)v3 notificationListCountIndicatorViewControllerTapped:v4];
+    [(NCNotificationListCountIndicatorViewControllerDelegate *)delegate notificationListCountIndicatorViewControllerTapped:selfCopy];
     swift_unknownObjectRelease();
   }
 }
 
-- (void)notificationListCountIndicatorViewLongPressed:(id)a3 presentingView:(id)a4
+- (void)notificationListCountIndicatorViewLongPressed:(id)pressed presentingView:(id)view
 {
-  v5 = a4;
-  v8 = self;
-  v6 = [(NCNotificationListCountIndicatorViewController *)v8 activeDNDModeConfiguration];
-  if (v6)
+  viewCopy = view;
+  selfCopy = self;
+  activeDNDModeConfiguration = [(NCNotificationListCountIndicatorViewController *)selfCopy activeDNDModeConfiguration];
+  if (activeDNDModeConfiguration)
   {
 
-    v7 = [(NCNotificationListCountIndicatorViewController *)v8 delegate];
-    if (v7)
+    delegate = [(NCNotificationListCountIndicatorViewController *)selfCopy delegate];
+    if (delegate)
     {
-      [(NCNotificationListCountIndicatorViewControllerDelegate *)v7 notificationListCountIndicatorViewControllerLongPressed:v8 presentingView:v5];
+      [(NCNotificationListCountIndicatorViewControllerDelegate *)delegate notificationListCountIndicatorViewControllerLongPressed:selfCopy presentingView:viewCopy];
       swift_unknownObjectRelease();
     }
   }

@@ -1,16 +1,16 @@
 @interface NSMutableURLRequest
-- (void)setAdIdentifier:(id)a3;
-- (void)setMaximumRequestCount:(id)a3;
-- (void)setRequestType:(int64_t)a3;
+- (void)setAdIdentifier:(id)identifier;
+- (void)setMaximumRequestCount:(id)count;
+- (void)setRequestType:(int64_t)type;
 @end
 
 @implementation NSMutableURLRequest
 
-- (void)setMaximumRequestCount:(id)a3
+- (void)setMaximumRequestCount:(id)count
 {
-  if (a3)
+  if (count)
   {
-    [NSURLProtocol setProperty:a3 forKey:@"maximumRequestCount" inRequest:self];
+    [NSURLProtocol setProperty:count forKey:@"maximumRequestCount" inRequest:self];
   }
 
   else
@@ -19,11 +19,11 @@
   }
 }
 
-- (void)setAdIdentifier:(id)a3
+- (void)setAdIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    [NSURLProtocol setProperty:a3 forKey:@"adIdentifier" inRequest:self];
+    [NSURLProtocol setProperty:identifier forKey:@"adIdentifier" inRequest:self];
   }
 
   else
@@ -32,9 +32,9 @@
   }
 }
 
-- (void)setRequestType:(int64_t)a3
+- (void)setRequestType:(int64_t)type
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:type];
   [NSURLProtocol setProperty:v4 forKey:@"requestType" inRequest:self];
 }
 

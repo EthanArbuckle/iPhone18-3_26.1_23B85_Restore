@@ -8,37 +8,37 @@
 
 - (id)mf_encodedHeaderDataWithEncodingHint:()MimeHeaderEncoding
 {
-  v3 = a3;
+  cfStringEncoding = a3;
   v88 = *MEMORY[0x1E69E9840];
   if (a3 == -1)
   {
-    v4 = [(__CFString *)a1 mf_bestMimeCharset];
-    v3 = [v4 cfStringEncoding];
+    mf_bestMimeCharset = [(__CFString *)self mf_bestMimeCharset];
+    cfStringEncoding = [mf_bestMimeCharset cfStringEncoding];
   }
 
-  if (v3 != 1536)
+  if (cfStringEncoding != 1536)
   {
-    if (MFStringCanBeConvertedLosslessly(a1, 0x600u))
+    if (MFStringCanBeConvertedLosslessly(self, 0x600u))
     {
-      v3 = 1536;
+      cfStringEncoding = 1536;
       goto LABEL_7;
     }
 
-    if (MFStringCanBeConvertedLosslessly(a1, v3))
+    if (MFStringCanBeConvertedLosslessly(self, cfStringEncoding))
     {
 LABEL_7:
-      v5 = [MFMimeCharset charsetForEncoding:v3];
-      if (v5)
+      mf_bestMimeCharset2 = [MFMimeCharset charsetForEncoding:cfStringEncoding];
+      if (mf_bestMimeCharset2)
       {
         goto LABEL_9;
       }
     }
   }
 
-  v5 = [(__CFString *)a1 mf_bestMimeCharset];
+  mf_bestMimeCharset2 = [(__CFString *)self mf_bestMimeCharset];
 LABEL_9:
-  v73 = v5;
-  if ([v5 cfStringEncoding] != 1536 || -[__CFString length](a1, "length") >= 2 && (-[__CFString hasPrefix:](a1, "hasPrefix:", @"=?") & 1) != 0 || (-[__CFString rangeOfString:](a1, "rangeOfString:", @" =?"), v6) || (-[__CFString rangeOfString:](a1, "rangeOfString:", @"\t=?"), v7))
+  v73 = mf_bestMimeCharset2;
+  if ([mf_bestMimeCharset2 cfStringEncoding] != 1536 || -[__CFString length](self, "length") >= 2 && (-[__CFString hasPrefix:](self, "hasPrefix:", @"=?") & 1) != 0 || (-[__CFString rangeOfString:](self, "rangeOfString:", @" =?"), v6) || (-[__CFString rangeOfString:](self, "rangeOfString:", @"\t=?"), v7))
   {
     if ([v73 useBase64InHeaders])
     {
@@ -48,9 +48,9 @@ LABEL_9:
 
     else
     {
-      v9 = MFCreateDataWithString(a1, [v73 cfStringEncoding], 0);
+      v9 = MFCreateDataWithString(self, [v73 cfStringEncoding], 0);
       v10 = [v9 length];
-      v11 = [v9 bytes];
+      bytes = [v9 bytes];
       v74 = v9;
       if (v10 < 1)
       {
@@ -59,9 +59,9 @@ LABEL_9:
 
       else
       {
-        v12 = v11;
+        v12 = bytes;
         v13 = 0;
-        v14 = v11 + v10;
+        v14 = bytes + v10;
         v15 = MEMORY[0x1E69E9830];
         do
         {
@@ -92,8 +92,8 @@ LABEL_9:
     }
 
     v19 = [@"=?" mutableCopyWithZone:0];
-    v20 = [v73 charsetName];
-    [v19 appendString:v20];
+    charsetName = [v73 charsetName];
+    [v19 appendString:charsetName];
 
     [v19 appendString:@"?"];
     if (v8)
@@ -112,7 +112,7 @@ LABEL_9:
     v69 = MFCreateDataWithString(v19, 0x600u, 0);
     if (v8)
     {
-      v22 = [v73 cfStringEncoding];
+      cfStringEncoding2 = [v73 cfStringEncoding];
       v23 = [v69 length];
       v75 = v74;
       v77 = v69;
@@ -121,8 +121,8 @@ LABEL_9:
       if (v75 && [v75 length] <= v25)
       {
         [(MFBufferedDataConsumer *)v24 appendData:v77];
-        v55 = [v75 mf_encodeBase64HeaderData];
-        [(MFBufferedDataConsumer *)v24 appendData:v55];
+        mf_encodeBase64HeaderData = [v75 mf_encodeBase64HeaderData];
+        [(MFBufferedDataConsumer *)v24 appendData:mf_encodeBase64HeaderData];
 
         [(MFBufferedDataConsumer *)v24 mf_appendCString:"?="];
       }
@@ -130,7 +130,7 @@ LABEL_9:
       else
       {
         Mutable = CFDataCreateMutable(0, 3 * ((64 - v23) >> 2));
-        v27 = CFStringGetLength(a1);
+        v27 = CFStringGetLength(self);
         length = 0xAAAAAAAAAAAAAAAALL;
         if (v27 >= 1)
         {
@@ -141,12 +141,12 @@ LABEL_9:
             MutableBytePtr = CFDataGetMutableBytePtr(Mutable);
             v90.location = v28;
             v90.length = v27;
-            Bytes = MFStringGetBytes(a1, v90, v22, 0, 0, MutableBytePtr, v25, &length);
+            Bytes = MFStringGetBytes(self, v90, cfStringEncoding2, 0, 0, MutableBytePtr, v25, &length);
             v31 = Bytes;
             if (Bytes < v27)
             {
               v32 = Bytes + v28;
-              location = CFStringGetRangeOfComposedCharactersAtIndex(a1, Bytes + v28).location;
+              location = CFStringGetRangeOfComposedCharactersAtIndex(self, Bytes + v28).location;
               if (location < v32)
               {
                 v34 = location - v28;
@@ -155,7 +155,7 @@ LABEL_9:
                   v35 = CFDataGetMutableBytePtr(Mutable);
                   v91.location = v28;
                   v91.length = v34;
-                  MFStringGetBytes(a1, v91, v22, 0, 0, v35, v25, &length);
+                  MFStringGetBytes(self, v91, cfStringEncoding2, 0, 0, v35, v25, &length);
                   v31 = v34;
                 }
               }
@@ -173,8 +173,8 @@ LABEL_9:
             }
 
             [(MFBufferedDataConsumer *)v24 appendData:v77];
-            v36 = [(__CFData *)Mutable mf_encodeBase64HeaderData];
-            [(MFBufferedDataConsumer *)v24 appendData:v36];
+            mf_encodeBase64HeaderData2 = [(__CFData *)Mutable mf_encodeBase64HeaderData];
+            [(MFBufferedDataConsumer *)v24 appendData:mf_encodeBase64HeaderData2];
 
             [(MFBufferedDataConsumer *)v24 mf_appendCString:"?="];
             v37 = v27 <= v31;
@@ -201,8 +201,8 @@ LABEL_9:
             goto LABEL_47;
           }
 
-          ExternalRepresentation = CFStringCreateExternalRepresentation(*MEMORY[0x1E695E480], a1, v22, 0x3Fu);
-          v63 = [(__CFData *)ExternalRepresentation ef_hexString];
+          ExternalRepresentation = CFStringCreateExternalRepresentation(*MEMORY[0x1E695E480], self, cfStringEncoding2, 0x3Fu);
+          ef_hexString = [(__CFData *)ExternalRepresentation ef_hexString];
           v64 = MFLogGeneral();
           if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
           {
@@ -211,9 +211,9 @@ LABEL_9:
             v82 = 2048;
             v83 = v25;
             v84 = 1024;
-            v85 = v22;
+            v85 = cfStringEncoding2;
             v86 = 2112;
-            v87 = v63;
+            v87 = ef_hexString;
             _os_log_error_impl(&dword_1D36B2000, v64, OS_LOG_TYPE_ERROR, "Error during base64 encoding: chunkLength=%ld maxInputBytesPerChunk=%lu encoding=%d str=%@", extraLength, 0x26u);
           }
 
@@ -225,7 +225,7 @@ LABEL_9:
             [NSString(MimeHeaderEncoding) mf_encodedHeaderDataWithEncodingHint:v65];
           }
 
-          v57 = 0;
+          data = 0;
           v56 = v24;
           goto LABEL_70;
         }
@@ -238,12 +238,12 @@ LABEL_47:
       }
 
       v56 = v24;
-      v57 = v56;
+      data = v56;
     }
 
     else
     {
-      v76 = [v73 cfStringEncoding];
+      cfStringEncoding3 = [v73 cfStringEncoding];
       v39 = [v69 length];
       v66 = v74;
       v70 = v69;
@@ -262,7 +262,7 @@ LABEL_47:
 
       else
       {
-        v40 = CFStringGetLength(a1);
+        v40 = CFStringGetLength(self);
         v41 = CFDataCreateMutable(0, 0);
         v67 = [[MFData alloc] initWithBytesNoCopy:"\n " length:2 freeWhenDone:0];
         if (v40 >= 1)
@@ -273,12 +273,12 @@ LABEL_47:
           v45 = 0;
           do
           {
-            RangeOfComposedCharactersAtIndex = CFStringGetRangeOfComposedCharactersAtIndex(a1, v42);
+            RangeOfComposedCharactersAtIndex = CFStringGetRangeOfComposedCharactersAtIndex(self, v42);
             *extraLength = 0xAAAAAAAAAAAAAAAALL;
-            MFStringGetBytes(a1, RangeOfComposedCharactersAtIndex, v76, 0, 0, 0, 0, extraLength);
+            MFStringGetBytes(self, RangeOfComposedCharactersAtIndex, cfStringEncoding3, 0, 0, 0, 0, extraLength);
             CFDataIncreaseLength(v41, *extraLength);
             v47 = CFDataGetMutableBytePtr(v41);
-            MFStringGetBytes(a1, RangeOfComposedCharactersAtIndex, v76, 0, 0, &v47[v43], *extraLength, 0);
+            MFStringGetBytes(self, RangeOfComposedCharactersAtIndex, cfStringEncoding3, 0, 0, &v47[v43], *extraLength, 0);
             v48 = [MFQuotedPrintableEncoder requiredSizeToEncodeHeaderBytes:&v47[v43] length:*extraLength];
             v45 += v48;
             if (v45 <= v72)
@@ -339,18 +339,18 @@ LABEL_47:
       }
 
       [(MFBufferedDataConsumer *)v78 done];
-      v57 = [(MFBufferedDataConsumer *)v78 data];
+      data = [(MFBufferedDataConsumer *)v78 data];
 
       v56 = v78;
     }
 
 LABEL_70:
 
-    v59 = v57;
+    v59 = data;
     goto LABEL_71;
   }
 
-  v59 = MFCreateDataWithString(a1, [v73 cfStringEncoding], 0);
+  v59 = MFCreateDataWithString(self, [v73 cfStringEncoding], 0);
 LABEL_71:
 
   v60 = *MEMORY[0x1E69E9840];
@@ -362,9 +362,9 @@ LABEL_71:
 {
   v43 = *MEMORY[0x1E69E9840];
   SystemEncoding = CFStringGetSystemEncoding();
-  [(__CFString *)a1 rangeOfString:@"=?"];
+  [(__CFString *)self rangeOfString:@"=?"];
   v5 = v4 == 0;
-  if (v4 || [(__CFString *)a1 hasPrefix:@"?"]&& ([(__CFString *)a1 hasSuffix:@"?="]& 1) != 0)
+  if (v4 || [(__CFString *)self hasPrefix:@"?"]&& ([(__CFString *)self hasSuffix:@"?="]& 1) != 0)
   {
     v36 = objc_alloc_init(MEMORY[0x1E696AD60]);
     if (!mf_decodeMimeHeaderValueWithEncodingHint__quSet)
@@ -372,9 +372,9 @@ LABEL_71:
       mf_decodeMimeHeaderValueWithEncodingHint__quSet = CFCharacterSetCreateWithCharactersInString(0, @"?_");
     }
 
-    v6 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:a1];
+    v6 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:self];
     [v6 setCharactersToBeSkipped:0];
-    v33 = a1;
+    selfCopy = self;
     v7 = 0;
     v8 = 0;
     while (([v6 isAtEnd] & 1) == 0)
@@ -475,24 +475,24 @@ LABEL_34:
               {
                 if (v21)
                 {
-                  v26 = [v24 mf_decodeBase64];
+                  mf_decodeBase64 = [v24 mf_decodeBase64];
                 }
 
                 else
                 {
-                  v26 = v24;
+                  mf_decodeBase64 = v24;
                 }
               }
 
               else
               {
-                v26 = [v24 mf_decodeQuotedPrintableForText:1];
+                mf_decodeBase64 = [v24 mf_decodeQuotedPrintableForText:1];
               }
 
-              v27 = v26;
-              if (v26)
+              v27 = mf_decodeBase64;
+              if (mf_decodeBase64)
               {
-                v28 = MFCreateStringWithData(v26, v18, 0);
+                v28 = MFCreateStringWithData(mf_decodeBase64, v18, 0);
                 if (v28 || v18 != a3 && (v28 = MFCreateStringWithData(v27, a3, 0)) != 0)
                 {
                   [v36 appendString:v28];
@@ -522,7 +522,7 @@ LABEL_34:
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v42 = v33;
+              v42 = selfCopy;
               _os_log_impl(&dword_1D36B2000, v22, OS_LOG_TYPE_DEFAULT, "#Warning Missing encoding char (Q or B) in MIME header: %@", buf, 0xCu);
             }
 
@@ -546,23 +546,23 @@ LABEL_34:
       }
     }
 
-    v30 = v36;
+    selfCopy2 = v36;
   }
 
   else
   {
-    v30 = a1;
+    selfCopy2 = self;
   }
 
   v31 = *MEMORY[0x1E69E9840];
 
-  return v30;
+  return selfCopy2;
 }
 
 - (id)mf_decodeMimeHeaderValueWithCharsetHint:()MimeHeaderEncoding
 {
   v4 = a3;
-  v5 = [a1 mf_decodeMimeHeaderValueWithEncodingHint:MFEncodingForCharset(v4)];
+  v5 = [self mf_decodeMimeHeaderValueWithEncodingHint:MFEncodingForCharset(v4)];
 
   return v5;
 }

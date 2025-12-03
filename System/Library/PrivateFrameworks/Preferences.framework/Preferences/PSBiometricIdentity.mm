@@ -2,42 +2,42 @@
 + (id)identities;
 + (id)nextIdentityName;
 + (int64_t)maximumIdentityCount;
-+ (void)removeIdentity:(id)a3;
-+ (void)setName:(id)a3 forIdentity:(id)a4;
++ (void)removeIdentity:(id)identity;
++ (void)setName:(id)name forIdentity:(id)identity;
 @end
 
 @implementation PSBiometricIdentity
 
 + (id)identities
 {
-  v2 = [MEMORY[0x1E698F3A8] manager];
-  v3 = [v2 identities:0];
+  manager = [MEMORY[0x1E698F3A8] manager];
+  v3 = [manager identities:0];
 
   return v3;
 }
 
 + (int64_t)maximumIdentityCount
 {
-  v2 = [MEMORY[0x1E698F3A8] manager];
-  v3 = [v2 getMaxIdentityCount:1];
+  manager = [MEMORY[0x1E698F3A8] manager];
+  v3 = [manager getMaxIdentityCount:1];
 
   return v3;
 }
 
-+ (void)removeIdentity:(id)a3
++ (void)removeIdentity:(id)identity
 {
   v3 = MEMORY[0x1E698F3A8];
-  v4 = a3;
-  v5 = [v3 manager];
-  [v5 removeIdentity:v4];
+  identityCopy = identity;
+  manager = [v3 manager];
+  [manager removeIdentity:identityCopy];
 }
 
-+ (void)setName:(id)a3 forIdentity:(id)a4
++ (void)setName:(id)name forIdentity:(id)identity
 {
-  v5 = a4;
-  [v5 setName:a3];
-  v6 = [MEMORY[0x1E698F3A8] manager];
-  [v6 updateIdentity:v5];
+  identityCopy = identity;
+  [identityCopy setName:name];
+  manager = [MEMORY[0x1E698F3A8] manager];
+  [manager updateIdentity:identityCopy];
 }
 
 + (id)nextIdentityName
@@ -48,8 +48,8 @@
   v35 = 0u;
   v33 = 0u;
   v32 = 0u;
-  v4 = [a1 identities];
-  v5 = [v4 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  identities = [self identities];
+  v5 = [identities countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v5)
   {
     v6 = *v33;
@@ -59,29 +59,29 @@
       {
         if (*v33 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(identities);
         }
 
-        v8 = [a1 nameForIdentity:*(*(&v32 + 1) + 8 * i)];
+        v8 = [self nameForIdentity:*(*(&v32 + 1) + 8 * i)];
         if (v8)
         {
           [v3 addObject:v8];
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v5 = [identities countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [a1 maximumIdentityCount];
-  v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:v9];
+  maximumIdentityCount = [self maximumIdentityCount];
+  v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:maximumIdentityCount];
   v10 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   [v10 setNumberStyle:0];
-  if (v9)
+  if (maximumIdentityCount)
   {
-    for (j = 1; j <= v9; ++j)
+    for (j = 1; j <= maximumIdentityCount; ++j)
     {
       v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:j];
       v13 = [v10 stringFromNumber:v12];

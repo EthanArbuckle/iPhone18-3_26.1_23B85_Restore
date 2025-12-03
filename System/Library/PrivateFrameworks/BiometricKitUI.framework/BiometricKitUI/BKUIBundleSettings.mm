@@ -1,13 +1,13 @@
 @interface BKUIBundleSettings
-+ (BOOL)BOOLForUserDefaultsKey:(id)a3;
++ (BOOL)BOOLForUserDefaultsKey:(id)key;
 + (BOOL)isFpEnrollHapticFeedbackDisabled;
 + (BOOL)isUserStudy;
-+ (float)floatForUserDefaultsKey:(id)a3;
-+ (id)objectForKey:(id)a3;
-+ (int64_t)integerForUserDefaultsKey:(id)a3;
++ (float)floatForUserDefaultsKey:(id)key;
++ (id)objectForKey:(id)key;
++ (int64_t)integerForUserDefaultsKey:(id)key;
 + (void)isFpEnrollHapticFeedbackDisabled;
 + (void)isUserStudy;
-+ (void)setInteger:(int64_t)a3 forUserDefaultsKey:(id)a4;
++ (void)setInteger:(int64_t)integer forUserDefaultsKey:(id)key;
 + (void)synchronize;
 @end
 
@@ -24,8 +24,8 @@
   v3 = *MEMORY[0x277CBF030];
   CFPreferencesSynchronize(@"com.apple.biometrickitui", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
   CFPreferencesSynchronize(@"com.apple.biometrickitd", v2, v3);
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 synchronize];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults synchronize];
 }
 
 + (BOOL)isFpEnrollHapticFeedbackDisabled
@@ -53,8 +53,8 @@
 
 + (BOOL)isUserStudy
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"userStudy"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"userStudy"];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -64,24 +64,24 @@
   return v3;
 }
 
-+ (void)setInteger:(int64_t)a3 forUserDefaultsKey:(id)a4
++ (void)setInteger:(int64_t)integer forUserDefaultsKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     +[BKUIBundleSettings setInteger:forUserDefaultsKey:];
   }
 
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [a1 setObject:v7 forKey:v6];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:integer];
+  [self setObject:v7 forKey:keyCopy];
 
-  [a1 synchronize];
+  [self synchronize];
 }
 
-+ (BOOL)BOOLForUserDefaultsKey:(id)a3
++ (BOOL)BOOLForUserDefaultsKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  keyCopy = key;
+  v5 = [self objectForKey:keyCopy];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     +[BKUIBundleSettings BOOLForUserDefaultsKey:];
@@ -91,7 +91,7 @@
     }
 
 LABEL_5:
-    v6 = 0;
+    bOOLValue = 0;
     goto LABEL_6;
   }
 
@@ -101,16 +101,16 @@ LABEL_5:
   }
 
 LABEL_3:
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 LABEL_6:
 
-  return v6;
+  return bOOLValue;
 }
 
-+ (int64_t)integerForUserDefaultsKey:(id)a3
++ (int64_t)integerForUserDefaultsKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  keyCopy = key;
+  v5 = [self objectForKey:keyCopy];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     +[BKUIBundleSettings integerForUserDefaultsKey:];
@@ -120,7 +120,7 @@ LABEL_6:
     }
 
 LABEL_5:
-    v6 = 0;
+    integerValue = 0;
     goto LABEL_6;
   }
 
@@ -130,16 +130,16 @@ LABEL_5:
   }
 
 LABEL_3:
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 LABEL_6:
 
-  return v6;
+  return integerValue;
 }
 
-+ (float)floatForUserDefaultsKey:(id)a3
++ (float)floatForUserDefaultsKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  keyCopy = key;
+  v5 = [self objectForKey:keyCopy];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     +[BKUIBundleSettings floatForUserDefaultsKey:];
@@ -166,9 +166,9 @@ LABEL_6:
   return v7;
 }
 
-+ (id)objectForKey:(id)a3
++ (id)objectForKey:(id)key
 {
-  v3 = CFPreferencesCopyValue(a3, @"com.apple.biometrickitui", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
+  v3 = CFPreferencesCopyValue(key, @"com.apple.biometrickitui", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
 
   return v3;
 }

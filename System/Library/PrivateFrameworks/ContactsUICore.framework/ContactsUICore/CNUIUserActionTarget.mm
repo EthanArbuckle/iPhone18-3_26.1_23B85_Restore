@@ -3,23 +3,23 @@
 + (id)targetForDirections;
 + (id)targetForEmailWithMail;
 + (id)targetForPayWithWallet;
-+ (id)targetForSendMessageIntentWithAppProxy:(id)a3;
-+ (id)targetForStartAudioCallIntentWithAppProxy:(id)a3;
-+ (id)targetForStartVideoCallIntentWithAppProxy:(id)a3;
-+ (id)targetForTextWithAvailableDefaultAppProxy:(id)a3;
++ (id)targetForSendMessageIntentWithAppProxy:(id)proxy;
++ (id)targetForStartAudioCallIntentWithAppProxy:(id)proxy;
++ (id)targetForStartVideoCallIntentWithAppProxy:(id)proxy;
++ (id)targetForTextWithAvailableDefaultAppProxy:(id)proxy;
 + (id)targetForTextWithMessages;
 + (id)targetForTextWithSkype;
-+ (id)targetForVideoWithCallProvider:(id)a3;
++ (id)targetForVideoWithCallProvider:(id)provider;
 + (id)targetForVideoWithFaceTime;
 + (id)targetForVideoWithSkype;
-+ (id)targetForVoiceWithCallProvider:(id)a3;
++ (id)targetForVoiceWithCallProvider:(id)provider;
 + (id)targetForVoiceWithFaceTime;
 + (id)targetForVoiceWithSkype;
 + (id)targetForVoiceWithTelephony;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CNUIUserActionTarget)init;
-- (CNUIUserActionTarget)initWithName:(id)a3 bundleIdentifier:(id)a4 teamIdentifier:(id)a5;
-- (id)actionsForContact:(id)a3 discoveringEnvironment:(id)a4;
+- (CNUIUserActionTarget)initWithName:(id)name bundleIdentifier:(id)identifier teamIdentifier:(id)teamIdentifier;
+- (id)actionsForContact:(id)contact discoveringEnvironment:(id)environment;
 - (unint64_t)hash;
 @end
 
@@ -36,8 +36,8 @@
   v10[2] = *MEMORY[0x1E695C2B0];
   v10[3] = v4;
   v10[4] = *MEMORY[0x1E695C360];
-  v5 = [MEMORY[0x1E695CEB0] descriptorForRequiredKeys];
-  v10[5] = v5;
+  descriptorForRequiredKeys = [MEMORY[0x1E695CEB0] descriptorForRequiredKeys];
+  v10[5] = descriptorForRequiredKeys;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:6];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[CNUIUserActionTarget descriptorForRequiredKeysForActionDiscovering]"];
   v8 = [v2 descriptorWithKeyDescriptors:v6 description:v7];
@@ -87,28 +87,28 @@
   return v2;
 }
 
-+ (id)targetForVoiceWithCallProvider:(id)a3
++ (id)targetForVoiceWithCallProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = [_CNUIUserActionCallProviderVoiceTarget alloc];
-  v5 = [v3 localizedName];
-  v6 = [v3 bundleIdentifier];
-  v7 = [(CNUIUserActionTarget *)v4 initWithName:v5 bundleIdentifier:v6 teamIdentifier:0];
+  localizedName = [providerCopy localizedName];
+  bundleIdentifier = [providerCopy bundleIdentifier];
+  v7 = [(CNUIUserActionTarget *)v4 initWithName:localizedName bundleIdentifier:bundleIdentifier teamIdentifier:0];
 
-  [(CNUIUserActionTarget *)v7 setCallProvider:v3];
+  [(CNUIUserActionTarget *)v7 setCallProvider:providerCopy];
 
   return v7;
 }
 
-+ (id)targetForStartAudioCallIntentWithAppProxy:(id)a3
++ (id)targetForStartAudioCallIntentWithAppProxy:(id)proxy
 {
-  v3 = a3;
+  proxyCopy = proxy;
   v4 = [_CNUIUserActionStartAudioCallIntentTarget alloc];
-  v5 = [v3 localizedName];
-  v6 = [v3 bundleIdentifier];
-  v7 = [v3 teamIdentifier];
+  localizedName = [proxyCopy localizedName];
+  bundleIdentifier = [proxyCopy bundleIdentifier];
+  teamIdentifier = [proxyCopy teamIdentifier];
 
-  v8 = [(CNUIUserActionTarget *)v4 initWithName:v5 bundleIdentifier:v6 teamIdentifier:v7];
+  v8 = [(CNUIUserActionTarget *)v4 initWithName:localizedName bundleIdentifier:bundleIdentifier teamIdentifier:teamIdentifier];
 
   return v8;
 }
@@ -127,28 +127,28 @@
   return v2;
 }
 
-+ (id)targetForVideoWithCallProvider:(id)a3
++ (id)targetForVideoWithCallProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = [_CNUIUserActionCallProviderVideoTarget alloc];
-  v5 = [v3 localizedName];
-  v6 = [v3 bundleIdentifier];
-  v7 = [(CNUIUserActionTarget *)v4 initWithName:v5 bundleIdentifier:v6 teamIdentifier:0];
+  localizedName = [providerCopy localizedName];
+  bundleIdentifier = [providerCopy bundleIdentifier];
+  v7 = [(CNUIUserActionTarget *)v4 initWithName:localizedName bundleIdentifier:bundleIdentifier teamIdentifier:0];
 
-  [(CNUIUserActionTarget *)v7 setCallProvider:v3];
+  [(CNUIUserActionTarget *)v7 setCallProvider:providerCopy];
 
   return v7;
 }
 
-+ (id)targetForStartVideoCallIntentWithAppProxy:(id)a3
++ (id)targetForStartVideoCallIntentWithAppProxy:(id)proxy
 {
-  v3 = a3;
+  proxyCopy = proxy;
   v4 = [_CNUIUserActionStartVideoCallIntentTarget alloc];
-  v5 = [v3 localizedName];
-  v6 = [v3 bundleIdentifier];
-  v7 = [v3 teamIdentifier];
+  localizedName = [proxyCopy localizedName];
+  bundleIdentifier = [proxyCopy bundleIdentifier];
+  teamIdentifier = [proxyCopy teamIdentifier];
 
-  v8 = [(CNUIUserActionTarget *)v4 initWithName:v5 bundleIdentifier:v6 teamIdentifier:v7];
+  v8 = [(CNUIUserActionTarget *)v4 initWithName:localizedName bundleIdentifier:bundleIdentifier teamIdentifier:teamIdentifier];
 
   return v8;
 }
@@ -167,28 +167,28 @@
   return v2;
 }
 
-+ (id)targetForSendMessageIntentWithAppProxy:(id)a3
++ (id)targetForSendMessageIntentWithAppProxy:(id)proxy
 {
-  v3 = a3;
+  proxyCopy = proxy;
   v4 = [_CNUIUserActionSendMessageIntentTarget alloc];
-  v5 = [v3 localizedName];
-  v6 = [v3 bundleIdentifier];
-  v7 = [v3 teamIdentifier];
+  localizedName = [proxyCopy localizedName];
+  bundleIdentifier = [proxyCopy bundleIdentifier];
+  teamIdentifier = [proxyCopy teamIdentifier];
 
-  v8 = [(CNUIUserActionTarget *)v4 initWithName:v5 bundleIdentifier:v6 teamIdentifier:v7];
+  v8 = [(CNUIUserActionTarget *)v4 initWithName:localizedName bundleIdentifier:bundleIdentifier teamIdentifier:teamIdentifier];
 
   return v8;
 }
 
-+ (id)targetForTextWithAvailableDefaultAppProxy:(id)a3
++ (id)targetForTextWithAvailableDefaultAppProxy:(id)proxy
 {
-  v3 = a3;
+  proxyCopy = proxy;
   v4 = [_CNUIUserActionAvailableDefaultAppTextTarget alloc];
-  v5 = [v3 localizedName];
-  v6 = [v3 bundleIdentifier];
-  v7 = [v3 teamIdentifier];
+  localizedName = [proxyCopy localizedName];
+  bundleIdentifier = [proxyCopy bundleIdentifier];
+  teamIdentifier = [proxyCopy teamIdentifier];
 
-  v8 = [(CNUIUserActionTarget *)v4 initWithName:v5 bundleIdentifier:v6 teamIdentifier:v7];
+  v8 = [(CNUIUserActionTarget *)v4 initWithName:localizedName bundleIdentifier:bundleIdentifier teamIdentifier:teamIdentifier];
 
   return v8;
 }
@@ -203,29 +203,29 @@
   return [(CNUIUserActionTarget *)self initWithName:&stru_1F162C170 bundleIdentifier:&stru_1F162C170 teamIdentifier:&stru_1F162C170];
 }
 
-- (CNUIUserActionTarget)initWithName:(id)a3 bundleIdentifier:(id)a4 teamIdentifier:(id)a5
+- (CNUIUserActionTarget)initWithName:(id)name bundleIdentifier:(id)identifier teamIdentifier:(id)teamIdentifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  identifierCopy = identifier;
+  teamIdentifierCopy = teamIdentifier;
   v16.receiver = self;
   v16.super_class = CNUIUserActionTarget;
   v12 = [(CNUIUserActionTarget *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a3);
-    objc_storeStrong(&v13->_bundleIdentifier, a4);
-    objc_storeStrong(&v13->_teamIdentifier, a5);
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v13->_bundleIdentifier, identifier);
+    objc_storeStrong(&v13->_teamIdentifier, teamIdentifier);
     v14 = v13;
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v6 = objc_opt_class();
   v16[0] = MEMORY[0x1E69E9820];
@@ -233,7 +233,7 @@
   v16[2] = __32__CNUIUserActionTarget_isEqual___block_invoke;
   v16[3] = &unk_1E76E7A88;
   v16[4] = self;
-  v17 = v4;
+  v17 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __32__CNUIUserActionTarget_isEqual___block_invoke_2;
@@ -337,31 +337,31 @@ uint64_t __28__CNUIUserActionTarget_hash__block_invoke_3(uint64_t a1)
   return v3;
 }
 
-- (id)actionsForContact:(id)a3 discoveringEnvironment:(id)a4
+- (id)actionsForContact:(id)contact discoveringEnvironment:(id)environment
 {
   v25[1] = *MEMORY[0x1E69E9840];
   v19 = MEMORY[0x1E6996798];
-  v6 = a4;
-  v7 = a3;
-  v23 = [v7 emailAddresses];
-  v22 = [(CNUIUserActionTarget *)self actionsForEmailAddresses:v23 contact:v7 discoveringEnvironment:v6];
+  environmentCopy = environment;
+  contactCopy = contact;
+  emailAddresses = [contactCopy emailAddresses];
+  v22 = [(CNUIUserActionTarget *)self actionsForEmailAddresses:emailAddresses contact:contactCopy discoveringEnvironment:environmentCopy];
   v24[0] = v22;
-  v21 = [v7 phoneNumbers];
-  v20 = [(CNUIUserActionTarget *)self actionsForPhoneNumbers:v21 contact:v7 discoveringEnvironment:v6];
+  phoneNumbers = [contactCopy phoneNumbers];
+  v20 = [(CNUIUserActionTarget *)self actionsForPhoneNumbers:phoneNumbers contact:contactCopy discoveringEnvironment:environmentCopy];
   v24[1] = v20;
-  v8 = [v7 instantMessageAddresses];
-  v9 = [(CNUIUserActionTarget *)self actionsForInstantMessageAddresses:v8 contact:v7 discoveringEnvironment:v6];
+  instantMessageAddresses = [contactCopy instantMessageAddresses];
+  v9 = [(CNUIUserActionTarget *)self actionsForInstantMessageAddresses:instantMessageAddresses contact:contactCopy discoveringEnvironment:environmentCopy];
   v24[2] = v9;
-  v10 = [v7 socialProfiles];
-  v11 = [(CNUIUserActionTarget *)self actionsForSocialProfiles:v10 contact:v7 discoveringEnvironment:v6];
+  socialProfiles = [contactCopy socialProfiles];
+  v11 = [(CNUIUserActionTarget *)self actionsForSocialProfiles:socialProfiles contact:contactCopy discoveringEnvironment:environmentCopy];
   v24[3] = v11;
-  v12 = [v7 postalAddresses];
-  v13 = [(CNUIUserActionTarget *)self actionsForPostalAddresses:v12 contact:v7 discoveringEnvironment:v6];
+  postalAddresses = [contactCopy postalAddresses];
+  v13 = [(CNUIUserActionTarget *)self actionsForPostalAddresses:postalAddresses contact:contactCopy discoveringEnvironment:environmentCopy];
 
   v24[4] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:5];
-  v15 = [v14 _cn_flatten];
-  v25[0] = v15;
+  _cn_flatten = [v14 _cn_flatten];
+  v25[0] = _cn_flatten;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
   v17 = [v19 observableWithResults:v16];
 

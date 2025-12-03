@@ -1,24 +1,24 @@
 @interface IMDRelayUtilities
-+ (id)_chipListDictionary:(id)a3;
-+ (id)_plainTextDictionaryFromMessage:(id)a3;
-+ (id)_richCardsDictionary:(id)a3;
-+ (id)loadDataForTransfer:(id)a3;
-+ (id)plainTextRelayPartWithString:(id)a3 index:(int64_t)a4;
-+ (id)relayPartsFor:(id)a3 overridingAttachmentData:(id)a4;
++ (id)_chipListDictionary:(id)dictionary;
++ (id)_plainTextDictionaryFromMessage:(id)message;
++ (id)_richCardsDictionary:(id)dictionary;
++ (id)loadDataForTransfer:(id)transfer;
++ (id)plainTextRelayPartWithString:(id)string index:(int64_t)index;
++ (id)relayPartsFor:(id)for overridingAttachmentData:(id)data;
 @end
 
 @implementation IMDRelayUtilities
 
-+ (id)relayPartsFor:(id)a3 overridingAttachmentData:(id)a4
++ (id)relayPartsFor:(id)for overridingAttachmentData:(id)data
 {
   v100 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v72 = a4;
-  v66 = v5;
-  v6 = [v5 body];
-  LODWORD(v5) = [v6 __im_isRichCard];
+  forCopy = for;
+  dataCopy = data;
+  v66 = forCopy;
+  body = [forCopy body];
+  LODWORD(forCopy) = [body __im_isRichCard];
 
-  if (v5)
+  if (forCopy)
   {
     v71 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v75 = 0u;
@@ -55,12 +55,12 @@
               v34 = OSLogHandleForIMFoundationCategory();
               if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
               {
-                v35 = [v66 guid];
-                v36 = [v12 guid];
+                guid = [v66 guid];
+                guid2 = [v12 guid];
                 *buf = 138412546;
-                v94 = v35;
+                v94 = guid;
                 v95 = 2112;
-                v96 = v36;
+                v96 = guid2;
                 _os_log_impl(&dword_22B4CC000, v34, OS_LOG_TYPE_INFO, "Rich cards media assets are too large for relay in message: %@, drop rest of the transfer starting from: %@", buf, 0x16u);
               }
             }
@@ -73,19 +73,19 @@
             v14 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
             {
-              v15 = [v66 guid];
-              v16 = [v12 guid];
+              guid3 = [v66 guid];
+              guid4 = [v12 guid];
               *buf = v64;
               v94 = v8;
               v95 = 2112;
-              v96 = v15;
+              v96 = guid3;
               v97 = 2112;
-              v98 = v16;
+              v98 = guid4;
               _os_log_impl(&dword_22B4CC000, v14, OS_LOG_TYPE_INFO, "Processing rich cards media assets of %lu bytes for relay in message: %@, drop rest of the transfer starting from: %@", buf, 0x20u);
             }
           }
 
-          if (v72 && ([v72 objectForKey:v10], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+          if (dataCopy && ([dataCopy objectForKey:v10], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             v18 = v17;
             v19 = v18;
@@ -93,16 +93,16 @@
 
           else
           {
-            v18 = [a1 loadDataForTransfer:v12];
+            v18 = [self loadDataForTransfer:v12];
             v19 = 0;
           }
 
           v91[0] = IMDCTPartDictionaryContentTypeKey;
-          v20 = [v12 mimeType];
-          if (v20)
+          mimeType = [v12 mimeType];
+          if (mimeType)
           {
-            v73 = [v12 mimeType];
-            v21 = v73;
+            mimeType2 = [v12 mimeType];
+            v21 = mimeType2;
           }
 
           else
@@ -114,9 +114,9 @@
           v92[1] = @"0.file";
           v91[1] = IMDCTPartDictionaryContentIDKey;
           v91[2] = IMDCTPartDictionaryContentLocationKey;
-          v22 = [v12 filename];
-          v23 = [v22 lastPathComponent];
-          v92[2] = v23;
+          filename = [v12 filename];
+          lastPathComponent = [filename lastPathComponent];
+          v92[2] = lastPathComponent;
           v91[3] = IMDCTPartDictionaryContentDataKey;
           v24 = v18;
           if (!v18)
@@ -133,7 +133,7 @@
           {
           }
 
-          if (v20)
+          if (mimeType)
           {
           }
 
@@ -152,33 +152,33 @@
 
 LABEL_40:
 
-    v37 = [v66 body];
-    v29 = [a1 _richCardsDictionary:v37];
+    body2 = [v66 body];
+    firstObject = [self _richCardsDictionary:body2];
 
-    if (v29)
+    if (firstObject)
     {
-      [v71 addObject:v29];
+      [v71 addObject:firstObject];
     }
 
     goto LABEL_83;
   }
 
-  v26 = [v66 fileTransferGUIDs];
-  v27 = [v26 count];
+  fileTransferGUIDs = [v66 fileTransferGUIDs];
+  v27 = [fileTransferGUIDs count];
 
   if (v27)
   {
-    v28 = [v66 fileTransferGUIDs];
-    v29 = [v28 firstObject];
+    fileTransferGUIDs2 = [v66 fileTransferGUIDs];
+    firstObject = [fileTransferGUIDs2 firstObject];
 
     v30 = +[IMDAttachmentStore sharedInstance];
-    v31 = [v30 attachmentWithGUID:v29];
+    v31 = [v30 attachmentWithGUID:firstObject];
 
     if (v31)
     {
       if (![v31 isInThumbnailState])
       {
-        if (v72 && ([v72 objectForKey:v29], (v45 = objc_claimAutoreleasedReturnValue()) != 0))
+        if (dataCopy && ([dataCopy objectForKey:firstObject], (v45 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           v46 = v45;
           v74 = v46;
@@ -186,7 +186,7 @@ LABEL_40:
 
         else
         {
-          v46 = [a1 loadDataForTransfer:v31];
+          v46 = [self loadDataForTransfer:v31];
           if (!v46)
           {
             if (!IMOSLoggingEnabled())
@@ -211,29 +211,29 @@ LABEL_40:
         }
 
         v85[0] = IMDCTPartDictionaryContentTypeKey;
-        v47 = [v31 mimeType];
-        if (v47)
+        mimeType3 = [v31 mimeType];
+        if (mimeType3)
         {
-          v48 = [v31 mimeType];
+          mimeType4 = [v31 mimeType];
         }
 
         else
         {
-          v48 = @"application/octet-stream";
+          mimeType4 = @"application/octet-stream";
         }
 
-        v86[0] = v48;
+        v86[0] = mimeType4;
         v86[1] = @"0.file";
         v85[1] = IMDCTPartDictionaryContentIDKey;
         v85[2] = IMDCTPartDictionaryContentLocationKey;
-        v50 = [v31 filename];
-        v51 = [v50 lastPathComponent];
-        v86[2] = v51;
+        filename2 = [v31 filename];
+        lastPathComponent2 = [filename2 lastPathComponent];
+        v86[2] = lastPathComponent2;
         v85[3] = IMDCTPartDictionaryContentDataKey;
         v86[3] = v46;
         v52 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v86 forKeys:v85 count:4];
 
-        if (v47)
+        if (mimeType3)
         {
         }
 
@@ -261,13 +261,13 @@ LABEL_40:
         v83[2] = v56;
         v57 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v83 forKeys:v82 count:3];
 
-        v58 = [v66 body];
-        v59 = [v58 __im_hasChipList];
+        body3 = [v66 body];
+        __im_hasChipList = [body3 __im_hasChipList];
 
-        if (v59)
+        if (__im_hasChipList)
         {
-          v60 = [v66 body];
-          v61 = [a1 _chipListDictionary:v60];
+          body4 = [v66 body];
+          v61 = [self _chipListDictionary:body4];
 
           if (v61)
           {
@@ -300,9 +300,9 @@ LABEL_40:
         v32 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
         {
-          v33 = [v31 guid];
+          guid5 = [v31 guid];
           *buf = 138412290;
-          v94 = v33;
+          v94 = guid5;
           _os_log_impl(&dword_22B4CC000, v32, OS_LOG_TYPE_INFO, "Transfer found in thumbnail state, aborting relay %@", buf, 0xCu);
         }
 
@@ -316,7 +316,7 @@ LABEL_49:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v94 = v29;
+        v94 = firstObject;
         _os_log_impl(&dword_22B4CC000, v32, OS_LOG_TYPE_INFO, "No transfer found for %@", buf, 0xCu);
       }
 
@@ -330,45 +330,45 @@ LABEL_82:
     goto LABEL_83;
   }
 
-  v38 = [v66 body];
-  v39 = [v38 __im_hasChipList];
+  body5 = [v66 body];
+  __im_hasChipList2 = [body5 __im_hasChipList];
 
-  if (!v39)
+  if (!__im_hasChipList2)
   {
-    v29 = [a1 _plainTextDictionaryFromMessage:v66];
-    v87 = v29;
+    firstObject = [self _plainTextDictionaryFromMessage:v66];
+    v87 = firstObject;
     v71 = [MEMORY[0x277CBEA60] arrayWithObjects:&v87 count:1];
     goto LABEL_83;
   }
 
-  v40 = [v66 body];
-  v29 = [a1 _chipListDictionary:v40];
+  body6 = [v66 body];
+  firstObject = [self _chipListDictionary:body6];
 
-  v41 = [v66 body];
-  v42 = [v41 length];
+  body7 = [v66 body];
+  v42 = [body7 length];
 
   if (v42 == 1)
   {
-    if (!v29)
+    if (!firstObject)
     {
       v71 = 0;
       goto LABEL_83;
     }
 
-    v43 = [v66 body];
-    v44 = [a1 _chipListDictionary:v43];
+    body8 = [v66 body];
+    v44 = [self _chipListDictionary:body8];
     v90 = v44;
     v71 = [MEMORY[0x277CBEA60] arrayWithObjects:&v90 count:1];
   }
 
   else
   {
-    v49 = [a1 _plainTextDictionaryFromMessage:v66];
-    v43 = v49;
-    if (v29)
+    v49 = [self _plainTextDictionaryFromMessage:v66];
+    body8 = v49;
+    if (firstObject)
     {
       v89[0] = v49;
-      v89[1] = v29;
+      v89[1] = firstObject;
       v71 = [MEMORY[0x277CBEA60] arrayWithObjects:v89 count:2];
     }
 
@@ -385,14 +385,14 @@ LABEL_83:
   return v71;
 }
 
-+ (id)plainTextRelayPartWithString:(id)a3 index:(int64_t)a4
++ (id)plainTextRelayPartWithString:(id)string index:(int64_t)index
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
     CFDictionarySetValue(v5, IMDCTPartDictionaryContentTypeKey, @"text/plain");
-    v6 = [v4 dataUsingEncoding:4];
+    v6 = [stringCopy dataUsingEncoding:4];
     if (v6)
     {
       CFDictionarySetValue(v5, IMDCTPartDictionaryContentDataKey, v6);
@@ -407,22 +407,22 @@ LABEL_83:
   return v5;
 }
 
-+ (id)loadDataForTransfer:(id)a3
++ (id)loadDataForTransfer:(id)transfer
 {
   v3 = MEMORY[0x277CBEA90];
-  v4 = a3;
+  transferCopy = transfer;
   v5 = [v3 alloc];
-  v6 = [v4 localPath];
+  localPath = [transferCopy localPath];
 
-  v7 = [v5 initWithContentsOfFile:v6];
+  v7 = [v5 initWithContentsOfFile:localPath];
 
   return v7;
 }
 
-+ (id)_plainTextDictionaryFromMessage:(id)a3
++ (id)_plainTextDictionaryFromMessage:(id)message
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v3 = [IMDTelephonyServiceSession getPlainTextForMessage:a3 processedMessageItem:a3];
+  v3 = [IMDTelephonyServiceSession getPlainTextForMessage:message processedMessageItem:message];
   v9[0] = @"text/plain";
   v8[0] = IMDCTPartDictionaryContentTypeKey;
   v8[1] = IMDCTPartDictionaryContentDataKey;
@@ -435,11 +435,11 @@ LABEL_83:
   return v5;
 }
 
-+ (id)_chipListDictionary:(id)a3
++ (id)_chipListDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 attributedSubstringFromRange:{objc_msgSend(v3, "length") - 1, 1}];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy attributedSubstringFromRange:{objc_msgSend(dictionaryCopy, "length") - 1, 1}];
   if (![v4 length])
   {
     v13 = IMLogHandleForCategory();
@@ -448,31 +448,31 @@ LABEL_83:
       sub_22B7D881C(v13);
     }
 
-    v5 = [MEMORY[0x277D1AAA8] sharedInstance];
-    [v5 forceAutoBugCaptureWithSubType:@"Failed to relay Chip List message" errorPayload:0 type:@"RCSChatBot" context:@"Message body is empty"];
+    mEMORY[0x277D1AAA8] = [MEMORY[0x277D1AAA8] sharedInstance];
+    [mEMORY[0x277D1AAA8] forceAutoBugCaptureWithSubType:@"Failed to relay Chip List message" errorPayload:0 type:@"RCSChatBot" context:@"Message body is empty"];
     goto LABEL_18;
   }
 
-  v5 = [v4 attributesAtIndex:objc_msgSend(v4 effectiveRange:{"length") - 1, 0}];
-  v6 = [v5 _arrayForKey:*MEMORY[0x277D19990]];
+  mEMORY[0x277D1AAA8] = [v4 attributesAtIndex:objc_msgSend(v4 effectiveRange:{"length") - 1, 0}];
+  v6 = [mEMORY[0x277D1AAA8] _arrayForKey:*MEMORY[0x277D19990]];
   v7 = [objc_alloc(MEMORY[0x277D1A928]) initWithChipArray:v6];
   if (!v7)
   {
     v14 = IMLogHandleForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      sub_22B7D87A4(v5, v14);
+      sub_22B7D87A4(mEMORY[0x277D1AAA8], v14);
     }
 
-    v15 = [MEMORY[0x277D1AAA8] sharedInstance];
-    [v15 forceAutoBugCaptureWithSubType:@"Failed to relay Chip List message" errorPayload:0 type:@"RCSChatBot" context:@"Cannot build Chip List" metadata:v5];
+    mEMORY[0x277D1AAA8]2 = [MEMORY[0x277D1AAA8] sharedInstance];
+    [mEMORY[0x277D1AAA8]2 forceAutoBugCaptureWithSubType:@"Failed to relay Chip List message" errorPayload:0 type:@"RCSChatBot" context:@"Cannot build Chip List" metadata:mEMORY[0x277D1AAA8]];
 
     goto LABEL_18;
   }
 
   v8 = v7;
-  v9 = [v7 relayDictionaryRepresentation];
-  v10 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v9 options:0 error:0];
+  relayDictionaryRepresentation = [v7 relayDictionaryRepresentation];
+  v10 = [MEMORY[0x277CCAAA0] dataWithJSONObject:relayDictionaryRepresentation options:0 error:0];
   if (!v10)
   {
     v16 = IMLogHandleForCategory();
@@ -481,8 +481,8 @@ LABEL_83:
       sub_22B7D8714(v8);
     }
 
-    v17 = [MEMORY[0x277D1AAA8] sharedInstance];
-    [v17 forceAutoBugCaptureWithSubType:@"Failed to relay Chip List message" errorPayload:0 type:@"RCSChatBot" context:@"Cannot generate attributedData" metadata:v9];
+    mEMORY[0x277D1AAA8]3 = [MEMORY[0x277D1AAA8] sharedInstance];
+    [mEMORY[0x277D1AAA8]3 forceAutoBugCaptureWithSubType:@"Failed to relay Chip List message" errorPayload:0 type:@"RCSChatBot" context:@"Cannot generate attributedData" metadata:relayDictionaryRepresentation];
 
 LABEL_18:
     v12 = 0;
@@ -505,7 +505,7 @@ LABEL_18:
   v21[0] = @"text/attributed/chipList";
   v21[1] = v10;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
-  v5 = v10;
+  mEMORY[0x277D1AAA8] = v10;
 LABEL_19:
 
   v18 = *MEMORY[0x277D85DE8];
@@ -513,17 +513,17 @@ LABEL_19:
   return v12;
 }
 
-+ (id)_richCardsDictionary:(id)a3
++ (id)_richCardsDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (![v3 __im_isRichCard])
+  dictionaryCopy = dictionary;
+  if (![dictionaryCopy __im_isRichCard])
   {
     v16 = 0;
     goto LABEL_22;
   }
 
-  v4 = [v3 attributesAtIndex:0 effectiveRange:0];
+  v4 = [dictionaryCopy attributesAtIndex:0 effectiveRange:0];
   v5 = [v4 _arrayForKey:*MEMORY[0x277D1A4D8]];
   v6 = objc_alloc(MEMORY[0x277D1AB58]);
   if (v5)
@@ -556,8 +556,8 @@ LABEL_15:
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 relayDictionaryRepresentation];
-    [v10 setObject:v13 forKeyedSubscript:@"urlToTransferMap"];
+    relayDictionaryRepresentation = [v11 relayDictionaryRepresentation];
+    [v10 setObject:relayDictionaryRepresentation forKeyedSubscript:@"urlToTransferMap"];
   }
 
   if (!v8)
@@ -566,8 +566,8 @@ LABEL_15:
   }
 
 LABEL_9:
-  v14 = [v8 relayDictionaryRepresentation];
-  [v10 addEntriesFromDictionary:v14];
+  relayDictionaryRepresentation2 = [v8 relayDictionaryRepresentation];
+  [v10 addEntriesFromDictionary:relayDictionaryRepresentation2];
 
   v15 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v10 options:0 error:0];
   if (v15)

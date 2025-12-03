@@ -1,13 +1,13 @@
 @interface MusicKit_SoftLinking_MPModelLibraryDuplicatePlaylistChangeRequest
-- (MusicKit_SoftLinking_MPModelLibraryDuplicatePlaylistChangeRequest)initWithPlaylist:(id)a3;
-- (void)performWithCompletionPolicy:(int64_t)a3 completionHandler:(id)a4;
+- (MusicKit_SoftLinking_MPModelLibraryDuplicatePlaylistChangeRequest)initWithPlaylist:(id)playlist;
+- (void)performWithCompletionPolicy:(int64_t)policy completionHandler:(id)handler;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelLibraryDuplicatePlaylistChangeRequest
 
-- (MusicKit_SoftLinking_MPModelLibraryDuplicatePlaylistChangeRequest)initWithPlaylist:(id)a3
+- (MusicKit_SoftLinking_MPModelLibraryDuplicatePlaylistChangeRequest)initWithPlaylist:(id)playlist
 {
-  v4 = a3;
+  playlistCopy = playlist;
   v16.receiver = self;
   v16.super_class = MusicKit_SoftLinking_MPModelLibraryDuplicatePlaylistChangeRequest;
   v5 = [(MusicKit_SoftLinking_MPModelLibraryDuplicatePlaylistChangeRequest *)&v16 init];
@@ -50,9 +50,9 @@
 
     v10 = v9;
     _Block_object_dispose(&v22, 8);
-    v11 = [v9 deviceMediaLibrary];
-    v12 = [v4 _underlyingModelObject];
-    v13 = [v8 initWithLibrary:v11 playlist:v12];
+    deviceMediaLibrary = [v9 deviceMediaLibrary];
+    _underlyingModelObject = [playlistCopy _underlyingModelObject];
+    v13 = [v8 initWithLibrary:deviceMediaLibrary playlist:_underlyingModelObject];
     underlyingChangeRequest = v5->_underlyingChangeRequest;
     v5->_underlyingChangeRequest = v13;
   }
@@ -60,17 +60,17 @@
   return v5;
 }
 
-- (void)performWithCompletionPolicy:(int64_t)a3 completionHandler:(id)a4
+- (void)performWithCompletionPolicy:(int64_t)policy completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   underlyingChangeRequest = self->_underlyingChangeRequest;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __115__MusicKit_SoftLinking_MPModelLibraryDuplicatePlaylistChangeRequest_performWithCompletionPolicy_completionHandler___block_invoke;
   v8[3] = &unk_1E84C3F68;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(MPModelLibraryDuplicatePlaylistChangeRequest *)underlyingChangeRequest performWithResponseHandler:v8];
 }
 

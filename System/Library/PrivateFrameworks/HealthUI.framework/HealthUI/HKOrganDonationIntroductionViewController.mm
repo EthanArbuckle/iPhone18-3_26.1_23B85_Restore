@@ -4,11 +4,11 @@
 - (id)linkButtonTitle;
 - (id)titleImage;
 - (id)titleString;
-- (void)alreadyButtonTapped:(id)a3;
-- (void)buttonAtIndexTapped:(int64_t)a3;
-- (void)notNowButtonTapped:(id)a3;
+- (void)alreadyButtonTapped:(id)tapped;
+- (void)buttonAtIndexTapped:(int64_t)tapped;
+- (void)notNowButtonTapped:(id)tapped;
 - (void)setUpRegistrationViewController;
-- (void)signupButtonTapped:(id)a3;
+- (void)signupButtonTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
@@ -72,9 +72,9 @@
   return v8;
 }
 
-- (void)buttonAtIndexTapped:(int64_t)a3
+- (void)buttonAtIndexTapped:(int64_t)tapped
 {
-  switch(a3)
+  switch(tapped)
   {
     case 2:
       [(HKOrganDonationIntroductionViewController *)self notNowButtonTapped:0];
@@ -93,50 +93,50 @@
   if (!self->_registrationViewController)
   {
     v3 = objc_alloc_init(HKOrganDonationRegisterViewController);
-    v4 = [(HKOrganDonationBaseViewController *)self medicalIDData];
-    [(HKOrganDonationRegisterViewController *)v3 setMedicalIDData:v4];
+    medicalIDData = [(HKOrganDonationBaseViewController *)self medicalIDData];
+    [(HKOrganDonationRegisterViewController *)v3 setMedicalIDData:medicalIDData];
 
-    v5 = [(HKOrganDonationBaseViewController *)self completionButtonTitle];
-    [(HKOrganDonationRegisterViewController *)v3 setCompletionButtonTitle:v5];
+    completionButtonTitle = [(HKOrganDonationBaseViewController *)self completionButtonTitle];
+    [(HKOrganDonationRegisterViewController *)v3 setCompletionButtonTitle:completionButtonTitle];
 
-    v6 = [(HKOrganDonationBaseViewController *)self registrationCompletionHandler];
-    [(HKOrganDonationRegisterViewController *)v3 setRegistrationCompletionHandler:v6];
+    registrationCompletionHandler = [(HKOrganDonationBaseViewController *)self registrationCompletionHandler];
+    [(HKOrganDonationRegisterViewController *)v3 setRegistrationCompletionHandler:registrationCompletionHandler];
 
     registrationViewController = self->_registrationViewController;
     self->_registrationViewController = v3;
   }
 }
 
-- (void)signupButtonTapped:(id)a3
+- (void)signupButtonTapped:(id)tapped
 {
-  v4 = [(HKOrganDonationIntroductionViewController *)self navigationController];
-  [v4 pushViewController:self->_registrationViewController animated:1];
+  navigationController = [(HKOrganDonationIntroductionViewController *)self navigationController];
+  [navigationController pushViewController:self->_registrationViewController animated:1];
 }
 
-- (void)alreadyButtonTapped:(id)a3
+- (void)alreadyButtonTapped:(id)tapped
 {
   v8 = [(HKOrganDonationBaseViewController *)[HKOrganDonationAlreadyDonorViewController alloc] initWithMedicalIDData:0];
-  v4 = [(HKOrganDonationBaseViewController *)self medicalIDData];
-  [(HKOrganDonationBaseViewController *)v8 setMedicalIDData:v4];
+  medicalIDData = [(HKOrganDonationBaseViewController *)self medicalIDData];
+  [(HKOrganDonationBaseViewController *)v8 setMedicalIDData:medicalIDData];
 
-  v5 = [(HKOrganDonationBaseViewController *)self completionButtonTitle];
-  [(HKOrganDonationBaseViewController *)v8 setCompletionButtonTitle:v5];
+  completionButtonTitle = [(HKOrganDonationBaseViewController *)self completionButtonTitle];
+  [(HKOrganDonationBaseViewController *)v8 setCompletionButtonTitle:completionButtonTitle];
 
-  v6 = [(HKOrganDonationBaseViewController *)self registrationCompletionHandler];
-  [(HKOrganDonationBaseViewController *)v8 setRegistrationCompletionHandler:v6];
+  registrationCompletionHandler = [(HKOrganDonationBaseViewController *)self registrationCompletionHandler];
+  [(HKOrganDonationBaseViewController *)v8 setRegistrationCompletionHandler:registrationCompletionHandler];
 
-  v7 = [(HKOrganDonationIntroductionViewController *)self navigationController];
-  [v7 pushViewController:v8 animated:1];
+  navigationController = [(HKOrganDonationIntroductionViewController *)self navigationController];
+  [navigationController pushViewController:v8 animated:1];
 }
 
-- (void)notNowButtonTapped:(id)a3
+- (void)notNowButtonTapped:(id)tapped
 {
-  v4 = [(HKOrganDonationBaseViewController *)self registrationCompletionHandler];
+  registrationCompletionHandler = [(HKOrganDonationBaseViewController *)self registrationCompletionHandler];
 
-  if (v4)
+  if (registrationCompletionHandler)
   {
-    v5 = [(HKOrganDonationBaseViewController *)self registrationCompletionHandler];
-    v5[2](v5, 0);
+    registrationCompletionHandler2 = [(HKOrganDonationBaseViewController *)self registrationCompletionHandler];
+    registrationCompletionHandler2[2](registrationCompletionHandler2, 0);
   }
 
   [(HKOrganDonationIntroductionViewController *)self dismissViewControllerAnimated:1 completion:0];

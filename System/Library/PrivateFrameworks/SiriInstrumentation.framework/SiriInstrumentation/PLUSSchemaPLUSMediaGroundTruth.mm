@@ -1,28 +1,28 @@
 @interface PLUSSchemaPLUSMediaGroundTruth
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSMediaGroundTruth)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSMediaGroundTruth)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSMediaGroundTruth)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSMediaGroundTruth)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasInferredMediaEntitylocality:(BOOL)a3;
-- (void)setHasSelectedMediaEntitylocality:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasInferredMediaEntitylocality:(BOOL)entitylocality;
+- (void)setHasSelectedMediaEntitylocality:(BOOL)entitylocality;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSMediaGroundTruth
 
-- (PLUSSchemaPLUSMediaGroundTruth)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSMediaGroundTruth)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = PLUSSchemaPLUSMediaGroundTruth;
   v5 = [(PLUSSchemaPLUSMediaGroundTruth *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"groundTruthId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"groundTruthId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,14 +30,14 @@
       [(PLUSSchemaPLUSMediaGroundTruth *)v5 setGroundTruthId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"groundTruthSource"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"groundTruthSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSMediaGroundTruth setGroundTruthSource:](v5, "setGroundTruthSource:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"selectedMediaEntityAdamId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"selectedMediaEntityAdamId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(PLUSSchemaPLUSMediaGroundTruth *)v5 setSelectedMediaEntityAdamId:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"inferredMediaEntityAdamId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"inferredMediaEntityAdamId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,14 +53,14 @@
       [(PLUSSchemaPLUSMediaGroundTruth *)v5 setInferredMediaEntityAdamId:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"selectedMediaEntitylocality"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"selectedMediaEntitylocality"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSMediaGroundTruth setSelectedMediaEntitylocality:](v5, "setSelectedMediaEntitylocality:", [v13 intValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"inferredMediaEntitylocality"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"inferredMediaEntitylocality"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSMediaGroundTruth)initWithJSON:(id)a3
+- (PLUSSchemaPLUSMediaGroundTruth)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSMediaGroundTruth *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSMediaGroundTruth *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSMediaGroundTruth *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,20 +109,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_groundTruthId)
   {
-    v4 = [(PLUSSchemaPLUSMediaGroundTruth *)self groundTruthId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    groundTruthId = [(PLUSSchemaPLUSMediaGroundTruth *)self groundTruthId];
+    dictionaryRepresentation = [groundTruthId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"groundTruthId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"groundTruthId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"groundTruthId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"groundTruthId"];
     }
   }
 
@@ -139,14 +139,14 @@
       v8 = off_1E78E07C8[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"groundTruthSource"];
+    [dictionary setObject:v8 forKeyedSubscript:@"groundTruthSource"];
   }
 
   if (self->_inferredMediaEntityAdamId)
   {
-    v9 = [(PLUSSchemaPLUSMediaGroundTruth *)self inferredMediaEntityAdamId];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"inferredMediaEntityAdamId"];
+    inferredMediaEntityAdamId = [(PLUSSchemaPLUSMediaGroundTruth *)self inferredMediaEntityAdamId];
+    v10 = [inferredMediaEntityAdamId copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"inferredMediaEntityAdamId"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -162,14 +162,14 @@
       v12 = off_1E78E0810[v11];
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"inferredMediaEntitylocality"];
+    [dictionary setObject:v12 forKeyedSubscript:@"inferredMediaEntitylocality"];
   }
 
   if (self->_selectedMediaEntityAdamId)
   {
-    v13 = [(PLUSSchemaPLUSMediaGroundTruth *)self selectedMediaEntityAdamId];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"selectedMediaEntityAdamId"];
+    selectedMediaEntityAdamId = [(PLUSSchemaPLUSMediaGroundTruth *)self selectedMediaEntityAdamId];
+    v14 = [selectedMediaEntityAdamId copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"selectedMediaEntityAdamId"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -185,12 +185,12 @@
       v16 = off_1E78E0810[v15];
     }
 
-    [v3 setObject:v16 forKeyedSubscript:@"selectedMediaEntitylocality"];
+    [dictionary setObject:v16 forKeyedSubscript:@"selectedMediaEntitylocality"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -232,28 +232,28 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(PLUSSchemaPLUSMediaGroundTruth *)self groundTruthId];
-  v6 = [v4 groundTruthId];
-  if ((v5 != 0) == (v6 == 0))
+  groundTruthId = [(PLUSSchemaPLUSMediaGroundTruth *)self groundTruthId];
+  groundTruthId2 = [equalCopy groundTruthId];
+  if ((groundTruthId != 0) == (groundTruthId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(PLUSSchemaPLUSMediaGroundTruth *)self groundTruthId];
-  if (v7)
+  groundTruthId3 = [(PLUSSchemaPLUSMediaGroundTruth *)self groundTruthId];
+  if (groundTruthId3)
   {
-    v8 = v7;
-    v9 = [(PLUSSchemaPLUSMediaGroundTruth *)self groundTruthId];
-    v10 = [v4 groundTruthId];
-    v11 = [v9 isEqual:v10];
+    v8 = groundTruthId3;
+    groundTruthId4 = [(PLUSSchemaPLUSMediaGroundTruth *)self groundTruthId];
+    groundTruthId5 = [equalCopy groundTruthId];
+    v11 = [groundTruthId4 isEqual:groundTruthId5];
 
     if (!v11)
     {
@@ -265,7 +265,7 @@ LABEL_6:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[48] & 1))
+  if ((*&self->_has & 1) != (equalCopy[48] & 1))
   {
     goto LABEL_20;
   }
@@ -273,26 +273,26 @@ LABEL_6:
   if (*&self->_has)
   {
     groundTruthSource = self->_groundTruthSource;
-    if (groundTruthSource != [v4 groundTruthSource])
+    if (groundTruthSource != [equalCopy groundTruthSource])
     {
       goto LABEL_20;
     }
   }
 
-  v5 = [(PLUSSchemaPLUSMediaGroundTruth *)self selectedMediaEntityAdamId];
-  v6 = [v4 selectedMediaEntityAdamId];
-  if ((v5 != 0) == (v6 == 0))
+  groundTruthId = [(PLUSSchemaPLUSMediaGroundTruth *)self selectedMediaEntityAdamId];
+  groundTruthId2 = [equalCopy selectedMediaEntityAdamId];
+  if ((groundTruthId != 0) == (groundTruthId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v13 = [(PLUSSchemaPLUSMediaGroundTruth *)self selectedMediaEntityAdamId];
-  if (v13)
+  selectedMediaEntityAdamId = [(PLUSSchemaPLUSMediaGroundTruth *)self selectedMediaEntityAdamId];
+  if (selectedMediaEntityAdamId)
   {
-    v14 = v13;
-    v15 = [(PLUSSchemaPLUSMediaGroundTruth *)self selectedMediaEntityAdamId];
-    v16 = [v4 selectedMediaEntityAdamId];
-    v17 = [v15 isEqual:v16];
+    v14 = selectedMediaEntityAdamId;
+    selectedMediaEntityAdamId2 = [(PLUSSchemaPLUSMediaGroundTruth *)self selectedMediaEntityAdamId];
+    selectedMediaEntityAdamId3 = [equalCopy selectedMediaEntityAdamId];
+    v17 = [selectedMediaEntityAdamId2 isEqual:selectedMediaEntityAdamId3];
 
     if (!v17)
     {
@@ -304,22 +304,22 @@ LABEL_6:
   {
   }
 
-  v5 = [(PLUSSchemaPLUSMediaGroundTruth *)self inferredMediaEntityAdamId];
-  v6 = [v4 inferredMediaEntityAdamId];
-  if ((v5 != 0) == (v6 == 0))
+  groundTruthId = [(PLUSSchemaPLUSMediaGroundTruth *)self inferredMediaEntityAdamId];
+  groundTruthId2 = [equalCopy inferredMediaEntityAdamId];
+  if ((groundTruthId != 0) == (groundTruthId2 == 0))
   {
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v18 = [(PLUSSchemaPLUSMediaGroundTruth *)self inferredMediaEntityAdamId];
-  if (v18)
+  inferredMediaEntityAdamId = [(PLUSSchemaPLUSMediaGroundTruth *)self inferredMediaEntityAdamId];
+  if (inferredMediaEntityAdamId)
   {
-    v19 = v18;
-    v20 = [(PLUSSchemaPLUSMediaGroundTruth *)self inferredMediaEntityAdamId];
-    v21 = [v4 inferredMediaEntityAdamId];
-    v22 = [v20 isEqual:v21];
+    v19 = inferredMediaEntityAdamId;
+    inferredMediaEntityAdamId2 = [(PLUSSchemaPLUSMediaGroundTruth *)self inferredMediaEntityAdamId];
+    inferredMediaEntityAdamId3 = [equalCopy inferredMediaEntityAdamId];
+    v22 = [inferredMediaEntityAdamId2 isEqual:inferredMediaEntityAdamId3];
 
     if (!v22)
     {
@@ -333,25 +333,25 @@ LABEL_19:
 
   has = self->_has;
   v26 = (*&has >> 1) & 1;
-  v27 = v4[48];
+  v27 = equalCopy[48];
   if (v26 == ((v27 >> 1) & 1))
   {
     if (v26)
     {
       selectedMediaEntitylocality = self->_selectedMediaEntitylocality;
-      if (selectedMediaEntitylocality != [v4 selectedMediaEntitylocality])
+      if (selectedMediaEntitylocality != [equalCopy selectedMediaEntitylocality])
       {
         goto LABEL_20;
       }
 
       has = self->_has;
-      v27 = v4[48];
+      v27 = equalCopy[48];
     }
 
     v29 = (*&has >> 2) & 1;
     if (v29 == ((v27 >> 2) & 1))
     {
-      if (!v29 || (inferredMediaEntitylocality = self->_inferredMediaEntitylocality, inferredMediaEntitylocality == [v4 inferredMediaEntitylocality]))
+      if (!v29 || (inferredMediaEntitylocality = self->_inferredMediaEntitylocality, inferredMediaEntitylocality == [equalCopy inferredMediaEntitylocality]))
       {
         v23 = 1;
         goto LABEL_21;
@@ -366,14 +366,14 @@ LABEL_21:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(PLUSSchemaPLUSMediaGroundTruth *)self groundTruthId];
+  toCopy = to;
+  groundTruthId = [(PLUSSchemaPLUSMediaGroundTruth *)self groundTruthId];
 
-  if (v4)
+  if (groundTruthId)
   {
-    v5 = [(PLUSSchemaPLUSMediaGroundTruth *)self groundTruthId];
+    groundTruthId2 = [(PLUSSchemaPLUSMediaGroundTruth *)self groundTruthId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -382,39 +382,39 @@ LABEL_21:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(PLUSSchemaPLUSMediaGroundTruth *)self selectedMediaEntityAdamId];
+  selectedMediaEntityAdamId = [(PLUSSchemaPLUSMediaGroundTruth *)self selectedMediaEntityAdamId];
 
-  if (v6)
+  if (selectedMediaEntityAdamId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(PLUSSchemaPLUSMediaGroundTruth *)self inferredMediaEntityAdamId];
+  inferredMediaEntityAdamId = [(PLUSSchemaPLUSMediaGroundTruth *)self inferredMediaEntityAdamId];
 
-  if (v7)
+  if (inferredMediaEntityAdamId)
   {
     PBDataWriterWriteStringField();
   }
 
   has = self->_has;
-  v9 = v10;
+  v9 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v9 = v10;
+    v9 = toCopy;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v9 = v10;
+    v9 = toCopy;
   }
 }
 
-- (void)setHasInferredMediaEntitylocality:(BOOL)a3
+- (void)setHasInferredMediaEntitylocality:(BOOL)entitylocality
 {
-  if (a3)
+  if (entitylocality)
   {
     v3 = 4;
   }
@@ -427,9 +427,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSelectedMediaEntitylocality:(BOOL)a3
+- (void)setHasSelectedMediaEntitylocality:(BOOL)entitylocality
 {
-  if (a3)
+  if (entitylocality)
   {
     v3 = 2;
   }
@@ -442,47 +442,47 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = PLUSSchemaPLUSMediaGroundTruth;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PLUSSchemaPLUSMediaGroundTruth *)self deleteSelectedMediaEntityAdamId];
     [(PLUSSchemaPLUSMediaGroundTruth *)self deleteInferredMediaEntityAdamId];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PLUSSchemaPLUSMediaGroundTruth *)self deleteSelectedMediaEntityAdamId];
     [(PLUSSchemaPLUSMediaGroundTruth *)self deleteInferredMediaEntityAdamId];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PLUSSchemaPLUSMediaGroundTruth *)self deleteSelectedMediaEntityAdamId];
     [(PLUSSchemaPLUSMediaGroundTruth *)self deleteInferredMediaEntityAdamId];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PLUSSchemaPLUSMediaGroundTruth *)self deleteSelectedMediaEntityAdamId];
     [(PLUSSchemaPLUSMediaGroundTruth *)self deleteInferredMediaEntityAdamId];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PLUSSchemaPLUSMediaGroundTruth *)self deleteSelectedMediaEntityAdamId];
     [(PLUSSchemaPLUSMediaGroundTruth *)self deleteInferredMediaEntityAdamId];
   }
 
-  v6 = [(PLUSSchemaPLUSMediaGroundTruth *)self groundTruthId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  groundTruthId = [(PLUSSchemaPLUSMediaGroundTruth *)self groundTruthId];
+  v7 = [groundTruthId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PLUSSchemaPLUSMediaGroundTruth *)self deleteGroundTruthId];
   }

@@ -3,7 +3,7 @@
 - (id)_specifierForSignoutButton;
 - (id)_vc;
 - (id)specifiers;
-- (void)_specifierForMDMProfileWasTapped:(id)a3;
+- (void)_specifierForMDMProfileWasTapped:(id)tapped;
 @end
 
 @implementation DMCMDMSignoutSpecifierProvider
@@ -13,26 +13,26 @@
   v11[2] = *MEMORY[0x277D85DE8];
   v10.receiver = self;
   v10.super_class = DMCMDMSignoutSpecifierProvider;
-  v3 = [(DMCSpecifierProvider *)&v10 specifiers];
+  specifiers = [(DMCSpecifierProvider *)&v10 specifiers];
 
-  if (v3)
+  if (specifiers)
   {
     v9.receiver = self;
     v9.super_class = DMCMDMSignoutSpecifierProvider;
-    v4 = [(DMCSpecifierProvider *)&v9 specifiers];
+    specifiers2 = [(DMCSpecifierProvider *)&v9 specifiers];
   }
 
   else
   {
     v5 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:*MEMORY[0x277D24D58]];
     v11[0] = v5;
-    v6 = [(DMCMDMSignoutSpecifierProvider *)self _specifierForSignoutButton];
-    v11[1] = v6;
+    _specifierForSignoutButton = [(DMCMDMSignoutSpecifierProvider *)self _specifierForSignoutButton];
+    v11[1] = _specifierForSignoutButton;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
-    v4 = [(DMCSpecifierProvider *)self cachedSpecifiers:v7];
+    specifiers2 = [(DMCSpecifierProvider *)self cachedSpecifiers:v7];
   }
 
-  return v4;
+  return specifiers2;
 }
 
 - (id)_specifierForSignoutButton
@@ -46,9 +46,9 @@
   return v5;
 }
 
-- (void)_specifierForMDMProfileWasTapped:(id)a3
+- (void)_specifierForMDMProfileWasTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if (!self->_enrollmentInterface)
   {
     objc_initWeak(&location, self);
@@ -74,21 +74,21 @@
     objc_destroyWeak(&location);
   }
 
-  v11 = [(DMCSpecifierProvider *)self rmAccount];
-  v12 = [v11 dmc_altDSID];
+  rmAccount = [(DMCSpecifierProvider *)self rmAccount];
+  dmc_altDSID = [rmAccount dmc_altDSID];
 
-  if (![v12 length])
+  if (![dmc_altDSID length])
   {
-    v13 = [(DMCSpecifierProvider *)self accountManager];
-    v14 = [v13 accounts];
-    v15 = [v14 allValues];
-    v16 = [v15 firstObject];
-    v17 = [v16 dmc_altDSID];
+    accountManager = [(DMCSpecifierProvider *)self accountManager];
+    accounts = [accountManager accounts];
+    allValues = [accounts allValues];
+    firstObject = [allValues firstObject];
+    dmc_altDSID2 = [firstObject dmc_altDSID];
 
-    v12 = v17;
+    dmc_altDSID = dmc_altDSID2;
   }
 
-  [(DMCEnrollmentInterface *)self->_enrollmentInterface startUnenrollmentWithAltDSID:v12 silent:0];
+  [(DMCEnrollmentInterface *)self->_enrollmentInterface startUnenrollmentWithAltDSID:dmc_altDSID silent:0];
 }
 
 void __67__DMCMDMSignoutSpecifierProvider__specifierForMDMProfileWasTapped___block_invoke(uint64_t a1)
@@ -160,22 +160,22 @@ uint64_t __67__DMCMDMSignoutSpecifierProvider__specifierForMDMProfileWasTapped__
 
 - (id)_vc
 {
-  v3 = [(DMCMDMSignoutSpecifierProvider *)self viewController];
+  viewController = [(DMCMDMSignoutSpecifierProvider *)self viewController];
 
-  if (v3)
+  if (viewController)
   {
-    v4 = [(DMCMDMSignoutSpecifierProvider *)self viewController];
+    viewController2 = [(DMCMDMSignoutSpecifierProvider *)self viewController];
   }
 
   else
   {
-    v5 = [(DMCSpecifierProvider *)self delegate];
+    delegate = [(DMCSpecifierProvider *)self delegate];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v4 = [(DMCSpecifierProvider *)self delegate];
+      viewController2 = [(DMCSpecifierProvider *)self delegate];
     }
 
     else
@@ -187,11 +187,11 @@ uint64_t __67__DMCMDMSignoutSpecifierProvider__specifierForMDMProfileWasTapped__
         _os_log_impl(&dword_247E7D000, v7, OS_LOG_TYPE_ERROR, "DMCMDMSignoutSpecifierProvider does not have a view controller to pop", v9, 2u);
       }
 
-      v4 = 0;
+      viewController2 = 0;
     }
   }
 
-  return v4;
+  return viewController2;
 }
 
 - (UIViewController)viewController

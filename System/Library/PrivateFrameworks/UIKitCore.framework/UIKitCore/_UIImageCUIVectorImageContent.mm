@@ -1,61 +1,61 @@
 @interface _UIImageCUIVectorImageContent
-- (BOOL)isEqual:(id)a3;
-- (CGImage)_provideCGImageWithSize:(CGSize)a3 scale:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (CGImage)_provideCGImageWithSize:(CGSize)size scale:(double)scale;
 - (CGPDFPage)CGPDFPage;
 - (CGSVGDocument)CGSVGDocument;
-- (_UIImageCUIVectorImageContent)contentWithCGImage:(CGImage *)a3;
-- (_UIImageCUIVectorImageContent)initWithCGImage:(CGImage *)a3 CUIVectorImage:(id)a4 scale:(double)a5;
-- (_UIImageCUIVectorImageContent)initWithScale:(double)a3;
+- (_UIImageCUIVectorImageContent)contentWithCGImage:(CGImage *)image;
+- (_UIImageCUIVectorImageContent)initWithCGImage:(CGImage *)image CUIVectorImage:(id)vectorImage scale:(double)scale;
+- (_UIImageCUIVectorImageContent)initWithScale:(double)scale;
 - (id)description;
-- (void)_drawVectorCommandsWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 renditionContext:(id)a6;
-- (void)_drawWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 renditionContext:(id)a6;
-- (void)_prepareForDrawingWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5;
+- (void)_drawVectorCommandsWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context renditionContext:(id)renditionContext;
+- (void)_drawWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context renditionContext:(id)renditionContext;
+- (void)_prepareForDrawingWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context;
 @end
 
 @implementation _UIImageCUIVectorImageContent
 
-- (_UIImageCUIVectorImageContent)initWithCGImage:(CGImage *)a3 CUIVectorImage:(id)a4 scale:(double)a5
+- (_UIImageCUIVectorImageContent)initWithCGImage:(CGImage *)image CUIVectorImage:(id)vectorImage scale:(double)scale
 {
-  v10 = a4;
+  vectorImageCopy = vectorImage;
   v14.receiver = self;
   v14.super_class = _UIImageCUIVectorImageContent;
-  v11 = [(_UIImageCGImageContent *)&v14 initWithCGImage:a3 scale:a5];
+  v11 = [(_UIImageCGImageContent *)&v14 initWithCGImage:image scale:scale];
   if (v11)
   {
-    if (!v10)
+    if (!vectorImageCopy)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:v11 file:@"_UIImageContent.m" lineNumber:1825 description:@"Need a valid vector image!"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v11 file:@"_UIImageContent.m" lineNumber:1825 description:@"Need a valid vector image!"];
     }
 
-    objc_storeStrong(&v11->_vectorImage, a4);
+    objc_storeStrong(&v11->_vectorImage, vectorImage);
   }
 
   return v11;
 }
 
-- (_UIImageCUIVectorImageContent)initWithScale:(double)a3
+- (_UIImageCUIVectorImageContent)initWithScale:(double)scale
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1834 description:@"You need to use -initWithCUIVectorImage:scale:"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1834 description:@"You need to use -initWithCUIVectorImage:scale:"];
 
   return 0;
 }
 
-- (_UIImageCUIVectorImageContent)contentWithCGImage:(CGImage *)a3
+- (_UIImageCUIVectorImageContent)contentWithCGImage:(CGImage *)image
 {
   v5 = [_UIImageCUIVectorImageContent alloc];
   vectorImage = self->_vectorImage;
   [(_UIImageContent *)self scale];
-  v7 = [(_UIImageCUIVectorImageContent *)v5 initWithCGImage:a3 CUIVectorImage:vectorImage scale:?];
+  v7 = [(_UIImageCUIVectorImageContent *)v5 initWithCGImage:image CUIVectorImage:vectorImage scale:?];
 
   return v7;
 }
 
-- (void)_prepareForDrawingWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5
+- (void)_prepareForDrawingWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(_UIImageContent *)self size];
   v11 = v10;
   v13 = v12;
@@ -105,55 +105,55 @@
 LABEL_16:
     v17.receiver = self;
     v17.super_class = _UIImageCUIVectorImageContent;
-    [(_UIImageContent *)&v17 _prepareForDrawingWithSize:a5 scale:width inContext:height, a4];
+    [(_UIImageContent *)&v17 _prepareForDrawingWithSize:context scale:width inContext:height, scale];
     return;
   }
 
-  CGContextTranslateCTM(a5, 0.0, height);
-  CGContextScaleCTM(a5, 1.0, -1.0);
-  CGContextScaleCTM(a5, width / v11, height / v13);
+  CGContextTranslateCTM(context, 0.0, height);
+  CGContextScaleCTM(context, 1.0, -1.0);
+  CGContextScaleCTM(context, width / v11, height / v13);
   if (v14)
   {
-    v16 = [(_UIImageCUIVectorImageContent *)self CGPDFPage];
+    cGPDFPage = [(_UIImageCUIVectorImageContent *)self CGPDFPage];
     v19.origin.x = 0.0;
     v19.origin.y = 0.0;
     v19.size.width = v11;
     v19.size.height = v13;
-    CGPDFPageGetDrawingTransform(&transform, v16, kCGPDFCropBox, v19, 0, 1);
-    CGContextConcatCTM(a5, &transform);
+    CGPDFPageGetDrawingTransform(&transform, cGPDFPage, kCGPDFCropBox, v19, 0, 1);
+    CGContextConcatCTM(context, &transform);
   }
 }
 
-- (void)_drawWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 renditionContext:(id)a6
+- (void)_drawWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context renditionContext:(id)renditionContext
 {
-  if (a3.width > 0.0)
+  if (size.width > 0.0)
   {
-    height = a3.height;
-    if (a3.height > 0.0)
+    height = size.height;
+    if (size.height > 0.0)
     {
-      width = a3.width;
+      width = size.width;
       vectorImage = self->_vectorImage;
-      [(_UIImageContent *)self scale:a5];
+      [(_UIImageContent *)self scale:context];
       v10 = [CUINamedVectorImage rasterizeImageUsingScaleFactor:"rasterizeImageUsingScaleFactor:forTargetSize:" forTargetSize:?];
       v12.origin.x = *MEMORY[0x1E695EFF8];
       v12.origin.y = *(MEMORY[0x1E695EFF8] + 8);
       v12.size.width = width;
       v12.size.height = height;
-      CGContextDrawImage(a5, v12, v10);
+      CGContextDrawImage(context, v12, v10);
 
       CGImageRelease(v10);
     }
   }
 }
 
-- (void)_drawVectorCommandsWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 renditionContext:(id)a6
+- (void)_drawVectorCommandsWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context renditionContext:(id)renditionContext
 {
-  height = a3.height;
-  width = a3.width;
-  v17 = a6;
+  height = size.height;
+  width = size.width;
+  renditionContextCopy = renditionContext;
   if ([(_UIImageCUIVectorImageContent *)self isCGPDFPage]&& [(_UIImageCUIVectorImageContent *)self CGPDFPage]&& (([(_UIImageContent *)self CGPDFPageSize], v12 == *MEMORY[0x1E695F060]) ? (v13 = v11 == *(MEMORY[0x1E695F060] + 8)) : (v13 = 0), !v13))
   {
-    CGContextDrawPDFPage(a5, [(_UIImageCUIVectorImageContent *)self CGPDFPage]);
+    CGContextDrawPDFPage(context, [(_UIImageCUIVectorImageContent *)self CGPDFPage]);
   }
 
   else if ([(_UIImageCUIVectorImageContent *)self isCGSVGDocument]&& [(_UIImageCUIVectorImageContent *)self CGSVGDocument]&& (([(_UIImageContent *)self CGSVGDocumentSize], v15 == *MEMORY[0x1E695F060]) ? (v16 = v14 == *(MEMORY[0x1E695F060] + 8)) : (v16 = 0), !v16))
@@ -164,23 +164,23 @@ LABEL_16:
 
   else
   {
-    [(_UIImageCUIVectorImageContent *)self _drawWithSize:a5 scale:v17 inContext:width renditionContext:height, a4];
+    [(_UIImageCUIVectorImageContent *)self _drawWithSize:context scale:renditionContextCopy inContext:width renditionContext:height, scale];
   }
 }
 
-- (CGImage)_provideCGImageWithSize:(CGSize)a3 scale:(double)a4
+- (CGImage)_provideCGImageWithSize:(CGSize)size scale:(double)scale
 {
-  if (a3.width <= 0.0)
+  if (size.width <= 0.0)
   {
     return 0;
   }
 
-  if (a3.height <= 0.0)
+  if (size.height <= 0.0)
   {
     return 0;
   }
 
-  v6 = [(CUINamedVectorImage *)self->_vectorImage rasterizeImageUsingScaleFactor:a4 forTargetSize:a3.width, a3.height, v4, v5];
+  v6 = [(CUINamedVectorImage *)self->_vectorImage rasterizeImageUsingScaleFactor:scale forTargetSize:size.width, size.height, v4, v5];
   if (!v6)
   {
     return 0;
@@ -222,12 +222,12 @@ LABEL_16:
   return [(CUINamedVectorImage *)vectorImage svgDocument];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([_UIImageContent content:v4 isEqualToContent:?])
+  equalCopy = equal;
+  if ([_UIImageContent content:equalCopy isEqualToContent:?])
   {
-    v5 = v4[6];
+    v5 = equalCopy[6];
     v6 = self->_vectorImage;
     v7 = v5;
     v8 = v7;

@@ -1,46 +1,46 @@
 @interface THWPRep
-- (BOOL)canEditWithEditor:(id)a3;
+- (BOOL)canEditWithEditor:(id)editor;
 - (BOOL)canReadHighlights;
 - (BOOL)canWriteHighlights;
-- (BOOL)hasMarginNoteAtCanvasPoint:(CGPoint)a3;
+- (BOOL)hasMarginNoteAtCanvasPoint:(CGPoint)point;
 - (BOOL)p_isSelectionSingleAnchoredDrawableAttachment;
-- (BOOL)shouldBeginEditingWithGesture:(id)a3;
+- (BOOL)shouldBeginEditingWithGesture:(id)gesture;
 - (CGPoint)lastPositionInRoot;
-- (CGRect)boundsRectForSelection:(id)a3;
-- (CGRect)popoverPresentationRectForRange:(_NSRange)a3;
-- (CGRect)rectForHighlight:(_NSRange)a3 lineHasAttachment:(BOOL)a4;
-- (CGRect)visibleBoundsForTilingLayer:(id)a3;
+- (CGRect)boundsRectForSelection:(id)selection;
+- (CGRect)popoverPresentationRectForRange:(_NSRange)range;
+- (CGRect)rectForHighlight:(_NSRange)highlight lineHasAttachment:(BOOL)attachment;
+- (CGRect)visibleBoundsForTilingLayer:(id)layer;
 - (THMarginNotesController)marginNotesController;
 - (THModelContentNode)storageContentNode;
 - (THWPHighlightController)highlightController;
-- (THWPRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (_NSRange)rangeIntersectingFirstOverlappingColumnOfRange:(_NSRange)a3;
+- (THWPRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (_NSRange)rangeIntersectingFirstOverlappingColumnOfRange:(_NSRange)range;
 - (double)firstLineBaseline;
 - (id)allLines;
 - (id)backgroundHighlightLayer;
-- (id)hitRep:(CGPoint)a3;
-- (id)hitRep:(CGPoint)a3 withGesture:(id)a4 passingTest:(id)a5;
-- (id)marginNoteForAnnotation:(id)a3 inRep:(id)a4 highlightBounds:(CGRect)a5;
+- (id)hitRep:(CGPoint)rep;
+- (id)hitRep:(CGPoint)rep withGesture:(id)gesture passingTest:(id)test;
+- (id)marginNoteForAnnotation:(id)annotation inRep:(id)rep highlightBounds:(CGRect)bounds;
 - (id)overlayLayers;
-- (id)p_lineSearchReferencesForSearchReferences:(id)a3;
-- (id)p_lineSelectionsForSelection:(id)a3;
-- (void)addAdditionalChildLayersToArray:(id)a3;
-- (void)addMarginNoteLayersToArray:(id)a3;
+- (id)p_lineSearchReferencesForSearchReferences:(id)references;
+- (id)p_lineSelectionsForSelection:(id)selection;
+- (void)addAdditionalChildLayersToArray:(id)array;
+- (void)addMarginNoteLayersToArray:(id)array;
 - (void)dealloc;
-- (void)p_addRoundedRectToContext:(CGContext *)a3 rect:(CGRect)a4 forCaret:(BOOL)a5;
+- (void)p_addRoundedRectToContext:(CGContext *)context rect:(CGRect)rect forCaret:(BOOL)caret;
 - (void)p_cleanup;
-- (void)p_enumerateBoundsRectsForRange:(_NSRange)a3 includeSpaceBefore:(BOOL)a4 includeSpaceAfter:(BOOL)a5 includeLeading:(BOOL)a6 withBlock:(id)a7;
-- (void)p_enumerateBoundsRectsForSelection:(id)a3 includeSpaceBefore:(BOOL)a4 includeSpaceAfter:(BOOL)a5 includeLeading:(BOOL)a6 withBlock:(id)a7;
-- (void)p_setLinkPulseControllerActive:(BOOL)a3 autohide:(BOOL)a4;
-- (void)p_setSelectionLineLayersHidden:(BOOL)a3;
-- (void)p_updateLinkAnimationForSelection:(id)a3 withAnimatingPulse:(BOOL)a4;
-- (void)p_updateLinkForSelection:(id)a3 withAnimatingPulse:(BOOL)a4 selectionFlags:(unsigned int)a5;
-- (void)p_updateLinkLayersForRangeSelection:(id)a3 withAnimatingPulse:(BOOL)a4;
+- (void)p_enumerateBoundsRectsForRange:(_NSRange)range includeSpaceBefore:(BOOL)before includeSpaceAfter:(BOOL)after includeLeading:(BOOL)leading withBlock:(id)block;
+- (void)p_enumerateBoundsRectsForSelection:(id)selection includeSpaceBefore:(BOOL)before includeSpaceAfter:(BOOL)after includeLeading:(BOOL)leading withBlock:(id)block;
+- (void)p_setLinkPulseControllerActive:(BOOL)active autohide:(BOOL)autohide;
+- (void)p_setSelectionLineLayersHidden:(BOOL)hidden;
+- (void)p_updateLinkAnimationForSelection:(id)selection withAnimatingPulse:(BOOL)pulse;
+- (void)p_updateLinkForSelection:(id)selection withAnimatingPulse:(BOOL)pulse selectionFlags:(unsigned int)flags;
+- (void)p_updateLinkLayersForRangeSelection:(id)selection withAnimatingPulse:(BOOL)pulse;
 - (void)p_updatePulseLayerPositions;
-- (void)processFindUIStateChangedNotificationUserInfo:(id)a3;
-- (void)pulseAnimationDidStop:(id)a3;
-- (void)setupMarginNotesControllerForHighlightController:(id)a3;
-- (void)showEditorForMarginNote:(id)a3;
+- (void)processFindUIStateChangedNotificationUserInfo:(id)info;
+- (void)pulseAnimationDidStop:(id)stop;
+- (void)setupMarginNotesControllerForHighlightController:(id)controller;
+- (void)showEditorForMarginNote:(id)note;
 - (void)updateFromLayout;
 - (void)viewScaleDidChange;
 - (void)willBeRemoved;
@@ -48,11 +48,11 @@
 
 @implementation THWPRep
 
-- (THWPRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWPRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v5.receiver = self;
   v5.super_class = THWPRep;
-  result = [(THWPRep *)&v5 initWithLayout:a3 canvas:a4];
+  result = [(THWPRep *)&v5 initWithLayout:layout canvas:canvas];
   if (result)
   {
     result->mHighlightController = 0;
@@ -207,27 +207,27 @@
   return result;
 }
 
-- (void)addAdditionalChildLayersToArray:(id)a3
+- (void)addAdditionalChildLayersToArray:(id)array
 {
   v36.receiver = self;
   v36.super_class = THWPRep;
   [(THWPRep *)&v36 addAdditionalChildLayersToArray:?];
   if ([(THWPRep *)self canReadHighlights])
   {
-    v5 = [(THWPRep *)self highlightController];
+    highlightController = [(THWPRep *)self highlightController];
     [-[THWPRep interactiveCanvasController](self "interactiveCanvasController")];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
     [-[THWPRep canvas](self "canvas")];
-    v15 = [(THWPHighlightController *)v5 highlightLayersInCanvasUnscaledRect:v7 scale:v9, v11, v13, v14];
+    v15 = [(THWPHighlightController *)highlightController highlightLayersInCanvasUnscaledRect:v7 scale:v9, v11, v13, v14];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v16 = [(THWPRep *)self activeHighlightLayers];
-    v17 = [(NSArray *)v16 countByEnumeratingWithState:&v32 objects:v38 count:16];
+    activeHighlightLayers = [(THWPRep *)self activeHighlightLayers];
+    v17 = [(NSArray *)activeHighlightLayers countByEnumeratingWithState:&v32 objects:v38 count:16];
     if (v17)
     {
       v18 = v17;
@@ -238,7 +238,7 @@
         {
           if (*v33 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(activeHighlightLayers);
           }
 
           v21 = *(*(&v32 + 1) + 8 * i);
@@ -248,7 +248,7 @@
           }
         }
 
-        v18 = [(NSArray *)v16 countByEnumeratingWithState:&v32 objects:v38 count:16];
+        v18 = [(NSArray *)activeHighlightLayers countByEnumeratingWithState:&v32 objects:v38 count:16];
       }
 
       while (v18);
@@ -257,14 +257,14 @@
     [(THWPRep *)self setActiveHighlightLayers:v15];
     if ([(NSArray *)[(THWPRep *)self activeHighlightLayers] count])
     {
-      v22 = [(THWPRep *)self backgroundHighlightLayer];
-      [a3 insertObject:v22 atIndex:0];
+      backgroundHighlightLayer = [(THWPRep *)self backgroundHighlightLayer];
+      [array insertObject:backgroundHighlightLayer atIndex:0];
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v23 = [(NSArray *)[(THWPRep *)self activeHighlightLayers] reverseObjectEnumerator];
-      v24 = [(NSEnumerator *)v23 countByEnumeratingWithState:&v28 objects:v37 count:16];
+      reverseObjectEnumerator = [(NSArray *)[(THWPRep *)self activeHighlightLayers] reverseObjectEnumerator];
+      v24 = [(NSEnumerator *)reverseObjectEnumerator countByEnumeratingWithState:&v28 objects:v37 count:16];
       if (v24)
       {
         v25 = v24;
@@ -275,30 +275,30 @@
           {
             if (*v29 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
-            [v22 insertSublayer:*(*(&v28 + 1) + 8 * j) atIndex:0];
+            [backgroundHighlightLayer insertSublayer:*(*(&v28 + 1) + 8 * j) atIndex:0];
           }
 
-          v25 = [(NSEnumerator *)v23 countByEnumeratingWithState:&v28 objects:v37 count:16];
+          v25 = [(NSEnumerator *)reverseObjectEnumerator countByEnumeratingWithState:&v28 objects:v37 count:16];
         }
 
         while (v25);
       }
     }
 
-    [(THWPRep *)self addMarginNoteLayersToArray:a3];
+    [(THWPRep *)self addMarginNoteLayersToArray:array];
   }
 }
 
-- (BOOL)shouldBeginEditingWithGesture:(id)a3
+- (BOOL)shouldBeginEditingWithGesture:(id)gesture
 {
   [-[THWPRep interactiveCanvasController](self "interactiveCanvasController")];
   if (objc_opt_respondsToSelector())
   {
     v5 = [objc_msgSend(-[THWPRep interactiveCanvasController](self "interactiveCanvasController")];
-    v6 = [a3 gestureKind];
+    gestureKind = [gesture gestureKind];
     if (!v5)
     {
       return 0;
@@ -307,11 +307,11 @@
 
   else
   {
-    v6 = [a3 gestureKind];
+    gestureKind = [gesture gestureKind];
   }
 
-  v8 = v6;
-  if (v6 == TSWPTapAndTouch || [(THWPRep *)self p_shouldStartEditingOnPress]&& v8 == TSWPImmediatePress)
+  v8 = gestureKind;
+  if (gestureKind == TSWPTapAndTouch || [(THWPRep *)self p_shouldStartEditingOnPress]&& v8 == TSWPImmediatePress)
   {
     return 1;
   }
@@ -325,14 +325,14 @@
   return result;
 }
 
-- (BOOL)canEditWithEditor:(id)a3
+- (BOOL)canEditWithEditor:(id)editor
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
   if (v4)
   {
-    v5 = [v4 storage];
-    if (v5 == [(THWPRep *)self storage])
+    storage = [v4 storage];
+    if (storage == [(THWPRep *)self storage])
     {
       LOBYTE(v4) = [-[THWPRep parentRep](self "parentRep")] ^ 1;
     }
@@ -346,16 +346,16 @@
   return v4;
 }
 
-- (_NSRange)rangeIntersectingFirstOverlappingColumnOfRange:(_NSRange)a3
+- (_NSRange)rangeIntersectingFirstOverlappingColumnOfRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(THWPRep *)self columns];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  columns = [(THWPRep *)self columns];
+  v6 = [columns countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -367,7 +367,7 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(columns);
         }
 
         v21.location = [*(*(&v14 + 1) + 8 * v9) range];
@@ -386,7 +386,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [columns countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -405,18 +405,18 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)rectForHighlight:(_NSRange)a3 lineHasAttachment:(BOOL)a4
+- (CGRect)rectForHighlight:(_NSRange)highlight lineHasAttachment:(BOOL)attachment
 {
-  v4 = a4;
-  length = a3.length;
-  location = a3.location;
-  v8 = [(THWPRep *)self storage];
+  attachmentCopy = attachment;
+  length = highlight.length;
+  location = highlight.location;
+  storage = [(THWPRep *)self storage];
   v17.location = location;
   v17.length = length;
-  v9 = THTrimHighlightRange(v8, v17);
+  v9 = THTrimHighlightRange(storage, v17);
   v11 = [TSWPSelection selectionWithRange:v9, v10];
   [(THWPRep *)self boundsRectForSelection:v11];
-  if (v4)
+  if (attachmentCopy)
   {
     [(THWPRep *)self rectForSelection:v11];
   }
@@ -441,9 +441,9 @@ LABEL_11:
   return v3[4] + v3[5];
 }
 
-- (CGRect)popoverPresentationRectForRange:(_NSRange)a3
+- (CGRect)popoverPresentationRectForRange:(_NSRange)range
 {
-  v4 = [(THWPRep *)self lineSelectionsForSelection:[TSWPSelection selectionWithRange:a3.location, a3.length]];
+  v4 = [(THWPRep *)self lineSelectionsForSelection:[TSWPSelection selectionWithRange:range.location, range.length]];
   v5 = +[NSMutableArray array];
   v72 = 0u;
   v73 = 0u;
@@ -464,12 +464,12 @@ LABEL_11:
         }
 
         v10 = *(*(&v72 + 1) + 8 * i);
-        v11 = [(THWPRep *)self storage];
-        v12 = [v10 range];
+        storage = [(THWPRep *)self storage];
+        range = [v10 range];
         v14 = v13;
-        v78.location = v12;
+        v78.location = range;
         v78.length = v14;
-        v15 = THTrimHighlightRange(v11, v78);
+        v15 = THTrimHighlightRange(storage, v78);
         if (v16)
         {
           [v5 addObject:{+[TSWPSelection selectionWithRange:](TSWPSelection, "selectionWithRange:", v15, v16)}];
@@ -551,11 +551,11 @@ LABEL_11:
           [v41 range];
           if (v42)
           {
-            v43 = [v41 range];
+            range2 = [v41 range];
             v45 = v44;
-            v46 = [(THWPRep *)self storage];
-            v47 = [v41 range];
-            -[THWPRep rectForHighlight:lineHasAttachment:](self, "rectForHighlight:lineHasAttachment:", v43, v45, [v46 rangeContainsAttachment:{v47, v48}]);
+            storage2 = [(THWPRep *)self storage];
+            range3 = [v41 range];
+            -[THWPRep rectForHighlight:lineHasAttachment:](self, "rectForHighlight:lineHasAttachment:", range2, v45, [storage2 rangeContainsAttachment:{range3, v48}]);
             v50 = v49;
             v52 = v51;
             v54 = v53;
@@ -688,20 +688,20 @@ LABEL_28:
         }
 
         v5 = *(*(&v21 + 1) + 8 * i);
-        v6 = [v5 countLines];
-        if (v6)
+        countLines = [v5 countLines];
+        if (countLines)
         {
-          v7 = v6;
+          v7 = countLines;
           for (j = 0; j != v7; ++j)
           {
             v9 = [v5 lineFragmentAtIndex:j];
             v10 = [TSWPSelection selectionWithRange:*v9, v9[1]];
-            v11 = [(THWPRep *)self storage];
-            v12 = [(TSWPSelection *)v10 range];
+            storage = [(THWPRep *)self storage];
+            range = [(TSWPSelection *)v10 range];
             v14 = v13;
-            v26.location = v12;
+            v26.location = range;
             v26.length = v14;
-            THTrimHighlightRange(v11, v26);
+            THTrimHighlightRange(storage, v26);
             if (v15)
             {
               if (v5)
@@ -729,29 +729,29 @@ LABEL_28:
   return v3;
 }
 
-- (id)hitRep:(CGPoint)a3
+- (id)hitRep:(CGPoint)rep
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = rep.y;
+  x = rep.x;
+  selfCopy = self;
   [(THWPRep *)self convertNaturalPointToUnscaledCanvas:?];
-  if (![(THWPRep *)v5 hasMarginNoteAtCanvasPoint:?])
+  if (![(THWPRep *)selfCopy hasMarginNoteAtCanvasPoint:?])
   {
-    v7.receiver = v5;
+    v7.receiver = selfCopy;
     v7.super_class = THWPRep;
     return [(THWPRep *)&v7 hitRep:x, y];
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)hitRep:(CGPoint)a3 withGesture:(id)a4 passingTest:(id)a5
+- (id)hitRep:(CGPoint)rep withGesture:(id)gesture passingTest:(id)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = rep.y;
+  x = rep.x;
   v9.receiver = self;
   v9.super_class = THWPRep;
-  result = [(THWPRep *)&v9 hitRep:a4 withGesture:a5 passingTest:?];
+  result = [(THWPRep *)&v9 hitRep:gesture withGesture:test passingTest:?];
   if (!result)
   {
     [(THWPRep *)self convertNaturalPointToUnscaledCanvas:x, y];
@@ -771,32 +771,32 @@ LABEL_28:
 
 - (THMarginNotesController)marginNotesController
 {
-  v2 = [(THWPRep *)self highlightController];
+  highlightController = [(THWPRep *)self highlightController];
 
-  return [(THWPHighlightController *)v2 marginNotesController];
+  return [(THWPHighlightController *)highlightController marginNotesController];
 }
 
-- (void)addMarginNoteLayersToArray:(id)a3
+- (void)addMarginNoteLayersToArray:(id)array
 {
-  v4 = [(THMarginNotesController *)[(THWPRep *)self marginNotesController] layers];
+  layers = [(THMarginNotesController *)[(THWPRep *)self marginNotesController] layers];
 
-  [a3 addObjectsFromArray:v4];
+  [array addObjectsFromArray:layers];
 }
 
-- (BOOL)hasMarginNoteAtCanvasPoint:(CGPoint)a3
+- (BOOL)hasMarginNoteAtCanvasPoint:(CGPoint)point
 {
   [-[THWPRep marginNotesOwner](self "marginNotesOwner")];
   v5 = v4;
   v7 = v6;
-  v8 = [(THWPRep *)self marginNotesController];
+  marginNotesController = [(THWPRep *)self marginNotesController];
 
-  return [(THMarginNotesController *)v8 hasMarginNoteAtPoint:v5, v7];
+  return [(THMarginNotesController *)marginNotesController hasMarginNoteAtPoint:v5, v7];
 }
 
-- (void)setupMarginNotesControllerForHighlightController:(id)a3
+- (void)setupMarginNotesControllerForHighlightController:(id)controller
 {
   v11 = objc_alloc_init(THMarginNotesController);
-  [a3 setMarginNotesController:v11];
+  [controller setMarginNotesController:v11];
   y = CGPointZero.y;
   [objc_msgSend(-[THWPRep layout](self "layout")];
   v7 = v6;
@@ -830,19 +830,19 @@ LABEL_28:
   [(THWPRep *)&v4 viewScaleDidChange];
 }
 
-- (id)marginNoteForAnnotation:(id)a3 inRep:(id)a4 highlightBounds:(CGRect)a5
+- (id)marginNoteForAnnotation:(id)annotation inRep:(id)rep highlightBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  if (a4 != self)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (rep != self)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
   v11 = objc_alloc_init(AEMarginNote);
-  [v11 setAnnotation:a3];
+  [v11 setAnnotation:annotation];
   [v11 setSide:0];
   v14.origin.x = x;
   v14.origin.y = y;
@@ -852,16 +852,16 @@ LABEL_28:
   [-[THWPRep canvas](self "canvas")];
   TSDRoundForScale();
   [v11 setYStart:?];
-  [v11 setTheme:{objc_msgSend(a3, "theme")}];
+  [v11 setTheme:{objc_msgSend(annotation, "theme")}];
 
   return v11;
 }
 
-- (void)showEditorForMarginNote:(id)a3
+- (void)showEditorForMarginNote:(id)note
 {
-  v4 = [(THWPRep *)self highlightController];
+  highlightController = [(THWPRep *)self highlightController];
 
-  [(THWPHighlightController *)v4 showNoteEditorForMarginNote:a3];
+  [(THWPHighlightController *)highlightController showNoteEditorForMarginNote:note];
 }
 
 - (id)overlayLayers
@@ -872,25 +872,25 @@ LABEL_28:
   mLinkPulseArrayController = self->mLinkPulseArrayController;
   if (mLinkPulseArrayController)
   {
-    v5 = [(TSKHighlightArrayController *)mLinkPulseArrayController layers];
-    if ([v5 count])
+    layers = [(TSKHighlightArrayController *)mLinkPulseArrayController layers];
+    if ([layers count])
     {
       [(THWPRep *)self p_updatePulseLayerPositions];
-      [v5 makeObjectsPerformSelector:"setDelegate:" withObject:{-[THWPRep interactiveCanvasController](self, "interactiveCanvasController")}];
-      [(NSMutableArray *)v3 addObjectsFromArray:v5];
+      [layers makeObjectsPerformSelector:"setDelegate:" withObject:{-[THWPRep interactiveCanvasController](self, "interactiveCanvasController")}];
+      [(NSMutableArray *)v3 addObjectsFromArray:layers];
     }
   }
 
   return v3;
 }
 
-- (void)pulseAnimationDidStop:(id)a3
+- (void)pulseAnimationDidStop:(id)stop
 {
   v6.receiver = self;
   v6.super_class = THWPRep;
   [(THWPRep *)&v6 pulseAnimationDidStop:?];
   mLinkPulseArrayController = self->mLinkPulseArrayController;
-  if (mLinkPulseArrayController == a3)
+  if (mLinkPulseArrayController == stop)
   {
     if ([(TSKHighlightArrayController *)mLinkPulseArrayController autohide])
     {
@@ -902,11 +902,11 @@ LABEL_28:
   }
 }
 
-- (void)processFindUIStateChangedNotificationUserInfo:(id)a3
+- (void)processFindUIStateChangedNotificationUserInfo:(id)info
 {
-  if (a3 && [a3 objectForKey:@"THMessageIsForTHWPRep"])
+  if (info && [info objectForKey:@"THMessageIsForTHWPRep"])
   {
-    v5 = [objc_msgSend(a3 objectForKey:{TSKSearchReferencesToHighlightKey), "objectForKey:", -[THWPRep storage](self, "storage")}];
+    v5 = [objc_msgSend(info objectForKey:{TSKSearchReferencesToHighlightKey), "objectForKey:", -[THWPRep storage](self, "storage")}];
     if (v5)
     {
       v6 = [NSArray arrayWithArray:v5];
@@ -919,7 +919,7 @@ LABEL_28:
   {
     v7.receiver = self;
     v7.super_class = THWPRep;
-    [(THWPRep *)&v7 processFindUIStateChangedNotificationUserInfo:a3];
+    [(THWPRep *)&v7 processFindUIStateChangedNotificationUserInfo:info];
   }
 }
 
@@ -953,19 +953,19 @@ LABEL_28:
   }
 
   [(THWPRep *)self setLinkPulseSearchReferences:0];
-  v3 = [(THWPRep *)self highlightController];
-  if (v3)
+  highlightController = [(THWPRep *)self highlightController];
+  if (highlightController)
   {
-    [(THWPHighlightController *)v3 updateFromLayout];
+    [(THWPHighlightController *)highlightController updateFromLayout];
   }
 }
 
-- (void)p_setLinkPulseControllerActive:(BOOL)a3 autohide:(BOOL)a4
+- (void)p_setLinkPulseControllerActive:(BOOL)active autohide:(BOOL)autohide
 {
   mLinkPulseArrayController = self->mLinkPulseArrayController;
-  if (a3)
+  if (active)
   {
-    v6 = a4;
+    autohideCopy = autohide;
     if (!mLinkPulseArrayController)
     {
       mLinkPulseArrayController = [[TSKHighlightArrayController alloc] initWithZOrder:self delegate:4.0];
@@ -975,7 +975,7 @@ LABEL_28:
     [(TSKHighlightArrayController *)mLinkPulseArrayController setShouldPulsate:0];
     v7 = self->mLinkPulseArrayController;
 
-    [(TSKHighlightArrayController *)v7 setAutohide:v6];
+    [(TSKHighlightArrayController *)v7 setAutohide:autohideCopy];
   }
 
   else if (mLinkPulseArrayController)
@@ -996,12 +996,12 @@ LABEL_28:
   if (v8 != v4 || v7 != v6)
   {
     [(THWPRep *)self lastPositionInRoot];
-    v10 = [(TSKHighlightArrayController *)self->mLinkPulseArrayController layers];
+    layers = [(TSKHighlightArrayController *)self->mLinkPulseArrayController layers];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v11 = [layers countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1013,7 +1013,7 @@ LABEL_28:
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(layers);
           }
 
           v15 = *(*(&v16 + 1) + 8 * i);
@@ -1022,7 +1022,7 @@ LABEL_28:
           [v15 setPosition:?];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v12 = [layers countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v12);
@@ -1032,21 +1032,21 @@ LABEL_28:
   [(THWPRep *)self setLastPositionInRoot:v4, v6];
 }
 
-- (void)p_updateLinkAnimationForSelection:(id)a3 withAnimatingPulse:(BOOL)a4
+- (void)p_updateLinkAnimationForSelection:(id)selection withAnimatingPulse:(BOOL)pulse
 {
-  v4 = a4;
+  pulseCopy = pulse;
   if (([(TSKHighlightArrayController *)self->mLinkPulseArrayController pulsating]& 1) == 0)
   {
-    if ([a3 isValid])
+    if ([selection isValid])
     {
       v7 = OBJC_IVAR___TSWPRep__updatingHighlights;
       if ((self->TSWPRep_opaque[OBJC_IVAR___TSWPRep__updatingHighlights] & 1) == 0)
       {
         self->TSWPRep_opaque[OBJC_IVAR___TSWPRep__updatingHighlights] = 1;
-        v8 = [(THWPRep *)self layout];
-        if (v8)
+        layout = [(THWPRep *)self layout];
+        if (layout)
         {
-          [v8 transformInRoot];
+          [layout transformInRoot];
         }
 
         else
@@ -1063,7 +1063,7 @@ LABEL_28:
         [(TSKHighlightArrayController *)mLinkPulseArrayController setTransform:v14];
         [*&self->TSWPRep_opaque[OBJC_IVAR___TSDRep_mCanvas] viewScale];
         [(TSKHighlightArrayController *)self->mLinkPulseArrayController setViewScale:?];
-        v10 = [[TSWPSearchReference alloc] initWithStorage:-[THWPRep storage](self selection:{"storage"), a3}];
+        v10 = [[TSWPSearchReference alloc] initWithStorage:-[THWPRep storage](self selection:{"storage"), selection}];
         v11 = [[NSArray alloc] initWithObjects:{v10, 0}];
         v12 = [(THWPRep *)self p_lineSearchReferencesForSearchReferences:v11];
         [objc_msgSend(-[THWPRep layout](self "layout")];
@@ -1072,7 +1072,7 @@ LABEL_28:
         [-[THWPRep canvas](self "canvas")];
         [(TSKHighlightArrayController *)v13 buildHighlightsForSearchReferences:v12 contentsScaleForLayers:?];
 
-        if (v4)
+        if (pulseCopy)
         {
           [(TSKHighlightArrayController *)self->mLinkPulseArrayController startAnimating];
         }
@@ -1084,18 +1084,18 @@ LABEL_28:
   }
 }
 
-- (void)p_updateLinkLayersForRangeSelection:(id)a3 withAnimatingPulse:(BOOL)a4
+- (void)p_updateLinkLayersForRangeSelection:(id)selection withAnimatingPulse:(BOOL)pulse
 {
   if (self->mLinkPulseArrayController)
   {
-    [(THWPRep *)self p_updateLinkAnimationForSelection:a3 withAnimatingPulse:a4];
+    [(THWPRep *)self p_updateLinkAnimationForSelection:selection withAnimatingPulse:pulse];
   }
 }
 
-- (void)p_updateLinkForSelection:(id)a3 withAnimatingPulse:(BOOL)a4 selectionFlags:(unsigned int)a5
+- (void)p_updateLinkForSelection:(id)selection withAnimatingPulse:(BOOL)pulse selectionFlags:(unsigned int)flags
 {
-  v5 = a4;
-  if (a3)
+  pulseCopy = pulse;
+  if (selection)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1115,21 +1115,21 @@ LABEL_28:
     if ((self->TSWPRep_opaque[OBJC_IVAR___TSWPRep__suppressSelectionHighlight] & 1) == 0)
     {
       [-[THWPRep layout](self "layout")];
-      if ([a3 isRange])
+      if ([selection isRange])
       {
 
-        [(THWPRep *)self p_updateLinkLayersForRangeSelection:a3 withAnimatingPulse:v5];
+        [(THWPRep *)self p_updateLinkLayersForRangeSelection:selection withAnimatingPulse:pulseCopy];
       }
     }
   }
 }
 
-- (void)p_addRoundedRectToContext:(CGContext *)a3 rect:(CGRect)a4 forCaret:(BOOL)a5
+- (void)p_addRoundedRectToContext:(CGContext *)context rect:(CGRect)rect forCaret:(BOOL)caret
 {
-  v5 = a5;
-  v23 = CGRectIntegral(a4);
+  caretCopy = caret;
+  v23 = CGRectIntegral(rect);
   v7 = -0.1;
-  if (!v5)
+  if (!caretCopy)
   {
     v7 = -4.0;
   }
@@ -1139,30 +1139,30 @@ LABEL_28:
   y = v24.origin.y;
   width = v24.size.width;
   height = v24.size.height;
-  CGContextBeginTransparencyLayer(a3, 0);
+  CGContextBeginTransparencyLayer(context, 0);
   DeviceRGB = TSUCGColorCreateDeviceRGB();
   v13 = TSUCGColorCreateDeviceRGB();
   v14 = TSUCGColorCreateDeviceRGB();
   v15 = TSUCGColorCreateDeviceRGB();
   v16 = TSDCreateRoundRectPathForRectWithRadius();
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v20.width = 0.0;
   v20.height = -1.0;
-  CGContextSetShadowWithColor(a3, v20, 4.0, DeviceRGB);
-  CGContextAddPath(a3, v16);
-  CGContextSetFillColorWithColor(a3, v13);
-  CGContextFillPath(a3);
-  CGContextRestoreGState(a3);
-  CGContextSaveGState(a3);
-  CGContextAddPath(a3, v16);
-  CGContextSetStrokeColorWithColor(a3, v15);
-  CGContextSetLineWidth(a3, 1.0);
-  CGContextDrawPath(a3, kCGPathStroke);
-  CGContextRestoreGState(a3);
-  CGContextSaveGState(a3);
+  CGContextSetShadowWithColor(context, v20, 4.0, DeviceRGB);
+  CGContextAddPath(context, v16);
+  CGContextSetFillColorWithColor(context, v13);
+  CGContextFillPath(context);
+  CGContextRestoreGState(context);
+  CGContextSaveGState(context);
+  CGContextAddPath(context, v16);
+  CGContextSetStrokeColorWithColor(context, v15);
+  CGContextSetLineWidth(context, 1.0);
+  CGContextDrawPath(context, kCGPathStroke);
+  CGContextRestoreGState(context);
+  CGContextSaveGState(context);
   v17 = [[NSArray alloc] initWithObjects:{v13, v14, 0}];
-  CGContextAddPath(a3, v16);
-  CGContextClip(a3);
+  CGContextAddPath(context, v16);
+  CGContextClip(context);
   v18 = CGGradientCreateWithColors(0, v17, 0);
 
   v25.origin.x = x;
@@ -1173,35 +1173,35 @@ LABEL_28:
   v21.x = 0.0;
   v22.x = 0.0;
   v21.y = y;
-  CGContextDrawLinearGradient(a3, v18, v21, v22, 0);
+  CGContextDrawLinearGradient(context, v18, v21, v22, 0);
   CGGradientRelease(v18);
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
   CGColorRelease(DeviceRGB);
   CGColorRelease(v14);
   CGColorRelease(v13);
   CGColorRelease(v15);
   CGPathRelease(v16);
 
-  CGContextEndTransparencyLayer(a3);
+  CGContextEndTransparencyLayer(context);
 }
 
-- (void)p_setSelectionLineLayersHidden:(BOOL)a3
+- (void)p_setSelectionLineLayersHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v4 = &self->TSWPRep_opaque[OBJC_IVAR___TSWPRep__selectionLineLayers];
   [*v4 setHidden:?];
   v5 = *(v4 + 1);
 
-  [v5 setHidden:v3];
+  [v5 setHidden:hiddenCopy];
 }
 
-- (id)p_lineSearchReferencesForSearchReferences:(id)a3
+- (id)p_lineSearchReferencesForSearchReferences:(id)references
 {
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v17 = [a3 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  v17 = [references countByEnumeratingWithState:&v23 objects:v28 count:16];
   v4 = 0;
   if (v17)
   {
@@ -1213,7 +1213,7 @@ LABEL_28:
       {
         if (*v24 != v16)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(references);
         }
 
         v6 = -[THWPRep p_lineSelectionsForSelection:](self, "p_lineSelectionsForSelection:", [*(*(&v23 + 1) + 8 * v5) selection]);
@@ -1264,7 +1264,7 @@ LABEL_28:
       }
 
       while ((v18 + 1) != v17);
-      v17 = [a3 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v17 = [references countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v17);
@@ -1273,9 +1273,9 @@ LABEL_28:
   return v4;
 }
 
-- (id)p_lineSelectionsForSelection:(id)a3
+- (id)p_lineSelectionsForSelection:(id)selection
 {
-  if (![a3 isRange])
+  if (![selection isRange])
   {
     return 0;
   }
@@ -1289,8 +1289,8 @@ LABEL_28:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(THWPRep *)self columns];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  columns = [(THWPRep *)self columns];
+  v6 = [columns countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (!v6)
   {
     return 0;
@@ -1305,10 +1305,10 @@ LABEL_28:
     {
       if (*v15 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(columns);
       }
 
-      v11 = [*(*(&v14 + 1) + 8 * i) lineSelectionsForSelection:a3];
+      v11 = [*(*(&v14 + 1) + 8 * i) lineSelectionsForSelection:selection];
       if (v11)
       {
         v12 = v11;
@@ -1321,7 +1321,7 @@ LABEL_28:
       }
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [columns countByEnumeratingWithState:&v14 objects:v18 count:16];
   }
 
   while (v7);
@@ -1330,27 +1330,27 @@ LABEL_28:
 
 - (BOOL)p_isSelectionSingleAnchoredDrawableAttachment
 {
-  v2 = [(THWPRep *)self textEditor];
+  textEditor = [(THWPRep *)self textEditor];
 
-  return [v2 isSelectionSingleAnchoredDrawableAttachment];
+  return [textEditor isSelectionSingleAnchoredDrawableAttachment];
 }
 
-- (void)p_enumerateBoundsRectsForRange:(_NSRange)a3 includeSpaceBefore:(BOOL)a4 includeSpaceAfter:(BOOL)a5 includeLeading:(BOOL)a6 withBlock:(id)a7
+- (void)p_enumerateBoundsRectsForRange:(_NSRange)range includeSpaceBefore:(BOOL)before includeSpaceAfter:(BOOL)after includeLeading:(BOOL)leading withBlock:(id)block
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
-  v12 = [TSWPSelection selectionWithRange:a3.location, a3.length];
+  leadingCopy = leading;
+  afterCopy = after;
+  beforeCopy = before;
+  v12 = [TSWPSelection selectionWithRange:range.location, range.length];
 
-  [(THWPRep *)self p_enumerateBoundsRectsForSelection:v12 includeSpaceBefore:v10 includeSpaceAfter:v9 includeLeading:v8 withBlock:a7];
+  [(THWPRep *)self p_enumerateBoundsRectsForSelection:v12 includeSpaceBefore:beforeCopy includeSpaceAfter:afterCopy includeLeading:leadingCopy withBlock:block];
 }
 
-- (void)p_enumerateBoundsRectsForSelection:(id)a3 includeSpaceBefore:(BOOL)a4 includeSpaceAfter:(BOOL)a5 includeLeading:(BOOL)a6 withBlock:(id)a7
+- (void)p_enumerateBoundsRectsForSelection:(id)selection includeSpaceBefore:(BOOL)before includeSpaceAfter:(BOOL)after includeLeading:(BOOL)leading withBlock:(id)block
 {
-  v24 = a5;
-  v25 = a6;
-  v23 = a4;
-  if (a3)
+  afterCopy = after;
+  leadingCopy = leading;
+  beforeCopy = before;
+  if (selection)
   {
     v32 = 0u;
     v33 = 0u;
@@ -1377,9 +1377,9 @@ LABEL_28:
           v27 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v14 = [a3 range];
+          range = [selection range];
           LOWORD(v21) = 0;
-          v16 = [v13 rectsForSelectionRange:v14 selectionType:v15 includeSpaceAfter:objc_msgSend(a3 includeSpaceBefore:"type") includeLeading:v24 forParagraphMode:v23 includeRuby:{v25, v21}];
+          v16 = [v13 rectsForSelectionRange:range selectionType:v15 includeSpaceAfter:objc_msgSend(selection includeSpaceBefore:"type") includeLeading:afterCopy forParagraphMode:beforeCopy includeRuby:{leadingCopy, v21}];
           v17 = [v16 countByEnumeratingWithState:&v26 objects:v34 count:16];
           if (v17)
           {
@@ -1396,7 +1396,7 @@ LABEL_28:
                 }
 
                 [*(*(&v26 + 1) + 8 * v20) CGRectValue];
-                (*(a7 + 2))(a7);
+                (*(block + 2))(block);
                 v20 = v20 + 1;
               }
 
@@ -1419,7 +1419,7 @@ LABEL_28:
   }
 }
 
-- (CGRect)boundsRectForSelection:(id)a3
+- (CGRect)boundsRectForSelection:(id)selection
 {
   v13 = 0;
   v14 = &v13;
@@ -1435,7 +1435,7 @@ LABEL_28:
   v12[2] = sub_A0BD0;
   v12[3] = &unk_45CCA8;
   v12[4] = &v13;
-  [(THWPRep *)self p_enumerateBoundsRectsForSelection:a3 includeSpaceBefore:0 includeSpaceAfter:0 includeLeading:0 withBlock:v12];
+  [(THWPRep *)self p_enumerateBoundsRectsForSelection:selection includeSpaceBefore:0 includeSpaceAfter:0 includeLeading:0 withBlock:v12];
   v4 = v14[6];
   v5 = v14[7];
   v6 = v14[8];
@@ -1452,13 +1452,13 @@ LABEL_28:
   return result;
 }
 
-- (CGRect)visibleBoundsForTilingLayer:(id)a3
+- (CGRect)visibleBoundsForTilingLayer:(id)layer
 {
   if ([(THWPRep *)self highlightController])
   {
-    v5 = [(THWPRep *)self highlightController];
+    highlightController = [(THWPRep *)self highlightController];
     [-[THWPRep interactiveCanvasController](self "interactiveCanvasController")];
-    if ([(THWPHighlightController *)v5 needsToRedrawForVisibleBounds:?])
+    if ([(THWPHighlightController *)highlightController needsToRedrawForVisibleBounds:?])
     {
       [-[THWPRep interactiveCanvasController](self "interactiveCanvasController")];
     }
@@ -1466,7 +1466,7 @@ LABEL_28:
 
   v10.receiver = self;
   v10.super_class = THWPRep;
-  [(THWPRep *)&v10 visibleBoundsForTilingLayer:a3];
+  [(THWPRep *)&v10 visibleBoundsForTilingLayer:layer];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;

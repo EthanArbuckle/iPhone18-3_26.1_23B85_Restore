@@ -1,40 +1,40 @@
 @interface MHSchemaMHVoiceTriggerFirstPassStatistic
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHVoiceTriggerFirstPassStatistic)initWithDictionary:(id)a3;
-- (MHSchemaMHVoiceTriggerFirstPassStatistic)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHVoiceTriggerFirstPassStatistic)initWithDictionary:(id)dictionary;
+- (MHSchemaMHVoiceTriggerFirstPassStatistic)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasFirstPassPeakScoreJS:(BOOL)a3;
-- (void)setHasFirstPassTriggerSource:(BOOL)a3;
-- (void)setHasInvocationTypeId:(BOOL)a3;
-- (void)setHasKeywordThresholdHS:(BOOL)a3;
-- (void)setHasKeywordThresholdJS:(BOOL)a3;
-- (void)setHasMitigationScore:(BOOL)a3;
-- (void)setHasRecognizerScoreHS:(BOOL)a3;
-- (void)setHasRecognizerScoreJS:(BOOL)a3;
-- (void)setHasRepetitionSimilarityScore:(BOOL)a3;
-- (void)setHasSecondsSinceEpoch:(BOOL)a3;
-- (void)setHasTdSpeakerRecognizerCombinedScore:(BOOL)a3;
-- (void)setHasTdSpeakerRecognizerCombinedThresholdHS:(BOOL)a3;
-- (void)setHasTdSpeakerRecognizerCombinedThresholdJS:(BOOL)a3;
-- (void)setHasTriggerScoreHS:(BOOL)a3;
-- (void)setHasTriggerScoreJS:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasFirstPassPeakScoreJS:(BOOL)s;
+- (void)setHasFirstPassTriggerSource:(BOOL)source;
+- (void)setHasInvocationTypeId:(BOOL)id;
+- (void)setHasKeywordThresholdHS:(BOOL)s;
+- (void)setHasKeywordThresholdJS:(BOOL)s;
+- (void)setHasMitigationScore:(BOOL)score;
+- (void)setHasRecognizerScoreHS:(BOOL)s;
+- (void)setHasRecognizerScoreJS:(BOOL)s;
+- (void)setHasRepetitionSimilarityScore:(BOOL)score;
+- (void)setHasSecondsSinceEpoch:(BOOL)epoch;
+- (void)setHasTdSpeakerRecognizerCombinedScore:(BOOL)score;
+- (void)setHasTdSpeakerRecognizerCombinedThresholdHS:(BOOL)s;
+- (void)setHasTdSpeakerRecognizerCombinedThresholdJS:(BOOL)s;
+- (void)setHasTriggerScoreHS:(BOOL)s;
+- (void)setHasTriggerScoreJS:(BOOL)s;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHVoiceTriggerFirstPassStatistic
 
-- (MHSchemaMHVoiceTriggerFirstPassStatistic)initWithDictionary:(id)a3
+- (MHSchemaMHVoiceTriggerFirstPassStatistic)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = MHSchemaMHVoiceTriggerFirstPassStatistic;
   v5 = [(MHSchemaMHVoiceTriggerFirstPassStatistic *)&v36 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"firstPassPeakScoreHS"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"firstPassPeakScoreHS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,7 +42,7 @@
       [(MHSchemaMHVoiceTriggerFirstPassStatistic *)v5 setFirstPassPeakScoreHS:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"firstPassPeakScoreJS"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"firstPassPeakScoreJS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,14 +50,14 @@
       [(MHSchemaMHVoiceTriggerFirstPassStatistic *)v5 setFirstPassPeakScoreJS:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"firstPassTriggerSource"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"firstPassTriggerSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerFirstPassStatistic setFirstPassTriggerSource:](v5, "setFirstPassTriggerSource:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"recognizerScoreHS"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"recognizerScoreHS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
     }
 
     v32 = v8;
-    v10 = [v4 objectForKeyedSubscript:@"recognizerScoreJS"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"recognizerScoreJS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
     }
 
     v11 = v7;
-    v12 = [v4 objectForKeyedSubscript:@"triggerScoreHS"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"triggerScoreHS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,7 +84,7 @@
     }
 
     v13 = v6;
-    v14 = [v4 objectForKeyedSubscript:@"triggerScoreJS"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"triggerScoreJS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
       [(MHSchemaMHVoiceTriggerFirstPassStatistic *)v5 setTriggerScoreJS:?];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"mitigationScore"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"mitigationScore"];
     objc_opt_class();
     v35 = v15;
     if (objc_opt_isKindOfClass())
@@ -102,7 +102,7 @@
     }
 
     v34 = v13;
-    v16 = [v4 objectForKeyedSubscript:@"invocationTypeId"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"invocationTypeId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -110,7 +110,7 @@
     }
 
     v33 = v11;
-    v17 = [v4 objectForKeyedSubscript:@"secondsSinceEpoch"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"secondsSinceEpoch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -118,7 +118,7 @@
     }
 
     v27 = v17;
-    v18 = [v4 objectForKeyedSubscript:@"repetitionSimilarityScore"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"repetitionSimilarityScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -127,7 +127,7 @@
     }
 
     v31 = v9;
-    v19 = [v4 objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedScore"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -136,7 +136,7 @@
     }
 
     v30 = v10;
-    v20 = [v4 objectForKeyedSubscript:@"keywordThresholdHS"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"keywordThresholdHS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -146,7 +146,7 @@
 
     v28 = v16;
     v29 = v12;
-    v21 = [v4 objectForKeyedSubscript:@"keywordThresholdJS"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"keywordThresholdJS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -155,7 +155,7 @@
     }
 
     v22 = v14;
-    v23 = [v4 objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedThresholdHS"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedThresholdHS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -163,7 +163,7 @@
       [(MHSchemaMHVoiceTriggerFirstPassStatistic *)v5 setTdSpeakerRecognizerCombinedThresholdHS:?];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedThresholdJS"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedThresholdJS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -177,30 +177,30 @@
   return v5;
 }
 
-- (MHSchemaMHVoiceTriggerFirstPassStatistic)initWithJSON:(id)a3
+- (MHSchemaMHVoiceTriggerFirstPassStatistic)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHVoiceTriggerFirstPassStatistic *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHVoiceTriggerFirstPassStatistic *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHVoiceTriggerFirstPassStatistic *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -213,14 +213,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v8 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerFirstPassStatistic *)self firstPassPeakScoreHS];
     v9 = [v8 numberWithFloat:?];
-    [v3 setObject:v9 forKeyedSubscript:@"firstPassPeakScoreHS"];
+    [dictionary setObject:v9 forKeyedSubscript:@"firstPassPeakScoreHS"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -243,7 +243,7 @@ LABEL_3:
   v10 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerFirstPassStatistic *)self firstPassPeakScoreJS];
   v11 = [v10 numberWithFloat:?];
-  [v3 setObject:v11 forKeyedSubscript:@"firstPassPeakScoreJS"];
+  [dictionary setObject:v11 forKeyedSubscript:@"firstPassPeakScoreJS"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -269,7 +269,7 @@ LABEL_23:
     v13 = off_1E78D9A50[v12];
   }
 
-  [v3 setObject:v13 forKeyedSubscript:@"firstPassTriggerSource"];
+  [dictionary setObject:v13 forKeyedSubscript:@"firstPassTriggerSource"];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -284,7 +284,7 @@ LABEL_5:
 
 LABEL_27:
   v14 = [MEMORY[0x1E696AD98] numberWithInt:{-[MHSchemaMHVoiceTriggerFirstPassStatistic invocationTypeId](self, "invocationTypeId")}];
-  [v3 setObject:v14 forKeyedSubscript:@"invocationTypeId"];
+  [dictionary setObject:v14 forKeyedSubscript:@"invocationTypeId"];
 
   has = self->_has;
   if ((has & 0x1000) == 0)
@@ -302,7 +302,7 @@ LABEL_28:
   v15 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerFirstPassStatistic *)self keywordThresholdHS];
   v16 = [v15 numberWithFloat:?];
-  [v3 setObject:v16 forKeyedSubscript:@"keywordThresholdHS"];
+  [dictionary setObject:v16 forKeyedSubscript:@"keywordThresholdHS"];
 
   has = self->_has;
   if ((has & 0x2000) == 0)
@@ -320,7 +320,7 @@ LABEL_29:
   v17 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerFirstPassStatistic *)self keywordThresholdJS];
   v18 = [v17 numberWithFloat:?];
-  [v3 setObject:v18 forKeyedSubscript:@"keywordThresholdJS"];
+  [dictionary setObject:v18 forKeyedSubscript:@"keywordThresholdJS"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -338,7 +338,7 @@ LABEL_30:
   v19 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerFirstPassStatistic *)self mitigationScore];
   v20 = [v19 numberWithFloat:?];
-  [v3 setObject:v20 forKeyedSubscript:@"mitigationScore"];
+  [dictionary setObject:v20 forKeyedSubscript:@"mitigationScore"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -356,7 +356,7 @@ LABEL_31:
   v21 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerFirstPassStatistic *)self recognizerScoreHS];
   v22 = [v21 numberWithFloat:?];
-  [v3 setObject:v22 forKeyedSubscript:@"recognizerScoreHS"];
+  [dictionary setObject:v22 forKeyedSubscript:@"recognizerScoreHS"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -374,7 +374,7 @@ LABEL_32:
   v23 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerFirstPassStatistic *)self recognizerScoreJS];
   v24 = [v23 numberWithFloat:?];
-  [v3 setObject:v24 forKeyedSubscript:@"recognizerScoreJS"];
+  [dictionary setObject:v24 forKeyedSubscript:@"recognizerScoreJS"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -392,7 +392,7 @@ LABEL_33:
   v25 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerFirstPassStatistic *)self repetitionSimilarityScore];
   v26 = [v25 numberWithFloat:?];
-  [v3 setObject:v26 forKeyedSubscript:@"repetitionSimilarityScore"];
+  [dictionary setObject:v26 forKeyedSubscript:@"repetitionSimilarityScore"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -408,7 +408,7 @@ LABEL_12:
 
 LABEL_34:
   v27 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[MHSchemaMHVoiceTriggerFirstPassStatistic secondsSinceEpoch](self, "secondsSinceEpoch")}];
-  [v3 setObject:v27 forKeyedSubscript:@"secondsSinceEpoch"];
+  [dictionary setObject:v27 forKeyedSubscript:@"secondsSinceEpoch"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -426,7 +426,7 @@ LABEL_35:
   v28 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerFirstPassStatistic *)self tdSpeakerRecognizerCombinedScore];
   v29 = [v28 numberWithFloat:?];
-  [v3 setObject:v29 forKeyedSubscript:@"tdSpeakerRecognizerCombinedScore"];
+  [dictionary setObject:v29 forKeyedSubscript:@"tdSpeakerRecognizerCombinedScore"];
 
   has = self->_has;
   if ((has & 0x4000) == 0)
@@ -444,7 +444,7 @@ LABEL_36:
   v30 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerFirstPassStatistic *)self tdSpeakerRecognizerCombinedThresholdHS];
   v31 = [v30 numberWithFloat:?];
-  [v3 setObject:v31 forKeyedSubscript:@"tdSpeakerRecognizerCombinedThresholdHS"];
+  [dictionary setObject:v31 forKeyedSubscript:@"tdSpeakerRecognizerCombinedThresholdHS"];
 
   has = self->_has;
   if ((has & 0x8000) == 0)
@@ -462,7 +462,7 @@ LABEL_37:
   v32 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerFirstPassStatistic *)self tdSpeakerRecognizerCombinedThresholdJS];
   v33 = [v32 numberWithFloat:?];
-  [v3 setObject:v33 forKeyedSubscript:@"tdSpeakerRecognizerCombinedThresholdJS"];
+  [dictionary setObject:v33 forKeyedSubscript:@"tdSpeakerRecognizerCombinedThresholdJS"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -480,7 +480,7 @@ LABEL_38:
   v34 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerFirstPassStatistic *)self triggerScoreHS];
   v35 = [v34 numberWithFloat:?];
-  [v3 setObject:v35 forKeyedSubscript:@"triggerScoreHS"];
+  [dictionary setObject:v35 forKeyedSubscript:@"triggerScoreHS"];
 
   if ((*&self->_has & 0x40) != 0)
   {
@@ -488,13 +488,13 @@ LABEL_17:
     v5 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerFirstPassStatistic *)self triggerScoreJS];
     v6 = [v5 numberWithFloat:?];
-    [v3 setObject:v6 forKeyedSubscript:@"triggerScoreJS"];
+    [dictionary setObject:v6 forKeyedSubscript:@"triggerScoreJS"];
   }
 
 LABEL_18:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -1049,16 +1049,16 @@ LABEL_77:
   return v10 ^ v5 ^ v15 ^ v20 ^ v21 ^ v26 ^ v31 ^ v36 ^ v41 ^ v42 ^ v47 ^ v48 ^ v53 ^ v58 ^ v63 ^ v68;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_66;
   }
 
   has = self->_has;
-  v6 = v4[40];
+  v6 = equalCopy[40];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_66;
@@ -1067,14 +1067,14 @@ LABEL_77:
   if (*&has)
   {
     firstPassPeakScoreHS = self->_firstPassPeakScoreHS;
-    [v4 firstPassPeakScoreHS];
+    [equalCopy firstPassPeakScoreHS];
     if (firstPassPeakScoreHS != v8)
     {
       goto LABEL_66;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -1086,14 +1086,14 @@ LABEL_77:
   if (v9)
   {
     firstPassPeakScoreJS = self->_firstPassPeakScoreJS;
-    [v4 firstPassPeakScoreJS];
+    [equalCopy firstPassPeakScoreJS];
     if (firstPassPeakScoreJS != v11)
     {
       goto LABEL_66;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v12 = (*&has >> 2) & 1;
@@ -1105,13 +1105,13 @@ LABEL_77:
   if (v12)
   {
     firstPassTriggerSource = self->_firstPassTriggerSource;
-    if (firstPassTriggerSource != [v4 firstPassTriggerSource])
+    if (firstPassTriggerSource != [equalCopy firstPassTriggerSource])
     {
       goto LABEL_66;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v14 = (*&has >> 3) & 1;
@@ -1123,14 +1123,14 @@ LABEL_77:
   if (v14)
   {
     recognizerScoreHS = self->_recognizerScoreHS;
-    [v4 recognizerScoreHS];
+    [equalCopy recognizerScoreHS];
     if (recognizerScoreHS != v16)
     {
       goto LABEL_66;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v17 = (*&has >> 4) & 1;
@@ -1142,14 +1142,14 @@ LABEL_77:
   if (v17)
   {
     recognizerScoreJS = self->_recognizerScoreJS;
-    [v4 recognizerScoreJS];
+    [equalCopy recognizerScoreJS];
     if (recognizerScoreJS != v19)
     {
       goto LABEL_66;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v20 = (*&has >> 5) & 1;
@@ -1161,14 +1161,14 @@ LABEL_77:
   if (v20)
   {
     triggerScoreHS = self->_triggerScoreHS;
-    [v4 triggerScoreHS];
+    [equalCopy triggerScoreHS];
     if (triggerScoreHS != v22)
     {
       goto LABEL_66;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v23 = (*&has >> 6) & 1;
@@ -1180,14 +1180,14 @@ LABEL_77:
   if (v23)
   {
     triggerScoreJS = self->_triggerScoreJS;
-    [v4 triggerScoreJS];
+    [equalCopy triggerScoreJS];
     if (triggerScoreJS != v25)
     {
       goto LABEL_66;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v26 = (*&has >> 7) & 1;
@@ -1199,14 +1199,14 @@ LABEL_77:
   if (v26)
   {
     mitigationScore = self->_mitigationScore;
-    [v4 mitigationScore];
+    [equalCopy mitigationScore];
     if (mitigationScore != v28)
     {
       goto LABEL_66;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v29 = (*&has >> 8) & 1;
@@ -1218,13 +1218,13 @@ LABEL_77:
   if (v29)
   {
     invocationTypeId = self->_invocationTypeId;
-    if (invocationTypeId != [v4 invocationTypeId])
+    if (invocationTypeId != [equalCopy invocationTypeId])
     {
       goto LABEL_66;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v31 = (*&has >> 9) & 1;
@@ -1236,13 +1236,13 @@ LABEL_77:
   if (v31)
   {
     secondsSinceEpoch = self->_secondsSinceEpoch;
-    if (secondsSinceEpoch != [v4 secondsSinceEpoch])
+    if (secondsSinceEpoch != [equalCopy secondsSinceEpoch])
     {
       goto LABEL_66;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v33 = (*&has >> 10) & 1;
@@ -1254,14 +1254,14 @@ LABEL_77:
   if (v33)
   {
     repetitionSimilarityScore = self->_repetitionSimilarityScore;
-    [v4 repetitionSimilarityScore];
+    [equalCopy repetitionSimilarityScore];
     if (repetitionSimilarityScore != v35)
     {
       goto LABEL_66;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v36 = (*&has >> 11) & 1;
@@ -1273,14 +1273,14 @@ LABEL_77:
   if (v36)
   {
     tdSpeakerRecognizerCombinedScore = self->_tdSpeakerRecognizerCombinedScore;
-    [v4 tdSpeakerRecognizerCombinedScore];
+    [equalCopy tdSpeakerRecognizerCombinedScore];
     if (tdSpeakerRecognizerCombinedScore != v38)
     {
       goto LABEL_66;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v39 = (*&has >> 12) & 1;
@@ -1292,14 +1292,14 @@ LABEL_77:
   if (v39)
   {
     keywordThresholdHS = self->_keywordThresholdHS;
-    [v4 keywordThresholdHS];
+    [equalCopy keywordThresholdHS];
     if (keywordThresholdHS != v41)
     {
       goto LABEL_66;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v42 = (*&has >> 13) & 1;
@@ -1311,14 +1311,14 @@ LABEL_77:
   if (v42)
   {
     keywordThresholdJS = self->_keywordThresholdJS;
-    [v4 keywordThresholdJS];
+    [equalCopy keywordThresholdJS];
     if (keywordThresholdJS != v44)
     {
       goto LABEL_66;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v45 = (*&has >> 14) & 1;
@@ -1330,11 +1330,11 @@ LABEL_77:
   if (v45)
   {
     tdSpeakerRecognizerCombinedThresholdHS = self->_tdSpeakerRecognizerCombinedThresholdHS;
-    [v4 tdSpeakerRecognizerCombinedThresholdHS];
+    [equalCopy tdSpeakerRecognizerCombinedThresholdHS];
     if (tdSpeakerRecognizerCombinedThresholdHS == v47)
     {
       has = self->_has;
-      v6 = v4[40];
+      v6 = equalCopy[40];
       goto LABEL_62;
     }
 
@@ -1352,7 +1352,7 @@ LABEL_62:
   if ((*&has & 0x8000) != 0)
   {
     tdSpeakerRecognizerCombinedThresholdJS = self->_tdSpeakerRecognizerCombinedThresholdJS;
-    [v4 tdSpeakerRecognizerCombinedThresholdJS];
+    [equalCopy tdSpeakerRecognizerCombinedThresholdJS];
     if (tdSpeakerRecognizerCombinedThresholdJS != v50)
     {
       goto LABEL_66;
@@ -1365,9 +1365,9 @@ LABEL_67:
   return v48;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1583,9 +1583,9 @@ LABEL_35:
 LABEL_17:
 }
 
-- (void)setHasTdSpeakerRecognizerCombinedThresholdJS:(BOOL)a3
+- (void)setHasTdSpeakerRecognizerCombinedThresholdJS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 0x8000;
   }
@@ -1598,9 +1598,9 @@ LABEL_17:
   *&self->_has = v3 & 0x8000 | *&self->_has & 0x7FFF;
 }
 
-- (void)setHasTdSpeakerRecognizerCombinedThresholdHS:(BOOL)a3
+- (void)setHasTdSpeakerRecognizerCombinedThresholdHS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 0x4000;
   }
@@ -1613,9 +1613,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasKeywordThresholdJS:(BOOL)a3
+- (void)setHasKeywordThresholdJS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 0x2000;
   }
@@ -1628,9 +1628,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasKeywordThresholdHS:(BOOL)a3
+- (void)setHasKeywordThresholdHS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 4096;
   }
@@ -1643,9 +1643,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasTdSpeakerRecognizerCombinedScore:(BOOL)a3
+- (void)setHasTdSpeakerRecognizerCombinedScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2048;
   }
@@ -1658,9 +1658,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasRepetitionSimilarityScore:(BOOL)a3
+- (void)setHasRepetitionSimilarityScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 1024;
   }
@@ -1673,9 +1673,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasSecondsSinceEpoch:(BOOL)a3
+- (void)setHasSecondsSinceEpoch:(BOOL)epoch
 {
-  if (a3)
+  if (epoch)
   {
     v3 = 512;
   }
@@ -1688,9 +1688,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasInvocationTypeId:(BOOL)a3
+- (void)setHasInvocationTypeId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 256;
   }
@@ -1703,9 +1703,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasMitigationScore:(BOOL)a3
+- (void)setHasMitigationScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 128;
   }
@@ -1718,9 +1718,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasTriggerScoreJS:(BOOL)a3
+- (void)setHasTriggerScoreJS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 64;
   }
@@ -1733,9 +1733,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasTriggerScoreHS:(BOOL)a3
+- (void)setHasTriggerScoreHS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 32;
   }
@@ -1748,9 +1748,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasRecognizerScoreJS:(BOOL)a3
+- (void)setHasRecognizerScoreJS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 16;
   }
@@ -1763,9 +1763,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasRecognizerScoreHS:(BOOL)a3
+- (void)setHasRecognizerScoreHS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 8;
   }
@@ -1778,9 +1778,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasFirstPassTriggerSource:(BOOL)a3
+- (void)setHasFirstPassTriggerSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 4;
   }
@@ -1793,9 +1793,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasFirstPassPeakScoreJS:(BOOL)a3
+- (void)setHasFirstPassPeakScoreJS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 2;
   }

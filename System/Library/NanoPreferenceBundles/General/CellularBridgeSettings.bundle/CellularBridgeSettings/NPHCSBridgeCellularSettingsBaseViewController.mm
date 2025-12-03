@@ -1,9 +1,9 @@
 @interface NPHCSBridgeCellularSettingsBaseViewController
 - (id)parentController;
 - (id)rootController;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)setSpecifier:(id)a3;
-- (void)showController:(id)a3 animate:(BOOL)a4;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)setSpecifier:(id)specifier;
+- (void)showController:(id)controller animate:(BOOL)animate;
 - (void)viewDidLoad;
 @end
 
@@ -30,41 +30,41 @@
   return WeakRetained;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v5 = a3;
-  if (self->_specifier != v5)
+  specifierCopy = specifier;
+  if (self->_specifier != specifierCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_specifier, a3);
-    v5 = v6;
+    v6 = specifierCopy;
+    objc_storeStrong(&self->_specifier, specifier);
+    specifierCopy = v6;
   }
 }
 
-- (void)showController:(id)a3 animate:(BOOL)a4
+- (void)showController:(id)controller animate:(BOOL)animate
 {
-  v4 = a4;
-  v8 = a3;
-  if (v4)
+  animateCopy = animate;
+  controllerCopy = controller;
+  if (animateCopy)
   {
-    [(NPHCSBridgeCellularSettingsBaseViewController *)self showViewController:v8 sender:self];
-    v6 = v8;
+    [(NPHCSBridgeCellularSettingsBaseViewController *)self showViewController:controllerCopy sender:self];
+    v6 = controllerCopy;
   }
 
   else
   {
-    v7 = [(NPHCSBridgeCellularSettingsBaseViewController *)self navigationController];
-    [v7 pushViewController:v8 animated:0];
+    navigationController = [(NPHCSBridgeCellularSettingsBaseViewController *)self navigationController];
+    [navigationController pushViewController:controllerCopy animated:0];
 
-    v6 = v7;
+    v6 = navigationController;
   }
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 

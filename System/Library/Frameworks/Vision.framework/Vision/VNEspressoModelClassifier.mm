@@ -1,27 +1,27 @@
 @interface VNEspressoModelClassifier
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-+ (shared_ptr<vision::mod::ImageClassifierAbstract>)createClassifierWithDescriptor:(shared_ptr<vision:(const char *)a4 :(int)a5 mod:(int)a6 :(const char *)a7 ImageDescriptorProcessorAbstract>)a3 classifierAbsolutePath:(Options *)a8 computePlatform:computePath:labelsFilename:options:;
-+ (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)createHierarchicalModelForOriginatingRequestSpecifier:(id)a3 error:(id *)a4;
-+ (shared_ptr<vision::mod::ImageDescriptorProcessorAbstract>)createDescriprorProcessorWithModelPath:(const char *)a3 nBatch:(int)a4 computePlatform:(int)a5 computePath:(int)a6 options:(Options *)a7;
-+ (void)convertRelationships:(id)a3 toStdRelationships:(void *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
++ (shared_ptr<vision::mod::ImageClassifierAbstract>)createClassifierWithDescriptor:(shared_ptr<vision:(const char *)descriptor :(int)a5 mod:(int)mod :(const char *)a7 ImageDescriptorProcessorAbstract>)a3 classifierAbsolutePath:(Options *)path computePlatform:computePath:labelsFilename:options:;
++ (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)createHierarchicalModelForOriginatingRequestSpecifier:(id)specifier error:(id *)error;
++ (shared_ptr<vision::mod::ImageDescriptorProcessorAbstract>)createDescriprorProcessorWithModelPath:(const char *)path nBatch:(int)batch computePlatform:(int)platform computePath:(int)computePath options:(Options *)options;
++ (void)convertRelationships:(id)relationships toStdRelationships:(void *)stdRelationships;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
 - (id).cxx_construct;
 - (id)boundComputeStageDevices;
-- (id)calculateImageDescriptors:(id)a3 regionOfInterest:(CGRect)a4 warningRecorder:(id)a5 canceller:(id)a6 error:(id *)a7;
+- (id)calculateImageDescriptors:(id)descriptors regionOfInterest:(CGRect)interest warningRecorder:(id)recorder canceller:(id)canceller error:(id *)error;
 - (id)getLabels;
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNEspressoModelClassifier
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities espressoV1ModelComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities espressoV1ModelComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __66__VNEspressoModelClassifier_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNEspressoModelClassifier configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNEspressoModelClassifier configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -59,17 +59,17 @@ void __66__VNEspressoModelClassifier_configurationOptionKeysForDetectorKey__bloc
   +[VNEspressoModelClassifier configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-+ (void)convertRelationships:(id)a3 toStdRelationships:(void *)a4
++ (void)convertRelationships:(id)relationships toStdRelationships:(void *)stdRelationships
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AEC0] defaultCStringEncoding];
+  relationshipsCopy = relationships;
+  defaultCStringEncoding = [MEMORY[0x1E696AEC0] defaultCStringEncoding];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__VNEspressoModelClassifier_convertRelationships_toStdRelationships___block_invoke;
   v7[3] = &__block_descriptor_48_e34_v32__0__NSString_8__NSArray_16_B24l;
-  v7[4] = v6;
-  v7[5] = a4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v7[4] = defaultCStringEncoding;
+  v7[5] = stdRelationships;
+  [relationshipsCopy enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __69__VNEspressoModelClassifier_convertRelationships_toStdRelationships___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -198,11 +198,11 @@ void __69__VNEspressoModelClassifier_convertRelationships_toStdRelationships___b
   }
 }
 
-+ (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)createHierarchicalModelForOriginatingRequestSpecifier:(id)a3 error:(id *)a4
++ (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)createHierarchicalModelForOriginatingRequestSpecifier:(id)specifier error:(id *)error
 {
   v7 = v4;
-  v8 = a3;
-  v9 = [a1 classifierResourceTypesToNamesForOriginatingRequestSpecifier:v8];
+  specifierCopy = specifier;
+  v9 = [self classifierResourceTypesToNamesForOriginatingRequestSpecifier:specifierCopy];
   if (v9)
   {
     v10 = VNFrameworkBundle();
@@ -233,7 +233,7 @@ void __69__VNEspressoModelClassifier_convertRelationships_toStdRelationships___b
         v32 = &v33;
         v31 = v15;
         v16 = _Block_copy(aBlock);
-        if (VNExecuteBlock(v16, a4))
+        if (VNExecuteBlock(v16, error))
         {
           v17 = v34[7];
           *v7 = v34[6];
@@ -259,13 +259,13 @@ void __69__VNEspressoModelClassifier_convertRelationships_toStdRelationships___b
 
       else
       {
-        if (a4)
+        if (error)
         {
           v24 = MEMORY[0x1E696AEC0];
           v25 = [v13 stringByAppendingPathExtension:@"txt"];
           v26 = [v24 stringWithFormat:@"could not locate the resource file %@", v25];
 
-          *a4 = [VNError errorForInvalidModelWithLocalizedDescription:v26];
+          *error = [VNError errorForInvalidModelWithLocalizedDescription:v26];
         }
 
         *v7 = 0;
@@ -277,13 +277,13 @@ void __69__VNEspressoModelClassifier_convertRelationships_toStdRelationships___b
 
     else
     {
-      if (a4)
+      if (error)
       {
         v21 = MEMORY[0x1E696AEC0];
         v22 = [v11 stringByAppendingPathExtension:@"csv"];
         v23 = [v21 stringWithFormat:@"could not locate the resource file %@", v22];
 
-        *a4 = [VNError errorForInvalidModelWithLocalizedDescription:v23];
+        *error = [VNError errorForInvalidModelWithLocalizedDescription:v23];
       }
 
       *v7 = 0;
@@ -293,13 +293,13 @@ void __69__VNEspressoModelClassifier_convertRelationships_toStdRelationships___b
 
   else
   {
-    if (a4)
+    if (error)
     {
       v18 = MEMORY[0x1E696AEC0];
-      v19 = NSStringFromClass(a1);
-      v20 = [v18 stringWithFormat:@"%@ must implement classifierResourceTypesToNamesForOriginatingRequestSpecifier: for %@", v19, v8];
+      v19 = NSStringFromClass(self);
+      specifierCopy = [v18 stringWithFormat:@"%@ must implement classifierResourceTypesToNamesForOriginatingRequestSpecifier: for %@", v19, specifierCopy];
 
-      *a4 = [VNError errorForUnimplementedFunctionWithLocalizedDescription:v20];
+      *error = [VNError errorForUnimplementedFunctionWithLocalizedDescription:specifierCopy];
     }
 
     *v7 = 0;
@@ -420,19 +420,19 @@ void __89__VNEspressoModelClassifier_createHierarchicalModelForOriginatingReques
   std::allocate_shared[abi:ne200100]<vision::mod::ImageClassifier_HierarchicalModel,std::allocator<vision::mod::ImageClassifier_HierarchicalModel>,char const*,decltype(nullptr),std::vector<std::pair<std::string,BOOL>> &,0>();
 }
 
-+ (shared_ptr<vision::mod::ImageDescriptorProcessorAbstract>)createDescriprorProcessorWithModelPath:(const char *)a3 nBatch:(int)a4 computePlatform:(int)a5 computePath:(int)a6 options:(Options *)a7
++ (shared_ptr<vision::mod::ImageDescriptorProcessorAbstract>)createDescriprorProcessorWithModelPath:(const char *)path nBatch:(int)batch computePlatform:(int)platform computePath:(int)computePath options:(Options *)options
 {
   *v7 = 0;
   v7[1] = 0;
 
-  var2 = a7->var2;
+  var2 = options->var2;
 
   result.__cntrl_ = v11;
   result.__ptr_ = v10;
   return result;
 }
 
-+ (shared_ptr<vision::mod::ImageClassifierAbstract>)createClassifierWithDescriptor:(shared_ptr<vision:(const char *)a4 :(int)a5 mod:(int)a6 :(const char *)a7 ImageDescriptorProcessorAbstract>)a3 classifierAbsolutePath:(Options *)a8 computePlatform:computePath:labelsFilename:options:
++ (shared_ptr<vision::mod::ImageClassifierAbstract>)createClassifierWithDescriptor:(shared_ptr<vision:(const char *)descriptor :(int)a5 mod:(int)mod :(const char *)a7 ImageDescriptorProcessorAbstract>)a3 classifierAbsolutePath:(Options *)path computePlatform:computePath:labelsFilename:options:
 {
   *v8 = 0;
   v8[1] = 0;
@@ -481,16 +481,16 @@ void __89__VNEspressoModelClassifier_createHierarchicalModelForOriginatingReques
   return v4;
 }
 
-- (id)calculateImageDescriptors:(id)a3 regionOfInterest:(CGRect)a4 warningRecorder:(id)a5 canceller:(id)a6 error:(id *)a7
+- (id)calculateImageDescriptors:(id)descriptors regionOfInterest:(CGRect)interest warningRecorder:(id)recorder canceller:(id)canceller error:(id *)error
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v83[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v70 = a5;
-  v16 = a6;
+  descriptorsCopy = descriptors;
+  recorderCopy = recorder;
+  cancellerCopy = canceller;
   v81 = 0;
   v82 = 0;
   v66 = objc_opt_class();
@@ -499,18 +499,18 @@ void __89__VNEspressoModelClassifier_createHierarchicalModelForOriginatingReques
   v18 = v81;
   if (v17)
   {
-    [v15 setObject:v17 forKeyedSubscript:@"VNImageClassifierProcessingOption_DebugIntermediatesDumpPath"];
+    [descriptorsCopy setObject:v17 forKeyedSubscript:@"VNImageClassifierProcessingOption_DebugIntermediatesDumpPath"];
   }
 
   if (v18)
   {
-    [v15 setObject:v18 forKeyedSubscript:@"VNImageClassifierProcessingOption_DebugInfo"];
+    [descriptorsCopy setObject:v18 forKeyedSubscript:@"VNImageClassifierProcessingOption_DebugInfo"];
   }
 
   v68 = v17;
   v69 = v18;
-  v67 = a7;
-  v19 = [(VNDetector *)self validatedImageBufferFromOptions:v15 error:a7];
+  errorCopy = error;
+  v19 = [(VNDetector *)self validatedImageBufferFromOptions:descriptorsCopy error:error];
   if (!v19)
   {
     goto LABEL_21;
@@ -527,18 +527,18 @@ void __89__VNEspressoModelClassifier_createHierarchicalModelForOriginatingReques
     v22 = v21;
   }
 
-  v23 = [v19 width];
-  v24 = [v19 height];
+  width = [v19 width];
+  height = [v19 height];
   v25 = v22;
-  if (v23 >= v24)
+  if (width >= height)
   {
-    v23 = v24;
+    width = height;
   }
 
-  if (v23 < v25)
+  if (width < v25)
   {
-    VNRecordImageTooSmallWarningWithImageMinimumShortDimension(v70, v22);
-    if (v23 < v25 >> 2)
+    VNRecordImageTooSmallWarningWithImageMinimumShortDimension(recorderCopy, v22);
+    if (width < v25 >> 2)
     {
       v26 = MEMORY[0x1E695E0F0];
       goto LABEL_67;
@@ -546,7 +546,7 @@ void __89__VNEspressoModelClassifier_createHierarchicalModelForOriginatingReques
   }
 
   v80 = 0;
-  if (![VNImageClassifier computeImageCropWithImage:v19 regionOfInterest:self->mDescriptorProcessor.__ptr_ usingDescriptorProcessor:1 scalingImage:v15 options:&v80 pixelBuffer:a7 error:x, y, width, height])
+  if (![VNImageClassifier computeImageCropWithImage:v19 regionOfInterest:self->mDescriptorProcessor.__ptr_ usingDescriptorProcessor:1 scalingImage:descriptorsCopy options:&v80 pixelBuffer:error error:x, y, width, height])
   {
 LABEL_21:
     v26 = 0;
@@ -555,11 +555,11 @@ LABEL_21:
 
   CVPixelBufferLockBaseAddress(v80, 1uLL);
   (*(self->mDescriptorProcessor.__ptr_->var0 + 8))(&v78);
-  v27 = [v15 objectForKeyedSubscript:@"VNEspressoModelClassifierProcessOption_CenterTileOnly"];
-  v28 = [v27 BOOLValue];
+  v27 = [descriptorsCopy objectForKeyedSubscript:@"VNEspressoModelClassifierProcessOption_CenterTileOnly"];
+  bOOLValue = [v27 BOOLValue];
 
-  v77 = v16;
-  LOBYTE(v27) = [(VNDetector *)self getOptionalCanceller:&v77 inOptions:v15 error:a7];
+  v77 = cancellerCopy;
+  LOBYTE(v27) = [(VNDetector *)self getOptionalCanceller:&v77 inOptions:descriptorsCopy error:error];
   v65 = v77;
 
   if (v27)
@@ -569,8 +569,8 @@ LABEL_21:
     v29 = v80;
     ptr = self->mDescriptorProcessor.__ptr_;
     v31 = v78;
-    v32 = [(VNDetector *)self metalContext];
-    LOBYTE(ptr) = [VNImageClassifier computeImageDescriptorsWithImage:v19 pixelBuffer:v29 regionOfInterest:ptr usingDescriptorProcessor:v28 tileCount:0 augmentationMode:v31 resultantDescriptorBuffer:x options:y metalContext:width canceller:height tileColumns:v15 tileRows:v32 error:v65, &v76, &v75, a7];
+    metalContext = [(VNDetector *)self metalContext];
+    LOBYTE(ptr) = [VNImageClassifier computeImageDescriptorsWithImage:v19 pixelBuffer:v29 regionOfInterest:ptr usingDescriptorProcessor:bOOLValue tileCount:0 augmentationMode:v31 resultantDescriptorBuffer:x options:y metalContext:width canceller:height tileColumns:descriptorsCopy tileRows:metalContext error:v65, &v76, &v75, error];
 
     CVPixelBufferUnlockBaseAddress(v80, 1uLL);
     CVPixelBufferRelease(v80);
@@ -578,24 +578,24 @@ LABEL_21:
     v80 = 0;
     if (ptr)
     {
-      VNRecordImageTilingWarning(v70, v76, v75);
+      VNRecordImageTilingWarning(recorderCopy, v76, v75);
       memset(v74, 0, sizeof(v74));
-      v33 = [v66 returnAllResultsOptionKey];
-      v56 = v33;
-      if (v33 && ([v15 objectForKeyedSubscript:v33], v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v34, "BOOLValue"), v34, v35))
+      returnAllResultsOptionKey = [v66 returnAllResultsOptionKey];
+      v56 = returnAllResultsOptionKey;
+      if (returnAllResultsOptionKey && ([descriptorsCopy objectForKeyedSubscript:returnAllResultsOptionKey], v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v34, "BOOLValue"), v34, v35))
       {
         v36 = self->mClassifier.__ptr_;
         v37 = v78;
-        v38 = [(VNDetector *)self metalContext];
+        metalContext2 = [(VNDetector *)self metalContext];
         v73 = 0;
-        LOBYTE(v36) = [VNImageClassifier computeLabelsAndConfidence:v36 usingDescriptorBuffer:v37 populateLabelsAndConfidence:v74 options:v15 metalContext:v38 error:&v73];
+        LOBYTE(v36) = [VNImageClassifier computeLabelsAndConfidence:v36 usingDescriptorBuffer:v37 populateLabelsAndConfidence:v74 options:descriptorsCopy metalContext:metalContext2 error:&v73];
         v39 = v73;
 
         if ((v36 & 1) == 0)
         {
-          if (a7)
+          if (error)
           {
-            *a7 = [VNError errorForInternalErrorWithLocalizedDescription:@"Could not compute raw labels and confidence for image" underlyingError:v39];
+            *error = [VNError errorForInternalErrorWithLocalizedDescription:@"Could not compute raw labels and confidence for image" underlyingError:v39];
           }
 
           goto LABEL_55;
@@ -624,8 +624,8 @@ LABEL_21:
         v64 = [MEMORY[0x1E695DF70] arrayWithCapacity:*(v40 + 9)];
         v60 = (*(*v40 + 104))(v40);
         v59 = *(v40 + 12);
-        v61 = [v66 espressoModelImageprintClass];
-        v42 = [VNValidationUtilities originatingRequestSpecifierInOptions:v15 error:a7];
+        espressoModelImageprintClass = [v66 espressoModelImageprintClass];
+        v42 = [VNValidationUtilities originatingRequestSpecifierInOptions:descriptorsCopy error:error];
         if (v42)
         {
           v57 = v41;
@@ -679,7 +679,7 @@ LABEL_21:
               v45 = 0;
             }
 
-            v52 = [[v61 alloc] initWithData:vision::mod::ImageDescriptorBufferAbstract::getDataForKthDescriptor(v58 elementCount:v43) elementType:v59 lengthInBytes:1 labelsAndConfidence:v60 requestRevision:{v45, objc_msgSend(v62, "requestRevision")}];
+            v52 = [[espressoModelImageprintClass alloc] initWithData:vision::mod::ImageDescriptorBufferAbstract::getDataForKthDescriptor(v58 elementCount:v43) elementType:v59 lengthInBytes:1 labelsAndConfidence:v60 requestRevision:{v45, objc_msgSend(v62, "requestRevision")}];
             if (!v52)
             {
               break;
@@ -698,7 +698,7 @@ LABEL_21:
                 goto LABEL_61;
               }
 
-              if (v67)
+              if (errorCopy)
               {
                 v54 = [VNError errorForInternalErrorWithLocalizedDescription:@"Cannot create observation object"];
                 v45 = 0;
@@ -710,12 +710,12 @@ LABEL_21:
             }
           }
 
-          if (v67)
+          if (errorCopy)
           {
             v54 = [VNError errorForInternalErrorWithLocalizedDescription:@"Cannot create image print"];
 LABEL_58:
             v26 = 0;
-            *v67 = v54;
+            *errorCopy = v54;
             goto LABEL_61;
           }
 
@@ -734,10 +734,10 @@ LABEL_61:
         goto LABEL_63;
       }
 
-      if (a7)
+      if (error)
       {
         [VNError errorForInternalErrorWithLocalizedDescription:@"Cannot calculate classification image descriptor"];
-        *a7 = v26 = 0;
+        *error = v26 = 0;
 LABEL_63:
 
         v71.__r_.__value_.__r.__words[0] = v74;
@@ -762,29 +762,29 @@ LABEL_64:
     std::__shared_weak_count::__release_shared[abi:ne200100](v79);
   }
 
-  v16 = v65;
+  cancellerCopy = v65;
 LABEL_67:
 
   return v26;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v73[1] = *MEMORY[0x1E69E9840];
-  v18 = a5;
-  v62 = a7;
-  v61 = a9;
-  v64 = v18;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v64 = optionsCopy;
   (*(self->mDescriptorProcessor.__ptr_->var0 + 8))(&v71);
-  v19 = [v18 objectForKeyedSubscript:@"VNEspressoModelClassifierProcessOption_CenterTileOnly"];
-  v20 = [v19 BOOLValue];
+  v19 = [optionsCopy objectForKeyedSubscript:@"VNEspressoModelClassifierProcessOption_CenterTileOnly"];
+  bOOLValue = [v19 BOOLValue];
 
   v70 = 0;
-  LOBYTE(v19) = [(VNDetector *)self getOptionalCanceller:&v70 inOptions:v18 error:a8];
+  LOBYTE(v19) = [(VNDetector *)self getOptionalCanceller:&v70 inOptions:optionsCopy error:error];
   v63 = v70;
   if ((v19 & 1) == 0)
   {
@@ -792,7 +792,7 @@ LABEL_67:
     goto LABEL_53;
   }
 
-  v21 = [(VNDetector *)self validatedImageBufferFromOptions:v18 error:a8];
+  v21 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (v21)
   {
     v57 = v21;
@@ -800,10 +800,10 @@ LABEL_67:
     v69 = 0;
     ptr = self->mDescriptorProcessor.__ptr_;
     v23 = v71;
-    v24 = [(VNDetector *)self metalContext];
-    v25 = [VNImageClassifier computeImageDescriptorsWithImage:v57 pixelBuffer:a4 regionOfInterest:ptr usingDescriptorProcessor:v20 tileCount:0 augmentationMode:v23 resultantDescriptorBuffer:x options:y metalContext:width canceller:height tileColumns:v64 tileRows:v24 error:v63, &v69, &v68, a8];
+    metalContext = [(VNDetector *)self metalContext];
+    error = [VNImageClassifier computeImageDescriptorsWithImage:v57 pixelBuffer:buffer regionOfInterest:ptr usingDescriptorProcessor:bOOLValue tileCount:0 augmentationMode:v23 resultantDescriptorBuffer:x options:y metalContext:width canceller:height tileColumns:v64 tileRows:metalContext error:v63, &v69, &v68, error];
 
-    if (!v25)
+    if (!error)
     {
       v35 = 0;
 LABEL_51:
@@ -811,23 +811,23 @@ LABEL_51:
       goto LABEL_52;
     }
 
-    VNRecordImageTilingWarning(v62, v69, v68);
+    VNRecordImageTilingWarning(recorderCopy, v69, v68);
     memset(v67, 0, sizeof(v67));
     v26 = objc_opt_class();
-    v27 = [v26 returnAllResultsOptionKey];
-    v53 = v27;
-    if (v27)
+    returnAllResultsOptionKey = [v26 returnAllResultsOptionKey];
+    v53 = returnAllResultsOptionKey;
+    if (returnAllResultsOptionKey)
     {
-      v28 = [v64 objectForKeyedSubscript:v27];
+      v28 = [v64 objectForKeyedSubscript:returnAllResultsOptionKey];
       v29 = v26;
-      v30 = [v28 BOOLValue];
+      bOOLValue2 = [v28 BOOLValue];
 
-      if (v30)
+      if (bOOLValue2)
       {
         v31 = self->mClassifier.__ptr_;
         v32 = v71;
-        v33 = [(VNDetector *)self metalContext];
-        v34 = [VNImageClassifier computeLabelsAndConfidence:v31 usingDescriptorBuffer:v32 populateLabelsAndConfidence:v67 options:v64 metalContext:v33 error:a8];
+        metalContext2 = [(VNDetector *)self metalContext];
+        v34 = [VNImageClassifier computeLabelsAndConfidence:v31 usingDescriptorBuffer:v32 populateLabelsAndConfidence:v67 options:v64 metalContext:metalContext2 error:error];
 
         if (!v34)
         {
@@ -865,8 +865,8 @@ LABEL_51:
       v60 = [MEMORY[0x1E695DF70] arrayWithCapacity:*(v36 + 9)];
       v55 = (*(*v36 + 104))(v36);
       v54 = *(v36 + 12);
-      v56 = [v26 espressoModelImageprintClass];
-      v38 = [VNValidationUtilities originatingRequestSpecifierInOptions:v64 error:a8];
+      espressoModelImageprintClass = [v26 espressoModelImageprintClass];
+      v38 = [VNValidationUtilities originatingRequestSpecifierInOptions:v64 error:error];
       if (v38)
       {
         v52 = v26;
@@ -919,7 +919,7 @@ LABEL_51:
             v41 = 0;
           }
 
-          v48 = [[v56 alloc] initWithData:vision::mod::ImageDescriptorBufferAbstract::getDataForKthDescriptor(v36 elementCount:v39) elementType:v54 lengthInBytes:1 labelsAndConfidence:v55 requestRevision:{v41, objc_msgSend(v58, "requestRevision")}];
+          v48 = [[espressoModelImageprintClass alloc] initWithData:vision::mod::ImageDescriptorBufferAbstract::getDataForKthDescriptor(v36 elementCount:v39) elementType:v54 lengthInBytes:1 labelsAndConfidence:v55 requestRevision:{v41, objc_msgSend(v58, "requestRevision")}];
           if (!v48)
           {
             break;
@@ -938,7 +938,7 @@ LABEL_51:
               goto LABEL_48;
             }
 
-            if (a8)
+            if (error)
             {
               v50 = [VNError errorForInternalErrorWithLocalizedDescription:@"Cannot create observation object"];
               v41 = 0;
@@ -950,12 +950,12 @@ LABEL_51:
           }
         }
 
-        if (a8)
+        if (error)
         {
           v50 = [VNError errorForInternalErrorWithLocalizedDescription:@"Cannot create image print"];
 LABEL_45:
           v35 = 0;
-          *a8 = v50;
+          *error = v50;
           goto LABEL_48;
         }
 
@@ -974,10 +974,10 @@ LABEL_48:
       goto LABEL_50;
     }
 
-    if (a8)
+    if (error)
     {
       [VNError errorForInternalErrorWithLocalizedDescription:@"Cannot calculate classification image descriptor"];
-      *a8 = v35 = 0;
+      *error = v35 = 0;
 LABEL_50:
 
       v65.__r_.__value_.__r.__words[0] = v67;
@@ -1002,36 +1002,36 @@ LABEL_53:
   return v35;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
-  v17 = [(VNDetector *)self validatedImageBufferFromOptions:v16 error:a8];
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  v17 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (v17)
   {
-    v18 = [VNImageClassifier computeImageCropWithImage:v17 regionOfInterest:self->mDescriptorProcessor.__ptr_ usingDescriptorProcessor:1 scalingImage:v16 options:a7 pixelBuffer:a8 error:x, y, width, height];
+    height = [VNImageClassifier computeImageCropWithImage:v17 regionOfInterest:self->mDescriptorProcessor.__ptr_ usingDescriptorProcessor:1 scalingImage:optionsCopy options:buffer pixelBuffer:error error:x, y, width, height];
   }
 
   else
   {
-    v18 = 0;
+    height = 0;
   }
 
-  return v18;
+  return height;
 }
 
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v16 = a4;
-  v17 = a6;
-  v18 = a8;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
   v32 = 0;
   v33 = 0;
   [objc_opt_class() initDumpDebugIntermediates:&v33 debugInfo:&v32];
@@ -1039,15 +1039,15 @@ LABEL_53:
   v20 = v32;
   if (v19)
   {
-    [v16 setObject:v19 forKeyedSubscript:@"VNImageClassifierProcessingOption_DebugIntermediatesDumpPath"];
+    [optionsCopy setObject:v19 forKeyedSubscript:@"VNImageClassifierProcessingOption_DebugIntermediatesDumpPath"];
   }
 
   if (v20)
   {
-    [v16 setObject:v20 forKeyedSubscript:@"VNImageClassifierProcessingOption_DebugInfo"];
+    [optionsCopy setObject:v20 forKeyedSubscript:@"VNImageClassifierProcessingOption_DebugInfo"];
   }
 
-  v21 = [(VNDetector *)self validatedImageBufferFromOptions:v16 error:a7];
+  v21 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (v21)
   {
     v22 = (*(self->mDescriptorProcessor.__ptr_->var0 + 19))(self->mDescriptorProcessor.__ptr_);
@@ -1061,43 +1061,43 @@ LABEL_53:
       v24 = v23;
     }
 
-    v25 = [v21 width];
-    v26 = [v21 height];
+    width = [v21 width];
+    height = [v21 height];
     v27 = v24;
-    if (v25 >= v26)
+    if (width >= height)
     {
-      v25 = v26;
+      width = height;
     }
 
-    if (v25 >= v27 || (VNRecordImageTooSmallWarningWithImageMinimumShortDimension(v17, v24), v25 >= v27 >> 2))
+    if (width >= v27 || (VNRecordImageTooSmallWarningWithImageMinimumShortDimension(recorderCopy, v24), width >= v27 >> 2))
     {
       v31.receiver = self;
       v31.super_class = VNEspressoModelClassifier;
-      v28 = [(VNDetector *)&v31 internalProcessUsingQualityOfServiceClass:a3 options:v16 regionOfInterest:v17 warningRecorder:a7 error:v18 progressHandler:x, y, width, height];
+      height2 = [(VNDetector *)&v31 internalProcessUsingQualityOfServiceClass:class options:optionsCopy regionOfInterest:recorderCopy warningRecorder:error error:handlerCopy progressHandler:x, y, width, height];
     }
 
     else
     {
-      v28 = MEMORY[0x1E695E0F0];
+      height2 = MEMORY[0x1E695E0F0];
     }
   }
 
   else
   {
-    v28 = 0;
+    height2 = 0;
   }
 
-  return v28;
+  return height2;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v32.receiver = self;
   v32.super_class = VNEspressoModelClassifier;
-  if ([(VNDetector *)&v32 completeInitializationForSession:a3 error:?])
+  if ([(VNDetector *)&v32 completeInitializationForSession:session error:?])
   {
-    v6 = [(VNDetector *)self configurationOptions];
-    v7 = [objc_opt_class() computeDeviceForComputeStage:@"VNComputeStageMain" configurationOptions:v6 error:a4];
+    configurationOptions = [(VNDetector *)self configurationOptions];
+    v7 = [objc_opt_class() computeDeviceForComputeStage:@"VNComputeStageMain" configurationOptions:configurationOptions error:error];
     computeDevice = self->_computeDevice;
     self->_computeDevice = v7;
 
@@ -1109,7 +1109,7 @@ LABEL_24:
       return v18;
     }
 
-    v9 = [VNValidationUtilities originatingRequestSpecifierInOptions:v6 error:a4];
+    v9 = [VNValidationUtilities originatingRequestSpecifierInOptions:configurationOptions error:error];
     if (!v9)
     {
       v18 = 0;
@@ -1122,32 +1122,32 @@ LABEL_23:
     v11 = [v10 classifierResourceTypesToNamesForOriginatingRequestSpecifier:v9];
     if (v11)
     {
-      v12 = [v6 objectForKeyedSubscript:@"VNDetectorOption_PreferBackgroundProcessing"];
-      v13 = [v12 BOOLValue];
+      v12 = [configurationOptions objectForKeyedSubscript:@"VNDetectorOption_PreferBackgroundProcessing"];
+      bOOLValue = [v12 BOOLValue];
 
       v14 = VNFrameworkBundle();
-      v15 = _modelBundlePathForClassifierResource(v14, v11, @"espresso-descriptor", @"bin", a4);
+      v15 = _modelBundlePathForClassifierResource(v14, v11, @"espresso-descriptor", @"bin", error);
       if (v15)
       {
-        v23 = _modelBundlePathForClassifierResource(v14, v11, @"espresso-classifier", @"bin", a4);
+        v23 = _modelBundlePathForClassifierResource(v14, v11, @"espresso-classifier", @"bin", error);
         if (v23)
         {
-          v16 = _modelBundlePathForClassifierResource(v14, v11, @"espresso-classifier-labels", @"csv", a4);
+          v16 = _modelBundlePathForClassifierResource(v14, v11, @"espresso-classifier-labels", @"csv", error);
           if (v16)
           {
             aBlock[0] = MEMORY[0x1E69E9820];
             aBlock[1] = 3221225472;
             aBlock[2] = __68__VNEspressoModelClassifier_completeInitializationForSession_error___block_invoke;
             aBlock[3] = &unk_1E77B3838;
-            v25 = v6;
-            v26 = self;
-            v31 = v13;
+            v25 = configurationOptions;
+            selfCopy = self;
+            v31 = bOOLValue;
             v30 = v10;
             v27 = v23;
             v28 = v16;
             v29 = v15;
             v17 = _Block_copy(aBlock);
-            v18 = VNExecuteBlock(v17, a4);
+            v18 = VNExecuteBlock(v17, error);
           }
 
           else
@@ -1173,7 +1173,7 @@ LABEL_23:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         v18 = 0;
 LABEL_22:
@@ -1186,7 +1186,7 @@ LABEL_22:
       v14 = [v19 stringWithFormat:@"%@ must implement +classifierResourceTypesToNamesForOriginatingRequestSpecifier: for %@", v20, v9];
 
       [VNError errorForUnimplementedFunctionWithLocalizedDescription:v14];
-      *a4 = v18 = 0;
+      *error = v18 = 0;
     }
 
     goto LABEL_22;

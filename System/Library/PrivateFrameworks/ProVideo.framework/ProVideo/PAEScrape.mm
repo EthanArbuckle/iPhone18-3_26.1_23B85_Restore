@@ -1,19 +1,19 @@
 @interface PAEScrape
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEScrape)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEScrape)initWithAPIManager:(id)manager;
 - (id)properties;
 - (void)dealloc;
 @end
 
 @implementation PAEScrape
 
-- (PAEScrape)initWithAPIManager:(id)a3
+- (PAEScrape)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEScrape;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (void)dealloc
@@ -52,19 +52,19 @@
   return v3 != 0;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (v9)
   {
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:input];
     v27 = 0;
     v25 = 0u;
     v26 = 0u;
     memset(&v24[2], 0, 32);
-    if (a3)
+    if (output)
     {
-      [a3 imageInfo];
+      [output imageInfo];
       v10 = *(&v25 + 1) == 0;
     }
 
@@ -73,22 +73,22 @@
       v10 = 1;
     }
 
-    [(PAESharedDefaultBase *)self getScaleForImage:a4];
+    [(PAESharedDefaultBase *)self getScaleForImage:input];
     __asm { FMOV            V0.2D, #0.5 }
 
     v24[0] = _Q0;
-    [v9 getXValue:v24 YValue:v24 + 8 fromParm:1 atFxTime:a5->var0.var1];
-    [(PAESharedDefaultBase *)self convertRelativeToPixelCoordinates:v24 withImage:a4];
+    [v9 getXValue:v24 YValue:v24 + 8 fromParm:1 atFxTime:info->var0.var1];
+    [(PAESharedDefaultBase *)self convertRelativeToPixelCoordinates:v24 withImage:input];
     v24[0] = v23;
     *&v23 = 0;
-    [v9 getFloatValue:&v23 fromParm:2 atFxTime:a5->var0.var1];
+    [v9 getFloatValue:&v23 fromParm:2 atFxTime:info->var0.var1];
     if (!v10)
     {
       *&v23 = -(*&v23 + -3.14159265);
     }
 
     v22 = 0.0;
-    [v9 getFloatValue:&v22 fromParm:3 atFxTime:a5->var0.var1];
+    [v9 getFloatValue:&v22 fromParm:3 atFxTime:info->var0.var1];
     if (v22 <= 200.0)
     {
       v16 = v22;
@@ -117,13 +117,13 @@
     }
 
     v21 = 0;
-    [v9 getIntValue:&v21 fromParm:4 atFxTime:{a5->var0.var1, v18}];
+    [v9 getIntValue:&v21 fromParm:4 atFxTime:{info->var0.var1, v18}];
     __sincos_stret(*&v23);
-    if (-[PAESharedDefaultBase getRenderMode:](self, "getRenderMode:", a5->var0.var1) && [a4 imageType] == 3)
+    if (-[PAESharedDefaultBase getRenderMode:](self, "getRenderMode:", info->var0.var1) && [input imageType] == 3)
     {
-      if (a4)
+      if (input)
       {
-        [a4 heliumRef];
+        [input heliumRef];
       }
 
       v19 = HGObject::operator new(0x1B0uLL);
@@ -134,15 +134,15 @@
   return v9 != 0;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

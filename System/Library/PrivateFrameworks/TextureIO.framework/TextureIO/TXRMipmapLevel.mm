@@ -1,15 +1,15 @@
 @interface TXRMipmapLevel
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setImage:(id)a3 atElement:(unint64_t)a4 atFace:(unint64_t)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setImage:(id)image atElement:(unint64_t)element atFace:(unint64_t)face;
 @end
 
 @implementation TXRMipmapLevel
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = [+[TXRMipmapLevel allocWithZone:](TXRMipmapLevel init];
-  v6 = [objc_msgSend(MEMORY[0x277CBEB18] allocWithZone:{a3), "initWithCapacity:", -[NSMutableArray count](self->_elements, "count")}];
+  v6 = [objc_msgSend(MEMORY[0x277CBEB18] allocWithZone:{zone), "initWithCapacity:", -[NSMutableArray count](self->_elements, "count")}];
   elements = v5->_elements;
   v5->_elements = v6;
 
@@ -34,7 +34,7 @@
         }
 
         v13 = v5->_elements;
-        v14 = [*(*(&v17 + 1) + 8 * v12) copyWithZone:{a3, v17}];
+        v14 = [*(*(&v17 + 1) + 8 * v12) copyWithZone:{zone, v17}];
         [(NSMutableArray *)v13 addObject:v14];
 
         ++v12;
@@ -51,12 +51,12 @@
   return v5;
 }
 
-- (void)setImage:(id)a3 atElement:(unint64_t)a4 atFace:(unint64_t)a5
+- (void)setImage:(id)image atElement:(unint64_t)element atFace:(unint64_t)face
 {
   elements = self->_elements;
-  v8 = a3;
-  v9 = [(NSMutableArray *)elements objectAtIndexedSubscript:a4];
-  [v9 setImage:v8 atFace:a5];
+  imageCopy = image;
+  v9 = [(NSMutableArray *)elements objectAtIndexedSubscript:element];
+  [v9 setImage:imageCopy atFace:face];
 }
 
 @end

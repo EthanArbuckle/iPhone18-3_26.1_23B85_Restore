@@ -1,48 +1,48 @@
 @interface CKKSControl
-- (CKKSControl)initWithConnection:(id)a3;
-- (id)objectProxyWithErrorHandler:(id)a3;
+- (CKKSControl)initWithConnection:(id)connection;
+- (id)objectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
-- (void)deleteSEView:(id)a3 reply:(id)a4;
-- (void)initialSyncStatus:(id)a3 reply:(id)a4;
-- (void)modifyTLKSharesForSEView:(id)a3 adding:(id)a4 deleting:(id)a5 reply:(id)a6;
-- (void)pcsMirrorKeysForServices:(id)a3 reply:(id)a4;
-- (void)proposeTLKForSEView:(id)a3 proposedTLK:(id)a4 wrappedOldTLK:(id)a5 tlkShares:(id)a6 reply:(id)a7;
-- (void)rpcCKMetric:(id)a3 attributes:(id)a4 reply:(id)a5;
-- (void)rpcGetCKDeviceIDWithReply:(id)a3;
-- (void)rpcKnownBadState:(id)a3 reply:(id)a4;
-- (void)rpcKnownBadStateForViews:(id)a3 reply:(id)a4;
-- (void)rpcPerformanceCounters:(id)a3;
-- (void)rpcPushOutgoingChanges:(id)a3 reply:(id)a4;
-- (void)rpcResetCloudKit:(id)a3 reason:(id)a4 reply:(id)a5;
-- (void)rpcResetLocal:(id)a3 reply:(id)a4;
-- (void)rpcResync:(id)a3 reply:(id)a4;
-- (void)rpcResyncLocal:(id)a3 reply:(id)a4;
-- (void)rpcTLKMissing:(id)a3 reply:(id)a4;
-- (void)toggleHavoc:(id)a3;
+- (void)deleteSEView:(id)view reply:(id)reply;
+- (void)initialSyncStatus:(id)status reply:(id)reply;
+- (void)modifyTLKSharesForSEView:(id)view adding:(id)adding deleting:(id)deleting reply:(id)reply;
+- (void)pcsMirrorKeysForServices:(id)services reply:(id)reply;
+- (void)proposeTLKForSEView:(id)view proposedTLK:(id)k wrappedOldTLK:(id)lK tlkShares:(id)shares reply:(id)reply;
+- (void)rpcCKMetric:(id)metric attributes:(id)attributes reply:(id)reply;
+- (void)rpcGetCKDeviceIDWithReply:(id)reply;
+- (void)rpcKnownBadState:(id)state reply:(id)reply;
+- (void)rpcKnownBadStateForViews:(id)views reply:(id)reply;
+- (void)rpcPerformanceCounters:(id)counters;
+- (void)rpcPushOutgoingChanges:(id)changes reply:(id)reply;
+- (void)rpcResetCloudKit:(id)kit reason:(id)reason reply:(id)reply;
+- (void)rpcResetLocal:(id)local reply:(id)reply;
+- (void)rpcResync:(id)resync reply:(id)reply;
+- (void)rpcResyncLocal:(id)local reply:(id)reply;
+- (void)rpcTLKMissing:(id)missing reply:(id)reply;
+- (void)toggleHavoc:(id)havoc;
 @end
 
 @implementation CKKSControl
 
-- (void)initialSyncStatus:(id)a3 reply:(id)a4
+- (void)initialSyncStatus:(id)status reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  replyCopy = reply;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __39__CKKSControl_initialSyncStatus_reply___block_invoke;
   v16[3] = &unk_1E70DECC0;
-  v8 = v7;
+  v8 = replyCopy;
   v17 = v8;
   v9 = [(CKKSControl *)self objectProxyWithErrorHandler:v16];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __39__CKKSControl_initialSyncStatus_reply___block_invoke_2;
   v12[3] = &unk_1E70D4B78;
-  v14 = self;
+  selfCopy = self;
   v15 = v8;
-  v13 = v6;
+  v13 = statusCopy;
   v10 = v8;
-  v11 = v6;
+  v11 = statusCopy;
   [v9 initialSyncStatus:v11 reply:v12];
 }
 
@@ -86,16 +86,16 @@ LABEL_6:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pcsMirrorKeysForServices:(id)a3 reply:(id)a4
+- (void)pcsMirrorKeysForServices:(id)services reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __46__CKKSControl_pcsMirrorKeysForServices_reply___block_invoke;
   v13[3] = &unk_1E70DECC0;
-  v7 = v6;
+  v7 = replyCopy;
   v14 = v7;
-  v8 = a3;
+  servicesCopy = services;
   v9 = [(CKKSControl *)self objectProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -104,17 +104,17 @@ LABEL_6:
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v9 pcsMirrorKeysForServices:v8 reply:v11];
+  [v9 pcsMirrorKeysForServices:servicesCopy reply:v11];
 }
 
-- (void)toggleHavoc:(id)a3
+- (void)toggleHavoc:(id)havoc
 {
-  v4 = a3;
+  havocCopy = havoc;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __27__CKKSControl_toggleHavoc___block_invoke;
   v10[3] = &unk_1E70DECC0;
-  v5 = v4;
+  v5 = havocCopy;
   v11 = v5;
   v6 = [(CKKSControl *)self objectProxyWithErrorHandler:v10];
   v8[0] = MEMORY[0x1E69E9820];
@@ -127,16 +127,16 @@ LABEL_6:
   [v6 toggleHavoc:v8];
 }
 
-- (void)deleteSEView:(id)a3 reply:(id)a4
+- (void)deleteSEView:(id)view reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __34__CKKSControl_deleteSEView_reply___block_invoke;
   v13[3] = &unk_1E70DECC0;
-  v7 = v6;
+  v7 = replyCopy;
   v14 = v7;
-  v8 = a3;
+  viewCopy = view;
   v9 = [(CKKSControl *)self objectProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -145,21 +145,21 @@ LABEL_6:
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v9 deleteSEView:v8 reply:v11];
+  [v9 deleteSEView:viewCopy reply:v11];
 }
 
-- (void)modifyTLKSharesForSEView:(id)a3 adding:(id)a4 deleting:(id)a5 reply:(id)a6
+- (void)modifyTLKSharesForSEView:(id)view adding:(id)adding deleting:(id)deleting reply:(id)reply
 {
-  v10 = a6;
+  replyCopy = reply;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __62__CKKSControl_modifyTLKSharesForSEView_adding_deleting_reply___block_invoke;
   v19[3] = &unk_1E70DECC0;
-  v11 = v10;
+  v11 = replyCopy;
   v20 = v11;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  deletingCopy = deleting;
+  addingCopy = adding;
+  viewCopy = view;
   v15 = [(CKKSControl *)self objectProxyWithErrorHandler:v19];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -168,22 +168,22 @@ LABEL_6:
   v17[4] = self;
   v18 = v11;
   v16 = v11;
-  [v15 modifyTLKSharesForSEView:v14 adding:v13 deleting:v12 reply:v17];
+  [v15 modifyTLKSharesForSEView:viewCopy adding:addingCopy deleting:deletingCopy reply:v17];
 }
 
-- (void)proposeTLKForSEView:(id)a3 proposedTLK:(id)a4 wrappedOldTLK:(id)a5 tlkShares:(id)a6 reply:(id)a7
+- (void)proposeTLKForSEView:(id)view proposedTLK:(id)k wrappedOldTLK:(id)lK tlkShares:(id)shares reply:(id)reply
 {
-  v12 = a7;
+  replyCopy = reply;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __77__CKKSControl_proposeTLKForSEView_proposedTLK_wrappedOldTLK_tlkShares_reply___block_invoke;
   v22[3] = &unk_1E70DECC0;
-  v13 = v12;
+  v13 = replyCopy;
   v23 = v13;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  sharesCopy = shares;
+  lKCopy = lK;
+  kCopy = k;
+  viewCopy = view;
   v18 = [(CKKSControl *)self objectProxyWithErrorHandler:v22];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -192,32 +192,32 @@ LABEL_6:
   v20[4] = self;
   v21 = v13;
   v19 = v13;
-  [v18 proposeTLKForSEView:v17 proposedTLK:v16 wrappedOldTLK:v15 tlkShares:v14 reply:v20];
+  [v18 proposeTLKForSEView:viewCopy proposedTLK:kCopy wrappedOldTLK:lKCopy tlkShares:sharesCopy reply:v20];
 }
 
-- (void)rpcKnownBadStateForViews:(id)a3 reply:(id)a4
+- (void)rpcKnownBadStateForViews:(id)views reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] == 1)
+  viewsCopy = views;
+  replyCopy = reply;
+  if ([viewsCopy count] == 1)
   {
-    v8 = [v6 firstObject];
+    firstObject = [viewsCopy firstObject];
   }
 
   else
   {
-    v8 = 0;
+    firstObject = 0;
   }
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __46__CKKSControl_rpcKnownBadStateForViews_reply___block_invoke;
   v11[3] = &unk_1E70D4B00;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [(CKKSControl *)self rpcFastStatus:v8 reply:v11];
+  v12 = viewsCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = viewsCopy;
+  [(CKKSControl *)self rpcFastStatus:firstObject reply:v11];
 }
 
 void __46__CKKSControl_rpcKnownBadStateForViews_reply___block_invoke(uint64_t a1, void *a2)
@@ -287,14 +287,14 @@ void __46__CKKSControl_rpcKnownBadStateForViews_reply___block_invoke(uint64_t a1
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)rpcKnownBadState:(id)a3 reply:(id)a4
+- (void)rpcKnownBadState:(id)state reply:(id)reply
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  stateCopy = state;
+  replyCopy = reply;
+  if (stateCopy)
   {
-    v13[0] = v6;
+    v13[0] = stateCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   }
 
@@ -307,23 +307,23 @@ void __46__CKKSControl_rpcKnownBadStateForViews_reply___block_invoke(uint64_t a1
   v11[1] = 3221225472;
   v11[2] = __38__CKKSControl_rpcKnownBadState_reply___block_invoke;
   v11[3] = &unk_1E70D4AD8;
-  v12 = v7;
-  v9 = v7;
+  v12 = replyCopy;
+  v9 = replyCopy;
   [(CKKSControl *)self rpcKnownBadStateForViews:v8 reply:v11];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)rpcTLKMissing:(id)a3 reply:(id)a4
+- (void)rpcTLKMissing:(id)missing reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __35__CKKSControl_rpcTLKMissing_reply___block_invoke;
   v8[3] = &unk_1E70DDD30;
-  v9 = v6;
-  v7 = v6;
-  [(CKKSControl *)self rpcFastStatus:a3 reply:v8];
+  v9 = replyCopy;
+  v7 = replyCopy;
+  [(CKKSControl *)self rpcFastStatus:missing reply:v8];
 }
 
 void __35__CKKSControl_rpcTLKMissing_reply___block_invoke(uint64_t a1, void *a2)
@@ -368,14 +368,14 @@ void __35__CKKSControl_rpcTLKMissing_reply___block_invoke(uint64_t a1, void *a2)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)rpcGetCKDeviceIDWithReply:(id)a3
+- (void)rpcGetCKDeviceIDWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __41__CKKSControl_rpcGetCKDeviceIDWithReply___block_invoke;
   v10[3] = &unk_1E70DECC0;
-  v5 = v4;
+  v5 = replyCopy;
   v11 = v5;
   v6 = [(CKKSControl *)self objectProxyWithErrorHandler:v10];
   v8[0] = MEMORY[0x1E69E9820];
@@ -388,14 +388,14 @@ void __35__CKKSControl_rpcTLKMissing_reply___block_invoke(uint64_t a1, void *a2)
   [v6 rpcGetCKDeviceIDWithReply:v8];
 }
 
-- (void)rpcPerformanceCounters:(id)a3
+- (void)rpcPerformanceCounters:(id)counters
 {
-  v4 = a3;
+  countersCopy = counters;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __38__CKKSControl_rpcPerformanceCounters___block_invoke;
   v10[3] = &unk_1E70DECC0;
-  v5 = v4;
+  v5 = countersCopy;
   v11 = v5;
   v6 = [(CKKSControl *)self objectProxyWithErrorHandler:v10];
   v8[0] = MEMORY[0x1E69E9820];
@@ -408,17 +408,17 @@ void __35__CKKSControl_rpcTLKMissing_reply___block_invoke(uint64_t a1, void *a2)
   [v6 performanceCounters:v8];
 }
 
-- (void)rpcCKMetric:(id)a3 attributes:(id)a4 reply:(id)a5
+- (void)rpcCKMetric:(id)metric attributes:(id)attributes reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __44__CKKSControl_rpcCKMetric_attributes_reply___block_invoke;
   v16[3] = &unk_1E70DECC0;
-  v9 = v8;
+  v9 = replyCopy;
   v17 = v9;
-  v10 = a4;
-  v11 = a3;
+  attributesCopy = attributes;
+  metricCopy = metric;
   v12 = [(CKKSControl *)self objectProxyWithErrorHandler:v16];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -427,19 +427,19 @@ void __35__CKKSControl_rpcTLKMissing_reply___block_invoke(uint64_t a1, void *a2)
   v14[4] = self;
   v15 = v9;
   v13 = v9;
-  [v12 rpcCKMetric:v11 attributes:v10 reply:v14];
+  [v12 rpcCKMetric:metricCopy attributes:attributesCopy reply:v14];
 }
 
-- (void)rpcPushOutgoingChanges:(id)a3 reply:(id)a4
+- (void)rpcPushOutgoingChanges:(id)changes reply:(id)reply
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  replyCopy = reply;
   v8 = secLogObjForScope("ckkscontrol");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = changesCopy;
     _os_log_impl(&dword_1887D2000, v8, OS_LOG_TYPE_DEFAULT, "Requesting a push for view %@", buf, 0xCu);
   }
 
@@ -447,7 +447,7 @@ void __35__CKKSControl_rpcTLKMissing_reply___block_invoke(uint64_t a1, void *a2)
   v15[1] = 3221225472;
   v15[2] = __44__CKKSControl_rpcPushOutgoingChanges_reply___block_invoke;
   v15[3] = &unk_1E70DECC0;
-  v9 = v7;
+  v9 = replyCopy;
   v16 = v9;
   v10 = [(CKKSControl *)self objectProxyWithErrorHandler:v15];
   v13[0] = MEMORY[0x1E69E9820];
@@ -457,7 +457,7 @@ void __35__CKKSControl_rpcTLKMissing_reply___block_invoke(uint64_t a1, void *a2)
   v13[4] = self;
   v14 = v9;
   v11 = v9;
-  [v10 rpcPushOutgoingChanges:v6 reply:v13];
+  [v10 rpcPushOutgoingChanges:changesCopy reply:v13];
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -528,16 +528,16 @@ LABEL_6:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)rpcResync:(id)a3 reply:(id)a4
+- (void)rpcResync:(id)resync reply:(id)reply
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resyncCopy = resync;
+  replyCopy = reply;
   v8 = secLogObjForScope("ckkscontrol");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = resyncCopy;
     _os_log_impl(&dword_1887D2000, v8, OS_LOG_TYPE_DEFAULT, "Requesting a resync for view %@", buf, 0xCu);
   }
 
@@ -545,7 +545,7 @@ LABEL_6:
   v15[1] = 3221225472;
   v15[2] = __31__CKKSControl_rpcResync_reply___block_invoke;
   v15[3] = &unk_1E70DECC0;
-  v9 = v7;
+  v9 = replyCopy;
   v16 = v9;
   v10 = [(CKKSControl *)self objectProxyWithErrorHandler:v15];
   v13[0] = MEMORY[0x1E69E9820];
@@ -555,7 +555,7 @@ LABEL_6:
   v13[4] = self;
   v14 = v9;
   v11 = v9;
-  [v10 rpcResync:v6 reply:v13];
+  [v10 rpcResync:resyncCopy reply:v13];
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -593,16 +593,16 @@ LABEL_6:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)rpcResyncLocal:(id)a3 reply:(id)a4
+- (void)rpcResyncLocal:(id)local reply:(id)reply
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  localCopy = local;
+  replyCopy = reply;
   v8 = secLogObjForScope("ckkscontrol");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = localCopy;
     _os_log_impl(&dword_1887D2000, v8, OS_LOG_TYPE_DEFAULT, "Requesting a local resync for view %@", buf, 0xCu);
   }
 
@@ -610,7 +610,7 @@ LABEL_6:
   v15[1] = 3221225472;
   v15[2] = __36__CKKSControl_rpcResyncLocal_reply___block_invoke;
   v15[3] = &unk_1E70DECC0;
-  v9 = v7;
+  v9 = replyCopy;
   v16 = v9;
   v10 = [(CKKSControl *)self objectProxyWithErrorHandler:v15];
   v13[0] = MEMORY[0x1E69E9820];
@@ -620,7 +620,7 @@ LABEL_6:
   v13[4] = self;
   v14 = v9;
   v11 = v9;
-  [v10 rpcResyncLocal:v6 reply:v13];
+  [v10 rpcResyncLocal:localCopy reply:v13];
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -658,17 +658,17 @@ LABEL_6:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)rpcResetCloudKit:(id)a3 reason:(id)a4 reply:(id)a5
+- (void)rpcResetCloudKit:(id)kit reason:(id)reason reply:(id)reply
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  kitCopy = kit;
+  replyCopy = reply;
+  reasonCopy = reason;
   v11 = secLogObjForScope("ckkscontrol");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v8;
+    v21 = kitCopy;
     _os_log_impl(&dword_1887D2000, v11, OS_LOG_TYPE_DEFAULT, "Requesting a CloudKit reset for view %@", buf, 0xCu);
   }
 
@@ -676,7 +676,7 @@ LABEL_6:
   v18[1] = 3221225472;
   v18[2] = __45__CKKSControl_rpcResetCloudKit_reason_reply___block_invoke;
   v18[3] = &unk_1E70DECC0;
-  v12 = v9;
+  v12 = replyCopy;
   v19 = v12;
   v13 = [(CKKSControl *)self objectProxyWithErrorHandler:v18];
   v16[0] = MEMORY[0x1E69E9820];
@@ -686,7 +686,7 @@ LABEL_6:
   v16[4] = self;
   v17 = v12;
   v14 = v12;
-  [v13 rpcResetCloudKit:v8 reason:v10 reply:v16];
+  [v13 rpcResetCloudKit:kitCopy reason:reasonCopy reply:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -724,16 +724,16 @@ LABEL_6:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)rpcResetLocal:(id)a3 reply:(id)a4
+- (void)rpcResetLocal:(id)local reply:(id)reply
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  localCopy = local;
+  replyCopy = reply;
   v8 = secLogObjForScope("ckkscontrol");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = localCopy;
     _os_log_impl(&dword_1887D2000, v8, OS_LOG_TYPE_DEFAULT, "Requesting a local reset for view %@", buf, 0xCu);
   }
 
@@ -741,7 +741,7 @@ LABEL_6:
   v15[1] = 3221225472;
   v15[2] = __35__CKKSControl_rpcResetLocal_reply___block_invoke;
   v15[3] = &unk_1E70DECC0;
-  v9 = v7;
+  v9 = replyCopy;
   v16 = v9;
   v10 = [(CKKSControl *)self objectProxyWithErrorHandler:v15];
   v13[0] = MEMORY[0x1E69E9820];
@@ -751,7 +751,7 @@ LABEL_6:
   v13[4] = self;
   v14 = v9;
   v11 = v9;
-  [v10 rpcResetLocal:v6 reply:v13];
+  [v10 rpcResetLocal:localCopy reply:v13];
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -789,20 +789,20 @@ LABEL_6:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)objectProxyWithErrorHandler:(id)a3
+- (id)objectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CKKSControl *)self synchronous];
-  v6 = [(CKKSControl *)self connection];
-  v7 = v6;
-  if (v5)
+  handlerCopy = handler;
+  synchronous = [(CKKSControl *)self synchronous];
+  connection = [(CKKSControl *)self connection];
+  v7 = connection;
+  if (synchronous)
   {
-    [v6 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    [connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
-    [v6 remoteObjectProxyWithErrorHandler:v4];
+    [connection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
   v8 = ;
 
@@ -811,24 +811,24 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [(CKKSControl *)self connection];
-  [v3 invalidate];
+  connection = [(CKKSControl *)self connection];
+  [connection invalidate];
 
   v4.receiver = self;
   v4.super_class = CKKSControl;
   [(CKKSControl *)&v4 dealloc];
 }
 
-- (CKKSControl)initWithConnection:(id)a3
+- (CKKSControl)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = CKKSControl;
   v6 = [(CKKSControl *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;

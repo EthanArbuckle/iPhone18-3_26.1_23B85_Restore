@@ -1,10 +1,10 @@
 @interface WFSeekAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFSeekAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v23[1] = *MEMORY[0x277D85DE8];
   v4 = [(WFSeekAction *)self parameterValueForKey:@"WFMediaRoute" ofClass:objc_opt_class()];
@@ -13,23 +13,23 @@
     v5 = [(WFSeekAction *)self parameterValueForKey:@"WFSeekBehavior" ofClass:objc_opt_class()];
     v6 = [(WFSeekAction *)self parameterValueForKey:@"WFTimeInterval" ofClass:objc_opt_class()];
     v7 = MEMORY[0x277D7C398];
-    v8 = [v6 unitString];
-    v9 = [v7 calendarUnitFromUnitString:v8];
+    unitString = [v6 unitString];
+    v9 = [v7 calendarUnitFromUnitString:unitString];
 
-    v10 = [MEMORY[0x277CBEAA8] date];
-    v11 = [MEMORY[0x277CBEA80] currentCalendar];
-    v12 = [v6 magnitude];
-    v13 = [v11 dateByAddingUnit:v9 value:objc_msgSend(v12 toDate:"integerValue") options:{v10, 0}];
+    date = [MEMORY[0x277CBEAA8] date];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    magnitude = [v6 magnitude];
+    v13 = [currentCalendar dateByAddingUnit:v9 value:objc_msgSend(magnitude toDate:"integerValue") options:{date, 0}];
 
-    [v13 timeIntervalSinceDate:v10];
+    [v13 timeIntervalSinceDate:date];
     v15 = v14;
     v16 = objc_alloc_init(WFMediaPlaybackController);
     v17 = 0;
     if (([v4 isLocalDevice] & 1) == 0)
     {
-      v18 = [v4 routeUID];
+      routeUID = [v4 routeUID];
 
-      if (!v18)
+      if (!routeUID)
       {
         v17 = WFMediaRouteDescriptorIsMissingRouteUIDError();
         [(WFSeekAction *)self finishRunningWithError:v17];
@@ -38,8 +38,8 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v19 = [v4 routeUID];
-      v23[0] = v19;
+      routeUID2 = [v4 routeUID];
+      v23[0] = routeUID2;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
     }
 

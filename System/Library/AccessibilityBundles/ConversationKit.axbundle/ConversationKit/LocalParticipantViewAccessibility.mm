@@ -1,5 +1,5 @@
 @interface LocalParticipantViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsExpanded;
 - (BOOL)_accessibilityIsFullScreen;
 - (BOOL)_axHandleLongPress;
@@ -17,24 +17,24 @@
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)updateCountdownWith:(int64_t)a3;
+- (void)updateCountdownWith:(int64_t)with;
 @end
 
 @implementation LocalParticipantViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"accessibilityConstraintController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"toggleReactionsView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" hasProperty:@"reactionsViewController" withType:"@"];
-  [v3 validateClass:@"ConversationKit.VideoReactionPickerViewController" hasProperty:@"view" withType:"@"];
-  [v3 validateClass:@"CNKFaceTimeConstraintsController" hasInstanceMethod:@"localParticipantState" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"ParticipantViewAccessibility" hasInstanceMethod:@"_accessibilityVideoView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.LocalParticipantView" hasInstanceMethod:@"controlsView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.LocalParticipantView" hasSwiftField:@"buttonShelfHost" withSwiftType:"Optional<UIHostingController<ButtonShelfView>>"];
-  [v3 validateClass:@"ConversationKit.LocalParticipantControlsView" hasInstanceMethod:@"collapseButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.LocalParticipantView" hasInstanceMethod:@"updateCountdownWith:" withFullSignature:{"v", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"accessibilityConstraintController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"toggleReactionsView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" hasProperty:@"reactionsViewController" withType:"@"];
+  [validationsCopy validateClass:@"ConversationKit.VideoReactionPickerViewController" hasProperty:@"view" withType:"@"];
+  [validationsCopy validateClass:@"CNKFaceTimeConstraintsController" hasInstanceMethod:@"localParticipantState" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"ParticipantViewAccessibility" hasInstanceMethod:@"_accessibilityVideoView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.LocalParticipantView" hasInstanceMethod:@"controlsView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.LocalParticipantView" hasSwiftField:@"buttonShelfHost" withSwiftType:"Optional<UIHostingController<ButtonShelfView>>"];
+  [validationsCopy validateClass:@"ConversationKit.LocalParticipantControlsView" hasInstanceMethod:@"collapseButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.LocalParticipantView" hasInstanceMethod:@"updateCountdownWith:" withFullSignature:{"v", "q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -67,11 +67,11 @@ uint64_t __79__LocalParticipantViewAccessibility__accessibilityLoadAccessibility
 - (id)accessibilityAttributedLabel
 {
   v3 = accessibilityLocalizedString(@"participant.video");
-  v4 = [(LocalParticipantViewAccessibility *)self _axParticipantView];
-  v12 = [v4 accessibilityLabel];
+  _axParticipantView = [(LocalParticipantViewAccessibility *)self _axParticipantView];
+  accessibilityLabel = [_axParticipantView accessibilityLabel];
   v5 = __UIAXStringForVariables();
 
-  v6 = [objc_alloc(MEMORY[0x29EDBA038]) initWithString:{v5, v12, @"__AXStringForVariablesSentinel"}];
+  v6 = [objc_alloc(MEMORY[0x29EDBA038]) initWithString:{v5, accessibilityLabel, @"__AXStringForVariablesSentinel"}];
   v7 = *MEMORY[0x29EDC7F40];
   v8 = [v3 length];
   v9 = [v5 length];
@@ -129,11 +129,11 @@ uint64_t __55__LocalParticipantViewAccessibility_accessibilityValue__block_invok
 
 - (id)accessibilityHint
 {
-  v3 = [(LocalParticipantViewAccessibility *)self _accessibilityIsExpanded];
-  v4 = [(LocalParticipantViewAccessibility *)self _axReactionsVisible];
+  _accessibilityIsExpanded = [(LocalParticipantViewAccessibility *)self _accessibilityIsExpanded];
+  _axReactionsVisible = [(LocalParticipantViewAccessibility *)self _axReactionsVisible];
   if ([(LocalParticipantViewAccessibility *)self _axIsShowingVideo])
   {
-    if (v3 || v4)
+    if (_accessibilityIsExpanded || _axReactionsVisible)
     {
       v5 = @"minimize.hint";
     }
@@ -156,9 +156,9 @@ uint64_t __55__LocalParticipantViewAccessibility_accessibilityValue__block_invok
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(LocalParticipantViewAccessibility *)self _axIsShowingVideo];
+  _axIsShowingVideo = [(LocalParticipantViewAccessibility *)self _axIsShowingVideo];
   v3 = MEMORY[0x29EDC7F70];
-  if (!v2)
+  if (!_axIsShowingVideo)
   {
     v3 = MEMORY[0x29EDC7FA0];
   }
@@ -168,12 +168,12 @@ uint64_t __55__LocalParticipantViewAccessibility_accessibilityValue__block_invok
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(LocalParticipantViewAccessibility *)self _axParticipantView];
-  v4 = [(LocalParticipantViewAccessibility *)self _accessibilityIsExpanded];
-  v5 = [(LocalParticipantViewAccessibility *)self _axReactionsVisible];
+  _axParticipantView = [(LocalParticipantViewAccessibility *)self _axParticipantView];
+  _accessibilityIsExpanded = [(LocalParticipantViewAccessibility *)self _accessibilityIsExpanded];
+  _axReactionsVisible = [(LocalParticipantViewAccessibility *)self _axReactionsVisible];
   if ([(LocalParticipantViewAccessibility *)self _axIsShowingVideo])
   {
-    if (v4)
+    if (_accessibilityIsExpanded)
     {
       objc_opt_class();
       v7 = [(LocalParticipantViewAccessibility *)self safeValueForKeyPath:@"controlsView.collapseButton"];
@@ -193,12 +193,12 @@ uint64_t __55__LocalParticipantViewAccessibility_accessibilityValue__block_invok
 
     else
     {
-      v7 = [v3 safeValueForKey:@"_axHandleSingleTap"];
+      v7 = [_axParticipantView safeValueForKey:@"_axHandleSingleTap"];
 
       if (v7)
       {
         LODWORD(v7) = *MEMORY[0x29EDC7EA8];
-        if (v5)
+        if (_axReactionsVisible)
         {
           v10 = @"minimized.local";
         }
@@ -227,11 +227,11 @@ uint64_t __55__LocalParticipantViewAccessibility_accessibilityValue__block_invok
 
 - (BOOL)accessibilityPerformEscape
 {
-  v3 = [(LocalParticipantViewAccessibility *)self _accessibilityIsExpanded];
+  _accessibilityIsExpanded = [(LocalParticipantViewAccessibility *)self _accessibilityIsExpanded];
   if ([(LocalParticipantViewAccessibility *)self _axReactionsVisible])
   {
-    v4 = [(LocalParticipantViewAccessibility *)self _axParticipantView];
-    v5 = [v4 safeValueForKey:@"_axHandleSingleTap"];
+    _axParticipantView = [(LocalParticipantViewAccessibility *)self _axParticipantView];
+    v5 = [_axParticipantView safeValueForKey:@"_axHandleSingleTap"];
 
     if (v5)
     {
@@ -244,7 +244,7 @@ uint64_t __55__LocalParticipantViewAccessibility_accessibilityValue__block_invok
     }
   }
 
-  if (!v3)
+  if (!_accessibilityIsExpanded)
   {
     return 0;
   }
@@ -292,51 +292,51 @@ uint64_t __55__LocalParticipantViewAccessibility_accessibilityValue__block_invok
   return v7;
 }
 
-- (void)updateCountdownWith:(int64_t)a3
+- (void)updateCountdownWith:(int64_t)with
 {
   v6.receiver = self;
   v6.super_class = LocalParticipantViewAccessibility;
   [(LocalParticipantViewAccessibility *)&v6 updateCountdownWith:?];
   v4 = *MEMORY[0x29EDC7EA8];
-  v5 = [MEMORY[0x29EDBA0F8] localizedStringWithFormat:@"%ld", a3];
-  UIAccessibilityPostNotification(v4, v5);
+  with = [MEMORY[0x29EDBA0F8] localizedStringWithFormat:@"%ld", with];
+  UIAccessibilityPostNotification(v4, with);
 }
 
 - (BOOL)_axIsShowingVideo
 {
-  v2 = [(LocalParticipantViewAccessibility *)self _axParticipantView];
-  v3 = [v2 safeUIViewForKey:@"_accessibilityVideoView"];
-  v4 = [v3 isHidden];
+  _axParticipantView = [(LocalParticipantViewAccessibility *)self _axParticipantView];
+  v3 = [_axParticipantView safeUIViewForKey:@"_accessibilityVideoView"];
+  isHidden = [v3 isHidden];
 
-  return v4 ^ 1;
+  return isHidden ^ 1;
 }
 
 - (BOOL)_axReactionsVisible
 {
-  v2 = [(LocalParticipantViewAccessibility *)self _axMultiwayViewController];
-  v3 = [v2 safeBoolForKey:@"isShowingReactions"];
+  _axMultiwayViewController = [(LocalParticipantViewAccessibility *)self _axMultiwayViewController];
+  v3 = [_axMultiwayViewController safeBoolForKey:@"isShowingReactions"];
 
   return v3;
 }
 
 - (id)_axParticipantView
 {
-  v3 = [(LocalParticipantViewAccessibility *)self _axGetParticipantView];
-  if (!v3)
+  _axGetParticipantView = [(LocalParticipantViewAccessibility *)self _axGetParticipantView];
+  if (!_axGetParticipantView)
   {
-    v3 = [(LocalParticipantViewAccessibility *)self _accessibilityDescendantOfType:MEMORY[0x29C2D28F0](@"ConversationKit.ParticipantView")];
-    [(LocalParticipantViewAccessibility *)self _axSetParticipantView:v3];
+    _axGetParticipantView = [(LocalParticipantViewAccessibility *)self _accessibilityDescendantOfType:MEMORY[0x29C2D28F0](@"ConversationKit.ParticipantView")];
+    [(LocalParticipantViewAccessibility *)self _axSetParticipantView:_axGetParticipantView];
   }
 
-  return v3;
+  return _axGetParticipantView;
 }
 
 - (id)_axMultiwayViewController
 {
   v2 = [(LocalParticipantViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_399 startWithSelf:1];
-  v3 = [v2 _accessibilityViewController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
 
-  return v3;
+  return _accessibilityViewController;
 }
 
 uint64_t __62__LocalParticipantViewAccessibility__axMultiwayViewController__block_invoke(uint64_t a1, void *a2)
@@ -350,36 +350,36 @@ uint64_t __62__LocalParticipantViewAccessibility__axMultiwayViewController__bloc
 
 - (id)_axConstraintsController
 {
-  v2 = [(LocalParticipantViewAccessibility *)self _axMultiwayViewController];
-  v3 = [v2 safeValueForKey:@"accessibilityConstraintController"];
+  _axMultiwayViewController = [(LocalParticipantViewAccessibility *)self _axMultiwayViewController];
+  v3 = [_axMultiwayViewController safeValueForKey:@"accessibilityConstraintController"];
 
   return v3;
 }
 
 - (BOOL)_accessibilityIsExpanded
 {
-  v2 = [(LocalParticipantViewAccessibility *)self _axConstraintsController];
-  v3 = [v2 safeIntegerForKey:@"localParticipantState"];
+  _axConstraintsController = [(LocalParticipantViewAccessibility *)self _axConstraintsController];
+  v3 = [_axConstraintsController safeIntegerForKey:@"localParticipantState"];
 
   return v3 == 2;
 }
 
 - (BOOL)_accessibilityIsFullScreen
 {
-  v2 = [(LocalParticipantViewAccessibility *)self _axConstraintsController];
-  v3 = [v2 safeIntegerForKey:@"localParticipantState"];
+  _axConstraintsController = [(LocalParticipantViewAccessibility *)self _axConstraintsController];
+  v3 = [_axConstraintsController safeIntegerForKey:@"localParticipantState"];
 
   return v3 == 3;
 }
 
 - (BOOL)_axHandleLongPress
 {
-  v2 = [(LocalParticipantViewAccessibility *)self _axMultiwayViewController];
+  _axMultiwayViewController = [(LocalParticipantViewAccessibility *)self _axMultiwayViewController];
   v8 = MEMORY[0x29EDCA5F8];
   v9 = 3221225472;
   v10 = __55__LocalParticipantViewAccessibility__axHandleLongPress__block_invoke;
   v11 = &unk_29F2B7C18;
-  v12 = v2;
+  v12 = _axMultiwayViewController;
   AXPerformSafeBlock();
   v3 = dispatch_time(0, 1000000000);
   v6[0] = MEMORY[0x29EDCA5F8];

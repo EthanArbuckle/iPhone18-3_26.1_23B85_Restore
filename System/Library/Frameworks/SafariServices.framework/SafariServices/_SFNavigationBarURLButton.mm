@@ -1,36 +1,36 @@
 @interface _SFNavigationBarURLButton
-- (BOOL)_scribbleInteraction:(id)a3 focusWillTransformElement:(id)a4;
-- (BOOL)_scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)pointMostlyInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGRect)_scribbleInteraction:(id)a3 frameForElement:(id)a4;
-- (_SFNavigationBarURLButton)initWithFrame:(CGRect)a3;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (void)_handleLongPress:(id)a3;
-- (void)_hover:(id)a3;
-- (void)_scribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4;
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6;
-- (void)_scribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5;
-- (void)_scribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4;
+- (BOOL)_scribbleInteraction:(id)interaction focusWillTransformElement:(id)element;
+- (BOOL)_scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)pointMostlyInside:(CGPoint)inside withEvent:(id)event;
+- (CGRect)_scribbleInteraction:(id)interaction frameForElement:(id)element;
+- (_SFNavigationBarURLButton)initWithFrame:(CGRect)frame;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (void)_handleLongPress:(id)press;
+- (void)_hover:(id)_hover;
+- (void)_scribbleInteraction:(id)interaction didFinishWritingInElement:(id)element;
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion;
+- (void)_scribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion;
+- (void)_scribbleInteraction:(id)interaction willBeginWritingInElement:(id)element;
 - (void)_updateBackgroundImageAnimated:(void *)result;
 - (void)_updateEffectView;
-- (void)copy:(id)a3;
+- (void)copy:(id)copy;
 - (void)dealloc;
-- (void)pasteAndGo:(id)a3;
-- (void)pasteAndSearch:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)pasteAndGo:(id)go;
+- (void)pasteAndSearch:(id)search;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)setOverlayConfiguration:;
-- (void)setTheme:(id *)a1;
+- (void)setTheme:(id *)theme;
 @end
 
 @implementation _SFNavigationBarURLButton
 
-- (_SFNavigationBarURLButton)initWithFrame:(CGRect)a3
+- (_SFNavigationBarURLButton)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = _SFNavigationBarURLButton;
-  v3 = [(_SFNavigationBarURLButton *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SFNavigationBarURLButton *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD298]);
@@ -48,11 +48,11 @@
     v3->_effectMask = v7;
 
     [(UIView *)v3->_effectMask setAutoresizingMask:18];
-    v9 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v3->_effectMask setBackgroundColor:v9];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v3->_effectMask setBackgroundColor:blackColor];
 
-    v10 = [(UIVisualEffectView *)v3->_effectView contentView];
-    [v10 addSubview:v3->_effectMask];
+    contentView = [(UIVisualEffectView *)v3->_effectView contentView];
+    [contentView addSubview:v3->_effectMask];
 
     v3->_backgroundAlphaFactor = 1.0;
     v11 = [objc_alloc(MEMORY[0x1E69DC9E0]) initWithDelegate:v3];
@@ -95,30 +95,30 @@
   [(_SFNavigationBarURLButton *)&v3 dealloc];
 }
 
-- (BOOL)pointMostlyInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointMostlyInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(_SFNavigationBarURLButton *)self layer];
-  v9 = [(_SFNavigationBarURLButton *)self layer];
-  v10 = [v9 presentationLayer];
-  [v8 convertPoint:v10 toLayer:{x, y}];
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  layer = [(_SFNavigationBarURLButton *)self layer];
+  layer2 = [(_SFNavigationBarURLButton *)self layer];
+  presentationLayer = [layer2 presentationLayer];
+  [layer convertPoint:presentationLayer toLayer:{x, y}];
   v12.receiver = self;
   v12.super_class = _SFNavigationBarURLButton;
-  LOBYTE(self) = [(_SFNavigationBarURLButton *)&v12 pointMostlyInside:v7 withEvent:?];
+  LOBYTE(self) = [(_SFNavigationBarURLButton *)&v12 pointMostlyInside:eventCopy withEvent:?];
 
   return self;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(_SFNavigationBarURLButton *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(_SFNavigationBarURLButton *)self isHighlighted]!= highlighted)
   {
     v5.receiver = self;
     v5.super_class = _SFNavigationBarURLButton;
-    [(_SFNavigationBarURLButton *)&v5 setHighlighted:v3];
+    [(_SFNavigationBarURLButton *)&v5 setHighlighted:highlightedCopy];
     if ([(_SFNavigationBarURLButton *)self adjustsImageWhenHighlighted])
     {
       [_SFNavigationBarURLButton _updateBackgroundImageAnimated:?];
@@ -126,37 +126,37 @@
   }
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationBarURLButtonDidReceiveCopyCommand:self];
 }
 
-- (void)pasteAndSearch:(id)a3
+- (void)pasteAndSearch:(id)search
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationBarURLButtonDidReceivePasteCommand:self];
 }
 
-- (void)pasteAndGo:(id)a3
+- (void)pasteAndGo:(id)go
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationBarURLButtonDidReceivePasteCommand:self];
 }
 
-- (void)_handleLongPress:(id)a3
+- (void)_handleLongPress:(id)press
 {
-  v9 = a3;
-  if ([v9 state] == 1)
+  pressCopy = press;
+  if ([pressCopy state] == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v5 = [WeakRetained navigationBarURLButton:self shouldShowMenuForGestureWithRecognizer:v9];
+    v5 = [WeakRetained navigationBarURLButton:self shouldShowMenuForGestureWithRecognizer:pressCopy];
 
     if (v5)
     {
       v6 = MEMORY[0x1E69DC9D8];
-      v7 = [(UIEditMenuInteraction *)self->_editMenuInteraction view];
-      [v9 locationInView:v7];
+      view = [(UIEditMenuInteraction *)self->_editMenuInteraction view];
+      [pressCopy locationInView:view];
       v8 = [v6 configurationWithIdentifier:0 sourcePoint:?];
 
       [(UIEditMenuInteraction *)self->_editMenuInteraction presentEditMenuWithConfiguration:v8];
@@ -164,17 +164,17 @@
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
+  senderCopy = sender;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = WeakRetained;
-  if (sel_copy_ == a3)
+  if (sel_copy_ == action)
   {
     v10 = [WeakRetained navigationBarURLButtonShouldCopy:self];
   }
 
-  else if (sel_pasteAndSearch_ == a3 || sel_pasteAndGo_ == a3)
+  else if (sel_pasteAndSearch_ == action || sel_pasteAndGo_ == action)
   {
     v10 = [WeakRetained navigationBarURLButtonShouldPaste:self];
   }
@@ -183,7 +183,7 @@
   {
     v13.receiver = self;
     v13.super_class = _SFNavigationBarURLButton;
-    v10 = [(_SFNavigationBarURLButton *)&v13 canPerformAction:a3 withSender:v6];
+    v10 = [(_SFNavigationBarURLButton *)&v13 canPerformAction:action withSender:senderCopy];
   }
 
   v11 = v10;
@@ -191,7 +191,7 @@
   return v11;
 }
 
-- (BOOL)_scribbleInteraction:(id)a3 focusWillTransformElement:(id)a4
+- (BOOL)_scribbleInteraction:(id)interaction focusWillTransformElement:(id)element
 {
   v5 = WBS_LOG_CHANNEL_PREFIXPencilInput();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -205,7 +205,7 @@
   return v7;
 }
 
-- (void)_scribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4
+- (void)_scribbleInteraction:(id)interaction willBeginWritingInElement:(id)element
 {
   v5 = WBS_LOG_CHANNEL_PREFIXPencilInput();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -217,7 +217,7 @@
   [WeakRetained navigationBarURLButtonBeginSuppressingPlaceholder:self];
 }
 
-- (void)_scribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4
+- (void)_scribbleInteraction:(id)interaction didFinishWritingInElement:(id)element
 {
   v5 = WBS_LOG_CHANNEL_PREFIXPencilInput();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -229,10 +229,10 @@
   [WeakRetained navigationBarURLButtonEndSuppressingPlaceholder:self];
 }
 
-- (BOOL)_scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4
+- (BOOL)_scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v7 = WBS_LOG_CHANNEL_PREFIXPencilInput();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -245,10 +245,10 @@
   return v9;
 }
 
-- (void)_scribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5
+- (void)_scribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a5;
+  completionCopy = completion;
   v7 = WBS_LOG_CHANNEL_PREFIXPencilInput();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -259,9 +259,9 @@
   if ([WeakRetained textFieldIsEditableForNavigationBarURLButton:self])
   {
     v9 = [WeakRetained textFieldForNavigationBarURLButton:self];
-    v10 = [v9 isFirstResponder];
+    isFirstResponder = [v9 isFirstResponder];
 
-    if (v10)
+    if (isFirstResponder)
     {
       v11 = 0;
     }
@@ -273,16 +273,16 @@
 
     v13[0] = @"pencilTextInputElementIdentifier";
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-    v6[2](v6, v12, v11);
+    completionCopy[2](completionCopy, v12, v11);
   }
 
   else
   {
-    v6[2](v6, MEMORY[0x1E695E0F0], 0x7FFFFFFFFFFFFFFFLL);
+    completionCopy[2](completionCopy, MEMORY[0x1E695E0F0], 0x7FFFFFFFFFFFFFFFLL);
   }
 }
 
-- (CGRect)_scribbleInteraction:(id)a3 frameForElement:(id)a4
+- (CGRect)_scribbleInteraction:(id)interaction frameForElement:(id)element
 {
   v5 = WBS_LOG_CHANNEL_PREFIXPencilInput();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -298,10 +298,10 @@
   return result;
 }
 
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion
 {
-  v8 = a6;
-  v9 = a4;
+  completionCopy = completion;
+  elementCopy = element;
   v10 = WBS_LOG_CHANNEL_PREFIXPencilInput();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -309,7 +309,7 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v12 = [v9 isEqual:@"pencilTextInputElementIdentifier"];
+  v12 = [elementCopy isEqual:@"pencilTextInputElementIdentifier"];
 
   if (v12 && WeakRetained)
   {
@@ -317,28 +317,28 @@
     v13[1] = 3221225472;
     v13[2] = __110___SFNavigationBarURLButton__scribbleInteraction_focusElement_initialFocusSelectionReferencePoint_completion___block_invoke;
     v13[3] = &unk_1E84908B0;
-    v16 = v8;
+    v16 = completionCopy;
     v14 = WeakRetained;
-    v15 = self;
+    selfCopy = self;
     [v14 navigationBarURLButtonDidRequestFocusForPencilInput:self completionHandler:v13];
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
+  touchCopy = touch;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [v5 locationInView:self];
+  [touchCopy locationInView:self];
   v8 = v7;
   v10 = v9;
 
-  LODWORD(v5) = [WeakRetained navigationBarURLButton:self shouldAllowLongPressAtPoint:{v8, v10}];
-  if (!v5)
+  LODWORD(touchCopy) = [WeakRetained navigationBarURLButton:self shouldAllowLongPressAtPoint:{v8, v10}];
+  if (!touchCopy)
   {
     return 0;
   }
@@ -351,33 +351,33 @@
   return [(_SFNavigationBarURLButton *)self canPerformAction:sel_pasteAndGo_ withSender:0];
 }
 
-- (void)_hover:(id)a3
+- (void)_hover:(id)_hover
 {
-  if (([a3 state] - 1) >= 2)
+  if (([_hover state] - 1) >= 2)
   {
-    v4 = [(_SFNavigationBarURLButton *)self isTracking];
+    isTracking = [(_SFNavigationBarURLButton *)self isTracking];
   }
 
   else
   {
-    v4 = 1;
+    isTracking = 1;
   }
 
-  [(_SFNavigationBarURLButton *)self setHighlighted:v4];
+  [(_SFNavigationBarURLButton *)self setHighlighted:isTracking];
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v7 = a5;
-  v8 = a3;
+  actionsCopy = actions;
+  interactionCopy = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [v8 locationInView:self];
+  [interactionCopy locationInView:self];
   v11 = v10;
   v13 = v12;
 
   if ([WeakRetained navigationBarURLButton:self shouldAllowLongPressAtPoint:{v11, v13}])
   {
-    v14 = v7;
+    v14 = actionsCopy;
   }
 
   else
@@ -390,12 +390,12 @@
   return v15;
 }
 
-- (void)setTheme:(id *)a1
+- (void)setTheme:(id *)theme
 {
   v4 = a2;
-  if (a1)
+  if (theme)
   {
-    v5 = a1[102];
+    v5 = theme[102];
     if (v5 != v4)
     {
       v10 = v4;
@@ -403,14 +403,14 @@
       v4 = v10;
       if ((v6 & 1) == 0)
       {
-        objc_storeStrong(a1 + 102, a2);
-        v7 = [v10 tintStyle];
-        v8 = [MEMORY[0x1E69DD248] _sf_effectWithStyle:0 forBarTintStyle:v7];
+        objc_storeStrong(theme + 102, a2);
+        tintStyle = [v10 tintStyle];
+        v8 = [MEMORY[0x1E69DD248] _sf_effectWithStyle:0 forBarTintStyle:tintStyle];
         OUTLINED_FUNCTION_35(v8, 752);
-        v9 = [MEMORY[0x1E69DD248] _sf_effectWithStyle:1 forBarTintStyle:v7];
+        v9 = [MEMORY[0x1E69DD248] _sf_effectWithStyle:1 forBarTintStyle:tintStyle];
         OUTLINED_FUNCTION_35(v9, 744);
-        [a1 _setOverrideUserInterfaceStyle:{objc_msgSend(v10, "platterOverrideUserInterfaceStyle")}];
-        [(_SFNavigationBarURLButton *)a1 _updateEffectView];
+        [theme _setOverrideUserInterfaceStyle:{objc_msgSend(v10, "platterOverrideUserInterfaceStyle")}];
+        [(_SFNavigationBarURLButton *)theme _updateEffectView];
         v4 = v10;
       }
     }
@@ -419,18 +419,18 @@
 
 - (void)_updateEffectView
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 isHighlighted];
+    isHighlighted = [self isHighlighted];
     v3 = &OBJC_IVAR____SFNavigationBarURLButton__vibrancyEffect;
-    if (v2)
+    if (isHighlighted)
     {
       v3 = &OBJC_IVAR____SFNavigationBarURLButton__highlightedVibrancyEffect;
     }
 
-    [*(a1 + 760) setEffect:*(a1 + *v3)];
-    v5 = [MEMORY[0x1E69DC888] blackColor];
-    v4 = [v5 colorWithAlphaComponent:*(a1 + 808)];
+    [*(self + 760) setEffect:*(self + *v3)];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v4 = [blackColor colorWithAlphaComponent:*(self + 808)];
     [OUTLINED_FUNCTION_12(768) setBackgroundColor:?];
   }
 }
@@ -466,8 +466,8 @@
   {
     v4 = *(v3 + 840);
     objc_storeStrong((v3 + 840), v1);
-    v5 = [v4 identifier];
-    v6 = [v15 identifier];
+    identifier = [v4 identifier];
+    identifier2 = [v15 identifier];
     v7 = WBSIsEqual();
 
     v8 = OUTLINED_FUNCTION_39();

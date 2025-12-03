@@ -1,15 +1,15 @@
 @interface RemoteViewController
-- (_TtC19RemoteiCloudQuotaUI20RemoteViewController)initWithCoder:(id)a3;
-- (_TtC19RemoteiCloudQuotaUI20RemoteViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)upgradeFlowManagerDidCancel:(id)a3;
-- (void)upgradeFlowManagerDidComplete:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC19RemoteiCloudQuotaUI20RemoteViewController)initWithCoder:(id)coder;
+- (_TtC19RemoteiCloudQuotaUI20RemoteViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)upgradeFlowManagerDidCancel:(id)cancel;
+- (void)upgradeFlowManagerDidComplete:(id)complete;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation RemoteViewController
 
-- (_TtC19RemoteiCloudQuotaUI20RemoteViewController)initWithCoder:(id)a3
+- (_TtC19RemoteiCloudQuotaUI20RemoteViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC19RemoteiCloudQuotaUI20RemoteViewController_flowPresented) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -24,30 +24,30 @@
   [(RemoteViewController *)&v2 viewDidLoad];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  RemoteViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  RemoteViewController.viewDidAppear(_:)(appear);
 }
 
-- (_TtC19RemoteiCloudQuotaUI20RemoteViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19RemoteiCloudQuotaUI20RemoteViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)upgradeFlowManagerDidComplete:(id)a3
+- (void)upgradeFlowManagerDidComplete:(id)complete
 {
-  v4 = a3;
-  v5 = self;
+  completeCopy = complete;
+  selfCopy = self;
   specialized RemoteViewController.upgradeFlowManagerDidComplete(_:)();
 }
 
-- (void)upgradeFlowManagerDidCancel:(id)a3
+- (void)upgradeFlowManagerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
   specialized RemoteViewController.upgradeFlowManagerDidCancel(_:)();
 }
 

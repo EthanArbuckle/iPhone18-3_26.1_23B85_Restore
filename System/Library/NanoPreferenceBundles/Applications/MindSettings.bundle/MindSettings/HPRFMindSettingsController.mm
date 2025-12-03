@@ -1,23 +1,23 @@
 @interface HPRFMindSettingsController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (HPRFMindSettingsController)init;
 - (id)_customReminderSpecifiers;
-- (id)_subtitleForCustomReminder:(id)a3;
+- (id)_subtitleForCustomReminder:(id)reminder;
 - (id)applicationGroupSpecifiers;
-- (id)getGuidedMeditationPrefetchEnabled:(id)a3;
-- (id)getMuteForToday:(id)a3;
+- (id)getGuidedMeditationPrefetchEnabled:(id)enabled;
+- (id)getMuteForToday:(id)today;
 - (id)localizedPaneTitle;
 - (id)notificationApplicationSpecifiers;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (void)_addReminderTapped;
 - (void)_manageStateOfMindSettings;
-- (void)_mutePreferencesDidChange:(id)a3;
-- (void)_reminderTapped:(id)a3;
-- (void)_remindersDidChange:(id)a3;
+- (void)_mutePreferencesDidChange:(id)change;
+- (void)_reminderTapped:(id)tapped;
+- (void)_remindersDidChange:(id)change;
 - (void)dealloc;
-- (void)setGuidedMeditationPrefetchEnabled:(id)a3 specifier:(id)a4;
-- (void)setMuteForToday:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)setGuidedMeditationPrefetchEnabled:(id)enabled specifier:(id)specifier;
+- (void)setMuteForToday:(id)today;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -43,8 +43,8 @@
   v18.receiver = self;
   v18.super_class = HPRFMindSettingsController;
   [(HPRFMindSettingsController *)&v18 viewDidLoad];
-  v3 = [(HPRFMindSettingsController *)self localizedPaneTitle];
-  [(HPRFMindSettingsController *)self setTitle:v3];
+  localizedPaneTitle = [(HPRFMindSettingsController *)self localizedPaneTitle];
+  [(HPRFMindSettingsController *)self setTitle:localizedPaneTitle];
 
   objc_initWeak(&location, self);
   v4 = kNLMindPreferencesChangedNotification;
@@ -89,34 +89,34 @@
   [(HPRFMindSettingsController *)&v5 dealloc];
 }
 
-- (void)_mutePreferencesDidChange:(id)a3
+- (void)_mutePreferencesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   _HKInitializeLogging();
   v5 = HKLogDeepBreathing;
   if (os_log_type_enabled(HKLogDeepBreathing, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 name];
+    name = [changeCopy name];
     v8 = 138412290;
-    v9 = v7;
+    v9 = name;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Did receive %@; reloading specifiers", &v8, 0xCu);
   }
 
   [(HPRFMindSettingsController *)self reloadSpecifiers];
 }
 
-- (void)_remindersDidChange:(id)a3
+- (void)_remindersDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   _HKInitializeLogging();
   v5 = HKLogDeepBreathing;
   if (os_log_type_enabled(HKLogDeepBreathing, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 name];
+    name = [changeCopy name];
     v8 = 138412290;
-    v9 = v7;
+    v9 = name;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Did receive %@; reloading specifiers", &v8, 0xCu);
   }
 
@@ -138,8 +138,8 @@
   v5 = [PSSpecifierDataSource loadSpecifiersFromPlist:@"MindReminderSettings" inBundle:v4 target:self stringsTable:@"MindSettings"];
 
   [v3 addObjectsFromArray:v5];
-  v6 = [(HPRFMindSettingsController *)self _customReminderSpecifiers];
-  [v3 addObjectsFromArray:v6];
+  _customReminderSpecifiers = [(HPRFMindSettingsController *)self _customReminderSpecifiers];
+  [v3 addObjectsFromArray:_customReminderSpecifiers];
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"ADD_REMINDER_LABEL" value:&stru_19170 table:@"MindSettings"];
   v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:self set:0 get:0 detail:0 cell:13 edit:0];
@@ -205,21 +205,21 @@
   return v5;
 }
 
-- (id)getGuidedMeditationPrefetchEnabled:(id)a3
+- (id)getGuidedMeditationPrefetchEnabled:(id)enabled
 {
   v3 = FIUIIsGuidedMeditationPrefetchEnabled();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setGuidedMeditationPrefetchEnabled:(id)a3 specifier:(id)a4
+- (void)setGuidedMeditationPrefetchEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  _FIUISetGuidedMeditationPrefetchEnabled(v4);
+  _FIUISetGuidedMeditationPrefetchEnabled(bOOLValue);
 }
 
-- (id)getMuteForToday:(id)a3
+- (id)getMuteForToday:(id)today
 {
   v3 = +[BPSNotificationMuteSettingsManager sharedNotificationMuteSettingsManager];
   v4 = [v3 isMutedForTodaySectionIdentifier:@"com.apple.Mind"];
@@ -227,9 +227,9 @@
   return [NSNumber numberWithBool:v4];
 }
 
-- (void)setMuteForToday:(id)a3
+- (void)setMuteForToday:(id)today
 {
-  v3 = [a3 BOOLValue];
+  bOOLValue = [today BOOLValue];
   v4 = [NSSet alloc];
   v9 = @"com.apple.Mind";
   v5 = [NSArray arrayWithObjects:&v9 count:1];
@@ -237,7 +237,7 @@
 
   v7 = +[BPSNotificationMuteSettingsManager sharedNotificationMuteSettingsManager];
   v8 = v7;
-  if (v3)
+  if (bOOLValue)
   {
     [v7 addSectionIdentifiers:v6];
   }
@@ -263,9 +263,9 @@
   [(HPRFMindSettingsController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)_reminderTapped:(id)a3
+- (void)_reminderTapped:(id)tapped
 {
-  v4 = [a3 propertyForKey:@"HPRFMindSubtitleCellReminderSpecifierKey"];
+  v4 = [tapped propertyForKey:@"HPRFMindSubtitleCellReminderSpecifierKey"];
   _HKInitializeLogging();
   v5 = HKLogDeepBreathing;
   if (os_log_type_enabled(HKLogDeepBreathing, OS_LOG_TYPE_DEFAULT))
@@ -277,8 +277,8 @@
 
   v6 = [[HPRFMindReminderViewController alloc] initWithReminderProvider:self->_customReminderProvider currentReminder:v4];
   v7 = [[UINavigationController alloc] initWithRootViewController:v6];
-  v8 = [(HPRFMindSettingsController *)self navigationController];
-  [v8 presentViewController:v7 animated:1 completion:0];
+  navigationController = [(HPRFMindSettingsController *)self navigationController];
+  [navigationController presentViewController:v7 animated:1 completion:0];
 }
 
 - (void)_manageStateOfMindSettings
@@ -290,10 +290,10 @@
 
 - (id)_customReminderSpecifiers
 {
-  v3 = [(FIMindfulnessCustomReminderProvider *)self->_customReminderProvider reminders];
-  v4 = [v3 allObjects];
+  reminders = [(FIMindfulnessCustomReminderProvider *)self->_customReminderProvider reminders];
+  allObjects = [reminders allObjects];
 
-  v5 = [v4 sortedArrayUsingComparator:&stru_18B18];
+  v5 = [allObjects sortedArrayUsingComparator:&stru_18B18];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_33A4;
@@ -316,14 +316,14 @@
   return v8;
 }
 
-- (id)_subtitleForCustomReminder:(id)a3
+- (id)_subtitleForCustomReminder:(id)reminder
 {
-  v3 = a3;
-  if ([v3 enabled])
+  reminderCopy = reminder;
+  if ([reminderCopy enabled])
   {
-    if ([v3 customWeekdaySelection])
+    if ([reminderCopy customWeekdaySelection])
     {
-      [v3 customWeekdaySelection];
+      [reminderCopy customWeekdaySelection];
       v4 = +[NSCalendar currentCalendar];
       v5 = FIUIMindfulnessLocalizedWeekdaySelection();
       goto LABEL_7;
@@ -348,35 +348,35 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(HPRFMindSettingsController *)self specifierAtIndexPath:a4];
+  v4 = [(HPRFMindSettingsController *)self specifierAtIndexPath:path];
   v5 = [v4 objectForKeyedSubscript:@"HPRFMindSubtitleCellReminderSpecifierKey"];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(HPRFMindSettingsController *)self specifierAtIndexPath:a4];
+  v4 = [(HPRFMindSettingsController *)self specifierAtIndexPath:path];
   v5 = [v4 objectForKeyedSubscript:@"HPRFMindSubtitleCellReminderSpecifierKey"];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v12 = [(HPRFMindSettingsController *)self specifierAtIndexPath:a5];
+    v12 = [(HPRFMindSettingsController *)self specifierAtIndexPath:path];
     v7 = [v12 objectForKeyedSubscript:@"HPRFMindSubtitleCellReminderSpecifierKey"];
     if (v7)
     {
       self->_shouldSkipNextReload = 1;
-      v8 = [(FIMindfulnessCustomReminderProvider *)self->_customReminderProvider reminders];
-      v9 = [v8 mutableCopy];
+      reminders = [(FIMindfulnessCustomReminderProvider *)self->_customReminderProvider reminders];
+      v9 = [reminders mutableCopy];
 
       [v9 removeObject:v7];
       customReminderProvider = self->_customReminderProvider;

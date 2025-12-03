@@ -1,5 +1,5 @@
 @interface _ADDeviceSyncSnapshotMutation
-- (_ADDeviceSyncSnapshotMutation)initWithBase:(id)a3;
+- (_ADDeviceSyncSnapshotMutation)initWithBase:(id)base;
 - (id)getDate;
 - (id)getItems;
 - (unint64_t)getGeneration;
@@ -11,30 +11,30 @@
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_items;
+    items = self->_items;
   }
 
   else
   {
-    v2 = [(ADDeviceSyncSnapshot *)self->_base items];
+    items = [(ADDeviceSyncSnapshot *)self->_base items];
   }
 
-  return v2;
+  return items;
 }
 
 - (id)getDate
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_date;
+    date = self->_date;
   }
 
   else
   {
-    v2 = [(ADDeviceSyncSnapshot *)self->_base date];
+    date = [(ADDeviceSyncSnapshot *)self->_base date];
   }
 
-  return v2;
+  return date;
 }
 
 - (unint64_t)getGeneration
@@ -50,16 +50,16 @@
   }
 }
 
-- (_ADDeviceSyncSnapshotMutation)initWithBase:(id)a3
+- (_ADDeviceSyncSnapshotMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _ADDeviceSyncSnapshotMutation;
   v6 = [(_ADDeviceSyncSnapshotMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

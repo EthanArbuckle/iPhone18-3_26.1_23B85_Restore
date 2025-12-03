@@ -1,17 +1,17 @@
 @interface MAAbstractEdge
-- (MAAbstractEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 weight:(float)a7 minimum:(unint64_t)a8 maximum:(unint64_t)a9 directed:(BOOL)a10;
-- (id)oppositeNode:(id)a3;
+- (MAAbstractEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain weight:(float)weight minimum:(unint64_t)minimum maximum:(unint64_t)maximum directed:(BOOL)self0;
+- (id)oppositeNode:(id)node;
 - (id)sourceNode;
 - (id)targetNode;
 @end
 
 @implementation MAAbstractEdge
 
-- (id)oppositeNode:(id)a3
+- (id)oppositeNode:(id)node
 {
   v5.receiver = self;
   v5.super_class = MAAbstractEdge;
-  v3 = [(MAEdge *)&v5 oppositeNode:a3];
+  v3 = [(MAEdge *)&v5 oppositeNode:node];
 
   return v3;
 }
@@ -30,22 +30,22 @@
   return WeakRetained;
 }
 
-- (MAAbstractEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 weight:(float)a7 minimum:(unint64_t)a8 maximum:(unint64_t)a9 directed:(BOOL)a10
+- (MAAbstractEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain weight:(float)weight minimum:(unint64_t)minimum maximum:(unint64_t)maximum directed:(BOOL)self0
 {
-  v15 = a4;
-  v16 = a5;
+  nodeCopy = node;
+  targetNodeCopy = targetNode;
   v21.receiver = self;
   v21.super_class = MAAbstractEdge;
   LODWORD(v17) = 1.0;
-  v18 = [(MAConcreteEdge *)&v21 initWithLabel:a3 sourceNode:0 targetNode:0 domain:1 weight:MEMORY[0x277CBEC10] properties:v17];
+  v18 = [(MAConcreteEdge *)&v21 initWithLabel:label sourceNode:0 targetNode:0 domain:1 weight:MEMORY[0x277CBEC10] properties:v17];
   v19 = v18;
   if (v18)
   {
-    objc_storeWeak(&v18->_sourceAbstractNode, v15);
-    objc_storeWeak(&v19->_targetAbstractNode, v16);
-    v19->_minimum = a8;
-    v19->_maximum = a9;
-    v19->_isDirected = a10;
+    objc_storeWeak(&v18->_sourceAbstractNode, nodeCopy);
+    objc_storeWeak(&v19->_targetAbstractNode, targetNodeCopy);
+    v19->_minimum = minimum;
+    v19->_maximum = maximum;
+    v19->_isDirected = directed;
   }
 
   return v19;

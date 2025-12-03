@@ -1,30 +1,30 @@
 @interface _INPBStartPhotoPlaybackIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBStartPhotoPlaybackIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBStartPhotoPlaybackIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsExcludedAttributes:(id)a3;
-- (int)StringAsIncludedAttributes:(id)a3;
+- (int)StringAsExcludedAttributes:(id)attributes;
+- (int)StringAsIncludedAttributes:(id)attributes;
 - (unint64_t)hash;
-- (void)addExcludedAttribute:(int)a3;
-- (void)addIncludedAttribute:(int)a3;
+- (void)addExcludedAttribute:(int)attribute;
+- (void)addIncludedAttribute:(int)attribute;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBStartPhotoPlaybackIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBStartPhotoPlaybackIntent *)self albumName];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"albumName"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  albumName = [(_INPBStartPhotoPlaybackIntent *)self albumName];
+  dictionaryRepresentation = [albumName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"albumName"];
 
-  v6 = [(_INPBStartPhotoPlaybackIntent *)self dateCreated];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"dateCreated"];
+  dateCreated = [(_INPBStartPhotoPlaybackIntent *)self dateCreated];
+  dictionaryRepresentation2 = [dateCreated dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"dateCreated"];
 
   if (self->_excludedAttributes.count)
   {
@@ -253,7 +253,7 @@ LABEL_67:
       }
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"excludedAttribute"];
+    [dictionary setObject:v8 forKeyedSubscript:@"excludedAttribute"];
   }
 
   if (self->_includedAttributes.count)
@@ -483,26 +483,26 @@ LABEL_135:
       }
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"includedAttribute"];
+    [dictionary setObject:v12 forKeyedSubscript:@"includedAttribute"];
   }
 
-  v16 = [(_INPBStartPhotoPlaybackIntent *)self intentMetadata];
-  v17 = [v16 dictionaryRepresentation];
-  [v3 setObject:v17 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBStartPhotoPlaybackIntent *)self intentMetadata];
+  dictionaryRepresentation3 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"intentMetadata"];
 
-  v18 = [(_INPBStartPhotoPlaybackIntent *)self locationCreated];
-  v19 = [v18 dictionaryRepresentation];
-  [v3 setObject:v19 forKeyedSubscript:@"locationCreated"];
+  locationCreated = [(_INPBStartPhotoPlaybackIntent *)self locationCreated];
+  dictionaryRepresentation4 = [locationCreated dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"locationCreated"];
 
-  v20 = [(_INPBStartPhotoPlaybackIntent *)self peopleInPhoto];
-  v21 = [v20 dictionaryRepresentation];
-  [v3 setObject:v21 forKeyedSubscript:@"peopleInPhoto"];
+  peopleInPhoto = [(_INPBStartPhotoPlaybackIntent *)self peopleInPhoto];
+  dictionaryRepresentation5 = [peopleInPhoto dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"peopleInPhoto"];
 
-  v22 = [(_INPBStartPhotoPlaybackIntent *)self searchTerm];
-  v23 = [v22 dictionaryRepresentation];
-  [v3 setObject:v23 forKeyedSubscript:@"searchTerm"];
+  searchTerm = [(_INPBStartPhotoPlaybackIntent *)self searchTerm];
+  dictionaryRepresentation6 = [searchTerm dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"searchTerm"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -517,28 +517,28 @@ LABEL_135:
   return v7 ^ v9 ^ [(_INPBStringList *)self->_searchTerm hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
-  v5 = [(_INPBStartPhotoPlaybackIntent *)self albumName];
-  v6 = [v4 albumName];
-  if ((v5 != 0) == (v6 == 0))
+  albumName = [(_INPBStartPhotoPlaybackIntent *)self albumName];
+  albumName2 = [equalCopy albumName];
+  if ((albumName != 0) == (albumName2 == 0))
   {
     goto LABEL_33;
   }
 
-  v7 = [(_INPBStartPhotoPlaybackIntent *)self albumName];
-  if (v7)
+  albumName3 = [(_INPBStartPhotoPlaybackIntent *)self albumName];
+  if (albumName3)
   {
-    v8 = v7;
-    v9 = [(_INPBStartPhotoPlaybackIntent *)self albumName];
-    v10 = [v4 albumName];
-    v11 = [v9 isEqual:v10];
+    v8 = albumName3;
+    albumName4 = [(_INPBStartPhotoPlaybackIntent *)self albumName];
+    albumName5 = [equalCopy albumName];
+    v11 = [albumName4 isEqual:albumName5];
 
     if (!v11)
     {
@@ -550,20 +550,20 @@ LABEL_135:
   {
   }
 
-  v5 = [(_INPBStartPhotoPlaybackIntent *)self dateCreated];
-  v6 = [v4 dateCreated];
-  if ((v5 != 0) == (v6 == 0))
+  albumName = [(_INPBStartPhotoPlaybackIntent *)self dateCreated];
+  albumName2 = [equalCopy dateCreated];
+  if ((albumName != 0) == (albumName2 == 0))
   {
     goto LABEL_33;
   }
 
-  v12 = [(_INPBStartPhotoPlaybackIntent *)self dateCreated];
-  if (v12)
+  dateCreated = [(_INPBStartPhotoPlaybackIntent *)self dateCreated];
+  if (dateCreated)
   {
-    v13 = v12;
-    v14 = [(_INPBStartPhotoPlaybackIntent *)self dateCreated];
-    v15 = [v4 dateCreated];
-    v16 = [v14 isEqual:v15];
+    v13 = dateCreated;
+    dateCreated2 = [(_INPBStartPhotoPlaybackIntent *)self dateCreated];
+    dateCreated3 = [equalCopy dateCreated];
+    v16 = [dateCreated2 isEqual:dateCreated3];
 
     if (!v16)
     {
@@ -580,20 +580,20 @@ LABEL_135:
     goto LABEL_34;
   }
 
-  v5 = [(_INPBStartPhotoPlaybackIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  albumName = [(_INPBStartPhotoPlaybackIntent *)self intentMetadata];
+  albumName2 = [equalCopy intentMetadata];
+  if ((albumName != 0) == (albumName2 == 0))
   {
     goto LABEL_33;
   }
 
-  v17 = [(_INPBStartPhotoPlaybackIntent *)self intentMetadata];
-  if (v17)
+  intentMetadata = [(_INPBStartPhotoPlaybackIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v18 = v17;
-    v19 = [(_INPBStartPhotoPlaybackIntent *)self intentMetadata];
-    v20 = [v4 intentMetadata];
-    v21 = [v19 isEqual:v20];
+    v18 = intentMetadata;
+    intentMetadata2 = [(_INPBStartPhotoPlaybackIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v21 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v21)
     {
@@ -605,20 +605,20 @@ LABEL_135:
   {
   }
 
-  v5 = [(_INPBStartPhotoPlaybackIntent *)self locationCreated];
-  v6 = [v4 locationCreated];
-  if ((v5 != 0) == (v6 == 0))
+  albumName = [(_INPBStartPhotoPlaybackIntent *)self locationCreated];
+  albumName2 = [equalCopy locationCreated];
+  if ((albumName != 0) == (albumName2 == 0))
   {
     goto LABEL_33;
   }
 
-  v22 = [(_INPBStartPhotoPlaybackIntent *)self locationCreated];
-  if (v22)
+  locationCreated = [(_INPBStartPhotoPlaybackIntent *)self locationCreated];
+  if (locationCreated)
   {
-    v23 = v22;
-    v24 = [(_INPBStartPhotoPlaybackIntent *)self locationCreated];
-    v25 = [v4 locationCreated];
-    v26 = [v24 isEqual:v25];
+    v23 = locationCreated;
+    locationCreated2 = [(_INPBStartPhotoPlaybackIntent *)self locationCreated];
+    locationCreated3 = [equalCopy locationCreated];
+    v26 = [locationCreated2 isEqual:locationCreated3];
 
     if (!v26)
     {
@@ -630,20 +630,20 @@ LABEL_135:
   {
   }
 
-  v5 = [(_INPBStartPhotoPlaybackIntent *)self peopleInPhoto];
-  v6 = [v4 peopleInPhoto];
-  if ((v5 != 0) == (v6 == 0))
+  albumName = [(_INPBStartPhotoPlaybackIntent *)self peopleInPhoto];
+  albumName2 = [equalCopy peopleInPhoto];
+  if ((albumName != 0) == (albumName2 == 0))
   {
     goto LABEL_33;
   }
 
-  v27 = [(_INPBStartPhotoPlaybackIntent *)self peopleInPhoto];
-  if (v27)
+  peopleInPhoto = [(_INPBStartPhotoPlaybackIntent *)self peopleInPhoto];
+  if (peopleInPhoto)
   {
-    v28 = v27;
-    v29 = [(_INPBStartPhotoPlaybackIntent *)self peopleInPhoto];
-    v30 = [v4 peopleInPhoto];
-    v31 = [v29 isEqual:v30];
+    v28 = peopleInPhoto;
+    peopleInPhoto2 = [(_INPBStartPhotoPlaybackIntent *)self peopleInPhoto];
+    peopleInPhoto3 = [equalCopy peopleInPhoto];
+    v31 = [peopleInPhoto2 isEqual:peopleInPhoto3];
 
     if (!v31)
     {
@@ -655,12 +655,12 @@ LABEL_135:
   {
   }
 
-  v5 = [(_INPBStartPhotoPlaybackIntent *)self searchTerm];
-  v6 = [v4 searchTerm];
-  if ((v5 != 0) != (v6 == 0))
+  albumName = [(_INPBStartPhotoPlaybackIntent *)self searchTerm];
+  albumName2 = [equalCopy searchTerm];
+  if ((albumName != 0) != (albumName2 == 0))
   {
-    v32 = [(_INPBStartPhotoPlaybackIntent *)self searchTerm];
-    if (!v32)
+    searchTerm = [(_INPBStartPhotoPlaybackIntent *)self searchTerm];
+    if (!searchTerm)
     {
 
 LABEL_37:
@@ -668,10 +668,10 @@ LABEL_37:
       goto LABEL_35;
     }
 
-    v33 = v32;
-    v34 = [(_INPBStartPhotoPlaybackIntent *)self searchTerm];
-    v35 = [v4 searchTerm];
-    v36 = [v34 isEqual:v35];
+    v33 = searchTerm;
+    searchTerm2 = [(_INPBStartPhotoPlaybackIntent *)self searchTerm];
+    searchTerm3 = [equalCopy searchTerm];
+    v36 = [searchTerm2 isEqual:searchTerm3];
 
     if (v36)
     {
@@ -691,54 +691,54 @@ LABEL_35:
   return v37;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBStartPhotoPlaybackIntent allocWithZone:](_INPBStartPhotoPlaybackIntent init];
-  v6 = [(_INPBString *)self->_albumName copyWithZone:a3];
+  v6 = [(_INPBString *)self->_albumName copyWithZone:zone];
   [(_INPBStartPhotoPlaybackIntent *)v5 setAlbumName:v6];
 
-  v7 = [(_INPBDateTimeRange *)self->_dateCreated copyWithZone:a3];
+  v7 = [(_INPBDateTimeRange *)self->_dateCreated copyWithZone:zone];
   [(_INPBStartPhotoPlaybackIntent *)v5 setDateCreated:v7];
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v8 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v8 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBStartPhotoPlaybackIntent *)v5 setIntentMetadata:v8];
 
-  v9 = [(_INPBLocation *)self->_locationCreated copyWithZone:a3];
+  v9 = [(_INPBLocation *)self->_locationCreated copyWithZone:zone];
   [(_INPBStartPhotoPlaybackIntent *)v5 setLocationCreated:v9];
 
-  v10 = [(_INPBContactList *)self->_peopleInPhoto copyWithZone:a3];
+  v10 = [(_INPBContactList *)self->_peopleInPhoto copyWithZone:zone];
   [(_INPBStartPhotoPlaybackIntent *)v5 setPeopleInPhoto:v10];
 
-  v11 = [(_INPBStringList *)self->_searchTerm copyWithZone:a3];
+  v11 = [(_INPBStringList *)self->_searchTerm copyWithZone:zone];
   [(_INPBStartPhotoPlaybackIntent *)v5 setSearchTerm:v11];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBStartPhotoPlaybackIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBStartPhotoPlaybackIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBStartPhotoPlaybackIntent)initWithCoder:(id)a3
+- (_INPBStartPhotoPlaybackIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBStartPhotoPlaybackIntent *)self initWithData:v6];
+    self = [(_INPBStartPhotoPlaybackIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -750,22 +750,22 @@ LABEL_35:
   [(_INPBStartPhotoPlaybackIntent *)&v3 dealloc];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v21 = a3;
-  v4 = [(_INPBStartPhotoPlaybackIntent *)self albumName];
+  toCopy = to;
+  albumName = [(_INPBStartPhotoPlaybackIntent *)self albumName];
 
-  if (v4)
+  if (albumName)
   {
-    v5 = [(_INPBStartPhotoPlaybackIntent *)self albumName];
+    albumName2 = [(_INPBStartPhotoPlaybackIntent *)self albumName];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBStartPhotoPlaybackIntent *)self dateCreated];
+  dateCreated = [(_INPBStartPhotoPlaybackIntent *)self dateCreated];
 
-  if (v6)
+  if (dateCreated)
   {
-    v7 = [(_INPBStartPhotoPlaybackIntent *)self dateCreated];
+    dateCreated2 = [(_INPBStartPhotoPlaybackIntent *)self dateCreated];
     PBDataWriterWriteSubmessage();
   }
 
@@ -795,186 +795,186 @@ LABEL_35:
     while (v10 < self->_includedAttributes.count);
   }
 
-  v12 = [(_INPBStartPhotoPlaybackIntent *)self intentMetadata];
+  intentMetadata = [(_INPBStartPhotoPlaybackIntent *)self intentMetadata];
 
-  if (v12)
+  if (intentMetadata)
   {
-    v13 = [(_INPBStartPhotoPlaybackIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBStartPhotoPlaybackIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(_INPBStartPhotoPlaybackIntent *)self locationCreated];
+  locationCreated = [(_INPBStartPhotoPlaybackIntent *)self locationCreated];
 
-  if (v14)
+  if (locationCreated)
   {
-    v15 = [(_INPBStartPhotoPlaybackIntent *)self locationCreated];
+    locationCreated2 = [(_INPBStartPhotoPlaybackIntent *)self locationCreated];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(_INPBStartPhotoPlaybackIntent *)self peopleInPhoto];
+  peopleInPhoto = [(_INPBStartPhotoPlaybackIntent *)self peopleInPhoto];
 
-  if (v16)
+  if (peopleInPhoto)
   {
-    v17 = [(_INPBStartPhotoPlaybackIntent *)self peopleInPhoto];
+    peopleInPhoto2 = [(_INPBStartPhotoPlaybackIntent *)self peopleInPhoto];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(_INPBStartPhotoPlaybackIntent *)self searchTerm];
+  searchTerm = [(_INPBStartPhotoPlaybackIntent *)self searchTerm];
 
-  v19 = v21;
-  if (v18)
+  v19 = toCopy;
+  if (searchTerm)
   {
-    v20 = [(_INPBStartPhotoPlaybackIntent *)self searchTerm];
+    searchTerm2 = [(_INPBStartPhotoPlaybackIntent *)self searchTerm];
     PBDataWriterWriteSubmessage();
 
-    v19 = v21;
+    v19 = toCopy;
   }
 }
 
-- (int)StringAsIncludedAttributes:(id)a3
+- (int)StringAsIncludedAttributes:(id)attributes
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PHOTO"])
+  attributesCopy = attributes;
+  if ([attributesCopy isEqualToString:@"PHOTO"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"VIDEO"])
+  else if ([attributesCopy isEqualToString:@"VIDEO"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GIF"])
+  else if ([attributesCopy isEqualToString:@"GIF"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"FLASH"])
+  else if ([attributesCopy isEqualToString:@"FLASH"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"LANDSCAPE_ORIENTATION"])
+  else if ([attributesCopy isEqualToString:@"LANDSCAPE_ORIENTATION"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"PORTRAIT_ORIENTATION"])
+  else if ([attributesCopy isEqualToString:@"PORTRAIT_ORIENTATION"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"FAVORITE"])
+  else if ([attributesCopy isEqualToString:@"FAVORITE"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"SELFIE"])
+  else if ([attributesCopy isEqualToString:@"SELFIE"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"FRONT_FACING_CAMERA"])
+  else if ([attributesCopy isEqualToString:@"FRONT_FACING_CAMERA"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"SCREENSHOT"])
+  else if ([attributesCopy isEqualToString:@"SCREENSHOT"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"BURST_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"BURST_PHOTO"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"HDR_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"HDR_PHOTO"])
   {
     v4 = 51;
   }
 
-  else if ([v3 isEqualToString:@"SQUARE_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"SQUARE_PHOTO"])
   {
     v4 = 52;
   }
 
-  else if ([v3 isEqualToString:@"PANORAMA_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"PANORAMA_PHOTO"])
   {
     v4 = 53;
   }
 
-  else if ([v3 isEqualToString:@"TIME_LAPSE_VIDEO"])
+  else if ([attributesCopy isEqualToString:@"TIME_LAPSE_VIDEO"])
   {
     v4 = 80;
   }
 
-  else if ([v3 isEqualToString:@"SLOW_MOTION_VIDEO"])
+  else if ([attributesCopy isEqualToString:@"SLOW_MOTION_VIDEO"])
   {
     v4 = 81;
   }
 
-  else if ([v3 isEqualToString:@"NOIR_FILTER"])
+  else if ([attributesCopy isEqualToString:@"NOIR_FILTER"])
   {
     v4 = 300;
   }
 
-  else if ([v3 isEqualToString:@"CHROME_FILTER"])
+  else if ([attributesCopy isEqualToString:@"CHROME_FILTER"])
   {
     v4 = 301;
   }
 
-  else if ([v3 isEqualToString:@"INSTANT_FILTER"])
+  else if ([attributesCopy isEqualToString:@"INSTANT_FILTER"])
   {
     v4 = 302;
   }
 
-  else if ([v3 isEqualToString:@"TONAL_FILTER"])
+  else if ([attributesCopy isEqualToString:@"TONAL_FILTER"])
   {
     v4 = 303;
   }
 
-  else if ([v3 isEqualToString:@"TRANSFER_FILTER"])
+  else if ([attributesCopy isEqualToString:@"TRANSFER_FILTER"])
   {
     v4 = 304;
   }
 
-  else if ([v3 isEqualToString:@"MONO_FILTER"])
+  else if ([attributesCopy isEqualToString:@"MONO_FILTER"])
   {
     v4 = 305;
   }
 
-  else if ([v3 isEqualToString:@"FADE_FILTER"])
+  else if ([attributesCopy isEqualToString:@"FADE_FILTER"])
   {
     v4 = 306;
   }
 
-  else if ([v3 isEqualToString:@"PROCESS_FILTER"])
+  else if ([attributesCopy isEqualToString:@"PROCESS_FILTER"])
   {
     v4 = 307;
   }
 
-  else if ([v3 isEqualToString:@"PORTRAIT_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"PORTRAIT_PHOTO"])
   {
     v4 = 54;
   }
 
-  else if ([v3 isEqualToString:@"LIVE_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"LIVE_PHOTO"])
   {
     v4 = 55;
   }
 
-  else if ([v3 isEqualToString:@"LOOP_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"LOOP_PHOTO"])
   {
     v4 = 56;
   }
 
-  else if ([v3 isEqualToString:@"BOUNCE_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"BOUNCE_PHOTO"])
   {
     v4 = 57;
   }
 
-  else if ([v3 isEqualToString:@"LONG_EXPOSURE_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"LONG_EXPOSURE_PHOTO"])
   {
     v4 = 58;
   }
@@ -987,158 +987,158 @@ LABEL_35:
   return v4;
 }
 
-- (void)addIncludedAttribute:(int)a3
+- (void)addIncludedAttribute:(int)attribute
 {
-  if (a3 != 0x7FFFFFFF)
+  if (attribute != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsExcludedAttributes:(id)a3
+- (int)StringAsExcludedAttributes:(id)attributes
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PHOTO"])
+  attributesCopy = attributes;
+  if ([attributesCopy isEqualToString:@"PHOTO"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"VIDEO"])
+  else if ([attributesCopy isEqualToString:@"VIDEO"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GIF"])
+  else if ([attributesCopy isEqualToString:@"GIF"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"FLASH"])
+  else if ([attributesCopy isEqualToString:@"FLASH"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"LANDSCAPE_ORIENTATION"])
+  else if ([attributesCopy isEqualToString:@"LANDSCAPE_ORIENTATION"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"PORTRAIT_ORIENTATION"])
+  else if ([attributesCopy isEqualToString:@"PORTRAIT_ORIENTATION"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"FAVORITE"])
+  else if ([attributesCopy isEqualToString:@"FAVORITE"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"SELFIE"])
+  else if ([attributesCopy isEqualToString:@"SELFIE"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"FRONT_FACING_CAMERA"])
+  else if ([attributesCopy isEqualToString:@"FRONT_FACING_CAMERA"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"SCREENSHOT"])
+  else if ([attributesCopy isEqualToString:@"SCREENSHOT"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"BURST_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"BURST_PHOTO"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"HDR_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"HDR_PHOTO"])
   {
     v4 = 51;
   }
 
-  else if ([v3 isEqualToString:@"SQUARE_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"SQUARE_PHOTO"])
   {
     v4 = 52;
   }
 
-  else if ([v3 isEqualToString:@"PANORAMA_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"PANORAMA_PHOTO"])
   {
     v4 = 53;
   }
 
-  else if ([v3 isEqualToString:@"TIME_LAPSE_VIDEO"])
+  else if ([attributesCopy isEqualToString:@"TIME_LAPSE_VIDEO"])
   {
     v4 = 80;
   }
 
-  else if ([v3 isEqualToString:@"SLOW_MOTION_VIDEO"])
+  else if ([attributesCopy isEqualToString:@"SLOW_MOTION_VIDEO"])
   {
     v4 = 81;
   }
 
-  else if ([v3 isEqualToString:@"NOIR_FILTER"])
+  else if ([attributesCopy isEqualToString:@"NOIR_FILTER"])
   {
     v4 = 300;
   }
 
-  else if ([v3 isEqualToString:@"CHROME_FILTER"])
+  else if ([attributesCopy isEqualToString:@"CHROME_FILTER"])
   {
     v4 = 301;
   }
 
-  else if ([v3 isEqualToString:@"INSTANT_FILTER"])
+  else if ([attributesCopy isEqualToString:@"INSTANT_FILTER"])
   {
     v4 = 302;
   }
 
-  else if ([v3 isEqualToString:@"TONAL_FILTER"])
+  else if ([attributesCopy isEqualToString:@"TONAL_FILTER"])
   {
     v4 = 303;
   }
 
-  else if ([v3 isEqualToString:@"TRANSFER_FILTER"])
+  else if ([attributesCopy isEqualToString:@"TRANSFER_FILTER"])
   {
     v4 = 304;
   }
 
-  else if ([v3 isEqualToString:@"MONO_FILTER"])
+  else if ([attributesCopy isEqualToString:@"MONO_FILTER"])
   {
     v4 = 305;
   }
 
-  else if ([v3 isEqualToString:@"FADE_FILTER"])
+  else if ([attributesCopy isEqualToString:@"FADE_FILTER"])
   {
     v4 = 306;
   }
 
-  else if ([v3 isEqualToString:@"PROCESS_FILTER"])
+  else if ([attributesCopy isEqualToString:@"PROCESS_FILTER"])
   {
     v4 = 307;
   }
 
-  else if ([v3 isEqualToString:@"PORTRAIT_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"PORTRAIT_PHOTO"])
   {
     v4 = 54;
   }
 
-  else if ([v3 isEqualToString:@"LIVE_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"LIVE_PHOTO"])
   {
     v4 = 55;
   }
 
-  else if ([v3 isEqualToString:@"LOOP_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"LOOP_PHOTO"])
   {
     v4 = 56;
   }
 
-  else if ([v3 isEqualToString:@"BOUNCE_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"BOUNCE_PHOTO"])
   {
     v4 = 57;
   }
 
-  else if ([v3 isEqualToString:@"LONG_EXPOSURE_PHOTO"])
+  else if ([attributesCopy isEqualToString:@"LONG_EXPOSURE_PHOTO"])
   {
     v4 = 58;
   }
@@ -1151,9 +1151,9 @@ LABEL_35:
   return v4;
 }
 
-- (void)addExcludedAttribute:(int)a3
+- (void)addExcludedAttribute:(int)attribute
 {
-  if (a3 != 0x7FFFFFFF)
+  if (attribute != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }

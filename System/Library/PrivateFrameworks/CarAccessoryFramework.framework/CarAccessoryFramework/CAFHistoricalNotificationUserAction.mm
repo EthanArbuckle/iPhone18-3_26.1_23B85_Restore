@@ -1,22 +1,22 @@
 @interface CAFHistoricalNotificationUserAction
-- (CAFHistoricalNotificationUserAction)initWithContentURLAction:(id)a3 symbolName:(id)a4 userVisibleLabel:(id)a5;
-- (CAFHistoricalNotificationUserAction)initWithDictionary:(id)a3;
+- (CAFHistoricalNotificationUserAction)initWithContentURLAction:(id)action symbolName:(id)name userVisibleLabel:(id)label;
+- (CAFHistoricalNotificationUserAction)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation CAFHistoricalNotificationUserAction
 
-- (CAFHistoricalNotificationUserAction)initWithDictionary:(id)a3
+- (CAFHistoricalNotificationUserAction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = CAFHistoricalNotificationUserAction;
   v5 = [(CAFHistoricalNotificationUserAction *)&v16 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKey:@"contentURLAction"];
+    v6 = [dictionaryCopy objectForKey:@"contentURLAction"];
     if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v7 = v6;
@@ -31,7 +31,7 @@
     v5->_contentURLAction = v7;
 
     objc_opt_class();
-    v9 = [v4 objectForKey:@"symbolName"];
+    v9 = [dictionaryCopy objectForKey:@"symbolName"];
     if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v10 = v9;
@@ -46,7 +46,7 @@
     v5->_symbolName = v10;
 
     objc_opt_class();
-    v12 = [v4 objectForKey:@"userVisibleLabel"];
+    v12 = [dictionaryCopy objectForKey:@"userVisibleLabel"];
     if (v12 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v13 = v12;
@@ -64,20 +64,20 @@
   return v5;
 }
 
-- (CAFHistoricalNotificationUserAction)initWithContentURLAction:(id)a3 symbolName:(id)a4 userVisibleLabel:(id)a5
+- (CAFHistoricalNotificationUserAction)initWithContentURLAction:(id)action symbolName:(id)name userVisibleLabel:(id)label
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  actionCopy = action;
+  nameCopy = name;
+  labelCopy = label;
   v15.receiver = self;
   v15.super_class = CAFHistoricalNotificationUserAction;
   v12 = [(CAFHistoricalNotificationUserAction *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_contentURLAction, a3);
-    objc_storeStrong(&v13->_symbolName, a4);
-    objc_storeStrong(&v13->_userVisibleLabel, a5);
+    objc_storeStrong(&v12->_contentURLAction, action);
+    objc_storeStrong(&v13->_symbolName, name);
+    objc_storeStrong(&v13->_userVisibleLabel, label);
   }
 
   return v13;
@@ -87,42 +87,42 @@
 {
   v13[3] = *MEMORY[0x277D85DE8];
   v12[0] = @"contentURLAction";
-  v3 = [(CAFHistoricalNotificationUserAction *)self contentURLAction];
-  v4 = v3;
-  if (!v3)
+  contentURLAction = [(CAFHistoricalNotificationUserAction *)self contentURLAction];
+  null = contentURLAction;
+  if (!contentURLAction)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"symbolName";
-  v5 = [(CAFHistoricalNotificationUserAction *)self symbolName];
-  v6 = v5;
-  if (!v5)
+  symbolName = [(CAFHistoricalNotificationUserAction *)self symbolName];
+  null2 = symbolName;
+  if (!symbolName)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"userVisibleLabel";
-  v7 = [(CAFHistoricalNotificationUserAction *)self userVisibleLabel];
-  v8 = v7;
-  if (!v7)
+  userVisibleLabel = [(CAFHistoricalNotificationUserAction *)self userVisibleLabel];
+  null3 = userVisibleLabel;
+  if (!userVisibleLabel)
   {
-    v8 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (!v7)
+  if (!userVisibleLabel)
   {
   }
 
-  if (!v5)
+  if (!symbolName)
   {
   }
 
-  if (!v3)
+  if (!contentURLAction)
   {
   }
 
@@ -135,10 +135,10 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CAFHistoricalNotificationUserAction *)self contentURLAction];
-  v6 = [(CAFHistoricalNotificationUserAction *)self symbolName];
-  v7 = [(CAFHistoricalNotificationUserAction *)self userVisibleLabel];
-  v8 = [v3 stringWithFormat:@"<%@: %p { %@: %@, %@: %@, %@: %@ }>", v4, self, @"contentURLAction", v5, @"symbolName", v6, @"userVisibleLabel", v7];
+  contentURLAction = [(CAFHistoricalNotificationUserAction *)self contentURLAction];
+  symbolName = [(CAFHistoricalNotificationUserAction *)self symbolName];
+  userVisibleLabel = [(CAFHistoricalNotificationUserAction *)self userVisibleLabel];
+  v8 = [v3 stringWithFormat:@"<%@: %p { %@: %@, %@: %@, %@: %@ }>", v4, self, @"contentURLAction", contentURLAction, @"symbolName", symbolName, @"userVisibleLabel", userVisibleLabel];
 
   return v8;
 }

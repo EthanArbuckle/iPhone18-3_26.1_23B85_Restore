@@ -58,7 +58,7 @@
 - (id)asdtArrayForKey:()ASDTConfig
 {
   v4 = a3;
-  v5 = [a1 objectForKeyedSubscript:v4];
+  v5 = [self objectForKeyedSubscript:v4];
   if (v5)
   {
     objc_opt_class();
@@ -81,7 +81,7 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  [a1 asdtArrayForKey:v4];
+  [self asdtArrayForKey:v4];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -138,7 +138,7 @@ LABEL_13:
 {
   v19 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  [a1 asdtArrayForKey:v4];
+  [self asdtArrayForKey:v4];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -195,7 +195,7 @@ LABEL_13:
 {
   v19 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  [a1 asdtArrayForKey:v4];
+  [self asdtArrayForKey:v4];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -251,7 +251,7 @@ LABEL_13:
 - (id)asdtNumberForKey:()ASDTConfig
 {
   v4 = a3;
-  v5 = [a1 objectForKeyedSubscript:v4];
+  v5 = [self objectForKeyedSubscript:v4];
   if (v5)
   {
     objc_opt_class();
@@ -272,16 +272,16 @@ LABEL_13:
 
 - (uint64_t)asdtBoolForKey:()ASDTConfig
 {
-  v1 = [a1 asdtNumberForKey:?];
-  v2 = [v1 BOOLValue];
+  v1 = [self asdtNumberForKey:?];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (id)asdtStringForKey:()ASDTConfig
 {
   v4 = a3;
-  v5 = [a1 objectForKeyedSubscript:v4];
+  v5 = [self objectForKeyedSubscript:v4];
   if (v5)
   {
     objc_opt_class();
@@ -311,19 +311,19 @@ LABEL_13:
     v10 = v9 < 5;
     if (v9 < 5)
     {
-      v11 = [v8 UTF8String];
-      if (v11)
+      uTF8String = [v8 UTF8String];
+      if (uTF8String)
       {
         v12 = 0;
         a5 = 0;
         do
         {
-          if (!*(v11 + v12))
+          if (!*(uTF8String + v12))
           {
             break;
           }
 
-          a5 = *(v11 + v12++) | (a5 << 8);
+          a5 = *(uTF8String + v12++) | (a5 << 8);
         }
 
         while (v12 != 4);
@@ -364,7 +364,7 @@ LABEL_13:
   v6 = a3;
   v11 = a4;
   v7 = objc_opt_class();
-  v8 = [a1 objectForKey:v6];
+  v8 = [self objectForKey:v6];
   [v7 asdtGetFourCC:&v11 forObject:v8 withDefault:a4];
 
   v9 = v11;
@@ -373,7 +373,7 @@ LABEL_13:
 
 - (id)asdtSubclass
 {
-  v1 = [a1 asdtStringForKey:@"Subclass"];
+  v1 = [self asdtStringForKey:@"Subclass"];
   v2 = v1;
   if (v1)
   {
@@ -390,11 +390,11 @@ LABEL_13:
 
 - (id)asdtFactorySubclass
 {
-  v2 = [a1 asdtStringForKey:@"FactorySubclass"];
+  v2 = [self asdtStringForKey:@"FactorySubclass"];
   if (!v2)
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [a1 asdtStringForKey:@"Subclass"];
+    v4 = [self asdtStringForKey:@"Subclass"];
     v2 = [v3 stringWithFormat:@"%@Factory", v4];
   }
 
@@ -405,13 +405,13 @@ LABEL_13:
 
 - (id)asdtServiceID
 {
-  v2 = [a1 asdtStringForKey:@"Identifier"];
+  v2 = [self asdtStringForKey:@"Identifier"];
   if (v2)
   {
-    v3 = [a1 asdtNumberForKey:@"ClientType"];
-    v4 = [v3 unsignedIntValue];
+    v3 = [self asdtNumberForKey:@"ClientType"];
+    unsignedIntValue = [v3 unsignedIntValue];
 
-    v5 = [ASDTIOServiceID forIdentifier:v2 andClientType:v4];
+    v5 = [ASDTIOServiceID forIdentifier:v2 andClientType:unsignedIntValue];
   }
 
   else
@@ -424,7 +424,7 @@ LABEL_13:
 
 - (id)asdtBundleExtension
 {
-  v1 = [a1 asdtStringForKey:@"BundleExt"];
+  v1 = [self asdtStringForKey:@"BundleExt"];
   v2 = [v1 substringWithRange:{0, 1}];
   v3 = [v2 isEqualToString:@"."];
 
@@ -440,7 +440,7 @@ LABEL_13:
 
 - (id)asdtBundleClass
 {
-  v1 = [a1 asdtStringForKey:@"BundleClass"];
+  v1 = [self asdtStringForKey:@"BundleClass"];
   v2 = v1;
   if (v1)
   {
@@ -457,12 +457,12 @@ LABEL_13:
 
 - (uint64_t)asdtClockDomain
 {
-  v1 = [a1 asdtStringForKey:@"ClockDomain"];
+  v1 = [self asdtStringForKey:@"ClockDomain"];
   v5 = v1;
   if (v1)
   {
-    v6 = [v1 UTF8String];
-    DomainForFourCC = ASDT::Clock::GetDomainForFourCC(v6, v7, v8, v9);
+    uTF8String = [v1 UTF8String];
+    DomainForFourCC = ASDT::Clock::GetDomainForFourCC(uTF8String, v7, v8, v9);
   }
 
   else
@@ -483,12 +483,12 @@ LABEL_13:
   v30 = a5;
   v31 = v8;
   v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
-  v10 = [a1 objectForKey:v30];
+  v10 = [self objectForKey:v30];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 count])
   {
-    v11 = [v10 allKeys];
-    v12 = [v11 asdtNumericSortAscending:1];
+    allKeys = [v10 allKeys];
+    v12 = [allKeys asdtNumericSortAscending:1];
 
     v39 = 0u;
     v40 = 0u;
@@ -534,7 +534,7 @@ LABEL_13:
 
   else
   {
-    v12 = [a1 asdtNumberForKey:{v29, v29}];
+    v12 = [self asdtNumberForKey:{v29, v29}];
     if (!v12)
     {
       goto LABEL_23;
@@ -588,24 +588,24 @@ LABEL_23:
 
 - (id)asdtInputLatenciesForSamplingRates:()ASDTConfig
 {
-  v3 = [a1 asdtLatenciesForSamplingRates:a3 latencyUsKey:@"InputLatencyUs" latencyDictKey:@"InputLatencies"];
+  v3 = [self asdtLatenciesForSamplingRates:a3 latencyUsKey:@"InputLatencyUs" latencyDictKey:@"InputLatencies"];
 
   return v3;
 }
 
 - (id)asdtOutputLatenciesForSamplingRates:()ASDTConfig
 {
-  v3 = [a1 asdtLatenciesForSamplingRates:a3 latencyUsKey:@"OutputLatencyUs" latencyDictKey:@"OutputLatencies"];
+  v3 = [self asdtLatenciesForSamplingRates:a3 latencyUsKey:@"OutputLatencyUs" latencyDictKey:@"OutputLatencies"];
 
   return v3;
 }
 
 - (id)asdtDeviceModel
 {
-  v2 = [a1 asdtStringForKey:@"DeviceModel"];
+  v2 = [self asdtStringForKey:@"DeviceModel"];
   if (!v2)
   {
-    v2 = [a1 asdtStringForKey:@"DeviceUID"];
+    v2 = [self asdtStringForKey:@"DeviceUID"];
   }
 
   return v2;
@@ -614,15 +614,15 @@ LABEL_23:
 - (uint64_t)asdtPMOrderWithDefaultForPowerUp:()ASDTConfig
 {
   v4 = 1000;
-  [a1 asdtPMOrder:&v4 forPowerUp:a3 allowDefault:1];
+  [self asdtPMOrder:&v4 forPowerUp:a3 allowDefault:1];
   return v4;
 }
 
 - (uint64_t)asdtSamplingRate:()ASDTConfig andSamplingRates:withDefault:
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v9 = [a1 asdtNumberForKey:@"SamplingRate"];
-  v10 = [a1 asdtArrayOfNumbersForKey:@"SamplingRates"];
+  v9 = [self asdtNumberForKey:@"SamplingRate"];
+  v10 = [self asdtArrayOfNumbersForKey:@"SamplingRates"];
   v11 = v10;
   if (v9)
   {
@@ -715,7 +715,7 @@ LABEL_24:
 
 - (id)asdtRelatedDeviceUIDs
 {
-  v1 = [a1 asdtArrayOfStringsForKey:@"RelatedDeviceUIDs"];
+  v1 = [self asdtArrayOfStringsForKey:@"RelatedDeviceUIDs"];
   if (v1)
   {
     v2 = [MEMORY[0x277CBEB98] setWithArray:v1];
@@ -731,7 +731,7 @@ LABEL_24:
 
 - (id)asdtExclavesSensorName
 {
-  v1 = [a1 asdtStringForKey:@"ExclavesSensorName"];
+  v1 = [self asdtStringForKey:@"ExclavesSensorName"];
   if (!v1)
   {
     v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"com.apple.sensors.mic"];
@@ -742,25 +742,25 @@ LABEL_24:
 
 - (uint64_t)asdtIsSettable
 {
-  v1 = [a1 asdtNumberForKey:@"IsSettable"];
+  v1 = [self asdtNumberForKey:@"IsSettable"];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v3 = 1;
+    bOOLValue = 1;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)asdtGetSelector:()ASDTConfig
 {
   v5 = objc_opt_class();
-  v6 = [a1 objectForKey:@"Selector"];
+  v6 = [self objectForKey:@"Selector"];
   v7 = [v5 asdtGetFourCC:a3 forObject:v6 withDefault:0];
 
   if ((v7 & 1) == 0)
@@ -778,10 +778,10 @@ LABEL_24:
 - (id)asdtPropertyAddress
 {
   v5 = 0;
-  if ([a1 asdtGetSelector:&v5])
+  if ([self asdtGetSelector:&v5])
   {
     v2 = objc_alloc(MEMORY[0x277CEFB68]);
-    v3 = [v2 initWithSelector:v5 scope:objc_msgSend(a1 element:{"asdtScope"), objc_msgSend(a1, "asdtElement")}];
+    v3 = [v2 initWithSelector:v5 scope:objc_msgSend(self element:{"asdtScope"), objc_msgSend(self, "asdtElement")}];
   }
 
   else
@@ -794,15 +794,15 @@ LABEL_24:
 
 - (uint64_t)asdtAddNonSecurePathEnable
 {
-  v1 = [a1 asdtNumberForKey:@"AddNonSecurePathEnable"];
-  v2 = [v1 BOOLValue];
+  v1 = [self asdtNumberForKey:@"AddNonSecurePathEnable"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (BOOL)asdtControlClassID:()ASDTConfig
 {
-  v4 = [a1 asdtFourCCForKey:@"ClassID" withDefault:0];
+  v4 = [self asdtFourCCForKey:@"ClassID" withDefault:0];
   v5 = v4;
   if (v4)
   {
@@ -824,7 +824,7 @@ LABEL_24:
 - (uint64_t)asdtSelectorControlItemValue:()ASDTConfig
 {
   v5 = objc_opt_class();
-  v6 = [a1 objectForKey:@"Value"];
+  v6 = [self objectForKey:@"Value"];
   v7 = [v5 asdtGetFourCC:a3 forObject:v6 withDefault:0];
 
   if ((v7 & 1) == 0)
@@ -841,15 +841,15 @@ LABEL_24:
 
 - (uint64_t)asdtSelectorControlItemSelected
 {
-  v1 = [a1 asdtNumberForKey:@"Selected"];
-  v2 = [v1 BOOLValue];
+  v1 = [self asdtNumberForKey:@"Selected"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)asdtPropertyCacheMode
 {
-  v1 = [a1 asdtStringForKey:@"CacheMode"];
+  v1 = [self asdtStringForKey:@"CacheMode"];
   v2 = v1;
   if (v1)
   {
@@ -883,15 +883,15 @@ LABEL_11:
 
 - (uint64_t)asdtPropertyDataSizeBytes
 {
-  v1 = [a1 asdtNumberForKey:@"DataSize"];
-  v2 = [v1 unsignedIntValue];
+  v1 = [self asdtNumberForKey:@"DataSize"];
+  unsignedIntValue = [v1 unsignedIntValue];
 
-  return v2;
+  return unsignedIntValue;
 }
 
 - (uint64_t)asdtPropertyIsPList
 {
-  if ([a1 asdtBoolForKey:@"IsPList"])
+  if ([self asdtBoolForKey:@"IsPList"])
   {
     return 1886155636;
   }
@@ -904,7 +904,7 @@ LABEL_11:
 
 - (uint64_t)asdtNumericType
 {
-  v1 = [a1 asdtStringForKey:@"NumericType"];
+  v1 = [self asdtStringForKey:@"NumericType"];
   v2 = v1;
   if (!v1)
   {
@@ -983,16 +983,16 @@ LABEL_25:
 
 - (uint64_t)asdtNumericCount
 {
-  v1 = [a1 asdtNumberForKey:@"NumericCount"];
-  v2 = [v1 unsignedIntValue];
-  if (v2 <= 1)
+  v1 = [self asdtNumberForKey:@"NumericCount"];
+  unsignedIntValue = [v1 unsignedIntValue];
+  if (unsignedIntValue <= 1)
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = v2;
+    v3 = unsignedIntValue;
   }
 
   return v3;
@@ -1000,26 +1000,26 @@ LABEL_25:
 
 - (uint64_t)asdtNumericIsVectorWithCount:()ASDTConfig
 {
-  v4 = [a1 asdtNumberForKey:@"NumericIsVector"];
+  v4 = [self asdtNumberForKey:@"NumericIsVector"];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v6 = a3 > 1;
+    bOOLValue = a3 > 1;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (uint64_t)asdtDirection:()ASDTConfig
 {
   if (a3)
   {
-    v4 = [a1 asdtStringForKey:@"Direction"];
+    v4 = [self asdtStringForKey:@"Direction"];
     v5 = v4;
     if (v4)
     {
@@ -1068,7 +1068,7 @@ LABEL_14:
 
 - (id)asdtFormats
 {
-  v1 = [a1 asdtArrayOfDictionariesForKey:@"Formats"];
+  v1 = [self asdtArrayOfDictionariesForKey:@"Formats"];
   if (!v1)
   {
     v2 = ASDTBaseLogType();
@@ -1083,23 +1083,23 @@ LABEL_14:
 
 - (id)asdtLatenciesForSamplingRates:()ASDTConfig
 {
-  v3 = [a1 asdtLatenciesForSamplingRates:a3 latencyUsKey:@"LatencyUs" latencyDictKey:@"Latencies"];
+  v3 = [self asdtLatenciesForSamplingRates:a3 latencyUsKey:@"LatencyUs" latencyDictKey:@"Latencies"];
 
   return v3;
 }
 
 - (uint64_t)asdtStartingChannel
 {
-  v1 = [a1 asdtNumberForKey:@"StartingChannel"];
-  v2 = [v1 unsignedIntValue];
-  if (v2 <= 1)
+  v1 = [self asdtNumberForKey:@"StartingChannel"];
+  unsignedIntValue = [v1 unsignedIntValue];
+  if (unsignedIntValue <= 1)
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = v2;
+    v3 = unsignedIntValue;
   }
 
   return v3;
@@ -1107,10 +1107,10 @@ LABEL_14:
 
 - (uint64_t)asdtIsolatedUseCaseID
 {
-  v1 = [a1 asdtNumberForKey:@"IsolatedUseCaseID"];
-  v2 = [v1 unsignedLongLongValue];
+  v1 = [self asdtNumberForKey:@"IsolatedUseCaseID"];
+  unsignedLongLongValue = [v1 unsignedLongLongValue];
 
-  return v2;
+  return unsignedLongLongValue;
 }
 
 - (id)asdtFormatsWithSamplingRates:()ASDTConfig
@@ -1166,7 +1166,7 @@ LABEL_14:
   v44 = 0;
   v45 = v8;
   v46 = v7;
-  v11 = [a1 asdtNumberForKey:@"AlignedHigh"];
+  v11 = [self asdtNumberForKey:@"AlignedHigh"];
   v36 = v11;
   if (v11)
   {
@@ -1187,15 +1187,15 @@ LABEL_14:
   }
 
   DWORD1(v42) |= v12;
-  v13 = [a1 asdtNumberForKey:@"Channels"];
+  v13 = [self asdtNumberForKey:@"Channels"];
   v14 = v13;
   if (!v13)
   {
     goto LABEL_24;
   }
 
-  v15 = [v13 unsignedIntValue];
-  if ((v15 - 33) <= 0xFFFFFFDF)
+  unsignedIntValue = [v13 unsignedIntValue];
+  if ((unsignedIntValue - 33) <= 0xFFFFFFDF)
   {
     v16 = ASDTBaseLogType();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1204,10 +1204,10 @@ LABEL_14:
     }
 
 LABEL_24:
-    v15 = 2;
+    unsignedIntValue = 2;
   }
 
-  v17 = [a1 asdtStringForKey:@"DataFormat"];
+  v17 = [self asdtStringForKey:@"DataFormat"];
   v18 = v17;
   if (!v17 || ![v17 caseInsensitiveCompare:@"lf32"])
   {
@@ -1249,20 +1249,20 @@ LABEL_33:
   v21 = 4;
 LABEL_38:
   DWORD1(v42) |= v21;
-  v22 = [a1 asdtNumberForKey:@"BitsPerSample"];
-  v23 = [v22 unsignedIntValue];
+  v22 = [self asdtNumberForKey:@"BitsPerSample"];
+  unsignedIntValue2 = [v22 unsignedIntValue];
 
-  if (v23 <= v20)
+  if (unsignedIntValue2 <= v20)
   {
     v24 = v20;
   }
 
   else
   {
-    v24 = v23;
+    v24 = unsignedIntValue2;
   }
 
-  if (v23 > 0x20)
+  if (unsignedIntValue2 > 0x20)
   {
     v24 = v20;
   }
@@ -1272,9 +1272,9 @@ LABEL_38:
     DWORD1(v42) |= 8u;
   }
 
-  HIDWORD(v43) = v15;
+  HIDWORD(v43) = unsignedIntValue;
   LODWORD(v44) = v20;
-  LODWORD(v43) = (v24 >> 3) * v15;
+  LODWORD(v43) = (v24 >> 3) * unsignedIntValue;
   DWORD2(v42) = v43;
   v25 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
   v39 = 0u;
@@ -1344,7 +1344,7 @@ LABEL_57:
     }
 
     v9 = *v8;
-    v10 = [a1 asdtNumberForKey:v9];
+    v10 = [self asdtNumberForKey:v9];
     if (v10)
     {
       v11 = v9;
@@ -1354,13 +1354,13 @@ LABEL_57:
     {
       v11 = @"PMOrder";
 
-      v10 = [a1 asdtNumberForKey:v11];
+      v10 = [self asdtNumberForKey:v11];
     }
 
-    v12 = [v10 unsignedIntValue];
+    unsignedIntValue = [v10 unsignedIntValue];
     if (v10)
     {
-      v13 = v12 >= 0x7D1;
+      v13 = unsignedIntValue >= 0x7D1;
     }
 
     else
@@ -1383,7 +1383,7 @@ LABEL_57:
     {
       if (v14)
       {
-        v15 = v12;
+        v15 = unsignedIntValue;
       }
 
       else
@@ -1399,7 +1399,7 @@ LABEL_57:
       v16 = ASDTBaseLogType();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v17 = [a1 objectForKey:v11];
+        v17 = [self objectForKey:v11];
         [(NSDictionary(ASDTConfig) *)v11 asdtPMOrder:v17 forPowerUp:v20 allowDefault:v16];
       }
     }
@@ -1416,15 +1416,15 @@ LABEL_57:
 
 - (uint64_t)asdtPMActionWaiterTimeoutUs
 {
-  v1 = [a1 asdtNumberForKey:@"WaiterTimeoutUs"];
-  v2 = [v1 unsignedIntValue];
+  v1 = [self asdtNumberForKey:@"WaiterTimeoutUs"];
+  unsignedIntValue = [v1 unsignedIntValue];
 
-  return v2;
+  return unsignedIntValue;
 }
 
 - (objc_class)asdtDeviceManager
 {
-  v1 = [a1 asdtStringForKey:@"DeviceManager"];
+  v1 = [self asdtStringForKey:@"DeviceManager"];
   v2 = v1;
   if (v1)
   {
@@ -1471,41 +1471,41 @@ LABEL_12:
 
 - (uint64_t)asdtManagerVerboseLogging
 {
-  v1 = [a1 asdtNumberForKey:@"VerboseLogging"];
+  v1 = [self asdtNumberForKey:@"VerboseLogging"];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v3 = 1;
+    bOOLValue = 1;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)asdtManagerInitializationWaitUs
 {
-  v1 = [a1 asdtNumberForKey:@"InitializationWaitUs"];
+  v1 = [self asdtNumberForKey:@"InitializationWaitUs"];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 unsignedIntValue];
+    unsignedIntValue = [v1 unsignedIntValue];
   }
 
   else
   {
-    v3 = 100000;
+    unsignedIntValue = 100000;
   }
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (double)asdtManagerRunningLogPeriod
 {
-  v1 = [a1 asdtNumberForKey:@"RunningLogPeriodSec"];
+  v1 = [self asdtNumberForKey:@"RunningLogPeriodSec"];
   v2 = v1;
   if (v1)
   {
@@ -1523,10 +1523,10 @@ LABEL_12:
 
 - (uint64_t)asdtManagerAudioObjectMaxCount
 {
-  v1 = [a1 asdtNumberForKey:@"AudioObjectMaxCount"];
-  v2 = [v1 unsignedIntValue];
+  v1 = [self asdtNumberForKey:@"AudioObjectMaxCount"];
+  unsignedIntValue = [v1 unsignedIntValue];
 
-  return v2;
+  return unsignedIntValue;
 }
 
 - (void)asdtArrayForKey:()ASDTConfig .cold.1()

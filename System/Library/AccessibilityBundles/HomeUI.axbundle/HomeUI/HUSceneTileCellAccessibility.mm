@@ -1,28 +1,28 @@
 @interface HUSceneTileCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation HUSceneTileCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUSceneTileCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"HUSceneTileCell" isKindOfClass:@"HUTileCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUSceneTileCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"HUSceneTileCell" isKindOfClass:@"HUTileCell"];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v9.receiver = self;
   v9.super_class = HUSceneTileCellAccessibility;
-  v2 = [(HUSceneTileCellAccessibility *)&v9 accessibilityTraits];
+  accessibilityTraits = [(HUSceneTileCellAccessibility *)&v9 accessibilityTraits];
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 configurationState];
+  configurationState = [v3 configurationState];
 
   objc_opt_class();
-  v5 = [v4 customStateForKey:@"com.apple.Home.isActive"];
+  v5 = [configurationState customStateForKey:@"com.apple.Home.isActive"];
   v6 = __UIAccessibilityCastAsClass();
 
   if ([v6 BOOLValue])
@@ -35,7 +35,7 @@
     v7 = 0;
   }
 
-  return v7 | v2;
+  return v7 | accessibilityTraits;
 }
 
 @end

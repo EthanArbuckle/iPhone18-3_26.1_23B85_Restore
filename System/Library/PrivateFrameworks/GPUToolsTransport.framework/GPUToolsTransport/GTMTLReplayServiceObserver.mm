@@ -1,22 +1,22 @@
 @interface GTMTLReplayServiceObserver
-- (void)notifyError:(id)a3;
+- (void)notifyError:(id)error;
 @end
 
 @implementation GTMTLReplayServiceObserver
 
-- (void)notifyError:(id)a3
+- (void)notifyError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   xdict = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(xdict, "_cmd", Name);
   xpc_dictionary_set_uint64(xdict, "_port", [(GTServiceObserver *)self replyStream]);
-  v7 = [(GTServiceObserver *)self replyPath];
-  xpc_dictionary_set_value(xdict, "_replyPath", v7);
+  replyPath = [(GTServiceObserver *)self replyPath];
+  xpc_dictionary_set_value(xdict, "_replyPath", replyPath);
 
-  xpc_dictionary_set_nserror(xdict, "error", v5);
-  v8 = [(GTServiceObserver *)self connection];
-  [v8 sendMessageAndWaitForDelivery:xdict];
+  xpc_dictionary_set_nserror(xdict, "error", errorCopy);
+  connection = [(GTServiceObserver *)self connection];
+  [connection sendMessageAndWaitForDelivery:xdict];
 }
 
 @end

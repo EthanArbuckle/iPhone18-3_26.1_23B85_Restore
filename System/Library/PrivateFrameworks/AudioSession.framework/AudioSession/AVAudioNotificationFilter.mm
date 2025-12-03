@@ -1,40 +1,40 @@
 @interface AVAudioNotificationFilter
-- (AVAudioNotificationFilter)initWithCoder:(id)a3;
-- (AVAudioNotificationFilter)initWithPropertyNotificationsOfInterest:(id)a3 wantsInterruptions:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)filterPropertyNotifications:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AVAudioNotificationFilter)initWithCoder:(id)coder;
+- (AVAudioNotificationFilter)initWithPropertyNotificationsOfInterest:(id)interest wantsInterruptions:(BOOL)interruptions;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)filterPropertyNotifications:(id)notifications;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVAudioNotificationFilter
 
-- (AVAudioNotificationFilter)initWithPropertyNotificationsOfInterest:(id)a3 wantsInterruptions:(BOOL)a4
+- (AVAudioNotificationFilter)initWithPropertyNotificationsOfInterest:(id)interest wantsInterruptions:(BOOL)interruptions
 {
-  v7 = a3;
+  interestCopy = interest;
   v11.receiver = self;
   v11.super_class = AVAudioNotificationFilter;
   v8 = [(AVAudioNotificationFilter *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_propertyNotificationsOfInterest, a3);
-    v9->_wantsInterruptions = a4;
+    objc_storeStrong(&v8->_propertyNotificationsOfInterest, interest);
+    v9->_wantsInterruptions = interruptions;
   }
 
   return v9;
 }
 
-- (id)filterPropertyNotifications:(id)a3
+- (id)filterPropertyNotifications:(id)notifications
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationsCopy = notifications;
   v5 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = notificationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -50,8 +50,8 @@
 
         v10 = *(*(&v15 + 1) + 8 * i);
         propertyNotificationsOfInterest = self->_propertyNotificationsOfInterest;
-        v12 = [v10 propertyName];
-        LODWORD(propertyNotificationsOfInterest) = [(NSSet *)propertyNotificationsOfInterest containsObject:v12];
+        propertyName = [v10 propertyName];
+        LODWORD(propertyNotificationsOfInterest) = [(NSSet *)propertyNotificationsOfInterest containsObject:propertyName];
 
         if (propertyNotificationsOfInterest)
         {
@@ -70,13 +70,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ([(NSSet *)self->_propertyNotificationsOfInterest isEqualToSet:v5[2]])
     {
       v6 = self->_wantsInterruptions == *(v5 + 8);
@@ -96,16 +96,16 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_propertyNotificationsOfInterest forKey:@"propertyNotificationsOfInterest"];
-  [v4 encodeBool:self->_wantsInterruptions forKey:@"wantsInterruptions"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_propertyNotificationsOfInterest forKey:@"propertyNotificationsOfInterest"];
+  [coderCopy encodeBool:self->_wantsInterruptions forKey:@"wantsInterruptions"];
 }
 
-- (AVAudioNotificationFilter)initWithCoder:(id)a3
+- (AVAudioNotificationFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = AVAudioNotificationFilter;
   v5 = [(AVAudioNotificationFilter *)&v12 init];
@@ -114,19 +114,19 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"propertyNotificationsOfInterest"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"propertyNotificationsOfInterest"];
     propertyNotificationsOfInterest = v5->_propertyNotificationsOfInterest;
     v5->_propertyNotificationsOfInterest = v9;
 
-    v5->_wantsInterruptions = [v4 decodeBoolForKey:@"wantsInterruptions"];
+    v5->_wantsInterruptions = [coderCopy decodeBoolForKey:@"wantsInterruptions"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [AVAudioNotificationFilter allocWithZone:a3];
+  v4 = [AVAudioNotificationFilter allocWithZone:zone];
   propertyNotificationsOfInterest = self->_propertyNotificationsOfInterest;
   wantsInterruptions = self->_wantsInterruptions;
 

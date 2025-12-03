@@ -1,10 +1,10 @@
 @interface HDCloudSyncStateUpdater
-+ (BOOL)persistDataWithStateStore:(id)a3 delegate:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)updateDataWithStateStore:(id)a3 delegate:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7;
-+ (id)_descriptionForDelegate:(uint64_t)a1;
-+ (uint64_t)_fetchCloudState:(HDCodableSyncState *)a3 codableSyncState:(void *)a4 stateStore:(void *)a5 profile:(void *)a6 delegate:(NSObject *)a7 error:;
-+ (uint64_t)_persistCloudState:(void *)a3 delegate:(void *)a4 profile:(void *)a5 error:;
-+ (uint64_t)_updateStateStore:(void *)a3 codableCloudState:(void *)a4 withMergeState:(void *)a5 profile:(void *)a6 delegate:(void *)a7 error:;
++ (BOOL)persistDataWithStateStore:(id)store delegate:(id)delegate profile:(id)profile error:(id *)error;
++ (BOOL)updateDataWithStateStore:(id)store delegate:(id)delegate profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (id)_descriptionForDelegate:(uint64_t)delegate;
++ (uint64_t)_fetchCloudState:(HDCodableSyncState *)state codableSyncState:(void *)syncState stateStore:(void *)store profile:(void *)profile delegate:(NSObject *)delegate error:;
++ (uint64_t)_persistCloudState:(void *)state delegate:(void *)delegate profile:(void *)profile error:;
++ (uint64_t)_updateStateStore:(void *)store codableCloudState:(void *)state withMergeState:(void *)mergeState profile:(void *)profile delegate:(void *)delegate error:;
 - (HDCloudSyncStateUpdater)init;
 @end
 
@@ -20,16 +20,16 @@
   return 0;
 }
 
-+ (BOOL)updateDataWithStateStore:(id)a3 delegate:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7
++ (BOOL)updateDataWithStateStore:(id)store delegate:(id)delegate profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v10 = v19;
-  v11 = v18;
-  v12 = v17;
-  v13 = v16;
+  storeCopy = store;
+  delegateCopy = delegate;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  v10 = transactionCopy;
+  v11 = profileCopy;
+  v12 = delegateCopy;
+  v13 = storeCopy;
   v14 = HKWithAutoreleasePool();
 
   return v14;
@@ -302,14 +302,14 @@ LABEL_53:
   return v17;
 }
 
-+ (BOOL)persistDataWithStateStore:(id)a3 delegate:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)persistDataWithStateStore:(id)store delegate:(id)delegate profile:(id)profile error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v8 = v15;
-  v9 = v14;
-  v10 = v13;
+  storeCopy = store;
+  delegateCopy = delegate;
+  profileCopy = profile;
+  v8 = profileCopy;
+  v9 = delegateCopy;
+  v10 = storeCopy;
   v11 = HKWithAutoreleasePool();
 
   return v11;
@@ -362,33 +362,33 @@ uint64_t __76__HDCloudSyncStateUpdater_persistDataWithStateStore_delegate_profil
   return v12;
 }
 
-+ (id)_descriptionForDelegate:(uint64_t)a1
++ (id)_descriptionForDelegate:(uint64_t)delegate
 {
   v2 = a2;
   objc_opt_self();
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = objc_opt_class();
-  v6 = [v2 domain];
+  domain = [v2 domain];
   v7 = [v2 key];
-  v8 = [v3 stringWithFormat:@"[%@:%@:%p (%@, %@)]", v4, v5, v2, v6, v7];
+  v8 = [v3 stringWithFormat:@"[%@:%@:%p (%@, %@)]", v4, v5, v2, domain, v7];
 
   return v8;
 }
 
-+ (uint64_t)_fetchCloudState:(HDCodableSyncState *)a3 codableSyncState:(void *)a4 stateStore:(void *)a5 profile:(void *)a6 delegate:(NSObject *)a7 error:
++ (uint64_t)_fetchCloudState:(HDCodableSyncState *)state codableSyncState:(void *)syncState stateStore:(void *)store profile:(void *)profile delegate:(NSObject *)delegate error:
 {
   v68 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
+  storeCopy = store;
+  profileCopy = profile;
+  syncStateCopy = syncState;
   v13 = objc_opt_self();
-  v14 = [v11 domain];
-  v15 = [v11 key];
-  v16 = [v11 supportedSyncVersionRange];
+  domain = [profileCopy domain];
+  v15 = [profileCopy key];
+  supportedSyncVersionRange = [profileCopy supportedSyncVersionRange];
   v58 = 0;
   v59 = 0;
-  v17 = [v12 data:&v59 forKey:v15 error:&v58];
+  v17 = [syncStateCopy data:&v59 forKey:v15 error:&v58];
 
   v18 = v59;
   v19 = v58;
@@ -399,7 +399,7 @@ uint64_t __76__HDCloudSyncStateUpdater_persistDataWithStateStore_delegate_profil
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
     {
       v44 = v27;
-      v45 = [(HDCloudSyncStateUpdater *)v13 _descriptionForDelegate:v11];
+      v45 = [(HDCloudSyncStateUpdater *)v13 _descriptionForDelegate:profileCopy];
       *buf = 138543618;
       v61 = v45;
       v62 = 2114;
@@ -411,11 +411,11 @@ uint64_t __76__HDCloudSyncStateUpdater_persistDataWithStateStore_delegate_profil
     v21 = v28;
     if (v28)
     {
-      if (a7)
+      if (delegate)
       {
         v29 = v28;
         v30 = 0;
-        *a7 = &v21->super.super;
+        *delegate = &v21->super.super;
 LABEL_42:
 
         goto LABEL_43;
@@ -433,46 +433,46 @@ LABEL_42:
     v52 = v13;
     v20 = [[HDCodableSyncState alloc] initWithData:v18];
     v21 = v20;
-    v54 = v10;
+    v54 = storeCopy;
     if (!v20)
     {
       v31 = MEMORY[0x277CCA9B8];
-      v32 = [v11 domain];
-      v33 = [v11 key];
-      [v31 hk_assignError:a7 code:129 format:{@"Unable to decode state sync data for domain %@ key %@", v32, v33}];
+      domain2 = [profileCopy domain];
+      v33 = [profileCopy key];
+      [v31 hk_assignError:delegate code:129 format:{@"Unable to decode state sync data for domain %@ key %@", domain2, v33}];
 
 LABEL_24:
       v30 = 0;
 LABEL_41:
 
-      v10 = v54;
+      storeCopy = v54;
       goto LABEL_42;
     }
 
-    v22 = [(HDCodableSyncState *)v20 domain];
-    v23 = v22;
+    domain3 = [(HDCodableSyncState *)v20 domain];
+    v23 = domain3;
     v53 = v19;
-    if (v22 == v14)
+    if (domain3 == domain)
     {
     }
 
     else
     {
-      if (!v14)
+      if (!domain)
       {
 
 LABEL_23:
         v39 = MEMORY[0x277CCA9B8];
-        v32 = [(HDCodableSyncState *)v21 key];
-        [v39 hk_assignError:a7 code:129 format:{@"Serialized domain %@ does not matched expected value %@", v32, v14}];
+        domain2 = [(HDCodableSyncState *)v21 key];
+        [v39 hk_assignError:delegate code:129 format:{@"Serialized domain %@ does not matched expected value %@", domain2, domain}];
         goto LABEL_24;
       }
 
       [(HDCodableSyncState *)v21 domain];
-      v25 = v24 = v14;
+      v25 = v24 = domain;
       v26 = [v25 isEqualToString:v24];
 
-      v14 = v24;
+      domain = v24;
       v19 = v53;
 
       if ((v26 & 1) == 0)
@@ -483,7 +483,7 @@ LABEL_23:
 
     v34 = [(HDCodableSyncState *)v21 key];
     v35 = v34;
-    v36 = v14;
+    v36 = domain;
     if (v34 == v15)
     {
     }
@@ -495,9 +495,9 @@ LABEL_23:
 
 LABEL_38:
         v46 = MEMORY[0x277CCA9B8];
-        v32 = [(HDCodableSyncState *)v21 key];
-        v14 = v36;
-        [v46 hk_assignError:a7 code:129 format:{@"Serialized key %@ does not matched %@ for domain %@", v32, v15, v36}];
+        domain2 = [(HDCodableSyncState *)v21 key];
+        domain = v36;
+        [v46 hk_assignError:delegate code:129 format:{@"Serialized key %@ does not matched %@ for domain %@", domain2, v15, v36}];
         v30 = 0;
         goto LABEL_40;
       }
@@ -511,18 +511,18 @@ LABEL_38:
       }
     }
 
-    if ([(HDCodableSyncState *)v21 versionRange]<= SHIDWORD(v16))
+    if ([(HDCodableSyncState *)v21 versionRange]<= SHIDWORD(supportedSyncVersionRange))
     {
-      if (a3)
+      if (state)
       {
         v41 = v21;
-        *a3 = v21;
+        *state = v21;
       }
 
       v57 = 0;
-      v30 = [v11 fetchCloudState:a2 codableSyncState:v21 profile:v54 error:&v57];
-      v32 = v57;
-      v14 = v36;
+      v30 = [profileCopy fetchCloudState:a2 codableSyncState:v21 profile:v54 error:&v57];
+      domain2 = v57;
+      domain = v36;
       if (!v30)
       {
         _HKInitializeLogging();
@@ -531,25 +531,25 @@ LABEL_38:
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
         {
           v49 = v42;
-          [(HDCloudSyncStateUpdater *)v52 _descriptionForDelegate:v11];
-          v51 = v50 = v14;
+          [(HDCloudSyncStateUpdater *)v52 _descriptionForDelegate:profileCopy];
+          v51 = v50 = domain;
           *buf = 138543618;
           v61 = v51;
           v62 = 2114;
-          *v63 = v32;
+          *v63 = domain2;
           _os_log_error_impl(&dword_228986000, v49, OS_LOG_TYPE_ERROR, "%{public}@ decode cloud state error: %{public}@", buf, 0x16u);
 
-          v14 = v50;
+          domain = v50;
           v19 = v53;
         }
 
-        v32 = v32;
-        if (v32)
+        domain2 = domain2;
+        if (domain2)
         {
-          if (a7)
+          if (delegate)
           {
-            v43 = v32;
-            *a7 = v32;
+            v43 = domain2;
+            *delegate = domain2;
           }
 
           else
@@ -565,29 +565,29 @@ LABEL_38:
     else
     {
       _HKInitializeLogging();
-      v32 = HKLogMedication();
-      if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+      domain2 = HKLogMedication();
+      if (os_log_type_enabled(domain2, OS_LOG_TYPE_DEFAULT))
       {
-        v40 = [(HDCodableSyncState *)v21 versionRange];
+        versionRange = [(HDCodableSyncState *)v21 versionRange];
         *buf = 138544386;
         v61 = v52;
         v62 = 1024;
-        *v63 = v40;
+        *v63 = versionRange;
         *&v63[4] = 1024;
-        *&v63[6] = HIDWORD(v16);
+        *&v63[6] = HIDWORD(supportedSyncVersionRange);
         v64 = 2114;
-        v14 = v36;
+        domain = v36;
         v65 = v36;
         v66 = 2114;
         v67 = v15;
-        _os_log_impl(&dword_228986000, v32, OS_LOG_TYPE_DEFAULT, "[%{public}@] Codable state has minimum version %d but current version for OS is %d for (%{public}@, %{public}@) ", buf, 0x2Cu);
+        _os_log_impl(&dword_228986000, domain2, OS_LOG_TYPE_DEFAULT, "[%{public}@] Codable state has minimum version %d but current version for OS is %d for (%{public}@, %{public}@) ", buf, 0x2Cu);
         v30 = 2;
       }
 
       else
       {
         v30 = 2;
-        v14 = v36;
+        domain = v36;
       }
     }
 
@@ -603,12 +603,12 @@ LABEL_43:
   return v30;
 }
 
-+ (uint64_t)_persistCloudState:(void *)a3 delegate:(void *)a4 profile:(void *)a5 error:
++ (uint64_t)_persistCloudState:(void *)state delegate:(void *)delegate profile:(void *)profile error:
 {
   v30 = *MEMORY[0x277D85DE8];
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
+  stateCopy = state;
+  delegateCopy = delegate;
   v11 = objc_opt_self();
   _HKInitializeLogging();
   v12 = MEMORY[0x277CCC328];
@@ -616,7 +616,7 @@ LABEL_43:
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [(HDCloudSyncStateUpdater *)v11 _descriptionForDelegate:v9];
+    v15 = [(HDCloudSyncStateUpdater *)v11 _descriptionForDelegate:stateCopy];
     *buf = 138543618;
     v27 = v15;
     v28 = 2114;
@@ -625,7 +625,7 @@ LABEL_43:
   }
 
   v25 = 0;
-  v16 = [v9 persistCloudState:v8 profile:v10 error:&v25];
+  v16 = [stateCopy persistCloudState:v8 profile:delegateCopy error:&v25];
 
   v17 = v25;
   if ((v16 & 1) == 0)
@@ -635,7 +635,7 @@ LABEL_43:
     if (os_log_type_enabled(*v12, OS_LOG_TYPE_ERROR))
     {
       v23 = v18;
-      v24 = [(HDCloudSyncStateUpdater *)v11 _descriptionForDelegate:v9];
+      v24 = [(HDCloudSyncStateUpdater *)v11 _descriptionForDelegate:stateCopy];
       *buf = 138543618;
       v27 = v24;
       v28 = 2114;
@@ -646,10 +646,10 @@ LABEL_43:
     v19 = v17;
     if (v19)
     {
-      if (a5)
+      if (profile)
       {
         v20 = v19;
-        *a5 = v19;
+        *profile = v19;
       }
 
       else
@@ -663,36 +663,36 @@ LABEL_43:
   return v16;
 }
 
-+ (uint64_t)_updateStateStore:(void *)a3 codableCloudState:(void *)a4 withMergeState:(void *)a5 profile:(void *)a6 delegate:(void *)a7 error:
++ (uint64_t)_updateStateStore:(void *)store codableCloudState:(void *)state withMergeState:(void *)mergeState profile:(void *)profile delegate:(void *)delegate error:
 {
   v51 = *MEMORY[0x277D85DE8];
   v12 = a2;
-  v13 = a3;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
+  storeCopy = store;
+  profileCopy = profile;
+  mergeStateCopy = mergeState;
+  stateCopy = state;
   v17 = objc_opt_self();
-  if (v13)
+  if (storeCopy)
   {
-    v18 = v13;
+    v18 = storeCopy;
   }
 
   else
   {
-    v19 = v14;
+    v19 = profileCopy;
     objc_opt_self();
     v18 = objc_alloc_init(HDCodableSyncState);
-    v20 = [v19 domain];
-    [(HDCodableSyncState *)v18 setDomain:v20];
+    domain = [v19 domain];
+    [(HDCodableSyncState *)v18 setDomain:domain];
 
     v21 = [v19 key];
 
     [(HDCodableSyncState *)v18 setKey:v21];
   }
 
-  -[HDCodableSyncState setVersionRange:](v18, "setVersionRange:", [v14 supportedSyncVersionRange]);
+  -[HDCodableSyncState setVersionRange:](v18, "setVersionRange:", [profileCopy supportedSyncVersionRange]);
   v46 = 0;
-  v22 = [v14 updateCodableSyncState:v18 withMergeState:v16 profile:v15 error:&v46];
+  v22 = [profileCopy updateCodableSyncState:v18 withMergeState:stateCopy profile:mergeStateCopy error:&v46];
 
   v23 = v46;
   if ((v22 & 1) == 0)
@@ -702,7 +702,7 @@ LABEL_43:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
     {
       v40 = v36;
-      v41 = [(HDCloudSyncStateUpdater *)v17 _descriptionForDelegate:v14];
+      v41 = [(HDCloudSyncStateUpdater *)v17 _descriptionForDelegate:profileCopy];
       *buf = 138543618;
       v48 = v41;
       v49 = 2114;
@@ -710,14 +710,14 @@ LABEL_43:
       _os_log_error_impl(&dword_228986000, v40, OS_LOG_TYPE_ERROR, "%{public}@ update codable sync state error: %{public}@", buf, 0x16u);
     }
 
-    v24 = v23;
-    if (v24)
+    data = v23;
+    if (data)
     {
-      if (a7)
+      if (delegate)
       {
-        v37 = v24;
+        v37 = data;
         v30 = 0;
-        *a7 = v24;
+        *delegate = data;
         goto LABEL_23;
       }
 
@@ -728,15 +728,15 @@ LABEL_43:
     goto LABEL_23;
   }
 
-  v44 = a7;
-  v24 = [(HDCodableSyncState *)v18 data];
+  delegateCopy = delegate;
+  data = [(HDCodableSyncState *)v18 data];
   _HKInitializeLogging();
   v25 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     v26 = v25;
-    v27 = [(HDCloudSyncStateUpdater *)v17 _descriptionForDelegate:v14];
-    v28 = [v24 length];
+    v27 = [(HDCloudSyncStateUpdater *)v17 _descriptionForDelegate:profileCopy];
+    v28 = [data length];
     *buf = 138543618;
     v48 = v27;
     v49 = 2048;
@@ -744,9 +744,9 @@ LABEL_43:
     _os_log_impl(&dword_228986000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@ update cloud state with %ld bytes of data", buf, 0x16u);
   }
 
-  v29 = [v14 key];
+  v29 = [profileCopy key];
   v45 = 0;
-  v30 = [v12 setData:v24 forKey:v29 error:&v45];
+  v30 = [v12 setData:data forKey:v29 error:&v45];
   v31 = v45;
 
   if ((v30 & 1) == 0)
@@ -756,7 +756,7 @@ LABEL_43:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
     {
       v42 = v32;
-      v43 = [(HDCloudSyncStateUpdater *)v17 _descriptionForDelegate:v14];
+      v43 = [(HDCloudSyncStateUpdater *)v17 _descriptionForDelegate:profileCopy];
       *buf = 138543618;
       v48 = v43;
       v49 = 2114;
@@ -768,10 +768,10 @@ LABEL_43:
     v34 = v33;
     if (v33)
     {
-      if (v44)
+      if (delegateCopy)
       {
         v35 = v33;
-        *v44 = v34;
+        *delegateCopy = v34;
       }
 
       else

@@ -1,52 +1,52 @@
 @interface MPModelLibraryModelObjectImportChangeRequestOperation
-- (id)_importItemFromModelObject:(id)a3;
-- (void)_finishOperationWithAddedItems:(id)a3 error:(id)a4;
+- (id)_importItemFromModelObject:(id)object;
+- (void)_finishOperationWithAddedItems:(id)items error:(id)error;
 - (void)execute;
 @end
 
 @implementation MPModelLibraryModelObjectImportChangeRequestOperation
 
-- (id)_importItemFromModelObject:(id)a3
+- (id)_importItemFromModelObject:(id)object
 {
   v52 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  objectCopy = object;
   v6 = objc_alloc_init(MEMORY[0x1E69B3400]);
-  v7 = [v5 identifiers];
-  v8 = [v7 personalizedStore];
-  v9 = [v8 personID];
+  identifiers = [objectCopy identifiers];
+  personalizedStore = [identifiers personalizedStore];
+  personID = [personalizedStore personID];
 
-  if ([v9 length])
+  if ([personID length])
   {
-    [v6 setAccountId:{objc_msgSend(v9, "longLongValue")}];
+    [v6 setAccountId:{objc_msgSend(personID, "longLongValue")}];
   }
 
-  v10 = [v7 universalStore];
-  v11 = [v10 adamID];
+  universalStore = [identifiers universalStore];
+  adamID = [universalStore adamID];
 
-  if (v11)
+  if (adamID)
   {
-    [v6 setStoreId:v11];
+    [v6 setStoreId:adamID];
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E69B33F8]);
   [v12 setIsInUsersLibrary:self->_shouldLibraryAdd];
   [v12 setCloudAssetAvailable:1];
-  v13 = [v7 universalStore];
-  v14 = [v13 subscriptionAdamID];
+  universalStore2 = [identifiers universalStore];
+  subscriptionAdamID = [universalStore2 subscriptionAdamID];
 
-  if (v14)
+  if (subscriptionAdamID)
   {
-    [v12 setSubscriptionStoreItemId:v14];
+    [v12 setSubscriptionStoreItemId:subscriptionAdamID];
     [v12 setPlaybackEndpointType:3];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = v5;
+    v15 = objectCopy;
     [v12 setMediaType:1];
-    v16 = [v15 title];
-    [v12 setTitle:v16];
+    title = [v15 title];
+    [v12 setTitle:title];
 
     if ([v15 hasLoadedValueForKey:@"MPModelPropertySongExplicit"])
     {
@@ -61,8 +61,8 @@
 
     if ([v15 hasLoadedValueForKey:@"MPModelPropertySongCopyrightText"])
     {
-      v18 = [v15 copyrightText];
-      [v12 setCopyright:v18];
+      copyrightText = [v15 copyrightText];
+      [v12 setCopyright:copyrightText];
     }
 
     if ([v15 hasLoadedValueForKey:@"MPModelPropertySongYear"])
@@ -85,13 +85,13 @@
     v47 = v20;
     if ([v15 hasLoadedValueForKey:@"MPModelRelationshipSongAlbum"])
     {
-      v21 = [v15 album];
-      v22 = v21;
-      if (v21 && [v21 hasLoadedValueForKey:@"MPModelPropertyAlbumTitle"])
+      album = [v15 album];
+      v22 = album;
+      if (album && [album hasLoadedValueForKey:@"MPModelPropertyAlbumTitle"])
       {
-        v44 = v9;
-        v23 = [v22 title];
-        [v20 setName:v23];
+        v44 = personID;
+        title2 = [v22 title];
+        [v20 setName:title2];
 
         if ([v22 hasLoadedValueForKey:@"MPModelPropertyAlbumDiscCount"])
         {
@@ -103,7 +103,7 @@
           [v20 setNumTracks:{objc_msgSend(v22, "trackCount")}];
         }
 
-        v9 = v44;
+        personID = v44;
         if ([v22 hasLoadedValueForKey:@"MPModelPropertyAlbumIsCompilation"])
         {
           [v20 setCompilation:{objc_msgSend(v22, "isCompilation")}];
@@ -111,38 +111,38 @@
       }
     }
 
-    v42 = self;
+    selfCopy = self;
     v24 = objc_alloc_init(MEMORY[0x1E69B33E0]);
     if ([v15 hasLoadedValueForKey:@"MPModelRelationshipSongArtist"])
     {
-      v25 = [v15 artist];
-      v26 = v25;
-      if (v25 && [v25 hasLoadedValueForKey:@"MPModelPropertyPersonName"])
+      artist = [v15 artist];
+      v26 = artist;
+      if (artist && [artist hasLoadedValueForKey:@"MPModelPropertyPersonName"])
       {
         [v26 name];
-        v28 = v27 = v9;
+        v28 = v27 = personID;
         [v24 setName:v28];
 
-        v9 = v27;
+        personID = v27;
         v20 = v47;
       }
     }
 
     if ([v15 hasLoadedValueForKey:@"MPModelRelationshipSongGenre"])
     {
-      v29 = [v15 genre];
-      v30 = v29;
-      if (v29 && [v29 hasLoadedValueForKey:@"MPModelPropertyGenreName"])
+      genre = [v15 genre];
+      v30 = genre;
+      if (genre && [genre hasLoadedValueForKey:@"MPModelPropertyGenreName"])
       {
-        v45 = v9;
+        v45 = personID;
         v31 = objc_alloc_init(MEMORY[0x1E69B33E8]);
-        v32 = [v30 name];
-        [v31 setName:v32];
+        name = [v30 name];
+        [v31 setName:name];
 
         v20 = v47;
         [v19 setGenre:v31];
 
-        v9 = v45;
+        personID = v45;
       }
     }
 
@@ -151,19 +151,19 @@
     [v12 setSong:v19];
     if ([v15 hasLoadedValueForKey:@"MPModelPropertySongArtwork"])
     {
-      v46 = v9;
-      v41 = [v15 artworkCatalog];
-      v33 = [v41 token];
-      if (v33 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      v46 = personID;
+      artworkCatalog = [v15 artworkCatalog];
+      token = [artworkCatalog token];
+      if (token && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v34 = [v33 imageArtworkInfo];
+        imageArtworkInfo = [token imageArtworkInfo];
         MSVGetMaximumScreenSize();
-        v43 = v34;
-        v35 = [v34 artworkURLWithSize:*MEMORY[0x1E69E4240] cropStyle:*MEMORY[0x1E69E4268] format:?];
-        v36 = [v35 absoluteString];
-        if ([v36 length])
+        v43 = imageArtworkInfo;
+        v35 = [imageArtworkInfo artworkURLWithSize:*MEMORY[0x1E69E4240] cropStyle:*MEMORY[0x1E69E4268] format:?];
+        absoluteString = [v35 absoluteString];
+        if ([absoluteString length])
         {
-          [v12 setArtworkId:v36];
+          [v12 setArtworkId:absoluteString];
         }
       }
 
@@ -173,22 +173,22 @@
         if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v49 = v42;
+          v49 = selfCopy;
           v50 = 2114;
-          v51 = v33;
+          v51 = token;
           _os_log_impl(&dword_1A238D000, v38, OS_LOG_TYPE_ERROR, "%{public}@ Unexpected token in artwork catalog - skipping setting artwork on the import item. token=%{public}@", buf, 0x16u);
         }
       }
 
-      v9 = v46;
+      personID = v46;
       v20 = v47;
     }
   }
 
   else
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"MPModelLibraryModelObjectImportChangeRequestOperation.m" lineNumber:235 description:{@"Unsupported model type %@", objc_opt_class()}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryModelObjectImportChangeRequestOperation.m" lineNumber:235 description:{@"Unsupported model type %@", objc_opt_class()}];
   }
 
   v39 = [objc_alloc(MEMORY[0x1E69B3470]) initWithMultiverseIdentifier:v6 mediaItem:v12];
@@ -196,18 +196,18 @@
   return v39;
 }
 
-- (void)_finishOperationWithAddedItems:(id)a3 error:(id)a4
+- (void)_finishOperationWithAddedItems:(id)items error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(MPModelLibraryModelObjectImportChangeRequestOperation *)self responseHandler];
-  v8 = v7;
-  if (v7)
+  itemsCopy = items;
+  errorCopy = error;
+  responseHandler = [(MPModelLibraryModelObjectImportChangeRequestOperation *)self responseHandler];
+  v8 = responseHandler;
+  if (responseHandler)
   {
-    (*(v7 + 16))(v7, v9, v6);
+    (*(responseHandler + 16))(responseHandler, itemsCopy, errorCopy);
   }
 
-  [(MPAsyncOperation *)self finishWithError:v6];
+  [(MPAsyncOperation *)self finishWithError:errorCopy];
 }
 
 - (void)execute
@@ -257,17 +257,17 @@
           [v28 addObject:v10];
           if (self->_shouldLibraryAdd)
           {
-            v11 = [v9 identifiers];
-            v12 = [v11 universalStore];
-            v13 = [v12 subscriptionAdamID];
+            identifiers = [v9 identifiers];
+            universalStore = [identifiers universalStore];
+            subscriptionAdamID = [universalStore subscriptionAdamID];
 
-            if (!v13)
+            if (!subscriptionAdamID)
             {
-              v14 = [v11 universalStore];
-              v13 = [v14 adamID];
+              universalStore2 = [identifiers universalStore];
+              subscriptionAdamID = [universalStore2 adamID];
             }
 
-            v15 = [MEMORY[0x1E696AD98] numberWithLongLong:v13];
+            v15 = [MEMORY[0x1E696AD98] numberWithLongLong:subscriptionAdamID];
             [v27 addObject:v15];
           }
         }
@@ -279,17 +279,17 @@
     }
 
     v16 = [v25 addItemsReturningResult:v28];
-    v17 = [v16 success];
-    if (v17)
+    success = [v16 success];
+    if (success)
     {
-      v18 = [v16 resultingDatabasePersistentIDs];
+      resultingDatabasePersistentIDs = [v16 resultingDatabasePersistentIDs];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __64__MPModelLibraryModelObjectImportChangeRequestOperation_execute__block_invoke;
       v32[3] = &unk_1E767B110;
       v32[4] = self;
       v33 = v24;
-      [v18 enumerateKeysAndObjectsUsingBlock:v32];
+      [resultingDatabasePersistentIDs enumerateKeysAndObjectsUsingBlock:v32];
 
       [v25 finish];
     }
@@ -312,7 +312,7 @@
     *&buf[16] = 0x3032000000;
     v43 = __Block_byref_object_copy__31176;
     v44 = __Block_byref_object_dispose__31177;
-    if (v17)
+    if (success)
     {
       v45 = 0;
       if (self->_shouldLibraryAdd && [v27 count] == 1)
@@ -321,14 +321,14 @@
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           *v38 = 138543618;
-          v39 = self;
+          selfCopy = self;
           v40 = 2114;
           v41 = v27;
           _os_log_impl(&dword_1A238D000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ Adding tracks with adam IDs %{public}@ to cloud library.", v38, 0x16u);
         }
 
-        v22 = [(MPAsyncOperation *)self userIdentity];
-        v23 = [MPCloudController controllerWithUserIdentity:v22];
+        userIdentity = [(MPAsyncOperation *)self userIdentity];
+        v23 = [MPCloudController controllerWithUserIdentity:userIdentity];
         v29[0] = MEMORY[0x1E69E9820];
         v29[1] = 3221225472;
         v29[2] = __64__MPModelLibraryModelObjectImportChangeRequestOperation_execute__block_invoke_13;

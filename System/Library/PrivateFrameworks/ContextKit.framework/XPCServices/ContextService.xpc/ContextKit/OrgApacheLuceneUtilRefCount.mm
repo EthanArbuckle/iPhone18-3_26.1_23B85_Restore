@@ -15,10 +15,10 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(JavaUtilConcurrentAtomicAtomicInteger *)refCount decrementAndGet];
-  if (v4)
+  decrementAndGet = [(JavaUtilConcurrentAtomicAtomicInteger *)refCount decrementAndGet];
+  if (decrementAndGet)
   {
-    if ((v4 & 0x80000000) != 0)
+    if ((decrementAndGet & 0x80000000) != 0)
     {
       v12 = JreStrcat("$I$", v5, v6, v7, v8, v9, v10, v11, @"too many decRef calls: refCount is ");
       v13 = new_JavaLangIllegalStateException_initWithNSString_(v12);

@@ -1,27 +1,27 @@
 @interface NTKDolomiteFaceBundle
-- (BOOL)_hasHWDefaultColorForDevice:(id)a3;
-- (id)_sortableFacesForDevice:(id)a3;
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryEditOptionsForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (id)galleryRowPrioritiesForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
+- (BOOL)_hasHWDefaultColorForDevice:(id)device;
+- (id)_sortableFacesForDevice:(id)device;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryEditOptionsForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (id)galleryRowPrioritiesForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
 @end
 
 @implementation NTKDolomiteFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKDolomiteFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKDolomiteFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryRowPrioritiesForDevice:(id)a3
+- (id)galleryRowPrioritiesForDevice:(id)device
 {
   v5 = &off_D5CE60;
   v6 = &off_D5CE78;
@@ -30,38 +30,38 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = NTKDolomiteFaceBundle;
-  v5 = [(NTKDolomiteFaceBundle *)&v15 galleryFacesForDevice:v4];
+  v5 = [(NTKDolomiteFaceBundle *)&v15 galleryFacesForDevice:deviceCopy];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_83A4;
   v12 = &unk_D5C550;
-  v13 = self;
-  v14 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v14 = deviceCopy;
+  v6 = deviceCopy;
   [v5 enumerateObjectsUsingBlock:&v9];
   v7 = [v5 copy];
 
   return v7;
 }
 
-- (BOOL)_hasHWDefaultColorForDevice:(id)a3
+- (BOOL)_hasHWDefaultColorForDevice:(id)device
 {
-  v3 = [(NTKDolomiteFaceBundle *)self defaultFaceForDevice:a3];
+  v3 = [(NTKDolomiteFaceBundle *)self defaultFaceForDevice:device];
   v4 = [v3 defaultOptionForCustomEditMode:10 slot:0];
-  v5 = [v4 fullname];
-  v6 = [v5 isEqualToString:@"dolomite.dynamic"];
+  fullname = [v4 fullname];
+  v6 = [fullname isEqualToString:@"dolomite.dynamic"];
 
   return v6 ^ 1;
 }
 
-- (id)galleryEditOptionsForDevice:(id)a3
+- (id)galleryEditOptionsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v10[0] = &off_D5CE90;
     v10[1] = &off_D5CED8;
@@ -86,11 +86,11 @@
   return v6;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[NSMutableArray array];
-  if ([v4 isRunningNapiliGMOrLater])
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     v18[0] = @"dolomite.dynamic";
     v18[1] = @"dolomite.color02";
@@ -99,25 +99,25 @@
     v6 = [NSArray arrayWithObjects:v18 count:4];
     [v5 addObjectsFromArray:v6];
 
-    v7 = [(NTKDolomiteFaceBundle *)self defaultFaceForDevice:v4];
+    v7 = [(NTKDolomiteFaceBundle *)self defaultFaceForDevice:deviceCopy];
     v8 = [v7 defaultOptionForCustomEditMode:10 slot:0];
-    v9 = [v8 fullname];
-    v10 = [v9 isEqualToString:@"dolomite.dynamic"];
+    fullname = [v8 fullname];
+    v10 = [fullname isEqualToString:@"dolomite.dynamic"];
 
     if (v10)
     {
       v17[0] = ntk_seasons_fall2025_forest;
       v17[1] = ntk_seasons_fall2025_anchorBlue;
-      v11 = [NSArray arrayWithObjects:v17 count:2];
-      [v5 addObjectsFromArray:v11];
+      fullname2 = [NSArray arrayWithObjects:v17 count:2];
+      [v5 addObjectsFromArray:fullname2];
     }
 
     else
     {
-      v11 = [v8 fullname];
-      v16[0] = v11;
-      v12 = [v8 fullname];
-      v16[1] = v12;
+      fullname2 = [v8 fullname];
+      v16[0] = fullname2;
+      fullname3 = [v8 fullname];
+      v16[1] = fullname3;
       v13 = [NSArray arrayWithObjects:v16 count:2];
       [v5 addObjectsFromArray:v13];
     }
@@ -144,12 +144,12 @@
   return v5;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:3669496134])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:3669496134])
   {
-    v5 = [(NTKDolomiteFaceBundle *)self _sortableFacesForDevice:v4];
+    v5 = [(NTKDolomiteFaceBundle *)self _sortableFacesForDevice:deviceCopy];
   }
 
   else
@@ -160,9 +160,9 @@
   return v5;
 }
 
-- (id)_sortableFacesForDevice:(id)a3
+- (id)_sortableFacesForDevice:(id)device
 {
-  v3 = [(NTKDolomiteFaceBundle *)self defaultFaceForDevice:a3];
+  v3 = [(NTKDolomiteFaceBundle *)self defaultFaceForDevice:device];
   v4 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v3 priority:100];
   v5 = v4;
   if (v4)

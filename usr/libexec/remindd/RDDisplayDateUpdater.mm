@@ -1,15 +1,15 @@
 @interface RDDisplayDateUpdater
-+ (void)updateDisplayDatesIn:(id)a3;
++ (void)updateDisplayDatesIn:(id)in;
 - (_TtC7remindd20RDDisplayDateUpdater)init;
 @end
 
 @implementation RDDisplayDateUpdater
 
-+ (void)updateDisplayDatesIn:(id)a3
++ (void)updateDisplayDatesIn:(id)in
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  sub_1005B5A88(v4);
+  inCopy = in;
+  sub_1005B5A88(inCopy);
 }
 
 - (_TtC7remindd20RDDisplayDateUpdater)init

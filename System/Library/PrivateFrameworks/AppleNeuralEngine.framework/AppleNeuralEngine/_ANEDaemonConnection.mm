@@ -3,16 +3,16 @@
 + (id)daemonConnectionRestricted;
 + (id)userDaemonConnection;
 - (_ANEDaemonConnection)init;
-- (_ANEDaemonConnection)initWithMachServiceName:(id)a3 restricted:(BOOL)a4;
-- (void)beginRealTimeTaskWithReply:(id)a3;
-- (void)compiledModelExistsFor:(id)a3 withReply:(id)a4;
-- (void)compiledModelExistsMatchingHash:(id)a3 withReply:(id)a4;
+- (_ANEDaemonConnection)initWithMachServiceName:(id)name restricted:(BOOL)restricted;
+- (void)beginRealTimeTaskWithReply:(id)reply;
+- (void)compiledModelExistsFor:(id)for withReply:(id)reply;
+- (void)compiledModelExistsMatchingHash:(id)hash withReply:(id)reply;
 - (void)dealloc;
-- (void)echo:(id)a3 withReply:(id)a4;
-- (void)endRealTimeTaskWithReply:(id)a3;
-- (void)purgeCompiledModel:(id)a3 withReply:(id)a4;
-- (void)purgeCompiledModelMatchingHash:(id)a3 withReply:(id)a4;
-- (void)reportTelemetryToPPS:(id)a3 playload:(id)a4;
+- (void)echo:(id)echo withReply:(id)reply;
+- (void)endRealTimeTaskWithReply:(id)reply;
+- (void)purgeCompiledModel:(id)model withReply:(id)reply;
+- (void)purgeCompiledModelMatchingHash:(id)hash withReply:(id)reply;
+- (void)reportTelemetryToPPS:(id)s playload:(id)playload;
 @end
 
 @implementation _ANEDaemonConnection
@@ -25,21 +25,21 @@
   return v4;
 }
 
-- (_ANEDaemonConnection)initWithMachServiceName:(id)a3 restricted:(BOOL)a4
+- (_ANEDaemonConnection)initWithMachServiceName:(id)name restricted:(BOOL)restricted
 {
-  v4 = a4;
-  v6 = a3;
+  restrictedCopy = restricted;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = _ANEDaemonConnection;
   v7 = [(_ANEDaemonConnection *)&v12 init];
   if (v7)
   {
-    v8 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:v6 options:4096];
+    v8 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:nameCopy options:4096];
     daemonConnection = v7->_daemonConnection;
     v7->_daemonConnection = v8;
 
-    v7->_restricted = v4;
-    if (v4)
+    v7->_restricted = restrictedCopy;
+    if (restrictedCopy)
     {
       _ANEDaemonInterfacePrivate();
     }
@@ -90,9 +90,9 @@
   return v4;
 }
 
-- (void)beginRealTimeTaskWithReply:(id)a3
+- (void)beginRealTimeTaskWithReply:(id)reply
 {
-  v5 = a3;
+  replyCopy = reply;
   if ([(_ANEDaemonConnection *)self restricted])
   {
     daemonConnection = self->_daemonConnection;
@@ -106,7 +106,7 @@
     v9[1] = 3221225472;
     v9[2] = __51___ANEDaemonConnection_beginRealTimeTaskWithReply___block_invoke_6;
     v9[3] = &unk_1E79BA258;
-    v10 = v5;
+    v10 = replyCopy;
     [v7 beginRealTimeTaskWithReply:v9];
   }
 
@@ -114,13 +114,13 @@
   {
     v7 = NSStringFromSelector(a2);
     v8 = [_ANEErrors entitlementErrorForMethod:v7];
-    (*(v5 + 2))(v5, 0, v8);
+    (*(replyCopy + 2))(replyCopy, 0, v8);
   }
 }
 
-- (void)endRealTimeTaskWithReply:(id)a3
+- (void)endRealTimeTaskWithReply:(id)reply
 {
-  v5 = a3;
+  replyCopy = reply;
   if ([(_ANEDaemonConnection *)self restricted])
   {
     daemonConnection = self->_daemonConnection;
@@ -134,7 +134,7 @@
     v9[1] = 3221225472;
     v9[2] = __49___ANEDaemonConnection_endRealTimeTaskWithReply___block_invoke_8;
     v9[3] = &unk_1E79BA258;
-    v10 = v5;
+    v10 = replyCopy;
     [v7 endRealTimeTaskWithReply:v9];
   }
 
@@ -142,14 +142,14 @@
   {
     v7 = NSStringFromSelector(a2);
     v8 = [_ANEErrors entitlementErrorForMethod:v7];
-    (*(v5 + 2))(v5, 0, v8);
+    (*(replyCopy + 2))(replyCopy, 0, v8);
   }
 }
 
-- (void)echo:(id)a3 withReply:(id)a4
+- (void)echo:(id)echo withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
+  echoCopy = echo;
+  replyCopy = reply;
   if ([(_ANEDaemonConnection *)self restricted])
   {
     daemonConnection = self->_daemonConnection;
@@ -163,19 +163,19 @@
     v12[1] = 3221225472;
     v12[2] = __39___ANEDaemonConnection_echo_withReply___block_invoke_9;
     v12[3] = &unk_1E79BA258;
-    v13 = v8;
-    [v10 echo:v7 withReply:v12];
+    v13 = replyCopy;
+    [v10 echo:echoCopy withReply:v12];
   }
 
   else
   {
     v10 = NSStringFromSelector(a2);
     v11 = [_ANEErrors entitlementErrorForMethod:v10];
-    (*(v8 + 2))(v8, 0, v11);
+    (*(replyCopy + 2))(replyCopy, 0, v11);
   }
 }
 
-- (void)reportTelemetryToPPS:(id)a3 playload:(id)a4
+- (void)reportTelemetryToPPS:(id)s playload:(id)playload
 {
   daemonConnection = self->_daemonConnection;
   v9[0] = MEMORY[0x1E69E9820];
@@ -183,90 +183,90 @@
   v9[2] = __54___ANEDaemonConnection_reportTelemetryToPPS_playload___block_invoke;
   v9[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
   v9[4] = a2;
-  v6 = a4;
-  v7 = a3;
+  playloadCopy = playload;
+  sCopy = s;
   v8 = [(NSXPCConnection *)daemonConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
-  [v8 reportTelemetryToPPS:v7 playload:v6];
+  [v8 reportTelemetryToPPS:sCopy playload:playloadCopy];
 }
 
-- (void)compiledModelExistsFor:(id)a3 withReply:(id)a4
+- (void)compiledModelExistsFor:(id)for withReply:(id)reply
 {
-  v7 = a4;
+  replyCopy = reply;
   daemonConnection = self->_daemonConnection;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __57___ANEDaemonConnection_compiledModelExistsFor_withReply___block_invoke;
   v14[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
   v14[4] = a2;
-  v9 = a3;
+  forCopy = for;
   v10 = [(NSXPCConnection *)daemonConnection synchronousRemoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57___ANEDaemonConnection_compiledModelExistsFor_withReply___block_invoke_17;
   v12[3] = &unk_1E79BA2D0;
-  v13 = v7;
-  v11 = v7;
-  [v10 compiledModelExistsFor:v9 withReply:v12];
+  v13 = replyCopy;
+  v11 = replyCopy;
+  [v10 compiledModelExistsFor:forCopy withReply:v12];
 }
 
-- (void)purgeCompiledModel:(id)a3 withReply:(id)a4
+- (void)purgeCompiledModel:(id)model withReply:(id)reply
 {
-  v7 = a4;
+  replyCopy = reply;
   daemonConnection = self->_daemonConnection;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __53___ANEDaemonConnection_purgeCompiledModel_withReply___block_invoke;
   v14[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
   v14[4] = a2;
-  v9 = a3;
+  modelCopy = model;
   v10 = [(NSXPCConnection *)daemonConnection synchronousRemoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __53___ANEDaemonConnection_purgeCompiledModel_withReply___block_invoke_19;
   v12[3] = &unk_1E79BA258;
-  v13 = v7;
-  v11 = v7;
-  [v10 purgeCompiledModel:v9 withReply:v12];
+  v13 = replyCopy;
+  v11 = replyCopy;
+  [v10 purgeCompiledModel:modelCopy withReply:v12];
 }
 
-- (void)compiledModelExistsMatchingHash:(id)a3 withReply:(id)a4
+- (void)compiledModelExistsMatchingHash:(id)hash withReply:(id)reply
 {
-  v7 = a4;
+  replyCopy = reply;
   daemonConnection = self->_daemonConnection;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __66___ANEDaemonConnection_compiledModelExistsMatchingHash_withReply___block_invoke;
   v14[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
   v14[4] = a2;
-  v9 = a3;
+  hashCopy = hash;
   v10 = [(NSXPCConnection *)daemonConnection synchronousRemoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __66___ANEDaemonConnection_compiledModelExistsMatchingHash_withReply___block_invoke_21;
   v12[3] = &unk_1E79BA258;
-  v13 = v7;
-  v11 = v7;
-  [v10 compiledModelExistsMatchingHash:v9 withReply:v12];
+  v13 = replyCopy;
+  v11 = replyCopy;
+  [v10 compiledModelExistsMatchingHash:hashCopy withReply:v12];
 }
 
-- (void)purgeCompiledModelMatchingHash:(id)a3 withReply:(id)a4
+- (void)purgeCompiledModelMatchingHash:(id)hash withReply:(id)reply
 {
-  v7 = a4;
+  replyCopy = reply;
   daemonConnection = self->_daemonConnection;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __65___ANEDaemonConnection_purgeCompiledModelMatchingHash_withReply___block_invoke;
   v14[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
   v14[4] = a2;
-  v9 = a3;
+  hashCopy = hash;
   v10 = [(NSXPCConnection *)daemonConnection synchronousRemoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65___ANEDaemonConnection_purgeCompiledModelMatchingHash_withReply___block_invoke_22;
   v12[3] = &unk_1E79BA258;
-  v13 = v7;
-  v11 = v7;
-  [v10 purgeCompiledModelMatchingHash:v9 withReply:v12];
+  v13 = replyCopy;
+  v11 = replyCopy;
+  [v10 purgeCompiledModelMatchingHash:hashCopy withReply:v12];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface RTStateTransitionMotionActivityTypeHistogram
 - (RTStateTransitionMotionActivityTypeHistogram)init;
 - (unint64_t)getDominantMotionActivityType;
-- (void)addMotionActivityType:(unint64_t)a3;
+- (void)addMotionActivityType:(unint64_t)type;
 - (void)show;
 @end
 
@@ -22,7 +22,7 @@
   v11[1] = v11;
   v11[2] = 0x2020000000;
   v11[3] = 0;
-  v2 = [(RTStateTransitionMotionActivityTypeHistogram *)self motionActivityTypeBins];
+  motionActivityTypeBins = [(RTStateTransitionMotionActivityTypeHistogram *)self motionActivityTypeBins];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __77__RTStateTransitionMotionActivityTypeHistogram_getDominantMotionActivityType__block_invoke;
@@ -30,7 +30,7 @@
   v10[4] = v11;
   v10[5] = &v16;
   v10[6] = &v12;
-  [v2 enumerateKeysAndObjectsUsingBlock:v10];
+  [motionActivityTypeBins enumerateKeysAndObjectsUsingBlock:v10];
 
   v3 = v17;
   if (*(v13 + 24) == 1)
@@ -107,28 +107,28 @@ void __77__RTStateTransitionMotionActivityTypeHistogram_getDominantMotionActivit
   return v2;
 }
 
-- (void)addMotionActivityType:(unint64_t)a3
+- (void)addMotionActivityType:(unint64_t)type
 {
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v4 = [(RTStateTransitionMotionActivityTypeHistogram *)self motionActivityTypeBins];
-  v5 = [v4 objectForKey:v8];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+  motionActivityTypeBins = [(RTStateTransitionMotionActivityTypeHistogram *)self motionActivityTypeBins];
+  v5 = [motionActivityTypeBins objectForKey:v8];
 
-  v6 = [(RTStateTransitionMotionActivityTypeHistogram *)self motionActivityTypeBins];
+  motionActivityTypeBins2 = [(RTStateTransitionMotionActivityTypeHistogram *)self motionActivityTypeBins];
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "integerValue") + 1}];
-  [v6 setObject:v7 forKey:v8];
+  [motionActivityTypeBins2 setObject:v7 forKey:v8];
 }
 
 - (void)show
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    v3 = [(RTStateTransitionMotionActivityTypeHistogram *)self motionActivityTypeBins];
-    v4 = [v3 count];
+    motionActivityTypeBins = [(RTStateTransitionMotionActivityTypeHistogram *)self motionActivityTypeBins];
+    v4 = [motionActivityTypeBins count];
 
     if (v4)
     {
-      v5 = [(RTStateTransitionMotionActivityTypeHistogram *)self motionActivityTypeBins];
-      [v5 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_106];
+      motionActivityTypeBins2 = [(RTStateTransitionMotionActivityTypeHistogram *)self motionActivityTypeBins];
+      [motionActivityTypeBins2 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_106];
     }
   }
 }

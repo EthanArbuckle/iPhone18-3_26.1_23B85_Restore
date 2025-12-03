@@ -1,14 +1,14 @@
 @interface WFWidgetConfigurationViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation WFWidgetConfigurationViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WFWidgetConfigurationView" hasInstanceMethod:@"containerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFWidgetConfigurationContainerView" hasInstanceMethod:@"requestDismissal" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WFWidgetConfigurationView" hasInstanceMethod:@"containerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFWidgetConfigurationContainerView" hasInstanceMethod:@"requestDismissal" withFullSignature:{"v", 0}];
 }
 
 void __68__WFWidgetConfigurationViewAccessibility_accessibilityPerformEscape__block_invoke(uint64_t a1)

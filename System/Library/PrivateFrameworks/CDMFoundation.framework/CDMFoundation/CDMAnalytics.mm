@@ -1,36 +1,36 @@
 @interface CDMAnalytics
-+ (void)recordCDMSetupFailureEvent:(id)a3 withError:(id)a4;
-+ (void)recordCDMSetupSuccessEvent:(id)a3;
-+ (void)recordContextUpdateOutcome:(int)a3 numTurnsRollback:(int)a4 locale:(id)a5;
-+ (void)recordGraphFailureEvent:(id)a3 withError:(id)a4;
-+ (void)recordGraphSuccessEvent:(id)a3 withTopParserId:(id)a4;
-+ (void)recordReceivedNluRequestEvent:(id)a3 withNluRequest:(id)a4;
++ (void)recordCDMSetupFailureEvent:(id)event withError:(id)error;
++ (void)recordCDMSetupSuccessEvent:(id)event;
++ (void)recordContextUpdateOutcome:(int)outcome numTurnsRollback:(int)rollback locale:(id)locale;
++ (void)recordGraphFailureEvent:(id)event withError:(id)error;
++ (void)recordGraphSuccessEvent:(id)event withTopParserId:(id)id;
++ (void)recordReceivedNluRequestEvent:(id)event withNluRequest:(id)request;
 @end
 
 @implementation CDMAnalytics
 
-+ (void)recordGraphFailureEvent:(id)a3 withError:(id)a4
++ (void)recordGraphFailureEvent:(id)event withError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  eventCopy = event;
+  errorCopy = error;
+  v7 = errorCopy;
+  if (eventCopy)
   {
-    if (v6)
+    if (errorCopy)
     {
-      v8 = [v6 domain];
+      domain = [errorCopy domain];
       [v7 code];
     }
 
     else
     {
-      v8 = @"UnknownErrorDomain";
+      domain = @"UnknownErrorDomain";
     }
 
-    v11 = v5;
-    v12 = v8;
-    v9 = v8;
+    v11 = eventCopy;
+    v12 = domain;
+    v9 = domain;
     AnalyticsSendEventLazy();
   }
 
@@ -68,13 +68,13 @@ id __50__CDMAnalytics_recordGraphFailureEvent_withError___block_invoke(void *a1)
   return v3;
 }
 
-+ (void)recordGraphSuccessEvent:(id)a3 withTopParserId:(id)a4
++ (void)recordGraphSuccessEvent:(id)event withTopParserId:(id)id
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  eventCopy = event;
+  idCopy = id;
+  v7 = idCopy;
+  if (!eventCopy)
   {
     v8 = CDMOSLoggerForCategory(0);
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -90,7 +90,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!idCopy)
   {
     v8 = CDMOSLoggerForCategory(0);
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -104,7 +104,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v11 = v5;
+  v11 = eventCopy;
   v12 = v7;
   AnalyticsSendEventLazy();
 
@@ -130,28 +130,28 @@ id __56__CDMAnalytics_recordGraphSuccessEvent_withTopParserId___block_invoke(uin
   return v2;
 }
 
-+ (void)recordCDMSetupFailureEvent:(id)a3 withError:(id)a4
++ (void)recordCDMSetupFailureEvent:(id)event withError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  eventCopy = event;
+  errorCopy = error;
+  v7 = errorCopy;
+  if (eventCopy)
   {
-    if (v6)
+    if (errorCopy)
     {
-      v8 = [v6 domain];
+      domain = [errorCopy domain];
       [v7 code];
     }
 
     else
     {
-      v8 = @"UnknownErrorDomain";
+      domain = @"UnknownErrorDomain";
     }
 
-    v11 = v5;
-    v12 = v8;
-    v9 = v8;
+    v11 = eventCopy;
+    v12 = domain;
+    v9 = domain;
     AnalyticsSendEventLazy();
   }
 
@@ -189,14 +189,14 @@ id __53__CDMAnalytics_recordCDMSetupFailureEvent_withError___block_invoke(void *
   return v3;
 }
 
-+ (void)recordCDMSetupSuccessEvent:(id)a3
++ (void)recordCDMSetupSuccessEvent:(id)event
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  eventCopy = event;
+  v4 = eventCopy;
+  if (eventCopy)
   {
-    v7 = v3;
+    v7 = eventCopy;
     AnalyticsSendEventLazy();
     v5 = v7;
   }
@@ -229,22 +229,22 @@ id __43__CDMAnalytics_recordCDMSetupSuccessEvent___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (void)recordContextUpdateOutcome:(int)a3 numTurnsRollback:(int)a4 locale:(id)a5
++ (void)recordContextUpdateOutcome:(int)outcome numTurnsRollback:(int)rollback locale:(id)locale
 {
-  v6 = a5;
-  v5 = v6;
+  localeCopy = locale;
+  v5 = localeCopy;
   AnalyticsSendEventLazy();
 }
 
-+ (void)recordReceivedNluRequestEvent:(id)a3 withNluRequest:(id)a4
++ (void)recordReceivedNluRequestEvent:(id)event withNluRequest:(id)request
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  eventCopy = event;
+  requestCopy = request;
+  if (eventCopy)
   {
-    v9 = v5;
-    v10 = v6;
+    v9 = eventCopy;
+    v10 = requestCopy;
     AnalyticsSendEventLazy();
 
     v7 = v9;

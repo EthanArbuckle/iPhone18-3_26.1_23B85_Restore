@@ -1,52 +1,52 @@
 @interface MFCalendarComposeRecipient
-- (BOOL)isEqual:(id)a3;
-- (MFCalendarComposeRecipient)initWithComposeRecipient:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MFCalendarComposeRecipient)initWithComposeRecipient:(id)recipient;
 - (id)displayString;
 - (unint64_t)hash;
-- (void)setCalAttendeeName:(id)a3;
-- (void)setParticipant:(id)a3;
+- (void)setCalAttendeeName:(id)name;
+- (void)setParticipant:(id)participant;
 @end
 
 @implementation MFCalendarComposeRecipient
 
-- (MFCalendarComposeRecipient)initWithComposeRecipient:(id)a3
+- (MFCalendarComposeRecipient)initWithComposeRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [v4 address];
-  v6 = -[MFComposeRecipient initWithContact:address:kind:](self, "initWithContact:address:kind:", 0, v5, [v4 kind]);
+  recipientCopy = recipient;
+  address = [recipientCopy address];
+  v6 = -[MFComposeRecipient initWithContact:address:kind:](self, "initWithContact:address:kind:", 0, address, [recipientCopy kind]);
 
   if (v6)
   {
     v6->super._property = *MEMORY[0x1E698A340];
-    v7 = [v4 displayString];
+    displayString = [recipientCopy displayString];
     displayString = v6->super._displayString;
-    v6->super._displayString = v7;
+    v6->super._displayString = displayString;
 
-    v6->super._sourceType = [v4 sourceType];
+    v6->super._sourceType = [recipientCopy sourceType];
   }
 
   return v6;
 }
 
-- (void)setCalAttendeeName:(id)a3
+- (void)setCalAttendeeName:(id)name
 {
-  v5 = a3;
-  if (self->_calAttendeeName != v5)
+  nameCopy = name;
+  if (self->_calAttendeeName != nameCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_calAttendeeName, a3);
-    v5 = v6;
+    v6 = nameCopy;
+    objc_storeStrong(&self->_calAttendeeName, name);
+    nameCopy = v6;
   }
 }
 
-- (void)setParticipant:(id)a3
+- (void)setParticipant:(id)participant
 {
-  v5 = a3;
-  if (self->_participant != v5)
+  participantCopy = participant;
+  if (self->_participant != participantCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_participant, a3);
-    v5 = v6;
+    v6 = participantCopy;
+    objc_storeStrong(&self->_participant, participant);
+    participantCopy = v6;
   }
 }
 
@@ -56,26 +56,26 @@
   {
     v6.receiver = self;
     v6.super_class = MFCalendarComposeRecipient;
-    v3 = [(MFComposeRecipient *)&v6 displayString];
+    displayString = [(MFComposeRecipient *)&v6 displayString];
   }
 
   else
   {
-    v3 = calAttendeeName;
+    displayString = calAttendeeName;
   }
 
-  return v3;
+  return displayString;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MFComposeRecipient *)self uncommentedAddress];
-    v6 = [v4 uncommentedAddress];
-    v7 = [v5 isEqualToString:v6];
+    uncommentedAddress = [(MFComposeRecipient *)self uncommentedAddress];
+    uncommentedAddress2 = [equalCopy uncommentedAddress];
+    v7 = [uncommentedAddress isEqualToString:uncommentedAddress2];
   }
 
   else
@@ -88,11 +88,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MFComposeRecipient *)self uncommentedAddress];
-  v4 = v3;
-  if (v3)
+  uncommentedAddress = [(MFComposeRecipient *)self uncommentedAddress];
+  v4 = uncommentedAddress;
+  if (uncommentedAddress)
   {
-    v5 = [v3 hash];
+    v5 = [uncommentedAddress hash];
   }
 
   else

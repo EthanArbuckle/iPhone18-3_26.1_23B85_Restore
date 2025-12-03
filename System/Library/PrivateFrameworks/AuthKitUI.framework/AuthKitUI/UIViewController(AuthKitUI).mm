@@ -6,35 +6,35 @@
 
 - (id)ak_topPresentedViewController
 {
-  v10[2] = a1;
+  v10[2] = self;
   v10[1] = a2;
-  v10[0] = MEMORY[0x277D82BE0](a1);
+  v10[0] = MEMORY[0x277D82BE0](self);
   while (1)
   {
-    v6 = [v10[0] presentedViewController];
+    presentedViewController = [v10[0] presentedViewController];
     v8 = 0;
     v7 = 0;
-    if (v6)
+    if (presentedViewController)
     {
-      v9 = [v10[0] presentedViewController];
+      presentedViewController2 = [v10[0] presentedViewController];
       v8 = 1;
-      v7 = [v9 isBeingDismissed] == 0;
+      v7 = [presentedViewController2 isBeingDismissed] == 0;
     }
 
     if (v8)
     {
-      MEMORY[0x277D82BD8](v9);
+      MEMORY[0x277D82BD8](presentedViewController2);
     }
 
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](presentedViewController);
     if (!v7)
     {
       break;
     }
 
-    v2 = [v10[0] presentedViewController];
+    presentedViewController3 = [v10[0] presentedViewController];
     v3 = v10[0];
-    v10[0] = v2;
+    v10[0] = presentedViewController3;
     MEMORY[0x277D82BD8](v3);
   }
 

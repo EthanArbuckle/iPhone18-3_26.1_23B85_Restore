@@ -1,18 +1,18 @@
 @interface NLSessionActivityMachineElapsedTimeAccumulator
-- (double)elapsedTimeAtPresentationTime:(id)a3;
-- (void)sessionActivity:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)setElapsedTime:(double)a3;
+- (double)elapsedTimeAtPresentationTime:(id)time;
+- (void)sessionActivity:(id)activity didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)setElapsedTime:(double)time;
 @end
 
 @implementation NLSessionActivityMachineElapsedTimeAccumulator
 
-- (void)setElapsedTime:(double)a3
+- (void)setElapsedTime:(double)time
 {
-  v4 = self;
-  MachineElapsedTimeAccumulator.setElapsedTime(_:)(a3);
+  selfCopy = self;
+  MachineElapsedTimeAccumulator.setElapsedTime(_:)(time);
 }
 
-- (double)elapsedTimeAtPresentationTime:(id)a3
+- (double)elapsedTimeAtPresentationTime:(id)time
 {
   v4 = type metadata accessor for Date();
   v5 = *(v4 - 8);
@@ -20,7 +20,7 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   MachineElapsedTimeAccumulator.elapsedTime(at:)();
   v11 = v10;
 
@@ -28,11 +28,11 @@
   return v11;
 }
 
-- (void)sessionActivity:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)sessionActivity:(id)activity didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v8 = a3;
-  v9 = self;
-  specialized MachineElapsedTimeAccumulator.sessionActivity(_:didChangeFrom:to:)(a4, a5);
+  activityCopy = activity;
+  selfCopy = self;
+  specialized MachineElapsedTimeAccumulator.sessionActivity(_:didChangeFrom:to:)(state, toState);
 }
 
 @end

@@ -14,7 +14,7 @@
   v12 = a4;
   v11 = v8;
   v9 = v8;
-  [a1 updateApplicationData:a3 completionHandler:v10];
+  [self updateApplicationData:a3 completionHandler:v10];
 }
 
 @end

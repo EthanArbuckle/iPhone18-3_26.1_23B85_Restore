@@ -1,15 +1,15 @@
 @interface PGBusinessCategoryFeatureExtractor
-+ (id)_labelProcessingForVersion:(int64_t)a3 label:(id)a4;
-+ (id)_labelsForVersion:(int64_t)a3;
-- (PGBusinessCategoryFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4;
++ (id)_labelProcessingForVersion:(int64_t)version label:(id)label;
++ (id)_labelsForVersion:(int64_t)version;
+- (PGBusinessCategoryFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error;
 @end
 
 @implementation PGBusinessCategoryFeatureExtractor
 
-- (PGBusinessCategoryFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4
+- (PGBusinessCategoryFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v6 = [objc_opt_class() _labelsForVersion:a3];
+  v6 = [objc_opt_class() _labelsForVersion:version];
   v7 = MEMORY[0x277D22C90];
   v8 = +[PGGraphMomentNode businessOfMoment];
   v17[0] = v8;
@@ -22,7 +22,7 @@
   v16[1] = 3221225472;
   v16[2] = __60__PGBusinessCategoryFeatureExtractor_initWithVersion_error___block_invoke;
   v16[3] = &__block_descriptor_40_e51___NSString_24__0__PGGraphBusinessCategoryNode_8__16l;
-  v16[4] = a3;
+  v16[4] = version;
   v15.receiver = self;
   v15.super_class = PGBusinessCategoryFeatureExtractor;
   v12 = [(PGGraphFeatureExtractor *)&v15 initWithName:@"Business Category" featureNames:v6 relation:v11 labelForTargetBlock:v16];
@@ -40,20 +40,20 @@ id __60__PGBusinessCategoryFeatureExtractor_initWithVersion_error___block_invoke
   return v4;
 }
 
-+ (id)_labelProcessingForVersion:(int64_t)a3 label:(id)a4
++ (id)_labelProcessingForVersion:(int64_t)version label:(id)label
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 == 2)
+  labelCopy = label;
+  v7 = labelCopy;
+  if (version == 2)
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [a1 prefix];
-    v8 = [v9 stringWithFormat:@"%@_%@", v10, v7];
+    prefix = [self prefix];
+    v8 = [v9 stringWithFormat:@"%@_%@", prefix, v7];
   }
 
-  else if (a3 == 1)
+  else if (version == 1)
   {
-    v8 = v6;
+    v8 = labelCopy;
   }
 
   else
@@ -64,10 +64,10 @@ id __60__PGBusinessCategoryFeatureExtractor_initWithVersion_error___block_invoke
   return v8;
 }
 
-+ (id)_labelsForVersion:(int64_t)a3
++ (id)_labelsForVersion:(int64_t)version
 {
   v19 = *MEMORY[0x277D85DE8];
-  if ((a3 - 1) >= 2)
+  if ((version - 1) >= 2)
   {
     v5 = MEMORY[0x277CBEBF8];
   }
@@ -96,7 +96,7 @@ id __60__PGBusinessCategoryFeatureExtractor_initWithVersion_error___block_invoke
           objc_enumerationMutation(v5);
         }
 
-        v11 = [a1 _labelProcessingForVersion:a3 label:*(*(&v14 + 1) + 8 * i)];
+        v11 = [self _labelProcessingForVersion:version label:*(*(&v14 + 1) + 8 * i)];
         [v6 addObject:v11];
       }
 

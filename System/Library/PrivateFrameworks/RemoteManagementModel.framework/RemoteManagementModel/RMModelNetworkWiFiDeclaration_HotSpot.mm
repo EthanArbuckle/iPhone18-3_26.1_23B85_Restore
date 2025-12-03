@@ -1,10 +1,10 @@
 @interface RMModelNetworkWiFiDeclaration_HotSpot
 + (NSSet)allowedPayloadKeys;
 + (id)buildRequiredOnly;
-+ (id)buildWithDisplayedOperatorName:(id)a3 domainName:(id)a4 roamingConsortiumOIs:(id)a5 serviceProviderRoamingEnabled:(id)a6 HESSID:(id)a7 naiRealmNames:(id)a8 mccAndMNCs:(id)a9;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildWithDisplayedOperatorName:(id)name domainName:(id)domainName roamingConsortiumOIs:(id)is serviceProviderRoamingEnabled:(id)enabled HESSID:(id)d naiRealmNames:(id)names mccAndMNCs:(id)cs;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelNetworkWiFiDeclaration_HotSpot
@@ -28,24 +28,24 @@
   return v4;
 }
 
-+ (id)buildWithDisplayedOperatorName:(id)a3 domainName:(id)a4 roamingConsortiumOIs:(id)a5 serviceProviderRoamingEnabled:(id)a6 HESSID:(id)a7 naiRealmNames:(id)a8 mccAndMNCs:(id)a9
++ (id)buildWithDisplayedOperatorName:(id)name domainName:(id)domainName roamingConsortiumOIs:(id)is serviceProviderRoamingEnabled:(id)enabled HESSID:(id)d naiRealmNames:(id)names mccAndMNCs:(id)cs
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
+  csCopy = cs;
+  namesCopy = names;
+  dCopy = d;
+  enabledCopy = enabled;
+  isCopy = is;
+  domainNameCopy = domainName;
+  nameCopy = name;
   v22 = objc_opt_new();
-  [v22 setPayloadDisplayedOperatorName:v21];
+  [v22 setPayloadDisplayedOperatorName:nameCopy];
 
-  [v22 setPayloadDomainName:v20];
-  [v22 setPayloadRoamingConsortiumOIs:v19];
+  [v22 setPayloadDomainName:domainNameCopy];
+  [v22 setPayloadRoamingConsortiumOIs:isCopy];
 
-  if (v18)
+  if (enabledCopy)
   {
-    v23 = v18;
+    v23 = enabledCopy;
   }
 
   else
@@ -55,10 +55,10 @@
 
   [v22 setPayloadServiceProviderRoamingEnabled:v23];
 
-  [v22 setPayloadHESSID:v17];
-  [v22 setPayloadNAIRealmNames:v16];
+  [v22 setPayloadHESSID:dCopy];
+  [v22 setPayloadNAIRealmNames:namesCopy];
 
-  [v22 setPayloadMCCAndMNCs:v15];
+  [v22 setPayloadMCCAndMNCs:csCopy];
 
   return v22;
 }
@@ -70,12 +70,12 @@
   return v2;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelNetworkWiFiDeclaration_HotSpot allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -83,44 +83,44 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"DisplayedOperatorName" forKeyPath:@"payloadDisplayedOperatorName" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"DomainName" forKeyPath:@"payloadDomainName" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:v7 usingKey:@"RoamingConsortiumOIs" forKeyPath:@"payloadRoamingConsortiumOIs" validator:&__block_literal_global_388 isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"ServiceProviderRoamingEnabled" forKeyPath:@"payloadServiceProviderRoamingEnabled" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"HESSID" forKeyPath:@"payloadHESSID" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:v7 usingKey:@"NAIRealmNames" forKeyPath:@"payloadNAIRealmNames" validator:&__block_literal_global_399 isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:v7 usingKey:@"MCCAndMNCs" forKeyPath:@"payloadMCCAndMNCs" validator:&__block_literal_global_404 isRequired:0 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"DisplayedOperatorName" forKeyPath:@"payloadDisplayedOperatorName" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"DomainName" forKeyPath:@"payloadDomainName" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"RoamingConsortiumOIs" forKeyPath:@"payloadRoamingConsortiumOIs" validator:&__block_literal_global_388 isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"ServiceProviderRoamingEnabled" forKeyPath:@"payloadServiceProviderRoamingEnabled" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"HESSID" forKeyPath:@"payloadHESSID" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"NAIRealmNames" forKeyPath:@"payloadNAIRealmNames" validator:&__block_literal_global_399 isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"MCCAndMNCs" forKeyPath:@"payloadMCCAndMNCs" validator:&__block_literal_global_404 isRequired:0 defaultValue:0 error:error];
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelNetworkWiFiDeclaration_HotSpot *)self payloadDisplayedOperatorName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"DisplayedOperatorName" value:v5 isRequired:0 defaultValue:0];
+  payloadDisplayedOperatorName = [(RMModelNetworkWiFiDeclaration_HotSpot *)self payloadDisplayedOperatorName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"DisplayedOperatorName" value:payloadDisplayedOperatorName isRequired:0 defaultValue:0];
 
-  v6 = [(RMModelNetworkWiFiDeclaration_HotSpot *)self payloadDomainName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"DomainName" value:v6 isRequired:0 defaultValue:0];
+  payloadDomainName = [(RMModelNetworkWiFiDeclaration_HotSpot *)self payloadDomainName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"DomainName" value:payloadDomainName isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelNetworkWiFiDeclaration_HotSpot *)self payloadRoamingConsortiumOIs];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"RoamingConsortiumOIs" value:v7 itemSerializer:&__block_literal_global_406 isRequired:0 defaultValue:0];
+  payloadRoamingConsortiumOIs = [(RMModelNetworkWiFiDeclaration_HotSpot *)self payloadRoamingConsortiumOIs];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"RoamingConsortiumOIs" value:payloadRoamingConsortiumOIs itemSerializer:&__block_literal_global_406 isRequired:0 defaultValue:0];
 
-  v8 = [(RMModelNetworkWiFiDeclaration_HotSpot *)self payloadServiceProviderRoamingEnabled];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"ServiceProviderRoamingEnabled" value:v8 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  payloadServiceProviderRoamingEnabled = [(RMModelNetworkWiFiDeclaration_HotSpot *)self payloadServiceProviderRoamingEnabled];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"ServiceProviderRoamingEnabled" value:payloadServiceProviderRoamingEnabled isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v9 = [(RMModelNetworkWiFiDeclaration_HotSpot *)self payloadHESSID];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"HESSID" value:v9 isRequired:0 defaultValue:0];
+  payloadHESSID = [(RMModelNetworkWiFiDeclaration_HotSpot *)self payloadHESSID];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"HESSID" value:payloadHESSID isRequired:0 defaultValue:0];
 
-  v10 = [(RMModelNetworkWiFiDeclaration_HotSpot *)self payloadNAIRealmNames];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"NAIRealmNames" value:v10 itemSerializer:&__block_literal_global_408 isRequired:0 defaultValue:0];
+  payloadNAIRealmNames = [(RMModelNetworkWiFiDeclaration_HotSpot *)self payloadNAIRealmNames];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"NAIRealmNames" value:payloadNAIRealmNames itemSerializer:&__block_literal_global_408 isRequired:0 defaultValue:0];
 
-  v11 = [(RMModelNetworkWiFiDeclaration_HotSpot *)self payloadMCCAndMNCs];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"MCCAndMNCs" value:v11 itemSerializer:&__block_literal_global_410 isRequired:0 defaultValue:0];
+  payloadMCCAndMNCs = [(RMModelNetworkWiFiDeclaration_HotSpot *)self payloadMCCAndMNCs];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"MCCAndMNCs" value:payloadMCCAndMNCs itemSerializer:&__block_literal_global_410 isRequired:0 defaultValue:0];
 
   v12 = [v4 copy];
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20.receiver = self;
   v20.super_class = RMModelNetworkWiFiDeclaration_HotSpot;
-  v4 = [(RMModelPayloadBase *)&v20 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v20 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadDisplayedOperatorName copy];
   v6 = v4[2];
   v4[2] = v5;

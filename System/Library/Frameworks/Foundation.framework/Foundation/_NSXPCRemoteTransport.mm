@@ -1,12 +1,12 @@
 @interface _NSXPCRemoteTransport
-- (_NSXPCRemoteTransport)initWithConnection:(id)a3;
-- (_NSXPCRemoteTransport)initWithRemoteService:(id)a3 name:(id)a4 queue:(id)a5 mode:(unint64_t)a6;
+- (_NSXPCRemoteTransport)initWithConnection:(id)connection;
+- (_NSXPCRemoteTransport)initWithRemoteService:(id)service name:(id)name queue:(id)queue mode:(unint64_t)mode;
 - (void)dealloc;
 @end
 
 @implementation _NSXPCRemoteTransport
 
-- (_NSXPCRemoteTransport)initWithConnection:(id)a3
+- (_NSXPCRemoteTransport)initWithConnection:(id)connection
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -17,7 +17,7 @@
     dispatch_once(&_MergedGlobals_111, &__block_literal_global_36);
   }
 
-  v5 = xpc_retain(a3);
+  v5 = xpc_retain(connection);
   v4->_connection = v5;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -28,7 +28,7 @@
   return v4;
 }
 
-- (_NSXPCRemoteTransport)initWithRemoteService:(id)a3 name:(id)a4 queue:(id)a5 mode:(unint64_t)a6
+- (_NSXPCRemoteTransport)initWithRemoteService:(id)service name:(id)name queue:(id)queue mode:(unint64_t)mode
 {
   v20 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -39,11 +39,11 @@
     dispatch_once(&_MergedGlobals_111, &__block_literal_global_36);
   }
 
-  v12 = off_1ED43F9A8(a3, a5, a6);
+  v12 = off_1ED43F9A8(service, queue, mode);
   v11->_connection = v12;
   if (!v12)
   {
-    v17 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: Unable to connect to the specified name (%@). No connection was created.", _NSMethodExceptionProem(v11, a2), a4), 0}];
+    v17 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: Unable to connect to the specified name (%@). No connection was created.", _NSMethodExceptionProem(v11, a2), name), 0}];
     objc_exception_throw(v17);
   }
 

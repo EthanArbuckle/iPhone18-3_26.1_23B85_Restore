@@ -1,7 +1,7 @@
 @interface MobileCalDayContainerAccessibilityElement
 - (CGRect)accessibilityFrame;
 - (UIView)dayGrid;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityLabel;
 - (void)dealloc;
 @end
@@ -15,8 +15,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(MobileCalDayContainerAccessibilityElement *)self children];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  children = [(MobileCalDayContainerAccessibilityElement *)self children];
+  v4 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -28,14 +28,14 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(children);
         }
 
         [*(*(&v10 + 1) + 8 * v7++) setAccessibilityContainer:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -50,18 +50,18 @@
 - (id)accessibilityLabel
 {
   objc_opt_class();
-  v3 = [(MobileCalDayContainerAccessibilityElement *)self dayGrid];
+  dayGrid = [(MobileCalDayContainerAccessibilityElement *)self dayGrid];
   v4 = __UIAccessibilityCastAsSafeCategory();
 
-  LODWORD(v3) = [v4 accessibilityIsPreviewGridView];
-  if (v3)
+  LODWORD(dayGrid) = [v4 accessibilityIsPreviewGridView];
+  if (dayGrid)
   {
     v5 = accessibilityLocalizedString(@"event.preview.area");
   }
 
   else
   {
-    v6 = [(MobileCalDayContainerAccessibilityElement *)self date];
+    date = [(MobileCalDayContainerAccessibilityElement *)self date];
     v5 = _AXGetYearlessStringForDay();
   }
 
@@ -70,10 +70,10 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(MobileCalDayContainerAccessibilityElement *)self dayGrid];
-  [v3 bounds];
-  v4 = [v3 superview];
-  v5 = [v4 safeValueForKey:@"_dayStarts"];
+  dayGrid = [(MobileCalDayContainerAccessibilityElement *)self dayGrid];
+  [dayGrid bounds];
+  superview = [dayGrid superview];
+  v5 = [superview safeValueForKey:@"_dayStarts"];
   [v5 count];
 
   [(MobileCalDayContainerAccessibilityElement *)self indexInArray];
@@ -94,13 +94,13 @@
   return result;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v32 = *MEMORY[0x29EDCA608];
-  v7 = a4;
-  v8 = [(MobileCalDayContainerAccessibilityElement *)self _accessibilityParentView];
+  eventCopy = event;
+  _accessibilityParentView = [(MobileCalDayContainerAccessibilityElement *)self _accessibilityParentView];
   UIAccessibilityPointForPoint();
   v10 = v9;
   v12 = v11;
@@ -109,8 +109,8 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v13 = [(MobileCalDayContainerAccessibilityElement *)self children];
-  v14 = [v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  children = [(MobileCalDayContainerAccessibilityElement *)self children];
+  v14 = [children countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v14)
   {
     v15 = v14;
@@ -123,7 +123,7 @@
       {
         if (*v28 != v17)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(children);
         }
 
         v19 = *(*(&v27 + 1) + 8 * v18);
@@ -143,8 +143,8 @@
 
           if ([v19 isAccessibilityElement])
           {
-            v20 = [v19 _accessibilitySupplementaryHeaderViews];
-            v21 = [(MobileCalDayContainerAccessibilityElement *)self _accessibilityHitTestSupplementaryViews:v20 point:v7 withEvent:x, y];
+            _accessibilitySupplementaryHeaderViews = [v19 _accessibilitySupplementaryHeaderViews];
+            v21 = [(MobileCalDayContainerAccessibilityElement *)self _accessibilityHitTestSupplementaryViews:_accessibilitySupplementaryHeaderViews point:eventCopy withEvent:x, y];
 
             if (v21)
             {
@@ -153,8 +153,8 @@
 
             else
             {
-              v23 = [v19 _accessibilitySupplementaryFooterViews];
-              v16 = [(MobileCalDayContainerAccessibilityElement *)self _accessibilityHitTestSupplementaryViews:v23 point:v7 withEvent:x, y];
+              _accessibilitySupplementaryFooterViews = [v19 _accessibilitySupplementaryFooterViews];
+              v16 = [(MobileCalDayContainerAccessibilityElement *)self _accessibilityHitTestSupplementaryViews:_accessibilitySupplementaryFooterViews point:eventCopy withEvent:x, y];
 
               if (!v16)
               {
@@ -165,7 +165,7 @@
 
           else
           {
-            v22 = [v19 _accessibilityHitTest:v7 withEvent:{x, y}];
+            v22 = [v19 _accessibilityHitTest:eventCopy withEvent:{x, y}];
 
             v16 = v22;
           }
@@ -180,7 +180,7 @@
       }
 
       while (v15 != v18);
-      v24 = [v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v24 = [children countByEnumeratingWithState:&v27 objects:v31 count:16];
       v15 = v24;
     }
 

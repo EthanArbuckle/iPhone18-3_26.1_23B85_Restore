@@ -1,24 +1,24 @@
 @interface TSTFormulaRewrite_PivotInfo
 - (TSKUIDStruct)tableUID;
-- (TSTFormulaRewrite_PivotInfo)initWithTableUID:(const TSKUIDStruct *)a3 beforeViewColumnRowUIDMap:(id)a4 beforeRewriteMap:(id)a5;
+- (TSTFormulaRewrite_PivotInfo)initWithTableUID:(const TSKUIDStruct *)d beforeViewColumnRowUIDMap:(id)map beforeRewriteMap:(id)rewriteMap;
 - (id)description;
 @end
 
 @implementation TSTFormulaRewrite_PivotInfo
 
-- (TSTFormulaRewrite_PivotInfo)initWithTableUID:(const TSKUIDStruct *)a3 beforeViewColumnRowUIDMap:(id)a4 beforeRewriteMap:(id)a5
+- (TSTFormulaRewrite_PivotInfo)initWithTableUID:(const TSKUIDStruct *)d beforeViewColumnRowUIDMap:(id)map beforeRewriteMap:(id)rewriteMap
 {
-  v8 = a4;
-  v9 = a5;
+  mapCopy = map;
+  rewriteMapCopy = rewriteMap;
   v19.receiver = self;
   v19.super_class = TSTFormulaRewrite_PivotInfo;
   v10 = [(TSTFormulaRewrite_PivotInfo *)&v19 init];
   v11 = v10;
   if (v10)
   {
-    v10->_tableUID = *a3;
-    objc_storeStrong(&v10->_beforeRewriteMap, a5);
-    v16 = objc_msgSend_copyOnWriteUIDMapper(v8, v12, v13, v14, v15);
+    v10->_tableUID = *d;
+    objc_storeStrong(&v10->_beforeRewriteMap, rewriteMap);
+    v16 = objc_msgSend_copyOnWriteUIDMapper(mapCopy, v12, v13, v14, v15);
     beforeColumnRowUIDMap = v11->_beforeColumnRowUIDMap;
     v11->_beforeColumnRowUIDMap = v16;
   }

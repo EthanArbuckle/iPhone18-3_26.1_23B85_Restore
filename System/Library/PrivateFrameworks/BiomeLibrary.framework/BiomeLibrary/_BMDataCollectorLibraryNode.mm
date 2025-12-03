@@ -2,25 +2,25 @@
 + (id)Telemetry;
 + (id)configurationForTelemetry;
 + (id)storeConfigurationForTelemetry;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMDataCollectorLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Telemetry"])
+  if ([name isEqualToString:@"Telemetry"])
   {
-    v4 = [a1 Telemetry];
+    telemetry = [self Telemetry];
   }
 
   else
   {
-    v4 = 0;
+    telemetry = 0;
   }
 
-  return v4;
+  return telemetry;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForTelemetry
 {
-  v3 = [a1 storeConfigurationForTelemetry];
-  v4 = [a1 syncPolicyForTelemetry];
+  storeConfigurationForTelemetry = [self storeConfigurationForTelemetry];
+  syncPolicyForTelemetry = [self syncPolicyForTelemetry];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"03B84432-BA9B-42AE-9754-52CF276B317D"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"DataCollector.Telemetry" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"DataCollector.Telemetry" eventClass:objc_opt_class() storeConfig:storeConfigurationForTelemetry syncPolicy:syncPolicyForTelemetry legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -59,7 +59,7 @@
 + (id)Telemetry
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForTelemetry];
+  configurationForTelemetry = [self configurationForTelemetry];
   v3 = +[BMDataCollectorTelemetry columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -71,7 +71,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"DataCollector.Telemetry" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"DataCollector.Telemetry" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"DataCollector.Telemetry" schema:v9 configuration:configurationForTelemetry];
 
   v11 = *MEMORY[0x1E69E9840];
 

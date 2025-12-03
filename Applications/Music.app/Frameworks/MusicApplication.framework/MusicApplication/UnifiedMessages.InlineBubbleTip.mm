@@ -1,15 +1,15 @@
 @interface UnifiedMessages.InlineBubbleTip
-- (_TtCE16MusicApplicationO9MusicCore15UnifiedMessages15InlineBubbleTip)initWithCoder:(id)a3;
-- (_TtCE16MusicApplicationO9MusicCore15UnifiedMessages15InlineBubbleTip)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)messageViewController:(id)a3 didFailWithError:(id)a4;
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4;
+- (_TtCE16MusicApplicationO9MusicCore15UnifiedMessages15InlineBubbleTip)initWithCoder:(id)coder;
+- (_TtCE16MusicApplicationO9MusicCore15UnifiedMessages15InlineBubbleTip)initWithNibName:(id)name bundle:(id)bundle;
+- (void)messageViewController:(id)controller didFailWithError:(id)error;
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation UnifiedMessages.InlineBubbleTip
 
-- (_TtCE16MusicApplicationO9MusicCore15UnifiedMessages15InlineBubbleTip)initWithCoder:(id)a3
+- (_TtCE16MusicApplicationO9MusicCore15UnifiedMessages15InlineBubbleTip)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtCE16MusicApplicationO9MusicCore15UnifiedMessages15InlineBubbleTip_handleUserDismissed);
   *v3 = 0;
@@ -21,7 +21,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_4F7330();
 }
 
@@ -34,23 +34,23 @@
   sub_4F7544();
 }
 
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_4F7C34(v7);
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  sub_4F7C34(resultCopy);
 }
 
-- (void)messageViewController:(id)a3 didFailWithError:(id)a4
+- (void)messageViewController:(id)controller didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_4F8504(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  errorCopy = error;
+  sub_4F8504(error);
 }
 
-- (_TtCE16MusicApplicationO9MusicCore15UnifiedMessages15InlineBubbleTip)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtCE16MusicApplicationO9MusicCore15UnifiedMessages15InlineBubbleTip)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,6 +1,6 @@
 @interface MTRBasicInformationClusterCapabilityMinimaStruct
 - (MTRBasicInformationClusterCapabilityMinimaStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRBasicInformationClusterCapabilityMinimaStruct);
-  v5 = [(MTRBasicInformationClusterCapabilityMinimaStruct *)self caseSessionsPerFabric];
-  [(MTRBasicInformationClusterCapabilityMinimaStruct *)v4 setCaseSessionsPerFabric:v5];
+  caseSessionsPerFabric = [(MTRBasicInformationClusterCapabilityMinimaStruct *)self caseSessionsPerFabric];
+  [(MTRBasicInformationClusterCapabilityMinimaStruct *)v4 setCaseSessionsPerFabric:caseSessionsPerFabric];
 
-  v6 = [(MTRBasicInformationClusterCapabilityMinimaStruct *)self subscriptionsPerFabric];
-  [(MTRBasicInformationClusterCapabilityMinimaStruct *)v4 setSubscriptionsPerFabric:v6];
+  subscriptionsPerFabric = [(MTRBasicInformationClusterCapabilityMinimaStruct *)self subscriptionsPerFabric];
+  [(MTRBasicInformationClusterCapabilityMinimaStruct *)v4 setSubscriptionsPerFabric:subscriptionsPerFabric];
 
   return v4;
 }

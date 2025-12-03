@@ -1,19 +1,19 @@
 @interface WABackgroundTaskManager
 - (BOOL)_configureDailyTask;
 - (BOOL)_configureDailyTaskUI;
-- (WABackgroundTaskManager)initWithEngine:(id)a3;
+- (WABackgroundTaskManager)initWithEngine:(id)engine;
 - (WAEngine)engine;
-- (id)_checkExistingTask:(id)a3;
-- (void)_runBackgroundTask:(id)a3 withBlock:(id)a4;
+- (id)_checkExistingTask:(id)task;
+- (void)_runBackgroundTask:(id)task withBlock:(id)block;
 - (void)registerTasks;
 @end
 
 @implementation WABackgroundTaskManager
 
-- (WABackgroundTaskManager)initWithEngine:(id)a3
+- (WABackgroundTaskManager)initWithEngine:(id)engine
 {
-  v4 = a3;
-  if (!v4)
+  engineCopy = engine;
+  if (!engineCopy)
   {
     goto LABEL_9;
   }
@@ -42,7 +42,7 @@
   }
 
   self = v5;
-  objc_storeWeak(&v5->_engine, v4);
+  objc_storeWeak(&v5->_engine, engineCopy);
   v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v7 = dispatch_queue_create("com.apple.wifi.analytics.bg-tasks", v6);
   backgroundTasksQueue = self->_backgroundTasksQueue;
@@ -51,15 +51,15 @@
   if (!self->_backgroundTasksQueue)
   {
 LABEL_9:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_5;
   }
 
   self = self;
-  v9 = self;
+  selfCopy = self;
 LABEL_5:
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)registerTasks
@@ -72,14 +72,14 @@ LABEL_5:
     self->_backgroundTasksQueue = v4;
   }
 
-  v6 = [sub_10003AC00() sharedScheduler];
-  v7 = [(WABackgroundTaskManager *)self backgroundTasksQueue];
+  sharedScheduler = [sub_10003AC00() sharedScheduler];
+  backgroundTasksQueue = [(WABackgroundTaskManager *)self backgroundTasksQueue];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10003ACE0;
   v22[3] = &unk_1000EDA18;
   v22[4] = self;
-  v8 = [v6 registerForTaskWithIdentifier:@"com.apple.wifi.analytics.daily-bg-tasks-ui" usingQueue:v7 launchHandler:v22];
+  v8 = [sharedScheduler registerForTaskWithIdentifier:@"com.apple.wifi.analytics.daily-bg-tasks-ui" usingQueue:backgroundTasksQueue launchHandler:v22];
 
   if ((v8 & 1) == 0)
   {
@@ -96,14 +96,14 @@ LABEL_5:
     }
   }
 
-  v10 = [sub_10003AC00() sharedScheduler];
-  v11 = [(WABackgroundTaskManager *)self backgroundTasksQueue];
+  sharedScheduler2 = [sub_10003AC00() sharedScheduler];
+  backgroundTasksQueue2 = [(WABackgroundTaskManager *)self backgroundTasksQueue];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10003ADD8;
   v21[3] = &unk_1000EDA18;
   v21[4] = self;
-  v12 = [v10 registerForTaskWithIdentifier:@"com.apple.wifi.analytics.daily-bg-tasks" usingQueue:v11 launchHandler:v21];
+  v12 = [sharedScheduler2 registerForTaskWithIdentifier:@"com.apple.wifi.analytics.daily-bg-tasks" usingQueue:backgroundTasksQueue2 launchHandler:v21];
 
   if ((v12 & 1) == 0)
   {
@@ -120,11 +120,11 @@ LABEL_5:
     }
   }
 
-  v14 = [(WABackgroundTaskManager *)self _configureDailyTask];
-  v15 = [(WABackgroundTaskManager *)self _configureDailyTaskUI];
+  _configureDailyTask = [(WABackgroundTaskManager *)self _configureDailyTask];
+  _configureDailyTaskUI = [(WABackgroundTaskManager *)self _configureDailyTaskUI];
   v16 = WALogCategoryInitPersistentLogHandle();
   v17 = v16;
-  if (!v15 || (v14 & 1) == 0)
+  if (!_configureDailyTaskUI || (_configureDailyTask & 1) == 0)
   {
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -157,11 +157,11 @@ LABEL_15:
 LABEL_16:
 }
 
-- (id)_checkExistingTask:(id)a3
+- (id)_checkExistingTask:(id)task
 {
-  v3 = a3;
+  taskCopy = task;
   v4 = +[BGSystemTaskScheduler sharedScheduler];
-  v5 = [v4 taskRequestForIdentifier:v3];
+  v5 = [v4 taskRequestForIdentifier:taskCopy];
 
   v6 = WALogCategoryInitPersistentLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -175,7 +175,7 @@ LABEL_16:
     v14 = 1024;
     v15 = 100;
     v16 = 2112;
-    v17 = v3;
+    v17 = taskCopy;
     v18 = 2112;
     v19 = v7;
     v20 = 2112;
@@ -321,10 +321,10 @@ LABEL_16:
   return v9 == 0;
 }
 
-- (void)_runBackgroundTask:(id)a3 withBlock:(id)a4
+- (void)_runBackgroundTask:(id)task withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  blockCopy = block;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -332,13 +332,13 @@ LABEL_16:
   v8 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v6 identifier];
+    identifier = [taskCopy identifier];
     *buf = 136446722;
     v29 = "[WABackgroundTaskManager _runBackgroundTask:withBlock:]";
     v30 = 1024;
     v31 = 156;
     v32 = 2112;
-    v33 = v9;
+    v33 = identifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Received task handler: %@", buf, 0x1Cu);
   }
 
@@ -347,38 +347,38 @@ LABEL_16:
   v23[2] = sub_10003BA10;
   v23[3] = &unk_1000EDA60;
   v23[4] = &v24;
-  [v6 setExpirationHandler:v23];
+  [taskCopy setExpirationHandler:v23];
   v10 = WALogCategoryInitPersistentLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 identifier];
+    identifier2 = [taskCopy identifier];
     *buf = 136446722;
     v29 = "[WABackgroundTaskManager _runBackgroundTask:withBlock:]";
     v30 = 1024;
     v31 = 163;
     v32 = 2112;
-    v33 = v11;
+    v33 = identifier2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:[START] Daily Background Task for %@", buf, 0x1Cu);
   }
 
-  v7[2](v7);
+  blockCopy[2](blockCopy);
   v12 = WALogCategoryInitPersistentLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v6 identifier];
+    identifier3 = [taskCopy identifier];
     *buf = 136446722;
     v29 = "[WABackgroundTaskManager _runBackgroundTask:withBlock:]";
     v30 = 1024;
     v31 = 165;
     v32 = 2112;
-    v33 = v13;
+    v33 = identifier3;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:[END] Daily Background Task for %@", buf, 0x1Cu);
   }
 
   if (*(v25 + 24) == 1)
   {
     v22 = 0;
-    v14 = [v6 setTaskExpiredWithRetryAfter:&v22 error:0.0];
+    v14 = [taskCopy setTaskExpiredWithRetryAfter:&v22 error:0.0];
     v15 = v22;
     if ((v14 & 1) == 0)
     {
@@ -400,29 +400,29 @@ LABEL_16:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Failed to expire task with error: %@", buf, 0x1Cu);
       }
 
-      [v6 setTaskCompleted];
+      [taskCopy setTaskCompleted];
     }
   }
 
   else
   {
-    [v6 setTaskCompleted];
+    [taskCopy setTaskCompleted];
   }
 
-  v18 = [(WABackgroundTaskManager *)self engine];
-  v19 = [v6 identifier];
-  [v18 incrementWorkReportValueForKey:v19];
+  engine = [(WABackgroundTaskManager *)self engine];
+  identifier4 = [taskCopy identifier];
+  [engine incrementWorkReportValueForKey:identifier4];
 
   v20 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    v21 = [v6 identifier];
+    identifier5 = [taskCopy identifier];
     *buf = 136446722;
     v29 = "[WABackgroundTaskManager _runBackgroundTask:withBlock:]";
     v30 = 1024;
     v31 = 180;
     v32 = 2112;
-    v33 = v21;
+    v33 = identifier5;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Existing task handler: %@", buf, 0x1Cu);
   }
 

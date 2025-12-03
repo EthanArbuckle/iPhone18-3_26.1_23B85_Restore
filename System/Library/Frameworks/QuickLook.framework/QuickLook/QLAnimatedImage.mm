@@ -1,7 +1,7 @@
 @interface QLAnimatedImage
-- (QLAnimatedImage)initWithImageSource:(CGImageSource *)a3;
-- (id)frameAtTime:(double)a3;
-- (int64_t)indexForTime:(double)a3;
+- (QLAnimatedImage)initWithImageSource:(CGImageSource *)source;
+- (id)frameAtTime:(double)time;
+- (int64_t)indexForTime:(double)time;
 - (void)dealloc;
 - (void)generateDurations;
 @end
@@ -16,14 +16,14 @@
   [(QLAnimatedImage *)&v3 dealloc];
 }
 
-- (QLAnimatedImage)initWithImageSource:(CGImageSource *)a3
+- (QLAnimatedImage)initWithImageSource:(CGImageSource *)source
 {
   v11.receiver = self;
   v11.super_class = QLAnimatedImage;
   v4 = [(QLAnimatedImage *)&v11 init];
   if (v4)
   {
-    v5 = [[QLImageData alloc] initWithImageSource:a3];
+    v5 = [[QLImageData alloc] initWithImageSource:source];
     imageData = v4->_imageData;
     v4->_imageData = v5;
 
@@ -43,8 +43,8 @@
 {
   if (!self->_durations)
   {
-    v13 = [(QLImageData *)self->_imageData durations];
-    v4 = [v13 count];
+    durations = [(QLImageData *)self->_imageData durations];
+    v4 = [durations count];
     self->_durationsCount = v4;
     if (v4)
     {
@@ -56,7 +56,7 @@
         v7 = 0;
         for (i = 0; i < durationsCount; ++i)
         {
-          v9 = [v13 objectAtIndexedSubscript:i];
+          v9 = [durations objectAtIndexedSubscript:i];
           [v9 floatValue];
           self->_durations[v7].var0 = v10;
 
@@ -89,7 +89,7 @@
   }
 }
 
-- (int64_t)indexForTime:(double)a3
+- (int64_t)indexForTime:(double)time
 {
   durationsCount = self->_durationsCount;
   if (!durationsCount)
@@ -98,7 +98,7 @@
   }
 
   result = 0;
-  for (i = &self->_durations->var1; *i <= a3; i += 2)
+  for (i = &self->_durations->var1; *i <= time; i += 2)
   {
     if (durationsCount == ++result)
     {
@@ -109,7 +109,7 @@
   return result;
 }
 
-- (id)frameAtTime:(double)a3
+- (id)frameAtTime:(double)time
 {
   if ([(QLAnimatedImage *)self time:self->_lastImageIndex belongsToIndex:?])
   {
@@ -119,14 +119,14 @@
   else
   {
     lastImageIndex = self->_lastImageIndex;
-    if (lastImageIndex < self->_durationsCount - 1 && [(QLAnimatedImage *)self time:lastImageIndex + 1 belongsToIndex:a3])
+    if (lastImageIndex < self->_durationsCount - 1 && [(QLAnimatedImage *)self time:lastImageIndex + 1 belongsToIndex:time])
     {
       v7 = self->_lastImageIndex + 1;
     }
 
     else
     {
-      v7 = [(QLAnimatedImage *)self indexForTime:a3];
+      v7 = [(QLAnimatedImage *)self indexForTime:time];
     }
 
     self->_lastImageIndex = v7;

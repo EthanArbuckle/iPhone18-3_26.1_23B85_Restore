@@ -7,18 +7,18 @@
 
 - (id)ic_loggingValues
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &off_282788560;
   v2 = objc_msgSendSuper2(&v9, sel_ic_loggingValues);
   v3 = [v2 mutableCopy];
 
-  v4 = [a1 previousServerChangeToken];
+  previousServerChangeToken = [self previousServerChangeToken];
 
-  if (v4)
+  if (previousServerChangeToken)
   {
-    v5 = [a1 previousServerChangeToken];
-    v6 = [v5 data];
-    v7 = [v6 base64EncodedStringWithOptions:0];
+    previousServerChangeToken2 = [self previousServerChangeToken];
+    data = [previousServerChangeToken2 data];
+    v7 = [data base64EncodedStringWithOptions:0];
   }
 
   else
@@ -33,12 +33,12 @@
 
 - (uint64_t)ic_removeAllCompletionBlocks
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &off_282788560;
   objc_msgSendSuper2(&v3, sel_ic_removeAllCompletionBlocks);
-  [a1 setRecordZoneWithIDChangedBlock:0];
-  [a1 setRecordZoneWithIDWasDeletedBlock:0];
-  return [a1 setFetchDatabaseChangesCompletionBlock:0];
+  [self setRecordZoneWithIDChangedBlock:0];
+  [self setRecordZoneWithIDWasDeletedBlock:0];
+  return [self setFetchDatabaseChangesCompletionBlock:0];
 }
 
 @end

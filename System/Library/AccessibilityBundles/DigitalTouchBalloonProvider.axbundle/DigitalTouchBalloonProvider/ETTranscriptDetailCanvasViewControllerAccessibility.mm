@@ -1,69 +1,69 @@
 @interface ETTranscriptDetailCanvasViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (ETTranscriptDetailCanvasViewControllerAccessibility)init;
 - (id)_accessibilityCameraFlipButtonLabelForCurrentCamera;
 - (id)_accessibilityStringForCurrentCameraPosition;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axFocusChanged:(id)a3;
+- (void)_axFocusChanged:(id)changed;
 - (void)_cameraFlipButtonTapped;
 - (void)_expandColorPickerButtonTapped;
 - (void)_sendButtonTapped;
-- (void)_setShowingGestureInstructionView:(BOOL)a3;
+- (void)_setShowingGestureInstructionView:(BOOL)view;
 - (void)_startShowCompositionControlsTimer;
-- (void)colorPicker:(id)a3 requestsDismissColorWheel:(id)a4;
-- (void)colorPicker:(id)a3 requestsPresentColorWheel:(id)a4;
+- (void)colorPicker:(id)picker requestsDismissColorWheel:(id)wheel;
+- (void)colorPicker:(id)picker requestsPresentColorWheel:(id)wheel;
 - (void)dealloc;
 - (void)expandUI;
 - (void)updateVideoUI;
-- (void)videoControllerDidStartPreview:(id)a3;
-- (void)videoControllerDidStopPreview:(id)a3;
+- (void)videoControllerDidStartPreview:(id)preview;
+- (void)videoControllerDidStopPreview:(id)preview;
 - (void)viewDidLoad;
 @end
 
 @implementation ETTranscriptDetailCanvasViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DTSCanvasViewController"];
-  [v3 validateClass:@"DTSCanvasViewController" hasInstanceVariable:@"_cancelButton" withType:"UIButton"];
-  [v3 validateClass:@"DTSCanvasViewController" hasInstanceMethod:@"_cancelButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" isKindOfClass:@"DTSCanvasViewController"];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_videoOnButton" withType:"UIButton"];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_videoRecordButton" withType:"ETVideoRecordButton"];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_cameraFlipButton" withType:"UIButton"];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_sendButton" withType:"UIButton"];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_videoController" withType:"ETVideoController"];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_photoCaptureButton" withType:"ETVideoRecordButton"];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_expandColorPickerButton" withType:"UIButton"];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_expandToCameraButton" withType:"UIButton"];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_gestureInstructionButton" withType:"UIButton"];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_gestureInstructionView" withType:"GestureInstructionView"];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_showingCompositionControls" withType:"B"];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_expandToGestureInstructionView" withType:"B"];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"colorPicker" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasProperty:@"canvasView" withType:"@"];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"presentationDelegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"updateVideoUI" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"_cameraFlipButtonTapped" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"_setShowingGestureInstructionView:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"_startShowCompositionControlsTimer" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"expandUI" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"_expandColorPickerButtonTapped" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"_sendButtonTapped" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"videoControllerDidStartPreview:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"videoControllerDidStopPreview:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"colorPicker: requestsPresentColorWheel:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"colorPicker: requestsDismissColorWheel:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"DTSColorPicker"];
-  [v3 validateClass:@"DTSColorPicker" hasInstanceMethod:@"paletteCircles" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DTSColorPicker" hasInstanceMethod:@"selectedCircle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_showCompositionControlsTimer" withType:"NSTimer"];
-  [v3 validateClass:@"ETVideoController" hasInstanceMethod:@"videoDevice" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVCaptureDevice" hasInstanceMethod:@"position" withFullSignature:{"q", 0}];
-  [v3 validateProtocol:@"ETTranscriptDetailCanvasViewControllerPresentationDelegate" hasRequiredInstanceMethod:@"canvasViewController: requestsPresentationStyleExpanded:"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DTSCanvasViewController"];
+  [validationsCopy validateClass:@"DTSCanvasViewController" hasInstanceVariable:@"_cancelButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"DTSCanvasViewController" hasInstanceMethod:@"_cancelButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" isKindOfClass:@"DTSCanvasViewController"];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_videoOnButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_videoRecordButton" withType:"ETVideoRecordButton"];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_cameraFlipButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_sendButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_videoController" withType:"ETVideoController"];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_photoCaptureButton" withType:"ETVideoRecordButton"];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_expandColorPickerButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_expandToCameraButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_gestureInstructionButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_gestureInstructionView" withType:"GestureInstructionView"];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_showingCompositionControls" withType:"B"];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_expandToGestureInstructionView" withType:"B"];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"colorPicker" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasProperty:@"canvasView" withType:"@"];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"presentationDelegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"updateVideoUI" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"_cameraFlipButtonTapped" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"_setShowingGestureInstructionView:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"_startShowCompositionControlsTimer" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"expandUI" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"_expandColorPickerButtonTapped" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"_sendButtonTapped" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"videoControllerDidStartPreview:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"videoControllerDidStopPreview:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"colorPicker: requestsPresentColorWheel:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceMethod:@"colorPicker: requestsDismissColorWheel:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"DTSColorPicker"];
+  [validationsCopy validateClass:@"DTSColorPicker" hasInstanceMethod:@"paletteCircles" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DTSColorPicker" hasInstanceMethod:@"selectedCircle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ETTranscriptDetailCanvasViewController" hasInstanceVariable:@"_showCompositionControlsTimer" withType:"NSTimer"];
+  [validationsCopy validateClass:@"ETVideoController" hasInstanceMethod:@"videoDevice" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVCaptureDevice" hasInstanceMethod:@"position" withFullSignature:{"q", 0}];
+  [validationsCopy validateProtocol:@"ETTranscriptDetailCanvasViewControllerPresentationDelegate" hasRequiredInstanceMethod:@"canvasViewController: requestsPresentationStyleExpanded:"];
 }
 
 - (BOOL)accessibilityPerformEscape
@@ -150,7 +150,7 @@ void __81__ETTranscriptDetailCanvasViewControllerAccessibility_accessibilityPerf
 - (id)_accessibilityCameraFlipButtonLabelForCurrentCamera
 {
   v3 = accessibilityLocalizedString(@"camera.chooser.button.label");
-  v6 = [(ETTranscriptDetailCanvasViewControllerAccessibility *)self _accessibilityStringForCurrentCameraPosition];
+  _accessibilityStringForCurrentCameraPosition = [(ETTranscriptDetailCanvasViewControllerAccessibility *)self _accessibilityStringForCurrentCameraPosition];
   v4 = __UIAXStringForVariables();
 
   return v4;
@@ -167,15 +167,15 @@ void __81__ETTranscriptDetailCanvasViewControllerAccessibility_accessibilityPerf
   }
 
   v4 = [v3 safeValueForKey:@"position"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  if (v5 == 1)
+  if (integerValue == 1)
   {
     v6 = @"camera.chooser.back.facing";
     goto LABEL_7;
   }
 
-  if (v5 != 2)
+  if (integerValue != 2)
   {
 LABEL_5:
     v7 = 0;
@@ -197,16 +197,16 @@ LABEL_8:
   v5.receiver = self;
   v5.super_class = ETTranscriptDetailCanvasViewControllerAccessibility;
   v2 = [(ETTranscriptDetailCanvasViewControllerAccessibility *)&v5 init];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 addObserver:v2 selector:sel__axFocusChanged_ name:*MEMORY[0x29EDC7EB8] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:v2 selector:sel__axFocusChanged_ name:*MEMORY[0x29EDC7EB8] object:0];
 
   return v2;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x29EDC7EB8] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x29EDC7EB8] object:0];
 
   v4.receiver = self;
   v4.super_class = ETTranscriptDetailCanvasViewControllerAccessibility;
@@ -235,8 +235,8 @@ LABEL_8:
   [v5 setAccessibilityLabel:v6];
 
   v7 = [(ETTranscriptDetailCanvasViewControllerAccessibility *)self safeValueForKey:@"_cameraFlipButton"];
-  v8 = [(ETTranscriptDetailCanvasViewControllerAccessibility *)self _accessibilityCameraFlipButtonLabelForCurrentCamera];
-  [v7 setAccessibilityLabel:v8];
+  _accessibilityCameraFlipButtonLabelForCurrentCamera = [(ETTranscriptDetailCanvasViewControllerAccessibility *)self _accessibilityCameraFlipButtonLabelForCurrentCamera];
+  [v7 setAccessibilityLabel:_accessibilityCameraFlipButtonLabelForCurrentCamera];
 }
 
 - (void)_cameraFlipButtonTapped
@@ -245,20 +245,20 @@ LABEL_8:
   v5.super_class = ETTranscriptDetailCanvasViewControllerAccessibility;
   [(ETTranscriptDetailCanvasViewControllerAccessibility *)&v5 _cameraFlipButtonTapped];
   v3 = [(ETTranscriptDetailCanvasViewControllerAccessibility *)self safeValueForKey:@"_cameraFlipButton"];
-  v4 = [(ETTranscriptDetailCanvasViewControllerAccessibility *)self _accessibilityCameraFlipButtonLabelForCurrentCamera];
-  [v3 setAccessibilityLabel:v4];
+  _accessibilityCameraFlipButtonLabelForCurrentCamera = [(ETTranscriptDetailCanvasViewControllerAccessibility *)self _accessibilityCameraFlipButtonLabelForCurrentCamera];
+  [v3 setAccessibilityLabel:_accessibilityCameraFlipButtonLabelForCurrentCamera];
 
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
-- (void)_setShowingGestureInstructionView:(BOOL)a3
+- (void)_setShowingGestureInstructionView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = ETTranscriptDetailCanvasViewControllerAccessibility;
   [(ETTranscriptDetailCanvasViewControllerAccessibility *)&v8 _setShowingGestureInstructionView:?];
   v5 = [(ETTranscriptDetailCanvasViewControllerAccessibility *)self safeValueForKey:@"canvasView"];
-  v6 = !v3;
+  v6 = !viewCopy;
   [v5 setIsAccessibilityElement:v6];
   if (!v6)
   {
@@ -312,17 +312,17 @@ LABEL_8:
   [(ETTranscriptDetailCanvasViewControllerAccessibility *)&v4 _sendButtonTapped];
 }
 
-- (void)videoControllerDidStartPreview:(id)a3
+- (void)videoControllerDidStartPreview:(id)preview
 {
   v10.receiver = self;
   v10.super_class = ETTranscriptDetailCanvasViewControllerAccessibility;
-  [(ETTranscriptDetailCanvasViewControllerAccessibility *)&v10 videoControllerDidStartPreview:a3];
+  [(ETTranscriptDetailCanvasViewControllerAccessibility *)&v10 videoControllerDidStartPreview:preview];
   v4 = accessibilityLocalizedString(@"camera.activated");
-  v9 = [(ETTranscriptDetailCanvasViewControllerAccessibility *)self _accessibilityStringForCurrentCameraPosition];
+  _accessibilityStringForCurrentCameraPosition = [(ETTranscriptDetailCanvasViewControllerAccessibility *)self _accessibilityStringForCurrentCameraPosition];
   v5 = __UIAXStringForVariables();
   UIAccessibilitySpeakAndDoNotBeInterrupted();
 
-  v6 = [(ETTranscriptDetailCanvasViewControllerAccessibility *)self safeValueForKey:@"_videoController", v9, @"__AXStringForVariablesSentinel"];
+  v6 = [(ETTranscriptDetailCanvasViewControllerAccessibility *)self safeValueForKey:@"_videoController", _accessibilityStringForCurrentCameraPosition, @"__AXStringForVariablesSentinel"];
   v7 = [v6 safeValueForKey:@"view"];
 
   [v7 setIsAccessibilityElement:0];
@@ -330,33 +330,33 @@ LABEL_8:
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], v8);
 }
 
-- (void)videoControllerDidStopPreview:(id)a3
+- (void)videoControllerDidStopPreview:(id)preview
 {
   v5.receiver = self;
   v5.super_class = ETTranscriptDetailCanvasViewControllerAccessibility;
-  [(ETTranscriptDetailCanvasViewControllerAccessibility *)&v5 videoControllerDidStopPreview:a3];
+  [(ETTranscriptDetailCanvasViewControllerAccessibility *)&v5 videoControllerDidStopPreview:preview];
   v4 = [(ETTranscriptDetailCanvasViewControllerAccessibility *)self safeValueForKey:@"canvasView"];
   [v4 setIsAccessibilityElement:1];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], v4);
 }
 
-- (void)colorPicker:(id)a3 requestsPresentColorWheel:(id)a4
+- (void)colorPicker:(id)picker requestsPresentColorWheel:(id)wheel
 {
   v8.receiver = self;
   v8.super_class = ETTranscriptDetailCanvasViewControllerAccessibility;
-  v6 = a4;
-  [(ETTranscriptDetailCanvasViewControllerAccessibility *)&v8 colorPicker:a3 requestsPresentColorWheel:v6];
+  wheelCopy = wheel;
+  [(ETTranscriptDetailCanvasViewControllerAccessibility *)&v8 colorPicker:picker requestsPresentColorWheel:wheelCopy];
   v7 = [(ETTranscriptDetailCanvasViewControllerAccessibility *)self safeValueForKey:@"canvasView", v8.receiver, v8.super_class];
   [v7 setIsAccessibilityElement:0];
 
-  UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], v6);
+  UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], wheelCopy);
 }
 
-- (void)colorPicker:(id)a3 requestsDismissColorWheel:(id)a4
+- (void)colorPicker:(id)picker requestsDismissColorWheel:(id)wheel
 {
   v7.receiver = self;
   v7.super_class = ETTranscriptDetailCanvasViewControllerAccessibility;
-  [(ETTranscriptDetailCanvasViewControllerAccessibility *)&v7 colorPicker:a3 requestsDismissColorWheel:a4];
+  [(ETTranscriptDetailCanvasViewControllerAccessibility *)&v7 colorPicker:picker requestsDismissColorWheel:wheel];
   v5 = [(ETTranscriptDetailCanvasViewControllerAccessibility *)self safeValueForKey:@"canvasView"];
   [v5 setIsAccessibilityElement:1];
 
@@ -407,14 +407,14 @@ id __89__ETTranscriptDetailCanvasViewControllerAccessibility__startShowCompositi
   return objc_msgSendSuper2(&v2, sel__startShowCompositionControlsTimer);
 }
 
-- (void)_axFocusChanged:(id)a3
+- (void)_axFocusChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x29EDC7EC0]];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x29EDC7EC0]];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x29EDC7FF8]];
+  userInfo2 = [changedCopy userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x29EDC7FF8]];
 
   v9 = [(ETTranscriptDetailCanvasViewControllerAccessibility *)self safeValueForKey:@"colorPicker"];
   objc_opt_class();

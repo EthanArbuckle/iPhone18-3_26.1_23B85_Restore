@@ -2,7 +2,7 @@
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
 - (id)description;
 - (id)entitlements;
-- (id)initForToken:(id *)a3 entitlementNames:(id)a4 cache:(id)a5;
+- (id)initForToken:(id *)token entitlementNames:(id)names cache:(id)cache;
 - (id)persistentStoreCoordinator;
 - (id)userInfo;
 - (void)dealloc;
@@ -12,9 +12,9 @@
 
 - (id)persistentStoreCoordinator
 {
-  v2 = [(NSXPCStoreServerPerConnectionCache *)self->_cache coordinator];
+  coordinator = [(NSXPCStoreServerPerConnectionCache *)self->_cache coordinator];
 
-  return v2;
+  return coordinator;
 }
 
 - (id)entitlements
@@ -61,7 +61,7 @@
   return self;
 }
 
-- (id)initForToken:(id *)a3 entitlementNames:(id)a4 cache:(id)a5
+- (id)initForToken:(id *)token entitlementNames:(id)names cache:(id)cache
 {
   v26 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
@@ -71,20 +71,20 @@
   if (v8)
   {
     *(v8 + 16) = 0;
-    v10 = *a3->var0;
-    *(v8 + 40) = *&a3->var0[4];
+    v10 = *token->var0;
+    *(v8 + 40) = *&token->var0[4];
     v11 = MEMORY[0x1E695E480];
     *(v8 + 24) = v10;
     v12 = *v11;
-    v13 = *&a3->var0[4];
-    *token.val = *a3->var0;
+    v13 = *&token->var0[4];
+    *token.val = *token->var0;
     *&token.val[4] = v13;
     v14 = SecTaskCreateWithAuditToken(v12, &token);
     v15 = v14;
     error = 0;
-    if (a4)
+    if (names)
     {
-      v16 = SecTaskCopyValuesForEntitlements(v14, a4, &error);
+      v16 = SecTaskCopyValuesForEntitlements(v14, names, &error);
       v9[1] = v16;
       if (v16)
       {
@@ -99,7 +99,7 @@ LABEL_5:
       {
 LABEL_14:
         CFRelease(v15);
-        v9[2] = a5;
+        v9[2] = cache;
         goto LABEL_15;
       }
 

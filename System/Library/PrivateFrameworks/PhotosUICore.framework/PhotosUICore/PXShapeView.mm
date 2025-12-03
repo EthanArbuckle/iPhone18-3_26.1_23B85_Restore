@@ -1,71 +1,71 @@
 @interface PXShapeView
-- (void)setFillColor:(id)a3;
-- (void)setPath:(id)a3;
-- (void)setStrokeColor:(id)a3;
+- (void)setFillColor:(id)color;
+- (void)setPath:(id)path;
+- (void)setStrokeColor:(id)color;
 @end
 
 @implementation PXShapeView
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_strokeColor != v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (self->_strokeColor != colorCopy)
   {
-    v10 = v5;
-    v7 = [(UIColor *)v5 isEqual:?];
+    v10 = colorCopy;
+    v7 = [(UIColor *)colorCopy isEqual:?];
     v6 = v10;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_strokeColor, a3);
-      v8 = [(UIColor *)self->_strokeColor CGColor];
-      v9 = [(PXShapeView *)self shapeLayer];
-      [v9 setStrokeColor:v8];
+      objc_storeStrong(&self->_strokeColor, color);
+      cGColor = [(UIColor *)self->_strokeColor CGColor];
+      shapeLayer = [(PXShapeView *)self shapeLayer];
+      [shapeLayer setStrokeColor:cGColor];
 
       v6 = v10;
     }
   }
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_fillColor != v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (self->_fillColor != colorCopy)
   {
-    v10 = v5;
-    v7 = [(UIColor *)v5 isEqual:?];
+    v10 = colorCopy;
+    v7 = [(UIColor *)colorCopy isEqual:?];
     v6 = v10;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_fillColor, a3);
-      v8 = [(UIColor *)self->_fillColor CGColor];
-      v9 = [(PXShapeView *)self shapeLayer];
-      [v9 setFillColor:v8];
+      objc_storeStrong(&self->_fillColor, color);
+      cGColor = [(UIColor *)self->_fillColor CGColor];
+      shapeLayer = [(PXShapeView *)self shapeLayer];
+      [shapeLayer setFillColor:cGColor];
 
       v6 = v10;
     }
   }
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v12 = a3;
-  if (([v12 isEqual:self->_path] & 1) == 0)
+  pathCopy = path;
+  if (([pathCopy isEqual:self->_path] & 1) == 0)
   {
-    v4 = [v12 copy];
+    v4 = [pathCopy copy];
     path = self->_path;
     self->_path = v4;
 
-    v6 = [(PXShapeView *)self shapeLayer];
-    v7 = v12;
-    [v6 setPath:{objc_msgSend(v12, "CGPath")}];
-    [v12 lineWidth];
-    [v6 setLineWidth:?];
-    v8 = [v12 usesEvenOddFillRule];
-    v9 = [(PXShapeView *)self shapeLayer];
-    v10 = v9;
-    if (v8)
+    shapeLayer = [(PXShapeView *)self shapeLayer];
+    v7 = pathCopy;
+    [shapeLayer setPath:{objc_msgSend(pathCopy, "CGPath")}];
+    [pathCopy lineWidth];
+    [shapeLayer setLineWidth:?];
+    usesEvenOddFillRule = [pathCopy usesEvenOddFillRule];
+    shapeLayer2 = [(PXShapeView *)self shapeLayer];
+    v10 = shapeLayer2;
+    if (usesEvenOddFillRule)
     {
       v11 = @"even-odd";
     }
@@ -75,7 +75,7 @@
       v11 = @"non-zero";
     }
 
-    [v9 setFillRule:v11];
+    [shapeLayer2 setFillRule:v11];
   }
 }
 

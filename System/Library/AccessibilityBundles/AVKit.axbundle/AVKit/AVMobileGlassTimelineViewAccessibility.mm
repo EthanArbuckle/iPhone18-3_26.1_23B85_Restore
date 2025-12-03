@@ -1,17 +1,17 @@
 @interface AVMobileGlassTimelineViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation AVMobileGlassTimelineViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVMobileGlassTimelineView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"AVMobileGlassTimelineView" hasInstanceVariable:@"_leadingLabel" withType:"AVLabel"];
-  [v3 validateClass:@"AVMobileGlassTimelineView" hasInstanceVariable:@"_trailingLabel" withType:"AVLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVMobileGlassTimelineView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"AVMobileGlassTimelineView" hasInstanceVariable:@"_leadingLabel" withType:"AVLabel"];
+  [validationsCopy validateClass:@"AVMobileGlassTimelineView" hasInstanceVariable:@"_trailingLabel" withType:"AVLabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,34 +1,34 @@
 @interface AVTCoreModelColor
 - ($0AC6E346AE4835514AAA8AC86D8F4844)settingKind;
-- (AVTCoreModelColor)initWithColorPreset:(id)a3 settingKind:(id)a4 order:(unint64_t)a5 derivedColorsByCategories:(id)a6;
-- (AVTCoreModelColor)initWithColorPreset:(id)a3 settingKind:(id)a4 order:(unint64_t)a5 showSlider:(BOOL)a6 rangeMin:(float)a7 rangeMax:(float)a8 derivedColorsByCategories:(id)a9;
-- (BOOL)isEqual:(id)a3;
+- (AVTCoreModelColor)initWithColorPreset:(id)preset settingKind:(id)kind order:(unint64_t)order derivedColorsByCategories:(id)categories;
+- (AVTCoreModelColor)initWithColorPreset:(id)preset settingKind:(id)kind order:(unint64_t)order showSlider:(BOOL)slider rangeMin:(float)min rangeMax:(float)max derivedColorsByCategories:(id)categories;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSString)identifier;
 - (NSString)localizedName;
-- (id)copyForCategory:(int64_t)a3 destination:(int64_t)a4;
-- (id)copyForPairedCategory:(int64_t)a3;
-- (id)copyWithRangeMin:(float)a3 rangeMax:(float)a4 showSlider:(BOOL)a5;
+- (id)copyForCategory:(int64_t)category destination:(int64_t)destination;
+- (id)copyForPairedCategory:(int64_t)category;
+- (id)copyWithRangeMin:(float)min rangeMax:(float)max showSlider:(BOOL)slider;
 - (id)thumbnail;
-- (id)volatileIdentifierForScope:(id)a3;
+- (id)volatileIdentifierForScope:(id)scope;
 - (unint64_t)hash;
 @end
 
 @implementation AVTCoreModelColor
 
-- (AVTCoreModelColor)initWithColorPreset:(id)a3 settingKind:(id)a4 order:(unint64_t)a5 derivedColorsByCategories:(id)a6
+- (AVTCoreModelColor)initWithColorPreset:(id)preset settingKind:(id)kind order:(unint64_t)order derivedColorsByCategories:(id)categories
 {
   LODWORD(v6) = -1.0;
   LODWORD(v7) = 1.0;
-  return [(AVTCoreModelColor *)self initWithColorPreset:a3 settingKind:a4.var0 order:a4.var1 showSlider:a5 rangeMin:0 rangeMax:a6 derivedColorsByCategories:v6, v7];
+  return [(AVTCoreModelColor *)self initWithColorPreset:preset settingKind:kind.var0 order:kind.var1 showSlider:order rangeMin:0 rangeMax:categories derivedColorsByCategories:v6, v7];
 }
 
-- (AVTCoreModelColor)initWithColorPreset:(id)a3 settingKind:(id)a4 order:(unint64_t)a5 showSlider:(BOOL)a6 rangeMin:(float)a7 rangeMax:(float)a8 derivedColorsByCategories:(id)a9
+- (AVTCoreModelColor)initWithColorPreset:(id)preset settingKind:(id)kind order:(unint64_t)order showSlider:(BOOL)slider rangeMin:(float)min rangeMax:(float)max derivedColorsByCategories:(id)categories
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v18 = a3;
-  v19 = a9;
+  var1 = kind.var1;
+  var0 = kind.var0;
+  presetCopy = preset;
+  categoriesCopy = categories;
   v25.receiver = self;
   v25.super_class = AVTCoreModelColor;
   v20 = [(AVTCoreModelColor *)&v25 init];
@@ -37,12 +37,12 @@
   {
     v20->_settingKind.destination = var0;
     v20->_settingKind.category = var1;
-    objc_storeStrong(&v20->_baseColorPreset, a3);
-    v21->_order = a5;
-    v21->_showSlider = a6;
-    v21->_rangeMin = a7;
-    v21->_rangeMax = a8;
-    v22 = [v19 copy];
+    objc_storeStrong(&v20->_baseColorPreset, preset);
+    v21->_order = order;
+    v21->_showSlider = slider;
+    v21->_rangeMin = min;
+    v21->_rangeMax = max;
+    v22 = [categoriesCopy copy];
     derivedColorsByCategories = v21->_derivedColorsByCategories;
     v21->_derivedColorsByCategories = v22;
   }
@@ -50,62 +50,62 @@
   return v21;
 }
 
-- (id)copyWithRangeMin:(float)a3 rangeMax:(float)a4 showSlider:(BOOL)a5
+- (id)copyWithRangeMin:(float)min rangeMax:(float)max showSlider:(BOOL)slider
 {
-  v5 = a5;
+  sliderCopy = slider;
   v9 = [AVTCoreModelColor alloc];
   baseColorPreset = self->_baseColorPreset;
   order = self->_order;
   derivedColorsByCategories = self->_derivedColorsByCategories;
   destination = self->_settingKind.destination;
   category = self->_settingKind.category;
-  *&v15 = a3;
-  *&v16 = a4;
+  *&v15 = min;
+  *&v16 = max;
 
-  return [(AVTCoreModelColor *)v9 initWithColorPreset:baseColorPreset settingKind:destination order:category showSlider:order rangeMin:v5 rangeMax:derivedColorsByCategories derivedColorsByCategories:v15, v16];
+  return [(AVTCoreModelColor *)v9 initWithColorPreset:baseColorPreset settingKind:destination order:category showSlider:order rangeMin:sliderCopy rangeMax:derivedColorsByCategories derivedColorsByCategories:v15, v16];
 }
 
-- (id)copyForPairedCategory:(int64_t)a3
+- (id)copyForPairedCategory:(int64_t)category
 {
-  v5 = [(AVTCoreModelColor *)self settingKind];
+  settingKind = [(AVTCoreModelColor *)self settingKind];
 
-  return [(AVTCoreModelColor *)self copyForCategory:a3 destination:v5];
+  return [(AVTCoreModelColor *)self copyForCategory:category destination:settingKind];
 }
 
-- (id)copyForCategory:(int64_t)a3 destination:(int64_t)a4
+- (id)copyForCategory:(int64_t)category destination:(int64_t)destination
 {
-  v6 = AVTAvatarSettingColorIndexForColorDestination(a4);
+  v6 = AVTAvatarSettingColorIndexForColorDestination(destination);
   v7 = MEMORY[0x1E698E290];
-  v8 = [(AVTCoreModelColor *)self baseColorPreset];
-  v9 = [v8 name];
-  v10 = [(AVTCoreModelColor *)self baseColorPreset];
-  [v10 variation];
-  v11 = [v7 colorPresetWithName:v9 category:a3 colorIndex:v6 variation:?];
+  baseColorPreset = [(AVTCoreModelColor *)self baseColorPreset];
+  name = [baseColorPreset name];
+  baseColorPreset2 = [(AVTCoreModelColor *)self baseColorPreset];
+  [baseColorPreset2 variation];
+  v11 = [v7 colorPresetWithName:name category:category colorIndex:v6 variation:?];
 
   v12 = [AVTCoreModelColor alloc];
-  v13 = AVTColorSettingKind(a3, v6);
+  v13 = AVTColorSettingKind(category, v6);
   v15 = v14;
-  v16 = [(AVTCoreModelColor *)self order];
-  v17 = [(AVTCoreModelColor *)self derivedColorsByCategories];
-  v18 = [(AVTCoreModelColor *)v12 initWithColorPreset:v11 settingKind:v13 order:v15 derivedColorsByCategories:v16, v17];
+  order = [(AVTCoreModelColor *)self order];
+  derivedColorsByCategories = [(AVTCoreModelColor *)self derivedColorsByCategories];
+  v18 = [(AVTCoreModelColor *)v12 initWithColorPreset:v11 settingKind:v13 order:v15 derivedColorsByCategories:order, derivedColorsByCategories];
 
   return v18;
 }
 
 - (NSString)localizedName
 {
-  v2 = [(AVTCoreModelColor *)self baseColorPreset];
-  v3 = [v2 localizedName];
-  v4 = [v3 copy];
+  baseColorPreset = [(AVTCoreModelColor *)self baseColorPreset];
+  localizedName = [baseColorPreset localizedName];
+  v4 = [localizedName copy];
 
   return v4;
 }
 
 - (NSString)identifier
 {
-  v2 = [(AVTCoreModelColor *)self baseColorPreset];
-  v3 = [v2 name];
-  v4 = [v3 copy];
+  baseColorPreset = [(AVTCoreModelColor *)self baseColorPreset];
+  name = [baseColorPreset name];
+  v4 = [name copy];
 
   return v4;
 }
@@ -118,8 +118,8 @@
   v4 = [v3 mutableCopy];
 
   [v4 appendFormat:@" %lu", -[AVTCoreModelColor order](self, "order")];
-  v5 = [(AVTCoreModelColor *)self identifier];
-  [v4 appendFormat:@" identifier: %@", v5];
+  identifier = [(AVTCoreModelColor *)self identifier];
+  [v4 appendFormat:@" identifier: %@", identifier];
 
   v6 = AVTAvatarSettingKindDescription([(AVTCoreModelColor *)self settingKind]);
   [v4 appendFormat:@" setting: %@", v6];
@@ -129,22 +129,22 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 != self)
+  equalCopy = equal;
+  if (equalCopy != self)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(AVTCoreModelColor *)self identifier];
-      if (v6 || ([(AVTCoreModelColor *)v5 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      identifier = [(AVTCoreModelColor *)self identifier];
+      if (identifier || ([(AVTCoreModelColor *)equalCopy identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v7 = [(AVTCoreModelColor *)self identifier];
-        v8 = [(AVTCoreModelColor *)v5 identifier];
-        v9 = [v7 isEqual:v8];
+        identifier2 = [(AVTCoreModelColor *)self identifier];
+        identifier3 = [(AVTCoreModelColor *)equalCopy identifier];
+        v9 = [identifier2 isEqual:identifier3];
 
-        if (v6)
+        if (identifier)
         {
 
           if (!v9)
@@ -163,19 +163,19 @@
         }
       }
 
-      v11 = [(AVTCoreModelColor *)self settingKind];
+      settingKind = [(AVTCoreModelColor *)self settingKind];
       v13 = v12;
-      v14 = [(AVTCoreModelColor *)v5 settingKind];
-      if (AVTAvatarSettingKindEqual(v11, v13, v14, v15))
+      settingKind2 = [(AVTCoreModelColor *)equalCopy settingKind];
+      if (AVTAvatarSettingKindEqual(settingKind, v13, settingKind2, v15))
       {
-        v16 = [(AVTCoreModelColor *)self derivedColorsByCategories];
-        if (v16 || ([(AVTCoreModelColor *)v5 derivedColorsByCategories], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+        derivedColorsByCategories = [(AVTCoreModelColor *)self derivedColorsByCategories];
+        if (derivedColorsByCategories || ([(AVTCoreModelColor *)equalCopy derivedColorsByCategories], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v17 = [(AVTCoreModelColor *)self derivedColorsByCategories];
-          v18 = [(AVTCoreModelColor *)v5 derivedColorsByCategories];
-          v10 = [v17 isEqual:v18];
+          derivedColorsByCategories2 = [(AVTCoreModelColor *)self derivedColorsByCategories];
+          derivedColorsByCategories3 = [(AVTCoreModelColor *)equalCopy derivedColorsByCategories];
+          v10 = [derivedColorsByCategories2 isEqual:derivedColorsByCategories3];
 
-          if (v16)
+          if (derivedColorsByCategories)
           {
 LABEL_19:
 
@@ -205,13 +205,13 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v3 = [(AVTCoreModelColor *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(AVTCoreModelColor *)self identifier];
+  identifier = [(AVTCoreModelColor *)self identifier];
+  v4 = [identifier hash];
+  identifier2 = [(AVTCoreModelColor *)self identifier];
   *(&v6 + 1) = v4;
-  *&v6 = [v5 hash];
-  v7 = [(AVTCoreModelColor *)self settingKind];
-  v9 = AVTAvatarSettingKindHash(v7, v8);
+  *&v6 = [identifier2 hash];
+  settingKind = [(AVTCoreModelColor *)self settingKind];
+  v9 = AVTAvatarSettingKindHash(settingKind, v8);
 
   return v9 ^ (v6 >> 32);
 }
@@ -225,25 +225,25 @@ LABEL_16:
   return result;
 }
 
-- (id)volatileIdentifierForScope:(id)a3
+- (id)volatileIdentifierForScope:(id)scope
 {
-  v4 = [MEMORY[0x1E696AD60] string];
-  v5 = [(AVTCoreModelColor *)self settingKind];
-  v7 = AVTAvatarSettingKindIdentifier(v5, v6);
-  v8 = [(AVTCoreModelColor *)self identifier];
-  [v4 appendFormat:@"color_%@_%@", v7, v8];
+  string = [MEMORY[0x1E696AD60] string];
+  settingKind = [(AVTCoreModelColor *)self settingKind];
+  v7 = AVTAvatarSettingKindIdentifier(settingKind, v6);
+  identifier = [(AVTCoreModelColor *)self identifier];
+  [string appendFormat:@"color_%@_%@", v7, identifier];
 
-  v9 = [v4 copy];
+  v9 = [string copy];
 
   return v9;
 }
 
 - (id)thumbnail
 {
-  v2 = [(AVTCoreModelColor *)self baseColorPreset];
-  v3 = [v2 thumbnail];
+  baseColorPreset = [(AVTCoreModelColor *)self baseColorPreset];
+  thumbnail = [baseColorPreset thumbnail];
 
-  return v3;
+  return thumbnail;
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface INReadAnnouncementIntent
-- (INReadAnnouncementIntent)initWithReadType:(int64_t)a3 startAnnouncementIdentifier:(id)a4 userNotificationType:(int64_t)a5;
+- (INReadAnnouncementIntent)initWithReadType:(int64_t)type startAnnouncementIdentifier:(id)identifier userNotificationType:(int64_t)notificationType;
 - (NSString)startAnnouncementIdentifier;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
 - (int64_t)readType;
 - (int64_t)userNotificationType;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setReadType:(int64_t)a3;
-- (void)setStartAnnouncementIdentifier:(id)a3;
-- (void)setUserNotificationType:(int64_t)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setReadType:(int64_t)type;
+- (void)setStartAnnouncementIdentifier:(id)identifier;
+- (void)setUserNotificationType:(int64_t)type;
 @end
 
 @implementation INReadAnnouncementIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INReadAnnouncementIntent *)self _typedBackingStore:a3];
+  v6 = [(INReadAnnouncementIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -26,14 +26,14 @@
 {
   v15[3] = *MEMORY[0x1E69E9840];
   v14[0] = @"readType";
-  v3 = [(INReadAnnouncementIntent *)self readType];
+  readType = [(INReadAnnouncementIntent *)self readType];
   v4 = @"unknown";
-  if (v3 == 2)
+  if (readType == 2)
   {
     v4 = @"repeat";
   }
 
-  if (v3 == 1)
+  if (readType == 1)
   {
     v4 = @"read";
   }
@@ -41,23 +41,23 @@
   v5 = v4;
   v15[0] = v5;
   v14[1] = @"startAnnouncementIdentifier";
-  v6 = [(INReadAnnouncementIntent *)self startAnnouncementIdentifier];
-  v7 = v6;
-  if (!v6)
+  startAnnouncementIdentifier = [(INReadAnnouncementIntent *)self startAnnouncementIdentifier];
+  null = startAnnouncementIdentifier;
+  if (!startAnnouncementIdentifier)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v7;
+  v15[1] = null;
   v14[2] = @"userNotificationType";
-  v8 = [(INReadAnnouncementIntent *)self userNotificationType];
+  userNotificationType = [(INReadAnnouncementIntent *)self userNotificationType];
   v9 = @"unknown";
-  if (v8 == 2)
+  if (userNotificationType == 2)
   {
     v9 = @"deliveryFailure";
   }
 
-  if (v8 == 1)
+  if (userNotificationType == 1)
   {
     v9 = @"announcement";
   }
@@ -66,7 +66,7 @@
   v15[2] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:3];
 
-  if (!v6)
+  if (!startAnnouncementIdentifier)
   {
   }
 
@@ -75,9 +75,9 @@
   return v11;
 }
 
-- (void)setUserNotificationType:(int64_t)a3
+- (void)setUserNotificationType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = 1;
   }
@@ -87,7 +87,7 @@
     v3 = 0x7FFFFFFF;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = 2;
   }
@@ -97,32 +97,32 @@
     v4 = v3;
   }
 
-  v5 = [(INReadAnnouncementIntent *)self _typedBackingStore];
-  v6 = v5;
+  _typedBackingStore = [(INReadAnnouncementIntent *)self _typedBackingStore];
+  v6 = _typedBackingStore;
   if (v4 == 0x7FFFFFFF)
   {
-    [v5 setHasUserNotificationType:0];
+    [_typedBackingStore setHasUserNotificationType:0];
   }
 
   else
   {
-    [v5 setUserNotificationType:v4];
+    [_typedBackingStore setUserNotificationType:v4];
   }
 }
 
 - (int64_t)userNotificationType
 {
-  v3 = [(INReadAnnouncementIntent *)self _typedBackingStore];
-  v4 = [v3 hasUserNotificationType];
-  v5 = [(INReadAnnouncementIntent *)self _typedBackingStore];
-  v6 = [v5 userNotificationType];
-  v7 = 2 * (v6 == 2);
-  if (v6 == 1)
+  _typedBackingStore = [(INReadAnnouncementIntent *)self _typedBackingStore];
+  hasUserNotificationType = [_typedBackingStore hasUserNotificationType];
+  _typedBackingStore2 = [(INReadAnnouncementIntent *)self _typedBackingStore];
+  userNotificationType = [_typedBackingStore2 userNotificationType];
+  v7 = 2 * (userNotificationType == 2);
+  if (userNotificationType == 1)
   {
     v7 = 1;
   }
 
-  if (v4)
+  if (hasUserNotificationType)
   {
     v8 = v7;
   }
@@ -135,25 +135,25 @@
   return v8;
 }
 
-- (void)setStartAnnouncementIdentifier:(id)a3
+- (void)setStartAnnouncementIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INReadAnnouncementIntent *)self _typedBackingStore];
-  [v5 setStartAnnouncementIdentifier:v4];
+  identifierCopy = identifier;
+  _typedBackingStore = [(INReadAnnouncementIntent *)self _typedBackingStore];
+  [_typedBackingStore setStartAnnouncementIdentifier:identifierCopy];
 }
 
 - (NSString)startAnnouncementIdentifier
 {
-  v2 = [(INReadAnnouncementIntent *)self _typedBackingStore];
-  v3 = [v2 startAnnouncementIdentifier];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INReadAnnouncementIntent *)self _typedBackingStore];
+  startAnnouncementIdentifier = [_typedBackingStore startAnnouncementIdentifier];
+  v4 = [startAnnouncementIdentifier copy];
 
   return v4;
 }
 
-- (void)setReadType:(int64_t)a3
+- (void)setReadType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = 1;
   }
@@ -163,7 +163,7 @@
     v3 = 0x7FFFFFFF;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = 2;
   }
@@ -173,32 +173,32 @@
     v4 = v3;
   }
 
-  v5 = [(INReadAnnouncementIntent *)self _typedBackingStore];
-  v6 = v5;
+  _typedBackingStore = [(INReadAnnouncementIntent *)self _typedBackingStore];
+  v6 = _typedBackingStore;
   if (v4 == 0x7FFFFFFF)
   {
-    [v5 setHasReadType:0];
+    [_typedBackingStore setHasReadType:0];
   }
 
   else
   {
-    [v5 setReadType:v4];
+    [_typedBackingStore setReadType:v4];
   }
 }
 
 - (int64_t)readType
 {
-  v3 = [(INReadAnnouncementIntent *)self _typedBackingStore];
-  v4 = [v3 hasReadType];
-  v5 = [(INReadAnnouncementIntent *)self _typedBackingStore];
-  v6 = [v5 readType];
-  v7 = 2 * (v6 == 2);
-  if (v6 == 1)
+  _typedBackingStore = [(INReadAnnouncementIntent *)self _typedBackingStore];
+  hasReadType = [_typedBackingStore hasReadType];
+  _typedBackingStore2 = [(INReadAnnouncementIntent *)self _typedBackingStore];
+  readType = [_typedBackingStore2 readType];
+  v7 = 2 * (readType == 2);
+  if (readType == 1)
   {
     v7 = 1;
   }
 
-  if (v4)
+  if (hasReadType)
   {
     v8 = v7;
   }
@@ -211,45 +211,45 @@
   return v8;
 }
 
-- (INReadAnnouncementIntent)initWithReadType:(int64_t)a3 startAnnouncementIdentifier:(id)a4 userNotificationType:(int64_t)a5
+- (INReadAnnouncementIntent)initWithReadType:(int64_t)type startAnnouncementIdentifier:(id)identifier userNotificationType:(int64_t)notificationType
 {
-  v8 = a4;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = INReadAnnouncementIntent;
   v9 = [(INIntent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    [(INReadAnnouncementIntent *)v9 setReadType:a3];
-    [(INReadAnnouncementIntent *)v10 setStartAnnouncementIdentifier:v8];
-    [(INReadAnnouncementIntent *)v10 setUserNotificationType:a5];
+    [(INReadAnnouncementIntent *)v9 setReadType:type];
+    [(INReadAnnouncementIntent *)v10 setStartAnnouncementIdentifier:identifierCopy];
+    [(INReadAnnouncementIntent *)v10 setUserNotificationType:notificationType];
   }
 
   return v10;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INReadAnnouncementIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INReadAnnouncementIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INReadAnnouncementIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INReadAnnouncementIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

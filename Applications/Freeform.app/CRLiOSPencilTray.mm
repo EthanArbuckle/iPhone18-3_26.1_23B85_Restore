@@ -1,19 +1,19 @@
 @interface CRLiOSPencilTray
 - (CGRect)rectangleObscuringCanvasScrollView;
 - (_TtC8Freeform16CRLiOSPencilTray)init;
-- (id)_colorPickerPopoverPresentationBarButtonItem:(id)a3;
-- (id)_toolPickerCurrentSelectionColor:(id)a3;
-- (void)_toggleLassoToolEditingViewColorPickerForToolPicker:(id)a3;
-- (void)_toolPicker:(id)a3 didChangeColor:(id)a4;
-- (void)didSetDocumentToMode:(id)a3 fromMode:(id)a4 animated:(BOOL)a5;
+- (id)_colorPickerPopoverPresentationBarButtonItem:(id)item;
+- (id)_toolPickerCurrentSelectionColor:(id)color;
+- (void)_toggleLassoToolEditingViewColorPickerForToolPicker:(id)picker;
+- (void)_toolPicker:(id)picker didChangeColor:(id)color;
+- (void)didSetDocumentToMode:(id)mode fromMode:(id)fromMode animated:(BOOL)animated;
 - (void)installToolTray;
-- (void)lassoSegmentedControlDidChangeType:(unint64_t)a3;
-- (void)processChanges:(id)a3 forChangeSource:(id)a4;
-- (void)setToolTrayHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)toolPickerFramesObscuredDidChange:(id)a3;
-- (void)toolPickerIsRulerActiveDidChange:(id)a3;
-- (void)toolPickerSelectedToolItemDidChange:(id)a3;
-- (void)toolPickerVisibilityDidChange:(id)a3;
+- (void)lassoSegmentedControlDidChangeType:(unint64_t)type;
+- (void)processChanges:(id)changes forChangeSource:(id)source;
+- (void)setToolTrayHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)toolPickerFramesObscuredDidChange:(id)change;
+- (void)toolPickerIsRulerActiveDidChange:(id)change;
+- (void)toolPickerSelectedToolItemDidChange:(id)change;
+- (void)toolPickerVisibilityDidChange:(id)change;
 - (void)toolkitDidUpdateCurrentToolSelection;
 - (void)toolkitDidUpdateRulerVisibility;
 - (void)uninstallToolTray;
@@ -31,7 +31,7 @@
 
 - (CGRect)rectangleObscuringCanvasScrollView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100F103AC();
   v5 = v4;
   v7 = v6;
@@ -50,97 +50,97 @@
 
 - (void)installToolTray
 {
-  v2 = self;
+  selfCopy = self;
   sub_100F10818();
 }
 
 - (void)uninstallToolTray
 {
-  v2 = self;
+  selfCopy = self;
   sub_100F10C3C();
 }
 
-- (void)setToolTrayHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setToolTrayHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v5 = self;
-  sub_100F161BC(a3);
+  selfCopy = self;
+  sub_100F161BC(hidden);
 }
 
-- (void)toolPickerSelectedToolItemDidChange:(id)a3
+- (void)toolPickerSelectedToolItemDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_100F11088();
 }
 
-- (void)toolPickerIsRulerActiveDidChange:(id)a3
+- (void)toolPickerIsRulerActiveDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_100F116C0(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100F116C0(changeCopy);
 }
 
-- (void)toolPickerVisibilityDidChange:(id)a3
+- (void)toolPickerVisibilityDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_100F11DA4();
 }
 
 - (void)updateForToolPickerVisibilityDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100F12420();
 }
 
-- (void)toolPickerFramesObscuredDidChange:(id)a3
+- (void)toolPickerFramesObscuredDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_100F12A0C();
 }
 
-- (void)_toolPicker:(id)a3 didChangeColor:(id)a4
+- (void)_toolPicker:(id)picker didChangeColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100F1308C(v6, a4);
+  pickerCopy = picker;
+  colorCopy = color;
+  selfCopy = self;
+  sub_100F1308C(pickerCopy, color);
 }
 
-- (id)_toolPickerCurrentSelectionColor:(id)a3
+- (id)_toolPickerCurrentSelectionColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
+  colorCopy = color;
+  selfCopy = self;
   v6 = sub_100F13A30();
 
   return v6;
 }
 
-- (void)_toggleLassoToolEditingViewColorPickerForToolPicker:(id)a3
+- (void)_toggleLassoToolEditingViewColorPickerForToolPicker:(id)picker
 {
-  v4 = a3;
-  v5 = self;
+  pickerCopy = picker;
+  selfCopy = self;
   sub_100F14098();
 }
 
-- (id)_colorPickerPopoverPresentationBarButtonItem:(id)a3
+- (id)_colorPickerPopoverPresentationBarButtonItem:(id)item
 {
   Strong = swift_unknownObjectUnownedLoadStrong();
-  v5 = self;
-  v6 = [Strong barButtonItemForPresentingColorPickerWithHiddenPencilTray:v5];
+  selfCopy = self;
+  v6 = [Strong barButtonItemForPresentingColorPickerWithHiddenPencilTray:selfCopy];
 
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-- (void)processChanges:(id)a3 forChangeSource:(id)a4
+- (void)processChanges:(id)changes forChangeSource:(id)source
 {
   type metadata accessor for CRLChangeRecord();
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_100F14AE4(v5);
@@ -148,11 +148,11 @@
   sub_100005070(&v7);
 }
 
-- (void)didSetDocumentToMode:(id)a3 fromMode:(id)a4 animated:(BOOL)a5
+- (void)didSetDocumentToMode:(id)mode fromMode:(id)fromMode animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  if ([v6 pencilModeType])
+  modeCopy = mode;
+  selfCopy = self;
+  if ([modeCopy pencilModeType])
   {
     sub_100F09EB4();
   }
@@ -161,11 +161,11 @@
 - (void)toolkitDidUpdateCurrentToolSelection
 {
   Strong = swift_unknownObjectUnownedLoadStrong();
-  v6 = self;
-  v4 = [Strong mode];
+  selfCopy = self;
+  mode = [Strong mode];
 
-  v5 = [v4 pencilModeType];
-  if (v5 == 1)
+  pencilModeType = [mode pencilModeType];
+  if (pencilModeType == 1)
   {
     sub_100F09EB4();
   }
@@ -173,21 +173,21 @@
 
 - (void)toolkitDidUpdateRulerVisibility
 {
-  v2 = self;
+  selfCopy = self;
   sub_100F1501C();
 }
 
-- (void)lassoSegmentedControlDidChangeType:(unint64_t)a3
+- (void)lassoSegmentedControlDidChangeType:(unint64_t)type
 {
   Strong = swift_unknownObjectUnownedLoadStrong();
-  v8 = self;
-  v6 = [Strong freehandDrawingToolkit];
+  selfCopy = self;
+  freehandDrawingToolkit = [Strong freehandDrawingToolkit];
 
-  if (v6)
+  if (freehandDrawingToolkit)
   {
-    v7 = [v6 toolkitUIState];
+    toolkitUIState = [freehandDrawingToolkit toolkitUIState];
 
-    [v7 setCurrentLassoType:a3];
+    [toolkitUIState setCurrentLassoType:type];
   }
 
   else

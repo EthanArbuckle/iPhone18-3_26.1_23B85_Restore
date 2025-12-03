@@ -1,13 +1,13 @@
 @interface BCAssetReview
-+ (id)assetIDFromAssetReviewID:(id)a3;
-+ (id)userIDFromAssetReviewID:(id)a3;
++ (id)assetIDFromAssetReviewID:(id)d;
++ (id)userIDFromAssetReviewID:(id)d;
 - (NSString)debugDescription;
 - (double)normalizedStarRating;
 - (id)mutableCopy;
-- (void)_configureFromAssetReview:(id)a3 withMergers:(id)a4;
-- (void)configureFromCloudData:(id)a3 withMergers:(id)a4;
-- (void)resolveConflictsFromRecord:(id)a3 withResolvers:(id)a4;
-- (void)setNormalizedStarRating:(double)a3;
+- (void)_configureFromAssetReview:(id)review withMergers:(id)mergers;
+- (void)configureFromCloudData:(id)data withMergers:(id)mergers;
+- (void)resolveConflictsFromRecord:(id)record withResolvers:(id)resolvers;
+- (void)setNormalizedStarRating:(double)rating;
 @end
 
 @implementation BCAssetReview
@@ -19,13 +19,13 @@
   return [(BCMutableAssetReview *)v3 initWithCloudData:self];
 }
 
-- (void)configureFromCloudData:(id)a3 withMergers:(id)a4
+- (void)configureFromCloudData:(id)data withMergers:(id)mergers
 {
-  v5 = a4;
+  mergersCopy = mergers;
   v6 = BUProtocolCast();
   if (v6)
   {
-    [(BCAssetReview *)self _configureFromAssetReview:v6 withMergers:v5];
+    [(BCAssetReview *)self _configureFromAssetReview:v6 withMergers:mergersCopy];
   }
 
   else
@@ -38,61 +38,61 @@
   }
 }
 
-- (void)_configureFromAssetReview:(id)a3 withMergers:(id)a4
+- (void)_configureFromAssetReview:(id)review withMergers:(id)mergers
 {
-  v6 = a3;
+  reviewCopy = review;
   v19.receiver = self;
   v19.super_class = BCAssetReview;
-  [(BCCloudData *)&v19 configureFromCloudData:v6 withMergers:a4];
-  v7 = [v6 assetReviewID];
-  v8 = [BCAssetReview userIDFromAssetReviewID:v7];
+  [(BCCloudData *)&v19 configureFromCloudData:reviewCopy withMergers:mergers];
+  assetReviewID = [reviewCopy assetReviewID];
+  v8 = [BCAssetReview userIDFromAssetReviewID:assetReviewID];
 
   [(BCAssetReview *)self setDifferentString:v8 forKey:@"userID"];
-  v9 = [v6 assetReviewID];
-  [(BCAssetReview *)self setDifferentString:v9 forKey:@"assetReviewID"];
+  assetReviewID2 = [reviewCopy assetReviewID];
+  [(BCAssetReview *)self setDifferentString:assetReviewID2 forKey:@"assetReviewID"];
 
-  v10 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [v6 starRating]);
+  v10 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [reviewCopy starRating]);
   [(BCAssetReview *)self setDifferentNumber:v10 forKey:@"starRating"];
 
-  v11 = [v6 reviewTitle];
-  [(BCAssetReview *)self setDifferentString:v11 forKey:@"reviewTitle"];
+  reviewTitle = [reviewCopy reviewTitle];
+  [(BCAssetReview *)self setDifferentString:reviewTitle forKey:@"reviewTitle"];
 
-  v12 = [v6 reviewBody];
-  [(BCAssetReview *)self setDifferentString:v12 forKey:@"reviewBody"];
+  reviewBody = [reviewCopy reviewBody];
+  [(BCAssetReview *)self setDifferentString:reviewBody forKey:@"reviewBody"];
 
   v13 = +[BULogUtilities shared];
-  v14 = [v13 verboseLoggingEnabled];
+  verboseLoggingEnabled = [v13 verboseLoggingEnabled];
 
-  if (v14)
+  if (verboseLoggingEnabled)
   {
     v15 = sub_10000DB80();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(BCAssetReview *)self assetReviewID];
+      assetReviewID3 = [(BCAssetReview *)self assetReviewID];
       v17 = [(BCAssetReview *)self debugDescription];
-      v18 = [v6 assetReviewID];
+      assetReviewID4 = [reviewCopy assetReviewID];
       *buf = 138412802;
-      v21 = v16;
+      v21 = assetReviewID3;
       v22 = 2112;
       v23 = v17;
       v24 = 2112;
-      v25 = v18;
+      v25 = assetReviewID4;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "\\BCAssetReview configured: %@ %@ from assetReview:%@\\"", buf, 0x20u);
     }
   }
 }
 
-- (void)resolveConflictsFromRecord:(id)a3 withResolvers:(id)a4
+- (void)resolveConflictsFromRecord:(id)record withResolvers:(id)resolvers
 {
-  v6 = a3;
+  recordCopy = record;
   v43.receiver = self;
   v43.super_class = BCAssetReview;
-  [(BCCloudData *)&v43 resolveConflictsFromRecord:v6 withResolvers:a4];
-  if (v6)
+  [(BCCloudData *)&v43 resolveConflictsFromRecord:recordCopy withResolvers:resolvers];
+  if (recordCopy)
   {
-    v7 = [BCCloudData localIdentifierFromRecord:v6];
-    v8 = [(BCAssetReview *)self assetReviewID];
-    v9 = [v8 isEqualToString:v7];
+    v7 = [BCCloudData localIdentifierFromRecord:recordCopy];
+    assetReviewID = [(BCAssetReview *)self assetReviewID];
+    v9 = [assetReviewID isEqualToString:v7];
 
     if ((v9 & 1) == 0)
     {
@@ -107,15 +107,15 @@
       [(BCAssetReview *)self setDifferentString:v11 forKey:@"userID"];
     }
 
-    v12 = [(BCAssetReview *)self modificationDate];
-    if (v12)
+    modificationDate = [(BCAssetReview *)self modificationDate];
+    if (modificationDate)
     {
-      v13 = v12;
-      v14 = [(BCAssetReview *)self modificationDate];
-      [v14 timeIntervalSinceReferenceDate];
+      v13 = modificationDate;
+      modificationDate2 = [(BCAssetReview *)self modificationDate];
+      [modificationDate2 timeIntervalSinceReferenceDate];
       v16 = v15;
-      v17 = [v6 modificationDate];
-      [v17 timeIntervalSinceReferenceDate];
+      modificationDate3 = [recordCopy modificationDate];
+      [modificationDate3 timeIntervalSinceReferenceDate];
       v19 = v18;
 
       if (v16 > v19)
@@ -123,24 +123,24 @@
         v20 = sub_100002660();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
-          v21 = [(BCAssetReview *)self assetReviewID];
-          v22 = [v6 recordID];
-          v23 = [v22 recordName];
-          v24 = [(BCAssetReview *)self modificationDate];
-          [v24 timeIntervalSinceReferenceDate];
+          assetReviewID2 = [(BCAssetReview *)self assetReviewID];
+          recordID = [recordCopy recordID];
+          recordName = [recordID recordName];
+          modificationDate4 = [(BCAssetReview *)self modificationDate];
+          [modificationDate4 timeIntervalSinceReferenceDate];
           v26 = v25;
-          v27 = [v6 modificationDate];
-          [v27 timeIntervalSinceReferenceDate];
+          modificationDate5 = [recordCopy modificationDate];
+          [modificationDate5 timeIntervalSinceReferenceDate];
           v28 = @"newer";
           *buf = 138412802;
-          v45 = v21;
+          v45 = assetReviewID2;
           if (v26 == v29)
           {
             v28 = @"the same";
           }
 
           v46 = 2112;
-          v47 = v23;
+          v47 = recordName;
           v48 = 2114;
           v49 = v28;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "BCAssetReview %@ Resolving conflicts from record %@, keeping my properties as my modification date is %{public}@.", buf, 0x20u);
@@ -151,33 +151,33 @@
       }
     }
 
-    v30 = [v6 objectForKey:@"starRating"];
+    v30 = [recordCopy objectForKey:@"starRating"];
     [(BCAssetReview *)self setDifferentNumber:v30 forKey:@"starRating"];
-    v31 = [v6 objectForKey:@"reviewTitle"];
+    v31 = [recordCopy objectForKey:@"reviewTitle"];
     [(BCAssetReview *)self setDifferentString:v31 forKey:@"reviewTitle"];
-    v32 = [v6 objectForKey:@"reviewBody"];
+    v32 = [recordCopy objectForKey:@"reviewBody"];
     [(BCAssetReview *)self setDifferentString:v32 forKey:@"reviewBody"];
-    v33 = [v6 modificationDate];
-    [(BCAssetReview *)self setDifferentDate:v33 forKey:@"modificationDate"];
-    v34 = [(BCAssetReview *)self hasChanges];
+    modificationDate6 = [recordCopy modificationDate];
+    [(BCAssetReview *)self setDifferentDate:modificationDate6 forKey:@"modificationDate"];
+    hasChanges = [(BCAssetReview *)self hasChanges];
     v35 = +[BULogUtilities shared];
-    v36 = [v35 verboseLoggingEnabled];
+    verboseLoggingEnabled = [v35 verboseLoggingEnabled];
 
-    if (v34)
+    if (hasChanges)
     {
-      if (v36)
+      if (verboseLoggingEnabled)
       {
         v37 = sub_10000DB80();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
-          v38 = [(BCAssetReview *)self assetReviewID];
-          v42 = [v6 recordID];
-          v39 = [v42 recordName];
+          assetReviewID3 = [(BCAssetReview *)self assetReviewID];
+          recordID2 = [recordCopy recordID];
+          recordName2 = [recordID2 recordName];
           v40 = [(BCAssetReview *)self debugDescription];
           *buf = 138412802;
-          v45 = v38;
+          v45 = assetReviewID3;
           v46 = 2112;
-          v47 = v39;
+          v47 = recordName2;
           v48 = 2112;
           v49 = v40;
           v41 = "\\BCAssetReview %@ Resolving: Adopted properties from record: %@ %@\\"";
@@ -191,19 +191,19 @@ LABEL_22:
       }
     }
 
-    else if (v36)
+    else if (verboseLoggingEnabled)
     {
       v37 = sub_10000DB80();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
-        v38 = [(BCAssetReview *)self assetReviewID];
-        v42 = [v6 recordID];
-        v39 = [v42 recordName];
+        assetReviewID3 = [(BCAssetReview *)self assetReviewID];
+        recordID2 = [recordCopy recordID];
+        recordName2 = [recordID2 recordName];
         v40 = [(BCAssetReview *)self debugDescription];
         *buf = 138412802;
-        v45 = v38;
+        v45 = assetReviewID3;
         v46 = 2112;
-        v47 = v39;
+        v47 = recordName2;
         v48 = 2112;
         v49 = v40;
         v41 = "\\BCAssetReview %@ Resolving: Identical properties from record: %@ %@\\"";
@@ -234,27 +234,27 @@ LABEL_25:
   return v4;
 }
 
-- (void)setNormalizedStarRating:(double)a3
+- (void)setNormalizedStarRating:(double)rating
 {
-  v4 = [NSNumber numberWithDouble:floor(a3 * 5.0)];
+  v4 = [NSNumber numberWithDouble:floor(rating * 5.0)];
   -[BCAssetReview setStarRating:](self, "setStarRating:", [v4 integerValue]);
 }
 
 - (NSString)debugDescription
 {
-  v3 = [(BCAssetReview *)self assetReviewID];
-  v4 = [(BCAssetReview *)self starRating];
-  v5 = [(BCAssetReview *)self reviewTitle];
-  v6 = [(BCAssetReview *)self reviewBody];
-  v7 = [NSString stringWithFormat:@"assetReviewID: %@, starRating: %hd, reviewTitle: %@, reviewBody: %@", v3, v4, v5, v6];
+  assetReviewID = [(BCAssetReview *)self assetReviewID];
+  starRating = [(BCAssetReview *)self starRating];
+  reviewTitle = [(BCAssetReview *)self reviewTitle];
+  reviewBody = [(BCAssetReview *)self reviewBody];
+  v7 = [NSString stringWithFormat:@"assetReviewID: %@, starRating: %hd, reviewTitle: %@, reviewBody: %@", assetReviewID, starRating, reviewTitle, reviewBody];
 
   return v7;
 }
 
-+ (id)assetIDFromAssetReviewID:(id)a3
++ (id)assetIDFromAssetReviewID:(id)d
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"|"];
+  dCopy = d;
+  v4 = [dCopy rangeOfString:@"|"];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -262,16 +262,16 @@ LABEL_25:
 
   else
   {
-    v6 = [v3 substringFromIndex:&v4[v5]];
+    v6 = [dCopy substringFromIndex:&v4[v5]];
   }
 
   return v6;
 }
 
-+ (id)userIDFromAssetReviewID:(id)a3
++ (id)userIDFromAssetReviewID:(id)d
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"|"];
+  dCopy = d;
+  v4 = [dCopy rangeOfString:@"|"];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -279,7 +279,7 @@ LABEL_25:
 
   else
   {
-    v5 = [v3 substringToIndex:v4];
+    v5 = [dCopy substringToIndex:v4];
   }
 
   return v5;

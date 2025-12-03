@@ -1,17 +1,17 @@
 @interface FPCKReport
 - (_TtC18FileProviderDaemon10FPCKReport)init;
-- (_TtC18FileProviderDaemon10FPCKReport)initWithStart:(id)a3 latest:(id)a4 superPendingSet:(id)a5 consistency:(id)a6;
+- (_TtC18FileProviderDaemon10FPCKReport)initWithStart:(id)start latest:(id)latest superPendingSet:(id)set consistency:(id)consistency;
 @end
 
 @implementation FPCKReport
 
-- (_TtC18FileProviderDaemon10FPCKReport)initWithStart:(id)a3 latest:(id)a4 superPendingSet:(id)a5 consistency:(id)a6
+- (_TtC18FileProviderDaemon10FPCKReport)initWithStart:(id)start latest:(id)latest superPendingSet:(id)set consistency:(id)consistency
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = sub_1CF4E8960(a3, a4, a5, a6);
+  startCopy = start;
+  latestCopy = latest;
+  setCopy = set;
+  consistencyCopy = consistency;
+  v14 = sub_1CF4E8960(start, latest, set, consistency);
 
   return v14;
 }

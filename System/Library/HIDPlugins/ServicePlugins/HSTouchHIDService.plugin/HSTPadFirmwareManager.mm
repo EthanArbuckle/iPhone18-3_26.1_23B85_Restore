@@ -1,9 +1,9 @@
 @interface HSTPadFirmwareManager
-- (void)_handleVendorEvent:(id)a3;
+- (void)_handleVendorEvent:(id)event;
 - (void)_restoreFirmwareState;
 - (void)_setEnabledInputsReport;
-- (void)_setUSBChargingState:(id)a3;
-- (void)handleConsume:(id)a3;
+- (void)_setUSBChargingState:(id)state;
+- (void)handleConsume:(id)consume;
 @end
 
 @implementation HSTPadFirmwareManager
@@ -22,13 +22,13 @@
   setReport<HSTPipeline::FirmwareInterface::FeatureReport::EnabledInputs::Awake>(self->super.super._deviceObj);
 }
 
-- (void)_setUSBChargingState:(id)a3
+- (void)_setUSBChargingState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 usbChargingState];
-  if (self->super.super._state.usbChargingState != v5)
+  stateCopy = state;
+  usbChargingState = [stateCopy usbChargingState];
+  if (self->super.super._state.usbChargingState != usbChargingState)
   {
-    self->super.super._state.usbChargingState = v5;
+    self->super.super._state.usbChargingState = usbChargingState;
     v6 = MTLoggingPlugin();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -70,10 +70,10 @@
   setReport<HSTPipeline::FirmwareInterface::FeatureReport::HostEvent>(self->super.super._deviceObj);
 }
 
-- (void)_handleVendorEvent:(id)a3
+- (void)_handleVendorEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 type] == 2)
+  eventCopy = event;
+  if ([eventCopy type] == 2)
   {
     v5 = MTLoggingPlugin();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -98,13 +98,13 @@
   }
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = consumeCopy;
   }
 
   else
@@ -114,12 +114,12 @@
 
   if (v5)
   {
-    [(HSTPadFirmwareManager *)self _handleVendorEvent:v4];
+    [(HSTPadFirmwareManager *)self _handleVendorEvent:consumeCopy];
   }
 
   v6.receiver = self;
   v6.super_class = HSTPadFirmwareManager;
-  [(HSTFirmwareManager *)&v6 handleConsume:v4];
+  [(HSTFirmwareManager *)&v6 handleConsume:consumeCopy];
 }
 
 @end

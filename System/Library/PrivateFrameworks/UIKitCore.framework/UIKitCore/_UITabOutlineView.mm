@@ -1,154 +1,154 @@
 @interface _UITabOutlineView
-- (BOOL)_canDragTab:(id)a3;
-- (BOOL)_canMoveTab:(id)a3 toDestinationIndexPath:(id)a4;
-- (BOOL)_hasCustomizablePlacementForTab:(id)a3;
-- (BOOL)_isActionIndexPath:(id)a3;
-- (BOOL)_isHeaderIndexPath:(id)a3;
+- (BOOL)_canDragTab:(id)tab;
+- (BOOL)_canMoveTab:(id)tab toDestinationIndexPath:(id)path;
+- (BOOL)_hasCustomizablePlacementForTab:(id)tab;
+- (BOOL)_isActionIndexPath:(id)path;
+- (BOOL)_isHeaderIndexPath:(id)path;
 - (BOOL)_isLensActiveOrAnimating;
 - (BOOL)_isShowingLensView;
 - (BOOL)_showSidebarBarButtonItem;
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 canPerformPrimaryActionForItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 dragSessionIsRestrictedToDraggingApplication:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldDeselectItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view canPerformPrimaryActionForItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view dragSessionIsRestrictedToDraggingApplication:(id)application;
+- (BOOL)collectionView:(id)view shouldDeselectItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CACornerRadii)contentCornerRadii;
 - (CGPoint)sidebarButtonOrigin;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (_UIShadowProperties)shadowProperties;
-- (id)_actionForIndexPath:(id)a3;
+- (id)_actionForIndexPath:(id)path;
 - (id)_bottomToolbar;
-- (id)_collectionView:(id)a3 dragSessionPropertiesForSession:(id)a4;
+- (id)_collectionView:(id)view dragSessionPropertiesForSession:(id)session;
 - (id)_currentPlatformMetrics;
 - (id)_currentSidebarImage;
-- (id)_dataSourceUpdateGroupCompletionCreateIfNeeded:(BOOL)a3;
-- (id)_existingSectionSnapshotForTabIdentifier:(id)a3;
+- (id)_dataSourceUpdateGroupCompletionCreateIfNeeded:(BOOL)needed;
+- (id)_existingSectionSnapshotForTabIdentifier:(id)identifier;
 - (id)_footerContentConfiguration;
 - (id)_headerContentConfiguration;
 - (id)_highlightGroupCompletion;
-- (id)_indexPathForGestureRecognizer:(id)a3;
-- (id)_leadingSwipeActionsConfigurationForItemAtIndexPath:(id)a3;
-- (id)_sidebarContentForIndexPath:(id)a3;
+- (id)_indexPathForGestureRecognizer:(id)recognizer;
+- (id)_leadingSwipeActionsConfigurationForItemAtIndexPath:(id)path;
+- (id)_sidebarContentForIndexPath:(id)path;
 - (id)_tabBarController;
-- (id)_tabForIndexPath:(id)a3;
+- (id)_tabForIndexPath:(id)path;
 - (id)_tabsByIdentifier;
-- (id)_trailingSwipeActionsConfigurationForItemAtIndexPath:(id)a3;
+- (id)_trailingSwipeActionsConfigurationForItemAtIndexPath:(id)path;
 - (id)activeTransaction;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath;
 - (id)delegate;
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3;
-- (id)initWithSidebar:(id *)a1;
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view;
+- (id)initWithSidebar:(id *)sidebar;
 - (id)preferredFocusEnvironments;
-- (id)resolvedPopoverPresentationControllerSourceItemForTab:(id)a3;
-- (int64_t)_hitRegionForDropSession:(id)a3 destinationIndexPath:(id)a4;
-- (int64_t)_indentationLevelForItemIdentifier:(id)a3 indexPath:(id)a4;
-- (uint64_t)makeFirstResponderForTab:(void *)a1;
-- (uint64_t)setAdditionalEditingInsets:(float64_t)a3;
-- (uint64_t)setEditing:(uint64_t)a3 animated:;
+- (id)resolvedPopoverPresentationControllerSourceItemForTab:(id)tab;
+- (int64_t)_hitRegionForDropSession:(id)session destinationIndexPath:(id)path;
+- (int64_t)_indentationLevelForItemIdentifier:(id)identifier indexPath:(id)path;
+- (uint64_t)makeFirstResponderForTab:(void *)tab;
+- (uint64_t)setAdditionalEditingInsets:(float64_t)insets;
+- (uint64_t)setEditing:(uint64_t)editing animated:;
 - (uint64_t)style;
 - (void)_activateNewSidebarTransaction;
-- (void)_adjustScrollViewForKeyboardInfo:(id)a3;
-- (void)_animateSelection:(id)a3 completion:(id)a4;
+- (void)_adjustScrollViewForKeyboardInfo:(id)info;
+- (void)_animateSelection:(id)selection completion:(id)completion;
 - (void)_commitCurrentSidebarTransaction;
 - (void)_configureShadowView;
 - (void)_createViewHierarchy;
-- (void)_handleSelectionGesture:(id)a3;
-- (void)_keyboardDidChangeFrame:(id)a3;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
-- (void)_performWithWillDisplayTab:(id)a3 block:(id)a4;
-- (void)_performWithoutAffectingContent:(id)a3;
-- (void)_performWithoutAffectingSelection:(id)a3;
-- (void)_reconfigureItemsInDataSourceForTabs:(id)a3 animated:(BOOL)a4;
-- (void)_reloadDataSourceSnapshotAnimated:(BOOL)a3;
+- (void)_handleSelectionGesture:(id)gesture;
+- (void)_keyboardDidChangeFrame:(id)frame;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
+- (void)_performWithWillDisplayTab:(id)tab block:(id)block;
+- (void)_performWithoutAffectingContent:(id)content;
+- (void)_performWithoutAffectingSelection:(id)selection;
+- (void)_reconfigureItemsInDataSourceForTabs:(id)tabs animated:(BOOL)animated;
+- (void)_reloadDataSourceSnapshotAnimated:(BOOL)animated;
 - (void)_resetCustomization;
-- (void)_selectItemAtIndexPath:(id)a3 animated:(BOOL)a4 performAction:(BOOL)a5;
-- (void)_setHighlightedIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)_setLensActive:(BOOL)a3;
-- (void)_setShowLensView:(BOOL)a3;
-- (void)_tabModel:(id)a3 customizationStoreDidChange:(id)a4;
-- (void)_tabModel:(id)a3 didChangeSelectedLeaf:(id)a4 previousElement:(id)a5;
-- (void)_tabModel:(id)a3 didReplaceOldItem:(id)a4 newItem:(id)a5;
-- (void)_tabModel:(id)a3 tabContentDidChange:(id)a4;
-- (void)_tabModel:(id)a3 visibilityDidChangeForTab:(id)a4;
-- (void)_tabModelDidReload:(id)a3;
+- (void)_selectItemAtIndexPath:(id)path animated:(BOOL)animated performAction:(BOOL)action;
+- (void)_setHighlightedIndexPath:(id)path animated:(BOOL)animated;
+- (void)_setLensActive:(BOOL)active;
+- (void)_setShowLensView:(BOOL)view;
+- (void)_tabModel:(id)model customizationStoreDidChange:(id)change;
+- (void)_tabModel:(id)model didChangeSelectedLeaf:(id)leaf previousElement:(id)element;
+- (void)_tabModel:(id)model didReplaceOldItem:(id)item newItem:(id)newItem;
+- (void)_tabModel:(id)model tabContentDidChange:(id)change;
+- (void)_tabModel:(id)model visibilityDidChangeForTab:(id)tab;
+- (void)_tabModelDidReload:(id)reload;
 - (void)_updateBackgroundEffects;
-- (void)_updateConfigurationForCell:(id)a3 inState:(id)a4 content:(id)a5 indexPath:(id)a6;
+- (void)_updateConfigurationForCell:(id)cell inState:(id)state content:(id)content indexPath:(id)path;
 - (void)_updateContinuousSelectionGesture;
 - (void)_updateEditBarButtonItem;
 - (void)_updateEditingInsets;
-- (void)_updateLensViewFrameAnimated:(BOOL)a3;
+- (void)_updateLensViewFrameAnimated:(BOOL)animated;
 - (void)_updateScrollEdgeAppearance;
-- (void)_updateSelectedItemAnimated:(BOOL)a3;
+- (void)_updateSelectedItemAnimated:(BOOL)animated;
 - (void)_updateSidebarStyle;
-- (void)_updateSnapshot:(id)a3 usingNode:(id)a4;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5;
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4;
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4;
-- (void)collectionView:(id)a3 dropSessionDidEnd:(id)a4;
-- (void)collectionView:(id)a3 dropSessionDidEnter:(id)a4;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
+- (void)_updateSnapshot:(id)snapshot usingNode:(id)node;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end;
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin;
+- (void)collectionView:(id)view dropSessionDidEnd:(id)end;
+- (void)collectionView:(id)view dropSessionDidEnter:(id)enter;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
 - (void)didMoveToSuperview;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)footerContentConfigurationDidChange:(id *)a1;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)footerContentConfigurationDidChange:(id *)change;
 - (void)hasActiveDrag;
-- (void)headerContentConfigurationDidChange:(id *)a1;
+- (void)headerContentConfigurationDidChange:(id *)change;
 - (void)layoutSubviews;
-- (void)prepareForTransitionToVisibility:(BOOL)a3;
-- (void)reconfigureItemForTab:(void *)a1;
+- (void)prepareForTransitionToVisibility:(BOOL)visibility;
+- (void)reconfigureItemForTab:(void *)tab;
 - (void)safeAreaInsetsDidChange;
-- (void)scrollToTarget:(uint64_t)a3 animated:;
-- (void)setDisplayedGroup:(uint64_t)a1;
-- (void)setOverrideBackgroundEffect:(id *)a1;
+- (void)scrollToTarget:(uint64_t)target animated:;
+- (void)setDisplayedGroup:(uint64_t)group;
+- (void)setOverrideBackgroundEffect:(id *)effect;
 - (void)setPreferredStyle:(void *)result;
-- (void)setSidebarButtonAction:(id *)a1;
-- (void)setTitle:(id *)a1;
-- (void)setTransitionsToTabBar:(uint64_t)a1;
+- (void)setSidebarButtonAction:(id *)action;
+- (void)setTitle:(id *)title;
+- (void)setTransitionsToTabBar:(uint64_t)bar;
 - (void)tabModelEditingStateDidChange;
 - (void)updateBottomBarView;
 - (void)updateCornerConfiguration;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation _UITabOutlineView
 
 - (void)updateBottomBarView
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 _bottomToolbar];
-    [v2 _setItemsDidChangeBlock:0];
+    _bottomToolbar = [self _bottomToolbar];
+    [_bottomToolbar _setItemsDidChangeBlock:0];
 
-    v3 = *(a1 + 664);
+    v3 = *(self + 664);
     if (v3)
     {
-      [v3 removeInteraction:*(a1 + 728)];
-      [*(a1 + 664) removeFromSuperview];
-      v4 = *(a1 + 664);
-      *(a1 + 664) = 0;
+      [v3 removeInteraction:*(self + 728)];
+      [*(self + 664) removeFromSuperview];
+      v4 = *(self + 664);
+      *(self + 664) = 0;
 
-      [a1 setNeedsLayout];
+      [self setNeedsLayout];
     }
 
-    v5 = *(a1 + 488);
-    v6 = [(_UICollectionLayoutAuxillaryItemSolver *)v5 supplementaryFrames];
+    v5 = *(self + 488);
+    supplementaryFrames = [(_UICollectionLayoutAuxillaryItemSolver *)v5 supplementaryFrames];
 
-    if (v6)
+    if (supplementaryFrames)
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v20 = MEMORY[0x1E69E9820];
       v21 = 3221225472;
       v22 = __40___UITabOutlineView_updateBottomBarView__block_invoke;
@@ -158,41 +158,41 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = v6;
-        v9 = [a1 _defaultBarBackdropGroupName];
-        [v8 _setBackdropViewLayerGroupName:v9];
+        v8 = supplementaryFrames;
+        _defaultBarBackdropGroupName = [self _defaultBarBackdropGroupName];
+        [v8 _setBackdropViewLayerGroupName:_defaultBarBackdropGroupName];
 
         [v8 _setItemsDidChangeBlock:v7];
-        *(a1 + 412) = 1;
+        *(self + 412) = 1;
       }
 
       else
       {
-        *(a1 + 412) = 0;
+        *(self + 412) = 0;
       }
 
-      v11 = [[_UITabSidebarBottomBarWrapperView alloc] initWithView:v6 intrinsicContentSizeInvalidationHandler:v7];
-      v12 = *(a1 + 664);
-      *(a1 + 664) = v11;
+      v11 = [[_UITabSidebarBottomBarWrapperView alloc] initWithView:supplementaryFrames intrinsicContentSizeInvalidationHandler:v7];
+      v12 = *(self + 664);
+      *(self + 664) = v11;
 
-      v13 = [a1 backgroundView];
-      v14 = [v13 contentView];
-      [v14 addSubview:*(a1 + 664)];
+      backgroundView = [self backgroundView];
+      contentView = [backgroundView contentView];
+      [contentView addSubview:*(self + 664)];
 
-      [a1 setNeedsLayout];
-      v15 = *(a1 + 728);
+      [self setNeedsLayout];
+      v15 = *(self + 728);
       if (!v15)
       {
         v16 = [_UIScrollPocketContainerInteraction alloc];
-        v17 = [a1 collectionView];
-        v18 = [(_UIScrollPocketContainerInteraction *)v16 initWithScrollView:v17 edge:4];
-        v19 = *(a1 + 728);
-        *(a1 + 728) = v18;
+        collectionView = [self collectionView];
+        v18 = [(_UIScrollPocketContainerInteraction *)v16 initWithScrollView:collectionView edge:4];
+        v19 = *(self + 728);
+        *(self + 728) = v18;
 
-        v15 = *(a1 + 728);
+        v15 = *(self + 728);
       }
 
-      [*(a1 + 664) addInteraction:{v15, v20, v21, v22, v23}];
+      [*(self + 664) addInteraction:{v15, v20, v21, v22, v23}];
 
       objc_destroyWeak(&v24);
       objc_destroyWeak(&location);
@@ -200,31 +200,31 @@
 
     else
     {
-      v10 = *(a1 + 728);
-      *(a1 + 728) = 0;
+      v10 = *(self + 728);
+      *(self + 728) = 0;
     }
   }
 }
 
 - (void)updateCornerConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_1891EF4CC();
 }
 
-- (id)initWithSidebar:(id *)a1
+- (id)initWithSidebar:(id *)sidebar
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (!a1)
+  if (!sidebar)
   {
     goto LABEL_11;
   }
 
-  v21.receiver = a1;
+  v21.receiver = sidebar;
   v21.super_class = _UITabOutlineView;
-  a1 = objc_msgSendSuper2(&v21, sel_initWithFrame_, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24));
-  if (!a1)
+  sidebar = objc_msgSendSuper2(&v21, sel_initWithFrame_, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24));
+  if (!sidebar)
   {
     goto LABEL_11;
   }
@@ -248,53 +248,53 @@ LABEL_13:
 LABEL_6:
   v7 = v6;
 
-  objc_storeStrong(a1 + 59, v6);
-  a1[61] = v3;
-  *(a1 + 449) = 1;
-  *(a1 + 448) = 0;
-  v8 = [(UIView *)a1 _internalTraitOverrides];
-  [v8 _setNSIntegerValue:1 forTraitToken:0x1EFE32590];
+  objc_storeStrong(sidebar + 59, v6);
+  sidebar[61] = v3;
+  *(sidebar + 449) = 1;
+  *(sidebar + 448) = 0;
+  _internalTraitOverrides = [(UIView *)sidebar _internalTraitOverrides];
+  [_internalTraitOverrides _setNSIntegerValue:1 forTraitToken:0x1EFE32590];
 
-  v9 = [(UIView *)a1 _internalTraitOverrides];
-  [v9 _setNSIntegerValue:2 forTraitToken:0x1EFE32560];
+  _internalTraitOverrides2 = [(UIView *)sidebar _internalTraitOverrides];
+  [_internalTraitOverrides2 _setNSIntegerValue:2 forTraitToken:0x1EFE32560];
 
-  v10 = [(UIView *)a1 _internalTraitOverrides];
+  _internalTraitOverrides3 = [(UIView *)sidebar _internalTraitOverrides];
   v11 = objc_opt_self();
-  [v10 setNSIntegerValue:1 forTrait:v11];
+  [_internalTraitOverrides3 setNSIntegerValue:1 forTrait:v11];
 
-  [a1 _createViewHierarchy];
+  [sidebar _createViewHierarchy];
   v24[0] = 0x1EFE323E0;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-  v13 = [a1 _registerForTraitTokenChanges:v12 withTarget:a1 action:sel__displayScaleTraitChanged];
+  v13 = [sidebar _registerForTraitTokenChanges:v12 withTarget:sidebar action:sel__displayScaleTraitChanged];
 
   v23 = 0x1EFE323B0;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
-  v15 = [a1 _registerForTraitTokenChanges:v14 withTarget:a1 action:sel__userInterfaceStyleTraitChanged];
+  v15 = [sidebar _registerForTraitTokenChanges:v14 withTarget:sidebar action:sel__userInterfaceStyleTraitChanged];
 
   v22 = 0x1EFE323C8;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
-  v17 = [a1 _registerForTraitTokenChanges:v16 withTarget:a1 action:sel__updateEditBarButtonItem];
+  v17 = [sidebar _registerForTraitTokenChanges:v16 withTarget:sidebar action:sel__updateEditBarButtonItem];
 
-  [v7 addObserver:a1];
-  v18 = [v7 tabItems];
-  v19 = [v18 count];
+  [v7 addObserver:sidebar];
+  tabItems = [v7 tabItems];
+  v19 = [tabItems count];
 
   if (v19)
   {
-    [a1 _reloadDataSourceSnapshotAnimated:0];
-    [a1 _updateSelectedItemAnimated:0];
+    [sidebar _reloadDataSourceSnapshotAnimated:0];
+    [sidebar _updateSelectedItemAnimated:0];
   }
 
   if ([v7 isEditing])
   {
-    [(_UITabOutlineView *)a1 setEditing:0 animated:?];
+    [(_UITabOutlineView *)sidebar setEditing:0 animated:?];
   }
 
 LABEL_11:
-  return a1;
+  return sidebar;
 }
 
-- (uint64_t)setEditing:(uint64_t)a3 animated:
+- (uint64_t)setEditing:(uint64_t)editing animated:
 {
   if (result)
   {
@@ -309,11 +309,11 @@ LABEL_11:
       }
 
       [v4 _updateEditBarButtonItem];
-      [v4 _reloadDataSourceSnapshotAnimated:a3];
-      v7 = [v4 collectionView];
-      [v7 setSelectionFollowsFocus:a2 ^ 1];
+      [v4 _reloadDataSourceSnapshotAnimated:editing];
+      collectionView = [v4 collectionView];
+      [collectionView setSelectionFollowsFocus:a2 ^ 1];
 
-      if (a3)
+      if (editing)
       {
         v11[0] = MEMORY[0x1E69E9820];
         v11[1] = 3221225472;
@@ -335,10 +335,10 @@ LABEL_11:
         [UIView performWithoutAnimation:v9];
       }
 
-      v8 = [v4 bottomBarView];
-      [v8 setHidden:a2];
+      bottomBarView = [v4 bottomBarView];
+      [bottomBarView setHidden:a2];
 
-      [v4 _updateSelectedItemAnimated:a3];
+      [v4 _updateSelectedItemAnimated:editing];
       return [v4 _updateEditingInsets];
     }
   }
@@ -346,21 +346,21 @@ LABEL_11:
   return result;
 }
 
-- (void)prepareForTransitionToVisibility:(BOOL)a3
+- (void)prepareForTransitionToVisibility:(BOOL)visibility
 {
   self->_isInTransitionAnimation = 1;
-  if (a3)
+  if (visibility)
   {
     if (self->_needsScrollToSelectedItemWhenBecomingVisible && ![(_UITabOutlineView *)self isEditing])
     {
-      v4 = [(_UITabOutlineView *)self collectionView];
-      v5 = [v4 indexPathsForSelectedItems];
-      v6 = [v5 firstObject];
+      collectionView = [(_UITabOutlineView *)self collectionView];
+      indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+      firstObject = [indexPathsForSelectedItems firstObject];
 
-      if (v6)
+      if (firstObject)
       {
-        v7 = [(_UITabOutlineView *)self collectionView];
-        [v7 scrollToItemAtIndexPath:v6 atScrollPosition:0 animated:0];
+        collectionView2 = [(_UITabOutlineView *)self collectionView];
+        [collectionView2 scrollToItemAtIndexPath:firstObject atScrollPosition:0 animated:0];
       }
     }
 
@@ -388,12 +388,12 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v5 = [(CACornerRadii *)self layer];
-  if (v5)
+  layer = [(CACornerRadii *)self layer];
+  if (layer)
   {
-    v6 = v5;
-    [v5 cornerRadii];
-    v5 = v6;
+    v6 = layer;
+    [layer cornerRadii];
+    layer = v6;
   }
 
   else
@@ -419,9 +419,9 @@ LABEL_4:
 
 - (CGPoint)sidebarButtonOrigin
 {
-  v3 = [(_UITabOutlineView *)self navigationItem];
-  v4 = [v3 leftBarButtonItem];
-  [v4 frameInView:self];
+  navigationItem = [(_UITabOutlineView *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem frameInView:self];
   v6 = v5;
   v8 = v7;
 
@@ -432,14 +432,14 @@ LABEL_4:
   return result;
 }
 
-- (void)setOverrideBackgroundEffect:(id *)a1
+- (void)setOverrideBackgroundEffect:(id *)effect
 {
   v4 = a2;
-  if (a1 && a1[66] != v4)
+  if (effect && effect[66] != v4)
   {
     v5 = v4;
-    objc_storeStrong(a1 + 66, a2);
-    [a1 _updateBackgroundEffects];
+    objc_storeStrong(effect + 66, a2);
+    [effect _updateBackgroundEffects];
     v4 = v5;
   }
 }
@@ -456,11 +456,11 @@ LABEL_4:
 
 - (_UIShadowProperties)shadowProperties
 {
-  v2 = [(_UITabOutlineView *)self shadowView];
-  v3 = v2;
-  if (v2)
+  shadowView = [(_UITabOutlineView *)self shadowView];
+  v3 = shadowView;
+  if (shadowView)
   {
-    v4 = *(v2 + 416);
+    v4 = *(shadowView + 416);
   }
 
   else
@@ -476,15 +476,15 @@ LABEL_4:
 - (void)_createViewHierarchy
 {
   v94[1] = *MEMORY[0x1E69E9840];
-  v66 = [(_UITabOutlineView *)self _currentPlatformMetrics];
-  v4 = [v66 sidebarPrefersMacAppearance];
-  v5 = [v66 supportsFloatingSidebar];
+  _currentPlatformMetrics = [(_UITabOutlineView *)self _currentPlatformMetrics];
+  sidebarPrefersMacAppearance = [_currentPlatformMetrics sidebarPrefersMacAppearance];
+  supportsFloatingSidebar = [_currentPlatformMetrics supportsFloatingSidebar];
   v6 = objc_alloc_init(_UIVisualEffectBackdropView);
   [(_UIVisualEffectBackdropView *)v6 setRenderMode:1];
   [(UIView *)self addSubview:v6];
   v63 = v6;
   objc_storeStrong(&self->_backgroundCaptureView, v6);
-  if (v5 & 1 | ((v4 & 1) == 0))
+  if (supportsFloatingSidebar & 1 | ((sidebarPrefersMacAppearance & 1) == 0))
   {
     v7 = objc_alloc_init(_UIDuoShadowView);
     shadowView = self->_shadowView;
@@ -495,17 +495,17 @@ LABEL_4:
   }
 
   v10 = [[UIVisualEffectView alloc] initWithEffect:0];
-  v11 = [v66 sidebarBackgroundEffects];
-  [(UIVisualEffectView *)v10 setBackgroundEffects:v11];
+  sidebarBackgroundEffects = [_currentPlatformMetrics sidebarBackgroundEffects];
+  [(UIVisualEffectView *)v10 setBackgroundEffects:sidebarBackgroundEffects];
 
-  v12 = [(UIVisualEffectView *)v10 contentView];
-  [v12 setClipsToBounds:1];
+  contentView = [(UIVisualEffectView *)v10 contentView];
+  [contentView setClipsToBounds:1];
 
   [(UIVisualEffectView *)v10 _setCaptureView:v63];
   [(UIView *)self addSubview:v10];
   objc_storeStrong(&self->_backgroundView, v10);
   [(_UITabOutlineView *)self _updateSidebarStyle];
-  if (v4)
+  if (sidebarPrefersMacAppearance)
   {
     obj = 0;
   }
@@ -517,8 +517,8 @@ LABEL_4:
     objc_storeStrong(&self->_navigationItem, v13);
     v14 = [UINavigationBar alloc];
     obj = [(UINavigationBar *)v14 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    v15 = [(_UITabOutlineView *)self _defaultBarBackdropGroupName];
-    [(UINavigationBar *)obj _setBackdropViewLayerGroupName:v15];
+    _defaultBarBackdropGroupName = [(_UITabOutlineView *)self _defaultBarBackdropGroupName];
+    [(UINavigationBar *)obj _setBackdropViewLayerGroupName:_defaultBarBackdropGroupName];
 
     [(UINavigationBar *)obj _setBarPosition:3];
     v16 = self->_wantsHostedTabBarMetricsForNavigationBar && self->_resolvedStyle == 0;
@@ -527,8 +527,8 @@ LABEL_4:
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v94 count:1];
     [(UINavigationBar *)obj setItems:v17];
 
-    v18 = [(UIVisualEffectView *)v10 contentView];
-    [v18 addSubview:obj];
+    contentView2 = [(UIVisualEffectView *)v10 contentView];
+    [contentView2 addSubview:obj];
 
     objc_storeStrong(&self->_navigationBar, obj);
   }
@@ -537,11 +537,11 @@ LABEL_4:
   [(UIView *)self setLayoutMargins:0.0, 0.0, 0.0, 0.0];
   [(UIView *)v10 setPreservesSuperviewLayoutMargins:1];
   [(UIView *)v10 setLayoutMargins:0.0, 0.0, 0.0, 0.0];
-  v19 = [(UIVisualEffectView *)v10 contentView];
-  [v19 setPreservesSuperviewLayoutMargins:1];
+  contentView3 = [(UIVisualEffectView *)v10 contentView];
+  [contentView3 setPreservesSuperviewLayoutMargins:1];
 
-  v20 = [(UIVisualEffectView *)v10 contentView];
-  [v20 setLayoutMargins:{0.0, 0.0, 0.0, 0.0}];
+  contentView4 = [(UIVisualEffectView *)v10 contentView];
+  [contentView4 setLayoutMargins:{0.0, 0.0, 0.0, 0.0}];
 
   objc_initWeak(&location, self);
   v21 = [UICollectionViewCompositionalLayout alloc];
@@ -575,15 +575,15 @@ LABEL_4:
   [(UICollectionView *)v23 setAllowsMultipleSelectionDuringEditing:1];
   [(UIView *)v23 _setSafeAreaInsetsFrozen:1];
   [(UIScrollView *)v23 _addScrollViewScrollObserver:self];
-  v25 = [(UIVisualEffectView *)v10 contentView];
+  contentView5 = [(UIVisualEffectView *)v10 contentView];
   if (obj)
   {
-    [v25 insertSubview:v23 belowSubview:self->_navigationBar];
+    [contentView5 insertSubview:v23 belowSubview:self->_navigationBar];
   }
 
   else
   {
-    [v25 addSubview:v23];
+    [contentView5 addSubview:v23];
   }
 
   v89[0] = MEMORY[0x1E69E9820];
@@ -637,8 +637,8 @@ LABEL_4:
   v76[2] = __41___UITabOutlineView__createViewHierarchy__block_invoke_11;
   v76[3] = &unk_1E711BD00;
   objc_copyWeak(&v77, &location);
-  v34 = [(UICollectionViewDiffableDataSource *)self->_dataSource reorderingHandlers];
-  [v34 setCanReorderItemHandler:v76];
+  reorderingHandlers = [(UICollectionViewDiffableDataSource *)self->_dataSource reorderingHandlers];
+  [reorderingHandlers setCanReorderItemHandler:v76];
 
   v74[0] = MEMORY[0x1E69E9820];
   v74[1] = 3221225472;
@@ -646,8 +646,8 @@ LABEL_4:
   v74[3] = &unk_1E712C058;
   objc_copyWeak(v75, &location);
   v75[1] = a2;
-  v35 = [(UICollectionViewDiffableDataSource *)self->_dataSource reorderingHandlers];
-  [v35 setWillReorderHandler:v74];
+  reorderingHandlers2 = [(UICollectionViewDiffableDataSource *)self->_dataSource reorderingHandlers];
+  [reorderingHandlers2 setWillReorderHandler:v74];
 
   v72[0] = MEMORY[0x1E69E9820];
   v72[1] = 3221225472;
@@ -655,20 +655,20 @@ LABEL_4:
   v72[3] = &unk_1E712C058;
   objc_copyWeak(v73, &location);
   v73[1] = a2;
-  v36 = [(UICollectionViewDiffableDataSource *)self->_dataSource reorderingHandlers];
-  [v36 setDidReorderHandler:v72];
+  reorderingHandlers3 = [(UICollectionViewDiffableDataSource *)self->_dataSource reorderingHandlers];
+  [reorderingHandlers3 setDidReorderHandler:v72];
 
   v37 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   collapsedGroupIdentifiers = self->_collapsedGroupIdentifiers;
   self->_collapsedGroupIdentifiers = v37;
 
   v39 = self->_tabModel;
-  v40 = [(_UITabModel *)v39 customizationStore];
-  v64 = [v40 collapsedGroupIdentifiers];
+  customizationStore = [(_UITabModel *)v39 customizationStore];
+  collapsedGroupIdentifiers = [customizationStore collapsedGroupIdentifiers];
 
-  if ([v64 count])
+  if ([collapsedGroupIdentifiers count])
   {
-    [(NSMutableSet *)self->_collapsedGroupIdentifiers unionSet:v64];
+    [(NSMutableSet *)self->_collapsedGroupIdentifiers unionSet:collapsedGroupIdentifiers];
   }
 
   v70[0] = MEMORY[0x1E69E9820];
@@ -676,26 +676,26 @@ LABEL_4:
   v70[2] = __41___UITabOutlineView__createViewHierarchy__block_invoke_14;
   v70[3] = &unk_1E712C080;
   objc_copyWeak(&v71, &location);
-  v41 = [(UICollectionViewDiffableDataSource *)self->_dataSource sectionSnapshotHandlers];
-  [v41 setWillExpandItemHandler:v70];
+  sectionSnapshotHandlers = [(UICollectionViewDiffableDataSource *)self->_dataSource sectionSnapshotHandlers];
+  [sectionSnapshotHandlers setWillExpandItemHandler:v70];
 
   v68[0] = MEMORY[0x1E69E9820];
   v68[1] = 3221225472;
   v68[2] = __41___UITabOutlineView__createViewHierarchy__block_invoke_16;
   v68[3] = &unk_1E712C080;
   objc_copyWeak(&v69, &location);
-  v42 = [(UICollectionViewDiffableDataSource *)self->_dataSource sectionSnapshotHandlers];
-  [v42 setWillCollapseItemHandler:v68];
+  sectionSnapshotHandlers2 = [(UICollectionViewDiffableDataSource *)self->_dataSource sectionSnapshotHandlers];
+  [sectionSnapshotHandlers2 setWillCollapseItemHandler:v68];
 
-  v61 = [(_UITabOutlineView *)self _currentSidebarImage];
-  v43 = [[UIBarButtonItem alloc] initWithImage:v61 style:0 target:0 action:0];
+  _currentSidebarImage = [(_UITabOutlineView *)self _currentSidebarImage];
+  v43 = [[UIBarButtonItem alloc] initWithImage:_currentSidebarImage style:0 target:0 action:0];
   [(UIBarButtonItem *)v43 setSpringLoaded:1];
   objc_storeStrong(&self->_sidebarBarButtonItem, v43);
   v44 = _UINSLocalizedStringWithDefaultValue(@"Reset", @"Reset");
   v45 = [[UIBarButtonItem alloc] initWithTitle:v44 style:0 target:self action:sel__resetCustomization];
   objc_storeStrong(&self->_resetBarButtonItem, v45);
   [(_UITabOutlineView *)self _updateEditBarButtonItem];
-  if ([v66 sidebarSupportsAnimatedSelections])
+  if ([_currentPlatformMetrics sidebarSupportsAnimatedSelections])
   {
     v46 = [(UIGestureRecognizer *)[_UIContinuousSelectionGestureRecognizer alloc] initWithTarget:self action:sel__handleSelectionGesture_];
     [(UIGestureRecognizer *)v46 setCancelsTouchesInView:0];
@@ -703,26 +703,26 @@ LABEL_4:
     [(UIView *)self addGestureRecognizer:v46];
     objc_storeStrong(&self->_selectionGestureRecognizer, v46);
     v47 = objc_opt_new();
-    v48 = [(UIVisualEffectView *)v10 contentView];
-    [(_UITabSidebarLensView *)v47 setLiftedContainerView:v48];
+    contentView6 = [(UIVisualEffectView *)v10 contentView];
+    [(_UITabSidebarLensView *)v47 setLiftedContainerView:contentView6];
 
-    v49 = [(UIVisualEffectView *)v10 contentView];
-    [v49 addSubview:v47];
+    contentView7 = [(UIVisualEffectView *)v10 contentView];
+    [contentView7 addSubview:v47];
 
     lensView = self->_lensView;
     self->_lensView = v47;
   }
 
-  v51 = [MEMORY[0x1E696AD88] defaultCenter];
-  v52 = [(UIView *)self _screen];
-  [v51 addObserver:self selector:sel__keyboardWillShow_ name:@"UIKeyboardPrivateWillShowNotification" object:v52];
-  [v51 addObserver:self selector:sel__keyboardWillHide_ name:@"UIKeyboardPrivateWillHideNotification" object:v52];
-  [v51 addObserver:self selector:sel__keyboardDidChangeFrame_ name:@"UIKeyboardPrivateDidChangeFrameNotification" object:v52];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  _screen = [(UIView *)self _screen];
+  [defaultCenter addObserver:self selector:sel__keyboardWillShow_ name:@"UIKeyboardPrivateWillShowNotification" object:_screen];
+  [defaultCenter addObserver:self selector:sel__keyboardWillHide_ name:@"UIKeyboardPrivateWillHideNotification" object:_screen];
+  [defaultCenter addObserver:self selector:sel__keyboardDidChangeFrame_ name:@"UIKeyboardPrivateDidChangeFrameNotification" object:_screen];
   if (obj)
   {
     v53 = [_UIScrollPocketContainerInteraction alloc];
-    v54 = [(_UITabOutlineView *)self collectionView];
-    v55 = [(_UIScrollPocketContainerInteraction *)v53 initWithScrollView:v54 edge:1];
+    collectionView = [(_UITabOutlineView *)self collectionView];
+    v55 = [(_UIScrollPocketContainerInteraction *)v53 initWithScrollView:collectionView edge:1];
     navigationBarPocketContainerInteraction = self->_navigationBarPocketContainerInteraction;
     self->_navigationBarPocketContainerInteraction = v55;
 
@@ -748,8 +748,8 @@ LABEL_4:
 
 - (id)_currentPlatformMetrics
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = _UIFloatingTabBarGetPlatformMetrics([v2 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = _UIFloatingTabBarGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   return v3;
 }
@@ -758,8 +758,8 @@ LABEL_4:
 {
   if (self->_shadowView)
   {
-    v8 = [(_UITabOutlineView *)self _currentPlatformMetrics];
-    v3 = [(UIView *)self traitCollection];
+    _currentPlatformMetrics = [(_UITabOutlineView *)self _currentPlatformMetrics];
+    traitCollection = [(UIView *)self traitCollection];
     if (_UISolariumEnabled())
     {
       v4 = 0;
@@ -769,10 +769,10 @@ LABEL_4:
     {
       v4 = objc_opt_new();
       [v4 setRadius:0.0];
-      [v3 displayScale];
+      [traitCollection displayScale];
       v5 = 1.0;
       [v4 setOffset:{1.0 / v6, 0.0}];
-      if ([v3 userInterfaceStyle] == 2)
+      if ([traitCollection userInterfaceStyle] == 2)
       {
         v7 = +[UIColor opaqueSeparatorColor];
         [v4 setColor:v7];
@@ -806,71 +806,71 @@ LABEL_4:
   v3 = self->_overrideBackgroundEffect;
   if (v3)
   {
-    v4 = v3;
-    v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v3, 0}];
+    _currentPlatformMetrics = v3;
+    sidebarBackgroundEffects = [MEMORY[0x1E695DEC8] arrayWithObjects:{v3, 0}];
   }
 
   else
   {
 LABEL_6:
-    v4 = [(_UITabOutlineView *)self _currentPlatformMetrics];
-    v5 = [v4 sidebarBackgroundEffects];
+    _currentPlatformMetrics = [(_UITabOutlineView *)self _currentPlatformMetrics];
+    sidebarBackgroundEffects = [_currentPlatformMetrics sidebarBackgroundEffects];
   }
 
-  v7 = v5;
+  v7 = sidebarBackgroundEffects;
 
 LABEL_8:
-  v6 = [(_UITabOutlineView *)self backgroundView];
-  [v6 setBackgroundEffects:v7];
+  backgroundView = [(_UITabOutlineView *)self backgroundView];
+  [backgroundView setBackgroundEffects:v7];
 }
 
 - (void)_resetCustomization
 {
-  v3 = [(_UITabOutlineView *)self activeTransaction];
+  activeTransaction = [(_UITabOutlineView *)self activeTransaction];
   if (self)
   {
-    v4 = [(_UITabModel *)self->_tabModel tabItems];
-    [v3 resetCustomizationForTabs:v4];
+    tabItems = [(_UITabModel *)self->_tabModel tabItems];
+    [activeTransaction resetCustomizationForTabs:tabItems];
 
     tabModel = self->_tabModel;
   }
 
   else
   {
-    v7 = [0 tabItems];
-    [v3 resetCustomizationForTabs:v7];
+    tabItems2 = [0 tabItems];
+    [activeTransaction resetCustomizationForTabs:tabItems2];
 
     tabModel = 0;
   }
 
-  v6 = [(_UITabModel *)tabModel customizationStore];
-  [v6 reset];
+  customizationStore = [(_UITabModel *)tabModel customizationStore];
+  [customizationStore reset];
 
   [(_UITabOutlineView *)self _reloadDataSourceSnapshotAnimated:1];
 
   [(_UITabOutlineView *)self _updateSelectedItemAnimated:1];
 }
 
-- (void)_updateConfigurationForCell:(id)a3 inState:(id)a4 content:(id)a5 indexPath:(id)a6
+- (void)_updateConfigurationForCell:(id)cell inState:(id)state content:(id)content indexPath:(id)path
 {
-  v34 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v34;
-  if (v34)
+  cellCopy = cell;
+  stateCopy = state;
+  contentCopy = content;
+  pathCopy = path;
+  v14 = cellCopy;
+  if (cellCopy)
   {
-    if (v11)
+    if (stateCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_13:
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"_UITabOutlineView.m" lineNumber:768 description:{@"Invalid parameter not satisfying: %@", @"state != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITabOutlineView.m" lineNumber:768 description:{@"Invalid parameter not satisfying: %@", @"state != nil"}];
 
-    v14 = v34;
-    if (!v34)
+    v14 = cellCopy;
+    if (!cellCopy)
     {
       goto LABEL_14;
     }
@@ -878,11 +878,11 @@ LABEL_13:
     goto LABEL_4;
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"_UITabOutlineView.m" lineNumber:767 description:{@"Invalid parameter not satisfying: %@", @"cell != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UITabOutlineView.m" lineNumber:767 description:{@"Invalid parameter not satisfying: %@", @"cell != nil"}];
 
   v14 = 0;
-  if (!v11)
+  if (!stateCopy)
   {
     goto LABEL_13;
   }
@@ -891,43 +891,43 @@ LABEL_3:
   if (!v14)
   {
 LABEL_14:
-    v17 = 0;
+    updatedSidebarItemForCurrentConfigurationState = 0;
 LABEL_15:
-    v22 = [v12 tab];
+    v22 = [contentCopy tab];
 
     if (v22)
     {
-      v23 = [(_UITabOutlineView *)self _isHeaderIndexPath:v13];
-      if ([v12 isEmptyGroup])
+      v23 = [(_UITabOutlineView *)self _isHeaderIndexPath:pathCopy];
+      if ([contentCopy isEmptyGroup])
       {
-        v24 = [v12 tab];
-        v25 = [v24 _isSidebarDestination];
+        v24 = [contentCopy tab];
+        _isSidebarDestination = [v24 _isSidebarDestination];
 
-        if (v25)
+        if (_isSidebarDestination)
         {
           v23 |= 2uLL;
         }
       }
 
       v26 = [UITabSidebarItemRequest alloc];
-      v27 = [v12 tab];
-      v28 = [(UITabSidebarItemRequest *)v26 _initWithTab:v27 cell:v34 attributes:v23];
+      action2 = [contentCopy tab];
+      v28 = [(UITabSidebarItemRequest *)v26 _initWithTab:action2 cell:cellCopy attributes:v23];
     }
 
     else
     {
-      v29 = [v12 action];
+      action = [contentCopy action];
 
-      if (!v29)
+      if (!action)
       {
 LABEL_26:
-        [(_UITabSidebarCell *)v34 setSidebarItem:?];
+        [(_UITabSidebarCell *)cellCopy setSidebarItem:?];
         goto LABEL_27;
       }
 
       v30 = [UITabSidebarItemRequest alloc];
-      v27 = [v12 action];
-      v28 = [(UITabSidebarItemRequest *)v30 _initWithAction:v27 cell:v34];
+      action2 = [contentCopy action];
+      v28 = [(UITabSidebarItemRequest *)v30 _initWithAction:action2 cell:cellCopy];
     }
 
     v31 = v28;
@@ -945,7 +945,7 @@ LABEL_26:
       }
 
       v33 = [(UITabBarControllerSidebar *)sidebar _sidebarItemForRequest:v31];
-      [(_UITabSidebarCell *)v34 setSidebarItem:v33];
+      [(_UITabSidebarCell *)cellCopy setSidebarItem:v33];
 
       goto LABEL_27;
     }
@@ -961,13 +961,13 @@ LABEL_4:
   }
 
   v16 = v15;
-  if ((*(v34 + 876) & 1) == 0)
+  if ((*(cellCopy + 876) & 1) == 0)
   {
-    v17 = v15;
+    updatedSidebarItemForCurrentConfigurationState = v15;
     goto LABEL_15;
   }
 
-  v17 = [(_UITabSidebarCell *)v34 updatedSidebarItemForCurrentConfigurationState];
+  updatedSidebarItemForCurrentConfigurationState = [(_UITabSidebarCell *)cellCopy updatedSidebarItemForCurrentConfigurationState];
 
   if (self)
   {
@@ -979,20 +979,20 @@ LABEL_4:
     v18 = 0;
   }
 
-  v19 = [(UITabBarControllerSidebar *)v18 _updatedSidebarItem:v17];
-  if (v19 != v17)
+  v19 = [(UITabBarControllerSidebar *)v18 _updatedSidebarItem:updatedSidebarItemForCurrentConfigurationState];
+  if (v19 != updatedSidebarItemForCurrentConfigurationState)
   {
-    [(_UITabSidebarCell *)v34 setSidebarItem:v19];
+    [(_UITabSidebarCell *)cellCopy setSidebarItem:v19];
   }
 
 LABEL_27:
 }
 
-- (id)_leadingSwipeActionsConfigurationForItemAtIndexPath:(id)a3
+- (id)_leadingSwipeActionsConfigurationForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_UITabOutlineView *)self _tabForIndexPath:v4];
-  if (v5 && ![(_UITabOutlineView *)self _isHeaderIndexPath:v4])
+  pathCopy = path;
+  v5 = [(_UITabOutlineView *)self _tabForIndexPath:pathCopy];
+  if (v5 && ![(_UITabOutlineView *)self _isHeaderIndexPath:pathCopy])
   {
     if (self)
     {
@@ -1015,11 +1015,11 @@ LABEL_27:
   return v6;
 }
 
-- (id)_trailingSwipeActionsConfigurationForItemAtIndexPath:(id)a3
+- (id)_trailingSwipeActionsConfigurationForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_UITabOutlineView *)self _tabForIndexPath:v4];
-  if (v5 && ![(_UITabOutlineView *)self _isHeaderIndexPath:v4])
+  pathCopy = path;
+  v5 = [(_UITabOutlineView *)self _tabForIndexPath:pathCopy];
+  if (v5 && ![(_UITabOutlineView *)self _isHeaderIndexPath:pathCopy])
   {
     if (self)
     {
@@ -1042,12 +1042,12 @@ LABEL_27:
   return v6;
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v5.receiver = self;
   v5.super_class = _UITabOutlineView;
   [(UIView *)&v5 didMoveToSuperview];
-  if (a3)
+  if (superview)
   {
     [(_UITabOutlineView *)self _updateSelectedItemAnimated:0];
   }
@@ -1061,29 +1061,29 @@ LABEL_27:
   [(_UITabOutlineView *)self _updateEditingInsets];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (self && self->_resolvedStyle == 1)
   {
-    v6 = [(_UITabOutlineView *)self collectionView];
-    [v6 contentSize];
+    collectionView = [(_UITabOutlineView *)self collectionView];
+    [collectionView contentSize];
     v8 = v7;
 
-    v9 = [(_UITabOutlineView *)self collectionView];
-    [v9 contentInset];
+    collectionView2 = [(_UITabOutlineView *)self collectionView];
+    [collectionView2 contentInset];
     v11 = v10;
-    v12 = [(_UITabOutlineView *)self collectionView];
-    [v12 contentInset];
+    collectionView3 = [(_UITabOutlineView *)self collectionView];
+    [collectionView3 contentInset];
     v14 = v8 + v11 + v13;
 
-    v15 = [(_UITabOutlineView *)self navigationBar];
-    [v15 frame];
+    navigationBar = [(_UITabOutlineView *)self navigationBar];
+    [navigationBar frame];
     v17 = v14 + v16;
 
-    v18 = [(_UITabOutlineView *)self bottomBarView];
-    [v18 frame];
+    bottomBarView = [(_UITabOutlineView *)self bottomBarView];
+    [bottomBarView frame];
     height = v17 + v19;
   }
 
@@ -1110,58 +1110,58 @@ LABEL_27:
   v51 = v12;
   v52 = v13;
   v15 = v14;
-  v16 = [(_UITabOutlineView *)self shadowView];
-  [v16 setFrame:{v4, v6, v8, maximumSidebarHeight}];
+  shadowView = [(_UITabOutlineView *)self shadowView];
+  [shadowView setFrame:{v4, v6, v8, maximumSidebarHeight}];
 
-  v17 = [(_UITabOutlineView *)self backgroundView];
-  [v17 setFrame:{v4, v6, v8, maximumSidebarHeight}];
+  backgroundView = [(_UITabOutlineView *)self backgroundView];
+  [backgroundView setFrame:{v4, v6, v8, maximumSidebarHeight}];
 
-  v18 = [(_UITabOutlineView *)self backgroundCaptureView];
-  [v18 setFrame:{v4, v6, v8, maximumSidebarHeight}];
+  backgroundCaptureView = [(_UITabOutlineView *)self backgroundCaptureView];
+  [backgroundCaptureView setFrame:{v4, v6, v8, maximumSidebarHeight}];
 
-  v19 = [(_UITabOutlineView *)self navigationBar];
-  [v19 sizeThatFits:{v8, maximumSidebarHeight}];
+  navigationBar = [(_UITabOutlineView *)self navigationBar];
+  [navigationBar sizeThatFits:{v8, maximumSidebarHeight}];
   v21 = v20;
   v23 = v22;
 
   if (v23 == 0.0)
   {
-    v24 = [(_UITabOutlineView *)self navigationBar];
-    [v24 layoutIfNeeded];
+    navigationBar2 = [(_UITabOutlineView *)self navigationBar];
+    [navigationBar2 layoutIfNeeded];
 
-    v25 = [(_UITabOutlineView *)self navigationBar];
-    [v25 sizeThatFits:{v8, maximumSidebarHeight}];
+    navigationBar3 = [(_UITabOutlineView *)self navigationBar];
+    [navigationBar3 sizeThatFits:{v8, maximumSidebarHeight}];
     v21 = v26;
     v23 = v27;
   }
 
   [(UIView *)self safeAreaInsets];
   v29 = v28;
-  v30 = [(_UITabOutlineView *)self navigationBar];
-  [v30 setFrame:{0.0, v29, v21, v23}];
+  navigationBar4 = [(_UITabOutlineView *)self navigationBar];
+  [navigationBar4 setFrame:{0.0, v29, v21, v23}];
 
   if (self->_isNavigationBarSafeAreaDirty)
   {
-    v31 = [(_UITabOutlineView *)self navigationBar];
-    [v31 safeAreaInsetsDidChange];
+    navigationBar5 = [(_UITabOutlineView *)self navigationBar];
+    [navigationBar5 safeAreaInsetsDidChange];
 
     self->_isNavigationBarSafeAreaDirty = 0;
   }
 
-  v32 = [(_UITabOutlineView *)self navigationBar];
+  navigationBar6 = [(_UITabOutlineView *)self navigationBar];
 
-  v33 = [(_UITabOutlineView *)self bottomBarView];
-  v36 = v33;
-  if (v33)
+  bottomBarView = [(_UITabOutlineView *)self bottomBarView];
+  v36 = bottomBarView;
+  if (bottomBarView)
   {
     LODWORD(v34) = 1148846080;
     LODWORD(v35) = 1112014848;
-    [v33 systemLayoutSizeFittingSize:v8 withHorizontalFittingPriority:44.0 verticalFittingPriority:{v34, v35}];
+    [bottomBarView systemLayoutSizeFittingSize:v8 withHorizontalFittingPriority:44.0 verticalFittingPriority:{v34, v35}];
     v38 = v37;
     v39 = maximumSidebarHeight - v37;
-    v40 = [(_UITabOutlineView *)self _bottomToolbar];
-    v41 = [v40 items];
-    v42 = [v41 count];
+    _bottomToolbar = [(_UITabOutlineView *)self _bottomToolbar];
+    items = [_bottomToolbar items];
+    v42 = [items count];
 
     if (v42)
     {
@@ -1197,7 +1197,7 @@ LABEL_27:
     v15 = v15 + maximumSidebarHeight - Height;
   }
 
-  if (v32)
+  if (navigationBar6)
   {
     v47 = v50 + v23;
   }
@@ -1207,11 +1207,11 @@ LABEL_27:
     v47 = v50;
   }
 
-  v48 = [(_UITabOutlineView *)self collectionView];
-  [v48 setSafeAreaInsets:{v47, v52, v15, v51}];
+  collectionView = [(_UITabOutlineView *)self collectionView];
+  [collectionView setSafeAreaInsets:{v47, v52, v15, v51}];
 
-  v49 = [(_UITabOutlineView *)self collectionView];
-  [v49 setFrame:{v4, v6, v8, maximumSidebarHeight}];
+  collectionView2 = [(_UITabOutlineView *)self collectionView];
+  [collectionView2 setFrame:{v4, v6, v8, maximumSidebarHeight}];
 
   [(_UITabOutlineView *)self _updateScrollEdgeAppearance];
 }
@@ -1224,69 +1224,69 @@ LABEL_27:
   self->_isNavigationBarSafeAreaDirty = 1;
 }
 
-- (void)setDisplayedGroup:(uint64_t)a1
+- (void)setDisplayedGroup:(uint64_t)group
 {
   v4 = a2;
-  if (a1 && *(a1 + 480) != v4)
+  if (group && *(group + 480) != v4)
   {
     v8 = v4;
     if (v4)
     {
-      v5 = [v4 _tabModel];
-      v6 = *(a1 + 472);
+      _tabModel = [v4 _tabModel];
+      v6 = *(group + 472);
 
-      if (v5 != v6)
+      if (_tabModel != v6)
       {
-        v7 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v7 handleFailureInMethod:sel_setDisplayedGroup_ object:a1 file:@"_UITabOutlineView.m" lineNumber:945 description:@"Trying to display a group that is not part of the tab model."];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:sel_setDisplayedGroup_ object:group file:@"_UITabOutlineView.m" lineNumber:945 description:@"Trying to display a group that is not part of the tab model."];
       }
     }
 
-    objc_storeStrong((a1 + 480), a2);
-    [a1 _reloadDataSourceSnapshotAnimated:0];
-    [a1 _updateSelectedItemAnimated:0];
+    objc_storeStrong((group + 480), a2);
+    [group _reloadDataSourceSnapshotAnimated:0];
+    [group _updateSelectedItemAnimated:0];
     v4 = v8;
   }
 }
 
-- (void)setSidebarButtonAction:(id *)a1
+- (void)setSidebarButtonAction:(id *)action
 {
   v3 = a2;
-  if (a1)
+  if (action)
   {
     v7 = v3;
     v4 = [v3 copy];
 
-    objc_storeStrong(a1 + 65, v4);
-    v5 = [a1 _currentSidebarImage];
-    [v4 setImage:v5];
+    objc_storeStrong(action + 65, v4);
+    _currentSidebarImage = [action _currentSidebarImage];
+    [v4 setImage:_currentSidebarImage];
 
-    v6 = [a1 sidebarBarButtonItem];
-    [v6 setPrimaryAction:v4];
-    [v6 setHidden:{objc_msgSend(a1, "_showSidebarBarButtonItem") ^ 1}];
-    [a1 setNeedsLayout];
+    sidebarBarButtonItem = [action sidebarBarButtonItem];
+    [sidebarBarButtonItem setPrimaryAction:v4];
+    [sidebarBarButtonItem setHidden:{objc_msgSend(action, "_showSidebarBarButtonItem") ^ 1}];
+    [action setNeedsLayout];
 
     v3 = v4;
   }
 }
 
-- (void)setTitle:(id *)a1
+- (void)setTitle:(id *)title
 {
   v10 = a2;
-  if (a1)
+  if (title)
   {
-    v4 = a1[64];
+    navigationItem = title[64];
     v5 = v10;
     v6 = v5;
-    if (v4 == v5)
+    if (navigationItem == v5)
     {
     }
 
     else
     {
-      if (v5 && v4)
+      if (v5 && navigationItem)
       {
-        v7 = [v4 isEqual:v5];
+        v7 = [navigationItem isEqual:v5];
 
         if (v7)
         {
@@ -1298,17 +1298,17 @@ LABEL_27:
       {
       }
 
-      objc_storeStrong(a1 + 64, a2);
-      v8 = [a1 _currentPlatformMetrics];
-      v9 = [v8 showsSidebarTitle];
+      objc_storeStrong(title + 64, a2);
+      _currentPlatformMetrics = [title _currentPlatformMetrics];
+      showsSidebarTitle = [_currentPlatformMetrics showsSidebarTitle];
 
-      if (!v9)
+      if (!showsSidebarTitle)
       {
         goto LABEL_12;
       }
 
-      v4 = [a1 navigationItem];
-      [v4 setTitle:v6];
+      navigationItem = [title navigationItem];
+      [navigationItem setTitle:v6];
     }
   }
 
@@ -1325,10 +1325,10 @@ LABEL_12:
       result[62] = a2;
       if (a2 == 1)
       {
-        v3 = [result _currentPlatformMetrics];
-        v4 = [v3 supportsFloatingSidebar];
+        _currentPlatformMetrics = [result _currentPlatformMetrics];
+        supportsFloatingSidebar = [_currentPlatformMetrics supportsFloatingSidebar];
 
-        a2 = v4 & 1;
+        a2 = supportsFloatingSidebar & 1;
       }
 
       v2[53] = a2;
@@ -1342,30 +1342,30 @@ LABEL_12:
 
 - (void)_updateSidebarStyle
 {
-  v12 = [(_UITabOutlineView *)self _currentPlatformMetrics];
-  v3 = [(UIView *)self traitCollection];
-  v4 = _UISidebarGetPlatformMetrics([v3 userInterfaceIdiom]);
+  _currentPlatformMetrics = [(_UITabOutlineView *)self _currentPlatformMetrics];
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = _UISidebarGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v5 = [(_UITabOutlineView *)self backgroundView];
-  v6 = [v5 layer];
+  backgroundView = [(_UITabOutlineView *)self backgroundView];
+  layer = [backgroundView layer];
 
   if (self && self->_resolvedStyle == 1)
   {
-    v7 = [v4 floatingBackground];
-    [v12 sidebarBorderWidth];
-    [v6 setBorderWidth:?];
-    v8 = [v12 sidebarBorderColor];
-    [v6 setBorderColor:{objc_msgSend(v8, "CGColor")}];
+    floatingBackground = [v4 floatingBackground];
+    [_currentPlatformMetrics sidebarBorderWidth];
+    [layer setBorderWidth:?];
+    sidebarBorderColor = [_currentPlatformMetrics sidebarBorderColor];
+    [layer setBorderColor:{objc_msgSend(sidebarBorderColor, "CGColor")}];
   }
 
   else
   {
-    v7 = [v4 abuttedBackground];
-    [v6 setBorderWidth:0.0];
+    floatingBackground = [v4 abuttedBackground];
+    [layer setBorderWidth:0.0];
   }
 
-  v9 = [(_UITabOutlineView *)self backgroundView];
-  [v9 _setBackground:v7];
+  backgroundView2 = [(_UITabOutlineView *)self backgroundView];
+  [backgroundView2 _setBackground:floatingBackground];
 
   [(_UITabOutlineView *)self _configureShadowView];
   [(_UITabOutlineView *)self _updateBackgroundEffects];
@@ -1388,52 +1388,52 @@ LABEL_12:
   }
 }
 
-- (void)setTransitionsToTabBar:(uint64_t)a1
+- (void)setTransitionsToTabBar:(uint64_t)bar
 {
-  if (a1 && *(a1 + 449) != a2)
+  if (bar && *(bar + 449) != a2)
   {
-    *(a1 + 449) = a2;
-    v3 = [a1 _currentSidebarImage];
-    [*(a1 + 648) setImage:v3];
+    *(bar + 449) = a2;
+    _currentSidebarImage = [bar _currentSidebarImage];
+    [*(bar + 648) setImage:_currentSidebarImage];
   }
 }
 
-- (uint64_t)makeFirstResponderForTab:(void *)a1
+- (uint64_t)makeFirstResponderForTab:(void *)tab
 {
-  if (!a1)
+  if (!tab)
   {
     return 0;
   }
 
   v3 = a2;
-  v4 = [a1 dataSource];
-  v5 = [v3 identifier];
+  dataSource = [tab dataSource];
+  identifier = [v3 identifier];
 
-  v6 = [v4 indexPathForItemIdentifier:v5];
+  v6 = [dataSource indexPathForItemIdentifier:identifier];
 
   if (v6)
   {
-    v7 = [a1 collectionView];
-    v8 = [v7 cellForItemAtIndexPath:v6];
+    collectionView = [tab collectionView];
+    v8 = [collectionView cellForItemAtIndexPath:v6];
 
     if (v8)
     {
-      v9 = [v8 contentView];
-      v10 = [v9 becomeFirstResponder];
+      contentView = [v8 contentView];
+      becomeFirstResponder = [contentView becomeFirstResponder];
     }
 
     else
     {
-      v10 = 0;
+      becomeFirstResponder = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    becomeFirstResponder = 0;
   }
 
-  return v10;
+  return becomeFirstResponder;
 }
 
 - (id)_currentSidebarImage
@@ -1451,28 +1451,28 @@ LABEL_12:
   return v2;
 }
 
-- (void)_updateSelectedItemAnimated:(BOOL)a3
+- (void)_updateSelectedItemAnimated:(BOOL)animated
 {
-  v36 = a3;
+  animatedCopy = animated;
   v46 = *MEMORY[0x1E69E9840];
   if (!self->_ignoringSelectionUpdates)
   {
     v4 = &OBJC_IVAR___UIScrollView__knobPointerLongPressGestureRecognizer;
     if ([(_UITabModel *)self->_tabModel isEditing])
     {
-      v5 = [(_UITabOutlineView *)self dataSource];
-      v6 = [v5 snapshot];
+      dataSource = [(_UITabOutlineView *)self dataSource];
+      snapshot = [dataSource snapshot];
 
-      v34 = v6;
-      v7 = [v6 itemIdentifiers];
-      v8 = [(_UITabOutlineView *)self collectionView];
-      v35 = [v8 indexPathsForSelectedItems];
+      v34 = snapshot;
+      itemIdentifiers = [snapshot itemIdentifiers];
+      collectionView = [(_UITabOutlineView *)self collectionView];
+      indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
       v43 = 0u;
       v44 = 0u;
       v41 = 0u;
       v42 = 0u;
-      obj = v7;
+      obj = itemIdentifiers;
       v9 = [obj countByEnumeratingWithState:&v41 objects:v45 count:16];
       if (!v9)
       {
@@ -1491,8 +1491,8 @@ LABEL_12:
           }
 
           v13 = *(*(&v41 + 1) + 8 * i);
-          v14 = [(_UITabOutlineView *)self contentByIdentifier];
-          v15 = [v14 objectForKey:v13];
+          contentByIdentifier = [(_UITabOutlineView *)self contentByIdentifier];
+          v15 = [contentByIdentifier objectForKey:v13];
           v16 = [v15 tab];
 
           v17 = [*(&self->super.super.super.isa + v4[473]) isTabHidden:v16];
@@ -1500,26 +1500,26 @@ LABEL_12:
           {
             v18 = v17;
             v19 = v4;
-            v20 = [(_UITabOutlineView *)self dataSource];
-            v21 = [v20 indexPathForItemIdentifier:v13];
+            dataSource2 = [(_UITabOutlineView *)self dataSource];
+            v21 = [dataSource2 indexPathForItemIdentifier:v13];
 
-            v22 = [(_UITabOutlineView *)self collectionView];
-            v23 = [(_UITabOutlineView *)self collectionView:v22 shouldSelectItemAtIndexPath:v21];
+            collectionView2 = [(_UITabOutlineView *)self collectionView];
+            v23 = [(_UITabOutlineView *)self collectionView:collectionView2 shouldSelectItemAtIndexPath:v21];
 
             v24 = [(_UITabOutlineView *)self _hasCustomizablePlacementForTab:v16];
             if ((v18 & 1) == 0 && (v23 || v24))
             {
-              v25 = [(_UITabOutlineView *)self collectionView];
-              [v25 selectItemAtIndexPath:v21 animated:v36 scrollPosition:0];
+              collectionView3 = [(_UITabOutlineView *)self collectionView];
+              [collectionView3 selectItemAtIndexPath:v21 animated:animatedCopy scrollPosition:0];
               v4 = v19;
               goto LABEL_14;
             }
 
             v4 = v19;
-            if ([v35 containsObject:v21])
+            if ([indexPathsForSelectedItems containsObject:v21])
             {
-              v25 = [(_UITabOutlineView *)self collectionView];
-              [v25 deselectItemAtIndexPath:v21 animated:v36];
+              collectionView3 = [(_UITabOutlineView *)self collectionView];
+              [collectionView3 deselectItemAtIndexPath:v21 animated:animatedCopy];
 LABEL_14:
             }
           }
@@ -1536,9 +1536,9 @@ LABEL_18:
     }
 
     objb = [(_UITabModel *)self->_tabModel selectedLeaf];
-    v26 = [(_UITabOutlineView *)self dataSource];
-    v27 = [objb identifier];
-    v28 = [v26 indexPathForItemIdentifier:v27];
+    dataSource3 = [(_UITabOutlineView *)self dataSource];
+    identifier = [objb identifier];
+    v28 = [dataSource3 indexPathForItemIdentifier:identifier];
 
     v29 = objb;
     if (objb)
@@ -1558,9 +1558,9 @@ LABEL_18:
         v31 = v29;
         objc = [v29 _parentGroup];
 
-        v32 = [(_UITabOutlineView *)self dataSource];
-        v33 = [objc identifier];
-        v28 = [v32 indexPathForItemIdentifier:v33];
+        dataSource4 = [(_UITabOutlineView *)self dataSource];
+        identifier2 = [objc identifier];
+        v28 = [dataSource4 indexPathForItemIdentifier:identifier2];
 
         v29 = objc;
       }
@@ -1569,23 +1569,23 @@ LABEL_18:
     }
 
     obja = v29;
-    [(_UITabOutlineView *)self _selectItemAtIndexPath:v28 animated:v36 performAction:0];
+    [(_UITabOutlineView *)self _selectItemAtIndexPath:v28 animated:animatedCopy performAction:0];
   }
 }
 
-- (void)_updateSnapshot:(id)a3 usingNode:(id)a4
+- (void)_updateSnapshot:(id)snapshot usingNode:(id)node
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifier];
+  snapshotCopy = snapshot;
+  nodeCopy = node;
+  identifier = [nodeCopy identifier];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v23 = v7;
-  v9 = [v7 children];
-  v10 = [v9 countByEnumeratingWithState:&v24 objects:v30 count:16];
+  v23 = nodeCopy;
+  children = [nodeCopy children];
+  v10 = [children countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1596,33 +1596,33 @@ LABEL_18:
       {
         if (*v25 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(children);
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
-        v15 = [v14 identifier];
-        v29 = v15;
+        identifier2 = [v14 identifier];
+        v29 = identifier2;
         v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
-        [v6 appendItems:v16 intoParentItem:v8];
+        [snapshotCopy appendItems:v16 intoParentItem:identifier];
 
-        [(_UITabOutlineView *)self _updateSnapshot:v6 usingNode:v14];
+        [(_UITabOutlineView *)self _updateSnapshot:snapshotCopy usingNode:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v24 objects:v30 count:16];
+      v11 = [children countByEnumeratingWithState:&v24 objects:v30 count:16];
     }
 
     while (v11);
   }
 
-  v17 = [v23 actions];
+  actions = [v23 actions];
 
-  if (v17)
+  if (actions)
   {
-    v18 = [v23 actions];
-    [v6 appendItems:v18 intoParentItem:v8];
+    actions2 = [v23 actions];
+    [snapshotCopy appendItems:actions2 intoParentItem:identifier];
   }
 
-  v19 = [(_UITabOutlineView *)self _existingSectionSnapshotForTabIdentifier:v8];
+  v19 = [(_UITabOutlineView *)self _existingSectionSnapshotForTabIdentifier:identifier];
   if ([(_UITabOutlineView *)self isEditing])
   {
     [(_UITabOutlineView *)self editingCollapsedGroupIdentifiers];
@@ -1633,17 +1633,17 @@ LABEL_18:
     [(_UITabOutlineView *)self collapsedGroupIdentifiers];
   }
   v20 = ;
-  v21 = [v20 containsObject:v8];
+  v21 = [v20 containsObject:identifier];
 
   if ((v21 & 1) == 0)
   {
-    v28 = v8;
+    v28 = identifier;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1];
-    [v6 expandItems:v22];
+    [snapshotCopy expandItems:v22];
   }
 }
 
-- (void)_reloadDataSourceSnapshotAnimated:(BOOL)a3
+- (void)_reloadDataSourceSnapshotAnimated:(BOOL)animated
 {
   v166 = *MEMORY[0x1E69E9840];
   if (self->_ignoringContentUpdates)
@@ -1651,7 +1651,7 @@ LABEL_18:
     return;
   }
 
-  v3 = a3;
+  animatedCopy = animated;
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Root-%p", self];
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v5, 0}];
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -1659,39 +1659,39 @@ LABEL_18:
   v131 = v7;
   v119 = v5;
   [v7 setObject:v8 forKeyedSubscript:v5];
-  v9 = [(_UITabModel *)self->_tabModel isEditing];
-  v10 = [(_UITabModel *)self->_tabModel tabItems];
+  isEditing = [(_UITabModel *)self->_tabModel isEditing];
+  tabItems = [(_UITabModel *)self->_tabModel tabItems];
   v11 = self->_displayedGroup;
-  v12 = [(_UITabGroup *)v11 _tabModel];
+  _tabModel = [(_UITabGroup *)v11 _tabModel];
   tabModel = self->_tabModel;
 
-  v120 = v3;
+  v120 = animatedCopy;
   v116 = v11;
-  if (v12 == tabModel)
+  if (_tabModel == tabModel)
   {
-    v14 = [(_UITabOutlineView *)self activeTransaction];
-    v15 = [(_UITabGroup *)v11 identifier];
-    v16 = [v14 currentDisplayOrderForGroupWithIdentifier:v15];
+    activeTransaction = [(_UITabOutlineView *)self activeTransaction];
+    identifier = [(_UITabGroup *)v11 identifier];
+    v16 = [activeTransaction currentDisplayOrderForGroupWithIdentifier:identifier];
 
     v17 = [(_UITabGroup *)v11 _orderedChildrenForDisplayOrder:v16];
 
-    v10 = v17;
+    tabItems = v17;
   }
 
   v18 = [_UITabOutlineParser alloc];
-  v19 = [(_UITabOutlineView *)self activeTransaction];
-  v117 = v10;
-  v20 = [(_UITabOutlineParser *)v18 initWithTabs:v10 includeAllowsHidingItems:v9 transaction:v19];
+  activeTransaction2 = [(_UITabOutlineView *)self activeTransaction];
+  v117 = tabItems;
+  v20 = [(_UITabOutlineParser *)v18 initWithTabs:tabItems includeAllowsHidingItems:isEditing transaction:activeTransaction2];
 
-  v21 = [(_UITabModel *)self->_tabModel customizationStore];
-  v22 = [v21 allGroupIdentifiers];
+  customizationStore = [(_UITabModel *)self->_tabModel customizationStore];
+  allGroupIdentifiers = [customizationStore allGroupIdentifiers];
 
-  v23 = [(_UITabOutlineParser *)v20 collapsedByDefaultGroupIdentifiers];
-  v24 = [v23 mutableCopy];
+  collapsedByDefaultGroupIdentifiers = [(_UITabOutlineParser *)v20 collapsedByDefaultGroupIdentifiers];
+  v24 = [collapsedByDefaultGroupIdentifiers mutableCopy];
 
-  v115 = v22;
-  [v24 minusSet:v22];
-  v132 = self;
+  v115 = allGroupIdentifiers;
+  [v24 minusSet:allGroupIdentifiers];
+  selfCopy = self;
   v114 = v24;
   [(NSMutableSet *)self->_collapsedGroupIdentifiers unionSet:v24];
   v155 = 0u;
@@ -1699,8 +1699,8 @@ LABEL_18:
   v153 = 0u;
   v154 = 0u;
   v122 = v20;
-  v25 = [(_UITabOutlineParser *)v20 rootItems];
-  v26 = [v25 countByEnumeratingWithState:&v153 objects:v165 count:16];
+  rootItems = [(_UITabOutlineParser *)v20 rootItems];
+  v26 = [rootItems countByEnumeratingWithState:&v153 objects:v165 count:16];
   if (v26)
   {
     v27 = v26;
@@ -1711,22 +1711,22 @@ LABEL_18:
       {
         if (*v154 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(rootItems);
         }
 
         v30 = *(*(&v153 + 1) + 8 * i);
-        v31 = [v30 identifier];
-        v164 = v31;
+        identifier2 = [v30 identifier];
+        v164 = identifier2;
         v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v164 count:1];
         [(NSDiffableDataSourceSectionSnapshot *)v8 appendItems:v32];
 
         if ([v30 isGroup])
         {
-          [(_UITabOutlineView *)v132 _updateSnapshot:v8 usingNode:v30];
+          [(_UITabOutlineView *)selfCopy _updateSnapshot:v8 usingNode:v30];
         }
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v153 objects:v165 count:16];
+      v27 = [rootItems countByEnumeratingWithState:&v153 objects:v165 count:16];
     }
 
     while (v27);
@@ -1738,8 +1738,8 @@ LABEL_18:
   v152 = 0u;
   v149 = 0u;
   v150 = 0u;
-  v33 = [(_UITabOutlineParser *)v122 groupItems];
-  v34 = [v33 countByEnumeratingWithState:&v149 objects:v163 count:16];
+  groupItems = [(_UITabOutlineParser *)v122 groupItems];
+  v34 = [groupItems countByEnumeratingWithState:&v149 objects:v163 count:16];
   if (v34)
   {
     v35 = v34;
@@ -1750,40 +1750,40 @@ LABEL_18:
       {
         if (*v150 != v36)
         {
-          objc_enumerationMutation(v33);
+          objc_enumerationMutation(groupItems);
         }
 
         v38 = *(*(&v149 + 1) + 8 * j);
         v39 = objc_alloc_init(NSDiffableDataSourceSectionSnapshot);
-        v40 = [v38 identifier];
-        v162 = v40;
+        identifier3 = [v38 identifier];
+        v162 = identifier3;
         v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v162 count:1];
         [(NSDiffableDataSourceSectionSnapshot *)v39 appendItems:v41];
 
-        [(_UITabOutlineView *)v132 _updateSnapshot:v39 usingNode:v38];
-        [v6 addObject:v40];
-        [v131 setObject:v39 forKeyedSubscript:v40];
+        [(_UITabOutlineView *)selfCopy _updateSnapshot:v39 usingNode:v38];
+        [v6 addObject:identifier3];
+        [v131 setObject:v39 forKeyedSubscript:identifier3];
       }
 
-      v35 = [v33 countByEnumeratingWithState:&v149 objects:v163 count:16];
+      v35 = [groupItems countByEnumeratingWithState:&v149 objects:v163 count:16];
     }
 
     while (v35);
   }
 
-  v113 = [(_UITabOutlineView *)v132 _dataSourceUpdateGroupCompletionCreateIfNeeded:1];
+  v113 = [(_UITabOutlineView *)selfCopy _dataSourceUpdateGroupCompletionCreateIfNeeded:1];
   [v113 increment];
-  v42 = [(_UITabOutlineView *)v132 dataSource];
-  v43 = [v42 snapshot];
+  dataSource = [(_UITabOutlineView *)selfCopy dataSource];
+  snapshot = [dataSource snapshot];
 
-  v44 = [v43 sectionIdentifiers];
-  v45 = [v6 differenceFromArray:v44 withOptions:4];
-  v112 = v44;
-  v123 = v43;
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v45 = [v6 differenceFromArray:sectionIdentifiers withOptions:4];
+  v112 = sectionIdentifiers;
+  v123 = snapshot;
   v121 = v45;
-  if (![v44 count])
+  if (![sectionIdentifiers count])
   {
-    [v43 appendSectionsWithIdentifiers:v6];
+    [snapshot appendSectionsWithIdentifiers:v6];
 LABEL_43:
     v46 = &OBJC_IVAR____UIStateMachine__state;
     goto LABEL_44;
@@ -1792,13 +1792,13 @@ LABEL_43:
   v46 = &OBJC_IVAR____UIStateMachine__state;
   if ([v45 hasChanges])
   {
-    v47 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v145 = 0u;
     v146 = 0u;
     v147 = 0u;
     v148 = 0u;
-    v48 = [v45 removals];
-    v49 = [v48 countByEnumeratingWithState:&v145 objects:v161 count:16];
+    removals = [v45 removals];
+    v49 = [removals countByEnumeratingWithState:&v145 objects:v161 count:16];
     if (v49)
     {
       v50 = v49;
@@ -1809,31 +1809,31 @@ LABEL_43:
         {
           if (*v146 != v51)
           {
-            objc_enumerationMutation(v48);
+            objc_enumerationMutation(removals);
           }
 
           v53 = *(*(&v145 + 1) + 8 * k);
           if ([v53 associatedIndex] == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v54 = [v53 object];
-            [v47 addObject:v54];
+            object = [v53 object];
+            [array addObject:object];
           }
         }
 
-        v50 = [v48 countByEnumeratingWithState:&v145 objects:v161 count:16];
+        v50 = [removals countByEnumeratingWithState:&v145 objects:v161 count:16];
       }
 
       while (v50);
     }
 
-    v129 = v47;
-    [v123 deleteSectionsWithIdentifiers:v47];
+    v129 = array;
+    [v123 deleteSectionsWithIdentifiers:array];
     v143 = 0u;
     v144 = 0u;
     v141 = 0u;
     v142 = 0u;
-    v55 = [v121 insertions];
-    v56 = [v55 countByEnumeratingWithState:&v141 objects:v160 count:16];
+    insertions = [v121 insertions];
+    v56 = [insertions countByEnumeratingWithState:&v141 objects:v160 count:16];
     if (v56)
     {
       v57 = v56;
@@ -1844,62 +1844,62 @@ LABEL_43:
         {
           if (*v142 != v58)
           {
-            objc_enumerationMutation(v55);
+            objc_enumerationMutation(insertions);
           }
 
           v60 = *(*(&v141 + 1) + 8 * m);
-          v61 = [v60 object];
+          object2 = [v60 object];
           v62 = [v6 objectAtIndex:{objc_msgSend(v60, "index") - 1}];
           if ([v60 associatedIndex] == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v159 = v61;
+            v159 = object2;
             v63 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v159 count:1];
             [v123 insertSectionsWithIdentifiers:v63 afterSectionWithIdentifier:v62];
           }
 
           else
           {
-            [v123 moveSectionWithIdentifier:v61 afterSectionWithIdentifier:v62];
+            [v123 moveSectionWithIdentifier:object2 afterSectionWithIdentifier:v62];
           }
         }
 
-        v57 = [v55 countByEnumeratingWithState:&v141 objects:v160 count:16];
+        v57 = [insertions countByEnumeratingWithState:&v141 objects:v160 count:16];
       }
 
       while (v57);
     }
 
-    v43 = v123;
+    snapshot = v123;
     v45 = v121;
     goto LABEL_43;
   }
 
 LABEL_44:
-  v64 = v132;
+  v64 = selfCopy;
   if ([v45 hasChanges])
   {
-    v65 = [(_UITabOutlineView *)v132 dataSource];
-    [v65 applySnapshot:v43 animatingDifferences:v120];
+    dataSource2 = [(_UITabOutlineView *)selfCopy dataSource];
+    [dataSource2 applySnapshot:snapshot animatingDifferences:v120];
   }
 
-  v66 = v132->_contentByIdentifier;
-  v67 = [(_UITabOutlineParser *)v122 contentByIdentifier];
-  contentByIdentifier = v132->_contentByIdentifier;
-  v132->_contentByIdentifier = v67;
+  v66 = selfCopy->_contentByIdentifier;
+  contentByIdentifier = [(_UITabOutlineParser *)v122 contentByIdentifier];
+  contentByIdentifier = selfCopy->_contentByIdentifier;
+  selfCopy->_contentByIdentifier = contentByIdentifier;
 
-  v69 = [(_UITabOutlineParser *)v122 allGroupIdentifiers];
-  allGroupIdentifiers = v132->_allGroupIdentifiers;
-  v132->_allGroupIdentifiers = v69;
+  allGroupIdentifiers2 = [(_UITabOutlineParser *)v122 allGroupIdentifiers];
+  allGroupIdentifiers = selfCopy->_allGroupIdentifiers;
+  selfCopy->_allGroupIdentifiers = allGroupIdentifiers2;
 
-  v71 = *(&v132->super.super.super.isa + v46[706]);
+  v71 = *(&selfCopy->super.super.super.isa + v46[706]);
   if (v71)
   {
     v72 = v71;
     v73 = [_UITabSidebarContent contentForTab:v72];
-    v74 = v132->_contentByIdentifier;
-    v75 = *(&v132->super.super.super.isa + v46[706]);
-    v76 = [v75 identifier];
-    [(NSMutableDictionary *)v74 setObject:v73 forKeyedSubscript:v76];
+    v74 = selfCopy->_contentByIdentifier;
+    v75 = *(&selfCopy->super.super.super.isa + v46[706]);
+    identifier4 = [v75 identifier];
+    [(NSMutableDictionary *)v74 setObject:v73 forKeyedSubscript:identifier4];
   }
 
   v139 = 0u;
@@ -1923,8 +1923,8 @@ LABEL_44:
 
         v81 = *(*(&v137 + 1) + 8 * n);
         v82 = [v131 objectForKeyedSubscript:v81];
-        v83 = [(_UITabOutlineView *)v132 dataSource];
-        [v83 applySnapshot:v82 toSection:v81 animatingDifferences:v120];
+        dataSource3 = [(_UITabOutlineView *)selfCopy dataSource];
+        [dataSource3 applySnapshot:v82 toSection:v81 animatingDifferences:v120];
       }
 
       v78 = [obj countByEnumeratingWithState:&v137 objects:v158 count:16];
@@ -1937,16 +1937,16 @@ LABEL_44:
   v136 = 0u;
   v133 = 0u;
   v134 = 0u;
-  v84 = [(_UITabOutlineView *)v132 collectionView];
-  v85 = [v84 preparedCells];
+  collectionView = [(_UITabOutlineView *)selfCopy collectionView];
+  preparedCells = [collectionView preparedCells];
 
-  v130 = [v85 countByEnumeratingWithState:&v133 objects:v157 count:16];
+  v130 = [preparedCells countByEnumeratingWithState:&v133 objects:v157 count:16];
   v86 = 0;
   if (v130)
   {
     v128 = *v134;
     v124 = v66;
-    v125 = v85;
+    v125 = preparedCells;
     while (1)
     {
       v87 = 0;
@@ -1971,27 +1971,27 @@ LABEL_44:
         v90 = v89;
         v91 = [v90 tab];
 
-        v92 = v132->_contentByIdentifier;
-        v93 = [v91 identifier];
-        v94 = [(NSMutableDictionary *)v92 objectForKeyedSubscript:v93];
+        v92 = selfCopy->_contentByIdentifier;
+        identifier5 = [v91 identifier];
+        v94 = [(NSMutableDictionary *)v92 objectForKeyedSubscript:identifier5];
 
         v95 = [v94 tab];
-        v96 = [v91 identifier];
-        v97 = [(NSMutableDictionary *)v66 objectForKeyedSubscript:v96];
+        identifier6 = [v91 identifier];
+        v97 = [(NSMutableDictionary *)v66 objectForKeyedSubscript:identifier6];
 
         if (v95 && ([v94 isCompatibleWithContent:v97] & 1) == 0)
         {
           if (v86)
           {
-            v100 = [v95 identifier];
-            [v86 addObject:v100];
+            identifier7 = [v95 identifier];
+            [v86 addObject:identifier7];
           }
 
           else
           {
             v105 = MEMORY[0x1E695DF70];
-            v100 = [v95 identifier];
-            v86 = [v105 arrayWithObject:v100];
+            identifier7 = [v95 identifier];
+            v86 = [v105 arrayWithObject:identifier7];
           }
 
 LABEL_73:
@@ -2002,24 +2002,24 @@ LABEL_73:
         if (v88 && (*(v88 + 876) & 1) != 0)
         {
           v127 = v86;
-          v98 = [v91 identifier];
-          v99 = v98;
-          if (v98)
+          identifier8 = [v91 identifier];
+          v99 = identifier8;
+          if (identifier8)
           {
-            v100 = v98;
+            identifier7 = identifier8;
           }
 
           else
           {
             v101 = *(v88 + 880);
-            v102 = [v101 action];
-            v100 = [v102 identifier];
+            action = [v101 action];
+            identifier7 = [action identifier];
           }
 
-          v103 = [(_UITabOutlineView *)v132 dataSource];
-          v104 = [v103 indexPathForItemIdentifier:v100];
+          dataSource4 = [(_UITabOutlineView *)selfCopy dataSource];
+          v104 = [dataSource4 indexPathForItemIdentifier:identifier7];
 
-          [v88 setIndentationLevel:{-[_UITabOutlineView _indentationLevelForItemIdentifier:indexPath:](v132, "_indentationLevelForItemIdentifier:indexPath:", v100, v104)}];
+          [v88 setIndentationLevel:{-[_UITabOutlineView _indentationLevelForItemIdentifier:indexPath:](selfCopy, "_indentationLevelForItemIdentifier:indexPath:", identifier7, v104)}];
           v66 = v124;
           v86 = v127;
           goto LABEL_73;
@@ -2038,24 +2038,24 @@ LABEL_74:
 
         if (v86)
         {
-          v64 = v132;
+          v64 = selfCopy;
           v107 = v113;
           if ([v86 count])
           {
-            v108 = [(_UITabOutlineView *)v132 dataSource];
-            v109 = [v108 snapshot];
+            dataSource5 = [(_UITabOutlineView *)selfCopy dataSource];
+            snapshot2 = [dataSource5 snapshot];
 
-            [v109 reconfigureItemsWithIdentifiers:v86];
-            v85 = [(_UITabOutlineView *)v132 dataSource];
-            [v85 applySnapshot:v109 animatingDifferences:v120];
-            v123 = v109;
+            [snapshot2 reconfigureItemsWithIdentifiers:v86];
+            preparedCells = [(_UITabOutlineView *)selfCopy dataSource];
+            [preparedCells applySnapshot:snapshot2 animatingDifferences:v120];
+            v123 = snapshot2;
             goto LABEL_82;
           }
         }
 
         else
         {
-          v64 = v132;
+          v64 = selfCopy;
           v107 = v113;
         }
 
@@ -2069,28 +2069,28 @@ LABEL_82:
 
 LABEL_84:
   [v107 complete];
-  v110 = [(_UITabOutlineView *)v64 activeTransaction];
-  if (v110)
+  activeTransaction3 = [(_UITabOutlineView *)v64 activeTransaction];
+  if (activeTransaction3)
   {
-    v111 = [(_UITabOutlineView *)v64 _tabsByIdentifier];
-    [v110 updateTabs:v111];
+    _tabsByIdentifier = [(_UITabOutlineView *)v64 _tabsByIdentifier];
+    [activeTransaction3 updateTabs:_tabsByIdentifier];
   }
 }
 
-- (id)_existingSectionSnapshotForTabIdentifier:(id)a3
+- (id)_existingSectionSnapshotForTabIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_UITabOutlineView *)self dataSource];
-  v6 = [v5 snapshot];
-  v7 = [v6 sectionIdentifierForSectionContainingItemIdentifier:v4];
+  identifierCopy = identifier;
+  dataSource = [(_UITabOutlineView *)self dataSource];
+  snapshot = [dataSource snapshot];
+  v7 = [snapshot sectionIdentifierForSectionContainingItemIdentifier:identifierCopy];
 
   if (v7)
   {
-    v8 = [(_UITabOutlineView *)self dataSource];
-    v9 = [v8 snapshotForSection:v7];
+    dataSource2 = [(_UITabOutlineView *)self dataSource];
+    v9 = [dataSource2 snapshotForSection:v7];
 
-    v10 = [v9 items];
-    v11 = [v10 count];
+    items = [v9 items];
+    v11 = [items count];
 
     if (v11)
     {
@@ -2104,17 +2104,17 @@ LABEL_5:
   return v9;
 }
 
-- (void)_reconfigureItemsInDataSourceForTabs:(id)a3 animated:(BOOL)a4
+- (void)_reconfigureItemsInDataSourceForTabs:(id)tabs animated:(BOOL)animated
 {
-  v23 = a4;
+  animatedCopy = animated;
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  tabsCopy = tabs;
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(tabsCopy, "count")}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = v5;
+  v7 = tabsCopy;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
@@ -2130,26 +2130,26 @@ LABEL_5:
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        v13 = [v12 identifier];
-        v14 = [(_UITabOutlineView *)self dataSource];
-        v15 = [v14 indexPathForItemIdentifier:v13];
+        identifier = [v12 identifier];
+        dataSource = [(_UITabOutlineView *)self dataSource];
+        v15 = [dataSource indexPathForItemIdentifier:identifier];
 
         if (v15)
         {
-          v16 = [(_UITabOutlineView *)self willDisplayTab];
+          willDisplayTab = [(_UITabOutlineView *)self willDisplayTab];
 
-          if (v12 == v16)
+          if (v12 == willDisplayTab)
           {
             self->_didUpdateWillDisplayTab = 1;
           }
 
           else
           {
-            [v6 addObject:v13];
+            [v6 addObject:identifier];
             v17 = [_UITabSidebarContent contentForTab:v12];
-            [(NSMutableDictionary *)self->_contentByIdentifier setObject:v17 forKey:v13];
-            v18 = [(_UITabOutlineView *)self activeTransaction];
-            [v18 replaceTab:v12 forIdentifier:v13];
+            [(NSMutableDictionary *)self->_contentByIdentifier setObject:v17 forKey:identifier];
+            activeTransaction = [(_UITabOutlineView *)self activeTransaction];
+            [activeTransaction replaceTab:v12 forIdentifier:identifier];
           }
         }
       }
@@ -2162,20 +2162,20 @@ LABEL_5:
 
   if ([v6 count])
   {
-    v19 = [(_UITabOutlineView *)self dataSource];
-    v20 = [v19 snapshot];
+    dataSource2 = [(_UITabOutlineView *)self dataSource];
+    snapshot = [dataSource2 snapshot];
 
-    [v20 reconfigureItemsWithIdentifiers:v6];
+    [snapshot reconfigureItemsWithIdentifiers:v6];
     v21 = [(_UITabOutlineView *)self _dataSourceUpdateGroupCompletionCreateIfNeeded:1];
     [v21 increment];
-    v22 = [(_UITabOutlineView *)self dataSource];
-    [v22 applySnapshot:v20 animatingDifferences:v23];
+    dataSource3 = [(_UITabOutlineView *)self dataSource];
+    [dataSource3 applySnapshot:snapshot animatingDifferences:animatedCopy];
 
     [v21 complete];
   }
 }
 
-- (id)_dataSourceUpdateGroupCompletionCreateIfNeeded:(BOOL)a3
+- (id)_dataSourceUpdateGroupCompletionCreateIfNeeded:(BOOL)needed
 {
   dataSourceUpdateGroupCompletion = self->_dataSourceUpdateGroupCompletion;
   if (dataSourceUpdateGroupCompletion)
@@ -2185,7 +2185,7 @@ LABEL_5:
 
   else
   {
-    v5 = !a3;
+    v5 = !needed;
   }
 
   if (!v5)
@@ -2210,18 +2210,18 @@ LABEL_5:
   return dataSourceUpdateGroupCompletion;
 }
 
-- (int64_t)_indentationLevelForItemIdentifier:(id)a3 indexPath:(id)a4
+- (int64_t)_indentationLevelForItemIdentifier:(id)identifier indexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UITabOutlineView *)self dataSource];
-  v9 = [v8 sectionIdentifierForIndex:{objc_msgSend(v6, "section")}];
+  pathCopy = path;
+  identifierCopy = identifier;
+  dataSource = [(_UITabOutlineView *)self dataSource];
+  v9 = [dataSource sectionIdentifierForIndex:{objc_msgSend(pathCopy, "section")}];
 
-  v10 = [(_UITabOutlineView *)self dataSource];
-  v11 = [v10 snapshotForSection:v9];
+  dataSource2 = [(_UITabOutlineView *)self dataSource];
+  v11 = [dataSource2 snapshotForSection:v9];
 
-  v12 = [v11 levelOfItem:v7];
-  v13 = [v6 section];
+  v12 = [v11 levelOfItem:identifierCopy];
+  section = [pathCopy section];
 
   if (v12 <= 1)
   {
@@ -2234,7 +2234,7 @@ LABEL_5:
   }
 
   v15 = v14 - 1;
-  if (v13)
+  if (section)
   {
     v16 = v15;
   }
@@ -2247,11 +2247,11 @@ LABEL_5:
   return v16;
 }
 
-- (id)_tabForIndexPath:(id)a3
+- (id)_tabForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_UITabOutlineView *)self dataSource];
-  v6 = [v5 itemIdentifierForIndexPath:v4];
+  pathCopy = path;
+  dataSource = [(_UITabOutlineView *)self dataSource];
+  v6 = [dataSource itemIdentifierForIndexPath:pathCopy];
 
   v7 = [(NSMutableDictionary *)self->_contentByIdentifier objectForKey:v6];
   v8 = [v7 tab];
@@ -2259,63 +2259,63 @@ LABEL_5:
   return v8;
 }
 
-- (id)_actionForIndexPath:(id)a3
+- (id)_actionForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_UITabOutlineView *)self dataSource];
-  v6 = [v5 itemIdentifierForIndexPath:v4];
+  pathCopy = path;
+  dataSource = [(_UITabOutlineView *)self dataSource];
+  v6 = [dataSource itemIdentifierForIndexPath:pathCopy];
 
   v7 = [(NSMutableDictionary *)self->_contentByIdentifier objectForKey:v6];
-  v8 = [v7 action];
+  action = [v7 action];
 
-  return v8;
+  return action;
 }
 
-- (id)_sidebarContentForIndexPath:(id)a3
+- (id)_sidebarContentForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_UITabOutlineView *)self dataSource];
-  v6 = [v5 itemIdentifierForIndexPath:v4];
+  pathCopy = path;
+  dataSource = [(_UITabOutlineView *)self dataSource];
+  v6 = [dataSource itemIdentifierForIndexPath:pathCopy];
 
   v7 = [(NSMutableDictionary *)self->_contentByIdentifier objectForKey:v6];
 
   return v7;
 }
 
-- (BOOL)_isHeaderIndexPath:(id)a3
+- (BOOL)_isHeaderIndexPath:(id)path
 {
-  v3 = a3;
-  v4 = [v3 section] >= 1 && objc_msgSend(v3, "item") == 0;
+  pathCopy = path;
+  v4 = [pathCopy section] >= 1 && objc_msgSend(pathCopy, "item") == 0;
 
   return v4;
 }
 
-- (BOOL)_isActionIndexPath:(id)a3
+- (BOOL)_isActionIndexPath:(id)path
 {
-  v3 = [(_UITabOutlineView *)self _tabForIndexPath:a3];
+  v3 = [(_UITabOutlineView *)self _tabForIndexPath:path];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 _isAction];
+    _isAction = [v3 _isAction];
   }
 
   else
   {
-    v5 = 1;
+    _isAction = 1;
   }
 
-  return v5;
+  return _isAction;
 }
 
-- (BOOL)_canDragTab:(id)a3
+- (BOOL)_canDragTab:(id)tab
 {
-  v4 = a3;
-  if ([v4 _isAction])
+  tabCopy = tab;
+  if ([tabCopy _isAction])
   {
     LOBYTE(v5) = 0;
   }
 
-  else if ([v4 _canBeReordered])
+  else if ([tabCopy _canBeReordered])
   {
     LOBYTE(v5) = 1;
   }
@@ -2333,7 +2333,7 @@ LABEL_5:
     }
 
     v7 = tabModel;
-    if ([(_UITabModel *)v7 isEditing]&& [(_UITabOutlineView *)self _hasCustomizablePlacementForTab:v4])
+    if ([(_UITabModel *)v7 isEditing]&& [(_UITabOutlineView *)self _hasCustomizablePlacementForTab:tabCopy])
     {
       if (self)
       {
@@ -2345,7 +2345,7 @@ LABEL_5:
         v8 = 0;
       }
 
-      v5 = ![(_UITabModel *)v8 isTabHidden:v4];
+      v5 = ![(_UITabModel *)v8 isTabHidden:tabCopy];
     }
 
     else
@@ -2357,62 +2357,62 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)_hasCustomizablePlacementForTab:(id)a3
+- (BOOL)_hasCustomizablePlacementForTab:(id)tab
 {
-  v4 = a3;
-  v5 = [(_UITabOutlineView *)self _currentPlatformMetrics];
-  v6 = [v5 supportsCustomizablePlacements];
+  tabCopy = tab;
+  _currentPlatformMetrics = [(_UITabOutlineView *)self _currentPlatformMetrics];
+  supportsCustomizablePlacements = [_currentPlatformMetrics supportsCustomizablePlacements];
 
-  if (v6)
+  if (supportsCustomizablePlacements)
   {
-    v7 = [v4 _hasCustomizablePlacement];
+    _hasCustomizablePlacement = [tabCopy _hasCustomizablePlacement];
   }
 
   else
   {
-    v7 = 0;
+    _hasCustomizablePlacement = 0;
   }
 
-  return v7;
+  return _hasCustomizablePlacement;
 }
 
-- (void)headerContentConfigurationDidChange:(id *)a1
+- (void)headerContentConfigurationDidChange:(id *)change
 {
-  if (a1)
+  if (change)
   {
-    v6 = [a1 _headerContentConfiguration];
-    if ((a2 != 0) != (v6 == 0))
+    _headerContentConfiguration = [change _headerContentConfiguration];
+    if ((a2 != 0) != (_headerContentConfiguration == 0))
     {
-      v4 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
-      v5 = [a1[72] supplementaryViewForElementKind:@"UICollectionElementKindSectionHeader" atIndexPath:v4];
-      [v5 setContentConfiguration:v6];
+      snapshot = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
+      v5 = [change[72] supplementaryViewForElementKind:@"UICollectionElementKindSectionHeader" atIndexPath:snapshot];
+      [v5 setContentConfiguration:_headerContentConfiguration];
     }
 
     else
     {
-      v4 = [a1[73] snapshot];
-      [a1[73] applySnapshot:v4 animatingDifferences:1];
+      snapshot = [change[73] snapshot];
+      [change[73] applySnapshot:snapshot animatingDifferences:1];
     }
   }
 }
 
-- (void)footerContentConfigurationDidChange:(id *)a1
+- (void)footerContentConfigurationDidChange:(id *)change
 {
-  if (a1)
+  if (change)
   {
-    v7 = [a1 _footerContentConfiguration];
-    if ((a2 != 0) != (v7 == 0))
+    _footerContentConfiguration = [change _footerContentConfiguration];
+    if ((a2 != 0) != (_footerContentConfiguration == 0))
     {
-      v4 = [a1[72] numberOfSections];
-      v5 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:v4 - 1];
-      v6 = [a1[72] supplementaryViewForElementKind:@"UICollectionElementKindSectionFooter" atIndexPath:v5];
-      [v6 setContentConfiguration:v7];
+      numberOfSections = [change[72] numberOfSections];
+      snapshot = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:numberOfSections - 1];
+      v6 = [change[72] supplementaryViewForElementKind:@"UICollectionElementKindSectionFooter" atIndexPath:snapshot];
+      [v6 setContentConfiguration:_footerContentConfiguration];
     }
 
     else
     {
-      v5 = [a1[73] snapshot];
-      [a1[73] applySnapshot:v5 animatingDifferences:1];
+      snapshot = [change[73] snapshot];
+      [change[73] applySnapshot:snapshot animatingDifferences:1];
     }
   }
 }
@@ -2441,21 +2441,21 @@ LABEL_5:
 {
   if (self->_bottomBarIsToolbar)
   {
-    v4 = [(_UITabSidebarBottomBarWrapperView *)self->_bottomBarView view];
+    view = [(_UITabSidebarBottomBarWrapperView *)self->_bottomBarView view];
   }
 
   else
   {
-    v4 = 0;
+    view = 0;
   }
 
-  return v4;
+  return view;
 }
 
-- (void)scrollToTarget:(uint64_t)a3 animated:
+- (void)scrollToTarget:(uint64_t)target animated:
 {
   v5 = a2;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_10;
   }
@@ -2477,9 +2477,9 @@ LABEL_5:
   {
     if (v18 && *(v18 + 8) == 1)
     {
-      v14 = [a1 _headerContentConfiguration];
+      _headerContentConfiguration = [self _headerContentConfiguration];
 
-      if (v14)
+      if (_headerContentConfiguration)
       {
         v12 = [MEMORY[0x1E696AC88] indexPathForItem:0x7FFFFFFFFFFFFFFFLL inSection:0];
         v13 = 1;
@@ -2493,23 +2493,23 @@ LABEL_5:
       }
     }
 
-    v15 = [a1 _footerContentConfiguration];
+    _footerContentConfiguration = [self _footerContentConfiguration];
 
     v5 = v18;
-    if (!v15)
+    if (!_footerContentConfiguration)
     {
       goto LABEL_10;
     }
 
-    v16 = [a1 collectionView];
-    v17 = [v16 numberOfSections] - 1;
+    collectionView = [self collectionView];
+    v17 = [collectionView numberOfSections] - 1;
 
     v12 = [MEMORY[0x1E696AC88] indexPathForItem:0x7FFFFFFFFFFFFFFFLL inSection:v17];
     v13 = 4;
     goto LABEL_8;
   }
 
-  v8 = [a1 dataSource];
+  dataSource = [self dataSource];
   if (v18)
   {
     v9 = v18[2];
@@ -2521,15 +2521,15 @@ LABEL_5:
   }
 
   v10 = v9;
-  v11 = [v10 identifier];
-  v12 = [v8 indexPathForItemIdentifier:v11];
+  identifier = [v10 identifier];
+  v12 = [dataSource indexPathForItemIdentifier:identifier];
 
   v13 = 0;
 LABEL_8:
   v5 = v18;
   if (v12)
   {
-    [a1[72] scrollToItemAtIndexPath:v12 atScrollPosition:v13 animated:a3];
+    [self[72] scrollToItemAtIndexPath:v12 atScrollPosition:v13 animated:target];
 
     v5 = v18;
   }
@@ -2537,42 +2537,42 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)reconfigureItemForTab:(void *)a1
+- (void)reconfigureItemForTab:(void *)tab
 {
-  if (a1)
+  if (tab)
   {
     v3 = [MEMORY[0x1E695DFD8] setWithObject:a2];
-    [a1 _reconfigureItemsInDataSourceForTabs:v3 animated:1];
+    [tab _reconfigureItemsInDataSourceForTabs:v3 animated:1];
   }
 }
 
-- (id)resolvedPopoverPresentationControllerSourceItemForTab:(id)a3
+- (id)resolvedPopoverPresentationControllerSourceItemForTab:(id)tab
 {
-  v4 = a3;
-  v5 = [(_UITabOutlineView *)self contentByIdentifier];
-  v6 = [v4 identifier];
-  v7 = [v5 objectForKey:v6];
+  tabCopy = tab;
+  contentByIdentifier = [(_UITabOutlineView *)self contentByIdentifier];
+  identifier = [tabCopy identifier];
+  v7 = [contentByIdentifier objectForKey:identifier];
   v8 = [v7 tab];
 
   if (v8)
   {
-    v9 = v4;
-    if (v9)
+    _parentGroup = tabCopy;
+    if (_parentGroup)
     {
       do
       {
-        v10 = v9;
-        v11 = [(_UITabOutlineView *)self dataSource];
-        v12 = [v9 identifier];
-        v13 = [v11 indexPathForItemIdentifier:v12];
+        v10 = _parentGroup;
+        dataSource = [(_UITabOutlineView *)self dataSource];
+        identifier2 = [_parentGroup identifier];
+        v13 = [dataSource indexPathForItemIdentifier:identifier2];
 
-        v14 = [(_UITabOutlineView *)self collectionView];
-        v15 = [v14 cellForItemAtIndexPath:v13];
+        collectionView = [(_UITabOutlineView *)self collectionView];
+        v15 = [collectionView cellForItemAtIndexPath:v13];
 
-        v9 = [v10 _parentGroup];
+        _parentGroup = [v10 _parentGroup];
       }
 
-      while (v9 && !v15);
+      while (_parentGroup && !v15);
     }
 
     else
@@ -2589,17 +2589,17 @@ LABEL_10:
   return v15;
 }
 
-- (void)_tabModelDidReload:(id)a3
+- (void)_tabModelDidReload:(id)reload
 {
   [(_UITabOutlineView *)self _reloadDataSourceSnapshotAnimated:1];
 
   [(_UITabOutlineView *)self _updateSelectedItemAnimated:1];
 }
 
-- (void)_tabModel:(id)a3 tabContentDidChange:(id)a4
+- (void)_tabModel:(id)model tabContentDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  changeCopy = change;
   v8 = [(_UITabOutlineView *)self _dataSourceUpdateGroupCompletionCreateIfNeeded:0];
   if (v8)
   {
@@ -2622,45 +2622,45 @@ LABEL_10:
       updatedTabsDuringApplySnapshot = self->_updatedTabsDuringApplySnapshot;
     }
 
-    [(NSMutableSet *)updatedTabsDuringApplySnapshot addObject:v7, v13, v14, v15, v16];
+    [(NSMutableSet *)updatedTabsDuringApplySnapshot addObject:changeCopy, v13, v14, v15, v16];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695DFD8] setWithObject:v7];
+    v12 = [MEMORY[0x1E695DFD8] setWithObject:changeCopy];
     [(_UITabOutlineView *)self _reconfigureItemsInDataSourceForTabs:v12 animated:1];
   }
 }
 
-- (void)_tabModel:(id)a3 didReplaceOldItem:(id)a4 newItem:(id)a5
+- (void)_tabModel:(id)model didReplaceOldItem:(id)item newItem:(id)newItem
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  if (([v7 _isGroup] & 1) == 0 && !objc_msgSend(v8, "_isGroup"))
+  itemCopy = item;
+  newItemCopy = newItem;
+  if (([itemCopy _isGroup] & 1) == 0 && !objc_msgSend(newItemCopy, "_isGroup"))
   {
     contentByIdentifier = self->_contentByIdentifier;
-    v10 = [v7 identifier];
-    [(NSMutableDictionary *)contentByIdentifier removeObjectForKey:v10];
+    identifier = [itemCopy identifier];
+    [(NSMutableDictionary *)contentByIdentifier removeObjectForKey:identifier];
 
     v11 = self->_contentByIdentifier;
-    v12 = [_UITabSidebarContent contentForTab:v8];
-    v13 = [v8 identifier];
-    [(NSMutableDictionary *)v11 setObject:v12 forKey:v13];
+    v12 = [_UITabSidebarContent contentForTab:newItemCopy];
+    identifier2 = [newItemCopy identifier];
+    [(NSMutableDictionary *)v11 setObject:v12 forKey:identifier2];
 
-    v14 = [(_UITabOutlineView *)self activeTransaction];
-    v15 = [v8 identifier];
-    [v14 replaceTab:v8 forIdentifier:v15];
+    activeTransaction = [(_UITabOutlineView *)self activeTransaction];
+    identifier3 = [newItemCopy identifier];
+    [activeTransaction replaceTab:newItemCopy forIdentifier:identifier3];
 
-    v16 = [(_UITabOutlineView *)self dataSource];
-    v17 = [v16 snapshot];
+    dataSource = [(_UITabOutlineView *)self dataSource];
+    snapshot = [dataSource snapshot];
 
     v18 = [(_UITabOutlineView *)self _dataSourceUpdateGroupCompletionCreateIfNeeded:1];
     [v18 increment];
-    v19 = [v7 identifier];
-    v20 = [v8 identifier];
-    v21 = v19;
-    v22 = v20;
+    identifier4 = [itemCopy identifier];
+    identifier5 = [newItemCopy identifier];
+    v21 = identifier4;
+    v22 = identifier5;
     v23 = v22;
     if (v21 == v22)
     {
@@ -2672,12 +2672,12 @@ LABEL_10:
       {
 
 LABEL_12:
-        v27 = [v7 identifier];
-        v28 = [v17 indexOfItemIdentifier:v27];
+        identifier6 = [itemCopy identifier];
+        v28 = [snapshot indexOfItemIdentifier:identifier6];
 
         if (v28 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          if (([v8 isHidden] & 1) == 0)
+          if (([newItemCopy isHidden] & 1) == 0)
           {
             [v18 complete];
             [(_UITabOutlineView *)self _reloadDataSourceSnapshotAnimated:1];
@@ -2686,20 +2686,20 @@ LABEL_12:
           goto LABEL_17;
         }
 
-        v29 = [v8 identifier];
-        v34 = v29;
+        identifier7 = [newItemCopy identifier];
+        v34 = identifier7;
         v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1];
-        v31 = [v7 identifier];
-        [v17 insertItemsWithIdentifiers:v30 afterItemWithIdentifier:v31];
+        identifier8 = [itemCopy identifier];
+        [snapshot insertItemsWithIdentifiers:v30 afterItemWithIdentifier:identifier8];
 
-        v25 = [v7 identifier];
-        v33 = v25;
+        identifier9 = [itemCopy identifier];
+        v33 = identifier9;
         v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
-        [v17 deleteItemsWithIdentifiers:v26];
+        [snapshot deleteItemsWithIdentifiers:v26];
 LABEL_16:
 
-        v32 = [(_UITabOutlineView *)self dataSource];
-        [v32 applySnapshot:v17 animatingDifferences:1];
+        dataSource2 = [(_UITabOutlineView *)self dataSource];
+        [dataSource2 applySnapshot:snapshot animatingDifferences:1];
 
         [v18 complete];
 LABEL_17:
@@ -2715,10 +2715,10 @@ LABEL_17:
       }
     }
 
-    v25 = [v8 identifier];
-    v35[0] = v25;
+    identifier9 = [newItemCopy identifier];
+    v35[0] = identifier9;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
-    [v17 reconfigureItemsWithIdentifiers:v26];
+    [snapshot reconfigureItemsWithIdentifiers:v26];
     goto LABEL_16;
   }
 
@@ -2726,9 +2726,9 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_tabModel:(id)a3 visibilityDidChangeForTab:(id)a4
+- (void)_tabModel:(id)model visibilityDidChangeForTab:(id)tab
 {
-  v14 = a4;
+  tabCopy = tab;
   if (self)
   {
     tabModel = self->_tabModel;
@@ -2743,14 +2743,14 @@ LABEL_18:
   {
     if (!self->_ignoringSelectionUpdates)
     {
-      v6 = [(_UITabOutlineView *)self dataSource];
-      v7 = [v14 identifier];
-      v8 = [v6 indexPathForItemIdentifier:v7];
+      dataSource = [(_UITabOutlineView *)self dataSource];
+      identifier = [tabCopy identifier];
+      v8 = [dataSource indexPathForItemIdentifier:identifier];
 
-      v9 = [(_UITabOutlineView *)self collectionView];
-      v10 = [(_UITabOutlineView *)self collectionView:v9 shouldSelectItemAtIndexPath:v8];
+      collectionView = [(_UITabOutlineView *)self collectionView];
+      v10 = [(_UITabOutlineView *)self collectionView:collectionView shouldSelectItemAtIndexPath:v8];
 
-      v11 = [(_UITabModel *)self->_tabModel isTabHidden:v14];
+      v11 = [(_UITabModel *)self->_tabModel isTabHidden:tabCopy];
       v12 = 0;
       if (!v11 && v10)
       {
@@ -2758,8 +2758,8 @@ LABEL_18:
       }
 
       [(_UITabOutlineView *)self _selectItemAtIndexPath:v12 animated:1 performAction:0];
-      v13 = [(_UITabOutlineView *)self activeTransaction];
-      [v13 updateTab:v14 toHidden:v11];
+      activeTransaction = [(_UITabOutlineView *)self activeTransaction];
+      [activeTransaction updateTab:tabCopy toHidden:v11];
     }
   }
 
@@ -2770,9 +2770,9 @@ LABEL_18:
   }
 }
 
-- (void)_tabModel:(id)a3 didChangeSelectedLeaf:(id)a4 previousElement:(id)a5
+- (void)_tabModel:(id)model didChangeSelectedLeaf:(id)leaf previousElement:(id)element
 {
-  v6 = [(UIView *)self superview:a3];
+  v6 = [(UIView *)self superview:model];
   if (v6)
   {
     v7 = +[UIView areAnimationsEnabled];
@@ -2783,9 +2783,9 @@ LABEL_18:
     v7 = 0;
   }
 
-  v8 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
 
-  if (!v8)
+  if (!superview)
   {
     self->_needsScrollToSelectedItemWhenBecomingVisible = 1;
   }
@@ -2793,16 +2793,16 @@ LABEL_18:
   [(_UITabOutlineView *)self _updateSelectedItemAnimated:v7];
 }
 
-- (void)_tabModel:(id)a3 customizationStoreDidChange:(id)a4
+- (void)_tabModel:(id)model customizationStoreDidChange:(id)change
 {
-  v5 = [a4 collapsedGroupIdentifiers];
-  v6 = [v5 mutableCopy];
+  collapsedGroupIdentifiers = [change collapsedGroupIdentifiers];
+  v6 = [collapsedGroupIdentifiers mutableCopy];
   collapsedGroupIdentifiers = self->_collapsedGroupIdentifiers;
   self->_collapsedGroupIdentifiers = v6;
 
   [(_UITabOutlineView *)self _reloadDataSourceSnapshotAnimated:1];
-  v8 = [(_UITabOutlineView *)&self->super.super.super.isa delegate];
-  [v8 outlineViewDidChangeCustomizationStore:self];
+  delegate = [(_UITabOutlineView *)&self->super.super.super.isa delegate];
+  [delegate outlineViewDidChangeCustomizationStore:self];
 }
 
 - (id)delegate
@@ -2832,9 +2832,9 @@ LABEL_18:
 - (void)_updateEditBarButtonItem
 {
   v56[1] = *MEMORY[0x1E69E9840];
-  v3 = [(_UITabOutlineView *)self navigationBar];
+  navigationBar = [(_UITabOutlineView *)self navigationBar];
 
-  if (v3)
+  if (navigationBar)
   {
     if (self)
     {
@@ -2846,7 +2846,7 @@ LABEL_18:
       tabModel = 0;
     }
 
-    v5 = [(_UITabModel *)tabModel isEditing];
+    isEditing = [(_UITabModel *)tabModel isEditing];
     if (self)
     {
       v6 = self->_tabModel;
@@ -2857,9 +2857,9 @@ LABEL_18:
       v6 = 0;
     }
 
-    v7 = [(_UITabModel *)v6 isEditable];
-    v8 = [(_UITabOutlineView *)self _currentPlatformMetrics];
-    v9 = [v8 supportsFloatingSidebar];
+    isEditable = [(_UITabModel *)v6 isEditable];
+    _currentPlatformMetrics = [(_UITabOutlineView *)self _currentPlatformMetrics];
+    supportsFloatingSidebar = [_currentPlatformMetrics supportsFloatingSidebar];
 
     if (self)
     {
@@ -2872,29 +2872,29 @@ LABEL_18:
     }
 
     v11 = sidebar;
-    v38 = [(UITabBarControllerSidebar *)v11 navigationOverflowItems];
+    navigationOverflowItems = [(UITabBarControllerSidebar *)v11 navigationOverflowItems];
 
     LODWORD(v11) = [(_UITabOutlineView *)self _showSidebarBarButtonItem];
-    v12 = [(_UITabOutlineView *)self sidebarBarButtonItem];
-    [v12 setHidden:v11 ^ 1];
+    sidebarBarButtonItem = [(_UITabOutlineView *)self sidebarBarButtonItem];
+    [sidebarBarButtonItem setHidden:v11 ^ 1];
 
-    v13 = [(_UITabOutlineView *)self sidebarBarButtonItem];
-    v14 = v13;
-    if (v9)
+    sidebarBarButtonItem2 = [(_UITabOutlineView *)self sidebarBarButtonItem];
+    v14 = sidebarBarButtonItem2;
+    if (supportsFloatingSidebar)
     {
-      v55 = v13;
+      v55 = sidebarBarButtonItem2;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v55 count:1];
       v16 = MEMORY[0x1E695E0F0];
     }
 
     else
     {
-      v56[0] = v13;
+      v56[0] = sidebarBarButtonItem2;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:1];
       v15 = MEMORY[0x1E695E0F0];
     }
 
-    if (!v5 && !v7 && !v38)
+    if (!isEditing && !isEditable && !navigationOverflowItems)
     {
       goto LABEL_29;
     }
@@ -2907,33 +2907,33 @@ LABEL_18:
     v40[2] = __45___UITabOutlineView__updateEditBarButtonItem__block_invoke;
     v40[3] = &unk_1E712C0C8;
     objc_copyWeak(&v41, &location);
-    v42 = v5;
+    v42 = isEditing;
     v18 = [UIAction actionWithTitle:v37 image:v17 identifier:0 handler:v40];
 
-    if (v5)
+    if (isEditing)
     {
       v19 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 primaryAction:v18];
       v20 = v19;
-      if (!v9)
+      if (!supportsFloatingSidebar)
       {
-        v27 = [(_UITabOutlineView *)self resetBarButtonItem];
-        v52 = v27;
+        resetBarButtonItem = [(_UITabOutlineView *)self resetBarButtonItem];
+        v52 = resetBarButtonItem;
         v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v52 count:1];
 
         v51 = v20;
         [MEMORY[0x1E695DEC8] arrayWithObjects:&v51 count:1];
-        v15 = v22 = v15;
+        v15 = resetBarButtonItem2 = v15;
         v16 = v28;
 LABEL_28:
 
         objc_destroyWeak(&v41);
         objc_destroyWeak(&location);
 LABEL_29:
-        v35 = [(_UITabOutlineView *)self navigationItem];
-        [v35 setLeftBarButtonItems:v16];
+        navigationItem = [(_UITabOutlineView *)self navigationItem];
+        [navigationItem setLeftBarButtonItems:v16];
 
-        v36 = [(_UITabOutlineView *)self navigationItem];
-        [v36 setRightBarButtonItems:v15];
+        navigationItem2 = [(_UITabOutlineView *)self navigationItem];
+        [navigationItem2 setRightBarButtonItems:v15];
 
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 3221225472;
@@ -2948,39 +2948,39 @@ LABEL_29:
       v54 = v19;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1];
 
-      v22 = [(_UITabOutlineView *)self resetBarButtonItem];
-      v53 = v22;
+      resetBarButtonItem2 = [(_UITabOutlineView *)self resetBarButtonItem];
+      v53 = resetBarButtonItem2;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
       v16 = v21;
     }
 
     else
     {
-      if (!v38)
+      if (!navigationOverflowItems)
       {
         v29 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:2 primaryAction:v18];
         v20 = v29;
-        if (v9)
+        if (supportsFloatingSidebar)
         {
           v45 = v29;
           [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
-          v16 = v22 = v16;
+          v16 = resetBarButtonItem2 = v16;
         }
 
         else
         {
           v44 = v29;
           [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
-          v15 = v22 = v15;
+          v15 = resetBarButtonItem2 = v15;
         }
 
         goto LABEL_28;
       }
 
-      if (v7)
+      if (isEditable)
       {
         v48 = v18;
-        v49[0] = v38;
+        v49[0] = navigationOverflowItems;
         v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1];
         v25 = [UIMenu menuWithTitle:&stru_1EFB14550 image:0 identifier:0 options:1 children:v24];
         v49[1] = v25;
@@ -2990,21 +2990,21 @@ LABEL_29:
 
       else
       {
-        v50 = v38;
+        v50 = navigationOverflowItems;
         v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1];
         v20 = [UIMenu menuWithChildren:v24];
       }
 
-      v30 = [(_UITabOutlineView *)self _currentPlatformMetrics];
-      v31 = [v30 overflowButtonImageName];
-      v22 = [UIImage systemImageNamed:v31];
+      _currentPlatformMetrics2 = [(_UITabOutlineView *)self _currentPlatformMetrics];
+      overflowButtonImageName = [_currentPlatformMetrics2 overflowButtonImageName];
+      resetBarButtonItem2 = [UIImage systemImageNamed:overflowButtonImageName];
 
-      v32 = [[UIBarButtonItem alloc] initWithImage:v22 menu:v20];
+      v32 = [[UIBarButtonItem alloc] initWithImage:resetBarButtonItem2 menu:v20];
       v33 = v32;
-      if (v9)
+      if (supportsFloatingSidebar)
       {
-        v34 = [(_UITabOutlineView *)self sidebarBarButtonItem];
-        v47[0] = v34;
+        sidebarBarButtonItem3 = [(_UITabOutlineView *)self sidebarBarButtonItem];
+        v47[0] = sidebarBarButtonItem3;
         v47[1] = v33;
         v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:2];
       }
@@ -3013,7 +3013,7 @@ LABEL_29:
       {
         v46 = v32;
         v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
-        v34 = v15;
+        sidebarBarButtonItem3 = v15;
       }
 
       v15 = v33;
@@ -3024,26 +3024,26 @@ LABEL_29:
   }
 }
 
-- (void)_performWithoutAffectingSelection:(id)a3
+- (void)_performWithoutAffectingSelection:(id)selection
 {
   self->_ignoringSelectionUpdates = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(selection + 2))(selection, a2);
   self->_ignoringSelectionUpdates = 0;
 }
 
-- (void)_performWithoutAffectingContent:(id)a3
+- (void)_performWithoutAffectingContent:(id)content
 {
   self->_ignoringContentUpdates = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(content + 2))(content, a2);
   self->_ignoringContentUpdates = 0;
 }
 
-- (void)_performWithWillDisplayTab:(id)a3 block:(id)a4
+- (void)_performWithWillDisplayTab:(id)tab block:(id)block
 {
-  objc_storeStrong(&self->_willDisplayTab, a3);
-  v9 = a3;
-  v7 = a4;
-  v7[2](v7, v9);
+  objc_storeStrong(&self->_willDisplayTab, tab);
+  tabCopy = tab;
+  blockCopy = block;
+  blockCopy[2](blockCopy, tabCopy);
 
   willDisplayTab = self->_willDisplayTab;
   self->_willDisplayTab = 0;
@@ -3070,46 +3070,46 @@ LABEL_29:
 
 - (void)tabModelEditingStateDidChange
 {
-  if (a1)
+  if (self)
   {
-    if ([*(a1 + 472) isEditing])
+    if ([*(self + 472) isEditing])
     {
-      [a1 _activateNewSidebarTransaction];
+      [self _activateNewSidebarTransaction];
       v2 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     }
 
     else
     {
-      v3 = [a1 activeTransaction];
+      activeTransaction = [self activeTransaction];
 
-      if (!v3)
+      if (!activeTransaction)
       {
-        v5 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v5 handleFailureInMethod:sel_tabModelEditingStateDidChange object:a1 file:@"_UITabOutlineView.m" lineNumber:1858 description:{@"UIKit internal error: Tab outline view should not be exiting edit mode without an active transaction. Model: %@; Outline view: %@", *(a1 + 472), a1}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:sel_tabModelEditingStateDidChange object:self file:@"_UITabOutlineView.m" lineNumber:1858 description:{@"UIKit internal error: Tab outline view should not be exiting edit mode without an active transaction. Model: %@; Outline view: %@", *(self + 472), self}];
       }
 
-      [a1 _commitCurrentSidebarTransaction];
+      [self _commitCurrentSidebarTransaction];
       v2 = 0;
     }
 
-    v4 = *(a1 + 616);
-    *(a1 + 616) = v2;
+    v4 = *(self + 616);
+    *(self + 616) = v2;
   }
 }
 
-- (uint64_t)setAdditionalEditingInsets:(float64_t)a3
+- (uint64_t)setAdditionalEditingInsets:(float64_t)insets
 {
   if (result)
   {
     v5 = result;
     v6.f64[0] = a2;
-    v6.f64[1] = a3;
+    v6.f64[1] = insets;
     v7.f64[0] = a4;
     v7.f64[1] = a5;
     if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(result + 736), v6), vceqq_f64(*(result + 752), v7)))) & 1) == 0)
     {
       *(result + 736) = a2;
-      *(result + 744) = a3;
+      *(result + 744) = insets;
       *(result + 752) = a4;
       *(result + 760) = a5;
       [result _updateEditingInsets];
@@ -3144,15 +3144,15 @@ LABEL_29:
     top = 0.0;
   }
 
-  v7 = [(UIView *)self superview];
-  if (v7)
+  superview = [(UIView *)self superview];
+  if (superview)
   {
     if (left != 0.0 || top != 0.0 || right != 0.0)
     {
 
 LABEL_10:
-      v8 = [(UIView *)self superview];
-      [v8 safeAreaInsets];
+      superview2 = [(UIView *)self superview];
+      [superview2 safeAreaInsets];
       v10 = v9;
       v12 = v11;
       v14 = v13;
@@ -3175,12 +3175,12 @@ LABEL_11:
 
 - (void)_activateNewSidebarTransaction
 {
-  v4 = [(_UITabOutlineView *)self activeTransaction];
+  activeTransaction = [(_UITabOutlineView *)self activeTransaction];
 
-  if (v4)
+  if (activeTransaction)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    v9 = v8;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v9 = currentHandler;
     if (self)
     {
       tabModel = self->_tabModel;
@@ -3191,20 +3191,20 @@ LABEL_11:
       tabModel = 0;
     }
 
-    [v8 handleFailureInMethod:a2 object:self file:@"_UITabOutlineView.m" lineNumber:1940 description:{@"UIKit internal error: Attempting to create a new transaction without while there is already an active transaction. Model: %@; Outline view: %@", tabModel, self}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITabOutlineView.m" lineNumber:1940 description:{@"UIKit internal error: Attempting to create a new transaction without while there is already an active transaction. Model: %@; Outline view: %@", tabModel, self}];
   }
 
-  v11 = [(_UITabOutlineView *)self _tabsByIdentifier];
+  _tabsByIdentifier = [(_UITabOutlineView *)self _tabsByIdentifier];
   v5 = [_UITabSidebarTransaction alloc];
   if (self)
   {
-    v6 = [(_UITabSidebarTransaction *)v5 initWithTabs:v11 sidebar:self->_sidebar];
+    v6 = [(_UITabSidebarTransaction *)v5 initWithTabs:_tabsByIdentifier sidebar:self->_sidebar];
     sidebar = self->_sidebar;
   }
 
   else
   {
-    v6 = [(_UITabSidebarTransaction *)v5 initWithTabs:v11 sidebar:0];
+    v6 = [(_UITabSidebarTransaction *)v5 initWithTabs:_tabsByIdentifier sidebar:0];
     sidebar = 0;
   }
 
@@ -3213,9 +3213,9 @@ LABEL_11:
 
 - (void)_commitCurrentSidebarTransaction
 {
-  v3 = [(_UITabOutlineView *)self activeTransaction];
+  activeTransaction = [(_UITabOutlineView *)self activeTransaction];
 
-  if (v3)
+  if (activeTransaction)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -3254,15 +3254,15 @@ LABEL_11:
 
 - (void)_updateContinuousSelectionGesture
 {
-  v3 = [(_UITabOutlineView *)self collectionView];
-  [v3 contentSize];
+  collectionView = [(_UITabOutlineView *)self collectionView];
+  [collectionView contentSize];
   v5 = v4;
 
-  v6 = [(_UITabOutlineView *)self collectionView];
-  [v6 frame];
+  collectionView2 = [(_UITabOutlineView *)self collectionView];
+  [collectionView2 frame];
   v8 = v7;
-  v9 = [(_UITabOutlineView *)self collectionView];
-  [v9 adjustedContentInset];
+  collectionView3 = [(_UITabOutlineView *)self collectionView];
+  [collectionView3 adjustedContentInset];
   v12 = v8 - (v10 + v11);
 
   v13 = v5 <= v12;
@@ -3276,29 +3276,29 @@ LABEL_11:
     v14 = 0.0;
   }
 
-  v15 = [(_UITabOutlineView *)self selectionGestureRecognizer];
-  [v15 setEnabled:v13];
+  selectionGestureRecognizer = [(_UITabOutlineView *)self selectionGestureRecognizer];
+  [selectionGestureRecognizer setEnabled:v13];
 
-  v16 = [(_UITabOutlineView *)self selectionGestureRecognizer];
-  [v16 setAllowableMovement:{v14, v14}];
+  selectionGestureRecognizer2 = [(_UITabOutlineView *)self selectionGestureRecognizer];
+  [selectionGestureRecognizer2 setAllowableMovement:{v14, v14}];
 }
 
-- (void)_animateSelection:(id)a3 completion:(id)a4
+- (void)_animateSelection:(id)selection completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UITabOutlineView *)self _highlightGroupCompletion];
-  [v8 increment];
+  completionCopy = completion;
+  selectionCopy = selection;
+  _highlightGroupCompletion = [(_UITabOutlineView *)self _highlightGroupCompletion];
+  [_highlightGroupCompletion increment];
   v9 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:0.8 response:0.3];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __50___UITabOutlineView__animateSelection_completion___block_invoke;
   v12[3] = &unk_1E711F7E0;
-  v13 = v8;
-  v14 = v6;
-  v10 = v6;
-  v11 = v8;
-  [UIView _animateUsingSpringBehavior:v9 tracking:0 animations:v7 completion:v12];
+  v13 = _highlightGroupCompletion;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = _highlightGroupCompletion;
+  [UIView _animateUsingSpringBehavior:v9 tracking:0 animations:selectionCopy completion:v12];
 }
 
 - (id)_highlightGroupCompletion
@@ -3323,14 +3323,14 @@ LABEL_11:
   return v3;
 }
 
-- (void)_setShowLensView:(BOOL)a3
+- (void)_setShowLensView:(BOOL)view
 {
-  v3 = a3;
-  v5 = [(_UITabOutlineView *)self lensView];
+  viewCopy = view;
+  lensView = [(_UITabOutlineView *)self lensView];
 
-  if (v5)
+  if (lensView)
   {
-    if (v3)
+    if (viewCopy)
     {
       if ([(_UITabOutlineView *)self _isShowingLensView])
       {
@@ -3344,14 +3344,14 @@ LABEL_7:
         return;
       }
 
-      v6 = [(UIView *)self traitOverrides];
-      [v6 setNSIntegerValue:1 forTrait:objc_opt_class()];
+      traitOverrides = [(UIView *)self traitOverrides];
+      [traitOverrides setNSIntegerValue:1 forTrait:objc_opt_class()];
     }
 
     else
     {
-      v6 = [(UIView *)self traitOverrides];
-      [v6 removeTrait:objc_opt_class()];
+      traitOverrides = [(UIView *)self traitOverrides];
+      [traitOverrides removeTrait:objc_opt_class()];
     }
 
     goto LABEL_7;
@@ -3360,35 +3360,35 @@ LABEL_7:
 
 - (BOOL)_isShowingLensView
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = [v2 valueForNSIntegerTrait:objc_opt_class()];
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = [traitCollection valueForNSIntegerTrait:objc_opt_class()];
 
   return v3 == 1;
 }
 
-- (void)_updateLensViewFrameAnimated:(BOOL)a3
+- (void)_updateLensViewFrameAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(_UITabOutlineView *)self highlightedIndexPath];
-  if (v5)
+  animatedCopy = animated;
+  highlightedIndexPath = [(_UITabOutlineView *)self highlightedIndexPath];
+  if (highlightedIndexPath)
   {
-    v6 = [(_UITabOutlineView *)self collectionView];
-    v7 = [v6 cellForItemAtIndexPath:v5];
+    collectionView = [(_UITabOutlineView *)self collectionView];
+    v7 = [collectionView cellForItemAtIndexPath:highlightedIndexPath];
 
     if (v7)
     {
-      v8 = [(_UITabOutlineView *)self lensView];
+      lensView = [(_UITabOutlineView *)self lensView];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __50___UITabOutlineView__updateLensViewFrameAnimated___block_invoke;
       aBlock[3] = &unk_1E70F6228;
-      v13 = v8;
+      v13 = lensView;
       v14 = v7;
-      v15 = self;
-      v9 = v8;
+      selfCopy = self;
+      v9 = lensView;
       v10 = _Block_copy(aBlock);
       v11 = v10;
-      if (v3)
+      if (animatedCopy)
       {
         [(_UITabOutlineView *)self _animateSelection:v10 completion:0];
       }
@@ -3401,16 +3401,16 @@ LABEL_7:
   }
 }
 
-- (void)_setHighlightedIndexPath:(id)a3 animated:(BOOL)a4
+- (void)_setHighlightedIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v12 = a3;
-  v7 = [(_UITabOutlineView *)self lensView];
+  animatedCopy = animated;
+  pathCopy = path;
+  lensView = [(_UITabOutlineView *)self lensView];
 
-  if (v7)
+  if (lensView)
   {
     v8 = self->_highlightedIndexPath;
-    v9 = v12;
+    v9 = pathCopy;
     v10 = v9;
     if (v8 == v9)
     {
@@ -3432,29 +3432,29 @@ LABEL_7:
     {
     }
 
-    objc_storeStrong(&self->_highlightedIndexPath, a3);
-    [(_UITabOutlineView *)self _updateLensViewFrameAnimated:v4];
+    objc_storeStrong(&self->_highlightedIndexPath, path);
+    [(_UITabOutlineView *)self _updateLensViewFrameAnimated:animatedCopy];
   }
 
 LABEL_10:
 }
 
-- (void)_selectItemAtIndexPath:(id)a3 animated:(BOOL)a4 performAction:(BOOL)a5
+- (void)_selectItemAtIndexPath:(id)path animated:(BOOL)animated performAction:(BOOL)action
 {
-  v5 = a5;
-  v6 = a4;
+  actionCopy = action;
+  animatedCopy = animated;
   v32[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(_UITabOutlineView *)self collectionView];
-  v10 = v9;
-  if (!v8)
+  pathCopy = path;
+  collectionView = [(_UITabOutlineView *)self collectionView];
+  v10 = collectionView;
+  if (!pathCopy)
   {
-    v16 = [v9 indexPathsForSelectedItems];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v17 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v17 = [indexPathsForSelectedItems countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v17)
     {
       v18 = v17;
@@ -3465,43 +3465,43 @@ LABEL_10:
         {
           if (*v27 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(indexPathsForSelectedItems);
           }
 
-          [v10 deselectItemAtIndexPath:*(*(&v26 + 1) + 8 * i) animated:v6];
+          [v10 deselectItemAtIndexPath:*(*(&v26 + 1) + 8 * i) animated:animatedCopy];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v18 = [indexPathsForSelectedItems countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v18);
     }
 
-    [(_UITabOutlineView *)self _setHighlightedIndexPath:0 animated:v6];
+    [(_UITabOutlineView *)self _setHighlightedIndexPath:0 animated:animatedCopy];
 
     goto LABEL_33;
   }
 
-  if (!v5)
+  if (!actionCopy)
   {
-    [v9 selectItemAtIndexPath:v8 animated:v6 scrollPosition:0];
+    [collectionView selectItemAtIndexPath:pathCopy animated:animatedCopy scrollPosition:0];
 LABEL_19:
     if (![(_UITabOutlineView *)self _isLensActiveOrAnimating])
     {
-      [(_UITabOutlineView *)self _setHighlightedIndexPath:v8 animated:v6];
+      [(_UITabOutlineView *)self _setHighlightedIndexPath:pathCopy animated:animatedCopy];
     }
 
     goto LABEL_33;
   }
 
-  v11 = [(_UITabOutlineView *)self collectionView:v9 shouldSelectItemAtIndexPath:v8];
+  v11 = [(_UITabOutlineView *)self collectionView:collectionView shouldSelectItemAtIndexPath:pathCopy];
   if (v11)
   {
-    [v10 selectItemAtIndexPath:v8 animated:v6 scrollPosition:0];
+    [v10 selectItemAtIndexPath:pathCopy animated:animatedCopy scrollPosition:0];
   }
 
   v12 = self->_firstSelectionIndexPath;
-  v13 = v8;
+  v13 = pathCopy;
   v14 = v13;
   if (v12 == v13)
   {
@@ -3541,25 +3541,25 @@ LABEL_19:
   if ([(_UITabOutlineView *)self _isHeaderIndexPath:v14])
   {
     v21 = [(_UITabOutlineView *)self _tabForIndexPath:v14];
-    v22 = [v21 identifier];
+    identifier = [v21 identifier];
 
-    v23 = [(_UITabOutlineView *)self _existingSectionSnapshotForTabIdentifier:v22];
-    if ([v23 isExpanded:v22])
+    v23 = [(_UITabOutlineView *)self _existingSectionSnapshotForTabIdentifier:identifier];
+    if ([v23 isExpanded:identifier])
     {
-      v32[0] = v22;
+      v32[0] = identifier;
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
       [v23 collapseItems:v24];
     }
 
     else
     {
-      v31 = v22;
+      v31 = identifier;
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
       [v23 expandItems:v24];
     }
 
-    v25 = [(_UITabOutlineView *)self dataSource];
-    [v25 applySnapshot:v23 toSection:v22 animatingDifferences:1];
+    dataSource = [(_UITabOutlineView *)self dataSource];
+    [dataSource applySnapshot:v23 toSection:identifier animatingDifferences:1];
   }
 
   if (v11)
@@ -3570,12 +3570,12 @@ LABEL_19:
 LABEL_33:
 }
 
-- (void)_handleSelectionGesture:(id)a3
+- (void)_handleSelectionGesture:(id)gesture
 {
-  v10 = a3;
+  gestureCopy = gesture;
   v4 = [(_UITabOutlineView *)self _indexPathForGestureRecognizer:?];
-  v5 = [(_UITabOutlineView *)self _highlightGroupCompletion];
-  v6 = [(_UITabOutlineView *)self lensView];
+  _highlightGroupCompletion = [(_UITabOutlineView *)self _highlightGroupCompletion];
+  lensView = [(_UITabOutlineView *)self lensView];
   if ([(_UITabOutlineView *)self _isShowingLensView])
   {
     v7 = 1;
@@ -3586,19 +3586,19 @@ LABEL_33:
     v7 = ![(_UITabOutlineView *)self _isHeaderIndexPath:v4]&& [(_UITabOutlineView *)self _isActionIndexPath:v4];
   }
 
-  v8 = [v10 state];
-  if ((v8 - 4) < 2)
+  state = [gestureCopy state];
+  if ((state - 4) < 2)
   {
     goto LABEL_11;
   }
 
-  if (v8 == 3)
+  if (state == 3)
   {
     [(_UITabOutlineView *)self _selectItemAtIndexPath:v4 animated:v7 performAction:1];
     [(_UITabOutlineView *)self _updateSelectedItemAnimated:v7];
 LABEL_11:
     [(_UITabOutlineView *)self _setLensActive:0];
-    [v5 complete];
+    [_highlightGroupCompletion complete];
 
     firstSelectionIndexPath = self->_firstSelectionIndexPath;
     self->_firstSelectionIndexPath = 0;
@@ -3607,10 +3607,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v8 == 1)
+  if (state == 1)
   {
     objc_storeStrong(&self->_firstSelectionIndexPath, v4);
-    [v5 increment];
+    [_highlightGroupCompletion increment];
     [(_UITabOutlineView *)self _setLensActive:1];
   }
 
@@ -3620,13 +3620,13 @@ LABEL_12:
 
 - (BOOL)_isLensActiveOrAnimating
 {
-  v3 = [(_UITabOutlineView *)self lensView];
-  v4 = ([v3 isActive] & 1) != 0 || self->_isAnimatingLensActiveState;
+  lensView = [(_UITabOutlineView *)self lensView];
+  v4 = ([lensView isActive] & 1) != 0 || self->_isAnimatingLensActiveState;
 
   return v4;
 }
 
-- (void)_setLensActive:(BOOL)a3
+- (void)_setLensActive:(BOOL)active
 {
   self->_isAnimatingLensActiveState = 1;
   objc_initWeak(&location, self);
@@ -3635,7 +3635,7 @@ LABEL_12:
   v7[2] = __36___UITabOutlineView__setLensActive___block_invoke;
   v7[3] = &unk_1E70F35E0;
   v7[4] = self;
-  v8 = a3;
+  activeCopy = active;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __36___UITabOutlineView__setLensActive___block_invoke_2;
@@ -3646,23 +3646,23 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (id)_indexPathForGestureRecognizer:(id)a3
+- (id)_indexPathForGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(_UITabOutlineView *)self collectionView];
-  [v4 locationInView:v5];
+  recognizerCopy = recognizer;
+  collectionView = [(_UITabOutlineView *)self collectionView];
+  [recognizerCopy locationInView:collectionView];
   v7 = v6;
 
-  v8 = [(_UITabOutlineView *)self collectionView];
-  [v8 bounds];
+  collectionView2 = [(_UITabOutlineView *)self collectionView];
+  [collectionView2 bounds];
   MidX = CGRectGetMidX(v14);
 
-  [v5 bounds];
+  [collectionView bounds];
   v13.x = MidX;
   v13.y = v7;
   if (CGRectContainsPoint(v15, v13))
   {
-    v10 = [v5 indexPathForItemAtPoint:{MidX, v7}];
+    v10 = [collectionView indexPathForItemAtPoint:{MidX, v7}];
   }
 
   else
@@ -3673,14 +3673,14 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(_UITabOutlineView *)self selectionGestureRecognizer];
+  beginCopy = begin;
+  selectionGestureRecognizer = [(_UITabOutlineView *)self selectionGestureRecognizer];
 
-  if (v5 == v4)
+  if (selectionGestureRecognizer == beginCopy)
   {
-    v7 = [(_UITabOutlineView *)self _indexPathForGestureRecognizer:v4];
+    v7 = [(_UITabOutlineView *)self _indexPathForGestureRecognizer:beginCopy];
     if (v7)
     {
       v6 = ![(_UITabOutlineView *)self isEditing];
@@ -3700,17 +3700,17 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UITabOutlineView *)self selectionGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  selectionGestureRecognizer = [(_UITabOutlineView *)self selectionGestureRecognizer];
 
-  if (v8 == v7)
+  if (selectionGestureRecognizer == recognizerCopy)
   {
-    v10 = [(_UITabOutlineView *)self collectionView];
-    v11 = [v10 panGestureRecognizer];
-    v9 = v11 == v6;
+    collectionView = [(_UITabOutlineView *)self collectionView];
+    panGestureRecognizer = [collectionView panGestureRecognizer];
+    v9 = panGestureRecognizer == gestureRecognizerCopy;
   }
 
   else
@@ -3723,42 +3723,42 @@ LABEL_12:
 
 - (void)_updateScrollEdgeAppearance
 {
-  v13 = [(_UITabOutlineView *)self collectionView];
-  v3 = [(_UITabOutlineView *)self navigationBar];
-  [v3 frame];
+  collectionView = [(_UITabOutlineView *)self collectionView];
+  navigationBar = [(_UITabOutlineView *)self navigationBar];
+  [navigationBar frame];
   MaxY = CGRectGetMaxY(v15);
 
-  [v13 contentOffset];
+  [collectionView contentOffset];
   v6 = fmax(fmin((-v5 - MaxY) / (MaxY + -4.0 - MaxY), 1.0), 0.0);
-  v7 = [(_UITabOutlineView *)self navigationItem];
-  [v7 _setManualScrollEdgeAppearanceProgress:v6];
+  navigationItem = [(_UITabOutlineView *)self navigationItem];
+  [navigationItem _setManualScrollEdgeAppearanceProgress:v6];
 
-  v8 = [(_UITabOutlineView *)self _bottomToolbar];
-  if (v8)
+  _bottomToolbar = [(_UITabOutlineView *)self _bottomToolbar];
+  if (_bottomToolbar)
   {
     [(UIView *)self->_bottomBarView frame];
     MinY = CGRectGetMinY(v16);
-    [v13 contentSize];
+    [collectionView contentSize];
     v11 = v10;
-    [v13 contentOffset];
-    [v8 _setBackgroundTransitionProgress:{fmax(fmin((v11 - v12 - (MinY + 4.0)) / (MinY - (MinY + 4.0)), 1.0), 0.0)}];
+    [collectionView contentOffset];
+    [_bottomToolbar _setBackgroundTransitionProgress:{fmax(fmin((v11 - v12 - (MinY + 4.0)) / (MinY - (MinY + 4.0)), 1.0), 0.0)}];
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(_UITabOutlineView *)self _tabForIndexPath:v5];
-  v7 = [(_UITabOutlineView *)self _isHeaderIndexPath:v5];
+  pathCopy = path;
+  v6 = [(_UITabOutlineView *)self _tabForIndexPath:pathCopy];
+  v7 = [(_UITabOutlineView *)self _isHeaderIndexPath:pathCopy];
 
   if (v7)
   {
-    v8 = 0;
+    _isSidebarDestination = 0;
   }
 
   else
   {
-    v8 = [v6 _isSidebarDestination];
+    _isSidebarDestination = [v6 _isSidebarDestination];
   }
 
   if (self)
@@ -3783,10 +3783,10 @@ LABEL_12:
       LOBYTE(v10) = 0;
     }
 
-    v11 = v8 & v10;
+    v11 = _isSidebarDestination & v10;
   }
 
-  else if (v8)
+  else if (_isSidebarDestination)
   {
     v11 = [(_UITabModel *)self->_tabModel shouldSelectTab:v6];
   }
@@ -3799,11 +3799,11 @@ LABEL_12:
   return v11;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  [(_UITabOutlineView *)self _setHighlightedIndexPath:v6 animated:1];
-  v7 = [(_UITabOutlineView *)self _tabForIndexPath:v6];
+  pathCopy = path;
+  [(_UITabOutlineView *)self _setHighlightedIndexPath:pathCopy animated:1];
+  v7 = [(_UITabOutlineView *)self _tabForIndexPath:pathCopy];
 
   if ([v7 _isSidebarDestination] && !self->_ignoresSelectionChangeFromFocusUpdate)
   {
@@ -3818,9 +3818,9 @@ LABEL_12:
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldDeselectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldDeselectItemAtIndexPath:(id)path
 {
-  v5 = [(_UITabOutlineView *)self _tabForIndexPath:a4];
+  v5 = [(_UITabOutlineView *)self _tabForIndexPath:path];
   if (self)
   {
     tabModel = self->_tabModel;
@@ -3833,20 +3833,20 @@ LABEL_12:
 
   if (-[_UITabModel isEditing](tabModel, "isEditing") && [v5 _isElement])
   {
-    v7 = [v5 allowsHiding];
+    allowsHiding = [v5 allowsHiding];
   }
 
   else
   {
-    v7 = 0;
+    allowsHiding = 0;
   }
 
-  return v7;
+  return allowsHiding;
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   if (self)
   {
     tabModel = self->_tabModel;
@@ -3859,15 +3859,15 @@ LABEL_12:
 
   if ([(_UITabModel *)tabModel isEditing])
   {
-    v8 = [(_UITabOutlineView *)self activeTransaction];
+    activeTransaction = [(_UITabOutlineView *)self activeTransaction];
 
-    if (!v8)
+    if (!activeTransaction)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"_UITabOutlineView.m" lineNumber:2322 description:@"Cannot edit an item without an active transaction"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UITabOutlineView.m" lineNumber:2322 description:@"Cannot edit an item without an active transaction"];
     }
 
-    v9 = [(_UITabOutlineView *)self _tabForIndexPath:v6];
+    v9 = [(_UITabOutlineView *)self _tabForIndexPath:pathCopy];
     v10 = v9;
     if (v9)
     {
@@ -3882,9 +3882,9 @@ LABEL_12:
   }
 }
 
-- (BOOL)collectionView:(id)a3 canPerformPrimaryActionForItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canPerformPrimaryActionForItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if (self)
   {
     tabModel = self->_tabModel;
@@ -3902,7 +3902,7 @@ LABEL_12:
 
   else
   {
-    v8 = [(_UITabOutlineView *)self _tabForIndexPath:v5];
+    v8 = [(_UITabOutlineView *)self _tabForIndexPath:pathCopy];
     if ([v8 _isAction])
     {
       v7 = 1;
@@ -3910,7 +3910,7 @@ LABEL_12:
 
     else
     {
-      v9 = [(_UITabOutlineView *)self _actionForIndexPath:v5];
+      v9 = [(_UITabOutlineView *)self _actionForIndexPath:pathCopy];
       v7 = v9 != 0;
     }
   }
@@ -3918,9 +3918,9 @@ LABEL_12:
   return v7;
 }
 
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path
 {
-  v8 = a4;
+  pathCopy = path;
   v5 = [(_UITabOutlineView *)self _actionForIndexPath:?];
   v6 = v5;
   if (v5)
@@ -3930,7 +3930,7 @@ LABEL_12:
 
   else
   {
-    v7 = [(_UITabOutlineView *)self _tabForIndexPath:v8];
+    v7 = [(_UITabOutlineView *)self _tabForIndexPath:pathCopy];
     if ([v7 _isAction])
     {
       [v7 _performAction];
@@ -3938,37 +3938,37 @@ LABEL_12:
   }
 }
 
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if ([(_UITabOutlineView *)self isEditing])
   {
-    v6 = [(_UITabOutlineView *)self _tabForIndexPath:v5];
+    v6 = [(_UITabOutlineView *)self _tabForIndexPath:pathCopy];
     if ([v6 allowsHiding])
     {
-      v7 = 1;
+      _isGroup = 1;
     }
 
     else
     {
-      v7 = [v6 _isGroup];
+      _isGroup = [v6 _isGroup];
     }
   }
 
   else
   {
-    v7 = 1;
+    _isGroup = 1;
   }
 
-  return v7;
+  return _isGroup;
 }
 
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view
 {
   if (self->_preferredItemIdentifierForFocusAfterCollapse)
   {
-    v4 = [(_UITabOutlineView *)self dataSource];
-    v5 = [v4 indexPathForItemIdentifier:self->_preferredItemIdentifierForFocusAfterCollapse];
+    dataSource = [(_UITabOutlineView *)self dataSource];
+    v5 = [dataSource indexPathForItemIdentifier:self->_preferredItemIdentifierForFocusAfterCollapse];
   }
 
   else
@@ -3979,15 +3979,15 @@ LABEL_12:
   return v5;
 }
 
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v11 = a3;
-  v7 = [a4 nextFocusedIndexPath];
-  self->_prefersCollectionViewFocused = v7 != 0;
-  if ([(_UITabOutlineView *)self isEditing]|| !v7)
+  viewCopy = view;
+  nextFocusedIndexPath = [context nextFocusedIndexPath];
+  self->_prefersCollectionViewFocused = nextFocusedIndexPath != 0;
+  if ([(_UITabOutlineView *)self isEditing]|| !nextFocusedIndexPath)
   {
     self->_ignoresSelectionChangeFromFocusUpdate = 0;
-    if (!v7)
+    if (!nextFocusedIndexPath)
     {
       goto LABEL_6;
     }
@@ -3995,8 +3995,8 @@ LABEL_12:
 
   else
   {
-    v8 = [v11 indexPathsForSelectedItems];
-    v9 = [v8 containsObject:v7];
+    indexPathsForSelectedItems = [viewCopy indexPathsForSelectedItems];
+    v9 = [indexPathsForSelectedItems containsObject:nextFocusedIndexPath];
 
     self->_ignoresSelectionChangeFromFocusUpdate = v9;
   }
@@ -4007,32 +4007,32 @@ LABEL_12:
 LABEL_6:
 }
 
-- (void)_adjustScrollViewForKeyboardInfo:(id)a3
+- (void)_adjustScrollViewForKeyboardInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(UIView *)self window];
+  infoCopy = info;
+  window = [(UIView *)self window];
 
-  if (v5)
+  if (window)
   {
     lastKeyboardAdjustment = self->_lastKeyboardAdjustment;
-    v6 = [(_UITabOutlineView *)self collectionView];
-    [v6 _adjustForAutomaticKeyboardInfo:v4 animated:1 lastAdjustment:&lastKeyboardAdjustment];
+    collectionView = [(_UITabOutlineView *)self collectionView];
+    [collectionView _adjustForAutomaticKeyboardInfo:infoCopy animated:1 lastAdjustment:&lastKeyboardAdjustment];
 
     self->_lastKeyboardAdjustment = lastKeyboardAdjustment;
   }
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  [(_UITabOutlineView *)self _adjustScrollViewForKeyboardInfo:v4];
+  userInfo = [show userInfo];
+  [(_UITabOutlineView *)self _adjustScrollViewForKeyboardInfo:userInfo];
 
   v5 = objc_opt_class();
 
   [v5 cancelPreviousPerformRequestsWithTarget:self selector:sel__adjuistScrollViewForKeyboardInfo_ object:0];
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = *MEMORY[0x1E695DA28];
@@ -4040,21 +4040,21 @@ LABEL_6:
   [(_UITabOutlineView *)self performSelector:sel__adjustScrollViewForKeyboardInfo_ withObject:0 afterDelay:v4 inModes:0.0];
 }
 
-- (void)_keyboardDidChangeFrame:(id)a3
+- (void)_keyboardDidChangeFrame:(id)frame
 {
-  v4 = [a3 userInfo];
-  [(_UITabOutlineView *)self _adjustScrollViewForKeyboardInfo:v4];
+  userInfo = [frame userInfo];
+  [(_UITabOutlineView *)self _adjustScrollViewForKeyboardInfo:userInfo];
 
   v5 = objc_opt_class();
 
   [v5 cancelPreviousPerformRequestsWithTarget:self selector:sel__adjuistScrollViewForKeyboardInfo_ object:0];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = _UITabOutlineView;
-  [(UIView *)&v5 didUpdateFocusInContext:a3 withAnimationCoordinator:a4];
+  [(UIView *)&v5 didUpdateFocusInContext:context withAnimationCoordinator:coordinator];
   self->_ignoresSelectionChangeFromFocusUpdate = 0;
 }
 
@@ -4063,24 +4063,24 @@ LABEL_6:
   v6[1] = *MEMORY[0x1E69E9840];
   if (self->_prefersCollectionViewFocused)
   {
-    v2 = [(_UITabOutlineView *)self collectionView];
-    v6[0] = v2;
-    v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
+    collectionView = [(_UITabOutlineView *)self collectionView];
+    v6[0] = collectionView;
+    preferredFocusEnvironments = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = _UITabOutlineView;
-    v3 = [(UIView *)&v5 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(UIView *)&v5 preferredFocusEnvironments];
   }
 
-  return v3;
+  return preferredFocusEnvironments;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5
+- (BOOL)collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context
 {
-  v6 = a4;
+  pathCopy = path;
   if (self)
   {
     tabModel = self->_tabModel;
@@ -4098,18 +4098,18 @@ LABEL_6:
 
   else
   {
-    v9 = [(_UITabOutlineView *)self _tabForIndexPath:v6];
+    v9 = [(_UITabOutlineView *)self _tabForIndexPath:pathCopy];
     if ([v9 isSpringLoaded])
     {
       if ([v9 _isGroup])
       {
-        v10 = [v9 identifier];
-        v11 = [(_UITabOutlineView *)self _existingSectionSnapshotForTabIdentifier:v10];
+        identifier = [v9 identifier];
+        v11 = [(_UITabOutlineView *)self _existingSectionSnapshotForTabIdentifier:identifier];
 
-        v12 = [v9 identifier];
-        LOBYTE(v10) = [v11 isExpanded:v12];
+        identifier2 = [v9 identifier];
+        LOBYTE(identifier) = [v11 isExpanded:identifier2];
 
-        v8 = v10 ^ 1;
+        v8 = identifier ^ 1;
       }
 
       else
@@ -4131,22 +4131,22 @@ LABEL_6:
 {
   if (result)
   {
-    v1 = [result collectionView];
-    v2 = [v1 hasActiveDrag];
+    collectionView = [result collectionView];
+    hasActiveDrag = [collectionView hasActiveDrag];
 
-    return v2;
+    return hasActiveDrag;
   }
 
   return result;
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
-  v7 = a4;
+  sessionCopy = session;
   v8 = MEMORY[0x1E695DF70];
-  v9 = a5;
+  pathCopy = path;
   v10 = objc_alloc_init(v8);
-  v11 = [(_UITabOutlineView *)self _tabForIndexPath:v9];
+  v11 = [(_UITabOutlineView *)self _tabForIndexPath:pathCopy];
 
   if (![(_UITabOutlineView *)self isEditing])
   {
@@ -4160,7 +4160,7 @@ LABEL_6:
       sidebar = 0;
     }
 
-    v13 = [(UITabBarControllerSidebar *)sidebar _itemsForBeginningDragSession:v7 tab:v11];
+    v13 = [(UITabBarControllerSidebar *)sidebar _itemsForBeginningDragSession:sessionCopy tab:v11];
     [v10 addObjectsFromArray:v13];
   }
 
@@ -4170,24 +4170,24 @@ LABEL_6:
     v15 = [[UIDragItem alloc] initWithItemProvider:v14];
     [(UIDragItem *)v15 setLocalObject:v11];
     [v10 addObject:v15];
-    [v7 setLocalContext:self];
+    [sessionCopy setLocalContext:self];
   }
 
   return v10;
 }
 
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point
 {
-  v8 = a4;
-  v9 = a5;
-  if (-[_UITabOutlineView isEditing](self, "isEditing") || ([v8 localContext], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 == self))
+  sessionCopy = session;
+  pathCopy = path;
+  if (-[_UITabOutlineView isEditing](self, "isEditing") || ([sessionCopy localContext], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 == self))
   {
     v13 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v11 = [(_UITabOutlineView *)self _tabForIndexPath:v9];
+    v11 = [(_UITabOutlineView *)self _tabForIndexPath:pathCopy];
     if (self)
     {
       sidebar = self->_sidebar;
@@ -4198,43 +4198,43 @@ LABEL_6:
       sidebar = 0;
     }
 
-    v13 = [(UITabBarControllerSidebar *)sidebar _itemsForAddingToDragSession:v8 tab:v11];
+    v13 = [(UITabBarControllerSidebar *)sidebar _itemsForAddingToDragSession:sessionCopy tab:v11];
   }
 
   return v13;
 }
 
-- (BOOL)collectionView:(id)a3 dragSessionIsRestrictedToDraggingApplication:(id)a4
+- (BOOL)collectionView:(id)view dragSessionIsRestrictedToDraggingApplication:(id)application
 {
-  v5 = [a4 localContext];
-  LOBYTE(self) = v5 == self;
+  localContext = [application localContext];
+  LOBYTE(self) = localContext == self;
 
   return self;
 }
 
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin
 {
-  v7 = a4;
-  v6 = [v7 localContext];
+  beginCopy = begin;
+  localContext = [beginCopy localContext];
 
-  if (v6 == self)
+  if (localContext == self)
   {
-    objc_storeStrong(&self->_activeDragSession, a4);
+    objc_storeStrong(&self->_activeDragSession, begin);
   }
 }
 
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end
 {
   activeDragSession = self->_activeDragSession;
   self->_activeDragSession = 0;
 }
 
-- (id)_collectionView:(id)a3 dragSessionPropertiesForSession:(id)a4
+- (id)_collectionView:(id)view dragSessionPropertiesForSession:(id)session
 {
-  v5 = a4;
-  v6 = [v5 localContext];
+  sessionCopy = session;
+  localContext = [sessionCopy localContext];
 
-  if (v6 == self)
+  if (localContext == self)
   {
     v8 = objc_opt_new();
     [v8 set_supportsSystemDrag:0];
@@ -4252,15 +4252,15 @@ LABEL_6:
       sidebar = 0;
     }
 
-    v8 = [(UITabBarControllerSidebar *)sidebar _sessionPropertiesForDragSession:v5];
+    v8 = [(UITabBarControllerSidebar *)sidebar _sessionPropertiesForDragSession:sessionCopy];
   }
 
   return v8;
 }
 
-- (void)collectionView:(id)a3 dropSessionDidEnter:(id)a4
+- (void)collectionView:(id)view dropSessionDidEnter:(id)enter
 {
-  v12 = a4;
+  enterCopy = enter;
   if (self)
   {
     tabModel = self->_tabModel;
@@ -4273,13 +4273,13 @@ LABEL_6:
 
   if ([(_UITabModel *)tabModel isEditing])
   {
-    v6 = [v12 items];
-    v7 = [v6 firstObject];
+    items = [enterCopy items];
+    firstObject = [items firstObject];
 
-    v8 = [v12 items];
-    if ([v8 count] == 1)
+    items2 = [enterCopy items];
+    if ([items2 count] == 1)
     {
-      v9 = [v7 localObject];
+      localObject = [firstObject localObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4290,12 +4290,12 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v8 = [v7 localObject];
-      v11 = [v7 previewProvider];
+      items2 = [firstObject localObject];
+      previewProvider = [firstObject previewProvider];
 
-      if (v11)
+      if (previewProvider)
       {
-        [v7 setPreviewProvider:0];
+        [firstObject setPreviewProvider:0];
       }
     }
 
@@ -4305,50 +4305,50 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)collectionView:(id)a3 dropSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dropSessionDidEnd:(id)end
 {
-  v5 = a4;
-  v6 = [(_UITabOutlineView *)self _tabBarController];
-  [(UITabBarController *)v6 _tabDropSessionDidUpdate:v5 withDestinationTab:0];
+  endCopy = end;
+  _tabBarController = [(_UITabOutlineView *)self _tabBarController];
+  [(UITabBarController *)_tabBarController _tabDropSessionDidUpdate:endCopy withDestinationTab:0];
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath
 {
-  v8 = a4;
-  v9 = a6;
-  v10 = [(_UITabOutlineView *)self currentDropContext];
+  pathCopy = path;
+  proposedIndexPathCopy = proposedIndexPath;
+  currentDropContext = [(_UITabOutlineView *)self currentDropContext];
 
-  if (v10)
+  if (currentDropContext)
   {
-    v11 = [(_UITabOutlineView *)self currentDropContext];
-    v12 = [v11 proposedIndexPath];
+    currentDropContext2 = [(_UITabOutlineView *)self currentDropContext];
+    proposedIndexPath = [currentDropContext2 proposedIndexPath];
   }
 
   else
   {
-    v11 = [(_UITabOutlineView *)self _tabForIndexPath:v8];
-    if ([(_UITabOutlineView *)self _canMoveTab:v11 toDestinationIndexPath:v9])
+    currentDropContext2 = [(_UITabOutlineView *)self _tabForIndexPath:pathCopy];
+    if ([(_UITabOutlineView *)self _canMoveTab:currentDropContext2 toDestinationIndexPath:proposedIndexPathCopy])
     {
-      v13 = v9;
+      v13 = proposedIndexPathCopy;
     }
 
     else
     {
-      v13 = v8;
+      v13 = pathCopy;
     }
 
-    v12 = v13;
+    proposedIndexPath = v13;
   }
 
-  v14 = v12;
+  v14 = proposedIndexPath;
 
   return v14;
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
+  updateCopy = update;
+  pathCopy = path;
   if (self)
   {
     tabModel = self->_tabModel;
@@ -4359,13 +4359,13 @@ LABEL_10:
     tabModel = 0;
   }
 
-  v10 = [(_UITabModel *)tabModel isEditing];
-  if (v8)
+  isEditing = [(_UITabModel *)tabModel isEditing];
+  if (pathCopy)
   {
-    v11 = [v7 localDragSession];
-    if (v11)
+    localDragSession = [updateCopy localDragSession];
+    if (localDragSession)
     {
-      v12 = [v7 localDragSession];
+      localDragSession2 = [updateCopy localDragSession];
       if (self)
       {
         activeDragSession = self->_activeDragSession;
@@ -4376,7 +4376,7 @@ LABEL_10:
         activeDragSession = 0;
       }
 
-      v14 = v12 == activeDragSession;
+      v14 = localDragSession2 == activeDragSession;
     }
 
     else
@@ -4390,30 +4390,30 @@ LABEL_10:
     v14 = 0;
   }
 
-  if (!v10 && !v14)
+  if (!isEditing && !v14)
   {
-    v20 = [(_UITabOutlineView *)self _hitRegionForDropSession:v7 destinationIndexPath:v8];
+    v20 = [(_UITabOutlineView *)self _hitRegionForDropSession:updateCopy destinationIndexPath:pathCopy];
     goto LABEL_22;
   }
 
-  v15 = [v7 items];
-  v16 = [v15 firstObject];
+  items = [updateCopy items];
+  firstObject = [items firstObject];
 
-  v17 = [v7 localDragSession];
-  v18 = [v17 localContext];
+  localDragSession3 = [updateCopy localDragSession];
+  localContext = [localDragSession3 localContext];
 
-  if (v18 != self)
+  if (localContext != self)
   {
     goto LABEL_13;
   }
 
-  v21 = [v7 items];
-  if ([v21 count] != 1)
+  items2 = [updateCopy items];
+  if ([items2 count] != 1)
   {
     goto LABEL_19;
   }
 
-  v22 = [v16 localObject];
+  localObject = [firstObject localObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4424,8 +4424,8 @@ LABEL_13:
     goto LABEL_21;
   }
 
-  v21 = [v16 localObject];
-  if ([(_UITabOutlineView *)self _canMoveTab:v21 toDestinationIndexPath:v8])
+  items2 = [firstObject localObject];
+  if ([(_UITabOutlineView *)self _canMoveTab:items2 toDestinationIndexPath:pathCopy])
   {
     v19 = [[UICollectionViewDropProposal alloc] initWithDropOperation:3 intent:1];
   }
@@ -4437,7 +4437,7 @@ LABEL_19:
   }
 
 LABEL_21:
-  v20 = [(_UITabOutlineView *)self _hitRegionForDropSession:v7 destinationIndexPath:v8];
+  v20 = [(_UITabOutlineView *)self _hitRegionForDropSession:updateCopy destinationIndexPath:pathCopy];
   if (v19)
   {
     goto LABEL_51;
@@ -4447,16 +4447,16 @@ LABEL_22:
   v24 = v20;
   if ((v20 | 2) == 3)
   {
-    v25 = [(_UITabOutlineView *)self _tabForIndexPath:v8];
-    v26 = [v25 parent];
-    v27 = v26;
-    if (v26)
+    v25 = [(_UITabOutlineView *)self _tabForIndexPath:pathCopy];
+    parent = [v25 parent];
+    v27 = parent;
+    if (parent)
     {
-      v28 = [v26 _filteredDisplayOrderIdentifiers];
-      v29 = [v25 identifier];
-      v30 = [v28 indexOfObject:v29];
+      _filteredDisplayOrderIdentifiers = [parent _filteredDisplayOrderIdentifiers];
+      identifier = [v25 identifier];
+      v30 = [_filteredDisplayOrderIdentifiers indexOfObject:identifier];
 
-      v31 = v8;
+      v31 = pathCopy;
       v32 = v31;
       if (v24 == 3)
       {
@@ -4476,7 +4476,7 @@ LABEL_22:
         sidebar = 0;
       }
 
-      v35 = [(UITabBarControllerSidebar *)sidebar _operationForInsertingItemsFromSession:v7 intoTabGroup:v27 atIndex:v30];
+      v35 = [(UITabBarControllerSidebar *)sidebar _operationForInsertingItemsFromSession:updateCopy intoTabGroup:v27 atIndex:v30];
       if (v35)
       {
         v36 = v35;
@@ -4506,12 +4506,12 @@ LABEL_22:
     v19 = 0;
   }
 
-  if (v19 != 0 || v10)
+  if (v19 != 0 || isEditing)
   {
     goto LABEL_49;
   }
 
-  if (!v8)
+  if (!pathCopy)
   {
     v40 = 0;
 LABEL_47:
@@ -4519,7 +4519,7 @@ LABEL_47:
     goto LABEL_48;
   }
 
-  v39 = [(_UITabOutlineView *)self _sidebarContentForIndexPath:v8];
+  v39 = [(_UITabOutlineView *)self _sidebarContentForIndexPath:pathCopy];
   v40 = v39;
   if (!v39)
   {
@@ -4530,22 +4530,22 @@ LABEL_47:
 
   if (v41)
   {
-    v42 = [(_UITabOutlineView *)self _tabBarController];
+    _tabBarController = [(_UITabOutlineView *)self _tabBarController];
     v43 = [v40 tab];
-    v44 = [(UITabBarController *)v42 _tab:v43 operationForAcceptingItemsFromDropSession:v7];
+    v44 = [(UITabBarController *)_tabBarController _tab:v43 operationForAcceptingItemsFromDropSession:updateCopy];
 
-    v45 = [(_UITabOutlineView *)self _tabBarController];
-    v46 = [v40 tab];
-    [(UITabBarController *)v45 _tabDropSessionDidUpdate:v7 withDestinationTab:v46];
+    _tabBarController2 = [(_UITabOutlineView *)self _tabBarController];
+    group = [v40 tab];
+    [(UITabBarController *)_tabBarController2 _tabDropSessionDidUpdate:updateCopy withDestinationTab:group];
   }
 
   else
   {
     v47 = self ? self->_sidebar : 0;
     v48 = v47;
-    v45 = [v40 action];
-    v46 = [v40 group];
-    v44 = [(UITabBarControllerSidebar *)v48 _sidebarAction:v45 group:v46 operationForAcceptingItemsFromDropSession:v7];
+    _tabBarController2 = [v40 action];
+    group = [v40 group];
+    v44 = [(UITabBarControllerSidebar *)v48 _sidebarAction:_tabBarController2 group:group operationForAcceptingItemsFromDropSession:updateCopy];
   }
 
   if (!v44)
@@ -4567,16 +4567,16 @@ LABEL_51:
   return v19;
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
   v54 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(_UITabOutlineView *)self currentDropContext];
-  v7 = [v6 activeTabGroup];
+  coordinatorCopy = coordinator;
+  currentDropContext = [(_UITabOutlineView *)self currentDropContext];
+  activeTabGroup = [currentDropContext activeTabGroup];
 
-  if (v7)
+  if (activeTabGroup)
   {
-    v8 = [v6 proposedIndexPath];
+    proposedIndexPath = [currentDropContext proposedIndexPath];
     if (self)
     {
       sidebar = self->_sidebar;
@@ -4588,18 +4588,18 @@ LABEL_51:
     }
 
     v10 = sidebar;
-    v11 = [v5 session];
-    v12 = [v6 activeTabGroup];
-    -[UITabBarControllerSidebar _insertItemsFromSession:intoTabGroup:atIndex:](v10, v11, v12, [v6 insertionIndex]);
+    session = [coordinatorCopy session];
+    activeTabGroup2 = [currentDropContext activeTabGroup];
+    -[UITabBarControllerSidebar _insertItemsFromSession:intoTabGroup:atIndex:](v10, session, activeTabGroup2, [currentDropContext insertionIndex]);
 
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v13 = [v5 session];
-    v14 = [v13 items];
+    session2 = [coordinatorCopy session];
+    items = [session2 items];
 
-    v15 = [v14 countByEnumeratingWithState:&v48 objects:v53 count:16];
+    v15 = [items countByEnumeratingWithState:&v48 objects:v53 count:16];
     if (v15)
     {
       v16 = v15;
@@ -4610,13 +4610,13 @@ LABEL_51:
         {
           if (*v49 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(items);
           }
 
-          v19 = [v5 dropItem:*(*(&v48 + 1) + 8 * i) toItemAtIndexPath:v8];
+          v19 = [coordinatorCopy dropItem:*(*(&v48 + 1) + 8 * i) toItemAtIndexPath:proposedIndexPath];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v48 objects:v53 count:16];
+        v16 = [items countByEnumeratingWithState:&v48 objects:v53 count:16];
       }
 
       while (v16);
@@ -4640,31 +4640,31 @@ LABEL_12:
 
   if (![(_UITabModel *)tabModel isEditing])
   {
-    v21 = [v5 proposal];
-    v22 = [v21 intent];
+    proposal = [coordinatorCopy proposal];
+    intent = [proposal intent];
 
-    if (v22 != 1)
+    if (intent != 1)
     {
-      v8 = [v5 destinationIndexPath];
-      if (v8)
+      proposedIndexPath = [coordinatorCopy destinationIndexPath];
+      if (proposedIndexPath)
       {
-        v23 = [(_UITabOutlineView *)self collectionView];
-        v24 = [v23 cellForItemAtIndexPath:v8];
+        collectionView = [(_UITabOutlineView *)self collectionView];
+        v24 = [collectionView cellForItemAtIndexPath:proposedIndexPath];
 
-        v25 = [v5 session];
-        [v25 locationInView:v24];
+        session3 = [coordinatorCopy session];
+        [session3 locationInView:v24];
         v27 = v26;
         v29 = v28;
 
-        v30 = [(_UITabOutlineView *)self _sidebarContentForIndexPath:v8];
+        v30 = [(_UITabOutlineView *)self _sidebarContentForIndexPath:proposedIndexPath];
         v31 = [v30 tab];
 
         if (v31)
         {
-          v32 = [(_UITabOutlineView *)self _tabBarController];
-          v33 = [v30 tab];
-          v34 = [v5 session];
-          [(UITabBarController *)v32 _tab:v33 acceptItemsFromDropSession:v34];
+          _tabBarController = [(_UITabOutlineView *)self _tabBarController];
+          group = [v30 tab];
+          session4 = [coordinatorCopy session];
+          [(UITabBarController *)_tabBarController _tab:group acceptItemsFromDropSession:session4];
         }
 
         else
@@ -4680,20 +4680,20 @@ LABEL_12:
           }
 
           v36 = v35;
-          v32 = [v30 action];
-          v33 = [v30 group];
-          v34 = [v5 session];
-          [(UITabBarControllerSidebar *)v36 _sidebarAction:v32 group:v33 acceptItemsFromDropSession:v34];
+          _tabBarController = [v30 action];
+          group = [v30 group];
+          session4 = [coordinatorCopy session];
+          [(UITabBarControllerSidebar *)v36 _sidebarAction:_tabBarController group:group acceptItemsFromDropSession:session4];
         }
 
         v46 = 0u;
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v37 = [v5 session];
-        v38 = [v37 items];
+        session5 = [coordinatorCopy session];
+        items2 = [session5 items];
 
-        v39 = [v38 countByEnumeratingWithState:&v44 objects:v52 count:16];
+        v39 = [items2 countByEnumeratingWithState:&v44 objects:v52 count:16];
         if (v39)
         {
           v40 = v39;
@@ -4704,13 +4704,13 @@ LABEL_12:
             {
               if (*v45 != v41)
               {
-                objc_enumerationMutation(v38);
+                objc_enumerationMutation(items2);
               }
 
-              v43 = [v5 dropItem:*(*(&v44 + 1) + 8 * j) intoItemAtIndexPath:v8 rect:{v27, v29, 0.0, 0.0}];
+              v43 = [coordinatorCopy dropItem:*(*(&v44 + 1) + 8 * j) intoItemAtIndexPath:proposedIndexPath rect:{v27, v29, 0.0, 0.0}];
             }
 
-            v40 = [v38 countByEnumeratingWithState:&v44 objects:v52 count:16];
+            v40 = [items2 countByEnumeratingWithState:&v44 objects:v52 count:16];
           }
 
           while (v40);
@@ -4724,19 +4724,19 @@ LABEL_12:
 LABEL_17:
 }
 
-- (int64_t)_hitRegionForDropSession:(id)a3 destinationIndexPath:(id)a4
+- (int64_t)_hitRegionForDropSession:(id)session destinationIndexPath:(id)path
 {
-  if (!a4)
+  if (!path)
   {
     return 0;
   }
 
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UITabOutlineView *)self collectionView];
-  v9 = [v8 cellForItemAtIndexPath:v6];
+  pathCopy = path;
+  sessionCopy = session;
+  collectionView = [(_UITabOutlineView *)self collectionView];
+  v9 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-  [v7 locationInView:v9];
+  [sessionCopy locationInView:v9];
   v11 = v10;
   v13 = v12;
 
@@ -4796,9 +4796,9 @@ LABEL_17:
   return v23;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
-  v6 = a4;
+  pathsCopy = paths;
   if (self)
   {
     tabModel = self->_tabModel;
@@ -4809,14 +4809,14 @@ LABEL_17:
     tabModel = 0;
   }
 
-  if (-[_UITabModel isEditing](tabModel, "isEditing") || [v6 count] != 1)
+  if (-[_UITabModel isEditing](tabModel, "isEditing") || [pathsCopy count] != 1)
   {
     v11 = 0;
   }
 
   else
   {
-    v8 = [v6 objectAtIndex:0];
+    v8 = [pathsCopy objectAtIndex:0];
     v9 = [(_UITabOutlineView *)self _tabForIndexPath:v8];
     if (v9)
     {
@@ -4843,20 +4843,20 @@ LABEL_17:
   return v11;
 }
 
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 _tab];
-  v10 = v9;
-  if (v9)
+  configurationCopy = configuration;
+  animatorCopy = animator;
+  _tab = [configurationCopy _tab];
+  v10 = _tab;
+  if (_tab)
   {
-    if ([v9 isEnabled])
+    if ([_tab isEnabled])
     {
-      v11 = [(_UITabOutlineView *)self dataSource];
-      v12 = [v7 _tab];
-      v13 = [v12 identifier];
-      v14 = [v11 indexPathForItemIdentifier:v13];
+      dataSource = [(_UITabOutlineView *)self dataSource];
+      _tab2 = [configurationCopy _tab];
+      identifier = [_tab2 identifier];
+      v14 = [dataSource indexPathForItemIdentifier:identifier];
 
       if (v14)
       {
@@ -4867,25 +4867,25 @@ LABEL_17:
         v16[4] = self;
         v17 = v14;
         v15 = v14;
-        [v8 addAnimations:v16];
+        [animatorCopy addAnimations:v16];
       }
     }
 
     else
     {
-      [v8 setPreferredCommitStyle:0];
+      [animatorCopy setPreferredCommitStyle:0];
     }
   }
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v7;
+    v9 = cellCopy;
     v10 = v9;
     if (v9)
     {
@@ -4894,7 +4894,7 @@ LABEL_17:
       if (v11)
       {
         self->_didUpdateWillDisplayTab = 0;
-        v13 = [v11 _tab];
+        _tab = [v11 _tab];
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __71___UITabOutlineView_collectionView_willDisplayCell_forItemAtIndexPath___block_invoke;
@@ -4902,8 +4902,8 @@ LABEL_17:
         v14[4] = self;
         v15 = v10;
         v16 = v15;
-        v17 = v8;
-        [(_UITabOutlineView *)self _performWithWillDisplayTab:v13 block:v14];
+        v17 = pathCopy;
+        [(_UITabOutlineView *)self _performWithWillDisplayTab:_tab block:v14];
       }
     }
 
@@ -4914,17 +4914,17 @@ LABEL_17:
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v12 = a4;
+  cellCopy = cell;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v7 = v12;
+  v7 = cellCopy;
   if (isKindOfClass)
   {
-    if (v12)
+    if (cellCopy)
     {
-      v8 = v12[110];
+      v8 = cellCopy[110];
       if (v8)
       {
         if (self)
@@ -4938,8 +4938,8 @@ LABEL_17:
         }
 
         v10 = sidebar;
-        v11 = [v8 _tab];
-        [(UITabBarControllerSidebar *)v10 _didEndDisplayingTab:v11];
+        _tab = [v8 _tab];
+        [(UITabBarControllerSidebar *)v10 _didEndDisplayingTab:_tab];
       }
     }
 
@@ -4948,28 +4948,28 @@ LABEL_17:
       v8 = 0;
     }
 
-    v7 = v12;
+    v7 = cellCopy;
   }
 }
 
-- (BOOL)_canMoveTab:(id)a3 toDestinationIndexPath:(id)a4
+- (BOOL)_canMoveTab:(id)tab toDestinationIndexPath:(id)path
 {
-  if (a4)
+  if (path)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(_UITabOutlineView *)self _tabForIndexPath:v6];
-    v9 = [(_UITabOutlineView *)self _isHeaderIndexPath:v6];
+    pathCopy = path;
+    tabCopy = tab;
+    v8 = [(_UITabOutlineView *)self _tabForIndexPath:pathCopy];
+    v9 = [(_UITabOutlineView *)self _isHeaderIndexPath:pathCopy];
 
     v10 = !v9;
-    LODWORD(v6) = [v8 _canBeReordered];
-    v11 = [v8 _parentGroup];
-    v12 = [v7 _parentGroup];
+    LODWORD(pathCopy) = [v8 _canBeReordered];
+    _parentGroup = [v8 _parentGroup];
+    _parentGroup2 = [tabCopy _parentGroup];
 
-    v13 = (v11 == v12) & ~[v8 _isAction] & v6 & v10;
-    v14 = [(_UITabOutlineView *)self dataSource];
-    v15 = [v8 identifier];
-    v16 = [v14 indexPathForItemIdentifier:v15];
+    v13 = (_parentGroup == _parentGroup2) & ~[v8 _isAction] & pathCopy & v10;
+    dataSource = [(_UITabOutlineView *)self dataSource];
+    identifier = [v8 identifier];
+    v16 = [dataSource indexPathForItemIdentifier:identifier];
 
     if (self && (v17 = self->_displayedGroup) != 0)
     {

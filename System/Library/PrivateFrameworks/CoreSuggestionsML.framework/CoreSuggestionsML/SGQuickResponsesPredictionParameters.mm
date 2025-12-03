@@ -1,16 +1,16 @@
 @interface SGQuickResponsesPredictionParameters
-+ (id)_modelTypeNameForDictionary:(id)a3;
-+ (id)_subModelKeyStringForDictionary:(id)a3;
-- (SGQuickResponsesPredictionParameters)initWithDictionary:(id)a3;
++ (id)_modelTypeNameForDictionary:(id)dictionary;
++ (id)_subModelKeyStringForDictionary:(id)dictionary;
+- (SGQuickResponsesPredictionParameters)initWithDictionary:(id)dictionary;
 @end
 
 @implementation SGQuickResponsesPredictionParameters
 
-- (SGQuickResponsesPredictionParameters)initWithDictionary:(id)a3
+- (SGQuickResponsesPredictionParameters)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
     {
@@ -517,7 +517,7 @@ LABEL_59:
 
 LABEL_99:
     self = self;
-    v53 = self;
+    selfCopy = self;
     goto LABEL_100;
   }
 
@@ -530,15 +530,15 @@ LABEL_99:
   }
 
 LABEL_60:
-  v53 = 0;
+  selfCopy = 0;
 LABEL_100:
 
-  return v53;
+  return selfCopy;
 }
 
-+ (id)_subModelKeyStringForDictionary:(id)a3
++ (id)_subModelKeyStringForDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"SUB_MODEL_KEY_STRING"];
+  v3 = [dictionary objectForKeyedSubscript:@"SUB_MODEL_KEY_STRING"];
   v4 = v3;
   if (v3)
   {
@@ -555,9 +555,9 @@ LABEL_100:
   return v5;
 }
 
-+ (id)_modelTypeNameForDictionary:(id)a3
++ (id)_modelTypeNameForDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"MODEL_TYPE_NAME"];
+  v3 = [dictionary objectForKeyedSubscript:@"MODEL_TYPE_NAME"];
   v4 = v3;
   if (v3)
   {

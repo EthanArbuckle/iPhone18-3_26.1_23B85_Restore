@@ -1,9 +1,9 @@
 @interface TRIExternalParameterManager
 - (NSDate)siriDeviceAggregationIdRotationDate;
 - (TRIExternalParameterManager)init;
-- (TRIExternalParameterManager)initWithProvider:(id)a3 paths:(id)a4;
+- (TRIExternalParameterManager)initWithProvider:(id)provider paths:(id)paths;
 - (id)_readParametersFromFile;
-- (id)_readSiriDeviceAggregationIdRotationDateFromEvent:(id)a3;
+- (id)_readSiriDeviceAggregationIdRotationDateFromEvent:(id)event;
 - (id)dictionary;
 - (void)_fetchSiriDeviceAggregationIdRotationDate;
 - (void)_writeParametersToFile;
@@ -14,39 +14,39 @@
 - (TRIExternalParameterManager)init
 {
   v3 = objc_alloc_init(TRIBiomeDataStreamProvider);
-  v4 = [MEMORY[0x277D737E0] sharedPaths];
-  v5 = [(TRIExternalParameterManager *)self initWithProvider:v3 paths:v4];
+  mEMORY[0x277D737E0] = [MEMORY[0x277D737E0] sharedPaths];
+  v5 = [(TRIExternalParameterManager *)self initWithProvider:v3 paths:mEMORY[0x277D737E0]];
 
   return v5;
 }
 
-- (TRIExternalParameterManager)initWithProvider:(id)a3 paths:(id)a4
+- (TRIExternalParameterManager)initWithProvider:(id)provider paths:(id)paths
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  pathsCopy = paths;
   v26.receiver = self;
   v26.super_class = TRIExternalParameterManager;
   v9 = [(TRIExternalParameterManager *)&v26 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_paramProvider, a3);
-    v11 = [v8 externalParametersFile];
+    objc_storeStrong(&v9->_paramProvider, provider);
+    externalParametersFile = [pathsCopy externalParametersFile];
     plistPath = v10->_plistPath;
-    v10->_plistPath = v11;
+    v10->_plistPath = externalParametersFile;
 
     v13 = objc_opt_new();
     v14 = [objc_alloc(MEMORY[0x277D425F8]) initWithGuardedData:v13];
     lock = v10->_lock;
     v10->_lock = v14;
 
-    v16 = [(TRIExternalParameterManager *)v10 _readParametersFromFile];
+    _readParametersFromFile = [(TRIExternalParameterManager *)v10 _readParametersFromFile];
     v17 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v28 = v16;
+      v28 = _readParametersFromFile;
       _os_log_debug_impl(&dword_26F567000, v17, OS_LOG_TYPE_DEBUG, "Reading params from cache: %@", buf, 0xCu);
     }
 
@@ -55,8 +55,8 @@
     v24[1] = 3221225472;
     v24[2] = __54__TRIExternalParameterManager_initWithProvider_paths___block_invoke;
     v24[3] = &unk_279DE11C8;
-    v25 = v16;
-    v19 = v16;
+    v25 = _readParametersFromFile;
+    v19 = _readParametersFromFile;
     [(_PASLock *)v18 runWithLockAcquired:v24];
     [(TRIExternalParameterManager *)v10 _fetchSiriDeviceAggregationIdRotationDate];
     v20 = [MEMORY[0x277D425A0] autoreleasingSerialQueueWithLabel:"com.apple.triald.ExternalParameterChangeQueue" qosClass:17];
@@ -274,12 +274,12 @@ LABEL_9:
   return v17;
 }
 
-- (id)_readSiriDeviceAggregationIdRotationDateFromEvent:(id)a3
+- (id)_readSiriDeviceAggregationIdRotationDateFromEvent:(id)event
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  eventCopy = event;
+  v4 = eventCopy;
+  if (!eventCopy)
   {
     v17 = TRILogCategory_ClientFramework();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -296,7 +296,7 @@ LABEL_14:
     goto LABEL_9;
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"effectiveFrom"];
+  v5 = [eventCopy objectForKeyedSubscript:@"effectiveFrom"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -312,11 +312,11 @@ LABEL_14:
 
       v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v10];
       v12 = [v4 objectForKeyedSubscript:@"validityDays"];
-      v13 = [v12 integerValue];
+      integerValue = [v12 integerValue];
       v14 = objc_opt_new();
-      [v14 setDay:v13];
-      v15 = [MEMORY[0x277CBEA80] currentCalendar];
-      v16 = [v15 dateByAddingComponents:v14 toDate:v11 options:0];
+      [v14 setDay:integerValue];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      v16 = [currentCalendar dateByAddingComponents:v14 toDate:v11 options:0];
 
       goto LABEL_10;
     }
@@ -361,8 +361,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v6 = [v4 domain];
-  if (![v6 isEqualToString:*MEMORY[0x277CCA050]])
+  domain = [v4 domain];
+  if (![domain isEqualToString:*MEMORY[0x277CCA050]])
   {
 
 LABEL_8:
@@ -379,9 +379,9 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v7 = [v5 code];
+  code = [v5 code];
 
-  if (v7 != 260)
+  if (code != 260)
   {
     goto LABEL_8;
   }
@@ -408,8 +408,8 @@ LABEL_11:
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
   v4 = MEMORY[0x277CCAC58];
-  v5 = [(TRIExternalParameterManager *)self dictionary];
-  v6 = [v4 dataWithPropertyList:v5 format:100 options:0 error:0];
+  dictionary = [(TRIExternalParameterManager *)self dictionary];
+  v6 = [v4 dataWithPropertyList:dictionary format:100 options:0 error:0];
 
   plistPath = self->_plistPath;
   v13 = 0;

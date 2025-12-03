@@ -1,12 +1,12 @@
 @interface SharedChannelProvisionOffGridPacketInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SharedChannelProvisionOffGridPacketInfo
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = SharedChannelProvisionOffGridPacketInfo;
   v4 = [(SharedChannelProvisionOffGridPacketInfo *)&v8 description];
-  v5 = [(SharedChannelProvisionOffGridPacketInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SharedChannelProvisionOffGridPacketInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   packetId = self->_packetId;
   if (packetId)
   {
-    [v3 setObject:packetId forKey:@"packet_id"];
+    [dictionary setObject:packetId forKey:@"packet_id"];
   }
 
   encryptedPacket = self->_encryptedPacket;
@@ -60,85 +60,85 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_packetId)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_encryptedPacket)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     packetExpirationTimestampMillis = self->_packetExpirationTimestampMillis;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_commitmentSalt)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_initializationVector)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_packetId)
   {
-    [v4 setPacketId:?];
-    v4 = v5;
+    [toCopy setPacketId:?];
+    toCopy = v5;
   }
 
   if (self->_encryptedPacket)
   {
     [v5 setEncryptedPacket:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_packetExpirationTimestampMillis;
-    *(v4 + 48) |= 1u;
+    *(toCopy + 1) = self->_packetExpirationTimestampMillis;
+    *(toCopy + 48) |= 1u;
   }
 
   if (self->_commitmentSalt)
   {
     [v5 setCommitmentSalt:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_initializationVector)
   {
     [v5 setInitializationVector:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_packetId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_packetId copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(NSData *)self->_encryptedPacket copyWithZone:a3];
+  v8 = [(NSData *)self->_encryptedPacket copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -148,27 +148,27 @@
     *(v5 + 48) |= 1u;
   }
 
-  v10 = [(NSData *)self->_commitmentSalt copyWithZone:a3];
+  v10 = [(NSData *)self->_commitmentSalt copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
-  v12 = [(NSData *)self->_initializationVector copyWithZone:a3];
+  v12 = [(NSData *)self->_initializationVector copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   packetId = self->_packetId;
-  if (packetId | *(v4 + 5))
+  if (packetId | *(equalCopy + 5))
   {
     if (![(NSData *)packetId isEqual:?])
     {
@@ -177,7 +177,7 @@
   }
 
   encryptedPacket = self->_encryptedPacket;
-  if (encryptedPacket | *(v4 + 3))
+  if (encryptedPacket | *(equalCopy + 3))
   {
     if (![(NSData *)encryptedPacket isEqual:?])
     {
@@ -185,16 +185,16 @@
     }
   }
 
-  v7 = *(v4 + 48);
+  v7 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_packetExpirationTimestampMillis != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_packetExpirationTimestampMillis != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -202,13 +202,13 @@ LABEL_15:
   }
 
   commitmentSalt = self->_commitmentSalt;
-  if (commitmentSalt | *(v4 + 2) && ![(NSData *)commitmentSalt isEqual:?])
+  if (commitmentSalt | *(equalCopy + 2) && ![(NSData *)commitmentSalt isEqual:?])
   {
     goto LABEL_15;
   }
 
   initializationVector = self->_initializationVector;
-  if (initializationVector | *(v4 + 4))
+  if (initializationVector | *(equalCopy + 4))
   {
     v10 = [(NSData *)initializationVector isEqual:?];
   }
@@ -241,38 +241,38 @@ LABEL_16:
   return v6 ^ [(NSData *)self->_initializationVector hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[5])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[5])
   {
     [(SharedChannelProvisionOffGridPacketInfo *)self setPacketId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(SharedChannelProvisionOffGridPacketInfo *)self setEncryptedPacket:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
-    self->_packetExpirationTimestampMillis = v4[1];
+    self->_packetExpirationTimestampMillis = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(SharedChannelProvisionOffGridPacketInfo *)self setCommitmentSalt:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(SharedChannelProvisionOffGridPacketInfo *)self setInitializationVector:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

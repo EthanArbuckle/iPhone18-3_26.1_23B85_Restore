@@ -1,30 +1,30 @@
 @interface CAMLivePhotoButton
-- (CAMLivePhotoButton)initWithLayoutStyle:(int64_t)a3;
+- (CAMLivePhotoButton)initWithLayoutStyle:(int64_t)style;
 - (id)_availableModes;
 - (id)_currentBaseImage;
 - (id)imageForAccessibilityHUD;
-- (id)titleForMenuItemAtIndex:(int64_t)a3;
-- (int64_t)indexForMode:(int64_t)a3;
+- (id)titleForMenuItemAtIndex:(int64_t)index;
+- (int64_t)indexForMode:(int64_t)mode;
 - (int64_t)livePhotoMode;
-- (int64_t)modeForIndex:(int64_t)a3;
+- (int64_t)modeForIndex:(int64_t)index;
 - (int64_t)numberOfMenuItems;
 - (void)_updateBaseImage;
-- (void)finishExpansionAnimated:(BOOL)a3;
+- (void)finishExpansionAnimated:(BOOL)animated;
 - (void)interruptEnablingAnimation;
 - (void)performEnablingAnimation;
 - (void)reloadData;
-- (void)setAllowsAutomaticMode:(BOOL)a3 needsReloadData:(BOOL)a4;
-- (void)setLivePhotoMode:(int64_t)a3;
-- (void)setSelectedIndex:(int64_t)a3;
+- (void)setAllowsAutomaticMode:(BOOL)mode needsReloadData:(BOOL)data;
+- (void)setLivePhotoMode:(int64_t)mode;
+- (void)setSelectedIndex:(int64_t)index;
 @end
 
 @implementation CAMLivePhotoButton
 
-- (CAMLivePhotoButton)initWithLayoutStyle:(int64_t)a3
+- (CAMLivePhotoButton)initWithLayoutStyle:(int64_t)style
 {
   v8.receiver = self;
   v8.super_class = CAMLivePhotoButton;
-  v3 = [(CAMExpandableMenuButton *)&v8 initWithLayoutStyle:a3];
+  v3 = [(CAMExpandableMenuButton *)&v8 initWithLayoutStyle:style];
   if (v3)
   {
     v4 = objc_alloc_init(CAMLivePhotoBloomView);
@@ -40,39 +40,39 @@
 
 - (int64_t)livePhotoMode
 {
-  v3 = [(CAMExpandableMenuButton *)self selectedIndex];
+  selectedIndex = [(CAMExpandableMenuButton *)self selectedIndex];
 
-  return [(CAMLivePhotoButton *)self modeForIndex:v3];
+  return [(CAMLivePhotoButton *)self modeForIndex:selectedIndex];
 }
 
-- (void)setLivePhotoMode:(int64_t)a3
+- (void)setLivePhotoMode:(int64_t)mode
 {
-  v4 = [(CAMLivePhotoButton *)self indexForMode:a3];
+  v4 = [(CAMLivePhotoButton *)self indexForMode:mode];
 
   [(CAMLivePhotoButton *)self setSelectedIndex:v4];
 }
 
-- (void)setSelectedIndex:(int64_t)a3
+- (void)setSelectedIndex:(int64_t)index
 {
-  if ([(CAMExpandableMenuButton *)self selectedIndex]!= a3)
+  if ([(CAMExpandableMenuButton *)self selectedIndex]!= index)
   {
     [(CAMLivePhotoButton *)self interruptEnablingAnimation];
     v5.receiver = self;
     v5.super_class = CAMLivePhotoButton;
-    [(CAMExpandableMenuButton *)&v5 setSelectedIndex:a3];
+    [(CAMExpandableMenuButton *)&v5 setSelectedIndex:index];
     [(CAMLivePhotoButton *)self _updateBaseImage];
   }
 }
 
-- (void)setAllowsAutomaticMode:(BOOL)a3 needsReloadData:(BOOL)a4
+- (void)setAllowsAutomaticMode:(BOOL)mode needsReloadData:(BOOL)data
 {
-  if (self->_allowsAutomaticMode != a3)
+  if (self->_allowsAutomaticMode != mode)
   {
-    v4 = a4;
+    dataCopy = data;
     v7 = [(CAMLivePhotoButton *)self modeForIndex:[(CAMExpandableMenuButton *)self selectedIndex]];
-    self->_allowsAutomaticMode = a3;
+    self->_allowsAutomaticMode = mode;
     v8 = [(CAMLivePhotoButton *)self indexForMode:v7];
-    if (v4)
+    if (dataCopy)
     {
       [(CAMLivePhotoButton *)self reloadData];
     }
@@ -96,44 +96,44 @@
   }
 }
 
-- (int64_t)modeForIndex:(int64_t)a3
+- (int64_t)modeForIndex:(int64_t)index
 {
-  v4 = [(CAMLivePhotoButton *)self _availableModes];
-  v5 = v4;
-  if (a3 < 0 || [v4 count] <= a3)
+  _availableModes = [(CAMLivePhotoButton *)self _availableModes];
+  v5 = _availableModes;
+  if (index < 0 || [_availableModes count] <= index)
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndexedSubscript:a3];
-    v7 = [v6 integerValue];
+    v6 = [v5 objectAtIndexedSubscript:index];
+    integerValue = [v6 integerValue];
   }
 
-  return v7;
+  return integerValue;
 }
 
-- (int64_t)indexForMode:(int64_t)a3
+- (int64_t)indexForMode:(int64_t)mode
 {
-  v4 = [(CAMLivePhotoButton *)self _availableModes];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 indexOfObject:v5];
+  _availableModes = [(CAMLivePhotoButton *)self _availableModes];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
+  v6 = [_availableModes indexOfObject:v5];
 
   return v6;
 }
 
 - (int64_t)numberOfMenuItems
 {
-  v2 = [(CAMLivePhotoButton *)self _availableModes];
-  v3 = [v2 count];
+  _availableModes = [(CAMLivePhotoButton *)self _availableModes];
+  v3 = [_availableModes count];
 
   return v3;
 }
 
-- (id)titleForMenuItemAtIndex:(int64_t)a3
+- (id)titleForMenuItemAtIndex:(int64_t)index
 {
-  v3 = [(CAMLivePhotoButton *)self modeForIndex:a3];
+  v3 = [(CAMLivePhotoButton *)self modeForIndex:index];
   switch(v3)
   {
     case 2:
@@ -161,9 +161,9 @@ LABEL_9:
 - (id)_currentBaseImage
 {
   v3 = [(CAMLivePhotoButton *)self modeForIndex:[(CAMExpandableMenuButton *)self selectedIndex]];
-  v4 = [(CAMExpandableMenuButton *)self wantsSelectedItemToBeVisible];
+  wantsSelectedItemToBeVisible = [(CAMExpandableMenuButton *)self wantsSelectedItemToBeVisible];
   v5 = @"CAMIrisButton-0-PhotoIris";
-  if (!v3 && ![(CAMExpandableMenuButton *)self isExpanded]&& !v4)
+  if (!v3 && ![(CAMExpandableMenuButton *)self isExpanded]&& !wantsSelectedItemToBeVisible)
   {
     v5 = @"CAMIrisButtonInactive";
   }
@@ -180,30 +180,30 @@ LABEL_9:
 
 - (void)_updateBaseImage
 {
-  v3 = [(CAMLivePhotoButton *)self livePhotoMode];
-  switch(v3)
+  livePhotoMode = [(CAMLivePhotoButton *)self livePhotoMode];
+  switch(livePhotoMode)
   {
     case 2:
-      v5 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
       goto LABEL_7;
     case 1:
-      v5 = [MEMORY[0x1E69DC888] systemYellowColor];
+      whiteColor = [MEMORY[0x1E69DC888] systemYellowColor];
 LABEL_7:
-      v7 = v5;
+      whiteColor2 = whiteColor;
       goto LABEL_9;
     case 0:
-      v7 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
       v4 = 1;
       goto LABEL_10;
   }
 
-  v7 = 0;
+  whiteColor2 = 0;
 LABEL_9:
   v4 = 0;
 LABEL_10:
-  v6 = [(CAMLivePhotoButton *)self _bloomView];
-  [v6 setIsOff:v4];
-  [v6 setTintColor:v7];
+  _bloomView = [(CAMLivePhotoButton *)self _bloomView];
+  [_bloomView setIsOff:v4];
+  [_bloomView setTintColor:whiteColor2];
 }
 
 - (void)reloadData
@@ -225,11 +225,11 @@ LABEL_10:
   }
 }
 
-- (void)finishExpansionAnimated:(BOOL)a3
+- (void)finishExpansionAnimated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = CAMLivePhotoButton;
-  [(CAMExpandableMenuButton *)&v4 finishExpansionAnimated:a3];
+  [(CAMExpandableMenuButton *)&v4 finishExpansionAnimated:animated];
   [(CAMLivePhotoButton *)self interruptEnablingAnimation];
 }
 
@@ -237,28 +237,28 @@ LABEL_10:
 {
   if (([(CAMLivePhotoButton *)self livePhotoMode]- 1) <= 1)
   {
-    v3 = [(CAMLivePhotoButton *)self _bloomView];
-    [v3 animateBloom];
+    _bloomView = [(CAMLivePhotoButton *)self _bloomView];
+    [_bloomView animateBloom];
   }
 }
 
 - (void)interruptEnablingAnimation
 {
-  v2 = [(CAMLivePhotoButton *)self _bloomView];
-  [v2 stopAnimating];
+  _bloomView = [(CAMLivePhotoButton *)self _bloomView];
+  [_bloomView stopAnimating];
 }
 
 - (id)imageForAccessibilityHUD
 {
-  v2 = [(CAMLivePhotoButton *)self livePhotoMode];
-  if (v2 > 2)
+  livePhotoMode = [(CAMLivePhotoButton *)self livePhotoMode];
+  if (livePhotoMode > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_1E76FA5C8[v2];
+    v3 = off_1E76FA5C8[livePhotoMode];
   }
 
   v4 = MEMORY[0x1E69DCAB8];

@@ -1,6 +1,6 @@
 @interface SBHSearchTextFieldAccessibility
 - (BOOL)accessibilityPerformEscape;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (unint64_t)accessibilityTraits;
 - (void)updateVisualStyling;
 @end
@@ -15,11 +15,11 @@
   return [(SBHSearchTextFieldAccessibility *)&v4 accessibilityTraits]| v2;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   v4 = AXSBIconControllerSharedInstance();
   v5 = v4;
-  if (a3 == 1 && [v4 _axIsShowingAppLibrary])
+  if (scroll == 1 && [v4 _axIsShowingAppLibrary])
   {
     [v5 _axHideAppLibrary];
     v6 = 1;
@@ -39,17 +39,17 @@
   if ([v3 _axIsShowingAppLibrary])
   {
     [v3 _axHideAppLibrary];
-    v4 = 1;
+    accessibilityPerformEscape = 1;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = SBHSearchTextFieldAccessibility;
-    v4 = [(SBHSearchTextFieldAccessibility *)&v6 accessibilityPerformEscape];
+    accessibilityPerformEscape = [(SBHSearchTextFieldAccessibility *)&v6 accessibilityPerformEscape];
   }
 
-  return v4;
+  return accessibilityPerformEscape;
 }
 
 - (void)updateVisualStyling

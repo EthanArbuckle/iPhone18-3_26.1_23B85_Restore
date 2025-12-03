@@ -6,7 +6,7 @@
 - (BOOL)isExplicitMediaAllowed;
 - (BOOL)isSiriExplicitAllowed;
 - (BOOL)isSiriWebSearchAllowed;
-- (FAPresetsConfiguration)initWithSTPresetsConfiguration:(id)a3;
+- (FAPresetsConfiguration)initWithSTPresetsConfiguration:(id)configuration;
 - (NSNumber)allowedAppStoreRating;
 - (NSNumber)allowedMovieRating;
 - (NSNumber)allowedTVRating;
@@ -14,16 +14,16 @@
 
 @implementation FAPresetsConfiguration
 
-- (FAPresetsConfiguration)initWithSTPresetsConfiguration:(id)a3
+- (FAPresetsConfiguration)initWithSTPresetsConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = FAPresetsConfiguration;
   v6 = [(FAPresetsConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_stPresetsConfiguration, a3);
+    objc_storeStrong(&v6->_stPresetsConfiguration, configuration);
   }
 
   return v7;
@@ -31,82 +31,82 @@
 
 - (NSNumber)allowedAppStoreRating
 {
-  v2 = [(FAPresetsConfiguration *)self stPresetsConfiguration];
-  v3 = [v2 allowedAppStoreRating];
+  stPresetsConfiguration = [(FAPresetsConfiguration *)self stPresetsConfiguration];
+  allowedAppStoreRating = [stPresetsConfiguration allowedAppStoreRating];
 
-  return v3;
+  return allowedAppStoreRating;
 }
 
 - (BOOL)isBooksAllowed
 {
-  v2 = [(FAPresetsConfiguration *)self stPresetsConfiguration];
-  v3 = [v2 isBooksAllowed];
+  stPresetsConfiguration = [(FAPresetsConfiguration *)self stPresetsConfiguration];
+  isBooksAllowed = [stPresetsConfiguration isBooksAllowed];
 
-  return v3;
+  return isBooksAllowed;
 }
 
 - (NSNumber)allowedTVRating
 {
-  v2 = [(FAPresetsConfiguration *)self stPresetsConfiguration];
-  v3 = [v2 allowedTVRating];
+  stPresetsConfiguration = [(FAPresetsConfiguration *)self stPresetsConfiguration];
+  allowedTVRating = [stPresetsConfiguration allowedTVRating];
 
-  return v3;
+  return allowedTVRating;
 }
 
 - (NSNumber)allowedMovieRating
 {
-  v2 = [(FAPresetsConfiguration *)self stPresetsConfiguration];
-  v3 = [v2 allowedMovieRating];
+  stPresetsConfiguration = [(FAPresetsConfiguration *)self stPresetsConfiguration];
+  allowedMovieRating = [stPresetsConfiguration allowedMovieRating];
 
-  return v3;
+  return allowedMovieRating;
 }
 
 - (BOOL)isExplicitMediaAllowed
 {
-  v2 = [(FAPresetsConfiguration *)self stPresetsConfiguration];
-  v3 = [v2 isExplicitMediaAllowed];
+  stPresetsConfiguration = [(FAPresetsConfiguration *)self stPresetsConfiguration];
+  isExplicitMediaAllowed = [stPresetsConfiguration isExplicitMediaAllowed];
 
-  return v3;
+  return isExplicitMediaAllowed;
 }
 
 - (BOOL)areMusicVideosAllowed
 {
-  v2 = [(FAPresetsConfiguration *)self stPresetsConfiguration];
-  v3 = [v2 areMusicVideosAllowed];
+  stPresetsConfiguration = [(FAPresetsConfiguration *)self stPresetsConfiguration];
+  areMusicVideosAllowed = [stPresetsConfiguration areMusicVideosAllowed];
 
-  return v3;
+  return areMusicVideosAllowed;
 }
 
 - (BOOL)areMusicProfilesAllowed
 {
-  v2 = [(FAPresetsConfiguration *)self stPresetsConfiguration];
-  v3 = [v2 areMusicProfilesAllowed];
+  stPresetsConfiguration = [(FAPresetsConfiguration *)self stPresetsConfiguration];
+  areMusicProfilesAllowed = [stPresetsConfiguration areMusicProfilesAllowed];
 
-  return v3;
+  return areMusicProfilesAllowed;
 }
 
 - (BOOL)isSiriWebSearchAllowed
 {
-  v2 = [(FAPresetsConfiguration *)self stPresetsConfiguration];
-  v3 = [v2 isSiriWebSearchAllowed];
+  stPresetsConfiguration = [(FAPresetsConfiguration *)self stPresetsConfiguration];
+  isSiriWebSearchAllowed = [stPresetsConfiguration isSiriWebSearchAllowed];
 
-  return v3;
+  return isSiriWebSearchAllowed;
 }
 
 - (BOOL)isSiriExplicitAllowed
 {
-  v2 = [(FAPresetsConfiguration *)self stPresetsConfiguration];
-  v3 = [v2 isSiriExplicitAllowed];
+  stPresetsConfiguration = [(FAPresetsConfiguration *)self stPresetsConfiguration];
+  isSiriExplicitAllowed = [stPresetsConfiguration isSiriExplicitAllowed];
 
-  return v3;
+  return isSiriExplicitAllowed;
 }
 
 - (BOOL)isDeletingAppsAllowed
 {
-  v2 = [(FAPresetsConfiguration *)self stPresetsConfiguration];
-  v3 = [v2 isDeletingAppsAllowed];
+  stPresetsConfiguration = [(FAPresetsConfiguration *)self stPresetsConfiguration];
+  isDeletingAppsAllowed = [stPresetsConfiguration isDeletingAppsAllowed];
 
-  return v3;
+  return isDeletingAppsAllowed;
 }
 
 @end

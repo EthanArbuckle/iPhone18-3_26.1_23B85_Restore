@@ -7,18 +7,18 @@
 + (TCEnumerationMap)pageOrientationEnumMap;
 + (TCEnumerationMap)sectionBreakEnumMap;
 + (TCEnumerationMap)verticalJustificationEnumMap;
-+ (float)scaleFromPrinterSettings:(id)a3;
++ (float)scaleFromPrinterSettings:(id)settings;
 + (void)chapterNumberSeparatorEnumMap;
 + (void)lineNumberRestartEnumMap;
-+ (void)mapFooter:(_xmlNode *)a3 toSection:(id)a4 state:(id)a5;
-+ (void)mapHeader:(_xmlNode *)a3 toSection:(id)a4 state:(id)a5;
-+ (void)mapPrinterSettings:(_xmlNode *)a3 toSection:(id)a4 state:(id)a5;
-+ (void)mapProperties:(_xmlNode *)a3 toSection:(id)a4 state:(id)a5;
++ (void)mapFooter:(_xmlNode *)footer toSection:(id)section state:(id)state;
++ (void)mapHeader:(_xmlNode *)header toSection:(id)section state:(id)state;
++ (void)mapPrinterSettings:(_xmlNode *)settings toSection:(id)section state:(id)state;
++ (void)mapProperties:(_xmlNode *)properties toSection:(id)section state:(id)state;
 + (void)pageBorderDepthEnumMap;
 + (void)pageBorderDisplayEnumMap;
 + (void)pageBorderOffsetEnumMap;
 + (void)pageOrientationEnumMap;
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 + (void)sectionBreakEnumMap;
 + (void)verticalJustificationEnumMap;
 @end
@@ -128,7 +128,7 @@ void __37__WXSection_pageBorderDisplayEnumMap__block_invoke()
     +[WXSection pageBorderOffsetEnumMap];
   }
 
-  return [a1 pageBorderDisplayEnumMap];
+  return [self pageBorderDisplayEnumMap];
 }
 
 void __36__WXSection_pageBorderOffsetEnumMap__block_invoke()
@@ -207,72 +207,72 @@ void __42__WXSection_chapterNumberSeparatorEnumMap__block_invoke()
   +[WXSection chapterNumberSeparatorEnumMap]::sChapterNumberSeparatorEnumMap = v0;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v24 = a4;
-  v8 = a5;
-  [v24 setResolveMode:0];
-  v9 = [v8 WXMainNamespace];
-  Child = OCXFindChild(a3, v9, "headerReference");
+  toCopy = to;
+  stateCopy = state;
+  [toCopy setResolveMode:0];
+  wXMainNamespace = [stateCopy WXMainNamespace];
+  Child = OCXFindChild(from, wXMainNamespace, "headerReference");
 
   while (Child)
   {
-    [a1 mapHeader:Child toSection:v24 state:v8];
-    v11 = [v8 WXMainNamespace];
-    Child = OCXFindNextChild(Child, v11, "headerReference");
+    [self mapHeader:Child toSection:toCopy state:stateCopy];
+    wXMainNamespace2 = [stateCopy WXMainNamespace];
+    Child = OCXFindNextChild(Child, wXMainNamespace2, "headerReference");
   }
 
-  v12 = [v8 WXMainNamespace];
-  v13 = OCXFindChild(a3, v12, "footerReference");
+  wXMainNamespace3 = [stateCopy WXMainNamespace];
+  v13 = OCXFindChild(from, wXMainNamespace3, "footerReference");
 
   while (v13)
   {
-    [a1 mapFooter:v13 toSection:v24 state:v8];
-    v14 = [v8 WXMainNamespace];
-    v13 = OCXFindNextChild(v13, v14, "footerReference");
+    [self mapFooter:v13 toSection:toCopy state:stateCopy];
+    wXMainNamespace4 = [stateCopy WXMainNamespace];
+    v13 = OCXFindNextChild(v13, wXMainNamespace4, "footerReference");
   }
 
-  v15 = [v8 WXMainNamespace];
-  v16 = OCXFindChild(a3, v15, "printerSettings");
+  wXMainNamespace5 = [stateCopy WXMainNamespace];
+  v16 = OCXFindChild(from, wXMainNamespace5, "printerSettings");
 
   if (v16)
   {
-    [a1 mapPrinterSettings:v16 toSection:v24 state:v8];
+    [self mapPrinterSettings:v16 toSection:toCopy state:stateCopy];
   }
 
-  [a1 mapProperties:a3 toSection:v24 state:v8];
-  v17 = [v8 WXMainNamespace];
-  v18 = OCXFindChild(a3, v17, "sectPrChange");
+  [self mapProperties:from toSection:toCopy state:stateCopy];
+  wXMainNamespace6 = [stateCopy WXMainNamespace];
+  v18 = OCXFindChild(from, wXMainNamespace6, "sectPrChange");
 
   if (v18)
   {
-    v19 = [v8 WXMainNamespace];
-    v20 = OCXFindChild(v18, v19, "sectPr");
+    wXMainNamespace7 = [stateCopy WXMainNamespace];
+    v20 = OCXFindChild(v18, wXMainNamespace7, "sectPr");
 
     if (v20)
     {
-      [v24 setResolveMode:1];
-      [a1 mapProperties:a3 toSection:v24 state:v8];
-      [v24 setFormattingChanged:1];
+      [toCopy setResolveMode:1];
+      [self mapProperties:from toSection:toCopy state:stateCopy];
+      [toCopy setFormattingChanged:1];
       v21 = wmxmlGetDateProperty(v18);
-      [v24 setFormattingChangeDate:v21];
+      [toCopy setFormattingChangeDate:v21];
 
-      v22 = [v8 document];
+      document = [stateCopy document];
       v23 = wmxmlGetAuthorProperty(v18);
-      [v24 setIndexToAuthorIDOfFormattingChange:{objc_msgSend(v22, "revisionAuthorAddLookup:", v23)}];
+      [toCopy setIndexToAuthorIDOfFormattingChange:{objc_msgSend(document, "revisionAuthorAddLookup:", v23)}];
 
-      [v24 setResolveMode:0];
-      [a1 mapProperties:v20 toSection:v24 state:v8];
+      [toCopy setResolveMode:0];
+      [self mapProperties:v20 toSection:toCopy state:stateCopy];
     }
   }
 
-  [v24 setResolveMode:2];
+  [toCopy setResolveMode:2];
 }
 
-+ (float)scaleFromPrinterSettings:(id)a3
++ (float)scaleFromPrinterSettings:(id)settings
 {
   v16 = 0;
-  v3 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:&v16];
+  v3 = [MEMORY[0x277CCAC58] propertyListWithData:settings options:0 format:0 error:&v16];
   v4 = v16;
   v5 = 1.0;
   if (v3)
@@ -302,355 +302,355 @@ void __42__WXSection_chapterNumberSeparatorEnumMap__block_invoke()
   return v5;
 }
 
-+ (void)mapHeader:(_xmlNode *)a3 toSection:(id)a4 state:(id)a5
++ (void)mapHeader:(_xmlNode *)header toSection:(id)section state:(id)state
 {
-  v31 = a4;
-  v7 = a5;
+  sectionCopy = section;
+  stateCopy = state;
   context = objc_autoreleasePoolPush();
-  v8 = [v7 wxoavState];
-  v9 = [v8 packagePart];
-  v10 = [v7 OCXReadRequiredRelationshipForNode:a3 packagePart:v9];
+  wxoavState = [stateCopy wxoavState];
+  packagePart = [wxoavState packagePart];
+  v10 = [stateCopy OCXReadRequiredRelationshipForNode:header packagePart:packagePart];
 
   v30 = v10;
-  v29 = [v10 identifier];
-  v11 = [v7 packagePart];
-  v12 = [v11 package];
+  identifier = [v10 identifier];
+  packagePart2 = [stateCopy packagePart];
+  package = [packagePart2 package];
 
-  v13 = [v7 packagePart];
-  v14 = [v13 relationshipForIdentifier:v29];
+  packagePart3 = [stateCopy packagePart];
+  v14 = [packagePart3 relationshipForIdentifier:identifier];
 
-  v15 = [v14 targetLocation];
-  v16 = [v12 partForLocation:v15];
+  targetLocation = [v14 targetLocation];
+  v16 = [package partForLocation:targetLocation];
 
-  v32 = [v7 packagePart];
-  [v7 setPackagePart:v16];
-  v17 = [v7 wxoavState];
-  v18 = [v17 packagePart];
-  [v17 setPackagePart:v16];
-  v19 = [v7 drawingState];
-  v20 = [v19 packagePart];
-  [v19 setPackagePart:v16];
-  v21 = [v16 xmlReader];
-  v22 = v21;
-  if (v21 && xmlTextReaderRead(v21) == 1 && xmlTextReaderNodeType(v22) == 1)
+  packagePart4 = [stateCopy packagePart];
+  [stateCopy setPackagePart:v16];
+  wxoavState2 = [stateCopy wxoavState];
+  packagePart5 = [wxoavState2 packagePart];
+  [wxoavState2 setPackagePart:v16];
+  drawingState = [stateCopy drawingState];
+  packagePart6 = [drawingState packagePart];
+  [drawingState setPackagePart:v16];
+  xmlReader = [v16 xmlReader];
+  v22 = xmlReader;
+  if (xmlReader && xmlTextReaderRead(xmlReader) == 1 && xmlTextReaderNodeType(v22) == 1)
   {
-    Prop = xmlGetProp(a3, "type");
+    Prop = xmlGetProp(header, "type");
     if (xmlStrcmp(Prop, "even"))
     {
       if (xmlStrcmp(Prop, "default"))
       {
         if (!xmlStrcmp(Prop, "first"))
         {
-          v25 = [v31 firstPageHeader];
-          [WXText readFromStream:v22 baseStyle:0 to:v25 state:v7];
+          firstPageHeader = [sectionCopy firstPageHeader];
+          [WXText readFromStream:v22 baseStyle:0 to:firstPageHeader state:stateCopy];
         }
       }
 
       else
       {
-        v27 = [v31 oddPageHeader];
-        [WXText readFromStream:v22 baseStyle:0 to:v27 state:v7];
+        oddPageHeader = [sectionCopy oddPageHeader];
+        [WXText readFromStream:v22 baseStyle:0 to:oddPageHeader state:stateCopy];
       }
     }
 
     else
     {
-      v26 = [v31 evenPageHeader];
-      [WXText readFromStream:v22 baseStyle:0 to:v26 state:v7];
+      evenPageHeader = [sectionCopy evenPageHeader];
+      [WXText readFromStream:v22 baseStyle:0 to:evenPageHeader state:stateCopy];
     }
 
     free(Prop);
   }
 
-  [v17 setPackagePart:v18];
-  [v19 setPackagePart:v20];
-  [v7 setPackagePart:v32];
-  v24 = [v14 targetLocation];
-  [v12 resetPartForLocation:v24];
+  [wxoavState2 setPackagePart:packagePart5];
+  [drawingState setPackagePart:packagePart6];
+  [stateCopy setPackagePart:packagePart4];
+  targetLocation2 = [v14 targetLocation];
+  [package resetPartForLocation:targetLocation2];
 
   xmlFreeTextReader(v22);
   objc_autoreleasePoolPop(context);
 }
 
-+ (void)mapFooter:(_xmlNode *)a3 toSection:(id)a4 state:(id)a5
++ (void)mapFooter:(_xmlNode *)footer toSection:(id)section state:(id)state
 {
-  v31 = a4;
-  v7 = a5;
+  sectionCopy = section;
+  stateCopy = state;
   context = objc_autoreleasePoolPush();
-  v8 = [v7 wxoavState];
-  v9 = [v8 packagePart];
-  v10 = [v7 OCXReadRequiredRelationshipForNode:a3 packagePart:v9];
+  wxoavState = [stateCopy wxoavState];
+  packagePart = [wxoavState packagePart];
+  v10 = [stateCopy OCXReadRequiredRelationshipForNode:footer packagePart:packagePart];
 
   v30 = v10;
-  v29 = [v10 identifier];
-  v11 = [v7 packagePart];
-  v12 = [v11 package];
+  identifier = [v10 identifier];
+  packagePart2 = [stateCopy packagePart];
+  package = [packagePart2 package];
 
-  v13 = [v7 packagePart];
-  v14 = [v13 relationshipForIdentifier:v29];
+  packagePart3 = [stateCopy packagePart];
+  v14 = [packagePart3 relationshipForIdentifier:identifier];
 
-  v15 = [v14 targetLocation];
-  v16 = [v12 partForLocation:v15];
+  targetLocation = [v14 targetLocation];
+  v16 = [package partForLocation:targetLocation];
 
-  v32 = [v7 packagePart];
-  [v7 setPackagePart:v16];
-  v17 = [v7 wxoavState];
-  v18 = [v17 packagePart];
-  [v17 setPackagePart:v16];
-  v19 = [v7 drawingState];
-  v20 = [v19 packagePart];
-  [v19 setPackagePart:v16];
-  v21 = [v16 xmlReader];
-  v22 = v21;
-  if (v21 && xmlTextReaderRead(v21) == 1 && xmlTextReaderNodeType(v22) == 1)
+  packagePart4 = [stateCopy packagePart];
+  [stateCopy setPackagePart:v16];
+  wxoavState2 = [stateCopy wxoavState];
+  packagePart5 = [wxoavState2 packagePart];
+  [wxoavState2 setPackagePart:v16];
+  drawingState = [stateCopy drawingState];
+  packagePart6 = [drawingState packagePart];
+  [drawingState setPackagePart:v16];
+  xmlReader = [v16 xmlReader];
+  v22 = xmlReader;
+  if (xmlReader && xmlTextReaderRead(xmlReader) == 1 && xmlTextReaderNodeType(v22) == 1)
   {
-    Prop = xmlGetProp(a3, "type");
+    Prop = xmlGetProp(footer, "type");
     if (xmlStrcmp(Prop, "even"))
     {
       if (xmlStrcmp(Prop, "default"))
       {
         if (!xmlStrcmp(Prop, "first"))
         {
-          v25 = [v31 firstPageFooter];
-          [WXText readFromStream:v22 baseStyle:0 to:v25 state:v7];
+          firstPageFooter = [sectionCopy firstPageFooter];
+          [WXText readFromStream:v22 baseStyle:0 to:firstPageFooter state:stateCopy];
         }
       }
 
       else
       {
-        v27 = [v31 oddPageFooter];
-        [WXText readFromStream:v22 baseStyle:0 to:v27 state:v7];
+        oddPageFooter = [sectionCopy oddPageFooter];
+        [WXText readFromStream:v22 baseStyle:0 to:oddPageFooter state:stateCopy];
       }
     }
 
     else
     {
-      v26 = [v31 evenPageFooter];
-      [WXText readFromStream:v22 baseStyle:0 to:v26 state:v7];
+      evenPageFooter = [sectionCopy evenPageFooter];
+      [WXText readFromStream:v22 baseStyle:0 to:evenPageFooter state:stateCopy];
     }
 
     free(Prop);
   }
 
-  [v17 setPackagePart:v18];
-  [v19 setPackagePart:v20];
-  [v7 setPackagePart:v32];
-  v24 = [v14 targetLocation];
-  [v12 resetPartForLocation:v24];
+  [wxoavState2 setPackagePart:packagePart5];
+  [drawingState setPackagePart:packagePart6];
+  [stateCopy setPackagePart:packagePart4];
+  targetLocation2 = [v14 targetLocation];
+  [package resetPartForLocation:targetLocation2];
 
   xmlFreeTextReader(v22);
   objc_autoreleasePoolPop(context);
 }
 
-+ (void)mapPrinterSettings:(_xmlNode *)a3 toSection:(id)a4 state:(id)a5
++ (void)mapPrinterSettings:(_xmlNode *)settings toSection:(id)section state:(id)state
 {
-  v23 = a4;
-  v8 = a5;
-  v9 = [v8 wxoavState];
-  v10 = [v9 packagePart];
-  v11 = [v8 OCXReadRequiredRelationshipForNode:a3 packagePart:v10];
+  sectionCopy = section;
+  stateCopy = state;
+  wxoavState = [stateCopy wxoavState];
+  packagePart = [wxoavState packagePart];
+  v11 = [stateCopy OCXReadRequiredRelationshipForNode:settings packagePart:packagePart];
 
-  v12 = [v11 identifier];
-  v13 = [v8 packagePart];
-  v14 = [v13 package];
+  identifier = [v11 identifier];
+  packagePart2 = [stateCopy packagePart];
+  package = [packagePart2 package];
 
-  v15 = [v8 packagePart];
-  v16 = [v15 relationshipForIdentifier:v12];
+  packagePart3 = [stateCopy packagePart];
+  v16 = [packagePart3 relationshipForIdentifier:identifier];
 
-  v17 = [v16 targetLocation];
-  v18 = [v14 partForLocation:v17];
+  targetLocation = [v16 targetLocation];
+  v18 = [package partForLocation:targetLocation];
 
   if (v18)
   {
-    v19 = [v18 data];
-    [a1 scaleFromPrinterSettings:v19];
+    data = [v18 data];
+    [self scaleFromPrinterSettings:data];
     v21 = v20;
 
     if (v21 != 1.0)
     {
-      [v23 setPageScale:(v21 * 100.0)];
+      [sectionCopy setPageScale:(v21 * 100.0)];
     }
   }
 
-  v22 = [v16 targetLocation];
-  [v14 resetPartForLocation:v22];
+  targetLocation2 = [v16 targetLocation];
+  [package resetPartForLocation:targetLocation2];
 }
 
-+ (void)mapProperties:(_xmlNode *)a3 toSection:(id)a4 state:(id)a5
++ (void)mapProperties:(_xmlNode *)properties toSection:(id)section state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(WXReadState *)v8 WXMainNamespace];
-  v10 = OCXFindChild(a3, v9, "pgBorders");
+  sectionCopy = section;
+  stateCopy = state;
+  wXMainNamespace = [(WXReadState *)stateCopy WXMainNamespace];
+  v10 = OCXFindChild(properties, wXMainNamespace, "pgBorders");
 
   if (v10)
   {
-    v11 = [(WXReadState *)v8 WXMainNamespace];
-    v12 = OCXFindChild(v10, v11, "top");
+    wXMainNamespace2 = [(WXReadState *)stateCopy WXMainNamespace];
+    v12 = OCXFindChild(v10, wXMainNamespace2, "top");
 
     if (v12)
     {
-      v13 = [v7 mutableTopBorder];
-      [WXBorder readFrom:v12 to:v13 state:v8];
+      mutableTopBorder = [sectionCopy mutableTopBorder];
+      [WXBorder readFrom:v12 to:mutableTopBorder state:stateCopy];
 
-      v14 = [(OCXState *)v8 OCXRelationshipsNamespace];
+      oCXRelationshipsNamespace = [(OCXState *)stateCopy OCXRelationshipsNamespace];
       v133 = 0;
-      CXOptionalStringAttribute(v12, v14, "id", &v133);
+      CXOptionalStringAttribute(v12, oCXRelationshipsNamespace, "id", &v133);
       v15 = v133;
 
-      v16 = [(OCXState *)v8 OCXRelationshipsNamespace];
+      oCXRelationshipsNamespace2 = [(OCXState *)stateCopy OCXRelationshipsNamespace];
       v132 = 0;
-      CXOptionalStringAttribute(v12, v16, "topLeft", &v132);
+      CXOptionalStringAttribute(v12, oCXRelationshipsNamespace2, "topLeft", &v132);
       v17 = v132;
 
-      v18 = [(OCXState *)v8 OCXRelationshipsNamespace];
+      oCXRelationshipsNamespace3 = [(OCXState *)stateCopy OCXRelationshipsNamespace];
       v131 = 0;
-      CXOptionalStringAttribute(v12, v18, "topRight", &v131);
+      CXOptionalStringAttribute(v12, oCXRelationshipsNamespace3, "topRight", &v131);
     }
 
-    v19 = [(WXReadState *)v8 WXMainNamespace];
-    v20 = OCXFindChild(v10, v19, "left");
+    wXMainNamespace3 = [(WXReadState *)stateCopy WXMainNamespace];
+    v20 = OCXFindChild(v10, wXMainNamespace3, "left");
 
     if (v20)
     {
-      v21 = [v7 mutableLeftBorder];
-      [WXBorder readFrom:v20 to:v21 state:v8];
+      mutableLeftBorder = [sectionCopy mutableLeftBorder];
+      [WXBorder readFrom:v20 to:mutableLeftBorder state:stateCopy];
 
-      v22 = [(OCXState *)v8 OCXRelationshipsNamespace];
+      oCXRelationshipsNamespace4 = [(OCXState *)stateCopy OCXRelationshipsNamespace];
       v130 = 0;
-      CXOptionalStringAttribute(v20, v22, "id", &v130);
+      CXOptionalStringAttribute(v20, oCXRelationshipsNamespace4, "id", &v130);
     }
 
-    v23 = [(WXReadState *)v8 WXMainNamespace];
-    v24 = OCXFindChild(v10, v23, "bottom");
+    wXMainNamespace4 = [(WXReadState *)stateCopy WXMainNamespace];
+    v24 = OCXFindChild(v10, wXMainNamespace4, "bottom");
 
     if (v24)
     {
-      v25 = [v7 mutableBottomBorder];
-      [WXBorder readFrom:v24 to:v25 state:v8];
+      mutableBottomBorder = [sectionCopy mutableBottomBorder];
+      [WXBorder readFrom:v24 to:mutableBottomBorder state:stateCopy];
 
-      v26 = [(OCXState *)v8 OCXRelationshipsNamespace];
+      oCXRelationshipsNamespace5 = [(OCXState *)stateCopy OCXRelationshipsNamespace];
       v129 = 0;
-      CXOptionalStringAttribute(v24, v26, "id", &v129);
+      CXOptionalStringAttribute(v24, oCXRelationshipsNamespace5, "id", &v129);
       v27 = v129;
 
-      v28 = [(OCXState *)v8 OCXRelationshipsNamespace];
+      oCXRelationshipsNamespace6 = [(OCXState *)stateCopy OCXRelationshipsNamespace];
       v128 = 0;
-      CXOptionalStringAttribute(v24, v28, "bottomLeft", &v128);
+      CXOptionalStringAttribute(v24, oCXRelationshipsNamespace6, "bottomLeft", &v128);
       v29 = v128;
 
-      v30 = [(OCXState *)v8 OCXRelationshipsNamespace];
+      oCXRelationshipsNamespace7 = [(OCXState *)stateCopy OCXRelationshipsNamespace];
       v127 = 0;
-      CXOptionalStringAttribute(v24, v30, "bottomRight", &v127);
+      CXOptionalStringAttribute(v24, oCXRelationshipsNamespace7, "bottomRight", &v127);
     }
 
-    v31 = [(WXReadState *)v8 WXMainNamespace];
-    v32 = OCXFindChild(v10, v31, "right");
+    wXMainNamespace5 = [(WXReadState *)stateCopy WXMainNamespace];
+    v32 = OCXFindChild(v10, wXMainNamespace5, "right");
 
     if (v32)
     {
-      v33 = [v7 mutableRightBorder];
-      [WXBorder readFrom:v32 to:v33 state:v8];
+      mutableRightBorder = [sectionCopy mutableRightBorder];
+      [WXBorder readFrom:v32 to:mutableRightBorder state:stateCopy];
 
-      v34 = [(OCXState *)v8 OCXRelationshipsNamespace];
+      oCXRelationshipsNamespace8 = [(OCXState *)stateCopy OCXRelationshipsNamespace];
       v126 = 0;
-      CXOptionalStringAttribute(v32, v34, "id", &v126);
+      CXOptionalStringAttribute(v32, oCXRelationshipsNamespace8, "id", &v126);
     }
   }
 
-  v35 = [(WXReadState *)v8 WXMainNamespace];
-  v36 = OCXFindChild(a3, v35, "cols");
+  wXMainNamespace6 = [(WXReadState *)stateCopy WXMainNamespace];
+  v36 = OCXFindChild(properties, wXMainNamespace6, "cols");
 
   if (v36)
   {
     v134 = 0;
-    v37 = [(WXReadState *)v8 WXMainNamespace];
-    v38 = OCXFindChild(a3, v37, "cols");
+    wXMainNamespace7 = [(WXReadState *)stateCopy WXMainNamespace];
+    v38 = OCXFindChild(properties, wXMainNamespace7, "cols");
 
-    v39 = [(WXReadState *)v8 WXMainNamespace];
-    v40 = CXOptionalLongAttribute(v38, v39, "num", &v134);
+    wXMainNamespace8 = [(WXReadState *)stateCopy WXMainNamespace];
+    v40 = CXOptionalLongAttribute(v38, wXMainNamespace8, "num", &v134);
 
     if (v40)
     {
-      [v7 setColumnCount:v134];
+      [sectionCopy setColumnCount:v134];
     }
 
-    [v7 isColumnCountOverridden];
+    [sectionCopy isColumnCountOverridden];
     v125 = 0;
-    v41 = [(WXReadState *)v8 WXMainNamespace];
-    v42 = CXOptionalLongAttribute(v38, v41, "space", &v125, 14);
+    wXMainNamespace9 = [(WXReadState *)stateCopy WXMainNamespace];
+    v42 = CXOptionalLongAttribute(v38, wXMainNamespace9, "space", &v125, 14);
 
     if (v42)
     {
-      [v7 setColumnSpace:v125];
+      [sectionCopy setColumnSpace:v125];
     }
 
-    v43 = [(WXReadState *)v8 WXMainNamespace];
+    wXMainNamespace10 = [(WXReadState *)stateCopy WXMainNamespace];
     v124 = 0;
-    v44 = CXOptionalStringAttribute(v36, v43, "equalWidth", &v124);
+    v44 = CXOptionalStringAttribute(v36, wXMainNamespace10, "equalWidth", &v124);
     v45 = v124;
 
     if (v44)
     {
-      [v7 setColumnsEqualWidth:{objc_msgSend(v45, "isEqualToString:", @"0"}];
+      [sectionCopy setColumnsEqualWidth:{objc_msgSend(v45, "isEqualToString:", @"0"}];
     }
 
-    if ([v7 isColumnsEqualWidthOverridden])
+    if ([sectionCopy isColumnsEqualWidthOverridden])
     {
-      if (([v7 columnsEqualWidth] & 1) == 0)
+      if (([sectionCopy columnsEqualWidth] & 1) == 0)
       {
-        v46 = [(WXReadState *)v8 WXMainNamespace];
-        Child = OCXFindChild(v36, v46, "col");
+        wXMainNamespace11 = [(WXReadState *)stateCopy WXMainNamespace];
+        Child = OCXFindChild(v36, wXMainNamespace11, "col");
 
         while (Child)
         {
-          v48 = [(WXReadState *)v8 WXMainNamespace];
-          v49 = CXDefaultLongAttribute(Child, v48, "w", 0, 14);
+          wXMainNamespace12 = [(WXReadState *)stateCopy WXMainNamespace];
+          v49 = CXDefaultLongAttribute(Child, wXMainNamespace12, "w", 0, 14);
 
-          [v7 appendColumnWidth:v49];
-          v50 = [(WXReadState *)v8 WXMainNamespace];
-          v51 = CXDefaultLongAttribute(Child, v50, "space", 0, 14);
+          [sectionCopy appendColumnWidth:v49];
+          wXMainNamespace13 = [(WXReadState *)stateCopy WXMainNamespace];
+          v51 = CXDefaultLongAttribute(Child, wXMainNamespace13, "space", 0, 14);
 
-          [v7 appendColumnSpace:v51];
-          v52 = [(WXReadState *)v8 WXMainNamespace];
-          Child = OCXFindNextChild(Child, v52, "col");
+          [sectionCopy appendColumnSpace:v51];
+          wXMainNamespace14 = [(WXReadState *)stateCopy WXMainNamespace];
+          Child = OCXFindNextChild(Child, wXMainNamespace14, "col");
         }
       }
     }
   }
 
   v123 = 0;
-  if (wmxmlGetBoolOnlyProperty(a3, "titlePg", "val", &v123, v8))
+  if (wmxmlGetBoolOnlyProperty(properties, "titlePg", "val", &v123, stateCopy))
   {
-    [v7 setTitlePage:v123];
+    [sectionCopy setTitlePage:v123];
   }
 
-  v53 = [(WXReadState *)v8 WXMainNamespace];
-  v54 = OCXFindChild(a3, v53, "bidi");
+  wXMainNamespace15 = [(WXReadState *)stateCopy WXMainNamespace];
+  v54 = OCXFindChild(properties, wXMainNamespace15, "bidi");
 
   if (v54)
   {
-    v55 = [(WXReadState *)v8 WXMainNamespace];
-    v56 = CXDefaultLongAttribute(v54, v55, "val", 1);
+    wXMainNamespace16 = [(WXReadState *)stateCopy WXMainNamespace];
+    v56 = CXDefaultLongAttribute(v54, wXMainNamespace16, "val", 1);
 
-    [v7 setBidi:v56 == 1];
+    [sectionCopy setBidi:v56 == 1];
   }
 
-  v57 = [(WXReadState *)v8 WXMainNamespace];
-  v58 = OCXFindChild(a3, v57, "rtlGutter");
+  wXMainNamespace17 = [(WXReadState *)stateCopy WXMainNamespace];
+  v58 = OCXFindChild(properties, wXMainNamespace17, "rtlGutter");
 
   if (v58)
   {
-    [v7 setRtlGutter:1];
+    [sectionCopy setRtlGutter:1];
   }
 
-  v59 = [(WXReadState *)v8 WXMainNamespace];
-  v60 = OCXFindChild(a3, v59, "pgSz");
+  wXMainNamespace18 = [(WXReadState *)stateCopy WXMainNamespace];
+  v60 = OCXFindChild(properties, wXMainNamespace18, "pgSz");
 
   if (v60)
   {
-    v61 = [(WXReadState *)v8 WXMainNamespace];
-    v62 = CXRequiredLongAttribute(v60, v61, "w", 14);
+    wXMainNamespace19 = [(WXReadState *)stateCopy WXMainNamespace];
+    v62 = CXRequiredLongAttribute(v60, wXMainNamespace19, "w", 14);
 
     if (v62 >= 0)
     {
@@ -662,9 +662,9 @@ void __42__WXSection_chapterNumberSeparatorEnumMap__block_invoke()
       v63 = 12240;
     }
 
-    [v7 setPageWidth:v63];
-    v64 = [(WXReadState *)v8 WXMainNamespace];
-    v65 = CXRequiredLongAttribute(v60, v64, "h", 14);
+    [sectionCopy setPageWidth:v63];
+    wXMainNamespace20 = [(WXReadState *)stateCopy WXMainNamespace];
+    v65 = CXRequiredLongAttribute(v60, wXMainNamespace20, "h", 14);
 
     if (v65 >= 0)
     {
@@ -676,82 +676,82 @@ void __42__WXSection_chapterNumberSeparatorEnumMap__block_invoke()
       v66 = 15840;
     }
 
-    [v7 setPageHeight:v66];
+    [sectionCopy setPageHeight:v66];
   }
 
   v125 = 0;
-  v67 = [(WXReadState *)v8 WXMainNamespace];
-  v68 = OCXFindChild(a3, v67, "pgMar");
+  wXMainNamespace21 = [(WXReadState *)stateCopy WXMainNamespace];
+  v68 = OCXFindChild(properties, wXMainNamespace21, "pgMar");
 
   if (v68)
   {
-    v69 = [(WXReadState *)v8 WXMainNamespace];
-    v125 = CXRequiredLongAttribute(v68, v69, "left", 14);
+    wXMainNamespace22 = [(WXReadState *)stateCopy WXMainNamespace];
+    v125 = CXRequiredLongAttribute(v68, wXMainNamespace22, "left", 14);
 
-    [v7 setLeftMargin:v125];
-    v70 = [(WXReadState *)v8 WXMainNamespace];
-    v125 = CXRequiredLongAttribute(v68, v70, "right", 14);
+    [sectionCopy setLeftMargin:v125];
+    wXMainNamespace23 = [(WXReadState *)stateCopy WXMainNamespace];
+    v125 = CXRequiredLongAttribute(v68, wXMainNamespace23, "right", 14);
 
-    [v7 setRightMargin:v125];
-    v71 = [(WXReadState *)v8 WXMainNamespace];
-    v125 = CXRequiredLongAttribute(v68, v71, "top", 14);
+    [sectionCopy setRightMargin:v125];
+    wXMainNamespace24 = [(WXReadState *)stateCopy WXMainNamespace];
+    v125 = CXRequiredLongAttribute(v68, wXMainNamespace24, "top", 14);
 
-    [v7 setTopMargin:v125];
-    v72 = [(WXReadState *)v8 WXMainNamespace];
-    v125 = CXRequiredLongAttribute(v68, v72, "bottom", 14);
+    [sectionCopy setTopMargin:v125];
+    wXMainNamespace25 = [(WXReadState *)stateCopy WXMainNamespace];
+    v125 = CXRequiredLongAttribute(v68, wXMainNamespace25, "bottom", 14);
 
-    [v7 setBottomMargin:v125];
-    v73 = [(WXReadState *)v8 WXMainNamespace];
-    v74 = CXDefaultLongAttribute(v68, v73, "header", 720, 14);
+    [sectionCopy setBottomMargin:v125];
+    wXMainNamespace26 = [(WXReadState *)stateCopy WXMainNamespace];
+    v74 = CXDefaultLongAttribute(v68, wXMainNamespace26, "header", 720, 14);
 
-    [v7 setHeaderMargin:v74];
-    v75 = [(WXReadState *)v8 WXMainNamespace];
-    v76 = CXDefaultLongAttribute(v68, v75, "footer", 720, 14);
+    [sectionCopy setHeaderMargin:v74];
+    wXMainNamespace27 = [(WXReadState *)stateCopy WXMainNamespace];
+    v76 = CXDefaultLongAttribute(v68, wXMainNamespace27, "footer", 720, 14);
 
-    [v7 setFooterMargin:v76];
-    v77 = [(WXReadState *)v8 WXMainNamespace];
-    v78 = CXRequiredLongAttribute(v68, v77, "gutter", 14);
+    [sectionCopy setFooterMargin:v76];
+    wXMainNamespace28 = [(WXReadState *)stateCopy WXMainNamespace];
+    v78 = CXRequiredLongAttribute(v68, wXMainNamespace28, "gutter", 14);
 
-    [v7 setGutterMargin:v78];
+    [sectionCopy setGutterMargin:v78];
   }
 
-  v79 = [(WXReadState *)v8 WXMainNamespace];
-  v80 = OCXFindChild(a3, v79, "lnNumType");
+  wXMainNamespace29 = [(WXReadState *)stateCopy WXMainNamespace];
+  v80 = OCXFindChild(properties, wXMainNamespace29, "lnNumType");
 
-  v81 = [(WXReadState *)v8 WXMainNamespace];
-  v82 = CXOptionalLongAttribute(v80, v81, "start", &v125);
+  wXMainNamespace30 = [(WXReadState *)stateCopy WXMainNamespace];
+  v82 = CXOptionalLongAttribute(v80, wXMainNamespace30, "start", &v125);
 
   if (v82)
   {
-    [v7 setLineNumberStart:v125];
+    [sectionCopy setLineNumberStart:v125];
   }
 
-  v83 = [(WXReadState *)v8 WXMainNamespace];
-  v84 = CXOptionalLongAttribute(v80, v83, "countBy", &v125);
+  wXMainNamespace31 = [(WXReadState *)stateCopy WXMainNamespace];
+  v84 = CXOptionalLongAttribute(v80, wXMainNamespace31, "countBy", &v125);
 
   if (v84)
   {
-    [v7 setLineNumberIncrement:v125];
+    [sectionCopy setLineNumberIncrement:v125];
   }
 
-  v85 = [(WXReadState *)v8 WXMainNamespace];
-  v86 = CXOptionalLongAttribute(v80, v85, "distance", &v125, 14);
+  wXMainNamespace32 = [(WXReadState *)stateCopy WXMainNamespace];
+  v86 = CXOptionalLongAttribute(v80, wXMainNamespace32, "distance", &v125, 14);
 
   if (v86)
   {
-    [v7 setLineNumberDistance:v125];
+    [sectionCopy setLineNumberDistance:v125];
   }
 
-  v87 = [(WXReadState *)v8 WXMainNamespace];
-  v88 = OCXFindChild(a3, v87, "pgNumType");
+  wXMainNamespace33 = [(WXReadState *)stateCopy WXMainNamespace];
+  v88 = OCXFindChild(properties, wXMainNamespace33, "pgNumType");
 
-  v89 = [(WXReadState *)v8 WXMainNamespace];
-  v90 = CXOptionalLongAttribute(v88, v89, "start", &v125);
+  wXMainNamespace34 = [(WXReadState *)stateCopy WXMainNamespace];
+  v90 = CXOptionalLongAttribute(v88, wXMainNamespace34, "start", &v125);
 
   if (v90)
   {
-    [v7 setPageNumberStart:v125];
-    [v7 setPageNumberRestart:1];
+    [sectionCopy setPageNumberStart:v125];
+    [sectionCopy setPageNumberRestart:1];
   }
 
   v91 = +[WXCommon numberFormatEnumMap];
@@ -766,19 +766,19 @@ void __42__WXSection_chapterNumberSeparatorEnumMap__block_invoke()
 
   if (v94 != -130883970)
   {
-    [v7 setPageNumberFormat:v94];
+    [sectionCopy setPageNumberFormat:v94];
   }
 
   LODWORD(v134) = 0;
   v95 = +[WXCommon textDirectionEnumMap];
-  if (readEnumProperty<WDTextDirection>(a3, "textDirection", "val", v95, &v134, v8))
+  if (readEnumProperty<WDTextDirection>(properties, "textDirection", "val", v95, &v134, stateCopy))
   {
   }
 
   else
   {
     v96 = +[WXCommon strictTextDirectionEnumMap];
-    v97 = readEnumProperty<WDTextDirection>(a3, "textDirection", "val", v96, &v134, v8);
+    v97 = readEnumProperty<WDTextDirection>(properties, "textDirection", "val", v96, &v134, stateCopy);
 
     if (!v97)
     {
@@ -786,78 +786,78 @@ void __42__WXSection_chapterNumberSeparatorEnumMap__block_invoke()
     }
   }
 
-  [v7 setTextDirection:v134];
+  [sectionCopy setTextDirection:v134];
 LABEL_54:
   v122 = 0;
-  v98 = [a1 sectionBreakEnumMap];
-  v99 = readEnumProperty<WDSectionBreakType>(a3, "type", "val", v98, &v122, v8);
+  sectionBreakEnumMap = [self sectionBreakEnumMap];
+  v99 = readEnumProperty<WDSectionBreakType>(properties, "type", "val", sectionBreakEnumMap, &v122, stateCopy);
 
   if (v99)
   {
-    [v7 setBreakType:v122];
+    [sectionCopy setBreakType:v122];
   }
 
   v121 = 0;
-  v100 = [a1 pageOrientationEnumMap];
-  v101 = readEnumProperty<WDPageOrientation>(a3, "pgSz", "orient", v100, &v121, v8);
+  pageOrientationEnumMap = [self pageOrientationEnumMap];
+  v101 = readEnumProperty<WDPageOrientation>(properties, "pgSz", "orient", pageOrientationEnumMap, &v121, stateCopy);
 
   if (v101)
   {
-    [v7 setPageOrientation:v121];
+    [sectionCopy setPageOrientation:v121];
   }
 
   v120 = 0;
-  v102 = [a1 pageBorderDepthEnumMap];
-  v103 = readEnumProperty<WDPageBorderDepth>(a3, "pgBorders", "zOrder", v102, &v120, v8);
+  pageBorderDepthEnumMap = [self pageBorderDepthEnumMap];
+  v103 = readEnumProperty<WDPageBorderDepth>(properties, "pgBorders", "zOrder", pageBorderDepthEnumMap, &v120, stateCopy);
 
   if (v103)
   {
-    [v7 setBorderDepth:v120];
+    [sectionCopy setBorderDepth:v120];
   }
 
   v119 = 0;
-  v104 = [a1 pageBorderDisplayEnumMap];
-  v105 = readEnumProperty<WDPageBorderDisplay>(a3, "pgBorders", "display", v104, &v119, v8);
+  pageBorderDisplayEnumMap = [self pageBorderDisplayEnumMap];
+  v105 = readEnumProperty<WDPageBorderDisplay>(properties, "pgBorders", "display", pageBorderDisplayEnumMap, &v119, stateCopy);
 
   if (v105)
   {
-    [v7 setBorderDisplay:v119];
+    [sectionCopy setBorderDisplay:v119];
   }
 
   v118 = 0;
-  v106 = [a1 pageBorderOffsetEnumMap];
-  v107 = readEnumProperty<WDPageBorderOffset>(a3, "pgBorders", "offsetFrom", v106, &v118, v8);
+  pageBorderOffsetEnumMap = [self pageBorderOffsetEnumMap];
+  v107 = readEnumProperty<WDPageBorderOffset>(properties, "pgBorders", "offsetFrom", pageBorderOffsetEnumMap, &v118, stateCopy);
 
   if (v107)
   {
-    [v7 setBorderOffset:v118];
+    [sectionCopy setBorderOffset:v118];
   }
 
   v117 = 0;
-  v108 = [a1 lineNumberRestartEnumMap];
-  v109 = readEnumProperty<WDLineNumberRestart>(a3, "lnNumType", "restart", v108, &v117, v8);
+  lineNumberRestartEnumMap = [self lineNumberRestartEnumMap];
+  v109 = readEnumProperty<WDLineNumberRestart>(properties, "lnNumType", "restart", lineNumberRestartEnumMap, &v117, stateCopy);
 
   if (v109)
   {
-    [v7 setLineNumberRestart:v117];
+    [sectionCopy setLineNumberRestart:v117];
   }
 
   v116 = 0;
-  v110 = [a1 verticalJustificationEnumMap];
-  v111 = readEnumProperty<WDVerticalJustification>(a3, "vAlign", "val", v110, &v116, v8);
+  verticalJustificationEnumMap = [self verticalJustificationEnumMap];
+  v111 = readEnumProperty<WDVerticalJustification>(properties, "vAlign", "val", verticalJustificationEnumMap, &v116, stateCopy);
 
   if (v111)
   {
-    [v7 setVerticalJustification:v116];
+    [sectionCopy setVerticalJustification:v116];
   }
 
   v115 = 0;
-  v112 = [a1 chapterNumberSeparatorEnumMap];
-  v113 = readEnumProperty<WDChapterNumberSeparator>(a3, "pgNumType", "chapSep", v112, &v115, v8);
+  chapterNumberSeparatorEnumMap = [self chapterNumberSeparatorEnumMap];
+  v113 = readEnumProperty<WDChapterNumberSeparator>(properties, "pgNumType", "chapSep", chapterNumberSeparatorEnumMap, &v115, stateCopy);
 
   if (v113)
   {
-    [v7 setChapterNumberSeparator:v115];
+    [sectionCopy setChapterNumberSeparator:v115];
   }
 }
 

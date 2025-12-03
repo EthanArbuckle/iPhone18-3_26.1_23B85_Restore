@@ -1,27 +1,27 @@
 @interface HUDMTLLayerTracking
 + (id)mainTracker;
 + (unint64_t)numTrackers;
-+ (void)enumerateTrackers:(id)a3;
-+ (void)setMainTracker:(id)a3;
-- (BOOL)_presentOrSignalDrawable:(id)a3;
-- (BOOL)metal4SignalDrawable:(id)a3;
++ (void)enumerateTrackers:(id)trackers;
++ (void)setMainTracker:(id)tracker;
+- (BOOL)_presentOrSignalDrawable:(id)drawable;
+- (BOOL)metal4SignalDrawable:(id)drawable;
 - (CAMetalLayer)layer;
 - (CGRect)safeAreaInsets;
-- (HUDMTLLayerTracking)initWithLayer:(id)a3 client:(id)a4 frameNumber:(unint64_t)a5;
+- (HUDMTLLayerTracking)initWithLayer:(id)layer client:(id)client frameNumber:(unint64_t)number;
 - (id)view;
 - (void)_bridgeMetrics;
 - (void)_initCommon;
-- (void)_snapshotDrawable:(id)a3 state:(HUDMTLLayerDrawableState *)a4;
+- (void)_snapshotDrawable:(id)drawable state:(HUDMTLLayerDrawableState *)state;
 - (void)_updateInfrequentFields;
-- (void)appWillEnterForeground:(id)a3;
+- (void)appWillEnterForeground:(id)foreground;
 - (void)dealloc;
-- (void)generateReport:(id)a3 forTimeInNs:(unint64_t)a4;
+- (void)generateReport:(id)report forTimeInNs:(unint64_t)ns;
 - (void)nextDrawable;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)presentDrawable:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)presentDrawable:(id)drawable;
 - (void)resetStats;
-- (void)setIsMainLayer:(BOOL)a3;
-- (void)snapshotNextDrawable:(unsigned int)a3 callback:(id)a4;
+- (void)setIsMainLayer:(BOOL)layer;
+- (void)snapshotNextDrawable:(unsigned int)drawable callback:(id)callback;
 @end
 
 @implementation HUDMTLLayerTracking
@@ -80,10 +80,10 @@ LABEL_13:
   return v8;
 }
 
-+ (void)setMainTracker:(id)a3
++ (void)setMainTracker:(id)tracker
 {
-  v3 = a3;
-  if (v3)
+  trackerCopy = tracker;
+  if (trackerCopy)
   {
     if (_HUDMTLLayerTrackingGetTrackers_onceToken != -1)
     {
@@ -111,8 +111,8 @@ LABEL_13:
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
-          v10 = [v9 layer];
-          [v9 setIsMainLayer:v10 == v3];
+          layer = [v9 layer];
+          [v9 setIsMainLayer:layer == trackerCopy];
         }
 
         v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -125,9 +125,9 @@ LABEL_13:
   }
 }
 
-+ (void)enumerateTrackers:(id)a3
++ (void)enumerateTrackers:(id)trackers
 {
-  v3 = a3;
+  trackersCopy = trackers;
   if (_HUDMTLLayerTrackingGetTrackers_onceToken != -1)
   {
     +[HUDMTLLayerTracking mainTracker];
@@ -155,7 +155,7 @@ LABEL_13:
           objc_enumerationMutation(v5);
         }
 
-        v3[2](v3, *(*(&v10 + 1) + 8 * i));
+        trackersCopy[2](trackersCopy, *(*(&v10 + 1) + 8 * i));
       }
 
       v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -178,10 +178,10 @@ LABEL_13:
   return v2;
 }
 
-- (HUDMTLLayerTracking)initWithLayer:(id)a3 client:(id)a4 frameNumber:(unint64_t)a5
+- (HUDMTLLayerTracking)initWithLayer:(id)layer client:(id)client frameNumber:(unint64_t)number
 {
-  v8 = a3;
-  v9 = a4;
+  layerCopy = layer;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = HUDMTLLayerTracking;
   v10 = [(HUDMTLLayerTracking *)&v15 init];
@@ -196,20 +196,20 @@ LABEL_13:
     *(v10 + 24) = 0u;
     *(v10 + 8) = 0u;
     bzero(v10 + 120, 0x1688uLL);
-    objc_storeWeak(v11 + 782, v8);
-    objc_storeStrong(v11 + 783, a4);
+    objc_storeWeak(v11 + 782, layerCopy);
+    objc_storeStrong(v11 + 783, client);
     v11[5908] = objc_opt_respondsToSelector() & 1;
-    *(v11 + 15) = a5;
-    *(v11 + 22) = v8;
+    *(v11 + 15) = number;
+    *(v11 + 22) = layerCopy;
     *(v11 + 744) = 0;
-    [v8 drawableSize];
+    [layerCopy drawableSize];
     *(v11 + 8) = v12;
-    [v8 drawableSize];
+    [layerCopy drawableSize];
     *(v11 + 9) = v13;
-    if (v8 && (NSSelectorFromString(@"developerHUDProperties"), (objc_opt_respondsToSelector() & 1) != 0))
+    if (layerCopy && (NSSelectorFromString(@"developerHUDProperties"), (objc_opt_respondsToSelector() & 1) != 0))
     {
       v11[188] = 1;
-      [v8 addObserver:v11 forKeyPath:@"developerHUDProperties" options:5 context:0];
+      [layerCopy addObserver:v11 forKeyPath:@"developerHUDProperties" options:5 context:0];
     }
 
     else
@@ -347,9 +347,9 @@ LABEL_17:
   [(HUDMTLLayerTracking *)&v13 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  isKindOfClass = [a5 objectForKeyedSubscript:{NSKeyValueChangeNewKey, a4}];
+  isKindOfClass = [change objectForKeyedSubscript:{NSKeyValueChangeNewKey, object}];
   v8 = isKindOfClass;
   if (self->_layerState.hasDeveloperHUDProperties)
   {
@@ -520,9 +520,9 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)_snapshotDrawable:(id)a3 state:(HUDMTLLayerDrawableState *)a4
+- (void)_snapshotDrawable:(id)drawable state:(HUDMTLLayerDrawableState *)state
 {
-  v40 = a3;
+  drawableCopy = drawable;
   os_unfair_lock_lock(&self->_layerState.logicalPresentTimeRecord.totalNumValues);
   v6 = mach_absolute_time();
   prevSnapshotTime = self->_layerState.prevSnapshotTime;
@@ -533,11 +533,11 @@ LABEL_24:
 
   self->_layerState.prevSnapshotTime = v6;
   self->_layerState.lastDeltaNs = prevSnapshotTime;
-  [v40 presentedTime];
-  a4->presentedTime = (v8 * 1000000000.0);
-  a4->drawableID = [v40 drawableID];
-  a4->missed = 0;
-  if (a4->presentedTime)
+  [drawableCopy presentedTime];
+  state->presentedTime = (v8 * 1000000000.0);
+  state->drawableID = [drawableCopy drawableID];
+  state->missed = 0;
+  if (state->presentedTime)
   {
     _snapshotDrawable_state__everHadPresentedTime = 1;
     heartbeatRate = self->_layerState.heartbeatRate;
@@ -546,7 +546,7 @@ LABEL_24:
       LODWORD(v9) = self->_layerState.screenFPS;
       if (heartbeatRate != v9 && *(HUDGetGlobalConfig() + 25) == 1)
       {
-        a4->presentedTime = (self->_layerState.heartbeatRate * round(a4->presentedTime / self->_layerState.heartbeatRate));
+        state->presentedTime = (self->_layerState.heartbeatRate * round(state->presentedTime / self->_layerState.heartbeatRate));
       }
     }
   }
@@ -555,37 +555,37 @@ LABEL_24:
   {
     if (_snapshotDrawable_state__everHadPresentedTime == 1)
     {
-      a4->presentedTime = self->_layerState.prevPresentedTime;
+      state->presentedTime = self->_layerState.prevPresentedTime;
     }
 
     else
     {
       v11 = HUDCurrentTimeInNs();
       v12 = _snapshotDrawable_state__everHadPresentedTime;
-      a4->presentedTime = v11;
+      state->presentedTime = v11;
       if (v12 != 1)
       {
         goto LABEL_12;
       }
     }
 
-    a4->missed = 1;
+    state->missed = 1;
     ++self->_layerState.frameMisses;
   }
 
 LABEL_12:
   v13 = HUDCurrentTimeInNs();
   prevPresentedTime = self->_layerState.prevPresentedTime;
-  a4->prevPresentedTime = prevPresentedTime;
-  a4->presentedCallbackTime = v13;
-  if (a4->missed)
+  state->prevPresentedTime = prevPresentedTime;
+  state->presentedCallbackTime = v13;
+  if (state->missed)
   {
     v15 = 0;
   }
 
   else
   {
-    presentedTime = a4->presentedTime;
+    presentedTime = state->presentedTime;
     v33 = presentedTime >= prevPresentedTime;
     v15 = presentedTime - prevPresentedTime;
     v17 = v15 != 0 && v33;
@@ -600,59 +600,59 @@ LABEL_12:
     }
   }
 
-  a4->presentedDeltaTime = v15;
-  v18 = [v40 layer];
-  [v18 contentsScale];
+  state->presentedDeltaTime = v15;
+  layer = [drawableCopy layer];
+  [layer contentsScale];
   *&v19 = v19;
-  a4->layerContentsScale = *&v19;
+  state->layerContentsScale = *&v19;
 
-  v20 = [v40 texture];
-  v21 = [v20 width];
-  v22 = [v40 layer];
-  [v22 bounds];
-  v24 = v21 / v23;
-  a4->contentsScale = v24;
+  texture = [drawableCopy texture];
+  width = [texture width];
+  layer2 = [drawableCopy layer];
+  [layer2 bounds];
+  v24 = width / v23;
+  state->contentsScale = v24;
 
-  v25 = [v40 texture];
-  a4->drawableWidth = [v25 width];
+  texture2 = [drawableCopy texture];
+  state->drawableWidth = [texture2 width];
 
-  v26 = [v40 texture];
-  a4->drawableHeight = [v26 height];
+  texture3 = [drawableCopy texture];
+  state->drawableHeight = [texture3 height];
 
-  self->_layerState.prevPresentedTime = a4->presentedTime;
+  self->_layerState.prevPresentedTime = state->presentedTime;
   if (__ROR8__(0xEEEEEEEEEEEEEEEFLL * self->_layerState.frameNumber, 2) < 0x444444444444445uLL)
   {
     detachCodeWhenPresented = 0xFFFFFFFFLL;
-    a4->detachCodeWhenPresented = 0xFFFFFFFFLL;
+    state->detachCodeWhenPresented = 0xFFFFFFFFLL;
   }
 
   else
   {
-    v27 = [v40 texture];
-    [v27 iosurface];
-    a4->detachCodeWhenPresented = IOSurfaceGetDetachModeCode();
+    texture4 = [drawableCopy texture];
+    [texture4 iosurface];
+    state->detachCodeWhenPresented = IOSurfaceGetDetachModeCode();
 
-    detachCodeWhenPresented = a4->detachCodeWhenPresented;
+    detachCodeWhenPresented = state->detachCodeWhenPresented;
     v29 = WORD2(detachCodeWhenPresented);
     if (WORD2(detachCodeWhenPresented) == 0xFFFF)
     {
       v29 = WORD2(self->_layerState.prevDetachCodeWhenPresented);
     }
 
-    self->_layerState.lastDrawableDetached = (LODWORD(a4->detachCodeWhenPresentScheduled) | v29) == 0;
+    self->_layerState.lastDrawableDetached = (LODWORD(state->detachCodeWhenPresentScheduled) | v29) == 0;
   }
 
   self->_layerState.prevDetachCodeWhenPresented = detachCodeWhenPresented;
-  if (!a4->missed)
+  if (!state->missed)
   {
-    presentedDeltaTime = a4->presentedDeltaTime;
+    presentedDeltaTime = state->presentedDeltaTime;
     if (presentedDeltaTime - 1000001 <= 0x3B8B87BE)
     {
       HUDValueHistoryRecordAddValue(&self->_layerState.presentTimeRecord, presentedDeltaTime);
-      HUDValueHistoryRecordAddValue(&self->_layerState.presentToOnGlassRecord.valuesMinSinceBeginning, round(1000000000.0 / a4->presentedDeltaTime));
-      if (a4->isLogicalFrame)
+      HUDValueHistoryRecordAddValue(&self->_layerState.presentToOnGlassRecord.valuesMinSinceBeginning, round(1000000000.0 / state->presentedDeltaTime));
+      if (state->isLogicalFrame)
       {
-        v31 = a4->presentedTime;
+        v31 = state->presentedTime;
         prevLogicalPresentedTime = self->_layerState.prevLogicalPresentedTime;
         v33 = v31 >= prevLogicalPresentedTime;
         v34 = v31 - prevLogicalPresentedTime;
@@ -671,7 +671,7 @@ LABEL_12:
           v36 = v35;
           HUDValueHistoryRecordAddValue(&self->_layerState.presentToOnGlassRecord.valuesMinSinceBeginning, round(1000000000.0 / v35));
           HUDValueHistoryRecordAddValue(&self->_layerState.logicalFPSRecord.totalNumValues, v36);
-          v31 = a4->presentedTime;
+          v31 = state->presentedTime;
         }
 
         self->_layerState.prevLogicalPresentedTime = v31;
@@ -679,8 +679,8 @@ LABEL_12:
     }
   }
 
-  v37 = a4->presentedTime;
-  presentDrawableTime = a4->presentDrawableTime;
+  v37 = state->presentedTime;
+  presentDrawableTime = state->presentDrawableTime;
   v17 = v37 > presentDrawableTime;
   v39 = v37 - presentDrawableTime;
   if (v17 && v39 <= 0xBEBC1FF)
@@ -696,19 +696,19 @@ LABEL_12:
   if (BYTE4(self->_layerState.logicalPresentTimeRecord.averageSinceBeginning) == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_insightReportContext.compilerStatStart.totalSyncCompileTimeObject);
-    v4 = [WeakRetained currentDisplay];
+    currentDisplay = [WeakRetained currentDisplay];
 
-    if (v4)
+    if (currentDisplay)
     {
-      [v4 refreshRate];
+      [currentDisplay refreshRate];
       if (v5 > 0.0)
       {
         v42 = 0u;
         v43 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v6 = [v4 availableModes];
-        v7 = [v6 countByEnumeratingWithState:&v40 objects:v44 count:16];
+        availableModes = [currentDisplay availableModes];
+        v7 = [availableModes countByEnumeratingWithState:&v40 objects:v44 count:16];
         if (v7)
         {
           v8 = v7;
@@ -721,7 +721,7 @@ LABEL_12:
             {
               if (*v41 != v10)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(availableModes);
               }
 
               v13 = *(*(&v40 + 1) + 8 * i);
@@ -742,7 +742,7 @@ LABEL_12:
               }
             }
 
-            v8 = [v6 countByEnumeratingWithState:&v40 objects:v44 count:16];
+            v8 = [availableModes countByEnumeratingWithState:&v40 objects:v44 count:16];
           }
 
           while (v8);
@@ -754,9 +754,9 @@ LABEL_12:
           v11 = 1000;
         }
 
-        [v4 refreshRate];
+        [currentDisplay refreshRate];
         self->_layerState.screenFPS = (1.0 / v36);
-        [v4 heartbeatRate];
+        [currentDisplay heartbeatRate];
         self->_layerState.heartbeatRate = v37;
         if (v9)
         {
@@ -766,9 +766,9 @@ LABEL_12:
 
         else
         {
-          [v4 refreshRate];
+          [currentDisplay refreshRate];
           self->_layerState.screenMinRefreshRate = v38;
-          [v4 refreshRate];
+          [currentDisplay refreshRate];
           self->_layerState.screenMaxRefreshRate = v39;
         }
 
@@ -779,7 +779,7 @@ LABEL_12:
 
   else
   {
-    v4 = 0;
+    currentDisplay = 0;
   }
 
   v18 = NSClassFromString(@"UIScreen");
@@ -844,9 +844,9 @@ LABEL_19:
   }
 }
 
-- (BOOL)_presentOrSignalDrawable:(id)a3
+- (BOOL)_presentOrSignalDrawable:(id)drawable
 {
-  v4 = a3;
+  drawableCopy = drawable;
   v5 = HUDGetGlobalConfig();
   objc_initWeak(&location, self);
   v27 = 0;
@@ -885,7 +885,7 @@ LABEL_19:
   v25[3] = &unk_69E48;
   objc_copyWeak(&v26, &location);
   v25[4] = &v27;
-  [v4 addPresentScheduledHandler:v25];
+  [drawableCopy addPresentScheduledHandler:v25];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = __48__HUDMTLLayerTracking__presentOrSignalDrawable___block_invoke_2;
@@ -893,7 +893,7 @@ LABEL_19:
   objc_copyWeak(&v24, &location);
   v23[4] = self;
   v23[5] = &v27;
-  [v4 addPresentedHandler:v23];
+  [drawableCopy addPresentedHandler:v23];
   objc_destroyWeak(&v24);
   objc_destroyWeak(&v26);
   _Block_object_dispose(&v27, 8);
@@ -926,7 +926,7 @@ LABEL_14:
   }
 
 LABEL_15:
-  v17 = [self->_insightReportContext.compilerStatStart.totalSyncCompileTimeCompute layerTracking:self presentDrawable:v4];
+  v17 = [self->_insightReportContext.compilerStatStart.totalSyncCompileTimeCompute layerTracking:self presentDrawable:drawableCopy];
   ++self->_layerState.frameNumber;
   v18 = HUDGPUTimeTrackerGetGlobalInstance();
   self->_layerState.logicalFrameNumber = HUDGPUTimeTrackerGetCurrentFrame(v18);
@@ -1080,46 +1080,46 @@ void __48__HUDMTLLayerTracking__presentOrSignalDrawable___block_invoke_4(uint64_
   }
 }
 
-- (void)presentDrawable:(id)a3
+- (void)presentDrawable:(id)drawable
 {
   if ((BYTE5(self->_layerState.logicalPresentTimeRecord.averageSinceBeginning) & 1) == 0)
   {
-    [(HUDMTLLayerTracking *)self _presentOrSignalDrawable:a3];
+    [(HUDMTLLayerTracking *)self _presentOrSignalDrawable:drawable];
   }
 }
 
-- (BOOL)metal4SignalDrawable:(id)a3
+- (BOOL)metal4SignalDrawable:(id)drawable
 {
-  v4 = a3;
+  drawableCopy = drawable;
   BYTE5(self->_layerState.logicalPresentTimeRecord.averageSinceBeginning) = 1;
   if (!self->_insightReportContext.frameIntervals)
   {
     WeakRetained = objc_loadWeakRetained(&self->_insightReportContext.compilerStatStart.totalSyncCompileTimeObject);
-    v6 = [WeakRetained device];
-    v7 = [v6 newSharedEvent];
+    device = [WeakRetained device];
+    newSharedEvent = [device newSharedEvent];
     frameIntervals = self->_insightReportContext.frameIntervals;
-    self->_insightReportContext.frameIntervals = v7;
+    self->_insightReportContext.frameIntervals = newSharedEvent;
 
     self->_insightReportContext.frameIntervalsWritingOffset = 0;
   }
 
-  v9 = [(HUDMTLLayerTracking *)self _presentOrSignalDrawable:v4];
+  v9 = [(HUDMTLLayerTracking *)self _presentOrSignalDrawable:drawableCopy];
   self->_insightReportContext.frameIntervalsWritingOffset += 2;
 
   return v9;
 }
 
-- (void)setIsMainLayer:(BOOL)a3
+- (void)setIsMainLayer:(BOOL)layer
 {
-  if (self->_layerState.isMainLayer != a3)
+  if (self->_layerState.isMainLayer != layer)
   {
-    self->_layerState.isMainLayer = a3;
-    if (self->_layerState.isUserMainLayer && !a3)
+    self->_layerState.isMainLayer = layer;
+    if (self->_layerState.isUserMainLayer && !layer)
     {
       self->_layerState.isUserMainLayer = 0;
     }
 
-    if (a3)
+    if (layer)
     {
       [(HUDMTLLayerTracking *)self resetStats];
       GlobalInstance = HUDGPUTimeTrackerGetGlobalInstance();
@@ -1203,22 +1203,22 @@ void __48__HUDMTLLayerTracking__presentOrSignalDrawable___block_invoke_4(uint64_
   HUDValueHistoryReset(&self->_layerState.logicalFPSRecord.totalNumValues);
 }
 
-- (void)snapshotNextDrawable:(unsigned int)a3 callback:(id)a4
+- (void)snapshotNextDrawable:(unsigned int)drawable callback:(id)callback
 {
-  v6 = a4;
-  if (v6)
+  callbackCopy = callback;
+  if (callbackCopy)
   {
     v7 = *(&self->_cachedSafeArea.origin.y + *&self->_safeAreaUpdateCounter);
     v8 = v7;
-    v9 = ((self->_lastDrawableState.drawableHeight / self->_lastDrawableState.drawableWidth) * a3);
+    v9 = ((self->_lastDrawableState.drawableHeight / self->_lastDrawableState.drawableWidth) * drawable);
     v21[0] = 0;
     v21[1] = v21;
     v21[2] = 0x2020000000;
     v21[3] = *&self->_safeAreaUpdateCounter;
     if (v7)
     {
-      v10 = a3;
-      if ([v7 width] == a3 && objc_msgSend(v8, "height") == v9)
+      drawableCopy2 = drawable;
+      if ([v7 width] == drawable && objc_msgSend(v8, "height") == v9)
       {
         goto LABEL_8;
       }
@@ -1226,15 +1226,15 @@ void __48__HUDMTLLayerTracking__presentOrSignalDrawable___block_invoke_4(uint64_
 
     else
     {
-      v10 = a3;
+      drawableCopy2 = drawable;
     }
 
-    v11 = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:70 width:v10 height:v9 mipmapped:0];
+    v11 = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:70 width:drawableCopy2 height:v9 mipmapped:0];
     [v11 setUsage:{objc_msgSend(v11, "usage") | 4}];
     [v11 setResourceOptions:0];
     WeakRetained = objc_loadWeakRetained(&self->_insightReportContext.compilerStatStart.totalSyncCompileTimeObject);
-    v13 = [WeakRetained device];
-    v14 = [v13 newTextureWithDescriptor:v11];
+    device = [WeakRetained device];
+    v14 = [device newTextureWithDescriptor:v11];
 
     objc_storeStrong(&self->_cachedSafeArea.origin.y + *&self->_safeAreaUpdateCounter, v14);
     v8 = v14;
@@ -1256,7 +1256,7 @@ LABEL_8:
     v16[3] = &unk_69F30;
     objc_copyWeak(&v19, &location);
     v18 = v21;
-    v17 = v6;
+    v17 = callbackCopy;
     [totalSyncCompileTimeCompute layerTracking:self setSnapshotTexture:v8 callback:v16];
 
     objc_destroyWeak(&v19);
@@ -1284,10 +1284,10 @@ void __53__HUDMTLLayerTracking_snapshotNextDrawable_callback___block_invoke(uint
 
 - (id)view
 {
-  v3 = [(HUDMTLLayerTracking *)self _viewClass];
+  _viewClass = [(HUDMTLLayerTracking *)self _viewClass];
   WeakRetained = objc_loadWeakRetained(&self->_insightReportContext.compilerStatStart.totalSyncCompileTimeObject);
-  v5 = [WeakRetained delegate];
-  if (v5)
+  delegate = [WeakRetained delegate];
+  if (delegate)
   {
     v6 = 1;
   }
@@ -1299,7 +1299,7 @@ void __53__HUDMTLLayerTracking_snapshotNextDrawable_callback___block_invoke(uint
 
   if (v6)
   {
-    v7 = v5;
+    delegate2 = delegate;
   }
 
   else
@@ -1309,24 +1309,24 @@ void __53__HUDMTLLayerTracking_snapshotNextDrawable_callback___block_invoke(uint
       v8 = WeakRetained;
       WeakRetained = [WeakRetained superlayer];
 
-      v7 = [WeakRetained delegate];
+      delegate2 = [WeakRetained delegate];
     }
 
-    while (!v7 && WeakRetained);
+    while (!delegate2 && WeakRetained);
   }
 
-  if (v3 && v7 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (_viewClass && delegate2 && (objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = 0;
+    delegate3 = 0;
   }
 
   else
   {
     v9 = objc_loadWeakRetained(&self->_insightReportContext.compilerStatStart.totalSyncCompileTimeObject);
-    v10 = [v9 delegate];
+    delegate3 = [v9 delegate];
   }
 
-  return v10;
+  return delegate3;
 }
 
 - (CGRect)safeAreaInsets
@@ -1336,11 +1336,11 @@ void __53__HUDMTLLayerTracking_snapshotNextDrawable_callback___block_invoke(uint
   if (denom)
   {
     self->_timebase.denom = 0;
-    v8 = [(HUDMTLLayerTracking *)self view];
-    v9 = v8;
-    if (v8)
+    view = [(HUDMTLLayerTracking *)self view];
+    v9 = view;
+    if (view)
     {
-      v10 = [v8 methodForSelector:"safeAreaInsets"];
+      v10 = [view methodForSelector:"safeAreaInsets"];
       objc_initWeak(&location, self);
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -1403,25 +1403,25 @@ void __37__HUDMTLLayerTracking_safeAreaInsets__block_invoke(uint64_t a1)
   }
 }
 
-- (void)generateReport:(id)a3 forTimeInNs:(unint64_t)a4
+- (void)generateReport:(id)report forTimeInNs:(unint64_t)ns
 {
-  obj = a3;
+  obj = report;
   if (![(HUDMTLLayerTracking *)self isGeneratingReport])
   {
     v6 = obj;
     if (!obj)
     {
       v7 = +[_CADeveloperHUDProperties instance];
-      v8 = [v7 reportOutputURL];
+      reportOutputURL = [v7 reportOutputURL];
 
-      if (!v8)
+      if (!reportOutputURL)
       {
         goto LABEL_5;
       }
 
       v9 = +[_CADeveloperHUDProperties instance];
-      v10 = [v9 reportOutputURL];
-      obja = [NSURL fileURLWithPath:v10];
+      reportOutputURL2 = [v9 reportOutputURL];
+      obja = [NSURL fileURLWithPath:reportOutputURL2];
 
       v6 = obja;
       if (!obja)
@@ -1437,9 +1437,9 @@ LABEL_5:
 
         v15 = NSTemporaryDirectory();
         v16 = +[_CADeveloperHUDProperties instance];
-        v17 = [v16 progName];
-        v18 = [NSString stringWithFormat:@"libMTLHud_%@_%@_%llus.html", v17, v14, a4 / 0x3B9ACA00];
-        v19 = [v15 stringByAppendingPathComponent:v18];
+        progName = [v16 progName];
+        0x3B9ACA00 = [NSString stringWithFormat:@"libMTLHud_%@_%@_%llus.html", progName, v14, ns / 0x3B9ACA00];
+        v19 = [v15 stringByAppendingPathComponent:0x3B9ACA00];
 
         objb = [NSURL fileURLWithPath:v19];
 
@@ -1450,11 +1450,11 @@ LABEL_5:
     LODWORD(self->_insightReportContext.compilerStatStart.totalSyncCompileTimeMesh) = 1;
     obj = v6;
     objc_storeStrong(&self->_lastInfrequentFieldUpdateTime, v6);
-    self->_insightReportContext.startFrameNumber = a4;
+    self->_insightReportContext.startFrameNumber = ns;
   }
 }
 
-- (void)appWillEnterForeground:(id)a3
+- (void)appWillEnterForeground:(id)foreground
 {
   if ([(HUDMTLLayerTracking *)self isMainLayer])
   {

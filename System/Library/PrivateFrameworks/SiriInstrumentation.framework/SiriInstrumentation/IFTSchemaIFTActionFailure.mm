@@ -1,33 +1,33 @@
 @interface IFTSchemaIFTActionFailure
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTActionFailure)initWithDictionary:(id)a3;
-- (IFTSchemaIFTActionFailure)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTActionFailure)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTActionFailure)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTActionFailure
 
-- (IFTSchemaIFTActionFailure)initWithDictionary:(id)a3
+- (IFTSchemaIFTActionFailure)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = IFTSchemaIFTActionFailure;
   v5 = [(IFTSchemaIFTActionFailure *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionFailure setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"failure"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"failure"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTActionFailure)initWithJSON:(id)a3
+- (IFTSchemaIFTActionFailure)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTActionFailure *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTActionFailure *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTActionFailure *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,32 +77,32 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailure exists](self, "exists")}];
-    [v3 setObject:v4 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v4 forKeyedSubscript:@"exists"];
   }
 
   if (self->_failure)
   {
-    v5 = [(IFTSchemaIFTActionFailure *)self failure];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    failure = [(IFTSchemaIFTActionFailure *)self failure];
+    dictionaryRepresentation = [failure dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"failure"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"failure"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"failure"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"failure"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -120,22 +120,22 @@
   return [(IFTSchemaIFTActionFailureFailure *)self->_failure hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (exists = self->_exists, exists == [v4 exists]))
+      if ((*&self->_has & 1) == 0 || (exists = self->_exists, exists == [equalCopy exists]))
       {
-        v6 = [(IFTSchemaIFTActionFailure *)self failure];
-        v7 = [v4 failure];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        failure = [(IFTSchemaIFTActionFailure *)self failure];
+        failure2 = [equalCopy failure];
+        v8 = failure2;
+        if ((failure != 0) != (failure2 == 0))
         {
-          v9 = [(IFTSchemaIFTActionFailure *)self failure];
-          if (!v9)
+          failure3 = [(IFTSchemaIFTActionFailure *)self failure];
+          if (!failure3)
           {
 
 LABEL_13:
@@ -143,10 +143,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(IFTSchemaIFTActionFailure *)self failure];
-          v12 = [v4 failure];
-          v13 = [v11 isEqual:v12];
+          v10 = failure3;
+          failure4 = [(IFTSchemaIFTActionFailure *)self failure];
+          failure5 = [equalCopy failure];
+          v13 = [failure4 isEqual:failure5];
 
           if (v13)
           {
@@ -167,37 +167,37 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v4 = [(IFTSchemaIFTActionFailure *)self failure];
+  failure = [(IFTSchemaIFTActionFailure *)self failure];
 
-  v5 = v7;
-  if (v4)
+  v5 = toCopy;
+  if (failure)
   {
-    v6 = [(IFTSchemaIFTActionFailure *)self failure];
+    failure2 = [(IFTSchemaIFTActionFailure *)self failure];
     PBDataWriterWriteSubmessage();
 
-    v5 = v7;
+    v5 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = IFTSchemaIFTActionFailure;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(IFTSchemaIFTActionFailure *)self failure:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(IFTSchemaIFTActionFailure *)self deleteFailure];
   }

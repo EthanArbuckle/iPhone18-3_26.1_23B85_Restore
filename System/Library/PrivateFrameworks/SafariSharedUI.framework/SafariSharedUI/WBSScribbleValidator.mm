@@ -1,41 +1,41 @@
 @interface WBSScribbleValidator
-- (WBSScribbleValidator)initWithWebView:(id)a3 elements:(id)a4 excludedTargets:(id)a5 completion:(id)a6;
-- (void)_addSimilarTargets:(id)a3 element:(id)a4;
-- (void)_collectSimilarTargetsWithCompletion:(id)a3;
-- (void)_compareRenderedTextWithCompletion:(id)a3;
-- (void)_findTargetsUsingHitTest:(id)a3 completion:(id)a4;
-- (void)_findTargetsUsingSelectors:(id)a3 completion:(id)a4;
-- (void)_findTargetsUsingTextSearch:(id)a3 completion:(id)a4;
+- (WBSScribbleValidator)initWithWebView:(id)view elements:(id)elements excludedTargets:(id)targets completion:(id)completion;
+- (void)_addSimilarTargets:(id)targets element:(id)element;
+- (void)_collectSimilarTargetsWithCompletion:(id)completion;
+- (void)_compareRenderedTextWithCompletion:(id)completion;
+- (void)_findTargetsUsingHitTest:(id)test completion:(id)completion;
+- (void)_findTargetsUsingSelectors:(id)selectors completion:(id)completion;
+- (void)_findTargetsUsingTextSearch:(id)search completion:(id)completion;
 - (void)_invokeCompletionBlock;
 - (void)_removeHiddenResultsAndAddInFlowElements;
 - (void)_removeHiddenResultsWithSimilarURLs;
 - (void)_removeResultsWithDifferentGeometryAndRevealTargetsIfNeeded;
 - (void)_removeTargetsToRevealIfNeeded;
 - (void)_startValidation;
-- (void)forEachSimilarTargetedElement:(id)a3;
+- (void)forEachSimilarTargetedElement:(id)element;
 - (void)invalidate;
 @end
 
 @implementation WBSScribbleValidator
 
-- (WBSScribbleValidator)initWithWebView:(id)a3 elements:(id)a4 excludedTargets:(id)a5 completion:(id)a6
+- (WBSScribbleValidator)initWithWebView:(id)view elements:(id)elements excludedTargets:(id)targets completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  viewCopy = view;
+  elementsCopy = elements;
+  targetsCopy = targets;
+  completionCopy = completion;
   v39.receiver = self;
   v39.super_class = WBSScribbleValidator;
   v14 = [(WBSScribbleValidator *)&v39 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_webView, v10);
-    v16 = [v11 copy];
+    objc_storeWeak(&v14->_webView, viewCopy);
+    v16 = [elementsCopy copy];
     elementsToValidate = v15->_elementsToValidate;
     v15->_elementsToValidate = v16;
 
-    v18 = [v12 copy];
+    v18 = [targetsCopy copy];
     targetsToExclude = v15->_targetsToExclude;
     v15->_targetsToExclude = v18;
 
@@ -63,7 +63,7 @@
     targetToScribbleElementWithMatchingSelectorsMap = v15->_targetToScribbleElementWithMatchingSelectorsMap;
     v15->_targetToScribbleElementWithMatchingSelectorsMap = v30;
 
-    v32 = _Block_copy(v13);
+    v32 = _Block_copy(completionCopy);
     completionBlock = v15->_completionBlock;
     v15->_completionBlock = v32;
 
@@ -79,7 +79,7 @@
 
   else
   {
-    (*(v13 + 2))(v13, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   return v15;
@@ -87,7 +87,7 @@
 
 - (void)_startValidation
 {
-  v2 = *(a1 + 16);
+  v2 = *(self + 16);
   v3 = a2;
   [v2 count];
   OUTLINED_FUNCTION_0_0(&dword_1C6968000, v4, v5, "Validating %zu scribble element(s)", v6, v7, v8, v9, 0);
@@ -174,9 +174,9 @@ void __40__WBSScribbleValidator__startValidation__block_invoke_51(uint64_t a1)
   }
 }
 
-- (void)_collectSimilarTargetsWithCompletion:(id)a3
+- (void)_collectSimilarTargetsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_group_create();
   objc_initWeak(&location, self);
   elementsToValidate = self->_elementsToValidate;
@@ -187,9 +187,9 @@ void __40__WBSScribbleValidator__startValidation__block_invoke_51(uint64_t a1)
   objc_copyWeak(&v11, &location);
   v7 = v5;
   v9 = v7;
-  v10 = self;
+  selfCopy = self;
   [(NSArray *)elementsToValidate enumerateObjectsUsingBlock:v8];
-  dispatch_group_notify(v7, MEMORY[0x1E69E96A0], v4);
+  dispatch_group_notify(v7, MEMORY[0x1E69E96A0], completionCopy);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -230,22 +230,22 @@ void __61__WBSScribbleValidator__collectSimilarTargetsWithCompletion___block_inv
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)_addSimilarTargets:(id)a3 element:(id)a4
+- (void)_addSimilarTargets:(id)targets element:(id)element
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v25 = a4;
+  targetsCopy = targets;
+  elementCopy = element;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v7 = [targetsCopy countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v32;
-    v23 = self;
-    v24 = v6;
+    selfCopy = self;
+    v24 = targetsCopy;
     v22 = *v32;
     do
     {
@@ -253,7 +253,7 @@ void __61__WBSScribbleValidator__collectSimilarTargetsWithCompletion___block_inv
       {
         if (*v32 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(targetsCopy);
         }
 
         v11 = *(*(&v31 + 1) + 8 * i);
@@ -287,13 +287,13 @@ void __61__WBSScribbleValidator__collectSimilarTargetsWithCompletion___block_inv
                   }
 
                   v18 = *(*(&v26 + 1) + 8 * j);
-                  v19 = [v18 target];
-                  v20 = [v19 isSameElement:v11];
+                  target = [v18 target];
+                  v20 = [target isSameElement:v11];
 
                   if (v20)
                   {
-                    [v18 addElement:v25];
-                    self = v23;
+                    [v18 addElement:elementCopy];
+                    self = selfCopy;
                     goto LABEL_18;
                   }
                 }
@@ -308,88 +308,88 @@ void __61__WBSScribbleValidator__collectSimilarTargetsWithCompletion___block_inv
               }
             }
 
-            self = v23;
-            targetingResults = v23->_targetingResults;
-            v13 = [[WBSElementTargetingResult alloc] initWithTarget:v11 element:v25];
+            self = selfCopy;
+            targetingResults = selfCopy->_targetingResults;
+            v13 = [[WBSElementTargetingResult alloc] initWithTarget:v11 element:elementCopy];
             [(NSMutableArray *)targetingResults addObject:v13];
 LABEL_18:
 
-            v6 = v24;
+            targetsCopy = v24;
             v9 = v22;
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v8 = [targetsCopy countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_findTargetsUsingHitTest:(id)a3 completion:(id)a4
+- (void)_findTargetsUsingHitTest:(id)test completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v11 isOutOfFlow])
+  testCopy = test;
+  completionCopy = completion;
+  if ([testCopy isOutOfFlow])
   {
     WeakRetained = objc_loadWeakRetained(&self->_webView);
     if (WeakRetained)
     {
-      [v11 hitTestLocationInWebView:WeakRetained];
+      [testCopy hitTestLocationInWebView:WeakRetained];
       v10 = [objc_alloc(MEMORY[0x1E6985400]) initWithPoint:{v8, v9}];
       [v10 setCanIncludeNearbyElements:0];
-      [WeakRetained _requestTargetedElementInfo:v10 completionHandler:v6];
+      [WeakRetained _requestTargetedElementInfo:v10 completionHandler:completionCopy];
     }
 
     else
     {
-      v6[2](v6, MEMORY[0x1E695E0F0]);
+      completionCopy[2](completionCopy, MEMORY[0x1E695E0F0]);
     }
   }
 
   else
   {
-    v6[2](v6, MEMORY[0x1E695E0F0]);
+    completionCopy[2](completionCopy, MEMORY[0x1E695E0F0]);
   }
 }
 
-- (void)_findTargetsUsingTextSearch:(id)a3 completion:(id)a4
+- (void)_findTargetsUsingTextSearch:(id)search completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
+  searchCopy = search;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   if (WeakRetained)
   {
-    v8 = [v10 searchableText];
-    if ([v8 length])
+    searchableText = [searchCopy searchableText];
+    if ([searchableText length])
     {
-      v9 = [objc_alloc(MEMORY[0x1E6985400]) initWithSearchText:v8];
+      v9 = [objc_alloc(MEMORY[0x1E6985400]) initWithSearchText:searchableText];
       [v9 setCanIncludeNearbyElements:0];
-      [WeakRetained _requestTargetedElementInfo:v9 completionHandler:v6];
+      [WeakRetained _requestTargetedElementInfo:v9 completionHandler:completionCopy];
     }
 
     else
     {
-      v6[2](v6, MEMORY[0x1E695E0F0]);
+      completionCopy[2](completionCopy, MEMORY[0x1E695E0F0]);
     }
   }
 
   else
   {
-    v6[2](v6, MEMORY[0x1E695E0F0]);
+    completionCopy[2](completionCopy, MEMORY[0x1E695E0F0]);
   }
 }
 
-- (void)_findTargetsUsingSelectors:(id)a3 completion:(id)a4
+- (void)_findTargetsUsingSelectors:(id)selectors completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  selectorsCopy = selectors;
+  completionCopy = completion;
   v8 = objc_opt_new();
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v18 = v7;
-  v19 = v6;
+  v18 = completionCopy;
+  v19 = selectorsCopy;
   if (WeakRetained)
   {
     v10 = v8;
@@ -398,8 +398,8 @@ LABEL_18:
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v12 = [v6 allSelectorsIncludingShadowHosts];
-    v13 = [v12 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    allSelectorsIncludingShadowHosts = [selectorsCopy allSelectorsIncludingShadowHosts];
+    v13 = [allSelectorsIncludingShadowHosts countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v13)
     {
       v14 = *v30;
@@ -409,7 +409,7 @@ LABEL_18:
         {
           if (*v30 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allSelectorsIncludingShadowHosts);
           }
 
           v16 = *(*(&v29 + 1) + 8 * i);
@@ -434,7 +434,7 @@ LABEL_18:
           }
         }
 
-        v13 = [v12 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v13 = [allSelectorsIncludingShadowHosts countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v13);
@@ -452,7 +452,7 @@ LABEL_18:
   else
   {
     v10 = v8;
-    (*(v7 + 2))(v7, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
   }
 }
 
@@ -683,9 +683,9 @@ LABEL_10:
   return v5;
 }
 
-- (void)_compareRenderedTextWithCompletion:(id)a3
+- (void)_compareRenderedTextWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_group_create();
   objc_initWeak(&location, self);
   targetingResults = self->_targetingResults;
@@ -697,7 +697,7 @@ LABEL_10:
   v9 = v7;
   objc_copyWeak(&v10, &location);
   [(NSMutableArray *)targetingResults enumerateObjectsUsingBlock:v8];
-  dispatch_group_notify(v7, MEMORY[0x1E69E96A0], v4);
+  dispatch_group_notify(v7, MEMORY[0x1E69E96A0], completionCopy);
   objc_destroyWeak(&v10);
 
   objc_destroyWeak(&location);
@@ -846,10 +846,10 @@ __CFString *__59__WBSScribbleValidator__compareRenderedTextWithCompletion___bloc
   }
 }
 
-- (void)forEachSimilarTargetedElement:(id)a3
+- (void)forEachSimilarTargetedElement:(id)element
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  elementCopy = element;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -870,12 +870,12 @@ __CFString *__59__WBSScribbleValidator__compareRenderedTextWithCompletion___bloc
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 target];
-        if (v11 && (v12 = v11, [v10 element], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
+        target = [v10 target];
+        if (target && (v12 = target, [v10 element], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
         {
-          v14 = [v10 target];
-          v15 = [v10 element];
-          v4[2](v4, v14, v15);
+          target2 = [v10 target];
+          element = [v10 element];
+          elementCopy[2](elementCopy, target2, element);
         }
 
         else
@@ -899,9 +899,9 @@ __CFString *__59__WBSScribbleValidator__compareRenderedTextWithCompletion___bloc
 {
   v7 = a2;
   v8 = [a3 debugDescription];
-  *a1 = 138477827;
+  *self = 138477827;
   *a4 = v8;
-  _os_log_debug_impl(&dword_1C6968000, v7, OS_LOG_TYPE_DEBUG, "- Keeping %{private}@ hidden to avoid partially hidden content", a1, 0xCu);
+  _os_log_debug_impl(&dword_1C6968000, v7, OS_LOG_TYPE_DEBUG, "- Keeping %{private}@ hidden to avoid partially hidden content", self, 0xCu);
 }
 
 void __40__WBSScribbleValidator__startValidation__block_invoke_cold_1(uint64_t a1, void *a2)

@@ -1,36 +1,36 @@
 @interface MUIMessageRepositoryCategoryProvider
-- (MUIMessageRepositoryCategoryProvider)initWithMessageRepository:(id)a3;
-- (void)categoryForContext:(id)a3 completionHandler:(id)a4;
+- (MUIMessageRepositoryCategoryProvider)initWithMessageRepository:(id)repository;
+- (void)categoryForContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation MUIMessageRepositoryCategoryProvider
 
-- (MUIMessageRepositoryCategoryProvider)initWithMessageRepository:(id)a3
+- (MUIMessageRepositoryCategoryProvider)initWithMessageRepository:(id)repository
 {
-  v5 = a3;
+  repositoryCopy = repository;
   v9.receiver = self;
   v9.super_class = MUIMessageRepositoryCategoryProvider;
   v6 = [(MUIMessageRepositoryCategoryProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_messageRepository, a3);
+    objc_storeStrong(&v6->_messageRepository, repository);
   }
 
   return v7;
 }
 
-- (void)categoryForContext:(id)a3 completionHandler:(id)a4
+- (void)categoryForContext:(id)context completionHandler:(id)handler
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 emailAddress];
+  contextCopy = context;
+  handlerCopy = handler;
+  emailAddress = [contextCopy emailAddress];
   v9 = MEMORY[0x277CCA920];
-  v10 = [MEMORY[0x277D06E08] predicateForMessagesWithSender:v8];
+  v10 = [MEMORY[0x277D06E08] predicateForMessagesWithSender:emailAddress];
   v24[0] = v10;
-  v11 = [MEMORY[0x277D06E08] predicateForCategorizedMessages];
-  v24[1] = v11;
+  predicateForCategorizedMessages = [MEMORY[0x277D06E08] predicateForCategorizedMessages];
+  v24[1] = predicateForCategorizedMessages;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
   v13 = [v9 andPredicateWithSubpredicates:v12];
 
@@ -42,16 +42,16 @@
   v23[3] = &__block_descriptor_40_e26_v16__0___EMQueryBuilder__8l;
   v23[4] = 1;
   v16 = [v14 initWithTargetClass:v15 predicate:v13 sortDescriptors:MEMORY[0x277CBEBF8] builder:v23];
-  v17 = [(MUIMessageRepositoryCategoryProvider *)self messageRepository];
+  messageRepository = [(MUIMessageRepositoryCategoryProvider *)self messageRepository];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __77__MUIMessageRepositoryCategoryProvider_categoryForContext_completionHandler___block_invoke_2;
   v20[3] = &unk_27818A588;
-  v21 = v6;
-  v22 = v7;
-  v18 = v6;
-  v19 = v7;
-  [v17 performQuery:v16 limit:1 completionHandler:v20];
+  v21 = contextCopy;
+  v22 = handlerCopy;
+  v18 = contextCopy;
+  v19 = handlerCopy;
+  [messageRepository performQuery:v16 limit:1 completionHandler:v20];
 }
 
 void __77__MUIMessageRepositoryCategoryProvider_categoryForContext_completionHandler___block_invoke(uint64_t a1, void *a2)

@@ -1,27 +1,27 @@
 @interface PKAutoRefineLogEntry
-- (PKAutoRefineLogEntry)initWithRefinedStrokes:(id)a3 originalStrokes:(id)a4 unchangedStrokes:(id)a5 locale:(id)a6 refinedWordCount:(int64_t)a7 duration:(double)a8 isAutoRefined:(BOOL)a9 debugInfo:(id)a10;
-- (void)estimateMetricsWithTokenDeviation:(double)a3 tokenHeight:(double)a4;
+- (PKAutoRefineLogEntry)initWithRefinedStrokes:(id)strokes originalStrokes:(id)originalStrokes unchangedStrokes:(id)unchangedStrokes locale:(id)locale refinedWordCount:(int64_t)count duration:(double)duration isAutoRefined:(BOOL)refined debugInfo:(id)self0;
+- (void)estimateMetricsWithTokenDeviation:(double)deviation tokenHeight:(double)height;
 @end
 
 @implementation PKAutoRefineLogEntry
 
-- (PKAutoRefineLogEntry)initWithRefinedStrokes:(id)a3 originalStrokes:(id)a4 unchangedStrokes:(id)a5 locale:(id)a6 refinedWordCount:(int64_t)a7 duration:(double)a8 isAutoRefined:(BOOL)a9 debugInfo:(id)a10
+- (PKAutoRefineLogEntry)initWithRefinedStrokes:(id)strokes originalStrokes:(id)originalStrokes unchangedStrokes:(id)unchangedStrokes locale:(id)locale refinedWordCount:(int64_t)count duration:(double)duration isAutoRefined:(BOOL)refined debugInfo:(id)self0
 {
-  v10 = a9;
-  v26 = a3;
-  v18 = a4;
-  v19 = a5;
+  refinedCopy = refined;
+  strokesCopy = strokes;
+  originalStrokesCopy = originalStrokes;
+  unchangedStrokesCopy = unchangedStrokes;
   v27.receiver = self;
   v27.super_class = PKAutoRefineLogEntry;
-  v20 = [(PKHandwritingSynthesisLogEntry *)&v27 initWithLocale:a6 duration:a10 debugInfo:a8];
-  objc_storeStrong(&v20->_refinedStrokes, a3);
-  objc_storeStrong(&v20->_unrefinedStrokes, a4);
-  objc_storeStrong(&v20->_unchangedStrokes, a5);
-  v20->_refinedWordCount = a7;
+  v20 = [(PKHandwritingSynthesisLogEntry *)&v27 initWithLocale:locale duration:info debugInfo:duration];
+  objc_storeStrong(&v20->_refinedStrokes, strokes);
+  objc_storeStrong(&v20->_unrefinedStrokes, originalStrokes);
+  objc_storeStrong(&v20->_unchangedStrokes, unchangedStrokes);
+  v20->_refinedWordCount = count;
   v20->_tokenDeviation = 0.0;
   v20->_tokenTranslation = -1.0;
-  v20->_isAutoRefined = v10;
-  if (v10)
+  v20->_isAutoRefined = refinedCopy;
+  if (refinedCopy)
   {
     v21 = @"refine";
   }
@@ -31,21 +31,21 @@
     v21 = @"autorefine";
   }
 
-  v22 = [(PKHandwritingSynthesisLogEntry *)v20 debugInfo];
-  [v22 setObject:v21 forKeyedSubscript:@"type"];
+  debugInfo = [(PKHandwritingSynthesisLogEntry *)v20 debugInfo];
+  [debugInfo setObject:v21 forKeyedSubscript:@"type"];
 
   v23 = [MEMORY[0x1E696AD98] numberWithInteger:v20->_refinedWordCount];
-  v24 = [(PKHandwritingSynthesisLogEntry *)v20 debugInfo];
-  [v24 setObject:v23 forKeyedSubscript:@"refinedWordCount"];
+  debugInfo2 = [(PKHandwritingSynthesisLogEntry *)v20 debugInfo];
+  [debugInfo2 setObject:v23 forKeyedSubscript:@"refinedWordCount"];
 
   return v20;
 }
 
-- (void)estimateMetricsWithTokenDeviation:(double)a3 tokenHeight:(double)a4
+- (void)estimateMetricsWithTokenDeviation:(double)deviation tokenHeight:(double)height
 {
   v43 = *MEMORY[0x1E69E9840];
-  self->_tokenDeviation = a3;
-  if (a4 > 0.0)
+  self->_tokenDeviation = deviation;
+  if (height > 0.0)
   {
     v5 = *MEMORY[0x1E695F050];
     v6 = *(MEMORY[0x1E695F050] + 8);
@@ -148,7 +148,7 @@
     }
 
     v31 = v8 * 0.5 + v5 - (width * 0.5 + x);
-    self->_tokenTranslation = sqrt((v7 * 0.5 + v6 - (height * 0.5 + y)) * (v7 * 0.5 + v6 - (height * 0.5 + y)) + v31 * v31) / a4;
+    self->_tokenTranslation = sqrt((v7 * 0.5 + v6 - (height * 0.5 + y)) * (v7 * 0.5 + v6 - (height * 0.5 + y)) + v31 * v31) / height;
   }
 }
 

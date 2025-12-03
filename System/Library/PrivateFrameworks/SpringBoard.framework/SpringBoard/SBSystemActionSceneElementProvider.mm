@@ -1,43 +1,43 @@
 @interface SBSystemActionSceneElementProvider
-+ (id)previewContextForSystemAction:(uint64_t)a1;
-+ (uint64_t)providesSceneElementForSystemAction:(uint64_t)a1;
-+ (void)_getClientIdentifier:(void *)a3 elementIdentifier:(void *)a4 forSystemAction:(void *)a5 withContext:;
++ (id)previewContextForSystemAction:(uint64_t)action;
++ (uint64_t)providesSceneElementForSystemAction:(uint64_t)action;
++ (void)_getClientIdentifier:(void *)identifier elementIdentifier:(void *)elementIdentifier forSystemAction:(void *)action withContext:;
 - (UIView)leadingView;
 - (UIView)trailingView;
-- (id)initWithSystemAction:(void *)a3 systemApertureController:(void *)a4 context:;
-- (id)previewForReason:(uint64_t)a1;
-- (void)_configureIdentificationWithContext:(uint64_t)a1;
+- (id)initWithSystemAction:(void *)action systemApertureController:(void *)controller context:;
+- (id)previewForReason:(uint64_t)reason;
+- (void)_configureIdentificationWithContext:(uint64_t)context;
 - (void)_configurePlaceholderContentProviders;
-- (void)_deactivateAndRemoveSceneElementIfNecessaryWithReason:(uint64_t)a1;
-- (void)noteSceneClientWantsControlOfElementWithAssertionTransferBlock:(id)a3;
-- (void)preferredContentSizeDidInvalidateForContentViewProvider:(id)a3;
-- (void)providesElementForSystemAction:(void *)a3 withContext:;
+- (void)_deactivateAndRemoveSceneElementIfNecessaryWithReason:(uint64_t)reason;
+- (void)noteSceneClientWantsControlOfElementWithAssertionTransferBlock:(id)block;
+- (void)preferredContentSizeDidInvalidateForContentViewProvider:(id)provider;
+- (void)providesElementForSystemAction:(void *)action withContext:;
 @end
 
 @implementation SBSystemActionSceneElementProvider
 
-+ (uint64_t)providesSceneElementForSystemAction:(uint64_t)a1
++ (uint64_t)providesSceneElementForSystemAction:(uint64_t)action
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 configuredAction];
+  configuredAction = [v2 configuredAction];
 
-  v4 = [v3 sectionIdentifier];
+  sectionIdentifier = [configuredAction sectionIdentifier];
 
-  if ([v4 isEqualToString:@"VoiceMemos"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"Translate") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"MusicRecognition"))
+  if ([sectionIdentifier isEqualToString:@"VoiceMemos"] & 1) != 0 || (objc_msgSend(sectionIdentifier, "isEqualToString:", @"Translate") & 1) != 0 || (objc_msgSend(sectionIdentifier, "isEqualToString:", @"MusicRecognition"))
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"Shortcuts"];
+    v5 = [sectionIdentifier isEqualToString:@"Shortcuts"];
   }
 
   return v5;
 }
 
-+ (id)previewContextForSystemAction:(uint64_t)a1
++ (id)previewContextForSystemAction:(uint64_t)action
 {
   v2 = a2;
   objc_opt_self();
@@ -50,8 +50,8 @@
   v4 = v2;
   v5 = [v3 bs_firstObjectPassingTest:v9];
 
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKey:@"SBSystemActionSceneElementPreviewContext"];
+  userInfo = [v5 userInfo];
+  v7 = [userInfo objectForKey:@"SBSystemActionSceneElementPreviewContext"];
 
   return v7;
 }
@@ -65,49 +65,49 @@ uint64_t __68__SBSystemActionSceneElementProvider_previewContextForSystemAction_
   return v5;
 }
 
-- (id)initWithSystemAction:(void *)a3 systemApertureController:(void *)a4 context:
+- (id)initWithSystemAction:(void *)action systemApertureController:(void *)controller context:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  actionCopy = action;
+  controllerCopy = controller;
+  if (self)
   {
     if (!v8)
     {
       [SBSystemActionSceneElementProvider initWithSystemAction:? systemApertureController:? context:?];
     }
 
-    if (!v9)
+    if (!actionCopy)
     {
       [SBSystemActionSceneElementProvider initWithSystemAction:? systemApertureController:? context:?];
     }
 
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = SBSystemActionSceneElementProvider;
     v11 = objc_msgSendSuper2(&v13, sel_init);
-    a1 = v11;
+    self = v11;
     if (v11)
     {
       objc_storeStrong(v11 + 10, a2);
-      objc_storeWeak(a1 + 1, v9);
-      objc_storeStrong(a1 + 4, a4);
-      [(SBSystemActionSceneElementProvider *)a1 _configureIdentificationWithContext:v10];
-      [(SBSystemActionSceneElementProvider *)a1 _configurePlaceholderContentProviders];
+      objc_storeWeak(self + 1, actionCopy);
+      objc_storeStrong(self + 4, controller);
+      [(SBSystemActionSceneElementProvider *)self _configureIdentificationWithContext:controllerCopy];
+      [(SBSystemActionSceneElementProvider *)self _configurePlaceholderContentProviders];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_configurePlaceholderContentProviders
 {
-  v5 = [objc_alloc(MEMORY[0x277D67E10]) initWithView:a1];
+  v5 = [objc_alloc(MEMORY[0x277D67E10]) initWithView:self];
   objc_storeStrong((a2 + 16), v5);
-  v6 = [a3 trailingApertureView];
-  v7 = v6;
-  if (v6)
+  trailingApertureView = [a3 trailingApertureView];
+  v7 = trailingApertureView;
+  if (trailingApertureView)
   {
-    v8 = v6;
+    v8 = trailingApertureView;
   }
 
   else
@@ -123,44 +123,44 @@ uint64_t __68__SBSystemActionSceneElementProvider_previewContextForSystemAction_
   *(a2 + 24) = v11;
   v13 = v11;
 
-  v14 = [a1 keyColor];
+  keyColor = [self keyColor];
   v15 = *(a2 + 56);
-  *(a2 + 56) = v14;
+  *(a2 + 56) = keyColor;
 }
 
-+ (void)_getClientIdentifier:(void *)a3 elementIdentifier:(void *)a4 forSystemAction:(void *)a5 withContext:
++ (void)_getClientIdentifier:(void *)identifier elementIdentifier:(void *)elementIdentifier forSystemAction:(void *)action withContext:
 {
-  v22 = a5;
-  v8 = a4;
+  actionCopy = action;
+  elementIdentifierCopy = elementIdentifier;
   objc_opt_self();
-  v9 = [v8 configuredAction];
+  configuredAction = [elementIdentifierCopy configuredAction];
 
-  v10 = [v9 sectionIdentifier];
-  v11 = [v22 clientIdentifier];
-  v12 = v11;
-  if (v11)
+  sectionIdentifier = [configuredAction sectionIdentifier];
+  clientIdentifier = [actionCopy clientIdentifier];
+  v12 = clientIdentifier;
+  if (clientIdentifier)
   {
-    v13 = v11;
+    associatedBundleIdentifier = clientIdentifier;
   }
 
   else
   {
-    v13 = [v9 associatedBundleIdentifier];
+    associatedBundleIdentifier = [configuredAction associatedBundleIdentifier];
   }
 
-  v14 = v13;
+  v14 = associatedBundleIdentifier;
 
-  v15 = [v22 elementIdentifier];
-  v16 = v15;
+  elementIdentifier = [actionCopy elementIdentifier];
+  v16 = elementIdentifier;
   v17 = *MEMORY[0x277D67FF0];
-  if (v15)
+  if (elementIdentifier)
   {
-    v17 = v15;
+    v17 = elementIdentifier;
   }
 
   v18 = v17;
 
-  if ([v10 isEqualToString:@"VoiceMemos"])
+  if ([sectionIdentifier isEqualToString:@"VoiceMemos"])
   {
     v19 = *MEMORY[0x277D68040];
 
@@ -170,26 +170,26 @@ uint64_t __68__SBSystemActionSceneElementProvider_previewContextForSystemAction_
   v20 = v14;
   *a2 = v14;
   v21 = v18;
-  *a3 = v18;
+  *identifier = v18;
 }
 
-- (id)previewForReason:(uint64_t)a1
+- (id)previewForReason:(uint64_t)reason
 {
   v3 = a2;
-  if (a1)
+  if (reason)
   {
     v4 = +[SBSystemApertureSceneElement activeElements];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __55__SBSystemActionSceneElementProvider_previewForReason___block_invoke;
     v26[3] = &unk_2783AFCA8;
-    v26[4] = a1;
+    v26[4] = reason;
     v5 = [v4 bs_firstObjectPassingTest:v26];
 
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, reason);
     if (!v5)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
+      WeakRetained = objc_loadWeakRetained((reason + 8));
       v7 = [SBSystemApertureSceneElement alloc];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
@@ -198,9 +198,9 @@ uint64_t __68__SBSystemActionSceneElementProvider_previewContextForSystemAction_
       objc_copyWeak(&v24, &location);
       v8 = WeakRetained;
       v22 = v8;
-      v23 = a1;
-      v5 = [(SBSystemApertureSceneElement *)v7 initWithScene:0 placeholderContentProvider:a1 statusBarBackgroundActivitiesSuppresser:v8 readyForPresentationHandler:v21];
-      objc_storeStrong((a1 + 88), v5);
+      reasonCopy = reason;
+      v5 = [(SBSystemApertureSceneElement *)v7 initWithScene:0 placeholderContentProvider:reason statusBarBackgroundActivitiesSuppresser:v8 readyForPresentationHandler:v21];
+      objc_storeStrong((reason + 88), v5);
 
       objc_destroyWeak(&v24);
     }
@@ -210,15 +210,15 @@ uint64_t __68__SBSystemActionSceneElementProvider_previewContextForSystemAction_
       [(SBSystemApertureSceneElement *)v5 activate];
     }
 
-    v9 = [(SBSystemApertureSceneElement *)v5 userInfo];
-    [v9 setObject:*(a1 + 80) forKey:@"SBSystemActionSceneElementSystemAction"];
-    v10 = *(a1 + 32);
+    userInfo = [(SBSystemApertureSceneElement *)v5 userInfo];
+    [userInfo setObject:*(reason + 80) forKey:@"SBSystemActionSceneElementSystemAction"];
+    v10 = *(reason + 32);
     if (v10)
     {
-      [v9 setObject:v10 forKey:@"SBSystemActionSceneElementPreviewContext"];
+      [userInfo setObject:v10 forKey:@"SBSystemActionSceneElementPreviewContext"];
     }
 
-    v11 = [v9 objectForKey:@"SBSystemActionSceneElementCompoundPreviewAssertion"];
+    v11 = [userInfo objectForKey:@"SBSystemActionSceneElementCompoundPreviewAssertion"];
     if (!v11)
     {
       objc_initWeak(&from, v5);
@@ -235,7 +235,7 @@ uint64_t __68__SBSystemActionSceneElementProvider_previewContextForSystemAction_
       v15[3] = &unk_2783AFD70;
       objc_copyWeak(&v16, &from);
       v11 = [(SBSystemActionCompoundPreviewAssertion *)v12 initWithIdentifier:v17 stateDidChangeBlock:v15 eventHandlingBlock:?];
-      [v9 setObject:v11 forKey:@"SBSystemActionSceneElementCompoundPreviewAssertion"];
+      [userInfo setObject:v11 forKey:@"SBSystemActionSceneElementCompoundPreviewAssertion"];
       objc_destroyWeak(&v16);
       objc_destroyWeak(&v19);
       objc_destroyWeak(&v18);
@@ -354,9 +354,9 @@ void __55__SBSystemActionSceneElementProvider_previewForReason___block_invoke_6(
   {
     v4 = self->_leadingPlaceholderContentViewProvider;
     [(SBUISystemApertureContentViewProviding *)v4 setContentContainer:self];
-    v5 = [(SBUISystemApertureContentViewProviding *)v4 providedView];
+    providedView = [(SBUISystemApertureContentViewProviding *)v4 providedView];
     v6 = self->_leadingView;
-    self->_leadingView = v5;
+    self->_leadingView = providedView;
 
     leadingView = self->_leadingView;
   }
@@ -371,9 +371,9 @@ void __55__SBSystemActionSceneElementProvider_previewForReason___block_invoke_6(
   {
     v4 = self->_trailingPlaceholderContentViewProvider;
     [(SBUISystemApertureContentViewProviding *)v4 setContentContainer:self];
-    v5 = [(SBUISystemApertureContentViewProviding *)v4 providedView];
+    providedView = [(SBUISystemApertureContentViewProviding *)v4 providedView];
     v6 = self->_trailingView;
-    self->_trailingView = v5;
+    self->_trailingView = providedView;
 
     trailingView = self->_trailingView;
   }
@@ -381,65 +381,65 @@ void __55__SBSystemActionSceneElementProvider_previewForReason___block_invoke_6(
   return trailingView;
 }
 
-- (void)noteSceneClientWantsControlOfElementWithAssertionTransferBlock:(id)a3
+- (void)noteSceneClientWantsControlOfElementWithAssertionTransferBlock:(id)block
 {
   elementAssertion = self->_elementAssertion;
   self->_elementAssertion = 0;
   v5 = elementAssertion;
-  v6 = a3;
+  blockCopy = block;
 
-  v6[2](v6, v5);
+  blockCopy[2](blockCopy, v5);
 }
 
-- (void)_configureIdentificationWithContext:(uint64_t)a1
+- (void)_configureIdentificationWithContext:(uint64_t)context
 {
-  if (a1)
+  if (context)
   {
     v8 = 0;
     v9 = 0;
-    [SBSystemActionSceneElementProvider _getClientIdentifier:&v8 elementIdentifier:*(a1 + 80) forSystemAction:a2 withContext:?];
+    [SBSystemActionSceneElementProvider _getClientIdentifier:&v8 elementIdentifier:*(context + 80) forSystemAction:a2 withContext:?];
     v3 = v9;
     v4 = v8;
     v7 = v3;
     v5 = [[SBSAElementIdentification alloc] initWithClientIdentifier:v7 elementIdentifier:v4];
-    v6 = *(a1 + 40);
-    *(a1 + 40) = v5;
+    v6 = *(context + 40);
+    *(context + 40) = v5;
   }
 }
 
-- (void)providesElementForSystemAction:(void *)a3 withContext:
+- (void)providesElementForSystemAction:(void *)action withContext:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v9 = 0;
     v10 = 0;
-    [SBSystemActionSceneElementProvider _getClientIdentifier:&v9 elementIdentifier:a2 forSystemAction:a3 withContext:?];
+    [SBSystemActionSceneElementProvider _getClientIdentifier:&v9 elementIdentifier:a2 forSystemAction:action withContext:?];
     v4 = v10;
     v5 = v9;
-    v6 = [v3 clientIdentifier];
-    if ([v6 isEqualToString:v4])
+    clientIdentifier = [selfCopy clientIdentifier];
+    if ([clientIdentifier isEqualToString:v4])
     {
-      v7 = [v3 elementIdentifier];
-      v3 = [v7 isEqualToString:v5];
+      elementIdentifier = [selfCopy elementIdentifier];
+      selfCopy = [elementIdentifier isEqualToString:v5];
     }
 
     else
     {
-      v3 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)_deactivateAndRemoveSceneElementIfNecessaryWithReason:(uint64_t)a1
+- (void)_deactivateAndRemoveSceneElementIfNecessaryWithReason:(uint64_t)reason
 {
   v5 = a2;
-  if (a1)
+  if (reason)
   {
-    v3 = *(a1 + 88);
-    v4 = *(a1 + 48);
+    v3 = *(reason + 88);
+    v4 = *(reason + 48);
     if (v4)
     {
       if ([v3 isActivated] && (objc_msgSend(v3, "isDeactivating") & 1) == 0)
@@ -455,7 +455,7 @@ void __55__SBSystemActionSceneElementProvider_previewForReason___block_invoke_6(
   }
 }
 
-- (void)preferredContentSizeDidInvalidateForContentViewProvider:(id)a3
+- (void)preferredContentSizeDidInvalidateForContentViewProvider:(id)provider
 {
   if (self)
   {
@@ -468,8 +468,8 @@ void __55__SBSystemActionSceneElementProvider_previewForReason___block_invoke_6(
   }
 
   v4 = sceneElement;
-  v5 = [(SBSystemApertureSceneElement *)v4 layoutHost];
-  [v5 preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:v4];
+  layoutHost = [(SBSystemApertureSceneElement *)v4 layoutHost];
+  [layoutHost preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:v4];
 }
 
 - (void)initWithSystemAction:(const char *)a1 systemApertureController:context:.cold.1(const char *a1)

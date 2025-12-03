@@ -1,10 +1,10 @@
 @interface AMSThreadSafeSet
 - (AMSThreadSafeSet)init;
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (NSArray)allObjects;
 - (unint64_t)count;
-- (void)addObject:(id)a3;
-- (void)removeObject:(id)a3;
+- (void)addObject:(id)object;
+- (void)removeObject:(id)object;
 @end
 
 @implementation AMSThreadSafeSet
@@ -34,13 +34,13 @@
   v9 = __Block_byref_object_copy__68;
   v10 = __Block_byref_object_dispose__68;
   v11 = MEMORY[0x1E695E0F0];
-  v2 = [(AMSThreadSafeSet *)self backingSet];
+  backingSet = [(AMSThreadSafeSet *)self backingSet];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __30__AMSThreadSafeSet_allObjects__block_invoke;
   v5[3] = &unk_1E73BCB20;
   v5[4] = &v6;
-  [v2 read:v5];
+  [backingSet read:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -61,13 +61,13 @@ uint64_t __30__AMSThreadSafeSet_allObjects__block_invoke(uint64_t a1, void *a2)
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(AMSThreadSafeSet *)self backingSet];
+  backingSet = [(AMSThreadSafeSet *)self backingSet];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __25__AMSThreadSafeSet_count__block_invoke;
   v5[3] = &unk_1E73BCB20;
   v5[4] = &v6;
-  [v2 read:v5];
+  [backingSet read:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -81,17 +81,17 @@ uint64_t __25__AMSThreadSafeSet_count__block_invoke(uint64_t a1, void *a2)
   return result;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
-  v5 = [(AMSThreadSafeSet *)self backingSet];
+  objectCopy = object;
+  backingSet = [(AMSThreadSafeSet *)self backingSet];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__AMSThreadSafeSet_addObject___block_invoke;
   v7[3] = &unk_1E73BCB48;
-  v8 = v4;
-  v6 = v4;
-  [v5 readWrite:v7];
+  v8 = objectCopy;
+  v6 = objectCopy;
+  [backingSet readWrite:v7];
 }
 
 id __30__AMSThreadSafeSet_addObject___block_invoke(uint64_t a1, void *a2)
@@ -102,17 +102,17 @@ id __30__AMSThreadSafeSet_addObject___block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v4 = a3;
-  v5 = [(AMSThreadSafeSet *)self backingSet];
+  objectCopy = object;
+  backingSet = [(AMSThreadSafeSet *)self backingSet];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__AMSThreadSafeSet_removeObject___block_invoke;
   v7[3] = &unk_1E73BCB48;
-  v8 = v4;
-  v6 = v4;
-  [v5 readWrite:v7];
+  v8 = objectCopy;
+  v6 = objectCopy;
+  [backingSet readWrite:v7];
 }
 
 id __33__AMSThreadSafeSet_removeObject___block_invoke(uint64_t a1, void *a2)
@@ -123,27 +123,27 @@ id __33__AMSThreadSafeSet_removeObject___block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(AMSThreadSafeSet *)self backingSet];
+  backingSet = [(AMSThreadSafeSet *)self backingSet];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __35__AMSThreadSafeSet_containsObject___block_invoke;
   v8[3] = &unk_1E73BCB70;
   v10 = &v11;
-  v6 = v4;
+  v6 = objectCopy;
   v9 = v6;
-  [v5 read:v8];
+  [backingSet read:v8];
 
-  LOBYTE(v5) = *(v12 + 24);
+  LOBYTE(backingSet) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
 
-  return v5;
+  return backingSet;
 }
 
 uint64_t __35__AMSThreadSafeSet_containsObject___block_invoke(uint64_t a1, void *a2)

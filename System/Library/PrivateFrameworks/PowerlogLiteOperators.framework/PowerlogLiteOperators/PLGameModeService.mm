@@ -2,7 +2,7 @@
 + (void)load;
 - (PLGameModeService)init;
 - (void)initOperatorDependancies;
-- (void)postGameModeStatusChangeNotification:(id)a3;
+- (void)postGameModeStatusChangeNotification:(id)notification;
 - (void)updateGameMode;
 @end
 
@@ -10,7 +10,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLGameModeService;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -27,13 +27,13 @@
 - (void)initOperatorDependancies
 {
   v3 = objc_alloc(MEMORY[0x277D3F160]);
-  v4 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__PLGameModeService_initOperatorDependancies__block_invoke;
   v7[3] = &unk_2782597E8;
   v7[4] = self;
-  v5 = [v3 initWithWorkQueue:v4 forNotification:@"com.apple.system.console_mode_changed" requireState:1 withBlock:v7];
+  v5 = [v3 initWithWorkQueue:workQueue forNotification:@"com.apple.system.console_mode_changed" requireState:1 withBlock:v7];
   consoleModeListener = self->_consoleModeListener;
   self->_consoleModeListener = v5;
 }
@@ -54,8 +54,8 @@ uint64_t __45__PLGameModeService_initOperatorDependancies__block_invoke(uint64_t
 {
   v17 = *MEMORY[0x277D85DE8];
   state64 = 0;
-  v3 = [(PLGameModeService *)self consoleModeListener];
-  state = notify_get_state([v3 stateToken], &state64);
+  consoleModeListener = [(PLGameModeService *)self consoleModeListener];
+  state = notify_get_state([consoleModeListener stateToken], &state64);
 
   if (state)
   {
@@ -86,9 +86,9 @@ LABEL_10:
     v8 = PLLogGameMode();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [(PLGameModeService *)self previousGameModeState];
+      previousGameModeState = [(PLGameModeService *)self previousGameModeState];
       *buf = 67109120;
-      v16 = v11;
+      v16 = previousGameModeState;
       _os_log_debug_impl(&dword_21A4C6000, v8, OS_LOG_TYPE_DEBUG, "self.previousGameModeState: %d", buf, 8u);
     }
 
@@ -105,20 +105,20 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postGameModeStatusChangeNotification:(id)a3
+- (void)postGameModeStatusChangeNotification:(id)notification
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PLLogGameMode();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 objectForKeyedSubscript:@"gameMode"];
+    v6 = [notificationCopy objectForKeyedSubscript:@"gameMode"];
     v8 = 138412290;
     v9 = v6;
     _os_log_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_DEFAULT, "Sent game mode notification to submodules: %@", &v8, 0xCu);
   }
 
-  [MEMORY[0x277D3F258] postNotificationName:@"PLGameModeNotification" object:self userInfo:v4];
+  [MEMORY[0x277D3F258] postNotificationName:@"PLGameModeNotification" object:self userInfo:notificationCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 

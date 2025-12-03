@@ -1,65 +1,65 @@
 @interface CAFNotificationUserActions
-+ (id)notificationUserActionsWithArray:(id)a3;
-+ (id)notificationUserActionsWithNotificationUserActions:(id)a3;
-- (CAFNotificationUserActions)initWithArray:(id)a3;
-- (CAFNotificationUserActions)initWithNotificationUserActions:(id)a3;
++ (id)notificationUserActionsWithArray:(id)array;
++ (id)notificationUserActionsWithNotificationUserActions:(id)actions;
+- (CAFNotificationUserActions)initWithArray:(id)array;
+- (CAFNotificationUserActions)initWithNotificationUserActions:(id)actions;
 - (NSArray)arrayRepresentation;
 - (NSString)formattedValue;
-- (id)objectAtIndex:(unint64_t)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (id)objectAtIndex:(unint64_t)index;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation CAFNotificationUserActions
 
-+ (id)notificationUserActionsWithArray:(id)a3
++ (id)notificationUserActionsWithArray:(id)array
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithArray:v4];
+  arrayCopy = array;
+  v5 = [[self alloc] initWithArray:arrayCopy];
 
   return v5;
 }
 
-+ (id)notificationUserActionsWithNotificationUserActions:(id)a3
++ (id)notificationUserActionsWithNotificationUserActions:(id)actions
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithNotificationUserActions:v4];
+  actionsCopy = actions;
+  v5 = [[self alloc] initWithNotificationUserActions:actionsCopy];
 
   return v5;
 }
 
-- (CAFNotificationUserActions)initWithNotificationUserActions:(id)a3
+- (CAFNotificationUserActions)initWithNotificationUserActions:(id)actions
 {
-  v5 = a3;
+  actionsCopy = actions;
   v9.receiver = self;
   v9.super_class = CAFNotificationUserActions;
   v6 = [(CAFNotificationUserActions *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_notificationUserActions, a3);
+    objc_storeStrong(&v6->_notificationUserActions, actions);
   }
 
   return v7;
 }
 
-- (CAFNotificationUserActions)initWithArray:(id)a3
+- (CAFNotificationUserActions)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v18.receiver = self;
   v18.super_class = CAFNotificationUserActions;
   v5 = [(CAFNotificationUserActions *)&v18 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __44__CAFNotificationUserActions_initWithArray___block_invoke;
     v15 = &unk_27890DA70;
-    v16 = v6;
+    v16 = array;
     v7 = v5;
     v17 = v7;
-    v8 = v6;
-    [v4 enumerateObjectsUsingBlock:&v12];
+    v8 = array;
+    [arrayCopy enumerateObjectsUsingBlock:&v12];
     v9 = [v8 copy];
     notificationUserActions = v7->_notificationUserActions;
     v7->_notificationUserActions = v9;
@@ -96,12 +96,12 @@ void __44__CAFNotificationUserActions_initWithArray___block_invoke(uint64_t a1, 
 
 - (NSString)formattedValue
 {
-  v3 = [(CAFNotificationUserActions *)self notificationUserActions];
-  if ([v3 count])
+  notificationUserActions = [(CAFNotificationUserActions *)self notificationUserActions];
+  if ([notificationUserActions count])
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(CAFNotificationUserActions *)self notificationUserActions];
-    v6 = [v5 componentsJoinedByString:{@", "}];
+    notificationUserActions2 = [(CAFNotificationUserActions *)self notificationUserActions];
+    v6 = [notificationUserActions2 componentsJoinedByString:{@", "}];
     v7 = [v4 stringWithFormat:@"[ %@ ]", v6];
   }
 
@@ -121,8 +121,8 @@ void __44__CAFNotificationUserActions_initWithArray___block_invoke(uint64_t a1, 
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CAFNotificationUserActions *)self notificationUserActions];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  notificationUserActions = [(CAFNotificationUserActions *)self notificationUserActions];
+  v5 = [notificationUserActions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -133,14 +133,14 @@ void __44__CAFNotificationUserActions_initWithArray___block_invoke(uint64_t a1, 
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(notificationUserActions);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [notificationUserActions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -151,18 +151,18 @@ void __44__CAFNotificationUserActions_initWithArray___block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v4 = [(CAFNotificationUserActions *)self notificationUserActions];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  notificationUserActions = [(CAFNotificationUserActions *)self notificationUserActions];
+  v5 = [notificationUserActions objectAtIndexedSubscript:index];
 
   return v5;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(CAFNotificationUserActions *)self notificationUserActions];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  notificationUserActions = [(CAFNotificationUserActions *)self notificationUserActions];
+  v9 = [notificationUserActions countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }

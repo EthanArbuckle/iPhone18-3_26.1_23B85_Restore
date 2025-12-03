@@ -1,29 +1,29 @@
 @interface PSTextFieldPINView
-- (BOOL)keyboardInputChanged:(id)a3;
+- (BOOL)keyboardInputChanged:(id)changed;
 - (BOOL)resignFirstResponder;
-- (PSTextFieldPINView)initWithFrame:(CGRect)a3;
-- (void)appendString:(id)a3;
+- (PSTextFieldPINView)initWithFrame:(CGRect)frame;
+- (void)appendString:(id)string;
 - (void)dealloc;
 - (void)deleteLastCharacter;
-- (void)hidePasscodeField:(BOOL)a3;
+- (void)hidePasscodeField:(BOOL)field;
 - (void)layoutSubviews;
 - (void)notifyDelegatePINChanged;
 - (void)notifyDelegatePINEntered;
-- (void)okButtonPressed:(id)a3;
-- (void)setBlocked:(BOOL)a3;
-- (void)setStringValue:(id)a3;
-- (void)setUsesNumericKeyboard:(BOOL)a3;
-- (void)showError:(id)a3 animate:(BOOL)a4;
+- (void)okButtonPressed:(id)pressed;
+- (void)setBlocked:(BOOL)blocked;
+- (void)setStringValue:(id)value;
+- (void)setUsesNumericKeyboard:(BOOL)keyboard;
+- (void)showError:(id)error animate:(BOOL)animate;
 @end
 
 @implementation PSTextFieldPINView
 
-- (PSTextFieldPINView)initWithFrame:(CGRect)a3
+- (PSTextFieldPINView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v27.receiver = self;
   v27.super_class = PSTextFieldPINView;
   v7 = [(PSTextFieldPINView *)&v27 initWithFrame:?];
@@ -35,13 +35,13 @@
 
     [(AlphanumericPINTableViewCell *)v7->_cell setOpaque:0];
     [(AlphanumericPINTableViewCell *)v7->_cell setTextFieldOffset:9.0];
-    v10 = [(AlphanumericPINTableViewCell *)v7->_cell pinTextField];
+    pinTextField = [(AlphanumericPINTableViewCell *)v7->_cell pinTextField];
     passcodeField = v7->_passcodeField;
-    v7->_passcodeField = v10;
+    v7->_passcodeField = pinTextField;
 
     [(UITextField *)v7->_passcodeField setDelegate:v7];
-    v12 = [(UITextField *)v7->_passcodeField textInputTraits];
-    [v12 setDevicePasscodeEntry:1];
+    textInputTraits = [(UITextField *)v7->_passcodeField textInputTraits];
+    [textInputTraits setDevicePasscodeEntry:1];
     [(UITextField *)v7->_passcodeField setDevicePasscodeEntry:1];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -55,14 +55,14 @@
 
     [(UITableView *)v7->_table setDataSource:v7];
     [(UITableView *)v7->_table setScrollEnabled:0];
-    v15 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITableView *)v7->_table setBackgroundColor:v15];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITableView *)v7->_table setBackgroundColor:clearColor];
 
     [(UITableView *)v7->_table _setTopPadding:0.0];
     [(UITableView *)v7->_table _setBottomPadding:0.0];
     [(PSTextFieldPINView *)v7 addSubview:v7->_table];
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v7 selector:sel_okButtonPressed_ name:*MEMORY[0x1E69DE038] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_okButtonPressed_ name:*MEMORY[0x1E69DE038] object:0];
 
     v17 = objc_alloc(MEMORY[0x1E69DCC10]);
     v18 = [v17 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -78,8 +78,8 @@
     [(UILabel *)v7->super._titleLabel setTextAlignment:1];
     v22 = v7->super._titleLabel;
     v23 = +[PSListController appearance];
-    v24 = [v23 textColor];
-    [(UILabel *)v22 setTextColor:v24];
+    textColor = [v23 textColor];
+    [(UILabel *)v22 setTextColor:textColor];
 
     [(UILabel *)v7->super._titleLabel setNumberOfLines:0];
     [(UILabel *)v7->super._titleLabel setAdjustsFontSizeToFitWidth:1];
@@ -89,11 +89,11 @@
   return v7;
 }
 
-- (void)setUsesNumericKeyboard:(BOOL)a3
+- (void)setUsesNumericKeyboard:(BOOL)keyboard
 {
-  self->_usesNumericKeyboard = a3;
+  self->_usesNumericKeyboard = keyboard;
   passcodeField = self->_passcodeField;
-  if (a3)
+  if (keyboard)
   {
     v4 = 127;
   }
@@ -142,44 +142,44 @@
   failureView = self->super._failureView;
   if (failureView)
   {
-    v18 = [(FailureBarView *)self->super._failureView titleLabel];
-    [(PINView *)self layoutBottomSubview:failureView withLabel:v18 withMinY:v14 + v15 + 22.0];
+    titleLabel = [(FailureBarView *)self->super._failureView titleLabel];
+    [(PINView *)self layoutBottomSubview:failureView withLabel:titleLabel withMinY:v14 + v15 + 22.0];
   }
 }
 
-- (void)setBlocked:(BOOL)a3
+- (void)setBlocked:(BOOL)blocked
 {
-  v3 = a3;
+  blockedCopy = blocked;
   UIKeyboardDisableAutomaticAppearance();
-  [(AlphanumericPINTableViewCell *)self->_cell setUserInteractionEnabled:!v3];
+  [(AlphanumericPINTableViewCell *)self->_cell setUserInteractionEnabled:!blockedCopy];
 
   UIKeyboardEnableAutomaticAppearance();
 }
 
 - (void)notifyDelegatePINChanged
 {
-  v4 = [(PINView *)self delegate];
+  delegate = [(PINView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(PSTextFieldPINView *)self stringValue];
-    [v4 pinView:self pinValueChanged:v3];
+    stringValue = [(PSTextFieldPINView *)self stringValue];
+    [delegate pinView:self pinValueChanged:stringValue];
   }
 }
 
 - (void)notifyDelegatePINEntered
 {
-  v4 = [(PINView *)self delegate];
+  delegate = [(PINView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(PSTextFieldPINView *)self stringValue];
-    [v4 pinView:self pinEntered:v3];
+    stringValue = [(PSTextFieldPINView *)self stringValue];
+    [delegate pinView:self pinEntered:stringValue];
   }
 }
 
-- (BOOL)keyboardInputChanged:(id)a3
+- (BOOL)keyboardInputChanged:(id)changed
 {
-  v4 = [(UITextField *)self->_passcodeField text];
-  v5 = [v4 length];
+  text = [(UITextField *)self->_passcodeField text];
+  v5 = [text length];
 
   if (v5)
   {
@@ -190,17 +190,17 @@
   return 1;
 }
 
-- (void)showError:(id)a3 animate:(BOOL)a4
+- (void)showError:(id)error animate:(BOOL)animate
 {
   v4.receiver = self;
   v4.super_class = PSTextFieldPINView;
-  [(PINView *)&v4 showError:a3 animate:a4];
+  [(PINView *)&v4 showError:error animate:animate];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(UITableView *)self->_table setDataSource:0];
   v4.receiver = self;
@@ -208,10 +208,10 @@
   [(PSTextFieldPINView *)&v4 dealloc];
 }
 
-- (void)okButtonPressed:(id)a3
+- (void)okButtonPressed:(id)pressed
 {
-  v4 = [(UITextField *)self->_passcodeField text];
-  v5 = [v4 length];
+  text = [(UITextField *)self->_passcodeField text];
+  v5 = [text length];
 
   if (v5)
   {
@@ -220,9 +220,9 @@
   }
 }
 
-- (void)hidePasscodeField:(BOOL)a3
+- (void)hidePasscodeField:(BOOL)field
 {
-  v3 = a3;
+  fieldCopy = field;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x4010000000;
@@ -243,7 +243,7 @@
   aBlock[4] = v15;
   v9 = _Block_copy(aBlock);
   v10 = v9;
-  if (v3)
+  if (fieldCopy)
   {
     v11 = MEMORY[0x1E69DD250];
     [MEMORY[0x1E69DD228] defaultDurationForTransition:7];
@@ -281,27 +281,27 @@ void __40__PSTextFieldPINView_hidePasscodeField___block_invoke(uint64_t a1)
   return [(PSTextFieldPINView *)&v4 resignFirstResponder];
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  [(UITextField *)self->_passcodeField setText:a3];
+  [(UITextField *)self->_passcodeField setText:value];
 
   [(PSTextFieldPINView *)self notifyDelegatePINChanged];
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v6 = a3;
-  v4 = [(UITextField *)self->_passcodeField text];
-  if ([v4 length])
+  stringCopy = string;
+  text = [(UITextField *)self->_passcodeField text];
+  if ([text length])
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:v4];
-    [v5 appendString:v6];
+    v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:text];
+    [v5 appendString:stringCopy];
     [(UITextField *)self->_passcodeField setText:v5];
   }
 
   else
   {
-    [(UITextField *)self->_passcodeField setText:v6];
+    [(UITextField *)self->_passcodeField setText:stringCopy];
   }
 
   [(PSTextFieldPINView *)self notifyDelegatePINChanged];
@@ -309,12 +309,12 @@ void __40__PSTextFieldPINView_hidePasscodeField___block_invoke(uint64_t a1)
 
 - (void)deleteLastCharacter
 {
-  v6 = [(UITextField *)self->_passcodeField text];
-  v3 = [v6 length];
+  text = [(UITextField *)self->_passcodeField text];
+  v3 = [text length];
   if (v3)
   {
     passcodeField = self->_passcodeField;
-    v5 = [v6 substringToIndex:v3 - 1];
+    v5 = [text substringToIndex:v3 - 1];
     [(UITextField *)passcodeField setText:v5];
   }
 

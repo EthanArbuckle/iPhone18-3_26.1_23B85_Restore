@@ -1,54 +1,54 @@
 @interface BKPictureBookReadingStatisticsCollector
-+ (id)readingStatisticsCollectorWithAssetViewController:(id)a3;
++ (id)readingStatisticsCollectorWithAssetViewController:(id)controller;
 - (AEAssetViewController)assetViewController;
-- (BKPictureBookReadingStatisticsCollector)initWithAssetViewController:(id)a3;
-- (BOOL)needPiggyBackOperationForOrdinal:(unint64_t)a3;
-- (id)navigationInfoHrefsForOrdinal:(unint64_t)a3;
+- (BKPictureBookReadingStatisticsCollector)initWithAssetViewController:(id)controller;
+- (BOOL)needPiggyBackOperationForOrdinal:(unint64_t)ordinal;
+- (id)navigationInfoHrefsForOrdinal:(unint64_t)ordinal;
 - (void)invalidate;
-- (void)renderingCacheOperationCompleted:(id)a3 textNodeCharacterCounts:(id)a4 cfisForHrefs:(id)a5;
-- (void)setupWithBookInfo:(id)a3;
+- (void)renderingCacheOperationCompleted:(id)completed textNodeCharacterCounts:(id)counts cfisForHrefs:(id)hrefs;
+- (void)setupWithBookInfo:(id)info;
 @end
 
 @implementation BKPictureBookReadingStatisticsCollector
 
-+ (id)readingStatisticsCollectorWithAssetViewController:(id)a3
++ (id)readingStatisticsCollectorWithAssetViewController:(id)controller
 {
-  v3 = a3;
-  v4 = [[BKPictureBookReadingStatisticsCollectorWK2 alloc] initWithAssetViewController:v3];
+  controllerCopy = controller;
+  v4 = [[BKPictureBookReadingStatisticsCollectorWK2 alloc] initWithAssetViewController:controllerCopy];
 
   return v4;
 }
 
-- (BKPictureBookReadingStatisticsCollector)initWithAssetViewController:(id)a3
+- (BKPictureBookReadingStatisticsCollector)initWithAssetViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = BKPictureBookReadingStatisticsCollector;
   v5 = [(BKPictureBookReadingStatisticsCollector *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_assetViewController, v4);
+    objc_storeWeak(&v5->_assetViewController, controllerCopy);
   }
 
   return v6;
 }
 
-- (void)setupWithBookInfo:(id)a3
+- (void)setupWithBookInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 spineIndexInPackage];
-  v34 = self;
-  -[BKPictureBookReadingStatisticsCollector setSpineIndexInPackage:](self, "setSpineIndexInPackage:", [v5 unsignedIntegerValue]);
+  infoCopy = info;
+  spineIndexInPackage = [infoCopy spineIndexInPackage];
+  selfCopy = self;
+  -[BKPictureBookReadingStatisticsCollector setSpineIndexInPackage:](self, "setSpineIndexInPackage:", [spineIndexInPackage unsignedIntegerValue]);
 
   v6 = +[NSMutableDictionary dictionary];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v35 = v4;
-  v7 = [v4 linearDocuments];
-  v8 = [v7 countByEnumeratingWithState:&v44 objects:v51 count:16];
+  v35 = infoCopy;
+  linearDocuments = [infoCopy linearDocuments];
+  v8 = [linearDocuments countByEnumeratingWithState:&v44 objects:v51 count:16];
   if (v8)
   {
     v9 = v8;
@@ -59,30 +59,30 @@
       {
         if (*v45 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(linearDocuments);
         }
 
         v12 = *(*(&v44 + 1) + 8 * i);
-        v13 = [v12 href];
+        href = [v12 href];
 
-        if (v13)
+        if (href)
         {
-          v14 = [v12 documentOrdinal];
-          v15 = [v12 href];
-          [v6 setObject:v14 forKeyedSubscript:v15];
+          documentOrdinal = [v12 documentOrdinal];
+          href2 = [v12 href];
+          [v6 setObject:documentOrdinal forKeyedSubscript:href2];
         }
 
         else
         {
-          v14 = BCReadingStatisticsLog();
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+          documentOrdinal = BCReadingStatisticsLog();
+          if (os_log_type_enabled(documentOrdinal, OS_LOG_TYPE_ERROR))
           {
-            sub_1384B8(&buf, v43, v14);
+            sub_1384B8(&buf, v43, documentOrdinal);
           }
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v44 objects:v51 count:16];
+      v9 = [linearDocuments countByEnumeratingWithState:&v44 objects:v51 count:16];
     }
 
     while (v9);
@@ -110,12 +110,12 @@
         }
 
         v21 = *(*(&v38 + 1) + 8 * j);
-        v22 = [v21 baseHref];
+        baseHref = [v21 baseHref];
 
-        if (v22)
+        if (baseHref)
         {
-          v23 = [v21 baseHref];
-          v24 = [v6 objectForKeyedSubscript:v23];
+          baseHref2 = [v21 baseHref];
+          v24 = [v6 objectForKeyedSubscript:baseHref2];
 
           if (v24)
           {
@@ -136,14 +136,14 @@
 
             [v16 setObject:v29 forKeyedSubscript:v24];
             v48[0] = @"fullHref";
-            v30 = [v21 href];
-            v49[0] = v30;
+            href3 = [v21 href];
+            v49[0] = href3;
             v48[1] = @"href";
-            v31 = [v21 baseHref];
-            v49[1] = v31;
+            baseHref3 = [v21 baseHref];
+            v49[1] = baseHref3;
             v48[2] = @"name";
-            v32 = [v21 name];
-            v49[2] = v32;
+            name = [v21 name];
+            v49[2] = name;
             v33 = [NSDictionary dictionaryWithObjects:v49 forKeys:v48 count:3];
             [v29 addObject:v33];
 
@@ -159,59 +159,59 @@
     while (v18);
   }
 
-  [(BKPictureBookReadingStatisticsCollector *)v34 setAllNavigationInfosByOrdinal:v16];
+  [(BKPictureBookReadingStatisticsCollector *)selfCopy setAllNavigationInfosByOrdinal:v16];
 }
 
-- (id)navigationInfoHrefsForOrdinal:(unint64_t)a3
+- (id)navigationInfoHrefsForOrdinal:(unint64_t)ordinal
 {
-  v4 = [(BKPictureBookReadingStatisticsCollector *)self allNavigationInfosByOrdinal];
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  allNavigationInfosByOrdinal = [(BKPictureBookReadingStatisticsCollector *)self allNavigationInfosByOrdinal];
+  v5 = [NSNumber numberWithUnsignedInteger:ordinal];
+  v6 = [allNavigationInfosByOrdinal objectForKeyedSubscript:v5];
 
   v7 = [v6 bu_arrayByInvokingBlock:&stru_1E51F0];
 
   return v7;
 }
 
-- (void)renderingCacheOperationCompleted:(id)a3 textNodeCharacterCounts:(id)a4 cfisForHrefs:(id)a5
+- (void)renderingCacheOperationCompleted:(id)completed textNodeCharacterCounts:(id)counts cfisForHrefs:(id)hrefs
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completedCopy = completed;
+  countsCopy = counts;
+  hrefsCopy = hrefs;
   if (![(BKPictureBookReadingStatisticsCollector *)self invalidated])
   {
-    v11 = [v8 pageNumber] - 1;
-    v12 = [(BKPictureBookReadingStatisticsCollector *)self assetViewController];
-    v13 = [v12 assetViewControllerDelegate];
-    if ([v13 needTOCEntriesForOrdinal:v11])
+    v11 = [completedCopy pageNumber] - 1;
+    assetViewController = [(BKPictureBookReadingStatisticsCollector *)self assetViewController];
+    assetViewControllerDelegate = [assetViewController assetViewControllerDelegate];
+    if ([assetViewControllerDelegate needTOCEntriesForOrdinal:v11])
     {
-      v14 = [(BKPictureBookReadingStatisticsCollector *)self allNavigationInfosByOrdinal];
+      allNavigationInfosByOrdinal = [(BKPictureBookReadingStatisticsCollector *)self allNavigationInfosByOrdinal];
       v15 = [NSNumber numberWithInteger:v11];
-      v16 = [v14 objectForKeyedSubscript:v15];
+      v16 = [allNavigationInfosByOrdinal objectForKeyedSubscript:v15];
 
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_BD780;
       v18[3] = &unk_1E4B48;
-      v19 = v10;
+      v19 = hrefsCopy;
       v17 = [v16 bu_arrayByInvokingBlock:v18];
-      [v13 addTOCEntries:v17 ordinal:v11 completion:0];
+      [assetViewControllerDelegate addTOCEntries:v17 ordinal:v11 completion:0];
     }
 
-    if ([v13 needTextNodeCharacterCountsForOrdinal:v11])
+    if ([assetViewControllerDelegate needTextNodeCharacterCountsForOrdinal:v11])
     {
-      [v13 addTextNodeCharacterCounts:v9 ordinal:v11 completion:0];
+      [assetViewControllerDelegate addTextNodeCharacterCounts:countsCopy ordinal:v11 completion:0];
     }
   }
 }
 
-- (BOOL)needPiggyBackOperationForOrdinal:(unint64_t)a3
+- (BOOL)needPiggyBackOperationForOrdinal:(unint64_t)ordinal
 {
-  v4 = [(BKPictureBookReadingStatisticsCollector *)self assetViewController];
-  v5 = [v4 assetViewControllerDelegate];
-  LOBYTE(a3) = [v5 needTextNodeCharacterCountsForOrdinal:a3];
+  assetViewController = [(BKPictureBookReadingStatisticsCollector *)self assetViewController];
+  assetViewControllerDelegate = [assetViewController assetViewControllerDelegate];
+  LOBYTE(ordinal) = [assetViewControllerDelegate needTextNodeCharacterCountsForOrdinal:ordinal];
 
-  return a3;
+  return ordinal;
 }
 
 - (void)invalidate

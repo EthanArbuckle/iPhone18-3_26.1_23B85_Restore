@@ -2,12 +2,12 @@
 - (id)shortDescription;
 - (void)_readPausedProgressFromDisk;
 - (void)dealloc;
-- (void)setCancellationHandler:(id)a3;
-- (void)setProgressDidSetupHandler:(id)a3;
-- (void)startTrackingFileURL:(id)a3 kind:(id)a4 allowReadPausedProgressFromDisk:(BOOL)a5;
+- (void)setCancellationHandler:(id)handler;
+- (void)setProgressDidSetupHandler:(id)handler;
+- (void)startTrackingFileURL:(id)l kind:(id)kind allowReadPausedProgressFromDisk:(BOOL)disk;
 - (void)stopTrackingIfStarted;
 - (void)stopTrackingIfStartedNotSynchronized;
-- (void)updateWithProgress:(id)a3;
+- (void)updateWithProgress:(id)progress;
 @end
 
 @implementation FPProgressProxy
@@ -40,74 +40,74 @@
   return v6;
 }
 
-- (void)updateWithProgress:(id)a3
+- (void)updateWithProgress:(id)progress
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  -[FPProgressProxy setPausable:](v5, "setPausable:", [v4 isPausable]);
+  progressCopy = progress;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  -[FPProgressProxy setPausable:](selfCopy, "setPausable:", [progressCopy isPausable]);
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __38__FPProgressProxy_updateWithProgress___block_invoke;
   v23[3] = &unk_1E79399B0;
-  v6 = v4;
+  v6 = progressCopy;
   v24 = v6;
-  [(FPProgressProxy *)v5 setPausingHandler:v23];
+  [(FPProgressProxy *)selfCopy setPausingHandler:v23];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __38__FPProgressProxy_updateWithProgress___block_invoke_2;
   v21[3] = &unk_1E79399B0;
   v7 = v6;
   v22 = v7;
-  [(FPProgressProxy *)v5 setResumingHandler:v21];
-  -[FPProgressProxy setCancellable:](v5, "setCancellable:", [v7 isCancellable]);
+  [(FPProgressProxy *)selfCopy setResumingHandler:v21];
+  -[FPProgressProxy setCancellable:](selfCopy, "setCancellable:", [v7 isCancellable]);
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __38__FPProgressProxy_updateWithProgress___block_invoke_3;
   v19[3] = &unk_1E79399B0;
   v8 = v7;
   v20 = v8;
-  [(FPProgressProxy *)v5 setCancellationHandler:v19];
-  if ([(FPProgressProxy *)v5 updateFileCount])
+  [(FPProgressProxy *)selfCopy setCancellationHandler:v19];
+  if ([(FPProgressProxy *)selfCopy updateFileCount])
   {
-    v9 = [v8 fileTotalCount];
-    [(FPProgressProxy *)v5 setFileTotalCount:v9];
+    fileTotalCount = [v8 fileTotalCount];
+    [(FPProgressProxy *)selfCopy setFileTotalCount:fileTotalCount];
 
-    v10 = [v8 fileCompletedCount];
-    [(FPProgressProxy *)v5 setFileCompletedCount:v10];
+    fileCompletedCount = [v8 fileCompletedCount];
+    [(FPProgressProxy *)selfCopy setFileCompletedCount:fileCompletedCount];
   }
 
   [v8 fractionCompleted];
   v12 = v11;
-  -[FPProgressProxy _setCompletedUnitCount:totalUnitCount:](v5, "_setCompletedUnitCount:totalUnitCount:", (v11 * [v8 totalUnitCount]), objc_msgSend(v8, "totalUnitCount"));
-  v13 = [v8 userInfo];
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E696A7F0]];
-  [(FPProgressProxy *)v5 setByteTotalCount:v14];
+  -[FPProgressProxy _setCompletedUnitCount:totalUnitCount:](selfCopy, "_setCompletedUnitCount:totalUnitCount:", (v11 * [v8 totalUnitCount]), objc_msgSend(v8, "totalUnitCount"));
+  userInfo = [v8 userInfo];
+  v14 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A7F0]];
+  [(FPProgressProxy *)selfCopy setByteTotalCount:v14];
 
-  v15 = [(FPProgressProxy *)v5 byteTotalCount];
+  byteTotalCount = [(FPProgressProxy *)selfCopy byteTotalCount];
 
-  if (v15)
+  if (byteTotalCount)
   {
     v16 = MEMORY[0x1E696AD98];
-    v17 = [(FPProgressProxy *)v5 byteTotalCount];
-    v18 = [v16 numberWithDouble:{v12 * objc_msgSend(v17, "longLongValue")}];
-    [(FPProgressProxy *)v5 setByteCompletedCount:v18];
+    byteTotalCount2 = [(FPProgressProxy *)selfCopy byteTotalCount];
+    v18 = [v16 numberWithDouble:{v12 * objc_msgSend(byteTotalCount2, "longLongValue")}];
+    [(FPProgressProxy *)selfCopy setByteCompletedCount:v18];
   }
 
   else
   {
-    [(FPProgressProxy *)v5 setByteCompletedCount:0];
+    [(FPProgressProxy *)selfCopy setByteCompletedCount:0];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setCancellationHandler:(id)a3
+- (void)setCancellationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6 = [(FPProgressProxy *)self valueForKey:@"_lock"];
   [v6 lock];
-  v5 = _Block_copy(v4);
+  v5 = _Block_copy(handlerCopy);
 
   [(FPProgressProxy *)self setValue:v5 forKey:@"_cancellationHandler"];
   [v6 unlock];
@@ -117,67 +117,67 @@
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = 138412546;
-  v6 = a1;
+  selfCopy = self;
   v7 = 2048;
   v8 = a4;
   OUTLINED_FUNCTION_2_6(&dword_1AAAE1000, a2, a3, "[DEBUG] %@: reading paused progress from disk: %g", &v5);
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startTrackingFileURL:(id)a3 kind:(id)a4 allowReadPausedProgressFromDisk:(BOOL)a5
+- (void)startTrackingFileURL:(id)l kind:(id)kind allowReadPausedProgressFromDisk:(BOOL)disk
 {
-  v5 = a5;
+  diskCopy = disk;
   location[4] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  lCopy = l;
+  kindCopy = kind;
   objc_initWeak(location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__FPProgressProxy_startTrackingFileURL_kind_allowReadPausedProgressFromDisk___block_invoke;
   aBlock[3] = &unk_1E793B9D0;
   objc_copyWeak(&v28, location);
-  v22 = v11;
+  v22 = kindCopy;
   v25 = v22;
-  v12 = v10;
-  v29 = v5;
+  v12 = lCopy;
+  v29 = diskCopy;
   v26 = v12;
-  v27 = self;
+  selfCopy = self;
   v23 = _Block_copy(aBlock);
-  v13 = self;
-  objc_sync_enter(v13);
-  v13->_isInSetup = 1;
-  if (v13->_subscriber)
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  selfCopy2->_isInSetup = 1;
+  if (selfCopy2->_subscriber)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    v15 = [(FPProgressProxy *)v13 shortDescription];
-    [v14 handleFailureInMethod:a2 object:v13 file:@"FPProgressProxy.m" lineNumber:192 description:{@"%@: startTracking/stopTracking not properly balanced", v15, v22}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    shortDescription = [(FPProgressProxy *)selfCopy2 shortDescription];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy2 file:@"FPProgressProxy.m" lineNumber:192 description:{@"%@: startTracking/stopTracking not properly balanced", shortDescription, v22}];
 
-    if (v13->_subscriber)
+    if (selfCopy2->_subscriber)
     {
-      [(FPProgressProxy *)v13 stopTrackingIfStarted];
+      [(FPProgressProxy *)selfCopy2 stopTrackingIfStarted];
     }
   }
 
-  if (v13->_fileURL)
+  if (selfCopy2->_fileURL)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    v17 = [(FPProgressProxy *)v13 shortDescription];
-    [v16 handleFailureInMethod:a2 object:v13 file:@"FPProgressProxy.m" lineNumber:197 description:{@"%@: startTracking/stopTracking not properly balanced", v17}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    shortDescription2 = [(FPProgressProxy *)selfCopy2 shortDescription];
+    [currentHandler2 handleFailureInMethod:a2 object:selfCopy2 file:@"FPProgressProxy.m" lineNumber:197 description:{@"%@: startTracking/stopTracking not properly balanced", shortDescription2}];
   }
 
-  v13->_shouldStopAccessingURL = [v12 startAccessingSecurityScopedResource];
-  objc_storeStrong(&v13->_fileURL, a3);
-  [(FPProgressProxy *)v13 setTotalUnitCount:-1];
-  [(FPProgressProxy *)v13 setCancellable:0];
-  if (v5)
+  selfCopy2->_shouldStopAccessingURL = [v12 startAccessingSecurityScopedResource];
+  objc_storeStrong(&selfCopy2->_fileURL, l);
+  [(FPProgressProxy *)selfCopy2 setTotalUnitCount:-1];
+  [(FPProgressProxy *)selfCopy2 setCancellable:0];
+  if (diskCopy)
   {
-    [(FPProgressProxy *)v13 _readPausedProgressFromDisk];
+    [(FPProgressProxy *)selfCopy2 _readPausedProgressFromDisk];
   }
 
   v18 = fp_current_or_default_log();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    [(FPProgressProxy *)v13 shortDescription];
+    [(FPProgressProxy *)selfCopy2 shortDescription];
     objc_claimAutoreleasedReturnValue();
     [v12 fp_shortDescription];
     objc_claimAutoreleasedReturnValue();
@@ -185,11 +185,11 @@
   }
 
   v19 = [MEMORY[0x1E696AE38] _addSubscriberForFileURL:v12 withPublishingHandler:v23];
-  subscriber = v13->_subscriber;
-  v13->_subscriber = v19;
+  subscriber = selfCopy2->_subscriber;
+  selfCopy2->_subscriber = v19;
 
-  v13->_isInSetup = 0;
-  objc_sync_exit(v13);
+  selfCopy2->_isInSetup = 0;
+  objc_sync_exit(selfCopy2);
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(location);
@@ -395,35 +395,35 @@ void __77__FPProgressProxy_startTrackingFileURL_kind_allowReadPausedProgressFrom
   self->_fileURL = 0;
 }
 
-- (void)setProgressDidSetupHandler:(id)a3
+- (void)setProgressDidSetupHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  totalUnitCountObservation = v5->_totalUnitCountObservation;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  totalUnitCountObservation = selfCopy->_totalUnitCountObservation;
   if (totalUnitCountObservation)
   {
     [(NSObservation *)totalUnitCountObservation finishObserving];
-    v7 = v5->_totalUnitCountObservation;
-    v5->_totalUnitCountObservation = 0;
+    v7 = selfCopy->_totalUnitCountObservation;
+    selfCopy->_totalUnitCountObservation = 0;
   }
 
-  objc_initWeak(&location, v5);
-  v8 = [MEMORY[0x1E696ADA8] keyPathWithRootObject:v5 path:"totalUnitCount"];
+  objc_initWeak(&location, selfCopy);
+  v8 = [MEMORY[0x1E696ADA8] keyPathWithRootObject:selfCopy path:"totalUnitCount"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __46__FPProgressProxy_setProgressDidSetupHandler___block_invoke;
   v12[3] = &unk_1E793B9F8;
   objc_copyWeak(&v14, &location);
-  v9 = v4;
+  v9 = handlerCopy;
   v13 = v9;
   v10 = [v8 addObserverBlock:v12];
-  v11 = v5->_totalUnitCountObservation;
-  v5->_totalUnitCountObservation = v10;
+  v11 = selfCopy->_totalUnitCountObservation;
+  selfCopy->_totalUnitCountObservation = v10;
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __46__FPProgressProxy_setProgressDidSetupHandler___block_invoke(uint64_t a1, void *a2)

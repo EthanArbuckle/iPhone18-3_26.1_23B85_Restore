@@ -1,25 +1,25 @@
 @interface BKHIDStudyLogEventProcessor
 + (BOOL)shouldCreateStudyLogger;
-- (BKHIDStudyLogEventProcessor)initWithContext:(id)a3;
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
+- (BKHIDStudyLogEventProcessor)initWithContext:(id)context;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
 - (void)dealloc;
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4;
-- (void)serviceDidDisappear:(id)a3;
+- (void)matcher:(id)matcher servicesDidMatch:(id)match;
+- (void)serviceDidDisappear:(id)disappear;
 @end
 
 @implementation BKHIDStudyLogEventProcessor
 
-- (void)serviceDidDisappear:(id)a3
+- (void)serviceDidDisappear:(id)disappear
 {
   gyroService = self->_gyroService;
   self->_gyroService = 0;
 }
 
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4
+- (void)matcher:(id)matcher servicesDidMatch:(id)match
 {
-  v5 = [a4 firstObject];
+  firstObject = [match firstObject];
   gyroService = self->_gyroService;
-  self->_gyroService = v5;
+  self->_gyroService = firstObject;
 
   [(BKIOHIDService *)self->_gyroService addDisappearanceObserver:self queue:self->_matcherQueue];
   v7 = self->_gyroService;
@@ -27,9 +27,9 @@
   [(BKIOHIDService *)v7 setProperty:v8 forKey:@"ReportInterval"];
 }
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
-  v6 = *a3;
+  v6 = *event;
   Type = IOHIDEventGetType();
   switch(Type)
   {
@@ -210,9 +210,9 @@ LABEL_35:
   [(BKHIDStudyLogEventProcessor *)&v3 dealloc];
 }
 
-- (BKHIDStudyLogEventProcessor)initWithContext:(id)a3
+- (BKHIDStudyLogEventProcessor)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (+[BKHIDStudyLogEventProcessor shouldCreateStudyLogger])
   {
     v22.receiver = self;
@@ -232,8 +232,8 @@ LABEL_35:
       matcherQueue = v5->_matcherQueue;
       v5->_matcherQueue = v10;
 
-      v12 = [v4 serviceMatcherDataProvider];
-      v13 = [[BKIOHIDServiceMatcher alloc] initWithUsagePage:65280 usage:9 builtIn:1 dataProvider:v12];
+      serviceMatcherDataProvider = [contextCopy serviceMatcherDataProvider];
+      v13 = [[BKIOHIDServiceMatcher alloc] initWithUsagePage:65280 usage:9 builtIn:1 dataProvider:serviceMatcherDataProvider];
       gyroMatcher = v5->_gyroMatcher;
       v5->_gyroMatcher = v13;
 
@@ -263,9 +263,9 @@ LABEL_35:
 + (BOOL)shouldCreateStudyLogger
 {
   v2 = +[SLGLog sharedInstance];
-  v3 = [v2 isEnabled];
+  isEnabled = [v2 isEnabled];
 
-  if (v3)
+  if (isEnabled)
   {
     v4 = sub_100008528();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -275,7 +275,7 @@ LABEL_35:
     }
   }
 
-  return v3;
+  return isEnabled;
 }
 
 @end

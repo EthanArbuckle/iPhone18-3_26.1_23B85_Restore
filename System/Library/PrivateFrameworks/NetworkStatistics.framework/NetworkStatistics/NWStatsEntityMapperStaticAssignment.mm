@@ -1,16 +1,16 @@
 @interface NWStatsEntityMapperStaticAssignment
 - (NWStatsEntityMapperStaticAssignment)init;
-- (id)identifierForUUID:(id)a3 derivation:(int *)a4;
+- (id)identifierForUUID:(id)d derivation:(int *)derivation;
 @end
 
 @implementation NWStatsEntityMapperStaticAssignment
 
-- (id)identifierForUUID:(id)a3 derivation:(int *)a4
+- (id)identifierForUUID:(id)d derivation:(int *)derivation
 {
-  result = [(NSMutableDictionary *)self->_staticUUIDToBundleIDMap objectForKeyedSubscript:a3];
-  if (a4)
+  result = [(NSMutableDictionary *)self->_staticUUIDToBundleIDMap objectForKeyedSubscript:d];
+  if (derivation)
   {
-    *a4 = 3;
+    *derivation = 3;
   }
 
   return result;
@@ -34,8 +34,8 @@
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v5 = [&unk_286D3E5D0 allKeys];
-      v6 = [v5 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      allKeys = [&unk_286D3E5D0 allKeys];
+      v6 = [allKeys countByEnumeratingWithState:&v16 objects:v21 count:16];
       if (v6)
       {
         v7 = v6;
@@ -46,7 +46,7 @@
           {
             if (*v17 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(allKeys);
             }
 
             v10 = *(*(&v16 + 1) + 8 * i);
@@ -57,7 +57,7 @@
             [(NSMutableDictionary *)v2->_staticUUIDToBundleIDMap setObject:v10 forKeyedSubscript:v13];
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v16 objects:v21 count:16];
+          v7 = [allKeys countByEnumeratingWithState:&v16 objects:v21 count:16];
         }
 
         while (v7);
@@ -66,7 +66,7 @@
 
     else
     {
-      v5 = v2;
+      allKeys = v2;
       v2 = 0;
     }
   }

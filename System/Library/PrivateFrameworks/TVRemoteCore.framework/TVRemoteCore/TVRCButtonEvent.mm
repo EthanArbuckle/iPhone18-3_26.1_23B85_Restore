@@ -1,27 +1,27 @@
 @interface TVRCButtonEvent
-+ (id)buttonEventForButton:(id)a3 eventType:(int64_t)a4;
-- (TVRCButtonEvent)initWithCoder:(id)a3;
++ (id)buttonEventForButton:(id)button eventType:(int64_t)type;
+- (TVRCButtonEvent)initWithCoder:(id)coder;
 - (id)_init;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TVRCButtonEvent
 
-+ (id)buttonEventForButton:(id)a3 eventType:(int64_t)a4
++ (id)buttonEventForButton:(id)button eventType:(int64_t)type
 {
-  v5 = a3;
-  v6 = [[TVRCButtonEvent alloc] _init];
-  v7 = v6[2];
-  v6[2] = v5;
-  v8 = v5;
+  buttonCopy = button;
+  _init = [[TVRCButtonEvent alloc] _init];
+  v7 = _init[2];
+  _init[2] = buttonCopy;
+  v8 = buttonCopy;
 
-  v6[3] = a4;
-  v9 = [MEMORY[0x277CBEAA8] date];
-  v10 = v6[1];
-  v6[1] = v9;
+  _init[3] = type;
+  date = [MEMORY[0x277CBEAA8] date];
+  v10 = _init[1];
+  _init[1] = date;
 
-  return v6;
+  return _init;
 }
 
 - (id)_init
@@ -31,35 +31,35 @@
   return [(TVRCButtonEvent *)&v3 init];
 }
 
-- (TVRCButtonEvent)initWithCoder:(id)a3
+- (TVRCButtonEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TVRCButtonEvent;
   v5 = [(TVRCButtonEvent *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"button"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"button"];
     button = v5->_button;
     v5->_button = v8;
 
-    v5->_eventType = [v4 decodeIntegerForKey:@"eventType"];
+    v5->_eventType = [coderCopy decodeIntegerForKey:@"eventType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timestamp = self->_timestamp;
-  v5 = a3;
-  [v5 encodeObject:timestamp forKey:@"timestamp"];
-  [v5 encodeObject:self->_button forKey:@"button"];
-  [v5 encodeInteger:self->_eventType forKey:@"eventType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:timestamp forKey:@"timestamp"];
+  [coderCopy encodeObject:self->_button forKey:@"button"];
+  [coderCopy encodeInteger:self->_eventType forKey:@"eventType"];
 }
 
 - (id)description

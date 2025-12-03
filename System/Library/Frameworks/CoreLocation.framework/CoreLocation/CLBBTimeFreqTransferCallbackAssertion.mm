@@ -1,14 +1,14 @@
 @interface CLBBTimeFreqTransferCallbackAssertion
-+ (id)newAssertionForBundle:(id)a3 withReason:(id)a4 withCallbackQueue:(id)a5 andBlock:(id)a6;
-+ (id)newAssertionForBundleIdentifier:(id)a3 withReason:(id)a4 withCallbackQueue:(id)a5 andBlock:(id)a6;
-- (CLBBTimeFreqTransferCallbackAssertion)initWithRegistrationMessageName:(const char *)a3 messageDictionary:(id)a4 dispatchQueue:(id)a5 codeBlock:(id)a6;
++ (id)newAssertionForBundle:(id)bundle withReason:(id)reason withCallbackQueue:(id)queue andBlock:(id)block;
++ (id)newAssertionForBundleIdentifier:(id)identifier withReason:(id)reason withCallbackQueue:(id)queue andBlock:(id)block;
+- (CLBBTimeFreqTransferCallbackAssertion)initWithRegistrationMessageName:(const char *)name messageDictionary:(id)dictionary dispatchQueue:(id)queue codeBlock:(id)block;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation CLBBTimeFreqTransferCallbackAssertion
 
-- (CLBBTimeFreqTransferCallbackAssertion)initWithRegistrationMessageName:(const char *)a3 messageDictionary:(id)a4 dispatchQueue:(id)a5 codeBlock:(id)a6
+- (CLBBTimeFreqTransferCallbackAssertion)initWithRegistrationMessageName:(const char *)name messageDictionary:(id)dictionary dispatchQueue:(id)queue codeBlock:(id)block
 {
   v7.receiver = self;
   v7.super_class = CLBBTimeFreqTransferCallbackAssertion;
@@ -44,20 +44,20 @@
   [(CLBBTimeFreqTransferCallbackAssertion *)&v4 dealloc];
 }
 
-+ (id)newAssertionForBundleIdentifier:(id)a3 withReason:(id)a4 withCallbackQueue:(id)a5 andBlock:(id)a6
++ (id)newAssertionForBundleIdentifier:(id)identifier withReason:(id)reason withCallbackQueue:(id)queue andBlock:(id)block
 {
-  v9 = [a3 copy];
-  v10 = [a4 copy];
+  v9 = [identifier copy];
+  v10 = [reason copy];
 
-  return sub_19B96068C(v9, &stru_1F0E6F140, v10, a5, a6);
+  return sub_19B96068C(v9, &stru_1F0E6F140, v10, queue, block);
 }
 
-+ (id)newAssertionForBundle:(id)a3 withReason:(id)a4 withCallbackQueue:(id)a5 andBlock:(id)a6
++ (id)newAssertionForBundle:(id)bundle withReason:(id)reason withCallbackQueue:(id)queue andBlock:(id)block
 {
-  v9 = [objc_msgSend(a3 "bundlePath")];
-  v10 = [a4 copy];
+  v9 = [objc_msgSend(bundle "bundlePath")];
+  v10 = [reason copy];
 
-  return sub_19B96068C(&stru_1F0E6F140, v9, v10, a5, a6);
+  return sub_19B96068C(&stru_1F0E6F140, v9, v10, queue, block);
 }
 
 @end

@@ -1,57 +1,57 @@
 @interface AFPeerMap
 - (AFPeerMap)init;
-- (id)_getUUIDAndUpdateIDMapsForPeerInfo:(id)a3;
-- (id)objectForPeerInfo:(id)a3;
-- (void)_cleanUpUUIDMapsForPeerInfo:(id)a3;
-- (void)enumerateObjectsUsingBlock:(id)a3;
-- (void)removeObjectForPeerInfo:(id)a3;
-- (void)setObject:(id)a3 forPeerInfo:(id)a4;
+- (id)_getUUIDAndUpdateIDMapsForPeerInfo:(id)info;
+- (id)objectForPeerInfo:(id)info;
+- (void)_cleanUpUUIDMapsForPeerInfo:(id)info;
+- (void)enumerateObjectsUsingBlock:(id)block;
+- (void)removeObjectForPeerInfo:(id)info;
+- (void)setObject:(id)object forPeerInfo:(id)info;
 @end
 
 @implementation AFPeerMap
 
-- (void)_cleanUpUUIDMapsForPeerInfo:(id)a3
+- (void)_cleanUpUUIDMapsForPeerInfo:(id)info
 {
-  v8 = a3;
-  v4 = [v8 assistantIdentifier];
-  if (v4)
+  infoCopy = info;
+  assistantIdentifier = [infoCopy assistantIdentifier];
+  if (assistantIdentifier)
   {
-    [(NSMutableDictionary *)self->_uuidsByAssistantIdentifier removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_uuidsByAssistantIdentifier removeObjectForKey:assistantIdentifier];
   }
 
-  v5 = [v8 rapportEffectiveIdentifier];
-  if (v5)
+  rapportEffectiveIdentifier = [infoCopy rapportEffectiveIdentifier];
+  if (rapportEffectiveIdentifier)
   {
-    [(NSMutableDictionary *)self->_uuidsByRapportIdentifier removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_uuidsByRapportIdentifier removeObjectForKey:rapportEffectiveIdentifier];
   }
 
-  v6 = [v8 idsDeviceUniqueIdentifier];
-  if (v6)
+  idsDeviceUniqueIdentifier = [infoCopy idsDeviceUniqueIdentifier];
+  if (idsDeviceUniqueIdentifier)
   {
-    [(NSMutableDictionary *)self->_uuidsByIdsDeviceIdentifier removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_uuidsByIdsDeviceIdentifier removeObjectForKey:idsDeviceUniqueIdentifier];
   }
 
-  v7 = [v8 homeKitAccessoryIdentifier];
-  if (v7)
+  homeKitAccessoryIdentifier = [infoCopy homeKitAccessoryIdentifier];
+  if (homeKitAccessoryIdentifier)
   {
-    [(NSMutableDictionary *)self->_uuidsByHomeKitIdentifier removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->_uuidsByHomeKitIdentifier removeObjectForKey:homeKitAccessoryIdentifier];
   }
 }
 
-- (id)_getUUIDAndUpdateIDMapsForPeerInfo:(id)a3
+- (id)_getUUIDAndUpdateIDMapsForPeerInfo:(id)info
 {
   v63 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
   v56 = __Block_byref_object_copy__48702;
   v57 = __Block_byref_object_dispose__48703;
   v58 = 0;
-  v5 = [v4 assistantIdentifier];
-  if (v5)
+  assistantIdentifier = [infoCopy assistantIdentifier];
+  if (assistantIdentifier)
   {
-    v6 = [(NSMutableDictionary *)self->_uuidsByAssistantIdentifier objectForKey:v5];
+    v6 = [(NSMutableDictionary *)self->_uuidsByAssistantIdentifier objectForKey:assistantIdentifier];
     v7 = v54[5];
     v54[5] = v6;
   }
@@ -64,7 +64,7 @@
       *buf = 136315394;
       v60 = "[AFPeerMap _getUUIDAndUpdateIDMapsForPeerInfo:]";
       v61 = 2112;
-      v62 = v4;
+      v62 = infoCopy;
       _os_log_error_impl(&dword_1912FE000, v8, OS_LOG_TYPE_ERROR, "%s Missing assistantId in %@", buf, 0x16u);
     }
   }
@@ -98,14 +98,14 @@
     v15 = v11;
     v49 = v15;
     v47[4] = self;
-    v48 = v5;
+    v48 = assistantIdentifier;
     v16 = MEMORY[0x193AFB7B0](v47);
     [v13 addObject:v16];
 
-    v17 = [v4 rapportEffectiveIdentifier];
-    if (v17)
+    rapportEffectiveIdentifier = [infoCopy rapportEffectiveIdentifier];
+    if (rapportEffectiveIdentifier)
     {
-      v18 = [(NSMutableDictionary *)self->_uuidsByRapportIdentifier objectForKey:v17];
+      v18 = [(NSMutableDictionary *)self->_uuidsByRapportIdentifier objectForKey:rapportEffectiveIdentifier];
       v19 = v54[5];
       v54[5] = v18;
     }
@@ -118,7 +118,7 @@
         *buf = 136315394;
         v60 = "[AFPeerMap _getUUIDAndUpdateIDMapsForPeerInfo:]";
         v61 = 2112;
-        v62 = v4;
+        v62 = infoCopy;
         _os_log_error_impl(&dword_1912FE000, v20, OS_LOG_TYPE_ERROR, "%s Missing rapportId in %@", buf, 0x16u);
       }
     }
@@ -138,14 +138,14 @@
       v21 = v15;
       v46 = v21;
       v44[4] = self;
-      v45 = v17;
+      v45 = rapportEffectiveIdentifier;
       v22 = MEMORY[0x193AFB7B0](v44);
       [v13 addObject:v22];
 
-      v23 = [v4 idsDeviceUniqueIdentifier];
-      if (v23)
+      idsDeviceUniqueIdentifier = [infoCopy idsDeviceUniqueIdentifier];
+      if (idsDeviceUniqueIdentifier)
       {
-        v24 = [(NSMutableDictionary *)self->_uuidsByIdsDeviceIdentifier objectForKey:v23];
+        v24 = [(NSMutableDictionary *)self->_uuidsByIdsDeviceIdentifier objectForKey:idsDeviceUniqueIdentifier];
         v25 = v54[5];
         v54[5] = v24;
       }
@@ -165,15 +165,15 @@
         v37 = v21;
         v43 = v37;
         v41[4] = self;
-        v36 = v23;
+        v36 = idsDeviceUniqueIdentifier;
         v42 = v36;
         v26 = MEMORY[0x193AFB7B0](v41);
         [v13 addObject:v26];
 
-        v27 = [v4 homeKitAccessoryIdentifier];
-        if (v27)
+        homeKitAccessoryIdentifier = [infoCopy homeKitAccessoryIdentifier];
+        if (homeKitAccessoryIdentifier)
         {
-          v28 = [(NSMutableDictionary *)self->_uuidsByHomeKitIdentifier objectForKey:v27];
+          v28 = [(NSMutableDictionary *)self->_uuidsByHomeKitIdentifier objectForKey:homeKitAccessoryIdentifier];
           v29 = v54[5];
           v54[5] = v28;
         }
@@ -190,10 +190,10 @@
           v30 = MEMORY[0x193AFB7B0](v38);
           [v13 addObject:v30];
 
-          v31 = [MEMORY[0x1E696AFB0] UUID];
-          v32 = [v31 UUIDString];
+          uUID = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString = [uUID UUIDString];
           v33 = v54[5];
-          v54[5] = v32;
+          v54[5] = uUIDString;
         }
 
         v14[2](v14);
@@ -260,21 +260,17 @@ uint64_t __48__AFPeerMap__getUUIDAndUpdateIDMapsForPeerInfo___block_invoke_3(voi
   return (*(a1[6] + 16))(a1[6], *(a1[4] + 16), a1[5]);
 }
 
-{
-  return (*(a1[6] + 16))(a1[6], *(a1[4] + 24), a1[5]);
-}
-
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v15 = 0;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSMutableDictionary *)self->_objectsByUUID allValues];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_objectsByUUID allValues];
+  v6 = [allValues countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -285,10 +281,10 @@ LABEL_3:
     {
       if (*v12 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allValues);
       }
 
-      v4[2](v4, *(*(&v11 + 1) + 8 * v9), &v15);
+      blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v9), &v15);
       if (v15)
       {
         break;
@@ -296,7 +292,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v11 objects:v16 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -310,24 +306,24 @@ LABEL_3:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObjectForPeerInfo:(id)a3
+- (void)removeObjectForPeerInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(AFPeerMap *)self _getUUIDAndUpdateIDMapsForPeerInfo:v4];
+  infoCopy = info;
+  v5 = [(AFPeerMap *)self _getUUIDAndUpdateIDMapsForPeerInfo:infoCopy];
   [(NSMutableDictionary *)self->_objectsByUUID removeObjectForKey:v5];
-  [(AFPeerMap *)self _cleanUpUUIDMapsForPeerInfo:v4];
+  [(AFPeerMap *)self _cleanUpUUIDMapsForPeerInfo:infoCopy];
 }
 
-- (void)setObject:(id)a3 forPeerInfo:(id)a4
+- (void)setObject:(id)object forPeerInfo:(id)info
 {
-  v6 = a3;
-  v7 = [(AFPeerMap *)self _getUUIDAndUpdateIDMapsForPeerInfo:a4];
-  [(NSMutableDictionary *)self->_objectsByUUID setObject:v6 forKey:v7];
+  objectCopy = object;
+  v7 = [(AFPeerMap *)self _getUUIDAndUpdateIDMapsForPeerInfo:info];
+  [(NSMutableDictionary *)self->_objectsByUUID setObject:objectCopy forKey:v7];
 }
 
-- (id)objectForPeerInfo:(id)a3
+- (id)objectForPeerInfo:(id)info
 {
-  v4 = [(AFPeerMap *)self _getUUIDAndUpdateIDMapsForPeerInfo:a3];
+  v4 = [(AFPeerMap *)self _getUUIDAndUpdateIDMapsForPeerInfo:info];
   v5 = [(NSMutableDictionary *)self->_objectsByUUID objectForKey:v4];
 
   return v5;

@@ -1,15 +1,15 @@
 @interface MTATimerTonePickerCell
-- (MTATimerTonePickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MTATimerTonePickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)didMoveToSuperview;
 @end
 
 @implementation MTATimerTonePickerCell
 
-- (MTATimerTonePickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MTATimerTonePickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = MTATimerTonePickerCell;
-  v4 = [(MTATimerTonePickerCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MTATimerTonePickerCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -26,14 +26,14 @@
   v7.receiver = self;
   v7.super_class = MTATimerTonePickerCell;
   [(MTATimerTonePickerCell *)&v7 didMoveToSuperview];
-  v3 = [(MTATimerTonePickerCell *)self traitCollection];
-  v4 = [UIFont _preferredFontForTextStyle:UIFontTextStyleBody maximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge compatibleWithTraitCollection:v3];
+  traitCollection = [(MTATimerTonePickerCell *)self traitCollection];
+  v4 = [UIFont _preferredFontForTextStyle:UIFontTextStyleBody maximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge compatibleWithTraitCollection:traitCollection];
 
-  v5 = [(MTATimerTonePickerCell *)self textLabel];
-  [v5 setFont:v4];
+  textLabel = [(MTATimerTonePickerCell *)self textLabel];
+  [textLabel setFont:v4];
 
-  v6 = [(MTATimerTonePickerCell *)self detailTextLabel];
-  [v6 setFont:v4];
+  detailTextLabel = [(MTATimerTonePickerCell *)self detailTextLabel];
+  [detailTextLabel setFont:v4];
 }
 
 @end

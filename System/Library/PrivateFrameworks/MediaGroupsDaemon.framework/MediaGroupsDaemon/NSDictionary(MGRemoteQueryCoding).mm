@@ -11,13 +11,13 @@
 - (id)rq_coded
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v2 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(self, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -28,7 +28,7 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
@@ -39,12 +39,12 @@
           objc_exception_throw(v13);
         }
 
-        v9 = [v3 objectForKey:{v8, v14}];
-        v10 = [v9 rq_coded];
-        [v2 setObject:v10 forKey:v8];
+        v9 = [selfCopy objectForKey:{v8, v14}];
+        rq_coded = [v9 rq_coded];
+        [v2 setObject:rq_coded forKey:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -57,7 +57,7 @@
 
 - (id)rq_stringForKey:()MGRemoteQueryCoding
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -74,7 +74,7 @@
 
 - (id)rq_numberForKey:()MGRemoteQueryCoding
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -91,7 +91,7 @@
 
 - (id)rq_decodedObjectOfClass:()MGRemoteQueryCoding forKey:
 {
-  v5 = [a1 objectForKey:a4];
+  v5 = [self objectForKey:a4];
   if (v5)
   {
     v6 = [a3 rq_instanceFromCoded:v5];
@@ -108,7 +108,7 @@
 - (id)rq_arrayOfDecodedClass:()MGRemoteQueryCoding forKey:
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [a1 objectForKey:a4];
+  v5 = [self objectForKey:a4];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

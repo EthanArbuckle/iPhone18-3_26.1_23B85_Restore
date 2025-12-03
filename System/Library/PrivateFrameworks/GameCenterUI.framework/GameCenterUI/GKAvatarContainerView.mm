@@ -2,15 +2,15 @@
 - (GKAvatarContainerViewDelegate)delegate;
 - (void)awakeFromNib;
 - (void)didMoveToSuperview;
-- (void)didSelectPlayerAvatarView:(id)a3;
-- (void)didSetPlayerAvatarImage:(id)a3;
+- (void)didSelectPlayerAvatarView:(id)view;
+- (void)didSetPlayerAvatarImage:(id)image;
 - (void)layoutSubviews;
 - (void)prepareForDefaultNicknameViewController;
 - (void)refreshHeaderViewProfileImage;
 - (void)refreshViewForLocalPlayer;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 - (void)setupEditImageBackground;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateAvatarEditingAvailability;
 @end
 
@@ -22,53 +22,53 @@
   v25.receiver = self;
   v25.super_class = GKAvatarContainerView;
   [(GKAvatarContainerView *)&v25 awakeFromNib];
-  v3 = [(GKAvatarContainerView *)self playerAvatarView];
-  [v3 setDelegate:self];
+  playerAvatarView = [(GKAvatarContainerView *)self playerAvatarView];
+  [playerAvatarView setDelegate:self];
 
-  v4 = [(GKAvatarContainerView *)self playerAvatarView];
-  [v4 setAccessibilityIdentifier:@"UIA.GameCenter.GKAvatarContainerView.playerAvatarView"];
+  playerAvatarView2 = [(GKAvatarContainerView *)self playerAvatarView];
+  [playerAvatarView2 setAccessibilityIdentifier:@"UIA.GameCenter.GKAvatarContainerView.playerAvatarView"];
 
   objc_initWeak(&location, self);
-  v5 = [(GKAvatarContainerView *)self playerAvatarView];
-  v6 = [MEMORY[0x277D0C138] local];
+  playerAvatarView3 = [(GKAvatarContainerView *)self playerAvatarView];
+  local = [MEMORY[0x277D0C138] local];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __37__GKAvatarContainerView_awakeFromNib__block_invoke;
   v22[3] = &unk_279669FE0;
   objc_copyWeak(&v23, &location);
-  [v5 setPlayer:v6 completionHandler:v22];
+  [playerAvatarView3 setPlayer:local completionHandler:v22];
 
   [(GKAvatarContainerView *)self updateAvatarEditingAvailability];
-  v7 = [(GKAvatarContainerView *)self editLabel];
-  v8 = [v7 layer];
+  editLabel = [(GKAvatarContainerView *)self editLabel];
+  layer = [editLabel layer];
 
-  v9 = [MEMORY[0x277D75348] blackColor];
-  v10 = [v9 colorWithAlphaComponent:0.4];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v10 = [blackColor colorWithAlphaComponent:0.4];
   v11 = v10;
   v26[0] = [v10 CGColor];
-  v12 = [MEMORY[0x277D75348] blackColor];
-  v13 = [v12 colorWithAlphaComponent:0.7];
+  blackColor2 = [MEMORY[0x277D75348] blackColor];
+  v13 = [blackColor2 colorWithAlphaComponent:0.7];
   v14 = v13;
   v26[1] = [v13 CGColor];
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
-  [v8 setColors:v15];
+  [layer setColors:v15];
 
-  v16 = [(GKAvatarContainerView *)self imageContainer];
-  [v16 setHidden:1];
+  imageContainer = [(GKAvatarContainerView *)self imageContainer];
+  [imageContainer setHidden:1];
 
-  v17 = [(GKAvatarContainerView *)self editImage];
-  [v17 setHidden:1];
+  editImage = [(GKAvatarContainerView *)self editImage];
+  [editImage setHidden:1];
 
-  v18 = [(GKAvatarContainerView *)self editLabel];
-  [v18 setAccessibilityIdentifier:@"UIA.GameCenter.GKAvatarContainerView.editLabel"];
+  editLabel2 = [(GKAvatarContainerView *)self editLabel];
+  [editLabel2 setAccessibilityIdentifier:@"UIA.GameCenter.GKAvatarContainerView.editLabel"];
 
-  v19 = [(GKAvatarContainerView *)self editLabel];
-  [v19 setIsAccessibilityElement:0];
+  editLabel3 = [(GKAvatarContainerView *)self editLabel];
+  [editLabel3 setIsAccessibilityElement:0];
 
   [(GKAvatarContainerView *)self setupEditImageBackground];
-  v20 = [(GKAvatarContainerView *)self imageContainer];
-  v21 = [MEMORY[0x277D755A8] automaticStyle];
-  [v20 setHoverStyle:v21];
+  imageContainer2 = [(GKAvatarContainerView *)self imageContainer];
+  automaticStyle = [MEMORY[0x277D755A8] automaticStyle];
+  [imageContainer2 setHoverStyle:automaticStyle];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(&location);
@@ -85,57 +85,57 @@ void __37__GKAvatarContainerView_awakeFromNib__block_invoke(uint64_t a1)
   v20.receiver = self;
   v20.super_class = GKAvatarContainerView;
   [(GKAvatarContainerView *)&v20 layoutSubviews];
-  v3 = [(GKAvatarContainerView *)self imageContainer];
-  [v3 frame];
+  imageContainer = [(GKAvatarContainerView *)self imageContainer];
+  [imageContainer frame];
   v5 = v4 * 0.5;
-  v6 = [(GKAvatarContainerView *)self imageContainer];
-  v7 = [v6 layer];
-  [v7 setCornerRadius:v5];
+  imageContainer2 = [(GKAvatarContainerView *)self imageContainer];
+  layer = [imageContainer2 layer];
+  [layer setCornerRadius:v5];
 
-  v8 = [MEMORY[0x277D75348] labelColor];
-  v9 = [v8 colorWithAlphaComponent:0.08];
-  v10 = [v9 CGColor];
-  v11 = [(GKAvatarContainerView *)self imageContainer];
-  v12 = [v11 layer];
-  [v12 setBorderColor:v10];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v9 = [labelColor colorWithAlphaComponent:0.08];
+  cGColor = [v9 CGColor];
+  imageContainer3 = [(GKAvatarContainerView *)self imageContainer];
+  layer2 = [imageContainer3 layer];
+  [layer2 setBorderColor:cGColor];
 
-  v13 = [(GKAvatarContainerView *)self imageContainer];
-  [v13 frame];
+  imageContainer4 = [(GKAvatarContainerView *)self imageContainer];
+  [imageContainer4 frame];
   v15 = v14 / 280.0;
-  v16 = [(GKAvatarContainerView *)self imageContainer];
-  v17 = [v16 layer];
-  [v17 setBorderWidth:v15];
+  imageContainer5 = [(GKAvatarContainerView *)self imageContainer];
+  layer3 = [imageContainer5 layer];
+  [layer3 setBorderWidth:v15];
 
-  v18 = [(GKAvatarContainerView *)self imageContainer];
-  v19 = [v18 layer];
-  [v19 setMasksToBounds:1];
+  imageContainer6 = [(GKAvatarContainerView *)self imageContainer];
+  layer4 = [imageContainer6 layer];
+  [layer4 setMasksToBounds:1];
 }
 
 - (void)setupEditImageBackground
 {
-  v3 = [(GKAvatarContainerView *)self editImageBackground];
-  v4 = [v3 layer];
-  [v4 setShadowOffset:{0.0, 0.0}];
+  editImageBackground = [(GKAvatarContainerView *)self editImageBackground];
+  layer = [editImageBackground layer];
+  [layer setShadowOffset:{0.0, 0.0}];
 
-  v5 = [(GKAvatarContainerView *)self editImageBackground];
-  v6 = [v5 layer];
-  [v6 setShadowRadius:2.0];
+  editImageBackground2 = [(GKAvatarContainerView *)self editImageBackground];
+  layer2 = [editImageBackground2 layer];
+  [layer2 setShadowRadius:2.0];
 
-  v7 = [MEMORY[0x277D75348] blackColor];
-  v8 = [v7 CGColor];
-  v9 = [(GKAvatarContainerView *)self editImageBackground];
-  v10 = [v9 layer];
-  [v10 setShadowColor:v8];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  cGColor = [blackColor CGColor];
+  editImageBackground3 = [(GKAvatarContainerView *)self editImageBackground];
+  layer3 = [editImageBackground3 layer];
+  [layer3 setShadowColor:cGColor];
 
-  v11 = [(GKAvatarContainerView *)self editImageBackground];
-  v12 = [v11 layer];
+  editImageBackground4 = [(GKAvatarContainerView *)self editImageBackground];
+  layer4 = [editImageBackground4 layer];
   LODWORD(v13) = 1050253722;
-  [v12 setShadowOpacity:v13];
+  [layer4 setShadowOpacity:v13];
 
-  v14 = [(GKAvatarContainerView *)self traitCollection];
-  v15 = [v14 userInterfaceStyle];
+  traitCollection = [(GKAvatarContainerView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v15 == 2)
+  if (userInterfaceStyle == 2)
   {
     [MEMORY[0x277D75348] tertiarySystemBackgroundColor];
   }
@@ -145,83 +145,83 @@ void __37__GKAvatarContainerView_awakeFromNib__block_invoke(uint64_t a1)
     [MEMORY[0x277D75348] systemBackgroundColor];
   }
   v17 = ;
-  v16 = [(GKAvatarContainerView *)self editImageBackground];
-  [v16 setTintColor:v17];
+  editImageBackground5 = [(GKAvatarContainerView *)self editImageBackground];
+  [editImageBackground5 setTintColor:v17];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = GKAvatarContainerView;
-  [(GKAvatarContainerView *)&v4 traitCollectionDidChange:a3];
+  [(GKAvatarContainerView *)&v4 traitCollectionDidChange:change];
   [(GKAvatarContainerView *)self setupEditImageBackground];
 }
 
 - (void)didMoveToSuperview
 {
-  v6 = [(GKAvatarContainerView *)self widthAnchor];
-  v3 = [(GKAvatarContainerView *)self superview];
-  v4 = [v3 widthAnchor];
-  v5 = [v6 constraintEqualToAnchor:v4];
+  widthAnchor = [(GKAvatarContainerView *)self widthAnchor];
+  superview = [(GKAvatarContainerView *)self superview];
+  widthAnchor2 = [superview widthAnchor];
+  v5 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v5 setActive:1];
 }
 
-- (void)didSetPlayerAvatarImage:(id)a3
+- (void)didSetPlayerAvatarImage:(id)image
 {
-  v3 = [(GKAvatarContainerView *)self imageContainer];
-  [v3 setHidden:0];
+  imageContainer = [(GKAvatarContainerView *)self imageContainer];
+  [imageContainer setHidden:0];
 }
 
-- (void)didSelectPlayerAvatarView:(id)a3
+- (void)didSelectPlayerAvatarView:(id)view
 {
-  v4 = [(GKAvatarContainerView *)self delegate];
-  [v4 avatarView:self didSelectImageWithEditingEnabled:GKIsAvatarEditingSupported()];
+  delegate = [(GKAvatarContainerView *)self delegate];
+  [delegate avatarView:self didSelectImageWithEditingEnabled:GKIsAvatarEditingSupported()];
 }
 
 - (void)refreshViewForLocalPlayer
 {
-  v3 = [MEMORY[0x277D0C138] local];
-  v4 = [v3 alias];
-  v5 = [(GKAvatarContainerView *)self nicknameLabel];
-  [v5 setText:v4];
+  local = [MEMORY[0x277D0C138] local];
+  alias = [local alias];
+  nicknameLabel = [(GKAvatarContainerView *)self nicknameLabel];
+  [nicknameLabel setText:alias];
 
-  v6 = [MEMORY[0x277D0C138] local];
-  v7 = [v6 accountName];
-  v8 = [(GKAvatarContainerView *)self emailLabel];
-  [v8 setText:v7];
+  local2 = [MEMORY[0x277D0C138] local];
+  accountName = [local2 accountName];
+  emailLabel = [(GKAvatarContainerView *)self emailLabel];
+  [emailLabel setText:accountName];
 
   [(GKAvatarContainerView *)self refreshHeaderViewProfileImage];
 }
 
 - (void)refreshHeaderViewProfileImage
 {
-  v3 = [(GKAvatarContainerView *)self playerAvatarView];
+  playerAvatarView = [(GKAvatarContainerView *)self playerAvatarView];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __54__GKAvatarContainerView_refreshHeaderViewProfileImage__block_invoke;
   v4[3] = &unk_2796699A8;
   v4[4] = self;
-  [v3 refreshImageWithCompletionHandler:v4];
+  [playerAvatarView refreshImageWithCompletionHandler:v4];
 }
 
 - (void)updateAvatarEditingAvailability
 {
-  v3 = [MEMORY[0x277D0C138] local];
-  v4 = [v3 isAvatarEditingRestricted];
+  local = [MEMORY[0x277D0C138] local];
+  isAvatarEditingRestricted = [local isAvatarEditingRestricted];
 
-  if (v4)
+  if (isAvatarEditingRestricted)
   {
-    v5 = [(GKAvatarContainerView *)self playerAvatarView];
-    v6 = v5;
+    playerAvatarView = [(GKAvatarContainerView *)self playerAvatarView];
+    v6 = playerAvatarView;
 LABEL_3:
-    [v5 setUserInteractionEnabled:0];
+    [playerAvatarView setUserInteractionEnabled:0];
 
     v7 = *MEMORY[0x277D76560];
-    v8 = [(GKAvatarContainerView *)self playerAvatarView];
-    [v8 setAccessibilityTraits:v7];
+    playerAvatarView2 = [(GKAvatarContainerView *)self playerAvatarView];
+    [playerAvatarView2 setAccessibilityTraits:v7];
 
-    v34 = [(GKAvatarContainerView *)self editLabel];
-    [v34 setHidden:1];
+    editLabel = [(GKAvatarContainerView *)self editLabel];
+    [editLabel setHidden:1];
     goto LABEL_10;
   }
 
@@ -229,67 +229,67 @@ LABEL_3:
   {
     v9 = GKGameCenterUIFrameworkBundle();
     v10 = GKGetLocalizedStringFromTableInBundle();
-    v11 = [(GKAvatarContainerView *)self editLabel];
-    [v11 setText:v10];
+    editLabel2 = [(GKAvatarContainerView *)self editLabel];
+    [editLabel2 setText:v10];
 
-    v12 = [(GKAvatarContainerView *)self editLabel];
-    v13 = [v12 text];
-    v14 = [v13 length];
+    editLabel3 = [(GKAvatarContainerView *)self editLabel];
+    text = [editLabel3 text];
+    v14 = [text length];
 
     if (v14 >= 6)
     {
-      v15 = [(GKAvatarContainerView *)self editLabel];
-      [v15 setHidden:1];
+      editLabel4 = [(GKAvatarContainerView *)self editLabel];
+      [editLabel4 setHidden:1];
 
-      v16 = [(GKAvatarContainerView *)self editImage];
-      [v16 setHidden:0];
+      editImage = [(GKAvatarContainerView *)self editImage];
+      [editImage setHidden:0];
     }
 
     v17 = *MEMORY[0x277D76560];
     v18 = *MEMORY[0x277D76548];
-    v19 = [(GKAvatarContainerView *)self playerAvatarView];
-    [v19 setAccessibilityTraits:v18 | v17];
+    playerAvatarView3 = [(GKAvatarContainerView *)self playerAvatarView];
+    [playerAvatarView3 setAccessibilityTraits:v18 | v17];
 
     v20 = GKGameCenterUIFrameworkBundle();
     v21 = GKGetLocalizedStringFromTableInBundle();
-    v22 = [(GKAvatarContainerView *)self playerAvatarView];
-    [v22 setAccessibilityHint:v21];
+    playerAvatarView4 = [(GKAvatarContainerView *)self playerAvatarView];
+    [playerAvatarView4 setAccessibilityHint:v21];
 
-    v34 = [(GKAvatarContainerView *)self playerAvatarView];
-    [v34 setUserInteractionEnabled:1];
+    editLabel = [(GKAvatarContainerView *)self playerAvatarView];
+    [editLabel setUserInteractionEnabled:1];
   }
 
   else
   {
-    v23 = [(GKAvatarContainerView *)self playerAvatarView];
-    v24 = [v23 hasImage];
+    playerAvatarView5 = [(GKAvatarContainerView *)self playerAvatarView];
+    hasImage = [playerAvatarView5 hasImage];
 
-    v5 = [(GKAvatarContainerView *)self playerAvatarView];
-    v6 = v5;
-    if (!v24)
+    playerAvatarView = [(GKAvatarContainerView *)self playerAvatarView];
+    v6 = playerAvatarView;
+    if (!hasImage)
     {
       goto LABEL_3;
     }
 
-    [v5 setUserInteractionEnabled:1];
+    [playerAvatarView setUserInteractionEnabled:1];
 
     v25 = *MEMORY[0x277D76560];
     v26 = *MEMORY[0x277D76548];
-    v27 = [(GKAvatarContainerView *)self playerAvatarView];
-    [v27 setAccessibilityTraits:v26 | v25];
+    playerAvatarView6 = [(GKAvatarContainerView *)self playerAvatarView];
+    [playerAvatarView6 setAccessibilityTraits:v26 | v25];
 
     v28 = GKGameCenterUIFrameworkBundle();
     v29 = GKGetLocalizedStringFromTableInBundle();
-    v30 = [(GKAvatarContainerView *)self playerAvatarView];
-    [v30 setAccessibilityHint:v29];
+    playerAvatarView7 = [(GKAvatarContainerView *)self playerAvatarView];
+    [playerAvatarView7 setAccessibilityHint:v29];
 
-    v31 = [(GKAvatarContainerView *)self editLabel];
-    [v31 setHidden:0];
+    editLabel5 = [(GKAvatarContainerView *)self editLabel];
+    [editLabel5 setHidden:0];
 
-    v34 = GKGameCenterUIFrameworkBundle();
+    editLabel = GKGameCenterUIFrameworkBundle();
     v32 = GKGetLocalizedStringFromTableInBundle();
-    v33 = [(GKAvatarContainerView *)self editLabel];
-    [v33 setText:v32];
+    editLabel6 = [(GKAvatarContainerView *)self editLabel];
+    [editLabel6 setText:v32];
   }
 
 LABEL_10:
@@ -297,29 +297,29 @@ LABEL_10:
 
 - (void)prepareForDefaultNicknameViewController
 {
-  v3 = [(GKAvatarContainerView *)self emailLabel];
-  [v3 removeFromSuperview];
+  emailLabel = [(GKAvatarContainerView *)self emailLabel];
+  [emailLabel removeFromSuperview];
 
-  v4 = [(GKAvatarContainerView *)self nicknameLabel];
-  [v4 removeFromSuperview];
+  nicknameLabel = [(GKAvatarContainerView *)self nicknameLabel];
+  [nicknameLabel removeFromSuperview];
 
-  v5 = [(GKAvatarContainerView *)self imageContainerTopConstraint];
-  [v5 setConstant:0.0];
+  imageContainerTopConstraint = [(GKAvatarContainerView *)self imageContainerTopConstraint];
+  [imageContainerTopConstraint setConstant:0.0];
 
   v6 = MEMORY[0x277D74300];
-  v7 = [(GKAvatarContainerView *)self editLabel];
-  v8 = [v7 font];
-  v9 = [v8 fontDescriptor];
-  v10 = [v9 fontDescriptorWithSymbolicTraits:2];
-  v11 = [(GKAvatarContainerView *)self editLabel];
-  v12 = [v11 font];
-  [v12 pointSize];
+  editLabel = [(GKAvatarContainerView *)self editLabel];
+  font = [editLabel font];
+  fontDescriptor = [font fontDescriptor];
+  v10 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
+  editLabel2 = [(GKAvatarContainerView *)self editLabel];
+  font2 = [editLabel2 font];
+  [font2 pointSize];
   v14 = [v6 fontWithDescriptor:v10 size:v13 + 2.0];
-  v15 = [(GKAvatarContainerView *)self editLabel];
-  [v15 setFont:v14];
+  editLabel3 = [(GKAvatarContainerView *)self editLabel];
+  [editLabel3 setFont:v14];
 
-  v16 = [MEMORY[0x277D75418] currentDevice];
-  v17 = [v16 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   if (*MEMORY[0x277D0C258])
   {
@@ -331,7 +331,7 @@ LABEL_10:
     v18 = 0;
   }
 
-  if (v17 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v19 = v18;
   }
@@ -341,19 +341,19 @@ LABEL_10:
     v19 = 1;
   }
 
-  v20 = [(GKAvatarContainerView *)self playerAvatarView];
-  [v20 setAvatarSize:v19];
+  playerAvatarView = [(GKAvatarContainerView *)self playerAvatarView];
+  [playerAvatarView setAvatarSize:v19];
 
   [(GKAvatarContainerView *)self refreshHeaderViewProfileImage];
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v9.receiver = self;
   v9.super_class = GKAvatarContainerView;
   [(GKAvatarContainerView *)&v9 setUserInteractionEnabled:?];
-  if (v3)
+  if (enabledCopy)
   {
     v5 = 1.0;
   }
@@ -363,10 +363,10 @@ LABEL_10:
     v5 = 0.0;
   }
 
-  v6 = [(GKAvatarContainerView *)self editLabel];
-  v7 = [v6 layer];
+  editLabel = [(GKAvatarContainerView *)self editLabel];
+  layer = [editLabel layer];
   *&v8 = v5;
-  [v7 setOpacity:v8];
+  [layer setOpacity:v8];
 }
 
 - (GKAvatarContainerViewDelegate)delegate

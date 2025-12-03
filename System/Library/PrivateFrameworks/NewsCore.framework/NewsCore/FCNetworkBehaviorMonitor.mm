@@ -1,15 +1,15 @@
 @interface FCNetworkBehaviorMonitor
 - (FCNetworkBehaviorMonitor)init;
-- (FCNetworkBehaviorMonitor)initWithOptions:(int64_t)a3 cacheDirectory:(id)a4;
+- (FCNetworkBehaviorMonitor)initWithOptions:(int64_t)options cacheDirectory:(id)directory;
 - (NSArray)networkEvents;
 - (NSArray)sessions;
-- (void)_visitEventGroupsFromDate:(void *)a3 toDate:(void *)a4 block:;
-- (void)addObserver:(id)a3;
-- (void)logNetworkEvent:(id)a3;
-- (void)operationThrottlerPerformOperation:(id)a3;
-- (void)populateTelemetry:(id)a3 withNetworkEventsFromDate:(id)a4 toDate:(id)a5;
-- (void)removeObserver:(id)a3;
-- (void)wifiReachabilityDidChange:(id)a3;
+- (void)_visitEventGroupsFromDate:(void *)date toDate:(void *)toDate block:;
+- (void)addObserver:(id)observer;
+- (void)logNetworkEvent:(id)event;
+- (void)operationThrottlerPerformOperation:(id)operation;
+- (void)populateTelemetry:(id)telemetry withNetworkEventsFromDate:(id)date toDate:(id)toDate;
+- (void)removeObserver:(id)observer;
+- (void)wifiReachabilityDidChange:(id)change;
 @end
 
 @implementation FCNetworkBehaviorMonitor
@@ -40,9 +40,9 @@
   objc_exception_throw(v6);
 }
 
-- (FCNetworkBehaviorMonitor)initWithOptions:(int64_t)a3 cacheDirectory:(id)a4
+- (FCNetworkBehaviorMonitor)initWithOptions:(int64_t)options cacheDirectory:(id)directory
 {
-  v6 = a4;
+  directoryCopy = directory;
   v27.receiver = self;
   v27.super_class = FCNetworkBehaviorMonitor;
   v7 = [(FCNetworkBehaviorMonitor *)&v27 init];
@@ -69,11 +69,11 @@
     observers = v7->_observers;
     v7->_observers = v17;
 
-    v7->_options = a3;
+    v7->_options = options;
     v19 = +[FCNetworkReachability sharedNetworkReachability];
     [v19 addObserver:v7];
 
-    if (v6 && (v7->_options & 8) != 0)
+    if (directoryCopy && (v7->_options & 8) != 0)
     {
       v20 = [[FCTimedOperationThrottler alloc] initWithDelegate:v7];
       [(FCTimedOperationThrottler *)v20 setCooldownTime:2.0];
@@ -87,7 +87,7 @@
     v24[2] = __59__FCNetworkBehaviorMonitor_initWithOptions_cacheDirectory___block_invoke;
     v24[3] = &unk_1E7C36C58;
     v25 = v7;
-    v26 = v6;
+    v26 = directoryCopy;
     dispatch_async(v22, v24);
   }
 
@@ -199,52 +199,52 @@ void __59__FCNetworkBehaviorMonitor_initWithOptions_cacheDirectory___block_invok
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)populateTelemetry:(id)a3 withNetworkEventsFromDate:(id)a4 toDate:(id)a5
+- (void)populateTelemetry:(id)telemetry withNetworkEventsFromDate:(id)date toDate:(id)toDate
 {
-  v8 = a3;
+  telemetryCopy = telemetry;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __79__FCNetworkBehaviorMonitor_populateTelemetry_withNetworkEventsFromDate_toDate___block_invoke;
   v10[3] = &unk_1E7C3AEB8;
-  v11 = v8;
-  v9 = v8;
-  [(FCNetworkBehaviorMonitor *)self _visitEventGroupsFromDate:a4 toDate:a5 block:v10];
+  v11 = telemetryCopy;
+  v9 = telemetryCopy;
+  [(FCNetworkBehaviorMonitor *)self _visitEventGroupsFromDate:date toDate:toDate block:v10];
 }
 
-- (void)_visitEventGroupsFromDate:(void *)a3 toDate:(void *)a4 block:
+- (void)_visitEventGroupsFromDate:(void *)date toDate:(void *)toDate block:
 {
-  v7 = a4;
-  if (a1)
+  toDateCopy = toDate;
+  if (self)
   {
-    v8 = a3;
-    v9 = [a2 fc_millisecondTimeIntervalSince1970];
-    v10 = [v8 fc_millisecondTimeIntervalSince1970];
+    dateCopy = date;
+    fc_millisecondTimeIntervalSince1970 = [a2 fc_millisecondTimeIntervalSince1970];
+    fc_millisecondTimeIntervalSince19702 = [dateCopy fc_millisecondTimeIntervalSince1970];
 
-    v11 = *(a1 + 8);
+    v11 = *(self + 8);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __67__FCNetworkBehaviorMonitor__visitEventGroupsFromDate_toDate_block___block_invoke;
     v12[3] = &unk_1E7C3AF88;
-    v12[4] = a1;
-    v14 = v9;
-    v15 = v10;
-    v13 = v7;
+    v12[4] = self;
+    v14 = fc_millisecondTimeIntervalSince1970;
+    v15 = fc_millisecondTimeIntervalSince19702;
+    v13 = toDateCopy;
     dispatch_sync(v11, v12);
   }
 }
 
 - (NSArray)sessions
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __36__FCNetworkBehaviorMonitor_sessions__block_invoke;
   v8[3] = &unk_1E7C3AEB8;
-  v9 = v3;
-  v4 = v3;
+  v9 = dictionary;
+  v4 = dictionary;
   [(FCNetworkBehaviorMonitor *)self _visitEventGroupsFromDate:0 toDate:v8 block:?];
-  v5 = [v4 allValues];
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_28];
+  allValues = [v4 allValues];
+  v6 = [allValues sortedArrayUsingComparator:&__block_literal_global_28];
 
   return v6;
 }
@@ -325,17 +325,17 @@ uint64_t __41__FCNetworkBehaviorMonitor_networkEvents__block_invoke_2(uint64_t a
   return [v2 containsIndex:v3];
 }
 
-- (void)logNetworkEvent:(id)a3
+- (void)logNetworkEvent:(id)event
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  eventCopy = event;
+  v5 = eventCopy;
   if (!self)
   {
     goto LABEL_11;
   }
 
-  [v4 startTime];
+  [eventCopy startTime];
   if (v6 == 0.0)
   {
 LABEL_5:
@@ -343,50 +343,50 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [v5 error];
-  if ([v7 fc_isCancellationError])
+  error = [v5 error];
+  if ([error fc_isCancellationError])
   {
 LABEL_4:
 
     goto LABEL_5;
   }
 
-  v9 = [v5 error];
-  v10 = [v9 domain];
-  if (![v10 isEqualToString:*MEMORY[0x1E696A978]])
+  error2 = [v5 error];
+  domain = [error2 domain];
+  if (![domain isEqualToString:*MEMORY[0x1E696A978]])
   {
 
 LABEL_11:
     goto LABEL_12;
   }
 
-  v11 = [v5 error];
-  if ([v11 code] == -1005)
+  error3 = [v5 error];
+  if ([error3 code] == -1005)
   {
 
     goto LABEL_4;
   }
 
-  v22 = [v5 error];
-  v23 = [v22 code];
+  error4 = [v5 error];
+  code = [error4 code];
 
-  if (v23 == -1009)
+  if (code == -1009)
   {
     goto LABEL_6;
   }
 
 LABEL_12:
-  v12 = [v5 error];
-  if (v12)
+  error5 = [v5 error];
+  if (error5)
   {
-    v13 = v12;
-    v14 = [v5 error];
-    v15 = [v14 fc_isRecoverableNetworkError];
+    v13 = error5;
+    error6 = [v5 error];
+    fc_isRecoverableNetworkError = [error6 fc_isRecoverableNetworkError];
 
-    if (v15)
+    if (fc_isRecoverableNetworkError)
     {
-      v16 = [MEMORY[0x1E695DF00] date];
-      [(FCNetworkBehaviorMonitor *)self setDateOfLastNetworkIssue:v16];
+      date = [MEMORY[0x1E695DF00] date];
+      [(FCNetworkBehaviorMonitor *)self setDateOfLastNetworkIssue:date];
     }
   }
 
@@ -395,10 +395,10 @@ LABEL_12:
     goto LABEL_28;
   }
 
-  v17 = [v5 error];
+  error7 = [v5 error];
 
   v18 = FCNetworkLog;
-  if (v17)
+  if (error7)
   {
     if (os_log_type_enabled(FCNetworkLog, OS_LOG_TYPE_ERROR))
     {
@@ -459,7 +459,7 @@ LABEL_28:
     v27[2] = __44__FCNetworkBehaviorMonitor_logNetworkEvent___block_invoke_2;
     v27[3] = &unk_1E7C36C58;
     v28 = v5;
-    v29 = self;
+    selfCopy = self;
     dispatch_async(accessQueue, v27);
   }
 
@@ -696,20 +696,20 @@ LABEL_48:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  observerCopy = observer;
   [v4 isMainThread];
-  [(NSHashTable *)self->_observers addObject:v5];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  observerCopy = observer;
   [v4 isMainThread];
-  [(NSHashTable *)self->_observers removeObject:v5];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 }
 
 uint64_t __52__FCNetworkBehaviorMonitor__respondingPOPFromEvent___block_invoke()
@@ -913,22 +913,22 @@ id __67__FCNetworkBehaviorMonitor__visitEventGroupsFromDate_toDate_block___block
   return v3;
 }
 
-- (void)wifiReachabilityDidChange:(id)a3
+- (void)wifiReachabilityDidChange:(id)change
 {
   v4 = MEMORY[0x1E69B6EB0];
-  v5 = a3;
+  changeCopy = change;
   v6 = objc_alloc_init(v4);
-  [v6 setWifiReachable:{objc_msgSend(v5, "isNetworkReachableViaWiFi")}];
-  v7 = [v5 cellularRadioAccessTechnology];
+  [v6 setWifiReachable:{objc_msgSend(changeCopy, "isNetworkReachableViaWiFi")}];
+  cellularRadioAccessTechnology = [changeCopy cellularRadioAccessTechnology];
 
-  [v6 setCellularRadioAccessTechnology:v7];
+  [v6 setCellularRadioAccessTechnology:cellularRadioAccessTechnology];
   accessQueue = self->_accessQueue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __54__FCNetworkBehaviorMonitor_wifiReachabilityDidChange___block_invoke;
   v10[3] = &unk_1E7C36C58;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v9 = v6;
   dispatch_async(accessQueue, v10);
 }
@@ -946,7 +946,7 @@ uint64_t __54__FCNetworkBehaviorMonitor_wifiReachabilityDidChange___block_invoke
   return [v4 addIndex:v5];
 }
 
-- (void)operationThrottlerPerformOperation:(id)a3
+- (void)operationThrottlerPerformOperation:(id)operation
 {
   v4 = objc_alloc_init(MEMORY[0x1E69B6EB8]);
   accessQueue = self->_accessQueue;
@@ -954,11 +954,11 @@ uint64_t __54__FCNetworkBehaviorMonitor_wifiReachabilityDidChange___block_invoke
   v8 = 3221225472;
   v9 = __63__FCNetworkBehaviorMonitor_operationThrottlerPerformOperation___block_invoke;
   v10 = &unk_1E7C36C58;
-  v11 = self;
+  selfCopy = self;
   v12 = v4;
   v6 = v4;
   dispatch_sync(accessQueue, &v7);
-  [(FCKeyValueStore *)self->_localStore setObject:v6 forKey:@"sessions", v7, v8, v9, v10, v11];
+  [(FCKeyValueStore *)self->_localStore setObject:v6 forKey:@"sessions", v7, v8, v9, v10, selfCopy];
 }
 
 void __63__FCNetworkBehaviorMonitor_operationThrottlerPerformOperation___block_invoke(uint64_t a1)

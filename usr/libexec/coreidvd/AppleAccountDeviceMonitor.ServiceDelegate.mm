@@ -1,33 +1,33 @@
 @interface AppleAccountDeviceMonitor.ServiceDelegate
 - (_TtCC8coreidvd25AppleAccountDeviceMonitorP33_82887AFD0E92FAFAEDB3A7101388C34115ServiceDelegate)init;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
 @end
 
 @implementation AppleAccountDeviceMonitor.ServiceDelegate
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
-  if (a4)
+  if (changed)
   {
     static Set._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
-  sub_100502D30(a3);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_100502D30(service);
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  if (a4)
+  if (changed)
   {
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
-  sub_100502FAC(a3);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_100502FAC(service);
 }
 
 - (_TtCC8coreidvd25AppleAccountDeviceMonitorP33_82887AFD0E92FAFAEDB3A7101388C34115ServiceDelegate)init

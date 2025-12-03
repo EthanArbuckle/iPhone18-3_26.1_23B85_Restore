@@ -1,8 +1,8 @@
 @interface _UIDebugIdentifierLabelSceneComponent
 + (BOOL)isEnabled;
 - (UIScene)_scene;
-- (_UIDebugIdentifierLabelSceneComponent)initWithScene:(id)a3;
-- (void)_scene:(id)a3 willTransitionToActivationState:(int64_t)a4 withReasonsMask:(unint64_t)a5;
+- (_UIDebugIdentifierLabelSceneComponent)initWithScene:(id)scene;
+- (void)_scene:(id)_scene willTransitionToActivationState:(int64_t)state withReasonsMask:(unint64_t)mask;
 @end
 
 @implementation _UIDebugIdentifierLabelSceneComponent
@@ -22,20 +22,20 @@
   return has_internal_diagnostics;
 }
 
-- (_UIDebugIdentifierLabelSceneComponent)initWithScene:(id)a3
+- (_UIDebugIdentifierLabelSceneComponent)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v10.receiver = self;
   v10.super_class = _UIDebugIdentifierLabelSceneComponent;
   v5 = [(_UIDebugIdentifierLabelSceneComponent *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
+    objc_storeWeak(&v5->_scene, sceneCopy);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [[_UIDebugIdentifierWindow alloc] initWithWindowScene:v4];
+      v7 = [[_UIDebugIdentifierWindow alloc] initWithWindowScene:sceneCopy];
       debugWindow = v6->_debugWindow;
       v6->_debugWindow = v7;
     }
@@ -44,11 +44,11 @@
   return v6;
 }
 
-- (void)_scene:(id)a3 willTransitionToActivationState:(int64_t)a4 withReasonsMask:(unint64_t)a5
+- (void)_scene:(id)_scene willTransitionToActivationState:(int64_t)state withReasonsMask:(unint64_t)mask
 {
-  if (!a4)
+  if (!state)
   {
-    [(UIWindow *)self->_debugWindow setHidden:0, 0, a5];
+    [(UIWindow *)self->_debugWindow setHidden:0, 0, mask];
   }
 }
 

@@ -1,7 +1,7 @@
 @interface MKMapItem
-+ (id)_maps_markerImageForMapItem:(id)a3 scale:(double)a4 size:(unint64_t)a5 useMarkerFallback:(BOOL)a6;
-+ (id)carMapItemFromDestination:(id)a3;
-+ (id)searchResultsForMapItems:(id)a3 options:(id)a4;
++ (id)_maps_markerImageForMapItem:(id)item scale:(double)scale size:(unint64_t)size useMarkerFallback:(BOOL)fallback;
++ (id)carMapItemFromDestination:(id)destination;
++ (id)searchResultsForMapItems:(id)items options:(id)options;
 - (BOOL)_maps_canAddToCollections;
 - (BOOL)_maps_canRenameCollectionItem;
 - (BOOL)_maps_hasCustomStyleAttributes;
@@ -17,22 +17,22 @@
 - (NSArray)venueAreaIdentifiers;
 - (NSUUID)locationOfInterestIdentifier;
 - (PersonalizedCompoundItem)personalizedCompoundItem;
-- (id)_flyoverAnnouncementMessageWithDefaultTitle:(id)a3;
+- (id)_flyoverAnnouncementMessageWithDefaultTitle:(id)title;
 - (id)_maps_addressFormattedAsStreetOnly;
 - (id)_maps_defaultCollectionItemTitle;
-- (id)_maps_detourTextForIdiom:(int64_t)a3;
-- (id)_maps_detourTextForIdiom:(int64_t)a3 travelTime:(double)a4;
+- (id)_maps_detourTextForIdiom:(int64_t)idiom;
+- (id)_maps_detourTextForIdiom:(int64_t)idiom travelTime:(double)time;
 - (id)_maps_diffableDataSourceIdentifier;
 - (id)_maps_distanceStringFromDetourInformation;
 - (id)_maps_externalDeviceDictionaryRepresentation;
-- (id)_maps_intentsRestaurantUsingParameters:(id)a3;
-- (id)_maps_placeAreaNameWithDefaultName:(id)a3;
-- (id)_maps_placeTitleWithDefaultTitle:(id)a3;
+- (id)_maps_intentsRestaurantUsingParameters:(id)parameters;
+- (id)_maps_placeAreaNameWithDefaultName:(id)name;
+- (id)_maps_placeTitleWithDefaultTitle:(id)title;
 - (id)_maps_stateAndCountry;
 - (id)_maps_styleAttributesForMapItem;
 - (id)notificationDisplayName;
-- (void)setPersonalizedCompoundItem:(id)a3;
-- (void)updateModel:(id)a3;
+- (void)setPersonalizedCompoundItem:(id)item;
+- (void)updateModel:(id)model;
 @end
 
 @implementation MKMapItem
@@ -40,18 +40,18 @@
 - (PersonalizedCompoundItem)personalizedCompoundItem
 {
   v2 = objc_getAssociatedObject(self, &off_101929320);
-  v3 = [v2 item];
+  item = [v2 item];
 
-  return v3;
+  return item;
 }
 
-- (void)setPersonalizedCompoundItem:(id)a3
+- (void)setPersonalizedCompoundItem:(id)item
 {
-  if (a3)
+  if (item)
   {
-    v4 = a3;
+    itemCopy = item;
     value = objc_alloc_init(_WeakPersonalizedCompoundItem);
-    [(_WeakPersonalizedCompoundItem *)value setItem:v4];
+    [(_WeakPersonalizedCompoundItem *)value setItem:itemCopy];
   }
 
   else
@@ -64,73 +64,73 @@
 
 - (id)_maps_addressFormattedAsStreetOnly
 {
-  v3 = [(MKMapItem *)self _addressFormattedAsStreetOnly];
-  v4 = v3;
-  if (v3)
+  _addressFormattedAsStreetOnly = [(MKMapItem *)self _addressFormattedAsStreetOnly];
+  v4 = _addressFormattedAsStreetOnly;
+  if (_addressFormattedAsStreetOnly)
   {
-    v5 = v3;
+    _addressFormattedAsName = _addressFormattedAsStreetOnly;
   }
 
   else
   {
-    v5 = [(MKMapItem *)self _addressFormattedAsName];
+    _addressFormattedAsName = [(MKMapItem *)self _addressFormattedAsName];
   }
 
-  v6 = v5;
+  v6 = _addressFormattedAsName;
 
   return v6;
 }
 
-- (void)updateModel:(id)a3
+- (void)updateModel:(id)model
 {
-  v8 = a3;
-  v4 = [(MKMapItem *)self name];
-  [v8 setFirstLine:v4];
+  modelCopy = model;
+  name = [(MKMapItem *)self name];
+  [modelCopy setFirstLine:name];
 
   if (([(MKMapItem *)self _hasUserRatingScore]& 1) != 0)
   {
     [(MKMapItem *)self _normalizedUserRatingScore];
     v5 = [NSNumber numberWithFloat:?];
-    [v8 setRating:v5];
+    [modelCopy setRating:v5];
   }
 
   else
   {
-    [v8 setRating:0];
+    [modelCopy setRating:0];
   }
 
   if (([(MKMapItem *)self _hasChargerNumberString]& 1) != 0)
   {
-    v6 = [(MKMapItem *)self _chargerNumberString];
-    [v8 setChargerNumberString:v6];
+    _chargerNumberString = [(MKMapItem *)self _chargerNumberString];
+    [modelCopy setChargerNumberString:_chargerNumberString];
   }
 
   else
   {
-    [v8 setChargerNumberString:0];
+    [modelCopy setChargerNumberString:0];
   }
 
-  v7 = [(MKMapItem *)self _maps_addressFormattedAsStreetOnly];
-  [v8 setSecondLine:v7];
+  _maps_addressFormattedAsStreetOnly = [(MKMapItem *)self _maps_addressFormattedAsStreetOnly];
+  [modelCopy setSecondLine:_maps_addressFormattedAsStreetOnly];
 
-  [v8 setMapItem:self];
-  [v8 setDebugSubtitle:@"[MapItem]"];
+  [modelCopy setMapItem:self];
+  [modelCopy setDebugSubtitle:@"[MapItem]"];
 }
 
 - (id)_maps_externalDeviceDictionaryRepresentation
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(MKMapItem *)self name];
-  if (v4)
+  name = [(MKMapItem *)self name];
+  if (name)
   {
-    [v3 setObject:v4 forKeyedSubscript:@"DisplayName"];
+    [v3 setObject:name forKeyedSubscript:@"DisplayName"];
   }
 
-  v5 = [(MKMapItem *)self placemark];
-  if (v5 && (v6 = v5, -[MKMapItem placemark](self, "placemark"), v7 = objc_claimAutoreleasedReturnValue(), [v7 coordinate], v8 = CLLocationCoordinate2DIsValid(v51), v7, v6, v8))
+  placemark = [(MKMapItem *)self placemark];
+  if (placemark && (v6 = placemark, -[MKMapItem placemark](self, "placemark"), v7 = objc_claimAutoreleasedReturnValue(), [v7 coordinate], v8 = CLLocationCoordinate2DIsValid(v51), v7, v6, v8))
   {
-    v9 = [(MKMapItem *)self placemark];
-    [v9 coordinate];
+    placemark2 = [(MKMapItem *)self placemark];
+    [placemark2 coordinate];
     v11 = v10;
     v13 = v12;
   }
@@ -146,12 +146,12 @@
   v52.longitude = v13;
   if (CLLocationCoordinate2DIsValid(v52))
   {
-    v16 = [(MKMapItem *)self placemark];
-    [v16 coordinate];
+    placemark3 = [(MKMapItem *)self placemark];
+    [placemark3 coordinate];
     v17 = [NSNumber numberWithDouble:?];
     v49[0] = v17;
-    v18 = [(MKMapItem *)self placemark];
-    [v18 coordinate];
+    placemark4 = [(MKMapItem *)self placemark];
+    [placemark4 coordinate];
     v20 = [NSNumber numberWithDouble:v19];
     v49[1] = v20;
     v21 = [NSArray arrayWithObjects:v49 count:2];
@@ -159,23 +159,23 @@
     [v3 setObject:v21 forKeyedSubscript:@"CenterCoordinate"];
   }
 
-  v41 = [(MKMapItem *)self _geoAddress];
-  v22 = [v41 formattedAddressLines];
-  if (v22)
+  _geoAddress = [(MKMapItem *)self _geoAddress];
+  formattedAddressLines = [_geoAddress formattedAddressLines];
+  if (formattedAddressLines)
   {
-    [v3 setObject:v22 forKeyedSubscript:@"Address"];
+    [v3 setObject:formattedAddressLines forKeyedSubscript:@"Address"];
   }
 
   v42 = v3;
-  v23 = [(MKMapItem *)self place];
-  v24 = [v23 entryPoints];
+  place = [(MKMapItem *)self place];
+  entryPoints = [place entryPoints];
 
-  v25 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v24 count]);
+  v25 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [entryPoints count]);
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v26 = v24;
+  v26 = entryPoints;
   v27 = [v26 countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v27)
   {
@@ -223,23 +223,23 @@
 - (id)notificationDisplayName
 {
   v3 = [NSMutableArray arrayWithCapacity:2];
-  v4 = [(MKMapItem *)self placemark];
-  v5 = [v4 name];
-  if (v5)
+  placemark = [(MKMapItem *)self placemark];
+  name = [placemark name];
+  if (name)
   {
-    v6 = v5;
-    v7 = [(MKMapItem *)self placemark];
-    v8 = [v7 locality];
+    v6 = name;
+    placemark2 = [(MKMapItem *)self placemark];
+    locality = [placemark2 locality];
 
-    if (v8)
+    if (locality)
     {
-      v9 = [(MKMapItem *)self placemark];
-      v10 = [v9 name];
-      [v3 addObject:v10];
+      placemark3 = [(MKMapItem *)self placemark];
+      name2 = [placemark3 name];
+      [v3 addObject:name2];
 
-      v11 = [(MKMapItem *)self placemark];
-      v12 = [v11 locality];
-      [v3 addObject:v12];
+      placemark4 = [(MKMapItem *)self placemark];
+      locality2 = [placemark4 locality];
+      [v3 addObject:locality2];
 
       goto LABEL_14;
     }
@@ -249,44 +249,44 @@
   {
   }
 
-  v13 = [(MKMapItem *)self placemark];
-  v14 = [v13 name];
+  placemark5 = [(MKMapItem *)self placemark];
+  name3 = [placemark5 name];
 
-  if (v14)
+  if (name3)
   {
-    v15 = [(MKMapItem *)self placemark];
-    v16 = [v15 name];
-    [v3 addObject:v16];
+    placemark6 = [(MKMapItem *)self placemark];
+    name4 = [placemark6 name];
+    [v3 addObject:name4];
   }
 
-  v17 = [(MKMapItem *)self placemark];
-  v18 = [v17 thoroughfare];
+  placemark7 = [(MKMapItem *)self placemark];
+  thoroughfare = [placemark7 thoroughfare];
 
-  if (v18)
+  if (thoroughfare)
   {
-    v19 = [(MKMapItem *)self placemark];
-    v20 = [v19 thoroughfare];
-    [v3 addObject:v20];
+    placemark8 = [(MKMapItem *)self placemark];
+    thoroughfare2 = [placemark8 thoroughfare];
+    [v3 addObject:thoroughfare2];
   }
 
-  v21 = [(MKMapItem *)self placemark];
-  v22 = [v21 locality];
+  placemark9 = [(MKMapItem *)self placemark];
+  locality3 = [placemark9 locality];
 
-  if (v22)
+  if (locality3)
   {
-    v23 = [(MKMapItem *)self placemark];
-    v24 = [v23 locality];
-    [v3 addObject:v24];
+    placemark10 = [(MKMapItem *)self placemark];
+    locality4 = [placemark10 locality];
+    [v3 addObject:locality4];
   }
 
-  v25 = [(MKMapItem *)self placemark];
-  v26 = [v25 administrativeArea];
+  placemark11 = [(MKMapItem *)self placemark];
+  administrativeArea = [placemark11 administrativeArea];
 
-  if (v26)
+  if (administrativeArea)
   {
-    v27 = [(MKMapItem *)self placemark];
-    v28 = [v27 administrativeArea];
-    [v3 addObject:v28];
+    placemark12 = [(MKMapItem *)self placemark];
+    administrativeArea2 = [placemark12 administrativeArea];
+    [v3 addObject:administrativeArea2];
   }
 
   [v3 trimToLength:2];
@@ -305,19 +305,19 @@ LABEL_14:
 
 - (NSArray)venueAreaIdentifiers
 {
-  v2 = [(MKMapItem *)self _geoMapItem];
-  v3 = [v2 _venueInfo];
+  _geoMapItem = [(MKMapItem *)self _geoMapItem];
+  _venueInfo = [_geoMapItem _venueInfo];
 
-  v4 = [v3 venueIdentifier];
-  if (v4)
+  venueIdentifier = [_venueInfo venueIdentifier];
+  if (venueIdentifier)
   {
-    v22 = v3;
+    v22 = _venueInfo;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v24 = v4;
-    obj = [v4 componentIdentifiers];
+    v24 = venueIdentifier;
+    obj = [venueIdentifier componentIdentifiers];
     v5 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v5)
     {
@@ -334,9 +334,9 @@ LABEL_14:
           }
 
           v10 = *(*(&v25 + 1) + 8 * i);
-          v11 = [v10 floorInfo];
+          floorInfo = [v10 floorInfo];
 
-          if (v11)
+          if (floorInfo)
           {
             if ([v10 _hasBuildingID])
             {
@@ -348,11 +348,11 @@ LABEL_14:
               v12 = 0;
             }
 
-            v13 = [v10 floorInfo];
-            v14 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v13 levelID]);
+            floorInfo2 = [v10 floorInfo];
+            v14 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [floorInfo2 levelID]);
 
-            v15 = [v10 floorInfo];
-            v16 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [v15 ordinal]);
+            floorInfo3 = [v10 floorInfo];
+            v16 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [floorInfo3 ordinal]);
 
             v17 = -[VenueAreaIdentifier initWithVenueID:buildingID:levelID:floorOrdinal:]([VenueAreaIdentifier alloc], "initWithVenueID:buildingID:levelID:floorOrdinal:", [v24 venueID], v12, v14, v16);
             v18 = v17;
@@ -382,8 +382,8 @@ LABEL_14:
     }
 
     v20 = [v7 copy];
-    v3 = v22;
-    v4 = v24;
+    _venueInfo = v22;
+    venueIdentifier = v24;
   }
 
   else
@@ -397,22 +397,22 @@ LABEL_14:
 
 - (id)_maps_stateAndCountry
 {
-  v2 = [(MKMapItem *)self place];
-  v3 = [v2 address];
-  v4 = [v3 structuredAddress];
+  place = [(MKMapItem *)self place];
+  address = [place address];
+  structuredAddress = [address structuredAddress];
 
   v5 = objc_alloc_init(NSMutableDictionary);
-  v6 = [v4 administrativeArea];
-  if (![v6 length])
+  administrativeArea = [structuredAddress administrativeArea];
+  if (![administrativeArea length])
   {
-    v7 = [v4 administrativeAreaCode];
+    administrativeAreaCode = [structuredAddress administrativeAreaCode];
 
-    v6 = v7;
+    administrativeArea = administrativeAreaCode;
   }
 
-  if ([v6 length])
+  if ([administrativeArea length])
   {
-    [v5 setObject:v6 forKeyedSubscript:@"State"];
+    [v5 setObject:administrativeArea forKeyedSubscript:@"State"];
   }
 
   if (!qword_10195E038)
@@ -425,15 +425,15 @@ LABEL_14:
     CFRelease(v8);
   }
 
-  v11 = [v4 countryCode];
-  v12 = [v11 lowercaseString];
+  countryCode = [structuredAddress countryCode];
+  lowercaseString = [countryCode lowercaseString];
 
-  if (([v12 isEqualToString:qword_10195E038] & 1) == 0)
+  if (([lowercaseString isEqualToString:qword_10195E038] & 1) == 0)
   {
-    v13 = [v4 country];
-    if ([v13 length])
+    country = [structuredAddress country];
+    if ([country length])
     {
-      [v5 setObject:v13 forKeyedSubscript:@"Country"];
+      [v5 setObject:country forKeyedSubscript:@"Country"];
     }
   }
 
@@ -442,44 +442,44 @@ LABEL_14:
   return v14;
 }
 
-- (id)_maps_placeAreaNameWithDefaultName:(id)a3
+- (id)_maps_placeAreaNameWithDefaultName:(id)name
 {
-  v4 = a3;
-  v5 = [(MKMapItem *)self place];
-  v6 = [v5 type];
-  v7 = 0;
-  if (v6 <= 0x2B)
+  nameCopy = name;
+  place = [(MKMapItem *)self place];
+  type = [place type];
+  _maps_stateAndCountry = 0;
+  if (type <= 0x2B)
   {
-    if (((1 << v6) & 0x80000010010) != 0)
+    if (((1 << type) & 0x80000010010) != 0)
     {
-      v7 = [(MKMapItem *)self _maps_stateAndCountry];
+      _maps_stateAndCountry = [(MKMapItem *)self _maps_stateAndCountry];
     }
 
-    else if (((1 << v6) & 6) != 0)
+    else if (((1 << type) & 6) != 0)
     {
-      v8 = [v5 address];
-      v9 = [v8 structuredAddress];
-      v7 = [v9 country];
+      address = [place address];
+      structuredAddress = [address structuredAddress];
+      _maps_stateAndCountry = [structuredAddress country];
 
-      if (![v7 length])
+      if (![_maps_stateAndCountry length])
       {
-        v10 = [v5 address];
-        v11 = [v10 structuredAddress];
-        v12 = [v11 countryCode];
+        address2 = [place address];
+        structuredAddress2 = [address2 structuredAddress];
+        countryCode = [structuredAddress2 countryCode];
 
-        v7 = v12;
+        _maps_stateAndCountry = countryCode;
       }
     }
   }
 
-  if ([v7 length])
+  if ([_maps_stateAndCountry length])
   {
-    v13 = v7;
+    v13 = _maps_stateAndCountry;
   }
 
   else
   {
-    v13 = v4;
+    v13 = nameCopy;
   }
 
   v14 = v13;
@@ -487,27 +487,27 @@ LABEL_14:
   return v13;
 }
 
-- (id)_maps_placeTitleWithDefaultTitle:(id)a3
+- (id)_maps_placeTitleWithDefaultTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(MKMapItem *)self place];
-  v6 = [v5 type];
+  titleCopy = title;
+  place = [(MKMapItem *)self place];
+  type = [place type];
 
-  v7 = [(MKMapItem *)self place];
-  v8 = [v7 address];
-  v9 = [v8 structuredAddress];
+  place2 = [(MKMapItem *)self place];
+  address = [place2 address];
+  structuredAddress = [address structuredAddress];
 
-  if (v6 == 43)
+  if (type == 43)
   {
-    v10 = [v9 subLocality];
+    subLocality = [structuredAddress subLocality];
     goto LABEL_5;
   }
 
-  if (v6 == 16)
+  if (type == 16)
   {
-    v10 = [(MKMapItem *)self _addressFormattedAsCity];
+    subLocality = [(MKMapItem *)self _addressFormattedAsCity];
 LABEL_5:
-    v11 = v10;
+    v11 = subLocality;
     goto LABEL_7;
   }
 
@@ -520,7 +520,7 @@ LABEL_7:
 
   else
   {
-    v12 = v4;
+    v12 = titleCopy;
   }
 
   v13 = v12;
@@ -530,29 +530,29 @@ LABEL_7:
 
 - (BOOL)_maps_isEVChargingStation
 {
-  v2 = [(MKMapItem *)self _geoMapItem];
-  v3 = [v2 _poiCategory];
-  v4 = [v3 isEqual:GEOPOICategoryEVCharger];
+  _geoMapItem = [(MKMapItem *)self _geoMapItem];
+  _poiCategory = [_geoMapItem _poiCategory];
+  v4 = [_poiCategory isEqual:GEOPOICategoryEVCharger];
 
   return v4;
 }
 
 - (BOOL)_maps_isLargeAreaPlace
 {
-  v2 = [(MKMapItem *)self place];
-  v3 = [v2 type];
+  place = [(MKMapItem *)self place];
+  type = [place type];
 
-  return (v3 < 0x3E) & (0x2001580000010016uLL >> v3);
+  return (type < 0x3E) & (0x2001580000010016uLL >> type);
 }
 
 - (id)_maps_distanceStringFromDetourInformation
 {
-  v3 = [(MKMapItem *)self _detourInfo];
+  _detourInfo = [(MKMapItem *)self _detourInfo];
 
-  if (v3)
+  if (_detourInfo)
   {
-    v4 = [(MKMapItem *)self _detourInfo];
-    [v4 distanceToPlace];
+    _detourInfo2 = [(MKMapItem *)self _detourInfo];
+    [_detourInfo2 distanceToPlace];
     v6 = v5;
 
     if (v6 <= 50.0)
@@ -577,9 +577,9 @@ LABEL_7:
   return v7;
 }
 
-- (id)_maps_detourTextForIdiom:(int64_t)a3 travelTime:(double)a4
+- (id)_maps_detourTextForIdiom:(int64_t)idiom travelTime:(double)time
 {
-  v4 = [NSString _navigation_stringForExpectedTravelTime:2 dateUnitStyle:a4];
+  v4 = [NSString _navigation_stringForExpectedTravelTime:2 dateUnitStyle:time];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"Adds %@" value:@"localized string not found" table:0];
   v7 = [NSString localizedStringWithFormat:v6, v4];
@@ -587,23 +587,23 @@ LABEL_7:
   return v7;
 }
 
-- (id)_maps_detourTextForIdiom:(int64_t)a3
+- (id)_maps_detourTextForIdiom:(int64_t)idiom
 {
-  v5 = [(MKMapItem *)self _detourInfo];
-  [v5 detourTime];
+  _detourInfo = [(MKMapItem *)self _detourInfo];
+  [_detourInfo detourTime];
   v6 = 60.0;
   if (v7 > 60.0)
   {
-    v8 = [(MKMapItem *)self _detourInfo];
-    [v8 detourTime];
+    _detourInfo2 = [(MKMapItem *)self _detourInfo];
+    [_detourInfo2 detourTime];
     v6 = v9;
   }
 
-  v10 = [(MKMapItem *)self _detourInfo];
+  _detourInfo3 = [(MKMapItem *)self _detourInfo];
 
-  if (v10)
+  if (_detourInfo3)
   {
-    v11 = [(MKMapItem *)self _maps_detourTextForIdiom:a3 travelTime:v6];
+    v11 = [(MKMapItem *)self _maps_detourTextForIdiom:idiom travelTime:v6];
   }
 
   else
@@ -616,20 +616,20 @@ LABEL_7:
 
 - (NSUUID)locationOfInterestIdentifier
 {
-  v2 = [(MKMapItem *)self _geoMapItem];
-  v3 = [v2 _clientAttributes];
-  v4 = [v3 routineAttributes];
-  v5 = [v4 loiIdentifier];
+  _geoMapItem = [(MKMapItem *)self _geoMapItem];
+  _clientAttributes = [_geoMapItem _clientAttributes];
+  routineAttributes = [_clientAttributes routineAttributes];
+  loiIdentifier = [routineAttributes loiIdentifier];
 
-  return v5;
+  return loiIdentifier;
 }
 
 - (id)_maps_defaultCollectionItemTitle
 {
-  v3 = [(MKMapItem *)self _styleAttributes];
-  v4 = [v3 isLabelPOI];
+  _styleAttributes = [(MKMapItem *)self _styleAttributes];
+  isLabelPOI = [_styleAttributes isLabelPOI];
 
-  if (v4)
+  if (isLabelPOI)
   {
     [(MKMapItem *)self _addressFormattedAsName];
   }
@@ -645,10 +645,10 @@ LABEL_7:
 
 - (BOOL)_maps_canRenameCollectionItem
 {
-  v3 = [(MKMapItem *)self _styleAttributes];
-  v4 = [v3 isLabelPOI];
+  _styleAttributes = [(MKMapItem *)self _styleAttributes];
+  isLabelPOI = [_styleAttributes isLabelPOI];
 
-  if (v4)
+  if (isLabelPOI)
   {
     return 0;
   }
@@ -668,22 +668,22 @@ LABEL_7:
     return 1;
   }
 
-  v4 = [(MKMapItem *)self _styleAttributes];
-  v5 = [v4 isLabelPOI];
+  _styleAttributes = [(MKMapItem *)self _styleAttributes];
+  isLabelPOI = [_styleAttributes isLabelPOI];
 
-  return v5 ^ 1;
+  return isLabelPOI ^ 1;
 }
 
 - (BOOL)_maps_isParkedCar
 {
   v3 = +[ParkedCarManager sharedManager];
-  v4 = [v3 parkedCar];
+  parkedCar = [v3 parkedCar];
 
-  if (v4)
+  if (parkedCar)
   {
-    v5 = [v4 mapItem];
-    v6 = [v5 _geoMapItem];
-    v7 = [(MKMapItem *)self _geoMapItem];
+    mapItem = [parkedCar mapItem];
+    _geoMapItem = [mapItem _geoMapItem];
+    _geoMapItem2 = [(MKMapItem *)self _geoMapItem];
     IsEqualToMapItemForPurpose = GEOMapItemIsEqualToMapItemForPurpose();
   }
 
@@ -697,16 +697,16 @@ LABEL_7:
 
 - (BOOL)_maps_isSchool
 {
-  v5 = [(MKMapItem *)self _geoMapItem];
-  v6 = [v5 _clientAttributes];
+  _geoMapItem = [(MKMapItem *)self _geoMapItem];
+  _clientAttributes = [_geoMapItem _clientAttributes];
 
-  if (!v6)
+  if (!_clientAttributes)
   {
 LABEL_14:
     v15 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-    v7 = [v15 shortcutForMapItem:self];
+    addressBookAttributes = [v15 shortcutForMapItem:self];
 
-    if (!v7 || ([v7 isHidden] & 1) != 0 || objc_msgSend(v7, "type") != 5)
+    if (!addressBookAttributes || ([addressBookAttributes isHidden] & 1) != 0 || objc_msgSend(addressBookAttributes, "type") != 5)
     {
       v14 = 0;
       goto LABEL_19;
@@ -719,37 +719,37 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v7 = [v6 addressBookAttributes];
-  v8 = [v7 isMe];
-  if (v8)
+  addressBookAttributes = [_clientAttributes addressBookAttributes];
+  isMe = [addressBookAttributes isMe];
+  if (isMe)
   {
-    v2 = [v6 addressBookAttributes];
-    if ([v2 addressType] == 3)
+    addressBookAttributes2 = [_clientAttributes addressBookAttributes];
+    if ([addressBookAttributes2 addressType] == 3)
     {
 
       goto LABEL_17;
     }
   }
 
-  v9 = [v6 mapsSyncAttributes];
-  if (v9)
+  mapsSyncAttributes = [_clientAttributes mapsSyncAttributes];
+  if (mapsSyncAttributes)
   {
-    v3 = [v6 mapsSyncAttributes];
-    if ([v3 secondaryObjectType] == 3)
+    mapsSyncAttributes2 = [_clientAttributes mapsSyncAttributes];
+    if ([mapsSyncAttributes2 secondaryObjectType] == 3)
     {
       v10 = 1;
       goto LABEL_10;
     }
   }
 
-  v11 = [v6 routineAttributes];
-  if (v11)
+  routineAttributes = [_clientAttributes routineAttributes];
+  if (routineAttributes)
   {
-    v12 = v11;
-    v13 = [v6 routineAttributes];
-    v10 = [v13 loiType] == 3;
+    v12 = routineAttributes;
+    routineAttributes2 = [_clientAttributes routineAttributes];
+    v10 = [routineAttributes2 loiType] == 3;
 
-    if (v9)
+    if (mapsSyncAttributes)
     {
       goto LABEL_10;
     }
@@ -758,11 +758,11 @@ LABEL_19:
   else
   {
     v10 = 0;
-    if (v9)
+    if (mapsSyncAttributes)
     {
 LABEL_10:
 
-      if ((v8 & 1) == 0)
+      if ((isMe & 1) == 0)
       {
         goto LABEL_12;
       }
@@ -771,7 +771,7 @@ LABEL_10:
     }
   }
 
-  if (v8)
+  if (isMe)
   {
 LABEL_11:
   }
@@ -791,16 +791,16 @@ LABEL_20:
 
 - (BOOL)_maps_isWork
 {
-  v5 = [(MKMapItem *)self _geoMapItem];
-  v6 = [v5 _clientAttributes];
+  _geoMapItem = [(MKMapItem *)self _geoMapItem];
+  _clientAttributes = [_geoMapItem _clientAttributes];
 
-  if (!v6)
+  if (!_clientAttributes)
   {
 LABEL_14:
     v15 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-    v7 = [v15 shortcutForMapItem:self];
+    addressBookAttributes = [v15 shortcutForMapItem:self];
 
-    if (!v7 || ([v7 isHidden] & 1) != 0 || objc_msgSend(v7, "type") != 3)
+    if (!addressBookAttributes || ([addressBookAttributes isHidden] & 1) != 0 || objc_msgSend(addressBookAttributes, "type") != 3)
     {
       v14 = 0;
       goto LABEL_19;
@@ -813,37 +813,37 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v7 = [v6 addressBookAttributes];
-  v8 = [v7 isMe];
-  if (v8)
+  addressBookAttributes = [_clientAttributes addressBookAttributes];
+  isMe = [addressBookAttributes isMe];
+  if (isMe)
   {
-    v2 = [v6 addressBookAttributes];
-    if ([v2 addressType] == 2)
+    addressBookAttributes2 = [_clientAttributes addressBookAttributes];
+    if ([addressBookAttributes2 addressType] == 2)
     {
 
       goto LABEL_17;
     }
   }
 
-  v9 = [v6 mapsSyncAttributes];
-  if (v9)
+  mapsSyncAttributes = [_clientAttributes mapsSyncAttributes];
+  if (mapsSyncAttributes)
   {
-    v3 = [v6 mapsSyncAttributes];
-    if ([v3 secondaryObjectType] == 2)
+    mapsSyncAttributes2 = [_clientAttributes mapsSyncAttributes];
+    if ([mapsSyncAttributes2 secondaryObjectType] == 2)
     {
       v10 = 1;
       goto LABEL_10;
     }
   }
 
-  v11 = [v6 routineAttributes];
-  if (v11)
+  routineAttributes = [_clientAttributes routineAttributes];
+  if (routineAttributes)
   {
-    v12 = v11;
-    v13 = [v6 routineAttributes];
-    v10 = [v13 loiType] == 2;
+    v12 = routineAttributes;
+    routineAttributes2 = [_clientAttributes routineAttributes];
+    v10 = [routineAttributes2 loiType] == 2;
 
-    if (v9)
+    if (mapsSyncAttributes)
     {
       goto LABEL_10;
     }
@@ -852,11 +852,11 @@ LABEL_19:
   else
   {
     v10 = 0;
-    if (v9)
+    if (mapsSyncAttributes)
     {
 LABEL_10:
 
-      if ((v8 & 1) == 0)
+      if ((isMe & 1) == 0)
       {
         goto LABEL_12;
       }
@@ -865,7 +865,7 @@ LABEL_10:
     }
   }
 
-  if (v8)
+  if (isMe)
   {
 LABEL_11:
   }
@@ -885,16 +885,16 @@ LABEL_20:
 
 - (BOOL)_maps_isHome
 {
-  v5 = [(MKMapItem *)self _geoMapItem];
-  v6 = [v5 _clientAttributes];
+  _geoMapItem = [(MKMapItem *)self _geoMapItem];
+  _clientAttributes = [_geoMapItem _clientAttributes];
 
-  if (!v6)
+  if (!_clientAttributes)
   {
 LABEL_14:
     v15 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-    v7 = [v15 shortcutForMapItem:self];
+    addressBookAttributes = [v15 shortcutForMapItem:self];
 
-    if (!v7 || ([v7 isHidden] & 1) != 0 || objc_msgSend(v7, "type") != 2)
+    if (!addressBookAttributes || ([addressBookAttributes isHidden] & 1) != 0 || objc_msgSend(addressBookAttributes, "type") != 2)
     {
       v14 = 0;
       goto LABEL_19;
@@ -907,37 +907,37 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v7 = [v6 addressBookAttributes];
-  v8 = [v7 isMe];
-  if (v8)
+  addressBookAttributes = [_clientAttributes addressBookAttributes];
+  isMe = [addressBookAttributes isMe];
+  if (isMe)
   {
-    v2 = [v6 addressBookAttributes];
-    if ([v2 addressType] == 1)
+    addressBookAttributes2 = [_clientAttributes addressBookAttributes];
+    if ([addressBookAttributes2 addressType] == 1)
     {
 
       goto LABEL_17;
     }
   }
 
-  v9 = [v6 mapsSyncAttributes];
-  if (v9)
+  mapsSyncAttributes = [_clientAttributes mapsSyncAttributes];
+  if (mapsSyncAttributes)
   {
-    v3 = [v6 mapsSyncAttributes];
-    if ([v3 secondaryObjectType] == 1)
+    mapsSyncAttributes2 = [_clientAttributes mapsSyncAttributes];
+    if ([mapsSyncAttributes2 secondaryObjectType] == 1)
     {
       v10 = 1;
       goto LABEL_10;
     }
   }
 
-  v11 = [v6 routineAttributes];
-  if (v11)
+  routineAttributes = [_clientAttributes routineAttributes];
+  if (routineAttributes)
   {
-    v12 = v11;
-    v13 = [v6 routineAttributes];
-    v10 = [v13 loiType] == 1;
+    v12 = routineAttributes;
+    routineAttributes2 = [_clientAttributes routineAttributes];
+    v10 = [routineAttributes2 loiType] == 1;
 
-    if (v9)
+    if (mapsSyncAttributes)
     {
       goto LABEL_10;
     }
@@ -946,11 +946,11 @@ LABEL_19:
   else
   {
     v10 = 0;
-    if (v9)
+    if (mapsSyncAttributes)
     {
 LABEL_10:
 
-      if ((v8 & 1) == 0)
+      if ((isMe & 1) == 0)
       {
         goto LABEL_12;
       }
@@ -959,7 +959,7 @@ LABEL_10:
     }
   }
 
-  if (v8)
+  if (isMe)
   {
 LABEL_11:
   }
@@ -1031,13 +1031,13 @@ LABEL_20:
   return v3;
 }
 
-+ (id)_maps_markerImageForMapItem:(id)a3 scale:(double)a4 size:(unint64_t)a5 useMarkerFallback:(BOOL)a6
++ (id)_maps_markerImageForMapItem:(id)item scale:(double)scale size:(unint64_t)size useMarkerFallback:(BOOL)fallback
 {
-  v6 = a6;
-  v9 = a3;
-  if (![v9 _maps_hasCustomStyleAttributes] || (objc_msgSend(v9, "_maps_styleAttributesForMapItem"), v10 = objc_claimAutoreleasedReturnValue(), +[MKIconManager imageForStyle:size:forScale:format:](MKIconManager, "imageForStyle:size:forScale:format:", v10, a5, 0, a4), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
+  fallbackCopy = fallback;
+  itemCopy = item;
+  if (![itemCopy _maps_hasCustomStyleAttributes] || (objc_msgSend(itemCopy, "_maps_styleAttributesForMapItem"), v10 = objc_claimAutoreleasedReturnValue(), +[MKIconManager imageForStyle:size:forScale:format:](MKIconManager, "imageForStyle:size:forScale:format:", v10, size, 0, scale), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
   {
-    v11 = [MKIconManager imageForMapItem:v9 size:a5 forScale:0 format:0 fallbackToBundleIcon:a4];
+    v11 = [MKIconManager imageForMapItem:itemCopy size:size forScale:0 format:0 fallbackToBundleIcon:scale];
     if (v11)
     {
       v12 = 1;
@@ -1045,13 +1045,13 @@ LABEL_20:
 
     else
     {
-      v12 = !v6;
+      v12 = !fallbackCopy;
     }
 
     if (!v12)
     {
       v13 = +[GEOFeatureStyleAttributes markerStyleAttributes];
-      v11 = [MKIconManager imageForStyle:v13 size:a5 forScale:0 format:a4];
+      v11 = [MKIconManager imageForStyle:v13 size:size forScale:0 format:scale];
     }
 
     if (v11)
@@ -1061,7 +1061,7 @@ LABEL_20:
 
     else
     {
-      v14 = !v6;
+      v14 = !fallbackCopy;
     }
 
     if (!v14)
@@ -1073,45 +1073,45 @@ LABEL_20:
   return v11;
 }
 
-- (id)_maps_intentsRestaurantUsingParameters:(id)a3
+- (id)_maps_intentsRestaurantUsingParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = objc_opt_new();
-  v6 = [v4 vendorId];
-  [v5 setVendorIdentifier:v6];
+  vendorId = [parametersCopy vendorId];
+  [v5 setVendorIdentifier:vendorId];
 
-  v7 = [v4 externalItemId];
+  externalItemId = [parametersCopy externalItemId];
 
-  [v5 setRestaurantIdentifier:v7];
-  v8 = [(MKMapItem *)self name];
-  [v5 setName:v8];
+  [v5 setRestaurantIdentifier:externalItemId];
+  name = [(MKMapItem *)self name];
+  [v5 setName:name];
 
-  v9 = [(MKMapItem *)self placemark];
-  v10 = [v9 location];
-  [v5 setLocation:v10];
+  placemark = [(MKMapItem *)self placemark];
+  location = [placemark location];
+  [v5 setLocation:location];
 
   return v5;
 }
 
 - (BOOL)needsAdditionalNavData
 {
-  v3 = [(MKMapItem *)self place];
-  v4 = [v3 address];
-  v5 = [v4 structuredAddress];
+  place = [(MKMapItem *)self place];
+  address = [place address];
+  structuredAddress = [address structuredAddress];
 
-  if ([v5 hasSubThoroughfare])
+  if ([structuredAddress hasSubThoroughfare])
   {
-    v6 = 1;
+    hasFullThoroughfare = 1;
   }
 
   else
   {
-    v6 = [v5 hasFullThoroughfare];
+    hasFullThoroughfare = [structuredAddress hasFullThoroughfare];
   }
 
   if ([(MKMapItem *)self _hasMUID])
   {
-    v7 = [v3 hasSpokenName] ^ 1;
+    v7 = [place hasSpokenName] ^ 1;
   }
 
   else
@@ -1122,11 +1122,11 @@ LABEL_20:
   [(MKMapItem *)self _coordinate];
   v9 = v8;
   v11 = v10;
-  if (v6)
+  if (hasFullThoroughfare)
   {
-    v12 = [v3 hasSpokenAddress] ^ 1;
-    v13 = [v3 entryPoints];
-    v14 = [v13 count];
+    v12 = [place hasSpokenAddress] ^ 1;
+    entryPoints = [place entryPoints];
+    v14 = [entryPoints count];
 
     if (v14)
     {
@@ -1149,16 +1149,16 @@ LABEL_20:
   return v16 & 1;
 }
 
-+ (id)searchResultsForMapItems:(id)a3 options:(id)a4
++ (id)searchResultsForMapItems:(id)items options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  itemsCopy = items;
+  optionsCopy = options;
+  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [itemsCopy count]);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v5;
+  obj = itemsCopy;
   v8 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v8)
   {
@@ -1187,34 +1187,34 @@ LABEL_20:
 
         else
         {
-          v15 = [v13 _geoMapItem];
-          v16 = [v15 addressObject];
+          _geoMapItem = [v13 _geoMapItem];
+          addressObject = [_geoMapItem addressObject];
 
           v17 = v13;
-          if (v16)
+          if (addressObject)
           {
             v18 = +[AddressBookManager sharedManager];
-            v19 = [v18 addressForAddressObject:v16];
+            v19 = [v18 addressForAddressObject:addressObject];
 
             if (v19)
             {
-              v20 = [v19 geocodedMapItem];
+              geocodedMapItem = [v19 geocodedMapItem];
 
-              if (v20)
+              if (geocodedMapItem)
               {
-                v21 = [v19 geocodedMapItem];
+                geocodedMapItem2 = [v19 geocodedMapItem];
 
-                v17 = v21;
+                v17 = geocodedMapItem2;
               }
             }
           }
 
           v14 = [[SearchResult alloc] initWithMapItem:v17];
           [(SearchResult *)v14 setOriginatedFromExternal:1];
-          v22 = [v6 objectForKeyedSubscript:v25];
+          v22 = [optionsCopy objectForKeyedSubscript:v25];
           [(SearchResult *)v14 setSourceURL:v22];
 
-          v23 = [v6 objectForKeyedSubscript:v11];
+          v23 = [optionsCopy objectForKeyedSubscript:v11];
           [(SearchResult *)v14 setSourceApplication:v23];
 
           if (v14)
@@ -1241,14 +1241,14 @@ LABEL_15:
   longitude = v5;
   if ([(MKMapItem *)self _hasLookAroundStorefront])
   {
-    v7 = [(MKMapItem *)self _geoMapItem];
-    v8 = [v7 _storefrontPresentationInfo];
+    _geoMapItem = [(MKMapItem *)self _geoMapItem];
+    _storefrontPresentationInfo = [_geoMapItem _storefrontPresentationInfo];
 
-    v9 = [v8 closeUpView];
-    v10 = v9;
-    if (v9)
+    closeUpView = [_storefrontPresentationInfo closeUpView];
+    v10 = closeUpView;
+    if (closeUpView)
     {
-      [v9 lookAt];
+      [closeUpView lookAt];
     }
 
     GEOLocationCoordinate2DFromOrientedPosition();
@@ -1264,37 +1264,37 @@ LABEL_15:
   return result;
 }
 
-+ (id)carMapItemFromDestination:(id)a3
++ (id)carMapItemFromDestination:(id)destination
 {
-  v3 = a3;
+  destinationCopy = destination;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    mapItem = destinationCopy;
 LABEL_5:
-    v5 = v4;
+    mKMapItem = mapItem;
     goto LABEL_6;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 mapItem];
+    mapItem = [destinationCopy mapItem];
     goto LABEL_5;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v3;
-    v5 = [v7 MKMapItem];
+    v7 = destinationCopy;
+    mKMapItem = [v7 MKMapItem];
 
-    if (v5)
+    if (mKMapItem)
     {
       v8 = [[MapsLocationOfInterest alloc] initWithMapsSuggestionEntry:v7];
 LABEL_15:
       v9 = v8;
-      v5 = [(MapsLocationOfInterest *)v8 mapItem];
+      mKMapItem = [(MapsLocationOfInterest *)v8 mapItem];
 LABEL_16:
 
       goto LABEL_17;
@@ -1306,10 +1306,10 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v3;
-    v5 = [v7 mkMapItem];
+    v7 = destinationCopy;
+    mKMapItem = [v7 mkMapItem];
 
-    if (v5)
+    if (mKMapItem)
     {
       v8 = [[MapsLocationOfInterest alloc] initWithMapsFavoriteItem:v7];
       goto LABEL_15;
@@ -1323,20 +1323,20 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 geocodedMapItem];
+    mapItem = [destinationCopy geocodedMapItem];
     goto LABEL_5;
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if ([v3 conformsToProtocol:&OBJC_PROTOCOL___GEOMapItem])
+    if ([destinationCopy conformsToProtocol:&OBJC_PROTOCOL___GEOMapItem])
     {
-      v4 = [[MKMapItem alloc] initWithGeoMapItem:v3 isPlaceHolderPlace:0];
+      mapItem = [[MKMapItem alloc] initWithGeoMapItem:destinationCopy isPlaceHolderPlace:0];
       goto LABEL_5;
     }
 
-    v13 = v3;
+    v13 = destinationCopy;
     v14 = &OBJC_PROTOCOL___MSPHistoryEntryRoute;
     objc_opt_class();
     v7 = v13;
@@ -1365,74 +1365,74 @@ LABEL_17:
     if (v9)
     {
       v21 = 0;
-      v19 = [(MapsLocationOfInterest *)v9 historyEntry];
-      [SearchResult newStartWaypointSearchResult:0 endWaypointSearchResult:&v21 forRouteHistoryEntry:v19];
+      historyEntry = [(MapsLocationOfInterest *)v9 historyEntry];
+      [SearchResult newStartWaypointSearchResult:0 endWaypointSearchResult:&v21 forRouteHistoryEntry:historyEntry];
       v20 = v21;
 
-      v5 = [v20 mapItem];
+      mKMapItem = [v20 mapItem];
     }
 
     else
     {
-      v5 = 0;
+      mKMapItem = 0;
     }
 
     goto LABEL_16;
   }
 
-  v10 = v3;
+  v10 = destinationCopy;
   v11 = [MKMapItem alloc];
-  v12 = [v10 geoMapItem];
+  geoMapItem = [v10 geoMapItem];
 
-  v5 = [v11 initWithGeoMapItem:v12 isPlaceHolderPlace:0];
+  mKMapItem = [v11 initWithGeoMapItem:geoMapItem isPlaceHolderPlace:0];
 LABEL_6:
 
-  return v5;
+  return mKMapItem;
 }
 
 - (id)_maps_diffableDataSourceIdentifier
 {
   if ([(MKMapItem *)self isCurrentLocation])
   {
-    v3 = @"CurrentLocation";
+    _maps_diffableDataSourceIdentifier = @"CurrentLocation";
   }
 
   else
   {
-    v4 = [(MKMapItem *)self _identifier];
-    v5 = v4;
-    if (v4)
+    _identifier = [(MKMapItem *)self _identifier];
+    v5 = _identifier;
+    if (_identifier)
     {
-      v3 = [v4 _maps_diffableDataSourceIdentifier];
+      _maps_diffableDataSourceIdentifier = [_identifier _maps_diffableDataSourceIdentifier];
     }
 
     else
     {
       [(MKMapItem *)self _coordinate];
-      v3 = 0;
+      _maps_diffableDataSourceIdentifier = 0;
       if (fabs(v7) <= 180.0 && v6 >= -90.0 && v6 <= 90.0)
       {
         v8 = [NSString stringWithFormat:@"%+.8f, %+.8f", *&v6, *&v7];
-        v3 = [NSString stringWithFormat:@"MarkedLocation(%@)", v8];
+        _maps_diffableDataSourceIdentifier = [NSString stringWithFormat:@"MarkedLocation(%@)", v8];
       }
     }
   }
 
-  return v3;
+  return _maps_diffableDataSourceIdentifier;
 }
 
-- (id)_flyoverAnnouncementMessageWithDefaultTitle:(id)a3
+- (id)_flyoverAnnouncementMessageWithDefaultTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(MKMapItem *)self _flyoverAnnouncementMessage];
-  if (!v5)
+  titleCopy = title;
+  _flyoverAnnouncementMessage = [(MKMapItem *)self _flyoverAnnouncementMessage];
+  if (!_flyoverAnnouncementMessage)
   {
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"3D Flyover Tour" value:@"localized string not found" table:0];
-    v5 = [NSString stringWithFormat:@"%@ - %@", v7, v4];
+    _flyoverAnnouncementMessage = [NSString stringWithFormat:@"%@ - %@", v7, titleCopy];
   }
 
-  return v5;
+  return _flyoverAnnouncementMessage;
 }
 
 @end

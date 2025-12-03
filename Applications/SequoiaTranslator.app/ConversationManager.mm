@@ -1,18 +1,18 @@
 @interface ConversationManager
-- (void)_accessbilityEvaluateTurnData:(id)a3 languageCode:(id)a4;
-- (void)handleAudioInterruptionWithNotification:(id)a3;
-- (void)handleResignWithNotification:(id)a3;
-- (void)handleRouteChangeWithNotification:(id)a3;
-- (void)languageDetectionResult:(id)a3;
+- (void)_accessbilityEvaluateTurnData:(id)data languageCode:(id)code;
+- (void)handleAudioInterruptionWithNotification:(id)notification;
+- (void)handleResignWithNotification:(id)notification;
+- (void)handleRouteChangeWithNotification:(id)notification;
+- (void)languageDetectionResult:(id)result;
 - (void)speechActivityDetected;
-- (void)speechRecognitionResult:(id)a3;
-- (void)translationDidFinishWithError:(id)a3;
-- (void)translatorDidTranslate:(id)a3;
+- (void)speechRecognitionResult:(id)result;
+- (void)translationDidFinishWithError:(id)error;
+- (void)translatorDidTranslate:(id)translate;
 @end
 
 @implementation ConversationManager
 
-- (void)handleRouteChangeWithNotification:(id)a3
+- (void)handleRouteChangeWithNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);
@@ -23,20 +23,20 @@
   (*(v4 + 8))(v6, v3);
 }
 
-- (void)handleAudioInterruptionWithNotification:(id)a3
+- (void)handleAudioInterruptionWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_100098FDC();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)handleResignWithNotification:(id)a3
+- (void)handleResignWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
@@ -45,7 +45,7 @@
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
   swift_getKeyPath();
   swift_getKeyPath();
-  v8 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   if (v9[40] == 2)
@@ -66,45 +66,45 @@
 
 - (void)speechActivityDetected
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000A0E74();
 }
 
-- (void)languageDetectionResult:(id)a3
+- (void)languageDetectionResult:(id)result
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000A12EC(v4);
+  resultCopy = result;
+  selfCopy = self;
+  sub_1000A12EC(resultCopy);
 }
 
-- (void)speechRecognitionResult:(id)a3
+- (void)speechRecognitionResult:(id)result
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000A1D68(v4);
+  resultCopy = result;
+  selfCopy = self;
+  sub_1000A1D68(resultCopy);
 }
 
-- (void)translatorDidTranslate:(id)a3
+- (void)translatorDidTranslate:(id)translate
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000A24DC(v4);
+  translateCopy = translate;
+  selfCopy = self;
+  sub_1000A24DC(translateCopy);
 }
 
-- (void)translationDidFinishWithError:(id)a3
+- (void)translationDidFinishWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  sub_1000A2C8C(a3);
+  selfCopy = self;
+  errorCopy = error;
+  sub_1000A2C8C(error);
 }
 
-- (void)_accessbilityEvaluateTurnData:(id)a3 languageCode:(id)a4
+- (void)_accessbilityEvaluateTurnData:(id)data languageCode:(id)code
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   sub_1000A538C(v5, v7, v8, v10);
 }
 

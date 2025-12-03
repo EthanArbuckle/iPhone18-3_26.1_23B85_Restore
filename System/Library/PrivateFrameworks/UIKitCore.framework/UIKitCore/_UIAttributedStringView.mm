@@ -1,27 +1,27 @@
 @interface _UIAttributedStringView
-- (_UIAttributedStringView)initWithFrame:(CGRect)a3;
-- (void)_updateContentsScale:(id)a3;
+- (_UIAttributedStringView)initWithFrame:(CGRect)frame;
+- (void)_updateContentsScale:(id)scale;
 - (void)dealloc;
 - (void)didMoveToSuperview;
-- (void)setFrame:(CGRect)a3;
-- (void)setString:(id)a3;
-- (void)setTextRotationAngle:(double)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setString:(id)string;
+- (void)setTextRotationAngle:(double)angle;
 @end
 
 @implementation _UIAttributedStringView
 
-- (_UIAttributedStringView)initWithFrame:(CGRect)a3
+- (_UIAttributedStringView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _UIAttributedStringView;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(UIView *)v3 setOpaque:0];
-    v5 = [(UIView *)v4 layer];
-    [(CALayer *)v5 setContentsGravity:*MEMORY[0x1E6979E00]];
-    [(CALayer *)v5 setAlignmentMode:*MEMORY[0x1E6979560]];
+    layer = [(UIView *)v4 layer];
+    [(CALayer *)layer setContentsGravity:*MEMORY[0x1E6979E00]];
+    [(CALayer *)layer setAlignmentMode:*MEMORY[0x1E6979560]];
     [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
   }
 
@@ -37,57 +37,57 @@
   [(UIView *)&v3 dealloc];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  v5 = CGRectIntegral(a3);
+  v5 = CGRectIntegral(frame);
   v4.receiver = self;
   v4.super_class = _UIAttributedStringView;
   [(UIView *)&v4 setFrame:v5.origin.x, v5.origin.y, v5.size.width, v5.size.height];
 }
 
-- (void)_updateContentsScale:(id)a3
+- (void)_updateContentsScale:(id)scale
 {
-  v5 = [(UIView *)self _scroller];
-  if ([a3 object] == v5)
+  _scroller = [(UIView *)self _scroller];
+  if ([scale object] == _scroller)
   {
     [MEMORY[0x1E6979518] setDisableActions:1];
-    v6 = [(UIView *)self layer];
-    [v5 zoomScale];
+    layer = [(UIView *)self layer];
+    [_scroller zoomScale];
 
-    [(CALayer *)v6 setContentsScale:?];
+    [(CALayer *)layer setContentsScale:?];
   }
 }
 
 - (void)didMoveToSuperview
 {
-  v3 = [(UIView *)self _scroller];
-  if (v3)
+  _scroller = [(UIView *)self _scroller];
+  if (_scroller)
   {
-    v4 = v3;
+    v4 = _scroller;
     [MEMORY[0x1E6979518] setDisableActions:1];
-    v5 = [(UIView *)self layer];
+    layer = [(UIView *)self layer];
     [v4 zoomScale];
 
-    [(CALayer *)v5 setContentsScale:?];
+    [(CALayer *)layer setContentsScale:?];
   }
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
 
-  self->_string = a3;
-  v6 = [(UIView *)self layer];
+  self->_string = string;
+  layer = [(UIView *)self layer];
   string = self->_string;
 
-  [(CALayer *)v6 setString:string];
+  [(CALayer *)layer setString:string];
 }
 
-- (void)setTextRotationAngle:(double)a3
+- (void)setTextRotationAngle:(double)angle
 {
-  v4 = [(UIView *)self layer];
-  CGAffineTransformMakeRotation(&v5, a3);
-  [(CALayer *)v4 setAffineTransform:&v5];
+  layer = [(UIView *)self layer];
+  CGAffineTransformMakeRotation(&v5, angle);
+  [(CALayer *)layer setAffineTransform:&v5];
 }
 
 @end

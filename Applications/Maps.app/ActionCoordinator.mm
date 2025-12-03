@@ -1,45 +1,45 @@
 @interface ActionCoordinator
-- (ActionCoordinator)initWithPlatformController:(id)a3;
+- (ActionCoordinator)initWithPlatformController:(id)controller;
 - (AppCoordinator)appCoordinator;
-- (BOOL)_canCaptureSearchStateForCardItem:(id)a3 previousItemInStack:(id)a4;
-- (BOOL)_conditionallyPopForContaineeClass:(Class)a3;
-- (BOOL)_conditionallyPopForContextClass:(Class)a3;
+- (BOOL)_canCaptureSearchStateForCardItem:(id)item previousItemInStack:(id)stack;
+- (BOOL)_conditionallyPopForContaineeClass:(Class)class;
+- (BOOL)_conditionallyPopForContextClass:(Class)class;
 - (BOOL)_isBuildingMultipointRoute;
 - (BOOL)_isRoutePlanningTopMost;
 - (BOOL)_shouldPresentAddStopSearchResults;
 - (BOOL)canEnterPedestrianAR;
 - (BOOL)chromeDidClearMapSelection;
-- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)a3;
-- (BOOL)chromeDidSelectClusteredWaypointMarker:(id)a3;
-- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)a3;
-- (BOOL)chromeDidSelectETAMarkerForRoute:(id)a3;
-- (BOOL)chromeDidSelectFlyoverTourLabelMarker:(id)a3;
-- (BOOL)chromeDidSelectOfflineAnnotationMarker:(id)a3;
-- (BOOL)chromeDidSelectRouteAnnotations:(id)a3;
-- (BOOL)chromeDidSelectRouteWaypointMarker:(id)a3;
-- (BOOL)chromeDidSelectTrafficIncident:(id)a3 latitude:(id)a4 longitude:(id)a5;
-- (BOOL)chromeDidSelectTransitLineMarker:(id)a3;
-- (BOOL)chromeDidSelectUserLocationAnnotation:(id)a3;
-- (BOOL)chromeDidSelectWaypointMarkerForAddress:(id)a3;
-- (BOOL)chromeDidSelectWaypointMarkerForFindMyHandleIdentifier:(id)a3;
-- (BOOL)chromeShouldAllowSelectingAnnotationView:(id)a3;
-- (BOOL)chromeShouldAllowSelectingLabelMarker:(id)a3;
-- (BOOL)clusterIsPartOfVenues:(id)a3;
+- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)marker;
+- (BOOL)chromeDidSelectClusteredWaypointMarker:(id)marker;
+- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)annotation;
+- (BOOL)chromeDidSelectETAMarkerForRoute:(id)route;
+- (BOOL)chromeDidSelectFlyoverTourLabelMarker:(id)marker;
+- (BOOL)chromeDidSelectOfflineAnnotationMarker:(id)marker;
+- (BOOL)chromeDidSelectRouteAnnotations:(id)annotations;
+- (BOOL)chromeDidSelectRouteWaypointMarker:(id)marker;
+- (BOOL)chromeDidSelectTrafficIncident:(id)incident latitude:(id)latitude longitude:(id)longitude;
+- (BOOL)chromeDidSelectTransitLineMarker:(id)marker;
+- (BOOL)chromeDidSelectUserLocationAnnotation:(id)annotation;
+- (BOOL)chromeDidSelectWaypointMarkerForAddress:(id)address;
+- (BOOL)chromeDidSelectWaypointMarkerForFindMyHandleIdentifier:(id)identifier;
+- (BOOL)chromeShouldAllowSelectingAnnotationView:(id)view;
+- (BOOL)chromeShouldAllowSelectingLabelMarker:(id)marker;
+- (BOOL)clusterIsPartOfVenues:(id)venues;
 - (BOOL)isPedestrianARActive;
 - (BOOL)isPedestrianARShowingFailureView;
 - (BOOL)isPresentingAddStopSearchResults;
 - (BOOL)isRoutePlanningPresented;
 - (BOOL)isTeachableMomentCardActive;
 - (BOOL)isWeatherPopoverActive;
-- (BOOL)mapsDragDestinationHandler:(id)a3 didReceiveURL:(id)a4;
-- (BOOL)mapsDragDestinationHandler:(id)a3 didReceiveVCard:(id)a4;
+- (BOOL)mapsDragDestinationHandler:(id)handler didReceiveURL:(id)l;
+- (BOOL)mapsDragDestinationHandler:(id)handler didReceiveVCard:(id)card;
 - (BOOL)pptTestCanResizePlacecard;
 - (BOOL)pptTestCanUpdateTrayLayout;
-- (BOOL)pptTestIsTrayType:(int64_t)a3;
+- (BOOL)pptTestIsTrayType:(int64_t)type;
 - (BOOL)searchSessionShouldUpdateEVChargers;
 - (BOOL)shouldAddStopInRoutePlanning;
 - (BOOL)shouldDismissPlaceCardOnClearMapSelection;
-- (BOOL)shouldReusePlaceCardViewController:(id)a3;
+- (BOOL)shouldReusePlaceCardViewController:(id)controller;
 - (BOOL)shouldShowSearchOverlay;
 - (ContaineeProtocol)currentViewController;
 - (ControlContainerViewController)containerViewController;
@@ -68,16 +68,16 @@
 - (VenuesManager)venuesManager;
 - (_TtC4Maps38RouteAnnotationContaineeViewController)routeAnnotationVC;
 - (_TtC4Maps38TrafficIncidentContaineeViewController)trafficIncidentVC;
-- (id)_filteredFeaturesFromTransitSystems:(id)a3 allFeatures:(id)a4;
+- (id)_filteredFeaturesFromTransitSystems:(id)systems allFeatures:(id)features;
 - (id)_newPlaceCardViewControllerForReuse;
-- (id)_searchResultFromMapsSuggestionsEntry:(id)a3;
+- (id)_searchResultFromMapsSuggestionsEntry:(id)entry;
 - (id)allSearchResultsForCurrentPinsOnMap;
 - (id)autosharingVC;
 - (id)incidentsVC;
-- (id)mapSelectionStateForVenueCardItem:(id)a3 savePlaceCardSelectionState:(BOOL)a4;
+- (id)mapSelectionStateForVenueCardItem:(id)item savePlaceCardSelectionState:(BOOL)state;
 - (id)mapView;
 - (id)placeCardForRoutePlanningViewController;
-- (id)placeCardForVenuesViewController:(id)a3;
+- (id)placeCardForVenuesViewController:(id)controller;
 - (id)reportsHomeViewController;
 - (id)resultsViewController;
 - (id)routeAnnotationsProvider;
@@ -86,238 +86,238 @@
 - (id)routeSearchVC;
 - (id)routeStepsVC;
 - (id)routingAppsVC;
-- (id)searchFieldItemForVenueCardItem:(id)a3 previousItemInStack:(id)a4;
-- (id)searchInfoForVenueCardItem:(id)a3 previousItemInStack:(id)a4;
+- (id)searchFieldItemForVenueCardItem:(id)item previousItemInStack:(id)stack;
+- (id)searchInfoForVenueCardItem:(id)item previousItemInStack:(id)stack;
 - (id)searchModeViewController;
-- (id)searchResultsForViewController:(id)a3;
+- (id)searchResultsForViewController:(id)controller;
 - (id)settingsViewController;
 - (id)shortcutEditSessionController;
 - (id)timePickingVC;
 - (id)traits;
-- (id)traitsForAddFromACViewController:(id)a3;
-- (id)traitsForCuratedCollectionViewController:(id)a3;
+- (id)traitsForAddFromACViewController:(id)controller;
+- (id)traitsForCuratedCollectionViewController:(id)controller;
 - (id)traitsForQuickActionPresenter;
-- (id)traitsForRouteSearchViewController:(id)a3;
+- (id)traitsForRouteSearchViewController:(id)controller;
 - (int)currentMapViewTargetForAnalytics;
 - (int)currentUITargetForAnalytics;
 - (int)mapApplicationState;
-- (int64_t)_excludedContentForPlaceCardItem:(id)a3;
+- (int64_t)_excludedContentForPlaceCardItem:(id)item;
 - (int64_t)displayedViewMode;
 - (void)_cancelUserInteractions;
-- (void)_carPlayPlaceCardDidDismiss:(id)a3;
-- (void)_carPlayPlaceCardDidPresent:(id)a3;
-- (void)_carPlayWantsToDisplayEVOnboarding:(id)a3;
-- (void)_cleanUpVenuesStackForNonVenuePlaceCardItem:(id)a3;
-- (void)_cleanupRoutePlanningIfNeededAnimated:(BOOL)a3;
-- (void)_enterRoutePlanningOverviewAnimated:(BOOL)a3 saveMapCamera:(BOOL)a4 completion:(id)a5;
-- (void)_exitRoutePlanningIfNeededAnimated:(BOOL)a3 restoreStashedMapSelection:(BOOL)a4;
+- (void)_carPlayPlaceCardDidDismiss:(id)dismiss;
+- (void)_carPlayPlaceCardDidPresent:(id)present;
+- (void)_carPlayWantsToDisplayEVOnboarding:(id)onboarding;
+- (void)_cleanUpVenuesStackForNonVenuePlaceCardItem:(id)item;
+- (void)_cleanupRoutePlanningIfNeededAnimated:(BOOL)animated;
+- (void)_enterRoutePlanningOverviewAnimated:(BOOL)animated saveMapCamera:(BOOL)camera completion:(id)completion;
+- (void)_exitRoutePlanningIfNeededAnimated:(BOOL)animated restoreStashedMapSelection:(BOOL)selection;
 - (void)_prepareToReceiveDrop;
-- (void)_presentMacRouteEditingWithEditRequired:(unint64_t)a3 index:(unint64_t)a4;
-- (void)_presentVenuesPlaceCardItem:(id)a3 shouldSaveSelectionState:(BOOL)a4 source:(unint64_t)a5 resetPlaceCardViewControllerBlock:(id)a6;
-- (void)_promptForCurrentLocationConfirmationWithDirectionItem:(id)a3 userInfo:(id)a4;
-- (void)_promptForEditRequired:(unint64_t)a3 forWaypointAtIndex:(unint64_t)a4 inDirectionItem:(id)a5 userInfo:(id)a6;
+- (void)_presentMacRouteEditingWithEditRequired:(unint64_t)required index:(unint64_t)index;
+- (void)_presentVenuesPlaceCardItem:(id)item shouldSaveSelectionState:(BOOL)state source:(unint64_t)source resetPlaceCardViewControllerBlock:(id)block;
+- (void)_promptForCurrentLocationConfirmationWithDirectionItem:(id)item userInfo:(id)info;
+- (void)_promptForEditRequired:(unint64_t)required forWaypointAtIndex:(unint64_t)index inDirectionItem:(id)item userInfo:(id)info;
 - (void)_resetStack;
-- (void)_setHikingFeaturesForPlaceCardItem:(id)a3;
+- (void)_setHikingFeaturesForPlaceCardItem:(id)item;
 - (void)_setRouteSelectionMapState;
-- (void)_setTopographicalFeaturesForPlaceCardItem:(id)a3;
-- (void)_viewControllerShowOfflineMaps:(id)a3 completionHandler:(id)a4;
-- (void)actionControlDidDeactivate:(id)a3;
+- (void)_setTopographicalFeaturesForPlaceCardItem:(id)item;
+- (void)_viewControllerShowOfflineMaps:(id)maps completionHandler:(id)handler;
+- (void)actionControlDidDeactivate:(id)deactivate;
 - (void)addContainerViewControllerObservers;
-- (void)addRatingsForMapItem:(id)a3;
-- (void)chromeViewController:(id)a3 didUpdateViewMode:(int64_t)a4;
+- (void)addRatingsForMapItem:(id)item;
+- (void)chromeViewController:(id)controller didUpdateViewMode:(int64_t)mode;
 - (void)clearMapSelection;
 - (void)clearSearch;
 - (void)clearSearchIfOriginatedFromWaypointEditor;
 - (void)clearSearchPins;
 - (void)clearSharedTrips;
-- (void)closeRoutePlanningViewController:(id)a3 withSender:(id)a4;
+- (void)closeRoutePlanningViewController:(id)controller withSender:(id)sender;
 - (void)closeSettingsIfNeeded;
 - (void)closeSharedTripDetail;
 - (void)closeStopDetail;
-- (void)closeVenueFloorCardViewController:(id)a3;
-- (void)closeVenueViewController:(id)a3;
-- (void)collectionPickerClosed:(id)a3;
-- (void)collectionPickerNewCollection:(id)a3;
-- (void)confirmDeleteCollections:(id)a3 sourceItem:(id)a4 sourceRect:(CGRect)a5 completion:(id)a6;
-- (void)confirmDeleteSharedTripWithSummary:(id)a3 sourceView:(id)a4 sourceRect:(CGRect)a5 completion:(id)a6;
-- (void)containeeViewController:(id)a3 didCreateKeyboardProxy:(id)a4;
-- (void)containerViewControllerDidResignContainee:(id)a3 toContainee:(id)a4;
-- (void)containerViewControllerWillPresentContainee:(id)a3 overContainee:(id)a4;
-- (void)continueRideBookingSessionWithApplicationIdentifier:(id)a3;
+- (void)closeVenueFloorCardViewController:(id)controller;
+- (void)closeVenueViewController:(id)controller;
+- (void)collectionPickerClosed:(id)closed;
+- (void)collectionPickerNewCollection:(id)collection;
+- (void)confirmDeleteCollections:(id)collections sourceItem:(id)item sourceRect:(CGRect)rect completion:(id)completion;
+- (void)confirmDeleteSharedTripWithSummary:(id)summary sourceView:(id)view sourceRect:(CGRect)rect completion:(id)completion;
+- (void)containeeViewController:(id)controller didCreateKeyboardProxy:(id)proxy;
+- (void)containerViewControllerDidResignContainee:(id)containee toContainee:(id)toContainee;
+- (void)containerViewControllerWillPresentContainee:(id)containee overContainee:(id)overContainee;
+- (void)continueRideBookingSessionWithApplicationIdentifier:(id)identifier;
 - (void)createRadar;
-- (void)curatedCollectionViewController:(id)a3 pickCollectionWithSession:(id)a4 presentationOptions:(id)a5;
-- (void)curatedCollectionViewController:(id)a3 selectSearchResult:(id)a4;
+- (void)curatedCollectionViewController:(id)controller pickCollectionWithSession:(id)session presentationOptions:(id)options;
+- (void)curatedCollectionViewController:(id)controller selectSearchResult:(id)result;
 - (void)dealloc;
 - (void)defaultZoom;
-- (void)deleteMarkedLocation:(id)a3;
-- (void)didRequestDirectionsForSharedTrip:(id)a3;
-- (void)didSaveCustomRoute:(id)a3;
-- (void)didSelectStopWithMapItem:(id)a3;
-- (void)didTapMapView:(id)a3 atPoint:(CGPoint)a4;
+- (void)deleteMarkedLocation:(id)location;
+- (void)didRequestDirectionsForSharedTrip:(id)trip;
+- (void)didSaveCustomRoute:(id)route;
+- (void)didSelectStopWithMapItem:(id)item;
+- (void)didTapMapView:(id)view atPoint:(CGPoint)point;
 - (void)dismissLastVenuePlaceCard;
 - (void)dismissPedestrianARTeachableMomentCardIfNecessary;
-- (void)dismissPlaceCardViewController:(id)a3;
+- (void)dismissPlaceCardViewController:(id)controller;
 - (void)dismissRoutePlanningPlaceCardIfNeeded;
-- (void)displayAlertWithTitle:(id)a3 message:(id)a4 postAlertSearchType:(unsigned int)a5;
-- (void)displayIncidentReportSubmissionWithItem:(id)a3 report:(id)a4;
+- (void)displayAlertWithTitle:(id)title message:(id)message postAlertSearchType:(unsigned int)type;
+- (void)displayIncidentReportSubmissionWithItem:(id)item report:(id)report;
 - (void)endSearch;
 - (void)endSearchForTesting;
 - (void)ensureMapSelectionVisible;
 - (void)ensureRoutePlanningContentIsVisible;
-- (void)enterLookAroundWithEntryPoint:(id)a3 lookAroundView:(id)a4 showsFullScreen:(BOOL)a5 originFrame:(CGRect)a6;
+- (void)enterLookAroundWithEntryPoint:(id)point lookAroundView:(id)view showsFullScreen:(BOOL)screen originFrame:(CGRect)frame;
 - (void)enterPedestrianAR;
-- (void)enterPedestrianAR:(id)a3;
-- (void)enterRouteCreationWithMapItem:(id)a3 completion:(id)a4;
+- (void)enterPedestrianAR:(id)r;
+- (void)enterRouteCreationWithMapItem:(id)item completion:(id)completion;
 - (void)exit3dMode;
 - (void)exitLookAround;
 - (void)exitPedestrianAR;
-- (void)getCurrentSceneTitleWithCompletion:(id)a3;
-- (void)guidesHomeViewController:(id)a3 showCuratedGuideWithIdentifier:(id)a4;
-- (void)handleVenueSearchResultsWithSelectedSearchResult:(id)a3 searchFieldItem:(id)a4 browseCategories:(id)a5;
-- (void)incidentReportSubmissionContaineeDidFinish:(id)a3;
-- (void)injectSearchPinsFromSearchInfo:(id)a3;
-- (void)lineCardViewController:(id)a3 displayMapRegion:(id)a4;
-- (void)lineCardViewController:(id)a3 doDirectionItem:(id)a4;
-- (void)lineCardViewController:(id)a3 selectMapItem:(id)a4;
-- (void)lineCardViewControllerDidAppear:(id)a3;
-- (void)locationRefinementViewController:(id)a3 didSelectCoordinate:(CLLocationCoordinate2D)a4;
-- (void)mapsDragDestinationHandler:(id)a3 didReceiveMapItem:(id)a4;
-- (void)mapsDragDestinationHandler:(id)a3 didReceiveMapKitHandle:(id)a4 title:(id)a5;
-- (void)mapsDragDestinationHandler:(id)a3 didReceiveString:(id)a4 nearCoordinate:(CLLocationCoordinate2D)a5;
-- (void)markedLocationRefinementViewControllerDidCancel:(id)a3;
-- (void)markedLocationRefinementViewControllerSelectedRemoveMarkedLocation:(id)a3;
-- (void)nearbyTransitViewController:(id)a3 select:(id)a4;
-- (void)pinnedItemsViewControllerWithViewController:(id)a3 didSelectPinSuggested:(id)a4;
-- (void)pinnedItemsViewControllerWithViewController:(id)a3 didSelectPinned:(id)a4;
-- (void)placeCardViewController:(id)a3 didRequestHikingToolTipRegionIDForLocation:(CLLocationCoordinate2D)a4;
-- (void)placeCardViewController:(id)a3 didSelectSharePublisherShareItem:(id)a4;
-- (void)placeCardViewController:(id)a3 didUpdateForViewMode:(int64_t)a4;
-- (void)placeCardViewController:(id)a3 didUpdateLinkedPlacesFromPlaceCardItem:(id)a4;
-- (void)placeCardViewController:(id)a3 doSearchItem:(id)a4 withUserInfo:(id)a5;
-- (void)placeCardViewController:(id)a3 editNameOfMapItem:(id)a4 saveHandler:(id)a5 cancelHandler:(id)a6;
-- (void)placeCardViewController:(id)a3 mapItemDidChange:(id)a4;
-- (void)placeCardViewController:(id)a3 placeCardItemWillChange:(id)a4;
-- (void)placeCardViewController:(id)a3 presentCategoryPlacesListForMapItem:(id)a4 searchCategory:(id)a5;
-- (void)placeCardViewController:(id)a3 requestCopyLinkToClipboard:(id)a4;
-- (void)placeCardViewController:(id)a3 selectTransitLineItem:(id)a4;
-- (void)placeCardViewController:(id)a3 showOfflineMapRegionSelectorForRegion:(id)a4 name:(id)a5 muid:(unint64_t)a6 shouldShowDataManagementAfterDownload:(BOOL)a7;
-- (void)placeCardViewController:(id)a3 willReusePlaceCardItem:(id)a4;
-- (void)placeCardViewControllerDidTapHikingTip:(id)a3 originMapItem:(id)a4;
-- (void)placeCardViewControllerRemovedObservingHandle:(id)a3;
-- (void)placeCardViewControllerWillBecomeCurrent:(id)a3;
-- (void)placeCardViewControllerWillResignCurrent:(id)a3;
-- (void)placeViewControllerViewContactsClosed:(id)a3;
-- (void)poiEnrichmentCoordinator:(id)a3 openURL:(id)a4;
-- (void)poiEnrichmentCoordinatorDidFinish:(id)a3;
+- (void)getCurrentSceneTitleWithCompletion:(id)completion;
+- (void)guidesHomeViewController:(id)controller showCuratedGuideWithIdentifier:(id)identifier;
+- (void)handleVenueSearchResultsWithSelectedSearchResult:(id)result searchFieldItem:(id)item browseCategories:(id)categories;
+- (void)incidentReportSubmissionContaineeDidFinish:(id)finish;
+- (void)injectSearchPinsFromSearchInfo:(id)info;
+- (void)lineCardViewController:(id)controller displayMapRegion:(id)region;
+- (void)lineCardViewController:(id)controller doDirectionItem:(id)item;
+- (void)lineCardViewController:(id)controller selectMapItem:(id)item;
+- (void)lineCardViewControllerDidAppear:(id)appear;
+- (void)locationRefinementViewController:(id)controller didSelectCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)mapsDragDestinationHandler:(id)handler didReceiveMapItem:(id)item;
+- (void)mapsDragDestinationHandler:(id)handler didReceiveMapKitHandle:(id)handle title:(id)title;
+- (void)mapsDragDestinationHandler:(id)handler didReceiveString:(id)string nearCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)markedLocationRefinementViewControllerDidCancel:(id)cancel;
+- (void)markedLocationRefinementViewControllerSelectedRemoveMarkedLocation:(id)location;
+- (void)nearbyTransitViewController:(id)controller select:(id)select;
+- (void)pinnedItemsViewControllerWithViewController:(id)controller didSelectPinSuggested:(id)suggested;
+- (void)pinnedItemsViewControllerWithViewController:(id)controller didSelectPinned:(id)pinned;
+- (void)placeCardViewController:(id)controller didRequestHikingToolTipRegionIDForLocation:(CLLocationCoordinate2D)location;
+- (void)placeCardViewController:(id)controller didSelectSharePublisherShareItem:(id)item;
+- (void)placeCardViewController:(id)controller didUpdateForViewMode:(int64_t)mode;
+- (void)placeCardViewController:(id)controller didUpdateLinkedPlacesFromPlaceCardItem:(id)item;
+- (void)placeCardViewController:(id)controller doSearchItem:(id)item withUserInfo:(id)info;
+- (void)placeCardViewController:(id)controller editNameOfMapItem:(id)item saveHandler:(id)handler cancelHandler:(id)cancelHandler;
+- (void)placeCardViewController:(id)controller mapItemDidChange:(id)change;
+- (void)placeCardViewController:(id)controller placeCardItemWillChange:(id)change;
+- (void)placeCardViewController:(id)controller presentCategoryPlacesListForMapItem:(id)item searchCategory:(id)category;
+- (void)placeCardViewController:(id)controller requestCopyLinkToClipboard:(id)clipboard;
+- (void)placeCardViewController:(id)controller selectTransitLineItem:(id)item;
+- (void)placeCardViewController:(id)controller showOfflineMapRegionSelectorForRegion:(id)region name:(id)name muid:(unint64_t)muid shouldShowDataManagementAfterDownload:(BOOL)download;
+- (void)placeCardViewController:(id)controller willReusePlaceCardItem:(id)item;
+- (void)placeCardViewControllerDidTapHikingTip:(id)tip originMapItem:(id)item;
+- (void)placeCardViewControllerRemovedObservingHandle:(id)handle;
+- (void)placeCardViewControllerWillBecomeCurrent:(id)current;
+- (void)placeCardViewControllerWillResignCurrent:(id)current;
+- (void)placeViewControllerViewContactsClosed:(id)closed;
+- (void)poiEnrichmentCoordinator:(id)coordinator openURL:(id)l;
+- (void)poiEnrichmentCoordinatorDidFinish:(id)finish;
 - (void)popContainee;
 - (void)pptAssertSearch;
-- (void)pptSelectACSuggestionMatchingAddress:(id)a3;
+- (void)pptSelectACSuggestionMatchingAddress:(id)address;
 - (void)pptSelectFirstCuratedGuide;
 - (void)pptSelectFirstGuidePublisher;
 - (void)pptSelectSeeAllCuratedCollections;
-- (void)pptTestAutocompleteSearchForFieldItem:(id)a3;
-- (void)pptTestCreateCustomSearchResultForDroppedPinAtPoint:(CLLocationCoordinate2D)a3 animated:(BOOL)a4;
-- (void)pptTestDismissTrayAnimated:(BOOL)a3 assertTrayType:(int64_t)a4;
-- (void)pptTestDoDirectionItem:(id)a3;
+- (void)pptTestAutocompleteSearchForFieldItem:(id)item;
+- (void)pptTestCreateCustomSearchResultForDroppedPinAtPoint:(CLLocationCoordinate2D)point animated:(BOOL)animated;
+- (void)pptTestDismissTrayAnimated:(BOOL)animated assertTrayType:(int64_t)type;
+- (void)pptTestDoDirectionItem:(id)item;
 - (void)pptTestEnterSearchMode;
-- (void)pptTestMaximizePlaceCardAnimated:(BOOL)a3;
-- (void)pptTestMediumizePlaceCardAnimated:(BOOL)a3;
-- (void)pptTestMinimizePlaceCardAnimated:(BOOL)a3;
+- (void)pptTestMaximizePlaceCardAnimated:(BOOL)animated;
+- (void)pptTestMediumizePlaceCardAnimated:(BOOL)animated;
+- (void)pptTestMinimizePlaceCardAnimated:(BOOL)animated;
 - (void)pptTestOpenFirstCollection;
-- (void)pptTestPresentPlacecardWithMapItem:(id)a3;
+- (void)pptTestPresentPlacecardWithMapItem:(id)item;
 - (void)pptTestSearchCancel;
 - (void)pptTestSearchEndEditing;
-- (void)pptTestSearchForFieldItem:(id)a3;
-- (void)pptTestSearchNearbyCategoryWithIndex:(unint64_t)a3;
-- (void)pptTestSearchRetainQueryForSelectedSearchCompletion:(id)a3;
+- (void)pptTestSearchForFieldItem:(id)item;
+- (void)pptTestSearchNearbyCategoryWithIndex:(unint64_t)index;
+- (void)pptTestSearchRetainQueryForSelectedSearchCompletion:(id)completion;
 - (void)pptTestStartNavigation;
-- (void)pptTestUpdateTrayLayout:(unint64_t)a3 animated:(BOOL)a4;
-- (void)presentAutosharingContactSearchWithContacts:(id)a3 selectionHandler:(id)a4;
-- (void)presentChinaAlertForSharedTrip:(id)a3;
-- (void)presentEditNoteViewControllerWithInitialText:(id)a3 libraryAccessProvider:(id)a4 placeMUID:(unint64_t)a5 completion:(id)a6;
-- (void)presentEducationScreenWithAssetURLs:(id)a3 titleText:(id)a4 bodyText:(id)a5;
-- (void)presentGuidesHomeWithGuideLocation:(id)a3;
-- (void)presentLPRWithVehicle:(id)a3 scenario:(int64_t)a4 presenter:(id)a5 completionBlock:(id)a6;
-- (void)presentLineCardForItem:(id)a3 labelMarker:(id)a4 loading:(BOOL)a5 overDisambiguation:(BOOL)a6 preferredLayout:(unint64_t)a7;
-- (void)presentLineCardForItem:(id)a3 loading:(BOOL)a4 sourceView:(id)a5 sourceRect:(CGRect)a6;
+- (void)pptTestUpdateTrayLayout:(unint64_t)layout animated:(BOOL)animated;
+- (void)presentAutosharingContactSearchWithContacts:(id)contacts selectionHandler:(id)handler;
+- (void)presentChinaAlertForSharedTrip:(id)trip;
+- (void)presentEditNoteViewControllerWithInitialText:(id)text libraryAccessProvider:(id)provider placeMUID:(unint64_t)d completion:(id)completion;
+- (void)presentEducationScreenWithAssetURLs:(id)ls titleText:(id)text bodyText:(id)bodyText;
+- (void)presentGuidesHomeWithGuideLocation:(id)location;
+- (void)presentLPRWithVehicle:(id)vehicle scenario:(int64_t)scenario presenter:(id)presenter completionBlock:(id)block;
+- (void)presentLineCardForItem:(id)item labelMarker:(id)marker loading:(BOOL)loading overDisambiguation:(BOOL)disambiguation preferredLayout:(unint64_t)layout;
+- (void)presentLineCardForItem:(id)item loading:(BOOL)loading sourceView:(id)view sourceRect:(CGRect)rect;
 - (void)presentLoadingResults;
-- (void)presentLocationCorrectionViewWithSession:(id)a3;
+- (void)presentLocationCorrectionViewWithSession:(id)session;
 - (void)presentMapsSettingInSettingsApp;
-- (void)presentPOIEnrichmentInformedConsentWithPresentationContext:(int64_t)a3 completion:(id)a4;
-- (void)presentPlaceCard:(id)a3 canReplaceCurrentIfNecessary:(BOOL)a4;
-- (void)presentPlaceCardForItem:(id)a3 addToHistory:(BOOL)a4 source:(unint64_t)a5 saveSelectionState:(BOOL)a6 replaceCurrentCard:(BOOL)a7;
-- (void)presentPreferredNetworksOnboardingForVehicle:(id)a3;
-- (void)presentRouteLibraryWithAvailableRoutes:(id)a3 unavailableRoutes:(id)a4;
-- (void)presentRoutePlanningViewType:(int64_t)a3;
-- (void)presentScheduleForStep:(id)a3;
-- (void)presentSearchAndRestoreSearchItem:(id)a3;
-- (void)presentSearchAnimated:(BOOL)a3;
-- (void)presentSharedTrip:(id)a3;
-- (void)presentSharedTrip:(id)a3 inPopoverFromView:(id)a4;
+- (void)presentPOIEnrichmentInformedConsentWithPresentationContext:(int64_t)context completion:(id)completion;
+- (void)presentPlaceCard:(id)card canReplaceCurrentIfNecessary:(BOOL)necessary;
+- (void)presentPlaceCardForItem:(id)item addToHistory:(BOOL)history source:(unint64_t)source saveSelectionState:(BOOL)state replaceCurrentCard:(BOOL)card;
+- (void)presentPreferredNetworksOnboardingForVehicle:(id)vehicle;
+- (void)presentRouteLibraryWithAvailableRoutes:(id)routes unavailableRoutes:(id)unavailableRoutes;
+- (void)presentRoutePlanningViewType:(int64_t)type;
+- (void)presentScheduleForStep:(id)step;
+- (void)presentSearchAndRestoreSearchItem:(id)item;
+- (void)presentSearchAnimated:(BOOL)animated;
+- (void)presentSharedTrip:(id)trip;
+- (void)presentSharedTrip:(id)trip inPopoverFromView:(id)view;
 - (void)presentSharedTrips;
-- (void)presentSimpleList:(id)a3;
-- (void)presentUnsupportedTransportTypeOrProtocolAlertForSharedTrip:(id)a3;
-- (void)presentVehicleOnboardingWithVehicles:(id)a3 completion:(id)a4;
-- (void)presentVenueCategoryWithVenueCategoryItem:(id)a3;
-- (void)presentWalletDCIViewControllerWithTransitSystems:(id)a3 callbackDelegate:(id)a4;
-- (void)presentWalletTopUpViewControllerWithTransitIdentifier:(id)a3 callbackDelegate:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)productViewController:(id)a3 didFinishWithResult:(int64_t)a4;
-- (void)ratingsHistoryContaineeViewController:(id)a3 didSelect:(id)a4;
-- (void)receivedVenueEVChargersUpdate:(id)a3;
+- (void)presentSimpleList:(id)list;
+- (void)presentUnsupportedTransportTypeOrProtocolAlertForSharedTrip:(id)trip;
+- (void)presentVehicleOnboardingWithVehicles:(id)vehicles completion:(id)completion;
+- (void)presentVenueCategoryWithVenueCategoryItem:(id)item;
+- (void)presentWalletDCIViewControllerWithTransitSystems:(id)systems callbackDelegate:(id)delegate;
+- (void)presentWalletTopUpViewControllerWithTransitIdentifier:(id)identifier callbackDelegate:(id)delegate;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)productViewController:(id)controller didFinishWithResult:(int64_t)result;
+- (void)ratingsHistoryContaineeViewController:(id)controller didSelect:(id)select;
+- (void)receivedVenueEVChargersUpdate:(id)update;
 - (void)refreshCurrentSearch;
 - (void)refreshRoutePlanningTimingIfNeeded;
 - (void)removeContainerViewControllerObserver;
-- (void)restoreSearchForItem:(id)a3 withResults:(id)a4 sessionOrigin:(unint64_t)a5;
-- (void)retainSearchQueryForSelectedSearchResult:(id)a3;
-- (void)routePlanningDataCoordinator:(id)a3 isEnabled:(BOOL)a4;
-- (void)routePlanningUpdatedWaypoints:(id)a3;
-- (void)routeSearchViewController:(id)a3 wantsToPerformSearchWithItem:(id)a4 userInfo:(id)a5 autocompleteSessionData:(id)a6;
-- (void)routeSearchViewControllerDidDismiss:(id)a3 shouldExitRoutePlanning:(BOOL)a4;
-- (void)routeStepsViewController:(id)a3 wantsToDisplayAdvisory:(id)a4;
-- (void)routeStepsViewController:(id)a3 wantsToShareItem:(id)a4 fromView:(id)a5;
-- (void)searchSessionManagerReceiveEVChargersUpdate:(id)a3;
+- (void)restoreSearchForItem:(id)item withResults:(id)results sessionOrigin:(unint64_t)origin;
+- (void)retainSearchQueryForSelectedSearchResult:(id)result;
+- (void)routePlanningDataCoordinator:(id)coordinator isEnabled:(BOOL)enabled;
+- (void)routePlanningUpdatedWaypoints:(id)waypoints;
+- (void)routeSearchViewController:(id)controller wantsToPerformSearchWithItem:(id)item userInfo:(id)info autocompleteSessionData:(id)data;
+- (void)routeSearchViewControllerDidDismiss:(id)dismiss shouldExitRoutePlanning:(BOOL)planning;
+- (void)routeStepsViewController:(id)controller wantsToDisplayAdvisory:(id)advisory;
+- (void)routeStepsViewController:(id)controller wantsToShareItem:(id)item fromView:(id)view;
+- (void)searchSessionManagerReceiveEVChargersUpdate:(id)update;
 - (void)searchSessionManagerSessionDidFail;
 - (void)searchSessionManagerSessionDidInvalidate;
 - (void)searchSessionManagerSessionDidReceiveUpdate;
 - (void)select3dMode;
-- (void)selectSearchResult:(id)a3 animated:(BOOL)a4;
-- (void)selectWaypointSearchFieldIndex:(unint64_t)a3 exitPlanningIfCancelTapped:(BOOL)a4 beginEditing:(BOOL)a5;
-- (void)setContainerViewController:(id)a3;
-- (void)setCurrentDirectionItem:(id)a3 withOptions:(id)a4;
-- (void)setCurrentTransitLineItem:(id)a3 zoomToMapRegion:(BOOL)a4 preferredLayout:(unint64_t)a5;
-- (void)setIsRoutePlanningPresented:(BOOL)a3;
-- (void)setRoutePlanningAdvisoriesInfo:(id)a3;
-- (void)setRoutePlanningAdvisory:(id)a3;
-- (void)setSearchPins:(id)a3 selectedPin:(id)a4 animated:(BOOL)a5;
-- (void)setSearchPinsFromSearchInfo:(id)a3 scrollToResults:(BOOL)a4 displayPlaceCardForResult:(id)a5 animated:(BOOL)a6 completion:(id)a7;
-- (void)setUserTrackingViewUserTrackingMode:(int64_t)a3;
-- (void)setViewMode:(int64_t)a3 animated:(BOOL)a4;
-- (void)shortcutEditSessionControllerFinished:(id)a3 shortcutWasReplacedBy:(id)a4;
-- (void)showAnnouncementForFlyover:(id)a3;
-- (void)showCuratedCollectionViewController:(id)a3 replaceViewController:(BOOL)a4 completion:(id)a5;
+- (void)selectSearchResult:(id)result animated:(BOOL)animated;
+- (void)selectWaypointSearchFieldIndex:(unint64_t)index exitPlanningIfCancelTapped:(BOOL)tapped beginEditing:(BOOL)editing;
+- (void)setContainerViewController:(id)controller;
+- (void)setCurrentDirectionItem:(id)item withOptions:(id)options;
+- (void)setCurrentTransitLineItem:(id)item zoomToMapRegion:(BOOL)region preferredLayout:(unint64_t)layout;
+- (void)setIsRoutePlanningPresented:(BOOL)presented;
+- (void)setRoutePlanningAdvisoriesInfo:(id)info;
+- (void)setRoutePlanningAdvisory:(id)advisory;
+- (void)setSearchPins:(id)pins selectedPin:(id)pin animated:(BOOL)animated;
+- (void)setSearchPinsFromSearchInfo:(id)info scrollToResults:(BOOL)results displayPlaceCardForResult:(id)result animated:(BOOL)animated completion:(id)completion;
+- (void)setUserTrackingViewUserTrackingMode:(int64_t)mode;
+- (void)setViewMode:(int64_t)mode animated:(BOOL)animated;
+- (void)shortcutEditSessionControllerFinished:(id)finished shortcutWasReplacedBy:(id)by;
+- (void)showAnnouncementForFlyover:(id)flyover;
+- (void)showCuratedCollectionViewController:(id)controller replaceViewController:(BOOL)viewController completion:(id)completion;
 - (void)showNearbyTeachableMomentCard;
 - (void)showPedestrianARFeatureIntroTeachableMomentCard;
 - (void)showPedestrianARRaiseToEnterTeachableMomentCard;
 - (void)showVLF;
-- (void)showWarmingSheetViewController:(int64_t)a3;
-- (void)simpleResultsViewContoller:(id)a3 didTapOnAddStopWithSearchResult:(id)a4;
-- (void)simpleResultsViewContoller:(id)a3 didTapOnCallWithSearchResult:(id)a4;
-- (void)simpleResultsViewContoller:(id)a3 didTapOnFlyoverWithSearchResult:(id)a4;
-- (void)simpleResultsViewContoller:(id)a3 didTapOnLookAroundWithSearchResult:(id)a4;
-- (void)simpleResultsViewContoller:(id)a3 didTapOnWebsiteWithSearchResult:(id)a4;
-- (void)simpleResultsViewContoller:(id)a3 selectClusteredLabelMarker:(id)a4;
-- (void)simpleResultsViewContoller:(id)a3 selectContainmentParentMapItem:(id)a4 resultsList:(id)a5;
-- (void)simpleResultsViewContoller:(id)a3 selectDirectionItem:(id)a4;
-- (void)simpleResultsViewContoller:(id)a3 selectSearchResult:(id)a4;
-- (void)simpleResultsViewContoller:(id)a3 selectTappableEntry:(id)a4 resultsList:(id)a5;
-- (void)simpleResultsViewContoller:(id)a3 showCuratedCollection:(id)a4;
-- (void)simpleResultsViewContoller:(id)a3 showCuratedCollectionsList:(id)a4 title:(id)a5;
-- (void)simpleResultsViewContoller:(id)a3 showUserGeneratedCollection:(id)a4;
-- (void)startNavigationWithRouteCollection:(id)a3 navigationDetailsOptions:(NavigationDetailsOptions *)a4;
-- (void)startRideBookingSessionWithRideOption:(id)a3;
-- (void)switchRoutePlanningTransportTypeToType:(int64_t)a3;
-- (void)timingViewController:(id)a3 didPickTiming:(id)a4;
+- (void)showWarmingSheetViewController:(int64_t)controller;
+- (void)simpleResultsViewContoller:(id)contoller didTapOnAddStopWithSearchResult:(id)result;
+- (void)simpleResultsViewContoller:(id)contoller didTapOnCallWithSearchResult:(id)result;
+- (void)simpleResultsViewContoller:(id)contoller didTapOnFlyoverWithSearchResult:(id)result;
+- (void)simpleResultsViewContoller:(id)contoller didTapOnLookAroundWithSearchResult:(id)result;
+- (void)simpleResultsViewContoller:(id)contoller didTapOnWebsiteWithSearchResult:(id)result;
+- (void)simpleResultsViewContoller:(id)contoller selectClusteredLabelMarker:(id)marker;
+- (void)simpleResultsViewContoller:(id)contoller selectContainmentParentMapItem:(id)item resultsList:(id)list;
+- (void)simpleResultsViewContoller:(id)contoller selectDirectionItem:(id)item;
+- (void)simpleResultsViewContoller:(id)contoller selectSearchResult:(id)result;
+- (void)simpleResultsViewContoller:(id)contoller selectTappableEntry:(id)entry resultsList:(id)list;
+- (void)simpleResultsViewContoller:(id)contoller showCuratedCollection:(id)collection;
+- (void)simpleResultsViewContoller:(id)contoller showCuratedCollectionsList:(id)list title:(id)title;
+- (void)simpleResultsViewContoller:(id)contoller showUserGeneratedCollection:(id)collection;
+- (void)startNavigationWithRouteCollection:(id)collection navigationDetailsOptions:(NavigationDetailsOptions *)options;
+- (void)startRideBookingSessionWithRideOption:(id)option;
+- (void)switchRoutePlanningTransportTypeToType:(int64_t)type;
+- (void)timingViewController:(id)controller didPickTiming:(id)timing;
 - (void)toggleRoutePlanning;
 - (void)toggleTopLevelGuides;
 - (void)toggleTopLevelPinned;
@@ -326,129 +326,129 @@
 - (void)toggleTopLevelRecents;
 - (void)toggleTopLevelSavedRoutes;
 - (void)toggleTopLevelVisitedPlaces;
-- (void)transitSchedulesViewController:(id)a3 wantsToShowInfoForLine:(id)a4;
-- (void)updateFloatingControlsWithSearchSession:(id)a3;
+- (void)transitSchedulesViewController:(id)controller wantsToShowInfoForLine:(id)line;
+- (void)updateFloatingControlsWithSearchSession:(id)session;
 - (void)updateHistoricalLocations;
-- (void)updateMapApplicationState:(int)a3;
-- (void)updateRedoSearchFloatingControl:(BOOL)a3;
+- (void)updateMapApplicationState:(int)state;
+- (void)updateRedoSearchFloatingControl:(BOOL)control;
 - (void)updateResultsViewContent;
 - (void)updateRouteAnnotations;
-- (void)updateSearchFieldWithSearchFieldItem:(id)a3;
-- (void)updateViewMode:(int64_t)a3 animated:(BOOL)a4;
-- (void)userGuideViewController:(id)a3 didSelect:(id)a4;
-- (void)userGuideViewController:(id)a3 didTapAddPlacesToGuide:(id)a4;
-- (void)userGuidesListViewControllerWithViewController:(id)a3 confirmDelete:(id)a4 presentationOptions:(id)a5 completion:(id)a6;
-- (void)userProfileViewControllerDismissByGestureWithViewController:(id)a3;
-- (void)viewController:(id)a3 addItemsFromACToCollection:(id)a4;
-- (void)viewController:(id)a3 addStopForSearchFieldItem:(id)a4 withUserInfo:(id)a5;
-- (void)viewController:(id)a3 addStopForSearchResult:(id)a4 withUserInfo:(id)a5;
-- (void)viewController:(id)a3 createDroppedPin:(id)a4;
-- (void)viewController:(id)a3 createMarkedLocationAtCoordinate:(CLLocationCoordinate2D)a4 floorOrdinal:(int)a5;
-- (void)viewController:(id)a3 createNewCollectionWithSession:(id)a4;
-- (void)viewController:(id)a3 dismissMenuControllerAnimated:(BOOL)a4;
-- (void)viewController:(id)a3 displayStoreViewControllerForAppWithiTunesIdentifier:(id)a4 clientIdentifier:(id)a5;
-- (void)viewController:(id)a3 displayTableBookingFor:(id)a4;
-- (void)viewController:(id)a3 displayTransitSchedulesForDepartureSequence:(id)a4 withTimeZone:(id)a5 scheduleWindowStartDate:(id)a6 includeAllDirections:(BOOL)a7;
-- (void)viewController:(id)a3 displayTransitSchedulesForMapItem:(id)a4 departureSequence:(id)a5;
-- (void)viewController:(id)a3 doAudioCallToSearchResult:(id)a4;
-- (void)viewController:(id)a3 doDirectionIntent:(id)a4 withSearchResults:(id)a5;
-- (void)viewController:(id)a3 doDirectionIntentWithLocalSearchCompletion:(id)a4;
-- (void)viewController:(id)a3 doDirectionItem:(id)a4 allowToPromptEditing:(BOOL)a5 withUserInfo:(id)a6;
-- (void)viewController:(id)a3 doSearchItem:(id)a4 withUserInfo:(id)a5;
-- (void)viewController:(id)a3 doSearchItem:(id)a4 withUserInfo:(id)a5 refinementsQuery:(id)a6 autocompleteSessionData:(id)a7;
-- (void)viewController:(id)a3 doShareSheetForShareItem:(id)a4 completion:(id)a5;
-- (void)viewController:(id)a3 downloadOfflineRegionForRouteData:(id)a4;
-- (void)viewController:(id)a3 editCollection:(id)a4;
-- (void)viewController:(id)a3 editCollection:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 completion:(id)a7;
-- (void)viewController:(id)a3 editLocationOfMarkedLocation:(id)a4;
-- (void)viewController:(id)a3 editNameOfMapItem:(id)a4 saveHandler:(id)a5 cancelHandler:(id)a6;
-- (void)viewController:(id)a3 editRoute:(id)a4;
-- (void)viewController:(id)a3 editShortcut:(id)a4;
-- (void)viewController:(id)a3 editShortcut:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6;
-- (void)viewController:(id)a3 enterFlyoverForMapItem:(id)a4;
-- (void)viewController:(id)a3 enterRouteCreationWith:(id)a4;
-- (void)viewController:(id)a3 enterRouteCreationWithRoute:(id)a4 withUserInfo:(id)a5;
-- (void)viewController:(id)a3 focusSearchResult:(id)a4;
-- (void)viewController:(id)a3 openCommuteEntry:(id)a4;
-- (void)viewController:(id)a3 openFavoriteItem:(id)a4 withUserInfo:(id)a5;
-- (void)viewController:(id)a3 openMapsSuggestionEntry:(id)a4 withUserInfo:(id)a5;
-- (void)viewController:(id)a3 openPlainTextFileURL:(id)a4;
-- (void)viewController:(id)a3 openSearchResult:(id)a4;
-- (void)viewController:(id)a3 openTransitIncidents:(id)a4 fromView:(id)a5 withUserInfo:(id)a6;
-- (void)viewController:(id)a3 openTransitLineCard:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6;
-- (void)viewController:(id)a3 openURL:(id)a4;
-- (void)viewController:(id)a3 openWebsiteForSearchResult:(id)a4;
-- (void)viewController:(id)a3 pickCollectionWithSession:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6;
-- (void)viewController:(id)a3 presentCluster:(id)a4;
-- (void)viewController:(id)a3 presentCollectionPickerContaineeViewController:(id)a4;
-- (void)viewController:(id)a3 presentMenuController:(id)a4 animated:(BOOL)a5 fromChrome:(BOOL)a6 completion:(id)a7;
-- (void)viewController:(id)a3 presentParentMapItem:(id)a4;
-- (void)viewController:(id)a3 presentPlacesForMapItem:(id)a4 searchCategory:(id)a5 source:(unint64_t)a6;
-- (void)viewController:(id)a3 presentPlacesWithPlacesCardItem:(id)a4 source:(unint64_t)a5;
-- (void)viewController:(id)a3 presentRelatedMapItems:(id)a4 withTitle:(id)a5 originalMapItem:(id)a6 analyticsDelegate:(id)a7;
-- (void)viewController:(id)a3 presentReportDetail:(id)a4 fromEntryPoint:(int)a5;
-- (void)viewController:(id)a3 presentVenueFloorCardViewController:(id)a4;
-- (void)viewController:(id)a3 presentVenueForMapItem:(id)a4 searchCategory:(id)a5 source:(unint64_t)a6;
-- (void)viewController:(id)a3 presentVenueFromAutoCompleteWithVenueIdentifier:(id)a4 searchCategory:(id)a5 source:(unint64_t)a6;
-- (void)viewController:(id)a3 presentVenueWithVenueCardItem:(id)a4 source:(unint64_t)a5;
-- (void)viewController:(id)a3 presentVenuesClusteredSearchResult:(id)a4;
-- (void)viewController:(id)a3 removeDroppedPin:(id)a4;
-- (void)viewController:(id)a3 removeMapsSuggestionsEntry:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 startBlock:(id)a7 completionBlock:(id)a8;
-- (void)viewController:(id)a3 removeShortcut:(id)a4;
-- (void)viewController:(id)a3 selectClientResolvedItem:(id)a4 fromSearchInfo:(id)a5 withUserInfo:(id)a6;
-- (void)viewController:(id)a3 selectDroppedPin:(id)a4;
-- (void)viewController:(id)a3 selectLastDirectionsDestinationComposedWaypoint:(id)a4;
-- (void)viewController:(id)a3 selectMapItem:(id)a4 address:(id)a5 addToHistory:(BOOL)a6 source:(unint64_t)a7;
-- (void)viewController:(id)a3 selectParkedCar:(id)a4 andPerformAction:(int64_t)a5 selectPOIOnMap:(BOOL)a6;
-- (void)viewController:(id)a3 selectPersonalizedItem:(id)a4 source:(unint64_t)a5 saveSelectionState:(BOOL)a6;
-- (void)viewController:(id)a3 selectSearchResult:(id)a4 addToHistory:(BOOL)a5 source:(unint64_t)a6 saveSelectionState:(BOOL)a7 replaceCurrentCard:(BOOL)a8;
-- (void)viewController:(id)a3 selectTransitLineItem:(id)a4 zoomToMapRegion:(BOOL)a5 preferredLayout:(unint64_t)a6;
-- (void)viewController:(id)a3 selectVenueSearchResult:(id)a4 source:(unint64_t)a5;
-- (void)viewController:(id)a3 showAddShortcut:(id)a4;
-- (void)viewController:(id)a3 showCollection:(id)a4 completion:(id)a5;
-- (void)viewController:(id)a3 showCollectionWithID:(id)a4;
-- (void)viewController:(id)a3 showCuratedCollection:(id)a4 replaceViewController:(BOOL)a5 completion:(id)a6;
-- (void)viewController:(id)a3 showCuratedCollectionIdentifier:(id)a4 replaceViewController:(BOOL)a5 completion:(id)a6;
-- (void)viewController:(id)a3 showCuratedCollectionsList:(id)a4 usingTitle:(id)a5 usingCollectionIds:(id)a6 completion:(id)a7;
-- (void)viewController:(id)a3 showFavoritesType:(int64_t)a4;
-- (void)viewController:(id)a3 showFullyClientizedCuratedCollection:(id)a4 replaceViewController:(BOOL)a5;
-- (void)viewController:(id)a3 showGuidesHome:(id)a4;
-- (void)viewController:(id)a3 showOfflineMapRegionSelectorForRegion:(id)a4 name:(id)a5 route:(id)a6 muid:(unint64_t)a7 shouldUseSessionlessAnalytics:(BOOL)a8 dismissalBlock:(id)a9 postDismissalBlock:(id)a10;
-- (void)viewController:(id)a3 showOfflineMapRegionSelectorForRegion:(id)a4 name:(id)a5 route:(id)a6 muid:(unint64_t)a7 shouldUseSessionlessAnalytics:(BOOL)a8 shouldShowDataManagementAfterDownload:(BOOL)a9 shouldShowDataManagementAfterDownloadIfRegionDiffers:(BOOL)a10 dismissalBlock:(id)a11;
-- (void)viewController:(id)a3 showSortPickerWithSortOptions:(id)a4 initialSelectedSortOptionIndex:(int64_t)a5 completion:(id)a6;
-- (void)viewController:(id)a3 startDirectionsToRouteData:(id)a4;
-- (void)viewControllerClearInjectedSearchPins:(id)a3;
-- (void)viewControllerClosed:(id)a3 animated:(BOOL)a4;
-- (void)viewControllerDoLastDirectionItem:(id)a3;
-- (void)viewControllerGoPreviousState:(id)a3 withSender:(id)a4;
-- (void)viewControllerOpenNearby:(id)a3 animated:(BOOL)a4;
-- (void)viewControllerOpenSettings:(id)a3;
-- (void)viewControllerPresentNearbyTransitDepartures:(id)a3;
-- (void)viewControllerPresentPOIEnrichmentWithCoordinator:(id)a3;
-- (void)viewControllerPresentRatingsHistory:(id)a3;
+- (void)updateSearchFieldWithSearchFieldItem:(id)item;
+- (void)updateViewMode:(int64_t)mode animated:(BOOL)animated;
+- (void)userGuideViewController:(id)controller didSelect:(id)select;
+- (void)userGuideViewController:(id)controller didTapAddPlacesToGuide:(id)guide;
+- (void)userGuidesListViewControllerWithViewController:(id)controller confirmDelete:(id)delete presentationOptions:(id)options completion:(id)completion;
+- (void)userProfileViewControllerDismissByGestureWithViewController:(id)controller;
+- (void)viewController:(id)controller addItemsFromACToCollection:(id)collection;
+- (void)viewController:(id)controller addStopForSearchFieldItem:(id)item withUserInfo:(id)info;
+- (void)viewController:(id)controller addStopForSearchResult:(id)result withUserInfo:(id)info;
+- (void)viewController:(id)controller createDroppedPin:(id)pin;
+- (void)viewController:(id)controller createMarkedLocationAtCoordinate:(CLLocationCoordinate2D)coordinate floorOrdinal:(int)ordinal;
+- (void)viewController:(id)controller createNewCollectionWithSession:(id)session;
+- (void)viewController:(id)controller dismissMenuControllerAnimated:(BOOL)animated;
+- (void)viewController:(id)controller displayStoreViewControllerForAppWithiTunesIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier;
+- (void)viewController:(id)controller displayTableBookingFor:(id)for;
+- (void)viewController:(id)controller displayTransitSchedulesForDepartureSequence:(id)sequence withTimeZone:(id)zone scheduleWindowStartDate:(id)date includeAllDirections:(BOOL)directions;
+- (void)viewController:(id)controller displayTransitSchedulesForMapItem:(id)item departureSequence:(id)sequence;
+- (void)viewController:(id)controller doAudioCallToSearchResult:(id)result;
+- (void)viewController:(id)controller doDirectionIntent:(id)intent withSearchResults:(id)results;
+- (void)viewController:(id)controller doDirectionIntentWithLocalSearchCompletion:(id)completion;
+- (void)viewController:(id)controller doDirectionItem:(id)item allowToPromptEditing:(BOOL)editing withUserInfo:(id)info;
+- (void)viewController:(id)controller doSearchItem:(id)item withUserInfo:(id)info;
+- (void)viewController:(id)controller doSearchItem:(id)item withUserInfo:(id)info refinementsQuery:(id)query autocompleteSessionData:(id)data;
+- (void)viewController:(id)controller doShareSheetForShareItem:(id)item completion:(id)completion;
+- (void)viewController:(id)controller downloadOfflineRegionForRouteData:(id)data;
+- (void)viewController:(id)controller editCollection:(id)collection;
+- (void)viewController:(id)controller editCollection:(id)collection sourceView:(id)view sourceRect:(CGRect)rect completion:(id)completion;
+- (void)viewController:(id)controller editLocationOfMarkedLocation:(id)location;
+- (void)viewController:(id)controller editNameOfMapItem:(id)item saveHandler:(id)handler cancelHandler:(id)cancelHandler;
+- (void)viewController:(id)controller editRoute:(id)route;
+- (void)viewController:(id)controller editShortcut:(id)shortcut;
+- (void)viewController:(id)controller editShortcut:(id)shortcut sourceView:(id)view sourceRect:(CGRect)rect;
+- (void)viewController:(id)controller enterFlyoverForMapItem:(id)item;
+- (void)viewController:(id)controller enterRouteCreationWith:(id)with;
+- (void)viewController:(id)controller enterRouteCreationWithRoute:(id)route withUserInfo:(id)info;
+- (void)viewController:(id)controller focusSearchResult:(id)result;
+- (void)viewController:(id)controller openCommuteEntry:(id)entry;
+- (void)viewController:(id)controller openFavoriteItem:(id)item withUserInfo:(id)info;
+- (void)viewController:(id)controller openMapsSuggestionEntry:(id)entry withUserInfo:(id)info;
+- (void)viewController:(id)controller openPlainTextFileURL:(id)l;
+- (void)viewController:(id)controller openSearchResult:(id)result;
+- (void)viewController:(id)controller openTransitIncidents:(id)incidents fromView:(id)view withUserInfo:(id)info;
+- (void)viewController:(id)controller openTransitLineCard:(id)card sourceView:(id)view sourceRect:(CGRect)rect;
+- (void)viewController:(id)controller openURL:(id)l;
+- (void)viewController:(id)controller openWebsiteForSearchResult:(id)result;
+- (void)viewController:(id)controller pickCollectionWithSession:(id)session sourceView:(id)view sourceRect:(CGRect)rect;
+- (void)viewController:(id)controller presentCluster:(id)cluster;
+- (void)viewController:(id)controller presentCollectionPickerContaineeViewController:(id)viewController;
+- (void)viewController:(id)controller presentMenuController:(id)menuController animated:(BOOL)animated fromChrome:(BOOL)chrome completion:(id)completion;
+- (void)viewController:(id)controller presentParentMapItem:(id)item;
+- (void)viewController:(id)controller presentPlacesForMapItem:(id)item searchCategory:(id)category source:(unint64_t)source;
+- (void)viewController:(id)controller presentPlacesWithPlacesCardItem:(id)item source:(unint64_t)source;
+- (void)viewController:(id)controller presentRelatedMapItems:(id)items withTitle:(id)title originalMapItem:(id)item analyticsDelegate:(id)delegate;
+- (void)viewController:(id)controller presentReportDetail:(id)detail fromEntryPoint:(int)point;
+- (void)viewController:(id)controller presentVenueFloorCardViewController:(id)viewController;
+- (void)viewController:(id)controller presentVenueForMapItem:(id)item searchCategory:(id)category source:(unint64_t)source;
+- (void)viewController:(id)controller presentVenueFromAutoCompleteWithVenueIdentifier:(id)identifier searchCategory:(id)category source:(unint64_t)source;
+- (void)viewController:(id)controller presentVenueWithVenueCardItem:(id)item source:(unint64_t)source;
+- (void)viewController:(id)controller presentVenuesClusteredSearchResult:(id)result;
+- (void)viewController:(id)controller removeDroppedPin:(id)pin;
+- (void)viewController:(id)controller removeMapsSuggestionsEntry:(id)entry sourceView:(id)view sourceRect:(CGRect)rect startBlock:(id)block completionBlock:(id)completionBlock;
+- (void)viewController:(id)controller removeShortcut:(id)shortcut;
+- (void)viewController:(id)controller selectClientResolvedItem:(id)item fromSearchInfo:(id)info withUserInfo:(id)userInfo;
+- (void)viewController:(id)controller selectDroppedPin:(id)pin;
+- (void)viewController:(id)controller selectLastDirectionsDestinationComposedWaypoint:(id)waypoint;
+- (void)viewController:(id)controller selectMapItem:(id)item address:(id)address addToHistory:(BOOL)history source:(unint64_t)source;
+- (void)viewController:(id)controller selectParkedCar:(id)car andPerformAction:(int64_t)action selectPOIOnMap:(BOOL)map;
+- (void)viewController:(id)controller selectPersonalizedItem:(id)item source:(unint64_t)source saveSelectionState:(BOOL)state;
+- (void)viewController:(id)controller selectSearchResult:(id)result addToHistory:(BOOL)history source:(unint64_t)source saveSelectionState:(BOOL)state replaceCurrentCard:(BOOL)card;
+- (void)viewController:(id)controller selectTransitLineItem:(id)item zoomToMapRegion:(BOOL)region preferredLayout:(unint64_t)layout;
+- (void)viewController:(id)controller selectVenueSearchResult:(id)result source:(unint64_t)source;
+- (void)viewController:(id)controller showAddShortcut:(id)shortcut;
+- (void)viewController:(id)controller showCollection:(id)collection completion:(id)completion;
+- (void)viewController:(id)controller showCollectionWithID:(id)d;
+- (void)viewController:(id)controller showCuratedCollection:(id)collection replaceViewController:(BOOL)viewController completion:(id)completion;
+- (void)viewController:(id)controller showCuratedCollectionIdentifier:(id)identifier replaceViewController:(BOOL)viewController completion:(id)completion;
+- (void)viewController:(id)controller showCuratedCollectionsList:(id)list usingTitle:(id)title usingCollectionIds:(id)ids completion:(id)completion;
+- (void)viewController:(id)controller showFavoritesType:(int64_t)type;
+- (void)viewController:(id)controller showFullyClientizedCuratedCollection:(id)collection replaceViewController:(BOOL)viewController;
+- (void)viewController:(id)controller showGuidesHome:(id)home;
+- (void)viewController:(id)controller showOfflineMapRegionSelectorForRegion:(id)region name:(id)name route:(id)route muid:(unint64_t)muid shouldUseSessionlessAnalytics:(BOOL)analytics dismissalBlock:(id)block postDismissalBlock:(id)self0;
+- (void)viewController:(id)controller showOfflineMapRegionSelectorForRegion:(id)region name:(id)name route:(id)route muid:(unint64_t)muid shouldUseSessionlessAnalytics:(BOOL)analytics shouldShowDataManagementAfterDownload:(BOOL)download shouldShowDataManagementAfterDownloadIfRegionDiffers:(BOOL)self0 dismissalBlock:(id)self1;
+- (void)viewController:(id)controller showSortPickerWithSortOptions:(id)options initialSelectedSortOptionIndex:(int64_t)index completion:(id)completion;
+- (void)viewController:(id)controller startDirectionsToRouteData:(id)data;
+- (void)viewControllerClearInjectedSearchPins:(id)pins;
+- (void)viewControllerClosed:(id)closed animated:(BOOL)animated;
+- (void)viewControllerDoLastDirectionItem:(id)item;
+- (void)viewControllerGoPreviousState:(id)state withSender:(id)sender;
+- (void)viewControllerOpenNearby:(id)nearby animated:(BOOL)animated;
+- (void)viewControllerOpenSettings:(id)settings;
+- (void)viewControllerPresentNearbyTransitDepartures:(id)departures;
+- (void)viewControllerPresentPOIEnrichmentWithCoordinator:(id)coordinator;
+- (void)viewControllerPresentRatingsHistory:(id)history;
 - (void)viewControllerPresentSearchEditing;
-- (void)viewControllerPresentSearchEndEditingAnimated:(BOOL)a3;
-- (void)viewControllerPresentUserProfile:(id)a3;
-- (void)viewControllerPresentUserProfilePreferences:(id)a3 withTabType:(int64_t)a4;
-- (void)viewControllerPresentVirtualGarage:(id)a3;
-- (void)viewControllerRemoveSearchResultFocus:(id)a3;
-- (void)viewControllerShowAddItemsFromACToLibraryView:(id)a3;
+- (void)viewControllerPresentSearchEndEditingAnimated:(BOOL)animated;
+- (void)viewControllerPresentUserProfile:(id)profile;
+- (void)viewControllerPresentUserProfilePreferences:(id)preferences withTabType:(int64_t)type;
+- (void)viewControllerPresentVirtualGarage:(id)garage;
+- (void)viewControllerRemoveSearchResultFocus:(id)focus;
+- (void)viewControllerShowAddItemsFromACToLibraryView:(id)view;
 - (void)viewControllerShowAllCollections;
-- (void)viewControllerShowCitySelectorFromGuideLocation:(id)a3;
-- (void)viewControllerShowCollections:(id)a3;
-- (void)viewControllerShowLibraryPlacesView:(id)a3;
-- (void)viewControllerShowLibraryRootView:(id)a3;
-- (void)viewControllerShowMyRecents:(id)a3 includeRecentSearches:(BOOL)a4;
-- (void)viewControllerShowMyShortcuts:(id)a3;
-- (void)viewControllerShowPhotoCredit:(id)a3;
-- (void)viewControllerShowPhotoThumbnailGalleryWithMapItem:(id)a3 albumIndex:(unint64_t)a4;
-- (void)viewControllerShowPublisher:(id)a3 replaceViewController:(BOOL)a4;
-- (void)viewControllerShowPublisherWithID:(id)a3 numberOfCollections:(unint64_t)a4 replaceViewController:(BOOL)a5;
-- (void)viewControllerShowRecentlyAdded:(id)a3;
-- (void)viewControllerShowReports:(id)a3;
-- (void)viewControllerShowReports:(id)a3 fromEntryPoint:(int)a4;
-- (void)viewControllerShowSavedRoutesList:(id)a3;
-- (void)viewControllerShowVisitHistoryHome:(id)a3;
+- (void)viewControllerShowCitySelectorFromGuideLocation:(id)location;
+- (void)viewControllerShowCollections:(id)collections;
+- (void)viewControllerShowLibraryPlacesView:(id)view;
+- (void)viewControllerShowLibraryRootView:(id)view;
+- (void)viewControllerShowMyRecents:(id)recents includeRecentSearches:(BOOL)searches;
+- (void)viewControllerShowMyShortcuts:(id)shortcuts;
+- (void)viewControllerShowPhotoCredit:(id)credit;
+- (void)viewControllerShowPhotoThumbnailGalleryWithMapItem:(id)item albumIndex:(unint64_t)index;
+- (void)viewControllerShowPublisher:(id)publisher replaceViewController:(BOOL)controller;
+- (void)viewControllerShowPublisherWithID:(id)d numberOfCollections:(unint64_t)collections replaceViewController:(BOOL)controller;
+- (void)viewControllerShowRecentlyAdded:(id)added;
+- (void)viewControllerShowReports:(id)reports;
+- (void)viewControllerShowReports:(id)reports fromEntryPoint:(int)point;
+- (void)viewControllerShowSavedRoutesList:(id)list;
+- (void)viewControllerShowVisitHistoryHome:(id)home;
 - (void)zoomIn;
 - (void)zoomOut;
 @end
@@ -457,52 +457,52 @@
 
 - (GEOTransitLineItem)currentTransitLineItem
 {
-  v2 = [(ActionCoordinator *)self currentViewController];
+  currentViewController = [(ActionCoordinator *)self currentViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 lineItem];
+    lineItem = [currentViewController lineItem];
   }
 
   else
   {
-    v3 = 0;
+    lineItem = 0;
   }
 
-  return v3;
+  return lineItem;
 }
 
 - (ContaineeProtocol)currentViewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v3 = [WeakRetained currentViewController];
+  currentViewController = [WeakRetained currentViewController];
 
-  return v3;
+  return currentViewController;
 }
 
 - (MKMapItem)currentMapItem
 {
-  v2 = [(ActionCoordinator *)self currentPlaceCardItem];
-  v3 = [v2 mapItem];
+  currentPlaceCardItem = [(ActionCoordinator *)self currentPlaceCardItem];
+  mapItem = [currentPlaceCardItem mapItem];
 
-  return v3;
+  return mapItem;
 }
 
 - (PlaceCardItem)currentPlaceCardItem
 {
-  v2 = [(ActionCoordinator *)self currentViewController];
+  currentViewController = [(ActionCoordinator *)self currentViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 placeCardItem];
+    placeCardItem = [currentViewController placeCardItem];
   }
 
   else
   {
-    v3 = 0;
+    placeCardItem = 0;
   }
 
-  return v3;
+  return placeCardItem;
 }
 
 - (void)removeContainerViewControllerObserver
@@ -567,14 +567,14 @@
   if (!searchModeViewController)
   {
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    v5 = [WeakRetained macChromeViewController];
+    macChromeViewController = [WeakRetained macChromeViewController];
 
-    if (v5)
+    if (macChromeViewController)
     {
-      v6 = [v5 sidebarHomeActionDelegate];
+      sidebarHomeActionDelegate = [macChromeViewController sidebarHomeActionDelegate];
       v7 = [SearchViewController alloc];
-      v8 = [v5 sidebarSearchDataSourceDelegate];
-      v9 = [(SearchViewController *)v7 initWithHomeActionDelegate:v6 searchDataSourceDelegate:v8];
+      sidebarSearchDataSourceDelegate = [macChromeViewController sidebarSearchDataSourceDelegate];
+      v9 = [(SearchViewController *)v7 initWithHomeActionDelegate:sidebarHomeActionDelegate searchDataSourceDelegate:sidebarSearchDataSourceDelegate];
       v10 = self->_searchModeViewController;
       self->_searchModeViewController = v9;
     }
@@ -582,23 +582,23 @@
     else
     {
       v11 = objc_alloc_init(SearchViewController);
-      v6 = self->_searchModeViewController;
+      sidebarHomeActionDelegate = self->_searchModeViewController;
       self->_searchModeViewController = v11;
     }
 
     [(ControlContaineeViewController *)self->_searchModeViewController setDelegate:self];
     [(SearchViewController *)self->_searchModeViewController setVisitedPlacesCommonActionsHandlingDelegate:self];
-    v12 = [(ActionCoordinator *)self personalizedItemManager];
-    [(SearchViewController *)self->_searchModeViewController setPersonalizedItemManager:v12];
+    personalizedItemManager = [(ActionCoordinator *)self personalizedItemManager];
+    [(SearchViewController *)self->_searchModeViewController setPersonalizedItemManager:personalizedItemManager];
 
     [(ContaineeViewController *)self->_searchModeViewController setPreferredPresentationStyle:1];
-    v13 = [(ActionCoordinator *)self containerViewController];
-    v14 = [v13 chromeViewController];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    chromeViewController = [containerViewController chromeViewController];
 
-    v15 = [v14 traitCollection];
-    v16 = [v15 horizontalSizeClass];
+    traitCollection = [chromeViewController traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if (sub_10000FA08(v14) == 1 && v16 == 2)
+    if (sub_10000FA08(chromeViewController) == 1 && horizontalSizeClass == 2)
     {
       v18 = 3;
     }
@@ -608,8 +608,8 @@
       v18 = 0;
     }
 
-    v19 = [(ContaineeViewController *)self->_searchModeViewController cardPresentationController];
-    [v19 setDefaultContaineeLayout:v18];
+    cardPresentationController = [(ContaineeViewController *)self->_searchModeViewController cardPresentationController];
+    [cardPresentationController setDefaultContaineeLayout:v18];
 
     searchModeViewController = self->_searchModeViewController;
   }
@@ -619,11 +619,11 @@
 
 - (PersonalizedItemManager)personalizedItemManager
 {
-  v2 = [(ActionCoordinator *)self containerViewController];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 personalizedItemManager];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  personalizedItemManager = [chromeViewController personalizedItemManager];
 
-  return v4;
+  return personalizedItemManager;
 }
 
 - (ControlContainerViewController)containerViewController
@@ -642,10 +642,10 @@
 
   else
   {
-    v3 = [(ActionCoordinator *)self containerViewController];
-    v4 = [v3 chromeViewController];
-    v5 = [v4 contexts];
-    v6 = [v5 _maps_firstContextOfClass:objc_opt_class()];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    chromeViewController = [containerViewController chromeViewController];
+    contexts = [chromeViewController contexts];
+    v6 = [contexts _maps_firstContextOfClass:objc_opt_class()];
     v2 = v6 != 0;
   }
 
@@ -654,35 +654,35 @@
 
 - (void)closeSettingsIfNeeded
 {
-  v2 = [(ActionCoordinator *)self containerViewController];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 topMostPresentedViewController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  topMostPresentedViewController = [chromeViewController topMostPresentedViewController];
 
-  if (v4)
+  if (topMostPresentedViewController)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 presentingViewController];
+      v5 = topMostPresentedViewController;
+      presentingViewController = [v5 presentingViewController];
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_100915A50;
       v8[3] = &unk_101661B18;
       v9 = v5;
       v7 = v5;
-      [v6 dismissViewControllerAnimated:0 completion:v8];
+      [presentingViewController dismissViewControllerAnimated:0 completion:v8];
     }
   }
 }
 
 - (id)routeAnnotationsProvider
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v4 = [v3 currentViewController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
   if (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector())
   {
-    v5 = v4;
+    v5 = currentViewController;
   }
 
   else
@@ -712,66 +712,66 @@ LABEL_9:
 
 - (void)updateRouteAnnotations
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v2 = [v3 chromeViewController];
-  [v2 setNeedsUpdateComponent:@"routeAnnotations" animated:1];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"routeAnnotations" animated:1];
 }
 
 - (GEOMapServiceTraits)newTraits
 {
-  v2 = [(ActionCoordinator *)self containerViewController];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 currentTraits];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  currentTraits = [chromeViewController currentTraits];
 
-  return v4;
+  return currentTraits;
 }
 
 - (VenuesManager)venuesManager
 {
-  v2 = [(ActionCoordinator *)self containerViewController];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 venuesManager];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  venuesManager = [chromeViewController venuesManager];
 
-  return v4;
+  return venuesManager;
 }
 
 - (void)updateHistoricalLocations
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v2 = [v3 chromeViewController];
-  [v2 updateHistoricalLocations];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  [chromeViewController updateHistoricalLocations];
 }
 
-- (BOOL)_canCaptureSearchStateForCardItem:(id)a3 previousItemInStack:(id)a4
+- (BOOL)_canCaptureSearchStateForCardItem:(id)item previousItemInStack:(id)stack
 {
-  v6 = a3;
-  if ([a4 conformsToProtocol:&OBJC_PROTOCOL___VenuePlaceCardItem])
+  itemCopy = item;
+  if ([stack conformsToProtocol:&OBJC_PROTOCOL___VenuePlaceCardItem])
   {
-    v7 = [(ActionCoordinator *)self currentSearchSession];
-    v8 = [v7 currentResultsSearchInfo];
-    v9 = [v8 singleResultMode];
+    currentSearchSession = [(ActionCoordinator *)self currentSearchSession];
+    currentResultsSearchInfo = [currentSearchSession currentResultsSearchInfo];
+    singleResultMode = [currentResultsSearchInfo singleResultMode];
 
-    if (v9)
+    if (singleResultMode)
     {
       goto LABEL_3;
     }
   }
 
-  if ([v6 conformsToProtocol:&OBJC_PROTOCOL___VenueRoutePlanningCardItem] & 1) != 0 || (objc_msgSend(v6, "conformsToProtocol:", &OBJC_PROTOCOL___VenueClusterCardItem) & 1) != 0 || (objc_msgSend(v6, "conformsToProtocol:", &OBJC_PROTOCOL___VenuePlaceCardItem))
+  if ([itemCopy conformsToProtocol:&OBJC_PROTOCOL___VenueRoutePlanningCardItem] & 1) != 0 || (objc_msgSend(itemCopy, "conformsToProtocol:", &OBJC_PROTOCOL___VenueClusterCardItem) & 1) != 0 || (objc_msgSend(itemCopy, "conformsToProtocol:", &OBJC_PROTOCOL___VenuePlaceCardItem))
   {
 LABEL_7:
     v10 = 1;
     goto LABEL_8;
   }
 
-  v12 = [(ActionCoordinator *)self venueCardCoordinator];
-  if ([v12 isCardStackEmpty])
+  venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+  if ([venueCardCoordinator isCardStackEmpty])
   {
   }
 
   else
   {
-    v13 = [v6 conformsToProtocol:&OBJC_PROTOCOL___VenueCategoryCardItem];
+    v13 = [itemCopy conformsToProtocol:&OBJC_PROTOCOL___VenueCategoryCardItem];
 
     if (v13)
     {
@@ -786,55 +786,55 @@ LABEL_8:
   return v10;
 }
 
-- (id)searchFieldItemForVenueCardItem:(id)a3 previousItemInStack:(id)a4
+- (id)searchFieldItemForVenueCardItem:(id)item previousItemInStack:(id)stack
 {
-  if ([(ActionCoordinator *)self _canCaptureSearchStateForCardItem:a3 previousItemInStack:a4])
+  if ([(ActionCoordinator *)self _canCaptureSearchStateForCardItem:item previousItemInStack:stack])
   {
-    v5 = [(ActionCoordinator *)self currentSearchSession];
-    v6 = [v5 searchFieldItem];
+    currentSearchSession = [(ActionCoordinator *)self currentSearchSession];
+    searchFieldItem = [currentSearchSession searchFieldItem];
   }
 
   else
   {
-    v6 = 0;
+    searchFieldItem = 0;
   }
 
-  return v6;
+  return searchFieldItem;
 }
 
-- (id)searchInfoForVenueCardItem:(id)a3 previousItemInStack:(id)a4
+- (id)searchInfoForVenueCardItem:(id)item previousItemInStack:(id)stack
 {
-  if ([(ActionCoordinator *)self _canCaptureSearchStateForCardItem:a3 previousItemInStack:a4])
+  if ([(ActionCoordinator *)self _canCaptureSearchStateForCardItem:item previousItemInStack:stack])
   {
-    v5 = [(ActionCoordinator *)self currentSearchSession];
-    v6 = [v5 currentResultsSearchInfo];
+    currentSearchSession = [(ActionCoordinator *)self currentSearchSession];
+    currentResultsSearchInfo = [currentSearchSession currentResultsSearchInfo];
   }
 
   else
   {
-    v6 = 0;
+    currentResultsSearchInfo = 0;
   }
 
-  return v6;
+  return currentResultsSearchInfo;
 }
 
-- (id)mapSelectionStateForVenueCardItem:(id)a3 savePlaceCardSelectionState:(BOOL)a4
+- (id)mapSelectionStateForVenueCardItem:(id)item savePlaceCardSelectionState:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 conformsToProtocol:&OBJC_PROTOCOL___VenueRoutePlanningCardItem])
+  stateCopy = state;
+  itemCopy = item;
+  if ([itemCopy conformsToProtocol:&OBJC_PROTOCOL___VenueRoutePlanningCardItem])
   {
     goto LABEL_2;
   }
 
-  if ([v6 conformsToProtocol:&OBJC_PROTOCOL___VenueClusterCardItem])
+  if ([itemCopy conformsToProtocol:&OBJC_PROTOCOL___VenueClusterCardItem])
   {
     goto LABEL_4;
   }
 
-  if (![v6 conformsToProtocol:&OBJC_PROTOCOL___VenuePlaceCardItem])
+  if (![itemCopy conformsToProtocol:&OBJC_PROTOCOL___VenuePlaceCardItem])
   {
-    if (![v6 conformsToProtocol:&OBJC_PROTOCOL___VenueCategoryCardItem])
+    if (![itemCopy conformsToProtocol:&OBJC_PROTOCOL___VenueCategoryCardItem])
     {
 LABEL_4:
       v8 = 0;
@@ -842,8 +842,8 @@ LABEL_4:
     }
 
 LABEL_2:
-    v7 = [(ActionCoordinator *)self mapSelectionManager];
-    v8 = [v7 selectionStateIncludingCamera:1 includeNotCustomLabelMarkers:0];
+    mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+    v8 = [mapSelectionManager selectionStateIncludingCamera:1 includeNotCustomLabelMarkers:0];
 
     goto LABEL_5;
   }
@@ -851,7 +851,7 @@ LABEL_2:
   routePlanningSelectionRestorationState = self->_routePlanningSelectionRestorationState;
   if (!routePlanningSelectionRestorationState)
   {
-    if (!v4)
+    if (!stateCopy)
     {
       goto LABEL_4;
     }
@@ -865,11 +865,11 @@ LABEL_5:
   return v8;
 }
 
-- (void)_setTopographicalFeaturesForPlaceCardItem:(id)a3
+- (void)_setTopographicalFeaturesForPlaceCardItem:(id)item
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self containerViewController];
-  v6 = [v5 chromeViewController];
+  itemCopy = item;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
 
   if ([(ActionCoordinator *)self isRoutePlanningPresented])
   {
@@ -883,9 +883,9 @@ LABEL_5:
     goto LABEL_29;
   }
 
-  v8 = [v4 mapItem];
+  mapItem = [itemCopy mapItem];
 
-  if (!v8)
+  if (!mapItem)
   {
     v9 = sub_1008800D4();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -912,30 +912,30 @@ LABEL_9:
     goto LABEL_29;
   }
 
-  v10 = [v4 mapItem];
-  v11 = [v10 _geoMapItem];
-  v12 = [v11 _placeData];
+  mapItem2 = [itemCopy mapItem];
+  _geoMapItem = [mapItem2 _geoMapItem];
+  _placeData = [_geoMapItem _placeData];
 
-  if ([v12 hasMapDisplayType])
+  if ([_placeData hasMapDisplayType])
   {
-    v13 = [v12 mapDisplayType];
+    mapDisplayType = [_placeData mapDisplayType];
     v14 = sub_1008800D4();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 67109120;
-      HIDWORD(buf) = v13 == 1;
+      HIDWORD(buf) = mapDisplayType == 1;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "PlaceCard mapItem has a mapDisplayType, toggling topographic features to %d.", &buf, 8u);
     }
 
-    if (v13 == 1)
+    if (mapDisplayType == 1)
     {
-      v15 = [(ActionCoordinator *)self _hikingToken];
-      v16 = v15 == 0;
+      _hikingToken = [(ActionCoordinator *)self _hikingToken];
+      v16 = _hikingToken == 0;
 
       if (v16)
       {
-        v17 = [v6 acquireHikingMapToken];
-        [(ActionCoordinator *)self _setHikingToken:v17];
+        acquireHikingMapToken = [chromeViewController acquireHikingMapToken];
+        [(ActionCoordinator *)self _setHikingToken:acquireHikingMapToken];
       }
     }
 
@@ -945,7 +945,7 @@ LABEL_9:
     }
   }
 
-  else if (([v4 isDroppedPin] & 1) != 0 || objc_msgSend(v10, "_isMapItemTypeAddress"))
+  else if (([itemCopy isDroppedPin] & 1) != 0 || objc_msgSend(mapItem2, "_isMapItemTypeAddress"))
   {
     v18 = sub_1008800D4();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -955,7 +955,7 @@ LABEL_9:
     }
 
     objc_initWeak(&buf, self);
-    [v10 _coordinate];
+    [mapItem2 _coordinate];
     v20 = v19;
     v22 = v21;
     v24[0] = _NSConcreteStackBlock;
@@ -963,7 +963,7 @@ LABEL_9:
     v24[2] = sub_100880128;
     v24[3] = &unk_10162C910;
     objc_copyWeak(&v26, &buf);
-    v25 = v6;
+    v25 = chromeViewController;
     [v25 checkIfCoordinate:v24 isInHikingContextualRegionWithCompletionHandler:{v20, v22}];
 
     objc_destroyWeak(&v26);
@@ -983,29 +983,29 @@ LABEL_9:
 LABEL_29:
 }
 
-- (void)_setHikingFeaturesForPlaceCardItem:(id)a3
+- (void)_setHikingFeaturesForPlaceCardItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 mapItem];
-  v6 = [v5 _mapsui_trailSelectionInfoForMap];
+  itemCopy = item;
+  mapItem = [itemCopy mapItem];
+  _mapsui_trailSelectionInfoForMap = [mapItem _mapsui_trailSelectionInfoForMap];
 
   v7 = sub_1008800D4();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (_mapsui_trailSelectionInfoForMap)
   {
     if (v8)
     {
       v14 = 134217984;
-      v15 = [v6 trailID];
+      trailID = [_mapsui_trailSelectionInfoForMap trailID];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Trail selection info found, selecting trail with ID %llu.", &v14, 0xCu);
     }
 
-    v9 = [(ActionCoordinator *)self mapSelectionManager];
-    v10 = [v6 trailID];
-    v11 = [v6 trailName];
+    mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+    trailID2 = [_mapsui_trailSelectionInfoForMap trailID];
+    trailName = [_mapsui_trailSelectionInfoForMap trailName];
     v12 = +[NSLocale currentLocale];
-    v13 = [v12 localeIdentifier];
-    [v9 selectTrailWithId:v10 name:v11 locale:v13];
+    localeIdentifier = [v12 localeIdentifier];
+    [mapSelectionManager selectTrailWithId:trailID2 name:trailName locale:localeIdentifier];
   }
 
   else
@@ -1016,77 +1016,77 @@ LABEL_29:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "No trail selection info found, deselecting all trails.", &v14, 2u);
     }
 
-    v9 = [(ActionCoordinator *)self mapSelectionManager];
-    [v9 deselectTrails];
+    mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+    [mapSelectionManager deselectTrails];
   }
 
-  [(ActionCoordinator *)self _setTopographicalFeaturesForPlaceCardItem:v4];
+  [(ActionCoordinator *)self _setTopographicalFeaturesForPlaceCardItem:itemCopy];
 }
 
-- (void)placeViewControllerViewContactsClosed:(id)a3
+- (void)placeViewControllerViewContactsClosed:(id)closed
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self mapSelectionManager];
-  [v5 clearSelection];
+  closedCopy = closed;
+  mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+  [mapSelectionManager clearSelection];
 
   v6 = dispatch_time(0, 250000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100880520;
   block[3] = &unk_101661B18;
-  v9 = v4;
-  v7 = v4;
+  v9 = closedCopy;
+  v7 = closedCopy;
   dispatch_after(v6, &_dispatch_main_q, block);
 }
 
-- (void)placeCardViewController:(id)a3 didUpdateForViewMode:(int64_t)a4
+- (void)placeCardViewController:(id)controller didUpdateForViewMode:(int64_t)mode
 {
-  v5 = a3;
-  v6 = [v5 isActive];
-  v7 = sub_1008800D4();
-  v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v6)
+  controllerCopy = controller;
+  isActive = [controllerCopy isActive];
+  placeCardItem = sub_1008800D4();
+  v8 = os_log_type_enabled(placeCardItem, OS_LOG_TYPE_INFO);
+  if (isActive)
   {
     if (v8)
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "View mode has changed, so hiking features need to be recalculated.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, placeCardItem, OS_LOG_TYPE_INFO, "View mode has changed, so hiking features need to be recalculated.", buf, 2u);
     }
 
-    v7 = [v5 placeCardItem];
-    if (v7)
+    placeCardItem = [controllerCopy placeCardItem];
+    if (placeCardItem)
     {
-      [(ActionCoordinator *)self _setHikingFeaturesForPlaceCardItem:v7];
+      [(ActionCoordinator *)self _setHikingFeaturesForPlaceCardItem:placeCardItem];
     }
   }
 
   else if (v8)
   {
     *v9 = 0;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "View mode has changed but place card is inactive, no work to do.", v9, 2u);
+    _os_log_impl(&_mh_execute_header, placeCardItem, OS_LOG_TYPE_INFO, "View mode has changed but place card is inactive, no work to do.", v9, 2u);
   }
 }
 
-- (void)placeCardViewControllerDidTapHikingTip:(id)a3 originMapItem:(id)a4
+- (void)placeCardViewControllerDidTapHikingTip:(id)tip originMapItem:(id)item
 {
-  v5 = a4;
-  v6 = [(ActionCoordinator *)self appCoordinator];
-  [v6 enterRouteCreationWithRoute:0 originMapItem:v5 destinationMapItem:0 userInfo:0 completion:0];
+  itemCopy = item;
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator enterRouteCreationWithRoute:0 originMapItem:itemCopy destinationMapItem:0 userInfo:0 completion:0];
 }
 
-- (void)placeCardViewController:(id)a3 didRequestHikingToolTipRegionIDForLocation:(CLLocationCoordinate2D)a4
+- (void)placeCardViewController:(id)controller didRequestHikingToolTipRegionIDForLocation:(CLLocationCoordinate2D)location
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v8 = [(ActionCoordinator *)self containerViewController];
-  v6 = [v8 chromeViewController];
-  v7 = [v6 mapView];
-  [v7 requestHikingToolTipRegionIDForLocation:{latitude, longitude}];
+  longitude = location.longitude;
+  latitude = location.latitude;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  mapView = [chromeViewController mapView];
+  [mapView requestHikingToolTipRegionIDForLocation:{latitude, longitude}];
 }
 
-- (void)placeCardViewControllerWillBecomeCurrent:(id)a3
+- (void)placeCardViewControllerWillBecomeCurrent:(id)current
 {
-  v4 = a3;
+  currentCopy = current;
   v5 = sub_1008800D4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1094,15 +1094,15 @@ LABEL_29:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Place Card is becoming current, will select trails and enable topographic features if needed.", v7, 2u);
   }
 
-  v6 = [v4 placeCardItem];
+  placeCardItem = [currentCopy placeCardItem];
 
-  if (v6)
+  if (placeCardItem)
   {
-    [(ActionCoordinator *)self _setHikingFeaturesForPlaceCardItem:v6];
+    [(ActionCoordinator *)self _setHikingFeaturesForPlaceCardItem:placeCardItem];
   }
 }
 
-- (void)placeCardViewControllerWillResignCurrent:(id)a3
+- (void)placeCardViewControllerWillResignCurrent:(id)current
 {
   v4 = sub_1008800D4();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1111,15 +1111,15 @@ LABEL_29:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Place Card is resigning current, will deselect trails and disable topographic features if needed.", v6, 2u);
   }
 
-  v5 = [(ActionCoordinator *)self mapSelectionManager];
-  [v5 deselectTrails];
+  mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+  [mapSelectionManager deselectTrails];
 
   [(ActionCoordinator *)self _setTopographicalFeaturesForPlaceCardItem:0];
 }
 
-- (void)placeCardViewController:(id)a3 willReusePlaceCardItem:(id)a4
+- (void)placeCardViewController:(id)controller willReusePlaceCardItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   v6 = sub_1008800D4();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1127,71 +1127,71 @@ LABEL_29:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Place Card is reusing its Place Card Item, will set hiking features for existing mapItem.", v7, 2u);
   }
 
-  [(ActionCoordinator *)self _setHikingFeaturesForPlaceCardItem:v5];
+  [(ActionCoordinator *)self _setHikingFeaturesForPlaceCardItem:itemCopy];
 }
 
-- (void)placeCardViewControllerRemovedObservingHandle:(id)a3
+- (void)placeCardViewControllerRemovedObservingHandle:(id)handle
 {
-  v4 = [(ActionCoordinator *)self containerViewController];
-  v5 = [v4 chromeViewController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10088095C;
   v6[3] = &unk_101661B18;
   v6[4] = self;
-  [v5 popToRootContextAnimated:0 completion:v6];
+  [chromeViewController popToRootContextAnimated:0 completion:v6];
 }
 
-- (void)placeCardViewController:(id)a3 showOfflineMapRegionSelectorForRegion:(id)a4 name:(id)a5 muid:(unint64_t)a6 shouldShowDataManagementAfterDownload:(BOOL)a7
+- (void)placeCardViewController:(id)controller showOfflineMapRegionSelectorForRegion:(id)region name:(id)name muid:(unint64_t)muid shouldShowDataManagementAfterDownload:(BOOL)download
 {
-  v12 = a5;
-  v13 = a4;
-  v17 = a3;
-  v14 = [v17 placeCardItem];
-  v15 = [v14 isHomeWorkSchoolAddress];
+  nameCopy = name;
+  regionCopy = region;
+  controllerCopy = controller;
+  placeCardItem = [controllerCopy placeCardItem];
+  isHomeWorkSchoolAddress = [placeCardItem isHomeWorkSchoolAddress];
 
   BYTE1(v16) = 1;
-  LOBYTE(v16) = a7;
-  [(ActionCoordinator *)self viewController:v17 showOfflineMapRegionSelectorForRegion:v13 name:v12 route:0 muid:a6 shouldUseSessionlessAnalytics:v15 shouldShowDataManagementAfterDownload:v16 shouldShowDataManagementAfterDownloadIfRegionDiffers:0 dismissalBlock:?];
+  LOBYTE(v16) = download;
+  [(ActionCoordinator *)self viewController:controllerCopy showOfflineMapRegionSelectorForRegion:regionCopy name:nameCopy route:0 muid:muid shouldUseSessionlessAnalytics:isHomeWorkSchoolAddress shouldShowDataManagementAfterDownload:v16 shouldShowDataManagementAfterDownloadIfRegionDiffers:0 dismissalBlock:?];
 }
 
-- (void)placeCardViewController:(id)a3 requestCopyLinkToClipboard:(id)a4
+- (void)placeCardViewController:(id)controller requestCopyLinkToClipboard:(id)clipboard
 {
-  v5 = a4;
-  v7 = [(ActionCoordinator *)self containerViewController];
-  v6 = [v7 chromeViewController];
-  [v6 copy:v5];
+  clipboardCopy = clipboard;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  [chromeViewController copy:clipboardCopy];
 }
 
-- (void)placeCardViewController:(id)a3 didSelectSharePublisherShareItem:(id)a4
+- (void)placeCardViewController:(id)controller didSelectSharePublisherShareItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
+  itemCopy = item;
+  controllerCopy = controller;
   v9 = objc_alloc_init(MUPresentationOptions);
-  [v9 setPresentingViewController:v7];
+  [v9 setPresentingViewController:controllerCopy];
 
-  v8 = [(ActionCoordinator *)self appCoordinator];
-  [v8 shareItem:v6 presentationOptions:0 completion:0];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator shareItem:itemCopy presentationOptions:0 completion:0];
 }
 
-- (void)placeCardViewController:(id)a3 editNameOfMapItem:(id)a4 saveHandler:(id)a5 cancelHandler:(id)a6
+- (void)placeCardViewController:(id)controller editNameOfMapItem:(id)item saveHandler:(id)handler cancelHandler:(id)cancelHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  itemCopy = item;
+  handlerCopy = handler;
+  cancelHandlerCopy = cancelHandler;
   objc_initWeak(&location, self);
-  v14 = [v10 placeCardItem];
-  v15 = [v14 searchResult];
-  v16 = v15;
-  if (v15)
+  placeCardItem = [controllerCopy placeCardItem];
+  searchResult = [placeCardItem searchResult];
+  v16 = searchResult;
+  if (searchResult)
   {
-    v17 = v15;
+    v17 = searchResult;
   }
 
   else
   {
-    v17 = [[SearchResult alloc] initWithMapItem:v11];
+    v17 = [[SearchResult alloc] initWithMapItem:itemCopy];
   }
 
   v18 = v17;
@@ -1208,99 +1208,99 @@ LABEL_29:
   v27[1] = 3221225472;
   v27[2] = sub_100880EF0;
   v27[3] = &unk_10162C8E8;
-  v21 = v12;
+  v21 = handlerCopy;
   v28 = v21;
   v29 = v20;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100880F40;
   v24[3] = &unk_10165BA38;
-  v22 = v13;
+  v22 = cancelHandlerCopy;
   v25 = v22;
   v23 = v29;
   v26 = v23;
-  [(ActionCoordinator *)self viewController:v10 editNameOfMapItem:v11 saveHandler:v27 cancelHandler:v24];
+  [(ActionCoordinator *)self viewController:controllerCopy editNameOfMapItem:itemCopy saveHandler:v27 cancelHandler:v24];
 
   objc_destroyWeak(&v32);
   objc_destroyWeak(&location);
 }
 
-- (void)placeCardViewController:(id)a3 doSearchItem:(id)a4 withUserInfo:(id)a5
+- (void)placeCardViewController:(id)controller doSearchItem:(id)item withUserInfo:(id)info
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  infoCopy = info;
+  itemCopy = item;
+  controllerCopy = controller;
   [(ActionCoordinator *)self viewControllerPresentSearchEndEditing];
-  [(ActionCoordinator *)self viewController:v10 doSearchItem:v9 withUserInfo:v8];
+  [(ActionCoordinator *)self viewController:controllerCopy doSearchItem:itemCopy withUserInfo:infoCopy];
 }
 
-- (void)placeCardViewController:(id)a3 didUpdateLinkedPlacesFromPlaceCardItem:(id)a4
+- (void)placeCardViewController:(id)controller didUpdateLinkedPlacesFromPlaceCardItem:(id)item
 {
-  v5 = a4;
-  v6 = [(ActionCoordinator *)self searchPinsManager];
-  [v6 showLinkedPlacesAndPolygonForPlaceCardItem:v5];
+  itemCopy = item;
+  searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+  [searchPinsManager showLinkedPlacesAndPolygonForPlaceCardItem:itemCopy];
 }
 
-- (void)placeCardViewController:(id)a3 presentCategoryPlacesListForMapItem:(id)a4 searchCategory:(id)a5
+- (void)placeCardViewController:(id)controller presentCategoryPlacesListForMapItem:(id)item searchCategory:(id)category
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  if ([v9 _browseCategory_isVenueItem])
+  categoryCopy = category;
+  itemCopy = item;
+  controllerCopy = controller;
+  if ([itemCopy _browseCategory_isVenueItem])
   {
-    [(ActionCoordinator *)self viewController:v10 presentVenueForMapItem:v9 searchCategory:v8 source:4];
+    [(ActionCoordinator *)self viewController:controllerCopy presentVenueForMapItem:itemCopy searchCategory:categoryCopy source:4];
   }
 
   else
   {
-    [(ActionCoordinator *)self viewController:v10 presentPlacesForMapItem:v9 searchCategory:v8 source:4];
+    [(ActionCoordinator *)self viewController:controllerCopy presentPlacesForMapItem:itemCopy searchCategory:categoryCopy source:4];
   }
 }
 
-- (void)placeCardViewController:(id)a3 selectTransitLineItem:(id)a4
+- (void)placeCardViewController:(id)controller selectTransitLineItem:(id)item
 {
-  v6 = a4;
-  v9 = a3;
-  v7 = [(ActionCoordinator *)self containerViewController];
-  v8 = sub_10000FA08(v7) != 5;
+  itemCopy = item;
+  controllerCopy = controller;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  v8 = sub_10000FA08(containerViewController) != 5;
 
-  [(ActionCoordinator *)self viewController:v9 selectTransitLineItem:v6 zoomToMapRegion:v8 preferredLayout:2];
+  [(ActionCoordinator *)self viewController:controllerCopy selectTransitLineItem:itemCopy zoomToMapRegion:v8 preferredLayout:2];
 }
 
-- (void)placeCardViewController:(id)a3 mapItemDidChange:(id)a4
+- (void)placeCardViewController:(id)controller mapItemDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   v6 = sub_1008800D4();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v11 = 134217984;
-    v12 = [v5 _muid];
+    _muid = [changeCopy _muid];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Place Card mapItemDidChange to muid %llu.", &v11, 0xCu);
   }
 
-  v7 = [(ActionCoordinator *)self containerViewController];
-  v8 = [v7 chromeViewController];
-  [v8 setNeedsUpdateComponent:@"lookAroundButton" animated:1];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"lookAroundButton" animated:1];
 
-  v9 = [(ActionCoordinator *)self containerViewController];
-  v10 = [v9 chromeViewController];
-  [v10 updateComponentsIfNeeded];
+  containerViewController2 = [(ActionCoordinator *)self containerViewController];
+  chromeViewController2 = [containerViewController2 chromeViewController];
+  [chromeViewController2 updateComponentsIfNeeded];
 }
 
-- (void)placeCardViewController:(id)a3 placeCardItemWillChange:(id)a4
+- (void)placeCardViewController:(id)controller placeCardItemWillChange:(id)change
 {
-  v5 = a4;
-  v6 = [v5 mapItem];
-  v7 = [v6 _hasMUID];
+  changeCopy = change;
+  mapItem = [changeCopy mapItem];
+  _hasMUID = [mapItem _hasMUID];
 
-  if (v7)
+  if (_hasMUID)
   {
     v8 = sub_1008800D4();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v5 mapItem];
+      mapItem2 = [changeCopy mapItem];
       v10 = 134217984;
-      v11 = [v9 _muid];
+      _muid = [mapItem2 _muid];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Place Card placeCardItemWillChange to muid %llu.", &v10, 0xCu);
     }
 
@@ -1309,7 +1309,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v5 isDroppedPin])
+  if ([changeCopy isDroppedPin])
   {
     v8 = sub_1008800D4();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -1322,7 +1322,7 @@ LABEL_7:
   }
 
 LABEL_8:
-  [(ActionCoordinator *)self _setHikingFeaturesForPlaceCardItem:v5];
+  [(ActionCoordinator *)self _setHikingFeaturesForPlaceCardItem:changeCopy];
 }
 
 - (UIView)incidentsVCSourceView
@@ -1339,25 +1339,25 @@ LABEL_8:
   return WeakRetained;
 }
 
-- (void)_carPlayPlaceCardDidDismiss:(id)a3
+- (void)_carPlayPlaceCardDidDismiss:(id)dismiss
 {
-  v4 = [a3 object];
-  if (v4)
+  object = [dismiss object];
+  if (object)
   {
-    v14 = v4;
-    v5 = [v4 platformController];
-    v6 = [(ActionCoordinator *)self platformController];
+    v14 = object;
+    platformController = [object platformController];
+    platformController2 = [(ActionCoordinator *)self platformController];
 
-    v4 = v14;
-    if (v5 == v6)
+    object = v14;
+    if (platformController == platformController2)
     {
       WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-      v8 = [WeakRetained currentViewController];
+      currentViewController = [WeakRetained currentViewController];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = v8;
+        v9 = currentViewController;
       }
 
       else
@@ -1369,9 +1369,9 @@ LABEL_8:
 
       if (v10)
       {
-        v11 = [v14 placeCardItem];
-        v12 = [v10 placeCardItem];
-        v13 = sub_100C73AE8(v11, v12);
+        placeCardItem = [v14 placeCardItem];
+        placeCardItem2 = [v10 placeCardItem];
+        v13 = sub_100C73AE8(placeCardItem, placeCardItem2);
 
         if (v13)
         {
@@ -1380,14 +1380,14 @@ LABEL_8:
         }
       }
 
-      v4 = v14;
+      object = v14;
     }
   }
 }
 
-- (void)_carPlayPlaceCardDidPresent:(id)a3
+- (void)_carPlayPlaceCardDidPresent:(id)present
 {
-  v4 = a3;
+  presentCopy = present;
   v5 = sub_10001CDEC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1395,17 +1395,17 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Received notification of CarPlay place card presenting", &v18, 2u);
   }
 
-  v6 = [v4 object];
+  object = [presentCopy object];
 
-  if (v6 && ([v6 platformController], v7 = objc_claimAutoreleasedReturnValue(), -[ActionCoordinator platformController](self, "platformController"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v7 == v8))
+  if (object && ([object platformController], v7 = objc_claimAutoreleasedReturnValue(), -[ActionCoordinator platformController](self, "platformController"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v7 == v8))
   {
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    v13 = [WeakRetained currentViewController];
+    currentViewController = [WeakRetained currentViewController];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v13;
+      v14 = currentViewController;
     }
 
     else
@@ -1415,10 +1415,10 @@ LABEL_8:
 
     v9 = v14;
 
-    if (!v9 || (-[NSObject placeCardItem](v9, "placeCardItem"), v15 = objc_claimAutoreleasedReturnValue(), [v6 placeCardItem], v16 = objc_claimAutoreleasedReturnValue(), v17 = sub_100C73AE8(v15, v16), v16, v15, (v17 & 1) == 0))
+    if (!v9 || (-[NSObject placeCardItem](v9, "placeCardItem"), v15 = objc_claimAutoreleasedReturnValue(), [object placeCardItem], v16 = objc_claimAutoreleasedReturnValue(), v17 = sub_100C73AE8(v15, v16), v16, v15, (v17 & 1) == 0))
     {
-      v10 = [v6 placeCardItem];
-      [(ActionCoordinator *)self presentPlaceCardForItem:v10 addToHistory:1 source:0 saveSelectionState:0 replaceCurrentCard:1];
+      placeCardItem = [object placeCardItem];
+      [(ActionCoordinator *)self presentPlaceCardForItem:placeCardItem addToHistory:1 source:0 saveSelectionState:0 replaceCurrentCard:1];
       goto LABEL_13;
     }
   }
@@ -1428,14 +1428,14 @@ LABEL_8:
     v9 = sub_10001CDEC();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v6 platformController];
-      v11 = [(ActionCoordinator *)self platformController];
+      placeCardItem = [object platformController];
+      platformController = [(ActionCoordinator *)self platformController];
       v18 = 138412802;
-      v19 = v6;
+      v19 = object;
       v20 = 2112;
-      v21 = v10;
+      v21 = placeCardItem;
       v22 = 2112;
-      v23 = v11;
+      v23 = platformController;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Synchronization info is either nil or platform controllers are not the same %@, %@, %@", &v18, 0x20u);
 
 LABEL_13:
@@ -1443,172 +1443,172 @@ LABEL_13:
   }
 }
 
-- (void)pinnedItemsViewControllerWithViewController:(id)a3 didSelectPinSuggested:(id)a4
+- (void)pinnedItemsViewControllerWithViewController:(id)controller didSelectPinSuggested:(id)suggested
 {
-  v6 = a4;
-  v9 = a3;
-  v7 = [v6 shortcutItem];
-  v8 = [v7 isSetupPlaceholder];
+  suggestedCopy = suggested;
+  controllerCopy = controller;
+  shortcutItem = [suggestedCopy shortcutItem];
+  isSetupPlaceholder = [shortcutItem isSetupPlaceholder];
 
-  if (v8)
+  if (isSetupPlaceholder)
   {
-    [(ActionCoordinator *)self viewController:v9 showAddShortcut:v6];
+    [(ActionCoordinator *)self viewController:controllerCopy showAddShortcut:suggestedCopy];
   }
 
   else
   {
-    [(ActionCoordinator *)self viewController:v9 editShortcut:v6];
+    [(ActionCoordinator *)self viewController:controllerCopy editShortcut:suggestedCopy];
   }
 }
 
-- (void)pinnedItemsViewControllerWithViewController:(id)a3 didSelectPinned:(id)a4
+- (void)pinnedItemsViewControllerWithViewController:(id)controller didSelectPinned:(id)pinned
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  pinnedCopy = pinned;
   v12 = @"DirectionsSessionInitiatorKey";
   v13 = &off_1016E77F0;
   v8 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
   v9 = [v8 mutableCopy];
 
-  v10 = [v7 shortcutIdentifier];
+  shortcutIdentifier = [pinnedCopy shortcutIdentifier];
 
-  if (v10)
+  if (shortcutIdentifier)
   {
-    v11 = [v7 shortcutIdentifier];
-    [v9 setObject:v11 forKeyedSubscript:@"ShortcutIdentifier"];
+    shortcutIdentifier2 = [pinnedCopy shortcutIdentifier];
+    [v9 setObject:shortcutIdentifier2 forKeyedSubscript:@"ShortcutIdentifier"];
   }
 
-  [(ActionCoordinator *)self viewController:v6 openFavoriteItem:v7 withUserInfo:v9];
+  [(ActionCoordinator *)self viewController:controllerCopy openFavoriteItem:pinnedCopy withUserInfo:v9];
 }
 
-- (void)userGuidesListViewControllerWithViewController:(id)a3 confirmDelete:(id)a4 presentationOptions:(id)a5 completion:(id)a6
+- (void)userGuidesListViewControllerWithViewController:(id)controller confirmDelete:(id)delete presentationOptions:(id)options completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v22 = [v11 sourceItem];
-  [v11 sourceRect];
+  completionCopy = completion;
+  optionsCopy = options;
+  deleteCopy = delete;
+  controllerCopy = controller;
+  sourceItem = [optionsCopy sourceItem];
+  [optionsCopy sourceRect];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  [(ActionCoordinator *)self viewController:v13 confirmDeleteCollections:v12 sourceItem:v22 sourceRect:v10 completion:v15, v17, v19, v21];
+  [(ActionCoordinator *)self viewController:controllerCopy confirmDeleteCollections:deleteCopy sourceItem:sourceItem sourceRect:completionCopy completion:v15, v17, v19, v21];
 }
 
-- (void)userGuideViewController:(id)a3 didTapAddPlacesToGuide:(id)a4
+- (void)userGuideViewController:(id)controller didTapAddPlacesToGuide:(id)guide
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CollectionEditSession *)[CollectionSaveSession alloc] initWithCollection:v6];
+  guideCopy = guide;
+  controllerCopy = controller;
+  v8 = [(CollectionEditSession *)[CollectionSaveSession alloc] initWithCollection:guideCopy];
 
-  [(ActionCoordinator *)self viewController:v7 addItemsFromACToCollection:v8];
+  [(ActionCoordinator *)self viewController:controllerCopy addItemsFromACToCollection:v8];
 }
 
-- (void)userGuideViewController:(id)a3 didSelect:(id)a4
+- (void)userGuideViewController:(id)controller didSelect:(id)select
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[SearchResult alloc] initWithMapItem:v6];
+  selectCopy = select;
+  controllerCopy = controller;
+  v8 = [[SearchResult alloc] initWithMapItem:selectCopy];
 
-  [(ActionCoordinator *)self viewController:v7 openSearchResult:v8];
+  [(ActionCoordinator *)self viewController:controllerCopy openSearchResult:v8];
 }
 
-- (void)userProfileViewControllerDismissByGestureWithViewController:(id)a3
+- (void)userProfileViewControllerDismissByGestureWithViewController:(id)controller
 {
-  v4 = [(ActionCoordinator *)self containerViewController];
-  v3 = [v4 chromeViewController];
-  [v3 setNeedsUpdateComponent:@"floatingControls" animated:1];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"floatingControls" animated:1];
 }
 
-- (void)ratingsHistoryContaineeViewController:(id)a3 didSelect:(id)a4
+- (void)ratingsHistoryContaineeViewController:(id)controller didSelect:(id)select
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[SearchResult alloc] initWithMapItem:v6];
+  selectCopy = select;
+  controllerCopy = controller;
+  v8 = [[SearchResult alloc] initWithMapItem:selectCopy];
 
-  [(ActionCoordinator *)self viewController:v7 openSearchResult:v8];
+  [(ActionCoordinator *)self viewController:controllerCopy openSearchResult:v8];
 }
 
-- (id)traitsForAddFromACViewController:(id)a3
+- (id)traitsForAddFromACViewController:(id)controller
 {
-  v3 = [(ActionCoordinator *)self newTraits];
+  newTraits = [(ActionCoordinator *)self newTraits];
 
-  return v3;
+  return newTraits;
 }
 
-- (void)guidesHomeViewController:(id)a3 showCuratedGuideWithIdentifier:(id)a4
+- (void)guidesHomeViewController:(id)controller showCuratedGuideWithIdentifier:(id)identifier
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = [(ActionCoordinator *)self containerViewController];
-  [v7 removeControllerFromStack:v8];
+  identifierCopy = identifier;
+  controllerCopy = controller;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [containerViewController removeControllerFromStack:controllerCopy];
 
-  [(ActionCoordinator *)self viewController:v8 showCuratedCollectionIdentifier:v6];
+  [(ActionCoordinator *)self viewController:controllerCopy showCuratedCollectionIdentifier:identifierCopy];
 }
 
-- (void)nearbyTransitViewController:(id)a3 select:(id)a4
+- (void)nearbyTransitViewController:(id)controller select:(id)select
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 view];
-  [(ActionCoordinator *)self viewController:v7 openTransitIncidents:v6 fromView:v8 withUserInfo:0];
+  selectCopy = select;
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [(ActionCoordinator *)self viewController:controllerCopy openTransitIncidents:selectCopy fromView:view withUserInfo:0];
 }
 
-- (void)injectSearchPinsFromSearchInfo:(id)a3
+- (void)injectSearchPinsFromSearchInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self searchPinsManager];
-  [v5 setSearchPinsFromSearchInfo:v4 scrollToResults:1 displayPlaceCardForResult:0 animated:1 completion:0];
+  infoCopy = info;
+  searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+  [searchPinsManager setSearchPinsFromSearchInfo:infoCopy scrollToResults:1 displayPlaceCardForResult:0 animated:1 completion:0];
 }
 
-- (void)viewControllerClearInjectedSearchPins:(id)a3
+- (void)viewControllerClearInjectedSearchPins:(id)pins
 {
-  v3 = [(ActionCoordinator *)self searchPinsManager];
-  [v3 clearSearchPins];
+  searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+  [searchPinsManager clearSearchPins];
 }
 
-- (id)searchResultsForViewController:(id)a3
+- (id)searchResultsForViewController:(id)controller
 {
-  v3 = [(ActionCoordinator *)self searchPinsManager];
-  v4 = [v3 allSearchResults];
+  searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+  allSearchResults = [searchPinsManager allSearchResults];
 
-  return v4;
+  return allSearchResults;
 }
 
-- (id)traitsForCuratedCollectionViewController:(id)a3
+- (id)traitsForCuratedCollectionViewController:(id)controller
 {
-  v3 = [(ActionCoordinator *)self newTraits];
+  newTraits = [(ActionCoordinator *)self newTraits];
 
-  return v3;
+  return newTraits;
 }
 
-- (void)curatedCollectionViewController:(id)a3 pickCollectionWithSession:(id)a4 presentationOptions:(id)a5
+- (void)curatedCollectionViewController:(id)controller pickCollectionWithSession:(id)session presentationOptions:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v19 = [v8 sourceView];
-  [v8 sourceRect];
+  optionsCopy = options;
+  sessionCopy = session;
+  controllerCopy = controller;
+  sourceView = [optionsCopy sourceView];
+  [optionsCopy sourceRect];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  [(ActionCoordinator *)self viewController:v10 pickCollectionWithSession:v9 sourceView:v19 sourceRect:v12, v14, v16, v18];
+  [(ActionCoordinator *)self viewController:controllerCopy pickCollectionWithSession:sessionCopy sourceView:sourceView sourceRect:v12, v14, v16, v18];
 }
 
-- (void)curatedCollectionViewController:(id)a3 selectSearchResult:(id)a4
+- (void)curatedCollectionViewController:(id)controller selectSearchResult:(id)result
 {
-  v5 = a4;
-  v6 = [(ActionCoordinator *)self mapSelectionManager];
-  [v6 selectSearchResult:v5 animated:1];
+  resultCopy = result;
+  mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+  [mapSelectionManager selectSearchResult:resultCopy animated:1];
 }
 
-- (void)presentLocationCorrectionViewWithSession:(id)a3
+- (void)presentLocationCorrectionViewWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   BOOL = GEOConfigGetBOOL();
   v6 = &off_1015F6760;
   if (!BOOL)
@@ -1616,19 +1616,19 @@ LABEL_13:
     v6 = off_1015F6758;
   }
 
-  v8 = [objc_alloc(*v6) initWithSessionObject:v4];
+  v8 = [objc_alloc(*v6) initWithSessionObject:sessionCopy];
 
   [v8 setContaineeDelegate:self];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   [WeakRetained presentController:v8 animated:1];
 }
 
-- (void)viewController:(id)a3 showSortPickerWithSortOptions:(id)a4 initialSelectedSortOptionIndex:(int64_t)a5 completion:(id)a6
+- (void)viewController:(id)controller showSortPickerWithSortOptions:(id)options initialSelectedSortOptionIndex:(int64_t)index completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [[_TtC4Maps30SortOptionPickerViewController alloc] initWithSortOptions:v11 initialSelectedSortOptionIndex:a5 onDone:v12];
+  controllerCopy = controller;
+  optionsCopy = options;
+  completionCopy = completion;
+  v13 = [[_TtC4Maps30SortOptionPickerViewController alloc] initWithSortOptions:optionsCopy initialSelectedSortOptionIndex:index onDone:completionCopy];
   [(ContaineeViewController *)v13 setContaineeDelegate:self];
   objc_initWeak(&location, self);
   objc_initWeak(&from, v13);
@@ -1644,7 +1644,7 @@ LABEL_13:
 
   if (v15 == 5)
   {
-    [v10 presentViewController:v13 animated:1 completion:0];
+    [controllerCopy presentViewController:v13 animated:1 completion:0];
   }
 
   else
@@ -1659,7 +1659,7 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)didSaveCustomRoute:(id)a3
+- (void)didSaveCustomRoute:(id)route
 {
   routeDataToEdit = self->_routeDataToEdit;
   self->_routeDataToEdit = 0;
@@ -1669,28 +1669,28 @@ LABEL_13:
 
 - (void)popContainee
 {
-  v2 = [(ActionCoordinator *)self containerViewController];
-  [v2 popLastViewControllerAnimated:1];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [containerViewController popLastViewControllerAnimated:1];
 }
 
-- (void)viewController:(id)a3 downloadOfflineRegionForRouteData:(id)a4
+- (void)viewController:(id)controller downloadOfflineRegionForRouteData:(id)data
 {
-  v23 = a3;
-  v6 = a4;
-  v7 = [v6 boundingMapRegion];
-  v8 = [GEOMapRegion _maps_offlineDownloadRegionForRouteBounds:v7];
+  controllerCopy = controller;
+  dataCopy = data;
+  boundingMapRegion = [dataCopy boundingMapRegion];
+  v8 = [GEOMapRegion _maps_offlineDownloadRegionForRouteBounds:boundingMapRegion];
 
-  v9 = [[GEORouteBuilder_PersistentData alloc] initWithPersistentData:v6];
-  v10 = [v9 buildRoute];
-  v11 = [v6 userProvidedName];
-  if ([v11 length])
+  v9 = [[GEORouteBuilder_PersistentData alloc] initWithPersistentData:dataCopy];
+  buildRoute = [v9 buildRoute];
+  userProvidedName = [dataCopy userProvidedName];
+  if ([userProvidedName length])
   {
-    [v6 userProvidedName];
+    [dataCopy userProvidedName];
   }
 
   else
   {
-    [v6 routeName];
+    [dataCopy routeName];
   }
   v12 = ;
 
@@ -1699,38 +1699,38 @@ LABEL_13:
   v28[2] = 0x3032000000;
   v28[3] = sub_100907968;
   v28[4] = sub_100907978;
-  v13 = [(ActionCoordinator *)self iosBasedChromeViewController];
-  v29 = [v13 acquireHikingMapToken];
+  iosBasedChromeViewController = [(ActionCoordinator *)self iosBasedChromeViewController];
+  acquireHikingMapToken = [iosBasedChromeViewController acquireHikingMapToken];
 
-  v14 = [(ActionCoordinator *)self iosChromeViewController];
-  v15 = [v14 mapView];
-  v16 = [v15 _mapLayer];
-  v17 = [v16 applicationSubState];
+  iosChromeViewController = [(ActionCoordinator *)self iosChromeViewController];
+  mapView = [iosChromeViewController mapView];
+  _mapLayer = [mapView _mapLayer];
+  applicationSubState = [_mapLayer applicationSubState];
 
-  v18 = [(ActionCoordinator *)self iosChromeViewController];
-  v19 = [v18 mapView];
-  v20 = [v19 _mapLayer];
-  [v20 setApplicationSubState:1];
+  iosChromeViewController2 = [(ActionCoordinator *)self iosChromeViewController];
+  mapView2 = [iosChromeViewController2 mapView];
+  _mapLayer2 = [mapView2 _mapLayer];
+  [_mapLayer2 setApplicationSubState:1];
 
   objc_initWeak(&location, self);
-  v21 = [v6 mapItemMuid];
+  mapItemMuid = [dataCopy mapItemMuid];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100907980;
   v24[3] = &unk_10162ED08;
   v24[4] = v28;
   objc_copyWeak(&v25, &location);
-  v26 = v17;
+  v26 = applicationSubState;
   LOWORD(v22) = 256;
-  [(ActionCoordinator *)self viewController:v23 showOfflineMapRegionSelectorForRegion:v8 name:v12 route:v10 muid:v21 shouldUseSessionlessAnalytics:0 shouldShowDataManagementAfterDownload:v22 shouldShowDataManagementAfterDownloadIfRegionDiffers:v24 dismissalBlock:?];
+  [(ActionCoordinator *)self viewController:controllerCopy showOfflineMapRegionSelectorForRegion:v8 name:v12 route:buildRoute muid:mapItemMuid shouldUseSessionlessAnalytics:0 shouldShowDataManagementAfterDownload:v22 shouldShowDataManagementAfterDownloadIfRegionDiffers:v24 dismissalBlock:?];
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
   _Block_object_dispose(v28, 8);
 }
 
-- (void)viewControllerShowSavedRoutesList:(id)a3
+- (void)viewControllerShowSavedRoutesList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -1742,45 +1742,45 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)viewControllerShowRecentlyAdded:(id)a3
+- (void)viewControllerShowRecentlyAdded:(id)added
 {
   v5 = [[_TtC4Maps43LibraryRecentlyAddedContaineeViewController alloc] initWithNibName:0 bundle:0];
   [(LibraryRecentlyAddedContaineeViewController *)v5 setActionDelegate:self];
   [(ContaineeViewController *)v5 setContaineeDelegate:self];
-  v4 = [(ActionCoordinator *)self containerViewController];
-  [v4 presentController:v5 animated:1];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [containerViewController presentController:v5 animated:1];
 }
 
-- (void)viewControllerShowVisitHistoryHome:(id)a3
+- (void)viewControllerShowVisitHistoryHome:(id)home
 {
   v8 = objc_alloc_init(_TtC4Maps40VisitedPlacesLibraryContextConfiguration);
   v4 = [[_TtC4Maps27VisitedPlacesLibraryContext alloc] initWithConfiguration:v8];
   [(VisitedPlacesLibraryContext *)v4 setActionDelegate:self];
-  v5 = [(ActionCoordinator *)self appCoordinator];
-  [(VisitedPlacesLibraryContext *)v4 setShareDelegate:v5];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [(VisitedPlacesLibraryContext *)v4 setShareDelegate:appCoordinator];
 
-  v6 = [(ActionCoordinator *)self containerViewController];
-  v7 = [v6 chromeViewController];
-  [v7 pushContext:v4 animated:1 completion:0];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  [chromeViewController pushContext:v4 animated:1 completion:0];
 }
 
-- (void)viewController:(id)a3 editRoute:(id)a4
+- (void)viewController:(id)controller editRoute:(id)route
 {
-  objc_storeStrong(&self->_routeDataToEdit, a4);
-  v6 = a4;
+  objc_storeStrong(&self->_routeDataToEdit, route);
+  routeCopy = route;
   v7 = [MapsSaveRouteContainee alloc];
 
   v9 = [(MapsSaveRouteContainee *)v7 initWithDelegate:self isEditing:1 showInitialKeyboard:1];
-  v8 = [(ActionCoordinator *)self containerViewController];
-  [v8 presentController:v9 animated:1];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [containerViewController presentController:v9 animated:1];
 }
 
-- (void)viewController:(id)a3 startDirectionsToRouteData:(id)a4
+- (void)viewController:(id)controller startDirectionsToRouteData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  dataCopy = data;
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v6);
+  objc_initWeak(&from, controllerCopy);
   v8 = +[MKLocationManager sharedLocationManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -1788,7 +1788,7 @@ LABEL_13:
   v11[3] = &unk_10162ECB8;
   objc_copyWeak(&v13, &location);
   objc_copyWeak(&v14, &from);
-  v9 = v7;
+  v9 = dataCopy;
   v12 = v9;
   v10 = [v8 singleLocationUpdateWithHandler:v11];
 
@@ -1799,24 +1799,24 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)routeStepsViewController:(id)a3 wantsToDisplayAdvisory:(id)a4
+- (void)routeStepsViewController:(id)controller wantsToDisplayAdvisory:(id)advisory
 {
-  [(ActionCoordinator *)self setRoutePlanningAdvisory:a4];
+  [(ActionCoordinator *)self setRoutePlanningAdvisory:advisory];
 
   [(ActionCoordinator *)self presentRoutePlanningViewType:5];
 }
 
-- (void)routeStepsViewController:(id)a3 wantsToShareItem:(id)a4 fromView:(id)a5
+- (void)routeStepsViewController:(id)controller wantsToShareItem:(id)item fromView:(id)view
 {
-  v7 = a4;
-  v9 = [MUPresentationOptions optionsWithSender:a5];
-  v8 = [(ActionCoordinator *)self appCoordinator];
-  [v8 shareItem:v7 presentationOptions:v9 completion:0];
+  itemCopy = item;
+  v9 = [MUPresentationOptions optionsWithSender:view];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator shareItem:itemCopy presentationOptions:v9 completion:0];
 }
 
-- (void)routeSearchViewControllerDidDismiss:(id)a3 shouldExitRoutePlanning:(BOOL)a4
+- (void)routeSearchViewControllerDidDismiss:(id)dismiss shouldExitRoutePlanning:(BOOL)planning
 {
-  if (a4)
+  if (planning)
   {
     v5 = !UIAccessibilityIsReduceMotionEnabled();
 
@@ -1826,41 +1826,41 @@ LABEL_13:
   else
   {
 
-    [(ActionCoordinator *)self closeRoutePlanningViewController:a3 withSender:0];
+    [(ActionCoordinator *)self closeRoutePlanningViewController:dismiss withSender:0];
   }
 }
 
-- (void)routeSearchViewController:(id)a3 wantsToPerformSearchWithItem:(id)a4 userInfo:(id)a5 autocompleteSessionData:(id)a6
+- (void)routeSearchViewController:(id)controller wantsToPerformSearchWithItem:(id)item userInfo:(id)info autocompleteSessionData:(id)data
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  controllerCopy = controller;
+  itemCopy = item;
+  infoCopy = info;
+  dataCopy = data;
   if (GEOConfigGetBOOL())
   {
-    v13 = [[_TtC4Maps20SearchResultsContext alloc] initWithSearchFieldItem:v10 contextType:1 recentAutocompleteSearchSessionData:v12];
-    v14 = [(ActionCoordinator *)self containerViewController];
-    v15 = [v14 chromeViewController];
-    [v15 pushContext:v13 animated:1 completion:0];
+    v13 = [[_TtC4Maps20SearchResultsContext alloc] initWithSearchFieldItem:itemCopy contextType:1 recentAutocompleteSearchSessionData:dataCopy];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    chromeViewController = [containerViewController chromeViewController];
+    [chromeViewController pushContext:v13 animated:1 completion:0];
   }
 
   else
   {
-    [(ActionCoordinator *)self viewController:v16 doSearchItem:v10 withUserInfo:v11 refinementsQuery:0 autocompleteSessionData:v12];
+    [(ActionCoordinator *)self viewController:controllerCopy doSearchItem:itemCopy withUserInfo:infoCopy refinementsQuery:0 autocompleteSessionData:dataCopy];
   }
 }
 
-- (id)traitsForRouteSearchViewController:(id)a3
+- (id)traitsForRouteSearchViewController:(id)controller
 {
-  v3 = [(ActionCoordinator *)self newTraits];
+  newTraits = [(ActionCoordinator *)self newTraits];
 
-  return v3;
+  return newTraits;
 }
 
-- (void)presentWalletTopUpViewControllerWithTransitIdentifier:(id)a3 callbackDelegate:(id)a4
+- (void)presentWalletTopUpViewControllerWithTransitIdentifier:(id)identifier callbackDelegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
   v8 = sub_10003D020();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1868,20 +1868,20 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Showing Wallet Top-Up View Controller", v11, 2u);
   }
 
-  v9 = [[PKPerformActionSetupViewController alloc] initWithPassIdentifier:v7];
-  [v9 setDelegate:v6];
+  v9 = [[PKPerformActionSetupViewController alloc] initWithPassIdentifier:identifierCopy];
+  [v9 setDelegate:delegateCopy];
 
-  v10 = [(ActionCoordinator *)self containerViewController];
-  [v10 _maps_topMostPresentViewController:v9 animated:1 completion:0];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [containerViewController _maps_topMostPresentViewController:v9 animated:1 completion:0];
 }
 
-- (void)presentWalletDCIViewControllerWithTransitSystems:(id)a3 callbackDelegate:(id)a4
+- (void)presentWalletDCIViewControllerWithTransitSystems:(id)systems callbackDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  systemsCopy = systems;
+  delegateCopy = delegate;
+  if (systemsCopy)
   {
-    if ([v7 count])
+    if ([systemsCopy count])
     {
       v9 = objc_alloc_init(PKPaymentSetupConfiguration);
       [v9 setReferrerIdentifier:@"maps"];
@@ -1890,9 +1890,9 @@ LABEL_13:
       v14[2] = sub_100908AB8;
       v14[3] = &unk_10162EC68;
       v14[4] = self;
-      v15 = v7;
+      v15 = systemsCopy;
       v16 = v9;
-      v17 = v8;
+      v17 = delegateCopy;
       v18 = a2;
       v10 = v9;
       [PKPaymentSetupViewController paymentSetupFeaturesForConfiguration:v10 completion:v14];
@@ -1966,17 +1966,17 @@ LABEL_12:
 LABEL_13:
 }
 
-- (id)_filteredFeaturesFromTransitSystems:(id)a3 allFeatures:(id)a4
+- (id)_filteredFeaturesFromTransitSystems:(id)systems allFeatures:(id)features
 {
-  v5 = a3;
-  v6 = a4;
-  v24 = v5;
-  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+  systemsCopy = systems;
+  featuresCopy = features;
+  v24 = systemsCopy;
+  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(systemsCopy, "count")}];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v6;
+  obj = featuresCopy;
   v25 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v25)
   {
@@ -2011,9 +2011,9 @@ LABEL_13:
               }
 
               v15 = *(*(&v26 + 1) + 8 * j);
-              v16 = [v9 identifiers];
-              v17 = [v15 identifier];
-              v18 = [v16 containsObject:v17];
+              identifiers = [v9 identifiers];
+              identifier = [v15 identifier];
+              v18 = [identifiers containsObject:identifier];
 
               if (v18)
               {
@@ -2040,27 +2040,27 @@ LABEL_13:
   return v20;
 }
 
-- (void)presentEducationScreenWithAssetURLs:(id)a3 titleText:(id)a4 bodyText:(id)a5
+- (void)presentEducationScreenWithAssetURLs:(id)ls titleText:(id)text bodyText:(id)bodyText
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v13 = [[TransitPayEducationScreenViewController alloc] initWithAssetURLs:v10 titleText:v9 bodyText:v8];
+  bodyTextCopy = bodyText;
+  textCopy = text;
+  lsCopy = ls;
+  v13 = [[TransitPayEducationScreenViewController alloc] initWithAssetURLs:lsCopy titleText:textCopy bodyText:bodyTextCopy];
 
   v11 = [[UINavigationController alloc] initWithRootViewController:v13];
-  v12 = [(ActionCoordinator *)self containerViewController];
-  [v12 _maps_topMostPresentViewController:v11 animated:1 completion:0];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [containerViewController _maps_topMostPresentViewController:v11 animated:1 completion:0];
 }
 
-- (void)viewController:(id)a3 presentReportDetail:(id)a4 fromEntryPoint:(int)a5
+- (void)viewController:(id)controller presentReportDetail:(id)detail fromEntryPoint:(int)point
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = a4;
+  v5 = *&point;
+  controllerCopy = controller;
+  detailCopy = detail;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v11 = [WeakRetained _maps_mapsSceneDelegate];
-  v12 = [v11 rapPresenter];
-  v13 = [v12 presentOfflineAlertIfNecessaryWithCompletion:0];
+  _maps_mapsSceneDelegate = [WeakRetained _maps_mapsSceneDelegate];
+  rapPresenter = [_maps_mapsSceneDelegate rapPresenter];
+  v13 = [rapPresenter presentOfflineAlertIfNecessaryWithCompletion:0];
 
   if (v13)
   {
@@ -2078,7 +2078,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v9 || ([v9 reportID], v17 = objc_claimAutoreleasedReturnValue(), v17, !v17))
+  if (!detailCopy || ([detailCopy reportID], v17 = objc_claimAutoreleasedReturnValue(), v17, !v17))
   {
     v14 = sub_10002E924();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -2097,7 +2097,7 @@ LABEL_12:
   rapNotificationDetailsCoordinator = self->_rapNotificationDetailsCoordinator;
   if (!rapNotificationDetailsCoordinator)
   {
-    v19 = [[_TtC4Maps33RAPNotificationDetailsCoordinator alloc] initWithParentViewController:v8];
+    v19 = [[_TtC4Maps33RAPNotificationDetailsCoordinator alloc] initWithParentViewController:controllerCopy];
     v20 = self->_rapNotificationDetailsCoordinator;
     self->_rapNotificationDetailsCoordinator = v19;
 
@@ -2105,39 +2105,39 @@ LABEL_12:
     rapNotificationDetailsCoordinator = self->_rapNotificationDetailsCoordinator;
   }
 
-  [(RAPNotificationDetailsCoordinator *)rapNotificationDetailsCoordinator presentRAPNotificationDetailsViewControllerWithRapRecord:v9 entryPoint:v5];
+  [(RAPNotificationDetailsCoordinator *)rapNotificationDetailsCoordinator presentRAPNotificationDetailsViewControllerWithRapRecord:detailCopy entryPoint:v5];
 LABEL_13:
 }
 
-- (void)viewControllerShowReports:(id)a3 fromEntryPoint:(int)a4
+- (void)viewControllerShowReports:(id)reports fromEntryPoint:(int)point
 {
-  v4 = *&a4;
+  v4 = *&point;
   if (_MKRAPIsAvailable() && (sub_1007413D0() & 1) == 0)
   {
     [CATransaction setFrameStallSkipRequest:1];
-    v6 = [(ActionCoordinator *)self reportsHomeViewController];
-    [v6 setEntryPoint:v4];
+    reportsHomeViewController = [(ActionCoordinator *)self reportsHomeViewController];
+    [reportsHomeViewController setEntryPoint:v4];
 
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    v7 = [(ActionCoordinator *)self reportsHomeViewController];
-    [WeakRetained presentController:v7 animated:1];
+    reportsHomeViewController2 = [(ActionCoordinator *)self reportsHomeViewController];
+    [WeakRetained presentController:reportsHomeViewController2 animated:1];
   }
 }
 
-- (void)viewControllerShowReports:(id)a3
+- (void)viewControllerShowReports:(id)reports
 {
-  v6 = a3;
+  reportsCopy = reports;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = 29;
-    v5 = v6;
+    v5 = reportsCopy;
   }
 
   else
   {
-    v5 = v6;
-    if (self->_searchModeViewController == v6)
+    v5 = reportsCopy;
+    if (self->_searchModeViewController == reportsCopy)
     {
       v4 = 8;
     }
@@ -2174,7 +2174,7 @@ LABEL_13:
   [v2 launchTTR];
 }
 
-- (void)enterPedestrianAR:(id)a3
+- (void)enterPedestrianAR:(id)r
 {
   _os_activity_label_useraction(&_mh_execute_header, "Tapped pedestrian AR button");
 
@@ -2188,24 +2188,24 @@ LABEL_13:
     v6 = sub_100798A3C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [(ActionCoordinator *)self containerViewController];
-      v8 = [v7 currentViewController];
+      containerViewController = [(ActionCoordinator *)self containerViewController];
+      currentViewController = [containerViewController currentViewController];
       v12 = 138412290;
-      v13 = v8;
+      v13 = currentViewController;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Dismissing Pedestrian AR teachable moment card: %@", &v12, 0xCu);
     }
 
-    v9 = [(ActionCoordinator *)self containerViewController];
-    v10 = [(ActionCoordinator *)self containerViewController];
-    v11 = [v10 currentViewController];
-    [v9 removeControllerFromStack:v11];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
+    containerViewController3 = [(ActionCoordinator *)self containerViewController];
+    currentViewController2 = [containerViewController3 currentViewController];
+    [containerViewController2 removeControllerFromStack:currentViewController2];
   }
 }
 
 - (void)showPedestrianARRaiseToEnterTeachableMomentCard
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v4 = [v3 currentViewController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2223,8 +2223,8 @@ LABEL_13:
   {
     v8 = objc_alloc_init(PedestrianARRaiseToEnterTeachableMomentContaineeViewController);
     [(ContaineeViewController *)v8 setContaineeDelegate:self];
-    v7 = [(ActionCoordinator *)self containerViewController];
-    [v7 presentController:v8 animated:1];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
+    [containerViewController2 presentController:v8 animated:1];
   }
 }
 
@@ -2244,16 +2244,16 @@ LABEL_13:
   {
     v5 = [[PedestrianARFeatureIntroTeachableMomentContaineeViewController alloc] initWithCoordinator:self];
     [(ContaineeViewController *)v5 setContaineeDelegate:self];
-    v4 = [(ActionCoordinator *)self containerViewController];
-    [v4 presentController:v5 animated:1];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    [containerViewController presentController:v5 animated:1];
   }
 }
 
 - (BOOL)isWeatherPopoverActive
 {
-  v2 = [(ActionCoordinator *)self containerViewController];
-  v3 = [v2 _maps_mapsSceneDelegate];
-  v4 = [v3 topMostPresentedViewController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  _maps_mapsSceneDelegate = [containerViewController _maps_mapsSceneDelegate];
+  topMostPresentedViewController = [_maps_mapsSceneDelegate topMostPresentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2262,8 +2262,8 @@ LABEL_13:
 
 - (BOOL)isTeachableMomentCardActive
 {
-  v2 = [(ActionCoordinator *)self containerViewController];
-  v3 = [v2 currentViewController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2272,8 +2272,8 @@ LABEL_13:
 
 - (void)exitPedestrianAR
 {
-  v2 = [(ActionCoordinator *)self appCoordinator];
-  [v2 exitPedestrianAR];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator exitPedestrianAR];
 }
 
 - (void)enterPedestrianAR
@@ -2288,13 +2288,13 @@ LABEL_13:
   if ([(ActionCoordinator *)self canEnterPedestrianAR])
   {
     objc_initWeak(&location, self);
-    v4 = [(ActionCoordinator *)self containerViewController];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_100909C48;
     v26[3] = &unk_1016619A8;
     objc_copyWeak(&v27, &location);
-    v5 = [v4 showVLFCrowdsourcingPermissionCardWithContaineeDelegate:self delegate:self completion:v26];
+    v5 = [containerViewController showVLFCrowdsourcingPermissionCardWithContaineeDelegate:self delegate:self completion:v26];
 
     if (v5)
     {
@@ -2304,13 +2304,13 @@ LABEL_24:
       return;
     }
 
-    v6 = [(ActionCoordinator *)self containerViewController];
-    v7 = [v6 currentViewController];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
+    currentViewController = [containerViewController2 currentViewController];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = currentViewController;
     }
 
     else
@@ -2320,13 +2320,13 @@ LABEL_24:
 
     v9 = v8;
 
-    v10 = [(ActionCoordinator *)self containerViewController];
-    v11 = [v10 currentViewController];
+    containerViewController3 = [(ActionCoordinator *)self containerViewController];
+    currentViewController2 = [containerViewController3 currentViewController];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v11;
+      v12 = currentViewController2;
     }
 
     else
@@ -2360,14 +2360,14 @@ LABEL_23:
         +[StartNavigationDetailsBuilder defaultNavigationDetailsOptions];
         *&v23 = 2;
         *(&v24 + 1) = 0;
-        v17 = [(ActionCoordinator *)self appCoordinator];
-        v18 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-        v19 = [v18 routeCollection];
+        appCoordinator = [(ActionCoordinator *)self appCoordinator];
+        routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+        routeCollection = [routePlanningDataCoordinator routeCollection];
         v20[0] = *buf;
         v20[1] = v23;
         v20[2] = v24;
         v21 = v25;
-        [v17 startNavigationWithRouteCollection:v19 navigationDetailsOptions:v20];
+        [appCoordinator startNavigationWithRouteCollection:routeCollection navigationDetailsOptions:v20];
 
         goto LABEL_24;
       }
@@ -2398,13 +2398,13 @@ LABEL_23:
 {
   if (!+[PedestrianARSessionTask isPedestrianARModeSupported])
   {
-    v7 = sub_100798A3C();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    pedestrianARSessionStateManager = sub_100798A3C();
+    if (os_log_type_enabled(pedestrianARSessionStateManager, OS_LOG_TYPE_INFO))
     {
       LOWORD(v13) = 0;
       v9 = "Cannot enter pedestrian AR because it's not supported on the current device";
 LABEL_9:
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, v9, &v13, 2u);
+      _os_log_impl(&_mh_execute_header, pedestrianARSessionStateManager, OS_LOG_TYPE_INFO, v9, &v13, 2u);
     }
 
 LABEL_13:
@@ -2412,14 +2412,14 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v3 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-  v4 = [v3 routeCollection];
-  v5 = [v4 count];
+  routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+  routeCollection = [routePlanningDataCoordinator routeCollection];
+  v5 = [routeCollection count];
 
   if (!v5)
   {
-    v7 = sub_100798A3C();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    pedestrianARSessionStateManager = sub_100798A3C();
+    if (os_log_type_enabled(pedestrianARSessionStateManager, OS_LOG_TYPE_INFO))
     {
       LOWORD(v13) = 0;
       v9 = "Cannot enter pedestrian AR without a route";
@@ -2429,15 +2429,15 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v6 = [(ActionCoordinator *)self platformController];
-  v7 = [v6 pedestrianARSessionStateManager];
+  platformController = [(ActionCoordinator *)self platformController];
+  pedestrianARSessionStateManager = [platformController pedestrianARSessionStateManager];
 
-  if (([v7 shouldShowPedestrianAR]& 1) == 0)
+  if (([pedestrianARSessionStateManager shouldShowPedestrianAR]& 1) == 0)
   {
     v10 = sub_100798A3C();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v7 debugDescription];
+      v11 = [pedestrianARSessionStateManager debugDescription];
       v13 = 138412290;
       v14 = v11;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Cannot enter pedestrian AR for state manager: %@", &v13, 0xCu);
@@ -2459,9 +2459,9 @@ LABEL_14:
     return 0;
   }
 
-  v3 = [(ActionCoordinator *)self appCoordinator];
-  v4 = [v3 chromeViewController];
-  v5 = [v4 topContext];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  chromeViewController = [appCoordinator chromeViewController];
+  topContext = [chromeViewController topContext];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0)
@@ -2469,15 +2469,15 @@ LABEL_14:
     return 0;
   }
 
-  v7 = [(ActionCoordinator *)self appCoordinator];
-  v8 = [v7 chromeViewController];
-  v9 = [v8 topContext];
-  v10 = [v9 fullscreenViewController];
+  appCoordinator2 = [(ActionCoordinator *)self appCoordinator];
+  chromeViewController2 = [appCoordinator2 chromeViewController];
+  topContext2 = [chromeViewController2 topContext];
+  fullscreenViewController = [topContext2 fullscreenViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = fullscreenViewController;
   }
 
   else
@@ -2489,22 +2489,22 @@ LABEL_14:
 
   if (v12)
   {
-    v13 = [v12 isShowingFailureView];
+    isShowingFailureView = [v12 isShowingFailureView];
   }
 
   else
   {
-    v13 = 0;
+    isShowingFailureView = 0;
   }
 
-  return v13;
+  return isShowingFailureView;
 }
 
 - (BOOL)isPedestrianARActive
 {
-  v2 = [(ActionCoordinator *)self appCoordinator];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 topContext];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  chromeViewController = [appCoordinator chromeViewController];
+  topContext = [chromeViewController topContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2520,34 +2520,34 @@ LABEL_14:
   return v5;
 }
 
-- (void)timingViewController:(id)a3 didPickTiming:(id)a4
+- (void)timingViewController:(id)controller didPickTiming:(id)timing
 {
-  v5 = a4;
-  v6 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-  [v6 updateTiming:v5];
+  timingCopy = timing;
+  routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+  [routePlanningDataCoordinator updateTiming:timingCopy];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v10 = a3;
-  v4 = [v10 presentedViewController];
+  dismissCopy = dismiss;
+  presentedViewController = [dismissCopy presentedViewController];
   incidentsVC = self->_incidentsVC;
 
-  if (v4 == incidentsVC)
+  if (presentedViewController == incidentsVC)
   {
     [(RouteIncidentsViewController *)self->_incidentsVC resetForDismiss];
   }
 
   else
   {
-    v6 = [v10 presentedViewController];
-    v7 = [(ActionCoordinator *)self lineCardVC];
-    v8 = v7;
-    if (v6 == v7)
+    presentedViewController2 = [dismissCopy presentedViewController];
+    lineCardVC = [(ActionCoordinator *)self lineCardVC];
+    v8 = lineCardVC;
+    if (presentedViewController2 == lineCardVC)
     {
-      v9 = [(TransitLineSelectionActionController *)self->_lineSelectionAction isActive];
+      isActive = [(TransitLineSelectionActionController *)self->_lineSelectionAction isActive];
 
-      if (v9)
+      if (isActive)
       {
         [(TransitLineSelectionActionController *)self->_lineSelectionAction deactivateWithContext:0];
       }
@@ -2562,28 +2562,28 @@ LABEL_14:
 - (UIScrollView)pptTestScrollView
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v3 = [WeakRetained currentViewController];
+  currentViewController = [WeakRetained currentViewController];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 pptTestScrollView];
+    pptTestScrollView = [currentViewController pptTestScrollView];
   }
 
   else
   {
-    v4 = 0;
+    pptTestScrollView = 0;
   }
 
-  return v4;
+  return pptTestScrollView;
 }
 
-- (void)pptTestDismissTrayAnimated:(BOOL)a3 assertTrayType:(int64_t)a4
+- (void)pptTestDismissTrayAnimated:(BOOL)animated assertTrayType:(int64_t)type
 {
-  v4 = a3;
-  v10 = [(ActionCoordinator *)self routePlanningOverviewViewControllerIfLoaded:a3];
-  v6 = [(ActionCoordinator *)self currentViewController];
-  v7 = v6;
-  if (v10 && v6 == v10)
+  animatedCopy = animated;
+  v10 = [(ActionCoordinator *)self routePlanningOverviewViewControllerIfLoaded:animated];
+  currentViewController = [(ActionCoordinator *)self currentViewController];
+  v7 = currentViewController;
+  if (v10 && currentViewController == v10)
   {
     [(ActionCoordinator *)self closeRoutePlanningViewController:v10 withSender:0];
   }
@@ -2591,53 +2591,53 @@ LABEL_14:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    [WeakRetained popLastViewControllerAnimated:v4];
+    [WeakRetained popLastViewControllerAnimated:animatedCopy];
 
-    v9 = [(ActionCoordinator *)self containerViewController];
-    [v9 popLastViewControllerFromViewController:v7 animated:v4 useDefaultContaineeLayout:0];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    [containerViewController popLastViewControllerFromViewController:v7 animated:animatedCopy useDefaultContaineeLayout:0];
   }
 }
 
-- (BOOL)pptTestIsTrayType:(int64_t)a3
+- (BOOL)pptTestIsTrayType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 0:
       return 1;
     case 2:
       v6 = +[UIDevice currentDevice];
-      v7 = [v6 userInterfaceIdiom];
+      userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-      v8 = [(ActionCoordinator *)self currentViewController];
-      v4 = v8;
-      if (v7 == 5)
+      currentViewController = [(ActionCoordinator *)self currentViewController];
+      currentViewController2 = currentViewController;
+      if (userInterfaceIdiom == 5)
       {
-        v9 = v8 == 0;
+        v9 = currentViewController == 0;
 LABEL_11:
 
         return v9;
       }
 
-      v5 = [(ActionCoordinator *)self searchModeViewController];
+      searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
 LABEL_10:
-      v9 = v4 == v5;
+      v9 = currentViewController2 == searchModeViewController;
 
       goto LABEL_11;
     case 1:
-      v4 = [(ActionCoordinator *)self currentViewController];
-      v5 = [(ActionCoordinator *)self placeCardViewController];
+      currentViewController2 = [(ActionCoordinator *)self currentViewController];
+      searchModeViewController = [(ActionCoordinator *)self placeCardViewController];
       goto LABEL_10;
   }
 
   return 0;
 }
 
-- (void)pptTestUpdateTrayLayout:(unint64_t)a3 animated:(BOOL)a4
+- (void)pptTestUpdateTrayLayout:(unint64_t)layout animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3 < 3)
+  animatedCopy = animated;
+  if (layout < 3)
   {
-    v6 = a3 + 1;
+    v6 = layout + 1;
   }
 
   else
@@ -2646,17 +2646,17 @@ LABEL_10:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v8 = [WeakRetained containeeLayout];
+  containeeLayout = [WeakRetained containeeLayout];
 
-  if (v8 == v6)
+  if (containeeLayout == v6)
   {
     v14[0] = @"ContainerLayout";
     v9 = [NSNumber numberWithUnsignedInteger:v6];
     v14[1] = @"ContainerContainee";
     v15[0] = v9;
     v10 = objc_loadWeakRetained(&self->_containerViewController);
-    v11 = [v10 currentViewController];
-    v15[1] = v11;
+    currentViewController = [v10 currentViewController];
+    v15[1] = currentViewController;
     v12 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
     [PPTNotificationCenter postNotificationIfNeededWithName:@"PPTTestTrayLayoutDidUpdateNotification" object:self userInfo:v12];
   }
@@ -2664,7 +2664,7 @@ LABEL_10:
   else
   {
     v13 = objc_loadWeakRetained(&self->_containerViewController);
-    [v13 setLayoutIfSupported:v6 animated:v4];
+    [v13 setLayoutIfSupported:v6 animated:animatedCopy];
   }
 }
 
@@ -2688,88 +2688,88 @@ LABEL_10:
 - (void)pptTestOpenFirstCollection
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v3 = [WeakRetained currentViewController];
+  currentViewController = [WeakRetained currentViewController];
 
-  if ([v3 conformsToProtocol:&OBJC_PROTOCOL___PPTTestPresentCollectionProtocol])
+  if ([currentViewController conformsToProtocol:&OBJC_PROTOCOL___PPTTestPresentCollectionProtocol])
   {
-    [v3 pptPresentFirstCollection];
+    [currentViewController pptPresentFirstCollection];
   }
 }
 
 - (UIScrollView)pptTestScrollViewForProactive
 {
-  v2 = [(ActionCoordinator *)self searchModeViewController];
-  v3 = [v2 scrollViewForProactive];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  scrollViewForProactive = [searchModeViewController scrollViewForProactive];
 
-  return v3;
+  return scrollViewForProactive;
 }
 
-- (void)mapsDragDestinationHandler:(id)a3 didReceiveMapKitHandle:(id)a4 title:(id)a5
+- (void)mapsDragDestinationHandler:(id)handler didReceiveMapKitHandle:(id)handle title:(id)title
 {
-  v7 = a5;
-  v8 = a4;
+  titleCopy = title;
+  handleCopy = handle;
   [(ActionCoordinator *)self _prepareToReceiveDrop];
   v9 = objc_alloc_init(SearchFieldItem);
-  [(SearchFieldItem *)v9 setMapKitHandle:v8];
+  [(SearchFieldItem *)v9 setMapKitHandle:handleCopy];
 
-  [(SearchFieldItem *)v9 setMapKitHandleTitle:v7];
+  [(SearchFieldItem *)v9 setMapKitHandleTitle:titleCopy];
   [(ActionCoordinator *)self viewController:0 doSearchItem:v9 withUserInfo:&__NSDictionary0__struct];
 }
 
-- (void)mapsDragDestinationHandler:(id)a3 didReceiveString:(id)a4 nearCoordinate:(CLLocationCoordinate2D)a5
+- (void)mapsDragDestinationHandler:(id)handler didReceiveString:(id)string nearCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a5.longitude;
-  latitude = a5.latitude;
-  v8 = a4;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  stringCopy = string;
   [(ActionCoordinator *)self _prepareToReceiveDrop];
   v9 = objc_alloc_init(SearchFieldItem);
-  [(SearchFieldItem *)v9 setSearchString:v8];
+  [(SearchFieldItem *)v9 setSearchString:stringCopy];
 
   [(SearchFieldItem *)v9 setCoordinateHint:latitude, longitude];
   [(ActionCoordinator *)self viewController:0 doSearchItem:v9 withUserInfo:&__NSDictionary0__struct];
 }
 
-- (BOOL)mapsDragDestinationHandler:(id)a3 didReceiveURL:(id)a4
+- (BOOL)mapsDragDestinationHandler:(id)handler didReceiveURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   [(ActionCoordinator *)self _prepareToReceiveDrop];
   v6 = +[UIApplication _maps_keyMapsSceneDelegate];
-  v7 = [v6 entryPointsCoordinator];
-  v8 = [(ActionCoordinator *)self containerViewController];
-  v9 = [v8 view];
-  v10 = [v9 window];
-  v11 = [v10 windowScene];
-  v12 = [v11 session];
-  v13 = [(ActionCoordinator *)self containerViewController];
-  v14 = [v13 view];
-  [v14 bounds];
-  [v7 openURL:v5 session:v12 sceneOptions:0 mkOptions:0 windowSize:{v15, v16}];
+  entryPointsCoordinator = [v6 entryPointsCoordinator];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  view = [containerViewController view];
+  window = [view window];
+  windowScene = [window windowScene];
+  session = [windowScene session];
+  containerViewController2 = [(ActionCoordinator *)self containerViewController];
+  view2 = [containerViewController2 view];
+  [view2 bounds];
+  [entryPointsCoordinator openURL:lCopy session:session sceneOptions:0 mkOptions:0 windowSize:{v15, v16}];
 
   return 1;
 }
 
-- (BOOL)mapsDragDestinationHandler:(id)a3 didReceiveVCard:(id)a4
+- (BOOL)mapsDragDestinationHandler:(id)handler didReceiveVCard:(id)card
 {
-  v5 = a4;
+  cardCopy = card;
   [(ActionCoordinator *)self _prepareToReceiveDrop];
-  v6 = [v5 postalAddresses];
-  v7 = [v6 firstObject];
+  postalAddresses = [cardCopy postalAddresses];
+  firstObject = [postalAddresses firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [[AddressBookAddress alloc] initWithContact:v5 addressValue:v7];
+    v8 = [[AddressBookAddress alloc] initWithContact:cardCopy addressValue:firstObject];
     v9 = [SearchFieldItem searchFieldItemWithObject:v8];
     [(ActionCoordinator *)self viewController:0 doSearchItem:v9 withUserInfo:&__NSDictionary0__struct];
   }
 
-  return v7 != 0;
+  return firstObject != 0;
 }
 
-- (void)mapsDragDestinationHandler:(id)a3 didReceiveMapItem:(id)a4
+- (void)mapsDragDestinationHandler:(id)handler didReceiveMapItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   [(ActionCoordinator *)self _prepareToReceiveDrop];
-  v7 = [[SearchResult alloc] initWithMapItem:v5];
+  v7 = [[SearchResult alloc] initWithMapItem:itemCopy];
 
   [(SearchResultRepr *)v7 setHasIncompleteMetadata:1];
   v6 = [SearchFieldItem searchFieldItemWithObject:v7];
@@ -2783,285 +2783,285 @@ LABEL_10:
   [(ActionCoordinator *)self presentSearchAnimated:0];
 }
 
-- (void)markedLocationRefinementViewControllerDidCancel:(id)a3
+- (void)markedLocationRefinementViewControllerDidCancel:(id)cancel
 {
-  v3 = [a3 presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [cancel presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)markedLocationRefinementViewControllerSelectedRemoveMarkedLocation:(id)a3
+- (void)markedLocationRefinementViewControllerSelectedRemoveMarkedLocation:(id)location
 {
-  v4 = a3;
-  v5 = [v4 originalMarkedLocation];
-  v6 = [v4 presentingViewController];
+  locationCopy = location;
+  originalMarkedLocation = [locationCopy originalMarkedLocation];
+  presentingViewController = [locationCopy presentingViewController];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10090AEA0;
   v9[3] = &unk_101661A40;
   v9[4] = self;
-  v10 = v4;
-  v11 = v5;
-  v7 = v5;
-  v8 = v4;
-  [v6 dismissViewControllerAnimated:1 completion:v9];
+  v10 = locationCopy;
+  v11 = originalMarkedLocation;
+  v7 = originalMarkedLocation;
+  v8 = locationCopy;
+  [presentingViewController dismissViewControllerAnimated:1 completion:v9];
 }
 
-- (void)locationRefinementViewController:(id)a3 didSelectCoordinate:(CLLocationCoordinate2D)a4
+- (void)locationRefinementViewController:(id)controller didSelectCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v8 = a3;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(ActionCoordinator *)self viewController:v8 createMarkedLocationAtCoordinate:0x7FFFFFFFLL floorOrdinal:latitude, longitude];
-    v7 = [v8 presentingViewController];
-    [v7 dismissViewControllerAnimated:1 completion:0];
+    [(ActionCoordinator *)self viewController:controllerCopy createMarkedLocationAtCoordinate:0x7FFFFFFFLL floorOrdinal:latitude, longitude];
+    presentingViewController = [controllerCopy presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
 - (int)currentMapViewTargetForAnalytics
 {
-  v3 = [(ActionCoordinator *)self currentViewController];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
+  currentViewController = [(ActionCoordinator *)self currentViewController];
+  v4 = [currentViewController conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(ActionCoordinator *)self currentViewController];
+  currentViewController2 = [(ActionCoordinator *)self currentViewController];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 currentMapViewTargetForAnalytics];
+    currentMapViewTargetForAnalytics = [currentViewController2 currentMapViewTargetForAnalytics];
   }
 
   else
   {
-    v6 = 0;
+    currentMapViewTargetForAnalytics = 0;
   }
 
-  return v6;
+  return currentMapViewTargetForAnalytics;
 }
 
 - (int)currentUITargetForAnalytics
 {
-  v3 = [(ActionCoordinator *)self currentViewController];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
+  currentViewController = [(ActionCoordinator *)self currentViewController];
+  v4 = [currentViewController conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(ActionCoordinator *)self currentViewController];
+  currentViewController2 = [(ActionCoordinator *)self currentViewController];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 currentUITargetForAnalytics];
+    currentUITargetForAnalytics = [currentViewController2 currentUITargetForAnalytics];
   }
 
   else
   {
-    v6 = 0;
+    currentUITargetForAnalytics = 0;
   }
 
-  return v6;
+  return currentUITargetForAnalytics;
 }
 
-- (void)pptTestPresentPlacecardWithMapItem:(id)a3
+- (void)pptTestPresentPlacecardWithMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [[PlaceCardItem alloc] initWithMapItem:v4];
+  itemCopy = item;
+  v5 = [[PlaceCardItem alloc] initWithMapItem:itemCopy];
 
   [(ActionCoordinator *)self presentPlaceCardForItem:v5 addToHistory:0 source:0 saveSelectionState:1];
 }
 
 - (void)pptTestStartNavigation
 {
-  v2 = [(ActionCoordinator *)self routePlanningOverviewViewController];
-  if ([v2 conformsToProtocol:&OBJC_PROTOCOL___PPTTestNavigationProtocol])
+  routePlanningOverviewViewController = [(ActionCoordinator *)self routePlanningOverviewViewController];
+  if ([routePlanningOverviewViewController conformsToProtocol:&OBJC_PROTOCOL___PPTTestNavigationProtocol])
   {
-    [v2 pptTestStartNavigation];
+    [routePlanningOverviewViewController pptTestStartNavigation];
   }
 }
 
-- (void)pptTestDoDirectionItem:(id)a3
+- (void)pptTestDoDirectionItem:(id)item
 {
   v6 = @"DirectionsSessionInitiatorKey";
   v7 = &off_1016E7808;
-  v4 = a3;
+  itemCopy = item;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
-  [(ActionCoordinator *)self viewController:0 doDirectionItem:v4 withUserInfo:v5];
+  [(ActionCoordinator *)self viewController:0 doDirectionItem:itemCopy withUserInfo:v5];
 }
 
-- (void)pptTestCreateCustomSearchResultForDroppedPinAtPoint:(CLLocationCoordinate2D)a3 animated:(BOOL)a4
+- (void)pptTestCreateCustomSearchResultForDroppedPinAtPoint:(CLLocationCoordinate2D)point animated:(BOOL)animated
 {
-  v5 = [SearchResult customSearchResultWithCoordinate:a4, a3.latitude, a3.longitude];
+  v5 = [SearchResult customSearchResultWithCoordinate:animated, point.latitude, point.longitude];
   [(ActionCoordinator *)self viewController:0 removeDroppedPin:0];
   [(ActionCoordinator *)self viewController:0 createDroppedPin:v5];
 }
 
 - (void)pptSelectFirstGuidePublisher
 {
-  v2 = [(ActionCoordinator *)self searchModeViewController];
-  [v2 pptSelectFirstGuidePublisher];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController pptSelectFirstGuidePublisher];
 }
 
 - (void)pptSelectSeeAllCuratedCollections
 {
-  v2 = [(ActionCoordinator *)self searchModeViewController];
-  [v2 pptSelectSeeAllCuratedCollections];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController pptSelectSeeAllCuratedCollections];
 }
 
-- (void)pptSelectACSuggestionMatchingAddress:(id)a3
+- (void)pptSelectACSuggestionMatchingAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self searchModeViewController];
-  [v5 pptSelectACSuggestionMatchingAddress:v4];
+  addressCopy = address;
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController pptSelectACSuggestionMatchingAddress:addressCopy];
 }
 
 - (void)pptSelectFirstCuratedGuide
 {
-  v2 = [(ActionCoordinator *)self searchModeViewController];
-  [v2 pptSelectFirstCuratedCollection];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController pptSelectFirstCuratedCollection];
 }
 
 - (void)pptTestSearchCancel
 {
   [(ActionCoordinator *)self pptAssertSearch];
-  v3 = [(ActionCoordinator *)self searchModeViewController];
-  [v3 conformsToProtocol:&OBJC_PROTOCOL___UISearchBarDelegate];
-  [v3 searchBarCancelButtonClicked:0];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController conformsToProtocol:&OBJC_PROTOCOL___UISearchBarDelegate];
+  [searchModeViewController searchBarCancelButtonClicked:0];
 }
 
 - (void)pptTestEnterSearchMode
 {
   [CATransaction setFrameStallSkipRequest:1];
   [(ActionCoordinator *)self pptAssertSearch];
-  v3 = [(ActionCoordinator *)self searchModeViewController];
-  [v3 pptSearchBarShouldProvideTextChangeNotification];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController pptSearchBarShouldProvideTextChangeNotification];
 
-  v4 = [(ActionCoordinator *)self currentViewController];
-  v5 = [v4 cardPresentationController];
-  [v5 wantsLayout:3];
+  currentViewController = [(ActionCoordinator *)self currentViewController];
+  cardPresentationController = [currentViewController cardPresentationController];
+  [cardPresentationController wantsLayout:3];
 
-  v6 = [(ActionCoordinator *)self searchModeViewController];
-  [v6 searchBarBecomeFirstResponder];
+  searchModeViewController2 = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController2 searchBarBecomeFirstResponder];
 }
 
-- (void)pptTestSearchForFieldItem:(id)a3
+- (void)pptTestSearchForFieldItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(ActionCoordinator *)self pptAssertSearch];
   v5 = +[UIApplication sharedApplication];
   [v5 sendAction:"resignFirstResponder" toTarget:0 fromSender:0 forEvent:0];
 
-  [(ActionCoordinator *)self viewController:0 doSearchItem:v4 withUserInfo:0];
+  [(ActionCoordinator *)self viewController:0 doSearchItem:itemCopy withUserInfo:0];
   v6 = +[UIDevice currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-  if (v7 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v8 = [(ActionCoordinator *)self searchModeViewController];
-    [v8 pptSetSearchDataSource];
+    searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+    [searchModeViewController pptSetSearchDataSource];
   }
 }
 
 - (void)pptAssertSearch
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  v5 = [(ActionCoordinator *)self currentViewController];
-  if (v4 != 5)
+  currentViewController = [(ActionCoordinator *)self currentViewController];
+  if (userInterfaceIdiom != 5)
   {
-    v6 = v5;
+    v6 = currentViewController;
     [(ActionCoordinator *)self searchModeViewController];
 
-    v5 = v6;
+    currentViewController = v6;
   }
 }
 
 - (void)pptTestSearchEndEditing
 {
-  v2 = [(ActionCoordinator *)self searchModeViewController];
-  [v2 endEditing];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController endEditing];
 }
 
-- (void)pptTestAutocompleteSearchForFieldItem:(id)a3
+- (void)pptTestAutocompleteSearchForFieldItem:(id)item
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self searchModeViewController];
-  [v5 updateSearchFieldWithItem:v4];
+  itemCopy = item;
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController updateSearchFieldWithItem:itemCopy];
 }
 
-- (void)pptTestSearchRetainQueryForSelectedSearchCompletion:(id)a3
+- (void)pptTestSearchRetainQueryForSelectedSearchCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self searchModeViewController];
-  [v5 retainSearchQueryForSelectedAutocompleteItem:v4 forTimeInterval:1.79769313e308];
+  completionCopy = completion;
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController retainSearchQueryForSelectedAutocompleteItem:completionCopy forTimeInterval:1.79769313e308];
 }
 
-- (void)pptTestSearchNearbyCategoryWithIndex:(unint64_t)a3
+- (void)pptTestSearchNearbyCategoryWithIndex:(unint64_t)index
 {
-  v4 = [(ActionCoordinator *)self searchModeViewController];
-  [v4 selectNearbyCategoryAtIndex:a3];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController selectNearbyCategoryAtIndex:index];
 }
 
-- (void)pptTestMediumizePlaceCardAnimated:(BOOL)a3
+- (void)pptTestMediumizePlaceCardAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  [WeakRetained setLayoutIfSupported:2 animated:v3];
+  [WeakRetained setLayoutIfSupported:2 animated:animatedCopy];
 }
 
-- (void)pptTestMinimizePlaceCardAnimated:(BOOL)a3
+- (void)pptTestMinimizePlaceCardAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  [WeakRetained setLayoutIfSupported:1 animated:v3];
+  [WeakRetained setLayoutIfSupported:1 animated:animatedCopy];
 }
 
-- (void)pptTestMaximizePlaceCardAnimated:(BOOL)a3
+- (void)pptTestMaximizePlaceCardAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  [WeakRetained setLayoutIfSupported:3 animated:v3];
+  [WeakRetained setLayoutIfSupported:3 animated:animatedCopy];
 }
 
 - (BOOL)pptTestCanResizePlacecard
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v3 = [WeakRetained containerStyle];
+  containerStyle = [WeakRetained containerStyle];
 
-  return ((v3 - 2) & 0xFFFFFFFFFFFFFFFALL) != 0;
+  return ((containerStyle - 2) & 0xFFFFFFFFFFFFFFFALL) != 0;
 }
 
-- (void)didTapMapView:(id)a3 atPoint:(CGPoint)a4
+- (void)didTapMapView:(id)view atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v26 = a3;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   if ([(ActionCoordinator *)self isRoutePlanningPresented])
   {
-    v7 = [(ActionCoordinator *)self containerViewController];
-    v8 = [v7 currentViewController];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    currentViewController = [containerViewController currentViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      [(RoutePlanningMapController *)self->_routePlanningMapController didTapMapView:v26 atPoint:x, y];
+      [(RoutePlanningMapController *)self->_routePlanningMapController didTapMapView:viewCopy atPoint:x, y];
     }
   }
 
-  v10 = [(ActionCoordinator *)self containerViewController];
-  v11 = [v10 chromeViewController];
+  containerViewController2 = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController2 chromeViewController];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [(ActionCoordinator *)self containerViewController];
-    v13 = [v12 chromeViewController];
-    v14 = [v13 mapViewShouldHandleTapToDeselect:v26];
+    containerViewController3 = [(ActionCoordinator *)self containerViewController];
+    chromeViewController2 = [containerViewController3 chromeViewController];
+    v14 = [chromeViewController2 mapViewShouldHandleTapToDeselect:viewCopy];
 
     if (!v14)
     {
@@ -3073,34 +3073,34 @@ LABEL_10:
   {
   }
 
-  v15 = [(ActionCoordinator *)self mapSelectionManager];
-  v16 = [v15 hasSelection];
+  mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+  hasSelection = [mapSelectionManager hasSelection];
 
-  if (v16)
+  if (hasSelection)
   {
-    v17 = [(ActionCoordinator *)self containerViewController];
-    v18 = [v17 chromeViewController];
-    [v18 setNeedsUpdateComponent:@"lookAroundButton" animated:1];
+    containerViewController4 = [(ActionCoordinator *)self containerViewController];
+    chromeViewController3 = [containerViewController4 chromeViewController];
+    [chromeViewController3 setNeedsUpdateComponent:@"lookAroundButton" animated:1];
 
-    v19 = [(ActionCoordinator *)self mapSelectionManager];
-    [v19 clearSelection];
+    mapSelectionManager2 = [(ActionCoordinator *)self mapSelectionManager];
+    [mapSelectionManager2 clearSelection];
   }
 
   else
   {
-    v20 = [(ActionCoordinator *)self lineSelectionAction];
-    v21 = [v20 isActive];
+    lineSelectionAction = [(ActionCoordinator *)self lineSelectionAction];
+    isActive = [lineSelectionAction isActive];
 
-    if (v21)
+    if (isActive)
     {
-      v19 = [(ActionCoordinator *)self lineSelectionAction];
-      [v19 deactivateWithContext:0];
+      mapSelectionManager2 = [(ActionCoordinator *)self lineSelectionAction];
+      [mapSelectionManager2 deactivateWithContext:0];
     }
 
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-      v23 = [WeakRetained currentViewController];
+      currentViewController2 = [WeakRetained currentViewController];
       objc_opt_class();
       v24 = objc_opt_isKindOfClass();
 
@@ -3109,32 +3109,32 @@ LABEL_10:
         goto LABEL_15;
       }
 
-      v19 = objc_loadWeakRetained(&self->_containerViewController);
-      v25 = [v19 currentViewController];
-      [(ActionCoordinator *)self viewControllerClosed:v25 animated:1];
+      mapSelectionManager2 = objc_loadWeakRetained(&self->_containerViewController);
+      currentViewController3 = [mapSelectionManager2 currentViewController];
+      [(ActionCoordinator *)self viewControllerClosed:currentViewController3 animated:1];
     }
   }
 
 LABEL_15:
 }
 
-- (void)viewControllerShowPhotoCredit:(id)a3
+- (void)viewControllerShowPhotoCredit:(id)credit
 {
-  v10 = a3;
-  v4 = [v10 parentViewController];
-  [v4 setIsPreparingForModalPresentation:1];
-  v5 = [v4 cardPresentationController];
-  [v5 updateHeightForCurrentLayoutAnimated:1];
+  creditCopy = credit;
+  parentViewController = [creditCopy parentViewController];
+  [parentViewController setIsPreparingForModalPresentation:1];
+  cardPresentationController = [parentViewController cardPresentationController];
+  [cardPresentationController updateHeightForCurrentLayoutAnimated:1];
 
   v6 = [[PhotoCreditViewController alloc] initWithCompletionHandler:&stru_10162EC18];
   [(ContaineeViewController *)v6 setContaineeDelegate:self];
-  [(PhotoCreditViewController *)v6 setDelegate:v4];
-  v7 = [(ActionCoordinator *)self containerViewController];
-  v8 = sub_10000FA08(v7);
+  [(PhotoCreditViewController *)v6 setDelegate:parentViewController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  v8 = sub_10000FA08(containerViewController);
 
   if (v8 == 5)
   {
-    [v10 presentViewController:v6 animated:1 completion:0];
+    [creditCopy presentViewController:v6 animated:1 completion:0];
   }
 
   else
@@ -3144,54 +3144,54 @@ LABEL_15:
   }
 }
 
-- (void)viewControllerPresentPOIEnrichmentWithCoordinator:(id)a3
+- (void)viewControllerPresentPOIEnrichmentWithCoordinator:(id)coordinator
 {
-  v10 = a3;
-  objc_storeStrong(&self->_poiEnrichmentCoordinator, a3);
+  coordinatorCopy = coordinator;
+  objc_storeStrong(&self->_poiEnrichmentCoordinator, coordinator);
   [(UGCPOIEnrichmentCoordinator *)self->_poiEnrichmentCoordinator setDelegate:self];
-  v5 = [(UGCPOIEnrichmentCoordinator *)self->_poiEnrichmentCoordinator containerViewController];
+  containerViewController = [(UGCPOIEnrichmentCoordinator *)self->_poiEnrichmentCoordinator containerViewController];
 
-  if (!v5)
+  if (!containerViewController)
   {
-    v6 = [(ActionCoordinator *)self containerViewController];
-    [(UGCPOIEnrichmentCoordinator *)self->_poiEnrichmentCoordinator setContainerViewController:v6];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
+    [(UGCPOIEnrichmentCoordinator *)self->_poiEnrichmentCoordinator setContainerViewController:containerViewController2];
   }
 
-  v7 = [(UGCPOIEnrichmentCoordinator *)self->_poiEnrichmentCoordinator containeeDelegate];
+  containeeDelegate = [(UGCPOIEnrichmentCoordinator *)self->_poiEnrichmentCoordinator containeeDelegate];
 
-  if (!v7)
+  if (!containeeDelegate)
   {
     [(UGCPOIEnrichmentCoordinator *)self->_poiEnrichmentCoordinator setContaineeDelegate:self];
   }
 
-  v8 = [(UGCPOIEnrichmentCoordinator *)self->_poiEnrichmentCoordinator presentingViewController];
+  presentingViewController = [(UGCPOIEnrichmentCoordinator *)self->_poiEnrichmentCoordinator presentingViewController];
 
-  if (!v8)
+  if (!presentingViewController)
   {
-    v9 = [(ActionCoordinator *)self containerViewController];
-    [(UGCPOIEnrichmentCoordinator *)self->_poiEnrichmentCoordinator setPresentingViewController:v9];
+    containerViewController3 = [(ActionCoordinator *)self containerViewController];
+    [(UGCPOIEnrichmentCoordinator *)self->_poiEnrichmentCoordinator setPresentingViewController:containerViewController3];
   }
 
   [(UGCPOIEnrichmentCoordinator *)self->_poiEnrichmentCoordinator present];
 }
 
-- (void)poiEnrichmentCoordinator:(id)a3 openURL:(id)a4
+- (void)poiEnrichmentCoordinator:(id)coordinator openURL:(id)l
 {
-  v6 = a4;
-  v7 = [a3 presentingViewController];
-  [(ActionCoordinator *)self viewController:v7 openURL:v6];
+  lCopy = l;
+  presentingViewController = [coordinator presentingViewController];
+  [(ActionCoordinator *)self viewController:presentingViewController openURL:lCopy];
 }
 
-- (void)poiEnrichmentCoordinatorDidFinish:(id)a3
+- (void)poiEnrichmentCoordinatorDidFinish:(id)finish
 {
   poiEnrichmentCoordinator = self->_poiEnrichmentCoordinator;
   self->_poiEnrichmentCoordinator = 0;
 }
 
-- (void)addRatingsForMapItem:(id)a3
+- (void)addRatingsForMapItem:(id)item
 {
-  v4 = a3;
-  v6 = [[MKMapItem alloc] initWithGeoMapItem:v4 isPlaceHolderPlace:0];
+  itemCopy = item;
+  v6 = [[MKMapItem alloc] initWithGeoMapItem:itemCopy isPlaceHolderPlace:0];
 
   v5 = [UGCPOIEnrichmentCoordinator ratingsAndPhotosCoordinatorWithMapItem:v6 initialOverallState:0 entryPoint:0 originTarget:@"SEARCH_TRAY"];
   [v5 setSubmissionStatusDelegate:self];
@@ -3199,17 +3199,17 @@ LABEL_15:
   [(ActionCoordinator *)self viewControllerPresentPOIEnrichmentWithCoordinator:v5];
 }
 
-- (void)presentPOIEnrichmentInformedConsentWithPresentationContext:(int64_t)a3 completion:(id)a4
+- (void)presentPOIEnrichmentInformedConsentWithPresentationContext:(int64_t)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(ActionCoordinator *)self containerViewController];
+  completionCopy = completion;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10090C010;
   v9[3] = &unk_10162EBD8;
-  v10 = v6;
-  v8 = v6;
-  [UGCInformedConsentViewController presentIfNeededWithPresentingViewController:v7 presentationContext:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [UGCInformedConsentViewController presentIfNeededWithPresentingViewController:containerViewController presentationContext:context completion:v9];
 }
 
 - (void)ensureRoutePlanningContentIsVisible
@@ -3249,49 +3249,49 @@ LABEL_15:
   }
 }
 
-- (void)continueRideBookingSessionWithApplicationIdentifier:(id)a3
+- (void)continueRideBookingSessionWithApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self appCoordinator];
-  [v5 continueRideBookingSessionWithApplicationIdentifier:v4];
+  identifierCopy = identifier;
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator continueRideBookingSessionWithApplicationIdentifier:identifierCopy];
 }
 
-- (void)startRideBookingSessionWithRideOption:(id)a3
+- (void)startRideBookingSessionWithRideOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   [(ActionCoordinator *)self setIsRoutePlanningPresented:0];
-  v5 = [(ActionCoordinator *)self appCoordinator];
-  [v5 startRideBookingSessionWithRideBookingRideOption:v4];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator startRideBookingSessionWithRideBookingRideOption:optionCopy];
 }
 
-- (void)startNavigationWithRouteCollection:(id)a3 navigationDetailsOptions:(NavigationDetailsOptions *)a4
+- (void)startNavigationWithRouteCollection:(id)collection navigationDetailsOptions:(NavigationDetailsOptions *)options
 {
-  v6 = a3;
-  v7 = [(ActionCoordinator *)self searchSessionManager];
-  v8 = [v7 currentSearchSession];
-  [v8 resetEVChargerTimers];
+  collectionCopy = collection;
+  searchSessionManager = [(ActionCoordinator *)self searchSessionManager];
+  currentSearchSession = [searchSessionManager currentSearchSession];
+  [currentSearchSession resetEVChargerTimers];
 
-  v9 = [(ActionCoordinator *)self appCoordinator];
-  v10 = *&a4->guidanceType;
-  v11[0] = *&a4->shouldSimulateLocations;
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  v10 = *&options->guidanceType;
+  v11[0] = *&options->shouldSimulateLocations;
   v11[1] = v10;
-  v11[2] = *&a4->isReconnecting;
-  navigationModeContext = a4->navigationModeContext;
-  [v9 startNavigationWithRouteCollection:v6 navigationDetailsOptions:v11];
+  v11[2] = *&options->isReconnecting;
+  navigationModeContext = options->navigationModeContext;
+  [appCoordinator startNavigationWithRouteCollection:collectionCopy navigationDetailsOptions:v11];
 }
 
-- (void)selectWaypointSearchFieldIndex:(unint64_t)a3 exitPlanningIfCancelTapped:(BOOL)a4 beginEditing:(BOOL)a5
+- (void)selectWaypointSearchFieldIndex:(unint64_t)index exitPlanningIfCancelTapped:(BOOL)tapped beginEditing:(BOOL)editing
 {
-  v5 = a4;
-  v7 = [(ActionCoordinator *)self routeSearchVC:a3];
-  [v7 setExitRoutePlanningOnCancel:v5];
-  [v7 selectFieldIndex:a3 beginEditing:0];
+  tappedCopy = tapped;
+  v7 = [(ActionCoordinator *)self routeSearchVC:index];
+  [v7 setExitRoutePlanningOnCancel:tappedCopy];
+  [v7 selectFieldIndex:index beginEditing:0];
 }
 
-- (void)presentScheduleForStep:(id)a3
+- (void)presentScheduleForStep:(id)step
 {
-  v4 = a3;
-  v8 = [[TransitSchedulesViewController alloc] initWithTransitRouteStep:v4];
+  stepCopy = step;
+  v8 = [[TransitSchedulesViewController alloc] initWithTransitRouteStep:stepCopy];
 
   [(TransitSchedulesViewController *)v8 setActionCoordinator:self];
   [(ContaineeViewController *)v8 setContaineeDelegate:self];
@@ -3299,64 +3299,64 @@ LABEL_15:
   [(ControlContaineeViewController *)v8 setDelegate:self];
   if (sub_10000FA08(v8) != 5)
   {
-    v5 = [(ContaineeViewController *)v8 cardPresentationController];
-    [v5 setPresentedModally:0];
+    cardPresentationController = [(ContaineeViewController *)v8 cardPresentationController];
+    [cardPresentationController setPresentedModally:0];
 
-    v6 = [(ContaineeViewController *)v8 cardPresentationController];
-    [v6 setTakesAvailableHeight:0];
+    cardPresentationController2 = [(ContaineeViewController *)v8 cardPresentationController];
+    [cardPresentationController2 setTakesAvailableHeight:0];
   }
 
-  v7 = [(ActionCoordinator *)self containerViewController];
-  [v7 presentController:v8 animated:1];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [containerViewController presentController:v8 animated:1];
 }
 
-- (void)setRoutePlanningAdvisory:(id)a3
+- (void)setRoutePlanningAdvisory:(id)advisory
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self incidentsVC];
-  [v5 setAdvisory:v4];
+  advisoryCopy = advisory;
+  incidentsVC = [(ActionCoordinator *)self incidentsVC];
+  [incidentsVC setAdvisory:advisoryCopy];
 }
 
-- (void)setRoutePlanningAdvisoriesInfo:(id)a3
+- (void)setRoutePlanningAdvisoriesInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self incidentsVC];
-  [v5 setAdvisoriesInfo:v4];
+  infoCopy = info;
+  incidentsVC = [(ActionCoordinator *)self incidentsVC];
+  [incidentsVC setAdvisoriesInfo:infoCopy];
 }
 
-- (void)closeRoutePlanningViewController:(id)a3 withSender:(id)a4
+- (void)closeRoutePlanningViewController:(id)controller withSender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  senderCopy = sender;
   v8 = sub_100798A3C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *v33 = 138412546;
-    *&v33[4] = v6;
+    *&v33[4] = controllerCopy;
     v34 = 2112;
-    v35 = v7;
+    v35 = senderCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "closeRoutePlanningViewController: %@ sender: %@", v33, 0x16u);
   }
 
-  v9 = [(ActionCoordinator *)self containerViewController];
-  v10 = [v9 traitCollection];
-  v11 = [v10 userInterfaceIdiom];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  traitCollection = [containerViewController traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v11 != 5 || [v6 modalPresentationStyle] != 7)
+  if (userInterfaceIdiom != 5 || [controllerCopy modalPresentationStyle] != 7)
   {
-    v12 = [(ActionCoordinator *)self currentViewController];
+    currentViewController = [(ActionCoordinator *)self currentViewController];
 
-    if (v12 != v6)
+    if (currentViewController != controllerCopy)
     {
-      v13 = sub_100798A3C();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      routePlanningOverviewViewControllerIfLoaded = sub_100798A3C();
+      if (os_log_type_enabled(routePlanningOverviewViewControllerIfLoaded, OS_LOG_TYPE_ERROR))
       {
-        v14 = [(ActionCoordinator *)self currentViewController];
+        currentViewController2 = [(ActionCoordinator *)self currentViewController];
         *v33 = 138412546;
-        *&v33[4] = v14;
+        *&v33[4] = currentViewController2;
         v34 = 2112;
-        v35 = v6;
-        _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Aborting closing route planning as %@ does not equal %@", v33, 0x16u);
+        v35 = controllerCopy;
+        _os_log_impl(&_mh_execute_header, routePlanningOverviewViewControllerIfLoaded, OS_LOG_TYPE_ERROR, "Aborting closing route planning as %@ does not equal %@", v33, 0x16u);
       }
 
 LABEL_41:
@@ -3367,23 +3367,23 @@ LABEL_41:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v6 presentedViewController];
+      presentedViewController = [controllerCopy presentedViewController];
 
-      if (v15)
+      if (presentedViewController)
       {
-        v16 = [(ActionCoordinator *)self containerViewController];
-        [v16 dismissViewControllerAnimated:1 completion:0];
+        containerViewController2 = [(ActionCoordinator *)self containerViewController];
+        [containerViewController2 dismissViewControllerAnimated:1 completion:0];
 
         goto LABEL_42;
       }
     }
 
-    v13 = [(ActionCoordinator *)self routePlanningOverviewViewControllerIfLoaded];
-    if (v13)
+    routePlanningOverviewViewControllerIfLoaded = [(ActionCoordinator *)self routePlanningOverviewViewControllerIfLoaded];
+    if (routePlanningOverviewViewControllerIfLoaded)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      if (v13 == v6 || (isKindOfClass & 1) == 0)
+      if (routePlanningOverviewViewControllerIfLoaded == controllerCopy || (isKindOfClass & 1) == 0)
       {
         goto LABEL_21;
       }
@@ -3413,8 +3413,8 @@ LABEL_21:
     IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
     objc_opt_class();
     v21 = objc_opt_isKindOfClass();
-    v22 = [(ActionCoordinator *)self platformController];
-    v23 = [v22 currentSession];
+    platformController = [(ActionCoordinator *)self platformController];
+    currentSession = [platformController currentSession];
     if (v21)
     {
       objc_opt_class();
@@ -3425,8 +3425,8 @@ LABEL_21:
 
       else
       {
-        v27 = [(ActionCoordinator *)self platformController];
-        v28 = [v27 previousSession];
+        platformController2 = [(ActionCoordinator *)self platformController];
+        previousSession = [platformController2 previousSession];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -3449,24 +3449,24 @@ LABEL_21:
 
       if (v25)
       {
-        v26 = [(ActionCoordinator *)self containerViewController];
-        [v26 popLastViewControllerFromViewController:v6 animated:!IsReduceMotionEnabled useDefaultContaineeLayout:0];
+        containerViewController3 = [(ActionCoordinator *)self containerViewController];
+        [containerViewController3 popLastViewControllerFromViewController:controllerCopy animated:!IsReduceMotionEnabled useDefaultContaineeLayout:0];
       }
 
       else
       {
         objc_opt_class();
-        if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || v11 == 5 && _UISolariumEnabled() && (objc_opt_class(), (objc_opt_isKindOfClass()))
+        if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || userInterfaceIdiom == 5 && _UISolariumEnabled() && (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          v26 = [(ActionCoordinator *)self containerViewController];
-          [v26 popLastViewControllerAnimated:!IsReduceMotionEnabled];
+          containerViewController3 = [(ActionCoordinator *)self containerViewController];
+          [containerViewController3 popLastViewControllerAnimated:!IsReduceMotionEnabled];
         }
 
         else
         {
-          v31 = [(ActionCoordinator *)self isRoutePlanningPresented];
-          v26 = [(ActionCoordinator *)self containerViewController];
-          if (v31)
+          isRoutePlanningPresented = [(ActionCoordinator *)self isRoutePlanningPresented];
+          containerViewController3 = [(ActionCoordinator *)self containerViewController];
+          if (isRoutePlanningPresented)
           {
             [(ActionCoordinator *)self routePlanningOverviewViewController];
           }
@@ -3476,19 +3476,19 @@ LABEL_21:
             [(ActionCoordinator *)self routeSearchVC];
           }
           v32 = ;
-          [v26 popLastViewControllerFromViewController:v32 animated:!IsReduceMotionEnabled useDefaultContaineeLayout:0];
+          [containerViewController3 popLastViewControllerFromViewController:v32 animated:!IsReduceMotionEnabled useDefaultContaineeLayout:0];
         }
       }
     }
 
     incidentsVC = self->_incidentsVC;
-    if (incidentsVC == v6)
+    if (incidentsVC == controllerCopy)
     {
       [(RouteIncidentsViewController *)incidentsVC resetForDismiss];
     }
 
     routeSearchVC = self->_routeSearchVC;
-    if (routeSearchVC == v6)
+    if (routeSearchVC == controllerCopy)
     {
       self->_routeSearchVC = 0;
     }
@@ -3496,37 +3496,37 @@ LABEL_21:
     goto LABEL_41;
   }
 
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
 LABEL_42:
 }
 
-- (void)_presentMacRouteEditingWithEditRequired:(unint64_t)a3 index:(unint64_t)a4
+- (void)_presentMacRouteEditingWithEditRequired:(unint64_t)required index:(unint64_t)index
 {
   [(ActionCoordinator *)self presentRoutePlanningViewType:1];
-  if (a3)
+  if (required)
   {
-    v9 = [self->_currentDirectionItem items];
-    v7 = [(ActionCoordinator *)self routeSearchVC];
-    [v7 updateWithItems:v9];
+    items = [self->_currentDirectionItem items];
+    routeSearchVC = [(ActionCoordinator *)self routeSearchVC];
+    [routeSearchVC updateWithItems:items];
 
-    if ([v9 count] > a4)
+    if ([items count] > index)
     {
-      v8 = [(ActionCoordinator *)self routeSearchVC];
-      [v8 selectFieldIndex:a4 beginEditing:1];
+      routeSearchVC2 = [(ActionCoordinator *)self routeSearchVC];
+      [routeSearchVC2 selectFieldIndex:index beginEditing:1];
     }
   }
 }
 
-- (void)presentPreferredNetworksOnboardingForVehicle:(id)a3
+- (void)presentPreferredNetworksOnboardingForVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = sub_100798370();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -3534,49 +3534,49 @@ LABEL_42:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(ActionCoordinator *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(ActionCoordinator *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543874;
-    v17 = v11;
+    v17 = selfCopy;
     v18 = 2080;
     v19 = "[ActionCoordinator presentPreferredNetworksOnboardingForVehicle:]";
     v20 = 2112;
-    v21 = v4;
+    v21 = vehicleCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] %s, vehicle: %@", buf, 0x20u);
   }
 
-  v12 = [[PreferredNetworksOnboardingController alloc] initWithVehicle:v4];
+  v12 = [[PreferredNetworksOnboardingController alloc] initWithVehicle:vehicleCopy];
   preferredNetworksOnboardingController = self->_preferredNetworksOnboardingController;
   self->_preferredNetworksOnboardingController = v12;
 
   v14 = self->_preferredNetworksOnboardingController;
-  v15 = [(ActionCoordinator *)self containerViewController];
-  [(PreferredNetworksOnboardingController *)v14 presentInViewController:v15 animated:1 completion:0];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [(PreferredNetworksOnboardingController *)v14 presentInViewController:containerViewController animated:1 completion:0];
 }
 
-- (void)presentVehicleOnboardingWithVehicles:(id)a3 completion:(id)a4
+- (void)presentVehicleOnboardingWithVehicles:(id)vehicles completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  vehiclesCopy = vehicles;
+  completionCopy = completion;
   v8 = sub_100798370();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = self;
-    if (!v9)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v14 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -3584,77 +3584,77 @@ LABEL_10:
     v11 = NSStringFromClass(v10);
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(ActionCoordinator *)v9 performSelector:"accessibilityIdentifier"];
+      v12 = [(ActionCoordinator *)selfCopy performSelector:"accessibilityIdentifier"];
       v13 = v12;
       if (v12 && ![v12 isEqualToString:v11])
       {
-        v14 = [NSString stringWithFormat:@"%@<%p, %@>", v11, v9, v13];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v11, selfCopy, v13];
 
         goto LABEL_8;
       }
     }
 
-    v14 = [NSString stringWithFormat:@"%@<%p>", v11, v9];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v11, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543874;
-    v20 = v14;
+    v20 = selfCopy;
     v21 = 2080;
     v22 = "[ActionCoordinator presentVehicleOnboardingWithVehicles:completion:]";
     v23 = 2112;
-    v24 = v6;
+    v24 = vehiclesCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] %s, vehicles: %@", buf, 0x20u);
   }
 
-  v15 = [[EVOnboardingController alloc] initWithUnpairedVehicles:v6];
+  v15 = [[EVOnboardingController alloc] initWithUnpairedVehicles:vehiclesCopy];
   vehicleOnboardingController = self->_vehicleOnboardingController;
   self->_vehicleOnboardingController = v15;
 
   v17 = self->_vehicleOnboardingController;
-  v18 = [(ActionCoordinator *)self containerViewController];
-  [(EVOnboardingController *)v17 presentInViewController:v18 animated:1 completion:v7];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [(EVOnboardingController *)v17 presentInViewController:containerViewController animated:1 completion:completionCopy];
 }
 
-- (void)presentEditNoteViewControllerWithInitialText:(id)a3 libraryAccessProvider:(id)a4 placeMUID:(unint64_t)a5 completion:(id)a6
+- (void)presentEditNoteViewControllerWithInitialText:(id)text libraryAccessProvider:(id)provider placeMUID:(unint64_t)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = objc_retainBlock(v12);
+  textCopy = text;
+  providerCopy = provider;
+  completionCopy = completion;
+  v13 = objc_retainBlock(completionCopy);
   noteEditorCompletionBlock = self->_noteEditorCompletionBlock;
   self->_noteEditorCompletionBlock = v13;
 
-  v15 = [[_TtC4Maps27PlaceNoteEditViewController alloc] initWithNote:v10];
+  v15 = [[_TtC4Maps27PlaceNoteEditViewController alloc] initWithNote:textCopy];
   objc_initWeak(&location, self);
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10090D0D8;
   v19[3] = &unk_10162EBB0;
   objc_copyWeak(v22, &location);
-  v16 = v11;
+  v16 = providerCopy;
   v20 = v16;
-  v22[1] = a5;
-  v17 = v10;
+  v22[1] = d;
+  v17 = textCopy;
   v21 = v17;
   [(PlaceNoteEditViewController *)v15 setDismissHandler:v19];
-  v18 = [(ActionCoordinator *)self containerViewController];
-  [v18 presentController:v15 animated:1];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [containerViewController presentController:v15 animated:1];
 
   objc_destroyWeak(v22);
   objc_destroyWeak(&location);
 }
 
-- (void)_carPlayWantsToDisplayEVOnboarding:(id)a3
+- (void)_carPlayWantsToDisplayEVOnboarding:(id)onboarding
 {
-  v4 = a3;
+  onboardingCopy = onboarding;
   if ([(EVOnboardingController *)self->_vehicleOnboardingController state]< 1 || [(EVOnboardingController *)self->_vehicleOnboardingController state]> 4)
   {
-    v5 = [v4 userInfo];
-    v6 = [v5 objectForKeyedSubscript:@"EVOnboardingCarPlayVehicleKey"];
+    userInfo = [onboardingCopy userInfo];
+    v6 = [userInfo objectForKeyedSubscript:@"EVOnboardingCarPlayVehicleKey"];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [v5 objectForKeyedSubscript:@"EVOnboardingCarPlayDictionaryKey"];
+      v7 = [userInfo objectForKeyedSubscript:@"EVOnboardingCarPlayDictionaryKey"];
       if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v8 = sub_100798370();
@@ -3687,7 +3687,7 @@ LABEL_10:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
         {
           *buf = 138412290;
-          v16 = v5;
+          v16 = userInfo;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_FAULT, "_carPlayWantsToDisplayEVOnboarding: Received invalid dictionaryKey object through notification: %@", buf, 0xCu);
         }
       }
@@ -3699,7 +3699,7 @@ LABEL_10:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v16 = v5;
+        v16 = userInfo;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_FAULT, "_carPlayWantsToDisplayEVOnboarding: Received invalid vehicle object through notification: %@", buf, 0xCu);
       }
     }
@@ -3707,21 +3707,21 @@ LABEL_10:
 
   else
   {
-    v5 = sub_100798370();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    userInfo = sub_100798370();
+    if (os_log_type_enabled(userInfo, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "_carPlayWantsToDisplayEVOnboarding: will not present another CP onboarding as we have already presented one.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, userInfo, OS_LOG_TYPE_ERROR, "_carPlayWantsToDisplayEVOnboarding: will not present another CP onboarding as we have already presented one.", buf, 2u);
     }
   }
 }
 
-- (void)switchRoutePlanningTransportTypeToType:(int64_t)a3
+- (void)switchRoutePlanningTransportTypeToType:(int64_t)type
 {
   if (self->_routePlanningDataCoordinator)
   {
-    v7 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-    [v7 updateTransportType:a3];
+    routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+    [routePlanningDataCoordinator updateTransportType:type];
   }
 
   else
@@ -3754,62 +3754,62 @@ LABEL_10:
 
 - (void)refreshRoutePlanningTimingIfNeeded
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v11 = [v3 currentOrPendingViewController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  currentOrPendingViewController = [containerViewController currentOrPendingViewController];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = v11;
+  v5 = currentOrPendingViewController;
   if (isKindOfClass)
   {
-    v6 = v11;
-    v7 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-    v8 = [v7 routeCollection];
-    v9 = [v8 currentRoute];
+    v6 = currentOrPendingViewController;
+    routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+    routeCollection = [routePlanningDataCoordinator routeCollection];
+    currentRoute = [routeCollection currentRoute];
 
-    if (v9)
+    if (currentRoute)
     {
-      v10 = [v9 shouldShowSchedule];
+      shouldShowSchedule = [currentRoute shouldShowSchedule];
     }
 
     else
     {
-      v10 = 0;
+      shouldShowSchedule = 0;
     }
 
-    [v6 setShowArriveBy:v10 animated:1];
+    [v6 setShowArriveBy:shouldShowSchedule animated:1];
 
-    v5 = v11;
+    v5 = currentOrPendingViewController;
   }
 }
 
-- (void)presentRoutePlanningViewType:(int64_t)a3
+- (void)presentRoutePlanningViewType:(int64_t)type
 {
   v5 = sub_100798A3C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v34 = a3;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "presentRoutePlanningViewType: %ld", buf, 0xCu);
   }
 
   IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
   v7 = IsReduceMotionEnabled;
   v8 = 0;
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 > 5)
+    if (type > 5)
     {
-      if (a3 != 6)
+      if (type != 6)
       {
-        if (a3 == 7)
+        if (type == 7)
         {
-          v9 = [(ActionCoordinator *)self autosharingVC];
-          v23 = [(PlatformController *)self->_platformController currentSession];
+          autosharingVC = [(ActionCoordinator *)self autosharingVC];
+          currentSession = [(PlatformController *)self->_platformController currentSession];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v24 = v23;
+            v24 = currentSession;
           }
 
           else
@@ -3819,11 +3819,11 @@ LABEL_10:
 
           v25 = v24;
 
-          v26 = [v25 automaticSharingContacts];
+          automaticSharingContacts = [v25 automaticSharingContacts];
 
-          if (v26)
+          if (automaticSharingContacts)
           {
-            v27 = v26;
+            v27 = automaticSharingContacts;
           }
 
           else
@@ -3831,47 +3831,47 @@ LABEL_10:
             v27 = &__NSArray0__struct;
           }
 
-          [(RoutePlanningEbikeOptionsViewController *)v9 setContacts:v27];
+          [(RoutePlanningEbikeOptionsViewController *)autosharingVC setContacts:v27];
         }
 
         else
         {
-          v9 = 0;
-          if (a3 != 8)
+          autosharingVC = 0;
+          if (type != 8)
           {
 LABEL_28:
-            if ([(RoutePlanningEbikeOptionsViewController *)v9 modalPresentationStyle]== 7)
+            if ([(RoutePlanningEbikeOptionsViewController *)autosharingVC modalPresentationStyle]== 7)
             {
-              v19 = [(RoutePlanningEbikeOptionsViewController *)v9 popoverPresentationController];
-              v20 = [v19 delegate];
+              popoverPresentationController = [(RoutePlanningEbikeOptionsViewController *)autosharingVC popoverPresentationController];
+              delegate = [popoverPresentationController delegate];
 
-              if (!v20)
+              if (!delegate)
               {
-                v21 = [(RoutePlanningEbikeOptionsViewController *)v9 popoverPresentationController];
-                [v21 setDelegate:self];
+                popoverPresentationController2 = [(RoutePlanningEbikeOptionsViewController *)autosharingVC popoverPresentationController];
+                [popoverPresentationController2 setDelegate:self];
               }
 
-              v22 = [(ActionCoordinator *)self containerViewController];
-              [v22 _maps_topMostPresentViewController:v9 animated:!v7 completion:0];
+              containerViewController = [(ActionCoordinator *)self containerViewController];
+              [containerViewController _maps_topMostPresentViewController:autosharingVC animated:!v7 completion:0];
             }
 
             else
             {
-              v22 = [(ActionCoordinator *)self containerViewController];
-              [v22 presentController:v9 animated:!v7 completion:v8];
+              containerViewController = [(ActionCoordinator *)self containerViewController];
+              [containerViewController presentController:autosharingVC animated:!v7 completion:v8];
             }
 
             return;
           }
 
           v10 = [RoutePlanningEbikeOptionsViewController alloc];
-          v11 = [(ActionCoordinator *)self routePlanningDataCoordinator];
+          routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
           v30[0] = _NSConcreteStackBlock;
           v30[1] = 3221225472;
           v30[2] = sub_10090DD0C;
           v30[3] = &unk_10162E5D0;
           v30[4] = self;
-          v9 = [(RoutePlanningOptionsViewController *)v10 initWithDataCoordinator:v11 automaticallySaveChanges:0 completionHandler:v30];
+          autosharingVC = [(RoutePlanningOptionsViewController *)v10 initWithDataCoordinator:routePlanningDataCoordinator automaticallySaveChanges:0 completionHandler:v30];
         }
 
 LABEL_27:
@@ -3879,13 +3879,13 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      v18 = [(ActionCoordinator *)self routingAppsVC];
+      routingAppsVC = [(ActionCoordinator *)self routingAppsVC];
 LABEL_26:
-      v9 = v18;
+      autosharingVC = routingAppsVC;
       goto LABEL_27;
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
       [(ActionCoordinator *)self routeOptionsVC];
     }
@@ -3895,13 +3895,13 @@ LABEL_26:
       [(ActionCoordinator *)self incidentsVC];
     }
 
-    v18 = LABEL_19:;
+    routingAppsVC = LABEL_19:;
     goto LABEL_26;
   }
 
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       [(ActionCoordinator *)self routeStepsVC];
     }
@@ -3914,34 +3914,34 @@ LABEL_26:
     goto LABEL_19;
   }
 
-  if (!a3)
+  if (!type)
   {
     [(ActionCoordinator *)self _enterRoutePlanningOverviewAnimated:!IsReduceMotionEnabled completion:0];
     return;
   }
 
-  v9 = 0;
-  if (a3 != 1)
+  autosharingVC = 0;
+  if (type != 1)
   {
     goto LABEL_28;
   }
 
-  v12 = [(ActionCoordinator *)self routeSearchVC];
-  [v12 setPauseSelectionUpdates:1];
+  routeSearchVC = [(ActionCoordinator *)self routeSearchVC];
+  [routeSearchVC setPauseSelectionUpdates:1];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_10090DCCC;
   v31[3] = &unk_101661738;
-  v13 = v12;
+  v13 = routeSearchVC;
   v32 = v13;
   v8 = objc_retainBlock(v31);
   [v13 updateFieldsWithCurrentDirectionItem];
   if ((_UISolariumEnabled() & 1) != 0 || (-[ActionCoordinator containerViewController](self, "containerViewController"), v14 = objc_claimAutoreleasedReturnValue(), [v14 traitCollection], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "userInterfaceIdiom"), v15, v14, v16 != 5))
   {
-    v28 = [(ActionCoordinator *)self containerViewController];
-    [v28 removeControllerFromStack:v13];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
+    [containerViewController2 removeControllerFromStack:v13];
 
-    v9 = v13;
+    autosharingVC = v13;
     v29 = +[MKMapService sharedService];
     [v29 captureUserAction:3006 onTarget:-[ActionCoordinator currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 
@@ -3950,8 +3950,8 @@ LABEL_26:
 
   if ([self->_currentDirectionItem transportType])
   {
-    v17 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-    [v17 updateTransportType:{-[DirectionItem transportType](self->_currentDirectionItem, "transportType")}];
+    routePlanningDataCoordinator2 = [(ActionCoordinator *)self routePlanningDataCoordinator];
+    [routePlanningDataCoordinator2 updateTransportType:{-[DirectionItem transportType](self->_currentDirectionItem, "transportType")}];
   }
 
   [(ActionCoordinator *)self _enterRoutePlanningOverviewAnimated:1 completion:v8];
@@ -3977,34 +3977,34 @@ LABEL_26:
   }
 }
 
-- (void)routePlanningUpdatedWaypoints:(id)a3
+- (void)routePlanningUpdatedWaypoints:(id)waypoints
 {
-  v4 = a3;
-  if (v4)
+  waypointsCopy = waypoints;
+  if (waypointsCopy)
   {
-    v16 = v4;
-    v5 = [(ActionCoordinator *)self containerViewController];
-    v6 = [v5 currentViewController];
+    v16 = waypointsCopy;
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    currentViewController = [containerViewController currentViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v4 = v16;
+    waypointsCopy = v16;
     if (isKindOfClass)
     {
-      v8 = [(ActionCoordinator *)self containerViewController];
-      v9 = [v8 currentViewController];
+      containerViewController2 = [(ActionCoordinator *)self containerViewController];
+      currentViewController2 = [containerViewController2 currentViewController];
 
-      v10 = [v16 origin];
-      v11 = [v10 geoMapItem];
-      v12 = [v11 timezone];
-      [v9 setOriginTimeZone:v12];
+      origin = [v16 origin];
+      geoMapItem = [origin geoMapItem];
+      timezone = [geoMapItem timezone];
+      [currentViewController2 setOriginTimeZone:timezone];
 
-      v13 = [v16 destination];
-      v14 = [v13 geoMapItem];
-      v15 = [v14 timezone];
-      [v9 setDestinationTimeZone:v15];
+      destination = [v16 destination];
+      geoMapItem2 = [destination geoMapItem];
+      timezone2 = [geoMapItem2 timezone];
+      [currentViewController2 setDestinationTimeZone:timezone2];
 
-      v4 = v16;
+      waypointsCopy = v16;
     }
   }
 }
@@ -4013,26 +4013,26 @@ LABEL_26:
 {
   if (self->_routePlanningDataCoordinator)
   {
-    v3 = [(ActionCoordinator *)self mapSelectionManager];
-    v4 = [v3 hasSelection];
+    mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+    hasSelection = [mapSelectionManager hasSelection];
 
-    if (v4)
+    if (hasSelection)
     {
-      v5 = [(ActionCoordinator *)self mapSelectionManager];
-      [v5 clearSelection];
+      mapSelectionManager2 = [(ActionCoordinator *)self mapSelectionManager];
+      [mapSelectionManager2 clearSelection];
     }
 
     [(ActionCoordinator *)self updateMapApplicationState:1];
-    v6 = [(ActionCoordinator *)self routePlanningMapController];
-    [v6 setSelectCurrentRoute:1];
+    routePlanningMapController = [(ActionCoordinator *)self routePlanningMapController];
+    [routePlanningMapController setSelectCurrentRoute:1];
   }
 }
 
-- (void)_cleanupRoutePlanningIfNeededAnimated:(BOOL)a3
+- (void)_cleanupRoutePlanningIfNeededAnimated:(BOOL)animated
 {
   if (self->_routePlanningDataCoordinator)
   {
-    v3 = a3;
+    animatedCopy = animated;
     if ([(ActionCoordinator *)self isRoutePlanningPresented]|| [(ActionCoordinator *)self _isRoutePlanningTopMost])
     {
       if (![(ActionCoordinator *)self isRoutePlanningPresented])
@@ -4065,26 +4065,26 @@ LABEL_26:
       }
 
       [(ActionCoordinator *)self setIsRoutePlanningPresented:0];
-      v5 = [(ActionCoordinator *)self platformController];
-      v6 = [v5 currentSession];
+      platformController = [(ActionCoordinator *)self platformController];
+      currentSession = [platformController currentSession];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0)
       {
-        v8 = [(ActionCoordinator *)self routePlanningMapController];
-        [v8 clearMapState:v3];
+        routePlanningMapController = [(ActionCoordinator *)self routePlanningMapController];
+        [routePlanningMapController clearMapState:animatedCopy];
 
-        [(RoutePlanningMapController *)self->_routePlanningMapController restoreOriginalMapViewMode:v3];
+        [(RoutePlanningMapController *)self->_routePlanningMapController restoreOriginalMapViewMode:animatedCopy];
         [(ActionCoordinator *)self updateMapApplicationState:0];
       }
 
-      v9 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-      [v9 stop];
+      routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+      [routePlanningDataCoordinator stop];
 
-      v10 = [(ActionCoordinator *)self containerViewController];
-      v11 = [v10 chromeViewController];
-      [v11 setNeedsUpdateComponent:@"lookAroundButton" animated:1];
+      containerViewController = [(ActionCoordinator *)self containerViewController];
+      chromeViewController = [containerViewController chromeViewController];
+      [chromeViewController setNeedsUpdateComponent:@"lookAroundButton" animated:1];
       goto LABEL_8;
     }
   }
@@ -4105,16 +4105,16 @@ LABEL_26:
 
     if (sub_100E03634())
     {
-      v10 = sub_10006D178();
-      if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      containerViewController = sub_10006D178();
+      if (!os_log_type_enabled(containerViewController, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_9;
       }
 
-      v11 = +[NSThread callStackSymbols];
+      chromeViewController = +[NSThread callStackSymbols];
       v16 = 138412290;
-      v17 = v11;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%@", &v16, 0xCu);
+      v17 = chromeViewController;
+      _os_log_impl(&_mh_execute_header, containerViewController, OS_LOG_TYPE_ERROR, "%@", &v16, 0xCu);
 LABEL_8:
 
 LABEL_9:
@@ -4122,32 +4122,32 @@ LABEL_9:
   }
 }
 
-- (void)_exitRoutePlanningIfNeededAnimated:(BOOL)a3 restoreStashedMapSelection:(BOOL)a4
+- (void)_exitRoutePlanningIfNeededAnimated:(BOOL)animated restoreStashedMapSelection:(BOOL)selection
 {
   if (self->_routePlanningDataCoordinator)
   {
-    v4 = a4;
-    v5 = a3;
+    selectionCopy = selection;
+    animatedCopy = animated;
     v7 = sub_100798A3C();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v28 = 134349568;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 1024;
-      *v31 = v5;
+      *v31 = animatedCopy;
       *&v31[4] = 1024;
-      *&v31[6] = v4;
+      *&v31[6] = selectionCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] _exitRoutePlanningIfNeededAnimated: %d, restoreStashedMapSelection: %d", &v28, 0x18u);
     }
 
     if (![(ActionCoordinator *)self isRoutePlanningPresented]&& ![(ActionCoordinator *)self _isRoutePlanningTopMost])
     {
-      v10 = sub_100798A3C();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      destination = sub_100798A3C();
+      if (os_log_type_enabled(destination, OS_LOG_TYPE_INFO))
       {
         v28 = 134349056;
-        v29 = self;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}p] _exitRoutePlanningIfNeededAnimated: Route planning is not presented; ignoring", &v28, 0xCu);
+        selfCopy2 = self;
+        _os_log_impl(&_mh_execute_header, destination, OS_LOG_TYPE_INFO, "[%{public}p] _exitRoutePlanningIfNeededAnimated: Route planning is not presented; ignoring", &v28, 0xCu);
       }
 
       goto LABEL_25;
@@ -4159,7 +4159,7 @@ LABEL_9:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         v28 = 136315906;
-        v29 = "[ActionCoordinator _exitRoutePlanningIfNeededAnimated:restoreStashedMapSelection:]";
+        selfCopy2 = "[ActionCoordinator _exitRoutePlanningIfNeededAnimated:restoreStashedMapSelection:]";
         v30 = 2080;
         *v31 = "ActionCoordinator.m";
         *&v31[8] = 1024;
@@ -4176,33 +4176,33 @@ LABEL_9:
         {
           v27 = +[NSThread callStackSymbols];
           v28 = 138412290;
-          v29 = v27;
+          selfCopy2 = v27;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%@", &v28, 0xCu);
         }
       }
     }
 
     [(ActionCoordinator *)self clearSearchIfOriginatedFromWaypointEditor];
-    v8 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-    v9 = [v8 resolvedWaypointSet];
-    v10 = [v9 destination];
+    routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+    resolvedWaypointSet = [routePlanningDataCoordinator resolvedWaypointSet];
+    destination = [resolvedWaypointSet destination];
 
-    [(ActionCoordinator *)self _cleanupRoutePlanningIfNeededAnimated:v5];
-    v11 = [(ActionCoordinator *)self routePlanningOverviewViewController];
-    v12 = [(ActionCoordinator *)self currentViewController];
-    v13 = [(ActionCoordinator *)self venueCardCoordinator];
-    v14 = [v13 topViewController];
+    [(ActionCoordinator *)self _cleanupRoutePlanningIfNeededAnimated:animatedCopy];
+    routePlanningOverviewViewController = [(ActionCoordinator *)self routePlanningOverviewViewController];
+    currentViewController = [(ActionCoordinator *)self currentViewController];
+    venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+    topViewController = [venueCardCoordinator topViewController];
 
-    if (v12 == v14)
+    if (currentViewController == topViewController)
     {
-      v15 = [(ActionCoordinator *)self venueCardCoordinator];
-      [v15 popVenueCardItem:0];
+      venueCardCoordinator2 = [(ActionCoordinator *)self venueCardCoordinator];
+      [venueCardCoordinator2 popVenueCardItem:0];
     }
 
-    v16 = [(ActionCoordinator *)self containerViewController];
-    [v16 popLastViewControllerFromViewController:v11 animated:v5 useDefaultContaineeLayout:0];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    [containerViewController popLastViewControllerFromViewController:routePlanningOverviewViewController animated:animatedCopy useDefaultContaineeLayout:0];
 
-    if (!v4)
+    if (!selectionCopy)
     {
 LABEL_22:
       v23 = sub_100798A3C();
@@ -4222,8 +4222,8 @@ LABEL_25:
     v17 = self->_routePlanningSelectionRestorationState;
     if (v17)
     {
-      v18 = [(ActionCoordinator *)self mapSelectionManager];
-      [v18 restoreSelectionState:v17 animated:v5];
+      mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+      [mapSelectionManager restoreSelectionState:v17 animated:animatedCopy];
     }
 
     else
@@ -4239,7 +4239,7 @@ LABEL_21:
       }
     }
 
-    [(ActionCoordinator *)self viewController:0 selectLastDirectionsDestinationComposedWaypoint:v10];
+    [(ActionCoordinator *)self viewController:0 selectLastDirectionsDestinationComposedWaypoint:destination];
     goto LABEL_21;
   }
 
@@ -4247,7 +4247,7 @@ LABEL_21:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
     v28 = 136315650;
-    v29 = "[ActionCoordinator _exitRoutePlanningIfNeededAnimated:restoreStashedMapSelection:]";
+    selfCopy2 = "[ActionCoordinator _exitRoutePlanningIfNeededAnimated:restoreStashedMapSelection:]";
     v30 = 2080;
     *v31 = "ActionCoordinator.m";
     *&v31[8] = 1024;
@@ -4257,51 +4257,51 @@ LABEL_21:
 
   if (sub_100E03634())
   {
-    v10 = sub_10006D178();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    destination = sub_10006D178();
+    if (os_log_type_enabled(destination, OS_LOG_TYPE_ERROR))
     {
       v20 = +[NSThread callStackSymbols];
       v28 = 138412290;
-      v29 = v20;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%@", &v28, 0xCu);
+      selfCopy2 = v20;
+      _os_log_impl(&_mh_execute_header, destination, OS_LOG_TYPE_ERROR, "%@", &v28, 0xCu);
     }
 
     goto LABEL_25;
   }
 }
 
-- (void)_enterRoutePlanningOverviewAnimated:(BOOL)a3 saveMapCamera:(BOOL)a4 completion:(id)a5
+- (void)_enterRoutePlanningOverviewAnimated:(BOOL)animated saveMapCamera:(BOOL)camera completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  cameraCopy = camera;
+  animatedCopy = animated;
+  completionCopy = completion;
   if (self->_routePlanningDataCoordinator)
   {
-    v72 = v6;
+    v72 = animatedCopy;
     [CATransaction setFrameStallSkipRequest:1];
-    v9 = [(ActionCoordinator *)self routePlanningOverviewViewController];
-    v10 = [(ActionCoordinator *)self currentViewController];
+    routePlanningOverviewViewController = [(ActionCoordinator *)self routePlanningOverviewViewController];
+    currentViewController = [(ActionCoordinator *)self currentViewController];
 
     v11 = sub_100798A3C();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = objc_retainBlock(v8);
+      v12 = objc_retainBlock(completionCopy);
       *buf = 134350082;
-      v75 = self;
+      selfCopy7 = self;
       v76 = 1024;
-      *v77 = v6;
+      *v77 = animatedCopy;
       *&v77[4] = 1024;
-      *&v77[6] = v5;
+      *&v77[6] = cameraCopy;
       *v78 = 2112;
       *&v78[2] = v12;
       v79 = 1024;
-      v80 = v10 != v9;
+      v80 = currentViewController != routePlanningOverviewViewController;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}p] _enterRoutePlanningOverviewAnimated: %d saveMapCamera: %d completion: %@ presentOverview: %d", buf, 0x28u);
     }
 
-    if (v10 != v9 && ![self->_currentDirectionItem isVenueItem])
+    if (currentViewController != routePlanningOverviewViewController && ![self->_currentDirectionItem isVenueItem])
     {
-      v13 = [(ActionCoordinator *)self currentViewController];
+      currentViewController2 = [(ActionCoordinator *)self currentViewController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -4314,12 +4314,12 @@ LABEL_21:
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
             *buf = 134349056;
-            v75 = self;
+            selfCopy7 = self;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}p] _enterRoutePlanningOverviewAnimated, saving selection state", buf, 0xCu);
           }
 
-          v17 = [(ActionCoordinator *)self mapSelectionManager];
-          v18 = [v17 selectionStateIncludingCamera:v5 includeNotCustomLabelMarkers:1];
+          mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+          v18 = [mapSelectionManager selectionStateIncludingCamera:cameraCopy includeNotCustomLabelMarkers:1];
           routePlanningSelectionRestorationState = self->_routePlanningSelectionRestorationState;
           self->_routePlanningSelectionRestorationState = v18;
 
@@ -4332,48 +4332,48 @@ LABEL_21:
       }
     }
 
-    v17 = [(ActionCoordinator *)self platformController];
-    v22 = [v17 previousSession];
-    if (v22)
+    mapSelectionManager = [(ActionCoordinator *)self platformController];
+    previousSession = [mapSelectionManager previousSession];
+    if (previousSession)
     {
-      v23 = v22;
-      v71 = v10;
-      v24 = v9;
-      v25 = [(ActionCoordinator *)self platformController];
-      v26 = [v25 previousSession];
+      v23 = previousSession;
+      v71 = currentViewController;
+      v24 = routePlanningOverviewViewController;
+      platformController = [(ActionCoordinator *)self platformController];
+      previousSession2 = [platformController previousSession];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 
 LABEL_22:
-        v9 = v24;
-        v10 = v71;
+        routePlanningOverviewViewController = v24;
+        currentViewController = v71;
         goto LABEL_23;
       }
 
-      v70 = v8;
-      v27 = [(ActionCoordinator *)self platformController];
-      v28 = [v27 previousSession];
+      v70 = completionCopy;
+      platformController2 = [(ActionCoordinator *)self platformController];
+      previousSession3 = [platformController2 previousSession];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 
-        v8 = v70;
+        completionCopy = v70;
         goto LABEL_22;
       }
 
-      v61 = [(ActionCoordinator *)self platformController];
-      v62 = [v61 previousSession];
+      platformController3 = [(ActionCoordinator *)self platformController];
+      previousSession4 = [platformController3 previousSession];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
-      v9 = v24;
-      v8 = v70;
-      v10 = v71;
+      routePlanningOverviewViewController = v24;
+      completionCopy = v70;
+      currentViewController = v71;
       if (isKindOfClass)
       {
 LABEL_24:
-        v29 = [(ActionCoordinator *)self routePlanningDataCoordinator];
+        routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
         v30 = [(ActionCoordinator *)self displayedViewMode]+ 1;
         if (v30 > 7)
         {
@@ -4398,8 +4398,8 @@ LABEL_24:
 
         else
         {
-          v35 = [(ActionCoordinator *)self currentViewController];
-          v34 = v35 == self->_routeSearchVC;
+          currentViewController3 = [(ActionCoordinator *)self currentViewController];
+          v34 = currentViewController3 == self->_routeSearchVC;
         }
 
         if (![(ActionCoordinator *)self isRoutePlanningPresented])
@@ -4408,7 +4408,7 @@ LABEL_24:
           if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
           {
             *buf = 134349056;
-            v75 = self;
+            selfCopy7 = self;
             _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "[%{public}p] _enterRoutePlanningOverviewAnimated: Route planning is not currently presented", buf, 0xCu);
           }
 
@@ -4417,14 +4417,14 @@ LABEL_24:
 
           if (v38 == 5)
           {
-            v39 = [(ActionCoordinator *)self appCoordinator];
-            [v39 closeSharedTrips];
+            appCoordinator = [(ActionCoordinator *)self appCoordinator];
+            [appCoordinator closeSharedTrips];
 
             [(ActionCoordinator *)self clearSearch];
           }
 
-          v40 = [(ActionCoordinator *)self containerViewController];
-          v41 = [v40 topMostPresentedViewController];
+          containerViewController = [(ActionCoordinator *)self containerViewController];
+          topMostPresentedViewController = [containerViewController topMostPresentedViewController];
           objc_opt_class();
           v42 = objc_opt_isKindOfClass();
 
@@ -4433,12 +4433,12 @@ LABEL_24:
             v43 = sub_1007984E4();
             if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
             {
-              v44 = [(ActionCoordinator *)self containerViewController];
-              v45 = [v44 topMostPresentedViewController];
+              containerViewController2 = [(ActionCoordinator *)self containerViewController];
+              topMostPresentedViewController2 = [containerViewController2 topMostPresentedViewController];
               *buf = 134349314;
-              v75 = self;
+              selfCopy7 = self;
               v76 = 2112;
-              *v77 = v45;
+              *v77 = topMostPresentedViewController2;
               _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "[%{public}p] _enterRoutePlanningOverviewAnimated: Need to present a RoutePlanning VC but there is an SFSafariViewController (%@) present. Dismissing it first.", buf, 0x16u);
             }
 
@@ -4451,30 +4451,30 @@ LABEL_24:
           }
 
           [(ActionCoordinator *)self setIsRoutePlanningPresented:1];
-          v46 = [(ActionCoordinator *)self displayedViewMode];
-          v47 = [(ActionCoordinator *)self routePlanningMapController];
-          [v47 saveOriginalMapViewModeAs:v46];
+          displayedViewMode = [(ActionCoordinator *)self displayedViewMode];
+          routePlanningMapController = [(ActionCoordinator *)self routePlanningMapController];
+          [routePlanningMapController saveOriginalMapViewModeAs:displayedViewMode];
 
-          [v29 refreshRidesharingOptionsIfVisible];
+          [routePlanningDataCoordinator refreshRidesharingOptionsIfVisible];
           v48 = objc_loadWeakRetained(&self->_containerViewController);
           v49 = sub_10000FA08(v48);
 
           if (v49 == 5)
           {
-            [v29 refreshVirtualGarage];
+            [routePlanningDataCoordinator refreshVirtualGarage];
           }
 
-          [v29 setupDataForCurrentObservers];
+          [routePlanningDataCoordinator setupDataForCurrentObservers];
         }
 
         v50 = sub_100798A3C();
         v51 = os_log_type_enabled(v50, OS_LOG_TYPE_INFO);
-        if (v10 == v9)
+        if (currentViewController == routePlanningOverviewViewController)
         {
           if (v51)
           {
             *buf = 134349056;
-            v75 = self;
+            selfCopy7 = self;
             _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_INFO, "[%{public}p] _enterRoutePlanningOverviewAnimated: Route planning is already presented; will update route selection map state", buf, 0xCu);
           }
 
@@ -4485,16 +4485,16 @@ LABEL_24:
         if (v51)
         {
           *buf = 134349312;
-          v75 = self;
+          selfCopy7 = self;
           v76 = 1024;
           *v77 = v34;
           _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_INFO, "[%{public}p] _enterRoutePlanningOverviewAnimated: Presenting route planning now with edited direction intent: %d", buf, 0x12u);
         }
 
-        v52 = [(ActionCoordinator *)self currentViewController];
+        currentViewController4 = [(ActionCoordinator *)self currentViewController];
         routeSearchVC = self->_routeSearchVC;
 
-        if (v52 == routeSearchVC)
+        if (currentViewController4 == routeSearchVC)
         {
           v54 = self->_routeSearchVC;
           self->_routeSearchVC = 0;
@@ -4509,27 +4509,27 @@ LABEL_24:
             [HistoryEntryRecentsItem saveGeoMapItem:v55];
           }
 
-          v56 = [(ActionCoordinator *)self containerViewController];
-          v57 = [(ActionCoordinator *)self containerViewController];
-          v58 = [v57 currentViewController];
-          [v56 popLastViewControllerFromViewController:v58 animated:v72 useDefaultContaineeLayout:0];
+          containerViewController3 = [(ActionCoordinator *)self containerViewController];
+          containerViewController4 = [(ActionCoordinator *)self containerViewController];
+          currentViewController5 = [containerViewController4 currentViewController];
+          [containerViewController3 popLastViewControllerFromViewController:currentViewController5 animated:v72 useDefaultContaineeLayout:0];
         }
 
-        v59 = objc_loadWeakRetained(&self->_containerViewController);
-        if (sub_10000FA08(v59) == 5 && ![v29 desiredTransportType])
+        defaultTransportTypeFinder = objc_loadWeakRetained(&self->_containerViewController);
+        if (sub_10000FA08(defaultTransportTypeFinder) == 5 && ![routePlanningDataCoordinator desiredTransportType])
         {
-          v64 = [v29 requestState];
+          requestState = [routePlanningDataCoordinator requestState];
 
-          if (v64)
+          if (requestState)
           {
             goto LABEL_54;
           }
 
-          v65 = [(ActionCoordinator *)self containerViewController];
-          v66 = [v65 chromeViewController];
-          v59 = [v66 defaultTransportTypeFinder];
+          containerViewController5 = [(ActionCoordinator *)self containerViewController];
+          chromeViewController = [containerViewController5 chromeViewController];
+          defaultTransportTypeFinder = [chromeViewController defaultTransportTypeFinder];
 
-          v67 = [v59 geoIdealTransportTypeForOrigin:0 destination:kCLLocationCoordinate2DInvalid.latitude ignoreMapType:{kCLLocationCoordinate2DInvalid.longitude, kCLLocationCoordinate2DInvalid.latitude, kCLLocationCoordinate2DInvalid.longitude}] - 1;
+          v67 = [defaultTransportTypeFinder geoIdealTransportTypeForOrigin:0 destination:kCLLocationCoordinate2DInvalid.latitude ignoreMapType:{kCLLocationCoordinate2DInvalid.longitude, kCLLocationCoordinate2DInvalid.latitude, kCLLocationCoordinate2DInvalid.longitude}] - 1;
           if (v67 > 5)
           {
             v68 = 1;
@@ -4540,12 +4540,12 @@ LABEL_24:
             v68 = qword_101216278[v67];
           }
 
-          [v29 updateTransportType:v68];
+          [routePlanningDataCoordinator updateTransportType:v68];
         }
 
 LABEL_54:
         v60 = objc_loadWeakRetained(&self->_containerViewController);
-        [v60 presentController:v9 animated:v72 useDefaultContaineeLayout:1 completion:v8];
+        [v60 presentController:routePlanningOverviewViewController animated:v72 useDefaultContaineeLayout:1 completion:completionCopy];
 
 LABEL_58:
 LABEL_59:
@@ -4557,11 +4557,11 @@ LABEL_59:
       if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
       {
         *buf = 134349056;
-        v75 = self;
+        selfCopy7 = self;
         _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_INFO, "[%{public}p] _enterRoutePlanningOverviewAnimated, deleting selection state", buf, 0xCu);
       }
 
-      v17 = self->_routePlanningSelectionRestorationState;
+      mapSelectionManager = self->_routePlanningSelectionRestorationState;
       self->_routePlanningSelectionRestorationState = 0;
     }
 
@@ -4574,7 +4574,7 @@ LABEL_23:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315650;
-    v75 = "[ActionCoordinator _enterRoutePlanningOverviewAnimated:saveMapCamera:completion:]";
+    selfCopy7 = "[ActionCoordinator _enterRoutePlanningOverviewAnimated:saveMapCamera:completion:]";
     v76 = 2080;
     *v77 = "ActionCoordinator.m";
     *&v77[8] = 1024;
@@ -4584,13 +4584,13 @@ LABEL_23:
 
   if (sub_100E03634())
   {
-    v9 = sub_10006D178();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    routePlanningOverviewViewController = sub_10006D178();
+    if (os_log_type_enabled(routePlanningOverviewViewController, OS_LOG_TYPE_ERROR))
     {
       v21 = +[NSThread callStackSymbols];
       *buf = 138412290;
-      v75 = v21;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
+      selfCopy7 = v21;
+      _os_log_impl(&_mh_execute_header, routePlanningOverviewViewController, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
 
     goto LABEL_59;
@@ -4599,21 +4599,21 @@ LABEL_23:
 LABEL_60:
 }
 
-- (void)routePlanningDataCoordinator:(id)a3 isEnabled:(BOOL)a4
+- (void)routePlanningDataCoordinator:(id)coordinator isEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
+  enabledCopy = enabled;
+  coordinatorCopy = coordinator;
   if (self->_routePlanningDataCoordinator)
   {
-    if (v4)
+    if (enabledCopy)
     {
-      v7 = [(ActionCoordinator *)self platformController];
-      v8 = [v7 currentSession];
+      platformController = [(ActionCoordinator *)self platformController];
+      currentSession = [platformController currentSession];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = v8;
+        v9 = currentSession;
       }
 
       else
@@ -4621,12 +4621,12 @@ LABEL_60:
         v9 = 0;
       }
 
-      v10 = v9;
+      currentViewController = v9;
 
-      v11 = [v6 directionItemForCurrentSession];
-      if (![self->_currentDirectionItem isEquivalentAsWaypointToDirectionItem:v11])
+      directionItemForCurrentSession = [coordinatorCopy directionItemForCurrentSession];
+      if (![self->_currentDirectionItem isEquivalentAsWaypointToDirectionItem:directionItemForCurrentSession])
       {
-        objc_storeStrong(&self->_currentDirectionItem, v11);
+        objc_storeStrong(&self->_currentDirectionItem, directionItemForCurrentSession);
       }
 
       v31[0] = _NSConcreteStackBlock;
@@ -4635,10 +4635,10 @@ LABEL_60:
       v31[3] = &unk_101661B18;
       v31[4] = self;
       v12 = objc_retainBlock(v31);
-      if (v10)
+      if (currentViewController)
       {
-        v13 = [v10 configuration];
-        v14 = [v13 shouldRestoreCamera];
+        configuration = [currentViewController configuration];
+        shouldRestoreCamera = [configuration shouldRestoreCamera];
         v29[0] = _NSConcreteStackBlock;
         v29[1] = 3221225472;
         v29[2] = sub_10090F784;
@@ -4646,13 +4646,13 @@ LABEL_60:
         v15 = &v30;
         v30 = v12;
         v16 = v12;
-        [(ActionCoordinator *)self _enterRoutePlanningOverviewAnimated:1 saveMapCamera:v14 completion:v29];
+        [(ActionCoordinator *)self _enterRoutePlanningOverviewAnimated:1 saveMapCamera:shouldRestoreCamera completion:v29];
       }
 
       else
       {
-        v20 = [(ActionCoordinator *)self platformController];
-        v21 = [v20 currentSession];
+        platformController2 = [(ActionCoordinator *)self platformController];
+        currentSession2 = [platformController2 currentSession];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4700,8 +4700,8 @@ LABEL_60:
 
     if ([(ActionCoordinator *)self isRoutePlanningPresented])
     {
-      v10 = [(ActionCoordinator *)self currentViewController];
-      [(ActionCoordinator *)self closeRoutePlanningViewController:v10 withSender:0];
+      currentViewController = [(ActionCoordinator *)self currentViewController];
+      [(ActionCoordinator *)self closeRoutePlanningViewController:currentViewController withSender:0];
 LABEL_21:
     }
   }
@@ -4736,28 +4736,28 @@ LABEL_21:
 
 - (BOOL)_isRoutePlanningTopMost
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v4 = [WeakRetained chromeViewController];
-  v5 = [v4 topMostPresentedViewController];
-  v6 = [(ActionCoordinator *)v2 routePlanningOverviewViewController];
-  LOBYTE(v2) = v5 == v6;
+  chromeViewController = [WeakRetained chromeViewController];
+  topMostPresentedViewController = [chromeViewController topMostPresentedViewController];
+  routePlanningOverviewViewController = [(ActionCoordinator *)selfCopy routePlanningOverviewViewController];
+  LOBYTE(selfCopy) = topMostPresentedViewController == routePlanningOverviewViewController;
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)handleVenueSearchResultsWithSelectedSearchResult:(id)a3 searchFieldItem:(id)a4 browseCategories:(id)a5
+- (void)handleVenueSearchResultsWithSelectedSearchResult:(id)result searchFieldItem:(id)item browseCategories:(id)categories
 {
-  v19 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(ActionCoordinator *)self venueCardCoordinator];
-  v11 = [v10 topViewController];
+  resultCopy = result;
+  categoriesCopy = categories;
+  itemCopy = item;
+  venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+  topViewController = [venueCardCoordinator topViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
+    v12 = topViewController;
   }
 
   else
@@ -4767,31 +4767,31 @@ LABEL_21:
 
   v13 = v12;
 
-  v14 = [v19 firstObject];
-  [(VenuesManager *)self->_venuesManager displayFloorForSelectedSearchResult:v14];
-  v15 = [v9 venueCategoryItem];
+  firstObject = [resultCopy firstObject];
+  [(VenuesManager *)self->_venuesManager displayFloorForSelectedSearchResult:firstObject];
+  venueCategoryItem = [itemCopy venueCategoryItem];
 
-  v16 = [v15 isAutoCompleteCategory];
-  if (v16)
+  isAutoCompleteCategory = [venueCategoryItem isAutoCompleteCategory];
+  if (isAutoCompleteCategory)
   {
-    v17 = [v13 contentDownloader];
-    [v17 searchDidReceiveAutoCompleteSubcategories:v8];
+    contentDownloader = [v13 contentDownloader];
+    [contentDownloader searchDidReceiveAutoCompleteSubcategories:categoriesCopy];
   }
 
-  v18 = [v13 contentDownloader];
-  [v18 searchDidReceiveResults:v19];
+  contentDownloader2 = [v13 contentDownloader];
+  [contentDownloader2 searchDidReceiveResults:resultCopy];
 }
 
-- (void)receivedVenueEVChargersUpdate:(id)a3
+- (void)receivedVenueEVChargersUpdate:(id)update
 {
-  v10 = a3;
-  v4 = [(ActionCoordinator *)self venueCardCoordinator];
-  v5 = [v4 topViewController];
+  updateCopy = update;
+  venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+  topViewController = [venueCardCoordinator topViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = topViewController;
   }
 
   else
@@ -4803,87 +4803,87 @@ LABEL_21:
 
   if (v7)
   {
-    v8 = [v7 contentDownloader];
+    contentDownloader = [v7 contentDownloader];
 
-    if (v8)
+    if (contentDownloader)
     {
-      v9 = [v7 contentDownloader];
-      [v9 searchDidReceiveEVChargerUpdates:v10];
+      contentDownloader2 = [v7 contentDownloader];
+      [contentDownloader2 searchDidReceiveEVChargerUpdates:updateCopy];
     }
   }
 }
 
-- (void)updateSearchFieldWithSearchFieldItem:(id)a3
+- (void)updateSearchFieldWithSearchFieldItem:(id)item
 {
-  v5 = a3;
-  v4 = [(ActionCoordinator *)self searchModeViewController];
-  [v4 updateSearchFieldWithItem:v5];
+  itemCopy = item;
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController updateSearchFieldWithItem:itemCopy];
 
-  [(SearchViewController *)self->_searchCardViewController updateSearchFieldWithItem:v5];
+  [(SearchViewController *)self->_searchCardViewController updateSearchFieldWithItem:itemCopy];
 }
 
-- (void)retainSearchQueryForSelectedSearchResult:(id)a3
+- (void)retainSearchQueryForSelectedSearchResult:(id)result
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self searchModeViewController];
-  [v5 retainSearchQueryForSelectedSearchResult:v4];
+  resultCopy = result;
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController retainSearchQueryForSelectedSearchResult:resultCopy];
 }
 
-- (void)presentLPRWithVehicle:(id)a3 scenario:(int64_t)a4 presenter:(id)a5 completionBlock:(id)a6
+- (void)presentLPRWithVehicle:(id)vehicle scenario:(int64_t)scenario presenter:(id)presenter completionBlock:(id)block
 {
-  v16 = a3;
-  v10 = a5;
-  v11 = a6;
+  vehicleCopy = vehicle;
+  presenterCopy = presenter;
+  blockCopy = block;
   v12 = objc_alloc_init(LPRFlowController);
   lprOnboardingController = self->_lprOnboardingController;
   self->_lprOnboardingController = v12;
 
   v14 = self->_lprOnboardingController;
-  if (v10)
+  if (presenterCopy)
   {
-    [(LPRFlowController *)self->_lprOnboardingController presentLPRFlowWithVehicle:v16 scenario:a4 presenter:v10 completionBlock:v11];
+    [(LPRFlowController *)self->_lprOnboardingController presentLPRFlowWithVehicle:vehicleCopy scenario:scenario presenter:presenterCopy completionBlock:blockCopy];
   }
 
   else
   {
-    v15 = [(ActionCoordinator *)self containerViewController];
-    [(LPRFlowController *)v14 presentLPRFlowWithVehicle:v16 scenario:a4 presenter:v15 completionBlock:v11];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    [(LPRFlowController *)v14 presentLPRFlowWithVehicle:vehicleCopy scenario:scenario presenter:containerViewController completionBlock:blockCopy];
   }
 }
 
 - (void)updateResultsViewContent
 {
-  v3 = [(ActionCoordinator *)self resultsViewController];
+  resultsViewController = [(ActionCoordinator *)self resultsViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(ActionCoordinator *)self resultsViewController];
-    v5 = [(ActionCoordinator *)self currentSearchSession];
-    [v6 updateSearchSession:v5];
+    resultsViewController2 = [(ActionCoordinator *)self resultsViewController];
+    currentSearchSession = [(ActionCoordinator *)self currentSearchSession];
+    [resultsViewController2 updateSearchSession:currentSearchSession];
   }
 }
 
-- (void)updateFloatingControlsWithSearchSession:(id)a3
+- (void)updateFloatingControlsWithSearchSession:(id)session
 {
-  v4 = a3;
-  v6 = [(ActionCoordinator *)self containerViewController];
-  v5 = [v6 floatingControlsPresentationController];
-  [v5 setSearchSession:v4];
+  sessionCopy = session;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  floatingControlsPresentationController = [containerViewController floatingControlsPresentationController];
+  [floatingControlsPresentationController setSearchSession:sessionCopy];
 }
 
 - (void)searchSessionManagerSessionDidFail
 {
   [(ActionCoordinator *)self updateResultsViewContent];
   [(ActionCoordinator *)self updateRedoSearchFloatingControl:1];
-  v3 = [(ActionCoordinator *)self venueCardCoordinator];
-  v4 = [v3 topViewController];
+  venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+  topViewController = [venueCardCoordinator topViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = topViewController;
   }
 
   else
@@ -4893,20 +4893,20 @@ LABEL_21:
 
   v6 = v5;
 
-  v7 = [v6 contentDownloader];
+  contentDownloader = [v6 contentDownloader];
 
-  [v7 searchDidFail];
+  [contentDownloader searchDidFail];
 }
 
 - (void)searchSessionManagerSessionDidInvalidate
 {
-  v3 = [(ActionCoordinator *)self venueCardCoordinator];
-  v4 = [v3 topViewController];
+  venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+  topViewController = [venueCardCoordinator topViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = topViewController;
   }
 
   else
@@ -4916,18 +4916,18 @@ LABEL_21:
 
   v6 = v5;
 
-  v7 = [v6 contentDownloader];
+  contentDownloader = [v6 contentDownloader];
 
-  [v7 searchDidCancel];
-  v13 = [(ActionCoordinator *)self currentViewController];
-  v8 = [(ActionCoordinator *)self resultsViewController];
-  if (v13 == v8)
+  [contentDownloader searchDidCancel];
+  currentViewController = [(ActionCoordinator *)self currentViewController];
+  resultsViewController = [(ActionCoordinator *)self resultsViewController];
+  if (currentViewController == resultsViewController)
   {
 
 LABEL_9:
-    v11 = [self->_addStopResultsViewController presentingViewController];
+    presentingViewController = [self->_addStopResultsViewController presentingViewController];
 
-    if (v11)
+    if (presentingViewController)
     {
       addStopResultsViewController = self->_addStopResultsViewController;
     }
@@ -4944,7 +4944,7 @@ LABEL_9:
 
   if (MapsFeature_IsEnabled_SearchAndDiscovery())
   {
-    v9 = [(ActionCoordinator *)self currentViewController];
+    currentViewController2 = [(ActionCoordinator *)self currentViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4957,25 +4957,25 @@ LABEL_9:
   }
 }
 
-- (void)searchSessionManagerReceiveEVChargersUpdate:(id)a3
+- (void)searchSessionManagerReceiveEVChargersUpdate:(id)update
 {
-  v7 = a3;
-  v4 = [(ActionCoordinator *)self resultsViewController];
+  updateCopy = update;
+  resultsViewController = [(ActionCoordinator *)self resultsViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(ActionCoordinator *)self resultsViewController];
-    [v6 refreshEVChargers:v7];
+    resultsViewController2 = [(ActionCoordinator *)self resultsViewController];
+    [resultsViewController2 refreshEVChargers:updateCopy];
   }
 }
 
 - (BOOL)searchSessionShouldUpdateEVChargers
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v4 = [v3 topMostPresentedViewController];
-  v5 = [(ActionCoordinator *)self resultsViewController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  topMostPresentedViewController = [containerViewController topMostPresentedViewController];
+  resultsViewController = [(ActionCoordinator *)self resultsViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4985,25 +4985,25 @@ LABEL_9:
 - (void)searchSessionManagerSessionDidReceiveUpdate
 {
   [(ActionCoordinator *)self updateResultsViewContent];
-  v3 = [(ActionCoordinator *)self appCoordinator];
-  [v3 setNeedsUserActivityUpdate];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator setNeedsUserActivityUpdate];
 
   [(ActionCoordinator *)self updateRedoSearchFloatingControl:0];
 }
 
-- (void)showAnnouncementForFlyover:(id)a3
+- (void)showAnnouncementForFlyover:(id)flyover
 {
-  v4 = a3;
-  if (v4)
+  flyoverCopy = flyover;
+  if (flyoverCopy)
   {
     objc_initWeak(&location, self);
     v5 = [TopBannerItem alloc];
     v6 = [NSAttributedString alloc];
-    v7 = [v4 announcement];
-    v8 = v7;
-    if (v7)
+    announcement = [flyoverCopy announcement];
+    v8 = announcement;
+    if (announcement)
     {
-      v9 = v7;
+      v9 = announcement;
     }
 
     else
@@ -5019,21 +5019,21 @@ LABEL_9:
     v16[2] = sub_1009102D4;
     v16[3] = &unk_10162EB88;
     objc_copyWeak(&v17, &location);
-    v13 = [(TopBannerItem *)v5 initWithType:1 layout:0 userInfo:v4 attributedString:v10 icon:0 buttonText:v12 buttonAction:v16];
+    v13 = [(TopBannerItem *)v5 initWithType:1 layout:0 userInfo:flyoverCopy attributedString:v10 icon:0 buttonText:v12 buttonAction:v16];
 
     v19 = v13;
     v14 = [NSArray arrayWithObjects:&v19 count:1];
-    v15 = [(ActionCoordinator *)self containerViewController];
-    [v15 updateTopBannerViewWithTopBannerItems:v14];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    [containerViewController updateTopBannerViewWithTopBannerItems:v14];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)updateRedoSearchFloatingControl:(BOOL)a3
+- (void)updateRedoSearchFloatingControl:(BOOL)control
 {
-  v5 = [(ActionCoordinator *)self resultsViewController];
+  resultsViewController = [(ActionCoordinator *)self resultsViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -5050,17 +5050,17 @@ LABEL_9:
     }
   }
 
-  v8 = [(ActionCoordinator *)self containerViewController];
-  v9 = [v8 chromeViewController];
-  v18 = [v9 redoSearchOverlay];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  redoSearchOverlay = [chromeViewController redoSearchOverlay];
 
-  v10 = [(ActionCoordinator *)self searchModeViewController];
-  [v10 didUpdateSearchResults];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController didUpdateSearchResults];
 
-  v11 = [(ActionCoordinator *)self currentSearchSession];
-  v12 = [v11 searchInfo];
-  v13 = [v12 results];
-  v14 = [v13 count];
+  currentSearchSession = [(ActionCoordinator *)self currentSearchSession];
+  searchInfo = [currentSearchSession searchInfo];
+  results = [searchInfo results];
+  v14 = [results count];
 
   v15 = objc_loadWeakRetained(&self->_containerViewController);
   if (sub_10000FA08(v15) != 5)
@@ -5068,14 +5068,14 @@ LABEL_9:
 
 LABEL_9:
     v16 = 1;
-    [v18 shouldHideFloatingControl:1 animated:1];
+    [redoSearchOverlay shouldHideFloatingControl:1 animated:1];
     goto LABEL_10;
   }
 
   v16 = 2;
-  if (!a3)
+  if (!control)
   {
-    v17 = v18;
+    v17 = redoSearchOverlay;
     if (!v14)
     {
       goto LABEL_11;
@@ -5085,96 +5085,96 @@ LABEL_9:
   }
 
 LABEL_10:
-  v17 = v18;
+  v17 = redoSearchOverlay;
 LABEL_11:
   [v17 updateSearchOverlayWithState:v16];
 }
 
-- (void)actionControlDidDeactivate:(id)a3
+- (void)actionControlDidDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(ActionCoordinator *)self containerViewController];
-    v7 = [v6 currentViewController];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    currentViewController = [containerViewController currentViewController];
     objc_opt_class();
     v8 = objc_opt_isKindOfClass();
 
     if (v8)
     {
-      v9 = [(ActionCoordinator *)self lineCardVC];
-      [(ActionCoordinator *)self viewControllerClosed:v9 animated:1];
+      lineCardVC = [(ActionCoordinator *)self lineCardVC];
+      [(ActionCoordinator *)self viewControllerClosed:lineCardVC animated:1];
     }
 
-    v10 = [(ActionCoordinator *)self lineCardVC];
-    [v10 resetNearestStation];
+    lineCardVC2 = [(ActionCoordinator *)self lineCardVC];
+    [lineCardVC2 resetNearestStation];
   }
 }
 
 - (void)zoomOut
 {
-  v3 = [(ActionCoordinator *)self mapView];
-  [v3 startLinearZoomIn:0];
+  mapView = [(ActionCoordinator *)self mapView];
+  [mapView startLinearZoomIn:0];
 
-  v4 = [(ActionCoordinator *)self mapView];
-  [NSObject cancelPreviousPerformRequestsWithTarget:v4 selector:"stopZoomingWithInertia" object:0];
+  mapView2 = [(ActionCoordinator *)self mapView];
+  [NSObject cancelPreviousPerformRequestsWithTarget:mapView2 selector:"stopZoomingWithInertia" object:0];
 
-  v5 = [(ActionCoordinator *)self mapView];
-  [v5 performSelector:"stopZoomingWithInertia" withObject:0 afterDelay:0.3];
+  mapView3 = [(ActionCoordinator *)self mapView];
+  [mapView3 performSelector:"stopZoomingWithInertia" withObject:0 afterDelay:0.3];
 }
 
 - (void)zoomIn
 {
-  v3 = [(ActionCoordinator *)self mapView];
-  [v3 startLinearZoomIn:1];
+  mapView = [(ActionCoordinator *)self mapView];
+  [mapView startLinearZoomIn:1];
 
-  v4 = [(ActionCoordinator *)self mapView];
-  [NSObject cancelPreviousPerformRequestsWithTarget:v4 selector:"stopZoomingWithInertia" object:0];
+  mapView2 = [(ActionCoordinator *)self mapView];
+  [NSObject cancelPreviousPerformRequestsWithTarget:mapView2 selector:"stopZoomingWithInertia" object:0];
 
-  v5 = [(ActionCoordinator *)self mapView];
-  [v5 performSelector:"stopZoomingWithInertia" withObject:0 afterDelay:0.3];
+  mapView3 = [(ActionCoordinator *)self mapView];
+  [mapView3 performSelector:"stopZoomingWithInertia" withObject:0 afterDelay:0.3];
 }
 
 - (void)defaultZoom
 {
-  v3 = [(ActionCoordinator *)self mapView];
-  [v3 centerCoordinate];
+  mapView = [(ActionCoordinator *)self mapView];
+  [mapView centerCoordinate];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(ActionCoordinator *)self mapView];
-  [v8 setCenterCoordinate:1 zoomLevel:v5 animated:{v7, 16.0}];
+  mapView2 = [(ActionCoordinator *)self mapView];
+  [mapView2 setCenterCoordinate:1 zoomLevel:v5 animated:{v7, 16.0}];
 }
 
 - (BOOL)shouldShowSearchOverlay
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4 == 5)
+  if (userInterfaceIdiom == 5)
   {
     if (MapsFeature_IsEnabled_SearchAndDiscovery())
     {
-      v5 = [(ActionCoordinator *)self currentSearchSession];
-      v6 = [v5 searchInfo];
+      currentSearchSession = [(ActionCoordinator *)self currentSearchSession];
+      searchInfo = [currentSearchSession searchInfo];
 
-      v7 = [(ActionCoordinator *)self currentViewController];
+      currentViewController = [(ActionCoordinator *)self currentViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
-      v9 = [v6 searchRedoButtonThreshold];
-      if (v9 && ([v6 shouldAllowManualRedoButton] & 1) != 0)
+      searchRedoButtonThreshold = [searchInfo searchRedoButtonThreshold];
+      if (searchRedoButtonThreshold && ([searchInfo shouldAllowManualRedoButton] & 1) != 0)
       {
         v10 = 1;
       }
 
-      else if ([v6 canRedoSearch])
+      else if ([searchInfo canRedoSearch])
       {
-        v19 = [v6 searchAutoRedoThreshold];
-        v10 = v19 != 0;
+        searchAutoRedoThreshold = [searchInfo searchAutoRedoThreshold];
+        v10 = searchAutoRedoThreshold != 0;
       }
 
       else
@@ -5192,11 +5192,11 @@ LABEL_11:
         }
 
         v22 = v21;
-        v23 = [(ActionCoordinator *)self currentViewController];
+        currentViewController2 = [(ActionCoordinator *)self currentViewController];
         v24 = 138412546;
         v25 = v22;
         v26 = 2112;
-        v27 = v23;
+        v27 = currentViewController2;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "[ActionCoordinator] Show search overlay %@, CurrentVC: %@", &v24, 0x16u);
       }
 
@@ -5211,18 +5211,18 @@ LABEL_11:
     return v15 & 1;
   }
 
-  v11 = [(ActionCoordinator *)self currentViewController];
+  currentViewController3 = [(ActionCoordinator *)self currentViewController];
   objc_opt_class();
   v12 = objc_opt_isKindOfClass();
 
-  v13 = [(ActionCoordinator *)self currentViewController];
-  v14 = v13;
+  currentViewController4 = [(ActionCoordinator *)self currentViewController];
+  v14 = currentViewController4;
   if (v12)
   {
 LABEL_11:
-    v17 = [v13 shouldShowSearchOverlay];
+    shouldShowSearchOverlay = [currentViewController4 shouldShowSearchOverlay];
 
-    return v17;
+    return shouldShowSearchOverlay;
   }
 
   objc_opt_class();
@@ -5230,8 +5230,8 @@ LABEL_11:
 
   if (v16)
   {
-    v13 = [(ActionCoordinator *)self currentViewController];
-    v14 = v13;
+    currentViewController4 = [(ActionCoordinator *)self currentViewController];
+    v14 = currentViewController4;
     goto LABEL_11;
   }
 
@@ -5241,9 +5241,9 @@ LABEL_11:
 
 - (void)refreshCurrentSearch
 {
-  v3 = [(ActionCoordinator *)self appCoordinator];
-  v4 = [v3 chromeViewController];
-  v5 = [v4 topContext];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  chromeViewController = [appCoordinator chromeViewController];
+  topContext = [chromeViewController topContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -5255,19 +5255,19 @@ LABEL_11:
   v7 = sub_100067540();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [(ActionCoordinator *)self currentViewController];
+    currentViewController = [(ActionCoordinator *)self currentViewController];
     v25 = 138412290;
-    v26 = v8;
+    v26 = currentViewController;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[ActionCoordinator] Refreshing current search. CurrentVC: %@", &v25, 0xCu);
   }
 
-  v9 = [(ActionCoordinator *)self resultsViewController];
+  resultsViewController = [(ActionCoordinator *)self resultsViewController];
   objc_opt_class();
   v10 = objc_opt_isKindOfClass();
 
   if ((v10 & 1) == 0)
   {
-    v20 = [(ActionCoordinator *)self resultsViewController];
+    resultsViewController2 = [(ActionCoordinator *)self resultsViewController];
     objc_opt_class();
     v21 = objc_opt_isKindOfClass();
 
@@ -5276,9 +5276,9 @@ LABEL_11:
       v23 = sub_100067540();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v24 = [(ActionCoordinator *)self currentViewController];
+        currentViewController2 = [(ActionCoordinator *)self currentViewController];
         v25 = 138412290;
-        v26 = v24;
+        v26 = currentViewController2;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "[ActionCoordinator] Unable to refresh current search. CurrentVC: %@", &v25, 0xCu);
       }
 
@@ -5291,120 +5291,120 @@ LABEL_11:
   if (!MapsFeature_IsEnabled_SearchAndDiscovery())
   {
 LABEL_11:
-    v22 = [(ActionCoordinator *)self resultsViewController];
+    resultsViewController3 = [(ActionCoordinator *)self resultsViewController];
 LABEL_16:
-    v23 = v22;
-    [v22 refreshCurrentSearch];
+    v23 = resultsViewController3;
+    [resultsViewController3 refreshCurrentSearch];
 LABEL_17:
 
     return;
   }
 
-  v11 = [(ActionCoordinator *)self containerViewController];
-  v12 = [v11 chromeViewController];
-  [v12 setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController2 = [containerViewController chromeViewController];
+  [chromeViewController2 setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
 
-  v13 = [(ActionCoordinator *)self currentViewController];
-  v14 = [(ActionCoordinator *)self searchModeViewController];
-  v15 = v14;
-  if (v13 == v14)
+  currentViewController3 = [(ActionCoordinator *)self currentViewController];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  v15 = searchModeViewController;
+  if (currentViewController3 == searchModeViewController)
   {
 
 LABEL_15:
-    v22 = [(ActionCoordinator *)self currentViewController];
+    resultsViewController3 = [(ActionCoordinator *)self currentViewController];
     goto LABEL_16;
   }
 
-  v16 = [(ActionCoordinator *)self currentViewController];
+  currentViewController4 = [(ActionCoordinator *)self currentViewController];
   searchCardViewController = self->_searchCardViewController;
 
-  if (v16 == searchCardViewController)
+  if (currentViewController4 == searchCardViewController)
   {
     goto LABEL_15;
   }
 
-  v18 = [(ActionCoordinator *)self currentViewController];
-  v19 = [(ActionCoordinator *)self resultsViewController];
+  currentViewController5 = [(ActionCoordinator *)self currentViewController];
+  resultsViewController4 = [(ActionCoordinator *)self resultsViewController];
 
-  if (v18 == v19)
+  if (currentViewController5 == resultsViewController4)
   {
     goto LABEL_15;
   }
 }
 
-- (void)updateMapApplicationState:(int)a3
+- (void)updateMapApplicationState:(int)state
 {
-  v3 = *&a3;
-  v6 = [(ActionCoordinator *)self containerViewController];
-  v4 = [v6 chromeViewController];
-  v5 = [v4 mapView];
-  [v5 _setApplicationState:v3];
+  v3 = *&state;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  mapView = [chromeViewController mapView];
+  [mapView _setApplicationState:v3];
 }
 
 - (int)mapApplicationState
 {
-  v2 = [(ActionCoordinator *)self containerViewController];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 mapView];
-  v5 = [v4 _applicationState];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  mapView = [chromeViewController mapView];
+  _applicationState = [mapView _applicationState];
 
-  return v5;
+  return _applicationState;
 }
 
-- (void)displayAlertWithTitle:(id)a3 message:(id)a4 postAlertSearchType:(unsigned int)a5
+- (void)displayAlertWithTitle:(id)title message:(id)message postAlertSearchType:(unsigned int)type
 {
-  v5 = *&a5;
-  v8 = a4;
-  v9 = a3;
-  v12 = [(ActionCoordinator *)self containerViewController];
-  v10 = [v12 chromeViewController];
-  v11 = [v10 interruptionManager];
-  [v11 displayAlertWithTitle:v9 message:v8 postAlertSearchType:v5];
+  v5 = *&type;
+  messageCopy = message;
+  titleCopy = title;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  interruptionManager = [chromeViewController interruptionManager];
+  [interruptionManager displayAlertWithTitle:titleCopy message:messageCopy postAlertSearchType:v5];
 }
 
-- (void)setUserTrackingViewUserTrackingMode:(int64_t)a3
+- (void)setUserTrackingViewUserTrackingMode:(int64_t)mode
 {
-  v4 = [(ActionCoordinator *)self mapView];
-  [v4 setUserTrackingMode:a3];
+  mapView = [(ActionCoordinator *)self mapView];
+  [mapView setUserTrackingMode:mode];
 }
 
-- (void)chromeViewController:(id)a3 didUpdateViewMode:(int64_t)a4
+- (void)chromeViewController:(id)controller didUpdateViewMode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = [(ActionCoordinator *)self containerViewController];
-  v8 = [v7 chromeViewController];
+  controllerCopy = controller;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
 
-  if (v8 == v6)
+  if (chromeViewController == controllerCopy)
   {
     if (![(ActionCoordinator *)self isRoutePlanningPresented]|| !self->_routePlanningDataCoordinator)
     {
-      v12 = [(ActionCoordinator *)self lineSelectionAction];
-      v13 = [v12 isActive];
+      lineSelectionAction = [(ActionCoordinator *)self lineSelectionAction];
+      isActive = [lineSelectionAction isActive];
 
-      if (a4 != 3 && v13)
+      if (mode != 3 && isActive)
       {
-        v14 = [(ActionCoordinator *)self lineSelectionAction];
-        [v14 deactivateWithContext:0];
+        lineSelectionAction2 = [(ActionCoordinator *)self lineSelectionAction];
+        [lineSelectionAction2 deactivateWithContext:0];
       }
 
       goto LABEL_48;
     }
 
-    v9 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-    v10 = [v9 transportType];
-    if (!v10)
+    routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+    transportType = [routePlanningDataCoordinator transportType];
+    if (!transportType)
     {
       goto LABEL_45;
     }
 
-    v11 = v10;
-    if (a4 <= 7)
+    v11 = transportType;
+    if (mode <= 7)
     {
-      if (((1 << a4) & 0x67) != 0)
+      if (((1 << mode) & 0x67) != 0)
       {
-        if (v10 == 3)
+        if (transportType == 3)
         {
-          if (a4 == 3)
+          if (mode == 3)
           {
             goto LABEL_24;
           }
@@ -5413,14 +5413,14 @@ LABEL_19:
           v15 = sub_100798408();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
           {
-            if (a4 < 8 && ((0xEFu >> a4) & 1) != 0)
+            if (mode < 8 && ((0xEFu >> mode) & 1) != 0)
             {
-              v16 = *(&off_10162EDE8 + a4);
+              mode = *(&off_10162EDE8 + mode);
             }
 
             else
             {
-              v16 = [NSString stringWithFormat:@"<Unknown: %ld>", a4];
+              mode = [NSString stringWithFormat:@"<Unknown: %ld>", mode];
             }
 
             if ((v11 - 2) > 3)
@@ -5434,15 +5434,15 @@ LABEL_19:
             }
 
             *buf = 138543618;
-            v37 = v16;
+            v37 = mode;
             v38 = 2114;
             v39 = v21;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "view mode %{public}@ isn't supported by transport type %{public}@; will attempt to replace the transport type", buf, 0x16u);
           }
 
-          v26 = [(ActionCoordinator *)self containerViewController];
-          v27 = [v26 chromeViewController];
-          v28 = [v27 defaultTransportTypeFinder];
+          containerViewController2 = [(ActionCoordinator *)self containerViewController];
+          chromeViewController2 = [containerViewController2 chromeViewController];
+          defaultTransportTypeFinder = [chromeViewController2 defaultTransportTypeFinder];
 
           objc_initWeak(buf, self);
           currentDirectionItem = self->_currentDirectionItem;
@@ -5451,39 +5451,39 @@ LABEL_19:
           v33[2] = sub_1009113EC;
           v33[3] = &unk_10162EB60;
           objc_copyWeak(v35, buf);
-          v35[1] = a4;
-          v34 = v9;
-          [v28 transportTypeForDirectionItem:currentDirectionItem ignoreMapType:0 completion:v33];
+          v35[1] = mode;
+          v34 = routePlanningDataCoordinator;
+          [defaultTransportTypeFinder transportTypeForDirectionItem:currentDirectionItem ignoreMapType:0 completion:v33];
 
           objc_destroyWeak(v35);
           objc_destroyWeak(buf);
         }
 
 LABEL_45:
-        v30 = [(ActionCoordinator *)self settingsController];
-        v31 = [v30 userRequestingViewModeChange];
+        settingsController = [(ActionCoordinator *)self settingsController];
+        userRequestingViewModeChange = [settingsController userRequestingViewModeChange];
 
-        if (v31)
+        if (userRequestingViewModeChange)
         {
-          [(RoutePlanningMapController *)self->_routePlanningMapController saveOriginalMapViewModeAs:a4];
+          [(RoutePlanningMapController *)self->_routePlanningMapController saveOriginalMapViewModeAs:mode];
         }
 
 LABEL_48:
-        v32 = [(ActionCoordinator *)self placeCardViewController];
-        [v32 updateForViewMode:a4];
+        placeCardViewController = [(ActionCoordinator *)self placeCardViewController];
+        [placeCardViewController updateForViewMode:mode];
 
         goto LABEL_49;
       }
 
-      if (a4 == 3)
+      if (mode == 3)
       {
-        if (v10 == 3)
+        if (transportType == 3)
         {
           goto LABEL_45;
         }
 
 LABEL_24:
-        if (a4 == 3)
+        if (mode == 3)
         {
           v17 = 3;
         }
@@ -5493,7 +5493,7 @@ LABEL_24:
           v17 = 1;
         }
 
-        if (a4 == -1)
+        if (mode == -1)
         {
           v18 = 0;
         }
@@ -5506,17 +5506,17 @@ LABEL_24:
         v19 = sub_100798408();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
-          if ((0x1DFu >> (a4 + 1)))
+          if ((0x1DFu >> (mode + 1)))
           {
-            v20 = *(&off_10162EE28 + a4 + 1);
+            mode2 = *(&off_10162EE28 + mode + 1);
           }
 
           else
           {
-            v20 = [NSString stringWithFormat:@"<Unknown: %ld>", a4];
+            mode2 = [NSString stringWithFormat:@"<Unknown: %ld>", mode];
           }
 
-          v22 = v20;
+          v22 = mode2;
           v23 = v22;
           if ((v11 - 2) > 3)
           {
@@ -5539,13 +5539,13 @@ LABEL_24:
         }
 
         [self->_currentDirectionItem setTransportType:v18];
-        [v9 updateTransportType:v18];
+        [routePlanningDataCoordinator updateTransportType:v18];
         goto LABEL_45;
       }
 
-      if (a4 == 7)
+      if (mode == 7)
       {
-        if (v10 == 1 || v10 == 4)
+        if (transportType == 1 || transportType == 4)
         {
           goto LABEL_45;
         }
@@ -5554,7 +5554,7 @@ LABEL_24:
       }
     }
 
-    if (a4 != -1)
+    if (mode != -1)
     {
       goto LABEL_19;
     }
@@ -5565,63 +5565,63 @@ LABEL_24:
 LABEL_49:
 }
 
-- (void)updateViewMode:(int64_t)a3 animated:(BOOL)a4
+- (void)updateViewMode:(int64_t)mode animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(ActionCoordinator *)self containerViewController];
-  v6 = [v7 chromeViewController];
-  [v6 updateViewMode:a3 animated:v4 preserveMapSelection:1];
+  animatedCopy = animated;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  [chromeViewController updateViewMode:mode animated:animatedCopy preserveMapSelection:1];
 }
 
-- (void)setViewMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setViewMode:(int64_t)mode animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(ActionCoordinator *)self settingsController];
-  v8 = [v7 bestMapViewModeForViewMode:a3];
+  animatedCopy = animated;
+  settingsController = [(ActionCoordinator *)self settingsController];
+  v8 = [settingsController bestMapViewModeForViewMode:mode];
 
-  v9 = [(ActionCoordinator *)self settingsController];
-  [v9 setMapViewMode:v8 animated:v4];
+  settingsController2 = [(ActionCoordinator *)self settingsController];
+  [settingsController2 setMapViewMode:v8 animated:animatedCopy];
 }
 
 - (int64_t)displayedViewMode
 {
-  v2 = [(ActionCoordinator *)self containerViewController];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 displayedViewMode];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  displayedViewMode = [chromeViewController displayedViewMode];
 
-  return v4;
+  return displayedViewMode;
 }
 
 - (void)select3dMode
 {
-  v3 = [(ActionCoordinator *)self mapView];
-  v4 = [v3 _isPitched];
+  mapView = [(ActionCoordinator *)self mapView];
+  _isPitched = [mapView _isPitched];
 
-  if (!v4)
+  if (!_isPitched)
   {
     if (!+[SettingsController deviceSupportsGlobe])
     {
-      v5 = [(ActionCoordinator *)self displayedViewMode];
-      if (v5 == 1)
+      displayedViewMode = [(ActionCoordinator *)self displayedViewMode];
+      if (displayedViewMode == 1)
       {
         v6 = 5;
         goto LABEL_10;
       }
 
-      if (v5 == 2)
+      if (displayedViewMode == 2)
       {
         v6 = 6;
 LABEL_10:
-        v7 = [(ActionCoordinator *)self settingsController];
-        [v7 setMapViewMode:v6 animated:0];
+        settingsController = [(ActionCoordinator *)self settingsController];
+        [settingsController setMapViewMode:v6 animated:0];
       }
     }
 
     v8 = +[MKMapService sharedService];
     [v8 captureUserAction:5009 onTarget:-[ActionCoordinator currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 
-    v9 = [(ActionCoordinator *)self mapView];
-    [v9 _enter3DMode];
+    mapView2 = [(ActionCoordinator *)self mapView];
+    [mapView2 _enter3DMode];
 
     self->_is3dModeSelected = 1;
     return;
@@ -5633,18 +5633,18 @@ LABEL_10:
 - (void)exit3dMode
 {
   *&self->_is3dModeSelected = 256;
-  v3 = [(ActionCoordinator *)self mapView];
-  [v3 _exit3DMode];
+  mapView = [(ActionCoordinator *)self mapView];
+  [mapView _exit3DMode];
 
   if (!+[SettingsController deviceSupportsGlobe])
   {
-    v4 = [(ActionCoordinator *)self settingsController];
-    v5 = [v4 in3DMode];
+    settingsController = [(ActionCoordinator *)self settingsController];
+    in3DMode = [settingsController in3DMode];
 
-    v6 = [(ActionCoordinator *)self displayedViewMode];
-    if (v6 != 5 || v5)
+    displayedViewMode = [(ActionCoordinator *)self displayedViewMode];
+    if (displayedViewMode != 5 || in3DMode)
     {
-      if ((v6 != 6) | v5 & 1)
+      if ((displayedViewMode != 6) | in3DMode & 1)
       {
         goto LABEL_8;
       }
@@ -5657,166 +5657,166 @@ LABEL_10:
       v7 = 1;
     }
 
-    v8 = [(ActionCoordinator *)self settingsController];
-    [v8 setMapViewMode:v7 animated:0];
+    settingsController2 = [(ActionCoordinator *)self settingsController];
+    [settingsController2 setMapViewMode:v7 animated:0];
   }
 
 LABEL_8:
   v9 = +[MKMapService sharedService];
   [v9 captureUserAction:5010 onTarget:-[ActionCoordinator currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 
-  v10 = [(ActionCoordinator *)self containerViewController];
-  [v10 refreshControls];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [containerViewController refreshControls];
 }
 
-- (void)productViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)productViewController:(id)controller didFinishWithResult:(int64_t)result
 {
-  v6 = a3;
-  v7 = [(ActionCoordinator *)self containerViewController];
-  v8 = [v7 traitCollection];
-  v9 = [v8 userInterfaceIdiom];
+  controllerCopy = controller;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  traitCollection = [containerViewController traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v9)
+  if (userInterfaceIdiom)
   {
-    v10 = [v6 presentingViewController];
-    [v10 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [controllerCopy presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    [controllerCopy dismissViewControllerAnimated:1 completion:0];
   }
 
-  v11 = [v6 clientIdentifier];
+  clientIdentifier = [controllerCopy clientIdentifier];
 
-  v12 = [v11 isEqualToString:@"RidesharingStoreProductClientIdentifier"];
-  if (a4 == 4 && v12)
+  v12 = [clientIdentifier isEqualToString:@"RidesharingStoreProductClientIdentifier"];
+  if (result == 4 && v12)
   {
-    v15 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-    v13 = [v15 rideOptionStateObserver];
-    v14 = [v13 analyticsBookingSession];
-    [v14 setInstalledApp:1];
+    routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+    rideOptionStateObserver = [routePlanningDataCoordinator rideOptionStateObserver];
+    analyticsBookingSession = [rideOptionStateObserver analyticsBookingSession];
+    [analyticsBookingSession setInstalledApp:1];
   }
 }
 
-- (void)containeeViewController:(id)a3 didCreateKeyboardProxy:(id)a4
+- (void)containeeViewController:(id)controller didCreateKeyboardProxy:(id)proxy
 {
-  v5 = a4;
-  v6 = [(ActionCoordinator *)self searchModeViewController];
-  [v6 keyboardProxyViewCreated:v5];
+  proxyCopy = proxy;
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController keyboardProxyViewCreated:proxyCopy];
 }
 
-- (void)confirmDeleteSharedTripWithSummary:(id)a3 sourceView:(id)a4 sourceRect:(CGRect)a5 completion:(id)a6
+- (void)confirmDeleteSharedTripWithSummary:(id)summary sourceView:(id)view sourceRect:(CGRect)rect completion:(id)completion
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v21 = a4;
-  v13 = a6;
-  v14 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  completionCopy = completion;
+  summaryCopy = summary;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v16 = [WeakRetained traitCollection];
-  v17 = +[UIAlertController _maps_confirmationAlertControllerForBlockingTripInSummary:userInterfaceIdiom:completion:](UIAlertController, "_maps_confirmationAlertControllerForBlockingTripInSummary:userInterfaceIdiom:completion:", v14, [v16 userInterfaceIdiom], v13);
+  traitCollection = [WeakRetained traitCollection];
+  v17 = +[UIAlertController _maps_confirmationAlertControllerForBlockingTripInSummary:userInterfaceIdiom:completion:](UIAlertController, "_maps_confirmationAlertControllerForBlockingTripInSummary:userInterfaceIdiom:completion:", summaryCopy, [traitCollection userInterfaceIdiom], completionCopy);
 
-  if (v21)
+  if (viewCopy)
   {
-    v18 = [v17 popoverPresentationController];
-    [v18 setSourceView:v21];
+    popoverPresentationController = [v17 popoverPresentationController];
+    [popoverPresentationController setSourceView:viewCopy];
 
-    v19 = [v17 popoverPresentationController];
-    [v19 setSourceRect:{x, y, width, height}];
+    popoverPresentationController2 = [v17 popoverPresentationController];
+    [popoverPresentationController2 setSourceRect:{x, y, width, height}];
   }
 
   v20 = objc_loadWeakRetained(&self->_containerViewController);
   [v20 _maps_topMostPresentViewController:v17 animated:1 completion:0];
 }
 
-- (void)confirmDeleteCollections:(id)a3 sourceItem:(id)a4 sourceRect:(CGRect)a5 completion:(id)a6
+- (void)confirmDeleteCollections:(id)collections sourceItem:(id)item sourceRect:(CGRect)rect completion:(id)completion
 {
-  v16 = a4;
-  v9 = a6;
-  v10 = a3;
+  itemCopy = item;
+  completionCopy = completion;
+  collectionsCopy = collections;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v12 = [WeakRetained traitCollection];
-  v13 = +[UIAlertController _maps_confirmationAlertControllerForDeletingCollections:userInterfaceIdiom:completion:](UIAlertController, "_maps_confirmationAlertControllerForDeletingCollections:userInterfaceIdiom:completion:", v10, [v12 userInterfaceIdiom], v9);
+  traitCollection = [WeakRetained traitCollection];
+  v13 = +[UIAlertController _maps_confirmationAlertControllerForDeletingCollections:userInterfaceIdiom:completion:](UIAlertController, "_maps_confirmationAlertControllerForDeletingCollections:userInterfaceIdiom:completion:", collectionsCopy, [traitCollection userInterfaceIdiom], completionCopy);
 
-  if (v16)
+  if (itemCopy)
   {
-    v14 = [v13 popoverPresentationController];
-    [v14 setSourceItem:v16];
+    popoverPresentationController = [v13 popoverPresentationController];
+    [popoverPresentationController setSourceItem:itemCopy];
   }
 
   v15 = objc_loadWeakRetained(&self->_containerViewController);
   [v15 _maps_topMostPresentViewController:v13 animated:1 completion:0];
 }
 
-- (void)deleteMarkedLocation:(id)a3
+- (void)deleteMarkedLocation:(id)location
 {
-  v3 = [(ActionCoordinator *)self searchPinsManager];
-  [v3 clearDroppedPin];
+  searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+  [searchPinsManager clearDroppedPin];
 
   v4 = +[CustomSearchManager sharedManager];
   [v4 setCustomSearchResult:0 animated:1 shouldSelectOnMap:0 context:@"__internal_MapsDroppedPinContextSwipe"];
 }
 
-- (void)presentAutosharingContactSearchWithContacts:(id)a3 selectionHandler:(id)a4
+- (void)presentAutosharingContactSearchWithContacts:(id)contacts selectionHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
+  contactsCopy = contacts;
+  handlerCopy = handler;
   if ([(ActionCoordinator *)self isRoutePlanningPresented])
   {
-    v7 = [[ContactSearchViewController alloc] initWithInitialContacts:v10 selectionHandler:v6];
-    v8 = [(ContaineeViewController *)v7 cardPresentationController];
-    [v8 setPresentedModally:1];
+    v7 = [[ContactSearchViewController alloc] initWithInitialContacts:contactsCopy selectionHandler:handlerCopy];
+    cardPresentationController = [(ContaineeViewController *)v7 cardPresentationController];
+    [cardPresentationController setPresentedModally:1];
 
     [(ContaineeViewController *)v7 setContaineeDelegate:self];
-    v9 = [(ActionCoordinator *)self containerViewController];
-    [v9 presentController:v7 animated:1];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    [containerViewController presentController:v7 animated:1];
   }
 }
 
 - (void)closeStopDetail
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v4 = [v3 currentViewController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(ActionCoordinator *)self containerViewController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
+    [containerViewController2 dismissViewControllerAnimated:1 completion:0];
   }
 }
 
 - (void)closeSharedTripDetail
 {
-  v2 = [(ActionCoordinator *)self containerViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [containerViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)didSelectStopWithMapItem:(id)a3
+- (void)didSelectStopWithMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [[PlaceCardItem alloc] initWithMapItem:v4];
-  v6 = [(ActionCoordinator *)self containerViewController];
+  itemCopy = item;
+  v5 = [[PlaceCardItem alloc] initWithMapItem:itemCopy];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100912090;
   v9[3] = &unk_101661A40;
   v9[4] = self;
-  v10 = v4;
+  v10 = itemCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
-  [v6 dismissViewControllerAnimated:1 completion:v9];
+  v8 = itemCopy;
+  [containerViewController dismissViewControllerAnimated:1 completion:v9];
 }
 
-- (void)didRequestDirectionsForSharedTrip:(id)a3
+- (void)didRequestDirectionsForSharedTrip:(id)trip
 {
-  v3 = [a3 destinationWaypointMapItem];
-  v4 = [MKMapItem _itemWithGeoMapItem:v3];
+  destinationWaypointMapItem = [trip destinationWaypointMapItem];
+  v4 = [MKMapItem _itemWithGeoMapItem:destinationWaypointMapItem];
   v9 = v4;
   v5 = [NSArray arrayWithObjects:&v9 count:1];
   v7 = MKLaunchOptionsDirectionsModeKey;
@@ -5828,59 +5828,59 @@ LABEL_8:
 - (void)_cancelUserInteractions
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v4 = [WeakRetained chromeViewController];
-  v5 = [v4 view];
-  v6 = [v5 isUserInteractionEnabled];
+  chromeViewController = [WeakRetained chromeViewController];
+  view = [chromeViewController view];
+  isUserInteractionEnabled = [view isUserInteractionEnabled];
 
-  if (v6)
+  if (isUserInteractionEnabled)
   {
     v7 = objc_loadWeakRetained(&self->_containerViewController);
-    v8 = [v7 chromeViewController];
-    v9 = [v8 view];
-    [v9 setUserInteractionEnabled:0];
+    chromeViewController2 = [v7 chromeViewController];
+    view2 = [chromeViewController2 view];
+    [view2 setUserInteractionEnabled:0];
 
     v12 = objc_loadWeakRetained(&self->_containerViewController);
-    v10 = [v12 chromeViewController];
-    v11 = [v10 view];
-    [v11 setUserInteractionEnabled:1];
+    chromeViewController3 = [v12 chromeViewController];
+    view3 = [chromeViewController3 view];
+    [view3 setUserInteractionEnabled:1];
   }
 }
 
 - (void)exitLookAround
 {
-  v2 = [(ActionCoordinator *)self appCoordinator];
-  [v2 exitLookAround];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator exitLookAround];
 }
 
-- (void)enterLookAroundWithEntryPoint:(id)a3 lookAroundView:(id)a4 showsFullScreen:(BOOL)a5 originFrame:(CGRect)a6
+- (void)enterLookAroundWithEntryPoint:(id)point lookAroundView:(id)view showsFullScreen:(BOOL)screen originFrame:(CGRect)frame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v10 = a5;
-  v13 = a4;
-  v14 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  screenCopy = screen;
+  viewCopy = view;
+  pointCopy = point;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v16 = [WeakRetained chromeViewController];
+  chromeViewController = [WeakRetained chromeViewController];
   v17 = objc_loadWeakRetained(&self->_containerViewController);
-  v18 = [v17 chromeContext];
-  v19 = [v16 isTopContext:v18];
+  chromeContext = [v17 chromeContext];
+  v19 = [chromeViewController isTopContext:chromeContext];
 
   if (v19)
   {
     [(ActionCoordinator *)self _cancelUserInteractions];
   }
 
-  v20 = [(ActionCoordinator *)self appCoordinator];
-  [v20 enterLookAroundWithEntryPoint:v14 lookAroundView:v13 showsFullScreen:v10 originFrame:{x, y, width, height}];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator enterLookAroundWithEntryPoint:pointCopy lookAroundView:viewCopy showsFullScreen:screenCopy originFrame:{x, y, width, height}];
 }
 
 - (BOOL)shouldDismissPlaceCardOnClearMapSelection
 {
-  v2 = [(ActionCoordinator *)self containerViewController];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 topContext];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  topContext = [chromeViewController topContext];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -5897,176 +5897,176 @@ LABEL_8:
   return v5 & 1;
 }
 
-- (void)dismissPlaceCardViewController:(id)a3
+- (void)dismissPlaceCardViewController:(id)controller
 {
-  if (self->_placeCardViewController == a3)
+  if (self->_placeCardViewController == controller)
   {
-    v5 = a3;
-    v6 = [(ActionCoordinator *)self containerViewController];
-    [v6 popLastViewControllerFromViewController:v5 animated:1 useDefaultContaineeLayout:0];
+    controllerCopy = controller;
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    [containerViewController popLastViewControllerFromViewController:controllerCopy animated:1 useDefaultContaineeLayout:0];
 
     placeCardViewController = self->_placeCardViewController;
     self->_placeCardViewController = 0;
   }
 }
 
-- (BOOL)shouldReusePlaceCardViewController:(id)a3
+- (BOOL)shouldReusePlaceCardViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 presentingViewController];
+  controllerCopy = controller;
+  presentingViewController = [controllerCopy presentingViewController];
 
-  v6 = [(ActionCoordinator *)self currentViewController];
+  currentViewController = [(ActionCoordinator *)self currentViewController];
 
-  return v6 == v4 || v5 == 0;
+  return currentViewController == controllerCopy || presentingViewController == 0;
 }
 
 - (void)dismissLastVenuePlaceCard
 {
-  v3 = [(ActionCoordinator *)self venueCardCoordinator];
-  v7 = [v3 topViewController];
+  venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+  topViewController = [venueCardCoordinator topViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(ActionCoordinator *)self mapSelectionManager];
-    [v4 clearSelection];
+    mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+    [mapSelectionManager clearSelection];
 
-    v5 = [(ActionCoordinator *)self containerViewController];
-    [v5 removeControllerFromStack:v7];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    [containerViewController removeControllerFromStack:topViewController];
 
-    v6 = [(ActionCoordinator *)self venueCardCoordinator];
-    [v6 popVenueCardItem:0];
+    venueCardCoordinator2 = [(ActionCoordinator *)self venueCardCoordinator];
+    [venueCardCoordinator2 popVenueCardItem:0];
   }
 }
 
-- (void)closeVenueFloorCardViewController:(id)a3
+- (void)closeVenueFloorCardViewController:(id)controller
 {
-  v7 = a3;
-  v4 = [(ActionCoordinator *)self containerViewController];
-  v5 = [v4 currentViewController];
+  controllerCopy = controller;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
 
-  v6 = [(ActionCoordinator *)self containerViewController];
-  if (v5 == v7)
+  containerViewController2 = [(ActionCoordinator *)self containerViewController];
+  if (currentViewController == controllerCopy)
   {
-    [v6 popLastViewControllerFromViewController:v7 animated:1 useDefaultContaineeLayout:0];
+    [containerViewController2 popLastViewControllerFromViewController:controllerCopy animated:1 useDefaultContaineeLayout:0];
   }
 
   else
   {
-    [v6 removeControllerFromStack:v7];
+    [containerViewController2 removeControllerFromStack:controllerCopy];
   }
 }
 
-- (void)viewController:(id)a3 presentVenueFloorCardViewController:(id)a4
+- (void)viewController:(id)controller presentVenueFloorCardViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(ActionCoordinator *)self containerViewController];
-  [v6 presentController:v5 animated:1];
+  viewControllerCopy = viewController;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [containerViewController presentController:viewControllerCopy animated:1];
 }
 
-- (void)closeVenueViewController:(id)a3
+- (void)closeVenueViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self venueCardCoordinator];
-  v6 = [v5 topViewController];
+  controllerCopy = controller;
+  venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+  topViewController = [venueCardCoordinator topViewController];
 
-  if (v6 == v4)
+  if (topViewController == controllerCopy)
   {
-    v7 = [(ActionCoordinator *)self containerViewController];
-    v8 = [v7 chromeViewController];
-    [v8 setNeedsUpdateComponent:@"lookAroundButton" animated:1];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    chromeViewController = [containerViewController chromeViewController];
+    [chromeViewController setNeedsUpdateComponent:@"lookAroundButton" animated:1];
 
-    v9 = [(ActionCoordinator *)self mapSelectionManager];
-    [v9 clearSelection];
+    mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+    [mapSelectionManager clearSelection];
 
-    v10 = [(ActionCoordinator *)self searchPinsManager];
-    [v10 clearLinkedPlacesAndPolygon];
+    searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+    [searchPinsManager clearLinkedPlacesAndPolygon];
 
-    v11 = [(ActionCoordinator *)self venueCardCoordinator];
+    venueCardCoordinator2 = [(ActionCoordinator *)self venueCardCoordinator];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100912988;
     v12[3] = &unk_10162EB18;
     v12[4] = self;
-    v13 = v4;
-    [v11 popVenueCardItem:v12];
+    v13 = controllerCopy;
+    [venueCardCoordinator2 popVenueCardItem:v12];
   }
 }
 
-- (void)viewController:(id)a3 presentVenuesClusteredSearchResult:(id)a4
+- (void)viewController:(id)controller presentVenuesClusteredSearchResult:(id)result
 {
-  v5 = a4;
-  v6 = [(ActionCoordinator *)self venueCardCoordinator];
+  resultCopy = result;
+  venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100912D74;
   v8[3] = &unk_10162EB18;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 popVenueCardItem:v8];
+  v9 = resultCopy;
+  v7 = resultCopy;
+  [venueCardCoordinator popVenueCardItem:v8];
 }
 
-- (void)viewController:(id)a3 selectVenueSearchResult:(id)a4 source:(unint64_t)a5
+- (void)viewController:(id)controller selectVenueSearchResult:(id)result source:(unint64_t)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ActionCoordinator *)self currentSearchSession];
-  v11 = [v10 currentResultsSearchInfo];
-  v12 = [v11 shouldInjectSearchResults];
+  controllerCopy = controller;
+  resultCopy = result;
+  currentSearchSession = [(ActionCoordinator *)self currentSearchSession];
+  currentResultsSearchInfo = [currentSearchSession currentResultsSearchInfo];
+  shouldInjectSearchResults = [currentResultsSearchInfo shouldInjectSearchResults];
 
-  if (v12)
+  if (shouldInjectSearchResults)
   {
-    v13 = [(ActionCoordinator *)self searchPinsManager];
-    [v13 selectAndShowSearchResult:v9 animated:1];
+    searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+    [searchPinsManager selectAndShowSearchResult:resultCopy animated:1];
   }
 
   else
   {
-    [(ActionCoordinator *)self viewController:v8 selectSearchResult:v9 addToHistory:1 source:a5 saveSelectionState:1];
-    v13 = [(ActionCoordinator *)self searchPinsManager];
-    v15 = v9;
+    [(ActionCoordinator *)self viewController:controllerCopy selectSearchResult:resultCopy addToHistory:1 source:source saveSelectionState:1];
+    searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+    v15 = resultCopy;
     v14 = [NSArray arrayWithObjects:&v15 count:1];
-    [v13 setSearchPins:v14 selectedPin:v9 animated:1];
+    [searchPinsManager setSearchPins:v14 selectedPin:resultCopy animated:1];
   }
 }
 
-- (void)viewController:(id)a3 presentPlacesWithPlacesCardItem:(id)a4 source:(unint64_t)a5
+- (void)viewController:(id)controller presentPlacesWithPlacesCardItem:(id)item source:(unint64_t)source
 {
-  v6 = a4;
-  v7 = [(ActionCoordinator *)self mapSelectionManager];
-  [v7 clearSelection];
+  itemCopy = item;
+  mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+  [mapSelectionManager clearSelection];
 
-  v8 = [(ActionCoordinator *)self searchPinsManager];
-  [v8 clearLinkedPlacesAndPolygon];
+  searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+  [searchPinsManager clearLinkedPlacesAndPolygon];
 
   v9 = [PlaceCategoryItem alloc];
-  v10 = [v6 searchCategory];
-  v11 = [v6 mapItem];
-  v12 = [v11 _muid];
-  v13 = [v6 searchCategory];
+  searchCategory = [itemCopy searchCategory];
+  mapItem = [itemCopy mapItem];
+  _muid = [mapItem _muid];
+  searchCategory2 = [itemCopy searchCategory];
 
-  v15 = -[PlaceCategoryItem initWithSearchCategory:parentMuid:displayMode:](v9, "initWithSearchCategory:parentMuid:displayMode:", v10, v12, [v13 displayMode]);
+  v15 = -[PlaceCategoryItem initWithSearchCategory:parentMuid:displayMode:](v9, "initWithSearchCategory:parentMuid:displayMode:", searchCategory, _muid, [searchCategory2 displayMode]);
   v14 = [SearchFieldItem searchFieldItemWithObject:v15];
   [(ActionCoordinator *)self viewController:0 doSearchItem:v14 withUserInfo:0];
 }
 
-- (void)viewController:(id)a3 presentVenueWithVenueCardItem:(id)a4 source:(unint64_t)a5
+- (void)viewController:(id)controller presentVenueWithVenueCardItem:(id)item source:(unint64_t)source
 {
-  v16 = a4;
-  if ([v16 isVenueItem])
+  itemCopy = item;
+  if ([itemCopy isVenueItem])
   {
-    v7 = [(ActionCoordinator *)self venueCardCoordinator];
-    [v7 pushVenueCardItem:v16 source:a5];
+    venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+    [venueCardCoordinator pushVenueCardItem:itemCopy source:source];
 
-    v8 = [(ActionCoordinator *)self mapSelectionManager];
-    [v8 clearSelection];
+    mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+    [mapSelectionManager clearSelection];
 
-    v9 = [(ActionCoordinator *)self searchPinsManager];
-    [v9 clearLinkedPlacesAndPolygon];
+    searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+    [searchPinsManager clearLinkedPlacesAndPolygon];
 
-    v10 = [(ActionCoordinator *)self venueCardCoordinator];
-    v11 = [v10 viewControllerForCardItem:v16];
+    venueCardCoordinator2 = [(ActionCoordinator *)self venueCardCoordinator];
+    v11 = [venueCardCoordinator2 viewControllerForCardItem:itemCopy];
 
     v12 = v11;
     objc_opt_class();
@@ -6089,64 +6089,64 @@ LABEL_8:
   }
 }
 
-- (void)viewController:(id)a3 presentVenueForMapItem:(id)a4 searchCategory:(id)a5 source:(unint64_t)a6
+- (void)viewController:(id)controller presentVenueForMapItem:(id)item searchCategory:(id)category source:(unint64_t)source
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[VenueSearchCardItem alloc] initWithMapItem:v11 searchCategory:v10];
+  categoryCopy = category;
+  itemCopy = item;
+  controllerCopy = controller;
+  v13 = [[VenueSearchCardItem alloc] initWithMapItem:itemCopy searchCategory:categoryCopy];
 
-  [(ActionCoordinator *)self viewController:v12 presentVenueWithVenueCardItem:v13 source:a6];
+  [(ActionCoordinator *)self viewController:controllerCopy presentVenueWithVenueCardItem:v13 source:source];
 }
 
-- (void)viewController:(id)a3 presentVenueFromAutoCompleteWithVenueIdentifier:(id)a4 searchCategory:(id)a5 source:(unint64_t)a6
+- (void)viewController:(id)controller presentVenueFromAutoCompleteWithVenueIdentifier:(id)identifier searchCategory:(id)category source:(unint64_t)source
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[VenueAutoCompleteSearchCardItem alloc] initWithVenueIdentifier:v11 searchCategory:v10];
+  categoryCopy = category;
+  identifierCopy = identifier;
+  controllerCopy = controller;
+  v13 = [[VenueAutoCompleteSearchCardItem alloc] initWithVenueIdentifier:identifierCopy searchCategory:categoryCopy];
 
-  [(ActionCoordinator *)self viewController:v12 presentVenueWithVenueCardItem:v13 source:a6];
+  [(ActionCoordinator *)self viewController:controllerCopy presentVenueWithVenueCardItem:v13 source:source];
 }
 
-- (void)viewController:(id)a3 dismissMenuControllerAnimated:(BOOL)a4
+- (void)viewController:(id)controller dismissMenuControllerAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  [WeakRetained popLastViewControllerFromViewController:v6 animated:v4 useDefaultContaineeLayout:0];
+  [WeakRetained popLastViewControllerFromViewController:controllerCopy animated:animatedCopy useDefaultContaineeLayout:0];
 }
 
-- (void)viewController:(id)a3 presentMenuController:(id)a4 animated:(BOOL)a5 fromChrome:(BOOL)a6 completion:(id)a7
+- (void)viewController:(id)controller presentMenuController:(id)menuController animated:(BOOL)animated fromChrome:(BOOL)chrome completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v18 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = v18;
-  if (v9)
+  chromeCopy = chrome;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  menuControllerCopy = menuController;
+  completionCopy = completion;
+  chromeViewController = controllerCopy;
+  if (chromeCopy)
   {
-    v7 = [(ActionCoordinator *)self containerViewController];
-    v15 = [v7 chromeViewController];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    chromeViewController = [containerViewController chromeViewController];
   }
 
-  v16 = [v13 macMenuPresentationController];
-  [v16 setContainerViewController:v15];
+  macMenuPresentationController = [menuControllerCopy macMenuPresentationController];
+  [macMenuPresentationController setContainerViewController:chromeViewController];
 
-  if (v9)
+  if (chromeCopy)
   {
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  [WeakRetained presentController:v13 animated:v10 completion:v14];
+  [WeakRetained presentController:menuControllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)displayIncidentReportSubmissionWithItem:(id)a3 report:(id)a4
+- (void)displayIncidentReportSubmissionWithItem:(id)item report:(id)report
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [[NavTrafficIncidentReportSubmissionContaineeViewController alloc] initWithItem:v7 report:v6];
+  reportCopy = report;
+  itemCopy = item;
+  v9 = [[NavTrafficIncidentReportSubmissionContaineeViewController alloc] initWithItem:itemCopy report:reportCopy];
 
   [(ContaineeViewController *)v9 setContaineeDelegate:self];
   [(NavTrafficIncidentReportSubmissionContaineeViewController *)v9 setReportingDelegate:self];
@@ -6154,29 +6154,29 @@ LABEL_8:
   [WeakRetained presentController:v9 animated:1 useDefaultContaineeLayout:1];
 }
 
-- (void)incidentReportSubmissionContaineeDidFinish:(id)a3
+- (void)incidentReportSubmissionContaineeDidFinish:(id)finish
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   [WeakRetained popLastViewControllerAnimated:1];
 }
 
-- (void)transitSchedulesViewController:(id)a3 wantsToShowInfoForLine:(id)a4
+- (void)transitSchedulesViewController:(id)controller wantsToShowInfoForLine:(id)line
 {
-  v6 = a4;
-  v9 = a3;
-  v7 = [(ActionCoordinator *)self containerViewController];
-  v8 = sub_10000FA08(v7) != 5;
+  lineCopy = line;
+  controllerCopy = controller;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  v8 = sub_10000FA08(containerViewController) != 5;
 
-  [(ActionCoordinator *)self viewController:v9 selectTransitLineItem:v6 zoomToMapRegion:v8];
+  [(ActionCoordinator *)self viewController:controllerCopy selectTransitLineItem:lineCopy zoomToMapRegion:v8];
 }
 
-- (void)viewController:(id)a3 displayTransitSchedulesForDepartureSequence:(id)a4 withTimeZone:(id)a5 scheduleWindowStartDate:(id)a6 includeAllDirections:(BOOL)a7
+- (void)viewController:(id)controller displayTransitSchedulesForDepartureSequence:(id)sequence withTimeZone:(id)zone scheduleWindowStartDate:(id)date includeAllDirections:(BOOL)directions
 {
-  v7 = a7;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v15 = [[TransitSchedulesViewController alloc] initWithDepartureSequence:v13 timeZone:v12 scheduleWindowStartDate:v11 includeAllDirections:v7];
+  directionsCopy = directions;
+  dateCopy = date;
+  zoneCopy = zone;
+  sequenceCopy = sequence;
+  v15 = [[TransitSchedulesViewController alloc] initWithDepartureSequence:sequenceCopy timeZone:zoneCopy scheduleWindowStartDate:dateCopy includeAllDirections:directionsCopy];
 
   [(TransitSchedulesViewController *)v15 setActionCoordinator:self];
   [(ContaineeViewController *)v15 setContaineeDelegate:self];
@@ -6190,8 +6190,8 @@ LABEL_8:
 
 - (void)showNearbyTeachableMomentCard
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v4 = [v3 currentViewController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -6214,9 +6214,9 @@ LABEL_7:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v12 = [WeakRetained containerStyle];
+  containerStyle = [WeakRetained containerStyle];
 
-  if ((v12 & 0xFFFFFFFFFFFFFFFDLL) == 4)
+  if ((containerStyle & 0xFFFFFFFFFFFFFFFDLL) == 4)
   {
     v6 = sub_100798A3C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -6236,22 +6236,22 @@ LABEL_8:
 
   v14 = objc_alloc_init(_TtC4Maps44NearbyTeachableMomentContaineeViewController);
   [(ContaineeViewController *)v14 setContaineeDelegate:self];
-  v13 = [(ActionCoordinator *)self containerViewController];
-  [v13 presentController:v14 animated:1];
+  containerViewController2 = [(ActionCoordinator *)self containerViewController];
+  [containerViewController2 presentController:v14 animated:1];
 }
 
-- (void)viewControllerPresentNearbyTransitDepartures:(id)a3
+- (void)viewControllerPresentNearbyTransitDepartures:(id)departures
 {
-  v4 = [(ActionCoordinator *)self containerViewController];
-  v5 = sub_10000FA08(v4);
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  v5 = sub_10000FA08(containerViewController);
 
   if (v5 != 5 || ([(ActionCoordinator *)self currentViewController], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) == 0))
   {
     v8 = [_TtC4Maps27NearbyTransitViewController alloc];
-    v9 = [(ActionCoordinator *)self containerViewController];
-    v10 = [v9 chromeViewController];
-    v11 = [v10 mapView];
-    v13 = [(NearbyTransitViewController *)v8 initWithMapView:v11 viewMode:[(ActionCoordinator *)self displayedViewMode]];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
+    chromeViewController = [containerViewController2 chromeViewController];
+    mapView = [chromeViewController mapView];
+    v13 = [(NearbyTransitViewController *)v8 initWithMapView:mapView viewMode:[(ActionCoordinator *)self displayedViewMode]];
 
     [(ContaineeViewController *)v13 setContaineeDelegate:self];
     [(NearbyTransitViewController *)v13 setNearbyTransitDelegate:self];
@@ -6260,11 +6260,11 @@ LABEL_8:
   }
 }
 
-- (void)viewController:(id)a3 displayTransitSchedulesForMapItem:(id)a4 departureSequence:(id)a5
+- (void)viewController:(id)controller displayTransitSchedulesForMapItem:(id)item departureSequence:(id)sequence
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = [[TransitSchedulesViewController alloc] initWithTransitMapItem:v8 departureSequence:v7];
+  sequenceCopy = sequence;
+  itemCopy = item;
+  v10 = [[TransitSchedulesViewController alloc] initWithTransitMapItem:itemCopy departureSequence:sequenceCopy];
 
   [(TransitSchedulesViewController *)v10 setActionCoordinator:self];
   [(ContaineeViewController *)v10 setContaineeDelegate:self];
@@ -6281,25 +6281,25 @@ LABEL_8:
   [GEOAPPortal captureUserAction:21 target:[(ActionCoordinator *)self currentUITargetForAnalytics] value:0];
 }
 
-- (BOOL)clusterIsPartOfVenues:(id)a3
+- (BOOL)clusterIsPartOfVenues:(id)venues
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self venueCardCoordinator];
-  v6 = [v5 venueIdForCurrentCardStack];
+  venuesCopy = venues;
+  venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+  venueIdForCurrentCardStack = [venueCardCoordinator venueIdForCurrentCardStack];
 
-  v20 = v6;
-  if (v6)
+  v20 = venueIdForCurrentCardStack;
+  if (venueIdForCurrentCardStack)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [v4 clusterFeatureAnnotations];
-    v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    clusterFeatureAnnotations = [venuesCopy clusterFeatureAnnotations];
+    v8 = [clusterFeatureAnnotations countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v8)
     {
       v9 = v8;
-      v19 = v4;
+      v19 = venuesCopy;
       v10 = *v22;
       while (2)
       {
@@ -6307,27 +6307,27 @@ LABEL_8:
         {
           if (*v22 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(clusterFeatureAnnotations);
           }
 
           v12 = *(*(&v21 + 1) + 8 * i);
           if ([v12 conformsToProtocol:{&OBJC_PROTOCOL___CustomPOIAnnotation, v19}])
           {
-            v13 = [v12 searchResult];
-            v14 = [v13 mapItem];
-            v15 = [v14 _venueInfo];
-            v16 = [v15 venueIdentifier];
-            v17 = [v16 venueID];
+            searchResult = [v12 searchResult];
+            mapItem = [searchResult mapItem];
+            _venueInfo = [mapItem _venueInfo];
+            venueIdentifier = [_venueInfo venueIdentifier];
+            venueID = [venueIdentifier venueID];
 
-            if (v17 != v20)
+            if (venueID != v20)
             {
-              LOBYTE(v6) = 0;
+              LOBYTE(venueIdForCurrentCardStack) = 0;
               goto LABEL_13;
             }
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v9 = [clusterFeatureAnnotations countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v9)
         {
           continue;
@@ -6336,65 +6336,65 @@ LABEL_8:
         break;
       }
 
-      LOBYTE(v6) = 1;
+      LOBYTE(venueIdForCurrentCardStack) = 1;
 LABEL_13:
-      v4 = v19;
+      venuesCopy = v19;
     }
 
     else
     {
-      LOBYTE(v6) = 1;
+      LOBYTE(venueIdForCurrentCardStack) = 1;
     }
   }
 
-  return v6;
+  return venueIdForCurrentCardStack;
 }
 
 - (void)showVLF
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v4 = [v3 currentViewController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v15 = [(ActionCoordinator *)self containerViewController];
-    v6 = [v15 currentViewController];
-    [v6 handleVLFPuckTapped];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
+    currentViewController2 = [containerViewController2 currentViewController];
+    [currentViewController2 handleVLFPuckTapped];
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v7 = [(ActionCoordinator *)self containerViewController];
+    containerViewController3 = [(ActionCoordinator *)self containerViewController];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100913EEC;
     v16[3] = &unk_1016619A8;
     objc_copyWeak(&v17, &location);
-    v8 = [v7 showVLFCrowdsourcingPermissionCardWithContaineeDelegate:self delegate:self completion:v16];
+    v8 = [containerViewController3 showVLFCrowdsourcingPermissionCardWithContaineeDelegate:self delegate:self completion:v16];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(ActionCoordinator *)self containerViewController];
-      v10 = [v9 chromeViewController];
-      v11 = [v10 userLocationView];
+      containerViewController4 = [(ActionCoordinator *)self containerViewController];
+      chromeViewController = [containerViewController4 chromeViewController];
+      userLocationView = [chromeViewController userLocationView];
 
-      if ([v11 isVLFBannerVisible])
+      if ([userLocationView isVLFBannerVisible])
       {
-        v12 = 2;
+        isVLFPuckVisible = 2;
       }
 
       else
       {
-        v12 = [v11 isVLFPuckVisible];
+        isVLFPuckVisible = [userLocationView isVLFPuckVisible];
       }
 
-      v13 = [[VLFContaineeViewController alloc] initWithEntryPoint:v12];
+      v13 = [[VLFContaineeViewController alloc] initWithEntryPoint:isVLFPuckVisible];
       [(ContaineeViewController *)v13 setContaineeDelegate:self];
-      v14 = [(ActionCoordinator *)self containerViewController];
-      [v14 presentController:v13];
+      containerViewController5 = [(ActionCoordinator *)self containerViewController];
+      [containerViewController5 presentController:v13];
     }
 
     objc_destroyWeak(&v17);
@@ -6402,33 +6402,33 @@ LABEL_13:
   }
 }
 
-- (void)viewController:(id)a3 presentCluster:(id)a4
+- (void)viewController:(id)controller presentCluster:(id)cluster
 {
-  v30 = a4;
-  if ([v30 isCluster])
+  clusterCopy = cluster;
+  if ([clusterCopy isCluster])
   {
-    v5 = [v30 clusterFeatureAnnotations];
-    v6 = [v5 firstObject];
+    clusterFeatureAnnotations = [clusterCopy clusterFeatureAnnotations];
+    firstObject = [clusterFeatureAnnotations firstObject];
 
-    if ([(ActionCoordinator *)self clusterIsPartOfVenues:v30])
+    if ([(ActionCoordinator *)self clusterIsPartOfVenues:clusterCopy])
     {
-      v7 = [[LabelMarkerVenueCardItem alloc] initWithLabelMarker:v30];
-      v8 = [(ActionCoordinator *)self venueCardCoordinator];
-      v9 = [v8 topViewController];
+      simpleListResultsVC6 = [[LabelMarkerVenueCardItem alloc] initWithLabelMarker:clusterCopy];
+      venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+      topViewController = [venueCardCoordinator topViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v11 = [(ActionCoordinator *)self venueCardCoordinator];
-        [v11 popVenueCardItem:0];
+        venueCardCoordinator2 = [(ActionCoordinator *)self venueCardCoordinator];
+        [venueCardCoordinator2 popVenueCardItem:0];
       }
 
-      v12 = [(ActionCoordinator *)self venueCardCoordinator];
-      [v12 pushVenueCardItem:v7 source:5];
+      venueCardCoordinator3 = [(ActionCoordinator *)self venueCardCoordinator];
+      [venueCardCoordinator3 pushVenueCardItem:simpleListResultsVC6 source:5];
 
-      v13 = [(ActionCoordinator *)self venueCardCoordinator];
-      v14 = [v13 viewControllerForCardItem:v7];
+      venueCardCoordinator4 = [(ActionCoordinator *)self venueCardCoordinator];
+      v14 = [venueCardCoordinator4 viewControllerForCardItem:simpleListResultsVC6];
 
       v15 = v14;
       objc_opt_class();
@@ -6448,10 +6448,10 @@ LABEL_13:
       [v17 setResultsDelegate:self];
       [v17 setEnableQuickActionMenu:1];
       [v17 setDisplayDistance:0];
-      v18 = [v17 view];
-      v19 = [(ActionCoordinator *)self currentSearchSession];
-      v20 = [v19 searchInfo];
-      [v17 setCluster:v30 sortAlphabetically:1 originalSearchInfo:v20];
+      view = [v17 view];
+      currentSearchSession = [(ActionCoordinator *)self currentSearchSession];
+      searchInfo = [currentSearchSession searchInfo];
+      [v17 setCluster:clusterCopy sortAlphabetically:1 originalSearchInfo:searchInfo];
 
       [(ActionCoordinator *)self presentSimpleList:v17];
     }
@@ -6465,29 +6465,29 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v21 = [(ActionCoordinator *)self simpleListResultsVC];
-      v22 = [v21 cluster];
+      simpleListResultsVC = [(ActionCoordinator *)self simpleListResultsVC];
+      cluster = [simpleListResultsVC cluster];
 
-      if (v22 != v30)
+      if (cluster != clusterCopy)
       {
-        v23 = [(ActionCoordinator *)self simpleListResultsVC];
-        [v23 clearCluster];
+        simpleListResultsVC2 = [(ActionCoordinator *)self simpleListResultsVC];
+        [simpleListResultsVC2 clearCluster];
       }
 
-      v24 = [(ActionCoordinator *)self simpleListResultsVC];
-      [v24 setDisplayDistance:1];
+      simpleListResultsVC3 = [(ActionCoordinator *)self simpleListResultsVC];
+      [simpleListResultsVC3 setDisplayDistance:1];
 
-      v25 = [(ActionCoordinator *)self simpleListResultsVC];
-      v26 = [(ResultsViewController *)self->_resultsViewController currentLocation];
-      [v25 updateCurrentLocation:v26 isClusterResult:1];
+      simpleListResultsVC4 = [(ActionCoordinator *)self simpleListResultsVC];
+      currentLocation = [(ResultsViewController *)self->_resultsViewController currentLocation];
+      [simpleListResultsVC4 updateCurrentLocation:currentLocation isClusterResult:1];
 
-      v27 = [(ActionCoordinator *)self simpleListResultsVC];
-      v28 = [(ActionCoordinator *)self currentSearchSession];
-      v29 = [v28 searchInfo];
-      [v27 setCluster:v30 sortAlphabetically:0 originalSearchInfo:v29];
+      simpleListResultsVC5 = [(ActionCoordinator *)self simpleListResultsVC];
+      currentSearchSession2 = [(ActionCoordinator *)self currentSearchSession];
+      searchInfo2 = [currentSearchSession2 searchInfo];
+      [simpleListResultsVC5 setCluster:clusterCopy sortAlphabetically:0 originalSearchInfo:searchInfo2];
 
-      v7 = [(ActionCoordinator *)self simpleListResultsVC];
-      [(ActionCoordinator *)self presentSimpleList:v7];
+      simpleListResultsVC6 = [(ActionCoordinator *)self simpleListResultsVC];
+      [(ActionCoordinator *)self presentSimpleList:simpleListResultsVC6];
     }
 
     goto LABEL_14;
@@ -6496,43 +6496,43 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)viewController:(id)a3 openWebsiteForSearchResult:(id)a4
+- (void)viewController:(id)controller openWebsiteForSearchResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  resultCopy = result;
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_100914930;
   v35[3] = &unk_10162EAF0;
   v35[4] = self;
-  v8 = v6;
+  v8 = controllerCopy;
   v36 = v8;
   v9 = objc_retainBlock(v35);
-  v10 = [v7 mapItem];
-  v11 = [v10 url];
+  mapItem = [resultCopy mapItem];
+  v11 = [mapItem url];
 
   if (!v11)
   {
-    if (![v7 isAddressBookResult])
+    if (![resultCopy isAddressBookResult])
     {
       goto LABEL_10;
     }
 
-    v12 = [v7 address];
-    v13 = [v12 contact];
+    address = [resultCopy address];
+    contact = [address contact];
 
-    v14 = [v13 urlAddresses];
-    v15 = [v14 count];
+    urlAddresses = [contact urlAddresses];
+    v15 = [urlAddresses count];
 
-    v16 = [v13 urlAddresses];
-    v17 = [v16 count];
+    urlAddresses2 = [contact urlAddresses];
+    v17 = [urlAddresses2 count];
 
     if (v15 == 1)
     {
-      v18 = [v13 urlAddresses];
-      v19 = [v18 lastObject];
-      v20 = [v19 value];
-      v21 = [NSURL URLWithString:v20];
+      urlAddresses3 = [contact urlAddresses];
+      lastObject = [urlAddresses3 lastObject];
+      value = [lastObject value];
+      v21 = [NSURL URLWithString:value];
 
       (v9[2])(v9, v21);
     }
@@ -6547,7 +6547,7 @@ LABEL_9:
       }
 
       v22 = [UIAlertController alertControllerWithTitle:0 message:0 preferredStyle:0];
-      v23 = [v13 urlAddresses];
+      urlAddresses4 = [contact urlAddresses];
       v29 = _NSConcreteStackBlock;
       v30 = 3221225472;
       v31 = sub_100914940;
@@ -6555,16 +6555,16 @@ LABEL_9:
       v33 = v22;
       v34 = v9;
       v21 = v22;
-      [v23 enumerateObjectsUsingBlock:&v29];
+      [urlAddresses4 enumerateObjectsUsingBlock:&v29];
 
       v24 = [NSBundle mainBundle:v29];
       v25 = [v24 localizedStringForKey:@"Cancel" value:@"localized string not found" table:0];
       v26 = [UIAlertAction actionWithTitle:v25 style:1 handler:0];
       [v21 addAction:v26];
 
-      v27 = [(ActionCoordinator *)self containerViewController];
-      v28 = [v27 chromeViewController];
-      [v28 _maps_topMostPresentViewController:v21 animated:1 completion:0];
+      containerViewController = [(ActionCoordinator *)self containerViewController];
+      chromeViewController = [containerViewController chromeViewController];
+      [chromeViewController _maps_topMostPresentViewController:v21 animated:1 completion:0];
     }
 
     goto LABEL_9;
@@ -6574,42 +6574,42 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)viewController:(id)a3 doAudioCallToSearchResult:(id)a4
+- (void)viewController:(id)controller doAudioCallToSearchResult:(id)result
 {
-  v5 = a4;
-  v6 = [v5 mapItem];
-  v7 = [v6 phoneNumber];
+  resultCopy = result;
+  mapItem = [resultCopy mapItem];
+  phoneNumber = [mapItem phoneNumber];
 
-  if (v7 && (v8 = [(NSString *)v7 length]) != 0)
+  if (phoneNumber && (v8 = [(NSString *)phoneNumber length]) != 0)
   {
-    sub_100914DE0(v8, v7);
+    sub_100914DE0(v8, phoneNumber);
   }
 
-  else if ([v5 isAddressBookResult])
+  else if ([resultCopy isAddressBookResult])
   {
-    v9 = [v5 address];
-    v10 = [v9 contact];
+    address = [resultCopy address];
+    contact = [address contact];
 
-    v11 = [v10 phoneNumbers];
-    v12 = [v11 count];
+    phoneNumbers = [contact phoneNumbers];
+    v12 = [phoneNumbers count];
 
-    v13 = [v10 phoneNumbers];
-    v14 = [v13 count];
+    phoneNumbers2 = [contact phoneNumbers];
+    v14 = [phoneNumbers2 count];
 
     if (v12 == 1)
     {
-      v15 = [v10 phoneNumbers];
-      v16 = [v15 lastObject];
-      v17 = [v16 value];
+      phoneNumbers3 = [contact phoneNumbers];
+      lastObject = [phoneNumbers3 lastObject];
+      value = [lastObject value];
 
-      v18 = [v17 stringValue];
-      sub_100914DE0(v18, v18);
+      stringValue = [value stringValue];
+      sub_100914DE0(stringValue, stringValue);
     }
 
     else if (v14 >= 2)
     {
       v19 = [UIAlertController alertControllerWithTitle:0 message:0 preferredStyle:0];
-      v20 = [v10 phoneNumbers];
+      phoneNumbers4 = [contact phoneNumbers];
       v27 = _NSConcreteStackBlock;
       v28 = 3221225472;
       v29 = sub_100914E48;
@@ -6617,42 +6617,42 @@ LABEL_10:
       v31 = v19;
       v32 = &stru_10162EAA0;
       v21 = v19;
-      [v20 enumerateObjectsUsingBlock:&v27];
+      [phoneNumbers4 enumerateObjectsUsingBlock:&v27];
 
       v22 = [NSBundle mainBundle:v27];
       v23 = [v22 localizedStringForKey:@"Cancel" value:@"localized string not found" table:0];
       v24 = [UIAlertAction actionWithTitle:v23 style:1 handler:0];
       [v21 addAction:v24];
 
-      v25 = [(ActionCoordinator *)self containerViewController];
-      v26 = [v25 chromeViewController];
-      [v26 _maps_topMostPresentViewController:v21 animated:1 completion:0];
+      containerViewController = [(ActionCoordinator *)self containerViewController];
+      chromeViewController = [containerViewController chromeViewController];
+      [chromeViewController _maps_topMostPresentViewController:v21 animated:1 completion:0];
     }
   }
 }
 
-- (void)viewController:(id)a3 doShareSheetForShareItem:(id)a4 completion:(id)a5
+- (void)viewController:(id)controller doShareSheetForShareItem:(id)item completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 view];
-  v12 = [MUPresentationOptions optionsWithSender:v10];
+  completionCopy = completion;
+  itemCopy = item;
+  view = [controller view];
+  v12 = [MUPresentationOptions optionsWithSender:view];
 
-  v11 = [(ActionCoordinator *)self appCoordinator];
-  [v11 shareItem:v9 presentationOptions:v12 completion:v8];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator shareItem:itemCopy presentationOptions:v12 completion:completionCopy];
 }
 
-- (void)viewController:(id)a3 displayStoreViewControllerForAppWithiTunesIdentifier:(id)a4 clientIdentifier:(id)a5
+- (void)viewController:(id)controller displayStoreViewControllerForAppWithiTunesIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier
 {
-  if (a4)
+  if (identifier)
   {
-    v7 = a5;
-    v8 = a4;
+    clientIdentifierCopy = clientIdentifier;
+    identifierCopy = identifier;
     v9 = objc_alloc_init(SKStoreProductViewController);
     [v9 setDelegate:self];
-    if (v7)
+    if (clientIdentifierCopy)
     {
-      v10 = v7;
+      v10 = clientIdentifierCopy;
     }
 
     else
@@ -6663,39 +6663,39 @@ LABEL_10:
     [v9 setClientIdentifier:v10];
 
     v14 = SKStoreProductParameterITunesItemIdentifier;
-    v15 = v8;
+    v15 = identifierCopy;
     v11 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
 
     [v9 loadProductWithParameters:v11 completionBlock:&stru_10162EA80];
-    v12 = [(ActionCoordinator *)self containerViewController];
-    v13 = [v12 chromeViewController];
-    [v13 _maps_topMostPresentViewController:v9 animated:1 completion:0];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    chromeViewController = [containerViewController chromeViewController];
+    [chromeViewController _maps_topMostPresentViewController:v9 animated:1 completion:0];
   }
 }
 
-- (void)viewController:(id)a3 editLocationOfMarkedLocation:(id)a4
+- (void)viewController:(id)controller editLocationOfMarkedLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[MarkedLocationRefinementViewController alloc] initWithMarkedLocation:v7];
+  controllerCopy = controller;
+  locationCopy = location;
+  v8 = [[MarkedLocationRefinementViewController alloc] initWithMarkedLocation:locationCopy];
 
   [(LocationRefinementViewController *)v8 setDelegate:self];
-  [(MarkedLocationRefinementViewController *)v8 setOriginalPresenterViewController:v6];
+  [(MarkedLocationRefinementViewController *)v8 setOriginalPresenterViewController:controllerCopy];
   v9 = [[UINavigationController alloc] initWithRootViewController:v8];
   [v9 setModalPresentationStyle:2];
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100915380;
   v17 = &unk_101661A90;
-  v18 = self;
+  selfCopy = self;
   v10 = v9;
   v19 = v10;
   v11 = objc_retainBlock(&v14);
-  if (sub_10000FA08(v6) == 5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (sub_10000FA08(controllerCopy) == 5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v12 = v6;
-    v13 = [v12 placeCardDelegate];
-    [v13 placeCardViewController:v12 dismissAnimated:1 completion:v11];
+    v12 = controllerCopy;
+    placeCardDelegate = [v12 placeCardDelegate];
+    [placeCardDelegate placeCardViewController:v12 dismissAnimated:1 completion:v11];
   }
 
   else
@@ -6704,94 +6704,94 @@ LABEL_10:
   }
 }
 
-- (void)viewController:(id)a3 createMarkedLocationAtCoordinate:(CLLocationCoordinate2D)a4 floorOrdinal:(int)a5
+- (void)viewController:(id)controller createMarkedLocationAtCoordinate:(CLLocationCoordinate2D)coordinate floorOrdinal:(int)ordinal
 {
-  v5 = *&a5;
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v17 = a3;
-  v9 = [SearchResult customSearchResultWithCoordinate:v5 floorOrdinal:latitude, longitude];
-  v10 = [(ActionCoordinator *)self containerViewController];
-  v11 = [v10 chromeViewController];
-  v12 = [v11 customSearchManager];
-  v13 = [(ActionCoordinator *)self containerViewController];
-  v14 = [v13 chromeViewController];
-  v15 = [v14 mapView];
-  [v12 setCustomSearchResult:v9 animated:1 shouldSelectOnMap:v15];
+  v5 = *&ordinal;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  controllerCopy = controller;
+  longitude = [SearchResult customSearchResultWithCoordinate:v5 floorOrdinal:latitude, longitude];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  customSearchManager = [chromeViewController customSearchManager];
+  containerViewController2 = [(ActionCoordinator *)self containerViewController];
+  chromeViewController2 = [containerViewController2 chromeViewController];
+  mapView = [chromeViewController2 mapView];
+  [customSearchManager setCustomSearchResult:longitude animated:1 shouldSelectOnMap:mapView];
 
-  if (v9)
+  if (longitude)
   {
-    v16 = [(ActionCoordinator *)self searchPinsManager];
-    [v16 setDroppedPin:v9 animated:1 shouldSelect:1];
+    searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+    [searchPinsManager setDroppedPin:longitude animated:1 shouldSelect:1];
 
-    [(ActionCoordinator *)self viewController:v17 selectSearchResult:v9 addToHistory:0 source:3 saveSelectionState:1];
+    [(ActionCoordinator *)self viewController:controllerCopy selectSearchResult:longitude addToHistory:0 source:3 saveSelectionState:1];
   }
 }
 
-- (void)viewController:(id)a3 createDroppedPin:(id)a4
+- (void)viewController:(id)controller createDroppedPin:(id)pin
 {
-  v8 = a4;
-  v6 = a3;
-  if ([v8 hasFloorOrdinal])
+  pinCopy = pin;
+  controllerCopy = controller;
+  if ([pinCopy hasFloorOrdinal])
   {
-    v7 = [v8 floorOrdinal];
+    floorOrdinal = [pinCopy floorOrdinal];
   }
 
   else
   {
-    v7 = 0x7FFFFFFFLL;
+    floorOrdinal = 0x7FFFFFFFLL;
   }
 
-  [v8 coordinate];
-  [(ActionCoordinator *)self viewController:v6 createMarkedLocationAtCoordinate:v7 floorOrdinal:?];
+  [pinCopy coordinate];
+  [(ActionCoordinator *)self viewController:controllerCopy createMarkedLocationAtCoordinate:floorOrdinal floorOrdinal:?];
 }
 
-- (void)viewController:(id)a3 removeDroppedPin:(id)a4
+- (void)viewController:(id)controller removeDroppedPin:(id)pin
 {
-  v12 = a3;
-  v6 = a4;
-  if (!v12)
+  controllerCopy = controller;
+  pinCopy = pin;
+  if (!controllerCopy)
   {
-    v7 = [(ActionCoordinator *)self currentViewController];
+    currentViewController = [(ActionCoordinator *)self currentViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [(ActionCoordinator *)self currentViewController];
-      v10 = [v9 placeCardItem];
-      v11 = [v10 isDroppedPin];
+      currentViewController2 = [(ActionCoordinator *)self currentViewController];
+      placeCardItem = [currentViewController2 placeCardItem];
+      isDroppedPin = [placeCardItem isDroppedPin];
 
-      if (v11)
+      if (isDroppedPin)
       {
-        v12 = [(ActionCoordinator *)self currentViewController];
+        controllerCopy = [(ActionCoordinator *)self currentViewController];
       }
 
       else
       {
-        v12 = 0;
+        controllerCopy = 0;
       }
     }
 
     else
     {
-      v12 = 0;
+      controllerCopy = 0;
     }
   }
 
-  [(ActionCoordinator *)self deleteMarkedLocation:v6];
-  [(ActionCoordinator *)self viewControllerClosed:v12 animated:1];
+  [(ActionCoordinator *)self deleteMarkedLocation:pinCopy];
+  [(ActionCoordinator *)self viewControllerClosed:controllerCopy animated:1];
 }
 
-- (void)viewControllerClosed:(id)a3 animated:(BOOL)a4
+- (void)viewControllerClosed:(id)closed animated:(BOOL)animated
 {
-  v4 = a4;
-  v19 = a3;
+  animatedCopy = animated;
+  closedCopy = closed;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(ActionCoordinator *)self searchPinsManager];
-    [v6 clearLinkedPlacesAndPolygon];
+    searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+    [searchPinsManager clearLinkedPlacesAndPolygon];
 
     v7 = +[MUPlaceEnrichmentAPIController sharedPlaceEnrichmentAPIController];
     [v7 resetConfiguration];
@@ -6803,8 +6803,8 @@ LABEL_10:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(ActionCoordinator *)self mapSelectionManager];
-    [v9 clearSelection];
+    mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+    [mapSelectionManager clearSelection];
 
     [(ActionCoordinator *)self clearSearch];
     parkedCarViewController = self->_parkedCarViewController;
@@ -6815,28 +6815,28 @@ LABEL_10:
   if ([(SearchSessionManager *)self->_searchSessionManager singleResultMode])
   {
     v11 = +[UIDevice currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    userInterfaceIdiom = [v11 userInterfaceIdiom];
 
-    if (v12 != 5)
+    if (userInterfaceIdiom != 5)
     {
       [(ActionCoordinator *)self clearSearch];
     }
   }
 
-  if (v19)
+  if (closedCopy)
   {
-    if (self->_placeCardForRoutePlanningViewController == v19)
+    if (self->_placeCardForRoutePlanningViewController == closedCopy)
     {
       [(ActionCoordinator *)self _setRouteSelectionMapState];
     }
 
-    v13 = [(ActionCoordinator *)self venueCardCoordinator];
-    v14 = [v13 topViewController];
+    venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+    topViewController = [venueCardCoordinator topViewController];
 
-    if (v14 == v19)
+    if (topViewController == closedCopy)
     {
-      v15 = [(ActionCoordinator *)self venueCardCoordinator];
-      [v15 popVenueCardItem:0];
+      venueCardCoordinator2 = [(ActionCoordinator *)self venueCardCoordinator];
+      [venueCardCoordinator2 popVenueCardItem:0];
     }
   }
 
@@ -6846,31 +6846,31 @@ LABEL_10:
     [(ActionCoordinator *)self _cleanupRoutePlanningIfNeededAnimated:0];
   }
 
-  v16 = [(ActionCoordinator *)self containerViewController];
-  [v16 popLastViewControllerFromViewController:v19 animated:v4 useDefaultContaineeLayout:0];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [containerViewController popLastViewControllerFromViewController:closedCopy animated:animatedCopy useDefaultContaineeLayout:0];
 
-  v17 = [(ActionCoordinator *)self containerViewController];
-  v18 = [v17 viewIfLoaded];
-  [v18 endEditing:1];
+  containerViewController2 = [(ActionCoordinator *)self containerViewController];
+  viewIfLoaded = [containerViewController2 viewIfLoaded];
+  [viewIfLoaded endEditing:1];
 }
 
-- (void)viewControllerOpenSettings:(id)a3
+- (void)viewControllerOpenSettings:(id)settings
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v5 = [WeakRetained chromeViewController];
+  chromeViewController = [WeakRetained chromeViewController];
   v6 = objc_loadWeakRetained(&self->_containerViewController);
-  v7 = [v6 chromeContext];
-  v8 = [v5 isTopContext:v7];
+  chromeContext = [v6 chromeContext];
+  v8 = [chromeViewController isTopContext:chromeContext];
 
   if (v8)
   {
     [(ActionCoordinator *)self _cancelUserInteractions];
-    v9 = [(ActionCoordinator *)self mapView];
-    [v9 setCompassEnabled:0];
+    mapView = [(ActionCoordinator *)self mapView];
+    [mapView setCompassEnabled:0];
 
     v10 = objc_loadWeakRetained(&self->_containerViewController);
-    v11 = [(ActionCoordinator *)self settingsViewController];
-    [v10 _maps_topMostPresentViewController:v11 animated:1 completion:0];
+    settingsViewController = [(ActionCoordinator *)self settingsViewController];
+    [v10 _maps_topMostPresentViewController:settingsViewController animated:1 completion:0];
 
     v12 = objc_loadWeakRetained(&self->_containerViewController);
     [v12 setUseBackdropFullScreen:1];
@@ -6880,23 +6880,23 @@ LABEL_10:
   }
 }
 
-- (void)viewControllerOpenNearby:(id)a3 animated:(BOOL)a4
+- (void)viewControllerOpenNearby:(id)nearby animated:(BOOL)animated
 {
-  [(ActionCoordinator *)self presentSearchAnimated:a4];
-  v5 = [(ActionCoordinator *)self searchModeViewController];
-  [v5 searchBarBecomeFirstResponder];
+  [(ActionCoordinator *)self presentSearchAnimated:animated];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController searchBarBecomeFirstResponder];
 }
 
-- (void)viewController:(id)a3 selectLastDirectionsDestinationComposedWaypoint:(id)a4
+- (void)viewController:(id)controller selectLastDirectionsDestinationComposedWaypoint:(id)waypoint
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  waypointCopy = waypoint;
   if (self->_routePlanningDataCoordinator)
   {
     v8 = +[CarDisplayController sharedInstance];
-    v9 = [v8 isCurrentlyConnectedToAnyCarScene];
+    isCurrentlyConnectedToAnyCarScene = [v8 isCurrentlyConnectedToAnyCarScene];
 
-    if (v9)
+    if (isCurrentlyConnectedToAnyCarScene)
     {
       v10 = sub_100035E6C();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -6923,23 +6923,23 @@ LABEL_19:
       goto LABEL_19;
     }
 
-    v14 = [currentDirectionItem items];
-    v15 = [v14 count];
+    items = [currentDirectionItem items];
+    v15 = [items count];
 
     if (v15 < 3)
     {
-      if (v7)
+      if (waypointCopy)
       {
-        v17 = [[SearchResult alloc] initWithComposedWaypoint:v7];
+        v17 = [[SearchResult alloc] initWithComposedWaypoint:waypointCopy];
       }
 
       else
       {
-        v18 = [self->_currentDirectionItem items];
-        v19 = [v18 lastObject];
+        items2 = [self->_currentDirectionItem items];
+        lastObject = [items2 lastObject];
 
-        v20 = [v19 waypoint];
-        v17 = [v20 pin];
+        waypoint = [lastObject waypoint];
+        v17 = [waypoint pin];
       }
 
       v21 = sub_100035E6C();
@@ -6953,11 +6953,11 @@ LABEL_19:
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Asked to select destination for last direction item: %@", buf, 0xCu);
         }
 
-        v23 = [(ActionCoordinator *)self searchPinsManager];
-        [v23 clearDirectionsPins];
+        searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+        [searchPinsManager clearDirectionsPins];
 
-        v24 = [(ActionCoordinator *)self containerViewController];
-        v25 = sub_10000FA08(v24) == 5;
+        containerViewController = [(ActionCoordinator *)self containerViewController];
+        v25 = sub_10000FA08(containerViewController) == 5;
 
         if (v25)
         {
@@ -6967,14 +6967,14 @@ LABEL_19:
 
         else
         {
-          v28 = [(ActionCoordinator *)self searchPinsManager];
-          v29 = [v28 canSelectPin:v17];
+          searchPinsManager2 = [(ActionCoordinator *)self searchPinsManager];
+          v29 = [searchPinsManager2 canSelectPin:v17];
 
-          v30 = [(ActionCoordinator *)self searchPinsManager];
-          v31 = v30;
+          searchPinsManager3 = [(ActionCoordinator *)self searchPinsManager];
+          v31 = searchPinsManager3;
           if (v29)
           {
-            [v30 selectAndShowSearchResult:v17 animated:1];
+            [searchPinsManager3 selectAndShowSearchResult:v17 animated:1];
           }
 
           else
@@ -6997,11 +6997,11 @@ LABEL_19:
           v22 = v33;
           v42 = v22;
           v43 = v17;
-          v44 = self;
+          selfCopy = self;
           v34 = objc_retainBlock(v41);
-          v35 = [v22 lastLocation];
+          lastLocation = [v22 lastLocation];
 
-          if (v35)
+          if (lastLocation)
           {
             (v34[2])(v34);
           }
@@ -7026,10 +7026,10 @@ LABEL_19:
 
       else if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v26 = [self->_currentDirectionItem items];
-        v27 = [v26 lastObject];
+        items3 = [self->_currentDirectionItem items];
+        lastObject2 = [items3 lastObject];
         *buf = 138412290;
-        *&buf[4] = v27;
+        *&buf[4] = lastObject2;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Asked to select destination for last direction item, but could not create SearchResult from item: %@", buf, 0xCu);
       }
     }
@@ -7079,7 +7079,7 @@ LABEL_19:
 LABEL_38:
 }
 
-- (void)viewControllerDoLastDirectionItem:(id)a3
+- (void)viewControllerDoLastDirectionItem:(id)item
 {
   if (self->_routePlanningDataCoordinator)
   {
@@ -7115,66 +7115,66 @@ LABEL_38:
   }
 }
 
-- (void)viewController:(id)a3 enterRouteCreationWithRoute:(id)a4 withUserInfo:(id)a5
+- (void)viewController:(id)controller enterRouteCreationWithRoute:(id)route withUserInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  routeCopy = route;
+  infoCopy = info;
   objc_initWeak(&location, self);
-  v11 = [(ActionCoordinator *)self newTraits];
+  newTraits = [(ActionCoordinator *)self newTraits];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100916588;
   v18[3] = &unk_10162EA38;
-  v12 = v9;
+  v12 = routeCopy;
   v19 = v12;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10091666C;
   v15[3] = &unk_10162EA60;
   objc_copyWeak(&v17, &location);
-  v13 = v10;
+  v13 = infoCopy;
   v16 = v13;
-  v14 = [v12 _maps_convertToNavigableRouteWithTraits:v11 errorHandler:v18 completionHandler:v15];
+  v14 = [v12 _maps_convertToNavigableRouteWithTraits:newTraits errorHandler:v18 completionHandler:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 }
 
-- (void)viewController:(id)a3 enterRouteCreationWith:(id)a4
+- (void)viewController:(id)controller enterRouteCreationWith:(id)with
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [[GEORouteBuilder_PersistentData alloc] initWithPersistentData:v6];
+  withCopy = with;
+  controllerCopy = controller;
+  v9 = [[GEORouteBuilder_PersistentData alloc] initWithPersistentData:withCopy];
 
-  v8 = [v9 buildRoute];
-  [(ActionCoordinator *)self viewController:v7 enterRouteCreationWithRoute:v8 withUserInfo:0];
+  buildRoute = [v9 buildRoute];
+  [(ActionCoordinator *)self viewController:controllerCopy enterRouteCreationWithRoute:buildRoute withUserInfo:0];
 }
 
-- (void)_promptForEditRequired:(unint64_t)a3 forWaypointAtIndex:(unint64_t)a4 inDirectionItem:(id)a5 userInfo:(id)a6
+- (void)_promptForEditRequired:(unint64_t)required forWaypointAtIndex:(unint64_t)index inDirectionItem:(id)item userInfo:(id)info
 {
-  v10 = a5;
-  v11 = a6;
-  if (!a3)
+  itemCopy = item;
+  infoCopy = info;
+  if (!required)
   {
     goto LABEL_21;
   }
 
-  v12 = [(ActionCoordinator *)self containerViewController];
-  v13 = sub_10000FA08(v12);
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  v13 = sub_10000FA08(containerViewController);
 
   if (v13 == 5)
   {
-    [(ActionCoordinator *)self _presentMacRouteEditingWithEditRequired:a3 index:a4];
+    [(ActionCoordinator *)self _presentMacRouteEditingWithEditRequired:required index:index];
     goto LABEL_21;
   }
 
-  if (a3 - 2 < 2)
+  if (required - 2 < 2)
   {
-    v17 = [v10 hasCurrentLocationOnlyAsOriginWaypoint];
+    hasCurrentLocationOnlyAsOriginWaypoint = [itemCopy hasCurrentLocationOnlyAsOriginWaypoint];
     v14 = +[NSBundle mainBundle];
     v15 = v14;
-    if (v17)
+    if (hasCurrentLocationOnlyAsOriginWaypoint)
     {
       v16 = @"Choose Start";
     }
@@ -7185,7 +7185,7 @@ LABEL_38:
     }
   }
 
-  else if (a3 == 4)
+  else if (required == 4)
   {
     v14 = +[NSBundle mainBundle];
     v15 = v14;
@@ -7194,7 +7194,7 @@ LABEL_38:
 
   else
   {
-    if (a3 != 1)
+    if (required != 1)
     {
       v18 = 0;
       goto LABEL_13;
@@ -7220,18 +7220,18 @@ LABEL_13:
   v39 = sub_100907978;
   v40 = 0;
   v19 = [RouteSearchViewController alloc];
-  v20 = [v10 items];
+  items = [itemCopy items];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_100916B70;
   v29[3] = &unk_10162EA10;
   v29[4] = self;
   v32 = &v35;
-  v30 = v10;
-  v33 = a3;
-  v34 = a4;
-  v31 = v11;
-  v21 = [(RouteSearchViewController *)v19 initWithDelegate:self items:v20 waypointIndex:a4 selectionHandler:v29];
+  v30 = itemCopy;
+  requiredCopy = required;
+  indexCopy = index;
+  v31 = infoCopy;
+  v21 = [(RouteSearchViewController *)v19 initWithDelegate:self items:items waypointIndex:index selectionHandler:v29];
   v22 = v36[5];
   v36[5] = v21;
 
@@ -7239,40 +7239,40 @@ LABEL_13:
   objc_storeStrong(&self->_routeSearchVC, v36[5]);
   if ([v36[5] modalPresentationStyle] == 7)
   {
-    v23 = [v36[5] popoverPresentationController];
-    v24 = [v23 delegate];
+    popoverPresentationController = [v36[5] popoverPresentationController];
+    delegate = [popoverPresentationController delegate];
 
-    if (!v24)
+    if (!delegate)
     {
-      v25 = [v36[5] popoverPresentationController];
-      [v25 setDelegate:self];
+      popoverPresentationController2 = [v36[5] popoverPresentationController];
+      [popoverPresentationController2 setDelegate:self];
     }
 
-    v26 = [(ActionCoordinator *)self containerViewController];
-    [v26 _maps_topMostPresentViewController:v36[5] animated:1 completion:0];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
+    [containerViewController2 _maps_topMostPresentViewController:v36[5] animated:1 completion:0];
   }
 
   else
   {
-    v26 = [(ActionCoordinator *)self containerViewController];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
     v27 = v36[5];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_100916D34;
     v28[3] = &unk_101659998;
     v28[4] = &v35;
-    v28[5] = a4;
-    [v26 presentController:v27 animated:1 completion:v28];
+    v28[5] = index;
+    [containerViewController2 presentController:v27 animated:1 completion:v28];
   }
 
   _Block_object_dispose(&v35, 8);
 LABEL_21:
 }
 
-- (void)_promptForCurrentLocationConfirmationWithDirectionItem:(id)a3 userInfo:(id)a4
+- (void)_promptForCurrentLocationConfirmationWithDirectionItem:(id)item userInfo:(id)info
 {
-  v28 = a3;
-  v6 = a4;
+  itemCopy = item;
+  infoCopy = info;
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"Get Directions from Approximate Location" value:@"localized string not found" table:0];
   v9 = +[NSBundle mainBundle];
@@ -7285,12 +7285,12 @@ LABEL_21:
   v34[1] = 3221225472;
   v34[2] = sub_100917174;
   v34[3] = &unk_10162E9A0;
-  v14 = v6;
+  v14 = infoCopy;
   v35 = v14;
-  v36 = self;
+  selfCopy = self;
   v15 = v11;
   v37 = v15;
-  v16 = v28;
+  v16 = itemCopy;
   v38 = v16;
   v17 = [UIAlertAction actionWithTitle:v13 style:0 handler:v34];
 
@@ -7302,7 +7302,7 @@ LABEL_21:
   v29[2] = sub_100917208;
   v29[3] = &unk_10162E9A0;
   v30 = v14;
-  v31 = self;
+  selfCopy2 = self;
   v32 = v15;
   v33 = v16;
   v20 = v16;
@@ -7320,37 +7320,37 @@ LABEL_21:
   [WeakRetained _maps_topMostPresentViewController:v21 animated:1 completion:0];
 }
 
-- (void)viewController:(id)a3 doDirectionItem:(id)a4 allowToPromptEditing:(BOOL)a5 withUserInfo:(id)a6
+- (void)viewController:(id)controller doDirectionItem:(id)item allowToPromptEditing:(BOOL)editing withUserInfo:(id)info
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  editingCopy = editing;
+  controllerCopy = controller;
+  itemCopy = item;
+  infoCopy = info;
   if (!GEOConfigGetBOOL())
   {
-    v66 = [v12 objectForKeyedSubscript:@"SearchSessionTraits"];
-    if (!v66)
+    newTraits = [infoCopy objectForKeyedSubscript:@"SearchSessionTraits"];
+    if (!newTraits)
     {
-      v66 = [(ActionCoordinator *)self newTraits];
+      newTraits = [(ActionCoordinator *)self newTraits];
     }
 
-    v14 = [v12 objectForKeyedSubscript:{@"SearchSessionTraitsSource", v66}];
+    v14 = [infoCopy objectForKeyedSubscript:{@"SearchSessionTraitsSource", newTraits}];
 
     if (v14)
     {
-      v15 = [v12 objectForKeyedSubscript:@"SearchSessionTraitsSource"];
+      v15 = [infoCopy objectForKeyedSubscript:@"SearchSessionTraitsSource"];
       [v67 setSource:{objc_msgSend(v15, "integerValue")}];
     }
 
-    v16 = [v11 items];
-    v17 = [v16 copy];
+    items = [itemCopy items];
+    v17 = [items copy];
 
     if ([(ActionCoordinator *)self isRoutePlanningPresented])
     {
-      v18 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-      v19 = [v18 directionItemForCurrentSession];
+      routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+      directionItemForCurrentSession = [routePlanningDataCoordinator directionItemForCurrentSession];
 
-      if (!v19)
+      if (!directionItemForCurrentSession)
       {
         goto LABEL_13;
       }
@@ -7358,32 +7358,32 @@ LABEL_21:
 
     else
     {
-      v19 = self->_currentDirectionItem;
-      if (!v19)
+      directionItemForCurrentSession = self->_currentDirectionItem;
+      if (!directionItemForCurrentSession)
       {
         goto LABEL_13;
       }
     }
 
-    v20 = [v12 objectForKeyedSubscript:@"DirectionsAppendContentsOfItem"];
-    v21 = [v20 BOOLValue];
+    v20 = [infoCopy objectForKeyedSubscript:@"DirectionsAppendContentsOfItem"];
+    bOOLValue = [v20 BOOLValue];
 
-    if (v21)
+    if (bOOLValue)
     {
-      v22 = [v11 items];
-      v23 = [v22 firstObject];
+      items2 = [itemCopy items];
+      firstObject = [items2 firstObject];
 
-      [(ActionCoordinator *)self viewController:v10 addStopForSearchFieldItem:v23 withUserInfo:v12];
+      [(ActionCoordinator *)self viewController:controllerCopy addStopForSearchFieldItem:firstObject withUserInfo:infoCopy];
 LABEL_64:
 
       goto LABEL_65;
     }
 
 LABEL_13:
-    if (([v11 isEquivalentAsWaypointToDirectionItem:v19] & 1) == 0)
+    if (([itemCopy isEquivalentAsWaypointToDirectionItem:directionItemForCurrentSession] & 1) == 0)
     {
       [(MKLocationManagerOperation *)self->_locationUpdateOperationForRouting cancel];
-      v24 = [v11 copy];
+      v24 = [itemCopy copy];
       currentDirectionItem = self->_currentDirectionItem;
       self->_currentDirectionItem = v24;
 
@@ -7391,28 +7391,28 @@ LABEL_13:
       {
         if (![(ActionCoordinator *)self isRoutePlanningPresented])
         {
-          v26 = [(ActionCoordinator *)self venueCardCoordinator];
-          [v26 pushVenueCardItem:self->_currentDirectionItem source:4];
+          venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+          [venueCardCoordinator pushVenueCardItem:self->_currentDirectionItem source:4];
 
-          v27 = [(ActionCoordinator *)self searchPinsManager];
-          [v27 clearLinkedPlacesAndPolygon];
+          searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+          [searchPinsManager clearLinkedPlacesAndPolygon];
         }
       }
     }
 
     if ([v17 count] == 1)
     {
-      v28 = [v12 objectForKeyedSubscript:@"DirectionsAppendContentsOfItem"];
-      v29 = [v28 BOOLValue];
+      v28 = [infoCopy objectForKeyedSubscript:@"DirectionsAppendContentsOfItem"];
+      bOOLValue2 = [v28 BOOLValue];
 
-      if ((v29 & 1) == 0)
+      if ((bOOLValue2 & 1) == 0)
       {
         v30 = sub_100798A3C();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
-          v31 = [v17 firstObject];
+          firstObject2 = [v17 firstObject];
           LODWORD(buf) = 138412290;
-          *(&buf + 4) = v31;
+          *(&buf + 4) = firstObject2;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "DirectionItem unexpectedly had only 1 waypoint: %@", &buf, 0xCu);
         }
       }
@@ -7429,11 +7429,11 @@ LABEL_13:
     v70 = v17;
     p_buf = &buf;
     [v70 enumerateObjectsUsingBlock:v69];
-    v32 = [v11 persistentData];
-    if (v32)
+    persistentData = [itemCopy persistentData];
+    if (persistentData)
     {
-      v33 = [v11 persistentData];
-      v34 = ([v33 source] & 0xFFFFFFFFFFFFFFFELL) == 2;
+      persistentData2 = [itemCopy persistentData];
+      v34 = ([persistentData2 source] & 0xFFFFFFFFFFFFFFFELL) == 2;
     }
 
     else
@@ -7454,41 +7454,41 @@ LABEL_63:
       goto LABEL_64;
     }
 
-    v35 = [v12 objectForKeyedSubscript:@"DirectionsAllowApproximateCurrentLocation"];
-    [v11 setAllowApproximateUserLocation:v35];
+    v35 = [infoCopy objectForKeyedSubscript:@"DirectionsAllowApproximateCurrentLocation"];
+    [itemCopy setAllowApproximateUserLocation:v35];
 
     v68 = 0x7FFFFFFFFFFFFFFFLL;
-    v36 = [v11 editRequired:&v68];
+    v36 = [itemCopy editRequired:&v68];
     v37 = v36;
-    if (v7 && v36)
+    if (editingCopy && v36)
     {
       if (v36 == 3)
       {
-        v38 = [v12 objectForKeyedSubscript:@"SearchSessionTraitsSource"];
+        v38 = [infoCopy objectForKeyedSubscript:@"SearchSessionTraitsSource"];
         if ([v38 integerValue] == 1)
         {
 
           goto LABEL_40;
         }
 
-        v51 = [v12 objectForKeyedSubscript:@"DirectionsSourceKey"];
+        v51 = [infoCopy objectForKeyedSubscript:@"DirectionsSourceKey"];
         v52 = [v51 integerValue] == 2;
 
         if (v52)
         {
 LABEL_40:
-          v53 = [v12 objectForKeyedSubscript:@"DirectionsAllowApproximateCurrentLocation"];
+          v53 = [infoCopy objectForKeyedSubscript:@"DirectionsAllowApproximateCurrentLocation"];
           v54 = v53 == 0;
 
           if (v54)
           {
-            [(ActionCoordinator *)self _promptForCurrentLocationConfirmationWithDirectionItem:v11 userInfo:v12];
+            [(ActionCoordinator *)self _promptForCurrentLocationConfirmationWithDirectionItem:itemCopy userInfo:infoCopy];
             goto LABEL_63;
           }
         }
       }
 
-      [(ActionCoordinator *)self _promptForEditRequired:v37 forWaypointAtIndex:v68 inDirectionItem:v11 userInfo:v12];
+      [(ActionCoordinator *)self _promptForEditRequired:v37 forWaypointAtIndex:v68 inDirectionItem:itemCopy userInfo:infoCopy];
       goto LABEL_63;
     }
 
@@ -7501,18 +7501,18 @@ LABEL_40:
       if (!v45 || !v44)
       {
 LABEL_34:
-        v46 = [self->_currentDirectionItem transportType];
+        transportType = [self->_currentDirectionItem transportType];
         v47 = sub_100798A3C();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
         {
-          if ((v46 - 1) > 4)
+          if ((transportType - 1) > 4)
           {
             v48 = @"Undefined";
           }
 
           else
           {
-            v48 = *(&off_10162EEB0 + v46 - 1);
+            v48 = *(&off_10162EEB0 + transportType - 1);
           }
 
           *v72 = 138412290;
@@ -7520,13 +7520,13 @@ LABEL_34:
           _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "Initial transport type from direction item: %@", v72, 0xCu);
         }
 
-        if (v46)
+        if (transportType)
         {
-          if (v46 == 4)
+          if (transportType == 4)
           {
             if (sub_100016C50())
             {
-              v46 = 4;
+              transportType = 4;
             }
 
             else
@@ -7538,29 +7538,29 @@ LABEL_34:
                 _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_ERROR, "Detected rideshare transport type when ride booking is not enabled; changing to driving", v72, 2u);
               }
 
-              v46 = 1;
+              transportType = 1;
             }
           }
 
           v56 = +[MapsSuggestionsPredictor sharedPredictor];
           v57 = v56;
-          if ((v46 - 1) > 4)
+          if ((transportType - 1) > 4)
           {
             v58 = 4;
           }
 
           else
           {
-            v58 = dword_101216100[v46 - 1];
+            v58 = dword_101216100[transportType - 1];
           }
 
           [v56 capturePredictedTransportationMode:v58];
         }
 
-        [self->_currentDirectionItem setTransportType:v46];
+        [self->_currentDirectionItem setTransportType:transportType];
         self->_visibleViewModeBeforeDoingDirectionItem = [(ActionCoordinator *)self displayedViewMode];
-        v50 = [v12 mutableCopy];
-        v59 = [v12 objectForKeyedSubscript:@"DirectionsSourceKey"];
+        v50 = [infoCopy mutableCopy];
+        v59 = [infoCopy objectForKeyedSubscript:@"DirectionsSourceKey"];
         v60 = [v59 integerValue] == 5;
 
         if (v60)
@@ -7568,9 +7568,9 @@ LABEL_34:
           v61 = 1;
         }
 
-        else if (v10)
+        else if (controllerCopy)
         {
-          v61 = self->_routeSearchVC == v10;
+          v61 = self->_routeSearchVC == controllerCopy;
         }
 
         else
@@ -7581,10 +7581,10 @@ LABEL_34:
         v62 = [NSNumber numberWithBool:v61];
         [v50 setObject:v62 forKeyedSubscript:@"DisableNotReachableErrorInRoutePlanning"];
 
-        v63 = [(ActionCoordinator *)self routePlanningDataCoordinator];
+        routePlanningDataCoordinator2 = [(ActionCoordinator *)self routePlanningDataCoordinator];
         v64 = self->_currentDirectionItem;
         v65 = [v50 copy];
-        [v63 startWithDirectionItem:v64 traits:v67 userInfo:v65];
+        [routePlanningDataCoordinator2 startWithDirectionItem:v64 traits:v67 userInfo:v65];
 
         goto LABEL_62;
       }
@@ -7604,35 +7604,35 @@ LABEL_62:
     goto LABEL_63;
   }
 
-  v13 = [(ActionCoordinator *)self appCoordinator];
-  [v13 enterRoutePlanningWithDirectionItem:v11 allowToPromptEditing:v7 withUserInfo:v12];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator enterRoutePlanningWithDirectionItem:itemCopy allowToPromptEditing:editingCopy withUserInfo:infoCopy];
 
 LABEL_65:
 }
 
-- (void)viewController:(id)a3 addStopForSearchFieldItem:(id)a4 withUserInfo:(id)a5
+- (void)viewController:(id)controller addStopForSearchFieldItem:(id)item withUserInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  itemCopy = item;
+  infoCopy = info;
   if (self->_routePlanningDataCoordinator)
   {
     if ([(ActionCoordinator *)self isRoutePlanningPresented]|| ([(RouteSearchViewController *)self->_routeSearchVC presentingViewController], (v11 = objc_claimAutoreleasedReturnValue()) == 0) || (v12 = v11, [(RouteSearchViewController *)self->_routeSearchVC dataCoordinator], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
     {
-      v14 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-      v15 = [v14 directionItemForCurrentSession];
+      routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+      directionItemForCurrentSession = [routePlanningDataCoordinator directionItemForCurrentSession];
 
-      v16 = [v15 items];
-      v17 = [NSMutableArray arrayWithArray:v16];
+      items = [directionItemForCurrentSession items];
+      v17 = [NSMutableArray arrayWithArray:items];
 
-      v18 = [(RouteSearchViewController *)self->_routeSearchVC presentingViewController];
-      if (!v18 || (v19 = v18, v20 = [(RouteSearchViewController *)self->_routeSearchVC _currentlySelectedIndexForAddStop], v19, v20 == 0x7FFFFFFFFFFFFFFFLL))
+      presentingViewController = [(RouteSearchViewController *)self->_routeSearchVC presentingViewController];
+      if (!presentingViewController || (v19 = presentingViewController, v20 = [(RouteSearchViewController *)self->_routeSearchVC _currentlySelectedIndexForAddStop], v19, v20 == 0x7FFFFFFFFFFFFFFFLL))
       {
-        v21 = [v15 transportType];
+        transportType = [directionItemForCurrentSession transportType];
         v20 = 0x7FFFFFFFFFFFFFFFLL;
-        if (v21 > 1)
+        if (transportType > 1)
         {
-          if (v21 == 2)
+          if (transportType == 2)
           {
             if (MapsFeature_IsEnabled_Maps182())
             {
@@ -7644,34 +7644,34 @@ LABEL_35:
                 _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "Performing fresh directions with added stop", &v36, 2u);
               }
 
-              [v17 addObject:v9];
+              [v17 addObject:itemCopy];
 LABEL_38:
-              v30 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-              v31 = [v30 transportType];
+              routePlanningDataCoordinator2 = [(ActionCoordinator *)self routePlanningDataCoordinator];
+              transportType2 = [routePlanningDataCoordinator2 transportType];
 
               v32 = [DirectionItem alloc];
               v33 = [v17 copy];
-              v25 = [(DirectionItem *)v32 initWithItems:v33 transportType:v31];
+              v25 = [(DirectionItem *)v32 initWithItems:v33 transportType:transportType2];
 
-              v34 = [v10 mutableCopy];
+              v34 = [infoCopy mutableCopy];
               [v34 setObject:0 forKeyedSubscript:@"DirectionsAppendContentsOfItem"];
               v35 = [v34 copy];
-              [(ActionCoordinator *)self viewController:v8 doDirectionItem:v25 withUserInfo:v35];
+              [(ActionCoordinator *)self viewController:controllerCopy doDirectionItem:v25 withUserInfo:v35];
 
               [(ActionCoordinator *)self clearSearch];
               goto LABEL_51;
             }
           }
 
-          else if (v21 == 5 && (MapsFeature_IsEnabled_Maps420() & 1) != 0)
+          else if (transportType == 5 && (MapsFeature_IsEnabled_Maps420() & 1) != 0)
           {
             goto LABEL_35;
           }
         }
 
-        else if (v21)
+        else if (transportType)
         {
-          if (v21 == 1 && (MapsFeature_IsEnabled_DrivingMultiWaypointRoutes() & 1) != 0)
+          if (transportType == 1 && (MapsFeature_IsEnabled_DrivingMultiWaypointRoutes() & 1) != 0)
           {
             goto LABEL_35;
           }
@@ -7695,7 +7695,7 @@ LABEL_38:
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Performing fresh directions with replaced stop at index %lu", &v36, 0xCu);
         }
 
-        [v17 replaceObjectAtIndex:v20 withObject:v9];
+        [v17 replaceObjectAtIndex:v20 withObject:itemCopy];
         goto LABEL_38;
       }
 
@@ -7707,11 +7707,11 @@ LABEL_51:
       }
 
       v26 = [v17 count];
-      v27 = [v15 transportType];
+      transportType3 = [directionItemForCurrentSession transportType];
       v28 = @"NO";
-      if (v27 > 1)
+      if (transportType3 > 1)
       {
-        if (v27 == 2)
+        if (transportType3 == 2)
         {
           if (MapsFeature_IsEnabled_Maps182())
           {
@@ -7723,7 +7723,7 @@ LABEL_49:
           goto LABEL_47;
         }
 
-        if (v27 != 5)
+        if (transportType3 != 5)
         {
           goto LABEL_50;
         }
@@ -7736,9 +7736,9 @@ LABEL_49:
 
       else
       {
-        if (v27)
+        if (transportType3)
         {
-          if (v27 == 1)
+          if (transportType3 == 1)
           {
             if (MapsFeature_IsEnabled_DrivingMultiWaypointRoutes())
             {
@@ -7770,7 +7770,7 @@ LABEL_47:
       goto LABEL_50;
     }
 
-    [(RouteSearchViewController *)self->_routeSearchVC replaceSelectedFieldWithItem:v9];
+    [(RouteSearchViewController *)self->_routeSearchVC replaceSelectedFieldWithItem:itemCopy];
   }
 
   else
@@ -7789,8 +7789,8 @@ LABEL_47:
 
     if (sub_100E03634())
     {
-      v15 = sub_10006D178();
-      if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      directionItemForCurrentSession = sub_10006D178();
+      if (!os_log_type_enabled(directionItemForCurrentSession, OS_LOG_TYPE_ERROR))
       {
 LABEL_53:
 
@@ -7800,7 +7800,7 @@ LABEL_53:
       v17 = +[NSThread callStackSymbols];
       v36 = 138412290;
       v37 = v17;
-      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%@", &v36, 0xCu);
+      _os_log_impl(&_mh_execute_header, directionItemForCurrentSession, OS_LOG_TYPE_ERROR, "%@", &v36, 0xCu);
 LABEL_52:
 
       goto LABEL_53;
@@ -7810,14 +7810,14 @@ LABEL_52:
 LABEL_54:
 }
 
-- (void)viewController:(id)a3 addStopForSearchResult:(id)a4 withUserInfo:(id)a5
+- (void)viewController:(id)controller addStopForSearchResult:(id)result withUserInfo:(id)info
 {
-  v8 = a3;
-  v9 = a5;
+  controllerCopy = controller;
+  infoCopy = info;
   if (self->_routePlanningDataCoordinator)
   {
-    v10 = [SearchFieldItem searchFieldItemWithObject:a4];
-    [(ActionCoordinator *)self viewController:v8 addStopForSearchFieldItem:v10 withUserInfo:v9];
+    v10 = [SearchFieldItem searchFieldItemWithObject:result];
+    [(ActionCoordinator *)self viewController:controllerCopy addStopForSearchFieldItem:v10 withUserInfo:infoCopy];
   }
 
   else
@@ -7848,35 +7848,35 @@ LABEL_54:
   }
 }
 
-- (void)viewController:(id)a3 doDirectionIntentWithLocalSearchCompletion:(id)a4
+- (void)viewController:(id)controller doDirectionIntentWithLocalSearchCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v8 = objc_alloc_init(DirectionIntentItemProvider);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100918360;
   v10[3] = &unk_10162E950;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [(DirectionIntentItemProvider *)v8 directionItemWithLocalSearchCompletion:v7 completion:v10];
+  v11 = controllerCopy;
+  v9 = controllerCopy;
+  [(DirectionIntentItemProvider *)v8 directionItemWithLocalSearchCompletion:completionCopy completion:v10];
 }
 
-- (void)viewController:(id)a3 doDirectionIntent:(id)a4 withSearchResults:(id)a5
+- (void)viewController:(id)controller doDirectionIntent:(id)intent withSearchResults:(id)results
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  controllerCopy = controller;
+  resultsCopy = results;
+  intentCopy = intent;
   v11 = objc_alloc_init(DirectionIntentItemProvider);
   v19 = _NSConcreteStackBlock;
   v20 = 3221225472;
   v21 = sub_1009185E8;
   v22 = &unk_10162E950;
-  v23 = self;
-  v12 = v8;
+  selfCopy = self;
+  v12 = controllerCopy;
   v24 = v12;
-  [(DirectionIntentItemProvider *)v11 directionItemWithDirectionIntent:v10 searchResults:v9 completion:&v19];
+  [(DirectionIntentItemProvider *)v11 directionItemWithDirectionIntent:intentCopy searchResults:resultsCopy completion:&v19];
 
   if (qword_10195DF00 != -1)
   {
@@ -7885,22 +7885,22 @@ LABEL_54:
 
   v13 = byte_10195DF08;
   v14 = [(ActionCoordinator *)self containerViewController:v19];
-  v15 = v14;
+  containerViewController = v14;
   if (v13 != 1)
   {
     p_resultsViewController = &self->_resultsViewController;
     goto LABEL_7;
   }
 
-  v16 = [v14 currentViewController];
+  currentViewController = [v14 currentViewController];
   p_resultsViewController = &self->_resultsViewController;
   resultsViewController = self->_resultsViewController;
 
-  if (v16 != resultsViewController)
+  if (currentViewController != resultsViewController)
   {
-    v15 = [(ActionCoordinator *)self containerViewController];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
 LABEL_7:
-    [v15 removeControllerFromStack:*p_resultsViewController];
+    [containerViewController removeControllerFromStack:*p_resultsViewController];
   }
 }
 
@@ -7915,29 +7915,29 @@ LABEL_7:
 
     v14 = self->_placeCardForRoutePlanningViewController;
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    v4 = [WeakRetained currentViewController];
-    if (v4)
+    currentViewController = [WeakRetained currentViewController];
+    if (currentViewController)
     {
-      v5 = v4;
+      v5 = currentViewController;
       v6 = objc_loadWeakRetained(&self->_containerViewController);
-      v7 = [v6 currentViewController];
+      currentViewController2 = [v6 currentViewController];
 
       v8 = v14;
-      if (v7 != v14)
+      if (currentViewController2 != v14)
       {
         goto LABEL_17;
       }
 
-      v9 = [(ActionCoordinator *)self mapSelectionManager];
-      [v9 clearSelectionAnimated:1];
+      mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+      [mapSelectionManager clearSelectionAnimated:1];
 
       WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
       if (sub_10000FA08(WeakRetained) == 5)
       {
-        v10 = [(ActionCoordinator *)self currentSearchSession];
+        currentSearchSession = [(ActionCoordinator *)self currentSearchSession];
 
         v8 = v14;
-        if (v10)
+        if (currentSearchSession)
         {
           [(ActionCoordinator *)self clearSearch];
 LABEL_16:
@@ -7982,25 +7982,25 @@ LABEL_17:
 {
   if (self->_routePlanningDataCoordinator)
   {
-    v3 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-    v4 = [v3 isSuspended];
+    routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+    isSuspended = [routePlanningDataCoordinator isSuspended];
 
-    v5 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-    v14 = v5;
-    if (v4)
+    routePlanningDataCoordinator2 = [(ActionCoordinator *)self routePlanningDataCoordinator];
+    routePlanningDataCoordinator3 = routePlanningDataCoordinator2;
+    if (isSuspended)
     {
-      [v5 resume];
+      [routePlanningDataCoordinator2 resume];
 LABEL_12:
 
       return;
     }
 
-    v9 = [v5 isEnabled];
+    isEnabled = [routePlanningDataCoordinator2 isEnabled];
 
-    if (v9)
+    if (isEnabled)
     {
-      v14 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-      [v14 suspend];
+      routePlanningDataCoordinator3 = [(ActionCoordinator *)self routePlanningDataCoordinator];
+      [routePlanningDataCoordinator3 suspend];
       goto LABEL_12;
     }
 
@@ -8088,13 +8088,13 @@ LABEL_12:
 
   if ([(ActionCoordinator *)self isRoutePlanningPresented])
   {
-    v3 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-    v4 = [v3 canAddStop];
+    routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+    canAddStop = [routePlanningDataCoordinator canAddStop];
   }
 
   else
   {
-    v4 = [self->_currentDirectionItem canAddStop];
+    canAddStop = [self->_currentDirectionItem canAddStop];
   }
 
   if (![(ActionCoordinator *)self _isBuildingMultipointRoute]&& ![(ActionCoordinator *)self isPresentingAddStopSearchResults])
@@ -8102,7 +8102,7 @@ LABEL_12:
     return 0;
   }
 
-  return v4;
+  return canAddStop;
 }
 
 - (BOOL)_isBuildingMultipointRoute
@@ -8113,34 +8113,34 @@ LABEL_12:
     {
       if ([(ActionCoordinator *)self isRoutePlanningPresented])
       {
-        v4 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-        v5 = [v4 transportType];
+        routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+        transportType = [routePlanningDataCoordinator transportType];
       }
 
       else
       {
-        v5 = [self->_currentDirectionItem transportType];
+        transportType = [self->_currentDirectionItem transportType];
       }
 
       if ([(ActionCoordinator *)self isRoutePlanningPresented])
       {
-        v10 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-        v11 = [v10 waypointRequests];
-        v12 = [v11 count];
+        routePlanningDataCoordinator2 = [(ActionCoordinator *)self routePlanningDataCoordinator];
+        waypointRequests = [routePlanningDataCoordinator2 waypointRequests];
+        v12 = [waypointRequests count];
       }
 
       else
       {
-        v10 = [self->_currentDirectionItem items];
-        v12 = [v10 count];
+        routePlanningDataCoordinator2 = [self->_currentDirectionItem items];
+        v12 = [routePlanningDataCoordinator2 count];
       }
 
       LOBYTE(v7) = 0;
-      if (v5 > 1)
+      if (transportType > 1)
       {
-        if (v5 != 2)
+        if (transportType != 2)
         {
-          if (v5 == 5)
+          if (transportType == 5)
           {
             LOBYTE(v7) = MapsFeature_IsEnabled_Maps420();
           }
@@ -8151,9 +8151,9 @@ LABEL_12:
 
       else
       {
-        if (v5)
+        if (transportType)
         {
-          if (v5 == 1)
+          if (transportType == 1)
           {
             LOBYTE(v7) = MapsFeature_IsEnabled_DrivingMultiWaypointRoutes();
           }
@@ -8213,14 +8213,14 @@ LABEL_12:
   return v7;
 }
 
-- (void)viewController:(id)a3 selectClientResolvedItem:(id)a4 fromSearchInfo:(id)a5 withUserInfo:(id)a6
+- (void)viewController:(id)controller selectClientResolvedItem:(id)item fromSearchInfo:(id)info withUserInfo:(id)userInfo
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6)
+  controllerCopy = controller;
+  itemCopy = item;
+  infoCopy = info;
+  if (userInfo)
   {
-    v13 = [a6 mutableCopy];
+    v13 = [userInfo mutableCopy];
   }
 
   else
@@ -8232,31 +8232,31 @@ LABEL_12:
   [v13 setObject:&__kCFBooleanTrue forKeyedSubscript:@"SearchSessionShouldReuseSearchSession"];
   v15 = [v14 copy];
   v16 = objc_alloc_init(ClientTypeResolver);
-  v17 = [v11 itemType];
-  if (v17 > 3)
+  itemType = [itemCopy itemType];
+  if (itemType > 3)
   {
-    switch(v17)
+    switch(itemType)
     {
       case 4:
-        v22 = [(ActionCoordinator *)self userLocationSearchResult];
+        userLocationSearchResult = [(ActionCoordinator *)self userLocationSearchResult];
 
-        if (!v22)
+        if (!userLocationSearchResult)
         {
           goto LABEL_19;
         }
 
-        v23 = [(ActionCoordinator *)self userLocationSearchResult];
-        v24 = [SearchFieldItem searchFieldItemWithObject:v23];
+        userLocationSearchResult2 = [(ActionCoordinator *)self userLocationSearchResult];
+        results = [SearchFieldItem searchFieldItemWithObject:userLocationSearchResult2];
 
-        [(ActionCoordinator *)self viewController:0 doSearchItem:v24 withUserInfo:v15];
+        [(ActionCoordinator *)self viewController:0 doSearchItem:results withUserInfo:v15];
         break;
       case 5:
-        v25 = [v11 resultIndex];
-        v24 = [v12 results];
-        if (v25 < [v24 count])
+        resultIndex = [itemCopy resultIndex];
+        results = [infoCopy results];
+        if (resultIndex < [results count])
         {
-          v26 = [v12 results];
-          v27 = [v26 objectAtIndexedSubscript:{objc_msgSend(v11, "resultIndex")}];
+          results2 = [infoCopy results];
+          v27 = [results2 objectAtIndexedSubscript:{objc_msgSend(itemCopy, "resultIndex")}];
 
           if (!v27)
           {
@@ -8266,21 +8266,21 @@ LABEL_12:
           v28 = [SearchFieldItem searchFieldItemWithObject:v27];
           [(ActionCoordinator *)self viewController:0 doSearchItem:v28 withUserInfo:v15];
 
-          v24 = v27;
+          results = v27;
         }
 
         break;
       case 6:
 LABEL_11:
-        v20 = [(ClientTypeResolver *)v16 personalizedItemSource];
-        v21 = [v11 itemType];
+        personalizedItemSource = [(ClientTypeResolver *)v16 personalizedItemSource];
+        itemType2 = [itemCopy itemType];
         v31[0] = _NSConcreteStackBlock;
         v31[1] = 3221225472;
         v31[2] = sub_100919308;
         v31[3] = &unk_10162E928;
         v31[4] = self;
         v32 = v15;
-        [v20 addressOrLOIWithType:v21 completion:v31];
+        [personalizedItemSource addressOrLOIWithType:itemType2 completion:v31];
 
         v19 = v32;
         goto LABEL_12;
@@ -8291,21 +8291,21 @@ LABEL_11:
     goto LABEL_19;
   }
 
-  if ((v17 - 1) < 2)
+  if ((itemType - 1) < 2)
   {
     goto LABEL_11;
   }
 
-  if (v17 == 3)
+  if (itemType == 3)
   {
-    v18 = [(ClientTypeResolver *)v16 parkedCarSource];
+    parkedCarSource = [(ClientTypeResolver *)v16 parkedCarSource];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_1009193FC;
     v29[3] = &unk_101658E78;
     v29[4] = self;
-    v30 = v10;
-    [v18 objectWithCompletion:v29];
+    v30 = controllerCopy;
+    [parkedCarSource objectWithCompletion:v29];
 
     v19 = v30;
 LABEL_12:
@@ -8314,46 +8314,46 @@ LABEL_12:
 LABEL_19:
 }
 
-- (void)viewController:(id)a3 doSearchItem:(id)a4 withUserInfo:(id)a5 refinementsQuery:(id)a6 autocompleteSessionData:(id)a7
+- (void)viewController:(id)controller doSearchItem:(id)item withUserInfo:(id)info refinementsQuery:(id)query autocompleteSessionData:(id)data
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  controllerCopy = controller;
+  itemCopy = item;
+  infoCopy = info;
+  queryCopy = query;
+  dataCopy = data;
   v17 = sub_100798B6C();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [v13 title];
+    title = [itemCopy title];
     v35 = 138412802;
-    v36 = v12;
+    v36 = controllerCopy;
     v37 = 2112;
-    v38 = v18;
+    v38 = title;
     v39 = 2112;
-    v40 = v14;
+    v40 = infoCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "doSearchItemWithRefinement viewController: %@ title: %@ userInfo: %@", &v35, 0x20u);
   }
 
-  v19 = [v14 objectForKeyedSubscript:@"SearchSessionFromRefinementBar"];
+  v19 = [infoCopy objectForKeyedSubscript:@"SearchSessionFromRefinementBar"];
   if (v19)
   {
     v20 = v19;
-    v21 = [v14 objectForKeyedSubscript:@"SearchSessionIsAutoRedoSearch"];
+    v21 = [infoCopy objectForKeyedSubscript:@"SearchSessionIsAutoRedoSearch"];
 
     if (!v21)
     {
-      v22 = [(ActionCoordinator *)self searchPinsManager];
-      [v22 clearSearchPins];
+      searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+      [searchPinsManager clearSearchPins];
     }
   }
 
   if (MapsFeature_IsEnabled_PlaceCardShowcase())
   {
-    v23 = [v13 completion];
-    v24 = [v23 mapItem];
-    v25 = [v24 _enrichmentInfo];
+    completion = [itemCopy completion];
+    mapItem = [completion mapItem];
+    _enrichmentInfo = [mapItem _enrichmentInfo];
 
-    if (v25)
+    if (_enrichmentInfo)
     {
       placeEnrichmentAPIController = self->_placeEnrichmentAPIController;
       if (placeEnrichmentAPIController)
@@ -8367,34 +8367,34 @@ LABEL_19:
       self->_placeEnrichmentAPIController = v27;
 
       v29 = self->_placeEnrichmentAPIController;
-      v30 = [v13 completion];
-      v31 = [v30 mapItem];
-      v32 = [(ActionCoordinator *)self newTraits];
-      [(MUPlaceEnrichmentAPIController *)v29 configureWithMapItem:v31 traits:v32];
+      completion2 = [itemCopy completion];
+      mapItem2 = [completion2 mapItem];
+      newTraits = [(ActionCoordinator *)self newTraits];
+      [(MUPlaceEnrichmentAPIController *)v29 configureWithMapItem:mapItem2 traits:newTraits];
 
       [(MUPlaceEnrichmentAPIController *)self->_placeEnrichmentAPIController fetchPlaceEnrichment:0];
     }
   }
 
   searchSessionManager = self->_searchSessionManager;
-  if (v16)
+  if (dataCopy)
   {
-    [(SearchSessionManager *)self->_searchSessionManager performSearchForSearchItem:v13 withUserInfo:v14 refinementsQuery:v15 recentAutocompleteSessionData:v16];
+    [(SearchSessionManager *)self->_searchSessionManager performSearchForSearchItem:itemCopy withUserInfo:infoCopy refinementsQuery:queryCopy recentAutocompleteSessionData:dataCopy];
   }
 
   else
   {
-    v34 = [(SearchViewController *)self->_searchModeViewController recentAutocompleteSessionData];
-    [(SearchSessionManager *)searchSessionManager performSearchForSearchItem:v13 withUserInfo:v14 refinementsQuery:v15 recentAutocompleteSessionData:v34];
+    recentAutocompleteSessionData = [(SearchViewController *)self->_searchModeViewController recentAutocompleteSessionData];
+    [(SearchSessionManager *)searchSessionManager performSearchForSearchItem:itemCopy withUserInfo:infoCopy refinementsQuery:queryCopy recentAutocompleteSessionData:recentAutocompleteSessionData];
   }
 }
 
-- (void)viewController:(id)a3 doSearchItem:(id)a4 withUserInfo:(id)a5
+- (void)viewController:(id)controller doSearchItem:(id)item withUserInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[NSMutableDictionary alloc] initWithDictionary:v10];
+  controllerCopy = controller;
+  itemCopy = item;
+  infoCopy = info;
+  v11 = [[NSMutableDictionary alloc] initWithDictionary:infoCopy];
 
   if ([(ActionCoordinator *)self isRoutePlanningPresented])
   {
@@ -8411,31 +8411,31 @@ LABEL_19:
   v15 = sub_100798B6C();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = [v9 title];
+    title = [itemCopy title];
     v19 = 138412802;
-    v20 = v8;
+    v20 = controllerCopy;
     v21 = 2112;
-    v22 = v16;
+    v22 = title;
     v23 = 2112;
     v24 = v11;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "doSearchItem viewController: %@ title: %@ userInfo: %@", &v19, 0x20u);
   }
 
   searchSessionManager = self->_searchSessionManager;
-  v18 = [(SearchViewController *)self->_searchModeViewController recentAutocompleteSessionData];
-  [(SearchSessionManager *)searchSessionManager performSearchForSearchItem:v9 withUserInfo:v11 recentAutocompleteSessionData:v18];
+  recentAutocompleteSessionData = [(SearchViewController *)self->_searchModeViewController recentAutocompleteSessionData];
+  [(SearchSessionManager *)searchSessionManager performSearchForSearchItem:itemCopy withUserInfo:v11 recentAutocompleteSessionData:recentAutocompleteSessionData];
 }
 
-- (void)viewControllerGoPreviousState:(id)a3 withSender:(id)a4
+- (void)viewControllerGoPreviousState:(id)state withSender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_incidentsVC == v6 || self->_routeStepsVC == v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  stateCopy = state;
+  senderCopy = sender;
+  if (self->_incidentsVC == stateCopy || self->_routeStepsVC == stateCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = self;
-    routePlanningOverviewViewController = v6;
+    selfCopy2 = self;
+    routePlanningOverviewViewController = stateCopy;
 LABEL_5:
-    [(ActionCoordinator *)v8 closeRoutePlanningViewController:routePlanningOverviewViewController withSender:v7];
+    [(ActionCoordinator *)selfCopy2 closeRoutePlanningViewController:routePlanningOverviewViewController withSender:senderCopy];
     goto LABEL_6;
   }
 
@@ -8443,16 +8443,16 @@ LABEL_5:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_10:
-    v13 = [(ActionCoordinator *)self trafficIncidentVC];
+    trafficIncidentVC = [(ActionCoordinator *)self trafficIncidentVC];
 
-    if (v13 == v6)
+    if (trafficIncidentVC == stateCopy)
     {
-      v14 = [(ActionCoordinator *)self mapSelectionManager];
-      v15 = [v14 mapView];
-      [v15 _deselectLabelMarkerAnimated:1];
+      mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+      mapView = [mapSelectionManager mapView];
+      [mapView _deselectLabelMarkerAnimated:1];
     }
 
-    if (self->_placeCardViewController == v6 || self->_placeCardForRoutePlanningViewController == v6)
+    if (self->_placeCardViewController == stateCopy || self->_placeCardForRoutePlanningViewController == stateCopy)
     {
       if (self->_isDismissingPlaceCardFromCarPlay)
       {
@@ -8461,20 +8461,20 @@ LABEL_10:
 
       else
       {
-        v17 = v6;
+        v17 = stateCopy;
         v18 = [PlaceCardSynchronizationNotificationInfo alloc];
-        v19 = [(RouteIncidentsViewController *)v17 placeCardItem];
+        placeCardItem = [(RouteIncidentsViewController *)v17 placeCardItem];
 
         v20 = +[CarDisplayController sharedInstance];
-        v21 = [v20 platformController];
-        v22 = [(PlaceCardSynchronizationNotificationInfo *)v18 initWithPlaceCardItem:v19 platformController:v21];
+        platformController = [v20 platformController];
+        v22 = [(PlaceCardSynchronizationNotificationInfo *)v18 initWithPlaceCardItem:placeCardItem platformController:platformController];
 
         v23 = +[NSNotificationCenter defaultCenter];
         [v23 postNotificationName:@"IOSBasedPlaceCardDidDismiss" object:v22];
       }
 
-      v24 = [(ActionCoordinator *)self searchPinsManager];
-      [v24 clearLinkedPlacesAndPolygon];
+      searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+      [searchPinsManager clearLinkedPlacesAndPolygon];
 
       v25 = +[MUPlaceEnrichmentAPIController sharedPlaceEnrichmentAPIController];
       [v25 resetConfiguration];
@@ -8483,28 +8483,28 @@ LABEL_10:
       [v26 cancelFetchingPlaceEnrichment];
     }
 
-    if (self->_lineCardViewController != v6)
+    if (self->_lineCardViewController != stateCopy)
     {
-      v27 = [(TransitLineSelectionActionController *)self->_lineSelectionAction disambiguationVC];
+      disambiguationVC = [(TransitLineSelectionActionController *)self->_lineSelectionAction disambiguationVC];
 
-      if (v27)
+      if (disambiguationVC)
       {
-        v28 = [(ActionCoordinator *)self containerViewController];
-        v29 = [(TransitLineSelectionActionController *)self->_lineSelectionAction disambiguationVC];
-        [v28 removeControllerFromStack:v29];
+        containerViewController = [(ActionCoordinator *)self containerViewController];
+        disambiguationVC2 = [(TransitLineSelectionActionController *)self->_lineSelectionAction disambiguationVC];
+        [containerViewController removeControllerFromStack:disambiguationVC2];
       }
     }
 
-    v30 = [(ActionCoordinator *)self venueCardCoordinator];
-    v31 = [v30 topViewController];
+    venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+    topViewController = [venueCardCoordinator topViewController];
 
-    if (v31 == v6)
+    if (topViewController == stateCopy)
     {
-      [(ActionCoordinator *)self closeVenueViewController:v6];
+      [(ActionCoordinator *)self closeVenueViewController:stateCopy];
       goto LABEL_6;
     }
 
-    if (self->_placeCardViewController == v6)
+    if (self->_placeCardViewController == stateCopy)
     {
       v32 = +[UIDevice currentDevice];
       if ([v32 userInterfaceIdiom] == 5)
@@ -8513,9 +8513,9 @@ LABEL_10:
 
       else
       {
-        v35 = [(SearchSessionManager *)self->_searchSessionManager singleResultMode];
+        singleResultMode = [(SearchSessionManager *)self->_searchSessionManager singleResultMode];
 
-        if (v35)
+        if (singleResultMode)
         {
           [(ActionCoordinator *)self clearSearch];
         }
@@ -8528,27 +8528,27 @@ LABEL_10:
 
       else
       {
-        v37 = [(ActionCoordinator *)self currentSearchSession];
-        v38 = [v37 isSingleResultToShowAsPlacecard];
+        currentSearchSession = [(ActionCoordinator *)self currentSearchSession];
+        isSingleResultToShowAsPlacecard = [currentSearchSession isSingleResultToShowAsPlacecard];
 
-        if (v38)
+        if (isSingleResultToShowAsPlacecard)
         {
           [(ActionCoordinator *)self clearSearch];
         }
       }
 
-      v39 = [(ActionCoordinator *)self containerViewController];
-      v40 = [v39 chromeViewController];
-      [v40 setNeedsUpdateComponent:@"lookAroundButton" animated:1];
+      containerViewController2 = [(ActionCoordinator *)self containerViewController];
+      chromeViewController = [containerViewController2 chromeViewController];
+      [chromeViewController setNeedsUpdateComponent:@"lookAroundButton" animated:1];
     }
 
     else
     {
-      if (self->_placeCardForRoutePlanningViewController == v6)
+      if (self->_placeCardForRoutePlanningViewController == stateCopy)
       {
         [(ActionCoordinator *)self _setRouteSelectionMapState];
-        v33 = [(ActionCoordinator *)self containerViewController];
-        [v33 popLastViewControllerFromViewController:v6 animated:1 useDefaultContaineeLayout:0];
+        containerViewController3 = [(ActionCoordinator *)self containerViewController];
+        [containerViewController3 popLastViewControllerFromViewController:stateCopy animated:1 useDefaultContaineeLayout:0];
 
         v34 = dispatch_time(0, 250000000);
         block[0] = _NSConcreteStackBlock;
@@ -8561,19 +8561,19 @@ LABEL_10:
       }
 
       routePlanningOverviewViewController = self->_routePlanningOverviewViewController;
-      if (routePlanningOverviewViewController == v6)
+      if (routePlanningOverviewViewController == stateCopy)
       {
-        v8 = self;
+        selfCopy2 = self;
         goto LABEL_5;
       }
 
-      if (self->_autosharingVC == v6)
+      if (self->_autosharingVC == stateCopy)
       {
-        v43 = [(PlatformController *)self->_platformController currentSession];
+        currentSession = [(PlatformController *)self->_platformController currentSession];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v44 = v43;
+          v44 = currentSession;
         }
 
         else
@@ -8581,16 +8581,16 @@ LABEL_10:
           v44 = 0;
         }
 
-        v45 = v44;
+        mapView2 = v44;
 
-        v41 = [(SharedTripAutosharingContaineeViewController *)self->_autosharingVC contacts];
-        [v45 setAutomaticSharingContacts:v41];
+        contacts = [(SharedTripAutosharingContaineeViewController *)self->_autosharingVC contacts];
+        [mapView2 setAutomaticSharingContacts:contacts];
 LABEL_55:
 
         goto LABEL_46;
       }
 
-      if (self->_lineCardViewController == v6 || self->_lineCardForRoutePlanningViewController == v6)
+      if (self->_lineCardViewController == stateCopy || self->_lineCardForRoutePlanningViewController == stateCopy)
       {
         [(TransitLineSelectionActionController *)self->_lineSelectionAction deactivateWithContext:0];
         goto LABEL_6;
@@ -8599,17 +8599,17 @@ LABEL_55:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(ActionCoordinator *)self closeVenueFloorCardViewController:v6];
+        [(ActionCoordinator *)self closeVenueFloorCardViewController:stateCopy];
         goto LABEL_6;
       }
 
-      if (self->_simpleListResultsVC != v6)
+      if (self->_simpleListResultsVC != stateCopy)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v46 = [(ActionCoordinator *)self containerViewController];
-          [v46 popLastViewControllerFromViewController:v6 animated:1 useDefaultContaineeLayout:0];
+          containerViewController4 = [(ActionCoordinator *)self containerViewController];
+          [containerViewController4 popLastViewControllerFromViewController:stateCopy animated:1 useDefaultContaineeLayout:0];
 
           [(ActionCoordinator *)self updateRouteAnnotations];
           goto LABEL_6;
@@ -8618,11 +8618,11 @@ LABEL_55:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v47 = [(ActionCoordinator *)self containerViewController];
-          [v47 popLastViewControllerFromViewController:v6 animated:1 useDefaultContaineeLayout:0];
+          containerViewController5 = [(ActionCoordinator *)self containerViewController];
+          [containerViewController5 popLastViewControllerFromViewController:stateCopy animated:1 useDefaultContaineeLayout:0];
 
-          v42 = [(ActionCoordinator *)self searchPinsManager];
-          [v42 clearSearchPins];
+          searchPinsManager2 = [(ActionCoordinator *)self searchPinsManager];
+          [searchPinsManager2 clearSearchPins];
           goto LABEL_48;
         }
 
@@ -8647,8 +8647,8 @@ LABEL_66:
           }
 
 LABEL_47:
-          v42 = [(ActionCoordinator *)self containerViewController];
-          [v42 popLastViewControllerFromViewController:v6 animated:1 useDefaultContaineeLayout:0];
+          searchPinsManager2 = [(ActionCoordinator *)self containerViewController];
+          [searchPinsManager2 popLastViewControllerFromViewController:stateCopy animated:1 useDefaultContaineeLayout:0];
 LABEL_48:
 
           goto LABEL_6;
@@ -8660,76 +8660,76 @@ LABEL_48:
           goto LABEL_47;
         }
 
-        v41 = [(ActionCoordinator *)self mapSelectionManager];
-        v45 = [v41 mapView];
-        [v45 _deselectLabelMarkerAnimated:1];
+        contacts = [(ActionCoordinator *)self mapSelectionManager];
+        mapView2 = [contacts mapView];
+        [mapView2 _deselectLabelMarkerAnimated:1];
         goto LABEL_55;
       }
     }
 
-    v41 = [(ActionCoordinator *)self mapSelectionManager];
-    [v41 clearSelection];
+    contacts = [(ActionCoordinator *)self mapSelectionManager];
+    [contacts clearSelection];
 LABEL_46:
 
     goto LABEL_47;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v11 = [WeakRetained _maps_mapsSceneDelegate];
-  v12 = [v11 topMostPresentedViewController];
+  _maps_mapsSceneDelegate = [WeakRetained _maps_mapsSceneDelegate];
+  topMostPresentedViewController = [_maps_mapsSceneDelegate topMostPresentedViewController];
 
-  if (([(RouteIncidentsViewController *)v12 conformsToProtocol:&OBJC_PROTOCOL___ContaineeProtocol]& 1) != 0)
+  if (([(RouteIncidentsViewController *)topMostPresentedViewController conformsToProtocol:&OBJC_PROTOCOL___ContaineeProtocol]& 1) != 0)
   {
 
     goto LABEL_10;
   }
 
-  if (v12 != v6)
+  if (topMostPresentedViewController != stateCopy)
   {
-    v16 = [(RouteIncidentsViewController *)v6 presentedViewController];
+    presentedViewController = [(RouteIncidentsViewController *)stateCopy presentedViewController];
 
-    if (v16 == v12)
+    if (presentedViewController == topMostPresentedViewController)
     {
-      [(RouteIncidentsViewController *)v12 dismissViewControllerAnimated:1 completion:0];
+      [(RouteIncidentsViewController *)topMostPresentedViewController dismissViewControllerAnimated:1 completion:0];
     }
   }
 
 LABEL_6:
 }
 
-- (void)viewController:(id)a3 removeMapsSuggestionsEntry:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 startBlock:(id)a7 completionBlock:(id)a8
+- (void)viewController:(id)controller removeMapsSuggestionsEntry:(id)entry sourceView:(id)view sourceRect:(CGRect)rect startBlock:(id)block completionBlock:(id)completionBlock
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a7;
-  v21 = a8;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  entryCopy = entry;
+  viewCopy = view;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v57[0] = _NSConcreteStackBlock;
   v57[1] = 3221225472;
   v57[2] = sub_10091A420;
   v57[3] = &unk_10162E8B0;
-  v22 = v20;
+  v22 = blockCopy;
   v59 = v22;
-  v23 = v18;
+  v23 = entryCopy;
   v58 = v23;
-  v24 = v21;
+  v24 = completionBlockCopy;
   v60 = v24;
   v25 = objc_retainBlock(v57);
-  v26 = [v23 availableRemovalBehaviors];
-  v27 = v26;
+  availableRemovalBehaviors = [v23 availableRemovalBehaviors];
+  v27 = availableRemovalBehaviors;
   v55[0] = 0;
   v55[1] = v55;
   v55[2] = 0x3032000000;
   v55[3] = sub_100907968;
   v55[4] = sub_100907978;
   v56 = 0;
-  if (v26 > 3)
+  if (availableRemovalBehaviors > 3)
   {
-    if (v26 == 4 || v26 == 8)
+    if (availableRemovalBehaviors == 4 || availableRemovalBehaviors == 8)
     {
       v28 = 1;
       goto LABEL_7;
@@ -8738,15 +8738,15 @@ LABEL_6:
 
   else
   {
-    if ((v26 - 1) < 2)
+    if ((availableRemovalBehaviors - 1) < 2)
     {
       v28 = 0;
 LABEL_7:
-      (v25[2])(v25, v26, v28);
+      (v25[2])(v25, availableRemovalBehaviors, v28);
       goto LABEL_14;
     }
 
-    if (!v26)
+    if (!availableRemovalBehaviors)
     {
       goto LABEL_14;
     }
@@ -8759,10 +8759,10 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "More than 1 removalBehavior present. Showing Action Sheet", buf, 2u);
   }
 
-  v42 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v31 = [WeakRetained traitCollection];
-  v32 = [v31 userInterfaceIdiom] == 5;
+  traitCollection = [WeakRetained traitCollection];
+  v32 = [traitCollection userInterfaceIdiom] == 5;
 
   v33 = [UIAlertController alertControllerWithTitle:0 message:0 preferredStyle:v32];
   v45 = _NSConcreteStackBlock;
@@ -8786,43 +8786,43 @@ LABEL_7:
   v37 = [UIAlertAction actionWithTitle:v36 style:1 handler:v43];
   [v34 addAction:v37];
 
-  if (v19)
+  if (viewCopy)
   {
-    v38 = [v34 popoverPresentationController];
-    [v38 setSourceView:v19];
+    popoverPresentationController = [v34 popoverPresentationController];
+    [popoverPresentationController setSourceView:viewCopy];
 
-    v39 = [v34 popoverPresentationController];
-    [v39 setSourceRect:{x, y, width, height}];
+    popoverPresentationController2 = [v34 popoverPresentationController];
+    [popoverPresentationController2 setSourceRect:{x, y, width, height}];
 
-    v40 = [v34 popoverPresentationController];
-    [v40 setPermittedArrowDirections:12];
+    popoverPresentationController3 = [v34 popoverPresentationController];
+    [popoverPresentationController3 setPermittedArrowDirections:12];
   }
 
-  v41 = [(ActionCoordinator *)v42 containerViewController];
-  [v41 _maps_topMostPresentViewController:v34 animated:1 completion:0];
+  containerViewController = [(ActionCoordinator *)selfCopy containerViewController];
+  [containerViewController _maps_topMostPresentViewController:v34 animated:1 completion:0];
 
 LABEL_14:
   _Block_object_dispose(v55, 8);
 }
 
-- (void)viewController:(id)a3 selectDroppedPin:(id)a4
+- (void)viewController:(id)controller selectDroppedPin:(id)pin
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && [v6 type] == 3)
+  controllerCopy = controller;
+  pinCopy = pin;
+  v7 = pinCopy;
+  if (pinCopy && [pinCopy type] == 3)
   {
-    v8 = [(ActionCoordinator *)self mapSelectionManager];
-    [v8 selectSearchResult:v7 animated:1];
+    mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+    [mapSelectionManager selectSearchResult:v7 animated:1];
   }
 }
 
-- (void)viewController:(id)a3 selectParkedCar:(id)a4 andPerformAction:(int64_t)a5 selectPOIOnMap:(BOOL)a6
+- (void)viewController:(id)controller selectParkedCar:(id)car andPerformAction:(int64_t)action selectPOIOnMap:(BOOL)map
 {
-  v6 = a6;
-  v9 = a4;
+  mapCopy = map;
+  carCopy = car;
   v10 = +[ParkedCarManager sharedManager];
-  [v10 informCoreRoutineOfEngagementWithParkedCar:v9];
+  [v10 informCoreRoutineOfEngagementWithParkedCar:carCopy];
 
   parkedCarViewController = self->_parkedCarViewController;
   if (!parkedCarViewController)
@@ -8833,15 +8833,15 @@ LABEL_14:
 
     [(InfoCardViewController *)self->_parkedCarViewController setContaineeDelegate:self];
     [(ParkedCarInfoCardViewController *)self->_parkedCarViewController setActionDelegate:self];
-    v14 = [(ActionCoordinator *)self appCoordinator];
-    [(ParkedCarInfoCardViewController *)self->_parkedCarViewController setShareDelegate:v14];
+    appCoordinator = [(ActionCoordinator *)self appCoordinator];
+    [(ParkedCarInfoCardViewController *)self->_parkedCarViewController setShareDelegate:appCoordinator];
 
     parkedCarViewController = self->_parkedCarViewController;
   }
 
-  [(ParkedCarInfoCardViewController *)parkedCarViewController setParkedCar:v9];
-  v15 = [(ActionCoordinator *)self containerViewController];
-  v16 = [v15 currentViewController];
+  [(ParkedCarInfoCardViewController *)parkedCarViewController setParkedCar:carCopy];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -8858,19 +8858,19 @@ LABEL_14:
     [WeakRetained presentController:v20];
   }
 
-  v21 = [(ActionCoordinator *)self mapView];
-  [v9 coordinate];
+  mapView = [(ActionCoordinator *)self mapView];
+  [carCopy coordinate];
   v23 = v22;
   v25 = v24;
-  [v21 convertCoordinate:v21 toPointToView:?];
+  [mapView convertCoordinate:mapView toPointToView:?];
   v27 = v26;
   v29 = v28;
-  [v21 bounds];
+  [mapView bounds];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  [v21 _edgeInsets];
+  [mapView _edgeInsets];
   v39 = v38 + v33;
   v42 = v35 - (v40 + v41);
   v69.size.height = v37 - (v38 + v43);
@@ -8880,19 +8880,19 @@ LABEL_14:
   v68.x = v27;
   v68.y = v29;
   v44 = CGRectContainsPoint(v69, v68);
-  [v9 horizontalAccuracy];
+  [carCopy horizontalAccuracy];
   v45 = 1000.0;
   v46 = 1000.0;
   if (v47 > 1000.0)
   {
-    [v9 horizontalAccuracy];
+    [carCopy horizontalAccuracy];
     v46 = v48;
   }
 
-  [v9 horizontalAccuracy];
+  [carCopy horizontalAccuracy];
   if (v49 > 1000.0)
   {
-    [v9 horizontalAccuracy];
+    [carCopy horizontalAccuracy];
     v45 = v50;
   }
 
@@ -8900,143 +8900,143 @@ LABEL_14:
   v67.longitude = v25;
   MKCoordinateRegionMakeWithDistance(v67, v46, v45);
   MKMapRectForCoordinateRegion();
-  [v21 mapRectThatFits:?];
+  [mapView mapRectThatFits:?];
   v52 = v51;
   v54 = v53;
   v56 = v55;
   v58 = v57;
-  [v21 visibleMapRect];
+  [mapView visibleMapRect];
   v61 = fmax(v59, v56) / fmin(v60, v58);
   if (v61 <= 4.0 && v44)
   {
 LABEL_17:
-    if (!v6)
+    if (!mapCopy)
     {
       goto LABEL_19;
     }
 
 LABEL_18:
-    v63 = [(ActionCoordinator *)self searchPinsManager];
-    v64 = [v63 customPOIsController];
+    searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+    customPOIsController = [searchPinsManager customPOIsController];
     v65 = +[ParkedCar personalizedItemKey];
     v66[0] = _NSConcreteStackBlock;
     v66[1] = 3221225472;
     v66[2] = sub_10091AEE0;
     v66[3] = &unk_10162E860;
     v66[4] = self;
-    [v64 customFeatureForKey:v65 completion:v66];
+    [customPOIsController customFeatureForKey:v65 completion:v66];
 
     goto LABEL_19;
   }
 
   if (v61 <= 4.0)
   {
-    [v21 setCenterCoordinate:1 animated:{v23, v25}];
+    [mapView setCenterCoordinate:1 animated:{v23, v25}];
     goto LABEL_17;
   }
 
-  [v21 setVisibleMapRect:1 animated:{v52, v54, v56, v58}];
-  if (v6)
+  [mapView setVisibleMapRect:1 animated:{v52, v54, v56, v58}];
+  if (mapCopy)
   {
     goto LABEL_18;
   }
 
 LABEL_19:
-  [(ParkedCarInfoCardViewController *)self->_parkedCarViewController performAction:a5];
+  [(ParkedCarInfoCardViewController *)self->_parkedCarViewController performAction:action];
 }
 
-- (void)viewController:(id)a3 displayTableBookingFor:(id)a4
+- (void)viewController:(id)controller displayTableBookingFor:(id)for
 {
-  v11 = a4;
-  v5 = [(ActionCoordinator *)self currentViewController];
+  forCopy = for;
+  currentViewController = [(ActionCoordinator *)self currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(ActionCoordinator *)self currentViewController];
-    v8 = [v7 placeCardItem];
-    v9 = [v11 isEqual:v8];
+    currentViewController2 = [(ActionCoordinator *)self currentViewController];
+    placeCardItem = [currentViewController2 placeCardItem];
+    v9 = [forCopy isEqual:placeCardItem];
 
     if (v9)
     {
-      [v7 setShouldPresentSecondaryActionWhenReady:1];
+      [currentViewController2 setShouldPresentSecondaryActionWhenReady:1];
       goto LABEL_6;
     }
   }
 
-  v7 = [(ActionCoordinator *)self placeCardViewController];
-  [v7 resetState];
-  [v7 setPlaceCardItem:v11 withHistory:1];
-  [v7 setShouldPresentSecondaryActionWhenReady:1];
-  [(ActionCoordinator *)self presentPlaceCard:v7];
-  v10 = [(ActionCoordinator *)self appCoordinator];
-  [v10 setNeedsUserActivityUpdate];
+  currentViewController2 = [(ActionCoordinator *)self placeCardViewController];
+  [currentViewController2 resetState];
+  [currentViewController2 setPlaceCardItem:forCopy withHistory:1];
+  [currentViewController2 setShouldPresentSecondaryActionWhenReady:1];
+  [(ActionCoordinator *)self presentPlaceCard:currentViewController2];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator setNeedsUserActivityUpdate];
 
 LABEL_6:
 }
 
-- (void)viewController:(id)a3 showCollectionWithID:(id)a4
+- (void)viewController:(id)controller showCollectionWithID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  controllerCopy = controller;
   v8 = +[CollectionManager sharedManager];
-  v9 = [v8 collectionWithIdentifier:v6];
+  v9 = [v8 collectionWithIdentifier:dCopy];
 
   if (v9)
   {
-    [(ActionCoordinator *)self viewController:v7 showCollection:v9];
+    [(ActionCoordinator *)self viewController:controllerCopy showCollection:v9];
   }
 
   else
   {
-    [(ActionCoordinator *)self viewControllerShowCollections:v7];
+    [(ActionCoordinator *)self viewControllerShowCollections:controllerCopy];
   }
 }
 
-- (void)viewController:(id)a3 showFavoritesType:(int64_t)a4
+- (void)viewController:(id)controller showFavoritesType:(int64_t)type
 {
-  v6 = a3;
+  controllerCopy = controller;
   v7 = +[CollectionManager sharedManager];
-  v8 = [v7 collectionForFavoritesType:a4];
+  v8 = [v7 collectionForFavoritesType:type];
 
   if (v8)
   {
-    [(ActionCoordinator *)self viewController:v6 showCollection:v8];
+    [(ActionCoordinator *)self viewController:controllerCopy showCollection:v8];
   }
 
   else
   {
-    [(ActionCoordinator *)self viewControllerShowCollections:v6];
+    [(ActionCoordinator *)self viewControllerShowCollections:controllerCopy];
   }
 }
 
-- (void)viewController:(id)a3 presentRelatedMapItems:(id)a4 withTitle:(id)a5 originalMapItem:(id)a6 analyticsDelegate:(id)a7
+- (void)viewController:(id)controller presentRelatedMapItems:(id)items withTitle:(id)title originalMapItem:(id)item analyticsDelegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (sub_10000FA08(v12) == 5 && ([v15 _venueInfo], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "venueFeatureType"), v17, v18 == 1))
+  controllerCopy = controller;
+  itemsCopy = items;
+  titleCopy = title;
+  itemCopy = item;
+  delegateCopy = delegate;
+  if (sub_10000FA08(controllerCopy) == 5 && ([itemCopy _venueInfo], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "venueFeatureType"), v17, v18 == 1))
   {
-    v19 = [v15 _browseCategories];
-    v20 = [v19 firstObject];
+    _browseCategories = [itemCopy _browseCategories];
+    firstObject = [_browseCategories firstObject];
 
-    v21 = [[VenueSearchCardItem alloc] initWithMapItem:v15 searchCategory:v20];
-    [(ActionCoordinator *)self viewController:v12 presentVenueWithVenueCardItem:v21 source:4];
+    v21 = [[VenueSearchCardItem alloc] initWithMapItem:itemCopy searchCategory:firstObject];
+    [(ActionCoordinator *)self viewController:controllerCopy presentVenueWithVenueCardItem:v21 source:4];
   }
 
   else
   {
-    v35 = v14;
-    v36 = v12;
-    v22 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v13 count]);
+    v35 = titleCopy;
+    v36 = controllerCopy;
+    v22 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [itemsCopy count]);
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v23 = v13;
+    v23 = itemsCopy;
     v24 = [v23 countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v24)
     {
@@ -9065,241 +9065,241 @@ LABEL_6:
     }
 
     v29 = [SimilarResultsViewController alloc];
-    v30 = [(ActionCoordinator *)self appCoordinator];
-    v31 = [(SimpleResultsViewController *)v29 initWithShareDelegate:v30];
+    appCoordinator = [(ActionCoordinator *)self appCoordinator];
+    v31 = [(SimpleResultsViewController *)v29 initWithShareDelegate:appCoordinator];
 
     [(SimpleResultsViewController *)v31 setResultsDelegate:self];
     [(ContaineeViewController *)v31 setContaineeDelegate:self];
     [(SimpleResultsViewController *)v31 setEnableQuickActionMenu:1];
-    v14 = v35;
+    titleCopy = v35;
     [(SimilarResultsViewController *)v31 setHeaderTitle:v35];
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
     [WeakRetained presentController:v31];
 
     [(SimpleResultsViewController *)v31 setSearchResults:v22];
-    [(SimilarResultsViewController *)v31 setOriginalMapItem:v15];
-    [(SimilarResultsViewController *)v31 setAnalyticsDelegate:v16];
+    [(SimilarResultsViewController *)v31 setOriginalMapItem:itemCopy];
+    [(SimilarResultsViewController *)v31 setAnalyticsDelegate:delegateCopy];
     v33 = [SearchInfo searchInfoWithResults:v22];
-    v34 = [(ActionCoordinator *)self searchPinsManager];
-    [v34 setSearchPinsFromSearchInfo:v33 scrollToResults:1 displayPlaceCardForResult:0 animated:1 completion:0];
+    searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+    [searchPinsManager setSearchPinsFromSearchInfo:v33 scrollToResults:1 displayPlaceCardForResult:0 animated:1 completion:0];
 
-    v12 = v36;
+    controllerCopy = v36;
   }
 }
 
-- (void)viewController:(id)a3 presentPlacesForMapItem:(id)a4 searchCategory:(id)a5 source:(unint64_t)a6
+- (void)viewController:(id)controller presentPlacesForMapItem:(id)item searchCategory:(id)category source:(unint64_t)source
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[PlacesSearchCardItem alloc] initWithMapItem:v11 searchCategory:v10];
+  categoryCopy = category;
+  itemCopy = item;
+  controllerCopy = controller;
+  v13 = [[PlacesSearchCardItem alloc] initWithMapItem:itemCopy searchCategory:categoryCopy];
 
-  [(ActionCoordinator *)self viewController:v12 presentPlacesWithPlacesCardItem:v13 source:a6];
+  [(ActionCoordinator *)self viewController:controllerCopy presentPlacesWithPlacesCardItem:v13 source:source];
 }
 
-- (void)viewController:(id)a3 presentParentMapItem:(id)a4
+- (void)viewController:(id)controller presentParentMapItem:(id)item
 {
-  v5 = a4;
-  v6 = [v5 _venueInfo];
+  itemCopy = item;
+  _venueInfo = [itemCopy _venueInfo];
 
-  if (v6)
+  if (_venueInfo)
   {
-    [(ActionCoordinator *)self viewController:0 selectMapItem:v5 address:0 addToHistory:1 source:4];
+    [(ActionCoordinator *)self viewController:0 selectMapItem:itemCopy address:0 addToHistory:1 source:4];
 LABEL_5:
-    v8 = [[SearchResult alloc] initWithMapItem:v5];
+    v8 = [[SearchResult alloc] initWithMapItem:itemCopy];
     v12 = v8;
     v9 = [NSArray arrayWithObjects:&v12 count:1];
     v10 = [SearchInfo searchInfoWithResults:v9];
 
-    v11 = [(ActionCoordinator *)self searchPinsManager];
-    [v11 setSearchPinsFromSearchInfo:v10 scrollToResults:1 displayPlaceCardForResult:v8 animated:1 completion:0];
+    searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+    [searchPinsManager setSearchPinsFromSearchInfo:v10 scrollToResults:1 displayPlaceCardForResult:v8 animated:1 completion:0];
 
     goto LABEL_6;
   }
 
-  if (![v5 _hasHikeInfo])
+  if (![itemCopy _hasHikeInfo])
   {
     goto LABEL_5;
   }
 
-  v7 = [(ActionCoordinator *)self appCoordinator];
-  [v7 enterRouteCreationWithMapItem:v5 completion:0];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator enterRouteCreationWithMapItem:itemCopy completion:0];
 
 LABEL_6:
 }
 
-- (void)viewController:(id)a3 showOfflineMapRegionSelectorForRegion:(id)a4 name:(id)a5 route:(id)a6 muid:(unint64_t)a7 shouldUseSessionlessAnalytics:(BOOL)a8 dismissalBlock:(id)a9 postDismissalBlock:(id)a10
+- (void)viewController:(id)controller showOfflineMapRegionSelectorForRegion:(id)region name:(id)name route:(id)route muid:(unint64_t)muid shouldUseSessionlessAnalytics:(BOOL)analytics dismissalBlock:(id)block postDismissalBlock:(id)self0
 {
-  v10 = a8;
-  v33 = a3;
-  v32 = a4;
-  v31 = a5;
-  v30 = a6;
-  v16 = a9;
-  v17 = a10;
+  analyticsCopy = analytics;
+  controllerCopy = controller;
+  regionCopy = region;
+  nameCopy = name;
+  routeCopy = route;
+  blockCopy = block;
+  dismissalBlockCopy = dismissalBlock;
   if (GEOSupportsOfflineMaps())
   {
-    v18 = v10;
+    v18 = analyticsCopy;
     v19 = +[MapsOfflineUIHelper sharedHelper];
-    v20 = [v19 alertControllerForAttemptedRegionDownload];
+    alertControllerForAttemptedRegionDownload = [v19 alertControllerForAttemptedRegionDownload];
 
-    v21 = [(ActionCoordinator *)self containerViewController];
-    v22 = [v21 chromeViewController];
-    v23 = v22;
-    if (v20)
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    chromeViewController = [containerViewController chromeViewController];
+    v23 = chromeViewController;
+    if (alertControllerForAttemptedRegionDownload)
     {
       v34[0] = _NSConcreteStackBlock;
       v34[1] = 3221225472;
       v34[2] = sub_10091B9BC;
       v34[3] = &unk_10165BA38;
-      v35 = v16;
-      v36 = v17;
-      [v23 _maps_topMostPresentViewController:v20 animated:1 completion:v34];
+      v35 = blockCopy;
+      v36 = dismissalBlockCopy;
+      [v23 _maps_topMostPresentViewController:alertControllerForAttemptedRegionDownload animated:1 completion:v34];
     }
 
     else
     {
-      v29 = a7;
-      v24 = [v22 topContext];
+      muidCopy = muid;
+      topContext = [chromeViewController topContext];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0)
       {
-        v26 = [[OfflineRegionSelectorContext alloc] initWithRegion:v32 name:v31];
+        v26 = [[OfflineRegionSelectorContext alloc] initWithRegion:regionCopy name:nameCopy];
         [(OfflineRegionSelectorContext *)v26 setShouldUseSessionlessAnalytics:v18];
-        [(OfflineRegionSelectorContext *)v26 setRoute:v30];
-        [(OfflineRegionSelectorContext *)v26 setMuid:v29];
-        [(OfflineRegionSelectorContext *)v26 setDismissalBlock:v16];
-        [(OfflineRegionSelectorContext *)v26 setPostDismissalBlock:v17];
+        [(OfflineRegionSelectorContext *)v26 setRoute:routeCopy];
+        [(OfflineRegionSelectorContext *)v26 setMuid:muidCopy];
+        [(OfflineRegionSelectorContext *)v26 setDismissalBlock:blockCopy];
+        [(OfflineRegionSelectorContext *)v26 setPostDismissalBlock:dismissalBlockCopy];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(OfflineRegionSelectorContext *)v26 setDownloadDelegate:v33];
+          [(OfflineRegionSelectorContext *)v26 setDownloadDelegate:controllerCopy];
         }
 
-        v27 = [(ActionCoordinator *)self containerViewController];
-        v28 = [v27 chromeViewController];
-        [v28 pushContext:v26 animated:1 completion:0];
+        containerViewController2 = [(ActionCoordinator *)self containerViewController];
+        chromeViewController2 = [containerViewController2 chromeViewController];
+        [chromeViewController2 pushContext:v26 animated:1 completion:0];
       }
     }
   }
 }
 
-- (void)viewController:(id)a3 showOfflineMapRegionSelectorForRegion:(id)a4 name:(id)a5 route:(id)a6 muid:(unint64_t)a7 shouldUseSessionlessAnalytics:(BOOL)a8 shouldShowDataManagementAfterDownload:(BOOL)a9 shouldShowDataManagementAfterDownloadIfRegionDiffers:(BOOL)a10 dismissalBlock:(id)a11
+- (void)viewController:(id)controller showOfflineMapRegionSelectorForRegion:(id)region name:(id)name route:(id)route muid:(unint64_t)muid shouldUseSessionlessAnalytics:(BOOL)analytics shouldShowDataManagementAfterDownload:(BOOL)download shouldShowDataManagementAfterDownloadIfRegionDiffers:(BOOL)self0 dismissalBlock:(id)self1
 {
-  v24 = a8;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a11;
+  analyticsCopy = analytics;
+  controllerCopy = controller;
+  regionCopy = region;
+  nameCopy = name;
+  routeCopy = route;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_10091BBE8;
   v25[3] = &unk_10162E838;
   objc_copyWeak(&v29, &location);
-  v21 = v20;
+  v21 = blockCopy;
   v28 = v21;
-  v30 = a9;
-  v31 = a10;
-  v22 = v17;
+  downloadCopy = download;
+  differsCopy = differs;
+  v22 = regionCopy;
   v26 = v22;
-  v23 = v16;
+  v23 = controllerCopy;
   v27 = v23;
-  [(ActionCoordinator *)self viewController:v23 showOfflineMapRegionSelectorForRegion:v22 name:v18 route:v19 muid:a7 shouldUseSessionlessAnalytics:v24 dismissalBlock:v25 postDismissalBlock:0];
+  [(ActionCoordinator *)self viewController:v23 showOfflineMapRegionSelectorForRegion:v22 name:nameCopy route:routeCopy muid:muid shouldUseSessionlessAnalytics:analyticsCopy dismissalBlock:v25 postDismissalBlock:0];
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&location);
 }
 
-- (void)_viewControllerShowOfflineMaps:(id)a3 completionHandler:(id)a4
+- (void)_viewControllerShowOfflineMaps:(id)maps completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = +[MapsOfflineUIHelper sharedHelper];
-  v7 = [v6 alertControllerForAttemptedDataManagementDisplay];
+  alertControllerForAttemptedDataManagementDisplay = [v6 alertControllerForAttemptedDataManagementDisplay];
 
-  v8 = [(ActionCoordinator *)self containerViewController];
-  v9 = [v8 chromeViewController];
-  v10 = v9;
-  if (v7)
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  v10 = chromeViewController;
+  if (alertControllerForAttemptedDataManagementDisplay)
   {
-    [v9 _maps_topMostPresentViewController:v7 animated:1 completion:0];
+    [chromeViewController _maps_topMostPresentViewController:alertControllerForAttemptedDataManagementDisplay animated:1 completion:0];
 
-    if (v5)
+    if (handlerCopy)
     {
-      v5[2](v5, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   else
   {
-    v11 = [v9 topContext];
+    topContext = [chromeViewController topContext];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      if (v5)
+      if (handlerCopy)
       {
-        v13 = [(ActionCoordinator *)self containerViewController];
-        v14 = [v13 chromeViewController];
-        v15 = [v14 topContext];
-        (v5)[2](v5, v15);
+        containerViewController2 = [(ActionCoordinator *)self containerViewController];
+        chromeViewController2 = [containerViewController2 chromeViewController];
+        topContext2 = [chromeViewController2 topContext];
+        (handlerCopy)[2](handlerCopy, topContext2);
       }
     }
 
     else
     {
       v16 = objc_alloc_init(OfflineMapsManagementContext);
-      v17 = [(ActionCoordinator *)self containerViewController];
-      v18 = [v17 chromeViewController];
+      containerViewController3 = [(ActionCoordinator *)self containerViewController];
+      chromeViewController3 = [containerViewController3 chromeViewController];
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
       v20[2] = sub_10091BF44;
       v20[3] = &unk_101661090;
       v21 = v16;
-      v22 = v5;
+      v22 = handlerCopy;
       v19 = v16;
-      [v18 pushContext:v19 animated:1 completion:v20];
+      [chromeViewController3 pushContext:v19 animated:1 completion:v20];
     }
   }
 }
 
-- (void)viewControllerShowPhotoThumbnailGalleryWithMapItem:(id)a3 albumIndex:(unint64_t)a4
+- (void)viewControllerShowPhotoThumbnailGalleryWithMapItem:(id)item albumIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [v6 _geoMapItem];
-  v8 = [v7 _captionedPhotoAlbums];
-  v9 = [v8 count];
+  itemCopy = item;
+  _geoMapItem = [itemCopy _geoMapItem];
+  _captionedPhotoAlbums = [_geoMapItem _captionedPhotoAlbums];
+  v9 = [_captionedPhotoAlbums count];
 
   if (v9 < 2)
   {
-    [UGCPOIEnrichmentCoordinator photoThumbnailGalleryCoordinatorWithMapItem:v6 withStartingIndex:0];
+    [UGCPOIEnrichmentCoordinator photoThumbnailGalleryCoordinatorWithMapItem:itemCopy withStartingIndex:0];
   }
 
   else
   {
-    [UGCPOIEnrichmentCoordinator photoThumbnailGalleryCoordinatorWithMapItem:v6 albumIndex:a4];
+    [UGCPOIEnrichmentCoordinator photoThumbnailGalleryCoordinatorWithMapItem:itemCopy albumIndex:index];
   }
   v11 = ;
 
   [v11 setDelegate:self];
-  v10 = [(ActionCoordinator *)self containerViewController];
-  [v11 setPresentingViewController:v10];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [v11 setPresentingViewController:containerViewController];
 
   [v11 setPresentationContext:1];
   [(ActionCoordinator *)self viewControllerPresentPOIEnrichmentWithCoordinator:v11];
 }
 
-- (void)viewControllerShowCitySelectorFromGuideLocation:(id)a3
+- (void)viewControllerShowCitySelectorFromGuideLocation:(id)location
 {
-  v4 = a3;
-  v5 = [[CitySelectorViewController alloc] initWithSourceGuideLocation:v4];
+  locationCopy = location;
+  v5 = [[CitySelectorViewController alloc] initWithSourceGuideLocation:locationCopy];
 
-  v6 = [(ActionCoordinator *)self newTraits];
-  [(CitySelectorViewController *)v5 setTraits:v6];
+  newTraits = [(ActionCoordinator *)self newTraits];
+  [(CitySelectorViewController *)v5 setTraits:newTraits];
 
   [(ContaineeViewController *)v5 setContaineeDelegate:self];
   [(CitySelectorViewController *)v5 setActionDelegate:self];
@@ -9308,8 +9308,8 @@ LABEL_6:
 
   if (self->_citySelectorVC)
   {
-    v8 = [(ActionCoordinator *)self containerViewController];
-    [v8 removeControllerFromStack:self->_citySelectorVC];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    [containerViewController removeControllerFromStack:self->_citySelectorVC];
 
     citySelectorVC = self->_citySelectorVC;
   }
@@ -9325,15 +9325,15 @@ LABEL_6:
 - (void)viewControllerShowAllCollections
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v4 = [WeakRetained currentViewController];
+  currentViewController = [WeakRetained currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
     v6 = objc_alloc_init(AllCollectionsViewController);
-    v7 = [(ActionCoordinator *)self newTraits];
-    [(AllCollectionsViewController *)v6 setTraits:v7];
+    newTraits = [(ActionCoordinator *)self newTraits];
+    [(AllCollectionsViewController *)v6 setTraits:newTraits];
 
     [(ContaineeViewController *)v6 setContaineeDelegate:self];
     [(AllCollectionsViewController *)v6 setActionDelegate:self];
@@ -9342,8 +9342,8 @@ LABEL_6:
 
     if (self->_allCollectionsVC)
     {
-      v9 = [(ActionCoordinator *)self containerViewController];
-      [v9 removeControllerFromStack:self->_allCollectionsVC];
+      containerViewController = [(ActionCoordinator *)self containerViewController];
+      [containerViewController removeControllerFromStack:self->_allCollectionsVC];
 
       allCollectionsVC = self->_allCollectionsVC;
     }
@@ -9357,22 +9357,22 @@ LABEL_6:
   }
 }
 
-- (void)viewControllerShowPublisherWithID:(id)a3 numberOfCollections:(unint64_t)a4 replaceViewController:(BOOL)a5
+- (void)viewControllerShowPublisherWithID:(id)d numberOfCollections:(unint64_t)collections replaceViewController:(BOOL)controller
 {
-  v5 = a5;
-  v8 = a3;
+  controllerCopy = controller;
+  dCopy = d;
   v9 = [PublisherViewController alloc];
-  v10 = [(ActionCoordinator *)self newTraits];
-  v11 = [(PublisherViewController *)v9 initWithPublisherId:v8 numberOfCollections:a4 withTraits:v10];
+  newTraits = [(ActionCoordinator *)self newTraits];
+  v11 = [(PublisherViewController *)v9 initWithPublisherId:dCopy numberOfCollections:collections withTraits:newTraits];
 
   [(ContaineeViewController *)v11 setContaineeDelegate:self];
   [(PublisherViewController *)v11 setActionDelegate:self];
-  v12 = [(ActionCoordinator *)self appCoordinator];
-  [(PublisherViewController *)v11 setShareDelegate:v12];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [(PublisherViewController *)v11 setShareDelegate:appCoordinator];
 
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   v14 = WeakRetained;
-  if (v5)
+  if (controllerCopy)
   {
     [WeakRetained replaceCurrentWithController:v11];
   }
@@ -9384,8 +9384,8 @@ LABEL_6:
 
   if (self->_publisherVC)
   {
-    v15 = [(ActionCoordinator *)self containerViewController];
-    [v15 removeControllerFromStack:self->_publisherVC];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    [containerViewController removeControllerFromStack:self->_publisherVC];
 
     publisherVC = self->_publisherVC;
   }
@@ -9398,24 +9398,24 @@ LABEL_6:
   self->_publisherVC = v11;
 }
 
-- (void)viewController:(id)a3 showGuidesHome:(id)a4
+- (void)viewController:(id)controller showGuidesHome:(id)home
 {
-  v11 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  homeCopy = home;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && self->_citySelectorVC)
   {
-    v7 = [(ActionCoordinator *)self containerViewController];
-    [v7 popLastViewControllerFromViewController:self->_citySelectorVC animated:1 useDefaultContaineeLayout:1];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    [containerViewController popLastViewControllerFromViewController:self->_citySelectorVC animated:1 useDefaultContaineeLayout:1];
 
-    v8 = [(ActionCoordinator *)self containerViewController];
-    v9 = [v8 controllerIsInStack:self->_guideHomeVC];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
+    v9 = [containerViewController2 controllerIsInStack:self->_guideHomeVC];
 
     if (v9)
     {
       guideHomeVC = self->_guideHomeVC;
 LABEL_7:
-      [(GuidesHomeViewController *)guideHomeVC setGuideLocation:v6];
+      [(GuidesHomeViewController *)guideHomeVC setGuideLocation:homeCopy];
       goto LABEL_9;
     }
   }
@@ -9433,31 +9433,31 @@ LABEL_7:
     }
   }
 
-  [(ActionCoordinator *)self presentGuidesHomeWithGuideLocation:v6];
+  [(ActionCoordinator *)self presentGuidesHomeWithGuideLocation:homeCopy];
 LABEL_9:
 }
 
-- (void)viewControllerShowPublisher:(id)a3 replaceViewController:(BOOL)a4
+- (void)viewControllerShowPublisher:(id)publisher replaceViewController:(BOOL)controller
 {
-  v4 = a4;
-  v6 = a3;
+  controllerCopy = controller;
+  publisherCopy = publisher;
   v7 = [MKMapItemIdentifier alloc];
-  v8 = [v6 identifier];
-  v10 = [v7 initWithGEOMapItemIdentifier:v8];
+  identifier = [publisherCopy identifier];
+  v10 = [v7 initWithGEOMapItemIdentifier:identifier];
 
-  v9 = [v6 totalCollectionCount];
-  [(ActionCoordinator *)self viewControllerShowPublisherWithID:v10 numberOfCollections:v9 replaceViewController:v4];
+  totalCollectionCount = [publisherCopy totalCollectionCount];
+  [(ActionCoordinator *)self viewControllerShowPublisherWithID:v10 numberOfCollections:totalCollectionCount replaceViewController:controllerCopy];
 }
 
-- (void)viewController:(id)a3 showCuratedCollectionsList:(id)a4 usingTitle:(id)a5 usingCollectionIds:(id)a6 completion:(id)a7
+- (void)viewController:(id)controller showCuratedCollectionsList:(id)list usingTitle:(id)title usingCollectionIds:(id)ids completion:(id)completion
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
+  completionCopy = completion;
+  idsCopy = ids;
+  titleCopy = title;
+  listCopy = list;
   v15 = [CuratedCollectionsListViewController alloc];
-  v16 = [(ActionCoordinator *)self newTraits];
-  v17 = [(CuratedCollectionsListViewController *)v15 initWithCuratedCollections:v14 usingTitle:v13 usingCollectionIds:v12 withTraits:v16];
+  newTraits = [(ActionCoordinator *)self newTraits];
+  v17 = [(CuratedCollectionsListViewController *)v15 initWithCuratedCollections:listCopy usingTitle:titleCopy usingCollectionIds:idsCopy withTraits:newTraits];
 
   [(ContaineeViewController *)v17 setContaineeDelegate:self];
   [(ControlContaineeViewController *)v17 setDelegate:self];
@@ -9468,7 +9468,7 @@ LABEL_9:
   v27 = &unk_101655D58;
   v19 = v17;
   v28 = v19;
-  v20 = v11;
+  v20 = completionCopy;
   v29 = v20;
   [WeakRetained presentController:v19 animated:1 completion:&v24];
 
@@ -9483,26 +9483,26 @@ LABEL_9:
   v23 = v19;
 }
 
-- (void)showCuratedCollectionViewController:(id)a3 replaceViewController:(BOOL)a4 completion:(id)a5
+- (void)showCuratedCollectionViewController:(id)controller replaceViewController:(BOOL)viewController completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  [v8 setContaineeDelegate:self];
-  [v8 setActionDelegate:self];
-  v10 = [(ActionCoordinator *)self appCoordinator];
-  [v8 setShareDelegate:v10];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  completionCopy = completion;
+  [controllerCopy setContaineeDelegate:self];
+  [controllerCopy setActionDelegate:self];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [controllerCopy setShareDelegate:appCoordinator];
 
-  [v8 setMapModificationDelegate:self];
+  [controllerCopy setMapModificationDelegate:self];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   v12 = WeakRetained;
-  if (v6)
+  if (viewControllerCopy)
   {
-    [WeakRetained replaceCurrentWithController:v8];
+    [WeakRetained replaceCurrentWithController:controllerCopy];
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -9512,22 +9512,22 @@ LABEL_9:
     v13[1] = 3221225472;
     v13[2] = sub_10091C8B8;
     v13[3] = &unk_10165F438;
-    v14 = v9;
-    [v12 presentController:v8 animated:1 completion:v13];
+    v14 = completionCopy;
+    [v12 presentController:controllerCopy animated:1 completion:v13];
   }
 }
 
-- (void)viewController:(id)a3 showFullyClientizedCuratedCollection:(id)a4 replaceViewController:(BOOL)a5
+- (void)viewController:(id)controller showFullyClientizedCuratedCollection:(id)collection replaceViewController:(BOOL)viewController
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [[CuratedCollectionViewController alloc] initWithFullyClientizedPlaceCollection:v7];
+  viewControllerCopy = viewController;
+  collectionCopy = collection;
+  v8 = [[CuratedCollectionViewController alloc] initWithFullyClientizedPlaceCollection:collectionCopy];
 
-  [(ActionCoordinator *)self showCuratedCollectionViewController:v8 replaceViewController:v5 completion:0];
+  [(ActionCoordinator *)self showCuratedCollectionViewController:v8 replaceViewController:viewControllerCopy completion:0];
   if (self->_curatedCollectionsVC)
   {
-    v9 = [(ActionCoordinator *)self containerViewController];
-    [v9 removeControllerFromStack:self->_curatedCollectionsVC];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    [containerViewController removeControllerFromStack:self->_curatedCollectionsVC];
 
     curatedCollectionsVC = self->_curatedCollectionsVC;
   }
@@ -9540,18 +9540,18 @@ LABEL_9:
   self->_curatedCollectionsVC = v8;
 }
 
-- (void)viewController:(id)a3 showCuratedCollectionIdentifier:(id)a4 replaceViewController:(BOOL)a5 completion:(id)a6
+- (void)viewController:(id)controller showCuratedCollectionIdentifier:(id)identifier replaceViewController:(BOOL)viewController completion:(id)completion
 {
-  v6 = a5;
-  v9 = a6;
-  v10 = a4;
-  v11 = [[CuratedCollectionViewController alloc] initWithCuratedCollectionIdentifier:v10];
+  viewControllerCopy = viewController;
+  completionCopy = completion;
+  identifierCopy = identifier;
+  v11 = [[CuratedCollectionViewController alloc] initWithCuratedCollectionIdentifier:identifierCopy];
 
-  [(ActionCoordinator *)self showCuratedCollectionViewController:v11 replaceViewController:v6 completion:v9];
+  [(ActionCoordinator *)self showCuratedCollectionViewController:v11 replaceViewController:viewControllerCopy completion:completionCopy];
   if (self->_curatedCollectionsVC)
   {
-    v12 = [(ActionCoordinator *)self containerViewController];
-    [v12 removeControllerFromStack:self->_curatedCollectionsVC];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    [containerViewController removeControllerFromStack:self->_curatedCollectionsVC];
 
     curatedCollectionsVC = self->_curatedCollectionsVC;
   }
@@ -9564,54 +9564,54 @@ LABEL_9:
   self->_curatedCollectionsVC = v11;
 }
 
-- (void)viewController:(id)a3 showCuratedCollection:(id)a4 replaceViewController:(BOOL)a5 completion:(id)a6
+- (void)viewController:(id)controller showCuratedCollection:(id)collection replaceViewController:(BOOL)viewController completion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  viewControllerCopy = viewController;
+  completionCopy = completion;
+  collectionCopy = collection;
+  controllerCopy = controller;
   v13 = [MKMapItemIdentifier alloc];
-  v14 = [v11 collectionIdentifier];
+  collectionIdentifier = [collectionCopy collectionIdentifier];
 
-  v15 = [v13 initWithGEOMapItemIdentifier:v14];
-  [(ActionCoordinator *)self viewController:v12 showCuratedCollectionIdentifier:v15 replaceViewController:v6 completion:v10];
+  v15 = [v13 initWithGEOMapItemIdentifier:collectionIdentifier];
+  [(ActionCoordinator *)self viewController:controllerCopy showCuratedCollectionIdentifier:v15 replaceViewController:viewControllerCopy completion:completionCopy];
 }
 
-- (void)collectionPickerNewCollection:(id)a3
+- (void)collectionPickerNewCollection:(id)collection
 {
   collectionPicker = self->_collectionPicker;
   self->_collectionPicker = 0;
-  v5 = a3;
+  collectionCopy = collection;
 
-  v6 = [v5 editSession];
+  editSession = [collectionCopy editSession];
 
-  [(ActionCoordinator *)self viewController:0 createNewCollectionWithSession:v6];
+  [(ActionCoordinator *)self viewController:0 createNewCollectionWithSession:editSession];
 }
 
-- (void)collectionPickerClosed:(id)a3
+- (void)collectionPickerClosed:(id)closed
 {
   collectionPicker = self->_collectionPicker;
   self->_collectionPicker = 0;
 }
 
-- (void)viewController:(id)a3 presentCollectionPickerContaineeViewController:(id)a4
+- (void)viewController:(id)controller presentCollectionPickerContaineeViewController:(id)viewController
 {
-  v5 = a4;
-  [v5 setContaineeDelegate:self];
+  viewControllerCopy = viewController;
+  [viewControllerCopy setContaineeDelegate:self];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  [WeakRetained presentController:v5 animated:1 completion:0];
+  [WeakRetained presentController:viewControllerCopy animated:1 completion:0];
 }
 
-- (void)viewController:(id)a3 editCollection:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 completion:(id)a7
+- (void)viewController:(id)controller editCollection:(id)collection sourceView:(id)view sourceRect:(CGRect)rect completion:(id)completion
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  collectionCopy = collection;
+  viewCopy = view;
+  completionCopy = completion;
   collectionEditCoordinator = self->_collectionEditCoordinator;
   if (collectionEditCoordinator)
   {
@@ -9619,8 +9619,8 @@ LABEL_9:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v21 = [WeakRetained view];
-  [v21 convertRect:v17 fromView:{x, y, width, height}];
+  view = [WeakRetained view];
+  [view convertRect:viewCopy fromView:{x, y, width, height}];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -9629,15 +9629,15 @@ LABEL_9:
   objc_initWeak(&location, self);
   v30 = [MacCollectionEditCoordinator alloc];
   v31 = objc_loadWeakRetained(&self->_containerViewController);
-  v32 = [v31 view];
+  view2 = [v31 view];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_10091CE3C;
   v36[3] = &unk_101660648;
   objc_copyWeak(&v38, &location);
-  v33 = v18;
+  v33 = completionCopy;
   v37 = v33;
-  v34 = [(MacCollectionEditCoordinator *)v30 initWithCollection:v16 presentingViewController:v31 sourceView:v32 sourceRect:v36 completion:v23, v25, v27, v29];
+  v34 = [(MacCollectionEditCoordinator *)v30 initWithCollection:collectionCopy presentingViewController:v31 sourceView:view2 sourceRect:v36 completion:v23, v25, v27, v29];
   v35 = self->_collectionEditCoordinator;
   self->_collectionEditCoordinator = v34;
 
@@ -9646,21 +9646,21 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (void)viewController:(id)a3 editNameOfMapItem:(id)a4 saveHandler:(id)a5 cancelHandler:(id)a6
+- (void)viewController:(id)controller editNameOfMapItem:(id)item saveHandler:(id)handler cancelHandler:(id)cancelHandler
 {
-  v8 = [UIViewController _maps_viewControllerForRenamingMapItem:a4 saveHandler:a5 cancelHandler:a6];
+  v8 = [UIViewController _maps_viewControllerForRenamingMapItem:item saveHandler:handler cancelHandler:cancelHandler];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   [WeakRetained _maps_topMostPresentViewController:v8 animated:1 completion:0];
 }
 
-- (void)viewController:(id)a3 createNewCollectionWithSession:(id)a4
+- (void)viewController:(id)controller createNewCollectionWithSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  sessionCopy = session;
   v8 = +[MapsOfflineUIHelper sharedHelper];
-  v9 = [v8 alertControllerForAttemptedAddCollection];
+  alertControllerForAttemptedAddCollection = [v8 alertControllerForAttemptedAddCollection];
 
-  if (!v9)
+  if (!alertControllerForAttemptedAddCollection)
   {
     if (!+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
     {
@@ -9669,18 +9669,18 @@ LABEL_9:
 
       if (v13 == 5)
       {
-        [(ActionCoordinator *)self viewController:v6 addItemsFromACToCollection:v7];
+        [(ActionCoordinator *)self viewController:controllerCopy addItemsFromACToCollection:sessionCopy];
         goto LABEL_22;
       }
     }
 
-    v14 = [v7 collection];
-    if ([v14 handlerType] == 3)
+    collection = [sessionCopy collection];
+    if ([collection handlerType] == 3)
     {
       v15 = 256;
     }
 
-    else if (self->_searchModeViewController == v6)
+    else if (self->_searchModeViewController == controllerCopy)
     {
       v15 = 8;
     }
@@ -9689,7 +9689,7 @@ LABEL_9:
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      if (v6)
+      if (controllerCopy)
       {
         v17 = 0;
       }
@@ -9710,14 +9710,14 @@ LABEL_9:
       }
     }
 
-    v18 = [[CollectionCreateViewController alloc] initWithEditSession:v7];
+    v18 = [[CollectionCreateViewController alloc] initWithEditSession:sessionCopy];
     [(ContaineeViewController *)v18 setContaineeDelegate:self];
     [(CollectionCreateViewController *)v18 setTarget:v15];
     collectionCreateVCDidDismissHandler = self->_collectionCreateVCDidDismissHandler;
     self->_collectionCreateVCDidDismissHandler = 0;
 
-    v20 = objc_loadWeakRetained(&self->_containerViewController);
-    if (sub_10000FA08(v20) == 5)
+    mapItem = objc_loadWeakRetained(&self->_containerViewController);
+    if (sub_10000FA08(mapItem) == 5)
     {
       objc_opt_class();
       v21 = objc_opt_isKindOfClass();
@@ -9731,10 +9731,10 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v22 = [(SearchViewController *)v6 placeCardItem];
-      v20 = [v22 mapItem];
+      placeCardItem = [(SearchViewController *)controllerCopy placeCardItem];
+      mapItem = [placeCardItem mapItem];
 
-      if (v20)
+      if (mapItem)
       {
         objc_initWeak(&location, self);
         v26[0] = _NSConcreteStackBlock;
@@ -9742,7 +9742,7 @@ LABEL_21:
         v26[2] = sub_10091D1F8;
         v26[3] = &unk_101661340;
         objc_copyWeak(&v28, &location);
-        v27 = v20;
+        v27 = mapItem;
         v23 = objc_retainBlock(v26);
         v24 = self->_collectionCreateVCDidDismissHandler;
         self->_collectionCreateVCDidDismissHandler = v23;
@@ -9755,25 +9755,25 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v10 = [(ActionCoordinator *)self containerViewController];
-  v11 = [v10 chromeViewController];
-  [v11 _maps_topMostPresentViewController:v9 animated:1 completion:0];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  [chromeViewController _maps_topMostPresentViewController:alertControllerForAttemptedAddCollection animated:1 completion:0];
 
 LABEL_22:
 }
 
-- (void)viewController:(id)a3 pickCollectionWithSession:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6
+- (void)viewController:(id)controller pickCollectionWithSession:(id)session sourceView:(id)view sourceRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = [[CollectionPicker alloc] initWithCollectionEditSession:v14 sourceView:v15 sourceRect:x, y, width, height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  sessionCopy = session;
+  viewCopy = view;
+  height = [[CollectionPicker alloc] initWithCollectionEditSession:sessionCopy sourceView:viewCopy sourceRect:x, y, width, height];
   collectionPicker = self->_collectionPicker;
-  self->_collectionPicker = v16;
+  self->_collectionPicker = height;
 
   [(CollectionPicker *)self->_collectionPicker setDelegate:self];
   objc_initWeak(&location, self);
@@ -9783,7 +9783,7 @@ LABEL_22:
   v22[2] = sub_10091D42C;
   v22[3] = &unk_10164F880;
   objc_copyWeak(&v24, &location);
-  v19 = v13;
+  v19 = controllerCopy;
   v23 = v19;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
@@ -9797,63 +9797,63 @@ LABEL_22:
   objc_destroyWeak(&location);
 }
 
-- (void)viewControllerShowAddItemsFromACToLibraryView:(id)a3
+- (void)viewControllerShowAddItemsFromACToLibraryView:(id)view
 {
   v4 = +[MapsOfflineUIHelper sharedHelper];
-  v7 = [v4 alertControllerForAttemptedAddCollection];
+  alertControllerForAttemptedAddCollection = [v4 alertControllerForAttemptedAddCollection];
 
-  if (v7)
+  if (alertControllerForAttemptedAddCollection)
   {
-    v5 = [(ActionCoordinator *)self containerViewController];
-    WeakRetained = [(LibraryAddCollectionItemViewController *)v5 chromeViewController];
-    [WeakRetained _maps_topMostPresentViewController:v7 animated:1 completion:0];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    WeakRetained = [(LibraryAddCollectionItemViewController *)containerViewController chromeViewController];
+    [WeakRetained _maps_topMostPresentViewController:alertControllerForAttemptedAddCollection animated:1 completion:0];
   }
 
   else
   {
-    v5 = [[_TtC4Maps38LibraryAddCollectionItemViewController alloc] initWithNibName:0 bundle:0];
-    [(ContaineeViewController *)v5 setContaineeDelegate:self];
-    [(AddFromACViewController *)v5 setAddFromACDelegate:self];
+    containerViewController = [[_TtC4Maps38LibraryAddCollectionItemViewController alloc] initWithNibName:0 bundle:0];
+    [(ContaineeViewController *)containerViewController setContaineeDelegate:self];
+    [(AddFromACViewController *)containerViewController setAddFromACDelegate:self];
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    [WeakRetained presentController:v5 animated:1];
+    [WeakRetained presentController:containerViewController animated:1];
   }
 }
 
-- (void)viewController:(id)a3 addItemsFromACToCollection:(id)a4
+- (void)viewController:(id)controller addItemsFromACToCollection:(id)collection
 {
-  v5 = a4;
-  if (v5)
+  collectionCopy = collection;
+  if (collectionCopy)
   {
-    v10 = v5;
+    v10 = collectionCopy;
     v6 = +[MapsOfflineUIHelper sharedHelper];
-    v7 = [v6 alertControllerForAttemptedAddCollection];
+    alertControllerForAttemptedAddCollection = [v6 alertControllerForAttemptedAddCollection];
 
-    if (v7)
+    if (alertControllerForAttemptedAddCollection)
     {
-      v8 = [(ActionCoordinator *)self containerViewController];
-      WeakRetained = [(CollectionAddViewController *)v8 chromeViewController];
-      [WeakRetained _maps_topMostPresentViewController:v7 animated:1 completion:0];
+      containerViewController = [(ActionCoordinator *)self containerViewController];
+      WeakRetained = [(CollectionAddViewController *)containerViewController chromeViewController];
+      [WeakRetained _maps_topMostPresentViewController:alertControllerForAttemptedAddCollection animated:1 completion:0];
     }
 
     else
     {
-      v8 = [[CollectionAddViewController alloc] initWithNibName:0 bundle:0];
-      [(ContaineeViewController *)v8 setContaineeDelegate:self];
-      [(AddFromACViewController *)v8 setAddFromACDelegate:self];
-      [(CollectionAddViewController *)v8 setEditSession:v10];
+      containerViewController = [[CollectionAddViewController alloc] initWithNibName:0 bundle:0];
+      [(ContaineeViewController *)containerViewController setContaineeDelegate:self];
+      [(AddFromACViewController *)containerViewController setAddFromACDelegate:self];
+      [(CollectionAddViewController *)containerViewController setEditSession:v10];
       WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-      [WeakRetained presentController:v8 animated:1];
+      [WeakRetained presentController:containerViewController animated:1];
     }
 
-    v5 = v10;
+    collectionCopy = v10;
   }
 }
 
-- (void)viewController:(id)a3 editCollection:(id)a4
+- (void)viewController:(id)controller editCollection:(id)collection
 {
-  v8 = a4;
-  v5 = [(ActionCoordinator *)self containerViewController];
-  v6 = [v5 currentViewController];
+  collectionCopy = collection;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -9862,43 +9862,43 @@ LABEL_22:
     [(ActionCoordinator *)self dismissPlaceCardViewController:self->_placeCardViewController];
   }
 
-  [(SearchViewController *)self->_searchModeViewController editCollection:v8];
+  [(SearchViewController *)self->_searchModeViewController editCollection:collectionCopy];
 }
 
-- (void)viewController:(id)a3 showCollection:(id)a4 completion:(id)a5
+- (void)viewController:(id)controller showCollection:(id)collection completion:(id)completion
 {
-  v18 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  collectionCopy = collection;
   [CATransaction setFrameStallSkipRequest:1];
-  if ([v7 handlerType] == 1)
+  if ([collectionCopy handlerType] == 1)
   {
-    [(ActionCoordinator *)self viewController:v18 createNewCollectionWithSession:0];
+    [(ActionCoordinator *)self viewController:controllerCopy createNewCollectionWithSession:0];
     goto LABEL_20;
   }
 
-  if ([v7 handlerType] != 4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if ([collectionCopy handlerType] != 4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v8 = [[_TtC4Maps23UserGuideViewController alloc] initWithCollectionHandler:v7];
+    v8 = [[_TtC4Maps23UserGuideViewController alloc] initWithCollectionHandler:collectionCopy];
     [(UserGuideViewController *)v8 setActionDelegate:self];
     [(UserGuideViewController *)v8 setMapModificationDelegate:self];
-    v11 = [(ActionCoordinator *)self appCoordinator];
-    [(UserGuideViewController *)v8 setShareDelegate:v11];
+    appCoordinator = [(ActionCoordinator *)self appCoordinator];
+    [(UserGuideViewController *)v8 setShareDelegate:appCoordinator];
 
     [(UserGuideViewController *)v8 setSortOptionPickerDelegate:self];
     [(ContaineeViewController *)v8 setContaineeDelegate:self];
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
     [WeakRetained presentController:v8 animated:1];
 
-    v10 = self->_userGuideVC;
-    if (v10)
+    curatedCollectionIdentifier2 = self->_userGuideVC;
+    if (curatedCollectionIdentifier2)
     {
       v13 = objc_loadWeakRetained(&self->_containerViewController);
-      [v13 removeControllerFromStack:v10];
+      [v13 removeControllerFromStack:curatedCollectionIdentifier2];
     }
 
     objc_storeStrong(&self->_userGuideVC, v8);
-    v14 = [v7 showAction];
-    if (self->_searchModeViewController == v18)
+    showAction = [collectionCopy showAction];
+    if (self->_searchModeViewController == controllerCopy)
     {
       LODWORD(v15) = 8;
     }
@@ -9917,7 +9917,7 @@ LABEL_22:
       }
     }
 
-    if ([v7 handlerType] == 3)
+    if ([collectionCopy handlerType] == 3)
     {
       v15 = 256;
     }
@@ -9927,64 +9927,64 @@ LABEL_22:
       v15 = v15;
     }
 
-    v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 bucketedNumberOfItems]);
+    v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [collectionCopy bucketedNumberOfItems]);
     v17 = [NSString stringWithFormat:@"%@", v16];
 
-    [GEOAPPortal captureUserAction:v14 target:v15 value:v17];
+    [GEOAPPortal captureUserAction:showAction target:v15 value:v17];
     goto LABEL_18;
   }
 
-  v8 = v7;
-  v9 = [(UserGuideViewController *)v8 curatedCollectionIdentifier];
+  v8 = collectionCopy;
+  curatedCollectionIdentifier = [(UserGuideViewController *)v8 curatedCollectionIdentifier];
 
-  if (v9)
+  if (curatedCollectionIdentifier)
   {
-    v10 = [(UserGuideViewController *)v8 curatedCollectionIdentifier];
-    [(ActionCoordinator *)self viewController:v18 showCuratedCollectionIdentifier:v10];
+    curatedCollectionIdentifier2 = [(UserGuideViewController *)v8 curatedCollectionIdentifier];
+    [(ActionCoordinator *)self viewController:controllerCopy showCuratedCollectionIdentifier:curatedCollectionIdentifier2];
 LABEL_18:
   }
 
 LABEL_20:
 }
 
-- (void)viewControllerShowCollections:(id)a3
+- (void)viewControllerShowCollections:(id)collections
 {
   [CATransaction setFrameStallSkipRequest:1];
   v6 = [[_TtC4Maps37UserGuidesListContaineeViewController alloc] initWithNibName:0 bundle:0];
   [(ContaineeViewController *)v6 setContaineeDelegate:self];
   [(UserGuidesListContaineeViewController *)v6 setActionDelegate:self];
-  v4 = [(ActionCoordinator *)self appCoordinator];
-  [(UserGuidesListContaineeViewController *)v6 setShareDelegate:v4];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [(UserGuidesListContaineeViewController *)v6 setShareDelegate:appCoordinator];
 
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   [WeakRetained presentController:v6 animated:1];
 }
 
-- (void)showWarmingSheetViewController:(int64_t)a3
+- (void)showWarmingSheetViewController:(int64_t)controller
 {
-  v5 = [[_TtC4Maps36LocationAuthenticationViewController alloc] initWithSheetType:1 actionFlow:a3 actionHandler:&stru_10162E7A8];
+  v5 = [[_TtC4Maps36LocationAuthenticationViewController alloc] initWithSheetType:1 actionFlow:controller actionHandler:&stru_10162E7A8];
   v3 = +[UIApplication sharedMapsDelegate];
-  v4 = [v3 chromeViewController];
-  [v4 _maps_topMostPresentViewController:v5 animated:1 completion:0];
+  chromeViewController = [v3 chromeViewController];
+  [chromeViewController _maps_topMostPresentViewController:v5 animated:1 completion:0];
 }
 
-- (void)viewControllerShowLibraryPlacesView:(id)a3
+- (void)viewControllerShowLibraryPlacesView:(id)view
 {
   v6 = [[_TtC4Maps24PlaceItemsViewController alloc] initWithNibName:0 bundle:0];
   [(ContaineeViewController *)v6 setContaineeDelegate:self];
   [(PlaceItemsViewController *)v6 setActionDelegate:self];
-  v4 = [(ActionCoordinator *)self appCoordinator];
-  [(PlaceItemsViewController *)v6 setShareDelegate:v4];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [(PlaceItemsViewController *)v6 setShareDelegate:appCoordinator];
 
   [(PlaceItemsViewController *)v6 setSortOptionPickerDelegate:self];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   [WeakRetained presentController:v6 animated:1];
 }
 
-- (void)viewControllerShowLibraryRootView:(id)a3
+- (void)viewControllerShowLibraryRootView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v5 = [WeakRetained currentViewController];
+  currentViewController = [WeakRetained currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -9998,25 +9998,25 @@ LABEL_20:
   }
 }
 
-- (void)shortcutEditSessionControllerFinished:(id)a3 shortcutWasReplacedBy:(id)a4
+- (void)shortcutEditSessionControllerFinished:(id)finished shortcutWasReplacedBy:(id)by
 {
-  v12 = a3;
-  v6 = a4;
+  finishedCopy = finished;
+  byCopy = by;
   shortcutEditSessionController = self->_shortcutEditSessionController;
   self->_shortcutEditSessionController = 0;
 
-  if (v6)
+  if (byCopy)
   {
     if (self->_placeCardViewController)
     {
-      v8 = [v12 requestInitiator];
+      requestInitiator = [finishedCopy requestInitiator];
       placeCardViewController = self->_placeCardViewController;
 
-      if (v8 == placeCardViewController)
+      if (requestInitiator == placeCardViewController)
       {
-        v10 = [SearchResult searchResultFromFavoriteItem:v6];
-        v11 = [(ActionCoordinator *)self mapSelectionManager];
-        [v11 injectAndSelectSearchResult:v10];
+        v10 = [SearchResult searchResultFromFavoriteItem:byCopy];
+        mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+        [mapSelectionManager injectAndSelectSearchResult:v10];
       }
     }
   }
@@ -10044,17 +10044,17 @@ LABEL_20:
   return v4;
 }
 
-- (void)viewController:(id)a3 editShortcut:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6
+- (void)viewController:(id)controller editShortcut:(id)shortcut sourceView:(id)view sourceRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v12 = a5;
-  v13 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  shortcutCopy = shortcut;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v15 = [WeakRetained view];
-  [v15 convertRect:v12 fromView:{x, y, width, height}];
+  view = [WeakRetained view];
+  [view convertRect:viewCopy fromView:{x, y, width, height}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -10063,53 +10063,53 @@ LABEL_20:
   shortcutEditSessionController = self->_shortcutEditSessionController;
   self->_shortcutEditSessionController = 0;
 
-  v27 = [(ActionCoordinator *)self shortcutEditSessionController];
+  shortcutEditSessionController = [(ActionCoordinator *)self shortcutEditSessionController];
   v25 = objc_loadWeakRetained(&self->_containerViewController);
-  v26 = [v25 view];
-  [v27 editShortcut:v13 sourceView:v26 sourceRect:{v17, v19, v21, v23}];
+  view2 = [v25 view];
+  [shortcutEditSessionController editShortcut:shortcutCopy sourceView:view2 sourceRect:{v17, v19, v21, v23}];
 }
 
-- (void)viewController:(id)a3 openTransitLineCard:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6
+- (void)viewController:(id)controller openTransitLineCard:(id)card sourceView:(id)view sourceRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v12 = a5;
-  v13 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  cardCopy = card;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v15 = [WeakRetained view];
-  [v15 convertRect:v12 fromView:{x, y, width, height}];
+  view = [WeakRetained view];
+  [view convertRect:viewCopy fromView:{x, y, width, height}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
-  v24 = sub_1005B1B14(v13);
+  v24 = sub_1005B1B14(cardCopy);
   v26 = objc_loadWeakRetained(&self->_containerViewController);
-  v25 = [v26 view];
-  [(ActionCoordinator *)self presentLineCardForItem:v13 loading:v24 sourceView:v25 sourceRect:v17, v19, v21, v23];
+  view2 = [v26 view];
+  [(ActionCoordinator *)self presentLineCardForItem:cardCopy loading:v24 sourceView:view2 sourceRect:v17, v19, v21, v23];
 }
 
-- (void)viewController:(id)a3 removeShortcut:(id)a4
+- (void)viewController:(id)controller removeShortcut:(id)shortcut
 {
-  v5 = a4;
-  v6 = [(ActionCoordinator *)self shortcutEditSessionController];
-  [v6 removeShortcut:v5];
+  shortcutCopy = shortcut;
+  shortcutEditSessionController = [(ActionCoordinator *)self shortcutEditSessionController];
+  [shortcutEditSessionController removeShortcut:shortcutCopy];
 }
 
-- (void)viewController:(id)a3 editShortcut:(id)a4
+- (void)viewController:(id)controller editShortcut:(id)shortcut
 {
-  v14 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  shortcutCopy = shortcut;
   v7 = +[MapsOfflineUIHelper sharedHelper];
-  v8 = [v7 alertControllerForAttemptedShowMyShortcut];
+  alertControllerForAttemptedShowMyShortcut = [v7 alertControllerForAttemptedShowMyShortcut];
 
-  if (v8)
+  if (alertControllerForAttemptedShowMyShortcut)
   {
-    v9 = [(ActionCoordinator *)self containerViewController];
-    v10 = [v9 chromeViewController];
-    [v10 _maps_topMostPresentViewController:v8 animated:1 completion:0];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    chromeViewController = [containerViewController chromeViewController];
+    [chromeViewController _maps_topMostPresentViewController:alertControllerForAttemptedShowMyShortcut animated:1 completion:0];
   }
 
   else
@@ -10120,7 +10120,7 @@ LABEL_20:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v14;
+      v12 = controllerCopy;
     }
 
     else
@@ -10128,25 +10128,25 @@ LABEL_20:
       v12 = 0;
     }
 
-    v13 = [(ActionCoordinator *)self shortcutEditSessionController];
-    [v13 setRequestInitiator:v12];
+    shortcutEditSessionController = [(ActionCoordinator *)self shortcutEditSessionController];
+    [shortcutEditSessionController setRequestInitiator:v12];
 
-    v9 = [(ActionCoordinator *)self shortcutEditSessionController];
-    [v9 editShortcut:v6];
+    containerViewController = [(ActionCoordinator *)self shortcutEditSessionController];
+    [containerViewController editShortcut:shortcutCopy];
   }
 }
 
-- (void)viewController:(id)a3 showAddShortcut:(id)a4
+- (void)viewController:(id)controller showAddShortcut:(id)shortcut
 {
-  v11 = a4;
+  shortcutCopy = shortcut;
   v5 = +[MapsOfflineUIHelper sharedHelper];
-  v6 = [v5 alertControllerForAttemptedAddShortcut];
+  alertControllerForAttemptedAddShortcut = [v5 alertControllerForAttemptedAddShortcut];
 
-  if (v6)
+  if (alertControllerForAttemptedAddShortcut)
   {
-    v7 = [(ActionCoordinator *)self containerViewController];
-    WeakRetained = [(AddShortcutViewController *)v7 chromeViewController];
-    [WeakRetained _maps_topMostPresentViewController:v6 animated:1 completion:0];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    WeakRetained = [(AddShortcutViewController *)containerViewController chromeViewController];
+    [WeakRetained _maps_topMostPresentViewController:alertControllerForAttemptedAddShortcut animated:1 completion:0];
 LABEL_5:
 
     goto LABEL_6;
@@ -10154,51 +10154,51 @@ LABEL_5:
 
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
-    v7 = [[AddShortcutViewController alloc] initWithShortcutEditSession:v11];
-    [(AddShortcutViewController *)v7 setDelegate:self];
-    [(ContaineeViewController *)v7 setContaineeDelegate:self];
+    containerViewController = [[AddShortcutViewController alloc] initWithShortcutEditSession:shortcutCopy];
+    [(AddShortcutViewController *)containerViewController setDelegate:self];
+    [(ContaineeViewController *)containerViewController setContaineeDelegate:self];
     shortcutEditSessionController = self->_shortcutEditSessionController;
     self->_shortcutEditSessionController = 0;
 
-    v10 = [(ActionCoordinator *)self shortcutEditSessionController];
-    [(AddShortcutViewController *)v7 setSessionController:v10];
+    shortcutEditSessionController = [(ActionCoordinator *)self shortcutEditSessionController];
+    [(AddShortcutViewController *)containerViewController setSessionController:shortcutEditSessionController];
 
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    [WeakRetained presentController:v7 animated:1];
+    [WeakRetained presentController:containerViewController animated:1];
     goto LABEL_5;
   }
 
-  v7 = [(ActionCoordinator *)self shortcutEditSessionController];
-  [(AddShortcutViewController *)v7 showAddShortcut:v11];
+  containerViewController = [(ActionCoordinator *)self shortcutEditSessionController];
+  [(AddShortcutViewController *)containerViewController showAddShortcut:shortcutCopy];
 LABEL_6:
 }
 
-- (void)viewControllerShowMyShortcuts:(id)a3
+- (void)viewControllerShowMyShortcuts:(id)shortcuts
 {
   v6 = [[_TtC4Maps25PinnedItemsViewController alloc] initWithNibName:0 bundle:0];
   [(ContaineeViewController *)v6 setContaineeDelegate:self];
   [(PinnedItemsViewController *)v6 setActionDelegate:self];
-  v4 = [(ActionCoordinator *)self appCoordinator];
-  [(PinnedItemsViewController *)v6 setShareDelegate:v4];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [(PinnedItemsViewController *)v6 setShareDelegate:appCoordinator];
 
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   [WeakRetained presentController:v6 animated:1];
 }
 
-- (void)viewControllerShowMyRecents:(id)a3 includeRecentSearches:(BOOL)a4
+- (void)viewControllerShowMyRecents:(id)recents includeRecentSearches:(BOOL)searches
 {
-  v4 = a4;
+  searchesCopy = searches;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v7 = [WeakRetained currentViewController];
+  currentViewController = [WeakRetained currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v11 = [[_TtC4Maps32MyRecentsContaineeViewController alloc] initIncludingRecentSearches:v4];
+    v11 = [[_TtC4Maps32MyRecentsContaineeViewController alloc] initIncludingRecentSearches:searchesCopy];
     [v11 setContaineeDelegate:self];
-    v9 = [(ActionCoordinator *)self appCoordinator];
-    [v11 setShareDelegate:v9];
+    appCoordinator = [(ActionCoordinator *)self appCoordinator];
+    [v11 setShareDelegate:appCoordinator];
 
     [v11 setActionDelegate:self];
     v10 = objc_loadWeakRetained(&self->_containerViewController);
@@ -10206,10 +10206,10 @@ LABEL_6:
   }
 }
 
-- (void)viewController:(id)a3 enterFlyoverForMapItem:(id)a4
+- (void)viewController:(id)controller enterFlyoverForMapItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
+  itemCopy = item;
+  controllerCopy = controller;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -10219,17 +10219,17 @@ LABEL_6:
     [v9 postNotificationName:@"SearchViewPreventAutoPresentingKeyboard_rdar_126940251" object:0];
   }
 
-  v10 = [(ActionCoordinator *)self appCoordinator];
-  [v10 enterFlyoverForMapItem:v6];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator enterFlyoverForMapItem:itemCopy];
 }
 
-- (void)viewController:(id)a3 selectTransitLineItem:(id)a4 zoomToMapRegion:(BOOL)a5 preferredLayout:(unint64_t)a6
+- (void)viewController:(id)controller selectTransitLineItem:(id)item zoomToMapRegion:(BOOL)region preferredLayout:(unint64_t)layout
 {
-  v7 = a5;
-  v9 = a4;
-  v10 = [(ActionCoordinator *)self lineCardVC];
-  v11 = [v10 labelMarker];
-  [(ActionCoordinator *)self presentLineCardForItem:v9 labelMarker:v11 loading:sub_1005B1B14(v9) overDisambiguation:0 preferredLayout:a6];
+  regionCopy = region;
+  itemCopy = item;
+  lineCardVC = [(ActionCoordinator *)self lineCardVC];
+  labelMarker = [lineCardVC labelMarker];
+  [(ActionCoordinator *)self presentLineCardForItem:itemCopy labelMarker:labelMarker loading:sub_1005B1B14(itemCopy) overDisambiguation:0 preferredLayout:layout];
   lineSelectionAction = self->_lineSelectionAction;
   if (!lineSelectionAction)
   {
@@ -10247,43 +10247,43 @@ LABEL_6:
   v20[2] = sub_10091E798;
   v20[3] = &unk_10162E788;
   v20[4] = self;
-  v21 = v9;
-  v22 = v10;
-  v23 = v11;
-  v24 = a6;
-  v17 = v11;
-  v18 = v10;
-  v19 = v9;
-  [(TransitLineSelectionActionController *)lineSelectionAction selectLine:v19 zoomToMapRegion:v7 onActivation:v20];
+  v21 = itemCopy;
+  v22 = lineCardVC;
+  v23 = labelMarker;
+  layoutCopy = layout;
+  v17 = labelMarker;
+  v18 = lineCardVC;
+  v19 = itemCopy;
+  [(TransitLineSelectionActionController *)lineSelectionAction selectLine:v19 zoomToMapRegion:regionCopy onActivation:v20];
 }
 
-- (void)_presentVenuesPlaceCardItem:(id)a3 shouldSaveSelectionState:(BOOL)a4 source:(unint64_t)a5 resetPlaceCardViewControllerBlock:(id)a6
+- (void)_presentVenuesPlaceCardItem:(id)item shouldSaveSelectionState:(BOOL)state source:(unint64_t)source resetPlaceCardViewControllerBlock:(id)block
 {
-  v8 = a4;
-  v26 = a3;
-  v10 = a6;
+  stateCopy = state;
+  itemCopy = item;
+  blockCopy = block;
   if ([(ActionCoordinator *)self isRoutePlanningPresented])
   {
-    v11 = [(ActionCoordinator *)self currentViewController];
-    v12 = [(ActionCoordinator *)self venueCardCoordinator];
-    v13 = [v12 topViewController];
+    currentViewController = [(ActionCoordinator *)self currentViewController];
+    venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+    topViewController = [venueCardCoordinator topViewController];
 
-    if (v11 == v13)
+    if (currentViewController == topViewController)
     {
-      v14 = [(ActionCoordinator *)self venueCardCoordinator];
-      [v14 popVenueCardItem:0];
+      venueCardCoordinator2 = [(ActionCoordinator *)self venueCardCoordinator];
+      [venueCardCoordinator2 popVenueCardItem:0];
     }
   }
 
-  v15 = [(ActionCoordinator *)self venueCardCoordinator];
-  v16 = [v15 pushVenueCardItem:v26 source:a5 savePlaceCardSelectionState:v8];
+  venueCardCoordinator3 = [(ActionCoordinator *)self venueCardCoordinator];
+  v16 = [venueCardCoordinator3 pushVenueCardItem:itemCopy source:source savePlaceCardSelectionState:stateCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   if (sub_10000FA08(WeakRetained) == 5 || v16 != 3)
   {
-    v19 = [(ActionCoordinator *)self currentViewController];
-    v20 = [(ActionCoordinator *)self resultsViewController];
-    v18 = v19 == v20;
+    currentViewController2 = [(ActionCoordinator *)self currentViewController];
+    resultsViewController = [(ActionCoordinator *)self resultsViewController];
+    v18 = currentViewController2 == resultsViewController;
   }
 
   else
@@ -10296,42 +10296,42 @@ LABEL_6:
     [(ActionCoordinator *)self _exitRoutePlanningIfNeededAnimated:0 restoreStashedMapSelection:0];
   }
 
-  if (a5 == 4 && v8)
+  if (source == 4 && stateCopy)
   {
-    v21 = [(ActionCoordinator *)self mapSelectionManager];
-    [v21 clearSelection];
+    mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+    [mapSelectionManager clearSelection];
   }
 
-  v22 = [(ActionCoordinator *)self venueCardCoordinator];
-  v23 = [v22 isCardStackEmpty];
+  venueCardCoordinator4 = [(ActionCoordinator *)self venueCardCoordinator];
+  isCardStackEmpty = [venueCardCoordinator4 isCardStackEmpty];
 
-  if (v23)
+  if (isCardStackEmpty)
   {
-    v24 = [(ActionCoordinator *)self searchPinsManager];
-    [v24 clearLinkedPlacesAndPolygon];
+    searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+    [searchPinsManager clearLinkedPlacesAndPolygon];
   }
 
-  v25 = [(ActionCoordinator *)self placeCardForVenuesViewController:v26];
-  v10[2](v10, v25);
+  v25 = [(ActionCoordinator *)self placeCardForVenuesViewController:itemCopy];
+  blockCopy[2](blockCopy, v25);
 
   [(ActionCoordinator *)self presentPlaceCard:v25 canReplaceCurrentIfNecessary:v18];
 }
 
-- (void)_cleanUpVenuesStackForNonVenuePlaceCardItem:(id)a3
+- (void)_cleanUpVenuesStackForNonVenuePlaceCardItem:(id)item
 {
-  if (([a3 isVenueItem] & 1) == 0)
+  if (([item isVenueItem] & 1) == 0)
   {
-    v4 = [(ActionCoordinator *)self _isBuildingMultipointRoute];
-    v5 = [(ActionCoordinator *)self venueCardCoordinator];
-    v6 = [v5 venueIdForCurrentCardStack];
+    _isBuildingMultipointRoute = [(ActionCoordinator *)self _isBuildingMultipointRoute];
+    venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+    venueIdForCurrentCardStack = [venueCardCoordinator venueIdForCurrentCardStack];
 
-    if (v6)
+    if (venueIdForCurrentCardStack)
     {
-      if ((v4 & 1) == 0)
+      if ((_isBuildingMultipointRoute & 1) == 0)
       {
         [(ActionCoordinator *)self _cleanupRoutePlanningIfNeededAnimated:0];
-        v7 = [(ActionCoordinator *)self venueCardCoordinator];
-        [v7 removeAllCards];
+        venueCardCoordinator2 = [(ActionCoordinator *)self venueCardCoordinator];
+        [venueCardCoordinator2 removeAllCards];
 
         [(ActionCoordinator *)self presentSearch];
       }
@@ -10339,9 +10339,9 @@ LABEL_6:
   }
 }
 
-- (int64_t)_excludedContentForPlaceCardItem:(id)a3
+- (int64_t)_excludedContentForPlaceCardItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if ([(ActionCoordinator *)self isRoutePlanningPresented])
   {
     v5 = 18;
@@ -10352,20 +10352,20 @@ LABEL_6:
     v5 = 16;
   }
 
-  v6 = [(ActionCoordinator *)self venuesManager];
-  if (([v6 isUserAtVenueWithID:{objc_msgSend(v4, "venueID")}] & 1) == 0)
+  venuesManager = [(ActionCoordinator *)self venuesManager];
+  if (([venuesManager isUserAtVenueWithID:{objc_msgSend(itemCopy, "venueID")}] & 1) == 0)
   {
-    v7 = [(ActionCoordinator *)self venuesManager];
-    v8 = [v4 personalizedItem];
-    [v8 coordinate];
-    if (([v7 isUserAtSameVenueAsCoordinate:?] & 1) == 0)
+    venuesManager2 = [(ActionCoordinator *)self venuesManager];
+    personalizedItem = [itemCopy personalizedItem];
+    [personalizedItem coordinate];
+    if (([venuesManager2 isUserAtSameVenueAsCoordinate:?] & 1) == 0)
     {
-      v9 = [v4 chargeStationWaypointInfo];
-      if (!v9)
+      chargeStationWaypointInfo = [itemCopy chargeStationWaypointInfo];
+      if (!chargeStationWaypointInfo)
       {
-        v13 = [v4 isCurrentLocation];
+        isCurrentLocation = [itemCopy isCurrentLocation];
 
-        if ((v13 & 1) == 0)
+        if ((isCurrentLocation & 1) == 0)
         {
           goto LABEL_11;
         }
@@ -10392,18 +10392,18 @@ LABEL_11:
   return v5;
 }
 
-- (void)presentPlaceCardForItem:(id)a3 addToHistory:(BOOL)a4 source:(unint64_t)a5 saveSelectionState:(BOOL)a6 replaceCurrentCard:(BOOL)a7
+- (void)presentPlaceCardForItem:(id)item addToHistory:(BOOL)history source:(unint64_t)source saveSelectionState:(BOOL)state replaceCurrentCard:(BOOL)card
 {
-  v7 = a7;
-  v8 = a6;
-  v12 = a3;
+  cardCopy = card;
+  stateCopy = state;
+  itemCopy = item;
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_10091EFCC;
   v34[3] = &unk_10162E738;
   v34[4] = self;
   v13 = objc_retainBlock(v34);
-  v14 = [(ActionCoordinator *)self currentViewController];
+  currentViewController = [(ActionCoordinator *)self currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -10416,24 +10416,24 @@ LABEL_7:
     v29[3] = &unk_10162E760;
     v20 = v13;
     v32 = v20;
-    v21 = v12;
+    v21 = itemCopy;
     v30 = v21;
-    v31 = self;
-    v33 = a4;
+    selfCopy = self;
+    historyCopy = history;
     v22 = objc_retainBlock(v29);
     if ([v21 isVenueItem] && (objc_msgSend(v21, "isDroppedPin") & 1) == 0)
     {
-      [(ActionCoordinator *)self _presentVenuesPlaceCardItem:v21 shouldSaveSelectionState:v8 source:a5 resetPlaceCardViewControllerBlock:v22];
+      [(ActionCoordinator *)self _presentVenuesPlaceCardItem:v21 shouldSaveSelectionState:stateCopy source:source resetPlaceCardViewControllerBlock:v22];
 LABEL_21:
 
-      v16 = v32;
+      currentViewController2 = v32;
       goto LABEL_22;
     }
 
     [(ActionCoordinator *)self _cleanUpVenuesStackForNonVenuePlaceCardItem:v21];
     if ([(ActionCoordinator *)self isRoutePlanningPresented])
     {
-      v23 = [(ActionCoordinator *)self placeCardForRoutePlanningViewController];
+      placeCardForRoutePlanningViewController = [(ActionCoordinator *)self placeCardForRoutePlanningViewController];
     }
 
     else
@@ -10441,8 +10441,8 @@ LABEL_21:
       placeCardViewController = self->_placeCardViewController;
       if (placeCardViewController)
       {
-        v25 = [(PlaceCardViewController *)placeCardViewController placeCardItem];
-        if (v20[2](v20, v25, v21))
+        placeCardItem = [(PlaceCardViewController *)placeCardViewController placeCardItem];
+        if (v20[2](v20, placeCardItem, v21))
         {
         }
 
@@ -10452,81 +10452,81 @@ LABEL_21:
 
           if ((v26 & 1) == 0)
           {
-            v27 = [(ActionCoordinator *)self _newPlaceCardViewControllerForReuse];
+            _newPlaceCardViewControllerForReuse = [(ActionCoordinator *)self _newPlaceCardViewControllerForReuse];
             v28 = 1;
             goto LABEL_18;
           }
         }
       }
 
-      v23 = [(ActionCoordinator *)self placeCardViewController];
+      placeCardForRoutePlanningViewController = [(ActionCoordinator *)self placeCardViewController];
     }
 
-    v27 = v23;
+    _newPlaceCardViewControllerForReuse = placeCardForRoutePlanningViewController;
     v28 = 0;
 LABEL_18:
-    (v22[2])(v22, v27);
-    [(ActionCoordinator *)self presentPlaceCard:v27 canReplaceCurrentIfNecessary:v7];
+    (v22[2])(v22, _newPlaceCardViewControllerForReuse);
+    [(ActionCoordinator *)self presentPlaceCard:_newPlaceCardViewControllerForReuse canReplaceCurrentIfNecessary:cardCopy];
     if (v28)
     {
-      objc_storeStrong(&self->_placeCardViewController, v27);
+      objc_storeStrong(&self->_placeCardViewController, _newPlaceCardViewControllerForReuse);
     }
 
     goto LABEL_21;
   }
 
-  v16 = [(ActionCoordinator *)self currentViewController];
-  v17 = [v16 placeCardItem];
-  if (!(v13[2])(v13, v12, v17))
+  currentViewController2 = [(ActionCoordinator *)self currentViewController];
+  placeCardItem2 = [currentViewController2 placeCardItem];
+  if (!(v13[2])(v13, itemCopy, placeCardItem2))
   {
 
     goto LABEL_7;
   }
 
-  v18 = [v17 searchResult];
-  v19 = [v18 autocompletePerson];
+  searchResult = [placeCardItem2 searchResult];
+  autocompletePerson = [searchResult autocompletePerson];
 
-  if (!v19)
+  if (!autocompletePerson)
   {
     [(ActionCoordinator *)self ensureMapSelectionVisible];
   }
 
-  [PPTNotificationCenter postNotificationIfNeededWithName:MKPlaceViewControllerDidShowNotification object:v16 userInfo:0];
+  [PPTNotificationCenter postNotificationIfNeededWithName:MKPlaceViewControllerDidShowNotification object:currentViewController2 userInfo:0];
 
 LABEL_22:
 }
 
-- (void)viewController:(id)a3 selectSearchResult:(id)a4 addToHistory:(BOOL)a5 source:(unint64_t)a6 saveSelectionState:(BOOL)a7 replaceCurrentCard:(BOOL)a8
+- (void)viewController:(id)controller selectSearchResult:(id)result addToHistory:(BOOL)history source:(unint64_t)source saveSelectionState:(BOOL)state replaceCurrentCard:(BOOL)card
 {
-  v8 = a8;
-  v9 = a7;
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
+  cardCopy = card;
+  stateCopy = state;
+  historyCopy = history;
+  controllerCopy = controller;
+  resultCopy = result;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v15 parkedCar];
-    [(ActionCoordinator *)self viewController:0 selectParkedCar:v16 andPerformAction:0];
+    parkedCar = [resultCopy parkedCar];
+    [(ActionCoordinator *)self viewController:0 selectParkedCar:parkedCar andPerformAction:0];
   }
 
   else
   {
-    v17 = [v15 mapItem];
-    v18 = [v17 _hasHikeInfo];
+    mapItem = [resultCopy mapItem];
+    _hasHikeInfo = [mapItem _hasHikeInfo];
 
-    if (v18)
+    if (_hasHikeInfo)
     {
       objc_initWeak(&location, self);
-      v19 = [(ActionCoordinator *)self appCoordinator];
-      v20 = [v15 mapItem];
+      appCoordinator = [(ActionCoordinator *)self appCoordinator];
+      mapItem2 = [resultCopy mapItem];
       v33[0] = _NSConcreteStackBlock;
       v33[1] = 3221225472;
       v33[2] = sub_10091F5D8;
       v33[3] = &unk_10165FBC0;
       objc_copyWeak(v34, &location);
-      v34[1] = a6;
-      [v19 enterRouteCreationWithMapItem:v20 completion:v33];
+      v34[1] = source;
+      [appCoordinator enterRouteCreationWithMapItem:mapItem2 completion:v33];
 
       objc_destroyWeak(v34);
       objc_destroyWeak(&location);
@@ -10534,165 +10534,165 @@ LABEL_22:
 
     else
     {
-      v21 = [[PlaceCardItem alloc] initWithSearchResult:v15];
+      v21 = [[PlaceCardItem alloc] initWithSearchResult:resultCopy];
       v22 = +[CustomLocationManager sharedManager];
-      v23 = [(ActionCoordinator *)self newTraits];
-      [v22 processSearchResult:v15 traits:v23];
+      newTraits = [(ActionCoordinator *)self newTraits];
+      [v22 processSearchResult:resultCopy traits:newTraits];
 
-      if (a6 == 8)
+      if (source == 8)
       {
-        v24 = [(ActionCoordinator *)self currentSearchSession];
-        v25 = [v24 singleResultMode];
+        currentSearchSession = [(ActionCoordinator *)self currentSearchSession];
+        singleResultMode = [currentSearchSession singleResultMode];
 
-        if (v25)
+        if (singleResultMode)
         {
-          v30 = [(ActionCoordinator *)self searchSessionManager];
-          v26 = [v30 currentSearchSession];
-          v32 = [v26 searchFieldItem];
+          searchSessionManager = [(ActionCoordinator *)self searchSessionManager];
+          currentSearchSession2 = [searchSessionManager currentSearchSession];
+          searchFieldItem = [currentSearchSession2 searchFieldItem];
 
-          v27 = [v32 punchInDetails];
-          v31 = [v27 completedSearchQuery];
+          punchInDetails = [searchFieldItem punchInDetails];
+          completedSearchQuery = [punchInDetails completedSearchQuery];
 
-          v29 = [(ActionCoordinator *)self searchModeViewController];
-          v28 = [v15 retainedSearchMetadata];
-          [v29 retainSpotlightQuery:v31 metadata:v28];
+          searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+          retainedSearchMetadata = [resultCopy retainedSearchMetadata];
+          [searchModeViewController retainSpotlightQuery:completedSearchQuery metadata:retainedSearchMetadata];
         }
       }
 
-      [(ActionCoordinator *)self presentPlaceCardForItem:v21 addToHistory:v11 source:a6 saveSelectionState:v9 replaceCurrentCard:v8];
+      [(ActionCoordinator *)self presentPlaceCardForItem:v21 addToHistory:historyCopy source:source saveSelectionState:stateCopy replaceCurrentCard:cardCopy];
     }
   }
 }
 
-- (void)viewController:(id)a3 selectMapItem:(id)a4 address:(id)a5 addToHistory:(BOOL)a6 source:(unint64_t)a7
+- (void)viewController:(id)controller selectMapItem:(id)item address:(id)address addToHistory:(BOOL)history source:(unint64_t)source
 {
-  v8 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [[PlaceCardItem alloc] initWithMapItem:v12 address:v11];
+  historyCopy = history;
+  addressCopy = address;
+  itemCopy = item;
+  v13 = [[PlaceCardItem alloc] initWithMapItem:itemCopy address:addressCopy];
 
-  [(ActionCoordinator *)self presentPlaceCardForItem:v13 addToHistory:v8 source:a7 saveSelectionState:1];
+  [(ActionCoordinator *)self presentPlaceCardForItem:v13 addToHistory:historyCopy source:source saveSelectionState:1];
 }
 
-- (void)viewController:(id)a3 selectPersonalizedItem:(id)a4 source:(unint64_t)a5 saveSelectionState:(BOOL)a6
+- (void)viewController:(id)controller selectPersonalizedItem:(id)item source:(unint64_t)source saveSelectionState:(BOOL)state
 {
-  v6 = a6;
-  v22 = a4;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v22 parkedCar], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  stateCopy = state;
+  itemCopy = item;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([itemCopy parkedCar], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
     [(ActionCoordinator *)self viewController:0 selectParkedCar:v9 andPerformAction:0];
   }
 
-  else if ((objc_opt_respondsToSelector() & 1) != 0 && ([v22 incidentReport], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+  else if ((objc_opt_respondsToSelector() & 1) != 0 && ([itemCopy incidentReport], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v11;
     v12 = +[MKMapService sharedService];
-    v13 = [(PlaceCardItem *)v10 incidentType];
-    if (v13 >= 0x14)
+    incidentType = [(PlaceCardItem *)v10 incidentType];
+    if (incidentType >= 0x14)
     {
-      v14 = [NSString stringWithFormat:@"(unknown: %i)", v13];
+      v14 = [NSString stringWithFormat:@"(unknown: %i)", incidentType];
     }
 
     else
     {
-      v14 = *(&off_10162ED48 + v13);
+      v14 = *(&off_10162ED48 + incidentType);
     }
 
     [v12 captureUserAction:1031 onTarget:511 eventValue:v14];
 
-    v16 = [(ActionCoordinator *)self trafficIncidentVC];
-    [v16 updateWithReport:v10];
+    trafficIncidentVC = [(ActionCoordinator *)self trafficIncidentVC];
+    [trafficIncidentVC updateWithReport:v10];
 
-    v17 = [(ActionCoordinator *)self containerViewController];
-    v18 = [v17 currentViewController];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    currentViewController = [containerViewController currentViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v20 = [(ActionCoordinator *)self containerViewController];
-    v21 = [(ActionCoordinator *)self trafficIncidentVC];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
+    trafficIncidentVC2 = [(ActionCoordinator *)self trafficIncidentVC];
     if (isKindOfClass)
     {
-      [v20 replaceCurrentWithController:v21 moveToContaineeDefaultLayout:1];
+      [containerViewController2 replaceCurrentWithController:trafficIncidentVC2 moveToContaineeDefaultLayout:1];
     }
 
     else
     {
-      [v20 presentController:v21 animated:1 useDefaultContaineeLayout:1];
+      [containerViewController2 presentController:trafficIncidentVC2 animated:1 useDefaultContaineeLayout:1];
     }
   }
 
   else
   {
-    v10 = [[PlaceCardItem alloc] initWithPersonalizedItem:v22];
-    v15 = [v22 address];
-    [(ActionCoordinator *)self presentPlaceCardForItem:v10 addToHistory:v15 == 0 source:a5 saveSelectionState:v6 replaceCurrentCard:1];
+    v10 = [[PlaceCardItem alloc] initWithPersonalizedItem:itemCopy];
+    address = [itemCopy address];
+    [(ActionCoordinator *)self presentPlaceCardForItem:v10 addToHistory:address == 0 source:source saveSelectionState:stateCopy replaceCurrentCard:1];
   }
 }
 
-- (void)viewController:(id)a3 openSearchResult:(id)a4
+- (void)viewController:(id)controller openSearchResult:(id)result
 {
-  v9 = a4;
-  v5 = a4;
-  v6 = [NSArray arrayWithObjects:&v9 count:1];
-  v7 = [SearchInfo searchInfoWithResults:v6, v9];
+  resultCopy = result;
+  resultCopy2 = result;
+  v6 = [NSArray arrayWithObjects:&resultCopy count:1];
+  resultCopy = [SearchInfo searchInfoWithResults:v6, resultCopy];
 
-  v8 = [(ActionCoordinator *)self searchPinsManager];
-  [v8 setSearchPinsFromSearchInfo:v7 scrollToResults:1 displayPlaceCardForResult:v5 animated:1 completion:0];
+  searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+  [searchPinsManager setSearchPinsFromSearchInfo:resultCopy scrollToResults:1 displayPlaceCardForResult:resultCopy2 animated:1 completion:0];
 }
 
-- (void)viewController:(id)a3 focusSearchResult:(id)a4
+- (void)viewController:(id)controller focusSearchResult:(id)result
 {
-  v5 = a4;
-  v6 = [(ActionCoordinator *)self mapSelectionManager];
-  v7 = [(ActionCoordinator *)self mapView];
-  v8 = [(ActionCoordinator *)self searchPinsManager];
-  v9 = [v8 customPOIsController];
-  v10 = [v5 personalizedItemKey];
+  resultCopy = result;
+  mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+  mapView = [(ActionCoordinator *)self mapView];
+  searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+  customPOIsController = [searchPinsManager customPOIsController];
+  personalizedItemKey = [resultCopy personalizedItemKey];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10091FB18;
   v13[3] = &unk_10162E710;
-  v14 = v7;
-  v15 = v6;
-  v16 = self;
-  v11 = v6;
-  v12 = v7;
-  [v9 customFeatureForKey:v10 completion:v13];
+  v14 = mapView;
+  v15 = mapSelectionManager;
+  selfCopy = self;
+  v11 = mapSelectionManager;
+  v12 = mapView;
+  [customPOIsController customFeatureForKey:personalizedItemKey completion:v13];
 }
 
-- (void)viewControllerRemoveSearchResultFocus:(id)a3
+- (void)viewControllerRemoveSearchResultFocus:(id)focus
 {
-  v6 = [(ActionCoordinator *)self mapView];
-  v4 = [(ActionCoordinator *)self mapSelectionManager];
-  [v4 setIgnoreSelectionChanges:1];
+  mapView = [(ActionCoordinator *)self mapView];
+  mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+  [mapSelectionManager setIgnoreSelectionChanges:1];
 
-  [v6 _deselectLabelMarkerAnimated:1];
-  v5 = [(ActionCoordinator *)self mapSelectionManager];
-  [v5 setIgnoreSelectionChanges:0];
+  [mapView _deselectLabelMarkerAnimated:1];
+  mapSelectionManager2 = [(ActionCoordinator *)self mapSelectionManager];
+  [mapSelectionManager2 setIgnoreSelectionChanges:0];
 }
 
-- (void)viewController:(id)a3 openTransitIncidents:(id)a4 fromView:(id)a5 withUserInfo:(id)a6
+- (void)viewController:(id)controller openTransitIncidents:(id)incidents fromView:(id)view withUserInfo:(id)info
 {
-  v19 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 count])
+  controllerCopy = controller;
+  incidentsCopy = incidents;
+  viewCopy = view;
+  if ([incidentsCopy count])
   {
-    v11 = [(ActionCoordinator *)self containerViewController];
-    v12 = [v11 traitCollection];
-    v13 = [v12 userInterfaceIdiom];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    traitCollection = [containerViewController traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v13 == 5)
+    if (userInterfaceIdiom == 5)
     {
-      if (v10)
+      if (viewCopy)
       {
-        v14 = [[MapsIncidentsViewController alloc] initWithTransitIncidents:v9];
+        v14 = [[MapsIncidentsViewController alloc] initWithTransitIncidents:incidentsCopy];
         [(MapsIncidentsViewController *)v14 setModalPresentationStyle:7];
-        v15 = [(MapsIncidentsViewController *)v14 popoverPresentationController];
-        [v15 setPermittedArrowDirections:12];
-        [v15 setSourceView:v10];
+        popoverPresentationController = [(MapsIncidentsViewController *)v14 popoverPresentationController];
+        [popoverPresentationController setPermittedArrowDirections:12];
+        [popoverPresentationController setSourceView:viewCopy];
         WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
         [WeakRetained _maps_topMostPresentViewController:v14 animated:1 completion:0];
 
@@ -10700,11 +10700,11 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v14 = [[MapsTransitIncidentsContaineeViewController alloc] initWithTransitIncidents:v9];
+      v14 = [[MapsTransitIncidentsContaineeViewController alloc] initWithTransitIncidents:incidentsCopy];
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        [v19 _maps_topMostPresentViewController:v14 animated:1 completion:0];
+        [controllerCopy _maps_topMostPresentViewController:v14 animated:1 completion:0];
         goto LABEL_10;
       }
 
@@ -10713,7 +10713,7 @@ LABEL_10:
 
     else
     {
-      v17 = [[MapsTransitIncidentsContaineeViewController alloc] initWithTransitIncidents:v9];
+      v17 = [[MapsTransitIncidentsContaineeViewController alloc] initWithTransitIncidents:incidentsCopy];
       v14 = v17;
     }
 
@@ -10728,11 +10728,11 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)viewController:(id)a3 openPlainTextFileURL:(id)a4
+- (void)viewController:(id)controller openPlainTextFileURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   v6 = [UINavigationController alloc];
-  v7 = [[PlainTextAttributionViewController alloc] initWithFileURL:v5];
+  v7 = [[PlainTextAttributionViewController alloc] initWithFileURL:lCopy];
 
   v9 = [v6 initWithRootViewController:v7];
   if (!sub_10000FA08(v9))
@@ -10740,37 +10740,37 @@ LABEL_11:
     [v9 setModalPresentationStyle:2];
   }
 
-  v8 = [(ActionCoordinator *)self containerViewController];
-  [v8 _maps_topMostPresentViewController:v9 animated:1 completion:0];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [containerViewController _maps_topMostPresentViewController:v9 animated:1 completion:0];
 }
 
-- (void)viewController:(id)a3 openURL:(id)a4
+- (void)viewController:(id)controller openURL:(id)l
 {
-  v10 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  lCopy = l;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v10 cardPresentationController];
-    v8 = [v7 containerViewController];
+    cardPresentationController = [controllerCopy cardPresentationController];
+    containerViewController = [cardPresentationController containerViewController];
   }
 
   else
   {
-    v8 = [(ActionCoordinator *)self containerViewController];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
   }
 
-  v9 = [[MapsWebLinkPresenter alloc] initWithPresentingViewController:v8];
-  [(MapsWebLinkPresenter *)v9 presentWebURL:v6];
+  v9 = [[MapsWebLinkPresenter alloc] initWithPresentingViewController:containerViewController];
+  [(MapsWebLinkPresenter *)v9 presentWebURL:lCopy];
 }
 
-- (id)_searchResultFromMapsSuggestionsEntry:(id)a3
+- (id)_searchResultFromMapsSuggestionsEntry:(id)entry
 {
-  v3 = a3;
-  if ([v3 type] == 24)
+  entryCopy = entry;
+  if ([entryCopy type] == 24)
   {
-    v4 = [v3 findMyWaypoint];
-    if (!v4)
+    findMyWaypoint = [entryCopy findMyWaypoint];
+    if (!findMyWaypoint)
     {
       v9 = sub_10006D178();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -10799,19 +10799,19 @@ LABEL_11:
       }
     }
 
-    v5 = [[SearchResult alloc] initWithComposedWaypoint:v4];
+    v5 = [[SearchResult alloc] initWithComposedWaypoint:findMyWaypoint];
   }
 
   else
   {
-    v4 = [[MapsLocationOfInterest alloc] initWithMapsSuggestionEntry:v3];
-    if (v4)
+    findMyWaypoint = [[MapsLocationOfInterest alloc] initWithMapsSuggestionEntry:entryCopy];
+    if (findMyWaypoint)
     {
       v6 = [SearchResult alloc];
-      v7 = [(MapsLocationOfInterest *)v4 mapItem];
-      v5 = [(SearchResult *)v6 initWithMapItem:v7];
+      mapItem = [(MapsLocationOfInterest *)findMyWaypoint mapItem];
+      v5 = [(SearchResult *)v6 initWithMapItem:mapItem];
 
-      [(SearchResult *)v5 setLocationOfInterest:v4];
+      [(SearchResult *)v5 setLocationOfInterest:findMyWaypoint];
     }
 
     else
@@ -10823,16 +10823,16 @@ LABEL_11:
   return v5;
 }
 
-- (void)viewController:(id)a3 openCommuteEntry:(id)a4
+- (void)viewController:(id)controller openCommuteEntry:(id)entry
 {
-  v6 = a4;
-  v7 = a3;
+  entryCopy = entry;
+  controllerCopy = controller;
   v8 = objc_alloc_init(SearchFieldItem);
   v9 = +[SearchResult currentLocationSearchResult];
   [(SearchFieldItem *)v8 setSearchResult:v9];
 
   v10 = objc_alloc_init(SearchFieldItem);
-  v11 = [(ActionCoordinator *)self _searchResultFromMapsSuggestionsEntry:v6];
+  v11 = [(ActionCoordinator *)self _searchResultFromMapsSuggestionsEntry:entryCopy];
 
   [(SearchFieldItem *)v10 setSearchResult:v11];
   v12 = [DirectionItem alloc];
@@ -10844,17 +10844,17 @@ LABEL_11:
   v16 = @"DirectionsSessionInitiatorKey";
   v17 = &off_1016E77F0;
   v15 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-  [(ActionCoordinator *)self viewController:v7 doDirectionItem:v14 allowToPromptEditing:0 withUserInfo:v15];
+  [(ActionCoordinator *)self viewController:controllerCopy doDirectionItem:v14 allowToPromptEditing:0 withUserInfo:v15];
 }
 
-- (void)viewController:(id)a3 openMapsSuggestionEntry:(id)a4 withUserInfo:(id)a5
+- (void)viewController:(id)controller openMapsSuggestionEntry:(id)entry withUserInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 containsKey:@"MapsSuggestionsRoutingNotAvailableKey"])
+  controllerCopy = controller;
+  entryCopy = entry;
+  infoCopy = info;
+  if ([entryCopy containsKey:@"MapsSuggestionsRoutingNotAvailableKey"])
   {
-    v115 = [v8 BOOLeanForKey:@"MapsSuggestionsRoutingNotAvailableKey"];
+    v115 = [entryCopy BOOLeanForKey:@"MapsSuggestionsRoutingNotAvailableKey"];
   }
 
   else
@@ -10862,19 +10862,19 @@ LABEL_11:
     v115 = 0;
   }
 
-  v10 = [v8 BOOLeanForKey:@"MapsSuggestionsAlreadyThereKey"];
+  v10 = [entryCopy BOOLeanForKey:@"MapsSuggestionsAlreadyThereKey"];
   v11 = +[MKLocationManager sharedLocationManager];
-  v12 = [v11 isAuthorizedForPreciseLocation];
+  isAuthorizedForPreciseLocation = [v11 isAuthorizedForPreciseLocation];
 
-  v13 = [(ActionCoordinator *)self containerViewController];
-  v14 = [v13 traitCollection];
-  v15 = [v14 userInterfaceIdiom] == 1;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  traitCollection = [containerViewController traitCollection];
+  v15 = [traitCollection userInterfaceIdiom] == 1;
 
-  v16 = [v9 objectForKeyedSubscript:@"MSGEntryForceShowPlacecardOnTap"];
-  v17 = [v16 BOOLValue];
+  v16 = [infoCopy objectForKeyedSubscript:@"MSGEntryForceShowPlacecardOnTap"];
+  bOOLValue = [v16 BOOLValue];
 
-  v18 = [v8 MKMapItem];
-  v19 = [v9 mutableCopy];
+  mKMapItem = [entryCopy MKMapItem];
+  v19 = [infoCopy mutableCopy];
 
   [v19 setObject:&off_1016E77F0 forKeyedSubscript:@"DirectionsSessionInitiatorKey"];
   v114 = v19;
@@ -10884,7 +10884,7 @@ LABEL_11:
   v144[2] = sub_100921514;
   v144[3] = &unk_10162E698;
   v144[4] = self;
-  v21 = v7;
+  v21 = controllerCopy;
   v145 = v21;
   v22 = v20;
   v146 = v22;
@@ -10894,7 +10894,7 @@ LABEL_11:
   v140[2] = sub_100921714;
   v140[3] = &unk_10162E6C0;
   v140[4] = self;
-  v24 = v8;
+  v24 = entryCopy;
   v141 = v24;
   v120 = v21;
   v142 = v120;
@@ -10905,14 +10905,14 @@ LABEL_11:
   v129[1] = 3221225472;
   v129[2] = sub_10092199C;
   v129[3] = &unk_10162E6E8;
-  v26 = v18;
+  v26 = mKMapItem;
   v130 = v26;
-  v131 = self;
+  selfCopy = self;
   v135 = v115;
   v136 = v10;
-  v137 = v12;
+  v137 = isAuthorizedForPreciseLocation;
   v138 = v15;
-  v139 = v17;
+  v139 = bOOLValue;
   v27 = v23;
   v133 = v27;
   v28 = v24;
@@ -10966,8 +10966,8 @@ LABEL_11:
         v40 = +[RestaurantReservationAnalyticsBookedSession currentAnalyticsBookedSessionForMuid:createIfNotPresent:](RestaurantReservationAnalyticsBookedSession, "currentAnalyticsBookedSessionForMuid:createIfNotPresent:", [v26 _muid], 1);
         [v40 setTappedProactiveTrayItem:1];
         [v40 setMuid:{objc_msgSend(v26, "_muid")}];
-        v41 = [v26 _restaurantLink_firstProviderIdentifier];
-        [v40 setAppID:v41];
+        _restaurantLink_firstProviderIdentifier = [v26 _restaurantLink_firstProviderIdentifier];
+        [v40 setAppID:_restaurantLink_firstProviderIdentifier];
 
         (v27[2])(v27, v28);
       }
@@ -10994,8 +10994,8 @@ LABEL_11:
 
         if (v42)
         {
-          v46 = [(ActionCoordinator *)self appCoordinator];
-          [v46 continueRideBookingSessionWithApplicationIdentifier:v42];
+          appCoordinator = [(ActionCoordinator *)self appCoordinator];
+          [appCoordinator continueRideBookingSessionWithApplicationIdentifier:v42];
         }
       }
 
@@ -11023,11 +11023,11 @@ LABEL_11:
         _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_INFO, "Extracted %lu items from MSG entry.", location, 0xCu);
       }
 
-      v49 = [v110 firstObject];
-      v50 = [v49 searchResult];
-      v51 = [v50 isDynamicCurrentLocation];
+      firstObject = [v110 firstObject];
+      searchResult = [firstObject searchResult];
+      isDynamicCurrentLocation = [searchResult isDynamicCurrentLocation];
 
-      if (v51)
+      if (isDynamicCurrentLocation)
       {
         v52 = sub_100798A3C();
         if (os_log_type_enabled(&v52->super, OS_LOG_TYPE_INFO))
@@ -11087,27 +11087,27 @@ LABEL_53:
         {
           v73 = [v28 routeRequestStorageForKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"];
           v74 = [DrivePreferences alloc];
-          v75 = [v73 automobileOptions];
+          automobileOptions = [v73 automobileOptions];
           v76 = +[NSUserDefaults standardUserDefaults];
-          v77 = [(DrivePreferences *)v74 initWithAutomobileOptions:v75 defaults:v76];
+          v77 = [(DrivePreferences *)v74 initWithAutomobileOptions:automobileOptions defaults:v76];
           [(DirectionItem *)v111 setDrivePreferences:v77];
 
           v78 = [TransitPreferences alloc];
-          v79 = [v73 transitOptions];
+          transitOptions = [v73 transitOptions];
           v80 = +[NSUserDefaults standardUserDefaults];
-          v81 = [(TransitPreferences *)v78 initWithTransitOptions:v79 defaults:v80];
+          v81 = [(TransitPreferences *)v78 initWithTransitOptions:transitOptions defaults:v80];
           [(DirectionItem *)v111 setTransitPreferences:v81];
 
           v82 = [WalkPreferences alloc];
-          v83 = [v73 walkingOptions];
+          walkingOptions = [v73 walkingOptions];
           v84 = +[NSUserDefaults standardUserDefaults];
-          v85 = [(WalkPreferences *)v82 initWithWalkingOptions:v83 defaults:v84];
+          v85 = [(WalkPreferences *)v82 initWithWalkingOptions:walkingOptions defaults:v84];
           [(DirectionItem *)v111 setWalkPreferences:v85];
 
           v86 = [CyclePreferences alloc];
-          v87 = [v73 cyclingOptions];
+          cyclingOptions = [v73 cyclingOptions];
           v88 = +[NSUserDefaults standardUserDefaults];
-          v89 = [(CyclePreferences *)v86 initWithCyclingOptions:v87 defaults:v88];
+          v89 = [(CyclePreferences *)v86 initWithCyclingOptions:cyclingOptions defaults:v88];
           [(DirectionItem *)v111 setCyclePreferences:v89];
         }
 
@@ -11119,35 +11119,35 @@ LABEL_53:
         {
           v118 = [v28 routeRequestStorageForKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"];
           v90 = [DrivePreferences alloc];
-          v91 = [v118 automobileOptions];
+          automobileOptions2 = [v118 automobileOptions];
           v92 = +[NSUserDefaults standardUserDefaults];
-          v93 = [(DrivePreferences *)v90 initWithAutomobileOptions:v91 defaults:v92];
+          v93 = [(DrivePreferences *)v90 initWithAutomobileOptions:automobileOptions2 defaults:v92];
           [(DirectionItem *)v111 setDrivePreferences:v93];
 
           v94 = [TransitPreferences alloc];
-          v95 = [v118 transitOptions];
+          transitOptions2 = [v118 transitOptions];
           v96 = +[NSUserDefaults standardUserDefaults];
-          v97 = [(TransitPreferences *)v94 initWithTransitOptions:v95 defaults:v96];
+          v97 = [(TransitPreferences *)v94 initWithTransitOptions:transitOptions2 defaults:v96];
           [(DirectionItem *)v111 setTransitPreferences:v97];
 
           v98 = [WalkPreferences alloc];
-          v99 = [v118 walkingOptions];
+          walkingOptions2 = [v118 walkingOptions];
           v100 = +[NSUserDefaults standardUserDefaults];
-          v101 = [(WalkPreferences *)v98 initWithWalkingOptions:v99 defaults:v100];
+          v101 = [(WalkPreferences *)v98 initWithWalkingOptions:walkingOptions2 defaults:v100];
           [(DirectionItem *)v111 setWalkPreferences:v101];
 
           v102 = [CyclePreferences alloc];
-          v103 = [v118 cyclingOptions];
+          cyclingOptions2 = [v118 cyclingOptions];
           v104 = +[NSUserDefaults standardUserDefaults];
-          v105 = [(CyclePreferences *)v102 initWithCyclingOptions:v103 defaults:v104];
+          v105 = [(CyclePreferences *)v102 initWithCyclingOptions:cyclingOptions2 defaults:v104];
           [(DirectionItem *)v111 setCyclePreferences:v105];
 
-          v106 = [v118 resumeRouteHandleStorage];
-          [(SearchFieldItem *)v64 setObject:v106 forKeyedSubscript:@"DirectionsResumeRouteHandleStorage"];
+          resumeRouteHandleStorage = [v118 resumeRouteHandleStorage];
+          [(SearchFieldItem *)v64 setObject:resumeRouteHandleStorage forKeyedSubscript:@"DirectionsResumeRouteHandleStorage"];
         }
 
-        v107 = [v28 sharingContacts];
-        [(SearchFieldItem *)v64 setObject:v107 forKeyedSubscript:@"DirectionsPreviousContactsForTripSharing"];
+        sharingContacts = [v28 sharingContacts];
+        [(SearchFieldItem *)v64 setObject:sharingContacts forKeyedSubscript:@"DirectionsPreviousContactsForTripSharing"];
         [(ActionCoordinator *)self viewController:v120 doDirectionItem:v111 withUserInfo:v64];
         v108 = +[MKMapService sharedService];
         if ([v113 count] <= 2)
@@ -11173,8 +11173,8 @@ LABEL_53:
 
         v64 = objc_alloc_init(SearchFieldItem);
         v65 = [SearchResult alloc];
-        v66 = [v28 MKMapItem];
-        v67 = [(SearchResult *)v65 initWithMapItem:v66];
+        mKMapItem2 = [v28 MKMapItem];
+        v67 = [(SearchResult *)v65 initWithMapItem:mKMapItem2];
         [(SearchFieldItem *)v64 setSearchResult:v67];
 
         [(ActionCoordinator *)self viewController:v120 doSearchItem:v64 withUserInfo:0];
@@ -11191,8 +11191,8 @@ LABEL_6:
       {
         v34 = [[SearchResult alloc] initWithMapItem:v26];
         [(SearchFieldItem *)v32 setSearchResult:v34];
-        v35 = [(SearchFieldItem *)v32 searchResult];
-        [v35 setHasIncompleteMetadata:1];
+        searchResult2 = [(SearchFieldItem *)v32 searchResult];
+        [searchResult2 setHasIncompleteMetadata:1];
 
         [(ActionCoordinator *)self viewController:v120 doSearchItem:v32 withUserInfo:v119];
       }
@@ -11200,17 +11200,17 @@ LABEL_6:
       else
       {
         v34 = [v28 URLForKey:@"MapsSuggestionsAppConnectionMapItemURL"];
-        v68 = [(SearchResult *)v34 absoluteString];
-        v69 = [v68 length] == 0;
+        absoluteString = [(SearchResult *)v34 absoluteString];
+        v69 = [absoluteString length] == 0;
 
         if (!v69)
         {
           v117 = [MKMapItem mapItemsFromURL:v34 options:0];
-          v70 = [v117 firstObject];
-          v71 = [[SearchResult alloc] initWithMapItem:v70];
+          firstObject2 = [v117 firstObject];
+          v71 = [[SearchResult alloc] initWithMapItem:firstObject2];
           [(SearchFieldItem *)v32 setSearchResult:v71];
-          v72 = [(SearchFieldItem *)v32 searchResult];
-          [v72 setHasIncompleteMetadata:1];
+          searchResult3 = [(SearchFieldItem *)v32 searchResult];
+          [searchResult3 setHasIncompleteMetadata:1];
         }
 
         [(ActionCoordinator *)self viewController:0 doSearchItem:v32 withUserInfo:0];
@@ -11231,8 +11231,8 @@ LABEL_6:
       objc_destroyWeak(location);
       goto LABEL_6;
     case 0x16uLL:
-      v36 = [v28 uniqueIdentifier];
-      v37 = [v36 isEqualToString:@"NearbyTransit"];
+      uniqueIdentifier = [v28 uniqueIdentifier];
+      v37 = [uniqueIdentifier isEqualToString:@"NearbyTransit"];
 
       if (v37)
       {
@@ -11269,25 +11269,25 @@ LABEL_5:
   }
 }
 
-- (void)viewController:(id)a3 openFavoriteItem:(id)a4 withUserInfo:(id)a5
+- (void)viewController:(id)controller openFavoriteItem:(id)item withUserInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 mkMapItem];
-  v33 = [v9 isAlreadyThere];
-  v12 = [v10 objectForKeyedSubscript:@"MSGEntryForceShowPlacecardOnTap"];
-  v32 = [v12 BOOLValue];
+  controllerCopy = controller;
+  itemCopy = item;
+  infoCopy = info;
+  mkMapItem = [itemCopy mkMapItem];
+  isAlreadyThere = [itemCopy isAlreadyThere];
+  v12 = [infoCopy objectForKeyedSubscript:@"MSGEntryForceShowPlacecardOnTap"];
+  bOOLValue = [v12 BOOLValue];
 
   v13 = +[MKLocationManager sharedLocationManager];
-  v31 = [v13 isAuthorizedForPreciseLocation];
+  isAuthorizedForPreciseLocation = [v13 isAuthorizedForPreciseLocation];
 
-  v14 = [(ActionCoordinator *)self containerViewController];
-  v15 = [v14 traitCollection];
-  v16 = [v15 userInterfaceIdiom] == 1;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  traitCollection = [containerViewController traitCollection];
+  v16 = [traitCollection userInterfaceIdiom] == 1;
 
-  v17 = [v11 _canGetDirections];
-  v18 = [v10 mutableCopy];
+  _canGetDirections = [mkMapItem _canGetDirections];
+  v18 = [infoCopy mutableCopy];
 
   [v18 setObject:&off_1016E77F0 forKeyedSubscript:@"DirectionsSessionInitiatorKey"];
   v19 = [v18 copy];
@@ -11302,7 +11302,7 @@ LABEL_5:
   v45[2] = sub_1009227D8;
   v45[3] = &unk_10162E648;
   v45[4] = self;
-  v21 = v8;
+  v21 = controllerCopy;
   v46 = v21;
   v22 = v19;
   v47 = v22;
@@ -11311,32 +11311,32 @@ LABEL_5:
   v34[1] = 3221225472;
   v34[2] = sub_100922A3C;
   v34[3] = &unk_10162E670;
-  v24 = v11;
+  v24 = mkMapItem;
   v35 = v24;
-  v36 = self;
-  v40 = v17;
-  v41 = v33;
-  v42 = v31;
+  selfCopy = self;
+  v40 = _canGetDirections;
+  v41 = isAlreadyThere;
+  v42 = isAuthorizedForPreciseLocation;
   v43 = v16;
-  v44 = v32;
+  v44 = bOOLValue;
   v25 = v20;
   v38 = v25;
-  v26 = v9;
+  v26 = itemCopy;
   v37 = v26;
   v27 = v23;
   v39 = v27;
   v28 = objc_retainBlock(v34);
-  v29 = [v26 type];
-  if (v29 >= 4)
+  type = [v26 type];
+  if (type >= 4)
   {
-    if (v29 == 6)
+    if (type == 6)
     {
       [(ActionCoordinator *)self viewControllerPresentNearbyTransitDepartures:v21];
       [GEOAPPortal captureUserAction:214 target:8 value:0];
       goto LABEL_9;
     }
 
-    if (v29 != 5)
+    if (type != 5)
     {
       goto LABEL_9;
     }
@@ -11356,15 +11356,15 @@ LABEL_5:
 LABEL_9:
 }
 
-- (void)containerViewControllerDidResignContainee:(id)a3 toContainee:(id)a4
+- (void)containerViewControllerDidResignContainee:(id)containee toContainee:(id)toContainee
 {
-  v10 = a3;
-  v6 = a4;
+  containeeCopy = containee;
+  toContaineeCopy = toContainee;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(ActionCoordinator *)self mapSelectionManager];
-    [v7 setIgnoreSelectionChanges:0];
+    mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+    [mapSelectionManager setIgnoreSelectionChanges:0];
   }
 
   objc_opt_class();
@@ -11391,10 +11391,10 @@ LABEL_9:
   }
 }
 
-- (void)containerViewControllerWillPresentContainee:(id)a3 overContainee:(id)a4
+- (void)containerViewControllerWillPresentContainee:(id)containee overContainee:(id)overContainee
 {
-  v8 = a3;
-  v6 = a4;
+  containeeCopy = containee;
+  overContaineeCopy = overContainee;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -11407,19 +11407,19 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(ActionCoordinator *)self mapSelectionManager];
-    [v7 setIgnoreSelectionChanges:1];
+    mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+    [mapSelectionManager setIgnoreSelectionChanges:1];
   }
 
   [(ActionCoordinator *)self updateRouteAnnotations];
 }
 
-- (void)presentGuidesHomeWithGuideLocation:(id)a3
+- (void)presentGuidesHomeWithGuideLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = [GuidesHomeViewController alloc];
-  v6 = [(ActionCoordinator *)self newTraits];
-  v7 = [(GuidesHomeViewController *)v5 initWithGuideLocation:v4 withTraits:v6];
+  newTraits = [(ActionCoordinator *)self newTraits];
+  v7 = [(GuidesHomeViewController *)v5 initWithGuideLocation:locationCopy withTraits:newTraits];
 
   [(ContaineeViewController *)v7 setContaineeDelegate:self];
   [(GuidesHomeViewController *)v7 setActionDelegate:self];
@@ -11430,16 +11430,16 @@ LABEL_9:
   self->_guideHomeVC = v7;
 }
 
-- (void)presentVenueCategoryWithVenueCategoryItem:(id)a3
+- (void)presentVenueCategoryWithVenueCategoryItem:(id)item
 {
-  v11 = a3;
-  v4 = [(ActionCoordinator *)self venueCardCoordinator];
-  v5 = [v4 topViewController];
+  itemCopy = item;
+  venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+  topViewController = [venueCardCoordinator topViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = topViewController;
   }
 
   else
@@ -11449,30 +11449,30 @@ LABEL_9:
 
   v7 = v6;
 
-  v8 = [v7 contentDownloader];
+  contentDownloader = [v7 contentDownloader];
 
-  [v8 searchWillStart];
-  if ([v11 isAutoCompleteCategory])
+  [contentDownloader searchWillStart];
+  if ([itemCopy isAutoCompleteCategory])
   {
-    v9 = [v11 venueIdentifier];
-    v10 = [v11 searchCategory];
-    [(ActionCoordinator *)self viewController:0 presentVenueFromAutoCompleteWithVenueIdentifier:v9 searchCategory:v10 source:2];
+    venueIdentifier = [itemCopy venueIdentifier];
+    searchCategory = [itemCopy searchCategory];
+    [(ActionCoordinator *)self viewController:0 presentVenueFromAutoCompleteWithVenueIdentifier:venueIdentifier searchCategory:searchCategory source:2];
   }
 }
 
 - (void)presentLoadingResults
 {
-  v3 = [(ActionCoordinator *)self resultsViewController];
-  v4 = [v3 cardPresentationController];
-  [v4 setHidden:0];
+  resultsViewController = [(ActionCoordinator *)self resultsViewController];
+  cardPresentationController = [resultsViewController cardPresentationController];
+  [cardPresentationController setHidden:0];
 
   if (!MapsFeature_IsEnabled_SearchAndDiscovery())
   {
     goto LABEL_14;
   }
 
-  v5 = [(ActionCoordinator *)self currentViewController];
-  if (!v5)
+  currentViewController = [(ActionCoordinator *)self currentViewController];
+  if (!currentViewController)
   {
     if ([(ActionCoordinator *)self isPresentingAddStopSearchResults]|| [(ActionCoordinator *)self isRoutePlanningPresented])
     {
@@ -11482,22 +11482,22 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v6 = v5;
-  v7 = [(ActionCoordinator *)self currentViewController];
-  if (v7 != self->_routeSearchVC && ![(ActionCoordinator *)self isPresentingAddStopSearchResults])
+  v6 = currentViewController;
+  currentViewController2 = [(ActionCoordinator *)self currentViewController];
+  if (currentViewController2 != self->_routeSearchVC && ![(ActionCoordinator *)self isPresentingAddStopSearchResults])
   {
-    v8 = [(ActionCoordinator *)self isRoutePlanningPresented];
+    isRoutePlanningPresented = [(ActionCoordinator *)self isRoutePlanningPresented];
 
-    if (v8)
+    if (isRoutePlanningPresented)
     {
       goto LABEL_14;
     }
 
 LABEL_10:
     v9 = +[UIDevice currentDevice];
-    v10 = [v9 userInterfaceIdiom];
+    userInterfaceIdiom = [v9 userInterfaceIdiom];
 
-    if (v10 == 5)
+    if (userInterfaceIdiom == 5)
     {
       if (!_UISolariumEnabled() || !self->_searchCardViewController)
       {
@@ -11511,7 +11511,7 @@ LABEL_10:
       v19[2] = sub_1009234C0;
       v19[3] = &unk_101661570;
       v19[4] = self;
-      v20 = v3;
+      v20 = resultsViewController;
       [WeakRetained presentController:searchCardViewController animated:1 completion:v19];
 
       v13 = v20;
@@ -11520,14 +11520,14 @@ LABEL_10:
     else
     {
       v15 = objc_loadWeakRetained(&self->_containerViewController);
-      v16 = [(ActionCoordinator *)self searchModeViewController];
+      searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_1009234CC;
       v17[3] = &unk_101661570;
       v17[4] = self;
-      v18 = v3;
-      [v15 presentController:v16 animated:1 completion:v17];
+      v18 = resultsViewController;
+      [v15 presentController:searchModeViewController animated:1 completion:v17];
 
       v13 = v18;
     }
@@ -11537,51 +11537,51 @@ LABEL_10:
 
 LABEL_14:
   v14 = objc_loadWeakRetained(&self->_containerViewController);
-  [v14 presentController:v3];
+  [v14 presentController:resultsViewController];
 
 LABEL_15:
 }
 
 - (void)clearSharedTrips
 {
-  v2 = [(ActionCoordinator *)self appCoordinator];
-  [v2 closeSharedTrips];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator closeSharedTrips];
 }
 
-- (void)presentUnsupportedTransportTypeOrProtocolAlertForSharedTrip:(id)a3
+- (void)presentUnsupportedTransportTypeOrProtocolAlertForSharedTrip:(id)trip
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self appCoordinator];
-  [v5 presentUnsupportedTransportTypeOrProtocolAlertForSharedTrip:v4];
+  tripCopy = trip;
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator presentUnsupportedTransportTypeOrProtocolAlertForSharedTrip:tripCopy];
 }
 
-- (void)presentChinaAlertForSharedTrip:(id)a3
+- (void)presentChinaAlertForSharedTrip:(id)trip
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self appCoordinator];
-  [v5 presentChinaAlertForSharedTrip:v4];
+  tripCopy = trip;
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator presentChinaAlertForSharedTrip:tripCopy];
 }
 
-- (void)presentSharedTrip:(id)a3 inPopoverFromView:(id)a4
+- (void)presentSharedTrip:(id)trip inPopoverFromView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [[SharedTripContaineeViewController alloc] initWithSharedTrip:v7];
+  viewCopy = view;
+  tripCopy = trip;
+  v10 = [[SharedTripContaineeViewController alloc] initWithSharedTrip:tripCopy];
 
   [(ControlContaineeViewController *)v10 setDelegate:self];
   [(SharedTripContaineeViewController *)v10 setActionDelegate:self];
   [(SharedTripContaineeViewController *)v10 setModalPresentationStyle:7];
-  v8 = [(SharedTripContaineeViewController *)v10 popoverPresentationController];
-  [v8 setSourceView:v6];
+  popoverPresentationController = [(SharedTripContaineeViewController *)v10 popoverPresentationController];
+  [popoverPresentationController setSourceView:viewCopy];
 
-  [v8 setPermittedArrowDirections:12];
-  v9 = [(ActionCoordinator *)self containerViewController];
-  [v9 _maps_topMostPresentViewController:v10 animated:1 completion:0];
+  [popoverPresentationController setPermittedArrowDirections:12];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [containerViewController _maps_topMostPresentViewController:v10 animated:1 completion:0];
 }
 
-- (void)presentSharedTrip:(id)a3
+- (void)presentSharedTrip:(id)trip
 {
-  v4 = a3;
+  tripCopy = trip;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   v6 = sub_10000FA08(WeakRetained);
 
@@ -11590,8 +11590,8 @@ LABEL_15:
     [(ActionCoordinator *)self _exitRoutePlanningIfNeededAnimated:1 restoreStashedMapSelection:0];
   }
 
-  v7 = [(ActionCoordinator *)self appCoordinator];
-  [v7 openSharedTrip:v4];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator openSharedTrip:tripCopy];
 }
 
 - (void)presentSharedTrips
@@ -11601,63 +11601,63 @@ LABEL_15:
 
   if (v4 != 5)
   {
-    v5 = [(ActionCoordinator *)self appCoordinator];
-    [v5 openSharedTrips];
+    appCoordinator = [(ActionCoordinator *)self appCoordinator];
+    [appCoordinator openSharedTrips];
   }
 }
 
 - (void)_resetStack
 {
-  v3 = [(ActionCoordinator *)self mapSelectionManager];
-  [v3 clearSelection];
+  mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+  [mapSelectionManager clearSelection];
 
-  v4 = [(ActionCoordinator *)self searchPinsManager];
-  [v4 clearLinkedPlacesAndPolygon];
+  searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+  [searchPinsManager clearLinkedPlacesAndPolygon];
 
-  v5 = [(ActionCoordinator *)self searchPinsManager];
-  [v5 clearSearchPins];
+  searchPinsManager2 = [(ActionCoordinator *)self searchPinsManager];
+  [searchPinsManager2 clearSearchPins];
 
   [(ActionCoordinator *)self exitRoutePlanningIfNeededAnimated:1];
-  v6 = [(ActionCoordinator *)self containerViewController];
-  [v6 setControllerStack:&__NSArray0__struct animated:1 completion:0];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [containerViewController setControllerStack:&__NSArray0__struct animated:1 completion:0];
 
-  v8 = [(ActionCoordinator *)self containerViewController];
-  v7 = [v8 chromeViewController];
-  [v7 popToRootContextAnimated:1 completion:0];
+  containerViewController2 = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController2 chromeViewController];
+  [chromeViewController popToRootContextAnimated:1 completion:0];
 }
 
-- (BOOL)_conditionallyPopForContextClass:(Class)a3
+- (BOOL)_conditionallyPopForContextClass:(Class)class
 {
-  v3 = [(ActionCoordinator *)self appCoordinator];
-  v4 = [v3 chromeViewController];
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  chromeViewController = [appCoordinator chromeViewController];
 
-  v5 = [v4 contexts];
-  v6 = [v5 _maps_firstContextOfClass:objc_opt_class()];
+  contexts = [chromeViewController contexts];
+  v6 = [contexts _maps_firstContextOfClass:objc_opt_class()];
 
   if (v6)
   {
-    v7 = [v4 topContext];
+    topContext = [chromeViewController topContext];
 
-    if (v6 == v7)
+    if (v6 == topContext)
     {
-      [v4 popToRootContextAnimated:1 completion:0];
+      [chromeViewController popToRootContextAnimated:1 completion:0];
     }
 
     else
     {
-      [v4 popToContext:v6 animated:1 completion:0];
+      [chromeViewController popToContext:v6 animated:1 completion:0];
     }
   }
 
   return v6 != 0;
 }
 
-- (BOOL)_conditionallyPopForContaineeClass:(Class)a3
+- (BOOL)_conditionallyPopForContaineeClass:(Class)class
 {
-  v4 = [(ActionCoordinator *)self containerViewController];
-  v5 = [v4 currentControllerStack];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  currentControllerStack = [containerViewController currentControllerStack];
 
-  v6 = [v5 lastObject];
+  lastObject = [currentControllerStack lastObject];
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
@@ -11667,14 +11667,14 @@ LABEL_15:
 
   else
   {
-    v9 = [v5 firstObject];
+    firstObject = [currentControllerStack firstObject];
     v10 = objc_opt_isKindOfClass();
 
     if (v10)
     {
       WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-      v12 = [v5 firstObject];
-      v15 = v12;
+      firstObject2 = [currentControllerStack firstObject];
+      v15 = firstObject2;
       v8 = 1;
       v13 = [NSArray arrayWithObjects:&v15 count:1];
       [WeakRetained setControllerStack:v13 animated:1 completion:0];
@@ -11691,152 +11691,152 @@ LABEL_15:
 
 - (void)toggleTopLevelRecentlyAdded
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v4 = sub_10000FA08(v3);
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  v4 = sub_10000FA08(containerViewController);
 
   if (v4 == 5 && ![(ActionCoordinator *)self _conditionallyPopForContaineeClass:objc_opt_class()])
   {
     [(ActionCoordinator *)self _resetStack];
-    v5 = [(ActionCoordinator *)self appCoordinator];
-    v6 = [v5 chromeViewController];
+    appCoordinator = [(ActionCoordinator *)self appCoordinator];
+    chromeViewController = [appCoordinator chromeViewController];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100923C0C;
     v7[3] = &unk_101661B18;
     v7[4] = self;
-    [v6 popToRootContextAnimated:1 completion:v7];
+    [chromeViewController popToRootContextAnimated:1 completion:v7];
   }
 }
 
 - (void)toggleTopLevelVisitedPlaces
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v4 = sub_10000FA08(v3);
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  v4 = sub_10000FA08(containerViewController);
 
   if (v4 == 5 && ![(ActionCoordinator *)self _conditionallyPopForContextClass:objc_opt_class()])
   {
     [(ActionCoordinator *)self _resetStack];
-    v5 = [(ActionCoordinator *)self appCoordinator];
-    v6 = [v5 chromeViewController];
+    appCoordinator = [(ActionCoordinator *)self appCoordinator];
+    chromeViewController = [appCoordinator chromeViewController];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100923D60;
     v7[3] = &unk_101661B18;
     v7[4] = self;
-    [v6 popToRootContextAnimated:1 completion:v7];
+    [chromeViewController popToRootContextAnimated:1 completion:v7];
   }
 }
 
 - (void)toggleTopLevelSavedRoutes
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v4 = sub_10000FA08(v3);
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  v4 = sub_10000FA08(containerViewController);
 
   if (v4 == 5 && ![(ActionCoordinator *)self _conditionallyPopForContaineeClass:objc_opt_class()])
   {
     [(ActionCoordinator *)self _resetStack];
-    v5 = [(ActionCoordinator *)self appCoordinator];
-    v6 = [v5 chromeViewController];
+    appCoordinator = [(ActionCoordinator *)self appCoordinator];
+    chromeViewController = [appCoordinator chromeViewController];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100923EB4;
     v7[3] = &unk_101661B18;
     v7[4] = self;
-    [v6 popToRootContextAnimated:1 completion:v7];
+    [chromeViewController popToRootContextAnimated:1 completion:v7];
   }
 }
 
 - (void)toggleTopLevelGuides
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v4 = sub_10000FA08(v3);
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  v4 = sub_10000FA08(containerViewController);
 
   if (v4 == 5 && ![(ActionCoordinator *)self _conditionallyPopForContaineeClass:objc_opt_class()])
   {
     [(ActionCoordinator *)self _resetStack];
-    v5 = [(ActionCoordinator *)self appCoordinator];
-    v6 = [v5 chromeViewController];
+    appCoordinator = [(ActionCoordinator *)self appCoordinator];
+    chromeViewController = [appCoordinator chromeViewController];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100924008;
     v7[3] = &unk_101661B18;
     v7[4] = self;
-    [v6 popToRootContextAnimated:1 completion:v7];
+    [chromeViewController popToRootContextAnimated:1 completion:v7];
   }
 }
 
 - (void)toggleTopLevelPlaces
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v4 = sub_10000FA08(v3);
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  v4 = sub_10000FA08(containerViewController);
 
   if (v4 == 5 && ![(ActionCoordinator *)self _conditionallyPopForContaineeClass:objc_opt_class()])
   {
     [(ActionCoordinator *)self _resetStack];
-    v5 = [(ActionCoordinator *)self appCoordinator];
-    v6 = [v5 chromeViewController];
+    appCoordinator = [(ActionCoordinator *)self appCoordinator];
+    chromeViewController = [appCoordinator chromeViewController];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10092415C;
     v7[3] = &unk_101661B18;
     v7[4] = self;
-    [v6 popToRootContextAnimated:1 completion:v7];
+    [chromeViewController popToRootContextAnimated:1 completion:v7];
   }
 }
 
 - (void)toggleTopLevelPinned
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v4 = sub_10000FA08(v3);
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  v4 = sub_10000FA08(containerViewController);
 
   if (v4 == 5 && ![(ActionCoordinator *)self _conditionallyPopForContaineeClass:objc_opt_class()])
   {
     [(ActionCoordinator *)self _resetStack];
-    v5 = [(ActionCoordinator *)self appCoordinator];
-    v6 = [v5 chromeViewController];
+    appCoordinator = [(ActionCoordinator *)self appCoordinator];
+    chromeViewController = [appCoordinator chromeViewController];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1009242B0;
     v7[3] = &unk_101661B18;
     v7[4] = self;
-    [v6 popToRootContextAnimated:1 completion:v7];
+    [chromeViewController popToRootContextAnimated:1 completion:v7];
   }
 }
 
 - (void)toggleTopLevelRecents
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v4 = sub_10000FA08(v3);
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  v4 = sub_10000FA08(containerViewController);
 
   if (v4 == 5 && ![(ActionCoordinator *)self _conditionallyPopForContaineeClass:objc_opt_class()])
   {
-    v5 = [(ActionCoordinator *)self appCoordinator];
-    v6 = [v5 chromeViewController];
+    appCoordinator = [(ActionCoordinator *)self appCoordinator];
+    chromeViewController = [appCoordinator chromeViewController];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1009243FC;
     v7[3] = &unk_101661B18;
     v7[4] = self;
-    [v6 popToRootContextAnimated:1 completion:v7];
+    [chromeViewController popToRootContextAnimated:1 completion:v7];
   }
 }
 
-- (void)presentSearchAnimated:(BOOL)a3
+- (void)presentSearchAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v5 = [(ActionCoordinator *)self searchModeViewController];
-  [WeakRetained presentController:v5 animated:v3 useDefaultContaineeLayout:1];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [WeakRetained presentController:searchModeViewController animated:animatedCopy useDefaultContaineeLayout:1];
 }
 
-- (void)viewControllerPresentSearchEndEditingAnimated:(BOOL)a3
+- (void)viewControllerPresentSearchEndEditingAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(ActionCoordinator *)self exitRoutePlanningIfNeededAnimated:0];
-  [(ActionCoordinator *)self presentSearchAnimated:v3];
+  [(ActionCoordinator *)self presentSearchAnimated:animatedCopy];
   [(ActionCoordinator *)self clearSearch];
-  v5 = [(ActionCoordinator *)self searchModeViewController];
-  [v5 endEditing];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController endEditing];
 }
 
 - (void)viewControllerPresentSearchEditing
@@ -11844,58 +11844,58 @@ LABEL_15:
   [(ActionCoordinator *)self exitRoutePlanningIfNeededAnimated:0];
   [(ActionCoordinator *)self clearSearch];
   [(ActionCoordinator *)self presentSearchAnimated:1];
-  v3 = [(ActionCoordinator *)self searchModeViewController];
-  [v3 searchBarBecomeFirstResponder];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController searchBarBecomeFirstResponder];
 }
 
 - (void)ensureMapSelectionVisible
 {
-  v3 = [(ActionCoordinator *)self mapView];
-  [v3 _edgeInsets];
+  mapView = [(ActionCoordinator *)self mapView];
+  [mapView _edgeInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(ActionCoordinator *)self containerViewController];
-  v13 = [v12 containerStyle];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  containerStyle = [containerViewController containerStyle];
 
-  if (v13 == 1)
+  if (containerStyle == 1)
   {
-    v14 = [(ActionCoordinator *)self containerViewController];
-    v15 = [v14 currentViewController];
-    [v15 heightForLayout:2];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
+    currentViewController = [containerViewController2 currentViewController];
+    [currentViewController heightForLayout:2];
     v9 = v16;
   }
 
   +[LookAroundButtonContainerViewController expandedHeight];
   v18 = v17 + v9;
-  v19 = [(ActionCoordinator *)self mapSelectionManager];
-  v20 = [v19 labelMarker];
+  mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+  labelMarker = [mapSelectionManager labelMarker];
 
-  v21 = [(ActionCoordinator *)self venuesManager];
+  venuesManager = [(ActionCoordinator *)self venuesManager];
   v25 = 0;
   v26 = 0;
-  [v21 getMinZoom:&v26 maxZoom:&v25 forDisplayingLabelMarker:v20];
+  [venuesManager getMinZoom:&v26 maxZoom:&v25 forDisplayingLabelMarker:labelMarker];
   v22 = v26;
   v23 = v25;
 
-  v24 = [(ActionCoordinator *)self mapCameraController];
-  [v24 frameLabelMarker:v20 edgeInsets:v22 minZoom:v23 maxZoom:0 completion:{v5, v7, v18, v11}];
+  mapCameraController = [(ActionCoordinator *)self mapCameraController];
+  [mapCameraController frameLabelMarker:labelMarker edgeInsets:v22 minZoom:v23 maxZoom:0 completion:{v5, v7, v18, v11}];
 
-  [(VenuesManager *)self->_venuesManager displayFloorForSelectedLabelMarker:v20];
+  [(VenuesManager *)self->_venuesManager displayFloorForSelectedLabelMarker:labelMarker];
 }
 
-- (void)presentLineCardForItem:(id)a3 labelMarker:(id)a4 loading:(BOOL)a5 overDisambiguation:(BOOL)a6 preferredLayout:(unint64_t)a7
+- (void)presentLineCardForItem:(id)item labelMarker:(id)marker loading:(BOOL)loading overDisambiguation:(BOOL)disambiguation preferredLayout:(unint64_t)layout
 {
-  v9 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(ActionCoordinator *)self lineCardVC];
-  [v14 setLineItem:v13 labelMarker:v12 loading:v9 preferredLayout:a7];
+  loadingCopy = loading;
+  markerCopy = marker;
+  itemCopy = item;
+  lineCardVC = [(ActionCoordinator *)self lineCardVC];
+  [lineCardVC setLineItem:itemCopy labelMarker:markerCopy loading:loadingCopy preferredLayout:layout];
 
-  v15 = [(ActionCoordinator *)self containerViewController];
-  v19 = [v15 currentViewController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -11905,7 +11905,7 @@ LABEL_15:
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if ((isKindOfClass & 1) == 0 && !a6)
+  if ((isKindOfClass & 1) == 0 && !disambiguation)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -11914,76 +11914,76 @@ LABEL_15:
   if (isKindOfClass)
   {
 LABEL_6:
-    v17 = [(ActionCoordinator *)self containerViewController];
-    v18 = [(ActionCoordinator *)self lineCardVC];
-    [v17 replaceCurrentWithController:v18 moveToContaineeLayout:a7];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
+    lineCardVC2 = [(ActionCoordinator *)self lineCardVC];
+    [containerViewController2 replaceCurrentWithController:lineCardVC2 moveToContaineeLayout:layout];
   }
 
   else
   {
-    v17 = [(ActionCoordinator *)self containerViewController];
-    v18 = [(ActionCoordinator *)self lineCardVC];
-    [v17 presentController:v18];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
+    lineCardVC2 = [(ActionCoordinator *)self lineCardVC];
+    [containerViewController2 presentController:lineCardVC2];
   }
 }
 
-- (void)presentLineCardForItem:(id)a3 loading:(BOOL)a4 sourceView:(id)a5 sourceRect:(CGRect)a6
+- (void)presentLineCardForItem:(id)item loading:(BOOL)loading sourceView:(id)view sourceRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v11 = a4;
-  v13 = a3;
-  v14 = a5;
-  v15 = [(ActionCoordinator *)self lineCardVC];
-  [v15 setLineItem:v13 labelMarker:0 loading:v11 preferredLayout:0];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  loadingCopy = loading;
+  itemCopy = item;
+  viewCopy = view;
+  lineCardVC = [(ActionCoordinator *)self lineCardVC];
+  [lineCardVC setLineItem:itemCopy labelMarker:0 loading:loadingCopy preferredLayout:0];
   lineSelectionAction = self->_lineSelectionAction;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100924A10;
   v21[3] = &unk_10162E5F8;
   v21[4] = self;
-  v22 = v13;
-  v23 = v15;
-  v17 = v15;
-  v18 = v13;
+  v22 = itemCopy;
+  v23 = lineCardVC;
+  v17 = lineCardVC;
+  v18 = itemCopy;
   [(TransitLineSelectionActionController *)lineSelectionAction selectLine:v18 zoomToMapRegion:0 onActivation:v21];
   [v17 setModalPresentationStyle:7];
-  v19 = [v17 popoverPresentationController];
-  [v19 setDelegate:self];
-  [v19 setSourceView:v14];
+  popoverPresentationController = [v17 popoverPresentationController];
+  [popoverPresentationController setDelegate:self];
+  [popoverPresentationController setSourceView:viewCopy];
 
-  [v19 setSourceRect:{x, y, width, height}];
-  [v19 setPermittedArrowDirections:12];
-  v20 = [(ActionCoordinator *)self containerViewController];
-  [v20 _maps_topMostPresentViewController:v17 animated:1 completion:0];
+  [popoverPresentationController setSourceRect:{x, y, width, height}];
+  [popoverPresentationController setPermittedArrowDirections:12];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  [containerViewController _maps_topMostPresentViewController:v17 animated:1 completion:0];
 }
 
-- (void)presentPlaceCard:(id)a3 canReplaceCurrentIfNecessary:(BOOL)a4
+- (void)presentPlaceCard:(id)card canReplaceCurrentIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(ActionCoordinator *)self containerViewController];
-  v8 = [v7 currentViewController];
+  necessaryCopy = necessary;
+  cardCopy = card;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
 
-  v9 = [(ContaineeViewController *)v6 cardPresentationController];
-  [v9 setHidden:0];
+  cardPresentationController = [(ContaineeViewController *)cardCopy cardPresentationController];
+  [cardPresentationController setHidden:0];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && self->_placeCardViewController)
   {
-    v10 = [(ActionCoordinator *)self containerViewController];
-    [v10 removeControllerFromStack:self->_placeCardViewController];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
+    [containerViewController2 removeControllerFromStack:self->_placeCardViewController];
   }
 
   [(ActionCoordinator *)self ensureMapSelectionVisible];
-  v11 = [(ActionCoordinator *)self containerViewController];
-  v12 = [v11 chromeViewController];
-  [v12 setNeedsUpdateComponent:@"lookAroundButton" animated:1];
+  containerViewController3 = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController3 chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"lookAroundButton" animated:1];
 
   placeCardViewController = self->_placeCardViewController;
-  if (!placeCardViewController || v8 != placeCardViewController)
+  if (!placeCardViewController || currentViewController != placeCardViewController)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -11992,14 +11992,14 @@ LABEL_6:
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
         WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-        [(PlaceCardViewController *)WeakRetained replaceCurrentWithController:v6];
+        [(PlaceCardViewController *)WeakRetained replaceCurrentWithController:cardCopy];
         goto LABEL_21;
       }
 
-      if (!v4 || ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (-[ActionCoordinator currentSearchSession](self, "currentSearchSession"), v35 = objc_claimAutoreleasedReturnValue(), v36 = [v35 singleResultMode], v35, !v36)) && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (-[ActionCoordinator currentSearchSession](self, "currentSearchSession"), v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v37, "isSingleResultToShowAsPlacecard"), v37, !v38)))
+      if (!necessaryCopy || ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (-[ActionCoordinator currentSearchSession](self, "currentSearchSession"), v35 = objc_claimAutoreleasedReturnValue(), v36 = [v35 singleResultMode], v35, !v36)) && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (-[ActionCoordinator currentSearchSession](self, "currentSearchSession"), v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v37, "isSingleResultToShowAsPlacecard"), v37, !v38)))
       {
-        v39 = [(PlaceCardViewController *)v6 placeCardItem];
-        if ([v39 isVenueItem])
+        placeCardItem = [(PlaceCardViewController *)cardCopy placeCardItem];
+        if ([placeCardItem isVenueItem])
         {
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
@@ -12014,10 +12014,10 @@ LABEL_6:
         {
         }
 
-        if (!v4 || !v8 || sub_10000FA08(v8) == 5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+        if (!necessaryCopy || !currentViewController || sub_10000FA08(currentViewController) == 5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-          [(PlaceCardViewController *)WeakRetained presentController:v6];
+          [(PlaceCardViewController *)WeakRetained presentController:cardCopy];
           goto LABEL_21;
         }
       }
@@ -12025,28 +12025,28 @@ LABEL_6:
       v14 = objc_loadWeakRetained(&self->_containerViewController);
       WeakRetained = v14;
 LABEL_7:
-      [(PlaceCardViewController *)v14 replaceCurrentWithController:v6 moveToContaineeLayout:2];
+      [(PlaceCardViewController *)v14 replaceCurrentWithController:cardCopy moveToContaineeLayout:2];
 LABEL_21:
       v19 = 1;
       goto LABEL_22;
     }
 
-    WeakRetained = v8;
-    v16 = [(PlaceCardViewController *)v6 placeCardItem];
-    if ([v16 isVenueItem])
+    WeakRetained = currentViewController;
+    placeCardItem2 = [(PlaceCardViewController *)cardCopy placeCardItem];
+    if ([placeCardItem2 isVenueItem])
     {
     }
 
     else
     {
-      v20 = [(PlaceCardViewController *)v6 placeCardItem];
-      v21 = [v20 mapItem];
-      v22 = [(PlaceCardViewController *)WeakRetained containsMapItem:v21];
+      placeCardItem3 = [(PlaceCardViewController *)cardCopy placeCardItem];
+      mapItem = [placeCardItem3 mapItem];
+      v22 = [(PlaceCardViewController *)WeakRetained containsMapItem:mapItem];
 
       if (v22)
       {
         v23 = objc_loadWeakRetained(&self->_containerViewController);
-        [v23 presentController:v6];
+        [v23 presentController:cardCopy];
 LABEL_20:
 
         goto LABEL_21;
@@ -12054,13 +12054,13 @@ LABEL_20:
     }
 
     v23 = objc_loadWeakRetained(&self->_containerViewController);
-    [v23 replaceCurrentWithController:v6 moveToContaineeLayout:2];
+    [v23 replaceCurrentWithController:cardCopy moveToContaineeLayout:2];
     goto LABEL_20;
   }
 
   v14 = objc_loadWeakRetained(&self->_containerViewController);
   WeakRetained = v14;
-  if (v8 != v6)
+  if (currentViewController != cardCopy)
   {
     goto LABEL_7;
   }
@@ -12068,11 +12068,11 @@ LABEL_20:
   [(PlaceCardViewController *)v14 removeControllerFromStack:self->_simpleListResultsVC];
 
   v17 = objc_loadWeakRetained(&self->_containerViewController);
-  v18 = [v17 containerStyle];
+  containerStyle = [v17 containerStyle];
 
-  if (v18 == 1)
+  if (containerStyle == 1)
   {
-    WeakRetained = [(ContaineeViewController *)v6 cardPresentationController];
+    WeakRetained = [(ContaineeViewController *)cardCopy cardPresentationController];
     [(PlaceCardViewController *)WeakRetained wantsLayout:2];
     v19 = 0;
 LABEL_22:
@@ -12084,12 +12084,12 @@ LABEL_22:
 LABEL_23:
   if ([(TransitLineSelectionActionController *)self->_lineSelectionAction isActive])
   {
-    v24 = [(PlaceCardViewController *)v6 placeCardItem];
-    v25 = v24;
-    if (v24)
+    placeCardItem4 = [(PlaceCardViewController *)cardCopy placeCardItem];
+    v25 = placeCardItem4;
+    if (placeCardItem4)
     {
       v41 = @"ActionControllerDeactivationItemKey";
-      v42 = v24;
+      v42 = placeCardItem4;
       v26 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
     }
 
@@ -12103,45 +12103,45 @@ LABEL_23:
 
   if ((v19 & 1) == 0)
   {
-    v27 = [(ActionCoordinator *)self containerViewController];
-    v28 = [v27 chromeViewController];
-    [v28 updateComponentsIfNeeded];
+    containerViewController4 = [(ActionCoordinator *)self containerViewController];
+    chromeViewController2 = [containerViewController4 chromeViewController];
+    [chromeViewController2 updateComponentsIfNeeded];
   }
 
   v29 = [PlaceCardSynchronizationNotificationInfo alloc];
-  v30 = [(PlaceCardViewController *)v6 placeCardItem];
+  placeCardItem5 = [(PlaceCardViewController *)cardCopy placeCardItem];
   v31 = +[CarDisplayController sharedInstance];
-  v32 = [v31 platformController];
-  v33 = [(PlaceCardSynchronizationNotificationInfo *)v29 initWithPlaceCardItem:v30 platformController:v32];
+  platformController = [v31 platformController];
+  v33 = [(PlaceCardSynchronizationNotificationInfo *)v29 initWithPlaceCardItem:placeCardItem5 platformController:platformController];
 
   v34 = +[NSNotificationCenter defaultCenter];
   [v34 postNotificationName:@"IOSBasedPlaceCardDidPresent" object:v33];
 }
 
-- (void)presentSimpleList:(id)a3
+- (void)presentSimpleList:(id)list
 {
-  v17 = a3;
-  v4 = [(ActionCoordinator *)self containerViewController];
-  v5 = [v4 currentViewController];
+  listCopy = list;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
 
-  if (v5 == v17)
+  if (currentViewController == listCopy)
   {
-    v11 = [(ActionCoordinator *)self containerViewController];
-    v12 = [v11 containeeLayout];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
+    containeeLayout = [containerViewController2 containeeLayout];
 
-    if (v12 != 1)
+    if (containeeLayout != 1)
     {
       goto LABEL_10;
     }
 
-    v13 = [v17 cardPresentationController];
-    [v13 wantsLayout:2];
+    cardPresentationController = [listCopy cardPresentationController];
+    [cardPresentationController wantsLayout:2];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    v7 = [WeakRetained currentViewController];
+    currentViewController2 = [WeakRetained currentViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -12149,26 +12149,26 @@ LABEL_23:
     v10 = v9;
     if (isKindOfClass)
     {
-      [v9 replaceCurrentWithController:v17 moveToContaineeLayout:2];
+      [v9 replaceCurrentWithController:listCopy moveToContaineeLayout:2];
 
       [(PlaceCardViewController *)self->_placeCardViewController resetState];
       goto LABEL_10;
     }
 
-    v14 = [v9 currentViewController];
+    currentViewController3 = [v9 currentViewController];
     objc_opt_class();
     v15 = objc_opt_isKindOfClass();
 
     v16 = objc_loadWeakRetained(&self->_containerViewController);
-    v13 = v16;
+    cardPresentationController = v16;
     if (v15)
     {
-      [v16 replaceCurrentWithController:v17 moveToContaineeLayout:2];
+      [v16 replaceCurrentWithController:listCopy moveToContaineeLayout:2];
     }
 
     else
     {
-      [v16 presentController:v17];
+      [v16 presentController:listCopy];
     }
   }
 
@@ -12176,12 +12176,12 @@ LABEL_10:
   [(ActionCoordinator *)self ensureMapSelectionVisible];
 }
 
-- (void)setIsRoutePlanningPresented:(BOOL)a3
+- (void)setIsRoutePlanningPresented:(BOOL)presented
 {
   if (self->_routePlanningDataCoordinator)
   {
-    v3 = a3;
-    if (self->_isRoutePlanningPresented == a3)
+    presentedCopy = presented;
+    if (self->_isRoutePlanningPresented == presented)
     {
       return;
     }
@@ -12193,11 +12193,11 @@ LABEL_10:
       v10 = 67109376;
       *v11 = isRoutePlanningPresented;
       *&v11[4] = 1024;
-      *&v11[6] = v3;
+      *&v11[6] = presentedCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Changing isRoutePlanningPresented from %d to %d", &v10, 0xEu);
     }
 
-    self->_isRoutePlanningPresented = v3;
+    self->_isRoutePlanningPresented = presentedCopy;
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 postNotificationName:@"RoutePlanningPresentedDidChangeNotification" object:self];
     goto LABEL_11;
@@ -12236,8 +12236,8 @@ LABEL_11:
   if (!venueCardCoordinator)
   {
     v4 = [VenueCardCoordinator alloc];
-    v5 = [(ActionCoordinator *)self venuesManager];
-    v6 = [(VenueCardCoordinator *)v4 initWithActionCoordinator:self venueChangeNotifier:v5];
+    venuesManager = [(ActionCoordinator *)self venuesManager];
+    v6 = [(VenueCardCoordinator *)v4 initWithActionCoordinator:self venueChangeNotifier:venuesManager];
     v7 = self->_venueCardCoordinator;
     self->_venueCardCoordinator = v6;
 
@@ -12369,8 +12369,8 @@ LABEL_11:
   if (self->_routePlanningDataCoordinator)
   {
     v3 = [RoutePlanningRoutingAppsController alloc];
-    v4 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-    v5 = [(RoutePlanningRoutingAppsController *)v3 initWithDataCoordination:v4];
+    routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+    v5 = [(RoutePlanningRoutingAppsController *)v3 initWithDataCoordination:routePlanningDataCoordinator];
 
     [(ContaineeViewController *)v5 setContaineeDelegate:self];
   }
@@ -12414,8 +12414,8 @@ LABEL_11:
     if (!self->_incidentsVC)
     {
       v3 = [RouteIncidentsViewController alloc];
-      v4 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-      v5 = [(RouteIncidentsViewController *)v3 initWithDataCoordination:v4];
+      routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+      v5 = [(RouteIncidentsViewController *)v3 initWithDataCoordination:routePlanningDataCoordinator];
       incidentsVC = self->_incidentsVC;
       self->_incidentsVC = v5;
 
@@ -12423,15 +12423,15 @@ LABEL_11:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    v8 = [WeakRetained traitCollection];
-    v9 = [v8 userInterfaceIdiom];
+    traitCollection = [WeakRetained traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v9 == 5)
+    if (userInterfaceIdiom == 5)
     {
       [(RouteIncidentsViewController *)self->_incidentsVC setModalPresentationStyle:7];
       v10 = objc_loadWeakRetained(&self->_incidentsVCSourceView);
-      v11 = [(RouteIncidentsViewController *)self->_incidentsVC popoverPresentationController];
-      [v11 setSourceView:v10];
+      popoverPresentationController = [(RouteIncidentsViewController *)self->_incidentsVC popoverPresentationController];
+      [popoverPresentationController setSourceView:v10];
 
       v12 = objc_loadWeakRetained(&self->_incidentsVCSourceView);
       [v12 bounds];
@@ -12439,11 +12439,11 @@ LABEL_11:
       v16 = v15;
       v18 = v17;
       v20 = v19;
-      v21 = [(RouteIncidentsViewController *)self->_incidentsVC popoverPresentationController];
-      [v21 setSourceRect:{v14, v16, v18, v20}];
+      popoverPresentationController2 = [(RouteIncidentsViewController *)self->_incidentsVC popoverPresentationController];
+      [popoverPresentationController2 setSourceRect:{v14, v16, v18, v20}];
 
-      v22 = [(RouteIncidentsViewController *)self->_incidentsVC popoverPresentationController];
-      [v22 setPermittedArrowDirections:12];
+      popoverPresentationController3 = [(RouteIncidentsViewController *)self->_incidentsVC popoverPresentationController];
+      [popoverPresentationController3 setPermittedArrowDirections:12];
     }
 
     v23 = self->_incidentsVC;
@@ -12485,8 +12485,8 @@ LABEL_11:
 {
   if (self->_routePlanningDataCoordinator)
   {
-    v3 = [(ActionCoordinator *)self containerViewController];
-    v4 = sub_10000FA08(v3);
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    v4 = sub_10000FA08(containerViewController);
 
     if (v4 == 5 && (_UISolariumEnabled() & 1) == 0)
     {
@@ -12499,38 +12499,38 @@ LABEL_11:
     }
 
     v10 = [RoutePlanningOptionsViewController alloc];
-    v11 = [(ActionCoordinator *)self routePlanningDataCoordinator];
+    routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_100925FA8;
     v28[3] = &unk_10162E5D0;
     v28[4] = self;
-    v9 = [(RoutePlanningOptionsViewController *)v10 initWithDataCoordinator:v11 automaticallySaveChanges:BOOL completionHandler:v28];
+    v9 = [(RoutePlanningOptionsViewController *)v10 initWithDataCoordinator:routePlanningDataCoordinator automaticallySaveChanges:BOOL completionHandler:v28];
 
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      v12 = [(RoutePlanningOptionsViewController *)v9 traitCollection];
-      v13 = [v12 userInterfaceIdiom];
+      traitCollection = [(RoutePlanningOptionsViewController *)v9 traitCollection];
+      userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-      if (v13 == 5)
+      if (userInterfaceIdiom == 5)
       {
-        v14 = [(ActionCoordinator *)self routePlanningOverviewViewController];
-        v15 = [v14 routeOptionsPopoverSourceView];
+        routePlanningOverviewViewController = [(ActionCoordinator *)self routePlanningOverviewViewController];
+        routeOptionsPopoverSourceView = [routePlanningOverviewViewController routeOptionsPopoverSourceView];
 
         [(RoutePlanningOptionsViewController *)v9 setModalPresentationStyle:7];
-        v16 = [(RoutePlanningOptionsViewController *)v9 popoverPresentationController];
-        [v16 setSourceView:v15];
+        popoverPresentationController = [(RoutePlanningOptionsViewController *)v9 popoverPresentationController];
+        [popoverPresentationController setSourceView:routeOptionsPopoverSourceView];
 
-        [v15 bounds];
+        [routeOptionsPopoverSourceView bounds];
         v18 = v17;
         v20 = v19;
         v22 = v21;
         v24 = v23;
-        v25 = [(RoutePlanningOptionsViewController *)v9 popoverPresentationController];
-        [v25 setSourceRect:{v18, v20, v22, v24}];
+        popoverPresentationController2 = [(RoutePlanningOptionsViewController *)v9 popoverPresentationController];
+        [popoverPresentationController2 setSourceRect:{v18, v20, v22, v24}];
 
-        v26 = [(RoutePlanningOptionsViewController *)v9 popoverPresentationController];
-        [v26 setPermittedArrowDirections:12];
+        popoverPresentationController3 = [(RoutePlanningOptionsViewController *)v9 popoverPresentationController];
+        [popoverPresentationController3 setPermittedArrowDirections:12];
       }
     }
   }
@@ -12571,24 +12571,24 @@ LABEL_11:
 {
   if (self->_routePlanningDataCoordinator)
   {
-    v3 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-    v4 = [v3 routeCollection];
-    v5 = [v4 currentRoute];
+    routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+    routeCollection = [routePlanningDataCoordinator routeCollection];
+    currentRoute = [routeCollection currentRoute];
 
     v6 = [RoutePlanningTimingViewController alloc];
-    v7 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-    v8 = [v7 timing];
-    if (v5)
+    routePlanningDataCoordinator2 = [(ActionCoordinator *)self routePlanningDataCoordinator];
+    timing = [routePlanningDataCoordinator2 timing];
+    if (currentRoute)
     {
-      v9 = [v5 shouldShowSchedule];
+      shouldShowSchedule = [currentRoute shouldShowSchedule];
     }
 
     else
     {
-      v9 = 0;
+      shouldShowSchedule = 0;
     }
 
-    v13 = [(RoutePlanningTimingViewController *)v6 initWithCurrentTiming:v8 shouldShowArriveBy:v9 pickerDelegate:self];
+    v13 = [(RoutePlanningTimingViewController *)v6 initWithCurrentTiming:timing shouldShowArriveBy:shouldShowSchedule pickerDelegate:self];
   }
 
   else
@@ -12636,8 +12636,8 @@ LABEL_11:
 
       [(ContaineeViewController *)self->_routeStepsVC setContaineeDelegate:self];
       [(RouteStepsViewController *)self->_routeStepsVC setDelegate:self];
-      v6 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-      [(RouteStepsViewController *)self->_routeStepsVC setDataCoordinator:v6];
+      routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+      [(RouteStepsViewController *)self->_routeStepsVC setDataCoordinator:routePlanningDataCoordinator];
 
       routeStepsVC = self->_routeStepsVC;
     }
@@ -12684,24 +12684,24 @@ LABEL_11:
     routeSearchVC = self->_routeSearchVC;
     if (!routeSearchVC || ([(RouteSearchViewController *)routeSearchVC dataCoordinator], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
     {
-      v5 = [(ActionCoordinator *)self routePlanningOverviewViewController];
-      v6 = [v5 routeSearchViewController];
+      routePlanningOverviewViewController = [(ActionCoordinator *)self routePlanningOverviewViewController];
+      routeSearchViewController = [routePlanningOverviewViewController routeSearchViewController];
 
-      if (v6)
+      if (routeSearchViewController)
       {
-        v7 = [(ActionCoordinator *)self routePlanningOverviewViewController];
-        v8 = [v7 routeSearchViewController];
+        routePlanningOverviewViewController2 = [(ActionCoordinator *)self routePlanningOverviewViewController];
+        routeSearchViewController2 = [routePlanningOverviewViewController2 routeSearchViewController];
       }
 
       else
       {
         v13 = [RouteSearchViewController alloc];
-        v7 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-        v8 = [(RouteSearchViewController *)v13 initWithDelegate:self dataCoordinator:v7];
+        routePlanningOverviewViewController2 = [(ActionCoordinator *)self routePlanningDataCoordinator];
+        routeSearchViewController2 = [(RouteSearchViewController *)v13 initWithDelegate:self dataCoordinator:routePlanningOverviewViewController2];
       }
 
       v14 = self->_routeSearchVC;
-      self->_routeSearchVC = v8;
+      self->_routeSearchVC = routeSearchViewController2;
     }
 
     v12 = self->_routeSearchVC;
@@ -12747,21 +12747,21 @@ LABEL_11:
     if (!routePlanningMapController)
     {
       v4 = [RoutePlanningMapController alloc];
-      v5 = [(ActionCoordinator *)self containerViewController];
-      v6 = [v5 chromeViewController];
-      v7 = [(RoutePlanningMapController *)v4 initWithChromeViewController:v6];
+      containerViewController = [(ActionCoordinator *)self containerViewController];
+      chromeViewController = [containerViewController chromeViewController];
+      v7 = [(RoutePlanningMapController *)v4 initWithChromeViewController:chromeViewController];
       v8 = self->_routePlanningMapController;
       self->_routePlanningMapController = v7;
 
       [(RoutePlanningMapController *)self->_routePlanningMapController setActionCoordinator:self];
-      v9 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-      [(RoutePlanningMapController *)self->_routePlanningMapController setDataCoordinator:v9];
+      routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+      [(RoutePlanningMapController *)self->_routePlanningMapController setDataCoordinator:routePlanningDataCoordinator];
 
-      v10 = [(ActionCoordinator *)self personalizedItemManager];
-      [(RoutePlanningMapController *)self->_routePlanningMapController setPersonalizedItemManager:v10];
+      personalizedItemManager = [(ActionCoordinator *)self personalizedItemManager];
+      [(RoutePlanningMapController *)self->_routePlanningMapController setPersonalizedItemManager:personalizedItemManager];
 
-      v11 = [(ActionCoordinator *)self searchPinsManager];
-      [(RoutePlanningMapController *)self->_routePlanningMapController setSearchPinsManager:v11];
+      searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+      [(RoutePlanningMapController *)self->_routePlanningMapController setSearchPinsManager:searchPinsManager];
 
       routePlanningMapController = self->_routePlanningMapController;
     }
@@ -12842,41 +12842,41 @@ LABEL_11:
 - (id)mapView
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v3 = [WeakRetained chromeViewController];
-  v4 = [v3 mapView];
+  chromeViewController = [WeakRetained chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  return v4;
+  return mapView;
 }
 
 - (MapCameraFraming)mapCameraController
 {
-  v2 = [(ActionCoordinator *)self containerViewController];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 mapCameraController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  mapCameraController = [chromeViewController mapCameraController];
 
-  return v4;
+  return mapCameraController;
 }
 
 - (MapSelectionManager)mapSelectionManager
 {
-  v2 = [(ActionCoordinator *)self containerViewController];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 mapSelectionManager];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  mapSelectionManager = [chromeViewController mapSelectionManager];
 
-  return v4;
+  return mapSelectionManager;
 }
 
-- (void)setContainerViewController:(id)a3
+- (void)setContainerViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
 
   if (WeakRetained != obj)
   {
     [(ActionCoordinator *)self removeContainerViewControllerObserver];
     v5 = objc_storeWeak(&self->_containerViewController, obj);
-    v6 = [obj chromeViewController];
-    [v6 setViewModeDelegate:self];
+    chromeViewController = [obj chromeViewController];
+    [chromeViewController setViewModeDelegate:self];
 
     [(ActionCoordinator *)self addContainerViewControllerObservers];
     [(ActionCoordinator *)self presentSearchAnimated:0];
@@ -12964,9 +12964,9 @@ LABEL_8:
   placeCardViewController = self->_placeCardViewController;
   if (!placeCardViewController)
   {
-    v4 = [(ActionCoordinator *)self _newPlaceCardViewControllerForReuse];
+    _newPlaceCardViewControllerForReuse = [(ActionCoordinator *)self _newPlaceCardViewControllerForReuse];
     v5 = self->_placeCardViewController;
-    self->_placeCardViewController = v4;
+    self->_placeCardViewController = _newPlaceCardViewControllerForReuse;
 
     placeCardViewController = self->_placeCardViewController;
   }
@@ -12974,11 +12974,11 @@ LABEL_8:
   return placeCardViewController;
 }
 
-- (id)placeCardForVenuesViewController:(id)a3
+- (id)placeCardForVenuesViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self venueCardCoordinator];
-  v6 = [v5 viewControllerForCardItem:v4];
+  controllerCopy = controller;
+  venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+  v6 = [venueCardCoordinator viewControllerForCardItem:controllerCopy];
 
   v7 = v6;
   objc_opt_class();
@@ -13062,9 +13062,9 @@ LABEL_8:
   v9[4] = self;
   [(SettingsViewController *)v3 setDismissSettingsViewControllerHandler:v9];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v5 = [WeakRetained chromeViewController];
-  v6 = [v5 settingsController];
-  [(SettingsViewController *)v3 setSettingsController:v6];
+  chromeViewController = [WeakRetained chromeViewController];
+  settingsController = [chromeViewController settingsController];
+  [(SettingsViewController *)v3 setSettingsController:settingsController];
 
   [(SettingsViewController *)v3 setModalPresentationStyle:4];
   v7 = objc_loadWeakRetained(&self->_containerViewController);
@@ -13157,12 +13157,12 @@ LABEL_11:
 {
   if (self->_routePlanningDataCoordinator)
   {
-    v3 = [(ActionCoordinator *)self mapView];
-    if (sub_10000FA08(v3) == 5 && [(ActionCoordinator *)self isRoutePlanningPresented])
+    mapView = [(ActionCoordinator *)self mapView];
+    if (sub_10000FA08(mapView) == 5 && [(ActionCoordinator *)self isRoutePlanningPresented])
     {
-      v4 = [(ActionCoordinator *)self currentSearchSession];
+      currentSearchSession = [(ActionCoordinator *)self currentSearchSession];
 
-      if (v4)
+      if (currentSearchSession)
       {
         return 1;
       }
@@ -13172,11 +13172,11 @@ LABEL_11:
     {
     }
 
-    v6 = [self->_addStopResultsViewController presentingViewController];
-    if (v6)
+    presentingViewController = [self->_addStopResultsViewController presentingViewController];
+    if (presentingViewController)
     {
-      v7 = [self->_currentDirectionItem items];
-      v5 = [v7 count] != 0;
+      items = [self->_currentDirectionItem items];
+      v5 = [items count] != 0;
     }
 
     else
@@ -13221,13 +13221,13 @@ LABEL_11:
 {
   if (self->_routePlanningDataCoordinator)
   {
-    v4 = [(ActionCoordinator *)self isRoutePlanningPresented];
-    if ((v4 & 1) != 0 || ([(RouteSearchViewController *)self->_routeSearchVC presentingViewController], (v2 = objc_claimAutoreleasedReturnValue()) != 0))
+    isRoutePlanningPresented = [(ActionCoordinator *)self isRoutePlanningPresented];
+    if ((isRoutePlanningPresented & 1) != 0 || ([(RouteSearchViewController *)self->_routeSearchVC presentingViewController], (v2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v5 = [self->_currentDirectionItem items];
-      v6 = [v5 count] != 0;
+      items = [self->_currentDirectionItem items];
+      v6 = [items count] != 0;
 
-      if (v4)
+      if (isRoutePlanningPresented)
       {
         return v6;
       }
@@ -13277,29 +13277,29 @@ LABEL_11:
   if (!simpleListResultsVC)
   {
     v4 = [SimpleResultsViewController alloc];
-    v5 = [(ActionCoordinator *)self appCoordinator];
-    v6 = [(SimpleResultsViewController *)v4 initWithShareDelegate:v5];
+    appCoordinator = [(ActionCoordinator *)self appCoordinator];
+    v6 = [(SimpleResultsViewController *)v4 initWithShareDelegate:appCoordinator];
     v7 = self->_simpleListResultsVC;
     self->_simpleListResultsVC = v6;
 
     [(SimpleResultsViewController *)self->_simpleListResultsVC setResultsDelegate:self];
     [(ContaineeViewController *)self->_simpleListResultsVC setContaineeDelegate:self];
     [(SimpleResultsViewController *)self->_simpleListResultsVC setEnableQuickActionMenu:1];
-    v8 = [(SimpleResultsViewController *)self->_simpleListResultsVC view];
+    view = [(SimpleResultsViewController *)self->_simpleListResultsVC view];
     simpleListResultsVC = self->_simpleListResultsVC;
   }
 
   return simpleListResultsVC;
 }
 
-- (void)presentRouteLibraryWithAvailableRoutes:(id)a3 unavailableRoutes:(id)a4
+- (void)presentRouteLibraryWithAvailableRoutes:(id)routes unavailableRoutes:(id)unavailableRoutes
 {
-  v6 = a4;
-  v7 = a3;
+  unavailableRoutesCopy = unavailableRoutes;
+  routesCopy = routes;
   v8 = [_TtC4Maps24RouteItemsViewController alloc];
-  if (v7)
+  if (routesCopy)
   {
-    v9 = v7;
+    v9 = routesCopy;
   }
 
   else
@@ -13307,14 +13307,14 @@ LABEL_11:
     v9 = &__NSArray0__struct;
   }
 
-  v11 = [(RouteItemsViewController *)v8 initWithAvailableRoutes:v9 unavailableRoutes:v6 isAllSavedRoutes:1];
+  v11 = [(RouteItemsViewController *)v8 initWithAvailableRoutes:v9 unavailableRoutes:unavailableRoutesCopy isAllSavedRoutes:1];
 
   [(ContaineeViewController *)v11 setContaineeDelegate:self];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   [WeakRetained presentController:v11 animated:1];
 }
 
-- (void)viewControllerPresentVirtualGarage:(id)a3
+- (void)viewControllerPresentVirtualGarage:(id)garage
 {
   v4 = objc_alloc_init(VehicleListViewController);
   vehicleListVC = self->_vehicleListVC;
@@ -13326,7 +13326,7 @@ LABEL_11:
   [WeakRetained presentController:self->_vehicleListVC animated:1];
 }
 
-- (void)viewControllerPresentRatingsHistory:(id)a3
+- (void)viewControllerPresentRatingsHistory:(id)history
 {
   v5 = [[_TtC4Maps33ARPHistoryContaineeViewController alloc] initWithNibName:0 bundle:0];
   [(ContaineeViewController *)v5 setContaineeDelegate:self];
@@ -13335,15 +13335,15 @@ LABEL_11:
   [WeakRetained presentController:v5 animated:1];
 }
 
-- (void)viewControllerPresentUserProfilePreferences:(id)a3 withTabType:(int64_t)a4
+- (void)viewControllerPresentUserProfilePreferences:(id)preferences withTabType:(int64_t)type
 {
-  v6 = [(ActionCoordinator *)self containerViewController];
-  v7 = sub_10000FA08(v6);
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  v7 = sub_10000FA08(containerViewController);
 
   if (v7 == 5)
   {
     WeakRetained = +[UIApplication sharedMapsDelegate];
-    [WeakRetained presentMacPreferencesTabWithType:a4];
+    [WeakRetained presentMacPreferencesTabWithType:type];
   }
 
   else
@@ -13358,7 +13358,7 @@ LABEL_11:
   }
 }
 
-- (void)viewControllerPresentUserProfile:(id)a3
+- (void)viewControllerPresentUserProfile:(id)profile
 {
   v5 = objc_alloc_init(_TtC4Maps34UserProfileContaineeViewController);
   [(ContaineeViewController *)v5 setContaineeDelegate:self];
@@ -13413,8 +13413,8 @@ LABEL_11:
     routePlanningOverviewViewController = self->_routePlanningOverviewViewController;
     if (!routePlanningOverviewViewController)
     {
-      v4 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-      v5 = [RoutePlanningOverviewViewController routePlanningOverviewViewControllerWithDataCoordinator:v4];
+      routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+      v5 = [RoutePlanningOverviewViewController routePlanningOverviewViewControllerWithDataCoordinator:routePlanningDataCoordinator];
       v6 = self->_routePlanningOverviewViewController;
       self->_routePlanningOverviewViewController = v5;
 
@@ -13460,91 +13460,91 @@ LABEL_11:
 
 - (PersonalizedItemSource)suggestionsItemSource
 {
-  v2 = [(ActionCoordinator *)self searchModeViewController];
-  v3 = [v2 suggestionsItemSource];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  suggestionsItemSource = [searchModeViewController suggestionsItemSource];
 
-  return v3;
+  return suggestionsItemSource;
 }
 
 - (SettingsController)settingsController
 {
-  v2 = [(ActionCoordinator *)self containerViewController];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 settingsController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  settingsController = [chromeViewController settingsController];
 
-  return v4;
+  return settingsController;
 }
 
 - (SearchPinsManager)searchPinsManager
 {
-  v2 = [(ActionCoordinator *)self containerViewController];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 searchPinsManager];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  searchPinsManager = [chromeViewController searchPinsManager];
 
-  return v4;
+  return searchPinsManager;
 }
 
 - (RouteAnnotationsController)routeAnnotationsController
 {
-  v2 = [(ActionCoordinator *)self containerViewController];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 routeAnnotationsController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  routeAnnotationsController = [chromeViewController routeAnnotationsController];
 
-  return v4;
+  return routeAnnotationsController;
 }
 
 - (UserLocationSearchResult)userLocationSearchResult
 {
-  v2 = [(ActionCoordinator *)self mapView];
-  v3 = [v2 userLocation];
+  mapView = [(ActionCoordinator *)self mapView];
+  userLocation = [mapView userLocation];
 
-  v4 = [v3 annotation];
+  annotation = [userLocation annotation];
 
-  return v4;
+  return annotation;
 }
 
-- (void)getCurrentSceneTitleWithCompletion:(id)a3
+- (void)getCurrentSceneTitleWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self containerViewController];
-  v6 = [v5 chromeViewController];
-  v7 = [v6 errorString];
+  completionCopy = completion;
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  errorString = [chromeViewController errorString];
 
   v8 = +[UIDevice currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  userInterfaceIdiom = [v8 userInterfaceIdiom];
 
-  if (v7)
+  if (errorString)
   {
-    v4[2](v4, v7);
+    completionCopy[2](completionCopy, errorString);
     goto LABEL_23;
   }
 
-  v10 = [(ActionCoordinator *)self currentMapItem];
+  currentMapItem = [(ActionCoordinator *)self currentMapItem];
 
-  if (v10 && v9 != 5)
+  if (currentMapItem && userInterfaceIdiom != 5)
   {
-    v11 = [(ActionCoordinator *)self currentMapItem];
-    v12 = [v11 name];
+    currentMapItem2 = [(ActionCoordinator *)self currentMapItem];
+    name = [currentMapItem2 name];
     goto LABEL_6;
   }
 
-  if ([(ActionCoordinator *)self isRoutePlanningPresented]&& v9 != 5 && self->_routePlanningDataCoordinator)
+  if ([(ActionCoordinator *)self isRoutePlanningPresented]&& userInterfaceIdiom != 5 && self->_routePlanningDataCoordinator)
   {
-    v14 = [self->_currentDirectionItem endMapItem];
-    v15 = [v14 name];
+    endMapItem = [self->_currentDirectionItem endMapItem];
+    name2 = [endMapItem name];
 
-    if (v15)
+    if (name2)
     {
-      v11 = +[NSBundle mainBundle];
-      v16 = [v11 localizedStringForKey:@"[App switcher title] Directions to <destination>" value:@"localized string not found" table:0];
-      v17 = [self->_currentDirectionItem endMapItem];
-      v18 = [v17 name];
-      v13 = [NSString stringWithFormat:v16, v18];
+      currentMapItem2 = +[NSBundle mainBundle];
+      v16 = [currentMapItem2 localizedStringForKey:@"[App switcher title] Directions to <destination>" value:@"localized string not found" table:0];
+      endMapItem2 = [self->_currentDirectionItem endMapItem];
+      name3 = [endMapItem2 name];
+      v13 = [NSString stringWithFormat:v16, name3];
 
 LABEL_7:
       if (v13)
       {
-        v4[2](v4, v13);
+        completionCopy[2](completionCopy, v13);
 
         goto LABEL_23;
       }
@@ -13552,10 +13552,10 @@ LABEL_7:
       goto LABEL_14;
     }
 
-    v11 = +[NSBundle mainBundle];
-    v12 = [v11 localizedStringForKey:@"[App switcher title] Directions" value:@"localized string not found" table:0];
+    currentMapItem2 = +[NSBundle mainBundle];
+    name = [currentMapItem2 localizedStringForKey:@"[App switcher title] Directions" value:@"localized string not found" table:0];
 LABEL_6:
-    v13 = v12;
+    v13 = name;
     goto LABEL_7;
   }
 
@@ -13568,42 +13568,42 @@ LABEL_14:
   else
   {
     v20 = +[UIDevice currentDevice];
-    v21 = [v20 userInterfaceIdiom];
+    userInterfaceIdiom2 = [v20 userInterfaceIdiom];
 
-    if (v21 != 5)
+    if (userInterfaceIdiom2 != 5)
     {
       goto LABEL_23;
     }
   }
 
-  v22 = [(ActionCoordinator *)self currentSearchSession];
+  currentSearchSession = [(ActionCoordinator *)self currentSearchSession];
 
-  if (v22)
+  if (currentSearchSession)
   {
-    v23 = [(ActionCoordinator *)self currentSearchSession];
-    v24 = [v23 searchInfo];
-    v25 = [v24 headerDisplayName];
-    v26 = v25;
-    if (v25)
+    currentSearchSession2 = [(ActionCoordinator *)self currentSearchSession];
+    searchInfo = [currentSearchSession2 searchInfo];
+    headerDisplayName = [searchInfo headerDisplayName];
+    v26 = headerDisplayName;
+    if (headerDisplayName)
     {
-      v22 = v25;
+      currentSearchSession = headerDisplayName;
     }
 
     else
     {
-      v27 = [(ActionCoordinator *)self currentSearchSession];
-      v28 = [v27 searchFieldItem];
-      v22 = [v28 title];
+      currentSearchSession3 = [(ActionCoordinator *)self currentSearchSession];
+      searchFieldItem = [currentSearchSession3 searchFieldItem];
+      currentSearchSession = [searchFieldItem title];
     }
   }
 
-  v29 = [(ActionCoordinator *)self mapView];
-  [v29 centerCoordinate];
+  mapView = [(ActionCoordinator *)self mapView];
+  [mapView centerCoordinate];
   v31 = v30;
   v33 = v32;
 
-  v34 = [(ActionCoordinator *)self mapView];
-  [v34 visibleMapRect];
+  mapView2 = [(ActionCoordinator *)self mapView];
+  [mapView2 visibleMapRect];
   v36 = v35;
   v38 = v37;
   v40 = v39;
@@ -13615,48 +13615,48 @@ LABEL_14:
   v46[1] = 3221225472;
   v46[2] = sub_100928538;
   v46[3] = &unk_10162E528;
-  v47 = v22;
-  v48 = v4;
+  v47 = currentSearchSession;
+  v48 = completionCopy;
   v49 = v36;
   v50 = v38;
   v51 = v40;
   v52 = v42;
-  v45 = v22;
+  v45 = currentSearchSession;
   [v43 reverseGeocodeLocation:v44 completionHandler:v46];
 
 LABEL_23:
 }
 
-- (void)setCurrentTransitLineItem:(id)a3 zoomToMapRegion:(BOOL)a4 preferredLayout:(unint64_t)a5
+- (void)setCurrentTransitLineItem:(id)item zoomToMapRegion:(BOOL)region preferredLayout:(unint64_t)layout
 {
-  v6 = a4;
-  v10 = a3;
-  v8 = [(ActionCoordinator *)self currentTransitLineItem];
+  regionCopy = region;
+  itemCopy = item;
+  currentTransitLineItem = [(ActionCoordinator *)self currentTransitLineItem];
 
-  v9 = v10;
-  if (v8 != v10)
+  v9 = itemCopy;
+  if (currentTransitLineItem != itemCopy)
   {
-    [(ActionCoordinator *)self viewController:0 selectTransitLineItem:v10 zoomToMapRegion:v6 preferredLayout:a5];
-    v9 = v10;
+    [(ActionCoordinator *)self viewController:0 selectTransitLineItem:itemCopy zoomToMapRegion:regionCopy preferredLayout:layout];
+    v9 = itemCopy;
   }
 }
 
-- (void)setCurrentDirectionItem:(id)a3 withOptions:(id)a4
+- (void)setCurrentDirectionItem:(id)item withOptions:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  optionsCopy = options;
   if (self->_routePlanningDataCoordinator)
   {
-    if (self->_currentDirectionItem != v7)
+    if (self->_currentDirectionItem != itemCopy)
     {
-      objc_storeStrong(&self->_currentDirectionItem, a3);
+      objc_storeStrong(&self->_currentDirectionItem, item);
       if ([self->_currentDirectionItem isVenueItem])
       {
-        v9 = [(ActionCoordinator *)self venueCardCoordinator];
-        [v9 pushVenueCardItem:self->_currentDirectionItem source:4];
+        venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+        [venueCardCoordinator pushVenueCardItem:self->_currentDirectionItem source:4];
       }
 
-      [(ActionCoordinator *)self viewController:0 doDirectionItem:self->_currentDirectionItem withUserInfo:v8];
+      [(ActionCoordinator *)self viewController:0 doDirectionItem:self->_currentDirectionItem withUserInfo:optionsCopy];
     }
   }
 
@@ -13688,50 +13688,50 @@ LABEL_23:
   }
 }
 
-- (void)restoreSearchForItem:(id)a3 withResults:(id)a4 sessionOrigin:(unint64_t)a5
+- (void)restoreSearchForItem:(id)item withResults:(id)results sessionOrigin:(unint64_t)origin
 {
-  v9 = a3;
-  v8 = a4;
-  if (([v8 isSearchAlongRoute] & 1) == 0)
+  itemCopy = item;
+  resultsCopy = results;
+  if (([resultsCopy isSearchAlongRoute] & 1) == 0)
   {
-    [(SearchSessionManager *)self->_searchSessionManager restoreSearchForItem:v9 withResults:v8 sessionOrigin:a5];
+    [(SearchSessionManager *)self->_searchSessionManager restoreSearchForItem:itemCopy withResults:resultsCopy sessionOrigin:origin];
   }
 }
 
-- (void)presentSearchAndRestoreSearchItem:(id)a3
+- (void)presentSearchAndRestoreSearchItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(ActionCoordinator *)self clearSearch];
   [(ActionCoordinator *)self presentSearch];
-  v5 = [(ActionCoordinator *)self searchModeViewController];
-  [v5 restoreSearchItem:v4];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController restoreSearchItem:itemCopy];
 }
 
 - (void)endSearchForTesting
 {
-  v2 = [(ActionCoordinator *)self searchModeViewController];
-  [v2 endSearchForTesting];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController endSearchForTesting];
 }
 
 - (void)endSearch
 {
-  v2 = [(ActionCoordinator *)self searchModeViewController];
-  [v2 endSearch];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController endSearch];
 }
 
 - (void)clearSearchPins
 {
-  v2 = [(ActionCoordinator *)self searchPinsManager];
-  [v2 clearSearchPins];
+  searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+  [searchPinsManager clearSearchPins];
 }
 
 - (void)clearSearchIfOriginatedFromWaypointEditor
 {
-  v3 = [(ActionCoordinator *)self searchSessionManager];
-  v4 = [v3 currentSearchSession];
-  v5 = [v4 isAddStopFromWaypointEditor];
+  searchSessionManager = [(ActionCoordinator *)self searchSessionManager];
+  currentSearchSession = [searchSessionManager currentSearchSession];
+  isAddStopFromWaypointEditor = [currentSearchSession isAddStopFromWaypointEditor];
 
-  if (v5)
+  if (isAddStopFromWaypointEditor)
   {
 
     [(ActionCoordinator *)self clearSearch];
@@ -13740,31 +13740,31 @@ LABEL_23:
 
 - (void)clearSearch
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v4 = [v3 floatingControlsPresentationController];
-  [v4 setSearchSession:0];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  floatingControlsPresentationController = [containerViewController floatingControlsPresentationController];
+  [floatingControlsPresentationController setSearchSession:0];
 
   [(SearchSessionManager *)self->_searchSessionManager clearSearchSession];
-  v5 = [(ActionCoordinator *)self searchPinsManager];
-  [v5 clearSearchPins];
+  searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+  [searchPinsManager clearSearchPins];
 
-  v6 = [(ActionCoordinator *)self searchModeViewController];
-  [v6 cleanSearch];
+  searchModeViewController = [(ActionCoordinator *)self searchModeViewController];
+  [searchModeViewController cleanSearch];
 
   v7 = +[MapsOfflineUIHelper sharedHelper];
-  LODWORD(v4) = [v7 isUsingOfflineMaps];
+  LODWORD(floatingControlsPresentationController) = [v7 isUsingOfflineMaps];
 
-  if (v4)
+  if (floatingControlsPresentationController)
   {
-    v8 = [(ActionCoordinator *)self searchModeViewController];
-    [v8 resetOfflineTextSearchSupport];
+    searchModeViewController2 = [(ActionCoordinator *)self searchModeViewController];
+    [searchModeViewController2 resetOfflineTextSearchSupport];
   }
 }
 
 - (void)clearMapSelection
 {
-  v2 = [(ActionCoordinator *)self mapSelectionManager];
-  [v2 clearSelection];
+  mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+  [mapSelectionManager clearSelection];
 }
 
 - (void)dealloc
@@ -13773,7 +13773,7 @@ LABEL_23:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -13787,9 +13787,9 @@ LABEL_23:
   [(ActionCoordinator *)&v5 dealloc];
 }
 
-- (ActionCoordinator)initWithPlatformController:(id)a3
+- (ActionCoordinator)initWithPlatformController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = ActionCoordinator;
   v6 = [(ActionCoordinator *)&v16 init];
@@ -13801,11 +13801,11 @@ LABEL_23:
       *buf = 134349314;
       v18 = v6;
       v19 = 2112;
-      v20 = v5;
+      v20 = controllerCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Initializing with platform controller: %@", buf, 0x16u);
     }
 
-    objc_storeStrong(&v6->_platformController, a3);
+    objc_storeStrong(&v6->_platformController, controller);
     if ((GEOConfigGetBOOL() & 1) == 0)
     {
       v8 = [[RoutePlanningDataCoordinator alloc] initWithPlatformController:v6->_platformController];
@@ -13837,257 +13837,257 @@ LABEL_23:
 
 - (id)traits
 {
-  v2 = [(ActionCoordinator *)self newTraits];
+  newTraits = [(ActionCoordinator *)self newTraits];
 
-  return v2;
+  return newTraits;
 }
 
-- (void)simpleResultsViewContoller:(id)a3 didTapOnAddStopWithSearchResult:(id)a4
+- (void)simpleResultsViewContoller:(id)contoller didTapOnAddStopWithSearchResult:(id)result
 {
   v9 = @"DirectionsSessionInitiatorKey";
   v10 = &off_1016E8048;
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  contollerCopy = contoller;
   v8 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  [(ActionCoordinator *)self viewController:v7 addStopForSearchResult:v6 withUserInfo:v8];
+  [(ActionCoordinator *)self viewController:contollerCopy addStopForSearchResult:resultCopy withUserInfo:v8];
 }
 
-- (void)simpleResultsViewContoller:(id)a3 showUserGeneratedCollection:(id)a4
+- (void)simpleResultsViewContoller:(id)contoller showUserGeneratedCollection:(id)collection
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100A284F0;
   v6[3] = &unk_101661A90;
-  v7 = self;
-  v8 = a3;
-  v5 = v8;
-  [(ActionCoordinator *)v7 viewController:v5 showCollection:a4 completion:v6];
+  selfCopy = self;
+  contollerCopy = contoller;
+  v5 = contollerCopy;
+  [(ActionCoordinator *)selfCopy viewController:v5 showCollection:collection completion:v6];
 }
 
-- (void)simpleResultsViewContoller:(id)a3 showCuratedCollectionsList:(id)a4 title:(id)a5
+- (void)simpleResultsViewContoller:(id)contoller showCuratedCollectionsList:(id)list title:(id)title
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100A285F8;
   v8[3] = &unk_101661A90;
-  v9 = self;
-  v10 = a3;
-  v7 = v10;
-  [(ActionCoordinator *)v9 viewController:v7 showCuratedCollectionsList:a4 usingTitle:a5 usingCollectionIds:0 completion:v8];
+  selfCopy = self;
+  contollerCopy = contoller;
+  v7 = contollerCopy;
+  [(ActionCoordinator *)selfCopy viewController:v7 showCuratedCollectionsList:list usingTitle:title usingCollectionIds:0 completion:v8];
 }
 
-- (void)simpleResultsViewContoller:(id)a3 showCuratedCollection:(id)a4
+- (void)simpleResultsViewContoller:(id)contoller showCuratedCollection:(id)collection
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100A286F8;
   v6[3] = &unk_101661A90;
-  v7 = self;
-  v8 = a3;
-  v5 = v8;
-  [(ActionCoordinator *)v7 viewController:v5 showCuratedCollection:a4 replaceViewController:0 completion:v6];
+  selfCopy = self;
+  contollerCopy = contoller;
+  v5 = contollerCopy;
+  [(ActionCoordinator *)selfCopy viewController:v5 showCuratedCollection:collection replaceViewController:0 completion:v6];
 }
 
-- (void)simpleResultsViewContoller:(id)a3 selectTappableEntry:(id)a4 resultsList:(id)a5
+- (void)simpleResultsViewContoller:(id)contoller selectTappableEntry:(id)entry resultsList:(id)list
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = [[SearchResult alloc] initWithMapItem:v8];
+  listCopy = list;
+  entryCopy = entry;
+  v11 = [[SearchResult alloc] initWithMapItem:entryCopy];
 
-  v9 = [v7 arrayByAddingObject:v11];
+  v9 = [listCopy arrayByAddingObject:v11];
 
-  v10 = [(ActionCoordinator *)self searchPinsManager];
-  [v10 setSearchPins:v9 selectedPin:v11 animated:1];
+  searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+  [searchPinsManager setSearchPins:v9 selectedPin:v11 animated:1];
 }
 
-- (void)simpleResultsViewContoller:(id)a3 selectContainmentParentMapItem:(id)a4 resultsList:(id)a5
+- (void)simpleResultsViewContoller:(id)contoller selectContainmentParentMapItem:(id)item resultsList:(id)list
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = [[SearchResult alloc] initWithMapItem:v8];
+  listCopy = list;
+  itemCopy = item;
+  v11 = [[SearchResult alloc] initWithMapItem:itemCopy];
 
-  v9 = [v7 arrayByAddingObject:v11];
+  v9 = [listCopy arrayByAddingObject:v11];
 
-  v10 = [(ActionCoordinator *)self searchPinsManager];
-  [v10 setSearchPins:v9 selectedPin:v11 animated:1];
+  searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+  [searchPinsManager setSearchPins:v9 selectedPin:v11 animated:1];
 }
 
-- (void)simpleResultsViewContoller:(id)a3 didTapOnFlyoverWithSearchResult:(id)a4
+- (void)simpleResultsViewContoller:(id)contoller didTapOnFlyoverWithSearchResult:(id)result
 {
-  v6 = a3;
-  v7 = [a4 mapItem];
-  [(ActionCoordinator *)self viewController:v6 enterFlyoverForMapItem:v7];
+  contollerCopy = contoller;
+  mapItem = [result mapItem];
+  [(ActionCoordinator *)self viewController:contollerCopy enterFlyoverForMapItem:mapItem];
 }
 
-- (void)simpleResultsViewContoller:(id)a3 didTapOnWebsiteWithSearchResult:(id)a4
+- (void)simpleResultsViewContoller:(id)contoller didTapOnWebsiteWithSearchResult:(id)result
 {
-  v4 = a4;
+  resultCopy = result;
   v7 = +[UIApplication sharedApplication];
-  v5 = [v4 mapItem];
+  mapItem = [resultCopy mapItem];
 
-  v6 = [v5 url];
+  v6 = [mapItem url];
   [v7 openURL:v6 withCompletionHandler:0];
 }
 
-- (void)simpleResultsViewContoller:(id)a3 didTapOnCallWithSearchResult:(id)a4
+- (void)simpleResultsViewContoller:(id)contoller didTapOnCallWithSearchResult:(id)result
 {
-  v8 = [a4 mapItem];
-  v4 = [v8 phoneNumber];
-  v5 = [v4 length];
+  mapItem = [result mapItem];
+  phoneNumber = [mapItem phoneNumber];
+  v5 = [phoneNumber length];
 
   if (v5)
   {
     v6 = +[UIApplication sharedApplication];
-    v7 = [v8 phoneNumber];
-    [v6 callPhoneNumber:v7 completion:0];
+    phoneNumber2 = [mapItem phoneNumber];
+    [v6 callPhoneNumber:phoneNumber2 completion:0];
   }
 }
 
-- (void)simpleResultsViewContoller:(id)a3 didTapOnLookAroundWithSearchResult:(id)a4
+- (void)simpleResultsViewContoller:(id)contoller didTapOnLookAroundWithSearchResult:(id)result
 {
-  v6 = [a4 mapItem];
-  if ([v6 _hasLookAroundStorefront])
+  mapItem = [result mapItem];
+  if ([mapItem _hasLookAroundStorefront])
   {
-    v5 = [MKLookAroundEntryPoint entryPointWithMapItem:v6 wantsCloseUpView:1];
+    v5 = [MKLookAroundEntryPoint entryPointWithMapItem:mapItem wantsCloseUpView:1];
     [(ActionCoordinator *)self enterLookAroundWithEntryPoint:v5 lookAroundView:0 showsFullScreen:1 originFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   }
 }
 
-- (void)simpleResultsViewContoller:(id)a3 selectDirectionItem:(id)a4
+- (void)simpleResultsViewContoller:(id)contoller selectDirectionItem:(id)item
 {
   v9 = @"DirectionsSessionInitiatorKey";
   v10 = &off_1016E8048;
-  v6 = a4;
-  v7 = a3;
+  itemCopy = item;
+  contollerCopy = contoller;
   v8 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  [(ActionCoordinator *)self viewController:v7 doDirectionItem:v6 withUserInfo:v8];
+  [(ActionCoordinator *)self viewController:contollerCopy doDirectionItem:itemCopy withUserInfo:v8];
 }
 
-- (void)simpleResultsViewContoller:(id)a3 selectClusteredLabelMarker:(id)a4
+- (void)simpleResultsViewContoller:(id)contoller selectClusteredLabelMarker:(id)marker
 {
-  v5 = a4;
-  v6 = [(ActionCoordinator *)self mapSelectionManager];
-  [v6 selectLabelMarker:v5 animated:1];
+  markerCopy = marker;
+  mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+  [mapSelectionManager selectLabelMarker:markerCopy animated:1];
 }
 
-- (void)simpleResultsViewContoller:(id)a3 selectSearchResult:(id)a4
+- (void)simpleResultsViewContoller:(id)contoller selectSearchResult:(id)result
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(ActionCoordinator *)self venueCardCoordinator];
-  v8 = [v7 topViewController];
+  resultCopy = result;
+  contollerCopy = contoller;
+  venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+  topViewController = [venueCardCoordinator topViewController];
 
-  if (v8 == v6)
+  if (topViewController == contollerCopy)
   {
-    [(ActionCoordinator *)self viewController:0 presentVenuesClusteredSearchResult:v10];
+    [(ActionCoordinator *)self viewController:0 presentVenuesClusteredSearchResult:resultCopy];
   }
 
   else
   {
-    v9 = [(ActionCoordinator *)self mapSelectionManager];
-    [v9 selectSearchResult:v10 animated:1];
+    mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+    [mapSelectionManager selectSearchResult:resultCopy animated:1];
   }
 }
 
 - (id)traitsForQuickActionPresenter
 {
-  v2 = [(ActionCoordinator *)self newTraits];
+  newTraits = [(ActionCoordinator *)self newTraits];
 
-  return v2;
+  return newTraits;
 }
 
 - (id)allSearchResultsForCurrentPinsOnMap
 {
-  v2 = [(ActionCoordinator *)self searchPinsManager];
-  v3 = [v2 allSearchResults];
+  searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+  allSearchResults = [searchPinsManager allSearchResults];
 
-  return v3;
+  return allSearchResults;
 }
 
-- (void)selectSearchResult:(id)a3 animated:(BOOL)a4
+- (void)selectSearchResult:(id)result animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(ActionCoordinator *)self mapSelectionManager];
-  [v7 selectSearchResult:v6 animated:v4];
+  animatedCopy = animated;
+  resultCopy = result;
+  mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+  [mapSelectionManager selectSearchResult:resultCopy animated:animatedCopy];
 }
 
-- (void)enterRouteCreationWithMapItem:(id)a3 completion:(id)a4
+- (void)enterRouteCreationWithMapItem:(id)item completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ActionCoordinator *)self appCoordinator];
-  [v8 enterRouteCreationWithMapItem:v7 completion:v6];
+  completionCopy = completion;
+  itemCopy = item;
+  appCoordinator = [(ActionCoordinator *)self appCoordinator];
+  [appCoordinator enterRouteCreationWithMapItem:itemCopy completion:completionCopy];
 }
 
-- (void)setSearchPins:(id)a3 selectedPin:(id)a4 animated:(BOOL)a5
+- (void)setSearchPins:(id)pins selectedPin:(id)pin animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(ActionCoordinator *)self searchPinsManager];
-  [v10 setSearchPins:v9 selectedPin:v8 animated:v5];
+  animatedCopy = animated;
+  pinCopy = pin;
+  pinsCopy = pins;
+  searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+  [searchPinsManager setSearchPins:pinsCopy selectedPin:pinCopy animated:animatedCopy];
 }
 
-- (void)setSearchPinsFromSearchInfo:(id)a3 scrollToResults:(BOOL)a4 displayPlaceCardForResult:(id)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)setSearchPinsFromSearchInfo:(id)info scrollToResults:(BOOL)results displayPlaceCardForResult:(id)result animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a6;
-  v9 = a4;
-  v12 = a7;
-  v13 = a5;
-  v14 = a3;
-  v15 = [(ActionCoordinator *)self searchPinsManager];
-  [v15 setSearchPinsFromSearchInfo:v14 scrollToResults:v9 displayPlaceCardForResult:v13 animated:v7 completion:v12];
+  animatedCopy = animated;
+  resultsCopy = results;
+  completionCopy = completion;
+  resultCopy = result;
+  infoCopy = info;
+  searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+  [searchPinsManager setSearchPinsFromSearchInfo:infoCopy scrollToResults:resultsCopy displayPlaceCardForResult:resultCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)lineCardViewControllerDidAppear:(id)a3
+- (void)lineCardViewControllerDidAppear:(id)appear
 {
-  v8 = a3;
-  v4 = [(ActionCoordinator *)self lineSelectionAction];
-  v5 = [v8 lineItem];
-  v6 = [v4 isShowingLineForLineItem:v5];
+  appearCopy = appear;
+  lineSelectionAction = [(ActionCoordinator *)self lineSelectionAction];
+  lineItem = [appearCopy lineItem];
+  v6 = [lineSelectionAction isShowingLineForLineItem:lineItem];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [v8 lineItem];
-    [(ActionCoordinator *)self viewController:v8 selectTransitLineItem:v7 zoomToMapRegion:0];
+    lineItem2 = [appearCopy lineItem];
+    [(ActionCoordinator *)self viewController:appearCopy selectTransitLineItem:lineItem2 zoomToMapRegion:0];
   }
 }
 
-- (void)lineCardViewController:(id)a3 displayMapRegion:(id)a4
+- (void)lineCardViewController:(id)controller displayMapRegion:(id)region
 {
-  v5 = a4;
-  v6 = [(ActionCoordinator *)self mapCameraController];
-  [v6 displayMapRegion:v5 animated:1 completion:0];
+  regionCopy = region;
+  mapCameraController = [(ActionCoordinator *)self mapCameraController];
+  [mapCameraController displayMapRegion:regionCopy animated:1 completion:0];
 }
 
-- (void)lineCardViewController:(id)a3 selectMapItem:(id)a4
+- (void)lineCardViewController:(id)controller selectMapItem:(id)item
 {
-  v6 = a4;
-  [(ActionCoordinator *)self viewController:a3 selectMapItem:v6 address:0 addToHistory:1 source:4];
-  v7 = [(ActionCoordinator *)self mapCameraController];
-  [v7 frameMapItem:v6 animated:1 completion:0];
+  itemCopy = item;
+  [(ActionCoordinator *)self viewController:controller selectMapItem:itemCopy address:0 addToHistory:1 source:4];
+  mapCameraController = [(ActionCoordinator *)self mapCameraController];
+  [mapCameraController frameMapItem:itemCopy animated:1 completion:0];
 }
 
-- (void)lineCardViewController:(id)a3 doDirectionItem:(id)a4
+- (void)lineCardViewController:(id)controller doDirectionItem:(id)item
 {
   v9 = @"DirectionsSessionInitiatorKey";
   v10 = &off_1016EAB08;
-  v6 = a4;
-  v7 = a3;
+  itemCopy = item;
+  controllerCopy = controller;
   v8 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  [(ActionCoordinator *)self viewController:v7 doDirectionItem:v6 withUserInfo:v8];
+  [(ActionCoordinator *)self viewController:controllerCopy doDirectionItem:itemCopy withUserInfo:v8];
 }
 
-- (BOOL)chromeShouldAllowSelectingAnnotationView:(id)a3
+- (BOOL)chromeShouldAllowSelectingAnnotationView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 isVLFPuckVisible])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [viewCopy isVLFPuckVisible])
   {
-    v5 = [(ActionCoordinator *)self platformController];
-    v6 = [v5 auxiliaryTasksManager];
-    v7 = [v6 auxilaryTaskForClass:objc_opt_class()];
+    platformController = [(ActionCoordinator *)self platformController];
+    auxiliaryTasksManager = [platformController auxiliaryTasksManager];
+    v7 = [auxiliaryTasksManager auxilaryTaskForClass:objc_opt_class()];
 
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -14108,17 +14108,17 @@ LABEL_23:
   return v9;
 }
 
-- (BOOL)chromeDidSelectOfflineAnnotationMarker:(id)a3
+- (BOOL)chromeDidSelectOfflineAnnotationMarker:(id)marker
 {
-  v4 = a3;
+  markerCopy = marker;
   x = MKMapRectNull.origin.x;
   y = MKMapRectNull.origin.y;
   v35 = y;
-  if ([v4 _maps_isOfflineAnnotation])
+  if ([markerCopy _maps_isOfflineAnnotation])
   {
-    v7 = [v4 featureAnnotation];
-    v8 = [v7 subscription];
-    v9 = [v8 region];
+    featureAnnotation = [markerCopy featureAnnotation];
+    subscription = [featureAnnotation subscription];
+    region = [subscription region];
     GEOMapRectForMapRegion();
     x = v10;
     y = v11;
@@ -14130,17 +14130,17 @@ LABEL_23:
   {
     width = MKMapRectNull.size.width;
     height = MKMapRectNull.size.height;
-    if (![v4 _maps_isOfflineClusterAnnotation])
+    if (![markerCopy _maps_isOfflineClusterAnnotation])
     {
       goto LABEL_14;
     }
 
-    v7 = [v4 clusterFeatureAnnotations];
+    featureAnnotation = [markerCopy clusterFeatureAnnotations];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v16 = [v7 countByEnumeratingWithState:&v36 objects:v40 count:16];
+    v16 = [featureAnnotation countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v16)
     {
       v17 = v16;
@@ -14151,15 +14151,15 @@ LABEL_23:
         {
           if (*v37 != v18)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(featureAnnotation);
           }
 
           v20 = *(*(&v36 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v21 = [v20 subscription];
-            v22 = [v21 region];
+            subscription2 = [v20 subscription];
+            region2 = [subscription2 region];
             GEOMapRectForMapRegion();
             v24 = v23;
             v26 = v25;
@@ -14182,7 +14182,7 @@ LABEL_23:
           }
         }
 
-        v17 = [v7 countByEnumeratingWithState:&v36 objects:v40 count:16];
+        v17 = [featureAnnotation countByEnumeratingWithState:&v36 objects:v40 count:16];
       }
 
       while (v17);
@@ -14192,27 +14192,27 @@ LABEL_23:
 LABEL_14:
   if (x != MKMapRectNull.origin.x || y != v35)
   {
-    v31 = [(ActionCoordinator *)self mapSelectionManager];
-    v32 = [v31 mapView];
-    [v32 setVisibleMapRect:1 edgePadding:x animated:{y, width, height, 35.0, 35.0, 35.0, 35.0}];
+    mapSelectionManager = [(ActionCoordinator *)self mapSelectionManager];
+    mapView = [mapSelectionManager mapView];
+    [mapView setVisibleMapRect:1 edgePadding:x animated:{y, width, height, 35.0, 35.0, 35.0, 35.0}];
 
-    v33 = [(ActionCoordinator *)self mapSelectionManager];
-    [v33 clearSelection];
+    mapSelectionManager2 = [(ActionCoordinator *)self mapSelectionManager];
+    [mapSelectionManager2 clearSelection];
   }
 
   return x != MKMapRectNull.origin.x || y != v35;
 }
 
-- (BOOL)chromeDidSelectRouteAnnotations:(id)a3
+- (BOOL)chromeDidSelectRouteAnnotations:(id)annotations
 {
-  v4 = a3;
-  if ([v4 count])
+  annotationsCopy = annotations;
+  if ([annotationsCopy count])
   {
-    v5 = [v4 firstObject];
-    v6 = [(ActionCoordinator *)self routeAnnotationVC];
-    [v6 setRouteAnnotation:v5];
+    firstObject = [annotationsCopy firstObject];
+    routeAnnotationVC = [(ActionCoordinator *)self routeAnnotationVC];
+    [routeAnnotationVC setRouteAnnotation:firstObject];
 
-    v7 = [v5 styleAttributes];
+    styleAttributes = [firstObject styleAttributes];
     v8 = FeatureStyleAttributesFind();
 
     if (v8)
@@ -14225,12 +14225,12 @@ LABEL_14:
       v9 = 0;
     }
 
-    v10 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-    v11 = [v10 transportType];
+    routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+    transportType = [routePlanningDataCoordinator transportType];
 
-    if (v11 == 5 || v11 == 2)
+    if (transportType == 5 || transportType == 2)
     {
-      if (v11 == 2)
+      if (transportType == 2)
       {
         v12 = 312;
       }
@@ -14241,72 +14241,72 @@ LABEL_14:
       }
 
       v13 = +[MKMapService sharedService];
-      v14 = [(ActionCoordinator *)self currentMapViewTargetForAnalytics];
-      v15 = [v9 stringValue];
-      [v13 captureUserAction:v12 onTarget:v14 eventValue:v15];
+      currentMapViewTargetForAnalytics = [(ActionCoordinator *)self currentMapViewTargetForAnalytics];
+      stringValue = [v9 stringValue];
+      [v13 captureUserAction:v12 onTarget:currentMapViewTargetForAnalytics eventValue:stringValue];
     }
 
-    v16 = [(ActionCoordinator *)self containerViewController];
-    v17 = [v16 currentViewController];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    currentViewController = [containerViewController currentViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v19 = [(ActionCoordinator *)self containerViewController];
-    v20 = [(ActionCoordinator *)self routeAnnotationVC];
+    containerViewController2 = [(ActionCoordinator *)self containerViewController];
+    routeAnnotationVC2 = [(ActionCoordinator *)self routeAnnotationVC];
     if (isKindOfClass)
     {
-      [v19 replaceCurrentWithController:v20 moveToContaineeDefaultLayout:1];
+      [containerViewController2 replaceCurrentWithController:routeAnnotationVC2 moveToContaineeDefaultLayout:1];
     }
 
     else
     {
-      [v19 presentController:v20 animated:1 useDefaultContaineeLayout:1];
+      [containerViewController2 presentController:routeAnnotationVC2 animated:1 useDefaultContaineeLayout:1];
     }
   }
 
   return 1;
 }
 
-- (BOOL)chromeDidSelectETAMarkerForRoute:(id)a3
+- (BOOL)chromeDidSelectETAMarkerForRoute:(id)route
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self routePlanningDataCoordinator];
-  [v5 updateCurrentRoute:v4];
+  routeCopy = route;
+  routePlanningDataCoordinator = [(ActionCoordinator *)self routePlanningDataCoordinator];
+  [routePlanningDataCoordinator updateCurrentRoute:routeCopy];
 
   [(ActionCoordinator *)self presentRoutePlanningViewType:0];
   v6 = +[MKMapService sharedService];
-  v7 = [(ActionCoordinator *)self currentMapViewTargetForAnalytics];
-  v8 = [v4 _maps_routeIndex];
+  currentMapViewTargetForAnalytics = [(ActionCoordinator *)self currentMapViewTargetForAnalytics];
+  _maps_routeIndex = [routeCopy _maps_routeIndex];
 
-  [v6 captureUserAction:3015 onTarget:v7 eventValue:0 routeIndex:v8];
+  [v6 captureUserAction:3015 onTarget:currentMapViewTargetForAnalytics eventValue:0 routeIndex:_maps_routeIndex];
   return 1;
 }
 
-- (BOOL)chromeDidSelectTrafficIncident:(id)a3 latitude:(id)a4 longitude:(id)a5
+- (BOOL)chromeDidSelectTrafficIncident:(id)incident latitude:(id)latitude longitude:(id)longitude
 {
-  v6 = a3;
-  v7 = [(ActionCoordinator *)self trafficIncidentVC];
-  [v7 updateWithIncident:v6];
+  incidentCopy = incident;
+  trafficIncidentVC = [(ActionCoordinator *)self trafficIncidentVC];
+  [trafficIncidentVC updateWithIncident:incidentCopy];
 
-  v8 = [(ActionCoordinator *)self containerViewController];
-  v9 = [v8 currentViewController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v11 = [(ActionCoordinator *)self containerViewController];
-  v12 = [(ActionCoordinator *)self trafficIncidentVC];
+  containerViewController2 = [(ActionCoordinator *)self containerViewController];
+  trafficIncidentVC2 = [(ActionCoordinator *)self trafficIncidentVC];
   if (isKindOfClass)
   {
-    [v11 replaceCurrentWithController:v12 moveToContaineeDefaultLayout:1];
+    [containerViewController2 replaceCurrentWithController:trafficIncidentVC2 moveToContaineeDefaultLayout:1];
   }
 
   else
   {
-    [v11 presentController:v12 animated:1 useDefaultContaineeLayout:1];
+    [containerViewController2 presentController:trafficIncidentVC2 animated:1 useDefaultContaineeLayout:1];
   }
 
   v13 = +[MKMapService sharedService];
-  v14 = +[MKTrafficSupport GEOTrafficIncidentTypeForVKTrafficIncidentType:](MKTrafficSupport, "GEOTrafficIncidentTypeForVKTrafficIncidentType:", [v6 type]);
+  v14 = +[MKTrafficSupport GEOTrafficIncidentTypeForVKTrafficIncidentType:](MKTrafficSupport, "GEOTrafficIncidentTypeForVKTrafficIncidentType:", [incidentCopy type]);
   if (v14 >= 0x14)
   {
     v15 = [NSString stringWithFormat:@"(unknown: %i)", v14];
@@ -14322,60 +14322,60 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)chromeDidSelectTransitLineMarker:(id)a3
+- (BOOL)chromeDidSelectTransitLineMarker:(id)marker
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self lineSelectionAction];
+  markerCopy = marker;
+  lineSelectionAction = [(ActionCoordinator *)self lineSelectionAction];
 
-  if (!v5)
+  if (!lineSelectionAction)
   {
     v6 = [TransitLineSelectionActionController alloc];
-    v7 = [(ActionCoordinator *)self containerViewController];
-    v8 = [(TransitLineSelectionActionController *)v6 initWithContainerViewController:v7 actionCoordinator:self];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    v8 = [(TransitLineSelectionActionController *)v6 initWithContainerViewController:containerViewController actionCoordinator:self];
     [(ActionCoordinator *)self setLineSelectionAction:v8];
   }
 
-  v9 = [(ActionCoordinator *)self lineSelectionAction];
-  v10 = [v9 isShowingLineForLabelMarker:v4];
+  lineSelectionAction2 = [(ActionCoordinator *)self lineSelectionAction];
+  v10 = [lineSelectionAction2 isShowingLineForLabelMarker:markerCopy];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(ActionCoordinator *)self lineCardVC];
-    v12 = [v4 _maps_numLines];
-    v13 = v12 > 1;
-    v14 = [v4 _maps_loadedLineItems];
+    lineCardVC = [(ActionCoordinator *)self lineCardVC];
+    _maps_numLines = [markerCopy _maps_numLines];
+    v13 = _maps_numLines > 1;
+    _maps_loadedLineItems = [markerCopy _maps_loadedLineItems];
 
     v31 = 0;
     v32 = &v31;
     v33 = 0x2020000000;
     v34 = 0;
-    v15 = v12 < 2 && v14 == 0;
+    v15 = _maps_numLines < 2 && _maps_loadedLineItems == 0;
     v16 = v15;
     if (v15)
     {
-      v17 = [[IncompleteTransitLineItem alloc] initWithLabelMarker:v4];
-      [(ActionCoordinator *)self presentLineCardForItem:v17 labelMarker:v4 loading:1 overDisambiguation:v12 > 1 preferredLayout:0];
+      v17 = [[IncompleteTransitLineItem alloc] initWithLabelMarker:markerCopy];
+      [(ActionCoordinator *)self presentLineCardForItem:v17 labelMarker:markerCopy loading:1 overDisambiguation:_maps_numLines > 1 preferredLayout:0];
 
-      v18 = [v11 lineItem];
-      v19 = [v18 muid];
-      v32[3] = v19;
+      lineItem = [lineCardVC lineItem];
+      muid = [lineItem muid];
+      v32[3] = muid;
     }
 
-    v20 = [(ActionCoordinator *)self lineSelectionAction];
-    v21 = [v4 _maps_lineShouldZoomMapRegionOnSelection];
+    lineSelectionAction3 = [(ActionCoordinator *)self lineSelectionAction];
+    _maps_lineShouldZoomMapRegionOnSelection = [markerCopy _maps_lineShouldZoomMapRegionOnSelection];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_100F7B288;
     v25[3] = &unk_10165EDF8;
     v25[4] = self;
     v29 = v13;
-    v22 = v4;
+    v22 = markerCopy;
     v26 = v22;
-    v23 = v11;
+    v23 = lineCardVC;
     v27 = v23;
     v28 = &v31;
     v30 = v16;
-    [v20 selectLineForLabelMarker:v22 zoomToMapRegion:v21 onActivation:v25];
+    [lineSelectionAction3 selectLineForLabelMarker:v22 zoomToMapRegion:_maps_lineShouldZoomMapRegionOnSelection onActivation:v25];
 
     [v22 set_maps_lineShouldZoomMapRegionOnSelection:0];
     _Block_object_dispose(&v31, 8);
@@ -14384,14 +14384,14 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)chromeDidSelectFlyoverTourLabelMarker:(id)a3
+- (BOOL)chromeDidSelectFlyoverTourLabelMarker:(id)marker
 {
-  v4 = [a3 flyoverTourIdentifier];
+  flyoverTourIdentifier = [marker flyoverTourIdentifier];
   v5 = +[MKMapService sharedService];
-  v11 = v4;
+  v11 = flyoverTourIdentifier;
   v6 = [NSArray arrayWithObjects:&v11 count:1];
-  v7 = [(ActionCoordinator *)self newTraits];
-  v8 = [v5 ticketForIdentifiers:v6 traits:v7];
+  newTraits = [(ActionCoordinator *)self newTraits];
+  v8 = [v5 ticketForIdentifiers:v6 traits:newTraits];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -14403,17 +14403,17 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)chromeDidSelectWaypointMarkerForAddress:(id)a3
+- (BOOL)chromeDidSelectWaypointMarkerForAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   objc_initWeak(&location, self);
-  v5 = [v4 contact];
+  contact = [addressCopy contact];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100F7B6D0;
   v7[3] = &unk_10165EDD0;
   objc_copyWeak(&v8, &location);
-  [_TtC4Maps22MapsAutocompletePerson autoCompletePersonWithContact:v5 completionHandler:v7];
+  [_TtC4Maps22MapsAutocompletePerson autoCompletePersonWithContact:contact completionHandler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -14421,24 +14421,24 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)chromeDidSelectWaypointMarkerForFindMyHandleIdentifier:(id)a3
+- (BOOL)chromeDidSelectWaypointMarkerForFindMyHandleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ActionCoordinator *)self currentSearchSession];
-  v6 = [v5 searchInfo];
+  identifierCopy = identifier;
+  currentSearchSession = [(ActionCoordinator *)self currentSearchSession];
+  searchInfo = [currentSearchSession searchInfo];
 
-  v7 = [v6 autocompletePerson];
-  v8 = [v7 handle];
-  v9 = [v8 handle];
-  v10 = [v9 handleIdentifier];
-  if (![v4 isEqualToString:v10])
+  autocompletePerson = [searchInfo autocompletePerson];
+  handle = [autocompletePerson handle];
+  v8Handle = [handle handle];
+  handleIdentifier = [v8Handle handleIdentifier];
+  if (![identifierCopy isEqualToString:handleIdentifier])
   {
 
     goto LABEL_7;
   }
 
-  v11 = [v6 results];
-  v12 = [v11 count];
+  results = [searchInfo results];
+  v12 = [results count];
 
   if (!v12)
   {
@@ -14448,7 +14448,7 @@ LABEL_7:
     v18[1] = 3221225472;
     v18[2] = sub_100F7BAB0;
     v18[3] = &unk_10165EDA8;
-    v19 = v4;
+    v19 = identifierCopy;
     objc_copyWeak(&v20, buf);
     [_TtC4Maps22MapsAutocompletePerson autoCompletePersonWithHandleIdentifier:v19 completionHandler:v18];
     objc_destroyWeak(&v20);
@@ -14457,16 +14457,16 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v13 = [(ActionCoordinator *)self searchPinsManager];
-  v14 = [v6 results];
-  v15 = [v14 firstObject];
-  [v13 setSearchPinsFromSearchInfo:v6 scrollToResults:1 displayPlaceCardForResult:v15 animated:1 completion:0];
+  searchPinsManager = [(ActionCoordinator *)self searchPinsManager];
+  results2 = [searchInfo results];
+  firstObject = [results2 firstObject];
+  [searchPinsManager setSearchPinsFromSearchInfo:searchInfo scrollToResults:1 displayPlaceCardForResult:firstObject animated:1 completion:0];
 
   v16 = sub_100798A3C();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v4;
+    v22 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Using the same search session to select a waypoint: %@", buf, 0xCu);
   }
 
@@ -14474,67 +14474,67 @@ LABEL_8:
   return 1;
 }
 
-- (BOOL)chromeDidSelectRouteWaypointMarker:(id)a3
+- (BOOL)chromeDidSelectRouteWaypointMarker:(id)marker
 {
-  v4 = a3;
+  markerCopy = marker;
   v5 = [MKMapItemIdentifier alloc];
-  v6 = [v4 featureID];
-  [v4 coordinate];
+  featureID = [markerCopy featureID];
+  [markerCopy coordinate];
   v8 = v7;
-  [v4 coordinate];
-  v9 = [v5 initWithMUID:v6 resultProviderID:0 coordinate:v8];
+  [markerCopy coordinate];
+  v9 = [v5 initWithMUID:featureID resultProviderID:0 coordinate:v8];
   v10 = +[MKMapService sharedService];
   v19 = v9;
   v11 = [NSArray arrayWithObjects:&v19 count:1];
-  v12 = [(ActionCoordinator *)self newTraits];
-  v13 = [v10 ticketForIdentifiers:v11 traits:v12];
+  newTraits = [(ActionCoordinator *)self newTraits];
+  v13 = [v10 ticketForIdentifiers:v11 traits:newTraits];
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100F7BE24;
   v16[3] = &unk_10165FE18;
-  v17 = v4;
-  v18 = self;
-  v14 = v4;
+  v17 = markerCopy;
+  selfCopy = self;
+  v14 = markerCopy;
   [v13 submitWithHandler:v16 networkActivity:0];
 
   return 1;
 }
 
-- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)a3
+- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [v4 parkedCar];
-  if (v5)
+  annotationCopy = annotation;
+  parkedCar = [annotationCopy parkedCar];
+  if (parkedCar)
   {
 
-    v6 = 0;
+    searchResult = 0;
 LABEL_3:
-    v7 = [v4 personalizedItem];
-    [(ActionCoordinator *)self viewController:0 selectPersonalizedItem:v7 source:1 saveSelectionState:0];
+    personalizedItem = [annotationCopy personalizedItem];
+    [(ActionCoordinator *)self viewController:0 selectPersonalizedItem:personalizedItem source:1 saveSelectionState:0];
 
     goto LABEL_4;
   }
 
-  v6 = [v4 searchResult];
-  if (!v6)
+  searchResult = [annotationCopy searchResult];
+  if (!searchResult)
   {
     goto LABEL_3;
   }
 
-  v9 = [(ActionCoordinator *)self venueCardCoordinator];
-  v10 = [v9 topViewController];
-  v11 = [(ActionCoordinator *)self currentViewController];
-  v12 = v11;
-  if (v10 == v11)
+  venueCardCoordinator = [(ActionCoordinator *)self venueCardCoordinator];
+  topViewController = [venueCardCoordinator topViewController];
+  currentViewController = [(ActionCoordinator *)self currentViewController];
+  v12 = currentViewController;
+  if (topViewController == currentViewController)
   {
-    v13 = [(ActionCoordinator *)self currentViewController];
+    currentViewController2 = [(ActionCoordinator *)self currentViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      [(ActionCoordinator *)self viewController:0 presentVenuesClusteredSearchResult:v6];
+      [(ActionCoordinator *)self viewController:0 presentVenuesClusteredSearchResult:searchResult];
       goto LABEL_4;
     }
   }
@@ -14543,19 +14543,19 @@ LABEL_3:
   {
   }
 
-  if ([v6 type] == 3)
+  if ([searchResult type] == 3)
   {
     goto LABEL_3;
   }
 
-  v15 = [(ActionCoordinator *)self currentSearchSession];
-  if ([v15 singleResultMode])
+  currentSearchSession = [(ActionCoordinator *)self currentSearchSession];
+  if ([currentSearchSession singleResultMode])
   {
-    v16 = [(ActionCoordinator *)self currentSearchSession];
-    v17 = [v16 searchFieldItem];
-    v18 = [v17 searchResult];
+    currentSearchSession2 = [(ActionCoordinator *)self currentSearchSession];
+    searchFieldItem = [currentSearchSession2 searchFieldItem];
+    searchResult2 = [searchFieldItem searchResult];
 
-    if (v18 == v6)
+    if (searchResult2 == searchResult)
     {
       goto LABEL_4;
     }
@@ -14565,16 +14565,16 @@ LABEL_3:
   {
   }
 
-  v19 = [v6 autocompletePerson];
-  if (v19)
+  autocompletePerson = [searchResult autocompletePerson];
+  if (autocompletePerson)
   {
   }
 
   else
   {
-    v20 = [v6 findMyHandle];
+    findMyHandle = [searchResult findMyHandle];
 
-    if (!v20)
+    if (!findMyHandle)
     {
       v21 = 1;
       goto LABEL_19;
@@ -14583,16 +14583,16 @@ LABEL_3:
 
   v21 = 0;
 LABEL_19:
-  if ([v6 locationType] == 4)
+  if ([searchResult locationType] == 4)
   {
     v22 = +[MKMapService sharedService];
     [v22 captureUserAction:404 onTarget:502 eventValue:0];
   }
 
-  v23 = [(ActionCoordinator *)self containerViewController];
-  if (sub_10000FA08(v23) == 5)
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  if (sub_10000FA08(containerViewController) == 5)
   {
-    v24 = [(ActionCoordinator *)self currentViewController];
+    currentViewController3 = [(ActionCoordinator *)self currentViewController];
     objc_opt_class();
     v25 = objc_opt_isKindOfClass();
 
@@ -14613,7 +14613,7 @@ LABEL_19:
     v26 = 1;
   }
 
-  [(ActionCoordinator *)self viewController:0 selectSearchResult:v6 addToHistory:v21 source:v26 saveSelectionState:0 replaceCurrentCard:1];
+  [(ActionCoordinator *)self viewController:0 selectSearchResult:searchResult addToHistory:v21 source:v26 saveSelectionState:0 replaceCurrentCard:1];
 LABEL_4:
 
   return 1;
@@ -14621,14 +14621,14 @@ LABEL_4:
 
 - (BOOL)chromeDidClearMapSelection
 {
-  v3 = [(ActionCoordinator *)self containerViewController];
-  v4 = [v3 currentOrPendingViewController];
+  containerViewController = [(ActionCoordinator *)self containerViewController];
+  currentOrPendingViewController = [containerViewController currentOrPendingViewController];
 
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([currentOrPendingViewController isMemberOfClass:objc_opt_class()])
   {
     if ([(ActionCoordinator *)self shouldDismissPlaceCardOnClearMapSelection])
     {
-      [(ActionCoordinator *)self viewControllerClosed:v4 animated:1];
+      [(ActionCoordinator *)self viewControllerClosed:currentOrPendingViewController animated:1];
     }
   }
 
@@ -14658,9 +14658,9 @@ LABEL_4:
             objc_enumerationMutation(v5);
           }
 
-          if ([v4 isMemberOfClass:{*(*(&v11 + 1) + 8 * i), v11}])
+          if ([currentOrPendingViewController isMemberOfClass:{*(*(&v11 + 1) + 8 * i), v11}])
           {
-            [(ActionCoordinator *)self viewControllerClosed:v4 animated:1];
+            [(ActionCoordinator *)self viewControllerClosed:currentOrPendingViewController animated:1];
             goto LABEL_14;
           }
         }
@@ -14681,82 +14681,82 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)chromeDidSelectUserLocationAnnotation:(id)a3
+- (BOOL)chromeDidSelectUserLocationAnnotation:(id)annotation
 {
-  v4 = [a3 annotation];
-  [(ActionCoordinator *)self viewController:0 selectSearchResult:v4 addToHistory:0 source:1 saveSelectionState:0];
+  annotation = [annotation annotation];
+  [(ActionCoordinator *)self viewController:0 selectSearchResult:annotation addToHistory:0 source:1 saveSelectionState:0];
 
   return 1;
 }
 
-- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)a3
+- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)marker
 {
-  v4 = a3;
+  markerCopy = marker;
   if (GEOConfigGetBOOL() && [(ActionCoordinator *)self isPresentingAddStopSearchResults])
   {
     v5 = [_TtC4Maps36ClusteredResultsContextConfiguration alloc];
-    v6 = [(ActionCoordinator *)self currentSearchSession];
-    v7 = [v6 searchInfo];
-    v8 = [(ClusteredResultsContextConfiguration *)v5 initWithLabelMarker:v4 sortAlphabetically:1 displayDistance:1 originalSearchInfo:v7 currentLocation:0];
+    currentSearchSession = [(ActionCoordinator *)self currentSearchSession];
+    searchInfo = [currentSearchSession searchInfo];
+    v8 = [(ClusteredResultsContextConfiguration *)v5 initWithLabelMarker:markerCopy sortAlphabetically:1 displayDistance:1 originalSearchInfo:searchInfo currentLocation:0];
 
-    v9 = [(ActionCoordinator *)self containerViewController];
-    v10 = [v9 chromeViewController];
-    v11 = [v10 topContext];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    chromeViewController = [containerViewController chromeViewController];
+    topContext = [chromeViewController topContext];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v11 updateWithConfiguration:v8];
+      [topContext updateWithConfiguration:v8];
     }
 
     else
     {
       v12 = [[_TtC4Maps23ClusteredResultsContext alloc] initWithConfiguration:v8];
-      v13 = [(ActionCoordinator *)self containerViewController];
-      v14 = [v13 chromeViewController];
-      [v14 pushContext:v12 animated:1 completion:&stru_10165ED80];
+      containerViewController2 = [(ActionCoordinator *)self containerViewController];
+      chromeViewController2 = [containerViewController2 chromeViewController];
+      [chromeViewController2 pushContext:v12 animated:1 completion:&stru_10165ED80];
     }
   }
 
   else
   {
-    [(ActionCoordinator *)self viewController:0 presentCluster:v4];
+    [(ActionCoordinator *)self viewController:0 presentCluster:markerCopy];
   }
 
   return 1;
 }
 
-- (BOOL)chromeDidSelectClusteredWaypointMarker:(id)a3
+- (BOOL)chromeDidSelectClusteredWaypointMarker:(id)marker
 {
-  v4 = a3;
-  if ([v4 isCluster])
+  markerCopy = marker;
+  if ([markerCopy isCluster])
   {
-    v5 = [v4 clusterWaypointInfos];
-    v6 = [v5 _maps_compactMap:&stru_10165ED60];
+    clusterWaypointInfos = [markerCopy clusterWaypointInfos];
+    v6 = [clusterWaypointInfos _maps_compactMap:&stru_10165ED60];
 
     v7 = [v6 count];
     v8 = v7 != 0;
     if (v7)
     {
-      v9 = [(ActionCoordinator *)self simpleListResultsVC];
-      v10 = [v9 cluster];
+      simpleListResultsVC = [(ActionCoordinator *)self simpleListResultsVC];
+      cluster = [simpleListResultsVC cluster];
 
-      if (v10 != v4)
+      if (cluster != markerCopy)
       {
-        v11 = [(ActionCoordinator *)self simpleListResultsVC];
-        [v11 clearCluster];
+        simpleListResultsVC2 = [(ActionCoordinator *)self simpleListResultsVC];
+        [simpleListResultsVC2 clearCluster];
       }
 
-      v12 = [(ActionCoordinator *)self simpleListResultsVC];
-      [v12 setDisplayDistance:1];
+      simpleListResultsVC3 = [(ActionCoordinator *)self simpleListResultsVC];
+      [simpleListResultsVC3 setDisplayDistance:1];
 
-      v13 = [(ActionCoordinator *)self simpleListResultsVC];
-      v14 = [(ActionCoordinator *)self currentSearchSession];
-      v15 = [v14 searchInfo];
-      [v13 setCluster:v4 sortAlphabetically:0 originalSearchInfo:v15 searchResults:v6];
+      simpleListResultsVC4 = [(ActionCoordinator *)self simpleListResultsVC];
+      currentSearchSession = [(ActionCoordinator *)self currentSearchSession];
+      searchInfo = [currentSearchSession searchInfo];
+      [simpleListResultsVC4 setCluster:markerCopy sortAlphabetically:0 originalSearchInfo:searchInfo searchResults:v6];
 
-      v16 = [(ActionCoordinator *)self simpleListResultsVC];
-      [(ActionCoordinator *)self presentSimpleList:v16];
+      simpleListResultsVC5 = [(ActionCoordinator *)self simpleListResultsVC];
+      [(ActionCoordinator *)self presentSimpleList:simpleListResultsVC5];
     }
   }
 
@@ -14768,18 +14768,18 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)chromeShouldAllowSelectingLabelMarker:(id)a3
+- (BOOL)chromeShouldAllowSelectingLabelMarker:(id)marker
 {
-  v4 = a3;
-  if ([v4 isTransitLine] && -[ActionCoordinator isRoutePlanningPresented](self, "isRoutePlanningPresented") || (objc_msgSend(v4, "waypointInfo"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "waypoint"), v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v7 = objc_opt_isKindOfClass(), v6, v5, (v7 & 1) != 0))
+  markerCopy = marker;
+  if ([markerCopy isTransitLine] && -[ActionCoordinator isRoutePlanningPresented](self, "isRoutePlanningPresented") || (objc_msgSend(markerCopy, "waypointInfo"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "waypoint"), v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v7 = objc_opt_isKindOfClass(), v6, v5, (v7 & 1) != 0))
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(ActionCoordinator *)self containerViewController];
-    v10 = [v9 currentViewController];
+    containerViewController = [(ActionCoordinator *)self containerViewController];
+    currentViewController = [containerViewController currentViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 

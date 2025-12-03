@@ -1,6 +1,6 @@
 @interface SUDelayedNavigationItem
 - (BOOL)leftItemsSupplementBackButton;
-- (SUDelayedNavigationItem)initWithNavigationItem:(id)a3;
+- (SUDelayedNavigationItem)initWithNavigationItem:(id)item;
 - (id)backButtonTitle;
 - (id)leftBarButtonItem;
 - (id)leftBarButtonItems;
@@ -9,34 +9,34 @@
 - (id)rightBarButtonItems;
 - (id)title;
 - (id)titleView;
-- (void)_prepareButtonItemForDisplay:(id)a3;
+- (void)_prepareButtonItemForDisplay:(id)display;
 - (void)_scheduleCommit;
 - (void)commitDelayedChanges;
 - (void)dealloc;
-- (void)setBackButtonTitle:(id)a3;
-- (void)setHidesBackButton:(BOOL)a3;
-- (void)setLeftBarButtonItem:(id)a3 animated:(BOOL)a4;
-- (void)setLeftBarButtonItems:(id)a3 animated:(BOOL)a4;
-- (void)setLeftItemsSupplementBackButton:(BOOL)a3;
-- (void)setRightBarButtonItem:(id)a3 animated:(BOOL)a4;
-- (void)setRightBarButtonItems:(id)a3 animated:(BOOL)a4;
-- (void)setTitle:(id)a3;
-- (void)setTitleView:(id)a3;
-- (void)setTitleView:(id)a3 animated:(BOOL)a4;
+- (void)setBackButtonTitle:(id)title;
+- (void)setHidesBackButton:(BOOL)button;
+- (void)setLeftBarButtonItem:(id)item animated:(BOOL)animated;
+- (void)setLeftBarButtonItems:(id)items animated:(BOOL)animated;
+- (void)setLeftItemsSupplementBackButton:(BOOL)button;
+- (void)setRightBarButtonItem:(id)item animated:(BOOL)animated;
+- (void)setRightBarButtonItems:(id)items animated:(BOOL)animated;
+- (void)setTitle:(id)title;
+- (void)setTitleView:(id)view;
+- (void)setTitleView:(id)view animated:(BOOL)animated;
 @end
 
 @implementation SUDelayedNavigationItem
 
-- (SUDelayedNavigationItem)initWithNavigationItem:(id)a3
+- (SUDelayedNavigationItem)initWithNavigationItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = SUDelayedNavigationItem;
   v6 = [(SUDelayedNavigationItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrappedNavigationItem, a3);
+    objc_storeStrong(&v6->_wrappedNavigationItem, item);
   }
 
   return v7;
@@ -79,9 +79,9 @@
   delayedBackButtonTitle = self->_delayedBackButtonTitle;
   if (delayedBackButtonTitle)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (delayedBackButtonTitle == v5)
+    if (delayedBackButtonTitle == null)
     {
       v6 = 0;
     }
@@ -107,9 +107,9 @@
   delayedLeftBarButtonItems = self->_delayedLeftBarButtonItems;
   if (delayedLeftBarButtonItems)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
 
-    if (delayedLeftBarButtonItems == v11)
+    if (delayedLeftBarButtonItems == null2)
     {
       v18 = v3;
       v17 = 0;
@@ -159,9 +159,9 @@
   delayedRightBarButtonItems = self->_delayedRightBarButtonItems;
   if (delayedRightBarButtonItems)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
 
-    if (delayedRightBarButtonItems == v21)
+    if (delayedRightBarButtonItems == null3)
     {
       v27 = 0;
     }
@@ -209,8 +209,8 @@
   delayedTitle = self->_delayedTitle;
   if (delayedTitle)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
-    if (delayedTitle == v30)
+    null4 = [MEMORY[0x1E695DFB0] null];
+    if (delayedTitle == null4)
     {
       v31 = 0;
     }
@@ -229,8 +229,8 @@
   delayedTitleView = self->_delayedTitleView;
   if (delayedTitleView)
   {
-    v34 = [MEMORY[0x1E695DFB0] null];
-    if (delayedTitleView == v34)
+    null5 = [MEMORY[0x1E695DFB0] null];
+    if (delayedTitleView == null5)
     {
       v35 = 0;
     }
@@ -258,16 +258,16 @@
   delayedBackButtonTitle = self->_delayedBackButtonTitle;
   if (delayedBackButtonTitle)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (delayedBackButtonTitle == v4)
+    if (delayedBackButtonTitle == null)
     {
-      v5 = 0;
+      backButtonTitle = 0;
     }
 
     else
     {
-      v5 = self->_delayedBackButtonTitle;
+      backButtonTitle = self->_delayedBackButtonTitle;
     }
   }
 
@@ -276,18 +276,18 @@
     wrappedNavigationItem = self->_wrappedNavigationItem;
     if (wrappedNavigationItem)
     {
-      v5 = [(SUNavigationItem *)wrappedNavigationItem backButtonTitle];
+      backButtonTitle = [(SUNavigationItem *)wrappedNavigationItem backButtonTitle];
     }
 
     else
     {
       v8.receiver = self;
       v8.super_class = SUDelayedNavigationItem;
-      v5 = [(SUDelayedNavigationItem *)&v8 backButtonTitle];
+      backButtonTitle = [(SUDelayedNavigationItem *)&v8 backButtonTitle];
     }
   }
 
-  return v5;
+  return backButtonTitle;
 }
 
 - (id)leftBarButtonItem
@@ -295,19 +295,19 @@
   delayedLeftBarButtonItems = self->_delayedLeftBarButtonItems;
   if (delayedLeftBarButtonItems)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (delayedLeftBarButtonItems == v4)
+    if (delayedLeftBarButtonItems == null)
     {
-      v5 = 0;
+      leftBarButtonItem = 0;
     }
 
     else
     {
-      v5 = [self->_delayedLeftBarButtonItems count];
-      if (v5)
+      leftBarButtonItem = [self->_delayedLeftBarButtonItems count];
+      if (leftBarButtonItem)
       {
-        v5 = [self->_delayedLeftBarButtonItems objectAtIndex:0];
+        leftBarButtonItem = [self->_delayedLeftBarButtonItems objectAtIndex:0];
       }
     }
   }
@@ -317,18 +317,18 @@
     wrappedNavigationItem = self->_wrappedNavigationItem;
     if (wrappedNavigationItem)
     {
-      v5 = [(SUNavigationItem *)wrappedNavigationItem leftBarButtonItem];
+      leftBarButtonItem = [(SUNavigationItem *)wrappedNavigationItem leftBarButtonItem];
     }
 
     else
     {
       v8.receiver = self;
       v8.super_class = SUDelayedNavigationItem;
-      v5 = [(SUDelayedNavigationItem *)&v8 leftBarButtonItem];
+      leftBarButtonItem = [(SUDelayedNavigationItem *)&v8 leftBarButtonItem];
     }
   }
 
-  return v5;
+  return leftBarButtonItem;
 }
 
 - (id)leftBarButtonItems
@@ -336,16 +336,16 @@
   delayedLeftBarButtonItems = self->_delayedLeftBarButtonItems;
   if (delayedLeftBarButtonItems)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (delayedLeftBarButtonItems == v4)
+    if (delayedLeftBarButtonItems == null)
     {
-      v5 = 0;
+      leftBarButtonItems = 0;
     }
 
     else
     {
-      v5 = [self->_delayedLeftBarButtonItems copy];
+      leftBarButtonItems = [self->_delayedLeftBarButtonItems copy];
     }
   }
 
@@ -354,18 +354,18 @@
     wrappedNavigationItem = self->_wrappedNavigationItem;
     if (wrappedNavigationItem)
     {
-      v5 = [(SUNavigationItem *)wrappedNavigationItem leftBarButtonItems];
+      leftBarButtonItems = [(SUNavigationItem *)wrappedNavigationItem leftBarButtonItems];
     }
 
     else
     {
       v8.receiver = self;
       v8.super_class = SUDelayedNavigationItem;
-      v5 = [(SUDelayedNavigationItem *)&v8 leftBarButtonItems];
+      leftBarButtonItems = [(SUDelayedNavigationItem *)&v8 leftBarButtonItems];
     }
   }
 
-  return v5;
+  return leftBarButtonItems;
 }
 
 - (BOOL)leftItemsSupplementBackButton
@@ -398,19 +398,19 @@
 {
   v8.receiver = self;
   v8.super_class = SUDelayedNavigationItem;
-  v3 = [(SUDelayedNavigationItem *)&v8 navigationBar];
-  v4 = v3;
-  if (v3)
+  navigationBar = [(SUDelayedNavigationItem *)&v8 navigationBar];
+  v4 = navigationBar;
+  if (navigationBar)
   {
-    v5 = v3;
+    navigationBar2 = navigationBar;
   }
 
   else
   {
-    v5 = [(SUNavigationItem *)self->_wrappedNavigationItem navigationBar];
+    navigationBar2 = [(SUNavigationItem *)self->_wrappedNavigationItem navigationBar];
   }
 
-  v6 = v5;
+  v6 = navigationBar2;
 
   return v6;
 }
@@ -420,19 +420,19 @@
   delayedRightBarButtonItems = self->_delayedRightBarButtonItems;
   if (delayedRightBarButtonItems)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (delayedRightBarButtonItems == v4)
+    if (delayedRightBarButtonItems == null)
     {
-      v5 = 0;
+      lastObject = 0;
     }
 
     else
     {
-      v5 = [self->_delayedRightBarButtonItems count];
-      if (v5)
+      lastObject = [self->_delayedRightBarButtonItems count];
+      if (lastObject)
       {
-        v5 = [self->_delayedRightBarButtonItems lastObject];
+        lastObject = [self->_delayedRightBarButtonItems lastObject];
       }
     }
   }
@@ -442,18 +442,18 @@
     wrappedNavigationItem = self->_wrappedNavigationItem;
     if (wrappedNavigationItem)
     {
-      v5 = [(SUNavigationItem *)wrappedNavigationItem rightBarButtonItem];
+      lastObject = [(SUNavigationItem *)wrappedNavigationItem rightBarButtonItem];
     }
 
     else
     {
       v8.receiver = self;
       v8.super_class = SUDelayedNavigationItem;
-      v5 = [(SUDelayedNavigationItem *)&v8 rightBarButtonItem];
+      lastObject = [(SUDelayedNavigationItem *)&v8 rightBarButtonItem];
     }
   }
 
-  return v5;
+  return lastObject;
 }
 
 - (id)rightBarButtonItems
@@ -461,16 +461,16 @@
   delayedRightBarButtonItems = self->_delayedRightBarButtonItems;
   if (delayedRightBarButtonItems)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (delayedRightBarButtonItems == v4)
+    if (delayedRightBarButtonItems == null)
     {
-      v5 = 0;
+      rightBarButtonItems = 0;
     }
 
     else
     {
-      v5 = [self->_delayedRightBarButtonItems copy];
+      rightBarButtonItems = [self->_delayedRightBarButtonItems copy];
     }
   }
 
@@ -479,43 +479,43 @@
     wrappedNavigationItem = self->_wrappedNavigationItem;
     if (wrappedNavigationItem)
     {
-      v5 = [(SUNavigationItem *)wrappedNavigationItem rightBarButtonItems];
+      rightBarButtonItems = [(SUNavigationItem *)wrappedNavigationItem rightBarButtonItems];
     }
 
     else
     {
       v8.receiver = self;
       v8.super_class = SUDelayedNavigationItem;
-      v5 = [(SUDelayedNavigationItem *)&v8 rightBarButtonItems];
+      rightBarButtonItems = [(SUDelayedNavigationItem *)&v8 rightBarButtonItems];
     }
   }
 
-  return v5;
+  return rightBarButtonItems;
 }
 
-- (void)setBackButtonTitle:(id)a3
+- (void)setBackButtonTitle:(id)title
 {
-  v10 = a3;
+  titleCopy = title;
   if ([(SUDelayedNavigationItem *)self shouldDelayChanges])
   {
-    v4 = v10;
-    if (v10)
+    v4 = titleCopy;
+    if (titleCopy)
     {
-      if (self->_delayedBackButtonTitle == v10)
+      if (self->_delayedBackButtonTitle == titleCopy)
       {
         goto LABEL_9;
       }
 
-      v5 = [v10 copy];
+      v5 = [titleCopy copy];
       delayedBackButtonTitle = self->_delayedBackButtonTitle;
       self->_delayedBackButtonTitle = v5;
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       v9 = self->_delayedBackButtonTitle;
-      self->_delayedBackButtonTitle = v8;
+      self->_delayedBackButtonTitle = null;
     }
 
     [(SUDelayedNavigationItem *)self _scheduleCommit];
@@ -523,23 +523,23 @@
 
   else
   {
-    [(SUNavigationItem *)self->_wrappedNavigationItem setBackButtonTitle:v10];
+    [(SUNavigationItem *)self->_wrappedNavigationItem setBackButtonTitle:titleCopy];
     v7 = self->_delayedBackButtonTitle;
     self->_delayedBackButtonTitle = 0;
   }
 
-  v4 = v10;
+  v4 = titleCopy;
 LABEL_9:
 }
 
-- (void)setHidesBackButton:(BOOL)a3
+- (void)setHidesBackButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   if ([(SUDelayedNavigationItem *)self shouldDelayChanges])
   {
-    if (self->_delayedBackButtonHidden != v3)
+    if (self->_delayedBackButtonHidden != buttonCopy)
     {
-      self->_delayedBackButtonHidden = v3;
+      self->_delayedBackButtonHidden = buttonCopy;
 
       [(SUDelayedNavigationItem *)self _scheduleCommit];
     }
@@ -549,17 +549,17 @@ LABEL_9:
   {
     wrappedNavigationItem = self->_wrappedNavigationItem;
 
-    [(SUNavigationItem *)wrappedNavigationItem setHidesBackButton:v3];
+    [(SUNavigationItem *)wrappedNavigationItem setHidesBackButton:buttonCopy];
   }
 }
 
-- (void)setLeftBarButtonItem:(id)a3 animated:(BOOL)a4
+- (void)setLeftBarButtonItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v13 = a3;
+  animatedCopy = animated;
+  itemCopy = item;
   if ([(SUDelayedNavigationItem *)self shouldDelayChanges])
   {
-    if (v13)
+    if (itemCopy)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -573,12 +573,12 @@ LABEL_9:
       v9 = self->_delayedLeftBarButtonItems;
       if (v8)
       {
-        [v9 replaceObjectAtIndex:0 withObject:v13];
+        [v9 replaceObjectAtIndex:0 withObject:itemCopy];
       }
 
       else
       {
-        [v9 addObject:v13];
+        [v9 addObject:itemCopy];
       }
     }
 
@@ -595,9 +595,9 @@ LABEL_9:
 
       else
       {
-        v11 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
         v12 = self->_delayedLeftBarButtonItems;
-        self->_delayedLeftBarButtonItems = v11;
+        self->_delayedLeftBarButtonItems = null;
       }
     }
 
@@ -606,40 +606,40 @@ LABEL_9:
 
   else
   {
-    [(SUNavigationItem *)self->_wrappedNavigationItem setLeftBarButtonItem:v13 animated:v4];
+    [(SUNavigationItem *)self->_wrappedNavigationItem setLeftBarButtonItem:itemCopy animated:animatedCopy];
     v10 = self->_delayedLeftBarButtonItems;
     self->_delayedLeftBarButtonItems = 0;
   }
 }
 
-- (void)setLeftBarButtonItems:(id)a3 animated:(BOOL)a4
+- (void)setLeftBarButtonItems:(id)items animated:(BOOL)animated
 {
-  v4 = a4;
-  v12 = a3;
-  v6 = [(SUDelayedNavigationItem *)self shouldDelayChanges];
+  animatedCopy = animated;
+  itemsCopy = items;
+  shouldDelayChanges = [(SUDelayedNavigationItem *)self shouldDelayChanges];
   wrappedNavigationItem = self->_wrappedNavigationItem;
-  if (v6)
+  if (shouldDelayChanges)
   {
-    v8 = [(SUNavigationItem *)wrappedNavigationItem leftBarButtonItems];
-    if (v8 != v12 && ([v8 isEqualToArray:v12] & 1) == 0)
+    leftBarButtonItems = [(SUNavigationItem *)wrappedNavigationItem leftBarButtonItems];
+    if (leftBarButtonItems != itemsCopy && ([leftBarButtonItems isEqualToArray:itemsCopy] & 1) == 0)
     {
-      if (v12)
+      if (itemsCopy)
       {
-        if (self->_delayedLeftBarButtonItems == v12)
+        if (self->_delayedLeftBarButtonItems == itemsCopy)
         {
           goto LABEL_8;
         }
 
-        v9 = [v12 mutableCopy];
+        v9 = [itemsCopy mutableCopy];
         delayedLeftBarButtonItems = self->_delayedLeftBarButtonItems;
         self->_delayedLeftBarButtonItems = v9;
       }
 
       else
       {
-        v11 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
         delayedLeftBarButtonItems = self->_delayedLeftBarButtonItems;
-        self->_delayedLeftBarButtonItems = v11;
+        self->_delayedLeftBarButtonItems = null;
       }
 
       [(SUDelayedNavigationItem *)self _scheduleCommit];
@@ -648,20 +648,20 @@ LABEL_9:
 
   else
   {
-    [(SUNavigationItem *)wrappedNavigationItem setLeftBarButtonItems:v12 animated:v4];
-    v8 = self->_delayedLeftBarButtonItems;
+    [(SUNavigationItem *)wrappedNavigationItem setLeftBarButtonItems:itemsCopy animated:animatedCopy];
+    leftBarButtonItems = self->_delayedLeftBarButtonItems;
     self->_delayedLeftBarButtonItems = 0;
   }
 
 LABEL_8:
 }
 
-- (void)setLeftItemsSupplementBackButton:(BOOL)a3
+- (void)setLeftItemsSupplementBackButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   if ([(SUDelayedNavigationItem *)self shouldDelayChanges])
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v3];
+    v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:buttonCopy];
     delayedLeftItemsSupplementBackButton = self->_delayedLeftItemsSupplementBackButton;
     self->_delayedLeftItemsSupplementBackButton = v5;
 
@@ -670,19 +670,19 @@ LABEL_8:
 
   else
   {
-    [(SUNavigationItem *)self->_wrappedNavigationItem setLeftItemsSupplementBackButton:v3];
+    [(SUNavigationItem *)self->_wrappedNavigationItem setLeftItemsSupplementBackButton:buttonCopy];
     v7 = self->_delayedLeftItemsSupplementBackButton;
     self->_delayedLeftItemsSupplementBackButton = 0;
   }
 }
 
-- (void)setRightBarButtonItem:(id)a3 animated:(BOOL)a4
+- (void)setRightBarButtonItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v13 = a3;
+  animatedCopy = animated;
+  itemCopy = item;
   if ([(SUDelayedNavigationItem *)self shouldDelayChanges])
   {
-    if (v13)
+    if (itemCopy)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -696,12 +696,12 @@ LABEL_8:
       v9 = self->_delayedRightBarButtonItems;
       if (v8)
       {
-        [v9 replaceObjectAtIndex:0 withObject:v13];
+        [v9 replaceObjectAtIndex:0 withObject:itemCopy];
       }
 
       else
       {
-        [v9 addObject:v13];
+        [v9 addObject:itemCopy];
       }
     }
 
@@ -718,9 +718,9 @@ LABEL_8:
 
       else
       {
-        v11 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
         v12 = self->_delayedRightBarButtonItems;
-        self->_delayedRightBarButtonItems = v11;
+        self->_delayedRightBarButtonItems = null;
       }
     }
 
@@ -729,40 +729,40 @@ LABEL_8:
 
   else
   {
-    [(SUNavigationItem *)self->_wrappedNavigationItem setRightBarButtonItem:v13 animated:v4];
+    [(SUNavigationItem *)self->_wrappedNavigationItem setRightBarButtonItem:itemCopy animated:animatedCopy];
     v10 = self->_delayedRightBarButtonItems;
     self->_delayedRightBarButtonItems = 0;
   }
 }
 
-- (void)setRightBarButtonItems:(id)a3 animated:(BOOL)a4
+- (void)setRightBarButtonItems:(id)items animated:(BOOL)animated
 {
-  v4 = a4;
-  v12 = a3;
-  v6 = [(SUDelayedNavigationItem *)self shouldDelayChanges];
+  animatedCopy = animated;
+  itemsCopy = items;
+  shouldDelayChanges = [(SUDelayedNavigationItem *)self shouldDelayChanges];
   wrappedNavigationItem = self->_wrappedNavigationItem;
-  if (v6)
+  if (shouldDelayChanges)
   {
-    v8 = [(SUNavigationItem *)wrappedNavigationItem rightBarButtonItems];
-    if (v8 != v12 && ([v8 isEqualToArray:v12] & 1) == 0)
+    rightBarButtonItems = [(SUNavigationItem *)wrappedNavigationItem rightBarButtonItems];
+    if (rightBarButtonItems != itemsCopy && ([rightBarButtonItems isEqualToArray:itemsCopy] & 1) == 0)
     {
-      if (v12)
+      if (itemsCopy)
       {
-        if (self->_delayedRightBarButtonItems == v12)
+        if (self->_delayedRightBarButtonItems == itemsCopy)
         {
           goto LABEL_8;
         }
 
-        v9 = [v12 mutableCopy];
+        v9 = [itemsCopy mutableCopy];
         delayedRightBarButtonItems = self->_delayedRightBarButtonItems;
         self->_delayedRightBarButtonItems = v9;
       }
 
       else
       {
-        v11 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
         delayedRightBarButtonItems = self->_delayedRightBarButtonItems;
-        self->_delayedRightBarButtonItems = v11;
+        self->_delayedRightBarButtonItems = null;
       }
 
       [(SUDelayedNavigationItem *)self _scheduleCommit];
@@ -771,75 +771,75 @@ LABEL_8:
 
   else
   {
-    [(SUNavigationItem *)wrappedNavigationItem setRightBarButtonItems:v12 animated:v4];
-    v8 = self->_delayedRightBarButtonItems;
+    [(SUNavigationItem *)wrappedNavigationItem setRightBarButtonItems:itemsCopy animated:animatedCopy];
+    rightBarButtonItems = self->_delayedRightBarButtonItems;
     self->_delayedRightBarButtonItems = 0;
   }
 
 LABEL_8:
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v8 = a3;
+  titleCopy = title;
   if ([(SUDelayedNavigationItem *)self shouldDelayChanges])
   {
-    v4 = v8;
-    if (self->_delayedTitle == v8)
+    v4 = titleCopy;
+    if (self->_delayedTitle == titleCopy)
     {
       goto LABEL_9;
     }
 
-    if (v8)
+    if (titleCopy)
     {
-      v5 = [v8 copy];
+      null = [titleCopy copy];
     }
 
     else
     {
-      v5 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
     delayedTitle = self->_delayedTitle;
-    self->_delayedTitle = v5;
+    self->_delayedTitle = null;
 
     [(SUDelayedNavigationItem *)self _scheduleCommit];
   }
 
   else
   {
-    [(SUNavigationItem *)self->_wrappedNavigationItem setTitle:v8];
+    [(SUNavigationItem *)self->_wrappedNavigationItem setTitle:titleCopy];
     v6 = self->_delayedTitle;
     self->_delayedTitle = 0;
   }
 
-  v4 = v8;
+  v4 = titleCopy;
 LABEL_9:
 }
 
-- (void)setTitleView:(id)a3
+- (void)setTitleView:(id)view
 {
-  v9 = a3;
+  viewCopy = view;
   if ([(SUDelayedNavigationItem *)self shouldDelayChanges])
   {
-    v4 = v9;
-    if (v9)
+    v4 = viewCopy;
+    if (viewCopy)
     {
-      if (self->_delayedTitleView == v9)
+      if (self->_delayedTitleView == viewCopy)
       {
         goto LABEL_9;
       }
 
-      v5 = v9;
+      v5 = viewCopy;
       delayedTitleView = self->_delayedTitleView;
       self->_delayedTitleView = v5;
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       delayedTitleView = self->_delayedTitleView;
-      self->_delayedTitleView = v8;
+      self->_delayedTitleView = null;
     }
 
     [(SUDelayedNavigationItem *)self _scheduleCommit];
@@ -847,39 +847,39 @@ LABEL_9:
 
   else
   {
-    [(SUNavigationItem *)self->_wrappedNavigationItem setTitleView:v9];
+    [(SUNavigationItem *)self->_wrappedNavigationItem setTitleView:viewCopy];
     v7 = self->_delayedTitleView;
     self->_delayedTitleView = 0;
   }
 
-  v4 = v9;
+  v4 = viewCopy;
 LABEL_9:
 }
 
-- (void)setTitleView:(id)a3 animated:(BOOL)a4
+- (void)setTitleView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v11 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   if ([(SUDelayedNavigationItem *)self shouldDelayChanges])
   {
-    v6 = v11;
-    if (v11)
+    v6 = viewCopy;
+    if (viewCopy)
     {
-      if (self->_delayedTitleView == v11)
+      if (self->_delayedTitleView == viewCopy)
       {
         goto LABEL_9;
       }
 
-      v7 = v11;
+      v7 = viewCopy;
       delayedTitleView = self->_delayedTitleView;
       self->_delayedTitleView = v7;
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       delayedTitleView = self->_delayedTitleView;
-      self->_delayedTitleView = v10;
+      self->_delayedTitleView = null;
     }
 
     [(SUDelayedNavigationItem *)self _scheduleCommit];
@@ -887,12 +887,12 @@ LABEL_9:
 
   else
   {
-    [(UINavigationItem *)self->_wrappedNavigationItem setTitleView:v11 animated:v4];
+    [(UINavigationItem *)self->_wrappedNavigationItem setTitleView:viewCopy animated:animatedCopy];
     v9 = self->_delayedTitleView;
     self->_delayedTitleView = 0;
   }
 
-  v6 = v11;
+  v6 = viewCopy;
 LABEL_9:
 }
 
@@ -901,16 +901,16 @@ LABEL_9:
   delayedTitle = self->_delayedTitle;
   if (delayedTitle)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (delayedTitle == v4)
+    if (delayedTitle == null)
     {
-      v5 = 0;
+      title = 0;
     }
 
     else
     {
-      v5 = self->_delayedTitle;
+      title = self->_delayedTitle;
     }
   }
 
@@ -919,18 +919,18 @@ LABEL_9:
     wrappedNavigationItem = self->_wrappedNavigationItem;
     if (wrappedNavigationItem)
     {
-      v5 = [(SUNavigationItem *)wrappedNavigationItem title];
+      title = [(SUNavigationItem *)wrappedNavigationItem title];
     }
 
     else
     {
       v8.receiver = self;
       v8.super_class = SUDelayedNavigationItem;
-      v5 = [(SUDelayedNavigationItem *)&v8 title];
+      title = [(SUDelayedNavigationItem *)&v8 title];
     }
   }
 
-  return v5;
+  return title;
 }
 
 - (id)titleView
@@ -938,16 +938,16 @@ LABEL_9:
   delayedTitleView = self->_delayedTitleView;
   if (delayedTitleView)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (delayedTitleView == v4)
+    if (delayedTitleView == null)
     {
-      v5 = 0;
+      titleView = 0;
     }
 
     else
     {
-      v5 = self->_delayedTitleView;
+      titleView = self->_delayedTitleView;
     }
   }
 
@@ -956,26 +956,26 @@ LABEL_9:
     wrappedNavigationItem = self->_wrappedNavigationItem;
     if (wrappedNavigationItem)
     {
-      v5 = [(SUNavigationItem *)wrappedNavigationItem titleView];
+      titleView = [(SUNavigationItem *)wrappedNavigationItem titleView];
     }
 
     else
     {
       v8.receiver = self;
       v8.super_class = SUDelayedNavigationItem;
-      v5 = [(SUDelayedNavigationItem *)&v8 titleView];
+      titleView = [(SUDelayedNavigationItem *)&v8 titleView];
     }
   }
 
-  return v5;
+  return titleView;
 }
 
-- (void)_prepareButtonItemForDisplay:(id)a3
+- (void)_prepareButtonItemForDisplay:(id)display
 {
-  v3 = [a3 customView];
-  if ([v3 conformsToProtocol:&unk_1F423BE40])
+  customView = [display customView];
+  if ([customView conformsToProtocol:&unk_1F423BE40])
   {
-    [v3 setDeferringInterfaceUpdates:0];
+    [customView setDeferringInterfaceUpdates:0];
   }
 }
 

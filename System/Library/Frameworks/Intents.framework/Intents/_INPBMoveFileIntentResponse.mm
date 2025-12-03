@@ -1,17 +1,17 @@
 @interface _INPBMoveFileIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBMoveFileIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBMoveFileIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsEntityTypes:(id)a3;
+- (int)StringAsEntityTypes:(id)types;
 - (unint64_t)hash;
-- (void)addEntityName:(id)a3;
-- (void)addEntityType:(int)a3;
+- (void)addEntityName:(id)name;
+- (void)addEntityType:(int)type;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEntityNames:(id)a3;
-- (void)setHasSuccess:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEntityNames:(id)names;
+- (void)setHasSuccess:(BOOL)success;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBMoveFileIntentResponse
@@ -19,14 +19,14 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBMoveFileIntentResponse *)self destinationName];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"destinationName"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  destinationName = [(_INPBMoveFileIntentResponse *)self destinationName];
+  dictionaryRepresentation = [destinationName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"destinationName"];
 
   if ([(NSArray *)self->_entityNames count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -46,8 +46,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -56,7 +56,7 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"entityName"];
+    [dictionary setObject:array forKeyedSubscript:@"entityName"];
   }
 
   if (self->_entityTypes.count)
@@ -86,28 +86,28 @@
       while (v14 < [(_INPBMoveFileIntentResponse *)self entityTypesCount]);
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"entityType"];
+    [dictionary setObject:v13 forKeyedSubscript:@"entityType"];
   }
 
   if ([(_INPBMoveFileIntentResponse *)self hasOverwrite])
   {
     v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBMoveFileIntentResponse overwrite](self, "overwrite")}];
-    [v3 setObject:v17 forKeyedSubscript:@"overwrite"];
+    [dictionary setObject:v17 forKeyedSubscript:@"overwrite"];
   }
 
-  v18 = [(_INPBMoveFileIntentResponse *)self sourceName];
-  v19 = [v18 dictionaryRepresentation];
-  [v3 setObject:v19 forKeyedSubscript:@"sourceName"];
+  sourceName = [(_INPBMoveFileIntentResponse *)self sourceName];
+  dictionaryRepresentation3 = [sourceName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"sourceName"];
 
   if ([(_INPBMoveFileIntentResponse *)self hasSuccess])
   {
     v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBMoveFileIntentResponse success](self, "success")}];
-    [v3 setObject:v20 forKeyedSubscript:@"success"];
+    [dictionary setObject:v20 forKeyedSubscript:@"success"];
   }
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -139,28 +139,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_INPBMoveFileIntentResponse *)self destinationName];
-  v6 = [v4 destinationName];
-  if ((v5 != 0) == (v6 == 0))
+  destinationName = [(_INPBMoveFileIntentResponse *)self destinationName];
+  destinationName2 = [equalCopy destinationName];
+  if ((destinationName != 0) == (destinationName2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_INPBMoveFileIntentResponse *)self destinationName];
-  if (v7)
+  destinationName3 = [(_INPBMoveFileIntentResponse *)self destinationName];
+  if (destinationName3)
   {
-    v8 = v7;
-    v9 = [(_INPBMoveFileIntentResponse *)self destinationName];
-    v10 = [v4 destinationName];
-    v11 = [v9 isEqual:v10];
+    v8 = destinationName3;
+    destinationName4 = [(_INPBMoveFileIntentResponse *)self destinationName];
+    destinationName5 = [equalCopy destinationName];
+    v11 = [destinationName4 isEqual:destinationName5];
 
     if (!v11)
     {
@@ -172,20 +172,20 @@
   {
   }
 
-  v5 = [(_INPBMoveFileIntentResponse *)self entityNames];
-  v6 = [v4 entityNames];
-  if ((v5 != 0) == (v6 == 0))
+  destinationName = [(_INPBMoveFileIntentResponse *)self entityNames];
+  destinationName2 = [equalCopy entityNames];
+  if ((destinationName != 0) == (destinationName2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_INPBMoveFileIntentResponse *)self entityNames];
-  if (v12)
+  entityNames = [(_INPBMoveFileIntentResponse *)self entityNames];
+  if (entityNames)
   {
-    v13 = v12;
-    v14 = [(_INPBMoveFileIntentResponse *)self entityNames];
-    v15 = [v4 entityNames];
-    v16 = [v14 isEqual:v15];
+    v13 = entityNames;
+    entityNames2 = [(_INPBMoveFileIntentResponse *)self entityNames];
+    entityNames3 = [equalCopy entityNames];
+    v16 = [entityNames2 isEqual:entityNames3];
 
     if (!v16)
     {
@@ -202,40 +202,40 @@
     goto LABEL_22;
   }
 
-  v17 = [(_INPBMoveFileIntentResponse *)self hasOverwrite];
-  if (v17 != [v4 hasOverwrite])
+  hasOverwrite = [(_INPBMoveFileIntentResponse *)self hasOverwrite];
+  if (hasOverwrite != [equalCopy hasOverwrite])
   {
     goto LABEL_22;
   }
 
   if ([(_INPBMoveFileIntentResponse *)self hasOverwrite])
   {
-    if ([v4 hasOverwrite])
+    if ([equalCopy hasOverwrite])
     {
       overwrite = self->_overwrite;
-      if (overwrite != [v4 overwrite])
+      if (overwrite != [equalCopy overwrite])
       {
         goto LABEL_22;
       }
     }
   }
 
-  v5 = [(_INPBMoveFileIntentResponse *)self sourceName];
-  v6 = [v4 sourceName];
-  if ((v5 != 0) == (v6 == 0))
+  destinationName = [(_INPBMoveFileIntentResponse *)self sourceName];
+  destinationName2 = [equalCopy sourceName];
+  if ((destinationName != 0) == (destinationName2 == 0))
   {
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  v19 = [(_INPBMoveFileIntentResponse *)self sourceName];
-  if (v19)
+  sourceName = [(_INPBMoveFileIntentResponse *)self sourceName];
+  if (sourceName)
   {
-    v20 = v19;
-    v21 = [(_INPBMoveFileIntentResponse *)self sourceName];
-    v22 = [v4 sourceName];
-    v23 = [v21 isEqual:v22];
+    v20 = sourceName;
+    sourceName2 = [(_INPBMoveFileIntentResponse *)self sourceName];
+    sourceName3 = [equalCopy sourceName];
+    v23 = [sourceName2 isEqual:sourceName3];
 
     if (!v23)
     {
@@ -247,10 +247,10 @@ LABEL_21:
   {
   }
 
-  v26 = [(_INPBMoveFileIntentResponse *)self hasSuccess];
-  if (v26 == [v4 hasSuccess])
+  hasSuccess = [(_INPBMoveFileIntentResponse *)self hasSuccess];
+  if (hasSuccess == [equalCopy hasSuccess])
   {
-    if (!-[_INPBMoveFileIntentResponse hasSuccess](self, "hasSuccess") || ![v4 hasSuccess] || (success = self->_success, success == objc_msgSend(v4, "success")))
+    if (!-[_INPBMoveFileIntentResponse hasSuccess](self, "hasSuccess") || ![equalCopy hasSuccess] || (success = self->_success, success == objc_msgSend(equalCopy, "success")))
     {
       v24 = 1;
       goto LABEL_23;
@@ -264,13 +264,13 @@ LABEL_23:
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBMoveFileIntentResponse allocWithZone:](_INPBMoveFileIntentResponse init];
-  v6 = [(_INPBString *)self->_destinationName copyWithZone:a3];
+  v6 = [(_INPBString *)self->_destinationName copyWithZone:zone];
   [(_INPBMoveFileIntentResponse *)v5 setDestinationName:v6];
 
-  v7 = [(NSArray *)self->_entityNames copyWithZone:a3];
+  v7 = [(NSArray *)self->_entityNames copyWithZone:zone];
   [(_INPBMoveFileIntentResponse *)v5 setEntityNames:v7];
 
   PBRepeatedInt32Copy();
@@ -279,7 +279,7 @@ LABEL_23:
     [(_INPBMoveFileIntentResponse *)v5 setOverwrite:[(_INPBMoveFileIntentResponse *)self overwrite]];
   }
 
-  v8 = [(_INPBString *)self->_sourceName copyWithZone:a3];
+  v8 = [(_INPBString *)self->_sourceName copyWithZone:zone];
   [(_INPBMoveFileIntentResponse *)v5 setSourceName:v8];
 
   if ([(_INPBMoveFileIntentResponse *)self hasSuccess])
@@ -290,28 +290,28 @@ LABEL_23:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBMoveFileIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBMoveFileIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBMoveFileIntentResponse)initWithCoder:(id)a3
+- (_INPBMoveFileIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBMoveFileIntentResponse *)self initWithData:v6];
+    self = [(_INPBMoveFileIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -322,15 +322,15 @@ LABEL_23:
   [(_INPBMoveFileIntentResponse *)&v3 dealloc];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBMoveFileIntentResponse *)self destinationName];
+  toCopy = to;
+  destinationName = [(_INPBMoveFileIntentResponse *)self destinationName];
 
-  if (v5)
+  if (destinationName)
   {
-    v6 = [(_INPBMoveFileIntentResponse *)self destinationName];
+    destinationName2 = [(_INPBMoveFileIntentResponse *)self destinationName];
     PBDataWriterWriteSubmessage();
   }
 
@@ -382,11 +382,11 @@ LABEL_23:
     PBDataWriterWriteBOOLField();
   }
 
-  v16 = [(_INPBMoveFileIntentResponse *)self sourceName];
+  sourceName = [(_INPBMoveFileIntentResponse *)self sourceName];
 
-  if (v16)
+  if (sourceName)
   {
-    v17 = [(_INPBMoveFileIntentResponse *)self sourceName];
+    sourceName2 = [(_INPBMoveFileIntentResponse *)self sourceName];
     PBDataWriterWriteSubmessage();
   }
 
@@ -399,9 +399,9 @@ LABEL_23:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHasSuccess:(BOOL)a3
+- (void)setHasSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 2;
   }
@@ -414,25 +414,25 @@ LABEL_23:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsEntityTypes:(id)a3
+- (int)StringAsEntityTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FILE"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"FILE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"FOLDER"])
+  else if ([typesCopy isEqualToString:@"FOLDER"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"REFERENCE"])
+  else if ([typesCopy isEqualToString:@"REFERENCE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"URL"])
+  else if ([typesCopy isEqualToString:@"URL"])
   {
     v4 = 3;
   }
@@ -445,35 +445,35 @@ LABEL_23:
   return v4;
 }
 
-- (void)addEntityType:(int)a3
+- (void)addEntityType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addEntityName:(id)a3
+- (void)addEntityName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   entityNames = self->_entityNames;
-  v8 = v4;
+  v8 = nameCopy;
   if (!entityNames)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_entityNames;
-    self->_entityNames = v6;
+    self->_entityNames = array;
 
-    v4 = v8;
+    nameCopy = v8;
     entityNames = self->_entityNames;
   }
 
-  [(NSArray *)entityNames addObject:v4];
+  [(NSArray *)entityNames addObject:nameCopy];
 }
 
-- (void)setEntityNames:(id)a3
+- (void)setEntityNames:(id)names
 {
-  v4 = [a3 mutableCopy];
+  v4 = [names mutableCopy];
   entityNames = self->_entityNames;
   self->_entityNames = v4;
 

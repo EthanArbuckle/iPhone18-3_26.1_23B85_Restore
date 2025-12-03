@@ -2,63 +2,63 @@
 - (BOOL)_hasAlbumsOrPlaylists;
 - (BOOL)_isOutOfSpace;
 - (BOOL)_shouldShowProgress;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (NMBridgeSyncedMusicController)init;
 - (PSSpecifier)addMusicSpecifier;
 - (float)_contentHeaderViewProgress;
-- (id)_albumSpecifierWithAlbum:(id)a3;
+- (id)_albumSpecifierWithAlbum:(id)album;
 - (id)_contentHeaderViewSubtitle;
 - (id)_contentHeaderViewTitle;
-- (id)_libraryPersistentIDs:(id)a3 type:(int64_t)a4;
+- (id)_libraryPersistentIDs:(id)ds type:(int64_t)type;
 - (id)_pinnedAlbums;
 - (id)_pinnedPlaylists;
-- (id)_playlistSpecifierWithPlaylist:(id)a3;
-- (id)_recommendationSelected:(id)a3;
-- (id)_recommendationSpecifierWithRecommendation:(id)a3;
+- (id)_playlistSpecifierWithPlaylist:(id)playlist;
+- (id)_recommendationSelected:(id)selected;
+- (id)_recommendationSpecifierWithRecommendation:(id)recommendation;
 - (id)_recommendationsGroup;
 - (id)_selfOrPresentedViewController;
 - (id)_workoutPlaylistID;
 - (id)specifiers;
 - (id)syncInfoController;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (unint64_t)_numberOfAlbums;
 - (unint64_t)_numberOfPlaylists;
 - (unint64_t)_numberOfSongs;
-- (unint64_t)_resolvedProgressViewStateForState:(unint64_t)a3;
+- (unint64_t)_resolvedProgressViewStateForState:(unint64_t)state;
 - (void)_addMusicAction;
-- (void)_completeTransientStateWithModelObject:(id)a3 success:(BOOL)a4;
+- (void)_completeTransientStateWithModelObject:(id)object success:(BOOL)success;
 - (void)_configureHeaderIfNeeded;
 - (void)_disableEditableAndButtonIfNothingLeftToEdit;
-- (void)_getRepresentativeCollectionGrouping:(int64_t *)a3 propertyPredicate:(id *)a4 mediaQuery:(id)a5;
-- (void)_handleApplicationDidEnterBackgroundNotification:(id)a3;
-- (void)_handleApplicationWillEnterForegroundNotification:(id)a3;
-- (void)_handleMusicPinningSelectionsDidChangeNotification:(id)a3;
-- (void)_handleMusicRecommendationsDidUpdateNotification:(id)a3;
-- (void)_handleSubscriptionStatusDidChangeNotification:(id)a3;
-- (void)_handleSyncInfoDidUpdateNotification:(id)a3;
-- (void)_performKeepLocalRequestWithModelObject:(id)a3 enableState:(int64_t)a4;
-- (void)_pinAlbum:(id)a3;
-- (void)_pinPlaylist:(id)a3;
-- (void)_prepareTransientStateWithModelObject:(id)a3 enableState:(int64_t)a4;
-- (void)_presentDownloadWaitingAlertIfNeededWithModelObject:(id)a3;
+- (void)_getRepresentativeCollectionGrouping:(int64_t *)grouping propertyPredicate:(id *)predicate mediaQuery:(id)query;
+- (void)_handleApplicationDidEnterBackgroundNotification:(id)notification;
+- (void)_handleApplicationWillEnterForegroundNotification:(id)notification;
+- (void)_handleMusicPinningSelectionsDidChangeNotification:(id)notification;
+- (void)_handleMusicRecommendationsDidUpdateNotification:(id)notification;
+- (void)_handleSubscriptionStatusDidChangeNotification:(id)notification;
+- (void)_handleSyncInfoDidUpdateNotification:(id)notification;
+- (void)_performKeepLocalRequestWithModelObject:(id)object enableState:(int64_t)state;
+- (void)_pinAlbum:(id)album;
+- (void)_pinPlaylist:(id)playlist;
+- (void)_prepareTransientStateWithModelObject:(id)object enableState:(int64_t)state;
+- (void)_presentDownloadWaitingAlertIfNeededWithModelObject:(id)object;
 - (void)_presentFavoritesPlaylistUnsupportedAlert;
 - (void)_reloadContents;
 - (void)_reloadPlaylistsAndAlbumsIfNeeded;
 - (void)_requestAlbums;
 - (void)_requestPlaylists;
 - (void)_requestRecommendations;
-- (void)_setRecommendationSelected:(id)a3 withSpecifier:(id)a4;
+- (void)_setRecommendationSelected:(id)selected withSpecifier:(id)specifier;
 - (void)_showSyncStorageWarning;
-- (void)_showWorkoutPlaylistWarningWithDeletionCompletion:(id)a3;
-- (void)_unpinAlbum:(id)a3;
-- (void)_unpinPlaylist:(id)a3;
+- (void)_showWorkoutPlaylistWarningWithDeletionCompletion:(id)completion;
+- (void)_unpinAlbum:(id)album;
+- (void)_unpinPlaylist:(id)playlist;
 - (void)_updateHeaderAndSyncProgressIfNeeded;
 - (void)_updateHeaderSize;
 - (void)_updateProgressIfNeeded;
 - (void)dealloc;
-- (void)mediaPicker:(id)a3 didPickMediaItems:(id)a4;
-- (void)mediaPickerDidCancel:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)mediaPicker:(id)picker didPickMediaItems:(id)items;
+- (void)mediaPickerDidCancel:(id)cancel;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -79,9 +79,9 @@
     v4 = +[NRPairedDeviceRegistry sharedInstance];
     v5 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v6 = [v4 getAllDevicesWithArchivedAltAccountDevicesMatching:v5];
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
     v8 = [[NSUUID alloc] initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-    v9 = [v7 supportsCapability:v8];
+    v9 = [firstObject supportsCapability:v8];
 
     if (v9)
     {
@@ -99,9 +99,9 @@
     v12 = +[NRPairedDeviceRegistry sharedInstance];
     v13 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v14 = [v12 getAllDevicesWithArchivedAltAccountDevicesMatching:v13];
-    v15 = [v14 firstObject];
+    firstObject2 = [v14 firstObject];
     v16 = [[NSUUID alloc] initWithUUIDString:@"4649745E-094C-4F84-80DD-F7AB46F54792"];
-    v17 = [v15 supportsCapability:v16];
+    v17 = [firstObject2 supportsCapability:v16];
 
     if (v17)
     {
@@ -129,8 +129,8 @@
   v4.super_class = NMBridgeSyncedMusicController;
   [(NMBridgeSyncedMusicController *)&v4 viewDidLoad];
   [(NMBridgeSyncedMusicController *)self _configureHeaderIfNeeded];
-  v3 = [(NMBridgeSyncedMusicController *)self table];
-  [v3 setAllowsSelectionDuringEditing:1];
+  table = [(NMBridgeSyncedMusicController *)self table];
+  [table setAllowsSelectionDuringEditing:1];
 
   [(NMBridgeSyncedMusicController *)self _reloadContents];
   [(NMBridgeSyncedMusicController *)self setReusesCells:1];
@@ -166,8 +166,8 @@
   else
   {
     v6 = +[NSMutableArray array];
-    v7 = [(NMBridgeSyncedMusicController *)self _recommendationsGroup];
-    [v6 addObjectsFromArray:v7];
+    _recommendationsGroup = [(NMBridgeSyncedMusicController *)self _recommendationsGroup];
+    [v6 addObjectsFromArray:_recommendationsGroup];
 
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"PLAYLIST_ALBUM_SECTION_TITLE" value:@"Playlists & Albums" table:0];
@@ -176,9 +176,9 @@
     v11 = +[NRPairedDeviceRegistry sharedInstance];
     v12 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v13 = [v11 getAllDevicesWithArchivedAltAccountDevicesMatching:v12];
-    v14 = [v13 firstObject];
+    firstObject = [v13 firstObject];
     v15 = [[NSUUID alloc] initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-    v16 = [v14 supportsCapability:v15];
+    v16 = [firstObject supportsCapability:v15];
 
     if ((v16 & 1) == 0)
     {
@@ -188,14 +188,14 @@
     }
 
     [v6 addObject:v10];
-    v19 = [(NMBridgeSyncedMusicController *)self addMusicSpecifier];
-    [v6 addObject:v19];
+    addMusicSpecifier = [(NMBridgeSyncedMusicController *)self addMusicSpecifier];
+    [v6 addObject:addMusicSpecifier];
 
-    v20 = [(NMBridgeSyncedMusicController *)self playlistSpecifiers];
-    [v6 addObjectsFromArray:v20];
+    playlistSpecifiers = [(NMBridgeSyncedMusicController *)self playlistSpecifiers];
+    [v6 addObjectsFromArray:playlistSpecifiers];
 
-    v21 = [(NMBridgeSyncedMusicController *)self albumSpecifiers];
-    [v6 addObjectsFromArray:v21];
+    albumSpecifiers = [(NMBridgeSyncedMusicController *)self albumSpecifiers];
+    [v6 addObjectsFromArray:albumSpecifiers];
 
     v22 = [v6 copy];
     v23 = *&self->PSEditableListController_opaque[v2];
@@ -223,7 +223,7 @@
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v29 = self;
+  selfCopy = self;
   v3 = self->_albumSpecifiers;
   v4 = [(NSArray *)v3 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v4)
@@ -241,10 +241,10 @@
         }
 
         v9 = [*(*(&v36 + 1) + 8 * i) propertyForKey:v7];
-        v10 = [v9 modelObject];
-        v11 = [v10 identifiers];
-        v12 = [v11 library];
-        v13 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v12 persistentID]);
+        modelObject = [v9 modelObject];
+        identifiers = [modelObject identifiers];
+        library = [identifiers library];
+        v13 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [library persistentID]);
         [v31 addObject:v13];
       }
 
@@ -254,20 +254,20 @@
     while (v5);
   }
 
-  v14 = [(NMBridgeSyncedMusicController *)v29 _pinnedAlbums];
-  v15 = [v31 isEqualToSet:v14];
+  _pinnedAlbums = [(NMBridgeSyncedMusicController *)selfCopy _pinnedAlbums];
+  v15 = [v31 isEqualToSet:_pinnedAlbums];
 
   if ((v15 & 1) == 0)
   {
-    [(NMBridgeSyncedMusicController *)v29 _requestAlbums];
+    [(NMBridgeSyncedMusicController *)selfCopy _requestAlbums];
   }
 
-  v16 = [[NSMutableSet alloc] initWithCapacity:{-[NSArray count](v29->_playlistSpecifiers, "count")}];
+  v16 = [[NSMutableSet alloc] initWithCapacity:{-[NSArray count](selfCopy->_playlistSpecifiers, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v29->_playlistSpecifiers;
+  obj = selfCopy->_playlistSpecifiers;
   v17 = [(NSArray *)obj countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v17)
   {
@@ -284,10 +284,10 @@
         }
 
         v22 = [*(*(&v32 + 1) + 8 * j) propertyForKey:v20];
-        v23 = [v22 modelObject];
-        v24 = [v23 identifiers];
-        v25 = [v24 library];
-        v26 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v25 persistentID]);
+        modelObject2 = [v22 modelObject];
+        identifiers2 = [modelObject2 identifiers];
+        library2 = [identifiers2 library];
+        v26 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [library2 persistentID]);
         [v16 addObject:v26];
       }
 
@@ -297,12 +297,12 @@
     while (v18);
   }
 
-  v27 = [(NMBridgeSyncedMusicController *)v29 _pinnedPlaylists];
-  v28 = [v16 isEqualToSet:v27];
+  _pinnedPlaylists = [(NMBridgeSyncedMusicController *)selfCopy _pinnedPlaylists];
+  v28 = [v16 isEqualToSet:_pinnedPlaylists];
 
   if ((v28 & 1) == 0)
   {
-    [(NMBridgeSyncedMusicController *)v29 _requestPlaylists];
+    [(NMBridgeSyncedMusicController *)selfCopy _requestPlaylists];
   }
 }
 
@@ -311,24 +311,24 @@
   v3 = sub_9AEC(13);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NMBridgeSyncedMusicController *)self recommendationSpecifiers];
-    v5 = [v4 count];
+    recommendationSpecifiers = [(NMBridgeSyncedMusicController *)self recommendationSpecifiers];
+    v5 = [recommendationSpecifiers count];
     v6 = +[NMSSubscriptionManager sharedManager];
-    v7 = [v6 subscriptionType];
+    subscriptionType = [v6 subscriptionType];
     v8 = +[NMSyncDefaults sharedDefaults];
-    v9 = [v8 cachedRecommendationsData];
+    cachedRecommendationsData = [v8 cachedRecommendationsData];
     *buf = 134218496;
     v54 = v5;
     v55 = 2048;
-    v56 = v7;
+    v56 = subscriptionType;
     v57 = 1024;
-    v58 = v9 != 0;
+    v58 = cachedRecommendationsData != 0;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "[Bridge Recommendations] Creating recommendation group - Recommendations count %lu Subscription type %ld Has cached recommendations %x", buf, 0x1Cu);
   }
 
   v10 = +[NSMutableArray array];
-  v11 = [(NMBridgeSyncedMusicController *)self recommendationSpecifiers];
-  v12 = [v11 count];
+  recommendationSpecifiers2 = [(NMBridgeSyncedMusicController *)self recommendationSpecifiers];
+  v12 = [recommendationSpecifiers2 count];
 
   if (!v12)
   {
@@ -339,7 +339,7 @@
 
   v13 = objc_alloc_init(NSMutableArray);
   v14 = objc_alloc_init(NSMutableArray);
-  v15 = [(NMBridgeSyncedMusicController *)self recommendationSpecifiers];
+  recommendationSpecifiers3 = [(NMBridgeSyncedMusicController *)self recommendationSpecifiers];
   v50[0] = _NSConcreteStackBlock;
   v50[1] = 3221225472;
   v50[2] = sub_3264;
@@ -348,7 +348,7 @@
   v51 = v16;
   v17 = v13;
   v52 = v17;
-  [v15 enumerateObjectsUsingBlock:v50];
+  [recommendationSpecifiers3 enumerateObjectsUsingBlock:v50];
 
   if ([v17 count])
   {
@@ -363,10 +363,10 @@
     v48 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v49 = v22;
     v47 = [v22 getAllDevicesWithArchivedAltAccountDevicesMatching:?];
-    v23 = [v47 firstObject];
+    firstObject = [v47 firstObject];
     v45 = [[NSUUID alloc] initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-    v46 = v23;
-    v24 = [v23 supportsCapability:?];
+    v46 = firstObject;
+    v24 = [firstObject supportsCapability:?];
     if (v19)
     {
       if (v24)
@@ -374,10 +374,10 @@
         v25 = +[NRPairedDeviceRegistry sharedInstance];
         v26 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
         v44 = [v25 getAllDevicesWithArchivedAltAccountDevicesMatching:v26];
-        v27 = [v44 firstObject];
+        firstObject2 = [v44 firstObject];
         v42 = [[NSUUID alloc] initWithUUIDString:@"C5092DE9-70B8-41DB-B2AB-80DD86ED41C7"];
-        v43 = v27;
-        v28 = [v27 supportsCapability:?];
+        v43 = firstObject2;
+        v28 = [firstObject2 supportsCapability:?];
         v29 = MGGetBoolAnswer();
         v30 = [NSBundle bundleForClass:objc_opt_class()];
         v31 = v30;
@@ -494,14 +494,14 @@ LABEL_29:
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v3 = +[NSMutableArray array];
   v4 = +[NSMutableArray array];
-  v5 = [(NMBridgeSyncedMusicController *)self _pinnedPlaylists];
+  _pinnedPlaylists = [(NMBridgeSyncedMusicController *)self _pinnedPlaylists];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_391C;
   v22[3] = &unk_145B0;
   v6 = v4;
   v23 = v6;
-  [v5 enumerateObjectsUsingBlock:v22];
+  [_pinnedPlaylists enumerateObjectsUsingBlock:v22];
 
   if ([v6 count])
   {
@@ -533,7 +533,7 @@ LABEL_29:
     v19[2] = sub_3A3C;
     v19[3] = &unk_14628;
     v20 = v3;
-    v21 = self;
+    selfCopy = self;
     [v7 performWithResponseHandler:v19];
   }
 
@@ -552,14 +552,14 @@ LABEL_29:
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v3 = +[NSMutableArray array];
   v4 = +[NSMutableArray array];
-  v5 = [(NMBridgeSyncedMusicController *)self _pinnedAlbums];
+  _pinnedAlbums = [(NMBridgeSyncedMusicController *)self _pinnedAlbums];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_3F70;
   v20[3] = &unk_145B0;
   v6 = v4;
   v21 = v6;
-  [v5 enumerateObjectsUsingBlock:v20];
+  [_pinnedAlbums enumerateObjectsUsingBlock:v20];
 
   if ([v6 count])
   {
@@ -587,7 +587,7 @@ LABEL_29:
     v17[2] = sub_4090;
     v17[3] = &unk_14628;
     v18 = v3;
-    v19 = self;
+    selfCopy = self;
     [v7 performWithResponseHandler:v17];
   }
 
@@ -617,7 +617,7 @@ LABEL_29:
   return syncInfoController;
 }
 
-- (void)_handleMusicRecommendationsDidUpdateNotification:(id)a3
+- (void)_handleMusicRecommendationsDidUpdateNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -627,20 +627,20 @@ LABEL_29:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_handleMusicPinningSelectionsDidChangeNotification:(id)a3
+- (void)_handleMusicPinningSelectionsDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:NMSNotificationUserInfoKeyIsInProcessNotification];
-  v6 = [v5 BOOLValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:NMSNotificationUserInfoKeyIsInProcessNotification];
+  bOOLValue = [v5 BOOLValue];
 
-  if ((v6 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
 
     [(NMBridgeSyncedMusicController *)self _reloadContents];
   }
 }
 
-- (void)_handleSubscriptionStatusDidChangeNotification:(id)a3
+- (void)_handleSubscriptionStatusDidChangeNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -650,20 +650,20 @@ LABEL_29:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_handleSyncInfoDidUpdateNotification:(id)a3
+- (void)_handleSyncInfoDidUpdateNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [(NMBridgeSyncedMusicController *)self syncInfoController];
+  object = [notification object];
+  syncInfoController = [(NMBridgeSyncedMusicController *)self syncInfoController];
 
-  if (v4 == v5)
+  if (object == syncInfoController)
   {
     [(NMBridgeSyncedMusicController *)self _updateHeaderAndSyncProgressIfNeeded];
     v7 = +[NRPairedDeviceRegistry sharedInstance];
     v8 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v9 = [v7 getAllDevicesWithArchivedAltAccountDevicesMatching:v8];
-    v10 = [v9 firstObject];
+    firstObject = [v9 firstObject];
     v11 = [[NSUUID alloc] initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-    v12 = [v10 supportsCapability:v11];
+    v12 = [firstObject supportsCapability:v11];
 
     if (v12)
     {
@@ -683,32 +683,32 @@ LABEL_29:
   }
 }
 
-- (void)_handleApplicationWillEnterForegroundNotification:(id)a3
+- (void)_handleApplicationWillEnterForegroundNotification:(id)notification
 {
-  v3 = [(NMBridgeSyncedMusicController *)self syncInfoController];
-  [v3 beginObservingSyncInfo];
+  syncInfoController = [(NMBridgeSyncedMusicController *)self syncInfoController];
+  [syncInfoController beginObservingSyncInfo];
 }
 
-- (void)_handleApplicationDidEnterBackgroundNotification:(id)a3
+- (void)_handleApplicationDidEnterBackgroundNotification:(id)notification
 {
-  v3 = [(NMBridgeSyncedMusicController *)self syncInfoController];
-  [v3 endObservingSyncInfo];
+  syncInfoController = [(NMBridgeSyncedMusicController *)self syncInfoController];
+  [syncInfoController endObservingSyncInfo];
 }
 
 - (BOOL)_hasAlbumsOrPlaylists
 {
-  v3 = [(NMBridgeSyncedMusicController *)self _pinnedAlbums];
-  v4 = [v3 count];
-  v5 = [(NMBridgeSyncedMusicController *)self _pinnedPlaylists];
-  if ([v5 count] + v4)
+  _pinnedAlbums = [(NMBridgeSyncedMusicController *)self _pinnedAlbums];
+  v4 = [_pinnedAlbums count];
+  _pinnedPlaylists = [(NMBridgeSyncedMusicController *)self _pinnedPlaylists];
+  if ([_pinnedPlaylists count] + v4)
   {
     v7 = 1;
   }
 
   else
   {
-    v6 = [(NMBridgeSyncedMusicController *)self _workoutPlaylistID];
-    v7 = [v6 longLongValue] != 0;
+    _workoutPlaylistID = [(NMBridgeSyncedMusicController *)self _workoutPlaylistID];
+    v7 = [_workoutPlaylistID longLongValue] != 0;
   }
 
   return v7;
@@ -718,10 +718,10 @@ LABEL_29:
 {
   if ([(NMBridgeSyncedMusicController *)self isViewLoaded])
   {
-    v3 = [(NMBridgeSyncedMusicController *)self view];
-    v4 = [v3 window];
+    view = [(NMBridgeSyncedMusicController *)self view];
+    window = [view window];
 
-    if (v4)
+    if (window)
     {
       [(NMBridgeSyncedMusicController *)self _configureHeaderIfNeeded];
       [(NMBridgeSyncedMusicController *)self _updateProgressIfNeeded];
@@ -758,7 +758,7 @@ LABEL_8:
 {
   if ([(NMBridgeSyncedMusicController *)self isViewLoaded])
   {
-    v27 = [(NMBridgeSyncedMusicController *)self table];
+    table = [(NMBridgeSyncedMusicController *)self table];
     v3 = +[NSMutableArray array];
     if ([(NMBridgeSyncedMusicController *)self _isOutOfSpace])
     {
@@ -773,13 +773,13 @@ LABEL_8:
 
       v11 = [NSBundle bundleForClass:objc_opt_class()];
       v12 = [v11 localizedStringForKey:@"SYNC_SETTINGS_OUT_OF_SPACE_HEADER_TITLE" value:@"Out of Media Storage" table:0];
-      v13 = [v9 textLabel];
-      [v13 setText:v12];
+      textLabel = [v9 textLabel];
+      [textLabel setText:v12];
 
       v14 = [NSBundle bundleForClass:objc_opt_class()];
       v15 = [v14 localizedStringForKey:@"SYNC_SETTINGS_OUT_OF_SPACE_HEADER_MESSAGE" value:@"The storage space dedicated to media on your Apple Watch is full. To make space available table:{you can remove some podcasts, music, or audiobooks.", 0}];
-      v16 = [v9 detailTextLabel];
-      [v16 setText:v15];
+      detailTextLabel = [v9 detailTextLabel];
+      [detailTextLabel setText:v15];
 
       [v9 setPreservesSuperviewLayoutMargins:1];
       [v3 addObject:v9];
@@ -794,29 +794,29 @@ LABEL_8:
     }
 
     v17 = [[NMBUIContentHeaderView alloc] initWithFrame:{x, y, width, height}];
-    v18 = [(NMBridgeSyncedMusicController *)self _contentHeaderViewTitle];
-    v19 = [v17 textLabel];
-    [v19 setText:v18];
+    _contentHeaderViewTitle = [(NMBridgeSyncedMusicController *)self _contentHeaderViewTitle];
+    textLabel2 = [v17 textLabel];
+    [textLabel2 setText:_contentHeaderViewTitle];
 
-    v20 = [(NMBridgeSyncedMusicController *)self _contentHeaderViewSubtitle];
-    v21 = [v17 detailTextLabel];
-    [v21 setText:v20];
+    _contentHeaderViewSubtitle = [(NMBridgeSyncedMusicController *)self _contentHeaderViewSubtitle];
+    detailTextLabel2 = [v17 detailTextLabel];
+    [detailTextLabel2 setText:_contentHeaderViewSubtitle];
 
     [v17 setPreservesSuperviewLayoutMargins:1];
     if ([(NMBridgeSyncedMusicController *)self _shouldShowProgress])
     {
       [(NMBridgeSyncedMusicController *)self _contentHeaderViewProgress];
       v23 = v22;
-      v24 = [v17 progressView];
+      progressView = [v17 progressView];
       LODWORD(v25) = v23;
-      [v24 setProgress:v25];
+      [progressView setProgress:v25];
     }
 
     [v3 addObject:v17];
     v26 = [[UIStackView alloc] initWithArrangedSubviews:v3];
     [v26 setAxis:1];
     [v26 setPreservesSuperviewLayoutMargins:1];
-    [v27 setTableHeaderView:v26];
+    [table setTableHeaderView:v26];
     [(NMBridgeSyncedMusicController *)self _updateHeaderSize];
   }
 }
@@ -825,28 +825,28 @@ LABEL_8:
 {
   if ([(NMBridgeSyncedMusicController *)self isViewLoaded])
   {
-    v3 = [(NMBridgeSyncedMusicController *)self table];
-    v14 = [v3 tableHeaderView];
+    table = [(NMBridgeSyncedMusicController *)self table];
+    tableHeaderView = [table tableHeaderView];
 
-    v4 = [v14 superview];
-    [v4 bounds];
+    superview = [tableHeaderView superview];
+    [superview bounds];
     v6 = v5;
     v8 = v7;
     LODWORD(v5) = 1148846080;
     LODWORD(v7) = 1112014848;
-    [v14 systemLayoutSizeFittingSize:v6 withHorizontalFittingPriority:v8 verticalFittingPriority:{v5, v7}];
+    [tableHeaderView systemLayoutSizeFittingSize:v6 withHorizontalFittingPriority:v8 verticalFittingPriority:{v5, v7}];
     v10 = v9;
     v12 = v11;
 
-    [v14 setBounds:{0.0, 0.0, v10, v12}];
-    v13 = [(NMBridgeSyncedMusicController *)self table];
-    [v13 setTableHeaderView:v14];
+    [tableHeaderView setBounds:{0.0, 0.0, v10, v12}];
+    table2 = [(NMBridgeSyncedMusicController *)self table];
+    [table2 setTableHeaderView:tableHeaderView];
   }
 }
 
 - (void)_updateProgressIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -868,22 +868,22 @@ LABEL_8:
 
         v4 = *(*(&v32 + 1) + 8 * i);
         v5 = [v4 propertyForKey:v26];
-        v6 = [v5 downloadState];
+        downloadState = [v5 downloadState];
 
-        if (v6)
+        if (downloadState)
         {
           v29 = v4;
-          v7 = [v5 modelObject];
-          v30 = [v5 downloadState];
-          v8 = [(NMBridgeSyncedMusicController *)v2 syncInfoController];
-          v31 = v7;
-          v9 = [v8 downloadStateForModelObject:v7];
+          modelObject = [v5 modelObject];
+          downloadState2 = [v5 downloadState];
+          syncInfoController = [(NMBridgeSyncedMusicController *)selfCopy syncInfoController];
+          v31 = modelObject;
+          v9 = [syncInfoController downloadStateForModelObject:modelObject];
 
           v10 = +[NRPairedDeviceRegistry sharedInstance];
           v11 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
           v12 = [v10 getAllDevicesWithArchivedAltAccountDevicesMatching:v11];
           [v12 firstObject];
-          v14 = v13 = v2;
+          v14 = v13 = selfCopy;
           v15 = [[NSUUID alloc] initWithUUIDString:@"4649745E-094C-4F84-80DD-F7AB46F54792"];
           v16 = [v14 supportsCapability:v15];
 
@@ -892,14 +892,14 @@ LABEL_8:
             v9 = [(NMBridgeSyncedMusicController *)v13 _resolvedProgressViewStateForState:v9];
           }
 
-          v2 = v13;
-          v17 = [(NMBridgeSyncedMusicController *)v13 syncInfoController];
-          [v17 progressForModelObject:v31];
+          selfCopy = v13;
+          syncInfoController2 = [(NMBridgeSyncedMusicController *)v13 syncInfoController];
+          [syncInfoController2 progressForModelObject:v31];
           v19 = v18;
 
-          if ([v30 state] == v9)
+          if ([downloadState2 state] == v9)
           {
-            [v30 progress];
+            [downloadState2 progress];
             v20 = v19;
             if (vabdd_f64(v21, v20) <= 0.00000011920929)
             {
@@ -912,12 +912,12 @@ LABEL_8:
             v20 = v19;
           }
 
-          v22 = [(NMBridgeSyncedMusicController *)v13 table];
+          table = [(NMBridgeSyncedMusicController *)v13 table];
           v23 = [(NMBridgeSyncedMusicController *)v13 indexPathForSpecifier:v29];
-          v24 = [v22 cellForRowAtIndexPath:v23];
+          v24 = [table cellForRowAtIndexPath:v23];
 
-          [v30 setState:v9];
-          [v30 setProgress:v20];
+          [downloadState2 setState:v9];
+          [downloadState2 setProgress:v20];
           [v24 refreshCellContentsWithSpecifier:v29];
 
 LABEL_14:
@@ -936,24 +936,24 @@ LABEL_14:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"4649745E-094C-4F84-80DD-F7AB46F54792"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   if (v8)
   {
-    v9 = [(NMBridgeSyncedMusicController *)self syncInfoController];
-    v10 = [v9 syncInfo];
-    v11 = [v10 hasItemsOverStorageLimit];
+    syncInfoController = [(NMBridgeSyncedMusicController *)self syncInfoController];
+    syncInfo = [syncInfoController syncInfo];
+    hasItemsOverStorageLimit = [syncInfo hasItemsOverStorageLimit];
   }
 
   else
   {
-    v9 = +[NMSMediaPinningManager sharedManager];
-    v11 = [v9 _legacy_musicIsOutOfSpace];
+    syncInfoController = +[NMSMediaPinningManager sharedManager];
+    hasItemsOverStorageLimit = [syncInfoController _legacy_musicIsOutOfSpace];
   }
 
-  return v11;
+  return hasItemsOverStorageLimit;
 }
 
 - (BOOL)_shouldShowProgress
@@ -961,18 +961,18 @@ LABEL_14:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"4649745E-094C-4F84-80DD-F7AB46F54792"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   if (v8)
   {
-    v9 = [(NMBridgeSyncedMusicController *)self _numberOfAlbums];
-    if ([(NMBridgeSyncedMusicController *)self _numberOfPlaylists]+ v9)
+    _numberOfAlbums = [(NMBridgeSyncedMusicController *)self _numberOfAlbums];
+    if ([(NMBridgeSyncedMusicController *)self _numberOfPlaylists]+ _numberOfAlbums)
     {
-      v14 = [(NMBridgeSyncedMusicController *)self syncInfoController];
-      v15 = [v14 syncInfo];
-      v10 = [v15 status] != &dword_4;
+      syncInfoController = [(NMBridgeSyncedMusicController *)self syncInfoController];
+      syncInfo = [syncInfoController syncInfo];
+      v10 = [syncInfo status] != &dword_4;
     }
 
     else
@@ -984,27 +984,27 @@ LABEL_14:
   else
   {
     v11 = +[NMSSyncManager sharedManager];
-    v12 = [v11 musicProgressInfo];
-    v13 = [v12 syncState];
+    musicProgressInfo = [v11 musicProgressInfo];
+    syncState = [musicProgressInfo syncState];
 
-    return v13 != &dword_0 + 1;
+    return syncState != &dword_0 + 1;
   }
 
   return v10;
 }
 
-- (unint64_t)_resolvedProgressViewStateForState:(unint64_t)a3
+- (unint64_t)_resolvedProgressViewStateForState:(unint64_t)state
 {
   v4 = +[NMSSyncManager sharedManager];
-  v5 = [v4 musicProgressInfo];
-  if ([v5 syncState] == &dword_0 + 3)
+  musicProgressInfo = [v4 musicProgressInfo];
+  if ([musicProgressInfo syncState] == &dword_0 + 3)
   {
     v6 = +[NMSSyncManager sharedManager];
-    v7 = [v6 musicProgressInfo];
-    v8 = [v7 syncWaitingSubstate];
+    musicProgressInfo2 = [v6 musicProgressInfo];
+    syncWaitingSubstate = [musicProgressInfo2 syncWaitingSubstate];
 
     v9 = 3;
-    if (v8)
+    if (syncWaitingSubstate)
     {
       v9 = 1;
     }
@@ -1016,14 +1016,14 @@ LABEL_14:
     v9 = 3;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     return v9;
   }
 
   else
   {
-    return a3;
+    return state;
   }
 }
 
@@ -1032,9 +1032,9 @@ LABEL_14:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"C5092DE9-70B8-41DB-B2AB-80DD86ED41C7"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   if (v8)
   {
@@ -1045,29 +1045,29 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  v12 = [(NMBridgeSyncedMusicController *)self _numberOfAlbums];
-  v13 = [(NMBridgeSyncedMusicController *)self _numberOfPlaylists];
-  v14 = v13;
-  if (v12 && v13)
+  _numberOfAlbums = [(NMBridgeSyncedMusicController *)self _numberOfAlbums];
+  _numberOfPlaylists = [(NMBridgeSyncedMusicController *)self _numberOfPlaylists];
+  v14 = _numberOfPlaylists;
+  if (_numberOfAlbums && _numberOfPlaylists)
   {
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v15 = [v9 localizedStringForKey:@"SYNC_SETTINGS_CONTENT_SUMMARY_HEADER_ALBUMS_PLAYLISTS" value:&stru_14C48 table:@"LocalizableDict"];
-    v11 = [NSString localizedStringWithFormat:v15, v12, v14];
+    v11 = [NSString localizedStringWithFormat:v15, _numberOfAlbums, v14];
 
     goto LABEL_11;
   }
 
-  if (v12)
+  if (_numberOfAlbums)
   {
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v16 = [v9 localizedStringForKey:@"SYNC_SETTINGS_CONTENT_SUMMARY_HEADER_ALBUMS" value:&stru_14C48 table:@"LocalizableDict"];
-    [NSString localizedStringWithFormat:v16, v12];
+    [NSString localizedStringWithFormat:v16, _numberOfAlbums];
     v11 = LABEL_10:;
 
     goto LABEL_11;
   }
 
-  if (v13)
+  if (_numberOfPlaylists)
   {
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v16 = [v9 localizedStringForKey:@"SYNC_SETTINGS_CONTENT_SUMMARY_HEADER_PLAYLISTS" value:&stru_14C48 table:@"LocalizableDict"];
@@ -1087,20 +1087,20 @@ LABEL_11:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"C5092DE9-70B8-41DB-B2AB-80DD86ED41C7"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   if (v8)
   {
     if (![(NMBridgeSyncedMusicController *)self _numberOfSongs])
     {
-      v9 = +[NRPairedDeviceRegistry sharedInstance];
-      v10 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
-      v11 = [v9 getAllDevicesWithArchivedAltAccountDevicesMatching:v10];
-      v12 = [v11 firstObject];
+      syncInfoController = +[NRPairedDeviceRegistry sharedInstance];
+      musicProgressInfo = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
+      v11 = [syncInfoController getAllDevicesWithArchivedAltAccountDevicesMatching:musicProgressInfo];
+      firstObject2 = [v11 firstObject];
       v13 = [[NSUUID alloc] initWithUUIDString:@"C5092DE9-70B8-41DB-B2AB-80DD86ED41C7"];
-      v14 = [v12 supportsCapability:v13];
+      v14 = [firstObject2 supportsCapability:v13];
       v15 = [NSBundle bundleForClass:objc_opt_class()];
       v16 = v15;
       if (v14)
@@ -1109,7 +1109,7 @@ LABEL_11:
         v18 = @"You can choose to automatically download your Pins and Recent Music on your Apple Watch, or manually add albums and playlists.";
         v19 = @"Localizable-LibraryPins";
 LABEL_15:
-        v33 = [v15 localizedStringForKey:v17 value:v18 table:v19];
+        syncStatusDetailText = [v15 localizedStringForKey:v17 value:v18 table:v19];
 LABEL_18:
 
         goto LABEL_19;
@@ -1125,25 +1125,25 @@ LABEL_14:
     goto LABEL_10;
   }
 
-  v20 = [(NMBridgeSyncedMusicController *)self _numberOfAlbums];
-  v21 = v20 | [(NMBridgeSyncedMusicController *)self _numberOfPlaylists];
-  v9 = +[NRPairedDeviceRegistry sharedInstance];
-  v10 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
-  v11 = [v9 getAllDevicesWithArchivedAltAccountDevicesMatching:v10];
-  v12 = [v11 firstObject];
+  _numberOfAlbums = [(NMBridgeSyncedMusicController *)self _numberOfAlbums];
+  v21 = _numberOfAlbums | [(NMBridgeSyncedMusicController *)self _numberOfPlaylists];
+  syncInfoController = +[NRPairedDeviceRegistry sharedInstance];
+  musicProgressInfo = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
+  v11 = [syncInfoController getAllDevicesWithArchivedAltAccountDevicesMatching:musicProgressInfo];
+  firstObject2 = [v11 firstObject];
   v22 = [NSUUID alloc];
   if (!v21)
   {
     v13 = [v22 initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-    if ([v12 supportsCapability:v13])
+    if ([firstObject2 supportsCapability:v13])
     {
       v16 = +[NRPairedDeviceRegistry sharedInstance];
       v37 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
       v36 = [v16 getAllDevicesWithArchivedAltAccountDevicesMatching:?];
-      v23 = [v36 firstObject];
+      firstObject3 = [v36 firstObject];
       v24 = [[NSUUID alloc] initWithUUIDString:@"C5092DE9-70B8-41DB-B2AB-80DD86ED41C7"];
-      v35 = v23;
-      v25 = [v23 supportsCapability:v24];
+      v35 = firstObject3;
+      v25 = [firstObject3 supportsCapability:v24];
       v26 = [NSBundle bundleForClass:objc_opt_class()];
       v27 = v26;
       if (v25)
@@ -1160,7 +1160,7 @@ LABEL_14:
         v30 = 0;
       }
 
-      v33 = [v26 localizedStringForKey:v28 value:v29 table:v30];
+      syncStatusDetailText = [v26 localizedStringForKey:v28 value:v29 table:v30];
 
       goto LABEL_18;
     }
@@ -1173,24 +1173,24 @@ LABEL_14:
   }
 
   v31 = [v22 initWithUUIDString:@"4649745E-094C-4F84-80DD-F7AB46F54792"];
-  v32 = [v12 supportsCapability:v31];
+  v32 = [firstObject2 supportsCapability:v31];
 
   if (v32)
   {
 LABEL_10:
-    v9 = [(NMBridgeSyncedMusicController *)self syncInfoController];
-    v33 = [v9 syncStatusDetailText];
+    syncInfoController = [(NMBridgeSyncedMusicController *)self syncInfoController];
+    syncStatusDetailText = [syncInfoController syncStatusDetailText];
     goto LABEL_20;
   }
 
-  v9 = +[NMSSyncManager sharedManager];
-  v10 = [v9 musicProgressInfo];
-  v33 = [v10 _trackProgressTextForMediaType:8];
+  syncInfoController = +[NMSSyncManager sharedManager];
+  musicProgressInfo = [syncInfoController musicProgressInfo];
+  syncStatusDetailText = [musicProgressInfo _trackProgressTextForMediaType:8];
 LABEL_19:
 
 LABEL_20:
 
-  return v33;
+  return syncStatusDetailText;
 }
 
 - (float)_contentHeaderViewProgress
@@ -1198,20 +1198,20 @@ LABEL_20:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"4649745E-094C-4F84-80DD-F7AB46F54792"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   if (v8)
   {
-    v9 = [(NMBridgeSyncedMusicController *)self syncInfoController];
-    v10 = [v9 syncInfo];
+    syncInfoController = [(NMBridgeSyncedMusicController *)self syncInfoController];
+    syncInfo = [syncInfoController syncInfo];
     v11 = 0.0;
-    if ([v10 status] == &dword_0 + 3)
+    if ([syncInfo status] == &dword_0 + 3)
     {
-      v12 = [(NMBridgeSyncedMusicController *)self syncInfoController];
-      v13 = [v12 syncInfo];
-      [v13 progress];
+      syncInfoController2 = [(NMBridgeSyncedMusicController *)self syncInfoController];
+      syncInfo2 = [syncInfoController2 syncInfo];
+      [syncInfo2 progress];
 LABEL_6:
       v11 = v14;
     }
@@ -1219,14 +1219,14 @@ LABEL_6:
 
   else
   {
-    v9 = +[NMSSyncManager sharedManager];
-    v10 = [v9 musicProgressInfo];
+    syncInfoController = +[NMSSyncManager sharedManager];
+    syncInfo = [syncInfoController musicProgressInfo];
     v11 = 0.0;
-    if ([v10 _isSyncing])
+    if ([syncInfo _isSyncing])
     {
-      v12 = +[NMSSyncManager sharedManager];
-      v13 = [v12 musicProgressInfo];
-      [v13 estimatedSyncProgress];
+      syncInfoController2 = +[NMSSyncManager sharedManager];
+      syncInfo2 = [syncInfoController2 musicProgressInfo];
+      [syncInfo2 estimatedSyncProgress];
       goto LABEL_6;
     }
   }
@@ -1234,17 +1234,17 @@ LABEL_6:
   return v11;
 }
 
-- (void)_presentDownloadWaitingAlertIfNeededWithModelObject:(id)a3
+- (void)_presentDownloadWaitingAlertIfNeededWithModelObject:(id)object
 {
-  v15 = a3;
-  v4 = [v15 nms_syncInfoContainerIdentifier];
-  v5 = [(NMBridgeSyncedMusicController *)self syncInfoController];
-  v6 = [v5 syncInfo];
-  v7 = [v6 statusForContainer:v4];
+  objectCopy = object;
+  nms_syncInfoContainerIdentifier = [objectCopy nms_syncInfoContainerIdentifier];
+  syncInfoController = [(NMBridgeSyncedMusicController *)self syncInfoController];
+  syncInfo = [syncInfoController syncInfo];
+  v7 = [syncInfo statusForContainer:nms_syncInfoContainerIdentifier];
 
-  v8 = [(NMBridgeSyncedMusicController *)self syncInfoController];
-  v9 = [v8 syncInfo];
-  v10 = [v9 downloadPauseReasonForContainer:v4];
+  syncInfoController2 = [(NMBridgeSyncedMusicController *)self syncInfoController];
+  syncInfo2 = [syncInfoController2 syncInfo];
+  v10 = [syncInfo2 downloadPauseReasonForContainer:nms_syncInfoContainerIdentifier];
 
   if (v7 <= 5 && ((1 << v7) & 0x26) != 0)
   {
@@ -1252,8 +1252,8 @@ LABEL_6:
     [v11 setQualityOfService:25];
     [v11 setCellularBundleIdentifier:@"com.apple.NanoMusic"];
     v12 = [NMUDownloadWaitingAlertController alloc];
-    v13 = [(NMBridgeSyncedMusicController *)self _selfOrPresentedViewController];
-    v14 = [v12 initWithModelObject:v15 status:v7 downloadPauseReason:v10 options:v11 presentingViewController:v13];
+    _selfOrPresentedViewController = [(NMBridgeSyncedMusicController *)self _selfOrPresentedViewController];
+    v14 = [v12 initWithModelObject:objectCopy status:v7 downloadPauseReason:v10 options:v11 presentingViewController:_selfOrPresentedViewController];
 
     [v14 presentWithCompletion:0];
   }
@@ -1288,44 +1288,44 @@ LABEL_6:
   return addMusicSpecifier;
 }
 
-- (id)_recommendationSpecifierWithRecommendation:(id)a3
+- (id)_recommendationSpecifierWithRecommendation:(id)recommendation
 {
-  v3 = a3;
-  v4 = [NMSMediaItemGroup itemGroupWithQuotaRefObj:v3];
-  v5 = [v3 items];
-  if ([v5 count] == &dword_0 + 1)
+  recommendationCopy = recommendation;
+  v4 = [NMSMediaItemGroup itemGroupWithQuotaRefObj:recommendationCopy];
+  items = [recommendationCopy items];
+  if ([items count] == &dword_0 + 1)
   {
-    v6 = [v3 items];
-    v7 = [v6 firstObject];
+    items2 = [recommendationCopy items];
+    firstObject = [items2 firstObject];
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
   v8 = +[NRPairedDeviceRegistry sharedInstance];
   v9 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v10 = [v8 getAllDevicesWithArchivedAltAccountDevicesMatching:v9];
-  v11 = [v10 firstObject];
+  firstObject2 = [v10 firstObject];
   v12 = [[NSUUID alloc] initWithUUIDString:@"4649745E-094C-4F84-80DD-F7AB46F54792"];
-  v13 = [v11 supportsCapability:v12];
+  v13 = [firstObject2 supportsCapability:v12];
 
   if (v13)
   {
-    if (![v3 isSelected])
+    if (![recommendationCopy isSelected])
     {
       v17 = 0;
       v16 = 0;
       goto LABEL_14;
     }
 
-    v14 = [v3 identifier];
-    if (([v14 isEqualToString:NMSRecommendationLibraryPinsIdentifier] & 1) == 0)
+    identifier = [recommendationCopy identifier];
+    if (([identifier isEqualToString:NMSRecommendationLibraryPinsIdentifier] & 1) == 0)
     {
-      v15 = [v3 identifier];
+      identifier2 = [recommendationCopy identifier];
       v16 = 0;
-      v17 = [v15 isEqualToString:NMSRecommendationRecentMusicIdentifier] ^ 1;
+      v17 = [identifier2 isEqualToString:NMSRecommendationRecentMusicIdentifier] ^ 1;
 LABEL_12:
 
       goto LABEL_13;
@@ -1334,12 +1334,12 @@ LABEL_12:
 
   else
   {
-    v14 = [v3 identifier];
-    if (([v14 isEqualToString:NMSRecommendationLibraryPinsIdentifier] & 1) == 0)
+    identifier = [recommendationCopy identifier];
+    if (([identifier isEqualToString:NMSRecommendationLibraryPinsIdentifier] & 1) == 0)
     {
-      v15 = [v3 identifier];
+      identifier2 = [recommendationCopy identifier];
       v17 = 0;
-      v16 = [v15 isEqualToString:NMSRecommendationRecentMusicIdentifier] ^ 1;
+      v16 = [identifier2 isEqualToString:NMSRecommendationRecentMusicIdentifier] ^ 1;
       goto LABEL_12;
     }
   }
@@ -1349,9 +1349,9 @@ LABEL_12:
 LABEL_13:
 
 LABEL_14:
-  v18 = [v3 title];
-  v19 = [v3 identifier];
-  v20 = [v19 isEqualToString:NMSRecommendationLibraryPinsIdentifier];
+  title = [recommendationCopy title];
+  identifier3 = [recommendationCopy identifier];
+  v20 = [identifier3 isEqualToString:NMSRecommendationLibraryPinsIdentifier];
 
   if (v20)
   {
@@ -1360,12 +1360,12 @@ LABEL_14:
     v23 = @"pin.fill";
 LABEL_18:
 
-    v18 = v22;
+    title = v22;
     goto LABEL_20;
   }
 
-  v24 = [v3 identifier];
-  v25 = [v24 isEqualToString:NMSRecommendationRecentMusicIdentifier];
+  identifier4 = [recommendationCopy identifier];
+  v25 = [identifier4 isEqualToString:NMSRecommendationRecentMusicIdentifier];
 
   if (v25)
   {
@@ -1377,66 +1377,66 @@ LABEL_18:
 
   v23 = @"music";
 LABEL_20:
-  v26 = [v3 identifier];
-  if ([v26 isEqualToString:NMSRecommendationLibraryPinsIdentifier])
+  identifier5 = [recommendationCopy identifier];
+  if ([identifier5 isEqualToString:NMSRecommendationLibraryPinsIdentifier])
   {
-    v27 = 0;
+    nms_lastUpdatedString = 0;
   }
 
   else
   {
-    v28 = [v3 identifier];
-    v29 = [v28 isEqualToString:NMSRecommendationRecentMusicIdentifier];
+    identifier6 = [recommendationCopy identifier];
+    v29 = [identifier6 isEqualToString:NMSRecommendationRecentMusicIdentifier];
 
     if (v29)
     {
-      v27 = 0;
+      nms_lastUpdatedString = 0;
       goto LABEL_26;
     }
 
-    v30 = [v3 items];
-    v26 = [v30 firstObject];
+    items3 = [recommendationCopy items];
+    identifier5 = [items3 firstObject];
 
-    v27 = [v26 nms_lastUpdatedString];
+    nms_lastUpdatedString = [identifier5 nms_lastUpdatedString];
   }
 
 LABEL_26:
-  v31 = [v3 artworkCatalog];
+  artworkCatalog = [recommendationCopy artworkCatalog];
   BYTE1(v34) = v16;
   LOBYTE(v34) = v17;
-  v32 = [(NMBridgeSyncedMusicController *)self _specifierWithTitle:v18 subtitle:v27 artworkCatalog:v31 placeholderSystemImage:v23 modelObject:v7 showSwitch:1 showDownloadInfo:v34 showWarningIfAboveQuota:v4 itemGroup:"_setRecommendationSelected:withSpecifier:" set:"_recommendationSelected:" get:?];
+  v32 = [(NMBridgeSyncedMusicController *)self _specifierWithTitle:title subtitle:nms_lastUpdatedString artworkCatalog:artworkCatalog placeholderSystemImage:v23 modelObject:firstObject showSwitch:1 showDownloadInfo:v34 showWarningIfAboveQuota:v4 itemGroup:"_setRecommendationSelected:withSpecifier:" set:"_recommendationSelected:" get:?];
 
-  [v32 setProperty:v3 forKey:@"NMBSpecifierRecommendationKey"];
+  [v32 setProperty:recommendationCopy forKey:@"NMBSpecifierRecommendationKey"];
 
   return v32;
 }
 
-- (id)_playlistSpecifierWithPlaylist:(id)a3
+- (id)_playlistSpecifierWithPlaylist:(id)playlist
 {
-  v4 = a3;
-  v5 = [v4 artworkCatalog];
-  v6 = v5;
-  if (v5)
+  playlistCopy = playlist;
+  artworkCatalog = [playlistCopy artworkCatalog];
+  v6 = artworkCatalog;
+  if (artworkCatalog)
   {
-    v7 = v5;
+    v7 = artworkCatalog;
   }
 
   else
   {
-    v7 = [v4 tracksTiledArtworkCatalogWithRows:2 columns:2];
+    v7 = [playlistCopy tracksTiledArtworkCatalogWithRows:2 columns:2];
   }
 
   v29 = v7;
 
-  v8 = [v4 curator];
-  v9 = [v8 name];
-  if ([v9 length])
+  curator = [playlistCopy curator];
+  name = [curator name];
+  if ([name length])
   {
     v10 = [NSBundle bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"PLAYLIST_SUBTITLE" value:@"Playlist by %@" table:0];
-    v12 = [v4 curator];
-    v13 = [v12 name];
-    v14 = [NSString localizedStringWithFormat:v11, v13];
+    curator2 = [playlistCopy curator];
+    name2 = [curator2 name];
+    v14 = [NSString localizedStringWithFormat:v11, name2];
   }
 
   else
@@ -1444,38 +1444,38 @@ LABEL_26:
     v14 = 0;
   }
 
-  v15 = [v4 identifiers];
-  v16 = [v15 library];
-  v17 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v16 persistentID]);
+  identifiers = [playlistCopy identifiers];
+  library = [identifiers library];
+  v17 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [library persistentID]);
   v18 = [NMSMediaItemGroup itemGroupWithSyncedPlaylistID:v17 downloadedItemsOnly:0];
 
   v19 = +[NRPairedDeviceRegistry sharedInstance];
   v20 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v21 = [v19 getAllDevicesWithArchivedAltAccountDevicesMatching:v20];
-  v22 = [v21 firstObject];
+  firstObject = [v21 firstObject];
   v23 = [[NSUUID alloc] initWithUUIDString:@"4649745E-094C-4F84-80DD-F7AB46F54792"];
-  v24 = [v22 supportsCapability:v23];
+  v24 = [firstObject supportsCapability:v23];
 
-  v25 = [v4 name];
+  name3 = [playlistCopy name];
   BYTE1(v28) = v24 ^ 1;
   LOBYTE(v28) = v24;
-  v26 = [(NMBridgeSyncedMusicController *)self _specifierWithTitle:v25 subtitle:v14 artworkCatalog:v29 placeholderSystemImage:@"music.note.list" modelObject:v4 showSwitch:0 showDownloadInfo:v28 showWarningIfAboveQuota:v18 itemGroup:0 set:0 get:?];
+  v26 = [(NMBridgeSyncedMusicController *)self _specifierWithTitle:name3 subtitle:v14 artworkCatalog:v29 placeholderSystemImage:@"music.note.list" modelObject:playlistCopy showSwitch:0 showDownloadInfo:v28 showWarningIfAboveQuota:v18 itemGroup:0 set:0 get:?];
 
   return v26;
 }
 
-- (id)_albumSpecifierWithAlbum:(id)a3
+- (id)_albumSpecifierWithAlbum:(id)album
 {
-  v4 = a3;
-  v5 = [v4 artist];
-  v6 = [v5 name];
-  if ([v6 length])
+  albumCopy = album;
+  artist = [albumCopy artist];
+  name = [artist name];
+  if ([name length])
   {
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"ALBUM_SUBTITLE" value:@"Album by %@" table:0];
-    v9 = [v4 artist];
-    v10 = [v9 name];
-    v11 = [NSString localizedStringWithFormat:v8, v10];
+    artist2 = [albumCopy artist];
+    name2 = [artist2 name];
+    v11 = [NSString localizedStringWithFormat:v8, name2];
   }
 
   else
@@ -1483,42 +1483,42 @@ LABEL_26:
     v11 = 0;
   }
 
-  v12 = [v4 identifiers];
-  v13 = [v12 library];
-  v14 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v13 persistentID]);
+  identifiers = [albumCopy identifiers];
+  library = [identifiers library];
+  v14 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [library persistentID]);
   v15 = [NMSMediaItemGroup itemGroupWithSyncedAlbumID:v14 downloadedItemsOnly:0];
 
   v16 = +[NRPairedDeviceRegistry sharedInstance];
   v17 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v18 = [v16 getAllDevicesWithArchivedAltAccountDevicesMatching:v17];
-  v19 = [v18 firstObject];
+  firstObject = [v18 firstObject];
   v20 = [[NSUUID alloc] initWithUUIDString:@"4649745E-094C-4F84-80DD-F7AB46F54792"];
-  v21 = [v19 supportsCapability:v20];
+  v21 = [firstObject supportsCapability:v20];
 
-  v22 = [v4 title];
-  v23 = [v4 artworkCatalog];
+  title = [albumCopy title];
+  artworkCatalog = [albumCopy artworkCatalog];
   BYTE1(v26) = v21 ^ 1;
   LOBYTE(v26) = v21;
-  v24 = [(NMBridgeSyncedMusicController *)self _specifierWithTitle:v22 subtitle:v11 artworkCatalog:v23 placeholderSystemImage:@"music" modelObject:v4 showSwitch:0 showDownloadInfo:v26 showWarningIfAboveQuota:v15 itemGroup:0 set:0 get:?];
+  v24 = [(NMBridgeSyncedMusicController *)self _specifierWithTitle:title subtitle:v11 artworkCatalog:artworkCatalog placeholderSystemImage:@"music" modelObject:albumCopy showSwitch:0 showDownloadInfo:v26 showWarningIfAboveQuota:v15 itemGroup:0 set:0 get:?];
 
   return v24;
 }
 
 - (id)_selfOrPresentedViewController
 {
-  v3 = [(NMBridgeSyncedMusicController *)self presentedViewController];
+  presentedViewController = [(NMBridgeSyncedMusicController *)self presentedViewController];
 
-  if (v3)
+  if (presentedViewController)
   {
-    v4 = [(NMBridgeSyncedMusicController *)self presentedViewController];
+    selfCopy = [(NMBridgeSyncedMusicController *)self presentedViewController];
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)_showSyncStorageWarning
@@ -1541,25 +1541,25 @@ LABEL_26:
   v11 = [UIAlertAction actionWithTitle:v10 style:0 handler:0];
   [v8 addAction:v11];
 
-  v12 = [(NMBridgeSyncedMusicController *)self _selfOrPresentedViewController];
-  [v12 presentViewController:v8 animated:1 completion:0];
+  _selfOrPresentedViewController = [(NMBridgeSyncedMusicController *)self _selfOrPresentedViewController];
+  [_selfOrPresentedViewController presentViewController:v8 animated:1 completion:0];
 }
 
-- (id)_recommendationSelected:(id)a3
+- (id)_recommendationSelected:(id)selected
 {
-  v3 = [a3 propertyForKey:@"NMBSpecifierRecommendationKey"];
+  v3 = [selected propertyForKey:@"NMBSpecifierRecommendationKey"];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isSelected]);
 
   return v4;
 }
 
-- (void)_setRecommendationSelected:(id)a3 withSpecifier:(id)a4
+- (void)_setRecommendationSelected:(id)selected withSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [a4 propertyForKey:@"NMBSpecifierRecommendationKey"];
-  v7 = [v5 BOOLValue];
+  selectedCopy = selected;
+  v6 = [specifier propertyForKey:@"NMBSpecifierRecommendationKey"];
+  bOOLValue = [selectedCopy BOOLValue];
 
-  [v6 setSelected:v7];
+  [v6 setSelected:bOOLValue];
   v8 = +[NMSMusicRecommendationManager sharedManager];
   v10 = v6;
   v9 = [NSArray arrayWithObjects:&v10 count:1];
@@ -1572,16 +1572,16 @@ LABEL_26:
   [v5 setDelegate:self];
   [v5 setPicksSingleCollectionEntity:1];
   v3 = +[NRPairedDeviceRegistry sharedInstance];
-  v4 = [v3 getActivePairedDevice];
+  getActivePairedDevice = [v3 getActivePairedDevice];
   [v5 setWatchCompatibilityVersion:NRWatchOSVersionForRemoteDevice()];
 
   [(NMBridgeSyncedMusicController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)mediaPicker:(id)a3 didPickMediaItems:(id)a4
+- (void)mediaPicker:(id)picker didPickMediaItems:(id)items
 {
-  v34 = a3;
-  v6 = a4;
+  pickerCopy = picker;
+  itemsCopy = items;
   v7 = sub_9AEC(13);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1589,38 +1589,38 @@ LABEL_26:
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "[NMBridgeSyncedMusicController] mediaPicker:didPickMediaItems:", buf, 2u);
   }
 
-  v8 = [v6 itemsQuery];
+  itemsQuery = [itemsCopy itemsQuery];
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"ADD_MUSIC_TITLE" value:@"Add Music…" table:0];
 
   v43 = 0;
   v44 = 0;
-  [(NMBridgeSyncedMusicController *)self _getRepresentativeCollectionGrouping:&v44 propertyPredicate:&v43 mediaQuery:v8];
+  [(NMBridgeSyncedMusicController *)self _getRepresentativeCollectionGrouping:&v44 propertyPredicate:&v43 mediaQuery:itemsQuery];
   v11 = v43;
   v12 = v11;
   if (!v11)
   {
-    v14 = 0;
+    longLongValue = 0;
     goto LABEL_14;
   }
 
-  v13 = [v11 value];
-  v14 = [v13 longLongValue];
+  value = [v11 value];
+  longLongValue = [value longLongValue];
 
   if (v44 != 6)
   {
     if (v44 == 1)
     {
-      v15 = [v6 representativeItem];
-      v16 = [v15 albumTitle];
+      representativeItem = [itemsCopy representativeItem];
+      albumTitle = [representativeItem albumTitle];
 
       v41[0] = _NSConcreteStackBlock;
       v41[1] = 3221225472;
       v41[2] = sub_775C;
       v41[3] = &unk_146C8;
-      v17 = v16;
+      v17 = albumTitle;
       v42 = v17;
-      v18 = [MPModelAlbum nms_modelObjectWithLibraryPersistentID:v14 block:v41];
+      v18 = [MPModelAlbum nms_modelObjectWithLibraryPersistentID:longLongValue block:v41];
       [(NMBridgeSyncedMusicController *)self _pinAlbum:v18];
       v19 = v17;
 
@@ -1650,7 +1650,7 @@ LABEL_26:
   v39 = 0x2020000000;
   v40 = 0;
   v20 = +[ML3MusicLibrary autoupdatingSharedLibrary];
-  v21 = [ML3ComparisonPredicate predicateWithProperty:ML3ContainerPropertyContainerPersistentId equalToInt64:v14];
+  v21 = [ML3ComparisonPredicate predicateWithProperty:ML3ContainerPropertyContainerPersistentId equalToInt64:longLongValue];
   v33 = [ML3Container queryWithLibrary:v20 predicate:v21];
 
   [v33 setLimit:1];
@@ -1673,9 +1673,9 @@ LABEL_26:
   v32 = +[NRPairedDeviceRegistry sharedInstance];
   v31 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v23 = [v32 getAllDevicesWithArchivedAltAccountDevicesMatching:v31];
-  v24 = [v23 firstObject];
+  firstObject = [v23 firstObject];
   v25 = [[NSUUID alloc] initWithUUIDString:@"205EB184-AC17-4886-BC97-09F15A9CA5F1"];
-  v26 = [v24 supportsCapability:v25];
+  v26 = [firstObject supportsCapability:v25];
 
   if ((v26 & 1) == 0)
   {
@@ -1691,7 +1691,7 @@ LABEL_10:
     v35[2] = sub_77F8;
     v35[3] = &unk_14718;
     v35[4] = buf;
-    v27 = [MPModelPlaylist nms_modelObjectWithLibraryPersistentID:v14 block:v35];
+    v27 = [MPModelPlaylist nms_modelObjectWithLibraryPersistentID:longLongValue block:v35];
     [(NMBridgeSyncedMusicController *)self _pinPlaylist:v27];
     v28 = *(*&buf[8] + 40);
 
@@ -1711,7 +1711,7 @@ LABEL_14:
       *buf = 134218240;
       *&buf[4] = v44;
       *&buf[12] = 2048;
-      *&buf[14] = v14;
+      *&buf[14] = longLongValue;
       _os_log_impl(&dword_0, v30, OS_LOG_TYPE_DEFAULT, "[NMBridgeSyncedMusicController] Picked collectionGrouping:%ld, persistentID:%lld", buf, 0x16u);
     }
 
@@ -1721,7 +1721,7 @@ LABEL_14:
   }
 }
 
-- (void)mediaPickerDidCancel:(id)a3
+- (void)mediaPickerDidCancel:(id)cancel
 {
   v4 = sub_9AEC(13);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1757,14 +1757,14 @@ LABEL_14:
   v11 = [UIAlertAction actionWithTitle:v10 style:0 handler:v13];
   [v8 addAction:v11];
 
-  v12 = [(NMBridgeSyncedMusicController *)self _selfOrPresentedViewController];
-  [v12 presentViewController:v8 animated:1 completion:0];
+  _selfOrPresentedViewController = [(NMBridgeSyncedMusicController *)self _selfOrPresentedViewController];
+  [_selfOrPresentedViewController presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)_getRepresentativeCollectionGrouping:(int64_t *)a3 propertyPredicate:(id *)a4 mediaQuery:(id)a5
+- (void)_getRepresentativeCollectionGrouping:(int64_t *)grouping propertyPredicate:(id *)predicate mediaQuery:(id)query
 {
-  v9 = a5;
-  v7 = [v9 predicateForProperty:MPMediaItemPropertyAlbumPersistentID];
+  queryCopy = query;
+  v7 = [queryCopy predicateForProperty:MPMediaItemPropertyAlbumPersistentID];
   if (v7)
   {
     v8 = 1;
@@ -1772,7 +1772,7 @@ LABEL_14:
 
   else
   {
-    v7 = [v9 predicateForProperty:MPMediaItemPropertyArtistPersistentID];
+    v7 = [queryCopy predicateForProperty:MPMediaItemPropertyArtistPersistentID];
     if (v7)
     {
       v8 = 2;
@@ -1780,7 +1780,7 @@ LABEL_14:
 
     else
     {
-      v7 = [v9 predicateForProperty:MPMediaItemPropertyAlbumArtistPersistentID];
+      v7 = [queryCopy predicateForProperty:MPMediaItemPropertyAlbumArtistPersistentID];
       if (v7)
       {
         v8 = 3;
@@ -1788,7 +1788,7 @@ LABEL_14:
 
       else
       {
-        v7 = [v9 predicateForProperty:MPMediaItemPropertyComposerPersistentID];
+        v7 = [queryCopy predicateForProperty:MPMediaItemPropertyComposerPersistentID];
         if (v7)
         {
           v8 = 4;
@@ -1796,7 +1796,7 @@ LABEL_14:
 
         else
         {
-          v7 = [v9 predicateForProperty:MPMediaItemPropertyGenrePersistentID];
+          v7 = [queryCopy predicateForProperty:MPMediaItemPropertyGenrePersistentID];
           if (v7)
           {
             v8 = 5;
@@ -1804,7 +1804,7 @@ LABEL_14:
 
           else
           {
-            v7 = [v9 predicateForProperty:MPMediaPlaylistPropertyPersistentID];
+            v7 = [queryCopy predicateForProperty:MPMediaPlaylistPropertyPersistentID];
             v8 = 6;
             if (!v7)
             {
@@ -1816,15 +1816,15 @@ LABEL_14:
     }
   }
 
-  if (a3)
+  if (grouping)
   {
-    *a3 = v8;
+    *grouping = v8;
   }
 
-  if (a4)
+  if (predicate)
   {
     v7 = v7;
-    *a4 = v7;
+    *predicate = v7;
   }
 }
 
@@ -1833,33 +1833,33 @@ LABEL_14:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   if (v8)
   {
-    v9 = [(NMBridgeSyncedMusicController *)self syncInfoController];
-    v10 = [v9 syncInfo];
-    v11 = [v10 keepLocalEnabledPlaylists];
-    v12 = [(NMBridgeSyncedMusicController *)self _libraryPersistentIDs:v11 type:4];
+    syncInfoController = [(NMBridgeSyncedMusicController *)self syncInfoController];
+    syncInfo = [syncInfoController syncInfo];
+    keepLocalEnabledPlaylists = [syncInfo keepLocalEnabledPlaylists];
+    v12 = [(NMBridgeSyncedMusicController *)self _libraryPersistentIDs:keepLocalEnabledPlaylists type:4];
   }
 
   else
   {
     v13 = +[NMSMediaPinningManager sharedManager];
-    v14 = [v13 pinnedPlaylists];
-    v9 = [NSMutableSet setWithArray:v14];
+    pinnedPlaylists = [v13 pinnedPlaylists];
+    syncInfoController = [NSMutableSet setWithArray:pinnedPlaylists];
 
     v15 = +[NMSMediaPinningManager sharedManager];
-    v10 = [v15 workoutPlaylistID];
+    syncInfo = [v15 workoutPlaylistID];
 
-    if ([v10 longLongValue])
+    if ([syncInfo longLongValue])
     {
-      [v9 addObject:v10];
+      [syncInfoController addObject:syncInfo];
     }
 
-    v12 = [v9 copy];
+    v12 = [syncInfoController copy];
   }
 
   return v12;
@@ -1870,23 +1870,23 @@ LABEL_14:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   if (v8)
   {
-    v9 = [(NMBridgeSyncedMusicController *)self syncInfoController];
-    v10 = [v9 syncInfo];
-    v11 = [v10 keepLocalEnabledAlbums];
-    v12 = [(NMBridgeSyncedMusicController *)self _libraryPersistentIDs:v11 type:2];
+    syncInfoController = [(NMBridgeSyncedMusicController *)self syncInfoController];
+    syncInfo = [syncInfoController syncInfo];
+    keepLocalEnabledAlbums = [syncInfo keepLocalEnabledAlbums];
+    v12 = [(NMBridgeSyncedMusicController *)self _libraryPersistentIDs:keepLocalEnabledAlbums type:2];
   }
 
   else
   {
-    v9 = +[NMSMediaPinningManager sharedManager];
-    v10 = [v9 pinnedAlbums];
-    v12 = [NSSet setWithArray:v10];
+    syncInfoController = +[NMSMediaPinningManager sharedManager];
+    syncInfo = [syncInfoController pinnedAlbums];
+    v12 = [NSSet setWithArray:syncInfo];
   }
 
   return v12;
@@ -1895,18 +1895,18 @@ LABEL_14:
 - (id)_workoutPlaylistID
 {
   v2 = +[NMSMediaPinningManager sharedManager];
-  v3 = [v2 workoutPlaylistID];
+  workoutPlaylistID = [v2 workoutPlaylistID];
 
-  return v3;
+  return workoutPlaylistID;
 }
 
 - (unint64_t)_numberOfSongs
 {
-  v2 = [(NMBridgeSyncedMusicController *)self syncInfoController];
-  v3 = [v2 syncInfo];
-  v4 = [v3 itemCount];
+  syncInfoController = [(NMBridgeSyncedMusicController *)self syncInfoController];
+  syncInfo = [syncInfoController syncInfo];
+  itemCount = [syncInfo itemCount];
 
-  return v4;
+  return itemCount;
 }
 
 - (unint64_t)_numberOfAlbums
@@ -1914,24 +1914,24 @@ LABEL_14:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   if (v8)
   {
-    v9 = [(NMBridgeSyncedMusicController *)self syncInfoController];
-    v10 = [v9 syncInfo];
-    v11 = [v10 allAlbums];
-    v12 = [(NMBridgeSyncedMusicController *)self _libraryPersistentIDs:v11 type:2];
+    syncInfoController = [(NMBridgeSyncedMusicController *)self syncInfoController];
+    syncInfo = [syncInfoController syncInfo];
+    allAlbums = [syncInfo allAlbums];
+    v12 = [(NMBridgeSyncedMusicController *)self _libraryPersistentIDs:allAlbums type:2];
     v13 = [v12 count];
   }
 
   else
   {
-    v9 = +[NMSMediaPinningManager sharedManager];
-    v10 = [v9 albumIdentifiers];
-    v13 = [v10 count];
+    syncInfoController = +[NMSMediaPinningManager sharedManager];
+    syncInfo = [syncInfoController albumIdentifiers];
+    v13 = [syncInfo count];
   }
 
   return v13;
@@ -1942,187 +1942,187 @@ LABEL_14:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   if (v8)
   {
-    v9 = [(NMBridgeSyncedMusicController *)self syncInfoController];
-    v10 = [v9 syncInfo];
-    v11 = [v10 allPlaylists];
-    v12 = [(NMBridgeSyncedMusicController *)self _libraryPersistentIDs:v11 type:4];
+    syncInfoController = [(NMBridgeSyncedMusicController *)self syncInfoController];
+    syncInfo = [syncInfoController syncInfo];
+    allPlaylists = [syncInfo allPlaylists];
+    v12 = [(NMBridgeSyncedMusicController *)self _libraryPersistentIDs:allPlaylists type:4];
     v13 = [v12 count];
   }
 
   else
   {
-    v9 = +[NMSMediaPinningManager sharedManager];
-    v10 = [v9 playlistIdentifiers];
-    v13 = [v10 count];
+    syncInfoController = +[NMSMediaPinningManager sharedManager];
+    syncInfo = [syncInfoController playlistIdentifiers];
+    v13 = [syncInfo count];
   }
 
   return v13;
 }
 
-- (void)_pinPlaylist:(id)a3
+- (void)_pinPlaylist:(id)playlist
 {
-  v4 = a3;
+  playlistCopy = playlist;
   v5 = sub_9AEC(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412290;
-    v21 = v4;
+    v21 = playlistCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "[NMBridgeSyncedMusicController] Pinning playlist: %@", &v20, 0xCu);
   }
 
   v6 = +[NRPairedDeviceRegistry sharedInstance];
   v7 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v8 = [v6 getAllDevicesWithArchivedAltAccountDevicesMatching:v7];
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
   v10 = [[NSUUID alloc] initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-  v11 = [v9 supportsCapability:v10];
+  v11 = [firstObject supportsCapability:v10];
 
   if (v11)
   {
-    [(NMBridgeSyncedMusicController *)self _performKeepLocalRequestWithModelObject:v4 enableState:1];
+    [(NMBridgeSyncedMusicController *)self _performKeepLocalRequestWithModelObject:playlistCopy enableState:1];
   }
 
   else
   {
-    v12 = [v4 identifiers];
-    v13 = [v12 library];
-    v14 = [v13 persistentID];
+    identifiers = [playlistCopy identifiers];
+    library = [identifiers library];
+    persistentID = [library persistentID];
 
     v15 = +[NMSMediaPinningManager sharedManager];
-    v16 = [NSNumber numberWithLongLong:v14];
+    v16 = [NSNumber numberWithLongLong:persistentID];
     v17 = [v15 isPlaylistPinned:v16];
 
     if ((v17 & 1) == 0)
     {
       v18 = +[NMSMediaPinningManager sharedManager];
-      v19 = [NSNumber numberWithLongLong:v14];
+      v19 = [NSNumber numberWithLongLong:persistentID];
       [v18 pinPlaylist:v19 completionHandler:0];
     }
   }
 }
 
-- (void)_pinAlbum:(id)a3
+- (void)_pinAlbum:(id)album
 {
-  v4 = a3;
+  albumCopy = album;
   v5 = sub_9AEC(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412290;
-    v21 = v4;
+    v21 = albumCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "[NMBridgeSyncedMusicController] Pinning album: %@", &v20, 0xCu);
   }
 
   v6 = +[NRPairedDeviceRegistry sharedInstance];
   v7 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v8 = [v6 getAllDevicesWithArchivedAltAccountDevicesMatching:v7];
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
   v10 = [[NSUUID alloc] initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-  v11 = [v9 supportsCapability:v10];
+  v11 = [firstObject supportsCapability:v10];
 
   if (v11)
   {
-    [(NMBridgeSyncedMusicController *)self _performKeepLocalRequestWithModelObject:v4 enableState:1];
+    [(NMBridgeSyncedMusicController *)self _performKeepLocalRequestWithModelObject:albumCopy enableState:1];
   }
 
   else
   {
-    v12 = [v4 identifiers];
-    v13 = [v12 library];
-    v14 = [v13 persistentID];
+    identifiers = [albumCopy identifiers];
+    library = [identifiers library];
+    persistentID = [library persistentID];
 
     v15 = +[NMSMediaPinningManager sharedManager];
-    v16 = [NSNumber numberWithLongLong:v14];
+    v16 = [NSNumber numberWithLongLong:persistentID];
     v17 = [v15 isAlbumPinned:v16];
 
     if ((v17 & 1) == 0)
     {
       v18 = +[NMSMediaPinningManager sharedManager];
-      v19 = [NSNumber numberWithLongLong:v14];
+      v19 = [NSNumber numberWithLongLong:persistentID];
       [v18 pinAlbum:v19 completionHandler:0];
     }
   }
 }
 
-- (void)_unpinPlaylist:(id)a3
+- (void)_unpinPlaylist:(id)playlist
 {
-  v4 = a3;
+  playlistCopy = playlist;
   v5 = sub_9AEC(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = playlistCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "[NMBridgeSyncedMusicController] Unpinning playlist: %@", &v16, 0xCu);
   }
 
   v6 = +[NRPairedDeviceRegistry sharedInstance];
   v7 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v8 = [v6 getAllDevicesWithArchivedAltAccountDevicesMatching:v7];
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
   v10 = [[NSUUID alloc] initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-  v11 = [v9 supportsCapability:v10];
+  v11 = [firstObject supportsCapability:v10];
 
   if (v11)
   {
-    [(NMBridgeSyncedMusicController *)self _performKeepLocalRequestWithModelObject:v4 enableState:-1];
+    [(NMBridgeSyncedMusicController *)self _performKeepLocalRequestWithModelObject:playlistCopy enableState:-1];
   }
 
   else
   {
     v12 = +[NMSMediaPinningManager sharedManager];
-    v13 = [v4 identifiers];
-    v14 = [v13 library];
-    v15 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v14 persistentID]);
+    identifiers = [playlistCopy identifiers];
+    library = [identifiers library];
+    v15 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [library persistentID]);
     [v12 unpinPlaylist:v15 completionHandler:0];
   }
 }
 
-- (void)_unpinAlbum:(id)a3
+- (void)_unpinAlbum:(id)album
 {
-  v4 = a3;
+  albumCopy = album;
   v5 = sub_9AEC(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = albumCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "[NMBridgeSyncedMusicController] Unpinning album: %@", &v16, 0xCu);
   }
 
   v6 = +[NRPairedDeviceRegistry sharedInstance];
   v7 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v8 = [v6 getAllDevicesWithArchivedAltAccountDevicesMatching:v7];
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
   v10 = [[NSUUID alloc] initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-  v11 = [v9 supportsCapability:v10];
+  v11 = [firstObject supportsCapability:v10];
 
   if (v11)
   {
-    [(NMBridgeSyncedMusicController *)self _performKeepLocalRequestWithModelObject:v4 enableState:-1];
+    [(NMBridgeSyncedMusicController *)self _performKeepLocalRequestWithModelObject:albumCopy enableState:-1];
   }
 
   else
   {
     v12 = +[NMSMediaPinningManager sharedManager];
-    v13 = [v4 identifiers];
-    v14 = [v13 library];
-    v15 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v14 persistentID]);
+    identifiers = [albumCopy identifiers];
+    library = [identifiers library];
+    v15 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [library persistentID]);
     [v12 unpinAlbum:v15 completionHandler:0];
   }
 }
 
-- (void)_performKeepLocalRequestWithModelObject:(id)a3 enableState:(int64_t)a4
+- (void)_performKeepLocalRequestWithModelObject:(id)object enableState:(int64_t)state
 {
-  v6 = a3;
-  [(NMBridgeSyncedMusicController *)self _prepareTransientStateWithModelObject:v6 enableState:a4];
+  objectCopy = object;
+  [(NMBridgeSyncedMusicController *)self _prepareTransientStateWithModelObject:objectCopy enableState:state];
   v7 = objc_alloc_init(NMSKeepLocalRequestOptions);
   [v7 setCellularBundleIdentifier:@"com.apple.NanoMusic"];
   [v7 setQualityOfService:25];
-  v8 = [[NMSKeepLocalRequestProxy alloc] initWithModelObject:v6 enableState:a4];
+  v8 = [[NMSKeepLocalRequestProxy alloc] initWithModelObject:objectCopy enableState:state];
   v9 = [[NMUKeepLocalRequestController alloc] initWithRequest:v8 presentingViewController:self];
   objc_initWeak(&location, self);
   v14[0] = _NSConcreteStackBlock;
@@ -2130,7 +2130,7 @@ LABEL_14:
   v14[2] = sub_8C18;
   v14[3] = &unk_14790;
   objc_copyWeak(&v16, &location);
-  v10 = v6;
+  v10 = objectCopy;
   v15 = v10;
   [v9 performRequestWithOptions:v7 completion:v14];
   v11 = +[NMSyncDefaults sharedDefaults];
@@ -2147,14 +2147,14 @@ LABEL_14:
   objc_destroyWeak(&location);
 }
 
-- (id)_libraryPersistentIDs:(id)a3 type:(int64_t)a4
+- (id)_libraryPersistentIDs:(id)ds type:(int64_t)type
 {
-  v6 = [a3 mutableCopy];
-  v7 = [(NMKeepLocalTransientState *)self->_keepLocalTransientState modelObjectsWithEnableState:1 type:a4];
+  v6 = [ds mutableCopy];
+  v7 = [(NMKeepLocalTransientState *)self->_keepLocalTransientState modelObjectsWithEnableState:1 type:type];
   v8 = [v7 valueForKeyPath:@"identifiers.library.persistentID"];
   [v6 unionSet:v8];
 
-  v9 = [(NMKeepLocalTransientState *)self->_keepLocalTransientState modelObjectsWithEnableState:-1 type:a4];
+  v9 = [(NMKeepLocalTransientState *)self->_keepLocalTransientState modelObjectsWithEnableState:-1 type:type];
   v10 = [v9 valueForKeyPath:@"identifiers.library.persistentID"];
   [v6 minusSet:v10];
 
@@ -2163,18 +2163,18 @@ LABEL_14:
   return v11;
 }
 
-- (void)_prepareTransientStateWithModelObject:(id)a3 enableState:(int64_t)a4
+- (void)_prepareTransientStateWithModelObject:(id)object enableState:(int64_t)state
 {
-  [(NMKeepLocalTransientState *)self->_keepLocalTransientState setEnableState:a4 forModelObject:a3];
+  [(NMKeepLocalTransientState *)self->_keepLocalTransientState setEnableState:state forModelObject:object];
 
   [(NMBridgeSyncedMusicController *)self _reloadContents];
 }
 
-- (void)_completeTransientStateWithModelObject:(id)a3 success:(BOOL)a4
+- (void)_completeTransientStateWithModelObject:(id)object success:(BOOL)success
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  successCopy = success;
+  objectCopy = object;
+  if (successCopy)
   {
     objc_initWeak(&location, self);
     keepLocalTransientState = self->_keepLocalTransientState;
@@ -2183,14 +2183,14 @@ LABEL_14:
     v8[2] = sub_8F6C;
     v8[3] = &unk_147B8;
     objc_copyWeak(&v9, &location);
-    [(NMKeepLocalTransientState *)keepLocalTransientState confirmEnableStateForModelObject:v6 expirationBlock:v8];
+    [(NMKeepLocalTransientState *)keepLocalTransientState confirmEnableStateForModelObject:objectCopy expirationBlock:v8];
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
   }
 
   else
   {
-    [(NMKeepLocalTransientState *)self->_keepLocalTransientState removeEnableStateForModelObject:v6];
+    [(NMKeepLocalTransientState *)self->_keepLocalTransientState removeEnableStateForModelObject:objectCopy];
     [(NMBridgeSyncedMusicController *)self _reloadContents];
   }
 }
@@ -2205,17 +2205,17 @@ LABEL_14:
   }
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NMBridgeSyncedMusicController *)self specifierAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(NMBridgeSyncedMusicController *)self specifierAtIndexPath:pathCopy];
   if ([(NMBridgeSyncedMusicController *)self editable])
   {
-    v9 = [v8 identifier];
+    identifier = [v8 identifier];
     v10 = [NSBundle bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"ADD_MUSIC_TITLE" value:@"Add Music…" table:0];
-    v12 = [v9 isEqualToString:v11];
+    v12 = [identifier isEqualToString:v11];
 
     if (v12)
     {
@@ -2232,25 +2232,25 @@ LABEL_14:
 
   v16.receiver = self;
   v16.super_class = NMBridgeSyncedMusicController;
-  v14 = [(NMBridgeSyncedMusicController *)&v16 tableView:v6 willSelectRowAtIndexPath:v7];
+  v14 = [(NMBridgeSyncedMusicController *)&v16 tableView:viewCopy willSelectRowAtIndexPath:pathCopy];
 
   return v14;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 section];
-  v9 = [v7 numberOfSections];
+  pathCopy = path;
+  viewCopy = view;
+  section = [pathCopy section];
+  numberOfSections = [viewCopy numberOfSections];
 
-  if (v8 == v9 - 1)
+  if (section == numberOfSections - 1)
   {
-    v10 = [(NMBridgeSyncedMusicController *)self specifierAtIndexPath:v6];
-    v11 = [v10 identifier];
+    v10 = [(NMBridgeSyncedMusicController *)self specifierAtIndexPath:pathCopy];
+    identifier = [v10 identifier];
     v12 = [NSBundle bundleForClass:objc_opt_class()];
     v13 = [v12 localizedStringForKey:@"ADD_MUSIC_TITLE" value:@"Add Music…" table:0];
-    v14 = [v11 isEqualToString:v13] ^ 1;
+    v14 = [identifier isEqualToString:v13] ^ 1;
   }
 
   else
@@ -2261,24 +2261,24 @@ LABEL_14:
   return v14;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NMBridgeSyncedMusicController *)self specifierAtIndexPath:v9];
+  viewCopy = view;
+  pathCopy = path;
+  v10 = [(NMBridgeSyncedMusicController *)self specifierAtIndexPath:pathCopy];
   v11 = [v10 propertyForKey:NMBUISpecifierCellConfigurationKey];
-  v12 = [v11 modelObject];
+  modelObject = [v11 modelObject];
 
   v13 = [NSPredicate predicateWithFormat:@"SELF != %@", v10];
-  v14 = [v9 section];
-  if (v14 != [v8 numberOfSections] - 1)
+  section = [pathCopy section];
+  if (section != [viewCopy numberOfSections] - 1)
   {
     goto LABEL_10;
   }
 
-  v15 = [v12 identifiers];
-  v16 = [v15 library];
-  v17 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v16 persistentID]);
+  identifiers = [modelObject identifiers];
+  library = [identifiers library];
+  v17 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [library persistentID]);
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2292,28 +2292,28 @@ LABEL_14:
       [(NMBridgeSyncedMusicController *)self setAlbumSpecifiers:v24];
 
       v17 = v22;
-      [(NMBridgeSyncedMusicController *)self _unpinAlbum:v12];
+      [(NMBridgeSyncedMusicController *)self _unpinAlbum:modelObject];
     }
 
     goto LABEL_9;
   }
 
   v27 = v17;
-  v18 = [(NMBridgeSyncedMusicController *)self _workoutPlaylistID];
-  if (!v18 || (v19 = v18, -[NMBridgeSyncedMusicController _workoutPlaylistID](self, "_workoutPlaylistID"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 isEqualToNumber:v17], v20, v19, !v21))
+  _workoutPlaylistID = [(NMBridgeSyncedMusicController *)self _workoutPlaylistID];
+  if (!_workoutPlaylistID || (v19 = _workoutPlaylistID, -[NMBridgeSyncedMusicController _workoutPlaylistID](self, "_workoutPlaylistID"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 isEqualToNumber:v17], v20, v19, !v21))
   {
-    v25 = [(NMBridgeSyncedMusicController *)self playlistSpecifiers];
-    v26 = [v25 filteredArrayUsingPredicate:v13];
+    playlistSpecifiers = [(NMBridgeSyncedMusicController *)self playlistSpecifiers];
+    v26 = [playlistSpecifiers filteredArrayUsingPredicate:v13];
     [(NMBridgeSyncedMusicController *)self setPlaylistSpecifiers:v26];
 
-    [(NMBridgeSyncedMusicController *)self _unpinPlaylist:v12];
+    [(NMBridgeSyncedMusicController *)self _unpinPlaylist:modelObject];
     v17 = v27;
 LABEL_9:
 
 LABEL_10:
     v28.receiver = self;
     v28.super_class = NMBridgeSyncedMusicController;
-    [(NMBridgeSyncedMusicController *)&v28 tableView:v8 commitEditingStyle:a4 forRowAtIndexPath:v9];
+    [(NMBridgeSyncedMusicController *)&v28 tableView:viewCopy commitEditingStyle:style forRowAtIndexPath:pathCopy];
     [(NMBridgeSyncedMusicController *)self _disableEditableAndButtonIfNothingLeftToEdit];
     goto LABEL_11;
   }
@@ -2324,18 +2324,18 @@ LABEL_10:
   v29[3] = &unk_147E0;
   v29[4] = self;
   v30 = v13;
-  v31 = v12;
-  v32 = v8;
-  v34 = a4;
-  v33 = v9;
+  v31 = modelObject;
+  v32 = viewCopy;
+  styleCopy = style;
+  v33 = pathCopy;
   [(NMBridgeSyncedMusicController *)self _showWorkoutPlaylistWarningWithDeletionCompletion:v29];
 
 LABEL_11:
 }
 
-- (void)_showWorkoutPlaylistWarningWithDeletionCompletion:(id)a3
+- (void)_showWorkoutPlaylistWarningWithDeletionCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"SYNC_SETTINGS_WORKOUT_PLAYLIST_DESCRIPTION" value:@"This playlist was selected as your Workout Playlist. If you remove this playlist from your Apple Watch table:{it will no longer play automatically when you start a workout.", 0}];
   v7 = [UIAlertController alertControllerWithTitle:v6 message:0 preferredStyle:0];
@@ -2346,8 +2346,8 @@ LABEL_11:
   v16[1] = 3221225472;
   v16[2] = sub_99A8;
   v16[3] = &unk_14808;
-  v17 = v4;
-  v10 = v4;
+  v17 = completionCopy;
+  v10 = completionCopy;
   v11 = [UIAlertAction actionWithTitle:v9 style:2 handler:v16];
   [v7 addAction:v11];
 
@@ -2356,8 +2356,8 @@ LABEL_11:
   v14 = [UIAlertAction actionWithTitle:v13 style:1 handler:0];
   [v7 addAction:v14];
 
-  v15 = [(NMBridgeSyncedMusicController *)self _selfOrPresentedViewController];
-  [v15 presentViewController:v7 animated:1 completion:0];
+  _selfOrPresentedViewController = [(NMBridgeSyncedMusicController *)self _selfOrPresentedViewController];
+  [_selfOrPresentedViewController presentViewController:v7 animated:1 completion:0];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface WBSLeadImageSaver
-+ (void)saveLeadImageFromWebView:(id)a3 toLeadImageCacheRegisteredWithMetadataManager:(id)a4 completionHandler:(id)a5;
++ (void)saveLeadImageFromWebView:(id)view toLeadImageCacheRegisteredWithMetadataManager:(id)manager completionHandler:(id)handler;
 @end
 
 @implementation WBSLeadImageSaver
 
-+ (void)saveLeadImageFromWebView:(id)a3 toLeadImageCacheRegisteredWithMetadataManager:(id)a4 completionHandler:(id)a5
++ (void)saveLeadImageFromWebView:(id)view toLeadImageCacheRegisteredWithMetadataManager:(id)manager completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  managerCopy = manager;
+  handlerCopy = handler;
   v10 = objc_alloc_init(MEMORY[0x1E696ECE0]);
   v11 = v10;
   if (v10)
@@ -18,8 +18,8 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __110__WBSLeadImageSaver_saveLeadImageFromWebView_toLeadImageCacheRegisteredWithMetadataManager_completionHandler___block_invoke;
     aBlock[3] = &unk_1E8285E60;
-    v28 = v9;
-    v27 = v8;
+    v28 = handlerCopy;
+    v27 = managerCopy;
     v12 = _Block_copy(aBlock);
     v20 = 0;
     v21 = &v20;
@@ -34,7 +34,7 @@
     v18 = v12;
     v19 = &v20;
     v13 = v12;
-    v14 = [v11 _startFetchingMetadataForWebView:v7 isNonAppInitiated:1 completionHandler:v17];
+    v14 = [v11 _startFetchingMetadataForWebView:viewCopy isNonAppInitiated:1 completionHandler:v17];
     v15 = v21[5];
     v21[5] = v14;
 
@@ -44,7 +44,7 @@
   else
   {
     v16 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:2 userInfo:0];
-    (*(v9 + 2))(v9, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, v16);
   }
 }
 

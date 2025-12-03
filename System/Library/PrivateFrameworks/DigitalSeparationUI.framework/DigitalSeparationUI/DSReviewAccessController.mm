@@ -1,10 +1,10 @@
 @interface DSReviewAccessController
 - (DSNavigationDelegate)delegate;
 - (DSReviewAccessController)init;
-- (id)_descriptionTextForDeviceNameList:(id)a3 format:(id)a4;
+- (id)_descriptionTextForDeviceNameList:(id)list format:(id)format;
 - (void)cancelReset;
 - (void)goToSafetyCheck;
-- (void)presentErrorAlert:(id)a3;
+- (void)presentErrorAlert:(id)alert;
 - (void)presentMoreOptions;
 - (void)resetAllDeviceAccess;
 - (void)viewDidLoad;
@@ -15,8 +15,8 @@
 - (DSReviewAccessController)init
 {
   v3 = MEMORY[0x277D755D0];
-  v4 = [MEMORY[0x277D75348] systemBlueColor];
-  v5 = [v3 configurationWithHierarchicalColor:v4];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v5 = [v3 configurationWithHierarchicalColor:systemBlueColor];
 
   if (+[DSFeatureFlags isNaturalUIEnabled])
   {
@@ -58,36 +58,36 @@
   v5 = DSUILocStringForKey(@"MORE_OPTIONS");
   v6 = [DSUIUtilities setUpLinkButtonForController:self title:v5 target:self selector:sel_presentMoreOptions];
 
-  v7 = [(DSReviewAccessController *)self accessManager];
-  v8 = [v7 mirroringDevices];
+  accessManager = [(DSReviewAccessController *)self accessManager];
+  mirroringDevices = [accessManager mirroringDevices];
 
-  if ([v8 count])
+  if ([mirroringDevices count])
   {
     v9 = DSUILocStringForKey(@"REVIEW_ACCESS_BULLET_MIRRORING_DETAIL");
-    v10 = [(DSReviewAccessController *)self _descriptionTextForDeviceNameList:v8 format:v9];
+    v10 = [(DSReviewAccessController *)self _descriptionTextForDeviceNameList:mirroringDevices format:v9];
 
     v11 = DSUILocStringForKey(@"REVIEW_ACCESS_BULLET_MIRRORING");
     v12 = [MEMORY[0x277D755B8] systemImageNamed:@"macbook.and.iphone"];
     [(DSReviewAccessController *)self addBulletedListItemWithTitle:v11 description:v10 image:v12];
   }
 
-  v13 = [(DSReviewAccessController *)self accessManager];
-  v14 = [v13 syncingDevices];
+  accessManager2 = [(DSReviewAccessController *)self accessManager];
+  syncingDevices = [accessManager2 syncingDevices];
 
-  if ([v14 count])
+  if ([syncingDevices count])
   {
     v15 = DSUILocStringForKey(@"REVIEW_ACCESS_BULLET_PAIRING_DETAIL");
-    v16 = [(DSReviewAccessController *)self _descriptionTextForDeviceNameList:v14 format:v15];
+    v16 = [(DSReviewAccessController *)self _descriptionTextForDeviceNameList:syncingDevices format:v15];
 
     v17 = DSUILocStringForKey(@"REVIEW_ACCESS_BULLET_PAIRING");
     v18 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.triangle.2.circlepath"];
     [(DSReviewAccessController *)self addBulletedListItemWithTitle:v17 description:v16 image:v18];
   }
 
-  v19 = [(DSReviewAccessController *)self accessManager];
-  v20 = [v19 hasAlternateFaceID];
+  accessManager3 = [(DSReviewAccessController *)self accessManager];
+  hasAlternateFaceID = [accessManager3 hasAlternateFaceID];
 
-  if (v20)
+  if (hasAlternateFaceID)
   {
     v21 = @"faceid";
     v22 = @"REVIEW_ACCESS_BULLET_ALT_FACEID_DETAIL";
@@ -100,10 +100,10 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v23 = [(DSReviewAccessController *)self accessManager];
-  v24 = [v23 hasAlternateTouchID];
+  accessManager4 = [(DSReviewAccessController *)self accessManager];
+  hasAlternateTouchID = [accessManager4 hasAlternateTouchID];
 
-  if (v24)
+  if (hasAlternateTouchID)
   {
     v21 = @"touchid";
     v22 = @"REVIEW_ACCESS_BULLET_ALT_TOUCHID_DETAIL";
@@ -117,26 +117,26 @@ LABEL_10:
   [(DSReviewAccessController *)self addBulletedListItemWithTitle:v28 description:v29 image:v30];
 }
 
-- (id)_descriptionTextForDeviceNameList:(id)a3 format:(id)a4
+- (id)_descriptionTextForDeviceNameList:(id)list format:(id)format
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 count] - 1;
+  formatCopy = format;
+  listCopy = list;
+  v7 = [listCopy count] - 1;
   v8 = MEMORY[0x277CCACA8];
   v9 = DSLocStringForKey();
-  v10 = [v6 firstObject];
+  firstObject = [listCopy firstObject];
 
-  v11 = [v8 localizedStringWithFormat:v9, v10, v7];
+  v11 = [v8 localizedStringWithFormat:v9, firstObject, v7];
 
-  v12 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v5, v11];
+  v12 = [MEMORY[0x277CCACA8] localizedStringWithFormat:formatCopy, v11];
 
   return v12;
 }
 
 - (void)resetAllDeviceAccess
 {
-  v3 = [(DSReviewAccessController *)self buttonTray];
-  [v3 showButtonsBusy];
+  buttonTray = [(DSReviewAccessController *)self buttonTray];
+  [buttonTray showButtonsBusy];
 
   v4 = DSLog_13;
   if (os_log_type_enabled(DSLog_13, OS_LOG_TYPE_INFO))
@@ -145,13 +145,13 @@ LABEL_10:
     _os_log_impl(&dword_248C7E000, v4, OS_LOG_TYPE_INFO, "Resetting all alternative device access methods", buf, 2u);
   }
 
-  v5 = [(DSReviewAccessController *)self accessManager];
+  accessManager = [(DSReviewAccessController *)self accessManager];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__DSReviewAccessController_resetAllDeviceAccess__block_invoke;
   v6[3] = &unk_278F759C0;
   v6[4] = self;
-  [v5 resetAllAccessMethodsWithCompletion:v6];
+  [accessManager resetAllAccessMethodsWithCompletion:v6];
 }
 
 void __48__DSReviewAccessController_resetAllDeviceAccess__block_invoke(uint64_t a1, void *a2)
@@ -194,17 +194,17 @@ void __48__DSReviewAccessController_resetAllDeviceAccess__block_invoke_2(uint64_
   }
 }
 
-- (void)presentErrorAlert:(id)a3
+- (void)presentErrorAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v5 = DSLog_13;
   if (os_log_type_enabled(DSLog_13, OS_LOG_TYPE_ERROR))
   {
-    [(DSReviewAccessController *)v4 presentErrorAlert:v5];
+    [(DSReviewAccessController *)alertCopy presentErrorAlert:v5];
   }
 
-  v6 = [(DSReviewAccessController *)self delegate];
-  [v6 pushPaneAfterPaneType:objc_opt_class()];
+  delegate = [(DSReviewAccessController *)self delegate];
+  [delegate pushPaneAfterPaneType:objc_opt_class()];
 }
 
 - (void)presentMoreOptions
@@ -243,20 +243,20 @@ void __48__DSReviewAccessController_resetAllDeviceAccess__block_invoke_2(uint64_
 
 - (void)goToSafetyCheck
 {
-  v3 = [(DSReviewAccessController *)self accessManager];
-  [v3 sendSummaryAnalyticsWithReviewAction:1 resetAction:0 exit:1];
+  accessManager = [(DSReviewAccessController *)self accessManager];
+  [accessManager sendSummaryAnalyticsWithReviewAction:1 resetAction:0 exit:1];
 
-  v4 = [(DSReviewAccessController *)self delegate];
-  [v4 goToCustomizeSharing];
+  delegate = [(DSReviewAccessController *)self delegate];
+  [delegate goToCustomizeSharing];
 }
 
 - (void)cancelReset
 {
-  v3 = [(DSReviewAccessController *)self accessManager];
-  [v3 sendSummaryAnalyticsWithReviewAction:1 resetAction:0 exit:0];
+  accessManager = [(DSReviewAccessController *)self accessManager];
+  [accessManager sendSummaryAnalyticsWithReviewAction:1 resetAction:0 exit:0];
 
-  v4 = [(DSReviewAccessController *)self presentingViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(DSReviewAccessController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (DSNavigationDelegate)delegate

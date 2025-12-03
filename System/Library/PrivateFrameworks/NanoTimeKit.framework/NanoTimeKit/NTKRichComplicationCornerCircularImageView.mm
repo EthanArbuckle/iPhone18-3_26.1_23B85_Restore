@@ -1,12 +1,12 @@
 @interface NTKRichComplicationCornerCircularImageView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 - (id)_circularView;
 - (int64_t)tritiumUpdateMode;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
-- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)a3;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
+- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)configuration;
 - (void)_updatePlatterColor;
-- (void)setPaused:(BOOL)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setPaused:(BOOL)paused;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
@@ -28,30 +28,30 @@
   return v4;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v5.receiver = self;
   v5.super_class = NTKRichComplicationCornerCircularImageView;
   [(CDRichComplicationView *)&v5 setPaused:?];
-  [(CDRichComplicationImageView *)self->_imageView setPaused:v3];
+  [(CDRichComplicationImageView *)self->_imageView setPaused:pausedCopy];
 }
 
 - (int64_t)tritiumUpdateMode
 {
-  v3 = [(CDRichComplicationImageView *)self->_imageView tritiumUpdateMode];
-  v4 = v3;
-  if (v3)
+  tritiumUpdateMode = [(CDRichComplicationImageView *)self->_imageView tritiumUpdateMode];
+  v4 = tritiumUpdateMode;
+  if (tritiumUpdateMode)
   {
-    v5 = [v3 integerValue];
-    if (v5 >= 2)
+    integerValue = [tritiumUpdateMode integerValue];
+    if (integerValue >= 2)
     {
-      v6 = 2;
+      tritiumUpdateMode2 = 2;
     }
 
     else
     {
-      v6 = v5;
+      tritiumUpdateMode2 = integerValue;
     }
   }
 
@@ -59,50 +59,50 @@
   {
     v8.receiver = self;
     v8.super_class = NTKRichComplicationCornerCircularImageView;
-    v6 = [(CDRichComplicationTemplateView *)&v8 tritiumUpdateMode];
+    tritiumUpdateMode2 = [(CDRichComplicationTemplateView *)&v8 tritiumUpdateMode];
   }
 
-  return v6;
+  return tritiumUpdateMode2;
 }
 
-- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)a3
+- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)configuration
 {
-  v8[0] = a3->var0;
-  v5 = a3->var1;
-  var2 = a3->var2;
+  v8[0] = configuration->var0;
+  v5 = configuration->var1;
+  var2 = configuration->var2;
   v9 = v5;
   v10 = var2;
   v7.receiver = self;
   v7.super_class = NTKRichComplicationCornerCircularImageView;
   [(CDRichComplicationView *)&v7 _setFontConfiguration:v8];
-  if (a3->var1)
+  if (configuration->var1)
   {
     [(CDRichComplicationImageView *)self->_imageView setFontDescriptor:?];
-    [(CDRichComplicationImageView *)self->_imageView setFontSizeFactor:a3->var2];
+    [(CDRichComplicationImageView *)self->_imageView setFontSizeFactor:configuration->var2];
   }
 }
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v6 = [a3 imageProvider];
-  [(CDRichComplicationImageView *)self->_imageView setImageProvider:v6 reason:a4];
+  imageProvider = [template imageProvider];
+  [(CDRichComplicationImageView *)self->_imageView setImageProvider:imageProvider reason:reason];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   [(NTKRichComplicationCornerCircularImageView *)self _updatePlatterColor];
   imageView = self->_imageView;
 
-  [(CDRichComplicationImageView *)imageView transitionToMonochromeWithFraction:a3];
+  [(CDRichComplicationImageView *)imageView transitionToMonochromeWithFraction:fraction];
 }
 
 - (void)updateMonochromeColor
@@ -117,14 +117,14 @@
 {
   if ([(CDRichComplicationTemplateView *)self templateWantsPlatter])
   {
-    v3 = [(CDRichComplicationView *)self filterProvider];
-    [v3 colorForView:self accented:0];
+    filterProvider = [(CDRichComplicationView *)self filterProvider];
+    [filterProvider colorForView:self accented:0];
     objc_claimAutoreleasedReturnValue();
 
     CLKUIDefaultComplicationBackgroundColorWithNonAccentColor();
   }
 
-  v4 = [MEMORY[0x277D75348] clearColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
   [(CDRichComplicationImageView *)self->_imageView setBackgroundColor:?];
 }
 

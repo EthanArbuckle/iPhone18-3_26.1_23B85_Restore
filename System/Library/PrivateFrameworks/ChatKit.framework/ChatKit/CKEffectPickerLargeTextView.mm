@@ -1,22 +1,22 @@
 @interface CKEffectPickerLargeTextView
-- (CGRect)_updateBalloonViewOrigin:(CGRect)a3 forButtonFrame:(CGRect)a4;
-- (CKEffectPickerLargeTextView)initWithFrame:(CGRect)a3 sendButtonFrame:(CGRect)a4 balloonViewOrigin:(CGPoint)a5 composition:(id)a6 color:(char)a7 gradientReferenceView:(id)a8;
+- (CGRect)_updateBalloonViewOrigin:(CGRect)origin forButtonFrame:(CGRect)frame;
+- (CKEffectPickerLargeTextView)initWithFrame:(CGRect)frame sendButtonFrame:(CGRect)buttonFrame balloonViewOrigin:(CGPoint)origin composition:(id)composition color:(char)color gradientReferenceView:(id)view;
 - (double)marginBetweenPickerDotButtons;
-- (double)offsetYForLabelAtIndex:(int64_t)a3 withInitialY:(double)a4;
-- (void)_touchUpInsideDotButton:(id)a3;
-- (void)activateTextSizeDependentConstraintsForSendButtonFrame:(CGRect)a3;
-- (void)addEffect:(id)a3 withDescriptiveText:(id)a4 withIdentifier:(id)a5;
+- (double)offsetYForLabelAtIndex:(int64_t)index withInitialY:(double)y;
+- (void)_touchUpInsideDotButton:(id)button;
+- (void)activateTextSizeDependentConstraintsForSendButtonFrame:(CGRect)frame;
+- (void)addEffect:(id)effect withDescriptiveText:(id)text withIdentifier:(id)identifier;
 - (void)cancelImpactSelection;
-- (void)effectTypeDidChange:(id)a3;
+- (void)effectTypeDidChange:(id)change;
 @end
 
 @implementation CKEffectPickerLargeTextView
 
-- (CKEffectPickerLargeTextView)initWithFrame:(CGRect)a3 sendButtonFrame:(CGRect)a4 balloonViewOrigin:(CGPoint)a5 composition:(id)a6 color:(char)a7 gradientReferenceView:(id)a8
+- (CKEffectPickerLargeTextView)initWithFrame:(CGRect)frame sendButtonFrame:(CGRect)buttonFrame balloonViewOrigin:(CGPoint)origin composition:(id)composition color:(char)color gradientReferenceView:(id)view
 {
   v9.receiver = self;
   v9.super_class = CKEffectPickerLargeTextView;
-  result = [(CKEffectPickerView *)&v9 initWithFrame:*&a5.x sendButtonFrame:*&a5.y balloonViewOrigin:a6 composition:a7 color:a8 gradientReferenceView:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height, v10, v11];
+  result = [(CKEffectPickerView *)&v9 initWithFrame:*&origin.x sendButtonFrame:*&origin.y balloonViewOrigin:composition composition:color color:view gradientReferenceView:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height, buttonFrame.origin.x, buttonFrame.origin.y, buttonFrame.size.width, buttonFrame.size.height, v10, v11];
   if (result)
   {
     result->_finishedInitializing = 1;
@@ -25,87 +25,87 @@
   return result;
 }
 
-- (void)activateTextSizeDependentConstraintsForSendButtonFrame:(CGRect)a3
+- (void)activateTextSizeDependentConstraintsForSendButtonFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = CKEffectPickerLargeTextView;
-  [(CKEffectPickerView *)&v21 activateTextSizeDependentConstraintsForSendButtonFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CKEffectPickerView *)&v21 activateTextSizeDependentConstraintsForSendButtonFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = MEMORY[0x1E696ACD8];
-  v5 = [(CKEffectPickerView *)self closeButton];
-  v6 = [v4 constraintWithItem:v5 attribute:4 relatedBy:0 toItem:self attribute:4 multiplier:1.0 constant:-20.0];
+  closeButton = [(CKEffectPickerView *)self closeButton];
+  v6 = [v4 constraintWithItem:closeButton attribute:4 relatedBy:0 toItem:self attribute:4 multiplier:1.0 constant:-20.0];
 
   [(CKEffectPickerLargeTextView *)self addConstraint:v6];
   [(CKEffectPickerView *)self setCloseButtonBottomConstraint:v6];
-  v7 = [(CKEffectPickerView *)self balloonView];
-  [v7 frame];
+  balloonView = [(CKEffectPickerView *)self balloonView];
+  [balloonView frame];
   v9 = v8;
-  v10 = [(CKEffectPickerView *)self closeButton];
-  [v10 frame];
+  closeButton2 = [(CKEffectPickerView *)self closeButton];
+  [closeButton2 frame];
   v12 = -(v9 - v11);
 
   v13 = MEMORY[0x1E696ACD8];
-  v14 = [(CKEffectPickerView *)self roundedContainerView];
-  v15 = [(CKEffectPickerView *)self closeButton];
-  v16 = [v13 constraintWithItem:v14 attribute:4 relatedBy:0 toItem:v15 attribute:3 multiplier:1.0 constant:v12];
+  roundedContainerView = [(CKEffectPickerView *)self roundedContainerView];
+  closeButton3 = [(CKEffectPickerView *)self closeButton];
+  v16 = [v13 constraintWithItem:roundedContainerView attribute:4 relatedBy:0 toItem:closeButton3 attribute:3 multiplier:1.0 constant:v12];
 
   [(CKEffectPickerLargeTextView *)self addConstraint:v16];
   v17 = MEMORY[0x1E696ACD8];
-  v18 = [(CKEffectPickerView *)self sendMomentButton];
-  v19 = [(CKEffectPickerView *)self closeButton];
-  v20 = [v17 constraintWithItem:v18 attribute:4 relatedBy:0 toItem:v19 attribute:3 multiplier:1.0 constant:-36.0];
+  sendMomentButton = [(CKEffectPickerView *)self sendMomentButton];
+  closeButton4 = [(CKEffectPickerView *)self closeButton];
+  v20 = [v17 constraintWithItem:sendMomentButton attribute:4 relatedBy:0 toItem:closeButton4 attribute:3 multiplier:1.0 constant:-36.0];
 
   [(CKEffectPickerLargeTextView *)self addConstraint:v20];
 }
 
-- (void)addEffect:(id)a3 withDescriptiveText:(id)a4 withIdentifier:(id)a5
+- (void)addEffect:(id)effect withDescriptiveText:(id)text withIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = CKEffectPickerLargeTextView;
-  v8 = a3;
-  [(CKEffectPickerView *)&v11 addEffect:v8 withDescriptiveText:a4 withIdentifier:a5];
+  effectCopy = effect;
+  [(CKEffectPickerView *)&v11 addEffect:effectCopy withDescriptiveText:text withIdentifier:identifier];
   v9 = [(CKEffectPickerView *)self effectDescriptiveLabels:v11.receiver];
-  v10 = [v9 lastObject];
+  lastObject = [v9 lastObject];
 
-  [v10 setText:v8];
+  [lastObject setText:effectCopy];
 }
 
 - (double)marginBetweenPickerDotButtons
 {
-  v2 = [(CKEffectPickerView *)self effectLabelFont];
-  [v2 lineHeight];
+  effectLabelFont = [(CKEffectPickerView *)self effectLabelFont];
+  [effectLabelFont lineHeight];
   v4 = v3 * 1.75;
 
   return v4;
 }
 
-- (CGRect)_updateBalloonViewOrigin:(CGRect)a3 forButtonFrame:(CGRect)a4
+- (CGRect)_updateBalloonViewOrigin:(CGRect)origin forButtonFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  y = a4.origin.y;
-  v6 = a3.size.height;
-  width = a3.size.width;
-  v9 = [(CKEffectPickerView *)self closeButton:a3.origin.x];
+  height = frame.size.height;
+  y = frame.origin.y;
+  v6 = origin.size.height;
+  width = origin.size.width;
+  v9 = [(CKEffectPickerView *)self closeButton:origin.origin.x];
   [v9 frame];
   v11 = v10;
 
-  v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v13 = [v12 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
   v14 = width + 20.0;
-  if (v13)
+  if (isEntryViewRefreshEnabled)
   {
-    v15 = [(CKEffectPickerLargeTextView *)self stylingMetrics];
-    [v15 roundTrackPadding];
+    stylingMetrics = [(CKEffectPickerLargeTextView *)self stylingMetrics];
+    [stylingMetrics roundTrackPadding];
     v14 = v14 + v16;
   }
 
-  v17 = [(CKEffectPickerView *)self typeSegmentedControl];
-  v18 = [v17 selectedSegmentIndex];
+  typeSegmentedControl = [(CKEffectPickerView *)self typeSegmentedControl];
+  selectedSegmentIndex = [typeSegmentedControl selectedSegmentIndex];
 
-  if (v18)
+  if (selectedSegmentIndex)
   {
-    v19 = [(CKEffectPickerView *)self sendMomentButton];
-    [v19 frame];
+    sendMomentButton = [(CKEffectPickerView *)self sendMomentButton];
+    [sendMomentButton frame];
     v21 = v20;
     v23 = v22;
 
@@ -119,14 +119,14 @@
 
   else if ([(CKEffectPickerView *)self selectedIndex])
   {
-    v24 = [(CKEffectPickerView *)self selectedIndex];
-    v25 = [(CKEffectPickerView *)self effectLabels];
-    v26 = [v25 count] - 1;
+    selectedIndex = [(CKEffectPickerView *)self selectedIndex];
+    effectLabels = [(CKEffectPickerView *)self effectLabels];
+    v26 = [effectLabels count] - 1;
 
-    if (v24 != v26)
+    if (selectedIndex != v26)
     {
-      v27 = [(CKEffectPickerView *)self effectDescriptiveLabels];
-      v28 = [v27 objectAtIndex:{-[CKEffectPickerView selectedIndex](self, "selectedIndex")}];
+      effectDescriptiveLabels = [(CKEffectPickerView *)self effectDescriptiveLabels];
+      v28 = [effectDescriptiveLabels objectAtIndex:{-[CKEffectPickerView selectedIndex](self, "selectedIndex")}];
 
       [v28 bounds];
       [v28 frame];
@@ -137,8 +137,8 @@
 
   else
   {
-    v30 = [(CKEffectPickerView *)self closeButton];
-    [v30 frame];
+    closeButton = [(CKEffectPickerView *)self closeButton];
+    [closeButton frame];
     y = v31 + -14.0 - v6;
   }
 
@@ -167,44 +167,44 @@
   [MEMORY[0x1E69DD250] animateWithDuration:v3 animations:0.25];
 }
 
-- (void)_touchUpInsideDotButton:(id)a3
+- (void)_touchUpInsideDotButton:(id)button
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  buttonCopy = button;
   if ([(CKEffectPickerView *)self selectedIndex]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(CKEffectPickerView *)self closeButton];
-    [v5 frame];
+    closeButton = [(CKEffectPickerView *)self closeButton];
+    [closeButton frame];
     v7 = v6 + -28.0;
-    v8 = [(CKEffectPickerView *)self roundedContainerView];
-    [v8 frame];
+    roundedContainerView = [(CKEffectPickerView *)self roundedContainerView];
+    [roundedContainerView frame];
     v10 = v7 - v9;
   }
 
   else
   {
-    v5 = [(CKEffectPickerView *)self roundedContainerView];
-    [v5 bounds];
+    closeButton = [(CKEffectPickerView *)self roundedContainerView];
+    [closeButton bounds];
     v10 = v11;
   }
 
   [(CKEffectPickerView *)self resetDotConstraintsToDefault];
-  v12 = [(CKEffectPickerView *)self effectIdentifiers];
-  v13 = [(CKEffectPickerView *)self effectDotButtons];
-  v14 = [v12 objectAtIndex:{objc_msgSend(v13, "indexOfObject:", v4)}];
+  effectIdentifiers = [(CKEffectPickerView *)self effectIdentifiers];
+  effectDotButtons = [(CKEffectPickerView *)self effectDotButtons];
+  v14 = [effectIdentifiers objectAtIndex:{objc_msgSend(effectDotButtons, "indexOfObject:", buttonCopy)}];
 
-  v15 = [(CKEffectPickerView *)self effectDotConstraintsThatChange];
-  v16 = [v15 objectForKey:v14];
+  effectDotConstraintsThatChange = [(CKEffectPickerView *)self effectDotConstraintsThatChange];
+  v16 = [effectDotConstraintsThatChange objectForKey:v14];
 
-  v17 = [(CKEffectPickerView *)self effectLabels];
-  v18 = [v17 count];
+  effectLabels = [(CKEffectPickerView *)self effectLabels];
+  v18 = [effectLabels count];
 
   if ([v16 count] == 1)
   {
     [(CKEffectPickerLargeTextView *)self marginBetweenPickerDotButtons];
     v20 = v19 + v19 + (v18 + 1) * 9.0;
-    v21 = [(CKEffectPickerLargeTextView *)self stylingMetrics];
-    [v21 roundTrackPadding];
+    stylingMetrics = [(CKEffectPickerLargeTextView *)self stylingMetrics];
+    [stylingMetrics roundTrackPadding];
     v23 = v10 - round(v20 + v22 * 2.0);
   }
 
@@ -212,8 +212,8 @@
   {
     [(CKEffectPickerLargeTextView *)self marginBetweenPickerDotButtons];
     v25 = v24 + v18 * 9.0;
-    v21 = [(CKEffectPickerLargeTextView *)self stylingMetrics];
-    [v21 roundTrackPadding];
+    stylingMetrics = [(CKEffectPickerLargeTextView *)self stylingMetrics];
+    [stylingMetrics roundTrackPadding];
     v23 = (v10 - round(v25 + v26 * 2.0)) * 0.5;
   }
 
@@ -254,49 +254,49 @@
   [MEMORY[0x1E69DD250] animateWithDuration:v34 animations:0.25];
   v33.receiver = self;
   v33.super_class = CKEffectPickerLargeTextView;
-  [(CKEffectPickerView *)&v33 _touchUpInsideDotButton:v4];
+  [(CKEffectPickerView *)&v33 _touchUpInsideDotButton:buttonCopy];
 }
 
-- (double)offsetYForLabelAtIndex:(int64_t)a3 withInitialY:(double)a4
+- (double)offsetYForLabelAtIndex:(int64_t)index withInitialY:(double)y
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(CKEffectPickerView *)self effectDescriptiveLabels];
-    v6 = [v7 objectAtIndex:a3];
+    effectDescriptiveLabels = [(CKEffectPickerView *)self effectDescriptiveLabels];
+    v6 = [effectDescriptiveLabels objectAtIndex:index];
 
-    if (!a3)
+    if (!index)
     {
-      v17 = [(CKEffectPickerView *)self closeButton];
-      [v17 frame];
-      v18 = [(CKEffectPickerView *)self balloonView];
-      [v18 frame];
+      closeButton = [(CKEffectPickerView *)self closeButton];
+      [closeButton frame];
+      balloonView = [(CKEffectPickerView *)self balloonView];
+      [balloonView frame];
       [v6 bounds];
 
       goto LABEL_8;
     }
   }
 
-  v8 = [(CKEffectPickerView *)self effectLabels];
-  v9 = [v8 count] - 1;
+  effectLabels = [(CKEffectPickerView *)self effectLabels];
+  v9 = [effectLabels count] - 1;
 
-  if (v9 == a3)
+  if (v9 == index)
   {
-    v10 = [(CKEffectPickerView *)self roundedContainerView];
-    v11 = [(CKEffectPickerView *)self effectSendButtons];
-    v12 = [v11 objectAtIndex:a3];
+    roundedContainerView = [(CKEffectPickerView *)self roundedContainerView];
+    effectSendButtons = [(CKEffectPickerView *)self effectSendButtons];
+    v12 = [effectSendButtons objectAtIndex:index];
     [v12 frame];
-    [v10 convertRect:self toView:?];
+    [roundedContainerView convertRect:self toView:?];
   }
 
   else
   {
-    v13 = [(CKEffectPickerView *)self balloonView];
-    [v13 frame];
+    balloonView2 = [(CKEffectPickerView *)self balloonView];
+    [balloonView2 frame];
     [v6 bounds];
   }
 
@@ -308,14 +308,14 @@ LABEL_8:
   return v15;
 }
 
-- (void)effectTypeDidChange:(id)a3
+- (void)effectTypeDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if ([(CKEffectPickerLargeTextView *)self finishedInitializing])
   {
-    if ([v4 selectedSegmentIndex])
+    if ([changeCopy selectedSegmentIndex])
     {
-      if ([v4 selectedSegmentIndex] != 1)
+      if ([changeCopy selectedSegmentIndex] != 1)
       {
 LABEL_7:
         v8[0] = MEMORY[0x1E69E9820];
@@ -335,8 +335,8 @@ LABEL_7:
       v5 = -20.0;
     }
 
-    v6 = [(CKEffectPickerView *)self closeButtonBottomConstraint];
-    [v6 setConstant:v5];
+    closeButtonBottomConstraint = [(CKEffectPickerView *)self closeButtonBottomConstraint];
+    [closeButtonBottomConstraint setConstant:v5];
 
     goto LABEL_7;
   }
@@ -344,7 +344,7 @@ LABEL_7:
 LABEL_8:
   v7.receiver = self;
   v7.super_class = CKEffectPickerLargeTextView;
-  [(CKEffectPickerView *)&v7 effectTypeDidChange:v4];
+  [(CKEffectPickerView *)&v7 effectTypeDidChange:changeCopy];
 }
 
 @end

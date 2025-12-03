@@ -1,19 +1,19 @@
 @interface PHImageManager
-+ (BOOL)_allowVideoAccessForAsset:(id)a3 options:(id)a4;
++ (BOOL)_allowVideoAccessForAsset:(id)asset options:(id)options;
 + (PHImageManager)defaultManager;
-+ (id)_videoAVObjectBuilderFromVideoURL:(id)a3 info:(id)a4 options:(id)a5 playbackOnly:(BOOL)a6;
-+ (id)fileTypeForOutputURL:(id)a3;
-+ (id)mediaItemURLForAssetUuid:(id)a3 fingerPrint:(id)a4 outOfBandPresentationHints:(id)a5;
-+ (id)playerItemFromVideoMediaItemMakerData:(id)a3 forAssetUuid:(id)a4 fingerPrint:(id)a5 outOfBandPresentationHints:(id)a6;
-+ (id)playerItemFromVideoMediaItemMakerDataInMediaResult:(id)a3 forAsset:(id)a4;
-+ (void)buildAVAssetFromVideoURL:(id)a3 infoDictionary:(id)a4 options:(id)a5 completion:(id)a6;
-+ (void)buildAVPlayerItemFromRemoteStreamVideoURL:(id)a3 infoDictionary:(id)a4 completion:(id)a5;
-+ (void)buildAVPlayerItemFromVideoURL:(id)a3 infoDictionary:(id)a4 options:(id)a5 completion:(id)a6;
-+ (void)buildExportSessionFromVideoURL:(id)a3 infoDictionary:(id)a4 options:(id)a5 exportPreset:(id)a6 completion:(id)a7;
-+ (void)configureAssetCacheInAssetCreationOptionsDictionary:(id)a3;
-+ (void)exportVideoFileForTimeRange:(id *)a3 fromVideoMediaItemMakerData:(id)a4 forAssetUuid:(id)a5 toOutputFileURL:(id)a6 fingerPrint:(id)a7 signpostId:(unint64_t)a8 options:(id)a9 completion:(id)a10;
-+ (void)startExportSession:(id)a3 assetUuid:(id)a4 signpostId:(unint64_t)a5 completion:(id)a6;
-- (BOOL)_canStreamVideoForAsset:(id)a3;
++ (id)_videoAVObjectBuilderFromVideoURL:(id)l info:(id)info options:(id)options playbackOnly:(BOOL)only;
++ (id)fileTypeForOutputURL:(id)l;
++ (id)mediaItemURLForAssetUuid:(id)uuid fingerPrint:(id)print outOfBandPresentationHints:(id)hints;
++ (id)playerItemFromVideoMediaItemMakerData:(id)data forAssetUuid:(id)uuid fingerPrint:(id)print outOfBandPresentationHints:(id)hints;
++ (id)playerItemFromVideoMediaItemMakerDataInMediaResult:(id)result forAsset:(id)asset;
++ (void)buildAVAssetFromVideoURL:(id)l infoDictionary:(id)dictionary options:(id)options completion:(id)completion;
++ (void)buildAVPlayerItemFromRemoteStreamVideoURL:(id)l infoDictionary:(id)dictionary completion:(id)completion;
++ (void)buildAVPlayerItemFromVideoURL:(id)l infoDictionary:(id)dictionary options:(id)options completion:(id)completion;
++ (void)buildExportSessionFromVideoURL:(id)l infoDictionary:(id)dictionary options:(id)options exportPreset:(id)preset completion:(id)completion;
++ (void)configureAssetCacheInAssetCreationOptionsDictionary:(id)dictionary;
++ (void)exportVideoFileForTimeRange:(id *)range fromVideoMediaItemMakerData:(id)data forAssetUuid:(id)uuid toOutputFileURL:(id)l fingerPrint:(id)print signpostId:(unint64_t)id options:(id)options completion:(id)self0;
++ (void)startExportSession:(id)session assetUuid:(id)uuid signpostId:(unint64_t)id completion:(id)completion;
+- (BOOL)_canStreamVideoForAsset:(id)asset;
 - (PHImageManager)init;
 - (PHImageRequestID)requestAVAssetForVideo:(PHAsset *)asset options:(PHVideoRequestOptions *)options resultHandler:(void *)resultHandler;
 - (PHImageRequestID)requestExportSessionForVideo:(PHAsset *)asset options:(PHVideoRequestOptions *)options exportPreset:(NSString *)exportPreset resultHandler:(void *)resultHandler;
@@ -22,24 +22,24 @@
 - (PHImageRequestID)requestImageForAsset:(PHAsset *)asset targetSize:(CGSize)targetSize contentMode:(PHImageContentMode)contentMode options:(PHImageRequestOptions *)options resultHandler:(void *)resultHandler;
 - (PHImageRequestID)requestLivePhotoForAsset:(PHAsset *)asset targetSize:(CGSize)targetSize contentMode:(PHImageContentMode)contentMode options:(PHLivePhotoRequestOptions *)options resultHandler:(void *)resultHandler;
 - (PHImageRequestID)requestPlayerItemForVideo:(PHAsset *)asset options:(PHVideoRequestOptions *)options resultHandler:(void *)resultHandler;
-- (id)synchronousImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6;
-- (int)_requestImagePropertiesFromFileForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)_requestLiveRenderAVAssetForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestAVAssetForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestAVProxyForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestAnimatedImageForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestContentEditingInputForAsset:(id)a3 withOptions:(id)a4 completionHandler:(id)a5;
-- (int)requestImagePropertiesForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestNewCGImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int)requestStreamForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestURLForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)runRequestWithContext:(id)a3;
-- (void)_handleResultForContentEditingInput:(id)a3 request:(id)a4 options:(id)a5 asset:(id)a6 completionHandler:(id)a7;
-- (void)_prepareLivePhotoResultWithImage:(CGImage *)a3 uiOrientation:(int64_t)a4 shouldIncludeVideo:(BOOL)a5 videoURL:(id)a6 info:(id)a7 photoTime:(id *)a8 asset:(id)a9 completion:(id)a10;
-- (void)_runBlockOnAppropriateResultQueueOrSynchronouslyWithRequest:(id)a3 options:(id)a4 block:(id)a5;
+- (id)synchronousImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options;
+- (int)_requestImagePropertiesFromFileForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)_requestLiveRenderAVAssetForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestAVAssetForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestAVProxyForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestAnimatedImageForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestContentEditingInputForAsset:(id)asset withOptions:(id)options completionHandler:(id)handler;
+- (int)requestImagePropertiesForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestNewCGImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int)requestStreamForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (int)requestURLForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (int)runRequestWithContext:(id)context;
+- (void)_handleResultForContentEditingInput:(id)input request:(id)request options:(id)options asset:(id)asset completionHandler:(id)handler;
+- (void)_prepareLivePhotoResultWithImage:(CGImage *)image uiOrientation:(int64_t)orientation shouldIncludeVideo:(BOOL)video videoURL:(id)l info:(id)info photoTime:(id *)time asset:(id)asset completion:(id)self0;
+- (void)_runBlockOnAppropriateResultQueueOrSynchronouslyWithRequest:(id)request options:(id)options block:(id)block;
 - (void)cancelImageRequest:(PHImageRequestID)requestID;
-- (void)mediaRequestContext:(id)a3 isQueryingCacheForRequest:(id)a4 didWait:(BOOL *)a5 didFindImage:(BOOL *)a6 resultHandler:(id)a7;
-- (void)mediaRequestContextDidFinish:(id)a3;
+- (void)mediaRequestContext:(id)context isQueryingCacheForRequest:(id)request didWait:(BOOL *)wait didFindImage:(BOOL *)image resultHandler:(id)handler;
+- (void)mediaRequestContextDidFinish:(id)finish;
 @end
 
 @implementation PHImageManager
@@ -50,7 +50,7 @@
   block[1] = 3221225472;
   block[2] = __32__PHImageManager_defaultManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultManager_onceToken_51993 != -1)
   {
     dispatch_once(&defaultManager_onceToken_51993, block);
@@ -79,9 +79,9 @@ void __32__PHImageManager_defaultManager__block_invoke(uint64_t a1)
   if (v2)
   {
     atomic_store(1u, &v2->_nextRequestID);
-    v4 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     requestContextsByID = v3->_requestContextsByID;
-    v3->_requestContextsByID = v4;
+    v3->_requestContextsByID = strongToStrongObjectsMapTable;
 
     v3->_lock._os_unfair_lock_opaque = 0;
     if (PHNextImageAndAssetResourceManagerID_onceToken != -1)
@@ -95,16 +95,16 @@ void __32__PHImageManager_defaultManager__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (int)requestImagePropertiesForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestImagePropertiesForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isPhoto])
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([assetCopy isPhoto])
   {
-    if (v9)
+    if (optionsCopy)
     {
-      v11 = [v9 copy];
+      v11 = [optionsCopy copy];
     }
 
     else
@@ -118,7 +118,7 @@ void __32__PHImageManager_defaultManager__block_invoke(uint64_t a1)
       [(PHImageRequestOptions *)v14 setLoadingMode:0x10000];
     }
 
-    v13 = [(PHImageManager *)self _requestImagePropertiesFromFileForAsset:v8 options:v14 resultHandler:v10];
+    v13 = [(PHImageManager *)self _requestImagePropertiesFromFileForAsset:assetCopy options:v14 resultHandler:handlerCopy];
   }
 
   else
@@ -136,18 +136,18 @@ void __32__PHImageManager_defaultManager__block_invoke(uint64_t a1)
   return v13;
 }
 
-- (int)_requestImagePropertiesFromFileForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)_requestImagePropertiesFromFileForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __92__PHImageManager_Properties___requestImagePropertiesFromFileForAsset_options_resultHandler___block_invoke;
   v11[3] = &unk_1E75A7FF0;
-  v12 = v8;
-  v9 = v8;
-  LODWORD(a4) = [(PHImageManager *)self requestImageForAsset:a3 targetSize:0 contentMode:a4 options:v11 resultHandler:-1.0, -1.0];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  LODWORD(options) = [(PHImageManager *)self requestImageForAsset:asset targetSize:0 contentMode:options options:v11 resultHandler:-1.0, -1.0];
 
-  return a4;
+  return options;
 }
 
 void __92__PHImageManager_Properties___requestImagePropertiesFromFileForAsset_options_resultHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -169,16 +169,16 @@ void __92__PHImageManager_Properties___requestImagePropertiesFromFileForAsset_op
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)fileTypeForOutputURL:(id)a3
++ (id)fileTypeForOutputURL:(id)l
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [a3 pathExtension];
-  v4 = [MEMORY[0x1E69C08F0] typeForFilenameExtensionOrLastPathComponent:v3];
-  v5 = [v4 identifier];
-  v6 = v5;
+  pathExtension = [l pathExtension];
+  v4 = [MEMORY[0x1E69C08F0] typeForFilenameExtensionOrLastPathComponent:pathExtension];
+  identifier = [v4 identifier];
+  v6 = identifier;
   if (v4)
   {
-    v7 = v5 == 0;
+    v7 = identifier == 0;
   }
 
   else
@@ -192,7 +192,7 @@ void __92__PHImageManager_Properties___requestImagePropertiesFromFileForAsset_op
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v11 = 138543618;
-      v12 = v3;
+      v12 = pathExtension;
       v13 = 2114;
       v14 = 0;
       _os_log_impl(&dword_19C86F000, v8, OS_LOG_TYPE_ERROR, "Unable to map path extension %{public}@ to AVFileType: %{public}@", &v11, 0x16u);
@@ -205,34 +205,34 @@ void __92__PHImageManager_Properties___requestImagePropertiesFromFileForAsset_op
   return v6;
 }
 
-+ (void)startExportSession:(id)a3 assetUuid:(id)a4 signpostId:(unint64_t)a5 completion:(id)a6
++ (void)startExportSession:(id)session assetUuid:(id)uuid signpostId:(unint64_t)id completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 outputURL];
-  v14 = [a1 fileTypeForOutputURL:v13];
-  [v10 setOutputFileType:v14];
+  sessionCopy = session;
+  uuidCopy = uuid;
+  completionCopy = completion;
+  outputURL = [sessionCopy outputURL];
+  v14 = [self fileTypeForOutputURL:outputURL];
+  [sessionCopy setOutputFileType:v14];
 
   v15 = PLImageManagerGetLog();
   v16 = v15;
-  if (a5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
+  if (id - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_19C86F000, v16, OS_SIGNPOST_INTERVAL_BEGIN, a5, "com.apple.photos.backend.adpExportVideoFileTimeRange.exportSession", byte_19CB567AE, buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_19C86F000, v16, OS_SIGNPOST_INTERVAL_BEGIN, id, "com.apple.photos.backend.adpExportVideoFileTimeRange.exportSession", byte_19CB567AE, buf, 2u);
   }
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __85__PHImageManager_VideoUtilities__startExportSession_assetUuid_signpostId_completion___block_invoke;
   v20[3] = &unk_1E75AAAF0;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v24 = a5;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
+  v21 = sessionCopy;
+  v22 = uuidCopy;
+  v23 = completionCopy;
+  idCopy = id;
+  v17 = completionCopy;
+  v18 = uuidCopy;
+  v19 = sessionCopy;
   [v19 exportAsynchronouslyWithCompletionHandler:v20];
 }
 
@@ -278,89 +278,89 @@ void __85__PHImageManager_VideoUtilities__startExportSession_assetUuid_signpostI
   }
 }
 
-+ (void)exportVideoFileForTimeRange:(id *)a3 fromVideoMediaItemMakerData:(id)a4 forAssetUuid:(id)a5 toOutputFileURL:(id)a6 fingerPrint:(id)a7 signpostId:(unint64_t)a8 options:(id)a9 completion:(id)a10
++ (void)exportVideoFileForTimeRange:(id *)range fromVideoMediaItemMakerData:(id)data forAssetUuid:(id)uuid toOutputFileURL:(id)l fingerPrint:(id)print signpostId:(unint64_t)id options:(id)options completion:(id)self0
 {
   v64[2] = *MEMORY[0x1E69E9840];
-  v52 = a4;
-  v54 = a5;
-  v16 = a6;
-  v51 = a7;
-  v50 = a9;
-  v17 = a10;
-  if ((a3->var0.var2 & 1) == 0 || (a3->var1.var2 & 1) == 0 || a3->var1.var3 || a3->var1.var0 < 0)
+  dataCopy = data;
+  uuidCopy = uuid;
+  lCopy = l;
+  printCopy = print;
+  optionsCopy = options;
+  completionCopy = completion;
+  if ((range->var0.var2 & 1) == 0 || (range->var1.var2 & 1) == 0 || range->var1.var3 || range->var1.var0 < 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PHImageManager+VideoUtilities.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"CMTIMERANGE_IS_VALID(timeRange)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHImageManager+VideoUtilities.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"CMTIMERANGE_IS_VALID(timeRange)"}];
   }
 
-  v19 = v52;
-  if (!v52)
+  v19 = dataCopy;
+  if (!dataCopy)
   {
-    v44 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v44 handleFailureInMethod:a2 object:a1 file:@"PHImageManager+VideoUtilities.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"videoMediaItemMakerData"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHImageManager+VideoUtilities.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"videoMediaItemMakerData"}];
   }
 
-  if (!v54)
+  if (!uuidCopy)
   {
-    v45 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v45 handleFailureInMethod:a2 object:a1 file:@"PHImageManager+VideoUtilities.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"assetUuid"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHImageManager+VideoUtilities.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"assetUuid"}];
   }
 
-  if (([v16 isFileURL] & 1) == 0)
+  if (([lCopy isFileURL] & 1) == 0)
   {
-    v46 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v46 handleFailureInMethod:a2 object:a1 file:@"PHImageManager+VideoUtilities.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"[outputURL isFileURL]"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PHImageManager+VideoUtilities.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"[outputURL isFileURL]"}];
 
-    if (v17)
+    if (completionCopy)
     {
       goto LABEL_11;
     }
 
 LABEL_35:
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v47 handleFailureInMethod:a2 object:a1 file:@"PHImageManager+VideoUtilities.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"originalCompletion"}];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"PHImageManager+VideoUtilities.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"originalCompletion"}];
 
     goto LABEL_11;
   }
 
-  if (!v17)
+  if (!completionCopy)
   {
     goto LABEL_35;
   }
 
 LABEL_11:
-  v49 = v16;
+  v49 = lCopy;
   v20 = PLImageManagerGetLog();
   v21 = v20;
-  v22 = a8 - 1;
-  if (a8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
+  v22 = id - 1;
+  if (id - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_19C86F000, v21, OS_SIGNPOST_INTERVAL_BEGIN, a8, "com.apple.photos.backend.adpExportVideoTimeRange", byte_19CB567AE, buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_19C86F000, v21, OS_SIGNPOST_INTERVAL_BEGIN, id, "com.apple.photos.backend.adpExportVideoTimeRange", byte_19CB567AE, buf, 2u);
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __161__PHImageManager_VideoUtilities__exportVideoFileForTimeRange_fromVideoMediaItemMakerData_forAssetUuid_toOutputFileURL_fingerPrint_signpostId_options_completion___block_invoke;
   aBlock[3] = &unk_1E75A8270;
-  v58 = a8;
-  v48 = v17;
+  idCopy = id;
+  v48 = completionCopy;
   v57 = v48;
   v23 = _Block_copy(aBlock);
   v55 = 0;
-  v24 = [objc_alloc(getCKMediaItemMakerClass()) initWithData:v52 error:&v55];
+  v24 = [objc_alloc(getCKMediaItemMakerClass()) initWithData:dataCopy error:&v55];
   v25 = v55;
   v26 = v25;
   if (v24)
   {
-    v27 = [a1 mediaItemURLForAssetUuid:v54 fingerPrint:v51 outOfBandPresentationHints:0];
-    v28 = [MEMORY[0x1E695DF90] dictionary];
-    v29 = [v50 objectForKey:@"PHVideoExportOmitFromAssetCacheKey"];
-    v30 = [v29 BOOLValue];
+    v27 = [self mediaItemURLForAssetUuid:uuidCopy fingerPrint:printCopy outOfBandPresentationHints:0];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v29 = [optionsCopy objectForKey:@"PHVideoExportOmitFromAssetCacheKey"];
+    bOOLValue = [v29 BOOLValue];
 
-    if ((v30 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      [a1 configureAssetCacheInAssetCreationOptionsDictionary:v28];
+      [self configureAssetCacheInAssetCreationOptionsDictionary:dictionary];
     }
 
     v31 = PLImageManagerGetLog();
@@ -368,27 +368,27 @@ LABEL_11:
     if (v22 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v31))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_19C86F000, v32, OS_SIGNPOST_INTERVAL_BEGIN, a8, "com.apple.photos.backend.adpExportVideoTimeRange.makeExportSession", byte_19CB567AE, buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_19C86F000, v32, OS_SIGNPOST_INTERVAL_BEGIN, id, "com.apple.photos.backend.adpExportVideoTimeRange.makeExportSession", byte_19CB567AE, buf, 2u);
     }
 
-    v33 = [v24 makeAVAssetExportSession:v27 options:v28 presetName:*MEMORY[0x1E6987338]];
+    v33 = [v24 makeAVAssetExportSession:v27 options:dictionary presetName:*MEMORY[0x1E6987338]];
     v34 = PLImageManagerGetLog();
     v35 = v34;
     if (v22 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v34))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_19C86F000, v35, OS_SIGNPOST_INTERVAL_END, a8, "com.apple.photos.backend.adpExportVideoTimeRange.makeExportSession", byte_19CB567AE, buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_19C86F000, v35, OS_SIGNPOST_INTERVAL_END, id, "com.apple.photos.backend.adpExportVideoTimeRange.makeExportSession", byte_19CB567AE, buf, 2u);
     }
 
     if (v33)
     {
-      v36 = *&a3->var0.var3;
-      *buf = *&a3->var0.var0;
+      v36 = *&range->var0.var3;
+      *buf = *&range->var0.var0;
       *&buf[16] = v36;
-      v60 = *&a3->var1.var1;
+      v60 = *&range->var1.var1;
       [v33 setTimeRange:buf];
       [v33 setOutputURL:v49];
-      [a1 startExportSession:v33 assetUuid:v54 signpostId:a8 completion:v23];
+      [self startExportSession:v33 assetUuid:uuidCopy signpostId:id completion:v23];
     }
 
     else
@@ -399,7 +399,7 @@ LABEL_11:
         *buf = 138412546;
         *&buf[4] = v24;
         *&buf[12] = 2112;
-        *&buf[14] = v54;
+        *&buf[14] = uuidCopy;
         _os_log_impl(&dword_19C86F000, v40, OS_LOG_TYPE_ERROR, "Media item maker %@ failed to create export session for asset %@", buf, 0x16u);
       }
 
@@ -412,7 +412,7 @@ LABEL_11:
       v23[2](v23, 0, v43);
     }
 
-    v19 = v52;
+    v19 = dataCopy;
   }
 
   else
@@ -431,7 +431,7 @@ LABEL_11:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      *&buf[4] = v54;
+      *&buf[4] = uuidCopy;
       *&buf[12] = 2112;
       *&buf[14] = v26;
       _os_log_impl(&dword_19C86F000, v27, OS_LOG_TYPE_ERROR, "Unable to deserialize media item maker for asset %@ to create export session: %@", buf, 0x16u);
@@ -454,29 +454,29 @@ void __161__PHImageManager_VideoUtilities__exportVideoFileForTimeRange_fromVideo
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)mediaItemURLForAssetUuid:(id)a3 fingerPrint:(id)a4 outOfBandPresentationHints:(id)a5
++ (id)mediaItemURLForAssetUuid:(id)uuid fingerPrint:(id)print outOfBandPresentationHints:(id)hints
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  printCopy = print;
+  hintsCopy = hints;
+  uuidCopy = uuid;
   v10 = objc_opt_new();
   [v10 setScheme:@"photos-avasset"];
-  v11 = [MEMORY[0x1E696AD60] stringWithString:v9];
+  v11 = [MEMORY[0x1E696AD60] stringWithString:uuidCopy];
 
-  if (v7)
+  if (printCopy)
   {
-    v12 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-    v13 = [v12 mutableCopy];
+    uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+    v13 = [uRLPathAllowedCharacterSet mutableCopy];
 
     [v13 removeCharactersInString:@"/"];
-    v14 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:v13];
+    v14 = [printCopy stringByAddingPercentEncodingWithAllowedCharacters:v13];
     [v11 appendFormat:@"/%@", v14];
   }
 
   [v10 setPath:v11];
-  if ([v8 length])
+  if ([hintsCopy length])
   {
-    [v10 setFragment:v8];
+    [v10 setFragment:hintsCopy];
   }
 
   v15 = [v10 URL];
@@ -484,23 +484,23 @@ void __161__PHImageManager_VideoUtilities__exportVideoFileForTimeRange_fromVideo
   return v15;
 }
 
-+ (id)playerItemFromVideoMediaItemMakerData:(id)a3 forAssetUuid:(id)a4 fingerPrint:(id)a5 outOfBandPresentationHints:(id)a6
++ (id)playerItemFromVideoMediaItemMakerData:(id)data forAssetUuid:(id)uuid fingerPrint:(id)print outOfBandPresentationHints:(id)hints
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
+  uuidCopy = uuid;
+  printCopy = print;
+  hintsCopy = hints;
+  dataCopy = data;
   v21 = 0;
-  v14 = [objc_alloc(getCKMediaItemMakerClass()) initWithData:v13 error:&v21];
+  v14 = [objc_alloc(getCKMediaItemMakerClass()) initWithData:dataCopy error:&v21];
 
   v15 = v21;
   if (v14)
   {
-    v16 = [a1 mediaItemURLForAssetUuid:v10 fingerPrint:v11 outOfBandPresentationHints:v12];
-    v17 = [MEMORY[0x1E695DF90] dictionary];
-    [a1 configureAssetCacheInAssetCreationOptionsDictionary:v17];
-    v18 = [v14 makeAVPlayerItemWithURL:v16 options:v17];
+    v16 = [self mediaItemURLForAssetUuid:uuidCopy fingerPrint:printCopy outOfBandPresentationHints:hintsCopy];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [self configureAssetCacheInAssetCreationOptionsDictionary:dictionary];
+    v18 = [v14 makeAVPlayerItemWithURL:v16 options:dictionary];
     if (!v18)
     {
       v19 = PLImageManagerGetLog();
@@ -509,7 +509,7 @@ void __161__PHImageManager_VideoUtilities__exportVideoFileForTimeRange_fromVideo
         *buf = 138412546;
         v23 = v14;
         v24 = 2112;
-        v25 = v10;
+        v25 = uuidCopy;
         _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_ERROR, "Media item maker %@ failed to create player item for asset %@", buf, 0x16u);
       }
     }
@@ -521,7 +521,7 @@ void __161__PHImageManager_VideoUtilities__exportVideoFileForTimeRange_fromVideo
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v23 = v10;
+      v23 = uuidCopy;
       v24 = 2112;
       v25 = v15;
       _os_log_impl(&dword_19C86F000, v16, OS_LOG_TYPE_ERROR, "Unable to deserialize media item maker for asset %@: %@", buf, 0x16u);
@@ -533,43 +533,43 @@ void __161__PHImageManager_VideoUtilities__exportVideoFileForTimeRange_fromVideo
   return v18;
 }
 
-+ (id)playerItemFromVideoMediaItemMakerDataInMediaResult:(id)a3 forAsset:(id)a4
++ (id)playerItemFromVideoMediaItemMakerDataInMediaResult:(id)result forAsset:(id)asset
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 videoMediaItemMakerData];
-  v9 = [v7 fingerPrint];
-  v10 = [v7 info];
+  assetCopy = asset;
+  resultCopy = result;
+  videoMediaItemMakerData = [resultCopy videoMediaItemMakerData];
+  fingerPrint = [resultCopy fingerPrint];
+  info = [resultCopy info];
 
-  v11 = [v10 objectForKey:@"PHImageResultAVAssetOutOfBandPresentationHintsKey"];
+  v11 = [info objectForKey:@"PHImageResultAVAssetOutOfBandPresentationHintsKey"];
 
-  v12 = [v6 uuid];
+  uuid = [assetCopy uuid];
 
-  v13 = [a1 playerItemFromVideoMediaItemMakerData:v8 forAssetUuid:v12 fingerPrint:v9 outOfBandPresentationHints:v11];
+  v13 = [self playerItemFromVideoMediaItemMakerData:videoMediaItemMakerData forAssetUuid:uuid fingerPrint:fingerPrint outOfBandPresentationHints:v11];
 
   return v13;
 }
 
-+ (void)buildExportSessionFromVideoURL:(id)a3 infoDictionary:(id)a4 options:(id)a5 exportPreset:(id)a6 completion:(id)a7
++ (void)buildExportSessionFromVideoURL:(id)l infoDictionary:(id)dictionary options:(id)options exportPreset:(id)preset completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v15 objectForKeyedSubscript:@"PHImageFileSandboxExtensionTokenKey"];
+  completionCopy = completion;
+  presetCopy = preset;
+  optionsCopy = options;
+  dictionaryCopy = dictionary;
+  lCopy = l;
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"PHImageFileSandboxExtensionTokenKey"];
   v18 = [PHSandboxExtensionWrapper wrapperWithToken:v17];
-  v19 = [a1 _videoAVObjectBuilderFromVideoURL:v16 info:v15 options:v14 playbackOnly:0];
+  v19 = [self _videoAVObjectBuilderFromVideoURL:lCopy info:dictionaryCopy options:optionsCopy playbackOnly:0];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __112__PHImageManager_VideoUtilities__buildExportSessionFromVideoURL_infoDictionary_options_exportPreset_completion___block_invoke;
   v22[3] = &unk_1E75A8248;
   v23 = v18;
-  v24 = v12;
-  v20 = v12;
+  v24 = completionCopy;
+  v20 = completionCopy;
   v21 = v18;
-  [v19 requestExportSessionWithExportPreset:v13 resultHandler:v22];
+  [v19 requestExportSessionWithExportPreset:presetCopy resultHandler:v22];
 }
 
 void __112__PHImageManager_VideoUtilities__buildExportSessionFromVideoURL_infoDictionary_options_exportPreset_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -584,36 +584,36 @@ void __112__PHImageManager_VideoUtilities__buildExportSessionFromVideoURL_infoDi
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)buildAVPlayerItemFromRemoteStreamVideoURL:(id)a3 infoDictionary:(id)a4 completion:(id)a5
++ (void)buildAVPlayerItemFromRemoteStreamVideoURL:(id)l infoDictionary:(id)dictionary completion:(id)completion
 {
-  v8 = a5;
-  v9 = [a1 _videoAVObjectBuilderFromVideoURL:a3 info:a4 options:0 playbackOnly:1];
+  completionCopy = completion;
+  v9 = [self _videoAVObjectBuilderFromVideoURL:l info:dictionary options:0 playbackOnly:1];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __102__PHImageManager_VideoUtilities__buildAVPlayerItemFromRemoteStreamVideoURL_infoDictionary_completion___block_invoke;
   v11[3] = &unk_1E75A8220;
-  v12 = v8;
-  v10 = v8;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [v9 requestAsynchronousPlayerItemWithResultHandler:v11];
 }
 
-+ (void)buildAVAssetFromVideoURL:(id)a3 infoDictionary:(id)a4 options:(id)a5 completion:(id)a6
++ (void)buildAVAssetFromVideoURL:(id)l infoDictionary:(id)dictionary options:(id)options completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v12 objectForKeyedSubscript:@"PHImageFileSandboxExtensionTokenKey"];
+  completionCopy = completion;
+  optionsCopy = options;
+  dictionaryCopy = dictionary;
+  lCopy = l;
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"PHImageFileSandboxExtensionTokenKey"];
   v15 = [PHSandboxExtensionWrapper wrapperWithToken:v14];
-  v16 = [a1 _videoAVObjectBuilderFromVideoURL:v13 info:v12 options:v11 playbackOnly:0];
+  v16 = [self _videoAVObjectBuilderFromVideoURL:lCopy info:dictionaryCopy options:optionsCopy playbackOnly:0];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __93__PHImageManager_VideoUtilities__buildAVAssetFromVideoURL_infoDictionary_options_completion___block_invoke;
   v19[3] = &unk_1E75A81F8;
   v20 = v15;
-  v21 = v10;
-  v17 = v10;
+  v21 = completionCopy;
+  v17 = completionCopy;
   v18 = v15;
   [v16 requestAVAssetWithResultHandler:v19];
 }
@@ -632,25 +632,25 @@ void __93__PHImageManager_VideoUtilities__buildAVAssetFromVideoURL_infoDictionar
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)buildAVPlayerItemFromVideoURL:(id)a3 infoDictionary:(id)a4 options:(id)a5 completion:(id)a6
++ (void)buildAVPlayerItemFromVideoURL:(id)l infoDictionary:(id)dictionary options:(id)options completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v12 objectForKeyedSubscript:@"PHImageFileSandboxExtensionTokenKey"];
+  completionCopy = completion;
+  optionsCopy = options;
+  dictionaryCopy = dictionary;
+  lCopy = l;
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"PHImageFileSandboxExtensionTokenKey"];
   v15 = [PHSandboxExtensionWrapper wrapperWithToken:v14];
-  v16 = [a1 _videoAVObjectBuilderFromVideoURL:v13 info:v12 options:v11 playbackOnly:1];
+  v16 = [self _videoAVObjectBuilderFromVideoURL:lCopy info:dictionaryCopy options:optionsCopy playbackOnly:1];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __98__PHImageManager_VideoUtilities__buildAVPlayerItemFromVideoURL_infoDictionary_options_completion___block_invoke;
   v20[3] = &unk_1E75A81D0;
   v22 = v16;
-  v23 = v10;
+  v23 = completionCopy;
   v21 = v15;
   v17 = v16;
-  v18 = v10;
+  v18 = completionCopy;
   v19 = v15;
   [v17 requestAsynchronousPlayerItemWithResultHandler:v20];
 }
@@ -669,47 +669,47 @@ void __98__PHImageManager_VideoUtilities__buildAVPlayerItemFromVideoURL_infoDict
   (*(v6 + 16))(v6, object, v7, v5);
 }
 
-+ (void)configureAssetCacheInAssetCreationOptionsDictionary:(id)a3
++ (void)configureAssetCacheInAssetCreationOptionsDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (([MEMORY[0x1E69BE6A8] debugAlwaysStreamSharedVideos] & 1) == 0 && objc_msgSend(MEMORY[0x1E69BF2F0], "isEntitledForPhotoKit"))
   {
-    v3 = [MEMORY[0x1E69BE6A8] streamdVideoCache];
-    [v4 setObject:v3 forKey:*MEMORY[0x1E6987B50]];
+    streamdVideoCache = [MEMORY[0x1E69BE6A8] streamdVideoCache];
+    [dictionaryCopy setObject:streamdVideoCache forKey:*MEMORY[0x1E6987B50]];
   }
 }
 
-+ (id)_videoAVObjectBuilderFromVideoURL:(id)a3 info:(id)a4 options:(id)a5 playbackOnly:(BOOL)a6
++ (id)_videoAVObjectBuilderFromVideoURL:(id)l info:(id)info options:(id)options playbackOnly:(BOOL)only
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v6 && ([v10 isFileURL] & 1) == 0)
+  onlyCopy = only;
+  lCopy = l;
+  infoCopy = info;
+  optionsCopy = options;
+  if (onlyCopy && ([lCopy isFileURL] & 1) == 0)
   {
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v14 = MEMORY[0x1E695E118];
-    [v13 setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6987BE8]];
-    [v13 setObject:v14 forKey:*MEMORY[0x1E6987B90]];
-    [v13 setObject:v14 forKey:*MEMORY[0x1E6987B98]];
-    [v13 setObject:v14 forKey:*MEMORY[0x1E6987BD0]];
-    [a1 configureAssetCacheInAssetCreationOptionsDictionary:v13];
+    [dictionary setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6987BE8]];
+    [dictionary setObject:v14 forKey:*MEMORY[0x1E6987B90]];
+    [dictionary setObject:v14 forKey:*MEMORY[0x1E6987B98]];
+    [dictionary setObject:v14 forKey:*MEMORY[0x1E6987BD0]];
+    [self configureAssetCacheInAssetCreationOptionsDictionary:dictionary];
   }
 
   else
   {
-    v13 = 0;
+    dictionary = 0;
   }
 
-  v15 = [MEMORY[0x1E6988168] URLAssetWithURL:v10 options:v13];
-  v16 = [v11 objectForKeyedSubscript:@"PHAdjustmentDataKey"];
+  v15 = [MEMORY[0x1E6988168] URLAssetWithURL:lCopy options:dictionary];
+  v16 = [infoCopy objectForKeyedSubscript:@"PHAdjustmentDataKey"];
   if (v16)
   {
     v17 = objc_alloc(MEMORY[0x1E69C0910]);
-    v18 = [v16 formatIdentifier];
-    v19 = [v16 formatVersion];
-    v20 = [v16 data];
-    v21 = [v17 initWithFormatIdentifier:v18 formatVersion:v19 data:v20 baseVersion:0 editorBundleID:0 renderTypes:0];
+    formatIdentifier = [v16 formatIdentifier];
+    formatVersion = [v16 formatVersion];
+    data = [v16 data];
+    v21 = [v17 initWithFormatIdentifier:formatIdentifier formatVersion:formatVersion data:data baseVersion:0 editorBundleID:0 renderTypes:0];
   }
 
   else
@@ -718,14 +718,14 @@ void __98__PHImageManager_VideoUtilities__buildAVPlayerItemFromVideoURL_infoDict
   }
 
   v22 = [objc_alloc(MEMORY[0x1E69C08F8]) initWithVideoAsset:v15 videoAdjustments:v21];
-  v23 = [v11 objectForKeyedSubscript:@"PHApplyTimeRangeKey"];
-  v24 = [v23 BOOLValue];
+  v23 = [infoCopy objectForKeyedSubscript:@"PHApplyTimeRangeKey"];
+  bOOLValue = [v23 BOOLValue];
 
-  if (v24)
+  if (bOOLValue)
   {
-    if (v12)
+    if (optionsCopy)
     {
-      [v12 timeRange];
+      [optionsCopy timeRange];
     }
 
     else
@@ -744,10 +744,10 @@ void __98__PHImageManager_VideoUtilities__buildAVPlayerItemFromVideoURL_infoDict
   return v22;
 }
 
-- (void)mediaRequestContextDidFinish:(id)a3
+- (void)mediaRequestContextDidFinish:(id)finish
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  finishCopy = finish;
   v5 = PLImageManagerGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -755,20 +755,20 @@ void __98__PHImageManager_VideoUtilities__buildAVPlayerItemFromVideoURL_infoDict
     *buf = 134218498;
     v14 = managerID;
     v15 = 2048;
-    v16 = [v4 requestID];
+    requestID = [finishCopy requestID];
     v17 = 2112;
-    v18 = v4;
+    v18 = finishCopy;
     _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_DEBUG, "[RM]: %ld-%ld image request %@ finished, removing from map table", buf, 0x20u);
   }
 
   if (PHImageManagerRecordEnabled())
   {
-    +[PHImageManagerRequestTracer traceMessageForRequestID:message:](PHImageManagerRequestTracer, "traceMessageForRequestID:message:", [v4 requestID], @"[RM]: %ld-%ld image request %@ finished, removing from map table", self->_managerID, objc_msgSend(v4, "requestID"), v4);
+    +[PHImageManagerRequestTracer traceMessageForRequestID:message:](PHImageManagerRequestTracer, "traceMessageForRequestID:message:", [finishCopy requestID], @"[RM]: %ld-%ld image request %@ finished, removing from map table", self->_managerID, objc_msgSend(finishCopy, "requestID"), finishCopy);
   }
 
   os_unfair_lock_lock(&self->_lock);
   requestContextsByID = self->_requestContextsByID;
-  v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "requestID")}];
+  v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(finishCopy, "requestID")}];
   [(NSMapTable *)requestContextsByID removeObjectForKey:v8];
 
   if (PHSignpostEventsEnabled_onceToken != -1)
@@ -779,21 +779,21 @@ void __98__PHImageManager_VideoUtilities__buildAVPlayerItemFromVideoURL_infoDict
   if (PHSignpostEventsEnabled_eventsEnabled == 1)
   {
     v9 = PLImageManagerGetLog();
-    v10 = [v4 signpostID];
-    if ((v10 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostID = [finishCopy signpostID];
+    if ((signpostID - 1) <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v11 = v10;
-      v12 = [v4 signpostLayoutID];
+      v11 = signpostID;
+      signpostLayoutID = [finishCopy signpostLayoutID];
       if (os_signpost_enabled(v9))
       {
         *buf = 0;
         _os_signpost_emit_with_name_impl(&dword_19C86F000, v9, OS_SIGNPOST_INTERVAL_END, v11, "ContextEvent", "Context end", buf, 2u);
       }
 
-      if (v12 != 101)
+      if (signpostLayoutID != 101)
       {
         os_unfair_lock_lock(&s_lock);
-        [s_availableLayoutIDs addIndex:v12];
+        [s_availableLayoutIDs addIndex:signpostLayoutID];
         os_unfair_lock_unlock(&s_lock);
       }
     }
@@ -802,37 +802,37 @@ void __98__PHImageManager_VideoUtilities__buildAVPlayerItemFromVideoURL_infoDict
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)mediaRequestContext:(id)a3 isQueryingCacheForRequest:(id)a4 didWait:(BOOL *)a5 didFindImage:(BOOL *)a6 resultHandler:(id)a7
+- (void)mediaRequestContext:(id)context isQueryingCacheForRequest:(id)request didWait:(BOOL *)wait didFindImage:(BOOL *)image resultHandler:(id)handler
 {
-  if (a5)
+  if (wait)
   {
-    *a5 = 0;
+    *wait = 0;
   }
 
-  if (a6)
+  if (image)
   {
-    *a6 = 0;
+    *image = 0;
   }
 }
 
-- (int)requestAVProxyForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestAVProxyForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isVideo])
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([assetCopy isVideo])
   {
-    v11 = [(PHImageManager *)self nextID];
-    v12 = [(PHImageManager *)self managerID];
+    nextID = [(PHImageManager *)self nextID];
+    managerID = [(PHImageManager *)self managerID];
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __63__PHImageManager_requestAVProxyForAsset_options_resultHandler___block_invoke;
     v20 = &unk_1E75AAB90;
-    v21 = v8;
-    v22 = self;
-    v23 = v9;
-    v24 = v10;
-    v13 = [PHSingleMediaRequestContext avProxyRequestContextWithRequestID:v11 managerID:v12 asset:v21 options:v23 resultHandler:&v17];
+    v21 = assetCopy;
+    selfCopy = self;
+    v23 = optionsCopy;
+    v24 = handlerCopy;
+    v13 = [PHSingleMediaRequestContext avProxyRequestContextWithRequestID:nextID managerID:managerID asset:v21 options:v23 resultHandler:&v17];
     v14 = [(PHImageManager *)self runRequestWithContext:v13, v17, v18, v19, v20];
 
     v15 = v21;
@@ -975,15 +975,15 @@ void __63__PHImageManager_requestAVProxyForAsset_options_resultHandler___block_i
   (*(v2 + 16))(v2, v1, v3);
 }
 
-- (int)requestAnimatedImageForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestAnimatedImageForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (optionsCopy)
   {
-    v11 = [v9 copy];
+    v11 = [optionsCopy copy];
   }
 
   else
@@ -994,7 +994,7 @@ void __63__PHImageManager_requestAVProxyForAsset_options_resultHandler___block_i
   v12 = v11;
   [(PHImageRequestOptions *)v11 setLoadingMode:0x10000];
   [(PHImageRequestOptions *)v12 setDeliveryMode:1];
-  v13 = [(PHImageManager *)self nextID];
+  nextID = [(PHImageManager *)self nextID];
   v14 = PLImageManagerGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -1005,7 +1005,7 @@ void __63__PHImageManager_requestAVProxyForAsset_options_resultHandler___block_i
 
   if (PHImageManagerRecordEnabled())
   {
-    [PHImageManagerRequestTracer traceMessageForRequestID:v13 message:@"(animated image) options: %@", v12];
+    [PHImageManagerRequestTracer traceMessageForRequestID:nextID message:@"(animated image) options: %@", v12];
   }
 
   managerID = self->_managerID;
@@ -1015,11 +1015,11 @@ void __63__PHImageManager_requestAVProxyForAsset_options_resultHandler___block_i
   v32[3] = &unk_1E75AABE0;
   v16 = v12;
   v33 = v16;
-  v34 = self;
-  v17 = v10;
+  selfCopy = self;
+  v17 = handlerCopy;
   v35 = v17;
-  v36 = v13;
-  v18 = [PHMediaRequestContext imageRequestContextWithRequestID:v13 managerID:managerID asset:v8 imageRequestOptions:v16 displaySpec:0 resultHandler:v32];
+  v36 = nextID;
+  v18 = [PHMediaRequestContext imageRequestContextWithRequestID:nextID managerID:managerID asset:assetCopy imageRequestOptions:v16 displaySpec:0 resultHandler:v32];
   if (PHSignpostEventsEnabled_onceToken != -1)
   {
     dispatch_once(&PHSignpostEventsEnabled_onceToken, &__block_literal_global_49262);
@@ -1032,52 +1032,52 @@ void __63__PHImageManager_requestAVProxyForAsset_options_resultHandler___block_i
     if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v21 = v20;
-      v30 = [v18 managerID];
-      v28 = [v18 requestID];
-      v29 = [v18 type];
+      managerID = [v18 managerID];
+      requestID = [v18 requestID];
+      type = [v18 type];
       if (_getNextLayoutID_onceToken != -1)
       {
         dispatch_once(&_getNextLayoutID_onceToken, &__block_literal_global_807);
       }
 
       os_unfair_lock_lock(&s_lock);
-      v22 = [s_availableLayoutIDs firstIndex];
-      v31 = v8;
-      if (v22 == 0x7FFFFFFFFFFFFFFFLL)
+      firstIndex = [s_availableLayoutIDs firstIndex];
+      v31 = assetCopy;
+      if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
       {
         v23 = 101;
       }
 
       else
       {
-        v23 = v22;
-        [s_availableLayoutIDs removeIndex:v22];
+        v23 = firstIndex;
+        [s_availableLayoutIDs removeIndex:firstIndex];
       }
 
       os_unfair_lock_unlock(&s_lock);
-      v24 = [v18 asset];
-      v25 = [v24 uuid];
+      asset = [v18 asset];
+      uuid = [asset uuid];
 
       [v18 setSignpostID:v21];
       [v18 setSignpostLayoutID:v23];
       if (os_signpost_enabled(v19))
       {
         *buf = 134219266;
-        v38 = v30;
+        v38 = managerID;
         v39 = 2048;
-        v40 = v28;
+        v40 = requestID;
         v41 = 2112;
         v42 = &stru_1F0FC60C8;
         v43 = 2048;
-        v44 = v29;
+        v44 = type;
         v45 = 2112;
-        v46 = v25;
+        v46 = uuid;
         v47 = 2048;
         v48 = v23;
         _os_signpost_emit_with_name_impl(&dword_19C86F000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v21, "ContextEvent", "Context begin: [%lu-%lu], target: %@, api: %lu, uuid: %@, layout: %lu", buf, 0x3Eu);
       }
 
-      v8 = v31;
+      assetCopy = v31;
     }
   }
 
@@ -1165,14 +1165,14 @@ void __69__PHImageManager_requestAnimatedImageForAsset_options_resultHandler___b
   }
 }
 
-- (int)requestContentEditingInputForAsset:(id)a3 withOptions:(id)a4 completionHandler:(id)a5
+- (int)requestContentEditingInputForAsset:(id)asset withOptions:(id)options completionHandler:(id)handler
 {
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 copy];
-  v11 = [PHContentEditingInputRequestContext shouldUseRAWResourceAsUnadjustedBaseForAsset:v8 options:v10];
-  v12 = [(PHImageManager *)self nextID];
+  assetCopy = asset;
+  handlerCopy = handler;
+  v10 = [options copy];
+  v11 = [PHContentEditingInputRequestContext shouldUseRAWResourceAsUnadjustedBaseForAsset:assetCopy options:v10];
+  nextID = [(PHImageManager *)self nextID];
   managerID = self->_managerID;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -1181,11 +1181,11 @@ void __69__PHImageManager_requestAnimatedImageForAsset_options_resultHandler___b
   v30[4] = self;
   v14 = v10;
   v31 = v14;
-  v15 = v8;
+  v15 = assetCopy;
   v32 = v15;
-  v16 = v9;
+  v16 = handlerCopy;
   v33 = v16;
-  v17 = [PHMediaRequestContext contentEditingInputRequestContextWithRequestID:v12 managerID:managerID asset:v15 options:v14 useRAWAsUnadjustedBase:v11 resultHandler:v30];
+  v17 = [PHMediaRequestContext contentEditingInputRequestContextWithRequestID:nextID managerID:managerID asset:v15 options:v14 useRAWAsUnadjustedBase:v11 resultHandler:v30];
   if (PHSignpostEventsEnabled_onceToken != -1)
   {
     dispatch_once(&PHSignpostEventsEnabled_onceToken, &__block_literal_global_49262);
@@ -1198,45 +1198,45 @@ void __69__PHImageManager_requestAnimatedImageForAsset_options_resultHandler___b
     if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v20 = v19;
-      v29 = [v17 managerID];
-      v27 = [v17 requestID];
-      v28 = [v17 type];
+      managerID = [v17 managerID];
+      requestID = [v17 requestID];
+      type = [v17 type];
       if (_getNextLayoutID_onceToken != -1)
       {
         dispatch_once(&_getNextLayoutID_onceToken, &__block_literal_global_807);
       }
 
       os_unfair_lock_lock(&s_lock);
-      v21 = [s_availableLayoutIDs firstIndex];
-      if (v21 == 0x7FFFFFFFFFFFFFFFLL)
+      firstIndex = [s_availableLayoutIDs firstIndex];
+      if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
       {
         v22 = 101;
       }
 
       else
       {
-        v22 = v21;
-        [s_availableLayoutIDs removeIndex:v21];
+        v22 = firstIndex;
+        [s_availableLayoutIDs removeIndex:firstIndex];
       }
 
       os_unfair_lock_unlock(&s_lock);
-      v23 = [v17 asset];
-      v24 = [v23 uuid];
+      asset = [v17 asset];
+      uuid = [asset uuid];
 
       [v17 setSignpostID:v20];
       [v17 setSignpostLayoutID:v22];
       if (os_signpost_enabled(v18))
       {
         *buf = 134219266;
-        v35 = v29;
+        v35 = managerID;
         v36 = 2048;
-        v37 = v27;
+        v37 = requestID;
         v38 = 2112;
         v39 = &stru_1F0FC60C8;
         v40 = 2048;
-        v41 = v28;
+        v41 = type;
         v42 = 2112;
-        v43 = v24;
+        v43 = uuid;
         v44 = 2048;
         v45 = v22;
         _os_signpost_emit_with_name_impl(&dword_19C86F000, v18, OS_SIGNPOST_INTERVAL_BEGIN, v20, "ContextEvent", "Context begin: [%lu-%lu], target: %@, api: %lu, uuid: %@, layout: %lu", buf, 0x3Eu);
@@ -1249,54 +1249,54 @@ void __69__PHImageManager_requestAnimatedImageForAsset_options_resultHandler___b
   return v25;
 }
 
-- (void)_handleResultForContentEditingInput:(id)a3 request:(id)a4 options:(id)a5 asset:(id)a6 completionHandler:(id)a7
+- (void)_handleResultForContentEditingInput:(id)input request:(id)request options:(id)options asset:(id)asset completionHandler:(id)handler
 {
   v88[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v11 videoURL];
-  v17 = [v11 imageURL];
-  if ([v14 isPhoto] && v17 || (v18 = 0, objc_msgSend(v14, "isVideo")) && v16)
+  inputCopy = input;
+  requestCopy = request;
+  optionsCopy = options;
+  assetCopy = asset;
+  handlerCopy = handler;
+  videoURL = [inputCopy videoURL];
+  imageURL = [inputCopy imageURL];
+  if ([assetCopy isPhoto] && imageURL || (v18 = 0, objc_msgSend(assetCopy, "isVideo")) && videoURL)
   {
-    v19 = [v11 error];
+    error = [inputCopy error];
 
-    if (v19)
+    if (error)
     {
       v18 = 0;
       goto LABEL_31;
     }
 
-    v67 = v16;
+    v67 = videoURL;
     v20 = MEMORY[0x1E69C08F0];
-    v21 = [v11 uniformTypeIdentifier];
-    v22 = [v20 typeWithIdentifier:v21];
+    uniformTypeIdentifier = [inputCopy uniformTypeIdentifier];
+    v22 = [v20 typeWithIdentifier:uniformTypeIdentifier];
     v23 = [v22 conformsToType:*MEMORY[0x1E6982F88]];
 
-    if ([v14 shouldUseRAWResourceWithOriginalResourceChoice:{objc_msgSend(v14, "originalResourceChoice")}] && (v23 & 1) == 0 && (objc_msgSend(v11, "baseVersionNeeded"), (v24 = objc_claimAutoreleasedReturnValue()) != 0) && (v25 = v24, objc_msgSend(v11, "baseVersionNeeded"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "integerValue"), v26, v25, !v27))
+    if ([assetCopy shouldUseRAWResourceWithOriginalResourceChoice:{objc_msgSend(assetCopy, "originalResourceChoice")}] && (v23 & 1) == 0 && (objc_msgSend(inputCopy, "baseVersionNeeded"), (v24 = objc_claimAutoreleasedReturnValue()) != 0) && (v25 = v24, objc_msgSend(inputCopy, "baseVersionNeeded"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "integerValue"), v26, v25, !v27))
     {
       v28 = MEMORY[0x1E696AD98];
-      v29 = [v14 originalChoiceToFallbackForUnsupportRAW];
+      originalChoiceToFallbackForUnsupportRAW = [assetCopy originalChoiceToFallbackForUnsupportRAW];
     }
 
     else
     {
-      if (![v13 shouldForceOriginalChoice])
+      if (![optionsCopy shouldForceOriginalChoice])
       {
         v70 = 0;
         goto LABEL_16;
       }
 
       v28 = MEMORY[0x1E696AD98];
-      v29 = [v13 originalChoice];
+      originalChoiceToFallbackForUnsupportRAW = [optionsCopy originalChoice];
     }
 
-    v70 = [v28 numberWithUnsignedInteger:v29];
+    v70 = [v28 numberWithUnsignedInteger:originalChoiceToFallbackForUnsupportRAW];
 LABEL_16:
-    v69 = [v11 uniformTypeIdentifier];
-    if ([v11 imageRef])
+    uniformTypeIdentifier2 = [inputCopy uniformTypeIdentifier];
+    if ([inputCopy imageRef])
     {
       v68 = DCIM_newPLImageWithCGImage();
     }
@@ -1306,34 +1306,34 @@ LABEL_16:
       v68 = 0;
     }
 
-    v30 = [v11 exifOrientation];
-    v65 = [v30 intValue];
+    exifOrientation = [inputCopy exifOrientation];
+    intValue = [exifOrientation intValue];
 
-    v31 = [v11 canHandleAdjustmentData];
-    v32 = [v11 baseVersionNeeded];
-    v63 = [v32 integerValue];
+    canHandleAdjustmentData = [inputCopy canHandleAdjustmentData];
+    baseVersionNeeded = [inputCopy baseVersionNeeded];
+    integerValue = [baseVersionNeeded integerValue];
 
     v33 = [PHContentEditingInput alloc];
-    v34 = [v14 photoLibrary];
-    v35 = [v34 photoLibraryURL];
-    v18 = [(PHContentEditingInput *)v33 initWithAppropriateURL:v35];
+    photoLibrary = [assetCopy photoLibrary];
+    photoLibraryURL = [photoLibrary photoLibraryURL];
+    v18 = [(PHContentEditingInput *)v33 initWithAppropriateURL:photoLibraryURL];
 
-    -[PHContentEditingInput setMediaType:](v18, "setMediaType:", [v14 mediaType]);
-    -[PHContentEditingInput setMediaSubtypes:](v18, "setMediaSubtypes:", [v14 mediaSubtypes]);
-    -[PHContentEditingInput setPlaybackStyle:](v18, "setPlaybackStyle:", [v14 playbackStyle]);
-    v36 = [v14 creationDate];
-    [(PHContentEditingInput *)v18 setCreationDate:v36];
+    -[PHContentEditingInput setMediaType:](v18, "setMediaType:", [assetCopy mediaType]);
+    -[PHContentEditingInput setMediaSubtypes:](v18, "setMediaSubtypes:", [assetCopy mediaSubtypes]);
+    -[PHContentEditingInput setPlaybackStyle:](v18, "setPlaybackStyle:", [assetCopy playbackStyle]);
+    creationDate = [assetCopy creationDate];
+    [(PHContentEditingInput *)v18 setCreationDate:creationDate];
 
-    v37 = [v14 location];
-    [(PHContentEditingInput *)v18 setLocation:v37];
+    location = [assetCopy location];
+    [(PHContentEditingInput *)v18 setLocation:location];
 
-    if (v31)
+    if (canHandleAdjustmentData)
     {
-      v38 = [v11 adjustmentData];
-      [(PHContentEditingInput *)v18 setAdjustmentData:v38];
+      adjustmentData = [inputCopy adjustmentData];
+      [(PHContentEditingInput *)v18 setAdjustmentData:adjustmentData];
 
-      v39 = [v11 adjustmentSecondaryDataURL];
-      [(PHContentEditingInput *)v18 setAdjustmentSecondaryDataURL:v39];
+      adjustmentSecondaryDataURL = [inputCopy adjustmentSecondaryDataURL];
+      [(PHContentEditingInput *)v18 setAdjustmentSecondaryDataURL:adjustmentSecondaryDataURL];
     }
 
     else
@@ -1342,42 +1342,42 @@ LABEL_16:
       [(PHContentEditingInput *)v18 setAdjustmentSecondaryDataURL:0];
     }
 
-    [(PHContentEditingInput *)v18 setBaseVersion:v63];
+    [(PHContentEditingInput *)v18 setBaseVersion:integerValue];
     [(PHContentEditingInput *)v18 setDisplaySizeImage:v68];
-    [(PHContentEditingInput *)v18 setFullSizeImageURL:v17];
-    [(PHContentEditingInput *)v18 setUniformTypeIdentifier:v69];
-    [(PHContentEditingInput *)v18 setFullSizeImageOrientation:v65];
-    v40 = [v11 imageSandboxExtensionToken];
-    [(PHContentEditingInput *)v18 consumeSandboxExtensionToken:v40];
+    [(PHContentEditingInput *)v18 setFullSizeImageURL:imageURL];
+    [(PHContentEditingInput *)v18 setUniformTypeIdentifier:uniformTypeIdentifier2];
+    [(PHContentEditingInput *)v18 setFullSizeImageOrientation:intValue];
+    imageSandboxExtensionToken = [inputCopy imageSandboxExtensionToken];
+    [(PHContentEditingInput *)v18 consumeSandboxExtensionToken:imageSandboxExtensionToken];
 
     [(PHContentEditingInput *)v18 setOriginalResourceChoice:v70];
-    v16 = v67;
-    if (v67 && v17)
+    videoURL = v67;
+    if (v67 && imageURL)
     {
-      v41 = [v11 videoSandboxExtensionToken];
-      [(PHContentEditingInput *)v18 consumeSandboxExtensionToken:v41];
+      videoSandboxExtensionToken = [inputCopy videoSandboxExtensionToken];
+      [(PHContentEditingInput *)v18 consumeSandboxExtensionToken:videoSandboxExtensionToken];
 
-      if (([v13 forceReturnFullLivePhoto] & 1) != 0 || (objc_msgSend(v14, "mediaSubtypes") & 8) != 0)
+      if (([optionsCopy forceReturnFullLivePhoto] & 1) != 0 || (objc_msgSend(assetCopy, "mediaSubtypes") & 8) != 0)
       {
-        if ([v14 playbackStyle] == 5)
+        if ([assetCopy playbackStyle] == 5)
         {
           v88[0] = v67;
-          v88[1] = v17;
+          v88[1] = imageURL;
           v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v88 count:2];
           v78 = 0;
           v43 = &v78;
-          v44 = +[PHLivePhoto loopingLivePhotoWithResourceFileURLs:skipInstantiatingImageAndAVAsset:error:](PHLivePhoto, "loopingLivePhotoWithResourceFileURLs:skipInstantiatingImageAndAVAsset:error:", v42, [v13 skipLivePhotoImageAndAVAsset], &v78);
+          v44 = +[PHLivePhoto loopingLivePhotoWithResourceFileURLs:skipInstantiatingImageAndAVAsset:error:](PHLivePhoto, "loopingLivePhotoWithResourceFileURLs:skipInstantiatingImageAndAVAsset:error:", v42, [optionsCopy skipLivePhotoImageAndAVAsset], &v78);
         }
 
         else
         {
           v87[0] = v67;
-          v87[1] = v17;
+          v87[1] = imageURL;
           v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v87 count:2];
-          v57 = [v13 skipLivePhotoImageAndAVAsset];
+          skipLivePhotoImageAndAVAsset = [optionsCopy skipLivePhotoImageAndAVAsset];
           v77 = 0;
           v43 = &v77;
-          v44 = [PHLivePhoto livePhotoWithResourceFileURLs:v42 targetSize:1 contentMode:v57 skipInstantiatingImageAndAVAsset:&v77 error:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+          v44 = [PHLivePhoto livePhotoWithResourceFileURLs:v42 targetSize:1 contentMode:skipLivePhotoImageAndAVAsset skipInstantiatingImageAndAVAsset:&v77 error:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
         }
 
         v58 = v44;
@@ -1388,16 +1388,16 @@ LABEL_16:
           v60 = PLImageManagerGetLog();
           if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
           {
-            v64 = [v14 localIdentifier];
-            v62 = [v59 code];
+            localIdentifier = [assetCopy localIdentifier];
+            code = [v59 code];
             [v59 domain];
             v61 = v66 = v59;
             *buf = 138544130;
-            v80 = v64;
+            v80 = localIdentifier;
             v81 = 2112;
             v82 = v66;
             v83 = 2048;
-            v84 = v62;
+            v84 = code;
             v85 = 2114;
             v86 = v61;
             _os_log_impl(&dword_19C86F000, v60, OS_LOG_TYPE_ERROR, "Unable to create PHLivePhoto object for asset with localIdentifier: %{public}@, error: %@, code: %ld, domain: %{public}@", buf, 0x2Au);
@@ -1408,10 +1408,10 @@ LABEL_16:
 
         [(PHContentEditingInput *)v18 setLivePhoto:v58];
 
-        v16 = v67;
+        videoURL = v67;
       }
 
-      if ([v14 playbackStyle] != 5)
+      if ([assetCopy playbackStyle] != 5)
       {
         goto LABEL_30;
       }
@@ -1420,32 +1420,32 @@ LABEL_16:
     else if (!v67)
     {
 LABEL_30:
-      v45 = v11;
-      v46 = [v45 overCapturePhotoURL];
-      [(PHContentEditingInput *)v18 setOverCapturePhotoURL:v46];
+      v45 = inputCopy;
+      overCapturePhotoURL = [v45 overCapturePhotoURL];
+      [(PHContentEditingInput *)v18 setOverCapturePhotoURL:overCapturePhotoURL];
 
-      v47 = [v45 overCaptureVideoURL];
-      [(PHContentEditingInput *)v18 setOverCaptureVideoURL:v47];
+      overCaptureVideoURL = [v45 overCaptureVideoURL];
+      [(PHContentEditingInput *)v18 setOverCaptureVideoURL:overCaptureVideoURL];
 
-      v48 = [v45 frontSwappingImageRenderURL];
-      [(PHContentEditingInput *)v18 setFrontSwappingImageRenderURL:v48];
+      frontSwappingImageRenderURL = [v45 frontSwappingImageRenderURL];
+      [(PHContentEditingInput *)v18 setFrontSwappingImageRenderURL:frontSwappingImageRenderURL];
 
-      v49 = [v45 backSwappingImageRenderURL];
-      [(PHContentEditingInput *)v18 setBackSwappingImageRenderURL:v49];
+      backSwappingImageRenderURL = [v45 backSwappingImageRenderURL];
+      [(PHContentEditingInput *)v18 setBackSwappingImageRenderURL:backSwappingImageRenderURL];
 
-      v50 = [v45 frontSwappingVideoRenderURL];
-      [(PHContentEditingInput *)v18 setFrontSwappingVideoRenderURL:v50];
+      frontSwappingVideoRenderURL = [v45 frontSwappingVideoRenderURL];
+      [(PHContentEditingInput *)v18 setFrontSwappingVideoRenderURL:frontSwappingVideoRenderURL];
 
-      v51 = [v45 backSwappingVideoRenderURL];
-      [(PHContentEditingInput *)v18 setBackSwappingVideoRenderURL:v51];
+      backSwappingVideoRenderURL = [v45 backSwappingVideoRenderURL];
+      [(PHContentEditingInput *)v18 setBackSwappingVideoRenderURL:backSwappingVideoRenderURL];
 
-      v52 = [v45 originalAdjustmentData];
+      originalAdjustmentData = [v45 originalAdjustmentData];
 
-      [(PHContentEditingInput *)v18 setOriginalAdjustmentData:v52];
+      [(PHContentEditingInput *)v18 setOriginalAdjustmentData:originalAdjustmentData];
       goto LABEL_31;
     }
 
-    [(PHContentEditingInput *)v18 setVideoURL:v16];
+    [(PHContentEditingInput *)v18 setVideoURL:videoURL];
     goto LABEL_30;
   }
 
@@ -1454,15 +1454,15 @@ LABEL_31:
   v72[1] = 3221225472;
   v72[2] = __94__PHImageManager__handleResultForContentEditingInput_request_options_asset_completionHandler___block_invoke;
   v72[3] = &unk_1E75AA9D8;
-  v73 = v11;
-  v74 = v12;
+  v73 = inputCopy;
+  v74 = requestCopy;
   v75 = v18;
-  v76 = v15;
+  v76 = handlerCopy;
   v53 = v18;
-  v54 = v12;
-  v55 = v11;
-  v56 = v15;
-  [(PHImageManager *)self _runBlockOnAppropriateResultQueueOrSynchronouslyWithRequest:v54 options:v13 block:v72];
+  v54 = requestCopy;
+  v55 = inputCopy;
+  v56 = handlerCopy;
+  [(PHImageManager *)self _runBlockOnAppropriateResultQueueOrSynchronouslyWithRequest:v54 options:optionsCopy block:v72];
 }
 
 void __94__PHImageManager__handleResultForContentEditingInput_request_options_asset_completionHandler___block_invoke(uint64_t a1)
@@ -1489,17 +1489,17 @@ void __94__PHImageManager__handleResultForContentEditingInput_request_options_as
   }
 }
 
-- (int)requestAVAssetForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestAVAssetForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
   v56[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([objc_opt_class() _allowVideoAccessForAsset:v8 options:v9])
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([objc_opt_class() _allowVideoAccessForAsset:assetCopy options:optionsCopy])
   {
-    if (v9)
+    if (optionsCopy)
     {
-      v11 = [v9 copy];
+      v11 = [optionsCopy copy];
     }
 
     else
@@ -1515,19 +1515,19 @@ void __94__PHImageManager__handleResultForContentEditingInput_request_options_as
     [(PHVideoRequestOptions *)v15 setResultHandlerQueue:v17];
 
     v12 = v15;
-    if ([v8 deferredProcessingNeeded] == 2 && -[PHVideoRequestOptions liveRenderVideoIfNeeded](v12, "liveRenderVideoIfNeeded"))
+    if ([assetCopy deferredProcessingNeeded] == 2 && -[PHVideoRequestOptions liveRenderVideoIfNeeded](v12, "liveRenderVideoIfNeeded"))
     {
-      v18 = [(PHVideoRequestOptions *)v12 isCurrentVersion];
+      isCurrentVersion = [(PHVideoRequestOptions *)v12 isCurrentVersion];
 
-      if (v18)
+      if (isCurrentVersion)
       {
         v41[0] = MEMORY[0x1E69E9820];
         v41[1] = 3221225472;
         v41[2] = __63__PHImageManager_requestAVAssetForAsset_options_resultHandler___block_invoke;
         v41[3] = &unk_1E75AA910;
         v19 = &v42;
-        v42 = v10;
-        v14 = [(PHImageManager *)self _requestLiveRenderAVAssetForAsset:v8 options:v12 resultHandler:v41];
+        v42 = handlerCopy;
+        v14 = [(PHImageManager *)self _requestLiveRenderAVAssetForAsset:assetCopy options:v12 resultHandler:v41];
 LABEL_27:
 
         goto LABEL_28;
@@ -1538,16 +1538,16 @@ LABEL_27:
     {
     }
 
-    v20 = [(PHImageManager *)self nextID];
+    nextID = [(PHImageManager *)self nextID];
     managerID = self->_managerID;
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __63__PHImageManager_requestAVAssetForAsset_options_resultHandler___block_invoke_2;
     v38[3] = &unk_1E75AAAA0;
-    v40 = v10;
+    v40 = handlerCopy;
     v38[4] = self;
     v39 = v12;
-    v22 = [PHMediaRequestContext videoRequestContextWithRequestID:v20 managerID:managerID asset:v8 videoRequestOptions:v39 intent:1 resultHandler:v38];
+    v22 = [PHMediaRequestContext videoRequestContextWithRequestID:nextID managerID:managerID asset:assetCopy videoRequestOptions:v39 intent:1 resultHandler:v38];
     if (PHSignpostEventsEnabled_onceToken != -1)
     {
       dispatch_once(&PHSignpostEventsEnabled_onceToken, &__block_literal_global_49262);
@@ -1561,9 +1561,9 @@ LABEL_27:
       if (v24 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
         v36 = v24;
-        v34 = [v22 managerID];
-        v31 = [v22 requestID];
-        v33 = [v22 type];
+        managerID = [v22 managerID];
+        requestID = [v22 requestID];
+        type = [v22 type];
         v37 = v23;
         if (_getNextLayoutID_onceToken != -1)
         {
@@ -1571,40 +1571,40 @@ LABEL_27:
         }
 
         os_unfair_lock_lock(&s_lock);
-        v25 = [s_availableLayoutIDs firstIndex];
-        if (v25 == 0x7FFFFFFFFFFFFFFFLL)
+        firstIndex = [s_availableLayoutIDs firstIndex];
+        if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
         {
           v26 = 101;
         }
 
         else
         {
-          v26 = v25;
-          [s_availableLayoutIDs removeIndex:v25];
+          v26 = firstIndex;
+          [s_availableLayoutIDs removeIndex:firstIndex];
         }
 
         os_unfair_lock_unlock(&s_lock);
-        v27 = [v22 asset];
-        v35 = [v27 uuid];
+        asset = [v22 asset];
+        uuid = [asset uuid];
 
         [v22 setSignpostID:v36];
         [v22 setSignpostLayoutID:v26];
         v28 = v37;
         if (os_signpost_enabled(v28))
         {
-          v30 = v31;
-          [v9 targetSize];
+          v30 = requestID;
+          [optionsCopy targetSize];
           v32 = DCIM_NSStringFromCGSize();
           *buf = 134219266;
-          v44 = v34;
+          v44 = managerID;
           v45 = 2048;
           v46 = v30;
           v47 = 2112;
           v48 = v32;
           v49 = 2048;
-          v50 = v33;
+          v50 = type;
           v51 = 2112;
-          v52 = v35;
+          v52 = uuid;
           v53 = 2048;
           v54 = v26;
           _os_signpost_emit_with_name_impl(&dword_19C86F000, v28, OS_SIGNPOST_INTERVAL_BEGIN, v36, "ContextEvent", "Context begin: [%lu-%lu], target: %@, api: %lu, uuid: %@, layout: %lu", buf, 0x3Eu);
@@ -1619,13 +1619,13 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     v12 = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:3306 userInfo:0];
     v55 = @"PHImageErrorKey";
     v56[0] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:&v55 count:1];
-    (*(v10 + 2))(v10, 0, 0, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v13);
     v14 = 0;
 LABEL_28:
 
@@ -1736,37 +1736,37 @@ void __63__PHImageManager_requestAVAssetForAsset_options_resultHandler___block_i
   (*(v4 + 16))(v4, v1, v2, v3, v5);
 }
 
-- (int)_requestLiveRenderAVAssetForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)_requestLiveRenderAVAssetForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(PHImageManager *)self nextID];
+  optionsCopy = options;
+  handlerCopy = handler;
+  assetCopy = asset;
+  nextID = [(PHImageManager *)self nextID];
   managerID = self->_managerID;
-  [v8 targetSize];
+  [optionsCopy targetSize];
   v14 = v13;
   v16 = v15;
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __74__PHImageManager__requestLiveRenderAVAssetForAsset_options_resultHandler___block_invoke;
   v35[3] = &unk_1E75AA898;
-  v17 = v9;
+  v17 = handlerCopy;
   v37 = v17;
   v35[4] = self;
-  v18 = v8;
+  v18 = optionsCopy;
   v36 = v18;
-  v19 = [PHLiveRenderEditingInputRequestContext videoLiveRenderContextWithRequestID:v11 managerID:managerID asset:v10 options:v18 targetSize:v35 renderedVideoHandler:v14, v16];
+  v19 = [PHLiveRenderEditingInputRequestContext videoLiveRenderContextWithRequestID:nextID managerID:managerID asset:assetCopy options:v18 targetSize:v35 renderedVideoHandler:v14, v16];
 
   v20 = PLImageManagerGetLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v21 = self->_managerID;
-    v22 = [v19 requestID];
+    requestID = [v19 requestID];
     *buf = 134218240;
     v39 = v21;
     v40 = 2048;
-    v41 = v22;
+    v41 = requestID;
     _os_log_impl(&dword_19C86F000, v20, OS_LOG_TYPE_DEFAULT, "%ld-%ld - Making edit request in preparation for live rendering video", buf, 0x16u);
   }
 
@@ -1782,45 +1782,45 @@ void __63__PHImageManager_requestAVAssetForAsset_options_resultHandler___block_i
     if (v24 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v25 = v24;
-      v34 = [v19 managerID];
-      v26 = [v19 requestID];
-      v33 = [v19 type];
+      managerID = [v19 managerID];
+      requestID2 = [v19 requestID];
+      type = [v19 type];
       if (_getNextLayoutID_onceToken != -1)
       {
         dispatch_once(&_getNextLayoutID_onceToken, &__block_literal_global_807);
       }
 
       os_unfair_lock_lock(&s_lock);
-      v27 = [s_availableLayoutIDs firstIndex];
-      if (v27 == 0x7FFFFFFFFFFFFFFFLL)
+      firstIndex = [s_availableLayoutIDs firstIndex];
+      if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
       {
         v28 = 101;
       }
 
       else
       {
-        v28 = v27;
-        [s_availableLayoutIDs removeIndex:v27];
+        v28 = firstIndex;
+        [s_availableLayoutIDs removeIndex:firstIndex];
       }
 
       os_unfair_lock_unlock(&s_lock);
-      v29 = [v19 asset];
-      v30 = [v29 uuid];
+      asset = [v19 asset];
+      uuid = [asset uuid];
 
       [v19 setSignpostID:v25];
       [v19 setSignpostLayoutID:v28];
       if (os_signpost_enabled(v23))
       {
         *buf = 134219266;
-        v39 = v34;
+        v39 = managerID;
         v40 = 2048;
-        v41 = v26;
+        v41 = requestID2;
         v42 = 2112;
         v43 = &stru_1F0FC60C8;
         v44 = 2048;
-        v45 = v33;
+        v45 = type;
         v46 = 2112;
-        v47 = v30;
+        v47 = uuid;
         v48 = 2048;
         v49 = v28;
         _os_signpost_emit_with_name_impl(&dword_19C86F000, v23, OS_SIGNPOST_INTERVAL_BEGIN, v25, "ContextEvent", "Context begin: [%lu-%lu], target: %@, api: %lu, uuid: %@, layout: %lu", buf, 0x3Eu);
@@ -1857,23 +1857,23 @@ void __74__PHImageManager__requestLiveRenderAVAssetForAsset_options_resultHandle
   }
 }
 
-- (int)requestURLForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestURLForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(PHImageManager *)self nextID];
+  optionsCopy = options;
+  handlerCopy = handler;
+  videoCopy = video;
+  nextID = [(PHImageManager *)self nextID];
   managerID = self->_managerID;
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __59__PHImageManager_requestURLForVideo_options_resultHandler___block_invoke;
   v31[3] = &unk_1E75AAB18;
-  v13 = v9;
+  v13 = handlerCopy;
   v33 = v13;
-  v14 = v8;
+  v14 = optionsCopy;
   v32 = v14;
-  v15 = [PHMediaRequestContext videoRequestContextWithRequestID:v11 managerID:managerID asset:v10 videoRequestOptions:v14 intent:3 resultHandler:v31];
+  v15 = [PHMediaRequestContext videoRequestContextWithRequestID:nextID managerID:managerID asset:videoCopy videoRequestOptions:v14 intent:3 resultHandler:v31];
 
   if (PHSignpostEventsEnabled_onceToken != -1)
   {
@@ -1887,49 +1887,49 @@ void __74__PHImageManager__requestLiveRenderAVAssetForAsset_options_resultHandle
     if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v18 = v17;
-      v19 = [v15 managerID];
-      v20 = [v15 requestID];
-      v29 = [v15 type];
+      managerID = [v15 managerID];
+      requestID = [v15 requestID];
+      type = [v15 type];
       if (_getNextLayoutID_onceToken != -1)
       {
         dispatch_once(&_getNextLayoutID_onceToken, &__block_literal_global_807);
       }
 
       os_unfair_lock_lock(&s_lock);
-      v21 = [s_availableLayoutIDs firstIndex];
-      if (v21 == 0x7FFFFFFFFFFFFFFFLL)
+      firstIndex = [s_availableLayoutIDs firstIndex];
+      if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
       {
         v22 = 101;
       }
 
       else
       {
-        v22 = v21;
-        [s_availableLayoutIDs removeIndex:v21];
+        v22 = firstIndex;
+        [s_availableLayoutIDs removeIndex:firstIndex];
       }
 
       os_unfair_lock_unlock(&s_lock);
-      v23 = [v15 asset];
-      v30 = [v23 uuid];
+      asset = [v15 asset];
+      uuid = [asset uuid];
 
       [v15 setSignpostID:v18];
       [v15 setSignpostLayoutID:v22];
       v24 = v16;
       if (os_signpost_enabled(v24))
       {
-        v28 = v20;
+        v28 = requestID;
         [v14 targetSize];
         v25 = DCIM_NSStringFromCGSize();
         *buf = 134219266;
-        v35 = v19;
+        v35 = managerID;
         v36 = 2048;
         v37 = v28;
         v38 = 2112;
         v39 = v25;
         v40 = 2048;
-        v41 = v29;
+        v41 = type;
         v42 = 2112;
-        v43 = v30;
+        v43 = uuid;
         v44 = 2048;
         v45 = v22;
         _os_signpost_emit_with_name_impl(&dword_19C86F000, v24, OS_SIGNPOST_INTERVAL_BEGIN, v18, "ContextEvent", "Context begin: [%lu-%lu], target: %@, api: %lu, uuid: %@, layout: %lu", buf, 0x3Eu);
@@ -1981,17 +1981,17 @@ void __59__PHImageManager_requestURLForVideo_options_resultHandler___block_invok
   (*(v2 + 16))(v2, v1, v3);
 }
 
-- (int)requestNewCGImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int)requestNewCGImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v63 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  if (v14)
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (optionsCopy)
   {
-    v16 = [v14 copy];
+    v16 = [optionsCopy copy];
   }
 
   else
@@ -2002,9 +2002,9 @@ void __59__PHImageManager_requestURLForVideo_options_resultHandler___block_invok
   v17 = v16;
   if ([(PHImageRequestOptions *)v16 version]== 16 || [(PHImageRequestOptions *)v17 version]== 17)
   {
-    v18 = [(PHImageRequestOptions *)v17 resultHandlerQueue];
+    resultHandlerQueue = [(PHImageRequestOptions *)v17 resultHandlerQueue];
 
-    if (!v18)
+    if (!resultHandlerQueue)
     {
       v19 = dispatch_get_global_queue(33, 0);
       [(PHImageRequestOptions *)v17 setResultHandlerQueue:v19];
@@ -2013,10 +2013,10 @@ void __59__PHImageManager_requestURLForVideo_options_resultHandler___block_invok
 
   v20 = [PHImageDisplaySpec alloc];
   [(PHImageRequestOptions *)v17 normalizedCropRect];
-  v25 = [(PHImageDisplaySpec *)v20 initWithTargetSize:a5 contentMode:ceil(width) normalizedCropRect:ceil(height), v21, v22, v23, v24];
+  v25 = [(PHImageDisplaySpec *)v20 initWithTargetSize:mode contentMode:ceil(width) normalizedCropRect:ceil(height), v21, v22, v23, v24];
   [(PHImageRequestOptions *)v17 fallbackTargetSizeIfRequestedSizeNotLocallyAvailable];
   [(PHImageDisplaySpec *)v25 setFallbackTargetSizeIfRequestedSizeNotLocallyAvailable:?];
-  v26 = [(PHImageManager *)self nextID];
+  nextID = [(PHImageManager *)self nextID];
   managerID = self->_managerID;
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
@@ -2024,10 +2024,10 @@ void __59__PHImageManager_requestURLForVideo_options_resultHandler___block_invok
   v47[3] = &unk_1E75AAAA0;
   v28 = v17;
   v48 = v28;
-  v49 = self;
-  v29 = v15;
+  selfCopy = self;
+  v29 = handlerCopy;
   v50 = v29;
-  v30 = [PHMediaRequestContext imageRequestContextWithRequestID:v26 managerID:managerID asset:v13 imageRequestOptions:v28 displaySpec:v25 resultHandler:v47];
+  v30 = [PHMediaRequestContext imageRequestContextWithRequestID:nextID managerID:managerID asset:assetCopy imageRequestOptions:v28 displaySpec:v25 resultHandler:v47];
   if (PHSignpostEventsEnabled_onceToken != -1)
   {
     dispatch_once(&PHSignpostEventsEnabled_onceToken, &__block_literal_global_49262);
@@ -2040,55 +2040,55 @@ void __59__PHImageManager_requestURLForVideo_options_resultHandler___block_invok
     if (v32 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v33 = v32;
-      v44 = [v30 managerID];
-      v41 = [v30 requestID];
-      v43 = [v30 type];
-      v45 = v13;
+      managerID = [v30 managerID];
+      requestID = [v30 requestID];
+      type = [v30 type];
+      v45 = assetCopy;
       if (_getNextLayoutID_onceToken != -1)
       {
         dispatch_once(&_getNextLayoutID_onceToken, &__block_literal_global_807);
       }
 
       os_unfair_lock_lock(&s_lock);
-      v34 = [s_availableLayoutIDs firstIndex];
-      if (v34 == 0x7FFFFFFFFFFFFFFFLL)
+      firstIndex = [s_availableLayoutIDs firstIndex];
+      if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
       {
         v35 = 101;
       }
 
       else
       {
-        v35 = v34;
-        [s_availableLayoutIDs removeIndex:v34];
+        v35 = firstIndex;
+        [s_availableLayoutIDs removeIndex:firstIndex];
       }
 
       os_unfair_lock_unlock(&s_lock);
-      v36 = [v30 asset];
-      v46 = [v36 uuid];
+      asset = [v30 asset];
+      uuid = [asset uuid];
 
       [v30 setSignpostID:v33];
       [v30 setSignpostLayoutID:v35];
       v37 = v31;
       if (os_signpost_enabled(v37))
       {
-        v40 = v41;
+        v40 = requestID;
         v42 = DCIM_NSStringFromCGSize();
         *buf = 134219266;
-        v52 = v44;
+        v52 = managerID;
         v53 = 2048;
         v54 = v40;
         v55 = 2112;
         v56 = v42;
         v57 = 2048;
-        v58 = v43;
+        v58 = type;
         v59 = 2112;
-        v60 = v46;
+        v60 = uuid;
         v61 = 2048;
         v62 = v35;
         _os_signpost_emit_with_name_impl(&dword_19C86F000, v37, OS_SIGNPOST_INTERVAL_BEGIN, v33, "ContextEvent", "Context begin: [%lu-%lu], target: %@, api: %lu, uuid: %@, layout: %lu", buf, 0x3Eu);
       }
 
-      v13 = v45;
+      assetCopy = v45;
     }
   }
 
@@ -2308,16 +2308,16 @@ void __89__PHImageManager_requestNewCGImageForAsset_targetSize_contentMode_optio
   }
 }
 
-- (id)synchronousImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6
+- (id)synchronousImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = a6;
-  v12 = v11;
-  if (v11)
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  optionsCopy = options;
+  v12 = optionsCopy;
+  if (optionsCopy)
   {
-    v13 = [v11 copy];
+    v13 = [optionsCopy copy];
   }
 
   else
@@ -2339,7 +2339,7 @@ void __89__PHImageManager_requestNewCGImageForAsset_targetSize_contentMode_optio
   v18[2] = __74__PHImageManager_synchronousImageForAsset_targetSize_contentMode_options___block_invoke;
   v18[3] = &unk_1E75AAAC8;
   v18[4] = &v19;
-  [v15 requestImageForAsset:v10 targetSize:a5 contentMode:v14 options:v18 resultHandler:{width, height}];
+  [v15 requestImageForAsset:assetCopy targetSize:mode contentMode:v14 options:v18 resultHandler:{width, height}];
 
   v16 = v20[5];
   _Block_object_dispose(&v19, 8);
@@ -2347,20 +2347,20 @@ void __89__PHImageManager_requestNewCGImageForAsset_targetSize_contentMode_optio
   return v16;
 }
 
-- (int)requestStreamForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestStreamForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
   v63 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  videoCopy = video;
+  optionsCopy = options;
+  handlerCopy = handler;
   v11 = PLAvailabilityRequestGetLog();
-  v12 = os_signpost_id_make_with_pointer(v11, v8);
+  v12 = os_signpost_id_make_with_pointer(v11, videoCopy);
   v13 = v11;
   v14 = v13;
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     *buf = 138412290;
-    v52 = v8;
+    v52 = videoCopy;
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "com.apple.photos.backend.requestPlayerItemForVideo", "requestPlayerItemForVideo %@", buf, 0xCu);
   }
 
@@ -2371,7 +2371,7 @@ void __89__PHImageManager_requestNewCGImageForAsset_targetSize_contentMode_optio
   v15 = v14;
   v48 = v15;
   v50 = v12;
-  v16 = v10;
+  v16 = handlerCopy;
   v49 = v16;
   v17 = _Block_copy(aBlock);
   v45[0] = MEMORY[0x1E69E9820];
@@ -2381,9 +2381,9 @@ void __89__PHImageManager_requestNewCGImageForAsset_targetSize_contentMode_optio
   v18 = v17;
   v46 = v18;
   v19 = _Block_copy(v45);
-  if (v9)
+  if (optionsCopy)
   {
-    v20 = [v9 copy];
+    v20 = [optionsCopy copy];
   }
 
   else
@@ -2403,7 +2403,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!-[PHVideoRequestOptions restrictToStreamable](v21, "restrictToStreamable") || ![objc_opt_class() _allowVideoAccessForAsset:v8 options:v9] || !-[PHImageManager _canStreamVideoForAsset:](self, "_canStreamVideoForAsset:", v8))
+  if (!-[PHVideoRequestOptions restrictToStreamable](v21, "restrictToStreamable") || ![objc_opt_class() _allowVideoAccessForAsset:videoCopy options:optionsCopy] || !-[PHImageManager _canStreamVideoForAsset:](self, "_canStreamVideoForAsset:", videoCopy))
   {
     v29 = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:3306 userInfo:0];
     v19[2](v19, v29);
@@ -2411,7 +2411,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v24 = [(PHImageManager *)self nextID];
+  nextID = [(PHImageManager *)self nextID];
   spida = self->_managerID;
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
@@ -2420,7 +2420,7 @@ LABEL_22:
   v43 = v18;
   v41[4] = self;
   v42 = v21;
-  v25 = [PHMediaRequestContext videoRequestContextWithRequestID:v24 managerID:spida asset:v8 videoRequestOptions:v42 intent:0 resultHandler:v41];
+  v25 = [PHMediaRequestContext videoRequestContextWithRequestID:nextID managerID:spida asset:videoCopy videoRequestOptions:v42 intent:0 resultHandler:v41];
   if (PHSignpostEventsEnabled_onceToken != -1)
   {
     dispatch_once(&PHSignpostEventsEnabled_onceToken, &__block_literal_global_49262);
@@ -2432,13 +2432,13 @@ LABEL_22:
     spid = os_signpost_id_generate(v40);
     if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v33 = [v25 managerID];
-      v31 = [v25 requestID];
-      v32 = [v25 type];
+      managerID = [v25 managerID];
+      requestID = [v25 requestID];
+      type = [v25 type];
       NextLayoutID = _getNextLayoutID();
       [v25 asset];
       v26 = v37 = v25;
-      v36 = [v26 uuid];
+      uuid = [v26 uuid];
 
       v25 = v37;
       [v37 setSignpostID:spid];
@@ -2446,18 +2446,18 @@ LABEL_22:
       v34 = v40;
       if (os_signpost_enabled(v34))
       {
-        [v9 targetSize];
+        [optionsCopy targetSize];
         v27 = DCIM_NSStringFromCGSize();
         *buf = 134219266;
-        v52 = v33;
+        v52 = managerID;
         v53 = 2048;
-        v54 = v31;
+        v54 = requestID;
         v55 = 2112;
         v56 = v27;
         v57 = 2048;
-        v58 = v32;
+        v58 = type;
         v59 = 2112;
-        v60 = v36;
+        v60 = uuid;
         v61 = 2048;
         v62 = NextLayoutID;
         _os_signpost_emit_with_name_impl(&dword_19C86F000, v34, OS_SIGNPOST_INTERVAL_BEGIN, spid, "ContextEvent", "Context begin: [%lu-%lu], target: %@, api: %lu, uuid: %@, layout: %lu", buf, 0x3Eu);
@@ -2622,9 +2622,9 @@ void __62__PHImageManager_requestStreamForVideo_options_resultHandler___block_in
     v19 = v22;
     if ([(PHAsset *)v8 deferredProcessingNeeded]== 2 && [(PHVideoRequestOptions *)v19 liveRenderVideoIfNeeded])
     {
-      v23 = [(PHVideoRequestOptions *)v19 isCurrentVersion];
+      isCurrentVersion = [(PHVideoRequestOptions *)v19 isCurrentVersion];
 
-      if (v23)
+      if (isCurrentVersion)
       {
         v49[0] = MEMORY[0x1E69E9820];
         v49[1] = 3221225472;
@@ -2643,7 +2643,7 @@ LABEL_35:
     {
     }
 
-    v25 = [(PHImageManager *)self nextID];
+    nextID = [(PHImageManager *)self nextID];
     managerID = self->_managerID;
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
@@ -2653,7 +2653,7 @@ LABEL_35:
     v45[4] = self;
     v46 = v8;
     v47 = v19;
-    v27 = [PHMediaRequestContext videoRequestContextWithRequestID:v25 managerID:managerID asset:v46 videoRequestOptions:v47 intent:0 resultHandler:v45];
+    v27 = [PHMediaRequestContext videoRequestContextWithRequestID:nextID managerID:managerID asset:v46 videoRequestOptions:v47 intent:0 resultHandler:v45];
     if (PHSignpostEventsEnabled_onceToken != -1)
     {
       dispatch_once(&PHSignpostEventsEnabled_onceToken, &__block_literal_global_49262);
@@ -2667,9 +2667,9 @@ LABEL_35:
       if (v29 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
         v40 = v29;
-        v39 = [v27 managerID];
-        v36 = [v27 requestID];
-        v38 = [v27 type];
+        managerID = [v27 managerID];
+        requestID = [v27 requestID];
+        type = [v27 type];
         v42 = v28;
         if (_getNextLayoutID_onceToken != -1)
         {
@@ -2677,41 +2677,41 @@ LABEL_35:
         }
 
         os_unfair_lock_lock(&s_lock);
-        v30 = [s_availableLayoutIDs firstIndex];
-        if (v30 == 0x7FFFFFFFFFFFFFFFLL)
+        firstIndex = [s_availableLayoutIDs firstIndex];
+        if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
         {
           v31 = 101;
         }
 
         else
         {
-          v31 = v30;
-          [s_availableLayoutIDs removeIndex:v30];
+          v31 = firstIndex;
+          [s_availableLayoutIDs removeIndex:firstIndex];
         }
 
         os_unfair_lock_unlock(&s_lock);
-        v32 = [v27 asset];
-        v41 = [v32 uuid];
+        asset = [v27 asset];
+        uuid = [asset uuid];
 
         [v27 setSignpostID:v40];
         [v27 setSignpostLayoutID:v31];
         v33 = v42;
         if (os_signpost_enabled(v33))
         {
-          v34 = v36;
+          v34 = requestID;
           [(PHVideoRequestOptions *)v9 targetSize];
           v37 = DCIM_NSStringFromCGSize();
           *buf = 134219266;
-          v56 = v39;
+          v56 = managerID;
           v57 = 2048;
           v58 = v34;
           v16 = v43;
           v59 = 2112;
           v60 = v37;
           v61 = 2048;
-          v62 = v38;
+          v62 = type;
           v63 = 2112;
-          v64 = v41;
+          v64 = uuid;
           v65 = 2048;
           v66 = v31;
           _os_signpost_emit_with_name_impl(&dword_19C86F000, v33, OS_SIGNPOST_INTERVAL_BEGIN, v40, "ContextEvent", "Context begin: [%lu-%lu], target: %@, api: %lu, uuid: %@, layout: %lu", buf, 0x3Eu);
@@ -3042,7 +3042,7 @@ void __66__PHImageManager_requestPlayerItemForVideo_options_resultHandler___bloc
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134217984;
-        v41 = [(PHVideoRequestOptions *)v18 deliveryMode];
+        deliveryMode = [(PHVideoRequestOptions *)v18 deliveryMode];
         _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_DEBUG, "Request for video export session with delivery mode of %ld is not allowed, request will require 'high quality' delivery mode", buf, 0xCu);
       }
 
@@ -3061,7 +3061,7 @@ void __66__PHImageManager_requestPlayerItemForVideo_options_resultHandler___bloc
       [(PHVideoRequestOptions *)v18 setRestrictToPlayableOnCurrentDevice:1];
     }
 
-    v21 = [(PHImageManager *)self nextID];
+    nextID = [(PHImageManager *)self nextID];
     managerID = self->_managerID;
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
@@ -3073,7 +3073,7 @@ void __66__PHImageManager_requestPlayerItemForVideo_options_resultHandler___bloc
     v37 = v15;
     v23 = v12;
     v38 = v23;
-    v24 = [PHMediaRequestContext videoRequestContextWithRequestID:v21 managerID:managerID asset:v10 videoRequestOptions:v15 intent:2 resultHandler:v36];
+    v24 = [PHMediaRequestContext videoRequestContextWithRequestID:nextID managerID:managerID asset:v10 videoRequestOptions:v15 intent:2 resultHandler:v36];
     if (PHSignpostEventsEnabled_onceToken != -1)
     {
       dispatch_once(&PHSignpostEventsEnabled_onceToken, &__block_literal_global_49262);
@@ -3085,9 +3085,9 @@ void __66__PHImageManager_requestPlayerItemForVideo_options_resultHandler___bloc
       v35 = os_signpost_id_generate(v25);
       if (v35 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v32 = [v24 managerID];
-        v30 = [v24 requestID];
-        v31 = [v24 type];
+        managerID = [v24 managerID];
+        requestID = [v24 requestID];
+        type = [v24 type];
         v33 = v12;
         if (_getNextLayoutID_onceToken != -1)
         {
@@ -3095,36 +3095,36 @@ void __66__PHImageManager_requestPlayerItemForVideo_options_resultHandler___bloc
         }
 
         os_unfair_lock_lock(&s_lock);
-        v26 = [s_availableLayoutIDs firstIndex];
-        if (v26 == 0x7FFFFFFFFFFFFFFFLL)
+        firstIndex = [s_availableLayoutIDs firstIndex];
+        if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
         {
           v27 = 101;
         }
 
         else
         {
-          v27 = v26;
-          [s_availableLayoutIDs removeIndex:v26];
+          v27 = firstIndex;
+          [s_availableLayoutIDs removeIndex:firstIndex];
         }
 
         os_unfair_lock_unlock(&s_lock);
-        v28 = [v24 asset];
-        v34 = [v28 uuid];
+        asset = [v24 asset];
+        uuid = [asset uuid];
 
         [v24 setSignpostID:v35];
         [v24 setSignpostLayoutID:v27];
         if (os_signpost_enabled(v25))
         {
           *buf = 134219266;
-          v41 = v32;
+          deliveryMode = managerID;
           v42 = 2048;
-          v43 = v30;
+          v43 = requestID;
           v44 = 2112;
           v45 = v23;
           v46 = 2048;
-          v47 = v31;
+          v47 = type;
           v48 = 2112;
-          v49 = v34;
+          v49 = uuid;
           v50 = 2048;
           v51 = v27;
           _os_signpost_emit_with_name_impl(&dword_19C86F000, v25, OS_SIGNPOST_INTERVAL_BEGIN, v35, "ContextEvent", "Context begin: [%lu-%lu], target: %@, api: %lu, uuid: %@, layout: %lu", buf, 0x3Eu);
@@ -3279,11 +3279,11 @@ void __82__PHImageManager_requestExportSessionForVideo_options_exportPreset_resu
     v16 = v14;
     if ([(PHAsset *)v13 deferredProcessingNeeded]== 2 && [(PHLivePhotoRequestOptions *)v16 liveRenderVideoIfNeeded])
     {
-      v17 = [(PHLivePhotoRequestOptions *)v16 isCurrentVersion];
+      isCurrentVersion = [(PHLivePhotoRequestOptions *)v16 isCurrentVersion];
 
-      if (v17)
+      if (isCurrentVersion)
       {
-        v18 = [(PHImageManager *)self nextID];
+        nextID = [(PHImageManager *)self nextID];
         managerID = self->_managerID;
         v67[0] = MEMORY[0x1E69E9820];
         v67[1] = 3221225472;
@@ -3292,16 +3292,16 @@ void __82__PHImageManager_requestExportSessionForVideo_options_exportPreset_resu
         v70 = v15;
         v68 = v16;
         v69 = v13;
-        v20 = [PHLiveRenderEditingInputRequestContext videoLiveRenderContextWithRequestID:v18 managerID:managerID asset:v69 options:v68 targetSize:contentMode contentMode:v67 renderedVideoHandler:width, height];
+        height = [PHLiveRenderEditingInputRequestContext videoLiveRenderContextWithRequestID:nextID managerID:managerID asset:v69 options:v68 targetSize:contentMode contentMode:v67 renderedVideoHandler:width, height];
         v21 = PLImageManagerGetLog();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           v22 = self->_managerID;
-          v23 = [v20 requestID];
+          requestID = [height requestID];
           *buf = 134218240;
           v72 = v22;
           v73 = 2048;
-          v74 = v23;
+          v74 = requestID;
           _os_log_impl(&dword_19C86F000, v21, OS_LOG_TYPE_DEFAULT, "%ld-%ld - Making edit request in preparation for live rendering live photo's video complement", buf, 0x16u);
         }
 
@@ -3318,48 +3318,48 @@ void __82__PHImageManager_requestExportSessionForVideo_options_exportPreset_resu
           {
             v26 = v25;
             v58 = v14;
-            v27 = [v20 managerID];
-            v28 = [v20 requestID];
-            v56 = [v20 type];
+            managerID = [height managerID];
+            requestID2 = [height requestID];
+            type = [height type];
             if (_getNextLayoutID_onceToken != -1)
             {
               dispatch_once(&_getNextLayoutID_onceToken, &__block_literal_global_807);
             }
 
             os_unfair_lock_lock(&s_lock);
-            v29 = [s_availableLayoutIDs firstIndex];
-            if (v29 == 0x7FFFFFFFFFFFFFFFLL)
+            firstIndex = [s_availableLayoutIDs firstIndex];
+            if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
             {
               v30 = 101;
             }
 
             else
             {
-              v30 = v29;
-              [s_availableLayoutIDs removeIndex:v29];
+              v30 = firstIndex;
+              [s_availableLayoutIDs removeIndex:firstIndex];
             }
 
             os_unfair_lock_unlock(&s_lock);
-            v48 = [v20 asset];
-            v61 = [v48 uuid];
+            asset = [height asset];
+            uuid = [asset uuid];
 
-            [v20 setSignpostID:v26];
-            [v20 setSignpostLayoutID:v30];
+            [height setSignpostID:v26];
+            [height setSignpostLayoutID:v30];
             v49 = v24;
             if (os_signpost_enabled(v49))
             {
               v50 = DCIM_NSStringFromCGSize();
               *buf = 134219266;
-              v72 = v27;
+              v72 = managerID;
               v73 = 2048;
-              v74 = v28;
+              v74 = requestID2;
               v75 = 2112;
               v76 = v50;
               v51 = v50;
               v77 = 2048;
-              v78 = v56;
+              v78 = type;
               v79 = 2112;
-              v80 = v61;
+              v80 = uuid;
               v81 = 2048;
               v82 = v30;
               _os_signpost_emit_with_name_impl(&dword_19C86F000, v49, OS_SIGNPOST_INTERVAL_BEGIN, v26, "ContextEvent", "Context begin: [%lu-%lu], target: %@, api: %lu, uuid: %@, layout: %lu", buf, 0x3Eu);
@@ -3369,9 +3369,9 @@ void __82__PHImageManager_requestExportSessionForVideo_options_exportPreset_resu
           }
         }
 
-        v33 = [(PHImageManager *)self runRequestWithContext:v20];
+        v33 = [(PHImageManager *)self runRequestWithContext:height];
 
-        v31 = v70;
+        height2 = v70;
         goto LABEL_36;
       }
     }
@@ -3380,7 +3380,7 @@ void __82__PHImageManager_requestExportSessionForVideo_options_exportPreset_resu
     {
     }
 
-    v31 = [[PHImageDisplaySpec alloc] initWithTargetSize:contentMode contentMode:width, height];
+    height2 = [[PHImageDisplaySpec alloc] initWithTargetSize:contentMode contentMode:width, height];
     if (v16)
     {
       v34 = v16;
@@ -3392,7 +3392,7 @@ void __82__PHImageManager_requestExportSessionForVideo_options_exportPreset_resu
     }
 
     v35 = v34;
-    v36 = [(PHImageManager *)self nextID];
+    nextID2 = [(PHImageManager *)self nextID];
     v37 = self->_managerID;
     v62[0] = MEMORY[0x1E69E9820];
     v62[1] = 3221225472;
@@ -3402,8 +3402,8 @@ void __82__PHImageManager_requestExportSessionForVideo_options_exportPreset_resu
     v63 = v38;
     v66 = v15;
     v64 = v13;
-    v65 = self;
-    v39 = [PHMediaRequestContext livePhotoRequestContextWithRequestID:v36 managerID:v37 asset:v64 livePhotoRequestOptions:v38 displaySpec:v31 resultHandler:v62];
+    selfCopy = self;
+    v39 = [PHMediaRequestContext livePhotoRequestContextWithRequestID:nextID2 managerID:v37 asset:v64 livePhotoRequestOptions:v38 displaySpec:height2 resultHandler:v62];
     if (PHSignpostEventsEnabled_onceToken != -1)
     {
       dispatch_once(&PHSignpostEventsEnabled_onceToken, &__block_literal_global_49262);
@@ -3416,9 +3416,9 @@ void __82__PHImageManager_requestExportSessionForVideo_options_exportPreset_resu
       if (v41 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
         v42 = v41;
-        v57 = [v39 managerID];
-        v53 = [v39 requestID];
-        v55 = [v39 type];
+        managerID2 = [v39 managerID];
+        requestID3 = [v39 requestID];
+        type2 = [v39 type];
         v59 = v14;
         if (_getNextLayoutID_onceToken != -1)
         {
@@ -3426,39 +3426,39 @@ void __82__PHImageManager_requestExportSessionForVideo_options_exportPreset_resu
         }
 
         os_unfair_lock_lock(&s_lock);
-        v43 = [s_availableLayoutIDs firstIndex];
-        if (v43 == 0x7FFFFFFFFFFFFFFFLL)
+        firstIndex2 = [s_availableLayoutIDs firstIndex];
+        if (firstIndex2 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v44 = 101;
         }
 
         else
         {
-          v44 = v43;
-          [s_availableLayoutIDs removeIndex:v43];
+          v44 = firstIndex2;
+          [s_availableLayoutIDs removeIndex:firstIndex2];
         }
 
         os_unfair_lock_unlock(&s_lock);
-        v45 = [v39 asset];
-        v60 = [v45 uuid];
+        asset2 = [v39 asset];
+        uuid2 = [asset2 uuid];
 
         [v39 setSignpostID:v42];
         [v39 setSignpostLayoutID:v44];
         v46 = v40;
         if (os_signpost_enabled(v46))
         {
-          v52 = v53;
+          v52 = requestID3;
           v54 = DCIM_NSStringFromCGSize();
           *buf = 134219266;
-          v72 = v57;
+          v72 = managerID2;
           v73 = 2048;
           v74 = v52;
           v75 = 2112;
           v76 = v54;
           v77 = 2048;
-          v78 = v55;
+          v78 = type2;
           v79 = 2112;
-          v80 = v60;
+          v80 = uuid2;
           v81 = 2048;
           v82 = v44;
           _os_signpost_emit_with_name_impl(&dword_19C86F000, v46, OS_SIGNPOST_INTERVAL_BEGIN, v42, "ContextEvent", "Context begin: [%lu-%lu], target: %@, api: %lu, uuid: %@, layout: %lu", buf, 0x3Eu);
@@ -3475,9 +3475,9 @@ void __82__PHImageManager_requestExportSessionForVideo_options_exportPreset_resu
 
   if (v15)
   {
-    v31 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3306 localizedDescription:@"Not a playable live photo asset"];
+    height2 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3306 localizedDescription:@"Not a playable live photo asset"];
     v83 = @"PHImageErrorKey";
-    v84[0] = v31;
+    v84[0] = height2;
     v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v84 forKeys:&v83 count:1];
     (*(v15 + 2))(v15, 0, v32);
 
@@ -3765,26 +3765,26 @@ uint64_t __88__PHImageManager_requestLivePhotoForAsset_targetSize_contentMode_op
   return result;
 }
 
-- (void)_prepareLivePhotoResultWithImage:(CGImage *)a3 uiOrientation:(int64_t)a4 shouldIncludeVideo:(BOOL)a5 videoURL:(id)a6 info:(id)a7 photoTime:(id *)a8 asset:(id)a9 completion:(id)a10
+- (void)_prepareLivePhotoResultWithImage:(CGImage *)image uiOrientation:(int64_t)orientation shouldIncludeVideo:(BOOL)video videoURL:(id)l info:(id)info photoTime:(id *)time asset:(id)asset completion:(id)self0
 {
-  v15 = a6;
-  v16 = a7;
-  v17 = a9;
-  v18 = a10;
-  if (a5)
+  lCopy = l;
+  infoCopy = info;
+  assetCopy = asset;
+  completionCopy = completion;
+  if (video)
   {
     v19 = objc_opt_class();
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __125__PHImageManager__prepareLivePhotoResultWithImage_uiOrientation_shouldIncludeVideo_videoURL_info_photoTime_asset_completion___block_invoke;
     v22[3] = &unk_1E75AA848;
-    v25 = a3;
-    v26 = a4;
-    v27 = *&a8->var0;
-    var3 = a8->var3;
-    v23 = v17;
-    v24 = v18;
-    [v19 buildAVAssetFromVideoURL:v15 infoDictionary:v16 options:0 completion:v22];
+    imageCopy = image;
+    orientationCopy = orientation;
+    v27 = *&time->var0;
+    var3 = time->var3;
+    v23 = assetCopy;
+    v24 = completionCopy;
+    [v19 buildAVAssetFromVideoURL:lCopy infoDictionary:infoCopy options:0 completion:v22];
 
     v20 = v23;
   }
@@ -3792,10 +3792,10 @@ uint64_t __88__PHImageManager_requestLivePhotoForAsset_targetSize_contentMode_op
   else
   {
     v21 = [PHLivePhoto alloc];
-    v29 = *&a8->var0;
-    v30 = a8->var3;
-    v20 = [(PHLivePhoto *)v21 initWithImage:a3 uiOrientation:a4 videoAsset:0 photoTime:&v29 asset:v17];
-    (*(v18 + 2))(v18, v20, 0);
+    v29 = *&time->var0;
+    v30 = time->var3;
+    v20 = [(PHLivePhoto *)v21 initWithImage:image uiOrientation:orientation videoAsset:0 photoTime:&v29 asset:assetCopy];
+    (*(completionCopy + 2))(completionCopy, v20, 0);
   }
 }
 
@@ -3863,7 +3863,7 @@ void __125__PHImageManager__prepareLivePhotoResultWithImage_uiOrientation_should
   [(PHImageRequestOptions *)v11 setDeliveryMode:v14];
   [(PHImageRequestOptions *)v11 setCannotReturnSmallerImage:1];
   [(PHImageRequestOptions *)v11 setIgnoreProcessWideRepairLimits:1];
-  v15 = [(PHImageManager *)self nextID];
+  nextID = [(PHImageManager *)self nextID];
   managerID = self->_managerID;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
@@ -3874,7 +3874,7 @@ void __125__PHImageManager__prepareLivePhotoResultWithImage_uiOrientation_should
   v33 = v17;
   v18 = v9;
   v34 = v18;
-  v19 = [PHMediaRequestContext imageRequestContextWithRequestID:v15 managerID:managerID asset:v8 imageRequestOptions:v17 displaySpec:0 resultHandler:v32];
+  v19 = [PHMediaRequestContext imageRequestContextWithRequestID:nextID managerID:managerID asset:v8 imageRequestOptions:v17 displaySpec:0 resultHandler:v32];
   if (PHSignpostEventsEnabled_onceToken != -1)
   {
     dispatch_once(&PHSignpostEventsEnabled_onceToken, &__block_literal_global_49262);
@@ -3887,45 +3887,45 @@ void __125__PHImageManager__prepareLivePhotoResultWithImage_uiOrientation_should
     if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v22 = v21;
-      v31 = [v19 managerID];
-      v29 = [v19 requestID];
-      v30 = [v19 type];
+      managerID = [v19 managerID];
+      requestID = [v19 requestID];
+      type = [v19 type];
       if (_getNextLayoutID_onceToken != -1)
       {
         dispatch_once(&_getNextLayoutID_onceToken, &__block_literal_global_807);
       }
 
       os_unfair_lock_lock(&s_lock);
-      v23 = [s_availableLayoutIDs firstIndex];
-      if (v23 == 0x7FFFFFFFFFFFFFFFLL)
+      firstIndex = [s_availableLayoutIDs firstIndex];
+      if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
       {
         v24 = 101;
       }
 
       else
       {
-        v24 = v23;
-        [s_availableLayoutIDs removeIndex:v23];
+        v24 = firstIndex;
+        [s_availableLayoutIDs removeIndex:firstIndex];
       }
 
       os_unfair_lock_unlock(&s_lock);
-      v25 = [v19 asset];
-      v26 = [v25 uuid];
+      asset = [v19 asset];
+      uuid = [asset uuid];
 
       [v19 setSignpostID:v22];
       [v19 setSignpostLayoutID:v24];
       if (os_signpost_enabled(v20))
       {
         *buf = 134219266;
-        v36 = v31;
+        v36 = managerID;
         v37 = 2048;
-        v38 = v29;
+        v38 = requestID;
         v39 = 2112;
         v40 = @"Data";
         v41 = 2048;
-        v42 = v30;
+        v42 = type;
         v43 = 2112;
-        v44 = v26;
+        v44 = uuid;
         v45 = 2048;
         v46 = v24;
         _os_signpost_emit_with_name_impl(&dword_19C86F000, v20, OS_SIGNPOST_INTERVAL_BEGIN, v22, "ContextEvent", "Context begin: [%lu-%lu], target: %@, api: %lu, uuid: %@, layout: %lu", buf, 0x3Eu);
@@ -4074,19 +4074,19 @@ void __84__PHImageManager_requestImageForAsset_targetSize_contentMode_options_re
 
     if (PHSignpostEventsEnabled_eventsEnabled == 1)
     {
-      v8 = [v7 signpostID];
-      if ((v8 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+      signpostID = [v7 signpostID];
+      if ((signpostID - 1) <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v9 = v8;
+        v9 = signpostID;
         v10 = PLImageManagerGetLog();
-        v11 = [v7 managerID];
-        v12 = [v7 requestID];
+        managerID = [v7 managerID];
+        requestID = [v7 requestID];
         if (os_signpost_enabled(v10))
         {
           *buf = 134218752;
-          v18 = v11;
+          v18 = managerID;
           v19 = 2048;
-          v20 = v12;
+          v20 = requestID;
           v21 = 2048;
           v22 = 0;
           v23 = 2048;
@@ -4135,12 +4135,12 @@ void __84__PHImageManager_requestImageForAsset_targetSize_contentMode_options_re
   }
 }
 
-- (int)runRequestWithContext:(id)a3
+- (int)runRequestWithContext:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 requestID];
-  [v4 setDelegate:self];
+  contextCopy = context;
+  requestID = [contextCopy requestID];
+  [contextCopy setDelegate:self];
   v6 = PLImageManagerGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -4148,66 +4148,66 @@ void __84__PHImageManager_requestImageForAsset_targetSize_contentMode_options_re
     *buf = 134218498;
     v19 = managerID;
     v20 = 2048;
-    v21 = [v4 requestID];
+    requestID2 = [contextCopy requestID];
     v22 = 2112;
-    v23 = v4;
+    v23 = contextCopy;
     _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_DEBUG, "[RM]: %ld-%ld run image request for %@; store in map table", buf, 0x20u);
   }
 
   if (PHImageManagerRecordEnabled())
   {
-    +[PHImageManagerRequestTracer traceMessageForRequestID:message:](PHImageManagerRequestTracer, "traceMessageForRequestID:message:", [v4 requestID], @"[RM]: %ld-%ld run image request for %@; store in map table", self->_managerID, objc_msgSend(v4, "requestID"), v4);
+    +[PHImageManagerRequestTracer traceMessageForRequestID:message:](PHImageManagerRequestTracer, "traceMessageForRequestID:message:", [contextCopy requestID], @"[RM]: %ld-%ld run image request for %@; store in map table", self->_managerID, objc_msgSend(contextCopy, "requestID"), contextCopy);
   }
 
   os_unfair_lock_lock(&self->_lock);
   requestContextsByID = self->_requestContextsByID;
-  v9 = [MEMORY[0x1E696AD98] numberWithInt:v5];
-  [(NSMapTable *)requestContextsByID setObject:v4 forKey:v9];
+  v9 = [MEMORY[0x1E696AD98] numberWithInt:requestID];
+  [(NSMapTable *)requestContextsByID setObject:contextCopy forKey:v9];
 
   os_unfair_lock_unlock(&self->_lock);
-  [v4 start];
+  [contextCopy start];
   if (PHImageManagerRecordEnabled())
   {
-    v11 = [v4 asset];
-    v12 = [v11 uuid];
-    [PHImageManagerRequestTracer registerRequestID:v5 withAssetUUID:v12];
+    asset = [contextCopy asset];
+    uuid = [asset uuid];
+    [PHImageManagerRequestTracer registerRequestID:requestID withAssetUUID:uuid];
 
-    v13 = [v4 asset];
-    v14 = [v13 uuid];
+    asset2 = [contextCopy asset];
+    uuid2 = [asset2 uuid];
 
-    if (!v14)
+    if (!uuid2)
     {
       v15 = PLImageManagerGetLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
-        v16 = [v4 asset];
+        asset3 = [contextCopy asset];
         *buf = 138412290;
-        v19 = v16;
+        v19 = asset3;
         _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_DEBUG, "[RM]: request for image for asset with no UUID (asset: %@)", buf, 0xCu);
       }
 
       if (PHImageManagerRecordEnabled())
       {
-        v17 = [v4 asset];
-        [PHImageManagerRequestTracer traceMessageForRequestID:v5 message:@"[RM]: request for image for asset with no UUID (asset: %@)", v17];
+        asset4 = [contextCopy asset];
+        [PHImageManagerRequestTracer traceMessageForRequestID:requestID message:@"[RM]: request for image for asset with no UUID (asset: %@)", asset4];
       }
     }
   }
 
-  return v5;
+  return requestID;
 }
 
-- (BOOL)_canStreamVideoForAsset:(id)a3
+- (BOOL)_canStreamVideoForAsset:(id)asset
 {
-  v3 = a3;
-  if ([v3 isStreamedVideo])
+  assetCopy = asset;
+  if ([assetCopy isStreamedVideo])
   {
     LOBYTE(v4) = 1;
   }
 
-  else if ([v3 isVideo])
+  else if ([assetCopy isVideo])
   {
-    v4 = [v3 isLoopingVideo] ^ 1;
+    v4 = [assetCopy isLoopingVideo] ^ 1;
   }
 
   else
@@ -4218,33 +4218,33 @@ void __84__PHImageManager_requestImageForAsset_targetSize_contentMode_options_re
   return v4;
 }
 
-- (void)_runBlockOnAppropriateResultQueueOrSynchronouslyWithRequest:(id)a3 options:(id)a4 block:(id)a5
+- (void)_runBlockOnAppropriateResultQueueOrSynchronouslyWithRequest:(id)request options:(id)options block:(id)block
 {
-  v10 = a4;
-  v7 = a5;
-  if ([a3 isSynchronous])
+  optionsCopy = options;
+  blockCopy = block;
+  if ([request isSynchronous])
   {
-    v7[2](v7);
+    blockCopy[2](blockCopy);
   }
 
   else
   {
-    v8 = [v10 resultHandlerQueue];
-    if (!v8)
+    resultHandlerQueue = [optionsCopy resultHandlerQueue];
+    if (!resultHandlerQueue)
     {
-      v8 = MEMORY[0x1E69E96A0];
+      resultHandlerQueue = MEMORY[0x1E69E96A0];
       v9 = MEMORY[0x1E69E96A0];
     }
 
-    dispatch_async(v8, v7);
+    dispatch_async(resultHandlerQueue, blockCopy);
   }
 }
 
-+ (BOOL)_allowVideoAccessForAsset:(id)a3 options:(id)a4
++ (BOOL)_allowVideoAccessForAsset:(id)asset options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = ([v5 isVideo] & 1) != 0 || objc_msgSend(v5, "playbackStyle") == 4 || objc_msgSend(v5, "playbackStyle") == 5 || objc_msgSend(v5, "isPhotoIris") && (objc_msgSend(v6, "isVideoComplementAllowed") & 1) != 0;
+  assetCopy = asset;
+  optionsCopy = options;
+  v7 = ([assetCopy isVideo] & 1) != 0 || objc_msgSend(assetCopy, "playbackStyle") == 4 || objc_msgSend(assetCopy, "playbackStyle") == 5 || objc_msgSend(assetCopy, "isPhotoIris") && (objc_msgSend(optionsCopy, "isVideoComplementAllowed") & 1) != 0;
 
   return v7;
 }

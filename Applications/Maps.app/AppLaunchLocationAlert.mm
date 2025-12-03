@@ -2,7 +2,7 @@
 - (BOOL)_shouldDisplayAlert;
 - (void)_alertDidFinishProcessing;
 - (void)_presentAlertUI;
-- (void)displayAlertIfNecessaryWithCompletionHandler:(id)a3;
+- (void)displayAlertIfNecessaryWithCompletionHandler:(id)handler;
 @end
 
 @implementation AppLaunchLocationAlert
@@ -40,13 +40,13 @@
   if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
   {
     v3 = +[MKLocationManager sharedLocationManager];
-    v4 = [v3 locationProvider];
+    locationProvider = [v3 locationProvider];
     v5 = +[MKLocationManager sharedLocationManager];
-    v6 = [v5 locationProvider];
+    locationProvider2 = [v5 locationProvider];
     v11 = 138412546;
-    v12 = v4;
+    v12 = locationProvider;
     v13 = 1024;
-    v14 = [v6 authorizationStatus];
+    authorizationStatus = [locationProvider2 authorizationStatus];
     _os_log_impl(&_mh_execute_header, v2, OS_LOG_TYPE_INFO, "AppLaunchLocationAlert: location provider %@ status %d", &v11, 0x12u);
   }
 
@@ -57,21 +57,21 @@
   }
 
   v8 = +[MKLocationManager sharedLocationManager];
-  v9 = [v8 isLocationServicesAuthorizationNeeded];
+  isLocationServicesAuthorizationNeeded = [v8 isLocationServicesAuthorizationNeeded];
 
-  return v9;
+  return isLocationServicesAuthorizationNeeded;
 }
 
-- (void)displayAlertIfNecessaryWithCompletionHandler:(id)a3
+- (void)displayAlertIfNecessaryWithCompletionHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   completionBlock = self->_completionBlock;
   self->_completionBlock = v4;
 
-  v6 = [(AppLaunchLocationAlert *)self _shouldDisplayAlert];
+  _shouldDisplayAlert = [(AppLaunchLocationAlert *)self _shouldDisplayAlert];
   v7 = sub_100005610();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (_shouldDisplayAlert)
   {
     if (v8)
     {

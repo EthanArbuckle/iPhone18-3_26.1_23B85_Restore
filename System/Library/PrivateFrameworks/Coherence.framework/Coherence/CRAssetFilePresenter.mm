@@ -2,8 +2,8 @@
 - (NSString)description;
 - (NSURL)presentedItemURL;
 - (_TtC9Coherence20CRAssetFilePresenter)init;
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3;
-- (void)accommodatePresentedSubitemDeletionAtURL:(id)a3 completionHandler:(id)a4;
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler;
+- (void)accommodatePresentedSubitemDeletionAtURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation CRAssetFilePresenter
@@ -29,37 +29,37 @@
   return v10;
 }
 
-- (void)accommodatePresentedSubitemDeletionAtURL:(id)a3 completionHandler:(id)a4
+- (void)accommodatePresentedSubitemDeletionAtURL:(id)l completionHandler:(id)handler
 {
   v6 = sub_1AE23BDDC();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
   MEMORY[0x1EEE9AC00](v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   sub_1AE23BD8C();
   _Block_copy(v11);
-  v12 = self;
-  sub_1AE1B3368(v10, v12, v11);
+  selfCopy = self;
+  sub_1AE1B3368(v10, selfCopy, v11);
   _Block_release(v11);
   _Block_release(v11);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_copy(v4);
-  v5 = self;
-  sub_1AE1B365C(v5, v4);
+  selfCopy = self;
+  sub_1AE1B365C(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AE1A7508();
 
   v3 = sub_1AE23CCDC();

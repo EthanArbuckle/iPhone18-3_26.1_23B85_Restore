@@ -1,92 +1,92 @@
 @interface PKExternalDeviceMigrationManifestEntry
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToExternalDeviceMigrationManifestEntry:(id)a3;
-- (PKExternalDeviceMigrationManifestEntry)initWithCoder:(id)a3;
-- (id)_initWithIdentifier:(id)a3 passUniqueIdentifier:(id)a4 fpanDescriptorIdentifier:(id)a5 title:(id)a6 subtitle:(id)a7 transferSize:(unint64_t)a8 estimatedOnDiskSize:(unint64_t)a9;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToExternalDeviceMigrationManifestEntry:(id)entry;
+- (PKExternalDeviceMigrationManifestEntry)initWithCoder:(id)coder;
+- (id)_initWithIdentifier:(id)identifier passUniqueIdentifier:(id)uniqueIdentifier fpanDescriptorIdentifier:(id)descriptorIdentifier title:(id)title subtitle:(id)subtitle transferSize:(unint64_t)size estimatedOnDiskSize:(unint64_t)diskSize;
 - (id)description;
 - (id)redactedDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKExternalDeviceMigrationManifestEntry
 
-- (id)_initWithIdentifier:(id)a3 passUniqueIdentifier:(id)a4 fpanDescriptorIdentifier:(id)a5 title:(id)a6 subtitle:(id)a7 transferSize:(unint64_t)a8 estimatedOnDiskSize:(unint64_t)a9
+- (id)_initWithIdentifier:(id)identifier passUniqueIdentifier:(id)uniqueIdentifier fpanDescriptorIdentifier:(id)descriptorIdentifier title:(id)title subtitle:(id)subtitle transferSize:(unint64_t)size estimatedOnDiskSize:(unint64_t)diskSize
 {
-  v16 = a3;
-  v17 = a4;
-  v23 = a5;
-  v22 = a6;
-  v18 = a7;
+  identifierCopy = identifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  descriptorIdentifierCopy = descriptorIdentifier;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v24.receiver = self;
   v24.super_class = PKExternalDeviceMigrationManifestEntry;
   v19 = [(PKExternalDeviceMigrationManifestEntry *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_identifier, a3);
-    objc_storeStrong(&v20->_passUniqueIdentifier, a4);
-    objc_storeStrong(&v20->_fpanDescriptorIdentifier, a5);
-    objc_storeStrong(&v20->_title, a6);
-    objc_storeStrong(&v20->_subtitle, a7);
-    v20->_transferSize = a8;
-    v20->_estimatedOnDiskSize = a9;
+    objc_storeStrong(&v19->_identifier, identifier);
+    objc_storeStrong(&v20->_passUniqueIdentifier, uniqueIdentifier);
+    objc_storeStrong(&v20->_fpanDescriptorIdentifier, descriptorIdentifier);
+    objc_storeStrong(&v20->_title, title);
+    objc_storeStrong(&v20->_subtitle, subtitle);
+    v20->_transferSize = size;
+    v20->_estimatedOnDiskSize = diskSize;
   }
 
   return v20;
 }
 
-- (PKExternalDeviceMigrationManifestEntry)initWithCoder:(id)a3
+- (PKExternalDeviceMigrationManifestEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKExternalDeviceMigrationManifestEntry;
   v5 = [(PKExternalDeviceMigrationManifestEntry *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
     passUniqueIdentifier = v5->_passUniqueIdentifier;
     v5->_passUniqueIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fpanDescriptorIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fpanDescriptorIdentifier"];
     fpanDescriptorIdentifier = v5->_fpanDescriptorIdentifier;
     v5->_fpanDescriptorIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferSize"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferSize"];
     v5->_transferSize = [v16 unsignedIntegerValue];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"estimatedOnDiskSize"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"estimatedOnDiskSize"];
     v5->_estimatedOnDiskSize = [v17 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_passUniqueIdentifier forKey:@"passUniqueIdentifier"];
-  [v5 encodeObject:self->_fpanDescriptorIdentifier forKey:@"fpanDescriptorIdentifier"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeObject:self->_subtitle forKey:@"subtitle"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_passUniqueIdentifier forKey:@"passUniqueIdentifier"];
+  [coderCopy encodeObject:self->_fpanDescriptorIdentifier forKey:@"fpanDescriptorIdentifier"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subtitle"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_transferSize];
-  [v5 encodeObject:v6 forKey:@"transferSize"];
+  [coderCopy encodeObject:v6 forKey:@"transferSize"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_estimatedOnDiskSize];
-  [v5 encodeObject:v7 forKey:@"estimatedOnDiskSize"];
+  [coderCopy encodeObject:v7 forKey:@"estimatedOnDiskSize"];
 }
 
 - (id)description
@@ -147,28 +147,28 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKExternalDeviceMigrationManifestEntry *)self isEqualToExternalDeviceMigrationManifestEntry:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKExternalDeviceMigrationManifestEntry *)self isEqualToExternalDeviceMigrationManifestEntry:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToExternalDeviceMigrationManifestEntry:(id)a3
+- (BOOL)isEqualToExternalDeviceMigrationManifestEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   identifier = self->_identifier;
-  v6 = v4[1];
+  v6 = entryCopy[1];
   if (identifier)
   {
     v7 = v6 == 0;
@@ -193,7 +193,7 @@
   }
 
   passUniqueIdentifier = self->_passUniqueIdentifier;
-  v9 = v4[2];
+  v9 = entryCopy[2];
   if (passUniqueIdentifier && v9)
   {
     if (([(NSString *)passUniqueIdentifier isEqual:?]& 1) == 0)
@@ -208,7 +208,7 @@
   }
 
   fpanDescriptorIdentifier = self->_fpanDescriptorIdentifier;
-  v11 = v4[3];
+  v11 = entryCopy[3];
   if (fpanDescriptorIdentifier && v11)
   {
     if (([(NSString *)fpanDescriptorIdentifier isEqual:?]& 1) == 0)
@@ -223,7 +223,7 @@
   }
 
   title = self->_title;
-  v13 = v4[4];
+  v13 = entryCopy[4];
   if (title && v13)
   {
     if (([(NSString *)title isEqual:?]& 1) == 0)
@@ -238,7 +238,7 @@
   }
 
   subtitle = self->_subtitle;
-  v15 = v4[5];
+  v15 = entryCopy[5];
   if (!subtitle || !v15)
   {
     if (subtitle == v15)
@@ -257,12 +257,12 @@ LABEL_31:
   }
 
 LABEL_29:
-  if (self->_transferSize != v4[6])
+  if (self->_transferSize != entryCopy[6])
   {
     goto LABEL_31;
   }
 
-  v16 = self->_estimatedOnDiskSize == v4[7];
+  v16 = self->_estimatedOnDiskSize == entryCopy[7];
 LABEL_32:
 
   return v16;

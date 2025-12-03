@@ -1,42 +1,42 @@
 @interface PLAssetsdPhotoKitAddService
-- (PLAssetsdPhotoKitAddService)initWithLibraryServicesManager:(id)a3 connectionAuthorization:(id)a4;
-- (void)applyChangesRequest:(id)a3 reply:(id)a4;
-- (void)commitRequest:(id)a3 reply:(id)a4;
+- (PLAssetsdPhotoKitAddService)initWithLibraryServicesManager:(id)manager connectionAuthorization:(id)authorization;
+- (void)applyChangesRequest:(id)request reply:(id)reply;
+- (void)commitRequest:(id)request reply:(id)reply;
 - (void)dealloc;
 @end
 
 @implementation PLAssetsdPhotoKitAddService
 
-- (void)commitRequest:(id)a3 reply:(id)a4
+- (void)commitRequest:(id)request reply:(id)reply
 {
-  v8 = a4;
-  v6 = a3;
-  if ([(PLAssetsdPhotoKitAddService *)self validatePhotosAccessScopeForChangesRequest:v6])
+  replyCopy = reply;
+  requestCopy = request;
+  if ([(PLAssetsdPhotoKitAddService *)self validatePhotosAccessScopeForChangesRequest:requestCopy])
   {
-    [v6 executeWithService:self reply:v8];
+    [requestCopy executeWithService:self reply:replyCopy];
   }
 
   else
   {
-    v7 = [v6 errorWithLocalizedDescription:@"Authorization failure for changes"];
+    v7 = [requestCopy errorWithLocalizedDescription:@"Authorization failure for changes"];
 
-    v8[2](v8, 0, v7);
-    v6 = v7;
+    replyCopy[2](replyCopy, 0, v7);
+    requestCopy = v7;
   }
 }
 
-- (void)applyChangesRequest:(id)a3 reply:(id)a4
+- (void)applyChangesRequest:(id)request reply:(id)reply
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   +[PLFileDescriptorFuse checkFileDescriptorFuse];
   v22 = 0u;
   *sel = 0u;
   v21 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v21) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v21) = enabled;
+  if (enabled)
   {
     v9 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: applyChangesRequest:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = *(&v21 + 1);
@@ -47,34 +47,34 @@
 
   connectionAuthorization = self->_connectionAuthorization;
   v20 = 0;
-  v12 = [v6 decodeWithService:self clientAuthorization:connectionAuthorization error:&v20];
+  v12 = [requestCopy decodeWithService:self clientAuthorization:connectionAuthorization error:&v20];
   v13 = v20;
   if (v12)
   {
     if ([(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization isClientInLimitedLibraryMode])
     {
-      [v6 discardUnsupportedLimitedLibraryChangeRequests];
+      [requestCopy discardUnsupportedLimitedLibraryChangeRequests];
     }
 
     v14 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v15 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization photoKitEntitled];
+      photoKitEntitled = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization photoKitEntitled];
       *buf = 136315650;
       v25 = "[PLAssetsdPhotoKitAddService applyChangesRequest:reply:]";
       v26 = 2112;
-      v27 = v6;
+      v27 = requestCopy;
       v28 = 1024;
-      v29 = v15;
+      v29 = photoKitEntitled;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEBUG, "##### %s %@ entitled:%d", buf, 0x1Cu);
     }
 
-    [(PLAssetsdPhotoKitAddService *)self commitRequest:v6 reply:v7];
+    [(PLAssetsdPhotoKitAddService *)self commitRequest:requestCopy reply:replyCopy];
   }
 
   else
   {
-    v7[2](v7, 0, v13);
+    replyCopy[2](replyCopy, 0, v13);
   }
 
   if (v21 == 1)
@@ -105,25 +105,25 @@
   [(PLAssetsdPhotoKitAddService *)&v3 dealloc];
 }
 
-- (PLAssetsdPhotoKitAddService)initWithLibraryServicesManager:(id)a3 connectionAuthorization:(id)a4
+- (PLAssetsdPhotoKitAddService)initWithLibraryServicesManager:(id)manager connectionAuthorization:(id)authorization
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  authorizationCopy = authorization;
   v16.receiver = self;
   v16.super_class = PLAssetsdPhotoKitAddService;
-  v8 = [(PLAbstractLibraryServicesManagerService *)&v16 initWithLibraryServicesManager:v6];
+  v8 = [(PLAbstractLibraryServicesManagerService *)&v16 initWithLibraryServicesManager:managerCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_connectionAuthorization, a4);
-    v10 = [v6 persistentStoreCoordinator];
+    objc_storeStrong(&v8->_connectionAuthorization, authorization);
+    persistentStoreCoordinator = [managerCopy persistentStoreCoordinator];
     persistentStoreCoordinator = v9->_persistentStoreCoordinator;
-    v9->_persistentStoreCoordinator = v10;
+    v9->_persistentStoreCoordinator = persistentStoreCoordinator;
 
     if (PLPlatformCameraCaptureSupported())
     {
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PhotoKitAddService: %@", v7];
-      v13 = [[PLCameraCaptureTaskConstraintCoordinator alloc] initWithTaskContstraintRole:2 name:v12];
+      authorizationCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"PhotoKitAddService: %@", authorizationCopy];
+      v13 = [[PLCameraCaptureTaskConstraintCoordinator alloc] initWithTaskContstraintRole:2 name:authorizationCopy];
       cameraTaskConstraintCoordinator = v9->_cameraTaskConstraintCoordinator;
       v9->_cameraTaskConstraintCoordinator = v13;
     }

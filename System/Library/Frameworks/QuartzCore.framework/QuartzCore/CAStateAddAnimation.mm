@@ -1,14 +1,14 @@
 @interface CAStateAddAnimation
-- (BOOL)matches:(id)a3;
-- (CAStateAddAnimation)initWithCoder:(id)a3;
-- (id)CAMLTypeForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)matches:(id)matches;
+- (CAStateAddAnimation)initWithCoder:(id)coder;
+- (id)CAMLTypeForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)keyPath;
-- (void)apply:(id)a3;
+- (void)apply:(id)apply;
 - (void)dealloc;
-- (void)encodeWithCAMLWriter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCAMLWriter:(id)writer;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CAStateAddAnimation
@@ -31,7 +31,7 @@
   [(CAStateElement *)&v3 dealloc];
 }
 
-- (CAStateAddAnimation)initWithCoder:(id)a3
+- (CAStateAddAnimation)initWithCoder:(id)coder
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -39,8 +39,8 @@
   v4 = [(CAStateElement *)&v7 initWithCoder:?];
   if (v4)
   {
-    v4->_key = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"key", "copy"}];
-    v5 = [a3 decodeObjectOfClasses:objc_msgSend(MEMORY[0x1E696AB10] forKey:{"CA_supportedClasses"), @"animation"}];
+    v4->_key = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"key", "copy"}];
+    v5 = [coder decodeObjectOfClasses:objc_msgSend(MEMORY[0x1E696AB10] forKey:{"CA_supportedClasses"), @"animation"}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,35 +51,35 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = CAStateAddAnimation;
   [(CAStateElement *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_key forKey:@"key"];
-  [a3 encodeObject:self->_animation forKey:@"animation"];
+  [coder encodeObject:self->_key forKey:@"key"];
+  [coder encodeObject:self->_animation forKey:@"animation"];
 }
 
-- (id)CAMLTypeForKey:(id)a3
+- (id)CAMLTypeForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"key"])
+  if ([key isEqualToString:@"key"])
   {
     return @"string";
   }
 
-  if ([a3 isEqualToString:@"animation"])
+  if ([key isEqualToString:@"animation"])
   {
     return @"CAAnimation";
   }
 
   v6.receiver = self;
   v6.super_class = CAStateAddAnimation;
-  return [(CAStateElement *)&v6 CAMLTypeForKey:a3];
+  return [(CAStateElement *)&v6 CAMLTypeForKey:key];
 }
 
-- (void)encodeWithCAMLWriter:(id)a3
+- (void)encodeWithCAMLWriter:(id)writer
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -88,18 +88,18 @@
   key = self->_key;
   if (key)
   {
-    [a3 setElementAttribute:key forKey:@"key"];
+    [writer setElementAttribute:key forKey:@"key"];
   }
 
   if (self->_animation)
   {
-    [a3 beginPropertyElement:@"animation"];
-    [a3 encodeObject:self->_animation];
-    [a3 endElement];
+    [writer beginPropertyElement:@"animation"];
+    [writer encodeObject:self->_animation];
+    [writer endElement];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CAStateAddAnimation);
   v4->_key = self->_key;
@@ -108,11 +108,11 @@
   return v4;
 }
 
-- (void)apply:(id)a3
+- (void)apply:(id)apply
 {
   if (self->_animation && self->_key)
   {
-    if (a3)
+    if (apply)
     {
       v5 = [objc_loadWeak(&self->super._target) animationForKey:self->_key];
       if (v5)
@@ -131,7 +131,7 @@
 
       [(CAStateElement *)v7 setTarget:objc_loadWeak(&self->super._target)];
       [(CAStateElement *)v7 setSource:self];
-      [a3 addElement:v7];
+      [apply addElement:v7];
     }
 
     [objc_loadWeak(&self->super._target) addAnimation:self->_animation forKey:self->_key];
@@ -146,7 +146,7 @@
   }
 }
 
-- (BOOL)matches:(id)a3
+- (BOOL)matches:(id)matches
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -158,13 +158,13 @@
     }
   }
 
-  v5 = [a3 target];
-  if (v5 != objc_loadWeak(&self->super._target))
+  target = [matches target];
+  if (target != objc_loadWeak(&self->super._target))
   {
     return 0;
   }
 
-  v7 = [a3 key];
+  v7 = [matches key];
   key = self->_key;
 
   return [v7 isEqualToString:key];

@@ -1,30 +1,30 @@
 @interface SiriSharedUIPanDismissalGestureRecognizer
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (CGPoint)initialPosition;
 - (CGRect)_windowBounds;
-- (SiriSharedUIPanDismissalGestureRecognizer)initWithDismissalDelegate:(id)a3 dismissalStyle:(int64_t)a4;
-- (SiriSharedUIPanDismissalGestureRecognizer)initWithDismissalDelegate:(id)a3 dismissalStyle:(int64_t)a4 rtlProvider:(id)a5;
+- (SiriSharedUIPanDismissalGestureRecognizer)initWithDismissalDelegate:(id)delegate dismissalStyle:(int64_t)style;
+- (SiriSharedUIPanDismissalGestureRecognizer)initWithDismissalDelegate:(id)delegate dismissalStyle:(int64_t)style rtlProvider:(id)provider;
 - (SiriSharedUIPanDismissalGestureRecognizerDelegate)dismissalDelegate;
 - (double)_contentScaleFactor;
-- (void)_handlePanWithRubberBandDownDismissUp:(id)a3 requiredDirection:(int64_t)a4;
-- (void)_handlePanWithRubberBandUpDownDismissTrailing:(id)a3 requiredDirection:(int64_t)a4;
-- (void)_updatePanGestureRecognizer:(id)a3 changedAnimations:(id)a4 endAnimations:(id)a5;
-- (void)panGestureRecognizerDidPan:(id)a3;
+- (void)_handlePanWithRubberBandDownDismissUp:(id)up requiredDirection:(int64_t)direction;
+- (void)_handlePanWithRubberBandUpDownDismissTrailing:(id)trailing requiredDirection:(int64_t)direction;
+- (void)_updatePanGestureRecognizer:(id)recognizer changedAnimations:(id)animations endAnimations:(id)endAnimations;
+- (void)panGestureRecognizerDidPan:(id)pan;
 @end
 
 @implementation SiriSharedUIPanDismissalGestureRecognizer
 
-- (SiriSharedUIPanDismissalGestureRecognizer)initWithDismissalDelegate:(id)a3 dismissalStyle:(int64_t)a4
+- (SiriSharedUIPanDismissalGestureRecognizer)initWithDismissalDelegate:(id)delegate dismissalStyle:(int64_t)style
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = SiriSharedUIPanDismissalGestureRecognizer;
   v7 = [(SiriSharedUIPanDismissalGestureRecognizer *)&v10 initWithTarget:self action:sel_panGestureRecognizerDidPan_];
   v8 = v7;
   if (v7)
   {
-    [(SiriSharedUIPanDismissalGestureRecognizer *)v7 setDismissalDelegate:v6];
-    [(SiriSharedUIPanDismissalGestureRecognizer *)v8 setDismissalStyle:a4];
+    [(SiriSharedUIPanDismissalGestureRecognizer *)v7 setDismissalDelegate:delegateCopy];
+    [(SiriSharedUIPanDismissalGestureRecognizer *)v8 setDismissalStyle:style];
     [(SiriSharedUIPanDismissalGestureRecognizer *)v8 setDelegate:v8];
     [(SiriSharedUIPanDismissalGestureRecognizer *)v8 _preventHighlightingUntilGestureFaills];
   }
@@ -32,13 +32,13 @@
   return v8;
 }
 
-- (SiriSharedUIPanDismissalGestureRecognizer)initWithDismissalDelegate:(id)a3 dismissalStyle:(int64_t)a4 rtlProvider:(id)a5
+- (SiriSharedUIPanDismissalGestureRecognizer)initWithDismissalDelegate:(id)delegate dismissalStyle:(int64_t)style rtlProvider:(id)provider
 {
-  v8 = a5;
-  v9 = [(SiriSharedUIPanDismissalGestureRecognizer *)self initWithDismissalDelegate:a3 dismissalStyle:a4];
+  providerCopy = provider;
+  v9 = [(SiriSharedUIPanDismissalGestureRecognizer *)self initWithDismissalDelegate:delegate dismissalStyle:style];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [providerCopy copy];
     rtlProvider = v9->_rtlProvider;
     v9->_rtlProvider = v10;
   }
@@ -46,15 +46,15 @@
   return v9;
 }
 
-- (void)panGestureRecognizerDidPan:(id)a3
+- (void)panGestureRecognizerDidPan:(id)pan
 {
-  v4 = a3;
-  v5 = v4;
+  panCopy = pan;
+  v5 = panCopy;
   dismissalStyle = self->_dismissalStyle;
   if (dismissalStyle == 2)
   {
-    v7 = v4;
-    v4 = [(SiriSharedUIPanDismissalGestureRecognizer *)self _handlePanWithRubberBandUpDownDismissTrailing:v4 requiredDirection:0];
+    v7 = panCopy;
+    panCopy = [(SiriSharedUIPanDismissalGestureRecognizer *)self _handlePanWithRubberBandUpDownDismissTrailing:panCopy requiredDirection:0];
   }
 
   else
@@ -64,28 +64,28 @@
       goto LABEL_6;
     }
 
-    v7 = v4;
-    v4 = [(SiriSharedUIPanDismissalGestureRecognizer *)self _handlePanWithRubberBandDownDismissUp:v4 requiredDirection:1];
+    v7 = panCopy;
+    panCopy = [(SiriSharedUIPanDismissalGestureRecognizer *)self _handlePanWithRubberBandDownDismissUp:panCopy requiredDirection:1];
   }
 
   v5 = v7;
 LABEL_6:
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](panCopy, v5);
 }
 
-- (void)_handlePanWithRubberBandDownDismissUp:(id)a3 requiredDirection:(int64_t)a4
+- (void)_handlePanWithRubberBandDownDismissUp:(id)up requiredDirection:(int64_t)direction
 {
-  v5 = a3;
-  v6 = [(SiriSharedUIPanDismissalGestureRecognizer *)self view];
-  [v6 frame];
+  upCopy = up;
+  view = [(SiriSharedUIPanDismissalGestureRecognizer *)self view];
+  [view frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(SiriSharedUIPanDismissalGestureRecognizer *)self view];
-  [v5 translationInView:v15];
+  view2 = [(SiriSharedUIPanDismissalGestureRecognizer *)self view];
+  [upCopy translationInView:view2];
   v17 = v16;
   v19 = v18;
 
@@ -94,12 +94,12 @@ LABEL_6:
   *&v31.size.width = v12;
   *&v31.size.height = v14;
   Height = CGRectGetHeight(v31);
-  v21 = [(SiriSharedUIPanDismissalGestureRecognizer *)self view];
-  [v5 velocityInView:v21];
+  view3 = [(SiriSharedUIPanDismissalGestureRecognizer *)self view];
+  [upCopy velocityInView:view3];
   v24 = v23;
   v25 = v22;
 
-  if ([v5 state] == 1)
+  if ([upCopy state] == 1)
   {
     *&self->_initialPosition.x = v8;
     *&self->_initialPosition.y = v10;
@@ -132,7 +132,7 @@ LABEL_6:
   v27[7] = v12;
   v27[8] = v14;
   v27[9] = *&Height;
-  [(SiriSharedUIPanDismissalGestureRecognizer *)self _updatePanGestureRecognizer:v5 changedAnimations:v28 endAnimations:v26];
+  [(SiriSharedUIPanDismissalGestureRecognizer *)self _updatePanGestureRecognizer:upCopy changedAnimations:v28 endAnimations:v26];
   objc_destroyWeak(v27);
   objc_destroyWeak(v29);
   objc_destroyWeak(&location);
@@ -221,11 +221,11 @@ void __101__SiriSharedUIPanDismissalGestureRecognizer__handlePanWithRubberBandDo
   }
 }
 
-- (void)_handlePanWithRubberBandUpDownDismissTrailing:(id)a3 requiredDirection:(int64_t)a4
+- (void)_handlePanWithRubberBandUpDownDismissTrailing:(id)trailing requiredDirection:(int64_t)direction
 {
-  v6 = a3;
-  v7 = [(SiriSharedUIPanDismissalGestureRecognizer *)self view];
-  [v7 frame];
+  trailingCopy = trailing;
+  view = [(SiriSharedUIPanDismissalGestureRecognizer *)self view];
+  [view frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -242,8 +242,8 @@ void __101__SiriSharedUIPanDismissalGestureRecognizer__handlePanWithRubberBandDo
   *&v50.size.width = v13;
   *&v50.size.height = v15;
   Width = CGRectGetWidth(v50);
-  v24 = [(SiriSharedUIPanDismissalGestureRecognizer *)self rtlProvider];
-  if (!v24)
+  rtlProvider = [(SiriSharedUIPanDismissalGestureRecognizer *)self rtlProvider];
+  if (!rtlProvider)
   {
     if (SiriSharedUILanguageIsRTL())
     {
@@ -260,9 +260,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v25 = v24;
-  v26 = [(SiriSharedUIPanDismissalGestureRecognizer *)self rtlProvider];
-  v27 = v26[2]();
+  v25 = rtlProvider;
+  rtlProvider2 = [(SiriSharedUIPanDismissalGestureRecognizer *)self rtlProvider];
+  v27 = rtlProvider2[2]();
 
   if ((v27 & 1) == 0)
   {
@@ -273,19 +273,19 @@ LABEL_3:
   v42 = 0.0;
   v28 = 1;
 LABEL_6:
-  v29 = [(SiriSharedUIPanDismissalGestureRecognizer *)self view];
-  [v6 velocityInView:v29];
+  view2 = [(SiriSharedUIPanDismissalGestureRecognizer *)self view];
+  [trailingCopy velocityInView:view2];
   v31 = v30;
   v33 = v32;
 
-  v34 = [(SiriSharedUIPanDismissalGestureRecognizer *)self view];
-  [v6 translationInView:v34];
+  view3 = [(SiriSharedUIPanDismissalGestureRecognizer *)self view];
+  [trailingCopy translationInView:view3];
   v36 = v35;
   v38 = v37;
 
-  if ([v6 state] == 1 && (v39 = fabs(*&v33) > fabs(*&v31), self->_initialDirection = v39, self->_initialPosition.x = v40, *&self->_initialPosition.y = v11, v39 != a4))
+  if ([trailingCopy state] == 1 && (v39 = fabs(*&v33) > fabs(*&v31), self->_initialDirection = v39, self->_initialPosition.x = v40, *&self->_initialPosition.y = v11, v39 != direction))
   {
-    [v6 setState:4];
+    [trailingCopy setState:4];
   }
 
   else
@@ -321,7 +321,7 @@ LABEL_6:
     v45 = v28;
     v44[9] = *&Width;
     v44[10] = *&v42;
-    [(SiriSharedUIPanDismissalGestureRecognizer *)self _updatePanGestureRecognizer:v6 changedAnimations:v46 endAnimations:v43];
+    [(SiriSharedUIPanDismissalGestureRecognizer *)self _updatePanGestureRecognizer:trailingCopy changedAnimations:v46 endAnimations:v43];
     objc_destroyWeak(v44);
     objc_destroyWeak(v47);
     objc_destroyWeak(&location);
@@ -490,32 +490,32 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_updatePanGestureRecognizer:(id)a3 changedAnimations:(id)a4 endAnimations:(id)a5
+- (void)_updatePanGestureRecognizer:(id)recognizer changedAnimations:(id)animations endAnimations:(id)endAnimations
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v10 state] == 2)
+  recognizerCopy = recognizer;
+  animationsCopy = animations;
+  endAnimationsCopy = endAnimations;
+  if ([recognizerCopy state] == 2)
   {
-    [(SiriSharedUIPanDismissalGestureRecognizer *)self _runAnimationsWithPreferredStyle:v8];
+    [(SiriSharedUIPanDismissalGestureRecognizer *)self _runAnimationsWithPreferredStyle:animationsCopy];
   }
 
-  if ([v10 state] == 3 || objc_msgSend(v10, "state") == 4)
+  if ([recognizerCopy state] == 3 || objc_msgSend(recognizerCopy, "state") == 4)
   {
-    [(SiriSharedUIPanDismissalGestureRecognizer *)self _runAnimationsWithPreferredStyle:v9];
+    [(SiriSharedUIPanDismissalGestureRecognizer *)self _runAnimationsWithPreferredStyle:endAnimationsCopy];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [(SiriSharedUIPanDismissalGestureRecognizer *)self dismissalDelegate];
+  touchCopy = touch;
+  dismissalDelegate = [(SiriSharedUIPanDismissalGestureRecognizer *)self dismissalDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SiriSharedUIPanDismissalGestureRecognizer *)self dismissalDelegate];
-    v9 = [v8 shouldBeginDismissalGestureRecognizer:self withTouch:v5];
+    dismissalDelegate2 = [(SiriSharedUIPanDismissalGestureRecognizer *)self dismissalDelegate];
+    v9 = [dismissalDelegate2 shouldBeginDismissalGestureRecognizer:self withTouch:touchCopy];
   }
 
   else
@@ -528,8 +528,8 @@ LABEL_15:
 
 - (double)_contentScaleFactor
 {
-  v2 = [(SiriSharedUIPanDismissalGestureRecognizer *)self view];
-  [v2 contentScaleFactor];
+  view = [(SiriSharedUIPanDismissalGestureRecognizer *)self view];
+  [view contentScaleFactor];
   v4 = v3;
 
   return v4;
@@ -537,9 +537,9 @@ LABEL_15:
 
 - (CGRect)_windowBounds
 {
-  v2 = [(SiriSharedUIPanDismissalGestureRecognizer *)self view];
-  v3 = [v2 window];
-  [v3 bounds];
+  view = [(SiriSharedUIPanDismissalGestureRecognizer *)self view];
+  window = [view window];
+  [window bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;

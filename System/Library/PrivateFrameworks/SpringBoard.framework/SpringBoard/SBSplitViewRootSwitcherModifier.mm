@@ -1,9 +1,9 @@
 @interface SBSplitViewRootSwitcherModifier
 - (SBSplitViewRootSwitcherModifier)init;
-- (id)_handleEvent:(id)a3;
-- (id)handleEvent:(id)a3;
-- (id)handleTimerEvent:(id)a3;
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5;
+- (id)_handleEvent:(id)event;
+- (id)handleEvent:(id)event;
+- (id)handleTimerEvent:(id)event;
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event;
 - (id)visibleHomeAffordanceLayoutElements;
 @end
 
@@ -26,18 +26,18 @@
   return v2;
 }
 
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event
 {
-  v8 = a5;
+  eventCopy = event;
   v14.receiver = self;
   v14.super_class = SBSplitViewRootSwitcherModifier;
-  v9 = a4;
-  v10 = [(SBChainableModifier *)&v14 responseForProposedChildResponse:a3 childModifier:v9 event:v8];
+  modifierCopy = modifier;
+  v10 = [(SBChainableModifier *)&v14 responseForProposedChildResponse:response childModifier:modifierCopy event:eventCopy];
   fullScreenModifier = self->_fullScreenModifier;
 
-  if (fullScreenModifier == v9)
+  if (fullScreenModifier == modifierCopy)
   {
-    v12 = [(SBSplitViewRootSwitcherModifier *)self _routingModifierForEvent:v8, v14.receiver, v14.super_class];
+    v12 = [(SBSplitViewRootSwitcherModifier *)self _routingModifierForEvent:eventCopy, v14.receiver, v14.super_class];
 
     if (v12)
     {
@@ -49,14 +49,14 @@
   return v10;
 }
 
-- (id)handleEvent:(id)a3
+- (id)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   routingModifier = self->_routingModifier;
   if (routingModifier)
   {
-    v6 = [(SBChainableModifier *)routingModifier parentModifier];
-    v7 = v6 != self;
+    parentModifier = [(SBChainableModifier *)routingModifier parentModifier];
+    v7 = parentModifier != self;
   }
 
   else
@@ -66,12 +66,12 @@
 
   v45.receiver = self;
   v45.super_class = SBSplitViewRootSwitcherModifier;
-  v33 = [(SBChainableModifier *)&v45 handleEvent:v4];
+  v33 = [(SBChainableModifier *)&v45 handleEvent:eventCopy];
   v8 = self->_routingModifier;
   if (v8)
   {
-    v9 = [(SBChainableModifier *)v8 parentModifier];
-    v10 = v9 == self;
+    parentModifier2 = [(SBChainableModifier *)v8 parentModifier];
+    v10 = parentModifier2 == self;
   }
 
   else
@@ -79,17 +79,17 @@
     v10 = 0;
   }
 
-  if ([v4 isGestureEvent])
+  if ([eventCopy isGestureEvent])
   {
-    v11 = v4;
-    v12 = [v11 type];
-    if (v12 <= 5 && ((1 << v12) & 0x2C) != 0)
+    v11 = eventCopy;
+    type = [v11 type];
+    if (type <= 5 && ((1 << type) & 0x2C) != 0)
     {
       if (![v11 phase])
       {
         v13 = [SBGestureSwitcherModifier alloc];
-        v14 = [v11 gestureID];
-        v15 = [(SBGestureSwitcherModifier *)v13 initWithGestureID:v14];
+        gestureID = [v11 gestureID];
+        v15 = [(SBGestureSwitcherModifier *)v13 initWithGestureID:gestureID];
         gestureTrackingModifier = self->_gestureTrackingModifier;
         self->_gestureTrackingModifier = v15;
       }
@@ -107,14 +107,14 @@
     }
   }
 
-  if ([v4 isTransitionEvent])
+  if ([eventCopy isTransitionEvent])
   {
-    v18 = v4;
+    v18 = eventCopy;
     if ([v18 phase] == 1)
     {
       v19 = [SBTransitionSwitcherModifier alloc];
-      v20 = [v18 transitionID];
-      v21 = [(SBTransitionSwitcherModifier *)v19 initWithTransitionID:v20];
+      transitionID = [v18 transitionID];
+      v21 = [(SBTransitionSwitcherModifier *)v19 initWithTransitionID:transitionID];
       transitionTrackingModifier = self->_transitionTrackingModifier;
       self->_transitionTrackingModifier = v21;
     }
@@ -132,7 +132,7 @@
     v38[2] = __47__SBSplitViewRootSwitcherModifier_handleEvent___block_invoke;
     v38[3] = &unk_2783AEA70;
     v38[4] = self;
-    v39 = v4;
+    v39 = eventCopy;
     v40 = &v41;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v23 usingBlock:v38];
     [(SBChainableModifier *)self->_gestureTrackingModifier setState:v42[3]];
@@ -152,7 +152,7 @@
     v35[2] = __47__SBSplitViewRootSwitcherModifier_handleEvent___block_invoke_2;
     v35[3] = &unk_2783AEA70;
     v35[4] = self;
-    v36 = v4;
+    v36 = eventCopy;
     v37 = &v41;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v24 usingBlock:v35];
     [(SBChainableModifier *)self->_transitionTrackingModifier setState:v42[3]];
@@ -227,22 +227,22 @@ uint64_t __47__SBSplitViewRootSwitcherModifier_handleEvent___block_invoke_2(void
   return result;
 }
 
-- (id)_handleEvent:(id)a3
+- (id)_handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SBChainableModifier *)self->_fullScreenModifier parentModifier];
+  eventCopy = event;
+  parentModifier = [(SBChainableModifier *)self->_fullScreenModifier parentModifier];
   v20.receiver = self;
   v20.super_class = SBSplitViewRootSwitcherModifier;
-  v6 = [(SBSwitcherModifier *)&v20 _handleEvent:v4];
+  v6 = [(SBSwitcherModifier *)&v20 _handleEvent:eventCopy];
   routingModifier = self->_routingModifier;
   if (!routingModifier)
   {
     goto LABEL_5;
   }
 
-  v8 = [(SBChainableModifier *)routingModifier parentModifier];
+  parentModifier2 = [(SBChainableModifier *)routingModifier parentModifier];
 
-  if (!v8)
+  if (!parentModifier2)
   {
     [(SBChainableModifier *)self->_fullScreenModifier setState:0];
     [(SBChainableModifier *)self addChildModifier:self->_fullScreenModifier];
@@ -253,39 +253,39 @@ uint64_t __47__SBSplitViewRootSwitcherModifier_handleEvent___block_invoke_2(void
   if (!self->_routingModifier)
   {
 LABEL_5:
-    v10 = [(SBSplitViewRootSwitcherModifier *)self _routingModifierForEvent:v4];
+    v10 = [(SBSplitViewRootSwitcherModifier *)self _routingModifierForEvent:eventCopy];
     if (v10)
     {
       objc_storeStrong(&self->_routingModifier, v10);
       [(SBChainableModifier *)self addChildModifier:self->_routingModifier];
-      v11 = [(SBChainableModifier *)self->_fullScreenModifier parentModifier];
+      parentModifier3 = [(SBChainableModifier *)self->_fullScreenModifier parentModifier];
 
-      if (v11)
+      if (parentModifier3)
       {
         [(SBChainableModifier *)self removeChildModifier:self->_fullScreenModifier];
       }
 
-      if ([v4 isTransitionEvent])
+      if ([eventCopy isTransitionEvent])
       {
-        v12 = [v4 unhandledCopy];
-        v13 = [v12 fromAppLayout];
-        [v12 setToAppLayout:v13];
+        unhandledCopy = [eventCopy unhandledCopy];
+        fromAppLayout = [unhandledCopy fromAppLayout];
+        [unhandledCopy setToAppLayout:fromAppLayout];
 
-        [v12 setToEnvironmentMode:{objc_msgSend(v12, "fromEnvironmentMode")}];
-        [v12 setPhase:3];
-        [v12 setAnimated:0];
-        v14 = [(SBChainableModifier *)self->_routingModifier handleEvent:v12];
+        [unhandledCopy setToEnvironmentMode:{objc_msgSend(unhandledCopy, "fromEnvironmentMode")}];
+        [unhandledCopy setPhase:3];
+        [unhandledCopy setAnimated:0];
+        v14 = [(SBChainableModifier *)self->_routingModifier handleEvent:unhandledCopy];
       }
 
       [(SBChainableModifier *)self->_routingModifier setState:0];
     }
   }
 
-  if (!v5)
+  if (!parentModifier)
   {
-    v15 = [(SBChainableModifier *)self->_fullScreenModifier parentModifier];
+    parentModifier4 = [(SBChainableModifier *)self->_fullScreenModifier parentModifier];
 
-    if (!v15)
+    if (!parentModifier4)
     {
       fullScreenModifier = self->_fullScreenModifier;
       v18[0] = MEMORY[0x277D85DD0];
@@ -293,7 +293,7 @@ LABEL_5:
       v18[2] = __48__SBSplitViewRootSwitcherModifier__handleEvent___block_invoke;
       v18[3] = &unk_2783A92D8;
       v18[4] = self;
-      v19 = v4;
+      v19 = eventCopy;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:fullScreenModifier usingBlock:v18];
     }
   }
@@ -301,16 +301,16 @@ LABEL_5:
   return v6;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBSplitViewRootSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v10 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v10 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  LODWORD(v4) = [v6 isEqualToString:@"SBSplitViewRootSwitcherModifierTimerEventReason"];
-  if (v4)
+  LODWORD(eventCopy) = [reason isEqualToString:@"SBSplitViewRootSwitcherModifierTimerEventReason"];
+  if (eventCopy)
   {
     self->_stoppedRoutingDueToArcSwipe = 0;
     v7 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:16 updateMode:3];
@@ -326,17 +326,17 @@ LABEL_5:
 {
   if (self->_stoppedRoutingDueToArcSwipe)
   {
-    v2 = [MEMORY[0x277CBEB98] set];
+    visibleHomeAffordanceLayoutElements = [MEMORY[0x277CBEB98] set];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = SBSplitViewRootSwitcherModifier;
-    v2 = [(SBSplitViewRootSwitcherModifier *)&v4 visibleHomeAffordanceLayoutElements];
+    visibleHomeAffordanceLayoutElements = [(SBSplitViewRootSwitcherModifier *)&v4 visibleHomeAffordanceLayoutElements];
   }
 
-  return v2;
+  return visibleHomeAffordanceLayoutElements;
 }
 
 @end

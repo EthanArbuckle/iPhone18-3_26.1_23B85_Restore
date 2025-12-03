@@ -3,64 +3,64 @@
 + (id)SATelTimeInfoTranslationTable;
 + (id)SATelTotalsDirStatsInfoTranslationTable;
 + (id)SATelTotalsInfoTranslationTable;
-+ (id)getLastSentTelemetryDate:(BOOL)a3;
-+ (id)newWithSAFOptions:(unint64_t)a3;
-+ (void)clearLastTelemetryData:(id)a3;
-+ (void)getLastTelemetryData:(id)a3;
-+ (void)updateLastSentTelemetryDate:(BOOL)a3;
-- (SATelemetryManager)initWithSAFOptions:(unint64_t)a3;
-- (double)stopTimeForTimeInfoEntry:(int64_t)a3;
-- (id)createAppColumn:(id)a3;
++ (id)getLastSentTelemetryDate:(BOOL)date;
++ (id)newWithSAFOptions:(unint64_t)options;
++ (void)clearLastTelemetryData:(id)data;
++ (void)getLastTelemetryData:(id)data;
++ (void)updateLastSentTelemetryDate:(BOOL)date;
+- (SATelemetryManager)initWithSAFOptions:(unint64_t)options;
+- (double)stopTimeForTimeInfoEntry:(int64_t)entry;
+- (id)createAppColumn:(id)column;
 - (id)dictionaryDescription;
-- (id)fillFilteredInfoDict:(id)a3 withNumberOfApps:(unint64_t)a4 withAppInfoArr:(id)a5 withFilterCriteria:(int64_t)a6 withMetricType:(id)a7;
+- (id)fillFilteredInfoDict:(id)dict withNumberOfApps:(unint64_t)apps withAppInfoArr:(id)arr withFilterCriteria:(int64_t)criteria withMetricType:(id)type;
 - (id)getFirstPartyAppsInfoKeys;
-- (id)getTelAppInfoTranslation:(int64_t)a3;
-- (id)getTelTimeInfoTranslation:(int64_t)a3;
-- (id)getTelTotalsDirStatsInfoTranslation:(int64_t)a3;
-- (id)getTelTotalsInfoTranslation:(int64_t)a3;
+- (id)getTelAppInfoTranslation:(int64_t)translation;
+- (id)getTelTimeInfoTranslation:(int64_t)translation;
+- (id)getTelTotalsDirStatsInfoTranslation:(int64_t)translation;
+- (id)getTelTotalsInfoTranslation:(int64_t)translation;
 - (id)getThirdPartyAppsInfoKeys;
 - (id)getTimeInfoTranslatedDictionary;
 - (id)getTotalsDirstatInfoTranslatedDictionary;
 - (id)getTotalsInfoTranslatedDictionary;
-- (id)getVendorValueforBundleIDs:(id)a3;
-- (id)setAppInfoDictWithFirstPartyAppsKeys:(id)a3 WithThirdPartyAppKeys:(id)a4;
-- (id)sortAppsInfo:(id)a3 by:(int64_t)a4 withOption:(int64_t)a5;
-- (unint64_t)getValueForAppInfoEntry:(int64_t)a3 forBundleIDs:(id)a4;
-- (unint64_t)getValueForDirStatsTotalsInfoEntry:(int64_t)a3;
-- (unint64_t)getValueForTimeInfoEntry:(int64_t)a3;
-- (unint64_t)getValueForTotalsInfoEntry:(int64_t)a3;
-- (void)addValue:(unint64_t)a3 forAppInfoEntry:(int64_t)a4 forBundleIDs:(id)a5;
-- (void)addValue:(unint64_t)a3 forDirStatsTotalsInfoEntry:(int64_t)a4;
-- (void)addValue:(unint64_t)a3 forTimeInfoEntry:(int64_t)a4;
-- (void)addValue:(unint64_t)a3 forTotalsInfoEntry:(int64_t)a4;
+- (id)getVendorValueforBundleIDs:(id)ds;
+- (id)setAppInfoDictWithFirstPartyAppsKeys:(id)keys WithThirdPartyAppKeys:(id)appKeys;
+- (id)sortAppsInfo:(id)info by:(int64_t)by withOption:(int64_t)option;
+- (unint64_t)getValueForAppInfoEntry:(int64_t)entry forBundleIDs:(id)ds;
+- (unint64_t)getValueForDirStatsTotalsInfoEntry:(int64_t)entry;
+- (unint64_t)getValueForTimeInfoEntry:(int64_t)entry;
+- (unint64_t)getValueForTotalsInfoEntry:(int64_t)entry;
+- (void)addValue:(unint64_t)value forAppInfoEntry:(int64_t)entry forBundleIDs:(id)ds;
+- (void)addValue:(unint64_t)value forDirStatsTotalsInfoEntry:(int64_t)entry;
+- (void)addValue:(unint64_t)value forTimeInfoEntry:(int64_t)entry;
+- (void)addValue:(unint64_t)value forTotalsInfoEntry:(int64_t)entry;
 - (void)hasResultsError;
 - (void)removeAppsWithMultipleVendors;
-- (void)saveTelemetryDataToDisk:(id)a3 thirdPartyAppKeys:(id)a4;
-- (void)setSystemDataSize:(unint64_t)a3;
-- (void)setValue:(unint64_t)a3 forAppInfoEntry:(int64_t)a4 forBundleIDs:(id)a5;
-- (void)setValue:(unint64_t)a3 forDirStatsTotalsInfoEntry:(int64_t)a4;
-- (void)setValue:(unint64_t)a3 forTimeInfoEntry:(int64_t)a4;
-- (void)setValue:(unint64_t)a3 forTotalsInfoEntry:(int64_t)a4;
-- (void)startTimeForTimeInfoEntry:(int64_t)a3;
-- (void)subtractValue:(unint64_t)a3 forAppInfoEntry:(int64_t)a4 forBundleIDs:(id)a5;
-- (void)subtractValue:(unint64_t)a3 forTotalsInfoEntry:(int64_t)a4;
-- (void)updateBundleIDs:(id)a3 appCacheSize:(unint64_t)a4;
-- (void)updateBundleIDs:(id)a3 appCacheSize:(unint64_t)a4 CDPluginSize:(unint64_t)a5;
-- (void)updateBundleIDs:(id)a3 attributionSize:(unint64_t)a4 attributionCloneSize:(unint64_t)a5 attributionTagCount:(unint64_t)a6;
-- (void)updateBundleIDs:(id)a3 usedDirStat:(BOOL)a4 fixedSize:(unint64_t)a5 dataSize:(unint64_t)a6 cloneSize:(unint64_t)a7 purgeableSize:(unint64_t)a8 fileCount:(unint64_t)a9;
-- (void)updateBundleIDs:(id)a3 withPurgeableTagSize:(unint64_t)a4;
-- (void)updateBundleIDs:(id)a3 withSUPurgeableSize:(unint64_t)a4;
-- (void)updateCacheFileCount:(unint64_t)a3 forBundleIDs:(id)a4;
-- (void)updateCloneInfoWithBundleIDs:(id)a3 withItemSize:(id)a4;
-- (void)updateDirStatInfo:(BOOL)a3 usedDirsStat:(BOOL)a4 failedDirStat:(BOOL)a5 skippedDirStat:(BOOL)a6;
-- (void)updateDirStatInfo:(id)a3;
-- (void)updateSAFOptionWithPathsList:(id)a3;
-- (void)updateTotalsInfo:(unint64_t)a3 totalPurgeable:(unint64_t)a4;
+- (void)saveTelemetryDataToDisk:(id)disk thirdPartyAppKeys:(id)keys;
+- (void)setSystemDataSize:(unint64_t)size;
+- (void)setValue:(unint64_t)value forAppInfoEntry:(int64_t)entry forBundleIDs:(id)ds;
+- (void)setValue:(unint64_t)value forDirStatsTotalsInfoEntry:(int64_t)entry;
+- (void)setValue:(unint64_t)value forTimeInfoEntry:(int64_t)entry;
+- (void)setValue:(unint64_t)value forTotalsInfoEntry:(int64_t)entry;
+- (void)startTimeForTimeInfoEntry:(int64_t)entry;
+- (void)subtractValue:(unint64_t)value forAppInfoEntry:(int64_t)entry forBundleIDs:(id)ds;
+- (void)subtractValue:(unint64_t)value forTotalsInfoEntry:(int64_t)entry;
+- (void)updateBundleIDs:(id)ds appCacheSize:(unint64_t)size;
+- (void)updateBundleIDs:(id)ds appCacheSize:(unint64_t)size CDPluginSize:(unint64_t)pluginSize;
+- (void)updateBundleIDs:(id)ds attributionSize:(unint64_t)size attributionCloneSize:(unint64_t)cloneSize attributionTagCount:(unint64_t)count;
+- (void)updateBundleIDs:(id)ds usedDirStat:(BOOL)stat fixedSize:(unint64_t)size dataSize:(unint64_t)dataSize cloneSize:(unint64_t)cloneSize purgeableSize:(unint64_t)purgeableSize fileCount:(unint64_t)count;
+- (void)updateBundleIDs:(id)ds withPurgeableTagSize:(unint64_t)size;
+- (void)updateBundleIDs:(id)ds withSUPurgeableSize:(unint64_t)size;
+- (void)updateCacheFileCount:(unint64_t)count forBundleIDs:(id)ds;
+- (void)updateCloneInfoWithBundleIDs:(id)ds withItemSize:(id)size;
+- (void)updateDirStatInfo:(BOOL)info usedDirsStat:(BOOL)stat failedDirStat:(BOOL)dirStat skippedDirStat:(BOOL)skippedDirStat;
+- (void)updateDirStatInfo:(id)info;
+- (void)updateSAFOptionWithPathsList:(id)list;
+- (void)updateTotalsInfo:(unint64_t)info totalPurgeable:(unint64_t)purgeable;
 @end
 
 @implementation SATelemetryManager
 
-- (SATelemetryManager)initWithSAFOptions:(unint64_t)a3
+- (SATelemetryManager)initWithSAFOptions:(unint64_t)options
 {
   v41.receiver = self;
   v41.super_class = SATelemetryManager;
@@ -68,12 +68,12 @@
   if (v4)
   {
     v5 = +[NSUUID UUID];
-    v6 = [v5 UUIDString];
+    uUIDString = [v5 UUIDString];
     runSignature = v4->_runSignature;
-    v4->_runSignature = v6;
+    v4->_runSignature = uUIDString;
 
     v4->_appsNumber = 0;
-    v4->_SAFOptions = a3;
+    v4->_SAFOptions = options;
     v8 = +[SASupport getiCloudPlanSizeGB];
     icloudPlan = v4->_icloudPlan;
     v4->_icloudPlan = v8;
@@ -138,17 +138,17 @@
   return v4;
 }
 
-+ (id)newWithSAFOptions:(unint64_t)a3
++ (id)newWithSAFOptions:(unint64_t)options
 {
   v4 = [SATelemetryManager alloc];
 
-  return [(SATelemetryManager *)v4 initWithSAFOptions:a3];
+  return [(SATelemetryManager *)v4 initWithSAFOptions:options];
 }
 
-- (id)createAppColumn:(id)a3
+- (id)createAppColumn:(id)column
 {
-  v4 = a3;
-  v5 = [SAUtilities breakCommaSeparatedStringToComponents:v4];
+  columnCopy = column;
+  v5 = [SAUtilities breakCommaSeparatedStringToComponents:columnCopy];
   v6 = [v5 count];
   v7 = objc_opt_new();
   if (v6 == 1)
@@ -158,15 +158,15 @@
 
   else
   {
-    v9 = [v5 anyObject];
+    anyObject = [v5 anyObject];
     v10 = [(SATelemetryManager *)self getTelAppInfoTranslation:2];
-    [v7 setValue:v9 forKey:v10];
+    [v7 setValue:anyObject forKey:v10];
 
     v8 = 26;
   }
 
   v11 = [(SATelemetryManager *)self getTelAppInfoTranslation:v8];
-  [v7 setValue:v4 forKey:v11];
+  [v7 setValue:columnCopy forKey:v11];
 
   v12 = [(SATelemetryManager *)self getTelAppInfoTranslation:0];
   [v7 setValue:@"app-info" forKey:v12];
@@ -201,14 +201,14 @@
   if (!v25)
   {
     v27 = 0;
-    v35 = v24;
+    bundleVersion2 = v24;
 LABEL_15:
 
     goto LABEL_17;
   }
 
   v26 = v25;
-  v43 = v4;
+  v43 = columnCopy;
   v27 = 0;
   v28 = *v45;
   do
@@ -242,94 +242,94 @@ LABEL_15:
 
   if (v27)
   {
-    v34 = [v27 bundleVersion];
+    bundleVersion = [v27 bundleVersion];
 
-    v4 = v43;
-    if (!v34)
+    columnCopy = v43;
+    if (!bundleVersion)
     {
       goto LABEL_17;
     }
 
-    v35 = [v27 bundleVersion];
+    bundleVersion2 = [v27 bundleVersion];
     v36 = [(SATelemetryManager *)self getTelAppInfoTranslation:7];
-    [v7 setValue:v35 forKey:v36];
+    [v7 setValue:bundleVersion2 forKey:v36];
 
     goto LABEL_15;
   }
 
-  v4 = v43;
+  columnCopy = v43;
 LABEL_17:
   v37 = v23;
-  v38 = [v23 allObjects];
-  v39 = [v38 sortedArrayUsingSelector:"localizedCaseInsensitiveCompare:"];
+  allObjects = [v23 allObjects];
+  v39 = [allObjects sortedArrayUsingSelector:"localizedCaseInsensitiveCompare:"];
 
   v40 = [v39 componentsJoinedByString:{@", "}];
   v41 = [(SATelemetryManager *)self getTelAppInfoTranslation:3];
   [v7 setValue:v40 forKey:v41];
 
-  [(NSMutableDictionary *)self->_appsInfo setValue:v7 forKey:v4];
+  [(NSMutableDictionary *)self->_appsInfo setValue:v7 forKey:columnCopy];
   [(SATelemetryManager *)self setAppsNumber:[(SATelemetryManager *)self appsNumber]+ 1];
 
   return v7;
 }
 
-- (void)setValue:(unint64_t)a3 forAppInfoEntry:(int64_t)a4 forBundleIDs:(id)a5
+- (void)setValue:(unint64_t)value forAppInfoEntry:(int64_t)entry forBundleIDs:(id)ds
 {
-  v13 = a5;
+  dsCopy = ds;
   v8 = objc_autoreleasePoolPush();
   v9 = self->_appsInfo;
   objc_sync_enter(v9);
-  v10 = [(NSMutableDictionary *)self->_appsInfo objectForKey:v13];
+  v10 = [(NSMutableDictionary *)self->_appsInfo objectForKey:dsCopy];
   if (!v10)
   {
-    v10 = [(SATelemetryManager *)self createAppColumn:v13];
+    v10 = [(SATelemetryManager *)self createAppColumn:dsCopy];
   }
 
-  v11 = [NSNumber numberWithUnsignedLongLong:a3];
-  v12 = [(SATelemetryManager *)self getTelAppInfoTranslation:a4];
+  v11 = [NSNumber numberWithUnsignedLongLong:value];
+  v12 = [(SATelemetryManager *)self getTelAppInfoTranslation:entry];
   [v10 setValue:v11 forKey:v12];
 
   objc_sync_exit(v9);
   objc_autoreleasePoolPop(v8);
 }
 
-- (unint64_t)getValueForAppInfoEntry:(int64_t)a3 forBundleIDs:(id)a4
+- (unint64_t)getValueForAppInfoEntry:(int64_t)entry forBundleIDs:(id)ds
 {
-  v6 = a4;
+  dsCopy = ds;
   v7 = self->_appsInfo;
   objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)self->_appsInfo objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_appsInfo objectForKey:dsCopy];
   if (v8)
   {
-    v9 = [(SATelemetryManager *)self getTelAppInfoTranslation:a3];
+    v9 = [(SATelemetryManager *)self getTelAppInfoTranslation:entry];
     v10 = [v8 objectForKey:v9];
 
     if (v10)
     {
-      v11 = [v10 longLongValue];
+      longLongValue = [v10 longLongValue];
     }
 
     else
     {
-      v11 = 0;
+      longLongValue = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    longLongValue = 0;
   }
 
   objc_sync_exit(v7);
-  return v11;
+  return longLongValue;
 }
 
-- (id)getVendorValueforBundleIDs:(id)a3
+- (id)getVendorValueforBundleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = self->_appsInfo;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_appsInfo objectForKey:v4];
+  v6 = [(NSMutableDictionary *)self->_appsInfo objectForKey:dsCopy];
   if (v6)
   {
     v7 = [(SATelemetryManager *)self getTelAppInfoTranslation:3];
@@ -346,39 +346,39 @@ LABEL_17:
   return v8;
 }
 
-- (void)updateCacheFileCount:(unint64_t)a3 forBundleIDs:(id)a4
+- (void)updateCacheFileCount:(unint64_t)count forBundleIDs:(id)ds
 {
-  [(SATelemetryManager *)self addValue:a3 forAppInfoEntry:29 forBundleIDs:a4];
+  [(SATelemetryManager *)self addValue:count forAppInfoEntry:29 forBundleIDs:ds];
 
-  [(SATelemetryManager *)self addValue:a3 forTotalsInfoEntry:24];
+  [(SATelemetryManager *)self addValue:count forTotalsInfoEntry:24];
 }
 
-- (void)addValue:(unint64_t)a3 forAppInfoEntry:(int64_t)a4 forBundleIDs:(id)a5
+- (void)addValue:(unint64_t)value forAppInfoEntry:(int64_t)entry forBundleIDs:(id)ds
 {
-  v8 = a5;
-  if (a3)
+  dsCopy = ds;
+  if (value)
   {
-    v10 = v8;
+    v10 = dsCopy;
     v9 = self->_appsInfo;
     objc_sync_enter(v9);
-    [(SATelemetryManager *)self setValue:[(SATelemetryManager *)self getValueForAppInfoEntry:a4 forBundleIDs:v10]+ a3 forAppInfoEntry:a4 forBundleIDs:v10];
+    [(SATelemetryManager *)self setValue:[(SATelemetryManager *)self getValueForAppInfoEntry:entry forBundleIDs:v10]+ value forAppInfoEntry:entry forBundleIDs:v10];
     objc_sync_exit(v9);
 
-    v8 = v10;
+    dsCopy = v10;
   }
 }
 
-- (void)subtractValue:(unint64_t)a3 forAppInfoEntry:(int64_t)a4 forBundleIDs:(id)a5
+- (void)subtractValue:(unint64_t)value forAppInfoEntry:(int64_t)entry forBundleIDs:(id)ds
 {
-  v8 = a5;
-  if (a3)
+  dsCopy = ds;
+  if (value)
   {
     v9 = self->_appsInfo;
     objc_sync_enter(v9);
-    v10 = [(SATelemetryManager *)self getValueForAppInfoEntry:a4 forBundleIDs:v8];
-    if (v10 >= a3)
+    v10 = [(SATelemetryManager *)self getValueForAppInfoEntry:entry forBundleIDs:dsCopy];
+    if (v10 >= value)
     {
-      [(SATelemetryManager *)self setValue:v10 - a3 forAppInfoEntry:a4 forBundleIDs:v8];
+      [(SATelemetryManager *)self setValue:v10 - value forAppInfoEntry:entry forBundleIDs:dsCopy];
     }
 
     else
@@ -394,48 +394,48 @@ LABEL_17:
   }
 }
 
-- (void)updateCloneInfoWithBundleIDs:(id)a3 withItemSize:(id)a4
+- (void)updateCloneInfoWithBundleIDs:(id)ds withItemSize:(id)size
 {
-  v6 = a4;
-  v7 = a3;
-  -[SATelemetryManager addValue:forAppInfoEntry:forBundleIDs:](self, "addValue:forAppInfoEntry:forBundleIDs:", [v6 dataSize], 23, v7);
-  -[SATelemetryManager addValue:forAppInfoEntry:forBundleIDs:](self, "addValue:forAppInfoEntry:forBundleIDs:", [v6 dataSize], 17, v7);
-  -[SATelemetryManager addValue:forAppInfoEntry:forBundleIDs:](self, "addValue:forAppInfoEntry:forBundleIDs:", [v6 cloneSize], 25, v7);
-  -[SATelemetryManager addValue:forAppInfoEntry:forBundleIDs:](self, "addValue:forAppInfoEntry:forBundleIDs:", [v6 cloneSize], 18, v7);
-  -[SATelemetryManager addValue:forAppInfoEntry:forBundleIDs:](self, "addValue:forAppInfoEntry:forBundleIDs:", [v6 purgeableSize], 24, v7);
-  -[SATelemetryManager addValue:forAppInfoEntry:forBundleIDs:](self, "addValue:forAppInfoEntry:forBundleIDs:", [v6 purgeableSize], 19, v7);
+  sizeCopy = size;
+  dsCopy = ds;
+  -[SATelemetryManager addValue:forAppInfoEntry:forBundleIDs:](self, "addValue:forAppInfoEntry:forBundleIDs:", [sizeCopy dataSize], 23, dsCopy);
+  -[SATelemetryManager addValue:forAppInfoEntry:forBundleIDs:](self, "addValue:forAppInfoEntry:forBundleIDs:", [sizeCopy dataSize], 17, dsCopy);
+  -[SATelemetryManager addValue:forAppInfoEntry:forBundleIDs:](self, "addValue:forAppInfoEntry:forBundleIDs:", [sizeCopy cloneSize], 25, dsCopy);
+  -[SATelemetryManager addValue:forAppInfoEntry:forBundleIDs:](self, "addValue:forAppInfoEntry:forBundleIDs:", [sizeCopy cloneSize], 18, dsCopy);
+  -[SATelemetryManager addValue:forAppInfoEntry:forBundleIDs:](self, "addValue:forAppInfoEntry:forBundleIDs:", [sizeCopy purgeableSize], 24, dsCopy);
+  -[SATelemetryManager addValue:forAppInfoEntry:forBundleIDs:](self, "addValue:forAppInfoEntry:forBundleIDs:", [sizeCopy purgeableSize], 19, dsCopy);
 
-  v8 = [v6 cloneSize];
+  cloneSize = [sizeCopy cloneSize];
 
-  [(SATelemetryManager *)self addValue:v8 forTotalsInfoEntry:20];
+  [(SATelemetryManager *)self addValue:cloneSize forTotalsInfoEntry:20];
 }
 
-- (void)updateBundleIDs:(id)a3 usedDirStat:(BOOL)a4 fixedSize:(unint64_t)a5 dataSize:(unint64_t)a6 cloneSize:(unint64_t)a7 purgeableSize:(unint64_t)a8 fileCount:(unint64_t)a9
+- (void)updateBundleIDs:(id)ds usedDirStat:(BOOL)stat fixedSize:(unint64_t)size dataSize:(unint64_t)dataSize cloneSize:(unint64_t)cloneSize purgeableSize:(unint64_t)purgeableSize fileCount:(unint64_t)count
 {
-  v13 = a4;
-  v15 = a3;
-  v19 = v15;
-  if (v13)
+  statCopy = stat;
+  dsCopy = ds;
+  v19 = dsCopy;
+  if (statCopy)
   {
-    [(SATelemetryManager *)self addValue:a6 forAppInfoEntry:9 forBundleIDs:v15];
-    [(SATelemetryManager *)self addValue:a6 forTotalsInfoEntry:6];
-    [(SATelemetryManager *)self addValue:a8 forAppInfoEntry:10 forBundleIDs:v19];
-    [(SATelemetryManager *)self addValue:a8 forTotalsInfoEntry:7];
-    [(SATelemetryManager *)self addValue:a7 forAppInfoEntry:11 forBundleIDs:v19];
-    [(SATelemetryManager *)self addValue:a7 forTotalsInfoEntry:8];
+    [(SATelemetryManager *)self addValue:dataSize forAppInfoEntry:9 forBundleIDs:dsCopy];
+    [(SATelemetryManager *)self addValue:dataSize forTotalsInfoEntry:6];
+    [(SATelemetryManager *)self addValue:purgeableSize forAppInfoEntry:10 forBundleIDs:v19];
+    [(SATelemetryManager *)self addValue:purgeableSize forTotalsInfoEntry:7];
+    [(SATelemetryManager *)self addValue:cloneSize forAppInfoEntry:11 forBundleIDs:v19];
+    [(SATelemetryManager *)self addValue:cloneSize forTotalsInfoEntry:8];
     [(SATelemetryManager *)self addValue:1 forAppInfoEntry:12 forBundleIDs:v19];
-    v15 = v19;
+    dsCopy = v19;
   }
 
-  [(SATelemetryManager *)self addValue:a5 forAppInfoEntry:22 forBundleIDs:v15];
-  [(SATelemetryManager *)self addValue:a6 forAppInfoEntry:23 forBundleIDs:v19];
-  [(SATelemetryManager *)self addValue:a7 forAppInfoEntry:25 forBundleIDs:v19];
-  [(SATelemetryManager *)self addValue:a7 forTotalsInfoEntry:20];
-  [(SATelemetryManager *)self addValue:a8 forAppInfoEntry:24 forBundleIDs:v19];
+  [(SATelemetryManager *)self addValue:size forAppInfoEntry:22 forBundleIDs:dsCopy];
+  [(SATelemetryManager *)self addValue:dataSize forAppInfoEntry:23 forBundleIDs:v19];
+  [(SATelemetryManager *)self addValue:cloneSize forAppInfoEntry:25 forBundleIDs:v19];
+  [(SATelemetryManager *)self addValue:cloneSize forTotalsInfoEntry:20];
+  [(SATelemetryManager *)self addValue:purgeableSize forAppInfoEntry:24 forBundleIDs:v19];
   v16 = v19;
-  if (a9)
+  if (count)
   {
-    if (a5)
+    if (size)
     {
       v17 = 23;
       v18 = 28;
@@ -443,7 +443,7 @@ LABEL_17:
 
     else
     {
-      if (!a6)
+      if (!dataSize)
       {
         goto LABEL_9;
       }
@@ -452,38 +452,38 @@ LABEL_17:
       v18 = 27;
     }
 
-    [(SATelemetryManager *)self addValue:a9 forAppInfoEntry:v18 forBundleIDs:v19];
-    [(SATelemetryManager *)self addValue:a9 forTotalsInfoEntry:v17];
+    [(SATelemetryManager *)self addValue:count forAppInfoEntry:v18 forBundleIDs:v19];
+    [(SATelemetryManager *)self addValue:count forTotalsInfoEntry:v17];
     v16 = v19;
   }
 
 LABEL_9:
 }
 
-- (void)updateBundleIDs:(id)a3 attributionSize:(unint64_t)a4 attributionCloneSize:(unint64_t)a5 attributionTagCount:(unint64_t)a6
+- (void)updateBundleIDs:(id)ds attributionSize:(unint64_t)size attributionCloneSize:(unint64_t)cloneSize attributionTagCount:(unint64_t)count
 {
-  v10 = a3;
-  [(SATelemetryManager *)self addValue:a4 forAppInfoEntry:23 forBundleIDs:v10];
-  [(SATelemetryManager *)self addValue:a4 forAppInfoEntry:13 forBundleIDs:v10];
-  [(SATelemetryManager *)self addValue:a4 forTotalsInfoEntry:10];
-  [(SATelemetryManager *)self addValue:a5 forAppInfoEntry:15 forBundleIDs:v10];
-  [(SATelemetryManager *)self addValue:a5 forTotalsInfoEntry:13];
-  [(SATelemetryManager *)self addValue:a6 forAppInfoEntry:16 forBundleIDs:v10];
+  dsCopy = ds;
+  [(SATelemetryManager *)self addValue:size forAppInfoEntry:23 forBundleIDs:dsCopy];
+  [(SATelemetryManager *)self addValue:size forAppInfoEntry:13 forBundleIDs:dsCopy];
+  [(SATelemetryManager *)self addValue:size forTotalsInfoEntry:10];
+  [(SATelemetryManager *)self addValue:cloneSize forAppInfoEntry:15 forBundleIDs:dsCopy];
+  [(SATelemetryManager *)self addValue:cloneSize forTotalsInfoEntry:13];
+  [(SATelemetryManager *)self addValue:count forAppInfoEntry:16 forBundleIDs:dsCopy];
 
-  [(SATelemetryManager *)self addValue:a6 forTotalsInfoEntry:14];
+  [(SATelemetryManager *)self addValue:count forTotalsInfoEntry:14];
 }
 
-- (void)updateBundleIDs:(id)a3 withPurgeableTagSize:(unint64_t)a4
+- (void)updateBundleIDs:(id)ds withPurgeableTagSize:(unint64_t)size
 {
-  v6 = a3;
-  v7 = [(SATelemetryManager *)self getValueForAppInfoEntry:5 forBundleIDs:v6];
-  [(SATelemetryManager *)self addValue:a4 forAppInfoEntry:24 forBundleIDs:v6];
-  [(SATelemetryManager *)self subtractValue:a4 forAppInfoEntry:23 forBundleIDs:v6];
-  [(SATelemetryManager *)self addValue:a4 forAppInfoEntry:14 forBundleIDs:v6];
-  [(SATelemetryManager *)self subtractValue:a4 forAppInfoEntry:13 forBundleIDs:v6];
+  dsCopy = ds;
+  v7 = [(SATelemetryManager *)self getValueForAppInfoEntry:5 forBundleIDs:dsCopy];
+  [(SATelemetryManager *)self addValue:size forAppInfoEntry:24 forBundleIDs:dsCopy];
+  [(SATelemetryManager *)self subtractValue:size forAppInfoEntry:23 forBundleIDs:dsCopy];
+  [(SATelemetryManager *)self addValue:size forAppInfoEntry:14 forBundleIDs:dsCopy];
+  [(SATelemetryManager *)self subtractValue:size forAppInfoEntry:13 forBundleIDs:dsCopy];
 
-  [(SATelemetryManager *)self subtractValue:a4 forTotalsInfoEntry:10];
-  [(SATelemetryManager *)self addValue:a4 forTotalsInfoEntry:19];
+  [(SATelemetryManager *)self subtractValue:size forTotalsInfoEntry:10];
+  [(SATelemetryManager *)self addValue:size forTotalsInfoEntry:19];
   if (v7 == 1)
   {
     v8 = 11;
@@ -494,49 +494,49 @@ LABEL_9:
     v8 = 12;
   }
 
-  [(SATelemetryManager *)self addValue:a4 forTotalsInfoEntry:v8];
+  [(SATelemetryManager *)self addValue:size forTotalsInfoEntry:v8];
 }
 
-- (void)updateBundleIDs:(id)a3 appCacheSize:(unint64_t)a4 CDPluginSize:(unint64_t)a5
+- (void)updateBundleIDs:(id)ds appCacheSize:(unint64_t)size CDPluginSize:(unint64_t)pluginSize
 {
-  v8 = a3;
-  [(SATelemetryManager *)self addValue:a5 + a4 forAppInfoEntry:24 forBundleIDs:v8];
-  [(SATelemetryManager *)self addValue:a4 forAppInfoEntry:20 forBundleIDs:v8];
-  [(SATelemetryManager *)self addValue:a4 forTotalsInfoEntry:15];
-  [(SATelemetryManager *)self addValue:a5 forAppInfoEntry:21 forBundleIDs:v8];
+  dsCopy = ds;
+  [(SATelemetryManager *)self addValue:pluginSize + size forAppInfoEntry:24 forBundleIDs:dsCopy];
+  [(SATelemetryManager *)self addValue:size forAppInfoEntry:20 forBundleIDs:dsCopy];
+  [(SATelemetryManager *)self addValue:size forTotalsInfoEntry:15];
+  [(SATelemetryManager *)self addValue:pluginSize forAppInfoEntry:21 forBundleIDs:dsCopy];
 
-  [(SATelemetryManager *)self addValue:a5 forTotalsInfoEntry:16];
+  [(SATelemetryManager *)self addValue:pluginSize forTotalsInfoEntry:16];
 }
 
-- (void)updateBundleIDs:(id)a3 appCacheSize:(unint64_t)a4
+- (void)updateBundleIDs:(id)ds appCacheSize:(unint64_t)size
 {
-  [(SATelemetryManager *)self addValue:a4 forAppInfoEntry:20 forBundleIDs:a3];
+  [(SATelemetryManager *)self addValue:size forAppInfoEntry:20 forBundleIDs:ds];
 
-  [(SATelemetryManager *)self addValue:a4 forTotalsInfoEntry:15];
+  [(SATelemetryManager *)self addValue:size forTotalsInfoEntry:15];
 }
 
-- (void)updateBundleIDs:(id)a3 withSUPurgeableSize:(unint64_t)a4
+- (void)updateBundleIDs:(id)ds withSUPurgeableSize:(unint64_t)size
 {
-  v6 = a3;
-  [(SATelemetryManager *)self addValue:a4 forAppInfoEntry:23 forBundleIDs:v6];
-  [(SATelemetryManager *)self subtractValue:a4 forAppInfoEntry:24 forBundleIDs:v6];
+  dsCopy = ds;
+  [(SATelemetryManager *)self addValue:size forAppInfoEntry:23 forBundleIDs:dsCopy];
+  [(SATelemetryManager *)self subtractValue:size forAppInfoEntry:24 forBundleIDs:dsCopy];
 }
 
-- (void)setSystemDataSize:(unint64_t)a3
+- (void)setSystemDataSize:(unint64_t)size
 {
-  [(SATelemetryManager *)self setValue:a3 forAppInfoEntry:23 forBundleIDs:@"com.apple.fakeapp.SystemData"];
+  [(SATelemetryManager *)self setValue:size forAppInfoEntry:23 forBundleIDs:@"com.apple.fakeapp.SystemData"];
 
-  [(SATelemetryManager *)self setValue:a3 forTotalsInfoEntry:18];
+  [(SATelemetryManager *)self setValue:size forTotalsInfoEntry:18];
 }
 
-- (void)updateSAFOptionWithPathsList:(id)a3
+- (void)updateSAFOptionWithPathsList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v24 = self;
+  selfCopy = self;
   obj = [(NSMutableDictionary *)self->_appsInfo allKeys];
   v5 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v5)
@@ -593,8 +593,8 @@ LABEL_9:
                 }
 
                 v21 = *(*(&v30 + 1) + 8 * v20);
-                v22 = [v4 appPathList];
-                v23 = [v22 objectForKeyedSubscript:v21];
+                appPathList = [listCopy appPathList];
+                v23 = [appPathList objectForKeyedSubscript:v21];
 
                 if (!v23 || ([v23 isUserVisible] & 1) == 0)
                 {
@@ -613,7 +613,7 @@ LABEL_9:
 
           if (![v15 count])
           {
-            [(SATelemetryManager *)v24 setValue:2 forAppInfoEntry:5 forBundleIDs:v14];
+            [(SATelemetryManager *)selfCopy setValue:2 forAppInfoEntry:5 forBundleIDs:v14];
           }
 
           v7 = v25;
@@ -634,61 +634,61 @@ LABEL_9:
   }
 }
 
-- (void)setValue:(unint64_t)a3 forTotalsInfoEntry:(int64_t)a4
+- (void)setValue:(unint64_t)value forTotalsInfoEntry:(int64_t)entry
 {
   obj = self->_totalsInfo;
   objc_sync_enter(obj);
   totalsInfo = self->_totalsInfo;
-  v8 = [NSNumber numberWithUnsignedLongLong:a3];
-  v9 = [(SATelemetryManager *)self getTelTotalsInfoTranslation:a4];
+  v8 = [NSNumber numberWithUnsignedLongLong:value];
+  v9 = [(SATelemetryManager *)self getTelTotalsInfoTranslation:entry];
   [(NSMutableDictionary *)totalsInfo setValue:v8 forKey:v9];
 
   objc_sync_exit(obj);
 }
 
-- (unint64_t)getValueForTotalsInfoEntry:(int64_t)a3
+- (unint64_t)getValueForTotalsInfoEntry:(int64_t)entry
 {
   v5 = self->_totalsInfo;
   objc_sync_enter(v5);
   totalsInfo = self->_totalsInfo;
-  v7 = [(SATelemetryManager *)self getTelTotalsInfoTranslation:a3];
+  v7 = [(SATelemetryManager *)self getTelTotalsInfoTranslation:entry];
   v8 = [(NSMutableDictionary *)totalsInfo objectForKey:v7];
 
   if (v8)
   {
-    v9 = [v8 longLongValue];
+    longLongValue = [v8 longLongValue];
   }
 
   else
   {
-    v9 = 0;
+    longLongValue = 0;
   }
 
   objc_sync_exit(v5);
-  return v9;
+  return longLongValue;
 }
 
-- (void)addValue:(unint64_t)a3 forTotalsInfoEntry:(int64_t)a4
+- (void)addValue:(unint64_t)value forTotalsInfoEntry:(int64_t)entry
 {
-  if (a3)
+  if (value)
   {
     obj = self->_totalsInfo;
     objc_sync_enter(obj);
-    [(SATelemetryManager *)self setValue:[(SATelemetryManager *)self getValueForTotalsInfoEntry:a4]+ a3 forTotalsInfoEntry:a4];
+    [(SATelemetryManager *)self setValue:[(SATelemetryManager *)self getValueForTotalsInfoEntry:entry]+ value forTotalsInfoEntry:entry];
     objc_sync_exit(obj);
   }
 }
 
-- (void)subtractValue:(unint64_t)a3 forTotalsInfoEntry:(int64_t)a4
+- (void)subtractValue:(unint64_t)value forTotalsInfoEntry:(int64_t)entry
 {
-  if (a3)
+  if (value)
   {
     v7 = self->_totalsInfo;
     objc_sync_enter(v7);
-    v8 = [(SATelemetryManager *)self getValueForTotalsInfoEntry:a4];
-    if (v8 >= a3)
+    v8 = [(SATelemetryManager *)self getValueForTotalsInfoEntry:entry];
+    if (v8 >= value)
     {
-      [(SATelemetryManager *)self setValue:v8 - a3 forTotalsInfoEntry:a4];
+      [(SATelemetryManager *)self setValue:v8 - value forTotalsInfoEntry:entry];
     }
 
     else
@@ -704,106 +704,106 @@ LABEL_9:
   }
 }
 
-- (void)updateTotalsInfo:(unint64_t)a3 totalPurgeable:(unint64_t)a4
+- (void)updateTotalsInfo:(unint64_t)info totalPurgeable:(unint64_t)purgeable
 {
-  [(SATelemetryManager *)self setValue:a3 >> 12 forTotalsInfoEntry:21];
+  [(SATelemetryManager *)self setValue:info >> 12 forTotalsInfoEntry:21];
 
-  [(SATelemetryManager *)self setValue:a4 forTotalsInfoEntry:19];
+  [(SATelemetryManager *)self setValue:purgeable forTotalsInfoEntry:19];
 }
 
-- (void)setValue:(unint64_t)a3 forDirStatsTotalsInfoEntry:(int64_t)a4
+- (void)setValue:(unint64_t)value forDirStatsTotalsInfoEntry:(int64_t)entry
 {
   obj = self->_totalsDstatsInfo;
   objc_sync_enter(obj);
   totalsDstatsInfo = self->_totalsDstatsInfo;
-  v8 = [NSNumber numberWithUnsignedLongLong:a3];
-  v9 = [(SATelemetryManager *)self getTelTotalsDirStatsInfoTranslation:a4];
+  v8 = [NSNumber numberWithUnsignedLongLong:value];
+  v9 = [(SATelemetryManager *)self getTelTotalsDirStatsInfoTranslation:entry];
   [(NSMutableDictionary *)totalsDstatsInfo setValue:v8 forKey:v9];
 
   objc_sync_exit(obj);
 }
 
-- (unint64_t)getValueForDirStatsTotalsInfoEntry:(int64_t)a3
+- (unint64_t)getValueForDirStatsTotalsInfoEntry:(int64_t)entry
 {
   v5 = self->_totalsDstatsInfo;
   objc_sync_enter(v5);
   totalsDstatsInfo = self->_totalsDstatsInfo;
-  v7 = [(SATelemetryManager *)self getTelTotalsDirStatsInfoTranslation:a3];
+  v7 = [(SATelemetryManager *)self getTelTotalsDirStatsInfoTranslation:entry];
   v8 = [(NSMutableDictionary *)totalsDstatsInfo objectForKey:v7];
 
   if (v8)
   {
-    v9 = [v8 longLongValue];
+    longLongValue = [v8 longLongValue];
   }
 
   else
   {
-    v9 = 0;
+    longLongValue = 0;
   }
 
   objc_sync_exit(v5);
-  return v9;
+  return longLongValue;
 }
 
-- (void)addValue:(unint64_t)a3 forDirStatsTotalsInfoEntry:(int64_t)a4
+- (void)addValue:(unint64_t)value forDirStatsTotalsInfoEntry:(int64_t)entry
 {
-  if (a3)
+  if (value)
   {
     obj = self->_totalsDstatsInfo;
     objc_sync_enter(obj);
-    [(SATelemetryManager *)self setValue:[(SATelemetryManager *)self getValueForDirStatsTotalsInfoEntry:a4]+ a3 forDirStatsTotalsInfoEntry:a4];
+    [(SATelemetryManager *)self setValue:[(SATelemetryManager *)self getValueForDirStatsTotalsInfoEntry:entry]+ value forDirStatsTotalsInfoEntry:entry];
     objc_sync_exit(obj);
   }
 }
 
-- (void)updateDirStatInfo:(id)a3
+- (void)updateDirStatInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(SATelemetryManager *)self addValue:1 forDirStatsTotalsInfoEntry:2];
-  if ([v4 enabledDirStat])
+  if ([infoCopy enabledDirStat])
   {
     [(SATelemetryManager *)self addValue:1 forTotalsInfoEntry:9];
     [(SATelemetryManager *)self addValue:1 forDirStatsTotalsInfoEntry:3];
   }
 
-  if ([v4 usedDirStat])
+  if ([infoCopy usedDirStat])
   {
     [(SATelemetryManager *)self addValue:1 forDirStatsTotalsInfoEntry:4];
   }
 
-  if ([v4 failedDirStat])
+  if ([infoCopy failedDirStat])
   {
     [(SATelemetryManager *)self addValue:1 forDirStatsTotalsInfoEntry:5];
   }
 
-  if ([v4 skippedDirStat])
+  if ([infoCopy skippedDirStat])
   {
     [(SATelemetryManager *)self addValue:1 forDirStatsTotalsInfoEntry:6];
   }
 }
 
-- (void)updateDirStatInfo:(BOOL)a3 usedDirsStat:(BOOL)a4 failedDirStat:(BOOL)a5 skippedDirStat:(BOOL)a6
+- (void)updateDirStatInfo:(BOOL)info usedDirsStat:(BOOL)stat failedDirStat:(BOOL)dirStat skippedDirStat:(BOOL)skippedDirStat
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  skippedDirStatCopy = skippedDirStat;
+  dirStatCopy = dirStat;
+  statCopy = stat;
+  infoCopy = info;
   [(SATelemetryManager *)self addValue:1 forDirStatsTotalsInfoEntry:2];
-  if (v9)
+  if (infoCopy)
   {
     [(SATelemetryManager *)self addValue:1 forTotalsInfoEntry:9];
     [(SATelemetryManager *)self addValue:1 forDirStatsTotalsInfoEntry:3];
-    if (!v8)
+    if (!statCopy)
     {
 LABEL_3:
-      if (!v7)
+      if (!dirStatCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
       [(SATelemetryManager *)self addValue:1 forDirStatsTotalsInfoEntry:5];
-      if (!v6)
+      if (!skippedDirStatCopy)
       {
         return;
       }
@@ -812,19 +812,19 @@ LABEL_10:
     }
   }
 
-  else if (!v8)
+  else if (!statCopy)
   {
     goto LABEL_3;
   }
 
   [(SATelemetryManager *)self addValue:1 forDirStatsTotalsInfoEntry:4];
-  if (v7)
+  if (dirStatCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (!v6)
+  if (!skippedDirStatCopy)
   {
     return;
   }
@@ -834,57 +834,57 @@ LABEL_5:
   [(SATelemetryManager *)self addValue:1 forDirStatsTotalsInfoEntry:6];
 }
 
-- (void)setValue:(unint64_t)a3 forTimeInfoEntry:(int64_t)a4
+- (void)setValue:(unint64_t)value forTimeInfoEntry:(int64_t)entry
 {
   obj = self->_timeInfo;
   objc_sync_enter(obj);
   timeInfo = self->_timeInfo;
-  v8 = [NSNumber numberWithUnsignedLongLong:a3];
-  v9 = [(SATelemetryManager *)self getTelTimeInfoTranslation:a4];
+  v8 = [NSNumber numberWithUnsignedLongLong:value];
+  v9 = [(SATelemetryManager *)self getTelTimeInfoTranslation:entry];
   [(NSMutableDictionary *)timeInfo setValue:v8 forKey:v9];
 
   objc_sync_exit(obj);
 }
 
-- (unint64_t)getValueForTimeInfoEntry:(int64_t)a3
+- (unint64_t)getValueForTimeInfoEntry:(int64_t)entry
 {
   v5 = self->_timeInfo;
   objc_sync_enter(v5);
   timeInfo = self->_timeInfo;
-  v7 = [(SATelemetryManager *)self getTelTimeInfoTranslation:a3];
+  v7 = [(SATelemetryManager *)self getTelTimeInfoTranslation:entry];
   v8 = [(NSMutableDictionary *)timeInfo valueForKey:v7];
 
   if (v8)
   {
-    v9 = [v8 longLongValue];
+    longLongValue = [v8 longLongValue];
   }
 
   else
   {
-    v9 = 0;
+    longLongValue = 0;
   }
 
   objc_sync_exit(v5);
-  return v9;
+  return longLongValue;
 }
 
-- (void)addValue:(unint64_t)a3 forTimeInfoEntry:(int64_t)a4
+- (void)addValue:(unint64_t)value forTimeInfoEntry:(int64_t)entry
 {
-  if (a3)
+  if (value)
   {
     obj = self->_timeInfo;
     objc_sync_enter(obj);
-    [(SATelemetryManager *)self setValue:[(SATelemetryManager *)self getValueForTimeInfoEntry:a4]+ a3 forTimeInfoEntry:a4];
+    [(SATelemetryManager *)self setValue:[(SATelemetryManager *)self getValueForTimeInfoEntry:entry]+ value forTimeInfoEntry:entry];
     objc_sync_exit(obj);
   }
 }
 
-- (void)startTimeForTimeInfoEntry:(int64_t)a3
+- (void)startTimeForTimeInfoEntry:(int64_t)entry
 {
   v5 = self->_timeInfo;
   objc_sync_enter(v5);
   times = self->_times;
-  v7 = [NSNumber numberWithInteger:a3];
+  v7 = [NSNumber numberWithInteger:entry];
   v8 = [(NSMutableDictionary *)times objectForKey:v7];
 
   if (v8)
@@ -900,19 +900,19 @@ LABEL_5:
   {
     v10 = self->_times;
     v9 = +[NSDate date];
-    v11 = [NSNumber numberWithInteger:a3];
+    v11 = [NSNumber numberWithInteger:entry];
     [(NSMutableDictionary *)v10 setObject:v9 forKey:v11];
   }
 
   objc_sync_exit(v5);
 }
 
-- (double)stopTimeForTimeInfoEntry:(int64_t)a3
+- (double)stopTimeForTimeInfoEntry:(int64_t)entry
 {
   v5 = self->_timeInfo;
   objc_sync_enter(v5);
   times = self->_times;
-  v7 = [NSNumber numberWithInteger:a3];
+  v7 = [NSNumber numberWithInteger:entry];
   v8 = [(NSMutableDictionary *)times objectForKey:v7];
 
   if (v8)
@@ -921,7 +921,7 @@ LABEL_5:
     [v9 timeIntervalSinceDate:v8];
     v11 = v10;
 
-    [(SATelemetryManager *)self addValue:(v11 * 1000.0) forTimeInfoEntry:a3];
+    [(SATelemetryManager *)self addValue:(v11 * 1000.0) forTimeInfoEntry:entry];
   }
 
   else
@@ -942,23 +942,23 @@ LABEL_5:
 - (id)dictionaryDescription
 {
   appsInfo = self->_appsInfo;
-  v4 = [(SATelemetryManager *)self getTotalsInfoTranslatedDictionary];
-  v5 = [(SATelemetryManager *)self getTotalsDirstatInfoTranslatedDictionary];
-  v6 = [(SATelemetryManager *)self getTimeInfoTranslatedDictionary];
-  v7 = [NSMutableDictionary dictionaryWithObjectsAndKeys:appsInfo, @"AppsInfo", v4, @"TotalsInfo", v5, @"TotalDirstatsInfo", v6, @"TimeInfo", self->_thirdPartyfilteredInfo, @"ThirdPartyFilteredInfo", 0];
+  getTotalsInfoTranslatedDictionary = [(SATelemetryManager *)self getTotalsInfoTranslatedDictionary];
+  getTotalsDirstatInfoTranslatedDictionary = [(SATelemetryManager *)self getTotalsDirstatInfoTranslatedDictionary];
+  getTimeInfoTranslatedDictionary = [(SATelemetryManager *)self getTimeInfoTranslatedDictionary];
+  v7 = [NSMutableDictionary dictionaryWithObjectsAndKeys:appsInfo, @"AppsInfo", getTotalsInfoTranslatedDictionary, @"TotalsInfo", getTotalsDirstatInfoTranslatedDictionary, @"TotalDirstatsInfo", getTimeInfoTranslatedDictionary, @"TimeInfo", self->_thirdPartyfilteredInfo, @"ThirdPartyFilteredInfo", 0];
 
   return v7;
 }
 
-- (id)sortAppsInfo:(id)a3 by:(int64_t)a4 withOption:(int64_t)a5
+- (id)sortAppsInfo:(id)info by:(int64_t)by withOption:(int64_t)option
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100036900;
   v7[3] = &unk_100065C28;
   v7[4] = self;
-  v7[5] = a4;
-  v5 = [a3 sortedArrayUsingComparator:{v7, a4, a5}];
+  v7[5] = by;
+  v5 = [info sortedArrayUsingComparator:{v7, by, option}];
 
   return v5;
 }
@@ -1005,7 +1005,7 @@ LABEL_5:
 - (id)getThirdPartyAppsInfoKeys
 {
   v15 = objc_opt_new();
-  v16 = self;
+  selfCopy = self;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1032,7 +1032,7 @@ LABEL_5:
         {
           v11 = v7;
           v12 = v8;
-          v13 = [(SATelemetryManager *)v16 getVendorValueforBundleIDs:v10];
+          v13 = [(SATelemetryManager *)selfCopy getVendorValueforBundleIDs:v10];
           if (([v13 isEqualToString:@"Apple"] & 1) == 0)
           {
             [v15 addObject:v10];
@@ -1052,22 +1052,22 @@ LABEL_5:
   return v15;
 }
 
-- (id)fillFilteredInfoDict:(id)a3 withNumberOfApps:(unint64_t)a4 withAppInfoArr:(id)a5 withFilterCriteria:(int64_t)a6 withMetricType:(id)a7
+- (id)fillFilteredInfoDict:(id)dict withNumberOfApps:(unint64_t)apps withAppInfoArr:(id)arr withFilterCriteria:(int64_t)criteria withMetricType:(id)type
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a7;
-  if ([v12 count] <= a4)
+  dictCopy = dict;
+  arrCopy = arr;
+  typeCopy = type;
+  if ([arrCopy count] <= apps)
   {
-    v39 = v12;
+    v39 = arrCopy;
   }
 
   else
   {
-    v41 = a6;
-    v42 = v13;
-    v43 = v12;
-    [v12 subarrayWithRange:{a4, objc_msgSend(v12, "count") - a4}];
+    criteriaCopy = criteria;
+    v42 = typeCopy;
+    v43 = arrCopy;
+    [arrCopy subarrayWithRange:{apps, objc_msgSend(arrCopy, "count") - apps}];
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
@@ -1114,16 +1114,16 @@ LABEL_5:
                 if (isKindOfClass)
                 {
                   v23 = [v15 valueForKey:v20];
-                  v24 = [v23 longLongValue];
-                  v25 = [v11 valueForKey:v20];
-                  v26 = v25;
-                  if (v25)
+                  longLongValue = [v23 longLongValue];
+                  longLongValue2 = [dictCopy valueForKey:v20];
+                  v26 = longLongValue2;
+                  if (longLongValue2)
                   {
-                    v25 = [v25 longLongValue];
+                    longLongValue2 = [longLongValue2 longLongValue];
                   }
 
-                  v27 = [NSNumber numberWithUnsignedLongLong:&v24[v25]];
-                  [v11 setValue:v27 forKey:v20];
+                  v27 = [NSNumber numberWithUnsignedLongLong:&longLongValue[longLongValue2]];
+                  [dictCopy setValue:v27 forKey:v20];
                 }
               }
 
@@ -1144,46 +1144,46 @@ LABEL_5:
     }
 
     v28 = [(SATelemetryManager *)self getTelAppInfoTranslation:0];
-    v13 = v42;
-    [v11 setValue:v42 forKey:v28];
+    typeCopy = v42;
+    [dictCopy setValue:v42 forKey:v28];
 
     runSignature = self->_runSignature;
     v30 = [(SATelemetryManager *)self getTelAppInfoTranslation:1];
-    [v11 setValue:runSignature forKey:v30];
+    [dictCopy setValue:runSignature forKey:v30];
 
     icloudPlan = self->_icloudPlan;
     v32 = [(SATelemetryManager *)self getTelAppInfoTranslation:4];
-    [v11 setValue:icloudPlan forKey:v32];
+    [dictCopy setValue:icloudPlan forKey:v32];
 
     v33 = [NSNumber numberWithUnsignedLongLong:self->_SAFOptions];
     v34 = [(SATelemetryManager *)self getTelAppInfoTranslation:5];
-    [v11 setValue:v33 forKey:v34];
+    [dictCopy setValue:v33 forKey:v34];
 
-    v35 = [(SATelemetryManager *)self getTelAppInfoTranslation:v41];
+    v35 = [(SATelemetryManager *)self getTelAppInfoTranslation:criteriaCopy];
     v36 = [(SATelemetryManager *)self getTelAppInfoTranslation:2];
-    [v11 setValue:v35 forKey:v36];
+    [dictCopy setValue:v35 forKey:v36];
 
     v37 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [obj count]);
     v38 = [(SATelemetryManager *)self getTelAppInfoTranslation:6];
-    [v11 setValue:v37 forKey:v38];
+    [dictCopy setValue:v37 forKey:v38];
 
-    v12 = v43;
-    v39 = [v43 subarrayWithRange:{0, a4}];
+    arrCopy = v43;
+    v39 = [v43 subarrayWithRange:{0, apps}];
   }
 
   return v39;
 }
 
-- (id)setAppInfoDictWithFirstPartyAppsKeys:(id)a3 WithThirdPartyAppKeys:(id)a4
+- (id)setAppInfoDictWithFirstPartyAppsKeys:(id)keys WithThirdPartyAppKeys:(id)appKeys
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  appKeysCopy = appKeys;
   v8 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = v6;
+  v9 = keysCopy;
   v10 = [v9 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v10)
   {
@@ -1222,7 +1222,7 @@ LABEL_5:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v17 = v7;
+  v17 = appKeysCopy;
   v18 = [v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v18)
   {
@@ -1313,37 +1313,37 @@ LABEL_5:
   return v3;
 }
 
-- (id)getTelAppInfoTranslation:(int64_t)a3
+- (id)getTelAppInfoTranslation:(int64_t)translation
 {
   v4 = +[SATelemetryManager SATelAppInfoTranslationTable];
-  v5 = [NSNumber numberWithInteger:a3];
+  v5 = [NSNumber numberWithInteger:translation];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   return v6;
 }
 
-- (id)getTelTotalsInfoTranslation:(int64_t)a3
+- (id)getTelTotalsInfoTranslation:(int64_t)translation
 {
   v4 = +[SATelemetryManager SATelTotalsInfoTranslationTable];
-  v5 = [NSNumber numberWithInteger:a3];
+  v5 = [NSNumber numberWithInteger:translation];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   return v6;
 }
 
-- (id)getTelTotalsDirStatsInfoTranslation:(int64_t)a3
+- (id)getTelTotalsDirStatsInfoTranslation:(int64_t)translation
 {
   v4 = +[SATelemetryManager SATelTotalsDirStatsInfoTranslationTable];
-  v5 = [NSNumber numberWithInteger:a3];
+  v5 = [NSNumber numberWithInteger:translation];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   return v6;
 }
 
-- (id)getTelTimeInfoTranslation:(int64_t)a3
+- (id)getTelTimeInfoTranslation:(int64_t)translation
 {
   v4 = +[SATelemetryManager SATelTimeInfoTranslationTable];
-  v5 = [NSNumber numberWithInteger:a3];
+  v5 = [NSNumber numberWithInteger:translation];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   return v6;
@@ -1351,14 +1351,14 @@ LABEL_5:
 
 - (void)hasResultsError
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(SATelemetryManager *)self getValueForTotalsInfoEntry:18];
   v4 = SASpeculativeDownloadAnalytics;
   if (+[SATapToRadar forceTTR])
   {
     [SATapToRadar sendTapToRadarNotificationWithDescription:&stru_100066450 highPriorityProblem:0];
 LABEL_3:
-    v5 = 0;
+    0x640000000 = 0;
     goto LABEL_13;
   }
 
@@ -1375,12 +1375,12 @@ LABEL_3:
       sub_100042258();
     }
 
-    v5 = @"SystemData size is negative";
+    0x640000000 = @"SystemData size is negative";
   }
 
   else
   {
-    v5 = [NSString stringWithFormat:@"SystemData size: %llu > %llu", v3, 0x640000000];
+    0x640000000 = [NSString stringWithFormat:@"SystemData size: %llu > %llu", v3, 0x640000000];
     v6 = SALog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -1388,20 +1388,20 @@ LABEL_3:
     }
   }
 
-  [SATapToRadar sendTapToRadarNotificationWithDescription:v5 highPriorityProblem:0];
+  [SATapToRadar sendTapToRadarNotificationWithDescription:0x640000000 highPriorityProblem:0];
 LABEL_13:
   v8 = +[SASupport getDiskCapacity];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v2->_appsInfo;
+  obj = selfCopy->_appsInfo;
   v29 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v38 objects:v47 count:16];
   if (v29)
   {
     v28 = *v39;
     v9 = &SBSCopyDisplayIdentifiers_ptr;
-    v31 = v2;
+    v31 = selfCopy;
     do
     {
       v10 = 0;
@@ -1414,7 +1414,7 @@ LABEL_13:
 
         v30 = v10;
         v32 = *(*(&v38 + 1) + 8 * v10);
-        v11 = [(NSMutableDictionary *)v2->_appsInfo objectForKey:?];
+        v11 = [(NSMutableDictionary *)selfCopy->_appsInfo objectForKey:?];
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
@@ -1439,23 +1439,23 @@ LABEL_13:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v18 = [v16 longLongValue];
-                if ((v18 & 0x8000000000000000) != 0)
+                longLongValue = [v16 longLongValue];
+                if ((longLongValue & 0x8000000000000000) != 0)
                 {
                   v21 = v8;
-                  v22 = [(SATelemetryManager *)v2 getTelAppInfoTranslation:9];
+                  v22 = [(SATelemetryManager *)selfCopy getTelAppInfoTranslation:9];
                   if ([v15 isEqualToString:v22])
                   {
 
                     goto LABEL_33;
                   }
 
-                  v23 = [(SATelemetryManager *)v2 getTelAppInfoTranslation:17];
+                  v23 = [(SATelemetryManager *)selfCopy getTelAppInfoTranslation:17];
                   v24 = [v15 isEqualToString:v23];
 
                   if (v24)
                   {
-                    v2 = v31;
+                    selfCopy = v31;
                     v4 = SASpeculativeDownloadAnalytics;
 LABEL_33:
                     v8 = v21;
@@ -1478,17 +1478,17 @@ LABEL_33:
                     }
 
                     [SATapToRadar sendTapToRadarNotificationWithDescription:v25 highPriorityProblem:0];
-                    v5 = v25;
-                    v2 = v31;
+                    0x640000000 = v25;
+                    selfCopy = v31;
                   }
 
                   v9 = &SBSCopyDisplayIdentifiers_ptr;
                   goto LABEL_38;
                 }
 
-                if (v18 > v8)
+                if (longLongValue > v8)
                 {
-                  v19 = [NSString stringWithFormat:@"%@ %@: %llu > diskCapacity: %llu", v32, v15, v18, v8];
+                  v19 = [NSString stringWithFormat:@"%@ %@: %llu > diskCapacity: %llu", v32, v15, longLongValue, v8];
 
                   v20 = SALog();
                   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1501,7 +1501,7 @@ LABEL_33:
                   }
 
                   [&v4[15] sendTapToRadarNotificationWithDescription:v19 highPriorityProblem:1];
-                  v5 = v19;
+                  0x640000000 = v19;
                 }
               }
 
@@ -1525,10 +1525,10 @@ LABEL_38:
   }
 }
 
-+ (void)updateLastSentTelemetryDate:(BOOL)a3
++ (void)updateLastSentTelemetryDate:(BOOL)date
 {
   v3 = @"lastUserSentTelemetryDate";
-  if (a3)
+  if (date)
   {
     v3 = @"lastDailyActivitySentTelemetryDate";
   }
@@ -1538,9 +1538,9 @@ LABEL_38:
   [SARunTimeDataManager setRunTimeDataObject:v5 forKey:v4];
 }
 
-+ (id)getLastSentTelemetryDate:(BOOL)a3
++ (id)getLastSentTelemetryDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = @"lastDailyActivitySentTelemetryDate";
   }
@@ -1553,21 +1553,21 @@ LABEL_38:
   return [SARunTimeDataManager runTimeDataObjectForKey:v3];
 }
 
-- (void)saveTelemetryDataToDisk:(id)a3 thirdPartyAppKeys:(id)a4
+- (void)saveTelemetryDataToDisk:(id)disk thirdPartyAppKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
+  diskCopy = disk;
+  keysCopy = keys;
   v8 = +[NSFileManager defaultManager];
   v19 = 0;
   v9 = [v8 createDirectoryAtPath:@"/var/db/spaceattribution" withIntermediateDirectories:1 attributes:0 error:&v19];
   v10 = v19;
   if (v9)
   {
-    v11 = [(SATelemetryManager *)self setAppInfoDictWithFirstPartyAppsKeys:v6 WithThirdPartyAppKeys:v7];
-    v12 = [(SATelemetryManager *)self dictionaryDescription];
-    [v12 setObject:v11 forKey:@"AppsInfo"];
+    v11 = [(SATelemetryManager *)self setAppInfoDictWithFirstPartyAppsKeys:diskCopy WithThirdPartyAppKeys:keysCopy];
+    dictionaryDescription = [(SATelemetryManager *)self dictionaryDescription];
+    [dictionaryDescription setObject:v11 forKey:@"AppsInfo"];
     v18 = v10;
-    v13 = [NSJSONSerialization dataWithJSONObject:v12 options:1 error:&v18];
+    v13 = [NSJSONSerialization dataWithJSONObject:dictionaryDescription options:1 error:&v18];
     v14 = v18;
 
     if (v14)
@@ -1613,9 +1613,9 @@ LABEL_11:
 LABEL_12:
 }
 
-+ (void)getLastTelemetryData:(id)a3
++ (void)getLastTelemetryData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = [NSString stringWithFormat:@"%@/%@", @"/var/db/spaceattribution", @"SpaceAttributionTelemetryData.json"];
   v13 = 0;
   v5 = [NSData dataWithContentsOfFile:v4 options:0 error:&v13];
@@ -1639,7 +1639,7 @@ LABEL_12:
       sub_100042570();
     }
 
-    v3[2](v3, 0, v6);
+    dataCopy[2](dataCopy, 0, v6);
   }
 
   else
@@ -1657,7 +1657,7 @@ LABEL_12:
       }
     }
 
-    (v3)[2](v3, v9, v6);
+    (dataCopy)[2](dataCopy, v9, v6);
   }
 }
 
@@ -1787,16 +1787,16 @@ LABEL_12:
   return v3;
 }
 
-+ (void)clearLastTelemetryData:(id)a3
++ (void)clearLastTelemetryData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[NSFileManager defaultManager];
   v5 = [NSString stringWithFormat:@"%@/%@", @"/var/db/spaceattribution", @"SpaceAttributionTelemetryData.json"];
   v7 = 0;
   [v4 removeItemAtPath:v5 error:&v7];
   v6 = v7;
 
-  v3[2](v3, v6);
+  dataCopy[2](dataCopy, v6);
 }
 
 @end

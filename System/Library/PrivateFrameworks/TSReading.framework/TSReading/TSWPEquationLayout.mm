@@ -5,7 +5,7 @@
 - (id)computeLayoutGeometry;
 - (void)dealloc;
 - (void)validate;
-- (void)willLayoutInlineWithTextAttributes:(__CFDictionary *)a3 columnWidth:(double)a4;
+- (void)willLayoutInlineWithTextAttributes:(__CFDictionary *)attributes columnWidth:(double)width;
 @end
 
 @implementation TSWPEquationLayout
@@ -23,9 +23,9 @@
 {
   if (!self->_equationLayoutContext)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEquationLayout validate]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationLayout.m"), 61, @"willLayoutInlineWithTextAttributes:columnWidth: should have been called before validate"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationLayout.m"), 61, @"willLayoutInlineWithTextAttributes:columnWidth: should have been called before validate"}];
   }
 
   if (!self->_equationLayout && self->_equationLayoutContext)
@@ -57,9 +57,9 @@
 {
   if (!self->_equationLayout || (equationLayoutContext = self->_equationLayoutContext) == 0)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEquationLayout computeLayoutGeometry]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationLayout.m"), 86, @"can't compute layout geometry before being validated"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationLayout.m"), 86, @"can't compute layout geometry before being validated"}];
     equationLayoutContext = self->_equationLayoutContext;
   }
 
@@ -122,9 +122,9 @@
 {
   if (!self->_equationLayout)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEquationLayout inlineVerticalOffset]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationLayout.m"), 117, @"can't compute vertical offset before being validated"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationLayout.m"), 117, @"can't compute vertical offset before being validated"}];
   }
 
   if (!self->_equationIsValid)
@@ -142,16 +142,16 @@
 {
   if (!self->_equationLayout)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEquationLayout inlineCenteredAlignmentOffset]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationLayout.m"), 131, @"can't compute vertical offset before being validated"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationLayout.m"), 131, @"can't compute vertical offset before being validated"}];
   }
 
   if (!self->_equationLayoutContext)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEquationLayout inlineCenteredAlignmentOffset]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationLayout.m"), 132, @"can't compute vertical offset without a layout context"}];
+    [currentHandler2 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationLayout.m"), 132, @"can't compute vertical offset without a layout context"}];
   }
 
   result = 0.0;
@@ -183,11 +183,11 @@
   return result;
 }
 
-- (void)willLayoutInlineWithTextAttributes:(__CFDictionary *)a3 columnWidth:(double)a4
+- (void)willLayoutInlineWithTextAttributes:(__CFDictionary *)attributes columnWidth:(double)width
 {
-  v8 = [[TSWPEquationLayoutContext alloc] initWithTextAttributes:a3 columnWidth:a4];
-  Value = CFDictionaryGetValue(a3, *MEMORY[0x277CC49C0]);
-  v7 = CFDictionaryGetValue(a3, @"TSWPShadow");
+  v8 = [[TSWPEquationLayoutContext alloc] initWithTextAttributes:attributes columnWidth:width];
+  Value = CFDictionaryGetValue(attributes, *MEMORY[0x277CC49C0]);
+  v7 = CFDictionaryGetValue(attributes, @"TSWPShadow");
   if (![(TSWPEquationLayoutContext *)v8 isEqual:self->_equationLayoutContext])
   {
 

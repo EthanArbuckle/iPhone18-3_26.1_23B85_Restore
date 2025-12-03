@@ -1,7 +1,7 @@
 @interface PASUIProxiedTermsHandler
 - (_TtC23ProximityAppleIDSetupUI24PASUIProxiedTermsHandler)init;
-- (void)genericTermsRemoteUI:(id)a3 acceptedTermsInfo:(id)a4;
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4;
+- (void)genericTermsRemoteUI:(id)i acceptedTermsInfo:(id)info;
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success;
 @end
 
 @implementation PASUIProxiedTermsHandler
@@ -13,11 +13,11 @@
   return result;
 }
 
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success
 {
-  v4 = a4;
-  v5 = self;
-  if (v4)
+  successCopy = success;
+  selfCopy = self;
+  if (successCopy)
   {
     sub_26111F7D0();
   }
@@ -28,12 +28,12 @@
   }
 }
 
-- (void)genericTermsRemoteUI:(id)a3 acceptedTermsInfo:(id)a4
+- (void)genericTermsRemoteUI:(id)i acceptedTermsInfo:(id)info
 {
-  if (a4)
+  if (info)
   {
     v5 = sub_26115B614();
-    v6 = self;
+    selfCopy = self;
     sub_26111F63C(v5);
   }
 

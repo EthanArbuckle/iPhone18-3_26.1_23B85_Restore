@@ -3,7 +3,7 @@
 - (UIEdgeInsets)multiSelectSectionContentInsets;
 - (UIEdgeInsets)togglesBackgroundContentInsets;
 - (UIEdgeInsets)togglesSectionContentInsets;
-- (double)headerHeightWithTitle:(id)a3 collectionView:(id)a4;
+- (double)headerHeightWithTitle:(id)title collectionView:(id)view;
 - (double)multiSelectHeaderLeadingAdjustment;
 @end
 
@@ -78,15 +78,15 @@
   return result;
 }
 
-- (double)headerHeightWithTitle:(id)a3 collectionView:(id)a4
+- (double)headerHeightWithTitle:(id)title collectionView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  titleCopy = title;
+  viewCopy = view;
+  if ([titleCopy length])
   {
     v7 = objc_alloc_init(AllRefinementsHeaderView);
-    [(AllRefinementsHeaderView *)v7 setTitle:v5];
-    [v6 frame];
+    [(AllRefinementsHeaderView *)v7 setTitle:titleCopy];
+    [viewCopy frame];
     v9 = v8;
     LODWORD(v8) = 1148846080;
     LODWORD(v10) = 1132068864;

@@ -1,22 +1,22 @@
 @interface WFRemoteExecutionOutgoingDialogRequestSession
-- (WFRemoteExecutionOutgoingDialogRequestSession)initWithService:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)finishWithError:(id)a3;
-- (void)handleIncomingProtobuf:(id)a3;
+- (WFRemoteExecutionOutgoingDialogRequestSession)initWithService:(id)service request:(id)request completion:(id)completion;
+- (void)finishWithError:(id)error;
+- (void)handleIncomingProtobuf:(id)protobuf;
 - (void)handleTimeout;
-- (void)sendToDestinations:(id)a3 options:(id)a4;
+- (void)sendToDestinations:(id)destinations options:(id)options;
 @end
 
 @implementation WFRemoteExecutionOutgoingDialogRequestSession
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(WFRemoteExecutionOutgoingDialogRequestSession *)self completion];
+  errorCopy = error;
+  completion = [(WFRemoteExecutionOutgoingDialogRequestSession *)self completion];
 
-  if (v5)
+  if (completion)
   {
-    v6 = [(WFRemoteExecutionOutgoingDialogRequestSession *)self completion];
-    (v6)[2](v6, 0, v4);
+    completion2 = [(WFRemoteExecutionOutgoingDialogRequestSession *)self completion];
+    (completion2)[2](completion2, 0, errorCopy);
 
     [(WFRemoteExecutionOutgoingDialogRequestSession *)self setCompletion:0];
   }
@@ -33,30 +33,30 @@
   [(WFRemoteExecutionOutgoingDialogRequestSession *)self finish];
 }
 
-- (void)handleIncomingProtobuf:(id)a3
+- (void)handleIncomingProtobuf:(id)protobuf
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   [(WFRemoteExecutionSession *)self setState:102];
   v5 = [WFRemoteExecutionDialogRequestResponse alloc];
-  v6 = [v4 data];
+  data = [protobufCopy data];
 
   v22 = 0;
-  v7 = [(WFRemoteExecutionDialogRequestResponse *)v5 initWithData:v6 error:&v22];
+  v7 = [(WFRemoteExecutionDialogRequestResponse *)v5 initWithData:data error:&v22];
   v8 = v22;
 
   if (v7)
   {
-    v9 = [(WFRemoteExecutionDialogRequestResponse *)v7 originatingRequestIdentifier];
-    v10 = [(WFRemoteExecutionSession *)self request];
-    v11 = [v10 identifier];
-    v12 = [v9 isEqualToString:v11];
+    originatingRequestIdentifier = [(WFRemoteExecutionDialogRequestResponse *)v7 originatingRequestIdentifier];
+    request = [(WFRemoteExecutionSession *)self request];
+    identifier = [request identifier];
+    v12 = [originatingRequestIdentifier isEqualToString:identifier];
 
     if (v12)
     {
-      v13 = [(WFRemoteExecutionOutgoingDialogRequestSession *)self completion];
-      v14 = [(WFRemoteExecutionDialogRequestResponse *)v7 error];
-      (v13)[2](v13, v7, v14);
+      completion = [(WFRemoteExecutionOutgoingDialogRequestSession *)self completion];
+      error = [(WFRemoteExecutionDialogRequestResponse *)v7 error];
+      (completion)[2](completion, v7, error);
 
       [(WFRemoteExecutionOutgoingDialogRequestSession *)self setCompletion:0];
       [(WFRemoteExecutionOutgoingDialogRequestSession *)self finish];
@@ -103,8 +103,8 @@
     }
 
     [(WFRemoteExecutionSession *)self setState:v19];
-    v20 = [(WFRemoteExecutionOutgoingDialogRequestSession *)self completion];
-    (v20)[2](v20, 0, v8);
+    completion2 = [(WFRemoteExecutionOutgoingDialogRequestSession *)self completion];
+    (completion2)[2](completion2, 0, v8);
 
     [(WFRemoteExecutionOutgoingDialogRequestSession *)self setCompletion:0];
     [(WFRemoteExecutionOutgoingDialogRequestSession *)self finishWithError:v8];
@@ -113,44 +113,44 @@
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendToDestinations:(id)a3 options:(id)a4
+- (void)sendToDestinations:(id)destinations options:(id)options
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v30.receiver = self;
   v30.super_class = WFRemoteExecutionOutgoingDialogRequestSession;
-  [(WFRemoteExecutionSession *)&v30 sendToDestinations:v6 options:v7];
+  [(WFRemoteExecutionSession *)&v30 sendToDestinations:destinationsCopy options:optionsCopy];
   [(WFRemoteExecutionSession *)self setState:100];
   v8 = objc_alloc_init(MEMORY[0x1E69C65C0]);
-  v9 = [(WFRemoteExecutionSession *)self request];
+  request = [(WFRemoteExecutionSession *)self request];
   v29 = 0;
-  v10 = [v9 writeTo:v8 error:&v29];
+  v10 = [request writeTo:v8 error:&v29];
   v11 = v29;
 
   if (v10)
   {
     v12 = objc_alloc(MEMORY[0x1E69A5388]);
-    v13 = [v8 immutableData];
-    v14 = [v12 initWithProtobufData:v13 type:10 isResponse:0];
+    immutableData = [v8 immutableData];
+    v14 = [v12 initWithProtobufData:immutableData type:10 isResponse:0];
 
     v15 = getWFRemoteExecutionLogObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [(WFRemoteExecutionSession *)self request];
-      v17 = [v16 identifier];
+      request2 = [(WFRemoteExecutionSession *)self request];
+      identifier = [request2 identifier];
       *buf = 136315394;
       v32 = "[WFRemoteExecutionOutgoingDialogRequestSession sendToDestinations:options:]";
       v33 = 2114;
-      v34 = v17;
+      selfCopy = identifier;
       _os_log_impl(&dword_1CA256000, v15, OS_LOG_TYPE_INFO, "%s <%{public}@> sending dialog request", buf, 0x16u);
     }
 
     [(WFRemoteExecutionSession *)self restartTimeout];
-    v18 = [(WFRemoteExecutionSession *)self service];
+    service = [(WFRemoteExecutionSession *)self service];
     v27 = 0;
     v28 = 0;
-    v19 = [v18 sendProtobuf:v14 toDestinations:v6 priority:300 options:v7 identifier:&v28 error:&v27];
+    v19 = [service sendProtobuf:v14 toDestinations:destinationsCopy priority:300 options:optionsCopy identifier:&v28 error:&v27];
     v20 = v28;
     v21 = v27;
 
@@ -169,7 +169,7 @@
         *buf = 136315650;
         v32 = "[WFRemoteExecutionOutgoingDialogRequestSession sendToDestinations:options:]";
         v33 = 2114;
-        v34 = self;
+        selfCopy = self;
         v35 = 2114;
         v36 = v21;
         _os_log_impl(&dword_1CA256000, v25, OS_LOG_TYPE_ERROR, "%s %{public}@ failed to send with error: %{public}@", buf, 0x20u);
@@ -184,12 +184,12 @@
     v22 = getWFRemoteExecutionLogObject();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
-      v23 = [(WFRemoteExecutionSession *)self request];
-      v24 = [v23 identifier];
+      request3 = [(WFRemoteExecutionSession *)self request];
+      identifier2 = [request3 identifier];
       *buf = 136315650;
       v32 = "[WFRemoteExecutionOutgoingDialogRequestSession sendToDestinations:options:]";
       v33 = 2114;
-      v34 = v24;
+      selfCopy = identifier2;
       v35 = 2114;
       v36 = v11;
       _os_log_impl(&dword_1CA256000, v22, OS_LOG_TYPE_FAULT, "%s <%{public}@> failed to write protobuf with error: %{public}@", buf, 0x20u);
@@ -202,23 +202,23 @@
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (WFRemoteExecutionOutgoingDialogRequestSession)initWithService:(id)a3 request:(id)a4 completion:(id)a5
+- (WFRemoteExecutionOutgoingDialogRequestSession)initWithService:(id)service request:(id)request completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  serviceCopy = service;
+  requestCopy = request;
+  completionCopy = completion;
+  if (serviceCopy)
   {
-    if (v10)
+    if (requestCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionOutgoingDialogRequestSession.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionOutgoingDialogRequestSession.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"request"}];
 
-    if (v11)
+    if (completionCopy)
     {
       goto LABEL_4;
     }
@@ -226,33 +226,33 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionOutgoingDialogRequestSession.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"service"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionOutgoingDialogRequestSession.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"service"}];
 
-  if (!v10)
+  if (!requestCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (completionCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionOutgoingDialogRequestSession.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionOutgoingDialogRequestSession.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_4:
   v21.receiver = self;
   v21.super_class = WFRemoteExecutionOutgoingDialogRequestSession;
-  v12 = [(WFRemoteExecutionSession *)&v21 initWithService:v9];
+  v12 = [(WFRemoteExecutionSession *)&v21 initWithService:serviceCopy];
   v13 = v12;
   if (v12)
   {
-    [(WFRemoteExecutionSession *)v12 setRequest:v10];
-    v14 = _Block_copy(v11);
+    [(WFRemoteExecutionSession *)v12 setRequest:requestCopy];
+    v14 = _Block_copy(completionCopy);
     completion = v13->_completion;
     v13->_completion = v14;
 

@@ -1,21 +1,21 @@
 @interface NSDateFormatter
-- (id)dateFromServerString:(id)a3 withError:(id *)a4;
+- (id)dateFromServerString:(id)string withError:(id *)error;
 @end
 
 @implementation NSDateFormatter
 
-- (id)dateFromServerString:(id)a3 withError:(id *)a4
+- (id)dateFromServerString:(id)string withError:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
+  stringCopy = string;
+  v6 = stringCopy;
   memset(&v25, 0, sizeof(v25));
-  if (!v5)
+  if (!stringCopy)
   {
     MobileActivationError = createMobileActivationError("[NSDateFormatter(MobileActivation) dateFromServerString:withError:]", 27, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Invalid input.", v21, v23, *&v25.tm_sec, *&v25.tm_hour, *&v25.tm_mon, *&v25.tm_wday, *&v25.tm_isdst, v25.tm_gmtoff, v25.tm_zone);
     goto LABEL_10;
   }
 
-  if (!strptime_l([v5 UTF8String], "%a, %d %b %Y %H:%M:%S %Z", &v25, 0))
+  if (!strptime_l([stringCopy UTF8String], "%a, %d %b %Y %H:%M:%S %Z", &v25, 0))
   {
     v12 = *__error();
     v13 = __error();
@@ -52,11 +52,11 @@ LABEL_9:
 LABEL_10:
   v18 = MobileActivationError;
   v10 = v18;
-  if (a4)
+  if (error)
   {
     v19 = v18;
     v9 = 0;
-    *a4 = v10;
+    *error = v10;
   }
 
   else

@@ -1,9 +1,9 @@
 @interface TSDCallbackRefconMap
 + (id)sharedTSDCallbackRefconMap;
 - (TSDCallbackRefconMap)init;
-- (id)getObject:(unint64_t)a3;
-- (unint64_t)allocateRefcon:(id)a3;
-- (void)releaseRefcon:(unint64_t)a3;
+- (id)getObject:(unint64_t)object;
+- (unint64_t)allocateRefcon:(id)refcon;
+- (void)releaseRefcon:(unint64_t)refcon;
 @end
 
 @implementation TSDCallbackRefconMap
@@ -38,36 +38,36 @@
   return v2;
 }
 
-- (unint64_t)allocateRefcon:(id)a3
+- (unint64_t)allocateRefcon:(id)refcon
 {
   v4 = self->_nextRefcon + 1;
   self->_nextRefcon = v4;
-  v5 = a3;
+  refconCopy = refcon;
   v6 = [NSNumber numberWithUnsignedLongLong:v4];
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_refcons setObject:v5 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_refcons setObject:refconCopy forKeyedSubscript:v6];
 
   os_unfair_lock_unlock(&self->_lock);
-  v7 = [v6 unsignedLongLongValue];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
-  return v7;
+  return unsignedLongLongValue;
 }
 
-- (void)releaseRefcon:(unint64_t)a3
+- (void)releaseRefcon:(unint64_t)refcon
 {
   os_unfair_lock_lock(&self->_lock);
   refcons = self->_refcons;
-  v6 = [NSNumber numberWithUnsignedLongLong:a3];
+  v6 = [NSNumber numberWithUnsignedLongLong:refcon];
   [(NSMutableDictionary *)refcons removeObjectForKey:v6];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)getObject:(unint64_t)a3
+- (id)getObject:(unint64_t)object
 {
   os_unfair_lock_lock(&self->_lock);
   refcons = self->_refcons;
-  v6 = [NSNumber numberWithUnsignedLongLong:a3];
+  v6 = [NSNumber numberWithUnsignedLongLong:object];
   v7 = [(NSMutableDictionary *)refcons objectForKey:v6];
 
   os_unfair_lock_unlock(&self->_lock);

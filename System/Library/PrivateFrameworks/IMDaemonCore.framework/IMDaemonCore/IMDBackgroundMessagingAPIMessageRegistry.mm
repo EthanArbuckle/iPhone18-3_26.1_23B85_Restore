@@ -1,8 +1,8 @@
 @interface IMDBackgroundMessagingAPIMessageRegistry
 + (id)sharedRegistry;
 - (IMDBackgroundMessagingAPIMessageRegistry)init;
-- (id)dateLastMessageSentFromAppWithBundleID:(id)a3 recipientHandle:(id)a4;
-- (void)recordMessageSentFromAppWithBundleID:(id)a3 toRecipientHandle:(id)a4;
+- (id)dateLastMessageSentFromAppWithBundleID:(id)d recipientHandle:(id)handle;
+- (void)recordMessageSentFromAppWithBundleID:(id)d toRecipientHandle:(id)handle;
 @end
 
 @implementation IMDBackgroundMessagingAPIMessageRegistry
@@ -34,17 +34,17 @@
   return v2;
 }
 
-- (void)recordMessageSentFromAppWithBundleID:(id)a3 toRecipientHandle:(id)a4
+- (void)recordMessageSentFromAppWithBundleID:(id)d toRecipientHandle:(id)handle
 {
-  v7 = [IMDBackgroundMessagingAPIMessageRegistry keyFromBundleID:a3 recipientHandle:a4];
+  v7 = [IMDBackgroundMessagingAPIMessageRegistry keyFromBundleID:d recipientHandle:handle];
   registry = self->_registry;
   v6 = [MEMORY[0x277CBEAA8] now];
   [(NSMutableDictionary *)registry setObject:v6 forKey:v7];
 }
 
-- (id)dateLastMessageSentFromAppWithBundleID:(id)a3 recipientHandle:(id)a4
+- (id)dateLastMessageSentFromAppWithBundleID:(id)d recipientHandle:(id)handle
 {
-  v5 = [IMDBackgroundMessagingAPIMessageRegistry keyFromBundleID:a3 recipientHandle:a4];
+  v5 = [IMDBackgroundMessagingAPIMessageRegistry keyFromBundleID:d recipientHandle:handle];
   v6 = [(NSMutableDictionary *)self->_registry objectForKey:v5];
 
   return v6;

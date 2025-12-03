@@ -1,17 +1,17 @@
 @interface HUServiceDetailsCameraStreamingAndRecordingItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUServiceDetailsCameraStreamingAndRecordingItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v18[1] = *MEMORY[0x277D85DE8];
   objc_opt_class();
-  v4 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = sourceServiceItem;
   }
 
   else

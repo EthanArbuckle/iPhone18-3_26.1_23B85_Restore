@@ -1,6 +1,6 @@
 @interface PGGraphBusinessCategoryNodeCollection
-+ (id)businessCategoryNodesForCategories:(id)a3 inGraph:(id)a4;
-+ (id)businessCategoryNodesForCategory:(id)a3 inGraph:(id)a4;
++ (id)businessCategoryNodesForCategories:(id)categories inGraph:(id)graph;
++ (id)businessCategoryNodesForCategory:(id)category inGraph:(id)graph;
 - (PGGraphBusinessNodeCollection)businessNodes;
 @end
 
@@ -14,20 +14,20 @@
   return v4;
 }
 
-+ (id)businessCategoryNodesForCategory:(id)a3 inGraph:(id)a4
++ (id)businessCategoryNodesForCategory:(id)category inGraph:(id)graph
 {
-  v5 = a4;
-  v6 = [PGGraphBusinessCategoryNode filterWithCategory:a3];
-  v7 = [(MANodeCollection *)PGGraphBusinessCategoryNodeCollection nodesMatchingFilter:v6 inGraph:v5];
+  graphCopy = graph;
+  v6 = [PGGraphBusinessCategoryNode filterWithCategory:category];
+  v7 = [(MANodeCollection *)PGGraphBusinessCategoryNodeCollection nodesMatchingFilter:v6 inGraph:graphCopy];
 
   return v7;
 }
 
-+ (id)businessCategoryNodesForCategories:(id)a3 inGraph:(id)a4
++ (id)businessCategoryNodesForCategories:(id)categories inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [PGGraphBusinessCategoryNode filterWithCategories:a3];
-  v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+  graphCopy = graph;
+  v7 = [PGGraphBusinessCategoryNode filterWithCategories:categories];
+  v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
 
   return v8;
 }

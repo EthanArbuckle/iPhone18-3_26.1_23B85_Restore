@@ -1,20 +1,20 @@
 @interface MKURLContext
-- (MKURLContext)initWithOriginatedFromWatch:(BOOL)a3 companionRouteContext:(id)a4;
+- (MKURLContext)initWithOriginatedFromWatch:(BOOL)watch companionRouteContext:(id)context;
 @end
 
 @implementation MKURLContext
 
-- (MKURLContext)initWithOriginatedFromWatch:(BOOL)a3 companionRouteContext:(id)a4
+- (MKURLContext)initWithOriginatedFromWatch:(BOOL)watch companionRouteContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = MKURLContext;
   v7 = [(MKURLContext *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_originatedFromWatch = a3;
-    v9 = [v6 copy];
+    v7->_originatedFromWatch = watch;
+    v9 = [contextCopy copy];
     companionRouteContext = v8->_companionRouteContext;
     v8->_companionRouteContext = v9;
   }

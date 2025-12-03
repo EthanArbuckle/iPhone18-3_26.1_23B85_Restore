@@ -1,5 +1,5 @@
 @interface AirQualityConditionsViewController
-- (AirQualityConditionsViewController)initWithWeatherLocationDataProvider:(id)a3;
+- (AirQualityConditionsViewController)initWithWeatherLocationDataProvider:(id)provider;
 - (AirQualityConditionsViewControllerDelegate)delegate;
 - (BOOL)_shouldShowAirQualityConditions;
 - (BOOL)isVisible;
@@ -11,8 +11,8 @@
 - (void)_updateSubviews;
 - (void)clearSavedLocation;
 - (void)loadView;
-- (void)setAirQualityConditions:(id)a3;
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)setAirQualityConditions:(id)conditions;
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
@@ -23,8 +23,8 @@
   v3 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(AirQualityConditionsViewController *)self setView:v3];
 
-  v4 = [(AirQualityConditionsViewController *)self view];
-  [v4 setAccessibilityIdentifier:@"AirQualityConditionsView"];
+  view = [(AirQualityConditionsViewController *)self view];
+  [view setAccessibilityIdentifier:@"AirQualityConditionsView"];
 }
 
 - (void)viewDidLoad
@@ -53,73 +53,73 @@
   v7 = [v3 initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(AirQualityConditionsViewController *)self setContentView:v7];
 
-  v8 = [(AirQualityConditionsViewController *)self contentView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentView = [(AirQualityConditionsViewController *)self contentView];
+  [contentView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(AirQualityConditionsViewController *)self contentView];
-  v10 = [v9 layer];
-  [v10 setCornerRadius:5.0];
+  contentView2 = [(AirQualityConditionsViewController *)self contentView];
+  layer = [contentView2 layer];
+  [layer setCornerRadius:5.0];
 
-  v11 = [(AirQualityConditionsViewController *)self contentView];
-  [v11 setAccessibilityIdentifier:@"AirQualityConditionsContent"];
+  contentView3 = [(AirQualityConditionsViewController *)self contentView];
+  [contentView3 setAccessibilityIdentifier:@"AirQualityConditionsContent"];
 
-  v12 = [(AirQualityConditionsViewController *)self view];
-  v13 = [(AirQualityConditionsViewController *)self contentView];
-  [v12 addSubview:v13];
+  view = [(AirQualityConditionsViewController *)self view];
+  contentView4 = [(AirQualityConditionsViewController *)self contentView];
+  [view addSubview:contentView4];
 
   v14 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(AirQualityConditionsViewController *)self setAqiCircleView:v14];
 
-  v15 = [(AirQualityConditionsViewController *)self aqiCircleView];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  aqiCircleView = [(AirQualityConditionsViewController *)self aqiCircleView];
+  [aqiCircleView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(AirQualityConditionsViewController *)self aqiCircleView];
-  [v16 setAccessibilityIdentifier:@"AirQualityConditionsCircleView"];
+  aqiCircleView2 = [(AirQualityConditionsViewController *)self aqiCircleView];
+  [aqiCircleView2 setAccessibilityIdentifier:@"AirQualityConditionsCircleView"];
 
-  v17 = [(AirQualityConditionsViewController *)self contentView];
-  v18 = [(AirQualityConditionsViewController *)self aqiCircleView];
-  [v17 addSubview:v18];
+  contentView5 = [(AirQualityConditionsViewController *)self contentView];
+  aqiCircleView3 = [(AirQualityConditionsViewController *)self aqiCircleView];
+  [contentView5 addSubview:aqiCircleView3];
 
   v19 = [[_MKUILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(AirQualityConditionsViewController *)self setAirQualityLabel:v19];
 
-  v20 = [(AirQualityConditionsViewController *)self airQualityLabel];
-  [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+  airQualityLabel = [(AirQualityConditionsViewController *)self airQualityLabel];
+  [airQualityLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v21 = +[UIColor clearColor];
-  v22 = [v21 CGColor];
-  v23 = [(AirQualityConditionsViewController *)self airQualityLabel];
-  v24 = [v23 layer];
-  [v24 setBackgroundColor:v22];
+  cGColor = [v21 CGColor];
+  airQualityLabel2 = [(AirQualityConditionsViewController *)self airQualityLabel];
+  layer2 = [airQualityLabel2 layer];
+  [layer2 setBackgroundColor:cGColor];
 
-  v25 = [(AirQualityConditionsViewController *)self airQualityLabel];
-  [v25 setTextAlignment:1];
+  airQualityLabel3 = [(AirQualityConditionsViewController *)self airQualityLabel];
+  [airQualityLabel3 setTextAlignment:1];
 
-  v26 = [(AirQualityConditionsViewController *)self _airQualityIndex];
-  v27 = [(AirQualityConditionsViewController *)self airQualityLabel];
-  [v27 setText:v26];
+  _airQualityIndex = [(AirQualityConditionsViewController *)self _airQualityIndex];
+  airQualityLabel4 = [(AirQualityConditionsViewController *)self airQualityLabel];
+  [airQualityLabel4 setText:_airQualityIndex];
 
-  v28 = [(AirQualityConditionsViewController *)self airQualityLabel];
-  [v28 setAccessibilityIdentifier:@"AirQualityConditionsTitleLabel"];
+  airQualityLabel5 = [(AirQualityConditionsViewController *)self airQualityLabel];
+  [airQualityLabel5 setAccessibilityIdentifier:@"AirQualityConditionsTitleLabel"];
 
-  v30 = [(AirQualityConditionsViewController *)self contentView];
-  v29 = [(AirQualityConditionsViewController *)self airQualityLabel];
-  [v30 addSubview:v29];
+  contentView6 = [(AirQualityConditionsViewController *)self contentView];
+  airQualityLabel6 = [(AirQualityConditionsViewController *)self airQualityLabel];
+  [contentView6 addSubview:airQualityLabel6];
 }
 
 - (id)_airQualityIndex
 {
-  v3 = [(AirQualityConditionsViewController *)self airQualityConditions];
+  airQualityConditions = [(AirQualityConditionsViewController *)self airQualityConditions];
 
-  if (v3)
+  if (airQualityConditions)
   {
-    v4 = [(AirQualityConditionsViewController *)self airQualityConditions];
-    v5 = [v4 hasNumericalAirQualityIndex];
+    airQualityConditions2 = [(AirQualityConditionsViewController *)self airQualityConditions];
+    hasNumericalAirQualityIndex = [airQualityConditions2 hasNumericalAirQualityIndex];
 
-    if (v5)
+    if (hasNumericalAirQualityIndex)
     {
-      v6 = [(AirQualityConditionsViewController *)self airQualityConditions];
-      v7 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", @"%ld", [v6 airQualityIndex]);
+      airQualityConditions3 = [(AirQualityConditionsViewController *)self airQualityConditions];
+      v7 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", @"%ld", [airQualityConditions3 airQualityIndex]);
     }
 
     else
@@ -143,7 +143,7 @@
       dispatch_once(&qword_10195E1B8, block);
     }
 
-    if (v5)
+    if (hasNumericalAirQualityIndex)
     {
       v14 = v12;
     }
@@ -176,9 +176,9 @@
 
 - (void)_updateSubviews
 {
-  v19 = [(AirQualityConditionsViewController *)self _font];
-  v3 = [(AirQualityConditionsViewController *)self airQualityLabel];
-  [v3 setFont:v19];
+  _font = [(AirQualityConditionsViewController *)self _font];
+  airQualityLabel = [(AirQualityConditionsViewController *)self airQualityLabel];
+  [airQualityLabel setFont:_font];
 
   if (_UISolariumEnabled())
   {
@@ -190,8 +190,8 @@
     +[MapsTheme weatherWidgetTextColor];
   }
   v4 = ;
-  v5 = [(AirQualityConditionsViewController *)self airQualityLabel];
-  [v5 setTextColor:v4];
+  airQualityLabel2 = [(AirQualityConditionsViewController *)self airQualityLabel];
+  [airQualityLabel2 setTextColor:v4];
 
   v6 = sub_10000FA08(self);
   v7 = 7.5;
@@ -200,26 +200,26 @@
     v7 = 8.5;
   }
 
-  [v19 _mapkit_scaledValueForValue:v7];
+  [_font _mapkit_scaledValueForValue:v7];
   v9 = v8;
-  v10 = [(AirQualityConditionsViewController *)self aqiCircleViewHeightConstraint];
-  [v10 setConstant:v9];
+  aqiCircleViewHeightConstraint = [(AirQualityConditionsViewController *)self aqiCircleViewHeightConstraint];
+  [aqiCircleViewHeightConstraint setConstant:v9];
 
-  v11 = [(AirQualityConditionsViewController *)self aqiCircleView];
-  v12 = [v11 layer];
-  [v12 setCornerRadius:v9 * 0.5];
+  aqiCircleView = [(AirQualityConditionsViewController *)self aqiCircleView];
+  layer = [aqiCircleView layer];
+  [layer setCornerRadius:v9 * 0.5];
 
   if ([(AirQualityConditionsViewController *)self _shouldShowAirQualityConditions])
   {
-    v13 = [(AirQualityConditionsViewController *)self _airQualityIndex];
-    v14 = [(AirQualityConditionsViewController *)self airQualityLabel];
-    [v14 setText:v13];
+    _airQualityIndex = [(AirQualityConditionsViewController *)self _airQualityIndex];
+    airQualityLabel3 = [(AirQualityConditionsViewController *)self airQualityLabel];
+    [airQualityLabel3 setText:_airQualityIndex];
 
-    v15 = [(AirQualityConditions *)self->_airQualityConditions color];
-    v16 = [v15 CGColor];
-    v17 = [(AirQualityConditionsViewController *)self aqiCircleView];
-    v18 = [v17 layer];
-    [v18 setBackgroundColor:v16];
+    color = [(AirQualityConditions *)self->_airQualityConditions color];
+    cGColor = [color CGColor];
+    aqiCircleView2 = [(AirQualityConditionsViewController *)self aqiCircleView];
+    layer2 = [aqiCircleView2 layer];
+    [layer2 setBackgroundColor:cGColor];
   }
 }
 
@@ -259,11 +259,11 @@
 - (BOOL)_shouldShowAirQualityConditions
 {
   v3 = +[WeatherSettingsManager sharedManager];
-  v4 = [v3 shouldShowAirQualityConditions];
+  shouldShowAirQualityConditions = [v3 shouldShowAirQualityConditions];
 
   if (self->_airQualityConditions)
   {
-    return v4;
+    return shouldShowAirQualityConditions;
   }
 
   else
@@ -275,87 +275,87 @@
 - (void)_setupConstraints
 {
   v69 = +[NSMutableArray array];
-  v3 = [(AirQualityConditionsViewController *)self aqiCircleView];
-  v4 = [v3 heightAnchor];
-  v5 = [v4 constraintEqualToConstant:0.0];
+  aqiCircleView = [(AirQualityConditionsViewController *)self aqiCircleView];
+  heightAnchor = [aqiCircleView heightAnchor];
+  v5 = [heightAnchor constraintEqualToConstant:0.0];
   [(AirQualityConditionsViewController *)self setAqiCircleViewHeightConstraint:v5];
 
-  v67 = [(AirQualityConditionsViewController *)self airQualityLabel];
-  v63 = [v67 topAnchor];
-  v65 = [(AirQualityConditionsViewController *)self contentView];
-  v61 = [v65 topAnchor];
-  v59 = [v63 constraintEqualToAnchor:v61];
+  airQualityLabel = [(AirQualityConditionsViewController *)self airQualityLabel];
+  topAnchor = [airQualityLabel topAnchor];
+  contentView = [(AirQualityConditionsViewController *)self contentView];
+  topAnchor2 = [contentView topAnchor];
+  v59 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v71[0] = v59;
-  v57 = [(AirQualityConditionsViewController *)self airQualityLabel];
-  v53 = [v57 bottomAnchor];
-  v55 = [(AirQualityConditionsViewController *)self contentView];
-  v51 = [v55 bottomAnchor];
-  v49 = [v53 constraintEqualToAnchor:v51];
+  airQualityLabel2 = [(AirQualityConditionsViewController *)self airQualityLabel];
+  bottomAnchor = [airQualityLabel2 bottomAnchor];
+  contentView2 = [(AirQualityConditionsViewController *)self contentView];
+  bottomAnchor2 = [contentView2 bottomAnchor];
+  v49 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v71[1] = v49;
-  v47 = [(AirQualityConditionsViewController *)self airQualityLabel];
-  v43 = [v47 leadingAnchor];
-  v45 = [(AirQualityConditionsViewController *)self contentView];
-  v41 = [v45 leadingAnchor];
-  v39 = [v43 constraintEqualToAnchor:v41];
+  airQualityLabel3 = [(AirQualityConditionsViewController *)self airQualityLabel];
+  leadingAnchor = [airQualityLabel3 leadingAnchor];
+  contentView3 = [(AirQualityConditionsViewController *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v71[2] = v39;
-  v37 = [(AirQualityConditionsViewController *)self aqiCircleView];
-  v35 = [v37 leadingAnchor];
-  v36 = [(AirQualityConditionsViewController *)self airQualityLabel];
-  v34 = [v36 trailingAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34 constant:4.0];
+  aqiCircleView2 = [(AirQualityConditionsViewController *)self aqiCircleView];
+  leadingAnchor3 = [aqiCircleView2 leadingAnchor];
+  airQualityLabel4 = [(AirQualityConditionsViewController *)self airQualityLabel];
+  trailingAnchor = [airQualityLabel4 trailingAnchor];
+  v33 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:4.0];
   v71[3] = v33;
-  v32 = [(AirQualityConditionsViewController *)self aqiCircleView];
-  v30 = [v32 trailingAnchor];
-  v31 = [(AirQualityConditionsViewController *)self contentView];
-  v29 = [v31 trailingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  aqiCircleView3 = [(AirQualityConditionsViewController *)self aqiCircleView];
+  trailingAnchor2 = [aqiCircleView3 trailingAnchor];
+  contentView4 = [(AirQualityConditionsViewController *)self contentView];
+  trailingAnchor3 = [contentView4 trailingAnchor];
+  v28 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v71[4] = v28;
-  v27 = [(AirQualityConditionsViewController *)self aqiCircleView];
-  v26 = [v27 centerYAnchor];
-  v6 = [(AirQualityConditionsViewController *)self airQualityLabel];
-  v7 = [v6 centerYAnchor];
-  v8 = [v26 constraintEqualToAnchor:v7];
+  aqiCircleView4 = [(AirQualityConditionsViewController *)self aqiCircleView];
+  centerYAnchor = [aqiCircleView4 centerYAnchor];
+  airQualityLabel5 = [(AirQualityConditionsViewController *)self airQualityLabel];
+  centerYAnchor2 = [airQualityLabel5 centerYAnchor];
+  v8 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v71[5] = v8;
-  v9 = [(AirQualityConditionsViewController *)self aqiCircleView];
-  v10 = [v9 widthAnchor];
-  v11 = [(AirQualityConditionsViewController *)self aqiCircleView];
-  v12 = [v11 heightAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  aqiCircleView5 = [(AirQualityConditionsViewController *)self aqiCircleView];
+  widthAnchor = [aqiCircleView5 widthAnchor];
+  aqiCircleView6 = [(AirQualityConditionsViewController *)self aqiCircleView];
+  heightAnchor2 = [aqiCircleView6 heightAnchor];
+  v13 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
   aqiCircleViewHeightConstraint = self->_aqiCircleViewHeightConstraint;
   v71[6] = v13;
   v71[7] = aqiCircleViewHeightConstraint;
   v15 = [NSArray arrayWithObjects:v71 count:8];
   [v69 addObjectsFromArray:v15];
 
-  v68 = [(AirQualityConditionsViewController *)self contentView];
-  v64 = [v68 centerXAnchor];
-  v66 = [(AirQualityConditionsViewController *)self view];
-  v62 = [v66 centerXAnchor];
-  v60 = [v64 constraintEqualToAnchor:v62];
+  contentView5 = [(AirQualityConditionsViewController *)self contentView];
+  centerXAnchor = [contentView5 centerXAnchor];
+  view = [(AirQualityConditionsViewController *)self view];
+  centerXAnchor2 = [view centerXAnchor];
+  v60 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v70[0] = v60;
-  v58 = [(AirQualityConditionsViewController *)self contentView];
-  v54 = [v58 topAnchor];
-  v56 = [(AirQualityConditionsViewController *)self view];
-  v52 = [v56 topAnchor];
-  v50 = [v54 constraintEqualToAnchor:v52];
+  contentView6 = [(AirQualityConditionsViewController *)self contentView];
+  topAnchor3 = [contentView6 topAnchor];
+  view2 = [(AirQualityConditionsViewController *)self view];
+  topAnchor4 = [view2 topAnchor];
+  v50 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v70[1] = v50;
-  v48 = [(AirQualityConditionsViewController *)self contentView];
-  v44 = [v48 bottomAnchor];
-  v46 = [(AirQualityConditionsViewController *)self view];
-  v42 = [v46 bottomAnchor];
-  v40 = [v44 constraintEqualToAnchor:v42];
+  contentView7 = [(AirQualityConditionsViewController *)self contentView];
+  bottomAnchor3 = [contentView7 bottomAnchor];
+  view3 = [(AirQualityConditionsViewController *)self view];
+  bottomAnchor4 = [view3 bottomAnchor];
+  v40 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v70[2] = v40;
-  v38 = [(AirQualityConditionsViewController *)self contentView];
-  v16 = [v38 leadingAnchor];
-  v17 = [(AirQualityConditionsViewController *)self view];
-  v18 = [v17 leadingAnchor];
-  v19 = [v16 constraintGreaterThanOrEqualToAnchor:v18];
+  contentView8 = [(AirQualityConditionsViewController *)self contentView];
+  leadingAnchor4 = [contentView8 leadingAnchor];
+  view4 = [(AirQualityConditionsViewController *)self view];
+  leadingAnchor5 = [view4 leadingAnchor];
+  v19 = [leadingAnchor4 constraintGreaterThanOrEqualToAnchor:leadingAnchor5];
   v70[3] = v19;
-  v20 = [(AirQualityConditionsViewController *)self contentView];
-  v21 = [v20 trailingAnchor];
-  v22 = [(AirQualityConditionsViewController *)self view];
-  v23 = [v22 trailingAnchor];
-  v24 = [v21 constraintLessThanOrEqualToAnchor:v23];
+  contentView9 = [(AirQualityConditionsViewController *)self contentView];
+  trailingAnchor4 = [contentView9 trailingAnchor];
+  view5 = [(AirQualityConditionsViewController *)self view];
+  trailingAnchor5 = [view5 trailingAnchor];
+  v24 = [trailingAnchor4 constraintLessThanOrEqualToAnchor:trailingAnchor5];
   v70[4] = v24;
   v25 = [NSArray arrayWithObjects:v70 count:5];
   [v69 addObjectsFromArray:v25];
@@ -372,9 +372,9 @@
 
 - (void)_toggleAirQualityConditionsVisibility
 {
-  v3 = [(AirQualityConditionsViewController *)self _shouldShowAirQualityConditions];
+  _shouldShowAirQualityConditions = [(AirQualityConditionsViewController *)self _shouldShowAirQualityConditions];
 
-  [(AirQualityConditionsViewController *)self setVisible:v3 animated:1];
+  [(AirQualityConditionsViewController *)self setVisible:_shouldShowAirQualityConditions animated:1];
 }
 
 - (void)clearSavedLocation
@@ -384,45 +384,45 @@
   [(AirQualityConditionsViewController *)self setAirQualityConditions:0];
 }
 
-- (void)setAirQualityConditions:(id)a3
+- (void)setAirQualityConditions:(id)conditions
 {
-  v5 = a3;
-  if (self->_airQualityConditions != v5)
+  conditionsCopy = conditions;
+  if (self->_airQualityConditions != conditionsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_airQualityConditions, a3);
+    v6 = conditionsCopy;
+    objc_storeStrong(&self->_airQualityConditions, conditions);
     [(AirQualityConditionsViewController *)self _updateSubviews];
     [(AirQualityConditionsViewController *)self setVisible:[(AirQualityConditionsViewController *)self _shouldShowAirQualityConditions] animated:1];
-    v5 = v6;
+    conditionsCopy = v6;
   }
 }
 
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(AirQualityConditionsViewController *)self delegate];
-  [v7 airQualityConditionsViewController:self makeVisible:v5 animated:v4];
+  animatedCopy = animated;
+  visibleCopy = visible;
+  delegate = [(AirQualityConditionsViewController *)self delegate];
+  [delegate airQualityConditionsViewController:self makeVisible:visibleCopy animated:animatedCopy];
 }
 
 - (BOOL)isVisible
 {
-  v2 = [(AirQualityConditionsViewController *)self view];
-  v3 = [v2 isHidden];
+  view = [(AirQualityConditionsViewController *)self view];
+  isHidden = [view isHidden];
 
-  return v3 ^ 1;
+  return isHidden ^ 1;
 }
 
-- (AirQualityConditionsViewController)initWithWeatherLocationDataProvider:(id)a3
+- (AirQualityConditionsViewController)initWithWeatherLocationDataProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = AirQualityConditionsViewController;
   v6 = [(AirQualityConditionsViewController *)&v11 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_weatherLocationDataProvider, a3);
+    objc_storeStrong(&v6->_weatherLocationDataProvider, provider);
     v8 = objc_alloc_init(_TtC4Maps32AirQualityConditionsDataProvider);
     airQualityConditionsDataProvider = v7->_airQualityConditionsDataProvider;
     v7->_airQualityConditionsDataProvider = v8;

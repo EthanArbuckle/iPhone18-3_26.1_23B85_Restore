@@ -1,15 +1,15 @@
 @interface ArcadePageTitleView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC22SubscribePageExtension19ArcadePageTitleView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC22SubscribePageExtension19ArcadePageTitleView)initWithCoder:(id)coder;
 - (void)invalidateIntrinsicContentSize;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ArcadePageTitleView
 
-- (_TtC22SubscribePageExtension19ArcadePageTitleView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension19ArcadePageTitleView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v4 = &self->_UINavigationBarTitleView_opaque[OBJC_IVAR____TtC22SubscribePageExtension19ArcadePageTitleView__contentOffset];
@@ -30,7 +30,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002FEDE4();
   v4 = v3;
   v6 = v5;
@@ -61,12 +61,12 @@
   [v11 setFrame:{MinX, CGRectGetMaxY(v15) - v10, v8, v10}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v4 = *&self->_UINavigationBarTitleView_opaque[OBJC_IVAR____TtC22SubscribePageExtension19ArcadePageTitleView_lockupView];
-  v5 = self;
-  [(ArcadePageTitleView *)v5 layoutMargins];
+  selfCopy = self;
+  [(ArcadePageTitleView *)selfCopy layoutMargins];
   sub_100753BA4();
   [v4 sizeThatFits:?];
   v7 = v6;
@@ -96,11 +96,11 @@
   [(ArcadePageTitleView *)&v6 invalidateIntrinsicContentSize];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1002FF110(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1002FF110(change);
 }
 
 @end

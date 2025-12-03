@@ -1,12 +1,12 @@
 @interface CKSQLBackingStore
 + (NSURL)directory;
-+ (void)setDirectory:(id)a3;
-- (_TtC13CoreKnowledge17CKSQLBackingStore)initWithName:(id)a3;
++ (void)setDirectory:(id)directory;
+- (_TtC13CoreKnowledge17CKSQLBackingStore)initWithName:(id)name;
 @end
 
 @implementation CKSQLBackingStore
 
-- (_TtC13CoreKnowledge17CKSQLBackingStore)initWithName:(id)a3
+- (_TtC13CoreKnowledge17CKSQLBackingStore)initWithName:(id)name
 {
   v4 = sub_1C86F8EFC();
   sub_1C86A1D30(v4, v5);
@@ -37,12 +37,12 @@
   return v8;
 }
 
-+ (void)setDirectory:(id)a3
++ (void)setDirectory:(id)directory
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC2AD9B8);
   MEMORY[0x1EEE9AC00](v4, v5);
   v7 = &v11 - v6;
-  if (a3)
+  if (directory)
   {
     sub_1C86F8BFC();
     v8 = sub_1C86F8C1C();

@@ -1,14 +1,14 @@
 @interface ICSystemPaperDrawingsHelper
-+ (id)drawingsForAttachment:(id)a3;
++ (id)drawingsForAttachment:(id)attachment;
 - (ICSystemPaperDrawingsHelper)init;
 @end
 
 @implementation ICSystemPaperDrawingsHelper
 
-+ (id)drawingsForAttachment:(id)a3
++ (id)drawingsForAttachment:(id)attachment
 {
-  v3 = a3;
-  _s11NotesShared27ICSystemPaperDrawingsHelperC21drawingsForAttachmentySay9PencilKit9PKDrawingVGSo12ICAttachmentCFZ_0(v3);
+  attachmentCopy = attachment;
+  _s11NotesShared27ICSystemPaperDrawingsHelperC21drawingsForAttachmentySay9PencilKit9PKDrawingVGSo12ICAttachmentCFZ_0(attachmentCopy);
 
   sub_2150A48F0();
   v4 = sub_2150A4EB0();

@@ -2,12 +2,12 @@
 + (id)style;
 + (id)styleContinuous;
 + (id)stylePeriodic;
-+ (id)stylePeriodicWithCount:(int64_t)a3;
-+ (id)stylePeriodicWithCount:(int64_t)a3 delay:(double)a4;
-+ (id)stylePeriodicWithDelay:(double)a3;
-- (_NSSymbolEffectOptionsRepeatStyle)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)stylePeriodicWithCount:(int64_t)count;
++ (id)stylePeriodicWithCount:(int64_t)count delay:(double)delay;
++ (id)stylePeriodicWithDelay:(double)delay;
+- (_NSSymbolEffectOptionsRepeatStyle)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _NSSymbolEffectOptionsRepeatStyle
@@ -22,7 +22,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
@@ -33,25 +33,25 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   backing = self->_backing;
-  v6 = a3;
-  [v6 encodeInteger:-[NSSymbolEffectOptionsRepeatBehavior _repeatBehavior](backing forKey:{"_repeatBehavior"), @"_repeatBehavior"}];
-  [v6 encodeInteger:-[NSSymbolEffectOptionsRepeatBehavior _repeatCount](self->_backing forKey:{"_repeatCount"), @"_repeatCount"}];
-  v5 = [(NSSymbolEffectOptionsRepeatBehavior *)self->_backing _repeatDelay];
-  [v6 encodeObject:v5 forKey:@"_repeatDelay"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[NSSymbolEffectOptionsRepeatBehavior _repeatBehavior](backing forKey:{"_repeatBehavior"), @"_repeatBehavior"}];
+  [coderCopy encodeInteger:-[NSSymbolEffectOptionsRepeatBehavior _repeatCount](self->_backing forKey:{"_repeatCount"), @"_repeatCount"}];
+  _repeatDelay = [(NSSymbolEffectOptionsRepeatBehavior *)self->_backing _repeatDelay];
+  [coderCopy encodeObject:_repeatDelay forKey:@"_repeatDelay"];
 
-  [v6 encodeBool:-[NSSymbolEffectOptionsRepeatBehavior _prefersContinuous](self->_backing forKey:{"_prefersContinuous"), @"_prefersContinuous"}];
+  [coderCopy encodeBool:-[NSSymbolEffectOptionsRepeatBehavior _prefersContinuous](self->_backing forKey:{"_prefersContinuous"), @"_prefersContinuous"}];
 }
 
-- (_NSSymbolEffectOptionsRepeatStyle)initWithCoder:(id)a3
+- (_NSSymbolEffectOptionsRepeatStyle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   v5 = objc_opt_new();
 
-  if (v5 && (v6 = [[NSSymbolEffectOptionsRepeatBehavior alloc] initWithCoder:v4]) != 0)
+  if (v5 && (v6 = [[NSSymbolEffectOptionsRepeatBehavior alloc] initWithCoder:coderCopy]) != 0)
   {
     v7 = v5[1];
     v5[1] = v6;
@@ -87,30 +87,30 @@
   return v2;
 }
 
-+ (id)stylePeriodicWithCount:(int64_t)a3
++ (id)stylePeriodicWithCount:(int64_t)count
 {
   v4 = objc_opt_new();
-  v5 = [NSSymbolEffectOptionsRepeatBehavior behaviorPeriodicWithCount:a3];
+  v5 = [NSSymbolEffectOptionsRepeatBehavior behaviorPeriodicWithCount:count];
   v6 = v4[1];
   v4[1] = v5;
 
   return v4;
 }
 
-+ (id)stylePeriodicWithDelay:(double)a3
++ (id)stylePeriodicWithDelay:(double)delay
 {
   v4 = objc_opt_new();
-  v5 = [NSSymbolEffectOptionsRepeatBehavior behaviorPeriodicWithDelay:a3];
+  v5 = [NSSymbolEffectOptionsRepeatBehavior behaviorPeriodicWithDelay:delay];
   v6 = v4[1];
   v4[1] = v5;
 
   return v4;
 }
 
-+ (id)stylePeriodicWithCount:(int64_t)a3 delay:(double)a4
++ (id)stylePeriodicWithCount:(int64_t)count delay:(double)delay
 {
   v6 = objc_opt_new();
-  v7 = [NSSymbolEffectOptionsRepeatBehavior behaviorPeriodicWithCount:a3 delay:a4];
+  v7 = [NSSymbolEffectOptionsRepeatBehavior behaviorPeriodicWithCount:count delay:delay];
   v8 = v6[1];
   v6[1] = v7;
 

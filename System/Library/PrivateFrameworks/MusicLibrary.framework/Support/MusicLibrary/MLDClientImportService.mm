@@ -1,16 +1,16 @@
 @interface MLDClientImportService
 + (MLDClientImportService)sharedService;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MLDClientImportService)init;
 @end
 
 @implementation MLDClientImportService
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v30 = a3;
-  v6 = a4;
-  v7 = [[MLDClientImportServiceSession alloc] initWithConnection:v6];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v7 = [[MLDClientImportServiceSession alloc] initWithConnection:connectionCopy];
   accessQueue = self->_accessQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -45,14 +45,14 @@
   v22 = [NSSet setWithObjects:v21, objc_opt_class(), 0];
   [v10 setClasses:v22 forSelector:"removeContainers:completion:" argumentIndex:0 ofReply:0];
 
-  [v6 setExportedInterface:v10];
-  [v6 setExportedObject:v9];
+  [connectionCopy setExportedInterface:v10];
+  [connectionCopy setExportedObject:v9];
   v23 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ML3ClientImportSessionXPCInterface];
-  [v6 setRemoteObjectInterface:v23];
-  v24 = [v6 processIdentifier];
-  if (v6)
+  [connectionCopy setRemoteObjectInterface:v23];
+  processIdentifier = [connectionCopy processIdentifier];
+  if (connectionCopy)
   {
-    [v6 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -71,7 +71,7 @@
     *&buf[22] = 2114;
     *&buf[24] = v25;
     v40 = 1024;
-    v41 = v24;
+    v41 = processIdentifier;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%{public}@ Created new session %{public}@ for incoming connection from %{public}@[%d]", buf, 0x26u);
   }
 
@@ -83,7 +83,7 @@
   objc_copyWeak(&v36, buf);
   v27 = v9;
   v35 = v27;
-  [v6 setInterruptionHandler:v34];
+  [connectionCopy setInterruptionHandler:v34];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_10001C5C0;
@@ -91,8 +91,8 @@
   objc_copyWeak(&v33, buf);
   v28 = v27;
   v32 = v28;
-  [v6 setInvalidationHandler:v31];
-  [v6 resume];
+  [connectionCopy setInvalidationHandler:v31];
+  [connectionCopy resume];
 
   objc_destroyWeak(&v33);
   objc_destroyWeak(&v36);

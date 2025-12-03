@@ -1,17 +1,17 @@
 @interface MRDUIControllerConnection
 + (BSServiceInterface)serviceInterface;
 - (BSServiceConnectionClient)serviceConnection;
-- (MRDUIControllerConnection)initWithClientObject:(id)a3 invalidationHandler:(id)a4;
+- (MRDUIControllerConnection)initWithClientObject:(id)object invalidationHandler:(id)handler;
 - (MRUIServerProtocol)server;
 - (void)dealloc;
 @end
 
 @implementation MRDUIControllerConnection
 
-- (MRDUIControllerConnection)initWithClientObject:(id)a3 invalidationHandler:(id)a4
+- (MRDUIControllerConnection)initWithClientObject:(id)object invalidationHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = MRDUIControllerConnection;
   v9 = [(MRDUIControllerConnection *)&v14 init];
@@ -25,11 +25,11 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[MRUIControllerConnection] <%p> Initializing.", buf, 0xCu);
     }
 
-    v11 = objc_retainBlock(v8);
+    v11 = objc_retainBlock(handlerCopy);
     invalidationHandler = v9->_invalidationHandler;
     v9->_invalidationHandler = v11;
 
-    objc_storeStrong(&v9->_client, a3);
+    objc_storeStrong(&v9->_client, object);
     v9->_lock._os_unfair_lock_opaque = 0;
   }
 
@@ -43,7 +43,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[MRUIControllerConnection] <%p> Dealloc.", buf, 0xCu);
   }
 
@@ -54,11 +54,11 @@
 
 - (MRUIServerProtocol)server
 {
-  v2 = [(MRDUIControllerConnection *)self serviceConnection];
+  serviceConnection = [(MRDUIControllerConnection *)self serviceConnection];
   v3 = [RBSDomainAttribute attributeWithDomain:@"com.apple.common" name:@"BasicAngelIPC"];
   v7 = v3;
   v4 = [NSArray arrayWithObjects:&v7 count:1];
-  v5 = [v2 remoteTargetWithLaunchingAssertionAttributes:v4];
+  v5 = [serviceConnection remoteTargetWithLaunchingAssertionAttributes:v4];
 
   return v5;
 }
@@ -73,7 +73,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v19 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[MRUIControllerConnection] <%p> Creating service connection.", buf, 0xCu);
     }
 
@@ -90,7 +90,7 @@
       v13 = 3221225472;
       v14 = sub_1000C321C;
       v15 = &unk_1004BB0D0;
-      v16 = self;
+      selfCopy2 = self;
       objc_copyWeak(&v17, buf);
       [(BSServiceConnectionClient *)v8 configureConnection:&v12];
       [(BSServiceConnectionClient *)self->_serviceConnection activate:v12];

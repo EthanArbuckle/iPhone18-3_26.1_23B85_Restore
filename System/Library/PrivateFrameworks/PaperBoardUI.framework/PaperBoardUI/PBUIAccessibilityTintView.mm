@@ -1,5 +1,5 @@
 @interface PBUIAccessibilityTintView
-- (PBUIAccessibilityTintView)initWithVariant:(int64_t)a3 wallpaperPresenter:(id)a4 wallpaperLegibilityProvider:(id)a5;
+- (PBUIAccessibilityTintView)initWithVariant:(int64_t)variant wallpaperPresenter:(id)presenter wallpaperLegibilityProvider:(id)provider;
 - (PBUIFakeBlurObserver)observer;
 - (PBUILegacyWallpaperPresenting)wallpaperPresenter;
 - (PBUIWallpaperLegibilityProviding)wallpaperLegibilityProvider;
@@ -11,10 +11,10 @@
 
 @implementation PBUIAccessibilityTintView
 
-- (PBUIAccessibilityTintView)initWithVariant:(int64_t)a3 wallpaperPresenter:(id)a4 wallpaperLegibilityProvider:(id)a5
+- (PBUIAccessibilityTintView)initWithVariant:(int64_t)variant wallpaperPresenter:(id)presenter wallpaperLegibilityProvider:(id)provider
 {
-  v8 = a4;
-  v9 = a5;
+  presenterCopy = presenter;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = PBUIAccessibilityTintView;
   v10 = [(PBUIAccessibilityTintView *)&v13 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -22,11 +22,11 @@
   if (v10)
   {
     [(PBUIAccessibilityTintView *)v10 setAutoresizingMask:18];
-    v11->_variant = a3;
-    objc_storeWeak(&v11->_wallpaperPresenter, v8);
-    objc_storeWeak(&v11->_wallpaperLegibilityProvider, v9);
+    v11->_variant = variant;
+    objc_storeWeak(&v11->_wallpaperPresenter, presenterCopy);
+    objc_storeWeak(&v11->_wallpaperLegibilityProvider, providerCopy);
     v11->_shouldMatchWallpaperPosition = 1;
-    [v8 addObserver:v11 forVariant:v11->_variant];
+    [presenterCopy addObserver:v11 forVariant:v11->_variant];
     [(PBUIAccessibilityTintView *)v11 _updateBackgroundColor];
   }
 
@@ -35,8 +35,8 @@
 
 - (void)dealloc
 {
-  v3 = [(PBUIAccessibilityTintView *)self wallpaperPresenter];
-  [v3 removeObserver:self forVariant:self->_variant];
+  wallpaperPresenter = [(PBUIAccessibilityTintView *)self wallpaperPresenter];
+  [wallpaperPresenter removeObserver:self forVariant:self->_variant];
 
   v4.receiver = self;
   v4.super_class = PBUIAccessibilityTintView;
@@ -45,22 +45,22 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(PBUIAccessibilityTintView *)self superview];
-  [v3 bounds];
+  superview = [(PBUIAccessibilityTintView *)self superview];
+  [superview bounds];
   [(PBUIAccessibilityTintView *)self setFrame:?];
 }
 
 - (void)didMoveToSuperview
 {
-  v3 = [(PBUIAccessibilityTintView *)self superview];
-  [v3 bounds];
+  superview = [(PBUIAccessibilityTintView *)self superview];
+  [superview bounds];
   [(PBUIAccessibilityTintView *)self setFrame:?];
 }
 
 - (void)_updateBackgroundColor
 {
-  v4 = [(PBUIAccessibilityTintView *)self wallpaperLegibilityProvider];
-  v3 = [v4 averageColorForVariant:self->_variant];
+  wallpaperLegibilityProvider = [(PBUIAccessibilityTintView *)self wallpaperLegibilityProvider];
+  v3 = [wallpaperLegibilityProvider averageColorForVariant:self->_variant];
   [(PBUIAccessibilityTintView *)self setBackgroundColor:v3];
 }
 

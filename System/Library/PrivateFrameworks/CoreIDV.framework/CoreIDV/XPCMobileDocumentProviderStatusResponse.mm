@@ -1,15 +1,15 @@
 @interface XPCMobileDocumentProviderStatusResponse
 - (_TtC7CoreIDV39XPCMobileDocumentProviderStatusResponse)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation XPCMobileDocumentProviderStatusResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  _s7CoreIDV39XPCMobileDocumentProviderStatusResponseC6encode4withySo7NSCoderC_tF_0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  _s7CoreIDV39XPCMobileDocumentProviderStatusResponseC6encode4withySo7NSCoderC_tF_0(coderCopy);
 }
 
 - (_TtC7CoreIDV39XPCMobileDocumentProviderStatusResponse)init

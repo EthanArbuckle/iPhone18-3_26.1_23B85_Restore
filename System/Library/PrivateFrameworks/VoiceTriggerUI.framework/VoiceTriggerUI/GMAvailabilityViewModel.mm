@@ -3,30 +3,30 @@
 - (BOOL)hasCameraButton;
 - (BOOL)isBuddyOrCFU;
 - (BOOL)shouldShowVisualIntelligenceIntro;
-- (id)continueButtonTitleKeyWithEnrollmentType:(unint64_t)a3;
-- (id)subtitleKeyWithEnrollmentType:(unint64_t)a3;
-- (id)titleKeyWithEnrollmentType:(unint64_t)a3;
+- (id)continueButtonTitleKeyWithEnrollmentType:(unint64_t)type;
+- (id)subtitleKeyWithEnrollmentType:(unint64_t)type;
+- (id)titleKeyWithEnrollmentType:(unint64_t)type;
 - (unint64_t)enrollmentType;
 - (void)optInGM;
-- (void)sendViewDidLoadEventWithEnrollmentType:(unint64_t)a3;
+- (void)sendViewDidLoadEventWithEnrollmentType:(unint64_t)type;
 @end
 
 @implementation GMAvailabilityViewModel
 
 - (BOOL)isBuddyOrCFU
 {
-  v2 = self;
+  selfCopy = self;
   if (_s14VoiceTriggerUI23GMAvailabilityViewModelC7isBuddySbvgZ_0())
   {
-    v3 = 1;
+    isBuddyOrFollowUp = 1;
   }
 
   else
   {
-    v3 = [*(&v2->super.isa + OBJC_IVAR____TtC14VoiceTriggerUI23GMAvailabilityViewModel_vtuiStyle) isBuddyOrFollowUp];
+    isBuddyOrFollowUp = [*(&selfCopy->super.isa + OBJC_IVAR____TtC14VoiceTriggerUI23GMAvailabilityViewModel_vtuiStyle) isBuddyOrFollowUp];
   }
 
-  return v3;
+  return isBuddyOrFollowUp;
 }
 
 - (BOOL)hasCameraButton
@@ -47,7 +47,7 @@
 
 - (unint64_t)enrollmentType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_272905E14();
 
   return v3;
@@ -61,9 +61,9 @@
   return v2 & 1;
 }
 
-- (id)titleKeyWithEnrollmentType:(unint64_t)a3
+- (id)titleKeyWithEnrollmentType:(unint64_t)type
 {
-  if (a3 - 2 >= 3 && a3 > 1)
+  if (type - 2 >= 3 && type > 1)
   {
     type metadata accessor for VTUIGMEnrollmentType(0);
     result = sub_27292E4A4();
@@ -80,25 +80,25 @@
   return result;
 }
 
-- (id)subtitleKeyWithEnrollmentType:(unint64_t)a3
+- (id)subtitleKeyWithEnrollmentType:(unint64_t)type
 {
-  sub_2729077E0(a3);
+  sub_2729077E0(type);
   v3 = sub_27292E224();
 
   return v3;
 }
 
-- (id)continueButtonTitleKeyWithEnrollmentType:(unint64_t)a3
+- (id)continueButtonTitleKeyWithEnrollmentType:(unint64_t)type
 {
   v3 = sub_27292E224();
 
   return v3;
 }
 
-- (void)sendViewDidLoadEventWithEnrollmentType:(unint64_t)a3
+- (void)sendViewDidLoadEventWithEnrollmentType:(unint64_t)type
 {
-  v4 = self;
-  sub_272906784(a3);
+  selfCopy = self;
+  sub_272906784(type);
 }
 
 - (void)optInGM

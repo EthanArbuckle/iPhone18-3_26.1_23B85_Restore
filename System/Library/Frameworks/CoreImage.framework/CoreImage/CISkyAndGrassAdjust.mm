@@ -67,12 +67,12 @@
   if (fabs(v4) >= 0.05 || v6 <= 0.95 || v6 >= 1.05)
   {
     v9 = [CIVector vectorWithX:v6 Y:v4];
-    v10 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
-    v11 = [(CISkyAndGrassAdjust *)self _kernel];
-    [(CIImage *)v10 extent];
-    v16[0] = v10;
+    imageByUnpremultiplyingAlpha = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
+    _kernel = [(CISkyAndGrassAdjust *)self _kernel];
+    [(CIImage *)imageByUnpremultiplyingAlpha extent];
+    v16[0] = imageByUnpremultiplyingAlpha;
     v16[1] = v9;
-    return [objc_msgSend(v11 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v16, 2), v12, v13, v14, v15), "imageByPremultiplyingAlpha"}];
+    return [objc_msgSend(_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v16, 2), v12, v13, v14, v15), "imageByPremultiplyingAlpha"}];
   }
 
   else

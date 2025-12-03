@@ -1,22 +1,22 @@
 @interface DIGeocoder
 - (CLGeocoder)geocoder;
-- (void)geocodeAddressString:(id)a3 completionHandler:(id)a4;
+- (void)geocodeAddressString:(id)string completionHandler:(id)handler;
 @end
 
 @implementation DIGeocoder
 
-- (void)geocodeAddressString:(id)a3 completionHandler:(id)a4
+- (void)geocodeAddressString:(id)string completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DIGeocoder *)self geocoder];
+  handlerCopy = handler;
+  stringCopy = string;
+  geocoder = [(DIGeocoder *)self geocoder];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100002B70;
   v10[3] = &unk_1007F8238;
-  v11 = v6;
-  v9 = v6;
-  [v8 geocodeAddressString:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [geocoder geocodeAddressString:stringCopy completionHandler:v10];
 }
 
 - (CLGeocoder)geocoder

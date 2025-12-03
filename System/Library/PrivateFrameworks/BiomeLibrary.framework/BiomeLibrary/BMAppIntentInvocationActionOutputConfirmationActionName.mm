@@ -1,17 +1,17 @@
 @interface BMAppIntentInvocationActionOutputConfirmationActionName
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAppIntentInvocationActionOutputConfirmationActionName)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMAppIntentInvocationActionOutputConfirmationActionName)initWithType:(int)a3 destructive:(id)a4 acceptLabel:(id)a5 acceptAlternatives:(id)a6 denyLabel:(id)a7 denyAlternatives:(id)a8;
-- (BOOL)isEqual:(id)a3;
+- (BMAppIntentInvocationActionOutputConfirmationActionName)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMAppIntentInvocationActionOutputConfirmationActionName)initWithType:(int)type destructive:(id)destructive acceptLabel:(id)label acceptAlternatives:(id)alternatives denyLabel:(id)denyLabel denyAlternatives:(id)denyAlternatives;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_acceptAlternativesJSONArray;
 - (id)_denyAlternativesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAppIntentInvocationActionOutputConfirmationActionName
@@ -38,15 +38,15 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self type];
-    if (v6 != [v5 type])
+    v5 = equalCopy;
+    type = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self type];
+    if (type != [v5 type])
     {
       goto LABEL_19;
     }
@@ -63,25 +63,25 @@
         goto LABEL_19;
       }
 
-      v7 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self destructive];
-      if (v7 != [v5 destructive])
+      destructive = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self destructive];
+      if (destructive != [v5 destructive])
       {
         goto LABEL_19;
       }
     }
 
-    v8 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self acceptLabel];
-    v9 = [v5 acceptLabel];
-    v10 = v9;
-    if (v8 == v9)
+    acceptLabel = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self acceptLabel];
+    acceptLabel2 = [v5 acceptLabel];
+    v10 = acceptLabel2;
+    if (acceptLabel == acceptLabel2)
     {
     }
 
     else
     {
-      v11 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self acceptLabel];
-      v12 = [v5 acceptLabel];
-      v13 = [v11 isEqual:v12];
+      acceptLabel3 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self acceptLabel];
+      acceptLabel4 = [v5 acceptLabel];
+      v13 = [acceptLabel3 isEqual:acceptLabel4];
 
       if (!v13)
       {
@@ -89,18 +89,18 @@
       }
     }
 
-    v15 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self acceptAlternatives];
-    v16 = [v5 acceptAlternatives];
-    v17 = v16;
-    if (v15 == v16)
+    acceptAlternatives = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self acceptAlternatives];
+    acceptAlternatives2 = [v5 acceptAlternatives];
+    v17 = acceptAlternatives2;
+    if (acceptAlternatives == acceptAlternatives2)
     {
     }
 
     else
     {
-      v18 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self acceptAlternatives];
-      v19 = [v5 acceptAlternatives];
-      v20 = [v18 isEqual:v19];
+      acceptAlternatives3 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self acceptAlternatives];
+      acceptAlternatives4 = [v5 acceptAlternatives];
+      v20 = [acceptAlternatives3 isEqual:acceptAlternatives4];
 
       if (!v20)
       {
@@ -108,18 +108,18 @@
       }
     }
 
-    v21 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self denyLabel];
-    v22 = [v5 denyLabel];
-    v23 = v22;
-    if (v21 == v22)
+    denyLabel = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self denyLabel];
+    denyLabel2 = [v5 denyLabel];
+    v23 = denyLabel2;
+    if (denyLabel == denyLabel2)
     {
     }
 
     else
     {
-      v24 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self denyLabel];
-      v25 = [v5 denyLabel];
-      v26 = [v24 isEqual:v25];
+      denyLabel3 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self denyLabel];
+      denyLabel4 = [v5 denyLabel];
+      v26 = [denyLabel3 isEqual:denyLabel4];
 
       if (!v26)
       {
@@ -131,18 +131,18 @@ LABEL_20:
       }
     }
 
-    v28 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self denyAlternatives];
-    v29 = [v5 denyAlternatives];
-    if (v28 == v29)
+    denyAlternatives = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self denyAlternatives];
+    denyAlternatives2 = [v5 denyAlternatives];
+    if (denyAlternatives == denyAlternatives2)
     {
       v14 = 1;
     }
 
     else
     {
-      v30 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self denyAlternatives];
-      v31 = [v5 denyAlternatives];
-      v14 = [v30 isEqual:v31];
+      denyAlternatives3 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self denyAlternatives];
+      denyAlternatives4 = [v5 denyAlternatives];
+      v14 = [denyAlternatives3 isEqual:denyAlternatives4];
     }
 
     goto LABEL_20;
@@ -168,76 +168,76 @@ LABEL_21:
     v4 = 0;
   }
 
-  v5 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self acceptLabel];
-  v6 = [v5 jsonDictionary];
+  acceptLabel = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self acceptLabel];
+  jsonDictionary = [acceptLabel jsonDictionary];
 
-  v7 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self _acceptAlternativesJSONArray];
-  v8 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self denyLabel];
-  v9 = [v8 jsonDictionary];
+  _acceptAlternativesJSONArray = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self _acceptAlternativesJSONArray];
+  denyLabel = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self denyLabel];
+  jsonDictionary2 = [denyLabel jsonDictionary];
 
-  v10 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self _denyAlternativesJSONArray];
+  _denyAlternativesJSONArray = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self _denyAlternativesJSONArray];
   v24[0] = @"type";
-  v11 = v3;
+  null = v3;
   if (!v3)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v11;
-  v25[0] = v11;
+  v22 = null;
+  v25[0] = null;
   v24[1] = @"destructive";
-  v12 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v12;
-  v25[1] = v12;
+  v20 = null2;
+  v25[1] = null2;
   v24[2] = @"acceptLabel";
-  v13 = v6;
-  if (!v6)
+  null3 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v23 = v3;
-  v25[2] = v13;
+  v25[2] = null3;
   v24[3] = @"acceptAlternatives";
-  v14 = v7;
-  if (!v7)
+  null4 = _acceptAlternativesJSONArray;
+  if (!_acceptAlternativesJSONArray)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[3] = v14;
+  v25[3] = null4;
   v24[4] = @"denyLabel";
-  v15 = v9;
-  if (!v9)
+  null5 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[4] = v15;
+  v25[4] = null5;
   v24[5] = @"denyAlternatives";
-  v16 = v10;
-  if (!v10)
+  null6 = _denyAlternativesJSONArray;
+  if (!_denyAlternativesJSONArray)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[5] = v16;
+  v25[5] = null6;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:{6, v20}];
-  if (v10)
+  if (_denyAlternativesJSONArray)
   {
-    if (v9)
+    if (jsonDictionary2)
     {
       goto LABEL_18;
     }
 
 LABEL_26:
 
-    if (v7)
+    if (_acceptAlternativesJSONArray)
     {
       goto LABEL_19;
     }
@@ -245,13 +245,13 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (!v9)
+  if (!jsonDictionary2)
   {
     goto LABEL_26;
   }
 
 LABEL_18:
-  if (v7)
+  if (_acceptAlternativesJSONArray)
   {
     goto LABEL_19;
   }
@@ -259,7 +259,7 @@ LABEL_18:
 LABEL_27:
 
 LABEL_19:
-  if (v6)
+  if (jsonDictionary)
   {
     if (v4)
     {
@@ -303,8 +303,8 @@ LABEL_22:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self denyAlternatives];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  denyAlternatives = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self denyAlternatives];
+  v5 = [denyAlternatives countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -315,14 +315,14 @@ LABEL_22:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(denyAlternatives);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [denyAlternatives countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -341,8 +341,8 @@ LABEL_22:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self acceptAlternatives];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  acceptAlternatives = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self acceptAlternatives];
+  v5 = [acceptAlternatives countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -353,14 +353,14 @@ LABEL_22:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(acceptAlternatives);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [acceptAlternatives countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -371,11 +371,11 @@ LABEL_22:
   return v3;
 }
 
-- (BMAppIntentInvocationActionOutputConfirmationActionName)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAppIntentInvocationActionOutputConfirmationActionName)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v140[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"type"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"type"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -389,19 +389,19 @@ LABEL_22:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v56 = objc_alloc(MEMORY[0x1E696ABC0]);
           v57 = *MEMORY[0x1E698F240];
           v139 = *MEMORY[0x1E696A578];
-          v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"type"];
-          v140[0] = v30;
+          errorCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"type"];
+          v140[0] = errorCopy;
           v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v140 forKeys:&v139 count:1];
           v59 = v56;
           v9 = v58;
           v7 = 0;
           v29 = 0;
-          *a4 = [v59 initWithDomain:v57 code:2 userInfo:v58];
+          *error = [v59 initWithDomain:v57 code:2 userInfo:v58];
           goto LABEL_107;
         }
 
@@ -421,14 +421,14 @@ LABEL_22:
     v7 = 0;
   }
 
-  v9 = [v5 objectForKeyedSubscript:@"destructive"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"destructive"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v30 = a4;
-      if (a4)
+      errorCopy = error;
+      if (error)
       {
         v31 = v9;
         v32 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -445,9 +445,9 @@ LABEL_22:
         v38 = v32;
         v9 = v31;
         v104 = v37;
-        v30 = 0;
+        errorCopy = 0;
         v29 = 0;
-        *a4 = [v38 initWithDomain:v33 code:2 userInfo:?];
+        *error = [v38 initWithDomain:v33 code:2 userInfo:?];
 
         goto LABEL_106;
       }
@@ -464,10 +464,10 @@ LABEL_22:
     v102 = 0;
   }
 
-  v10 = [v5 objectForKeyedSubscript:@"acceptLabel"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"acceptLabel"];
   if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v99 = self;
+    selfCopy2 = self;
     v100 = v9;
     v96 = v6;
     v103 = 0;
@@ -477,10 +477,10 @@ LABEL_22:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       v29 = 0;
-      v30 = v102;
+      errorCopy = v102;
       v27 = v10;
       goto LABEL_106;
     }
@@ -499,12 +499,12 @@ LABEL_22:
     v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v136 forKeys:&v135 count:1];
     v45 = v39;
     v9 = v101;
-    *a4 = [v45 initWithDomain:v40 code:2 userInfo:v44];
+    *error = [v45 initWithDomain:v40 code:2 userInfo:v44];
 
     v29 = 0;
     v27 = v10;
 LABEL_45:
-    v30 = v102;
+    errorCopy = v102;
     goto LABEL_105;
   }
 
@@ -514,27 +514,27 @@ LABEL_45:
   v28 = v118;
   if (v28)
   {
-    if (a4)
+    if (error)
     {
       v28 = v28;
-      *a4 = v28;
+      *error = v28;
     }
 
     v29 = 0;
     goto LABEL_45;
   }
 
-  v99 = self;
+  selfCopy2 = self;
   v100 = v9;
   v96 = v6;
 
 LABEL_15:
-  v11 = [v5 objectForKeyedSubscript:@"acceptAlternatives"];
-  v12 = [MEMORY[0x1E695DFB0] null];
-  v13 = [v11 isEqual:v12];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"acceptAlternatives"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v13 = [v11 isEqual:null];
 
   v97 = v7;
-  v98 = v5;
+  v98 = dictionaryCopy;
   v95 = v10;
   if (v13)
   {
@@ -547,7 +547,7 @@ LABEL_15:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v54 = objc_alloc(MEMORY[0x1E696ABC0]);
         v55 = *MEMORY[0x1E698F240];
@@ -556,13 +556,13 @@ LABEL_15:
         v134 = v106;
         v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v134 forKeys:&v133 count:1];
         v29 = 0;
-        *a4 = [v54 initWithDomain:v55 code:2 userInfo:v23];
+        *error = [v54 initWithDomain:v55 code:2 userInfo:v23];
         goto LABEL_61;
       }
 
       v29 = 0;
       v9 = v100;
-      v30 = v102;
+      errorCopy = v102;
       goto LABEL_104;
     }
   }
@@ -578,17 +578,17 @@ LABEL_15:
   {
 LABEL_29:
 
-    v23 = [v5 objectForKeyedSubscript:@"denyLabel"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"denyLabel"];
     if (v23 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v29 = 0;
           v9 = v100;
-          v30 = v102;
+          errorCopy = v102;
           goto LABEL_103;
         }
 
@@ -599,11 +599,11 @@ LABEL_29:
         v127 = v19;
         v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v127 forKeys:&v126 count:1];
         v29 = 0;
-        *a4 = [v77 initWithDomain:v78 code:2 userInfo:v24];
+        *error = [v77 initWithDomain:v78 code:2 userInfo:v24];
 LABEL_55:
         v7 = v97;
         v9 = v100;
-        v30 = v102;
+        errorCopy = v102;
         goto LABEL_102;
       }
 
@@ -615,15 +615,15 @@ LABEL_55:
       if (v76)
       {
         v9 = v100;
-        if (a4)
+        if (error)
         {
           v76 = v76;
-          *a4 = v76;
+          *error = v76;
         }
 
         v29 = 0;
         v23 = v24;
-        v30 = v102;
+        errorCopy = v102;
         goto LABEL_102;
       }
     }
@@ -633,9 +633,9 @@ LABEL_55:
       v19 = 0;
     }
 
-    v24 = [v5 objectForKeyedSubscript:@"denyAlternatives"];
-    v25 = [MEMORY[0x1E695DFB0] null];
-    v26 = [v24 isEqual:v25];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"denyAlternatives"];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    v26 = [v24 isEqual:null2];
 
     v93 = v23;
     if (v26)
@@ -691,11 +691,11 @@ LABEL_69:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v5 = v98;
+          dictionaryCopy = v98;
           v9 = v100;
-          v30 = v102;
-          v79 = a4;
-          if (!a4)
+          errorCopy = v102;
+          errorCopy3 = error;
+          if (!error)
           {
             goto LABEL_99;
           }
@@ -720,15 +720,15 @@ LABEL_69:
         if (v74)
         {
           v86 = v74;
-          if (a4)
+          if (error)
           {
             v88 = v74;
-            *a4 = v86;
+            *error = v86;
           }
 
-          v5 = v98;
+          dictionaryCopy = v98;
           v9 = v100;
-          v30 = v102;
+          errorCopy = v102;
 LABEL_98:
 
 LABEL_99:
@@ -752,10 +752,10 @@ LABEL_99:
 
 LABEL_77:
 
-          v30 = v102;
-          v29 = -[BMAppIntentInvocationActionOutputConfirmationActionName initWithType:destructive:acceptLabel:acceptAlternatives:denyLabel:denyAlternatives:](v99, "initWithType:destructive:acceptLabel:acceptAlternatives:denyLabel:denyAlternatives:", [v7 intValue], v102, v103, v106, v19, v65);
-          v99 = v29;
-          v5 = v98;
+          errorCopy = v102;
+          v29 = -[BMAppIntentInvocationActionOutputConfirmationActionName initWithType:destructive:acceptLabel:acceptAlternatives:denyLabel:denyAlternatives:](selfCopy2, "initWithType:destructive:acceptLabel:acceptAlternatives:denyLabel:denyAlternatives:", [v7 intValue], v102, v103, v106, v19, v65);
+          selfCopy2 = v29;
+          dictionaryCopy = v98;
           v9 = v100;
 LABEL_100:
 
@@ -763,11 +763,11 @@ LABEL_100:
         }
       }
 
-      v5 = v98;
+      dictionaryCopy = v98;
       v9 = v100;
-      v30 = v102;
-      v79 = a4;
-      if (!a4)
+      errorCopy = v102;
+      errorCopy3 = error;
+      if (!error)
       {
         goto LABEL_99;
       }
@@ -785,12 +785,12 @@ LABEL_94:
       v86 = [v83 dictionaryWithObjects:v84 forKeys:v85 count:1];
       v87 = v81;
       v9 = v80;
-      v30 = v102;
-      *v79 = [v87 initWithDomain:v82 code:2 userInfo:v86];
+      errorCopy = v102;
+      *errorCopy3 = [v87 initWithDomain:v82 code:2 userInfo:v86];
       goto LABEL_98;
     }
 
-    if (a4)
+    if (error)
     {
       v60 = objc_alloc(MEMORY[0x1E696ABC0]);
       v61 = *MEMORY[0x1E698F240];
@@ -800,18 +800,18 @@ LABEL_94:
       v63 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v125 forKeys:&v124 count:1];
       v64 = v61;
       v7 = v97;
-      *a4 = [v60 initWithDomain:v64 code:2 userInfo:v63];
+      *error = [v60 initWithDomain:v64 code:2 userInfo:v63];
       v65 = v62;
 
       v29 = 0;
       v9 = v100;
-      v30 = v102;
+      errorCopy = v102;
       goto LABEL_100;
     }
 
     v29 = 0;
     v9 = v100;
-    v30 = v102;
+    errorCopy = v102;
 LABEL_101:
     v23 = v93;
 LABEL_102:
@@ -840,8 +840,8 @@ LABEL_21:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v47 = a4;
-      if (!a4)
+      errorCopy5 = error;
+      if (!error)
       {
         goto LABEL_60;
       }
@@ -856,7 +856,7 @@ LABEL_21:
       v50 = v52;
 LABEL_50:
       v29 = 0;
-      *v47 = [v49 initWithDomain:v50 code:2 userInfo:v24];
+      *errorCopy5 = [v49 initWithDomain:v50 code:2 userInfo:v24];
 LABEL_54:
       v23 = v11;
       goto LABEL_55;
@@ -870,10 +870,10 @@ LABEL_54:
     if (v22)
     {
       v24 = v22;
-      if (a4)
+      if (error)
       {
         v53 = v22;
-        *a4 = v24;
+        *error = v24;
       }
 
       v29 = 0;
@@ -894,10 +894,10 @@ LABEL_54:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v46 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v47 = a4;
+    errorCopy5 = error;
     v48 = *MEMORY[0x1E698F240];
     v130 = *MEMORY[0x1E696A578];
     v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type null for element of %@, must not be null", @"acceptAlternatives"];
@@ -913,13 +913,13 @@ LABEL_60:
   v23 = v11;
 LABEL_61:
   v9 = v100;
-  v30 = v102;
+  errorCopy = v102;
 LABEL_103:
 
 LABEL_104:
   v27 = v95;
   v6 = v96;
-  self = v99;
+  self = selfCopy2;
 LABEL_105:
 
 LABEL_106:
@@ -934,15 +934,15 @@ LABEL_108:
 {
   v3 = objc_opt_new();
   [(BMAppIntentInvocationActionOutputConfirmationActionName *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   type = self->_type;
   PBDataWriterWriteUint32Field();
   if (self->_hasDestructive)
@@ -955,7 +955,7 @@ LABEL_108:
   {
     v28 = 0;
     PBDataWriterPlaceMark();
-    [(BMAppIntentInvocationStaticDeferredLocalizedString *)self->_acceptLabel writeTo:v4];
+    [(BMAppIntentInvocationStaticDeferredLocalizedString *)self->_acceptLabel writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -982,7 +982,7 @@ LABEL_108:
         v12 = *(*(&v24 + 1) + 8 * v11);
         v28 = 0;
         PBDataWriterPlaceMark();
-        [v12 writeTo:v4];
+        [v12 writeTo:toCopy];
         PBDataWriterRecallMark();
         ++v11;
       }
@@ -998,7 +998,7 @@ LABEL_108:
   {
     v28 = 0;
     PBDataWriterPlaceMark();
-    [(BMAppIntentInvocationStaticDeferredLocalizedString *)self->_denyLabel writeTo:v4];
+    [(BMAppIntentInvocationStaticDeferredLocalizedString *)self->_denyLabel writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1025,7 +1025,7 @@ LABEL_108:
         v18 = *(*(&v20 + 1) + 8 * v17);
         v28 = 0;
         PBDataWriterPlaceMark();
-        [v18 writeTo:{v4, v20}];
+        [v18 writeTo:{toCopy, v20}];
         PBDataWriterRecallMark();
         ++v17;
       }
@@ -1040,9 +1040,9 @@ LABEL_108:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v47.receiver = self;
   v47.super_class = BMAppIntentInvocationActionOutputConfirmationActionName;
   v5 = [(BMEventBase *)&v47 init];
@@ -1053,12 +1053,12 @@ LABEL_108:
 
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  v8 = [v4 position];
-  if (v8 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1069,18 +1069,18 @@ LABEL_108:
       while (1)
       {
         LOBYTE(v48) = 0;
-        v12 = [v4 position] + 1;
-        if (v12 >= [v4 position] && (v13 = objc_msgSend(v4, "position") + 1, v13 <= objc_msgSend(v4, "length")))
+        v12 = [fromCopy position] + 1;
+        if (v12 >= [fromCopy position] && (v13 = objc_msgSend(fromCopy, "position") + 1, v13 <= objc_msgSend(fromCopy, "length")))
         {
-          v14 = [v4 data];
-          [v14 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v11 |= (v48 & 0x7F) << v9;
@@ -1098,9 +1098,9 @@ LABEL_108:
         }
       }
 
-      v16 = [v4 hasError] ? 0 : v11;
+      v16 = [fromCopy hasError] ? 0 : v11;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v16 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v16 & 7) == 4)
       {
         break;
       }
@@ -1113,7 +1113,7 @@ LABEL_16:
           case 4:
             v48 = 0;
             v49 = 0;
-            if (!PBReaderPlaceMark() || (v30 = [[BMAppIntentInvocationStaticDeferredLocalizedString alloc] initByReadFrom:v4]) == 0)
+            if (!PBReaderPlaceMark() || (v30 = [[BMAppIntentInvocationStaticDeferredLocalizedString alloc] initByReadFrom:fromCopy]) == 0)
             {
 LABEL_68:
 
@@ -1131,7 +1131,7 @@ LABEL_68:
               goto LABEL_68;
             }
 
-            v18 = [[BMAppIntentInvocationStaticDeferredLocalizedString alloc] initByReadFrom:v4];
+            v18 = [[BMAppIntentInvocationStaticDeferredLocalizedString alloc] initByReadFrom:fromCopy];
             if (!v18)
             {
               goto LABEL_68;
@@ -1147,7 +1147,7 @@ LABEL_68:
               goto LABEL_68;
             }
 
-            v20 = [[BMAppIntentInvocationStaticDeferredLocalizedString alloc] initByReadFrom:v4];
+            v20 = [[BMAppIntentInvocationStaticDeferredLocalizedString alloc] initByReadFrom:fromCopy];
             if (!v20)
             {
               goto LABEL_68;
@@ -1174,18 +1174,18 @@ LABEL_43:
             while (1)
             {
               LOBYTE(v48) = 0;
-              v26 = [v4 position] + 1;
-              if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+              v26 = [fromCopy position] + 1;
+              if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
               {
-                v28 = [v4 data];
-                [v28 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v25 |= (v48 & 0x7F) << v23;
@@ -1201,7 +1201,7 @@ LABEL_43:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v25 > 0x22)
+            if (([fromCopy hasError] & 1) != 0 || v25 > 0x22)
             {
 LABEL_61:
               LODWORD(v25) = 0;
@@ -1217,18 +1217,18 @@ LABEL_61:
             while (1)
             {
               LOBYTE(v48) = 0;
-              v34 = [v4 position] + 1;
-              if (v34 >= [v4 position] && (v35 = objc_msgSend(v4, "position") + 1, v35 <= objc_msgSend(v4, "length")))
+              v34 = [fromCopy position] + 1;
+              if (v34 >= [fromCopy position] && (v35 = objc_msgSend(fromCopy, "position") + 1, v35 <= objc_msgSend(fromCopy, "length")))
               {
-                v36 = [v4 data];
-                [v36 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v33 |= (v48 & 0x7F) << v31;
@@ -1246,7 +1246,7 @@ LABEL_61:
               }
             }
 
-            v37 = (v33 != 0) & ~[v4 hasError];
+            v37 = (v33 != 0) & ~[fromCopy hasError];
 LABEL_64:
             v5->_destructive = v37;
             goto LABEL_65;
@@ -1258,7 +1258,7 @@ LABEL_64:
               goto LABEL_68;
             }
 
-            v18 = [[BMAppIntentInvocationStaticDeferredLocalizedString alloc] initByReadFrom:v4];
+            v18 = [[BMAppIntentInvocationStaticDeferredLocalizedString alloc] initByReadFrom:fromCopy];
             if (!v18)
             {
               goto LABEL_68;
@@ -1280,10 +1280,10 @@ LABEL_58:
       }
 
 LABEL_65:
-      v39 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v39 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v40 = [v6 copy];
@@ -1294,8 +1294,8 @@ LABEL_65:
   denyAlternatives = v5->_denyAlternatives;
   v5->_denyAlternatives = v42;
 
-  v44 = [v4 hasError];
-  if (v44)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_69:
     v45 = 0;
@@ -1315,33 +1315,33 @@ LABEL_67:
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = BMAppIntentInvocationActionOutputConfirmationActionNameTypeAsString([(BMAppIntentInvocationActionOutputConfirmationActionName *)self type]);
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMAppIntentInvocationActionOutputConfirmationActionName destructive](self, "destructive")}];
-  v6 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self acceptLabel];
-  v7 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self acceptAlternatives];
-  v8 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self denyLabel];
-  v9 = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self denyAlternatives];
-  v10 = [v3 initWithFormat:@"BMAppIntentInvocationActionOutputConfirmationActionName with type: %@, destructive: %@, acceptLabel: %@, acceptAlternatives: %@, denyLabel: %@, denyAlternatives: %@", v4, v5, v6, v7, v8, v9];
+  acceptLabel = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self acceptLabel];
+  acceptAlternatives = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self acceptAlternatives];
+  denyLabel = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self denyLabel];
+  denyAlternatives = [(BMAppIntentInvocationActionOutputConfirmationActionName *)self denyAlternatives];
+  v10 = [v3 initWithFormat:@"BMAppIntentInvocationActionOutputConfirmationActionName with type: %@, destructive: %@, acceptLabel: %@, acceptAlternatives: %@, denyLabel: %@, denyAlternatives: %@", v4, v5, acceptLabel, acceptAlternatives, denyLabel, denyAlternatives];
 
   return v10;
 }
 
-- (BMAppIntentInvocationActionOutputConfirmationActionName)initWithType:(int)a3 destructive:(id)a4 acceptLabel:(id)a5 acceptAlternatives:(id)a6 denyLabel:(id)a7 denyAlternatives:(id)a8
+- (BMAppIntentInvocationActionOutputConfirmationActionName)initWithType:(int)type destructive:(id)destructive acceptLabel:(id)label acceptAlternatives:(id)alternatives denyLabel:(id)denyLabel denyAlternatives:(id)denyAlternatives
 {
-  v14 = a4;
-  v20 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  destructiveCopy = destructive;
+  labelCopy = label;
+  alternativesCopy = alternatives;
+  denyLabelCopy = denyLabel;
+  denyAlternativesCopy = denyAlternatives;
   v21.receiver = self;
   v21.super_class = BMAppIntentInvocationActionOutputConfirmationActionName;
   v18 = [(BMEventBase *)&v21 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    v18->_type = a3;
-    if (v14)
+    v18->_type = type;
+    if (destructiveCopy)
     {
       v18->_hasDestructive = 1;
-      v18->_destructive = [v14 BOOLValue];
+      v18->_destructive = [destructiveCopy BOOLValue];
     }
 
     else
@@ -1350,10 +1350,10 @@ LABEL_67:
       v18->_destructive = 0;
     }
 
-    objc_storeStrong(&v18->_acceptLabel, a5);
-    objc_storeStrong(&v18->_acceptAlternatives, a6);
-    objc_storeStrong(&v18->_denyLabel, a7);
-    objc_storeStrong(&v18->_denyAlternatives, a8);
+    objc_storeStrong(&v18->_acceptLabel, label);
+    objc_storeStrong(&v18->_acceptAlternatives, alternatives);
+    objc_storeStrong(&v18->_denyLabel, denyLabel);
+    objc_storeStrong(&v18->_denyAlternatives, denyAlternatives);
   }
 
   return v18;
@@ -1419,9 +1419,9 @@ id __66__BMAppIntentInvocationActionOutputConfirmationActionName_columns__block_
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1429,8 +1429,8 @@ id __66__BMAppIntentInvocationActionOutputConfirmationActionName_columns__block_
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMAppIntentInvocationActionOutputConfirmationActionName alloc] initByReadFrom:v7];
     v4 = v8;

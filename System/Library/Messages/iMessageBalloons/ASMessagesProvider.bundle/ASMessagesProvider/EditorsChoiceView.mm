@@ -1,15 +1,15 @@
 @interface EditorsChoiceView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC18ASMessagesProvider17EditorsChoiceView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC18ASMessagesProvider17EditorsChoiceView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
 @end
 
 @implementation EditorsChoiceView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   ObjectType = swift_getObjectType();
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider17EditorsChoiceView_preferredLineCount);
@@ -17,8 +17,8 @@
   v7 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider17EditorsChoiceView_useAdsLocale);
   v8 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider17EditorsChoiceView_useCase);
   v9 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider17EditorsChoiceView_size);
-  v10 = self;
-  sub_2E368C(v9, v5, v6, v10, v7, v8, ObjectType);
+  selfCopy = self;
+  sub_2E368C(v9, v5, v6, selfCopy, v7, v8, ObjectType);
   v12 = v11;
   v14 = v13;
 
@@ -29,15 +29,15 @@
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = self;
-  [(EditorsChoiceView *)v6 sizeThatFits:width, height];
+  height = fitting.height;
+  width = fitting.width;
+  selfCopy = self;
+  [(EditorsChoiceView *)selfCopy sizeThatFits:width, height];
   v8 = v7;
   v10 = v9;
-  [(EditorsChoiceView *)v6 lastBaselineFromBottom];
+  [(EditorsChoiceView *)selfCopy lastBaselineFromBottom];
   v12 = v11;
 
   v13 = v8;
@@ -53,27 +53,27 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2E17BC();
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_2E1CC0(x, y, width, height);
 }
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_2E1FB4();
 }
 
-- (_TtC18ASMessagesProvider17EditorsChoiceView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider17EditorsChoiceView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

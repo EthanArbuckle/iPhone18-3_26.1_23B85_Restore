@@ -1,8 +1,8 @@
 @interface GTMTLReplaySharedBufferRange
-- (GTMTLReplaySharedBufferRange)initWithBuffer:(id)a3;
-- (GTMTLReplaySharedBufferRange)initWithHeap:(id)a3 range:(_NSRange)a4;
+- (GTMTLReplaySharedBufferRange)initWithBuffer:(id)buffer;
+- (GTMTLReplaySharedBufferRange)initWithHeap:(id)heap range:(_NSRange)range;
 - (id)data;
-- (id)tensorAlias:(id)a3;
+- (id)tensorAlias:(id)alias;
 @end
 
 @implementation GTMTLReplaySharedBufferRange
@@ -12,7 +12,7 @@
   v3 = self->_heap;
   v4 = self->_heapBuffer;
   v5 = objc_alloc(MEMORY[0x277CBEA90]);
-  v6 = [(MTLBuffer *)v4 contents];
+  contents = [(MTLBuffer *)v4 contents];
   location = self->_heapRange.location;
   length = self->_heapRange.length;
   v13[0] = MEMORY[0x277D85DD0];
@@ -23,23 +23,23 @@
   v15 = v3;
   v9 = v3;
   v10 = v4;
-  v11 = [v5 initWithBytesNoCopy:v6 + location length:length deallocator:v13];
+  v11 = [v5 initWithBytesNoCopy:contents + location length:length deallocator:v13];
 
   return v11;
 }
 
-- (id)tensorAlias:(id)a3
+- (id)tensorAlias:(id)alias
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 strides];
+  aliasCopy = alias;
+  strides = [aliasCopy strides];
 
-  if (v5)
+  if (strides)
   {
     heapBuffer = self->_heapBuffer;
     location = self->_heapRange.location;
     v16 = 0;
-    v8 = [(MTLBuffer *)heapBuffer newTensorWithDescriptor:v4 offset:location error:&v16];
+    v8 = [(MTLBuffer *)heapBuffer newTensorWithDescriptor:aliasCopy offset:location error:&v16];
     v9 = v16;
     v10 = v9;
     if (v8)
@@ -69,21 +69,21 @@
   return v8;
 }
 
-- (GTMTLReplaySharedBufferRange)initWithHeap:(id)a3 range:(_NSRange)a4
+- (GTMTLReplaySharedBufferRange)initWithHeap:(id)heap range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
+  length = range.length;
+  location = range.location;
+  heapCopy = heap;
   v14.receiver = self;
   v14.super_class = GTMTLReplaySharedBufferRange;
   v9 = [(GTMTLReplaySharedBufferRange *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_heap, a3);
-    v11 = [v8 buffer];
+    objc_storeStrong(&v9->_heap, heap);
+    buffer = [heapCopy buffer];
     heapBuffer = v10->_heapBuffer;
-    v10->_heapBuffer = v11;
+    v10->_heapBuffer = buffer;
 
     v10->_heapRange.location = location;
     v10->_heapRange.length = length;
@@ -92,17 +92,17 @@
   return v10;
 }
 
-- (GTMTLReplaySharedBufferRange)initWithBuffer:(id)a3
+- (GTMTLReplaySharedBufferRange)initWithBuffer:(id)buffer
 {
-  v5 = a3;
+  bufferCopy = buffer;
   v10.receiver = self;
   v10.super_class = GTMTLReplaySharedBufferRange;
   v6 = [(GTMTLReplaySharedBufferRange *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_heapBuffer, a3);
-    v8 = [v5 length];
+    objc_storeStrong(&v6->_heapBuffer, buffer);
+    v8 = [bufferCopy length];
     v7->_heapRange.location = 0;
     v7->_heapRange.length = v8;
   }

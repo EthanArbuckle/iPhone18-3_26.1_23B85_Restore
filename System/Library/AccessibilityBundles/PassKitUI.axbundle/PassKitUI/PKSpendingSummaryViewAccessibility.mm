@@ -1,18 +1,18 @@
 @interface PKSpendingSummaryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation PKSpendingSummaryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKSpendingSummaryView" hasInstanceVariable:@"_chartView" withType:"PKSpendingSummaryChartView"];
-  [v3 validateClass:@"PKSpendingSummaryView" hasInstanceVariable:@"_arrowImageView" withType:"UIImageView"];
-  [v3 validateClass:@"PKSpendingSummaryView" hasInstanceVariable:@"_spendingLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKSpendingSummaryView" hasInstanceVariable:@"_totalAmount" withType:"UILabel"];
-  [v3 validateClass:@"PKSpendingSummaryView" hasInstanceVariable:@"_upArrow" withType:"UIImage"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKSpendingSummaryView" hasInstanceVariable:@"_chartView" withType:"PKSpendingSummaryChartView"];
+  [validationsCopy validateClass:@"PKSpendingSummaryView" hasInstanceVariable:@"_arrowImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"PKSpendingSummaryView" hasInstanceVariable:@"_spendingLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKSpendingSummaryView" hasInstanceVariable:@"_totalAmount" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKSpendingSummaryView" hasInstanceVariable:@"_upArrow" withType:"UIImage"];
 }
 
 - (id)accessibilityElements

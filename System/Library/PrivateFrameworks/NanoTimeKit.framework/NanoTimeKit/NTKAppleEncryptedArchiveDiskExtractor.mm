@@ -1,41 +1,41 @@
 @interface NTKAppleEncryptedArchiveDiskExtractor
-- (BOOL)verifyExtractedContentsWithError:(id *)a3;
-- (NTKAppleEncryptedArchiveDiskExtractor)initWithArchiveURL:(id)a3 symmetricKey:(id)a4 outputDirectoryURL:(id)a5 fileProtection:(id)a6 completion:(id)a7;
-- (id)errorWithCode:(void *)a1;
-- (id)errorWithCode:(void *)a3 userInfo:;
-- (id)requiredDiskSpaceWithError:(id *)a3;
+- (BOOL)verifyExtractedContentsWithError:(id *)error;
+- (NTKAppleEncryptedArchiveDiskExtractor)initWithArchiveURL:(id)l symmetricKey:(id)key outputDirectoryURL:(id)rL fileProtection:(id)protection completion:(id)completion;
+- (id)errorWithCode:(void *)code;
+- (id)errorWithCode:(void *)code userInfo:;
+- (id)requiredDiskSpaceWithError:(id *)error;
 - (void)cancel;
 - (void)resume;
 @end
 
 @implementation NTKAppleEncryptedArchiveDiskExtractor
 
-- (NTKAppleEncryptedArchiveDiskExtractor)initWithArchiveURL:(id)a3 symmetricKey:(id)a4 outputDirectoryURL:(id)a5 fileProtection:(id)a6 completion:(id)a7
+- (NTKAppleEncryptedArchiveDiskExtractor)initWithArchiveURL:(id)l symmetricKey:(id)key outputDirectoryURL:(id)rL fileProtection:(id)protection completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  keyCopy = key;
+  rLCopy = rL;
+  protectionCopy = protection;
+  completionCopy = completion;
   v29.receiver = self;
   v29.super_class = NTKAppleEncryptedArchiveDiskExtractor;
   v17 = [(NTKAppleEncryptedArchiveDiskExtractor *)&v29 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [lCopy copy];
     archiveURL = v17->_archiveURL;
     v17->_archiveURL = v18;
 
-    v20 = [v13 copy];
+    v20 = [keyCopy copy];
     symmetricKey = v17->_symmetricKey;
     v17->_symmetricKey = v20;
 
-    v22 = [v14 copy];
+    v22 = [rLCopy copy];
     outputDirectoryURL = v17->_outputDirectoryURL;
     v17->_outputDirectoryURL = v22;
 
-    objc_storeStrong(&v17->_fileProtection, a6);
-    v24 = [v16 copy];
+    objc_storeStrong(&v17->_fileProtection, protection);
+    v24 = [completionCopy copy];
     completion = v17->_completion;
     v17->_completion = v24;
 
@@ -51,14 +51,14 @@
   return v17;
 }
 
-- (id)requiredDiskSpaceWithError:(id *)a3
+- (id)requiredDiskSpaceWithError:(id *)error
 {
   v5 = [NTKAppleEncryptedArchiveHandle alloc];
-  v6 = [(NTKAppleEncryptedArchiveDiskExtractor *)self archiveURL];
-  v7 = [(NTKAppleEncryptedArchiveDiskExtractor *)self symmetricKey];
-  v8 = [(NTKAppleEncryptedArchiveHandle *)v5 initWithArchiveURL:v6 symmetricKey:v7];
+  archiveURL = [(NTKAppleEncryptedArchiveDiskExtractor *)self archiveURL];
+  symmetricKey = [(NTKAppleEncryptedArchiveDiskExtractor *)self symmetricKey];
+  v8 = [(NTKAppleEncryptedArchiveHandle *)v5 initWithArchiveURL:archiveURL symmetricKey:symmetricKey];
 
-  v9 = [(NTKAppleEncryptedArchiveHandle *)v8 openReturningError:a3];
+  v9 = [(NTKAppleEncryptedArchiveHandle *)v8 openReturningError:error];
   if (v9)
   {
     v10 = v9;
@@ -93,9 +93,9 @@
       goto LABEL_16;
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = [(NTKAppleEncryptedArchiveDiskExtractor *)self errorWithCode:?];
+      *error = [(NTKAppleEncryptedArchiveDiskExtractor *)self errorWithCode:?];
     }
 
     [(NTKAppleEncryptedArchiveHandle *)v8 closeReturningError:0];
@@ -107,29 +107,29 @@ LABEL_16:
   return v17;
 }
 
-- (BOOL)verifyExtractedContentsWithError:(id *)a3
+- (BOOL)verifyExtractedContentsWithError:(id *)error
 {
   v5 = [MEMORY[0x277CBEB98] setWithObjects:{@"CTM", @"MTM", @"BTM", @"UID", @"GID", @"MOD", 0}];
   v6 = [NTKAppleEncryptedArchiveVerificationHandle alloc];
-  v7 = [(NTKAppleEncryptedArchiveDiskExtractor *)self archiveURL];
-  v8 = [(NTKAppleEncryptedArchiveDiskExtractor *)self symmetricKey];
-  v9 = [(NTKAppleEncryptedArchiveDiskExtractor *)self outputDirectoryURL];
-  v10 = [(NTKAppleEncryptedArchiveVerificationHandle *)v6 initWithArchiveURL:v7 symmetricKey:v8 outputDirectoryURL:v9 excludeFields:v5];
+  archiveURL = [(NTKAppleEncryptedArchiveDiskExtractor *)self archiveURL];
+  symmetricKey = [(NTKAppleEncryptedArchiveDiskExtractor *)self symmetricKey];
+  outputDirectoryURL = [(NTKAppleEncryptedArchiveDiskExtractor *)self outputDirectoryURL];
+  v10 = [(NTKAppleEncryptedArchiveVerificationHandle *)v6 initWithArchiveURL:archiveURL symmetricKey:symmetricKey outputDirectoryURL:outputDirectoryURL excludeFields:v5];
 
-  v11 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __74__NTKAppleEncryptedArchiveDiskExtractor_verifyExtractedContentsWithError___block_invoke;
   v26[3] = &unk_278783AF0;
-  v12 = v11;
+  v12 = dictionary;
   v27 = v12;
   [(NTKAppleEncryptedArchiveHandle *)v10 setArchiveEntryEvent:v26];
-  v13 = [(NTKAppleEncryptedArchiveVerificationHandle *)v10 openReturningError:a3];
+  v13 = [(NTKAppleEncryptedArchiveVerificationHandle *)v10 openReturningError:error];
   if (v13)
   {
-    v14 = [(NTKAppleEncryptedArchiveVerificationHandle *)v10 archiveStream];
-    v15 = [(NTKAppleEncryptedArchiveHandle *)v10 archiveEntryEvent];
-    v16 = AAArchiveStreamProcess(v14, v13, v15, invokeBlockForArchiveEvent_0, 0xC010000000000001, 0);
+    archiveStream = [(NTKAppleEncryptedArchiveVerificationHandle *)v10 archiveStream];
+    archiveEntryEvent = [(NTKAppleEncryptedArchiveHandle *)v10 archiveEntryEvent];
+    v16 = AAArchiveStreamProcess(archiveStream, v13, archiveEntryEvent, invokeBlockForArchiveEvent_0, 0xC010000000000001, 0);
 
     LOBYTE(v13) = v16 >= 0;
     if (v16 < 0)
@@ -165,10 +165,10 @@ LABEL_16:
       v17 = v22;
     }
 
-    if (a3)
+    if (error)
     {
       v23 = v17;
-      *a3 = v17;
+      *error = v17;
     }
   }
 
@@ -423,29 +423,29 @@ void __47__NTKAppleEncryptedArchiveDiskExtractor_resume__block_invoke_2(uint64_t
   AAArchiveStreamCancel(outputStream);
 }
 
-- (id)errorWithCode:(void *)a1
+- (id)errorWithCode:(void *)code
 {
-  if (a1)
+  if (code)
   {
-    a1 = [(NTKAppleEncryptedArchiveDiskExtractor *)a1 errorWithCode:a2 userInfo:MEMORY[0x277CBEC10]];
+    code = [(NTKAppleEncryptedArchiveDiskExtractor *)code errorWithCode:a2 userInfo:MEMORY[0x277CBEC10]];
     v2 = vars8;
   }
 
-  return a1;
+  return code;
 }
 
-- (id)errorWithCode:(void *)a3 userInfo:
+- (id)errorWithCode:(void *)code userInfo:
 {
-  if (a1)
+  if (self)
   {
-    v5 = [a3 mutableCopy];
+    v5 = [code mutableCopy];
     v6 = *MEMORY[0x277CCA760];
     v7 = [v5 objectForKey:*MEMORY[0x277CCA760]];
 
     if (!v7)
     {
-      v8 = [a1 archiveURL];
-      [v5 setObject:v8 forKey:v6];
+      archiveURL = [self archiveURL];
+      [v5 setObject:archiveURL forKey:v6];
     }
 
     v9 = MEMORY[0x277CCA9B8];
@@ -463,31 +463,31 @@ void __47__NTKAppleEncryptedArchiveDiskExtractor_resume__block_invoke_2(uint64_t
 
 - (void)resume
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    v2->_state = 1;
+    selfCopy->_state = 1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v3 = [NTKAppleEncryptedArchiveDiskExtractionHandle alloc];
-  v4 = [(NTKAppleEncryptedArchiveDiskExtractor *)v2 archiveURL];
-  v5 = [(NTKAppleEncryptedArchiveDiskExtractor *)v2 symmetricKey];
-  v6 = [(NTKAppleEncryptedArchiveDiskExtractor *)v2 outputDirectoryURL];
-  v7 = [(NTKAppleEncryptedArchiveDiskExtractor *)v2 fileProtection];
-  v8 = [(NTKAppleEncryptedArchiveDiskExtractionHandle *)v3 initWithArchiveURL:v4 symmetricKey:v5 outputDirectoryURL:v6 fileProtection:v7];
+  archiveURL = [(NTKAppleEncryptedArchiveDiskExtractor *)selfCopy archiveURL];
+  symmetricKey = [(NTKAppleEncryptedArchiveDiskExtractor *)selfCopy symmetricKey];
+  outputDirectoryURL = [(NTKAppleEncryptedArchiveDiskExtractor *)selfCopy outputDirectoryURL];
+  fileProtection = [(NTKAppleEncryptedArchiveDiskExtractor *)selfCopy fileProtection];
+  v8 = [(NTKAppleEncryptedArchiveDiskExtractionHandle *)v3 initWithArchiveURL:archiveURL symmetricKey:symmetricKey outputDirectoryURL:outputDirectoryURL fileProtection:fileProtection];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __47__NTKAppleEncryptedArchiveDiskExtractor_resume__block_invoke;
   v14[3] = &unk_278783AF0;
-  v14[4] = v2;
+  v14[4] = selfCopy;
   [(NTKAppleEncryptedArchiveHandle *)v8 setArchiveEntryEvent:v14];
-  if (v2)
+  if (selfCopy)
   {
-    extractionQueue = v2->_extractionQueue;
+    extractionQueue = selfCopy->_extractionQueue;
   }
 
   else
@@ -500,7 +500,7 @@ void __47__NTKAppleEncryptedArchiveDiskExtractor_resume__block_invoke_2(uint64_t
   block[2] = __47__NTKAppleEncryptedArchiveDiskExtractor_resume__block_invoke_2;
   block[3] = &unk_27877E438;
   v12 = v8;
-  v13 = v2;
+  v13 = selfCopy;
   v10 = v8;
   dispatch_async(extractionQueue, block);
 }

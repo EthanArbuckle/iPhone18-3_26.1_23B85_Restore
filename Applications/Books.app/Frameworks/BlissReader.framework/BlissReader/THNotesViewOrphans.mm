@@ -4,7 +4,7 @@
 - (NSString)title;
 - (THNotesViewOrphans)init;
 - (void)dealloc;
-- (void)updateWithAllAnnotations:(id)a3 orphanedAnnotations:(id)a4 annotationController:(id)a5 navigationModel:(id)a6;
+- (void)updateWithAllAnnotations:(id)annotations orphanedAnnotations:(id)orphanedAnnotations annotationController:(id)controller navigationModel:(id)model;
 @end
 
 @implementation THNotesViewOrphans
@@ -43,15 +43,15 @@
   return [v2 localizedStringForKey:@"Old Notes" value:&stru_471858 table:0];
 }
 
-- (void)updateWithAllAnnotations:(id)a3 orphanedAnnotations:(id)a4 annotationController:(id)a5 navigationModel:(id)a6
+- (void)updateWithAllAnnotations:(id)annotations orphanedAnnotations:(id)orphanedAnnotations annotationController:(id)controller navigationModel:(id)model
 {
   self->mOrphanedAnnotations = 0;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_12C4B4;
   v10[3] = &unk_45DCE0;
-  v10[4] = a6;
-  self->mOrphanedAnnotations = [a5 cachedAnnotationsForAnnotations:a4 withFilter:v10];
+  v10[4] = model;
+  self->mOrphanedAnnotations = [controller cachedAnnotationsForAnnotations:orphanedAnnotations withFilter:v10];
 }
 
 - (NSArray)sectionArray

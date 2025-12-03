@@ -1,33 +1,33 @@
 @interface GDGraphSportsTeam
-- (GDGraphSportsTeam)initWithEntityIdentifierField:(id)a3 nameField:(id)a4 identifiersField:(id)a5 qidField:(id)a6 umcIdentifierField:(id)a7 allNameField:(id)a8 allQidField:(id)a9 allUmcIdentifierField:(id)a10;
+- (GDGraphSportsTeam)initWithEntityIdentifierField:(id)field nameField:(id)nameField identifiersField:(id)identifiersField qidField:(id)qidField umcIdentifierField:(id)identifierField allNameField:(id)allNameField allQidField:(id)allQidField allUmcIdentifierField:(id)self0;
 @end
 
 @implementation GDGraphSportsTeam
 
-- (GDGraphSportsTeam)initWithEntityIdentifierField:(id)a3 nameField:(id)a4 identifiersField:(id)a5 qidField:(id)a6 umcIdentifierField:(id)a7 allNameField:(id)a8 allQidField:(id)a9 allUmcIdentifierField:(id)a10
+- (GDGraphSportsTeam)initWithEntityIdentifierField:(id)field nameField:(id)nameField identifiersField:(id)identifiersField qidField:(id)qidField umcIdentifierField:(id)identifierField allNameField:(id)allNameField allQidField:(id)allQidField allUmcIdentifierField:(id)self0
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v17 = a9;
-  v18 = a10;
+  fieldCopy = field;
+  nameFieldCopy = nameField;
+  identifiersFieldCopy = identifiersField;
+  qidFieldCopy = qidField;
+  identifierFieldCopy = identifierField;
+  allNameFieldCopy = allNameField;
+  allQidFieldCopy = allQidField;
+  umcIdentifierFieldCopy = umcIdentifierField;
   v28.receiver = self;
   v28.super_class = GDGraphSportsTeam;
   v19 = [(GDGraphSportsTeam *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_entityIdentifier, a3);
-    objc_storeStrong(&v20->_name, a4);
-    objc_storeStrong(&v20->_identifiers, a5);
-    objc_storeStrong(&v20->_qid, a6);
-    objc_storeStrong(&v20->_umcIdentifier, a7);
-    objc_storeStrong(&v20->_allName, a8);
-    objc_storeStrong(&v20->_allQid, a9);
-    objc_storeStrong(&v20->_allUmcIdentifier, a10);
+    objc_storeStrong(&v19->_entityIdentifier, field);
+    objc_storeStrong(&v20->_name, nameField);
+    objc_storeStrong(&v20->_identifiers, identifiersField);
+    objc_storeStrong(&v20->_qid, qidField);
+    objc_storeStrong(&v20->_umcIdentifier, identifierField);
+    objc_storeStrong(&v20->_allName, allNameField);
+    objc_storeStrong(&v20->_allQid, allQidField);
+    objc_storeStrong(&v20->_allUmcIdentifier, umcIdentifierField);
   }
 
   return v20;

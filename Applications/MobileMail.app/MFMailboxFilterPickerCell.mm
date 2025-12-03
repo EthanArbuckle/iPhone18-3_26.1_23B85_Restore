@@ -1,44 +1,44 @@
 @interface MFMailboxFilterPickerCell
-- (MFMailboxFilterPickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)bindWithMailboxFilter:(id)a3;
-- (void)setIcon:(id)a3;
-- (void)setIconTintColor:(id)a3;
-- (void)setTitle:(id)a3;
+- (MFMailboxFilterPickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)bindWithMailboxFilter:(id)filter;
+- (void)setIcon:(id)icon;
+- (void)setIconTintColor:(id)color;
+- (void)setTitle:(id)title;
 @end
 
 @implementation MFMailboxFilterPickerCell
 
-- (void)bindWithMailboxFilter:(id)a3
+- (void)bindWithMailboxFilter:(id)filter
 {
-  v9 = a3;
-  v4 = [v9 filterDescription];
-  [(MFMailboxFilterPickerCell *)self setTitle:v4];
+  filterCopy = filter;
+  filterDescription = [filterCopy filterDescription];
+  [(MFMailboxFilterPickerCell *)self setTitle:filterDescription];
 
-  v5 = [v9 iconTintColor];
-  [(MFMailboxFilterPickerCell *)self setIconTintColor:v5];
+  iconTintColor = [filterCopy iconTintColor];
+  [(MFMailboxFilterPickerCell *)self setIconTintColor:iconTintColor];
 
-  v6 = [v9 iconImageName];
+  iconImageName = [filterCopy iconImageName];
 
-  if (v6)
+  if (iconImageName)
   {
-    v7 = [v9 iconImageName];
-    v8 = [UIImage mf_systemImageNamed:v7 forView:6];
+    iconImageName2 = [filterCopy iconImageName];
+    icon = [UIImage mf_systemImageNamed:iconImageName2 forView:6];
   }
 
   else
   {
-    v8 = [v9 icon];
+    icon = [filterCopy icon];
   }
 
-  [(MFMailboxFilterPickerCell *)self setIcon:v8];
+  [(MFMailboxFilterPickerCell *)self setIcon:icon];
 }
 
-- (MFMailboxFilterPickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MFMailboxFilterPickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = MFMailboxFilterPickerCell;
-  v7 = [(MFMailboxFilterPickerCell *)&v10 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(MFMailboxFilterPickerCell *)&v10 initWithStyle:style reuseIdentifier:identifierCopy];
   v8 = v7;
   if (v7)
   {
@@ -48,36 +48,36 @@
   return v8;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001D4C98;
   v5[3] = &unk_10064FD38;
-  v6 = a3;
-  v4 = v6;
+  titleCopy = title;
+  v4 = titleCopy;
   [(MFMailboxFilterPickerCell *)self mf_updateContentConfigurationWithBlock:v5];
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001D4D50;
   v5[3] = &unk_10064FD38;
-  v6 = a3;
-  v4 = v6;
+  iconCopy = icon;
+  v4 = iconCopy;
   [(MFMailboxFilterPickerCell *)self mf_updateContentConfigurationWithBlock:v5];
 }
 
-- (void)setIconTintColor:(id)a3
+- (void)setIconTintColor:(id)color
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001D4E08;
   v5[3] = &unk_10064FD38;
-  v6 = a3;
-  v4 = v6;
+  colorCopy = color;
+  v4 = colorCopy;
   [(MFMailboxFilterPickerCell *)self mf_updateContentConfigurationWithBlock:v5];
 }
 

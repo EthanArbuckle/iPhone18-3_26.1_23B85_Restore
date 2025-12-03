@@ -1,10 +1,10 @@
 @interface JavaNioDoubleArrayBuffer
 - (double)get;
-- (double)getWithInt:(int)a3;
+- (double)getWithInt:(int)int;
 - (id)compact;
 - (id)protectedArray;
-- (id)putWithDouble:(double)a3;
-- (id)putWithInt:(int)a3 withDouble:(double)a4;
+- (id)putWithDouble:(double)double;
+- (id)putWithInt:(int)int withDouble:(double)double;
 - (id)slice;
 - (int)protectedArrayOffset;
 - (void)dealloc;
@@ -83,7 +83,7 @@
   return backingArray->buffer_[v6];
 }
 
-- (double)getWithInt:(int)a3
+- (double)getWithInt:(int)int
 {
   [(JavaNioBuffer *)self checkIndexWithInt:?];
   backingArray = self->backingArray_;
@@ -93,7 +93,7 @@
   }
 
   size = backingArray->super.size_;
-  v7 = (self->arrayOffset_ + a3);
+  v7 = (self->arrayOffset_ + int);
   if (v7 < 0 || v7 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v7);
@@ -102,7 +102,7 @@
   return backingArray->buffer_[v7];
 }
 
-- (id)putWithDouble:(double)a3
+- (id)putWithDouble:(double)double
 {
   if (self->isReadOnly_)
   {
@@ -133,11 +133,11 @@ LABEL_11:
     IOSArray_throwOutOfBoundsWithMsg(size, (arrayOffset + position));
   }
 
-  backingArray->buffer_[v8] = a3;
+  backingArray->buffer_[v8] = double;
   return self;
 }
 
-- (id)putWithInt:(int)a3 withDouble:(double)a4
+- (id)putWithInt:(int)int withDouble:(double)double
 {
   if (self->isReadOnly_)
   {
@@ -153,13 +153,13 @@ LABEL_11:
   }
 
   size = backingArray->super.size_;
-  v9 = (self->arrayOffset_ + a3);
+  v9 = (self->arrayOffset_ + int);
   if (v9 < 0 || v9 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v9);
   }
 
-  backingArray->buffer_[v9] = a4;
+  backingArray->buffer_[v9] = double;
   return self;
 }
 

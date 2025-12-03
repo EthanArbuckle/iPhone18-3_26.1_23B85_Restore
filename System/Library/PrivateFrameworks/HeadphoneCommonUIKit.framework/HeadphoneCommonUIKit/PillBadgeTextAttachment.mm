@@ -1,24 +1,24 @@
 @interface PillBadgeTextAttachment
-- (_TtC20HeadphoneCommonUIKit23PillBadgeTextAttachment)initWithData:(id)a3 ofType:(id)a4;
+- (_TtC20HeadphoneCommonUIKit23PillBadgeTextAttachment)initWithData:(id)data ofType:(id)type;
 @end
 
 @implementation PillBadgeTextAttachment
 
-- (_TtC20HeadphoneCommonUIKit23PillBadgeTextAttachment)initWithData:(id)a3 ofType:(id)a4
+- (_TtC20HeadphoneCommonUIKit23PillBadgeTextAttachment)initWithData:(id)data ofType:(id)type
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
-  if (a3)
+  MEMORY[0x1E69E5928](data);
+  MEMORY[0x1E69E5928](type);
+  if (data)
   {
     sub_1AC3B7214();
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](data);
   }
 
-  if (a4)
+  if (type)
   {
     sub_1AC3B7EF4();
     v6 = v4;
-    MEMORY[0x1E69E5920](a4);
+    MEMORY[0x1E69E5920](type);
     v5 = v6;
   }
 

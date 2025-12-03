@@ -1,6 +1,6 @@
 @interface SCATModernMenuPositionsSheet
 + (id)menuItemDictionary;
-+ (id)menuItemWithIdentifier:(id)a3 menu:(id)a4 delegate:(id)a5;
++ (id)menuItemWithIdentifier:(id)identifier menu:(id)menu delegate:(id)delegate;
 - (id)makeMenuItemsIfNeeded;
 @end
 
@@ -57,56 +57,56 @@
   return v11;
 }
 
-+ (id)menuItemWithIdentifier:(id)a3 menu:(id)a4 delegate:(id)a5
++ (id)menuItemWithIdentifier:(id)identifier menu:(id)menu delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [a1 menuItemDictionary];
-  v10 = [v9 objectForKey:v7];
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  menuItemDictionary = [self menuItemDictionary];
+  v10 = [menuItemDictionary objectForKey:identifierCopy];
 
   if (v10)
   {
-    if ([v7 isEqualToString:@"settings_moveOriginal"])
+    if ([identifierCopy isEqualToString:@"settings_moveOriginal"])
     {
       v11 = &stru_1001D6D10;
     }
 
-    else if ([v7 isEqualToString:@"settings_moveTopLeft"])
+    else if ([identifierCopy isEqualToString:@"settings_moveTopLeft"])
     {
       v11 = &stru_1001D6D30;
     }
 
-    else if ([v7 isEqualToString:@"settings_moveTop"])
+    else if ([identifierCopy isEqualToString:@"settings_moveTop"])
     {
       v11 = &stru_1001D6D50;
     }
 
-    else if ([v7 isEqualToString:@"settings_moveTopRight"])
+    else if ([identifierCopy isEqualToString:@"settings_moveTopRight"])
     {
       v11 = &stru_1001D6D70;
     }
 
-    else if ([v7 isEqualToString:@"settings_moveRight"])
+    else if ([identifierCopy isEqualToString:@"settings_moveRight"])
     {
       v11 = &stru_1001D6D90;
     }
 
-    else if ([v7 isEqualToString:@"settings_moveBottomRight"])
+    else if ([identifierCopy isEqualToString:@"settings_moveBottomRight"])
     {
       v11 = &stru_1001D6DB0;
     }
 
-    else if ([v7 isEqualToString:@"settings_moveBottom"])
+    else if ([identifierCopy isEqualToString:@"settings_moveBottom"])
     {
       v11 = &stru_1001D6DD0;
     }
 
-    else if ([v7 isEqualToString:@"settings_moveBottomLeft"])
+    else if ([identifierCopy isEqualToString:@"settings_moveBottomLeft"])
     {
       v11 = &stru_1001D6DF0;
     }
 
-    else if ([v7 isEqualToString:@"settings_moveLeft"])
+    else if ([identifierCopy isEqualToString:@"settings_moveLeft"])
     {
       v11 = &stru_1001D6E10;
     }
@@ -116,8 +116,8 @@
       v11 = 0;
     }
 
-    v12 = [v9 objectForKeyedSubscript:v7];
-    v10 = [SCATModernMenuItem itemWithIdentifier:v7 delegate:v8 title:v12 imageName:0 activateBehavior:3 activateHandler:v11 updateHandler:0];
+    v12 = [menuItemDictionary objectForKeyedSubscript:identifierCopy];
+    v10 = [SCATModernMenuItem itemWithIdentifier:identifierCopy delegate:delegateCopy title:v12 imageName:0 activateBehavior:3 activateHandler:v11 updateHandler:0];
   }
 
   return v10;
@@ -130,8 +130,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [objc_opt_class() menuItemDictionary];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  menuItemDictionary = [objc_opt_class() menuItemDictionary];
+  v5 = [menuItemDictionary countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -142,17 +142,17 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(menuItemDictionary);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = objc_opt_class();
-        v11 = [(SCATModernMenuSheet *)self menu];
-        v12 = [v10 menuItemWithIdentifier:v9 menu:v11 delegate:self];
+        menu = [(SCATModernMenuSheet *)self menu];
+        v12 = [v10 menuItemWithIdentifier:v9 menu:menu delegate:self];
         [v3 addObject:v12];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [menuItemDictionary countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);

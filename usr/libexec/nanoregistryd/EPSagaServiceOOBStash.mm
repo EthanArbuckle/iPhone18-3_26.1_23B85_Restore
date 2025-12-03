@@ -3,7 +3,7 @@
 - (id)recallOOBKey;
 - (void)_clearOOBKey;
 - (void)clearOOBKey;
-- (void)storeOOBKeyWithTimeout:(id)a3;
+- (void)storeOOBKeyWithTimeout:(id)timeout;
 @end
 
 @implementation EPSagaServiceOOBStash
@@ -24,17 +24,17 @@
   return v2;
 }
 
-- (void)storeOOBKeyWithTimeout:(id)a3
+- (void)storeOOBKeyWithTimeout:(id)timeout
 {
-  v4 = a3;
+  timeoutCopy = timeout;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000EE7D4;
   v7[3] = &unk_100175598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = timeoutCopy;
+  v6 = timeoutCopy;
   dispatch_sync(queue, v7);
 }
 

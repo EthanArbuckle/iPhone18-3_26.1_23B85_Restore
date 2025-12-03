@@ -1,16 +1,16 @@
 @interface BWNodeDroppedSampleMessage
-+ (id)newMessageWithDroppedSample:(id)a3;
-- (void)_initWithDroppedSample:(void *)a1;
++ (id)newMessageWithDroppedSample:(id)sample;
+- (void)_initWithDroppedSample:(void *)sample;
 - (void)dealloc;
 @end
 
 @implementation BWNodeDroppedSampleMessage
 
-+ (id)newMessageWithDroppedSample:(id)a3
++ (id)newMessageWithDroppedSample:(id)sample
 {
   v4 = [BWNodeDroppedSampleMessage alloc];
 
-  return [(BWNodeDroppedSampleMessage *)v4 _initWithDroppedSample:a3];
+  return [(BWNodeDroppedSampleMessage *)v4 _initWithDroppedSample:sample];
 }
 
 - (void)dealloc
@@ -20,14 +20,14 @@
   [(BWNodeDroppedSampleMessage *)&v3 dealloc];
 }
 
-- (void)_initWithDroppedSample:(void *)a1
+- (void)_initWithDroppedSample:(void *)sample
 {
-  if (!a1)
+  if (!sample)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = sample;
   v6.super_class = BWNodeDroppedSampleMessage;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   v4 = v3;

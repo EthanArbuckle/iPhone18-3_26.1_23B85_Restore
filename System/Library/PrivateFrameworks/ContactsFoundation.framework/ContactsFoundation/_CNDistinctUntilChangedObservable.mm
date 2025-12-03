@@ -1,30 +1,30 @@
 @interface _CNDistinctUntilChangedObservable
-- (BOOL)_resultIsDistinctFromLastResult:(id)a3;
-- (_CNDistinctUntilChangedObservable)initWithObservable:(id)a3;
-- (id)subscribe:(id)a3;
+- (BOOL)_resultIsDistinctFromLastResult:(id)result;
+- (_CNDistinctUntilChangedObservable)initWithObservable:(id)observable;
+- (id)subscribe:(id)subscribe;
 @end
 
 @implementation _CNDistinctUntilChangedObservable
 
-- (_CNDistinctUntilChangedObservable)initWithObservable:(id)a3
+- (_CNDistinctUntilChangedObservable)initWithObservable:(id)observable
 {
-  v5 = a3;
+  observableCopy = observable;
   v10.receiver = self;
   v10.super_class = _CNDistinctUntilChangedObservable;
   v6 = [(_CNDistinctUntilChangedObservable *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_observable, a3);
+    objc_storeStrong(&v6->_observable, observable);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(_CNDistinctUntilChangedObservableCancelationToken);
   observable = self->_observable;
@@ -34,7 +34,7 @@
   v17[2] = __47___CNDistinctUntilChangedObservable_subscribe___block_invoke;
   v17[3] = &unk_1E6ED8170;
   objc_copyWeak(&v19, &location);
-  v18 = v4;
+  v18 = subscribeCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __47___CNDistinctUntilChangedObservable_subscribe___block_invoke_2;
@@ -63,18 +63,18 @@
   return v5;
 }
 
-- (BOOL)_resultIsDistinctFromLastResult:(id)a3
+- (BOOL)_resultIsDistinctFromLastResult:(id)result
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [v5 isEqual:v6->_lastObservedResult];
+  resultCopy = result;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [resultCopy isEqual:selfCopy->_lastObservedResult];
   if ((v7 & 1) == 0)
   {
-    objc_storeStrong(&v6->_lastObservedResult, a3);
+    objc_storeStrong(&selfCopy->_lastObservedResult, result);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v7 ^ 1;
 }

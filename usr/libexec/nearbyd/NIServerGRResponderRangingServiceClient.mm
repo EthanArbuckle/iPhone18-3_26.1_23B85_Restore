@@ -1,38 +1,38 @@
 @interface NIServerGRResponderRangingServiceClient
-- (BOOL)removeInterestedDevice:(id)a3 ticketId:(unsigned __int16)a4;
-- (NIServerGRResponderRangingServiceClient)initWithClientIdentifier:(id)a3 clientQueue:(id)a4 delegate:(id)a5;
+- (BOOL)removeInterestedDevice:(id)device ticketId:(unsigned __int16)id;
+- (NIServerGRResponderRangingServiceClient)initWithClientIdentifier:(id)identifier clientQueue:(id)queue delegate:(id)delegate;
 - (basic_string<char,)get_client_identifier;
 - (id).cxx_construct;
-- (void)addInterestedDevice:(id)a3 withThrottleRate:(float)a4;
+- (void)addInterestedDevice:(id)device withThrottleRate:(float)rate;
 @end
 
 @implementation NIServerGRResponderRangingServiceClient
 
-- (NIServerGRResponderRangingServiceClient)initWithClientIdentifier:(id)a3 clientQueue:(id)a4 delegate:(id)a5
+- (NIServerGRResponderRangingServiceClient)initWithClientIdentifier:(id)identifier clientQueue:(id)queue delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = NIServerGRResponderRangingServiceClient;
   v11 = [(NIServerGRResponderRangingServiceClient *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(NIServerGRResponderRangingServiceClient *)v11 setDelegate:v10];
-    [(NIServerGRResponderRangingServiceClient *)v12 setClientId:v8];
-    [(NIServerGRResponderRangingServiceClient *)v12 setQueue:v9];
-    std::string::assign(&v12->_clientIdAsStdString, [v8 UTF8String]);
+    [(NIServerGRResponderRangingServiceClient *)v11 setDelegate:delegateCopy];
+    [(NIServerGRResponderRangingServiceClient *)v12 setClientId:identifierCopy];
+    [(NIServerGRResponderRangingServiceClient *)v12 setQueue:queueCopy];
+    std::string::assign(&v12->_clientIdAsStdString, [identifierCopy UTF8String]);
   }
 
   return v12;
 }
 
-- (void)addInterestedDevice:(id)a3 withThrottleRate:(float)a4
+- (void)addInterestedDevice:(id)device withThrottleRate:(float)rate
 {
-  v6 = a3;
-  v10 = [v6 gr_session_ticket_id];
-  sub_100022098(&self->_interestedDeviceList.__table_.__bucket_list_.__ptr_, &v10);
+  deviceCopy = device;
+  gr_session_ticket_id = [deviceCopy gr_session_ticket_id];
+  sub_100022098(&self->_interestedDeviceList.__table_.__bucket_list_.__ptr_, &gr_session_ticket_id);
   if (*(&self->_clientIdAsStdString.__rep_.__l + 23) < 0)
   {
     sub_1000056BC(__p, self->_clientIdAsStdString.__rep_.__l.__data_, self->_clientIdAsStdString.__rep_.__l.__size_);
@@ -45,21 +45,21 @@
     v9 = *(&self->_clientIdAsStdString.__rep_.__l + 2);
   }
 
-  *&v7 = a4;
-  [v6 setRate:__p forClient:1 shouldReplace:*&v7];
+  *&v7 = rate;
+  [deviceCopy setRate:__p forClient:1 shouldReplace:*&v7];
   if (SHIBYTE(v9) < 0)
   {
     operator delete(__p[0]);
   }
 }
 
-- (BOOL)removeInterestedDevice:(id)a3 ticketId:(unsigned __int16)a4
+- (BOOL)removeInterestedDevice:(id)device ticketId:(unsigned __int16)id
 {
-  v6 = a3;
-  v11 = a4;
-  if (sub_1000222CC(&self->_interestedDeviceList.__table_.__bucket_list_.__ptr_, &v11))
+  deviceCopy = device;
+  idCopy = id;
+  if (sub_1000222CC(&self->_interestedDeviceList.__table_.__bucket_list_.__ptr_, &idCopy))
   {
-    sub_100022384(&self->_interestedDeviceList.__table_.__bucket_list_.__ptr_, &v11);
+    sub_100022384(&self->_interestedDeviceList.__table_.__bucket_list_.__ptr_, &idCopy);
   }
 
   if (*(&self->_clientIdAsStdString.__rep_.__l + 23) < 0)
@@ -73,7 +73,7 @@
     v10 = *(&self->_clientIdAsStdString.__rep_.__l + 2);
   }
 
-  v7 = [v6 removeRateForClient:__p];
+  v7 = [deviceCopy removeRateForClient:__p];
   if (SHIBYTE(v10) < 0)
   {
     operator delete(__p[0]);

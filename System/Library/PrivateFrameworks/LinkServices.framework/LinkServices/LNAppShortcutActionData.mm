@@ -1,39 +1,39 @@
 @interface LNAppShortcutActionData
-- (BOOL)isEqual:(id)a3;
-- (LNAppShortcutActionData)initWithAction:(id)a3 typeMap:(id)a4;
-- (LNAppShortcutActionData)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNAppShortcutActionData)initWithAction:(id)action typeMap:(id)map;
+- (LNAppShortcutActionData)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAppShortcutActionData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAppShortcutActionData *)self action];
-  [v4 encodeObject:v5 forKey:@"action"];
+  coderCopy = coder;
+  action = [(LNAppShortcutActionData *)self action];
+  [coderCopy encodeObject:action forKey:@"action"];
 
-  v6 = [(LNAppShortcutActionData *)self identifiersByTypeMap];
-  [v4 encodeObject:v6 forKey:@"identifiersByTypeMap"];
+  identifiersByTypeMap = [(LNAppShortcutActionData *)self identifiersByTypeMap];
+  [coderCopy encodeObject:identifiersByTypeMap forKey:@"identifiersByTypeMap"];
 }
 
-- (LNAppShortcutActionData)initWithCoder:(id)a3
+- (LNAppShortcutActionData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifiersByTypeMap"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifiersByTypeMap"];
 
   v7 = [(LNAppShortcutActionData *)self initWithAction:v5 typeMap:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -42,10 +42,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNAppShortcutActionData *)self action];
-    v8 = [(LNAppShortcutActionData *)v6 action];
-    v9 = v7;
-    v10 = v8;
+    action = [(LNAppShortcutActionData *)self action];
+    action2 = [(LNAppShortcutActionData *)v6 action];
+    v9 = action;
+    v10 = action2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -72,10 +72,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNAppShortcutActionData *)self identifiersByTypeMap];
-    v16 = [(LNAppShortcutActionData *)v6 identifiersByTypeMap];
-    v14 = v15;
-    v17 = v16;
+    identifiersByTypeMap = [(LNAppShortcutActionData *)self identifiersByTypeMap];
+    identifiersByTypeMap2 = [(LNAppShortcutActionData *)v6 identifiersByTypeMap];
+    v14 = identifiersByTypeMap;
+    v17 = identifiersByTypeMap2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -100,14 +100,14 @@ LABEL_21:
   return v12;
 }
 
-- (LNAppShortcutActionData)initWithAction:(id)a3 typeMap:(id)a4
+- (LNAppShortcutActionData)initWithAction:(id)action typeMap:(id)map
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  actionCopy = action;
+  mapCopy = map;
+  v9 = mapCopy;
+  if (actionCopy)
   {
-    if (v8)
+    if (mapCopy)
     {
       goto LABEL_3;
     }
@@ -115,8 +115,8 @@ LABEL_21:
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"LNAppShortcutActionData.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAppShortcutActionData.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"action"}];
 
     if (v9)
     {
@@ -124,8 +124,8 @@ LABEL_21:
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"LNAppShortcutActionData.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"typeMap"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNAppShortcutActionData.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"typeMap"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -133,7 +133,7 @@ LABEL_3:
   v10 = [(LNAppShortcutActionData *)&v19 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [actionCopy copy];
     action = v10->_action;
     v10->_action = v11;
 

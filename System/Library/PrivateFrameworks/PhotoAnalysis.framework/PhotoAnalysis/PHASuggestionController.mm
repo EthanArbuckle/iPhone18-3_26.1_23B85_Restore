@@ -1,45 +1,45 @@
 @interface PHASuggestionController
-+ (unint64_t)_retirementDelayInDaysForSuggestionType:(unsigned __int16)a3 andSubtype:(unsigned __int16)a4;
-- (BOOL)existingSuggestion:(id)a3 matchesSuggestion:(id)a4;
-- (BOOL)shouldDeleteSuggestion:(id)a3 atDate:(id)a4;
-- (BOOL)shouldRetireSuggestion:(id)a3 atDate:(id)a4;
-- (PHASuggestionController)initWithGraphManager:(id)a3;
-- (id)_createSuggestionSessionWithProfile:(unsigned __int8)a3;
-- (id)_existingSuggestionsForProfile:(unsigned __int8)a3;
++ (unint64_t)_retirementDelayInDaysForSuggestionType:(unsigned __int16)type andSubtype:(unsigned __int16)subtype;
+- (BOOL)existingSuggestion:(id)suggestion matchesSuggestion:(id)matchesSuggestion;
+- (BOOL)shouldDeleteSuggestion:(id)suggestion atDate:(id)date;
+- (BOOL)shouldRetireSuggestion:(id)suggestion atDate:(id)date;
+- (PHASuggestionController)initWithGraphManager:(id)manager;
+- (id)_createSuggestionSessionWithProfile:(unsigned __int8)profile;
+- (id)_existingSuggestionsForProfile:(unsigned __int8)profile;
 - (id)_forbiddenAssetUUIDs;
-- (id)_suggestionsToReuseWithSuggestionSession:(id)a3 numberOfSuggestionsToReuse:(unint64_t)a4;
-- (id)collidableMemoriesWithReferenceDate:(id)a3 andDelay:(double)a4;
-- (id)collidableSuggestionsWithOptions:(id)a3;
-- (id)commitSuggestions:(id)a3 retiringSuggestions:(id)a4 deletingSuggestions:(id)a5 withOptions:(id)a6 error:(id *)a7;
-- (id)deniedSuggestionsForProfile:(unsigned __int8)a3;
-- (id)existingSuggestionByKeyAssetUUIDWithType:(unsigned __int16)a3 subtypes:(id)a4;
-- (id)generateSuggestionsWithProfile:(unsigned __int8)a3 options:(id)a4 progress:(id)a5;
+- (id)_suggestionsToReuseWithSuggestionSession:(id)session numberOfSuggestionsToReuse:(unint64_t)reuse;
+- (id)collidableMemoriesWithReferenceDate:(id)date andDelay:(double)delay;
+- (id)collidableSuggestionsWithOptions:(id)options;
+- (id)commitSuggestions:(id)suggestions retiringSuggestions:(id)retiringSuggestions deletingSuggestions:(id)deletingSuggestions withOptions:(id)options error:(id *)error;
+- (id)deniedSuggestionsForProfile:(unsigned __int8)profile;
+- (id)existingSuggestionByKeyAssetUUIDWithType:(unsigned __int16)type subtypes:(id)subtypes;
+- (id)generateSuggestionsWithProfile:(unsigned __int8)profile options:(id)options progress:(id)progress;
 - (id)pendingOnThisDayMemories;
-- (id)suggestionInfosWithOptions:(id)a3;
+- (id)suggestionInfosWithOptions:(id)options;
 - (void)cacheWidgetSuggestionsWithCurrentlyFeaturedState;
-- (void)ingestExistingSuggestionsWithOptions:(id)a3;
-- (void)ingestSuggestions:(id)a3 atDate:(id)a4;
-- (void)processSuggestions:(id)a3 forRecyclingWithExistingSuggestionByKeyAssetUUID:(id)a4 resultBlock:(id)a5;
-- (void)recordCreatedSuggestions:(id)a3 duringSession:(id)a4;
-- (void)recordDeletedSuggestions:(id)a3;
-- (void)recordRetiredSuggestions:(id)a3;
+- (void)ingestExistingSuggestionsWithOptions:(id)options;
+- (void)ingestSuggestions:(id)suggestions atDate:(id)date;
+- (void)processSuggestions:(id)suggestions forRecyclingWithExistingSuggestionByKeyAssetUUID:(id)d resultBlock:(id)block;
+- (void)recordCreatedSuggestions:(id)suggestions duringSession:(id)session;
+- (void)recordDeletedSuggestions:(id)suggestions;
+- (void)recordRetiredSuggestions:(id)suggestions;
 @end
 
 @implementation PHASuggestionController
 
-- (id)suggestionInfosWithOptions:(id)a3
+- (id)suggestionInfosWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(PGManager *)self->_graphManager workingContextForSuggestions];
-  v6 = [objc_alloc(MEMORY[0x277D3BBF8]) initWithProfile:0 workingContext:v5];
+  optionsCopy = options;
+  workingContextForSuggestions = [(PGManager *)self->_graphManager workingContextForSuggestions];
+  v6 = [objc_alloc(MEMORY[0x277D3BBF8]) initWithProfile:0 workingContext:workingContextForSuggestions];
   v7 = objc_alloc_init(MEMORY[0x277D3BBF0]);
   v8 = MEMORY[0x277CCAA78];
-  v9 = [v4 objectForKeyedSubscript:@"type"];
+  v9 = [optionsCopy objectForKeyedSubscript:@"type"];
   v10 = [v8 indexSetWithIndex:{objc_msgSend(v9, "unsignedIntegerValue")}];
   [v7 setSuggestionTypeWhitelist:v10];
 
   v11 = MEMORY[0x277CCAA78];
-  v12 = [v4 objectForKeyedSubscript:@"subtype"];
+  v12 = [optionsCopy objectForKeyedSubscript:@"subtype"];
   v13 = [v11 indexSetWithIndex:{objc_msgSend(v12, "unsignedIntegerValue")}];
   [v7 setSuggestionSubtypeWhitelist:v13];
 
@@ -50,19 +50,19 @@
   [v7 setShouldProcessExistingSuggestions:0];
   [v7 setDiscardGeneratedSuggestions:1];
   [v7 setAllowNotification:0];
-  v14 = [v4 objectForKeyedSubscript:@"localDate"];
+  v14 = [optionsCopy objectForKeyedSubscript:@"localDate"];
   if (v14)
   {
     [v7 setLocalToday:v14];
   }
 
-  v15 = [v4 objectForKeyedSubscript:@"universalStartDate"];
+  v15 = [optionsCopy objectForKeyedSubscript:@"universalStartDate"];
   if (v15)
   {
     [v7 setUniversalStartDate:v15];
   }
 
-  v16 = [v4 objectForKeyedSubscript:@"universalEndDate"];
+  v16 = [optionsCopy objectForKeyedSubscript:@"universalEndDate"];
   if (v16)
   {
     [v7 setUniversalEndDate:v16];
@@ -79,9 +79,9 @@
 
 - (void)cacheWidgetSuggestionsWithCurrentlyFeaturedState
 {
-  v8 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v8 setWantsIncrementalChangeDetails:0];
-  v3 = [MEMORY[0x277CD99E0] fetchWidgetSuggestionsWithFeaturedState:1 withOptions:v8];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+  v3 = [MEMORY[0x277CD99E0] fetchWidgetSuggestionsWithFeaturedState:1 withOptions:librarySpecificFetchOptions];
   v4 = [v3 count];
   if (v4)
   {
@@ -92,22 +92,22 @@
   }
 }
 
-- (void)processSuggestions:(id)a3 forRecyclingWithExistingSuggestionByKeyAssetUUID:(id)a4 resultBlock:(id)a5
+- (void)processSuggestions:(id)suggestions forRecyclingWithExistingSuggestionByKeyAssetUUID:(id)d resultBlock:(id)block
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v23 = a5;
+  suggestionsCopy = suggestions;
+  dCopy = d;
+  blockCopy = block;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v10 = objc_alloc(MEMORY[0x277CBEB58]);
-  v11 = [v8 allValues];
-  v24 = [v10 initWithArray:v11];
+  allValues = [dCopy allValues];
+  v24 = [v10 initWithArray:allValues];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = v7;
+  v12 = suggestionsCopy;
   v13 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v13)
   {
@@ -123,11 +123,11 @@
         }
 
         v17 = *(*(&v26 + 1) + 8 * i);
-        v18 = [v17 keyAssets];
-        v19 = [v18 firstObject];
-        v20 = [v19 uuid];
+        keyAssets = [v17 keyAssets];
+        firstObject = [keyAssets firstObject];
+        uuid = [firstObject uuid];
 
-        v21 = [v8 objectForKeyedSubscript:v20];
+        v21 = [dCopy objectForKeyedSubscript:uuid];
         if (v21 && [(PHASuggestionController *)self existingSuggestion:v21 matchesSuggestion:v17])
         {
           [v24 removeObject:v21];
@@ -145,22 +145,22 @@
     while (v14);
   }
 
-  v22 = [v24 allObjects];
-  v23[2](v23, v9, v22);
+  allObjects = [v24 allObjects];
+  blockCopy[2](blockCopy, v9, allObjects);
 }
 
-- (BOOL)existingSuggestion:(id)a3 matchesSuggestion:(id)a4
+- (BOOL)existingSuggestion:(id)suggestion matchesSuggestion:(id)matchesSuggestion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 type];
-  if (v7 == [v6 type] && (v8 = objc_msgSend(v5, "subtype"), v8 == objc_msgSend(v6, "subtype")) && (v9 = objc_msgSend(v5, "version"), v9 == objc_msgSend(v6, "version")))
+  suggestionCopy = suggestion;
+  matchesSuggestionCopy = matchesSuggestion;
+  type = [suggestionCopy type];
+  if (type == [matchesSuggestionCopy type] && (v8 = objc_msgSend(suggestionCopy, "subtype"), v8 == objc_msgSend(matchesSuggestionCopy, "subtype")) && (v9 = objc_msgSend(suggestionCopy, "version"), v9 == objc_msgSend(matchesSuggestionCopy, "version")))
   {
-    v10 = [v5 features];
-    v11 = v10;
-    if (v10)
+    features = [suggestionCopy features];
+    v11 = features;
+    if (features)
     {
-      v12 = v10;
+      v12 = features;
     }
 
     else
@@ -170,11 +170,11 @@
 
     v15 = v12;
 
-    v16 = [v6 features];
-    v17 = v16;
-    if (v16)
+    features2 = [matchesSuggestionCopy features];
+    v17 = features2;
+    if (features2)
     {
-      v18 = v16;
+      v18 = features2;
     }
 
     else
@@ -185,12 +185,12 @@
     v19 = v18;
 
     v20 = [v15 isEqualToSet:v19];
-    v21 = [v5 suggestedPersonLocalIdentifiers];
-    v22 = v21;
+    suggestedPersonLocalIdentifiers = [suggestionCopy suggestedPersonLocalIdentifiers];
+    v22 = suggestedPersonLocalIdentifiers;
     v23 = MEMORY[0x277CBEBF8];
-    if (v21)
+    if (suggestedPersonLocalIdentifiers)
     {
-      v24 = v21;
+      v24 = suggestedPersonLocalIdentifiers;
     }
 
     else
@@ -200,11 +200,11 @@
 
     v25 = v24;
 
-    v26 = [v6 suggestedPersonLocalIdentifiers];
-    v27 = v26;
-    if (v26)
+    suggestedPersonLocalIdentifiers2 = [matchesSuggestionCopy suggestedPersonLocalIdentifiers];
+    v27 = suggestedPersonLocalIdentifiers2;
+    if (suggestedPersonLocalIdentifiers2)
     {
-      v28 = v26;
+      v28 = suggestedPersonLocalIdentifiers2;
     }
 
     else
@@ -218,21 +218,21 @@
     {
       if ([v25 isEqualToArray:v29])
       {
-        v30 = [v5 recipe];
-        v31 = [v6 recipe];
-        if (v30 == v31)
+        recipe = [suggestionCopy recipe];
+        recipe2 = [matchesSuggestionCopy recipe];
+        if (recipe == recipe2)
         {
           v20 = 1;
         }
 
         else
         {
-          v32 = [v5 recipe];
-          [v6 recipe];
-          v33 = v38 = v30;
-          v20 = [v32 isEqual:v33];
+          recipe3 = [suggestionCopy recipe];
+          [matchesSuggestionCopy recipe];
+          v33 = v38 = recipe;
+          v20 = [recipe3 isEqual:v33];
 
-          v30 = v38;
+          recipe = v38;
         }
       }
 
@@ -242,15 +242,15 @@
       }
     }
 
-    v34 = [MEMORY[0x277CD99E0] allTopWallpaperSuggestionSubtypes];
-    v35 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v6, "subtype")}];
-    v36 = [v34 containsObject:v35];
+    allTopWallpaperSuggestionSubtypes = [MEMORY[0x277CD99E0] allTopWallpaperSuggestionSubtypes];
+    v35 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(matchesSuggestionCopy, "subtype")}];
+    v36 = [allTopWallpaperSuggestionSubtypes containsObject:v35];
 
     v13 = (v36 ^ 1) & v20;
     if (((v36 ^ 1) & 1) == 0 && v20)
     {
-      v37 = [v5 availableFeatures];
-      v13 = v37 == [v6 availableFeatures];
+      availableFeatures = [suggestionCopy availableFeatures];
+      v13 = availableFeatures == [matchesSuggestionCopy availableFeatures];
     }
   }
 
@@ -262,22 +262,22 @@
   return v13;
 }
 
-- (id)existingSuggestionByKeyAssetUUIDWithType:(unsigned __int16)a3 subtypes:(id)a4
+- (id)existingSuggestionByKeyAssetUUIDWithType:(unsigned __int16)type subtypes:(id)subtypes
 {
-  v4 = a3;
+  typeCopy = type;
   v58[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v42 = self;
-  v7 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  subtypesCopy = subtypes;
+  selfCopy = self;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v8 = MEMORY[0x277CCA920];
   v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != %d", @"state", 4];
   v58[0] = v9;
-  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type == %d", v4];
-  v58[1] = v10;
+  typeCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"type == %d", typeCopy];
+  v58[1] = typeCopy;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v58 count:2];
   v12 = [v8 andPredicateWithSubpredicates:v11];
 
-  if (v6)
+  if (subtypesCopy)
   {
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v47[0] = MEMORY[0x277D85DD0];
@@ -286,7 +286,7 @@
     v47[3] = &unk_2788B1F40;
     v48 = v13;
     v14 = v13;
-    [v6 enumerateIndexesUsingBlock:v47];
+    [subtypesCopy enumerateIndexesUsingBlock:v47];
     v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"subtype IN %@", v14];
     v16 = MEMORY[0x277CCA920];
     v57[0] = v12;
@@ -297,20 +297,20 @@
     v12 = v18;
   }
 
-  [v7 setPredicate:v12];
-  v19 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:v7];
+  [librarySpecificFetchOptions setPredicate:v12];
+  v19 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:librarySpecificFetchOptions];
   if ([v19 count])
   {
     v38 = v12;
-    v39 = v7;
-    v40 = v6;
-    v20 = [(PHPhotoLibrary *)v42->_photoLibrary librarySpecificFetchOptions];
+    v39 = librarySpecificFetchOptions;
+    v40 = subtypesCopy;
+    librarySpecificFetchOptions2 = [(PHPhotoLibrary *)selfCopy->_photoLibrary librarySpecificFetchOptions];
     v56 = *MEMORY[0x277CD9AA8];
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v56 count:1];
-    [v20 setFetchPropertySets:v21];
+    [librarySpecificFetchOptions2 setFetchPropertySets:v21];
 
-    v36 = v20;
-    v22 = [MEMORY[0x277CD97A8] fetchKeyAssetBySuggestionUUIDForSuggestions:v19 options:v20];
+    v36 = librarySpecificFetchOptions2;
+    v22 = [MEMORY[0x277CD97A8] fetchKeyAssetBySuggestionUUIDForSuggestions:v19 options:librarySpecificFetchOptions2];
     v23 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v43 = 0u;
     v44 = 0u;
@@ -333,16 +333,16 @@
           }
 
           v28 = *(*(&v43 + 1) + 8 * i);
-          v29 = [v28 uuid];
-          v30 = [v22 objectForKeyedSubscript:v29];
+          uuid = [v28 uuid];
+          v30 = [v22 objectForKeyedSubscript:uuid];
 
           if (v30)
           {
-            v31 = [v30 uuid];
-            v32 = [v23 objectForKeyedSubscript:v31];
+            uuid2 = [v30 uuid];
+            v32 = [v23 objectForKeyedSubscript:uuid2];
             if (v32)
             {
-              loggingConnection = v42->_loggingConnection;
+              loggingConnection = selfCopy->_loggingConnection;
               if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412802;
@@ -357,13 +357,13 @@
 
             else
             {
-              [v23 setObject:v28 forKeyedSubscript:v31];
+              [v23 setObject:v28 forKeyedSubscript:uuid2];
             }
           }
 
           else
           {
-            v34 = v42->_loggingConnection;
+            v34 = selfCopy->_loggingConnection;
             if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
@@ -379,8 +379,8 @@
       while (v25);
     }
 
-    v7 = v39;
-    v6 = v40;
+    librarySpecificFetchOptions = v39;
+    subtypesCopy = v40;
     v19 = v37;
     v12 = v38;
   }
@@ -426,8 +426,8 @@ void __77__PHASuggestionController_existingSuggestionByKeyAssetUUIDWithType_subt
         v9 = *(*(&v13 + 1) + 8 * i);
         if ([v9 pendingState] == 1)
         {
-          v10 = [v9 category];
-          if ((v10 - 202) <= 0xB && ((1 << (v10 + 54)) & 0xC01) != 0)
+          category = [v9 category];
+          if ((category - 202) <= 0xB && ((1 << (category + 54)) & 0xC01) != 0)
           {
             [v3 addObject:v9];
           }
@@ -443,27 +443,27 @@ void __77__PHASuggestionController_existingSuggestionByKeyAssetUUIDWithType_subt
   return v3;
 }
 
-- (id)_createSuggestionSessionWithProfile:(unsigned __int8)a3
+- (id)_createSuggestionSessionWithProfile:(unsigned __int8)profile
 {
-  v3 = a3;
-  v4 = [(PGManager *)self->_graphManager workingContextForSuggestions];
-  v5 = [objc_alloc(MEMORY[0x277D3BBF8]) initWithProfile:v3 workingContext:v4];
+  profileCopy = profile;
+  workingContextForSuggestions = [(PGManager *)self->_graphManager workingContextForSuggestions];
+  v5 = [objc_alloc(MEMORY[0x277D3BBF8]) initWithProfile:profileCopy workingContext:workingContextForSuggestions];
 
   return v5;
 }
 
-- (id)_suggestionsToReuseWithSuggestionSession:(id)a3 numberOfSuggestionsToReuse:(unint64_t)a4
+- (id)_suggestionsToReuseWithSuggestionSession:(id)session numberOfSuggestionsToReuse:(unint64_t)reuse
 {
-  v5 = a3;
-  v6 = [v5 existingSuggestionsWithState:0 count:a4];
-  if ([v6 count] == a4)
+  sessionCopy = session;
+  v6 = [sessionCopy existingSuggestionsWithState:0 count:reuse];
+  if ([v6 count] == reuse)
   {
     v7 = v6;
   }
 
   else
   {
-    v8 = [v5 existingSuggestionsWithState:1 count:{a4 - objc_msgSend(v6, "count")}];
+    v8 = [sessionCopy existingSuggestionsWithState:1 count:{reuse - objc_msgSend(v6, "count")}];
     if ([v8 count])
     {
       v9 = [v6 arrayByAddingObjectsFromArray:v8];
@@ -480,11 +480,11 @@ void __77__PHASuggestionController_existingSuggestionByKeyAssetUUIDWithType_subt
   return v7;
 }
 
-- (id)collidableSuggestionsWithOptions:(id)a3
+- (id)collidableSuggestionsWithOptions:(id)options
 {
   v4 = MEMORY[0x277D27690];
-  v5 = [a3 localToday];
-  v6 = [v4 universalDateFromLocalDate:v5];
+  localToday = [options localToday];
+  v6 = [v4 universalDateFromLocalDate:localToday];
 
   v7 = [(PHASuggestionController *)self _existingSuggestionsForProfile:1];
   v8 = MEMORY[0x277CCAC30];
@@ -513,15 +513,15 @@ BOOL __60__PHASuggestionController_collidableSuggestionsWithOptions___block_invo
 - (id)_forbiddenAssetUUIDs
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v2 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v19[0] = *MEMORY[0x277CD9AA8];
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-  [v2 setFetchPropertySets:v3];
+  [librarySpecificFetchOptions setFetchPropertySets:v3];
 
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K CONTAINS %d", @"suggestionsBeingKeyAssets", @"state", 4];
-  [v2 setInternalPredicate:v4];
+  [librarySpecificFetchOptions setInternalPredicate:v4];
 
-  v5 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v2];
+  v5 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v14 = 0u;
   v15 = 0u;
@@ -542,8 +542,8 @@ BOOL __60__PHASuggestionController_collidableSuggestionsWithOptions___block_invo
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * i) uuid];
-        [v6 addObject:v12];
+        uuid = [*(*(&v14 + 1) + 8 * i) uuid];
+        [v6 addObject:uuid];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -555,12 +555,12 @@ BOOL __60__PHASuggestionController_collidableSuggestionsWithOptions___block_invo
   return v6;
 }
 
-- (id)generateSuggestionsWithProfile:(unsigned __int8)a3 options:(id)a4 progress:(id)a5
+- (id)generateSuggestionsWithProfile:(unsigned __int8)profile options:(id)options progress:(id)progress
 {
-  v7 = a3;
+  profileCopy = profile;
   v132 = *MEMORY[0x277D85DE8];
-  v88 = a4;
-  v89 = a5;
+  optionsCopy = options;
+  progressCopy = progress;
   v9 = self->_loggingConnection;
   spid = os_signpost_id_generate(v9);
   info = 0;
@@ -577,17 +577,17 @@ BOOL __60__PHASuggestionController_collidableSuggestionsWithOptions___block_invo
 
   v84 = mach_absolute_time();
   v117 = 0;
-  v89[2](v89, &v117, 0.0);
+  progressCopy[2](progressCopy, &v117, 0.0);
   if ((v117 & 1) == 0)
   {
-    v87 = [(PHASuggestionController *)self _createSuggestionSessionWithProfile:v7];
-    v13 = [(PHASuggestionController *)self _existingSuggestionsForProfile:v7];
+    v87 = [(PHASuggestionController *)self _createSuggestionSessionWithProfile:profileCopy];
+    v13 = [(PHASuggestionController *)self _existingSuggestionsForProfile:profileCopy];
     [v87 setExistingSuggestions:v13];
 
-    v14 = [(PHASuggestionController *)self deniedSuggestionsForProfile:v7];
+    v14 = [(PHASuggestionController *)self deniedSuggestionsForProfile:profileCopy];
     [v87 setDeniedSuggestions:v14];
 
-    v89[2](v89, &v117, 0.1);
+    progressCopy[2](progressCopy, &v117, 0.1);
     if (v117)
     {
       v12 = MEMORY[0x277CBEBF8];
@@ -596,14 +596,14 @@ LABEL_129:
       goto LABEL_130;
     }
 
-    if (v7 > 3)
+    if (profileCopy > 3)
     {
-      if ((v7 - 6) >= 2)
+      if ((profileCopy - 6) >= 2)
       {
-        if (v7 == 4)
+        if (profileCopy == 4)
         {
-          v17 = [(PHASuggestionController *)self pendingOnThisDayMemories];
-          [v87 setCollidableMemories:v17];
+          pendingOnThisDayMemories = [(PHASuggestionController *)self pendingOnThisDayMemories];
+          [v87 setCollidableMemories:pendingOnThisDayMemories];
 
 LABEL_22:
           v15 = v113;
@@ -611,27 +611,27 @@ LABEL_22:
           v113[1] = 3221225472;
           v113[2] = __75__PHASuggestionController_generateSuggestionsWithProfile_options_progress___block_invoke_4;
           v113[3] = &unk_2788B1EC8;
-          v113[4] = v89;
-          v82 = [v87 suggestionsWithOptions:v88 progress:v113];
+          v113[4] = progressCopy;
+          v82 = [v87 suggestionsWithOptions:optionsCopy progress:v113];
           goto LABEL_24;
         }
 
         v82 = 0;
-        if (v7 != 5)
+        if (profileCopy != 5)
         {
           goto LABEL_25;
         }
 
 LABEL_16:
-        if ([v88 maximumNumberOfSuggestions] == 1)
+        if ([optionsCopy maximumNumberOfSuggestions] == 1)
         {
           v15 = v116;
           v116[0] = MEMORY[0x277D85DD0];
           v116[1] = 3221225472;
           v116[2] = __75__PHASuggestionController_generateSuggestionsWithProfile_options_progress___block_invoke;
           v116[3] = &unk_2788B1EC8;
-          v116[4] = v89;
-          v82 = [v87 coordinatedSuggestionsWithOptions:v88 progress:v116];
+          v116[4] = progressCopy;
+          v82 = [v87 coordinatedSuggestionsWithOptions:optionsCopy progress:v116];
         }
 
         else
@@ -641,8 +641,8 @@ LABEL_16:
           v115[1] = 3221225472;
           v115[2] = __75__PHASuggestionController_generateSuggestionsWithProfile_options_progress___block_invoke_2;
           v115[3] = &unk_2788B1EC8;
-          v115[4] = v89;
-          v82 = [v87 uncoordinatedSuggestionsWithOptions:v88 progress:v115];
+          v115[4] = progressCopy;
+          v82 = [v87 uncoordinatedSuggestionsWithOptions:optionsCopy progress:v115];
         }
 
         goto LABEL_24;
@@ -651,15 +651,15 @@ LABEL_16:
 
     else
     {
-      if (v7 <= 1)
+      if (profileCopy <= 1)
       {
         v82 = 0;
-        if (v7)
+        if (profileCopy)
         {
-          if (v7 != 1)
+          if (profileCopy != 1)
           {
 LABEL_25:
-            v89[2](v89, &v117, 0.6);
+            progressCopy[2](progressCopy, &v117, 0.6);
             if (v117)
             {
               v12 = MEMORY[0x277CBEBF8];
@@ -671,10 +671,10 @@ LABEL_128:
 
             v90 = objc_alloc_init(MEMORY[0x277CBEB18]);
             v91 = objc_alloc_init(MEMORY[0x277CBEB18]);
-            if ([v88 shouldProcessExistingSuggestions])
+            if ([optionsCopy shouldProcessExistingSuggestions])
             {
-              v19 = [MEMORY[0x277D3BBF8] suggestionTypesWithProfile:v7];
-              v20 = [MEMORY[0x277D3BBF8] suggestionSubtypesWithProfile:v7];
+              v19 = [MEMORY[0x277D3BBF8] suggestionTypesWithProfile:profileCopy];
+              v20 = [MEMORY[0x277D3BBF8] suggestionSubtypesWithProfile:profileCopy];
               v110 = 0u;
               v111 = 0u;
               v108 = 0u;
@@ -737,15 +737,15 @@ LABEL_128:
                 while (v27);
               }
 
-              if (v7 == 3 && (v31 = [v88 maximumNumberOfSuggestions], v31 > objc_msgSend(v82, "count")))
+              if (profileCopy == 3 && (v31 = [optionsCopy maximumNumberOfSuggestions], v31 > objc_msgSend(v82, "count")))
               {
                 v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
                 v102 = 0u;
                 v103 = 0u;
                 v100 = 0u;
                 v101 = 0u;
-                v33 = [v87 existingSuggestions];
-                v34 = [v33 countByEnumeratingWithState:&v100 objects:v129 count:16];
+                existingSuggestions = [v87 existingSuggestions];
+                v34 = [existingSuggestions countByEnumeratingWithState:&v100 objects:v129 count:16];
                 if (v34)
                 {
                   v35 = *v101;
@@ -755,7 +755,7 @@ LABEL_128:
                     {
                       if (*v101 != v35)
                       {
-                        objc_enumerationMutation(v33);
+                        objc_enumerationMutation(existingSuggestions);
                       }
 
                       v5 = *(*(&v100 + 1) + 8 * k);
@@ -765,7 +765,7 @@ LABEL_128:
                       }
                     }
 
-                    v34 = [v33 countByEnumeratingWithState:&v100 objects:v129 count:16];
+                    v34 = [existingSuggestions countByEnumeratingWithState:&v100 objects:v129 count:16];
                   }
 
                   while (v34);
@@ -775,12 +775,12 @@ LABEL_128:
                 {
                   [v32 pha_shuffle];
                   v37 = [v82 mutableCopy];
-                  v38 = [v88 maximumNumberOfSuggestions];
+                  maximumNumberOfSuggestions = [optionsCopy maximumNumberOfSuggestions];
                   v39 = [v82 count];
                   v40 = [v32 count];
-                  if (v40 >= v38 - v39)
+                  if (v40 >= maximumNumberOfSuggestions - v39)
                   {
-                    v41 = v38 - v39;
+                    v41 = maximumNumberOfSuggestions - v39;
                   }
 
                   else
@@ -796,9 +796,9 @@ LABEL_128:
                       v5 = self->_loggingConnection;
                       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
                       {
-                        v43 = [v42 localIdentifier];
+                        localIdentifier = [v42 localIdentifier];
                         LODWORD(buf) = 138412290;
-                        *(&buf + 4) = v43;
+                        *(&buf + 4) = localIdentifier;
                         _os_log_impl(&dword_22FA28000, v5, OS_LOG_TYPE_DEFAULT, "Reusing widget suggestion: %@", &buf, 0xCu);
                       }
 
@@ -829,7 +829,7 @@ LABEL_128:
               v81 = v82;
             }
 
-            v89[2](v89, &v117, 0.7);
+            progressCopy[2](progressCopy, &v117, 0.7);
             v12 = MEMORY[0x277CBEBF8];
             if (v117)
             {
@@ -844,17 +844,17 @@ LABEL_127:
             v125 = 0x3032000000;
             v126 = __Block_byref_object_copy__2616;
             v127 = __Block_byref_object_dispose__2617;
-            v44 = [v88 discardGeneratedSuggestions];
+            discardGeneratedSuggestions = [optionsCopy discardGeneratedSuggestions];
             v45 = v81;
-            if (v44)
+            if (discardGeneratedSuggestions)
             {
               v45 = v12;
             }
 
             v128 = v45;
-            if ([objc_opt_class() _shouldCheckSuggestionRecylingForProfile:v7])
+            if ([objc_opt_class() _shouldCheckSuggestionRecylingForProfile:profileCopy])
             {
-              switch(v7)
+              switch(profileCopy)
               {
                 case 2:
                   v77 = 6;
@@ -871,8 +871,8 @@ LABEL_127:
                   return result;
               }
 
-              v78 = [v88 suggestionSubtypeWhitelist];
-              v79 = [(PHASuggestionController *)self existingSuggestionByKeyAssetUUIDWithType:v77 subtypes:v78];
+              suggestionSubtypeWhitelist = [optionsCopy suggestionSubtypeWhitelist];
+              v79 = [(PHASuggestionController *)self existingSuggestionByKeyAssetUUIDWithType:v77 subtypes:suggestionSubtypeWhitelist];
 
               if ([v79 count])
               {
@@ -892,9 +892,9 @@ LABEL_127:
             {
               v46 = *(*(&buf + 1) + 40);
               v96 = 0;
-              v47 = [(PHASuggestionController *)self commitSuggestions:v46 retiringSuggestions:v90 deletingSuggestions:v91 withOptions:v88 error:&v96];
+              v47 = [(PHASuggestionController *)self commitSuggestions:v46 retiringSuggestions:v90 deletingSuggestions:v91 withOptions:optionsCopy error:&v96];
               v48 = v96;
-              v89[2](v89, &v117, 0.8);
+              progressCopy[2](progressCopy, &v117, 0.8);
               if (v117)
               {
 
@@ -975,10 +975,10 @@ LABEL_126:
               v47 = MEMORY[0x277CBEBF8];
             }
 
-            v89[2](v89, &v117, 0.9);
+            progressCopy[2](progressCopy, &v117, 0.9);
             if ((v117 & 1) == 0)
             {
-              if ([v88 discardGeneratedSuggestions] && objc_msgSend(v81, "count"))
+              if ([optionsCopy discardGeneratedSuggestions] && objc_msgSend(v81, "count"))
               {
                 v83 = v47;
                 v56 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1001,13 +1001,13 @@ LABEL_126:
                       }
 
                       v61 = *(*(&v92 + 1) + 8 * m);
-                      v62 = [v61 keyAssets];
-                      v63 = [v62 firstObject];
-                      v64 = [v63 localIdentifier];
+                      keyAssets = [v61 keyAssets];
+                      firstObject = [keyAssets firstObject];
+                      localIdentifier2 = [firstObject localIdentifier];
 
-                      if (v64)
+                      if (localIdentifier2)
                       {
-                        v120[0] = v64;
+                        v120[0] = localIdentifier2;
                         v119[0] = @"assetLocalIdentifier";
                         v119[1] = @"score";
                         v65 = MEMORY[0x277CCABB0];
@@ -1015,9 +1015,9 @@ LABEL_126:
                         v66 = [v65 numberWithDouble:?];
                         v120[1] = v66;
                         v119[2] = @"reasons";
-                        v67 = [v61 reasons];
-                        v68 = v67;
-                        if (!v67)
+                        reasons = [v61 reasons];
+                        v68 = reasons;
+                        if (!reasons)
                         {
                           v5 = [MEMORY[0x277CBEB98] set];
                           v68 = v5;
@@ -1025,7 +1025,7 @@ LABEL_126:
 
                         v120[2] = v68;
                         v69 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v120 forKeys:v119 count:3];
-                        if (!v67)
+                        if (!reasons)
                         {
                         }
 
@@ -1063,7 +1063,7 @@ LABEL_126:
                 _os_log_impl(&dword_22FA28000, v75, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", v122, 0x16u);
               }
 
-              v89[2](v89, &v117, 1.0);
+              progressCopy[2](progressCopy, &v117, 1.0);
               if (v117)
               {
                 v12 = MEMORY[0x277CBEBF8];
@@ -1085,31 +1085,31 @@ LABEL_126:
         goto LABEL_16;
       }
 
-      if (v7 != 2)
+      if (profileCopy != 2)
       {
         v15 = v112;
         v112[0] = MEMORY[0x277D85DD0];
         v112[1] = 3221225472;
         v112[2] = __75__PHASuggestionController_generateSuggestionsWithProfile_options_progress___block_invoke_5;
         v112[3] = &unk_2788B1EC8;
-        v112[4] = v89;
-        v82 = [v87 uncoordinatedSuggestionsWithOptions:v88 progress:v112];
+        v112[4] = progressCopy;
+        v82 = [v87 uncoordinatedSuggestionsWithOptions:optionsCopy progress:v112];
 LABEL_24:
 
         goto LABEL_25;
       }
     }
 
-    v16 = [(PHASuggestionController *)self _forbiddenAssetUUIDs];
-    [v87 setForbiddenAssetUUIDs:v16];
+    _forbiddenAssetUUIDs = [(PHASuggestionController *)self _forbiddenAssetUUIDs];
+    [v87 setForbiddenAssetUUIDs:_forbiddenAssetUUIDs];
 
     v15 = v114;
     v114[0] = MEMORY[0x277D85DD0];
     v114[1] = 3221225472;
     v114[2] = __75__PHASuggestionController_generateSuggestionsWithProfile_options_progress___block_invoke_3;
     v114[3] = &unk_2788B1EC8;
-    v114[4] = v89;
-    v82 = [v87 suggestionsWithOptions:v88 progress:v114];
+    v114[4] = progressCopy;
+    v82 = [v87 suggestionsWithOptions:optionsCopy progress:v114];
     goto LABEL_24;
   }
 
@@ -1150,9 +1150,9 @@ void __75__PHASuggestionController_generateSuggestionsWithProfile_options_progre
   [*(a1 + 40) addObjectsFromArray:v6];
 }
 
-- (id)collidableMemoriesWithReferenceDate:(id)a3 andDelay:(double)a4
+- (id)collidableMemoriesWithReferenceDate:(id)date andDelay:(double)delay
 {
-  v6 = a3;
+  dateCopy = date;
   v7 = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndex:201];
   [v7 addIndex:302];
   [v7 addIndex:211];
@@ -1171,9 +1171,9 @@ void __75__PHASuggestionController_generateSuggestionsWithProfile_options_progre
   v15[2] = __72__PHASuggestionController_collidableMemoriesWithReferenceDate_andDelay___block_invoke;
   v15[3] = &unk_2788B1EA0;
   v16 = v7;
-  v17 = v6;
-  v18 = a4;
-  v10 = v6;
+  v17 = dateCopy;
+  delayCopy = delay;
+  v10 = dateCopy;
   v11 = v7;
   v12 = [v9 predicateWithBlock:v15];
   v13 = [(NSArray *)existingMemories filteredArrayUsingPredicate:v12];
@@ -1188,19 +1188,19 @@ BOOL __72__PHASuggestionController_collidableMemoriesWithReferenceDate_andDelay_
   return v8;
 }
 
-- (id)commitSuggestions:(id)a3 retiringSuggestions:(id)a4 deletingSuggestions:(id)a5 withOptions:(id)a6 error:(id *)a7
+- (id)commitSuggestions:(id)suggestions retiringSuggestions:(id)retiringSuggestions deletingSuggestions:(id)deletingSuggestions withOptions:(id)options error:(id *)error
 {
   v81 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  suggestionsCopy = suggestions;
+  retiringSuggestionsCopy = retiringSuggestions;
+  deletingSuggestionsCopy = deletingSuggestions;
+  optionsCopy = options;
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     v16 = loggingConnection;
     *buf.sysname = 67109120;
-    *&buf.sysname[4] = [v11 count];
+    *&buf.sysname[4] = [suggestionsCopy count];
     _os_log_impl(&dword_22FA28000, v16, OS_LOG_TYPE_DEFAULT, "Committing %d new suggestions", &buf, 8u);
 
     loggingConnection = self->_loggingConnection;
@@ -1209,7 +1209,7 @@ BOOL __72__PHASuggestionController_collidableMemoriesWithReferenceDate_andDelay_
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     v17 = loggingConnection;
-    v18 = [v12 count];
+    v18 = [retiringSuggestionsCopy count];
     *buf.sysname = 67109120;
     *&buf.sysname[4] = v18;
     _os_log_impl(&dword_22FA28000, v17, OS_LOG_TYPE_DEFAULT, "Retiring %d suggestions", &buf, 8u);
@@ -1220,27 +1220,27 @@ BOOL __72__PHASuggestionController_collidableMemoriesWithReferenceDate_andDelay_
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     v19 = loggingConnection;
-    v20 = [v13 count];
+    v20 = [deletingSuggestionsCopy count];
     *buf.sysname = 67109120;
     *&buf.sysname[4] = v20;
     _os_log_impl(&dword_22FA28000, v19, OS_LOG_TYPE_DEFAULT, "Deleting %d suggestions", &buf, 8u);
   }
 
-  v54 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v11, "count")}];
+  v54 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(suggestionsCopy, "count")}];
   v53 = objc_opt_new();
   memset(&buf, 0, 512);
   uname(&buf);
   v52 = [MEMORY[0x277CCACA8] stringWithCString:buf.machine encoding:4];
-  v21 = [MEMORY[0x277CCAC38] processInfo];
-  v51 = [v21 operatingSystemVersionString];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  operatingSystemVersionString = [processInfo operatingSystemVersionString];
 
-  v22 = [v14 localToday];
-  v59 = v12;
-  v55 = v22;
-  v56 = v11;
-  if (v22)
+  localToday = [optionsCopy localToday];
+  v59 = retiringSuggestionsCopy;
+  v55 = localToday;
+  v56 = suggestionsCopy;
+  if (localToday)
   {
-    [MEMORY[0x277D27690] universalDateFromLocalDate:v22];
+    [MEMORY[0x277D27690] universalDateFromLocalDate:localToday];
   }
 
   else
@@ -1248,12 +1248,12 @@ BOOL __72__PHASuggestionController_collidableMemoriesWithReferenceDate_andDelay_
     [MEMORY[0x277CBEAA8] date];
   }
   v50 = ;
-  v58 = v14;
+  v58 = optionsCopy;
   v75 = 0u;
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v23 = v13;
+  v23 = deletingSuggestionsCopy;
   v24 = [v23 countByEnumeratingWithState:&v73 objects:v79 count:16];
   if (v24)
   {
@@ -1273,15 +1273,15 @@ BOOL __72__PHASuggestionController_collidableMemoriesWithReferenceDate_andDelay_
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
           v30 = v29;
-          v31 = [v28 localIdentifier];
+          localIdentifier = [v28 localIdentifier];
           *v77 = 138412290;
-          *v78 = v31;
+          *v78 = localIdentifier;
           _os_log_impl(&dword_22FA28000, v30, OS_LOG_TYPE_DEFAULT, "Delete suggestion: %@", v77, 0xCu);
         }
 
         deletedSuggestionLocalIdentifiers = self->_deletedSuggestionLocalIdentifiers;
-        v33 = [v28 localIdentifier];
-        [(NSMutableSet *)deletedSuggestionLocalIdentifiers addObject:v33];
+        localIdentifier2 = [v28 localIdentifier];
+        [(NSMutableSet *)deletedSuggestionLocalIdentifiers addObject:localIdentifier2];
       }
 
       v25 = [v23 countByEnumeratingWithState:&v73 objects:v79 count:16];
@@ -1296,12 +1296,12 @@ BOOL __72__PHASuggestionController_collidableMemoriesWithReferenceDate_andDelay_
   v62[2] = __103__PHASuggestionController_commitSuggestions_retiringSuggestions_deletingSuggestions_withOptions_error___block_invoke;
   v62[3] = &unk_2788B1E78;
   v63 = v56;
-  v64 = self;
+  selfCopy = self;
   v35 = v50;
   v65 = v35;
   v57 = v52;
   v66 = v57;
-  v36 = v51;
+  v36 = operatingSystemVersionString;
   v67 = v36;
   v37 = v53;
   v68 = v37;
@@ -1314,7 +1314,7 @@ BOOL __72__PHASuggestionController_collidableMemoriesWithReferenceDate_andDelay_
   v41 = v23;
   v72 = v41;
   v61 = v63;
-  if (![(PHPhotoLibrary *)photoLibrary performChangesAndWait:v62 error:a7])
+  if (![(PHPhotoLibrary *)photoLibrary performChangesAndWait:v62 error:error])
   {
     v45 = v38;
     v38 = 0;
@@ -1724,11 +1724,11 @@ LABEL_57:
   return result;
 }
 
-- (void)ingestSuggestions:(id)a3 atDate:(id)a4
+- (void)ingestSuggestions:(id)suggestions atDate:(id)date
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  suggestionsCopy = suggestions;
+  dateCopy = date;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1737,7 +1737,7 @@ LABEL_57:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v11 = v6;
+  v11 = suggestionsCopy;
   v12 = [v11 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v12)
   {
@@ -1755,19 +1755,19 @@ LABEL_57:
         v16 = *(*(&v29 + 1) + 8 * i);
         if (![(PHASuggestionController *)self _filterExistingSuggestion:v16])
         {
-          v17 = [v16 state];
-          if (v17 <= 2)
+          state = [v16 state];
+          if (state <= 2)
           {
-            if (v17)
+            if (state)
             {
-              if (v17 != 1)
+              if (state != 1)
               {
-                if (v17 != 2)
+                if (state != 2)
                 {
                   continue;
                 }
 
-                if ([(PHASuggestionController *)self shouldDeleteSuggestion:v16 atDate:v7])
+                if ([(PHASuggestionController *)self shouldDeleteSuggestion:v16 atDate:dateCopy])
                 {
                   v18 = v9;
                 }
@@ -1781,7 +1781,7 @@ LABEL_57:
               }
 
 LABEL_15:
-              v19 = [(PHASuggestionController *)self shouldRetireSuggestion:v16 atDate:v7];
+              v19 = [(PHASuggestionController *)self shouldRetireSuggestion:v16 atDate:dateCopy];
               v18 = v8;
               if (v19)
               {
@@ -1801,7 +1801,7 @@ LABEL_18:
             continue;
           }
 
-          if ((v17 - 3) >= 2)
+          if ((state - 3) >= 2)
           {
             continue;
           }
@@ -1840,43 +1840,43 @@ LABEL_18:
   self->_suggestionsToDelete = v9;
 }
 
-- (BOOL)shouldDeleteSuggestion:(id)a3 atDate:(id)a4
+- (BOOL)shouldDeleteSuggestion:(id)suggestion atDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 activationDate];
-  [v5 timeIntervalSinceDate:v7];
+  dateCopy = date;
+  suggestionCopy = suggestion;
+  activationDate = [suggestionCopy activationDate];
+  [dateCopy timeIntervalSinceDate:activationDate];
   v9 = v8;
 
   v10 = objc_opt_class();
-  v11 = [v6 type];
-  v12 = [v6 subtype];
+  type = [suggestionCopy type];
+  subtype = [suggestionCopy subtype];
 
-  [v10 _maximumDurationBeforeDeletionForSuggestionType:v11 andSubtype:v12];
-  LOBYTE(v6) = v9 > v13;
+  [v10 _maximumDurationBeforeDeletionForSuggestionType:type andSubtype:subtype];
+  LOBYTE(suggestionCopy) = v9 > v13;
 
-  return v6;
+  return suggestionCopy;
 }
 
-- (BOOL)shouldRetireSuggestion:(id)a3 atDate:(id)a4
+- (BOOL)shouldRetireSuggestion:(id)suggestion atDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 relevantUntilDate];
-  v8 = [v5 activationDate];
-  [v6 timeIntervalSinceDate:v8];
+  suggestionCopy = suggestion;
+  dateCopy = date;
+  relevantUntilDate = [suggestionCopy relevantUntilDate];
+  activationDate = [suggestionCopy activationDate];
+  [dateCopy timeIntervalSinceDate:activationDate];
   v10 = v9;
-  if ([v5 state] != 4)
+  if ([suggestionCopy state] != 4)
   {
-    if ([v6 compare:v7] == 1)
+    if ([dateCopy compare:relevantUntilDate] == 1)
     {
       v11 = 1;
       goto LABEL_7;
     }
 
-    if (v8)
+    if (activationDate)
     {
-      v11 = v10 > [objc_opt_class() _retirementDelayInDaysForSuggestionType:objc_msgSend(v5 andSubtype:{"type"), objc_msgSend(v5, "subtype")}] * 86400.0;
+      v11 = v10 > [objc_opt_class() _retirementDelayInDaysForSuggestionType:objc_msgSend(suggestionCopy andSubtype:{"type"), objc_msgSend(suggestionCopy, "subtype")}] * 86400.0;
       goto LABEL_7;
     }
   }
@@ -1887,11 +1887,11 @@ LABEL_7:
   return v11;
 }
 
-- (id)deniedSuggestionsForProfile:(unsigned __int8)a3
+- (id)deniedSuggestionsForProfile:(unsigned __int8)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v42 = *MEMORY[0x277D85DE8];
-  if (a3 <= 7u && ((1 << a3) & 0xC4) != 0)
+  if (profile <= 7u && ((1 << profile) & 0xC4) != 0)
   {
     v5 = MEMORY[0x277CBEBF8];
   }
@@ -1934,7 +1934,7 @@ LABEL_7:
     if ([v6 count])
     {
       v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      if (v3 <= 4 && ((1 << v3) & 0x19) != 0)
+      if (profileCopy <= 4 && ((1 << profileCopy) & 0x19) != 0)
       {
         v33 = 0u;
         v34 = 0u;
@@ -1971,8 +1971,8 @@ LABEL_7:
 
       else
       {
-        v13 = [MEMORY[0x277D3BBF8] suggestionTypesWithProfile:v3];
-        v19 = [MEMORY[0x277D3BBF8] suggestionSubtypesWithProfile:v3];
+        v13 = [MEMORY[0x277D3BBF8] suggestionTypesWithProfile:profileCopy];
+        v19 = [MEMORY[0x277D3BBF8] suggestionSubtypesWithProfile:profileCopy];
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
@@ -2016,17 +2016,17 @@ LABEL_7:
   return v5;
 }
 
-- (id)_existingSuggestionsForProfile:(unsigned __int8)a3
+- (id)_existingSuggestionsForProfile:(unsigned __int8)profile
 {
   v18 = *MEMORY[0x277D85DE8];
-  if ((a3 - 3) < 3)
+  if ((profile - 3) < 3)
   {
     goto LABEL_4;
   }
 
-  if (a3 == 1)
+  if (profile == 1)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6 = [MEMORY[0x277D3BBF8] suggestionTypesWithProfile:1];
     v13 = 0u;
     v14 = 0u;
@@ -2050,7 +2050,7 @@ LABEL_7:
           v12 = *(*(&v13 + 1) + 8 * i);
           if ([v6 containsIndex:{objc_msgSend(v12, "type", v13)}])
           {
-            [(NSMutableArray *)v4 addObject:v12];
+            [(NSMutableArray *)array addObject:v12];
           }
         }
 
@@ -2063,28 +2063,28 @@ LABEL_7:
 
   else
   {
-    if (!a3)
+    if (!profile)
     {
 LABEL_4:
-      v4 = self->_existingSuggestions;
+      array = self->_existingSuggestions;
       goto LABEL_5;
     }
 
-    v4 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
 LABEL_5:
 
-  return v4;
+  return array;
 }
 
-- (void)ingestExistingSuggestionsWithOptions:(id)a3
+- (void)ingestExistingSuggestionsWithOptions:(id)options
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v4 = [a3 localToday];
-  if (v4)
+  localToday = [options localToday];
+  if (localToday)
   {
-    [MEMORY[0x277D27690] universalDateFromLocalDate:v4];
+    [MEMORY[0x277D27690] universalDateFromLocalDate:localToday];
   }
 
   else
@@ -2092,7 +2092,7 @@ LABEL_5:
     [MEMORY[0x277CBEAA8] date];
   }
   v5 = ;
-  v6 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v7 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"activationDate" ascending:0];
   v14[0] = v7;
   v8 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:0];
@@ -2100,32 +2100,32 @@ LABEL_5:
   v9 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:1];
   v14[2] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:3];
-  [v6 setSortDescriptors:v10];
+  [librarySpecificFetchOptions setSortDescriptors:v10];
 
-  if (v4)
+  if (localToday)
   {
     v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"creationDate < %@", v5];
-    [v6 setPredicate:v11];
+    [librarySpecificFetchOptions setPredicate:v11];
   }
 
-  v12 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:v6];
-  v13 = [v12 fetchedObjects];
-  [(PHASuggestionController *)self ingestSuggestions:v13 atDate:v5];
+  v12 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:librarySpecificFetchOptions];
+  fetchedObjects = [v12 fetchedObjects];
+  [(PHASuggestionController *)self ingestSuggestions:fetchedObjects atDate:v5];
 }
 
-- (PHASuggestionController)initWithGraphManager:(id)a3
+- (PHASuggestionController)initWithGraphManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = PHASuggestionController;
   v6 = [(PHASuggestionController *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphManager, a3);
-    v8 = [v5 photoLibrary];
+    objc_storeStrong(&v6->_graphManager, manager);
+    photoLibrary = [managerCopy photoLibrary];
     photoLibrary = v7->_photoLibrary;
-    v7->_photoLibrary = v8;
+    v7->_photoLibrary = photoLibrary;
 
     v10 = os_log_create("com.apple.photoanalysisd", "suggestions");
     loggingConnection = v7->_loggingConnection;
@@ -2140,36 +2140,36 @@ LABEL_5:
   return v7;
 }
 
-+ (unint64_t)_retirementDelayInDaysForSuggestionType:(unsigned __int16)a3 andSubtype:(unsigned __int16)a4
++ (unint64_t)_retirementDelayInDaysForSuggestionType:(unsigned __int16)type andSubtype:(unsigned __int16)subtype
 {
-  if (a4 == 502)
+  if (subtype == 502)
   {
     return 15;
   }
 
-  if ((a3 - 1) > 0xC)
+  if ((type - 1) > 0xC)
   {
     return 0;
   }
 
-  return qword_22FCDE5B8[(a3 - 1)];
+  return qword_22FCDE5B8[(type - 1)];
 }
 
-- (void)recordCreatedSuggestions:(id)a3 duringSession:(id)a4
+- (void)recordCreatedSuggestions:(id)suggestions duringSession:(id)session
 {
   v100 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  suggestionsCopy = suggestions;
+  sessionCopy = session;
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v85 objects:v99 count:16];
-  v81 = v6;
+  v8 = [suggestionsCopy countByEnumeratingWithState:&v85 objects:v99 count:16];
+  v81 = suggestionsCopy;
   if (v8)
   {
-    v54 = self;
-    v55 = v7;
+    selfCopy = self;
+    v55 = sessionCopy;
     v58 = 0;
     v59 = 0;
     v60 = 0;
@@ -2196,22 +2196,22 @@ LABEL_5:
       {
         if (*v86 != v11)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(suggestionsCopy);
         }
 
         v13 = *(*(&v85 + 1) + 8 * i);
-        v14 = [v13 type];
-        v15 = [v13 subtype];
-        v16 = v15;
-        if (v14 <= 2)
+        type = [v13 type];
+        subtype = [v13 subtype];
+        v16 = subtype;
+        if (type <= 2)
         {
-          if (v14 == 1)
+          if (type == 1)
           {
-            v17 = [v13 features];
-            v18 = [v17 count];
+            features = [v13 features];
+            v18 = [features count];
 
-            v19 = [v13 suggestedPersonLocalIdentifiers];
-            v20 = [v19 count];
+            suggestedPersonLocalIdentifiers = [v13 suggestedPersonLocalIdentifiers];
+            v20 = [suggestedPersonLocalIdentifiers count];
 
             if ([v13 notificationState])
             {
@@ -2233,31 +2233,31 @@ LABEL_38:
               goto LABEL_38;
             }
 
-            v6 = v81;
+            suggestionsCopy = v81;
             continue;
           }
 
-          if (v14 == 2)
+          if (type == 2)
           {
-            if (v15 > 202)
+            if (subtype > 202)
             {
-              if (v15 == 203)
+              if (subtype == 203)
               {
                 ++v64;
               }
 
-              else if (v15 == 204)
+              else if (subtype == 204)
               {
                 ++v65;
               }
             }
 
-            else if (v15 == 201)
+            else if (subtype == 201)
             {
               ++v62;
             }
 
-            else if (v15 == 202)
+            else if (subtype == 202)
             {
               ++v63;
             }
@@ -2266,12 +2266,12 @@ LABEL_38:
 
         else
         {
-          switch(v14)
+          switch(type)
           {
             case 3:
-              if (v15 > 303)
+              if (subtype > 303)
               {
-                switch(v15)
+                switch(subtype)
                 {
                   case 304:
                     ++v60;
@@ -2287,7 +2287,7 @@ LABEL_38:
 
               else
               {
-                switch(v15)
+                switch(subtype)
                 {
                   case 301:
                     ++v57;
@@ -2306,12 +2306,12 @@ LABEL_38:
               ++v10;
               break;
             case 5:
-              if (v15 == 502)
+              if (subtype == 502)
               {
                 ++v79;
               }
 
-              else if (v15 == 501)
+              else if (subtype == 501)
               {
                 ++v76;
               }
@@ -2321,14 +2321,14 @@ LABEL_38:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v85 objects:v99 count:16];
+      v8 = [suggestionsCopy countByEnumeratingWithState:&v85 objects:v99 count:16];
       if (!v8)
       {
         v21 = v82;
         v22 = v66;
         v23 = v67;
-        self = v54;
-        v7 = v55;
+        self = selfCopy;
+        sessionCopy = v55;
         v8 = v70;
         goto LABEL_51;
       }
@@ -2354,43 +2354,43 @@ LABEL_38:
   v22 = 0.0;
   v21 = 0.0;
 LABEL_51:
-  v24 = [v7 profile];
-  if (v24 > 2)
+  profile = [sessionCopy profile];
+  if (profile > 2)
   {
-    switch(v24)
+    switch(profile)
     {
       case 3:
-        v25 = [(PHASuggestionController *)self graphManager];
-        v34 = [v25 analytics];
+        graphManager = [(PHASuggestionController *)self graphManager];
+        analytics = [graphManager analytics];
         v91 = @"longtailCreated";
-        v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v79];
-        v92 = v26;
-        v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v92 forKeys:&v91 count:1];
+        graphManager3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v79];
+        v92 = graphManager3;
+        analytics2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v92 forKeys:&v91 count:1];
         v47 = @"com.apple.Photos.suggestion.widget";
         break;
       case 4:
-        v25 = [(PHASuggestionController *)self graphManager];
-        v34 = [v25 analytics];
+        graphManager = [(PHASuggestionController *)self graphManager];
+        analytics = [graphManager analytics];
         v93 = @"onThisDayCreated";
-        v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
-        v94 = v26;
-        v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v94 forKeys:&v93 count:1];
+        graphManager3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
+        v94 = graphManager3;
+        analytics2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v94 forKeys:&v93 count:1];
         v47 = @"com.apple.Photos.suggestion.onThisDay";
         break;
       case 5:
         v83 = MEMORY[0x277CF6EC0];
         v89[0] = @"numberOfSingleAssetSuggestionCreated";
-        v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
-        v90[0] = v25;
+        graphManager = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(suggestionsCopy, "count")}];
+        v90[0] = graphManager;
         v89[1] = @"editLoopCreated";
         v74 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v62];
         v90[1] = v74;
         v89[2] = @"editLongExposureCreated";
-        v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v63];
-        v90[2] = v26;
+        graphManager3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v63];
+        v90[2] = graphManager3;
         v89[3] = @"editBounceCreated";
-        v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v64];
-        v90[3] = v27;
+        analytics2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v64];
+        v90[3] = analytics2;
         v89[4] = @"editPortraitStudioLightCreated";
         v71 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v65];
         v90[4] = v71;
@@ -2418,8 +2418,8 @@ LABEL_51:
         v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v90 forKeys:v89 count:12];
         [v83 sendEvent:@"com.apple.Photos.suggestion.singleAsset" withPayload:v33];
 
-        v6 = v81;
-        v34 = v74;
+        suggestionsCopy = v81;
+        analytics = v74;
 
         v35 = v71;
 LABEL_69:
@@ -2429,22 +2429,22 @@ LABEL_69:
         goto LABEL_71;
     }
 
-    [v34 sendEvent:v47 withPayload:v27];
+    [analytics sendEvent:v47 withPayload:analytics2];
 LABEL_70:
 
     goto LABEL_71;
   }
 
-  if (!v24)
+  if (!profile)
   {
-    v84 = [(PHASuggestionController *)self graphManager];
-    v34 = [v84 analytics];
+    graphManager2 = [(PHASuggestionController *)self graphManager];
+    analytics = [graphManager2 analytics];
     v95[0] = @"numberOfSingleAssetSuggestionCreated";
-    v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
-    v96[0] = v26;
+    graphManager3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(suggestionsCopy, "count")}];
+    v96[0] = graphManager3;
     v95[1] = @"editLoopCreated";
-    v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v62];
-    v96[1] = v27;
+    analytics2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v62];
+    v96[1] = analytics2;
     v95[2] = @"editLongExposureCreated";
     v80 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v63];
     v96[2] = v80;
@@ -2476,16 +2476,16 @@ LABEL_70:
     v52 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v56];
     v96[11] = v52;
     v53 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v96 forKeys:v95 count:12];
-    [v34 sendEvent:@"com.apple.Photos.suggestion.singleAsset" withPayload:v53];
+    [analytics sendEvent:@"com.apple.Photos.suggestion.singleAsset" withPayload:v53];
 
-    v6 = v81;
-    v25 = v84;
+    suggestionsCopy = v81;
+    graphManager = graphManager2;
 
     v35 = v80;
     goto LABEL_69;
   }
 
-  if (v24 == 1)
+  if (profile == 1)
   {
     v36 = MEMORY[0x277CBEB38];
     v97[0] = @"sentNotifications";
@@ -2496,53 +2496,53 @@ LABEL_70:
     v39 = [MEMORY[0x277CCABB0] numberWithDouble:v21 / (v73 + v8)];
     v98[1] = v39;
     v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v98 forKeys:v97 count:2];
-    v25 = [v36 dictionaryWithDictionary:v40];
+    graphManager = [v36 dictionaryWithDictionary:v40];
 
-    v41 = [v7 notificationProfile];
-    v34 = v41;
-    if (v41)
+    notificationProfile = [sessionCopy notificationProfile];
+    analytics = notificationProfile;
+    if (notificationProfile)
     {
-      [v41 userType];
+      [notificationProfile userType];
       v42 = PGStringFromSuggestionNotificationUserType();
-      [v25 setObject:v42 forKeyedSubscript:@"notificationProfile"];
+      [graphManager setObject:v42 forKeyedSubscript:@"notificationProfile"];
     }
 
     if (v73)
     {
       v43 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v73];
-      [v25 setObject:v43 forKeyedSubscript:@"momentShareCreated"];
+      [graphManager setObject:v43 forKeyedSubscript:@"momentShareCreated"];
 
       v44 = [MEMORY[0x277CCABB0] numberWithDouble:v22 / v73];
-      [v25 setObject:v44 forKeyedSubscript:@"numberOfTextFeaturesPerMoment"];
+      [graphManager setObject:v44 forKeyedSubscript:@"numberOfTextFeaturesPerMoment"];
     }
 
     if (v38)
     {
       v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v38];
-      [v25 setObject:v45 forKeyedSubscript:@"collectionShareCreated"];
+      [graphManager setObject:v45 forKeyedSubscript:@"collectionShareCreated"];
 
       v46 = [MEMORY[0x277CCABB0] numberWithDouble:v23 / v38];
-      [v25 setObject:v46 forKeyedSubscript:@"numberOfTextFeaturesPerCollection"];
+      [graphManager setObject:v46 forKeyedSubscript:@"numberOfTextFeaturesPerCollection"];
     }
 
-    v26 = [(PHASuggestionController *)self graphManager];
-    v27 = [v26 analytics];
-    [v27 sendEvent:@"com.apple.Photos.suggestion.sharing" withPayload:v25];
+    graphManager3 = [(PHASuggestionController *)self graphManager];
+    analytics2 = [graphManager3 analytics];
+    [analytics2 sendEvent:@"com.apple.Photos.suggestion.sharing" withPayload:graphManager];
     goto LABEL_70;
   }
 
 LABEL_71:
 }
 
-- (void)recordDeletedSuggestions:(id)a3
+- (void)recordDeletedSuggestions:(id)suggestions
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  v5 = [suggestionsCopy countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2554,7 +2554,7 @@ LABEL_71:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(suggestionsCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -2564,32 +2564,32 @@ LABEL_71:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v6 = [suggestionsCopy countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v6);
     if (v7)
     {
-      v11 = [(PHASuggestionController *)self graphManager];
-      v12 = [v11 analytics];
+      graphManager = [(PHASuggestionController *)self graphManager];
+      analytics = [graphManager analytics];
       v19 = @"singleAssetSuggestionNotConsumed";
       v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
       v20 = v13;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-      [v12 sendEvent:@"com.apple.Photos.suggestion.singleAssetSuggestionNotConsumed" withPayload:v14];
+      [analytics sendEvent:@"com.apple.Photos.suggestion.singleAssetSuggestionNotConsumed" withPayload:v14];
     }
   }
 }
 
-- (void)recordRetiredSuggestions:(id)a3
+- (void)recordRetiredSuggestions:(id)suggestions
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  v5 = [suggestionsCopy countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2603,21 +2603,21 @@ LABEL_71:
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(suggestionsCopy);
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [v12 type];
-        v14 = [v12 state];
-        if (v13 == 1 && v14 == 1)
+        type = [v12 type];
+        state = [v12 state];
+        if (type == 1 && state == 1)
         {
-          v16 = [v12 notificationState];
-          if (v16 == 2)
+          notificationState = [v12 notificationState];
+          if (notificationState == 2)
           {
             ++v8;
           }
 
-          else if (v16 == 1)
+          else if (notificationState == 1)
           {
             ++v9;
           }
@@ -2629,7 +2629,7 @@ LABEL_71:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v29 count:16];
+      v6 = [suggestionsCopy countByEnumeratingWithState:&v23 objects:v29 count:16];
     }
 
     while (v6);
@@ -2649,8 +2649,8 @@ LABEL_71:
   if (v8 || v7)
   {
 LABEL_23:
-    v17 = [(PHASuggestionController *)self graphManager];
-    v18 = [v17 analytics];
+    graphManager = [(PHASuggestionController *)self graphManager];
+    analytics = [graphManager analytics];
     v27[0] = @"ignoredNotifications";
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9];
     v28[0] = v19;
@@ -2661,7 +2661,7 @@ LABEL_23:
     v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
     v28[2] = v21;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:3];
-    [v18 sendEvent:@"com.apple.Photos.suggestion.retired" withPayload:v22];
+    [analytics sendEvent:@"com.apple.Photos.suggestion.retired" withPayload:v22];
   }
 }
 

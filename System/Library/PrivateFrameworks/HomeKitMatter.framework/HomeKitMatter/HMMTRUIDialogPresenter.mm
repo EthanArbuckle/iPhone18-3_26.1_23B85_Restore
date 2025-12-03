@@ -1,9 +1,9 @@
 @interface HMMTRUIDialogPresenter
-- (HMMTRUIDialogPresenter)initWithQueue:(id)a3 context:(id)a4;
+- (HMMTRUIDialogPresenter)initWithQueue:(id)queue context:(id)context;
 - (id)context;
 - (id)dialogDelegate;
-- (void)requestUserPermissionForBridgeAccessory:(id)a3 completionHandler:(id)a4;
-- (void)requestUserPermissionForUnauthenticatedAccessory:(id)a3 completionHandler:(id)a4;
+- (void)requestUserPermissionForBridgeAccessory:(id)accessory completionHandler:(id)handler;
+- (void)requestUserPermissionForUnauthenticatedAccessory:(id)accessory completionHandler:(id)handler;
 @end
 
 @implementation HMMTRUIDialogPresenter
@@ -22,21 +22,21 @@
   return WeakRetained;
 }
 
-- (void)requestUserPermissionForBridgeAccessory:(id)a3 completionHandler:(id)a4
+- (void)requestUserPermissionForBridgeAccessory:(id)accessory completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMMTRUIDialogPresenter *)self clientQueue];
+  accessoryCopy = accessory;
+  handlerCopy = handler;
+  clientQueue = [(HMMTRUIDialogPresenter *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__HMMTRUIDialogPresenter_requestUserPermissionForBridgeAccessory_completionHandler___block_invoke;
   block[3] = &unk_2786F0EA8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = accessoryCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = accessoryCopy;
+  dispatch_async(clientQueue, block);
 }
 
 void __84__HMMTRUIDialogPresenter_requestUserPermissionForBridgeAccessory_completionHandler___block_invoke(uint64_t a1)
@@ -102,21 +102,21 @@ void __84__HMMTRUIDialogPresenter_requestUserPermissionForBridgeAccessory_comple
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestUserPermissionForUnauthenticatedAccessory:(id)a3 completionHandler:(id)a4
+- (void)requestUserPermissionForUnauthenticatedAccessory:(id)accessory completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMMTRUIDialogPresenter *)self clientQueue];
+  accessoryCopy = accessory;
+  handlerCopy = handler;
+  clientQueue = [(HMMTRUIDialogPresenter *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __93__HMMTRUIDialogPresenter_requestUserPermissionForUnauthenticatedAccessory_completionHandler___block_invoke;
   block[3] = &unk_2786F0EA8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = accessoryCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = accessoryCopy;
+  dispatch_async(clientQueue, block);
 }
 
 void __93__HMMTRUIDialogPresenter_requestUserPermissionForUnauthenticatedAccessory_completionHandler___block_invoke(uint64_t a1)
@@ -182,18 +182,18 @@ void __93__HMMTRUIDialogPresenter_requestUserPermissionForUnauthenticatedAccesso
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMTRUIDialogPresenter)initWithQueue:(id)a3 context:(id)a4
+- (HMMTRUIDialogPresenter)initWithQueue:(id)queue context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = HMMTRUIDialogPresenter;
   v9 = [(HMMTRUIDialogPresenter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientQueue, a3);
-    objc_storeWeak(&v10->_context, v8);
+    objc_storeStrong(&v9->_clientQueue, queue);
+    objc_storeWeak(&v10->_context, contextCopy);
   }
 
   return v10;

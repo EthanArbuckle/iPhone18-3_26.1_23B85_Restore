@@ -1,5 +1,5 @@
 @interface HKUIConnectedGymIconUtilties
-+ (id)iconForConnectedGymDevice:(id)a3 preferredIconWidth:(double)a4;
++ (id)iconForConnectedGymDevice:(id)device preferredIconWidth:(double)width;
 + (void)initialize;
 @end
 
@@ -17,27 +17,27 @@
   MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-+ (id)iconForConnectedGymDevice:(id)a3 preferredIconWidth:(double)a4
++ (id)iconForConnectedGymDevice:(id)device preferredIconWidth:(double)width
 {
-  v5 = [a3 manufacturer];
-  v6 = [v5 lowercaseString];
+  manufacturer = [device manufacturer];
+  lowercaseString = [manufacturer lowercaseString];
 
-  v7 = [v6 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F42FFBE0];
+  v7 = [lowercaseString stringByReplacingOccurrencesOfString:@" " withString:&stru_1F42FFBE0];
 
   v8 = MEMORY[0x1E696AEC0];
   v9 = [__HKUIManufacturerNameToLogoNameMapping objectForKeyedSubscript:v7];
-  v10 = [v8 stringWithFormat:@"%@_%.0f", v9, *&a4];
+  v10 = [v8 stringWithFormat:@"%@_%.0f", v9, *&width];
 
-  v11 = [_iconCache objectForKeyedSubscript:v10];
-  if (!v11)
+  hk_watchIconImage = [_iconCache objectForKeyedSubscript:v10];
+  if (!hk_watchIconImage)
   {
     v12 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v13 = [MEMORY[0x1E69DCAB8] imageNamed:v10 inBundle:v12];
-    v11 = [v13 hk_watchIconImage];
+    hk_watchIconImage = [v13 hk_watchIconImage];
 
-    if (v11)
+    if (hk_watchIconImage)
     {
-      [_iconCache setObject:v11 forKeyedSubscript:v10];
+      [_iconCache setObject:hk_watchIconImage forKeyedSubscript:v10];
     }
 
     else
@@ -51,7 +51,7 @@
     }
   }
 
-  return v11;
+  return hk_watchIconImage;
 }
 
 + (void)iconForConnectedGymDevice:(os_log_t)log preferredIconWidth:.cold.1(uint64_t a1, uint64_t a2, os_log_t log)

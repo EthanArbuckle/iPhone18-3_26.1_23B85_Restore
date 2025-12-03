@@ -1,6 +1,6 @@
 @interface TopEntityHelper
-+ (id)findNamedEntities:(id)a3;
-+ (id)mergeAndSort:(id)a3 usingMergeType:(unint64_t)a4;
++ (id)findNamedEntities:(id)entities;
++ (id)mergeAndSort:(id)sort usingMergeType:(unint64_t)type;
 + (void)initialize;
 @end
 
@@ -8,7 +8,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [&off_1004A9E50 componentsJoinedByString:@")|("];
     v5 = [NSString stringWithFormat:@"^((%@))\\.?\\s", v2];
@@ -19,25 +19,25 @@
   }
 }
 
-+ (id)findNamedEntities:(id)a3
++ (id)findNamedEntities:(id)entities
 {
-  v3 = a3;
+  entitiesCopy = entities;
   v4 = [NSLinguisticTagger alloc];
   v17 = NSLinguisticTagSchemeNameType;
   v5 = [NSArray arrayWithObjects:&v17 count:1];
   v6 = [v4 initWithTagSchemes:v5 options:30];
 
-  [v6 setString:v3];
+  [v6 setString:entitiesCopy];
   v7 = objc_opt_new();
-  v8 = [v3 length];
+  v8 = [entitiesCopy length];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1002A4B44;
   v14[3] = &unk_100483DB0;
-  v15 = v3;
+  v15 = entitiesCopy;
   v9 = v7;
   v16 = v9;
-  v10 = v3;
+  v10 = entitiesCopy;
   [v6 enumerateTagsInRange:0 scheme:v8 options:NSLinguisticTagSchemeNameType usingBlock:{30, v14}];
   v11 = v16;
   v12 = v9;
@@ -45,16 +45,16 @@
   return v9;
 }
 
-+ (id)mergeAndSort:(id)a3 usingMergeType:(unint64_t)a4
++ (id)mergeAndSort:(id)sort usingMergeType:(unint64_t)type
 {
-  v4 = a3;
+  sortCopy = sort;
   v5 = objc_opt_new();
   v44 = objc_opt_new();
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v4;
+  obj = sortCopy;
   v6 = [obj countByEnumeratingWithState:&v60 objects:v69 count:16];
   if (v6)
   {
@@ -82,16 +82,16 @@
           goto LABEL_19;
         }
 
-        v11 = [v10 name];
-        v12 = [v11 length];
+        name = [v10 name];
+        v12 = [name length];
 
         if (v12 <= 0x64)
         {
-          v13 = [v10 name];
-          v14 = v13;
-          if (a4 == 1)
+          name2 = [v10 name];
+          v14 = name2;
+          if (type == 1)
           {
-            v15 = [qword_1005571F0 stringByReplacingMatchesInString:v13 options:0 range:0 withTemplate:{objc_msgSend(v13, "length"), &stru_100484358}];
+            v15 = [qword_1005571F0 stringByReplacingMatchesInString:name2 options:0 range:0 withTemplate:{objc_msgSend(name2, "length"), &stru_100484358}];
 
             v14 = v15;
           }
@@ -129,7 +129,7 @@ LABEL_19:
   v56 = 0u;
   v57 = 0u;
   v42 = v5;
-  v18 = a4;
+  typeCopy2 = type;
   v41 = [v42 countByEnumeratingWithState:&v56 objects:v66 count:16];
   if (!v41)
   {
@@ -174,7 +174,7 @@ LABEL_19:
             v26 = *(*(&v52 + 1) + 8 * v25);
             if (v20 != v26)
             {
-              if (v18 == 1)
+              if (typeCopy2 == 1)
               {
                 if (![v20 localizedCaseInsensitiveContainsString:*(*(&v52 + 1) + 8 * v25)])
                 {
@@ -182,7 +182,7 @@ LABEL_19:
                 }
               }
 
-              else if (v18 != 2 || ([*(*(&v52 + 1) + 8 * v25) localizedCaseInsensitiveContainsString:v20] & 1) == 0)
+              else if (typeCopy2 != 2 || ([*(*(&v52 + 1) + 8 * v25) localizedCaseInsensitiveContainsString:v20] & 1) == 0)
               {
                 goto LABEL_43;
               }
@@ -192,9 +192,9 @@ LABEL_19:
               v48 = 0u;
               v49 = 0u;
               v27 = [v21 objectForKeyedSubscript:v26];
-              v28 = [v27 sourceNamedEntities];
+              sourceNamedEntities = [v27 sourceNamedEntities];
 
-              v29 = [v28 countByEnumeratingWithState:&v48 objects:v64 count:16];
+              v29 = [sourceNamedEntities countByEnumeratingWithState:&v48 objects:v64 count:16];
               if (v29)
               {
                 v30 = v29;
@@ -205,7 +205,7 @@ LABEL_19:
                   {
                     if (*v49 != v31)
                     {
-                      objc_enumerationMutation(v28);
+                      objc_enumerationMutation(sourceNamedEntities);
                     }
 
                     v33 = *(*(&v48 + 1) + 8 * j);
@@ -213,14 +213,14 @@ LABEL_19:
                     [v34 mergeWith:v33];
                   }
 
-                  v30 = [v28 countByEnumeratingWithState:&v48 objects:v64 count:16];
+                  v30 = [sourceNamedEntities countByEnumeratingWithState:&v48 objects:v64 count:16];
                 }
 
                 while (v30);
               }
 
               [v44 addObject:v26];
-              v18 = a4;
+              typeCopy2 = type;
               v24 = v46;
               v23 = v47;
             }
@@ -246,11 +246,11 @@ LABEL_43:
   while (v41);
 LABEL_47:
 
-  v35 = [v44 allObjects];
-  [v42 removeObjectsForKeys:v35];
+  allObjects = [v44 allObjects];
+  [v42 removeObjectsForKeys:allObjects];
 
-  v36 = [v42 allValues];
-  v37 = [v36 sortedArrayUsingSelector:"descendingScoreCompare:"];
+  allValues = [v42 allValues];
+  v37 = [allValues sortedArrayUsingSelector:"descendingScoreCompare:"];
 
   return v37;
 }

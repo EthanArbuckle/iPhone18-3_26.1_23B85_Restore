@@ -1,50 +1,50 @@
 @interface THModelSearchResult
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToResult:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToResult:(id)result;
 - (BOOL)isTextResult;
-- (THModelSearchResult)initWithTerm:(id)a3 annotation:(id)a4 pageNumber:(unint64_t)a5 displayPageNumber:(id)a6 occurrenceIndex:(unint64_t)a7 context:(id)a8;
-- (THModelSearchResult)initWithTerm:(id)a3 rank:(int)a4 cfi:(id)a5 pageNumber:(unint64_t)a6 displayPageNumber:(id)a7 occurrenceIndex:(unint64_t)a8 context:(id)a9;
+- (THModelSearchResult)initWithTerm:(id)term annotation:(id)annotation pageNumber:(unint64_t)number displayPageNumber:(id)pageNumber occurrenceIndex:(unint64_t)index context:(id)context;
+- (THModelSearchResult)initWithTerm:(id)term rank:(int)rank cfi:(id)cfi pageNumber:(unint64_t)number displayPageNumber:(id)pageNumber occurrenceIndex:(unint64_t)index context:(id)context;
 - (_NSRange)contextRangeForResult;
-- (_NSRange)contextRangeForResultWithTrimmedContext:(id)a3;
+- (_NSRange)contextRangeForResultWithTrimmedContext:(id)context;
 - (void)dealloc;
 @end
 
 @implementation THModelSearchResult
 
-- (THModelSearchResult)initWithTerm:(id)a3 rank:(int)a4 cfi:(id)a5 pageNumber:(unint64_t)a6 displayPageNumber:(id)a7 occurrenceIndex:(unint64_t)a8 context:(id)a9
+- (THModelSearchResult)initWithTerm:(id)term rank:(int)rank cfi:(id)cfi pageNumber:(unint64_t)number displayPageNumber:(id)pageNumber occurrenceIndex:(unint64_t)index context:(id)context
 {
   v17.receiver = self;
   v17.super_class = THModelSearchResult;
   v15 = [(THModelSearchResult *)&v17 init];
   if (v15)
   {
-    v15->mTerm = [a3 copy];
-    v15->mRank = a4;
-    v15->mCFI = [a5 copy];
-    v15->mPageNumber = a6;
-    v15->mDisplayPageNumber = [a7 copy];
-    v15->mOccurrenceIndex = a8;
-    v15->mContext = [a9 copy];
+    v15->mTerm = [term copy];
+    v15->mRank = rank;
+    v15->mCFI = [cfi copy];
+    v15->mPageNumber = number;
+    v15->mDisplayPageNumber = [pageNumber copy];
+    v15->mOccurrenceIndex = index;
+    v15->mContext = [context copy];
     v15->mOccurenceCount = 1;
   }
 
   return v15;
 }
 
-- (THModelSearchResult)initWithTerm:(id)a3 annotation:(id)a4 pageNumber:(unint64_t)a5 displayPageNumber:(id)a6 occurrenceIndex:(unint64_t)a7 context:(id)a8
+- (THModelSearchResult)initWithTerm:(id)term annotation:(id)annotation pageNumber:(unint64_t)number displayPageNumber:(id)pageNumber occurrenceIndex:(unint64_t)index context:(id)context
 {
   v16.receiver = self;
   v16.super_class = THModelSearchResult;
   v14 = [(THModelSearchResult *)&v16 init];
   if (v14)
   {
-    v14->mTerm = [a3 copy];
-    v14->mAnnotation = a4;
+    v14->mTerm = [term copy];
+    v14->mAnnotation = annotation;
     v14->mRank = 100;
-    v14->mPageNumber = a5;
-    v14->mDisplayPageNumber = [a6 copy];
-    v14->mOccurrenceIndex = a7;
-    v14->mContext = [a8 copy];
+    v14->mPageNumber = number;
+    v14->mDisplayPageNumber = [pageNumber copy];
+    v14->mOccurrenceIndex = index;
+    v14->mContext = [context copy];
     v14->mOccurenceCount = 1;
   }
 
@@ -58,14 +58,14 @@
   [(THModelSearchResult *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -76,28 +76,28 @@
     return 0;
   }
 
-  return [(THModelSearchResult *)self isEqualToResult:a3];
+  return [(THModelSearchResult *)self isEqualToResult:equal];
 }
 
-- (BOOL)isEqualToResult:(id)a3
+- (BOOL)isEqualToResult:(id)result
 {
   mRank = self->mRank;
-  if (mRank != [a3 rank] || (mPageNumber = self->mPageNumber, mPageNumber != objc_msgSend(a3, "pageNumber")) || (mOccurrenceIndex = self->mOccurrenceIndex, mOccurrenceIndex != objc_msgSend(a3, "occurrenceIndex")))
+  if (mRank != [result rank] || (mPageNumber = self->mPageNumber, mPageNumber != objc_msgSend(result, "pageNumber")) || (mOccurrenceIndex = self->mOccurrenceIndex, mOccurrenceIndex != objc_msgSend(result, "occurrenceIndex")))
   {
     LOBYTE(v8) = 0;
     return v8;
   }
 
-  v8 = -[NSString isEqualToString:](self->mTerm, "isEqualToString:", [a3 term]);
+  v8 = -[NSString isEqualToString:](self->mTerm, "isEqualToString:", [result term]);
   if (v8)
   {
-    v8 = -[NSString isEqualToString:](self->mCFI, "isEqualToString:", [a3 cfi]);
+    v8 = -[NSString isEqualToString:](self->mCFI, "isEqualToString:", [result cfi]);
     if (v8)
     {
       mAnnotation = self->mAnnotation;
       if (!mAnnotation)
       {
-        if (![a3 annotation])
+        if (![result annotation])
         {
 LABEL_10:
           LOBYTE(v8) = 1;
@@ -107,7 +107,7 @@ LABEL_10:
         mAnnotation = self->mAnnotation;
       }
 
-      v8 = -[THAnnotation isEqual:](mAnnotation, "isEqual:", [a3 annotation]);
+      v8 = -[THAnnotation isEqual:](mAnnotation, "isEqual:", [result annotation]);
       if (v8)
       {
         goto LABEL_10;
@@ -134,7 +134,7 @@ LABEL_10:
   return result;
 }
 
-- (_NSRange)contextRangeForResultWithTrimmedContext:(id)a3
+- (_NSRange)contextRangeForResultWithTrimmedContext:(id)context
 {
   if (self->mOccurrenceIndex)
   {
@@ -143,7 +143,7 @@ LABEL_10:
     v7 = 0;
     while (1)
     {
-      v5 = [a3 rangeOfString:self->mTerm options:objc_msgSend(objc_opt_class() range:{"stringCompareOptions"), &v5[v6], objc_msgSend(a3, "length") - &v5[v6]}];
+      v5 = [context rangeOfString:self->mTerm options:objc_msgSend(objc_opt_class() range:{"stringCompareOptions"), &v5[v6], objc_msgSend(context, "length") - &v5[v6]}];
       if (v5 == 0x7FFFFFFFFFFFFFFFLL || v6 == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;

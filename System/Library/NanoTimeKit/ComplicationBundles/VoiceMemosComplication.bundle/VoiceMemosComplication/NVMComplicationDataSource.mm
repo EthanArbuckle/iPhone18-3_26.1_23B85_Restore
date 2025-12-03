@@ -1,9 +1,9 @@
 @interface NVMComplicationDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
 + (id)formatter;
-- (NVMComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
+- (NVMComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
 - (id)currentSwitcherTemplate;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
 @end
 
 @implementation NVMComplicationDataSource
@@ -20,13 +20,13 @@
   return v3;
 }
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
-  v6 = a4;
-  if ([v6 isRunningGraceOrLater])
+  deviceCopy = device;
+  if ([deviceCopy isRunningGraceOrLater])
   {
-    v7 = [a1 formatter];
-    v8 = [v7 supportsFamily:a3 forDevice:v6];
+    formatter = [self formatter];
+    v8 = [formatter supportsFamily:family forDevice:deviceCopy];
   }
 
   else
@@ -37,37 +37,37 @@
   return v8;
 }
 
-- (NVMComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (NVMComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = NVMComplicationDataSource;
-  return [(NVMComplicationDataSource *)&v6 initWithComplication:a3 family:a4 forDevice:a5];
+  return [(NVMComplicationDataSource *)&v6 initWithComplication:complication family:family forDevice:device];
 }
 
 - (id)currentSwitcherTemplate
 {
-  v3 = [objc_opt_class() formatter];
-  v4 = [(NVMComplicationDataSource *)self family];
-  v5 = [(NVMComplicationDataSource *)self device];
-  v6 = [v3 switcherTemplateWithFamily:v4 forDevice:v5];
+  formatter = [objc_opt_class() formatter];
+  family = [(NVMComplicationDataSource *)self family];
+  device = [(NVMComplicationDataSource *)self device];
+  v6 = [formatter switcherTemplateWithFamily:family forDevice:device];
 
   return v6;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v4 = a3;
-    v5 = [objc_opt_class() formatter];
-    v6 = [(NVMComplicationDataSource *)self family];
-    v7 = [(NVMComplicationDataSource *)self device];
-    v10 = [v5 formattedTemplateWithFamily:v6 forDevice:v7];
+    handlerCopy = handler;
+    formatter = [objc_opt_class() formatter];
+    family = [(NVMComplicationDataSource *)self family];
+    device = [(NVMComplicationDataSource *)self device];
+    v10 = [formatter formattedTemplateWithFamily:family forDevice:device];
 
     v8 = +[NSDate date];
     v9 = [CLKComplicationTimelineEntry entryWithDate:v8 complicationTemplate:v10];
 
-    v4[2](v4, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 }
 

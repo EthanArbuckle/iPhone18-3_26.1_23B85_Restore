@@ -1,63 +1,63 @@
 @interface BRCFSImporter
-- (BOOL)_deleteAppLibrary:(id)a3 documentsFolder:(id)a4 error:(id *)a5;
-- (BOOL)_doesAppLibraryMatchWithItemURL:(id)a3 appLibraryRowID:(id)a4;
-- (BOOL)_isDesktopOrDocumentsItem:(id)a3;
-- (BOOL)_processParentAndFilenameIfNecessaryWithLocalItem:(id)a3 changedFields:(unint64_t)a4 templateItem:(id)a5 error:(id *)a6;
-- (BOOL)_shouldRejectItemDeleteDueToEtags:(id)a3 baseVersion:(id)a4 error:(id *)a5;
-- (BOOL)_shouldRejectItemWithName:(id)a3 templateItem:(id)a4 existingItem:(id)a5 options:(unint64_t)a6 shouldRemoveItemFromDrive:(BOOL *)a7;
-- (BOOL)changeItem:(id)a3 baseVersion:(id)a4 changedFields:(unint64_t)a5 newValues:(id)a6 contents:(id)a7 additionalAttrs:(id)a8 clearCKInfoOnSyncUp:(BOOL)a9 stillPendingFields:(unint64_t *)a10 error:(id *)a11;
-- (BOOL)deleteItem:(id)a3 recursively:(BOOL)a4 baseVersion:(id)a5 error:(id *)a6;
-- (BOOL)trashItem:(id)a3 parentItemInTrash:(id)a4 error:(id *)a5;
-- (BRCFSImporter)initWithAccountSession:(id)a3;
-- (id)_createAndInsertNewItemWithImportObject:(id)a3 parentItem:(id)a4 fields:(unint64_t)a5 templateItem:(id)a6 fileURL:(id)a7 options:(unint64_t)a8 additionalAttrs:(id)a9 importBookmark:(id)a10 stillPendingFields:(unint64_t *)a11 error:(id *)a12;
-- (id)_createBaseItemWithImportObject:(id)a3 importBookmark:(id)a4 parentItem:(id)a5 options:(unint64_t)a6 error:(id *)a7;
-- (id)_findCollidingItemWithTemplateItem:(id)a3 parentItem:(id)a4 logicalName:(id)a5 error:(id *)a6;
-- (id)_globalItemByFileID:(unint64_t)a3;
-- (id)_handleCollisionIfNecessaryWithTemplateItem:(id)a3 parentItem:(id)a4 logicalName:(id)a5 fileURL:(id)a6 options:(unint64_t)a7 error:(id *)a8;
-- (id)_locateMatchingItemForTemplateItem:(id)a3 parentItem:(id)a4 options:(unint64_t)a5 fileURL:(id)a6 fields:(unint64_t *)a7 shouldReject:(BOOL *)a8 additionalAttrs:(id)a9 importBookmark:(id)a10 ignoreImportBookmark:(BOOL *)a11 stillPendingFields:(unint64_t *)a12 error:(id *)a13;
-- (id)_locateTemplateItemFromFPFSMigration:(id)a3 fields:(unint64_t *)a4 documentHasChanges:(BOOL *)a5;
-- (id)_parseImportBookmark:(id)a3 templateItem:(id)a4 fileURL:(id)a5 ignoreImportBookmark:(BOOL *)a6;
-- (id)createAndImportNewDirectoryWithLogicalName:(id)a3 parentItem:(id)a4 error:(id *)a5;
-- (id)getOrCreateTrashItemInAppLibrary:(id)a3 error:(id *)a4;
-- (id)importAppLibraryRootFromTemplateItem:(id)a3;
-- (id)importNewItemAtURL:(id)a3 parentItem:(id)a4 templateItem:(id)a5 fields:(unint64_t)a6 options:(unint64_t)a7 additionalItemAttributes:(id)a8 importBookmark:(id)a9 stillPendingFields:(unint64_t *)a10 error:(id *)a11;
-- (unsigned)_itemTypeToFileObjectIDType:(char)a3 itemID:(id)a4;
-- (unsigned)capabilityToMoveItem:(id)a3 toNewParentItem:(id)a4 error:(id *)a5;
-- (void)_changeBasicFieldsOnItem:(id)a3 fields:(unint64_t)a4 template:(id)a5;
+- (BOOL)_deleteAppLibrary:(id)library documentsFolder:(id)folder error:(id *)error;
+- (BOOL)_doesAppLibraryMatchWithItemURL:(id)l appLibraryRowID:(id)d;
+- (BOOL)_isDesktopOrDocumentsItem:(id)item;
+- (BOOL)_processParentAndFilenameIfNecessaryWithLocalItem:(id)item changedFields:(unint64_t)fields templateItem:(id)templateItem error:(id *)error;
+- (BOOL)_shouldRejectItemDeleteDueToEtags:(id)etags baseVersion:(id)version error:(id *)error;
+- (BOOL)_shouldRejectItemWithName:(id)name templateItem:(id)item existingItem:(id)existingItem options:(unint64_t)options shouldRemoveItemFromDrive:(BOOL *)drive;
+- (BOOL)changeItem:(id)item baseVersion:(id)version changedFields:(unint64_t)fields newValues:(id)values contents:(id)contents additionalAttrs:(id)attrs clearCKInfoOnSyncUp:(BOOL)up stillPendingFields:(unint64_t *)self0 error:(id *)self1;
+- (BOOL)deleteItem:(id)item recursively:(BOOL)recursively baseVersion:(id)version error:(id *)error;
+- (BOOL)trashItem:(id)item parentItemInTrash:(id)trash error:(id *)error;
+- (BRCFSImporter)initWithAccountSession:(id)session;
+- (id)_createAndInsertNewItemWithImportObject:(id)object parentItem:(id)item fields:(unint64_t)fields templateItem:(id)templateItem fileURL:(id)l options:(unint64_t)options additionalAttrs:(id)attrs importBookmark:(id)self0 stillPendingFields:(unint64_t *)self1 error:(id *)self2;
+- (id)_createBaseItemWithImportObject:(id)object importBookmark:(id)bookmark parentItem:(id)item options:(unint64_t)options error:(id *)error;
+- (id)_findCollidingItemWithTemplateItem:(id)item parentItem:(id)parentItem logicalName:(id)name error:(id *)error;
+- (id)_globalItemByFileID:(unint64_t)d;
+- (id)_handleCollisionIfNecessaryWithTemplateItem:(id)item parentItem:(id)parentItem logicalName:(id)name fileURL:(id)l options:(unint64_t)options error:(id *)error;
+- (id)_locateMatchingItemForTemplateItem:(id)item parentItem:(id)parentItem options:(unint64_t)options fileURL:(id)l fields:(unint64_t *)fields shouldReject:(BOOL *)reject additionalAttrs:(id)attrs importBookmark:(id)self0 ignoreImportBookmark:(BOOL *)self1 stillPendingFields:(unint64_t *)self2 error:(id *)self3;
+- (id)_locateTemplateItemFromFPFSMigration:(id)migration fields:(unint64_t *)fields documentHasChanges:(BOOL *)changes;
+- (id)_parseImportBookmark:(id)bookmark templateItem:(id)item fileURL:(id)l ignoreImportBookmark:(BOOL *)importBookmark;
+- (id)createAndImportNewDirectoryWithLogicalName:(id)name parentItem:(id)item error:(id *)error;
+- (id)getOrCreateTrashItemInAppLibrary:(id)library error:(id *)error;
+- (id)importAppLibraryRootFromTemplateItem:(id)item;
+- (id)importNewItemAtURL:(id)l parentItem:(id)item templateItem:(id)templateItem fields:(unint64_t)fields options:(unint64_t)options additionalItemAttributes:(id)attributes importBookmark:(id)bookmark stillPendingFields:(unint64_t *)self0 error:(id *)self1;
+- (unsigned)_itemTypeToFileObjectIDType:(char)type itemID:(id)d;
+- (unsigned)capabilityToMoveItem:(id)item toNewParentItem:(id)parentItem error:(id *)error;
+- (void)_changeBasicFieldsOnItem:(id)item fields:(unint64_t)fields template:(id)template;
 - (void)_childPropagationSchedule;
 - (void)_cleanItemBatchAfterMigrationToFPFSIfNecessary;
-- (void)_learnEtagsIfNecessaryWithItem:(id)a3 templateItem:(id)a4 changedFields:(unint64_t)a5 baseVersion:(id)a6;
-- (void)_learnLocalContentEtagXattrIfPossibleOnDocumentItem:(id)a3 templateItem:(id)a4;
-- (void)_processIngestBatch:(id)a3 minRowID:(unint64_t)a4;
-- (void)_propagateDirectoryMergeOrCrossZoneMove:(id)a3 persistedState:(id)a4 batchSize:(int)a5;
-- (void)_propagateFieldsToNextChildBatch:(id)a3 persistedState:(id)a4 minRowID:(unint64_t)a5 batchSize:(int)a6;
-- (void)_reportBouncingForMigration:(id)a3 existingItem:(id)a4;
-- (void)_resolveConflictLosersForItem:(id)a3 localItem:(id)a4;
-- (void)_updateFPFSMigrationStatsForBouncing:(id)a3 existingItem:(id)a4;
+- (void)_learnEtagsIfNecessaryWithItem:(id)item templateItem:(id)templateItem changedFields:(unint64_t)fields baseVersion:(id)version;
+- (void)_learnLocalContentEtagXattrIfPossibleOnDocumentItem:(id)item templateItem:(id)templateItem;
+- (void)_processIngestBatch:(id)batch minRowID:(unint64_t)d;
+- (void)_propagateDirectoryMergeOrCrossZoneMove:(id)move persistedState:(id)state batchSize:(int)size;
+- (void)_propagateFieldsToNextChildBatch:(id)batch persistedState:(id)state minRowID:(unint64_t)d batchSize:(int)size;
+- (void)_reportBouncingForMigration:(id)migration existingItem:(id)item;
+- (void)_resolveConflictLosersForItem:(id)item localItem:(id)localItem;
+- (void)_updateFPFSMigrationStatsForBouncing:(id)bouncing existingItem:(id)item;
 - (void)resume;
 @end
 
 @implementation BRCFSImporter
 
-- (BRCFSImporter)initWithAccountSession:(id)a3
+- (BRCFSImporter)initWithAccountSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v17.receiver = self;
   v17.super_class = BRCFSImporter;
   v6 = [(BRCFSImporter *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
     objc_initWeak(&location, v7);
     v8 = [BRCFairSource alloc];
-    v9 = [(BRCAccountSession *)v7->_session fairClientDBScheduler];
-    v10 = [(BRCFairSource *)v8 initWithName:@"child-propagation" scheduler:v9];
+    fairClientDBScheduler = [(BRCAccountSession *)v7->_session fairClientDBScheduler];
+    v10 = [(BRCFairSource *)v8 initWithName:@"child-propagation" scheduler:fairClientDBScheduler];
     childPropagationSource = v7->_childPropagationSource;
     v7->_childPropagationSource = v10;
 
-    v12 = [v5 clientTruthWorkloop];
-    [(BRCFairSource *)v7->_childPropagationSource setWorkloop:v12];
+    clientTruthWorkloop = [sessionCopy clientTruthWorkloop];
+    [(BRCFairSource *)v7->_childPropagationSource setWorkloop:clientTruthWorkloop];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -78,35 +78,35 @@ void __40__BRCFSImporter_initWithAccountSession___block_invoke(uint64_t a1)
   [WeakRetained _childPropagationSchedule];
 }
 
-- (id)_createBaseItemWithImportObject:(id)a3 importBookmark:(id)a4 parentItem:(id)a5 options:(unint64_t)a6 error:(id *)a7
+- (id)_createBaseItemWithImportObject:(id)object importBookmark:(id)bookmark parentItem:(id)item options:(unint64_t)options error:(id *)error
 {
-  v8 = a6;
+  optionsCopy = options;
   v55 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if ([v12 isDocument])
+  objectCopy = object;
+  bookmarkCopy = bookmark;
+  itemCopy = item;
+  if ([objectCopy isDocument])
   {
     v15 = off_2784FDA40;
     goto LABEL_5;
   }
 
-  if ([v12 isSymLink])
+  if ([objectCopy isSymLink])
   {
     v15 = off_2784FDD90;
     goto LABEL_5;
   }
 
-  if (![v12 isBRAlias])
+  if (![objectCopy isBRAlias])
   {
-    if ([v12 isFinderAlias])
+    if ([objectCopy isFinderAlias])
     {
       v15 = off_2784FDB00;
     }
 
     else
     {
-      if (([v12 isUnixDir] & 1) == 0)
+      if (([objectCopy isUnixDir] & 1) == 0)
       {
         v44 = brc_bread_crumbs();
         v45 = brc_default_log();
@@ -115,7 +115,7 @@ void __40__BRCFSImporter_initWithAccountSession___block_invoke(uint64_t a1)
           [BRCFSImporter _createBaseItemWithImportObject:importBookmark:parentItem:options:error:];
         }
 
-        v28 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Import object of unknown type %@", v12}];
+        v28 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Import object of unknown type %@", objectCopy}];
         if (!v28)
         {
           goto LABEL_21;
@@ -132,7 +132,7 @@ void __40__BRCFSImporter_initWithAccountSession___block_invoke(uint64_t a1)
         *buf = 136315906;
         v48 = "[BRCFSImporter _createBaseItemWithImportObject:importBookmark:parentItem:options:error:]";
         v49 = 2080;
-        if (!a7)
+        if (!error)
         {
           v46 = "(ignored by caller)";
         }
@@ -144,11 +144,11 @@ void __40__BRCFSImporter_initWithAccountSession___block_invoke(uint64_t a1)
     }
 
 LABEL_5:
-    v16 = [objc_alloc(*v15) _initWithImportObject:v12 error:a7];
-    v17 = [v13 mangledID];
-    v18 = [v17 isShared];
+    v16 = [objc_alloc(*v15) _initWithImportObject:objectCopy error:error];
+    mangledID = [bookmarkCopy mangledID];
+    isShared = [mangledID isShared];
 
-    if (v18)
+    if (isShared)
     {
       v19 = brc_bread_crumbs();
       v20 = brc_default_log();
@@ -161,10 +161,10 @@ LABEL_5:
         _os_log_impl(&dword_223E7A000, v20, OS_LOG_TYPE_DEFAULT, "[WARNING] Marking %@ as a top level shared item because it has top level share bookmark data%@", buf, 0x16u);
       }
 
-      [v16 markImportedItemAsSharedWithImportBookmark:v13 parent:v14];
+      [v16 markImportedItemAsSharedWithImportBookmark:bookmarkCopy parent:itemCopy];
     }
 
-    if ((v8 & 1) == 0)
+    if ((optionsCopy & 1) == 0)
     {
       if ([(BRCFSImporter *)self _isDesktopOrDocumentsItem:v16])
       {
@@ -175,8 +175,8 @@ LABEL_5:
           [BRCFSImporter _createBaseItemWithImportObject:importBookmark:parentItem:options:error:];
         }
 
-        v23 = [v12 logicalName];
-        v24 = [v23 isEqualToString:*MEMORY[0x277CFAD80]];
+        logicalName = [objectCopy logicalName];
+        v24 = [logicalName isEqualToString:*MEMORY[0x277CFAD80]];
 
         if (v24)
         {
@@ -185,8 +185,8 @@ LABEL_5:
 
         else
         {
-          v37 = [v12 logicalName];
-          v38 = [v37 isEqualToString:*MEMORY[0x277CFAD90]];
+          logicalName2 = [objectCopy logicalName];
+          v38 = [logicalName2 isEqualToString:*MEMORY[0x277CFAD90]];
 
           if (!v38)
           {
@@ -199,8 +199,8 @@ LABEL_5:
 
         v39 = v25;
 LABEL_39:
-        v40 = [v16 clientZone];
-        v41 = [v40 existsByItemID:v39];
+        clientZone = [v16 clientZone];
+        v41 = [clientZone existsByItemID:v39];
 
         if ((v41 & 1) == 0)
         {
@@ -219,11 +219,11 @@ LABEL_39:
 
       if ([v16 isInDocumentScope])
       {
-        v32 = [v16 appLibrary];
-        v33 = [v32 containerMetadata];
-        v34 = [v33 isDocumentScopePublic];
+        appLibrary = [v16 appLibrary];
+        containerMetadata = [appLibrary containerMetadata];
+        isDocumentScopePublic = [containerMetadata isDocumentScopePublic];
 
-        if (!v34)
+        if (!isDocumentScopePublic)
         {
           goto LABEL_42;
         }
@@ -248,7 +248,7 @@ LABEL_39:
     [BRCFSImporter _createBaseItemWithImportObject:importBookmark:parentItem:options:error:];
   }
 
-  v28 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Can't import br aliases anymore %@", v12}];
+  v28 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Can't import br aliases anymore %@", objectCopy}];
   if (!v28)
   {
     goto LABEL_21;
@@ -262,7 +262,7 @@ LABEL_39:
     *buf = 136315906;
     v48 = "[BRCFSImporter _createBaseItemWithImportObject:importBookmark:parentItem:options:error:]";
     v49 = 2080;
-    if (!a7)
+    if (!error)
     {
       v46 = "(ignored by caller)";
     }
@@ -279,10 +279,10 @@ LABEL_54:
 LABEL_20:
 
 LABEL_21:
-  if (a7)
+  if (error)
   {
     v31 = v28;
-    *a7 = v28;
+    *error = v28;
   }
 
   v16 = 0;
@@ -293,12 +293,12 @@ LABEL_42:
   return v16;
 }
 
-- (id)_globalItemByFileID:(unint64_t)a3
+- (id)_globalItemByFileID:(unint64_t)d
 {
   if ([(BRCFSImporter *)self isFPFSMigrationInProgress])
   {
-    v5 = [(BRCAccountSession *)self->_session itemFetcher];
-    v6 = [v5 globalItemByFileID:a3];
+    itemFetcher = [(BRCAccountSession *)self->_session itemFetcher];
+    v6 = [itemFetcher globalItemByFileID:d];
 
     if ([v6 isMigratingToFPFS])
     {
@@ -328,48 +328,48 @@ LABEL_42:
   return v8;
 }
 
-- (BOOL)_shouldRejectItemWithName:(id)a3 templateItem:(id)a4 existingItem:(id)a5 options:(unint64_t)a6 shouldRemoveItemFromDrive:(BOOL *)a7
+- (BOOL)_shouldRejectItemWithName:(id)name templateItem:(id)item existingItem:(id)existingItem options:(unint64_t)options shouldRemoveItemFromDrive:(BOOL *)drive
 {
-  v8 = a6;
+  optionsCopy = options;
   v46 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [v11 br_stringByDeletingPathBounceNo:0];
-  if ((v8 & 1) == 0)
+  nameCopy = name;
+  itemCopy = item;
+  existingItemCopy = existingItem;
+  v14 = [nameCopy br_stringByDeletingPathBounceNo:0];
+  if ((optionsCopy & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  v15 = [v12 extendedAttributes];
-  v16 = [v15 objectForKeyedSubscript:@"com.apple.fpfs.fileid"];
+  extendedAttributes = [itemCopy extendedAttributes];
+  v16 = [extendedAttributes objectForKeyedSubscript:@"com.apple.fpfs.fileid"];
   if (!v16 || ([v14 isEqualToString:@".Trash-from-provider"] & 1) == 0)
   {
 
     goto LABEL_10;
   }
 
-  [v13 st];
+  [existingItemCopy st];
   v41 = v14;
-  v18 = v17 = v13;
-  v19 = [v18 logicalName];
-  v20 = [v19 br_stringByDeletingPathBounceNo:0];
+  v18 = v17 = existingItemCopy;
+  logicalName = [v18 logicalName];
+  v20 = [logicalName br_stringByDeletingPathBounceNo:0];
   v21 = [v20 isEqualToString:@".Trash-from-provider"];
 
-  v13 = v17;
+  existingItemCopy = v17;
   v14 = v41;
 
   if (!v21)
   {
 LABEL_10:
-    if ([v14 isEqualToString:*MEMORY[0x277CFADB8]] && (!v13 || -[NSObject isInTrashScope](v13, "isInTrashScope")))
+    if ([v14 isEqualToString:*MEMORY[0x277CFADB8]] && (!existingItemCopy || -[NSObject isInTrashScope](existingItemCopy, "isInTrashScope")))
     {
-      v25 = brc_bread_crumbs();
+      contentType2 = brc_bread_crumbs();
       v26 = brc_default_log();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v43 = v25;
+        v43 = contentType2;
         v27 = "[INFO] rejecting Trash folder%@";
 LABEL_20:
         v31 = v26;
@@ -382,22 +382,22 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    if (v12)
+    if (itemCopy)
     {
-      v28 = [v12 contentType];
-      if ([v28 br_isAliasFileType])
+      contentType = [itemCopy contentType];
+      if ([contentType br_isAliasFileType])
       {
-        v29 = [v12 extendedAttributes];
-        v30 = [v29 objectForKeyedSubscript:@"com.apple.clouddocs.security"];
+        extendedAttributes2 = [itemCopy extendedAttributes];
+        v30 = [extendedAttributes2 objectForKeyedSubscript:@"com.apple.clouddocs.security"];
 
         if (v30)
         {
-          v25 = brc_bread_crumbs();
+          contentType2 = brc_bread_crumbs();
           v26 = brc_default_log();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v43 = v25;
+            v43 = contentType2;
             v27 = "[INFO] rejecting BRAlias%@";
             goto LABEL_20;
           }
@@ -414,19 +414,19 @@ LABEL_27:
       }
     }
 
-    if ([v11 isEqualToString:*MEMORY[0x277CFADB0]])
+    if ([nameCopy isEqualToString:*MEMORY[0x277CFADB0]])
     {
-      v33 = [v12 parentItemIdentifier];
-      v34 = [v33 isEqualToString:*MEMORY[0x277CC6348]];
+      parentItemIdentifier = [itemCopy parentItemIdentifier];
+      v34 = [parentItemIdentifier isEqualToString:*MEMORY[0x277CC6348]];
 
       if (v34)
       {
-        v25 = brc_bread_crumbs();
+        contentType2 = brc_bread_crumbs();
         v26 = brc_default_log();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v43 = v25;
+          v43 = contentType2;
           v27 = "[WARNING] rejecting shared mangled containerID%@";
           v31 = v26;
           v32 = OS_LOG_TYPE_DEFAULT;
@@ -437,10 +437,10 @@ LABEL_27:
       }
     }
 
-    v25 = [v12 contentType];
-    if (([v25 br_isDirectoryType]& 1) == 0)
+    contentType2 = [itemCopy contentType];
+    if (([contentType2 br_isDirectoryType]& 1) == 0)
     {
-      v35 = [v11 isEqualToString:*MEMORY[0x277CFAD90]];
+      v35 = [nameCopy isEqualToString:*MEMORY[0x277CFAD90]];
 
       if (!v35)
       {
@@ -448,10 +448,10 @@ LABEL_27:
       }
 
       v36 = MEMORY[0x277CFAE50];
-      v37 = [v12 parentItemIdentifier];
-      v25 = [v36 fileObjectIDWithString:v37];
+      parentItemIdentifier2 = [itemCopy parentItemIdentifier];
+      contentType2 = [v36 fileObjectIDWithString:parentItemIdentifier2];
 
-      if ([v25 isAppLibraryRoot])
+      if ([contentType2 isAppLibraryRoot])
       {
         v26 = brc_bread_crumbs();
         v38 = brc_default_log();
@@ -476,16 +476,16 @@ LABEL_35:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v43 = v13;
+    v43 = existingItemCopy;
     v44 = 2112;
     v45 = v22;
     _os_log_impl(&dword_223E7A000, v23, OS_LOG_TYPE_DEFAULT, "[WARNING] Rejecting .Trash-from-provider item that was mapped to %@%@", buf, 0x16u);
   }
 
   v24 = 1;
-  if (a7)
+  if (drive)
   {
-    *a7 = 1;
+    *drive = 1;
   }
 
 LABEL_36:
@@ -494,24 +494,24 @@ LABEL_36:
   return v24;
 }
 
-- (BOOL)_isDesktopOrDocumentsItem:(id)a3
+- (BOOL)_isDesktopOrDocumentsItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 parentFileObjectID];
-  if ([v4 isCloudDocsRoot] && objc_msgSend(v3, "isDirectory") && objc_msgSend(v3, "itemScope") == 2)
+  itemCopy = item;
+  parentFileObjectID = [itemCopy parentFileObjectID];
+  if ([parentFileObjectID isCloudDocsRoot] && objc_msgSend(itemCopy, "isDirectory") && objc_msgSend(itemCopy, "itemScope") == 2)
   {
-    v5 = [v3 st];
-    v6 = [v5 logicalName];
-    if ([v6 isEqualToString:*MEMORY[0x277CFAD80]])
+    v5 = [itemCopy st];
+    logicalName = [v5 logicalName];
+    if ([logicalName isEqualToString:*MEMORY[0x277CFAD80]])
     {
       v7 = 1;
     }
 
     else
     {
-      v9 = [v3 st];
-      v10 = [v9 logicalName];
-      v7 = [v10 isEqualToString:*MEMORY[0x277CFAD90]];
+      v9 = [itemCopy st];
+      logicalName2 = [v9 logicalName];
+      v7 = [logicalName2 isEqualToString:*MEMORY[0x277CFAD90]];
     }
   }
 
@@ -523,17 +523,17 @@ LABEL_36:
   return v7;
 }
 
-- (unsigned)capabilityToMoveItem:(id)a3 toNewParentItem:(id)a4 error:(id *)a5
+- (unsigned)capabilityToMoveItem:(id)item toNewParentItem:(id)parentItem error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  itemCopy = item;
+  parentItemCopy = parentItem;
+  if (parentItemCopy)
   {
-    if (!v7)
+    if (!itemCopy)
     {
-      v9 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:0];
-      if (v9)
+      clientZone = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:0];
+      if (clientZone)
       {
         v14 = brc_bread_crumbs();
         v15 = brc_default_log();
@@ -543,40 +543,40 @@ LABEL_36:
           v41 = 136315906;
           v42 = "[BRCFSImporter capabilityToMoveItem:toNewParentItem:error:]";
           v43 = 2080;
-          if (!a5)
+          if (!error)
           {
             v38 = "(ignored by caller)";
           }
 
           v44 = v38;
           v45 = 2112;
-          v46 = v9;
+          v46 = clientZone;
           v47 = 2112;
           v48 = v14;
           _os_log_debug_impl(&dword_223E7A000, v15, OS_LOG_TYPE_DEBUG, "[DEBUG] %s: %s error: %@%@", &v41, 0x2Au);
         }
       }
 
-      if (a5)
+      if (error)
       {
-        v16 = v9;
-        *a5 = v9;
+        v16 = clientZone;
+        *error = clientZone;
       }
 
       v13 = 1;
       goto LABEL_75;
     }
 
-    v9 = [v7 clientZone];
-    v10 = [v8 clientZone];
-    if ([v7 isSharedToMeChildItem] && (objc_msgSend(v7, "sharingOptions") & 0x20) != 0)
+    clientZone = [itemCopy clientZone];
+    clientZone2 = [parentItemCopy clientZone];
+    if ([itemCopy isSharedToMeChildItem] && (objc_msgSend(itemCopy, "sharingOptions") & 0x20) != 0)
     {
       v11 = brc_bread_crumbs();
       v12 = brc_default_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v41 = 138412546;
-        v42 = v7;
+        v42 = itemCopy;
         v43 = 2112;
         v44 = v11;
         v18 = "[WARNING] Can't edit a readonly share for %@%@";
@@ -587,18 +587,18 @@ LABEL_38:
 
     else
     {
-      if (![v8 isSharedToMe] || (objc_msgSend(v8, "sharingOptions") & 0x20) == 0)
+      if (![parentItemCopy isSharedToMe] || (objc_msgSend(parentItemCopy, "sharingOptions") & 0x20) == 0)
       {
-        if ((([v7 isSharedToMeTopLevelItem] & 1) != 0 || objc_msgSend(v7, "isSharedByMe") && objc_msgSend(v7, "hasShareIDAndIsOwnedByMe")) && objc_msgSend(v8, "isInTrashScope"))
+        if ((([itemCopy isSharedToMeTopLevelItem] & 1) != 0 || objc_msgSend(itemCopy, "isSharedByMe") && objc_msgSend(itemCopy, "hasShareIDAndIsOwnedByMe")) && objc_msgSend(parentItemCopy, "isInTrashScope"))
         {
           v11 = brc_bread_crumbs();
           v12 = brc_default_log();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
             v41 = 138412802;
-            v42 = v7;
+            v42 = itemCopy;
             v43 = 2112;
-            v44 = v8;
+            v44 = parentItemCopy;
             v45 = 2112;
             v46 = v11;
             _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_DEFAULT, "[WARNING] Trying to move shared top item %@ into trash at parent %@%@", &v41, 0x20u);
@@ -608,20 +608,20 @@ LABEL_38:
           goto LABEL_73;
         }
 
-        if (([v9 isEqualToClientZone:v10] & 1) == 0)
+        if (([clientZone isEqualToClientZone:clientZone2] & 1) == 0)
         {
-          if ([v7 isSharedToMeTopLevelItem])
+          if ([itemCopy isSharedToMeTopLevelItem])
           {
-            if ([v10 isSharedZone])
+            if ([clientZone2 isSharedZone])
             {
               v11 = brc_bread_crumbs();
               v12 = brc_default_log();
               if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
               {
                 v41 = 138412802;
-                v42 = v7;
+                v42 = itemCopy;
                 v43 = 2112;
-                v44 = v8;
+                v44 = parentItemCopy;
                 v45 = 2112;
                 v46 = v11;
                 _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_DEFAULT, "[WARNING] Trying to move shared top item %@ into another shared item %@%@", &v41, 0x20u);
@@ -632,9 +632,9 @@ LABEL_38:
 
             else
             {
-              v28 = [v7 appLibrary];
-              v29 = [v28 defaultClientZone];
-              v30 = [v29 isEqualToClientZone:v10];
+              appLibrary = [itemCopy appLibrary];
+              defaultClientZone = [appLibrary defaultClientZone];
+              v30 = [defaultClientZone isEqualToClientZone:clientZone2];
 
               if (v30)
               {
@@ -655,7 +655,7 @@ LABEL_38:
                 if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
                 {
                   v41 = 138412546;
-                  v42 = v7;
+                  v42 = itemCopy;
                   v43 = 2112;
                   v44 = v11;
                   _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_DEFAULT, "[WARNING] Top level shared item %@ moved across zone boundaries.  Allowing it%@", &v41, 0x16u);
@@ -668,16 +668,16 @@ LABEL_38:
             goto LABEL_73;
           }
 
-          if (([v9 isSharedZone] & 1) == 0 && !objc_msgSend(v10, "isSharedZone"))
+          if (([clientZone isSharedZone] & 1) == 0 && !objc_msgSend(clientZone2, "isSharedZone"))
           {
             v11 = brc_bread_crumbs();
             v12 = brc_default_log();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
             {
               v41 = 138412802;
-              v42 = v7;
+              v42 = itemCopy;
               v43 = 2112;
-              v44 = v8;
+              v44 = parentItemCopy;
               v45 = 2112;
               v46 = v11;
               v13 = 32;
@@ -692,16 +692,16 @@ LABEL_38:
             goto LABEL_73;
           }
 
-          if (([v9 isSharedZone] & 1) != 0 || !objc_msgSend(v7, "isDirectory") || (objc_msgSend(v7, "asDirectory"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "possiblyContainsSharedItem"), v25, !v26))
+          if (([clientZone isSharedZone] & 1) != 0 || !objc_msgSend(itemCopy, "isDirectory") || (objc_msgSend(itemCopy, "asDirectory"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "possiblyContainsSharedItem"), v25, !v26))
           {
             v11 = brc_bread_crumbs();
             v12 = brc_default_log();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
             {
               v41 = 138412802;
-              v42 = v7;
+              v42 = itemCopy;
               v43 = 2112;
-              v44 = v8;
+              v44 = parentItemCopy;
               v45 = 2112;
               v46 = v11;
               _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_DEFAULT, "[WARNING] We need to download item %@ which is moving in or out of a shared zone to parent %@%@", &v41, 0x20u);
@@ -719,23 +719,23 @@ LABEL_38:
           }
 
           v41 = 138412802;
-          v42 = v7;
+          v42 = itemCopy;
           v43 = 2112;
-          v44 = v8;
+          v44 = parentItemCopy;
           v45 = 2112;
           v46 = v11;
           v27 = "[WARNING] Moving an unshared directory %@ into a shared parent %@ where the source item has shared subitems%@";
           goto LABEL_88;
         }
 
-        if ([v7 hasShareIDAndIsOwnedByMe])
+        if ([itemCopy hasShareIDAndIsOwnedByMe])
         {
-          if (([v8 isOwnedByMe] & 1) == 0)
+          if (([parentItemCopy isOwnedByMe] & 1) == 0)
           {
             [BRCFSImporter capabilityToMoveItem:toNewParentItem:error:];
           }
 
-          if ([v8 isSharedByMe])
+          if ([parentItemCopy isSharedByMe])
           {
             v11 = brc_bread_crumbs();
             v12 = brc_default_log();
@@ -747,9 +747,9 @@ LABEL_72:
             }
 
             v41 = 138412802;
-            v42 = v7;
+            v42 = itemCopy;
             v43 = 2112;
-            v44 = v8;
+            v44 = parentItemCopy;
             v45 = 2112;
             v46 = v11;
             v17 = "[WARNING] Trying to move shared top item %@ into another shared item %@%@";
@@ -759,14 +759,14 @@ LABEL_28:
           }
 
 LABEL_80:
-          if ([v7 isDirectory] && (objc_msgSend(v7, "isSharedByMe") & 1) == 0 && (objc_msgSend(v7, "isSharedToMe") & 1) == 0)
+          if ([itemCopy isDirectory] && (objc_msgSend(itemCopy, "isSharedByMe") & 1) == 0 && (objc_msgSend(itemCopy, "isSharedToMe") & 1) == 0)
           {
-            if (([v8 isSharedToMe] & 1) != 0 || objc_msgSend(v8, "isSharedByMe"))
+            if (([parentItemCopy isSharedToMe] & 1) != 0 || objc_msgSend(parentItemCopy, "isSharedByMe"))
             {
-              v36 = [v7 asDirectory];
-              v37 = [v36 possiblyContainsSharedItem];
+              asDirectory = [itemCopy asDirectory];
+              possiblyContainsSharedItem = [asDirectory possiblyContainsSharedItem];
 
-              if (v37)
+              if (possiblyContainsSharedItem)
               {
                 v11 = brc_bread_crumbs();
                 v12 = brc_default_log();
@@ -778,9 +778,9 @@ LABEL_89:
                 }
 
                 v41 = 138412802;
-                v42 = v7;
+                v42 = itemCopy;
                 v43 = 2112;
-                v44 = v8;
+                v44 = parentItemCopy;
                 v45 = 2112;
                 v46 = v11;
                 v27 = "[WARNING] Moving item with a shared child %@ into a share with parent %@%@";
@@ -790,21 +790,21 @@ LABEL_88:
               }
             }
 
-            if ([v8 isInTrashScope])
+            if ([parentItemCopy isInTrashScope])
             {
-              v39 = [v7 asDirectory];
-              v40 = [v39 possiblyContainsSharedItem];
+              asDirectory2 = [itemCopy asDirectory];
+              possiblyContainsSharedItem2 = [asDirectory2 possiblyContainsSharedItem];
 
-              if (v40)
+              if (possiblyContainsSharedItem2)
               {
                 v11 = brc_bread_crumbs();
                 v12 = brc_default_log();
                 if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
                 {
                   v41 = 138412802;
-                  v42 = v7;
+                  v42 = itemCopy;
                   v43 = 2112;
-                  v44 = v8;
+                  v44 = parentItemCopy;
                   v45 = 2112;
                   v46 = v11;
                   _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_DEFAULT, "[WARNING] Moving an item with a shared child %@ into trash at parent %@%@", &v41, 0x20u);
@@ -820,11 +820,11 @@ LABEL_88:
           goto LABEL_74;
         }
 
-        if ([v7 isOwnedByMe])
+        if ([itemCopy isOwnedByMe])
         {
-          if (![v7 isSharedByMe])
+          if (![itemCopy isSharedByMe])
           {
-            if ([v8 isSharedByMe])
+            if ([parentItemCopy isSharedByMe])
             {
               v11 = brc_bread_crumbs();
               v12 = brc_default_log();
@@ -834,9 +834,9 @@ LABEL_88:
               }
 
               v41 = 138412802;
-              v42 = v7;
+              v42 = itemCopy;
               v43 = 2112;
-              v44 = v8;
+              v44 = parentItemCopy;
               v45 = 2112;
               v46 = v11;
               v17 = "[WARNING] Moving item %@ into a share with parent %@%@";
@@ -846,12 +846,12 @@ LABEL_88:
             goto LABEL_80;
           }
 
-          if (([v8 isOwnedByMe] & 1) == 0)
+          if (([parentItemCopy isOwnedByMe] & 1) == 0)
           {
             [BRCFSImporter capabilityToMoveItem:toNewParentItem:error:];
           }
 
-          if (([v8 isSharedByMe] & 1) == 0)
+          if (([parentItemCopy isSharedByMe] & 1) == 0)
           {
             v11 = brc_bread_crumbs();
             v12 = brc_default_log();
@@ -861,17 +861,17 @@ LABEL_88:
             }
 
             v41 = 138412802;
-            v42 = v7;
+            v42 = itemCopy;
             v43 = 2112;
-            v44 = v8;
+            v44 = parentItemCopy;
             v45 = 2112;
             v46 = v11;
             v17 = "[WARNING] Moving item %@ out of the share to new parent %@%@";
             goto LABEL_28;
           }
 
-          v11 = [MEMORY[0x277CBC5D0] brc_fetchShareIDWithSharedItem:v7];
-          v12 = [MEMORY[0x277CBC5D0] brc_fetchShareIDWithSharedItem:v8];
+          v11 = [MEMORY[0x277CBC5D0] brc_fetchShareIDWithSharedItem:itemCopy];
+          v12 = [MEMORY[0x277CBC5D0] brc_fetchShareIDWithSharedItem:parentItemCopy];
           if (!v12 || ([v11 recordName], v19 = objc_claimAutoreleasedReturnValue(), -[NSObject recordName](v12, "recordName"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "isEqualToString:", v20), v20, v19, (v21 & 1) == 0))
           {
             v22 = brc_bread_crumbs();
@@ -879,9 +879,9 @@ LABEL_88:
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
             {
               v41 = 138412802;
-              v42 = v7;
+              v42 = itemCopy;
               v43 = 2112;
-              v44 = v8;
+              v44 = parentItemCopy;
               v45 = 2112;
               v46 = v22;
               v24 = "[WARNING] Moving item %@ into a different share with parent %@%@";
@@ -896,13 +896,13 @@ LABEL_70:
 
         else
         {
-          if ([v8 isOwnedByMe])
+          if ([parentItemCopy isOwnedByMe])
           {
             [BRCFSImporter capabilityToMoveItem:toNewParentItem:error:];
           }
 
-          v11 = [MEMORY[0x277CBC5D0] brc_fetchShareIDWithSharedItem:v7];
-          v12 = [MEMORY[0x277CBC5D0] brc_fetchShareIDWithSharedItem:v8];
+          v11 = [MEMORY[0x277CBC5D0] brc_fetchShareIDWithSharedItem:itemCopy];
+          v12 = [MEMORY[0x277CBC5D0] brc_fetchShareIDWithSharedItem:parentItemCopy];
           if (!v12 || ([v11 recordName], v31 = objc_claimAutoreleasedReturnValue(), -[NSObject recordName](v12, "recordName"), v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v31, "isEqualToString:", v32), v32, v31, (v33 & 1) == 0))
           {
             v22 = brc_bread_crumbs();
@@ -910,9 +910,9 @@ LABEL_70:
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
             {
               v41 = 138412802;
-              v42 = v7;
+              v42 = itemCopy;
               v43 = 2112;
-              v44 = v8;
+              v44 = parentItemCopy;
               v45 = 2112;
               v46 = v22;
               v24 = "[WARNING] Moving item %@ into another shared item %@%@";
@@ -933,7 +933,7 @@ LABEL_71:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v41 = 138412546;
-        v42 = v8;
+        v42 = parentItemCopy;
         v43 = 2112;
         v44 = v11;
         v18 = "[WARNING] Can't add a file to a readonly share with parent %@%@";
@@ -957,16 +957,16 @@ LABEL_76:
   return v13;
 }
 
-- (void)_resolveConflictLosersForItem:(id)a3 localItem:(id)a4
+- (void)_resolveConflictLosersForItem:(id)item localItem:(id)localItem
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 conflictingVersions];
+  localItemCopy = localItem;
+  conflictingVersions = [item conflictingVersions];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [conflictingVersions countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -977,19 +977,19 @@ LABEL_76:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(conflictingVersions);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         if ([v11 conflictResolved])
         {
-          v12 = [v11 br_contentEtag];
-          v13 = [v5 asDocument];
-          [v13 appDidResolveConflictLoserWithEtag:v12];
+          br_contentEtag = [v11 br_contentEtag];
+          asDocument = [localItemCopy asDocument];
+          [asDocument appDidResolveConflictLoserWithEtag:br_contentEtag];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [conflictingVersions countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -998,21 +998,21 @@ LABEL_76:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_changeBasicFieldsOnItem:(id)a3 fields:(unint64_t)a4 template:(id)a5
+- (void)_changeBasicFieldsOnItem:(id)item fields:(unint64_t)fields template:(id)template
 {
-  v6 = a4;
-  v17 = a3;
-  v7 = a5;
-  v8 = v7;
-  if ((v6 & 8) != 0)
+  fieldsCopy = fields;
+  itemCopy = item;
+  templateCopy = template;
+  v8 = templateCopy;
+  if ((fieldsCopy & 8) != 0)
   {
-    v10 = [v7 lastUsedDate];
-    [v17 updateWithLastUsedDate:v10];
+    lastUsedDate = [templateCopy lastUsedDate];
+    [itemCopy updateWithLastUsedDate:lastUsedDate];
 
-    if ((v6 & 0x10) == 0)
+    if ((fieldsCopy & 0x10) == 0)
     {
 LABEL_3:
-      if ((v6 & 0x20) == 0)
+      if ((fieldsCopy & 0x20) == 0)
       {
         goto LABEL_4;
       }
@@ -1021,20 +1021,20 @@ LABEL_3:
     }
   }
 
-  else if ((v6 & 0x10) == 0)
+  else if ((fieldsCopy & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  v11 = [v8 tagData];
+  tagData = [v8 tagData];
   v12 = FPGetTagsFromTagsData();
   v13 = [v12 valueForKey:@"label"];
 
-  [v17 updateWithFinderTagNames:v13];
-  if ((v6 & 0x20) == 0)
+  [itemCopy updateWithFinderTagNames:v13];
+  if ((fieldsCopy & 0x20) == 0)
   {
 LABEL_4:
-    if ((v6 & 0x40) == 0)
+    if ((fieldsCopy & 0x40) == 0)
     {
       goto LABEL_5;
     }
@@ -1043,13 +1043,13 @@ LABEL_4:
   }
 
 LABEL_14:
-  v14 = [v8 favoriteRank];
-  [v17 updateWithFavoriteRank:{objc_msgSend(v14, "longLongValue")}];
+  favoriteRank = [v8 favoriteRank];
+  [itemCopy updateWithFavoriteRank:{objc_msgSend(favoriteRank, "longLongValue")}];
 
-  if ((v6 & 0x40) == 0)
+  if ((fieldsCopy & 0x40) == 0)
   {
 LABEL_5:
-    if ((v6 & 0x80) == 0)
+    if ((fieldsCopy & 0x80) == 0)
     {
       goto LABEL_6;
     }
@@ -1058,13 +1058,13 @@ LABEL_5:
   }
 
 LABEL_15:
-  v15 = [v8 creationDate];
-  [v17 updateWithCreationDate:v15];
+  creationDate = [v8 creationDate];
+  [itemCopy updateWithCreationDate:creationDate];
 
-  if ((v6 & 0x80) == 0)
+  if ((fieldsCopy & 0x80) == 0)
   {
 LABEL_6:
-    if ((v6 & 0x100) == 0)
+    if ((fieldsCopy & 0x100) == 0)
     {
       goto LABEL_7;
     }
@@ -1073,13 +1073,13 @@ LABEL_6:
   }
 
 LABEL_16:
-  v16 = [v8 contentModificationDate];
-  [v17 updateWithContentModificationDate:v16];
+  contentModificationDate = [v8 contentModificationDate];
+  [itemCopy updateWithContentModificationDate:contentModificationDate];
 
-  if ((v6 & 0x100) == 0)
+  if ((fieldsCopy & 0x100) == 0)
   {
 LABEL_7:
-    if ((v6 & 0x200) == 0)
+    if ((fieldsCopy & 0x200) == 0)
     {
       goto LABEL_9;
     }
@@ -1088,55 +1088,55 @@ LABEL_7:
   }
 
 LABEL_17:
-  [v17 updateWithFileSystemFlags:{objc_msgSend(v8, "fileSystemFlags")}];
-  if ((v6 & 0x200) != 0)
+  [itemCopy updateWithFileSystemFlags:{objc_msgSend(v8, "fileSystemFlags")}];
+  if ((fieldsCopy & 0x200) != 0)
   {
 LABEL_8:
-    v9 = [v8 extendedAttributes];
-    [v17 updateWithXattrs:v9];
+    extendedAttributes = [v8 extendedAttributes];
+    [itemCopy updateWithXattrs:extendedAttributes];
   }
 
 LABEL_9:
 }
 
-- (void)_updateFPFSMigrationStatsForBouncing:(id)a3 existingItem:(id)a4
+- (void)_updateFPFSMigrationStatsForBouncing:(id)bouncing existingItem:(id)item
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [v17 contentType];
-  v8 = [v7 br_isDirectoryType];
+  bouncingCopy = bouncing;
+  itemCopy = item;
+  contentType = [bouncingCopy contentType];
+  br_isDirectoryType = [contentType br_isDirectoryType];
 
-  if (v8)
+  if (br_isDirectoryType)
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [v17 contentType];
-    v11 = [v10 br_isSymbolicLinkType];
+    contentType2 = [bouncingCopy contentType];
+    br_isSymbolicLinkType = [contentType2 br_isSymbolicLinkType];
 
-    if (v11)
+    if (br_isSymbolicLinkType)
     {
       v9 = 4;
     }
 
     else
     {
-      v12 = [v17 contentType];
-      v13 = [v12 br_isAliasFileType];
+      contentType3 = [bouncingCopy contentType];
+      br_isAliasFileType = [contentType3 br_isAliasFileType];
 
-      if (v13)
+      if (br_isAliasFileType)
       {
         v9 = 3;
       }
 
       else
       {
-        v14 = [v17 contentType];
-        v15 = [v14 br_isPackageType];
+        contentType4 = [bouncingCopy contentType];
+        br_isPackageType = [contentType4 br_isPackageType];
 
-        if (v15)
+        if (br_isPackageType)
         {
           v9 = 2;
         }
@@ -1149,22 +1149,22 @@ LABEL_9:
     }
   }
 
-  if ([v6 isDirectory])
+  if ([itemCopy isDirectory])
   {
     v16 = 0;
   }
 
-  else if ([v6 isSymLink])
+  else if ([itemCopy isSymLink])
   {
     v16 = 4;
   }
 
-  else if ([v6 isFinderBookmark])
+  else if ([itemCopy isFinderBookmark])
   {
     v16 = 3;
   }
 
-  else if ([v6 isPackage])
+  else if ([itemCopy isPackage])
   {
     v16 = 2;
   }
@@ -1177,24 +1177,24 @@ LABEL_9:
   [(BRCAccountSession *)self->_session _updateFPFSMigrationBouncedItemType:v9 withExistingItemType:v16];
 }
 
-- (void)_reportBouncingForMigration:(id)a3 existingItem:(id)a4
+- (void)_reportBouncingForMigration:(id)migration existingItem:(id)item
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [(BRCFSImporter *)self _updateFPFSMigrationStatsForBouncing:a3 existingItem:v6];
+  itemCopy = item;
+  [(BRCFSImporter *)self _updateFPFSMigrationStatsForBouncing:migration existingItem:itemCopy];
   if ([(BRCFSImporter *)self isFPFSMigrationInProgress])
   {
-    if ([v6 isDirectory])
+    if ([itemCopy isDirectory])
     {
       v7 = [BRCUserDefaults defaultsForMangledID:0];
-      v8 = [v7 filterDecendantsOfNotMigratedFolders];
+      filterDecendantsOfNotMigratedFolders = [v7 filterDecendantsOfNotMigratedFolders];
 
-      if (v8)
+      if (filterDecendantsOfNotMigratedFolders)
       {
-        v9 = [(BRCAccountSession *)self->_session clientDB];
-        if (isFPFSMigrationNonMigratedFoldersExists(v9, v10))
+        clientDB = [(BRCAccountSession *)self->_session clientDB];
+        if (isFPFSMigrationNonMigratedFoldersExists(clientDB, v10))
         {
-          v11 = [v6 itemGlobalID];
+          itemGlobalID = [itemCopy itemGlobalID];
           v12 = brc_bread_crumbs();
           v13 = brc_default_log();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -1202,25 +1202,25 @@ LABEL_9:
             [BRCFSImporter _reportBouncingForMigration:existingItem:];
           }
 
-          v14 = [v11 itemID];
-          v15 = [v11 zoneRowID];
-          v16 = [v9 execute:{@"INSERT OR IGNORE INTO fpfs_folders_not_migrated (item_id, zone_rowid) VALUES (%@, %@)", v14, v15}];
+          itemID = [itemGlobalID itemID];
+          zoneRowID = [itemGlobalID zoneRowID];
+          v16 = [clientDB execute:{@"INSERT OR IGNORE INTO fpfs_folders_not_migrated (item_id, zone_rowid) VALUES (%@, %@)", itemID, zoneRowID}];
 
-          if (!v16 || ![v9 changes])
+          if (!v16 || ![clientDB changes])
           {
             v17 = brc_bread_crumbs();
             v18 = brc_default_log();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
-              v19 = [v11 itemID];
-              v20 = [v11 zoneRowID];
-              v21 = [v9 lastError];
+              itemID2 = [itemGlobalID itemID];
+              zoneRowID2 = [itemGlobalID zoneRowID];
+              lastError = [clientDB lastError];
               *buf = 138413058;
-              v24 = v19;
+              v24 = itemID2;
               v25 = 2112;
-              v26 = v20;
+              v26 = zoneRowID2;
               v27 = 2112;
-              v28 = v21;
+              v28 = lastError;
               v29 = 2112;
               v30 = v17;
               _os_log_impl(&dword_223E7A000, v18, OS_LOG_TYPE_DEFAULT, "[WARNING] Failed inserting to fpfs_folders_not_migrated with %@, %@. Error: %@%@", buf, 0x2Au);
@@ -1234,29 +1234,29 @@ LABEL_9:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_parseImportBookmark:(id)a3 templateItem:(id)a4 fileURL:(id)a5 ignoreImportBookmark:(BOOL *)a6
+- (id)_parseImportBookmark:(id)bookmark templateItem:(id)item fileURL:(id)l ignoreImportBookmark:(BOOL *)importBookmark
 {
   v54 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v46 = a5;
-  v12 = [v10 mangledID];
-  v13 = [v10 itemID];
-  v14 = [(BRCAccountSession *)self->_session clientZoneByMangledID:v12];
-  if (![v10 isTrashBookmark])
+  bookmarkCopy = bookmark;
+  itemCopy = item;
+  lCopy = l;
+  mangledID = [bookmarkCopy mangledID];
+  itemID = [bookmarkCopy itemID];
+  v14 = [(BRCAccountSession *)self->_session clientZoneByMangledID:mangledID];
+  if (![bookmarkCopy isTrashBookmark])
   {
-    v24 = [v14 itemByItemID:v13];
+    v24 = [v14 itemByItemID:itemID];
     if (!v24)
     {
       v35 = brc_bread_crumbs();
       v36 = brc_default_log();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
-        v37 = [v13 debugItemIDString];
+        debugItemIDString = [itemID debugItemIDString];
         *buf = 138412802;
-        *&buf[4] = v37;
+        *&buf[4] = debugItemIDString;
         *&buf[12] = 2112;
-        *&buf[14] = v12;
+        *&buf[14] = mangledID;
         *&buf[22] = 2112;
         v51 = v35;
         _os_log_impl(&dword_223E7A000, v36, OS_LOG_TYPE_DEFAULT, "[WARNING] Couldn't find item by bookmark data %@ (%@)%@", buf, 0x20u);
@@ -1272,7 +1272,7 @@ LABEL_9:
       [BRCFSImporter _parseImportBookmark:templateItem:fileURL:ignoreImportBookmark:];
     }
 
-    if ((itemsHaveTheSameKind(v24, v11) & 1) == 0)
+    if ((itemsHaveTheSameKind(v24, itemCopy) & 1) == 0)
     {
       v41 = brc_bread_crumbs();
       v42 = brc_default_log();
@@ -1283,41 +1283,41 @@ LABEL_9:
         _os_log_impl(&dword_223E7A000, v42, OS_LOG_TYPE_DEFAULT, "[WARNING] The existing shared item doesn't have the right kind%@", buf, 0xCu);
       }
 
-      if (a6)
+      if (importBookmark)
       {
-        v19 = 0;
+        asDirectory = 0;
         v40 = 0;
-        *a6 = 1;
+        *importBookmark = 1;
         goto LABEL_41;
       }
 
 LABEL_32:
-      v19 = 0;
+      asDirectory = 0;
       v40 = 0;
       goto LABEL_41;
     }
 
     if ([v24 isDocument])
     {
-      v45 = [v24 asDocument];
-      v27 = [v45 currentVersion];
-      if ([v27 size] <= 0)
+      asDocument = [v24 asDocument];
+      currentVersion = [asDocument currentVersion];
+      if ([currentVersion size] <= 0)
       {
 
 LABEL_38:
         goto LABEL_39;
       }
 
-      v28 = [v11 documentSize];
-      v29 = [v28 longLongValue] == 0;
+      documentSize = [itemCopy documentSize];
+      v29 = [documentSize longLongValue] == 0;
 
       if (v29)
       {
-        v30 = [MEMORY[0x277CCAA00] defaultManager];
-        v45 = [v30 enumeratorAtURL:v46 includingPropertiesForKeys:0 options:0 errorHandler:0];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        asDocument = [defaultManager enumeratorAtURL:lCopy includingPropertiesForKeys:0 options:0 errorHandler:0];
 
-        v31 = [v45 nextObject];
-        v32 = v31 == 0;
+        nextObject = [asDocument nextObject];
+        v32 = nextObject == 0;
 
         if (v32)
         {
@@ -1326,7 +1326,7 @@ LABEL_38:
           if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
           {
             *buf = 138412802;
-            *&buf[4] = v11;
+            *&buf[4] = itemCopy;
             *&buf[12] = 2112;
             *&buf[14] = v24;
             *&buf[22] = 2112;
@@ -1334,9 +1334,9 @@ LABEL_38:
             _os_log_fault_impl(&dword_223E7A000, v34, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: can't match an empty shared package %@ to the existing shared package item %@%@", buf, 0x20u);
           }
 
-          if (a6)
+          if (importBookmark)
           {
-            *a6 = 1;
+            *importBookmark = 1;
           }
 
           goto LABEL_32;
@@ -1347,7 +1347,7 @@ LABEL_38:
     }
 
 LABEL_39:
-    v19 = 0;
+    asDirectory = 0;
     goto LABEL_40;
   }
 
@@ -1358,28 +1358,28 @@ LABEL_39:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *&buf[4] = v12;
+      *&buf[4] = mangledID;
       *&buf[12] = 2112;
       *&buf[14] = v15;
       _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_DEFAULT, "[WARNING] Can't find zone for trash putback %@, falling back to clouddocs zone%@", buf, 0x16u);
     }
 
-    v17 = [(BRCAccountSession *)self->_session cloudDocsClientZone];
+    cloudDocsClientZone = [(BRCAccountSession *)self->_session cloudDocsClientZone];
 
-    v14 = v17;
+    v14 = cloudDocsClientZone;
   }
 
-  v18 = [v14 itemByItemID:v13];
-  v19 = [v18 asDirectory];
+  v18 = [v14 itemByItemID:itemID];
+  asDirectory = [v18 asDirectory];
 
-  if (([v19 isInTrashScope] & 1) == 0)
+  if (([asDirectory isInTrashScope] & 1) == 0)
   {
     v20 = brc_bread_crumbs();
     v21 = brc_default_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *&buf[4] = v13;
+      *&buf[4] = itemID;
       *&buf[12] = 2112;
       *&buf[14] = v20;
       _os_log_impl(&dword_223E7A000, v21, OS_LOG_TYPE_DEFAULT, "[WARNING] Can't find trash parent for %@, falling back to one at the zone root%@", buf, 0x16u);
@@ -1404,10 +1404,10 @@ LABEL_39:
     v23 = *(*&buf[8] + 40);
     _Block_object_dispose(buf, 8);
 
-    v19 = v23;
+    asDirectory = v23;
   }
 
-  if (!v19)
+  if (!asDirectory)
   {
     v38 = brc_bread_crumbs();
     v39 = brc_default_log();
@@ -1473,13 +1473,13 @@ void __80__BRCFSImporter__parseImportBookmark_templateItem_fileURL_ignoreImportB
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_locateTemplateItemFromFPFSMigration:(id)a3 fields:(unint64_t *)a4 documentHasChanges:(BOOL *)a5
+- (id)_locateTemplateItemFromFPFSMigration:(id)migration fields:(unint64_t *)fields documentHasChanges:(BOOL *)changes
 {
   v51 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (a5)
+  migrationCopy = migration;
+  if (changes)
   {
-    *a5 = 0;
+    *changes = 0;
   }
 
   if ([(BRCAccountSession *)self->_session fpfsMigrationState]!= 1)
@@ -1488,8 +1488,8 @@ void __80__BRCFSImporter__parseImportBookmark_templateItem_fileURL_ignoreImportB
     goto LABEL_53;
   }
 
-  v8 = [v7 extendedAttributes];
-  v9 = [v8 objectForKeyedSubscript:@"com.apple.fpfs.fileid"];
+  extendedAttributes = [migrationCopy extendedAttributes];
+  v9 = [extendedAttributes objectForKeyedSubscript:@"com.apple.fpfs.fileid"];
 
   v44 = 0;
   v43 = 0;
@@ -1521,11 +1521,11 @@ void __80__BRCFSImporter__parseImportBookmark_templateItem_fileURL_ignoreImportB
   }
 
   v12 = [(BRCFSImporter *)self _globalItemByDocumentID:?];
-  v13 = [v12 asDocument];
-  v14 = v13;
+  asDocument = [v12 asDocument];
+  v14 = asDocument;
   if (v12)
   {
-    if ((itemsHaveTheSameKind(v12, v7) & 1) == 0)
+    if ((itemsHaveTheSameKind(v12, migrationCopy) & 1) == 0)
     {
       v15 = brc_bread_crumbs();
       v16 = brc_default_log();
@@ -1563,26 +1563,26 @@ LABEL_17:
       [BRCFSImporter _locateTemplateItemFromFPFSMigration:fields:documentHasChanges:];
     }
 
-    v19 = [v14 fileIDForUpload];
-    v20 = [v19 longLongValue];
+    fileIDForUpload = [v14 fileIDForUpload];
+    longLongValue = [fileIDForUpload longLongValue];
 
-    v21 = [v14 generationIDForUpload];
-    v22 = [v21 fsGenerationID];
-    v23 = [v22 unsignedLongLongValue];
+    generationIDForUpload = [v14 generationIDForUpload];
+    fsGenerationID = [generationIDForUpload fsGenerationID];
+    unsignedLongLongValue = [fsGenerationID unsignedLongLongValue];
 
-    if (v20 == v44)
+    if (longLongValue == v44)
     {
       if ([v14 isPackage])
       {
-        v41 = v23;
-        v24 = [v7 contentModificationDate];
-        [v24 timeIntervalSince1970];
+        v41 = unsignedLongLongValue;
+        contentModificationDate = [migrationCopy contentModificationDate];
+        [contentModificationDate timeIntervalSince1970];
         v26 = v25;
 
-        v27 = [v14 currentVersion];
-        v28 = [v27 mtime];
+        currentVersion = [v14 currentVersion];
+        mtime = [currentVersion mtime];
 
-        if (v28 == v26)
+        if (mtime == v26)
         {
           v29 = 0;
         }
@@ -1596,7 +1596,7 @@ LABEL_17:
             *buf = 134218498;
             v46 = v26;
             v47 = 2048;
-            *v48 = v28;
+            *v48 = mtime;
             *&v48[8] = 2112;
             *&v48[10] = v40;
             _os_log_debug_impl(&dword_223E7A000, v30, OS_LOG_TYPE_DEBUG, "[DEBUG] mtimes don't match %lld vs %lld%@", buf, 0x20u);
@@ -1605,12 +1605,12 @@ LABEL_17:
           v29 = 1;
         }
 
-        v23 = v41;
+        unsignedLongLongValue = v41;
       }
 
       else
       {
-        v29 = v23 != v42;
+        v29 = unsignedLongLongValue != v42;
       }
     }
 
@@ -1619,9 +1619,9 @@ LABEL_17:
       v29 = 1;
     }
 
-    if (a5)
+    if (changes)
     {
-      *a5 = v29;
+      *changes = v29;
     }
 
     if (v29)
@@ -1631,11 +1631,11 @@ LABEL_17:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134219010;
-        v46 = v20;
+        v46 = longLongValue;
         v47 = 2048;
         *v48 = v44;
         *&v48[8] = 2048;
-        *&v48[10] = v23;
+        *&v48[10] = unsignedLongLongValue;
         *&v48[18] = 2048;
         *&v48[20] = v42;
         v49 = 2112;
@@ -1648,7 +1648,7 @@ LABEL_17:
     goto LABEL_40;
   }
 
-  if (v13)
+  if (asDocument)
   {
     goto LABEL_17;
   }
@@ -1675,7 +1675,7 @@ LABEL_41:
     goto LABEL_52;
   }
 
-  if (itemsHaveTheSameKind(v33, v7))
+  if (itemsHaveTheSameKind(v33, migrationCopy))
   {
     v34 = brc_bread_crumbs();
     v35 = brc_default_log();
@@ -1709,16 +1709,16 @@ LABEL_53:
   return v12;
 }
 
-- (id)_findCollidingItemWithTemplateItem:(id)a3 parentItem:(id)a4 logicalName:(id)a5 error:(id *)a6
+- (id)_findCollidingItemWithTemplateItem:(id)item parentItem:(id)parentItem logicalName:(id)name error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 parentItemIdentifier];
-  v14 = [v13 isEqualToString:*MEMORY[0x277CC6358]];
+  itemCopy = item;
+  parentItemCopy = parentItem;
+  nameCopy = name;
+  parentItemIdentifier = [itemCopy parentItemIdentifier];
+  v14 = [parentItemIdentifier isEqualToString:*MEMORY[0x277CC6358]];
 
-  v15 = [v11 itemID];
+  itemID = [parentItemCopy itemID];
   if (v14)
   {
     v42 = 0;
@@ -1733,15 +1733,15 @@ LABEL_53:
     v39 = __Block_byref_object_copy__25;
     v40 = __Block_byref_object_dispose__25;
     v41 = 0;
-    v16 = [v11 appLibrary];
-    v17 = [v16 db];
+    appLibrary = [parentItemCopy appLibrary];
+    v17 = [appLibrary db];
     v28 = MEMORY[0x277D85DD0];
     v29 = 3221225472;
     v30 = __81__BRCFSImporter__findCollidingItemWithTemplateItem_parentItem_logicalName_error___block_invoke;
     v31 = &unk_2785033B8;
     v34 = &v36;
-    v32 = self;
-    v33 = v11;
+    selfCopy = self;
+    v33 = parentItemCopy;
     v35 = &v42;
     [v17 groupInBatch:&v28];
 
@@ -1757,7 +1757,7 @@ LABEL_53:
         *buf = 136315906;
         v49 = "[BRCFSImporter _findCollidingItemWithTemplateItem:parentItem:logicalName:error:]";
         v50 = 2080;
-        if (!a6)
+        if (!error)
         {
           v27 = "(ignored by caller)";
         }
@@ -1770,17 +1770,17 @@ LABEL_53:
         _os_log_error_impl(&dword_223E7A000, v21, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
       }
 
-      if (a6)
+      if (error)
       {
         v22 = v19;
-        *a6 = v19;
+        *error = v19;
       }
     }
 
     else
     {
       [v37[5] itemID];
-      v15 = v19 = v15;
+      itemID = v19 = itemID;
     }
 
     _Block_object_dispose(&v36, 8);
@@ -1792,7 +1792,7 @@ LABEL_53:
     }
   }
 
-  if (!v15)
+  if (!itemID)
   {
 LABEL_10:
     v24 = 0;
@@ -1800,8 +1800,8 @@ LABEL_10:
 
   else
   {
-    v23 = [v11 clientZone];
-    v24 = [v23 liveItemByParentID:v15 andLogicalName:v12 excludingItemGlobalID:0];
+    clientZone = [parentItemCopy clientZone];
+    v24 = [clientZone liveItemByParentID:itemID andLogicalName:nameCopy excludingItemGlobalID:0];
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -1851,22 +1851,22 @@ void __81__BRCFSImporter__findCollidingItemWithTemplateItem_parentItem_logicalNa
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_handleCollisionIfNecessaryWithTemplateItem:(id)a3 parentItem:(id)a4 logicalName:(id)a5 fileURL:(id)a6 options:(unint64_t)a7 error:(id *)a8
+- (id)_handleCollisionIfNecessaryWithTemplateItem:(id)item parentItem:(id)parentItem logicalName:(id)name fileURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v9 = a7;
+  optionsCopy = options;
   v75 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a6;
-  v16 = [(BRCFSImporter *)self _findCollidingItemWithTemplateItem:v14 parentItem:a4 logicalName:a5 error:a8];
+  itemCopy = item;
+  lCopy = l;
+  v16 = [(BRCFSImporter *)self _findCollidingItemWithTemplateItem:itemCopy parentItem:parentItem logicalName:name error:error];
   if (!v16)
   {
     goto LABEL_57;
   }
 
-  if (v15)
+  if (lCopy)
   {
-    v17 = 0;
-    if (v9)
+    br_isDocumentType = 0;
+    if (optionsCopy)
     {
       goto LABEL_9;
     }
@@ -1874,10 +1874,10 @@ void __81__BRCFSImporter__findCollidingItemWithTemplateItem_parentItem_logicalNa
 
   else
   {
-    v18 = [v14 contentType];
-    v17 = [v18 br_isDocumentType];
+    contentType = [itemCopy contentType];
+    br_isDocumentType = [contentType br_isDocumentType];
 
-    if (v9)
+    if (optionsCopy)
     {
 LABEL_9:
       v19 = 0;
@@ -1890,25 +1890,25 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v55 = [v16 itemID];
-  if ([v55 isDocumentsFolder])
+  itemID = [v16 itemID];
+  if ([itemID isDocumentsFolder])
   {
-    v66 = v55;
+    v66 = itemID;
     v19 = 1;
 LABEL_10:
     v20 = v16;
-    v21 = v14;
-    v67 = v15;
-    v22 = [v21 parentItemIdentifier];
-    if ([v22 isEqualToString:*MEMORY[0x277CC6358]])
+    v21 = itemCopy;
+    v67 = lCopy;
+    parentItemIdentifier = [v21 parentItemIdentifier];
+    if ([parentItemIdentifier isEqualToString:*MEMORY[0x277CC6358]])
     {
-      v23 = [v20 isInTrashScope];
+      isInTrashScope = [v20 isInTrashScope];
 
-      if ((v23 & 1) == 0)
+      if ((isInTrashScope & 1) == 0)
       {
         v68 = brc_bread_crumbs();
-        v24 = brc_default_log();
-        if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
+        asDocument = brc_default_log();
+        if (os_log_type_enabled(asDocument, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412802;
           v70 = v21;
@@ -1918,7 +1918,7 @@ LABEL_10:
           v74 = v68;
           v25 = "[DEBUG] template item %@ differs in trash-ness from %@%@";
 LABEL_20:
-          _os_log_debug_impl(&dword_223E7A000, v24, OS_LOG_TYPE_DEBUG, v25, buf, 0x20u);
+          _os_log_debug_impl(&dword_223E7A000, asDocument, OS_LOG_TYPE_DEBUG, v25, buf, 0x20u);
           goto LABEL_29;
         }
 
@@ -1932,8 +1932,8 @@ LABEL_20:
 
     if (itemsHaveTheSameKind(v20, v21))
     {
-      v26 = [v21 extendedAttributes];
-      v27 = [v26 objectForKeyedSubscript:@"com.apple.clouddocs.private.share-bookmark#B"];
+      extendedAttributes = [v21 extendedAttributes];
+      v27 = [extendedAttributes objectForKeyedSubscript:@"com.apple.clouddocs.private.share-bookmark#B"];
       v28 = v27;
       if (v27)
       {
@@ -1943,18 +1943,18 @@ LABEL_20:
       else
       {
         [v21 extendedAttributes];
-        v64 = v14;
+        v64 = itemCopy;
         v29 = v19;
-        v30 = v15;
-        v31 = self;
-        v33 = v32 = v17;
+        v30 = lCopy;
+        selfCopy = self;
+        v33 = v32 = br_isDocumentType;
         v68 = [v33 objectForKeyedSubscript:@"com.apple.finder.copy.preserveinbackups.com.apple.clouddocs.private.share-bookmark#N"];
 
-        v17 = v32;
-        self = v31;
-        v15 = v30;
+        br_isDocumentType = v32;
+        self = selfCopy;
+        lCopy = v30;
         v19 = v29;
-        v14 = v64;
+        itemCopy = v64;
       }
 
       if ((![v20 isSharedToMeTopLevelItem]|| v68) && (([v20 isSharedToMe]& 1) != 0 || !v68))
@@ -1976,7 +1976,7 @@ LABEL_31:
           else if (!v35)
           {
 LABEL_33:
-            if (v17)
+            if (br_isDocumentType)
             {
               goto LABEL_57;
             }
@@ -2000,42 +2000,42 @@ LABEL_33:
           goto LABEL_43;
         }
 
-        v24 = [v20 asDocument];
-        v46 = [v24 isPackage];
+        asDocument = [v20 asDocument];
+        isPackage = [asDocument isPackage];
         v35 = 1;
-        if (!v67 || !v46)
+        if (!v67 || !isPackage)
         {
 LABEL_30:
 
           goto LABEL_31;
         }
 
-        v47 = [v21 documentSize];
-        if ([v47 longLongValue])
+        documentSize = [v21 documentSize];
+        if ([documentSize longLongValue])
         {
         }
 
         else
         {
-          v65 = v17;
-          v56 = [v24 currentVersion];
-          v62 = [v56 size];
+          v65 = br_isDocumentType;
+          currentVersion = [asDocument currentVersion];
+          v62 = [currentVersion size];
 
           if (!v62)
           {
             v35 = 1;
-            v17 = v65;
+            br_isDocumentType = v65;
             goto LABEL_30;
           }
 
-          v57 = [MEMORY[0x277CCAA00] defaultManager];
-          v58 = [v57 enumeratorAtURL:v67 includingPropertiesForKeys:0 options:0 errorHandler:0];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+          v58 = [defaultManager enumeratorAtURL:v67 includingPropertiesForKeys:0 options:0 errorHandler:0];
 
           v63 = v58;
-          v59 = [v58 nextObject];
+          nextObject = [v58 nextObject];
 
-          v17 = v65;
-          if (!v59)
+          br_isDocumentType = v65;
+          if (!nextObject)
           {
             v61 = brc_bread_crumbs();
             v60 = brc_default_log();
@@ -2044,7 +2044,7 @@ LABEL_30:
               *buf = 138412802;
               v70 = v21;
               v71 = 2112;
-              v72 = v24;
+              v72 = asDocument;
               v73 = 2112;
               v74 = v61;
               _os_log_fault_impl(&dword_223E7A000, v60, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: can't path-match an empty package %@ to the existing package item %@%@", buf, 0x20u);
@@ -2058,7 +2058,7 @@ LABEL_30:
         goto LABEL_30;
       }
 
-      v24 = brc_bread_crumbs();
+      asDocument = brc_bread_crumbs();
       v34 = brc_default_log();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
       {
@@ -2067,7 +2067,7 @@ LABEL_30:
         v71 = 2112;
         v72 = v20;
         v73 = 2112;
-        v74 = v24;
+        v74 = asDocument;
         _os_log_debug_impl(&dword_223E7A000, v34, OS_LOG_TYPE_DEBUG, "[DEBUG] template item %@ differs in share-bookmark from %@%@", buf, 0x20u);
       }
     }
@@ -2075,8 +2075,8 @@ LABEL_30:
     else
     {
       v68 = brc_bread_crumbs();
-      v24 = brc_default_log();
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
+      asDocument = brc_default_log();
+      if (os_log_type_enabled(asDocument, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412802;
         v70 = v21;
@@ -2094,20 +2094,20 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (v17)
+  if (br_isDocumentType)
   {
     goto LABEL_57;
   }
 
 LABEL_34:
   v36 = [v16 st];
-  v37 = [v36 fpCreationItemIdentifier];
-  v38 = [v14 itemIdentifier];
-  v39 = [v37 isEqualToString:v38];
+  fpCreationItemIdentifier = [v36 fpCreationItemIdentifier];
+  itemIdentifier = [itemCopy itemIdentifier];
+  v39 = [fpCreationItemIdentifier isEqualToString:itemIdentifier];
 
   if (v39)
   {
-    if (itemsHaveTheSameKind(v16, v14))
+    if (itemsHaveTheSameKind(v16, itemCopy))
     {
       v40 = brc_bread_crumbs();
       v41 = brc_default_log();
@@ -2129,7 +2129,7 @@ LABEL_43:
       *buf = 138412802;
       v70 = v16;
       v71 = 2112;
-      v72 = v14;
+      v72 = itemCopy;
       v73 = 2112;
       v74 = v48;
       _os_log_fault_impl(&dword_223E7A000, v49, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: Items have the same creation identifier but are of differnt kinds %@ vs %@%@", buf, 0x20u);
@@ -2143,22 +2143,22 @@ LABEL_43:
     *buf = 138412802;
     v70 = v16;
     v71 = 2112;
-    v72 = v14;
+    v72 = itemCopy;
     v73 = 2112;
     v74 = v50;
     _os_log_impl(&dword_223E7A000, v51, OS_LOG_TYPE_INFO, "[INFO] Bouncing item %@ because of %@%@", buf, 0x20u);
   }
 
-  v52 = [(BRCAccountSession *)self->_session bouncingAnalyzer];
-  [v52 analyzeBouncingOfItem:v16 withTemplateItem:v14];
+  bouncingAnalyzer = [(BRCAccountSession *)self->_session bouncingAnalyzer];
+  [bouncingAnalyzer analyzeBouncingOfItem:v16 withTemplateItem:itemCopy];
 
   [v16 markBouncedToNextAvailableBounceNumber:504];
-  LODWORD(v52) = [v16 isMigratingToFPFS];
+  LODWORD(bouncingAnalyzer) = [v16 isMigratingToFPFS];
   [v16 markDoneMigratingToFPFS];
   [v16 saveToDB];
-  if (v52)
+  if (bouncingAnalyzer)
   {
-    [(BRCFSImporter *)self _reportBouncingForMigration:v14 existingItem:v16];
+    [(BRCFSImporter *)self _reportBouncingForMigration:itemCopy existingItem:v16];
   }
 
 LABEL_57:
@@ -2170,14 +2170,14 @@ LABEL_58:
   return v45;
 }
 
-- (id)_locateMatchingItemForTemplateItem:(id)a3 parentItem:(id)a4 options:(unint64_t)a5 fileURL:(id)a6 fields:(unint64_t *)a7 shouldReject:(BOOL *)a8 additionalAttrs:(id)a9 importBookmark:(id)a10 ignoreImportBookmark:(BOOL *)a11 stillPendingFields:(unint64_t *)a12 error:(id *)a13
+- (id)_locateMatchingItemForTemplateItem:(id)item parentItem:(id)parentItem options:(unint64_t)options fileURL:(id)l fields:(unint64_t *)fields shouldReject:(BOOL *)reject additionalAttrs:(id)attrs importBookmark:(id)self0 ignoreImportBookmark:(BOOL *)self1 stillPendingFields:(unint64_t *)self2 error:(id *)self3
 {
   v135 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v107 = a4;
-  v20 = a6;
-  v105 = a9;
-  v106 = a10;
+  itemCopy = item;
+  parentItemCopy = parentItem;
+  lCopy = l;
+  attrsCopy = attrs;
+  bookmarkCopy = bookmark;
   v121 = 0;
   v122[0] = &v121;
   v122[1] = 0x3032000000;
@@ -2185,18 +2185,18 @@ LABEL_58:
   v122[3] = __Block_byref_object_dispose__25;
   v123 = 0;
   v120 = 0;
-  v108 = [v19 filename];
-  if (a5)
+  filename = [itemCopy filename];
+  if (options)
   {
-    v21 = [(BRCFSImporter *)self _locateTemplateItemFromFPFSMigration:v19 fields:a7 documentHasChanges:&v120];
+    v21 = [(BRCFSImporter *)self _locateTemplateItemFromFPFSMigration:itemCopy fields:fields documentHasChanges:&v120];
     v22 = *(v122[0] + 40);
     *(v122[0] + 40) = v21;
 
     v23 = *(v122[0] + 40);
     v104 = v23 != 0;
-    if (v106 && !v23)
+    if (bookmarkCopy && !v23)
     {
-      v24 = [(BRCFSImporter *)self _parseImportBookmark:v106 templateItem:v19 fileURL:v20 ignoreImportBookmark:a11];
+      v24 = [(BRCFSImporter *)self _parseImportBookmark:bookmarkCopy templateItem:itemCopy fileURL:lCopy ignoreImportBookmark:importBookmark];
       v25 = *(v122[0] + 40);
       *(v122[0] + 40) = v24;
     }
@@ -2208,7 +2208,7 @@ LABEL_58:
   }
 
   v26 = *(v122[0] + 40);
-  if (v26 && (itemsHaveTheSameKind(v26, v19) & 1) == 0)
+  if (v26 && (itemsHaveTheSameKind(v26, itemCopy) & 1) == 0)
   {
     v27 = brc_bread_crumbs();
     v28 = brc_default_log();
@@ -2218,7 +2218,7 @@ LABEL_58:
       *buf = 138412802;
       *&buf[4] = v97;
       *&buf[12] = 2112;
-      *&buf[14] = v19;
+      *&buf[14] = itemCopy;
       *&buf[22] = 2112;
       v133 = v27;
       _os_log_fault_impl(&dword_223E7A000, v28, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: Items dont have the same kind so can't be matched! %@ vs %@%@", buf, 0x20u);
@@ -2228,23 +2228,23 @@ LABEL_58:
     *(v122[0] + 40) = 0;
   }
 
-  v30 = 0;
-  *a8 = 0;
-  if (!v20)
+  br_isAliasFileType = 0;
+  *reject = 0;
+  if (!lCopy)
   {
-    v31 = [v19 contentType];
-    if ([v31 br_isDocumentType])
+    contentType = [itemCopy contentType];
+    if ([contentType br_isDocumentType])
     {
-      v30 = 1;
+      br_isAliasFileType = 1;
     }
 
     else
     {
-      v32 = [v19 contentType];
-      v30 = [v32 br_isAliasFileType];
+      contentType2 = [itemCopy contentType];
+      br_isAliasFileType = [contentType2 br_isAliasFileType];
     }
 
-    if ((((a5 & 1) == 0) & v30) == 1)
+    if ((((options & 1) == 0) & br_isAliasFileType) == 1)
     {
       v102 = brc_bread_crumbs();
       v103 = brc_default_log();
@@ -2253,14 +2253,14 @@ LABEL_58:
         [BRCFSImporter _locateMatchingItemForTemplateItem:parentItem:options:fileURL:fields:shouldReject:additionalAttrs:importBookmark:ignoreImportBookmark:stillPendingFields:error:];
       }
 
-      v30 = 1;
+      br_isAliasFileType = 1;
     }
   }
 
   v119 = 0;
-  if ([(BRCFSImporter *)self _shouldRejectItemWithName:v108 templateItem:v19 existingItem:*(v122[0] + 40) options:a5 shouldRemoveItemFromDrive:&v119])
+  if ([(BRCFSImporter *)self _shouldRejectItemWithName:filename templateItem:itemCopy existingItem:*(v122[0] + 40) options:options shouldRemoveItemFromDrive:&v119])
   {
-    *a8 = 1;
+    *reject = 1;
     v33 = *(v122[0] + 40);
     if (v33)
     {
@@ -2294,7 +2294,7 @@ LABEL_58:
             *v124 = 136315906;
             v125 = "[BRCFSImporter _locateMatchingItemForTemplateItem:parentItem:options:fileURL:fields:shouldReject:additionalAttrs:importBookmark:ignoreImportBookmark:stillPendingFields:error:]";
             v126 = 2080;
-            if (!a13)
+            if (!error)
             {
               v99 = "(ignored by caller)";
             }
@@ -2307,10 +2307,10 @@ LABEL_58:
             _os_log_error_impl(&dword_223E7A000, v38, 0x90u, "[ERROR] %s: %s error: %@%@", v124, 0x2Au);
           }
 
-          if (a13)
+          if (error)
           {
             v39 = v36;
-            *a13 = v36;
+            *error = v36;
           }
         }
 
@@ -2319,10 +2319,10 @@ LABEL_58:
 
       else if (([v33 saveToDB] & 1) == 0)
       {
-        v81 = [(BRCAccountSession *)self->_session clientDB];
-        v82 = [v81 lastError];
+        clientDB = [(BRCAccountSession *)self->_session clientDB];
+        lastError = [clientDB lastError];
 
-        if (v82)
+        if (lastError)
         {
           v83 = brc_bread_crumbs();
           v84 = brc_default_log();
@@ -2332,24 +2332,24 @@ LABEL_58:
             *buf = 136315906;
             *&buf[4] = "[BRCFSImporter _locateMatchingItemForTemplateItem:parentItem:options:fileURL:fields:shouldReject:additionalAttrs:importBookmark:ignoreImportBookmark:stillPendingFields:error:]";
             *&buf[12] = 2080;
-            if (!a13)
+            if (!error)
             {
               v101 = "(ignored by caller)";
             }
 
             *&buf[14] = v101;
             *&buf[22] = 2112;
-            v133 = v82;
+            v133 = lastError;
             LOWORD(v134) = 2112;
             *(&v134 + 2) = v83;
             _os_log_error_impl(&dword_223E7A000, v84, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
           }
         }
 
-        if (a13)
+        if (error)
         {
-          v85 = v82;
-          *a13 = v82;
+          v85 = lastError;
+          *error = lastError;
         }
       }
     }
@@ -2364,12 +2364,12 @@ LABEL_58:
     goto LABEL_32;
   }
 
-  v42 = [(BRCFSImporter *)self _handleCollisionIfNecessaryWithTemplateItem:v19 parentItem:v107 logicalName:v108 fileURL:v20 options:a5 error:a13];
+  v42 = [(BRCFSImporter *)self _handleCollisionIfNecessaryWithTemplateItem:itemCopy parentItem:parentItemCopy logicalName:filename fileURL:lCopy options:options error:error];
   v43 = *(v122[0] + 40);
   *(v122[0] + 40) = v42;
 
   v44 = *(v122[0] + 40);
-  if (v44 && (itemsHaveTheSameKind(v44, v19) & 1) == 0)
+  if (v44 && (itemsHaveTheSameKind(v44, itemCopy) & 1) == 0)
   {
     v45 = brc_bread_crumbs();
     v46 = brc_default_log();
@@ -2379,7 +2379,7 @@ LABEL_58:
       *buf = 138412802;
       *&buf[4] = v100;
       *&buf[12] = 2112;
-      *&buf[14] = v19;
+      *&buf[14] = itemCopy;
       *&buf[22] = 2112;
       v133 = v45;
       _os_log_fault_impl(&dword_223E7A000, v46, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: Can't match items of different kind! %@ vs %@%@", buf, 0x20u);
@@ -2394,18 +2394,18 @@ LABEL_58:
   if (v41)
   {
 LABEL_32:
-    if (v30)
+    if (br_isAliasFileType)
     {
-      *a7 &= ~1uLL;
+      *fields &= ~1uLL;
       v41 = *(v40 + 40);
     }
 
-    v48 = [v41 syncUpState];
-    if (!v20 && v48 == 7)
+    syncUpState = [v41 syncUpState];
+    if (!lCopy && syncUpState == 7)
     {
-      v49 = [*(v122[0] + 40) clientZone];
-      v50 = [*(v122[0] + 40) itemID];
-      v51 = [v49 serverItemByItemID:v50];
+      clientZone = [*(v122[0] + 40) clientZone];
+      itemID = [*(v122[0] + 40) itemID];
+      v51 = [clientZone serverItemByItemID:itemID];
 
       v52 = brc_bread_crumbs();
       v53 = brc_default_log();
@@ -2425,39 +2425,39 @@ LABEL_32:
 
     if ([*(v122[0] + 40) syncUpState])
     {
-      v56 = [*(v122[0] + 40) isMigratingToFPFS];
+      isMigratingToFPFS = [*(v122[0] + 40) isMigratingToFPFS];
     }
 
     else
     {
-      v56 = 1;
+      isMigratingToFPFS = 1;
     }
 
-    if ([*(v122[0] + 40) isDocument] & v56) == 1 && (*a7)
+    if ([*(v122[0] + 40) isDocument] & isMigratingToFPFS) == 1 && (*fields)
     {
-      v57 = [*(v122[0] + 40) asDocument];
-      v58 = [v57 currentVersion];
-      v59 = [v58 mtime];
-      v60 = [v19 contentModificationDate];
-      [v60 timeIntervalSince1970];
+      asDocument = [*(v122[0] + 40) asDocument];
+      currentVersion = [asDocument currentVersion];
+      mtime = [currentVersion mtime];
+      contentModificationDate = [itemCopy contentModificationDate];
+      [contentModificationDate timeIntervalSince1970];
       v62 = v61;
 
-      v63 = [v57 currentVersion];
-      v64 = [v63 versionSignature];
-      LODWORD(v58) = [v64 isPendingSignature];
+      currentVersion2 = [asDocument currentVersion];
+      versionSignature = [currentVersion2 versionSignature];
+      LODWORD(currentVersion) = [versionSignature isPendingSignature];
 
-      v65 = [v57 localDiffs];
-      if (!((v120 | v58) & 1 | (trunc(v62) != v59)) && (v65 & 0x180000) == 0)
+      localDiffs = [asDocument localDiffs];
+      if (!((v120 | currentVersion) & 1 | (trunc(v62) != mtime)) && (localDiffs & 0x180000) == 0)
       {
-        if ([v57 isPackage])
+        if ([asDocument isPackage])
         {
           goto LABEL_48;
         }
 
-        v66 = [v57 currentVersion];
-        v67 = [v66 size];
-        v68 = [v19 documentSize];
-        LODWORD(v67) = v67 == [v68 longLongValue];
+        currentVersion3 = [asDocument currentVersion];
+        v67 = [currentVersion3 size];
+        documentSize = [itemCopy documentSize];
+        LODWORD(v67) = v67 == [documentSize longLongValue];
 
         if (v67)
         {
@@ -2469,12 +2469,12 @@ LABEL_48:
             [BRCFSImporter _locateMatchingItemForTemplateItem:parentItem:options:fileURL:fields:shouldReject:additionalAttrs:importBookmark:ignoreImportBookmark:stillPendingFields:error:];
           }
 
-          *a7 &= ~1uLL;
+          *fields &= ~1uLL;
         }
       }
     }
 
-    if ([v107 isSharedToMe] && (objc_msgSend(v107, "sharingOptions") & 0x20) != 0)
+    if ([parentItemCopy isSharedToMe] && (objc_msgSend(parentItemCopy, "sharingOptions") & 0x20) != 0)
     {
       v86 = brc_bread_crumbs();
       v87 = brc_default_log();
@@ -2493,7 +2493,7 @@ LABEL_48:
       }
 
       [*(v122[0] + 40) saveToDB];
-      if ((a5 & 1) == 0)
+      if ((options & 1) == 0)
       {
         v90 = brc_bread_crumbs();
         v91 = brc_default_log();
@@ -2520,22 +2520,22 @@ LABEL_81:
       v133 = __Block_byref_object_copy__25;
       *&v134 = __Block_byref_object_dispose__25;
       *(&v134 + 1) = 0;
-      v72 = [(BRCAccountSession *)self->_session clientDB];
+      clientDB2 = [(BRCAccountSession *)self->_session clientDB];
       v109[0] = MEMORY[0x277D85DD0];
       v109[1] = 3221225472;
       v109[2] = __176__BRCFSImporter__locateMatchingItemForTemplateItem_parentItem_options_fileURL_fields_shouldReject_additionalAttrs_importBookmark_ignoreImportBookmark_stillPendingFields_error___block_invoke_36;
       v109[3] = &unk_278503408;
       v109[4] = self;
       v113 = &v121;
-      v115 = a7;
-      v73 = v19;
+      fieldsCopy = fields;
+      v73 = itemCopy;
       v110 = v73;
-      v111 = v20;
+      v111 = lCopy;
       v117 = v104;
-      v116 = a12;
-      v112 = v105;
+      pendingFieldsCopy = pendingFields;
+      v112 = attrsCopy;
       v114 = buf;
-      [v72 groupInTransaction:v109];
+      [clientDB2 groupInTransaction:v109];
 
       v74 = *(*&buf[8] + 40);
       if (v74)
@@ -2548,7 +2548,7 @@ LABEL_81:
           *v124 = 136315906;
           v125 = "[BRCFSImporter _locateMatchingItemForTemplateItem:parentItem:options:fileURL:fields:shouldReject:additionalAttrs:importBookmark:ignoreImportBookmark:stillPendingFields:error:]";
           v126 = 2080;
-          if (!a13)
+          if (!error)
           {
             v98 = "(ignored by caller)";
           }
@@ -2562,13 +2562,13 @@ LABEL_81:
         }
       }
 
-      if (a13)
+      if (error)
       {
         v77 = v74;
-        *a13 = v74;
+        *error = v74;
       }
 
-      if ((a5 & 1) == 0)
+      if ((options & 1) == 0)
       {
         v78 = brc_bread_crumbs();
         v79 = brc_default_log();
@@ -2592,7 +2592,7 @@ LABEL_81:
     goto LABEL_81;
   }
 
-  if (!v30)
+  if (!br_isAliasFileType)
   {
 LABEL_86:
     v92 = 0;
@@ -2609,7 +2609,7 @@ LABEL_86:
   }
 
   v92 = 0;
-  *a8 = 1;
+  *reject = 1;
 LABEL_87:
 
   _Block_object_dispose(&v121, 8);
@@ -2657,15 +2657,15 @@ uint64_t __176__BRCFSImporter__locateMatchingItemForTemplateItem_parentItem_opti
   return v12;
 }
 
-- (id)_createAndInsertNewItemWithImportObject:(id)a3 parentItem:(id)a4 fields:(unint64_t)a5 templateItem:(id)a6 fileURL:(id)a7 options:(unint64_t)a8 additionalAttrs:(id)a9 importBookmark:(id)a10 stillPendingFields:(unint64_t *)a11 error:(id *)a12
+- (id)_createAndInsertNewItemWithImportObject:(id)object parentItem:(id)item fields:(unint64_t)fields templateItem:(id)templateItem fileURL:(id)l options:(unint64_t)options additionalAttrs:(id)attrs importBookmark:(id)self0 stillPendingFields:(unint64_t *)self1 error:(id *)self2
 {
   v73 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v38 = a4;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
-  v21 = a10;
+  objectCopy = object;
+  itemCopy = item;
+  templateItemCopy = templateItem;
+  lCopy = l;
+  attrsCopy = attrs;
+  bookmarkCopy = bookmark;
   v59 = 0;
   v60 = &v59;
   v61 = 0x3032000000;
@@ -2678,30 +2678,30 @@ uint64_t __176__BRCFSImporter__locateMatchingItemForTemplateItem_parentItem_opti
   v56 = __Block_byref_object_copy__25;
   v57 = __Block_byref_object_dispose__25;
   v58 = 0;
-  v22 = [(BRCAccountSession *)self->_session clientDB];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __160__BRCFSImporter__createAndInsertNewItemWithImportObject_parentItem_fields_templateItem_fileURL_options_additionalAttrs_importBookmark_stillPendingFields_error___block_invoke;
   v40[3] = &unk_278503430;
-  v23 = v17;
+  v23 = objectCopy;
   v41 = v23;
-  v42 = self;
+  selfCopy = self;
   v48 = &v59;
-  v50 = a5;
-  v24 = v18;
+  fieldsCopy = fields;
+  v24 = templateItemCopy;
   v43 = v24;
-  v25 = v19;
+  v25 = lCopy;
   v44 = v25;
-  v26 = v20;
-  v51 = a11;
+  v26 = attrsCopy;
+  pendingFieldsCopy = pendingFields;
   v45 = v26;
   v49 = &v53;
-  v27 = v21;
+  v27 = bookmarkCopy;
   v46 = v27;
-  v28 = v38;
+  v28 = itemCopy;
   v47 = v28;
-  v52 = a8;
-  v29 = [v22 groupInTransaction:v40];
+  optionsCopy = options;
+  v29 = [clientDB groupInTransaction:v40];
 
   if ((v29 & 1) == 0)
   {
@@ -2716,7 +2716,7 @@ uint64_t __176__BRCFSImporter__locateMatchingItemForTemplateItem_parentItem_opti
         *buf = 136315906;
         v66 = "[BRCFSImporter _createAndInsertNewItemWithImportObject:parentItem:fields:templateItem:fileURL:options:additionalAttrs:importBookmark:stillPendingFields:error:]";
         v67 = 2080;
-        if (!a12)
+        if (!error)
         {
           v37 = "(ignored by caller)";
         }
@@ -2730,10 +2730,10 @@ uint64_t __176__BRCFSImporter__locateMatchingItemForTemplateItem_parentItem_opti
       }
     }
 
-    if (a12)
+    if (error)
     {
       v33 = v30;
-      *a12 = v30;
+      *error = v30;
     }
   }
 
@@ -2927,13 +2927,13 @@ LABEL_25:
   return v18;
 }
 
-- (id)importAppLibraryRootFromTemplateItem:(id)a3
+- (id)importAppLibraryRootFromTemplateItem:(id)item
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_alloc(MEMORY[0x277CFAE60]);
-  v6 = [v4 filename];
-  v7 = [v5 initWithMangledString:v6];
+  filename = [itemCopy filename];
+  v7 = [v5 initWithMangledString:filename];
 
   v8 = [(BRCAccountSession *)self->_session appLibraryByMangledID:v7];
   if (v8)
@@ -2963,18 +2963,18 @@ LABEL_25:
   v23 = __Block_byref_object_copy__25;
   v24 = __Block_byref_object_dispose__25;
   v25 = 0;
-  v11 = [(BRCAccountSession *)self->_session clientReadWriteDatabaseFacade];
-  v12 = [v11 workloop];
+  clientReadWriteDatabaseFacade = [(BRCAccountSession *)self->_session clientReadWriteDatabaseFacade];
+  workloop = [clientReadWriteDatabaseFacade workloop];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__BRCFSImporter_importAppLibraryRootFromTemplateItem___block_invoke;
   block[3] = &unk_278502B88;
   v19 = v8;
-  v20 = v11;
+  v20 = clientReadWriteDatabaseFacade;
   v21 = buf;
-  v13 = v11;
+  v13 = clientReadWriteDatabaseFacade;
   v14 = v8;
-  dispatch_async_and_wait(v12, block);
+  dispatch_async_and_wait(workloop, block);
 
   v15 = *(*&buf[8] + 40);
   _Block_object_dispose(buf, 8);
@@ -2996,32 +2996,32 @@ void __54__BRCFSImporter_importAppLibraryRootFromTemplateItem___block_invoke(uin
   *(v6 + 40) = v5;
 }
 
-- (id)importNewItemAtURL:(id)a3 parentItem:(id)a4 templateItem:(id)a5 fields:(unint64_t)a6 options:(unint64_t)a7 additionalItemAttributes:(id)a8 importBookmark:(id)a9 stillPendingFields:(unint64_t *)a10 error:(id *)a11
+- (id)importNewItemAtURL:(id)l parentItem:(id)item templateItem:(id)templateItem fields:(unint64_t)fields options:(unint64_t)options additionalItemAttributes:(id)attributes importBookmark:(id)bookmark stillPendingFields:(unint64_t *)self0 error:(id *)self1
 {
   v69 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v60 = a6;
-  v20 = a8;
-  v21 = a9;
+  lCopy = l;
+  itemCopy = item;
+  templateItemCopy = templateItem;
+  fieldsCopy = fields;
+  attributesCopy = attributes;
+  bookmarkCopy = bookmark;
   v59 = 0;
-  v55 = [v19 filename];
-  v56 = v18;
+  filename = [templateItemCopy filename];
+  v56 = itemCopy;
   v58 = 0;
   v57 = 0;
-  v22 = v18;
-  v23 = v17;
-  v24 = [(BRCFSImporter *)self _locateMatchingItemForTemplateItem:v19 parentItem:v22 options:a7 fileURL:v17 fields:&v60 shouldReject:&v59 additionalAttrs:v20 importBookmark:v21 ignoreImportBookmark:&v58 stillPendingFields:a10 error:&v57];
+  v22 = itemCopy;
+  v23 = lCopy;
+  v24 = [(BRCFSImporter *)self _locateMatchingItemForTemplateItem:templateItemCopy parentItem:v22 options:options fileURL:lCopy fields:&fieldsCopy shouldReject:&v59 additionalAttrs:attributesCopy importBookmark:bookmarkCopy ignoreImportBookmark:&v58 stillPendingFields:pendingFields error:&v57];
   v25 = v57;
   v26 = v25;
   if (v25)
   {
-    if (a11)
+    if (error)
     {
       v27 = v25;
       v28 = 0;
-      *a11 = v26;
+      *error = v26;
 LABEL_6:
       v29 = v23;
       goto LABEL_7;
@@ -3040,7 +3040,7 @@ LABEL_5:
   if (v58 == 1)
   {
 
-    v21 = 0;
+    bookmarkCopy = 0;
   }
 
   if (!v24)
@@ -3048,24 +3048,24 @@ LABEL_5:
     [(BRCAccountSession *)self->_session updateFPFSMigrationNewItemsInDB];
     if (v23)
     {
-      v34 = [[BRCImportObject alloc] initWithURL:v23 logicalName:v55 quarantineInfo:0 parentItem:v56 error:a11];
+      v34 = [[BRCImportObject alloc] initWithURL:v23 logicalName:filename quarantineInfo:0 parentItem:v56 error:error];
     }
 
     else
     {
-      v52 = [v19 contentType];
-      v49 = [v52 br_isSymbolicLinkType];
+      contentType = [templateItemCopy contentType];
+      br_isSymbolicLinkType = [contentType br_isSymbolicLinkType];
 
-      if (v49)
+      if (br_isSymbolicLinkType)
       {
-        v43 = [v19 symlinkTargetPath];
-        if (!v43)
+        symlinkTargetPath = [templateItemCopy symlinkTargetPath];
+        if (!symlinkTargetPath)
         {
-          v43 = [v20 objectForKey:@"symlink-target"];
+          symlinkTargetPath = [attributesCopy objectForKey:@"symlink-target"];
         }
 
-        v53 = v43;
-        v50 = [[BRCImportObject alloc] initAsSymlinkWithTarget:v43 parentItem:v56 logicalName:v55 error:a11];
+        v53 = symlinkTargetPath;
+        v50 = [[BRCImportObject alloc] initAsSymlinkWithTarget:symlinkTargetPath parentItem:v56 logicalName:filename error:error];
 
         v35 = v50;
         if (!v50)
@@ -3074,19 +3074,19 @@ LABEL_5:
         }
 
 LABEL_29:
-        v44 = self;
+        selfCopy = self;
         v45 = v35;
         v29 = v23;
-        v28 = [(BRCFSImporter *)v44 _createAndInsertNewItemWithImportObject:v35 parentItem:v56 fields:v60 templateItem:v19 fileURL:v23 options:a7 additionalAttrs:v20 importBookmark:v21 stillPendingFields:a10 error:a11];
+        v28 = [(BRCFSImporter *)selfCopy _createAndInsertNewItemWithImportObject:v35 parentItem:v56 fields:fieldsCopy templateItem:templateItemCopy fileURL:v23 options:options additionalAttrs:attributesCopy importBookmark:bookmarkCopy stillPendingFields:pendingFields error:error];
 LABEL_30:
 
         goto LABEL_7;
       }
 
-      v54 = [v19 contentType];
-      v51 = [v54 br_isDirectoryType];
+      contentType2 = [templateItemCopy contentType];
+      br_isDirectoryType = [contentType2 br_isDirectoryType];
 
-      if (!v51)
+      if (!br_isDirectoryType)
       {
         v45 = brc_bread_crumbs();
         v46 = brc_default_log();
@@ -3100,7 +3100,7 @@ LABEL_30:
         goto LABEL_30;
       }
 
-      v34 = [[BRCImportObject alloc] initAsNewDirectoryWithLogicalName:v55 parentItem:v56];
+      v34 = [[BRCImportObject alloc] initAsNewDirectoryWithLogicalName:filename parentItem:v56];
     }
 
     v35 = v34;
@@ -3112,9 +3112,9 @@ LABEL_30:
     goto LABEL_29;
   }
 
-  v32 = [v24 isPackage];
+  isPackage = [v24 isPackage];
   session = self->_session;
-  if (v32)
+  if (isPackage)
   {
     [(BRCAccountSession *)self->_session updateFPFSMigrationMigratedTypesWithPackage];
   }
@@ -3126,10 +3126,10 @@ LABEL_30:
   }
 
   v29 = v23;
-  v37 = [v24 isMigratingToFPFS];
-  v38 = [v24 dbItemIsMigratingToFPFS];
-  v39 = v38;
-  if ((v37 & 1) != 0 || v38)
+  isMigratingToFPFS = [v24 isMigratingToFPFS];
+  dbItemIsMigratingToFPFS = [v24 dbItemIsMigratingToFPFS];
+  v39 = dbItemIsMigratingToFPFS;
+  if ((isMigratingToFPFS & 1) != 0 || dbItemIsMigratingToFPFS)
   {
     v40 = brc_bread_crumbs();
     v41 = brc_default_log();
@@ -3138,7 +3138,7 @@ LABEL_30:
       v47 = "not-migrating";
       *buf = 138413058;
       v62 = v24;
-      if (v37)
+      if (isMigratingToFPFS)
       {
         v48 = "migrating";
       }
@@ -3174,12 +3174,12 @@ LABEL_7:
   return v28;
 }
 
-- (id)createAndImportNewDirectoryWithLogicalName:(id)a3 parentItem:(id)a4 error:(id *)a5
+- (id)createAndImportNewDirectoryWithLogicalName:(id)name parentItem:(id)item error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [[BRCImportObject alloc] initAsNewDirectoryWithLogicalName:v8 parentItem:v9];
+  nameCopy = name;
+  itemCopy = item;
+  v10 = [[BRCImportObject alloc] initAsNewDirectoryWithLogicalName:nameCopy parentItem:itemCopy];
   v11 = v10;
   if (v10)
   {
@@ -3188,48 +3188,48 @@ LABEL_7:
       [BRCFSImporter createAndImportNewDirectoryWithLogicalName:parentItem:error:];
     }
 
-    v12 = [(BRCFSImporter *)self _createBaseItemWithImportObject:v11 importBookmark:0 parentItem:v9 options:0 error:a5];
-    v13 = [v12 asDirectory];
+    v12 = [(BRCFSImporter *)self _createBaseItemWithImportObject:v11 importBookmark:0 parentItem:itemCopy options:0 error:error];
+    asDirectory = [v12 asDirectory];
 
-    if ([v13 handlePathMatchConflictForDirectoryCreationIfNecessary] || (objc_msgSend(v13, "markNeedsUploadOrSyncingUp"), (objc_msgSend(v13, "saveToDB") & 1) != 0))
+    if ([asDirectory handlePathMatchConflictForDirectoryCreationIfNecessary] || (objc_msgSend(asDirectory, "markNeedsUploadOrSyncingUp"), (objc_msgSend(asDirectory, "saveToDB") & 1) != 0))
     {
-      v14 = v13;
+      v14 = asDirectory;
       v15 = 0;
     }
 
     else
     {
-      v20 = [v13 db];
-      v21 = [v20 lastError];
-      v22 = v21;
-      if (v21)
+      v20 = [asDirectory db];
+      lastError = [v20 lastError];
+      v22 = lastError;
+      if (lastError)
       {
-        v15 = v21;
+        v15 = lastError;
       }
 
       else
       {
         v23 = MEMORY[0x277CCA9B8];
-        v24 = [v9 itemID];
-        v25 = [v24 debugItemIDString];
-        v15 = [v23 brc_errorItemNotFound:v25];
+        itemID = [itemCopy itemID];
+        debugItemIDString = [itemID debugItemIDString];
+        v15 = [v23 brc_errorItemNotFound:debugItemIDString];
       }
 
-      if (a5)
+      if (error)
       {
         v26 = v15;
-        *a5 = v15;
+        *error = v15;
       }
 
       v27 = brc_bread_crumbs();
       v28 = brc_default_log();
       if (os_log_type_enabled(v28, 0x90u))
       {
-        v32 = [v9 itemID];
+        itemID2 = [itemCopy itemID];
         v33 = 138413058;
-        v34 = v8;
+        v34 = nameCopy;
         v35 = 2112;
-        v36 = v32;
+        v36 = itemID2;
         v37 = 2112;
         v38 = v15;
         v39 = 2112;
@@ -3247,11 +3247,11 @@ LABEL_7:
     v17 = brc_default_log();
     if (os_log_type_enabled(v17, 0x90u))
     {
-      v31 = [v9 itemID];
+      itemID3 = [itemCopy itemID];
       v33 = 138412802;
-      v34 = v8;
+      v34 = nameCopy;
       v35 = 2112;
-      v36 = v31;
+      v36 = itemID3;
       v37 = 2112;
       v38 = v16;
       _os_log_error_impl(&dword_223E7A000, v17, 0x90u, "[ERROR] Fail to create directory import object with name %@ and parent %@%@", &v33, 0x20u);
@@ -3259,11 +3259,11 @@ LABEL_7:
 
     v18 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:22];
     v15 = v18;
-    if (a5)
+    if (error)
     {
       v19 = v18;
       v14 = 0;
-      *a5 = v15;
+      *error = v15;
     }
 
     else
@@ -3277,69 +3277,69 @@ LABEL_7:
   return v14;
 }
 
-- (id)getOrCreateTrashItemInAppLibrary:(id)a3 error:(id *)a4
+- (id)getOrCreateTrashItemInAppLibrary:(id)library error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 db];
-  v8 = [v7 isBatchSuspended];
+  libraryCopy = library;
+  v7 = [libraryCopy db];
+  isBatchSuspended = [v7 isBatchSuspended];
 
-  if ((v8 & 1) == 0)
+  if ((isBatchSuspended & 1) == 0)
   {
     [BRCFSImporter getOrCreateTrashItemInAppLibrary:error:];
   }
 
-  v9 = [v6 documentsFolderItemID];
-  v10 = [v6 defaultClientZone];
+  documentsFolderItemID = [libraryCopy documentsFolderItemID];
+  defaultClientZone = [libraryCopy defaultClientZone];
   v11 = *MEMORY[0x277CFADB8];
-  v12 = [v10 itemByParentID:v9 andLogicalName:*MEMORY[0x277CFADB8]];
-  v13 = [v12 asDirectory];
+  v12 = [defaultClientZone itemByParentID:documentsFolderItemID andLogicalName:*MEMORY[0x277CFADB8]];
+  asDirectory = [v12 asDirectory];
 
-  if (!v13)
+  if (!asDirectory)
   {
-    v14 = [v6 defaultClientZone];
-    v15 = [v14 itemByItemID:v9];
-    v16 = [v15 asDirectory];
+    defaultClientZone2 = [libraryCopy defaultClientZone];
+    v15 = [defaultClientZone2 itemByItemID:documentsFolderItemID];
+    asDirectory2 = [v15 asDirectory];
 
-    if (!v16)
+    if (!asDirectory2)
     {
-      v17 = [v6 createDocumentsFolder];
-      if (!v17)
+      createDocumentsFolder = [libraryCopy createDocumentsFolder];
+      if (!createDocumentsFolder)
       {
-        v16 = brc_bread_crumbs();
+        asDirectory2 = brc_bread_crumbs();
         v19 = brc_default_log();
         if (os_log_type_enabled(v19, 0x90u))
         {
           [BRCFSImporter getOrCreateTrashItemInAppLibrary:error:];
         }
 
-        v13 = 0;
+        asDirectory = 0;
         goto LABEL_8;
       }
 
-      v16 = v17;
+      asDirectory2 = createDocumentsFolder;
     }
 
-    v13 = [(BRCFSImporter *)self createAndImportNewDirectoryWithLogicalName:v11 parentItem:v16 error:a4];
+    asDirectory = [(BRCFSImporter *)self createAndImportNewDirectoryWithLogicalName:v11 parentItem:asDirectory2 error:error];
 LABEL_8:
   }
 
-  return v13;
+  return asDirectory;
 }
 
-- (BOOL)trashItem:(id)a3 parentItemInTrash:(id)a4 error:(id *)a5
+- (BOOL)trashItem:(id)item parentItemInTrash:(id)trash error:(id *)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(BRCAccountSession *)self->_session clientDB];
-  v11 = [v10 isInTransaction];
+  itemCopy = item;
+  trashCopy = trash;
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  isInTransaction = [clientDB isInTransaction];
 
-  if ((v11 & 1) == 0)
+  if ((isInTransaction & 1) == 0)
   {
     [BRCFSImporter trashItem:parentItemInTrash:error:];
   }
 
-  if ([v8 isSharedToMe])
+  if ([itemCopy isSharedToMe])
   {
     v12 = brc_bread_crumbs();
     v13 = brc_default_log();
@@ -3351,73 +3351,73 @@ LABEL_8:
     }
 
     v14 = 1;
-    [v8 markRemovedFromFilesystemRecursively:1];
+    [itemCopy markRemovedFromFilesystemRecursively:1];
   }
 
   else
   {
-    v15 = [v8 appLibrary];
+    appLibrary = [itemCopy appLibrary];
     v49 = 0;
-    v16 = [(BRCFSImporter *)self getOrCreateTrashItemInAppLibrary:v15 error:&v49];
+    v16 = [(BRCFSImporter *)self getOrCreateTrashItemInAppLibrary:appLibrary error:&v49];
     v17 = v49;
 
     v14 = v16 != 0;
     if (v16)
     {
-      if (v9 && ([v16 itemGlobalID], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "itemGlobalID"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v18, "isEqual:", v19), v19, v18, !v20))
+      if (trashCopy && ([v16 itemGlobalID], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(trashCopy, "itemGlobalID"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v18, "isEqual:", v19), v19, v18, !v20))
       {
-        v23 = 0;
-        v21 = 0;
+        parentID = 0;
+        computeItemPathRelativeToRoot = 0;
       }
 
       else
       {
-        v21 = [v8 computeItemPathRelativeToRoot];
-        v22 = [v8 st];
-        v23 = [v22 parentID];
+        computeItemPathRelativeToRoot = [itemCopy computeItemPathRelativeToRoot];
+        v22 = [itemCopy st];
+        parentID = [v22 parentID];
 
         v24 = v16;
-        v9 = v24;
+        trashCopy = v24;
       }
 
-      v48 = v21;
+      v48 = computeItemPathRelativeToRoot;
       v30 = brc_bread_crumbs();
       v31 = brc_default_log();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
-        v47 = [v8 itemID];
-        v43 = [v47 debugItemIDString];
-        v44 = [v23 debugItemIDString];
+        itemID = [itemCopy itemID];
+        debugItemIDString = [itemID debugItemIDString];
+        debugItemIDString2 = [parentID debugItemIDString];
         *buf = 138413058;
-        v51 = v43;
+        v51 = debugItemIDString;
         v52 = 2112;
         v53 = v48;
         v54 = 2112;
-        v55 = v44;
+        v55 = debugItemIDString2;
         v56 = 2112;
         v57 = v30;
         _os_log_debug_impl(&dword_223E7A000, v31, OS_LOG_TYPE_DEBUG, "[DEBUG] item %@ put back: path [%@] parentID [%@]%@", buf, 0x2Au);
       }
 
-      if ([v9 itemScope] != 3)
+      if ([trashCopy itemScope] != 3)
       {
         [BRCFSImporter trashItem:parentItemInTrash:error:];
       }
 
-      v32 = [v9 clientZone];
-      v33 = [v9 itemID];
-      v34 = [v8 st];
-      v35 = [v34 logicalName];
-      v36 = [v8 itemGlobalID];
-      v37 = [v32 existsByParentID:v33 andLogicalName:v35 excludingItemGlobalID:v36];
+      clientZone = [trashCopy clientZone];
+      itemID2 = [trashCopy itemID];
+      v34 = [itemCopy st];
+      logicalName = [v34 logicalName];
+      itemGlobalID = [itemCopy itemGlobalID];
+      v37 = [clientZone existsByParentID:itemID2 andLogicalName:logicalName excludingItemGlobalID:itemGlobalID];
 
-      v38 = [v9 itemGlobalID];
+      itemGlobalID2 = [trashCopy itemGlobalID];
       v29 = v48;
-      [v8 updateToBeInTrashWithParent:v38 trashPutBackPath:v48 trashPutBackParentID:v23];
+      [itemCopy updateToBeInTrashWithParent:itemGlobalID2 trashPutBackPath:v48 trashPutBackParentID:parentID];
 
       if (v37)
       {
-        [v8 markBouncedToNextAvailableBounceNumber:508];
+        [itemCopy markBouncedToNextAvailableBounceNumber:508];
       }
 
       v39 = brc_bread_crumbs();
@@ -3443,7 +3443,7 @@ LABEL_8:
           *buf = 136315906;
           v51 = "[BRCFSImporter trashItem:parentItemInTrash:error:]";
           v52 = 2080;
-          if (!a5)
+          if (!error)
           {
             v45 = "(ignored by caller)";
           }
@@ -3457,15 +3457,15 @@ LABEL_8:
         }
       }
 
-      if (a5)
+      if (error)
       {
         v28 = v25;
-        *a5 = v25;
+        *error = v25;
       }
 
       v29 = brc_bread_crumbs();
-      v23 = brc_default_log();
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
+      parentID = brc_default_log();
+      if (os_log_type_enabled(parentID, OS_LOG_TYPE_DEBUG))
       {
         [BRCFSImporter trashItem:parentItemInTrash:error:];
       }
@@ -3476,36 +3476,36 @@ LABEL_8:
   return v14;
 }
 
-- (BOOL)_processParentAndFilenameIfNecessaryWithLocalItem:(id)a3 changedFields:(unint64_t)a4 templateItem:(id)a5 error:(id *)a6
+- (BOOL)_processParentAndFilenameIfNecessaryWithLocalItem:(id)item changedFields:(unint64_t)fields templateItem:(id)templateItem error:(id *)error
 {
-  v8 = a4;
+  fieldsCopy = fields;
   v81 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
+  itemCopy = item;
+  templateItemCopy = templateItem;
   v69[0] = MEMORY[0x277D85DD0];
   v69[1] = 3221225472;
   v69[2] = __100__BRCFSImporter__processParentAndFilenameIfNecessaryWithLocalItem_changedFields_templateItem_error___block_invoke;
   v69[3] = &unk_278503458;
-  v12 = v10;
+  v12 = itemCopy;
   v70 = v12;
-  v13 = v11;
+  v13 = templateItemCopy;
   v71 = v13;
-  v72 = self;
+  selfCopy = self;
   v14 = MEMORY[0x22AA4A310](v69);
-  if ((v8 & 4) != 0)
+  if ((fieldsCopy & 4) != 0)
   {
-    v20 = [v13 parentItemIdentifier];
-    v21 = [v20 isEqualToString:*MEMORY[0x277CC6358]];
+    parentItemIdentifier = [v13 parentItemIdentifier];
+    v21 = [parentItemIdentifier isEqualToString:*MEMORY[0x277CC6358]];
 
     if (v21)
     {
-      if ((v8 & 2) != 0)
+      if ((fieldsCopy & 2) != 0)
       {
-        v22 = [v13 filename];
-        [v12 updateWithLogicalName:v22 newParent:0];
+        filename = [v13 filename];
+        [v12 updateWithLogicalName:filename newParent:0];
       }
 
-      if ([(BRCFSImporter *)self _trashItem:v12 error:a6])
+      if ([(BRCFSImporter *)self _trashItem:v12 error:error])
       {
         goto LABEL_54;
       }
@@ -3513,8 +3513,8 @@ LABEL_8:
       goto LABEL_47;
     }
 
-    v23 = [v13 parentItemIdentifier];
-    v24 = [v23 isEqualToString:*MEMORY[0x277CC6348]];
+    parentItemIdentifier2 = [v13 parentItemIdentifier];
+    v24 = [parentItemIdentifier2 isEqualToString:*MEMORY[0x277CC6348]];
 
     if (v24)
     {
@@ -3530,23 +3530,23 @@ LABEL_8:
         [BRCFSImporter _processParentAndFilenameIfNecessaryWithLocalItem:changedFields:templateItem:error:];
       }
 
-      v27 = [v12 appLibrary];
-      v28 = [v27 fetchDocumentsDirectoryItem];
-      v29 = [v28 fileObjectID];
+      appLibrary = [v12 appLibrary];
+      fetchDocumentsDirectoryItem = [appLibrary fetchDocumentsDirectoryItem];
+      fileObjectID = [fetchDocumentsDirectoryItem fileObjectID];
     }
 
     else
     {
       v30 = MEMORY[0x277CFAE50];
-      v27 = [v13 parentItemIdentifier];
-      v29 = [v30 fileObjectIDWithString:v27];
+      appLibrary = [v13 parentItemIdentifier];
+      fileObjectID = [v30 fileObjectIDWithString:appLibrary];
     }
 
-    if (!v29)
+    if (!fileObjectID)
     {
       v47 = MEMORY[0x277CCA9B8];
-      v48 = [v13 parentItemIdentifier];
-      v43 = [v47 brc_errorInvalidParameter:@"parentItemIdentifier" value:v48];
+      parentItemIdentifier3 = [v13 parentItemIdentifier];
+      v43 = [v47 brc_errorInvalidParameter:@"parentItemIdentifier" value:parentItemIdentifier3];
 
       if (v43)
       {
@@ -3558,7 +3558,7 @@ LABEL_8:
           *buf = 136315906;
           v74 = "[BRCFSImporter _processParentAndFilenameIfNecessaryWithLocalItem:changedFields:templateItem:error:]";
           v75 = 2080;
-          if (!a6)
+          if (!error)
           {
             v67 = "(ignored by caller)";
           }
@@ -3572,39 +3572,39 @@ LABEL_8:
         }
       }
 
-      if (a6)
+      if (error)
       {
         v51 = v43;
-        *a6 = v43;
+        *error = v43;
       }
 
       goto LABEL_46;
     }
 
-    v31 = [v12 session];
-    v32 = [v31 itemFetcher];
-    v68 = v29;
-    v33 = [v32 itemByFileObjectID:v29];
-    v34 = [v33 asDirectory];
+    session = [v12 session];
+    itemFetcher = [session itemFetcher];
+    v68 = fileObjectID;
+    v33 = [itemFetcher itemByFileObjectID:fileObjectID];
+    asDirectory = [v33 asDirectory];
 
-    if (v34 && ![v34 isDead])
+    if (asDirectory && ![asDirectory isDead])
     {
-      if (([(BRCFSImporter *)self capabilityToMoveItem:v12 toNewParentItem:v34 error:0]& 0x35FB) != 0)
+      if (([(BRCFSImporter *)self capabilityToMoveItem:v12 toNewParentItem:asDirectory error:0]& 0x35FB) != 0)
       {
-        if ((v8 & 2) != 0)
+        if ((fieldsCopy & 2) != 0)
         {
-          v53 = [v13 filename];
+          filename2 = [v13 filename];
         }
 
         else
         {
           v52 = [v12 st];
-          v53 = [v52 logicalName];
+          filename2 = [v52 logicalName];
         }
 
-        v62 = [v34 clientZone];
-        v63 = [v34 itemID];
-        v64 = (v14)[2](v14, v53, v62, v63, v34);
+        clientZone = [asDirectory clientZone];
+        itemID = [asDirectory itemID];
+        v64 = (v14)[2](v14, filename2, clientZone, itemID, asDirectory);
 
         v43 = v68;
         if (!v64)
@@ -3626,13 +3626,13 @@ LABEL_46:
           *buf = 138412802;
           v74 = v12;
           v75 = 2112;
-          v76 = v34;
+          v76 = asDirectory;
           v77 = 2112;
           v78 = v60;
           _os_log_debug_impl(&dword_223E7A000, v61, OS_LOG_TYPE_DEBUG, "[DEBUG] Can't reparent to folder: undoing reparent on %@ to %@%@", buf, 0x20u);
         }
 
-        v34 = 0;
+        asDirectory = 0;
       }
 
 LABEL_54:
@@ -3640,7 +3640,7 @@ LABEL_54:
       goto LABEL_55;
     }
 
-    if (([v34 isDead] & 1) != 0 || (objc_msgSend(v12, "session"), v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "recentsEnumerator"), v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "hasDeletedFileObjectID:", v68), v36, v35, v37))
+    if (([asDirectory isDead] & 1) != 0 || (objc_msgSend(v12, "session"), v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "recentsEnumerator"), v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "hasDeletedFileObjectID:", v68), v36, v35, v37))
     {
       v38 = brc_bread_crumbs();
       v39 = brc_default_log();
@@ -3650,8 +3650,8 @@ LABEL_54:
       }
 
       v40 = MEMORY[0x277CCA9B8];
-      v41 = [v13 parentItemIdentifier];
-      v42 = [v40 brc_errorParentItemRemotelyDeleted:v41];
+      parentItemIdentifier4 = [v13 parentItemIdentifier];
+      v42 = [v40 brc_errorParentItemRemotelyDeleted:parentItemIdentifier4];
 
       v43 = v68;
       if (!v42)
@@ -3666,10 +3666,10 @@ LABEL_54:
 LABEL_41:
 
 LABEL_42:
-        if (a6)
+        if (error)
         {
           v58 = v42;
-          *a6 = v42;
+          *error = v42;
         }
 
         goto LABEL_45;
@@ -3679,7 +3679,7 @@ LABEL_42:
       *buf = 136315906;
       v74 = "[BRCFSImporter _processParentAndFilenameIfNecessaryWithLocalItem:changedFields:templateItem:error:]";
       v75 = 2080;
-      if (!a6)
+      if (!error)
       {
         v46 = "(ignored by caller)";
       }
@@ -3695,8 +3695,8 @@ LABEL_42:
       }
 
       v56 = MEMORY[0x277CCA9B8];
-      v57 = [v13 parentItemIdentifier];
-      v42 = [v56 brc_errorItemNotFound:v57];
+      parentItemIdentifier5 = [v13 parentItemIdentifier];
+      v42 = [v56 brc_errorItemNotFound:parentItemIdentifier5];
 
       v43 = v68;
       if (!v42)
@@ -3715,7 +3715,7 @@ LABEL_42:
       *buf = 136315906;
       v74 = "[BRCFSImporter _processParentAndFilenameIfNecessaryWithLocalItem:changedFields:templateItem:error:]";
       v75 = 2080;
-      if (!a6)
+      if (!error)
       {
         v46 = "(ignored by caller)";
       }
@@ -3730,16 +3730,16 @@ LABEL_42:
     goto LABEL_41;
   }
 
-  if ((v8 & 2) == 0)
+  if ((fieldsCopy & 2) == 0)
   {
     goto LABEL_54;
   }
 
-  v15 = [v13 filename];
-  v16 = [v12 parentClientZone];
+  filename3 = [v13 filename];
+  parentClientZone = [v12 parentClientZone];
   v17 = [v12 st];
-  v18 = [v17 parentID];
-  v19 = (v14)[2](v14, v15, v16, v18, 0);
+  parentID = [v17 parentID];
+  v19 = (v14)[2](v14, filename3, parentClientZone, parentID, 0);
 
   if (v19)
   {
@@ -3797,37 +3797,37 @@ uint64_t __100__BRCFSImporter__processParentAndFilenameIfNecessaryWithLocalItem_
   return 1;
 }
 
-- (void)_learnLocalContentEtagXattrIfPossibleOnDocumentItem:(id)a3 templateItem:(id)a4
+- (void)_learnLocalContentEtagXattrIfPossibleOnDocumentItem:(id)item templateItem:(id)templateItem
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  templateItemCopy = templateItem;
   v8 = [BRCUserDefaults defaultsForMangledID:0];
-  v9 = [(BRCAccountSession *)self->_session accountFacade];
-  v10 = [v8 saveLocalContentVersionIdentifierOnDiskWithAccountFacade:v9];
+  accountFacade = [(BRCAccountSession *)self->_session accountFacade];
+  v10 = [v8 saveLocalContentVersionIdentifierOnDiskWithAccountFacade:accountFacade];
 
   if (v10)
   {
-    v11 = [v7 extendedAttributes];
-    v12 = [v11 objectForKeyedSubscript:@"com.apple.clouddocs.local.fpfs.ct.version.identifier#CB"];
+    extendedAttributes = [templateItemCopy extendedAttributes];
+    v12 = [extendedAttributes objectForKeyedSubscript:@"com.apple.clouddocs.local.fpfs.ct.version.identifier#CB"];
     if (v12)
     {
       v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v12 encoding:4];
       if (v13)
       {
-        [v6 learnContentVersionFromVersionIdentifier:v13];
+        [itemCopy learnContentVersionFromVersionIdentifier:v13];
         v14 = brc_bread_crumbs();
         v15 = brc_default_log();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
-          v17 = [v6 currentVersion];
-          v18 = [v17 ckInfo];
+          currentVersion = [itemCopy currentVersion];
+          ckInfo = [currentVersion ckInfo];
           v19 = 138413058;
-          v20 = v6;
+          v20 = itemCopy;
           v21 = 2112;
           v22 = v13;
           v23 = 2112;
-          v24 = v18;
+          v24 = ckInfo;
           v25 = 2112;
           v26 = v14;
           _os_log_debug_impl(&dword_223E7A000, v15, OS_LOG_TYPE_DEBUG, "[DEBUG] Learned etag on %@ from the content xattr in reimport flow - versionIdentifier = %@, ckInfo = %@%@", &v19, 0x2Au);
@@ -3839,35 +3839,35 @@ uint64_t __100__BRCFSImporter__processParentAndFilenameIfNecessaryWithLocalItem_
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_learnEtagsIfNecessaryWithItem:(id)a3 templateItem:(id)a4 changedFields:(unint64_t)a5 baseVersion:(id)a6
+- (void)_learnEtagsIfNecessaryWithItem:(id)item templateItem:(id)templateItem changedFields:(unint64_t)fields baseVersion:(id)version
 {
   v50 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (![v10 isDocument] || (objc_msgSend(v10, "asDocument"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isDocumentBeingCopiedToNewZone"), v13, (v14 & 1) == 0))
+  itemCopy = item;
+  templateItemCopy = templateItem;
+  versionCopy = version;
+  if (![itemCopy isDocument] || (objc_msgSend(itemCopy, "asDocument"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isDocumentBeingCopiedToNewZone"), v13, (v14 & 1) == 0))
   {
-    if ((a5 & 1) != 0 && [v12 br_isValidContentVersion] && objc_msgSend(v10, "isDocument"))
+    if ((fields & 1) != 0 && [versionCopy br_isValidContentVersion] && objc_msgSend(itemCopy, "isDocument"))
     {
-      v15 = [v12 br_contentSignature];
-      v16 = [v10 orig];
-      v17 = [v16 asDocument];
-      v18 = [v17 currentVersion];
-      v19 = [v18 versionSignature];
+      br_contentSignature = [versionCopy br_contentSignature];
+      orig = [itemCopy orig];
+      asDocument = [orig asDocument];
+      currentVersion = [asDocument currentVersion];
+      versionSignature = [currentVersion versionSignature];
 
-      if (([v15 isEquivalentToSignature:v19] & 1) == 0)
+      if (([br_contentSignature isEquivalentToSignature:versionSignature] & 1) == 0)
       {
         v20 = brc_bread_crumbs();
         v21 = brc_default_log();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          [v15 versionIdentifier];
+          [br_contentSignature versionIdentifier];
           v22 = v42 = v20;
-          v23 = [v19 versionIdentifier];
+          versionIdentifier = [versionSignature versionIdentifier];
           *buf = 138412802;
           v45 = v22;
           v46 = 2112;
-          v47 = v23;
+          v47 = versionIdentifier;
           v48 = 2112;
           v49 = v42;
           _os_log_impl(&dword_223E7A000, v21, OS_LOG_TYPE_DEFAULT, "[WARNING] Base version differs from local version content! overwriting our local version (%@ vs %@)%@", buf, 0x20u);
@@ -3875,81 +3875,81 @@ uint64_t __100__BRCFSImporter__processParentAndFilenameIfNecessaryWithLocalItem_
           v20 = v42;
         }
 
-        v43 = [v10 asDocument];
-        v24 = [v43 currentVersion];
-        v25 = [v24 ckInfo];
-        [v15 etag];
-        v26 = v15;
-        v28 = v27 = v19;
-        [v25 overwriteEtag:v28];
+        asDocument2 = [itemCopy asDocument];
+        currentVersion2 = [asDocument2 currentVersion];
+        ckInfo = [currentVersion2 ckInfo];
+        [br_contentSignature etag];
+        v26 = br_contentSignature;
+        v28 = v27 = versionSignature;
+        [ckInfo overwriteEtag:v28];
 
-        v19 = v27;
-        v15 = v26;
+        versionSignature = v27;
+        br_contentSignature = v26;
       }
     }
 
-    if (a5 >= 2 && [v12 br_isValidStructureVersion])
+    if (fields >= 2 && [versionCopy br_isValidStructureVersion])
     {
-      v29 = [v12 br_structureSignature];
-      v30 = [v10 orig];
-      v31 = [v30 st];
-      v32 = [v31 versionSignature];
+      br_structureSignature = [versionCopy br_structureSignature];
+      orig2 = [itemCopy orig];
+      v31 = [orig2 st];
+      versionSignature2 = [v31 versionSignature];
 
-      if (([v29 isEquivalentToSignature:v32] & 1) == 0)
+      if (([br_structureSignature isEquivalentToSignature:versionSignature2] & 1) == 0)
       {
         v33 = brc_bread_crumbs();
         v34 = brc_default_log();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
-          v35 = [v29 versionIdentifier];
-          v36 = [v32 versionIdentifier];
+          versionIdentifier2 = [br_structureSignature versionIdentifier];
+          versionIdentifier3 = [versionSignature2 versionIdentifier];
           *buf = 138412802;
-          v45 = v35;
+          v45 = versionIdentifier2;
           v46 = 2112;
-          v47 = v36;
+          v47 = versionIdentifier3;
           v48 = 2112;
           v49 = v33;
           _os_log_impl(&dword_223E7A000, v34, OS_LOG_TYPE_DEFAULT, "[WARNING] Base version differs from local version structure! overwriting our local version (%@ vs %@)%@", buf, 0x20u);
         }
 
-        v37 = [v10 st];
-        v38 = [v37 ckInfo];
-        v39 = [v29 etag];
-        [v38 overwriteEtag:v39];
+        v37 = [itemCopy st];
+        ckInfo2 = [v37 ckInfo];
+        etag = [br_structureSignature etag];
+        [ckInfo2 overwriteEtag:etag];
       }
     }
 
-    if (!v12 && [v10 isDocument])
+    if (!versionCopy && [itemCopy isDocument])
     {
-      v40 = [v10 asDocument];
-      [(BRCFSImporter *)self _learnLocalContentEtagXattrIfPossibleOnDocumentItem:v40 templateItem:v11];
+      asDocument3 = [itemCopy asDocument];
+      [(BRCFSImporter *)self _learnLocalContentEtagXattrIfPossibleOnDocumentItem:asDocument3 templateItem:templateItemCopy];
     }
   }
 
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)changeItem:(id)a3 baseVersion:(id)a4 changedFields:(unint64_t)a5 newValues:(id)a6 contents:(id)a7 additionalAttrs:(id)a8 clearCKInfoOnSyncUp:(BOOL)a9 stillPendingFields:(unint64_t *)a10 error:(id *)a11
+- (BOOL)changeItem:(id)item baseVersion:(id)version changedFields:(unint64_t)fields newValues:(id)values contents:(id)contents additionalAttrs:(id)attrs clearCKInfoOnSyncUp:(BOOL)up stillPendingFields:(unint64_t *)self0 error:(id *)self1
 {
   v118 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v105 = a4;
-  v18 = a6;
-  v19 = a7;
-  v104 = a8;
-  v20 = [(BRCAccountSession *)self->_session clientDB];
-  LOBYTE(a4) = [v20 isInTransaction];
+  itemCopy = item;
+  versionCopy = version;
+  valuesCopy = values;
+  contentsCopy = contents;
+  attrsCopy = attrs;
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  LOBYTE(version) = [clientDB isInTransaction];
 
-  if ((a4 & 1) == 0)
+  if ((version & 1) == 0)
   {
     [BRCFSImporter changeItem:baseVersion:changedFields:newValues:contents:additionalAttrs:clearCKInfoOnSyncUp:stillPendingFields:error:];
   }
 
-  if (![v17 isZoneRoot])
+  if (![itemCopy isZoneRoot])
   {
-    if ([v17 isShareAcceptationFault])
+    if ([itemCopy isShareAcceptationFault])
     {
-      v21 = brc_bread_crumbs();
+      lastError = brc_bread_crumbs();
       v22 = brc_default_log();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
@@ -3959,23 +3959,23 @@ uint64_t __100__BRCFSImporter__processParentAndFilenameIfNecessaryWithLocalItem_
       goto LABEL_9;
     }
 
-    v103 = v19;
-    if ([v17 isZoneRoot])
+    v103 = contentsCopy;
+    if ([itemCopy isZoneRoot])
     {
 LABEL_39:
-      v41 = [v17 parentFileObjectID];
-      if ([v41 isAppLibraryRoot])
+      parentFileObjectID = [itemCopy parentFileObjectID];
+      if ([parentFileObjectID isAppLibraryRoot])
       {
-        v42 = [v17 itemID];
-        v43 = ([v42 isDocumentsFolder] & 1) != 0 || -[BRCFSImporter _isDesktopOrDocumentsItem:](self, "_isDesktopOrDocumentsItem:", v17);
+        itemID = [itemCopy itemID];
+        v43 = ([itemID isDocumentsFolder] & 1) != 0 || -[BRCFSImporter _isDesktopOrDocumentsItem:](self, "_isDesktopOrDocumentsItem:", itemCopy);
       }
 
       else
       {
-        v43 = [(BRCFSImporter *)self _isDesktopOrDocumentsItem:v17];
+        v43 = [(BRCFSImporter *)self _isDesktopOrDocumentsItem:itemCopy];
       }
 
-      if ((a5 & 6) != 0 && v43)
+      if ((fields & 6) != 0 && v43)
       {
         v44 = brc_bread_crumbs();
         v45 = brc_default_log();
@@ -3984,25 +3984,25 @@ LABEL_39:
           [BRCFSImporter changeItem:baseVersion:changedFields:newValues:contents:additionalAttrs:clearCKInfoOnSyncUp:stillPendingFields:error:];
         }
 
-        a5 &= 0xFFFFFFFFFFFFFFF9;
+        fields &= 0xFFFFFFFFFFFFFFF9;
       }
 
-      if ((a5 & 1) == 0)
+      if ((fields & 1) == 0)
       {
         v23 = 0;
         goto LABEL_87;
       }
 
-      if (v19)
+      if (contentsCopy)
       {
-        if (([v17 isDocument] & 1) == 0)
+        if (([itemCopy isDocument] & 1) == 0)
         {
           [BRCFSImporter changeItem:baseVersion:changedFields:newValues:contents:additionalAttrs:clearCKInfoOnSyncUp:stillPendingFields:error:];
         }
 
-        v46 = [(BRCAccountSession *)self->_session fsUploader];
-        v47 = [v17 asDocument];
-        v48 = [v46 isUploadingItem:v47];
+        fsUploader = [(BRCAccountSession *)self->_session fsUploader];
+        asDocument = [itemCopy asDocument];
+        v48 = [fsUploader isUploadingItem:asDocument];
 
         if (v48)
         {
@@ -4013,46 +4013,46 @@ LABEL_39:
             [BRCFSImporter changeItem:baseVersion:changedFields:newValues:contents:additionalAttrs:clearCKInfoOnSyncUp:stillPendingFields:error:];
           }
 
-          v19 = v103;
-          if (a11)
+          contentsCopy = v103;
+          if (error)
           {
             [MEMORY[0x277CCA9B8] brc_errorPostponeUpload];
-            v21 = 0;
+            lastError = 0;
             v23 = 0;
-            *a11 = v24 = 0;
+            *error = v24 = 0;
             goto LABEL_10;
           }
 
-          v21 = 0;
+          lastError = 0;
 LABEL_121:
           v23 = 0;
           goto LABEL_122;
         }
 
-        if ([v17 isDocument])
+        if ([itemCopy isDocument])
         {
-          v59 = [v17 asDocument];
-          v60 = [v59 currentVersion];
-          v53 = [v60 quarantineInfo];
+          asDocument2 = [itemCopy asDocument];
+          currentVersion = [asDocument2 currentVersion];
+          quarantineInfo = [currentVersion quarantineInfo];
         }
 
         else
         {
-          v53 = 0;
+          quarantineInfo = 0;
         }
 
-        v19 = v103;
+        contentsCopy = v103;
         v109 = 0;
-        v21 = [[BRCImportObject alloc] initWithURL:v103 existingItem:v17 quarantineInfo:v53 error:&v109];
-        v58 = v109;
+        lastError = [[BRCImportObject alloc] initWithURL:v103 existingItem:itemCopy quarantineInfo:quarantineInfo error:&v109];
+        asDocument3 = v109;
       }
 
       else
       {
-        v51 = [v18 contentType];
-        v52 = [v51 br_isSymbolicLinkType];
+        contentType = [valuesCopy contentType];
+        br_isSymbolicLinkType = [contentType br_isSymbolicLinkType];
 
-        if (!v52)
+        if (!br_isSymbolicLinkType)
         {
           v61 = brc_bread_crumbs();
           v62 = brc_default_log();
@@ -4063,8 +4063,8 @@ LABEL_121:
             _os_log_impl(&dword_223E7A000, v62, OS_LOG_TYPE_DEFAULT, "[NOTICE] Got nil content URL and the item is not a symbolic link. Ignoring the content change field%@", buf, 0xCu);
           }
 
-          v58 = 0;
-          v21 = 0;
+          asDocument3 = 0;
+          lastError = 0;
           v23 = 0;
           if (![0 br_isPOSIXErrorCode:1])
           {
@@ -4074,77 +4074,77 @@ LABEL_121:
           goto LABEL_81;
         }
 
-        v53 = [v18 symlinkTargetPath];
-        if (!v53)
+        quarantineInfo = [valuesCopy symlinkTargetPath];
+        if (!quarantineInfo)
         {
-          v53 = [v104 objectForKey:@"symlink-target"];
+          quarantineInfo = [attrsCopy objectForKey:@"symlink-target"];
         }
 
         v54 = [BRCImportObject alloc];
-        v55 = [v17 parentItemOnFS];
-        v56 = [v17 st];
-        v57 = [v56 logicalName];
+        parentItemOnFS = [itemCopy parentItemOnFS];
+        v56 = [itemCopy st];
+        logicalName = [v56 logicalName];
         v108 = 0;
-        v21 = [(BRCImportObject *)v54 initAsSymlinkWithTarget:v53 parentItem:v55 logicalName:v57 error:&v108];
-        v58 = v108;
+        lastError = [(BRCImportObject *)v54 initAsSymlinkWithTarget:quarantineInfo parentItem:parentItemOnFS logicalName:logicalName error:&v108];
+        asDocument3 = v108;
 
-        v19 = v103;
+        contentsCopy = v103;
       }
 
-      if (v21)
+      if (lastError)
       {
-        v107 = v58;
-        v63 = [v17 updateWithImportObject:v21 onlyContentDependentProperties:v18 != 0 error:&v107];
+        v107 = asDocument3;
+        v63 = [itemCopy updateWithImportObject:lastError onlyContentDependentProperties:valuesCopy != 0 error:&v107];
         v23 = v107;
 
         if (v63)
         {
-          if (!v19)
+          if (!contentsCopy)
           {
             goto LABEL_86;
           }
 
-          v64 = [(BRCAccountSession *)self->_session stageRegistry];
-          v65 = [v17 liveStageFilename];
-          v66 = v19;
-          v67 = v65;
-          v68 = [v64 moveFromURLToLiveStage:v66 liveStageFilename:v65 error:a11];
+          stageRegistry = [(BRCAccountSession *)self->_session stageRegistry];
+          liveStageFilename = [itemCopy liveStageFilename];
+          v66 = contentsCopy;
+          v67 = liveStageFilename;
+          v68 = [stageRegistry moveFromURLToLiveStage:v66 liveStageFilename:liveStageFilename error:error];
 
           if (!v68)
           {
             v24 = 0;
-            v19 = v103;
+            contentsCopy = v103;
             goto LABEL_10;
           }
 
-          if (![v17 isDocument])
+          if (![itemCopy isDocument])
           {
             goto LABEL_86;
           }
 
-          v58 = [v17 asDocument];
-          v69 = [v18 filename];
-          if (v69)
+          asDocument3 = [itemCopy asDocument];
+          filename = [valuesCopy filename];
+          if (filename)
           {
-            [v58 updateWithOriginalPosixName:v69];
+            [asDocument3 updateWithOriginalPosixName:filename];
           }
 
           else
           {
-            v93 = [v17 st];
-            v94 = [v93 filename];
-            [v58 updateWithOriginalPosixName:v94];
+            v93 = [itemCopy st];
+            filename2 = [v93 filename];
+            [asDocument3 updateWithOriginalPosixName:filename2];
           }
 
           goto LABEL_85;
         }
 
-        v58 = v23;
+        asDocument3 = v23;
       }
 
-      if (([v58 br_isPOSIXErrorCode:1] & 1) == 0)
+      if (([asDocument3 br_isPOSIXErrorCode:1] & 1) == 0)
       {
-        v23 = v58;
+        v23 = asDocument3;
         if (v23)
         {
           v88 = brc_bread_crumbs();
@@ -4155,7 +4155,7 @@ LABEL_121:
             *buf = 136315906;
             v111 = "[BRCFSImporter changeItem:baseVersion:changedFields:newValues:contents:additionalAttrs:clearCKInfoOnSyncUp:stillPendingFields:error:]";
             v112 = 2080;
-            if (!a11)
+            if (!error)
             {
               v96 = "(ignored by caller)";
             }
@@ -4169,10 +4169,10 @@ LABEL_121:
           }
         }
 
-        if (a11)
+        if (error)
         {
           v90 = v23;
-          *a11 = v23;
+          *error = v23;
         }
 
         goto LABEL_122;
@@ -4184,16 +4184,16 @@ LABEL_81:
       if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v111 = v17;
+        v111 = itemCopy;
         v112 = 2112;
         v113 = v70;
         _os_log_impl(&dword_223E7A000, v71, OS_LOG_TYPE_DEFAULT, "[WARNING] Failed updating the content of the item %@ from the template due to EPERM error, will continue and flag the content of the item as pending%@", buf, 0x16u);
       }
 
       v23 = 0;
-      if (a10)
+      if (pendingFields)
       {
-        *a10 |= 1uLL;
+        *pendingFields |= 1uLL;
       }
 
 LABEL_85:
@@ -4201,16 +4201,16 @@ LABEL_85:
 LABEL_86:
 LABEL_87:
       v72 = v23;
-      [(BRCFSImporter *)self _learnEtagsIfNecessaryWithItem:v17 templateItem:v18 changedFields:a5 baseVersion:v105];
+      [(BRCFSImporter *)self _learnEtagsIfNecessaryWithItem:itemCopy templateItem:valuesCopy changedFields:fields baseVersion:versionCopy];
       v106 = v23;
-      v73 = [(BRCFSImporter *)self _processParentAndFilenameIfNecessaryWithLocalItem:v17 changedFields:a5 templateItem:v18 error:&v106];
+      v73 = [(BRCFSImporter *)self _processParentAndFilenameIfNecessaryWithLocalItem:itemCopy changedFields:fields templateItem:valuesCopy error:&v106];
       v23 = v106;
 
       if (!v73)
       {
-        v21 = v23;
-        v19 = v103;
-        if (v21)
+        lastError = v23;
+        contentsCopy = v103;
+        if (lastError)
         {
           v81 = brc_bread_crumbs();
           v82 = brc_default_log();
@@ -4220,25 +4220,25 @@ LABEL_87:
             *buf = 136315906;
             v111 = "[BRCFSImporter changeItem:baseVersion:changedFields:newValues:contents:additionalAttrs:clearCKInfoOnSyncUp:stillPendingFields:error:]";
             v112 = 2080;
-            if (!a11)
+            if (!error)
             {
               v91 = "(ignored by caller)";
             }
 
             v113 = v91;
             v114 = 2112;
-            v115 = v21;
+            v115 = lastError;
             v116 = 2112;
             v117 = v81;
             _os_log_error_impl(&dword_223E7A000, v82, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
           }
         }
 
-        if (a11)
+        if (error)
         {
-          v83 = v21;
+          v83 = lastError;
           v24 = 0;
-          *a11 = v21;
+          *error = lastError;
         }
 
         else
@@ -4246,19 +4246,19 @@ LABEL_87:
           v24 = 0;
         }
 
-        v23 = v21;
+        v23 = lastError;
         goto LABEL_10;
       }
 
-      [(BRCFSImporter *)self _changeBasicFieldsOnItem:v17 fields:a5 template:v18];
-      if ((a5 & 0x80000000) != 0 && [v17 isDocument])
+      [(BRCFSImporter *)self _changeBasicFieldsOnItem:itemCopy fields:fields template:valuesCopy];
+      if ((fields & 0x80000000) != 0 && [itemCopy isDocument])
       {
-        [(BRCFSImporter *)self _resolveConflictLosersForItem:v18 localItem:v17];
+        [(BRCFSImporter *)self _resolveConflictLosersForItem:valuesCopy localItem:itemCopy];
       }
 
-      [v17 markNeedsUploadOrSyncingUp];
-      v19 = v103;
-      if (a9 && ([v17 isIdleOrRejected] & 1) == 0)
+      [itemCopy markNeedsUploadOrSyncingUp];
+      contentsCopy = v103;
+      if (up && ([itemCopy isIdleOrRejected] & 1) == 0)
       {
         v74 = brc_bread_crumbs();
         v75 = brc_default_log();
@@ -4267,34 +4267,34 @@ LABEL_87:
           [BRCFSImporter changeItem:baseVersion:changedFields:newValues:contents:additionalAttrs:clearCKInfoOnSyncUp:stillPendingFields:error:];
         }
 
-        v76 = [v17 localDiffs];
-        v77 = [v17 diffAgainstOriginalItem] | v76;
-        if ([v17 isDocument] && (v77 & 0x1FE0000) != 0)
+        localDiffs = [itemCopy localDiffs];
+        v77 = [itemCopy diffAgainstOriginalItem] | localDiffs;
+        if ([itemCopy isDocument] && (v77 & 0x1FE0000) != 0)
         {
-          v78 = [v17 asDocument];
-          v79 = [v78 currentVersion];
-          [v79 clearCKInfo];
+          asDocument4 = [itemCopy asDocument];
+          currentVersion2 = [asDocument4 currentVersion];
+          [currentVersion2 clearCKInfo];
 
-          v19 = v103;
+          contentsCopy = v103;
         }
 
         if ((v77 & 0x3FFE) != 0)
         {
-          v80 = [v17 st];
+          v80 = [itemCopy st];
           [v80 clearCKInfo];
         }
       }
 
-      if ([v17 saveToDB])
+      if ([itemCopy saveToDB])
       {
         v24 = 1;
         goto LABEL_11;
       }
 
-      v84 = [v17 db];
-      v21 = [v84 lastError];
+      v84 = [itemCopy db];
+      lastError = [v84 lastError];
 
-      if (v21)
+      if (lastError)
       {
         v85 = brc_bread_crumbs();
         v86 = brc_default_log();
@@ -4304,25 +4304,25 @@ LABEL_87:
           *buf = 136315906;
           v111 = "[BRCFSImporter changeItem:baseVersion:changedFields:newValues:contents:additionalAttrs:clearCKInfoOnSyncUp:stillPendingFields:error:]";
           v112 = 2080;
-          if (!a11)
+          if (!error)
           {
             v92 = "(ignored by caller)";
           }
 
           v113 = v92;
           v114 = 2112;
-          v115 = v21;
+          v115 = lastError;
           v116 = 2112;
           v117 = v85;
           _os_log_error_impl(&dword_223E7A000, v86, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
         }
       }
 
-      if (a11)
+      if (error)
       {
-        v87 = v21;
+        v87 = lastError;
         v24 = 0;
-        *a11 = v21;
+        *error = lastError;
         goto LABEL_10;
       }
 
@@ -4331,46 +4331,46 @@ LABEL_122:
       goto LABEL_10;
     }
 
-    v27 = [v17 appLibrary];
-    v28 = [v27 mangledID];
-    v29 = [BRCUserDefaults defaultsForMangledID:v28];
+    appLibrary = [itemCopy appLibrary];
+    mangledID = [appLibrary mangledID];
+    v29 = [BRCUserDefaults defaultsForMangledID:mangledID];
     if ([v29 failModifyRequestsWhenInFlightUnAckedChanges])
     {
-      v30 = [v17 isKnownByServer];
-      if (!v30)
+      isKnownByServer = [itemCopy isKnownByServer];
+      if (!isKnownByServer)
       {
         v101 = 0;
         v102 = 0;
         goto LABEL_18;
       }
 
-      v31 = [v17 st];
+      v31 = [itemCopy st];
       if ([v31 localChangeCount])
       {
         v101 = 0;
-        v102 = v30;
+        v102 = isKnownByServer;
         v99 = v31;
         goto LABEL_18;
       }
 
-      if ([v17 isDocument])
+      if ([itemCopy isDocument])
       {
-        v98 = [v17 asDocument];
-        v97 = [v98 currentVersion];
-        if ([v97 localChangeCount])
+        asDocument5 = [itemCopy asDocument];
+        currentVersion3 = [asDocument5 currentVersion];
+        if ([currentVersion3 localChangeCount])
         {
           v99 = v31;
           v101 = 1;
-          v102 = v30;
+          v102 = isKnownByServer;
 LABEL_18:
-          v32 = [v17 clientZone];
-          v33 = [v32 dbRowID];
-          if ([v17 inFlightSyncUpDiffsInZoneRowID:v33])
+          clientZone = [itemCopy clientZone];
+          dbRowID = [clientZone dbRowID];
+          if ([itemCopy inFlightSyncUpDiffsInZoneRowID:dbRowID])
           {
-            v34 = [v17 clientZone];
-            v100 = ([v34 syncState] >> 2) & 1;
+            clientZone2 = [itemCopy clientZone];
+            v100 = ([clientZone2 syncState] >> 2) & 1;
 
-            v19 = v103;
+            contentsCopy = v103;
             if (v101)
             {
               goto LABEL_20;
@@ -4411,14 +4411,14 @@ LABEL_26:
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v111 = v17;
+              v111 = itemCopy;
               v112 = 2112;
               v113 = v36;
               _os_log_impl(&dword_223E7A000, v37, OS_LOG_TYPE_DEFAULT, "[WARNING] Received modify item request while we have un-acked in-flight diffs for %@. Returning with an error to retry later%@", buf, 0x16u);
             }
 
-            v21 = [MEMORY[0x277CCA9B8] brc_errorPostponeUpload];
-            if (v21)
+            lastError = [MEMORY[0x277CCA9B8] brc_errorPostponeUpload];
+            if (lastError)
             {
               v38 = brc_bread_crumbs();
               v39 = brc_default_log();
@@ -4428,26 +4428,26 @@ LABEL_26:
                 *buf = 136315906;
                 v111 = "[BRCFSImporter changeItem:baseVersion:changedFields:newValues:contents:additionalAttrs:clearCKInfoOnSyncUp:stillPendingFields:error:]";
                 v112 = 2080;
-                if (!a11)
+                if (!error)
                 {
                   v95 = "(ignored by caller)";
                 }
 
                 v113 = v95;
                 v114 = 2112;
-                v115 = v21;
+                v115 = lastError;
                 v116 = 2112;
                 v117 = v38;
                 _os_log_error_impl(&dword_223E7A000, v39, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
               }
             }
 
-            if (a11)
+            if (error)
             {
-              v40 = v21;
+              v40 = lastError;
               v23 = 0;
               v24 = 0;
-              *a11 = v21;
+              *error = lastError;
               goto LABEL_10;
             }
 
@@ -4469,7 +4469,7 @@ LABEL_25:
     goto LABEL_39;
   }
 
-  v21 = brc_bread_crumbs();
+  lastError = brc_bread_crumbs();
   v22 = brc_default_log();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
@@ -4487,34 +4487,34 @@ LABEL_11:
   return v24;
 }
 
-- (unsigned)_itemTypeToFileObjectIDType:(char)a3 itemID:(id)a4
+- (unsigned)_itemTypeToFileObjectIDType:(char)type itemID:(id)d
 {
-  v4 = a3;
-  if ([a4 isDocumentsFolder])
+  typeCopy = type;
+  if ([d isDocumentsFolder])
   {
     return 4;
   }
 
-  if (v4 > 0xA)
+  if (typeCopy > 0xA)
   {
     return 5;
   }
 
-  return byte_2241ABFD4[v4];
+  return byte_2241ABFD4[typeCopy];
 }
 
-- (BOOL)_deleteAppLibrary:(id)a3 documentsFolder:(id)a4 error:(id *)a5
+- (BOOL)_deleteAppLibrary:(id)library documentsFolder:(id)folder error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  libraryCopy = library;
+  folderCopy = folder;
+  if (libraryCopy)
   {
-    v9 = [v7 deleteAppLibrary];
-    v10 = v9;
-    if (v9)
+    deleteAppLibrary = [libraryCopy deleteAppLibrary];
+    v10 = deleteAppLibrary;
+    if (deleteAppLibrary)
     {
-      v11 = v9;
+      v11 = deleteAppLibrary;
       v12 = brc_bread_crumbs();
       v13 = brc_default_log();
       if (os_log_type_enabled(v13, 0x90u))
@@ -4523,7 +4523,7 @@ LABEL_11:
         *buf = 136315906;
         v30 = "[BRCFSImporter _deleteAppLibrary:documentsFolder:error:]";
         v31 = 2080;
-        if (!a5)
+        if (!error)
         {
           v25 = "(ignored by caller)";
         }
@@ -4536,25 +4536,25 @@ LABEL_11:
         _os_log_error_impl(&dword_223E7A000, v13, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
       }
 
-      if (a5)
+      if (error)
       {
         v14 = v11;
-        *a5 = v11;
+        *error = v11;
       }
     }
 
     else
     {
-      [v7 didRemoveDocumentsFolder];
-      v15 = [v7 rootFileObjectID];
-      v16 = [v15 asString];
+      [libraryCopy didRemoveDocumentsFolder];
+      rootFileObjectID = [libraryCopy rootFileObjectID];
+      asString = [rootFileObjectID asString];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __57__BRCFSImporter__deleteAppLibrary_documentsFolder_error___block_invoke;
       v27[3] = &unk_2784FF540;
-      v17 = v8;
+      v17 = folderCopy;
       v28 = v17;
-      [BRCImportUtil forceIngestionForItemID:v16 completionHandler:v27];
+      [BRCImportUtil forceIngestionForItemID:asString completionHandler:v27];
 
       v18 = [[BRCNotification alloc] initWithLocalItem:v17 itemDiffs:0];
       v19 = [MEMORY[0x277CCA9B8] brc_errorForRejectedDeletionOfItem:v18];
@@ -4568,7 +4568,7 @@ LABEL_11:
           *buf = 136315906;
           v30 = "[BRCFSImporter _deleteAppLibrary:documentsFolder:error:]";
           v31 = 2080;
-          if (!a5)
+          if (!error)
           {
             v26 = "(ignored by caller)";
           }
@@ -4582,19 +4582,19 @@ LABEL_11:
         }
       }
 
-      if (a5)
+      if (error)
       {
         v22 = v19;
-        *a5 = v19;
+        *error = v19;
       }
 
       v11 = v28;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -4625,43 +4625,43 @@ void __57__BRCFSImporter__deleteAppLibrary_documentsFolder_error___block_invoke(
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldRejectItemDeleteDueToEtags:(id)a3 baseVersion:(id)a4 error:(id *)a5
+- (BOOL)_shouldRejectItemDeleteDueToEtags:(id)etags baseVersion:(id)version error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 appLibrary];
-  v10 = [v9 mangledID];
-  v11 = [BRCUserDefaults defaultsForMangledID:v10];
-  v12 = [v11 rejectDeletionsBasedOnEtag];
+  etagsCopy = etags;
+  versionCopy = version;
+  appLibrary = [etagsCopy appLibrary];
+  mangledID = [appLibrary mangledID];
+  v11 = [BRCUserDefaults defaultsForMangledID:mangledID];
+  rejectDeletionsBasedOnEtag = [v11 rejectDeletionsBasedOnEtag];
 
-  if (!v12 || ([v7 isSharedToMeTopLevelItem] & 1) != 0)
+  if (!rejectDeletionsBasedOnEtag || ([etagsCopy isSharedToMeTopLevelItem] & 1) != 0)
   {
     goto LABEL_8;
   }
 
-  v13 = [v8 br_structureSignature];
-  v14 = [v7 st];
-  v15 = [v14 versionSignature];
+  br_structureSignature = [versionCopy br_structureSignature];
+  v14 = [etagsCopy st];
+  versionSignature = [v14 versionSignature];
 
-  if (([v15 isEquivalentToSignature:v13] & 1) == 0)
+  if (([versionSignature isEquivalentToSignature:br_structureSignature] & 1) == 0)
   {
     v23 = brc_bread_crumbs();
     v24 = brc_default_log();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v38 = v15;
+      v38 = versionSignature;
       v39 = 2112;
-      v40 = v13;
+      v40 = br_structureSignature;
       v41 = 2112;
       v42 = v23;
       _os_log_debug_impl(&dword_223E7A000, v24, OS_LOG_TYPE_DEBUG, "[DEBUG] Structure signature mismatch for deletion %@ vs %@%@", buf, 0x20u);
     }
 
-    v16 = [[BRCNotification alloc] initWithLocalItem:v7 itemDiffs:0];
-    v19 = [MEMORY[0x277CCA9B8] brc_errorForRejectedDeletionOfItem:v16];
-    if (v19)
+    br_contentSignature = [[BRCNotification alloc] initWithLocalItem:etagsCopy itemDiffs:0];
+    versionSignature2 = [MEMORY[0x277CCA9B8] brc_errorForRejectedDeletionOfItem:br_contentSignature];
+    if (versionSignature2)
     {
       v25 = brc_bread_crumbs();
       v26 = brc_default_log();
@@ -4671,37 +4671,37 @@ void __57__BRCFSImporter__deleteAppLibrary_documentsFolder_error___block_invoke(
         *buf = 136315906;
         v38 = "[BRCFSImporter _shouldRejectItemDeleteDueToEtags:baseVersion:error:]";
         v39 = 2080;
-        if (!a5)
+        if (!error)
         {
           v34 = "(ignored by caller)";
         }
 
         v40 = v34;
         v41 = 2112;
-        v42 = v19;
+        v42 = versionSignature2;
         v43 = 2112;
         v44 = v25;
         _os_log_error_impl(&dword_223E7A000, v26, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
       }
     }
 
-    if (a5)
+    if (error)
     {
-      v27 = v19;
-      *a5 = v19;
+      v27 = versionSignature2;
+      *error = versionSignature2;
     }
 
     goto LABEL_25;
   }
 
-  if ([v7 isDocument])
+  if ([etagsCopy isDocument])
   {
-    v16 = [v8 br_contentSignature];
-    v17 = [v7 asDocument];
-    v18 = [v17 currentVersion];
-    v19 = [v18 versionSignature];
+    br_contentSignature = [versionCopy br_contentSignature];
+    asDocument = [etagsCopy asDocument];
+    currentVersion = [asDocument currentVersion];
+    versionSignature2 = [currentVersion versionSignature];
 
-    if ([v19 isEquivalentToSignature:v16])
+    if ([versionSignature2 isEquivalentToSignature:br_contentSignature])
     {
 
       goto LABEL_7;
@@ -4712,15 +4712,15 @@ void __57__BRCFSImporter__deleteAppLibrary_documentsFolder_error___block_invoke(
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v38 = v16;
+      v38 = br_contentSignature;
       v39 = 2112;
-      v40 = v19;
+      v40 = versionSignature2;
       v41 = 2112;
       v42 = v28;
       _os_log_debug_impl(&dword_223E7A000, v29, OS_LOG_TYPE_DEBUG, "[DEBUG] Content signature mismatch for deletion %@ vs %@%@", buf, 0x20u);
     }
 
-    v30 = [[BRCNotification alloc] initWithLocalItem:v7 itemDiffs:0];
+    v30 = [[BRCNotification alloc] initWithLocalItem:etagsCopy itemDiffs:0];
     v31 = [MEMORY[0x277CCA9B8] brc_errorForRejectedDeletionOfItem:v30];
     if (v31)
     {
@@ -4732,7 +4732,7 @@ void __57__BRCFSImporter__deleteAppLibrary_documentsFolder_error___block_invoke(
         *buf = 136315906;
         v38 = "[BRCFSImporter _shouldRejectItemDeleteDueToEtags:baseVersion:error:]";
         v39 = 2080;
-        if (!a5)
+        if (!error)
         {
           v35 = "(ignored by caller)";
         }
@@ -4746,10 +4746,10 @@ void __57__BRCFSImporter__deleteAppLibrary_documentsFolder_error___block_invoke(
       }
     }
 
-    if (a5)
+    if (error)
     {
       v33 = v31;
-      *a5 = v31;
+      *error = v31;
     }
 
 LABEL_25:
@@ -4767,20 +4767,20 @@ LABEL_9:
   return v20;
 }
 
-- (BOOL)deleteItem:(id)a3 recursively:(BOOL)a4 baseVersion:(id)a5 error:(id *)a6
+- (BOOL)deleteItem:(id)item recursively:(BOOL)recursively baseVersion:(id)version error:(id *)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = [(BRCAccountSession *)self->_session clientDB];
-  [v12 assertOnQueue];
+  itemCopy = item;
+  versionCopy = version;
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  [clientDB assertOnQueue];
 
-  if (!v10 || [v10 isDead])
+  if (!itemCopy || [itemCopy isDead])
   {
-    if (a6)
+    if (error)
     {
       v13 = 0;
-      *a6 = 0;
+      *error = 0;
       goto LABEL_22;
     }
 
@@ -4789,15 +4789,15 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (!a4 && [v10 isDirectory])
+  if (!recursively && [itemCopy isDirectory])
   {
-    v14 = [v10 asDirectory];
-    if ([v14 hasLiveChildren])
+    asDirectory = [itemCopy asDirectory];
+    if ([asDirectory hasLiveChildren])
     {
 
 LABEL_11:
-      v18 = [MEMORY[0x277CCA9B8] brc_errorDeletingNonEmptyDirectoryNonRecursively];
-      if (v18)
+      brc_errorDeletingNonEmptyDirectoryNonRecursively = [MEMORY[0x277CCA9B8] brc_errorDeletingNonEmptyDirectoryNonRecursively];
+      if (brc_errorDeletingNonEmptyDirectoryNonRecursively)
       {
         v19 = brc_bread_crumbs();
         v20 = brc_default_log();
@@ -4807,36 +4807,36 @@ LABEL_11:
           *v47 = 136315906;
           *&v47[4] = "[BRCFSImporter deleteItem:recursively:baseVersion:error:]";
           *&v47[12] = 2080;
-          if (!a6)
+          if (!error)
           {
             v33 = "(ignored by caller)";
           }
 
           *&v47[14] = v33;
           *&v47[22] = 2112;
-          v48 = v18;
+          v48 = brc_errorDeletingNonEmptyDirectoryNonRecursively;
           LOWORD(v49) = 2112;
           *(&v49 + 2) = v19;
           _os_log_error_impl(&dword_223E7A000, v20, 0x90u, "[ERROR] %s: %s error: %@%@", v47, 0x2Au);
         }
       }
 
-      if (a6)
+      if (error)
       {
-        v21 = v18;
-        *a6 = v18;
+        v21 = brc_errorDeletingNonEmptyDirectoryNonRecursively;
+        *error = brc_errorDeletingNonEmptyDirectoryNonRecursively;
       }
 
       goto LABEL_21;
     }
 
-    if ([v10 isDirectoryFault])
+    if ([itemCopy isDirectoryFault])
     {
-      v15 = [v10 asDirectory];
-      v16 = [v15 childItemCount];
-      v17 = [v16 longLongValue];
+      asDirectory2 = [itemCopy asDirectory];
+      childItemCount = [asDirectory2 childItemCount];
+      longLongValue = [childItemCount longLongValue];
 
-      if (v17 > 0)
+      if (longLongValue > 0)
       {
         goto LABEL_11;
       }
@@ -4847,18 +4847,18 @@ LABEL_11:
     }
   }
 
-  v22 = [v10 fileObjectID];
-  v23 = [v22 isAppLibraryDocumentsFolder];
+  fileObjectID = [itemCopy fileObjectID];
+  isAppLibraryDocumentsFolder = [fileObjectID isAppLibraryDocumentsFolder];
 
-  if (v23)
+  if (isAppLibraryDocumentsFolder)
   {
-    v24 = [v10 appLibrary];
-    [(BRCFSImporter *)self _deleteAppLibrary:v24 documentsFolder:v10 error:a6];
+    appLibrary = [itemCopy appLibrary];
+    [(BRCFSImporter *)self _deleteAppLibrary:appLibrary documentsFolder:itemCopy error:error];
 
     goto LABEL_21;
   }
 
-  if ([(BRCFSImporter *)self _shouldRejectItemDeleteDueToEtags:v10 baseVersion:v11 error:a6])
+  if ([(BRCFSImporter *)self _shouldRejectItemDeleteDueToEtags:itemCopy baseVersion:versionCopy error:error])
   {
     goto LABEL_21;
   }
@@ -4869,15 +4869,15 @@ LABEL_11:
   v48 = __Block_byref_object_copy__25;
   *&v49 = __Block_byref_object_dispose__25;
   *(&v49 + 1) = 0;
-  v27 = [v10 db];
+  v27 = [itemCopy db];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __58__BRCFSImporter_deleteItem_recursively_baseVersion_error___block_invoke;
   v34[3] = &unk_278503480;
-  v38 = a4;
-  v36 = self;
+  recursivelyCopy = recursively;
+  selfCopy = self;
   v37 = v47;
-  v35 = v10;
+  v35 = itemCopy;
   [v27 groupInBatch:v34];
 
   v28 = *(*&v47[8] + 40);
@@ -4891,7 +4891,7 @@ LABEL_11:
       *buf = 136315906;
       v40 = "[BRCFSImporter deleteItem:recursively:baseVersion:error:]";
       v41 = 2080;
-      if (!a6)
+      if (!error)
       {
         v32 = "(ignored by caller)";
       }
@@ -4905,10 +4905,10 @@ LABEL_11:
     }
   }
 
-  if (a6)
+  if (error)
   {
     v31 = v28;
-    *a6 = v28;
+    *error = v28;
   }
 
   v13 = *(*&v47[8] + 40) == 0;
@@ -5129,30 +5129,30 @@ void __66__BRCFSImporter__markNextChildBatchDead_persistedState_batchSize___bloc
   [v21 unlinkLiveStageFilename:v18];
 }
 
-- (void)_propagateDirectoryMergeOrCrossZoneMove:(id)a3 persistedState:(id)a4 batchSize:(int)a5
+- (void)_propagateDirectoryMergeOrCrossZoneMove:(id)move persistedState:(id)state batchSize:(int)size
 {
   v66 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 clientZone];
-  v9 = [v8 dbRowID];
-  v10 = [v7 previousItemGlobalID];
-  v11 = [v10 zoneRowID];
-  v12 = [v9 br_isEqualToNumber:v11];
+  moveCopy = move;
+  clientZone = [moveCopy clientZone];
+  dbRowID = [clientZone dbRowID];
+  previousItemGlobalID = [moveCopy previousItemGlobalID];
+  zoneRowID = [previousItemGlobalID zoneRowID];
+  v12 = [dbRowID br_isEqualToNumber:zoneRowID];
 
   if (v12)
   {
-    v13 = [v7 clientZone];
-    v14 = [v7 previousItemGlobalID];
-    v15 = [v14 itemID];
-    v16 = [v13 itemByItemID:v15];
+    clientZone2 = [moveCopy clientZone];
+    previousItemGlobalID2 = [moveCopy previousItemGlobalID];
+    itemID = [previousItemGlobalID2 itemID];
+    v16 = [clientZone2 itemByItemID:itemID];
 
-    v54 = [v16 isKnownByServer];
+    isKnownByServer = [v16 isKnownByServer];
     v17 = "directory merge";
   }
 
   else
   {
-    v54 = 0;
+    isKnownByServer = 0;
     v17 = "cross-zone move";
   }
 
@@ -5164,7 +5164,7 @@ void __66__BRCFSImporter__markNextChildBatchDead_persistedState_batchSize___bloc
     *buf = 136315650;
     v61 = v49;
     v62 = 2112;
-    v63 = v7;
+    v63 = moveCopy;
     v64 = 2112;
     v65 = v18;
     _os_log_debug_impl(&dword_223E7A000, v19, OS_LOG_TYPE_DEBUG, "[DEBUG] Propagating %s of %@ to children%@", buf, 0x20u);
@@ -5174,12 +5174,12 @@ void __66__BRCFSImporter__markNextChildBatchDead_persistedState_batchSize___bloc
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v20 = [(BRCAccountSession *)self->_session itemFetcher];
-  v21 = [v7 previousItemGlobalID];
-  v48 = self;
-  v22 = [(BRCAccountSession *)self->_session clientReadWriteDatabaseFacade];
-  v47 = a5;
-  v23 = [v20 enumerateChildrenOfItemGlobalID:v21 dbFacade:v22 sortOrder:0 offset:0 limit:a5];
+  itemFetcher = [(BRCAccountSession *)self->_session itemFetcher];
+  previousItemGlobalID3 = [moveCopy previousItemGlobalID];
+  selfCopy = self;
+  clientReadWriteDatabaseFacade = [(BRCAccountSession *)self->_session clientReadWriteDatabaseFacade];
+  sizeCopy = size;
+  v23 = [itemFetcher enumerateChildrenOfItemGlobalID:previousItemGlobalID3 dbFacade:clientReadWriteDatabaseFacade sortOrder:0 offset:0 limit:size];
 
   obj = v23;
   v24 = [v23 countByEnumeratingWithState:&v55 objects:v59 count:16];
@@ -5189,7 +5189,7 @@ void __66__BRCFSImporter__markNextChildBatchDead_persistedState_batchSize___bloc
     v26 = 0;
     v27 = *v56;
     v28 = "[BRCFSImporter _propagateDirectoryMergeOrCrossZoneMove:persistedState:batchSize:]";
-    v51 = v7;
+    v51 = moveCopy;
     v52 = *v56;
     do
     {
@@ -5215,23 +5215,23 @@ void __66__BRCFSImporter__markNextChildBatchDead_persistedState_batchSize___bloc
           _os_log_debug_impl(&dword_223E7A000, v32, OS_LOG_TYPE_DEBUG, "[DEBUG] Propagating %s to item: %@%@", buf, 0x20u);
         }
 
-        [v30 updateWithLogicalName:0 newParent:v7];
+        [v30 updateWithLogicalName:0 newParent:moveCopy];
         if (v12)
         {
-          v33 = [v7 clientZone];
-          v34 = [v7 itemID];
+          clientZone3 = [moveCopy clientZone];
+          itemID2 = [moveCopy itemID];
           [v30 st];
           v36 = v35 = v12;
           [v36 logicalName];
           v37 = v25;
           v39 = v38 = v28;
-          v40 = [v33 existsByParentID:v34 andLogicalName:v39];
+          v40 = [clientZone3 existsByParentID:itemID2 andLogicalName:v39];
 
           v28 = v38;
           v25 = v37;
 
           v12 = v35;
-          v7 = v51;
+          moveCopy = v51;
           v27 = v52;
 
           if (v40)
@@ -5241,7 +5241,7 @@ void __66__BRCFSImporter__markNextChildBatchDead_persistedState_batchSize___bloc
         }
 
         [v30 saveToDB];
-        if (v54 && ![v30 syncUpState])
+        if (isKnownByServer && ![v30 syncUpState])
         {
           [v30 _markNeedsSyncingUp];
           [v30 saveToDB];
@@ -5260,13 +5260,13 @@ void __66__BRCFSImporter__markNextChildBatchDead_persistedState_batchSize___bloc
     v26 = 0;
   }
 
-  if (v26 == v47)
+  if (v26 == sizeCopy)
   {
-    v41 = [v7 fileObjectID];
-    currentPropagationObject = v48->_currentPropagationObject;
-    v48->_currentPropagationObject = v41;
+    fileObjectID = [moveCopy fileObjectID];
+    currentPropagationObject = selfCopy->_currentPropagationObject;
+    selfCopy->_currentPropagationObject = fileObjectID;
 
-    v48->_currentPropagationMinRowID = 0;
+    selfCopy->_currentPropagationMinRowID = 0;
   }
 
   else
@@ -5278,46 +5278,46 @@ void __66__BRCFSImporter__markNextChildBatchDead_persistedState_batchSize___bloc
       *buf = 136315650;
       v61 = v49;
       v62 = 2112;
-      v63 = v7;
+      v63 = moveCopy;
       v64 = 2112;
       v65 = v43;
       _os_log_debug_impl(&dword_223E7A000, v44, OS_LOG_TYPE_DEBUG, "[DEBUG] Finished propagating %s of %@ to children%@", buf, 0x20u);
     }
 
-    v45 = v48->_currentPropagationObject;
-    v48->_currentPropagationObject = 0;
+    v45 = selfCopy->_currentPropagationObject;
+    selfCopy->_currentPropagationObject = 0;
 
-    v48->_currentPropagationMinRowID = 0;
-    [v7 markDirectoryMergeOrCrossZonePropagationComplete];
-    [v7 markChildPropagationComplete];
-    [v7 saveToDB];
+    selfCopy->_currentPropagationMinRowID = 0;
+    [moveCopy markDirectoryMergeOrCrossZonePropagationComplete];
+    [moveCopy markChildPropagationComplete];
+    [moveCopy saveToDB];
   }
 
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_propagateFieldsToNextChildBatch:(id)a3 persistedState:(id)a4 minRowID:(unint64_t)a5 batchSize:(int)a6
+- (void)_propagateFieldsToNextChildBatch:(id)batch persistedState:(id)state minRowID:(unint64_t)d batchSize:(int)size
 {
   v154 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v83 = a4;
-  v9 = [v8 itemID];
-  v76 = [v9 isNonDesktopRoot];
+  batchCopy = batch;
+  stateCopy = state;
+  itemID = [batchCopy itemID];
+  isNonDesktopRoot = [itemID isNonDesktopRoot];
 
-  v10 = [v8 itemID];
-  v72 = [v10 isDocumentsFolder];
+  itemID2 = [batchCopy itemID];
+  isDocumentsFolder = [itemID2 isDocumentsFolder];
 
-  v68 = [v8 sharingOptions];
-  v70 = [v8 itemScope];
-  v81 = [v8 appLibrary];
-  v66 = [v8 isUserVisible];
-  v11 = [v8 st];
-  v64 = [v11 logicalName];
+  sharingOptions = [batchCopy sharingOptions];
+  itemScope = [batchCopy itemScope];
+  appLibrary = [batchCopy appLibrary];
+  isUserVisible = [batchCopy isUserVisible];
+  v11 = [batchCopy st];
+  logicalName = [v11 logicalName];
 
-  v58 = [v8 localDiffs];
-  if ([v8 isSharedToMe])
+  localDiffs = [batchCopy localDiffs];
+  if ([batchCopy isSharedToMe])
   {
-    v62 = ([v8 sharingOptions] & 0x20) == 0;
+    v62 = ([batchCopy sharingOptions] & 0x20) == 0;
   }
 
   else
@@ -5331,8 +5331,8 @@ void __66__BRCFSImporter__markNextChildBatchDead_persistedState_batchSize___bloc
   v15 = objc_opt_new();
   v16 = objc_opt_new();
   v60 = objc_alloc_init(MEMORY[0x277CCAB58]);
-  v17 = [v81 dbRowID];
-  v79 = [v17 longLongValue];
+  dbRowID = [appLibrary dbRowID];
+  longLongValue = [dbRowID longLongValue];
 
   v152[0] = 0;
   v152[1] = v152;
@@ -5341,7 +5341,7 @@ void __66__BRCFSImporter__markNextChildBatchDead_persistedState_batchSize___bloc
   v148 = 0;
   v149 = &v148;
   v150 = 0x2020000000;
-  v151 = [v83 nextNotifRank];
+  nextNotifRank = [stateCopy nextNotifRank];
   v144 = 0;
   v145 = &v144;
   v146 = 0x2020000000;
@@ -5409,22 +5409,22 @@ void __66__BRCFSImporter__markNextChildBatchDead_persistedState_batchSize___bloc
   v105[1] = 3221225472;
   v105[2] = __84__BRCFSImporter__propagateFieldsToNextChildBatch_persistedState_minRowID_batchSize___block_invoke_101;
   v105[3] = &unk_278503540;
-  v27 = (v58 >> 39) & 1;
+  v27 = (localDiffs >> 39) & 1;
   v114 = &v144;
-  v117 = v68 & 0x78;
-  v119 = v66;
-  v120 = v76;
-  v121 = v70;
-  v50 = v64;
+  v117 = sharingOptions & 0x78;
+  v119 = isUserVisible;
+  v120 = isNonDesktopRoot;
+  v121 = itemScope;
+  v50 = logicalName;
   v106 = v50;
-  v49 = v81;
+  v49 = appLibrary;
   v107 = v49;
-  v122 = v72;
-  v123 = (v58 & 0x8000000000) != 0;
+  v122 = isDocumentsFolder;
+  v123 = (localDiffs & 0x8000000000) != 0;
   v82 = v25;
   v108 = v82;
   v115 = v152;
-  v118 = v79;
+  v118 = longLongValue;
   v116 = &v148;
   v51 = v20;
   v109 = v51;
@@ -5437,7 +5437,7 @@ void __66__BRCFSImporter__markNextChildBatchDead_persistedState_batchSize___bloc
   v63 = v23;
   v113 = v63;
   v28 = MEMORY[0x22AA4A310](v105);
-  v29 = [(BRCAccountSession *)self->_session clientDB];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
   v91[0] = MEMORY[0x277D85DD0];
   v91[1] = 3221225472;
   v91[2] = __84__BRCFSImporter__propagateFieldsToNextChildBatch_persistedState_minRowID_batchSize___block_invoke_103;
@@ -5448,7 +5448,7 @@ void __66__BRCFSImporter__markNextChildBatchDead_persistedState_batchSize___bloc
   v94 = v67;
   v69 = v55;
   v95 = v69;
-  v101 = v79;
+  v101 = longLongValue;
   v71 = v54;
   v96 = v71;
   v73 = v53;
@@ -5456,29 +5456,29 @@ void __66__BRCFSImporter__markNextChildBatchDead_persistedState_batchSize___bloc
   v77 = v26;
   v98 = v77;
   v104 = v27;
-  v30 = v8;
+  v30 = batchCopy;
   v92 = v30;
-  v102 = a5;
-  v103 = a6;
+  dCopy = d;
+  sizeCopy = size;
   v80 = v28;
   v99 = v80;
   v100 = v142;
-  [v29 groupInTransaction:v91];
+  [clientDB groupInTransaction:v91];
 
-  v31 = [(BRCAccountSession *)self->_session clientDB];
-  v32 = [v31 changes];
+  clientDB2 = [(BRCAccountSession *)self->_session clientDB];
+  changes = [clientDB2 changes];
 
   v33 = v149[3];
-  if (v33 != [v83 nextNotifRank])
+  if (v33 != [stateCopy nextNotifRank])
   {
-    v34 = [v30 appLibrary];
-    v35 = [v34 hasActiveQueries];
+    appLibrary2 = [v30 appLibrary];
+    hasActiveQueries = [appLibrary2 hasActiveQueries];
 
-    if (v35)
+    if (hasActiveQueries)
     {
-      v36 = [(BRCAccountSession *)self->_session clientDB];
-      v37 = [v83 nextNotifRank];
-      v75 = [v36 fetch:{@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE item_notifs_rank >= %lld AND item_notifs_rank < %lld ORDER BY item_notifs_rank", v37, v149[3], v49, v50, v51, v52}];
+      clientDB3 = [(BRCAccountSession *)self->_session clientDB];
+      nextNotifRank2 = [stateCopy nextNotifRank];
+      v75 = [clientDB3 fetch:{@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE item_notifs_rank >= %lld AND item_notifs_rank < %lld ORDER BY item_notifs_rank", nextNotifRank2, v149[3], v49, v50, v51, v52}];
 
       v89 = 0u;
       v90 = 0u;
@@ -5504,8 +5504,8 @@ void __66__BRCFSImporter__markNextChildBatchDead_persistedState_batchSize___bloc
             }
 
             v42 = [BRCNotification notificationFromItem:*(*(&v87 + 1) + 8 * i)];
-            v43 = [(BRCAccountSession *)self->_session notificationManager];
-            [v43 queueUpdate:v42];
+            notificationManager = [(BRCAccountSession *)self->_session notificationManager];
+            [notificationManager queueUpdate:v42];
           }
 
           v39 = [v38 countByEnumeratingWithState:&v87 objects:v153 count:16];
@@ -5515,7 +5515,7 @@ void __66__BRCFSImporter__markNextChildBatchDead_persistedState_batchSize___bloc
       }
     }
 
-    [v83 setNextNotifRank:v149[3]];
+    [stateCopy setNextNotifRank:v149[3]];
   }
 
   v84[0] = MEMORY[0x277D85DD0];
@@ -5526,11 +5526,11 @@ void __66__BRCFSImporter__markNextChildBatchDead_persistedState_batchSize___bloc
   v44 = v30;
   v85 = v44;
   [v82 enumerateIndexesUsingBlock:v84];
-  if (v32 == a6)
+  if (changes == size)
   {
-    v45 = [v44 fileObjectID];
+    fileObjectID = [v44 fileObjectID];
     currentPropagationObject = self->_currentPropagationObject;
-    self->_currentPropagationObject = v45;
+    self->_currentPropagationObject = fileObjectID;
 
     self->_currentPropagationMinRowID = v145[3];
   }
@@ -5872,26 +5872,26 @@ void __84__BRCFSImporter__propagateFieldsToNextChildBatch_persistedState_minRowI
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)_processIngestBatch:(id)a3 minRowID:(unint64_t)a4
+- (void)_processIngestBatch:(id)batch minRowID:(unint64_t)d
 {
-  v6 = a3;
+  batchCopy = batch;
   v7 = [BRCUserDefaults defaultsForMangledID:0];
-  v8 = [v7 readerScanBatchSize];
+  readerScanBatchSize = [v7 readerScanBatchSize];
 
   v9 = [(BRCPersistedState *)BRCClientRanksPersistedState loadFromClientStateInSession:self->_session];
-  v10 = [(BRCAccountSession *)self->_session clientDB];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __46__BRCFSImporter__processIngestBatch_minRowID___block_invoke;
   v13[3] = &unk_278503590;
-  v14 = v6;
-  v15 = self;
-  v18 = v8;
+  v14 = batchCopy;
+  selfCopy = self;
+  v18 = readerScanBatchSize;
   v16 = v9;
-  v17 = a4;
+  dCopy = d;
   v11 = v9;
-  v12 = v6;
-  [v10 groupInBatch:v13];
+  v12 = batchCopy;
+  [clientDB groupInBatch:v13];
 }
 
 uint64_t __46__BRCFSImporter__processIngestBatch_minRowID___block_invoke(uint64_t a1)
@@ -5945,13 +5945,13 @@ uint64_t __46__BRCFSImporter__processIngestBatch_minRowID___block_invoke(uint64_
     goto LABEL_6;
   }
 
-  v3 = [(BRCAccountSession *)self->_session itemFetcher];
-  v4 = [v3 itemByFileObjectID:self->_currentPropagationObject];
-  v34 = [v4 asDirectory];
+  itemFetcher = [(BRCAccountSession *)self->_session itemFetcher];
+  v4 = [itemFetcher itemByFileObjectID:self->_currentPropagationObject];
+  asDirectory = [v4 asDirectory];
 
-  if (v34)
+  if (asDirectory)
   {
-    [(BRCFSImporter *)self _processIngestBatch:v34 minRowID:self->_currentPropagationMinRowID];
+    [(BRCFSImporter *)self _processIngestBatch:asDirectory minRowID:self->_currentPropagationMinRowID];
     [(BRCFairSource *)self->_childPropagationSource signal];
   }
 
@@ -5959,25 +5959,25 @@ uint64_t __46__BRCFSImporter__processIngestBatch_minRowID___block_invoke(uint64_
   {
 LABEL_6:
     v5 = [BRCUserDefaults defaultsForMangledID:0];
-    v6 = [v5 maxSyncPathDepth];
+    maxSyncPathDepth = [v5 maxSyncPathDepth];
 
-    v7 = [(BRCAccountSession *)self->_session clientDB];
+    clientDB = [(BRCAccountSession *)self->_session clientDB];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __42__BRCFSImporter__childPropagationSchedule__block_invoke;
     v36[3] = &unk_2784FF910;
     v36[4] = self;
-    v8 = [v7 fetchObject:v36 sql:{@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE item_processing_stamp IS NOT NULL ORDER BY item_processing_stamp ASC LIMIT 1"}];
-    v9 = [v8 asDirectory];
+    v8 = [clientDB fetchObject:v36 sql:{@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE item_processing_stamp IS NOT NULL ORDER BY item_processing_stamp ASC LIMIT 1"}];
+    asDirectory2 = [v8 asDirectory];
 
-    if (v9)
+    if (asDirectory2)
     {
-      v10 = [(BRCAccountSession *)self->_session clientDB];
-      v11 = [v9 st];
-      v12 = [v11 parentID];
-      v13 = [v9 parentClientZone];
-      v14 = [v13 dbRowID];
-      v15 = [v10 fetch:{@"WITH RECURSIVE item_parents  (rowid, item_parent_id, item_parent_zone_rowid, item_state, item_processing_stamp) AS( SELECT rowid, item_parent_id, item_parent_zone_rowid, item_state, item_processing_stamp FROM client_items      WHERE item_id = %@ AND zone_rowid = %@  UNION ALL     SELECT li.rowid, li.item_parent_id, li.item_parent_zone_rowid, li.item_state, li.item_processing_stamp FROM client_items AS li  INNER JOIN item_parents AS p WHERE p.item_parent_id = li.item_id AND p.item_parent_zone_rowid = li.zone_rowid      LIMIT %u) SELECT rowid, item_processing_stamp FROM item_parents WHERE item_processing_stamp IS NOT NULL", v12, v14, v6}];
+      clientDB2 = [(BRCAccountSession *)self->_session clientDB];
+      v11 = [asDirectory2 st];
+      parentID = [v11 parentID];
+      parentClientZone = [asDirectory2 parentClientZone];
+      dbRowID = [parentClientZone dbRowID];
+      v15 = [clientDB2 fetch:{@"WITH RECURSIVE item_parents  (rowid, item_parent_id, item_parent_zone_rowid, item_state, item_processing_stamp) AS( SELECT rowid, item_parent_id, item_parent_zone_rowid, item_state, item_processing_stamp FROM client_items      WHERE item_id = %@ AND zone_rowid = %@  UNION ALL     SELECT li.rowid, li.item_parent_id, li.item_parent_zone_rowid, li.item_state, li.item_processing_stamp FROM client_items AS li  INNER JOIN item_parents AS p WHERE p.item_parent_id = li.item_id AND p.item_parent_zone_rowid = li.zone_rowid      LIMIT %u) SELECT rowid, item_processing_stamp FROM item_parents WHERE item_processing_stamp IS NOT NULL", parentID, dbRowID, maxSyncPathDepth}];
 
       v16 = objc_opt_new();
       v17 = objc_opt_new();
@@ -5997,16 +5997,16 @@ LABEL_6:
         while (([v15 next] & 1) != 0);
       }
 
-      v35 = v9;
+      v35 = asDirectory2;
       if ([v17 count])
       {
         v21 = [v17 objectAtIndexedSubscript:0];
-        v22 = [v21 unsignedLongLongValue];
+        unsignedLongLongValue = [v21 unsignedLongLongValue];
       }
 
       else
       {
-        v22 = 0;
+        unsignedLongLongValue = 0;
       }
 
       if ([v16 count] >= 2)
@@ -6015,28 +6015,28 @@ LABEL_6:
         do
         {
           v24 = [v17 objectAtIndexedSubscript:v23];
-          v25 = [v24 unsignedLongLongValue];
+          unsignedLongLongValue2 = [v24 unsignedLongLongValue];
 
-          if (v25 >= v22)
+          if (unsignedLongLongValue2 >= unsignedLongLongValue)
           {
-            v22 = v25 + 1;
+            unsignedLongLongValue = unsignedLongLongValue2 + 1;
           }
 
           else
           {
-            if (v22 < 0x7FFFFFFFFFFFFFFFLL)
+            if (unsignedLongLongValue < 0x7FFFFFFFFFFFFFFFLL)
             {
-              ++v22;
+              ++unsignedLongLongValue;
             }
 
             else
             {
-              v22 = 0x7FFFFFFFFFFFFFFFLL;
+              unsignedLongLongValue = 0x7FFFFFFFFFFFFFFFLL;
             }
 
-            v26 = [(BRCAccountSession *)self->_session clientDB];
+            clientDB3 = [(BRCAccountSession *)self->_session clientDB];
             v27 = [v16 objectAtIndexedSubscript:v23];
-            [v26 execute:{@"UPDATE client_items SET item_processing_stamp = %lld WHERE rowid = %llu", v22, objc_msgSend(v27, "unsignedLongLongValue")}];
+            [clientDB3 execute:{@"UPDATE client_items SET item_processing_stamp = %lld WHERE rowid = %llu", unsignedLongLongValue, objc_msgSend(v27, "unsignedLongLongValue")}];
           }
 
           ++v23;
@@ -6047,22 +6047,22 @@ LABEL_6:
 
       if ([v16 count])
       {
-        v28 = [(BRCAccountSession *)self->_session itemFetcher];
+        itemFetcher2 = [(BRCAccountSession *)self->_session itemFetcher];
         v29 = [v16 objectAtIndexedSubscript:0];
-        v30 = [v28 itemByRowID:{objc_msgSend(v29, "unsignedLongLongValue")}];
-        v31 = [v30 asDirectory];
+        v30 = [itemFetcher2 itemByRowID:{objc_msgSend(v29, "unsignedLongLongValue")}];
+        asDirectory3 = [v30 asDirectory];
       }
 
       else
       {
-        v31 = v35;
+        asDirectory3 = v35;
       }
 
-      v32 = [v31 fileObjectID];
+      fileObjectID = [asDirectory3 fileObjectID];
       currentPropagationObject = self->_currentPropagationObject;
-      self->_currentPropagationObject = v32;
+      self->_currentPropagationObject = fileObjectID;
 
-      [(BRCFSImporter *)self _processIngestBatch:v31 minRowID:0];
+      [(BRCFSImporter *)self _processIngestBatch:asDirectory3 minRowID:0];
       [(BRCFairSource *)self->_childPropagationSource signal];
     }
 
@@ -6083,23 +6083,23 @@ id __42__BRCFSImporter__childPropagationSchedule__block_invoke(uint64_t a1, void
   return v7;
 }
 
-- (BOOL)_doesAppLibraryMatchWithItemURL:(id)a3 appLibraryRowID:(id)a4
+- (BOOL)_doesAppLibraryMatchWithItemURL:(id)l appLibraryRowID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  lCopy = l;
+  dCopy = d;
+  if (dCopy)
   {
-    v8 = [(BRCAccountSession *)self->_session appLibraryByRowID:v7];
-    v9 = [v8 mangledID];
+    v8 = [(BRCAccountSession *)self->_session appLibraryByRowID:dCopy];
+    mangledID = [v8 mangledID];
 
     v10 = objc_alloc(MEMORY[0x277CFAE60]);
-    v11 = [v6 br_containerID];
-    v12 = [v10 initWithAppLibraryName:v11];
+    br_containerID = [lCopy br_containerID];
+    v12 = [v10 initWithAppLibraryName:br_containerID];
 
     v13 = 0;
-    if (v9 && v12)
+    if (mangledID && v12)
     {
-      v13 = [v12 isEqualToMangledID:v9];
+      v13 = [v12 isEqualToMangledID:mangledID];
     }
   }
 

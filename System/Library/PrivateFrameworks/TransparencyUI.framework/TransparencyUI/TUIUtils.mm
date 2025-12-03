@@ -1,27 +1,27 @@
 @interface TUIUtils
-+ (BOOL)_checkMismatchedAccountError:(id)a3;
-+ (BOOL)_checkNetworkError:(id)a3;
-+ (BOOL)isAuthError:(id)a3;
-+ (BOOL)isDateExpired:(id)a3;
++ (BOOL)_checkMismatchedAccountError:(id)error;
++ (BOOL)_checkNetworkError:(id)error;
++ (BOOL)isAuthError:(id)error;
++ (BOOL)isDateExpired:(id)expired;
 + (BOOL)isHSA2;
-+ (BOOL)isMismatchedAccountError:(id)a3;
-+ (BOOL)isNetworkError:(id)a3;
-+ (BOOL)isTransparencyFeatureEnabled:(const char *)a3;
++ (BOOL)isMismatchedAccountError:(id)error;
++ (BOOL)isNetworkError:(id)error;
++ (BOOL)isTransparencyFeatureEnabled:(const char *)enabled;
 + (void)isHSA2;
 @end
 
 @implementation TUIUtils
 
-+ (BOOL)isTransparencyFeatureEnabled:(const char *)a3
++ (BOOL)isTransparencyFeatureEnabled:(const char *)enabled
 {
-  if (!a3)
+  if (!enabled)
   {
     LOBYTE(v5) = 0;
     return v5;
   }
 
   v4 = _os_feature_enabled_impl();
-  if (!strcmp(a3, ffKTReportToApple))
+  if (!strcmp(enabled, ffKTReportToApple))
   {
     if (!v4)
     {
@@ -78,10 +78,10 @@ uint64_t __41__TUIUtils_isTransparencyFeatureEnabled___block_invoke_46()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)isNetworkError:(id)a3
++ (BOOL)isNetworkError:(id)error
 {
-  v4 = a3;
-  v5 = [a1 _checkNetworkError:v4];
+  errorCopy = error;
+  v5 = [self _checkNetworkError:errorCopy];
   if (v5)
   {
     if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_11 != -1)
@@ -105,17 +105,17 @@ uint64_t __27__TUIUtils_isNetworkError___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)isMismatchedAccountError:(id)a3
++ (BOOL)isMismatchedAccountError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  v5 = [v4 domain];
-  if (![v5 isEqual:*MEMORY[0x277D735D0]])
+  domain = [errorCopy domain];
+  if (![domain isEqual:*MEMORY[0x277D735D0]])
   {
 
 LABEL_11:
@@ -123,9 +123,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v6 = [v4 code];
+  code = [errorCopy code];
 
-  if (v6 != -290 || ![a1 _checkMismatchedAccountError:v4])
+  if (code != -290 || ![self _checkMismatchedAccountError:errorCopy])
   {
     goto LABEL_11;
   }
@@ -153,31 +153,31 @@ uint64_t __37__TUIUtils_isMismatchedAccountError___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)isDateExpired:(id)a3
++ (BOOL)isDateExpired:(id)expired
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
+  expiredCopy = expired;
   v5 = [v3 now];
-  v6 = [v4 earlierDate:v5];
+  v6 = [expiredCopy earlierDate:v5];
 
-  return v6 == v4;
+  return v6 == expiredCopy;
 }
 
-+ (BOOL)isAuthError:(id)a3
++ (BOOL)isAuthError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_13;
   }
 
-  v6 = [v5 domain];
-  v7 = [v6 isEqualToString:*MEMORY[0x277D46258]];
+  domain = [errorCopy domain];
+  v7 = [domain isEqualToString:*MEMORY[0x277D46258]];
   if ((v7 & 1) == 0)
   {
-    v3 = [v5 domain];
-    if (([v3 isEqualToString:*MEMORY[0x277D46260]] & 1) == 0)
+    domain2 = [errorCopy domain];
+    if (([domain2 isEqualToString:*MEMORY[0x277D46260]] & 1) == 0)
     {
 
 LABEL_13:
@@ -186,15 +186,15 @@ LABEL_13:
     }
   }
 
-  v8 = [v5 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"statusCode"];
-  v10 = [v9 integerValue];
+  userInfo = [errorCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"statusCode"];
+  integerValue = [v9 integerValue];
 
   if ((v7 & 1) == 0)
   {
   }
 
-  if (v10 != 401)
+  if (integerValue != 401)
   {
     goto LABEL_13;
   }
@@ -207,7 +207,7 @@ LABEL_13:
   v11 = TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_11;
   if (os_log_type_enabled(TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_11, OS_LOG_TYPE_DEBUG))
   {
-    [(TUIUtils *)v11 isAuthError:v5, a1];
+    [(TUIUtils *)v11 isAuthError:errorCopy, self];
   }
 
   v12 = 1;
@@ -223,10 +223,10 @@ uint64_t __24__TUIUtils_isAuthError___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)_checkNetworkError:(id)a3
++ (BOOL)_checkNetworkError:(id)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -234,14 +234,14 @@ uint64_t __24__TUIUtils_isAuthError___block_invoke()
     goto LABEL_18;
   }
 
-  v5 = [v4 domain];
-  if ([v5 isEqual:*MEMORY[0x277D735F8]])
+  domain = [errorCopy domain];
+  if ([domain isEqual:*MEMORY[0x277D735F8]])
   {
     goto LABEL_15;
   }
 
-  v6 = [v4 domain];
-  if ([v6 isEqual:*MEMORY[0x277CCA738]])
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqual:*MEMORY[0x277CCA738]])
   {
 LABEL_14:
 
@@ -251,53 +251,53 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  v7 = [v4 domain];
-  if ([v7 isEqual:*MEMORY[0x277CBACE8]])
+  domain3 = [errorCopy domain];
+  if ([domain3 isEqual:*MEMORY[0x277CBACE8]])
   {
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v8 = [v4 domain];
-  if ([v8 isEqual:*MEMORY[0x277D735F0]] && objc_msgSend(v4, "code") == -343)
+  domain4 = [errorCopy domain];
+  if ([domain4 isEqual:*MEMORY[0x277D735F0]] && objc_msgSend(errorCopy, "code") == -343)
   {
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v9 = [v4 domain];
-  if ([v9 isEqual:*MEMORY[0x277D735E8]] && objc_msgSend(v4, "code") == -41)
+  domain5 = [errorCopy domain];
+  if ([domain5 isEqual:*MEMORY[0x277D735E8]] && objc_msgSend(errorCopy, "code") == -41)
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v10 = [v4 domain];
-  if ([v10 isEqual:*MEMORY[0x277D735E0]])
+  domain6 = [errorCopy domain];
+  if ([domain6 isEqual:*MEMORY[0x277D735E0]])
   {
 
     goto LABEL_11;
   }
 
-  v14 = [v4 domain];
-  v35 = [v14 isEqualToString:*MEMORY[0x277D46258]];
+  domain7 = [errorCopy domain];
+  v35 = [domain7 isEqualToString:*MEMORY[0x277D46258]];
   if ((v35 & 1) == 0)
   {
-    v15 = [v4 domain];
-    if (![v15 isEqualToString:*MEMORY[0x277D46260]])
+    domain8 = [errorCopy domain];
+    if (![domain8 isEqualToString:*MEMORY[0x277D46260]])
     {
       v34 = 0;
       goto LABEL_29;
     }
 
-    v32 = v15;
+    v32 = domain8;
   }
 
-  v33 = [v4 userInfo];
-  v16 = [v33 objectForKeyedSubscript:@"statusCode"];
+  userInfo = [errorCopy userInfo];
+  v16 = [userInfo objectForKeyedSubscript:@"statusCode"];
   if ([v16 integerValue] < 500)
   {
 
@@ -308,17 +308,17 @@ LABEL_11:
     }
 
     v34 = 0;
-    v15 = v32;
+    domain8 = v32;
     goto LABEL_29;
   }
 
-  v30 = [v4 userInfo];
-  [v30 objectForKeyedSubscript:@"statusCode"];
-  v17 = v31 = v14;
+  userInfo2 = [errorCopy userInfo];
+  [userInfo2 objectForKeyedSubscript:@"statusCode"];
+  v17 = v31 = domain7;
   v34 = [v17 integerValue] < 600;
 
-  v14 = v31;
-  v15 = v32;
+  domain7 = v31;
+  domain8 = v32;
   if ((v35 & 1) == 0)
   {
 LABEL_29:
@@ -330,26 +330,26 @@ LABEL_29:
   }
 
 LABEL_31:
-  v18 = [v4 domain];
-  v19 = [v18 isEqual:*MEMORY[0x277D735D8]];
+  domain9 = [errorCopy domain];
+  v19 = [domain9 isEqual:*MEMORY[0x277D735D8]];
 
   if (v19)
   {
     goto LABEL_16;
   }
 
-  v20 = [v4 userInfo];
-  v21 = [v20 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  userInfo3 = [errorCopy userInfo];
+  v21 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-  if ([a1 _checkNetworkError:v21])
+  if ([self _checkNetworkError:v21])
   {
     v11 = 1;
   }
 
   else
   {
-    v22 = [v4 userInfo];
-    v23 = [v22 objectForKeyedSubscript:*MEMORY[0x277CCA578]];
+    userInfo4 = [errorCopy userInfo];
+    v23 = [userInfo4 objectForKeyedSubscript:*MEMORY[0x277CCA578]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -377,7 +377,7 @@ LABEL_31:
 
             v21 = *(*(&v36 + 1) + 8 * v28);
 
-            if ([a1 _checkNetworkError:v21])
+            if ([self _checkNetworkError:v21])
             {
               v11 = 1;
               goto LABEL_46;
@@ -414,10 +414,10 @@ LABEL_18:
   return v11;
 }
 
-+ (BOOL)_checkMismatchedAccountError:(id)a3
++ (BOOL)_checkMismatchedAccountError:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -425,12 +425,12 @@ LABEL_18:
     goto LABEL_24;
   }
 
-  v5 = [v4 domain];
-  if ([v5 isEqual:@"IDSKeyTransparencyVerifierErrorDomain"])
+  domain = [errorCopy domain];
+  if ([domain isEqual:@"IDSKeyTransparencyVerifierErrorDomain"])
   {
-    v6 = [v4 code];
+    code = [errorCopy code];
 
-    if (v6 == -8003)
+    if (code == -8003)
     {
       v7 = 1;
       goto LABEL_24;
@@ -441,18 +441,18 @@ LABEL_18:
   {
   }
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  userInfo = [errorCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-  if ([a1 _checkMismatchedAccountError:v9])
+  if ([self _checkMismatchedAccountError:v9])
   {
     v7 = 1;
   }
 
   else
   {
-    v10 = [v4 userInfo];
-    v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA578]];
+    userInfo2 = [errorCopy userInfo];
+    v11 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CCA578]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -480,7 +480,7 @@ LABEL_18:
 
             v9 = *(*(&v20 + 1) + 8 * v16);
 
-            if ([a1 _checkMismatchedAccountError:{v9, v20}])
+            if ([self _checkMismatchedAccountError:{v9, v20}])
             {
               v7 = 1;
               goto LABEL_21;
@@ -519,17 +519,17 @@ LABEL_24:
 
 + (BOOL)isHSA2
 {
-  v2 = [MEMORY[0x277CF0130] sharedInstance];
-  v3 = [MEMORY[0x277CFD480] sharedInstance];
-  v4 = [v3 primaryAccountAltDSID];
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
+  primaryAccountAltDSID = [mEMORY[0x277CFD480] primaryAccountAltDSID];
   v10 = 0;
-  v5 = [v2 authKitAccountWithAltDSID:v4 error:&v10];
+  v5 = [mEMORY[0x277CF0130] authKitAccountWithAltDSID:primaryAccountAltDSID error:&v10];
   v6 = v10;
 
   if (v5)
   {
-    v7 = [MEMORY[0x277CF0130] sharedInstance];
-    v8 = [v7 securityLevelForAccount:v5] == 4;
+    mEMORY[0x277CF0130]2 = [MEMORY[0x277CF0130] sharedInstance];
+    v8 = [mEMORY[0x277CF0130]2 securityLevelForAccount:v5] == 4;
   }
 
   else

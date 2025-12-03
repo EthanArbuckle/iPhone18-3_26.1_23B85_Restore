@@ -1,11 +1,11 @@
 @interface LargeLockupCollectionViewCell
-- (_TtC18ASMessagesProvider29LargeLockupCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider29LargeLockupCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation LargeLockupCollectionViewCell
 
-- (_TtC18ASMessagesProvider29LargeLockupCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider29LargeLockupCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider29LargeLockupCollectionViewCell_itemLayoutContext;
   v5 = sub_75C840();
@@ -23,7 +23,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_29DE5C();
 }
 

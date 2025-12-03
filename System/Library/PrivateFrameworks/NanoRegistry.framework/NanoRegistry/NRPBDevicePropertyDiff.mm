@@ -1,10 +1,10 @@
 @interface NRPBDevicePropertyDiff
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)setValue:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)setValue:(uint64_t)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRPBDevicePropertyDiff
@@ -15,26 +15,26 @@
   v8.receiver = self;
   v8.super_class = NRPBDevicePropertyDiff;
   v4 = [(NRPBDevicePropertyDiff *)&v8 description];
-  v5 = [(NRPBDevicePropertyDiff *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NRPBDevicePropertyDiff *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   value = self->_value;
   if (value)
   {
-    v5 = [(NRPBPropertyValue *)value dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"value"];
+    dictionaryRepresentation = [(NRPBPropertyValue *)value dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"value"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_value)
   {
@@ -42,31 +42,31 @@
   }
 }
 
-- (void)setValue:(uint64_t)a1
+- (void)setValue:(uint64_t)value
 {
-  if (a1)
+  if (value)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((value + 8), a2);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NRPBPropertyValue *)self->_value copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NRPBPropertyValue *)self->_value copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     value = self->_value;
-    if (value | v4[1])
+    if (value | equalCopy[1])
     {
       v6 = [(NRPBPropertyValue *)value isEqual:?];
     }

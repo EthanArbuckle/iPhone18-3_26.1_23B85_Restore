@@ -2,8 +2,8 @@
 + (void)initialize;
 - (id)selectedLocationIdentifier;
 - (id)specifiers;
-- (void)setSelectedLocationIdentifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setSelectedLocationIdentifier:(id)identifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -25,13 +25,13 @@
   v3 = +[USLocationWrapper shared];
   [(UBSDefaultLocationSettingsController *)self setModel:v3];
 
-  v4 = [(UBSDefaultLocationSettingsController *)self model];
+  model = [(UBSDefaultLocationSettingsController *)self model];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1FF4;
   v5[3] = &unk_C538;
   v5[4] = self;
-  [v4 loadLocationsWithCompletion:v5];
+  [model loadLocationsWithCompletion:v5];
 }
 
 - (id)specifiers
@@ -45,8 +45,8 @@
   else
   {
     v33 = OBJC_IVAR___PSListController__specifiers;
-    v5 = [(UBSDefaultLocationSettingsController *)self locations];
-    v6 = [v5 count];
+    locations = [(UBSDefaultLocationSettingsController *)self locations];
+    v6 = [locations count];
 
     if (!v6)
     {
@@ -57,8 +57,8 @@
       }
     }
 
-    v8 = [(UBSDefaultLocationSettingsController *)self locations];
-    v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v8 count]);
+    locations2 = [(UBSDefaultLocationSettingsController *)self locations];
+    v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [locations2 count]);
 
     v10 = +[UBSLocalizedString shared];
     v11 = [v10 stringForKey:@"DEFAULT_LOCATION"];
@@ -74,12 +74,12 @@
     [v12 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
     v35 = v12;
     [v9 addObject:v12];
-    v15 = [(UBSDefaultLocationSettingsController *)self selectedLocation];
+    selectedLocation = [(UBSDefaultLocationSettingsController *)self selectedLocation];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v16 = self;
+    selfCopy = self;
     obj = [(UBSDefaultLocationSettingsController *)self locations];
     v17 = [obj countByEnumeratingWithState:&v37 objects:v43 count:16];
     if (v17)
@@ -98,20 +98,20 @@
           }
 
           v22 = *(*(&v37 + 1) + 8 * i);
-          v23 = [v22 name];
-          v24 = [PSSpecifier preferenceSpecifierNamed:v23 target:v16 set:0 get:0 detail:0 cell:3 edit:0];
+          name = [v22 name];
+          v24 = [PSSpecifier preferenceSpecifierNamed:name target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
           [v24 setProperty:v22 forKey:v20];
           [v9 addObject:v24];
-          if ([v15 isEqual:v22])
+          if ([selectedLocation isEqual:v22])
           {
             v25 = qword_11568;
             if (os_log_type_enabled(qword_11568, OS_LOG_TYPE_DEFAULT))
             {
               v26 = v25;
-              v27 = [v22 name];
+              name2 = [v22 name];
               *buf = 138412290;
-              v42 = v27;
+              v42 = name2;
               _os_log_impl(&dword_0, v26, OS_LOG_TYPE_DEFAULT, "Settings selected location to %@.", buf, 0xCu);
             }
 
@@ -126,38 +126,38 @@
     }
 
     v28 = [v9 copy];
-    v29 = *&v16->PSListController_opaque[v33];
-    *&v16->PSListController_opaque[v33] = v28;
+    v29 = *&selfCopy->PSListController_opaque[v33];
+    *&selfCopy->PSListController_opaque[v33] = v28;
 
-    v3 = *&v16->PSListController_opaque[v33];
+    v3 = *&selfCopy->PSListController_opaque[v33];
   }
 
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = UBSDefaultLocationSettingsController;
-  v6 = a4;
-  [(UBSDefaultLocationSettingsController *)&v14 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [v6 section];
+  pathCopy = path;
+  [(UBSDefaultLocationSettingsController *)&v14 tableView:view didSelectRowAtIndexPath:pathCopy];
+  section = [pathCopy section];
 
-  v8 = [(UBSDefaultLocationSettingsController *)self specifierAtIndex:[(UBSDefaultLocationSettingsController *)self indexOfGroup:v7]];
+  v8 = [(UBSDefaultLocationSettingsController *)self specifierAtIndex:[(UBSDefaultLocationSettingsController *)self indexOfGroup:section]];
   v9 = [v8 propertyForKey:PSIsRadioGroupKey];
-  LODWORD(v6) = [v9 BOOLValue];
+  LODWORD(pathCopy) = [v9 BOOLValue];
 
-  if (v6)
+  if (pathCopy)
   {
     v10 = [v8 propertyForKey:PSRadioGroupCheckedSpecifierKey];
     v11 = [v10 propertyForKey:PSValueKey];
-    v12 = [(UBSDefaultLocationSettingsController *)self selectedLocation];
-    if (([v11 isEqual:v12] & 1) == 0)
+    selectedLocation = [(UBSDefaultLocationSettingsController *)self selectedLocation];
+    if (([v11 isEqual:selectedLocation] & 1) == 0)
     {
       [(UBSDefaultLocationSettingsController *)self setPreferenceValue:v11 specifier:v10];
       [(UBSDefaultLocationSettingsController *)self setSelectedLocation:v11];
-      v13 = [(UBSDefaultLocationSettingsController *)self model];
-      [v13 setWithSelectedLocation:v11];
+      model = [(UBSDefaultLocationSettingsController *)self model];
+      [model setWithSelectedLocation:v11];
     }
   }
 
@@ -166,25 +166,25 @@
 
 - (id)selectedLocationIdentifier
 {
-  v2 = [(UBSDefaultLocationSettingsController *)self selectedLocation];
-  v3 = [v2 id];
+  selectedLocation = [(UBSDefaultLocationSettingsController *)self selectedLocation];
+  v3 = [selectedLocation id];
 
   return v3;
 }
 
-- (void)setSelectedLocationIdentifier:(id)a3
+- (void)setSelectedLocationIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(UBSDefaultLocationSettingsController *)self locations];
+    locations = [(UBSDefaultLocationSettingsController *)self locations];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_2994;
     v13[3] = &unk_C5A8;
-    v6 = v4;
+    v6 = identifierCopy;
     v14 = v6;
-    v7 = [v5 indexOfObjectPassingTest:v13];
+    v7 = [locations indexOfObjectPassingTest:v13];
 
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -197,11 +197,11 @@
 
     else
     {
-      v10 = [(UBSDefaultLocationSettingsController *)self locations];
-      v11 = [v10 objectAtIndexedSubscript:v7];
+      locations2 = [(UBSDefaultLocationSettingsController *)self locations];
+      v11 = [locations2 objectAtIndexedSubscript:v7];
 
-      v12 = [(UBSDefaultLocationSettingsController *)self model];
-      [v12 setWithSelectedLocation:v11];
+      model = [(UBSDefaultLocationSettingsController *)self model];
+      [model setWithSelectedLocation:v11];
 
       [(UBSDefaultLocationSettingsController *)self setSelectedLocation:v11];
     }

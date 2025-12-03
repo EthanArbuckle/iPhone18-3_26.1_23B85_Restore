@@ -1,33 +1,33 @@
 @interface AVTStoreBackendMigrator
-- (AVTStoreBackendMigrator)initWithEnvironment:(id)a3;
-- (BOOL)migrateContentFromSource:(id)a3 toDestination:(id)a4 error:(id *)a5;
-- (id)updatedRecordsForMigratingRecords:(id)a3 source:(id)a4 destinationBackend:(id)a5 error:(id *)a6;
+- (AVTStoreBackendMigrator)initWithEnvironment:(id)environment;
+- (BOOL)migrateContentFromSource:(id)source toDestination:(id)destination error:(id *)error;
+- (id)updatedRecordsForMigratingRecords:(id)records source:(id)source destinationBackend:(id)backend error:(id *)error;
 @end
 
 @implementation AVTStoreBackendMigrator
 
-- (AVTStoreBackendMigrator)initWithEnvironment:(id)a3
+- (AVTStoreBackendMigrator)initWithEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   v10.receiver = self;
   v10.super_class = AVTStoreBackendMigrator;
   v6 = [(AVTStoreBackendMigrator *)&v10 init];
   if (v6)
   {
-    v7 = [v5 logger];
+    logger = [environmentCopy logger];
     logger = v6->_logger;
-    v6->_logger = v7;
+    v6->_logger = logger;
 
-    objc_storeStrong(&v6->_environment, a3);
+    objc_storeStrong(&v6->_environment, environment);
   }
 
   return v6;
 }
 
-- (BOOL)migrateContentFromSource:(id)a3 toDestination:(id)a4 error:(id *)a5
+- (BOOL)migrateContentFromSource:(id)source toDestination:(id)destination error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  sourceCopy = source;
+  destinationCopy = destination;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -38,24 +38,24 @@
   v23 = __Block_byref_object_copy__6;
   v24 = __Block_byref_object_dispose__6;
   v25 = 0;
-  v10 = [(AVTStoreBackendMigrator *)self logger];
+  logger = [(AVTStoreBackendMigrator *)self logger];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __72__AVTStoreBackendMigrator_migrateContentFromSource_toDestination_error___block_invoke;
   v15[3] = &unk_278CFAE48;
   v15[4] = self;
-  v11 = v8;
+  v11 = sourceCopy;
   v16 = v11;
   v18 = &v20;
   v19 = &v26;
-  v12 = v9;
+  v12 = destinationCopy;
   v17 = v12;
-  [v10 migratingPersistedContent:v15];
+  [logger migratingPersistedContent:v15];
 
   v13 = *(v27 + 24);
-  if (a5 && (v27[3] & 1) == 0)
+  if (error && (v27[3] & 1) == 0)
   {
-    *a5 = v21[5];
+    *error = v21[5];
   }
 
   _Block_object_dispose(&v20, 8);
@@ -137,52 +137,52 @@ LABEL_9:
 LABEL_11:
 }
 
-- (id)updatedRecordsForMigratingRecords:(id)a3 source:(id)a4 destinationBackend:(id)a5 error:(id *)a6
+- (id)updatedRecordsForMigratingRecords:(id)records source:(id)source destinationBackend:(id)backend error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  recordsCopy = records;
+  sourceCopy = source;
+  backendCopy = backend;
   v13 = +[AVTAvatarFetchRequest requestForAllAvatars];
-  v14 = [v12 avatarsForFetchRequest:v13 error:a6];
+  v14 = [backendCopy avatarsForFetchRequest:v13 error:error];
   v15 = [v14 avt_map:&__block_literal_global_8];
 
   if (v15)
   {
-    v16 = [MEMORY[0x277CBEB18] array];
-    if ([v10 count])
+    array = [MEMORY[0x277CBEB18] array];
+    if ([recordsCopy count])
     {
       v17 = 0;
       do
       {
-        v18 = [v10 objectAtIndexedSubscript:v17];
-        v19 = [v18 identifier];
-        v20 = [v15 containsObject:v19];
+        v18 = [recordsCopy objectAtIndexedSubscript:v17];
+        identifier = [v18 identifier];
+        v20 = [v15 containsObject:identifier];
 
         if (v20)
         {
-          v21 = [(AVTStoreBackendMigrator *)self logger];
-          [v21 logFoundExistingRecordDuringMigration];
+          logger = [(AVTStoreBackendMigrator *)self logger];
+          [logger logFoundExistingRecordDuringMigration];
         }
 
         else
         {
-          v21 = [v11 migratedRecordFromRecord:v18 index:v17 totalCount:{objc_msgSend(v10, "count")}];
-          [v16 addObject:v21];
+          logger = [sourceCopy migratedRecordFromRecord:v18 index:v17 totalCount:{objc_msgSend(recordsCopy, "count")}];
+          [array addObject:logger];
         }
 
         ++v17;
       }
 
-      while (v17 < [v10 count]);
+      while (v17 < [recordsCopy count]);
     }
   }
 
   else
   {
-    v16 = 0;
+    array = 0;
   }
 
-  return v16;
+  return array;
 }
 
 @end

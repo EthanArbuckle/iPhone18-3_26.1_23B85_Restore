@@ -1,6 +1,6 @@
 @interface SWWebViewFactory
 - (SWWebViewFactory)init;
-- (id)createWebViewWithWebViewConfiguration:(id)a3 scrollSettings:(id)a4;
+- (id)createWebViewWithWebViewConfiguration:(id)configuration scrollSettings:(id)settings;
 @end
 
 @implementation SWWebViewFactory
@@ -12,48 +12,48 @@
   v2 = [(SWWebViewFactory *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     webViews = v2->_webViews;
-    v2->_webViews = v3;
+    v2->_webViews = weakObjectsPointerArray;
   }
 
   return v2;
 }
 
-- (id)createWebViewWithWebViewConfiguration:(id)a3 scrollSettings:(id)a4
+- (id)createWebViewWithWebViewConfiguration:(id)configuration scrollSettings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
+  settingsCopy = settings;
+  configurationCopy = configuration;
   v8 = [SWWebView alloc];
-  v9 = [(SWWebView *)v8 initWithFrame:v7 configuration:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  v9 = [(SWWebView *)v8 initWithFrame:configurationCopy configuration:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
-  v10 = [(SWWebView *)v9 scrollView];
-  [v10 setScrollsToTop:{objc_msgSend(v6, "scrollsToTop")}];
+  scrollView = [(SWWebView *)v9 scrollView];
+  [scrollView setScrollsToTop:{objc_msgSend(settingsCopy, "scrollsToTop")}];
 
-  v11 = [MEMORY[0x1E69DC888] clearColor];
-  [(SWWebView *)v9 setBackgroundColor:v11];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(SWWebView *)v9 setBackgroundColor:clearColor];
 
   [(SWWebView *)v9 setOpaque:0];
   [(SWWebView *)v9 _setUseSystemAppearance:1];
-  v12 = [(SWWebView *)v9 scrollView];
-  v13 = [MEMORY[0x1E69DC888] clearColor];
-  [v12 setBackgroundColor:v13];
+  scrollView2 = [(SWWebView *)v9 scrollView];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [scrollView2 setBackgroundColor:clearColor2];
 
-  v14 = [(SWWebView *)v9 scrollView];
-  [v14 setScrollEnabled:{objc_msgSend(v6, "scrollEnabled")}];
+  scrollView3 = [(SWWebView *)v9 scrollView];
+  [scrollView3 setScrollEnabled:{objc_msgSend(settingsCopy, "scrollEnabled")}];
 
-  v15 = [(SWWebView *)v9 scrollView];
-  v16 = [v6 showsVerticalScrollIndicator];
+  scrollView4 = [(SWWebView *)v9 scrollView];
+  showsVerticalScrollIndicator = [settingsCopy showsVerticalScrollIndicator];
 
-  [v15 setShowsVerticalScrollIndicator:v16];
-  v17 = [(SWWebView *)v9 scrollView];
-  [v17 setShowsHorizontalScrollIndicator:0];
+  [scrollView4 setShowsVerticalScrollIndicator:showsVerticalScrollIndicator];
+  scrollView5 = [(SWWebView *)v9 scrollView];
+  [scrollView5 setShowsHorizontalScrollIndicator:0];
 
-  v18 = [(SWWebView *)v9 scrollView];
-  [v18 setContentInsetAdjustmentBehavior:2];
+  scrollView6 = [(SWWebView *)v9 scrollView];
+  [scrollView6 setContentInsetAdjustmentBehavior:2];
 
-  v19 = [(SWWebViewFactory *)self webViews];
-  [v19 addPointer:v9];
+  webViews = [(SWWebViewFactory *)self webViews];
+  [webViews addPointer:v9];
 
   return v9;
 }

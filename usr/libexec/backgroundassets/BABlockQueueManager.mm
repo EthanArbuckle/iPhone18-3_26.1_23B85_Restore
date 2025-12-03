@@ -1,7 +1,7 @@
 @interface BABlockQueueManager
 - (BABlockQueueManager)init;
-- (id)blockQueueWithIdentifier:(id)a3;
-- (void)invalidateBlockQueue:(id)a3;
+- (id)blockQueueWithIdentifier:(id)identifier;
+- (void)invalidateBlockQueue:(id)queue;
 @end
 
 @implementation BABlockQueueManager
@@ -21,13 +21,13 @@
   return v2;
 }
 
-- (id)blockQueueWithIdentifier:(id)a3
+- (id)blockQueueWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_identifiersToBlockQueues;
   objc_sync_enter(v5);
-  v6 = [(BABlockQueueManager *)self identifiersToBlockQueues];
-  v7 = [v6 objectForKey:v4];
+  identifiersToBlockQueues = [(BABlockQueueManager *)self identifiersToBlockQueues];
+  v7 = [identifiersToBlockQueues objectForKey:identifierCopy];
 
   if (v7)
   {
@@ -37,10 +37,10 @@
 
   else
   {
-    v8 = [[BABlockQueue alloc] initWithIdentifier:v4];
+    v8 = [[BABlockQueue alloc] initWithIdentifier:identifierCopy];
     [(BABlockQueue *)v8 _increment];
-    v9 = [(BABlockQueueManager *)self identifiersToBlockQueues];
-    [v9 setObject:v8 forKey:v4];
+    identifiersToBlockQueues2 = [(BABlockQueueManager *)self identifiersToBlockQueues];
+    [identifiersToBlockQueues2 setObject:v8 forKey:identifierCopy];
   }
 
   objc_sync_exit(v5);
@@ -48,9 +48,9 @@
   return v8;
 }
 
-- (void)invalidateBlockQueue:(id)a3
+- (void)invalidateBlockQueue:(id)queue
 {
-  v8 = a3;
+  queueCopy = queue;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -60,14 +60,14 @@
 
   v4 = self->_identifiersToBlockQueues;
   objc_sync_enter(v4);
-  [v8 _decrement];
-  if (![v8 queueRetainCount])
+  [queueCopy _decrement];
+  if (![queueCopy queueRetainCount])
   {
-    v5 = [(BABlockQueueManager *)self identifiersToBlockQueues];
-    v6 = [v8 identifier];
-    [v5 removeObjectForKey:v6];
+    identifiersToBlockQueues = [(BABlockQueueManager *)self identifiersToBlockQueues];
+    identifier = [queueCopy identifier];
+    [identifiersToBlockQueues removeObjectForKey:identifier];
 
-    [v8 drain];
+    [queueCopy drain];
   }
 
   objc_sync_exit(v4);

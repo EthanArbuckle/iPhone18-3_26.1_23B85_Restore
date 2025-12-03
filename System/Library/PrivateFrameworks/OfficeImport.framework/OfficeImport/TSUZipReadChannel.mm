@@ -1,35 +1,35 @@
 @interface TSUZipReadChannel
-- (BOOL)processData:(id)a3 CRC:(unsigned int *)a4 isDone:(BOOL)a5 handler:(id)a6;
-- (BOOL)readFileHeaderFromData:(id)a3 headerLength:(unint64_t *)a4;
-- (TSUZipReadChannel)initWithEntry:(id)a3 archive:(id)a4 validateCRC:(BOOL)a5;
-- (void)addBarrier:(id)a3;
+- (BOOL)processData:(id)data CRC:(unsigned int *)c isDone:(BOOL)done handler:(id)handler;
+- (BOOL)readFileHeaderFromData:(id)data headerLength:(unint64_t *)length;
+- (TSUZipReadChannel)initWithEntry:(id)entry archive:(id)archive validateCRC:(BOOL)c;
+- (void)addBarrier:(id)barrier;
 - (void)close;
 - (void)dealloc;
-- (void)handleFailureWithHandler:(id)a3 error:(id)a4;
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5;
-- (void)readWithFileHeaderLength:(unint64_t)a3 handler:(id)a4;
-- (void)readWithHandler:(id)a3;
-- (void)setLowWater:(unint64_t)a3;
+- (void)handleFailureWithHandler:(id)handler error:(id)error;
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler;
+- (void)readWithFileHeaderLength:(unint64_t)length handler:(id)handler;
+- (void)readWithHandler:(id)handler;
+- (void)setLowWater:(unint64_t)water;
 @end
 
 @implementation TSUZipReadChannel
 
-- (TSUZipReadChannel)initWithEntry:(id)a3 archive:(id)a4 validateCRC:(BOOL)a5
+- (TSUZipReadChannel)initWithEntry:(id)entry archive:(id)archive validateCRC:(BOOL)c
 {
-  v9 = a3;
-  v10 = a4;
+  entryCopy = entry;
+  archiveCopy = archive;
   v18.receiver = self;
   v18.super_class = TSUZipReadChannel;
   v11 = [(TSUZipReadChannel *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_entry, a3);
-    objc_storeStrong(&v12->_archive, a4);
-    v12->_validateCRC = a5;
-    v13 = [v10 newArchiveReadChannel];
+    objc_storeStrong(&v11->_entry, entry);
+    objc_storeStrong(&v12->_archive, archive);
+    v12->_validateCRC = c;
+    newArchiveReadChannel = [archiveCopy newArchiveReadChannel];
     archiveReadChannel = v12->_archiveReadChannel;
-    v12->_archiveReadChannel = v13;
+    v12->_archiveReadChannel = newArchiveReadChannel;
 
     if (!v12->_archiveReadChannel)
     {
@@ -53,20 +53,20 @@
   [(TSUZipReadChannel *)&v3 dealloc];
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TSUZipEntry *)self->_entry compressedSize];
-  v6 = [(TSUZipEntry *)self->_entry fileHeaderLength];
-  if (v6)
+  handlerCopy = handler;
+  compressedSize = [(TSUZipEntry *)self->_entry compressedSize];
+  fileHeaderLength = [(TSUZipEntry *)self->_entry fileHeaderLength];
+  if (fileHeaderLength)
   {
-    [(TSUZipReadChannel *)self readWithFileHeaderLength:v6 handler:v4];
+    [(TSUZipReadChannel *)self readWithFileHeaderLength:fileHeaderLength handler:handlerCopy];
   }
 
   else
   {
-    v7 = [(TSUZipEntry *)self->_entry nameLength];
-    v8 = [(TSUZipEntry *)self->_entry extraFieldsLength];
+    nameLength = [(TSUZipEntry *)self->_entry nameLength];
+    extraFieldsLength = [(TSUZipEntry *)self->_entry extraFieldsLength];
     v26[0] = 0;
     v26[1] = v26;
     v26[2] = 0x3032000000;
@@ -88,19 +88,19 @@
     v20[2] = 0x2020000000;
     v21 = crc32(0, 0, 0);
     archiveReadChannel = self->_archiveReadChannel;
-    v12 = [(TSUZipEntry *)self->_entry offset];
+    offset = [(TSUZipEntry *)self->_entry offset];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __37__TSUZipReadChannel_readWithHandler___block_invoke_7;
     v13[3] = &unk_2799C73A0;
     v15 = v22;
     v13[4] = self;
-    v14 = v4;
+    v14 = handlerCopy;
     v16 = v26;
     v17 = v24;
     v18 = v20;
-    v19 = v7 + v8 + 30;
-    [(TSUReadChannel *)archiveReadChannel readFromOffset:v12 length:v19 + v5 handler:v13];
+    v19 = nameLength + extraFieldsLength + 30;
+    [(TSUReadChannel *)archiveReadChannel readFromOffset:offset length:v19 + compressedSize handler:v13];
 
     _Block_object_dispose(v20, 8);
     _Block_object_dispose(v22, 8);
@@ -214,54 +214,54 @@ void __37__TSUZipReadChannel_readWithHandler___block_invoke_2()
   TSUDefaultCat_log_t = v0;
 }
 
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler
 {
-  v8 = a5;
-  v9 = [(TSUZipEntry *)self->_entry compressedSize];
-  if (a3 < 0 || v9 < a3)
+  handlerCopy = handler;
+  compressedSize = [(TSUZipEntry *)self->_entry compressedSize];
+  if (offset < 0 || compressedSize < offset)
   {
     if (TSUDefaultCat_init_token != -1)
     {
       [TSUZipReadChannel readFromOffset:length:handler:];
     }
 
-    (*(v8 + 2))(v8, 1, MEMORY[0x277D85CC8], 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, MEMORY[0x277D85CC8], 0);
   }
 
   else
   {
-    if (v9 - a3 < a4)
+    if (compressedSize - offset < length)
     {
-      a4 = v9 - a3;
+      length = compressedSize - offset;
     }
 
-    if (a3 || a4 != v9)
+    if (offset || length != compressedSize)
     {
-      v10 = [(TSUZipEntry *)self->_entry fileHeaderLength];
-      if (v10)
+      fileHeaderLength = [(TSUZipEntry *)self->_entry fileHeaderLength];
+      if (fileHeaderLength)
       {
-        [(TSUReadChannel *)self->_archiveReadChannel readFromOffset:v10 + a3 + [(TSUZipEntry *)self->_entry offset] length:a4 handler:v8];
+        [(TSUReadChannel *)self->_archiveReadChannel readFromOffset:fileHeaderLength + offset + [(TSUZipEntry *)self->_entry offset] length:length handler:handlerCopy];
       }
 
       else
       {
         archiveReadChannel = self->_archiveReadChannel;
-        v12 = [(TSUZipEntry *)self->_entry offset];
+        offset = [(TSUZipEntry *)self->_entry offset];
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
         v13[2] = __51__TSUZipReadChannel_readFromOffset_length_handler___block_invoke_3;
         v13[3] = &unk_2799C73C8;
         v13[4] = self;
-        v15 = a3;
-        v16 = a4;
-        v14 = v8;
-        [TSUIOUtils readAllFromChannel:archiveReadChannel offset:v12 length:30 completion:v13];
+        offsetCopy = offset;
+        lengthCopy = length;
+        v14 = handlerCopy;
+        [TSUIOUtils readAllFromChannel:archiveReadChannel offset:offset length:30 completion:v13];
       }
     }
 
     else
     {
-      [(TSUZipReadChannel *)self readWithHandler:v8];
+      [(TSUZipReadChannel *)self readWithHandler:handlerCopy];
     }
   }
 }
@@ -292,19 +292,19 @@ void __51__TSUZipReadChannel_readFromOffset_length_handler___block_invoke_3(uint
   }
 }
 
-- (BOOL)readFileHeaderFromData:(id)a3 headerLength:(unint64_t *)a4
+- (BOOL)readFileHeaderFromData:(id)data headerLength:(unint64_t *)length
 {
-  v6 = a3;
-  size = dispatch_data_get_size(v6);
+  dataCopy = data;
+  size = dispatch_data_get_size(dataCopy);
   if (size == 30)
   {
-    subrange = v6;
+    subrange = dataCopy;
     goto LABEL_5;
   }
 
   if (size >= 0x1F)
   {
-    subrange = dispatch_data_create_subrange(v6, 0, 0x1EuLL);
+    subrange = dispatch_data_create_subrange(dataCopy, 0, 0x1EuLL);
 LABEL_5:
     v9 = subrange;
     v16 = 0;
@@ -326,7 +326,7 @@ LABEL_5:
 
       if (v13 && (((v12 != TSUZipDeflateCompressionMethod) ^ [(TSUZipEntry *)self->_entry isCompressed]) & 1) != 0)
       {
-        *a4 = v11[13] + v11[14] + 30;
+        *length = v11[13] + v11[14] + 30;
         [(TSUZipEntry *)self->_entry setFileHeaderLength:?];
         v14 = 1;
 LABEL_17:
@@ -390,9 +390,9 @@ void __57__TSUZipReadChannel_readFileHeaderFromData_headerLength___block_invoke_
   TSUDefaultCat_log_t = v0;
 }
 
-- (void)readWithFileHeaderLength:(unint64_t)a3 handler:(id)a4
+- (void)readWithFileHeaderLength:(unint64_t)length handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x2020000000;
@@ -402,18 +402,18 @@ void __57__TSUZipReadChannel_readFileHeaderFromData_headerLength___block_invoke_
   v15[2] = 0x2020000000;
   v16 = crc32(0, 0, 0);
   archiveReadChannel = self->_archiveReadChannel;
-  v8 = [(TSUZipEntry *)self->_entry offset];
-  v9 = [(TSUZipEntry *)self->_entry compressedSize];
+  offset = [(TSUZipEntry *)self->_entry offset];
+  compressedSize = [(TSUZipEntry *)self->_entry compressedSize];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __54__TSUZipReadChannel_readWithFileHeaderLength_handler___block_invoke;
   v11[3] = &unk_2799C73F0;
   v13 = v17;
   v11[4] = self;
-  v10 = v6;
+  v10 = handlerCopy;
   v12 = v10;
   v14 = v15;
-  [(TSUReadChannel *)archiveReadChannel readFromOffset:v8 + a3 length:v9 handler:v11];
+  [(TSUReadChannel *)archiveReadChannel readFromOffset:offset + length length:compressedSize handler:v11];
 
   _Block_object_dispose(v15, 8);
   _Block_object_dispose(v17, 8);
@@ -445,25 +445,25 @@ LABEL_6:
 LABEL_7:
 }
 
-- (BOOL)processData:(id)a3 CRC:(unsigned int *)a4 isDone:(BOOL)a5 handler:(id)a6
+- (BOOL)processData:(id)data CRC:(unsigned int *)c isDone:(BOOL)done handler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
-  if (a4 && self->_validateCRC && (applier[0] = MEMORY[0x277D85DD0], applier[1] = 3221225472, applier[2] = __52__TSUZipReadChannel_processData_CRC_isDone_handler___block_invoke, applier[3] = &__block_descriptor_40_e47_B40__0__NSObject_OS_dispatch_data__8Q16r_v24Q32l, applier[4] = a4, dispatch_data_apply(v10, applier), v7) && [(TSUZipEntry *)self->_entry CRC]!= *a4)
+  doneCopy = done;
+  dataCopy = data;
+  handlerCopy = handler;
+  if (c && self->_validateCRC && (applier[0] = MEMORY[0x277D85DD0], applier[1] = 3221225472, applier[2] = __52__TSUZipReadChannel_processData_CRC_isDone_handler___block_invoke, applier[3] = &__block_descriptor_40_e47_B40__0__NSObject_OS_dispatch_data__8Q16r_v24Q32l, applier[4] = c, dispatch_data_apply(dataCopy, applier), doneCopy) && [(TSUZipEntry *)self->_entry CRC]!= *c)
   {
     if (TSUDefaultCat_init_token != -1)
     {
       [TSUZipReadChannel processData:CRC:isDone:handler:];
     }
 
-    [(TSUZipReadChannel *)self handleFailureWithHandler:v11 error:0];
+    [(TSUZipReadChannel *)self handleFailureWithHandler:handlerCopy error:0];
     v12 = 0;
   }
 
   else
   {
-    v11[2](v11, v7, v10, 0);
+    handlerCopy[2](handlerCopy, doneCopy, dataCopy, 0);
     v12 = 1;
   }
 
@@ -495,21 +495,21 @@ void __52__TSUZipReadChannel_processData_CRC_isDone_handler___block_invoke_2()
   TSUDefaultCat_log_t = v0;
 }
 
-- (void)handleFailureWithHandler:(id)a3 error:(id)a4
+- (void)handleFailureWithHandler:(id)handler error:(id)error
 {
-  if (a4)
+  if (error)
   {
-    v5 = *(a3 + 2);
-    v8 = a3;
+    v5 = *(handler + 2);
+    handlerCopy = handler;
     v5();
   }
 
   else
   {
     v6 = MEMORY[0x277CCA9B8];
-    v7 = a3;
-    v8 = [v6 tsu_fileReadCorruptedFileErrorWithUserInfo:0];
-    (*(a3 + 2))(v7, 1, 0);
+    handlerCopy2 = handler;
+    handlerCopy = [v6 tsu_fileReadCorruptedFileErrorWithUserInfo:0];
+    (*(handler + 2))(handlerCopy2, 1, 0);
   }
 }
 
@@ -526,7 +526,7 @@ void __52__TSUZipReadChannel_processData_CRC_isDone_handler___block_invoke_2()
   self->_archive = 0;
 }
 
-- (void)setLowWater:(unint64_t)a3
+- (void)setLowWater:(unint64_t)water
 {
   if (!self->_archiveReadChannel)
   {
@@ -537,7 +537,7 @@ void __52__TSUZipReadChannel_processData_CRC_isDone_handler___block_invoke_2()
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (a3 <= 0x1D)
+  if (water <= 0x1D)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUZipReadChannel setLowWater:]"];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUZipReadChannel.m"];
@@ -548,14 +548,14 @@ void __52__TSUZipReadChannel_processData_CRC_isDone_handler___block_invoke_2()
 
   archiveReadChannel = self->_archiveReadChannel;
 
-  [(TSUReadChannel *)archiveReadChannel setLowWater:a3];
+  [(TSUReadChannel *)archiveReadChannel setLowWater:water];
 }
 
-- (void)addBarrier:(id)a3
+- (void)addBarrier:(id)barrier
 {
-  v4 = a3;
+  barrierCopy = barrier;
   archiveReadChannel = self->_archiveReadChannel;
-  v8 = v4;
+  v8 = barrierCopy;
   if (!archiveReadChannel)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUZipReadChannel addBarrier:]"];
@@ -563,11 +563,11 @@ void __52__TSUZipReadChannel_processData_CRC_isDone_handler___block_invoke_2()
     [OITSUAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:281 isFatal:0 description:"Already closed"];
 
     +[OITSUAssertionHandler logBacktraceThrottled];
-    v4 = v8;
+    barrierCopy = v8;
     archiveReadChannel = self->_archiveReadChannel;
   }
 
-  [(TSUReadChannel *)archiveReadChannel addBarrier:v4];
+  [(TSUReadChannel *)archiveReadChannel addBarrier:barrierCopy];
 }
 
 uint64_t __52__TSUZipReadChannel_processData_CRC_isDone_handler___block_invoke_cold_1()

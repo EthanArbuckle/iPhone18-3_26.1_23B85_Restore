@@ -1,9 +1,9 @@
 @interface PLUIEditImageViewController
-- (PLUIEditImageViewController)initWithPhoto:(id)a3;
+- (PLUIEditImageViewController)initWithPhoto:(id)photo;
 - (int)cropOverlayMode;
-- (void)cropOverlay:(id)a3 didFinishSaving:(id)a4;
-- (void)cropOverlayWasCancelled:(id)a3;
-- (void)cropOverlayWasOKed:(id)a3;
+- (void)cropOverlay:(id)overlay didFinishSaving:(id)saving;
+- (void)cropOverlayWasCancelled:(id)cancelled;
+- (void)cropOverlayWasOKed:(id)ked;
 - (void)dealloc;
 @end
 
@@ -24,7 +24,7 @@
   return mode;
 }
 
-- (void)cropOverlayWasCancelled:(id)a3
+- (void)cropOverlayWasCancelled:(id)cancelled
 {
   if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -34,17 +34,17 @@
   }
 }
 
-- (void)cropOverlay:(id)a3 didFinishSaving:(id)a4
+- (void)cropOverlay:(id)overlay didFinishSaving:(id)saving
 {
   if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     delegate = self->_delegate;
 
-    [delegate editImageViewController:self didEditImageWithOptions:a4];
+    [delegate editImageViewController:self didEditImageWithOptions:saving];
   }
 }
 
-- (void)cropOverlayWasOKed:(id)a3
+- (void)cropOverlayWasOKed:(id)ked
 {
   if (!self->_saveOptions)
   {
@@ -54,11 +54,11 @@
   [PLCropOverlay beginBackgroundSaveWithTile:"beginBackgroundSaveWithTile:progressTitle:completionCallbackTarget:options:" progressTitle:self->super._imageTile completionCallbackTarget:0 options:?];
 }
 
-- (PLUIEditImageViewController)initWithPhoto:(id)a3
+- (PLUIEditImageViewController)initWithPhoto:(id)photo
 {
   v6.receiver = self;
   v6.super_class = PLUIEditImageViewController;
-  v3 = [(PLUIImageViewController *)&v6 initWithPhoto:a3];
+  v3 = [(PLUIImageViewController *)&v6 initWithPhoto:photo];
   v4 = v3;
   if (v3)
   {

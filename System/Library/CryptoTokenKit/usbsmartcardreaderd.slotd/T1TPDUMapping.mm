@@ -1,63 +1,63 @@
 @interface T1TPDUMapping
-- (T1TPDUMapping)initWithTransmitter:(id)a3 autoIfs:(BOOL)a4 ifs:(unsigned __int8)a5 redundancyCode:(char)a6 bwt:(float)a7;
-- (id)secure:(id)a3 APDU:(id)a4;
-- (id)transmit:(id)a3;
-- (id)transmitCCIDMessage:(id)a3 maxPayload:(unint64_t)a4 transmitted:(id)a5;
-- (void)fillQueue:(id)a3 request:(id)a4 ifs:(unsigned __int8)a5;
-- (void)handleIBlock:(id)a3 ackBlock:(id)a4 queue:(id)a5 resultData:(id)a6;
-- (void)handleRBlock:(id)a3 ackBlock:(id)a4 queue:(id)a5 resultData:(id)a6;
-- (void)handleSBlock:(id)a3 ackBlock:(id)a4 queue:(id)a5 abortBlock:(id)a6 resynchBlock:(id)a7;
+- (T1TPDUMapping)initWithTransmitter:(id)transmitter autoIfs:(BOOL)ifs ifs:(unsigned __int8)a5 redundancyCode:(char)code bwt:(float)bwt;
+- (id)secure:(id)secure APDU:(id)u;
+- (id)transmit:(id)transmit;
+- (id)transmitCCIDMessage:(id)message maxPayload:(unint64_t)payload transmitted:(id)transmitted;
+- (void)fillQueue:(id)queue request:(id)request ifs:(unsigned __int8)ifs;
+- (void)handleIBlock:(id)block ackBlock:(id)ackBlock queue:(id)queue resultData:(id)data;
+- (void)handleRBlock:(id)block ackBlock:(id)ackBlock queue:(id)queue resultData:(id)data;
+- (void)handleSBlock:(id)block ackBlock:(id)ackBlock queue:(id)queue abortBlock:(id)abortBlock resynchBlock:(id)resynchBlock;
 @end
 
 @implementation T1TPDUMapping
 
-- (T1TPDUMapping)initWithTransmitter:(id)a3 autoIfs:(BOOL)a4 ifs:(unsigned __int8)a5 redundancyCode:(char)a6 bwt:(float)a7
+- (T1TPDUMapping)initWithTransmitter:(id)transmitter autoIfs:(BOOL)ifs ifs:(unsigned __int8)a5 redundancyCode:(char)code bwt:(float)bwt
 {
-  v8 = a6;
+  codeCopy = code;
   v9 = a5;
-  v10 = a4;
-  v12 = a3;
+  ifsCopy = ifs;
+  transmitterCopy = transmitter;
   v13 = sub_100008B80();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109888;
-    v18 = v10;
+    v18 = ifsCopy;
     v19 = 1024;
     v20 = v9;
     v21 = 1024;
-    v22 = v8;
+    v22 = codeCopy;
     v23 = 2048;
-    v24 = a7;
+    bwtCopy = bwt;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "T1TPDUMapping initWithTransmitter autoIFS: %d IFS: %d RC: %d BWT %f", buf, 0x1Eu);
   }
 
   v16.receiver = self;
   v16.super_class = T1TPDUMapping;
-  v14 = [(APDUMapping *)&v16 initWithTransmitter:v12];
+  v14 = [(APDUMapping *)&v16 initWithTransmitter:transmitterCopy];
 
   if (v14)
   {
-    *(&v14->super._wt + 6) = v10;
+    *(&v14->super._wt + 6) = ifsCopy;
     v14->_cardSequence = v9;
-    LOBYTE(v14->_bwt) = v8;
-    *&v14->_deactivated = a7;
+    LOBYTE(v14->_bwt) = codeCopy;
+    *&v14->_deactivated = bwt;
     BYTE1(v14->_bwt) = [T1TPDUBlock nodeAddressWithSource:0 andDestination:0];
   }
 
   return v14;
 }
 
-- (id)transmitCCIDMessage:(id)a3 maxPayload:(unint64_t)a4 transmitted:(id)a5
+- (id)transmitCCIDMessage:(id)message maxPayload:(unint64_t)payload transmitted:(id)transmitted
 {
-  v8 = a5;
-  v9 = [CCIDMessageView create:111 withPayload:a3];
+  transmittedCopy = transmitted;
+  v9 = [CCIDMessageView create:111 withPayload:message];
   [v9 setWLevelParameter:0];
   [v9 setBBWI:0];
   WeakRetained = objc_loadWeakRetained(&self->super._transmitter);
   v11 = WeakRetained;
-  if (a4)
+  if (payload)
   {
-    v12 = a4 + 5;
+    v12 = payload + 5;
   }
 
   else
@@ -65,11 +65,11 @@
     v12 = 0;
   }
 
-  v13 = [WeakRetained transmitAndReceive:v9 maxPayload:v12 outTimeout:0 inTimeout:0 transmitted:v8];
+  v13 = [WeakRetained transmitAndReceive:v9 maxPayload:v12 outTimeout:0 inTimeout:0 transmitted:transmittedCopy];
 
   if ([v13 messageType] == 128)
   {
-    v14 = [v13 aPayload];
+    aPayload = [v13 aPayload];
   }
 
   else
@@ -80,30 +80,30 @@
       sub_100016444();
     }
 
-    v14 = 0;
+    aPayload = 0;
   }
 
-  return v14;
+  return aPayload;
 }
 
-- (void)fillQueue:(id)a3 request:(id)a4 ifs:(unsigned __int8)a5
+- (void)fillQueue:(id)queue request:(id)request ifs:(unsigned __int8)ifs
 {
-  v5 = a5;
-  v25 = a3;
-  v8 = a4;
-  if ([v8 length] <= v5)
+  ifsCopy = ifs;
+  queueCopy = queue;
+  requestCopy = request;
+  if ([requestCopy length] <= ifsCopy)
   {
     v24 = *(&self->super._wt + 4);
     *(&self->super._wt + 4) = v24 + 1;
-    v21 = [T1InformationBlock informationBlockWithNad:BYTE1(self->_bwt) sequence:v24 & 1 moreData:0 informationField:v8 redundancyCode:SLOBYTE(self->_bwt)];
-    [v25 enqueueBlock:v21];
+    v21 = [T1InformationBlock informationBlockWithNad:BYTE1(self->_bwt) sequence:v24 & 1 moreData:0 informationField:requestCopy redundancyCode:SLOBYTE(self->_bwt)];
+    [queueCopy enqueueBlock:v21];
   }
 
   else
   {
-    v9 = v5;
+    v9 = ifsCopy;
     v10 = +[NSMutableArray array];
-    [v8 length];
+    [requestCopy length];
     v11 = 0;
     v12 = 0;
     v26 = v10;
@@ -112,16 +112,16 @@
       v13 = *(&self->super._wt + 4);
       *(&self->super._wt + 4) = v13 + 1;
       v14 = &v9[v12];
-      v15 = [v8 length];
+      v15 = [requestCopy length];
       v16 = v9;
       v17 = v15;
       v18 = BYTE1(self->_bwt);
       if (v15 <= &v9[v12])
       {
-        v16 = [v8 length] + v11;
+        v16 = [requestCopy length] + v11;
       }
 
-      v19 = [v8 subdataWithRange:{v12, v16}];
+      v19 = [requestCopy subdataWithRange:{v12, v16}];
       v20 = [T1InformationBlock informationBlockWithNad:v18 sequence:v13 & 1 moreData:v17 > v14 informationField:v19 redundancyCode:SLOBYTE(self->_bwt)];
 
       v21 = v26;
@@ -131,28 +131,28 @@
       v12 = v14;
     }
 
-    while ([v8 length] >= v14);
-    v22 = [v26 reverseObjectEnumerator];
-    v23 = [v22 allObjects];
-    [v25 enqueueArray:v23];
+    while ([requestCopy length] >= v14);
+    reverseObjectEnumerator = [v26 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    [queueCopy enqueueArray:allObjects];
   }
 }
 
-- (void)handleIBlock:(id)a3 ackBlock:(id)a4 queue:(id)a5 resultData:(id)a6
+- (void)handleIBlock:(id)block ackBlock:(id)ackBlock queue:(id)queue resultData:(id)data
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  blockCopy = block;
+  queueCopy = queue;
+  dataCopy = data;
   v13 = sub_100008B80();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     sub_1000164E8();
   }
 
-  v14 = [v10 sequence];
+  sequence = [blockCopy sequence];
   v15 = *(&self->super._wt + 5);
   *(&self->super._wt + 5) = v15 + 1;
-  if (v14 != (v15 & 1))
+  if (sequence != (v15 & 1))
   {
     v16 = sub_100008B80();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -163,9 +163,9 @@
     ++*(&self->super._wt + 5);
   }
 
-  if (a4)
+  if (ackBlock)
   {
-    v17 = [v11 dequeueBlock];
+    dequeueBlock = [queueCopy dequeueBlock];
     v18 = sub_100008B80();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
@@ -173,12 +173,12 @@
     }
   }
 
-  if ([v10 lengthByte])
+  if ([blockCopy lengthByte])
   {
-    v19 = [v10 informationField];
-    if (v19)
+    informationField = [blockCopy informationField];
+    if (informationField)
     {
-      [v12 appendData:v19];
+      [dataCopy appendData:informationField];
     }
 
     else
@@ -191,10 +191,10 @@
     }
   }
 
-  if ([v10 moreData])
+  if ([blockCopy moreData])
   {
     v21 = [T1ReadyBlock readyBlockWithNad:BYTE1(self->_bwt) sequence:*(&self->super._wt + 5) & 1 status:0 redundancyCode:SLOBYTE(self->_bwt)];
-    [v11 enqueueBlock:v21];
+    [queueCopy enqueueBlock:v21];
 
     v22 = sub_100008B80();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -204,11 +204,11 @@
   }
 }
 
-- (void)handleRBlock:(id)a3 ackBlock:(id)a4 queue:(id)a5 resultData:(id)a6
+- (void)handleRBlock:(id)block ackBlock:(id)ackBlock queue:(id)queue resultData:(id)data
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  blockCopy = block;
+  ackBlockCopy = ackBlock;
+  queueCopy = queue;
   v12 = sub_100008B80();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -218,15 +218,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v10;
-    v14 = [v13 moreData];
-    v15 = [v13 sequence];
-    v16 = [v9 sequence];
-    if (v14)
+    v13 = ackBlockCopy;
+    moreData = [v13 moreData];
+    sequence = [v13 sequence];
+    sequence2 = [blockCopy sequence];
+    if (moreData)
     {
-      if (v15 != v16)
+      if (sequence != sequence2)
       {
-        v17 = [v11 dequeueBlock];
+        dequeueBlock = [queueCopy dequeueBlock];
         v18 = sub_100008B80();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
@@ -237,10 +237,10 @@ LABEL_14:
       }
     }
 
-    else if (v15 != v16)
+    else if (sequence != sequence2)
     {
       v20 = [T1ReadyBlock readyBlockWithNad:BYTE1(self->_bwt) sequence:*(&self->super._wt + 5) & 1 status:2 redundancyCode:SLOBYTE(self->_bwt)];
-      [v11 enqueueBlock:v20];
+      [queueCopy enqueueBlock:v20];
 
       v18 = sub_100008B80();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -256,10 +256,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v10)
+  if (!ackBlockCopy)
   {
     v19 = [T1ReadyBlock readyBlockWithNad:BYTE1(self->_bwt) sequence:*(&self->super._wt + 5) & 1 status:0 redundancyCode:SLOBYTE(self->_bwt)];
-    [v11 enqueueBlock:v19];
+    [queueCopy enqueueBlock:v19];
 
     v13 = sub_100008B80();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -273,26 +273,26 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)handleSBlock:(id)a3 ackBlock:(id)a4 queue:(id)a5 abortBlock:(id)a6 resynchBlock:(id)a7
+- (void)handleSBlock:(id)block ackBlock:(id)ackBlock queue:(id)queue abortBlock:(id)abortBlock resynchBlock:(id)resynchBlock
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  blockCopy = block;
+  queueCopy = queue;
+  abortBlockCopy = abortBlock;
+  resynchBlockCopy = resynchBlock;
   v15 = sub_100008B80();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     sub_100016690();
   }
 
-  v16 = [v11 type];
-  v17 = [v11 operation];
-  if (v16)
+  type = [blockCopy type];
+  operation = [blockCopy operation];
+  if (type)
   {
-    if (v17 == 1)
+    if (operation == 1)
     {
-      self->_cardSequence = [v11 uint8Value];
-      v18 = [v12 dequeueBlock];
+      self->_cardSequence = [blockCopy uint8Value];
+      dequeueBlock = [queueCopy dequeueBlock];
       v19 = sub_100008B80();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
@@ -300,9 +300,9 @@ LABEL_16:
       }
     }
 
-    else if ([v11 operation] == 2)
+    else if ([blockCopy operation] == 2)
     {
-      v13[2](v13);
+      abortBlockCopy[2](abortBlockCopy);
       v19 = sub_100008B80();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
@@ -310,7 +310,7 @@ LABEL_16:
       }
     }
 
-    else if ([v11 operation])
+    else if ([blockCopy operation])
     {
       v19 = sub_100008B80();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -321,8 +321,8 @@ LABEL_16:
 
     else
     {
-      v27 = [v12 dequeueBlock];
-      v14[2](v14);
+      dequeueBlock2 = [queueCopy dequeueBlock];
+      resynchBlockCopy[2](resynchBlockCopy);
       v19 = sub_100008B80();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
@@ -335,44 +335,44 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (v17 == 3)
+  if (operation == 3)
   {
     v20 = BYTE1(self->_bwt);
-    v21 = [v11 informationField];
-    v22 = [T1SupervisoryBlock supervisoryBlockWithNad:v20 operation:3 type:1 informationField:v21 redundancyCode:SLOBYTE(self->_bwt)];
-    [v12 enqueueBlock:v22];
+    informationField = [blockCopy informationField];
+    v22 = [T1SupervisoryBlock supervisoryBlockWithNad:v20 operation:3 type:1 informationField:informationField redundancyCode:SLOBYTE(self->_bwt)];
+    [queueCopy enqueueBlock:v22];
 
     v19 = sub_100008B80();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000168B8(v11);
+      sub_1000168B8(blockCopy);
     }
 
     goto LABEL_27;
   }
 
-  if ([v11 operation] == 1)
+  if ([blockCopy operation] == 1)
   {
-    self->_cardSequence = [v11 uint8Value];
+    self->_cardSequence = [blockCopy uint8Value];
     v23 = BYTE1(self->_bwt);
-    v24 = [v11 informationField];
-    v25 = [T1SupervisoryBlock supervisoryBlockWithNad:v23 operation:1 type:1 informationField:v24 redundancyCode:SLOBYTE(self->_bwt)];
-    [v12 enqueueBlock:v25];
+    informationField2 = [blockCopy informationField];
+    v25 = [T1SupervisoryBlock supervisoryBlockWithNad:v23 operation:1 type:1 informationField:informationField2 redundancyCode:SLOBYTE(self->_bwt)];
+    [queueCopy enqueueBlock:v25];
 
     v19 = sub_100008B80();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      sub_10001683C(v11);
+      sub_10001683C(blockCopy);
     }
 
     goto LABEL_27;
   }
 
-  if ([v11 operation] == 2)
+  if ([blockCopy operation] == 2)
   {
-    v13[2](v13);
+    abortBlockCopy[2](abortBlockCopy);
     v26 = [T1SupervisoryBlock supervisoryBlockWithNad:BYTE1(self->_bwt) operation:2 type:1 informationField:0 redundancyCode:SLOBYTE(self->_bwt)];
-    [v12 enqueueBlock:v26];
+    [queueCopy enqueueBlock:v26];
 
     v19 = sub_100008B80();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -383,11 +383,11 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  if (![v11 operation])
+  if (![blockCopy operation])
   {
-    v14[2](v14);
+    resynchBlockCopy[2](resynchBlockCopy);
     v28 = [T1SupervisoryBlock supervisoryBlockWithNad:BYTE1(self->_bwt) operation:0 type:1 informationField:0 redundancyCode:SLOBYTE(self->_bwt)];
-    [v12 enqueueBlock:v28];
+    [queueCopy enqueueBlock:v28];
 
     v19 = sub_100008B80();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -401,16 +401,16 @@ LABEL_27:
 LABEL_28:
 }
 
-- (id)transmit:(id)a3
+- (id)transmit:(id)transmit
 {
-  v4 = a3;
+  transmitCopy = transmit;
   v5 = sub_100008B80();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_100016934();
   }
 
-  v45 = [[APDU alloc] initWithData:v4];
+  v45 = [[APDU alloc] initWithData:transmitCopy];
   v6 = +[NSMutableData data];
   v7 = objc_alloc_init(FIFOQueue);
   if (self->_sequence == 1)
@@ -430,8 +430,8 @@ LABEL_28:
   v59 = v44;
   v9 = v7;
   v60 = v9;
-  v61 = self;
-  v41 = v4;
+  selfCopy = self;
+  v41 = transmitCopy;
   v62 = v41;
   v10 = objc_retainBlock(v58);
   v56[0] = _NSConcreteStackBlock;
@@ -475,30 +475,30 @@ LABEL_28:
         *(&self->super._wt + 7) = 1;
       }
 
-      v18 = [(FIFOQueue *)v11 firstBlock];
-      if (([v18 needAck] & 1) == 0)
+      firstBlock = [(FIFOQueue *)v11 firstBlock];
+      if (([firstBlock needAck] & 1) == 0)
       {
-        v19 = [(FIFOQueue *)v11 dequeueBlock];
+        dequeueBlock = [(FIFOQueue *)v11 dequeueBlock];
       }
 
       v20 = sub_100008B80();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v64 = v18;
+        v64 = firstBlock;
         _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, ">>> block: %@", buf, 0xCu);
       }
 
-      v21 = [v18 data];
-      v22 = [(APDU *)v45 maxPayload];
+      data = [firstBlock data];
+      maxPayload = [(APDU *)v45 maxPayload];
       v53[0] = _NSConcreteStackBlock;
       v53[1] = 3221225472;
       v53[2] = sub_10000AF7C;
       v53[3] = &unk_100024800;
-      v23 = v18;
+      v23 = firstBlock;
       v54 = v23;
-      v55 = self;
-      v24 = [(T1TPDUMapping *)self transmitCCIDMessage:v21 maxPayload:v22 transmitted:v53];
+      selfCopy2 = self;
+      v24 = [(T1TPDUMapping *)self transmitCCIDMessage:data maxPayload:maxPayload transmitted:v53];
 
       v52 = 0;
       v25 = +[T1TPDUBlock blockWithData:redundacyCode:sequence:rcError:](T1TPDUBlock, "blockWithData:redundacyCode:sequence:rcError:", v24, SLOBYTE(self->_bwt), [v23 sequence], &v52);
@@ -519,16 +519,16 @@ LABEL_28:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v27 = [(FIFOQueue *)v11 firstBlock];
-        [(T1TPDUMapping *)self handleRBlock:v25 ackBlock:v27 queue:v11 resultData:v44];
+        firstBlock2 = [(FIFOQueue *)v11 firstBlock];
+        [(T1TPDUMapping *)self handleRBlock:v25 ackBlock:firstBlock2 queue:v11 resultData:v44];
         goto LABEL_27;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v27 = [(FIFOQueue *)v11 firstBlock];
-        [(T1TPDUMapping *)self handleSBlock:v25 ackBlock:v27 queue:v11 abortBlock:v43 resynchBlock:v42];
+        firstBlock2 = [(FIFOQueue *)v11 firstBlock];
+        [(T1TPDUMapping *)self handleSBlock:v25 ackBlock:firstBlock2 queue:v11 abortBlock:v43 resynchBlock:v42];
         goto LABEL_27;
       }
 
@@ -549,7 +549,7 @@ LABEL_28:
 
 LABEL_45:
         ++v13;
-        v33 = [(FIFOQueue *)v11 firstBlock];
+        firstBlock3 = [(FIFOQueue *)v11 firstBlock];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -624,8 +624,8 @@ LABEL_28:
       }
     }
 
-    v27 = [(FIFOQueue *)v11 firstBlock];
-    [(T1TPDUMapping *)self handleIBlock:v25 ackBlock:v27 queue:v11 resultData:v44];
+    firstBlock2 = [(FIFOQueue *)v11 firstBlock];
+    [(T1TPDUMapping *)self handleIBlock:v25 ackBlock:firstBlock2 queue:v11 resultData:v44];
 LABEL_27:
 
     v13 = 0;
@@ -648,10 +648,10 @@ LABEL_52:
   return v37;
 }
 
-- (id)secure:(id)a3 APDU:(id)a4
+- (id)secure:(id)secure APDU:(id)u
 {
-  v6 = a3;
-  v7 = a4;
+  secureCopy = secure;
+  uCopy = u;
   v8 = sub_100008B80();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -659,18 +659,18 @@ LABEL_52:
   }
 
   v9 = objc_alloc_init(FIFOQueue);
-  v26 = v7;
-  [(T1TPDUMapping *)self fillQueue:v9 request:v7 ifs:self->_cardSequence];
-  v10 = [(FIFOQueue *)v9 dequeueBlock];
-  [v6 setNodeAddressByte:{objc_msgSend(v10, "nodeAddressByte")}];
-  [v6 setProtocolControlByte:{objc_msgSend(v10, "protocolControlByte")}];
-  [v6 setLengthByte:{objc_msgSend(v10, "lengthByte")}];
-  v27 = v6;
-  v11 = [v6 buffer];
-  v12 = [NSMutableData dataWithData:v11];
+  v26 = uCopy;
+  [(T1TPDUMapping *)self fillQueue:v9 request:uCopy ifs:self->_cardSequence];
+  dequeueBlock = [(FIFOQueue *)v9 dequeueBlock];
+  [secureCopy setNodeAddressByte:{objc_msgSend(dequeueBlock, "nodeAddressByte")}];
+  [secureCopy setProtocolControlByte:{objc_msgSend(dequeueBlock, "protocolControlByte")}];
+  [secureCopy setLengthByte:{objc_msgSend(dequeueBlock, "lengthByte")}];
+  v27 = secureCopy;
+  buffer = [secureCopy buffer];
+  v12 = [NSMutableData dataWithData:buffer];
 
-  v13 = [v10 informationField];
-  [v12 appendData:v13];
+  informationField = [dequeueBlock informationField];
+  [v12 appendData:informationField];
 
   v14 = [CCIDMessageView create:105 withPayload:v12];
   [v14 setWLevelParameter:0];
@@ -679,19 +679,19 @@ LABEL_52:
   v16 = [WeakRetained transmitAndReceive:v14 maxPayload:0 outTimeout:0 inTimeout:&off_100027330 transmitted:0];
 
   v28 = 6;
-  v17 = [(FIFOQueue *)v9 dequeueBlock];
+  dequeueBlock2 = [(FIFOQueue *)v9 dequeueBlock];
 
-  if (v17)
+  if (dequeueBlock2)
   {
     do
     {
-      BYTE1(v28) = [v17 nodeAddressByte];
-      BYTE2(v28) = [v17 protocolControlByte];
-      HIBYTE(v28) = [v17 lengthByte];
+      BYTE1(v28) = [dequeueBlock2 nodeAddressByte];
+      BYTE2(v28) = [dequeueBlock2 protocolControlByte];
+      HIBYTE(v28) = [dequeueBlock2 lengthByte];
       v18 = [NSMutableData dataWithBytes:&v28 length:4];
 
-      v19 = [v17 informationField];
-      [v18 appendData:v19];
+      informationField2 = [dequeueBlock2 informationField];
+      [v18 appendData:informationField2];
 
       v20 = [CCIDMessageView create:105 withPayload:v18];
 
@@ -700,15 +700,15 @@ LABEL_52:
       v21 = objc_loadWeakRetained(&self->super._transmitter);
       v22 = [v21 transmitAndReceive:v20 maxPayload:0 outTimeout:0 inTimeout:&off_100027330 transmitted:0];
 
-      v23 = [(FIFOQueue *)v9 dequeueBlock];
+      dequeueBlock3 = [(FIFOQueue *)v9 dequeueBlock];
 
-      v17 = v23;
+      dequeueBlock2 = dequeueBlock3;
       v16 = v22;
       v14 = v20;
       v12 = v18;
     }
 
-    while (v23);
+    while (dequeueBlock3);
   }
 
   else
@@ -718,9 +718,9 @@ LABEL_52:
     v22 = v16;
   }
 
-  v24 = [v22 aPayload];
+  aPayload = [v22 aPayload];
 
-  return v24;
+  return aPayload;
 }
 
 @end

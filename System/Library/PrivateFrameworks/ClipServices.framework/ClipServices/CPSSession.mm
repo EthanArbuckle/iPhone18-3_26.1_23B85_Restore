@@ -1,69 +1,69 @@
 @interface CPSSession
 - (BOOL)checkAndConsumeShowsAppAttributionBannerLaunchOption;
-- (CPSSession)initWithURL:(id)a3 usingQueue:(id)a4 configuration:(id)a5;
+- (CPSSession)initWithURL:(id)l usingQueue:(id)queue configuration:(id)configuration;
 - (NSString)logID;
 - (NSURL)applicationIconFileURL;
 - (id)_availabilityOptions;
-- (id)_retrieveInstalledApplicationIconWithAppIconURL:(id)a3 clipBundleID:(id)a4;
-- (void)_didFetchBusinessIconWithURL:(id)a3;
-- (void)_didFinishLoadingWithError:(id)a3;
-- (void)_didUpdateMetadata:(id)a3;
+- (id)_retrieveInstalledApplicationIconWithAppIconURL:(id)l clipBundleID:(id)d;
+- (void)_didFetchBusinessIconWithURL:(id)l;
+- (void)_didFinishLoadingWithError:(id)error;
+- (void)_didUpdateMetadata:(id)metadata;
 - (void)_evictFromCache;
-- (void)_fetchAppMetadataWithBundleID:(id)a3 url:(id)a4 accountInvocationPolicy:(id)a5;
+- (void)_fetchAppMetadataWithBundleID:(id)d url:(id)url accountInvocationPolicy:(id)policy;
 - (void)_fetchBusinessIconIfNeeded;
 - (void)_fetchBusinessMetadata;
-- (void)_fetchParentApplicationMetadataWithBundleID:(id)a3;
-- (void)_notifyObserversOfMetadataFetchResultUpdates:(id)a3;
-- (void)_retrieveApplicationIconWithAppIconURL:(id)a3 clipBundleID:(id)a4;
-- (void)_retrieveApplicationIconWithCompletionHandler:(id)a3;
-- (void)_retrieveImageWithURL:(id)a3 didFetchImage:(BOOL *)a4 fileURL:(id *)a5 fetchCompletion:(id)a6 proxyCompletion:(id)a7;
-- (void)_synthesizeFullAppMetadataFromMetadata:(id)a3 patternMatchedBundleID:(id)a4 URL:(id)a5 completionHandler:(id)a6;
-- (void)_updateEntryPointForWebClip:(id)a3;
-- (void)_updateLocationConfirmationForRecord:(id)a3 permissionGranted:(id)a4;
-- (void)_updateWebClipIcon:(id)a3 metadata:(id)a4;
-- (void)addRemoteObjectProxy:(id)a3;
+- (void)_fetchParentApplicationMetadataWithBundleID:(id)d;
+- (void)_notifyObserversOfMetadataFetchResultUpdates:(id)updates;
+- (void)_retrieveApplicationIconWithAppIconURL:(id)l clipBundleID:(id)d;
+- (void)_retrieveApplicationIconWithCompletionHandler:(id)handler;
+- (void)_retrieveImageWithURL:(id)l didFetchImage:(BOOL *)image fileURL:(id *)rL fetchCompletion:(id)completion proxyCompletion:(id)proxyCompletion;
+- (void)_synthesizeFullAppMetadataFromMetadata:(id)metadata patternMatchedBundleID:(id)d URL:(id)l completionHandler:(id)handler;
+- (void)_updateEntryPointForWebClip:(id)clip;
+- (void)_updateLocationConfirmationForRecord:(id)record permissionGranted:(id)granted;
+- (void)_updateWebClipIcon:(id)icon metadata:(id)metadata;
+- (void)addRemoteObjectProxy:(id)proxy;
 - (void)clearMetadataAndRefetch;
-- (void)didCompleteTestSessionAtTime:(double)a3;
+- (void)didCompleteTestSessionAtTime:(double)time;
 - (void)fetchHeroImage;
-- (void)fetchMetadataWithCompletion:(id)a3;
-- (void)installationController:(id)a3 didFinishWithError:(id)a4;
-- (void)installationController:(id)a3 didUpdateProgress:(double)a4;
-- (void)installationControllerDidInstallPlaceholder:(id)a3;
-- (void)installationControllerWillStartInstall:(id)a3;
-- (void)removeRemoteObjectProxy:(id)a3;
-- (void)setPreloadedMetadata:(id)a3;
-- (void)updateClipDataForEntryPointWithWebClip:(id)a3 launchOptions:(id)a4;
+- (void)fetchMetadataWithCompletion:(id)completion;
+- (void)installationController:(id)controller didFinishWithError:(id)error;
+- (void)installationController:(id)controller didUpdateProgress:(double)progress;
+- (void)installationControllerDidInstallPlaceholder:(id)placeholder;
+- (void)installationControllerWillStartInstall:(id)install;
+- (void)removeRemoteObjectProxy:(id)proxy;
+- (void)setPreloadedMetadata:(id)metadata;
+- (void)updateClipDataForEntryPointWithWebClip:(id)clip launchOptions:(id)options;
 @end
 
 @implementation CPSSession
 
-- (CPSSession)initWithURL:(id)a3 usingQueue:(id)a4 configuration:(id)a5
+- (CPSSession)initWithURL:(id)l usingQueue:(id)queue configuration:(id)configuration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  queueCopy = queue;
+  configurationCopy = configuration;
   v23.receiver = self;
   v23.super_class = CPSSession;
   v12 = [(CPSSession *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_queue, a4);
+    objc_storeStrong(&v12->_queue, queue);
     v14 = objc_alloc_init(CPSClipLaunchOptions);
     launchOptions = v13->_launchOptions;
     v13->_launchOptions = v14;
 
-    objc_storeStrong(&v13->_url, a3);
-    objc_storeStrong(&v13->_queue, a4);
-    v16 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v13->_url, l);
+    objc_storeStrong(&v13->_queue, queue);
+    array = [MEMORY[0x277CBEB18] array];
     proxyObjects = v13->_proxyObjects;
-    v13->_proxyObjects = v16;
+    v13->_proxyObjects = array;
 
     v18 = objc_alloc_init(CPSImageLoader);
     imageLoader = v13->_imageLoader;
     v13->_imageLoader = v18;
 
-    objc_storeStrong(&v13->_configuration, a5);
+    objc_storeStrong(&v13->_configuration, configuration);
     configuration = v13->_configuration;
     if (!configuration || ![(CPSSessionConfiguration *)configuration useLocalContent])
     {
@@ -76,17 +76,17 @@
   return v13;
 }
 
-- (void)addRemoteObjectProxy:(id)a3
+- (void)addRemoteObjectProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__CPSSession_addRemoteObjectProxy___block_invoke;
   v7[3] = &unk_278DCDE58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = proxyCopy;
+  v6 = proxyCopy;
   dispatch_async(queue, v7);
 }
 
@@ -189,26 +189,26 @@ void *__35__CPSSession_addRemoteObjectProxy___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)removeRemoteObjectProxy:(id)a3
+- (void)removeRemoteObjectProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__CPSSession_removeRemoteObjectProxy___block_invoke;
   v7[3] = &unk_278DCDE58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = proxyCopy;
+  v6 = proxyCopy;
   dispatch_async(queue, v7);
 }
 
 - (NSString)logID
 {
-  v2 = [(CPSSessionConfiguration *)self->_configuration sessionID];
-  v3 = [v2 UUIDString];
+  sessionID = [(CPSSessionConfiguration *)self->_configuration sessionID];
+  uUIDString = [sessionID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (void)_fetchBusinessMetadata
@@ -583,37 +583,37 @@ void __36__CPSSession__fetchBusinessMetadata__block_invoke_3_20(uint64_t a1, voi
   }
 }
 
-- (void)_fetchAppMetadataWithBundleID:(id)a3 url:(id)a4 accountInvocationPolicy:(id)a5
+- (void)_fetchAppMetadataWithBundleID:(id)d url:(id)url accountInvocationPolicy:(id)policy
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  policyCopy = policy;
   queue = self->_queue;
-  v10 = a4;
-  v11 = a3;
+  urlCopy = url;
+  dCopy = d;
   dispatch_assert_queue_V2(queue);
   v12 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_signpost_enabled(v12))
   {
     v13 = v12;
-    v14 = [(CPSSession *)self logID];
+    logID = [(CPSSession *)self logID];
     *buf = 138543618;
-    v23 = v14;
+    v23 = logID;
     v24 = 2082;
     v25 = "[begin] Fetching App metadata";
     _os_signpost_emit_with_name_impl(&dword_2436ED000, v13, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "AppMetaData", " ID=[%{public, signpost.description:logID}@]  Message=%{public}s ", buf, 0x16u);
   }
 
   appInfoFetcher = self->_appInfoFetcher;
-  v16 = [(CPSSessionConfiguration *)self->_configuration sourceBundleID];
-  v17 = [(CPSSession *)self registeredForTest];
+  sourceBundleID = [(CPSSessionConfiguration *)self->_configuration sourceBundleID];
+  registeredForTest = [(CPSSession *)self registeredForTest];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __72__CPSSession__fetchAppMetadataWithBundleID_url_accountInvocationPolicy___block_invoke;
   v20[3] = &unk_278DCE698;
   v20[4] = self;
-  v21 = v8;
-  v18 = v8;
-  [(CPSAppInfoFetching *)appInfoFetcher lookUpClipMetadataByBundleID:v11 sourceBundleID:v16 URL:v10 downloadIconIfNeeded:0 skipCaching:v17 completionHandler:v20];
+  v21 = policyCopy;
+  v18 = policyCopy;
+  [(CPSAppInfoFetching *)appInfoFetcher lookUpClipMetadataByBundleID:dCopy sourceBundleID:sourceBundleID URL:urlCopy downloadIconIfNeeded:0 skipCaching:registeredForTest completionHandler:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -748,16 +748,16 @@ LABEL_7:
 {
   v23 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(CPSClipMetadata *)self->_metadata clipBusinessIconURL];
-  v4 = [(CPSClipMetadata *)self->_metadata clipMapItemMUID];
-  v5 = [(CPSClipMetadata *)self->_metadata clipBusinessIconStyleAttributes];
+  clipBusinessIconURL = [(CPSClipMetadata *)self->_metadata clipBusinessIconURL];
+  clipMapItemMUID = [(CPSClipMetadata *)self->_metadata clipMapItemMUID];
+  clipBusinessIconStyleAttributes = [(CPSClipMetadata *)self->_metadata clipBusinessIconStyleAttributes];
   v6 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_signpost_enabled(v6))
   {
     v7 = v6;
-    v8 = [(CPSSession *)self logID];
+    logID = [(CPSSession *)self logID];
     *buf = 138543618;
-    v20 = v8;
+    v20 = logID;
     v21 = 2082;
     v22 = "[begin] Fetching business icon data";
     _os_signpost_emit_with_name_impl(&dword_2436ED000, v7, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "BusinessIconData", " ID=[%{public, signpost.description:logID}@]  Message=%{public}s ", buf, 0x16u);
@@ -769,31 +769,31 @@ LABEL_7:
   v18[3] = &unk_278DCE6C0;
   v18[4] = self;
   v9 = MEMORY[0x245D3D5F0](v18);
-  if (v3)
+  if (clipBusinessIconURL)
   {
     v10 = +[CPSPromise promise];
     businessIconFetchingPromise = self->_businessIconFetchingPromise;
     self->_businessIconFetchingPromise = v10;
 
-    [(CPSImageLoader *)self->_imageLoader loadImageWithURL:v3 completionHandler:v9];
+    [(CPSImageLoader *)self->_imageLoader loadImageWithURL:clipBusinessIconURL completionHandler:v9];
   }
 
-  else if (v4)
+  else if (clipMapItemMUID)
   {
     v12 = +[CPSPromise promise];
     v13 = self->_businessIconFetchingPromise;
     self->_businessIconFetchingPromise = v12;
 
-    -[CPSImageLoader loadImageForMapItemMUID:completionHandler:](self->_imageLoader, "loadImageForMapItemMUID:completionHandler:", [v4 unsignedLongLongValue], v9);
+    -[CPSImageLoader loadImageForMapItemMUID:completionHandler:](self->_imageLoader, "loadImageForMapItemMUID:completionHandler:", [clipMapItemMUID unsignedLongLongValue], v9);
   }
 
-  else if (v5)
+  else if (clipBusinessIconStyleAttributes)
   {
     v14 = +[CPSPromise promise];
     v15 = self->_businessIconFetchingPromise;
     self->_businessIconFetchingPromise = v14;
 
-    v16 = [objc_alloc(MEMORY[0x277D0ED90]) initWithDictionary:v5];
+    v16 = [objc_alloc(MEMORY[0x277D0ED90]) initWithDictionary:clipBusinessIconStyleAttributes];
     [(CPSImageLoader *)self->_imageLoader loadImageForGEOStyleAttributes:v16 completionHandler:v9];
   }
 
@@ -856,16 +856,16 @@ uint64_t __40__CPSSession__fetchBusinessIconIfNeeded__block_invoke_29(uint64_t a
   return [*(a1 + 40) _didFetchBusinessIconWithURL:*(a1 + 48)];
 }
 
-- (void)_fetchParentApplicationMetadataWithBundleID:(id)a3
+- (void)_fetchParentApplicationMetadataWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[CPSClipDataSQLiteStore defaultStore];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__CPSSession__fetchParentApplicationMetadataWithBundleID___block_invoke;
   v6[3] = &unk_278DCE6E8;
   v6[4] = self;
-  [v5 getAppClipRecordWithBundleID:v4 completion:v6];
+  [v5 getAppClipRecordWithBundleID:dCopy completion:v6];
 }
 
 void __58__CPSSession__fetchParentApplicationMetadataWithBundleID___block_invoke(uint64_t a1, void *a2)
@@ -954,31 +954,31 @@ void __58__CPSSession__fetchParentApplicationMetadataWithBundleID___block_invoke
   return v3;
 }
 
-- (void)_synthesizeFullAppMetadataFromMetadata:(id)a3 patternMatchedBundleID:(id)a4 URL:(id)a5 completionHandler:(id)a6
+- (void)_synthesizeFullAppMetadataFromMetadata:(id)metadata patternMatchedBundleID:(id)d URL:(id)l completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  metadataCopy = metadata;
+  dCopy = d;
+  lCopy = l;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
-  if (v12)
+  if (lCopy)
   {
     v14 = MEMORY[0x277CC1E48];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __98__CPSSession__synthesizeFullAppMetadataFromMetadata_patternMatchedBundleID_URL_completionHandler___block_invoke;
     v15[3] = &unk_278DCE710;
-    v16 = v12;
-    v20 = v13;
-    v17 = v10;
-    v18 = self;
-    v19 = v11;
+    v16 = lCopy;
+    v20 = handlerCopy;
+    v17 = metadataCopy;
+    selfCopy = self;
+    v19 = dCopy;
     [v14 getAppLinkWithURL:v16 completionHandler:v15];
   }
 
   else
   {
-    (*(v13 + 2))(v13, 0, v10);
+    (*(handlerCopy + 2))(handlerCopy, 0, metadataCopy);
   }
 }
 
@@ -1156,30 +1156,30 @@ uint64_t __98__CPSSession__synthesizeFullAppMetadataFromMetadata_patternMatchedB
 
 - (id)_availabilityOptions
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[CPSSession registeredForTest](self, "registeredForTest")}];
-  [v3 setObject:v4 forKeyedSubscript:@"RegisteredForTest"];
+  [dictionary setObject:v4 forKeyedSubscript:@"RegisteredForTest"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[CPSSessionConfiguration originIsControlCenter](self->_configuration, "originIsControlCenter")}];
-  [v3 setObject:v5 forKeyedSubscript:@"OriginIsControlCenter"];
+  [dictionary setObject:v5 forKeyedSubscript:@"OriginIsControlCenter"];
 
-  v6 = [(CPSSessionConfiguration *)self->_configuration launchReason];
-  [v3 setObject:v6 forKeyedSubscript:@"LaunchReason"];
+  launchReason = [(CPSSessionConfiguration *)self->_configuration launchReason];
+  [dictionary setObject:launchReason forKeyedSubscript:@"LaunchReason"];
 
-  v7 = [(CPSSessionConfiguration *)self->_configuration sourceBundleID];
-  [v3 setObject:v7 forKeyedSubscript:@"SourceBundleID"];
+  sourceBundleID = [(CPSSessionConfiguration *)self->_configuration sourceBundleID];
+  [dictionary setObject:sourceBundleID forKeyedSubscript:@"SourceBundleID"];
 
-  v8 = [(CPSSessionConfiguration *)self->_configuration referrerBundleID];
-  [v3 setObject:v8 forKeyedSubscript:@"ReferrerBundleID"];
+  referrerBundleID = [(CPSSessionConfiguration *)self->_configuration referrerBundleID];
+  [dictionary setObject:referrerBundleID forKeyedSubscript:@"ReferrerBundleID"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)_didUpdateMetadata:(id)a3
+- (void)_didUpdateMetadata:(id)metadata
 {
-  v8 = a3;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(self->_queue);
-  objc_storeStrong(&self->_metadata, a3);
+  objc_storeStrong(&self->_metadata, metadata);
   if (self->_metadataFetchState == 2)
   {
     metadataCompletion = self->_metadataCompletion;
@@ -1204,18 +1204,18 @@ uint64_t __98__CPSSession__synthesizeFullAppMetadataFromMetadata_patternMatchedB
   [(CPSSession *)self _notifyObserversOfMetadataFetchResultUpdates:self->_proxyObjects];
 }
 
-- (void)_notifyObserversOfMetadataFetchResultUpdates:(id)a3
+- (void)_notifyObserversOfMetadataFetchResultUpdates:(id)updates
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  updatesCopy = updates;
+  v5 = updatesCopy;
   if (self->_metadataFetchError)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    v6 = [updatesCopy countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1248,7 +1248,7 @@ uint64_t __98__CPSSession__synthesizeFullAppMetadataFromMetadata_patternMatchedB
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v11 = [v4 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v11 = [updatesCopy countByEnumeratingWithState:&v16 objects:v24 count:16];
       if (v11)
       {
         v12 = v11;
@@ -1276,12 +1276,12 @@ uint64_t __98__CPSSession__synthesizeFullAppMetadataFromMetadata_patternMatchedB
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didFinishLoadingWithError:(id)a3
+- (void)_didFinishLoadingWithError:(id)error
 {
-  v8 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   self->_metadataFetchState = 2;
-  objc_storeStrong(&self->_metadataFetchError, a3);
+  objc_storeStrong(&self->_metadataFetchError, error);
   if (self->_metadataFetchState == 2)
   {
     metadataCompletion = self->_metadataCompletion;
@@ -1304,17 +1304,17 @@ uint64_t __98__CPSSession__synthesizeFullAppMetadataFromMetadata_patternMatchedB
   }
 
   [(CPSSession *)self _notifyObserversOfMetadataFetchResultUpdates:self->_proxyObjects];
-  if (v8)
+  if (errorCopy)
   {
     [(CPSSession *)self _evictFromCache];
   }
 }
 
-- (void)_didFetchBusinessIconWithURL:(id)a3
+- (void)_didFetchBusinessIconWithURL:(id)l
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_businessIconFileURL, a3);
+  lCopy = l;
+  objc_storeStrong(&self->_businessIconFileURL, l);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -1335,7 +1335,7 @@ uint64_t __98__CPSSession__synthesizeFullAppMetadataFromMetadata_patternMatchedB
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) didRetrieveBusinessIcon:{v5, v12}];
+        [*(*(&v12 + 1) + 8 * v10++) didRetrieveBusinessIcon:{lCopy, v12}];
       }
 
       while (v8 != v10);
@@ -1354,20 +1354,20 @@ uint64_t __98__CPSSession__synthesizeFullAppMetadataFromMetadata_patternMatchedB
   [v3 clearSessionWithURL:self->_url];
 }
 
-- (void)setPreloadedMetadata:(id)a3
+- (void)setPreloadedMetadata:(id)metadata
 {
-  v8 = a3;
+  metadataCopy = metadata;
   self->_clipAvailabilityState = 1;
   self->_metadataFetchState = 2;
-  objc_storeStrong(&self->_metadata, a3);
+  objc_storeStrong(&self->_metadata, metadata);
   v5 = +[CPSClipInvocationPolicy eligiblePolicy];
   [(CPSClipMetadata *)self->_metadata setInvocationPolicy:v5];
 
   if ([(CPSClipMetadata *)self->_metadata isDeveloperOverride])
   {
-    v6 = [(CPSClipMetadata *)self->_metadata fullAppIconURL];
-    v7 = [(CPSClipMetadata *)self->_metadata clipBundleID];
-    [(CPSSession *)self _retrieveApplicationIconWithAppIconURL:v6 clipBundleID:v7];
+    fullAppIconURL = [(CPSClipMetadata *)self->_metadata fullAppIconURL];
+    clipBundleID = [(CPSClipMetadata *)self->_metadata clipBundleID];
+    [(CPSSession *)self _retrieveApplicationIconWithAppIconURL:fullAppIconURL clipBundleID:clipBundleID];
 
     [(CPSSession *)self fetchHeroImage];
   }
@@ -1404,7 +1404,7 @@ uint64_t __37__CPSSession_clearMetadataAndRefetch__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)didCompleteTestSessionAtTime:(double)a3
+- (void)didCompleteTestSessionAtTime:(double)time
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1412,7 +1412,7 @@ uint64_t __37__CPSSession_clearMetadataAndRefetch__block_invoke(uint64_t result)
   v4[2] = __43__CPSSession_didCompleteTestSessionAtTime___block_invoke;
   v4[3] = &unk_278DCE278;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = time;
   dispatch_async(queue, v4);
 }
 
@@ -1457,22 +1457,22 @@ void __43__CPSSession_didCompleteTestSessionAtTime___block_invoke(uint64_t a1)
 
 - (BOOL)checkAndConsumeShowsAppAttributionBannerLaunchOption
 {
-  v3 = [(CPSClipLaunchOptions *)self->_launchOptions showsAppAttributionBanner];
+  showsAppAttributionBanner = [(CPSClipLaunchOptions *)self->_launchOptions showsAppAttributionBanner];
   [(CPSClipLaunchOptions *)self->_launchOptions setShowsAppAttributionBanner:0];
-  return v3;
+  return showsAppAttributionBanner;
 }
 
-- (void)fetchMetadataWithCompletion:(id)a3
+- (void)fetchMetadataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__CPSSession_fetchMetadataWithCompletion___block_invoke;
   v7[3] = &unk_278DCDD70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1600,32 +1600,32 @@ void __28__CPSSession_fetchHeroImage__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_updateLocationConfirmationForRecord:(id)a3 permissionGranted:(id)a4
+- (void)_updateLocationConfirmationForRecord:(id)record permissionGranted:(id)granted
 {
-  v9 = a3;
-  v6 = a4;
+  recordCopy = record;
+  grantedCopy = granted;
   if ([(CPSClipMetadata *)self->_metadata clipRequestsLocationConfirmationPermission])
   {
-    [v9 setLocationConfirmationGranted:v6];
-    if ([v6 BOOLValue])
+    [recordCopy setLocationConfirmationGranted:grantedCopy];
+    if ([grantedCopy BOOLValue])
     {
-      v7 = [(CPSSessionConfiguration *)self->_configuration launchReason];
-      if ([v7 isEqualToString:@"NFC"])
+      launchReason = [(CPSSessionConfiguration *)self->_configuration launchReason];
+      if ([launchReason isEqualToString:@"NFC"])
       {
         v8 = 2;
       }
 
-      else if ([v7 isEqualToString:@"QR"])
+      else if ([launchReason isEqualToString:@"QR"])
       {
         v8 = 1;
       }
 
-      else if ([v7 isEqualToString:@"DeveloperTools"])
+      else if ([launchReason isEqualToString:@"DeveloperTools"])
       {
         v8 = 4;
       }
 
-      else if ([v7 isEqualToString:@"AppclipCode"])
+      else if ([launchReason isEqualToString:@"AppclipCode"])
       {
         v8 = 3;
       }
@@ -1635,44 +1635,44 @@ void __28__CPSSession_fetchHeroImage__block_invoke(uint64_t a1)
         v8 = 0;
       }
 
-      [v9 setLocationConfirmationState:v8];
+      [recordCopy setLocationConfirmationState:v8];
     }
 
     else
     {
-      [v9 setLocationConfirmationState:0];
+      [recordCopy setLocationConfirmationState:0];
     }
   }
 
   else
   {
-    [v9 setLocationConfirmationGranted:0];
+    [recordCopy setLocationConfirmationGranted:0];
   }
 }
 
-- (void)updateClipDataForEntryPointWithWebClip:(id)a3 launchOptions:(id)a4
+- (void)updateClipDataForEntryPointWithWebClip:(id)clip launchOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  clipCopy = clip;
+  optionsCopy = options;
   v8 = os_transaction_create();
-  if (!v7)
+  if (!optionsCopy)
   {
-    v7 = objc_alloc_init(CPSClipLaunchOptions);
+    optionsCopy = objc_alloc_init(CPSClipLaunchOptions);
   }
 
-  v9 = [(CPSClipLaunchOptions *)v7 skipsLaunching];
+  skipsLaunching = [(CPSClipLaunchOptions *)optionsCopy skipsLaunching];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__CPSSession_updateClipDataForEntryPointWithWebClip_launchOptions___block_invoke;
   block[3] = &unk_278DCE7D8;
-  v19 = !v9;
+  v19 = !skipsLaunching;
   v15 = v8;
-  v16 = self;
-  v17 = v7;
-  v18 = v6;
-  v11 = v6;
-  v12 = v7;
+  selfCopy = self;
+  v17 = optionsCopy;
+  v18 = clipCopy;
+  v11 = clipCopy;
+  v12 = optionsCopy;
   v13 = v8;
   dispatch_async(queue, block);
 }
@@ -1799,13 +1799,13 @@ void __67__CPSSession_updateClipDataForEntryPointWithWebClip_launchOptions___blo
   [*(a1 + 48) _updateEntryPointForWebClip:*(a1 + 72)];
 }
 
-- (void)_retrieveApplicationIconWithCompletionHandler:(id)a3
+- (void)_retrieveApplicationIconWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (self->_didFetchApplicationIcon)
   {
-    (*(v4 + 2))(v4, self->_applicationIconFileURL);
+    (*(handlerCopy + 2))(handlerCopy, self->_applicationIconFileURL);
   }
 
   else
@@ -1835,13 +1835,13 @@ void __60__CPSSession__retrieveApplicationIconWithCompletionHandler___block_invo
   }
 }
 
-- (id)_retrieveInstalledApplicationIconWithAppIconURL:(id)a3 clipBundleID:(id)a4
+- (id)_retrieveInstalledApplicationIconWithAppIconURL:(id)l clipBundleID:(id)d
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  dCopy = d;
   v26 = 0;
-  v7 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v6 allowPlaceholder:0 error:&v26];
+  v7 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v26];
   v8 = v26;
   if (!v7)
   {
@@ -1849,18 +1849,18 @@ void __60__CPSSession__retrieveApplicationIconWithCompletionHandler___block_invo
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = v15;
-      v17 = [v8 cps_privacyPreservingDescription];
+      cps_privacyPreservingDescription = [v8 cps_privacyPreservingDescription];
       *buf = 138478083;
-      v28 = v6;
+      v28 = dCopy;
       v29 = 2114;
-      v30 = v17;
+      v30 = cps_privacyPreservingDescription;
       _os_log_impl(&dword_2436ED000, v16, OS_LOG_TYPE_INFO, "Unable to find local application record, clip %{private}@ not installed: %{public}@", buf, 0x16u);
     }
 
     goto LABEL_9;
   }
 
-  v9 = _CPSCreateUnmaskedIconDataForBundle(v6);
+  v9 = _CPSCreateUnmaskedIconDataForBundle(dCopy);
   if (!v9)
   {
 LABEL_9:
@@ -1870,7 +1870,7 @@ LABEL_9:
 
   v10 = v9;
   v25 = 0;
-  v11 = [CPSImageStore keyForImageURL:v5 error:&v25];
+  v11 = [CPSImageStore keyForImageURL:lCopy error:&v25];
   v12 = v25;
   if (v12)
   {
@@ -1913,10 +1913,10 @@ LABEL_17:
   return v14;
 }
 
-- (void)_retrieveApplicationIconWithAppIconURL:(id)a3 clipBundleID:(id)a4
+- (void)_retrieveApplicationIconWithAppIconURL:(id)l clipBundleID:(id)d
 {
-  v6 = a3;
-  v7 = [(CPSSession *)self _retrieveInstalledApplicationIconWithAppIconURL:v6 clipBundleID:a4];
+  lCopy = l;
+  v7 = [(CPSSession *)self _retrieveInstalledApplicationIconWithAppIconURL:lCopy clipBundleID:d];
   v9 = v7;
   if (v7)
   {
@@ -1925,21 +1925,21 @@ LABEL_17:
 
   else
   {
-    v8 = v6;
+    v8 = lCopy;
   }
 
   [(CPSSession *)self _retrieveImageWithURL:v8 didFetchImage:&self->_didFetchApplicationIcon fileURL:&self->_applicationIconFileURL fetchCompletion:self->_applicationIconFetchCompletion proxyCompletion:&__block_literal_global_5];
 }
 
-- (void)_retrieveImageWithURL:(id)a3 didFetchImage:(BOOL *)a4 fileURL:(id *)a5 fetchCompletion:(id)a6 proxyCompletion:(id)a7
+- (void)_retrieveImageWithURL:(id)l didFetchImage:(BOOL *)image fileURL:(id *)rL fetchCompletion:(id)completion proxyCompletion:(id)proxyCompletion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  if (a4)
+  lCopy = l;
+  completionCopy = completion;
+  proxyCompletionCopy = proxyCompletion;
+  if (image)
   {
-    *a4 = 0;
+    *image = 0;
   }
 
   v33[0] = MEMORY[0x277D85DD0];
@@ -1947,24 +1947,24 @@ LABEL_17:
   v33[2] = __90__CPSSession__retrieveImageWithURL_didFetchImage_fileURL_fetchCompletion_proxyCompletion___block_invoke;
   v33[3] = &unk_278DCE848;
   v33[4] = self;
-  v36 = a5;
-  v37 = a4;
-  v15 = v13;
+  rLCopy = rL;
+  imageCopy = image;
+  v15 = completionCopy;
   v34 = v15;
-  v16 = v14;
+  v16 = proxyCompletionCopy;
   v35 = v16;
   v17 = MEMORY[0x245D3D5F0](v33);
-  if ([v12 cps_isFileURL] && !-[CPSClipMetadata isDeveloperOverride](self->_metadata, "isDeveloperOverride"))
+  if ([lCopy cps_isFileURL] && !-[CPSClipMetadata isDeveloperOverride](self->_metadata, "isDeveloperOverride"))
   {
-    (v17)[2](v17, v12);
+    (v17)[2](v17, lCopy);
     goto LABEL_16;
   }
 
-  if (v12)
+  if (lCopy)
   {
     v18 = os_transaction_create();
-    v19 = [(CPSClipMetadata *)self->_metadata clipHeroImageURL];
-    v20 = [v12 isEqual:v19];
+    clipHeroImageURL = [(CPSClipMetadata *)self->_metadata clipHeroImageURL];
+    v20 = [lCopy isEqual:clipHeroImageURL];
 
     v21 = CPS_LOG_CHANNEL_PREFIXClipServices();
     v22 = os_signpost_enabled(v21);
@@ -1973,9 +1973,9 @@ LABEL_17:
       if (v22)
       {
         v23 = v21;
-        v24 = [(CPSSession *)self logID];
+        logID = [(CPSSession *)self logID];
         *buf = 138543618;
-        v39 = v24;
+        v39 = logID;
         v40 = 2082;
         v41 = "[begin] Fetching header image data";
         v25 = "HeaderImage";
@@ -1987,9 +1987,9 @@ LABEL_14:
     else if (v22)
     {
       v23 = v21;
-      v24 = [(CPSSession *)self logID];
+      logID = [(CPSSession *)self logID];
       *buf = 138543618;
-      v39 = v24;
+      v39 = logID;
       v40 = 2082;
       v41 = "[begin] Fetching application icon data";
       v25 = "AppIcon";
@@ -2006,7 +2006,7 @@ LABEL_14:
     v31 = v17;
     v32 = v20;
     v27 = v18;
-    [(CPSImageLoader *)imageLoader loadImageWithURL:v12 completionHandler:v29];
+    [(CPSImageLoader *)imageLoader loadImageWithURL:lCopy completionHandler:v29];
 
     goto LABEL_16;
   }
@@ -2149,24 +2149,24 @@ LABEL_6:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateEntryPointForWebClip:(id)a3
+- (void)_updateEntryPointForWebClip:(id)clip
 {
-  v4 = a3;
+  clipCopy = clip;
   v5 = os_transaction_create();
   v6 = +[CPSClipDataSQLiteStore defaultStore];
-  v7 = [v4 bundleIdentifier];
+  bundleIdentifier = [clipCopy bundleIdentifier];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __42__CPSSession__updateEntryPointForWebClip___block_invoke;
   v11[3] = &unk_278DCE910;
-  v12 = v4;
+  v12 = clipCopy;
   v13 = v6;
   v14 = v5;
-  v15 = self;
+  selfCopy = self;
   v8 = v5;
   v9 = v6;
-  v10 = v4;
-  [v9 getEntryPointRecordWithWebClipIdentifier:v7 completion:v11];
+  v10 = clipCopy;
+  [v9 getEntryPointRecordWithWebClipIdentifier:bundleIdentifier completion:v11];
 }
 
 void __42__CPSSession__updateEntryPointForWebClip___block_invoke(uint64_t a1, void *a2)
@@ -2255,14 +2255,14 @@ uint64_t __42__CPSSession__updateEntryPointForWebClip___block_invoke_4(uint64_t 
   return result;
 }
 
-- (void)_updateWebClipIcon:(id)a3 metadata:(id)a4
+- (void)_updateWebClipIcon:(id)icon metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  iconCopy = icon;
+  metadataCopy = metadata;
   v8 = dispatch_group_create();
-  v9 = [v6 iconImagePath];
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [v10 fileExistsAtPath:v9];
+  iconImagePath = [iconCopy iconImagePath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v11 = [defaultManager fileExistsAtPath:iconImagePath];
 
   if ((v11 & 1) == 0)
   {
@@ -2287,7 +2287,7 @@ uint64_t __42__CPSSession__updateEntryPointForWebClip___block_invoke_4(uint64_t 
     v29[3] = __Block_byref_object_copy__5;
     v29[4] = __Block_byref_object_dispose__5;
     v30 = 0;
-    if ([v7 isPoweredByThirdParty])
+    if ([metadataCopy isPoweredByThirdParty])
     {
       if (!self->_businessIconFetchingPromise)
       {
@@ -2325,7 +2325,7 @@ uint64_t __42__CPSSession__updateEntryPointForWebClip___block_invoke_4(uint64_t 
     v19 = v15;
     v21 = v29;
     v22 = v34;
-    v20 = v6;
+    v20 = iconCopy;
     v17 = v15;
     dispatch_group_notify(v12, queue, v18);
 
@@ -2415,7 +2415,7 @@ void __42__CPSSession__updateWebClipIcon_metadata___block_invoke_5(uint64_t a1)
   [v4 updateAppClipIcon:v3 forWebClipWithIdentifier:v5 completionHandler:v6];
 }
 
-- (void)installationControllerWillStartInstall:(id)a3
+- (void)installationControllerWillStartInstall:(id)install
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2434,7 +2434,7 @@ void __53__CPSSession_installationControllerWillStartInstall___block_invoke(uint
   *(v1 + 144) = &unk_285684118;
 }
 
-- (void)installationControllerDidInstallPlaceholder:(id)a3
+- (void)installationControllerDidInstallPlaceholder:(id)placeholder
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2495,7 +2495,7 @@ void __58__CPSSession_installationControllerDidInstallPlaceholder___block_invoke
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)installationController:(id)a3 didUpdateProgress:(double)a4
+- (void)installationController:(id)controller didUpdateProgress:(double)progress
 {
   queue = self->_queue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -2503,7 +2503,7 @@ void __58__CPSSession_installationControllerDidInstallPlaceholder___block_invoke
   v5[2] = __55__CPSSession_installationController_didUpdateProgress___block_invoke;
   v5[3] = &unk_278DCE278;
   v5[4] = self;
-  *&v5[5] = a4;
+  *&v5[5] = progress;
   dispatch_async(queue, v5);
 }
 
@@ -2548,17 +2548,17 @@ void __55__CPSSession_installationController_didUpdateProgress___block_invoke(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)installationController:(id)a3 didFinishWithError:(id)a4
+- (void)installationController:(id)controller didFinishWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__CPSSession_installationController_didFinishWithError___block_invoke;
   v8[3] = &unk_278DCDE58;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = errorCopy;
+  v7 = errorCopy;
   dispatch_async(queue, v8);
 }
 

@@ -2,8 +2,8 @@
 - (NCOCellularDetail)init;
 - (id)specifiers;
 - (void)confirmInexpensiveSelection;
-- (void)selectDefaultSpecifier:(id)a3;
-- (void)selectInexpensiveSpecifier:(id)a3;
+- (void)selectDefaultSpecifier:(id)specifier;
+- (void)selectInexpensiveSpecifier:(id)specifier;
 @end
 
 @implementation NCOCellularDetail
@@ -48,8 +48,8 @@
 
     [v14 setButtonAction:"selectInexpensiveSpecifier:"];
     [v5 addObject:v14];
-    v15 = [(NCOCellularDetail *)self ncoData];
-    -[NCOCellularDetail setCachedValue:](self, "setCachedValue:", [v15 isCellularInexpensive]);
+    ncoData = [(NCOCellularDetail *)self ncoData];
+    -[NCOCellularDetail setCachedValue:](self, "setCachedValue:", [ncoData isCellularInexpensive]);
 
     if ([(NCOCellularDetail *)self cachedValue])
     {
@@ -71,7 +71,7 @@
   return v4;
 }
 
-- (void)selectDefaultSpecifier:(id)a3
+- (void)selectDefaultSpecifier:(id)specifier
 {
   if ([(NCOCellularDetail *)self cachedValue])
   {
@@ -80,7 +80,7 @@
   }
 }
 
-- (void)selectInexpensiveSpecifier:(id)a3
+- (void)selectInexpensiveSpecifier:(id)specifier
 {
   if (![(NCOCellularDetail *)self cachedValue])
   {

@@ -1,7 +1,7 @@
 @interface IntentHandler
 - (_TtC16NewsTodayIntents13IntentHandler)init;
-- (id)defaultTagForTag:(id)a3;
-- (void)provideTagOptionsCollectionForTag:(id)a3 searchTerm:(id)a4 withCompletion:(id)a5;
+- (id)defaultTagForTag:(id)tag;
+- (void)provideTagOptionsCollectionForTag:(id)tag searchTerm:(id)term withCompletion:(id)completion;
 @end
 
 @implementation IntentHandler
@@ -30,13 +30,13 @@
   return [(IntentHandler *)&v8 init];
 }
 
-- (void)provideTagOptionsCollectionForTag:(id)a3 searchTerm:(id)a4 withCompletion:(id)a5
+- (void)provideTagOptionsCollectionForTag:(id)tag searchTerm:(id)term withCompletion:(id)completion
 {
-  v8 = _Block_copy(a5);
-  if (a4)
+  v8 = _Block_copy(completion);
+  if (term)
   {
     v9 = sub_10000F154();
-    a4 = v10;
+    term = v10;
   }
 
   else
@@ -46,15 +46,15 @@
 
   v11 = swift_allocObject();
   *(v11 + 16) = v8;
-  v12 = a3;
-  v13 = self;
-  sub_1000093AC(v9, a4, sub_10000A0F8, v11);
+  tagCopy = tag;
+  selfCopy = self;
+  sub_1000093AC(v9, term, sub_10000A0F8, v11);
 }
 
-- (id)defaultTagForTag:(id)a3
+- (id)defaultTagForTag:(id)tag
 {
-  v4 = a3;
-  v5 = self;
+  tagCopy = tag;
+  selfCopy = self;
   v6 = sub_100009CC8();
 
   return v6;

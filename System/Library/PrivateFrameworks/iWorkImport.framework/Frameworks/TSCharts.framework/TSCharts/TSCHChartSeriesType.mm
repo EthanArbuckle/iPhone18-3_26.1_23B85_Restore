@@ -3,7 +3,7 @@
 + (NSArray)styleArchTypes;
 + (NSString)inspectorDefaultLocalizedValueLabelsDisclosureTitle;
 + (NSString)inspectorDefaultLocalizedValueLabelsTabName;
-+ (TSCHChartSeriesType)allocWithZone:(_NSZone *)a3;
++ (TSCHChartSeriesType)allocWithZone:(_NSZone *)zone;
 + (TSCHChartSeriesType)area3DSeries;
 + (TSCHChartSeriesType)areaSeries;
 + (TSCHChartSeriesType)bar3DSeries;
@@ -29,7 +29,7 @@
 + (TSCHChartSeriesType)stackedColumn3DSeries;
 + (TSCHChartSeriesType)stackedColumnSeries;
 + (id)_singletonAlloc;
-+ (id)expandProperties:(id)a3;
++ (id)expandProperties:(id)properties;
 - (BOOL)canUseEstimatedValueLabelsDrawingRect;
 - (BOOL)supportsSeries3DFill;
 - (BOOL)supportsSeriesGradientFill;
@@ -43,16 +43,16 @@
 - (TSCHChartSeriesType)init;
 - (TSSPropertyMap)additionalFillSetPropertyMap;
 - (TSUIntToIntDictionary)genericToSpecificPropertyMap;
-- (id)cdeFillForSeries:(id)a3;
-- (id)coordinateAxisForSeries:(id)a3;
-- (id)legendFillForSeries:(id)a3;
-- (id)legendStrokeForSeries:(id)a3;
-- (id)p_axisForSeries:(id)a3 isCategory:(BOOL)a4;
-- (id)p_specificMutationsForGenericMutations:(id)a3;
+- (id)cdeFillForSeries:(id)series;
+- (id)coordinateAxisForSeries:(id)series;
+- (id)legendFillForSeries:(id)series;
+- (id)legendStrokeForSeries:(id)series;
+- (id)p_axisForSeries:(id)series isCategory:(BOOL)category;
+- (id)p_specificMutationsForGenericMutations:(id)mutations;
 - (id)p_supportedSymbolsIfSymbolsSupported;
-- (id)resetSeriesStorage:(id)a3 forSeries:(id)a4;
-- (id)userInterfaceNameForLabelPosition:(id)a3;
-- (id)valueAxisForSeries:(id)a3;
+- (id)resetSeriesStorage:(id)storage forSeries:(id)series;
+- (id)userInterfaceNameForLabelPosition:(id)position;
+- (id)valueAxisForSeries:(id)series;
 - (int)specificFillSetFillProperty;
 @end
 
@@ -60,17 +60,17 @@
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSCHChartSeriesType;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
 
-+ (TSCHChartSeriesType)allocWithZone:(_NSZone *)a3
++ (TSCHChartSeriesType)allocWithZone:(_NSZone *)zone
 {
   v7 = MEMORY[0x277D81150];
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "+[TSCHChartSeriesType allocWithZone:]");
   v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v10, v11, v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartSeriesType.mm");
-  v14 = NSStringFromClass(a1);
+  v14 = NSStringFromClass(self);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v15, v16, v17, v18, v8, v13, 52, 0, "+[%@ allocWithZone:] called on singleton class.", v14);
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
@@ -365,75 +365,75 @@
   return v3;
 }
 
-+ (id)expandProperties:(id)a3
++ (id)expandProperties:(id)properties
 {
   v251[22] = *MEMORY[0x277D85DE8];
-  v247 = a3;
+  propertiesCopy = properties;
   v246 = objc_msgSend_propertySet(MEMORY[0x277D80AA8], v4, v5, v6, v7);
-  v245 = objc_msgSend_pieSeries(a1, v8, v9, v10, v11);
+  v245 = objc_msgSend_pieSeries(self, v8, v9, v10, v11);
   v244 = objc_msgSend_genericToSpecificPropertyMap(v245, v12, v13, v14, v15);
   v251[0] = v244;
-  v243 = objc_msgSend_scatterSeries(a1, v16, v17, v18, v19);
+  v243 = objc_msgSend_scatterSeries(self, v16, v17, v18, v19);
   v242 = objc_msgSend_genericToSpecificPropertyMap(v243, v20, v21, v22, v23);
   v251[1] = v242;
-  v241 = objc_msgSend_columnSeries(a1, v24, v25, v26, v27);
+  v241 = objc_msgSend_columnSeries(self, v24, v25, v26, v27);
   v240 = objc_msgSend_genericToSpecificPropertyMap(v241, v28, v29, v30, v31);
   v251[2] = v240;
-  v239 = objc_msgSend_barSeries(a1, v32, v33, v34, v35);
+  v239 = objc_msgSend_barSeries(self, v32, v33, v34, v35);
   v238 = objc_msgSend_genericToSpecificPropertyMap(v239, v36, v37, v38, v39);
   v251[3] = v238;
-  v237 = objc_msgSend_lineSeries(a1, v40, v41, v42, v43);
+  v237 = objc_msgSend_lineSeries(self, v40, v41, v42, v43);
   v236 = objc_msgSend_genericToSpecificPropertyMap(v237, v44, v45, v46, v47);
   v251[4] = v236;
-  v235 = objc_msgSend_areaSeries(a1, v48, v49, v50, v51);
+  v235 = objc_msgSend_areaSeries(self, v48, v49, v50, v51);
   v234 = objc_msgSend_genericToSpecificPropertyMap(v235, v52, v53, v54, v55);
   v251[5] = v234;
-  v233 = objc_msgSend_radarAreaSeries(a1, v56, v57, v58, v59);
+  v233 = objc_msgSend_radarAreaSeries(self, v56, v57, v58, v59);
   v232 = objc_msgSend_genericToSpecificPropertyMap(v233, v60, v61, v62, v63);
   v251[6] = v232;
-  v231 = objc_msgSend_stackedColumnSeries(a1, v64, v65, v66, v67);
+  v231 = objc_msgSend_stackedColumnSeries(self, v64, v65, v66, v67);
   v230 = objc_msgSend_genericToSpecificPropertyMap(v231, v68, v69, v70, v71);
   v251[7] = v230;
-  v229 = objc_msgSend_stackedBarSeries(a1, v72, v73, v74, v75);
+  v229 = objc_msgSend_stackedBarSeries(self, v72, v73, v74, v75);
   v228 = objc_msgSend_genericToSpecificPropertyMap(v229, v76, v77, v78, v79);
   v251[8] = v228;
-  v227 = objc_msgSend_stackedAreaSeries(a1, v80, v81, v82, v83);
+  v227 = objc_msgSend_stackedAreaSeries(self, v80, v81, v82, v83);
   v226 = objc_msgSend_genericToSpecificPropertyMap(v227, v84, v85, v86, v87);
   v251[9] = v226;
-  v225 = objc_msgSend_mixedColumnSeries(a1, v88, v89, v90, v91);
+  v225 = objc_msgSend_mixedColumnSeries(self, v88, v89, v90, v91);
   v224 = objc_msgSend_genericToSpecificPropertyMap(v225, v92, v93, v94, v95);
   v251[10] = v224;
-  v223 = objc_msgSend_mixedLineSeries(a1, v96, v97, v98, v99);
+  v223 = objc_msgSend_mixedLineSeries(self, v96, v97, v98, v99);
   v222 = objc_msgSend_genericToSpecificPropertyMap(v223, v100, v101, v102, v103);
   v251[11] = v222;
-  v221 = objc_msgSend_mixedAreaSeries(a1, v104, v105, v106, v107);
+  v221 = objc_msgSend_mixedAreaSeries(self, v104, v105, v106, v107);
   v220 = objc_msgSend_genericToSpecificPropertyMap(v221, v108, v109, v110, v111);
   v251[12] = v220;
-  v219 = objc_msgSend_bubbleSeries(a1, v112, v113, v114, v115);
+  v219 = objc_msgSend_bubbleSeries(self, v112, v113, v114, v115);
   v218 = objc_msgSend_genericToSpecificPropertyMap(v219, v116, v117, v118, v119);
   v251[13] = v218;
-  v217 = objc_msgSend_column3DSeries(a1, v120, v121, v122, v123);
+  v217 = objc_msgSend_column3DSeries(self, v120, v121, v122, v123);
   v216 = objc_msgSend_genericToSpecificPropertyMap(v217, v124, v125, v126, v127);
   v251[14] = v216;
-  v215 = objc_msgSend_line3DSeries(a1, v128, v129, v130, v131);
+  v215 = objc_msgSend_line3DSeries(self, v128, v129, v130, v131);
   v214 = objc_msgSend_genericToSpecificPropertyMap(v215, v132, v133, v134, v135);
   v251[15] = v214;
-  v213 = objc_msgSend_area3DSeries(a1, v136, v137, v138, v139);
+  v213 = objc_msgSend_area3DSeries(self, v136, v137, v138, v139);
   v212 = objc_msgSend_genericToSpecificPropertyMap(v213, v140, v141, v142, v143);
   v251[16] = v212;
-  v148 = objc_msgSend_stackedArea3DSeries(a1, v144, v145, v146, v147);
+  v148 = objc_msgSend_stackedArea3DSeries(self, v144, v145, v146, v147);
   v153 = objc_msgSend_genericToSpecificPropertyMap(v148, v149, v150, v151, v152);
   v251[17] = v153;
-  v158 = objc_msgSend_pie3DSeries(a1, v154, v155, v156, v157);
+  v158 = objc_msgSend_pie3DSeries(self, v154, v155, v156, v157);
   v163 = objc_msgSend_genericToSpecificPropertyMap(v158, v159, v160, v161, v162);
   v251[18] = v163;
-  v168 = objc_msgSend_stackedColumn3DSeries(a1, v164, v165, v166, v167);
+  v168 = objc_msgSend_stackedColumn3DSeries(self, v164, v165, v166, v167);
   v173 = objc_msgSend_genericToSpecificPropertyMap(v168, v169, v170, v171, v172);
   v251[19] = v173;
-  v178 = objc_msgSend_bar3DSeries(a1, v174, v175, v176, v177);
+  v178 = objc_msgSend_bar3DSeries(self, v174, v175, v176, v177);
   v183 = objc_msgSend_genericToSpecificPropertyMap(v178, v179, v180, v181, v182);
   v251[20] = v183;
-  v188 = objc_msgSend_stackedBar3DSeries(a1, v184, v185, v186, v187);
+  v188 = objc_msgSend_stackedBar3DSeries(self, v184, v185, v186, v187);
   v193 = objc_msgSend_genericToSpecificPropertyMap(v188, v189, v190, v191, v192);
   v251[21] = v193;
   v211 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v194, v195, v196, v197, v251, 22);
@@ -446,7 +446,7 @@
   v249 = v198;
   v199 = v246;
   v250 = v199;
-  objc_msgSend_enumeratePropertiesUsingBlock_(v247, v200, v201, v202, v203, v248);
+  objc_msgSend_enumeratePropertiesUsingBlock_(propertiesCopy, v200, v201, v202, v203, v248);
   objc_msgSend_removeProperty_(v199, v204, v205, v206, v207, 0);
   v208 = v250;
   v209 = v199;
@@ -460,7 +460,7 @@
   block[1] = 3221225472;
   block[2] = sub_27623F4E0;
   block[3] = &unk_27A6B6250;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A46D38 != -1)
   {
     dispatch_once(&qword_280A46D38, block);
@@ -538,10 +538,10 @@
   return v2;
 }
 
-- (id)userInterfaceNameForLabelPosition:(id)a3
+- (id)userInterfaceNameForLabelPosition:(id)position
 {
-  v4 = a3;
-  v9 = objc_msgSend_intValue(v4, v5, v6, v7, v8);
+  positionCopy = position;
+  v9 = objc_msgSend_intValue(positionCopy, v5, v6, v7, v8);
   v14 = objc_msgSend_filterChartLabelPosition_(self, v10, v11, v12, v13, v9);
   if (v14 == objc_msgSend_filterChartLabelPosition_(self, v15, v16, v17, v18, 20))
   {
@@ -627,16 +627,16 @@ LABEL_20:
   return v3;
 }
 
-- (id)legendFillForSeries:(id)a3
+- (id)legendFillForSeries:(id)series
 {
-  v6 = objc_msgSend_objectValueForProperty_(a3, a2, v3, v4, v5, 1160);
+  v6 = objc_msgSend_objectValueForProperty_(series, a2, v3, v4, v5, 1160);
 
   return v6;
 }
 
-- (id)legendStrokeForSeries:(id)a3
+- (id)legendStrokeForSeries:(id)series
 {
-  v4 = a3;
+  seriesCopy = series;
   if (objc_msgSend_sceneObjectClass(self, v5, v6, v7, v8))
   {
     v13 = 0;
@@ -644,7 +644,7 @@ LABEL_20:
 
   else
   {
-    v13 = objc_msgSend_objectValueForProperty_(v4, v9, v10, v11, v12, 1184);
+    v13 = objc_msgSend_objectValueForProperty_(seriesCopy, v9, v10, v11, v12, 1184);
   }
 
   return v13;
@@ -662,9 +662,9 @@ LABEL_20:
   return v3;
 }
 
-- (id)cdeFillForSeries:(id)a3
+- (id)cdeFillForSeries:(id)series
 {
-  v6 = objc_msgSend_legendFillForSeries_(self, a2, v3, v4, v5, a3);
+  v6 = objc_msgSend_legendFillForSeries_(self, a2, v3, v4, v5, series);
 
   return v6;
 }
@@ -720,19 +720,19 @@ LABEL_20:
   return v6;
 }
 
-- (id)resetSeriesStorage:(id)a3 forSeries:(id)a4
+- (id)resetSeriesStorage:(id)storage forSeries:(id)series
 {
-  v6 = a3;
-  v7 = a4;
+  storageCopy = storage;
+  seriesCopy = series;
   if (objc_msgSend_sceneObjectClass(self, v8, v9, v10, v11))
   {
     v16 = objc_msgSend_sceneObjectClass(self, v12, v13, v14, v15);
-    v21 = objc_msgSend_resetSeriesStorage_forSeries_(v16, v17, v18, v19, v20, v6, v7);
+    v21 = objc_msgSend_resetSeriesStorage_forSeries_(v16, v17, v18, v19, v20, storageCopy, seriesCopy);
   }
 
   else
   {
-    v21 = v6;
+    v21 = storageCopy;
   }
 
   v22 = v21;
@@ -747,18 +747,18 @@ LABEL_20:
   return objc_msgSend_sceneObjectClass(v2, v3, v4, v5, v6);
 }
 
-- (id)p_axisForSeries:(id)a3 isCategory:(BOOL)a4
+- (id)p_axisForSeries:(id)series isCategory:(BOOL)category
 {
-  v4 = a4;
-  v5 = a3;
-  v10 = objc_msgSend_model(v5, v6, v7, v8, v9);
-  v15 = objc_msgSend_axisIDForAxisType_(v5, v11, v12, v13, v14, 2);
+  categoryCopy = category;
+  seriesCopy = series;
+  v10 = objc_msgSend_model(seriesCopy, v6, v7, v8, v9);
+  v15 = objc_msgSend_axisIDForAxisType_(seriesCopy, v11, v12, v13, v14, 2);
   v20 = objc_msgSend_axisForID_(v10, v16, v17, v18, v19, v15);
 
-  v25 = objc_msgSend_axisIDForAxisType_(v5, v21, v22, v23, v24, 1);
+  v25 = objc_msgSend_axisIDForAxisType_(seriesCopy, v21, v22, v23, v24, 1);
   v30 = objc_msgSend_axisForID_(v10, v26, v27, v28, v29, v25);
 
-  if (objc_msgSend_isCategory(v30, v31, v32, v33, v34) != v4)
+  if (objc_msgSend_isCategory(v30, v31, v32, v33, v34) != categoryCopy)
   {
     v35 = v20;
   }
@@ -773,16 +773,16 @@ LABEL_20:
   return v35;
 }
 
-- (id)valueAxisForSeries:(id)a3
+- (id)valueAxisForSeries:(id)series
 {
-  v6 = objc_msgSend_p_axisForSeries_isCategory_(self, a2, v3, v4, v5, a3, 0);
+  v6 = objc_msgSend_p_axisForSeries_isCategory_(self, a2, v3, v4, v5, series, 0);
 
   return v6;
 }
 
-- (id)coordinateAxisForSeries:(id)a3
+- (id)coordinateAxisForSeries:(id)series
 {
-  v6 = objc_msgSend_p_axisForSeries_isCategory_(self, a2, v3, v4, v5, a3, 1);
+  v6 = objc_msgSend_p_axisForSeries_isCategory_(self, a2, v3, v4, v5, series, 1);
 
   return v6;
 }
@@ -860,16 +860,16 @@ LABEL_6:
   return v26;
 }
 
-- (id)p_specificMutationsForGenericMutations:(id)a3
+- (id)p_specificMutationsForGenericMutations:(id)mutations
 {
   v75 = *MEMORY[0x277D85DE8];
-  v68 = a3;
+  mutationsCopy = mutations;
   v69 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v4, v5, v6, v7);
   v72 = 0u;
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v8 = v68;
+  v8 = mutationsCopy;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, v10, v11, v12, &v70, v74, 16);
   if (v14)
   {

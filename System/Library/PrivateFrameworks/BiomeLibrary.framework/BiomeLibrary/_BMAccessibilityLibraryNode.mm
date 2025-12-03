@@ -35,7 +35,7 @@
 + (id)storeConfigurationForVoiceOver;
 + (id)storeConfigurationForWhitePoint;
 + (id)storeConfigurationForZoom;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -44,7 +44,7 @@
 + (id)ClassicInvert
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForClassicInvert];
+  configurationForClassicInvert = [self configurationForClassicInvert];
   v3 = +[BMAccessibilityClassicInvert columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -56,7 +56,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Accessibility.ClassicInvert" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.ClassicInvert" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.ClassicInvert" schema:v9 configuration:configurationForClassicInvert];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -65,13 +65,13 @@
 
 + (id)configurationForClassicInvert
 {
-  v3 = [a1 storeConfigurationForClassicInvert];
-  v4 = [a1 syncPolicyForClassicInvert];
+  storeConfigurationForClassicInvert = [self storeConfigurationForClassicInvert];
+  syncPolicyForClassicInvert = [self syncPolicyForClassicInvert];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"8ED9A3AE-742E-4BDA-BE4E-27D83D9D2EA0"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.ClassicInvert" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.ClassicInvert" eventClass:objc_opt_class() storeConfig:storeConfigurationForClassicInvert syncPolicy:syncPolicyForClassicInvert legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -87,7 +87,7 @@
 + (id)ColorFilters
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForColorFilters];
+  configurationForColorFilters = [self configurationForColorFilters];
   v3 = +[BMAccessibilityColorFilters columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -99,7 +99,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Accessibility.ColorFilters" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.ColorFilters" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.ColorFilters" schema:v9 configuration:configurationForColorFilters];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -108,13 +108,13 @@
 
 + (id)configurationForColorFilters
 {
-  v3 = [a1 storeConfigurationForColorFilters];
-  v4 = [a1 syncPolicyForColorFilters];
+  storeConfigurationForColorFilters = [self storeConfigurationForColorFilters];
+  syncPolicyForColorFilters = [self syncPolicyForColorFilters];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"802EA60B-FBF0-46E0-AFBE-738351D682A6"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.ColorFilters" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.ColorFilters" eventClass:objc_opt_class() storeConfig:storeConfigurationForColorFilters syncPolicy:syncPolicyForColorFilters legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -130,7 +130,7 @@
 + (id)Contrast
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForContrast];
+  configurationForContrast = [self configurationForContrast];
   v3 = +[BMAccessibilityContrast columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -142,7 +142,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Accessibility.Contrast" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.Contrast" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.Contrast" schema:v9 configuration:configurationForContrast];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -151,13 +151,13 @@
 
 + (id)configurationForContrast
 {
-  v3 = [a1 storeConfigurationForContrast];
-  v4 = [a1 syncPolicyForContrast];
+  storeConfigurationForContrast = [self storeConfigurationForContrast];
+  syncPolicyForContrast = [self syncPolicyForContrast];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"4DBA3BC2-F175-4035-AF91-D30001BAC726"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.Contrast" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.Contrast" eventClass:objc_opt_class() storeConfig:storeConfigurationForContrast syncPolicy:syncPolicyForContrast legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -173,7 +173,7 @@
 + (id)MotionCues
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForMotionCues];
+  configurationForMotionCues = [self configurationForMotionCues];
   v3 = +[BMAccessibilityMotionCues columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -185,7 +185,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Accessibility.MotionCues" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.MotionCues" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.MotionCues" schema:v9 configuration:configurationForMotionCues];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -194,13 +194,13 @@
 
 + (id)configurationForMotionCues
 {
-  v3 = [a1 storeConfigurationForMotionCues];
-  v4 = [a1 syncPolicyForMotionCues];
+  storeConfigurationForMotionCues = [self storeConfigurationForMotionCues];
+  syncPolicyForMotionCues = [self syncPolicyForMotionCues];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"543A82D6-4C54-44A0-9287-C985992DE170"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.MotionCues" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.MotionCues" eventClass:objc_opt_class() storeConfig:storeConfigurationForMotionCues syncPolicy:syncPolicyForMotionCues legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -216,7 +216,7 @@
 + (id)ReduceMotion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForReduceMotion];
+  configurationForReduceMotion = [self configurationForReduceMotion];
   v3 = +[BMAccessibilityReduceMotion columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -228,7 +228,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Accessibility.ReduceMotion" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.ReduceMotion" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.ReduceMotion" schema:v9 configuration:configurationForReduceMotion];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -237,13 +237,13 @@
 
 + (id)configurationForReduceMotion
 {
-  v3 = [a1 storeConfigurationForReduceMotion];
-  v4 = [a1 syncPolicyForReduceMotion];
+  storeConfigurationForReduceMotion = [self storeConfigurationForReduceMotion];
+  syncPolicyForReduceMotion = [self syncPolicyForReduceMotion];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"FCC2E76F-3CAE-481D-B8F8-1F9290D48CC8"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.ReduceMotion" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.ReduceMotion" eventClass:objc_opt_class() storeConfig:storeConfigurationForReduceMotion syncPolicy:syncPolicyForReduceMotion legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -259,7 +259,7 @@
 + (id)ReduceTransparency
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForReduceTransparency];
+  configurationForReduceTransparency = [self configurationForReduceTransparency];
   v3 = +[BMAccessibilityReduceTransparency columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -271,7 +271,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Accessibility.ReduceTransparency" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.ReduceTransparency" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.ReduceTransparency" schema:v9 configuration:configurationForReduceTransparency];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -280,13 +280,13 @@
 
 + (id)configurationForReduceTransparency
 {
-  v3 = [a1 storeConfigurationForReduceTransparency];
-  v4 = [a1 syncPolicyForReduceTransparency];
+  storeConfigurationForReduceTransparency = [self storeConfigurationForReduceTransparency];
+  syncPolicyForReduceTransparency = [self syncPolicyForReduceTransparency];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"7EA88124-DC52-4E9B-986D-C8E257E4EE45"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.ReduceTransparency" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.ReduceTransparency" eventClass:objc_opt_class() storeConfig:storeConfigurationForReduceTransparency syncPolicy:syncPolicyForReduceTransparency legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -302,7 +302,7 @@
 + (id)SmartInvert
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForSmartInvert];
+  configurationForSmartInvert = [self configurationForSmartInvert];
   v3 = +[BMAccessibilitySmartInvert columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -314,7 +314,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Accessibility.SmartInvert" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.SmartInvert" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.SmartInvert" schema:v9 configuration:configurationForSmartInvert];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -323,13 +323,13 @@
 
 + (id)configurationForSmartInvert
 {
-  v3 = [a1 storeConfigurationForSmartInvert];
-  v4 = [a1 syncPolicyForSmartInvert];
+  storeConfigurationForSmartInvert = [self storeConfigurationForSmartInvert];
+  syncPolicyForSmartInvert = [self syncPolicyForSmartInvert];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"4C3C11B9-A0B2-4A16-A2CA-019F7FAB4AD0"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.SmartInvert" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.SmartInvert" eventClass:objc_opt_class() storeConfig:storeConfigurationForSmartInvert syncPolicy:syncPolicyForSmartInvert legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -345,7 +345,7 @@
 + (id)SoundDetection
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForSoundDetection];
+  configurationForSoundDetection = [self configurationForSoundDetection];
   v3 = +[BMAccessibilitySoundDetection columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -357,7 +357,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Accessibility.SoundDetection" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.SoundDetection" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.SoundDetection" schema:v9 configuration:configurationForSoundDetection];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -366,13 +366,13 @@
 
 + (id)configurationForSoundDetection
 {
-  v3 = [a1 storeConfigurationForSoundDetection];
-  v4 = [a1 syncPolicyForSoundDetection];
+  storeConfigurationForSoundDetection = [self storeConfigurationForSoundDetection];
+  syncPolicyForSoundDetection = [self syncPolicyForSoundDetection];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"EECE2235-7EAB-40C7-A763-AB3D44240D63"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.SoundDetection" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3EB628 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.SoundDetection" eventClass:objc_opt_class() storeConfig:storeConfigurationForSoundDetection syncPolicy:syncPolicyForSoundDetection legacyNames:&unk_1EF3EB628 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -388,7 +388,7 @@
 + (id)VoiceControl
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForVoiceControl];
+  configurationForVoiceControl = [self configurationForVoiceControl];
   v3 = +[BMAccessibilityVoiceControl columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -400,7 +400,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Accessibility.VoiceControl" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.VoiceControl" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.VoiceControl" schema:v9 configuration:configurationForVoiceControl];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -409,13 +409,13 @@
 
 + (id)configurationForVoiceControl
 {
-  v3 = [a1 storeConfigurationForVoiceControl];
-  v4 = [a1 syncPolicyForVoiceControl];
+  storeConfigurationForVoiceControl = [self storeConfigurationForVoiceControl];
+  syncPolicyForVoiceControl = [self syncPolicyForVoiceControl];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"C75A57EF-37C2-43B0-8F93-D47BA7691715"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.VoiceControl" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.VoiceControl" eventClass:objc_opt_class() storeConfig:storeConfigurationForVoiceControl syncPolicy:syncPolicyForVoiceControl legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -431,7 +431,7 @@
 + (id)VoiceOver
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForVoiceOver];
+  configurationForVoiceOver = [self configurationForVoiceOver];
   v3 = +[BMAccessibilityVoiceOver columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -443,7 +443,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Accessibility.VoiceOver" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.VoiceOver" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.VoiceOver" schema:v9 configuration:configurationForVoiceOver];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -452,13 +452,13 @@
 
 + (id)configurationForVoiceOver
 {
-  v3 = [a1 storeConfigurationForVoiceOver];
-  v4 = [a1 syncPolicyForVoiceOver];
+  storeConfigurationForVoiceOver = [self storeConfigurationForVoiceOver];
+  syncPolicyForVoiceOver = [self syncPolicyForVoiceOver];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"4A709D28-1CA9-4AC0-BFE0-F4889AA9C5FA"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.VoiceOver" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.VoiceOver" eventClass:objc_opt_class() storeConfig:storeConfigurationForVoiceOver syncPolicy:syncPolicyForVoiceOver legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -474,7 +474,7 @@
 + (id)WhitePoint
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForWhitePoint];
+  configurationForWhitePoint = [self configurationForWhitePoint];
   v3 = +[BMAccessibilityWhitePoint columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -486,7 +486,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Accessibility.WhitePoint" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.WhitePoint" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.WhitePoint" schema:v9 configuration:configurationForWhitePoint];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -495,13 +495,13 @@
 
 + (id)configurationForWhitePoint
 {
-  v3 = [a1 storeConfigurationForWhitePoint];
-  v4 = [a1 syncPolicyForWhitePoint];
+  storeConfigurationForWhitePoint = [self storeConfigurationForWhitePoint];
+  syncPolicyForWhitePoint = [self syncPolicyForWhitePoint];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"F73CC6CE-A31A-4021-9F1A-2C6A5B4457C1"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.WhitePoint" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.WhitePoint" eventClass:objc_opt_class() storeConfig:storeConfigurationForWhitePoint syncPolicy:syncPolicyForWhitePoint legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -517,7 +517,7 @@
 + (id)Zoom
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForZoom];
+  configurationForZoom = [self configurationForZoom];
   v3 = +[BMAccessibilityZoom columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -529,7 +529,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Accessibility.Zoom" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.Zoom" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Accessibility.Zoom" schema:v9 configuration:configurationForZoom];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -538,13 +538,13 @@
 
 + (id)configurationForZoom
 {
-  v3 = [a1 storeConfigurationForZoom];
-  v4 = [a1 syncPolicyForZoom];
+  storeConfigurationForZoom = [self storeConfigurationForZoom];
+  syncPolicyForZoom = [self syncPolicyForZoom];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"A4210F09-D73C-4345-980C-7E067C85B1DF"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.Zoom" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Accessibility.Zoom" eventClass:objc_opt_class() storeConfig:storeConfigurationForZoom syncPolicy:syncPolicyForZoom legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -557,80 +557,80 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"ClassicInvert"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"ClassicInvert"])
   {
-    v5 = [a1 ClassicInvert];
+    classicInvert = [self ClassicInvert];
 LABEL_25:
-    v6 = v5;
+    v6 = classicInvert;
     goto LABEL_26;
   }
 
-  if ([v4 isEqualToString:@"ColorFilters"])
+  if ([nameCopy isEqualToString:@"ColorFilters"])
   {
-    v5 = [a1 ColorFilters];
+    classicInvert = [self ColorFilters];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"Contrast"])
+  if ([nameCopy isEqualToString:@"Contrast"])
   {
-    v5 = [a1 Contrast];
+    classicInvert = [self Contrast];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"MotionCues"])
+  if ([nameCopy isEqualToString:@"MotionCues"])
   {
-    v5 = [a1 MotionCues];
+    classicInvert = [self MotionCues];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"ReduceMotion"])
+  if ([nameCopy isEqualToString:@"ReduceMotion"])
   {
-    v5 = [a1 ReduceMotion];
+    classicInvert = [self ReduceMotion];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"ReduceTransparency"])
+  if ([nameCopy isEqualToString:@"ReduceTransparency"])
   {
-    v5 = [a1 ReduceTransparency];
+    classicInvert = [self ReduceTransparency];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"SmartInvert"])
+  if ([nameCopy isEqualToString:@"SmartInvert"])
   {
-    v5 = [a1 SmartInvert];
+    classicInvert = [self SmartInvert];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"SoundDetection"])
+  if ([nameCopy isEqualToString:@"SoundDetection"])
   {
-    v5 = [a1 SoundDetection];
+    classicInvert = [self SoundDetection];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"VoiceControl"])
+  if ([nameCopy isEqualToString:@"VoiceControl"])
   {
-    v5 = [a1 VoiceControl];
+    classicInvert = [self VoiceControl];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"VoiceOver"])
+  if ([nameCopy isEqualToString:@"VoiceOver"])
   {
-    v5 = [a1 VoiceOver];
+    classicInvert = [self VoiceOver];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"WhitePoint"])
+  if ([nameCopy isEqualToString:@"WhitePoint"])
   {
-    v5 = [a1 WhitePoint];
+    classicInvert = [self WhitePoint];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"Zoom"])
+  if ([nameCopy isEqualToString:@"Zoom"])
   {
-    v5 = [a1 Zoom];
+    classicInvert = [self Zoom];
     goto LABEL_25;
   }
 

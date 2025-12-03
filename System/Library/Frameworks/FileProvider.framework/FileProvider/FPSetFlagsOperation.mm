@@ -1,29 +1,29 @@
 @interface FPSetFlagsOperation
-- (FPSetFlagsOperation)initWithItems:(id)a3 flags:(unint64_t)a4;
+- (FPSetFlagsOperation)initWithItems:(id)items flags:(unint64_t)flags;
 - (id)fp_prettyDescription;
-- (id)replicateForItems:(id)a3;
+- (id)replicateForItems:(id)items;
 @end
 
 @implementation FPSetFlagsOperation
 
-- (id)replicateForItems:(id)a3
+- (id)replicateForItems:(id)items
 {
   v4 = [FPSetFlagsOperation alloc];
-  v5 = [(FPTransformOperation *)self items];
-  v6 = [(FPSetFlagsOperation *)v4 initWithItems:v5 flags:self->_flags];
+  items = [(FPTransformOperation *)self items];
+  v6 = [(FPSetFlagsOperation *)v4 initWithItems:items flags:self->_flags];
 
   return v6;
 }
 
-- (FPSetFlagsOperation)initWithItems:(id)a3 flags:(unint64_t)a4
+- (FPSetFlagsOperation)initWithItems:(id)items flags:(unint64_t)flags
 {
   v8.receiver = self;
   v8.super_class = FPSetFlagsOperation;
-  v5 = [(FPTransformOperation *)&v8 initWithItemsOfDifferentProviders:a3 action:0];
+  v5 = [(FPTransformOperation *)&v8 initWithItemsOfDifferentProviders:items action:0];
   v6 = v5;
   if (v5)
   {
-    v5->_flags = a4;
+    v5->_flags = flags;
     [(FPActionOperation *)v5 setSetupRemoteOperationService:1];
   }
 
@@ -33,9 +33,9 @@
 - (id)fp_prettyDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(FPTransformOperation *)self items];
-  v5 = [v4 fp_itemIdentifiers];
-  v6 = FPAbbreviatedArrayDescription(v5);
+  items = [(FPTransformOperation *)self items];
+  fp_itemIdentifiers = [items fp_itemIdentifiers];
+  v6 = FPAbbreviatedArrayDescription(fp_itemIdentifiers);
   v7 = v6;
   flags = self->_flags;
   v9 = 101;

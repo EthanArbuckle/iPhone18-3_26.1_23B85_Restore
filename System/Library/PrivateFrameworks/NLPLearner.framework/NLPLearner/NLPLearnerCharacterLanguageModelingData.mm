@@ -1,15 +1,15 @@
 @interface NLPLearnerCharacterLanguageModelingData
 + (void)initialize;
-- (BOOL)loadFromCoreDuet:(id)a3 limitSamplesTo:(unint64_t)a4;
-- (NLPLearnerCharacterLanguageModelingData)initWithLocale:(id)a3;
-- (void)addResource:(id)a3;
+- (BOOL)loadFromCoreDuet:(id)duet limitSamplesTo:(unint64_t)to;
+- (NLPLearnerCharacterLanguageModelingData)initWithLocale:(id)locale;
+- (void)addResource:(id)resource;
 @end
 
 @implementation NLPLearnerCharacterLanguageModelingData
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sLogCharLM = os_log_create("com.apple.NLP", "NLPLearnerCharacterLanguageModelingData");
 
@@ -17,12 +17,12 @@
   }
 }
 
-- (NLPLearnerCharacterLanguageModelingData)initWithLocale:(id)a3
+- (NLPLearnerCharacterLanguageModelingData)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v7.receiver = self;
   v7.super_class = NLPLearnerCharacterLanguageModelingData;
-  v5 = [(NLPLearnerLanguageModelingData *)&v7 initWithLocale:v4];
+  v5 = [(NLPLearnerLanguageModelingData *)&v7 initWithLocale:localeCopy];
   if (v5)
   {
     -[NLPLearnerTextData setMaxSequenceLength:](v5, "setMaxSequenceLength:", [objc_opt_class() defaultMaxSequenceLength]);
@@ -31,12 +31,12 @@
   return v5;
 }
 
-- (void)addResource:(id)a3
+- (void)addResource:(id)resource
 {
-  v4 = a3;
-  [(NLPLearnerLanguageModelingData *)self setTokenIDMapPath:v4];
+  resourceCopy = resource;
+  [(NLPLearnerLanguageModelingData *)self setTokenIDMapPath:resourceCopy];
   v5 = objc_alloc(MEMORY[0x277CF6F78]);
-  v6 = [MEMORY[0x277CBEBC0] URLWithString:v4];
+  v6 = [MEMORY[0x277CBEBC0] URLWithString:resourceCopy];
   v7 = [v5 initWithResource:v6 andTokenType:1];
   tokenConverter = self->_tokenConverter;
   self->_tokenConverter = v7;
@@ -46,17 +46,17 @@
     v9 = sLogCharLM;
     if (os_log_type_enabled(sLogCharLM, OS_LOG_TYPE_ERROR))
     {
-      [(NLPLearnerCharacterLanguageModelingData *)v4 addResource:v9];
+      [(NLPLearnerCharacterLanguageModelingData *)resourceCopy addResource:v9];
     }
   }
 }
 
-- (BOOL)loadFromCoreDuet:(id)a3 limitSamplesTo:(unint64_t)a4
+- (BOOL)loadFromCoreDuet:(id)duet limitSamplesTo:(unint64_t)to
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  duetCopy = duet;
   tokenConverter = self->_tokenConverter;
-  v27 = v6;
+  v27 = duetCopy;
   if (tokenConverter)
   {
     v7 = sLogCharLM;
@@ -85,16 +85,16 @@ LABEL_6:
 
         v11 = *(*(&v36 + 1) + 8 * v10);
         v12 = objc_autoreleasePoolPush();
-        if (a4 && [(NLPLearnerTextData *)self numSamples]>= a4)
+        if (to && [(NLPLearnerTextData *)self numSamples]>= to)
         {
           v23 = 2;
         }
 
         else
         {
-          v13 = [(NLPLearnerTextData *)self locale];
-          v14 = [v13 languageCode];
-          v15 = [NLPLearnerUtils messageContentForEvent:v11 andLanguage:v14];
+          locale = [(NLPLearnerTextData *)self locale];
+          languageCode = [locale languageCode];
+          v15 = [NLPLearnerUtils messageContentForEvent:v11 andLanguage:languageCode];
 
           if (v15)
           {
@@ -123,8 +123,8 @@ LABEL_6:
               v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[CVNLPTokenIDConverter eosTokenID](self->_tokenConverter, "eosTokenID")}];
               [v20 addObject:v21];
 
-              v22 = [(NLPLearnerTextData *)self sentences];
-              [v22 addObject:v31[5]];
+              sentences = [(NLPLearnerTextData *)self sentences];
+              [sentences addObject:v31[5]];
             }
 
             _Block_object_dispose(&v30, 8);

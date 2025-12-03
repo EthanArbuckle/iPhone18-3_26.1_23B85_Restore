@@ -1,27 +1,27 @@
 @interface SecABC
-+ (void)triggerAutoBugCaptureWithType:(id)a3 subType:(id)a4 subtypeContext:(id)a5 domain:(id)a6 events:(id)a7 payload:(id)a8 detectedProcess:(id)a9;
++ (void)triggerAutoBugCaptureWithType:(id)type subType:(id)subType subtypeContext:(id)context domain:(id)domain events:(id)events payload:(id)payload detectedProcess:(id)process;
 @end
 
 @implementation SecABC
 
-+ (void)triggerAutoBugCaptureWithType:(id)a3 subType:(id)a4 subtypeContext:(id)a5 domain:(id)a6 events:(id)a7 payload:(id)a8 detectedProcess:(id)a9
++ (void)triggerAutoBugCaptureWithType:(id)type subType:(id)subType subtypeContext:(id)context domain:(id)domain events:(id)events payload:(id)payload detectedProcess:(id)process
 {
   v39 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  typeCopy = type;
+  subTypeCopy = subType;
+  contextCopy = context;
+  domainCopy = domain;
+  eventsCopy = events;
+  payloadCopy = payload;
+  processCopy = process;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     *buf = 138543874;
-    v34 = v14;
+    v34 = typeCopy;
     v35 = 2114;
-    v36 = v15;
+    v36 = subTypeCopy;
     v37 = 2114;
-    v38 = v16;
+    v38 = contextCopy;
     _os_log_impl(&dword_1887D2000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "TriggerABC for %{public}@/%{public}@/%{public}@", buf, 0x20u);
   }
 
@@ -29,9 +29,9 @@
   {
     v21 = objc_alloc_init(MEMORY[0x1E69D4F78]);
     v22 = v21;
-    if (v20)
+    if (processCopy)
     {
-      v23 = [v21 signatureWithDomain:v17 type:v14 subType:v15 subtypeContext:v16 detectedProcess:v20 triggerThresholdValues:0];
+      v23 = [v21 signatureWithDomain:domainCopy type:typeCopy subType:subTypeCopy subtypeContext:contextCopy detectedProcess:processCopy triggerThresholdValues:0];
       if (v23)
       {
 LABEL_6:
@@ -39,10 +39,10 @@ LABEL_6:
         v29[1] = 3221225472;
         v29[2] = __101__SecABC_triggerAutoBugCaptureWithType_subType_subtypeContext_domain_events_payload_detectedProcess___block_invoke;
         v29[3] = &unk_1E70D68A0;
-        v30 = v14;
-        v31 = v15;
-        v32 = v16;
-        [v22 snapshotWithSignature:v23 delay:v18 events:v19 payload:0 actions:v29 reply:5.0];
+        v30 = typeCopy;
+        v31 = subTypeCopy;
+        v32 = contextCopy;
+        [v22 snapshotWithSignature:v23 delay:eventsCopy events:payloadCopy payload:0 actions:v29 reply:5.0];
 
 LABEL_10:
         goto LABEL_11;
@@ -52,13 +52,13 @@ LABEL_10:
     else
     {
       [MEMORY[0x1E696AE30] processInfo];
-      v28 = v19;
-      v25 = v24 = v18;
-      v26 = [v25 processName];
-      v23 = [v22 signatureWithDomain:v17 type:v14 subType:v15 subtypeContext:v16 detectedProcess:v26 triggerThresholdValues:0];
+      v28 = payloadCopy;
+      v25 = v24 = eventsCopy;
+      processName = [v25 processName];
+      v23 = [v22 signatureWithDomain:domainCopy type:typeCopy subType:subTypeCopy subtypeContext:contextCopy detectedProcess:processName triggerThresholdValues:0];
 
-      v18 = v24;
-      v19 = v28;
+      eventsCopy = v24;
+      payloadCopy = v28;
       if (v23)
       {
         goto LABEL_6;

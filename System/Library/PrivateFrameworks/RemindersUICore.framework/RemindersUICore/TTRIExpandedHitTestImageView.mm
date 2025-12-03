@@ -1,7 +1,7 @@
 @interface TTRIExpandedHitTestImageView
 - (CGRect)accessibilityFrame;
-- (_TtC15RemindersUICore28TTRIExpandedHitTestImageView)initWithImage:(id)a3;
-- (_TtC15RemindersUICore28TTRIExpandedHitTestImageView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (_TtC15RemindersUICore28TTRIExpandedHitTestImageView)initWithImage:(id)image;
+- (_TtC15RemindersUICore28TTRIExpandedHitTestImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 @end
 
 @implementation TTRIExpandedHitTestImageView
@@ -16,18 +16,18 @@
   return result;
 }
 
-- (_TtC15RemindersUICore28TTRIExpandedHitTestImageView)initWithImage:(id)a3
+- (_TtC15RemindersUICore28TTRIExpandedHitTestImageView)initWithImage:(id)image
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for TTRIExpandedHitTestImageView();
-  return [(TTRIExpandedHitTestImageView *)&v5 initWithImage:a3];
+  return [(TTRIExpandedHitTestImageView *)&v5 initWithImage:image];
 }
 
-- (_TtC15RemindersUICore28TTRIExpandedHitTestImageView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (_TtC15RemindersUICore28TTRIExpandedHitTestImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for TTRIExpandedHitTestImageView();
-  return [(TTRIExpandedHitTestImageView *)&v7 initWithImage:a3 highlightedImage:a4];
+  return [(TTRIExpandedHitTestImageView *)&v7 initWithImage:image highlightedImage:highlightedImage];
 }
 
 @end

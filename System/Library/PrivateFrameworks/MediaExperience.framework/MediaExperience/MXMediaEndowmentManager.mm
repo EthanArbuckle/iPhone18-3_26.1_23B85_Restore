@@ -1,17 +1,17 @@
 @interface MXMediaEndowmentManager
 + (id)sharedInstance;
 - (MXMediaEndowmentManager)init;
-- (id)getHostProcessAttributions:(int)a3;
-- (int)grantMediaEndowment:(int)a3 environmentID:(id)a4 endowmentPayload:(id)a5;
-- (int)revokeMediaEndowment:(int)a3 environmentID:(id)a4;
+- (id)getHostProcessAttributions:(int)attributions;
+- (int)grantMediaEndowment:(int)endowment environmentID:(id)d endowmentPayload:(id)payload;
+- (int)revokeMediaEndowment:(int)endowment environmentID:(id)d;
 - (void)dealloc;
 - (void)dumpDebugInfo;
 - (void)handleEndowmentTreeUpdate;
-- (void)iterateEndowmentTree:(id)a3 rootPID:(id)a4 environment:(id)a5 endowmentLinks:(id)a6;
+- (void)iterateEndowmentTree:(id)tree rootPID:(id)d environment:(id)environment endowmentLinks:(id)links;
 - (void)loadMediaEndowments;
-- (void)processStateUpdateHandler:(id)a3 process:(id)a4 update:(id)a5;
+- (void)processStateUpdateHandler:(id)handler process:(id)process update:(id)update;
 - (void)refreshAssertions;
-- (void)refreshDomainAssertions:(id)a3 currentlyActivePIDs:(id)a4;
+- (void)refreshDomainAssertions:(id)assertions currentlyActivePIDs:(id)ds;
 - (void)refreshEndowmentTrees;
 - (void)storeMediaEndowments;
 @end
@@ -307,14 +307,14 @@ uint64_t __31__MXMediaEndowmentManager_init__block_invoke(uint64_t a1, void *a2)
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)iterateEndowmentTree:(id)a3 rootPID:(id)a4 environment:(id)a5 endowmentLinks:(id)a6
+- (void)iterateEndowmentTree:(id)tree rootPID:(id)d environment:(id)environment endowmentLinks:(id)links
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [a6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v10 = [links countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -326,18 +326,18 @@ uint64_t __31__MXMediaEndowmentManager_init__block_invoke(uint64_t a1, void *a2)
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(a6);
+          objc_enumerationMutation(links);
         }
 
         v14 = *(*(&v18 + 1) + 8 * v13);
-        v15 = [-[NSMutableDictionary objectForKey:](self->mEndowmentTrees objectForKey:{a4), "objectForKey:", a5}];
+        v15 = [-[NSMutableDictionary objectForKey:](self->mEndowmentTrees objectForKey:{d), "objectForKey:", environment}];
         [v15 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", objc_msgSend(v14, "targetPid"))}];
-        -[MXMediaEndowmentManager iterateEndowmentTree:rootPID:environment:endowmentLinks:](self, "iterateEndowmentTree:rootPID:environment:endowmentLinks:", a3, a4, a5, [a3 childrenLinks:v14]);
+        -[MXMediaEndowmentManager iterateEndowmentTree:rootPID:environment:endowmentLinks:](self, "iterateEndowmentTree:rootPID:environment:endowmentLinks:", tree, d, environment, [tree childrenLinks:v14]);
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [a6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [links countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
@@ -479,12 +479,12 @@ uint64_t __48__MXMediaEndowmentManager_refreshEndowmentTrees__block_invoke(uint6
   [(MXMediaEndowmentManager *)self refreshAssertions];
 }
 
-- (void)processStateUpdateHandler:(id)a3 process:(id)a4 update:(id)a5
+- (void)processStateUpdateHandler:(id)handler process:(id)process update:(id)update
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = [objc_msgSend(objc_msgSend(a5 previousState];
-  v7 = [objc_msgSend(objc_msgSend(a5 "state")];
-  if (v6)
+  previousState = [objc_msgSend(objc_msgSend(update previousState];
+  v7 = [objc_msgSend(objc_msgSend(update "state")];
+  if (previousState)
   {
     if ((v7 & 1) == 0)
     {
@@ -514,28 +514,28 @@ LABEL_8:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (int)grantMediaEndowment:(int)a3 environmentID:(id)a4 endowmentPayload:(id)a5
+- (int)grantMediaEndowment:(int)endowment environmentID:(id)d endowmentPayload:(id)payload
 {
   v25 = *MEMORY[0x1E69E9840];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v9 = [a5 objectForKey:@"AuditToken"];
-  v10 = [a5 objectForKey:@"BundleID"];
-  if (a3 && a4 && (v9 ? (v11 = v10 == 0) : (v11 = 1), !v11))
+  v9 = [payload objectForKey:@"AuditToken"];
+  v10 = [payload objectForKey:@"BundleID"];
+  if (endowment && d && (v9 ? (v11 = v10 == 0) : (v11 = 1), !v11))
   {
     mSerialQueue = self->mSerialQueue;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __78__MXMediaEndowmentManager_grantMediaEndowment_environmentID_endowmentPayload___block_invoke;
     v17[3] = &unk_1E7AE7D08;
-    v18 = a3;
+    endowmentCopy = endowment;
     v17[4] = self;
-    v17[5] = a4;
+    v17[5] = d;
     v17[7] = v10;
     v17[8] = &v21;
-    v17[6] = a5;
+    v17[6] = payload;
     MXDispatchSync("[MXMediaEndowmentManager grantMediaEndowment:environmentID:endowmentPayload:]", "MX_MediaEndowmentManager.m", 368, 0, 0, mSerialQueue, v17);
     v13 = *(v22 + 6);
   }
@@ -644,23 +644,23 @@ LABEL_11:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (int)revokeMediaEndowment:(int)a3 environmentID:(id)a4
+- (int)revokeMediaEndowment:(int)endowment environmentID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  if (a3 && a4)
+  if (endowment && d)
   {
     mSerialQueue = self->mSerialQueue;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __62__MXMediaEndowmentManager_revokeMediaEndowment_environmentID___block_invoke;
     v9[3] = &unk_1E7AE7D30;
-    v10 = a3;
+    endowmentCopy = endowment;
     v9[4] = self;
-    v9[5] = a4;
+    v9[5] = d;
     v9[6] = &v13;
     MXDispatchSync("[MXMediaEndowmentManager revokeMediaEndowment:environmentID:]", "MX_MediaEndowmentManager.m", 462, 0, 0, mSerialQueue, v9);
     v5 = *(v14 + 6);
@@ -719,7 +719,7 @@ uint64_t __62__MXMediaEndowmentManager_revokeMediaEndowment_environmentID___bloc
   return result;
 }
 
-- (id)getHostProcessAttributions:(int)a3
+- (id)getHostProcessAttributions:(int)attributions
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   mSerialQueue = self->mSerialQueue;
@@ -727,7 +727,7 @@ uint64_t __62__MXMediaEndowmentManager_revokeMediaEndowment_environmentID___bloc
   v8[1] = 3221225472;
   v8[2] = __54__MXMediaEndowmentManager_getHostProcessAttributions___block_invoke;
   v8[3] = &unk_1E7AE7D58;
-  v9 = a3;
+  attributionsCopy = attributions;
   v8[4] = self;
   v8[5] = v5;
   MXDispatchSync("[MXMediaEndowmentManager getHostProcessAttributions:]", "MX_MediaEndowmentManager.m", 497, 0, 0, mSerialQueue, v8);
@@ -1030,18 +1030,18 @@ LABEL_30:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)refreshDomainAssertions:(id)a3 currentlyActivePIDs:(id)a4
+- (void)refreshDomainAssertions:(id)assertions currentlyActivePIDs:(id)ds
 {
   v65 = *MEMORY[0x1E69E9840];
   obj = [MEMORY[0x1E695DFA8] set];
-  if ([a3 isEqualToString:@"MediaPlayback"])
+  if ([assertions isEqualToString:@"MediaPlayback"])
   {
     mMediaPlaybackAssertions = self->mMediaPlaybackAssertions;
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v7 = [a4 countByEnumeratingWithState:&v51 objects:v64 count:16];
+    v7 = [ds countByEnumeratingWithState:&v51 objects:v64 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1052,19 +1052,19 @@ LABEL_30:
         {
           if (*v52 != v9)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(ds);
           }
 
           v11 = *(*(&v51 + 1) + 8 * i);
           if (![(NSMutableDictionary *)mMediaPlaybackAssertions objectForKey:v11, v34, v36])
           {
             v50 = 0;
-            v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{originator:com.apple.mediaexperience, clientPID:%@ DomainName:%@}", v11, a3];
-            v13 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.mediaexperience" name:a3];
+            assertions = [MEMORY[0x1E696AEC0] stringWithFormat:@"{originator:com.apple.mediaexperience, clientPID:%@ DomainName:%@}", v11, assertions];
+            v13 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.mediaexperience" name:assertions];
             v14 = objc_alloc(MEMORY[0x1E69C7548]);
             v15 = [MEMORY[0x1E69C7640] targetWithPid:{objc_msgSend(v11, "unsignedIntValue")}];
             v63 = v13;
-            v16 = [v14 initWithExplanation:v12 target:v15 attributes:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v63, 1)}];
+            v16 = [v14 initWithExplanation:assertions target:v15 attributes:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v63, 1)}];
             if ([v16 acquireWithError:&v50])
             {
               if (dword_1EB75DE60)
@@ -1090,7 +1090,7 @@ LABEL_30:
           }
         }
 
-        v8 = [a4 countByEnumeratingWithState:&v51 objects:v64 count:16];
+        v8 = [ds countByEnumeratingWithState:&v51 objects:v64 count:16];
       }
 
       while (v8);
@@ -1115,7 +1115,7 @@ LABEL_30:
           }
 
           v23 = *(*(&v44 + 1) + 8 * j);
-          if (([a4 containsObject:v23] & 1) == 0)
+          if (([ds containsObject:v23] & 1) == 0)
           {
             [obj addObject:v23];
           }
@@ -1168,7 +1168,7 @@ LABEL_30:
               v57 = 136315650;
               v58 = "[MXMediaEndowmentManager refreshDomainAssertions:currentlyActivePIDs:]";
               v59 = 2114;
-              v60 = a3;
+              assertionsCopy = assertions;
               v61 = 2114;
               v62 = v28;
               LODWORD(v37) = 32;

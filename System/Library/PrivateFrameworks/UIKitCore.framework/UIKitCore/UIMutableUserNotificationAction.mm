@@ -1,20 +1,20 @@
 @interface UIMutableUserNotificationAction
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UIMutableUserNotificationAction
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UIUserNotificationAction alloc];
-  v5 = [(UIUserNotificationAction *)self identifier];
-  v6 = [(UIUserNotificationAction *)self title];
-  v7 = [(UIUserNotificationAction *)self behavior];
-  v8 = [(UIUserNotificationAction *)self parameters];
-  v9 = [(UIUserNotificationAction *)self activationMode];
-  v10 = [(UIUserNotificationAction *)self isAuthenticationRequired];
+  identifier = [(UIUserNotificationAction *)self identifier];
+  title = [(UIUserNotificationAction *)self title];
+  behavior = [(UIUserNotificationAction *)self behavior];
+  parameters = [(UIUserNotificationAction *)self parameters];
+  activationMode = [(UIUserNotificationAction *)self activationMode];
+  isAuthenticationRequired = [(UIUserNotificationAction *)self isAuthenticationRequired];
   LOBYTE(v13) = [(UIUserNotificationAction *)self isDestructive];
-  v11 = [(UIUserNotificationAction *)v4 initWithIdentifier:v5 title:v6 behavior:v7 parameters:v8 activationMode:v9 isAuthenticationRequired:v10 isDestructive:v13];
+  v11 = [(UIUserNotificationAction *)v4 initWithIdentifier:identifier title:title behavior:behavior parameters:parameters activationMode:activationMode isAuthenticationRequired:isAuthenticationRequired isDestructive:v13];
 
   return v11;
 }

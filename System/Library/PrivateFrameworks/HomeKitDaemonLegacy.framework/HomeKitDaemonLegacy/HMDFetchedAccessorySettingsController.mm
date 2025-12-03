@@ -1,20 +1,20 @@
 @interface HMDFetchedAccessorySettingsController
 + (id)logCategory;
-- (HMDFetchedAccessorySettingsController)initWithQueue:(id)a3 dataSource:(id)a4 drivers:(id)a5;
-- (HMDFetchedAccessorySettingsController)initWithQueue:(id)a3 dataSource:(id)a4 drivers:(id)a5 notificationCenter:(id)a6;
+- (HMDFetchedAccessorySettingsController)initWithQueue:(id)queue dataSource:(id)source drivers:(id)drivers;
+- (HMDFetchedAccessorySettingsController)initWithQueue:(id)queue dataSource:(id)source drivers:(id)drivers notificationCenter:(id)center;
 - (NSNotificationCenter)notificationCenter;
-- (id)cachedSettingForKeyPath:(id)a3;
-- (void)_postNotificationForSettings:(void *)a1;
-- (void)_postUpdateEventsIfDifferent:(void *)a1;
-- (void)_updateCacheWithSettings:(uint64_t)a1;
-- (void)applyFetchedSettings:(void *)a1 requestedKeyPaths:(void *)a2;
-- (void)driver:(id)a3 didUpdatePrimaryUserInfo:(id)a4;
-- (void)driver:(id)a3 didUpdateSettings:(id)a4;
-- (void)driverDidReload:(id)a3;
-- (void)fetchSettingsForKeyPaths:(id)a3 completion:(id)a4;
-- (void)languageValueListWithCompletion:(id)a3;
+- (id)cachedSettingForKeyPath:(id)path;
+- (void)_postNotificationForSettings:(void *)settings;
+- (void)_postUpdateEventsIfDifferent:(void *)different;
+- (void)_updateCacheWithSettings:(uint64_t)settings;
+- (void)applyFetchedSettings:(void *)settings requestedKeyPaths:(void *)paths;
+- (void)driver:(id)driver didUpdatePrimaryUserInfo:(id)info;
+- (void)driver:(id)driver didUpdateSettings:(id)settings;
+- (void)driverDidReload:(id)reload;
+- (void)fetchSettingsForKeyPaths:(id)paths completion:(id)completion;
+- (void)languageValueListWithCompletion:(id)completion;
 - (void)start;
-- (void)updateSettingWithKeyPath:(id)a3 settingValue:(id)a4 completion:(id)a5;
+- (void)updateSettingWithKeyPath:(id)path settingValue:(id)value completion:(id)completion;
 @end
 
 @implementation HMDFetchedAccessorySettingsController
@@ -26,18 +26,18 @@
   return WeakRetained;
 }
 
-- (void)driverDidReload:(id)a3
+- (void)driverDidReload:(id)reload
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDFetchedAccessorySettingsController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  reloadCopy = reload;
+  queue = [(HMDFetchedAccessorySettingsController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(HMDFetchedAccessorySettingsController *)self driverMap];
-  v8 = v6;
-  if (v6)
+  driverMap = [(HMDFetchedAccessorySettingsController *)self driverMap];
+  v8 = driverMap;
+  if (driverMap)
   {
-    Property = objc_getProperty(v6, v7, 8, 1);
+    Property = objc_getProperty(driverMap, v7, 8, 1);
   }
 
   else
@@ -49,23 +49,23 @@
   v30[1] = 3221225472;
   v30[2] = __57__HMDFetchedAccessorySettingsController_driverDidReload___block_invoke;
   v30[3] = &unk_279732F88;
-  v10 = v4;
+  v10 = reloadCopy;
   v31 = v10;
   v11 = [Property na_firstObjectPassingTest:v30];
 
   if (v11 && ([v11 driver], v12 = objc_claimAutoreleasedReturnValue(), v13 = v12 == v10, v12, v13))
   {
     v18 = MEMORY[0x277CBEB98];
-    v19 = [v11 keyPaths];
-    v20 = [v18 setWithArray:v19];
+    keyPaths = [v11 keyPaths];
+    v20 = [v18 setWithArray:keyPaths];
 
-    v21 = [(HMDFetchedAccessorySettingsController *)self pendingFetchKeyPaths];
-    v22 = [v21 setByAddingObjectsFromSet:v20];
+    pendingFetchKeyPaths = [(HMDFetchedAccessorySettingsController *)self pendingFetchKeyPaths];
+    v22 = [pendingFetchKeyPaths setByAddingObjectsFromSet:v20];
     v23 = [v22 mutableCopy];
     [(HMDFetchedAccessorySettingsController *)self setPendingFetchKeyPaths:v23];
 
     objc_initWeak(buf, self);
-    v24 = [v11 keyPaths];
+    keyPaths2 = [v11 keyPaths];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __57__HMDFetchedAccessorySettingsController_driverDidReload___block_invoke_2;
@@ -73,7 +73,7 @@
     objc_copyWeak(&v29, buf);
     v25 = v20;
     v28 = v25;
-    [v10 fetchSettingsForKeyPaths:v24 completion:v27];
+    [v10 fetchSettingsForKeyPaths:keyPaths2 completion:v27];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(buf);
@@ -82,7 +82,7 @@
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -122,19 +122,19 @@ void __57__HMDFetchedAccessorySettingsController_driverDidReload___block_invoke_
   }
 }
 
-- (void)applyFetchedSettings:(void *)a1 requestedKeyPaths:(void *)a2
+- (void)applyFetchedSettings:(void *)settings requestedKeyPaths:(void *)paths
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __80__HMDFetchedAccessorySettingsController_applyFetchedSettings_requestedKeyPaths___block_invoke;
   v4[3] = &unk_279732F38;
-  v4[4] = a1;
-  v3 = [a2 na_filter:v4];
+  v4[4] = settings;
+  v3 = [paths na_filter:v4];
   if ([v3 count])
   {
-    [(HMDFetchedAccessorySettingsController *)a1 _postUpdateEventsIfDifferent:v3];
-    [(HMDFetchedAccessorySettingsController *)a1 _updateCacheWithSettings:v3];
-    [(HMDFetchedAccessorySettingsController *)a1 _postNotificationForSettings:v3];
+    [(HMDFetchedAccessorySettingsController *)settings _postUpdateEventsIfDifferent:v3];
+    [(HMDFetchedAccessorySettingsController *)settings _updateCacheWithSettings:v3];
+    [(HMDFetchedAccessorySettingsController *)settings _postNotificationForSettings:v3];
   }
 }
 
@@ -149,21 +149,21 @@ uint64_t __80__HMDFetchedAccessorySettingsController_applyFetchedSettings_reques
   return v6;
 }
 
-- (void)_postUpdateEventsIfDifferent:(void *)a1
+- (void)_postUpdateEventsIfDifferent:(void *)different
 {
   v62 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (different)
   {
-    v4 = [a1 queue];
-    dispatch_assert_queue_V2(v4);
+    queue = [different queue];
+    dispatch_assert_queue_V2(queue);
 
-    v5 = [a1 dataSource];
-    v46 = [v5 eventSourceIdentifierNameForFetchedSettingsController:a1];
+    dataSource = [different dataSource];
+    v46 = [dataSource eventSourceIdentifierNameForFetchedSettingsController:different];
 
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v7 = v6;
-    v45 = [a1 pendingFetchKeyPaths];
+    pendingFetchKeyPaths = [different pendingFetchKeyPaths];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
@@ -177,7 +177,7 @@ uint64_t __80__HMDFetchedAccessorySettingsController_applyFetchedSettings_reques
     }
 
     v47 = *v52;
-    v43 = a1;
+    differentCopy = different;
     while (1)
     {
       for (i = 0; i != v48; ++i)
@@ -188,58 +188,58 @@ uint64_t __80__HMDFetchedAccessorySettingsController_applyFetchedSettings_reques
         }
 
         v9 = *(*(&v51 + 1) + 8 * i);
-        v10 = [v9 keyPath];
-        if (v10)
+        keyPath = [v9 keyPath];
+        if (keyPath)
         {
-          v11 = v10;
-          v12 = [v9 keyPath];
-          v13 = [v45 containsObject:v12];
+          v11 = keyPath;
+          keyPath2 = [v9 keyPath];
+          v13 = [pendingFetchKeyPaths containsObject:keyPath2];
 
           if (v13)
           {
             v14 = objc_autoreleasePoolPush();
-            v15 = a1;
+            differentCopy2 = different;
             v16 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
             {
               v17 = HMFGetLogIdentifier();
-              v18 = [v9 keyPath];
+              keyPath3 = [v9 keyPath];
               *buf = 138543618;
               v56 = v17;
               v57 = 2114;
-              v58 = v18;
+              v58 = keyPath3;
               _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_DEBUG, "%{public}@Removing keyPath %{public}@ from pending fetch", buf, 0x16u);
             }
 
             objc_autoreleasePoolPop(v14);
-            v19 = [v15 pendingFetchKeyPaths];
-            v20 = [v9 keyPath];
-            [v19 removeObject:v20];
+            pendingFetchKeyPaths2 = [differentCopy2 pendingFetchKeyPaths];
+            keyPath4 = [v9 keyPath];
+            [pendingFetchKeyPaths2 removeObject:keyPath4];
           }
         }
 
-        v21 = [a1 dataSource];
-        v22 = [v9 keyPath];
-        v23 = [v21 controller:a1 topicForKeyPath:v22];
+        dataSource2 = [different dataSource];
+        keyPath5 = [v9 keyPath];
+        v23 = [dataSource2 controller:different topicForKeyPath:keyPath5];
 
-        v24 = [a1 dataSource];
-        v25 = [v24 eventStoreReadHandle];
+        dataSource3 = [different dataSource];
+        eventStoreReadHandle = [dataSource3 eventStoreReadHandle];
 
-        v26 = [v25 lastEventForTopic:v23];
+        v26 = [eventStoreReadHandle lastEventForTopic:v23];
         if (!v26)
         {
           v27 = 0;
           goto LABEL_24;
         }
 
-        v49 = v25;
+        v49 = eventStoreReadHandle;
         v50 = 0;
         v27 = [MEMORY[0x277CD1AD8] decodeSettingFromEvent:v26 error:&v50];
         v28 = v50;
         if (v28)
         {
           v29 = objc_autoreleasePoolPush();
-          v30 = a1;
+          differentCopy3 = different;
           v31 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
           {
@@ -254,39 +254,39 @@ uint64_t __80__HMDFetchedAccessorySettingsController_applyFetchedSettings_reques
           }
 
           objc_autoreleasePoolPop(v29);
-          a1 = v43;
+          different = differentCopy;
         }
 
         if (!v27 || ![v27 isEqual:v9])
         {
-          v25 = v49;
+          eventStoreReadHandle = v49;
 LABEL_24:
           v38 = [objc_alloc(MEMORY[0x277CD1AD8]) initWithSetting:v9 eventSource:v46 eventTimestamp:v7];
-          v39 = [a1 dataSource];
-          v40 = [v39 eventForwarder];
-          [v40 forwardEvent:v38 topic:v23 completion:&__block_literal_global_84_175126];
+          dataSource4 = [different dataSource];
+          eventForwarder = [dataSource4 eventForwarder];
+          [eventForwarder forwardEvent:v38 topic:v23 completion:&__block_literal_global_84_175126];
 
           goto LABEL_25;
         }
 
         v33 = objc_autoreleasePoolPush();
-        v34 = a1;
+        differentCopy4 = different;
         v35 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
         {
           v36 = HMFGetLogIdentifier();
-          v37 = [v9 keyPath];
+          keyPath6 = [v9 keyPath];
           *buf = 138543618;
           v56 = v36;
           v57 = 2114;
-          v58 = v37;
+          v58 = keyPath6;
           _os_log_impl(&dword_2531F8000, v35, OS_LOG_TYPE_INFO, "%{public}@Skip sending event for keyPath: %{public}@ as it matches stored", buf, 0x16u);
 
-          a1 = v43;
+          different = differentCopy;
         }
 
         objc_autoreleasePoolPop(v33);
-        v25 = v49;
+        eventStoreReadHandle = v49;
 LABEL_25:
       }
 
@@ -304,11 +304,11 @@ LABEL_27:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCacheWithSettings:(uint64_t)a1
+- (void)_updateCacheWithSettings:(uint64_t)settings
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (settings)
   {
     os_unfair_lock_lock_with_options();
     v14 = 0u;
@@ -330,9 +330,9 @@ LABEL_27:
           }
 
           v8 = *(*(&v12 + 1) + 8 * i);
-          v9 = *(a1 + 16);
-          v10 = [v8 keyPath];
-          [v9 setObject:v8 forKeyedSubscript:v10];
+          v9 = *(settings + 16);
+          keyPath = [v8 keyPath];
+          [v9 setObject:v8 forKeyedSubscript:keyPath];
         }
 
         v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -341,17 +341,17 @@ LABEL_27:
       while (v5);
     }
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((settings + 8));
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postNotificationForSettings:(void *)a1
+- (void)_postNotificationForSettings:(void *)settings
 {
   v21 = *MEMORY[0x277D85DE8];
   obj = a2;
-  if (a1)
+  if (settings)
   {
     v16 = 0u;
     v17 = 0u;
@@ -373,15 +373,15 @@ LABEL_27:
           }
 
           v7 = *(*(&v14 + 1) + 8 * v6);
-          v8 = [a1 notificationCenter];
-          v9 = [a1 dataSource];
+          notificationCenter = [settings notificationCenter];
+          dataSource = [settings dataSource];
           v18[1] = @"HMDFetchedAccessorySettingsControllerSettingsUpdateNotification";
           v19[0] = v7;
           v18[0] = @"HMDFetchedAccessorySettingsControllerSettingsUpdateNotificationSettingValueCodingKey";
-          v10 = [v7 keyPath];
-          v19[1] = v10;
+          keyPath = [v7 keyPath];
+          v19[1] = keyPath;
           v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
-          [v8 postNotificationName:@"HMDFetchedAccessorySettingsControllerSettingsUpdateNotification" object:v9 userInfo:v11];
+          [notificationCenter postNotificationName:@"HMDFetchedAccessorySettingsControllerSettingsUpdateNotification" object:dataSource userInfo:v11];
 
           ++v6;
         }
@@ -397,13 +397,13 @@ LABEL_27:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)driver:(id)a3 didUpdatePrimaryUserInfo:(id)a4
+- (void)driver:(id)driver didUpdatePrimaryUserInfo:(id)info
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  driverCopy = driver;
+  infoCopy = info;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -417,16 +417,16 @@ LABEL_27:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)driver:(id)a3 didUpdateSettings:(id)a4
+- (void)driver:(id)driver didUpdateSettings:(id)settings
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDFetchedAccessorySettingsController *)self queue];
-  dispatch_assert_queue_V2(v8);
+  driverCopy = driver;
+  settingsCopy = settings;
+  queue = [(HMDFetchedAccessorySettingsController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -437,28 +437,28 @@ LABEL_27:
   }
 
   objc_autoreleasePoolPop(v9);
-  v13 = [(HMDFetchedAccessorySettingsController *)v10 driverMap];
-  v15 = [(HMDFetchedAccessorySettingsControllerMutableKeyPathMap *)v13 availableKeyPaths];
+  driverMap = [(HMDFetchedAccessorySettingsController *)selfCopy driverMap];
+  availableKeyPaths = [(HMDFetchedAccessorySettingsControllerMutableKeyPathMap *)driverMap availableKeyPaths];
 
-  v16 = [MEMORY[0x277CBEB18] array];
-  v17 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __66__HMDFetchedAccessorySettingsController_driver_didUpdateSettings___block_invoke;
   v45[3] = &unk_279732F60;
-  v18 = v15;
+  v18 = availableKeyPaths;
   v46 = v18;
-  v19 = v16;
+  v19 = array;
   v47 = v19;
-  v20 = v17;
+  v20 = array2;
   v48 = v20;
-  v21 = [v7 na_filter:v45];
+  v21 = [settingsCopy na_filter:v45];
   if ([v20 count])
   {
-    v22 = v7;
-    v23 = v6;
+    v22 = settingsCopy;
+    v23 = driverCopy;
     v24 = objc_autoreleasePoolPush();
-    v25 = v10;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
@@ -476,21 +476,21 @@ LABEL_27:
     }
 
     objc_autoreleasePoolPop(v24);
-    v6 = v23;
-    v7 = v22;
+    driverCopy = v23;
+    settingsCopy = v22;
   }
 
   if ([v21 count])
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = v10;
+    v30 = selfCopy;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       HMFGetLogIdentifier();
       v42 = v18;
-      v32 = v44 = v6;
-      v33 = v7;
+      v32 = v44 = driverCopy;
+      v33 = settingsCopy;
       v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v19, "count")}];
       v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v21, "count")}];
       *buf = 138543874;
@@ -501,10 +501,10 @@ LABEL_27:
       v54 = v35;
       _os_log_impl(&dword_2531F8000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@Received updates for %@ known key paths and %@ filtered settings", buf, 0x20u);
 
-      v7 = v33;
+      settingsCopy = v33;
       v18 = v42;
 
-      v6 = v44;
+      driverCopy = v44;
     }
 
     objc_autoreleasePoolPop(v29);
@@ -559,28 +559,28 @@ uint64_t __66__HMDFetchedAccessorySettingsController_driver_didUpdateSettings___
   return v11;
 }
 
-- (id)cachedSettingForKeyPath:(id)a3
+- (id)cachedSettingForKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMutableDictionary *)self->_keyPathToSettingCache objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_keyPathToSettingCache objectForKeyedSubscript:pathCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)languageValueListWithCompletion:(id)a3
+- (void)languageValueListWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HMDFetchedAccessorySettingsController *)self queue];
+  completionCopy = completion;
+  queue = [(HMDFetchedAccessorySettingsController *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__HMDFetchedAccessorySettingsController_languageValueListWithCompletion___block_invoke;
   v7[3] = &unk_279735738;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __73__HMDFetchedAccessorySettingsController_languageValueListWithCompletion___block_invoke(uint64_t a1)
@@ -590,24 +590,24 @@ void __73__HMDFetchedAccessorySettingsController_languageValueListWithCompletion
   [v2 languageValueListWithCompletion:*(a1 + 40)];
 }
 
-- (void)updateSettingWithKeyPath:(id)a3 settingValue:(id)a4 completion:(id)a5
+- (void)updateSettingWithKeyPath:(id)path settingValue:(id)value completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDFetchedAccessorySettingsController *)self queue];
+  pathCopy = path;
+  valueCopy = value;
+  completionCopy = completion;
+  queue = [(HMDFetchedAccessorySettingsController *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __90__HMDFetchedAccessorySettingsController_updateSettingWithKeyPath_settingValue_completion___block_invoke;
   v15[3] = &unk_279734578;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = pathCopy;
+  v17 = valueCopy;
+  v18 = completionCopy;
+  v12 = valueCopy;
+  v13 = completionCopy;
+  v14 = pathCopy;
+  dispatch_async(queue, v15);
 }
 
 void __90__HMDFetchedAccessorySettingsController_updateSettingWithKeyPath_settingValue_completion___block_invoke(uint64_t a1)
@@ -752,21 +752,21 @@ LABEL_24:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchSettingsForKeyPaths:(id)a3 completion:(id)a4
+- (void)fetchSettingsForKeyPaths:(id)paths completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDFetchedAccessorySettingsController *)self queue];
+  pathsCopy = paths;
+  completionCopy = completion;
+  queue = [(HMDFetchedAccessorySettingsController *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__HMDFetchedAccessorySettingsController_fetchSettingsForKeyPaths_completion___block_invoke;
   block[3] = &unk_2797355D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = pathsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = pathsCopy;
+  dispatch_async(queue, block);
 }
 
 void __77__HMDFetchedAccessorySettingsController_fetchSettingsForKeyPaths_completion___block_invoke(uint64_t a1)
@@ -1032,12 +1032,12 @@ void __77__HMDFetchedAccessorySettingsController_fetchSettingsForKeyPaths_comple
     _os_signpost_emit_with_name_impl(&dword_2531F8000, logger, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "LocalSettingsFetch", "", buf, 2u);
   }
 
-  v5 = [(HMDFetchedAccessorySettingsController *)self dataSource];
-  v6 = [v5 setupActivity];
-  v7 = v6;
-  if (v6)
+  dataSource = [(HMDFetchedAccessorySettingsController *)self dataSource];
+  setupActivity = [dataSource setupActivity];
+  v7 = setupActivity;
+  if (setupActivity)
   {
-    *buf = v6;
+    *buf = setupActivity;
   }
 
   else
@@ -1049,11 +1049,11 @@ void __77__HMDFetchedAccessorySettingsController_fetchSettingsForKeyPaths_comple
     *buf = [v8 initWithName:v11];
   }
 
-  v12 = [(HMDFetchedAccessorySettingsController *)self dataSource];
-  v13 = [v12 currentAccessorySetupMetricDispatcher];
-  [v13 markSetupBeginStage:5 error:0];
+  dataSource2 = [(HMDFetchedAccessorySettingsController *)self dataSource];
+  currentAccessorySetupMetricDispatcher = [dataSource2 currentAccessorySetupMetricDispatcher];
+  [currentAccessorySetupMetricDispatcher markSetupBeginStage:5 error:0];
 
-  v14 = [(HMDFetchedAccessorySettingsController *)self queue];
+  queue = [(HMDFetchedAccessorySettingsController *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__HMDFetchedAccessorySettingsController_start__block_invoke;
@@ -1061,7 +1061,7 @@ void __77__HMDFetchedAccessorySettingsController_fetchSettingsForKeyPaths_comple
   block[4] = self;
   v16 = *buf;
   v17 = 0xEEEEB0B5B2B2EEEELL;
-  dispatch_async(v14, block);
+  dispatch_async(queue, block);
 
   __HMFActivityScopeLeave();
 }
@@ -1364,27 +1364,27 @@ void __46__HMDFetchedAccessorySettingsController_start__block_invoke_68(uint64_t
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDFetchedAccessorySettingsController)initWithQueue:(id)a3 dataSource:(id)a4 drivers:(id)a5 notificationCenter:(id)a6
+- (HMDFetchedAccessorySettingsController)initWithQueue:(id)queue dataSource:(id)source drivers:(id)drivers notificationCenter:(id)center
 {
   v44 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  queueCopy = queue;
+  sourceCopy = source;
+  driversCopy = drivers;
+  centerCopy = center;
   v41.receiver = self;
   v41.super_class = HMDFetchedAccessorySettingsController;
   v15 = [(HMDFetchedAccessorySettingsController *)&v41 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_queue, a3);
-    objc_storeStrong(&v16->_dataSource, a4);
+    objc_storeStrong(&v15->_queue, queue);
+    objc_storeStrong(&v16->_dataSource, source);
     v17 = [MEMORY[0x277CBEB58] set];
     pendingFetchKeyPaths = v16->_pendingFetchKeyPaths;
     v16->_pendingFetchKeyPaths = v17;
 
     v19 = [HMDFetchedAccessorySettingsControllerMutableKeyPathMap alloc];
-    v20 = v13;
+    v20 = driversCopy;
     if (v19)
     {
       v42.receiver = v19;
@@ -1407,7 +1407,7 @@ void __46__HMDFetchedAccessorySettingsController_start__block_invoke_68(uint64_t
     v16->_driverMap = v21;
 
     v16->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v16->_notificationCenter, v14);
+    objc_storeWeak(&v16->_notificationCenter, centerCopy);
     v25 = objc_opt_new();
     keyPathToSettingCache = v16->_keyPathToSettingCache;
     v16->_keyPathToSettingCache = v25;
@@ -1432,8 +1432,8 @@ void __46__HMDFetchedAccessorySettingsController_start__block_invoke_68(uint64_t
             objc_enumerationMutation(v27);
           }
 
-          v32 = [*(*(&v37 + 1) + 8 * v31) driver];
-          [v32 setDelegate:v16];
+          driver = [*(*(&v37 + 1) + 8 * v31) driver];
+          [driver setDelegate:v16];
 
           ++v31;
         }
@@ -1454,14 +1454,14 @@ void __46__HMDFetchedAccessorySettingsController_start__block_invoke_68(uint64_t
   return v16;
 }
 
-- (HMDFetchedAccessorySettingsController)initWithQueue:(id)a3 dataSource:(id)a4 drivers:(id)a5
+- (HMDFetchedAccessorySettingsController)initWithQueue:(id)queue dataSource:(id)source drivers:(id)drivers
 {
   v8 = MEMORY[0x277CCAB98];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 defaultCenter];
-  v13 = [(HMDFetchedAccessorySettingsController *)self initWithQueue:v11 dataSource:v10 drivers:v9 notificationCenter:v12];
+  driversCopy = drivers;
+  sourceCopy = source;
+  queueCopy = queue;
+  defaultCenter = [v8 defaultCenter];
+  v13 = [(HMDFetchedAccessorySettingsController *)self initWithQueue:queueCopy dataSource:sourceCopy drivers:driversCopy notificationCenter:defaultCenter];
 
   return v13;
 }

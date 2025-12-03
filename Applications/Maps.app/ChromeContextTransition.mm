@@ -2,9 +2,9 @@
 - (BOOL)hasStarted;
 - (ChromeContext)nextTopContext;
 - (ChromeContext)previousTopContext;
-- (id)initForTransitionFromContexts:(id)a3 toContexts:(id)a4 animated:(BOOL)a5;
+- (id)initForTransitionFromContexts:(id)contexts toContexts:(id)toContexts animated:(BOOL)animated;
 - (void)dealloc;
-- (void)runWithCompletion:(id)a3;
+- (void)runWithCompletion:(id)completion;
 @end
 
 @implementation ChromeContextTransition
@@ -40,10 +40,10 @@
   v3 = sub_100029734();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -51,22 +51,22 @@
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(ChromeContextTransition *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(ChromeContextTransition *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v12 = v9;
+    v12 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Deallocating", buf, 0xCu);
   }
 
@@ -75,9 +75,9 @@ LABEL_10:
   [(ChromeContextTransition *)&v10 dealloc];
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_leaveAnimation;
   v6 = self->_enterAnimation;
   v20[0] = _NSConcreteStackBlock;
@@ -93,32 +93,32 @@ LABEL_10:
   v16[2] = sub_100EA56F0;
   v16[3] = &unk_101661108;
   objc_copyWeak(&v18, &location);
-  v8 = v4;
+  v8 = completionCopy;
   v17 = v8;
   [(GroupAnimation *)v7 addCompletion:v16];
   v9 = sub_100029734();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = self;
+    selfCopy = self;
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     if (objc_opt_respondsToSelector())
     {
-      v13 = [(ChromeContextTransition *)v10 performSelector:"accessibilityIdentifier"];
+      v13 = [(ChromeContextTransition *)selfCopy performSelector:"accessibilityIdentifier"];
       v14 = v13;
       if (v13 && ([v13 isEqualToString:v12] & 1) == 0)
       {
-        v15 = [NSString stringWithFormat:@"%@<%p, %@>", v12, v10, v14];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v12, selfCopy, v14];
 
         goto LABEL_7;
       }
     }
 
-    v15 = [NSString stringWithFormat:@"%@<%p>", v12, v10];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v12, selfCopy];
 LABEL_7:
 
     *buf = 138543362;
-    v23 = v15;
+    v23 = selfCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}@] Starting transition", buf, 0xCu);
   }
 
@@ -127,28 +127,28 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (id)initForTransitionFromContexts:(id)a3 toContexts:(id)a4 animated:(BOOL)a5
+- (id)initForTransitionFromContexts:(id)contexts toContexts:(id)toContexts animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  contextsCopy = contexts;
+  toContextsCopy = toContexts;
   v98.receiver = self;
   v98.super_class = ChromeContextTransition;
   v10 = [(ChromeContextTransition *)&v98 init];
   if (v10)
   {
-    v11 = [v8 lastObject];
-    objc_storeWeak(&v10->_previousTopContext, v11);
+    lastObject = [contextsCopy lastObject];
+    objc_storeWeak(&v10->_previousTopContext, lastObject);
 
-    v12 = [v9 lastObject];
-    objc_storeWeak(&v10->_nextTopContext, v12);
+    lastObject2 = [toContextsCopy lastObject];
+    objc_storeWeak(&v10->_nextTopContext, lastObject2);
 
-    objc_storeStrong(&v10->_pendingContexts, a4);
-    v13 = [GroupAnimation animationForAnimatedFlag:v5];
+    objc_storeStrong(&v10->_pendingContexts, toContexts);
+    v13 = [GroupAnimation animationForAnimatedFlag:animatedCopy];
     leaveAnimation = v10->_leaveAnimation;
     v10->_leaveAnimation = v13;
 
-    v15 = [GroupAnimation animationForAnimatedFlag:v5];
+    v15 = [GroupAnimation animationForAnimatedFlag:animatedCopy];
     enterAnimation = v10->_enterAnimation;
     v10->_enterAnimation = v15;
 
@@ -207,15 +207,15 @@ LABEL_78:
 LABEL_15:
         v32 = v31;
         v33 = "not ";
-        if (v5)
+        if (animatedCopy)
         {
           v33 = "";
         }
 
         v94 = v33;
-        v34 = v8;
+        v34 = contextsCopy;
         v35 = v34;
-        v97 = v9;
+        v97 = toContextsCopy;
         v95 = v32;
         if (v34)
         {
@@ -223,7 +223,7 @@ LABEL_15:
           if ([v34 count])
           {
             v90 = v10;
-            v92 = v8;
+            v92 = contextsCopy;
             v37 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v35 count]);
             v99 = 0u;
             v100 = 0u;
@@ -297,8 +297,8 @@ LABEL_36:
                 v51 = [NSString stringWithFormat:@"<%p> [%@]", v38, v50];
 
                 v10 = v90;
-                v8 = v92;
-                v9 = v97;
+                contextsCopy = v92;
+                toContextsCopy = v97;
                 v35 = v88;
                 goto LABEL_39;
               }
@@ -317,7 +317,7 @@ LABEL_36:
 LABEL_39:
 
         v52 = v51;
-        v53 = v9;
+        v53 = toContextsCopy;
         v54 = v53;
         if (v53)
         {
@@ -325,7 +325,7 @@ LABEL_39:
           {
             v89 = v52;
             v91 = v10;
-            v93 = v8;
+            v93 = contextsCopy;
             v55 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v54 count]);
             v99 = 0u;
             v100 = 0u;
@@ -399,7 +399,7 @@ LABEL_58:
                 v69 = [v36[459] stringWithFormat:@"<%p> [%@]", v56, v68];
 
                 v10 = v91;
-                v8 = v93;
+                contextsCopy = v93;
                 v54 = v87;
                 v52 = v89;
                 goto LABEL_61;
@@ -468,7 +468,7 @@ LABEL_77:
           v114 = v85;
           _os_log_impl(&_mh_execute_header, v96, OS_LOG_TYPE_DEBUG, "[%{public}@] Initialising transition (%sanimated)\n\tfrom: %{public}@\n\tto: %{public}@\nleaveAnimation: %{public}@\nenterAnimation: %{public}@", buf, 0x3Eu);
 
-          v9 = v97;
+          toContextsCopy = v97;
           goto LABEL_78;
         }
 

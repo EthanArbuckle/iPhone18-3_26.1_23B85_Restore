@@ -1,30 +1,30 @@
 @interface KNRecordingMovieSegmentTrimmer
-- (KNRecordingMovieSegmentTrimmer)initWithMovieSegment:(id)a3 trimDuration:(double)a4;
-- (void)trimMovieSegmentWithCompletionHandler:(id)a3;
+- (KNRecordingMovieSegmentTrimmer)initWithMovieSegment:(id)segment trimDuration:(double)duration;
+- (void)trimMovieSegmentWithCompletionHandler:(id)handler;
 @end
 
 @implementation KNRecordingMovieSegmentTrimmer
 
-- (KNRecordingMovieSegmentTrimmer)initWithMovieSegment:(id)a3 trimDuration:(double)a4
+- (KNRecordingMovieSegmentTrimmer)initWithMovieSegment:(id)segment trimDuration:(double)duration
 {
-  v7 = a3;
+  segmentCopy = segment;
   v11.receiver = self;
   v11.super_class = KNRecordingMovieSegmentTrimmer;
   v8 = [(KNRecordingMovieSegmentTrimmer *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_movieSegment, a3);
-    v9->_trimDurationInSeconds = a4;
+    objc_storeStrong(&v8->_movieSegment, segment);
+    v9->_trimDurationInSeconds = duration;
   }
 
   return v9;
 }
 
-- (void)trimMovieSegmentWithCompletionHandler:(id)a3
+- (void)trimMovieSegmentWithCompletionHandler:(id)handler
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v7 = objc_msgSend_movieData(self->_movieSegment, v5, v6);
   v10 = v7;
   if (v7)
@@ -41,9 +41,9 @@
       v22[2] = sub_275E27734;
       v22[3] = &unk_27A699558;
       v23 = v14;
-      v24 = self;
+      selfCopy = self;
       v25 = v10;
-      v26 = v4;
+      v26 = handlerCopy;
       inited = v14;
       objc_msgSend_loadValuesAsynchronouslyForKeys_completionHandler_(inited, v16, &unk_2884F3E50, v22);
     }
@@ -58,13 +58,13 @@
       v17 = [KNMovieSegment alloc];
       objc_msgSend_startTime(self->_movieSegment, v18, v19);
       inited = objc_msgSend_initEmptySegmentWithStartTime_(v17, v20, v21);
-      (*(v4 + 2))(v4, inited, 0);
+      (*(handlerCopy + 2))(handlerCopy, inited, 0);
     }
   }
 
   else
   {
-    (*(v4 + 2))(v4, self->_movieSegment, 0);
+    (*(handlerCopy + 2))(handlerCopy, self->_movieSegment, 0);
   }
 }
 

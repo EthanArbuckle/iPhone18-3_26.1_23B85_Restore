@@ -1,16 +1,16 @@
 @interface _UIKBCompatInputView
 - (BOOL)_hasAutolayoutHeightConstraint;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_compatibleBounds;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIView)touchableView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_didChangeKeyplaneWithContext:(id)a3;
-- (void)addSubview:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_didChangeKeyplaneWithContext:(id)context;
+- (void)addSubview:(id)subview;
 - (void)dealloc;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation _UIKBCompatInputView
@@ -20,49 +20,49 @@
   touchableView = self->_touchableView;
   if (touchableView)
   {
-    v3 = touchableView;
+    firstObject = touchableView;
   }
 
   else
   {
-    v4 = [(UIView *)self subviews];
-    v3 = [v4 firstObject];
+    subviews = [(UIView *)self subviews];
+    firstObject = [subviews firstObject];
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(UIView *)self _rootInputWindowController];
-  if (![v3 isRotating])
+  _rootInputWindowController = [(UIView *)self _rootInputWindowController];
+  if (![_rootInputWindowController isRotating])
   {
     goto LABEL_13;
   }
 
   v4 = +[UIKeyboardInputModeController sharedInputModeController];
-  v5 = [v4 currentInputMode];
-  v6 = [v5 isExtensionInputMode];
+  currentInputMode = [v4 currentInputMode];
+  isExtensionInputMode = [currentInputMode isExtensionInputMode];
 
-  if (v6)
+  if (isExtensionInputMode)
   {
     v7 = +[UIKeyboardSceneDelegate interfaceOrientation];
     v8 = +[UIKeyboardInputModeController sharedInputModeController];
-    v9 = [v8 currentInputMode];
-    v3 = [UICompatibilityInputViewController inputSnapshotViewForInputMode:v9 orientation:1];
+    currentInputMode2 = [v8 currentInputMode];
+    _rootInputWindowController = [UICompatibilityInputViewController inputSnapshotViewForInputMode:currentInputMode2 orientation:1];
 
     v10 = +[UIKeyboardInputModeController sharedInputModeController];
-    v11 = [v10 currentInputMode];
-    v12 = [UICompatibilityInputViewController inputSnapshotViewForInputMode:v11 orientation:4];
+    currentInputMode3 = [v10 currentInputMode];
+    v12 = [UICompatibilityInputViewController inputSnapshotViewForInputMode:currentInputMode3 orientation:4];
 
-    if (!v3 || !v12)
+    if (!_rootInputWindowController || !v12)
     {
       goto LABEL_12;
     }
 
     v13 = v7 - 3;
-    v14 = [(_UIKBCompatInputView *)self touchableView];
-    [v14 bounds];
+    touchableView = [(_UIKBCompatInputView *)self touchableView];
+    [touchableView bounds];
     v16 = v15;
     v18 = v17;
     if (v13 > 1)
@@ -76,7 +76,7 @@
         goto LABEL_12;
       }
 
-      v23 = v3;
+      v23 = _rootInputWindowController;
       if (v18 != v27)
       {
         goto LABEL_12;
@@ -85,7 +85,7 @@
 
     else
     {
-      [v3 bounds];
+      [_rootInputWindowController bounds];
       v20 = v19;
       v22 = v21;
 
@@ -106,21 +106,21 @@ LABEL_13:
   }
 
 LABEL_14:
-  v32 = [(_UIKBCompatInputView *)self snapshotView];
+  snapshotView = [(_UIKBCompatInputView *)self snapshotView];
 
-  if (v32)
+  if (snapshotView)
   {
-    v33 = [(_UIKBCompatInputView *)self snapshotView];
-    [v33 bounds];
+    snapshotView2 = [(_UIKBCompatInputView *)self snapshotView];
+    [snapshotView2 bounds];
     v29 = v34;
     v31 = v35;
   }
 
   else
   {
-    v36 = [(_UIKBCompatInputView *)self touchableView];
+    touchableView2 = [(_UIKBCompatInputView *)self touchableView];
 
-    if (!v36)
+    if (!touchableView2)
     {
       v43.receiver = self;
       v43.super_class = _UIKBCompatInputView;
@@ -130,8 +130,8 @@ LABEL_14:
       goto LABEL_19;
     }
 
-    v33 = [(_UIKBCompatInputView *)self touchableView];
-    [v33 intrinsicContentSize];
+    snapshotView2 = [(_UIKBCompatInputView *)self touchableView];
+    [snapshotView2 intrinsicContentSize];
     v29 = v37;
     v31 = v38;
   }
@@ -146,11 +146,11 @@ LABEL_19:
 
 - (CGRect)_compatibleBounds
 {
-  v3 = [(_UIKBCompatInputView *)self touchableView];
-  v4 = v3;
-  if (v3)
+  touchableView = [(_UIKBCompatInputView *)self touchableView];
+  v4 = touchableView;
+  if (touchableView)
   {
-    [v3 _compatibleBounds];
+    [touchableView _compatibleBounds];
   }
 
   else
@@ -189,51 +189,51 @@ LABEL_19:
   [(UIView *)&v5 dealloc];
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
   v4.receiver = self;
   v4.super_class = _UIKBCompatInputView;
-  [(UIView *)&v4 addSubview:a3];
+  [(UIView *)&v4 addSubview:subview];
   [(UIView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = _UIKBCompatInputView;
-  [(UIView *)&v13 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v13 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(UIView *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(_UIKBCompatInputView *)self touchableView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  touchableView = [(_UIKBCompatInputView *)self touchableView];
+  [touchableView setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v9.receiver = self;
   v9.super_class = _UIKBCompatInputView;
   [(UIView *)&v9 setBounds:?];
-  v8 = [(_UIKBCompatInputView *)self touchableView];
-  [v8 setFrame:{x, y, width, height}];
+  touchableView = [(_UIKBCompatInputView *)self touchableView];
+  [touchableView setFrame:{x, y, width, height}];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(_UIKBCompatInputView *)self touchableView];
-  if (v8)
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  touchableView = [(_UIKBCompatInputView *)self touchableView];
+  if (touchableView)
   {
-    [(UIView *)self convertPoint:v8 toView:x, y];
-    v9 = [v8 pointInside:v7 withEvent:?];
+    [(UIView *)self convertPoint:touchableView toView:x, y];
+    v9 = [touchableView pointInside:eventCopy withEvent:?];
   }
 
   else
@@ -244,19 +244,19 @@ LABEL_19:
   return v9;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(_UIKBCompatInputView *)self touchableView];
-  if (v8)
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  touchableView = [(_UIKBCompatInputView *)self touchableView];
+  if (touchableView)
   {
     v9 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
     [v9 userTapsOnKeyboard];
 
-    [(UIView *)self convertPoint:v8 toView:x, y];
-    v10 = [v8 hitTest:v7 withEvent:?];
+    [(UIView *)self convertPoint:touchableView toView:x, y];
+    v10 = [touchableView hitTest:eventCopy withEvent:?];
   }
 
   else
@@ -267,15 +267,15 @@ LABEL_19:
   return v10;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(_UIKBCompatInputView *)self touchableView];
-  v7 = v6;
-  if (v6)
+  height = fits.height;
+  width = fits.width;
+  touchableView = [(_UIKBCompatInputView *)self touchableView];
+  v7 = touchableView;
+  if (touchableView)
   {
-    [v6 sizeThatFits:{width, height}];
+    [touchableView sizeThatFits:{width, height}];
   }
 
   else
@@ -295,32 +295,32 @@ LABEL_19:
   return result;
 }
 
-- (void)_didChangeKeyplaneWithContext:(id)a3
+- (void)_didChangeKeyplaneWithContext:(id)context
 {
-  v4 = a3;
-  if ([v4 sizeDidChange])
+  contextCopy = context;
+  if ([contextCopy sizeDidChange])
   {
     [(UIView *)self invalidateIntrinsicContentSize];
   }
 
   v5.receiver = self;
   v5.super_class = _UIKBCompatInputView;
-  [(UIView *)&v5 _didChangeKeyplaneWithContext:v4];
+  [(UIView *)&v5 _didChangeKeyplaneWithContext:contextCopy];
 }
 
 - (BOOL)_hasAutolayoutHeightConstraint
 {
-  v3 = [(_UIKBCompatInputView *)self touchableView];
+  touchableView = [(_UIKBCompatInputView *)self touchableView];
 
-  if (!v3)
+  if (!touchableView)
   {
     return 1;
   }
 
-  v4 = [(_UIKBCompatInputView *)self touchableView];
-  v5 = [v4 _hasAutolayoutHeightConstraint];
+  touchableView2 = [(_UIKBCompatInputView *)self touchableView];
+  _hasAutolayoutHeightConstraint = [touchableView2 _hasAutolayoutHeightConstraint];
 
-  return v5;
+  return _hasAutolayoutHeightConstraint;
 }
 
 @end

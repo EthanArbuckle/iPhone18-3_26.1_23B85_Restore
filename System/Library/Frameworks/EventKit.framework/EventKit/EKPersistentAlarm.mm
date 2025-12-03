@@ -1,7 +1,7 @@
 @interface EKPersistentAlarm
 + (id)defaultPropertiesToLoad;
 + (id)relations;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)semanticIdentifier;
 @end
@@ -70,58 +70,58 @@ void __44__EKPersistentAlarm_defaultPropertiesToLoad__block_invoke()
 
 - (id)semanticIdentifier
 {
-  v3 = [(EKPersistentAlarm *)self isDefaultAlarm];
-  v4 = [(EKPersistentAlarm *)self absoluteDate];
-  v5 = [(EKPersistentAlarm *)self relativeOffset];
-  v6 = [EKAlarmSemanticIdentifierGenerator semanticIdentifierForAlarmIsDefault:v3 absoluteDate:v4 relativeOffset:v5 emailAddress:0 url:0];
+  isDefaultAlarm = [(EKPersistentAlarm *)self isDefaultAlarm];
+  absoluteDate = [(EKPersistentAlarm *)self absoluteDate];
+  relativeOffset = [(EKPersistentAlarm *)self relativeOffset];
+  v6 = [EKAlarmSemanticIdentifierGenerator semanticIdentifierForAlarmIsDefault:isDefaultAlarm absoluteDate:absoluteDate relativeOffset:relativeOffset emailAddress:0 url:0];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(EKPersistentAlarm);
-  v5 = [(EKPersistentAlarm *)self absoluteDate];
+  absoluteDate = [(EKPersistentAlarm *)self absoluteDate];
 
-  if (v5)
+  if (absoluteDate)
   {
-    v6 = [(EKPersistentAlarm *)self absoluteDate];
-    [(EKPersistentAlarm *)v4 setAbsoluteDate:v6];
+    absoluteDate2 = [(EKPersistentAlarm *)self absoluteDate];
+    [(EKPersistentAlarm *)v4 setAbsoluteDate:absoluteDate2];
   }
 
   else
   {
-    v6 = [(EKPersistentAlarm *)self relativeOffset];
-    [(EKPersistentAlarm *)v4 setRelativeOffset:v6];
+    absoluteDate2 = [(EKPersistentAlarm *)self relativeOffset];
+    [(EKPersistentAlarm *)v4 setRelativeOffset:absoluteDate2];
   }
 
   [(EKPersistentAlarm *)v4 setProximity:[(EKPersistentAlarm *)self proximity]];
   [(EKPersistentAlarm *)v4 setType:[(EKPersistentAlarm *)self type]];
-  v7 = [(EKPersistentAlarm *)self emailAddress];
-  [(EKPersistentAlarm *)v4 setEmailAddress:v7];
+  emailAddress = [(EKPersistentAlarm *)self emailAddress];
+  [(EKPersistentAlarm *)v4 setEmailAddress:emailAddress];
 
-  v8 = [(EKPersistentObject *)self eventStore];
-  v9 = [v8 connection];
-  v10 = [v9 initializationOptions];
-  v11 = [v10 mockPermissions];
+  eventStore = [(EKPersistentObject *)self eventStore];
+  connection = [eventStore connection];
+  initializationOptions = [connection initializationOptions];
+  mockPermissions = [initializationOptions mockPermissions];
 
-  if ((!v11 || [v11 testingAccessLevelGranted]) && +[EKAlarm _processIsAllowedToCreateProcedureAlarms](EKAlarm, "_processIsAllowedToCreateProcedureAlarms"))
+  if ((!mockPermissions || [mockPermissions testingAccessLevelGranted]) && +[EKAlarm _processIsAllowedToCreateProcedureAlarms](EKAlarm, "_processIsAllowedToCreateProcedureAlarms"))
   {
-    v12 = [(EKPersistentAlarm *)self urlWrapper];
-    [(EKPersistentAlarm *)v4 setUrlWrapper:v12];
+    urlWrapper = [(EKPersistentAlarm *)self urlWrapper];
+    [(EKPersistentAlarm *)v4 setUrlWrapper:urlWrapper];
   }
 
   v13 = EKUUIDString();
   [(EKPersistentAlarm *)v4 setUUID:v13];
 
   [(EKPersistentAlarm *)v4 setIsDefaultAlarm:[(EKPersistentAlarm *)self isDefaultAlarm]];
-  v14 = [(EKPersistentObject *)self eventStore];
-  v15 = [v14 eventAccessLevel];
+  eventStore2 = [(EKPersistentObject *)self eventStore];
+  eventAccessLevel = [eventStore2 eventAccessLevel];
 
-  if (v15 == 2)
+  if (eventAccessLevel == 2)
   {
-    v16 = [(EKPersistentAlarm *)self externalData];
-    v17 = [v16 copy];
+    externalData = [(EKPersistentAlarm *)self externalData];
+    v17 = [externalData copy];
     [(EKPersistentAlarm *)v4 setExternalData:v17];
   }
 
@@ -130,26 +130,26 @@ void __44__EKPersistentAlarm_defaultPropertiesToLoad__block_invoke()
 
 - (id)description
 {
-  v3 = [(EKPersistentAlarm *)self absoluteDate];
+  absoluteDate = [(EKPersistentAlarm *)self absoluteDate];
 
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
-  if (v3)
+  if (absoluteDate)
   {
-    v6 = [(EKPersistentAlarm *)self absoluteDate];
-    v7 = [(EKPersistentAlarm *)self proximity];
-    v8 = [(EKPersistentAlarm *)self structuredLocation];
-    [v4 stringWithFormat:@"%@ <%p> {triggerDate = %@; proximity = %ld; location = %@, type = %ld}", v5, self, v6, v7, v8, -[EKPersistentAlarm type](self, "type")];
+    absoluteDate2 = [(EKPersistentAlarm *)self absoluteDate];
+    proximity = [(EKPersistentAlarm *)self proximity];
+    structuredLocation = [(EKPersistentAlarm *)self structuredLocation];
+    [v4 stringWithFormat:@"%@ <%p> {triggerDate = %@; proximity = %ld; location = %@, type = %ld}", v5, self, absoluteDate2, proximity, structuredLocation, -[EKPersistentAlarm type](self, "type")];
   }
 
   else
   {
-    v6 = [(EKPersistentAlarm *)self relativeOffset];
-    [v6 doubleValue];
+    absoluteDate2 = [(EKPersistentAlarm *)self relativeOffset];
+    [absoluteDate2 doubleValue];
     v10 = v9;
-    v11 = [(EKPersistentAlarm *)self proximity];
-    v8 = [(EKPersistentAlarm *)self structuredLocation];
-    [v4 stringWithFormat:@"%@ <%p> {triggerInterval = %lf; proximity = %ld; location = %@, type = %ld}", v5, self, v10, v11, v8, -[EKPersistentAlarm type](self, "type")];
+    proximity2 = [(EKPersistentAlarm *)self proximity];
+    structuredLocation = [(EKPersistentAlarm *)self structuredLocation];
+    [v4 stringWithFormat:@"%@ <%p> {triggerInterval = %lf; proximity = %ld; location = %@, type = %ld}", v5, self, v10, proximity2, structuredLocation, -[EKPersistentAlarm type](self, "type")];
   }
   v12 = ;
 

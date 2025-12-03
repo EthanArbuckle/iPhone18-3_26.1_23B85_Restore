@@ -1,45 +1,45 @@
 @interface ATXAppDirectoryCategory
-+ (BOOL)isCategory:(unint64_t)a3 descendantOfCategory:(unint64_t)a4;
-+ (BOOL)shouldCategoryNeverMergeWithParent:(unint64_t)a3;
-+ (id)categoryIdentifierForScreenTimeCategoryID:(unint64_t)a3;
-+ (id)localizedStringForCategoryID:(unint64_t)a3;
-+ (id)localizedStringForNonScreenTimeCategoryID:(unint64_t)a3;
-+ (unint64_t)_parentCategoryForiTunesGenreID:(unint64_t)a3;
-+ (unint64_t)appDirectoryCategoryStringToAppDirectoryCategoryID:(id)a3;
-+ (unint64_t)parentCategoryForCategory:(unint64_t)a3;
-+ (unint64_t)screenTimeCategoryIDForCategoryIdentifier:(id)a3;
-- (ATXAppDirectoryCategory)initWithCategoryID:(unint64_t)a3 appBundleIDs:(id)a4 localizedName:(id)a5;
-- (ATXAppDirectoryCategory)initWithCategoryID:(unint64_t)a3 appIdentitites:(id)a4 localizedName:(id)a5;
-- (ATXAppDirectoryCategory)initWithCoder:(id)a3;
++ (BOOL)isCategory:(unint64_t)category descendantOfCategory:(unint64_t)ofCategory;
++ (BOOL)shouldCategoryNeverMergeWithParent:(unint64_t)parent;
++ (id)categoryIdentifierForScreenTimeCategoryID:(unint64_t)d;
++ (id)localizedStringForCategoryID:(unint64_t)d;
++ (id)localizedStringForNonScreenTimeCategoryID:(unint64_t)d;
++ (unint64_t)_parentCategoryForiTunesGenreID:(unint64_t)d;
++ (unint64_t)appDirectoryCategoryStringToAppDirectoryCategoryID:(id)d;
++ (unint64_t)parentCategoryForCategory:(unint64_t)category;
++ (unint64_t)screenTimeCategoryIDForCategoryIdentifier:(id)identifier;
+- (ATXAppDirectoryCategory)initWithCategoryID:(unint64_t)d appBundleIDs:(id)ds localizedName:(id)name;
+- (ATXAppDirectoryCategory)initWithCategoryID:(unint64_t)d appIdentitites:(id)identitites localizedName:(id)name;
+- (ATXAppDirectoryCategory)initWithCoder:(id)coder;
 - (NSArray)appBundleIDs;
 - (id)description;
-- (id)localizedStringForCategoryID:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateAppBundleIDs:(id)a3;
-- (void)updateCategoryLocalizedNameWithName:(id)a3;
+- (id)localizedStringForCategoryID:(unint64_t)d;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateAppBundleIDs:(id)ds;
+- (void)updateCategoryLocalizedNameWithName:(id)name;
 @end
 
 @implementation ATXAppDirectoryCategory
 
 - (NSArray)appBundleIDs
 {
-  v2 = [(ATXAppDirectoryCategory *)self appIdentities];
-  v3 = [v2 bundleIDsFromIdentities];
+  appIdentities = [(ATXAppDirectoryCategory *)self appIdentities];
+  bundleIDsFromIdentities = [appIdentities bundleIDsFromIdentities];
 
-  return v3;
+  return bundleIDsFromIdentities;
 }
 
-- (ATXAppDirectoryCategory)initWithCategoryID:(unint64_t)a3 appBundleIDs:(id)a4 localizedName:(id)a5
+- (ATXAppDirectoryCategory)initWithCategoryID:(unint64_t)d appBundleIDs:(id)ds localizedName:(id)name
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  dsCopy = ds;
+  nameCopy = name;
   v10 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = v8;
+  v11 = dsCopy;
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
@@ -70,15 +70,15 @@
     while (v13);
   }
 
-  v19 = [(ATXAppDirectoryCategory *)self initWithCategoryID:a3 appIdentitites:v10 localizedName:v9];
+  v19 = [(ATXAppDirectoryCategory *)self initWithCategoryID:d appIdentitites:v10 localizedName:nameCopy];
   return v19;
 }
 
-- (ATXAppDirectoryCategory)initWithCategoryID:(unint64_t)a3 appIdentitites:(id)a4 localizedName:(id)a5
+- (ATXAppDirectoryCategory)initWithCategoryID:(unint64_t)d appIdentitites:(id)identitites localizedName:(id)name
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  identititesCopy = identitites;
+  nameCopy = name;
   v32.receiver = self;
   v32.super_class = ATXAppDirectoryCategory;
   v11 = [(ATXAppDirectoryCategory *)&v32 init];
@@ -86,13 +86,13 @@
   if (v11)
   {
     v27 = a2;
-    v11->_categoryID = a3;
+    v11->_categoryID = d;
     v13 = objc_opt_new();
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v14 = v9;
+    v14 = identititesCopy;
     v15 = [v14 countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v15)
     {
@@ -108,15 +108,15 @@
           }
 
           v19 = *(*(&v28 + 1) + 8 * i);
-          v20 = [v19 bundleIdentifier];
+          bundleIdentifier = [v19 bundleIdentifier];
 
-          if (!v20)
+          if (!bundleIdentifier)
           {
             [ATXAppDirectoryCategory initWithCategoryID:v27 appIdentitites:v12 localizedName:?];
           }
 
-          v21 = [v19 bundleIdentifier];
-          [v13 addObject:v21];
+          bundleIdentifier2 = [v19 bundleIdentifier];
+          [v13 addObject:bundleIdentifier2];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -129,7 +129,7 @@
     appIdentities = v12->_appIdentities;
     v12->_appIdentities = v22;
 
-    v24 = [v10 copy];
+    v24 = [nameCopy copy];
     localizedName = v12->_localizedName;
     v12->_localizedName = v24;
   }
@@ -148,60 +148,60 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu %@: %@", self->_categoryID, localizedName, self->_appIdentities];
 }
 
-- (ATXAppDirectoryCategory)initWithCoder:(id)a3
+- (ATXAppDirectoryCategory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"appBundleIDs"];
-  v9 = [v4 decodeIntegerForKey:@"categoryID"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"appBundleIDs"];
+  v9 = [coderCopy decodeIntegerForKey:@"categoryID"];
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"appIdentities"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"appIdentities"];
 
-  v14 = [v8 appIdentitiesFromBundleIDs];
-  if (![v13 count] && objc_msgSend(v14, "count"))
+  appIdentitiesFromBundleIDs = [v8 appIdentitiesFromBundleIDs];
+  if (![v13 count] && objc_msgSend(appIdentitiesFromBundleIDs, "count"))
   {
-    v15 = v14;
+    v15 = appIdentitiesFromBundleIDs;
 
     v13 = v15;
   }
 
-  if (v13 || ([v4 error], v18 = objc_claimAutoreleasedReturnValue(), v18, !v18))
+  if (v13 || ([coderCopy error], v18 = objc_claimAutoreleasedReturnValue(), v18, !v18))
   {
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
     self = [(ATXAppDirectoryCategory *)self initWithCategoryID:v9 appIdentitites:v13 localizedName:v16];
 
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   categoryID = self->_categoryID;
-  v5 = a3;
-  [v5 encodeInteger:categoryID forKey:@"categoryID"];
-  [v5 encodeObject:self->_appIdentities forKey:@"appIdentities"];
-  [v5 encodeObject:self->_localizedName forKey:@"localizedName"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:categoryID forKey:@"categoryID"];
+  [coderCopy encodeObject:self->_appIdentities forKey:@"appIdentities"];
+  [coderCopy encodeObject:self->_localizedName forKey:@"localizedName"];
 }
 
-+ (id)categoryIdentifierForScreenTimeCategoryID:(unint64_t)a3
++ (id)categoryIdentifierForScreenTimeCategoryID:(unint64_t)d
 {
-  if (a3 - 1000 >= 0xD)
+  if (d - 1000 >= 0xD)
   {
     v5 = __atxlog_handle_app_library();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [(ATXAppDirectoryCategory *)a3 categoryIdentifierForScreenTimeCategoryID:v5];
+      [(ATXAppDirectoryCategory *)d categoryIdentifierForScreenTimeCategoryID:v5];
     }
 
     v3 = MEMORY[0x1E6993B00];
@@ -209,7 +209,7 @@
 
   else
   {
-    v3 = qword_1E80C0A20[a3 - 1000];
+    v3 = qword_1E80C0A20[d - 1000];
   }
 
   v6 = *v3;
@@ -217,66 +217,66 @@
   return v6;
 }
 
-+ (unint64_t)screenTimeCategoryIDForCategoryIdentifier:(id)a3
++ (unint64_t)screenTimeCategoryIDForCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E6993AF0]])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:*MEMORY[0x1E6993AF0]])
   {
     v4 = 1000;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E6993B20]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E6993B20]])
   {
     v4 = 1001;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E6993AE8]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E6993AE8]])
   {
     v4 = 1002;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E6993AD8]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E6993AD8]])
   {
     v4 = 1003;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E6993B08]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E6993B08]])
   {
     v4 = 1004;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E6993AE0]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E6993AE0]])
   {
     v4 = 1005;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E6993B10]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E6993B10]])
   {
     v4 = 1006;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E6993AF8]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E6993AF8]])
   {
     v4 = 1007;
   }
 
   else
   {
-    if (([v3 isEqualToString:*MEMORY[0x1E6993B00]] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E6993B30]) & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E6993B40]) & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E6993B48]) & 1) == 0)
+    if (([identifierCopy isEqualToString:*MEMORY[0x1E6993B00]] & 1) == 0 && (objc_msgSend(identifierCopy, "isEqualToString:", *MEMORY[0x1E6993B30]) & 1) == 0 && (objc_msgSend(identifierCopy, "isEqualToString:", *MEMORY[0x1E6993B40]) & 1) == 0 && (objc_msgSend(identifierCopy, "isEqualToString:", *MEMORY[0x1E6993B48]) & 1) == 0)
     {
-      if ([v3 isEqualToString:*MEMORY[0x1E6993B60]])
+      if ([identifierCopy isEqualToString:*MEMORY[0x1E6993B60]])
       {
         v4 = 1010;
         goto LABEL_22;
       }
 
-      if ([v3 isEqualToString:*MEMORY[0x1E6993B18]])
+      if ([identifierCopy isEqualToString:*MEMORY[0x1E6993B18]])
       {
         v4 = 1011;
         goto LABEL_22;
       }
 
-      if ([v3 isEqualToString:*MEMORY[0x1E6993B58]])
+      if ([identifierCopy isEqualToString:*MEMORY[0x1E6993B58]])
       {
         v4 = 1012;
         goto LABEL_22;
@@ -285,7 +285,7 @@
       v6 = __atxlog_handle_app_library();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
       {
-        [(ATXAppDirectoryCategory *)v3 screenTimeCategoryIDForCategoryIdentifier:v6];
+        [(ATXAppDirectoryCategory *)identifierCopy screenTimeCategoryIDForCategoryIdentifier:v6];
       }
     }
 
@@ -297,140 +297,140 @@ LABEL_22:
   return v4;
 }
 
-+ (unint64_t)appDirectoryCategoryStringToAppDirectoryCategoryID:(id)a3
++ (unint64_t)appDirectoryCategoryStringToAppDirectoryCategoryID:(id)d
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesBusiness"])
+  dCopy = d;
+  if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesBusiness"])
   {
     v4 = 6000;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesWeather"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesWeather"])
   {
     v4 = 6001;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesUtilities"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesUtilities"])
   {
     v4 = 6002;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesTravel"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesTravel"])
   {
     v4 = 6003;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesSports"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesSports"])
   {
     v4 = 6004;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesSocialNetworking"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesSocialNetworking"])
   {
     v4 = 6005;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesReference"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesReference"])
   {
     v4 = 6006;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesProductivity"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesProductivity"])
   {
     v4 = 6007;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesPhotoVideo"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesPhotoVideo"])
   {
     v4 = 6008;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesNews"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesNews"])
   {
     v4 = 6009;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesNavigation"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesNavigation"])
   {
     v4 = 6010;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesMusic"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesMusic"])
   {
     v4 = 6011;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesLifestyle"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesLifestyle"])
   {
     v4 = 6012;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesHealthFitness"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesHealthFitness"])
   {
     v4 = 6013;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesGames"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesGames"])
   {
     v4 = 6014;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesFinance"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesFinance"])
   {
     v4 = 6015;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesEntertainment"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesEntertainment"])
   {
     v4 = 6016;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesEducation"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesEducation"])
   {
     v4 = 6017;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesBooks"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesBooks"])
   {
     v4 = 6018;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesMedical"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesMedical"])
   {
     v4 = 6020;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesNewsstand"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesNewsstand"])
   {
     v4 = 6021;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesCatalogs"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesCatalogs"])
   {
     v4 = 6022;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesFoodDrinks"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesFoodDrinks"])
   {
     v4 = 6023;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesShopping"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesShopping"])
   {
     v4 = 6024;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesStickers"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesStickers"])
   {
     v4 = 6025;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesDeveloperTools"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesDeveloperTools"])
   {
     v4 = 6026;
   }
 
-  else if ([v3 isEqualToString:@"ATXAppDirectoryCategoryIDiTunesGraphicsDesign"])
+  else if ([dCopy isEqualToString:@"ATXAppDirectoryCategoryIDiTunesGraphicsDesign"])
   {
     v4 = 6027;
   }
@@ -443,9 +443,9 @@ LABEL_22:
   return v4;
 }
 
-- (id)localizedStringForCategoryID:(unint64_t)a3
+- (id)localizedStringForCategoryID:(unint64_t)d
 {
-  if (self->_categoryID != a3)
+  if (self->_categoryID != d)
   {
     v5 = __atxlog_handle_app_library();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -455,50 +455,50 @@ LABEL_22:
     }
   }
 
-  if ([objc_opt_class() _instanceSpecificLocalizedStringExistsForCategory:a3] && (localizedName = self->_localizedName) != 0)
+  if ([objc_opt_class() _instanceSpecificLocalizedStringExistsForCategory:d] && (localizedName = self->_localizedName) != 0)
   {
     v7 = localizedName;
   }
 
   else
   {
-    v7 = [objc_opt_class() localizedStringForCategoryID:a3];
+    v7 = [objc_opt_class() localizedStringForCategoryID:d];
   }
 
   return v7;
 }
 
-+ (id)localizedStringForCategoryID:(unint64_t)a3
++ (id)localizedStringForCategoryID:(unint64_t)d
 {
-  if ([a1 isCategoryScreenTime:?])
+  if ([self isCategoryScreenTime:?])
   {
     v5 = MEMORY[0x1E6993BA0];
-    v6 = [a1 categoryIdentifierForScreenTimeCategoryID:a3];
+    v6 = [self categoryIdentifierForScreenTimeCategoryID:d];
     v7 = [v5 localizedNameForIdentifier:v6];
   }
 
   else
   {
-    v7 = [a1 localizedStringForNonScreenTimeCategoryID:a3];
+    v7 = [self localizedStringForNonScreenTimeCategoryID:d];
   }
 
   return v7;
 }
 
-+ (id)localizedStringForNonScreenTimeCategoryID:(unint64_t)a3
++ (id)localizedStringForNonScreenTimeCategoryID:(unint64_t)d
 {
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v6 = v5;
-  if (a3 <= 5)
+  if (d <= 5)
   {
-    if (a3 > 2)
+    if (d > 2)
     {
-      if (a3 == 3)
+      if (d == 3)
       {
         v7 = @"Suggestions";
       }
 
-      else if (a3 == 4)
+      else if (d == 4)
       {
         v7 = @"Recently Added";
       }
@@ -509,16 +509,16 @@ LABEL_22:
       }
     }
 
-    else if (a3)
+    else if (d)
     {
-      if (a3 == 1)
+      if (d == 1)
       {
         v7 = @"Enterprise Apps";
       }
 
       else
       {
-        if (a3 != 2)
+        if (d != 2)
         {
 LABEL_19:
           v8 = __atxlog_handle_app_library();
@@ -543,7 +543,7 @@ LABEL_19:
 
   else
   {
-    switch(a3)
+    switch(d)
     {
       case 0x1770uLL:
         v7 = @"Business";
@@ -561,7 +561,7 @@ LABEL_19:
         v7 = @"Sports";
         break;
       case 0x1775uLL:
-        v10 = [a1 localizedStringForCategoryID:1001];
+        v10 = [self localizedStringForCategoryID:1001];
         goto LABEL_50;
       case 0x1776uLL:
         v7 = @"Reference";
@@ -629,14 +629,14 @@ LABEL_19:
         v7 = @"Graphics & Design";
         break;
       default:
-        if (a3 == 6)
+        if (d == 6)
         {
           v7 = @"Managed Apps";
         }
 
         else
         {
-          if (a3 != 7)
+          if (d != 7)
           {
             goto LABEL_19;
           }
@@ -656,55 +656,55 @@ LABEL_51:
   return v9;
 }
 
-- (void)updateCategoryLocalizedNameWithName:(id)a3
+- (void)updateCategoryLocalizedNameWithName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   localizedName = self->_localizedName;
   self->_localizedName = v4;
 
   MEMORY[0x1EEE66BB8](v4, localizedName);
 }
 
-- (void)updateAppBundleIDs:(id)a3
+- (void)updateAppBundleIDs:(id)ds
 {
-  v4 = [a3 appIdentitiesFromBundleIDs];
+  appIdentitiesFromBundleIDs = [ds appIdentitiesFromBundleIDs];
   appIdentities = self->_appIdentities;
-  self->_appIdentities = v4;
+  self->_appIdentities = appIdentitiesFromBundleIDs;
 
-  MEMORY[0x1EEE66BB8](v4, appIdentities);
+  MEMORY[0x1EEE66BB8](appIdentitiesFromBundleIDs, appIdentities);
 }
 
-+ (unint64_t)_parentCategoryForiTunesGenreID:(unint64_t)a3
++ (unint64_t)_parentCategoryForiTunesGenreID:(unint64_t)d
 {
-  v6 = a3 - 6000;
-  if (a3 - 6000 < 0x1C && ((0xFF7FFFFu >> v6) & 1) != 0)
+  v6 = d - 6000;
+  if (d - 6000 < 0x1C && ((0xFF7FFFFu >> v6) & 1) != 0)
   {
     return qword_1BF6F5538[v6];
   }
 
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v8 handleFailureInMethod:a2 object:a1 file:@"ATXAppDirectoryCategory+Dynamic.m" lineNumber:74 description:{@"%s: categoryID %lu is not an iTunes genreID", "+[ATXAppDirectoryCategory(Dynamic) _parentCategoryForiTunesGenreID:]", a3}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAppDirectoryCategory+Dynamic.m" lineNumber:74 description:{@"%s: categoryID %lu is not an iTunes genreID", "+[ATXAppDirectoryCategory(Dynamic) _parentCategoryForiTunesGenreID:]", d}];
 
   return 1008;
 }
 
-+ (BOOL)shouldCategoryNeverMergeWithParent:(unint64_t)a3
++ (BOOL)shouldCategoryNeverMergeWithParent:(unint64_t)parent
 {
   result = 1;
-  if (a3 - 1000 <= 0xA)
+  if (parent - 1000 <= 0xA)
   {
-    if (((1 << (a3 + 24)) & 0x41A) != 0)
+    if (((1 << (parent + 24)) & 0x41A) != 0)
     {
       return result;
     }
 
-    if (a3 == 1000)
+    if (parent == 1000)
     {
       return ([MEMORY[0x1E69C5CF8] isiPad] & 1) != 0;
     }
   }
 
-  if (a3 > 6 || ((1 << a3) & 0x46) == 0)
+  if (parent > 6 || ((1 << parent) & 0x46) == 0)
   {
     return 0;
   }
@@ -712,33 +712,33 @@ LABEL_51:
   return result;
 }
 
-+ (unint64_t)parentCategoryForCategory:(unint64_t)a3
++ (unint64_t)parentCategoryForCategory:(unint64_t)category
 {
-  if ([a1 isCategoryiTunesGamesSubgenre:?])
+  if ([self isCategoryiTunesGamesSubgenre:?])
   {
     return 6014;
   }
 
-  if (![a1 isCategoryiTunesGenre:a3])
+  if (![self isCategoryiTunesGenre:category])
   {
     return 1008;
   }
 
-  return [a1 _parentCategoryForiTunesGenreID:a3];
+  return [self _parentCategoryForiTunesGenreID:category];
 }
 
-+ (BOOL)isCategory:(unint64_t)a3 descendantOfCategory:(unint64_t)a4
++ (BOOL)isCategory:(unint64_t)category descendantOfCategory:(unint64_t)ofCategory
 {
-  result = a3 != 1008;
-  if (a3 != a4 && a3 != 1008)
+  result = category != 1008;
+  if (category != ofCategory && category != 1008)
   {
     do
     {
-      v7 = [a1 parentCategoryForCategory:?];
+      v7 = [self parentCategoryForCategory:?];
       result = v7 != 1008;
     }
 
-    while (v7 != a4 && v7 != 1008);
+    while (v7 != ofCategory && v7 != 1008);
   }
 
   return result;

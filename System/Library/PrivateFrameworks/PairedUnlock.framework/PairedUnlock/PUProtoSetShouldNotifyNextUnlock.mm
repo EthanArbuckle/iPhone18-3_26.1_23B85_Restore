@@ -1,6 +1,6 @@
 @interface PUProtoSetShouldNotifyNextUnlock
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
@@ -12,8 +12,8 @@
   v7.receiver = self;
   v7.super_class = PUProtoSetShouldNotifyNextUnlock;
   v3 = [(PUProtoSetShouldNotifyNextUnlock *)&v7 description];
-  v4 = [(PUProtoSetShouldNotifyNextUnlock *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PUProtoSetShouldNotifyNextUnlock *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -27,19 +27,19 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 8) = self->_shouldNotify;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = self->_shouldNotify == v4[8];
+    v5 = self->_shouldNotify == equalCopy[8];
   }
 
   else

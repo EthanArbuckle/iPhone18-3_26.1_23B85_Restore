@@ -1,35 +1,35 @@
 @interface BSUIItemDescription
 - (BOOL)bookCoverIsRightToLeft;
-- (BSUIItemDescription)initWithAsset:(id)a3;
-- (BSUIItemDescription)initWithCachedItemDescription:(id)a3 lazyNotes:(id)a4;
-- (BSUIItemDescription)initWithDictionary:(id)a3;
-- (BSUIItemDescription)initWithDragInfo:(id)a3;
-- (BSUIItemDescription)initWithItemDescription:(id)a3;
-- (BSUIItemDescription)initWithProfile:(id)a3;
+- (BSUIItemDescription)initWithAsset:(id)asset;
+- (BSUIItemDescription)initWithCachedItemDescription:(id)description lazyNotes:(id)notes;
+- (BSUIItemDescription)initWithDictionary:(id)dictionary;
+- (BSUIItemDescription)initWithDragInfo:(id)info;
+- (BSUIItemDescription)initWithItemDescription:(id)description;
+- (BSUIItemDescription)initWithProfile:(id)profile;
 - (id)description;
 - (unint64_t)coverEffectStyle;
 @end
 
 @implementation BSUIItemDescription
 
-- (BSUIItemDescription)initWithAsset:(id)a3
+- (BSUIItemDescription)initWithAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v39.receiver = self;
   v39.super_class = BSUIItemDescription;
   v5 = [(BSUIItemDescription *)&v39 init];
   if (v5)
   {
-    v6 = [v4 id];
+    v6 = [assetCopy id];
     storeID = v5->_storeID;
     v5->_storeID = v6;
 
-    v8 = [v4 artworkURL];
+    artworkURL = [assetCopy artworkURL];
     artworkURLTemplate = v5->_artworkURLTemplate;
-    v5->_artworkURLTemplate = v8;
+    v5->_artworkURLTemplate = artworkURL;
 
-    v10 = [v4 width];
-    [v10 floatValue];
+    width = [assetCopy width];
+    [width floatValue];
     if (v11 <= 0.0)
     {
       v5->_artworkAspect = 1.5;
@@ -37,27 +37,27 @@
 
     else
     {
-      v12 = [v4 height];
-      [v12 floatValue];
+      height = [assetCopy height];
+      [height floatValue];
       v14 = v13;
-      v15 = [v4 width];
-      [v15 floatValue];
+      width2 = [assetCopy width];
+      [width2 floatValue];
       v5->_artworkAspect = (v14 / v16);
     }
 
-    v17 = [v4 name];
+    name = [assetCopy name];
     title = v5->_title;
-    v5->_title = v17;
+    v5->_title = name;
 
-    v19 = [v4 artistName];
+    artistName = [assetCopy artistName];
     author = v5->_author;
-    v5->_author = v19;
+    v5->_author = artistName;
 
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_55AA0;
     v37[3] = &unk_388D38;
-    v21 = v4;
+    v21 = assetCopy;
     v38 = v21;
     v22 = [BCLazyValue objectSyncProducer:v37];
     lazyNotes = v5->_lazyNotes;
@@ -82,21 +82,21 @@
 
     objc_storeStrong(&v5->_kind, v27);
     v5->_isAudiobook = [v21 isAudiobook];
-    v28 = [v21 bookSampleDownloadURL];
+    bookSampleDownloadURL = [v21 bookSampleDownloadURL];
     sampleDownloadURL = v5->_sampleDownloadURL;
-    v5->_sampleDownloadURL = v28;
+    v5->_sampleDownloadURL = bookSampleDownloadURL;
 
-    v30 = [v21 priceFormatted];
+    priceFormatted = [v21 priceFormatted];
     priceString = v5->_priceString;
-    v5->_priceString = v30;
+    v5->_priceString = priceFormatted;
 
     v32 = [BCMAssetWrapper actionTextForType:1 withAsset:v21];
     actionString = v5->_actionString;
     v5->_actionString = v32;
 
-    v34 = [v21 buyParams];
+    buyParams = [v21 buyParams];
     buyParameters = v5->_buyParameters;
-    v5->_buyParameters = v34;
+    v5->_buyParameters = buyParams;
 
     v5->_fileSize = [v21 fileSize];
   }
@@ -104,36 +104,36 @@
   return v5;
 }
 
-- (BSUIItemDescription)initWithProfile:(id)a3
+- (BSUIItemDescription)initWithProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [v4 adamId];
+  profileCopy = profile;
+  adamId = [profileCopy adamId];
   v37.receiver = self;
   v37.super_class = BSUIItemDescription;
   v6 = [(BSUIItemDescription *)&v37 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storeID, v5);
+    objc_storeStrong(&v6->_storeID, adamId);
     v36 = 0x3FF8000000000000;
-    v8 = [v4 artworkURLTemplateAspect:&v36];
+    v8 = [profileCopy artworkURLTemplateAspect:&v36];
     artworkURLTemplate = v7->_artworkURLTemplate;
     v7->_artworkURLTemplate = v8;
 
     *&v7->_artworkAspect = v36;
-    v10 = [v4 title];
+    title = [profileCopy title];
     title = v7->_title;
-    v7->_title = v10;
+    v7->_title = title;
 
-    v12 = [v4 author];
+    author = [profileCopy author];
     author = v7->_author;
-    v7->_author = v12;
+    v7->_author = author;
 
     v31 = _NSConcreteStackBlock;
     v32 = 3221225472;
     v33 = sub_55D28;
     v34 = &unk_388D38;
-    v14 = v4;
+    v14 = profileCopy;
     v35 = v14;
     v15 = [BCLazyValue objectSyncProducer:&v31];
     lazyNotes = v7->_lazyNotes;
@@ -142,30 +142,30 @@
     [v14 averageRating];
     v7->_averageRating = v17;
     v7->_ratingCount = [v14 ratingCount];
-    v18 = [v14 productURL];
+    productURL = [v14 productURL];
     productURL = v7->_productURL;
-    v7->_productURL = v18;
+    v7->_productURL = productURL;
 
-    v20 = [v14 kind];
+    kind = [v14 kind];
     kind = v7->_kind;
-    v7->_kind = v20;
+    v7->_kind = kind;
 
     v7->_isAudiobook = [v14 isAudiobook];
-    v22 = [v14 bookSampleDownloadURL];
+    bookSampleDownloadURL = [v14 bookSampleDownloadURL];
     sampleDownloadURL = v7->_sampleDownloadURL;
-    v7->_sampleDownloadURL = v22;
+    v7->_sampleDownloadURL = bookSampleDownloadURL;
 
-    v24 = [v14 priceString];
+    priceString = [v14 priceString];
     priceString = v7->_priceString;
-    v7->_priceString = v24;
+    v7->_priceString = priceString;
 
     v26 = [v14 actionTextWithType:1];
     actionString = v7->_actionString;
     v7->_actionString = v26;
 
-    v28 = [v14 buyParameters];
+    buyParameters = [v14 buyParameters];
     buyParameters = v7->_buyParameters;
-    v7->_buyParameters = v28;
+    v7->_buyParameters = buyParameters;
 
     v7->_fileSize = [v14 fileSize];
   }
@@ -173,109 +173,109 @@
   return v7;
 }
 
-- (BSUIItemDescription)initWithItemDescription:(id)a3
+- (BSUIItemDescription)initWithItemDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v31.receiver = self;
   v31.super_class = BSUIItemDescription;
   v5 = [(BSUIItemDescription *)&v31 init];
   if (v5)
   {
-    v6 = [v4 storeID];
+    storeID = [descriptionCopy storeID];
     storeID = v5->_storeID;
-    v5->_storeID = v6;
+    v5->_storeID = storeID;
 
-    v8 = [v4 artworkURLTemplate];
+    artworkURLTemplate = [descriptionCopy artworkURLTemplate];
     artworkURLTemplate = v5->_artworkURLTemplate;
-    v5->_artworkURLTemplate = v8;
+    v5->_artworkURLTemplate = artworkURLTemplate;
 
-    [v4 artworkAspect];
+    [descriptionCopy artworkAspect];
     v5->_artworkAspect = v10;
-    v11 = [v4 title];
+    title = [descriptionCopy title];
     title = v5->_title;
-    v5->_title = v11;
+    v5->_title = title;
 
-    v13 = [v4 author];
+    author = [descriptionCopy author];
     author = v5->_author;
-    v5->_author = v13;
+    v5->_author = author;
 
-    v15 = [v4 lazyNotes];
+    lazyNotes = [descriptionCopy lazyNotes];
     lazyNotes = v5->_lazyNotes;
-    v5->_lazyNotes = v15;
+    v5->_lazyNotes = lazyNotes;
 
-    [v4 averageRating];
+    [descriptionCopy averageRating];
     v5->_averageRating = v17;
-    v5->_ratingCount = [v4 ratingCount];
-    v18 = [v4 productURL];
+    v5->_ratingCount = [descriptionCopy ratingCount];
+    productURL = [descriptionCopy productURL];
     productURL = v5->_productURL;
-    v5->_productURL = v18;
+    v5->_productURL = productURL;
 
-    v20 = [v4 kind];
+    kind = [descriptionCopy kind];
     kind = v5->_kind;
-    v5->_kind = v20;
+    v5->_kind = kind;
 
-    v5->_isAudiobook = [v4 isAudiobook];
-    v22 = [v4 sampleDownloadURL];
+    v5->_isAudiobook = [descriptionCopy isAudiobook];
+    sampleDownloadURL = [descriptionCopy sampleDownloadURL];
     sampleDownloadURL = v5->_sampleDownloadURL;
-    v5->_sampleDownloadURL = v22;
+    v5->_sampleDownloadURL = sampleDownloadURL;
 
-    v24 = [v4 priceString];
+    priceString = [descriptionCopy priceString];
     priceString = v5->_priceString;
-    v5->_priceString = v24;
+    v5->_priceString = priceString;
 
-    v26 = [v4 actionString];
+    actionString = [descriptionCopy actionString];
     actionString = v5->_actionString;
-    v5->_actionString = v26;
+    v5->_actionString = actionString;
 
-    v28 = [v4 buyParameters];
+    buyParameters = [descriptionCopy buyParameters];
     buyParameters = v5->_buyParameters;
-    v5->_buyParameters = v28;
+    v5->_buyParameters = buyParameters;
 
-    v5->_fileSize = [v4 fileSize];
+    v5->_fileSize = [descriptionCopy fileSize];
   }
 
   return v5;
 }
 
-- (BSUIItemDescription)initWithDictionary:(id)a3
+- (BSUIItemDescription)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = BSUIItemDescription;
   v5 = [(BSUIItemDescription *)&v36 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"storeID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"storeID"];
     storeID = v5->_storeID;
     v5->_storeID = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"artworkAspect"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"artworkAspect"];
     [v8 doubleValue];
     v5->_artworkAspect = v9;
 
-    v10 = [v4 objectForKeyedSubscript:@"artworkURLTemplate"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"artworkURLTemplate"];
     artworkURLTemplate = v5->_artworkURLTemplate;
     v5->_artworkURLTemplate = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"title"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     title = v5->_title;
     v5->_title = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"author"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"author"];
     author = v5->_author;
     v5->_author = v14;
 
-    v16 = [v4 objectForKeyedSubscript:@"averageRating"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"averageRating"];
     [v16 doubleValue];
     v5->_averageRating = v17;
 
-    v18 = [v4 objectForKeyedSubscript:@"ratingCount"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"ratingCount"];
     v5->_ratingCount = [v18 integerValue];
 
-    v19 = [v4 objectForKeyedSubscript:@"productURL"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"productURL"];
     if (v19)
     {
-      v20 = [v4 objectForKeyedSubscript:@"productURL"];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"productURL"];
       v21 = [NSURL URLWithString:v20];
       productURL = v5->_productURL;
       v5->_productURL = v21;
@@ -287,14 +287,14 @@
       v5->_productURL = 0;
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"kind"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"kind"];
     kind = v5->_kind;
     v5->_kind = v23;
 
-    v25 = [v4 objectForKeyedSubscript:@"sampleDownloadURL"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"sampleDownloadURL"];
     if (v25)
     {
-      v26 = [v4 objectForKeyedSubscript:@"sampleDownloadURL"];
+      v26 = [dictionaryCopy objectForKeyedSubscript:@"sampleDownloadURL"];
       v27 = [NSURL URLWithString:v26];
       sampleDownloadURL = v5->_sampleDownloadURL;
       v5->_sampleDownloadURL = v27;
@@ -306,15 +306,15 @@
       v5->_sampleDownloadURL = 0;
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"priceString"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"priceString"];
     priceString = v5->_priceString;
     v5->_priceString = v29;
 
-    v31 = [v4 objectForKeyedSubscript:@"actionString"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"actionString"];
     actionString = v5->_actionString;
     v5->_actionString = v31;
 
-    v33 = [v4 objectForKeyedSubscript:@"buyParameters"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"buyParameters"];
     buyParameters = v5->_buyParameters;
     v5->_buyParameters = v33;
   }
@@ -322,34 +322,34 @@
   return v5;
 }
 
-- (BSUIItemDescription)initWithDragInfo:(id)a3
+- (BSUIItemDescription)initWithDragInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v20.receiver = self;
   v20.super_class = BSUIItemDescription;
   v5 = [(BSUIItemDescription *)&v20 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKeyedSubscript:@"storeID"];
+    v6 = [infoCopy objectForKeyedSubscript:@"storeID"];
     v7 = BUDynamicCast();
     storeID = v5->_storeID;
     v5->_storeID = v7;
 
     objc_opt_class();
-    v9 = [v4 objectForKeyedSubscript:@"title"];
+    v9 = [infoCopy objectForKeyedSubscript:@"title"];
     v10 = BUDynamicCast();
     title = v5->_title;
     v5->_title = v10;
 
     objc_opt_class();
-    v12 = [v4 objectForKeyedSubscript:@"author"];
+    v12 = [infoCopy objectForKeyedSubscript:@"author"];
     v13 = BUDynamicCast();
     author = v5->_author;
     v5->_author = v13;
 
     objc_opt_class();
-    v15 = [v4 objectForKeyedSubscript:@"storeURL"];
+    v15 = [infoCopy objectForKeyedSubscript:@"storeURL"];
     v16 = BUDynamicCast();
 
     if ([v16 length])
@@ -363,92 +363,92 @@
   return v5;
 }
 
-- (BSUIItemDescription)initWithCachedItemDescription:(id)a3 lazyNotes:(id)a4
+- (BSUIItemDescription)initWithCachedItemDescription:(id)description lazyNotes:(id)notes
 {
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  notesCopy = notes;
   v41.receiver = self;
   v41.super_class = BSUIItemDescription;
   v8 = [(BSUIItemDescription *)&v41 init];
   if (v8)
   {
-    v9 = [v6 storeID];
-    v10 = [v9 copy];
+    storeID = [descriptionCopy storeID];
+    v10 = [storeID copy];
     storeID = v8->_storeID;
     v8->_storeID = v10;
 
-    v12 = [v6 artworkAspect];
-    [v12 doubleValue];
+    artworkAspect = [descriptionCopy artworkAspect];
+    [artworkAspect doubleValue];
     v8->_artworkAspect = v13;
 
-    v14 = [v6 artworkURLTemplate];
+    artworkURLTemplate = [descriptionCopy artworkURLTemplate];
     artworkURLTemplate = v8->_artworkURLTemplate;
-    v8->_artworkURLTemplate = v14;
+    v8->_artworkURLTemplate = artworkURLTemplate;
 
-    objc_storeStrong(&v8->_lazyNotes, a4);
-    v16 = [v6 title];
+    objc_storeStrong(&v8->_lazyNotes, notes);
+    title = [descriptionCopy title];
     title = v8->_title;
-    v8->_title = v16;
+    v8->_title = title;
 
-    v18 = [v6 author];
+    author = [descriptionCopy author];
     author = v8->_author;
-    v8->_author = v18;
+    v8->_author = author;
 
-    v20 = [v6 averageRating];
-    [v20 doubleValue];
+    averageRating = [descriptionCopy averageRating];
+    [averageRating doubleValue];
     v8->_averageRating = v21;
 
-    v22 = [v6 ratingCount];
-    v8->_ratingCount = [v22 integerValue];
+    ratingCount = [descriptionCopy ratingCount];
+    v8->_ratingCount = [ratingCount integerValue];
 
-    v23 = [v6 productURL];
-    if (v23)
+    productURL = [descriptionCopy productURL];
+    if (productURL)
     {
-      v24 = [v6 productURL];
-      v25 = [NSURL URLWithString:v24];
+      productURL2 = [descriptionCopy productURL];
+      v25 = [NSURL URLWithString:productURL2];
       productURL = v8->_productURL;
       v8->_productURL = v25;
     }
 
     else
     {
-      v24 = v8->_productURL;
+      productURL2 = v8->_productURL;
       v8->_productURL = 0;
     }
 
-    v27 = [v6 kind];
+    kind = [descriptionCopy kind];
     kind = v8->_kind;
-    v8->_kind = v27;
+    v8->_kind = kind;
 
-    v29 = [v6 sampleDownloadURL];
-    if (v29)
+    sampleDownloadURL = [descriptionCopy sampleDownloadURL];
+    if (sampleDownloadURL)
     {
-      v30 = [v6 sampleDownloadURL];
-      v31 = [NSURL URLWithString:v30];
+      sampleDownloadURL2 = [descriptionCopy sampleDownloadURL];
+      v31 = [NSURL URLWithString:sampleDownloadURL2];
       sampleDownloadURL = v8->_sampleDownloadURL;
       v8->_sampleDownloadURL = v31;
     }
 
     else
     {
-      v30 = v8->_sampleDownloadURL;
+      sampleDownloadURL2 = v8->_sampleDownloadURL;
       v8->_sampleDownloadURL = 0;
     }
 
-    v33 = [v6 priceString];
+    priceString = [descriptionCopy priceString];
     priceString = v8->_priceString;
-    v8->_priceString = v33;
+    v8->_priceString = priceString;
 
-    v35 = [v6 actionString];
+    actionString = [descriptionCopy actionString];
     actionString = v8->_actionString;
-    v8->_actionString = v35;
+    v8->_actionString = actionString;
 
-    v37 = [v6 buyParameters];
+    buyParameters = [descriptionCopy buyParameters];
     buyParameters = v8->_buyParameters;
-    v8->_buyParameters = v37;
+    v8->_buyParameters = buyParameters;
 
-    v39 = [v6 fileSize];
-    v8->_fileSize = [v39 integerValue];
+    fileSize = [descriptionCopy fileSize];
+    v8->_fileSize = [fileSize integerValue];
   }
 
   return v8;
@@ -460,11 +460,11 @@
   v4 = NSStringFromClass(v3);
   v5 = [NSMutableString stringWithFormat:@"<%@: %p", v4, self];
 
-  v6 = [(BSUIItemDescription *)self storeID];
-  [v5 appendFormat:@"\n  storeID=%@ ", v6];
+  storeID = [(BSUIItemDescription *)self storeID];
+  [v5 appendFormat:@"\n  storeID=%@ ", storeID];
 
-  v7 = [(BSUIItemDescription *)self artworkURLTemplate];
-  [v5 appendFormat:@"\n  artworkURLTemplate=%@ ", v7];
+  artworkURLTemplate = [(BSUIItemDescription *)self artworkURLTemplate];
+  [v5 appendFormat:@"\n  artworkURLTemplate=%@ ", artworkURLTemplate];
 
   [(BSUIItemDescription *)self artworkAspect];
   *&v8 = v8;
@@ -473,36 +473,36 @@
   v10 = NSStringFromClass(v9);
   [v5 appendFormat:@"\n  _lazyNotes=<%@:%p> ", v10, self->_lazyNotes];
 
-  v11 = [(BSUIItemDescription *)self title];
-  [v5 appendFormat:@"\n  title=%@ ", v11];
+  title = [(BSUIItemDescription *)self title];
+  [v5 appendFormat:@"\n  title=%@ ", title];
 
-  v12 = [(BSUIItemDescription *)self author];
-  [v5 appendFormat:@"\n  author=%@ ", v12];
+  author = [(BSUIItemDescription *)self author];
+  [v5 appendFormat:@"\n  author=%@ ", author];
 
   [(BSUIItemDescription *)self averageRating];
   *&v13 = v13;
   [v5 appendFormat:@"\n  averageRating=%f ", *&v13];
   [v5 appendFormat:@"\n  ratingCount=%d ", -[BSUIItemDescription ratingCount](self, "ratingCount")];
-  v14 = [(BSUIItemDescription *)self metrics];
-  [v5 appendFormat:@"\n  metrics=%@ ", v14];
+  metrics = [(BSUIItemDescription *)self metrics];
+  [v5 appendFormat:@"\n  metrics=%@ ", metrics];
 
-  v15 = [(BSUIItemDescription *)self kind];
-  [v5 appendFormat:@"\n  kind=%@", v15];
+  kind = [(BSUIItemDescription *)self kind];
+  [v5 appendFormat:@"\n  kind=%@", kind];
 
-  v16 = [(BSUIItemDescription *)self productURL];
-  [v5 appendFormat:@"\n  productURL=%@", v16];
+  productURL = [(BSUIItemDescription *)self productURL];
+  [v5 appendFormat:@"\n  productURL=%@", productURL];
 
-  v17 = [(BSUIItemDescription *)self sampleDownloadURL];
-  [v5 appendFormat:@"\n  sampleDownloadURL=%@", v17];
+  sampleDownloadURL = [(BSUIItemDescription *)self sampleDownloadURL];
+  [v5 appendFormat:@"\n  sampleDownloadURL=%@", sampleDownloadURL];
 
-  v18 = [(BSUIItemDescription *)self priceString];
-  [v5 appendFormat:@"\n  priceString=%@", v18];
+  priceString = [(BSUIItemDescription *)self priceString];
+  [v5 appendFormat:@"\n  priceString=%@", priceString];
 
-  v19 = [(BSUIItemDescription *)self actionString];
-  [v5 appendFormat:@"\n  actionString=%@", v19];
+  actionString = [(BSUIItemDescription *)self actionString];
+  [v5 appendFormat:@"\n  actionString=%@", actionString];
 
-  v20 = [(BSUIItemDescription *)self buyParameters];
-  [v5 appendFormat:@"\n  buyParameters=%@", v20];
+  buyParameters = [(BSUIItemDescription *)self buyParameters];
+  [v5 appendFormat:@"\n  buyParameters=%@", buyParameters];
 
   [v5 appendFormat:@">"];
 

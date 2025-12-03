@@ -11,7 +11,7 @@
 
 - (NSData)posterArchive
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21456A288();
 
   return v3;
@@ -58,7 +58,7 @@
 
 - (BlastDoorWallpaper_WallpaperImage)highResImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21456A700();
 
   return v3;
@@ -66,7 +66,7 @@
 
 - (BlastDoorWallpaper_WallpaperImage)lowResImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21456ABA8();
 
   return v3;

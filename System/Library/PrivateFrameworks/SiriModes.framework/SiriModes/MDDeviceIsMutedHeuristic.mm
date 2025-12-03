@@ -1,6 +1,6 @@
 @interface MDDeviceIsMutedHeuristic
 - (MDDeviceIsMutedHeuristic)init;
-- (MDDeviceIsMutedHeuristic)initWithRingerStateObserver:(id)a3;
+- (MDDeviceIsMutedHeuristic)initWithRingerStateObserver:(id)observer;
 - (id)determineCurrentMode;
 @end
 
@@ -15,9 +15,9 @@
   return v5;
 }
 
-- (MDDeviceIsMutedHeuristic)initWithRingerStateObserver:(id)a3
+- (MDDeviceIsMutedHeuristic)initWithRingerStateObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v10.receiver = self;
   v10.super_class = MDDeviceIsMutedHeuristic;
   v6 = [(MDDeviceIsMutedHeuristic *)&v10 init];
@@ -27,7 +27,7 @@
     displayOnlyModeDecision = v6->_displayOnlyModeDecision;
     v6->_displayOnlyModeDecision = v7;
 
-    objc_storeStrong(&v6->_ringerStateObserver, a3);
+    objc_storeStrong(&v6->_ringerStateObserver, observer);
   }
 
   return v6;

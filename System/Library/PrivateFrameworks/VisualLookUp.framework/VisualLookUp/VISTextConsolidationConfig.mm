@@ -1,18 +1,18 @@
 @interface VISTextConsolidationConfig
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (VISTextConsolidationConfig)initWithDictionary:(id)a3;
-- (VISTextConsolidationConfig)initWithJSON:(id)a3;
+- (VISTextConsolidationConfig)initWithDictionary:(id)dictionary;
+- (VISTextConsolidationConfig)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VISTextConsolidationConfig
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v17 = a3;
+  toCopy = to;
   [(VISTextConsolidationConfig *)self match_cost_threshold];
   if (v4 != 0.0)
   {
@@ -85,21 +85,21 @@
   }
 
   [(VISTextConsolidationConfig *)self world_position_update_distance_threshold];
-  v15 = v17;
+  v15 = toCopy;
   if (v16 != 0.0)
   {
     PBDataWriterWriteFloatField();
-    v15 = v17;
+    v15 = toCopy;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (match_cost_threshold = self->_match_cost_threshold, objc_msgSend(v4, "match_cost_threshold"), match_cost_threshold == v6) && (font_size_start_reporting_threshold = self->_font_size_start_reporting_threshold, objc_msgSend(v4, "font_size_start_reporting_threshold"), font_size_start_reporting_threshold == v8) && (font_size_stop_reporting_threshold = self->_font_size_stop_reporting_threshold, objc_msgSend(v4, "font_size_stop_reporting_threshold"), font_size_stop_reporting_threshold == v10) && (angular_offset_exponential_smoothing = self->_angular_offset_exponential_smoothing, objc_msgSend(v4, "angular_offset_exponential_smoothing"), angular_offset_exponential_smoothing == v12) && (model_aspect_ratio = self->_model_aspect_ratio, objc_msgSend(v4, "model_aspect_ratio"), model_aspect_ratio == v14) && (confidence_threshold = self->_confidence_threshold, objc_msgSend(v4, "confidence_threshold"), confidence_threshold == v16) && (confidence_filter_ratio = self->_confidence_filter_ratio, objc_msgSend(v4, "confidence_filter_ratio"), confidence_filter_ratio == v18) && (confidence_hysteresis_value_lag = self->_confidence_hysteresis_value_lag, objc_msgSend(v4, "confidence_hysteresis_value_lag"), confidence_hysteresis_value_lag == v20) && (confidence_hysteresis_temporal_lag_before_confident = self->_confidence_hysteresis_temporal_lag_before_confident, objc_msgSend(v4, "confidence_hysteresis_temporal_lag_before_confident"), confidence_hysteresis_temporal_lag_before_confident == v22) && (confidence_hysteresis_temporal_lag_before_not_confident = self->_confidence_hysteresis_temporal_lag_before_not_confident, objc_msgSend(v4, "confidence_hysteresis_temporal_lag_before_not_confident"), confidence_hysteresis_temporal_lag_before_not_confident == v24) && (enable_smoothed_transformation = self->_enable_smoothed_transformation, enable_smoothed_transformation == objc_msgSend(v4, "enable_smoothed_transformation")) && (geo_cost_depth_threshold = self->_geo_cost_depth_threshold, objc_msgSend(v4, "geo_cost_depth_threshold"), geo_cost_depth_threshold == v27))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (match_cost_threshold = self->_match_cost_threshold, objc_msgSend(equalCopy, "match_cost_threshold"), match_cost_threshold == v6) && (font_size_start_reporting_threshold = self->_font_size_start_reporting_threshold, objc_msgSend(equalCopy, "font_size_start_reporting_threshold"), font_size_start_reporting_threshold == v8) && (font_size_stop_reporting_threshold = self->_font_size_stop_reporting_threshold, objc_msgSend(equalCopy, "font_size_stop_reporting_threshold"), font_size_stop_reporting_threshold == v10) && (angular_offset_exponential_smoothing = self->_angular_offset_exponential_smoothing, objc_msgSend(equalCopy, "angular_offset_exponential_smoothing"), angular_offset_exponential_smoothing == v12) && (model_aspect_ratio = self->_model_aspect_ratio, objc_msgSend(equalCopy, "model_aspect_ratio"), model_aspect_ratio == v14) && (confidence_threshold = self->_confidence_threshold, objc_msgSend(equalCopy, "confidence_threshold"), confidence_threshold == v16) && (confidence_filter_ratio = self->_confidence_filter_ratio, objc_msgSend(equalCopy, "confidence_filter_ratio"), confidence_filter_ratio == v18) && (confidence_hysteresis_value_lag = self->_confidence_hysteresis_value_lag, objc_msgSend(equalCopy, "confidence_hysteresis_value_lag"), confidence_hysteresis_value_lag == v20) && (confidence_hysteresis_temporal_lag_before_confident = self->_confidence_hysteresis_temporal_lag_before_confident, objc_msgSend(equalCopy, "confidence_hysteresis_temporal_lag_before_confident"), confidence_hysteresis_temporal_lag_before_confident == v22) && (confidence_hysteresis_temporal_lag_before_not_confident = self->_confidence_hysteresis_temporal_lag_before_not_confident, objc_msgSend(equalCopy, "confidence_hysteresis_temporal_lag_before_not_confident"), confidence_hysteresis_temporal_lag_before_not_confident == v24) && (enable_smoothed_transformation = self->_enable_smoothed_transformation, enable_smoothed_transformation == objc_msgSend(equalCopy, "enable_smoothed_transformation")) && (geo_cost_depth_threshold = self->_geo_cost_depth_threshold, objc_msgSend(equalCopy, "geo_cost_depth_threshold"), geo_cost_depth_threshold == v27))
   {
     world_position_update_distance_threshold = self->_world_position_update_distance_threshold;
-    [v4 world_position_update_distance_threshold];
+    [equalCopy world_position_update_distance_threshold];
     v28 = world_position_update_distance_threshold == v31;
   }
 
@@ -556,13 +556,13 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_angular_offset_exponential_smoothing != 0.0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(VISTextConsolidationConfig *)self angular_offset_exponential_smoothing];
     v5 = [v4 numberWithFloat:?];
-    [v3 setObject:v5 forKeyedSubscript:@"angularOffsetExponentialSmoothing"];
+    [dictionary setObject:v5 forKeyedSubscript:@"angularOffsetExponentialSmoothing"];
   }
 
   if (self->_confidence_filter_ratio != 0.0)
@@ -570,7 +570,7 @@
     v6 = MEMORY[0x1E696AD98];
     [(VISTextConsolidationConfig *)self confidence_filter_ratio];
     v7 = [v6 numberWithFloat:?];
-    [v3 setObject:v7 forKeyedSubscript:@"confidenceFilterRatio"];
+    [dictionary setObject:v7 forKeyedSubscript:@"confidenceFilterRatio"];
   }
 
   if (self->_confidence_hysteresis_temporal_lag_before_confident != 0.0)
@@ -578,7 +578,7 @@
     v8 = MEMORY[0x1E696AD98];
     [(VISTextConsolidationConfig *)self confidence_hysteresis_temporal_lag_before_confident];
     v9 = [v8 numberWithFloat:?];
-    [v3 setObject:v9 forKeyedSubscript:@"confidenceHysteresisTemporalLagBeforeConfident"];
+    [dictionary setObject:v9 forKeyedSubscript:@"confidenceHysteresisTemporalLagBeforeConfident"];
   }
 
   if (self->_confidence_hysteresis_temporal_lag_before_not_confident != 0.0)
@@ -586,7 +586,7 @@
     v10 = MEMORY[0x1E696AD98];
     [(VISTextConsolidationConfig *)self confidence_hysteresis_temporal_lag_before_not_confident];
     v11 = [v10 numberWithFloat:?];
-    [v3 setObject:v11 forKeyedSubscript:@"confidenceHysteresisTemporalLagBeforeNotConfident"];
+    [dictionary setObject:v11 forKeyedSubscript:@"confidenceHysteresisTemporalLagBeforeNotConfident"];
   }
 
   if (self->_confidence_hysteresis_value_lag != 0.0)
@@ -594,7 +594,7 @@
     v12 = MEMORY[0x1E696AD98];
     [(VISTextConsolidationConfig *)self confidence_hysteresis_value_lag];
     v13 = [v12 numberWithFloat:?];
-    [v3 setObject:v13 forKeyedSubscript:@"confidenceHysteresisValueLag"];
+    [dictionary setObject:v13 forKeyedSubscript:@"confidenceHysteresisValueLag"];
   }
 
   if (self->_confidence_threshold != 0.0)
@@ -602,13 +602,13 @@
     v14 = MEMORY[0x1E696AD98];
     [(VISTextConsolidationConfig *)self confidence_threshold];
     v15 = [v14 numberWithFloat:?];
-    [v3 setObject:v15 forKeyedSubscript:@"confidenceThreshold"];
+    [dictionary setObject:v15 forKeyedSubscript:@"confidenceThreshold"];
   }
 
   if (self->_enable_smoothed_transformation)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[VISTextConsolidationConfig enable_smoothed_transformation](self, "enable_smoothed_transformation")}];
-    [v3 setObject:v16 forKeyedSubscript:@"enableSmoothedTransformation"];
+    [dictionary setObject:v16 forKeyedSubscript:@"enableSmoothedTransformation"];
   }
 
   if (self->_font_size_start_reporting_threshold != 0.0)
@@ -616,7 +616,7 @@
     v17 = MEMORY[0x1E696AD98];
     [(VISTextConsolidationConfig *)self font_size_start_reporting_threshold];
     v18 = [v17 numberWithFloat:?];
-    [v3 setObject:v18 forKeyedSubscript:@"fontSizeStartReportingThreshold"];
+    [dictionary setObject:v18 forKeyedSubscript:@"fontSizeStartReportingThreshold"];
   }
 
   if (self->_font_size_stop_reporting_threshold != 0.0)
@@ -624,7 +624,7 @@
     v19 = MEMORY[0x1E696AD98];
     [(VISTextConsolidationConfig *)self font_size_stop_reporting_threshold];
     v20 = [v19 numberWithFloat:?];
-    [v3 setObject:v20 forKeyedSubscript:@"fontSizeStopReportingThreshold"];
+    [dictionary setObject:v20 forKeyedSubscript:@"fontSizeStopReportingThreshold"];
   }
 
   if (self->_geo_cost_depth_threshold != 0.0)
@@ -632,7 +632,7 @@
     v21 = MEMORY[0x1E696AD98];
     [(VISTextConsolidationConfig *)self geo_cost_depth_threshold];
     v22 = [v21 numberWithFloat:?];
-    [v3 setObject:v22 forKeyedSubscript:@"geoCostDepthThreshold"];
+    [dictionary setObject:v22 forKeyedSubscript:@"geoCostDepthThreshold"];
   }
 
   if (self->_match_cost_threshold != 0.0)
@@ -640,7 +640,7 @@
     v23 = MEMORY[0x1E696AD98];
     [(VISTextConsolidationConfig *)self match_cost_threshold];
     v24 = [v23 numberWithFloat:?];
-    [v3 setObject:v24 forKeyedSubscript:@"matchCostThreshold"];
+    [dictionary setObject:v24 forKeyedSubscript:@"matchCostThreshold"];
   }
 
   if (self->_model_aspect_ratio != 0.0)
@@ -648,7 +648,7 @@
     v25 = MEMORY[0x1E696AD98];
     [(VISTextConsolidationConfig *)self model_aspect_ratio];
     v26 = [v25 numberWithFloat:?];
-    [v3 setObject:v26 forKeyedSubscript:@"modelAspectRatio"];
+    [dictionary setObject:v26 forKeyedSubscript:@"modelAspectRatio"];
   }
 
   if (self->_world_position_update_distance_threshold != 0.0)
@@ -656,18 +656,18 @@
     v27 = MEMORY[0x1E696AD98];
     [(VISTextConsolidationConfig *)self world_position_update_distance_threshold];
     v28 = [v27 numberWithFloat:?];
-    [v3 setObject:v28 forKeyedSubscript:@"worldPositionUpdateDistanceThreshold"];
+    [dictionary setObject:v28 forKeyedSubscript:@"worldPositionUpdateDistanceThreshold"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(VISTextConsolidationConfig *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(VISTextConsolidationConfig *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -678,33 +678,33 @@
   return v3;
 }
 
-- (VISTextConsolidationConfig)initWithJSON:(id)a3
+- (VISTextConsolidationConfig)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(VISTextConsolidationConfig *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (VISTextConsolidationConfig)initWithDictionary:(id)a3
+- (VISTextConsolidationConfig)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = VISTextConsolidationConfig;
   v5 = [(VISTextConsolidationConfig *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"matchCostThreshold"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"matchCostThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -712,7 +712,7 @@
       [(VISTextConsolidationConfig *)v5 setMatch_cost_threshold:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"fontSizeStartReportingThreshold"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"fontSizeStartReportingThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -720,7 +720,7 @@
       [(VISTextConsolidationConfig *)v5 setFont_size_start_reporting_threshold:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"fontSizeStopReportingThreshold"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"fontSizeStopReportingThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -728,7 +728,7 @@
       [(VISTextConsolidationConfig *)v5 setFont_size_stop_reporting_threshold:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"angularOffsetExponentialSmoothing"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"angularOffsetExponentialSmoothing"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -736,7 +736,7 @@
       [(VISTextConsolidationConfig *)v5 setAngular_offset_exponential_smoothing:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"modelAspectRatio"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"modelAspectRatio"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -744,7 +744,7 @@
       [(VISTextConsolidationConfig *)v5 setModel_aspect_ratio:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"confidenceThreshold"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"confidenceThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -752,7 +752,7 @@
       [(VISTextConsolidationConfig *)v5 setConfidence_threshold:?];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"confidenceFilterRatio"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"confidenceFilterRatio"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -761,7 +761,7 @@
     }
 
     v27 = v6;
-    v13 = [v4 objectForKeyedSubscript:{@"confidenceHysteresisValueLag", v12}];
+    v13 = [dictionaryCopy objectForKeyedSubscript:{@"confidenceHysteresisValueLag", v12}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -770,7 +770,7 @@
     }
 
     v26 = v7;
-    v14 = [v4 objectForKeyedSubscript:@"confidenceHysteresisTemporalLagBeforeConfident"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"confidenceHysteresisTemporalLagBeforeConfident"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -779,7 +779,7 @@
     }
 
     v25 = v8;
-    v15 = [v4 objectForKeyedSubscript:@"confidenceHysteresisTemporalLagBeforeNotConfident"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"confidenceHysteresisTemporalLagBeforeNotConfident"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -789,7 +789,7 @@
 
     v23 = v11;
     v24 = v9;
-    v16 = [v4 objectForKeyedSubscript:@"enableSmoothedTransformation"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"enableSmoothedTransformation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -797,7 +797,7 @@
     }
 
     v17 = v10;
-    v18 = [v4 objectForKeyedSubscript:@"geoCostDepthThreshold"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"geoCostDepthThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -805,7 +805,7 @@
       [(VISTextConsolidationConfig *)v5 setGeo_cost_depth_threshold:?];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"worldPositionUpdateDistanceThreshold"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"worldPositionUpdateDistanceThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

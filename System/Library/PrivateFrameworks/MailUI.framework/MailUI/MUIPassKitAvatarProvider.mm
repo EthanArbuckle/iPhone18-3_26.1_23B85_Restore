@@ -1,8 +1,8 @@
 @interface MUIPassKitAvatarProvider
 + (OS_os_log)log;
 - (MUIPassKitAvatarProvider)init;
-- (id)genericAvatarForContext:(id)a3;
-- (id)genericCategoryForEmailAddress:(id)a3;
+- (id)genericAvatarForContext:(id)context;
+- (id)genericCategoryForEmailAddress:(id)address;
 @end
 
 @implementation MUIPassKitAvatarProvider
@@ -46,7 +46,7 @@
   block[1] = 3221225472;
   block[2] = __31__MUIPassKitAvatarProvider_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_11 != -1)
   {
     dispatch_once(&log_onceToken_11, block);
@@ -66,11 +66,11 @@ void __31__MUIPassKitAvatarProvider_log__block_invoke(uint64_t a1)
   log_log_11 = v2;
 }
 
-- (id)genericAvatarForContext:(id)a3
+- (id)genericAvatarForContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 emailAddress];
-  v6 = [(MUIPassKitAvatarProvider *)self genericCategoryForEmailAddress:v5];
+  contextCopy = context;
+  emailAddress = [contextCopy emailAddress];
+  v6 = [(MUIPassKitAvatarProvider *)self genericCategoryForEmailAddress:emailAddress];
 
   if ((*(*MEMORY[0x277D07118] + 16))())
   {
@@ -79,8 +79,8 @@ void __31__MUIPassKitAvatarProvider_log__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [v6 unsignedIntegerValue];
-    [v4 scale];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
+    [contextCopy scale];
     v10 = v9;
     v17 = 0;
     v18 = &v17;
@@ -104,22 +104,22 @@ void __31__MUIPassKitAvatarProvider_log__block_invoke(uint64_t a1)
       [MUIPassKitAvatarProvider genericAvatarForContext:];
     }
 
-    v12 = (v11)(v8, 0, 0, 45.0, 45.0, v10);
+    v12 = (v11)(unsignedIntegerValue, 0, 0, 45.0, 45.0, v10);
     v13 = [MUIAvatarImageGeneratorResult alloc];
-    v14 = [v4 emailAddress];
-    v7 = [(MUIAvatarImageGeneratorResult *)v13 initWithAddress:v14 image:v12 style:1 type:1];
+    emailAddress2 = [contextCopy emailAddress];
+    v7 = [(MUIAvatarImageGeneratorResult *)v13 initWithAddress:emailAddress2 image:v12 style:1 type:1];
   }
 
   return v7;
 }
 
-- (id)genericCategoryForEmailAddress:(id)a3
+- (id)genericCategoryForEmailAddress:(id)address
 {
-  v4 = a3;
-  v5 = [v4 emailAddressValue];
-  v6 = [v5 highLevelDomain];
+  addressCopy = address;
+  emailAddressValue = [addressCopy emailAddressValue];
+  highLevelDomain = [emailAddressValue highLevelDomain];
 
-  if ([v6 length])
+  if ([highLevelDomain length])
   {
     v21 = 0;
     v22 = &v21;
@@ -131,15 +131,15 @@ void __31__MUIPassKitAvatarProvider_log__block_invoke(uint64_t a1)
     v18 = __Block_byref_object_copy__2;
     v19 = __Block_byref_object_dispose__2;
     v20 = 0;
-    v7 = [(MUIPassKitAvatarProvider *)self mccController];
+    mccController = [(MUIPassKitAvatarProvider *)self mccController];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __59__MUIPassKitAvatarProvider_genericCategoryForEmailAddress___block_invoke;
     v11[3] = &unk_27818A600;
-    v12 = v6;
+    v12 = highLevelDomain;
     v13 = &v15;
     v14 = &v21;
-    [v7 getPKCategoryForDomain:v12 completion:v11];
+    [mccController getPKCategoryForDomain:v12 completion:v11];
 
     if ((v22[3] & 1) == 0)
     {

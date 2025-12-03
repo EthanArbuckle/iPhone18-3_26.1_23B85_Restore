@@ -1,24 +1,24 @@
 @interface ICNoteBrowseCollectionView
 - (BOOL)hasTagSection;
 - (BOOL)shouldShowFolderAndOrAccountName;
-- (ICNoteBrowseCollectionView)initWithPresentingViewController:(id)a3 legacyManagedObjectContext:(id)a4 modernManagedObjectContext:(id)a5 viewControllerManager:(id)a6;
-- (id)_layoutBoundaryWithElementKind:(id)a3 alignment:(int64_t)a4 estimatedHeight:(double)a5;
+- (ICNoteBrowseCollectionView)initWithPresentingViewController:(id)controller legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext viewControllerManager:(id)manager;
+- (id)_layoutBoundaryWithElementKind:(id)kind alignment:(int64_t)alignment estimatedHeight:(double)height;
 - (id)accessibilityValue;
 - (id)createLayout;
-- (id)notesGallerySectionForSectionIndex:(int64_t)a3 layoutEnvironment:(id)a4;
-- (id)notesListSectionForSectionIndex:(int64_t)a3 layoutEnvironment:(id)a4;
-- (id)notesSectionForSectionIndex:(int64_t)a3 layoutEnvironment:(id)a4;
-- (int64_t)noteListSectionHeaderModeForSectionIndex:(unint64_t)a3;
-- (unint64_t)adjustedNumberOfGalleryColumnsForWidth:(double)a3;
+- (id)notesGallerySectionForSectionIndex:(int64_t)index layoutEnvironment:(id)environment;
+- (id)notesListSectionForSectionIndex:(int64_t)index layoutEnvironment:(id)environment;
+- (id)notesSectionForSectionIndex:(int64_t)index layoutEnvironment:(id)environment;
+- (int64_t)noteListSectionHeaderModeForSectionIndex:(unint64_t)index;
+- (unint64_t)adjustedNumberOfGalleryColumnsForWidth:(double)width;
 - (unint64_t)wideModeNumberOfColumns;
-- (void)contentSizeCategoryDidChange:(id)a3;
+- (void)contentSizeCategoryDidChange:(id)change;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)reloadLayoutAnimated:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setShouldShowRecentlyDeletedHeader:(BOOL)a3;
-- (void)setShouldShowSummaryFooter:(BOOL)a3;
-- (void)setWideModeNumberOfColumns:(unint64_t)a3 animated:(BOOL)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)reloadLayoutAnimated:(BOOL)animated;
+- (void)setFrame:(CGRect)frame;
+- (void)setShouldShowRecentlyDeletedHeader:(BOOL)header;
+- (void)setShouldShowSummaryFooter:(BOOL)footer;
+- (void)setWideModeNumberOfColumns:(unint64_t)columns animated:(BOOL)animated;
 @end
 
 @implementation ICNoteBrowseCollectionView
@@ -61,11 +61,11 @@
   return v9;
 }
 
-- (ICNoteBrowseCollectionView)initWithPresentingViewController:(id)a3 legacyManagedObjectContext:(id)a4 modernManagedObjectContext:(id)a5 viewControllerManager:(id)a6
+- (ICNoteBrowseCollectionView)initWithPresentingViewController:(id)controller legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext viewControllerManager:(id)manager
 {
   v12.receiver = self;
   v12.super_class = ICNoteBrowseCollectionView;
-  v6 = [(ICCollectionView *)&v12 initWithPresentingViewController:a3 legacyManagedObjectContext:a4 modernManagedObjectContext:a5 viewControllerManager:a6];
+  v6 = [(ICCollectionView *)&v12 initWithPresentingViewController:controller legacyManagedObjectContext:context modernManagedObjectContext:objectContext viewControllerManager:manager];
   v7 = v6;
   if (v6)
   {
@@ -101,21 +101,21 @@
   [(ICNoteBrowseCollectionView *)&v5 dealloc];
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
   if ([(ICNoteBrowseCollectionView *)self shouldShowRecentlyDeletedHeader]|| [(ICNoteBrowseCollectionView *)self hasTagSection])
   {
-    v4 = [(ICNoteBrowseCollectionView *)self createLayout];
-    [(ICNoteBrowseCollectionView *)self setCollectionViewLayout:v4];
+    createLayout = [(ICNoteBrowseCollectionView *)self createLayout];
+    [(ICNoteBrowseCollectionView *)self setCollectionViewLayout:createLayout];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(ICNoteBrowseCollectionView *)self frame];
   v9 = v8;
   v11.receiver = self;
@@ -125,37 +125,37 @@
   {
     if ([(ICNoteBrowseCollectionView *)self shouldShowRecentlyDeletedHeader])
     {
-      v10 = [(ICNoteBrowseCollectionView *)self createLayout];
-      [(ICNoteBrowseCollectionView *)self setCollectionViewLayout:v10];
+      createLayout = [(ICNoteBrowseCollectionView *)self createLayout];
+      [(ICNoteBrowseCollectionView *)self setCollectionViewLayout:createLayout];
     }
   }
 }
 
-- (void)setShouldShowRecentlyDeletedHeader:(BOOL)a3
+- (void)setShouldShowRecentlyDeletedHeader:(BOOL)header
 {
-  if (self->_shouldShowRecentlyDeletedHeader != a3)
+  if (self->_shouldShowRecentlyDeletedHeader != header)
   {
-    self->_shouldShowRecentlyDeletedHeader = a3;
-    v5 = [(ICNoteBrowseCollectionView *)self createLayout];
-    [(ICNoteBrowseCollectionView *)self setCollectionViewLayout:v5];
+    self->_shouldShowRecentlyDeletedHeader = header;
+    createLayout = [(ICNoteBrowseCollectionView *)self createLayout];
+    [(ICNoteBrowseCollectionView *)self setCollectionViewLayout:createLayout];
   }
 }
 
-- (void)setShouldShowSummaryFooter:(BOOL)a3
+- (void)setShouldShowSummaryFooter:(BOOL)footer
 {
-  if (self->_shouldShowSummaryFooter != a3)
+  if (self->_shouldShowSummaryFooter != footer)
   {
-    self->_shouldShowSummaryFooter = a3;
-    v5 = [(ICNoteBrowseCollectionView *)self createLayout];
-    [(ICNoteBrowseCollectionView *)self setCollectionViewLayout:v5];
+    self->_shouldShowSummaryFooter = footer;
+    createLayout = [(ICNoteBrowseCollectionView *)self createLayout];
+    [(ICNoteBrowseCollectionView *)self setCollectionViewLayout:createLayout];
   }
 }
 
-- (id)notesSectionForSectionIndex:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)notesSectionForSectionIndex:(int64_t)index layoutEnvironment:(id)environment
 {
-  v6 = a4;
-  v7 = [(ICNoteBrowseCollectionView *)self noteContainerViewMode];
-  if (v7 == -1)
+  environmentCopy = environment;
+  noteContainerViewMode = [(ICNoteBrowseCollectionView *)self noteContainerViewMode];
+  if (noteContainerViewMode == -1)
   {
     v10 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -164,13 +164,13 @@
     }
 
 LABEL_9:
-    v9 = [(ICNoteBrowseCollectionView *)self notesListSectionForSectionIndex:a3 layoutEnvironment:v6];
+    v9 = [(ICNoteBrowseCollectionView *)self notesListSectionForSectionIndex:index layoutEnvironment:environmentCopy];
     goto LABEL_10;
   }
 
-  if (v7 != 1)
+  if (noteContainerViewMode != 1)
   {
-    if (v7)
+    if (noteContainerViewMode)
     {
       v8 = 0;
       goto LABEL_11;
@@ -179,7 +179,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [(ICNoteBrowseCollectionView *)self notesGallerySectionForSectionIndex:a3 layoutEnvironment:v6];
+  v9 = [(ICNoteBrowseCollectionView *)self notesGallerySectionForSectionIndex:index layoutEnvironment:environmentCopy];
 LABEL_10:
   v8 = v9;
 LABEL_11:
@@ -187,10 +187,10 @@ LABEL_11:
   return v8;
 }
 
-- (unint64_t)adjustedNumberOfGalleryColumnsForWidth:(double)a3
+- (unint64_t)adjustedNumberOfGalleryColumnsForWidth:(double)width
 {
-  v5 = [(ICCollectionView *)self viewControllerManager];
-  if ([v5 hasCompactWidth])
+  viewControllerManager = [(ICCollectionView *)self viewControllerManager];
+  if ([viewControllerManager hasCompactWidth])
   {
 
     v6 = ICAccessibilityAccessibilityLargerTextSizesEnabled();
@@ -199,21 +199,21 @@ LABEL_11:
 
   if ((+[UIDevice ic_isVision]& 1) != 0)
   {
-    v9 = [(ICCollectionView *)self viewControllerManager];
-    v10 = [v9 isMainSplitViewDisplayModeSecondaryOnly];
+    viewControllerManager2 = [(ICCollectionView *)self viewControllerManager];
+    isMainSplitViewDisplayModeSecondaryOnly = [viewControllerManager2 isMainSplitViewDisplayModeSecondaryOnly];
 
     v6 = ICAccessibilityAccessibilityLargerTextSizesEnabled();
-    if (v10)
+    if (isMainSplitViewDisplayModeSecondaryOnly)
     {
 LABEL_3:
       if (v6)
       {
-        v7 = 2;
+        wideModeNumberOfColumns = 2;
       }
 
       else
       {
-        v7 = 3;
+        wideModeNumberOfColumns = 3;
       }
 
       goto LABEL_6;
@@ -226,9 +226,9 @@ LABEL_3:
     ICAccessibilityAccessibilityLargerTextSizesEnabled();
   }
 
-  v7 = [(ICNoteBrowseCollectionView *)self wideModeNumberOfColumns];
-  v11 = [(ICNoteBrowseCollectionView *)self numberOfColumnsAdjustmentWidths];
-  v12 = [v11 count];
+  wideModeNumberOfColumns = [(ICNoteBrowseCollectionView *)self wideModeNumberOfColumns];
+  numberOfColumnsAdjustmentWidths = [(ICNoteBrowseCollectionView *)self numberOfColumnsAdjustmentWidths];
+  v12 = [numberOfColumnsAdjustmentWidths count];
 
   if (+[UIDevice ic_isVision]&& v12)
   {
@@ -236,12 +236,12 @@ LABEL_3:
     v14 = v12 + 1;
     while (1)
     {
-      v15 = [(ICNoteBrowseCollectionView *)self numberOfColumnsAdjustmentWidths];
-      v16 = [v15 objectAtIndexedSubscript:v13];
+      numberOfColumnsAdjustmentWidths2 = [(ICNoteBrowseCollectionView *)self numberOfColumnsAdjustmentWidths];
+      v16 = [numberOfColumnsAdjustmentWidths2 objectAtIndexedSubscript:v13];
       [v16 floatValue];
       v18 = v17;
 
-      if (v18 > a3)
+      if (v18 > width)
       {
         break;
       }
@@ -253,39 +253,39 @@ LABEL_3:
       }
     }
 
-    v7 -= v14;
+    wideModeNumberOfColumns -= v14;
   }
 
 LABEL_6:
-  if (v7 <= 3)
+  if (wideModeNumberOfColumns <= 3)
   {
     return 3;
   }
 
   else
   {
-    return v7;
+    return wideModeNumberOfColumns;
   }
 }
 
-- (id)notesGallerySectionForSectionIndex:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)notesGallerySectionForSectionIndex:(int64_t)index layoutEnvironment:(id)environment
 {
-  v55 = a4;
-  v5 = [(ICCollectionView *)self diffableDataSource];
-  v57 = [v5 snapshot];
+  environmentCopy = environment;
+  diffableDataSource = [(ICCollectionView *)self diffableDataSource];
+  snapshot = [diffableDataSource snapshot];
 
-  v52 = [v57 sectionIdentifiers];
-  v56 = [v52 objectAtIndexedSubscript:a3];
-  v6 = [(ICCollectionView *)self diffableDataSource];
-  v54 = [v6 snapshotForSection:v56];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v56 = [sectionIdentifiers objectAtIndexedSubscript:index];
+  diffableDataSource2 = [(ICCollectionView *)self diffableDataSource];
+  v54 = [diffableDataSource2 snapshotForSection:v56];
 
-  v51 = [v54 items];
-  v50 = [v51 lastObject];
-  v7 = [v57 sectionIdentifiers];
-  v45 = [v7 count];
+  items = [v54 items];
+  lastObject = [items lastObject];
+  sectionIdentifiers2 = [snapshot sectionIdentifiers];
+  v45 = [sectionIdentifiers2 count];
 
-  v8 = [v57 numberOfItemsInSection:v56];
-  if (v50)
+  v8 = [snapshot numberOfItemsInSection:v56];
+  if (lastObject)
   {
     v9 = [v54 parentOfChildItem:?];
     v10 = v9 != 0;
@@ -296,8 +296,8 @@ LABEL_6:
     v10 = 0;
   }
 
-  v11 = [v55 container];
-  [v11 effectiveContentSize];
+  container = [environmentCopy container];
+  [container effectiveContentSize];
   v13 = v12;
 
   v14 = [(ICNoteBrowseCollectionView *)self adjustedNumberOfGalleryColumnsForWidth:v13];
@@ -328,7 +328,7 @@ LABEL_6:
   v60 = &v59;
   v61 = 0x2020000000;
   v62 = 0;
-  v21 = [v55 traitCollection];
+  traitCollection = [environmentCopy traitCollection];
   v58[0] = _NSConcreteStackBlock;
   v58[1] = 3221225472;
   v58[2] = sub_1000AE11C;
@@ -337,7 +337,7 @@ LABEL_6:
   *&v58[7] = v13;
   v58[4] = self;
   v58[5] = &v59;
-  [v21 performAsCurrentTraitCollection:v58];
+  [traitCollection performAsCurrentTraitCollection:v58];
 
   v44 = [NSCollectionLayoutDimension absoluteDimension:v60[3]];
   v43 = [NSCollectionLayoutSize sizeWithWidthDimension:v49 heightDimension:?];
@@ -406,7 +406,7 @@ LABEL_6:
     v38 = 0.0;
   }
 
-  if (v45 - 1 != a3)
+  if (v45 - 1 != index)
   {
     [v35 contentInsets];
   }
@@ -428,15 +428,15 @@ LABEL_6:
   return [(ICNoteBrowseCollectionView *)self shouldShowAccountName];
 }
 
-- (id)notesListSectionForSectionIndex:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)notesListSectionForSectionIndex:(int64_t)index layoutEnvironment:(id)environment
 {
-  v6 = a4;
-  v7 = [(ICNoteBrowseCollectionView *)self ic_behavior];
+  environmentCopy = environment;
+  ic_behavior = [(ICNoteBrowseCollectionView *)self ic_behavior];
   v8 = +[UIDevice ic_isVision];
   if (_UISolariumEnabled())
   {
-    v9 = [v6 traitCollection];
-    v11 = [v9 splitViewControllerLayoutEnvironment] == 1 || v7 == 1;
+    traitCollection = [environmentCopy traitCollection];
+    v11 = [traitCollection splitViewControllerLayoutEnvironment] == 1 || ic_behavior == 1;
 
     v12 = 2;
     if (v11)
@@ -464,7 +464,7 @@ LABEL_6:
   v14 = [[UICollectionLayoutListConfiguration alloc] initWithAppearance:v13];
   if (v11)
   {
-    if (v7 == 1)
+    if (ic_behavior == 1)
     {
       +[UIColor clearColor];
     }
@@ -477,7 +477,7 @@ LABEL_6:
     [v14 setBackgroundColor:v15];
     [(ICNoteBrowseCollectionView *)self setBackgroundColor:v15];
 
-    [v14 setHeaderMode:{-[ICNoteBrowseCollectionView noteListSectionHeaderModeForSectionIndex:](self, "noteListSectionHeaderModeForSectionIndex:", a3)}];
+    [v14 setHeaderMode:{-[ICNoteBrowseCollectionView noteListSectionHeaderModeForSectionIndex:](self, "noteListSectionHeaderModeForSectionIndex:", index)}];
     objc_initWeak(&location, self);
     v23 = _NSConcreteStackBlock;
     v24 = 3221225472;
@@ -491,16 +491,16 @@ LABEL_6:
 
   else
   {
-    [v14 setHeaderMode:{-[ICNoteBrowseCollectionView noteListSectionHeaderModeForSectionIndex:](self, "noteListSectionHeaderModeForSectionIndex:", a3)}];
+    [v14 setHeaderMode:{-[ICNoteBrowseCollectionView noteListSectionHeaderModeForSectionIndex:](self, "noteListSectionHeaderModeForSectionIndex:", index)}];
   }
 
   v16 = [(ICCollectionView *)self leadingSwipeActionsConfigurationProvider:v23];
   [v14 setLeadingSwipeActionsConfigurationProvider:v16];
 
-  v17 = [(ICCollectionView *)self trailingSwipeActionsConfigurationProvider];
-  [v14 setTrailingSwipeActionsConfigurationProvider:v17];
+  trailingSwipeActionsConfigurationProvider = [(ICCollectionView *)self trailingSwipeActionsConfigurationProvider];
+  [v14 setTrailingSwipeActionsConfigurationProvider:trailingSwipeActionsConfigurationProvider];
 
-  v18 = [NSCollectionLayoutSection sectionWithListConfiguration:v14 layoutEnvironment:v6];
+  v18 = [NSCollectionLayoutSection sectionWithListConfiguration:v14 layoutEnvironment:environmentCopy];
   [v18 contentInsets];
   if (v8)
   {
@@ -514,33 +514,33 @@ LABEL_6:
   return v18;
 }
 
-- (int64_t)noteListSectionHeaderModeForSectionIndex:(unint64_t)a3
+- (int64_t)noteListSectionHeaderModeForSectionIndex:(unint64_t)index
 {
-  v5 = [(ICCollectionView *)self diffableDataSource];
-  v6 = [v5 snapshot];
-  v7 = [v6 sectionIdentifiers];
+  diffableDataSource = [(ICCollectionView *)self diffableDataSource];
+  snapshot = [diffableDataSource snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
 
-  if ([v7 count] <= a3)
+  if ([sectionIdentifiers count] <= index)
   {
     v10 = 0;
   }
 
   else
   {
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    v8 = [sectionIdentifiers objectAtIndexedSubscript:index];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 sectionType];
+      sectionType = [v8 sectionType];
       v10 = 0;
-      if (v9 <= 7)
+      if (sectionType <= 7)
       {
-        if (((1 << v9) & 0xEE) != 0)
+        if (((1 << sectionType) & 0xEE) != 0)
         {
           v10 = 2;
         }
 
-        else if (v9 == 4)
+        else if (sectionType == 4)
         {
           if ([(ICNoteBrowseCollectionView *)self hasTagSection])
           {
@@ -552,7 +552,7 @@ LABEL_6:
             v12 = 1;
           }
 
-          v10 = 2 * ([v7 count] > v12);
+          v10 = 2 * ([sectionIdentifiers count] > v12);
         }
       }
     }
@@ -566,27 +566,27 @@ LABEL_6:
   return v10;
 }
 
-- (id)_layoutBoundaryWithElementKind:(id)a3 alignment:(int64_t)a4 estimatedHeight:(double)a5
+- (id)_layoutBoundaryWithElementKind:(id)kind alignment:(int64_t)alignment estimatedHeight:(double)height
 {
-  v7 = a3;
+  kindCopy = kind;
   v8 = [NSCollectionLayoutDimension fractionalWidthDimension:1.0];
-  v9 = [NSCollectionLayoutDimension estimatedDimension:a5];
+  v9 = [NSCollectionLayoutDimension estimatedDimension:height];
   v10 = [NSCollectionLayoutSize sizeWithWidthDimension:v8 heightDimension:v9];
-  v11 = [NSCollectionLayoutBoundarySupplementaryItem boundarySupplementaryItemWithLayoutSize:v10 elementKind:v7 alignment:a4];
+  v11 = [NSCollectionLayoutBoundarySupplementaryItem boundarySupplementaryItemWithLayoutSize:v10 elementKind:kindCopy alignment:alignment];
 
   return v11;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(ICNoteBrowseCollectionView *)self noteContainerViewMode];
-  if (!v2)
+  noteContainerViewMode = [(ICNoteBrowseCollectionView *)self noteContainerViewMode];
+  if (!noteContainerViewMode)
   {
     v3 = @"List";
     goto LABEL_5;
   }
 
-  if (v2 == 1)
+  if (noteContainerViewMode == 1)
   {
     v3 = @"Gallery";
 LABEL_5:
@@ -602,16 +602,16 @@ LABEL_7:
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  if (([(ICNoteBrowseCollectionView *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/UI/Note/Browse/Views/ICNoteBrowseCollectionView.m"]& 1) != 0)
+  changeCopy = change;
+  objectCopy = object;
+  pathCopy = path;
+  if (([(ICNoteBrowseCollectionView *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/UI/Note/Browse/Views/ICNoteBrowseCollectionView.m"]& 1) != 0)
   {
-    v13 = [(ICNoteBrowseCollectionView *)self ic_shouldIgnoreObserveValue:v10 ofObject:v11 forKeyPath:v12];
+    v13 = [(ICNoteBrowseCollectionView *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
-    if (a6 == &off_1006BB0C0 && (v13 & 1) == 0)
+    if (context == &off_1006BB0C0 && (v13 & 1) == 0)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -626,16 +626,16 @@ LABEL_7:
   {
     v15.receiver = self;
     v15.super_class = ICNoteBrowseCollectionView;
-    [(ICNoteBrowseCollectionView *)&v15 observeValueForKeyPath:v12 ofObject:v11 change:v10 context:a6];
+    [(ICNoteBrowseCollectionView *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
 - (BOOL)hasTagSection
 {
-  v2 = [(ICCollectionView *)self diffableDataSource];
-  v3 = [v2 snapshot];
-  v4 = [v3 sectionIdentifiers];
-  v5 = [v4 ic_containsObjectPassingTest:&stru_100648168];
+  diffableDataSource = [(ICCollectionView *)self diffableDataSource];
+  snapshot = [diffableDataSource snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v5 = [sectionIdentifiers ic_containsObjectPassingTest:&stru_100648168];
 
   return v5;
 }
@@ -648,28 +648,28 @@ LABEL_7:
   return v3;
 }
 
-- (void)setWideModeNumberOfColumns:(unint64_t)a3 animated:(BOOL)a4
+- (void)setWideModeNumberOfColumns:(unint64_t)columns animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7 = +[NSUserDefaults standardUserDefaults];
-  [v7 setInteger:a3 forKey:@"ICNoteBrowseCollectionViewGalleryWideModeNumberOfColumnsKey"];
+  [v7 setInteger:columns forKey:@"ICNoteBrowseCollectionViewGalleryWideModeNumberOfColumnsKey"];
 
-  [(ICNoteBrowseCollectionView *)self reloadLayoutAnimated:v4];
+  [(ICNoteBrowseCollectionView *)self reloadLayoutAnimated:animatedCopy];
 }
 
-- (void)reloadLayoutAnimated:(BOOL)a3
+- (void)reloadLayoutAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v6 = [(ICNoteBrowseCollectionView *)self createLayout];
-  if (v3)
+  animatedCopy = animated;
+  createLayout = [(ICNoteBrowseCollectionView *)self createLayout];
+  if (animatedCopy)
   {
     v5 = +[ICNoteBrowseCollectionViewAnimator animator];
-    [(ICNoteBrowseCollectionView *)self setCollectionViewLayout:v6 withAnimator:v5];
+    [(ICNoteBrowseCollectionView *)self setCollectionViewLayout:createLayout withAnimator:v5];
   }
 
   else
   {
-    [(ICNoteBrowseCollectionView *)self setCollectionViewLayout:v6];
+    [(ICNoteBrowseCollectionView *)self setCollectionViewLayout:createLayout];
   }
 }
 

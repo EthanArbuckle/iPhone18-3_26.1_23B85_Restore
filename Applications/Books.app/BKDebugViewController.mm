@@ -2,29 +2,29 @@
 + (id)resolver;
 + (id)serviceCenter;
 - (BKDebugViewSection)yearInReviewSection;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (uint64_t)_clearTodaysReadingTime;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_emulateCurrentLightLevelChange:(int64_t)a3;
+- (void)_emulateCurrentLightLevelChange:(int64_t)change;
 - (void)_handleAppRemoval;
 - (void)_loadDefaults;
 - (void)_moveEligibleLocalBooksToUbiquity;
 - (void)_moveUbiquityBooksBackToLocal;
-- (void)_presentAddReadingSessionPickerFromIndexPath:(id)a3 duration:(double)a4;
+- (void)_presentAddReadingSessionPickerFromIndexPath:(id)path duration:(double)duration;
 - (void)_presentCoverCacheDumpingAdamIDCoversAlert;
 - (void)_presentLightLevelChangeAlert;
 - (void)_presentProductPageAlsoAvailableAsAlert;
 - (void)_presentREIChromeEditingMenu;
 - (void)_presentSessionStartOffsetChangeAlert;
-- (void)_presentTeaDebugViewController:(id)a3;
+- (void)_presentTeaDebugViewController:(id)controller;
 - (void)_presentWantToReadSamplesBehaviorAlert;
 - (void)setupForTableView;
 - (void)setupNavigationBar;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -33,18 +33,18 @@
 + (id)serviceCenter
 {
   v2 = +[BKAppDelegate delegate];
-  v3 = [v2 serviceCenter];
+  serviceCenter = [v2 serviceCenter];
 
-  return v3;
+  return serviceCenter;
 }
 
 + (id)resolver
 {
   v2 = +[BKAppDelegate delegate];
-  v3 = [v2 containerHost];
-  v4 = [v3 bridgedResolver];
+  containerHost = [v2 containerHost];
+  bridgedResolver = [containerHost bridgedResolver];
 
-  return v4;
+  return bridgedResolver;
 }
 
 - (void)viewDidLoad
@@ -71,20 +71,20 @@
 
 - (void)setupNavigationBar
 {
-  v3 = [(BKDebugViewController *)self navigationItem];
-  [v3 setTitle:@"iBooks Debugging (Release Build)"];
+  navigationItem = [(BKDebugViewController *)self navigationItem];
+  [navigationItem setTitle:@"iBooks Debugging (Release Build)"];
 
   v4 = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:2 target:self action:"_close:"];
-  v5 = [(BKDebugViewController *)self navigationItem];
-  [v5 setLeftBarButtonItem:v4];
+  navigationItem2 = [(BKDebugViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v4];
 
   v6 = +[NSBundle internalExtrasBundle];
 
   if (v6)
   {
     v8 = [[UIBarButtonItem alloc] initWithTitle:@"Tea" style:2 target:self action:"_presentTeaDebugViewController:"];
-    v7 = [(BKDebugViewController *)self navigationItem];
-    [v7 setRightBarButtonItem:v8];
+    navigationItem3 = [(BKDebugViewController *)self navigationItem];
+    [navigationItem3 setRightBarButtonItem:v8];
   }
 }
 
@@ -170,10 +170,10 @@
   self->_reiContentSizeLogging = &v38->super;
 
   v40 = +[JSABridge sharedInstance];
-  v41 = [v40 environment];
-  v42 = [v41 bootURL];
+  environment = [v40 environment];
+  bootURL = [environment bootURL];
   bootUrl = self->_bootUrl;
-  self->_bootUrl = v42;
+  self->_bootUrl = bootURL;
 
   v44 = +[NSUserDefaults standardUserDefaults];
   v45 = [v44 stringForKey:kAllowsCoverCacheImagesLoggingUserDefaultsKey];
@@ -192,31 +192,31 @@
 
   v53 = +[BRCConfigurationManager sharedInstance];
   v54 = +[BCRCDataContainer defaultContainer];
-  v295 = [v54 configs];
+  configs = [v54 configs];
 
   v55 = [BKDebugBoolDefaultSwitch alloc];
-  v56 = [v295 valueForKeyPath:BRCBooksDefaultsKeyPersonalizationLocalSignalCollectionEnabled];
-  v57 = [v56 BOOLValue];
+  v56 = [configs valueForKeyPath:BRCBooksDefaultsKeyPersonalizationLocalSignalCollectionEnabled];
+  bOOLValue = [v56 BOOLValue];
   v361[0] = _NSConcreteStackBlock;
   v361[1] = 3221225472;
   v361[2] = sub_1000C2DA4;
   v361[3] = &unk_100A038D0;
   v58 = v53;
   v362 = v58;
-  v59 = [(BKDebugBoolDefaultSwitch *)v55 initWithInitialValue:v57 synchronize:v361];
+  v59 = [(BKDebugBoolDefaultSwitch *)v55 initWithInitialValue:bOOLValue synchronize:v361];
   localSignalCollectionEnabledSwitch = self->_localSignalCollectionEnabledSwitch;
   self->_localSignalCollectionEnabledSwitch = v59;
 
   v61 = [BKDebugBoolDefaultSwitch alloc];
-  v62 = [v295 valueForKeyPath:BRCBooksDefaultsKeyPersonalizationLocalSignalSyncEnabled];
-  v63 = [v62 BOOLValue];
+  v62 = [configs valueForKeyPath:BRCBooksDefaultsKeyPersonalizationLocalSignalSyncEnabled];
+  bOOLValue2 = [v62 BOOLValue];
   v359[0] = _NSConcreteStackBlock;
   v359[1] = 3221225472;
   v359[2] = sub_1000C2E5C;
   v359[3] = &unk_100A038D0;
   v197 = v58;
   v360 = v197;
-  v64 = [(BKDebugBoolDefaultSwitch *)v61 initWithInitialValue:v63 synchronize:v359];
+  v64 = [(BKDebugBoolDefaultSwitch *)v61 initWithInitialValue:bOOLValue2 synchronize:v359];
   localSignalSyncEnabledSwitch = self->_localSignalSyncEnabledSwitch;
   self->_localSignalSyncEnabledSwitch = v64;
 
@@ -295,8 +295,8 @@
 
   [(BKDebugViewController *)self _loadDefaults];
   v100 = +[JSABridge sharedInstance];
-  v101 = [v100 environment];
-  v204 = [v101 appVersion];
+  environment2 = [v100 environment];
+  appVersion = [environment2 appVersion];
 
   v353[0] = _NSConcreteStackBlock;
   v353[1] = 3221225472;
@@ -565,8 +565,8 @@
   v333 = 0u;
   v332 = 0u;
   v331 = 0u;
-  v146 = [v145 allKeys];
-  v147 = [v146 countByEnumeratingWithState:&v331 objects:v370 count:16];
+  allKeys = [v145 allKeys];
+  v147 = [allKeys countByEnumeratingWithState:&v331 objects:v370 count:16];
   if (v147)
   {
     v148 = *v332;
@@ -576,7 +576,7 @@
       {
         if (*v332 != v148)
         {
-          objc_enumerationMutation(v146);
+          objc_enumerationMutation(allKeys);
         }
 
         v150 = *(*(&v331 + 1) + 8 * i);
@@ -587,7 +587,7 @@
         [v132 addObject:v154];
       }
 
-      v147 = [v146 countByEnumeratingWithState:&v331 objects:v370 count:16];
+      v147 = [allKeys countByEnumeratingWithState:&v331 objects:v370 count:16];
     }
 
     while (v147);
@@ -740,14 +740,14 @@
   val->_remoteConfig = v180;
 
   v297 = +[NSMutableArray array];
-  v294 = [(BKDebugViewController *)val remoteConfig];
-  v269 = [v294 section];
-  v364[0] = v269;
+  remoteConfig = [(BKDebugViewController *)val remoteConfig];
+  section = [remoteConfig section];
+  v364[0] = section;
   v264 = [[BKDebugViewSection alloc] initWithHeaderTitle:@"Reading Experience" entries:v203 footerTitle:0];
   v364[1] = v264;
   v182 = [BKDebugViewSection alloc];
-  v259 = [NSString stringWithFormat:@"Store: JS %@", v204];
-  v254 = [(BKDebugViewSection *)v182 initWithHeaderTitle:v259 entries:v206 footerTitle:@"Note: You must enable Enable Remote Config Monitoring in Internal Settings for configuration to work"];
+  v204 = [NSString stringWithFormat:@"Store: JS %@", appVersion];
+  v254 = [(BKDebugViewSection *)v182 initWithHeaderTitle:v204 entries:v206 footerTitle:@"Note: You must enable Enable Remote Config Monitoring in Internal Settings for configuration to work"];
   v364[2] = v254;
   v246 = [[BKDebugViewSection alloc] initWithHeaderTitle:@"Book Messages" entries:v132 footerTitle:&stru_100A30A68];
   v364[3] = v246;
@@ -763,25 +763,25 @@
   v364[8] = v186;
   v187 = [[BKDebugViewSection alloc] initWithHeaderTitle:@"Analytics" entries:v242 footerTitle:0];
   v364[9] = v187;
-  v188 = [(BKDebugViewController *)val yearInReviewSection];
-  v364[10] = v188;
+  yearInReviewSection = [(BKDebugViewController *)val yearInReviewSection];
+  v364[10] = yearInReviewSection;
   v189 = [NSArray arrayWithObjects:v364 count:11];
   [v297 addObjectsFromArray:v189];
 
-  v190 = [(BKDebugViewController *)val priceTracking];
-  v191 = [v190 section];
+  priceTracking = [(BKDebugViewController *)val priceTracking];
+  section2 = [priceTracking section];
 
-  if (v191)
+  if (section2)
   {
-    [v297 addObject:v191];
+    [v297 addObject:section2];
   }
 
   v192 = [v297 copy];
   sections = val->_sections;
   val->_sections = v192;
 
-  v194 = [(BKDebugViewController *)val tableView];
-  [v194 registerClass:objc_opt_class() forCellReuseIdentifier:@"CellIdentifier"];
+  tableView = [(BKDebugViewController *)val tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"CellIdentifier"];
 
   objc_destroyWeak(&v300);
   objc_destroyWeak(&v302);
@@ -817,68 +817,68 @@
   objc_destroyWeak(&location);
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(BKDebugViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(BKDebugViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(BKDebugViewController *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  sections = [(BKDebugViewController *)self sections];
+  v6 = [sections objectAtIndexedSubscript:section];
 
-  v7 = [v6 entries];
-  v8 = [v7 count];
+  entries = [v6 entries];
+  v8 = [entries count];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(BKDebugViewController *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  sections = [(BKDebugViewController *)self sections];
+  v6 = [sections objectAtIndexedSubscript:section];
 
-  v7 = [v6 headerTitle];
+  headerTitle = [v6 headerTitle];
 
-  return v7;
+  return headerTitle;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(BKDebugViewController *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  sections = [(BKDebugViewController *)self sections];
+  v6 = [sections objectAtIndexedSubscript:section];
 
-  v7 = [v6 footerTitle];
+  footerTitle = [v6 footerTitle];
 
-  return v7;
+  return footerTitle;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v8 = a4;
-  v9 = [a3 dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:v8];
-  v10 = [(BKDebugViewController *)self sections];
-  v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v8, "section")}];
+  pathCopy = path;
+  v9 = [view dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:pathCopy];
+  sections = [(BKDebugViewController *)self sections];
+  v11 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v12 = [v11 entries];
-  v13 = [v8 row];
+  entries = [v11 entries];
+  v13 = [pathCopy row];
 
-  v14 = [v12 objectAtIndexedSubscript:v13];
+  v14 = [entries objectAtIndexedSubscript:v13];
 
-  v15 = [v14 title];
-  v16 = [v9 textLabel];
-  [v16 setText:v15];
+  title = [v14 title];
+  textLabel = [v9 textLabel];
+  [textLabel setText:title];
 
-  v17 = [v14 model];
-  v18 = [v17 detailTextBlock];
-  if (v18)
+  model = [v14 model];
+  detailTextBlock = [model detailTextBlock];
+  if (detailTextBlock)
   {
-    v4 = [v14 model];
-    v5 = [v4 detailTextBlock];
-    v19 = v5[2]();
+    model2 = [v14 model];
+    detailTextBlock2 = [model2 detailTextBlock];
+    v19 = detailTextBlock2[2]();
   }
 
   else
@@ -886,32 +886,32 @@
     v19 = 0;
   }
 
-  v20 = [v9 detailTextLabel];
-  [v20 setText:v19];
+  detailTextLabel = [v9 detailTextLabel];
+  [detailTextLabel setText:v19];
 
-  if (v18)
+  if (detailTextBlock)
   {
   }
 
-  v21 = [v14 model];
-  v22 = [v21 detailLineBreakMode];
-  v23 = [v9 detailTextLabel];
-  [v23 setLineBreakMode:v22];
+  model3 = [v14 model];
+  detailLineBreakMode = [model3 detailLineBreakMode];
+  detailTextLabel2 = [v9 detailTextLabel];
+  [detailTextLabel2 setLineBreakMode:detailLineBreakMode];
 
-  v24 = [v14 model];
-  [v9 setAccessoryType:{objc_msgSend(v24, "accessoryType")}];
+  model4 = [v14 model];
+  [v9 setAccessoryType:{objc_msgSend(model4, "accessoryType")}];
 
-  v25 = [v14 model];
-  v26 = [v25 accessoryView];
-  [v9 setAccessoryView:v26];
+  model5 = [v14 model];
+  accessoryView = [model5 accessoryView];
+  [v9 setAccessoryView:accessoryView];
 
-  v27 = [v14 model];
-  v28 = [v27 userInteractionEnabledBlock];
-  if (v28)
+  model6 = [v14 model];
+  userInteractionEnabledBlock = [model6 userInteractionEnabledBlock];
+  if (userInteractionEnabledBlock)
   {
-    v29 = [v14 model];
-    v30 = [v29 userInteractionEnabledBlock];
-    [v9 setUserInteractionEnabled:v30[2]()];
+    model7 = [v14 model];
+    userInteractionEnabledBlock2 = [model7 userInteractionEnabledBlock];
+    [v9 setUserInteractionEnabled:userInteractionEnabledBlock2[2]()];
   }
 
   else
@@ -922,63 +922,63 @@
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  v6 = a3;
-  v7 = [(BKDebugViewController *)self sections];
-  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v13, "section")}];
+  pathCopy = path;
+  viewCopy = view;
+  sections = [(BKDebugViewController *)self sections];
+  v8 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v9 = [v8 entries];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v13, "row")}];
+  entries = [v8 entries];
+  v10 = [entries objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  v11 = [v10 action];
-  v12 = v11;
-  if (v11)
+  action = [v10 action];
+  v12 = action;
+  if (action)
   {
-    (*(v11 + 16))(v11, v13);
+    (*(action + 16))(action, pathCopy);
   }
 
-  [v6 deselectRowAtIndexPath:v13 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)_presentTeaDebugViewController:(id)a3
+- (void)_presentTeaDebugViewController:(id)controller
 {
-  v12 = [objc_opt_class() resolver];
-  v4 = [v12 resolveClass:objc_opt_class() name:@"Debug"];
+  resolver = [objc_opt_class() resolver];
+  v4 = [resolver resolveClass:objc_opt_class() name:@"Debug"];
   v5 = objc_opt_new();
-  v6 = [(BKDebugViewController *)self view];
-  v7 = [v6 window];
-  v8 = [v7 windowScene];
+  view = [(BKDebugViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
   v9 = +[BKAppDelegate delegate];
-  v10 = [v9 containerHost];
-  [v5 registerWindowScene:v8 containerHost:v10];
+  containerHost = [v9 containerHost];
+  [v5 registerWindowScene:windowScene containerHost:containerHost];
 
-  v11 = [(BKDebugViewController *)self navigationController];
-  [v11 presentViewController:v4 animated:1 completion:0];
+  navigationController = [(BKDebugViewController *)self navigationController];
+  [navigationController presentViewController:v4 animated:1 completion:0];
 }
 
 - (void)_presentLightLevelChangeAlert
 {
-  v3 = [(BKDebugViewController *)self tableView];
-  v4 = [v3 indexPathForSelectedRow];
+  tableView = [(BKDebugViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  v5 = [(BKDebugViewController *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+  sections = [(BKDebugViewController *)self sections];
+  v6 = [sections objectAtIndexedSubscript:{objc_msgSend(indexPathForSelectedRow, "section")}];
 
   v20 = v6;
-  v7 = [v6 entries];
-  v8 = v4;
-  v9 = [v7 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+  entries = [v6 entries];
+  v8 = indexPathForSelectedRow;
+  v9 = [entries objectAtIndexedSubscript:{objc_msgSend(indexPathForSelectedRow, "row")}];
 
-  v10 = [v9 title];
-  v11 = [UIAlertController alertControllerWithTitle:v10 message:0 preferredStyle:1];
+  title = [v9 title];
+  v11 = [UIAlertController alertControllerWithTitle:title message:0 preferredStyle:1];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = self;
+  selfCopy = self;
   obj = self->_lightLevelTitles;
   v13 = [(NSArray *)obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v13)
@@ -999,7 +999,7 @@
         v22[1] = 3221225472;
         v22[2] = sub_1000C535C;
         v22[3] = &unk_100A05868;
-        v22[4] = v12;
+        v22[4] = selfCopy;
         v23 = v8;
         v18 = [UIAlertAction actionWithTitle:v17 style:0 handler:v22];
         [v11 addAction:v18];
@@ -1014,10 +1014,10 @@
   v19 = [UIAlertAction actionWithTitle:@"Cancel" style:1 handler:0];
   [v11 addAction:v19];
 
-  [(BKDebugViewController *)v12 presentViewController:v11 animated:1 completion:0];
+  [(BKDebugViewController *)selfCopy presentViewController:v11 animated:1 completion:0];
 }
 
-- (void)_emulateCurrentLightLevelChange:(int64_t)a3
+- (void)_emulateCurrentLightLevelChange:(int64_t)change
 {
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 BOOLForKey:@"BCShouldOverrideNightModeDelay"];
@@ -1038,7 +1038,7 @@
   v9[2] = sub_1000C5574;
   v9[3] = &unk_100A04DD0;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = change;
   dispatch_after(v8, &_dispatch_main_q, v9);
 }
 
@@ -1062,8 +1062,8 @@
 
 - (void)_presentCoverCacheDumpingAdamIDCoversAlert
 {
-  v3 = [(BKDebugViewController *)self tableView];
-  v4 = [v3 indexPathForSelectedRow];
+  tableView = [(BKDebugViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
   v5 = [UIAlertController alertControllerWithTitle:@"Dump particular cover cache images in the next app launch" message:@"See BICCacheStates logging for dumped image file path.\n\n Just enter hash (sideload) or adamID (store) you want its covers dumped preferredStyle:and restart Books.app and use it like you normally do. Below text field will be reset when Books.app relaunched.\n\n", 1];
   [(BKDebugViewController *)self coverCacheHashOrAdamID];
@@ -1080,7 +1080,7 @@
   v10[3] = &unk_100A069C8;
   objc_copyWeak(&v12, &location);
   v10[4] = self;
-  v7 = v4;
+  v7 = indexPathForSelectedRow;
   v11 = v7;
   v8 = [UIAlertAction actionWithTitle:@"OK" style:0 handler:v10];
   [v5 addAction:v8];
@@ -1097,22 +1097,22 @@
 {
   objc_opt_class();
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
   v5 = BUDynamicCast();
 
-  v4 = [v5 ubiquitousDocumentsController];
-  [v4 makeAllEligibleLocalBooksUbiquitousWithCompletion:&stru_100A06A08];
+  ubiquitousDocumentsController = [v5 ubiquitousDocumentsController];
+  [ubiquitousDocumentsController makeAllEligibleLocalBooksUbiquitousWithCompletion:&stru_100A06A08];
 }
 
 - (void)_moveUbiquityBooksBackToLocal
 {
   objc_opt_class();
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
   v5 = BUDynamicCast();
 
-  v4 = [v5 ubiquitousDocumentsController];
-  [v4 makeAllUbiquitousBooksLocalWithCompletion:&stru_100A06A28];
+  ubiquitousDocumentsController = [v5 ubiquitousDocumentsController];
+  [ubiquitousDocumentsController makeAllUbiquitousBooksLocalWithCompletion:&stru_100A06A28];
 }
 
 - (void)_handleAppRemoval
@@ -1132,7 +1132,7 @@
   v20[3] = &unk_100A05ED0;
   v8 = v5;
   v21 = v8;
-  v22 = self;
+  selfCopy = self;
   v9 = v7;
   v23 = v9;
   v10 = [v3 remoteObjectProxyWithErrorHandler:v20];
@@ -1141,7 +1141,7 @@
   v15 = sub_1000C6140;
   v16 = &unk_100A05ED0;
   v17 = v8;
-  v18 = self;
+  selfCopy2 = self;
   v19 = v9;
   v11 = v9;
   v12 = v8;
@@ -1152,47 +1152,47 @@
 
 - (void)_loadDefaults
 {
-  v2 = self;
+  selfCopy = self;
   sub_10065CE1C();
 }
 
 - (void)_presentSessionStartOffsetChangeAlert
 {
-  v2 = self;
+  selfCopy = self;
   sub_10065D648();
 }
 
 - (void)_presentREIChromeEditingMenu
 {
-  v2 = self;
+  selfCopy = self;
   sub_100600740(&v5);
   v3 = objc_allocWithZone(sub_1001F1160(&qword_100AF0278));
   v4 = sub_10079CBC4();
-  [(BKDebugViewController *)v2 presentViewController:v4 animated:1 completion:0];
+  [(BKDebugViewController *)selfCopy presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)_presentAddReadingSessionPickerFromIndexPath:(id)a3 duration:(double)a4
+- (void)_presentAddReadingSessionPickerFromIndexPath:(id)path duration:(double)duration
 {
   v6 = sub_100796E74();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796E14();
-  v10 = self;
-  sub_10065E02C(a4);
+  selfCopy = self;
+  sub_10065E02C(duration);
 
   (*(v7 + 8))(v9, v6);
 }
 
 - (void)_presentWantToReadSamplesBehaviorAlert
 {
-  v2 = self;
+  selfCopy = self;
   sub_10065E7CC();
 }
 
 - (BKDebugViewSection)yearInReviewSection
 {
-  v2 = self;
+  selfCopy = self;
   sub_10065F5BC();
   v3 = objc_allocWithZone(BKDebugViewSection);
   v4 = sub_1007A2214();
@@ -1229,9 +1229,9 @@
   }
 
   (*(v8 + 32))(v10, v6, v7);
-  v12 = [objc_opt_self() defaultCenter];
+  defaultCenter = [objc_opt_self() defaultCenter];
   isa = sub_100796554().super.isa;
-  [v12 postNotification:isa];
+  [defaultCenter postNotification:isa];
 
   return (*(v8 + 8))(v10, v7);
 }

@@ -2,73 +2,73 @@
 + (id)_keychainWrapper;
 + (id)contactInformationFromKeychain;
 + (void)deleteContactInformationFromKeychain;
-+ (void)saveContactInformationToKeychain:(id)a3;
-- (PKContactInformation)initWithCoder:(id)a3;
-- (PKContactInformation)initWithDictionary:(id)a3;
-- (PKContactInformation)initWithKeychainData:(id)a3;
-- (PKContactInformation)initWithPostalAddresses:(id)a3 emailAddresses:(id)a4 phoneNumbers:(id)a5;
++ (void)saveContactInformationToKeychain:(id)keychain;
+- (PKContactInformation)initWithCoder:(id)coder;
+- (PKContactInformation)initWithDictionary:(id)dictionary;
+- (PKContactInformation)initWithKeychainData:(id)data;
+- (PKContactInformation)initWithPostalAddresses:(id)addresses emailAddresses:(id)emailAddresses phoneNumbers:(id)numbers;
 - (id)description;
 - (id)keychainData;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKContactInformation
 
 + (id)contactInformationFromKeychain
 {
-  v3 = [a1 _keychainWrapper];
-  v4 = [v3 objectForKey:*MEMORY[0x1E697B3C0]];
-  v5 = [[a1 alloc] initWithKeychainData:v4];
+  _keychainWrapper = [self _keychainWrapper];
+  v4 = [_keychainWrapper objectForKey:*MEMORY[0x1E697B3C0]];
+  v5 = [[self alloc] initWithKeychainData:v4];
 
   return v5;
 }
 
-+ (void)saveContactInformationToKeychain:(id)a3
++ (void)saveContactInformationToKeychain:(id)keychain
 {
-  v4 = [a3 keychainData];
-  if (v4)
+  keychainData = [keychain keychainData];
+  if (keychainData)
   {
-    v6 = v4;
-    v5 = [a1 _keychainWrapper];
-    [v5 setObject:v6 forKey:*MEMORY[0x1E697B3C0]];
+    v6 = keychainData;
+    _keychainWrapper = [self _keychainWrapper];
+    [_keychainWrapper setObject:v6 forKey:*MEMORY[0x1E697B3C0]];
 
-    v4 = v6;
+    keychainData = v6;
   }
 }
 
 + (void)deleteContactInformationFromKeychain
 {
-  v2 = [a1 _keychainWrapper];
-  [v2 resetKeychainItem];
+  _keychainWrapper = [self _keychainWrapper];
+  [_keychainWrapper resetKeychainItem];
 }
 
-- (PKContactInformation)initWithPostalAddresses:(id)a3 emailAddresses:(id)a4 phoneNumbers:(id)a5
+- (PKContactInformation)initWithPostalAddresses:(id)addresses emailAddresses:(id)emailAddresses phoneNumbers:(id)numbers
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  addressesCopy = addresses;
+  emailAddressesCopy = emailAddresses;
+  numbersCopy = numbers;
   v15.receiver = self;
   v15.super_class = PKContactInformation;
   v12 = [(PKContactInformation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_postalAddresses, a3);
-    objc_storeStrong(&v13->_emailAddresses, a4);
-    objc_storeStrong(&v13->_phoneNumbers, a5);
+    objc_storeStrong(&v12->_postalAddresses, addresses);
+    objc_storeStrong(&v13->_emailAddresses, emailAddresses);
+    objc_storeStrong(&v13->_phoneNumbers, numbers);
   }
 
   return v13;
 }
 
-- (PKContactInformation)initWithDictionary:(id)a3
+- (PKContactInformation)initWithDictionary:(id)dictionary
 {
   v77 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 PKArrayForKey:@"addresses"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy PKArrayForKey:@"addresses"];
   v5 = 0x1E695D000uLL;
   v52 = v4;
-  v53 = v3;
+  v53 = dictionaryCopy;
   if (v4)
   {
     v6 = v4;
@@ -132,7 +132,7 @@
     obja = 0;
   }
 
-  v18 = [v3 PKArrayForKey:@"emails"];
+  v18 = [dictionaryCopy PKArrayForKey:@"emails"];
   v50 = v18;
   if (v18)
   {
@@ -176,7 +176,7 @@
     }
 
     v31 = [v20 copy];
-    v3 = v53;
+    dictionaryCopy = v53;
     v5 = 0x1E695D000;
   }
 
@@ -185,7 +185,7 @@
     v31 = 0;
   }
 
-  v32 = [v3 PKArrayForKey:@"phoneNumbers"];
+  v32 = [dictionaryCopy PKArrayForKey:@"phoneNumbers"];
   if (v32)
   {
     v49 = v31;
@@ -242,7 +242,7 @@
       v45 = 0;
     }
 
-    v3 = v53;
+    dictionaryCopy = v53;
     v31 = v49;
 
     v32 = v48;
@@ -258,18 +258,18 @@
   return v46;
 }
 
-- (PKContactInformation)initWithKeychainData:(id)a3
+- (PKContactInformation)initWithKeychainData:(id)data
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v5 = 0;
     goto LABEL_7;
   }
 
   v11 = 0;
-  v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v11];
+  v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v11];
   v6 = v11;
   if (!v6)
   {
@@ -284,7 +284,7 @@ LABEL_7:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v7;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "%@: Error initializing from Keychain data: %@", buf, 0x16u);
@@ -308,7 +308,7 @@ LABEL_8:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
       v12 = v4;
       _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "%@: Error serializing data for Keychain: %@", buf, 0x16u);
@@ -325,29 +325,29 @@ LABEL_8:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   postalAddresses = self->_postalAddresses;
-  v5 = a3;
-  [v5 encodeObject:postalAddresses forKey:@"postalAddresses"];
-  [v5 encodeObject:self->_emailAddresses forKey:@"emailAddresses"];
-  [v5 encodeObject:self->_phoneNumbers forKey:@"phoneNumbers"];
+  coderCopy = coder;
+  [coderCopy encodeObject:postalAddresses forKey:@"postalAddresses"];
+  [coderCopy encodeObject:self->_emailAddresses forKey:@"emailAddresses"];
+  [coderCopy encodeObject:self->_phoneNumbers forKey:@"phoneNumbers"];
 }
 
-- (PKContactInformation)initWithCoder:(id)a3
+- (PKContactInformation)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 alloc];
   v14[0] = objc_opt_class();
   v14[1] = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
   v8 = [v6 initWithArray:v7];
 
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"postalAddresses"];
-  v10 = [v5 decodeObjectOfClasses:v8 forKey:@"emailAddresses"];
-  v11 = [v5 decodeObjectOfClasses:v8 forKey:@"phoneNumbers"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"postalAddresses"];
+  v10 = [coderCopy decodeObjectOfClasses:v8 forKey:@"emailAddresses"];
+  v11 = [coderCopy decodeObjectOfClasses:v8 forKey:@"phoneNumbers"];
 
   v12 = [(PKContactInformation *)self initWithPostalAddresses:v9 emailAddresses:v10 phoneNumbers:v11];
   return v12;

@@ -53,7 +53,7 @@
   }
 
   [v14 setDelegate:v13];
-  [v14 setBeginTime:a1];
+  [v14 setBeginTime:self];
   [v14 setRemovedOnCompletion:0];
   [v14 setFillMode:*MEMORY[0x1E69797E0]];
   [v14 ck_requestHighFrameRate];
@@ -81,7 +81,7 @@
     [v14 setSpeed:v28];
     [v14 settlingDuration];
     [v14 setDuration:?];
-    v25 = a1 + 0.055;
+    selfCopy = self + 0.055;
     v24 = v14;
     goto LABEL_5;
   }
@@ -106,9 +106,9 @@
     LODWORD(v23) = 2.0;
     [v14 setSpeed:v23];
     v24 = v14;
-    v25 = a1;
+    selfCopy = self;
 LABEL_5:
-    [v24 setBeginTime:v25];
+    [v24 setBeginTime:selfCopy];
     goto LABEL_7;
   }
 

@@ -9,10 +9,10 @@
   v25 = *MEMORY[0x29EDCA608];
   v23.receiver = self;
   v23.super_class = BaseCollectionViewAccessibility;
-  v3 = [(BaseCollectionViewAccessibility *)&v23 accessibilityHeaderElements];
-  if ([v3 count])
+  accessibilityHeaderElements = [(BaseCollectionViewAccessibility *)&v23 accessibilityHeaderElements];
+  if ([accessibilityHeaderElements count])
   {
-    v4 = v3;
+    array = accessibilityHeaderElements;
   }
 
   else
@@ -27,8 +27,8 @@
     v22[4] = v5;
     v8 = [v7 ax_filteredArrayUsingBlock:v22];
 
-    v9 = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
-    v4 = [MEMORY[0x29EDB8DE8] array];
+    defaultVoiceOverOptions = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
+    array = [MEMORY[0x29EDB8DE8] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -48,8 +48,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * i) _accessibilityLeafDescendantsWithOptions:{v9, v18}];
-          [v4 addObjectsFromArray:v15];
+          v15 = [*(*(&v18 + 1) + 8 * i) _accessibilityLeafDescendantsWithOptions:{defaultVoiceOverOptions, v18}];
+          [array addObjectsFromArray:v15];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v18 objects:v24 count:16];
@@ -61,7 +61,7 @@
 
   v16 = *MEMORY[0x29EDCA608];
 
-  return v4;
+  return array;
 }
 
 @end

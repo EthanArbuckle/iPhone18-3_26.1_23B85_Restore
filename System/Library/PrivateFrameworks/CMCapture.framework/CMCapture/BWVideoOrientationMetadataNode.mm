@@ -3,18 +3,18 @@
 - (OpaqueCMClock)masterClock;
 - (uint64_t)_determineExifOrientation;
 - (void)_emitBufferForNewStateIfRecording;
-- (void)_emitValidatedVideoOrientationSampleBufferForBoxedFormatOutputAtTime:(uint64_t)a1;
+- (void)_emitValidatedVideoOrientationSampleBufferForBoxedFormatOutputAtTime:(uint64_t)time;
 - (void)_releaseCachedBBufs;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setMasterClock:(OpaqueCMClock *)a3;
-- (void)setSourceDeviceType:(int)a3;
-- (void)setSourcePosition:(int)a3;
-- (void)updateRotationDegrees:(int)a3;
-- (void)updateVideoMirrored:(BOOL)a3;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setMasterClock:(OpaqueCMClock *)clock;
+- (void)setSourceDeviceType:(int)type;
+- (void)setSourcePosition:(int)position;
+- (void)updateRotationDegrees:(int)degrees;
+- (void)updateVideoMirrored:(BOOL)mirrored;
 @end
 
 @implementation BWVideoOrientationMetadataNode
@@ -110,9 +110,9 @@
   [(BWNode *)&v6 dealloc];
 }
 
-- (void)updateRotationDegrees:(int)a3
+- (void)updateRotationDegrees:(int)degrees
 {
-  if (a3 >= 0x10F)
+  if (degrees >= 0x10F)
   {
     [BWVideoOrientationMetadataNode updateRotationDegrees:];
   }
@@ -125,7 +125,7 @@
     v4[2] = __56__BWVideoOrientationMetadataNode_updateRotationDegrees___block_invoke;
     v4[3] = &unk_1E7991CF0;
     v4[4] = self;
-    v5 = a3;
+    degreesCopy = degrees;
     dispatch_async(emitSamplesDispatchQueue, v4);
   }
 }
@@ -144,7 +144,7 @@ void __56__BWVideoOrientationMetadataNode_updateRotationDegrees___block_invoke(u
   }
 }
 
-- (void)updateVideoMirrored:(BOOL)a3
+- (void)updateVideoMirrored:(BOOL)mirrored
 {
   emitSamplesDispatchQueue = self->_emitSamplesDispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -152,7 +152,7 @@ void __56__BWVideoOrientationMetadataNode_updateRotationDegrees___block_invoke(u
   v4[2] = __54__BWVideoOrientationMetadataNode_updateVideoMirrored___block_invoke;
   v4[3] = &unk_1E7990078;
   v4[4] = self;
-  v5 = a3;
+  mirroredCopy = mirrored;
   dispatch_async(emitSamplesDispatchQueue, v4);
 }
 
@@ -182,13 +182,13 @@ void __54__BWVideoOrientationMetadataNode_updateVideoMirrored___block_invoke(uin
   return masterClock;
 }
 
-- (void)setMasterClock:(OpaqueCMClock *)a3
+- (void)setMasterClock:(OpaqueCMClock *)clock
 {
   masterClock = self->_masterClock;
-  self->_masterClock = a3;
-  if (a3)
+  self->_masterClock = clock;
+  if (clock)
   {
-    CFRetain(a3);
+    CFRetain(clock);
   }
 
   if (masterClock)
@@ -198,19 +198,19 @@ void __54__BWVideoOrientationMetadataNode_updateVideoMirrored___block_invoke(uin
   }
 }
 
-- (void)setSourcePosition:(int)a3
+- (void)setSourcePosition:(int)position
 {
-  if (self->_sourcePosition != a3)
+  if (self->_sourcePosition != position)
   {
-    self->_sourcePosition = a3;
+    self->_sourcePosition = position;
   }
 }
 
-- (void)setSourceDeviceType:(int)a3
+- (void)setSourceDeviceType:(int)type
 {
-  if (self->_sourceDeviceType != a3)
+  if (self->_sourceDeviceType != type)
   {
-    self->_sourceDeviceType = a3;
+    self->_sourceDeviceType = type;
   }
 }
 
@@ -238,9 +238,9 @@ LABEL_6:
   [(BWNode *)&v5 prepareForCurrentConfigurationToBecomeLive];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if ([(BWNodeOutput *)self->super._output consumer:a3])
+  if ([(BWNodeOutput *)self->super._output consumer:d])
   {
     emitSamplesDispatchQueue = self->_emitSamplesDispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -252,7 +252,7 @@ LABEL_6:
   }
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   emitSamplesDispatchQueue = self->_emitSamplesDispatchQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -260,22 +260,22 @@ LABEL_6:
   v5[2] = __76__BWVideoOrientationMetadataNode_didReachEndOfDataForConfigurationID_input___block_invoke;
   v5[3] = &unk_1E798F898;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = d;
   dispatch_async(emitSamplesDispatchQueue, v5);
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v4 = a3;
+  bufferCopy = buffer;
   sampleBufferOut = 0;
-  if (!BWSampleBufferIsMarkerBuffer(a3))
+  if (!BWSampleBufferIsMarkerBuffer(buffer))
   {
     return;
   }
 
-  if (!qtmfsn_bufferSpecifiesFileWriterAction(v4, @"Start"))
+  if (!qtmfsn_bufferSpecifiesFileWriterAction(bufferCopy, @"Start"))
   {
-    if (qtmfsn_bufferSpecifiesFileWriterAction(v4, @"Resume"))
+    if (qtmfsn_bufferSpecifiesFileWriterAction(bufferCopy, @"Resume"))
     {
       v9 = 0;
       v6 = 0;
@@ -284,16 +284,16 @@ LABEL_6:
 
     else
     {
-      if ((qtmfsn_bufferSpecifiesFileWriterAction(v4, @"Stop") & 1) == 0 && (qtmfsn_bufferSpecifiesFileWriterAction(v4, @"Flush") & 1) == 0 && !qtmfsn_bufferSpecifiesFileWriterAction(v4, @"Terminate"))
+      if ((qtmfsn_bufferSpecifiesFileWriterAction(bufferCopy, @"Stop") & 1) == 0 && (qtmfsn_bufferSpecifiesFileWriterAction(bufferCopy, @"Flush") & 1) == 0 && !qtmfsn_bufferSpecifiesFileWriterAction(bufferCopy, @"Terminate"))
       {
-        v10 = qtmfsn_bufferSpecifiesFileWriterAction(v4, @"Pause");
+        v10 = qtmfsn_bufferSpecifiesFileWriterAction(bufferCopy, @"Pause");
         recordVideoOrientationAndMirroringChanges = 0;
         v9 = 0;
         v6 = 0;
         goto LABEL_23;
       }
 
-      CMGetAttachment(v4, @"FileWriterAction", 0);
+      CMGetAttachment(bufferCopy, @"FileWriterAction", 0);
       recordVideoOrientationAndMirroringChanges = 0;
       v6 = 0;
       v9 = 1;
@@ -302,7 +302,7 @@ LABEL_6:
     goto LABEL_19;
   }
 
-  v6 = CMGetAttachment(v4, @"RecordingSettings", 0);
+  v6 = CMGetAttachment(bufferCopy, @"RecordingSettings", 0);
   if (!v6)
   {
     recordVideoOrientationAndMirroringChanges = 0;
@@ -334,12 +334,12 @@ LABEL_22:
     self->_flipMetadataHorizontally = v8;
   }
 
-  if (!self->_recordVideoOrientationAndMirroringChanges && !CMSampleBufferCreateCopy(*MEMORY[0x1E695E480], v4, &sampleBufferOut))
+  if (!self->_recordVideoOrientationAndMirroringChanges && !CMSampleBufferCreateCopy(*MEMORY[0x1E695E480], bufferCopy, &sampleBufferOut))
   {
     v10 = 1;
     CMSetAttachment(sampleBufferOut, @"FileWriterStartActionModifier_NoDataWillBeProvidedForThisRecording", *MEMORY[0x1E695E4D0], 1u);
     v9 = 0;
-    v4 = sampleBufferOut;
+    bufferCopy = sampleBufferOut;
     goto LABEL_23;
   }
 
@@ -347,14 +347,14 @@ LABEL_22:
 LABEL_19:
   v10 = 1;
 LABEL_23:
-  CFRetain(v4);
+  CFRetain(bufferCopy);
   emitSamplesDispatchQueue = self->_emitSamplesDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__BWVideoOrientationMetadataNode_renderSampleBuffer_forInput___block_invoke;
   block[3] = &unk_1E7997648;
   block[4] = self;
-  block[5] = v4;
+  block[5] = bufferCopy;
   v17 = v10;
   v18 = recordVideoOrientationAndMirroringChanges & 1;
   v19 = v9;
@@ -362,7 +362,7 @@ LABEL_23:
   if (recordVideoOrientationAndMirroringChanges)
   {
     memset(&v15, 0, sizeof(v15));
-    CMSampleBufferGetPresentationTimeStamp(&v15, v4);
+    CMSampleBufferGetPresentationTimeStamp(&v15, bufferCopy);
     v12 = self->_emitSamplesDispatchQueue;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -397,20 +397,20 @@ void __62__BWVideoOrientationMetadataNode_renderSampleBuffer_forInput___block_in
 
 - (void)_releaseCachedBBufs
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
+    selfCopy = self;
     v2 = 8;
     do
     {
-      v3 = *(v1 + 184);
+      v3 = *(selfCopy + 184);
       if (v3)
       {
         CFRelease(v3);
-        *(v1 + 184) = 0;
+        *(selfCopy + 184) = 0;
       }
 
-      v1 += 8;
+      selfCopy += 8;
       --v2;
     }
 
@@ -432,15 +432,15 @@ void __62__BWVideoOrientationMetadataNode_renderSampleBuffer_forInput___block_in
 
 - (void)_emitBufferForNewStateIfRecording
 {
-  if (a1 && *(a1 + 175) == 1)
+  if (self && *(self + 175) == 1)
   {
     memset(&v3, 0, sizeof(v3));
-    CMClockGetTime(&v2, *(a1 + 128));
-    CMSyncConvertTime(&v3, &v2, *(a1 + 128), *(a1 + 136));
+    CMClockGetTime(&v2, *(self + 128));
+    CMSyncConvertTime(&v3, &v2, *(self + 128), *(self + 136));
     if (v3.flags)
     {
       v2 = v3;
-      [(BWVideoOrientationMetadataNode *)a1 _emitValidatedVideoOrientationSampleBufferForBoxedFormatOutputAtTime:?];
+      [(BWVideoOrientationMetadataNode *)self _emitValidatedVideoOrientationSampleBufferForBoxedFormatOutputAtTime:?];
     }
   }
 }
@@ -467,18 +467,18 @@ void __62__BWVideoOrientationMetadataNode_renderSampleBuffer_forInput___block_in
   *(*(a1 + 40) + 175) = 1;
 }
 
-- (void)_emitValidatedVideoOrientationSampleBufferForBoxedFormatOutputAtTime:(uint64_t)a1
+- (void)_emitValidatedVideoOrientationSampleBufferForBoxedFormatOutputAtTime:(uint64_t)time
 {
-  if (a1)
+  if (time)
   {
     if (*(a2 + 12))
     {
-      v3 = *(a1 + 176);
+      v3 = *(time + 176);
       if ((v3 - 9) >= 0xFFFFFFF8)
       {
         v4 = v3 - 1;
         v5 = v3;
-        if (!*(a1 + 184 + 8 * (v3 - 1)))
+        if (!*(time + 184 + 8 * (v3 - 1)))
         {
           BoxedVideoOrientationBlockBuffer = FigCaptureMetadataUtilitiesCreateBoxedVideoOrientationBlockBuffer();
           if (!BoxedVideoOrientationBlockBuffer)
@@ -486,7 +486,7 @@ void __62__BWVideoOrientationMetadataNode_renderSampleBuffer_forInput___block_in
             return;
           }
 
-          *(a1 + 184 + 8 * v4) = BoxedVideoOrientationBlockBuffer;
+          *(time + 184 + 8 * v4) = BoxedVideoOrientationBlockBuffer;
         }
 
         OUTLINED_FUNCTION_2_10();
@@ -496,7 +496,7 @@ void __62__BWVideoOrientationMetadataNode_renderSampleBuffer_forInput___block_in
           v10 = v9;
           *&v11 = OUTLINED_FUNCTION_2_10().n128_u64[0];
           [v12 addItemToCacheWithPTS:&v13 exifOrientation:v11];
-          [*(a1 + 16) emitSampleBuffer:v10];
+          [*(time + 16) emitSampleBuffer:v10];
           CFRelease(v10);
         }
       }

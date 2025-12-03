@@ -1,57 +1,57 @@
 @interface MSASPendingChanges
-- (MSASPendingChanges)initWithSyncedKeyValueChangesForAlbumGUIDS:(id)a3 albumChanges:(id)a4 accessControlChangesForAlbumGUIDS:(id)a5;
-- (void)addPendingAssetCollectionChanges:(id)a3 forAlbumGUID:(id)a4;
-- (void)addPendingChangesForAlbumGUID:(id)a3;
-- (void)removePendingAssetCollection:(id)a3 forAlbumGUID:(id)a4;
-- (void)removePendingChangesForAlbumGUID:(id)a3;
-- (void)removePendingKeyValueChangesForAlbumGUID:(id)a3;
-- (void)removePendingSharingInfoChangesForAlbumGUID:(id)a3;
+- (MSASPendingChanges)initWithSyncedKeyValueChangesForAlbumGUIDS:(id)s albumChanges:(id)changes accessControlChangesForAlbumGUIDS:(id)dS;
+- (void)addPendingAssetCollectionChanges:(id)changes forAlbumGUID:(id)d;
+- (void)addPendingChangesForAlbumGUID:(id)d;
+- (void)removePendingAssetCollection:(id)collection forAlbumGUID:(id)d;
+- (void)removePendingChangesForAlbumGUID:(id)d;
+- (void)removePendingKeyValueChangesForAlbumGUID:(id)d;
+- (void)removePendingSharingInfoChangesForAlbumGUID:(id)d;
 @end
 
 @implementation MSASPendingChanges
 
-- (void)removePendingSharingInfoChangesForAlbumGUID:(id)a3
+- (void)removePendingSharingInfoChangesForAlbumGUID:(id)d
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    [(NSMutableSet *)self->_pendingAlbumGUIDsWithSharingInfoChanges removeObject:v4];
+    [(NSMutableSet *)self->_pendingAlbumGUIDsWithSharingInfoChanges removeObject:dCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Could not remove pending sharing info changes for album with nil GUID.", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removePendingAssetCollection:(id)a3 forAlbumGUID:(id)a4
+- (void)removePendingAssetCollection:(id)collection forAlbumGUID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dCopy = d;
   pendingAlbumGUIDToAssetCollections = self->_pendingAlbumGUIDToAssetCollections;
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)pendingAlbumGUIDToAssetCollections objectForKey:v6];
-  v10 = [v8 GUID];
+  collectionCopy = collection;
+  v9 = [(NSMutableDictionary *)pendingAlbumGUIDToAssetCollections objectForKey:dCopy];
+  gUID = [collectionCopy GUID];
 
-  if (!v10)
+  if (!gUID)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v14 = 138543362;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Could not remove pending asset collection with nil GUID.", &v14, 0xCu);
-      if (!v6)
+      if (!dCopy)
       {
         goto LABEL_10;
       }
     }
 
-    else if (!v6)
+    else if (!dCopy)
     {
       goto LABEL_10;
     }
@@ -61,19 +61,19 @@ LABEL_6:
     v12 = self->_pendingAlbumGUIDToAssetCollections;
     if (v11)
     {
-      [(NSMutableDictionary *)v12 setObject:v9 forKey:v6];
+      [(NSMutableDictionary *)v12 setObject:v9 forKey:dCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)v12 removeObjectForKey:v6];
+      [(NSMutableDictionary *)v12 removeObjectForKey:dCopy];
     }
 
     goto LABEL_12;
   }
 
-  [v9 removeObject:v10];
-  if (v6)
+  [v9 removeObject:gUID];
+  if (dCopy)
   {
     goto LABEL_6;
   }
@@ -82,7 +82,7 @@ LABEL_10:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v14 = 138543362;
-    v15 = self;
+    selfCopy2 = self;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Could not remove pending asset collections for album with nil GUID.", &v14, 0xCu);
   }
 
@@ -91,15 +91,15 @@ LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addPendingAssetCollectionChanges:(id)a3 forAlbumGUID:(id)a4
+- (void)addPendingAssetCollectionChanges:(id)changes forAlbumGUID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_pendingAlbumGUIDToAssetCollections objectForKey:v7];
+  changesCopy = changes;
+  dCopy = d;
+  v8 = [(NSMutableDictionary *)self->_pendingAlbumGUIDToAssetCollections objectForKey:dCopy];
   if (!v8)
   {
-    v8 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v6, "count")}];
+    v8 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(changesCopy, "count")}];
   }
 
   v11[0] = MEMORY[0x277D85DD0];
@@ -108,16 +108,16 @@ LABEL_12:
   v11[3] = &unk_278E927F0;
   v12 = v8;
   v9 = v8;
-  [v6 enumerateObjectsUsingBlock:v11];
-  if (v7)
+  [changesCopy enumerateObjectsUsingBlock:v11];
+  if (dCopy)
   {
-    [(NSMutableDictionary *)self->_pendingAlbumGUIDToAssetCollections setObject:v9 forKey:v7];
+    [(NSMutableDictionary *)self->_pendingAlbumGUIDToAssetCollections setObject:v9 forKey:dCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v14 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Could not add pending asset collection changes for album with nil GUID.", buf, 0xCu);
   }
 
@@ -131,86 +131,86 @@ void __68__MSASPendingChanges_addPendingAssetCollectionChanges_forAlbumGUID___bl
   [v2 addObject:v3];
 }
 
-- (void)removePendingChangesForAlbumGUID:(id)a3
+- (void)removePendingChangesForAlbumGUID:(id)d
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    [(NSMutableSet *)self->_pendingAlbumChanges removeObject:v4];
+    [(NSMutableSet *)self->_pendingAlbumChanges removeObject:dCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Could not remove pending changes for album with nil GUID.", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addPendingChangesForAlbumGUID:(id)a3
+- (void)addPendingChangesForAlbumGUID:(id)d
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    [(NSMutableSet *)self->_pendingAlbumChanges addObject:v4];
+    [(NSMutableSet *)self->_pendingAlbumChanges addObject:dCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Could not add pending changes for album with nil GUID.", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removePendingKeyValueChangesForAlbumGUID:(id)a3
+- (void)removePendingKeyValueChangesForAlbumGUID:(id)d
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    [(NSMutableSet *)self->_pendingAlbumGUIDsWithKeyValueChanges removeObject:v4];
+    [(NSMutableSet *)self->_pendingAlbumGUIDsWithKeyValueChanges removeObject:dCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Could not remove pending key value changes for album with nil GUID.", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (MSASPendingChanges)initWithSyncedKeyValueChangesForAlbumGUIDS:(id)a3 albumChanges:(id)a4 accessControlChangesForAlbumGUIDS:(id)a5
+- (MSASPendingChanges)initWithSyncedKeyValueChangesForAlbumGUIDS:(id)s albumChanges:(id)changes accessControlChangesForAlbumGUIDS:(id)dS
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sCopy = s;
+  changesCopy = changes;
+  dSCopy = dS;
   v21.receiver = self;
   v21.super_class = MSASPendingChanges;
   v11 = [(MSASPendingChanges *)&v21 init];
   if (v11)
   {
-    v12 = [MEMORY[0x277CBEB58] setWithArray:v8];
+    v12 = [MEMORY[0x277CBEB58] setWithArray:sCopy];
     pendingAlbumGUIDsWithKeyValueChanges = v11->_pendingAlbumGUIDsWithKeyValueChanges;
     v11->_pendingAlbumGUIDsWithKeyValueChanges = v12;
 
-    v14 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v9, "count")}];
+    v14 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(changesCopy, "count")}];
     pendingAlbumChanges = v11->_pendingAlbumChanges;
     v11->_pendingAlbumChanges = v14;
 
-    v16 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
+    v16 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(changesCopy, "count")}];
     pendingAlbumGUIDToAssetCollections = v11->_pendingAlbumGUIDToAssetCollections;
     v11->_pendingAlbumGUIDToAssetCollections = v16;
 
-    v18 = [MEMORY[0x277CBEB58] setWithArray:v10];
+    v18 = [MEMORY[0x277CBEB58] setWithArray:dSCopy];
     pendingAlbumGUIDsWithSharingInfoChanges = v11->_pendingAlbumGUIDsWithSharingInfoChanges;
     v11->_pendingAlbumGUIDsWithSharingInfoChanges = v18;
   }

@@ -1,32 +1,32 @@
 @interface TSDContainerInfo
 - (BOOL)isThemeContent;
-- (TSDContainerInfo)initWithContext:(id)a3 geometry:(id)a4;
-- (id)copyWithContext:(id)a3;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (int64_t)mixingTypeWithObject:(id)a3;
-- (void)addChildInfo:(id)a3;
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3;
+- (TSDContainerInfo)initWithContext:(id)context geometry:(id)geometry;
+- (id)copyWithContext:(id)context;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (int64_t)mixingTypeWithObject:(id)object;
+- (void)addChildInfo:(id)info;
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed;
 - (void)dealloc;
-- (void)insertChildInfo:(id)a3 above:(id)a4;
-- (void)insertChildInfo:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertChildInfo:(id)a3 below:(id)a4;
-- (void)moveChildren:(id)a3 toIndexes:(id)a4;
-- (void)replaceChildInfo:(id)a3 with:(id)a4;
-- (void)setChildInfos:(id)a3;
-- (void)setGeometry:(id)a3;
-- (void)setOwningAttachment:(id)a3;
+- (void)insertChildInfo:(id)info above:(id)above;
+- (void)insertChildInfo:(id)info atIndex:(unint64_t)index;
+- (void)insertChildInfo:(id)info below:(id)below;
+- (void)moveChildren:(id)children toIndexes:(id)indexes;
+- (void)replaceChildInfo:(id)info with:(id)with;
+- (void)setChildInfos:(id)infos;
+- (void)setGeometry:(id)geometry;
+- (void)setOwningAttachment:(id)attachment;
 @end
 
 @implementation TSDContainerInfo
 
-- (TSDContainerInfo)initWithContext:(id)a3 geometry:(id)a4
+- (TSDContainerInfo)initWithContext:(id)context geometry:(id)geometry
 {
   v7.receiver = self;
   v7.super_class = TSDContainerInfo;
-  v5 = [(TSPObject *)&v7 initWithContext:a3];
+  v5 = [(TSPObject *)&v7 initWithContext:context];
   if (v5)
   {
-    v5->mGeometry = [a4 copy];
+    v5->mGeometry = [geometry copy];
   }
 
   return v5;
@@ -69,52 +69,52 @@
   [(TSDContainerInfo *)&v8 dealloc];
 }
 
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed
 {
-  if (self->mParentInfo == a3)
+  if (self->mParentInfo == needed)
   {
     self->mParentInfo = 0;
   }
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  if (!a3)
+  if (!geometry)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDContainerInfo setGeometry:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContainerInfo.m"), 59, @"invalid nil value for '%s'", "newGeometry"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContainerInfo.m"), 59, @"invalid nil value for '%s'", "newGeometry"}];
   }
 
-  if (([a3 isEqual:self->mGeometry] & 1) == 0)
+  if (([geometry isEqual:self->mGeometry] & 1) == 0)
   {
     [(TSPObject *)self willModify];
 
-    self->mGeometry = a3;
+    self->mGeometry = geometry;
   }
 }
 
-- (void)setOwningAttachment:(id)a3
+- (void)setOwningAttachment:(id)attachment
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDContainerInfo setOwningAttachment:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContainerInfo.m"];
 
-  [v3 handleFailureInFunction:v4 file:v5 lineNumber:75 description:@"TSDContainerInfo cannot be owned by an attachment because it is not a subclass of TSDDrawableInfo"];
+  [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:75 description:@"TSDContainerInfo cannot be owned by an attachment because it is not a subclass of TSDDrawableInfo"];
 }
 
 - (BOOL)isThemeContent
 {
-  v2 = [(TSDContainerInfo *)self parentInfo];
+  parentInfo = [(TSDContainerInfo *)self parentInfo];
 
-  return [(TSDContainerInfo *)v2 isThemeContent];
+  return [(TSDContainerInfo *)parentInfo isThemeContent];
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = [(TSDContainerInfo *)self zone];
-  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{v5), "initWithContext:", a3}];
+  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{v5), "initWithContext:", context}];
   if (v6)
   {
     *(v6 + 48) = [(TSDInfoGeometry *)self->mGeometry copyWithZone:v5];
@@ -141,7 +141,7 @@
               objc_enumerationMutation(mChildInfos);
             }
 
-            v12 = [*(*(&v14 + 1) + 8 * v11) copyWithContext:a3];
+            v12 = [*(*(&v14 + 1) + 8 * v11) copyWithContext:context];
             [v12 setParentInfo:v6];
             [*(v6 + 64) addObject:v12];
 
@@ -160,16 +160,16 @@
   return v6;
 }
 
-- (void)setChildInfos:(id)a3
+- (void)setChildInfos:(id)infos
 {
   v30 = *MEMORY[0x277D85DE8];
   mChildInfos = self->mChildInfos;
-  if (mChildInfos != a3 && ([(NSMutableArray *)mChildInfos isEqual:?]& 1) == 0)
+  if (mChildInfos != infos && ([(NSMutableArray *)mChildInfos isEqual:?]& 1) == 0)
   {
     [(TSPObject *)self willModify];
-    if (a3)
+    if (infos)
     {
-      v6 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:a3];
+      v6 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:infos];
     }
 
     else
@@ -223,7 +223,7 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v14 = [a3 countByEnumeratingWithState:&v20 objects:v28 count:16];
+    v14 = [infos countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v14)
     {
       v15 = v14;
@@ -234,7 +234,7 @@
         {
           if (*v21 != v16)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(infos);
           }
 
           v18 = *(*(&v20 + 1) + 8 * j);
@@ -246,18 +246,18 @@
           }
         }
 
-        v15 = [a3 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v15 = [infos countByEnumeratingWithState:&v20 objects:v28 count:16];
       }
 
       while (v15);
     }
 
-    v19 = [a3 mutableCopy];
+    v19 = [infos mutableCopy];
     self->mChildInfos = v19;
   }
 }
 
-- (void)addChildInfo:(id)a3
+- (void)addChildInfo:(id)info
 {
   mChildInfos = self->mChildInfos;
   if (mChildInfos)
@@ -270,20 +270,20 @@
     v6 = 0;
   }
 
-  [(TSDContainerInfo *)self insertChildInfo:a3 atIndex:v6];
+  [(TSDContainerInfo *)self insertChildInfo:info atIndex:v6];
 }
 
-- (void)insertChildInfo:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChildInfo:(id)info atIndex:(unint64_t)index
 {
-  if (a3)
+  if (info)
   {
     [(TSPObject *)self willModify];
-    [a3 parentInfo];
+    [info parentInfo];
     v6 = TSUProtocolCast();
     if (v6)
     {
-      v7 = a3;
-      [v6 removeChildInfo:a3];
+      infoCopy = info;
+      [v6 removeChildInfo:info];
     }
 
     mChildInfos = self->mChildInfos;
@@ -293,66 +293,66 @@
       self->mChildInfos = mChildInfos;
     }
 
-    [(NSMutableArray *)mChildInfos insertObject:a3 atIndex:a4];
-    [a3 setParentInfo:self];
+    [(NSMutableArray *)mChildInfos insertObject:info atIndex:index];
+    [info setParentInfo:self];
     if (v6)
     {
     }
   }
 }
 
-- (void)insertChildInfo:(id)a3 below:(id)a4
+- (void)insertChildInfo:(id)info below:(id)below
 {
   mChildInfos = self->mChildInfos;
   if (mChildInfos)
   {
-    v7 = [(NSMutableArray *)mChildInfos indexOfObjectIdenticalTo:a4];
+    v7 = [(NSMutableArray *)mChildInfos indexOfObjectIdenticalTo:below];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
 
-      [(TSDContainerInfo *)self insertChildInfo:a3 atIndex:v7];
+      [(TSDContainerInfo *)self insertChildInfo:info atIndex:v7];
     }
   }
 }
 
-- (void)insertChildInfo:(id)a3 above:(id)a4
+- (void)insertChildInfo:(id)info above:(id)above
 {
   mChildInfos = self->mChildInfos;
   if (mChildInfos)
   {
-    v7 = [(NSMutableArray *)mChildInfos indexOfObjectIdenticalTo:a4];
+    v7 = [(NSMutableArray *)mChildInfos indexOfObjectIdenticalTo:above];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
 
-      [(TSDContainerInfo *)self insertChildInfo:a3 atIndex:v7 + 1];
+      [(TSDContainerInfo *)self insertChildInfo:info atIndex:v7 + 1];
     }
   }
 }
 
-- (void)moveChildren:(id)a3 toIndexes:(id)a4
+- (void)moveChildren:(id)children toIndexes:(id)indexes
 {
-  v7 = [a3 count];
-  v8 = [a4 count];
-  v9 = [a4 lastIndex];
+  v7 = [children count];
+  v8 = [indexes count];
+  lastIndex = [indexes lastIndex];
   v10 = [(NSMutableArray *)self->mChildInfos count];
   v11 = v10;
   if (v7 == v8)
   {
-    if (v9 < v10)
+    if (lastIndex < v10)
     {
       v20 = [(NSMutableArray *)self->mChildInfos mutableCopy];
-      [v20 removeObjectsInArray:a3];
+      [v20 removeObjectsInArray:children];
       v12 = v11 - v7;
       if ([v20 count] != v12)
       {
-        v13 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDContainerInfo moveChildren:toIndexes:]"];
-        [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContainerInfo.m"), 248, @"Can't move drawables to indexes, not all drawables are in this container."}];
+        [currentHandler handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContainerInfo.m"), 248, @"Can't move drawables to indexes, not all drawables are in this container."}];
       }
 
       if ([v20 count] == v12)
       {
-        [v20 insertObjects:a3 atIndexes:a4];
+        [v20 insertObjects:children atIndexes:indexes];
         [(TSDContainerInfo *)self setChildInfos:v20];
       }
 
@@ -362,23 +362,23 @@
 
   else
   {
-    v15 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDContainerInfo moveChildren:toIndexes:]"];
-    [v15 handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContainerInfo.m"), 241, @"Can't move drawables to indexes, counts don't match."}];
-    if (v9 < v11)
+    [currentHandler2 handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContainerInfo.m"), 241, @"Can't move drawables to indexes, counts don't match."}];
+    if (lastIndex < v11)
     {
       return;
     }
   }
 
-  v17 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
   v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDContainerInfo moveChildren:toIndexes:]"];
   v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContainerInfo.m"];
 
-  [v17 handleFailureInFunction:v18 file:v19 lineNumber:242 description:{@"Can't move drawables to indexes, one or more indexes out of range."}];
+  [currentHandler3 handleFailureInFunction:v18 file:v19 lineNumber:242 description:{@"Can't move drawables to indexes, one or more indexes out of range."}];
 }
 
-- (void)replaceChildInfo:(id)a3 with:(id)a4
+- (void)replaceChildInfo:(id)info with:(id)with
 {
   mChildInfos = self->mChildInfos;
   if (mChildInfos)
@@ -388,28 +388,28 @@
     {
       v9 = v8;
       [(TSPObject *)self willModify];
-      v10 = a3;
+      infoCopy = info;
       [(NSMutableArray *)self->mChildInfos removeObjectAtIndex:v9];
-      [a3 setParentInfo:0];
+      [info setParentInfo:0];
 
-      [(TSDContainerInfo *)self insertChildInfo:a4 atIndex:v9];
+      [(TSDContainerInfo *)self insertChildInfo:with atIndex:v9];
     }
   }
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDContainerInfo mixingTypeWithObject:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContainerInfo.m"), 302, @"TSDContainerInfo does not implement TSDMixing!"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContainerInfo.m"), 302, @"TSDContainerInfo does not implement TSDMixing!"}];
   return 1;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDContainerInfo mixedObjectWithFraction:ofObject:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContainerInfo.m"), 309, @"TSDContainerInfo does not implement TSDMixing!"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContainerInfo.m"), 309, @"TSDContainerInfo does not implement TSDMixing!"}];
   return 0;
 }
 

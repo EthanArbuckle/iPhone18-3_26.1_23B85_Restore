@@ -1,63 +1,63 @@
 @interface MTToggleAlarmIntentHandler
-- (BOOL)getEnableStateForAlarm:(id)a3;
-- (id)_alarmUserActivityWithDisableIntent:(id)a3;
-- (id)_alarmUserActivityWithEnableIntent:(id)a3;
-- (void)_toggleAlarm:(id)a3 alarmIDString:(id)a4 completion:(id)a5;
-- (void)confirmDisableAlarm:(id)a3 completion:(id)a4;
-- (void)confirmEnableAlarm:(id)a3 completion:(id)a4;
-- (void)confirmToggleAlarm:(id)a3 completion:(id)a4;
-- (void)handleDisableAlarm:(id)a3 completion:(id)a4;
-- (void)handleEnableAlarm:(id)a3 completion:(id)a4;
-- (void)handleToggleAlarm:(id)a3 completion:(id)a4;
-- (void)provideAlarmOptionsForToggleAlarm:(id)a3 withCompletion:(id)a4;
-- (void)resolveAlarmForToggleAlarm:(id)a3 withCompletion:(id)a4;
-- (void)resolveOperationForToggleAlarm:(id)a3 withCompletion:(id)a4;
-- (void)resolveStateForToggleAlarm:(id)a3 withCompletion:(id)a4;
+- (BOOL)getEnableStateForAlarm:(id)alarm;
+- (id)_alarmUserActivityWithDisableIntent:(id)intent;
+- (id)_alarmUserActivityWithEnableIntent:(id)intent;
+- (void)_toggleAlarm:(id)alarm alarmIDString:(id)string completion:(id)completion;
+- (void)confirmDisableAlarm:(id)alarm completion:(id)completion;
+- (void)confirmEnableAlarm:(id)alarm completion:(id)completion;
+- (void)confirmToggleAlarm:(id)alarm completion:(id)completion;
+- (void)handleDisableAlarm:(id)alarm completion:(id)completion;
+- (void)handleEnableAlarm:(id)alarm completion:(id)completion;
+- (void)handleToggleAlarm:(id)alarm completion:(id)completion;
+- (void)provideAlarmOptionsForToggleAlarm:(id)alarm withCompletion:(id)completion;
+- (void)resolveAlarmForToggleAlarm:(id)alarm withCompletion:(id)completion;
+- (void)resolveOperationForToggleAlarm:(id)alarm withCompletion:(id)completion;
+- (void)resolveStateForToggleAlarm:(id)alarm withCompletion:(id)completion;
 @end
 
 @implementation MTToggleAlarmIntentHandler
 
-- (void)confirmEnableAlarm:(id)a3 completion:(id)a4
+- (void)confirmEnableAlarm:(id)alarm completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  alarmCopy = alarm;
   v8 = [MTEnableAlarmIntentResponse alloc];
-  v9 = [(MTToggleAlarmIntentHandler *)self _alarmUserActivityWithEnableIntent:v7];
+  v9 = [(MTToggleAlarmIntentHandler *)self _alarmUserActivityWithEnableIntent:alarmCopy];
 
   v10 = [(MTEnableAlarmIntentResponse *)v8 initWithCode:1 userActivity:v9];
-  v6[2](v6, v10);
+  completionCopy[2](completionCopy, v10);
 }
 
-- (void)confirmDisableAlarm:(id)a3 completion:(id)a4
+- (void)confirmDisableAlarm:(id)alarm completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  alarmCopy = alarm;
   v8 = [MTDisableAlarmIntentResponse alloc];
-  v9 = [(MTToggleAlarmIntentHandler *)self _alarmUserActivityWithDisableIntent:v7];
+  v9 = [(MTToggleAlarmIntentHandler *)self _alarmUserActivityWithDisableIntent:alarmCopy];
 
   v10 = [(MTDisableAlarmIntentResponse *)v8 initWithCode:1 userActivity:v9];
-  v6[2](v6, v10);
+  completionCopy[2](completionCopy, v10);
 }
 
-- (void)handleEnableAlarm:(id)a3 completion:(id)a4
+- (void)handleEnableAlarm:(id)alarm completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  alarmCopy = alarm;
+  completionCopy = completion;
   v8 = MTLogForCategory(3);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [MTToggleAlarmIntentHandler handleEnableAlarm:completion:];
   }
 
-  v9 = [v6 alarmID];
-  v10 = [v9 identifier];
+  alarmID = [alarmCopy alarmID];
+  identifier = [alarmID identifier];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59__MTToggleAlarmIntentHandler_handleEnableAlarm_completion___block_invoke;
   v12[3] = &unk_1E7B0C660;
-  v13 = v7;
-  v11 = v7;
-  [(MTToggleAlarmIntentHandler *)self _toggleAlarm:MEMORY[0x1E695E118] alarmIDString:v10 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(MTToggleAlarmIntentHandler *)self _toggleAlarm:MEMORY[0x1E695E118] alarmIDString:identifier completion:v12];
 }
 
 void __59__MTToggleAlarmIntentHandler_handleEnableAlarm_completion___block_invoke(uint64_t a1, int a2)
@@ -80,25 +80,25 @@ void __59__MTToggleAlarmIntentHandler_handleEnableAlarm_completion___block_invok
   }
 }
 
-- (void)handleDisableAlarm:(id)a3 completion:(id)a4
+- (void)handleDisableAlarm:(id)alarm completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  alarmCopy = alarm;
+  completionCopy = completion;
   v8 = MTLogForCategory(3);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [MTToggleAlarmIntentHandler handleDisableAlarm:completion:];
   }
 
-  v9 = [v6 alarmID];
-  v10 = [v9 identifier];
+  alarmID = [alarmCopy alarmID];
+  identifier = [alarmID identifier];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __60__MTToggleAlarmIntentHandler_handleDisableAlarm_completion___block_invoke;
   v12[3] = &unk_1E7B0C660;
-  v13 = v7;
-  v11 = v7;
-  [(MTToggleAlarmIntentHandler *)self _toggleAlarm:MEMORY[0x1E695E110] alarmIDString:v10 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(MTToggleAlarmIntentHandler *)self _toggleAlarm:MEMORY[0x1E695E110] alarmIDString:identifier completion:v12];
 }
 
 void __60__MTToggleAlarmIntentHandler_handleDisableAlarm_completion___block_invoke(uint64_t a1, int a2)
@@ -121,31 +121,31 @@ void __60__MTToggleAlarmIntentHandler_handleDisableAlarm_completion___block_invo
   }
 }
 
-- (void)resolveAlarmForToggleAlarm:(id)a3 withCompletion:(id)a4
+- (void)resolveAlarmForToggleAlarm:(id)alarm withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 alarm];
-  v9 = [v8 identifier];
-  v10 = [v9 length];
+  alarmCopy = alarm;
+  completionCopy = completion;
+  alarm = [alarmCopy alarm];
+  identifier = [alarm identifier];
+  v10 = [identifier length];
 
   if (v10)
   {
-    v11 = [(MTAlarmIntentHandler *)self alarmManager];
-    v12 = [v11 alarmsIncludingSleepAlarm:1];
+    alarmManager = [(MTAlarmIntentHandler *)self alarmManager];
+    v12 = [alarmManager alarmsIncludingSleepAlarm:1];
 
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __72__MTToggleAlarmIntentHandler_resolveAlarmForToggleAlarm_withCompletion___block_invoke;
     v19[3] = &unk_1E7B0C688;
-    v13 = v7;
+    v13 = completionCopy;
     v20 = v13;
     v14 = [v12 addFailureBlock:v19];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __72__MTToggleAlarmIntentHandler_resolveAlarmForToggleAlarm_withCompletion___block_invoke_2;
     v16[3] = &unk_1E7B0C6D8;
-    v17 = v6;
+    v17 = alarmCopy;
     v18 = v13;
     v15 = [v12 addSuccessBlock:v16];
   }
@@ -153,7 +153,7 @@ void __60__MTToggleAlarmIntentHandler_handleDisableAlarm_completion___block_invo
   else
   {
     v12 = +[MTIntentAlarmResolutionResult needsValue];
-    (*(v7 + 2))(v7, v12);
+    (*(completionCopy + 2))(completionCopy, v12);
   }
 }
 
@@ -198,23 +198,23 @@ uint64_t __72__MTToggleAlarmIntentHandler_resolveAlarmForToggleAlarm_withComplet
   return v6;
 }
 
-- (void)resolveStateForToggleAlarm:(id)a3 withCompletion:(id)a4
+- (void)resolveStateForToggleAlarm:(id)alarm withCompletion:(id)completion
 {
-  v9 = a4;
-  v5 = a3;
-  if ([v5 state])
+  completionCopy = completion;
+  alarmCopy = alarm;
+  if ([alarmCopy state])
   {
-    v6 = [v5 state];
+    state = [alarmCopy state];
 
-    v7 = [MTAlarmStateResolutionResult successWithResolvedAlarmState:v6];
-    v9[2](v9, v7);
+    v7 = [MTAlarmStateResolutionResult successWithResolvedAlarmState:state];
+    completionCopy[2](completionCopy, v7);
   }
 
   else
   {
-    v8 = [v5 operation];
+    operation = [alarmCopy operation];
 
-    if (v8 == 1)
+    if (operation == 1)
     {
       +[MTAlarmStateResolutionResult needsValue];
     }
@@ -224,21 +224,21 @@ uint64_t __72__MTToggleAlarmIntentHandler_resolveAlarmForToggleAlarm_withComplet
       +[MTAlarmStateResolutionResult notRequired];
     }
     v7 = ;
-    v9[2](v9, v7);
+    completionCopy[2](completionCopy, v7);
   }
 }
 
-- (void)provideAlarmOptionsForToggleAlarm:(id)a3 withCompletion:(id)a4
+- (void)provideAlarmOptionsForToggleAlarm:(id)alarm withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [(MTAlarmIntentHandler *)self alarmManager];
-  v7 = [v6 alarmsIncludingSleepAlarm:1];
+  completionCopy = completion;
+  alarmManager = [(MTAlarmIntentHandler *)self alarmManager];
+  v7 = [alarmManager alarmsIncludingSleepAlarm:1];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__MTToggleAlarmIntentHandler_provideAlarmOptionsForToggleAlarm_withCompletion___block_invoke;
   v14[3] = &unk_1E7B0C688;
-  v8 = v5;
+  v8 = completionCopy;
   v15 = v8;
   v9 = [v7 addFailureBlock:v14];
   v12[0] = MEMORY[0x1E69E9820];
@@ -256,27 +256,27 @@ void __79__MTToggleAlarmIntentHandler_provideAlarmOptionsForToggleAlarm_withComp
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)confirmToggleAlarm:(id)a3 completion:(id)a4
+- (void)confirmToggleAlarm:(id)alarm completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = [[MTToggleAlarmIntentResponse alloc] initWithCode:1 userActivity:0];
-  v4[2](v4, v5);
+  completionCopy[2](completionCopy, v5);
 }
 
-- (void)handleToggleAlarm:(id)a3 completion:(id)a4
+- (void)handleToggleAlarm:(id)alarm completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  alarmCopy = alarm;
+  completionCopy = completion;
   v8 = MTLogForCategory(3);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [MTToggleAlarmIntentHandler handleToggleAlarm:completion:];
   }
 
-  v9 = [v6 operation];
-  if (v9 == 1)
+  operation = [alarmCopy operation];
+  if (operation == 1)
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v6, "state") == 1}];
+    v10 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(alarmCopy, "state") == 1}];
   }
 
   else
@@ -284,19 +284,19 @@ void __79__MTToggleAlarmIntentHandler_provideAlarmOptionsForToggleAlarm_withComp
     v10 = 0;
   }
 
-  v11 = [v6 alarm];
-  v12 = [v11 identifier];
+  alarm = [alarmCopy alarm];
+  identifier = [alarm identifier];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __59__MTToggleAlarmIntentHandler_handleToggleAlarm_completion___block_invoke;
   v15[3] = &unk_1E7B0C748;
-  v16 = v6;
-  v17 = v7;
-  v13 = v6;
-  v14 = v7;
-  [(MTToggleAlarmIntentHandler *)self _toggleAlarm:v10 alarmIDString:v12 completion:v15];
+  v16 = alarmCopy;
+  v17 = completionCopy;
+  v13 = alarmCopy;
+  v14 = completionCopy;
+  [(MTToggleAlarmIntentHandler *)self _toggleAlarm:v10 alarmIDString:identifier completion:v15];
 
-  if (v9 == 1)
+  if (operation == 1)
   {
   }
 }
@@ -325,13 +325,13 @@ void __59__MTToggleAlarmIntentHandler_handleToggleAlarm_completion___block_invok
   }
 }
 
-- (void)resolveOperationForToggleAlarm:(id)a3 withCompletion:(id)a4
+- (void)resolveOperationForToggleAlarm:(id)alarm withCompletion:(id)completion
 {
-  v7 = a3;
-  v5 = a4;
-  if ([v7 operation])
+  alarmCopy = alarm;
+  completionCopy = completion;
+  if ([alarmCopy operation])
   {
-    +[MTAlarmOperationResolutionResult successWithResolvedAlarmOperation:](MTAlarmOperationResolutionResult, "successWithResolvedAlarmOperation:", [v7 operation]);
+    +[MTAlarmOperationResolutionResult successWithResolvedAlarmOperation:](MTAlarmOperationResolutionResult, "successWithResolvedAlarmOperation:", [alarmCopy operation]);
   }
 
   else
@@ -339,16 +339,16 @@ void __59__MTToggleAlarmIntentHandler_handleToggleAlarm_completion___block_invok
     +[MTAlarmOperationResolutionResult needsValue];
   }
   v6 = ;
-  v5[2](v5, v6);
+  completionCopy[2](completionCopy, v6);
 }
 
-- (void)_toggleAlarm:(id)a3 alarmIDString:(id)a4 completion:(id)a5
+- (void)_toggleAlarm:(id)alarm alarmIDString:(id)string completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MTAlarmIntentHandler *)self alarmManager];
-  v12 = [v11 alarmsIncludingSleepAlarm:1];
+  alarmCopy = alarm;
+  stringCopy = string;
+  completionCopy = completion;
+  alarmManager = [(MTAlarmIntentHandler *)self alarmManager];
+  v12 = [alarmManager alarmsIncludingSleepAlarm:1];
 
   objc_initWeak(&location, self);
   v31[0] = 0;
@@ -360,9 +360,9 @@ void __59__MTToggleAlarmIntentHandler_handleToggleAlarm_completion___block_invok
   v26[2] = __68__MTToggleAlarmIntentHandler__toggleAlarm_alarmIDString_completion___block_invoke;
   v26[3] = &unk_1E7B0C770;
   objc_copyWeak(&v30, &location);
-  v13 = v9;
+  v13 = stringCopy;
   v27 = v13;
-  v14 = v8;
+  v14 = alarmCopy;
   v28 = v14;
   v29 = v31;
   v15 = [v12 flatMap:v26];
@@ -370,7 +370,7 @@ void __59__MTToggleAlarmIntentHandler_handleToggleAlarm_completion___block_invok
   v23[1] = 3221225472;
   v23[2] = __68__MTToggleAlarmIntentHandler__toggleAlarm_alarmIDString_completion___block_invoke_17;
   v23[3] = &unk_1E7B0C798;
-  v16 = v10;
+  v16 = completionCopy;
   v24 = v16;
   v25 = v31;
   v17 = [v15 addSuccessBlock:v23];
@@ -531,49 +531,49 @@ uint64_t __68__MTToggleAlarmIntentHandler__toggleAlarm_alarmIDString_completion_
   return v5;
 }
 
-- (BOOL)getEnableStateForAlarm:(id)a3
+- (BOOL)getEnableStateForAlarm:(id)alarm
 {
-  v3 = a3;
-  v4 = [v3 isSleepAlarm];
-  v5 = [v3 isEnabled];
-  v6 = v4 ^ 1;
-  v7 = (v4 ^ 1) & v5;
-  if (v6 & 1) == 0 && (v5)
+  alarmCopy = alarm;
+  isSleepAlarm = [alarmCopy isSleepAlarm];
+  isEnabled = [alarmCopy isEnabled];
+  v6 = isSleepAlarm ^ 1;
+  sleepSchedule = (isSleepAlarm ^ 1) & isEnabled;
+  if (v6 & 1) == 0 && (isEnabled)
   {
-    v7 = [v3 sleepSchedule];
+    sleepSchedule = [alarmCopy sleepSchedule];
   }
 
-  return v7;
+  return sleepSchedule;
 }
 
-- (id)_alarmUserActivityWithEnableIntent:(id)a3
+- (id)_alarmUserActivityWithEnableIntent:(id)intent
 {
   v3 = MEMORY[0x1E696B090];
-  v4 = a3;
+  intentCopy = intent;
   v5 = [v3 mtUserActivityWithActivityType:@"com.apple.clock.alarm"];
   v6 = objc_opt_class();
-  v7 = [v4 identifier];
-  v8 = [v4 alarmID];
+  identifier = [intentCopy identifier];
+  alarmID = [intentCopy alarmID];
 
-  v9 = [v8 identifier];
-  v10 = [v6 createUserInfoWithIntentName:v7 alarmIDString:v9 time:0 label:0];
+  identifier2 = [alarmID identifier];
+  v10 = [v6 createUserInfoWithIntentName:identifier alarmIDString:identifier2 time:0 label:0];
 
   [v5 setUserInfo:v10];
 
   return v5;
 }
 
-- (id)_alarmUserActivityWithDisableIntent:(id)a3
+- (id)_alarmUserActivityWithDisableIntent:(id)intent
 {
   v3 = MEMORY[0x1E696B090];
-  v4 = a3;
+  intentCopy = intent;
   v5 = [v3 mtUserActivityWithActivityType:@"com.apple.clock.alarm"];
   v6 = objc_opt_class();
-  v7 = [v4 identifier];
-  v8 = [v4 alarmID];
+  identifier = [intentCopy identifier];
+  alarmID = [intentCopy alarmID];
 
-  v9 = [v8 identifier];
-  v10 = [v6 createUserInfoWithIntentName:v7 alarmIDString:v9 time:0 label:0];
+  identifier2 = [alarmID identifier];
+  v10 = [v6 createUserInfoWithIntentName:identifier alarmIDString:identifier2 time:0 label:0];
 
   [v5 setUserInfo:v10];
 

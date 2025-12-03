@@ -1,25 +1,25 @@
 @interface RunShortcutIntent.RunnerClientDelegate
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6;
-- (void)workflowRunnerClient:(id)a3 didStartRunningWorkflowWithProgress:(id)a4;
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled;
+- (void)workflowRunnerClient:(id)client didStartRunningWorkflowWithProgress:(id)progress;
 @end
 
 @implementation RunShortcutIntent.RunnerClientDelegate
 
-- (void)workflowRunnerClient:(id)a3 didStartRunningWorkflowWithProgress:(id)a4
+- (void)workflowRunnerClient:(id)client didStartRunningWorkflowWithProgress:(id)progress
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100026094(v6, a4);
+  clientCopy = client;
+  progressCopy = progress;
+  selfCopy = self;
+  sub_100026094(clientCopy, progress);
 }
 
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  v12 = a5;
-  sub_100026540(v9, a4, a5);
+  clientCopy = client;
+  outputCopy = output;
+  selfCopy = self;
+  errorCopy = error;
+  sub_100026540(clientCopy, output, error);
 }
 
 @end

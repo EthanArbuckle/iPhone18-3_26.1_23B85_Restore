@@ -1,8 +1,8 @@
 @interface MTRAccountLoginClusterLoginParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRAccountLoginClusterLoginParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRAccountLoginClusterLoginParams);
-  v5 = [(MTRAccountLoginClusterLoginParams *)self tempAccountIdentifier];
-  [(MTRAccountLoginClusterLoginParams *)v4 setTempAccountIdentifier:v5];
+  tempAccountIdentifier = [(MTRAccountLoginClusterLoginParams *)self tempAccountIdentifier];
+  [(MTRAccountLoginClusterLoginParams *)v4 setTempAccountIdentifier:tempAccountIdentifier];
 
-  v6 = [(MTRAccountLoginClusterLoginParams *)self setupPIN];
-  [(MTRAccountLoginClusterLoginParams *)v4 setSetupPIN:v6];
+  setupPIN = [(MTRAccountLoginClusterLoginParams *)self setupPIN];
+  [(MTRAccountLoginClusterLoginParams *)v4 setSetupPIN:setupPIN];
 
-  v7 = [(MTRAccountLoginClusterLoginParams *)self node];
-  [(MTRAccountLoginClusterLoginParams *)v4 setNode:v7];
+  node = [(MTRAccountLoginClusterLoginParams *)self node];
+  [(MTRAccountLoginClusterLoginParams *)v4 setNode:node];
 
-  v8 = [(MTRAccountLoginClusterLoginParams *)self timedInvokeTimeoutMs];
-  [(MTRAccountLoginClusterLoginParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTRAccountLoginClusterLoginParams *)self timedInvokeTimeoutMs];
+  [(MTRAccountLoginClusterLoginParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v9 = [(MTRAccountLoginClusterLoginParams *)self serverSideProcessingTimeout];
-  [(MTRAccountLoginClusterLoginParams *)v4 setServerSideProcessingTimeout:v9];
+  serverSideProcessingTimeout = [(MTRAccountLoginClusterLoginParams *)self serverSideProcessingTimeout];
+  [(MTRAccountLoginClusterLoginParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -66,7 +66,7 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v27 = 0;
   v25 = 0u;
@@ -74,22 +74,22 @@
   v24[0] = 0;
   v24[1] = 0;
   v23 = v24;
-  v5 = [(MTRAccountLoginClusterLoginParams *)self tempAccountIdentifier];
-  sub_238DB9BD8(v17, [v5 UTF8String], objc_msgSend(v5, "lengthOfBytesUsingEncoding:", 4));
+  tempAccountIdentifier = [(MTRAccountLoginClusterLoginParams *)self tempAccountIdentifier];
+  sub_238DB9BD8(v17, [tempAccountIdentifier UTF8String], objc_msgSend(tempAccountIdentifier, "lengthOfBytesUsingEncoding:", 4));
 
   v25 = v17[0];
-  v6 = [(MTRAccountLoginClusterLoginParams *)self setupPIN];
-  sub_238DB9BD8(v17, [v6 UTF8String], objc_msgSend(v6, "lengthOfBytesUsingEncoding:", 4));
+  setupPIN = [(MTRAccountLoginClusterLoginParams *)self setupPIN];
+  sub_238DB9BD8(v17, [setupPIN UTF8String], objc_msgSend(setupPIN, "lengthOfBytesUsingEncoding:", 4));
 
   v26 = v17[0];
-  v7 = [(MTRAccountLoginClusterLoginParams *)self node];
+  node = [(MTRAccountLoginClusterLoginParams *)self node];
 
-  if (v7)
+  if (node)
   {
     v27 = 1;
-    v28 = 0;
-    v8 = [(MTRAccountLoginClusterLoginParams *)self node];
-    v28 = [v8 unsignedLongLongValue];
+    unsignedLongLongValue = 0;
+    node2 = [(MTRAccountLoginClusterLoginParams *)self node];
+    unsignedLongLongValue = [node2 unsignedLongLongValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v22);
@@ -111,8 +111,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v22);
-      v9 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v22);
+      v9 = sub_2393C7114(reader, 21, 256);
       v12 = v16;
       v11 = v9;
     }
@@ -140,19 +140,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRAccountLoginClusterLoginParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -163,7 +163,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x7D9800000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

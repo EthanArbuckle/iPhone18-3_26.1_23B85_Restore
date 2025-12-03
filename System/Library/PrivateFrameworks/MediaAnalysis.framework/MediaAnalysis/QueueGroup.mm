@@ -1,20 +1,20 @@
 @interface QueueGroup
-- (void)scheduleJob:(id)a3 toDispatchGroup:(id)a4;
+- (void)scheduleJob:(id)job toDispatchGroup:(id)group;
 @end
 
 @implementation QueueGroup
 
-- (void)scheduleJob:(id)a3 toDispatchGroup:(id)a4
+- (void)scheduleJob:(id)job toDispatchGroup:(id)group
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(QueueGroup *)self queues];
-  v9 = [v8 objectAtIndexedSubscript:self->_roundRobinIdx];
-  dispatch_group_async(v6, v9, v7);
+  groupCopy = group;
+  jobCopy = job;
+  queues = [(QueueGroup *)self queues];
+  v9 = [queues objectAtIndexedSubscript:self->_roundRobinIdx];
+  dispatch_group_async(groupCopy, v9, jobCopy);
 
   v10 = self->_roundRobinIdx + 1;
-  v11 = [(QueueGroup *)self queues];
-  self->_roundRobinIdx = v10 % [v11 count];
+  queues2 = [(QueueGroup *)self queues];
+  self->_roundRobinIdx = v10 % [queues2 count];
 }
 
 @end

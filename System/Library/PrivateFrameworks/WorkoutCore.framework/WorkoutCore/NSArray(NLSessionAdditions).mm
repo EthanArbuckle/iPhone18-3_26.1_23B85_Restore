@@ -7,7 +7,7 @@
 
 - (id)nl_mapUsingBlock:()NLSessionAdditions
 {
-  v21 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -18,8 +18,8 @@
   v17 = __Block_byref_object_copy_;
   v18 = __Block_byref_object_dispose_;
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
-  v19 = [v5 initWithCapacity:{objc_msgSend(v21, "count")}];
-  v6 = v21;
+  v19 = [v5 initWithCapacity:{objc_msgSend(selfCopy, "count")}];
+  v6 = selfCopy;
   v7 = MEMORY[0x277D85DD0];
   v8 = -1073741824;
   v9 = 0;
@@ -39,7 +39,7 @@
 
 - (id)nl_filteredArrayUsingBlock:()NLSessionAdditions
 {
-  v21 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -50,8 +50,8 @@
   v17 = __Block_byref_object_copy_;
   v18 = __Block_byref_object_dispose_;
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
-  v19 = [v5 initWithCapacity:{objc_msgSend(v21, "count")}];
-  v6 = v21;
+  v19 = [v5 initWithCapacity:{objc_msgSend(selfCopy, "count")}];
+  v6 = selfCopy;
   v7 = MEMORY[0x277D85DD0];
   v8 = -1073741824;
   v9 = 0;

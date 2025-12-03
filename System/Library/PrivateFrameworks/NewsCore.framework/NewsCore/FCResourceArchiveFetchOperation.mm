@@ -1,28 +1,28 @@
 @interface FCResourceArchiveFetchOperation
 - (BOOL)validateOperation;
-- (FCResourceArchiveFetchOperation)initWithArchiveURL:(id)a3 context:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCResourceArchiveFetchOperation)initWithArchiveURL:(id)l context:(id)context;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
-- (void)setDownloadTask:(uint64_t)a1;
+- (void)setDownloadTask:(uint64_t)task;
 @end
 
 @implementation FCResourceArchiveFetchOperation
 
-- (FCResourceArchiveFetchOperation)initWithArchiveURL:(id)a3 context:(id)a4
+- (FCResourceArchiveFetchOperation)initWithArchiveURL:(id)l context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = FCResourceArchiveFetchOperation;
   v8 = [(FCOperation *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     archiveURL = v8->_archiveURL;
     v8->_archiveURL = v9;
 
-    objc_storeStrong(&v8->_context, a4);
+    objc_storeStrong(&v8->_context, context);
   }
 
   return v8;
@@ -100,13 +100,13 @@ LABEL_12:
 
   v4 = [MEMORY[0x1E695AC18] requestWithURL:archiveURL];
   FCOperationFlagsApplyToURLRequest([(FCOperation *)self flags], v4);
-  v5 = [MEMORY[0x1E695AC78] sharedSession];
+  mEMORY[0x1E695AC78] = [MEMORY[0x1E695AC78] sharedSession];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __51__FCResourceArchiveFetchOperation_performOperation__block_invoke;
   v11[3] = &unk_1E7C3B7A0;
   v11[4] = self;
-  v6 = [v5 downloadTaskWithRequest:v4 completionHandler:v11];
+  v6 = [mEMORY[0x1E695AC78] downloadTaskWithRequest:v4 completionHandler:v11];
   [(FCResourceArchiveFetchOperation *)self setDownloadTask:v6];
 
   if (self)
@@ -120,12 +120,12 @@ LABEL_12:
   }
 
   [(NSURLSessionDownloadTask *)downloadTask addObserver:self forKeyPath:@"countOfBytesReceived" options:0 context:FCResourceArchiveFetchOperationKVOContext];
-  v8 = [(FCResourceArchiveFetchOperation *)self progressHandler];
+  progressHandler = [(FCResourceArchiveFetchOperation *)self progressHandler];
 
-  if (v8)
+  if (progressHandler)
   {
-    v9 = [(FCResourceArchiveFetchOperation *)self progressHandler];
-    v9[2](0.0);
+    progressHandler2 = [(FCResourceArchiveFetchOperation *)self progressHandler];
+    progressHandler2[2](0.0);
   }
 
   if (self)
@@ -348,17 +348,17 @@ void __51__FCResourceArchiveFetchOperation_performOperation__block_invoke_5(uint
   }
 }
 
-- (void)setDownloadTask:(uint64_t)a1
+- (void)setDownloadTask:(uint64_t)task
 {
-  if (a1)
+  if (task)
   {
-    objc_storeStrong((a1 + 424), a2);
+    objc_storeStrong((task + 424), a2);
   }
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v9 = a3;
+  errorCopy = error;
   if (self)
   {
     downloadTask = self->_downloadTask;
@@ -371,12 +371,12 @@ void __51__FCResourceArchiveFetchOperation_performOperation__block_invoke_5(uint
 
   [(NSURLSessionDownloadTask *)downloadTask removeObserver:self forKeyPath:@"countOfBytesReceived"];
   [(FCResourceArchiveFetchOperation *)self setDownloadTask:?];
-  v5 = [(FCResourceArchiveFetchOperation *)self fetchCompletionHandler];
+  fetchCompletionHandler = [(FCResourceArchiveFetchOperation *)self fetchCompletionHandler];
 
-  if (v5)
+  if (fetchCompletionHandler)
   {
-    v6 = [(FCResourceArchiveFetchOperation *)self fetchCompletionHandler];
-    v7 = v6;
+    fetchCompletionHandler2 = [(FCResourceArchiveFetchOperation *)self fetchCompletionHandler];
+    v7 = fetchCompletionHandler2;
     if (self)
     {
       resultResources = self->_resultResources;
@@ -387,13 +387,13 @@ void __51__FCResourceArchiveFetchOperation_performOperation__block_invoke_5(uint
       resultResources = 0;
     }
 
-    (*(v6 + 16))(v6, resultResources, v9);
+    (*(fetchCompletionHandler2 + 16))(fetchCompletionHandler2, resultResources, errorCopy);
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (FCResourceArchiveFetchOperationKVOContext == a6)
+  if (FCResourceArchiveFetchOperationKVOContext == context)
   {
     if (self)
     {
@@ -405,8 +405,8 @@ void __51__FCResourceArchiveFetchOperation_performOperation__block_invoke_5(uint
       downloadTask = 0;
     }
 
-    v8 = [(NSURLSessionDownloadTask *)downloadTask countOfBytesExpectedToReceive:a3];
-    if (v8 < 0)
+    longLongValue = [(NSURLSessionDownloadTask *)downloadTask countOfBytesExpectedToReceive:path];
+    if (longLongValue < 0)
     {
       objc_opt_class();
       if (self)
@@ -419,12 +419,12 @@ void __51__FCResourceArchiveFetchOperation_performOperation__block_invoke_5(uint
         v9 = 0;
       }
 
-      v10 = [(NSURLSessionDownloadTask *)v9 response];
-      if (v10)
+      response = [(NSURLSessionDownloadTask *)v9 response];
+      if (response)
       {
         if (objc_opt_isKindOfClass())
         {
-          v11 = v10;
+          v11 = response;
         }
 
         else
@@ -440,10 +440,10 @@ void __51__FCResourceArchiveFetchOperation_performOperation__block_invoke_5(uint
 
       v12 = v11;
 
-      v13 = [v12 allHeaderFields];
-      v14 = [v13 objectForKeyedSubscript:@"Content-Length"];
+      allHeaderFields = [v12 allHeaderFields];
+      v14 = [allHeaderFields objectForKeyedSubscript:@"Content-Length"];
 
-      v8 = [v14 longLongValue];
+      longLongValue = [v14 longLongValue];
     }
 
     if (self)
@@ -456,13 +456,13 @@ void __51__FCResourceArchiveFetchOperation_performOperation__block_invoke_5(uint
       v15 = 0;
     }
 
-    v16 = [(NSURLSessionDownloadTask *)v15 countOfBytesReceived];
-    v17 = [(FCResourceArchiveFetchOperation *)self progressHandler];
+    countOfBytesReceived = [(NSURLSessionDownloadTask *)v15 countOfBytesReceived];
+    progressHandler = [(FCResourceArchiveFetchOperation *)self progressHandler];
 
-    if (v17)
+    if (progressHandler)
     {
-      v18 = [(FCResourceArchiveFetchOperation *)self progressHandler];
-      v18[2](v16 / v8 * 0.85 + 0.0);
+      progressHandler2 = [(FCResourceArchiveFetchOperation *)self progressHandler];
+      progressHandler2[2](countOfBytesReceived / longLongValue * 0.85 + 0.0);
     }
   }
 
@@ -470,7 +470,7 @@ void __51__FCResourceArchiveFetchOperation_performOperation__block_invoke_5(uint
   {
     v19.receiver = self;
     v19.super_class = FCResourceArchiveFetchOperation;
-    [(FCResourceArchiveFetchOperation *)&v19 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(FCResourceArchiveFetchOperation *)&v19 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

@@ -1,56 +1,56 @@
 @interface SMBFPClient
-+ (id)locallyDestroyFPDomain:(id)a3 provider:(id)a4;
-+ (id)newClientForProvider:(id)a3;
-- (id)fixupConnectionFor:(id)a3;
++ (id)locallyDestroyFPDomain:(id)domain provider:(id)provider;
++ (id)newClientForProvider:(id)provider;
+- (id)fixupConnectionFor:(id)for;
 @end
 
 @implementation SMBFPClient
 
-- (id)fixupConnectionFor:(id)a3
+- (id)fixupConnectionFor:(id)for
 {
-  v5 = a3;
+  forCopy = for;
   v6 = objc_opt_new();
   v7 = OBJC_IVAR___LiveFSMountClient_helper;
   objc_storeStrong(&self->LiveFSMountClient_opaque[OBJC_IVAR___LiveFSMountClient_helper], v6);
   if (*&self->LiveFSMountClient_opaque[v7])
   {
-    objc_storeStrong(&self->LiveFSMountClient_opaque[OBJC_IVAR___LiveFSMountClient_provider], a3);
-    [v6 setProviderName:v5];
+    objc_storeStrong(&self->LiveFSMountClient_opaque[OBJC_IVAR___LiveFSMountClient_provider], for);
+    [v6 setProviderName:forCopy];
     v8 = *&self->LiveFSMountClient_opaque[v7];
     v9 = OBJC_IVAR___LiveFSMountClient_conn;
     [*&self->LiveFSMountClient_opaque[OBJC_IVAR___LiveFSMountClient_conn] setExportedObject:v8];
     v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___LiveFSMounterClient];
     [*&self->LiveFSMountClient_opaque[v9] setExportedInterface:v10];
 
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-+ (id)newClientForProvider:(id)a3
++ (id)newClientForProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithProvider:v4];
+  providerCopy = provider;
+  v5 = [[self alloc] initWithProvider:providerCopy];
 
   return v5;
 }
 
-+ (id)locallyDestroyFPDomain:(id)a3 provider:(id)a4
++ (id)locallyDestroyFPDomain:(id)domain provider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
+  domainCopy = domain;
+  providerCopy = provider;
   v7 = objc_opt_new();
   v8 = v7;
   if (v7)
   {
-    [v7 setProviderName:v6];
-    [v8 destroyDomain:v5];
+    [v7 setProviderName:providerCopy];
+    [v8 destroyDomain:domainCopy];
   }
 
   else

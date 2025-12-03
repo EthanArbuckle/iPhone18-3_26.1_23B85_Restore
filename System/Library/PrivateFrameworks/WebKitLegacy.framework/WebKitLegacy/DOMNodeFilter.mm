@@ -1,5 +1,5 @@
 @interface DOMNodeFilter
-- (signed)acceptNode:(id)a3;
+- (signed)acceptNode:(id)node;
 - (void)dealloc;
 @end
 
@@ -12,9 +12,9 @@
   {
     if (*(internal + 4) == 1)
     {
-      v3 = self;
+      selfCopy = self;
       (*(*internal + 16))(self->super._internal, a2);
-      self = v3;
+      self = selfCopy;
     }
 
     else
@@ -28,9 +28,9 @@
   [(DOMObject *)&v4 dealloc];
 }
 
-- (signed)acceptNode:(id)a3
+- (signed)acceptNode:(id)node
 {
-  if (!a3)
+  if (!node)
   {
     raiseTypeErrorException();
   }

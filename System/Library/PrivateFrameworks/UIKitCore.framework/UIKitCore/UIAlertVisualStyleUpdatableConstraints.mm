@@ -1,6 +1,6 @@
 @interface UIAlertVisualStyleUpdatableConstraints
 - (UIAlertVisualStyleUpdatableConstraints)init;
-- (void)addConstraint:(id)a3 forKey:(id)a4;
+- (void)addConstraint:(id)constraint forKey:(id)key;
 @end
 
 @implementation UIAlertVisualStyleUpdatableConstraints
@@ -12,19 +12,19 @@
   v2 = [(UIAlertVisualStyleUpdatableConstraints *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     constraintsByKey = v2->_constraintsByKey;
-    v2->_constraintsByKey = v3;
+    v2->_constraintsByKey = dictionary;
   }
 
   return v2;
 }
 
-- (void)addConstraint:(id)a3 forKey:(id)a4
+- (void)addConstraint:(id)constraint forKey:(id)key
 {
-  if (a3)
+  if (constraint)
   {
-    if (a4)
+    if (key)
     {
       [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
     }

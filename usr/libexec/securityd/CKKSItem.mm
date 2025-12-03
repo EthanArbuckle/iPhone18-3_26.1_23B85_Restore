@@ -1,25 +1,25 @@
 @interface CKKSItem
-+ (BOOL)intransactionRecordChanged:(id)a3 contextID:(id)a4 resync:(BOOL)a5 error:(id *)a6;
-+ (BOOL)intransactionRecordDeleted:(id)a3 contextID:(id)a4 resync:(BOOL)a5 error:(id *)a6;
-+ (id)fromDatabaseRow:(id)a3;
-+ (void)setOSVersionInRecord:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesCKRecord:(id)a3;
-- (CKKSItem)initWithCKRecord:(id)a3 contextID:(id)a4;
-- (CKKSItem)initWithUUID:(id)a3 parentKeyUUID:(id)a4 contextID:(id)a5 zoneID:(id)a6 encodedCKRecord:(id)a7 encItem:(id)a8 wrappedkey:(id)a9 generationCount:(unint64_t)a10 encver:(unint64_t)a11 plaintextPCSServiceIdentifier:(id)a12 plaintextPCSPublicKey:(id)a13 plaintextPCSPublicIdentity:(id)a14;
++ (BOOL)intransactionRecordChanged:(id)changed contextID:(id)d resync:(BOOL)resync error:(id *)error;
++ (BOOL)intransactionRecordDeleted:(id)deleted contextID:(id)d resync:(BOOL)resync error:(id *)error;
++ (id)fromDatabaseRow:(id)row;
++ (void)setOSVersionInRecord:(id)record;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesCKRecord:(id)record;
+- (CKKSItem)initWithCKRecord:(id)record contextID:(id)d;
+- (CKKSItem)initWithUUID:(id)d parentKeyUUID:(id)iD contextID:(id)contextID zoneID:(id)zoneID encodedCKRecord:(id)record encItem:(id)item wrappedkey:(id)wrappedkey generationCount:(unint64_t)self0 encver:(unint64_t)self1 plaintextPCSServiceIdentifier:(id)self2 plaintextPCSPublicKey:(id)self3 plaintextPCSPublicIdentity:(id)self4;
 - (NSString)base64Item;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (id)initCopyingCKKSItem:(id)a3;
-- (id)makeAuthenticatedDataDictionaryUpdatingCKKSItem:(id)a3 encryptionVersion:(unint64_t)a4;
+- (id)initCopyingCKKSItem:(id)item;
+- (id)makeAuthenticatedDataDictionaryUpdatingCKKSItem:(id)item encryptionVersion:(unint64_t)version;
 - (id)makeAuthenticatedDataDictionaryUpdatingCKKSItemEncVer1;
-- (id)makeAuthenticatedDataDictionaryUpdatingCKKSItemEncVer2:(id)a3;
+- (id)makeAuthenticatedDataDictionaryUpdatingCKKSItemEncVer2:(id)ver2;
 - (id)sqlValues;
-- (id)updateCKRecord:(id)a3 zoneID:(id)a4;
+- (id)updateCKRecord:(id)record zoneID:(id)d;
 - (id)whereClauseToFindSelf;
-- (void)setBase64Item:(id)a3;
-- (void)setFromCKRecord:(id)a3;
+- (void)setBase64Item:(id)item;
+- (void)setFromCKRecord:(id)record;
 @end
 
 @implementation CKKSItem
@@ -27,11 +27,11 @@
 - (id)sqlValues
 {
   v40[0] = @"contextID";
-  v3 = [(CKKSCKRecordHolder *)self contextID];
-  v4 = v3;
-  if (v3)
+  contextID = [(CKKSCKRecordHolder *)self contextID];
+  v4 = contextID;
+  if (contextID)
   {
-    v5 = v3;
+    v5 = contextID;
   }
 
   else
@@ -44,18 +44,18 @@
   v39 = v6;
   v41[0] = v6;
   v40[1] = @"UUID";
-  v38 = [(CKKSItem *)self uuid];
-  v41[1] = v38;
+  uuid = [(CKKSItem *)self uuid];
+  v41[1] = uuid;
   v40[2] = @"parentKeyUUID";
-  v37 = [(CKKSItem *)self parentKeyUUID];
-  v41[2] = v37;
+  parentKeyUUID = [(CKKSItem *)self parentKeyUUID];
+  v41[2] = parentKeyUUID;
   v40[3] = @"ckzone";
-  v7 = [(CKKSCKRecordHolder *)self zoneID];
-  v8 = [v7 zoneName];
+  zoneID = [(CKKSCKRecordHolder *)self zoneID];
+  zoneName = [zoneID zoneName];
 
-  if (v8)
+  if (zoneName)
   {
-    v9 = v8;
+    v9 = zoneName;
   }
 
   else
@@ -68,23 +68,23 @@
   v36 = v10;
   v41[3] = v10;
   v40[4] = @"encitem";
-  v35 = [(CKKSItem *)self base64Item];
-  v41[4] = v35;
+  base64Item = [(CKKSItem *)self base64Item];
+  v41[4] = base64Item;
   v40[5] = @"wrappedkey";
-  v34 = [(CKKSItem *)self wrappedkey];
-  v11 = [v34 base64WrappedKey];
-  v41[5] = v11;
+  wrappedkey = [(CKKSItem *)self wrappedkey];
+  base64WrappedKey = [wrappedkey base64WrappedKey];
+  v41[5] = base64WrappedKey;
   v40[6] = @"gencount";
   v12 = [NSNumber numberWithInteger:[(CKKSItem *)self generationCount]];
-  v13 = [v12 stringValue];
-  v41[6] = v13;
+  stringValue = [v12 stringValue];
+  v41[6] = stringValue;
   v40[7] = @"encver";
   v14 = [NSNumber numberWithInteger:[(CKKSItem *)self encver]];
-  v15 = [v14 stringValue];
-  v41[7] = v15;
+  stringValue2 = [v14 stringValue];
+  v41[7] = stringValue2;
   v40[8] = @"ckrecord";
-  v16 = [(CKKSCKRecordHolder *)self encodedCKRecord];
-  v17 = [v16 base64EncodedStringWithOptions:0];
+  encodedCKRecord = [(CKKSCKRecordHolder *)self encodedCKRecord];
+  v17 = [encodedCKRecord base64EncodedStringWithOptions:0];
 
   if (v17)
   {
@@ -100,11 +100,11 @@
 
   v41[8] = v19;
   v40[9] = @"pcss";
-  v20 = [(CKKSItem *)self plaintextPCSServiceIdentifier];
-  v21 = v20;
-  if (v20)
+  plaintextPCSServiceIdentifier = [(CKKSItem *)self plaintextPCSServiceIdentifier];
+  v21 = plaintextPCSServiceIdentifier;
+  if (plaintextPCSServiceIdentifier)
   {
-    v22 = v20;
+    v22 = plaintextPCSServiceIdentifier;
   }
 
   else
@@ -116,8 +116,8 @@
 
   v41[9] = v23;
   v40[10] = @"pcsk";
-  v24 = [(CKKSItem *)self plaintextPCSPublicKey];
-  v25 = [v24 base64EncodedStringWithOptions:0];
+  plaintextPCSPublicKey = [(CKKSItem *)self plaintextPCSPublicKey];
+  v25 = [plaintextPCSPublicKey base64EncodedStringWithOptions:0];
 
   if (v25)
   {
@@ -133,8 +133,8 @@
 
   v41[10] = v27;
   v40[11] = @"pcsi";
-  v28 = [(CKKSItem *)self plaintextPCSPublicIdentity];
-  v29 = [v28 base64EncodedStringWithOptions:0];
+  plaintextPCSPublicIdentity = [(CKKSItem *)self plaintextPCSPublicIdentity];
+  v29 = [plaintextPCSPublicIdentity base64EncodedStringWithOptions:0];
 
   if (v29)
   {
@@ -157,11 +157,11 @@
 - (id)whereClauseToFindSelf
 {
   v12[0] = @"contextID";
-  v3 = [(CKKSCKRecordHolder *)self contextID];
-  v4 = v3;
-  if (v3)
+  contextID = [(CKKSCKRecordHolder *)self contextID];
+  v4 = contextID;
+  if (contextID)
   {
-    v5 = v3;
+    v5 = contextID;
   }
 
   else
@@ -173,21 +173,21 @@
 
   v13[0] = v6;
   v12[1] = @"UUID";
-  v7 = [(CKKSItem *)self uuid];
-  v13[1] = v7;
+  uuid = [(CKKSItem *)self uuid];
+  v13[1] = uuid;
   v12[2] = @"ckzone";
-  v8 = [(CKKSCKRecordHolder *)self zoneID];
-  v9 = [v8 zoneName];
-  v13[2] = v9;
+  zoneID = [(CKKSCKRecordHolder *)self zoneID];
+  zoneName = [zoneID zoneName];
+  v13[2] = zoneName;
   v10 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:3];
 
   return v10;
 }
 
-- (void)setBase64Item:(id)a3
+- (void)setBase64Item:(id)item
 {
-  v4 = a3;
-  v5 = [[NSData alloc] initWithBase64EncodedString:v4 options:0];
+  itemCopy = item;
+  v5 = [[NSData alloc] initWithBase64EncodedString:itemCopy options:0];
 
   encitem = self->_encitem;
   self->_encitem = v5;
@@ -195,17 +195,17 @@
 
 - (NSString)base64Item
 {
-  v2 = [(CKKSItem *)self encitem];
-  v3 = [v2 base64EncodedStringWithOptions:0];
+  encitem = [(CKKSItem *)self encitem];
+  v3 = [encitem base64EncodedStringWithOptions:0];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CKKSItem;
-  v4 = [(CKKSCKRecordHolder *)&v6 copyWithZone:a3];
+  v4 = [(CKKSCKRecordHolder *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 7, self->_uuid);
   objc_storeStrong(v4 + 8, self->_parentKeyUUID);
   objc_storeStrong(v4 + 9, self->_encitem);
@@ -219,8 +219,8 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CKKSItem *)self uuid];
-  v6 = [NSString stringWithFormat:@"<%@: %@ %p>", v4, v5, self];
+  uuid = [(CKKSItem *)self uuid];
+  v6 = [NSString stringWithFormat:@"<%@: %@ %p>", v4, uuid, self];
 
   return v6;
 }
@@ -229,57 +229,57 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CKKSItem *)self uuid];
-  v6 = [NSString stringWithFormat:@"<%@: %@>", v4, v5];
+  uuid = [(CKKSItem *)self uuid];
+  v6 = [NSString stringWithFormat:@"<%@: %@>", v4, uuid];
 
   return v6;
 }
 
-- (id)makeAuthenticatedDataDictionaryUpdatingCKKSItemEncVer2:(id)a3
+- (id)makeAuthenticatedDataDictionaryUpdatingCKKSItemEncVer2:(id)ver2
 {
-  v4 = a3;
+  ver2Copy = ver2;
   v5 = objc_alloc_init(NSMutableDictionary);
-  v6 = [(CKKSItem *)self uuid];
-  v7 = [v6 dataUsingEncoding:4];
+  uuid = [(CKKSItem *)self uuid];
+  v7 = [uuid dataUsingEncoding:4];
   [v5 setObject:v7 forKeyedSubscript:@"UUID"];
 
-  v8 = [(CKKSItem *)self parentKeyUUID];
-  v9 = [v8 dataUsingEncoding:4];
+  parentKeyUUID = [(CKKSItem *)self parentKeyUUID];
+  v9 = [parentKeyUUID dataUsingEncoding:4];
   [v5 setObject:v9 forKeyedSubscript:@"wrappedkey"];
 
-  v41 = [(CKKSItem *)self generationCount];
-  v10 = [NSData dataWithBytes:&v41 length:8];
+  generationCount = [(CKKSItem *)self generationCount];
+  v10 = [NSData dataWithBytes:&generationCount length:8];
   [v5 setObject:v10 forKeyedSubscript:@"gen"];
 
-  v40 = [(CKKSItem *)self encver];
-  v11 = [NSData dataWithBytes:&v40 length:8];
+  encver = [(CKKSItem *)self encver];
+  v11 = [NSData dataWithBytes:&encver length:8];
   [v5 setObject:v11 forKeyedSubscript:@"encver"];
 
-  v12 = [(CKKSItem *)self plaintextPCSServiceIdentifier];
+  plaintextPCSServiceIdentifier = [(CKKSItem *)self plaintextPCSServiceIdentifier];
 
-  if (v12)
+  if (plaintextPCSServiceIdentifier)
   {
-    v13 = [(CKKSItem *)self plaintextPCSServiceIdentifier];
-    v14 = [v13 unsignedLongValue];
+    plaintextPCSServiceIdentifier2 = [(CKKSItem *)self plaintextPCSServiceIdentifier];
+    unsignedLongValue = [plaintextPCSServiceIdentifier2 unsignedLongValue];
 
-    v39 = v14;
-    v15 = [NSData dataWithBytes:&v39 length:8];
+    unsignedLongLongValue = unsignedLongValue;
+    v15 = [NSData dataWithBytes:&unsignedLongLongValue length:8];
     [v5 setObject:v15 forKeyedSubscript:@"pcsservice"];
   }
 
-  v16 = [(CKKSItem *)self plaintextPCSPublicKey];
-  [v5 setObject:v16 forKeyedSubscript:@"pcspublickey"];
+  plaintextPCSPublicKey = [(CKKSItem *)self plaintextPCSPublicKey];
+  [v5 setObject:plaintextPCSPublicKey forKeyedSubscript:@"pcspublickey"];
 
-  v17 = [(CKKSItem *)self plaintextPCSPublicIdentity];
-  [v5 setObject:v17 forKeyedSubscript:@"pcspublicidentity"];
+  plaintextPCSPublicIdentity = [(CKKSItem *)self plaintextPCSPublicIdentity];
+  [v5 setObject:plaintextPCSPublicIdentity forKeyedSubscript:@"pcspublicidentity"];
 
-  if (!v4)
+  if (!ver2Copy)
   {
     goto LABEL_36;
   }
 
-  v18 = [v4 storedCKRecord];
-  if (!v18)
+  storedCKRecord = [ver2Copy storedCKRecord];
+  if (!storedCKRecord)
   {
     goto LABEL_35;
   }
@@ -289,9 +289,9 @@
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v33 = v18;
-  v19 = [v18 allKeys];
-  v20 = [v19 countByEnumeratingWithState:&v35 objects:v42 count:16];
+  v33 = storedCKRecord;
+  allKeys = [storedCKRecord allKeys];
+  v20 = [allKeys countByEnumeratingWithState:&v35 objects:v42 count:16];
   if (!v20)
   {
     goto LABEL_34;
@@ -306,7 +306,7 @@
     {
       if (*v36 != v22)
       {
-        objc_enumerationMutation(v19);
+        objc_enumerationMutation(allKeys);
       }
 
       v24 = *(*(&v35 + 1) + 8 * v23);
@@ -345,8 +345,8 @@ LABEL_24:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v39 = [v34 unsignedLongLongValue];
-              v25 = [NSData dataWithBytes:&v39 length:8];
+              unsignedLongLongValue = [v34 unsignedLongLongValue];
+              v25 = [NSData dataWithBytes:&unsignedLongLongValue length:8];
               goto LABEL_24;
             }
           }
@@ -357,7 +357,7 @@ LABEL_24:
     }
 
     while (v21 != v23);
-    v26 = [v19 countByEnumeratingWithState:&v35 objects:v42 count:16];
+    v26 = [allKeys countByEnumeratingWithState:&v35 objects:v42 count:16];
     v21 = v26;
   }
 
@@ -365,7 +365,7 @@ LABEL_24:
 LABEL_34:
 
   v5 = v32;
-  v18 = v33;
+  storedCKRecord = v33;
 LABEL_35:
 
 LABEL_36:
@@ -376,20 +376,20 @@ LABEL_36:
 - (id)makeAuthenticatedDataDictionaryUpdatingCKKSItemEncVer1
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(CKKSItem *)self uuid];
-  v5 = [v4 dataUsingEncoding:4];
+  uuid = [(CKKSItem *)self uuid];
+  v5 = [uuid dataUsingEncoding:4];
   [v3 setObject:v5 forKeyedSubscript:@"UUID"];
 
-  v6 = [(CKKSItem *)self parentKeyUUID];
-  v7 = [v6 dataUsingEncoding:4];
+  parentKeyUUID = [(CKKSItem *)self parentKeyUUID];
+  v7 = [parentKeyUUID dataUsingEncoding:4];
   [v3 setObject:v7 forKeyedSubscript:@"wrappedkey"];
 
-  v12 = [(CKKSItem *)self generationCount];
-  v8 = [NSData dataWithBytes:&v12 length:8];
+  generationCount = [(CKKSItem *)self generationCount];
+  v8 = [NSData dataWithBytes:&generationCount length:8];
   [v3 setObject:v8 forKeyedSubscript:@"gen"];
 
-  v11 = [(CKKSItem *)self encver];
-  v9 = [NSData dataWithBytes:&v11 length:8];
+  encver = [(CKKSItem *)self encver];
+  v9 = [NSData dataWithBytes:&encver length:8];
   [v3 setObject:v9 forKeyedSubscript:@"encver"];
 
   [v3 setObject:0 forKeyedSubscript:@"pcsservice"];
@@ -399,48 +399,48 @@ LABEL_36:
   return v3;
 }
 
-- (id)makeAuthenticatedDataDictionaryUpdatingCKKSItem:(id)a3 encryptionVersion:(unint64_t)a4
+- (id)makeAuthenticatedDataDictionaryUpdatingCKKSItem:(id)item encryptionVersion:(unint64_t)version
 {
-  v6 = a3;
-  if (a4 == 2)
+  itemCopy = item;
+  if (version == 2)
   {
-    v7 = [(CKKSItem *)self makeAuthenticatedDataDictionaryUpdatingCKKSItemEncVer2:v6];
+    makeAuthenticatedDataDictionaryUpdatingCKKSItemEncVer1 = [(CKKSItem *)self makeAuthenticatedDataDictionaryUpdatingCKKSItemEncVer2:itemCopy];
   }
 
   else
   {
-    if (a4 != 1)
+    if (version != 1)
     {
-      v10 = [NSString stringWithFormat:@"%d is not a known encryption version", a4];
-      v11 = [NSException exceptionWithName:@"WrongEncryptionVersionException" reason:v10 userInfo:0];
+      version = [NSString stringWithFormat:@"%d is not a known encryption version", version];
+      v11 = [NSException exceptionWithName:@"WrongEncryptionVersionException" reason:version userInfo:0];
       v12 = v11;
 
       objc_exception_throw(v11);
     }
 
-    v7 = [(CKKSItem *)self makeAuthenticatedDataDictionaryUpdatingCKKSItemEncVer1];
+    makeAuthenticatedDataDictionaryUpdatingCKKSItemEncVer1 = [(CKKSItem *)self makeAuthenticatedDataDictionaryUpdatingCKKSItemEncVer1];
   }
 
-  v8 = v7;
+  v8 = makeAuthenticatedDataDictionaryUpdatingCKKSItemEncVer1;
 
   return v8;
 }
 
-- (BOOL)matchesCKRecord:(id)a3
+- (BOOL)matchesCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 recordType];
-  v6 = [v5 isEqual:@"item"];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  v6 = [recordType isEqual:@"item"];
 
   if (!v6)
   {
     goto LABEL_41;
   }
 
-  v7 = [v4 recordID];
-  v8 = [v7 recordName];
-  v9 = [(CKKSItem *)self uuid];
-  v10 = [v8 isEqualToString:v9];
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  uuid = [(CKKSItem *)self uuid];
+  v10 = [recordName isEqualToString:uuid];
 
   if ((v10 & 1) == 0)
   {
@@ -455,11 +455,11 @@ LABEL_36:
     goto LABEL_39;
   }
 
-  v11 = [v4 objectForKeyedSubscript:@"parentkeyref"];
-  v12 = [v11 recordID];
-  v13 = [v12 recordName];
-  v14 = [(CKKSItem *)self parentKeyUUID];
-  v15 = [v13 isEqualToString:v14];
+  v11 = [recordCopy objectForKeyedSubscript:@"parentkeyref"];
+  recordID2 = [v11 recordID];
+  recordName2 = [recordID2 recordName];
+  parentKeyUUID = [(CKKSItem *)self parentKeyUUID];
+  v15 = [recordName2 isEqualToString:parentKeyUUID];
 
   if ((v15 & 1) == 0)
   {
@@ -474,7 +474,7 @@ LABEL_36:
     goto LABEL_39;
   }
 
-  v16 = [v4 objectForKeyedSubscript:@"gen"];
+  v16 = [recordCopy objectForKeyedSubscript:@"gen"];
   v17 = [NSNumber numberWithInteger:[(CKKSItem *)self generationCount]];
   v18 = [v16 isEqual:v17];
 
@@ -491,10 +491,10 @@ LABEL_36:
     goto LABEL_39;
   }
 
-  v19 = [v4 objectForKeyedSubscript:@"wrappedkey"];
-  v20 = [(CKKSItem *)self wrappedkey];
-  v21 = [v20 base64WrappedKey];
-  v22 = [v19 isEqual:v21];
+  v19 = [recordCopy objectForKeyedSubscript:@"wrappedkey"];
+  wrappedkey = [(CKKSItem *)self wrappedkey];
+  base64WrappedKey = [wrappedkey base64WrappedKey];
+  v22 = [v19 isEqual:base64WrappedKey];
 
   if ((v22 & 1) == 0)
   {
@@ -509,9 +509,9 @@ LABEL_36:
     goto LABEL_39;
   }
 
-  v23 = [v4 objectForKeyedSubscript:@"data"];
-  v24 = [(CKKSItem *)self encitem];
-  v25 = [v23 isEqual:v24];
+  v23 = [recordCopy objectForKeyedSubscript:@"data"];
+  encitem = [(CKKSItem *)self encitem];
+  v25 = [v23 isEqual:encitem];
 
   if ((v25 & 1) == 0)
   {
@@ -526,12 +526,12 @@ LABEL_36:
     goto LABEL_39;
   }
 
-  v26 = [v4 objectForKeyedSubscript:@"pcsservice"];
-  if (v26 || ([(CKKSItem *)self plaintextPCSServiceIdentifier], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
+  v26 = [recordCopy objectForKeyedSubscript:@"pcsservice"];
+  if (v26 || ([(CKKSItem *)self plaintextPCSServiceIdentifier], (encitem = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v27 = [v4 objectForKeyedSubscript:@"pcsservice"];
-    v28 = [(CKKSItem *)self plaintextPCSServiceIdentifier];
-    v29 = [v27 isEqual:v28];
+    v27 = [recordCopy objectForKeyedSubscript:@"pcsservice"];
+    plaintextPCSServiceIdentifier = [(CKKSItem *)self plaintextPCSServiceIdentifier];
+    v29 = [v27 isEqual:plaintextPCSServiceIdentifier];
 
     if (v26)
     {
@@ -563,12 +563,12 @@ LABEL_36:
   }
 
 LABEL_11:
-  v30 = [v4 objectForKeyedSubscript:@"pcspublickey"];
-  if (v30 || ([(CKKSItem *)self plaintextPCSPublicKey], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
+  v30 = [recordCopy objectForKeyedSubscript:@"pcspublickey"];
+  if (v30 || ([(CKKSItem *)self plaintextPCSPublicKey], (encitem = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v31 = [v4 objectForKeyedSubscript:@"pcspublickey"];
-    v32 = [(CKKSItem *)self plaintextPCSPublicKey];
-    v33 = [v31 isEqual:v32];
+    v31 = [recordCopy objectForKeyedSubscript:@"pcspublickey"];
+    plaintextPCSPublicKey = [(CKKSItem *)self plaintextPCSPublicKey];
+    v33 = [v31 isEqual:plaintextPCSPublicKey];
 
     if (v30)
     {
@@ -602,19 +602,19 @@ LABEL_39:
   }
 
 LABEL_15:
-  v34 = [v4 objectForKeyedSubscript:@"pcspublicidentity"];
+  v34 = [recordCopy objectForKeyedSubscript:@"pcspublicidentity"];
   if (!v34)
   {
-    v24 = [(CKKSItem *)self plaintextPCSPublicIdentity];
-    if (!v24)
+    encitem = [(CKKSItem *)self plaintextPCSPublicIdentity];
+    if (!encitem)
     {
       goto LABEL_19;
     }
   }
 
-  v35 = [v4 objectForKeyedSubscript:@"pcspublicidentity"];
-  v36 = [(CKKSItem *)self plaintextPCSPublicIdentity];
-  v37 = [v35 isEqual:v36];
+  v35 = [recordCopy objectForKeyedSubscript:@"pcspublicidentity"];
+  plaintextPCSPublicIdentity = [(CKKSItem *)self plaintextPCSPublicIdentity];
+  v37 = [v35 isEqual:plaintextPCSPublicIdentity];
 
   if (!v34)
   {
@@ -652,17 +652,17 @@ LABEL_42:
   return v38;
 }
 
-- (id)updateCKRecord:(id)a3 zoneID:(id)a4
+- (id)updateCKRecord:(id)record zoneID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 recordType];
-  v9 = [v8 isEqual:@"item"];
+  recordCopy = record;
+  dCopy = d;
+  recordType = [recordCopy recordType];
+  v9 = [recordType isEqual:@"item"];
 
   if ((v9 & 1) == 0)
   {
-    v24 = [v6 recordType];
-    v25 = [NSString stringWithFormat:@"CKRecordType (%@) was not %@", v24, @"item"];
+    recordType2 = [recordCopy recordType];
+    v25 = [NSString stringWithFormat:@"CKRecordType (%@) was not %@", recordType2, @"item"];
     v26 = [NSException exceptionWithName:@"WrongCKRecordTypeException" reason:v25 userInfo:0];
     v27 = v26;
 
@@ -671,68 +671,68 @@ LABEL_42:
 
   v10 = [CKReference alloc];
   v11 = [CKRecordID alloc];
-  v12 = [(CKKSItem *)self parentKeyUUID];
-  v13 = [v11 initWithRecordName:v12 zoneID:v7];
+  parentKeyUUID = [(CKKSItem *)self parentKeyUUID];
+  v13 = [v11 initWithRecordName:parentKeyUUID zoneID:dCopy];
   v14 = [v10 initWithRecordID:v13 action:CKReferenceActionValidate];
-  [v6 setObject:v14 forKeyedSubscript:@"parentkeyref"];
+  [recordCopy setObject:v14 forKeyedSubscript:@"parentkeyref"];
 
-  [CKKSItem setOSVersionInRecord:v6];
-  v15 = [(CKKSItem *)self encitem];
-  [v6 setObject:v15 forKeyedSubscript:@"data"];
+  [CKKSItem setOSVersionInRecord:recordCopy];
+  encitem = [(CKKSItem *)self encitem];
+  [recordCopy setObject:encitem forKeyedSubscript:@"data"];
 
-  v16 = [(CKKSItem *)self wrappedkey];
-  v17 = [v16 base64WrappedKey];
-  [v6 setObject:v17 forKeyedSubscript:@"wrappedkey"];
+  wrappedkey = [(CKKSItem *)self wrappedkey];
+  base64WrappedKey = [wrappedkey base64WrappedKey];
+  [recordCopy setObject:base64WrappedKey forKeyedSubscript:@"wrappedkey"];
 
   v18 = [NSNumber numberWithInteger:[(CKKSItem *)self generationCount]];
-  [v6 setObject:v18 forKeyedSubscript:@"gen"];
+  [recordCopy setObject:v18 forKeyedSubscript:@"gen"];
 
   v19 = [NSNumber numberWithInteger:[(CKKSItem *)self encver]];
-  [v6 setObject:v19 forKeyedSubscript:@"encver"];
+  [recordCopy setObject:v19 forKeyedSubscript:@"encver"];
 
-  v20 = [(CKKSItem *)self plaintextPCSServiceIdentifier];
-  [v6 setObject:v20 forKeyedSubscript:@"pcsservice"];
+  plaintextPCSServiceIdentifier = [(CKKSItem *)self plaintextPCSServiceIdentifier];
+  [recordCopy setObject:plaintextPCSServiceIdentifier forKeyedSubscript:@"pcsservice"];
 
-  v21 = [(CKKSItem *)self plaintextPCSPublicKey];
-  [v6 setObject:v21 forKeyedSubscript:@"pcspublickey"];
+  plaintextPCSPublicKey = [(CKKSItem *)self plaintextPCSPublicKey];
+  [recordCopy setObject:plaintextPCSPublicKey forKeyedSubscript:@"pcspublickey"];
 
-  v22 = [(CKKSItem *)self plaintextPCSPublicIdentity];
-  [v6 setObject:v22 forKeyedSubscript:@"pcspublicidentity"];
+  plaintextPCSPublicIdentity = [(CKKSItem *)self plaintextPCSPublicIdentity];
+  [recordCopy setObject:plaintextPCSPublicIdentity forKeyedSubscript:@"pcspublicidentity"];
 
-  return v6;
+  return recordCopy;
 }
 
-- (void)setFromCKRecord:(id)a3
+- (void)setFromCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 recordType];
-  v6 = [v5 isEqual:@"item"];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  v6 = [recordType isEqual:@"item"];
 
   if ((v6 & 1) == 0)
   {
-    v26 = [v4 recordType];
-    v27 = [NSString stringWithFormat:@"CKRecordType (%@) was not %@", v26, @"item"];
+    recordType2 = [recordCopy recordType];
+    v27 = [NSString stringWithFormat:@"CKRecordType (%@) was not %@", recordType2, @"item"];
     v28 = [NSException exceptionWithName:@"WrongCKRecordTypeException" reason:v27 userInfo:0];
     v29 = v28;
 
     objc_exception_throw(v28);
   }
 
-  [(CKKSCKRecordHolder *)self setStoredCKRecord:v4];
-  v7 = [v4 recordID];
-  v8 = [v7 recordName];
+  [(CKKSCKRecordHolder *)self setStoredCKRecord:recordCopy];
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
   uuid = self->_uuid;
-  self->_uuid = v8;
+  self->_uuid = recordName;
 
-  v10 = [v4 objectForKeyedSubscript:@"parentkeyref"];
-  v11 = [v10 recordID];
-  v12 = [v11 recordName];
-  [(CKKSItem *)self setParentKeyUUID:v12];
+  v10 = [recordCopy objectForKeyedSubscript:@"parentkeyref"];
+  recordID2 = [v10 recordID];
+  recordName2 = [recordID2 recordName];
+  [(CKKSItem *)self setParentKeyUUID:recordName2];
 
-  v13 = [v4 objectForKeyedSubscript:@"data"];
+  v13 = [recordCopy objectForKeyedSubscript:@"data"];
   [(CKKSItem *)self setEncitem:v13];
 
-  v14 = [v4 objectForKeyedSubscript:@"wrappedkey"];
+  v14 = [recordCopy objectForKeyedSubscript:@"wrappedkey"];
   if (v14)
   {
     v15 = [[CKKSWrappedAESSIVKey alloc] initWithBase64:v14];
@@ -740,10 +740,10 @@ LABEL_42:
 
   else
   {
-    v16 = [v4 recordID];
-    v17 = [v16 zoneID];
-    v18 = [v17 zoneName];
-    v19 = sub_100019104(@"ckksitem", v18);
+    recordID3 = [recordCopy recordID];
+    zoneID = [recordID3 zoneID];
+    zoneName = [zoneID zoneName];
+    v19 = sub_100019104(@"ckksitem", zoneName);
 
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -757,32 +757,32 @@ LABEL_42:
   v20 = v15;
   [(CKKSItem *)self setWrappedkey:v15];
 
-  v21 = [v4 objectForKeyedSubscript:@"gen"];
+  v21 = [recordCopy objectForKeyedSubscript:@"gen"];
   -[CKKSItem setGenerationCount:](self, "setGenerationCount:", [v21 unsignedIntegerValue]);
 
-  v22 = [v4 objectForKeyedSubscript:@"encver"];
+  v22 = [recordCopy objectForKeyedSubscript:@"encver"];
   -[CKKSItem setEncver:](self, "setEncver:", [v22 unsignedIntegerValue]);
 
-  v23 = [v4 objectForKeyedSubscript:@"pcsservice"];
+  v23 = [recordCopy objectForKeyedSubscript:@"pcsservice"];
   [(CKKSItem *)self setPlaintextPCSServiceIdentifier:v23];
 
-  v24 = [v4 objectForKeyedSubscript:@"pcspublickey"];
+  v24 = [recordCopy objectForKeyedSubscript:@"pcspublickey"];
   [(CKKSItem *)self setPlaintextPCSPublicKey:v24];
 
-  v25 = [v4 objectForKeyedSubscript:@"pcspublicidentity"];
+  v25 = [recordCopy objectForKeyedSubscript:@"pcspublicidentity"];
   [(CKKSItem *)self setPlaintextPCSPublicIdentity:v25];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CKKSItem *)self uuid];
-    v7 = [v5 uuid];
-    if (![v6 isEqual:v7])
+    v5 = equalCopy;
+    uuid = [(CKKSItem *)self uuid];
+    uuid2 = [v5 uuid];
+    if (![uuid isEqual:uuid2])
     {
       v14 = 0;
 LABEL_37:
@@ -790,9 +790,9 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v8 = [(CKKSItem *)self parentKeyUUID];
-    v9 = [v5 parentKeyUUID];
-    if (![v8 isEqual:v9])
+    parentKeyUUID = [(CKKSItem *)self parentKeyUUID];
+    parentKeyUUID2 = [v5 parentKeyUUID];
+    if (![parentKeyUUID isEqual:parentKeyUUID2])
     {
       v14 = 0;
 LABEL_36:
@@ -800,10 +800,10 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    v10 = [(CKKSCKRecordHolder *)self zoneID];
-    v11 = [v5 zoneID];
-    v34 = v10;
-    if (![v10 isEqual:v11])
+    zoneID = [(CKKSCKRecordHolder *)self zoneID];
+    zoneID2 = [v5 zoneID];
+    v34 = zoneID;
+    if (![zoneID isEqual:zoneID2])
     {
       v14 = 0;
 LABEL_35:
@@ -811,13 +811,13 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    v12 = [(CKKSCKRecordHolder *)self contextID];
-    if (v12 || ([v5 contextID], (v27 = objc_claimAutoreleasedReturnValue()) != 0))
+    contextID = [(CKKSCKRecordHolder *)self contextID];
+    if (contextID || ([v5 contextID], (v27 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v13 = [(CKKSCKRecordHolder *)self contextID];
-      v31 = [v5 contextID];
-      v32 = v13;
-      if (![v13 isEqualToString:?])
+      contextID2 = [(CKKSCKRecordHolder *)self contextID];
+      contextID3 = [v5 contextID];
+      v32 = contextID2;
+      if (![contextID2 isEqualToString:?])
       {
         v14 = 0;
         goto LABEL_31;
@@ -832,36 +832,36 @@ LABEL_35:
       v30 = 0;
     }
 
-    v33 = [(CKKSItem *)self encitem];
-    if (v33 || ([v5 encitem], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
+    encitem = [(CKKSItem *)self encitem];
+    if (encitem || ([v5 encitem], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v15 = [(CKKSItem *)self encitem];
-      v28 = [v5 encitem];
-      v29 = v15;
-      if (![v15 isEqual:v28])
+      encitem2 = [(CKKSItem *)self encitem];
+      encitem3 = [v5 encitem];
+      v29 = encitem2;
+      if (![encitem2 isEqual:encitem3])
       {
         v14 = 0;
         goto LABEL_28;
       }
 
-      v26 = v12;
+      v26 = contextID;
       v25 = 1;
     }
 
     else
     {
-      v26 = v12;
+      v26 = contextID;
       v23 = 0;
       v25 = 0;
     }
 
-    v16 = [(CKKSItem *)self wrappedkey];
-    v17 = [v5 wrappedkey];
-    v24 = v16;
-    if ([v16 isEqual:v17] && (v18 = -[CKKSItem generationCount](self, "generationCount"), v18 == objc_msgSend(v5, "generationCount")))
+    wrappedkey = [(CKKSItem *)self wrappedkey];
+    wrappedkey2 = [v5 wrappedkey];
+    v24 = wrappedkey;
+    if ([wrappedkey isEqual:wrappedkey2] && (v18 = -[CKKSItem generationCount](self, "generationCount"), v18 == objc_msgSend(v5, "generationCount")))
     {
-      v19 = [(CKKSItem *)self encver];
-      v14 = v19 == [v5 encver];
+      encver = [(CKKSItem *)self encver];
+      v14 = encver == [v5 encver];
 
       if ((v25 & 1) == 0)
       {
@@ -876,8 +876,8 @@ LABEL_35:
       if (!v25)
       {
 LABEL_24:
-        v12 = v26;
-        if (v33)
+        contextID = v26;
+        if (encitem)
         {
         }
 
@@ -888,7 +888,7 @@ LABEL_24:
         if ((v30 & 1) == 0)
         {
 LABEL_32:
-          if (!v12)
+          if (!contextID)
           {
           }
 
@@ -901,11 +901,11 @@ LABEL_31:
       }
     }
 
-    v12 = v26;
+    contextID = v26;
 LABEL_28:
 
-    v20 = v33;
-    if (!v33)
+    v20 = encitem;
+    if (!encitem)
     {
 
       v20 = 0;
@@ -925,121 +925,121 @@ LABEL_38:
   return v14;
 }
 
-- (CKKSItem)initWithUUID:(id)a3 parentKeyUUID:(id)a4 contextID:(id)a5 zoneID:(id)a6 encodedCKRecord:(id)a7 encItem:(id)a8 wrappedkey:(id)a9 generationCount:(unint64_t)a10 encver:(unint64_t)a11 plaintextPCSServiceIdentifier:(id)a12 plaintextPCSPublicKey:(id)a13 plaintextPCSPublicIdentity:(id)a14
+- (CKKSItem)initWithUUID:(id)d parentKeyUUID:(id)iD contextID:(id)contextID zoneID:(id)zoneID encodedCKRecord:(id)record encItem:(id)item wrappedkey:(id)wrappedkey generationCount:(unint64_t)self0 encver:(unint64_t)self1 plaintextPCSServiceIdentifier:(id)self2 plaintextPCSPublicKey:(id)self3 plaintextPCSPublicIdentity:(id)self4
 {
-  v30 = a3;
-  v29 = a4;
-  v19 = a8;
-  v28 = a9;
-  v27 = a12;
-  v20 = a13;
-  v21 = a14;
+  dCopy = d;
+  iDCopy = iD;
+  itemCopy = item;
+  wrappedkeyCopy = wrappedkey;
+  identifierCopy = identifier;
+  keyCopy = key;
+  identityCopy = identity;
   v31.receiver = self;
   v31.super_class = CKKSItem;
-  v22 = [(CKKSCKRecordHolder *)&v31 initWithCKRecordType:@"item" encodedCKRecord:a7 contextID:a5 zoneID:a6];
+  v22 = [(CKKSCKRecordHolder *)&v31 initWithCKRecordType:@"item" encodedCKRecord:record contextID:contextID zoneID:zoneID];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_uuid, a3);
-    objc_storeStrong(&v23->_parentKeyUUID, a4);
-    v23->_generationCount = a10;
-    [(CKKSItem *)v23 setEncitem:v19];
-    objc_storeStrong(&v23->_wrappedkey, a9);
-    v23->_encver = a11;
-    objc_storeStrong(&v23->_plaintextPCSServiceIdentifier, a12);
-    objc_storeStrong(&v23->_plaintextPCSPublicKey, a13);
-    objc_storeStrong(&v23->_plaintextPCSPublicIdentity, a14);
+    objc_storeStrong(&v22->_uuid, d);
+    objc_storeStrong(&v23->_parentKeyUUID, iD);
+    v23->_generationCount = count;
+    [(CKKSItem *)v23 setEncitem:itemCopy];
+    objc_storeStrong(&v23->_wrappedkey, wrappedkey);
+    v23->_encver = encver;
+    objc_storeStrong(&v23->_plaintextPCSServiceIdentifier, identifier);
+    objc_storeStrong(&v23->_plaintextPCSPublicKey, key);
+    objc_storeStrong(&v23->_plaintextPCSPublicIdentity, identity);
   }
 
   return v23;
 }
 
-- (id)initCopyingCKKSItem:(id)a3
+- (id)initCopyingCKKSItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 ckRecordType];
-  v6 = [v4 encodedCKRecord];
-  v7 = [v4 contextID];
-  v8 = [v4 zoneID];
+  itemCopy = item;
+  ckRecordType = [itemCopy ckRecordType];
+  encodedCKRecord = [itemCopy encodedCKRecord];
+  contextID = [itemCopy contextID];
+  zoneID = [itemCopy zoneID];
   v25.receiver = self;
   v25.super_class = CKKSItem;
-  v9 = [(CKKSCKRecordHolder *)&v25 initWithCKRecordType:v5 encodedCKRecord:v6 contextID:v7 zoneID:v8];
+  v9 = [(CKKSCKRecordHolder *)&v25 initWithCKRecordType:ckRecordType encodedCKRecord:encodedCKRecord contextID:contextID zoneID:zoneID];
 
   if (v9)
   {
-    v10 = [v4 uuid];
+    uuid = [itemCopy uuid];
     uuid = v9->_uuid;
-    v9->_uuid = v10;
+    v9->_uuid = uuid;
 
-    v12 = [v4 parentKeyUUID];
+    parentKeyUUID = [itemCopy parentKeyUUID];
     parentKeyUUID = v9->_parentKeyUUID;
-    v9->_parentKeyUUID = v12;
+    v9->_parentKeyUUID = parentKeyUUID;
 
-    v9->_generationCount = [v4 generationCount];
-    v14 = [v4 encitem];
+    v9->_generationCount = [itemCopy generationCount];
+    encitem = [itemCopy encitem];
     encitem = v9->_encitem;
-    v9->_encitem = v14;
+    v9->_encitem = encitem;
 
-    v16 = [v4 wrappedkey];
+    wrappedkey = [itemCopy wrappedkey];
     wrappedkey = v9->_wrappedkey;
-    v9->_wrappedkey = v16;
+    v9->_wrappedkey = wrappedkey;
 
-    v9->_encver = [v4 encver];
-    v18 = [v4 plaintextPCSServiceIdentifier];
+    v9->_encver = [itemCopy encver];
+    plaintextPCSServiceIdentifier = [itemCopy plaintextPCSServiceIdentifier];
     plaintextPCSServiceIdentifier = v9->_plaintextPCSServiceIdentifier;
-    v9->_plaintextPCSServiceIdentifier = v18;
+    v9->_plaintextPCSServiceIdentifier = plaintextPCSServiceIdentifier;
 
-    v20 = [v4 plaintextPCSPublicKey];
+    plaintextPCSPublicKey = [itemCopy plaintextPCSPublicKey];
     plaintextPCSPublicKey = v9->_plaintextPCSPublicKey;
-    v9->_plaintextPCSPublicKey = v20;
+    v9->_plaintextPCSPublicKey = plaintextPCSPublicKey;
 
-    v22 = [v4 plaintextPCSPublicIdentity];
+    plaintextPCSPublicIdentity = [itemCopy plaintextPCSPublicIdentity];
     plaintextPCSPublicIdentity = v9->_plaintextPCSPublicIdentity;
-    v9->_plaintextPCSPublicIdentity = v22;
+    v9->_plaintextPCSPublicIdentity = plaintextPCSPublicIdentity;
   }
 
   return v9;
 }
 
-- (CKKSItem)initWithCKRecord:(id)a3 contextID:(id)a4
+- (CKKSItem)initWithCKRecord:(id)record contextID:(id)d
 {
   v5.receiver = self;
   v5.super_class = CKKSItem;
-  return [(CKKSCKRecordHolder *)&v5 initWithCKRecord:a3 contextID:a4];
+  return [(CKKSCKRecordHolder *)&v5 initWithCKRecord:record contextID:d];
 }
 
-+ (BOOL)intransactionRecordDeleted:(id)a3 contextID:(id)a4 resync:(BOOL)a5 error:(id *)a6
++ (BOOL)intransactionRecordDeleted:(id)deleted contextID:(id)d resync:(BOOL)resync error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(__CFString *)v8 zoneID];
-  v11 = [v10 zoneName];
-  v12 = sub_100019104(@"ckks", v11);
+  deletedCopy = deleted;
+  dCopy = d;
+  zoneID = [(__CFString *)deletedCopy zoneID];
+  zoneName = [zoneID zoneName];
+  v12 = sub_100019104(@"ckks", zoneName);
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v67 = @"item";
     v68 = 2112;
-    v69 = v8;
+    v69 = deletedCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "CloudKit notification: deleted record(%@): %@", buf, 0x16u);
   }
 
-  v13 = [(__CFString *)v8 recordName];
-  v14 = [(__CFString *)v8 zoneID];
-  v15 = [CKKSMirrorEntry tryFromDatabase:v13 contextID:v9 zoneID:v14 error:a6];
+  recordName = [(__CFString *)deletedCopy recordName];
+  zoneID2 = [(__CFString *)deletedCopy zoneID];
+  v15 = [CKKSMirrorEntry tryFromDatabase:recordName contextID:dCopy zoneID:zoneID2 error:error];
 
   if (!v15)
   {
 LABEL_28:
-    v47 = [(__CFString *)v8 zoneID];
-    v48 = [v47 zoneName];
-    v18 = sub_100019104(@"ckks", v48);
+    zoneID3 = [(__CFString *)deletedCopy zoneID];
+    zoneName2 = [zoneID3 zoneName];
+    v18 = sub_100019104(@"ckks", zoneName2);
 
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v67 = v8;
+      v67 = deletedCopy;
       v68 = 2112;
       v69 = v15;
       _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "CKKSMirrorEntry was deleted: %@ %@", buf, 0x16u);
@@ -1057,8 +1057,8 @@ LABEL_28:
   if (v16)
   {
     v19 = [CKKSIncomingQueueEntry alloc];
-    v20 = [(__CFString *)v15 item];
-    v21 = [(CKKSIncomingQueueEntry *)v19 initWithCKKSItem:v20 action:@"delete" state:@"new"];
+    item = [(__CFString *)v15 item];
+    v21 = [(CKKSIncomingQueueEntry *)v19 initWithCKKSItem:item action:@"delete" state:@"new"];
 
     v64 = 0;
     [(CKKSSQLDatabaseObject *)v21 saveToDatabase:&v64];
@@ -1066,9 +1066,9 @@ LABEL_28:
     if (v22)
     {
       v23 = v22;
-      v24 = [(__CFString *)v8 zoneID];
-      v25 = [v24 zoneName];
-      v26 = sub_100019104(@"ckks", v25);
+      zoneID4 = [(__CFString *)deletedCopy zoneID];
+      zoneName3 = [zoneID4 zoneName];
+      v26 = sub_100019104(@"ckks", zoneName3);
 
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -1077,47 +1077,47 @@ LABEL_28:
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Couldn't save incoming queue entry: %@", buf, 0xCu);
       }
 
-      if (a6)
+      if (error)
       {
         v27 = v23;
-        *a6 = v23;
+        *error = v23;
       }
 
       goto LABEL_38;
     }
 
     v56 = v21;
-    v30 = [(CKKSIncomingQueueEntry *)v21 uuid];
+    uuid = [(CKKSIncomingQueueEntry *)v21 uuid];
     v73[0] = @"new";
     v73[1] = @"reencrypt";
     v73[2] = @"error";
     v31 = [NSArray arrayWithObjects:v73 count:3];
-    v32 = [(__CFString *)v8 zoneID];
+    zoneID5 = [(__CFString *)deletedCopy zoneID];
     v63 = 0;
-    v33 = [CKKSOutgoingQueueEntry allWithUUID:v30 states:v31 contextID:v9 zoneID:v32 error:&v63];
+    v33 = [CKKSOutgoingQueueEntry allWithUUID:uuid states:v31 contextID:dCopy zoneID:zoneID5 error:&v63];
     v34 = v63;
 
     if (v34)
     {
-      v35 = [(__CFString *)v8 zoneID];
-      v36 = [v35 zoneName];
-      v37 = sub_100019104(@"ckks", v36);
+      zoneID6 = [(__CFString *)deletedCopy zoneID];
+      zoneName4 = [zoneID6 zoneName];
+      v37 = sub_100019104(@"ckks", zoneName4);
 
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
-        v38 = [(CKKSIncomingQueueEntry *)v56 uuid];
+        uuid2 = [(CKKSIncomingQueueEntry *)v56 uuid];
         *buf = 138412546;
-        v67 = v38;
+        v67 = uuid2;
         v68 = 2112;
         v69 = v34;
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "Couldn't load OQE sibling for %@: %@", buf, 0x16u);
       }
 
       v39 = v56;
-      if (a6)
+      if (error)
       {
         v40 = v34;
-        *a6 = v34;
+        *error = v34;
       }
 
 LABEL_36:
@@ -1150,27 +1150,27 @@ LABEL_36:
           if (v46)
           {
             v49 = v46;
-            v50 = [(__CFString *)v8 zoneID];
-            v51 = [v50 zoneName];
-            v52 = sub_100019104(@"ckks", v51);
+            zoneID7 = [(__CFString *)deletedCopy zoneID];
+            zoneName5 = [zoneID7 zoneName];
+            v52 = sub_100019104(@"ckks", zoneName5);
 
             if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
             {
-              v53 = [(CKKSIncomingQueueEntry *)v56 uuid];
+              uuid3 = [(CKKSIncomingQueueEntry *)v56 uuid];
               *buf = 138412802;
               v67 = v45;
               v68 = 2112;
-              v69 = v53;
+              v69 = uuid3;
               v70 = 2112;
               v71 = v49;
               _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_ERROR, "Couldn't delete OQE sibling(%@) for %@: %@", buf, 0x20u);
             }
 
             v39 = v56;
-            if (a6)
+            if (error)
             {
               v54 = v49;
-              *a6 = v49;
+              *error = v49;
             }
 
             goto LABEL_36;
@@ -1190,7 +1190,7 @@ LABEL_36:
     goto LABEL_28;
   }
 
-  if (!a6)
+  if (!error)
   {
 LABEL_37:
     v23 = 0;
@@ -1202,31 +1202,31 @@ LABEL_38:
   v28 = v17;
   v23 = 0;
   v29 = 0;
-  *a6 = v18;
+  *error = v18;
 LABEL_39:
 
   return v29;
 }
 
-+ (BOOL)intransactionRecordChanged:(id)a3 contextID:(id)a4 resync:(BOOL)a5 error:(id *)a6
++ (BOOL)intransactionRecordChanged:(id)changed contextID:(id)d resync:(BOOL)resync error:(id *)error
 {
-  v6 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CKKSMirrorEntry *)v8 recordID];
-  v11 = [v10 recordName];
-  v12 = [(CKKSMirrorEntry *)v8 recordID];
-  v13 = [v12 zoneID];
+  resyncCopy = resync;
+  changedCopy = changed;
+  dCopy = d;
+  recordID = [(CKKSMirrorEntry *)changedCopy recordID];
+  recordName = [recordID recordName];
+  recordID2 = [(CKKSMirrorEntry *)changedCopy recordID];
+  zoneID = [recordID2 zoneID];
   v133 = 0;
-  v14 = [CKKSMirrorEntry tryFromDatabase:v11 contextID:v9 zoneID:v13 error:&v133];
+  v14 = [CKKSMirrorEntry tryFromDatabase:recordName contextID:dCopy zoneID:zoneID error:&v133];
   v15 = v133;
 
   if (v15)
   {
-    v16 = [(CKKSMirrorEntry *)v8 recordID];
-    v17 = [v16 zoneID];
-    v18 = [v17 zoneName];
-    v19 = sub_100019104(@"ckks", v18);
+    recordID3 = [(CKKSMirrorEntry *)changedCopy recordID];
+    zoneID2 = [recordID3 zoneID];
+    zoneName = [zoneID2 zoneName];
+    v19 = sub_100019104(@"ckks", zoneName);
 
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -1241,23 +1241,23 @@ LABEL_39:
     goto LABEL_4;
   }
 
-  if (v6)
+  if (resyncCopy)
   {
     if (v14)
     {
-      v25 = [(CKKSMirrorEntry *)v14 matchesCKRecord:v8];
-      v26 = [(CKKSMirrorEntry *)v8 recordID];
-      v27 = [v26 zoneID];
-      v28 = [v27 zoneName];
-      v29 = sub_100019104(@"ckksresync", v28);
+      v25 = [(CKKSMirrorEntry *)v14 matchesCKRecord:changedCopy];
+      recordID4 = [(CKKSMirrorEntry *)changedCopy recordID];
+      zoneID3 = [recordID4 zoneID];
+      zoneName2 = [zoneID3 zoneName];
+      v29 = sub_100019104(@"ckksresync", zoneName2);
 
       if (v25)
       {
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
-          v30 = [(CKKSMirrorEntry *)v8 recordID];
+          recordID5 = [(CKKSMirrorEntry *)changedCopy recordID];
           *buf = 138412290;
-          v137 = v30;
+          v137 = recordID5;
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Already know about this item record, updating anyway: %@", buf, 0xCu);
         }
       }
@@ -1267,27 +1267,27 @@ LABEL_39:
         *buf = 138412546;
         v137 = v14;
         v138 = 2112;
-        v139 = v8;
+        v139 = changedCopy;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "BUG: Local item doesn't match resynced CloudKit record: %@ %@", buf, 0x16u);
       }
 
       goto LABEL_21;
     }
 
-    v31 = [(CKKSMirrorEntry *)v8 recordID];
-    v32 = [v31 zoneID];
-    v33 = [v32 zoneName];
-    v34 = sub_100019104(@"ckksresync", v33);
+    recordID6 = [(CKKSMirrorEntry *)changedCopy recordID];
+    zoneID4 = [recordID6 zoneID];
+    zoneName3 = [zoneID4 zoneName];
+    v34 = sub_100019104(@"ckksresync", zoneName3);
 
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v137 = v8;
+      v137 = changedCopy;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "BUG: No local item matching resynced CloudKit record: %@", buf, 0xCu);
     }
 
 LABEL_17:
-    v14 = [[CKKSMirrorEntry alloc] initWithCKRecord:v8 contextID:v9];
+    v14 = [[CKKSMirrorEntry alloc] initWithCKRecord:changedCopy contextID:dCopy];
     v35 = @"add";
     goto LABEL_35;
   }
@@ -1298,45 +1298,45 @@ LABEL_17:
   }
 
 LABEL_21:
-  v36 = [(CKKSMirrorEntry *)v14 item];
-  if (v36)
+  item = [(CKKSMirrorEntry *)v14 item];
+  if (item)
   {
-    v37 = v36;
-    v38 = [(CKKSMirrorEntry *)v14 item];
-    v39 = [v38 generationCount];
-    v40 = [(CKKSMirrorEntry *)v8 objectForKeyedSubscript:@"gen"];
-    v41 = [v40 unsignedLongLongValue];
+    v37 = item;
+    item2 = [(CKKSMirrorEntry *)v14 item];
+    generationCount = [item2 generationCount];
+    v40 = [(CKKSMirrorEntry *)changedCopy objectForKeyedSubscript:@"gen"];
+    unsignedLongLongValue = [v40 unsignedLongLongValue];
 
-    if (v39 > v41)
+    if (generationCount > unsignedLongLongValue)
     {
-      v42 = [(CKKSMirrorEntry *)v8 recordID];
-      v43 = [v42 zoneID];
-      v44 = [v43 zoneName];
-      v45 = sub_100019104(@"ckks", v44);
+      recordID7 = [(CKKSMirrorEntry *)changedCopy recordID];
+      zoneID5 = [recordID7 zoneID];
+      zoneName4 = [zoneID5 zoneName];
+      v45 = sub_100019104(@"ckks", zoneName4);
 
       if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
       {
-        v46 = [(CKKSMirrorEntry *)v14 uuid];
-        v47 = [(CKKSMirrorEntry *)v14 item];
-        v48 = [v47 generationCount];
-        v49 = [(CKKSMirrorEntry *)v8 objectForKeyedSubscript:@"gen"];
+        uuid = [(CKKSMirrorEntry *)v14 uuid];
+        item3 = [(CKKSMirrorEntry *)v14 item];
+        generationCount2 = [item3 generationCount];
+        v49 = [(CKKSMirrorEntry *)changedCopy objectForKeyedSubscript:@"gen"];
         *buf = 138412802;
-        v137 = v46;
+        v137 = uuid;
         v138 = 2048;
-        v139 = v48;
+        v139 = generationCount2;
         v140 = 2112;
         v141 = v49;
         _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_ERROR, "received a record from CloudKit with a bad generation count: %@ (%ld > %@)", buf, 0x20u);
       }
 
-      if (a6)
+      if (error)
       {
-        v50 = [(CKKSMirrorEntry *)v14 uuid];
-        v51 = [(CKKSMirrorEntry *)v14 item];
-        v52 = [v51 generationCount];
-        v53 = [(CKKSMirrorEntry *)v8 objectForKeyedSubscript:@"gen"];
-        v54 = [NSString stringWithFormat:@"Received a record(%@) with a bad generation count (%ld > %@)", v50, v52, v53];
-        *a6 = [NSError errorWithDomain:@"CKKSErrorDomain" code:58 description:v54];
+        uuid2 = [(CKKSMirrorEntry *)v14 uuid];
+        item4 = [(CKKSMirrorEntry *)v14 item];
+        generationCount3 = [item4 generationCount];
+        v53 = [(CKKSMirrorEntry *)changedCopy objectForKeyedSubscript:@"gen"];
+        v54 = [NSString stringWithFormat:@"Received a record(%@) with a bad generation count (%ld > %@)", uuid2, generationCount3, v53];
+        *error = [NSError errorWithDomain:@"CKKSErrorDomain" code:58 description:v54];
       }
 
       v15 = 0;
@@ -1344,18 +1344,18 @@ LABEL_21:
     }
   }
 
-  if ([(CKKSMirrorEntry *)v14 matchesCKRecord:v8]&& !v6)
+  if ([(CKKSMirrorEntry *)v14 matchesCKRecord:changedCopy]&& !resyncCopy)
   {
-    v55 = [(CKKSMirrorEntry *)v8 recordID];
-    v56 = [v55 zoneID];
-    v57 = [v56 zoneName];
-    v58 = sub_100019104(@"ckks", v57);
+    recordID8 = [(CKKSMirrorEntry *)changedCopy recordID];
+    zoneID6 = [recordID8 zoneID];
+    zoneName5 = [zoneID6 zoneName];
+    v58 = sub_100019104(@"ckks", zoneName5);
 
     if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
     {
-      v59 = [(CKKSMirrorEntry *)v14 uuid];
+      uuid3 = [(CKKSMirrorEntry *)v14 uuid];
       *buf = 138412290;
-      v137 = v59;
+      v137 = uuid3;
       _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "CloudKit has told us of record we already know about for %@; skipping update", buf, 0xCu);
     }
 
@@ -1364,16 +1364,16 @@ LABEL_21:
     goto LABEL_85;
   }
 
-  [(CKKSMirrorEntry *)v14 setFromCKRecord:v8];
+  [(CKKSMirrorEntry *)v14 setFromCKRecord:changedCopy];
   v35 = @"modify";
 LABEL_35:
   v132 = 0;
   v60 = [(CKKSSQLDatabaseObject *)v14 saveToDatabase:&v132];
   v15 = v132;
-  v61 = [(CKKSMirrorEntry *)v8 recordID];
-  v62 = [v61 zoneID];
-  v63 = [v62 zoneName];
-  v19 = sub_100019104(@"ckks", v63);
+  recordID9 = [(CKKSMirrorEntry *)changedCopy recordID];
+  zoneID7 = [recordID9 zoneID];
+  zoneName6 = [zoneID7 zoneName];
+  v19 = sub_100019104(@"ckks", zoneName6);
 
   if (!v60 || v15)
   {
@@ -1381,11 +1381,11 @@ LABEL_35:
     {
 LABEL_5:
 
-      if (a6)
+      if (error)
       {
         v23 = v15;
         v24 = 0;
-        *a6 = v15;
+        *error = v15;
         goto LABEL_85;
       }
 
@@ -1395,7 +1395,7 @@ LABEL_28:
     }
 
     *buf = 138412546;
-    v137 = v8;
+    v137 = changedCopy;
     v138 = 2112;
     v139 = v15;
     v20 = "couldn't save new CKRecord to database: %@ %@";
@@ -1413,21 +1413,21 @@ LABEL_4:
     _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "CKKSMirrorEntry was created: %@", buf, 0xCu);
   }
 
-  v64 = [(CKKSMirrorEntry *)v14 item];
-  v65 = [v64 uuid];
-  v66 = [(CKKSMirrorEntry *)v14 item];
-  v67 = [v66 zoneID];
+  item5 = [(CKKSMirrorEntry *)v14 item];
+  uuid4 = [item5 uuid];
+  item6 = [(CKKSMirrorEntry *)v14 item];
+  zoneID8 = [item6 zoneID];
   v131 = 0;
-  v68 = [CKKSIncomingQueueEntry tryFromDatabase:v65 contextID:v9 zoneID:v67 error:&v131];
+  v68 = [CKKSIncomingQueueEntry tryFromDatabase:uuid4 contextID:dCopy zoneID:zoneID8 error:&v131];
   v69 = v131;
 
   v121 = v69;
   if (v69)
   {
-    v70 = [(CKKSMirrorEntry *)v8 recordID];
-    v71 = [v70 zoneID];
-    v72 = [v71 zoneName];
-    v73 = sub_100019104(@"ckks", v72);
+    recordID10 = [(CKKSMirrorEntry *)changedCopy recordID];
+    zoneID9 = [recordID10 zoneID];
+    zoneName7 = [zoneID9 zoneName];
+    v73 = sub_100019104(@"ckks", zoneName7);
 
     if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
     {
@@ -1439,10 +1439,10 @@ LABEL_4:
 
   if (v68)
   {
-    v74 = [(CKKSMirrorEntry *)v8 recordID];
-    v75 = [v74 zoneID];
-    v76 = [v75 zoneName];
-    v77 = sub_100019104(@"ckks", v76);
+    recordID11 = [(CKKSMirrorEntry *)changedCopy recordID];
+    zoneID10 = [recordID11 zoneID];
+    zoneName8 = [zoneID10 zoneName];
+    v77 = sub_100019104(@"ckks", zoneName8);
 
     if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
     {
@@ -1456,10 +1456,10 @@ LABEL_4:
     v78 = v130;
     if (v78)
     {
-      v79 = [(CKKSMirrorEntry *)v8 recordID];
-      v80 = [v79 zoneID];
-      v81 = [v80 zoneName];
-      v82 = sub_100019104(@"ckks", v81);
+      recordID12 = [(CKKSMirrorEntry *)changedCopy recordID];
+      zoneID11 = [recordID12 zoneID];
+      zoneName9 = [zoneID11 zoneName];
+      v82 = sub_100019104(@"ckks", zoneName9);
 
       if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
       {
@@ -1472,16 +1472,16 @@ LABEL_4:
 
   v120 = v68;
   v83 = [CKKSIncomingQueueEntry alloc];
-  v84 = [(CKKSMirrorEntry *)v14 item];
-  v85 = [(CKKSIncomingQueueEntry *)v83 initWithCKKSItem:v84 action:v35 state:@"new"];
+  item7 = [(CKKSMirrorEntry *)v14 item];
+  v85 = [(CKKSIncomingQueueEntry *)v83 initWithCKKSItem:item7 action:v35 state:@"new"];
 
   v129 = 0;
   LODWORD(v83) = [(CKKSSQLDatabaseObject *)v85 saveToDatabase:&v129];
   v86 = v129;
-  v87 = [(CKKSMirrorEntry *)v8 recordID];
-  v88 = [v87 zoneID];
-  v89 = [v88 zoneName];
-  v90 = sub_100019104(@"ckks", v89);
+  recordID13 = [(CKKSMirrorEntry *)changedCopy recordID];
+  zoneID12 = [recordID13 zoneID];
+  zoneName10 = [zoneID12 zoneName];
+  v90 = sub_100019104(@"ckks", zoneName10);
 
   v91 = v86;
   if (!v83 || v86)
@@ -1494,12 +1494,12 @@ LABEL_4:
     }
 
     v109 = v120;
-    if (a6)
+    if (error)
     {
       v110 = v86;
       v15 = 0;
       v24 = 0;
-      *a6 = v91;
+      *error = v91;
     }
 
     else
@@ -1518,29 +1518,29 @@ LABEL_4:
       _os_log_debug_impl(&_mh_execute_header, v90, OS_LOG_TYPE_DEBUG, "CKKSIncomingQueueEntry was created: %@", buf, 0xCu);
     }
 
-    v92 = [(CKKSIncomingQueueEntry *)v85 uuid];
+    uuid5 = [(CKKSIncomingQueueEntry *)v85 uuid];
     v135[0] = @"new";
     v135[1] = @"reencrypt";
     v135[2] = @"error";
     v93 = [NSArray arrayWithObjects:v135 count:3];
-    v94 = [(CKKSMirrorEntry *)v8 recordID];
-    v95 = [v94 zoneID];
+    recordID14 = [(CKKSMirrorEntry *)changedCopy recordID];
+    zoneID13 = [recordID14 zoneID];
     v128 = 0;
-    v96 = [CKKSOutgoingQueueEntry allWithUUID:v92 states:v93 contextID:v9 zoneID:v95 error:&v128];
+    v96 = [CKKSOutgoingQueueEntry allWithUUID:uuid5 states:v93 contextID:dCopy zoneID:zoneID13 error:&v128];
     v15 = v128;
 
     if (!v96 || v15)
     {
-      v97 = [(CKKSMirrorEntry *)v8 recordID];
-      v98 = [v97 zoneID];
-      v99 = [v98 zoneName];
-      v100 = sub_100019104(@"ckks", v99);
+      recordID15 = [(CKKSMirrorEntry *)changedCopy recordID];
+      zoneID14 = [recordID15 zoneID];
+      zoneName11 = [zoneID14 zoneName];
+      v100 = sub_100019104(@"ckks", zoneName11);
 
       if (os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
       {
-        v101 = [(CKKSIncomingQueueEntry *)v85 uuid];
+        uuid6 = [(CKKSIncomingQueueEntry *)v85 uuid];
         *buf = 138412546;
-        v137 = v101;
+        v137 = uuid6;
         v138 = 2112;
         v139 = v15;
         _os_log_impl(&_mh_execute_header, v100, OS_LOG_TYPE_ERROR, "Couldn't load OQE sibling for %@: %@", buf, 0x16u);
@@ -1574,28 +1574,28 @@ LABEL_4:
           if (v108)
           {
             v111 = v108;
-            v112 = [(CKKSMirrorEntry *)v8 recordID];
-            v113 = [v112 zoneID];
-            v114 = [v113 zoneName];
-            oslog = sub_100019104(@"ckks", v114);
+            recordID16 = [(CKKSMirrorEntry *)changedCopy recordID];
+            zoneID15 = [recordID16 zoneID];
+            zoneName12 = [zoneID15 zoneName];
+            oslog = sub_100019104(@"ckks", zoneName12);
 
             if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
             {
-              v115 = [(CKKSIncomingQueueEntry *)v119 uuid];
+              uuid7 = [(CKKSIncomingQueueEntry *)v119 uuid];
               *buf = 138412802;
               v137 = v107;
               v138 = 2112;
-              v139 = v115;
+              v139 = uuid7;
               v140 = 2112;
               v141 = v111;
               _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_ERROR, "Couldn't delete OQE sibling(%@) for %@: %@", buf, 0x20u);
             }
 
             v91 = 0;
-            if (a6)
+            if (error)
             {
               v116 = v111;
-              *a6 = v111;
+              *error = v111;
             }
 
             v24 = 0;
@@ -1632,32 +1632,32 @@ LABEL_85:
   return v24;
 }
 
-+ (id)fromDatabaseRow:(id)a3
++ (id)fromDatabaseRow:(id)row
 {
-  v3 = a3;
+  rowCopy = row;
   v24 = [CKKSItem alloc];
-  v31 = [v3 objectForKeyedSubscript:@"UUID"];
-  v4 = [v31 asString];
-  v29 = [v3 objectForKeyedSubscript:@"parentKeyUUID"];
-  v37 = [v29 asString];
-  v28 = [v3 objectForKeyedSubscript:@"contextID"];
-  v36 = [v28 asString];
+  v31 = [rowCopy objectForKeyedSubscript:@"UUID"];
+  asString = [v31 asString];
+  v29 = [rowCopy objectForKeyedSubscript:@"parentKeyUUID"];
+  asString2 = [v29 asString];
+  v28 = [rowCopy objectForKeyedSubscript:@"contextID"];
+  asString3 = [v28 asString];
   v5 = [CKRecordZoneID alloc];
-  v27 = [v3 objectForKeyedSubscript:@"ckzone"];
-  v26 = [v27 asString];
+  v27 = [rowCopy objectForKeyedSubscript:@"ckzone"];
+  asString4 = [v27 asString];
   v35 = [v5 initWithZoneName:? ownerName:?];
-  v25 = [v3 objectForKeyedSubscript:@"ckrecord"];
-  v34 = [v25 asBase64DecodedData];
-  v23 = [v3 objectForKeyedSubscript:@"encitem"];
-  v33 = [v23 asBase64DecodedData];
-  v22 = [v3 objectForKeyedSubscript:@"wrappedkey"];
-  v21 = [v22 asString];
-  v30 = v4;
-  if (v21)
+  v25 = [rowCopy objectForKeyedSubscript:@"ckrecord"];
+  asBase64DecodedData = [v25 asBase64DecodedData];
+  v23 = [rowCopy objectForKeyedSubscript:@"encitem"];
+  asBase64DecodedData2 = [v23 asBase64DecodedData];
+  v22 = [rowCopy objectForKeyedSubscript:@"wrappedkey"];
+  asString5 = [v22 asString];
+  v30 = asString;
+  if (asString5)
   {
     v6 = [CKKSWrappedAESSIVKey alloc];
-    v19 = [v3 objectForKeyedSubscript:@"wrappedkey"];
-    v18 = [v19 asString];
+    v19 = [rowCopy objectForKeyedSubscript:@"wrappedkey"];
+    asString6 = [v19 asString];
     v32 = [(CKKSWrappedAESSIVKey *)v6 initWithBase64:?];
   }
 
@@ -1666,30 +1666,30 @@ LABEL_85:
     v32 = 0;
   }
 
-  v20 = [v3 objectForKeyedSubscript:@"gencount"];
-  v7 = [v20 asNSInteger];
-  v8 = [v3 objectForKeyedSubscript:@"encver"];
-  v9 = [v8 asNSInteger];
-  v10 = [v3 objectForKeyedSubscript:@"pcss"];
-  v11 = [v10 asNSNumberInteger];
-  v12 = [v3 objectForKeyedSubscript:@"pcsk"];
-  v13 = [v12 asBase64DecodedData];
-  v14 = [v3 objectForKeyedSubscript:@"pcsi"];
-  v15 = [v14 asBase64DecodedData];
-  v16 = [(CKKSItem *)v24 initWithUUID:v30 parentKeyUUID:v37 contextID:v36 zoneID:v35 encodedCKRecord:v34 encItem:v33 wrappedkey:v32 generationCount:v7 encver:v9 plaintextPCSServiceIdentifier:v11 plaintextPCSPublicKey:v13 plaintextPCSPublicIdentity:v15];
+  v20 = [rowCopy objectForKeyedSubscript:@"gencount"];
+  asNSInteger = [v20 asNSInteger];
+  v8 = [rowCopy objectForKeyedSubscript:@"encver"];
+  asNSInteger2 = [v8 asNSInteger];
+  v10 = [rowCopy objectForKeyedSubscript:@"pcss"];
+  asNSNumberInteger = [v10 asNSNumberInteger];
+  v12 = [rowCopy objectForKeyedSubscript:@"pcsk"];
+  asBase64DecodedData3 = [v12 asBase64DecodedData];
+  v14 = [rowCopy objectForKeyedSubscript:@"pcsi"];
+  asBase64DecodedData4 = [v14 asBase64DecodedData];
+  v16 = [(CKKSItem *)v24 initWithUUID:v30 parentKeyUUID:asString2 contextID:asString3 zoneID:v35 encodedCKRecord:asBase64DecodedData encItem:asBase64DecodedData2 wrappedkey:v32 generationCount:asNSInteger encver:asNSInteger2 plaintextPCSServiceIdentifier:asNSNumberInteger plaintextPCSPublicKey:asBase64DecodedData3 plaintextPCSPublicIdentity:asBase64DecodedData4];
 
-  if (v21)
+  if (asString5)
   {
   }
 
   return v16;
 }
 
-+ (void)setOSVersionInRecord:(id)a3
++ (void)setOSVersionInRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = [OTDeviceInformationActualAdapter osVersion]_0();
-  [v3 setObject:v4 forKeyedSubscript:@"uploadver"];
+  [recordCopy setObject:v4 forKeyedSubscript:@"uploadver"];
 }
 
 @end

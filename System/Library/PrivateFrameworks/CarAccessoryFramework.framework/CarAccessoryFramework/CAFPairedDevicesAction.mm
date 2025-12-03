@@ -9,28 +9,28 @@
 - (CAFConnectDeviceControl)connectDeviceControl;
 - (CAFDisconnectDeviceControl)disconnectDeviceControl;
 - (CAFForgetDeviceControl)forgetDeviceControl;
-- (void)connectDeviceWithIdentifier:(id)a3 completion:(id)a4;
-- (void)disconnectDeviceWithIdentifier:(id)a3 completion:(id)a4;
-- (void)forgetDeviceWithIdentifier:(id)a3 completion:(id)a4;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)connectDeviceWithIdentifier:(id)identifier completion:(id)completion;
+- (void)disconnectDeviceWithIdentifier:(id)identifier completion:(id)completion;
+- (void)forgetDeviceWithIdentifier:(id)identifier completion:(id)completion;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFPairedDevicesAction
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFPairedDevicesAction;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -43,12 +43,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -78,25 +78,25 @@
   return v4;
 }
 
-- (void)connectDeviceWithIdentifier:(id)a3 completion:(id)a4
+- (void)connectDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAFPairedDevicesAction *)self connectDeviceControl];
-  v9 = v8;
-  if (v8)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  connectDeviceControl = [(CAFPairedDevicesAction *)self connectDeviceControl];
+  v9 = connectDeviceControl;
+  if (connectDeviceControl)
   {
-    [v8 connectDeviceWithIdentifier:v6 completion:v7];
+    [connectDeviceControl connectDeviceWithIdentifier:identifierCopy completion:completionCopy];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v10 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __65__CAFPairedDevicesAction_connectDeviceWithIdentifier_completion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v12 = v7;
+    v12 = completionCopy;
     dispatch_async(v10, block);
   }
 }
@@ -110,8 +110,8 @@ void __65__CAFPairedDevicesAction_connectDeviceWithIdentifier_completion___block
 
 - (BOOL)hasConnectDevice
 {
-  v2 = [(CAFPairedDevicesAction *)self connectDeviceControl];
-  v3 = v2 != 0;
+  connectDeviceControl = [(CAFPairedDevicesAction *)self connectDeviceControl];
+  v3 = connectDeviceControl != 0;
 
   return v3;
 }
@@ -133,25 +133,25 @@ void __65__CAFPairedDevicesAction_connectDeviceWithIdentifier_completion___block
   return v4;
 }
 
-- (void)disconnectDeviceWithIdentifier:(id)a3 completion:(id)a4
+- (void)disconnectDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAFPairedDevicesAction *)self disconnectDeviceControl];
-  v9 = v8;
-  if (v8)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  disconnectDeviceControl = [(CAFPairedDevicesAction *)self disconnectDeviceControl];
+  v9 = disconnectDeviceControl;
+  if (disconnectDeviceControl)
   {
-    [v8 disconnectDeviceWithIdentifier:v6 completion:v7];
+    [disconnectDeviceControl disconnectDeviceWithIdentifier:identifierCopy completion:completionCopy];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v10 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__CAFPairedDevicesAction_disconnectDeviceWithIdentifier_completion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v12 = v7;
+    v12 = completionCopy;
     dispatch_async(v10, block);
   }
 }
@@ -165,8 +165,8 @@ void __68__CAFPairedDevicesAction_disconnectDeviceWithIdentifier_completion___bl
 
 - (BOOL)hasDisconnectDevice
 {
-  v2 = [(CAFPairedDevicesAction *)self disconnectDeviceControl];
-  v3 = v2 != 0;
+  disconnectDeviceControl = [(CAFPairedDevicesAction *)self disconnectDeviceControl];
+  v3 = disconnectDeviceControl != 0;
 
   return v3;
 }
@@ -188,25 +188,25 @@ void __68__CAFPairedDevicesAction_disconnectDeviceWithIdentifier_completion___bl
   return v4;
 }
 
-- (void)forgetDeviceWithIdentifier:(id)a3 completion:(id)a4
+- (void)forgetDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAFPairedDevicesAction *)self forgetDeviceControl];
-  v9 = v8;
-  if (v8)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  forgetDeviceControl = [(CAFPairedDevicesAction *)self forgetDeviceControl];
+  v9 = forgetDeviceControl;
+  if (forgetDeviceControl)
   {
-    [v8 forgetDeviceWithIdentifier:v6 completion:v7];
+    [forgetDeviceControl forgetDeviceWithIdentifier:identifierCopy completion:completionCopy];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v10 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __64__CAFPairedDevicesAction_forgetDeviceWithIdentifier_completion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v12 = v7;
+    v12 = completionCopy;
     dispatch_async(v10, block);
   }
 }
@@ -220,8 +220,8 @@ void __64__CAFPairedDevicesAction_forgetDeviceWithIdentifier_completion___block_
 
 - (BOOL)hasForgetDevice
 {
-  v2 = [(CAFPairedDevicesAction *)self forgetDeviceControl];
-  v3 = v2 != 0;
+  forgetDeviceControl = [(CAFPairedDevicesAction *)self forgetDeviceControl];
+  v3 = forgetDeviceControl != 0;
 
   return v3;
 }
@@ -229,13 +229,13 @@ void __64__CAFPairedDevicesAction_forgetDeviceWithIdentifier_completion___block_
 - (BOOL)registeredForConnectDevice
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x000000003600001A"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x000000003600001A"];
 
   return v10;
 }
@@ -243,13 +243,13 @@ void __64__CAFPairedDevicesAction_forgetDeviceWithIdentifier_completion___block_
 - (BOOL)registeredForDisconnectDevice
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x000000003600001B"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x000000003600001B"];
 
   return v10;
 }
@@ -257,13 +257,13 @@ void __64__CAFPairedDevicesAction_forgetDeviceWithIdentifier_completion___block_
 - (BOOL)registeredForForgetDevice
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x000000003600001C"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x000000003600001C"];
 
   return v10;
 }

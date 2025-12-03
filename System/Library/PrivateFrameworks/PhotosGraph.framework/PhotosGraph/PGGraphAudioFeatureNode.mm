@@ -1,10 +1,10 @@
 @interface PGGraphAudioFeatureNode
 + (id)filter;
-+ (id)filterForAudioFeatureLabel:(id)a3;
-+ (id)filterForAudioFeatureLabels:(id)a3;
++ (id)filterForAudioFeatureLabel:(id)label;
++ (id)filterForAudioFeatureLabels:(id)labels;
 + (id)momentOfAudioFeature;
 - (NSString)featureIdentifier;
-- (PGGraphAudioFeatureNode)initWithLabel:(id)a3;
+- (PGGraphAudioFeatureNode)initWithLabel:(id)label;
 - (PGGraphAudioFeatureNodeCollection)collection;
 @end
 
@@ -15,8 +15,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PGGraphAudioFeatureNode *)self label];
-  v7 = [v3 stringWithFormat:@"%@|%@", v5, v6];
+  label = [(PGGraphAudioFeatureNode *)self label];
+  v7 = [v3 stringWithFormat:@"%@|%@", v5, label];
 
   return v7;
 }
@@ -28,15 +28,15 @@
   return v2;
 }
 
-- (PGGraphAudioFeatureNode)initWithLabel:(id)a3
+- (PGGraphAudioFeatureNode)initWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v9.receiver = self;
   v9.super_class = PGGraphAudioFeatureNode;
   v5 = [(PGGraphNode *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [labelCopy copy];
     label = v5->_label;
     v5->_label = v6;
   }
@@ -47,26 +47,26 @@
 + (id)momentOfAudioFeature
 {
   v2 = +[PGGraphMomentFeaturesEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
-+ (id)filterForAudioFeatureLabels:(id)a3
++ (id)filterForAudioFeatureLabels:(id)labels
 {
   v3 = MEMORY[0x277D22C78];
-  v4 = a3;
+  labelsCopy = labels;
   v5 = [v3 alloc];
-  v6 = [v5 initWithLabels:v4 domain:1201 properties:MEMORY[0x277CBEC10]];
+  v6 = [v5 initWithLabels:labelsCopy domain:1201 properties:MEMORY[0x277CBEC10]];
 
   return v6;
 }
 
-+ (id)filterForAudioFeatureLabel:(id)a3
++ (id)filterForAudioFeatureLabel:(id)label
 {
   v3 = MEMORY[0x277D22C78];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithLabel:v4 domain:1201];
+  labelCopy = label;
+  v5 = [[v3 alloc] initWithLabel:labelCopy domain:1201];
 
   return v5;
 }

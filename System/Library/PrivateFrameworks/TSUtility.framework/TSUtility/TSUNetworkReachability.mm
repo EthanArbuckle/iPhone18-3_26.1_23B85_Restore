@@ -1,15 +1,15 @@
 @interface TSUNetworkReachability
 + (id)networkReachabilityForInternetConnection;
 + (id)networkReachabilityForLocalWiFi;
-+ (id)networkReachabilityWithAddress:(const sockaddr_in *)a3;
-+ (id)networkReachabilityWithHostName:(id)a3;
++ (id)networkReachabilityWithAddress:(const sockaddr_in *)address;
++ (id)networkReachabilityWithHostName:(id)name;
 + (int64_t)networkReachabilityStatusForDocumentResources;
 + (int64_t)networkReachabilityStatusForInternetConnection;
 + (int64_t)networkReachabilityStatusForLocalWiFi;
 - (BOOL)connectionRequired;
 - (TSUNetworkReachability)init;
-- (TSUNetworkReachability)initWithReachabilityRef:(__SCNetworkReachability *)a3;
-- (int64_t)networkStatusForFlags:(unsigned int)a3;
+- (TSUNetworkReachability)initWithReachabilityRef:(__SCNetworkReachability *)ref;
+- (int64_t)networkStatusForFlags:(unsigned int)flags;
 - (int64_t)status;
 - (void)dealloc;
 @end
@@ -32,15 +32,15 @@
   objc_exception_throw(v8);
 }
 
-- (TSUNetworkReachability)initWithReachabilityRef:(__SCNetworkReachability *)a3
+- (TSUNetworkReachability)initWithReachabilityRef:(__SCNetworkReachability *)ref
 {
   v6.receiver = self;
   v6.super_class = TSUNetworkReachability;
   v4 = [(TSUNetworkReachability *)&v6 init];
   if (v4)
   {
-    CFRetain(a3);
-    v4->_reachabilityRef = a3;
+    CFRetain(ref);
+    v4->_reachabilityRef = ref;
   }
 
   return v4;
@@ -59,9 +59,9 @@
   [(TSUNetworkReachability *)&v4 dealloc];
 }
 
-+ (id)networkReachabilityWithHostName:(id)a3
++ (id)networkReachabilityWithHostName:(id)name
 {
-  v3 = SCNetworkReachabilityCreateWithName(0, [a3 UTF8String]);
+  v3 = SCNetworkReachabilityCreateWithName(0, [name UTF8String]);
   if (v3)
   {
     v4 = v3;
@@ -77,9 +77,9 @@
   return v5;
 }
 
-+ (id)networkReachabilityWithAddress:(const sockaddr_in *)a3
++ (id)networkReachabilityWithAddress:(const sockaddr_in *)address
 {
-  v3 = SCNetworkReachabilityCreateWithAddress(*MEMORY[0x277CBECE8], a3);
+  v3 = SCNetworkReachabilityCreateWithAddress(*MEMORY[0x277CBECE8], address);
   if (v3)
   {
     v4 = v3;
@@ -100,7 +100,7 @@
   v4[2] = *MEMORY[0x277D85DE8];
   v4[1] = 0;
   v4[0] = 528;
-  v2 = [a1 networkReachabilityWithAddress:v4];
+  v2 = [self networkReachabilityWithAddress:v4];
 
   return v2;
 }
@@ -110,7 +110,7 @@
   v4[2] = *MEMORY[0x277D85DE8];
   v4[1] = 0;
   v4[0] = 0xFEA900000210;
-  v2 = [a1 networkReachabilityWithAddress:v4];
+  v2 = [self networkReachabilityWithAddress:v4];
   if (v2)
   {
     v2[16] = 1;
@@ -121,42 +121,42 @@
 
 + (int64_t)networkReachabilityStatusForDocumentResources
 {
-  v2 = [a1 networkReachabilityForDocumentResources];
-  v3 = [v2 status];
+  networkReachabilityForDocumentResources = [self networkReachabilityForDocumentResources];
+  status = [networkReachabilityForDocumentResources status];
 
-  return v3;
+  return status;
 }
 
 + (int64_t)networkReachabilityStatusForInternetConnection
 {
-  v2 = [a1 networkReachabilityForInternetConnection];
-  v3 = [v2 status];
+  networkReachabilityForInternetConnection = [self networkReachabilityForInternetConnection];
+  status = [networkReachabilityForInternetConnection status];
 
-  return v3;
+  return status;
 }
 
 + (int64_t)networkReachabilityStatusForLocalWiFi
 {
-  v2 = [a1 networkReachabilityForLocalWiFi];
-  v3 = [v2 status];
+  networkReachabilityForLocalWiFi = [self networkReachabilityForLocalWiFi];
+  status = [networkReachabilityForLocalWiFi status];
 
-  return v3;
+  return status;
 }
 
-- (int64_t)networkStatusForFlags:(unsigned int)a3
+- (int64_t)networkStatusForFlags:(unsigned int)flags
 {
-  if ((a3 & 2) == 0)
+  if ((flags & 2) == 0)
   {
     return 0;
   }
 
-  LODWORD(v4) = (a3 & 0x28) != 0;
-  if ((a3 & 0x10) != 0)
+  LODWORD(v4) = (flags & 0x28) != 0;
+  if ((flags & 0x10) != 0)
   {
     LODWORD(v4) = 0;
   }
 
-  if ((a3 & 4) != 0)
+  if ((flags & 4) != 0)
   {
     v4 = v4;
   }
@@ -166,7 +166,7 @@
     v4 = 1;
   }
 
-  if ((a3 & 0x40000) != 0)
+  if ((flags & 0x40000) != 0)
   {
     return 2;
   }

@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneSearchUsageTrackingQueryCachingPolicy
-- (BOOL)shouldCacheWithOrgApacheLuceneSearchQuery:(id)a3 withOrgApacheLuceneIndexLeafReaderContext:(id)a4;
-- (int)frequencyWithOrgApacheLuceneSearchQuery:(id)a3;
-- (int)minFrequencyToCacheWithOrgApacheLuceneSearchQuery:(id)a3;
+- (BOOL)shouldCacheWithOrgApacheLuceneSearchQuery:(id)query withOrgApacheLuceneIndexLeafReaderContext:(id)context;
+- (int)frequencyWithOrgApacheLuceneSearchQuery:(id)query;
+- (int)minFrequencyToCacheWithOrgApacheLuceneSearchQuery:(id)query;
 - (void)dealloc;
-- (void)onUseWithOrgApacheLuceneSearchQuery:(id)a3;
+- (void)onUseWithOrgApacheLuceneSearchQuery:(id)query;
 @end
 
 @implementation OrgApacheLuceneSearchUsageTrackingQueryCachingPolicy
 
-- (int)minFrequencyToCacheWithOrgApacheLuceneSearchQuery:(id)a3
+- (int)minFrequencyToCacheWithOrgApacheLuceneSearchQuery:(id)query
 {
   if (OrgApacheLuceneSearchUsageTrackingQueryCachingPolicy_isCostlyWithOrgApacheLuceneSearchQuery_())
   {
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)onUseWithOrgApacheLuceneSearchQuery:(id)a3
+- (void)onUseWithOrgApacheLuceneSearchQuery:(id)query
 {
-  v4 = sub_100070BD8(a3);
+  v4 = sub_100070BD8(query);
   if (!v4)
   {
     JreThrowNullPointerException();
@@ -48,9 +48,9 @@
   objc_sync_exit(self);
 }
 
-- (int)frequencyWithOrgApacheLuceneSearchQuery:(id)a3
+- (int)frequencyWithOrgApacheLuceneSearchQuery:(id)query
 {
-  v4 = sub_100070BD8(a3);
+  v4 = sub_100070BD8(query);
   if (!v4)
   {
     JreThrowNullPointerException();
@@ -69,7 +69,7 @@
   return v7;
 }
 
-- (BOOL)shouldCacheWithOrgApacheLuceneSearchQuery:(id)a3 withOrgApacheLuceneIndexLeafReaderContext:(id)a4
+- (BOOL)shouldCacheWithOrgApacheLuceneSearchQuery:(id)query withOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
   segmentPolicy = self->segmentPolicy_;
   if (!segmentPolicy)
@@ -77,11 +77,11 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(OrgApacheLuceneSearchQueryCachingPolicy_CacheOnLargeSegments *)segmentPolicy shouldCacheWithOrgApacheLuceneSearchQuery:a3 withOrgApacheLuceneIndexLeafReaderContext:a4];
+  v7 = [(OrgApacheLuceneSearchQueryCachingPolicy_CacheOnLargeSegments *)segmentPolicy shouldCacheWithOrgApacheLuceneSearchQuery:query withOrgApacheLuceneIndexLeafReaderContext:context];
   if (v7)
   {
-    v8 = [(OrgApacheLuceneSearchUsageTrackingQueryCachingPolicy *)self frequencyWithOrgApacheLuceneSearchQuery:a3];
-    LOBYTE(v7) = v8 >= [(OrgApacheLuceneSearchUsageTrackingQueryCachingPolicy *)self minFrequencyToCacheWithOrgApacheLuceneSearchQuery:a3];
+    v8 = [(OrgApacheLuceneSearchUsageTrackingQueryCachingPolicy *)self frequencyWithOrgApacheLuceneSearchQuery:query];
+    LOBYTE(v7) = v8 >= [(OrgApacheLuceneSearchUsageTrackingQueryCachingPolicy *)self minFrequencyToCacheWithOrgApacheLuceneSearchQuery:query];
   }
 
   return v7;

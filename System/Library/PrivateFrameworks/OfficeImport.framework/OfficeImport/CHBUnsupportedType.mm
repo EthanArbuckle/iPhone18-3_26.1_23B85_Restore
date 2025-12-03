@@ -1,21 +1,21 @@
 @interface CHBUnsupportedType
-+ (id)chdChartTypeWithState:(id)a3;
++ (id)chdChartTypeWithState:(id)state;
 @end
 
 @implementation CHBUnsupportedType
 
-+ (id)chdChartTypeWithState:(id)a3
++ (id)chdChartTypeWithState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = objc_opt_class();
-  v5 = [v3 xlCurrentPlot];
-  if (v5 && (*(*v5 + 16))(v5) - 6 < 3)
+  xlCurrentPlot = [stateCopy xlCurrentPlot];
+  if (xlCurrentPlot && (*(*xlCurrentPlot + 16))(xlCurrentPlot) - 6 < 3)
   {
     v4 = objc_opt_class();
   }
 
-  v6 = [v3 chart];
-  v7 = [v4 chartTypeWithChart:v6];
+  chart = [stateCopy chart];
+  v7 = [v4 chartTypeWithChart:chart];
 
   return v7;
 }

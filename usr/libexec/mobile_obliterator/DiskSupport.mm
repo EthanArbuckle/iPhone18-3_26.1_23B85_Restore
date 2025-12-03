@@ -1,7 +1,7 @@
 @interface DiskSupport
 + (id)sharedInstance;
-- (BOOL)removeFSItem:(id)a3 error:(id *)a4;
-- (BOOL)traverseFolderAndRemoveItems:(id)a3 exceptions:(id)a4;
+- (BOOL)removeFSItem:(id)item error:(id *)error;
+- (BOOL)traverseFolderAndRemoveItems:(id)items exceptions:(id)exceptions;
 - (DiskSupport)init;
 @end
 
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000045F8;
   block[3] = &unk_100028C38;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10002EA10 != -1)
   {
     dispatch_once(&qword_10002EA10, block);
@@ -35,10 +35,10 @@
   return result;
 }
 
-- (BOOL)traverseFolderAndRemoveItems:(id)a3 exceptions:(id)a4
+- (BOOL)traverseFolderAndRemoveItems:(id)items exceptions:(id)exceptions
 {
-  v6 = [objc_msgSend(a4 objectForKeyedSubscript:{off_10002C2E0), "isEqualToString:", @"remove"}];
-  obj = [+[NSFileManager defaultManager](NSFileManager contentsOfDirectoryAtPath:"contentsOfDirectoryAtPath:error:" error:a3, 0];
+  v6 = [objc_msgSend(exceptions objectForKeyedSubscript:{off_10002C2E0), "isEqualToString:", @"remove"}];
+  obj = [+[NSFileManager defaultManager](NSFileManager contentsOfDirectoryAtPath:"contentsOfDirectoryAtPath:error:" error:items, 0];
   v7 = &IOMobileFramebufferCreateDisplayList_ptr;
   v8 = "Keeping";
   v157 = v6;
@@ -47,8 +47,8 @@
     v8 = "Removing";
   }
 
-  v9 = [NSString stringWithFormat:@"%s the contents of '%@' (exceptionList: %@)", v8, a3, a4];
-  v10 = CFStringCreateWithFormat(0, 0, @"%@", v9);
+  exceptions = [NSString stringWithFormat:@"%s the contents of '%@' (exceptionList: %@)", v8, items, exceptions];
+  v10 = CFStringCreateWithFormat(0, 0, @"%@", exceptions);
   if (v10)
   {
     v11 = v10;
@@ -72,7 +72,7 @@
     sub_1000018A4(1, "%s: %s", "[DiskSupport traverseFolderAndRemoveItems:exceptions:]", "<error getting string>");
   }
 
-  free(v9);
+  free(exceptions);
   v201 = 0u;
   v202 = 0u;
   v199 = 0u;
@@ -85,7 +85,7 @@
 
   v14 = &IOMobileFramebufferCreateDisplayList_ptr;
   v162 = *v200;
-  v167 = a3;
+  itemsCopy = items;
   while (2)
   {
     v15 = 0;
@@ -98,12 +98,12 @@
 
       v168 = v15;
       v16 = *(*(&v199 + 1) + 8 * v15);
-      v169 = [v7[333] pathWithComponents:{objc_msgSend(v14[342], "arrayWithObjects:", a3, v16, 0)}];
-      v17 = [a4 objectForKeyedSubscript:v16];
+      v169 = [v7[333] pathWithComponents:{objc_msgSend(v14[342], "arrayWithObjects:", items, v16, 0)}];
+      v17 = [exceptions objectForKeyedSubscript:v16];
       if (v17)
       {
 LABEL_42:
-        v37 = [v7[333] stringWithFormat:@"Found exception '%@' for '%@'", v17, v16, v156];
+        v156 = [v7[333] stringWithFormat:@"Found exception '%@' for '%@'", v17, v16, v156];
       }
 
       else
@@ -112,7 +112,7 @@ LABEL_42:
         v198 = 0u;
         v195 = 0u;
         v196 = 0u;
-        v18 = [a4 countByEnumeratingWithState:&v195 objects:v211 count:16];
+        v18 = [exceptions countByEnumeratingWithState:&v195 objects:v211 count:16];
         if (v18)
         {
           v19 = v18;
@@ -123,7 +123,7 @@ LABEL_42:
             {
               if (*v196 != v20)
               {
-                objc_enumerationMutation(a4);
+                objc_enumerationMutation(exceptions);
               }
 
               v22 = *(*(&v195 + 1) + 8 * i);
@@ -156,7 +156,7 @@ LABEL_42:
               }
             }
 
-            v19 = [a4 countByEnumeratingWithState:&v195 objects:v211 count:16];
+            v19 = [exceptions countByEnumeratingWithState:&v195 objects:v211 count:16];
             if (v19)
             {
               continue;
@@ -170,11 +170,11 @@ LABEL_42:
         v194 = 0u;
         v191 = 0u;
         v192 = 0u;
-        v24 = [a4 countByEnumeratingWithState:&v191 objects:v210 count:16];
+        v24 = [exceptions countByEnumeratingWithState:&v191 objects:v210 count:16];
         if (!v24)
         {
 LABEL_31:
-          a3 = v167;
+          items = itemsCopy;
           v14 = &IOMobileFramebufferCreateDisplayList_ptr;
           v30 = v169;
           if ((v157 & 1) == 0)
@@ -193,7 +193,7 @@ LABEL_25:
         {
           if (*v192 != v26)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(exceptions);
           }
 
           v28 = *(*(&v191 + 1) + 8 * v27);
@@ -205,7 +205,7 @@ LABEL_25:
 
           if (v25 == ++v27)
           {
-            v25 = [a4 countByEnumeratingWithState:&v191 objects:v210 count:16];
+            v25 = [exceptions countByEnumeratingWithState:&v191 objects:v210 count:16];
             if (v25)
             {
               goto LABEL_25;
@@ -215,10 +215,10 @@ LABEL_25:
           }
         }
 
-        v36 = [a4 objectForKeyedSubscript:v28];
+        v36 = [exceptions objectForKeyedSubscript:v28];
         if (!v36)
         {
-          a3 = v167;
+          items = itemsCopy;
           v14 = &IOMobileFramebufferCreateDisplayList_ptr;
           v30 = v169;
           if (v157)
@@ -235,11 +235,11 @@ LABEL_25:
           goto LABEL_42;
         }
 
-        v37 = [v7[333] stringWithFormat:@"Found regexp-exception '%@' for '%@', regexp '%@'", v36, v16, v28];
+        v156 = [v7[333] stringWithFormat:@"Found regexp-exception '%@' for '%@', regexp '%@'", v36, v16, v28];
       }
 
-      v38 = v37;
-      v39 = CFStringCreateWithFormat(0, 0, @"%@", v37);
+      v38 = v156;
+      v39 = CFStringCreateWithFormat(0, 0, @"%@", v156);
       if (v39)
       {
         v40 = v39;
@@ -278,13 +278,13 @@ LABEL_25:
       {
         v164 = v43;
         v46 = objc_alloc_init(NSMutableDictionary);
-        v47 = [a4 objectForKeyedSubscript:off_10002C2E0];
+        v47 = [exceptions objectForKeyedSubscript:off_10002C2E0];
         [v46 setObject:v47 forKey:off_10002C2E0];
         v189 = 0u;
         v190 = 0u;
         v187 = 0u;
         v188 = 0u;
-        v48 = [a4 countByEnumeratingWithState:&v187 objects:v209 count:16];
+        v48 = [exceptions countByEnumeratingWithState:&v187 objects:v209 count:16];
         if (v48)
         {
           v49 = v48;
@@ -295,17 +295,17 @@ LABEL_25:
             {
               if (*v188 != v50)
               {
-                objc_enumerationMutation(a4);
+                objc_enumerationMutation(exceptions);
               }
 
               v52 = *(*(&v187 + 1) + 8 * j);
               if (![v52 rangeOfString:{objc_msgSend(v16, "stringByAppendingString:", @"/"}])
               {
-                [v46 setObject:objc_msgSend(a4 forKey:{"objectForKeyedSubscript:", v52), objc_msgSend(v52, "substringWithRange:", v53, objc_msgSend(v52, "length") - v53)}];
+                [v46 setObject:objc_msgSend(exceptions forKey:{"objectForKeyedSubscript:", v52), objc_msgSend(v52, "substringWithRange:", v53, objc_msgSend(v52, "length") - v53)}];
               }
             }
 
-            v49 = [a4 countByEnumeratingWithState:&v187 objects:v209 count:16];
+            v49 = [exceptions countByEnumeratingWithState:&v187 objects:v209 count:16];
           }
 
           while (v49);
@@ -342,7 +342,7 @@ LABEL_61:
           sub_1000018A4(1, "%s: %s", "[DiskSupport traverseFolderAndRemoveItems:exceptions:]", "<error getting string>");
         }
 
-        a3 = v167;
+        items = itemsCopy;
         v14 = &IOMobileFramebufferCreateDisplayList_ptr;
         free(v54);
         if ((v43 & 1) == 0)
@@ -354,8 +354,8 @@ LABEL_68:
         v170 = 0;
         if (![(DiskSupport *)self removeFSItem:v30 error:&v170])
         {
-          v143 = [v7[333] stringWithFormat:@"Error: Failed to delete '%@' with error %@!", v30, v170];
-          v148 = CFStringCreateWithFormat(0, 0, @"%@", v143);
+          v170 = [v7[333] stringWithFormat:@"Error: Failed to delete '%@' with error %@!", v30, v170];
+          v148 = CFStringCreateWithFormat(0, 0, @"%@", v170);
           if (!v148)
           {
             goto LABEL_161;
@@ -422,7 +422,7 @@ LABEL_159:
 
               v69 = [v67 rangeAtIndex:1];
               v71 = [v63 substringWithRange:{v69, v70}];
-              v72 = [a4 objectForKeyedSubscript:{objc_msgSend(v7[333], "stringWithFormat:", @"%@/%@", v16, v71)}];
+              v72 = [exceptions objectForKeyedSubscript:{objc_msgSend(v7[333], "stringWithFormat:", @"%@/%@", v16, v71)}];
               if (v72)
               {
                 v73 = v72;
@@ -478,7 +478,7 @@ LABEL_159:
         v182 = 0u;
         v179 = 0u;
         v180 = 0u;
-        v79 = [a4 countByEnumeratingWithState:&v179 objects:v207 count:16];
+        v79 = [exceptions countByEnumeratingWithState:&v179 objects:v207 count:16];
         if (v79)
         {
           v80 = v79;
@@ -489,7 +489,7 @@ LABEL_159:
             {
               if (*v180 != v81)
               {
-                objc_enumerationMutation(a4);
+                objc_enumerationMutation(exceptions);
               }
 
               v83 = *(*(&v179 + 1) + 8 * m);
@@ -497,14 +497,14 @@ LABEL_159:
               {
                 v85 = v84;
                 v86 = [v83 length] - v84;
-                v87 = [a4 objectForKeyedSubscript:v83];
+                v87 = [exceptions objectForKeyedSubscript:v83];
                 v88 = v86;
                 v7 = &IOMobileFramebufferCreateDisplayList_ptr;
                 [v62 setObject:v87 forKey:{objc_msgSend(v83, "substringWithRange:", v85, v88)}];
               }
             }
 
-            v80 = [a4 countByEnumeratingWithState:&v179 objects:v207 count:16];
+            v80 = [exceptions countByEnumeratingWithState:&v179 objects:v207 count:16];
           }
 
           while (v80);
@@ -512,7 +512,7 @@ LABEL_159:
 
 LABEL_98:
         [+[DiskSupport sharedInstance](DiskSupport traverseFolderAndRemoveItems:"traverseFolderAndRemoveItems:exceptions:" exceptions:v169, v62];
-        a3 = v167;
+        items = itemsCopy;
         v14 = &IOMobileFramebufferCreateDisplayList_ptr;
         goto LABEL_69;
       }
@@ -535,7 +535,7 @@ LABEL_98:
             {
               v96 = [v7[333] pathWithComponents:{objc_msgSend(v93, "subarrayWithRange:", 0, v95)}];
               v97 = v7[333];
-              v206[0] = v167;
+              v206[0] = itemsCopy;
               v206[1] = v16;
               v206[2] = v96;
               v98 = [v97 pathWithComponents:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", v206, 3)}];
@@ -591,13 +591,13 @@ LABEL_111:
 
               v109 = [v107 rangeAtIndex:1];
               v111 = [v166 substringWithRange:{v109, v110}];
-              v112 = [a4 objectForKeyedSubscript:{objc_msgSend(v7[333], "stringWithFormat:", @"%@/%@", v16, v111)}];
+              v112 = [exceptions objectForKeyedSubscript:{objc_msgSend(v7[333], "stringWithFormat:", @"%@/%@", v16, v111)}];
               if (v112)
               {
                 v113 = v112;
                 v156 = v112;
-                v114 = [v7[333] stringWithFormat:@"==> keepExcept for '%@/%@' has rule '%@', using it instead of 'remove'", v16, v111];
-                v115 = CFStringCreateWithFormat(0, 0, @"%@", v114);
+                v111 = [v7[333] stringWithFormat:@"==> keepExcept for '%@/%@' has rule '%@', using it instead of 'remove'", v16, v111];
+                v115 = CFStringCreateWithFormat(0, 0, @"%@", v111);
                 if (v115)
                 {
                   v116 = v115;
@@ -621,7 +621,7 @@ LABEL_111:
                   sub_1000018A4(1, "%s: %s", "[DiskSupport traverseFolderAndRemoveItems:exceptions:]", "<error getting string>");
                 }
 
-                free(v114);
+                free(v111);
                 v7 = &IOMobileFramebufferCreateDisplayList_ptr;
               }
 
@@ -647,7 +647,7 @@ LABEL_111:
             v152 = [v107 rangeAtIndex:2];
             v142 = [v151 stringWithFormat:@"Exception '%@' for '%@' is ill-formatted - found extra string '%@' or missing '/'!", v166, v16, objc_msgSend(v166, "substringWithRange:", v152, v153)];
 LABEL_148:
-            v143 = v142;
+            v170 = v142;
             v144 = CFStringCreateWithFormat(0, 0, @"%@", v142);
             if (v144)
             {
@@ -675,7 +675,7 @@ LABEL_126:
           v174 = 0u;
           v171 = 0u;
           v172 = 0u;
-          v119 = [a4 countByEnumeratingWithState:&v171 objects:v204 count:16];
+          v119 = [exceptions countByEnumeratingWithState:&v171 objects:v204 count:16];
           if (v119)
           {
             v120 = v119;
@@ -686,7 +686,7 @@ LABEL_126:
               {
                 if (*v172 != v121)
                 {
-                  objc_enumerationMutation(a4);
+                  objc_enumerationMutation(exceptions);
                 }
 
                 v123 = *(*(&v171 + 1) + 8 * n);
@@ -694,14 +694,14 @@ LABEL_126:
                 {
                   v125 = v124;
                   v126 = [v123 length] - v124;
-                  v127 = [a4 objectForKeyedSubscript:v123];
+                  v127 = [exceptions objectForKeyedSubscript:v123];
                   v128 = v126;
                   v7 = &IOMobileFramebufferCreateDisplayList_ptr;
                   [v62 setObject:v127 forKey:{objc_msgSend(v123, "substringWithRange:", v125, v128)}];
                 }
               }
 
-              v120 = [a4 countByEnumeratingWithState:&v171 objects:v204 count:16];
+              v120 = [exceptions countByEnumeratingWithState:&v171 objects:v204 count:16];
             }
 
             while (v120);
@@ -712,8 +712,8 @@ LABEL_126:
 
         if (![(__CFString *)v17 hasPrefix:@"keepExcept "])
         {
-          v143 = [v7[333] stringWithFormat:@"Exception '%@' for '%@' is ill-formatted!", v17, v16];
-          v154 = CFStringCreateWithFormat(0, 0, @"%@", v143);
+          v170 = [v7[333] stringWithFormat:@"Exception '%@' for '%@' is ill-formatted!", v17, v16];
+          v154 = CFStringCreateWithFormat(0, 0, @"%@", v170);
           if (v154)
           {
             v145 = v154;
@@ -730,7 +730,7 @@ LABEL_126:
 LABEL_161:
           sub_1000018A4(1, "%s: %s", "[DiskSupport traverseFolderAndRemoveItems:exceptions:]", "<error getting string>");
 LABEL_162:
-          free(v143);
+          free(v170);
           return 0;
         }
 
@@ -750,7 +750,7 @@ LABEL_162:
             {
               v134 = [v7[333] pathWithComponents:{objc_msgSend(v131, "subarrayWithRange:", 0, v133)}];
               v135 = v7[333];
-              v203[0] = v167;
+              v203[0] = itemsCopy;
               v203[1] = v16;
               v203[2] = v134;
               v136 = [v135 pathWithComponents:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", v203, 3)}];
@@ -771,7 +771,7 @@ LABEL_162:
 
       [v99 setObject:v100 forKey:v92];
       [+[DiskSupport sharedInstance](DiskSupport traverseFolderAndRemoveItems:"traverseFolderAndRemoveItems:exceptions:" exceptions:v169, v89];
-      a3 = v167;
+      items = itemsCopy;
       v14 = &IOMobileFramebufferCreateDisplayList_ptr;
 LABEL_69:
       v15 = v168 + 1;
@@ -790,10 +790,10 @@ LABEL_69:
   }
 }
 
-- (BOOL)removeFSItem:(id)a3 error:(id *)a4
+- (BOOL)removeFSItem:(id)item error:(id *)error
 {
-  v7 = [NSString stringWithFormat:@"Deleting FS item '%@'", a3];
-  v8 = CFStringCreateWithFormat(0, 0, @"%@", v7);
+  item = [NSString stringWithFormat:@"Deleting FS item '%@'", item];
+  v8 = CFStringCreateWithFormat(0, 0, @"%@", item);
   if (v8)
   {
     v9 = v8;
@@ -813,7 +813,7 @@ LABEL_69:
     sub_1000018A4(1, "%s: %s", "[DiskSupport removeFSItem:error:]", "<error getting string>");
   }
 
-  free(v7);
+  free(item);
   if ([(DiskSupport *)self dryRunOnly])
   {
     return 1;
@@ -821,7 +821,7 @@ LABEL_69:
 
   v13 = +[NSFileManager defaultManager];
 
-  return [(NSFileManager *)v13 removeItemAtPath:a3 error:a4];
+  return [(NSFileManager *)v13 removeItemAtPath:item error:error];
 }
 
 @end

@@ -45,31 +45,31 @@
     [(TLKTrialManager *)self setNamespace:v4];
   }
 
-  v5 = [(TLKTrialManager *)self client];
-  [v5 refresh];
+  client = [(TLKTrialManager *)self client];
+  [client refresh];
 
   if (self->_experimentIdentifiers)
   {
     NSLog(&cfstr_HasExperimentI.isa);
   }
 
-  v6 = [(TLKTrialManager *)self client];
+  client2 = [(TLKTrialManager *)self client];
   v7 = [MEMORY[0x1E69DB548] namespaceNameFromId:333];
-  v8 = [v6 experimentIdentifiersWithNamespaceName:v7];
+  v8 = [client2 experimentIdentifiersWithNamespaceName:v7];
   experimentIdentifiers = self->_experimentIdentifiers;
   self->_experimentIdentifiers = v8;
 
-  v10 = [(TLKTrialManager *)self client];
-  v11 = [(TLKTrialManager *)self namespace];
-  v18 = [v10 levelForFactor:@"SnippetModernization" withNamespaceName:v11];
+  client3 = [(TLKTrialManager *)self client];
+  namespace = [(TLKTrialManager *)self namespace];
+  v18 = [client3 levelForFactor:@"SnippetModernization" withNamespaceName:namespace];
 
-  v12 = [(TLKTrialManager *)self client];
-  v13 = [(TLKTrialManager *)self namespace];
-  v14 = [v12 levelForFactor:@"BiggerSuggestionsLayout" withNamespaceName:v13];
+  client4 = [(TLKTrialManager *)self client];
+  namespace2 = [(TLKTrialManager *)self namespace];
+  v14 = [client4 levelForFactor:@"BiggerSuggestionsLayout" withNamespaceName:namespace2];
 
-  v15 = [(TLKTrialManager *)self client];
-  v16 = [(TLKTrialManager *)self namespace];
-  v17 = [v15 levelForFactor:@"ZKWExpansionOverride" withNamespaceName:v16];
+  client5 = [(TLKTrialManager *)self client];
+  namespace3 = [(TLKTrialManager *)self namespace];
+  v17 = [client5 levelForFactor:@"ZKWExpansionOverride" withNamespaceName:namespace3];
 
   if (v18)
   {

@@ -1,51 +1,51 @@
 @interface ATXActionFeedbackWeights
 + (ATXActionFeedbackWeights)sharedInstance;
-- (ATXActionFeedbackWeights)initWithAssetClass:(Class)a3;
-- (float)confirmWeightForFeedbackStage:(unint64_t)a3 consumerSubType:(unsigned __int8)a4;
-- (float)rejectWeightForFeedbackStage:(unint64_t)a3 consumerSubType:(unsigned __int8)a4;
+- (ATXActionFeedbackWeights)initWithAssetClass:(Class)class;
+- (float)confirmWeightForFeedbackStage:(unint64_t)stage consumerSubType:(unsigned __int8)type;
+- (float)rejectWeightForFeedbackStage:(unint64_t)stage consumerSubType:(unsigned __int8)type;
 @end
 
 @implementation ATXActionFeedbackWeights
 
-- (float)confirmWeightForFeedbackStage:(unint64_t)a3 consumerSubType:(unsigned __int8)a4
+- (float)confirmWeightForFeedbackStage:(unint64_t)stage consumerSubType:(unsigned __int8)type
 {
-  v4 = a4;
-  if (a3 >= 8)
+  typeCopy = type;
+  if (stage >= 8)
   {
     [ATXActionFeedbackWeights confirmWeightForFeedbackStage:consumerSubType:];
   }
 
-  if (v4 >= 0x32)
+  if (typeCopy >= 0x32)
   {
     [ATXActionFeedbackWeights confirmWeightForFeedbackStage:consumerSubType:];
   }
 
-  _H0 = *&self->_confirmWeights[100 * a3 + 2 * v4];
+  _H0 = *&self->_confirmWeights[100 * stage + 2 * typeCopy];
   __asm { FCVT            S0, H0 }
 
   return result;
 }
 
-- (float)rejectWeightForFeedbackStage:(unint64_t)a3 consumerSubType:(unsigned __int8)a4
+- (float)rejectWeightForFeedbackStage:(unint64_t)stage consumerSubType:(unsigned __int8)type
 {
-  v4 = a4;
-  if (a3 >= 8)
+  typeCopy = type;
+  if (stage >= 8)
   {
     [ATXActionFeedbackWeights rejectWeightForFeedbackStage:consumerSubType:];
   }
 
-  if (v4 >= 0x32)
+  if (typeCopy >= 0x32)
   {
     [ATXActionFeedbackWeights rejectWeightForFeedbackStage:consumerSubType:];
   }
 
-  _H0 = *&self->_rejectWeights[100 * a3 + 2 * v4];
+  _H0 = *&self->_rejectWeights[100 * stage + 2 * typeCopy];
   __asm { FCVT            S0, H0 }
 
   return result;
 }
 
-- (ATXActionFeedbackWeights)initWithAssetClass:(Class)a3
+- (ATXActionFeedbackWeights)initWithAssetClass:(Class)class
 {
   v14.receiver = self;
   v14.super_class = ATXActionFeedbackWeights;
@@ -54,12 +54,12 @@
   {
     v5 = objc_autoreleasePoolPush();
     v6 = MEMORY[0x277CEB3C0];
-    if (!a3)
+    if (!class)
     {
-      a3 = objc_opt_class();
+      class = objc_opt_class();
     }
 
-    v7 = [v6 dictionaryWithLegacyPathForClass:a3];
+    v7 = [v6 dictionaryWithLegacyPathForClass:class];
     v8 = [v7 objectForKeyedSubscript:@"Confirms"];
     v9 = [v7 objectForKeyedSubscript:@"Rejects"];
     v10 = v9;

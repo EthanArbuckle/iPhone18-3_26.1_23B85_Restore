@@ -1,21 +1,21 @@
 @interface SMInitiatorEligibility
-+ (BOOL)checkAirplaneModeEnabledWithQueue:(id)a3;
-+ (BOOL)checkCellularDataEnabledWithQueue:(id)a3;
-+ (BOOL)checkCellularWatchToggleEnabledWithQueue:(id)a3;
++ (BOOL)checkAirplaneModeEnabledWithQueue:(id)queue;
++ (BOOL)checkCellularDataEnabledWithQueue:(id)queue;
++ (BOOL)checkCellularWatchToggleEnabledWithQueue:(id)queue;
 + (BOOL)checkDevicePlatformEnabled;
-+ (BOOL)checkHasSimWithQueue:(id)a3;
++ (BOOL)checkHasSimWithQueue:(id)queue;
 + (BOOL)checkIsInternalInstall;
-+ (BOOL)checkRegulatoryDomainPassedWithQueue:(id)a3;
++ (BOOL)checkRegulatoryDomainPassedWithQueue:(id)queue;
 + (BOOL)deviceHasBaseband;
-+ (BOOL)shouldSkipCellularEligibilityCheckWithEffectivePairedDevice:(id)a3 handoffType:(int64_t)a4 defaultsManager:(id)a5;
++ (BOOL)shouldSkipCellularEligibilityCheckWithEffectivePairedDevice:(id)device handoffType:(int64_t)type defaultsManager:(id)manager;
 + (id)_getRegulatoryDomainCountryCodes;
-+ (int64_t)cellularEligibilityFailureStatusForPlatform:(id)a3;
-+ (void)checkCellularEnabledWithQueue:(id)a3 handler:(id)a4;
-+ (void)checkIMessageAccountEnabledWithQueue:(id)a3 handler:(id)a4;
-+ (void)checkInitiatorEligibilityWithQueue:(id)a3 authorizationManager:(id)a4 effectivePairedDevice:(id)a5 handoffType:(int64_t)a6 defaultsManager:(id)a7 platform:(id)a8 appDeletionManager:(id)a9 handler:(id)a10;
-+ (void)checkLocationAuthorizationWithQueue:(id)a3 handler:(id)a4;
-+ (void)checkManateeEnabledWithQueue:(id)a3 handler:(id)a4;
-+ (void)checkNetworkReachabilityWithQueue:(id)a3 handler:(id)a4;
++ (int64_t)cellularEligibilityFailureStatusForPlatform:(id)platform;
++ (void)checkCellularEnabledWithQueue:(id)queue handler:(id)handler;
++ (void)checkIMessageAccountEnabledWithQueue:(id)queue handler:(id)handler;
++ (void)checkInitiatorEligibilityWithQueue:(id)queue authorizationManager:(id)manager effectivePairedDevice:(id)device handoffType:(int64_t)type defaultsManager:(id)defaultsManager platform:(id)platform appDeletionManager:(id)deletionManager handler:(id)self0;
++ (void)checkLocationAuthorizationWithQueue:(id)queue handler:(id)handler;
++ (void)checkManateeEnabledWithQueue:(id)queue handler:(id)handler;
++ (void)checkNetworkReachabilityWithQueue:(id)queue handler:(id)handler;
 @end
 
 @implementation SMInitiatorEligibility
@@ -23,9 +23,9 @@
 + (BOOL)checkIsInternalInstall
 {
   v2 = +[RTPlatform currentPlatform];
-  v3 = [v2 internalInstall];
+  internalInstall = [v2 internalInstall];
 
-  return v3;
+  return internalInstall;
 }
 
 + (BOOL)checkDevicePlatformEnabled
@@ -53,17 +53,17 @@
   return v2;
 }
 
-+ (void)checkInitiatorEligibilityWithQueue:(id)a3 authorizationManager:(id)a4 effectivePairedDevice:(id)a5 handoffType:(int64_t)a6 defaultsManager:(id)a7 platform:(id)a8 appDeletionManager:(id)a9 handler:(id)a10
++ (void)checkInitiatorEligibilityWithQueue:(id)queue authorizationManager:(id)manager effectivePairedDevice:(id)device handoffType:(int64_t)type defaultsManager:(id)defaultsManager platform:(id)platform appDeletionManager:(id)deletionManager handler:(id)self0
 {
   v54 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  if (!v14)
+  queueCopy = queue;
+  managerCopy = manager;
+  deviceCopy = device;
+  defaultsManagerCopy = defaultsManager;
+  platformCopy = platform;
+  deletionManagerCopy = deletionManager;
+  handlerCopy = handler;
+  if (!queueCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -76,7 +76,7 @@
     }
   }
 
-  if (!v15)
+  if (!managerCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -89,7 +89,7 @@
     }
   }
 
-  if (!v20)
+  if (!handlerCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -122,29 +122,29 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __168__SMInitiatorEligibility_checkInitiatorEligibilityWithQueue_authorizationManager_effectivePairedDevice_handoffType_defaultsManager_platform_appDeletionManager_handler___block_invoke;
   aBlock[3] = &unk_2788CDE08;
-  v49 = v20;
+  v49 = handlerCopy;
   v50 = v52;
-  v37 = v20;
+  v37 = handlerCopy;
   v29 = _Block_copy(aBlock);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __168__SMInitiatorEligibility_checkInitiatorEligibilityWithQueue_authorizationManager_effectivePairedDevice_handoffType_defaultsManager_platform_appDeletionManager_handler___block_invoke_38;
   block[3] = &unk_2788CDE80;
-  v40 = v19;
-  v41 = v15;
-  v42 = v14;
-  v43 = v16;
+  v40 = deletionManagerCopy;
+  v41 = managerCopy;
+  v42 = queueCopy;
+  v43 = deviceCopy;
   v46 = v29;
-  v47 = a6;
-  v44 = v17;
-  v45 = v18;
-  v30 = v18;
-  v31 = v17;
-  v32 = v16;
-  v33 = v14;
-  v34 = v15;
+  typeCopy = type;
+  v44 = defaultsManagerCopy;
+  v45 = platformCopy;
+  v30 = platformCopy;
+  v31 = defaultsManagerCopy;
+  v32 = deviceCopy;
+  v33 = queueCopy;
+  v34 = managerCopy;
   v35 = v29;
-  v36 = v19;
+  v36 = deletionManagerCopy;
   dispatch_async(v33, block);
 
   _Block_object_dispose(v52, 8);
@@ -559,10 +559,10 @@ uint64_t __168__SMInitiatorEligibility_checkInitiatorEligibilityWithQueue_author
   return result;
 }
 
-+ (BOOL)shouldSkipCellularEligibilityCheckWithEffectivePairedDevice:(id)a3 handoffType:(int64_t)a4 defaultsManager:(id)a5
++ (BOOL)shouldSkipCellularEligibilityCheckWithEffectivePairedDevice:(id)device handoffType:(int64_t)type defaultsManager:(id)manager
 {
-  v5 = a5;
-  if (+[SMInitiatorEligibility checkIsInternalInstall](SMInitiatorEligibility, "checkIsInternalInstall") && ([v5 objectForKey:@"SMDefaultsInitiatorEligibilitySkipCellularCheck" value:MEMORY[0x277CBEC28]], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "BOOLValue"), v6, v7))
+  managerCopy = manager;
+  if (+[SMInitiatorEligibility checkIsInternalInstall](SMInitiatorEligibility, "checkIsInternalInstall") && ([managerCopy objectForKey:@"SMDefaultsInitiatorEligibilitySkipCellularCheck" value:MEMORY[0x277CBEC28]], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "BOOLValue"), v6, v7))
   {
     v8 = 1;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -586,14 +586,14 @@ uint64_t __168__SMInitiatorEligibility_checkInitiatorEligibilityWithQueue_author
   return v8;
 }
 
-+ (int64_t)cellularEligibilityFailureStatusForPlatform:(id)a3
++ (int64_t)cellularEligibilityFailureStatusForPlatform:(id)platform
 {
-  v3 = a3;
-  if ([v3 watchPlatform])
+  platformCopy = platform;
+  if ([platformCopy watchPlatform])
   {
     if (+[SMInitiatorEligibility deviceHasBaseband])
     {
-      if ([v3 isTinkerPaired])
+      if ([platformCopy isTinkerPaired])
       {
         v4 = 5;
       }
@@ -635,12 +635,12 @@ uint64_t __43__SMInitiatorEligibility_deviceHasBaseband__block_invoke()
   return result;
 }
 
-+ (void)checkCellularEnabledWithQueue:(id)a3 handler:(id)a4
++ (void)checkCellularEnabledWithQueue:(id)queue handler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -657,10 +657,10 @@ uint64_t __43__SMInitiatorEligibility_deviceHasBaseband__block_invoke()
   v10[1] = 3221225472;
   v10[2] = __64__SMInitiatorEligibility_checkCellularEnabledWithQueue_handler___block_invoke;
   v10[3] = &unk_2788C4938;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = queueCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = queueCopy;
   dispatch_async(v9, v10);
 }
 
@@ -676,12 +676,12 @@ uint64_t __64__SMInitiatorEligibility_checkCellularEnabledWithQueue_handler___bl
   return v2();
 }
 
-+ (BOOL)checkHasSimWithQueue:(id)a3
++ (BOOL)checkHasSimWithQueue:(id)queue
 {
   v25 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CC37B0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithQueue:v4];
+  queueCopy = queue;
+  v5 = [[v3 alloc] initWithQueue:queueCopy];
 
   v20 = 0;
   v6 = [v5 getCurrentDataSubscriptionContextSync:&v20];
@@ -725,8 +725,8 @@ uint64_t __64__SMInitiatorEligibility_checkCellularEnabledWithQueue_handler___bl
         v10 = 0;
         if (!v9 && v13)
         {
-          v14 = [v13 unique_id];
-          v10 = [v14 isEqualToString:@"00000000-0000-0000-0000-000000000000"] ^ 1;
+          unique_id = [v13 unique_id];
+          v10 = [unique_id isEqualToString:@"00000000-0000-0000-0000-000000000000"] ^ 1;
         }
       }
     }
@@ -754,7 +754,7 @@ uint64_t __64__SMInitiatorEligibility_checkCellularEnabledWithQueue_handler___bl
   return v10;
 }
 
-+ (BOOL)checkCellularDataEnabledWithQueue:(id)a3
++ (BOOL)checkCellularDataEnabledWithQueue:(id)queue
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = _CTServerConnectionCreateWithIdentifier();
@@ -780,7 +780,7 @@ uint64_t __64__SMInitiatorEligibility_checkCellularEnabledWithQueue_handler___bl
   return 0;
 }
 
-+ (BOOL)checkAirplaneModeEnabledWithQueue:(id)a3
++ (BOOL)checkAirplaneModeEnabledWithQueue:(id)queue
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = _CTServerConnectionCreateWithIdentifier();
@@ -808,12 +808,12 @@ uint64_t __64__SMInitiatorEligibility_checkCellularEnabledWithQueue_handler___bl
   return 0;
 }
 
-+ (BOOL)checkCellularWatchToggleEnabledWithQueue:(id)a3
++ (BOOL)checkCellularWatchToggleEnabledWithQueue:(id)queue
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CEC5D0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithQueue:v4];
+  queueCopy = queue;
+  v5 = [[v3 alloc] initWithQueue:queueCopy];
 
   if (v5)
   {
@@ -842,12 +842,12 @@ uint64_t __64__SMInitiatorEligibility_checkCellularEnabledWithQueue_handler___bl
   return v6;
 }
 
-+ (BOOL)checkRegulatoryDomainPassedWithQueue:(id)a3
++ (BOOL)checkRegulatoryDomainPassedWithQueue:(id)queue
 {
   v61 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D443A8] currentEstimates];
-  if ([v4 count])
+  queueCopy = queue;
+  currentEstimates = [MEMORY[0x277D443A8] currentEstimates];
+  if ([currentEstimates count])
   {
     goto LABEL_8;
   }
@@ -868,26 +868,26 @@ uint64_t __64__SMInitiatorEligibility_checkCellularEnabledWithQueue_handler___bl
     }
   }
 
-  v9 = [MEMORY[0x277D443A8] lastKnownEstimates];
+  lastKnownEstimates = [MEMORY[0x277D443A8] lastKnownEstimates];
 
-  if ([v9 count])
+  if ([lastKnownEstimates count])
   {
-    v4 = v9;
+    currentEstimates = lastKnownEstimates;
 LABEL_8:
-    v10 = [objc_opt_class() _getRegulatoryDomainCountryCodes];
+    _getRegulatoryDomainCountryCodes = [objc_opt_class() _getRegulatoryDomainCountryCodes];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v9 = v4;
-    v39 = [v9 countByEnumeratingWithState:&v49 objects:v60 count:16];
+    lastKnownEstimates = currentEstimates;
+    v39 = [lastKnownEstimates countByEnumeratingWithState:&v49 objects:v60 count:16];
     if (v39)
     {
       v11 = *v50;
       v12 = MEMORY[0x277D86220];
-      v40 = v9;
-      v41 = v3;
-      v42 = v10;
+      v40 = lastKnownEstimates;
+      v41 = queueCopy;
+      v42 = _getRegulatoryDomainCountryCodes;
       v38 = *v50;
       do
       {
@@ -896,7 +896,7 @@ LABEL_8:
         {
           if (*v50 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(lastKnownEstimates);
           }
 
           v14 = *(*(&v49 + 1) + 8 * v13);
@@ -909,13 +909,13 @@ LABEL_8:
               v16 = objc_opt_class();
               v17 = NSStringFromClass(v16);
               v18 = NSStringFromSelector(a2);
-              v19 = [v14 countryCode];
+              countryCode = [v14 countryCode];
               *buf = 138412802;
               v55 = v17;
               v56 = 2112;
               v57 = v18;
               v58 = 2112;
-              v59 = v19;
+              v59 = countryCode;
               _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "%@, %@, estimate's country code, %@", buf, 0x20u);
             }
           }
@@ -924,7 +924,7 @@ LABEL_8:
           v48 = 0u;
           v45 = 0u;
           v46 = 0u;
-          v20 = v10;
+          v20 = _getRegulatoryDomainCountryCodes;
           v21 = [v20 countByEnumeratingWithState:&v45 objects:v53 count:16];
           if (v21)
           {
@@ -941,13 +941,13 @@ LABEL_8:
 
                 v25 = *(*(&v45 + 1) + 8 * i);
                 v26 = objc_autoreleasePoolPush();
-                v27 = [v14 countryCode];
-                v28 = [v27 isEqualToString:v25];
+                countryCode2 = [v14 countryCode];
+                v28 = [countryCode2 isEqualToString:v25];
 
                 if (v28)
                 {
-                  v9 = v40;
-                  v3 = v41;
+                  lastKnownEstimates = v40;
+                  queueCopy = v41;
                   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
                   {
                     v30 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -970,7 +970,7 @@ LABEL_8:
 
                   objc_autoreleasePoolPop(context);
                   v29 = 0;
-                  v10 = v42;
+                  _getRegulatoryDomainCountryCodes = v42;
                   goto LABEL_34;
                 }
 
@@ -989,9 +989,9 @@ LABEL_8:
 
           objc_autoreleasePoolPop(context);
           ++v13;
-          v9 = v40;
-          v3 = v41;
-          v10 = v42;
+          lastKnownEstimates = v40;
+          queueCopy = v41;
+          _getRegulatoryDomainCountryCodes = v42;
           v11 = v38;
           v12 = MEMORY[0x277D86220];
         }
@@ -1020,8 +1020,8 @@ LABEL_34:
     goto LABEL_36;
   }
 
-  v10 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  _getRegulatoryDomainCountryCodes = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+  if (os_log_type_enabled(_getRegulatoryDomainCountryCodes, OS_LOG_TYPE_INFO))
   {
     v35 = objc_opt_class();
     v36 = NSStringFromClass(v35);
@@ -1030,7 +1030,7 @@ LABEL_34:
     v55 = v36;
     v56 = 2112;
     v57 = v37;
-    _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%@, %@, no last known estimates found, returning success as default fallback behaviour", buf, 0x16u);
+    _os_log_impl(&dword_2304B3000, _getRegulatoryDomainCountryCodes, OS_LOG_TYPE_INFO, "%@, %@, no last known estimates found, returning success as default fallback behaviour", buf, 0x16u);
   }
 
 LABEL_35:
@@ -1039,12 +1039,12 @@ LABEL_36:
   return v29;
 }
 
-+ (void)checkNetworkReachabilityWithQueue:(id)a3 handler:(id)a4
++ (void)checkNetworkReachabilityWithQueue:(id)queue handler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1061,9 +1061,9 @@ LABEL_36:
   block[1] = 3221225472;
   block[2] = __68__SMInitiatorEligibility_checkNetworkReachabilityWithQueue_handler___block_invoke;
   block[3] = &unk_2788C4758;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v5, block);
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  dispatch_async(queueCopy, block);
 }
 
 uint64_t __68__SMInitiatorEligibility_checkNetworkReachabilityWithQueue_handler___block_invoke(uint64_t a1)
@@ -1076,12 +1076,12 @@ uint64_t __68__SMInitiatorEligibility_checkNetworkReachabilityWithQueue_handler_
   return v3();
 }
 
-+ (void)checkIMessageAccountEnabledWithQueue:(id)a3 handler:(id)a4
++ (void)checkIMessageAccountEnabledWithQueue:(id)queue handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1094,16 +1094,16 @@ uint64_t __68__SMInitiatorEligibility_checkNetworkReachabilityWithQueue_handler_
     }
   }
 
-  v8 = [MEMORY[0x277D18D68] sharedInstance];
-  v9 = [v8 multiplexedConnectionWithLabel:@"com.apple.routined.SafetyMonitor.SMInitiatorEligibility.iMessage" capabilities:512 context:0];
+  mEMORY[0x277D18D68] = [MEMORY[0x277D18D68] sharedInstance];
+  v9 = [mEMORY[0x277D18D68] multiplexedConnectionWithLabel:@"com.apple.routined.SafetyMonitor.SMInitiatorEligibility.iMessage" capabilities:512 context:0];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __71__SMInitiatorEligibility_checkIMessageAccountEnabledWithQueue_handler___block_invoke;
   v12[3] = &unk_2788C4938;
-  v13 = v5;
-  v14 = v6;
-  v10 = v6;
-  v11 = v5;
+  v13 = queueCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = queueCopy;
   [v9 connectWithCompletion:v12];
 }
 
@@ -1164,12 +1164,12 @@ LABEL_3:
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)checkLocationAuthorizationWithQueue:(id)a3 handler:(id)a4
++ (void)checkLocationAuthorizationWithQueue:(id)queue handler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1186,9 +1186,9 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = __70__SMInitiatorEligibility_checkLocationAuthorizationWithQueue_handler___block_invoke;
   block[3] = &unk_2788C4758;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v5, block);
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  dispatch_async(queueCopy, block);
 }
 
 uint64_t __70__SMInitiatorEligibility_checkLocationAuthorizationWithQueue_handler___block_invoke(uint64_t a1)
@@ -1200,12 +1200,12 @@ uint64_t __70__SMInitiatorEligibility_checkLocationAuthorizationWithQueue_handle
   return v3(v4, v2, 0);
 }
 
-+ (void)checkManateeEnabledWithQueue:(id)a3 handler:(id)a4
++ (void)checkManateeEnabledWithQueue:(id)queue handler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1222,10 +1222,10 @@ uint64_t __70__SMInitiatorEligibility_checkLocationAuthorizationWithQueue_handle
   v10[1] = 3221225472;
   v10[2] = __63__SMInitiatorEligibility_checkManateeEnabledWithQueue_handler___block_invoke;
   v10[3] = &unk_2788C58B8;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = queueCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = queueCopy;
   [SMCloudKitZone supportsDeviceToDeviceEncryptionWithCompletion:v10];
 }
 

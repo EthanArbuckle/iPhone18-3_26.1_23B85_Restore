@@ -4,16 +4,16 @@
 + (id)proactiveRecommendedEndpointController;
 + (id)proactiveUserSelectedEndpointController;
 + (id)userSelectedEndpointController;
-- (BOOL)containsOutputDeviceWithRouteUID:(id)a3;
+- (BOOL)containsOutputDeviceWithRouteUID:(id)d;
 - (BOOL)isEndpointDiscovered;
 - (BOOL)updatesActiveEndpointInPlace;
-- (MRUEndpointController)initWithEndpointController:(id)a3;
-- (MRUEndpointController)initWithRouteUID:(id)a3 client:(id)a4 player:(id)a5;
+- (MRUEndpointController)initWithEndpointController:(id)controller;
+- (MRUEndpointController)initWithRouteUID:(id)d client:(id)client player:(id)player;
 - (NSString)routeUID;
 - (int64_t)state;
-- (void)endpointController:(id)a3 didLoadNewResponse:(id)a4;
-- (void)endpointControllerAllowsAutomaticResponseLoadingDidUpdate:(id)a3;
-- (void)endpointControllerDidChangeState:(id)a3;
+- (void)endpointController:(id)controller didLoadNewResponse:(id)response;
+- (void)endpointControllerAllowsAutomaticResponseLoadingDidUpdate:(id)update;
+- (void)endpointControllerDidChangeState:(id)state;
 - (void)notifyObserversRouteDidUpdate;
 @end
 
@@ -22,10 +22,10 @@
 + (id)localEndpointController
 {
   v3 = [MediaControlsEndpointController alloc];
-  v4 = [MEMORY[0x1E6970490] systemRoute];
-  v5 = [(MediaControlsEndpointController *)v3 initWithEndpoint:v4];
+  systemRoute = [MEMORY[0x1E6970490] systemRoute];
+  v5 = [(MediaControlsEndpointController *)v3 initWithEndpoint:systemRoute];
 
-  v6 = [[a1 alloc] initWithEndpointController:v5];
+  v6 = [[self alloc] initWithEndpointController:v5];
 
   return v6;
 }
@@ -33,7 +33,7 @@
 + (id)userSelectedEndpointController
 {
   v3 = [[MediaControlsActiveEndpointController alloc] initWithActiveEndpointType:0];
-  v4 = [[a1 alloc] initWithEndpointController:v3];
+  v4 = [[self alloc] initWithEndpointController:v3];
 
   return v4;
 }
@@ -41,24 +41,24 @@
 + (id)proactiveEndpointController
 {
   v3 = [[MediaControlsActiveEndpointController alloc] initWithActiveEndpointType:1];
-  v4 = [[a1 alloc] initWithEndpointController:v3];
+  v4 = [[self alloc] initWithEndpointController:v3];
 
   return v4;
 }
 
 + (id)proactiveUserSelectedEndpointController
 {
-  v3 = [MEMORY[0x1E69B0B28] currentSettings];
-  v4 = [v3 supportManyRecommendationsPlatters];
+  currentSettings = [MEMORY[0x1E69B0B28] currentSettings];
+  supportManyRecommendationsPlatters = [currentSettings supportManyRecommendationsPlatters];
 
-  if (v4)
+  if (supportManyRecommendationsPlatters)
   {
-    [a1 userSelectedEndpointController];
+    [self userSelectedEndpointController];
   }
 
   else
   {
-    [a1 proactiveEndpointController];
+    [self proactiveEndpointController];
   }
   v5 = ;
 
@@ -68,36 +68,36 @@
 + (id)proactiveRecommendedEndpointController
 {
   v3 = [[MediaControlsActiveEndpointController alloc] initWithActiveEndpointType:3];
-  v4 = [[a1 alloc] initWithEndpointController:v3];
+  v4 = [[self alloc] initWithEndpointController:v3];
 
   return v4;
 }
 
-- (MRUEndpointController)initWithEndpointController:(id)a3
+- (MRUEndpointController)initWithEndpointController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = MRUEndpointController;
   v6 = [(MRUEndpointController *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v7;
+    v6->_observers = weakObjectsHashTable;
 
-    objc_storeStrong(&v6->_endpointController, a3);
+    objc_storeStrong(&v6->_endpointController, controller);
     [(MediaControlsEndpointController *)v6->_endpointController setDelegate:v6];
   }
 
   return v6;
 }
 
-- (MRUEndpointController)initWithRouteUID:(id)a3 client:(id)a4 player:(id)a5
+- (MRUEndpointController)initWithRouteUID:(id)d client:(id)client player:(id)player
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[MediaControlsStandaloneEndpointController alloc] initWithRouteUID:v10 client:v9 player:v8];
+  playerCopy = player;
+  clientCopy = client;
+  dCopy = d;
+  v11 = [[MediaControlsStandaloneEndpointController alloc] initWithRouteUID:dCopy client:clientCopy player:playerCopy];
 
   v12 = [(MRUEndpointController *)self initWithEndpointController:v11];
   return v12;
@@ -105,10 +105,10 @@
 
 - (NSString)routeUID
 {
-  v2 = [(MediaControlsEndpointController *)self->_endpointController route];
-  v3 = [v2 routeUID];
+  route = [(MediaControlsEndpointController *)self->_endpointController route];
+  routeUID = [route routeUID];
 
-  return v3;
+  return routeUID;
 }
 
 - (int64_t)state
@@ -124,7 +124,7 @@
 
 - (BOOL)isEndpointDiscovered
 {
-  v3 = [(MRUEndpointController *)self endpointController];
+  endpointController = [(MRUEndpointController *)self endpointController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -133,10 +133,10 @@
     return 1;
   }
 
-  v5 = [(MRUEndpointController *)self endpointController];
-  v6 = [v5 isEndpointDiscovered];
+  endpointController2 = [(MRUEndpointController *)self endpointController];
+  isEndpointDiscovered = [endpointController2 isEndpointDiscovered];
 
-  return v6;
+  return isEndpointDiscovered;
 }
 
 - (BOOL)updatesActiveEndpointInPlace
@@ -147,16 +147,16 @@
   return [(MediaControlsEndpointController *)endpointController isMemberOfClass:v3];
 }
 
-- (BOOL)containsOutputDeviceWithRouteUID:(id)a3
+- (BOOL)containsOutputDeviceWithRouteUID:(id)d
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(MediaControlsEndpointController *)self->_endpointController route];
-  v6 = [objc_msgSend(v5 "endpoint")];
+  route = [(MediaControlsEndpointController *)self->_endpointController route];
+  v6 = [objc_msgSend(route "endpoint")];
 
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
@@ -171,7 +171,7 @@
           objc_enumerationMutation(v6);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) containsUID:v4])
+        if ([*(*(&v11 + 1) + 8 * i) containsUID:dCopy])
         {
           LOBYTE(v7) = 1;
           goto LABEL_11;
@@ -193,10 +193,10 @@ LABEL_11:
   return v7;
 }
 
-- (void)endpointController:(id)a3 didLoadNewResponse:(id)a4
+- (void)endpointController:(id)controller didLoadNewResponse:(id)response
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  responseCopy = response;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -220,7 +220,7 @@ LABEL_11:
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 endpointController:self didChangeResponse:v5];
+          [v11 endpointController:self didChangeResponse:responseCopy];
         }
 
         ++v10;
@@ -234,14 +234,14 @@ LABEL_11:
   }
 }
 
-- (void)endpointControllerDidChangeState:(id)a3
+- (void)endpointControllerDidChangeState:(id)state
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSHashTable *)self->_observers copy:a3];
+  v4 = [(NSHashTable *)self->_observers copy:state];
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -274,10 +274,10 @@ LABEL_11:
   }
 }
 
-- (void)endpointControllerAllowsAutomaticResponseLoadingDidUpdate:(id)a3
+- (void)endpointControllerAllowsAutomaticResponseLoadingDidUpdate:(id)update
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updateCopy = update;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -301,7 +301,7 @@ LABEL_11:
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 endpointController:self didAllowAutomaticResponseLoading:{objc_msgSend(v4, "allowsAutomaticResponseLoading")}];
+          [v10 endpointController:self didAllowAutomaticResponseLoading:{objc_msgSend(updateCopy, "allowsAutomaticResponseLoading")}];
         }
 
         ++v9;
@@ -341,8 +341,8 @@ LABEL_11:
         v8 = *(*(&v10 + 1) + 8 * v7);
         if (objc_opt_respondsToSelector())
         {
-          v9 = [(MRUEndpointController *)self route];
-          [v8 endpointController:self didChangeRoute:v9];
+          route = [(MRUEndpointController *)self route];
+          [v8 endpointController:self didChangeRoute:route];
         }
 
         ++v7;

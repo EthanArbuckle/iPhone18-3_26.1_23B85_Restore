@@ -2,7 +2,7 @@
 - (CKConversation)conversation;
 - (CKCustomAcknowledgementDebouncer)init;
 - (void)dealloc;
-- (void)setConversation:(id)a3;
+- (void)setConversation:(id)conversation;
 @end
 
 @implementation CKCustomAcknowledgementDebouncer
@@ -14,19 +14,19 @@
   return Strong;
 }
 
-- (void)setConversation:(id)a3
+- (void)setConversation:(id)conversation
 {
-  v5 = a3;
-  v6 = self;
-  sub_19099ACAC(a3);
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_19099ACAC(conversation);
   swift_unknownObjectWeakAssign();
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_19099AEEC();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = CKCustomAcknowledgementDebouncer;
   [(CKCustomAcknowledgementDebouncer *)&v3 dealloc];
 }

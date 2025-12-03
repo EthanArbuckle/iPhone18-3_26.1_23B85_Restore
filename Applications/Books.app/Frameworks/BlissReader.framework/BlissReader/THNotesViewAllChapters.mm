@@ -2,25 +2,25 @@
 - (BOOL)hasGlossaryTerms;
 - (NSArray)sectionArray;
 - (NSString)title;
-- (THNotesViewAllChapters)initWithNavigationUnits:(id)a3 navigationModel:(id)a4;
-- (id)p_annotationCacheForContentNode:(id)a3;
+- (THNotesViewAllChapters)initWithNavigationUnits:(id)units navigationModel:(id)model;
+- (id)p_annotationCacheForContentNode:(id)node;
 - (unint64_t)annotationCount;
 - (unint64_t)annotationCountForStudyCards;
 - (void)dealloc;
-- (void)updateWithAllAnnotations:(id)a3 orphanedAnnotations:(id)a4 annotationController:(id)a5 navigationModel:(id)a6;
+- (void)updateWithAllAnnotations:(id)annotations orphanedAnnotations:(id)orphanedAnnotations annotationController:(id)controller navigationModel:(id)model;
 @end
 
 @implementation THNotesViewAllChapters
 
-- (THNotesViewAllChapters)initWithNavigationUnits:(id)a3 navigationModel:(id)a4
+- (THNotesViewAllChapters)initWithNavigationUnits:(id)units navigationModel:(id)model
 {
   v8.receiver = self;
   v8.super_class = THNotesViewAllChapters;
   v6 = [(THNotesViewAllChapters *)&v8 init];
   if (v6)
   {
-    v6->mNavigationUnits = a3;
-    v6->mNavigationModel = a4;
+    v6->mNavigationUnits = units;
+    v6->mNavigationModel = model;
     v6->mCachedAnnotationsByContentNode = objc_alloc_init(NSMutableDictionary);
     v6->mImage = [UIImage th_imageNamed:@"notes-all-chapters"];
   }
@@ -61,8 +61,8 @@
         v15 = 0u;
         v16 = 0u;
         v17 = 0u;
-        v8 = [v7 contentNodes];
-        v9 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+        contentNodes = [v7 contentNodes];
+        v9 = [contentNodes countByEnumeratingWithState:&v14 objects:v22 count:16];
         if (v9)
         {
           v10 = v9;
@@ -73,7 +73,7 @@
             {
               if (*v15 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(contentNodes);
               }
 
               if ([*(*(&v14 + 1) + 8 * j) glossaryTermExists])
@@ -83,7 +83,7 @@
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+            v10 = [contentNodes countByEnumeratingWithState:&v14 objects:v22 count:16];
             if (v10)
             {
               continue;
@@ -110,8 +110,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(NSMutableDictionary *)self->mCachedAnnotationsByContentNode allValues];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->mCachedAnnotationsByContentNode allValues];
+  v3 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (!v3)
   {
     return 0;
@@ -126,15 +126,15 @@
     {
       if (*v12 != v6)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(allValues);
       }
 
       v8 = *(*(&v11 + 1) + 8 * i);
-      v9 = [v8 numberOfHighlightAnnotations];
-      v5 += [v8 numberOfOrphanedAnnotations] + v9;
+      numberOfHighlightAnnotations = [v8 numberOfHighlightAnnotations];
+      v5 += [v8 numberOfOrphanedAnnotations] + numberOfHighlightAnnotations;
     }
 
-    v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   }
 
   while (v4);
@@ -147,8 +147,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NSMutableDictionary *)self->mCachedAnnotationsByContentNode allValues];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->mCachedAnnotationsByContentNode allValues];
+  v3 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (!v3)
   {
     return 0;
@@ -163,13 +163,13 @@
     {
       if (*v10 != v6)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(allValues);
       }
 
       v5 += [*(*(&v9 + 1) + 8 * i) numberOfHighlightAnnotations];
     }
 
-    v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   }
 
   while (v4);
@@ -183,15 +183,15 @@
   return [v2 localizedStringForKey:@"All Chapters" value:&stru_471858 table:0];
 }
 
-- (void)updateWithAllAnnotations:(id)a3 orphanedAnnotations:(id)a4 annotationController:(id)a5 navigationModel:(id)a6
+- (void)updateWithAllAnnotations:(id)annotations orphanedAnnotations:(id)orphanedAnnotations annotationController:(id)controller navigationModel:(id)model
 {
   self->mNeedsMigration = 0;
-  if (!a3)
+  if (!annotations)
   {
-    a3 = [NSArray array:0];
+    annotations = [NSArray array:0];
   }
 
-  v9 = [a3 arrayByAddingObjectsFromArray:{a4, a4, a5, a6}];
+  v9 = [annotations arrayByAddingObjectsFromArray:{orphanedAnnotations, orphanedAnnotations, controller, model}];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -217,8 +217,8 @@
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v12 = [v11 contentNodes];
-        v13 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        contentNodes = [v11 contentNodes];
+        v13 = [contentNodes countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v13)
         {
           v14 = v13;
@@ -229,11 +229,11 @@
             {
               if (*v24 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(contentNodes);
               }
 
               v17 = *(*(&v23 + 1) + 8 * i);
-              v18 = [a5 cachedAnnotationsForAnnotations:v9 filteredWithContentNode:v17];
+              v18 = [controller cachedAnnotationsForAnnotations:v9 filteredWithContentNode:v17];
               if ([v18 needsMigration])
               {
                 self->mNeedsMigration = 1;
@@ -242,7 +242,7 @@
               -[NSMutableDictionary setObject:forKey:](self->mCachedAnnotationsByContentNode, "setObject:forKey:", v18, [v17 nodeGUID]);
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+            v14 = [contentNodes countByEnumeratingWithState:&v23 objects:v31 count:16];
           }
 
           while (v14);
@@ -259,12 +259,12 @@
   }
 }
 
-- (id)p_annotationCacheForContentNode:(id)a3
+- (id)p_annotationCacheForContentNode:(id)node
 {
   mCachedAnnotationsByContentNode = self->mCachedAnnotationsByContentNode;
-  v4 = [a3 nodeGUID];
+  nodeGUID = [node nodeGUID];
 
-  return [(NSMutableDictionary *)mCachedAnnotationsByContentNode objectForKey:v4];
+  return [(NSMutableDictionary *)mCachedAnnotationsByContentNode objectForKey:nodeGUID];
 }
 
 - (NSArray)sectionArray
@@ -307,8 +307,8 @@
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v22 = [v4 contentNodes];
-        v7 = [v22 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        contentNodes = [v4 contentNodes];
+        v7 = [contentNodes countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v7)
         {
           v8 = v7;
@@ -321,7 +321,7 @@
             {
               if (*v26 != v23)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(contentNodes);
               }
 
               v12 = *(*(&v25 + 1) + 8 * i);
@@ -329,15 +329,15 @@
               [(NSArray *)v24 addObject:v13];
               if (v9)
               {
-                v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", [THBundle() localizedStringForKey:@"Section %lu - %@" value:&stru_471858 table:0], v9, objc_msgSend(v12, "title"));
+                title = +[NSString stringWithFormat:](NSString, "stringWithFormat:", [THBundle() localizedStringForKey:@"Section %lu - %@" value:&stru_471858 table:0], v9, objc_msgSend(v12, "title"));
               }
 
               else
               {
-                v14 = [v12 title];
+                title = [v12 title];
               }
 
-              [(THNotesViewSection *)v13 setTitle:[(NSString *)v14 stringByTransformingForTHNotesSectionHeader]];
+              [(THNotesViewSection *)v13 setTitle:[(NSString *)title stringByTransformingForTHNotesSectionHeader]];
               -[THNotesViewSection setNotes:](v13, "setNotes:", [-[THNotesViewAllChapters p_annotationCacheForContentNode:](self p_annotationCacheForContentNode:{v12), "highlightAnnotationsSortedByRange"}]);
               if ((([(NSArray *)[(THNotesViewSection *)v13 notes] count]!= 0) & v10) == 1)
               {
@@ -349,7 +349,7 @@
               ++v9;
             }
 
-            v8 = [v22 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            v8 = [contentNodes countByEnumeratingWithState:&v25 objects:v33 count:16];
           }
 
           while (v8);

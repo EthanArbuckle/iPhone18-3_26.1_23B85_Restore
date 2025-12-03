@@ -1,15 +1,15 @@
 @interface _PXGMediaRequestToken
-- (_PXGMediaRequestToken)initWithMediaProvider:(id)a3 mediaRequestID:(int64_t)a4;
+- (_PXGMediaRequestToken)initWithMediaProvider:(id)provider mediaRequestID:(int64_t)d;
 @end
 
 @implementation _PXGMediaRequestToken
 
-- (_PXGMediaRequestToken)initWithMediaProvider:(id)a3 mediaRequestID:(int64_t)a4
+- (_PXGMediaRequestToken)initWithMediaProvider:(id)provider mediaRequestID:(int64_t)d
 {
-  v8 = a3;
-  if (v8)
+  providerCopy = provider;
+  if (providerCopy)
   {
-    if (a4)
+    if (d)
     {
       goto LABEL_3;
     }
@@ -17,17 +17,17 @@
 
   else
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXGDisplayAssetTextureProvider.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"mediaProvider"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGDisplayAssetTextureProvider.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"mediaProvider"}];
 
-    if (a4)
+    if (d)
     {
       goto LABEL_3;
     }
   }
 
-  v13 = [MEMORY[0x277CCA890] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"PXGDisplayAssetTextureProvider.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"mediaRequestID != PXInvalidMediaRequestID"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGDisplayAssetTextureProvider.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"mediaRequestID != PXInvalidMediaRequestID"}];
 
 LABEL_3:
   v14.receiver = self;
@@ -36,8 +36,8 @@ LABEL_3:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mediaProvider, a3);
-    v10->_mediaRequestID = a4;
+    objc_storeStrong(&v9->_mediaProvider, provider);
+    v10->_mediaRequestID = d;
   }
 
   return v10;

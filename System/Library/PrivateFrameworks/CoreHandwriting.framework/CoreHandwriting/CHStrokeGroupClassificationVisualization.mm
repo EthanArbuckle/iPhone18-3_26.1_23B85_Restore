@@ -1,20 +1,20 @@
 @interface CHStrokeGroupClassificationVisualization
-- (CGColor)newColorForStrokeInGroup:(id)a3;
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5;
+- (CGColor)newColorForStrokeInGroup:(id)group;
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds;
 @end
 
 @implementation CHStrokeGroupClassificationVisualization
 
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v195 = *MEMORY[0x1E69E9840];
   v182.receiver = self;
   v182.super_class = CHStrokeGroupClassificationVisualization;
-  [(CHStrokeGroupingVisualization *)&v182 drawVisualizationInRect:a3.origin.x context:a3.origin.y viewBounds:a3.size.width, a3.size.height, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  [(CHStrokeGroupingVisualization *)&v182 drawVisualizationInRect:rect.origin.x context:rect.origin.y viewBounds:rect.size.width, rect.size.height, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   color = CGColorCreate(DeviceRGB, dbl_1839D92C8);
   v179 = CGColorCreate(DeviceRGB, dbl_1839D92E8);
@@ -35,25 +35,25 @@
   v202.size.height = height;
   if (CGRectIntersectsRect(v196, v202))
   {
-    CGContextSetFillColorWithColor(a4, color);
+    CGContextSetFillColorWithColor(context, color);
     v197.size.width = 432.0;
     v197.origin.x = 6.0;
     v197.origin.y = 8.0;
     v197.size.height = 18.0;
-    CGContextFillRect(a4, v197);
+    CGContextFillRect(context, v197);
     v198.size.width = 432.0;
     v198.origin.x = 6.0;
     v198.origin.y = 8.0;
     v198.size.height = 18.0;
     MidY = CGRectGetMidY(v198);
-    CGContextTranslateCTM(a4, 0.0, MidY);
-    CGContextScaleCTM(a4, 1.0, -1.0);
+    CGContextTranslateCTM(context, 0.0, MidY);
+    CGContextScaleCTM(context, 1.0, -1.0);
     v199.size.width = 432.0;
     v199.origin.x = 6.0;
     v199.origin.y = 8.0;
     v199.size.height = 18.0;
     v15 = CGRectGetMidY(v199);
-    CGContextTranslateCTM(a4, 0.0, -v15);
+    CGContextTranslateCTM(context, 0.0, -v15);
     v188 = 0;
     v189 = &v188;
     v190 = 0x2020000000;
@@ -205,7 +205,7 @@
             _Block_object_dispose(&v188, 8);
             if (v173)
             {
-              v173(v172, a4);
+              v173(v172, context);
               CFRelease(v172);
               CFRelease(v170);
               CFRelease(v19);
@@ -243,10 +243,10 @@ LABEL_18:
   CGColorRelease(v13);
 }
 
-- (CGColor)newColorForStrokeInGroup:(id)a3
+- (CGColor)newColorForStrokeInGroup:(id)group
 {
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
-  v10 = objc_msgSend_classification(a3, v5, v6, v7, v8, v9);
+  v10 = objc_msgSend_classification(group, v5, v6, v7, v8, v9);
   if (v10 > 8)
   {
     CGColorSpaceRelease(DeviceRGB);

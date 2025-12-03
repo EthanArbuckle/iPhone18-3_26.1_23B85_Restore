@@ -1,9 +1,9 @@
 @interface Broadcaster
-- (Broadcaster)initWithNotifier:(id)a3 messageContext:(id)a4 protocol:(id)a5 targets:(id)a6 priority:(int)a7 completion:(id)a8;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (Broadcaster)initWithNotifier:(id)notifier messageContext:(id)context protocol:(id)protocol targets:(id)targets priority:(int)priority completion:(id)completion;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
-- (void)sendXPCObject:(id)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)sendXPCObject:(id)object;
 @end
 
 @implementation Broadcaster
@@ -28,27 +28,27 @@
   [(Broadcaster *)&v5 dealloc];
 }
 
-- (Broadcaster)initWithNotifier:(id)a3 messageContext:(id)a4 protocol:(id)a5 targets:(id)a6 priority:(int)a7 completion:(id)a8
+- (Broadcaster)initWithNotifier:(id)notifier messageContext:(id)context protocol:(id)protocol targets:(id)targets priority:(int)priority completion:(id)completion
 {
-  if (!a5 || !objc_msgSend_count(a6, a2, a3))
+  if (!protocol || !objc_msgSend_count(targets, a2, notifier))
   {
     return 0;
   }
 
-  self->_parent = a3;
-  self->_targets = a6;
-  self->_messageContext = a4;
-  self->_protocol = a5;
-  self->_curXPCMessagePriority = a7;
-  self->_completion = _Block_copy(a8);
+  self->_parent = notifier;
+  self->_targets = targets;
+  self->_messageContext = context;
+  self->_protocol = protocol;
+  self->_curXPCMessagePriority = priority;
+  self->_completion = _Block_copy(completion);
   return self;
 }
 
-- (void)sendXPCObject:(id)a3
+- (void)sendXPCObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    if (objc_msgSend_count(self->_targets, a2, a3))
+    if (objc_msgSend_count(self->_targets, a2, object))
     {
       v7 = objc_msgSend_defaultBroadcaster(IMRemoteObjectBroadcaster, v5, v6);
       v10 = objc_msgSend__queue(v7, v8, v9);
@@ -56,21 +56,21 @@
       v11[1] = 3221225472;
       v11[2] = sub_1959B7FCC;
       v11[3] = &unk_1E7439598;
-      v11[4] = a3;
+      v11[4] = object;
       v11[5] = self;
       dispatch_sync(v10, v11);
     }
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   protocol = self->_protocol;
-  MethodDescription = protocol_getMethodDescription(protocol, a3, 1, 1);
+  MethodDescription = protocol_getMethodDescription(protocol, selector, 1, 1);
   types = MethodDescription.types;
   if (!MethodDescription.name)
   {
-    types = protocol_getMethodDescription(protocol, a3, 0, 1).types;
+    types = protocol_getMethodDescription(protocol, selector, 0, 1).types;
     if (types)
     {
       goto LABEL_3;
@@ -90,10 +90,10 @@ LABEL_3:
   return objc_msgSend_signatureWithObjCTypes_(v7, types, types);
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v62 = *MEMORY[0x1E69E9840];
-  if (!objc_msgSend_count(self->_targets, a2, a3))
+  if (!objc_msgSend_count(self->_targets, a2, invocation))
   {
     goto LABEL_42;
   }
@@ -116,7 +116,7 @@ LABEL_3:
   if (dword_1ED517080)
   {
 LABEL_4:
-    v7 = objc_msgSend_selector(a3, v5, v6);
+    v7 = objc_msgSend_selector(invocation, v5, v6);
     v8 = NSStringFromSelector(v7);
     messageContext = self->_messageContext;
     shouldBoost = objc_msgSend_shouldBoost(messageContext, v10, v11);
@@ -136,7 +136,7 @@ LABEL_7:
   targets = self->_targets;
   v17 = self->_messageContext;
   completion = self->_completion;
-  v18 = IMCreateXPCObjectFromInvocation(a3);
+  v18 = IMCreateXPCObjectFromInvocation(invocation);
   if (!v18)
   {
     goto LABEL_42;

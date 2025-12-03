@@ -1,20 +1,20 @@
 @interface RAWOpcodeMapTable
-- (RAWOpcodeMapTable)initWithArguments:(id)a3;
+- (RAWOpcodeMapTable)initWithArguments:(id)arguments;
 - (id)outputImage;
 @end
 
 @implementation RAWOpcodeMapTable
 
-- (RAWOpcodeMapTable)initWithArguments:(id)a3
+- (RAWOpcodeMapTable)initWithArguments:(id)arguments
 {
-  v4 = a3;
+  argumentsCopy = arguments;
   v11.receiver = self;
   v11.super_class = RAWOpcodeMapTable;
   v5 = [(RAWOpcodeMapTable *)&v11 init];
   v9 = v5;
   if (v5)
   {
-    objc_msgSend_setArguments_(v5, v6, v4, v7, v8);
+    objc_msgSend_setArguments_(v5, v6, argumentsCopy, v7, v8);
   }
 
   return v9;

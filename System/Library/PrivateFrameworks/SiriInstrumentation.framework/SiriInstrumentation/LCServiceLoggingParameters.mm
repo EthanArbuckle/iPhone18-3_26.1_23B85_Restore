@@ -1,45 +1,45 @@
 @interface LCServiceLoggingParameters
-- (BOOL)isEqual:(id)a3;
-- (LCServiceLoggingParameters)initWithDictionary:(id)a3;
-- (LCServiceLoggingParameters)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LCServiceLoggingParameters)initWithDictionary:(id)dictionary;
+- (LCServiceLoggingParameters)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasMessageSizeQuotaInBytes:(BOOL)a3;
-- (void)setHasOptOutOfCompression:(BOOL)a3;
-- (void)setHasOverrideIntoSamplePopulation:(BOOL)a3;
-- (void)setHasRealtimeSamplingRate:(BOOL)a3;
-- (void)setHasTotalDiskSizeQuotaInBytes:(BOOL)a3;
-- (void)setHasUploadSamplingRate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasMessageSizeQuotaInBytes:(BOOL)bytes;
+- (void)setHasOptOutOfCompression:(BOOL)compression;
+- (void)setHasOverrideIntoSamplePopulation:(BOOL)population;
+- (void)setHasRealtimeSamplingRate:(BOOL)rate;
+- (void)setHasTotalDiskSizeQuotaInBytes:(BOOL)bytes;
+- (void)setHasUploadSamplingRate:(BOOL)rate;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LCServiceLoggingParameters
 
-- (LCServiceLoggingParameters)initWithDictionary:(id)a3
+- (LCServiceLoggingParameters)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = LCServiceLoggingParameters;
   v5 = [(LCServiceLoggingParameters *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"qos"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"qos"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LCServiceLoggingParameters setQos:](v5, "setQos:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"messageSizeQuotaInBytes"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"messageSizeQuotaInBytes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LCServiceLoggingParameters setMessageSizeQuotaInBytes:](v5, "setMessageSizeQuotaInBytes:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"totalDiskSizeQuotaInBytes"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"totalDiskSizeQuotaInBytes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,14 +47,14 @@
     }
 
     v19 = v8;
-    v9 = [v4 objectForKeyedSubscript:@"optOutOfCompression"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"optOutOfCompression"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LCServiceLoggingParameters setOptOutOfCompression:](v5, "setOptOutOfCompression:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"uploadSamplingRate"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"uploadSamplingRate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@
       [(LCServiceLoggingParameters *)v5 setUploadSamplingRate:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"realtimeSamplingRate"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"realtimeSamplingRate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,7 +71,7 @@
     }
 
     v20 = v6;
-    v12 = [v4 objectForKeyedSubscript:@"entropy"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"entropy"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,14 +79,14 @@
       [(LCServiceLoggingParameters *)v5 setEntropy:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"overrideIntoSamplePopulation"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"overrideIntoSamplePopulation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LCServiceLoggingParameters setOverrideIntoSamplePopulation:](v5, "setOverrideIntoSamplePopulation:", [v14 BOOLValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"uploadEndpointURL"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"uploadEndpointURL"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,30 +100,30 @@
   return v5;
 }
 
-- (LCServiceLoggingParameters)initWithJSON:(id)a3
+- (LCServiceLoggingParameters)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LCServiceLoggingParameters *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LCServiceLoggingParameters *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LCServiceLoggingParameters *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -136,20 +136,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_entropy)
   {
-    v4 = [(LCServiceLoggingParameters *)self entropy];
-    v5 = [v4 base64EncodedStringWithOptions:0];
+    entropy = [(LCServiceLoggingParameters *)self entropy];
+    v5 = [entropy base64EncodedStringWithOptions:0];
     if (v5)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"entropy"];
+      [dictionary setObject:v5 forKeyedSubscript:@"entropy"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"entropy"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"entropy"];
     }
   }
 
@@ -157,7 +157,7 @@
   if ((has & 2) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithInt:{-[LCServiceLoggingParameters messageSizeQuotaInBytes](self, "messageSizeQuotaInBytes")}];
-    [v3 setObject:v14 forKeyedSubscript:@"messageSizeQuotaInBytes"];
+    [dictionary setObject:v14 forKeyedSubscript:@"messageSizeQuotaInBytes"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -178,7 +178,7 @@ LABEL_8:
   }
 
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[LCServiceLoggingParameters optOutOfCompression](self, "optOutOfCompression")}];
-  [v3 setObject:v15 forKeyedSubscript:@"optOutOfCompression"];
+  [dictionary setObject:v15 forKeyedSubscript:@"optOutOfCompression"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -194,7 +194,7 @@ LABEL_9:
 
 LABEL_22:
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[LCServiceLoggingParameters overrideIntoSamplePopulation](self, "overrideIntoSamplePopulation")}];
-  [v3 setObject:v16 forKeyedSubscript:@"overrideIntoSamplePopulation"];
+  [dictionary setObject:v16 forKeyedSubscript:@"overrideIntoSamplePopulation"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -226,7 +226,7 @@ LABEL_23:
     v19 = v18;
   }
 
-  [v3 setObject:v19 forKeyedSubscript:@"qos"];
+  [dictionary setObject:v19 forKeyedSubscript:@"qos"];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -243,21 +243,21 @@ LABEL_29:
   v20 = MEMORY[0x1E696AD98];
   [(LCServiceLoggingParameters *)self realtimeSamplingRate];
   v21 = [v20 numberWithFloat:?];
-  [v3 setObject:v21 forKeyedSubscript:@"realtimeSamplingRate"];
+  [dictionary setObject:v21 forKeyedSubscript:@"realtimeSamplingRate"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_12:
     v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[LCServiceLoggingParameters totalDiskSizeQuotaInBytes](self, "totalDiskSizeQuotaInBytes")}];
-    [v3 setObject:v8 forKeyedSubscript:@"totalDiskSizeQuotaInBytes"];
+    [dictionary setObject:v8 forKeyedSubscript:@"totalDiskSizeQuotaInBytes"];
   }
 
 LABEL_13:
   if (self->_uploadEndpointURL)
   {
-    v9 = [(LCServiceLoggingParameters *)self uploadEndpointURL];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"uploadEndpointURL"];
+    uploadEndpointURL = [(LCServiceLoggingParameters *)self uploadEndpointURL];
+    v10 = [uploadEndpointURL copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"uploadEndpointURL"];
   }
 
   if ((*&self->_has & 0x10) != 0)
@@ -265,12 +265,12 @@ LABEL_13:
     v11 = MEMORY[0x1E696AD98];
     [(LCServiceLoggingParameters *)self uploadSamplingRate];
     v12 = [v11 numberWithFloat:?];
-    [v3 setObject:v12 forKeyedSubscript:@"uploadSamplingRate"];
+    [dictionary setObject:v12 forKeyedSubscript:@"uploadSamplingRate"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -421,16 +421,16 @@ LABEL_16:
   return v6 ^ v5 ^ v7 ^ v8 ^ v13 ^ v14 ^ v20 ^ v19 ^ [(NSString *)self->_uploadEndpointURL hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
   has = self->_has;
-  v6 = v4[56];
+  v6 = equalCopy[56];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_38;
@@ -439,13 +439,13 @@ LABEL_16:
   if (*&has)
   {
     qos = self->_qos;
-    if (qos != [v4 qos])
+    if (qos != [equalCopy qos])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[56];
+    v6 = equalCopy[56];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -454,13 +454,13 @@ LABEL_16:
     if (v8)
     {
       messageSizeQuotaInBytes = self->_messageSizeQuotaInBytes;
-      if (messageSizeQuotaInBytes != [v4 messageSizeQuotaInBytes])
+      if (messageSizeQuotaInBytes != [equalCopy messageSizeQuotaInBytes])
       {
         goto LABEL_38;
       }
 
       has = self->_has;
-      v6 = v4[56];
+      v6 = equalCopy[56];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -469,13 +469,13 @@ LABEL_16:
       if (v10)
       {
         totalDiskSizeQuotaInBytes = self->_totalDiskSizeQuotaInBytes;
-        if (totalDiskSizeQuotaInBytes != [v4 totalDiskSizeQuotaInBytes])
+        if (totalDiskSizeQuotaInBytes != [equalCopy totalDiskSizeQuotaInBytes])
         {
           goto LABEL_38;
         }
 
         has = self->_has;
-        v6 = v4[56];
+        v6 = equalCopy[56];
       }
 
       v12 = (*&has >> 3) & 1;
@@ -484,13 +484,13 @@ LABEL_16:
         if (v12)
         {
           optOutOfCompression = self->_optOutOfCompression;
-          if (optOutOfCompression != [v4 optOutOfCompression])
+          if (optOutOfCompression != [equalCopy optOutOfCompression])
           {
             goto LABEL_38;
           }
 
           has = self->_has;
-          v6 = v4[56];
+          v6 = equalCopy[56];
         }
 
         v14 = (*&has >> 4) & 1;
@@ -499,14 +499,14 @@ LABEL_16:
           if (v14)
           {
             uploadSamplingRate = self->_uploadSamplingRate;
-            [v4 uploadSamplingRate];
+            [equalCopy uploadSamplingRate];
             if (uploadSamplingRate != v16)
             {
               goto LABEL_38;
             }
 
             has = self->_has;
-            v6 = v4[56];
+            v6 = equalCopy[56];
           }
 
           v17 = (*&has >> 5) & 1;
@@ -518,27 +518,27 @@ LABEL_16:
           if (v17)
           {
             realtimeSamplingRate = self->_realtimeSamplingRate;
-            [v4 realtimeSamplingRate];
+            [equalCopy realtimeSamplingRate];
             if (realtimeSamplingRate != v19)
             {
               goto LABEL_38;
             }
           }
 
-          v20 = [(LCServiceLoggingParameters *)self entropy];
-          v21 = [v4 entropy];
-          if ((v20 != 0) == (v21 == 0))
+          entropy = [(LCServiceLoggingParameters *)self entropy];
+          entropy2 = [equalCopy entropy];
+          if ((entropy != 0) == (entropy2 == 0))
           {
             goto LABEL_37;
           }
 
-          v22 = [(LCServiceLoggingParameters *)self entropy];
-          if (v22)
+          entropy3 = [(LCServiceLoggingParameters *)self entropy];
+          if (entropy3)
           {
-            v23 = v22;
-            v24 = [(LCServiceLoggingParameters *)self entropy];
-            v25 = [v4 entropy];
-            v26 = [v24 isEqual:v25];
+            v23 = entropy3;
+            entropy4 = [(LCServiceLoggingParameters *)self entropy];
+            entropy5 = [equalCopy entropy];
+            v26 = [entropy4 isEqual:entropy5];
 
             if (!v26)
             {
@@ -551,7 +551,7 @@ LABEL_16:
           }
 
           v27 = (*&self->_has >> 6) & 1;
-          if (v27 != ((v4[56] >> 6) & 1))
+          if (v27 != ((equalCopy[56] >> 6) & 1))
           {
             goto LABEL_38;
           }
@@ -559,18 +559,18 @@ LABEL_16:
           if (v27)
           {
             overrideIntoSamplePopulation = self->_overrideIntoSamplePopulation;
-            if (overrideIntoSamplePopulation != [v4 overrideIntoSamplePopulation])
+            if (overrideIntoSamplePopulation != [equalCopy overrideIntoSamplePopulation])
             {
               goto LABEL_38;
             }
           }
 
-          v20 = [(LCServiceLoggingParameters *)self uploadEndpointURL];
-          v21 = [v4 uploadEndpointURL];
-          if ((v20 != 0) != (v21 == 0))
+          entropy = [(LCServiceLoggingParameters *)self uploadEndpointURL];
+          entropy2 = [equalCopy uploadEndpointURL];
+          if ((entropy != 0) != (entropy2 == 0))
           {
-            v29 = [(LCServiceLoggingParameters *)self uploadEndpointURL];
-            if (!v29)
+            uploadEndpointURL = [(LCServiceLoggingParameters *)self uploadEndpointURL];
+            if (!uploadEndpointURL)
             {
 
 LABEL_41:
@@ -578,10 +578,10 @@ LABEL_41:
               goto LABEL_39;
             }
 
-            v30 = v29;
-            v31 = [(LCServiceLoggingParameters *)self uploadEndpointURL];
-            v32 = [v4 uploadEndpointURL];
-            v33 = [v31 isEqual:v32];
+            v30 = uploadEndpointURL;
+            uploadEndpointURL2 = [(LCServiceLoggingParameters *)self uploadEndpointURL];
+            uploadEndpointURL3 = [equalCopy uploadEndpointURL];
+            v33 = [uploadEndpointURL2 isEqual:uploadEndpointURL3];
 
             if (v33)
             {
@@ -605,9 +605,9 @@ LABEL_39:
   return v34;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -680,9 +680,9 @@ LABEL_7:
   }
 
 LABEL_8:
-  v5 = [(LCServiceLoggingParameters *)self entropy];
+  entropy = [(LCServiceLoggingParameters *)self entropy];
 
-  if (v5)
+  if (entropy)
   {
     PBDataWriterWriteDataField();
   }
@@ -692,19 +692,19 @@ LABEL_8:
     PBDataWriterWriteBOOLField();
   }
 
-  v6 = [(LCServiceLoggingParameters *)self uploadEndpointURL];
+  uploadEndpointURL = [(LCServiceLoggingParameters *)self uploadEndpointURL];
 
-  v7 = v8;
-  if (v6)
+  v7 = toCopy;
+  if (uploadEndpointURL)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasOverrideIntoSamplePopulation:(BOOL)a3
+- (void)setHasOverrideIntoSamplePopulation:(BOOL)population
 {
-  if (a3)
+  if (population)
   {
     v3 = 64;
   }
@@ -717,9 +717,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasRealtimeSamplingRate:(BOOL)a3
+- (void)setHasRealtimeSamplingRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 32;
   }
@@ -732,9 +732,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasUploadSamplingRate:(BOOL)a3
+- (void)setHasUploadSamplingRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 16;
   }
@@ -747,9 +747,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasOptOutOfCompression:(BOOL)a3
+- (void)setHasOptOutOfCompression:(BOOL)compression
 {
-  if (a3)
+  if (compression)
   {
     v3 = 8;
   }
@@ -762,9 +762,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTotalDiskSizeQuotaInBytes:(BOOL)a3
+- (void)setHasTotalDiskSizeQuotaInBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 4;
   }
@@ -777,9 +777,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMessageSizeQuotaInBytes:(BOOL)a3
+- (void)setHasMessageSizeQuotaInBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 2;
   }

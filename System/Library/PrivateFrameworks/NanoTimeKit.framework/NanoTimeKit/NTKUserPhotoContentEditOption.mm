@@ -1,38 +1,38 @@
 @interface NTKUserPhotoContentEditOption
-- (NTKUserPhotoContentEditOption)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NTKUserPhotoContentEditOption)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKUserPhotoContentEditOption
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = NTKUserPhotoContentEditOption;
-  [(NTKEditOption *)&v6 encodeWithCoder:v4];
+  [(NTKEditOption *)&v6 encodeWithCoder:coderCopy];
   path = self->_path;
   if (path)
   {
-    [v4 encodeObject:path forKey:@"Path"];
+    [coderCopy encodeObject:path forKey:@"Path"];
   }
 
-  [v4 encodeBool:self->_isDefaultPhoto forKey:@"IsDefault"];
+  [coderCopy encodeBool:self->_isDefaultPhoto forKey:@"IsDefault"];
 }
 
-- (NTKUserPhotoContentEditOption)initWithCoder:(id)a3
+- (NTKUserPhotoContentEditOption)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = NTKUserPhotoContentEditOption;
-  v5 = [(NTKEditOption *)&v11 initWithCoder:v4];
+  v5 = [(NTKEditOption *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Path"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Path"];
     path = v5->_path;
     v5->_path = v6;
 
-    v8 = [v4 decodeBoolForKey:@"IsDefault"];
+    v8 = [coderCopy decodeBoolForKey:@"IsDefault"];
     v5->_isDefaultPhoto = v8;
     if (v5->_path)
     {

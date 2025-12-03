@@ -1,6 +1,6 @@
 @interface WatchdogTimer
-+ (id)watchdogWithName:(const char *)a3;
-- (WatchdogTimer)initWithName:(const char *)a3 timeout:(unsigned int)a4;
++ (id)watchdogWithName:(const char *)name;
+- (WatchdogTimer)initWithName:(const char *)name timeout:(unsigned int)timeout;
 - (void)cancel;
 - (void)dealloc;
 @end
@@ -37,14 +37,14 @@
   }
 }
 
-+ (id)watchdogWithName:(const char *)a3
++ (id)watchdogWithName:(const char *)name
 {
-  v3 = [[WatchdogTimer alloc] initWithName:a3 timeout:60];
+  v3 = [[WatchdogTimer alloc] initWithName:name timeout:60];
 
   return v3;
 }
 
-- (WatchdogTimer)initWithName:(const char *)a3 timeout:(unsigned int)a4
+- (WatchdogTimer)initWithName:(const char *)name timeout:(unsigned int)timeout
 {
   v11.receiver = self;
   v11.super_class = WatchdogTimer;
@@ -57,7 +57,7 @@
     }
 
     v6 = objc_alloc_init(WatchdogTimerItem);
-    v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
+    v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:name];
     [(WatchdogTimerItem *)v6 setName:v7];
 
     v8 = mach_absolute_time();

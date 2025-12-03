@@ -1,29 +1,29 @@
 @interface EKExpandedReminderStackLayout
-+ (CGSize)itemFittingSizeForCell:(id)a3 withLayoutEnvironment:(id)a4;
-- (EKExpandedReminderStackLayout)initWithDelegate:(id)a3;
++ (CGSize)itemFittingSizeForCell:(id)cell withLayoutEnvironment:(id)environment;
+- (EKExpandedReminderStackLayout)initWithDelegate:(id)delegate;
 - (EKExpandedReminderStackLayoutDelegate)delegate;
-- (id)_animationForReusableView:(id)a3 toLayoutAttributes:(id)a4 type:(unint64_t)a5;
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3;
-- (id)finalLayoutAttributesForDisappearingSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
-- (id)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4;
-- (void)prepareCellAnimationWithLayoutAttributes:(id)a3 indexPath:(id)a4;
-- (void)prepareHeaderAnimationWithLayoutAttributes:(id)a3;
+- (id)_animationForReusableView:(id)view toLayoutAttributes:(id)attributes type:(unint64_t)type;
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path;
+- (id)finalLayoutAttributesForDisappearingSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
+- (id)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)prepareCellAnimationWithLayoutAttributes:(id)attributes indexPath:(id)path;
+- (void)prepareHeaderAnimationWithLayoutAttributes:(id)attributes;
 @end
 
 @implementation EKExpandedReminderStackLayout
 
-- (EKExpandedReminderStackLayout)initWithDelegate:(id)a3
+- (EKExpandedReminderStackLayout)initWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = objc_storeWeak(&self->_delegate, v4);
-  v6 = [v4 expandedReminderStackShouldDoCompactLayout];
+  delegateCopy = delegate;
+  v5 = objc_storeWeak(&self->_delegate, delegateCopy);
+  expandedReminderStackShouldDoCompactLayout = [delegateCopy expandedReminderStackShouldDoCompactLayout];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __50__EKExpandedReminderStackLayout_initWithDelegate___block_invoke;
   aBlock[3] = &__block_descriptor_33_e71___NSCollectionLayoutSection_24__0q8___NSCollectionLayoutEnvironment__16l;
-  v12 = v6;
+  v12 = expandedReminderStackShouldDoCompactLayout;
   v7 = _Block_copy(aBlock);
   v10.receiver = self;
   v10.super_class = EKExpandedReminderStackLayout;
@@ -79,16 +79,16 @@ id __50__EKExpandedReminderStackLayout_initWithDelegate___block_invoke(uint64_t 
   return v12;
 }
 
-+ (CGSize)itemFittingSizeForCell:(id)a3 withLayoutEnvironment:(id)a4
++ (CGSize)itemFittingSizeForCell:(id)cell withLayoutEnvironment:(id)environment
 {
-  v5 = a3;
-  v6 = [a4 container];
-  [v6 contentSize];
+  cellCopy = cell;
+  container = [environment container];
+  [container contentSize];
   v8 = v7;
 
   LODWORD(v9) = 1148846080;
   LODWORD(v10) = 1112014848;
-  [v5 systemLayoutSizeFittingSize:v8 withHorizontalFittingPriority:3.40282347e38 verticalFittingPriority:{v9, v10}];
+  [cellCopy systemLayoutSizeFittingSize:v8 withHorizontalFittingPriority:3.40282347e38 verticalFittingPriority:{v9, v10}];
   v12 = v11;
   v14 = v13;
 
@@ -99,88 +99,88 @@ id __50__EKExpandedReminderStackLayout_initWithDelegate___block_invoke(uint64_t 
   return result;
 }
 
-- (void)prepareCellAnimationWithLayoutAttributes:(id)a3 indexPath:(id)a4
+- (void)prepareCellAnimationWithLayoutAttributes:(id)attributes indexPath:(id)path
 {
-  v6 = a4;
-  v9 = a3;
+  pathCopy = path;
+  attributesCopy = attributes;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained stackedReminderViewFrame];
-  [v9 setFrame:?];
+  [attributesCopy setFrame:?];
 
-  v8 = [v6 row];
-  [v9 setZIndex:-v8];
+  v8 = [pathCopy row];
+  [attributesCopy setZIndex:-v8];
 }
 
-- (void)prepareHeaderAnimationWithLayoutAttributes:(id)a3
+- (void)prepareHeaderAnimationWithLayoutAttributes:(id)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   CGAffineTransformMakeScale(&v5, 0.7, 0.7);
   v4 = v5;
-  [v3 setTransform:&v4];
-  [v3 setAlpha:0.0];
+  [attributesCopy setTransform:&v4];
+  [attributesCopy setAlpha:0.0];
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = EKExpandedReminderStackLayout;
-  v4 = a3;
-  v5 = [(EKExpandedReminderStackLayout *)&v7 initialLayoutAttributesForAppearingItemAtIndexPath:v4];
-  [(EKExpandedReminderStackLayout *)self prepareCellAnimationWithLayoutAttributes:v5 indexPath:v4, v7.receiver, v7.super_class];
+  pathCopy = path;
+  v5 = [(EKExpandedReminderStackLayout *)&v7 initialLayoutAttributesForAppearingItemAtIndexPath:pathCopy];
+  [(EKExpandedReminderStackLayout *)self prepareCellAnimationWithLayoutAttributes:v5 indexPath:pathCopy, v7.receiver, v7.super_class];
 
   return v5;
 }
 
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = EKExpandedReminderStackLayout;
-  v4 = a3;
-  v5 = [(EKExpandedReminderStackLayout *)&v7 finalLayoutAttributesForDisappearingItemAtIndexPath:v4];
-  [(EKExpandedReminderStackLayout *)self prepareCellAnimationWithLayoutAttributes:v5 indexPath:v4, v7.receiver, v7.super_class];
+  pathCopy = path;
+  v5 = [(EKExpandedReminderStackLayout *)&v7 finalLayoutAttributesForDisappearingItemAtIndexPath:pathCopy];
+  [(EKExpandedReminderStackLayout *)self prepareCellAnimationWithLayoutAttributes:v5 indexPath:pathCopy, v7.receiver, v7.super_class];
 
   return v5;
 }
 
-- (id)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4
+- (id)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = EKExpandedReminderStackLayout;
-  v5 = [(EKExpandedReminderStackLayout *)&v7 initialLayoutAttributesForAppearingSupplementaryElementOfKind:a3 atIndexPath:a4];
+  v5 = [(EKExpandedReminderStackLayout *)&v7 initialLayoutAttributesForAppearingSupplementaryElementOfKind:kind atIndexPath:path];
   [(EKExpandedReminderStackLayout *)self prepareHeaderAnimationWithLayoutAttributes:v5];
 
   return v5;
 }
 
-- (id)finalLayoutAttributesForDisappearingSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4
+- (id)finalLayoutAttributesForDisappearingSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = EKExpandedReminderStackLayout;
-  v5 = [(EKExpandedReminderStackLayout *)&v7 finalLayoutAttributesForDisappearingSupplementaryElementOfKind:a3 atIndexPath:a4];
+  v5 = [(EKExpandedReminderStackLayout *)&v7 finalLayoutAttributesForDisappearingSupplementaryElementOfKind:kind atIndexPath:path];
   [(EKExpandedReminderStackLayout *)self prepareHeaderAnimationWithLayoutAttributes:v5];
 
   return v5;
 }
 
-- (id)_animationForReusableView:(id)a3 toLayoutAttributes:(id)a4 type:(unint64_t)a5
+- (id)_animationForReusableView:(id)view toLayoutAttributes:(id)attributes type:(unint64_t)type
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  attributesCopy = attributes;
   objc_opt_class();
   v9 = objc_opt_isKindOfClass() & 1;
-  v10 = [(EKExpandedReminderStackLayout *)self delegate];
-  v11 = [v10 viewControllerIsDisappearing];
+  delegate = [(EKExpandedReminderStackLayout *)self delegate];
+  viewControllerIsDisappearing = [delegate viewControllerIsDisappearing];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __83__EKExpandedReminderStackLayout__animationForReusableView_toLayoutAttributes_type___block_invoke;
   aBlock[3] = &unk_1E8441DC8;
-  v19 = v11;
+  v19 = viewControllerIsDisappearing;
   v20 = v9;
-  v17 = v7;
-  v18 = v8;
-  v12 = v8;
-  v13 = v7;
+  v17 = viewCopy;
+  v18 = attributesCopy;
+  v12 = attributesCopy;
+  v13 = viewCopy;
   v14 = _Block_copy(aBlock);
 
   return v14;

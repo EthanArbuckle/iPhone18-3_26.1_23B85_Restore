@@ -1,18 +1,18 @@
 @interface UAReplayAdvertisableItem
-+ (id)replayableAdvertisableItemWithAdvertisableItem:(id)a3;
-- (BOOL)wasResumedOnAnotherDeviceWithCompletionHandler:(id)a3;
-- (UAReplayAdvertisableItem)initWithCoder:(id)a3;
-- (UAReplayAdvertisableItem)initWithUUID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)replayableAdvertisableItemWithAdvertisableItem:(id)item;
+- (BOOL)wasResumedOnAnotherDeviceWithCompletionHandler:(id)handler;
+- (UAReplayAdvertisableItem)initWithCoder:(id)coder;
+- (UAReplayAdvertisableItem)initWithUUID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UAReplayAdvertisableItem
 
-- (UAReplayAdvertisableItem)initWithUUID:(id)a3
+- (UAReplayAdvertisableItem)initWithUUID:(id)d
 {
   v7.receiver = self;
   v7.super_class = UAReplayAdvertisableItem;
-  v3 = [(UAReplayAdvertisableItem *)&v7 initWithUUID:a3 type:1 options:0];
+  v3 = [(UAReplayAdvertisableItem *)&v7 initWithUUID:d type:1 options:0];
   if (v3)
   {
     v4 = dispatch_semaphore_create(0);
@@ -23,11 +23,11 @@
   return v3;
 }
 
-- (UAReplayAdvertisableItem)initWithCoder:(id)a3
+- (UAReplayAdvertisableItem)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = UAReplayAdvertisableItem;
-  v3 = [(UAReplayAdvertisableItem *)&v7 initWithCoder:a3];
+  v3 = [(UAReplayAdvertisableItem *)&v7 initWithCoder:coder];
   if (v3)
   {
     v4 = dispatch_semaphore_create(0);
@@ -38,30 +38,30 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = UAReplayAdvertisableItem;
-  [(UAReplayAdvertisableItem *)&v3 encodeWithCoder:a3];
+  [(UAReplayAdvertisableItem *)&v3 encodeWithCoder:coder];
 }
 
-- (BOOL)wasResumedOnAnotherDeviceWithCompletionHandler:(id)a3
+- (BOOL)wasResumedOnAnotherDeviceWithCompletionHandler:(id)handler
 {
-  v4 = [(UAReplayAdvertisableItem *)self wasResumed];
+  wasResumed = [(UAReplayAdvertisableItem *)self wasResumed];
 
-  if (v4)
+  if (wasResumed)
   {
-    v5 = [(UAReplayAdvertisableItem *)self wasResumed];
-    dispatch_semaphore_signal(v5);
+    wasResumed2 = [(UAReplayAdvertisableItem *)self wasResumed];
+    dispatch_semaphore_signal(wasResumed2);
   }
 
   return 0;
 }
 
-+ (id)replayableAdvertisableItemWithAdvertisableItem:(id)a3
++ (id)replayableAdvertisableItemWithAdvertisableItem:(id)item
 {
-  v3 = a3;
-  v4 = [[UAReplayAdvertisableItem alloc] initWithUserActivityInfo:v3];
+  itemCopy = item;
+  v4 = [[UAReplayAdvertisableItem alloc] initWithUserActivityInfo:itemCopy];
 
   return v4;
 }

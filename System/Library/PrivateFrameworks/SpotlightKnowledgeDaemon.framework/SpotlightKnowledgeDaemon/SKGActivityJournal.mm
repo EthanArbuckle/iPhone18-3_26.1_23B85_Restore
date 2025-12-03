@@ -1,9 +1,9 @@
 @interface SKGActivityJournal
 + (id)sharedJournal;
 + (id)testJournal;
-- (SKGActivityJournal)initWithParentPath:(id)a3 fileName:(id)a4;
-- (id)_createEventData:(unsigned __int8)a3 params:(id)a4;
-- (void)clearJournalWithSize:(int64_t)a3 limit:(int64_t)a4;
+- (SKGActivityJournal)initWithParentPath:(id)path fileName:(id)name;
+- (id)_createEventData:(unsigned __int8)data params:(id)params;
+- (void)clearJournalWithSize:(int64_t)size limit:(int64_t)limit;
 - (void)dealloc;
 - (void)logInit;
 @end
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __35__SKGActivityJournal_sharedJournal__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedJournal_onceToken != -1)
   {
     dispatch_once(&sharedJournal_onceToken, block);
@@ -35,10 +35,10 @@ void __35__SKGActivityJournal_sharedJournal__block_invoke(uint64_t a1)
   sharedJournal__sharedJournal = v2;
 }
 
-- (SKGActivityJournal)initWithParentPath:(id)a3 fileName:(id)a4
+- (SKGActivityJournal)initWithParentPath:(id)path fileName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  nameCopy = name;
   v8 = isAppleInternalInstall();
   self->_isInternalInstall = v8;
   if (v8)
@@ -48,9 +48,9 @@ void __35__SKGActivityJournal_sharedJournal__block_invoke(uint64_t a1)
     queue = self->_queue;
     self->_queue = v10;
 
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", v6, v7];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", pathCopy, nameCopy];
     path = self->_path;
-    self->_path = v12;
+    self->_path = nameCopy;
 
     self->_fd = 0;
     v14 = dispatch_get_global_queue(21, 0);
@@ -58,14 +58,14 @@ void __35__SKGActivityJournal_sharedJournal__block_invoke(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __50__SKGActivityJournal_initWithParentPath_fileName___block_invoke;
     block[3] = &unk_27893D928;
-    v20 = v6;
-    v15 = self;
-    v21 = v15;
-    v22 = v7;
+    v20 = pathCopy;
+    selfCopy = self;
+    v21 = selfCopy;
+    v22 = nameCopy;
     dispatch_async(v14, block);
 
     v16 = v22;
-    v17 = v15;
+    v17 = selfCopy;
   }
 
   return self;
@@ -228,14 +228,14 @@ LABEL_20:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearJournalWithSize:(int64_t)a3 limit:(int64_t)a4
+- (void)clearJournalWithSize:(int64_t)size limit:(int64_t)limit
 {
   if (SKGLogGetCurrentLoggingLevel() >= 2)
   {
     v7 = SKGLogInit();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(SKGActivityJournal *)a3 clearJournalWithSize:a4 limit:v7];
+      [(SKGActivityJournal *)size clearJournalWithSize:limit limit:v7];
     }
   }
 
@@ -243,22 +243,22 @@ LABEL_20:
   fd_zero_truncate();
 }
 
-- (id)_createEventData:(unsigned __int8)a3 params:(id)a4
+- (id)_createEventData:(unsigned __int8)data params:(id)params
 {
   v37 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v4 = a4;
-  v5 = [MEMORY[0x277CBEB28] data];
-  [v5 appendBytes:&v35 length:1];
-  if (v35 >= 0x37u)
+  dataCopy = data;
+  paramsCopy = params;
+  data = [MEMORY[0x277CBEB28] data];
+  [data appendBytes:&dataCopy length:1];
+  if (dataCopy >= 0x37u)
   {
     [SKGActivityJournal _createEventData:params:];
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  [v5 appendBytes:&Current length:8];
-  v6 = [v4 allKeys];
-  v7 = [v6 sortedArrayUsingSelector:sel_compare_];
+  [data appendBytes:&Current length:8];
+  allKeys = [paramsCopy allKeys];
+  v7 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v32 = 0u;
   v33 = 0u;
@@ -280,9 +280,9 @@ LABEL_20:
         }
 
         v13 = *(*(&v30 + 1) + 8 * i);
-        v29 = [v13 unsignedIntValue];
-        DataTypeForParamType = getDataTypeForParamType(v29);
-        if (v29 >= 0x10)
+        unsignedIntValue = [v13 unsignedIntValue];
+        DataTypeForParamType = getDataTypeForParamType(unsignedIntValue);
+        if (unsignedIntValue >= 0x10)
         {
           [SKGActivityJournal _createEventData:params:];
         }
@@ -293,7 +293,7 @@ LABEL_20:
           [SKGActivityJournal _createEventData:params:];
         }
 
-        [v5 appendBytes:&v29 length:4];
+        [data appendBytes:&unsignedIntValue length:4];
         if (v15 <= 2)
         {
           if (v15 != 1)
@@ -303,26 +303,26 @@ LABEL_20:
               continue;
             }
 
-            v18 = [v4 objectForKeyedSubscript:v13];
-            v19 = [v18 longLongValue];
+            v18 = [paramsCopy objectForKeyedSubscript:v13];
+            longLongValue = [v18 longLongValue];
 LABEL_19:
-            v22 = v19;
+            v22 = longLongValue;
 
             v28 = v22;
-            v23 = v5;
+            v23 = data;
             v24 = 8;
 LABEL_22:
             [v23 appendBytes:&v28 length:{v24, v28}];
             continue;
           }
 
-          v20 = [v4 objectForKeyedSubscript:v13];
-          v21 = [v20 intValue];
+          v20 = [paramsCopy objectForKeyedSubscript:v13];
+          intValue = [v20 intValue];
 LABEL_21:
-          v25 = v21;
+          v25 = intValue;
 
           LODWORD(v28) = v25;
-          v23 = v5;
+          v23 = data;
           v24 = 4;
           goto LABEL_22;
         }
@@ -330,19 +330,19 @@ LABEL_21:
         switch(v15)
         {
           case 3:
-            v20 = [v4 objectForKeyedSubscript:v13];
-            v21 = [v20 unsignedIntValue];
+            v20 = [paramsCopy objectForKeyedSubscript:v13];
+            intValue = [v20 unsignedIntValue];
             goto LABEL_21;
           case 4:
-            v18 = [v4 objectForKeyedSubscript:v13];
-            v19 = [v18 unsignedLongLongValue];
+            v18 = [paramsCopy objectForKeyedSubscript:v13];
+            longLongValue = [v18 unsignedLongLongValue];
             goto LABEL_19;
           case 5:
-            v16 = [v4 objectForKeyedSubscript:v13];
+            v16 = [paramsCopy objectForKeyedSubscript:v13];
             LODWORD(v28) = [v16 lengthOfBytesUsingEncoding:4];
-            [v5 appendBytes:&v28 length:4];
-            v17 = [v16 UTF8String];
-            [v5 appendBytes:v17 length:v28];
+            [data appendBytes:&v28 length:4];
+            uTF8String = [v16 UTF8String];
+            [data appendBytes:uTF8String length:v28];
 
             break;
         }
@@ -356,7 +356,7 @@ LABEL_21:
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return data;
 }
 
 uint64_t __46__SKGActivityJournal_addEventWithType_params___block_invoke(uint64_t a1)
@@ -397,7 +397,7 @@ void __34__SKGActivityJournal_flushUpdates__block_invoke()
   block[1] = 3221225472;
   block[2] = __39__SKGActivityJournal_Test__testJournal__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (testJournal_onceToken != -1)
   {
     dispatch_once(&testJournal_onceToken, block);

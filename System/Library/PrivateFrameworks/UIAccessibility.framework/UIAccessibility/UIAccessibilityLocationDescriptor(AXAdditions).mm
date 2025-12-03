@@ -8,12 +8,12 @@
 - (id)dictionaryRepresentation
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a1, "view")}];
-  [a1 point];
+  v2 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(self, "view")}];
+  [self point];
   valuePtr[0] = v3;
   valuePtr[1] = v4;
   v5 = AXValueCreate(kAXValueTypeCGPoint, valuePtr);
-  v6 = [a1 attributedName];
+  attributedName = [self attributedName];
   v7 = objc_opt_new();
   v8 = *MEMORY[0x1E6988CE8];
   v17[0] = v2;
@@ -23,13 +23,13 @@
   v10 = CFAutorelease(v5);
   v16[2] = *MEMORY[0x1E6988CB8];
   v17[1] = v10;
-  v17[2] = v6;
+  v17[2] = attributedName;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
   [v7 addEntriesFromDictionary:v11];
-  v12 = [a1 _auxiliaryDataAsDictionaryRepresentation];
-  if (v12)
+  _auxiliaryDataAsDictionaryRepresentation = [self _auxiliaryDataAsDictionaryRepresentation];
+  if (_auxiliaryDataAsDictionaryRepresentation)
   {
-    [v7 addEntriesFromDictionary:v12];
+    [v7 addEntriesFromDictionary:_auxiliaryDataAsDictionaryRepresentation];
   }
 
   v13 = [v7 copy];
@@ -40,18 +40,18 @@
 - (BOOL)matchesDictionaryRepresentation:()AXAdditions
 {
   v4 = a3;
-  v5 = [a1 attributedName];
-  v6 = [v5 string];
+  attributedName = [self attributedName];
+  string = [attributedName string];
   v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6988CB8]];
-  v8 = [v7 attributedString];
-  v9 = [v8 string];
-  v10 = [v6 isEqualToString:v9];
+  attributedString = [v7 attributedString];
+  string2 = [attributedString string];
+  v10 = [string isEqualToString:string2];
 
   if (v10)
   {
-    v11 = [a1 view];
+    view = [self view];
     v12 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6988CE8]];
-    v13 = [v12 unsignedLongLongValue] == v11;
+    v13 = [v12 unsignedLongLongValue] == view;
   }
 
   else

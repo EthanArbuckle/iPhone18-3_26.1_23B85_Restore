@@ -1,47 +1,47 @@
 @interface CATStateMachine
 + (CATStateMachine)new;
-- (BOOL)canTransitionWithTriggeringEvent:(id)a3;
+- (BOOL)canTransitionWithTriggeringEvent:(id)event;
 - (CATStateMachine)init;
-- (CATStateMachine)initWithTarget:(id)a3;
-- (id)addStateWithName:(id)a3;
+- (CATStateMachine)initWithTarget:(id)target;
+- (id)addStateWithName:(id)name;
 - (id)description;
-- (id)eventForTriggeringEvent:(id)a3;
-- (id)stateWithName:(id)a3;
+- (id)eventForTriggeringEvent:(id)event;
+- (id)stateWithName:(id)name;
 - (id)target;
-- (void)addState:(id)a3;
+- (void)addState:(id)state;
 - (void)dealloc;
-- (void)delegateDidEnterState:(id)a3 event:(id)a4;
-- (void)delegateWillExitState:(id)a3 event:(id)a4;
-- (void)invokeAction:(SEL)a3 event:(id)a4;
+- (void)delegateDidEnterState:(id)state event:(id)event;
+- (void)delegateWillExitState:(id)state event:(id)event;
+- (void)invokeAction:(SEL)action event:(id)event;
 - (void)start;
-- (void)transitionWithTriggeringEvent:(id)a3;
+- (void)transitionWithTriggeringEvent:(id)event;
 @end
 
 @implementation CATStateMachine
 
 + (CATStateMachine)new
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CATStateMachine.m" lineNumber:62 description:{@"%@ cannot call %@", a1, v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CATStateMachine.m" lineNumber:62 description:{@"%@ cannot call %@", self, v5}];
 
   return 0;
 }
 
 - (CATStateMachine)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"CATStateMachine.m" lineNumber:69 description:{@"%@ cannot call %@", v5, v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CATStateMachine.m" lineNumber:69 description:{@"%@ cannot call %@", v5, v6}];
 
   return 0;
 }
 
-- (CATStateMachine)initWithTarget:(id)a3
+- (CATStateMachine)initWithTarget:(id)target
 {
-  v4 = a3;
-  if (!v4)
+  targetCopy = target;
+  if (!targetCopy)
   {
     [CATStateMachine initWithTarget:];
   }
@@ -56,10 +56,10 @@
     v5->mStateByName = v6;
 
     v5->_logLevel = 0;
-    objc_storeWeak(&v5->_target, v4);
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@: %p>", objc_opt_class(), v4];
+    objc_storeWeak(&v5->_target, targetCopy);
+    targetCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@: %p>", objc_opt_class(), targetCopy];
     name = v5->_name;
-    v5->_name = v8;
+    v5->_name = targetCopy;
   }
 
   return v5;
@@ -68,7 +68,7 @@
 - (void)dealloc
 {
   OUTLINED_FUNCTION_0_2();
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v3 = *v1;
   OUTLINED_FUNCTION_0();
   [v2 handleFailureInMethod:v0 object:v3 file:? lineNumber:? description:?];
@@ -78,48 +78,48 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CATStateMachine *)self name];
-  v6 = [(CATStateMachine *)self currentState];
-  v7 = [v6 name];
-  v8 = v7;
-  if (v7)
+  name = [(CATStateMachine *)self name];
+  currentState = [(CATStateMachine *)self currentState];
+  name2 = [currentState name];
+  v8 = name2;
+  if (name2)
   {
-    v9 = [v3 stringWithFormat:@"<%@: %p { name = %@, currentState = %@ }>", v4, self, v5, v7];
+    v9 = [v3 stringWithFormat:@"<%@: %p { name = %@, currentState = %@ }>", v4, self, name, name2];
   }
 
   else
   {
-    v10 = [(CATStateMachine *)self initialState];
-    v11 = [v10 name];
-    v9 = [v3 stringWithFormat:@"<%@: %p { name = %@, currentState = %@ }>", v4, self, v5, v11];
+    initialState = [(CATStateMachine *)self initialState];
+    name3 = [initialState name];
+    v9 = [v3 stringWithFormat:@"<%@: %p { name = %@, currentState = %@ }>", v4, self, name, name3];
   }
 
   return v9;
 }
 
-- (id)addStateWithName:(id)a3
+- (id)addStateWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[CATState alloc] initWithName:v4];
+  nameCopy = name;
+  v5 = [[CATState alloc] initWithName:nameCopy];
 
   [(CATStateMachine *)self addState:v5];
 
   return v5;
 }
 
-- (void)addState:(id)a3
+- (void)addState:(id)state
 {
-  v11 = a3;
-  v4 = [(CATStateMachine *)self currentState];
+  stateCopy = state;
+  currentState = [(CATStateMachine *)self currentState];
 
-  if (v4)
+  if (currentState)
   {
     [CATStateMachine addState:];
   }
 
   mStateByName = self->mStateByName;
-  v6 = [v11 name];
-  v7 = [(NSMutableDictionary *)mStateByName objectForKeyedSubscript:v6];
+  name = [stateCopy name];
+  v7 = [(NSMutableDictionary *)mStateByName objectForKeyedSubscript:name];
 
   if (v7)
   {
@@ -127,21 +127,21 @@
   }
 
   v8 = self->mStateByName;
-  v9 = [v11 name];
-  [(NSMutableDictionary *)v8 setObject:v11 forKeyedSubscript:v9];
+  name2 = [stateCopy name];
+  [(NSMutableDictionary *)v8 setObject:stateCopy forKeyedSubscript:name2];
 
-  v10 = [(CATStateMachine *)self initialState];
+  initialState = [(CATStateMachine *)self initialState];
 
-  if (!v10)
+  if (!initialState)
   {
-    [(CATStateMachine *)self setInitialState:v11];
+    [(CATStateMachine *)self setInitialState:stateCopy];
   }
 }
 
-- (id)stateWithName:(id)a3
+- (id)stateWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->mStateByName objectForKeyedSubscript:v4];
+  nameCopy = name;
+  v5 = [(NSMutableDictionary *)self->mStateByName objectForKeyedSubscript:nameCopy];
   if (!v5)
   {
     [CATStateMachine stateWithName:];
@@ -154,36 +154,36 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_24329F000, a2, OS_LOG_TYPE_DEBUG, "%@ starting...", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)canTransitionWithTriggeringEvent:(id)a3
+- (BOOL)canTransitionWithTriggeringEvent:(id)event
 {
-  v4 = [(CATStateMachine *)self eventForTriggeringEvent:a3];
-  v5 = [(CATStateMachine *)self currentState];
-  v6 = [v4 trigger];
-  v7 = [v5 transitionWithTriggeringEvent:v6];
+  v4 = [(CATStateMachine *)self eventForTriggeringEvent:event];
+  currentState = [(CATStateMachine *)self currentState];
+  trigger = [v4 trigger];
+  v7 = [currentState transitionWithTriggeringEvent:trigger];
 
   return v7 != 0;
 }
 
-- (void)transitionWithTriggeringEvent:(id)a3
+- (void)transitionWithTriggeringEvent:(id)event
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(CATStateMachine *)self currentState];
+  eventCopy = event;
+  currentState = [(CATStateMachine *)self currentState];
 
-  if (!v6)
+  if (!currentState)
   {
     [CATStateMachine transitionWithTriggeringEvent:];
   }
 
-  v7 = [(CATStateMachine *)self eventForTriggeringEvent:v5];
-  v8 = [(CATStateMachine *)self currentState];
-  v9 = [v7 trigger];
-  v10 = [v8 transitionWithTriggeringEvent:v9];
+  v7 = [(CATStateMachine *)self eventForTriggeringEvent:eventCopy];
+  currentState2 = [(CATStateMachine *)self currentState];
+  trigger = [v7 trigger];
+  v10 = [currentState2 transitionWithTriggeringEvent:trigger];
 
   if (!v10)
   {
@@ -193,7 +193,7 @@
   p_mCalloutReason = &self->mCalloutReason;
   if (self->mCalloutReason)
   {
-    [(CATStateMachine *)a2 transitionWithTriggeringEvent:self, v5];
+    [(CATStateMachine *)a2 transitionWithTriggeringEvent:self, eventCopy];
   }
 
   if ([(CATStateMachine *)self logLevel])
@@ -201,26 +201,26 @@
     v12 = _CATLogFSM();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v34 = [(CATStateMachine *)self currentState];
-      v28 = [v34 name];
-      v29 = [v10 state];
-      v30 = [v29 name];
-      v31 = [v7 trigger];
+      currentState3 = [(CATStateMachine *)self currentState];
+      name = [currentState3 name];
+      state = [v10 state];
+      name2 = [state name];
+      trigger2 = [v7 trigger];
       *buf = 138413058;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 2112;
-      v38 = v28;
+      v38 = name;
       v39 = 2112;
-      v40 = v30;
+      v40 = name2;
       v41 = 2112;
-      v42 = v31;
+      v42 = trigger2;
       _os_log_debug_impl(&dword_24329F000, v12, OS_LOG_TYPE_DEBUG, "%@ transitioning from %@ to %@ because %@", buf, 0x2Au);
     }
   }
 
-  v13 = [v10 state];
+  state2 = [v10 state];
 
-  if (v13)
+  if (state2)
   {
     mCalloutReason = self->mCalloutReason;
     self->mCalloutReason = @"Calling Exit Action";
@@ -230,18 +230,18 @@
       v15 = _CATLogFSM();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
-        v32 = [(CATStateMachine *)self currentState];
-        v33 = [v32 name];
+        currentState4 = [(CATStateMachine *)self currentState];
+        name3 = [currentState4 name];
         *buf = 138412546;
-        v36 = self;
+        selfCopy2 = self;
         v37 = 2112;
-        v38 = v33;
+        v38 = name3;
         _os_log_debug_impl(&dword_24329F000, v15, OS_LOG_TYPE_DEBUG, "%@ leaving %@", buf, 0x16u);
       }
     }
 
-    v16 = [(CATStateMachine *)self currentState];
-    [(CATStateMachine *)self delegateWillExitState:v16 event:v7];
+    currentState5 = [(CATStateMachine *)self currentState];
+    [(CATStateMachine *)self delegateWillExitState:currentState5 event:v7];
 
     v17 = *p_mCalloutReason;
     *p_mCalloutReason = 0;
@@ -266,25 +266,25 @@
     *p_mCalloutReason = 0;
   }
 
-  v21 = [v10 state];
+  state3 = [v10 state];
 
-  if (v21)
+  if (state3)
   {
-    v22 = [v10 state];
-    [(CATStateMachine *)self setCurrentState:v22];
+    state4 = [v10 state];
+    [(CATStateMachine *)self setCurrentState:state4];
 
     if ([(CATStateMachine *)self logLevel]>= 2)
     {
       v23 = _CATLogFSM();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
-        v24 = [(CATStateMachine *)self currentState];
-        [(CATStateMachine *)self transitionWithTriggeringEvent:v24, buf, v23];
+        currentState6 = [(CATStateMachine *)self currentState];
+        [(CATStateMachine *)self transitionWithTriggeringEvent:currentState6, buf, v23];
       }
     }
 
-    v25 = [(CATStateMachine *)self currentState];
-    [(CATStateMachine *)self delegateDidEnterState:v25 event:v7];
+    currentState7 = [(CATStateMachine *)self currentState];
+    [(CATStateMachine *)self delegateDidEnterState:currentState7 event:v7];
   }
 
   v26 = *p_mCalloutReason;
@@ -293,18 +293,18 @@
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)eventForTriggeringEvent:(id)a3
+- (id)eventForTriggeringEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = eventCopy;
   }
 
   else
   {
-    v4 = [CATStateMachineEvent eventWithTrigger:v3 context:0];
+    v4 = [CATStateMachineEvent eventWithTrigger:eventCopy context:0];
   }
 
   v5 = v4;
@@ -312,11 +312,11 @@
   return v5;
 }
 
-- (void)delegateWillExitState:(id)a3 event:(id)a4
+- (void)delegateWillExitState:(id)state event:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 exitAction])
+  stateCopy = state;
+  eventCopy = event;
+  if ([stateCopy exitAction])
   {
     if ([(CATStateMachine *)self logLevel]>= 2)
     {
@@ -327,15 +327,15 @@
       }
     }
 
-    -[CATStateMachine invokeAction:event:](self, "invokeAction:event:", [v6 exitAction], v7);
+    -[CATStateMachine invokeAction:event:](self, "invokeAction:event:", [stateCopy exitAction], eventCopy);
   }
 }
 
-- (void)delegateDidEnterState:(id)a3 event:(id)a4
+- (void)delegateDidEnterState:(id)state event:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 enterAction])
+  stateCopy = state;
+  eventCopy = event;
+  if ([stateCopy enterAction])
   {
     if ([(CATStateMachine *)self logLevel]>= 2)
     {
@@ -346,28 +346,28 @@
       }
     }
 
-    -[CATStateMachine invokeAction:event:](self, "invokeAction:event:", [v6 enterAction], v7);
+    -[CATStateMachine invokeAction:event:](self, "invokeAction:event:", [stateCopy enterAction], eventCopy);
   }
 }
 
-- (void)invokeAction:(SEL)a3 event:(id)a4
+- (void)invokeAction:(SEL)action event:(id)event
 {
-  v6 = a4;
-  if (a3)
+  eventCopy = event;
+  if (action)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = [(CATStateMachine *)self target];
-    v9 = [v8 methodSignatureForSelector:a3];
+    target = [(CATStateMachine *)self target];
+    v9 = [target methodSignatureForSelector:action];
 
     v10 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v9];
-    v11 = [(CATStateMachine *)self target];
-    [v10 setTarget:v11];
+    target2 = [(CATStateMachine *)self target];
+    [v10 setTarget:target2];
 
-    [v10 setSelector:a3];
+    [v10 setSelector:action];
     if ([v9 numberOfArguments] >= 3)
     {
-      v12 = [v6 context];
-      [v10 setArgument:&v12 atIndex:2];
+      context = [eventCopy context];
+      [v10 setArgument:&context atIndex:2];
     }
 
     [v10 invoke];

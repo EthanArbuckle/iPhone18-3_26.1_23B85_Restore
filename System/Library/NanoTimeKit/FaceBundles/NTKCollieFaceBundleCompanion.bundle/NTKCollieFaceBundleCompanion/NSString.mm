@@ -1,7 +1,7 @@
 @interface NSString
-+ (BOOL)_isAnimojiCharacterStyleName:(id)a3;
-+ (id)identifierFromMemojiCharacterStyleName:(id)a3;
-+ (id)styleNameFromBasename:(id)a3;
++ (BOOL)_isAnimojiCharacterStyleName:(id)name;
++ (id)identifierFromMemojiCharacterStyleName:(id)name;
++ (id)styleNameFromBasename:(id)basename;
 - (BOOL)isAnyMemojiStyleName;
 - (BOOL)isRegularAnimojiStyleName;
 - (BOOL)isRegularMemojiStyleName;
@@ -16,12 +16,12 @@
 
 @implementation NSString
 
-+ (id)identifierFromMemojiCharacterStyleName:(id)a3
++ (id)identifierFromMemojiCharacterStyleName:(id)name
 {
-  v4 = a3;
-  if ([a1 _isMemojiCharacterStyleName:v4])
+  nameCopy = name;
+  if ([self _isMemojiCharacterStyleName:nameCopy])
   {
-    v5 = [v4 substringFromIndex:{objc_msgSend(@"memoji-", "length")}];
+    v5 = [nameCopy substringFromIndex:{objc_msgSend(@"memoji-", "length")}];
   }
 
   else
@@ -32,11 +32,11 @@
   return v5;
 }
 
-+ (BOOL)_isAnimojiCharacterStyleName:(id)a3
++ (BOOL)_isAnimojiCharacterStyleName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[NTKCollieStyleEditOptionAvatarRecordCache animojiIdentifiers];
-  v5 = [v4 indexOfObject:v3];
+  v5 = [v4 indexOfObject:nameCopy];
 
   return v5 != 0x7FFFFFFFFFFFFFFFLL;
 }
@@ -127,22 +127,22 @@
   return [(NSString *)self isRegularAnimojiStyleName];
 }
 
-+ (id)styleNameFromBasename:(id)a3
++ (id)styleNameFromBasename:(id)basename
 {
-  v3 = a3;
+  basenameCopy = basename;
   v4 = @"toybox-animoji";
-  if (([v3 hasPrefix:@"toybox-animoji"] & 1) == 0)
+  if (([basenameCopy hasPrefix:@"toybox-animoji"] & 1) == 0)
   {
     v4 = @"toybox-memoji";
-    if (([v3 hasPrefix:@"toybox-memoji"] & 1) == 0)
+    if (([basenameCopy hasPrefix:@"toybox-memoji"] & 1) == 0)
     {
       v4 = @"local-memoji";
-      if (([v3 hasPrefix:@"local-memoji"] & 1) == 0)
+      if (([basenameCopy hasPrefix:@"local-memoji"] & 1) == 0)
       {
         v5 = [@"memoji-" length];
-        if ([v3 hasPrefix:@"memoji-"] && (v6 = v5 + 36, objc_msgSend(v3, "length") >= v6))
+        if ([basenameCopy hasPrefix:@"memoji-"] && (v6 = v5 + 36, objc_msgSend(basenameCopy, "length") >= v6))
         {
-          v4 = [v3 substringToIndex:v6];
+          v4 = [basenameCopy substringToIndex:v6];
         }
 
         else
@@ -166,7 +166,7 @@
                 }
 
                 v10 = *(*(&v12 + 1) + 8 * i);
-                if ([v3 hasPrefix:{v10, v12}])
+                if ([basenameCopy hasPrefix:{v10, v12}])
                 {
                   v4 = v10;
                   goto LABEL_16;

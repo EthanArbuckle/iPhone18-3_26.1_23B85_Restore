@@ -1,8 +1,8 @@
 @interface AEAnnotationGroupPrintActivityItemProvider
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 - (id)supportedActivityTypes;
-- (void)populateHTMLGenerator:(id)a3;
+- (void)populateHTMLGenerator:(id)generator;
 @end
 
 @implementation AEAnnotationGroupPrintActivityItemProvider
@@ -15,18 +15,18 @@
   return v2;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AEAnnotationGroupPrintActivityItemProvider *)self supportedActivityTypes];
-  v9 = [v8 containsObject:v7];
+  controllerCopy = controller;
+  typeCopy = type;
+  supportedActivityTypes = [(AEAnnotationGroupPrintActivityItemProvider *)self supportedActivityTypes];
+  v9 = [supportedActivityTypes containsObject:typeCopy];
 
   if (v9)
   {
     v15.receiver = self;
     v15.super_class = AEAnnotationGroupPrintActivityItemProvider;
-    v10 = [(AEAnnotationGroupHTMLActivityItemProvider *)&v15 activityViewController:v6 itemForActivityType:v7];
+    v10 = [(AEAnnotationGroupHTMLActivityItemProvider *)&v15 activityViewController:controllerCopy itemForActivityType:typeCopy];
     v11 = [[UIMarkupTextPrintFormatter alloc] initWithMarkupText:v10];
   }
 
@@ -40,7 +40,7 @@
       *buf = 138412546;
       v17 = v13;
       v18 = 2112;
-      v19 = v7;
+      v19 = typeCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "%@ returning nil for activity:%@", buf, 0x16u);
     }
 
@@ -50,21 +50,21 @@
   return v11;
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   v3 = [[UIMarkupTextPrintFormatter alloc] initWithMarkupText:&stru_2D2930];
 
   return v3;
 }
 
-- (void)populateHTMLGenerator:(id)a3
+- (void)populateHTMLGenerator:(id)generator
 {
   v4.receiver = self;
   v4.super_class = AEAnnotationGroupPrintActivityItemProvider;
-  v3 = a3;
-  [(AEAnnotationHTMLActivityItemProvider *)&v4 populateHTMLGenerator:v3];
-  [v3 setCitationsAllowed:{0, v4.receiver, v4.super_class}];
-  [v3 setForPrint:1];
+  generatorCopy = generator;
+  [(AEAnnotationHTMLActivityItemProvider *)&v4 populateHTMLGenerator:generatorCopy];
+  [generatorCopy setCitationsAllowed:{0, v4.receiver, v4.super_class}];
+  [generatorCopy setForPrint:1];
 }
 
 @end

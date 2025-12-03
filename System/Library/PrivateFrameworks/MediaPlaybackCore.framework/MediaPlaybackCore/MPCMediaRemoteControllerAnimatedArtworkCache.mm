@@ -1,9 +1,9 @@
 @interface MPCMediaRemoteControllerAnimatedArtworkCache
 - (MPCMediaRemoteControllerAnimatedArtworkCache)init;
-- (id)assetForArtworkID:(id)a3 artworkKey:(id)a4;
-- (void)insertAsset:(id)a3 forArtworkID:(id)a4 artworkKey:(id)a5;
-- (void)removeAssetsForArtworkID:(id)a3;
-- (void)updateArtworkID:(id)a3;
+- (id)assetForArtworkID:(id)d artworkKey:(id)key;
+- (void)insertAsset:(id)asset forArtworkID:(id)d artworkKey:(id)key;
+- (void)removeAssetsForArtworkID:(id)d;
+- (void)updateArtworkID:(id)d;
 @end
 
 @implementation MPCMediaRemoteControllerAnimatedArtworkCache
@@ -23,18 +23,18 @@
   return v2;
 }
 
-- (id)assetForArtworkID:(id)a3 artworkKey:(id)a4
+- (id)assetForArtworkID:(id)d artworkKey:(id)key
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (self->_artworkID != v6 && ![(NSString *)v6 isEqual:?])
+  dCopy = d;
+  keyCopy = key;
+  if (self->_artworkID != dCopy && ![(NSString *)dCopy isEqual:?])
   {
     v10 = 0;
     goto LABEL_12;
   }
 
-  v8 = [(NSMutableDictionary *)self->_assets objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_assets objectForKeyedSubscript:keyCopy];
   v9 = v8;
   if (!v8)
   {
@@ -47,13 +47,13 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v13 = 138412546;
-      v14 = v6;
+      v14 = dCopy;
       v15 = 2112;
-      v16 = v7;
+      v16 = keyCopy;
       _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_INFO, "Cached asset for %@ / %@ not playable, returning nil", &v13, 0x16u);
     }
 
-    [(NSMutableDictionary *)self->_assets removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->_assets removeObjectForKey:keyCopy];
 LABEL_10:
     v10 = 0;
     goto LABEL_11;
@@ -67,48 +67,48 @@ LABEL_12:
   return v10;
 }
 
-- (void)removeAssetsForArtworkID:(id)a3
+- (void)removeAssetsForArtworkID:(id)d
 {
-  v4 = a3;
-  v7 = v4;
-  if (self->_artworkID == v4 || (v5 = [(NSString *)v4 isEqual:?], v6 = v7, v5))
+  dCopy = d;
+  v7 = dCopy;
+  if (self->_artworkID == dCopy || (removeAllObjects = [(NSString *)dCopy isEqual:?], v6 = v7, removeAllObjects))
   {
-    v5 = [(NSMutableDictionary *)self->_assets removeAllObjects];
+    removeAllObjects = [(NSMutableDictionary *)self->_assets removeAllObjects];
     v6 = v7;
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](removeAllObjects, v6);
 }
 
-- (void)insertAsset:(id)a3 forArtworkID:(id)a4 artworkKey:(id)a5
+- (void)insertAsset:(id)asset forArtworkID:(id)d artworkKey:(id)key
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (self->_artworkID == v8 || [(NSString *)v8 isEqual:?])
+  assetCopy = asset;
+  dCopy = d;
+  keyCopy = key;
+  if (self->_artworkID == dCopy || [(NSString *)dCopy isEqual:?])
   {
-    [(NSMutableDictionary *)self->_assets setObject:v10 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->_assets setObject:assetCopy forKeyedSubscript:keyCopy];
   }
 }
 
-- (void)updateArtworkID:(id)a3
+- (void)updateArtworkID:(id)d
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_artworkID != v5)
+  dCopy = d;
+  v6 = dCopy;
+  if (self->_artworkID != dCopy)
   {
-    v7 = v5;
-    v5 = [v5 isEqual:?];
+    v7 = dCopy;
+    dCopy = [dCopy isEqual:?];
     v6 = v7;
-    if ((v5 & 1) == 0)
+    if ((dCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_artworkID, a3);
-      v5 = [(NSMutableDictionary *)self->_assets removeAllObjects];
+      objc_storeStrong(&self->_artworkID, d);
+      dCopy = [(NSMutableDictionary *)self->_assets removeAllObjects];
       v6 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](dCopy, v6);
 }
 
 @end

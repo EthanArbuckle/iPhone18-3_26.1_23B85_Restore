@@ -1,29 +1,29 @@
 @interface AMSUserNotificationAuthorizationTask
-+ (id)_findEngagementRequestInResponse:(id)a3;
++ (id)_findEngagementRequestInResponse:(id)response;
 + (id)engagementRequestForFullSheet;
-+ (id)recordEngagementEventWithBundleIdentifier:(id)a3 options:(id)a4;
++ (id)recordEngagementEventWithBundleIdentifier:(id)identifier options:(id)options;
 - (AMSUserNotificationAuthorizationDelegate)delegate;
-- (AMSUserNotificationAuthorizationTask)initWithBundleIdentifier:(id)a3 options:(id)a4;
+- (AMSUserNotificationAuthorizationTask)initWithBundleIdentifier:(id)identifier options:(id)options;
 - (id)_presentDialogForUserInitiatedWithCompletion;
-- (id)_startEngagementAuthorizationWithResult:(id)a3;
+- (id)_startEngagementAuthorizationWithResult:(id)result;
 - (id)requestAuthorization;
 @end
 
 @implementation AMSUserNotificationAuthorizationTask
 
-- (AMSUserNotificationAuthorizationTask)initWithBundleIdentifier:(id)a3 options:(id)a4
+- (AMSUserNotificationAuthorizationTask)initWithBundleIdentifier:(id)identifier options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v14.receiver = self;
   v14.super_class = AMSUserNotificationAuthorizationTask;
   v9 = [(AMSTask *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bundleIdentifier, a3);
-    objc_storeStrong(&v10->_options, a4);
-    v11 = [objc_alloc(MEMORY[0x1E6983308]) initWithBundleIdentifier:v7];
+    objc_storeStrong(&v9->_bundleIdentifier, identifier);
+    objc_storeStrong(&v10->_options, options);
+    v11 = [objc_alloc(MEMORY[0x1E6983308]) initWithBundleIdentifier:identifierCopy];
     notificationCenter = v10->_notificationCenter;
     v10->_notificationCenter = v11;
   }
@@ -35,9 +35,9 @@
 {
   v3 = objc_alloc_init(AMSMutablePromise);
   v4 = objc_alloc(MEMORY[0x1E6983308]);
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v4 initWithBundleIdentifier:v6];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v7 = [v4 initWithBundleIdentifier:bundleIdentifier];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -45,19 +45,19 @@
   v12[3] = &unk_1E73BDEB8;
   v8 = v3;
   v13 = v8;
-  v14 = a1;
+  selfCopy = self;
   [v7 getNotificationSettingsWithCompletionHandler:v12];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__AMSUserNotificationAuthorizationTask_engagementRequestForFullSheet__block_invoke_33;
   v11[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v11[4] = a1;
+  v11[4] = self;
   [(AMSPromise *)v8 addErrorBlock:v11];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__AMSUserNotificationAuthorizationTask_engagementRequestForFullSheet__block_invoke_34;
   v10[3] = &__block_descriptor_40_e48_v16__0__AMSUserNotificationAuthorizationResult_8l;
-  v10[4] = a1;
+  v10[4] = self;
   [(AMSPromise *)v8 addSuccessBlock:v10];
 
   return v8;
@@ -203,15 +203,15 @@ void __69__AMSUserNotificationAuthorizationTask_engagementRequestForFullSheet__b
   }
 }
 
-+ (id)_findEngagementRequestInResponse:(id)a3
++ (id)_findEngagementRequestInResponse:(id)response
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a3 messageActions];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  messageActions = [response messageActions];
+  v4 = [messageActions countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -222,20 +222,20 @@ void __69__AMSUserNotificationAuthorizationTask_engagementRequestForFullSheet__b
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(messageActions);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) engagementRequest];
-        if (v8)
+        engagementRequest = [*(*(&v11 + 1) + 8 * i) engagementRequest];
+        if (engagementRequest)
         {
-          v9 = v8;
-          [v8 setSilentlyCheckURL:1];
+          v9 = engagementRequest;
+          [engagementRequest setSilentlyCheckURL:1];
           [v9 setFailOnDismiss:1];
           goto LABEL_11;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [messageActions countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -251,19 +251,19 @@ LABEL_11:
   return v9;
 }
 
-+ (id)recordEngagementEventWithBundleIdentifier:(id)a3 options:(id)a4
++ (id)recordEngagementEventWithBundleIdentifier:(id)identifier options:(id)options
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v7 = +[AMSLogConfig sharedConfig];
   if (!v7)
   {
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = AMSLogKey();
@@ -271,25 +271,25 @@ LABEL_11:
     v27 = v9;
     v28 = 2114;
     v29 = v10;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Recording engagement event.", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Recording engagement event.", buf, 0x16u);
   }
 
   v11 = objc_alloc_init(AMSEngagement);
-  v25[0] = v5;
+  v25[0] = identifierCopy;
   v24[0] = @"bundleIdentifier";
   v24[1] = @"userInitiated";
-  v12 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v6, "userInitiated")}];
+  v12 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(optionsCopy, "userInitiated")}];
   v25[1] = v12;
   v24[2] = @"authorizationOptions";
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v6, "authorizationOptions")}];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(optionsCopy, "authorizationOptions")}];
   v25[2] = v13;
   v24[3] = @"metricsOverlay";
-  v14 = [v6 metricsOverlay];
+  metricsOverlay = [optionsCopy metricsOverlay];
 
   v15 = MEMORY[0x1E695E0F8];
-  if (v14)
+  if (metricsOverlay)
   {
-    v15 = v14;
+    v15 = metricsOverlay;
   }
 
   v25[3] = v15;
@@ -315,8 +315,8 @@ LABEL_11:
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
@@ -325,13 +325,13 @@ LABEL_11:
     v22 = v5;
     v23 = 2114;
     v24 = v7;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting notification authorization task", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting notification authorization task", buf, 0x16u);
   }
 
   v8 = objc_alloc_init(AMSUserNotificationAuthorizationResult);
   v9 = objc_alloc_init(AMSMutablePromise);
   objc_initWeak(buf, self);
-  v10 = [(AMSUserNotificationAuthorizationTask *)self notificationCenter];
+  notificationCenter = [(AMSUserNotificationAuthorizationTask *)self notificationCenter];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __60__AMSUserNotificationAuthorizationTask_requestAuthorization__block_invoke;
@@ -341,7 +341,7 @@ LABEL_11:
   v18 = v11;
   v12 = v8;
   v19 = v12;
-  [v10 getNotificationSettingsWithCompletionHandler:v17];
+  [notificationCenter getNotificationSettingsWithCompletionHandler:v17];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -465,9 +465,9 @@ void __60__AMSUserNotificationAuthorizationTask_requestAuthorization__block_invo
 - (id)_presentDialogForUserInitiatedWithCompletion
 {
   v3 = objc_alloc_init(AMSMutableBinaryPromise);
-  v4 = [(AMSUserNotificationAuthorizationTask *)self notificationCenter];
-  v5 = [(AMSUserNotificationAuthorizationTask *)self options];
-  v6 = [v5 authorizationOptions];
+  notificationCenter = [(AMSUserNotificationAuthorizationTask *)self notificationCenter];
+  options = [(AMSUserNotificationAuthorizationTask *)self options];
+  authorizationOptions = [options authorizationOptions];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__AMSUserNotificationAuthorizationTask__presentDialogForUserInitiatedWithCompletion__block_invoke;
@@ -475,7 +475,7 @@ void __60__AMSUserNotificationAuthorizationTask_requestAuthorization__block_invo
   v11[4] = self;
   v7 = v3;
   v12 = v7;
-  [v4 requestAuthorizationWithOptions:v6 completionHandler:v11];
+  [notificationCenter requestAuthorizationWithOptions:authorizationOptions completionHandler:v11];
 
   v8 = v12;
   v9 = v7;
@@ -536,14 +536,14 @@ void __84__AMSUserNotificationAuthorizationTask__presentDialogForUserInitiatedWi
   }
 }
 
-- (id)_startEngagementAuthorizationWithResult:(id)a3
+- (id)_startEngagementAuthorizationWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = objc_alloc_init(AMSMutableBinaryPromise);
   v6 = objc_opt_class();
-  v7 = [(AMSUserNotificationAuthorizationTask *)self bundleIdentifier];
-  v8 = [(AMSUserNotificationAuthorizationTask *)self options];
-  v9 = [v6 recordEngagementEventWithBundleIdentifier:v7 options:v8];
+  bundleIdentifier = [(AMSUserNotificationAuthorizationTask *)self bundleIdentifier];
+  options = [(AMSUserNotificationAuthorizationTask *)self options];
+  v9 = [v6 recordEngagementEventWithBundleIdentifier:bundleIdentifier options:options];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -559,8 +559,8 @@ void __84__AMSUserNotificationAuthorizationTask__presentDialogForUserInitiatedWi
   v16[4] = self;
   v11 = v10;
   v17 = v11;
-  v18 = v4;
-  v12 = v4;
+  v18 = resultCopy;
+  v12 = resultCopy;
   [v9 addSuccessBlock:v16];
   v13 = v18;
   v14 = v11;

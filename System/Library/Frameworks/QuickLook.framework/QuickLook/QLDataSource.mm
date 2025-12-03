@@ -1,34 +1,34 @@
 @interface QLDataSource
-- (QLDataSource)initWithPreviewItems:(id)a3;
-- (void)previewItemAtIndex:(unint64_t)a3 withCompletionHandler:(id)a4;
+- (QLDataSource)initWithPreviewItems:(id)items;
+- (void)previewItemAtIndex:(unint64_t)index withCompletionHandler:(id)handler;
 @end
 
 @implementation QLDataSource
 
-- (QLDataSource)initWithPreviewItems:(id)a3
+- (QLDataSource)initWithPreviewItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v10.receiver = self;
   v10.super_class = QLDataSource;
   v6 = [(QLDataSource *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_previewItems, a3);
+    objc_storeStrong(&v6->_previewItems, items);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)previewItemAtIndex:(unint64_t)a3 withCompletionHandler:(id)a4
+- (void)previewItemAtIndex:(unint64_t)index withCompletionHandler:(id)handler
 {
   previewItems = self->_previewItems;
-  v8 = a4;
-  v11 = [(NSArray *)previewItems objectAtIndexedSubscript:a3];
-  v9 = [(NSArray *)self->_previewItems objectAtIndexedSubscript:a3];
-  v10 = [v9 fetcher];
-  (*(a4 + 2))(v8, v11, v10);
+  handlerCopy = handler;
+  v11 = [(NSArray *)previewItems objectAtIndexedSubscript:index];
+  v9 = [(NSArray *)self->_previewItems objectAtIndexedSubscript:index];
+  fetcher = [v9 fetcher];
+  (*(handler + 2))(handlerCopy, v11, fetcher);
 }
 
 @end

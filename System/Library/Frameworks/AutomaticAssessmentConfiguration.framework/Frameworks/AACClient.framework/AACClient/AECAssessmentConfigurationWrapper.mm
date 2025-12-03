@@ -1,11 +1,11 @@
 @interface AECAssessmentConfigurationWrapper
-+ (id)wrapperFromConfiguration:(id)a3;
++ (id)wrapperFromConfiguration:(id)configuration;
 - (AEAssessmentIndividualConfiguration)mainIndividualConfiguration;
 - (AECAssessmentConfigurationWrapper)init;
 - (NSMutableDictionary)configurationsByApplicationDescriptor;
 - (id)makeConfiguration;
-- (void)setConfigurationsByApplicationDescriptor:(id)a3;
-- (void)setMainIndividualConfiguration:(id)a3;
+- (void)setConfigurationsByApplicationDescriptor:(id)descriptor;
+- (void)setMainIndividualConfiguration:(id)configuration;
 @end
 
 @implementation AECAssessmentConfigurationWrapper
@@ -29,7 +29,7 @@
   return v2;
 }
 
-- (void)setMainIndividualConfiguration:(id)a3
+- (void)setMainIndividualConfiguration:(id)configuration
 {
   v4 = [(AEAssessmentIndividualConfiguration *)self->_mainIndividualConfiguration copy];
   mainIndividualConfiguration = self->_mainIndividualConfiguration;
@@ -52,9 +52,9 @@
   return v2;
 }
 
-- (void)setConfigurationsByApplicationDescriptor:(id)a3
+- (void)setConfigurationsByApplicationDescriptor:(id)descriptor
 {
-  v4 = [a3 mutableCopy];
+  v4 = [descriptor mutableCopy];
   configurationsByApplicationDescriptor = self->_configurationsByApplicationDescriptor;
   self->_configurationsByApplicationDescriptor = v4;
 
@@ -83,47 +83,47 @@
   [v3 setAllowsScreenshots:{-[AECAssessmentConfigurationWrapper allowsScreenshots](self, "allowsScreenshots")}];
   [v3 set_allowsNetworkAccess:{-[AECAssessmentConfigurationWrapper _allowsNetworkAccess](self, "_allowsNetworkAccess")}];
   [v3 set_allowsContentCapture:{-[AECAssessmentConfigurationWrapper _allowsContentCapture](self, "_allowsContentCapture")}];
-  v4 = [(AECAssessmentConfigurationWrapper *)self mainIndividualConfiguration];
-  v5 = [v4 copy];
+  mainIndividualConfiguration = [(AECAssessmentConfigurationWrapper *)self mainIndividualConfiguration];
+  v5 = [mainIndividualConfiguration copy];
   [v3 setMainIndividualConfiguration:v5];
 
-  v6 = [(AECAssessmentConfigurationWrapper *)self configurationsByApplicationDescriptor];
-  v7 = [v6 copy];
+  configurationsByApplicationDescriptor = [(AECAssessmentConfigurationWrapper *)self configurationsByApplicationDescriptor];
+  v7 = [configurationsByApplicationDescriptor copy];
   [v3 setConfigurationsByApplicationDescriptor:v7];
 
   return v3;
 }
 
-+ (id)wrapperFromConfiguration:(id)a3
++ (id)wrapperFromConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = objc_opt_new();
-  [v4 setAllowsAutoCorrection:{objc_msgSend(v3, "allowsAutoCorrection")}];
-  [v4 setAllowsSmartPunctuation:{objc_msgSend(v3, "allowsSmartPunctuation")}];
-  [v4 setAllowsSpellCheck:{objc_msgSend(v3, "allowsSpellCheck")}];
-  [v4 setAllowsPredictiveKeyboard:{objc_msgSend(v3, "allowsPredictiveKeyboard")}];
-  [v4 setAllowsKeyboardShortcuts:{objc_msgSend(v3, "allowsKeyboardShortcuts")}];
-  [v4 setAllowsActivityContinuation:{objc_msgSend(v3, "allowsActivityContinuation")}];
-  [v4 setAllowsDictation:{objc_msgSend(v3, "allowsDictation")}];
-  [v4 setAllowsAccessibilityKeyboard:{objc_msgSend(v3, "allowsAccessibilityKeyboard")}];
-  [v4 setAllowsAccessibilityLiveCaptions:{objc_msgSend(v3, "allowsAccessibilityLiveCaptions")}];
-  [v4 setAllowsAccessibilityReader:{objc_msgSend(v3, "allowsAccessibilityReader")}];
-  [v4 setAllowsAccessibilitySpeech:{objc_msgSend(v3, "allowsAccessibilitySpeech")}];
-  [v4 setAllowsAccessibilityTypingFeedback:{objc_msgSend(v3, "allowsAccessibilityTypingFeedback")}];
-  [v4 setAllowsPasswordAutoFill:{objc_msgSend(v3, "allowsPasswordAutoFill")}];
-  [v4 setAllowsContinuousPathKeyboard:{objc_msgSend(v3, "allowsContinuousPathKeyboard")}];
-  [v4 setAllowsKeyboardMathSolving:{objc_msgSend(v3, "allowsKeyboardMathSolving")}];
-  [v4 setAllowsMathPaperSolving:{objc_msgSend(v3, "allowsMathPaperSolving")}];
-  [v4 setAllowsScreenshots:{objc_msgSend(v3, "allowsScreenshots")}];
-  [v4 _setAllowsNetworkAccess:{objc_msgSend(v3, "_allowsNetworkAccess")}];
-  [v4 _setAllowsContentCapture:{objc_msgSend(v3, "_allowsContentCapture")}];
-  v5 = [v3 mainIndividualConfiguration];
-  v6 = [v5 copy];
+  [v4 setAllowsAutoCorrection:{objc_msgSend(configurationCopy, "allowsAutoCorrection")}];
+  [v4 setAllowsSmartPunctuation:{objc_msgSend(configurationCopy, "allowsSmartPunctuation")}];
+  [v4 setAllowsSpellCheck:{objc_msgSend(configurationCopy, "allowsSpellCheck")}];
+  [v4 setAllowsPredictiveKeyboard:{objc_msgSend(configurationCopy, "allowsPredictiveKeyboard")}];
+  [v4 setAllowsKeyboardShortcuts:{objc_msgSend(configurationCopy, "allowsKeyboardShortcuts")}];
+  [v4 setAllowsActivityContinuation:{objc_msgSend(configurationCopy, "allowsActivityContinuation")}];
+  [v4 setAllowsDictation:{objc_msgSend(configurationCopy, "allowsDictation")}];
+  [v4 setAllowsAccessibilityKeyboard:{objc_msgSend(configurationCopy, "allowsAccessibilityKeyboard")}];
+  [v4 setAllowsAccessibilityLiveCaptions:{objc_msgSend(configurationCopy, "allowsAccessibilityLiveCaptions")}];
+  [v4 setAllowsAccessibilityReader:{objc_msgSend(configurationCopy, "allowsAccessibilityReader")}];
+  [v4 setAllowsAccessibilitySpeech:{objc_msgSend(configurationCopy, "allowsAccessibilitySpeech")}];
+  [v4 setAllowsAccessibilityTypingFeedback:{objc_msgSend(configurationCopy, "allowsAccessibilityTypingFeedback")}];
+  [v4 setAllowsPasswordAutoFill:{objc_msgSend(configurationCopy, "allowsPasswordAutoFill")}];
+  [v4 setAllowsContinuousPathKeyboard:{objc_msgSend(configurationCopy, "allowsContinuousPathKeyboard")}];
+  [v4 setAllowsKeyboardMathSolving:{objc_msgSend(configurationCopy, "allowsKeyboardMathSolving")}];
+  [v4 setAllowsMathPaperSolving:{objc_msgSend(configurationCopy, "allowsMathPaperSolving")}];
+  [v4 setAllowsScreenshots:{objc_msgSend(configurationCopy, "allowsScreenshots")}];
+  [v4 _setAllowsNetworkAccess:{objc_msgSend(configurationCopy, "_allowsNetworkAccess")}];
+  [v4 _setAllowsContentCapture:{objc_msgSend(configurationCopy, "_allowsContentCapture")}];
+  mainIndividualConfiguration = [configurationCopy mainIndividualConfiguration];
+  v6 = [mainIndividualConfiguration copy];
   [v4 setMainIndividualConfiguration:v6];
 
-  v7 = [v3 configurationsByApplicationDescriptor];
+  configurationsByApplicationDescriptor = [configurationCopy configurationsByApplicationDescriptor];
 
-  v8 = [v7 mutableCopy];
+  v8 = [configurationsByApplicationDescriptor mutableCopy];
   [v4 setConfigurationsByApplicationDescriptor:v8];
 
   return v4;

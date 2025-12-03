@@ -1,22 +1,22 @@
 @interface XPCAppRemovalService
-- (BOOL)removeDirectoryAtURL:(id)a3 error:(id *)a4;
-- (BOOL)removeSharedCacheDirectory:(id *)a3;
-- (BOOL)removeSharedDocumentsDirectory:(id *)a3;
-- (BOOL)removeSharedImageStoreDirectory:(id *)a3;
-- (BOOL)removeSharedLibraryDirectory:(id *)a3;
-- (id)errorWithError:(id)a3 code:(int64_t)a4;
+- (BOOL)removeDirectoryAtURL:(id)l error:(id *)error;
+- (BOOL)removeSharedCacheDirectory:(id *)directory;
+- (BOOL)removeSharedDocumentsDirectory:(id *)directory;
+- (BOOL)removeSharedImageStoreDirectory:(id *)directory;
+- (BOOL)removeSharedLibraryDirectory:(id *)directory;
+- (id)errorWithError:(id)error code:(int64_t)code;
 - (id)sharedCacheURL;
 - (id)sharedDocumentsURL;
 - (id)sharedLibraryURL;
-- (void)removeAllMediaWithCompletion:(id)a3;
-- (void)removeAppWithReply:(id)a3;
+- (void)removeAllMediaWithCompletion:(id)completion;
+- (void)removeAppWithReply:(id)reply;
 @end
 
 @implementation XPCAppRemovalService
 
-- (void)removeAppWithReply:(id)a3
+- (void)removeAppWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = _MTLogCategoryAppRemoval();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -98,11 +98,11 @@
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Removing all NanoPreferencesSync defaults.", v27, 2u);
   }
 
-  v20 = [sub_100003050() sharedDefaults];
-  [v20 clearPodcastsDefaults];
+  sharedDefaults = [sub_100003050() sharedDefaults];
+  [sharedDefaults clearPodcastsDefaults];
 
-  v21 = [sub_100003050() sharedDefaults];
-  [v21 clearAppActivityStatusDefaultsForBundleID:kMTApplicationBundleIdentifier];
+  sharedDefaults2 = [sub_100003050() sharedDefaults];
+  [sharedDefaults2 clearAppActivityStatusDefaultsForBundleID:kMTApplicationBundleIdentifier];
 
   dispatch_group_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   if (!v18)
@@ -118,12 +118,12 @@
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Podcasts resources were removed from the system.", buf, 2u);
   }
 
-  v4[2](v4, v18);
+  replyCopy[2](replyCopy, v18);
 }
 
-- (void)removeAllMediaWithCompletion:(id)a3
+- (void)removeAllMediaWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _MTLogCategoryAppRemoval();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -136,75 +136,75 @@
   v7[1] = 3221225472;
   v7[2] = sub_10000327C;
   v7[3] = &unk_10000C5D8;
-  v8 = v3;
-  v6 = v3;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 requestMediaLibraryWriteTransaction:&stru_10000C5B0 completion:v7];
 }
 
-- (BOOL)removeSharedImageStoreDirectory:(id *)a3
+- (BOOL)removeSharedImageStoreDirectory:(id *)directory
 {
   v5 = +[MTImageStoreConstants defaultImageStoreURL];
   v9 = 0;
   v6 = [(XPCAppRemovalService *)self removeDirectoryAtURL:v5 error:&v9];
   v7 = v9;
 
-  if (a3 && !v6)
+  if (directory && !v6)
   {
-    *a3 = [(XPCAppRemovalService *)self errorWithError:v7 code:8];
+    *directory = [(XPCAppRemovalService *)self errorWithError:v7 code:8];
   }
 
   return v6;
 }
 
-- (BOOL)removeSharedDocumentsDirectory:(id *)a3
+- (BOOL)removeSharedDocumentsDirectory:(id *)directory
 {
-  v5 = [(XPCAppRemovalService *)self sharedDocumentsURL];
+  sharedDocumentsURL = [(XPCAppRemovalService *)self sharedDocumentsURL];
   v9 = 0;
-  v6 = [(XPCAppRemovalService *)self removeDirectoryAtURL:v5 error:&v9];
+  v6 = [(XPCAppRemovalService *)self removeDirectoryAtURL:sharedDocumentsURL error:&v9];
   v7 = v9;
 
-  if (a3 && !v6)
+  if (directory && !v6)
   {
-    *a3 = [(XPCAppRemovalService *)self errorWithError:v7 code:4];
+    *directory = [(XPCAppRemovalService *)self errorWithError:v7 code:4];
   }
 
   return v6;
 }
 
-- (BOOL)removeSharedCacheDirectory:(id *)a3
+- (BOOL)removeSharedCacheDirectory:(id *)directory
 {
-  v5 = [(XPCAppRemovalService *)self sharedCacheURL];
+  sharedCacheURL = [(XPCAppRemovalService *)self sharedCacheURL];
   v9 = 0;
-  v6 = [(XPCAppRemovalService *)self removeDirectoryAtURL:v5 error:&v9];
+  v6 = [(XPCAppRemovalService *)self removeDirectoryAtURL:sharedCacheURL error:&v9];
   v7 = v9;
 
-  if (a3 && !v6)
+  if (directory && !v6)
   {
-    *a3 = [(XPCAppRemovalService *)self errorWithError:v7 code:5];
+    *directory = [(XPCAppRemovalService *)self errorWithError:v7 code:5];
   }
 
   return v6;
 }
 
-- (BOOL)removeSharedLibraryDirectory:(id *)a3
+- (BOOL)removeSharedLibraryDirectory:(id *)directory
 {
-  v5 = [(XPCAppRemovalService *)self sharedLibraryURL];
+  sharedLibraryURL = [(XPCAppRemovalService *)self sharedLibraryURL];
   v9 = 0;
-  v6 = [(XPCAppRemovalService *)self removeDirectoryAtURL:v5 error:&v9];
+  v6 = [(XPCAppRemovalService *)self removeDirectoryAtURL:sharedLibraryURL error:&v9];
   v7 = v9;
 
-  if (a3 && !v6)
+  if (directory && !v6)
   {
-    *a3 = [(XPCAppRemovalService *)self errorWithError:v7 code:7];
+    *directory = [(XPCAppRemovalService *)self errorWithError:v7 code:7];
   }
 
   return v6;
 }
 
-- (BOOL)removeDirectoryAtURL:(id)a3 error:(id *)a4
+- (BOOL)removeDirectoryAtURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  lCopy = l;
+  if (!lCopy)
   {
     v11 = 0;
 LABEL_6:
@@ -212,7 +212,7 @@ LABEL_6:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v18 = v5;
+      v18 = lCopy;
       v19 = 2114;
       v20 = v11;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Error removing directory: %{public}@ %{public}@", buf, 0x16u);
@@ -225,8 +225,8 @@ LABEL_12:
   }
 
   v6 = +[NSFileManager defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7];
+  path = [lCopy path];
+  v8 = [v6 fileExistsAtPath:path];
 
   if ((v8 & 1) == 0)
   {
@@ -234,7 +234,7 @@ LABEL_12:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v18 = v5;
+      v18 = lCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Skipping removal of directory that does not exist: %{public}@", buf, 0xCu);
     }
 
@@ -245,15 +245,15 @@ LABEL_12:
 
   v9 = +[NSFileManager defaultManager];
   v16 = 0;
-  v10 = [v9 removeItemAtURL:v5 error:&v16];
+  v10 = [v9 removeItemAtURL:lCopy error:&v16];
   v11 = v16;
 
   if ((v10 & 1) == 0)
   {
-    if (a4 && v11)
+    if (error && v11)
     {
       v15 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
     goto LABEL_6;
@@ -289,31 +289,31 @@ LABEL_13:
   return v3;
 }
 
-- (id)errorWithError:(id)a3 code:(int64_t)a4
+- (id)errorWithError:(id)error code:(int64_t)code
 {
-  v5 = a3;
+  errorCopy = error;
   v6 = +[NSMutableDictionary dictionary];
-  v7 = [v5 userInfo];
+  userInfo = [errorCopy userInfo];
 
-  if (v7)
+  if (userInfo)
   {
-    v8 = [v5 userInfo];
-    [v6 addEntriesFromDictionary:v8];
+    userInfo2 = [errorCopy userInfo];
+    [v6 addEntriesFromDictionary:userInfo2];
   }
 
-  v9 = [v5 domain];
-  v10 = [v9 length];
+  domain = [errorCopy domain];
+  v10 = [domain length];
 
   if (v10)
   {
-    v11 = [v5 domain];
-    [v6 setObject:v11 forKeyedSubscript:@"originalDomain"];
+    domain2 = [errorCopy domain];
+    [v6 setObject:domain2 forKeyedSubscript:@"originalDomain"];
 
-    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 code]);
+    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     [v6 setObject:v12 forKeyedSubscript:@"originalCode"];
   }
 
-  v13 = [NSError errorWithDomain:@"com.apple.podcasts.appremoval" code:a4 userInfo:v6];
+  v13 = [NSError errorWithDomain:@"com.apple.podcasts.appremoval" code:code userInfo:v6];
 
   return v13;
 }

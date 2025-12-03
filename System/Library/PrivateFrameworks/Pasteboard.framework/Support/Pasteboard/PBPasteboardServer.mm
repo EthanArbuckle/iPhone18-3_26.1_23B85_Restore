@@ -1,5 +1,5 @@
 @interface PBPasteboardServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PBPasteboardServer)init;
 - (void)start;
 @end
@@ -61,27 +61,27 @@
   [(NSXPCListener *)userActivityListener resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PBPasteboardServer *)self pasteboardServiceListener];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  pasteboardServiceListener = [(PBPasteboardServer *)self pasteboardServiceListener];
 
-  if (v8 == v6)
+  if (pasteboardServiceListener == listenerCopy)
   {
-    v11 = [PBPasteboardServerServicer newServicerForConnection:v7 detectiveAgency:self->_detectiveAgency pasteButtonSlotMachine:self->_pasteButtonSlotMachine pasteAuthority:self->_pasteAuthority pasteNotifier:self->_pasteNotifier];
+    v11 = [PBPasteboardServerServicer newServicerForConnection:connectionCopy detectiveAgency:self->_detectiveAgency pasteButtonSlotMachine:self->_pasteButtonSlotMachine pasteAuthority:self->_pasteAuthority pasteNotifier:self->_pasteNotifier];
 LABEL_6:
 
-    [v7 resume];
+    [connectionCopy resume];
     v10 = 1;
     goto LABEL_7;
   }
 
-  v9 = [(PBPasteboardServer *)self userActivityListener];
+  userActivityListener = [(PBPasteboardServer *)self userActivityListener];
 
-  if (v9 == v6)
+  if (userActivityListener == listenerCopy)
   {
-    v11 = [PBUserActivityServicer newServicerForConnection:v7];
+    v11 = [PBUserActivityServicer newServicerForConnection:connectionCopy];
     goto LABEL_6;
   }
 

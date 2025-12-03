@@ -1,24 +1,24 @@
 @interface COSControlCenterViewController
-- (COSControlCenterViewController)initWithCoder:(id)a3;
-- (COSControlCenterViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (COSControlCenterViewController)initWithCoder:(id)coder;
+- (COSControlCenterViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
-- (void)presentRearrangeController:(id)a3;
+- (void)presentRearrangeController:(id)controller;
 - (void)resetControlCenterConfirmed:;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSControlCenterViewController
 
-- (void)presentRearrangeController:(id)a3
+- (void)presentRearrangeController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_10013ACAC();
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_10014C8A8();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -26,41 +26,41 @@
   return v3.super.isa;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v4 = self;
-  sub_10014D63C(v3);
+  appearCopy = appear;
+  selfCopy = self;
+  sub_10014D63C(appearCopy);
 }
 
-- (COSControlCenterViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (COSControlCenterViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for ControlCenterViewController();
-  v9 = [(COSControlCenterViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(COSControlCenterViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (COSControlCenterViewController)initWithCoder:(id)a3
+- (COSControlCenterViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ControlCenterViewController();
-  v4 = a3;
-  v5 = [(COSControlCenterViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(COSControlCenterViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

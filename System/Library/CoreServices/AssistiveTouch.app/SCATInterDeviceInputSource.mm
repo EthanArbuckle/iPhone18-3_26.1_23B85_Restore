@@ -1,29 +1,29 @@
 @interface SCATInterDeviceInputSource
-- (id)_resolveSwitchForSwitchEvent:(id)a3 deviceName:(id)a4;
-- (void)_didReceiveActionWithIdentifier:(id)a3 start:(BOOL)a4 ignoreInputHold:(BOOL)a5;
-- (void)_getActionIdentifier:(id)a3 longPressActionIdentifier:(id)a4 forSwitchEvent:(id)a5;
-- (void)handleReceivedSwitchEvent:(id)a3 deviceName:(id)a4;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)updateWithSwitches:(id)a3 recipe:(id)a4;
+- (id)_resolveSwitchForSwitchEvent:(id)event deviceName:(id)name;
+- (void)_didReceiveActionWithIdentifier:(id)identifier start:(BOOL)start ignoreInputHold:(BOOL)hold;
+- (void)_getActionIdentifier:(id)identifier longPressActionIdentifier:(id)actionIdentifier forSwitchEvent:(id)event;
+- (void)handleReceivedSwitchEvent:(id)event deviceName:(id)name;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)updateWithSwitches:(id)switches recipe:(id)recipe;
 @end
 
 @implementation SCATInterDeviceInputSource
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
   v4.receiver = self;
   v4.super_class = SCATInterDeviceInputSource;
-  [(SCATInputSource *)&v4 setDelegate:a3 queue:a4];
+  [(SCATInputSource *)&v4 setDelegate:delegate queue:queue];
 }
 
-- (void)updateWithSwitches:(id)a3 recipe:(id)a4
+- (void)updateWithSwitches:(id)switches recipe:(id)recipe
 {
-  v6 = a3;
-  v7 = a4;
+  switchesCopy = switches;
+  recipeCopy = recipe;
   v16.receiver = self;
   v16.super_class = SCATInterDeviceInputSource;
-  [(SCATInputSource *)&v16 updateWithSwitches:v6 recipe:v7];
-  if (v7)
+  [(SCATInputSource *)&v16 updateWithSwitches:switchesCopy recipe:recipeCopy];
+  if (recipeCopy)
   {
     v8 = +[NSMutableDictionary dictionary];
     v9 = +[NSMutableDictionary dictionary];
@@ -31,12 +31,12 @@
     v12[1] = 3221225472;
     v12[2] = sub_1000B3168;
     v12[3] = &unk_1001D5B98;
-    v13 = v7;
+    v13 = recipeCopy;
     v14 = v8;
     v15 = v9;
     v10 = v9;
     v11 = v8;
-    [v6 enumerateObjectsUsingBlock:v12];
+    [switchesCopy enumerateObjectsUsingBlock:v12];
     [(SCATInterDeviceInputSource *)self setActionIdentifiersToRecipeMappingIndices:v11];
     [(SCATInterDeviceInputSource *)self setLongPressActionIdentifiersToRecipeMappingIndices:v10];
   }
@@ -48,17 +48,17 @@
   }
 }
 
-- (void)_getActionIdentifier:(id)a3 longPressActionIdentifier:(id)a4 forSwitchEvent:(id)a5
+- (void)_getActionIdentifier:(id)identifier longPressActionIdentifier:(id)actionIdentifier forSwitchEvent:(id)event
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  actionIdentifierCopy = actionIdentifier;
+  eventCopy = event;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v11 = [v10 actions];
-  v12 = [v11 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  actions = [eventCopy actions];
+  v12 = [actions countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v12)
   {
     v13 = v12;
@@ -70,7 +70,7 @@
       {
         if (*v30 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(actions);
         }
 
         v16 = [(SCATInputSource *)self _identifierForInterDeviceAction:*(*(&v29 + 1) + 8 * v15)];
@@ -84,7 +84,7 @@
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v13 = [actions countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v13)
       {
         continue;
@@ -101,8 +101,8 @@ LABEL_11:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v18 = [v10 longPressActions];
-  v19 = [v18 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  longPressActions = [eventCopy longPressActions];
+  v19 = [longPressActions countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v19)
   {
     v20 = v19;
@@ -114,7 +114,7 @@ LABEL_11:
       {
         if (*v26 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(longPressActions);
         }
 
         v23 = [(SCATInputSource *)self _identifierForInterDeviceAction:*(*(&v25 + 1) + 8 * v22)];
@@ -128,7 +128,7 @@ LABEL_11:
       }
 
       while (v20 != v22);
-      v20 = [v18 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v20 = [longPressActions countByEnumeratingWithState:&v25 objects:v33 count:16];
       if (v20)
       {
         continue;
@@ -141,86 +141,86 @@ LABEL_11:
   v24 = 0;
 LABEL_21:
 
-  if (v8)
+  if (identifierCopy)
   {
-    [v8 setAction:v17];
+    [identifierCopy setAction:v17];
   }
 
-  if (v9)
+  if (actionIdentifierCopy)
   {
-    [v9 setAction:v24];
+    [actionIdentifierCopy setAction:v24];
   }
 }
 
-- (id)_resolveSwitchForSwitchEvent:(id)a3 deviceName:(id)a4
+- (id)_resolveSwitchForSwitchEvent:(id)event deviceName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  nameCopy = name;
   v8 = +[AXSettings sharedInstance];
-  v9 = [v8 assistiveTouchSwitches];
+  assistiveTouchSwitches = [v8 assistiveTouchSwitches];
 
   v31 = _NSConcreteStackBlock;
   v32 = 3221225472;
   v33 = sub_1000B3848;
   v34 = &unk_1001D5990;
-  v10 = v6;
+  v10 = eventCopy;
   v35 = v10;
-  v11 = [v9 objectsPassingTest:&v31];
+  v11 = [assistiveTouchSwitches objectsPassingTest:&v31];
   if ([v11 count] >= 2)
   {
     v30 = v11;
     _AXAssert();
   }
 
-  v12 = [v11 anyObject];
-  if (!v12)
+  anyObject = [v11 anyObject];
+  if (!anyObject)
   {
     if (CFPreferencesGetAppBooleanValue(@"IDCLog", @"com.apple.Accessibility.SwitchControl", 0))
     {
-      NSLog(@"Existing switches: %@", v9);
+      NSLog(@"Existing switches: %@", assistiveTouchSwitches);
     }
 
     v18 = objc_opt_new();
     v19 = objc_opt_new();
     [(SCATInterDeviceInputSource *)self _getActionIdentifier:v18 longPressActionIdentifier:v19 forSwitchEvent:v10];
-    v20 = [v18 action];
-    v21 = [v10 switchDisplayName];
-    v13 = [AXSwitch switchWithAction:v20 name:v21 source:SCATSwitchSourceRemote type:SCATSwitchTypeOptional];
+    action = [v18 action];
+    switchDisplayName = [v10 switchDisplayName];
+    v13 = [AXSwitch switchWithAction:action name:switchDisplayName source:SCATSwitchSourceRemote type:SCATSwitchTypeOptional];
 
     [v13 setLongPressAction:{objc_msgSend(v19, "action")}];
-    [v13 setRemoteDeviceName:v7];
-    v22 = [v10 switchIdentifier];
-    [v13 setRemoteSwitchIdentifier:v22];
+    [v13 setRemoteDeviceName:nameCopy];
+    switchIdentifier = [v10 switchIdentifier];
+    [v13 setRemoteSwitchIdentifier:switchIdentifier];
 
-    v23 = [v10 deviceIdentifier];
-    [v13 setRemoteDeviceIdentifier:v23];
+    deviceIdentifier = [v10 deviceIdentifier];
+    [v13 setRemoteDeviceIdentifier:deviceIdentifier];
 
-    v24 = [v9 mutableCopy];
+    v24 = [assistiveTouchSwitches mutableCopy];
     [v24 addObject:v13];
     v25 = +[AXSettings sharedInstance];
     [v25 setAssistiveTouchSwitches:v24];
 
     if (CFPreferencesGetAppBooleanValue(@"IDCLog", @"com.apple.Accessibility.SwitchControl", 0))
     {
-      v26 = [v10 deviceIdentifier];
-      v27 = [v10 switchIdentifier];
-      NSLog(@"Created new remote switch for device identifier %@, switch identifier %@: %@", v26, v27, v13, v31, v32, v33, v34);
+      deviceIdentifier2 = [v10 deviceIdentifier];
+      switchIdentifier2 = [v10 switchIdentifier];
+      NSLog(@"Created new remote switch for device identifier %@, switch identifier %@: %@", deviceIdentifier2, switchIdentifier2, v13, v31, v32, v33, v34);
     }
 
     goto LABEL_16;
   }
 
-  v13 = v12;
-  v14 = [v12 remoteDeviceName];
-  if (([v14 isEqualToString:v7] & 1) == 0)
+  v13 = anyObject;
+  remoteDeviceName = [anyObject remoteDeviceName];
+  if (([remoteDeviceName isEqualToString:nameCopy] & 1) == 0)
   {
 
     goto LABEL_13;
   }
 
-  v15 = [v13 name];
-  v16 = [v10 switchDisplayName];
-  v17 = [v15 isEqualToString:v16];
+  name = [v13 name];
+  switchDisplayName2 = [v10 switchDisplayName];
+  v17 = [name isEqualToString:switchDisplayName2];
 
   if ((v17 & 1) == 0)
   {
@@ -230,11 +230,11 @@ LABEL_13:
       NSLog(@"Had to update name of existing remote switch %@", v13);
     }
 
-    v18 = [v9 mutableCopy];
+    v18 = [assistiveTouchSwitches mutableCopy];
     [v18 removeObject:v13];
-    [v13 setRemoteDeviceName:v7];
-    v28 = [v10 switchDisplayName];
-    [v13 setName:v28];
+    [v13 setRemoteDeviceName:nameCopy];
+    switchDisplayName3 = [v10 switchDisplayName];
+    [v13 setName:switchDisplayName3];
 
     [v18 addObject:v13];
     v19 = +[AXSettings sharedInstance];
@@ -245,30 +245,30 @@ LABEL_16:
   return v13;
 }
 
-- (void)handleReceivedSwitchEvent:(id)a3 deviceName:(id)a4
+- (void)handleReceivedSwitchEvent:(id)event deviceName:(id)name
 {
-  v29 = a3;
-  v6 = a4;
-  v7 = [v29 deviceIdentifier];
-  v8 = [v7 length];
+  eventCopy = event;
+  nameCopy = name;
+  deviceIdentifier = [eventCopy deviceIdentifier];
+  v8 = [deviceIdentifier length];
 
   if (v8)
   {
-    v9 = [(SCATInterDeviceInputSource *)self _resolveSwitchForSwitchEvent:v29 deviceName:v6];
-    v10 = [(SCATInterDeviceInputSource *)self actionIdentifiersToRecipeMappingIndices];
+    v9 = [(SCATInterDeviceInputSource *)self _resolveSwitchForSwitchEvent:eventCopy deviceName:nameCopy];
+    actionIdentifiersToRecipeMappingIndices = [(SCATInterDeviceInputSource *)self actionIdentifiersToRecipeMappingIndices];
 
-    if (v10)
+    if (actionIdentifiersToRecipeMappingIndices)
     {
-      v11 = [(SCATInterDeviceInputSource *)self actionIdentifiersToRecipeMappingIndices];
-      v12 = [v9 uuid];
-      v13 = [v11 objectForKeyedSubscript:v12];
+      actionIdentifiersToRecipeMappingIndices2 = [(SCATInterDeviceInputSource *)self actionIdentifiersToRecipeMappingIndices];
+      uuid = [v9 uuid];
+      v13 = [actionIdentifiersToRecipeMappingIndices2 objectForKeyedSubscript:uuid];
 
       if (v13)
       {
         v14 = v13;
-        v15 = [(SCATInterDeviceInputSource *)self longPressActionIdentifiersToRecipeMappingIndices];
-        v16 = [v9 uuid];
-        v17 = [v15 objectForKeyedSubscript:v16];
+        longPressActionIdentifiersToRecipeMappingIndices = [(SCATInterDeviceInputSource *)self longPressActionIdentifiersToRecipeMappingIndices];
+        uuid2 = [v9 uuid];
+        v17 = [longPressActionIdentifiersToRecipeMappingIndices objectForKeyedSubscript:uuid2];
 
         if (v17)
         {
@@ -295,16 +295,16 @@ LABEL_16:
 
     else
     {
-      v21 = [v13 shortcutIdentifier];
-      v20 = v21 != 0;
+      shortcutIdentifier = [v13 shortcutIdentifier];
+      v20 = shortcutIdentifier != 0;
     }
   }
 
   else
   {
-    v19 = [(SCATInterDeviceInputSource *)self actionIdentifiersToRecipeMappingIndices];
+    actionIdentifiersToRecipeMappingIndices3 = [(SCATInterDeviceInputSource *)self actionIdentifiersToRecipeMappingIndices];
 
-    if (v19)
+    if (actionIdentifiersToRecipeMappingIndices3)
     {
       v20 = 0;
       v17 = 0;
@@ -318,7 +318,7 @@ LABEL_16:
         NSLog(@"No device identifier for the remote switch event, so we had to forward it without saving it.");
       }
 
-      [(SCATInterDeviceInputSource *)self _getActionIdentifier:0 longPressActionIdentifier:0 forSwitchEvent:v29];
+      [(SCATInterDeviceInputSource *)self _getActionIdentifier:0 longPressActionIdentifier:0 forSwitchEvent:eventCopy];
       v17 = 0;
       v13 = 0;
       v20 = 1;
@@ -330,8 +330,8 @@ LABEL_16:
     NSLog(@"Should handle action: %i", v20);
   }
 
-  v22 = [(SCATInputSource *)self delegate];
-  v23 = [v22 shouldForwardSwitchEventsForInputSource:self];
+  delegate = [(SCATInputSource *)self delegate];
+  v23 = [delegate shouldForwardSwitchEventsForInputSource:self];
 
   if (v23)
   {
@@ -340,38 +340,38 @@ LABEL_16:
 
   if (v20)
   {
-    v24 = [v29 isDown];
-    v25 = [v29 switchIdentifier];
-    v26 = [v29 switchDisplayName];
-    [(SCATInputSource *)self _handleAction:v13 longPressAction:v17 start:v24 switchIdentifier:v25 switchDisplayName:v26];
+    isDown = [eventCopy isDown];
+    switchIdentifier = [eventCopy switchIdentifier];
+    switchDisplayName = [eventCopy switchDisplayName];
+    [(SCATInputSource *)self _handleAction:v13 longPressAction:v17 start:isDown switchIdentifier:switchIdentifier switchDisplayName:switchDisplayName];
   }
 
-  v27 = [(SCATInterDeviceInputSource *)self inputDeviceHandledAction];
+  inputDeviceHandledAction = [(SCATInterDeviceInputSource *)self inputDeviceHandledAction];
 
-  if (v27)
+  if (inputDeviceHandledAction)
   {
-    v28 = [(SCATInterDeviceInputSource *)self inputDeviceHandledAction];
-    v28[2](v28, v20);
+    inputDeviceHandledAction2 = [(SCATInterDeviceInputSource *)self inputDeviceHandledAction];
+    inputDeviceHandledAction2[2](inputDeviceHandledAction2, v20);
   }
 }
 
-- (void)_didReceiveActionWithIdentifier:(id)a3 start:(BOOL)a4 ignoreInputHold:(BOOL)a5
+- (void)_didReceiveActionWithIdentifier:(id)identifier start:(BOOL)start ignoreInputHold:(BOOL)hold
 {
-  v8 = a3;
-  v9 = [(SCATInputSource *)self delegate];
-  v10 = [(SCATInputSource *)self queue];
-  if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+  identifierCopy = identifier;
+  delegate = [(SCATInputSource *)self delegate];
+  queue = [(SCATInputSource *)self queue];
+  if (queue && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000B3D38;
     v11[3] = &unk_1001D5B70;
-    v12 = v9;
-    v13 = self;
-    v14 = v8;
-    v15 = a4;
-    v16 = a5;
-    [v10 performAsynchronousWritingBlock:v11];
+    v12 = delegate;
+    selfCopy = self;
+    v14 = identifierCopy;
+    startCopy = start;
+    holdCopy = hold;
+    [queue performAsynchronousWritingBlock:v11];
   }
 }
 

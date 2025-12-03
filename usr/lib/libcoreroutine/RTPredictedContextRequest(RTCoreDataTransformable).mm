@@ -54,8 +54,8 @@ LABEL_8:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v5 = [v3 predictedContexts];
-    v6 = [v5 countByEnumeratingWithState:&v24 objects:v30 count:16];
+    predictedContexts = [v3 predictedContexts];
+    v6 = [predictedContexts countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v6)
     {
       v7 = v6;
@@ -66,7 +66,7 @@ LABEL_8:
         {
           if (*v25 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(predictedContexts);
           }
 
           v10 = [MEMORY[0x277D01208] createWithManagedObject:*(*(&v24 + 1) + 8 * i)];
@@ -76,7 +76,7 @@ LABEL_8:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v24 objects:v30 count:16];
+        v7 = [predictedContexts countByEnumeratingWithState:&v24 objects:v30 count:16];
       }
 
       while (v7);
@@ -89,14 +89,14 @@ LABEL_8:
 
     v13 = [objc_alloc(MEMORY[0x277D01248]) initWithPredictedContexts:0 analytics:0];
     v14 = objc_alloc(MEMORY[0x277D01240]);
-    v15 = [v4 identifier];
-    v16 = [v4 requestStartDate];
-    v17 = [v4 requestEndDate];
-    v18 = [v4 inferenceTriggerReason];
+    identifier = [v4 identifier];
+    requestStartDate = [v4 requestStartDate];
+    requestEndDate = [v4 requestEndDate];
+    inferenceTriggerReason = [v4 inferenceTriggerReason];
     [v4 memoryFootprintStart];
     v20 = v19;
     [v4 memoryFootprintEnd];
-    v22 = [v14 initWithIdentifier:v15 predictedContextResult:v13 requestStartDate:v16 requestEndDate:v17 inferenceTriggerReason:v18 memoryFootprintStart:objc_msgSend(v4 memoryFootprintEnd:"clientCount") clientCount:{v20, v21}];
+    v22 = [v14 initWithIdentifier:identifier predictedContextResult:v13 requestStartDate:requestStartDate requestEndDate:requestEndDate inferenceTriggerReason:inferenceTriggerReason memoryFootprintStart:objc_msgSend(v4 memoryFootprintEnd:"clientCount") clientCount:{v20, v21}];
   }
 
   else
@@ -118,7 +118,7 @@ LABEL_8:
 {
   if (a3)
   {
-    v3 = [RTPredictedContextRequestMO managedObjectWithPredictedContextRequest:a1 inManagedObjectContext:a3];
+    v3 = [RTPredictedContextRequestMO managedObjectWithPredictedContextRequest:self inManagedObjectContext:a3];
   }
 
   else

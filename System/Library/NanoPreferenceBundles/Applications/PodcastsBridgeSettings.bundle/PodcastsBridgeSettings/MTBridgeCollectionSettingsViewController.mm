@@ -1,27 +1,27 @@
 @interface MTBridgeCollectionSettingsViewController
-- (MTBridgeCollectionSettingsViewController)initWithCollectionType:(unint64_t)a3 identifier:(id)a4;
-- (id)_footerTextWithValue:(int64_t)a3;
-- (id)_specifierNameWithValue:(int64_t)a3;
-- (id)_specifierWithValue:(int64_t)a3;
+- (MTBridgeCollectionSettingsViewController)initWithCollectionType:(unint64_t)type identifier:(id)identifier;
+- (id)_footerTextWithValue:(int64_t)value;
+- (id)_specifierNameWithValue:(int64_t)value;
+- (id)_specifierWithValue:(int64_t)value;
 - (id)specifiers;
 - (int64_t)_selectedNumberOfEpisodes;
 - (void)_removeShow;
-- (void)_setNumberOfEpisodesWithSpecifier:(id)a3;
+- (void)_setNumberOfEpisodesWithSpecifier:(id)specifier;
 @end
 
 @implementation MTBridgeCollectionSettingsViewController
 
-- (MTBridgeCollectionSettingsViewController)initWithCollectionType:(unint64_t)a3 identifier:(id)a4
+- (MTBridgeCollectionSettingsViewController)initWithCollectionType:(unint64_t)type identifier:(id)identifier
 {
-  v7 = a4;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = MTBridgeCollectionSettingsViewController;
   v8 = [(MTBridgeCollectionSettingsViewController *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    v8->_collectionType = a3;
-    objc_storeStrong(&v8->_identifier, a4);
+    v8->_collectionType = type;
+    objc_storeStrong(&v8->_identifier, identifier);
     v10 = +[NSNotificationCenter defaultCenter];
     [v10 addObserver:v9 selector:"_handlePodcastsIdentifiersDidChangeNotification:" name:NMSMediaPinningManagerPodcastsIdentifiersDidChangeNotification object:0];
   }
@@ -41,10 +41,10 @@
   {
     v36 = OBJC_IVAR___PSListController__specifiers;
     v5 = +[NSMutableArray array];
-    v6 = [(MTBridgeCollectionSettingsViewController *)self _selectedNumberOfEpisodes];
+    _selectedNumberOfEpisodes = [(MTBridgeCollectionSettingsViewController *)self _selectedNumberOfEpisodes];
     v7 = [PSSpecifier groupSpecifierWithID:@"NumberOfEpisodesGroup"];
     [v7 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
-    v8 = [(MTBridgeCollectionSettingsViewController *)self _footerTextWithValue:v6];
+    v8 = [(MTBridgeCollectionSettingsViewController *)self _footerTextWithValue:_selectedNumberOfEpisodes];
     [v7 setProperty:v8 forKey:PSFooterTextGroupKey];
 
     v37 = v7;
@@ -80,7 +80,7 @@
           v17 = *(*(&v38 + 1) + 8 * i);
           v18 = -[MTBridgeCollectionSettingsViewController _specifierWithValue:](self, "_specifierWithValue:", [v17 unsignedIntegerValue]);
           [v5 addObject:v18];
-          if (v6 == [v17 unsignedIntegerValue])
+          if (_selectedNumberOfEpisodes == [v17 unsignedIntegerValue])
           {
             v19 = v18;
 
@@ -142,9 +142,9 @@
   return v3;
 }
 
-- (id)_specifierNameWithValue:(int64_t)a3
+- (id)_specifierNameWithValue:(int64_t)value
 {
-  if (a3)
+  if (value)
   {
     [MTBridgeUtilities localizedStringForEpisodeCount:?];
   }
@@ -158,10 +158,10 @@
   return v3;
 }
 
-- (void)_setNumberOfEpisodesWithSpecifier:(id)a3
+- (void)_setNumberOfEpisodesWithSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:@"MTBNumberOfEpisodesKey"];
-  v5 = [v4 integerValue];
+  v4 = [specifier propertyForKey:@"MTBNumberOfEpisodesKey"];
+  integerValue = [v4 integerValue];
 
   collectionType = self->_collectionType;
   if (collectionType > 1)
@@ -169,7 +169,7 @@
     if (collectionType == 2)
     {
       v8 = [[NMSPodcastsDownloadSettings alloc] initWithCollectionType:2];
-      [v8 setNumberOfEpisodes:v5];
+      [v8 setNumberOfEpisodes:integerValue];
       v7 = +[NMSMediaPinningManager sharedManager];
       [v7 setPodcastsDownloadSettings:v8 forStationUUID:self->_identifier];
     }
@@ -182,7 +182,7 @@
       }
 
       v8 = [[NMSPodcastsDownloadSettings alloc] initWithCollectionType:3];
-      [v8 setNumberOfEpisodes:v5];
+      [v8 setNumberOfEpisodes:integerValue];
       v7 = +[NMSMediaPinningManager sharedManager];
       [v7 setPodcastsDownloadSettings:v8 forShowFeedURL:self->_identifier];
     }
@@ -196,7 +196,7 @@
     }
 
     v8 = [[NMSPodcastsDownloadSettings alloc] initWithCollectionType:1];
-    [v8 setNumberOfEpisodes:v5];
+    [v8 setNumberOfEpisodes:integerValue];
     v7 = +[NMSMediaPinningManager sharedManager];
     [v7 setPodcastsSavedEpisodesDownloadSettings:v8];
   }
@@ -204,19 +204,19 @@
   else
   {
     v8 = [[NMSPodcastsDownloadSettings alloc] initWithCollectionType:0];
-    [v8 setNumberOfEpisodes:v5];
+    [v8 setNumberOfEpisodes:integerValue];
     v7 = +[NMSMediaPinningManager sharedManager];
     [v7 setPodcastsUpNextDownloadSettings:v8];
   }
 }
 
-- (id)_specifierWithValue:(int64_t)a3
+- (id)_specifierWithValue:(int64_t)value
 {
   v5 = [(MTBridgeCollectionSettingsViewController *)self _specifierNameWithValue:?];
   v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:3 edit:0];
 
   [v6 setButtonAction:"_setNumberOfEpisodesWithSpecifier:"];
-  v7 = [NSNumber numberWithInteger:a3];
+  v7 = [NSNumber numberWithInteger:value];
   [v6 setProperty:v7 forKey:@"MTBNumberOfEpisodesKey"];
 
   return v6;
@@ -229,26 +229,26 @@
   v3 = +[NMSMediaPinningManager sharedManager];
   [v3 setPodcastsDownloadSettings:v6 forShowFeedURL:self->_identifier];
 
-  v4 = [(MTBridgeCollectionSettingsViewController *)self navigationController];
-  v5 = [v4 popViewControllerAnimated:1];
+  navigationController = [(MTBridgeCollectionSettingsViewController *)self navigationController];
+  v5 = [navigationController popViewControllerAnimated:1];
 }
 
-- (id)_footerTextWithValue:(int64_t)a3
+- (id)_footerTextWithValue:(int64_t)value
 {
   v5 = +[NSBundle podcastsFoundationBundle];
   v6 = v5;
-  if (a3)
+  if (value)
   {
     v7 = [v5 localizedStringForKey:@"NUMBER_OF_EPISODES_FOOTER_TEXT" value:&stru_1CB88 table:0];
-    v8 = [(MTBridgeCollectionSettingsViewController *)self title];
-    [NSString localizedStringWithFormat:v7, a3, v8];
+    title = [(MTBridgeCollectionSettingsViewController *)self title];
+    [NSString localizedStringWithFormat:v7, value, title];
   }
 
   else
   {
     v7 = [v5 localizedStringForKey:@"NUMBER_OF_EPISODES_OFF_FOOTER_TEXT" value:@"Episodes from %@ won’t be downloaded." table:0];
-    v8 = [(MTBridgeCollectionSettingsViewController *)self title];
-    [NSString localizedStringWithFormat:v7, v8, v11];
+    title = [(MTBridgeCollectionSettingsViewController *)self title];
+    [NSString localizedStringWithFormat:v7, title, v11];
   }
   v9 = ;
 
@@ -263,14 +263,14 @@
     if (collectionType == 2)
     {
       v3 = +[NMSMediaPinningManager sharedManager];
-      v4 = [v3 podcastsDownloadSettingsForStationUUID:self->_identifier];
+      podcastsUpNextDownloadSettings = [v3 podcastsDownloadSettingsForStationUUID:self->_identifier];
       goto LABEL_11;
     }
 
     if (collectionType == 3)
     {
       v3 = +[NMSMediaPinningManager sharedManager];
-      v4 = [v3 podcastsDownloadSettingsForShowFeedURL:self->_identifier];
+      podcastsUpNextDownloadSettings = [v3 podcastsDownloadSettingsForShowFeedURL:self->_identifier];
       goto LABEL_11;
     }
 
@@ -280,7 +280,7 @@
   if (!collectionType)
   {
     v3 = +[NMSMediaPinningManager sharedManager];
-    v4 = [v3 podcastsUpNextDownloadSettings];
+    podcastsUpNextDownloadSettings = [v3 podcastsUpNextDownloadSettings];
     goto LABEL_11;
   }
 
@@ -290,12 +290,12 @@
   }
 
   v3 = +[NMSMediaPinningManager sharedManager];
-  v4 = [v3 podcastsSavedEpisodesDownloadSettings];
+  podcastsUpNextDownloadSettings = [v3 podcastsSavedEpisodesDownloadSettings];
 LABEL_11:
-  v7 = v4;
-  v8 = [v4 numberOfEpisodes];
+  v7 = podcastsUpNextDownloadSettings;
+  numberOfEpisodes = [podcastsUpNextDownloadSettings numberOfEpisodes];
 
-  return v8;
+  return numberOfEpisodes;
 }
 
 @end

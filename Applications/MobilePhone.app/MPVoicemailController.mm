@@ -1,53 +1,53 @@
 @interface MPVoicemailController
 + (id)_telephonyClient;
-- (BOOL)isRestrictedMessage:(id)a3;
+- (BOOL)isRestrictedMessage:(id)message;
 - (BOOL)shouldShowVerifiedBadge;
 - (CNContactFormatter)contactFormatter;
 - (MPVoicemailController)init;
-- (MPVoicemailController)initWithVoicemailManager:(id)a3 accountManager:(id)a4 callProviderManager:(id)a5 contactStore:(id)a6 suggestedContactStore:(id)a7 metadataCache:(id)a8;
+- (MPVoicemailController)initWithVoicemailManager:(id)manager accountManager:(id)accountManager callProviderManager:(id)providerManager contactStore:(id)store suggestedContactStore:(id)contactStore metadataCache:(id)cache;
 - (NSArray)audioMessages;
 - (NSArray)contactKeyDescriptors;
 - (NSArray)messages;
-- (id)attributedStringForDowntimeMessage:(id)a3;
-- (id)audioMessagesPassingTest:(id)a3;
-- (id)localizedAttributedDowntimeTitleForMessage:(id)a3;
-- (id)localizedHandleTitleFromMessage:(id)a3;
-- (id)localizedSubtitleForMessage:(id)a3;
-- (id)localizedTitleForMessage:(id)a3;
-- (id)messagesPassingTest:(id)a3;
-- (id)mutableSenderContactForMessage:(id)a3;
-- (id)senderContactForMessage:(id)a3;
+- (id)attributedStringForDowntimeMessage:(id)message;
+- (id)audioMessagesPassingTest:(id)test;
+- (id)localizedAttributedDowntimeTitleForMessage:(id)message;
+- (id)localizedHandleTitleFromMessage:(id)message;
+- (id)localizedSubtitleForMessage:(id)message;
+- (id)localizedTitleForMessage:(id)message;
+- (id)messagesPassingTest:(id)test;
+- (id)mutableSenderContactForMessage:(id)message;
+- (id)senderContactForMessage:(id)message;
 - (unint64_t)unreadMessageCount;
 - (void)addAcceptedIntroductionsNotifier;
-- (void)audioMessagesPassingTest:(id)a3 withCompletion:(id)a4;
-- (void)audioMessagesWithCompletion:(id)a3;
+- (void)audioMessagesPassingTest:(id)test withCompletion:(id)completion;
+- (void)audioMessagesWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)deleteMessages:(id)a3;
-- (void)fetchContactsForMessages:(id)a3 keyDescriptors:(id)a4;
-- (void)fetchLegacyVoicemailsCompletion:(id)a3;
-- (void)fetchMessagesCompletion:(id)a3;
-- (void)fetchMetadataForMessages:(id)a3;
-- (void)handleCNContactStoreDidChangeNotification:(id)a3;
-- (void)handleNSCurrentLocaleDidChangeNotification:(id)a3;
-- (void)handleRecentsChangedNotification:(id)a3;
-- (void)handleTUMetadataCacheDidFinishUpdatingNotification:(id)a3;
-- (void)handleUIApplicationSignificantTimeChangeNotification:(id)a3;
-- (void)handleUIApplicationWillEnterForegroundNotification:(id)a3;
+- (void)deleteMessages:(id)messages;
+- (void)fetchContactsForMessages:(id)messages keyDescriptors:(id)descriptors;
+- (void)fetchLegacyVoicemailsCompletion:(id)completion;
+- (void)fetchMessagesCompletion:(id)completion;
+- (void)fetchMetadataForMessages:(id)messages;
+- (void)handleCNContactStoreDidChangeNotification:(id)notification;
+- (void)handleNSCurrentLocaleDidChangeNotification:(id)notification;
+- (void)handleRecentsChangedNotification:(id)notification;
+- (void)handleTUMetadataCacheDidFinishUpdatingNotification:(id)notification;
+- (void)handleUIApplicationSignificantTimeChangeNotification:(id)notification;
+- (void)handleUIApplicationWillEnterForegroundNotification:(id)notification;
 - (void)handleUpdatedContacts;
-- (void)handleVoicemailsChangedNotification:(id)a3;
-- (void)loadLocalizedTitlesForMessages:(id)a3;
-- (void)markMessagesAsRead:(id)a3;
-- (void)messageForIdentifier:(id)a3 completionBlock:(id)a4;
-- (void)messagesPassingTest:(id)a3 withCompletion:(id)a4;
-- (void)moveMessagesToInbox:(id)a3;
-- (void)performSynchronousBlock:(id)a3;
+- (void)handleVoicemailsChangedNotification:(id)notification;
+- (void)loadLocalizedTitlesForMessages:(id)messages;
+- (void)markMessagesAsRead:(id)read;
+- (void)messageForIdentifier:(id)identifier completionBlock:(id)block;
+- (void)messagesPassingTest:(id)test withCompletion:(id)completion;
+- (void)moveMessagesToInbox:(id)inbox;
+- (void)performSynchronousBlock:(id)block;
 - (void)postMPVoicemailControllerMessagesDidChangeNotification;
 - (void)postMPVoicemailControllerUnreadMessageCountDidChangeNotification;
-- (void)providersChangedForProviderManager:(id)a3;
-- (void)setAudioMessages:(id)a3;
-- (void)setMessages:(id)a3;
-- (void)setUnreadMessageCount:(unint64_t)a3;
-- (void)trashMessages:(id)a3;
+- (void)providersChangedForProviderManager:(id)manager;
+- (void)setAudioMessages:(id)messages;
+- (void)setMessages:(id)messages;
+- (void)setUnreadMessageCount:(unint64_t)count;
+- (void)trashMessages:(id)messages;
 @end
 
 @implementation MPVoicemailController
@@ -59,21 +59,21 @@
   objc_exception_throw(v2);
 }
 
-- (MPVoicemailController)initWithVoicemailManager:(id)a3 accountManager:(id)a4 callProviderManager:(id)a5 contactStore:(id)a6 suggestedContactStore:(id)a7 metadataCache:(id)a8
+- (MPVoicemailController)initWithVoicemailManager:(id)manager accountManager:(id)accountManager callProviderManager:(id)providerManager contactStore:(id)store suggestedContactStore:(id)contactStore metadataCache:(id)cache
 {
-  v15 = a3;
-  v16 = a4;
-  v37 = a5;
-  v36 = a6;
-  v35 = a7;
-  v34 = a8;
+  managerCopy = manager;
+  accountManagerCopy = accountManager;
+  providerManagerCopy = providerManager;
+  storeCopy = store;
+  contactStoreCopy = contactStore;
+  cacheCopy = cache;
   v41.receiver = self;
   v41.super_class = MPVoicemailController;
   v17 = [(MPVoicemailController *)&v41 init];
   if (v17)
   {
-    v32 = v16;
-    v33 = v15;
+    v32 = accountManagerCopy;
+    v33 = managerCopy;
     v18 = +[MPVoicemailQueueManager serialQueue];
     serialDispatchQueue = v17->_serialDispatchQueue;
     v17->_serialDispatchQueue = v18;
@@ -95,12 +95,12 @@
     }
 
     dispatch_queue_set_specific(v20, v21, v17, 0);
-    objc_storeStrong(&v17->_callProviderManager, a5);
-    objc_storeStrong(&v17->_contactStore, a6);
-    objc_storeStrong(&v17->_suggestedContactStore, a7);
-    objc_storeStrong(&v17->_metadataCache, a8);
-    objc_storeStrong(&v17->_voicemailManager, a3);
-    objc_storeStrong(&v17->_accountManager, a4);
+    objc_storeStrong(&v17->_callProviderManager, providerManager);
+    objc_storeStrong(&v17->_contactStore, store);
+    objc_storeStrong(&v17->_suggestedContactStore, contactStore);
+    objc_storeStrong(&v17->_metadataCache, cache);
+    objc_storeStrong(&v17->_voicemailManager, manager);
+    objc_storeStrong(&v17->_accountManager, accountManager);
     v25 = objc_alloc_init(TUFeatureFlags);
     featureFlags = v17->_featureFlags;
     v17->_featureFlags = v25;
@@ -110,7 +110,7 @@
     v17->_contactCache = v27;
 
     v29 = PHDefaultLog();
-    v16 = v32;
+    accountManagerCopy = v32;
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -125,7 +125,7 @@
     v39 = v17;
     dispatch_async(v30, block);
 
-    v15 = v33;
+    managerCopy = v33;
   }
 
   return v17;
@@ -186,19 +186,19 @@ void __134__MPVoicemailController_initWithVoicemailManager_accountManager_callPr
   [(MPVoicemailController *)&v4 dealloc];
 }
 
-- (void)audioMessagesWithCompletion:(id)a3
+- (void)audioMessagesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(MPVoicemailController *)self serialDispatchQueue];
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __53__MPVoicemailController_audioMessagesWithCompletion___block_invoke;
   block[3] = &unk_100285690;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(serialDispatchQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -274,14 +274,14 @@ uint64_t __53__MPVoicemailController_audioMessagesWithCompletion___block_invoke(
   return v2;
 }
 
-- (void)loadLocalizedTitlesForMessages:(id)a3
+- (void)loadLocalizedTitlesForMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [messagesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -292,7 +292,7 @@ uint64_t __53__MPVoicemailController_audioMessagesWithCompletion___block_invoke(
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(messagesCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -300,14 +300,14 @@ uint64_t __53__MPVoicemailController_audioMessagesWithCompletion___block_invoke(
         v11 = [(MPVoicemailController *)self localizedSubtitleForMessage:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [messagesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)localizedSubtitleForMessage:(id)a3
+- (id)localizedSubtitleForMessage:(id)message
 {
   v11 = 0;
   v12 = &v11;
@@ -319,10 +319,10 @@ uint64_t __53__MPVoicemailController_audioMessagesWithCompletion___block_invoke(
   v7[1] = 3221225472;
   v7[2] = __53__MPVoicemailController_localizedSubtitleForMessage___block_invoke;
   v7[3] = &unk_1002856E0;
-  v4 = a3;
-  v9 = self;
+  messageCopy = message;
+  selfCopy = self;
   v10 = &v11;
-  v8 = v4;
+  v8 = messageCopy;
   [(MPVoicemailController *)self performSynchronousBlock:v7];
   v5 = v12[5];
 
@@ -435,31 +435,31 @@ void __53__MPVoicemailController_localizedSubtitleForMessage___block_invoke(uint
   }
 }
 
-- (BOOL)isRestrictedMessage:(id)a3
+- (BOOL)isRestrictedMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 senderDestinationID];
-  if ([v4 length])
+  messageCopy = message;
+  senderDestinationID = [messageCopy senderDestinationID];
+  if ([senderDestinationID length])
   {
-    v5 = [v3 senderDestinationID];
+    senderDestinationID2 = [messageCopy senderDestinationID];
   }
 
   else
   {
-    v5 = TUCallFilterUnknownCallerAddress;
+    senderDestinationID2 = TUCallFilterUnknownCallerAddress;
   }
 
-  v6 = v5;
+  v6 = senderDestinationID2;
 
   v7 = [TUHandle normalizedHandleWithDestinationID:v6];
   v8 = +[TUCallCenter sharedInstance];
-  v9 = [v8 callFilterController];
-  v10 = [v9 containsRestrictedHandle:v7 forBundleIdentifier:TUBundleIdentifierMobilePhoneApplication];
+  callFilterController = [v8 callFilterController];
+  v10 = [callFilterController containsRestrictedHandle:v7 forBundleIdentifier:TUBundleIdentifierMobilePhoneApplication];
 
   return v10;
 }
 
-- (id)localizedAttributedDowntimeTitleForMessage:(id)a3
+- (id)localizedAttributedDowntimeTitleForMessage:(id)message
 {
   v11 = 0;
   v12 = &v11;
@@ -471,10 +471,10 @@ void __53__MPVoicemailController_localizedSubtitleForMessage___block_invoke(uint
   v7[1] = 3221225472;
   v7[2] = __68__MPVoicemailController_localizedAttributedDowntimeTitleForMessage___block_invoke;
   v7[3] = &unk_1002856E0;
-  v4 = a3;
-  v9 = self;
+  messageCopy = message;
+  selfCopy = self;
   v10 = &v11;
-  v8 = v4;
+  v8 = messageCopy;
   [(MPVoicemailController *)self performSynchronousBlock:v7];
   v5 = v12[5];
 
@@ -529,7 +529,7 @@ void __68__MPVoicemailController_localizedAttributedDowntimeTitleForMessage___bl
   }
 }
 
-- (id)localizedTitleForMessage:(id)a3
+- (id)localizedTitleForMessage:(id)message
 {
   v11 = 0;
   v12 = &v11;
@@ -541,10 +541,10 @@ void __68__MPVoicemailController_localizedAttributedDowntimeTitleForMessage___bl
   v7[1] = 3221225472;
   v7[2] = __50__MPVoicemailController_localizedTitleForMessage___block_invoke;
   v7[3] = &unk_1002856E0;
-  v4 = a3;
-  v9 = self;
+  messageCopy = message;
+  selfCopy = self;
   v10 = &v11;
-  v8 = v4;
+  v8 = messageCopy;
   [(MPVoicemailController *)self performSynchronousBlock:v7];
   v5 = v12[5];
 
@@ -595,29 +595,29 @@ void __50__MPVoicemailController_localizedTitleForMessage___block_invoke(uint64_
   }
 }
 
-- (id)localizedHandleTitleFromMessage:(id)a3
+- (id)localizedHandleTitleFromMessage:(id)message
 {
-  v4 = [a3 senderHandle];
-  v5 = [v4 type];
-  if (v5 == 2)
+  senderHandle = [message senderHandle];
+  type = [senderHandle type];
+  if (type == 2)
   {
 LABEL_5:
-    v10 = [v4 normalizedValue];
-    v11 = [v4 isoCountryCode];
+    normalizedValue = [senderHandle normalizedValue];
+    isoCountryCode = [senderHandle isoCountryCode];
     v12 = PNCreateFormattedStringWithCountry();
 
     goto LABEL_7;
   }
 
-  if (v5 == 3)
+  if (type == 3)
   {
-    v6 = [(MPVoicemailController *)self featureFlags];
-    v7 = [v6 callScreeningEnabledM3];
+    featureFlags = [(MPVoicemailController *)self featureFlags];
+    callScreeningEnabledM3 = [featureFlags callScreeningEnabledM3];
 
-    if (v7)
+    if (callScreeningEnabledM3)
     {
-      v8 = [v4 normalizedValue];
-      v9 = [CNLabeledValue localizedDisplayStringForLabel:v8 propertyName:CNContactEmailAddressesKey];
+      normalizedValue2 = [senderHandle normalizedValue];
+      v9 = [CNLabeledValue localizedDisplayStringForLabel:normalizedValue2 propertyName:CNContactEmailAddressesKey];
     }
 
     goto LABEL_5;
@@ -627,24 +627,24 @@ LABEL_5:
 LABEL_7:
   if (![v12 length])
   {
-    v13 = [v4 value];
+    value = [senderHandle value];
 
-    v12 = v13;
+    v12 = value;
   }
 
   return v12;
 }
 
-- (id)messagesPassingTest:(id)a3
+- (id)messagesPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(MPVoicemailController *)self messages];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  messages = [(MPVoicemailController *)self messages];
+  v7 = [messages countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -655,17 +655,17 @@ LABEL_7:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(messages);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if (v4[2](v4, v11))
+        if (testCopy[2](testCopy, v11))
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [messages countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -676,22 +676,22 @@ LABEL_7:
   return v12;
 }
 
-- (void)messagesPassingTest:(id)a3 withCompletion:(id)a4
+- (void)messagesPassingTest:(id)test withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(MPVoicemailController *)self serialDispatchQueue];
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __60__MPVoicemailController_messagesPassingTest_withCompletion___block_invoke;
   v11[3] = &unk_100285708;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = testCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = testCopy;
+  dispatch_async(serialDispatchQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -745,16 +745,16 @@ void __60__MPVoicemailController_messagesPassingTest_withCompletion___block_invo
   }
 }
 
-- (id)audioMessagesPassingTest:(id)a3
+- (id)audioMessagesPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(MPVoicemailController *)self audioMessages];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  audioMessages = [(MPVoicemailController *)self audioMessages];
+  v7 = [audioMessages countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -765,17 +765,17 @@ void __60__MPVoicemailController_messagesPassingTest_withCompletion___block_invo
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(audioMessages);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if (v4[2](v4, v11))
+        if (testCopy[2](testCopy, v11))
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [audioMessages countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -786,22 +786,22 @@ void __60__MPVoicemailController_messagesPassingTest_withCompletion___block_invo
   return v12;
 }
 
-- (void)audioMessagesPassingTest:(id)a3 withCompletion:(id)a4
+- (void)audioMessagesPassingTest:(id)test withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(MPVoicemailController *)self serialDispatchQueue];
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __65__MPVoicemailController_audioMessagesPassingTest_withCompletion___block_invoke;
   v11[3] = &unk_100285708;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = testCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = testCopy;
+  dispatch_async(serialDispatchQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -855,84 +855,84 @@ void __65__MPVoicemailController_audioMessagesPassingTest_withCompletion___block
   }
 }
 
-- (void)deleteMessages:(id)a3
+- (void)deleteMessages:(id)messages
 {
-  v4 = a3;
-  v5 = [(MPVoicemailController *)self voicemailManager];
-  v6 = [(MPVoicemailController *)self serialDispatchQueue];
+  messagesCopy = messages;
+  voicemailManager = [(MPVoicemailController *)self voicemailManager];
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __40__MPVoicemailController_deleteMessages___block_invoke;
   v9[3] = &unk_1002852E0;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
-  dispatch_async(v6, v9);
+  v10 = voicemailManager;
+  v11 = messagesCopy;
+  v7 = messagesCopy;
+  v8 = voicemailManager;
+  dispatch_async(serialDispatchQueue, v9);
 }
 
-- (void)markMessagesAsRead:(id)a3
+- (void)markMessagesAsRead:(id)read
 {
-  v4 = a3;
-  v5 = [(MPVoicemailController *)self voicemailManager];
-  v6 = [(MPVoicemailController *)self serialDispatchQueue];
+  readCopy = read;
+  voicemailManager = [(MPVoicemailController *)self voicemailManager];
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __44__MPVoicemailController_markMessagesAsRead___block_invoke;
   v9[3] = &unk_1002852E0;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
-  dispatch_async(v6, v9);
+  v10 = voicemailManager;
+  v11 = readCopy;
+  v7 = readCopy;
+  v8 = voicemailManager;
+  dispatch_async(serialDispatchQueue, v9);
 }
 
-- (void)trashMessages:(id)a3
+- (void)trashMessages:(id)messages
 {
-  v4 = a3;
-  v5 = [(MPVoicemailController *)self voicemailManager];
-  v6 = [(MPVoicemailController *)self serialDispatchQueue];
+  messagesCopy = messages;
+  voicemailManager = [(MPVoicemailController *)self voicemailManager];
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __39__MPVoicemailController_trashMessages___block_invoke;
   v9[3] = &unk_1002852E0;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
-  dispatch_async(v6, v9);
+  v10 = voicemailManager;
+  v11 = messagesCopy;
+  v7 = messagesCopy;
+  v8 = voicemailManager;
+  dispatch_async(serialDispatchQueue, v9);
 }
 
-- (void)moveMessagesToInbox:(id)a3
+- (void)moveMessagesToInbox:(id)inbox
 {
-  v4 = a3;
-  v5 = [(MPVoicemailController *)self voicemailManager];
-  v6 = [(MPVoicemailController *)self serialDispatchQueue];
+  inboxCopy = inbox;
+  voicemailManager = [(MPVoicemailController *)self voicemailManager];
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __45__MPVoicemailController_moveMessagesToInbox___block_invoke;
   v9[3] = &unk_1002852E0;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
-  dispatch_async(v6, v9);
+  v10 = voicemailManager;
+  v11 = inboxCopy;
+  v7 = inboxCopy;
+  v8 = voicemailManager;
+  dispatch_async(serialDispatchQueue, v9);
 }
 
-- (void)messageForIdentifier:(id)a3 completionBlock:(id)a4
+- (void)messageForIdentifier:(id)identifier completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   [(MPVoicemailController *)self voicemailManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __62__MPVoicemailController_messageForIdentifier_completionBlock___block_invoke;
   v12 = v11[3] = &unk_100285780;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = identifierCopy;
+  selfCopy = self;
+  v15 = blockCopy;
+  v8 = blockCopy;
+  v9 = identifierCopy;
   v10 = v12;
   [(MPVoicemailController *)self performSynchronousBlock:v11];
 }
@@ -995,20 +995,20 @@ void __57__MPVoicemailController_addAcceptedIntroductionsNotifier__block_invoke(
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)attributedStringForDowntimeMessage:(id)a3
+- (id)attributedStringForDowntimeMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_alloc_init(NSMutableAttributedString);
   v5 = +[NSMutableDictionary dictionary];
   v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
@@ -1025,7 +1025,7 @@ void __57__MPVoicemailController_addAcceptedIntroductionsNotifier__block_invoke(
   if ([UIApp userInterfaceLayoutDirection] == 1)
   {
     v10 = [NSAttributedString alloc];
-    v11 = [v3 stringByAppendingString:@" "];
+    v11 = [messageCopy stringByAppendingString:@" "];
     v12 = [v10 initWithString:v11 attributes:v5];
     [v4 appendAttributedString:v12];
 
@@ -1039,7 +1039,7 @@ void __57__MPVoicemailController_addAcceptedIntroductionsNotifier__block_invoke(
     [v4 appendAttributedString:v14];
 
     v15 = [NSAttributedString alloc];
-    v13 = [@" " stringByAppendingString:v3];
+    v13 = [@" " stringByAppendingString:messageCopy];
     v16 = [v15 initWithString:v13 attributes:v5];
     [v4 appendAttributedString:v16];
   }
@@ -1052,8 +1052,8 @@ void __57__MPVoicemailController_addAcceptedIntroductionsNotifier__block_invoke(
 
 - (CNContactFormatter)contactFormatter
 {
-  v3 = [(MPVoicemailController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   contactFormatter = self->_contactFormatter;
   if (!contactFormatter)
@@ -1071,8 +1071,8 @@ void __57__MPVoicemailController_addAcceptedIntroductionsNotifier__block_invoke(
 
 - (NSArray)contactKeyDescriptors
 {
-  v3 = [(MPVoicemailController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   contactKeyDescriptors = self->_contactKeyDescriptors;
   if (!contactKeyDescriptors)
@@ -1091,21 +1091,21 @@ void __57__MPVoicemailController_addAcceptedIntroductionsNotifier__block_invoke(
   return contactKeyDescriptors;
 }
 
-- (void)setMessages:(id)a3
+- (void)setMessages:(id)messages
 {
-  v10 = a3;
-  v4 = [(MPVoicemailController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  messagesCopy = messages;
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
-  v5 = v10;
-  if (self->_messages != v10)
+  v5 = messagesCopy;
+  if (self->_messages != messagesCopy)
   {
-    v6 = [(NSArray *)v10 copy];
+    v6 = [(NSArray *)messagesCopy copy];
     messages = self->_messages;
     self->_messages = v6;
 
     v8 = [NSPredicate predicateWithBlock:&__block_literal_global_5];
-    v9 = [(NSArray *)v10 filteredArrayUsingPredicate:v8];
+    v9 = [(NSArray *)messagesCopy filteredArrayUsingPredicate:v8];
 
     if (self->_audioMessages != v9)
     {
@@ -1114,38 +1114,38 @@ void __57__MPVoicemailController_addAcceptedIntroductionsNotifier__block_invoke(
 
     [(MPVoicemailController *)self postMPVoicemailControllerMessagesDidChangeNotification];
 
-    v5 = v10;
+    v5 = messagesCopy;
   }
 }
 
-- (void)setAudioMessages:(id)a3
+- (void)setAudioMessages:(id)messages
 {
-  v8 = a3;
-  v4 = [(MPVoicemailController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  messagesCopy = messages;
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
-  v5 = v8;
-  if (self->_audioMessages != v8)
+  v5 = messagesCopy;
+  if (self->_audioMessages != messagesCopy)
   {
-    v6 = [(NSArray *)v8 copy];
+    v6 = [(NSArray *)messagesCopy copy];
     audioMessages = self->_audioMessages;
     self->_audioMessages = v6;
 
     [(MPVoicemailController *)self postMPVoicemailControllerMessagesDidChangeNotification];
-    v5 = v8;
+    v5 = messagesCopy;
   }
 }
 
-- (void)setUnreadMessageCount:(unint64_t)a3
+- (void)setUnreadMessageCount:(unint64_t)count
 {
-  v5 = [(MPVoicemailController *)self serialDispatchQueue];
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __47__MPVoicemailController_setUnreadMessageCount___block_invoke;
   v6[3] = &unk_1002852B8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = count;
+  dispatch_async(serialDispatchQueue, v6);
 }
 
 id __47__MPVoicemailController_setUnreadMessageCount___block_invoke(id result)
@@ -1161,19 +1161,19 @@ id __47__MPVoicemailController_setUnreadMessageCount___block_invoke(id result)
   return result;
 }
 
-- (id)mutableSenderContactForMessage:(id)a3
+- (id)mutableSenderContactForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(MPVoicemailController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
-  v6 = [(MPVoicemailController *)self metadataCache];
-  v7 = [v4 senderDestinationID];
-  if ([v7 length])
+  metadataCache = [(MPVoicemailController *)self metadataCache];
+  senderDestinationID = [messageCopy senderDestinationID];
+  if ([senderDestinationID length])
   {
-    v8 = [TUHandle normalizedHandleWithDestinationID:v7];
-    v9 = [v4 senderISOCountryCode];
-    v10 = [CNMutableContact contactForHandle:v8 isoCountryCode:v9 metadataCache:v6];
+    v8 = [TUHandle normalizedHandleWithDestinationID:senderDestinationID];
+    senderISOCountryCode = [messageCopy senderISOCountryCode];
+    v10 = [CNMutableContact contactForHandle:v8 isoCountryCode:senderISOCountryCode metadataCache:metadataCache];
   }
 
   else
@@ -1184,7 +1184,7 @@ id __47__MPVoicemailController_setUnreadMessageCount___block_invoke(id result)
   return v10;
 }
 
-- (id)senderContactForMessage:(id)a3
+- (id)senderContactForMessage:(id)message
 {
   v11 = 0;
   v12 = &v11;
@@ -1196,10 +1196,10 @@ id __47__MPVoicemailController_setUnreadMessageCount___block_invoke(id result)
   v7[1] = 3221225472;
   v7[2] = __49__MPVoicemailController_senderContactForMessage___block_invoke;
   v7[3] = &unk_1002856E0;
-  v4 = a3;
-  v9 = self;
+  messageCopy = message;
+  selfCopy = self;
   v10 = &v11;
-  v8 = v4;
+  v8 = messageCopy;
   [(MPVoicemailController *)self performSynchronousBlock:v7];
   v5 = v12[5];
 
@@ -1222,19 +1222,19 @@ void __49__MPVoicemailController_senderContactForMessage___block_invoke(uint64_t
   }
 }
 
-- (void)fetchContactsForMessages:(id)a3 keyDescriptors:(id)a4
+- (void)fetchContactsForMessages:(id)messages keyDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPVoicemailController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v8);
+  messagesCopy = messages;
+  descriptorsCopy = descriptors;
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   v9 = objc_alloc_init(NSMutableSet);
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v10 = v6;
+  v10 = messagesCopy;
   v11 = [v10 countByEnumeratingWithState:&v45 objects:v54 count:16];
   if (v11)
   {
@@ -1250,15 +1250,15 @@ void __49__MPVoicemailController_senderContactForMessage___block_invoke(uint64_t
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v45 + 1) + 8 * v14) senderDestinationID];
-        if (v15)
+        senderDestinationID = [*(*(&v45 + 1) + 8 * v14) senderDestinationID];
+        if (senderDestinationID)
         {
-          v16 = [(MPVoicemailController *)self contactCache];
-          v17 = [v16 objectForKeyedSubscript:v15];
+          contactCache = [(MPVoicemailController *)self contactCache];
+          v17 = [contactCache objectForKeyedSubscript:senderDestinationID];
 
           if (!v17)
           {
-            [v9 addObject:v15];
+            [v9 addObject:senderDestinationID];
           }
         }
 
@@ -1286,7 +1286,7 @@ void __49__MPVoicemailController_senderContactForMessage___block_invoke(uint64_t
 
   if ([v9 count])
   {
-    v21 = [(MPVoicemailController *)self contactStore];
+    contactStore = [(MPVoicemailController *)self contactStore];
     v22 = PHDefaultLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
@@ -1294,19 +1294,19 @@ void __49__MPVoicemailController_senderContactForMessage___block_invoke(uint64_t
       *buf = 134218242;
       v51 = v23;
       v52 = 2112;
-      v53 = v21;
+      v53 = contactStore;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Fetching contacts for %lu handles using contact store %@", buf, 0x16u);
     }
 
-    v24 = [v9 allObjects];
-    v25 = [v21 contactsForHandles:v24 keyDescriptors:v7];
+    allObjects = [v9 allObjects];
+    v25 = [contactStore contactsForHandles:allObjects keyDescriptors:descriptorsCopy];
 
     if (v25)
     {
-      v36 = v21;
+      v36 = contactStore;
       v37 = v10;
       v38 = v9;
-      v39 = v7;
+      v39 = descriptorsCopy;
       v43 = 0u;
       v44 = 0u;
       v41 = 0u;
@@ -1330,10 +1330,10 @@ void __49__MPVoicemailController_senderContactForMessage___block_invoke(uint64_t
             v30 = *(*(&v41 + 1) + 8 * v29);
             v31 = [TUOptionalObject alloc];
             v32 = [v25 objectForKeyedSubscript:v30];
-            v33 = [v32 firstObject];
-            v34 = [v31 initWithValue:v33];
-            v35 = [(MPVoicemailController *)self contactCache];
-            [v35 setObject:v34 forKeyedSubscript:v30];
+            firstObject = [v32 firstObject];
+            v34 = [v31 initWithValue:firstObject];
+            contactCache2 = [(MPVoicemailController *)self contactCache];
+            [contactCache2 setObject:v34 forKeyedSubscript:v30];
 
             v29 = v29 + 1;
           }
@@ -1346,28 +1346,28 @@ void __49__MPVoicemailController_senderContactForMessage___block_invoke(uint64_t
       }
 
       v9 = v38;
-      v7 = v39;
-      v21 = v36;
+      descriptorsCopy = v39;
+      contactStore = v36;
       v10 = v37;
     }
   }
 }
 
-- (void)fetchMessagesCompletion:(id)a3
+- (void)fetchMessagesCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MPVoicemailController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
-  v6 = [(MPVoicemailController *)self voicemailManager];
+  voicemailManager = [(MPVoicemailController *)self voicemailManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __49__MPVoicemailController_fetchMessagesCompletion___block_invoke;
   v8[3] = &unk_100285838;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 fetchMessagesWithCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [voicemailManager fetchMessagesWithCompletion:v8];
 }
 
 void __49__MPVoicemailController_fetchMessagesCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1399,29 +1399,29 @@ uint64_t __49__MPVoicemailController_fetchMessagesCompletion___block_invoke_2(ui
   return v5();
 }
 
-- (void)fetchMetadataForMessages:(id)a3
+- (void)fetchMetadataForMessages:(id)messages
 {
-  v4 = a3;
-  v5 = [(MPVoicemailController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  messagesCopy = messages;
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
-  v6 = [(MPVoicemailController *)self metadataCache];
+  metadataCache = [(MPVoicemailController *)self metadataCache];
 
-  if (v6)
+  if (metadataCache)
   {
-    v7 = [TUMetadataDestinationID metadataDestinationIDsForVMVoicemails:v4];
+    v7 = [TUMetadataDestinationID metadataDestinationIDsForVMVoicemails:messagesCopy];
     v8 = PHDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134218240;
-      v11 = [v4 count];
+      v11 = [messagesCopy count];
       v12 = 2048;
       v13 = [v7 count];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Fetching metadata for %lu voicemail messages using %lu handles", &v10, 0x16u);
     }
 
-    v9 = [(MPVoicemailController *)self metadataCache];
-    [v9 updateCacheWithDestinationIDs:v7];
+    metadataCache2 = [(MPVoicemailController *)self metadataCache];
+    [metadataCache2 updateCacheWithDestinationIDs:v7];
   }
 }
 
@@ -1445,17 +1445,17 @@ void __41__MPVoicemailController__telephonyClient__block_invoke(id a1)
   _telephonyClient_staticTelephonyClient = v1;
 }
 
-- (void)fetchLegacyVoicemailsCompletion:(id)a3
+- (void)fetchLegacyVoicemailsCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [objc_opt_class() _telephonyClient];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __57__MPVoicemailController_fetchLegacyVoicemailsCompletion___block_invoke;
   v7[3] = &unk_1002858D0;
   v8 = v7[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = completionCopy;
+  v5 = completionCopy;
   v6 = v8;
   [v6 getActiveContextsWithCallback:v7];
 }
@@ -1645,13 +1645,13 @@ void __57__MPVoicemailController_fetchLegacyVoicemailsCompletion___block_invoke_
 
 - (void)handleUpdatedContacts
 {
-  v3 = [(MPVoicemailController *)self serialDispatchQueue];
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __46__MPVoicemailController_handleUpdatedContacts__block_invoke;
   block[3] = &unk_100284FD0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialDispatchQueue, block);
 }
 
 id __46__MPVoicemailController_handleUpdatedContacts__block_invoke(uint64_t a1)
@@ -1675,48 +1675,48 @@ id __46__MPVoicemailController_handleUpdatedContacts__block_invoke(uint64_t a1)
   return [v8 postMPVoicemailControllerMessagesDidChangeNotification];
 }
 
-- (void)handleCNContactStoreDidChangeNotification:(id)a3
+- (void)handleCNContactStoreDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v9 = 138412546;
     v10 = v6;
     v11 = 2112;
-    v12 = v8;
+    v12 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@>", &v9, 0x16u);
   }
 
   [(MPVoicemailController *)self handleUpdatedContacts];
 }
 
-- (void)handleRecentsChangedNotification:(id)a3
+- (void)handleRecentsChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138412546;
     v12 = v6;
     v13 = 2112;
-    v14 = v8;
+    v14 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@>", buf, 0x16u);
   }
 
-  v9 = [(MPVoicemailController *)self serialDispatchQueue];
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __58__MPVoicemailController_handleRecentsChangedNotification___block_invoke;
   block[3] = &unk_100284FD0;
   block[4] = self;
-  dispatch_async(v9, block);
+  dispatch_async(serialDispatchQueue, block);
 }
 
 id __58__MPVoicemailController_handleRecentsChangedNotification___block_invoke(uint64_t a1)
@@ -1732,29 +1732,29 @@ id __58__MPVoicemailController_handleRecentsChangedNotification___block_invoke(u
   return [v4 postMPVoicemailControllerMessagesDidChangeNotification];
 }
 
-- (void)handleNSCurrentLocaleDidChangeNotification:(id)a3
+- (void)handleNSCurrentLocaleDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138412546;
     v12 = v6;
     v13 = 2112;
-    v14 = v8;
+    v14 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@>", buf, 0x16u);
   }
 
-  v9 = [(MPVoicemailController *)self serialDispatchQueue];
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __68__MPVoicemailController_handleNSCurrentLocaleDidChangeNotification___block_invoke;
   block[3] = &unk_100284FD0;
   block[4] = self;
-  dispatch_async(v9, block);
+  dispatch_async(serialDispatchQueue, block);
 }
 
 id __68__MPVoicemailController_handleNSCurrentLocaleDidChangeNotification___block_invoke(uint64_t a1)
@@ -1774,29 +1774,29 @@ id __68__MPVoicemailController_handleNSCurrentLocaleDidChangeNotification___bloc
   return [v6 postMPVoicemailControllerMessagesDidChangeNotification];
 }
 
-- (void)handleTUMetadataCacheDidFinishUpdatingNotification:(id)a3
+- (void)handleTUMetadataCacheDidFinishUpdatingNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138412546;
     v12 = v6;
     v13 = 2112;
-    v14 = v8;
+    v14 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@>", buf, 0x16u);
   }
 
-  v9 = [(MPVoicemailController *)self serialDispatchQueue];
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __76__MPVoicemailController_handleTUMetadataCacheDidFinishUpdatingNotification___block_invoke;
   block[3] = &unk_100284FD0;
   block[4] = self;
-  dispatch_async(v9, block);
+  dispatch_async(serialDispatchQueue, block);
 }
 
 id __76__MPVoicemailController_handleTUMetadataCacheDidFinishUpdatingNotification___block_invoke(uint64_t a1)
@@ -1815,68 +1815,68 @@ id __76__MPVoicemailController_handleTUMetadataCacheDidFinishUpdatingNotificatio
   return [v5 postMPVoicemailControllerMessagesDidChangeNotification];
 }
 
-- (void)handleUIApplicationSignificantTimeChangeNotification:(id)a3
+- (void)handleUIApplicationSignificantTimeChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v9 = 138412546;
     v10 = v6;
     v11 = 2112;
-    v12 = v8;
+    v12 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@>", &v9, 0x16u);
   }
 
   [(MPVoicemailController *)self postMPVoicemailControllerMessagesDidChangeNotification];
 }
 
-- (void)handleUIApplicationWillEnterForegroundNotification:(id)a3
+- (void)handleUIApplicationWillEnterForegroundNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v10 = 138412546;
     v11 = v6;
     v12 = 2112;
-    v13 = v8;
+    v13 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@>", &v10, 0x16u);
   }
 
-  v9 = [(MPVoicemailController *)self voicemailManager];
-  [v9 requestInitialStateIfNecessaryAndSendNotifications:1];
+  voicemailManager = [(MPVoicemailController *)self voicemailManager];
+  [voicemailManager requestInitialStateIfNecessaryAndSendNotifications:1];
 }
 
-- (void)handleVoicemailsChangedNotification:(id)a3
+- (void)handleVoicemailsChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138412546;
     v12 = v6;
     v13 = 2112;
-    v14 = v8;
+    v14 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@>", buf, 0x16u);
   }
 
-  v9 = [(MPVoicemailController *)self serialDispatchQueue];
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __61__MPVoicemailController_handleVoicemailsChangedNotification___block_invoke;
   block[3] = &unk_100284FD0;
   block[4] = self;
-  dispatch_async(v9, block);
+  dispatch_async(serialDispatchQueue, block);
 }
 
 id __61__MPVoicemailController_handleVoicemailsChangedNotification___block_invoke(uint64_t a1)
@@ -1892,13 +1892,13 @@ id __61__MPVoicemailController_handleVoicemailsChangedNotification___block_invok
 
 - (void)postMPVoicemailControllerMessagesDidChangeNotification
 {
-  v3 = [(MPVoicemailController *)self completionDispatchQueue];
+  completionDispatchQueue = [(MPVoicemailController *)self completionDispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __79__MPVoicemailController_postMPVoicemailControllerMessagesDidChangeNotification__block_invoke;
   block[3] = &unk_100284FD0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(completionDispatchQueue, block);
 }
 
 void __79__MPVoicemailController_postMPVoicemailControllerMessagesDidChangeNotification__block_invoke(uint64_t a1)
@@ -1909,13 +1909,13 @@ void __79__MPVoicemailController_postMPVoicemailControllerMessagesDidChangeNotif
 
 - (void)postMPVoicemailControllerUnreadMessageCountDidChangeNotification
 {
-  v3 = [(MPVoicemailController *)self completionDispatchQueue];
+  completionDispatchQueue = [(MPVoicemailController *)self completionDispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __89__MPVoicemailController_postMPVoicemailControllerUnreadMessageCountDidChangeNotification__block_invoke;
   block[3] = &unk_100284FD0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(completionDispatchQueue, block);
 }
 
 void __89__MPVoicemailController_postMPVoicemailControllerUnreadMessageCountDidChangeNotification__block_invoke(uint64_t a1)
@@ -1924,44 +1924,44 @@ void __89__MPVoicemailController_postMPVoicemailControllerUnreadMessageCountDidC
   [v2 postNotificationName:@"MPVoicemailControllerUnreadMessageCountDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)performSynchronousBlock:(id)a3
+- (void)performSynchronousBlock:(id)block
 {
   if (dispatch_get_specific(MPVoicemailControllerSerialQueueContextKey) == self)
   {
-    v6 = *(a3 + 2);
-    v7 = a3;
+    v6 = *(block + 2);
+    blockCopy = block;
     v6();
   }
 
   else
   {
-    v5 = a3;
-    v7 = [(MPVoicemailController *)self serialDispatchQueue];
-    dispatch_sync(v7, v5);
+    blockCopy2 = block;
+    blockCopy = [(MPVoicemailController *)self serialDispatchQueue];
+    dispatch_sync(blockCopy, blockCopy2);
   }
 }
 
-- (void)providersChangedForProviderManager:(id)a3
+- (void)providersChangedForProviderManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(MPVoicemailController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  managerCopy = manager;
+  serialDispatchQueue = [(MPVoicemailController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = managerCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ is handling providersChangedForProviderManager %@", &v9, 0x16u);
   }
 
-  v7 = [(MPVoicemailController *)self localizedSubtitleCache];
-  [v7 removeAllObjects];
+  localizedSubtitleCache = [(MPVoicemailController *)self localizedSubtitleCache];
+  [localizedSubtitleCache removeAllObjects];
 
-  v8 = [(MPVoicemailController *)self localizedTitleCache];
-  [v8 removeAllObjects];
+  localizedTitleCache = [(MPVoicemailController *)self localizedTitleCache];
+  [localizedTitleCache removeAllObjects];
 
   [(MPVoicemailController *)self postMPVoicemailControllerMessagesDidChangeNotification];
 }

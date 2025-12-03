@@ -1,21 +1,21 @@
 @interface AAFAnalyticsTransportInProcessRTC
-+ (id)analyticsTransportRTCWithClientType:(id)a3 clientBundleId:(id)a4 clientName:(id)a5;
-- (AAFAnalyticsTransportInProcessRTC)initWithClientType:(id)a3 clientBundleId:(id)a4 clientName:(id)a5;
-- (BOOL)_sendMessageWithCategory:(id)a3 payload:(id)a4 error:(id *)a5;
++ (id)analyticsTransportRTCWithClientType:(id)type clientBundleId:(id)id clientName:(id)name;
+- (AAFAnalyticsTransportInProcessRTC)initWithClientType:(id)type clientBundleId:(id)id clientName:(id)name;
+- (BOOL)_sendMessageWithCategory:(id)category payload:(id)payload error:(id *)error;
 - (NSString)debugDescription;
-- (id)_createPayloadWith:(id)a3;
-- (void)configureReportingSessionWithCompletion:(id)a3;
+- (id)_createPayloadWith:(id)with;
+- (void)configureReportingSessionWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)sendEvent:(id)a3;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation AAFAnalyticsTransportInProcessRTC
 
-- (AAFAnalyticsTransportInProcessRTC)initWithClientType:(id)a3 clientBundleId:(id)a4 clientName:(id)a5
+- (AAFAnalyticsTransportInProcessRTC)initWithClientType:(id)type clientBundleId:(id)id clientName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  idCopy = id;
+  nameCopy = name;
   v70.receiver = self;
   v70.super_class = AAFAnalyticsTransportInProcessRTC;
   v12 = [(AAFAnalyticsTransportInProcessRTC *)&v70 init];
@@ -25,9 +25,9 @@
     goto LABEL_59;
   }
 
-  objc_storeStrong(&v12->_clientType, a3);
-  objc_storeStrong(&v13->_clientBundleId, a4);
-  objc_storeStrong(&v13->_clientName, a5);
+  objc_storeStrong(&v12->_clientType, type);
+  objc_storeStrong(&v13->_clientBundleId, id);
+  objc_storeStrong(&v13->_clientName, name);
   v14 = objc_alloc_init(MEMORY[0x1E695DF20]);
   sessionInfo = v13->_sessionInfo;
   v13->_sessionInfo = v14;
@@ -71,8 +71,8 @@
 
   else
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
-    [v18 setObject:clientType forKeyedSubscript:v23];
+    null = [MEMORY[0x1E695DFB0] null];
+    [v18 setObject:clientType forKeyedSubscript:null];
   }
 
   if (RTCReportingLibraryCore())
@@ -108,8 +108,8 @@ LABEL_61:
     goto LABEL_62;
   }
 
-  v27 = [MEMORY[0x1E695DFB0] null];
-  [v18 setObject:&unk_1F48489A0 forKeyedSubscript:v27];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  [v18 setObject:&unk_1F48489A0 forKeyedSubscript:null2];
 
 LABEL_14:
   if (RTCReportingLibraryCore())
@@ -145,8 +145,8 @@ LABEL_62:
     goto LABEL_63;
   }
 
-  v31 = [MEMORY[0x1E695DFB0] null];
-  [v18 setObject:&unk_1F48489A0 forKeyedSubscript:v31];
+  null3 = [MEMORY[0x1E695DFB0] null];
+  [v18 setObject:&unk_1F48489A0 forKeyedSubscript:null3];
 
 LABEL_20:
   if (RTCReportingLibraryCore())
@@ -182,15 +182,15 @@ LABEL_63:
     goto LABEL_64;
   }
 
-  v35 = [MEMORY[0x1E695DFB0] null];
-  [v18 setObject:MEMORY[0x1E695E110] forKeyedSubscript:v35];
+  null4 = [MEMORY[0x1E695DFB0] null];
+  [v18 setObject:MEMORY[0x1E695E110] forKeyedSubscript:null4];
 
 LABEL_26:
   clientBundleId = v13->_clientBundleId;
   if (!RTCReportingLibraryCore())
   {
-    v40 = [MEMORY[0x1E695DFB0] null];
-    [v18 setObject:clientBundleId forKeyedSubscript:v40];
+    null5 = [MEMORY[0x1E695DFB0] null];
+    [v18 setObject:clientBundleId forKeyedSubscript:null5];
 
     goto LABEL_32;
   }
@@ -267,8 +267,8 @@ LABEL_67:
 
         else
         {
-          v45 = [MEMORY[0x1E695DFB0] null];
-          [v18 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v45];
+          null6 = [MEMORY[0x1E695DFB0] null];
+          [v18 setObject:MEMORY[0x1E695E118] forKeyedSubscript:null6];
         }
       }
     }
@@ -314,15 +314,15 @@ LABEL_66:
     goto LABEL_67;
   }
 
-  v52 = [MEMORY[0x1E695DFB0] null];
-  [v48 setObject:@"default" forKeyedSubscript:v52];
+  null7 = [MEMORY[0x1E695DFB0] null];
+  [v48 setObject:@"default" forKeyedSubscript:null7];
 
 LABEL_47:
   clientName = v13->_clientName;
   if (!RTCReportingLibraryCore())
   {
-    v57 = [MEMORY[0x1E695DFB0] null];
-    [v48 setObject:clientName forKeyedSubscript:v57];
+    null8 = [MEMORY[0x1E695DFB0] null];
+    [v48 setObject:clientName forKeyedSubscript:null8];
 
     goto LABEL_53;
   }
@@ -359,9 +359,9 @@ LABEL_53:
   v13->_userInfo = v58;
 
   *&v13->_sessionState = xmmword_1C8656AC0;
-  v60 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   eventQueue = v13->_eventQueue;
-  v13->_eventQueue = v60;
+  v13->_eventQueue = array;
 
   if (RTCReportingLibraryCore())
   {
@@ -401,56 +401,56 @@ LABEL_59:
   return v13;
 }
 
-- (id)_createPayloadWith:(id)a3
+- (id)_createPayloadWith:(id)with
 {
-  v3 = a3;
-  v4 = [v3 reportData];
-  v5 = [v4 mutableCopy];
+  withCopy = with;
+  reportData = [withCopy reportData];
+  v5 = [reportData mutableCopy];
 
-  v6 = [v3 eventName];
+  eventName = [withCopy eventName];
 
-  if (v6)
+  if (eventName)
   {
-    v7 = [v3 eventName];
-    [v5 setObject:v7 forKeyedSubscript:@"eventName"];
+    eventName2 = [withCopy eventName];
+    [v5 setObject:eventName2 forKeyedSubscript:@"eventName"];
   }
 
   return v5;
 }
 
-- (void)configureReportingSessionWithCompletion:(id)a3
+- (void)configureReportingSessionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(AAFAnalyticsTransportInProcessRTC *)self rtcReportingSession];
+  completionCopy = completion;
+  rtcReportingSession = [(AAFAnalyticsTransportInProcessRTC *)self rtcReportingSession];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__AAFAnalyticsTransportInProcessRTC_configureReportingSessionWithCompletion___block_invoke;
   v7[3] = &unk_1E831BD00;
-  v8 = v4;
-  v6 = v4;
-  [v5 startConfigurationWithCompletionHandler:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [rtcReportingSession startConfigurationWithCompletionHandler:v7];
 }
 
-- (BOOL)_sendMessageWithCategory:(id)a3 payload:(id)a4 error:(id *)a5
+- (BOOL)_sendMessageWithCategory:(id)category payload:(id)payload error:(id *)error
 {
   rtcReportingSession = self->_rtcReportingSession;
-  v8 = a4;
-  LOBYTE(a5) = -[RTCReporting sendMessageWithCategory:type:payload:error:](rtcReportingSession, "sendMessageWithCategory:type:payload:error:", [a3 unsignedIntValue], 0, v8, a5);
+  payloadCopy = payload;
+  LOBYTE(error) = -[RTCReporting sendMessageWithCategory:type:payload:error:](rtcReportingSession, "sendMessageWithCategory:type:payload:error:", [category unsignedIntValue], 0, payloadCopy, error);
 
-  return a5;
+  return error;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 eventCategory];
+  eventCopy = event;
+  eventCategory = [eventCopy eventCategory];
 
-  if (v5)
+  if (eventCategory)
   {
-    v6 = [(AAFAnalyticsTransportInProcessRTC *)self _createPayloadWith:v4];
-    v7 = [v4 eventCategory];
+    v6 = [(AAFAnalyticsTransportInProcessRTC *)self _createPayloadWith:eventCopy];
+    eventCategory2 = [eventCopy eventCategory];
     v12 = 0;
-    v8 = [(AAFAnalyticsTransportInProcessRTC *)self _sendMessageWithCategory:v7 payload:v6 error:&v12];
+    v8 = [(AAFAnalyticsTransportInProcessRTC *)self _sendMessageWithCategory:eventCategory2 payload:v6 error:&v12];
     v9 = v12;
 
     v10 = _AAFLogSystem();
@@ -474,7 +474,7 @@ LABEL_59:
     v6 = _AAFLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(AAFAnalyticsTransportInProcessRTC *)v4 sendEvent:v6];
+      [(AAFAnalyticsTransportInProcessRTC *)eventCopy sendEvent:v6];
     }
   }
 }
@@ -491,25 +491,25 @@ LABEL_59:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(AAFAnalyticsTransportInProcessRTC *)self clientType];
-  v6 = [(AAFAnalyticsTransportInProcessRTC *)self clientBundleId];
-  v7 = [(AAFAnalyticsTransportInProcessRTC *)self clientName];
-  v8 = [(AAFAnalyticsTransportInProcessRTC *)self sessionInfo];
-  v9 = [(AAFAnalyticsTransportInProcessRTC *)self userInfo];
-  v10 = [v3 stringWithFormat:@"<%@: %p> ClientType: [%@], ClientBundleId: [%@], ClientName: [%@], SessionInfo: %@, UserInfo: %@", v4, self, v5, v6, v7, v8, v9];
+  clientType = [(AAFAnalyticsTransportInProcessRTC *)self clientType];
+  clientBundleId = [(AAFAnalyticsTransportInProcessRTC *)self clientBundleId];
+  clientName = [(AAFAnalyticsTransportInProcessRTC *)self clientName];
+  sessionInfo = [(AAFAnalyticsTransportInProcessRTC *)self sessionInfo];
+  userInfo = [(AAFAnalyticsTransportInProcessRTC *)self userInfo];
+  v10 = [v3 stringWithFormat:@"<%@: %p> ClientType: [%@], ClientBundleId: [%@], ClientName: [%@], SessionInfo: %@, UserInfo: %@", v4, self, clientType, clientBundleId, clientName, sessionInfo, userInfo];
 
   return v10;
 }
 
-+ (id)analyticsTransportRTCWithClientType:(id)a3 clientBundleId:(id)a4 clientName:(id)a5
++ (id)analyticsTransportRTCWithClientType:(id)type clientBundleId:(id)id clientName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9 && v10)
+  typeCopy = type;
+  idCopy = id;
+  nameCopy = name;
+  v11 = nameCopy;
+  if (typeCopy && idCopy && nameCopy)
   {
-    v12 = [[a1 alloc] initWithClientType:v8 clientBundleId:v9 clientName:v10];
+    v12 = [[self alloc] initWithClientType:typeCopy clientBundleId:idCopy clientName:nameCopy];
   }
 
   else

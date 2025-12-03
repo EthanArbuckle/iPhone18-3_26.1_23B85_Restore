@@ -1,73 +1,73 @@
 @interface BuddyTargetDeviceMigrationManager
-+ (id)createDeviceTransferTask:(id)a3;
++ (id)createDeviceTransferTask:(id)task;
 - (BOOL)hasVersionIncompatibility;
 - (BOOL)migrationInProgressOrCompleted;
 - (BOOL)requiresUpdateToMigrate;
-- (BuddyTargetDeviceMigrationManager)initWithFileTranferSession:(id)a3 proximitySetupController:(id)a4 prepareForMigrationRebootBlock:(id)a5 passcodeCacheManager:(id)a6 buddyPreferencesExcludedFromBackup:(id)a7 analyticsManager:(id)a8 lockdownModeProvider:(id)a9;
+- (BuddyTargetDeviceMigrationManager)initWithFileTranferSession:(id)session proximitySetupController:(id)controller prepareForMigrationRebootBlock:(id)block passcodeCacheManager:(id)manager buddyPreferencesExcludedFromBackup:(id)backup analyticsManager:(id)analyticsManager lockdownModeProvider:(id)provider;
 - (__MKBAssertion)acquireDeviceLockAssertion;
 - (void)_rebootDevice;
 - (void)_stageReboot;
 - (void)cancelDeviceTransferTask;
 - (void)connectionTerminated;
 - (void)didCancel;
-- (void)didCompleteWithError:(id)a3;
+- (void)didCompleteWithError:(id)error;
 - (void)reset;
 - (void)start;
 - (void)startDataTransfer;
 - (void)startDeviceTransferTask;
 - (void)startKeychainDataImport;
-- (void)startKeychainDataTransferWithCompletionHandler:(id)a3;
+- (void)startKeychainDataTransferWithCompletionHandler:(id)handler;
 - (void)startPreflight;
-- (void)waitForKeychain:(id)a3;
-- (void)waitForKeychainDataImport:(id)a3;
-- (void)waitForKeychainDataTransfer:(id)a3;
-- (void)waitForPreflight:(id)a3;
+- (void)waitForKeychain:(id)keychain;
+- (void)waitForKeychainDataImport:(id)import;
+- (void)waitForKeychainDataTransfer:(id)transfer;
+- (void)waitForPreflight:(id)preflight;
 @end
 
 @implementation BuddyTargetDeviceMigrationManager
 
-- (BuddyTargetDeviceMigrationManager)initWithFileTranferSession:(id)a3 proximitySetupController:(id)a4 prepareForMigrationRebootBlock:(id)a5 passcodeCacheManager:(id)a6 buddyPreferencesExcludedFromBackup:(id)a7 analyticsManager:(id)a8 lockdownModeProvider:(id)a9
+- (BuddyTargetDeviceMigrationManager)initWithFileTranferSession:(id)session proximitySetupController:(id)controller prepareForMigrationRebootBlock:(id)block passcodeCacheManager:(id)manager buddyPreferencesExcludedFromBackup:(id)backup analyticsManager:(id)analyticsManager lockdownModeProvider:(id)provider
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   obj = 0;
-  objc_storeStrong(&obj, a4);
+  objc_storeStrong(&obj, controller);
   v26 = 0;
-  objc_storeStrong(&v26, a5);
+  objc_storeStrong(&v26, block);
   v25 = 0;
-  objc_storeStrong(&v25, a6);
+  objc_storeStrong(&v25, manager);
   v24 = 0;
-  objc_storeStrong(&v24, a7);
+  objc_storeStrong(&v24, backup);
   v23 = 0;
-  objc_storeStrong(&v23, a8);
+  objc_storeStrong(&v23, analyticsManager);
   v22 = 0;
-  objc_storeStrong(&v22, a9);
-  v14 = v29;
-  v29 = 0;
+  objc_storeStrong(&v22, provider);
+  v14 = selfCopy;
+  selfCopy = 0;
   v21.receiver = v14;
   v21.super_class = BuddyTargetDeviceMigrationManager;
-  v29 = [(BuddyTargetDeviceMigrationManager *)&v21 initWithFileTranferSession:location[0]];
-  objc_storeStrong(&v29, v29);
-  if (v29)
+  selfCopy = [(BuddyTargetDeviceMigrationManager *)&v21 initWithFileTranferSession:location[0]];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(v29 + 4, obj);
+    objc_storeStrong(selfCopy + 4, obj);
     v15 = objc_retainBlock(v26);
-    v16 = *(v29 + 5);
-    *(v29 + 5) = v15;
+    v16 = *(selfCopy + 5);
+    *(selfCopy + 5) = v15;
 
-    objc_storeStrong(v29 + 15, v25);
-    objc_storeStrong(v29 + 16, v24);
-    objc_storeStrong(v29 + 17, v23);
+    objc_storeStrong(selfCopy + 15, v25);
+    objc_storeStrong(selfCopy + 16, v24);
+    objc_storeStrong(selfCopy + 17, v23);
     v17 = +[BYPreferencesController buddyPreferencesInternal];
     v18 = [v17 BOOLForKey:@"RequireSoftwareUpdateForMigration"];
-    *(v29 + 9) = v18 & 1;
+    *(selfCopy + 9) = v18 & 1;
 
-    objc_storeStrong(v29 + 19, v22);
+    objc_storeStrong(selfCopy + 19, v22);
   }
 
-  v19 = v29;
+  v19 = selfCopy;
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v23, 0);
   objc_storeStrong(&v24, 0);
@@ -75,101 +75,101 @@
   objc_storeStrong(&v26, 0);
   objc_storeStrong(&obj, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v29, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v19;
 }
 
 - (void)start
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6.receiver = self;
   v6.super_class = BuddyTargetDeviceMigrationManager;
   [(BuddyTargetDeviceMigrationManager *)&v6 start];
   v2 = dispatch_queue_create("Keychain Data Transfer Completion Queue", 0);
-  [(BuddyTargetDeviceMigrationManager *)v8 setKeychainDataTransferCompletionQueue:v2];
+  [(BuddyTargetDeviceMigrationManager *)selfCopy setKeychainDataTransferCompletionQueue:v2];
 
-  v3 = [(BuddyTargetDeviceMigrationManager *)v8 keychainDataTransferCompletionQueue];
-  dispatch_suspend(v3);
+  keychainDataTransferCompletionQueue = [(BuddyTargetDeviceMigrationManager *)selfCopy keychainDataTransferCompletionQueue];
+  dispatch_suspend(keychainDataTransferCompletionQueue);
 
-  v4 = [(BuddyTargetDeviceMigrationManager *)v8 networkProvider];
-  v5 = [(BuddyNetworkProvider *)v4 inAppleStore];
-  [(BuddyTargetDeviceMigrationManager *)v8 setInAppleStore:v5 & 1];
+  networkProvider = [(BuddyTargetDeviceMigrationManager *)selfCopy networkProvider];
+  inAppleStore = [(BuddyNetworkProvider *)networkProvider inAppleStore];
+  [(BuddyTargetDeviceMigrationManager *)selfCopy setInAppleStore:inAppleStore & 1];
 }
 
 - (void)startPreflight
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
-  v2 = [(BuddyTargetDeviceMigrationManager *)self migrationQueue];
+  migrationQueue = [(BuddyTargetDeviceMigrationManager *)self migrationQueue];
   block = _NSConcreteStackBlock;
   v4 = -1073741824;
   v5 = 0;
   v6 = sub_1000C74B0;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
-  dispatch_async(v2, &block);
+  v8[0] = selfCopy;
+  dispatch_async(migrationQueue, &block);
 
   objc_storeStrong(v8, 0);
 }
 
-- (void)waitForPreflight:(id)a3
+- (void)waitForPreflight:(id)preflight
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyTargetDeviceMigrationManager *)v12 migrationQueue];
+  objc_storeStrong(location, preflight);
+  migrationQueue = [(BuddyTargetDeviceMigrationManager *)selfCopy migrationQueue];
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000C79C0;
   v8 = &unk_10032AFD0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
-  dispatch_async(v3, &block);
+  dispatch_async(migrationQueue, &block);
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)startKeychainDataTransferWithCompletionHandler:(id)a3
+- (void)startKeychainDataTransferWithCompletionHandler:(id)handler
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyTargetDeviceMigrationManager *)v12 migrationQueue];
+  objc_storeStrong(location, handler);
+  migrationQueue = [(BuddyTargetDeviceMigrationManager *)selfCopy migrationQueue];
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000C7BD0;
   v8 = &unk_10032AFD0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
-  dispatch_async(v3, &block);
+  dispatch_async(migrationQueue, &block);
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)waitForKeychainDataTransfer:(id)a3
+- (void)waitForKeychainDataTransfer:(id)transfer
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyTargetDeviceMigrationManager *)v12 keychainDataTransferCompletionQueue];
+  objc_storeStrong(location, transfer);
+  keychainDataTransferCompletionQueue = [(BuddyTargetDeviceMigrationManager *)selfCopy keychainDataTransferCompletionQueue];
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000C80EC;
   v8 = &unk_10032AFD0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
-  dispatch_async(v3, &block);
+  dispatch_async(keychainDataTransferCompletionQueue, &block);
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
@@ -178,55 +178,55 @@
 
 - (void)startKeychainDataImport
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
-  v2 = [(BuddyTargetDeviceMigrationManager *)self migrationQueue];
+  migrationQueue = [(BuddyTargetDeviceMigrationManager *)self migrationQueue];
   block = _NSConcreteStackBlock;
   v4 = -1073741824;
   v5 = 0;
   v6 = sub_1000C83C4;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
-  dispatch_async(v2, &block);
+  v8[0] = selfCopy;
+  dispatch_async(migrationQueue, &block);
 
   objc_storeStrong(v8, 0);
 }
 
-- (void)waitForKeychainDataImport:(id)a3
+- (void)waitForKeychainDataImport:(id)import
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyTargetDeviceMigrationManager *)v12 migrationQueue];
+  objc_storeStrong(location, import);
+  migrationQueue = [(BuddyTargetDeviceMigrationManager *)selfCopy migrationQueue];
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000C88E0;
   v8 = &unk_10032AFD0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
-  dispatch_async(v3, &block);
+  dispatch_async(migrationQueue, &block);
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)waitForKeychain:(id)a3
+- (void)waitForKeychain:(id)keychain
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
+  objc_storeStrong(location, keychain);
+  v3 = selfCopy;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000C8A5C;
   v8 = &unk_10032C4C0;
   v10 = location[0];
-  v9 = v12;
+  v9 = selfCopy;
   [(BuddyTargetDeviceMigrationManager *)v3 waitForKeychainDataTransfer:&v4];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
@@ -235,19 +235,19 @@
 
 - (void)startDataTransfer
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
-  v2 = [(BuddyTargetDeviceMigrationManager *)self passcodeCacheManager];
-  [(BYPasscodeCacheManager *)v2 persistPasscodeStash];
+  passcodeCacheManager = [(BuddyTargetDeviceMigrationManager *)self passcodeCacheManager];
+  [(BYPasscodeCacheManager *)passcodeCacheManager persistPasscodeStash];
 
-  v3 = [(BuddyTargetDeviceMigrationManager *)v10 migrationQueue];
+  migrationQueue = [(BuddyTargetDeviceMigrationManager *)selfCopy migrationQueue];
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000C8BBC;
   v8 = &unk_10032B0D0;
-  v9[0] = v10;
-  dispatch_async(v3, &block);
+  v9[0] = selfCopy;
+  dispatch_async(migrationQueue, &block);
 
   objc_storeStrong(v9, 0);
 }
@@ -262,27 +262,27 @@
 - (BOOL)requiresUpdateToMigrate
 {
   requiresUpdateToMigrate = self->_requiresUpdateToMigrate;
-  v3 = 1;
+  forceUpdateToMigrate = 1;
   if (!requiresUpdateToMigrate)
   {
-    v3 = [(BuddyTargetDeviceMigrationManager *)self forceUpdateToMigrate];
+    forceUpdateToMigrate = [(BuddyTargetDeviceMigrationManager *)self forceUpdateToMigrate];
   }
 
-  return v3 & 1;
+  return forceUpdateToMigrate & 1;
 }
 
 - (BOOL)hasVersionIncompatibility
 {
-  v2 = [(BuddyTargetDeviceMigrationManager *)self error];
-  v3 = [v2 domain];
-  v4 = [v3 isEqualToString:@"MBErrorDomain"];
+  error = [(BuddyTargetDeviceMigrationManager *)self error];
+  domain = [error domain];
+  v4 = [domain isEqualToString:@"MBErrorDomain"];
   v7 = 0;
   v5 = 0;
   if (v4)
   {
-    v8 = [(BuddyTargetDeviceMigrationManager *)self error];
+    error2 = [(BuddyTargetDeviceMigrationManager *)self error];
     v7 = 1;
-    v5 = [v8 code] == 203;
+    v5 = [error2 code] == 203;
   }
 
   v10 = v5;
@@ -298,14 +298,14 @@
   v5 = 0;
   if ([(BuddyTargetDeviceMigrationManager *)self userChoseMigration])
   {
-    v2 = [(BuddyTargetDeviceMigrationManager *)self willMigrate];
-    v3 = 1;
-    if ((v2 & 1) == 0)
+    willMigrate = [(BuddyTargetDeviceMigrationManager *)self willMigrate];
+    didComplete = 1;
+    if ((willMigrate & 1) == 0)
     {
-      v3 = [(BuddyTargetDeviceMigrationManager *)self didComplete];
+      didComplete = [(BuddyTargetDeviceMigrationManager *)self didComplete];
     }
 
-    return v3 & 1;
+    return didComplete & 1;
   }
 
   return v5;
@@ -313,16 +313,16 @@
 
 - (void)startDeviceTransferTask
 {
-  v2 = [(BuddyTargetDeviceMigrationManager *)self proximitySetupController];
-  v3 = [(ProximitySetupController *)v2 model];
-  [(BuddyTargetDeviceMigrationManager *)self setSourceDeviceModel:v3];
+  proximitySetupController = [(BuddyTargetDeviceMigrationManager *)self proximitySetupController];
+  model = [(ProximitySetupController *)proximitySetupController model];
+  [(BuddyTargetDeviceMigrationManager *)self setSourceDeviceModel:model];
 
-  v4 = [(BuddyTargetDeviceMigrationManager *)self proximitySetupController];
-  v5 = [(ProximitySetupController *)v4 productVersion];
-  [(BuddyTargetDeviceMigrationManager *)self setSourceDeviceProductVersion:v5];
+  proximitySetupController2 = [(BuddyTargetDeviceMigrationManager *)self proximitySetupController];
+  productVersion = [(ProximitySetupController *)proximitySetupController2 productVersion];
+  [(BuddyTargetDeviceMigrationManager *)self setSourceDeviceProductVersion:productVersion];
 
-  v6 = [(BuddyTargetDeviceMigrationManager *)self _targetDeviceTransferTask];
-  [v6 start];
+  _targetDeviceTransferTask = [(BuddyTargetDeviceMigrationManager *)self _targetDeviceTransferTask];
+  [_targetDeviceTransferTask start];
 }
 
 - (void)cancelDeviceTransferTask
@@ -333,31 +333,31 @@
 
 - (void)didCancel
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   [(BuddyTargetDeviceMigrationManager *)self setWillMigrate:0];
-  v2 = [(BuddyTargetDeviceMigrationManager *)v9 migrationQueue];
+  migrationQueue = [(BuddyTargetDeviceMigrationManager *)selfCopy migrationQueue];
   block = _NSConcreteStackBlock;
   v4 = -1073741824;
   v5 = 0;
   v6 = sub_1000C92A4;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
-  dispatch_async(v2, &block);
+  v8[0] = selfCopy;
+  dispatch_async(migrationQueue, &block);
 
   objc_storeStrong(v8, 0);
 }
 
-- (void)didCompleteWithError:(id)a3
+- (void)didCompleteWithError:(id)error
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyTargetDeviceMigrationManager *)v30 setDidComplete:1];
-  v3 = [location[0] domain];
+  objc_storeStrong(location, error);
+  [(BuddyTargetDeviceMigrationManager *)selfCopy setDidComplete:1];
+  domain = [location[0] domain];
   v4 = 0;
-  if ([v3 isEqualToString:@"MBErrorDomain"])
+  if ([domain isEqualToString:@"MBErrorDomain"])
   {
     v4 = [location[0] code] == 202;
   }
@@ -365,7 +365,7 @@
   if (v4)
   {
     v5 = BYDeviceMigrationManagerErrorDomain;
-    v6 = [(BuddyTargetDeviceMigrationManager *)v30 cancellationCause]+ 1000;
+    v6 = [(BuddyTargetDeviceMigrationManager *)selfCopy cancellationCause]+ 1000;
     v33 = NSUnderlyingErrorKey;
     v34 = location[0];
     v7 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
@@ -374,36 +374,36 @@
     location[0] = v8;
   }
 
-  if ([(BuddyTargetDeviceMigrationManager *)v30 userChoseMigration])
+  if ([(BuddyTargetDeviceMigrationManager *)selfCopy userChoseMigration])
   {
     v31[0] = @"success";
     v26 = [NSNumber numberWithInt:location[0] == 0];
     v32[0] = v26;
     v31[1] = @"connectionType";
-    v10 = [(BuddyTargetDeviceMigrationManager *)v30 connectionInfo];
-    v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 connectionType]);
+    connectionInfo = [(BuddyTargetDeviceMigrationManager *)selfCopy connectionInfo];
+    v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [connectionInfo connectionType]);
     v32[1] = v11;
     v31[2] = @"sourceDeviceModel";
-    v12 = [(BuddyTargetDeviceMigrationManager *)v30 sourceDeviceModel];
-    v32[2] = v12;
+    sourceDeviceModel = [(BuddyTargetDeviceMigrationManager *)selfCopy sourceDeviceModel];
+    v32[2] = sourceDeviceModel;
     v31[3] = @"sourceDeviceProductVersion";
-    v13 = [(BuddyTargetDeviceMigrationManager *)v30 sourceDeviceProductVersion];
-    v32[3] = v13;
+    sourceDeviceProductVersion = [(BuddyTargetDeviceMigrationManager *)selfCopy sourceDeviceProductVersion];
+    v32[3] = sourceDeviceProductVersion;
     v31[4] = @"inAppleStore";
-    v14 = [NSNumber numberWithBool:[(BuddyTargetDeviceMigrationManager *)v30 inAppleStore]];
+    v14 = [NSNumber numberWithBool:[(BuddyTargetDeviceMigrationManager *)selfCopy inAppleStore]];
     v32[4] = v14;
     v31[5] = @"transferSize";
-    v15 = [NSNumber numberWithUnsignedLongLong:[(BuddyTargetDeviceMigrationManager *)v30 bytesTransferred]];
+    v15 = [NSNumber numberWithUnsignedLongLong:[(BuddyTargetDeviceMigrationManager *)selfCopy bytesTransferred]];
     v32[5] = v15;
     v31[6] = @"numberOfFilesTransferred";
-    v16 = [NSNumber numberWithUnsignedLongLong:[(BuddyTargetDeviceMigrationManager *)v30 filesTransferred]];
+    v16 = [NSNumber numberWithUnsignedLongLong:[(BuddyTargetDeviceMigrationManager *)selfCopy filesTransferred]];
     v32[6] = v16;
     v31[7] = @"transferDuration";
-    [(BuddyTargetDeviceMigrationManager *)v30 durationOfTransfer];
+    [(BuddyTargetDeviceMigrationManager *)selfCopy durationOfTransfer];
     v17 = [NSNumber numberWithDouble:?];
     v32[7] = v17;
     v31[8] = @"restoreDuration";
-    [(BuddyTargetDeviceMigrationManager *)v30 durationOfRestore];
+    [(BuddyTargetDeviceMigrationManager *)selfCopy durationOfRestore];
     v18 = [NSNumber numberWithDouble:?];
     v32[8] = v18;
     v19 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:9];
@@ -411,32 +411,32 @@
 
     if (location[0])
     {
-      v20 = [location[0] domain];
-      v21 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (%ld)", v20, [location[0] code]);
+      domain2 = [location[0] domain];
+      v21 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (%ld)", domain2, [location[0] code]);
       [v28 setObject:v21 forKeyedSubscript:@"error"];
 
-      v22 = [location[0] userInfo];
-      v27 = [v22 objectForKey:NSUnderlyingErrorKey];
+      userInfo = [location[0] userInfo];
+      v27 = [userInfo objectForKey:NSUnderlyingErrorKey];
 
       if (v27)
       {
-        v23 = [location[0] domain];
-        v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (%ld)", v23, [location[0] code]);
+        domain3 = [location[0] domain];
+        v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (%ld)", domain3, [location[0] code]);
         [v28 setObject:v24 forKeyedSubscript:@"underlyingError"];
       }
 
       objc_storeStrong(&v27, 0);
     }
 
-    v25 = [(BuddyTargetDeviceMigrationManager *)v30 analyticsManager];
-    [(BYAnalyticsManager *)v25 addEvent:@"com.apple.setupassistant.ios.migration" withPayload:v28 persist:1];
+    analyticsManager = [(BuddyTargetDeviceMigrationManager *)selfCopy analyticsManager];
+    [(BYAnalyticsManager *)analyticsManager addEvent:@"com.apple.setupassistant.ios.migration" withPayload:v28 persist:1];
 
     objc_storeStrong(&v28, 0);
   }
 
   if (!location[0])
   {
-    [(BuddyTargetDeviceMigrationManager *)v30 _stageReboot];
+    [(BuddyTargetDeviceMigrationManager *)selfCopy _stageReboot];
   }
 
   objc_storeStrong(location, 0);
@@ -444,7 +444,7 @@
 
 - (__MKBAssertion)acquireDeviceLockAssertion
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   if ([(BuddyTargetDeviceMigrationManager *)self softwareUpdateDidOccur])
   {
@@ -496,7 +496,7 @@
 
   else
   {
-    v13.receiver = v15;
+    v13.receiver = selfCopy;
     v13.super_class = BuddyTargetDeviceMigrationManager;
     return [(BuddyTargetDeviceMigrationManager *)&v13 acquireDeviceLockAssertion];
   }
@@ -504,12 +504,12 @@
   return v16;
 }
 
-+ (id)createDeviceTransferTask:(id)a3
++ (id)createDeviceTransferTask:(id)task
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, task);
   v3 = [MBTargetDeviceTransferTask alloc];
   v4 = [v3 initWithFileTransferSession:location[0]];
   objc_storeStrong(location, 0);
@@ -519,10 +519,10 @@
 
 - (void)_stageReboot
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BuddyTargetDeviceMigrationManager *)self buddyPreferencesExcludedFromBackup];
-  v3 = [BuddyMigrationState hasStateFromPreferences:v2];
+  buddyPreferencesExcludedFromBackup = [(BuddyTargetDeviceMigrationManager *)self buddyPreferencesExcludedFromBackup];
+  v3 = [BuddyMigrationState hasStateFromPreferences:buddyPreferencesExcludedFromBackup];
 
   if (v3)
   {
@@ -537,7 +537,7 @@
     }
 
     objc_storeStrong(location, 0);
-    [(BuddyTargetDeviceMigrationManager *)v22 deviceLockAssertion];
+    [(BuddyTargetDeviceMigrationManager *)selfCopy deviceLockAssertion];
     v18 = MKBDeviceLockAssertionPromote();
     if (v18)
     {
@@ -553,12 +553,12 @@
     }
   }
 
-  v6 = [(BuddyTargetDeviceMigrationManager *)v22 buddyPreferencesExcludedFromBackup];
-  v7 = [NSNumber numberWithBool:[(BuddyTargetDeviceMigrationManager *)v22 softwareUpdateDidOccur]];
-  [(BYPreferencesController *)v6 setObject:v7 forKey:BYBuddySoftwareUpdateMigration persistImmediately:1];
+  buddyPreferencesExcludedFromBackup2 = [(BuddyTargetDeviceMigrationManager *)selfCopy buddyPreferencesExcludedFromBackup];
+  v7 = [NSNumber numberWithBool:[(BuddyTargetDeviceMigrationManager *)selfCopy softwareUpdateDidOccur]];
+  [(BYPreferencesController *)buddyPreferencesExcludedFromBackup2 setObject:v7 forKey:BYBuddySoftwareUpdateMigration persistImmediately:1];
 
-  v8 = [(BuddyTargetDeviceMigrationManager *)v22 prepareForMigrationRebootBlock];
-  v8[2](v8);
+  prepareForMigrationRebootBlock = [(BuddyTargetDeviceMigrationManager *)selfCopy prepareForMigrationRebootBlock];
+  prepareForMigrationRebootBlock[2](prepareForMigrationRebootBlock);
 
   v9 = &_dispatch_main_q;
   v10 = _NSConcreteStackBlock;
@@ -566,7 +566,7 @@
   v12 = 0;
   v13 = sub_1000CA014;
   v14 = &unk_10032B0D0;
-  v15 = v22;
+  v15 = selfCopy;
   dispatch_async(v9, &v10);
 
   objc_storeStrong(&v15, 0);
@@ -574,7 +574,7 @@
 
 - (void)_rebootDevice
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _BYLoggingFacility();
   v27 = OS_LOG_TYPE_DEFAULT;
@@ -588,10 +588,10 @@
 
   objc_storeStrong(location, 0);
   v25 = objc_alloc_init(MBManager);
-  v4 = [(BuddyTargetDeviceMigrationManager *)v29 lockdownModeProvider];
-  v5 = [(LockdownModeProvider *)v4 hasStagedEnablement];
+  lockdownModeProvider = [(BuddyTargetDeviceMigrationManager *)selfCopy lockdownModeProvider];
+  hasStagedEnablement = [(LockdownModeProvider *)lockdownModeProvider hasStagedEnablement];
 
-  if (v5)
+  if (hasStagedEnablement)
   {
     v24 = _BYLoggingFacility();
     v23 = OS_LOG_TYPE_DEFAULT;
@@ -604,14 +604,14 @@
     }
 
     objc_storeStrong(&v24, 0);
-    v8 = [(BuddyTargetDeviceMigrationManager *)v29 lockdownModeProvider];
+    lockdownModeProvider2 = [(BuddyTargetDeviceMigrationManager *)selfCopy lockdownModeProvider];
     v16 = _NSConcreteStackBlock;
     v17 = -1073741824;
     v18 = 0;
     v19 = sub_1000CA3D0;
     v20 = &unk_10032B6F0;
     v21 = v25;
-    [(LockdownModeProvider *)v8 enableWithStrategy:1 completionHandler:&v16];
+    [(LockdownModeProvider *)lockdownModeProvider2 enableWithStrategy:1 completionHandler:&v16];
 
     objc_storeStrong(&v21, 0);
   }
@@ -621,14 +621,14 @@
     [v25 rebootDevice:0];
   }
 
-  v9 = [(BuddyTargetDeviceMigrationManager *)v29 migrationQueue];
+  migrationQueue = [(BuddyTargetDeviceMigrationManager *)selfCopy migrationQueue];
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
   v12 = 0;
   v13 = sub_1000CA544;
   v14 = &unk_10032B0D0;
-  v15 = v29;
-  dispatch_async(v9, &v10);
+  v15 = selfCopy;
+  dispatch_async(migrationQueue, &v10);
 
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v25, 0);
@@ -636,7 +636,7 @@
 
 - (void)connectionTerminated
 {
-  v12 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if ([(BuddyTargetDeviceMigrationManager *)self ignoreProximityDisconnections])
   {
@@ -666,7 +666,7 @@
     }
 
     objc_storeStrong(&v8, 0);
-    [(BuddyTargetDeviceMigrationManager *)v12 cancelWithCause:4];
+    [(BuddyTargetDeviceMigrationManager *)selfCopy cancelWithCause:4];
   }
 }
 

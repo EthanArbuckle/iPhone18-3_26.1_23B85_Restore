@@ -1,6 +1,6 @@
 @interface VoiceOverAudioController
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 @end
 
 @implementation VoiceOverAudioController
@@ -20,11 +20,11 @@
     [v6 setProperty:v8 forKey:*MEMORY[0x277D400E0]];
 
     [v6 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FFC8]];
-    v9 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-    v10 = [v9 objectForKey:*MEMORY[0x277CE7FA0]];
-    v11 = [v10 integerValue];
+    accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+    v10 = [accessibilityDomainAccessor objectForKey:*MEMORY[0x277CE7FA0]];
+    integerValue = [v10 integerValue];
 
-    if (v11)
+    if (integerValue)
     {
       v12 = &unk_284E7E7A0;
     }
@@ -44,14 +44,14 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v24.receiver = self;
   v24.super_class = VoiceOverAudioController;
-  v8 = [(VoiceOverAudioController *)&v24 tableView:v6 cellForRowAtIndexPath:v7];
-  v9 = [(VoiceOverAudioController *)self specifierAtIndexPath:v7];
+  v8 = [(VoiceOverAudioController *)&v24 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  v9 = [(VoiceOverAudioController *)self specifierAtIndexPath:pathCopy];
   v10 = v8;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -61,14 +61,14 @@
 
     if (v12)
     {
-      v13 = [v10 control];
-      objc_initWeak(&location, v13);
+      control = [v10 control];
+      objc_initWeak(&location, control);
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __60__VoiceOverAudioController_tableView_cellForRowAtIndexPath___block_invoke;
       v21[3] = &unk_278B90AA0;
       objc_copyWeak(&v22, &location);
-      [v13 setAccessibilityValueBlock:v21];
+      [control setAccessibilityValueBlock:v21];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __60__VoiceOverAudioController_tableView_cellForRowAtIndexPath___block_invoke_2;

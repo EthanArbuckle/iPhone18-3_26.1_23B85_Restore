@@ -1,11 +1,11 @@
 @interface SSVPushNotificationParameters
 - (NSArray)mediaKinds;
 - (SSVPushNotificationParameters)init;
-- (SSVPushNotificationParameters)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSVPushNotificationParameters)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
-- (void)setMediaKinds:(id)a3;
-- (void)setValue:(id)a3 forParameter:(id)a4;
+- (void)setMediaKinds:(id)kinds;
+- (void)setValue:(id)value forParameter:(id)parameter;
 @end
 
 @implementation SSVPushNotificationParameters
@@ -33,19 +33,19 @@
   return v3;
 }
 
-- (void)setMediaKinds:(id)a3
+- (void)setMediaKinds:(id)kinds
 {
-  v7 = a3;
+  kindsCopy = kinds;
   v4 = [(NSMutableDictionary *)self->_parameterDictionary objectForKey:@"parameters"];
-  v5 = v7;
+  v5 = kindsCopy;
   v6 = v4;
-  if (v7)
+  if (kindsCopy)
   {
     if (!v4)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
       [(NSMutableDictionary *)self->_parameterDictionary setObject:v6 forKey:@"parameters"];
-      v5 = v7;
+      v5 = kindsCopy;
     }
 
     [v6 setObject:v5 forKey:@"media-kinds"];
@@ -57,26 +57,26 @@
   }
 }
 
-- (void)setValue:(id)a3 forParameter:(id)a4
+- (void)setValue:(id)value forParameter:(id)parameter
 {
   parameterDictionary = self->_parameterDictionary;
-  if (a3)
+  if (value)
   {
-    [(NSMutableDictionary *)parameterDictionary setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)parameterDictionary setObject:value forKey:parameter];
   }
 
   else
   {
-    [(NSMutableDictionary *)parameterDictionary removeObjectForKey:a4];
+    [(NSMutableDictionary *)parameterDictionary removeObjectForKey:parameter];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setAccountIdentifier:self->_accountIdentifier];
   [v5 setEnvironmentName:self->_environmentName];
-  v6 = [(NSMutableDictionary *)self->_parameterDictionary mutableCopyWithZone:a3];
+  v6 = [(NSMutableDictionary *)self->_parameterDictionary mutableCopyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -84,11 +84,11 @@
   return v5;
 }
 
-- (SSVPushNotificationParameters)initWithXPCEncoding:(id)a3
+- (SSVPushNotificationParameters)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v15.receiver = self;
     v15.super_class = SSVPushNotificationParameters;

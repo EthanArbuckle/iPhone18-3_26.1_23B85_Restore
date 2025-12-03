@@ -1,14 +1,14 @@
 @interface LineGraphView
-- (LineGraphView)initWithFrame:(CGRect)a3;
-- (void)resizeSelectedLineClipViewWithLeftX:(double)a3 rightX:(double)a4;
-- (void)setGraphImageSet:(id)a3;
-- (void)setSelectedLineImage:(id)a3;
-- (void)setShowingSelectedLine:(BOOL)a3;
+- (LineGraphView)initWithFrame:(CGRect)frame;
+- (void)resizeSelectedLineClipViewWithLeftX:(double)x rightX:(double)rightX;
+- (void)setGraphImageSet:(id)set;
+- (void)setSelectedLineImage:(id)image;
+- (void)setShowingSelectedLine:(BOOL)line;
 @end
 
 @implementation LineGraphView
 
-- (LineGraphView)initWithFrame:(CGRect)a3
+- (LineGraphView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = LineGraphView;
@@ -22,12 +22,12 @@
   return v4;
 }
 
-- (void)setSelectedLineImage:(id)a3
+- (void)setSelectedLineImage:(id)image
 {
-  v6 = a3;
-  if (self->_lineImage != v6)
+  imageCopy = image;
+  if (self->_lineImage != imageCopy)
   {
-    objc_storeStrong(&self->_lineImage, a3);
+    objc_storeStrong(&self->_lineImage, image);
     tintedLineView = self->_tintedLineView;
     if (tintedLineView)
     {
@@ -36,26 +36,26 @@
   }
 }
 
-- (void)setGraphImageSet:(id)a3
+- (void)setGraphImageSet:(id)set
 {
-  v4 = a3;
-  v5 = [v4 lineGraphImage];
-  v6 = [v5 CGImage];
-  v7 = [(LineGraphView *)self layer];
-  [v7 setContents:v6];
+  setCopy = set;
+  lineGraphImage = [setCopy lineGraphImage];
+  cGImage = [lineGraphImage CGImage];
+  layer = [(LineGraphView *)self layer];
+  [layer setContents:cGImage];
 
-  v8 = [v4 highlightOverlayImage];
+  highlightOverlayImage = [setCopy highlightOverlayImage];
 
-  [(LineGraphView *)self setSelectedLineImage:v8];
+  [(LineGraphView *)self setSelectedLineImage:highlightOverlayImage];
 }
 
-- (void)setShowingSelectedLine:(BOOL)a3
+- (void)setShowingSelectedLine:(BOOL)line
 {
-  if (self->_showingTintedLine != a3)
+  if (self->_showingTintedLine != line)
   {
-    v4 = a3;
-    self->_showingTintedLine = a3;
-    if (a3)
+    lineCopy = line;
+    self->_showingTintedLine = line;
+    if (line)
     {
       if (!self->_tintedLineView)
       {
@@ -83,24 +83,24 @@
 
     v11 = self->_tintedLineClipView;
 
-    [(UIView *)v11 setAlpha:v4];
+    [(UIView *)v11 setAlpha:lineCopy];
   }
 }
 
-- (void)resizeSelectedLineClipViewWithLeftX:(double)a3 rightX:(double)a4
+- (void)resizeSelectedLineClipViewWithLeftX:(double)x rightX:(double)rightX
 {
-  v7 = [(TintedView *)self->_tintedLineView layer];
-  [v7 removeAllAnimations];
+  layer = [(TintedView *)self->_tintedLineView layer];
+  [layer removeAllAnimations];
 
-  v8 = [(UIView *)self->_tintedLineClipView layer];
-  [v8 removeAllAnimations];
+  layer2 = [(UIView *)self->_tintedLineClipView layer];
+  [layer2 removeAllAnimations];
 
   [(LineGraphView *)self bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [(UIView *)self->_tintedLineClipView setFrame:a3, 0.0, a4 - a3];
+  [(UIView *)self->_tintedLineClipView setFrame:x, 0.0, rightX - x];
   tintedLineView = self->_tintedLineView;
   [(LineGraphView *)self convertRect:self->_tintedLineClipView toView:v10, v12, v14, v16];
 

@@ -1,21 +1,21 @@
 @interface PKMemoItem
 - (NSCopying)identifier;
-- (PKMemoItem)initWithMemo:(id)a3 type:(unint64_t)a4;
+- (PKMemoItem)initWithMemo:(id)memo type:(unint64_t)type;
 @end
 
 @implementation PKMemoItem
 
-- (PKMemoItem)initWithMemo:(id)a3 type:(unint64_t)a4
+- (PKMemoItem)initWithMemo:(id)memo type:(unint64_t)type
 {
-  v7 = a3;
+  memoCopy = memo;
   v11.receiver = self;
   v11.super_class = PKMemoItem;
   v8 = [(PKMemoItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a4;
-    objc_storeStrong(&v8->_memo, a3);
+    v8->_type = type;
+    objc_storeStrong(&v8->_memo, memo);
   }
 
   return v9;

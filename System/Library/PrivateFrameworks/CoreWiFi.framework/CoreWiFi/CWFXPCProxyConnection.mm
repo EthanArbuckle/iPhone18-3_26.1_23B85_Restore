@@ -1,13 +1,13 @@
 @interface CWFXPCProxyConnection
-- (CWFXPCProxyConnection)initWithForwardingTarget:(id)a3;
+- (CWFXPCProxyConnection)initWithForwardingTarget:(id)target;
 - (void)invalidate;
 @end
 
 @implementation CWFXPCProxyConnection
 
-- (CWFXPCProxyConnection)initWithForwardingTarget:(id)a3
+- (CWFXPCProxyConnection)initWithForwardingTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v18.receiver = self;
   v18.super_class = CWFXPCProxyConnection;
   v5 = [(CWFXPCProxyConnection *)&v18 init];
@@ -37,7 +37,7 @@
       goto LABEL_7;
     }
 
-    [(CWFXPCProxy *)v13 setTarget:v4];
+    [(CWFXPCProxy *)v13 setTarget:targetCopy];
     [(CWFXPCProxy *)v5->_XPCProxy setQueue:v5->_queue];
     v14 = objc_alloc_init(CWFXPCProxy);
     synchronousXPCProxy = v5->_synchronousXPCProxy;
@@ -47,7 +47,7 @@
     if (v16)
     {
       [(CWFXPCProxy *)v16 setSynchronous:1];
-      [(CWFXPCProxy *)v5->_synchronousXPCProxy setTarget:v4];
+      [(CWFXPCProxy *)v5->_synchronousXPCProxy setTarget:targetCopy];
       [(CWFXPCProxy *)v5->_synchronousXPCProxy setQueue:v5->_queue];
     }
 
@@ -74,12 +74,12 @@ LABEL_7:
   [(CWFXPCProxy *)self->_XPCProxy setQueue:0];
   [(CWFXPCProxy *)self->_synchronousXPCProxy setTarget:0];
   [(CWFXPCProxy *)self->_synchronousXPCProxy setQueue:0];
-  v3 = [(CWFXPCProxyConnection *)self invalidationHandler];
+  invalidationHandler = [(CWFXPCProxyConnection *)self invalidationHandler];
 
-  if (v3)
+  if (invalidationHandler)
   {
-    v4 = [(CWFXPCProxyConnection *)self invalidationHandler];
-    v4[2]();
+    invalidationHandler2 = [(CWFXPCProxyConnection *)self invalidationHandler];
+    invalidationHandler2[2]();
   }
 
   [(CWFXPCProxyConnection *)self setInvalidationHandler:0];

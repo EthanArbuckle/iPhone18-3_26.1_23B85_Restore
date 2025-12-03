@@ -1,21 +1,21 @@
 @interface HeadphoneMovieBatteryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityOverridesInvalidFrames;
 - (CGRect)accessibilityFrame;
-- (void)updateWithBatteries:(id)a3;
+- (void)updateWithBatteries:(id)batteries;
 @end
 
 @implementation HeadphoneMovieBatteryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SharingViewService.HeadphoneMovieBatteryView"];
-  [v3 validateClass:@"SharingViewService.HeadphoneMovieBatteryView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SharingViewService.HeadphoneMovieBatteryView" hasSwiftField:@"batteryViews" withSwiftType:"Array<LabelledBatteryView>"];
-  [v3 validateClass:@"SharingViewService.HeadphoneMovieBatteryView" hasInstanceMethod:@"updateWithBatteries:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SFBatteryInfo"];
-  [v3 validateClass:@"SFBatteryInfo" hasInstanceMethod:@"batteryType" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SharingViewService.HeadphoneMovieBatteryView"];
+  [validationsCopy validateClass:@"SharingViewService.HeadphoneMovieBatteryView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SharingViewService.HeadphoneMovieBatteryView" hasSwiftField:@"batteryViews" withSwiftType:"Array<LabelledBatteryView>"];
+  [validationsCopy validateClass:@"SharingViewService.HeadphoneMovieBatteryView" hasInstanceMethod:@"updateWithBatteries:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SFBatteryInfo"];
+  [validationsCopy validateClass:@"SFBatteryInfo" hasInstanceMethod:@"batteryType" withFullSignature:{"q", 0}];
 }
 
 - (BOOL)_accessibilityOverridesInvalidFrames
@@ -47,11 +47,11 @@
   {
     objc_opt_class();
     v10 = __UIAccessibilityCastAsClass();
-    v11 = [v10 superview];
-    v12 = v11;
-    if (v11)
+    superview = [v10 superview];
+    v12 = superview;
+    if (superview)
     {
-      [v11 accessibilityFrame];
+      [superview accessibilityFrame];
       v5 = v13;
       v7 = v14;
       v8 = v15;
@@ -70,12 +70,12 @@
   return result;
 }
 
-- (void)updateWithBatteries:(id)a3
+- (void)updateWithBatteries:(id)batteries
 {
   v9.receiver = self;
   v9.super_class = HeadphoneMovieBatteryViewAccessibility;
-  v4 = a3;
-  [(HeadphoneMovieBatteryViewAccessibility *)&v9 updateWithBatteries:v4];
+  batteriesCopy = batteries;
+  [(HeadphoneMovieBatteryViewAccessibility *)&v9 updateWithBatteries:batteriesCopy];
   v5 = [(HeadphoneMovieBatteryViewAccessibility *)self safeSwiftArrayForKey:@"batteryViews"];
   v7[0] = MEMORY[0x29EDCA5F8];
   v7[1] = 3221225472;
@@ -83,7 +83,7 @@
   v7[3] = &unk_29F2F7E88;
   v8 = v5;
   v6 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [batteriesCopy enumerateObjectsUsingBlock:v7];
 }
 
 void __62__HeadphoneMovieBatteryViewAccessibility_updateWithBatteries___block_invoke(uint64_t a1, void *a2, uint64_t a3)

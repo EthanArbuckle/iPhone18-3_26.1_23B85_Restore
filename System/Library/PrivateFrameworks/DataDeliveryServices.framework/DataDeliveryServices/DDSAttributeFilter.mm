@@ -1,35 +1,35 @@
 @interface DDSAttributeFilter
 + (id)attributeFilter;
-+ (id)attributeFilterWithDictionary:(id)a3;
-+ (unint64_t)hashDictionary:(id)a3;
-+ (unint64_t)hashObject:(id)a3;
-+ (unint64_t)hashSet:(id)a3;
-- (BOOL)doesContainAttributes:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToQueryFilter:(id)a3;
-- (DDSAttributeFilter)initWithCoder:(id)a3;
-- (DDSAttributeFilter)initWithDictionary:(id)a3;
-- (id)_setForKey:(id)a3;
-- (id)allowedValuesForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)attributeFilterWithDictionary:(id)dictionary;
++ (unint64_t)hashDictionary:(id)dictionary;
++ (unint64_t)hashObject:(id)object;
++ (unint64_t)hashSet:(id)set;
+- (BOOL)doesContainAttributes:(id)attributes;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToQueryFilter:(id)filter;
+- (DDSAttributeFilter)initWithCoder:(id)coder;
+- (DDSAttributeFilter)initWithDictionary:(id)dictionary;
+- (id)_setForKey:(id)key;
+- (id)allowedValuesForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dumpDescription;
-- (id)entriesMatchingAttributes:(id)a3;
+- (id)entriesMatchingAttributes:(id)attributes;
 - (unint64_t)hash;
-- (void)addAllowedValue:(id)a3 forKey:(id)a4;
-- (void)addAllowedValues:(id)a3 forKey:(id)a4;
-- (void)addEntriesFromFilter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateAllowedValuesAndKeys:(id)a3;
-- (void)removeAllowedValue:(id)a3 forKey:(id)a4;
-- (void)removeAllowedValues:(id)a3 forKey:(id)a4;
+- (void)addAllowedValue:(id)value forKey:(id)key;
+- (void)addAllowedValues:(id)values forKey:(id)key;
+- (void)addEntriesFromFilter:(id)filter;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateAllowedValuesAndKeys:(id)keys;
+- (void)removeAllowedValue:(id)value forKey:(id)key;
+- (void)removeAllowedValues:(id)values forKey:(id)key;
 @end
 
 @implementation DDSAttributeFilter
 
 + (id)attributeFilter
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [v2 initWithDictionary:MEMORY[0x1E695E0F8]];
 
   return v3;
@@ -38,8 +38,8 @@
 - (unint64_t)hash
 {
   v3 = objc_opt_class();
-  v4 = [(DDSAttributeFilter *)self filters];
-  v5 = [v3 hashObject:v4];
+  filters = [(DDSAttributeFilter *)self filters];
+  v5 = [v3 hashObject:filters];
 
   return v5;
 }
@@ -49,47 +49,47 @@
   if (DDS_LOG_REDACTED())
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [(DDSAttributeFilter *)self filters];
-    [v3 stringWithFormat:@"<filter: %@>", v4];
+    filters = [(DDSAttributeFilter *)self filters];
+    [v3 stringWithFormat:@"<filter: %@>", filters];
   }
 
   else
   {
-    v5 = [(DDSAttributeFilter *)self filters];
-    v4 = [v5 mutableCopy];
+    filters2 = [(DDSAttributeFilter *)self filters];
+    filters = [filters2 mutableCopy];
 
-    v6 = [v4 objectForKey:@"AssetRegion"];
+    v6 = [filters objectForKey:@"AssetRegion"];
 
     if (v6)
     {
       v7 = [MEMORY[0x1E695DFD8] setWithObject:@"<redacted>"];
-      [v4 setObject:v7 forKey:@"AssetRegion"];
+      [filters setObject:v7 forKey:@"AssetRegion"];
     }
 
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"<filter: %@>", v4];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"<filter: %@>", filters];
   }
   v8 = ;
 
   return v8;
 }
 
-+ (id)attributeFilterWithDictionary:(id)a3
++ (id)attributeFilterWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[self alloc] initWithDictionary:dictionaryCopy];
 
   return v5;
 }
 
-- (DDSAttributeFilter)initWithDictionary:(id)a3
+- (DDSAttributeFilter)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = DDSAttributeFilter;
   v5 = [(DDSAttributeFilter *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dictionaryCopy mutableCopy];
     filters = v5->_filters;
     v5->_filters = v6;
   }
@@ -97,68 +97,68 @@
   return v5;
 }
 
-- (id)allowedValuesForKey:(id)a3
+- (id)allowedValuesForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(DDSAttributeFilter *)self filters];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  filters = [(DDSAttributeFilter *)self filters];
+  v6 = [filters objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)enumerateAllowedValuesAndKeys:(id)a3
+- (void)enumerateAllowedValuesAndKeys:(id)keys
 {
-  v4 = a3;
-  if (v4)
+  keysCopy = keys;
+  if (keysCopy)
   {
-    v5 = [(DDSAttributeFilter *)self filters];
+    filters = [(DDSAttributeFilter *)self filters];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __52__DDSAttributeFilter_enumerateAllowedValuesAndKeys___block_invoke;
     v6[3] = &unk_1E86C5D78;
-    v7 = v4;
-    [v5 enumerateKeysAndObjectsUsingBlock:v6];
+    v7 = keysCopy;
+    [filters enumerateKeysAndObjectsUsingBlock:v6];
   }
 }
 
-- (id)_setForKey:(id)a3
+- (id)_setForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(DDSAttributeFilter *)self filters];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  filters = [(DDSAttributeFilter *)self filters];
+  v6 = [filters objectForKey:keyCopy];
 
   if (!v6)
   {
     v6 = [MEMORY[0x1E695DFA8] set];
-    v7 = [(DDSAttributeFilter *)self filters];
-    [v7 setObject:v6 forKey:v4];
+    filters2 = [(DDSAttributeFilter *)self filters];
+    [filters2 setObject:v6 forKey:keyCopy];
   }
 
   return v6;
 }
 
-- (void)addEntriesFromFilter:(id)a3
+- (void)addEntriesFromFilter:(id)filter
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __43__DDSAttributeFilter_addEntriesFromFilter___block_invoke;
   v3[3] = &unk_1E86C5DA0;
   v3[4] = self;
-  [a3 enumerateAllowedValuesAndKeys:v3];
+  [filter enumerateAllowedValuesAndKeys:v3];
 }
 
-- (id)entriesMatchingAttributes:(id)a3
+- (id)entriesMatchingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  attributesCopy = attributes;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __48__DDSAttributeFilter_entriesMatchingAttributes___block_invoke;
   v11[3] = &unk_1E86C5DC8;
-  v12 = v4;
-  v6 = v5;
+  v12 = attributesCopy;
+  v6 = dictionary;
   v13 = v6;
-  v7 = v4;
+  v7 = attributesCopy;
   [(DDSAttributeFilter *)self enumerateAllowedValuesAndKeys:v11];
   v8 = v13;
   v9 = v6;
@@ -180,9 +180,9 @@ void __48__DDSAttributeFilter_entriesMatchingAttributes___block_invoke(uint64_t 
   }
 }
 
-- (BOOL)doesContainAttributes:(id)a3
+- (BOOL)doesContainAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -193,7 +193,7 @@ void __48__DDSAttributeFilter_entriesMatchingAttributes___block_invoke(uint64_t 
   v6[3] = &unk_1E86C5DF0;
   v6[4] = self;
   v6[5] = &v7;
-  [v4 enumerateKeysAndObjectsUsingBlock:v6];
+  [attributesCopy enumerateKeysAndObjectsUsingBlock:v6];
   LOBYTE(self) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -212,70 +212,70 @@ void __44__DDSAttributeFilter_doesContainAttributes___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)addAllowedValue:(id)a3 forKey:(id)a4
+- (void)addAllowedValue:(id)value forKey:(id)key
 {
-  if (a3)
+  if (value)
   {
-    v6 = a3;
-    v7 = [(DDSAttributeFilter *)self _setForKey:a4];
-    [v7 addObject:v6];
+    valueCopy = value;
+    v7 = [(DDSAttributeFilter *)self _setForKey:key];
+    [v7 addObject:valueCopy];
   }
 }
 
-- (void)addAllowedValues:(id)a3 forKey:(id)a4
+- (void)addAllowedValues:(id)values forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v8 count])
+  valuesCopy = values;
+  keyCopy = key;
+  if ([valuesCopy count])
   {
-    v7 = [(DDSAttributeFilter *)self _setForKey:v6];
-    [v7 unionSet:v8];
+    v7 = [(DDSAttributeFilter *)self _setForKey:keyCopy];
+    [v7 unionSet:valuesCopy];
   }
 }
 
-- (void)removeAllowedValue:(id)a3 forKey:(id)a4
+- (void)removeAllowedValue:(id)value forKey:(id)key
 {
-  if (a3)
+  if (value)
   {
-    v6 = a3;
-    v7 = [(DDSAttributeFilter *)self _setForKey:a4];
-    [v7 removeObject:v6];
+    valueCopy = value;
+    v7 = [(DDSAttributeFilter *)self _setForKey:key];
+    [v7 removeObject:valueCopy];
   }
 }
 
-- (void)removeAllowedValues:(id)a3 forKey:(id)a4
+- (void)removeAllowedValues:(id)values forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v8 count])
+  valuesCopy = values;
+  keyCopy = key;
+  if ([valuesCopy count])
   {
-    v7 = [(DDSAttributeFilter *)self _setForKey:v6];
-    [v7 minusSet:v8];
+    v7 = [(DDSAttributeFilter *)self _setForKey:keyCopy];
+    [v7 minusSet:valuesCopy];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [DDSAttributeFilter alloc];
-  v5 = [(DDSAttributeFilter *)self filters];
-  v6 = [v5 copy];
+  filters = [(DDSAttributeFilter *)self filters];
+  v6 = [filters copy];
   v7 = [(DDSAttributeFilter *)v4 initWithDictionary:v6];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(DDSAttributeFilter *)self filters];
+  coderCopy = coder;
+  filters = [(DDSAttributeFilter *)self filters];
   v5 = NSStringFromSelector(sel_filters);
-  [v4 encodeObject:v6 forKey:v5];
+  [coderCopy encodeObject:filters forKey:v5];
 }
 
-- (DDSAttributeFilter)initWithCoder:(id)a3
+- (DDSAttributeFilter)initWithCoder:(id)coder
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = DDSAttributeFilter;
   v5 = [(DDSAttributeFilter *)&v19 init];
@@ -291,7 +291,7 @@ void __44__DDSAttributeFilter_doesContainAttributes___block_invoke(uint64_t a1, 
 
     v10 = NSStringFromSelector(sel_filters);
     v18 = 0;
-    v11 = [v4 decodeTopLevelObjectOfClasses:v9 forKey:v10 error:&v18];
+    v11 = [coderCopy decodeTopLevelObjectOfClasses:v9 forKey:v10 error:&v18];
     v12 = v18;
     filters = v5->_filters;
     v5->_filters = v11;
@@ -320,8 +320,8 @@ void __44__DDSAttributeFilter_doesContainAttributes___block_invoke(uint64_t a1, 
   if (DDS_IS_INTERNAL_INSTALL())
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [(DDSAttributeFilter *)self filters];
-    v5 = [v3 stringWithFormat:@"<filter: %@>", v4];
+    filters = [(DDSAttributeFilter *)self filters];
+    v5 = [v3 stringWithFormat:@"<filter: %@>", filters];
   }
 
   else
@@ -332,32 +332,32 @@ void __44__DDSAttributeFilter_doesContainAttributes___block_invoke(uint64_t a1, 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DDSAttributeFilter *)self isEqualToQueryFilter:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DDSAttributeFilter *)self isEqualToQueryFilter:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToQueryFilter:(id)a3
+- (BOOL)isEqualToQueryFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(DDSAttributeFilter *)self filters];
-  v6 = [v4 filters];
+  filterCopy = filter;
+  filters = [(DDSAttributeFilter *)self filters];
+  filters2 = [filterCopy filters];
 
-  LOBYTE(v4) = DDSObjectsAreEqualOrNil(v5, v6);
-  return v4;
+  LOBYTE(filterCopy) = DDSObjectsAreEqualOrNil(filters, filters2);
+  return filterCopy;
 }
 
-+ (unint64_t)hashObject:(id)a3
++ (unint64_t)hashObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [objc_opt_class() hashDictionary:v3];
+    v4 = [objc_opt_class() hashDictionary:objectCopy];
   }
 
   else
@@ -365,12 +365,12 @@ void __44__DDSAttributeFilter_doesContainAttributes___block_invoke(uint64_t a1, 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [objc_opt_class() hashSet:v3];
+      v4 = [objc_opt_class() hashSet:objectCopy];
     }
 
     else
     {
-      v4 = [v3 hash];
+      v4 = [objectCopy hash];
     }
   }
 
@@ -387,9 +387,9 @@ void __44__DDSAttributeFilter_doesContainAttributes___block_invoke(uint64_t a1, 
   return v5;
 }
 
-+ (unint64_t)hashDictionary:(id)a3
++ (unint64_t)hashDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -399,8 +399,8 @@ void __44__DDSAttributeFilter_doesContainAttributes___block_invoke(uint64_t a1, 
   v7[2] = __37__DDSAttributeFilter_hashDictionary___block_invoke;
   v7[3] = &unk_1E86C5E18;
   v7[4] = &v8;
-  v7[5] = a1;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  v7[5] = self;
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v7];
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
 
@@ -421,16 +421,16 @@ void __37__DDSAttributeFilter_hashDictionary___block_invoke(uint64_t a1, void *a
   *(*(*(a1 + 32) + 8) + 24) = v9 * v6 * v11;
 }
 
-+ (unint64_t)hashSet:(id)a3
++ (unint64_t)hashSet:(id)set
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = 77239;
-  v4 = a3;
+  setCopy = set;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [setCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -442,14 +442,14 @@ void __37__DDSAttributeFilter_hashDictionary___block_invoke(uint64_t a1, void *a
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(setCopy);
         }
 
         v3 *= [objc_opt_class() hashObject:*(*(&v11 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [setCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);

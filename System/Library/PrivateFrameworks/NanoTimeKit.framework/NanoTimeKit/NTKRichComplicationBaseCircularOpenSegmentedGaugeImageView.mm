@@ -1,15 +1,15 @@
 @interface NTKRichComplicationBaseCircularOpenSegmentedGaugeImageView
-- ($8502DCEA08BBBE1AB2005217B3838BBD)_layoutConstraintsWithDevice:(SEL)a3 family:(id)a4;
+- ($8502DCEA08BBBE1AB2005217B3838BBD)_layoutConstraintsWithDevice:(SEL)device family:(id)family;
 @end
 
 @implementation NTKRichComplicationBaseCircularOpenSegmentedGaugeImageView
 
-- ($8502DCEA08BBBE1AB2005217B3838BBD)_layoutConstraintsWithDevice:(SEL)a3 family:(id)a4
+- ($8502DCEA08BBBE1AB2005217B3838BBD)_layoutConstraintsWithDevice:(SEL)device family:(id)family
 {
   memset(v13, 0, sizeof(v13));
   memset(v12, 0, sizeof(v12));
   v7 = v12;
-  ___LayoutConstants_block_invoke_61(a4, v12);
+  ___LayoutConstants_block_invoke_61(family, v12);
   if (a5 != 10)
   {
     if (a5 == 12)

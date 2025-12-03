@@ -1,30 +1,30 @@
 @interface PGTimeUtility
-+ (id)dateIntervalWithStartDate:(id)a3 endDate:(id)a4;
++ (id)dateIntervalWithStartDate:(id)date endDate:(id)endDate;
 @end
 
 @implementation PGTimeUtility
 
-+ (id)dateIntervalWithStartDate:(id)a3 endDate:(id)a4
++ (id)dateIntervalWithStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 compare:v6];
+  dateCopy = date;
+  endDateCopy = endDate;
+  v7 = [dateCopy compare:endDateCopy];
   if (v7 == 1)
   {
-    v8 = v5;
+    v8 = dateCopy;
   }
 
   else
   {
-    v8 = v6;
+    v8 = endDateCopy;
   }
 
   if (v7 != 1)
   {
-    v6 = v5;
+    endDateCopy = dateCopy;
   }
 
-  v9 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v6 endDate:v8];
+  v9 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:endDateCopy endDate:v8];
 
   return v9;
 }

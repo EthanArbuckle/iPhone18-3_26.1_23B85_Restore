@@ -1,34 +1,34 @@
 @interface OrgApacheLuceneIndexLeafReaderContext_WeakSingletonList
-- (BOOL)containsWithId:(id)a3;
-- (OrgApacheLuceneIndexLeafReaderContext_WeakSingletonList)initWithId:(id)a3;
-- (id)getWithInt:(int)a3;
+- (BOOL)containsWithId:(id)id;
+- (OrgApacheLuceneIndexLeafReaderContext_WeakSingletonList)initWithId:(id)id;
+- (id)getWithInt:(int)int;
 - (void)__javaClone;
 @end
 
 @implementation OrgApacheLuceneIndexLeafReaderContext_WeakSingletonList
 
-- (OrgApacheLuceneIndexLeafReaderContext_WeakSingletonList)initWithId:(id)a3
+- (OrgApacheLuceneIndexLeafReaderContext_WeakSingletonList)initWithId:(id)id
 {
   JavaUtilAbstractList_init(self, a2);
-  objc_storeWeak(&self->element_, a3);
+  objc_storeWeak(&self->element_, id);
   return self;
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   if (!objc_loadWeak(&self->element_))
   {
-    return a3 == 0;
+    return id == 0;
   }
 
   Weak = objc_loadWeak(&self->element_);
 
-  return [Weak isEqual:a3];
+  return [Weak isEqual:id];
 }
 
-- (id)getWithInt:(int)a3
+- (id)getWithInt:(int)int
 {
-  if (a3)
+  if (int)
   {
     v6 = new_JavaLangIndexOutOfBoundsException_init();
     objc_exception_throw(v6);

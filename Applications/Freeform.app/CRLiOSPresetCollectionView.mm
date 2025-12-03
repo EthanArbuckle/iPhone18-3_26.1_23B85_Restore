@@ -10,8 +10,8 @@
   v4.receiver = self;
   v4.super_class = CRLiOSPresetCollectionView;
   [(CRLiOSPresetCollectionView *)&v4 layoutSubviews];
-  v3 = [(CRLiOSPresetCollectionView *)self presetCollectionViewDelegate];
-  [v3 presetCollectionViewDidLayoutSubviews:self];
+  presetCollectionViewDelegate = [(CRLiOSPresetCollectionView *)self presetCollectionViewDelegate];
+  [presetCollectionViewDelegate presetCollectionViewDidLayoutSubviews:self];
 }
 
 - (CRLiOSPresetCollectionViewDelegate)presetCollectionViewDelegate

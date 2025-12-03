@@ -1,33 +1,33 @@
 @interface LNActionSummaryString
-- (BOOL)isEqual:(id)a3;
-- (LNActionSummaryString)initWithCoder:(id)a3;
-- (LNActionSummaryString)initWithFormatString:(id)a3 parameterIdentifiers:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNActionSummaryString)initWithCoder:(id)coder;
+- (LNActionSummaryString)initWithFormatString:(id)string parameterIdentifiers:(id)identifiers;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNActionSummaryString
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(parameterIdentifiers3) = 0;
 LABEL_20:
 
       goto LABEL_21;
     }
 
-    v7 = [(LNActionSummaryString *)self formatString];
-    v8 = [(LNActionSummaryString *)v6 formatString];
-    v9 = v7;
-    v10 = v8;
+    formatString = [(LNActionSummaryString *)self formatString];
+    formatString2 = [(LNActionSummaryString *)v6 formatString];
+    v9 = formatString;
+    v10 = formatString2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -35,114 +35,114 @@ LABEL_20:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(parameterIdentifiers3) = 0;
       v13 = v10;
-      v14 = v9;
+      parameterIdentifiers5 = v9;
       if (!v9 || !v10)
       {
         goto LABEL_16;
       }
 
-      LODWORD(v12) = [v9 isEqualToString:v10];
+      LODWORD(parameterIdentifiers3) = [v9 isEqualToString:v10];
 
-      if (!v12)
+      if (!parameterIdentifiers3)
       {
         goto LABEL_19;
       }
     }
 
-    v15 = [(LNActionSummaryString *)self parameterIdentifiers];
-    v16 = [(LNActionSummaryString *)v6 parameterIdentifiers];
+    parameterIdentifiers = [(LNActionSummaryString *)self parameterIdentifiers];
+    parameterIdentifiers2 = [(LNActionSummaryString *)v6 parameterIdentifiers];
 
-    if (v15 == v16)
+    if (parameterIdentifiers == parameterIdentifiers2)
     {
-      LOBYTE(v12) = 1;
+      LOBYTE(parameterIdentifiers3) = 1;
       goto LABEL_19;
     }
 
-    v12 = [(LNActionSummaryString *)self parameterIdentifiers];
-    if (!v12)
+    parameterIdentifiers3 = [(LNActionSummaryString *)self parameterIdentifiers];
+    if (!parameterIdentifiers3)
     {
 LABEL_19:
 
       goto LABEL_20;
     }
 
-    v17 = [(LNActionSummaryString *)v6 parameterIdentifiers];
+    parameterIdentifiers4 = [(LNActionSummaryString *)v6 parameterIdentifiers];
 
-    if (!v17)
+    if (!parameterIdentifiers4)
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(parameterIdentifiers3) = 0;
       goto LABEL_19;
     }
 
-    v12 = MEMORY[0x1E695DFD8];
-    v14 = [(LNActionSummaryString *)self parameterIdentifiers];
-    v13 = [v12 setWithArray:v14];
+    parameterIdentifiers3 = MEMORY[0x1E695DFD8];
+    parameterIdentifiers5 = [(LNActionSummaryString *)self parameterIdentifiers];
+    v13 = [parameterIdentifiers3 setWithArray:parameterIdentifiers5];
     v18 = MEMORY[0x1E695DFD8];
-    v19 = [(LNActionSummaryString *)v6 parameterIdentifiers];
-    v20 = [v18 setWithArray:v19];
-    LOBYTE(v12) = [v13 isEqualToSet:v20];
+    parameterIdentifiers6 = [(LNActionSummaryString *)v6 parameterIdentifiers];
+    v20 = [v18 setWithArray:parameterIdentifiers6];
+    LOBYTE(parameterIdentifiers3) = [v13 isEqualToSet:v20];
 
 LABEL_16:
     goto LABEL_19;
   }
 
-  LOBYTE(v12) = 1;
+  LOBYTE(parameterIdentifiers3) = 1;
 LABEL_21:
 
-  return v12;
+  return parameterIdentifiers3;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LNActionSummaryString *)self formatString];
-  v4 = [v3 hash];
-  v5 = [(LNActionSummaryString *)self parameterIdentifiers];
-  v6 = [v5 hash];
+  formatString = [(LNActionSummaryString *)self formatString];
+  v4 = [formatString hash];
+  parameterIdentifiers = [(LNActionSummaryString *)self parameterIdentifiers];
+  v6 = [parameterIdentifiers hash];
 
   return v6 ^ v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNActionSummaryString *)self formatString];
-  [v4 encodeObject:v5 forKey:@"formatString"];
+  coderCopy = coder;
+  formatString = [(LNActionSummaryString *)self formatString];
+  [coderCopy encodeObject:formatString forKey:@"formatString"];
 
-  v6 = [(LNActionSummaryString *)self parameterIdentifiers];
-  [v4 encodeObject:v6 forKey:@"parameterIdentifiers"];
+  parameterIdentifiers = [(LNActionSummaryString *)self parameterIdentifiers];
+  [coderCopy encodeObject:parameterIdentifiers forKey:@"parameterIdentifiers"];
 }
 
-- (LNActionSummaryString)initWithCoder:(id)a3
+- (LNActionSummaryString)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"formatString"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"formatString"];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"parameterIdentifiers"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"parameterIdentifiers"];
 
     if (v9)
     {
       self = [(LNActionSummaryString *)self initWithFormatString:v5 parameterIdentifiers:v9];
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)description
@@ -150,23 +150,23 @@ LABEL_21:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNActionSummaryString *)self formatString];
-  v7 = [(LNActionSummaryString *)self parameterIdentifiers];
-  v8 = [v7 valueForKeyPath:@"description"];
+  formatString = [(LNActionSummaryString *)self formatString];
+  parameterIdentifiers = [(LNActionSummaryString *)self parameterIdentifiers];
+  v8 = [parameterIdentifiers valueForKeyPath:@"description"];
   v9 = [v8 componentsJoinedByString:{@", "}];
-  v10 = [v3 stringWithFormat:@"<%@: %p, formatString: %@, parameterIdentifiers: [%@]>", v5, self, v6, v9];
+  v10 = [v3 stringWithFormat:@"<%@: %p, formatString: %@, parameterIdentifiers: [%@]>", v5, self, formatString, v9];
 
   return v10;
 }
 
-- (LNActionSummaryString)initWithFormatString:(id)a3 parameterIdentifiers:(id)a4
+- (LNActionSummaryString)initWithFormatString:(id)string parameterIdentifiers:(id)identifiers
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  stringCopy = string;
+  identifiersCopy = identifiers;
+  v9 = identifiersCopy;
+  if (stringCopy)
   {
-    if (v8)
+    if (identifiersCopy)
     {
       goto LABEL_3;
     }
@@ -174,8 +174,8 @@ LABEL_21:
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"LNActionSummaryString.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"formatString"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNActionSummaryString.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"formatString"}];
 
     if (v9)
     {
@@ -183,8 +183,8 @@ LABEL_21:
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"LNActionSummaryString.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"parameterIdentifiers"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNActionSummaryString.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"parameterIdentifiers"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -192,7 +192,7 @@ LABEL_3:
   v10 = [(LNActionSummaryString *)&v19 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [stringCopy copy];
     formatString = v10->_formatString;
     v10->_formatString = v11;
 

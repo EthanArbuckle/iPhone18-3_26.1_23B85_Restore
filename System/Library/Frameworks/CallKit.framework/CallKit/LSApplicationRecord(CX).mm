@@ -28,10 +28,10 @@
 + (id)cx_applicationRecordForConnection:()CX
 {
   v4 = a3;
-  v5 = [v4 cx_bundleIdentifier];
-  if ([v5 length])
+  cx_bundleIdentifier = [v4 cx_bundleIdentifier];
+  if ([cx_bundleIdentifier length])
   {
-    v6 = [a1 cx_applicationRecordForBundleIdentifier:v5];
+    v6 = [self cx_applicationRecordForBundleIdentifier:cx_bundleIdentifier];
   }
 
   else
@@ -50,8 +50,8 @@
 
 - (uint64_t)cx_backgroundModeOptions
 {
-  HasBackgroundMode = _cx_LSAppRecordHasBackgroundMode(a1, @"voip");
-  if (_cx_LSAppRecordHasBackgroundMode(a1, @"push-to-talk"))
+  HasBackgroundMode = _cx_LSAppRecordHasBackgroundMode(self, @"voip");
+  if (_cx_LSAppRecordHasBackgroundMode(self, @"push-to-talk"))
   {
     return HasBackgroundMode | 2;
   }
@@ -64,15 +64,15 @@
 
 - (BOOL)containsBackgroundModeOptions:()CX
 {
-  v4 = [a1 cx_backgroundModeOptions];
+  cx_backgroundModeOptions = [self cx_backgroundModeOptions];
   if (a3)
   {
-    return (a3 & ~v4) == 0;
+    return (a3 & ~cx_backgroundModeOptions) == 0;
   }
 
   else
   {
-    return v4 == 0;
+    return cx_backgroundModeOptions == 0;
   }
 }
 

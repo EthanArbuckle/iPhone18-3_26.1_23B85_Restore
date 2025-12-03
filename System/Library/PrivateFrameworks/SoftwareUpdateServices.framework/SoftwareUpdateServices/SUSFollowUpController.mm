@@ -1,23 +1,23 @@
 @interface SUSFollowUpController
 + (id)sharedController;
-+ (id)stringForSUSFollowUpType:(unint64_t)a3;
-- (BOOL)_isCurrentlyPresentingFollowUpType:(unint64_t)a3 currentFollowUps:(id)a4;
-- (BOOL)isCurrentlyPresentingFollowUpType:(unint64_t)a3;
-- (BOOL)isCurrentlyPresentingFollowUpTypes:(id)a3 presentationOption:(unint64_t)a4;
-- (BOOL)isfollowUpSUSRelated:(id)a3;
++ (id)stringForSUSFollowUpType:(unint64_t)type;
+- (BOOL)_isCurrentlyPresentingFollowUpType:(unint64_t)type currentFollowUps:(id)ups;
+- (BOOL)isCurrentlyPresentingFollowUpType:(unint64_t)type;
+- (BOOL)isCurrentlyPresentingFollowUpTypes:(id)types presentationOption:(unint64_t)option;
+- (BOOL)isfollowUpSUSRelated:(id)related;
 - (SUSFollowUpController)init;
 - (id)getCurrentSUSFollowUpItems;
-- (id)identifierForSUFollowUpType:(unint64_t)a3;
-- (id)identifiersForSUFollowUpTypes:(id)a3;
-- (void)SUSFollowUpControllerBadgeSettings:(id)a3;
+- (id)identifierForSUFollowUpType:(unint64_t)type;
+- (id)identifiersForSUFollowUpTypes:(id)types;
+- (void)SUSFollowUpControllerBadgeSettings:(id)settings;
 - (void)SUSFollowUpControllerUnbadgeSettings;
 - (void)dismissAllSUFollowUps;
-- (void)dismissFollowUpType:(unint64_t)a3;
-- (void)dismissFollowUpTypes:(id)a3;
-- (void)dismissFollowUpWithIdentifiers:(id)a3;
+- (void)dismissFollowUpType:(unint64_t)type;
+- (void)dismissFollowUpTypes:(id)types;
+- (void)dismissFollowUpWithIdentifiers:(id)identifiers;
 - (void)dismissLegacyFollowUps;
-- (void)postFollowUpItem:(id)a3;
-- (void)postFollowUpOfType:(unint64_t)a3 withUpdate:(id)a4 userInfo:(id)a5;
+- (void)postFollowUpItem:(id)item;
+- (void)postFollowUpOfType:(unint64_t)type withUpdate:(id)update userInfo:(id)info;
 @end
 
 @implementation SUSFollowUpController
@@ -56,16 +56,16 @@ uint64_t __41__SUSFollowUpController_sharedController__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)isCurrentlyPresentingFollowUpTypes:(id)a3 presentationOption:(unint64_t)a4
+- (BOOL)isCurrentlyPresentingFollowUpTypes:(id)types presentationOption:(unint64_t)option
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(SUSFollowUpController *)self getCurrentSUSFollowUpItems];
+  typesCopy = types;
+  getCurrentSUSFollowUpItems = [(SUSFollowUpController *)self getCurrentSUSFollowUpItems];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v7;
+  v9 = typesCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -80,17 +80,17 @@ uint64_t __41__SUSFollowUpController_sharedController__block_invoke()
           objc_enumerationMutation(v9);
         }
 
-        v4 = -[SUSFollowUpController _isCurrentlyPresentingFollowUpType:currentFollowUps:](self, "_isCurrentlyPresentingFollowUpType:currentFollowUps:", [*(*(&v16 + 1) + 8 * i) integerValue], v8);
+        v4 = -[SUSFollowUpController _isCurrentlyPresentingFollowUpType:currentFollowUps:](self, "_isCurrentlyPresentingFollowUpType:currentFollowUps:", [*(*(&v16 + 1) + 8 * i) integerValue], getCurrentSUSFollowUpItems);
         if (v4)
         {
-          if (a4 == 1)
+          if (option == 1)
           {
-            LOBYTE(a4) = 0;
+            LOBYTE(option) = 0;
             goto LABEL_13;
           }
         }
 
-        else if (!a4)
+        else if (!option)
         {
           goto LABEL_13;
         }
@@ -102,29 +102,29 @@ uint64_t __41__SUSFollowUpController_sharedController__block_invoke()
     while (v11);
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(option) = 1;
 LABEL_13:
 
   v14 = *MEMORY[0x277D85DE8];
-  return (v4 | a4) & 1;
+  return (v4 | option) & 1;
 }
 
-- (BOOL)isCurrentlyPresentingFollowUpType:(unint64_t)a3
+- (BOOL)isCurrentlyPresentingFollowUpType:(unint64_t)type
 {
-  v5 = [(SUSFollowUpController *)self getCurrentSUSFollowUpItems];
-  LOBYTE(a3) = [(SUSFollowUpController *)self _isCurrentlyPresentingFollowUpType:a3 currentFollowUps:v5];
+  getCurrentSUSFollowUpItems = [(SUSFollowUpController *)self getCurrentSUSFollowUpItems];
+  LOBYTE(type) = [(SUSFollowUpController *)self _isCurrentlyPresentingFollowUpType:type currentFollowUps:getCurrentSUSFollowUpItems];
 
-  return a3;
+  return type;
 }
 
-- (BOOL)_isCurrentlyPresentingFollowUpType:(unint64_t)a3 currentFollowUps:(id)a4
+- (BOOL)_isCurrentlyPresentingFollowUpType:(unint64_t)type currentFollowUps:(id)ups
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
-  if (v6 && [v6 count])
+  upsCopy = ups;
+  v7 = upsCopy;
+  if (upsCopy && [upsCopy count])
   {
-    v8 = [(SUSFollowUpController *)self identifierForSUFollowUpType:a3];
+    v8 = [(SUSFollowUpController *)self identifierForSUFollowUpType:type];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -143,8 +143,8 @@ LABEL_13:
             objc_enumerationMutation(v9);
           }
 
-          v13 = [*(*(&v31 + 1) + 8 * i) uniqueIdentifier];
-          v14 = [v13 isEqualToString:v8];
+          uniqueIdentifier = [*(*(&v31 + 1) + 8 * i) uniqueIdentifier];
+          v14 = [uniqueIdentifier isEqualToString:v8];
 
           if (v14)
           {
@@ -234,10 +234,10 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)isfollowUpSUSRelated:(id)a3
+- (BOOL)isfollowUpSUSRelated:(id)related
 {
   v12[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  relatedCopy = related;
   v4 = +[SUSFollowUpBadgeOnly identifier];
   v12[0] = v4;
   v5 = +[SUSFollowUpUpdateAvailable identifier];
@@ -247,11 +247,11 @@ LABEL_14:
   v7 = +[SUSFollowUpInsufficientDiskSpace identifier];
   v12[3] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:4];
-  v9 = [v3 uniqueIdentifier];
+  uniqueIdentifier = [relatedCopy uniqueIdentifier];
 
-  LOBYTE(v3) = [v8 containsObject:v9];
+  LOBYTE(relatedCopy) = [v8 containsObject:uniqueIdentifier];
   v10 = *MEMORY[0x277D85DE8];
-  return v3;
+  return relatedCopy;
 }
 
 - (void)dismissAllSUFollowUps
@@ -262,8 +262,8 @@ LABEL_14:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(SUSFollowUpController *)self getCurrentSUSFollowUpItems];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  getCurrentSUSFollowUpItems = [(SUSFollowUpController *)self getCurrentSUSFollowUpItems];
+  v5 = [getCurrentSUSFollowUpItems countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -275,17 +275,17 @@ LABEL_14:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(getCurrentSUSFollowUpItems);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) uniqueIdentifier];
-        [v3 addObject:v9];
+        uniqueIdentifier = [*(*(&v11 + 1) + 8 * v8) uniqueIdentifier];
+        [v3 addObject:uniqueIdentifier];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [getCurrentSUSFollowUpItems countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -295,10 +295,10 @@ LABEL_14:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dismissFollowUpType:(unint64_t)a3
+- (void)dismissFollowUpType:(unint64_t)type
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v4 = [(SUSFollowUpController *)self identifierForSUFollowUpType:a3];
+  v4 = [(SUSFollowUpController *)self identifierForSUFollowUpType:type];
   v7[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   [(SUSFollowUpController *)self dismissFollowUpWithIdentifiers:v5];
@@ -306,21 +306,21 @@ LABEL_14:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dismissFollowUpTypes:(id)a3
+- (void)dismissFollowUpTypes:(id)types
 {
-  v4 = [(SUSFollowUpController *)self identifiersForSUFollowUpTypes:a3];
+  v4 = [(SUSFollowUpController *)self identifiersForSUFollowUpTypes:types];
   [(SUSFollowUpController *)self dismissFollowUpWithIdentifiers:v4];
 }
 
-- (void)dismissFollowUpWithIdentifiers:(id)a3
+- (void)dismissFollowUpWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = SULogFollowUp();
-  SULogInfoForSubsystem(v5, @"Dismissing FollowUps with identifiers: %@", v6, v7, v8, v9, v10, v11, v4);
+  SULogInfoForSubsystem(v5, @"Dismissing FollowUps with identifiers: %@", v6, v7, v8, v9, v10, v11, identifiersCopy);
 
-  v12 = [(SUSFollowUpController *)self followUpController];
+  followUpController = [(SUSFollowUpController *)self followUpController];
   v21 = 0;
-  [v12 clearPendingFollowUpItemsWithUniqueIdentifiers:v4 error:&v21];
+  [followUpController clearPendingFollowUpItemsWithUniqueIdentifiers:identifiersCopy error:&v21];
 
   v13 = v21;
   if (v13)
@@ -330,16 +330,16 @@ LABEL_14:
   }
 }
 
-- (id)identifiersForSUFollowUpTypes:(id)a3
+- (id)identifiersForSUFollowUpTypes:(id)types
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typesCopy = types;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = typesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -372,17 +372,17 @@ LABEL_14:
   return v5;
 }
 
-- (id)identifierForSUFollowUpType:(unint64_t)a3
+- (id)identifierForSUFollowUpType:(unint64_t)type
 {
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v4 = SUSFollowUpAutoUpdate;
       goto LABEL_11;
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
       v4 = SUSFollowUpInsufficientDiskSpace;
       goto LABEL_11;
@@ -390,58 +390,58 @@ LABEL_14:
 
 LABEL_8:
     v5 = SULogFollowUp();
-    SULogInfoForSubsystem(v5, @"Unknown SUSFollowUpType: %ld", v6, v7, v8, v9, v10, v11, a3);
+    SULogInfoForSubsystem(v5, @"Unknown SUSFollowUpType: %ld", v6, v7, v8, v9, v10, v11, type);
 
-    v12 = 0;
+    identifier = 0;
     goto LABEL_12;
   }
 
-  if (!a3)
+  if (!type)
   {
     v4 = SUSFollowUpBadgeOnly;
     goto LABEL_11;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     goto LABEL_8;
   }
 
   v4 = SUSFollowUpUpdateAvailable;
 LABEL_11:
-  v12 = [(__objc2_class *)v4 identifier];
+  identifier = [(__objc2_class *)v4 identifier];
 LABEL_12:
 
-  return v12;
+  return identifier;
 }
 
-- (void)postFollowUpOfType:(unint64_t)a3 withUpdate:(id)a4 userInfo:(id)a5
+- (void)postFollowUpOfType:(unint64_t)type withUpdate:(id)update userInfo:(id)info
 {
-  v37 = a4;
-  v8 = a5;
+  updateCopy = update;
+  infoCopy = info;
   v9 = +[SUPreferences sharedInstance];
-  v10 = [v9 disableFollowUps];
+  disableFollowUps = [v9 disableFollowUps];
 
   v11 = SULogFollowUp();
   v18 = v11;
-  if (v10)
+  if (disableFollowUps)
   {
-    v19 = [SUSFollowUpController stringForSUSFollowUpType:a3];
+    v19 = [SUSFollowUpController stringForSUSFollowUpType:type];
     SULogInfoForSubsystem(v18, @"Skipping post of %@ followup item because preference is set", v20, v21, v22, v23, v24, v25, v19);
 
     goto LABEL_18;
   }
 
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v26 = off_279CA9BB8;
       v27 = @"Attempting to post SUSFollowUpAutoUpdate item";
       goto LABEL_15;
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
       v26 = off_279CA9BD0;
       v27 = @"Attempting to post SUSFollowUpTypeInsufficientDiskSpace item";
@@ -449,15 +449,15 @@ LABEL_12:
     }
 
 LABEL_10:
-    SULogInfoForSubsystem(v11, @"Unknown SUSFollowUpType (%ld). Unable to create FollowUp", v12, v13, v14, v15, v16, v17, a3);
+    SULogInfoForSubsystem(v11, @"Unknown SUSFollowUpType (%ld). Unable to create FollowUp", v12, v13, v14, v15, v16, v17, type);
     goto LABEL_18;
   }
 
-  if (!a3)
+  if (!type)
   {
     SULogInfoForSubsystem(v11, @"Attempting to post SUSFollowUpBadgeOnly item", v12, v13, v14, v15, v16, v17, v35);
 
-    if ([v37 isSplatOnly])
+    if ([updateCopy isSplatOnly])
     {
       v18 = SULogFollowUp();
       SULogInfoForSubsystem(v18, @"Not posting badge only followups for splat only updates", v28, v29, v30, v31, v32, v33, v36);
@@ -468,7 +468,7 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     goto LABEL_10;
   }
@@ -479,7 +479,7 @@ LABEL_15:
   SULogInfoForSubsystem(v11, v27, v12, v13, v14, v15, v16, v17, v35);
 
 LABEL_16:
-  v34 = [(__objc2_class *)*v26 generateFollowUpWithDescriptor:v37 userInfo:v8];
+  v34 = [(__objc2_class *)*v26 generateFollowUpWithDescriptor:updateCopy userInfo:infoCopy];
   if (!v34)
   {
     goto LABEL_19;
@@ -492,26 +492,26 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)postFollowUpItem:(id)a3
+- (void)postFollowUpItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
     [(SUSFollowUpController *)self dismissAllSUFollowUps];
     followUpController = self->_followUpController;
     v23 = 0;
-    v6 = [(FLFollowUpController *)followUpController postFollowUpItem:v4 error:&v23];
+    v6 = [(FLFollowUpController *)followUpController postFollowUpItem:itemCopy error:&v23];
     v7 = v23;
     v8 = SULogFollowUp();
     v15 = v8;
     if (v6)
     {
-      SULogInfoForSubsystem(v8, @"Successfully posted FollowUp item: %@", v9, v10, v11, v12, v13, v14, v4);
+      SULogInfoForSubsystem(v8, @"Successfully posted FollowUp item: %@", v9, v10, v11, v12, v13, v14, itemCopy);
     }
 
     else
     {
-      SULogInfoForSubsystem(v8, @"Failed to post FollowUp item: %@ Error: %@", v9, v10, v11, v12, v13, v14, v4);
+      SULogInfoForSubsystem(v8, @"Failed to post FollowUp item: %@ Error: %@", v9, v10, v11, v12, v13, v14, itemCopy);
     }
   }
 
@@ -522,27 +522,27 @@ LABEL_19:
   }
 }
 
-+ (id)stringForSUSFollowUpType:(unint64_t)a3
++ (id)stringForSUSFollowUpType:(unint64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return @"Unknonw Type";
   }
 
   else
   {
-    return off_279CAA808[a3];
+    return off_279CAA808[type];
   }
 }
 
-- (void)SUSFollowUpControllerBadgeSettings:(id)a3
+- (void)SUSFollowUpControllerBadgeSettings:(id)settings
 {
-  v12 = a3;
+  settingsCopy = settings;
   v4 = SULogFollowUp();
   SULogInfoForSubsystem(v4, @"Got request to badge settings via followUp", v5, v6, v7, v8, v9, v10, v11);
 
   [(SUSFollowUpController *)self dismissAllSUFollowUps];
-  [(SUSFollowUpController *)self postFollowUpOfType:0 withUpdate:v12 userInfo:0];
+  [(SUSFollowUpController *)self postFollowUpOfType:0 withUpdate:settingsCopy userInfo:0];
 }
 
 - (void)SUSFollowUpControllerUnbadgeSettings

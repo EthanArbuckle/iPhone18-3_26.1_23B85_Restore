@@ -1,9 +1,9 @@
 @interface CRBulletin
 + (UNNotificationCategory)notificationCategory;
-+ (id)CARActionWithTitle:(id)a3;
-+ (id)CARActionWithURL:(id)a3 title:(id)a4;
++ (id)CARActionWithTitle:(id)title;
++ (id)CARActionWithURL:(id)l title:(id)title;
 - (CRBulletin)init;
-- (CRBulletin)initWithTitle:(id)a3 message:(id)a4 icon:(id)a5 defaultActionURL:(id)a6 destinations:(unint64_t)a7;
+- (CRBulletin)initWithTitle:(id)title message:(id)message icon:(id)icon defaultActionURL:(id)l destinations:(unint64_t)destinations;
 - (NSArray)actions;
 - (UNNotificationRequest)notificationRequest;
 @end
@@ -18,9 +18,9 @@
   if (v2)
   {
     v3 = +[NSUUID UUID];
-    v4 = [v3 UUIDString];
+    uUIDString = [v3 UUIDString];
     recordID = v2->_recordID;
-    v2->_recordID = v4;
+    v2->_recordID = uUIDString;
 
     v2->_destinations = 2;
   }
@@ -28,21 +28,21 @@
   return v2;
 }
 
-- (CRBulletin)initWithTitle:(id)a3 message:(id)a4 icon:(id)a5 defaultActionURL:(id)a6 destinations:(unint64_t)a7
+- (CRBulletin)initWithTitle:(id)title message:(id)message icon:(id)icon defaultActionURL:(id)l destinations:(unint64_t)destinations
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  titleCopy = title;
+  messageCopy = message;
+  iconCopy = icon;
+  lCopy = l;
   v17 = [(CRBulletin *)self init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_title, a3);
-    objc_storeStrong(&v18->_message, a4);
-    objc_storeStrong(&v18->_icon, a5);
-    objc_storeStrong(&v18->_defaultActionURL, a6);
-    v18->_destinations = a7;
+    objc_storeStrong(&v17->_title, title);
+    objc_storeStrong(&v18->_message, message);
+    objc_storeStrong(&v18->_icon, icon);
+    objc_storeStrong(&v18->_defaultActionURL, l);
+    v18->_destinations = destinations;
   }
 
   return v18;
@@ -51,11 +51,11 @@
 + (UNNotificationCategory)notificationCategory
 {
   v3 = [UNMutableNotificationCategory alloc];
-  v4 = [a1 categoryIdentifier];
-  v5 = [v3 initWithIdentifier:v4];
+  categoryIdentifier = [self categoryIdentifier];
+  v5 = [v3 initWithIdentifier:categoryIdentifier];
 
-  v6 = [a1 actions];
-  [v5 setActions:v6];
+  actions = [self actions];
+  [v5 setActions:actions];
 
   [v5 setOptions:0];
 
@@ -72,11 +72,11 @@
 - (UNNotificationRequest)notificationRequest
 {
   v3 = objc_opt_new();
-  v4 = [(CRBulletin *)self title];
-  v5 = v4;
-  if (v4)
+  title = [(CRBulletin *)self title];
+  v5 = title;
+  if (title)
   {
-    v6 = v4;
+    v6 = title;
   }
 
   else
@@ -86,11 +86,11 @@
 
   [v3 setTitle:v6];
 
-  v7 = [(CRBulletin *)self message];
-  v8 = v7;
-  if (v7)
+  message = [(CRBulletin *)self message];
+  v8 = message;
+  if (message)
   {
-    v9 = v7;
+    v9 = message;
   }
 
   else
@@ -100,30 +100,30 @@
 
   [v3 setBody:v9];
 
-  v10 = [objc_opt_class() categoryIdentifier];
-  [v3 setCategoryIdentifier:v10];
+  categoryIdentifier = [objc_opt_class() categoryIdentifier];
+  [v3 setCategoryIdentifier:categoryIdentifier];
 
   [v3 setShouldIgnoreDoNotDisturb:1];
   [v3 setShouldSuppressScreenLightUp:1];
-  v11 = [(CRBulletin *)self icon];
-  [v3 setIcon:v11];
+  icon = [(CRBulletin *)self icon];
+  [v3 setIcon:icon];
 
-  v12 = [(CRBulletin *)self defaultActionURL];
-  [v3 setDefaultActionURL:v12];
+  defaultActionURL = [(CRBulletin *)self defaultActionURL];
+  [v3 setDefaultActionURL:defaultActionURL];
 
-  v13 = [(CRBulletin *)self recordID];
-  v14 = [UNNotificationRequest requestWithIdentifier:v13 content:v3 trigger:0 destinations:self->_destinations];
+  recordID = [(CRBulletin *)self recordID];
+  v14 = [UNNotificationRequest requestWithIdentifier:recordID content:v3 trigger:0 destinations:self->_destinations];
 
   return v14;
 }
 
-+ (id)CARActionWithTitle:(id)a3
++ (id)CARActionWithTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
-    v3 = a3;
-    v4 = [v3 uppercaseString];
-    v5 = [UNNotificationAction actionWithIdentifier:v4 title:v3 options:0];
+    titleCopy = title;
+    uppercaseString = [titleCopy uppercaseString];
+    v5 = [UNNotificationAction actionWithIdentifier:uppercaseString title:titleCopy options:0];
   }
 
   else
@@ -134,15 +134,15 @@
   return v5;
 }
 
-+ (id)CARActionWithURL:(id)a3 title:(id)a4
++ (id)CARActionWithURL:(id)l title:(id)title
 {
   v4 = 0;
-  if (a3 && a4)
+  if (l && title)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [v6 uppercaseString];
-    v4 = [UNNotificationAction actionWithIdentifier:v8 title:v6 url:v7];
+    titleCopy = title;
+    lCopy = l;
+    uppercaseString = [titleCopy uppercaseString];
+    v4 = [UNNotificationAction actionWithIdentifier:uppercaseString title:titleCopy url:lCopy];
   }
 
   return v4;

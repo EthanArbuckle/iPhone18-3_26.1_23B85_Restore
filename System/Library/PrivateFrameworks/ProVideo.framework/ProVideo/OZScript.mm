@@ -1,10 +1,10 @@
 @interface OZScript
 - (OZScript)init;
-- (id)preprocess:(id)a3;
-- (id)process:(id)a3;
+- (id)preprocess:(id)preprocess;
+- (id)process:(id)process;
 - (void)dealloc;
-- (void)dispatch:(id)a3;
-- (void)loadScriptWithURL:(id)a3;
+- (void)dispatch:(id)dispatch;
+- (void)loadScriptWithURL:(id)l;
 @end
 
 @implementation OZScript
@@ -68,14 +68,14 @@ void __16__OZScript_init__block_invoke_1(uint64_t a1, uint64_t a2)
   [(OZScript *)&v3 dealloc];
 }
 
-- (void)dispatch:(id)a3
+- (void)dispatch:(id)dispatch
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = *"";
   v3[2] = __21__OZScript_dispatch___block_invoke;
   v3[3] = &unk_279AA9BD8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = dispatch;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -92,20 +92,20 @@ uint64_t __21__OZScript_dispatch___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)loadScriptWithURL:(id)a3
+- (void)loadScriptWithURL:(id)l
 {
   v11 = *MEMORY[0x277D85DE8];
-  self->_url = [a3 copy];
+  self->_url = [l copy];
   v8 = 0;
-  v5 = [MEMORY[0x277CCACA8] stringWithContentsOfURL:a3 encoding:134217984 error:&v8];
+  v5 = [MEMORY[0x277CCACA8] stringWithContentsOfURL:l encoding:134217984 error:&v8];
   v6 = v8;
   if (v8)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v6 localizedDescription];
+      localizedDescription = [v6 localizedDescription];
       *buf = 138412290;
-      v10 = v7;
+      v10 = localizedDescription;
       _os_log_impl(&dword_25F8F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Error while processing script file: %@", buf, 0xCu);
     }
   }
@@ -116,10 +116,10 @@ uint64_t __21__OZScript_dispatch___block_invoke(uint64_t a1)
   }
 }
 
-- (id)preprocess:(id)a3
+- (id)preprocess:(id)preprocess
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a3 componentsSeparatedByCharactersInSet:{objc_msgSend(MEMORY[0x277CCA900], "newlineCharacterSet")}];
+  v4 = [preprocess componentsSeparatedByCharactersInSet:{objc_msgSend(MEMORY[0x277CCA900], "newlineCharacterSet")}];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -152,15 +152,15 @@ uint64_t __21__OZScript_dispatch___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (id)process:(id)a3
+- (id)process:(id)process
 {
-  v3 = a3;
-  if (![a3 containsString:@"EXPORT"])
+  processCopy = process;
+  if (![process containsString:@"EXPORT"])
   {
-    return v3;
+    return processCopy;
   }
 
-  v5 = -[NSRegularExpression firstMatchInString:options:range:](self->_paramRegex, "firstMatchInString:options:range:", v3, 0, 0, [v3 length]);
+  v5 = -[NSRegularExpression firstMatchInString:options:range:](self->_paramRegex, "firstMatchInString:options:range:", processCopy, 0, 0, [processCopy length]);
   if (!v5)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -174,11 +174,11 @@ uint64_t __21__OZScript_dispatch___block_invoke(uint64_t a1)
 
   v6 = v5;
   v7 = [(NSTextCheckingResult *)v5 rangeAtIndex:1];
-  v9 = [v3 substringWithRange:{v7, v8}];
+  v9 = [processCopy substringWithRange:{v7, v8}];
   v10 = [(NSTextCheckingResult *)v6 rangeAtIndex:2];
-  v12 = [v3 substringWithRange:{v10, v11}];
+  v12 = [processCopy substringWithRange:{v10, v11}];
   v13 = [(NSTextCheckingResult *)v6 rangeAtIndex:3];
-  v15 = [v3 substringWithRange:{v13, v14}];
+  v15 = [processCopy substringWithRange:{v13, v14}];
   if ([v9 isEqualToString:@"CHANNEL_FLOAT"])
   {
     v16 = 0;

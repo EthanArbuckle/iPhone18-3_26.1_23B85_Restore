@@ -1,51 +1,51 @@
 @interface PKAccountPassActivationResultViewController
-- (PKAccountPassActivationResultViewController)initWithAccountFlowController:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5;
-- (id)_localizedStringKeyForPerformedOperationsAndMadeDefault:(BOOL)a3;
+- (PKAccountPassActivationResultViewController)initWithAccountFlowController:(id)controller context:(int64_t)context setupDelegate:(id)delegate;
+- (id)_localizedStringKeyForPerformedOperationsAndMadeDefault:(BOOL)default;
 - (void)_handleNextStep;
-- (void)_presentDisplayableError:(id)a3;
-- (void)_presentViewController:(id)a3;
-- (void)_showActivationSpinner:(BOOL)a3;
+- (void)_presentDisplayableError:(id)error;
+- (void)_presentViewController:(id)controller;
+- (void)_showActivationSpinner:(BOOL)spinner;
 - (void)_terminateSetupFlow;
 - (void)_updateForLoading;
 - (void)_updateForMadeDefault;
 - (void)_updateForSetupLater;
 - (void)_updateUI;
-- (void)accountFlowController:(id)a3 requestsNavigationControllerWithOnDisplay:(id)a4;
-- (void)accountFlowController:(id)a3 requestsPresentationOfViewController:(id)a4;
+- (void)accountFlowController:(id)controller requestsNavigationControllerWithOnDisplay:(id)display;
+- (void)accountFlowController:(id)controller requestsPresentationOfViewController:(id)viewController;
 - (void)dealloc;
 - (void)loadView;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKAccountPassActivationResultViewController
 
-- (PKAccountPassActivationResultViewController)initWithAccountFlowController:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5
+- (PKAccountPassActivationResultViewController)initWithAccountFlowController:(id)controller context:(int64_t)context setupDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a5;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = PKAccountPassActivationResultViewController;
-  v11 = [(PKExplanationViewController *)&v16 initWithContext:a4];
+  v11 = [(PKExplanationViewController *)&v16 initWithContext:context];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v10);
-    objc_storeStrong(&v12->_accountController, a3);
-    v13 = [(PKAccountFlowController *)v12->_accountController accountCredential];
-    v14 = [v13 account];
-    v12->_featureIdentifier = [v14 feature];
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v12->_accountController, controller);
+    accountCredential = [(PKAccountFlowController *)v12->_accountController accountCredential];
+    account = [accountCredential account];
+    v12->_featureIdentifier = [account feature];
 
-    v12->_setupContext = a4;
+    v12->_setupContext = context;
   }
 
   return v12;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (!self->_inUseAssertion)
   {
     v5 = MEMORY[0x1E695FBE0];
@@ -57,12 +57,12 @@
 
   v9.receiver = self;
   v9.super_class = PKAccountPassActivationResultViewController;
-  [(PKAccountPassActivationResultViewController *)&v9 viewWillAppear:v3];
+  [(PKAccountPassActivationResultViewController *)&v9 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   inUseAssertion = self->_inUseAssertion;
   if (inUseAssertion)
   {
@@ -73,7 +73,7 @@
 
   v7.receiver = self;
   v7.super_class = PKAccountPassActivationResultViewController;
-  [(PKAccountPassActivationResultViewController *)&v7 viewWillDisappear:v3];
+  [(PKAccountPassActivationResultViewController *)&v7 viewWillDisappear:disappearCopy];
 }
 
 - (void)dealloc
@@ -93,19 +93,19 @@
   v7.receiver = self;
   v7.super_class = PKAccountPassActivationResultViewController;
   [(PKExplanationViewController *)&v7 loadView];
-  v3 = [(PKExplanationViewController *)self explanationView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
   v4 = PKProvisioningSecondaryBackgroundColor();
-  [v3 setTopBackgroundColor:v4];
+  [explanationView setTopBackgroundColor:v4];
   v5 = [[PKApplyHeroCardView alloc] initWithFeatureIdentifier:self->_featureIdentifier];
-  [v3 setTopBackgroundColor:v4];
+  [explanationView setTopBackgroundColor:v4];
   [(PKApplyHeroCardView *)v5 setBackgroundColor:v4];
-  [v3 setHeroView:v5];
-  [v3 setShowPrivacyView:0];
-  [v3 setDelegate:self];
+  [explanationView setHeroView:v5];
+  [explanationView setShowPrivacyView:0];
+  [explanationView setDelegate:self];
   [(PKExplanationViewController *)self setShowCancelButton:0];
   [(PKExplanationViewController *)self setShowDoneButton:0];
-  v6 = [(PKAccountPassActivationResultViewController *)self navigationItem];
-  [v6 setHidesBackButton:1 animated:0];
+  navigationItem = [(PKAccountPassActivationResultViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 
   [(PKAccountPassActivationResultViewController *)self _updateUI];
 }
@@ -116,8 +116,8 @@
   v7.super_class = PKAccountPassActivationResultViewController;
   [(PKExplanationViewController *)&v7 viewDidLoad];
   v3 = objc_alloc(MEMORY[0x1E69DCCF0]);
-  v4 = [(PKAccountPassActivationResultViewController *)self view];
-  v5 = [v3 initWithView:v4];
+  view = [(PKAccountPassActivationResultViewController *)self view];
+  v5 = [v3 initWithView:view];
   cardAddedFeedbackGenerator = self->_cardAddedFeedbackGenerator;
   self->_cardAddedFeedbackGenerator = v5;
 
@@ -125,9 +125,9 @@
   [(PKAccountFlowController *)self->_accountController performInitalOperations];
 }
 
-- (void)accountFlowController:(id)a3 requestsPresentationOfViewController:(id)a4
+- (void)accountFlowController:(id)controller requestsPresentationOfViewController:(id)viewController
 {
-  v7 = a4;
+  viewControllerCopy = viewController;
   nextStepHandler = self->_nextStepHandler;
   if (nextStepHandler)
   {
@@ -138,18 +138,18 @@
 
   else
   {
-    objc_storeStrong(&self->_nextViewController, a4);
+    objc_storeStrong(&self->_nextViewController, viewController);
     self->_showingLoadingIndicator = 0;
     [(PKAccountPassActivationResultViewController *)self _updateUI];
   }
 }
 
-- (void)accountFlowController:(id)a3 requestsNavigationControllerWithOnDisplay:(id)a4
+- (void)accountFlowController:(id)controller requestsNavigationControllerWithOnDisplay:(id)display
 {
   self->_showingLoadingIndicator = 0;
-  v5 = a4;
+  displayCopy = display;
   [(PKAccountPassActivationResultViewController *)self _updateUI];
-  v6 = _Block_copy(v5);
+  v6 = _Block_copy(displayCopy);
 
   nextStepHandler = self->_nextStepHandler;
   self->_nextStepHandler = v6;
@@ -165,21 +165,21 @@
   v2 = _Block_copy(aBlock);
   if (PKPaymentSetupContextIsBridge())
   {
-    v3 = objc_alloc_init(getNPKCompanionAgentConnectionClass_6());
+    paymentService = objc_alloc_init(getNPKCompanionAgentConnectionClass_6());
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __56__PKAccountPassActivationResultViewController__updateUI__block_invoke_2;
     v5[3] = &unk_1E8025940;
     v6 = v2;
-    [v3 defaultCardUniqueID:v5];
-    v4 = v6;
+    [paymentService defaultCardUniqueID:v5];
+    defaultPaymentPassUniqueIdentifier = v6;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69B8DB8] paymentService];
-    v4 = [v3 defaultPaymentPassUniqueIdentifier];
-    (*(v2 + 2))(v2, v4);
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
+    defaultPaymentPassUniqueIdentifier = [paymentService defaultPaymentPassUniqueIdentifier];
+    (*(v2 + 2))(v2, defaultPaymentPassUniqueIdentifier);
   }
 }
 
@@ -227,127 +227,127 @@ void __56__PKAccountPassActivationResultViewController__updateUI__block_invoke_2
 
 - (void)_updateForLoading
 {
-  v9 = [(PKExplanationViewController *)self explanationView];
-  v3 = [v9 dockView];
-  v4 = [v3 footerView];
-  [v9 showCheckmark:0 animated:0];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  footerView = [dockView footerView];
+  [explanationView showCheckmark:0 animated:0];
   [(PKAccountPassActivationResultViewController *)self _showActivationSpinner:1];
   [(PKAccountPassActivationResultViewController *)self _willPerformProvisioningActions];
   v5 = PKLocalizedFeatureString();
-  [v9 setTitleText:v5];
+  [explanationView setTitleText:v5];
 
-  [v4 setSetUpLaterButton:0];
-  v6 = [v3 primaryButton];
+  [footerView setSetUpLaterButton:0];
+  primaryButton = [dockView primaryButton];
   v7 = PKLocalizedPaymentString(&cfstr_Continue.isa);
-  [v6 setTitle:v7 forState:0];
+  [primaryButton setTitle:v7 forState:0];
 
   if ([(PKAccountPassActivationResultViewController *)self _willPerformProvisioningActions])
   {
     v8 = PKLocalizedFeatureString();
-    [v3 setButtonExplanationText:v8];
+    [dockView setButtonExplanationText:v8];
   }
 
   else
   {
-    [v3 setButtonExplanationText:0];
+    [dockView setButtonExplanationText:0];
   }
 }
 
 - (void)_updateForMadeDefault
 {
-  v16 = [(PKExplanationViewController *)self explanationView];
-  v3 = [v16 dockView];
-  v4 = [v3 footerView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  footerView = [dockView footerView];
   [(PKAccountPassActivationResultViewController *)self _showActivationSpinner:0];
-  [v16 setShowCheckmark:1];
+  [explanationView setShowCheckmark:1];
   [(UINotificationFeedbackGenerator *)self->_cardAddedFeedbackGenerator notificationOccurred:0];
-  v5 = [v3 primaryButton];
+  primaryButton = [dockView primaryButton];
   v6 = PKLocalizedPaymentString(&cfstr_Continue.isa);
-  [v5 setTitle:v6 forState:0];
+  [primaryButton setTitle:v6 forState:0];
 
-  v7 = [v3 primaryButton];
-  [v7 addTarget:self action:sel__handleNextStep forEvents:0x2000];
+  primaryButton2 = [dockView primaryButton];
+  [primaryButton2 addTarget:self action:sel__handleNextStep forEvents:0x2000];
 
-  [v4 setSetUpLaterButton:0];
+  [footerView setSetUpLaterButton:0];
   if ([(PKAccountPassActivationResultViewController *)self _willPerformProvisioningActions])
   {
     v8 = PKLocalizedFeatureString();
-    [v16 setTitleText:v8];
+    [explanationView setTitleText:v8];
 
     v9 = [(PKAccountPassActivationResultViewController *)self _localizedStringKeyForPerformedOperationsAndMadeDefault:1];
     v10 = PKLocalizedFeatureString();
     v11 = PKLocalizedFeatureString();
     v12 = [v10 stringByAppendingString:v11];
 
-    [v16 setBodyText:v12];
+    [explanationView setBodyText:v12];
     v13 = PKLocalizedFeatureString();
-    [v3 setButtonExplanationText:v13];
+    [dockView setButtonExplanationText:v13];
   }
 
   else
   {
     v14 = PKLocalizedFeatureString();
-    [v16 setTitleText:v14];
+    [explanationView setTitleText:v14];
 
     v15 = PKLocalizedFeatureString();
-    [v16 setBodyText:v15];
+    [explanationView setBodyText:v15];
 
-    [v3 setButtonExplanationText:0];
+    [dockView setButtonExplanationText:0];
   }
 }
 
 - (void)_updateForSetupLater
 {
-  v14 = [(PKExplanationViewController *)self explanationView];
-  v3 = [v14 dockView];
-  v4 = [v3 footerView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  footerView = [dockView footerView];
   [(PKAccountPassActivationResultViewController *)self _showActivationSpinner:0];
-  [v14 setShowCheckmark:1];
+  [explanationView setShowCheckmark:1];
   [(UINotificationFeedbackGenerator *)self->_cardAddedFeedbackGenerator notificationOccurred:0];
   v5 = PKLocalizedFeatureString();
-  [v14 setTitleText:v5];
+  [explanationView setTitleText:v5];
 
   v6 = [(PKAccountPassActivationResultViewController *)self _localizedStringKeyForPerformedOperationsAndMadeDefault:0];
   v7 = PKLocalizedFeatureString();
   v8 = PKLocalizedFeatureString();
   v9 = [v7 stringByAppendingString:v8];
 
-  [v14 setBodyText:v9];
-  [v4 setSetUpLaterButton:0];
-  v10 = [v3 primaryButton];
+  [explanationView setBodyText:v9];
+  [footerView setSetUpLaterButton:0];
+  primaryButton = [dockView primaryButton];
   v11 = PKLocalizedPaymentString(&cfstr_Continue.isa);
-  [v10 setTitle:v11 forState:0];
+  [primaryButton setTitle:v11 forState:0];
 
-  v12 = [v3 primaryButton];
-  [v12 addTarget:self action:sel__handleNextStep forEvents:0x2000];
+  primaryButton2 = [dockView primaryButton];
+  [primaryButton2 addTarget:self action:sel__handleNextStep forEvents:0x2000];
 
   if ([(PKAccountPassActivationResultViewController *)self _willPerformProvisioningActions])
   {
     v13 = PKLocalizedFeatureString();
-    [v3 setButtonExplanationText:v13];
+    [dockView setButtonExplanationText:v13];
   }
 
   else
   {
-    [v3 setButtonExplanationText:0];
+    [dockView setButtonExplanationText:0];
   }
 }
 
-- (void)_showActivationSpinner:(BOOL)a3
+- (void)_showActivationSpinner:(BOOL)spinner
 {
-  v3 = a3;
+  spinnerCopy = spinner;
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [(PKExplanationViewController *)self explanationView];
-  v5 = [v4 dockView];
-  [v4 setShowSpinner:v3];
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v6 _setIdleTimerDisabled:v3 forReason:@"Activating Account Pass"];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  [explanationView setShowSpinner:spinnerCopy];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] _setIdleTimerDisabled:spinnerCopy forReason:@"Activating Account Pass"];
 
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"enabled";
-    if (v3)
+    if (spinnerCopy)
     {
       v8 = @"disabled";
     }
@@ -359,7 +359,7 @@ void __56__PKAccountPassActivationResultViewController__updateUI__block_invoke_2
     _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Idle timer is: %@ for reason: %@", &v9, 0x16u);
   }
 
-  [v5 setButtonsEnabled:v3 ^ 1];
+  [dockView setButtonsEnabled:spinnerCopy ^ 1];
 }
 
 - (void)_handleNextStep
@@ -368,9 +368,9 @@ void __56__PKAccountPassActivationResultViewController__updateUI__block_invoke_2
   nextStepHandler = self->_nextStepHandler;
   if (nextStepHandler)
   {
-    v6 = [(PKAccountPassActivationResultViewController *)self navigationController];
-    nextStepHandler[2](nextStepHandler, v6);
-    nextViewController = v6;
+    navigationController = [(PKAccountPassActivationResultViewController *)self navigationController];
+    nextStepHandler[2](nextStepHandler, navigationController);
+    nextViewController = navigationController;
   }
 
   else
@@ -407,20 +407,20 @@ uint64_t __62__PKAccountPassActivationResultViewController__handleNextStep__bloc
   }
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (controllerCopy)
   {
-    [v4 pk_paymentSetupSetHideSetupLaterButton:1];
-    v6 = [(PKAccountPassActivationResultViewController *)self navigationController];
+    [controllerCopy pk_paymentSetupSetHideSetupLaterButton:1];
+    navigationController = [(PKAccountPassActivationResultViewController *)self navigationController];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __70__PKAccountPassActivationResultViewController__presentViewController___block_invoke;
     v7[3] = &unk_1E8011D28;
     v7[4] = self;
-    [v6 pk_presentPaymentSetupViewController:v5 animated:1 completion:v7];
+    [navigationController pk_presentPaymentSetupViewController:v5 animated:1 completion:v7];
   }
 
   else
@@ -430,19 +430,19 @@ uint64_t __62__PKAccountPassActivationResultViewController__handleNextStep__bloc
   }
 }
 
-- (void)_presentDisplayableError:(id)a3
+- (void)_presentDisplayableError:(id)error
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __72__PKAccountPassActivationResultViewController__presentDisplayableError___block_invoke;
   v6[3] = &unk_1E8010970;
   v6[4] = self;
-  v4 = PKAlertForDisplayableErrorWithHandlers(a3, 0, v6, 0);
+  v4 = PKAlertForDisplayableErrorWithHandlers(error, 0, v6, 0);
   [(PKExplanationViewController *)self showNavigationBarSpinner:0];
   if (v4)
   {
-    v5 = [(PKAccountPassActivationResultViewController *)self navigationController];
-    [v5 presentViewController:v4 animated:1 completion:0];
+    navigationController = [(PKAccountPassActivationResultViewController *)self navigationController];
+    [navigationController presentViewController:v4 animated:1 completion:0];
   }
 
   else
@@ -470,22 +470,22 @@ uint64_t __72__PKAccountPassActivationResultViewController__presentDisplayableEr
 
   if (WeakRetained)
   {
-    v4 = objc_loadWeakRetained(&self->_delegate);
-    [v4 viewControllerDidTerminateSetupFlow:self];
+    presentingViewController = objc_loadWeakRetained(&self->_delegate);
+    [presentingViewController viewControllerDidTerminateSetupFlow:self];
   }
 
   else
   {
-    v4 = [(PKAccountPassActivationResultViewController *)self presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKAccountPassActivationResultViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (id)_localizedStringKeyForPerformedOperationsAndMadeDefault:(BOOL)a3
+- (id)_localizedStringKeyForPerformedOperationsAndMadeDefault:(BOOL)default
 {
-  v3 = a3;
+  defaultCopy = default;
   v5 = objc_alloc(MEMORY[0x1E696AD60]);
-  if (v3)
+  if (defaultCopy)
   {
     v6 = @"ACCOUNT_ACTIVATED_BODY_MADE_DEFAULT_WALLET_SAFARI";
   }
@@ -496,10 +496,10 @@ uint64_t __72__PKAccountPassActivationResultViewController__presentDisplayableEr
   }
 
   v7 = [v5 initWithString:v6];
-  v8 = [(PKAccountFlowController *)self->_accountController accountProvisioningController];
-  v9 = [v8 didAddToAMP];
+  accountProvisioningController = [(PKAccountFlowController *)self->_accountController accountProvisioningController];
+  didAddToAMP = [accountProvisioningController didAddToAMP];
 
-  if (v9)
+  if (didAddToAMP)
   {
     [v7 appendString:@"_APPLEID"];
   }

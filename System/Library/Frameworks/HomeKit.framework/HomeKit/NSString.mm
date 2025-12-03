@@ -6,14 +6,14 @@
 
 - (id)stringByTrimmingDots
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"."];
-    v1 = [v1 stringByTrimmingCharactersInSet:v2];
+    selfCopy = [selfCopy stringByTrimmingCharactersInSet:v2];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __61__NSString_HomeKit__stringByTransformingFirstWordUsingBlock___block_invoke(void *a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, _BYTE *a7)

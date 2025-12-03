@@ -1,20 +1,20 @@
 @interface WBSRecentlyDeletedAlertConfiguration
-+ (id)_alertTitleForFailingToRecoverMultipleAccountsWithCredentialTypes:(int64_t)a3;
-+ (id)_alertTitleForFailingToRecoverSingleAccountWithCredentialTypes:(int64_t)a3;
-+ (id)alertTitleForFailingToRecoverAccounts:(id)a3;
++ (id)_alertTitleForFailingToRecoverMultipleAccountsWithCredentialTypes:(int64_t)types;
++ (id)_alertTitleForFailingToRecoverSingleAccountWithCredentialTypes:(int64_t)types;
++ (id)alertTitleForFailingToRecoverAccounts:(id)accounts;
 @end
 
 @implementation WBSRecentlyDeletedAlertConfiguration
 
-+ (id)alertTitleForFailingToRecoverAccounts:(id)a3
++ (id)alertTitleForFailingToRecoverAccounts:(id)accounts
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountsCopy = accounts;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [accountsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -26,13 +26,13 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(accountsCopy);
         }
 
         v7 |= [*(*(&v13 + 1) + 8 * i) credentialTypes];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [accountsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -43,14 +43,14 @@
     v7 = 0;
   }
 
-  if ([v4 count] == 1)
+  if ([accountsCopy count] == 1)
   {
-    [a1 _alertTitleForFailingToRecoverSingleAccountWithCredentialTypes:v7];
+    [self _alertTitleForFailingToRecoverSingleAccountWithCredentialTypes:v7];
   }
 
   else
   {
-    [a1 _alertTitleForFailingToRecoverMultipleAccountsWithCredentialTypes:v7];
+    [self _alertTitleForFailingToRecoverMultipleAccountsWithCredentialTypes:v7];
   }
   v10 = ;
 
@@ -59,14 +59,14 @@
   return v10;
 }
 
-+ (id)_alertTitleForFailingToRecoverMultipleAccountsWithCredentialTypes:(int64_t)a3
++ (id)_alertTitleForFailingToRecoverMultipleAccountsWithCredentialTypes:(int64_t)types
 {
-  if (a3 == 3)
+  if (types == 3)
   {
     v4 = @"Passwords was unable to recover these passkeys and passwords.";
   }
 
-  else if (a3 == 2)
+  else if (types == 2)
   {
     v4 = @"Passwords was unable to recover these passkeys.";
   }
@@ -81,14 +81,14 @@
   return v5;
 }
 
-+ (id)_alertTitleForFailingToRecoverSingleAccountWithCredentialTypes:(int64_t)a3
++ (id)_alertTitleForFailingToRecoverSingleAccountWithCredentialTypes:(int64_t)types
 {
-  if (a3 == 3)
+  if (types == 3)
   {
     v4 = @"Passwords was unable to recover this passkey and password.";
   }
 
-  else if (a3 == 2)
+  else if (types == 2)
   {
     v4 = @"Passwords was unable to recover this passkey.";
   }

@@ -1,17 +1,17 @@
 @interface CUINamedRecognitionImage
 - (CGImage)image;
 - (CGSize)physicalSizeInMeters;
-- (CUINamedRecognitionImage)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5;
+- (CUINamedRecognitionImage)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme;
 - (int)exifOrientation;
 @end
 
 @implementation CUINamedRecognitionImage
 
-- (CUINamedRecognitionImage)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5
+- (CUINamedRecognitionImage)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme
 {
   v7.receiver = self;
   v7.super_class = CUINamedRecognitionImage;
-  v5 = [(CUINamedLookup *)&v7 initWithName:a3 usingRenditionKey:a4 fromTheme:a5];
+  v5 = [(CUINamedLookup *)&v7 initWithName:name usingRenditionKey:key fromTheme:theme];
   if ([(CUIThemeRendition *)[(CUINamedLookup *)v5 _rendition] type]== 1014)
   {
 
@@ -23,16 +23,16 @@
 
 - (CGImage)image
 {
-  v2 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  return [(CUIThemeRendition *)v2 uncroppedImage];
+  return [(CUIThemeRendition *)_rendition uncroppedImage];
 }
 
 - (CGSize)physicalSizeInMeters
 {
-  v2 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  [(CUIThemeRendition *)v2 physicalSizeInMeters];
+  [(CUIThemeRendition *)_rendition physicalSizeInMeters];
   result.height = v4;
   result.width = v3;
   return result;
@@ -40,9 +40,9 @@
 
 - (int)exifOrientation
 {
-  v2 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  return [(CUIThemeRendition *)v2 exifOrientation];
+  return [(CUIThemeRendition *)_rendition exifOrientation];
 }
 
 @end

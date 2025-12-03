@@ -1,41 +1,41 @@
 @interface NSAttributeDescription
-+ (NSString)_classNameForType:(uint64_t)a1;
-+ (id)stringForAttributeType:(unint64_t)a3;
++ (NSString)_classNameForType:(uint64_t)type;
++ (id)stringForAttributeType:(unint64_t)type;
 + (void)initialize;
-- (BOOL)_attributeTypeIsSchemaEqual:(unint64_t)a3;
-- (BOOL)_comparePredicatesAndWarnings:(id)a3;
-- (BOOL)_epsilonEquals:(id)a3 rhs:(id)a4 withFlags:(int)a5;
-- (BOOL)_isSchemaEqual:(id)a3;
-- (BOOL)_nonPredicateValidateValue:(id *)a3 forKey:(id)a4 inObject:(id)a5 error:(id *)a6;
+- (BOOL)_attributeTypeIsSchemaEqual:(unint64_t)equal;
+- (BOOL)_comparePredicatesAndWarnings:(id)warnings;
+- (BOOL)_epsilonEquals:(id)equals rhs:(id)rhs withFlags:(int)flags;
+- (BOOL)_isSchemaEqual:(id)equal;
+- (BOOL)_nonPredicateValidateValue:(id *)value forKey:(id)key inObject:(id)object error:(id *)error;
 - (BOOL)isIndexed;
 - (BOOL)usesMergeableStorage;
 - (Class)_attributeValueClass;
-- (NSAttributeDescription)initWithCoder:(id)a3;
+- (NSAttributeDescription)initWithCoder:(id)coder;
 - (NSData)versionHash;
-- (id)_initWithName:(id)a3 type:(unint64_t)a4;
-- (id)_initWithName:(id)a3 type:(unint64_t)a4 withClassName:(id)a5;
+- (id)_initWithName:(id)name type:(unint64_t)type;
+- (id)_initWithName:(id)name type:(unint64_t)type withClassName:(id)className;
 - (id)_rawValidationPredicates;
 - (id)_rawValidationWarnings;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)validationPredicates;
 - (id)validationWarnings;
 - (uint64_t)_attributeValueClasses;
-- (uint64_t)_canConvertPredicate:(void *)a3 andWarning:;
+- (uint64_t)_canConvertPredicate:(void *)predicate andWarning:;
 - (uint64_t)_comparePredicatesAndWarningsWithUnoptimizedAttributeDescription:(uint64_t)result;
-- (uint64_t)_sortOutDefaultNumericValuesBecauseDoublesAndFloatsDontCompareEqual:(uint64_t)a1;
+- (uint64_t)_sortOutDefaultNumericValuesBecauseDoublesAndFloatsDontCompareEqual:(uint64_t)equal;
 - (void)_createCachesAndOptimizeState;
-- (void)_versionHash:(char *)a3 inStyle:(unint64_t)a4;
-- (void)_writeIntoData:(id)a3 propertiesDict:(id)a4 uniquedPropertyNames:(id)a5 uniquedStrings:(id)a6 uniquedData:(id)a7 entitiesSlots:(id)a8 fetchRequests:(id)a9;
+- (void)_versionHash:(char *)hash inStyle:(unint64_t)style;
+- (void)_writeIntoData:(id)data propertiesDict:(id)dict uniquedPropertyNames:(id)names uniquedStrings:(id)strings uniquedData:(id)uniquedData entitiesSlots:(id)slots fetchRequests:(id)requests;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAllowsCloudEncryption:(BOOL)allowsCloudEncryption;
 - (void)setAllowsExternalBinaryDataStorage:(BOOL)allowsExternalBinaryDataStorage;
 - (void)setAttributeType:(NSAttributeType)attributeType;
 - (void)setAttributeValueClassName:(NSString *)attributeValueClassName;
 - (void)setDefaultValue:(id)defaultValue;
-- (void)setIsFileBackedFuture:(BOOL)a3;
-- (void)setPreserveValueOnDeletionInPersistentHistory:(BOOL)a3;
+- (void)setIsFileBackedFuture:(BOOL)future;
+- (void)setPreserveValueOnDeletionInPersistentHistory:(BOOL)history;
 - (void)setPreservesValueInHistoryOnDeletion:(BOOL)preservesValueInHistoryOnDeletion;
 - (void)setValueTransformerName:(NSString *)valueTransformerName;
 @end
@@ -75,17 +75,17 @@
     objc_opt_self();
   }
 
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___NSAttributeDescription;
   objc_msgSendSuper2(&v4, sel_initialize);
 }
 
 - (id)validationWarnings
 {
-  v3 = [(NSPropertyDescription *)self _hasMinValueInExtraIvars];
-  v4 = [(NSPropertyDescription *)self _hasMaxValueInExtraIvars];
-  v5 = v4;
-  if (!v3 && !v4)
+  _hasMinValueInExtraIvars = [(NSPropertyDescription *)self _hasMinValueInExtraIvars];
+  _hasMaxValueInExtraIvars = [(NSPropertyDescription *)self _hasMaxValueInExtraIvars];
+  v5 = _hasMaxValueInExtraIvars;
+  if (!_hasMinValueInExtraIvars && !_hasMaxValueInExtraIvars)
   {
     v11.receiver = self;
     v11.super_class = NSAttributeDescription;
@@ -95,13 +95,13 @@
   v12.receiver = self;
   v12.super_class = NSAttributeDescription;
   v6 = [MEMORY[0x1E695DF70] arrayWithArray:{-[NSPropertyDescription validationWarnings](&v12, sel_validationWarnings)}];
-  v7 = [(NSAttributeDescription *)self attributeType];
-  if (v7 <= 399)
+  attributeType = [(NSAttributeDescription *)self attributeType];
+  if (attributeType <= 399)
   {
-    if (v7 != NSInteger16AttributeType && v7 != NSInteger32AttributeType && v7 != NSInteger64AttributeType)
+    if (attributeType != NSInteger16AttributeType && attributeType != NSInteger32AttributeType && attributeType != NSInteger64AttributeType)
     {
 LABEL_12:
-      if (v3)
+      if (_hasMinValueInExtraIvars)
       {
         [v6 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", 1640)}];
       }
@@ -119,11 +119,11 @@ LABEL_22:
     }
   }
 
-  else if (v7 > 599)
+  else if (attributeType > 599)
   {
-    if (v7 == NSStringAttributeType)
+    if (attributeType == NSStringAttributeType)
     {
-      if (v3)
+      if (_hasMinValueInExtraIvars)
       {
         [v6 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", 1670)}];
       }
@@ -138,18 +138,18 @@ LABEL_22:
       return v6;
     }
 
-    if (v7 != NSFloatAttributeType)
+    if (attributeType != NSFloatAttributeType)
     {
       goto LABEL_12;
     }
   }
 
-  else if (v7 != NSDecimalAttributeType && v7 != NSDoubleAttributeType)
+  else if (attributeType != NSDecimalAttributeType && attributeType != NSDoubleAttributeType)
   {
     goto LABEL_12;
   }
 
-  if (v3)
+  if (_hasMinValueInExtraIvars)
   {
     [v6 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", 1620)}];
   }
@@ -173,8 +173,8 @@ LABEL_22:
   v3 = [(NSDictionary *)[[(NSEntityDescription *)[(NSPropertyDescription *)self entity] superentity] propertiesByName] objectForKey:[(NSPropertyDescription *)self name]];
   if (v3)
   {
-    v4 = [v3 allowsCloudEncryption];
-    if (v4 != [(NSAttributeDescription *)self allowsCloudEncryption])
+    allowsCloudEncryption = [v3 allowsCloudEncryption];
+    if (allowsCloudEncryption != [(NSAttributeDescription *)self allowsCloudEncryption])
     {
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"%@:%@ - Encryption must also be applied to all inherited attributes from the parent entity (%@)", -[NSEntityDescription name](-[NSPropertyDescription entity](self, "entity"), "name"), -[NSPropertyDescription name](self, "name"), -[NSEntityDescription name](-[NSEntityDescription superentity](-[NSPropertyDescription entity](self, "entity"), "superentity"), "name")), 0}]);
     }
@@ -202,14 +202,14 @@ LABEL_22:
             if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
             {
               v8 = self->_valueTransformerName;
-              v9 = [(NSPropertyDescription *)self name];
-              v10 = [(NSEntityDescription *)[(NSPropertyDescription *)self entity] name];
+              name = [(NSPropertyDescription *)self name];
+              name2 = [(NSEntityDescription *)[(NSPropertyDescription *)self entity] name];
               *buf = 138412802;
               v58 = v8;
               v59 = 2112;
-              v60 = v9;
+              v60 = name;
               v61 = 2112;
-              v62 = v10;
+              v62 = name2;
               _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: no NSValueTransformer with class name '%@' was found for attribute '%@' on entity '%@'\n", buf, 0x20u);
             }
           }
@@ -220,14 +220,14 @@ LABEL_22:
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
             {
               v12 = self->_valueTransformerName;
-              v13 = [(NSPropertyDescription *)self name];
-              v14 = [(NSEntityDescription *)[(NSPropertyDescription *)self entity] name];
+              name3 = [(NSPropertyDescription *)self name];
+              name4 = [(NSEntityDescription *)[(NSPropertyDescription *)self entity] name];
               *buf = 138412802;
               v58 = v12;
               v59 = 2112;
-              v60 = v13;
+              v60 = name3;
               v61 = 2112;
-              v62 = v14;
+              v62 = name4;
               _os_log_impl(&dword_18565F000, v11, OS_LOG_TYPE_DEFAULT, "CoreData: warning: no NSValueTransformer with class name '%@' was found for attribute '%@' on entity '%@'\n", buf, 0x20u);
             }
           }
@@ -235,15 +235,15 @@ LABEL_22:
 
         v15 = _pflogging_catastrophic_mode;
         v16 = self->_valueTransformerName;
-        v17 = [(NSPropertyDescription *)self name];
-        v18 = [(NSEntityDescription *)[(NSPropertyDescription *)self entity] name];
+        name5 = [(NSPropertyDescription *)self name];
+        name6 = [(NSEntityDescription *)[(NSPropertyDescription *)self entity] name];
         v19 = 5;
         if (v15)
         {
           v19 = 1;
         }
 
-        _NSCoreDataLog_console(v19, "no NSValueTransformer with class name '%@' was found for attribute '%@' on entity '%@'", v16, v17, v18);
+        _NSCoreDataLog_console(v19, "no NSValueTransformer with class name '%@' was found for attribute '%@' on entity '%@'", v16, name5, name6);
         objc_autoreleasePoolPop(v6);
       }
     }
@@ -253,8 +253,8 @@ LABEL_22:
       v40 = self->_valueTransformerName;
       if (!v40 || [(NSString *)self->_valueTransformerName isEqualToString:*MEMORY[0x1E696A9F8]]|| [(NSString *)v40 isEqualToString:*MEMORY[0x1E696A510]])
       {
-        v41 = [MEMORY[0x1E696AE30] processInfo];
-        if ([@"xctest" isEqual:{objc_msgSend(v41, "processName")}] & 1) != 0 || (objc_msgSend(@"cplctl", "isEqual:", objc_msgSend(v41, "processName")))
+        processInfo = [MEMORY[0x1E696AE30] processInfo];
+        if ([@"xctest" isEqual:{objc_msgSend(processInfo, "processName")}] & 1) != 0 || (objc_msgSend(@"cplctl", "isEqual:", objc_msgSend(processInfo, "processName")))
         {
           goto LABEL_54;
         }
@@ -273,13 +273,13 @@ LABEL_22:
             v44 = _PFLogGetLogStream(1);
             if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
             {
-              v45 = [(NSPropertyDescription *)self name];
-              v46 = [(NSEntityDescription *)[(NSPropertyDescription *)self entity] name];
+              name7 = [(NSPropertyDescription *)self name];
+              name8 = [(NSEntityDescription *)[(NSPropertyDescription *)self entity] name];
               v47 = *MEMORY[0x1E696A8B0];
               *buf = 138412802;
-              v58 = v45;
+              v58 = name7;
               v59 = 2112;
-              v60 = v46;
+              v60 = name8;
               v61 = 2112;
               v62 = v47;
               _os_log_error_impl(&dword_18565F000, v44, OS_LOG_TYPE_ERROR, "CoreData: error: Property '%@' on Entity '%@' is using nil or an insecure NSValueTransformer.  Please switch to using %@ or a subclass of NSSecureUnarchiveFromDataTransformer instead.\n", buf, 0x20u);
@@ -291,13 +291,13 @@ LABEL_22:
             v48 = _PFLogGetLogStream(5);
             if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
             {
-              v49 = [(NSPropertyDescription *)self name];
-              v50 = [(NSEntityDescription *)[(NSPropertyDescription *)self entity] name];
+              name9 = [(NSPropertyDescription *)self name];
+              name10 = [(NSEntityDescription *)[(NSPropertyDescription *)self entity] name];
               v51 = *MEMORY[0x1E696A8B0];
               *buf = 138412802;
-              v58 = v49;
+              v58 = name9;
               v59 = 2112;
-              v60 = v50;
+              v60 = name10;
               v61 = 2112;
               v62 = v51;
               _os_log_impl(&dword_18565F000, v48, OS_LOG_TYPE_DEFAULT, "CoreData: warning: Property '%@' on Entity '%@' is using nil or an insecure NSValueTransformer.  Please switch to using %@ or a subclass of NSSecureUnarchiveFromDataTransformer instead.\n", buf, 0x20u);
@@ -306,15 +306,15 @@ LABEL_22:
         }
 
         v52 = _pflogging_catastrophic_mode;
-        v53 = [(NSPropertyDescription *)self name];
-        v54 = [(NSEntityDescription *)[(NSPropertyDescription *)self entity] name];
+        name11 = [(NSPropertyDescription *)self name];
+        name12 = [(NSEntityDescription *)[(NSPropertyDescription *)self entity] name];
         v55 = 5;
         if (v52)
         {
           v55 = 1;
         }
 
-        _NSCoreDataLog_console(v55, "Property '%@' on Entity '%@' is using nil or an insecure NSValueTransformer.  Please switch to using %@ or a subclass of NSSecureUnarchiveFromDataTransformer instead.", v53, v54, *MEMORY[0x1E696A8B0]);
+        _NSCoreDataLog_console(v55, "Property '%@' on Entity '%@' is using nil or an insecure NSValueTransformer.  Please switch to using %@ or a subclass of NSSecureUnarchiveFromDataTransformer instead.", name11, name12, *MEMORY[0x1E696A8B0]);
         objc_autoreleasePoolPop(v43);
       }
     }
@@ -326,19 +326,19 @@ LABEL_22:
     *&self->super._propertyDescriptionFlags |= 0x2000u;
   }
 
-  v21 = [(NSAttributeDescription *)self validationWarnings];
-  v22 = [v21 count];
+  validationWarnings = [(NSAttributeDescription *)self validationWarnings];
+  v22 = [validationWarnings count];
   if (v22)
   {
     v23 = v22;
-    v24 = [(NSAttributeDescription *)self validationPredicates];
+    validationPredicates = [(NSAttributeDescription *)self validationPredicates];
     v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v27 = 0;
     while (1)
     {
-      v28 = [v24 objectAtIndex:v27];
-      v29 = [v21 objectAtIndex:v27];
+      v28 = [validationPredicates objectAtIndex:v27];
+      v29 = [validationWarnings objectAtIndex:v27];
       v30 = [(NSAttributeDescription *)self _canConvertPredicate:v28 andWarning:v29];
       if (v30)
       {
@@ -355,7 +355,7 @@ LABEL_22:
 
         *&self->super._propertyDescriptionFlags |= v32;
         v33 = [objc_msgSend(v28 "rightExpression")];
-        v34 = [(NSPropertyDescription *)self _extraIVars];
+        _extraIVars = [(NSPropertyDescription *)self _extraIVars];
         type = self->_type;
         if (type > 0x12B)
         {
@@ -372,7 +372,7 @@ LABEL_36:
               v36 = 16;
             }
 
-            *(&v34->var0 + v36) = [v33 longLongValue];
+            *(&_extraIVars->var0 + v36) = [v33 longLongValue];
             goto LABEL_40;
           }
         }
@@ -393,7 +393,7 @@ LABEL_36:
         }
 
         [v33 doubleValue];
-        *(&v34->var0 + v37) = v38;
+        *(&_extraIVars->var0 + v37) = v38;
       }
 
       else
@@ -405,7 +405,7 @@ LABEL_36:
 LABEL_40:
       if (v23 == ++v27)
       {
-        v39 = [v21 count];
+        v39 = [validationWarnings count];
         if (v39 == [v26 count])
         {
         }
@@ -507,7 +507,7 @@ LABEL_54:
               v17 = 138412546;
               v18 = v14;
               v19 = 2112;
-              v20 = [(NSPropertyDescription *)self name];
+              name = [(NSPropertyDescription *)self name];
               _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Could not materialize Objective-C class %@ for attribute named %@, property setter will not validate type\n", &v17, 0x16u);
             }
 
@@ -515,11 +515,11 @@ LABEL_54:
             if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
             {
               v15 = self->_attributeValueClassName;
-              v16 = [(NSPropertyDescription *)self name];
+              name2 = [(NSPropertyDescription *)self name];
               v17 = 138412546;
               v18 = v15;
               v19 = 2112;
-              v20 = v16;
+              name = name2;
               _os_log_fault_impl(&dword_18565F000, v12, OS_LOG_TYPE_FAULT, "CoreData: Could not materialize Objective-C class %@ for attribute named %@, property setter will not validate type", &v17, 0x16u);
             }
           }
@@ -547,10 +547,10 @@ LABEL_54:
 
 - (id)validationPredicates
 {
-  v3 = [(NSPropertyDescription *)self _hasMinValueInExtraIvars];
-  v4 = [(NSPropertyDescription *)self _hasMaxValueInExtraIvars];
-  v5 = v4;
-  if (!v3 && !v4)
+  _hasMinValueInExtraIvars = [(NSPropertyDescription *)self _hasMinValueInExtraIvars];
+  _hasMaxValueInExtraIvars = [(NSPropertyDescription *)self _hasMaxValueInExtraIvars];
+  v5 = _hasMaxValueInExtraIvars;
+  if (!_hasMinValueInExtraIvars && !_hasMaxValueInExtraIvars)
   {
     v20.receiver = self;
     v20.super_class = NSAttributeDescription;
@@ -560,15 +560,15 @@ LABEL_54:
   v21.receiver = self;
   v21.super_class = NSAttributeDescription;
   v6 = [MEMORY[0x1E695DF70] arrayWithArray:{-[NSPropertyDescription validationPredicates](&v21, sel_validationPredicates)}];
-  v7 = [(NSPropertyDescription *)self _extraIVars];
-  v8 = [(NSAttributeDescription *)self attributeType];
-  if (v8 <= 399)
+  _extraIVars = [(NSPropertyDescription *)self _extraIVars];
+  attributeType = [(NSAttributeDescription *)self attributeType];
+  if (attributeType <= 399)
   {
-    if (v8 == NSInteger16AttributeType || v8 == NSInteger32AttributeType || v8 == NSInteger64AttributeType)
+    if (attributeType == NSInteger16AttributeType || attributeType == NSInteger32AttributeType || attributeType == NSInteger64AttributeType)
     {
-      if (v3)
+      if (_hasMinValueInExtraIvars)
       {
-        v9 = [MEMORY[0x1E696AD98] numberWithLongLong:v7->var1];
+        v9 = [MEMORY[0x1E696AD98] numberWithLongLong:_extraIVars->var1];
         [v6 addObject:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithFormat:", @"SELF >= %@", v9)}];
       }
 
@@ -577,14 +577,14 @@ LABEL_54:
         goto LABEL_25;
       }
 
-      v10 = [MEMORY[0x1E696AD98] numberWithLongLong:v7->var2];
+      v10 = [MEMORY[0x1E696AD98] numberWithLongLong:_extraIVars->var2];
       goto LABEL_23;
     }
 
 LABEL_28:
-    if (v3)
+    if (_hasMinValueInExtraIvars)
     {
-      v16 = [MEMORY[0x1E696AD98] numberWithDouble:*&v7->var1];
+      v16 = [MEMORY[0x1E696AD98] numberWithDouble:*&_extraIVars->var1];
       [v6 addObject:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithFormat:", @"self >= %@", v16)}];
     }
 
@@ -593,18 +593,18 @@ LABEL_28:
       goto LABEL_25;
     }
 
-    v17 = [MEMORY[0x1E696AD98] numberWithDouble:*&v7->var2];
+    v17 = [MEMORY[0x1E696AD98] numberWithDouble:*&_extraIVars->var2];
     v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self =< %@", v17];
     goto LABEL_24;
   }
 
-  if (v8 != NSDecimalAttributeType)
+  if (attributeType != NSDecimalAttributeType)
   {
-    if (v8 == NSStringAttributeType)
+    if (attributeType == NSStringAttributeType)
     {
-      if (v3)
+      if (_hasMinValueInExtraIvars)
       {
-        v18 = [MEMORY[0x1E696AD98] numberWithLongLong:v7->var1];
+        v18 = [MEMORY[0x1E696AD98] numberWithLongLong:_extraIVars->var1];
         [v6 addObject:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithFormat:", @"length >= %@", v18)}];
       }
 
@@ -613,16 +613,16 @@ LABEL_28:
         goto LABEL_25;
       }
 
-      v19 = [MEMORY[0x1E696AD98] numberWithLongLong:v7->var2];
+      v19 = [MEMORY[0x1E696AD98] numberWithLongLong:_extraIVars->var2];
       v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"length =< %@", v19];
       goto LABEL_24;
     }
 
-    if (v8 == NSDateAttributeType)
+    if (attributeType == NSDateAttributeType)
     {
-      if (v3)
+      if (_hasMinValueInExtraIvars)
       {
-        v11 = [MEMORY[0x1E696AD98] numberWithDouble:*&v7->var1];
+        v11 = [MEMORY[0x1E696AD98] numberWithDouble:*&_extraIVars->var1];
         [v6 addObject:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithFormat:", @"timeIntervalSinceReferenceDate >= %@", v11)}];
       }
 
@@ -631,7 +631,7 @@ LABEL_28:
         goto LABEL_25;
       }
 
-      v12 = [MEMORY[0x1E696AD98] numberWithDouble:*&v7->var2];
+      v12 = [MEMORY[0x1E696AD98] numberWithDouble:*&_extraIVars->var2];
       v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"timeIntervalSinceReferenceDate =< %@", v12];
       goto LABEL_24;
     }
@@ -639,9 +639,9 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (v3)
+  if (_hasMinValueInExtraIvars)
   {
-    v14 = [MEMORY[0x1E696AB90] numberWithDouble:*&v7->var1];
+    v14 = [MEMORY[0x1E696AB90] numberWithDouble:*&_extraIVars->var1];
     [v6 addObject:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithFormat:", @"SELF >= %@", v14)}];
   }
 
@@ -650,7 +650,7 @@ LABEL_28:
     goto LABEL_25;
   }
 
-  v10 = [MEMORY[0x1E696AB90] numberWithDouble:*&v7->var2];
+  v10 = [MEMORY[0x1E696AB90] numberWithDouble:*&_extraIVars->var2];
 LABEL_23:
   v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF =< %@", v10];
 LABEL_24:
@@ -667,12 +667,12 @@ LABEL_25:
 - (uint64_t)_attributeValueClasses
 {
   v47 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_39;
   }
 
-  v2 = a1[13];
+  v2 = self[13];
   if (!v2)
   {
     goto LABEL_39;
@@ -691,7 +691,7 @@ LABEL_25:
   v8 = [MEMORY[0x1E696AD48] characterSetWithCharactersInString:@"$_"];
   [v8 formUnionWithCharacterSet:{objc_msgSend(MEMORY[0x1E696AB08], "alphanumericCharacterSet")}];
   [v8 invert];
-  if ([v8 characterIsMember:{objc_msgSend(a1[13], "characterAtIndex:", 0)}])
+  if ([v8 characterIsMember:{objc_msgSend(self[13], "characterAtIndex:", 0)}])
   {
     if (byte_1ED4BEECE != 1)
     {
@@ -701,11 +701,11 @@ LABEL_25:
     LogStream = _PFLogGetLogStream(17);
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
-      v32 = a1[13];
+      v32 = self[13];
       *buf = 138412546;
       v41 = v32;
       v42 = 2112;
-      v43 = [a1 name];
+      name = [self name];
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Declared Objective-C type %@ for attribute named %@ is not valid\n", buf, 0x16u);
     }
 
@@ -715,12 +715,12 @@ LABEL_25:
       goto LABEL_39;
     }
 
-    v11 = a1[13];
-    v12 = [a1 name];
+    v11 = self[13];
+    name2 = [self name];
     *buf = 138412546;
     v41 = v11;
     v42 = 2112;
-    v43 = v12;
+    name = name2;
     v13 = "CoreData: Declared Objective-C type %@ for attribute named %@ is not valid";
 LABEL_13:
     v14 = v10;
@@ -730,8 +730,8 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  v16 = [a1[13] componentsSeparatedByCharactersInSet:v8];
-  if ([v16 count] == 1 && objc_msgSend(a1[13], "isEqualToString:", objc_msgSend(v16, "firstObject")))
+  v16 = [self[13] componentsSeparatedByCharactersInSet:v8];
+  if ([v16 count] == 1 && objc_msgSend(self[13], "isEqualToString:", objc_msgSend(v16, "firstObject")))
   {
     if (byte_1ED4BEECE != 1)
     {
@@ -741,11 +741,11 @@ LABEL_38:
     v17 = _PFLogGetLogStream(17);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v35 = a1[13];
+      v35 = self[13];
       *buf = 138412546;
       v41 = v35;
       v42 = 2112;
-      v43 = [a1 name];
+      name = [self name];
       _os_log_error_impl(&dword_18565F000, v17, OS_LOG_TYPE_ERROR, "CoreData: fault: Could not materialize Objective-C class for declared attribute value class name %@ of attribute named %@\n", buf, 0x16u);
     }
 
@@ -755,17 +755,17 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v18 = a1[13];
-    v19 = [a1 name];
+    v18 = self[13];
+    name3 = [self name];
     *buf = 138412546;
     v41 = v18;
     v42 = 2112;
-    v43 = v19;
+    name = name3;
     v13 = "CoreData: Could not materialize Objective-C class for declared attribute value class name %@ of attribute named %@";
     goto LABEL_13;
   }
 
-  v20 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -799,7 +799,7 @@ LABEL_23:
       break;
     }
 
-    [v20 addObject:v26];
+    [array addObject:v26];
 LABEL_30:
     if (v22 == ++v24)
     {
@@ -813,7 +813,7 @@ LABEL_30:
     }
   }
 
-  if ([a1 _swiftDataPropertyFlags])
+  if ([self _swiftDataPropertyFlags])
   {
     goto LABEL_30;
   }
@@ -823,28 +823,28 @@ LABEL_30:
     v27 = _PFLogGetLogStream(17);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      v33 = a1[13];
-      v34 = [a1 name];
+      v33 = self[13];
+      name4 = [self name];
       *buf = 138412802;
       v41 = v25;
       v42 = 2112;
-      v43 = v33;
+      name = v33;
       v44 = 2112;
-      v45 = v34;
+      v45 = name4;
       _os_log_error_impl(&dword_18565F000, v27, OS_LOG_TYPE_ERROR, "CoreData: fault: Could not materialize Objective-C class named %@ from declared attribute value type %@ of attribute named %@\n", buf, 0x20u);
     }
 
     v28 = _PFLogGetLogStream(17);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
     {
-      v29 = a1[13];
-      v30 = [a1 name];
+      v29 = self[13];
+      name5 = [self name];
       *buf = 138412802;
       v41 = v25;
       v42 = 2112;
-      v43 = v29;
+      name = v29;
       v44 = 2112;
-      v45 = v30;
+      v45 = name5;
       v13 = "CoreData: Could not materialize Objective-C class named %@ from declared attribute value type %@ of attribute named %@";
       v14 = v28;
       v15 = 32;
@@ -853,25 +853,25 @@ LABEL_30:
   }
 
 LABEL_39:
-  v20 = 0;
+  array = 0;
 LABEL_40:
   v31 = *MEMORY[0x1E69E9840];
-  return v20;
+  return array;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = objc_autoreleasePoolPush();
   v8.receiver = self;
   v8.super_class = NSAttributeDescription;
-  [(NSPropertyDescription *)&v8 encodeWithCoder:a3];
-  [a3 encodeInt:-[NSAttributeDescription attributeType](self forKey:{"attributeType"), @"NSAttributeType"}];
-  [a3 encodeObject:-[NSAttributeDescription attributeValueClassName](self forKey:{"attributeValueClassName"), @"NSAttributeValueClassName"}];
-  [a3 encodeObject:-[NSAttributeDescription defaultValue](self forKey:{"defaultValue"), @"NSDefaultValue"}];
-  [a3 encodeObject:-[NSAttributeDescription valueTransformerName](self forKey:{"valueTransformerName"), @"NSValueTransformerName"}];
+  [(NSPropertyDescription *)&v8 encodeWithCoder:coder];
+  [coder encodeInt:-[NSAttributeDescription attributeType](self forKey:{"attributeType"), @"NSAttributeType"}];
+  [coder encodeObject:-[NSAttributeDescription attributeValueClassName](self forKey:{"attributeValueClassName"), @"NSAttributeValueClassName"}];
+  [coder encodeObject:-[NSAttributeDescription defaultValue](self forKey:{"defaultValue"), @"NSDefaultValue"}];
+  [coder encodeObject:-[NSAttributeDescription valueTransformerName](self forKey:{"valueTransformerName"), @"NSValueTransformerName"}];
   if ([(NSAttributeDescription *)self isIndexed])
   {
-    [a3 encodeBool:1 forKey:@"NSIsIndexed"];
+    [coder encodeBool:1 forKey:@"NSIsIndexed"];
   }
 
   if ([(NSPropertyDescription *)self _storeBinaryDataExternally])
@@ -899,14 +899,14 @@ LABEL_40:
     v7 = v6;
   }
 
-  [a3 encodeInt32:-[NSAttributeDescription _encodedAttributeFlagsForFlags:](self forKey:{"_encodedAttributeFlagsForFlags:", v7), @"NSFlagsKey"}];
+  [coder encodeInt32:-[NSAttributeDescription _encodedAttributeFlagsForFlags:](self forKey:{"_encodedAttributeFlagsForFlags:", v7), @"NSFlagsKey"}];
   objc_autoreleasePoolPop(v5);
 }
 
-- (uint64_t)_sortOutDefaultNumericValuesBecauseDoublesAndFloatsDontCompareEqual:(uint64_t)a1
+- (uint64_t)_sortOutDefaultNumericValuesBecauseDoublesAndFloatsDontCompareEqual:(uint64_t)equal
 {
   result = 0;
-  if (!a1 || !a2)
+  if (!equal || !a2)
   {
     return result;
   }
@@ -916,16 +916,16 @@ LABEL_40:
     return a2;
   }
 
-  v5 = [a2 objCType];
-  v6 = *(a1 + 80);
+  objCType = [a2 objCType];
+  v6 = *(equal + 80);
   if (v6 != 600)
   {
     if (v6 == 500)
     {
-      v7 = *v5;
+      v7 = *objCType;
       if (v7 == 102)
       {
-        if (!v5[1])
+        if (!objCType[1])
         {
           goto LABEL_13;
         }
@@ -945,10 +945,10 @@ LABEL_13:
     return a2;
   }
 
-  v8 = *v5;
+  v8 = *objCType;
   if (v8 == 100)
   {
-    if (v5[1])
+    if (objCType[1])
     {
       return a2;
     }
@@ -966,7 +966,7 @@ LABEL_13:
   return [v12 numberWithFloat:v13];
 }
 
-- (NSAttributeDescription)initWithCoder:(id)a3
+- (NSAttributeDescription)initWithCoder:(id)coder
 {
   v45 = *MEMORY[0x1E69E9840];
   v38.receiver = self;
@@ -979,7 +979,7 @@ LABEL_13:
 
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
-  v7 = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"NSValueTransformerName"}];
+  v7 = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"NSValueTransformerName"}];
   v4->_valueTransformerName = v7;
   if (v7)
   {
@@ -989,7 +989,7 @@ LABEL_13:
       v18 = *MEMORY[0x1E696A250];
       v19 = &unk_1EF434B30;
 LABEL_20:
-      [a3 failWithError:{objc_msgSend(v17, "errorWithDomain:code:userInfo:", v18, 4866, v19)}];
+      [coder failWithError:{objc_msgSend(v17, "errorWithDomain:code:userInfo:", v18, 4866, v19)}];
 
       v4 = 0;
       goto LABEL_54;
@@ -1002,8 +1002,8 @@ LABEL_20:
     }
   }
 
-  v4->_type = [a3 decodeIntForKey:@"NSAttributeType"];
-  v8 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSAttributeValueClassName"];
+  v4->_type = [coder decodeIntForKey:@"NSAttributeType"];
+  v8 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSAttributeValueClassName"];
   v4->_attributeValueClassName = v8;
   if (v8 && ([(NSString *)v8 isNSString]& 1) == 0)
   {
@@ -1019,10 +1019,10 @@ LABEL_20:
     goto LABEL_32;
   }
 
-  v10 = [(NSAttributeDescription *)&v4->super.super.isa _attributeValueClasses];
-  if (!v10)
+  _attributeValueClasses = [(NSAttributeDescription *)&v4->super.super.isa _attributeValueClasses];
+  if (!_attributeValueClasses)
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    _attributeValueClasses = [MEMORY[0x1E695DF70] array];
   }
 
   v11 = _PFClassFromString(v4->_valueTransformerName);
@@ -1052,13 +1052,13 @@ LABEL_20:
       else if (v16)
       {
 LABEL_58:
-        v35 = [(NSPropertyDescription *)v4 name];
-        v36 = [(NSEntityDescription *)[(NSPropertyDescription *)v4 entity] name];
+        name = [(NSPropertyDescription *)v4 name];
+        name2 = [(NSEntityDescription *)[(NSPropertyDescription *)v4 entity] name];
         valueTransformerName = v4->_valueTransformerName;
         *buf = 138412802;
-        v40 = v35;
+        v40 = name;
         v41 = 2112;
-        v42 = v36;
+        v42 = name2;
         v43 = 2112;
         v44 = valueTransformerName;
       }
@@ -1071,10 +1071,10 @@ LABEL_58:
 LABEL_23:
     if (objc_opt_respondsToSelector())
     {
-      v20 = [v12 allowedTopLevelClasses];
-      if (v20)
+      allowedTopLevelClasses = [v12 allowedTopLevelClasses];
+      if (allowedTopLevelClasses)
       {
-        v21 = v20;
+        v21 = allowedTopLevelClasses;
       }
 
       else
@@ -1082,23 +1082,23 @@ LABEL_23:
         v21 = MEMORY[0x1E695E0F0];
       }
 
-      [v10 addObjectsFromArray:v21];
+      [_attributeValueClasses addObjectsFromArray:v21];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v22 = [v12 transformedValueClass];
-      if (v22)
+      transformedValueClass = [v12 transformedValueClass];
+      if (transformedValueClass)
       {
-        [v10 addObject:v22];
+        [_attributeValueClasses addObject:transformedValueClass];
       }
     }
   }
 
-  v9 = [v9 setByAddingObjectsFromArray:v10];
+  v9 = [v9 setByAddingObjectsFromArray:_attributeValueClasses];
 LABEL_32:
-  v4->_defaultValue = -[NSAttributeDescription _sortOutDefaultNumericValuesBecauseDoublesAndFloatsDontCompareEqual:](v4, [a3 decodeObjectOfClasses:v9 forKey:@"NSDefaultValue"]);
-  v23 = [a3 decodeInt32ForKey:@"NSFlagsKey"];
+  v4->_defaultValue = -[NSAttributeDescription _sortOutDefaultNumericValuesBecauseDoublesAndFloatsDontCompareEqual:](v4, [coder decodeObjectOfClasses:v9 forKey:@"NSDefaultValue"]);
+  v23 = [coder decodeInt32ForKey:@"NSFlagsKey"];
   if (!v23)
   {
     goto LABEL_49;
@@ -1127,13 +1127,13 @@ LABEL_42:
     else if (type != 100 && type != 200)
     {
 LABEL_57:
-      v33 = [(NSPropertyDescription *)v4 _extraIVars];
-      [a3 decodeDoubleForKey:@"NSMinValueName"];
-      *(v33 + 8) = v34;
+      _extraIVars = [(NSPropertyDescription *)v4 _extraIVars];
+      [coder decodeDoubleForKey:@"NSMinValueName"];
+      *(_extraIVars + 8) = v34;
       goto LABEL_49;
     }
 
-    v28 = [a3 decodeInt64ForKey:@"NSMinValueName"];
+    v28 = [coder decodeInt64ForKey:@"NSMinValueName"];
     *([(NSPropertyDescription *)v4 _extraIVars]+ 8) = v28;
     goto LABEL_49;
   }
@@ -1152,15 +1152,15 @@ LABEL_57:
   if (v25 == 700 || v25 == 300)
   {
 LABEL_40:
-    v26 = [a3 decodeInt64ForKey:@"NSMaxValueName"];
+    v26 = [coder decodeInt64ForKey:@"NSMaxValueName"];
     *([(NSPropertyDescription *)v4 _extraIVars]+ 16) = v26;
     goto LABEL_41;
   }
 
 LABEL_55:
-  v31 = [(NSPropertyDescription *)v4 _extraIVars];
-  [a3 decodeDoubleForKey:@"NSMaxValueName"];
-  *(v31 + 16) = v32;
+  _extraIVars2 = [(NSPropertyDescription *)v4 _extraIVars];
+  [coder decodeDoubleForKey:@"NSMaxValueName"];
+  *(_extraIVars2 + 16) = v32;
   if (v24)
   {
     goto LABEL_42;
@@ -1172,7 +1172,7 @@ LABEL_49:
     *&v4->super._propertyDescriptionFlags |= 0x4800u;
   }
 
-  if ([a3 decodeBoolForKey:@"NSIsIndexed"])
+  if ([coder decodeBoolForKey:@"NSIsIndexed"])
   {
     [(NSPropertyDescription *)v4 setIndexed:1];
   }
@@ -1182,11 +1182,11 @@ LABEL_54:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NSAttributeDescription;
-  v4 = [(NSPropertyDescription *)&v7 copyWithZone:a3];
+  v4 = [(NSPropertyDescription *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -1218,21 +1218,21 @@ LABEL_54:
   return v5;
 }
 
-- (BOOL)_isSchemaEqual:(id)a3
+- (BOOL)_isSchemaEqual:(id)equal
 {
   v9.receiver = self;
   v9.super_class = NSAttributeDescription;
   v5 = [(NSPropertyDescription *)&v9 _isSchemaEqual:?];
   if (v5)
   {
-    v5 = -[NSAttributeDescription _attributeTypeIsSchemaEqual:](self, "_attributeTypeIsSchemaEqual:", [a3 attributeType]);
+    v5 = -[NSAttributeDescription _attributeTypeIsSchemaEqual:](self, "_attributeTypeIsSchemaEqual:", [equal attributeType]);
     if (v5)
     {
-      v6 = [(NSAttributeDescription *)self isFileBackedFuture];
-      if (v6 == [a3 isFileBackedFuture])
+      isFileBackedFuture = [(NSAttributeDescription *)self isFileBackedFuture];
+      if (isFileBackedFuture == [equal isFileBackedFuture])
       {
-        v7 = [(NSAttributeDescription *)self storesBinaryDataExternally];
-        LOBYTE(v5) = v7 ^ [a3 storesBinaryDataExternally] ^ 1;
+        storesBinaryDataExternally = [(NSAttributeDescription *)self storesBinaryDataExternally];
+        LOBYTE(v5) = storesBinaryDataExternally ^ [equal storesBinaryDataExternally] ^ 1;
       }
 
       else
@@ -1252,9 +1252,9 @@ LABEL_54:
   v15.receiver = self;
   v15.super_class = NSAttributeDescription;
   v5 = [(NSPropertyDescription *)&v15 description];
-  v6 = [(NSAttributeDescription *)self attributeType];
-  v7 = [(NSAttributeDescription *)self attributeValueClassName];
-  v8 = [(NSAttributeDescription *)self defaultValue];
+  attributeType = [(NSAttributeDescription *)self attributeType];
+  attributeValueClassName = [(NSAttributeDescription *)self attributeValueClassName];
+  defaultValue = [(NSAttributeDescription *)self defaultValue];
   v9 = @"NO";
   if ([(NSAttributeDescription *)self preservesValueInHistoryOnDeletion])
   {
@@ -1271,14 +1271,14 @@ LABEL_54:
     v9 = @"YES";
   }
 
-  v11 = [(NSAttributeDescription *)self usesMergeableStorage];
+  usesMergeableStorage = [(NSAttributeDescription *)self usesMergeableStorage];
   v12 = &stru_1EF3F1768;
-  if (v11)
+  if (usesMergeableStorage)
   {
     v12 = @", usesMergeableStorage YES";
   }
 
-  v13 = [v4 stringWithFormat:@"%@, attributeType %lu, attributeValueClassName %@, defaultValue %@, preservesValueInHistoryOnDeletion %@, allowsCloudEncryption %@%@", v5, v6, v7, v8, v10, v9, v12];
+  v13 = [v4 stringWithFormat:@"%@, attributeType %lu, attributeValueClassName %@, defaultValue %@, preservesValueInHistoryOnDeletion %@, allowsCloudEncryption %@%@", v5, attributeType, attributeValueClassName, defaultValue, v10, v9, v12];
   objc_autoreleasePoolPop(v3);
   return v13;
 }
@@ -1320,7 +1320,7 @@ LABEL_54:
       v7 = MEMORY[0x1E696AEC0];
       v8 = [NSAttributeDescription stringForAttributeType:2000];
       v9 = objc_opt_class();
-      v10 = [v7 stringWithFormat:@"'%@' is only supported for use with '%@'.", v8, NSStringFromClass(v9)];
+      attributeType = [v7 stringWithFormat:@"'%@' is only supported for use with '%@'.", v8, NSStringFromClass(v9)];
       v11 = v5;
       v12 = v6;
       goto LABEL_12;
@@ -1331,9 +1331,9 @@ LABEL_54:
   {
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D940];
-    v10 = @"Can't set attribute type to undefined for non-transient attribute.";
+    attributeType = @"Can't set attribute type to undefined for non-transient attribute.";
 LABEL_12:
-    objc_exception_throw([v11 exceptionWithName:v12 reason:v10 userInfo:0]);
+    objc_exception_throw([v11 exceptionWithName:v12 reason:attributeType userInfo:0]);
   }
 
   v13 = [NSAttributeDescription _classNameForType:?];
@@ -1341,7 +1341,7 @@ LABEL_12:
   {
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D930];
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Can't find class for type %lu", attributeType];
+    attributeType = [MEMORY[0x1E696AEC0] stringWithFormat:@"Can't find class for type %lu", attributeType];
     v11 = v14;
     v12 = v15;
     goto LABEL_12;
@@ -1352,7 +1352,7 @@ LABEL_12:
   [(NSAttributeDescription *)self setAttributeValueClassName:v13];
 }
 
-+ (NSString)_classNameForType:(uint64_t)a1
++ (NSString)_classNameForType:(uint64_t)type
 {
   objc_opt_self();
   result = 0;
@@ -1557,13 +1557,13 @@ LABEL_28:
   }
 }
 
-- (void)setPreserveValueOnDeletionInPersistentHistory:(BOOL)a3
+- (void)setPreserveValueOnDeletionInPersistentHistory:(BOOL)history
 {
-  v3 = a3;
+  historyCopy = history;
   [(NSPropertyDescription *)self _throwIfNotEditable];
   if (self)
   {
-    if (v3)
+    if (historyCopy)
     {
       v5 = 4096;
     }
@@ -1577,20 +1577,20 @@ LABEL_28:
   }
 }
 
-- (BOOL)_attributeTypeIsSchemaEqual:(unint64_t)a3
+- (BOOL)_attributeTypeIsSchemaEqual:(unint64_t)equal
 {
   type = self->_type;
-  if (type == a3)
+  if (type == equal)
   {
     return 1;
   }
 
   if (type == 100)
   {
-    return a3 == 300 || a3 == 200;
+    return equal == 300 || equal == 200;
   }
 
-  if (a3 == 300 && type == 200 || a3 == 500 && type == 600)
+  if (equal == 300 && type == 200 || equal == 500 && type == 600)
   {
     return 1;
   }
@@ -1601,7 +1601,7 @@ LABEL_28:
   }
 
   result = 1;
-  if (a3 != 100 && a3 != 200 && a3 != 300)
+  if (equal != 100 && equal != 200 && equal != 300)
   {
     return 0;
   }
@@ -1609,15 +1609,15 @@ LABEL_28:
   return result;
 }
 
-- (id)_initWithName:(id)a3 type:(unint64_t)a4 withClassName:(id)a5
+- (id)_initWithName:(id)name type:(unint64_t)type withClassName:(id)className
 {
-  v6 = a4;
-  v7 = [(NSPropertyDescription *)self _initWithName:a3];
+  typeCopy = type;
+  v7 = [(NSPropertyDescription *)self _initWithName:name];
   v8 = v7;
   if (v7)
   {
-    *(v7 + 40) = v6;
-    v7[13] = [a5 copy];
+    *(v7 + 40) = typeCopy;
+    v7[13] = [className copy];
     v8[14] = 0;
     v8[12] = 0;
   }
@@ -1625,11 +1625,11 @@ LABEL_28:
   return v8;
 }
 
-- (void)setIsFileBackedFuture:(BOOL)a3
+- (void)setIsFileBackedFuture:(BOOL)future
 {
-  v3 = a3;
+  futureCopy = future;
   [(NSPropertyDescription *)self _throwIfNotEditable];
-  if (v3)
+  if (futureCopy)
   {
     v5 = 18432;
   }
@@ -1642,20 +1642,20 @@ LABEL_28:
   *&self->super._propertyDescriptionFlags = v5 | *&self->super._propertyDescriptionFlags & 0xB7FF;
 }
 
-+ (id)stringForAttributeType:(unint64_t)a3
++ (id)stringForAttributeType:(unint64_t)type
 {
-  if (a3 > 899)
+  if (type > 899)
   {
-    if (a3 > 1799)
+    if (type > 1799)
     {
-      if (a3 > 2099)
+      if (type > 2099)
       {
-        if (a3 == 2100)
+        if (type == 2100)
         {
           return @"NSCompositeAttributeType";
         }
 
-        if (a3 == 2200)
+        if (type == 2200)
         {
           return @"NSCodableAttributeType";
         }
@@ -1663,26 +1663,26 @@ LABEL_28:
 
       else
       {
-        if (a3 == 1800)
+        if (type == 1800)
         {
           return @"NSTransformableAttributeType";
         }
 
-        if (a3 == 2000)
+        if (type == 2000)
         {
           return @"NSObjectIDAttributeType";
         }
       }
     }
 
-    else if (a3 > 1099)
+    else if (type > 1099)
     {
-      if (a3 == 1100)
+      if (type == 1100)
       {
         return @"NSUUIDAttributeType";
       }
 
-      if (a3 == 1200)
+      if (type == 1200)
       {
         return @"NSURIAttributeType";
       }
@@ -1690,28 +1690,28 @@ LABEL_28:
 
     else
     {
-      if (a3 == 900)
+      if (type == 900)
       {
         return @"NSDateAttributeType";
       }
 
-      if (a3 == 1000)
+      if (type == 1000)
       {
         return @"NSBinaryDataAttributeType";
       }
     }
   }
 
-  else if (a3 > 499)
+  else if (type > 499)
   {
-    if (a3 > 699)
+    if (type > 699)
     {
-      if (a3 == 700)
+      if (type == 700)
       {
         return @"NSStringAttributeType";
       }
 
-      if (a3 == 800)
+      if (type == 800)
       {
         return @"NSBooleanAttributeType";
       }
@@ -1719,26 +1719,26 @@ LABEL_28:
 
     else
     {
-      if (a3 == 500)
+      if (type == 500)
       {
         return @"NSDoubleAttributeType";
       }
 
-      if (a3 == 600)
+      if (type == 600)
       {
         return @"NSFloatAttributeType";
       }
     }
   }
 
-  else if (a3 > 299)
+  else if (type > 299)
   {
-    if (a3 == 300)
+    if (type == 300)
     {
       return @"NSInteger64AttributeType";
     }
 
-    if (a3 == 400)
+    if (type == 400)
     {
       return @"NSDecimalAttributeType";
     }
@@ -1746,12 +1746,12 @@ LABEL_28:
 
   else
   {
-    if (a3 == 100)
+    if (type == 100)
     {
       return @"NSInteger16AttributeType";
     }
 
-    if (a3 == 200)
+    if (type == 200)
     {
       return @"NSInteger32AttributeType";
     }
@@ -1760,21 +1760,21 @@ LABEL_28:
   return @"NSUndefinedAttributeType";
 }
 
-- (BOOL)_epsilonEquals:(id)a3 rhs:(id)a4 withFlags:(int)a5
+- (BOOL)_epsilonEquals:(id)equals rhs:(id)rhs withFlags:(int)flags
 {
-  if (a3 == a4 || a5 == 1 && [(NSPropertyDescription *)self _isTriggerBacked])
+  if (equals == rhs || flags == 1 && [(NSPropertyDescription *)self _isTriggerBacked])
   {
     return 1;
   }
 
-  v9 = [(NSAttributeDescription *)self attributeType];
-  if (v9 == NSDateAttributeType)
+  attributeType = [(NSAttributeDescription *)self attributeType];
+  if (attributeType == NSDateAttributeType)
   {
-    if ([a3 isNSDate] && objc_msgSend(a4, "isNSDate"))
+    if ([equals isNSDate] && objc_msgSend(rhs, "isNSDate"))
     {
-      [a3 timeIntervalSinceReferenceDate];
+      [equals timeIntervalSinceReferenceDate];
       v11 = v17;
-      [a4 timeIntervalSinceReferenceDate];
+      [rhs timeIntervalSinceReferenceDate];
 LABEL_18:
       if (v11 != v12)
       {
@@ -1785,13 +1785,13 @@ LABEL_18:
     }
   }
 
-  else if (v9 == NSFloatAttributeType)
+  else if (attributeType == NSFloatAttributeType)
   {
-    if ([a3 isNSNumber] && objc_msgSend(a4, "isNSNumber"))
+    if ([equals isNSNumber] && objc_msgSend(rhs, "isNSNumber"))
     {
-      [a3 floatValue];
+      [equals floatValue];
       v14 = v13;
-      [a4 floatValue];
+      [rhs floatValue];
       if (v14 != v15)
       {
         return vabds_f32(v14, v15) <= 0.00000011921;
@@ -1801,23 +1801,23 @@ LABEL_18:
     }
   }
 
-  else if (v9 == NSDoubleAttributeType && [a3 isNSNumber] && objc_msgSend(a4, "isNSNumber"))
+  else if (attributeType == NSDoubleAttributeType && [equals isNSNumber] && objc_msgSend(rhs, "isNSNumber"))
   {
-    [a3 doubleValue];
+    [equals doubleValue];
     v11 = v10;
-    [a4 doubleValue];
+    [rhs doubleValue];
     goto LABEL_18;
   }
 
-  return [a3 isEqual:a4];
+  return [equals isEqual:rhs];
 }
 
-- (uint64_t)_canConvertPredicate:(void *)a3 andWarning:
+- (uint64_t)_canConvertPredicate:(void *)predicate andWarning:
 {
   if (result)
   {
     v4 = result;
-    if (![a3 isNSNumber])
+    if (![predicate isNSNumber])
     {
       return 0;
     }
@@ -1836,14 +1836,14 @@ LABEL_18:
             return 0;
           }
 
-          v11 = [a2 leftExpression];
-          if ([v11 expressionType] != 3)
+          leftExpression = [a2 leftExpression];
+          if ([leftExpression expressionType] != 3)
           {
             return 0;
           }
 
-          v8 = [v11 keyPath];
-          v7 = @"length";
+          keyPath = [leftExpression keyPath];
+          expressionForEvaluatedObject = @"length";
         }
 
         else
@@ -1859,28 +1859,28 @@ LABEL_18:
             return 0;
           }
 
-          v10 = [a2 leftExpression];
-          if ([v10 expressionType] != 3)
+          leftExpression2 = [a2 leftExpression];
+          if ([leftExpression2 expressionType] != 3)
           {
             return 0;
           }
 
-          v8 = [v10 keyPath];
-          v7 = @"timeIntervalSinceReferenceDate";
+          keyPath = [leftExpression2 keyPath];
+          expressionForEvaluatedObject = @"timeIntervalSinceReferenceDate";
         }
 
 LABEL_16:
-        if (-[__CFString isEqual:](v7, "isEqual:", v8) && ![objc_msgSend(a2 "rightExpression")])
+        if (-[__CFString isEqual:](expressionForEvaluatedObject, "isEqual:", keyPath) && ![objc_msgSend(a2 "rightExpression")])
         {
-          v9 = [a2 predicateOperatorType];
-          if (v9 == 3)
+          predicateOperatorType = [a2 predicateOperatorType];
+          if (predicateOperatorType == 3)
           {
             return -1;
           }
 
           else
           {
-            return v9 == 1;
+            return predicateOperatorType == 1;
           }
         }
 
@@ -1914,9 +1914,9 @@ LABEL_14:
           return 0;
         }
 
-        v6 = [a2 leftExpression];
-        v7 = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
-        v8 = v6;
+        leftExpression3 = [a2 leftExpression];
+        expressionForEvaluatedObject = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
+        keyPath = leftExpression3;
         goto LABEL_16;
       }
     }
@@ -1930,28 +1930,28 @@ LABEL_14:
   if (result)
   {
     v3 = result;
-    v4 = [a2 _rawValidationPredicates];
-    v5 = [a2 _rawValidationWarnings];
-    v6 = [v3 _rawValidationPredicates];
-    v7 = [v3 _rawValidationWarnings];
-    v8 = [v3 _extraIVars];
-    v9 = [v4 count];
+    _rawValidationPredicates = [a2 _rawValidationPredicates];
+    _rawValidationWarnings = [a2 _rawValidationWarnings];
+    _rawValidationPredicates2 = [v3 _rawValidationPredicates];
+    _rawValidationWarnings2 = [v3 _rawValidationWarnings];
+    _extraIVars = [v3 _extraIVars];
+    v9 = [_rawValidationPredicates count];
     if (v9)
     {
       v10 = v9;
       for (i = 0; v10 != i; ++i)
       {
-        v12 = [v4 objectAtIndex:i];
-        v13 = -[NSAttributeDescription _canConvertPredicate:andWarning:](v3, v12, [v5 objectAtIndex:i]);
+        v12 = [_rawValidationPredicates objectAtIndex:i];
+        v13 = -[NSAttributeDescription _canConvertPredicate:andWarning:](v3, v12, [_rawValidationWarnings objectAtIndex:i]);
         if (!v13)
         {
-          if (!v6)
+          if (!_rawValidationPredicates2)
           {
             return 0;
           }
 
-          v17 = [v6 indexOfObject:v12];
-          if (v17 == 0x7FFFFFFFFFFFFFFFLL || ([objc_msgSend(v7 objectAtIndex:{v17), "isEqual:", objc_msgSend(v5, "objectAtIndex:", i)}] & 1) == 0)
+          v17 = [_rawValidationPredicates2 indexOfObject:v12];
+          if (v17 == 0x7FFFFFFFFFFFFFFFLL || ([objc_msgSend(_rawValidationWarnings2 objectAtIndex:{v17), "isEqual:", objc_msgSend(_rawValidationWarnings, "objectAtIndex:", i)}] & 1) == 0)
           {
             return 0;
           }
@@ -1973,7 +1973,7 @@ LABEL_20:
               v20 = 16;
             }
 
-            v21 = *(v8 + v20);
+            v21 = *(_extraIVars + v20);
             [v15 doubleValue];
             if (v21 != v22)
             {
@@ -1995,7 +1995,7 @@ LABEL_20:
           v18 = 16;
         }
 
-        v19 = *(v8 + v18);
+        v19 = *(_extraIVars + v18);
         if (v19 != [v15 longLongValue])
         {
           return 0;
@@ -2009,22 +2009,22 @@ LABEL_20:
   return result;
 }
 
-- (BOOL)_comparePredicatesAndWarnings:(id)a3
+- (BOOL)_comparePredicatesAndWarnings:(id)warnings
 {
-  v5 = [(NSPropertyDescription *)self _hasMaxValueInExtraIvars]|| [(NSPropertyDescription *)self _hasMinValueInExtraIvars];
+  _hasMinValueInExtraIvars = [(NSPropertyDescription *)self _hasMaxValueInExtraIvars]|| [(NSPropertyDescription *)self _hasMinValueInExtraIvars];
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(warnings))
   {
-    a3 = [a3 _underlyingProperty];
+    warnings = [warnings _underlyingProperty];
   }
 
-  if ([a3 _hasMaxValueInExtraIvars] & 1) != 0 || (objc_msgSend(a3, "_hasMinValueInExtraIvars"))
+  if ([warnings _hasMaxValueInExtraIvars] & 1) != 0 || (objc_msgSend(warnings, "_hasMinValueInExtraIvars"))
   {
-    if (v5)
+    if (_hasMinValueInExtraIvars)
     {
-      v7 = [(NSPropertyDescription *)self _extraIVars];
-      v8 = [a3 _extraIVars];
-      if (v7->var1 != *(v8 + 8) || v7->var2 != *(v8 + 16))
+      _extraIVars = [(NSPropertyDescription *)self _extraIVars];
+      _extraIVars2 = [warnings _extraIVars];
+      if (_extraIVars->var1 != *(_extraIVars2 + 8) || _extraIVars->var2 != *(_extraIVars2 + 16))
       {
         return 0;
       }
@@ -2032,25 +2032,25 @@ LABEL_20:
       goto LABEL_19;
     }
 
-    v10 = a3;
-    v11 = self;
+    selfCopy2 = warnings;
+    warningsCopy2 = self;
   }
 
   else
   {
-    if (!v5)
+    if (!_hasMinValueInExtraIvars)
     {
 LABEL_19:
       v12.receiver = self;
       v12.super_class = NSAttributeDescription;
-      return [(NSPropertyDescription *)&v12 _comparePredicatesAndWarnings:a3];
+      return [(NSPropertyDescription *)&v12 _comparePredicatesAndWarnings:warnings];
     }
 
-    v10 = self;
-    v11 = a3;
+    selfCopy2 = self;
+    warningsCopy2 = warnings;
   }
 
-  return [(NSAttributeDescription *)v10 _comparePredicatesAndWarningsWithUnoptimizedAttributeDescription:v11];
+  return [(NSAttributeDescription *)selfCopy2 _comparePredicatesAndWarningsWithUnoptimizedAttributeDescription:warningsCopy2];
 }
 
 void __75__NSAttributeDescription__NSInternalMethods___createCachesAndOptimizeState__block_invoke()
@@ -2081,29 +2081,29 @@ void __75__NSAttributeDescription__NSInternalMethods___createCachesAndOptimizeSt
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_nonPredicateValidateValue:(id *)a3 forKey:(id)a4 inObject:(id)a5 error:(id *)a6
+- (BOOL)_nonPredicateValidateValue:(id *)value forKey:(id)key inObject:(id)object error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   v32.receiver = self;
   v32.super_class = NSAttributeDescription;
-  LODWORD(v10) = [NSPropertyDescription _nonPredicateValidateValue:sel__nonPredicateValidateValue_forKey_inObject_error_ forKey:a3 inObject:a4 error:?];
+  LODWORD(v10) = [NSPropertyDescription _nonPredicateValidateValue:sel__nonPredicateValidateValue_forKey_inObject_error_ forKey:value inObject:key error:?];
   if (!v10)
   {
     goto LABEL_53;
   }
 
-  if (!*a3)
+  if (!*value)
   {
     LOBYTE(v10) = 1;
     goto LABEL_53;
   }
 
-  v11 = [(NSPropertyDescription *)self _hasMaxValueInExtraIvars];
-  v12 = [(NSPropertyDescription *)self _hasMinValueInExtraIvars];
-  v13 = v12;
-  if (v11 || v12 || self->_type == 700)
+  _hasMaxValueInExtraIvars = [(NSPropertyDescription *)self _hasMaxValueInExtraIvars];
+  _hasMinValueInExtraIvars = [(NSPropertyDescription *)self _hasMinValueInExtraIvars];
+  v13 = _hasMinValueInExtraIvars;
+  if (_hasMaxValueInExtraIvars || _hasMinValueInExtraIvars || self->_type == 700)
   {
-    v14 = [(NSPropertyDescription *)self _extraIVars];
+    _extraIVars = [(NSPropertyDescription *)self _extraIVars];
     v15 = 0;
     type = self->_type;
     if (type > 0x1F3)
@@ -2120,9 +2120,9 @@ void __75__NSAttributeDescription__NSInternalMethods___createCachesAndOptimizeSt
 
       if (type == 700)
       {
-        if (v11)
+        if (_hasMaxValueInExtraIvars)
         {
-          if ([*a3 length] <= v14->var2)
+          if ([*value length] <= _extraIVars->var2)
           {
             v15 = 0;
           }
@@ -2138,13 +2138,13 @@ void __75__NSAttributeDescription__NSInternalMethods___createCachesAndOptimizeSt
           v15 = 0;
         }
 
-        if (v13 && [*a3 length] < v14->var1)
+        if (v13 && [*value length] < _extraIVars->var1)
         {
           v15 = 1670;
         }
 
-        v26 = [*a3 length];
-        if (CFStringGetCharactersPtr(*a3))
+        v26 = [*value length];
+        if (CFStringGetCharactersPtr(*value))
         {
           if (CFStringEncodingUnicodeToBytes())
           {
@@ -2163,7 +2163,7 @@ void __75__NSAttributeDescription__NSInternalMethods___createCachesAndOptimizeSt
 
           v34.location = 0;
           v34.length = v26;
-          CFStringGetCharacters(*a3, v34, v29);
+          CFStringGetCharacters(*value, v34, v29);
           if (CFStringEncodingUnicodeToBytes())
           {
             v15 = 1671;
@@ -2180,10 +2180,10 @@ void __75__NSAttributeDescription__NSInternalMethods___createCachesAndOptimizeSt
 
       if (type == 900)
       {
-        if (v11)
+        if (_hasMaxValueInExtraIvars)
         {
-          [*a3 timeIntervalSinceReferenceDate];
-          v15 = v18 <= *&v14->var2 ? 0 : 1630;
+          [*value timeIntervalSinceReferenceDate];
+          v15 = v18 <= *&_extraIVars->var2 ? 0 : 1630;
         }
 
         else
@@ -2193,8 +2193,8 @@ void __75__NSAttributeDescription__NSInternalMethods___createCachesAndOptimizeSt
 
         if (v13)
         {
-          [*a3 timeIntervalSinceReferenceDate];
-          v19 = v27 < *&v14->var1;
+          [*value timeIntervalSinceReferenceDate];
+          v19 = v27 < *&_extraIVars->var1;
           v21 = 1640;
 LABEL_40:
           if (v19)
@@ -2220,9 +2220,9 @@ LABEL_40:
       if (type == 300)
       {
 LABEL_23:
-        if (v11)
+        if (_hasMaxValueInExtraIvars)
         {
-          if ([*a3 longLongValue] <= v14->var2)
+          if ([*value longLongValue] <= _extraIVars->var2)
           {
             v15 = 0;
           }
@@ -2243,17 +2243,17 @@ LABEL_23:
           goto LABEL_42;
         }
 
-        v19 = [*a3 longLongValue] < v14->var1;
+        v19 = [*value longLongValue] < _extraIVars->var1;
         goto LABEL_39;
       }
 
       if (type == 400)
       {
 LABEL_19:
-        if (v11)
+        if (_hasMaxValueInExtraIvars)
         {
-          [*a3 doubleValue];
-          if (v17 <= *&v14->var2)
+          [*value doubleValue];
+          if (v17 <= *&_extraIVars->var2)
           {
             v15 = 0;
           }
@@ -2274,8 +2274,8 @@ LABEL_19:
           goto LABEL_42;
         }
 
-        [*a3 doubleValue];
-        v19 = v20 < *&v14->var1;
+        [*value doubleValue];
+        v19 = v20 < *&_extraIVars->var1;
 LABEL_39:
         v21 = 1620;
         goto LABEL_40;
@@ -2291,25 +2291,25 @@ LABEL_39:
 LABEL_42:
   if ([(NSAttributeDescription *)self attributeType]== NSURIAttributeType)
   {
-    v22 = [*a3 absoluteString];
+    absoluteString = [*value absoluteString];
     v23 = 1560;
     if (!v15)
     {
       v23 = 1690;
     }
 
-    if (!v22)
+    if (!absoluteString)
     {
       v15 = v23;
     }
   }
 
   LOBYTE(v10) = v15 == 0;
-  if (a6 && v15)
+  if (error && v15)
   {
-    if (a5)
+    if (object)
     {
-      v10 = [(NSManagedObject *)a5 _generateErrorWithCode:v15 andMessage:0 forKey:[(NSPropertyDescription *)self name] andValue:*a3 additionalDetail:0];
+      v10 = [(NSManagedObject *)object _generateErrorWithCode:v15 andMessage:0 forKey:[(NSPropertyDescription *)self name] andValue:*value additionalDetail:0];
     }
 
     else
@@ -2319,7 +2319,7 @@ LABEL_42:
 
     v24 = v10;
     LOBYTE(v10) = 0;
-    *a6 = v24;
+    *error = v24;
   }
 
 LABEL_53:
@@ -2327,17 +2327,17 @@ LABEL_53:
   return v10;
 }
 
-- (void)_versionHash:(char *)a3 inStyle:(unint64_t)a4
+- (void)_versionHash:(char *)hash inStyle:(unint64_t)style
 {
   v13 = *MEMORY[0x1E69E9840];
   memset(&c, 0, sizeof(c));
   CC_SHA256_Init(&c);
   v10.receiver = self;
   v10.super_class = NSAttributeDescription;
-  [(NSPropertyDescription *)&v10 _versionHash:data inStyle:a4];
+  [(NSPropertyDescription *)&v10 _versionHash:data inStyle:style];
   CC_SHA256_Update(&c, data, 0x20u);
-  v9 = [(NSAttributeDescription *)self attributeType];
-  CC_SHA256_Update(&c, &v9, 4u);
+  attributeType = [(NSAttributeDescription *)self attributeType];
+  CC_SHA256_Update(&c, &attributeType, 4u);
   if ([(NSAttributeDescription *)self allowsExternalBinaryDataStorage])
   {
     v8 = 1;
@@ -2350,33 +2350,33 @@ LABEL_53:
     CC_SHA256_Update(&c, &v8, 1u);
   }
 
-  CC_SHA256_Final(a3, &c);
+  CC_SHA256_Final(hash, &c);
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_initWithName:(id)a3 type:(unint64_t)a4
+- (id)_initWithName:(id)name type:(unint64_t)type
 {
-  v7 = [NSAttributeDescription _classNameForType:a4];
+  v7 = [NSAttributeDescription _classNameForType:type];
   if (v7 == NSKeyValueCoding_NullValue)
   {
 
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Can't find class for type %lu", a4), 0}]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Can't find class for type %lu", type), 0}]);
   }
 
-  return [(NSAttributeDescription *)self _initWithName:a3 type:a4 withClassName:v7];
+  return [(NSAttributeDescription *)self _initWithName:name type:type withClassName:v7];
 }
 
-- (void)_writeIntoData:(id)a3 propertiesDict:(id)a4 uniquedPropertyNames:(id)a5 uniquedStrings:(id)a6 uniquedData:(id)a7 entitiesSlots:(id)a8 fetchRequests:(id)a9
+- (void)_writeIntoData:(id)data propertiesDict:(id)dict uniquedPropertyNames:(id)names uniquedStrings:(id)strings uniquedData:(id)uniquedData entitiesSlots:(id)slots fetchRequests:(id)requests
 {
-  v16 = [a3 length];
-  _writeInt32IntoData(a3, 0);
-  v17 = [a3 length];
+  v16 = [data length];
+  _writeInt32IntoData(data, 0);
+  v17 = [data length];
   v39.receiver = self;
   v39.super_class = NSAttributeDescription;
-  [(NSPropertyDescription *)&v39 _appendPropertyFieldsToData:a3 propertiesDict:a4 uniquedPropertyNames:a5 uniquedStrings:a6 uniquedData:a7 entitiesSlots:a8];
+  [(NSPropertyDescription *)&v39 _appendPropertyFieldsToData:data propertiesDict:dict uniquedPropertyNames:names uniquedStrings:strings uniquedData:uniquedData entitiesSlots:slots];
   if (self->_valueTransformerName)
   {
-    v18 = [objc_msgSend(a6 "valueForKey:"unsignedIntegerValue"")];
+    v18 = [objc_msgSend(strings "valueForKey:"unsignedIntegerValue"")];
   }
 
   else
@@ -2384,11 +2384,11 @@ LABEL_53:
     v18 = 0;
   }
 
-  _writeInt32IntoData(a3, v18);
-  _writeInt32IntoData(a3, self->_type);
+  _writeInt32IntoData(data, v18);
+  _writeInt32IntoData(data, self->_type);
   if (self->_attributeValueClassName)
   {
-    v19 = [objc_msgSend(a5 "valueForKey:"unsignedIntegerValue"")];
+    v19 = [objc_msgSend(names "valueForKey:"unsignedIntegerValue"")];
   }
 
   else
@@ -2396,10 +2396,10 @@ LABEL_53:
     v19 = 0;
   }
 
-  _writeInt32IntoData(a3, v19);
+  _writeInt32IntoData(data, v19);
   if (self->_defaultValue)
   {
-    _writeInt32IntoData(a3, 1u);
+    _writeInt32IntoData(data, 1u);
     type = self->_type;
     if (type <= 0x1F3)
     {
@@ -2407,20 +2407,20 @@ LABEL_53:
       {
         if (type == 300)
         {
-          _writeInt64IntoData(a3, [self->_defaultValue longLongValue]);
+          _writeInt64IntoData(data, [self->_defaultValue longLongValue]);
           goto LABEL_40;
         }
 
         if (type == 400)
         {
           defaultValue = [self->_defaultValue stringValue];
-          v22 = a5;
+          stringsCopy = names;
           goto LABEL_37;
         }
 
 LABEL_36:
         defaultValue = self->_defaultValue;
-        v22 = a7;
+        stringsCopy = uniquedData;
         goto LABEL_37;
       }
 
@@ -2430,10 +2430,10 @@ LABEL_36:
       }
 
 LABEL_18:
-      v25 = [self->_defaultValue integerValue];
+      integerValue = [self->_defaultValue integerValue];
 LABEL_38:
-      v24 = v25;
-      v23 = a3;
+      v24 = integerValue;
+      dataCopy4 = data;
       goto LABEL_39;
     }
 
@@ -2446,29 +2446,29 @@ LABEL_38:
           goto LABEL_36;
         }
 
-        v26 = [a3 length];
+        v26 = [data length];
         v27 = (v26 + 3) & 0xFFFFFFFFFFFFFFFCLL;
         if (v27 != v26)
         {
           v38 = 0;
-          [a3 appendBytes:&v38 length:v27 - v26];
+          [data appendBytes:&v38 length:v27 - v26];
         }
 
         [self->_defaultValue floatValue];
         LODWORD(v38) = bswap32(v28);
-        v29 = a3;
+        dataCopy3 = data;
         v30 = 4;
 LABEL_35:
-        [v29 appendBytes:&v38 length:v30];
+        [dataCopy3 appendBytes:&v38 length:v30];
         goto LABEL_40;
       }
 
-      v34 = [a3 length];
+      v34 = [data length];
       v35 = (v34 + 7) & 0xFFFFFFFFFFFFFFF8;
       if (v35 != v34)
       {
         v38 = 0;
-        [a3 appendBytes:&v38 length:v35 - v34];
+        [data appendBytes:&v38 length:v35 - v34];
       }
 
       [self->_defaultValue doubleValue];
@@ -2483,9 +2483,9 @@ LABEL_35:
           if (type == 700)
           {
             defaultValue = self->_defaultValue;
-            v22 = a6;
+            stringsCopy = strings;
 LABEL_37:
-            v25 = [objc_msgSend(v22 objectForKey:{defaultValue), "unsignedIntegerValue"}];
+            integerValue = [objc_msgSend(stringsCopy objectForKey:{defaultValue), "unsignedIntegerValue"}];
             goto LABEL_38;
           }
 
@@ -2495,72 +2495,72 @@ LABEL_37:
         goto LABEL_18;
       }
 
-      v31 = [a3 length];
+      v31 = [data length];
       v32 = (v31 + 7) & 0xFFFFFFFFFFFFFFF8;
       if (v32 != v31)
       {
         v38 = 0;
-        [a3 appendBytes:&v38 length:v32 - v31];
+        [data appendBytes:&v38 length:v32 - v31];
       }
 
       [self->_defaultValue timeIntervalSinceReferenceDate];
     }
 
     v38 = bswap64(v33);
-    v29 = a3;
+    dataCopy3 = data;
     v30 = 8;
     goto LABEL_35;
   }
 
-  v23 = a3;
+  dataCopy4 = data;
   v24 = 0;
 LABEL_39:
-  _writeInt32IntoData(v23, v24);
+  _writeInt32IntoData(dataCopy4, v24);
 LABEL_40:
-  v36 = [(NSPropertyDescription *)self _hasMaxValueInExtraIvars];
+  _hasMaxValueInExtraIvars = [(NSPropertyDescription *)self _hasMaxValueInExtraIvars];
   if ([(NSPropertyDescription *)self _hasMinValueInExtraIvars])
   {
-    v36 |= 2u;
+    _hasMaxValueInExtraIvars |= 2u;
   }
 
   if ([(NSPropertyDescription *)self _storeBinaryDataExternally])
   {
-    v36 |= 4u;
+    _hasMaxValueInExtraIvars |= 4u;
   }
 
   if ([(NSPropertyDescription *)self _isTriggerBacked])
   {
-    v36 |= 8u;
+    _hasMaxValueInExtraIvars |= 8u;
   }
 
   if ([(NSAttributeDescription *)self preservesValueInHistoryOnDeletion])
   {
-    v36 |= 0x10u;
+    _hasMaxValueInExtraIvars |= 0x10u;
   }
 
   if ([(NSPropertyDescription *)self _isFileBackedFuture])
   {
-    v36 |= 0x20u;
+    _hasMaxValueInExtraIvars |= 0x20u;
   }
 
   else if ([-[NSDictionary valueForKey:](-[NSPropertyDescription userInfo](self "userInfo")])
   {
-    v36 |= 0x24u;
+    _hasMaxValueInExtraIvars |= 0x24u;
   }
 
   if ([(NSPropertyDescription *)self _allowsCloudEncryption])
   {
-    v37 = v36 | 0x40;
+    v37 = _hasMaxValueInExtraIvars | 0x40;
   }
 
   else
   {
-    v37 = v36;
+    v37 = _hasMaxValueInExtraIvars;
   }
 
-  _writeInt32IntoData(a3, v37);
-  v38 = bswap32([a3 length] - v16);
-  [a3 replaceBytesInRange:v17 - 4 withBytes:{4, &v38}];
+  _writeInt32IntoData(data, v37);
+  v38 = bswap32([data length] - v16);
+  [data replaceBytesInRange:v17 - 4 withBytes:{4, &v38}];
 }
 
 @end

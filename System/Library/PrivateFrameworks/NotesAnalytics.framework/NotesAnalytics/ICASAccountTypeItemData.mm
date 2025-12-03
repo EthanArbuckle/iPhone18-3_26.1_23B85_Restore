@@ -1,24 +1,24 @@
 @interface ICASAccountTypeItemData
-- (ICASAccountTypeItemData)initWithAccountType:(id)a3 countOfAccounts:(id)a4 countOfNotes:(id)a5;
+- (ICASAccountTypeItemData)initWithAccountType:(id)type countOfAccounts:(id)accounts countOfNotes:(id)notes;
 - (id)toDict;
 @end
 
 @implementation ICASAccountTypeItemData
 
-- (ICASAccountTypeItemData)initWithAccountType:(id)a3 countOfAccounts:(id)a4 countOfNotes:(id)a5
+- (ICASAccountTypeItemData)initWithAccountType:(id)type countOfAccounts:(id)accounts countOfNotes:(id)notes
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  accountsCopy = accounts;
+  notesCopy = notes;
   v15.receiver = self;
   v15.super_class = ICASAccountTypeItemData;
   v12 = [(ICASAccountTypeItemData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_accountType, a3);
-    objc_storeStrong(&v13->_countOfAccounts, a4);
-    objc_storeStrong(&v13->_countOfNotes, a5);
+    objc_storeStrong(&v12->_accountType, type);
+    objc_storeStrong(&v13->_countOfAccounts, accounts);
+    objc_storeStrong(&v13->_countOfNotes, notes);
   }
 
   return v13;
@@ -28,47 +28,47 @@
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v15[0] = @"accountType";
-  v3 = [(ICASAccountTypeItemData *)self accountType];
-  if (v3)
+  accountType = [(ICASAccountTypeItemData *)self accountType];
+  if (accountType)
   {
-    v4 = [(ICASAccountTypeItemData *)self accountType];
+    accountType2 = [(ICASAccountTypeItemData *)self accountType];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    accountType2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v16[0] = v4;
+  v5 = accountType2;
+  v16[0] = accountType2;
   v15[1] = @"countOfAccounts";
-  v6 = [(ICASAccountTypeItemData *)self countOfAccounts];
-  if (v6)
+  countOfAccounts = [(ICASAccountTypeItemData *)self countOfAccounts];
+  if (countOfAccounts)
   {
-    v7 = [(ICASAccountTypeItemData *)self countOfAccounts];
+    countOfAccounts2 = [(ICASAccountTypeItemData *)self countOfAccounts];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    countOfAccounts2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v16[1] = v7;
+  v8 = countOfAccounts2;
+  v16[1] = countOfAccounts2;
   v15[2] = @"countOfNotes";
-  v9 = [(ICASAccountTypeItemData *)self countOfNotes];
-  if (v9)
+  countOfNotes = [(ICASAccountTypeItemData *)self countOfNotes];
+  if (countOfNotes)
   {
-    v10 = [(ICASAccountTypeItemData *)self countOfNotes];
+    countOfNotes2 = [(ICASAccountTypeItemData *)self countOfNotes];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    countOfNotes2 = objc_opt_new();
   }
 
-  v11 = v10;
-  v16[2] = v10;
+  v11 = countOfNotes2;
+  v16[2] = countOfNotes2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
   v13 = *MEMORY[0x277D85DE8];

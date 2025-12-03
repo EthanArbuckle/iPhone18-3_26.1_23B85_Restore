@@ -1,38 +1,38 @@
 @interface TSDGLTextureInfo
-+ (id)textureInfoWithName:(unsigned int)a3 target:(unsigned int)a4 width:(unsigned int)a5 height:(unsigned int)a6 containsMipmaps:(BOOL)a7;
++ (id)textureInfoWithName:(unsigned int)name target:(unsigned int)target width:(unsigned int)width height:(unsigned int)height containsMipmaps:(BOOL)mipmaps;
 - (CGSize)size;
-- (TSDGLTextureInfo)initWithName:(unsigned int)a3 target:(unsigned int)a4 width:(unsigned int)a5 height:(unsigned int)a6 containsMipmaps:(BOOL)a7;
+- (TSDGLTextureInfo)initWithName:(unsigned int)name target:(unsigned int)target width:(unsigned int)width height:(unsigned int)height containsMipmaps:(BOOL)mipmaps;
 - (id)description;
 - (void)teardown;
 @end
 
 @implementation TSDGLTextureInfo
 
-+ (id)textureInfoWithName:(unsigned int)a3 target:(unsigned int)a4 width:(unsigned int)a5 height:(unsigned int)a6 containsMipmaps:(BOOL)a7
++ (id)textureInfoWithName:(unsigned int)name target:(unsigned int)target width:(unsigned int)width height:(unsigned int)height containsMipmaps:(BOOL)mipmaps
 {
-  v7 = a7;
-  v8 = *&a6;
-  v9 = *&a5;
-  v10 = *&a4;
-  v11 = *&a3;
+  mipmapsCopy = mipmaps;
+  v8 = *&height;
+  v9 = *&width;
+  v10 = *&target;
+  v11 = *&name;
   v12 = objc_alloc(objc_opt_class());
-  v14 = objc_msgSend_initWithName_target_width_height_containsMipmaps_(v12, v13, v11, v10, v9, v8, v7);
+  v14 = objc_msgSend_initWithName_target_width_height_containsMipmaps_(v12, v13, v11, v10, v9, v8, mipmapsCopy);
 
   return v14;
 }
 
-- (TSDGLTextureInfo)initWithName:(unsigned int)a3 target:(unsigned int)a4 width:(unsigned int)a5 height:(unsigned int)a6 containsMipmaps:(BOOL)a7
+- (TSDGLTextureInfo)initWithName:(unsigned int)name target:(unsigned int)target width:(unsigned int)width height:(unsigned int)height containsMipmaps:(BOOL)mipmaps
 {
   v13.receiver = self;
   v13.super_class = TSDGLTextureInfo;
   result = [(TSDGLTextureInfo *)&v13 init];
   if (result)
   {
-    result->_containsMipmaps = a7;
-    result->_name = a3;
-    result->_target = a4;
-    result->_height = a6;
-    result->_width = a5;
+    result->_containsMipmaps = mipmaps;
+    result->_name = name;
+    result->_target = target;
+    result->_height = height;
+    result->_width = width;
   }
 
   return result;

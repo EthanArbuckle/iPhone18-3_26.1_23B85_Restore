@@ -1,26 +1,26 @@
 @interface IMBatchMessageTrackingContext
 - (BOOL)isComplete;
-- (IMBatchMessageTrackingContext)initWith:(id)a3;
-- (void)noteItemProcessed:(id)a3;
+- (IMBatchMessageTrackingContext)initWith:(id)with;
+- (void)noteItemProcessed:(id)processed;
 @end
 
 @implementation IMBatchMessageTrackingContext
 
-- (IMBatchMessageTrackingContext)initWith:(id)a3
+- (IMBatchMessageTrackingContext)initWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v17.receiver = self;
   v17.super_class = IMBatchMessageTrackingContext;
   v5 = [(IMBatchMessageTrackingContext *)&v17 init];
   if (v5)
   {
-    v6 = [v4 context];
-    v7 = [v6 batchIdentifier];
+    context = [withCopy context];
+    batchIdentifier = [context batchIdentifier];
     batchIdentifier = v5->_batchIdentifier;
-    v5->_batchIdentifier = v7;
+    v5->_batchIdentifier = batchIdentifier;
 
-    v9 = [v4 messages];
-    v5->_totalMessagesExpected = [v9 count];
+    messages = [withCopy messages];
+    v5->_totalMessagesExpected = [messages count];
 
     if ([(IMBatchMessageTrackingContext *)v5 totalMessagesExpected]< 1)
     {
@@ -38,27 +38,27 @@
       [messageTracker setPacketsExpected:{-[IMBatchMessageTrackingContext totalMessagesExpected](v5, "totalMessagesExpected")}];
     }
 
-    if ([v4 hasValidPagination])
+    if ([withCopy hasValidPagination])
     {
-      v13 = [v4 context];
-      v14 = [v13 batchNumber];
+      context2 = [withCopy context];
+      batchNumber = [context2 batchNumber];
       batchNumber = v5->_batchNumber;
-      v5->_batchNumber = v14;
+      v5->_batchNumber = batchNumber;
     }
   }
 
   return v5;
 }
 
-- (void)noteItemProcessed:(id)a3
+- (void)noteItemProcessed:(id)processed
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  processedCopy = processed;
+  if (processedCopy)
   {
-    v5 = [(IMBatchMessageTrackingContext *)self messageTracker];
+    messageTracker = [(IMBatchMessageTrackingContext *)self messageTracker];
     v10 = 0;
-    [v5 trackPacket:objc_msgSend(v4 packetsExpected:"longLongValue") error:{-[IMBatchMessageTrackingContext totalMessagesExpected](self, "totalMessagesExpected"), &v10}];
+    [messageTracker trackPacket:objc_msgSend(processedCopy packetsExpected:"longLongValue") error:{-[IMBatchMessageTrackingContext totalMessagesExpected](self, "totalMessagesExpected"), &v10}];
     v6 = v10;
 
     if (v6 && IMOSLoggingEnabled())
@@ -66,11 +66,11 @@
       v7 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [(IMBatchMessageTrackingContext *)self totalMessagesExpected];
+        totalMessagesExpected = [(IMBatchMessageTrackingContext *)self totalMessagesExpected];
         *buf = 138412802;
-        v12 = v4;
+        v12 = processedCopy;
         v13 = 2048;
-        v14 = v8;
+        v14 = totalMessagesExpected;
         v15 = 2112;
         v16 = v6;
         _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Error tracking message index %@ in batch (size %ld): error %@", buf, 0x20u);
@@ -83,19 +83,19 @@
 
 - (BOOL)isComplete
 {
-  v3 = [(IMBatchMessageTrackingContext *)self messageTracker];
-  if (v3)
+  messageTracker = [(IMBatchMessageTrackingContext *)self messageTracker];
+  if (messageTracker)
   {
-    v4 = [(IMBatchMessageTrackingContext *)self messageTracker];
-    v5 = [v4 isComplete];
+    messageTracker2 = [(IMBatchMessageTrackingContext *)self messageTracker];
+    isComplete = [messageTracker2 isComplete];
   }
 
   else
   {
-    v5 = 1;
+    isComplete = 1;
   }
 
-  return v5;
+  return isComplete;
 }
 
 @end

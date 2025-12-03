@@ -1,23 +1,23 @@
 @interface CALNNotificationRecordsDiffer
-+ (id)diffOldRecords:(id)a3 withNewRecords:(id)a4 filteredBySourceClientIDs:(id)a5;
++ (id)diffOldRecords:(id)records withNewRecords:(id)newRecords filteredBySourceClientIDs:(id)ds;
 @end
 
 @implementation CALNNotificationRecordsDiffer
 
-+ (id)diffOldRecords:(id)a3 withNewRecords:(id)a4 filteredBySourceClientIDs:(id)a5
++ (id)diffOldRecords:(id)records withNewRecords:(id)newRecords filteredBySourceClientIDs:(id)ds
 {
   v60 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v43 = a5;
+  recordsCopy = records;
+  newRecordsCopy = newRecords;
+  dsCopy = ds;
   v46 = objc_opt_new();
   v45 = objc_opt_new();
-  v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+  v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(recordsCopy, "count")}];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v10 = v7;
+  v10 = recordsCopy;
   v11 = [v10 countByEnumeratingWithState:&v54 objects:v59 count:16];
   if (v11)
   {
@@ -34,9 +34,9 @@
 
         v15 = *(*(&v54 + 1) + 8 * i);
         v16 = [CALNNotificationIdentifier alloc];
-        v17 = [v15 sourceIdentifier];
-        v18 = [v15 sourceClientIdentifier];
-        v19 = [(CALNNotificationIdentifier *)v16 initWithSourceIdentifier:v17 sourceClientIdentifier:v18];
+        sourceIdentifier = [v15 sourceIdentifier];
+        sourceClientIdentifier = [v15 sourceClientIdentifier];
+        v19 = [(CALNNotificationIdentifier *)v16 initWithSourceIdentifier:sourceIdentifier sourceClientIdentifier:sourceClientIdentifier];
 
         [v9 setObject:v15 forKeyedSubscript:v19];
       }
@@ -53,7 +53,7 @@
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v8;
+  obj = newRecordsCopy;
   v20 = [obj countByEnumeratingWithState:&v50 objects:v58 count:16];
   if (v20)
   {
@@ -71,9 +71,9 @@
 
         v24 = *(*(&v50 + 1) + 8 * v23);
         v25 = [CALNNotificationIdentifier alloc];
-        v26 = [v24 sourceIdentifier];
-        v27 = [v24 sourceClientIdentifier];
-        v28 = [(CALNNotificationIdentifier *)v25 initWithSourceIdentifier:v26 sourceClientIdentifier:v27];
+        sourceIdentifier2 = [v24 sourceIdentifier];
+        sourceClientIdentifier2 = [v24 sourceClientIdentifier];
+        v28 = [(CALNNotificationIdentifier *)v25 initWithSourceIdentifier:sourceIdentifier2 sourceClientIdentifier:sourceClientIdentifier2];
 
         v29 = [v9 objectForKeyedSubscript:v28];
         v30 = v46;
@@ -83,12 +83,12 @@
         }
 
         [v9 removeObjectForKey:v28];
-        v31 = [v29 content];
-        v32 = [v24 content];
-        v33 = v32;
-        if (v31)
+        content = [v29 content];
+        content2 = [v24 content];
+        v33 = content2;
+        if (content)
         {
-          v34 = v32 == 0;
+          v34 = content2 == 0;
         }
 
         else
@@ -100,7 +100,7 @@
         {
 
           v30 = v45;
-          if (v31 == v33)
+          if (content == v33)
           {
             goto LABEL_21;
           }
@@ -110,7 +110,7 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v35 = [v31 isEqualForDiffingPurposesToContent:v32];
+        v35 = [content isEqualForDiffingPurposesToContent:content2];
 
         v30 = v45;
         if ((v35 & 1) == 0)
@@ -131,20 +131,20 @@ LABEL_21:
     while (v36);
   }
 
-  if (v43)
+  if (dsCopy)
   {
     v37 = [v9 copy];
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
     v47[2] = __89__CALNNotificationRecordsDiffer_diffOldRecords_withNewRecords_filteredBySourceClientIDs___block_invoke;
     v47[3] = &unk_278D6F0F8;
-    v48 = v43;
+    v48 = dsCopy;
     v49 = v9;
     [v37 enumerateKeysAndObjectsUsingBlock:v47];
   }
 
-  v38 = [v9 allValues];
-  v39 = [CALNNotificationRecordsDiff diffWithAddedRecords:v46 removedRecords:v38 modifiedRecords:v45];
+  allValues = [v9 allValues];
+  v39 = [CALNNotificationRecordsDiff diffWithAddedRecords:v46 removedRecords:allValues modifiedRecords:v45];
 
   v40 = *MEMORY[0x277D85DE8];
 

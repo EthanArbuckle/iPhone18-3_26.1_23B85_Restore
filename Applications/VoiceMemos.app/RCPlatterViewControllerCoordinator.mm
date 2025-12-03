@@ -1,49 +1,49 @@
 @interface RCPlatterViewControllerCoordinator
 - (RCPlatterViewControllerCoordinator)init;
 - (id)recordingStartTimeInfo;
-- (void)stopCapturingForPlatterViewController:(id)a3;
+- (void)stopCapturingForPlatterViewController:(id)controller;
 @end
 
 @implementation RCPlatterViewControllerCoordinator
 
 - (id)recordingStartTimeInfo
 {
-  v2 = [objc_opt_self() sharedAppDelegate];
-  if (v2)
+  sharedAppDelegate = [objc_opt_self() sharedAppDelegate];
+  if (sharedAppDelegate)
   {
-    v3 = v2;
-    v4 = [v2 defaultSceneDelegate];
+    v3 = sharedAppDelegate;
+    defaultSceneDelegate = [sharedAppDelegate defaultSceneDelegate];
 
-    if (v4)
+    if (defaultSceneDelegate)
     {
-      v5 = [v4 mainViewController];
+      mainViewController = [defaultSceneDelegate mainViewController];
 
-      v6 = [v5 recordingStartTimeInfo];
-      v2 = v6;
+      recordingStartTimeInfo = [mainViewController recordingStartTimeInfo];
+      sharedAppDelegate = recordingStartTimeInfo;
     }
 
     else
     {
-      v2 = 0;
+      sharedAppDelegate = 0;
     }
   }
 
-  return v2;
+  return sharedAppDelegate;
 }
 
-- (void)stopCapturingForPlatterViewController:(id)a3
+- (void)stopCapturingForPlatterViewController:(id)controller
 {
-  v3 = [objc_opt_self() sharedAppDelegate];
-  if (v3)
+  sharedAppDelegate = [objc_opt_self() sharedAppDelegate];
+  if (sharedAppDelegate)
   {
-    v4 = v3;
-    v5 = [v3 defaultSceneDelegate];
+    v4 = sharedAppDelegate;
+    defaultSceneDelegate = [sharedAppDelegate defaultSceneDelegate];
 
-    if (v5)
+    if (defaultSceneDelegate)
     {
-      v6 = [v5 mainViewController];
+      mainViewController = [defaultSceneDelegate mainViewController];
 
-      [v6 endRecording];
+      [mainViewController endRecording];
     }
   }
 }

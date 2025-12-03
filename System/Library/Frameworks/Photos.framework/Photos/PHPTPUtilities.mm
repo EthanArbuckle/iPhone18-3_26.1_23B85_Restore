@@ -1,31 +1,31 @@
 @interface PHPTPUtilities
-+ (BOOL)shouldExpungeAsset:(id)a3;
-+ (BOOL)shouldExpungeAsset:(id)a3 withFileManager:(id)a4;
++ (BOOL)shouldExpungeAsset:(id)asset;
++ (BOOL)shouldExpungeAsset:(id)asset withFileManager:(id)manager;
 @end
 
 @implementation PHPTPUtilities
 
-+ (BOOL)shouldExpungeAsset:(id)a3 withFileManager:(id)a4
++ (BOOL)shouldExpungeAsset:(id)asset withFileManager:(id)manager
 {
   v100 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 ptpProperties];
-  v6 = [v5 ptpTrashedState];
+  assetCopy = asset;
+  ptpProperties = [assetCopy ptpProperties];
+  ptpTrashedState = [ptpProperties ptpTrashedState];
 
   v7 = PLPTPGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [v4 objectID];
-    v9 = [v8 pl_shortURI];
+    objectID = [assetCopy objectID];
+    pl_shortURI = [objectID pl_shortURI];
     *buf = 138543618;
-    v97 = v9;
+    v97 = pl_shortURI;
     v98 = 2048;
-    v99 = v6;
+    v99 = ptpTrashedState;
     _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_DEBUG, "Asset %{public}@ trashed state: 0x%llx", buf, 0x16u);
   }
 
   v10 = 1;
-  [PHAssetResource assetResourcesForAsset:v4 includeDerivatives:0 includeMetadata:0 includeAdjustmentOverflowDataBlob:1];
+  [PHAssetResource assetResourcesForAsset:assetCopy includeDerivatives:0 includeMetadata:0 includeAdjustmentOverflowDataBlob:1];
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
@@ -37,8 +37,8 @@
   }
 
   v13 = v12;
-  v89 = v4;
-  if ((v6 & 0x10000) != 0)
+  v89 = assetCopy;
+  if ((ptpTrashedState & 0x10000) != 0)
   {
     v14 = @"YES";
   }
@@ -49,7 +49,7 @@
   }
 
   v15 = *v92;
-  if ((v6 & 0x8000) != 0)
+  if ((ptpTrashedState & 0x8000) != 0)
   {
     v16 = @"YES";
   }
@@ -61,7 +61,7 @@
 
   v75 = v16;
   v76 = v14;
-  if ((v6 & 0x4000) != 0)
+  if ((ptpTrashedState & 0x4000) != 0)
   {
     v17 = @"YES";
   }
@@ -71,7 +71,7 @@
     v17 = @"NO";
   }
 
-  if ((v6 & 0x100) != 0)
+  if ((ptpTrashedState & 0x100) != 0)
   {
     v18 = @"YES";
   }
@@ -83,7 +83,7 @@
 
   v87 = v18;
   v88 = v17;
-  if ((v6 & 0x80) != 0)
+  if ((ptpTrashedState & 0x80) != 0)
   {
     v19 = @"YES";
   }
@@ -93,7 +93,7 @@
     v19 = @"NO";
   }
 
-  if ((v6 & 2) != 0)
+  if ((ptpTrashedState & 2) != 0)
   {
     v20 = @"YES";
   }
@@ -105,7 +105,7 @@
 
   v85 = v20;
   v86 = v19;
-  if ((v6 & 0x2000) != 0)
+  if ((ptpTrashedState & 0x2000) != 0)
   {
     v21 = @"YES";
   }
@@ -115,7 +115,7 @@
     v21 = @"NO";
   }
 
-  if ((v6 & 0x40) != 0)
+  if ((ptpTrashedState & 0x40) != 0)
   {
     v22 = @"YES";
   }
@@ -127,7 +127,7 @@
 
   v83 = v22;
   v84 = v21;
-  if ((v6 & 0x1000) != 0)
+  if ((ptpTrashedState & 0x1000) != 0)
   {
     v23 = @"YES";
   }
@@ -137,7 +137,7 @@
     v23 = @"NO";
   }
 
-  if ((v6 & 0x800) != 0)
+  if ((ptpTrashedState & 0x800) != 0)
   {
     v24 = @"YES";
   }
@@ -149,7 +149,7 @@
 
   v81 = v24;
   v82 = v23;
-  if ((v6 & 0x400) != 0)
+  if ((ptpTrashedState & 0x400) != 0)
   {
     v25 = @"YES";
   }
@@ -159,7 +159,7 @@
     v25 = @"NO";
   }
 
-  if ((v6 & 0x200) != 0)
+  if ((ptpTrashedState & 0x200) != 0)
   {
     v26 = @"YES";
   }
@@ -171,7 +171,7 @@
 
   v79 = v26;
   v80 = v25;
-  if ((v6 & 8) != 0)
+  if ((ptpTrashedState & 8) != 0)
   {
     v27 = @"YES";
   }
@@ -181,7 +181,7 @@
     v27 = @"NO";
   }
 
-  if ((v6 & 4) != 0)
+  if ((ptpTrashedState & 4) != 0)
   {
     v28 = @"YES";
   }
@@ -193,7 +193,7 @@
 
   v77 = v28;
   v78 = v27;
-  if (v6)
+  if (ptpTrashedState)
   {
     v29 = @"YES";
   }
@@ -214,9 +214,9 @@ LABEL_51:
     }
 
     v31 = *(*(&v91 + 1) + 8 * v30);
-    v32 = [v31 type];
+    type = [v31 type];
     v33 = 1;
-    switch(v32)
+    switch(type)
     {
       case 1:
       case 2:
@@ -231,7 +231,7 @@ LABEL_51:
           _os_log_impl(&dword_19C86F000, v38, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
         }
 
-        if (v6)
+        if (ptpTrashedState)
         {
           goto LABEL_115;
         }
@@ -249,7 +249,7 @@ LABEL_51:
           _os_log_impl(&dword_19C86F000, v60, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
         }
 
-        if ((v6 & 0x200) == 0)
+        if ((ptpTrashedState & 0x200) == 0)
         {
           goto LABEL_122;
         }
@@ -267,7 +267,7 @@ LABEL_51:
           _os_log_impl(&dword_19C86F000, v58, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
         }
 
-        if ((v6 & 0x800) == 0)
+        if ((ptpTrashedState & 0x800) == 0)
         {
           goto LABEL_122;
         }
@@ -285,7 +285,7 @@ LABEL_51:
           _os_log_impl(&dword_19C86F000, v52, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
         }
 
-        if ((v6 & 4) == 0)
+        if ((ptpTrashedState & 4) == 0)
         {
           goto LABEL_122;
         }
@@ -303,7 +303,7 @@ LABEL_51:
           _os_log_impl(&dword_19C86F000, v46, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
         }
 
-        if ((v6 & 8) == 0)
+        if ((ptpTrashedState & 8) == 0)
         {
           goto LABEL_122;
         }
@@ -321,7 +321,7 @@ LABEL_51:
           _os_log_impl(&dword_19C86F000, v50, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
         }
 
-        if ((v6 & 2) == 0)
+        if ((ptpTrashedState & 2) == 0)
         {
           goto LABEL_122;
         }
@@ -339,7 +339,7 @@ LABEL_51:
           _os_log_impl(&dword_19C86F000, v48, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
         }
 
-        if ((v6 & 0x80) == 0)
+        if ((ptpTrashedState & 0x80) == 0)
         {
           goto LABEL_122;
         }
@@ -357,7 +357,7 @@ LABEL_51:
           _os_log_impl(&dword_19C86F000, v56, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
         }
 
-        if ((v6 & 0x1000) == 0)
+        if ((ptpTrashedState & 0x1000) == 0)
         {
           goto LABEL_122;
         }
@@ -375,7 +375,7 @@ LABEL_51:
           _os_log_impl(&dword_19C86F000, v62, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
         }
 
-        if ((v6 & 0x400) != 0)
+        if ((ptpTrashedState & 0x400) != 0)
         {
           goto LABEL_115;
         }
@@ -393,7 +393,7 @@ LABEL_51:
           _os_log_impl(&dword_19C86F000, v42, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
         }
 
-        if ((v6 & 0x4000) == 0)
+        if ((ptpTrashedState & 0x4000) == 0)
         {
           goto LABEL_122;
         }
@@ -411,7 +411,7 @@ LABEL_51:
           _os_log_impl(&dword_19C86F000, v54, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
         }
 
-        if ((v6 & 0x100) == 0)
+        if ((ptpTrashedState & 0x100) == 0)
         {
           goto LABEL_122;
         }
@@ -435,7 +435,7 @@ LABEL_51:
           _os_log_impl(&dword_19C86F000, v40, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
         }
 
-        if ((v6 & 0x40) == 0)
+        if ((ptpTrashedState & 0x40) == 0)
         {
           goto LABEL_122;
         }
@@ -453,7 +453,7 @@ LABEL_51:
           _os_log_impl(&dword_19C86F000, v44, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
         }
 
-        if ((v6 & 0x2000) == 0)
+        if ((ptpTrashedState & 0x2000) == 0)
         {
           goto LABEL_122;
         }
@@ -462,22 +462,22 @@ LABEL_51:
       case 18:
         goto LABEL_130;
       default:
-        if (v32 != 110)
+        if (type != 110)
         {
-          if (v32 != 113)
+          if (type != 113)
           {
 LABEL_130:
             v71 = PLPTPGetLog();
-            v4 = v89;
+            assetCopy = v89;
             if (os_log_type_enabled(v71, OS_LOG_TYPE_FAULT))
             {
-              v72 = [v31 type];
-              v73 = [v89 objectID];
-              v74 = [v73 pl_shortURI];
+              type2 = [v31 type];
+              objectID2 = [v89 objectID];
+              pl_shortURI2 = [objectID2 pl_shortURI];
               *buf = 134218242;
-              v97 = v72;
+              v97 = type2;
               v98 = 2114;
-              v99 = v74;
+              v99 = pl_shortURI2;
               _os_log_impl(&dword_19C86F000, v71, OS_LOG_TYPE_FAULT, "Unhandled resource type (%lu). Not expunging asset %{public}@.", buf, 0x16u);
             }
 
@@ -496,7 +496,7 @@ LABEL_130:
             _os_log_impl(&dword_19C86F000, v36, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
           }
 
-          if ((v6 & 0x8000) == 0)
+          if ((ptpTrashedState & 0x8000) == 0)
           {
             goto LABEL_122;
           }
@@ -529,14 +529,14 @@ LABEL_115:
           _os_log_impl(&dword_19C86F000, v64, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
         }
 
-        v33 = (v6 & 0x10000) >> 16;
+        v33 = (ptpTrashedState & 0x10000) >> 16;
 LABEL_54:
         v34 = PLPTPGetLog();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
         {
-          v35 = [v31 type];
+          type3 = [v31 type];
           *buf = 134217984;
-          v97 = v35;
+          v97 = type3;
           _os_log_impl(&dword_19C86F000, v34, OS_LOG_TYPE_DEBUG, "Unsupported resource type %ld", buf, 0xCu);
         }
 
@@ -548,7 +548,7 @@ LABEL_54:
 LABEL_122:
         v10 = 0;
 LABEL_123:
-        v4 = v89;
+        assetCopy = v89;
 LABEL_124:
 
         v67 = PLPTPGetLog();
@@ -575,14 +575,14 @@ LABEL_124:
   }
 }
 
-+ (BOOL)shouldExpungeAsset:(id)a3
++ (BOOL)shouldExpungeAsset:(id)asset
 {
   v4 = MEMORY[0x1E696AC08];
-  v5 = a3;
-  v6 = [v4 defaultManager];
-  LOBYTE(a1) = [a1 shouldExpungeAsset:v5 withFileManager:v6];
+  assetCopy = asset;
+  defaultManager = [v4 defaultManager];
+  LOBYTE(self) = [self shouldExpungeAsset:assetCopy withFileManager:defaultManager];
 
-  return a1;
+  return self;
 }
 
 @end

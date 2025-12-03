@@ -1,29 +1,29 @@
 @interface MKFCKAccessory
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (BOOL)isReadyToImportIntoLocalModelWithContext:(id)a3;
-- (id)_localModelForHostAccessoryWithContext:(void *)a1;
-- (uint64_t)_shouldIgnoreMoveBackToDefaultRoom:(void *)a3 context:;
-- (void)_exportOwnerSettingsFromLocalModel:(void *)a3 context:;
-- (void)_importOwnerSettingsIntoLocalModel:(void *)a3 context:;
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (BOOL)isReadyToImportIntoLocalModelWithContext:(id)context;
+- (id)_localModelForHostAccessoryWithContext:(void *)context;
+- (uint64_t)_shouldIgnoreMoveBackToDefaultRoom:(void *)room context:;
+- (void)_exportOwnerSettingsFromLocalModel:(void *)model context:;
+- (void)_importOwnerSettingsIntoLocalModel:(void *)model context:;
 @end
 
 @implementation MKFCKAccessory
 
-- (void)_importOwnerSettingsIntoLocalModel:(void *)a3 context:
+- (void)_importOwnerSettingsIntoLocalModel:(void *)model context:
 {
   v25 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  modelCopy = model;
+  if (self)
   {
-    v7 = [a1 home];
-    v8 = [v7 owner];
+    home = [self home];
+    owner = [home owner];
 
-    if (!v8)
+    if (!owner)
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = a1;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -37,10 +37,10 @@
       goto LABEL_22;
     }
 
-    v9 = [v8 fetchLocalModelWithContext:v6];
+    v9 = [owner fetchLocalModelWithContext:modelCopy];
     if (v9)
     {
-      if ([a1 ownerListeningHistoryEnabled])
+      if ([self ownerListeningHistoryEnabled])
       {
         [v5 addUsersWithListeningHistoryEnabled_Object:v9];
       }
@@ -50,7 +50,7 @@
         [v5 removeUsersWithListeningHistoryEnabledObject:v9];
       }
 
-      if ([a1 ownerMediaContentProfileEnabled])
+      if ([self ownerMediaContentProfileEnabled])
       {
         [v5 addUsersWithMediaContentProfileEnabled_Object:v9];
       }
@@ -60,7 +60,7 @@
         [v5 removeUsersWithMediaContentProfileEnabled_Object:v9];
       }
 
-      if ([a1 ownerPersonalRequestsEnabled])
+      if ([self ownerPersonalRequestsEnabled])
       {
         [v5 addUsersWithPersonalRequestsEnabled_Object:v9];
       }
@@ -71,7 +71,7 @@
       }
 
       v14 = objc_autoreleasePoolPush();
-      v18 = a1;
+      selfCopy2 = self;
       v16 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
@@ -90,7 +90,7 @@
     else
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = a1;
+      selfCopy3 = self;
       v16 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
@@ -116,19 +116,19 @@ LABEL_23:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_exportOwnerSettingsFromLocalModel:(void *)a3 context:
+- (void)_exportOwnerSettingsFromLocalModel:(void *)model context:
 {
   v35 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  modelCopy = model;
+  if (self)
   {
-    v7 = [v5 home];
-    v8 = [v7 owner];
-    v9 = [v8 modelID];
+    home = [v5 home];
+    owner = [home owner];
+    modelID = [owner modelID];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
@@ -142,46 +142,46 @@ LABEL_23:
     }
 
     objc_autoreleasePoolPop(v10);
-    v15 = [v5 usersWithListeningHistoryEnabled];
+    usersWithListeningHistoryEnabled = [v5 usersWithListeningHistoryEnabled];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __71__MKFCKAccessory_Settings___exportOwnerSettingsFromLocalModel_context___block_invoke;
     v29[3] = &unk_278675850;
-    v16 = v9;
+    v16 = modelID;
     v30 = v16;
-    v17 = [v15 na_any:v29];
+    v17 = [usersWithListeningHistoryEnabled na_any:v29];
 
-    if (v17 != [v11 ownerListeningHistoryEnabled])
+    if (v17 != [selfCopy ownerListeningHistoryEnabled])
     {
-      [v11 setOwnerListeningHistoryEnabled:v17];
+      [selfCopy setOwnerListeningHistoryEnabled:v17];
     }
 
-    v18 = [v5 usersWithMediaContentProfileEnabled];
+    usersWithMediaContentProfileEnabled = [v5 usersWithMediaContentProfileEnabled];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __71__MKFCKAccessory_Settings___exportOwnerSettingsFromLocalModel_context___block_invoke_2;
     v27[3] = &unk_278675850;
     v19 = v16;
     v28 = v19;
-    v20 = [v18 na_any:v27];
+    v20 = [usersWithMediaContentProfileEnabled na_any:v27];
 
-    if (v20 != [v11 ownerMediaContentProfileEnabled])
+    if (v20 != [selfCopy ownerMediaContentProfileEnabled])
     {
-      [v11 setOwnerMediaContentProfileEnabled:v20];
+      [selfCopy setOwnerMediaContentProfileEnabled:v20];
     }
 
-    v21 = [v5 usersWithPersonalRequestsEnabled];
+    usersWithPersonalRequestsEnabled = [v5 usersWithPersonalRequestsEnabled];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __71__MKFCKAccessory_Settings___exportOwnerSettingsFromLocalModel_context___block_invoke_3;
     v25[3] = &unk_278675850;
     v26 = v19;
     v22 = v19;
-    v23 = [v21 na_any:v25];
+    v23 = [usersWithPersonalRequestsEnabled na_any:v25];
 
-    if (v23 != [v11 ownerPersonalRequestsEnabled])
+    if (v23 != [selfCopy ownerPersonalRequestsEnabled])
     {
-      [v11 setOwnerPersonalRequestsEnabled:v23];
+      [selfCopy setOwnerPersonalRequestsEnabled:v23];
     }
   }
 
@@ -212,33 +212,33 @@ uint64_t __71__MKFCKAccessory_Settings___exportOwnerSettingsFromLocalModel_conte
   return v4;
 }
 
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
   v63 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if (![(MKFCKModel *)self copyPropertiesFromLocalModel:v7 context:v8])
+  modelCopy = model;
+  contextCopy = context;
+  if (![(MKFCKModel *)self copyPropertiesFromLocalModel:modelCopy context:contextCopy])
   {
     goto LABEL_34;
   }
 
-  [(MKFCKAccessory *)self _exportOwnerSettingsFromLocalModel:v7 context:v8];
-  v9 = v7;
-  v10 = v8;
+  [(MKFCKAccessory *)self _exportOwnerSettingsFromLocalModel:modelCopy context:contextCopy];
+  v9 = modelCopy;
+  initialModel3 = contextCopy;
   v11 = self != 0;
   if (!self)
   {
     goto LABEL_37;
   }
 
-  v12 = [v9 room];
-  v13 = [v12 entity];
-  v14 = [HMDCoreDataCloudTransform exportTransformableClassFromEntity:v13];
+  room = [v9 room];
+  entity = [room entity];
+  v14 = [HMDCoreDataCloudTransform exportTransformableClassFromEntity:entity];
 
-  v15 = [(objc_class *)v14 fetchWithLocalModel:v12 context:v10];
+  v15 = [(objc_class *)v14 fetchWithLocalModel:room context:initialModel3];
   if (v15)
   {
-    v16 = [(MKFCKAccessory *)self room];
+    room2 = [(MKFCKAccessory *)self room];
     v17 = HMFEqualObjects();
 
     if ((v17 & 1) == 0)
@@ -250,12 +250,12 @@ uint64_t __71__MKFCKAccessory_Settings___exportOwnerSettingsFromLocalModel_conte
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
-      v21 = v53 = v7;
+      v21 = v53 = modelCopy;
       [v9 objectID];
       v22 = v54 = v18;
       *buf = 138543874;
@@ -263,11 +263,11 @@ uint64_t __71__MKFCKAccessory_Settings___exportOwnerSettingsFromLocalModel_conte
       v59 = 2112;
       v60 = v22;
       v61 = 2112;
-      v62 = v12;
+      v62 = room;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_INFO, "%{public}@Cannot fulfill relationship yet: %@.room = %@", buf, 0x20u);
 
       v18 = v54;
-      v7 = v53;
+      modelCopy = v53;
     }
 
     objc_autoreleasePoolPop(v18);
@@ -275,20 +275,20 @@ uint64_t __71__MKFCKAccessory_Settings___exportOwnerSettingsFromLocalModel_conte
   }
 
   v23 = v9;
-  v24 = v10;
-  v25 = [v23 hostAccessory];
-  if ((v25 != 0) != [(MKFCKAccessory *)self isHosted])
+  v24 = initialModel3;
+  hostAccessory = [v23 hostAccessory];
+  if ((hostAccessory != 0) != [(MKFCKAccessory *)self isHosted])
   {
-    [(MKFCKAccessory *)self setIsHosted:v25 != 0];
+    [(MKFCKAccessory *)self setIsHosted:hostAccessory != 0];
   }
 
-  if (v25)
+  if (hostAccessory)
   {
-    v26 = [(MKFCKModel *)MKFCKAccessory fetchWithLocalModel:v25 context:v24];
+    v26 = [(MKFCKModel *)MKFCKAccessory fetchWithLocalModel:hostAccessory context:v24];
     if (!v26)
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = self;
+      selfCopy2 = self;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
@@ -301,7 +301,7 @@ uint64_t __71__MKFCKAccessory_Settings___exportOwnerSettingsFromLocalModel_conte
         v59 = 2112;
         v60 = v31;
         v61 = 2112;
-        v62 = v25;
+        v62 = hostAccessory;
         _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_INFO, "%{public}@Cannot fulfill relationship yet: %@.hostAccessory = %@", buf, 0x20u);
 
         v27 = v55;
@@ -319,7 +319,7 @@ uint64_t __71__MKFCKAccessory_Settings___exportOwnerSettingsFromLocalModel_conte
     v26 = 0;
   }
 
-  v32 = [(MKFCKAccessory *)self hostAccessory];
+  hostAccessory2 = [(MKFCKAccessory *)self hostAccessory];
   v33 = HMFEqualObjects();
 
   if ((v33 & 1) == 0)
@@ -335,20 +335,20 @@ LABEL_19:
   {
     v35 = v23;
     v36 = v24;
-    v37 = [v35 hostedAccessories];
+    hostedAccessories = [v35 hostedAccessories];
 
-    if (v37)
+    if (hostedAccessories)
     {
-      v38 = [v35 entity];
-      v39 = [v38 relationshipsByName];
-      v40 = [v39 objectForKeyedSubscript:@"hostedAccessories_"];
+      entity2 = [v35 entity];
+      relationshipsByName = [entity2 relationshipsByName];
+      v40 = [relationshipsByName objectForKeyedSubscript:@"hostedAccessories_"];
 
       v41 = [(MKFCKModel *)self relationshipForLocalName:@"hostedAccessories_" localModel:v35];
       [(MKFCKHomeObject *)self _exportSiblingRelationshipsFromLocalModel:v35 localRelationship:v40 cloudRelationship:v41 context:v36];
     }
 
     v9 = [_MKFApplicationData appDataDictionaryForContainer:v35];
-    v42 = [(MKFCKAccessory *)self applicationData];
+    applicationData = [(MKFCKAccessory *)self applicationData];
     v43 = HMFEqualObjects();
 
     if ((v43 & 1) == 0)
@@ -356,56 +356,56 @@ LABEL_19:
       [(MKFCKAccessory *)self setApplicationData:v9];
     }
 
-    v44 = [(MKFCKAccessory *)self initialCategory];
-    if (![v44 unsignedIntegerValue])
+    initialCategory = [(MKFCKAccessory *)self initialCategory];
+    if (![initialCategory unsignedIntegerValue])
     {
-      v45 = [v35 initialCategoryIdentifier];
-      v46 = [v45 unsignedIntegerValue];
+      initialCategoryIdentifier = [v35 initialCategoryIdentifier];
+      unsignedIntegerValue = [initialCategoryIdentifier unsignedIntegerValue];
 
-      if (!v46)
+      if (!unsignedIntegerValue)
       {
         goto LABEL_28;
       }
 
-      v44 = [v35 initialCategoryIdentifier];
-      [(MKFCKAccessory *)self setInitialCategory:v44];
+      initialCategory = [v35 initialCategoryIdentifier];
+      [(MKFCKAccessory *)self setInitialCategory:initialCategory];
     }
 
 LABEL_28:
-    v47 = [(MKFCKAccessory *)self initialManufacturer];
-    if (!v47)
+    initialManufacturer = [(MKFCKAccessory *)self initialManufacturer];
+    if (!initialManufacturer)
     {
-      v48 = [v35 initialManufacturer];
+      initialManufacturer2 = [v35 initialManufacturer];
 
-      if (!v48)
+      if (!initialManufacturer2)
       {
         goto LABEL_32;
       }
 
-      v47 = [v35 initialManufacturer];
-      [(MKFCKAccessory *)self setInitialManufacturer:v47];
+      initialManufacturer = [v35 initialManufacturer];
+      [(MKFCKAccessory *)self setInitialManufacturer:initialManufacturer];
     }
 
 LABEL_32:
-    v49 = [(MKFCKAccessory *)self initialModel];
-    if (v49)
+    initialModel = [(MKFCKAccessory *)self initialModel];
+    if (initialModel)
     {
-      v10 = v49;
+      initialModel3 = initialModel;
     }
 
     else
     {
-      v50 = [v35 initialModel];
+      initialModel2 = [v35 initialModel];
 
-      if (!v50)
+      if (!initialModel2)
       {
 LABEL_38:
 
         goto LABEL_39;
       }
 
-      v10 = [v35 initialModel];
-      [(MKFCKAccessory *)self setInitialModel:v10];
+      initialModel3 = [v35 initialModel];
+      [(MKFCKAccessory *)self setInitialModel:initialModel3];
     }
 
 LABEL_37:
@@ -421,37 +421,37 @@ LABEL_39:
   return v11;
 }
 
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
   v79 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(MKFCKModel *)self copyPropertiesIntoLocalModel:v8 context:v10])
+  modelCopy = model;
+  propertiesCopy = properties;
+  contextCopy = context;
+  if ([(MKFCKModel *)self copyPropertiesIntoLocalModel:modelCopy context:contextCopy])
   {
-    [(MKFCKAccessory *)self _importOwnerSettingsIntoLocalModel:v8 context:v10];
+    [(MKFCKAccessory *)self _importOwnerSettingsIntoLocalModel:modelCopy context:contextCopy];
     v68 = 0;
     v69 = &v68;
     v70 = 0x2020000000;
     v71 = 0;
-    if (v9 && ![v9 hmf_isEmpty])
+    if (propertiesCopy && ![propertiesCopy hmf_isEmpty])
     {
       v64[0] = MEMORY[0x277D85DD0];
       v64[1] = 3221225472;
       v64[2] = __65__MKFCKAccessory_importIntoLocalModel_updatedProperties_context___block_invoke;
       v64[3] = &unk_27867E2F0;
       v64[4] = self;
-      v65 = v8;
-      v66 = v10;
+      v65 = modelCopy;
+      v66 = contextCopy;
       v67 = &v68;
-      [v9 hmf_enumerateWithAutoreleasePoolUsingBlock:v64];
+      [propertiesCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v64];
 
       v12 = v69;
     }
 
     else
     {
-      v11 = [(MKFCKAccessory *)self _shouldIgnoreMoveBackToDefaultRoom:v8 context:v10];
+      v11 = [(MKFCKAccessory *)self _shouldIgnoreMoveBackToDefaultRoom:modelCopy context:contextCopy];
       v12 = v69;
       if ((v11 & 1) == 0)
       {
@@ -464,81 +464,81 @@ LABEL_39:
       if (self)
       {
 LABEL_26:
-        v30 = v8;
-        v31 = [(MKFCKAccessory *)self _localModelForHostAccessoryWithContext:v10];
+        v30 = modelCopy;
+        v31 = [(MKFCKAccessory *)self _localModelForHostAccessoryWithContext:contextCopy];
         [(MKFCKAccessory *)self isHosted];
         [v30 setHostAccessory:v31];
 
-        v32 = [(MKFCKAccessory *)self applicationData];
-        [_MKFApplicationData setAppDataDictionary:v32 forContainer:v30];
+        applicationData = [(MKFCKAccessory *)self applicationData];
+        [_MKFApplicationData setAppDataDictionary:applicationData forContainer:v30];
 
-        v33 = [(MKFCKAccessory *)self initialCategory];
-        v34 = [v30 initialCategoryIdentifier];
+        initialCategory = [(MKFCKAccessory *)self initialCategory];
+        initialCategoryIdentifier = [v30 initialCategoryIdentifier];
         v35 = HMFEqualObjects();
 
         if ((v35 & 1) == 0)
         {
-          [v30 setInitialCategoryIdentifier:v33];
+          [v30 setInitialCategoryIdentifier:initialCategory];
         }
 
-        v36 = [(MKFCKAccessory *)self initialManufacturer];
-        v37 = [v30 initialManufacturer];
+        initialManufacturer = [(MKFCKAccessory *)self initialManufacturer];
+        initialManufacturer2 = [v30 initialManufacturer];
         v38 = HMFEqualObjects();
 
         if ((v38 & 1) == 0)
         {
-          [v30 setInitialManufacturer:v36];
+          [v30 setInitialManufacturer:initialManufacturer];
         }
 
-        v39 = [(MKFCKAccessory *)self initialModel];
-        v40 = [v30 initialModel];
+        initialModel = [(MKFCKAccessory *)self initialModel];
+        initialModel2 = [v30 initialModel];
         v41 = HMFEqualObjects();
 
         if ((v41 & 1) == 0)
         {
-          [v30 setInitialModel:v39];
+          [v30 setInitialModel:initialModel];
         }
 
-        if (![v9 count])
+        if (![propertiesCopy count])
         {
-          v42 = [(MKFCKAccessory *)self initialManufacturer];
-          if (v42)
+          initialManufacturer3 = [(MKFCKAccessory *)self initialManufacturer];
+          if (initialManufacturer3)
           {
-            v43 = [v30 manufacturer];
-            v44 = v43 == 0;
+            manufacturer = [v30 manufacturer];
+            v44 = manufacturer == 0;
 
             if (v44)
             {
-              v45 = [(MKFCKAccessory *)self initialManufacturer];
-              v46 = [v45 copy];
+              initialManufacturer4 = [(MKFCKAccessory *)self initialManufacturer];
+              v46 = [initialManufacturer4 copy];
               [v30 setManufacturer:v46];
             }
           }
 
-          v47 = [(MKFCKAccessory *)self initialModel];
-          if (v47)
+          initialModel3 = [(MKFCKAccessory *)self initialModel];
+          if (initialModel3)
           {
-            v48 = [v30 model];
-            v49 = v48 == 0;
+            model = [v30 model];
+            v49 = model == 0;
 
             if (v49)
             {
-              v50 = [(MKFCKAccessory *)self initialModel];
-              v51 = [v50 copy];
+              initialModel4 = [(MKFCKAccessory *)self initialModel];
+              v51 = [initialModel4 copy];
               [v30 setModel:v51];
             }
           }
 
-          v52 = [(MKFCKAccessory *)self initialCategory];
-          if (v52)
+          initialCategory2 = [(MKFCKAccessory *)self initialCategory];
+          if (initialCategory2)
           {
-            v53 = [v30 accessoryCategory];
-            v54 = v53 == 0;
+            accessoryCategory = [v30 accessoryCategory];
+            v54 = accessoryCategory == 0;
 
             if (v54)
             {
-              v55 = [(MKFCKAccessory *)self initialCategory];
-              v56 = [v55 copy];
+              initialCategory3 = [(MKFCKAccessory *)self initialCategory];
+              v56 = [initialCategory3 copy];
               [v30 setAccessoryCategory:v56];
             }
           }
@@ -552,8 +552,8 @@ LABEL_48:
       goto LABEL_49;
     }
 
-    v62 = v8;
-    v63 = v10;
+    v62 = modelCopy;
+    v63 = contextCopy;
     if (!self)
     {
 
@@ -562,14 +562,14 @@ LABEL_47:
       goto LABEL_48;
     }
 
-    v13 = [(MKFCKAccessory *)self room];
-    v14 = [(MKFCKAccessory *)self home];
-    v61 = [v14 defaultRoom];
+    room = [(MKFCKAccessory *)self room];
+    home = [(MKFCKAccessory *)self home];
+    defaultRoom = [home defaultRoom];
 
-    if (!v13)
+    if (!room)
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
@@ -581,10 +581,10 @@ LABEL_47:
 
       objc_autoreleasePoolPop(v15);
       v19 = objc_autoreleasePoolPush();
-      v20 = v16;
+      v20 = selfCopy;
       v21 = HMFGetOSLogHandle();
       v22 = os_log_type_enabled(v21, OS_LOG_TYPE_INFO);
-      if (!v61)
+      if (!defaultRoom)
       {
         if (v22)
         {
@@ -595,7 +595,7 @@ LABEL_47:
         }
 
         objc_autoreleasePoolPop(v19);
-        v13 = 0;
+        room = 0;
         v72 = 1;
 LABEL_25:
 
@@ -617,10 +617,10 @@ LABEL_25:
       }
 
       objc_autoreleasePoolPop(v19);
-      v13 = v61;
+      room = defaultRoom;
     }
 
-    v24 = [v13 fetchLocalModelWithContext:v63];
+    v24 = [room fetchLocalModelWithContext:v63];
     if (v24)
     {
       [v62 setRoom:v24];
@@ -629,18 +629,18 @@ LABEL_25:
     else
     {
       context = objc_autoreleasePoolPush();
-      v25 = self;
+      selfCopy2 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         v27 = HMFGetLogIdentifier();
-        v28 = [v62 objectID];
+        objectID = [v62 objectID];
         *buf = 138543874;
         v74 = v27;
         v75 = 2112;
-        v76 = v28;
+        v76 = objectID;
         v77 = 2112;
-        v78 = v13;
+        v78 = room;
         _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_INFO, "%{public}@Cannot fulfill relationship yet: %@.room = %@", buf, 0x20u);
       }
 
@@ -659,44 +659,44 @@ LABEL_49:
   return self;
 }
 
-- (uint64_t)_shouldIgnoreMoveBackToDefaultRoom:(void *)a3 context:
+- (uint64_t)_shouldIgnoreMoveBackToDefaultRoom:(void *)room context:
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  roomCopy = room;
+  if (!self)
   {
     v10 = 0;
     goto LABEL_16;
   }
 
-  v7 = [a1 room];
-  v8 = [a1 home];
-  v9 = [v8 defaultRoom];
+  room = [self room];
+  home = [self home];
+  defaultRoom = [home defaultRoom];
 
   v10 = 0;
-  if (v7 && v9)
+  if (room && defaultRoom)
   {
-    v11 = [v5 room];
+    room2 = [v5 room];
 
-    if (v11)
+    if (room2)
     {
-      v12 = [v9 fetchLocalModelWithContext:v6];
+      v12 = [defaultRoom fetchLocalModelWithContext:roomCopy];
       if (v12)
       {
-        v13 = [v5 room];
-        if ([v13 isEqual:v12])
+        room3 = [v5 room];
+        if ([room3 isEqual:v12])
         {
         }
 
         else
         {
-          v14 = [v7 isEqual:v9];
+          v14 = [room isEqual:defaultRoom];
 
           if (v14)
           {
             v15 = objc_autoreleasePoolPush();
-            v16 = a1;
+            selfCopy = self;
             v17 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
             {
@@ -761,16 +761,16 @@ void __65__MKFCKAccessory_importIntoLocalModel_updatedProperties_context___block
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_localModelForHostAccessoryWithContext:(void *)a1
+- (id)_localModelForHostAccessoryWithContext:(void *)context
 {
   v3 = a2;
-  if (a1)
+  if (context)
   {
-    v4 = [a1 hostAccessory];
-    v5 = v4;
-    if (v4)
+    hostAccessory = [context hostAccessory];
+    v5 = hostAccessory;
+    if (hostAccessory)
     {
-      v6 = [v4 fetchLocalModelWithContext:v3];
+      v6 = [hostAccessory fetchLocalModelWithContext:v3];
     }
 
     else
@@ -787,18 +787,18 @@ void __65__MKFCKAccessory_importIntoLocalModel_updatedProperties_context___block
   return v6;
 }
 
-- (BOOL)isReadyToImportIntoLocalModelWithContext:(id)a3
+- (BOOL)isReadyToImportIntoLocalModelWithContext:(id)context
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if ([(MKFCKAccessory *)self isHosted])
   {
-    v5 = [(MKFCKAccessory *)self _localModelForHostAccessoryWithContext:v4];
+    v5 = [(MKFCKAccessory *)self _localModelForHostAccessoryWithContext:contextCopy];
     v6 = v5 != 0;
     if (!v5)
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {

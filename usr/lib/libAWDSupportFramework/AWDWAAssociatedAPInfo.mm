@@ -1,13 +1,13 @@
 @interface AWDWAAssociatedAPInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWAAssociatedAPInfo
@@ -33,12 +33,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   manufacturerElement = self->_manufacturerElement;
   if (manufacturerElement)
   {
-    [v3 setObject:manufacturerElement forKey:@"ManufacturerElement"];
+    [dictionary setObject:manufacturerElement forKey:@"ManufacturerElement"];
   }
 
   modelName = self->_modelName;
@@ -68,7 +68,7 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_manufacturerElement)
   {
@@ -97,68 +97,68 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_manufacturerElement)
   {
-    [a3 setManufacturerElement:?];
+    [to setManufacturerElement:?];
   }
 
   if (self->_modelName)
   {
-    [a3 setModelName:?];
+    [to setModelName:?];
   }
 
   if (self->_modelNumber)
   {
-    [a3 setModelNumber:?];
+    [to setModelNumber:?];
   }
 
   if (self->_deviceNameElement)
   {
-    [a3 setDeviceNameElement:?];
+    [to setDeviceNameElement:?];
   }
 
   if (self->_deviceNameData)
   {
 
-    [a3 setDeviceNameData:?];
+    [to setDeviceNameData:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  v5[3] = [(NSString *)self->_manufacturerElement copyWithZone:a3];
-  v5[4] = [(NSString *)self->_modelName copyWithZone:a3];
+  v5[3] = [(NSString *)self->_manufacturerElement copyWithZone:zone];
+  v5[4] = [(NSString *)self->_modelName copyWithZone:zone];
 
-  v5[5] = [(NSString *)self->_modelNumber copyWithZone:a3];
-  v5[2] = [(NSString *)self->_deviceNameElement copyWithZone:a3];
+  v5[5] = [(NSString *)self->_modelNumber copyWithZone:zone];
+  v5[2] = [(NSString *)self->_deviceNameElement copyWithZone:zone];
 
-  v5[1] = [(NSString *)self->_deviceNameData copyWithZone:a3];
+  v5[1] = [(NSString *)self->_deviceNameData copyWithZone:zone];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     manufacturerElement = self->_manufacturerElement;
-    if (!(manufacturerElement | *(a3 + 3)) || (v5 = [(NSString *)manufacturerElement isEqual:?]) != 0)
+    if (!(manufacturerElement | *(equal + 3)) || (v5 = [(NSString *)manufacturerElement isEqual:?]) != 0)
     {
       modelName = self->_modelName;
-      if (!(modelName | *(a3 + 4)) || (v5 = [(NSString *)modelName isEqual:?]) != 0)
+      if (!(modelName | *(equal + 4)) || (v5 = [(NSString *)modelName isEqual:?]) != 0)
       {
         modelNumber = self->_modelNumber;
-        if (!(modelNumber | *(a3 + 5)) || (v5 = [(NSString *)modelNumber isEqual:?]) != 0)
+        if (!(modelNumber | *(equal + 5)) || (v5 = [(NSString *)modelNumber isEqual:?]) != 0)
         {
           deviceNameElement = self->_deviceNameElement;
-          if (!(deviceNameElement | *(a3 + 2)) || (v5 = [(NSString *)deviceNameElement isEqual:?]) != 0)
+          if (!(deviceNameElement | *(equal + 2)) || (v5 = [(NSString *)deviceNameElement isEqual:?]) != 0)
           {
             deviceNameData = self->_deviceNameData;
-            if (deviceNameData | *(a3 + 1))
+            if (deviceNameData | *(equal + 1))
             {
 
               LOBYTE(v5) = [(NSString *)deviceNameData isEqual:?];
@@ -186,29 +186,29 @@
   return v6 ^ [(NSString *)self->_deviceNameData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDWAAssociatedAPInfo *)self setManufacturerElement:?];
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDWAAssociatedAPInfo *)self setModelName:?];
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDWAAssociatedAPInfo *)self setModelNumber:?];
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDWAAssociatedAPInfo *)self setDeviceNameElement:?];
   }
 
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
 
     [(AWDWAAssociatedAPInfo *)self setDeviceNameData:?];

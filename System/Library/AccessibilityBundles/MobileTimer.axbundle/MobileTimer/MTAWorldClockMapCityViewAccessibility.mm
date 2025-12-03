@@ -7,10 +7,10 @@
 - (id)accessibilityLabel
 {
   v3 = [(MTAWorldClockMapCityViewAccessibility *)self safeValueForKey:@"_nameLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(MTAWorldClockMapCityViewAccessibility *)self safeValueForKey:@"_timeLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
 
   v7 = __UIAXStringForVariables();
 

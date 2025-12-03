@@ -1,13 +1,13 @@
 @interface CKPinnedConversationDropTargetCollectionViewCell
 + (NSString)reuseIdentifier;
-+ (id)uniqueIdentifierForDropTargetAtItemIndex:(int64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKPinnedConversationDropTargetCollectionViewCell)initWithFrame:(CGRect)a3;
++ (id)uniqueIdentifierForDropTargetAtItemIndex:(int64_t)index;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKPinnedConversationDropTargetCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)_updateFont;
 - (void)_updateInstructionLabelColor;
 - (void)layoutSubviews;
-- (void)setShouldAnimateCircle:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setShouldAnimateCircle:(BOOL)circle;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CKPinnedConversationDropTargetCollectionViewCell
@@ -19,28 +19,28 @@
   return NSStringFromClass(v2);
 }
 
-+ (id)uniqueIdentifierForDropTargetAtItemIndex:(int64_t)a3
++ (id)uniqueIdentifierForDropTargetAtItemIndex:(int64_t)index
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [a1 uniqueIdentifier];
-  v6 = [v4 stringWithFormat:@"%@%li", v5, a3];
+  uniqueIdentifier = [self uniqueIdentifier];
+  index = [v4 stringWithFormat:@"%@%li", uniqueIdentifier, index];
 
-  return v6;
+  return index;
 }
 
-- (CKPinnedConversationDropTargetCollectionViewCell)initWithFrame:(CGRect)a3
+- (CKPinnedConversationDropTargetCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v21.receiver = self;
   v21.super_class = CKPinnedConversationDropTargetCollectionViewCell;
   v7 = [(CKPinnedConversationDropTargetCollectionViewCell *)&v21 initWithFrame:?];
   v8 = v7;
   if (v7)
   {
-    v9 = [(CKPinnedConversationDropTargetCollectionViewCell *)v7 contentView];
+    contentView = [(CKPinnedConversationDropTargetCollectionViewCell *)v7 contentView];
     v10 = objc_alloc(MEMORY[0x1E69DCC10]);
     [(CKPinnedConversationDropTargetCollectionViewCell *)v8 bounds];
     v11 = [v10 initWithFrame:?];
@@ -55,12 +55,12 @@
     [(UILabel *)v8->_instructionLabel setNumberOfLines:3];
     [(UILabel *)v8->_instructionLabel setTextAlignment:1];
     [(CKPinnedConversationDropTargetCollectionViewCell *)v8 _updateInstructionLabelColor];
-    [v9 addSubview:v8->_instructionLabel];
-    v16 = [[CKDropZoneCircleView alloc] initWithFrame:x, y, width, height];
+    [contentView addSubview:v8->_instructionLabel];
+    height = [[CKDropZoneCircleView alloc] initWithFrame:x, y, width, height];
     dropZoneCircleView = v8->_dropZoneCircleView;
-    v8->_dropZoneCircleView = v16;
+    v8->_dropZoneCircleView = height;
 
-    [v9 addSubview:v8->_dropZoneCircleView];
+    [contentView addSubview:v8->_dropZoneCircleView];
     v18 = objc_alloc_init(CKPinnedConversationView);
     prototypeConversationView = v8->_prototypeConversationView;
     v8->_prototypeConversationView = v18;
@@ -74,11 +74,11 @@
   return v8;
 }
 
-- (void)setShouldAnimateCircle:(BOOL)a3
+- (void)setShouldAnimateCircle:(BOOL)circle
 {
-  self->_shouldAnimateCircle = a3;
+  self->_shouldAnimateCircle = circle;
   dropZoneCircleView = self->_dropZoneCircleView;
-  if (a3)
+  if (circle)
   {
     [(CKDropZoneCircleView *)dropZoneCircleView startAnimating];
   }
@@ -93,8 +93,8 @@
 {
   instructionLabel = self->_instructionLabel;
   v4 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v4 conversationListDropTargetInstructionFont];
-  [(UILabel *)instructionLabel setFont:v3];
+  conversationListDropTargetInstructionFont = [v4 conversationListDropTargetInstructionFont];
+  [(UILabel *)instructionLabel setFont:conversationListDropTargetInstructionFont];
 }
 
 - (void)layoutSubviews
@@ -102,8 +102,8 @@
   v34.receiver = self;
   v34.super_class = CKPinnedConversationDropTargetCollectionViewCell;
   [(CKPinnedConversationDropTargetCollectionViewCell *)&v34 layoutSubviews];
-  v3 = [(CKPinnedConversationDropTargetCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(CKPinnedConversationDropTargetCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -121,8 +121,8 @@
   v19 = v18;
   v21 = v20;
   [(UILabel *)self->_instructionLabel setBounds:0.0, 0.0, v18, v20];
-  v22 = [(UILabel *)self->_instructionLabel font];
-  [v22 lineHeight];
+  font = [(UILabel *)self->_instructionLabel font];
+  [font lineHeight];
   v24 = llround(v21 / v23);
 
   if (v24 == 2)
@@ -175,10 +175,10 @@
   [(UILabel *)self->_instructionLabel setFrame:v32, v27, v33, v21];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(CKPinnedConversationView *)self->_prototypeConversationView setLayoutStyle:self->_layoutStyle];
   prototypeConversationView = self->_prototypeConversationView;
 
@@ -188,22 +188,22 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CKPinnedConversationDropTargetCollectionViewCell;
-  [(CKPinnedConversationDropTargetCollectionViewCell *)&v4 traitCollectionDidChange:a3];
+  [(CKPinnedConversationDropTargetCollectionViewCell *)&v4 traitCollectionDidChange:change];
   [(CKPinnedConversationDropTargetCollectionViewCell *)self _updateInstructionLabelColor];
 }
 
 - (void)_updateInstructionLabelColor
 {
-  v3 = [(CKPinnedConversationDropTargetCollectionViewCell *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(CKPinnedConversationDropTargetCollectionViewCell *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 >= 2)
+  if (userInterfaceStyle >= 2)
   {
-    if (v4 != 2)
+    if (userInterfaceStyle != 2)
     {
       v7 = 0;
       goto LABEL_7;
@@ -219,8 +219,8 @@
 
   v7 = v5;
 LABEL_7:
-  v6 = [(CKPinnedConversationDropTargetCollectionViewCell *)self instructionLabel];
-  [v6 setTextColor:v7];
+  instructionLabel = [(CKPinnedConversationDropTargetCollectionViewCell *)self instructionLabel];
+  [instructionLabel setTextColor:v7];
 }
 
 @end

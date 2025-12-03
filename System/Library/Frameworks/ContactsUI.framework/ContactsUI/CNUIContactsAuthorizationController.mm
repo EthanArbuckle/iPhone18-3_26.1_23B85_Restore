@@ -4,62 +4,62 @@
 + (NSString)authorizationPaneHeaderLabel;
 - (BOOL)foundAppsWithContactsAccessInfo;
 - (CNUIContactsAuthorizationController)init;
-- (CNUIContactsAuthorizationController)initWithBundleIdentifier:(id)a3;
+- (CNUIContactsAuthorizationController)initWithBundleIdentifier:(id)identifier;
 - (CNUICoreContactsAuthorizationModel)model;
 - (NSArray)bundleIdentifiersOfAppsWithContactsAccessInfo;
-- (id)authorizationLevelOfAppWithBundleIdentifier:(id)a3;
+- (id)authorizationLevelOfAppWithBundleIdentifier:(id)identifier;
 - (id)createModel;
-- (id)iconOfAppWithBundleIdentifier:(id)a3;
-- (id)nameOfAppWithBundleIdentifier:(id)a3;
+- (id)iconOfAppWithBundleIdentifier:(id)identifier;
+- (id)nameOfAppWithBundleIdentifier:(id)identifier;
 - (void)lazilyLoadIconsForRemoteItems;
 - (void)saveModel;
-- (void)setAuthorizationLevel:(id)a3 ofAppWithBundleIdentifier:(id)a4;
+- (void)setAuthorizationLevel:(id)level ofAppWithBundleIdentifier:(id)identifier;
 @end
 
 @implementation CNUIContactsAuthorizationController
 
-- (void)setAuthorizationLevel:(id)a3 ofAppWithBundleIdentifier:(id)a4
+- (void)setAuthorizationLevel:(id)level ofAppWithBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [a3 unsignedIntegerValue];
-  v8 = [(CNUIContactsAuthorizationController *)self model];
-  v9 = [v8 itemWithMatchingBundleIdentifier:v6];
+  identifierCopy = identifier;
+  unsignedIntegerValue = [level unsignedIntegerValue];
+  model = [(CNUIContactsAuthorizationController *)self model];
+  v9 = [model itemWithMatchingBundleIdentifier:identifierCopy];
 
-  [v9 setAuthorization:v7];
+  [v9 setAuthorization:unsignedIntegerValue];
 
   [(CNUIContactsAuthorizationController *)self saveModel];
 }
 
-- (id)iconOfAppWithBundleIdentifier:(id)a3
+- (id)iconOfAppWithBundleIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E69DCAB8];
-  v5 = a3;
-  v6 = [(CNUIContactsAuthorizationController *)self model];
-  v7 = [v6 itemWithMatchingBundleIdentifier:v5];
+  identifierCopy = identifier;
+  model = [(CNUIContactsAuthorizationController *)self model];
+  v7 = [model itemWithMatchingBundleIdentifier:identifierCopy];
 
-  v8 = [v7 icon];
-  v9 = [v4 imageWithData:v8];
+  icon = [v7 icon];
+  v9 = [v4 imageWithData:icon];
 
   return v9;
 }
 
-- (id)nameOfAppWithBundleIdentifier:(id)a3
+- (id)nameOfAppWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CNUIContactsAuthorizationController *)self model];
-  v6 = [v5 itemWithMatchingBundleIdentifier:v4];
+  identifierCopy = identifier;
+  model = [(CNUIContactsAuthorizationController *)self model];
+  v6 = [model itemWithMatchingBundleIdentifier:identifierCopy];
 
-  v7 = [v6 name];
+  name = [v6 name];
 
-  return v7;
+  return name;
 }
 
-- (id)authorizationLevelOfAppWithBundleIdentifier:(id)a3
+- (id)authorizationLevelOfAppWithBundleIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
-  v6 = [(CNUIContactsAuthorizationController *)self model];
-  v7 = [v6 itemWithMatchingBundleIdentifier:v5];
+  identifierCopy = identifier;
+  model = [(CNUIContactsAuthorizationController *)self model];
+  v7 = [model itemWithMatchingBundleIdentifier:identifierCopy];
 
   v8 = [v4 numberWithInteger:{objc_msgSend(v7, "authorization")}];
 
@@ -68,34 +68,34 @@
 
 - (NSArray)bundleIdentifiersOfAppsWithContactsAccessInfo
 {
-  v2 = [(CNUIContactsAuthorizationController *)self model];
-  v3 = [v2 bundleIdentifiers];
+  model = [(CNUIContactsAuthorizationController *)self model];
+  bundleIdentifiers = [model bundleIdentifiers];
 
-  return v3;
+  return bundleIdentifiers;
 }
 
 - (BOOL)foundAppsWithContactsAccessInfo
 {
-  v2 = [(CNUIContactsAuthorizationController *)self model];
-  v3 = [v2 isEmpty];
+  model = [(CNUIContactsAuthorizationController *)self model];
+  isEmpty = [model isEmpty];
 
-  return v3 ^ 1;
+  return isEmpty ^ 1;
 }
 
 - (void)saveModel
 {
-  v3 = [(CNUIContactsAuthorizationController *)self store];
-  v4 = [(CNUIContactsAuthorizationController *)self model];
-  v6 = [v3 saveContactsAuthorizationModel:v4];
+  store = [(CNUIContactsAuthorizationController *)self store];
+  model = [(CNUIContactsAuthorizationController *)self model];
+  v6 = [store saveContactsAuthorizationModel:model];
 
   v5 = [v6 result:0];
 }
 
 - (void)lazilyLoadIconsForRemoteItems
 {
-  v3 = [(CNUIContactsAuthorizationController *)self store];
-  v4 = [(CNUIContactsAuthorizationController *)self model];
-  v5 = [v3 contactsAuthorizationModelByLoadingIconsOfRemoteItemsInModel:v4];
+  store = [(CNUIContactsAuthorizationController *)self store];
+  model = [(CNUIContactsAuthorizationController *)self model];
+  v5 = [store contactsAuthorizationModelByLoadingIconsOfRemoteItemsInModel:model];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -122,9 +122,9 @@ void __68__CNUIContactsAuthorizationController_lazilyLoadIconsForRemoteItems__bl
 
 - (id)createModel
 {
-  v2 = [(CNUIContactsAuthorizationController *)self store];
-  v3 = [v2 contactsAuthorizationModel];
-  v4 = [v3 result:0];
+  store = [(CNUIContactsAuthorizationController *)self store];
+  contactsAuthorizationModel = [store contactsAuthorizationModel];
+  v4 = [contactsAuthorizationModel result:0];
 
   return v4;
 }
@@ -134,9 +134,9 @@ void __68__CNUIContactsAuthorizationController_lazilyLoadIconsForRemoteItems__bl
   model = self->_model;
   if (!model)
   {
-    v4 = [(CNUIContactsAuthorizationController *)self createModel];
+    createModel = [(CNUIContactsAuthorizationController *)self createModel];
     v5 = self->_model;
-    self->_model = v4;
+    self->_model = createModel;
 
     model = self->_model;
   }
@@ -144,15 +144,15 @@ void __68__CNUIContactsAuthorizationController_lazilyLoadIconsForRemoteItems__bl
   return model;
 }
 
-- (CNUIContactsAuthorizationController)initWithBundleIdentifier:(id)a3
+- (CNUIContactsAuthorizationController)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = CNUIContactsAuthorizationController;
   v5 = [(CNUIContactsAuthorizationController *)&v10 init];
   if (v5)
   {
-    v6 = [[CNUIContactsAuthorizationStore alloc] initWithBundleIdentifier:v4];
+    v6 = [[CNUIContactsAuthorizationStore alloc] initWithBundleIdentifier:identifierCopy];
     store = v5->_store;
     v5->_store = v6;
 
@@ -164,7 +164,7 @@ void __68__CNUIContactsAuthorizationController_lazilyLoadIconsForRemoteItems__bl
 
 - (CNUIContactsAuthorizationController)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }

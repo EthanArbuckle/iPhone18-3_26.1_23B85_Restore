@@ -1,10 +1,10 @@
 @interface SSSoftwareUpdatesStore
 - (SSSoftwareUpdatesStore)init;
-- (void)clearExpiredUpdateHistoryWithCompletionBlock:(id)a3;
+- (void)clearExpiredUpdateHistoryWithCompletionBlock:(id)block;
 - (void)dealloc;
-- (void)getUpdatesWithCompletionBlock:(id)a3;
+- (void)getUpdatesWithCompletionBlock:(id)block;
 - (void)hideApplicationBadgeForPendingUpdates;
-- (void)reloadFromServerWithCompletionBlock:(id)a3;
+- (void)reloadFromServerWithCompletionBlock:(id)block;
 - (void)removeUpdateBulletins;
 - (void)showApplicationBadgeForPendingUpdates;
 @end
@@ -45,19 +45,19 @@
   [(SSSoftwareUpdatesStore *)&v4 dealloc];
 }
 
-- (void)clearExpiredUpdateHistoryWithCompletionBlock:(id)a3
+- (void)clearExpiredUpdateHistoryWithCompletionBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3, 0, 0);
+    (*(block + 2))(block, 0, 0);
   }
 }
 
-- (void)getUpdatesWithCompletionBlock:(id)a3
+- (void)getUpdatesWithCompletionBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3, MEMORY[0x1E695E0F0]);
+    (*(block + 2))(block, MEMORY[0x1E695E0F0]);
   }
 }
 
@@ -75,19 +75,19 @@
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
   {
     v7 = v5;
   }
@@ -109,9 +109,9 @@
 
   if (v8)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v17, v16}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v17, v16}];
     free(v8);
-    SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, v6);
+    SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_14:
   }
 
@@ -123,10 +123,10 @@ LABEL_16:
   }
 }
 
-- (void)reloadFromServerWithCompletionBlock:(id)a3
+- (void)reloadFromServerWithCompletionBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -135,19 +135,19 @@ LABEL_16:
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v9 = v7;
     }
@@ -171,9 +171,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v22, v19}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v22, v19}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -186,8 +186,8 @@ LABEL_16:
   block[2] = __62__SSSoftwareUpdatesStore_reloadFromServerWithCompletionBlock___block_invoke;
   block[3] = &unk_1E84AC360;
   block[4] = self;
-  v21 = v4;
-  v18 = v4;
+  v21 = blockCopy;
+  v18 = blockCopy;
   dispatch_async(dispatchQueue, block);
 }
 

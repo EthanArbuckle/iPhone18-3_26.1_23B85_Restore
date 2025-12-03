@@ -2,12 +2,12 @@
 + (NSUUID)defaultConfigurationUUID;
 + (id)defaultConfiguration;
 + (void)defaultConfiguration;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TGITextGenerationInferenceModelConfiguration)modelConfiguration;
-- (TGTextGenerationConfiguration)initWithUUID:(id)a3 resources:(id)a4 decodingPolicy:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TGTextGenerationConfiguration)initWithUUID:(id)d resources:(id)resources decodingPolicy:(id)policy;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -45,8 +45,8 @@ uint64_t __57__TGTextGenerationConfiguration_defaultConfigurationUUID__block_inv
     if (v4)
     {
       v50 = +[TGTextGenerationConfiguration defaultConfigurationUUID];
-      v5 = [v50 UUIDString];
-      v6 = [v4 objectForKey:v5];
+      uUIDString = [v50 UUIDString];
+      v6 = [v4 objectForKey:uUIDString];
 
       v47 = v6;
       if (v50)
@@ -209,25 +209,25 @@ LABEL_42:
   return v17;
 }
 
-- (TGTextGenerationConfiguration)initWithUUID:(id)a3 resources:(id)a4 decodingPolicy:(id)a5
+- (TGTextGenerationConfiguration)initWithUUID:(id)d resources:(id)resources decodingPolicy:(id)policy
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  resourcesCopy = resources;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = TGTextGenerationConfiguration;
   v11 = [(TGTextGenerationConfiguration *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     uuid = v11->_uuid;
     v11->_uuid = v12;
 
-    v14 = [v9 copy];
+    v14 = [resourcesCopy copy];
     resources = v11->_resources;
     v11->_resources = v14;
 
-    v16 = [v10 copy];
+    v16 = [policyCopy copy];
     decodingPolicy = v11->_decodingPolicy;
     v11->_decodingPolicy = v16;
   }
@@ -235,35 +235,35 @@ LABEL_42:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TGTextGenerationConfiguration alloc];
-  v5 = [(TGTextGenerationConfiguration *)self uuid];
-  v6 = [(TGTextGenerationConfiguration *)self resources];
-  v7 = [(TGTextGenerationConfiguration *)self decodingPolicy];
-  v8 = [(TGTextGenerationConfiguration *)v4 initWithUUID:v5 resources:v6 decodingPolicy:v7];
+  uuid = [(TGTextGenerationConfiguration *)self uuid];
+  resources = [(TGTextGenerationConfiguration *)self resources];
+  decodingPolicy = [(TGTextGenerationConfiguration *)self decodingPolicy];
+  v8 = [(TGTextGenerationConfiguration *)v4 initWithUUID:uuid resources:resources decodingPolicy:decodingPolicy];
 
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TGMutableTextGenerationConfiguration alloc];
-  v5 = [(TGTextGenerationConfiguration *)self uuid];
-  v6 = [(TGTextGenerationConfiguration *)self resources];
-  v7 = [(TGTextGenerationConfiguration *)self decodingPolicy];
-  v8 = [(TGTextGenerationConfiguration *)v4 initWithUUID:v5 resources:v6 decodingPolicy:v7];
+  uuid = [(TGTextGenerationConfiguration *)self uuid];
+  resources = [(TGTextGenerationConfiguration *)self resources];
+  decodingPolicy = [(TGTextGenerationConfiguration *)self decodingPolicy];
+  v8 = [(TGTextGenerationConfiguration *)v4 initWithUUID:uuid resources:resources decodingPolicy:decodingPolicy];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -274,17 +274,17 @@ LABEL_42:
   v6 = v5;
   if (v6)
   {
-    v7 = [(TGTextGenerationConfiguration *)self uuid];
-    v8 = [v6 uuid];
-    if ([v7 isEqual:v8])
+    uuid = [(TGTextGenerationConfiguration *)self uuid];
+    uuid2 = [v6 uuid];
+    if ([uuid isEqual:uuid2])
     {
-      v9 = [(TGTextGenerationConfiguration *)self resources];
-      v10 = [v6 resources];
-      if ([v9 isEqualToSet:v10])
+      resources = [(TGTextGenerationConfiguration *)self resources];
+      resources2 = [v6 resources];
+      if ([resources isEqualToSet:resources2])
       {
-        v11 = [(TGTextGenerationConfiguration *)self decodingPolicy];
-        v12 = [v6 decodingPolicy];
-        v13 = [v11 isEqual:v12];
+        decodingPolicy = [(TGTextGenerationConfiguration *)self decodingPolicy];
+        decodingPolicy2 = [v6 decodingPolicy];
+        v13 = [decodingPolicy isEqual:decodingPolicy2];
       }
 
       else
@@ -309,14 +309,14 @@ LABEL_42:
 
 - (unint64_t)hash
 {
-  v3 = [(TGTextGenerationConfiguration *)self uuid];
-  [v3 hash];
+  uuid = [(TGTextGenerationConfiguration *)self uuid];
+  [uuid hash];
 
-  v4 = [(TGTextGenerationConfiguration *)self resources];
-  [v4 hash];
+  resources = [(TGTextGenerationConfiguration *)self resources];
+  [resources hash];
 
-  v5 = [(TGTextGenerationConfiguration *)self decodingPolicy];
-  v6 = [v5 hash];
+  decodingPolicy = [(TGTextGenerationConfiguration *)self decodingPolicy];
+  v6 = [decodingPolicy hash];
 
   return v6;
 }
@@ -325,14 +325,14 @@ LABEL_42:
 {
   v11[3] = *MEMORY[0x277D85DE8];
   v10[0] = @"uuid";
-  v3 = [(TGTextGenerationConfiguration *)self uuid];
-  v11[0] = v3;
+  uuid = [(TGTextGenerationConfiguration *)self uuid];
+  v11[0] = uuid;
   v10[1] = @"resources";
-  v4 = [(TGTextGenerationConfiguration *)self resources];
-  v11[1] = v4;
+  resources = [(TGTextGenerationConfiguration *)self resources];
+  v11[1] = resources;
   v10[2] = @"decodingPolicy";
-  v5 = [(TGTextGenerationConfiguration *)self decodingPolicy];
-  v11[2] = v5;
+  decodingPolicy = [(TGTextGenerationConfiguration *)self decodingPolicy];
+  v11[2] = decodingPolicy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:3];
   v7 = [v6 description];
 
@@ -353,8 +353,8 @@ LABEL_42:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [v1 resources];
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  resources = [v1 resources];
+  v4 = [resources countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
     v5 = 0;
@@ -363,33 +363,33 @@ LABEL_42:
     {
       if (i != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(resources);
       }
 
       v8 = *(*(&v19 + 1) + 8 * v5);
       if ([v8 type] == 1)
       {
         v9 = [v8 url];
-        v10 = [v9 path];
-        v11 = v10;
-        std::string::__assign_external(retstr, [v10 UTF8String]);
+        path = [v9 path];
+        v11 = path;
+        std::string::__assign_external(retstr, [path UTF8String]);
 
-        v12 = [v8 e5FunctionName];
-        v13 = v12;
-        std::string::__assign_external(&retstr[2], [v12 UTF8String]);
+        e5FunctionName = [v8 e5FunctionName];
+        v13 = e5FunctionName;
+        std::string::__assign_external(&retstr[2], [e5FunctionName UTF8String]);
       }
 
       if (![v8 type])
       {
         v14 = [v8 url];
-        v15 = [v14 path];
-        v16 = v15;
-        std::string::__assign_external(&retstr[1], [v15 UTF8String]);
+        path2 = [v14 path];
+        v16 = path2;
+        std::string::__assign_external(&retstr[1], [path2 UTF8String]);
       }
 
       if (++v5 >= v4)
       {
-        v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v4 = [resources countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (!v4)
         {
           break;

@@ -1,14 +1,14 @@
 @interface SBSApplicationService
-- (void)deleteSnapshotsForApplicationIdentifier:(id)a3;
+- (void)deleteSnapshotsForApplicationIdentifier:(id)identifier;
 @end
 
 @implementation SBSApplicationService
 
-- (void)deleteSnapshotsForApplicationIdentifier:(id)a3
+- (void)deleteSnapshotsForApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBSAbstractApplicationService *)self client];
-  [v5 deleteSnapshotsForApplicationIdentifier:v4];
+  identifierCopy = identifier;
+  client = [(SBSAbstractApplicationService *)self client];
+  [client deleteSnapshotsForApplicationIdentifier:identifierCopy];
 }
 
 @end

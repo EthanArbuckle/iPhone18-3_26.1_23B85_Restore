@@ -1,30 +1,30 @@
 @interface TVRUIButtonEvent
-+ (id)createButtonEvent:(int64_t)a3 buttonType:(int64_t)a4;
-- (id)_initWithButtonType:(int64_t)a3 eventType:(int64_t)a4;
++ (id)createButtonEvent:(int64_t)event buttonType:(int64_t)type;
+- (id)_initWithButtonType:(int64_t)type eventType:(int64_t)eventType;
 - (id)description;
 @end
 
 @implementation TVRUIButtonEvent
 
-- (id)_initWithButtonType:(int64_t)a3 eventType:(int64_t)a4
+- (id)_initWithButtonType:(int64_t)type eventType:(int64_t)eventType
 {
   v7.receiver = self;
   v7.super_class = TVRUIButtonEvent;
   result = [(TVRUIButtonEvent *)&v7 init];
   if (result)
   {
-    *(result + 2) = a3;
-    *(result + 3) = a4;
+    *(result + 2) = type;
+    *(result + 3) = eventType;
   }
 
   return result;
 }
 
-+ (id)createButtonEvent:(int64_t)a3 buttonType:(int64_t)a4
++ (id)createButtonEvent:(int64_t)event buttonType:(int64_t)type
 {
   v6 = objc_alloc_init(TVRUIButtonEvent);
-  v6->_buttonType = a4;
-  v6->_eventType = a3;
+  v6->_buttonType = type;
+  v6->_eventType = event;
 
   return v6;
 }
@@ -41,13 +41,13 @@
   v5 = [v3 appendInteger:-[TVRUIButtonEvent eventType](self withName:{"eventType"), @"eventType"}];
   v6 = [v3 appendClass:objc_opt_class() withName:@"class"];
   v7 = description_dateFormatter;
-  v8 = [(TVRUIButtonEvent *)self timestamp];
-  v9 = [v7 stringFromDate:v8];
+  timestamp = [(TVRUIButtonEvent *)self timestamp];
+  v9 = [v7 stringFromDate:timestamp];
   [v3 appendString:v9 withName:@"timestamp"];
 
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 uint64_t __31__TVRUIButtonEvent_description__block_invoke()

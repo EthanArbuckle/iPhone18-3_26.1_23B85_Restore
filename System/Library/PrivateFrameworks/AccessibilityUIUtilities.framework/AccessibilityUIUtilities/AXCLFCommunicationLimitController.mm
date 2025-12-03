@@ -1,7 +1,7 @@
 @interface AXCLFCommunicationLimitController
-- (BOOL)_isAllowedFavoritesEntry:(id)a3;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
+- (BOOL)_isAllowedFavoritesEntry:(id)entry;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
 - (CLFBaseCommunicationLimitSettings)settings;
 - (NSArray)actionTypes;
 - (NSArray)bundleIdentifiers;
@@ -11,24 +11,24 @@
 - (NSString)incomingHeaderText;
 - (NSString)outgoingHeaderText;
 - (NSString)privacyAppBundleIdentifier;
-- (id)_favoritesEntryPickerContactForContact:(id)a3 contactStore:(id)a4;
+- (id)_favoritesEntryPickerContactForContact:(id)contact contactStore:(id)store;
 - (id)_favoritesSpecifiers;
-- (id)_singleCommunicationLimitSpecifiersForSpecifier:(id)a3;
-- (id)_specifierForFavoritesEntry:(id)a3;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (id)_singleCommunicationLimitSpecifiersForSpecifier:(id)specifier;
+- (id)_specifierForFavoritesEntry:(id)entry;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (unint64_t)app;
-- (void)_addFavorite:(id)a3;
-- (void)_favoritesDidChange:(id)a3;
+- (void)_addFavorite:(id)favorite;
+- (void)_favoritesDidChange:(id)change;
 - (void)_updateEditButton;
 - (void)_updateForOutgoingCommunicationLimit;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
-- (void)favoritesEntryPicker:(id)a3 didPickEntry:(id)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPickerDidCancel:(id)cancel;
+- (void)favoritesEntryPicker:(id)picker didPickEntry:(id)entry;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)viewDidLoad;
 @end
 
@@ -36,41 +36,41 @@
 
 - (NSArray)communicationLimitSpecifiers
 {
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = [_SingleCommunicationLimitSpecifiers alloc];
-  v6 = [(AXCLFCommunicationLimitController *)self incomingHeaderText];
-  v7 = [(AXCLFCommunicationLimitController *)self settings];
-  v8 = [v7 incomingCommunicationLimit];
-  v9 = *MEMORY[0x1E6994600];
-  v10 = [(_SingleCommunicationLimitSpecifiers *)v5 initWithHeaderText:v6 communicationLimit:v8 maximumCommunicationLimit:*MEMORY[0x1E6994600] app:[(AXCLFCommunicationLimitController *)self app] direction:0];
+  incomingHeaderText = [(AXCLFCommunicationLimitController *)self incomingHeaderText];
+  settings = [(AXCLFCommunicationLimitController *)self settings];
+  incomingCommunicationLimit = [settings incomingCommunicationLimit];
+  incomingCommunicationLimit2 = *MEMORY[0x1E6994600];
+  v10 = [(_SingleCommunicationLimitSpecifiers *)v5 initWithHeaderText:incomingHeaderText communicationLimit:incomingCommunicationLimit maximumCommunicationLimit:*MEMORY[0x1E6994600] app:[(AXCLFCommunicationLimitController *)self app] direction:0];
   [(AXCLFCommunicationLimitController *)self setIncomingSpecifiers:v10];
 
-  v11 = [(AXCLFCommunicationLimitController *)self incomingSpecifiers];
-  v12 = [v11 allSpecifiers];
-  [v4 addObjectsFromArray:v12];
+  incomingSpecifiers = [(AXCLFCommunicationLimitController *)self incomingSpecifiers];
+  allSpecifiers = [incomingSpecifiers allSpecifiers];
+  [array addObjectsFromArray:allSpecifiers];
 
   v13 = [_SingleCommunicationLimitSpecifiers alloc];
-  v14 = [(AXCLFCommunicationLimitController *)self outgoingHeaderText];
-  v15 = [(AXCLFCommunicationLimitController *)self settings];
-  v16 = [v15 outgoingCommunicationLimit];
-  v17 = [(AXCLFCommunicationLimitController *)self settings];
-  v18 = [v17 requiresMoreRestrictiveOutgoingCommunicationLimit];
-  if (v18)
+  outgoingHeaderText = [(AXCLFCommunicationLimitController *)self outgoingHeaderText];
+  settings2 = [(AXCLFCommunicationLimitController *)self settings];
+  outgoingCommunicationLimit = [settings2 outgoingCommunicationLimit];
+  settings3 = [(AXCLFCommunicationLimitController *)self settings];
+  requiresMoreRestrictiveOutgoingCommunicationLimit = [settings3 requiresMoreRestrictiveOutgoingCommunicationLimit];
+  if (requiresMoreRestrictiveOutgoingCommunicationLimit)
   {
-    v2 = [(AXCLFCommunicationLimitController *)self settings];
-    v9 = [v2 incomingCommunicationLimit];
+    settings4 = [(AXCLFCommunicationLimitController *)self settings];
+    incomingCommunicationLimit2 = [settings4 incomingCommunicationLimit];
   }
 
-  v19 = [(_SingleCommunicationLimitSpecifiers *)v13 initWithHeaderText:v14 communicationLimit:v16 maximumCommunicationLimit:v9 app:[(AXCLFCommunicationLimitController *)self app] direction:1];
+  v19 = [(_SingleCommunicationLimitSpecifiers *)v13 initWithHeaderText:outgoingHeaderText communicationLimit:outgoingCommunicationLimit maximumCommunicationLimit:incomingCommunicationLimit2 app:[(AXCLFCommunicationLimitController *)self app] direction:1];
   [(AXCLFCommunicationLimitController *)self setOutgoingSpecifiers:v19];
 
-  if (v18)
+  if (requiresMoreRestrictiveOutgoingCommunicationLimit)
   {
   }
 
-  v20 = [(AXCLFCommunicationLimitController *)self outgoingSpecifiers];
-  v21 = [v20 allSpecifiers];
-  [v4 addObjectsFromArray:v21];
+  outgoingSpecifiers = [(AXCLFCommunicationLimitController *)self outgoingSpecifiers];
+  allSpecifiers2 = [outgoingSpecifiers allSpecifiers];
+  [array addObjectsFromArray:allSpecifiers2];
 
   if ([(AXCLFCommunicationLimitController *)self app])
   {
@@ -84,14 +84,14 @@
 
   v23 = AXUILocalizedStringForKey(v22);
   v24 = [MEMORY[0x1E69C5748] groupSpecifierWithName:v23];
-  v25 = [(AXCLFCommunicationLimitController *)self favoritesFooterText];
-  [v24 setProperty:v25 forKey:*MEMORY[0x1E69C5900]];
+  favoritesFooterText = [(AXCLFCommunicationLimitController *)self favoritesFooterText];
+  [v24 setProperty:favoritesFooterText forKey:*MEMORY[0x1E69C5900]];
 
-  [v4 addObject:v24];
-  v26 = [(AXCLFCommunicationLimitController *)self _favoritesSpecifiers];
-  [v4 addObjectsFromArray:v26];
+  [array addObject:v24];
+  _favoritesSpecifiers = [(AXCLFCommunicationLimitController *)self _favoritesSpecifiers];
+  [array addObjectsFromArray:_favoritesSpecifiers];
 
-  v27 = [(AXCLFBasePrivacyLinkController *)self specifiersWithPrivacyLinkSupport:v4];
+  v27 = [(AXCLFBasePrivacyLinkController *)self specifiersWithPrivacyLinkSupport:array];
 
   return v27;
 }
@@ -104,59 +104,59 @@
   [(AXCLFCommunicationLimitController *)self _updateEditButton];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v7.receiver = self;
   v7.super_class = AXCLFCommunicationLimitController;
   [AXCLFCommunicationLimitController setEditing:sel_setEditing_animated_ animated:?];
-  [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x1E69C57C0]) setEditing:v5 animated:v4];
+  [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x1E69C57C0]) setEditing:editingCopy animated:animatedCopy];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v18.receiver = self;
   v18.super_class = AXCLFCommunicationLimitController;
-  v6 = a4;
-  [(AXCLFCommunicationLimitController *)&v18 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(AXCLFCommunicationLimitController *)self specifierAtIndexPath:v6, v18.receiver, v18.super_class];
+  pathCopy = path;
+  [(AXCLFCommunicationLimitController *)&v18 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(AXCLFCommunicationLimitController *)self specifierAtIndexPath:pathCopy, v18.receiver, v18.super_class];
 
   v8 = [(AXCLFCommunicationLimitController *)self _singleCommunicationLimitSpecifiersForSpecifier:v7];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 groupSpecifier];
-    v11 = [v10 propertyForKey:*MEMORY[0x1E69C5958]];
+    groupSpecifier = [v8 groupSpecifier];
+    v11 = [groupSpecifier propertyForKey:*MEMORY[0x1E69C5958]];
 
     if (v11 != v7)
     {
-      v12 = [MEMORY[0x1E6994620] commonLog];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
+      commonLog = [MEMORY[0x1E6994620] commonLog];
+      if (os_log_type_enabled(commonLog, OS_LOG_TYPE_FAULT))
       {
         [AXCLFCommunicationLimitController tableView:didSelectRowAtIndexPath:];
       }
     }
 
     v13 = [v9 communicationLimitForSpecifier:v11];
-    v14 = [(AXCLFCommunicationLimitController *)self incomingSpecifiers];
+    incomingSpecifiers = [(AXCLFCommunicationLimitController *)self incomingSpecifiers];
 
-    if (v9 == v14)
+    if (v9 == incomingSpecifiers)
     {
-      v17 = [(AXCLFCommunicationLimitController *)self settings];
-      [v17 setIncomingCommunicationLimit:v13];
+      settings = [(AXCLFCommunicationLimitController *)self settings];
+      [settings setIncomingCommunicationLimit:v13];
 
       [(AXCLFCommunicationLimitController *)self _updateForOutgoingCommunicationLimit];
     }
 
     else
     {
-      v15 = [(AXCLFCommunicationLimitController *)self outgoingSpecifiers];
+      outgoingSpecifiers = [(AXCLFCommunicationLimitController *)self outgoingSpecifiers];
 
-      if (v9 == v15)
+      if (v9 == outgoingSpecifiers)
       {
-        v16 = [(AXCLFCommunicationLimitController *)self settings];
-        [v16 setOutgoingCommunicationLimit:v13];
+        settings2 = [(AXCLFCommunicationLimitController *)self settings];
+        [settings2 setOutgoingCommunicationLimit:v13];
 
         [(AXCLFCommunicationLimitController *)self reloadSpecifiers];
       }
@@ -164,42 +164,42 @@
   }
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(AXCLFCommunicationLimitController *)self specifierAtIndexPath:a4];
+  v4 = [(AXCLFCommunicationLimitController *)self specifierAtIndexPath:path];
   v5 = [v4 propertyForKey:@"favoritesEntry"];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(AXCLFCommunicationLimitController *)self specifierAtIndexPath:a4];
+  v4 = [(AXCLFCommunicationLimitController *)self specifierAtIndexPath:path];
   v5 = [v4 propertyForKey:@"favoritesEntry"];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v6 = [(AXCLFCommunicationLimitController *)self specifierAtIndexPath:a5];
+    v6 = [(AXCLFCommunicationLimitController *)self specifierAtIndexPath:path];
     v7 = [v6 propertyForKey:@"favoritesEntry"];
     if (v7)
     {
-      v8 = [(AXCLFCommunicationLimitController *)self favoritesController];
-      v9 = [v8 favoritesEntries];
-      v10 = [v9 indexOfObject:v7];
+      favoritesController = [(AXCLFCommunicationLimitController *)self favoritesController];
+      favoritesEntries = [favoritesController favoritesEntries];
+      v10 = [favoritesEntries indexOfObject:v7];
 
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
       {
         [(AXCLFCommunicationLimitController *)self setShouldAvoidReloadForNextFavoritesUpdate:1];
-        v12 = [(AXCLFCommunicationLimitController *)self favoritesController];
+        favoritesController2 = [(AXCLFCommunicationLimitController *)self favoritesController];
         v13 = [MEMORY[0x1E696AC90] indexSetWithIndex:v10];
-        [v12 removeEntriesAtIndexes:v13];
+        [favoritesController2 removeEntriesAtIndexes:v13];
 
         [(AXCLFCommunicationLimitController *)self removeSpecifier:v6 animated:1];
         goto LABEL_10;
@@ -225,30 +225,30 @@ LABEL_10:
   }
 }
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
-  v4 = [(AXCLFCommunicationLimitController *)self specifierAtIndexPath:a4];
+  v4 = [(AXCLFCommunicationLimitController *)self specifierAtIndexPath:path];
   v5 = [v4 propertyForKey:@"favoritesEntry"];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(AXCLFCommunicationLimitController *)self specifierAtIndexPath:v8];
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  v9 = [(AXCLFCommunicationLimitController *)self specifierAtIndexPath:indexPathCopy];
   v10 = [v9 propertyForKey:@"favoritesEntry"];
 
   if (v10)
   {
-    v11 = v8;
+    v11 = indexPathCopy;
   }
 
   else
   {
-    v11 = v7;
+    v11 = pathCopy;
   }
 
   v12 = v11;
@@ -256,14 +256,14 @@ LABEL_10:
   return v11;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  if (a4 && a5)
+  if (path && indexPath)
   {
-    v7 = a5;
-    v8 = [(AXCLFCommunicationLimitController *)self specifierAtIndexPath:a4];
+    indexPathCopy = indexPath;
+    v8 = [(AXCLFCommunicationLimitController *)self specifierAtIndexPath:path];
     v9 = [v8 propertyForKey:@"favoritesEntry"];
-    v10 = [(AXCLFCommunicationLimitController *)self specifierAtIndexPath:v7];
+    v10 = [(AXCLFCommunicationLimitController *)self specifierAtIndexPath:indexPathCopy];
 
     v11 = [v10 propertyForKey:@"favoritesEntry"];
     v12 = v11;
@@ -279,8 +279,8 @@ LABEL_10:
 
     if (v13)
     {
-      v14 = CLFLogCommon();
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      favoritesController3 = CLFLogCommon();
+      if (os_log_type_enabled(favoritesController3, OS_LOG_TYPE_ERROR))
       {
         [AXCLFCommunicationLimitController tableView:moveRowAtIndexPath:toIndexPath:];
       }
@@ -288,18 +288,18 @@ LABEL_10:
 
     else
     {
-      v15 = [(AXCLFCommunicationLimitController *)self favoritesController];
-      v16 = [v15 favoritesEntries];
-      v17 = [v16 indexOfObject:v9];
+      favoritesController = [(AXCLFCommunicationLimitController *)self favoritesController];
+      favoritesEntries = [favoritesController favoritesEntries];
+      v17 = [favoritesEntries indexOfObject:v9];
 
-      v18 = [(AXCLFCommunicationLimitController *)self favoritesController];
-      v19 = [v18 favoritesEntries];
-      v20 = [v19 indexOfObject:v12];
+      favoritesController2 = [(AXCLFCommunicationLimitController *)self favoritesController];
+      favoritesEntries2 = [favoritesController2 favoritesEntries];
+      v20 = [favoritesEntries2 indexOfObject:v12];
 
       if (v17 == 0x7FFFFFFFFFFFFFFFLL || v20 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v14 = CLFLogCommon();
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+        favoritesController3 = CLFLogCommon();
+        if (os_log_type_enabled(favoritesController3, OS_LOG_TYPE_ERROR))
         {
           [AXCLFCommunicationLimitController tableView:moveRowAtIndexPath:toIndexPath:];
         }
@@ -308,19 +308,19 @@ LABEL_10:
       else
       {
         [(AXCLFCommunicationLimitController *)self setShouldAvoidReloadForNextFavoritesUpdate:1];
-        v14 = [(AXCLFCommunicationLimitController *)self favoritesController];
-        [v14 moveEntryAtIndex:v17 toIndex:v20];
+        favoritesController3 = [(AXCLFCommunicationLimitController *)self favoritesController];
+        [favoritesController3 moveEntryAtIndex:v17 toIndex:v20];
       }
     }
   }
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = [(AXCLFCommunicationLimitController *)self presentedViewController];
+  cancelCopy = cancel;
+  presentedViewController = [(AXCLFCommunicationLimitController *)self presentedViewController];
 
-  if (v5 == v4)
+  if (presentedViewController == cancelCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -337,61 +337,61 @@ LABEL_10:
   }
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v14 = a3;
-  v6 = a4;
-  [v14 invalidateSelectionAnimated:1];
-  v7 = [(AXCLFCommunicationLimitController *)self favoritesController];
-  v8 = [v7 contactStore];
-  v9 = [(AXCLFCommunicationLimitController *)self _favoritesEntryPickerContactForContact:v6 contactStore:v8];
+  pickerCopy = picker;
+  contactCopy = contact;
+  [pickerCopy invalidateSelectionAnimated:1];
+  favoritesController = [(AXCLFCommunicationLimitController *)self favoritesController];
+  contactStore = [favoritesController contactStore];
+  v9 = [(AXCLFCommunicationLimitController *)self _favoritesEntryPickerContactForContact:contactCopy contactStore:contactStore];
 
   if (v9)
   {
-    v10 = [objc_alloc(MEMORY[0x1E695D1C0]) initWithContact:v6];
+    v10 = [objc_alloc(MEMORY[0x1E695D1C0]) initWithContact:contactCopy];
     [(AXCLFCommunicationLimitController *)self setFavoritesEntryPicker:v10];
 
-    v11 = [(AXCLFCommunicationLimitController *)self favoritesEntryPicker];
-    [v11 setDelegate:self];
+    favoritesEntryPicker = [(AXCLFCommunicationLimitController *)self favoritesEntryPicker];
+    [favoritesEntryPicker setDelegate:self];
 
-    v12 = [(AXCLFCommunicationLimitController *)self favoritesEntryPicker];
-    v13 = [v12 viewController];
-    [v14 presentViewController:v13 animated:1 completion:0];
+    favoritesEntryPicker2 = [(AXCLFCommunicationLimitController *)self favoritesEntryPicker];
+    viewController = [favoritesEntryPicker2 viewController];
+    [pickerCopy presentViewController:viewController animated:1 completion:0];
   }
 }
 
-- (void)favoritesEntryPicker:(id)a3 didPickEntry:(id)a4
+- (void)favoritesEntryPicker:(id)picker didPickEntry:(id)entry
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(AXCLFCommunicationLimitController *)self favoritesController];
-  v7 = [v6 favoritesEntries];
-  v8 = [v7 containsObject:v5];
+  entryCopy = entry;
+  favoritesController = [(AXCLFCommunicationLimitController *)self favoritesController];
+  favoritesEntries = [favoritesController favoritesEntries];
+  v8 = [favoritesEntries containsObject:entryCopy];
 
   if (v8)
   {
-    v9 = CLFLogCommon();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    favoritesController3 = CLFLogCommon();
+    if (os_log_type_enabled(favoritesController3, OS_LOG_TYPE_ERROR))
     {
       [AXCLFCommunicationLimitController favoritesEntryPicker:didPickEntry:];
     }
   }
 
-  else if ([(AXCLFCommunicationLimitController *)self _isAllowedFavoritesEntry:v5])
+  else if ([(AXCLFCommunicationLimitController *)self _isAllowedFavoritesEntry:entryCopy])
   {
-    v10 = [(AXCLFCommunicationLimitController *)self favoritesController];
-    v11 = [v10 canAddEntry];
+    favoritesController2 = [(AXCLFCommunicationLimitController *)self favoritesController];
+    canAddEntry = [favoritesController2 canAddEntry];
 
-    if (v11)
+    if (canAddEntry)
     {
-      v9 = [(AXCLFCommunicationLimitController *)self favoritesController];
-      [v9 addEntry:v5];
+      favoritesController3 = [(AXCLFCommunicationLimitController *)self favoritesController];
+      [favoritesController3 addEntry:entryCopy];
     }
 
     else
     {
-      v9 = CLFLogCommon();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      favoritesController3 = CLFLogCommon();
+      if (os_log_type_enabled(favoritesController3, OS_LOG_TYPE_ERROR))
       {
         [AXCLFCommunicationLimitController favoritesEntryPicker:didPickEntry:];
       }
@@ -400,12 +400,12 @@ LABEL_10:
 
   else
   {
-    v9 = CLFLogCommon();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    favoritesController3 = CLFLogCommon();
+    if (os_log_type_enabled(favoritesController3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v5;
-      _os_log_impl(&dword_1C0DFB000, v9, OS_LOG_TYPE_DEFAULT, "Not adding favorites entry as it is for an unrelated app: %@", buf, 0xCu);
+      v14 = entryCopy;
+      _os_log_impl(&dword_1C0DFB000, favoritesController3, OS_LOG_TYPE_DEFAULT, "Not adding favorites entry as it is for an unrelated app: %@", buf, 0xCu);
     }
   }
 
@@ -419,75 +419,75 @@ LABEL_10:
 
 - (void)_updateForOutgoingCommunicationLimit
 {
-  v3 = [(AXCLFCommunicationLimitController *)self outgoingSpecifiers];
-  v4 = [(AXCLFCommunicationLimitController *)self settings];
-  v5 = [v4 outgoingCommunicationLimit];
-  v6 = [(AXCLFCommunicationLimitController *)self settings];
-  if ([v6 requiresMoreRestrictiveOutgoingCommunicationLimit])
+  outgoingSpecifiers = [(AXCLFCommunicationLimitController *)self outgoingSpecifiers];
+  settings = [(AXCLFCommunicationLimitController *)self settings];
+  outgoingCommunicationLimit = [settings outgoingCommunicationLimit];
+  settings2 = [(AXCLFCommunicationLimitController *)self settings];
+  if ([settings2 requiresMoreRestrictiveOutgoingCommunicationLimit])
   {
-    v7 = [(AXCLFCommunicationLimitController *)self settings];
-    v8 = [v7 incomingCommunicationLimit];
-    [v3 updateForCommunicationLimit:v5 maximumCommunicationLimit:v8];
+    settings3 = [(AXCLFCommunicationLimitController *)self settings];
+    incomingCommunicationLimit = [settings3 incomingCommunicationLimit];
+    [outgoingSpecifiers updateForCommunicationLimit:outgoingCommunicationLimit maximumCommunicationLimit:incomingCommunicationLimit];
   }
 
   else
   {
-    [v3 updateForCommunicationLimit:v5 maximumCommunicationLimit:*MEMORY[0x1E6994600]];
+    [outgoingSpecifiers updateForCommunicationLimit:outgoingCommunicationLimit maximumCommunicationLimit:*MEMORY[0x1E6994600]];
   }
 
-  v9 = [(AXCLFCommunicationLimitController *)self settings];
-  v10 = [v9 requiresMoreRestrictiveOutgoingCommunicationLimit];
+  settings4 = [(AXCLFCommunicationLimitController *)self settings];
+  requiresMoreRestrictiveOutgoingCommunicationLimit = [settings4 requiresMoreRestrictiveOutgoingCommunicationLimit];
 
-  if (v10)
+  if (requiresMoreRestrictiveOutgoingCommunicationLimit)
   {
 
     [(AXCLFCommunicationLimitController *)self reloadSpecifiers];
   }
 }
 
-- (id)_singleCommunicationLimitSpecifiersForSpecifier:(id)a3
+- (id)_singleCommunicationLimitSpecifiersForSpecifier:(id)specifier
 {
-  v4 = [(AXCLFCommunicationLimitController *)self getGroupSpecifierForSpecifier:a3];
-  v5 = [(AXCLFCommunicationLimitController *)self incomingSpecifiers];
-  v6 = [v5 groupSpecifier];
+  v4 = [(AXCLFCommunicationLimitController *)self getGroupSpecifierForSpecifier:specifier];
+  incomingSpecifiers = [(AXCLFCommunicationLimitController *)self incomingSpecifiers];
+  groupSpecifier = [incomingSpecifiers groupSpecifier];
 
-  if (v4 == v6)
+  if (v4 == groupSpecifier)
   {
-    v10 = [(AXCLFCommunicationLimitController *)self incomingSpecifiers];
+    incomingSpecifiers2 = [(AXCLFCommunicationLimitController *)self incomingSpecifiers];
   }
 
   else
   {
-    v7 = [(AXCLFCommunicationLimitController *)self outgoingSpecifiers];
-    v8 = [v7 groupSpecifier];
+    outgoingSpecifiers = [(AXCLFCommunicationLimitController *)self outgoingSpecifiers];
+    groupSpecifier2 = [outgoingSpecifiers groupSpecifier];
 
-    if (v4 != v8)
+    if (v4 != groupSpecifier2)
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    v10 = [(AXCLFCommunicationLimitController *)self outgoingSpecifiers];
+    incomingSpecifiers2 = [(AXCLFCommunicationLimitController *)self outgoingSpecifiers];
   }
 
-  v9 = v10;
+  v9 = incomingSpecifiers2;
 LABEL_7:
 
   return v9;
 }
 
-- (id)_specifierForFavoritesEntry:(id)a3
+- (id)_specifierForFavoritesEntry:(id)entry
 {
   v4 = MEMORY[0x1E69C5748];
-  v5 = a3;
-  v6 = [v5 name];
-  v7 = [v4 preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:0 cell:4 edit:0];
+  entryCopy = entry;
+  name = [entryCopy name];
+  v7 = [v4 preferenceSpecifierNamed:name target:self set:0 get:0 detail:0 cell:4 edit:0];
 
   [v7 setProperty:objc_opt_class() forKey:*MEMORY[0x1E69C5860]];
-  [v7 setProperty:v5 forKey:@"favoritesEntry"];
+  [v7 setProperty:entryCopy forKey:@"favoritesEntry"];
 
-  v8 = [(AXCLFCommunicationLimitController *)self favoritesController];
-  [v7 setProperty:v8 forKey:@"favoritesController"];
+  favoritesController = [(AXCLFCommunicationLimitController *)self favoritesController];
+  [v7 setProperty:favoritesController forKey:@"favoritesController"];
 
   return v7;
 }
@@ -495,33 +495,33 @@ LABEL_7:
 - (id)_favoritesSpecifiers
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(AXCLFCommunicationLimitController *)self favoritesController];
+  favoritesController = [(AXCLFCommunicationLimitController *)self favoritesController];
 
-  if (!v3)
+  if (!favoritesController)
   {
     v4 = objc_alloc(MEMORY[0x1E69D89B0]);
     v5 = objc_opt_new();
     v6 = [v4 initWithContactStore:v5 prefetchCount:0];
     [(AXCLFCommunicationLimitController *)self setFavoritesController:v6];
 
-    v7 = [(AXCLFCommunicationLimitController *)self favoritesController];
-    [v7 fetchIfNeeded];
+    favoritesController2 = [(AXCLFCommunicationLimitController *)self favoritesController];
+    [favoritesController2 fetchIfNeeded];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v9 = *MEMORY[0x1E69D8A00];
-    v10 = [(AXCLFCommunicationLimitController *)self favoritesController];
-    [v8 addObserver:self selector:sel__favoritesDidChange_ name:v9 object:v10];
+    favoritesController3 = [(AXCLFCommunicationLimitController *)self favoritesController];
+    [defaultCenter addObserver:self selector:sel__favoritesDidChange_ name:v9 object:favoritesController3];
   }
 
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = [(AXCLFCommunicationLimitController *)self favoritesController];
-  v13 = [v12 favoritesEntries];
+  favoritesController4 = [(AXCLFCommunicationLimitController *)self favoritesController];
+  favoritesEntries = [favoritesController4 favoritesEntries];
 
-  v14 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v14 = [favoritesEntries countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v14)
   {
     v15 = v14;
@@ -532,18 +532,18 @@ LABEL_7:
       {
         if (*v25 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(favoritesEntries);
         }
 
         v18 = *(*(&v24 + 1) + 8 * i);
         if ([(AXCLFCommunicationLimitController *)self _isAllowedFavoritesEntry:v18])
         {
           v19 = [(AXCLFCommunicationLimitController *)self _specifierForFavoritesEntry:v18];
-          [v11 addObject:v19];
+          [array addObject:v19];
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v15 = [favoritesEntries countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v15);
@@ -554,22 +554,22 @@ LABEL_7:
   v22 = [v20 preferenceSpecifierNamed:v21 target:self set:0 get:0 detail:0 cell:13 edit:0];
 
   [v22 setButtonAction:sel__addFavorite_];
-  [v11 addObject:v22];
+  [array addObject:v22];
 
-  return v11;
+  return array;
 }
 
-- (BOOL)_isAllowedFavoritesEntry:(id)a3
+- (BOOL)_isAllowedFavoritesEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(AXCLFCommunicationLimitController *)self bundleIdentifiers];
-  v6 = [v4 bundleIdentifier];
+  entryCopy = entry;
+  bundleIdentifiers = [(AXCLFCommunicationLimitController *)self bundleIdentifiers];
+  bundleIdentifier = [entryCopy bundleIdentifier];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(entryCopy) = [bundleIdentifiers containsObject:bundleIdentifier];
+  return entryCopy;
 }
 
-- (void)_addFavorite:(id)a3
+- (void)_addFavorite:(id)favorite
 {
   v6 = objc_alloc_init(MEMORY[0x1E695D128]);
   [v6 setAllowsEditing:0];
@@ -581,38 +581,38 @@ LABEL_7:
   v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"emailAddresses.@count > 0 OR phoneNumbers.@count > 0"];
   [v6 setPredicateForEnablingContact:v4];
 
-  v5 = [(AXCLFCommunicationLimitController *)self contactPickerPrompt];
-  [v6 setPrompt:v5];
+  contactPickerPrompt = [(AXCLFCommunicationLimitController *)self contactPickerPrompt];
+  [v6 setPrompt:contactPickerPrompt];
 
   [(AXCLFCommunicationLimitController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (id)_favoritesEntryPickerContactForContact:(id)a3 contactStore:(id)a4
+- (id)_favoritesEntryPickerContactForContact:(id)contact contactStore:(id)store
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695D1C0] descriptorForRequiredKeys];
-  v23[0] = v7;
+  contactCopy = contact;
+  storeCopy = store;
+  descriptorForRequiredKeys = [MEMORY[0x1E695D1C0] descriptorForRequiredKeys];
+  v23[0] = descriptorForRequiredKeys;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
 
-  if ([v5 areKeysAvailable:v8])
+  if ([contactCopy areKeysAvailable:v8])
   {
-    v9 = v5;
+    v9 = contactCopy;
   }
 
   else
   {
     v10 = [MEMORY[0x1E695DF70] arrayWithArray:v8];
-    v11 = [v5 availableKeyDescriptor];
-    if (v11)
+    availableKeyDescriptor = [contactCopy availableKeyDescriptor];
+    if (availableKeyDescriptor)
     {
-      [v10 addObject:v11];
+      [v10 addObject:availableKeyDescriptor];
     }
 
-    v12 = [v5 identifier];
+    identifier = [contactCopy identifier];
     v16 = 0;
-    v9 = [v6 unifiedContactWithIdentifier:v12 keysToFetch:v10 error:&v16];
+    v9 = [storeCopy unifiedContactWithIdentifier:identifier keysToFetch:v10 error:&v16];
     v13 = v16;
 
     if (!v9)
@@ -621,9 +621,9 @@ LABEL_7:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v18 = v5;
+        v18 = contactCopy;
         v19 = 2112;
-        v20 = v6;
+        v20 = storeCopy;
         v21 = 2112;
         v22 = v13;
         _os_log_error_impl(&dword_1C0DFB000, v14, OS_LOG_TYPE_ERROR, "Could not retrieve a compatible contact using contact (%@) and contact store (%@) due to an error (%@).", buf, 0x20u);
@@ -634,7 +634,7 @@ LABEL_7:
   return v9;
 }
 
-- (void)_favoritesDidChange:(id)a3
+- (void)_favoritesDidChange:(id)change
 {
   if ([(AXCLFCommunicationLimitController *)self shouldAvoidReloadForNextFavoritesUpdate])
   {
@@ -651,21 +651,21 @@ LABEL_7:
 
 - (void)_updateEditButton
 {
-  v3 = [(AXCLFCommunicationLimitController *)self favoritesController];
-  v4 = [v3 favoritesEntries];
-  v5 = [v4 count];
+  favoritesController = [(AXCLFCommunicationLimitController *)self favoritesController];
+  favoritesEntries = [favoritesController favoritesEntries];
+  v5 = [favoritesEntries count];
 
   if (v5)
   {
-    v8 = [(AXCLFCommunicationLimitController *)self editButtonItem];
-    v6 = [(AXCLFCommunicationLimitController *)self navigationItem];
-    [v6 setRightBarButtonItem:v8];
+    editButtonItem = [(AXCLFCommunicationLimitController *)self editButtonItem];
+    navigationItem = [(AXCLFCommunicationLimitController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:editButtonItem];
   }
 
   else
   {
-    v7 = [(AXCLFCommunicationLimitController *)self navigationItem];
-    [v7 setRightBarButtonItem:0];
+    navigationItem2 = [(AXCLFCommunicationLimitController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:0];
 
     [(AXCLFCommunicationLimitController *)self setEditing:0 animated:1];
   }

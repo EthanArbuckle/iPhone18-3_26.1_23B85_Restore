@@ -20,7 +20,7 @@
 
 - (BlastDoorImage)image
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21454CF54();
 
   return v3;
@@ -41,7 +41,7 @@
 {
   self->animatedImageFrame[OBJC_IVAR___BlastDoorAnimatedImageFrame_animatedImageFrame + 441];
   self->animatedImageFrame[OBJC_IVAR___BlastDoorAnimatedImageFrame_animatedImageFrame + 441];
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2146D9588();
 
   return v3;

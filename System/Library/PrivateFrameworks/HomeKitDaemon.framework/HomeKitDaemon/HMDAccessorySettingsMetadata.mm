@@ -1,6 +1,6 @@
 @interface HMDAccessorySettingsMetadata
 - (HMDAccessorySettingsMetadata)init;
-- (HMDAccessorySettingsMetadata)initWithURL:(id)a3;
+- (HMDAccessorySettingsMetadata)initWithURL:(id)l;
 - (NSString)propertyDescription;
 @end
 
@@ -9,15 +9,15 @@
 - (NSString)propertyDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDAccessorySettingsMetadata *)self rootGroup];
-  v4 = [v2 stringWithFormat:@", Root = %@", v3];
+  rootGroup = [(HMDAccessorySettingsMetadata *)self rootGroup];
+  v4 = [v2 stringWithFormat:@", Root = %@", rootGroup];
 
   return v4;
 }
 
-- (HMDAccessorySettingsMetadata)initWithURL:(id)a3
+- (HMDAccessorySettingsMetadata)initWithURL:(id)l
 {
-  v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:a3];
+  v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:l];
   if (v4)
   {
     v16.receiver = self;
@@ -37,53 +37,53 @@
     }
 
     self = v5;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (HMDAccessorySettingsMetadata)init
 {
   v26 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [MEMORY[0x277D0F8E8] productInfo];
-  [v4 productClass];
+  productInfo = [MEMORY[0x277D0F8E8] productInfo];
+  [productInfo productClass];
   v5 = HMFProductClassToString();
   v6 = [v3 stringWithFormat:@"%@.plist", v5];
 
-  v7 = [MEMORY[0x277D0F8E8] productInfo];
-  v8 = [v7 productClass];
+  productInfo2 = [MEMORY[0x277D0F8E8] productInfo];
+  productClass = [productInfo2 productClass];
 
-  if (v8 == 6)
+  if (productClass == 6)
   {
 
     v6 = @"AudioAccessory-b238.plist";
   }
 
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v10 = [v9 resourceURL];
-  v11 = [v10 URLByAppendingPathComponent:v6];
+  resourceURL = [v9 resourceURL];
+  v11 = [resourceURL URLByAppendingPathComponent:v6];
 
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
-  v13 = [v11 path];
-  v14 = [v12 fileExistsAtPath:v13];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v11 path];
+  v14 = [defaultManager fileExistsAtPath:path];
 
   if (v14)
   {
-    v15 = [(HMDAccessorySettingsMetadata *)self initWithURL:v11];
-    v16 = v15;
+    selfCopy = [(HMDAccessorySettingsMetadata *)self initWithURL:v11];
+    v16 = selfCopy;
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {

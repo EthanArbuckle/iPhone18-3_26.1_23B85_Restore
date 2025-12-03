@@ -1,53 +1,53 @@
 @interface AnalyticsEngineCore
 + (id)queue;
-- (AnalyticsEngineCore)initWithWorkspace:(id)a3 params:(id)a4 queue:(id)a5;
-- (BOOL)handlesEntity:(id)a3;
-- (BOOL)predicateFullyAllowsEvaluation:(id)a3;
-- (id)entityDictionaryFromObject:(id)a3 attributeKeys:(id)a4 relationshipKeys:(id)a5 includeObjectID:(BOOL)a6;
-- (id)extractQueryStringFrom:(id)a3 isGeneric:(BOOL *)a4;
-- (id)getOption:(id)a3;
-- (id)safeComparisonPredFrom:(id)a3 forEntity:(id)a4;
-- (id)safeCompoundPredicateFrom:(id)a3 forEntity:(id)a4;
-- (id)safePredFrom:(id)a3 forEntity:(id)a4;
-- (id)setOption:(id)a3;
-- (int)performQueryOnEntityFromCache:(id)a3 pred:(id)a4 altpred:(id *)a5 actions:(id)a6 found:(id *)a7;
+- (AnalyticsEngineCore)initWithWorkspace:(id)workspace params:(id)params queue:(id)queue;
+- (BOOL)handlesEntity:(id)entity;
+- (BOOL)predicateFullyAllowsEvaluation:(id)evaluation;
+- (id)entityDictionaryFromObject:(id)object attributeKeys:(id)keys relationshipKeys:(id)relationshipKeys includeObjectID:(BOOL)d;
+- (id)extractQueryStringFrom:(id)from isGeneric:(BOOL *)generic;
+- (id)getOption:(id)option;
+- (id)safeComparisonPredFrom:(id)from forEntity:(id)entity;
+- (id)safeCompoundPredicateFrom:(id)from forEntity:(id)entity;
+- (id)safePredFrom:(id)from forEntity:(id)entity;
+- (id)setOption:(id)option;
+- (int)performQueryOnEntityFromCache:(id)cache pred:(id)pred altpred:(id *)altpred actions:(id)actions found:(id *)found;
 - (void)_saveAndUnloadAllState;
-- (void)createSnapshotFor:(id)a3 pred:(id)a4 actions:(id)a5 reply:(id)a6;
+- (void)createSnapshotFor:(id)for pred:(id)pred actions:(id)actions reply:(id)reply;
 - (void)dealloc;
-- (void)inquireNOIFor:(id)a3 orPredicate:(id)a4 requestedKeys:(id)a5 options:(id)a6 connection:(id)a7 reply:(id)a8;
-- (void)performQueryOnEntity:(id)a3 fetchRequestProperties:(id)a4 pred:(id)a5 sort:(id)a6 actions:(id)a7 service:(id)a8 connection:(id)a9 reply:(id)a10;
-- (void)performQueryOnEntity:(id)a3 pred:(id)a4 sort:(id)a5 actions:(id)a6 service:(id)a7 connection:(id)a8 reply:(id)a9;
-- (void)performQueryOnEntityCore:(id)a3 fetchRequestProperties:(id)a4 pred:(id)a5 sort:(id)a6 actions:(id)a7 service:(id)a8 reply:(id)a9;
-- (void)performQueryPostProcessing:(id)a3 actions:(id)a4 processOutcome:(id)a5;
-- (void)resetDataFor:(id)a3 nameKind:(id)a4;
-- (void)setWorkspace:(id)a3;
+- (void)inquireNOIFor:(id)for orPredicate:(id)predicate requestedKeys:(id)keys options:(id)options connection:(id)connection reply:(id)reply;
+- (void)performQueryOnEntity:(id)entity fetchRequestProperties:(id)properties pred:(id)pred sort:(id)sort actions:(id)actions service:(id)service connection:(id)connection reply:(id)self0;
+- (void)performQueryOnEntity:(id)entity pred:(id)pred sort:(id)sort actions:(id)actions service:(id)service connection:(id)connection reply:(id)reply;
+- (void)performQueryOnEntityCore:(id)core fetchRequestProperties:(id)properties pred:(id)pred sort:(id)sort actions:(id)actions service:(id)service reply:(id)reply;
+- (void)performQueryPostProcessing:(id)processing actions:(id)actions processOutcome:(id)outcome;
+- (void)resetDataFor:(id)for nameKind:(id)kind;
+- (void)setWorkspace:(id)workspace;
 - (void)shutdown;
-- (void)subscribeToNOIsFor:(id)a3 orPredicate:(id)a4 options:(id)a5 connection:(id)a6;
-- (void)unsubscribeToNOIs:(id)a3 connection:(id)a4;
+- (void)subscribeToNOIsFor:(id)for orPredicate:(id)predicate options:(id)options connection:(id)connection;
+- (void)unsubscribeToNOIs:(id)is connection:(id)connection;
 @end
 
 @implementation AnalyticsEngineCore
 
-- (AnalyticsEngineCore)initWithWorkspace:(id)a3 params:(id)a4 queue:(id)a5
+- (AnalyticsEngineCore)initWithWorkspace:(id)workspace params:(id)params queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  workspaceCopy = workspace;
+  paramsCopy = params;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = AnalyticsEngineCore;
   v11 = [(AnalyticsEngineCore *)&v20 init];
   if (v11)
   {
-    v12 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     lastWorkspaceReset = v11->lastWorkspaceReset;
-    v11->lastWorkspaceReset = v12;
+    v11->lastWorkspaceReset = date;
 
-    objc_storeStrong(&v11->_queue, a5);
-    v14 = [v9 objectForKeyedSubscript:@"isHelper"];
+    objc_storeStrong(&v11->_queue, queue);
+    v14 = [paramsCopy objectForKeyedSubscript:@"isHelper"];
     v11->_isHelper = [v14 BOOLValue];
 
     v11->_enableAdHocDatabaseSave = 1;
-    [(AnalyticsEngineCore *)v11 setWorkspace:v8];
+    [(AnalyticsEngineCore *)v11 setWorkspace:workspaceCopy];
     shared_prefs_store = get_shared_prefs_store();
     if (shared_prefs_store)
     {
@@ -144,91 +144,91 @@ LABEL_9:
   [(AnalyticsEngineCore *)&v2 dealloc];
 }
 
-- (BOOL)handlesEntity:(id)a3
+- (BOOL)handlesEntity:(id)entity
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:101 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore handlesEntity:]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:101 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore handlesEntity:]"}];
 
   return 0;
 }
 
-- (void)performQueryOnEntity:(id)a3 pred:(id)a4 sort:(id)a5 actions:(id)a6 service:(id)a7 connection:(id)a8 reply:(id)a9
+- (void)performQueryOnEntity:(id)entity pred:(id)pred sort:(id)sort actions:(id)actions service:(id)service connection:(id)connection reply:(id)reply
 {
-  v11 = [MEMORY[0x277CCA890] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:107 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore performQueryOnEntity:pred:sort:actions:service:connection:reply:]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:107 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore performQueryOnEntity:pred:sort:actions:service:connection:reply:]"}];
 }
 
-- (void)performQueryOnEntity:(id)a3 fetchRequestProperties:(id)a4 pred:(id)a5 sort:(id)a6 actions:(id)a7 service:(id)a8 connection:(id)a9 reply:(id)a10
+- (void)performQueryOnEntity:(id)entity fetchRequestProperties:(id)properties pred:(id)pred sort:(id)sort actions:(id)actions service:(id)service connection:(id)connection reply:(id)self0
 {
-  v12 = [MEMORY[0x277CCA890] currentHandler];
-  [v12 handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:119 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore performQueryOnEntity:fetchRequestProperties:pred:sort:actions:service:connection:reply:]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:119 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore performQueryOnEntity:fetchRequestProperties:pred:sort:actions:service:connection:reply:]"}];
 }
 
-- (int)performQueryOnEntityFromCache:(id)a3 pred:(id)a4 altpred:(id *)a5 actions:(id)a6 found:(id *)a7
+- (int)performQueryOnEntityFromCache:(id)cache pred:(id)pred altpred:(id *)altpred actions:(id)actions found:(id *)found
 {
-  v9 = [MEMORY[0x277CCA890] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:124 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore performQueryOnEntityFromCache:pred:altpred:actions:found:]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:124 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore performQueryOnEntityFromCache:pred:altpred:actions:found:]"}];
 
   return 2;
 }
 
-- (void)performQueryPostProcessing:(id)a3 actions:(id)a4 processOutcome:(id)a5
+- (void)performQueryPostProcessing:(id)processing actions:(id)actions processOutcome:(id)outcome
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:130 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore performQueryPostProcessing:actions:processOutcome:]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:130 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore performQueryPostProcessing:actions:processOutcome:]"}];
 }
 
-- (void)createSnapshotFor:(id)a3 pred:(id)a4 actions:(id)a5 reply:(id)a6
+- (void)createSnapshotFor:(id)for pred:(id)pred actions:(id)actions reply:(id)reply
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:135 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore createSnapshotFor:pred:actions:reply:]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:135 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore createSnapshotFor:pred:actions:reply:]"}];
 }
 
-- (id)setOption:(id)a3
+- (id)setOption:(id)option
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:140 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore setOption:]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:140 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore setOption:]"}];
 
   return 0;
 }
 
-- (id)getOption:(id)a3
+- (id)getOption:(id)option
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:146 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore getOption:]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:146 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore getOption:]"}];
 
   return 0;
 }
 
-- (void)resetDataFor:(id)a3 nameKind:(id)a4
+- (void)resetDataFor:(id)for nameKind:(id)kind
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:152 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore resetDataFor:nameKind:]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:152 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore resetDataFor:nameKind:]"}];
 }
 
-- (void)subscribeToNOIsFor:(id)a3 orPredicate:(id)a4 options:(id)a5 connection:(id)a6
+- (void)subscribeToNOIsFor:(id)for orPredicate:(id)predicate options:(id)options connection:(id)connection
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:157 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore subscribeToNOIsFor:orPredicate:options:connection:]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:157 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore subscribeToNOIsFor:orPredicate:options:connection:]"}];
 }
 
-- (void)inquireNOIFor:(id)a3 orPredicate:(id)a4 requestedKeys:(id)a5 options:(id)a6 connection:(id)a7 reply:(id)a8
+- (void)inquireNOIFor:(id)for orPredicate:(id)predicate requestedKeys:(id)keys options:(id)options connection:(id)connection reply:(id)reply
 {
-  v10 = [MEMORY[0x277CCA890] currentHandler];
-  [v10 handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:162 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore inquireNOIFor:orPredicate:requestedKeys:options:connection:reply:]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:162 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore inquireNOIFor:orPredicate:requestedKeys:options:connection:reply:]"}];
 }
 
-- (void)unsubscribeToNOIs:(id)a3 connection:(id)a4
+- (void)unsubscribeToNOIs:(id)is connection:(id)connection
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:167 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore unsubscribeToNOIs:connection:]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:167 description:{@"Subclasses must provide an impl for %s", "-[AnalyticsEngineCore unsubscribeToNOIs:connection:]"}];
 }
 
-- (void)setWorkspace:(id)a3
+- (void)setWorkspace:(id)workspace
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->workspace, a3);
+  workspaceCopy = workspace;
+  objc_storeStrong(&self->workspace, workspace);
   if (self->workspace && (v6 = self->_queue) != 0)
   {
     v7 = dispatch_source_create(MEMORY[0x277D85D18], 0, 6uLL, v6);
@@ -256,7 +256,7 @@ LABEL_9:
       workspace = self->workspace;
       queue = self->_queue;
       *buf = 134218240;
-      v16 = workspace;
+      workspaceCopy2 = workspace;
       v17 = 2048;
       v18 = queue;
       _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_ERROR, "Skipping registration of memory pressure handler. workspace:%p, queue:%p", buf, 0x16u);
@@ -266,22 +266,22 @@ LABEL_9:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)predicateFullyAllowsEvaluation:(id)a3
+- (BOOL)predicateFullyAllowsEvaluation:(id)evaluation
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 _allowsEvaluation];
+  evaluationCopy = evaluation;
+  _allowsEvaluation = [evaluationCopy _allowsEvaluation];
   v5 = analyticsLogHandle;
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v6 = "disallows";
-    if (v4)
+    if (_allowsEvaluation)
     {
       v6 = "allows";
     }
 
     *buf = 138412546;
-    v45 = v3;
+    v45 = evaluationCopy;
     v46 = 2080;
     v47 = v6;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "predicateFullyAllowsEvaluation: Predicate '%@' (%s evaluation)", buf, 0x16u);
@@ -290,8 +290,8 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v36 = v3;
-    v7 = v3;
+    v36 = evaluationCopy;
+    v7 = evaluationCopy;
     v8 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
     {
@@ -303,26 +303,26 @@ LABEL_9:
     v37 = v7;
     v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v7, 0}];
     v10 = v9;
-    if (v4)
+    if (_allowsEvaluation)
     {
       if ([v9 count])
       {
         do
         {
-          v11 = [v10 firstObject];
+          firstObject = [v10 firstObject];
           v12 = analyticsLogHandle;
           if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
           {
             v13 = v12;
-            v14 = [v11 _allowsEvaluation];
+            _allowsEvaluation2 = [firstObject _allowsEvaluation];
             *buf = 138412546;
             v15 = "disallows";
-            if (v14)
+            if (_allowsEvaluation2)
             {
               v15 = "allows";
             }
 
-            v45 = v11;
+            v45 = firstObject;
             v46 = 2080;
             v47 = v15;
             _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_DEBUG, "predicateFullyAllowsEvaluation: Compound predicate '%@' (%s evaluation)", buf, 0x16u);
@@ -332,9 +332,9 @@ LABEL_9:
           if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
           {
             v17 = v16;
-            v18 = [v11 subpredicates];
+            subpredicates = [firstObject subpredicates];
             *buf = 138412290;
-            v45 = v18;
+            v45 = subpredicates;
             _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_DEBUG, "predicateFullyAllowsEvaluation:  Validating sub-predicates '%@'", buf, 0xCu);
           }
 
@@ -342,12 +342,12 @@ LABEL_9:
           v42 = 0u;
           v39 = 0u;
           v40 = 0u;
-          v19 = [v11 subpredicates];
-          v20 = [v19 countByEnumeratingWithState:&v39 objects:v43 count:16];
+          subpredicates2 = [firstObject subpredicates];
+          v20 = [subpredicates2 countByEnumeratingWithState:&v39 objects:v43 count:16];
           if (v20)
           {
             v21 = v20;
-            v38 = v11;
+            v38 = firstObject;
             v22 = *v40;
             v23 = 1;
             do
@@ -356,7 +356,7 @@ LABEL_9:
               {
                 if (*v40 != v22)
                 {
-                  objc_enumerationMutation(v19);
+                  objc_enumerationMutation(subpredicates2);
                 }
 
                 v25 = *(*(&v39 + 1) + 8 * i);
@@ -375,13 +375,13 @@ LABEL_9:
 
                 else
                 {
-                  v27 = [v25 _allowsEvaluation];
+                  _allowsEvaluation3 = [v25 _allowsEvaluation];
                   v28 = analyticsLogHandle;
                   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
                   {
                     *buf = 136315394;
                     v29 = "NOT ";
-                    if (v27)
+                    if (_allowsEvaluation3)
                     {
                       v29 = "";
                     }
@@ -392,11 +392,11 @@ LABEL_9:
                     _os_log_impl(&dword_23255B000, v28, OS_LOG_TYPE_DEBUG, "predicateFullyAllowsEvaluation:   Evaluation %sallowed for sub-predicate '%@'", buf, 0x16u);
                   }
 
-                  v23 &= v27;
+                  v23 &= _allowsEvaluation3;
                 }
               }
 
-              v21 = [v19 countByEnumeratingWithState:&v39 objects:v43 count:16];
+              v21 = [subpredicates2 countByEnumeratingWithState:&v39 objects:v43 count:16];
             }
 
             while (v21);
@@ -404,7 +404,7 @@ LABEL_9:
             [v10 removeObject:v38];
             if ((v23 & 1) == 0)
             {
-              v4 = 0;
+              _allowsEvaluation = 0;
               goto LABEL_40;
             }
           }
@@ -412,14 +412,14 @@ LABEL_9:
           else
           {
 
-            [v10 removeObject:v11];
+            [v10 removeObject:firstObject];
           }
         }
 
         while ([v10 count]);
       }
 
-      v4 = 1;
+      _allowsEvaluation = 1;
     }
 
 LABEL_40:
@@ -428,7 +428,7 @@ LABEL_40:
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_INFO))
     {
       v33 = "NOT ";
-      if (v4)
+      if (_allowsEvaluation)
       {
         v33 = "";
       }
@@ -440,7 +440,7 @@ LABEL_40:
       _os_log_impl(&dword_23255B000, v32, OS_LOG_TYPE_INFO, "predicateFullyAllowsEvaluation: Evaluation %sallowed for compound predicate: '%@'", buf, 0x16u);
     }
 
-    v3 = v36;
+    evaluationCopy = v36;
   }
 
   else
@@ -449,7 +449,7 @@ LABEL_40:
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_INFO))
     {
       v31 = "NOT ";
-      if (v4)
+      if (_allowsEvaluation)
       {
         v31 = "";
       }
@@ -457,24 +457,24 @@ LABEL_40:
       *buf = 136315394;
       v45 = v31;
       v46 = 2112;
-      v47 = v3;
+      v47 = evaluationCopy;
       _os_log_impl(&dword_23255B000, v30, OS_LOG_TYPE_INFO, "predicateFullyAllowsEvaluation: Evaluation %sallowed for predicate: '%@'", buf, 0x16u);
     }
   }
 
   v34 = *MEMORY[0x277D85DE8];
-  return v4;
+  return _allowsEvaluation;
 }
 
-- (id)safePredFrom:(id)a3 forEntity:(id)a4
+- (id)safePredFrom:(id)from forEntity:(id)entity
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  entityCopy = entity;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(AnalyticsEngineCore *)self safeCompoundPredicateFrom:v6 forEntity:v7];
+    v8 = [(AnalyticsEngineCore *)self safeCompoundPredicateFrom:fromCopy forEntity:entityCopy];
   }
 
   else
@@ -486,7 +486,7 @@ LABEL_40:
       goto LABEL_9;
     }
 
-    v8 = [(AnalyticsEngineCore *)self safeComparisonPredFrom:v6 forEntity:v7];
+    v8 = [(AnalyticsEngineCore *)self safeComparisonPredFrom:fromCopy forEntity:entityCopy];
   }
 
   v9 = v8;
@@ -508,27 +508,27 @@ LABEL_9:
   return v9;
 }
 
-- (id)safeCompoundPredicateFrom:(id)a3 forEntity:(id)a4
+- (id)safeCompoundPredicateFrom:(id)from forEntity:(id)entity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 compoundPredicateType];
+  fromCopy = from;
+  entityCopy = entity;
+  compoundPredicateType = [fromCopy compoundPredicateType];
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [v6 subpredicates];
+  subpredicates = [fromCopy subpredicates];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __59__AnalyticsEngineCore_safeCompoundPredicateFrom_forEntity___block_invoke;
   v18[3] = &unk_27898A0F0;
   v18[4] = self;
-  v11 = v7;
+  v11 = entityCopy;
   v19 = v11;
   v12 = v9;
   v20 = v12;
-  v13 = v6;
+  v13 = fromCopy;
   v21 = v13;
-  [v10 enumerateObjectsUsingBlock:v18];
+  [subpredicates enumerateObjectsUsingBlock:v18];
 
-  if (![v12 count] || (v14 = objc_msgSend(objc_alloc(MEMORY[0x277CCA920]), "initWithType:subpredicates:", v8, v12)) == 0)
+  if (![v12 count] || (v14 = objc_msgSend(objc_alloc(MEMORY[0x277CCA920]), "initWithType:subpredicates:", compoundPredicateType, v12)) == 0)
   {
     v15 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
@@ -608,39 +608,39 @@ LABEL_13:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)safeComparisonPredFrom:(id)a3 forEntity:(id)a4
+- (id)safeComparisonPredFrom:(id)from forEntity:(id)entity
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 leftExpression];
-  v8 = [v7 expressionType];
+  fromCopy = from;
+  entityCopy = entity;
+  leftExpression = [fromCopy leftExpression];
+  expressionType = [leftExpression expressionType];
 
-  if (v8 == 3)
+  if (expressionType == 3)
   {
-    v9 = [v6 attributesByName];
-    v10 = [v9 allKeys];
+    attributesByName = [entityCopy attributesByName];
+    allKeys = [attributesByName allKeys];
 
-    v11 = [v6 relationshipsByName];
-    v12 = [v11 allKeys];
+    relationshipsByName = [entityCopy relationshipsByName];
+    allKeys2 = [relationshipsByName allKeys];
 
-    v13 = [v10 arrayByAddingObjectsFromArray:v12];
-    v14 = [v5 leftExpression];
-    v15 = [v14 keyPath];
-    v16 = [v15 componentsSeparatedByString:@"."];
+    v13 = [allKeys arrayByAddingObjectsFromArray:allKeys2];
+    leftExpression2 = [fromCopy leftExpression];
+    keyPath = [leftExpression2 keyPath];
+    v16 = [keyPath componentsSeparatedByString:@"."];
 
     if (v16 && [v16 count] && (objc_msgSend(v16, "objectAtIndexedSubscript:", 0), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v13, "containsObject:", v17), v17, (v18 & 1) != 0))
     {
-      v19 = [v5 rightExpression];
-      v20 = [v19 expressionType];
+      rightExpression = [fromCopy rightExpression];
+      expressionType2 = [rightExpression expressionType];
 
-      if ((v20 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+      if ((expressionType2 & 0xFFFFFFFFFFFFFFFDLL) != 0)
       {
         v21 = analyticsLogHandle;
         if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
         {
           v22 = v21;
-          v23 = NSStringForNSExpressionType(v20);
+          v23 = NSStringForNSExpressionType(expressionType2);
           *buf = 138412290;
           v48 = v23;
           _os_log_impl(&dword_23255B000, v22, OS_LOG_TYPE_ERROR, "SymptomAnalytics safe predicate: rhs is not conformant to constant value or variable expression type (%@)", buf, 0xCu);
@@ -652,29 +652,29 @@ LABEL_13:
       else
       {
         v34 = MEMORY[0x277CCA9C0];
-        v35 = [v5 leftExpression];
-        v36 = [v35 keyPath];
-        v46 = [v34 expressionForKeyPath:v36];
+        leftExpression3 = [fromCopy leftExpression];
+        keyPath2 = [leftExpression3 keyPath];
+        v46 = [v34 expressionForKeyPath:keyPath2];
 
         v37 = MEMORY[0x277CCA9C0];
-        v38 = [v5 rightExpression];
-        v39 = v38;
-        if (v20)
+        rightExpression2 = [fromCopy rightExpression];
+        v39 = rightExpression2;
+        if (expressionType2)
         {
-          v40 = [v38 variable];
-          [v37 expressionForVariable:v40];
+          variable = [rightExpression2 variable];
+          [v37 expressionForVariable:variable];
         }
 
         else
         {
-          v40 = [v38 constantValue];
-          [v37 expressionForConstantValue:v40];
+          variable = [rightExpression2 constantValue];
+          [v37 expressionForConstantValue:variable];
         }
         v41 = ;
 
         if (v46 && v41)
         {
-          v42 = [objc_alloc(MEMORY[0x277CCA918]) initWithLeftExpression:v46 rightExpression:v41 modifier:0 type:objc_msgSend(v5 options:{"predicateOperatorType"), 0}];
+          v42 = [objc_alloc(MEMORY[0x277CCA918]) initWithLeftExpression:v46 rightExpression:v41 modifier:0 type:objc_msgSend(fromCopy options:{"predicateOperatorType"), 0}];
           if (!v42)
           {
             v43 = analyticsLogHandle;
@@ -720,10 +720,10 @@ LABEL_13:
       if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
       {
         v22 = v29;
-        v30 = [v5 leftExpression];
-        v31 = [v30 keyPath];
+        leftExpression4 = [fromCopy leftExpression];
+        keyPath3 = [leftExpression4 keyPath];
         *buf = 138412290;
-        v48 = v31;
+        v48 = keyPath3;
         _os_log_impl(&dword_23255B000, v22, OS_LOG_TYPE_ERROR, "SymptomAnalytics safe predicate: lhs key path is not conformant (%@)", buf, 0xCu);
 
         goto LABEL_13;
@@ -740,8 +740,8 @@ LABEL_15:
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
   {
     v25 = v24;
-    v26 = [v5 leftExpression];
-    v27 = NSStringForNSExpressionType([v26 expressionType]);
+    leftExpression5 = [fromCopy leftExpression];
+    v27 = NSStringForNSExpressionType([leftExpression5 expressionType]);
     *buf = 138412290;
     v48 = v27;
     _os_log_impl(&dword_23255B000, v25, OS_LOG_TYPE_ERROR, "SymptomAnalytics safe predicate: lhs is not conformant to keypath expression type (%@)", buf, 0xCu);
@@ -764,13 +764,13 @@ LABEL_16:
     block[9] = v2;
     block[10] = v3;
     v6 = dispatch_time(0, 400000000);
-    v7 = [(AnalyticsEngineCore *)self queue];
+    queue = [(AnalyticsEngineCore *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __45__AnalyticsEngineCore__saveAndUnloadAllState__block_invoke;
     block[3] = &unk_27898A0C8;
     block[4] = self;
-    dispatch_after(v6, v7, block);
+    dispatch_after(v6, queue, block);
   }
 }
 
@@ -817,7 +817,7 @@ void __45__AnalyticsEngineCore__saveAndUnloadAllState__block_invoke(uint64_t a1)
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v5 = 134217984;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_23255B000, v3, OS_LOG_TYPE_DEBUG, "core analyticsengine: saving context for %p", &v5, 0xCu);
     }
 
@@ -827,16 +827,16 @@ void __45__AnalyticsEngineCore__saveAndUnloadAllState__block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)entityDictionaryFromObject:(id)a3 attributeKeys:(id)a4 relationshipKeys:(id)a5 includeObjectID:(BOOL)a6
+- (id)entityDictionaryFromObject:(id)object attributeKeys:(id)keys relationshipKeys:(id)relationshipKeys includeObjectID:(BOOL)d
 {
-  v6 = a6;
+  dCopy = d;
   v45 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v10;
+  objectCopy = object;
+  keysCopy = keys;
+  relationshipKeysCopy = relationshipKeys;
+  v12 = keysCopy;
   v13 = v12;
-  if (v6)
+  if (dCopy)
   {
     v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v12];
     [v13 addObject:@"objectID"];
@@ -844,7 +844,7 @@ void __45__AnalyticsEngineCore__saveAndUnloadAllState__block_invoke(uint64_t a1)
 
   if (v13)
   {
-    v14 = [v9 dictionaryWithValuesForKeys:v13];
+    v14 = [objectCopy dictionaryWithValuesForKeys:v13];
     if (v14)
     {
       v30 = v14;
@@ -853,8 +853,8 @@ void __45__AnalyticsEngineCore__saveAndUnloadAllState__block_invoke(uint64_t a1)
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v31 = v11;
-      v16 = v11;
+      v31 = relationshipKeysCopy;
+      v16 = relationshipKeysCopy;
       v17 = [v16 countByEnumeratingWithState:&v36 objects:v44 count:16];
       if (v17)
       {
@@ -870,7 +870,7 @@ void __45__AnalyticsEngineCore__saveAndUnloadAllState__block_invoke(uint64_t a1)
             }
 
             v21 = *(*(&v36 + 1) + 8 * i);
-            v22 = [v9 valueForKeyPath:v21];
+            v22 = [objectCopy valueForKeyPath:v21];
             if (v22)
             {
               [v15 setObject:v22 forKey:v21];
@@ -900,7 +900,7 @@ void __45__AnalyticsEngineCore__saveAndUnloadAllState__block_invoke(uint64_t a1)
       [v24 enumerateObjectsUsingBlock:v32];
 
       v14 = v30;
-      v11 = v31;
+      relationshipKeysCopy = v31;
     }
 
     else
@@ -909,7 +909,7 @@ void __45__AnalyticsEngineCore__saveAndUnloadAllState__block_invoke(uint64_t a1)
       if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v41 = v9;
+        v41 = objectCopy;
         v42 = 2112;
         v43 = v13;
         _os_log_impl(&dword_23255B000, v27, OS_LOG_TYPE_ERROR, "SymptomAnalytics entityDictionaryFromObject: failed to synthesize dictionary with values for keys from managed object (%@) with attributes (%@)", buf, 0x16u);
@@ -975,18 +975,18 @@ void __97__AnalyticsEngineCore_entityDictionaryFromObject_attributeKeys_relation
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performQueryOnEntityCore:(id)a3 fetchRequestProperties:(id)a4 pred:(id)a5 sort:(id)a6 actions:(id)a7 service:(id)a8 reply:(id)a9
+- (void)performQueryOnEntityCore:(id)core fetchRequestProperties:(id)properties pred:(id)pred sort:(id)sort actions:(id)actions service:(id)service reply:(id)reply
 {
   v238 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v185 = a4;
-  v186 = a5;
-  v184 = a6;
-  v188 = a7;
-  v182 = a8;
-  v191 = a9;
+  coreCopy = core;
+  propertiesCopy = properties;
+  predCopy = pred;
+  sortCopy = sort;
+  actionsCopy = actions;
+  serviceCopy = service;
+  replyCopy = reply;
   v183 = objc_autoreleasePoolPush();
-  v189 = v15;
+  v189 = coreCopy;
   if (!self->workspace)
   {
     v22 = analyticsLogHandle;
@@ -1000,11 +1000,11 @@ void __97__AnalyticsEngineCore_entityDictionaryFromObject_attributeKeys_relation
     goto LABEL_15;
   }
 
-  v202 = self;
-  v187 = [(NSMutableDictionary *)self->spaces objectForKey:v15];
+  selfCopy = self;
+  v187 = [(NSMutableDictionary *)self->spaces objectForKey:coreCopy];
   if (!v187)
   {
-    v16 = [objc_alloc(MEMORY[0x277D6B540]) initWithWorkspace:self->workspace entityName:v15 withCache:0];
+    v16 = [objc_alloc(MEMORY[0x277D6B540]) initWithWorkspace:self->workspace entityName:coreCopy withCache:0];
     if (v16)
     {
       v187 = v16;
@@ -1016,19 +1016,19 @@ void __97__AnalyticsEngineCore_entityDictionaryFromObject_attributeKeys_relation
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *&buf[4] = v15;
+      *&buf[4] = coreCopy;
       _os_log_impl(&dword_23255B000, v25, OS_LOG_TYPE_ERROR, "SymptomAnalytics ServiceImpl: failed to allocate space for entityName:%@", buf, 0xCu);
     }
 
 LABEL_15:
-    v191[2](v191, 0);
+    replyCopy[2](replyCopy, 0);
     goto LABEL_188;
   }
 
 LABEL_5:
   if (([(AnalyticsWorkspace *)self->workspace persistent]& 1) != 0)
   {
-    v203 = [v187 getDescriptionForName:v15];
+    v203 = [v187 getDescriptionForName:coreCopy];
     v17 = v203;
     if (!v203)
     {
@@ -1036,20 +1036,20 @@ LABEL_5:
       if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        *&buf[4] = v15;
+        *&buf[4] = coreCopy;
         _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_ERROR, "SymptomAnalytics ServiceImpl: failed to allocate entityDescription for entityName:%@", buf, 0xCu);
       }
 
       goto LABEL_12;
     }
 
-    v18 = v188;
-    if (v188)
+    v18 = actionsCopy;
+    if (actionsCopy)
     {
-      v19 = [v188 objectForKeyedSubscript:@"process"];
+      v19 = [actionsCopy objectForKeyedSubscript:@"process"];
       if (v19)
       {
-        v20 = [v188 objectForKeyedSubscript:@"sweepUsage"];
+        v20 = [actionsCopy objectForKeyedSubscript:@"sweepUsage"];
 
         if (v20)
         {
@@ -1057,20 +1057,20 @@ LABEL_5:
           if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            *&buf[4] = v188;
+            *&buf[4] = actionsCopy;
             _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_ERROR, "SymptomAnalytics ServiceImpl: requesting mutually exclusive service:%@", buf, 0xCu);
           }
 
 LABEL_12:
-          v191[2](v191, 0);
+          replyCopy[2](replyCopy, 0);
 LABEL_187:
 
           goto LABEL_188;
         }
       }
 
-      v201 = [v188 keysOfEntriesPassingTest:&__block_literal_global_1];
-      v18 = v188;
+      v201 = [actionsCopy keysOfEntriesPassingTest:&__block_literal_global_1];
+      v18 = actionsCopy;
       v17 = v203;
     }
 
@@ -1081,7 +1081,7 @@ LABEL_187:
 
     v227 = 0;
     v226 = 0;
-    v26 = [(AnalyticsEngineCore *)self performQueryOnEntityFromCache:v17 pred:v186 altpred:&v227 actions:v18 found:&v226];
+    v26 = [(AnalyticsEngineCore *)self performQueryOnEntityFromCache:v17 pred:predCopy altpred:&v227 actions:v18 found:&v226];
     v180 = v227;
     v181 = v226;
     v27 = analyticsLogHandle;
@@ -1105,7 +1105,7 @@ LABEL_187:
       }
 
       context = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:10];
-      v44 = [v188 objectForKeyedSubscript:@"process"];
+      v44 = [actionsCopy objectForKeyedSubscript:@"process"];
       v45 = v44 == 0;
 
       v46 = analyticsLogHandle;
@@ -1145,9 +1145,9 @@ LABEL_187:
               if (objc_opt_isKindOfClass())
               {
                 v73 = v71;
-                v74 = [v203 attributesByName];
-                v75 = [v74 allKeys];
-                v76 = [(AnalyticsEngineCore *)v202 entityDictionaryFromObject:v73 attributeKeys:v75 relationshipKeys:v201 includeObjectID:0];
+                attributesByName = [v203 attributesByName];
+                allKeys = [attributesByName allKeys];
+                v76 = [(AnalyticsEngineCore *)selfCopy entityDictionaryFromObject:v73 attributeKeys:allKeys relationshipKeys:v201 includeObjectID:0];
 
                 if (v76)
                 {
@@ -1202,7 +1202,7 @@ LABEL_187:
           _os_log_impl(&dword_23255B000, v46, OS_LOG_TYPE_INFO, "SymptomAnalytics performQueryOnEntity: post-processing entities in cache", buf, 2u);
         }
 
-        [(AnalyticsEngineCore *)self performQueryPostProcessing:v181 actions:v188 processOutcome:context];
+        [(AnalyticsEngineCore *)self performQueryPostProcessing:v181 actions:actionsCopy processOutcome:context];
       }
 
       v82 = analyticsLogHandle;
@@ -1218,32 +1218,32 @@ LABEL_187:
       goto LABEL_186;
     }
 
-    v29 = [v188 objectForKeyedSubscript:@"fetchOffset"];
-    v178 = [v29 unsignedIntegerValue];
+    v29 = [actionsCopy objectForKeyedSubscript:@"fetchOffset"];
+    unsignedIntegerValue = [v29 unsignedIntegerValue];
 
-    v30 = [v188 objectForKeyedSubscript:@"fetchLimit"];
-    v31 = [v30 unsignedIntegerValue];
+    v30 = [actionsCopy objectForKeyedSubscript:@"fetchLimit"];
+    unsignedIntegerValue2 = [v30 unsignedIntegerValue];
 
     v32 = analyticsLogHandle;
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      *&buf[4] = v15;
+      *&buf[4] = coreCopy;
       *&buf[12] = 2048;
-      *&buf[14] = v178;
+      *&buf[14] = unsignedIntegerValue;
       *&buf[22] = 2048;
-      *&buf[24] = v31;
+      *&buf[24] = unsignedIntegerValue2;
       _os_log_impl(&dword_23255B000, v32, OS_LOG_TYPE_DEBUG, "SymptomAnalytics performQueryOnEntity: fetchEntity query required for %@, offset %lu, limit %lu", buf, 0x20u);
     }
 
-    if (v185)
+    if (propertiesCopy)
     {
       v33 = objc_autoreleasePoolPush();
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x2020000000;
       *&buf[24] = 0;
-      workspace = v202->workspace;
+      workspace = selfCopy->workspace;
       v221[0] = MEMORY[0x277D85DD0];
       v221[1] = 3221225472;
       v221[2] = __103__AnalyticsEngineCore_performQueryOnEntityCore_fetchRequestProperties_pred_sort_actions_service_reply___block_invoke_80;
@@ -1257,7 +1257,7 @@ LABEL_187:
         *v235 = 134218242;
         *&v235[4] = v36;
         *&v235[12] = 2112;
-        *&v235[14] = v15;
+        *&v235[14] = coreCopy;
         _os_log_impl(&dword_23255B000, v35, OS_LOG_TYPE_DEBUG, "SymptomAnalytics performQueryOnEntity: dirtyCount is %ld for %@", v235, 0x16u);
       }
 
@@ -1267,11 +1267,11 @@ LABEL_187:
         if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
         {
           *v235 = 138412290;
-          *&v235[4] = v15;
+          *&v235[4] = coreCopy;
           _os_log_impl(&dword_23255B000, v37, OS_LOG_TYPE_INFO, "SymptomAnalytics performQueryOnEntity: saving changes before performing database queries for entity %@", v235, 0xCu);
         }
 
-        [(AnalyticsWorkspace *)v202->workspace save];
+        [(AnalyticsWorkspace *)selfCopy->workspace save];
       }
 
       v38 = buf;
@@ -1279,11 +1279,11 @@ LABEL_187:
 
     else
     {
-      v48 = [v188 objectForKeyedSubscript:@"sweepUsage"];
-      if (!v48 || (enableAdHocDatabaseSave = v202->_enableAdHocDatabaseSave, v48, !enableAdHocDatabaseSave))
+      v48 = [actionsCopy objectForKeyedSubscript:@"sweepUsage"];
+      if (!v48 || (enableAdHocDatabaseSave = selfCopy->_enableAdHocDatabaseSave, v48, !enableAdHocDatabaseSave))
       {
 LABEL_41:
-        v39 = [v188 objectForKeyedSubscript:@"process"];
+        v39 = [actionsCopy objectForKeyedSubscript:@"process"];
         v40 = v39 == 0;
 
         v41 = analyticsLogHandle;
@@ -1302,12 +1302,12 @@ LABEL_41:
 
           else
           {
-            v42 = v186;
+            v42 = predCopy;
           }
 
-          v179 = [v187 fetchEntitiesFreeForm:v42 sortDesc:v184];
+          v179 = [v187 fetchEntitiesFreeForm:v42 sortDesc:sortCopy];
           context = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:10];
-          [(AnalyticsEngineCore *)v202 performQueryPostProcessing:v179 actions:v188 processOutcome:context];
+          [(AnalyticsEngineCore *)selfCopy performQueryPostProcessing:v179 actions:actionsCopy processOutcome:context];
           goto LABEL_183;
         }
 
@@ -1319,41 +1319,41 @@ LABEL_41:
         }
 
         v176 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        if (v185)
+        if (propertiesCopy)
         {
-          v62 = [v185 fetchProperties];
-          v63 = [v62 count] == 0;
+          fetchProperties = [propertiesCopy fetchProperties];
+          v63 = [fetchProperties count] == 0;
 
           if (v63)
           {
             goto LABEL_95;
           }
 
-          v64 = [v185 fetchProperties];
+          fetchProperties2 = [propertiesCopy fetchProperties];
         }
 
         else
         {
-          v85 = [v203 attributesByName];
-          v86 = [v85 allKeys];
-          [v176 addObjectsFromArray:v86];
+          attributesByName2 = [v203 attributesByName];
+          allKeys2 = [attributesByName2 allKeys];
+          [v176 addObjectsFromArray:allKeys2];
 
-          v64 = [v201 allObjects];
+          fetchProperties2 = [v201 allObjects];
         }
 
-        v87 = v64;
-        [v176 addObjectsFromArray:v64];
+        v87 = fetchProperties2;
+        [v176 addObjectsFromArray:fetchProperties2];
 
 LABEL_95:
         v88 = objc_alloc(MEMORY[0x277CBEB58]);
-        v89 = [(AnalyticsWorkspace *)v202->workspace mainObjectContext];
-        v90 = [v89 updatedObjects];
-        v174 = [v88 initWithSet:v90];
+        mainObjectContext = [(AnalyticsWorkspace *)selfCopy->workspace mainObjectContext];
+        updatedObjects = [mainObjectContext updatedObjects];
+        v174 = [v88 initWithSet:updatedObjects];
 
         v91 = objc_alloc(MEMORY[0x277CBEB58]);
-        v92 = [(AnalyticsWorkspace *)v202->workspace mainObjectContext];
-        v93 = [v92 insertedObjects];
-        v173 = [v91 initWithSet:v93];
+        mainObjectContext2 = [(AnalyticsWorkspace *)selfCopy->workspace mainObjectContext];
+        insertedObjects = [mainObjectContext2 insertedObjects];
+        v173 = [v91 initWithSet:insertedObjects];
 
         v94 = analyticsLogHandle;
         if (os_log_type_enabled(v94, OS_LOG_TYPE_DEBUG))
@@ -1368,10 +1368,10 @@ LABEL_95:
         }
 
         v97 = MEMORY[0x277CCAC30];
-        v98 = [v203 managedObjectClassName];
-        v170 = [v97 predicateWithFormat:@"self isKindOfClass: %@", NSClassFromString(v98)];
+        managedObjectClassName = [v203 managedObjectClassName];
+        v170 = [v97 predicateWithFormat:@"self isKindOfClass: %@", NSClassFromString(managedObjectClassName)];
 
-        v99 = v186;
+        v99 = predCopy;
         if (v180)
         {
           v99 = v180;
@@ -1381,9 +1381,9 @@ LABEL_95:
         v101 = analyticsLogHandle;
         if (os_log_type_enabled(v101, OS_LOG_TYPE_DEBUG))
         {
-          v102 = [v100 _allowsEvaluation];
+          _allowsEvaluation = [v100 _allowsEvaluation];
           *buf = 67110146;
-          *&buf[4] = v102;
+          *&buf[4] = _allowsEvaluation;
           *&buf[8] = 2048;
           *&buf[10] = v100;
           *&buf[18] = 2112;
@@ -1391,13 +1391,13 @@ LABEL_95:
           *&buf[28] = 2048;
           *&buf[30] = v180;
           *&buf[38] = 2048;
-          *&buf[40] = v186;
+          *&buf[40] = predCopy;
           _os_log_impl(&dword_23255B000, v101, OS_LOG_TYPE_DEBUG, "SymptomAnalytics performQueryOnEntity: targetPred(%d) %p: %@ (altpred: %p, pred: %p)", buf, 0x30u);
         }
 
-        if (![(AnalyticsEngineCore *)v202 predicateFullyAllowsEvaluation:v100])
+        if (![(AnalyticsEngineCore *)selfCopy predicateFullyAllowsEvaluation:v100])
         {
-          v103 = [(AnalyticsEngineCore *)v202 safePredFrom:v100 forEntity:v203];
+          v103 = [(AnalyticsEngineCore *)selfCopy safePredFrom:v100 forEntity:v203];
 
           v100 = v103;
         }
@@ -1454,15 +1454,15 @@ LABEL_95:
           *buf = 138412802;
           *&buf[4] = v171;
           *&buf[12] = 2048;
-          *&buf[14] = v31;
+          *&buf[14] = unsignedIntegerValue2;
           *&buf[22] = 2048;
-          *&buf[24] = v178;
+          *&buf[24] = unsignedIntegerValue;
           _os_log_impl(&dword_23255B000, v112, OS_LOG_TYPE_DEBUG, "SymptomAnalytics performQueryOnEntity: performing query with predicate %@, limit %lu, offset %lu", buf, 0x20u);
         }
 
-        if (v184)
+        if (sortCopy)
         {
-          v232 = v184;
+          v232 = sortCopy;
           v113 = [MEMORY[0x277CBEA60] arrayWithObjects:&v232 count:1];
         }
 
@@ -1472,8 +1472,8 @@ LABEL_95:
         }
 
         LOBYTE(v168) = v110 != 0;
-        v115 = [v187 fetchEntityDictionariesWithProperties:v176 fetchRequestProperties:v185 predicate:v171 sortDescriptors:v113 limit:v31 offset:v178 includeObjectID:v168];
-        if (v184)
+        v115 = [v187 fetchEntityDictionariesWithProperties:v176 fetchRequestProperties:propertiesCopy predicate:v171 sortDescriptors:v113 limit:unsignedIntegerValue2 offset:unsignedIntegerValue includeObjectID:v168];
+        if (sortCopy)
         {
         }
 
@@ -1522,9 +1522,9 @@ LABEL_95:
                 }
 
                 v125 = *(*(&v216 + 1) + 8 * j);
-                v126 = [v203 attributesByName];
-                v127 = [v126 allKeys];
-                v128 = [(AnalyticsEngineCore *)v202 entityDictionaryFromObject:v125 attributeKeys:v127 relationshipKeys:v201 includeObjectID:1];
+                attributesByName3 = [v203 attributesByName];
+                allKeys3 = [attributesByName3 allKeys];
+                v128 = [(AnalyticsEngineCore *)selfCopy entityDictionaryFromObject:v125 attributeKeys:allKeys3 relationshipKeys:v201 includeObjectID:1];
 
                 if (v128)
                 {
@@ -1655,7 +1655,7 @@ LABEL_153:
 
           v143 = v193;
           v144 = v169;
-          if (v178)
+          if (unsignedIntegerValue)
           {
             v144 = 0;
           }
@@ -1699,9 +1699,9 @@ LABEL_167:
                     }
 
                     v155 = *(*(&v204 + 1) + 8 * k);
-                    v156 = [v203 attributesByName];
-                    v157 = [v156 allKeys];
-                    v158 = [(AnalyticsEngineCore *)v202 entityDictionaryFromObject:v155 attributeKeys:v157 relationshipKeys:v201 includeObjectID:0];
+                    attributesByName4 = [v203 attributesByName];
+                    allKeys4 = [attributesByName4 allKeys];
+                    v158 = [(AnalyticsEngineCore *)selfCopy entityDictionaryFromObject:v155 attributeKeys:allKeys4 relationshipKeys:v201 includeObjectID:0];
 
                     [v145 addObject:v158];
                     v159 = analyticsLogHandle;
@@ -1754,7 +1754,7 @@ LABEL_166:
         else
         {
           v146 = v169;
-          if (v178)
+          if (unsignedIntegerValue)
           {
             v146 = 0;
           }
@@ -1787,7 +1787,7 @@ LABEL_183:
         }
 
 LABEL_186:
-        (v191)[2](v191, context);
+        (replyCopy)[2](replyCopy, context);
 
         goto LABEL_187;
       }
@@ -1797,21 +1797,21 @@ LABEL_186:
       *&v235[8] = v235;
       *&v235[16] = 0x2020000000;
       v236 = 0;
-      v50 = v202->workspace;
+      v50 = selfCopy->workspace;
       v220[0] = MEMORY[0x277D85DD0];
       v220[1] = 3221225472;
       v220[2] = __103__AnalyticsEngineCore_performQueryOnEntityCore_fetchRequestProperties_pred_sort_actions_service_reply___block_invoke_82;
       v220[3] = &unk_27898A188;
       v220[4] = v235;
       [(AnalyticsWorkspace *)v50 enumerateResidentObjectsOfType:v203 usingBlock:v220];
-      v51 = [(AnalyticsWorkspace *)v202->workspace canCloneObjectsOfType:v203];
+      v51 = [(AnalyticsWorkspace *)selfCopy->workspace canCloneObjectsOfType:v203];
       v52 = (*(*&v235[8] + 24) < 0xBuLL) & v51;
       v53 = analyticsLogHandle;
       if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
       {
         v54 = *(*&v235[8] + 24);
-        v55 = [v203 name];
-        v56 = v55;
+        name = [v203 name];
+        v56 = name;
         v57 = "NOT ";
         *buf = 134218754;
         *&buf[4] = v54;
@@ -1826,7 +1826,7 @@ LABEL_186:
         }
 
         *&buf[12] = 2112;
-        *&buf[14] = v55;
+        *&buf[14] = name;
         *&buf[22] = 2080;
         if (!v52)
         {
@@ -1852,7 +1852,7 @@ LABEL_186:
           _os_log_impl(&dword_23255B000, v59, OS_LOG_TYPE_DEFAULT, "SymptomAnalytics performQueryOnEntity: workspace save (dirty: %d, not clonable: %d)", buf, 0xEu);
         }
 
-        [(AnalyticsWorkspace *)v202->workspace save];
+        [(AnalyticsWorkspace *)selfCopy->workspace save];
       }
 
       v38 = v235;
@@ -1867,11 +1867,11 @@ LABEL_186:
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    *&buf[4] = v15;
+    *&buf[4] = coreCopy;
     _os_log_impl(&dword_23255B000, v23, OS_LOG_TYPE_ERROR, "SymptomAnalytics ServiceImpl: workspace is non-persistent:%@", buf, 0xCu);
   }
 
-  v191[2](v191, 0);
+  replyCopy[2](replyCopy, 0);
 
 LABEL_188:
   objc_autoreleasePoolPop(v183);
@@ -1898,68 +1898,68 @@ uint64_t __103__AnalyticsEngineCore_performQueryOnEntityCore_fetchRequestPropert
   return v6;
 }
 
-- (id)extractQueryStringFrom:(id)a3 isGeneric:(BOOL *)a4
+- (id)extractQueryStringFrom:(id)from isGeneric:(BOOL *)generic
 {
-  v5 = a3;
-  *a4 = 0;
-  if ([v5 predicateOperatorType] != 4)
+  fromCopy = from;
+  *generic = 0;
+  if ([fromCopy predicateOperatorType] != 4)
   {
     goto LABEL_9;
   }
 
-  v6 = [v5 leftExpression];
-  v7 = [v6 expressionType];
+  leftExpression = [fromCopy leftExpression];
+  expressionType = [leftExpression expressionType];
 
-  if (v7 != 3)
+  if (expressionType != 3)
   {
     goto LABEL_9;
   }
 
-  v8 = [v5 rightExpression];
-  if ([v8 expressionType])
+  rightExpression = [fromCopy rightExpression];
+  if ([rightExpression expressionType])
   {
   }
 
   else
   {
-    v9 = [v5 rightExpression];
-    v10 = [v9 constantValue];
+    rightExpression2 = [fromCopy rightExpression];
+    constantValue = [rightExpression2 constantValue];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v12 = [v5 rightExpression];
-      v13 = [v12 constantValue];
+      rightExpression3 = [fromCopy rightExpression];
+      constantValue2 = [rightExpression3 constantValue];
 
       goto LABEL_10;
     }
   }
 
-  v14 = [v5 rightExpression];
-  v15 = [v14 expressionType];
+  rightExpression4 = [fromCopy rightExpression];
+  expressionType2 = [rightExpression4 expressionType];
 
-  if (v15 == 2)
+  if (expressionType2 == 2)
   {
-    v13 = 0;
-    *a4 = 1;
+    constantValue2 = 0;
+    *generic = 1;
   }
 
   else
   {
 LABEL_9:
-    v13 = 0;
+    constantValue2 = 0;
   }
 
 LABEL_10:
 
-  return v13;
+  return constantValue2;
 }
 
 + (id)queue
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"AnalyticsEngineCore.m" lineNumber:867 description:{@"Subclasses must provide an impl for %s", "+[AnalyticsEngineCore queue]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"AnalyticsEngineCore.m" lineNumber:867 description:{@"Subclasses must provide an impl for %s", "+[AnalyticsEngineCore queue]"}];
 
   return 0;
 }

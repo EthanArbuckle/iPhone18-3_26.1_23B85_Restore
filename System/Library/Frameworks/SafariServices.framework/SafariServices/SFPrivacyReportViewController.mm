@@ -1,33 +1,33 @@
 @interface SFPrivacyReportViewController
-- (BOOL)_privacyProxyTip:(int64_t *)a3;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (SFPrivacyReportViewController)initWithDomain:(id)a3;
-- (SFPrivacyReportViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (SFPrivacyReportViewController)initWithWebView:(id)a3;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (id)_cellForRowWithIndexPath:(id)a3 itemIdentifier:(id)a4;
-- (id)dataSource:(id)a3 headerTextForSection:(int64_t)a4;
-- (int64_t)_sectionTypeFromSectionIndex:(int64_t)a3;
-- (void)_createTableViewIfNeededLoadingReport:(BOOL)a3;
-- (void)_reloadDataLoadingReport:(BOOL)a3;
+- (BOOL)_privacyProxyTip:(int64_t *)tip;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (SFPrivacyReportViewController)initWithDomain:(id)domain;
+- (SFPrivacyReportViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (SFPrivacyReportViewController)initWithWebView:(id)view;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (id)_cellForRowWithIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)dataSource:(id)source headerTextForSection:(int64_t)section;
+- (int64_t)_sectionTypeFromSectionIndex:(int64_t)index;
+- (void)_createTableViewIfNeededLoadingReport:(BOOL)report;
+- (void)_reloadDataLoadingReport:(BOOL)report;
 - (void)_updateLayoutMargins;
 - (void)_updateUsesInsetStyle;
-- (void)cellDidToggleDetailType:(id)a3;
-- (void)cellDidToggleExpandDetailedExplanation:(id)a3;
-- (void)cellPrivacyProxyUpsellDismissed:(id)a3;
+- (void)cellDidToggleDetailType:(id)type;
+- (void)cellDidToggleExpandDetailedExplanation:(id)explanation;
+- (void)cellPrivacyProxyUpsellDismissed:(id)dismissed;
 - (void)setNeedsUpdateRowHeight;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SFPrivacyReportViewController
 
-- (SFPrivacyReportViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SFPrivacyReportViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = SFPrivacyReportViewController;
-  v4 = [(SFPrivacyReportViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(SFPrivacyReportViewController *)&v8 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -38,14 +38,14 @@
   return v5;
 }
 
-- (SFPrivacyReportViewController)initWithDomain:(id)a3
+- (SFPrivacyReportViewController)initWithDomain:(id)domain
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  domainCopy = domain;
   v5 = [(SFPrivacyReportViewController *)self initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [domainCopy copy];
     domain = v5->_domain;
     v5->_domain = v6;
 
@@ -59,17 +59,17 @@
   return v5;
 }
 
-- (SFPrivacyReportViewController)initWithWebView:(id)a3
+- (SFPrivacyReportViewController)initWithWebView:(id)view
 {
-  v5 = a3;
-  v6 = [v5 URL];
-  v7 = [v6 host];
-  v8 = [v7 safari_highLevelDomainFromHost];
-  v9 = [(SFPrivacyReportViewController *)self initWithDomain:v8];
+  viewCopy = view;
+  v6 = [viewCopy URL];
+  host = [v6 host];
+  safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
+  v9 = [(SFPrivacyReportViewController *)self initWithDomain:safari_highLevelDomainFromHost];
 
   if (v9)
   {
-    objc_storeStrong(&v9->_webView, a3);
+    objc_storeStrong(&v9->_webView, view);
     v10 = v9;
   }
 
@@ -84,16 +84,16 @@
   v3 = _WBSLocalizedString();
   [(SFPrivacyReportViewController *)self setTitle:v3];
 
-  v4 = [(SFPrivacyReportViewController *)self navigationItem];
-  v5 = [v4 sf_preferredDismissOrDoneButtonItem];
+  navigationItem = [(SFPrivacyReportViewController *)self navigationItem];
+  sf_preferredDismissOrDoneButtonItem = [navigationItem sf_preferredDismissOrDoneButtonItem];
 
-  if (!v5)
+  if (!sf_preferredDismissOrDoneButtonItem)
   {
     v6 = objc_alloc(MEMORY[0x1E69DC708]);
     v7 = [v6 initWithBarButtonSystemItem:objc_msgSend(MEMORY[0x1E69DC708] target:"_sf_popoverDoneButtonItem") action:{self, sel__doneBarButtonItemAction_}];
-    [v4 sf_setPreferredDismissOrDoneButtonItem:v7];
-    v8 = [v4 sf_preferredDismissOrDoneButtonItem];
-    [v8 setAccessibilityIdentifier:@"PrivacyReportDoneButton"];
+    [navigationItem sf_setPreferredDismissOrDoneButtonItem:v7];
+    sf_preferredDismissOrDoneButtonItem2 = [navigationItem sf_preferredDismissOrDoneButtonItem];
+    [sf_preferredDismissOrDoneButtonItem2 setAccessibilityIdentifier:@"PrivacyReportDoneButton"];
   }
 
   [(SFPrivacyReportViewController *)self _updateUsesInsetStyle];
@@ -122,9 +122,9 @@ void __44__SFPrivacyReportViewController_viewDidLoad__block_invoke(uint64_t a1)
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_createTableViewIfNeededLoadingReport:(BOOL)a3
+- (void)_createTableViewIfNeededLoadingReport:(BOOL)report
 {
-  v3 = a3;
+  reportCopy = report;
   if (self->_usesInsetStyle)
   {
     v5 = 2;
@@ -146,9 +146,9 @@ void __44__SFPrivacyReportViewController_viewDidLoad__block_invoke(uint64_t a1)
   {
     objc_initWeak(&location, self);
     [(UITableView *)self->_tableView removeFromSuperview];
-    v7 = [(SFPrivacyReportViewController *)self view];
+    view = [(SFPrivacyReportViewController *)self view];
     v8 = objc_alloc(MEMORY[0x1E69DD020]);
-    [v7 bounds];
+    [view bounds];
     v9 = [v8 initWithFrame:v5 style:?];
     v10 = self->_tableView;
     self->_tableView = v9;
@@ -158,7 +158,7 @@ void __44__SFPrivacyReportViewController_viewDidLoad__block_invoke(uint64_t a1)
 
     [(UITableView *)self->_tableView setAccessibilityIdentifier:@"PrivacyReportWindow"];
     [(UITableView *)self->_tableView setAutoresizingMask:18];
-    [v7 addSubview:self->_tableView];
+    [view addSubview:self->_tableView];
     [(UITableView *)self->_tableView setDelegate:self];
     [(UITableView *)self->_tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"trackingProtectionExplanationCell"];
     [(UITableView *)self->_tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"noReportAvailableCell"];
@@ -182,7 +182,7 @@ void __44__SFPrivacyReportViewController_viewDidLoad__block_invoke(uint64_t a1)
 
     [(SFTableViewDiffableDataSource *)self->_diffableDataSource setDefaultRowAnimation:0, v16, v17, v18, v19];
     [(SFTableViewDiffableDataSource *)self->_diffableDataSource setDelegate:self];
-    [(SFPrivacyReportViewController *)self _reloadDataLoadingReport:v3];
+    [(SFPrivacyReportViewController *)self _reloadDataLoadingReport:reportCopy];
     objc_destroyWeak(&v20);
 
     objc_destroyWeak(&location);
@@ -201,8 +201,8 @@ id __71__SFPrivacyReportViewController__createTableViewIfNeededLoadingReport___b
 
 - (void)_updateUsesInsetStyle
 {
-  v3 = [(SFPrivacyReportViewController *)self view];
-  [v3 bounds];
+  view = [(SFPrivacyReportViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
@@ -228,21 +228,21 @@ id __71__SFPrivacyReportViewController__createTableViewIfNeededLoadingReport___b
     v3 = 16.0;
   }
 
-  v4 = [(UITableView *)self->_tableView tableHeaderView];
-  [v4 frame];
-  [v4 setFrame:?];
-  [(UITableView *)self->_tableView setTableHeaderView:v4];
+  tableHeaderView = [(UITableView *)self->_tableView tableHeaderView];
+  [tableHeaderView frame];
+  [tableHeaderView setFrame:?];
+  [(UITableView *)self->_tableView setTableHeaderView:tableHeaderView];
   [(UITableView *)self->_tableView setLayoutMargins:35.0, v3, 40.0, v3];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __84__SFPrivacyReportViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v4[3] = &unk_1E848F860;
   v4[4] = self;
-  [a4 animateAlongsideTransition:v4 completion:0];
+  [coordinator animateAlongsideTransition:v4 completion:0];
 }
 
 uint64_t __84__SFPrivacyReportViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -254,14 +254,14 @@ uint64_t __84__SFPrivacyReportViewController_viewWillTransitionToSize_withTransi
   return [v2 reloadData];
 }
 
-- (void)_reloadDataLoadingReport:(BOOL)a3
+- (void)_reloadDataLoadingReport:(BOOL)report
 {
-  v3 = a3;
+  reportCopy = report;
   v49[1] = *MEMORY[0x1E69E9840];
   self->_showingCurrentWebsite = 0;
   v5 = objc_alloc_init(MEMORY[0x1E69955A0]);
   v6 = v5;
-  if (!v3)
+  if (!reportCopy)
   {
     if (([(WBSPrivacyReportData *)self->_privacyReportData hasData]& 1) == 0)
     {
@@ -309,25 +309,25 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v19 = [(WBSPrivacyReportData *)self->_privacyReportData knownTrackers];
-      v20 = [v19 firstObject];
-      v21 = [v20 firstParties];
-      self->_maxCountForDetailList = [v21 count];
+      knownTrackers = [(WBSPrivacyReportData *)self->_privacyReportData knownTrackers];
+      firstObject = [knownTrackers firstObject];
+      firstParties = [firstObject firstParties];
+      self->_maxCountForDetailList = [firstParties count];
 
-      v22 = [(WBSPrivacyReportData *)self->_privacyReportData knownTrackers];
-      v23 = v22;
+      knownTrackers2 = [(WBSPrivacyReportData *)self->_privacyReportData knownTrackers];
+      v23 = knownTrackers2;
       v24 = &__block_literal_global_2;
     }
 
     else
     {
-      v26 = [(WBSPrivacyReportData *)self->_privacyReportData trackedFirstParties];
-      v27 = [v26 firstObject];
-      v28 = [v27 trackers];
-      self->_maxCountForDetailList = [v28 count];
+      trackedFirstParties = [(WBSPrivacyReportData *)self->_privacyReportData trackedFirstParties];
+      firstObject2 = [trackedFirstParties firstObject];
+      trackers = [firstObject2 trackers];
+      self->_maxCountForDetailList = [trackers count];
 
-      v29 = [(WBSPrivacyReportData *)self->_privacyReportData trackedFirstParties];
-      v23 = v29;
+      trackedFirstParties2 = [(WBSPrivacyReportData *)self->_privacyReportData trackedFirstParties];
+      v23 = trackedFirstParties2;
       if (self->_domain)
       {
         v42[0] = MEMORY[0x1E69E9820];
@@ -335,7 +335,7 @@ LABEL_16:
         v42[2] = __58__SFPrivacyReportViewController__reloadDataLoadingReport___block_invoke_2;
         v42[3] = &unk_1E848F8A8;
         v42[4] = self;
-        v30 = [v29 indexOfObjectPassingTest:v42];
+        v30 = [trackedFirstParties2 indexOfObjectPassingTest:v42];
         if (v30 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v31 = v30;
@@ -360,10 +360,10 @@ LABEL_16:
       }
 
       v24 = &__block_literal_global_93;
-      v22 = v23;
+      knownTrackers2 = v23;
     }
 
-    v40 = [v22 safari_mapObjectsUsingBlock:v24];
+    v40 = [knownTrackers2 safari_mapObjectsUsingBlock:v24];
     [v6 appendItemsWithIdentifiers:v40];
 
     goto LABEL_16;
@@ -379,7 +379,7 @@ LABEL_10:
   [v6 appendItemsWithIdentifiers:v25];
 
 LABEL_17:
-  [(SFTableViewDiffableDataSource *)self->_diffableDataSource applySnapshot:v6 animatingDifferences:!v3];
+  [(SFTableViewDiffableDataSource *)self->_diffableDataSource applySnapshot:v6 animatingDifferences:!reportCopy];
 }
 
 SFPrivacyReportItem *__58__SFPrivacyReportViewController__reloadDataLoadingReport___block_invoke(uint64_t a1, void *a2)
@@ -406,65 +406,65 @@ SFPrivacyReportItem *__58__SFPrivacyReportViewController__reloadDataLoadingRepor
   return v3;
 }
 
-- (int64_t)_sectionTypeFromSectionIndex:(int64_t)a3
+- (int64_t)_sectionTypeFromSectionIndex:(int64_t)index
 {
-  v4 = [(SFTableViewDiffableDataSource *)self->_diffableDataSource snapshot];
-  v5 = [v4 sectionIdentifiers];
-  v6 = [v5 objectAtIndexedSubscript:a3];
-  v7 = [v6 integerValue];
+  snapshot = [(SFTableViewDiffableDataSource *)self->_diffableDataSource snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v6 = [sectionIdentifiers objectAtIndexedSubscript:index];
+  integerValue = [v6 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
-- (id)_cellForRowWithIndexPath:(id)a3 itemIdentifier:(id)a4
+- (id)_cellForRowWithIndexPath:(id)path itemIdentifier:(id)identifier
 {
   v33[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 type];
+  pathCopy = path;
+  identifierCopy = identifier;
+  type = [identifierCopy type];
   v9 = 0;
-  if (v8 > 6)
+  if (type > 6)
   {
-    if ((v8 - 9) < 4)
+    if ((type - 9) < 4)
     {
-      v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"privacyProxyTipCell" forIndexPath:v6];
+      v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"privacyProxyTipCell" forIndexPath:pathCopy];
       [v9 setUsesInsetStyle:self->_usesInsetStyle];
       [v9 setDelegate:self];
       goto LABEL_30;
     }
 
-    if (v8 == 7)
+    if (type == 7)
     {
-      v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"trackerCell" forIndexPath:v6];
-      v14 = [v7 userInfo];
-      [v9 setTracker:v14];
+      v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"trackerCell" forIndexPath:pathCopy];
+      userInfo = [identifierCopy userInfo];
+      [v9 setTracker:userInfo];
 LABEL_29:
 
       [v9 setMaxCount:self->_maxCountForDetailList];
       goto LABEL_30;
     }
 
-    if (v8 != 8)
+    if (type != 8)
     {
       goto LABEL_30;
     }
 
-    v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"subheaderCell" forIndexPath:v6];
-    v13 = [v7 userInfo];
-    [v9 setSubheaderText:v13];
+    v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"subheaderCell" forIndexPath:pathCopy];
+    userInfo2 = [identifierCopy userInfo];
+    [v9 setSubheaderText:userInfo2];
 LABEL_27:
 
     goto LABEL_30;
   }
 
-  if (v8 > 2)
+  if (type > 2)
   {
-    if (v8 <= 4)
+    if (type <= 4)
     {
-      if (v8 == 3)
+      if (type == 3)
       {
-        v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"gridViewCellIdentifier" forIndexPath:v6];
-        v15 = [v9 gridView];
+        v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"gridViewCellIdentifier" forIndexPath:pathCopy];
+        gridView = [v9 gridView];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -477,8 +477,8 @@ LABEL_27:
 
       else
       {
-        v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"gridViewCellIdentifier" forIndexPath:v6];
-        v10 = [v9 gridView];
+        v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"gridViewCellIdentifier" forIndexPath:pathCopy];
+        gridView2 = [v9 gridView];
         objc_opt_class();
         v11 = objc_opt_isKindOfClass();
 
@@ -492,28 +492,28 @@ LABEL_20:
         }
       }
 
-      v18 = [v9 gridView];
-      [v18 setUsesInsetStyle:self->_usesInsetStyle];
+      gridView3 = [v9 gridView];
+      [gridView3 setUsesInsetStyle:self->_usesInsetStyle];
 
       goto LABEL_30;
     }
 
-    if (v8 == 5)
+    if (type == 5)
     {
-      v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"detailTypeToggleCell" forIndexPath:v6];
+      v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"detailTypeToggleCell" forIndexPath:pathCopy];
       [v9 setDetailType:self->_listDetailType];
       [v9 setDelegate:self];
       [v9 setUseCurrentWebsiteHeader:self->_showingCurrentWebsite];
       goto LABEL_30;
     }
 
-    v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"websiteCell" forIndexPath:v6];
-    v14 = [v7 userInfo];
-    [v9 setWebsite:v14];
+    v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"websiteCell" forIndexPath:pathCopy];
+    userInfo = [identifierCopy userInfo];
+    [v9 setWebsite:userInfo];
     goto LABEL_29;
   }
 
-  switch(v8)
+  switch(type)
   {
     case 0:
       v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"loadingReportCell"];
@@ -524,37 +524,37 @@ LABEL_20:
 
       v9 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"loadingReportCell"];
       [v9 setBackgroundView:0];
-      v19 = [MEMORY[0x1E69DC888] clearColor];
-      [v9 setBackgroundColor:v19];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [v9 setBackgroundColor:clearColor];
 
-      v13 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
-      [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v20 = [v9 contentView];
-      [v20 addSubview:v13];
+      userInfo2 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
+      [userInfo2 setTranslatesAutoresizingMaskIntoConstraints:0];
+      contentView = [v9 contentView];
+      [contentView addSubview:userInfo2];
       v28 = MEMORY[0x1E696ACD8];
-      v32 = [v13 centerXAnchor];
-      v31 = [v20 centerXAnchor];
-      v30 = [v32 constraintEqualToAnchor:v31];
+      centerXAnchor = [userInfo2 centerXAnchor];
+      centerXAnchor2 = [contentView centerXAnchor];
+      v30 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v33[0] = v30;
-      v29 = [v13 centerYAnchor];
-      v27 = [v20 centerYAnchor];
-      v21 = [v29 constraintEqualToAnchor:v27];
+      centerYAnchor = [userInfo2 centerYAnchor];
+      centerYAnchor2 = [contentView centerYAnchor];
+      v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v33[1] = v21;
-      v22 = [v20 heightAnchor];
-      v23 = [v13 heightAnchor];
-      v24 = [v22 constraintEqualToAnchor:v23 multiplier:1.0 constant:20.0];
+      heightAnchor = [contentView heightAnchor];
+      heightAnchor2 = [userInfo2 heightAnchor];
+      v24 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:1.0 constant:20.0];
       v33[2] = v24;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:3];
       [v28 activateConstraints:v25];
 
-      [v13 startAnimating];
+      [userInfo2 startAnimating];
       goto LABEL_26;
     case 1:
       v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:@"noReportAvailableCell"];
-      v13 = [v9 textLabel];
-      [v13 setNumberOfLines:0];
-      v20 = _WBSLocalizedString();
-      [v13 setText:v20];
+      userInfo2 = [v9 textLabel];
+      [userInfo2 setNumberOfLines:0];
+      contentView = _WBSLocalizedString();
+      [userInfo2 setText:contentView];
 LABEL_26:
 
       goto LABEL_27;
@@ -570,34 +570,34 @@ LABEL_30:
   return v9;
 }
 
-- (BOOL)_privacyProxyTip:(int64_t *)a3
+- (BOOL)_privacyProxyTip:(int64_t *)tip
 {
-  v4 = [MEMORY[0x1E69C9808] sharedManager];
-  if (![v4 isPrivacyProxyActive])
+  mEMORY[0x1E69C9808] = [MEMORY[0x1E69C9808] sharedManager];
+  if (![mEMORY[0x1E69C9808] isPrivacyProxyActive])
   {
     goto LABEL_3;
   }
 
-  v5 = [v4 state];
-  v6 = [v4 isUserAccountInSubscriberTierForPrivacyProxy];
-  if (v5 == 2)
+  state = [mEMORY[0x1E69C9808] state];
+  isUserAccountInSubscriberTierForPrivacyProxy = [mEMORY[0x1E69C9808] isUserAccountInSubscriberTierForPrivacyProxy];
+  if (state == 2)
   {
     goto LABEL_3;
   }
 
-  if (v6)
+  if (isUserAccountInSubscriberTierForPrivacyProxy)
   {
-    if (v5 == 1)
+    if (state == 1)
     {
       v9 = 12;
       goto LABEL_15;
     }
 
-    if (!v5)
+    if (!state)
     {
       v9 = 11;
 LABEL_15:
-      *a3 = v9;
+      *tip = v9;
       v7 = 1;
       goto LABEL_4;
     }
@@ -605,16 +605,16 @@ LABEL_15:
 
   else
   {
-    if (v5 != 1)
+    if (state != 1)
     {
       v9 = 9;
       goto LABEL_15;
     }
 
-    v10 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v11 = [v10 BOOLForKey:@"PrivacyReportPrivacyProxyDismissed"];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    v11 = [safari_browserDefaults BOOLForKey:@"PrivacyReportPrivacyProxyDismissed"];
 
-    if ((v11 & 1) == 0 && ([v4 isPrivacyProxyPaidTierUnavailableInUserCountry] & 1) == 0)
+    if ((v11 & 1) == 0 && ([mEMORY[0x1E69C9808] isPrivacyProxyPaidTierUnavailableInUserCountry] & 1) == 0)
     {
       v9 = 10;
       goto LABEL_15;
@@ -628,24 +628,24 @@ LABEL_4:
   return v7;
 }
 
-- (void)cellDidToggleDetailType:(id)a3
+- (void)cellDidToggleDetailType:(id)type
 {
-  self->_listDetailType = [a3 detailType];
+  self->_listDetailType = [type detailType];
 
   [(SFPrivacyReportViewController *)self _reloadDataLoadingReport:0];
 }
 
-- (void)cellDidToggleExpandDetailedExplanation:(id)a3
+- (void)cellDidToggleExpandDetailedExplanation:(id)explanation
 {
-  self->_showExplanationDetailView = [a3 isExpanded];
+  self->_showExplanationDetailView = [explanation isExpanded];
 
   [(SFPrivacyReportViewController *)self _reloadDataLoadingReport:0];
 }
 
-- (void)cellPrivacyProxyUpsellDismissed:(id)a3
+- (void)cellPrivacyProxyUpsellDismissed:(id)dismissed
 {
-  v4 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v4 setBool:1 forKey:@"PrivacyReportPrivacyProxyDismissed"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults setBool:1 forKey:@"PrivacyReportPrivacyProxyDismissed"];
 
   [(SFPrivacyReportViewController *)self _reloadDataLoadingReport:0];
 }
@@ -681,9 +681,9 @@ void __56__SFPrivacyReportViewController_setNeedsUpdateRowHeight__block_invoke(u
   }
 }
 
-- (id)dataSource:(id)a3 headerTextForSection:(int64_t)a4
+- (id)dataSource:(id)source headerTextForSection:(int64_t)section
 {
-  if ([(SFPrivacyReportViewController *)self _sectionTypeFromSectionIndex:a4]== 3)
+  if ([(SFPrivacyReportViewController *)self _sectionTypeFromSectionIndex:section]== 3)
   {
     v4 = MEMORY[0x1E696AEC0];
     v5 = _WBSLocalizedString();
@@ -698,61 +698,61 @@ void __56__SFPrivacyReportViewController_setNeedsUpdateRowHeight__block_invoke(u
   return v6;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = [(SFTableViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:a4];
-  v5 = [v4 type];
+  v4 = [(SFTableViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:path];
+  type = [v4 type];
 
-  return (v5 & 0xFFFFFFFFFFFFFFFELL) == 6;
+  return (type & 0xFFFFFFFFFFFFFFFELL) == 6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v14 = [(SFTableViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:v6];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v14 = [(SFTableViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
-  v7 = [v14 type];
-  if (v7 == 6)
+  type = [v14 type];
+  if (type == 6)
   {
     v11 = [SFPrivacyReportWebsiteDetailViewController alloc];
-    v12 = [v14 userInfo];
-    v10 = [(SFPrivacyReportWebsiteDetailViewController *)v11 initWithWebsite:v12];
+    userInfo = [v14 userInfo];
+    v10 = [(SFPrivacyReportWebsiteDetailViewController *)v11 initWithWebsite:userInfo];
 
     [(SFPrivacyReportWebsiteDetailViewController *)v10 setSeparatesBlockedTrackers:self->_websiteDetailShouldSeparateBlockedTrackers];
   }
 
   else
   {
-    if (v7 != 7)
+    if (type != 7)
     {
       goto LABEL_6;
     }
 
     v8 = [SFPrivacyReportTrackerDetailViewController alloc];
-    v9 = [v14 userInfo];
-    v10 = [(SFPrivacyReportTrackerDetailViewController *)v8 initWithTracker:v9];
+    userInfo2 = [v14 userInfo];
+    v10 = [(SFPrivacyReportTrackerDetailViewController *)v8 initWithTracker:userInfo2];
   }
 
-  v13 = [(SFPrivacyReportViewController *)self navigationController];
-  [v13 pushViewController:v10 animated:1];
+  navigationController = [(SFPrivacyReportViewController *)self navigationController];
+  [navigationController pushViewController:v10 animated:1];
 
 LABEL_6:
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v5 = a3;
+  viewCopy = view;
   v6 = MEMORY[0x1E696AC88];
-  v7 = a4;
+  pathCopy = path;
   v8 = [v6 indexPathForRow:0 inSection:0];
-  v9 = [v7 isEqual:v8];
+  v9 = [pathCopy isEqual:v8];
 
   if (v9)
   {
-    [v5 frame];
+    [viewCopy frame];
     Height = CGRectGetHeight(v13);
-    [v5 frame];
+    [viewCopy frame];
     v11 = fmax(Height, CGRectGetWidth(v14));
   }
 

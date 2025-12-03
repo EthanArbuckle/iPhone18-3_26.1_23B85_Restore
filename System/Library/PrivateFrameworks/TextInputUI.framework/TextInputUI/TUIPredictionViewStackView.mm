@@ -1,12 +1,12 @@
 @interface TUIPredictionViewStackView
-- (TUIPredictionViewStackView)initWithFrame:(CGRect)a3;
+- (TUIPredictionViewStackView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentMargin;
 - (id)allVisibleCells;
 - (id)arrangedSubviews;
 - (id)subStackViews;
 - (id)visibleCells;
-- (int64_t)_layoutTypeForSubview:(id)a3;
-- (void)addArrangedSubview:(id)a3 beforeLastSubview:(BOOL)a4;
+- (int64_t)_layoutTypeForSubview:(id)subview;
+- (void)addArrangedSubview:(id)subview beforeLastSubview:(BOOL)lastSubview;
 - (void)layoutSubviews;
 @end
 
@@ -15,13 +15,13 @@
 - (id)allVisibleCells
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(TUIPredictionViewStackView *)self arrangedSubviews];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  arrangedSubviews = [(TUIPredictionViewStackView *)self arrangedSubviews];
+  v5 = [arrangedSubviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -32,15 +32,15 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 allVisibleCells];
-          [v3 addObjectsFromArray:v10];
+          allVisibleCells = [v9 allVisibleCells];
+          [array addObjectsFromArray:allVisibleCells];
         }
 
         else
@@ -48,26 +48,26 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v3 addObject:v9];
+            [array addObject:v9];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [arrangedSubviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)arrangedSubviews
 {
-  v2 = [(TUIPredictionViewStackView *)self contentView];
-  v3 = [v2 subviews];
+  contentView = [(TUIPredictionViewStackView *)self contentView];
+  subviews = [contentView subviews];
 
-  return v3;
+  return subviews;
 }
 
 - (void)layoutSubviews
@@ -83,11 +83,11 @@
   v14 = v6 + v13;
   v16 = v8 - (v11 + v15);
   v18 = v10 - (v13 + v17);
-  v19 = [(TUIPredictionViewStackView *)self contentView];
-  [v19 setFrame:{v12, v14, v16, v18}];
+  contentView = [(TUIPredictionViewStackView *)self contentView];
+  [contentView setFrame:{v12, v14, v16, v18}];
 
-  v20 = [(TUIPredictionViewStackView *)self contentView];
-  [v20 bounds];
+  contentView2 = [(TUIPredictionViewStackView *)self contentView];
+  [contentView2 bounds];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -97,8 +97,8 @@
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v29 = [(TUIPredictionViewStackView *)self arrangedSubviews];
-  v30 = [v29 countByEnumeratingWithState:&v47 objects:v51 count:16];
+  arrangedSubviews = [(TUIPredictionViewStackView *)self arrangedSubviews];
+  v30 = [arrangedSubviews countByEnumeratingWithState:&v47 objects:v51 count:16];
   v31 = 0.0;
   v32 = v26;
   v33 = 0.0;
@@ -114,7 +114,7 @@
       {
         if (*v48 != v36)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v38 = *(*(&v47 + 1) + 8 * i);
@@ -131,7 +131,7 @@
         }
       }
 
-      v34 = [v29 countByEnumeratingWithState:&v47 objects:v51 count:16];
+      v34 = [arrangedSubviews countByEnumeratingWithState:&v47 objects:v51 count:16];
     }
 
     while (v34);
@@ -147,11 +147,11 @@
     v31 = 16.0;
   }
 
-  v41 = [(TUIPredictionViewStackView *)self arrangedSubviews];
-  v42 = round(v32 - ([v41 count] - 1) * v31) / v33;
+  arrangedSubviews2 = [(TUIPredictionViewStackView *)self arrangedSubviews];
+  v42 = round(v32 - ([arrangedSubviews2 count] - 1) * v31) / v33;
 
-  v43 = [(TUIPredictionViewStackView *)self arrangedSubviews];
-  v44 = [(TUIPredictionViewStackView *)self layoutDirection];
+  arrangedSubviews3 = [(TUIPredictionViewStackView *)self arrangedSubviews];
+  layoutDirection = [(TUIPredictionViewStackView *)self layoutDirection];
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __44__TUIPredictionViewStackView_layoutSubviews__block_invoke;
@@ -164,7 +164,7 @@
   *&v45[9] = v26;
   v45[10] = v28;
   *&v45[11] = v31;
-  [v43 enumerateObjectsWithOptions:2 * (v44 == 1) usingBlock:v45];
+  [arrangedSubviews3 enumerateObjectsWithOptions:2 * (layoutDirection == 1) usingBlock:v45];
 
   _Block_object_dispose(v46, 8);
 }
@@ -229,11 +229,11 @@ LABEL_11:
 
 - (id)visibleCells
 {
-  v3 = [(TUIPredictionViewStackView *)self arrangedSubviews];
-  v4 = [v3 indexesOfObjectsPassingTest:&__block_literal_global_9491];
+  arrangedSubviews = [(TUIPredictionViewStackView *)self arrangedSubviews];
+  v4 = [arrangedSubviews indexesOfObjectsPassingTest:&__block_literal_global_9491];
 
-  v5 = [(TUIPredictionViewStackView *)self arrangedSubviews];
-  v6 = [v5 objectsAtIndexes:v4];
+  arrangedSubviews2 = [(TUIPredictionViewStackView *)self arrangedSubviews];
+  v6 = [arrangedSubviews2 objectsAtIndexes:v4];
 
   return v6;
 }
@@ -250,13 +250,13 @@ uint64_t __42__TUIPredictionViewStackView_visibleCells__block_invoke(uint64_t a1
 - (id)subStackViews
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(TUIPredictionViewStackView *)self arrangedSubviews];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  arrangedSubviews = [(TUIPredictionViewStackView *)self arrangedSubviews];
+  v5 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -267,89 +267,89 @@ uint64_t __42__TUIPredictionViewStackView_visibleCells__block_invoke(uint64_t a1
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (void)addArrangedSubview:(id)a3 beforeLastSubview:(BOOL)a4
+- (void)addArrangedSubview:(id)subview beforeLastSubview:(BOOL)lastSubview
 {
-  v4 = a4;
-  v13 = a3;
-  v6 = [(TUIPredictionViewStackView *)self contentView];
-  v7 = [v6 subviews];
-  v8 = [v7 count];
+  lastSubviewCopy = lastSubview;
+  subviewCopy = subview;
+  contentView = [(TUIPredictionViewStackView *)self contentView];
+  subviews = [contentView subviews];
+  v8 = [subviews count];
 
-  v9 = [(TUIPredictionViewStackView *)self contentView];
-  v10 = v9;
-  if (v4 && v8)
+  contentView2 = [(TUIPredictionViewStackView *)self contentView];
+  contentView3 = contentView2;
+  if (lastSubviewCopy && v8)
   {
-    v11 = [v9 subviews];
-    v12 = [v11 containsObject:v13];
+    subviews2 = [contentView2 subviews];
+    v12 = [subviews2 containsObject:subviewCopy];
 
     if (v12)
     {
       goto LABEL_7;
     }
 
-    v10 = [(TUIPredictionViewStackView *)self contentView];
-    [v10 insertSubview:v13 atIndex:v8 - 1];
+    contentView3 = [(TUIPredictionViewStackView *)self contentView];
+    [contentView3 insertSubview:subviewCopy atIndex:v8 - 1];
   }
 
   else
   {
-    [v9 addSubview:v13];
+    [contentView2 addSubview:subviewCopy];
   }
 
 LABEL_7:
   [(TUIPredictionViewStackView *)self setNeedsLayout];
 }
 
-- (int64_t)_layoutTypeForSubview:(id)a3
+- (int64_t)_layoutTypeForSubview:(id)subview
 {
-  v3 = a3;
+  subviewCopy = subview;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 layoutType];
+    layoutType = [subviewCopy layoutType];
   }
 
   else
   {
-    v4 = 0;
+    layoutType = 0;
   }
 
-  return v4;
+  return layoutType;
 }
 
-- (TUIPredictionViewStackView)initWithFrame:(CGRect)a3
+- (TUIPredictionViewStackView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = TUIPredictionViewStackView;
-  v3 = [(TUIPredictionViewStackView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUIPredictionViewStackView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [TUIPredictionViewStackContentView alloc];
     v5 = [(TUIPredictionViewStackContentView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(TUIPredictionViewStackView *)v3 setContentView:v5];
 
-    v6 = [(TUIPredictionViewStackView *)v3 contentView];
-    [(TUIPredictionViewStackView *)v3 addSubview:v6];
+    contentView = [(TUIPredictionViewStackView *)v3 contentView];
+    [(TUIPredictionViewStackView *)v3 addSubview:contentView];
   }
 
   return v3;

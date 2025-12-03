@@ -1,8 +1,8 @@
 @interface PermissionViewController
-- (_TtC7Journal24PermissionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)a3;
+- (_TtC7Journal24PermissionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)state;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -10,17 +10,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10069A2DC();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for PermissionViewController();
   v4 = v5.receiver;
-  [(PermissionViewController *)&v5 viewWillAppear:v3];
+  [(PermissionViewController *)&v5 viewWillAppear:appearCopy];
   sub_10069CE4C();
 }
 
@@ -33,22 +33,22 @@
   sub_10069CE4C();
 }
 
-- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UIContentUnavailableConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UIContentUnavailableConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_10069A53C();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (_TtC7Journal24PermissionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal24PermissionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -60,8 +60,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10069D120(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10069D120(v5, v7, bundle);
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface CSAttendingServiceListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (CSAttendingServiceListener)initWithAudioProviderSelector:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (CSAttendingServiceListener)initWithAudioProviderSelector:(id)selector;
 - (CSAttendingStatesProvidingProxy)attendingStatesProvidingProxy;
 - (CSAttendingUsecaseManager)attendingUsecaseManager;
 - (void)dealloc;
@@ -42,21 +42,21 @@
   dispatch_async(queue, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v31 = "[CSAttendingServiceListener listener:shouldAcceptNewConnection:]";
     v32 = 2112;
-    v33 = v7;
+    v33 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s Got new connection on attending service: %@", buf, 0x16u);
   }
 
-  if (self->_listener != v6)
+  if (self->_listener != listenerCopy)
   {
     v9 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -64,7 +64,7 @@
       *buf = 136315394;
       v31 = "[CSAttendingServiceListener listener:shouldAcceptNewConnection:]";
       v32 = 2114;
-      v33 = v6;
+      v33 = listenerCopy;
       v10 = "%s Invalid listener - %{public}@";
       v11 = v9;
       v12 = 22;
@@ -76,9 +76,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (([CSUtils xpcConnection:v7 hasEntitlement:@"corespeech.corespeechd.attending.service"]& 1) == 0)
+  if (([CSUtils xpcConnection:connectionCopy hasEntitlement:@"corespeech.corespeechd.attending.service"]& 1) == 0)
   {
-    [(NSXPCListener *)v7 invalidate];
+    [(NSXPCListener *)connectionCopy invalidate];
     v22 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
@@ -95,18 +95,18 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  [(NSXPCListener *)v7 setExportedInterface:self->_exportedInterface];
-  [(NSXPCListener *)v7 setRemoteObjectInterface:self->_remoteInterface];
+  [(NSXPCListener *)connectionCopy setExportedInterface:self->_exportedInterface];
+  [(NSXPCListener *)connectionCopy setRemoteObjectInterface:self->_remoteInterface];
   v13 = [CSAttendingUsecaseProxy alloc];
   audioProviderSelector = self->_audioProviderSelector;
   WeakRetained = objc_loadWeakRetained(&self->_attendingUsecaseManager);
   v16 = objc_loadWeakRetained(&self->_attendingStatesProvidingProxy);
-  v17 = [(CSAttendingUsecaseProxy *)v13 initWithConnection:v7 audioProviderSelector:audioProviderSelector usecaseManager:WeakRetained attendingStatesProvidingProxy:v16];
+  v17 = [(CSAttendingUsecaseProxy *)v13 initWithConnection:connectionCopy audioProviderSelector:audioProviderSelector usecaseManager:WeakRetained attendingStatesProvidingProxy:v16];
 
-  v18 = [(NSXPCListener *)v7 remoteObjectProxy];
-  [(CSAttendingUsecaseProxy *)v17 setupListenerDelegate:v18];
+  remoteObjectProxy = [(NSXPCListener *)connectionCopy remoteObjectProxy];
+  [(CSAttendingUsecaseProxy *)v17 setupListenerDelegate:remoteObjectProxy];
 
-  [(NSXPCListener *)v7 setExportedObject:v17];
+  [(NSXPCListener *)connectionCopy setExportedObject:v17];
   objc_initWeak(buf, v17);
   objc_initWeak(&location, self);
   v26[0] = _NSConcreteStackBlock;
@@ -116,7 +116,7 @@ LABEL_11:
   objc_copyWeak(&v27, buf);
   objc_copyWeak(&v28, &location);
   [(CSAttendingUsecaseProxy *)v17 setupConnectionErrorHandler:v26];
-  v19 = [(CSAttendingServiceListener *)self queue];
+  queue = [(CSAttendingServiceListener *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100114FEC;
@@ -124,9 +124,9 @@ LABEL_11:
   block[4] = self;
   v20 = v17;
   v25 = v20;
-  dispatch_async(v19, block);
+  dispatch_async(queue, block);
 
-  [(NSXPCListener *)v7 resume];
+  [(NSXPCListener *)connectionCopy resume];
   objc_destroyWeak(&v28);
   objc_destroyWeak(&v27);
   objc_destroyWeak(&location);
@@ -146,7 +146,7 @@ LABEL_12:
     *buf = 136315394;
     v6 = "[CSAttendingServiceListener dealloc]";
     v7 = 2114;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s Attending service dealloced - %{public}@", buf, 0x16u);
   }
 
@@ -155,9 +155,9 @@ LABEL_12:
   [(CSAttendingServiceListener *)&v4 dealloc];
 }
 
-- (CSAttendingServiceListener)initWithAudioProviderSelector:(id)a3
+- (CSAttendingServiceListener)initWithAudioProviderSelector:(id)selector
 {
-  v5 = a3;
+  selectorCopy = selector;
   v19.receiver = self;
   v19.super_class = CSAttendingServiceListener;
   v6 = [(CSAttendingServiceListener *)&v19 init];
@@ -167,7 +167,7 @@ LABEL_12:
     queue = v6->_queue;
     v6->_queue = v7;
 
-    objc_storeStrong(&v6->_audioProviderSelector, a3);
+    objc_storeStrong(&v6->_audioProviderSelector, selector);
     v9 = +[NSMutableArray array];
     proxies = v6->_proxies;
     v6->_proxies = v9;

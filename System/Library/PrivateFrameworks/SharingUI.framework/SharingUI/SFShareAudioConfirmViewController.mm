@@ -1,17 +1,17 @@
 @interface SFShareAudioConfirmViewController
-- (void)_updateDeviceVisual:(id)a3;
-- (void)eventCancel:(id)a3;
-- (void)eventConfirm:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)_updateDeviceVisual:(id)visual;
+- (void)eventCancel:(id)cancel;
+- (void)eventConfirm:(id)confirm;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SFShareAudioConfirmViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioConfirmViewController viewWillAppear:];
@@ -19,16 +19,16 @@
 
   v16.receiver = self;
   v16.super_class = SFShareAudioConfirmViewController;
-  [(SFShareAudioBaseViewController *)&v16 viewWillAppear:v3];
+  [(SFShareAudioBaseViewController *)&v16 viewWillAppear:appearCopy];
   if (self->_productID)
   {
-    v5 = SFLocalizedNameForBluetoothProductID();
-    [(UILabel *)self->super._titleLabel setText:v5];
+    mainBundle = SFLocalizedNameForBluetoothProductID();
+    [(UILabel *)self->super._titleLabel setText:mainBundle];
   }
 
   else
   {
-    v5 = [(SFShareAudioViewController *)self->super._mainController mainBundle];
+    mainBundle = [(SFShareAudioViewController *)self->super._mainController mainBundle];
     v6 = SFLocalizedStringEx();
     [(UILabel *)self->super._titleLabel setText:v6];
   }
@@ -42,11 +42,11 @@
     [(UIButton *)self->_confirmButton bounds];
     [(MTMaterialView *)self->_confirmButtonMaterialView setFrame:?];
     [(MTMaterialView *)self->_confirmButtonMaterialView setAutoresizingMask:18];
-    v9 = [(UIButton *)self->_confirmButton layer];
-    [v9 cornerRadius];
+    layer = [(UIButton *)self->_confirmButton layer];
+    [layer cornerRadius];
     v11 = v10;
-    v12 = [(MTMaterialView *)self->_confirmButtonMaterialView layer];
-    [v12 setCornerRadius:v11];
+    layer2 = [(MTMaterialView *)self->_confirmButtonMaterialView layer];
+    [layer2 setCornerRadius:v11];
 
     [(UIButton *)self->_confirmButton addSubview:self->_confirmButtonMaterialView];
   }
@@ -90,9 +90,9 @@ void __52__SFShareAudioConfirmViewController_viewWillAppear___block_invoke(uint6
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioConfirmViewController viewWillDisappear:];
@@ -100,32 +100,32 @@ void __52__SFShareAudioConfirmViewController_viewWillAppear___block_invoke(uint6
 
   v5.receiver = self;
   v5.super_class = SFShareAudioConfirmViewController;
-  [(SFShareAudioBaseViewController *)&v5 viewWillDisappear:v3];
+  [(SFShareAudioBaseViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SFShareAudioConfirmViewController;
-  [(SFShareAudioConfirmViewController *)&v4 viewDidDisappear:a3];
+  [(SFShareAudioConfirmViewController *)&v4 viewDidDisappear:disappear];
   [(SFMediaPlayerView *)self->_productMovieView stop];
 }
 
-- (void)eventConfirm:(id)a3
+- (void)eventConfirm:(id)confirm
 {
-  v5 = a3;
+  confirmCopy = confirm;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioConfirmViewController eventConfirm:];
   }
 
-  v4 = [(SFShareAudioViewController *)self->super._mainController shareAudioSession];
-  [v4 userConfirmed];
+  shareAudioSession = [(SFShareAudioViewController *)self->super._mainController shareAudioSession];
+  [shareAudioSession userConfirmed];
 }
 
-- (void)eventCancel:(id)a3
+- (void)eventCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioConfirmViewController eventCancel:];
@@ -134,13 +134,13 @@ void __52__SFShareAudioConfirmViewController_viewWillAppear___block_invoke(uint6
   [(SFShareAudioViewController *)self->super._mainController reportUserCancelled];
 }
 
-- (void)_updateDeviceVisual:(id)a3
+- (void)_updateDeviceVisual:(id)visual
 {
-  v4 = a3;
-  v12 = v4;
-  if (v4)
+  visualCopy = visual;
+  v12 = visualCopy;
+  if (visualCopy)
   {
-    v5 = [MEMORY[0x1E696AAE8] bundleWithPath:v4];
+    v5 = [MEMORY[0x1E696AAE8] bundleWithPath:visualCopy];
   }
 
   else
@@ -170,8 +170,8 @@ void __52__SFShareAudioConfirmViewController_viewWillAppear___block_invoke(uint6
     }
 
     v9 = MEMORY[0x1E69DCAB8];
-    v10 = [(SFShareAudioViewController *)self->super._mainController mainBundle];
-    v11 = [v9 imageNamed:@"ShareAudioAirPods" inBundle:v10 compatibleWithTraitCollection:0];
+    mainBundle = [(SFShareAudioViewController *)self->super._mainController mainBundle];
+    v11 = [v9 imageNamed:@"ShareAudioAirPods" inBundle:mainBundle compatibleWithTraitCollection:0];
     [(UIImageView *)self->_shareImageView setImage:v11];
 
     [(UIImageView *)self->_shareImageView setHidden:0];

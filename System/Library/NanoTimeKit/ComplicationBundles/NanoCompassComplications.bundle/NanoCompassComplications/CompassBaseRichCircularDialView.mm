@@ -10,26 +10,26 @@
 - (id)_ticksImageName;
 - (id)directionRedactionLabel;
 - (id)headingRedactionLabel;
-- (id)initFullColorImageViewWithDevice:(id)a3;
+- (id)initFullColorImageViewWithDevice:(id)device;
 - (id)monochromeAccentViews;
 - (id)monochromeOtherViews;
 - (int64_t)_supportedFamily;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 - (void)layoutSubviews;
 @end
 
 @implementation CompassBaseRichCircularDialView
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v46.receiver = self;
   v46.super_class = CompassBaseRichCircularDialView;
-  v6 = [(CompassRichDialView *)&v46 initFullColorImageViewWithDevice:v5];
+  v6 = [(CompassRichDialView *)&v46 initFullColorImageViewWithDevice:deviceCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6 + 57, a3);
+    objc_storeStrong(v6 + 57, device);
     v45 = 0;
     v43 = 0u;
     v44 = 0u;
@@ -193,13 +193,13 @@
   return v6;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v6 = a3;
+  providerCopy = provider;
   v57.receiver = self;
   v57.super_class = CompassBaseRichCircularDialView;
-  [(CompassRichDialView *)&v57 configureWithImageProvider:v6 reason:a4];
-  v10 = objc_msgSend_metadata(v6, v7, v8, v9);
+  [(CompassRichDialView *)&v57 configureWithImageProvider:providerCopy reason:reason];
+  v10 = objc_msgSend_metadata(providerCopy, v7, v8, v9);
   v13 = objc_msgSend_objectForKeyedSubscript_(v10, v11, @"heading", v12);
 
   v17 = objc_msgSend_null(MEMORY[0x277CBEB68], v14, v15, v16);
@@ -211,7 +211,7 @@
     v13 = 0;
   }
 
-  v24 = objc_msgSend_metadata(v6, v21, v22, v23);
+  v24 = objc_msgSend_metadata(providerCopy, v21, v22, v23);
   v27 = objc_msgSend_objectForKeyedSubscript_(v24, v25, @"nodata", v26);
   v31 = objc_msgSend_BOOLValue(v27, v28, v29, v30);
 

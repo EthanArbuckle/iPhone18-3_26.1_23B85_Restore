@@ -1,20 +1,20 @@
 @interface CSAttSiriSignalProvider
-- (CSAttSiriSignalProvider)initWithAudioProviderSelector:(id)a3;
-- (id)_startStreamOptionWithMachAbsTime:(unint64_t)a3;
+- (CSAttSiriSignalProvider)initWithAudioProviderSelector:(id)selector;
+- (id)_startStreamOptionWithMachAbsTime:(unint64_t)time;
 - (unint64_t)_observersCount;
 - (void)_cancelAudioStreamHold;
 - (void)_deliverSignalProviderDidStopUnexpectedly;
-- (void)_holdAudioStreamWithTimeout:(double)a3;
+- (void)_holdAudioStreamWithTimeout:(double)timeout;
 - (void)_resetAudioStreamObserverContext;
-- (void)_startAudioStreamingWithSignalOptions:(id)a3 completion:(id)a4;
+- (void)_startAudioStreamingWithSignalOptions:(id)options completion:(id)completion;
 - (void)_stopAllAnalyzers;
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4;
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4;
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available;
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly;
 - (void)cancelAudioStreamHoldingIfNeeded;
-- (void)fetchStartSpeechWithOwnVoiceVadByProcessedAudioInMs:(double)a3 fetchOwnVoiceVADSignal:(BOOL)a4 prependAudioDuration:(double)a5 speechDetectSampleCountThreshold:(unint64_t)a6 completion:(id)a7;
-- (void)osdProvider:(id)a3 silenceFramesCountMs:(double)a4 silenceProbability:(double)a5 silenceDurationMs:(double)a6 processedAudioMs:(double)a7 deviceHasBoronEnabled:(BOOL)a8 latestBoronActiveSampleCount:(int64_t)a9;
-- (void)startWithSignalOptions:(id)a3 observer:(id)a4 completion:(id)a5;
-- (void)stopWithObserver:(id)a3 holdAudioStream:(BOOL)a4;
+- (void)fetchStartSpeechWithOwnVoiceVadByProcessedAudioInMs:(double)ms fetchOwnVoiceVADSignal:(BOOL)signal prependAudioDuration:(double)duration speechDetectSampleCountThreshold:(unint64_t)threshold completion:(id)completion;
+- (void)osdProvider:(id)provider silenceFramesCountMs:(double)ms silenceProbability:(double)probability silenceDurationMs:(double)durationMs processedAudioMs:(double)audioMs deviceHasBoronEnabled:(BOOL)enabled latestBoronActiveSampleCount:(int64_t)count;
+- (void)startWithSignalOptions:(id)options observer:(id)observer completion:(id)completion;
+- (void)stopWithObserver:(id)observer holdAudioStream:(BOOL)stream;
 @end
 
 @implementation CSAttSiriSignalProvider
@@ -29,14 +29,14 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s ", &v6, 0xCu);
   }
 
-  v4 = [(CSAudioStream *)self->_audioStream streamProvider];
-  [v4 cancelAudioStreamHold:self->_audioStreamHolding];
+  streamProvider = [(CSAudioStream *)self->_audioStream streamProvider];
+  [streamProvider cancelAudioStreamHold:self->_audioStreamHolding];
 
   audioStreamHolding = self->_audioStreamHolding;
   self->_audioStreamHolding = 0;
 }
 
-- (void)_holdAudioStreamWithTimeout:(double)a3
+- (void)_holdAudioStreamWithTimeout:(double)timeout
 {
   v5 = CSLogCategoryAttending;
   if (os_log_type_enabled(CSLogCategoryAttending, OS_LOG_TYPE_DEFAULT))
@@ -44,41 +44,41 @@
     v10 = 136315394;
     v11 = "[CSAttSiriSignalProvider _holdAudioStreamWithTimeout:]";
     v12 = 2048;
-    v13 = a3;
+    timeoutCopy = timeout;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s timeout = %.2f", &v10, 0x16u);
   }
 
-  v6 = [[CSAudioStreamHoldRequestOption alloc] initWithTimeout:6 clientIdentity:0 requireRecordModeLock:1 requireListeningMicIndicatorLock:a3];
-  v7 = [(CSAudioStream *)self->_audioStream streamProvider];
-  v8 = [v7 holdAudioStreamWithDescription:@"CSAttSiriAttendingAudioStream" option:v6];
+  v6 = [[CSAudioStreamHoldRequestOption alloc] initWithTimeout:6 clientIdentity:0 requireRecordModeLock:1 requireListeningMicIndicatorLock:timeout];
+  streamProvider = [(CSAudioStream *)self->_audioStream streamProvider];
+  v8 = [streamProvider holdAudioStreamWithDescription:@"CSAttSiriAttendingAudioStream" option:v6];
   audioStreamHolding = self->_audioStreamHolding;
   self->_audioStreamHolding = v8;
 }
 
 - (unint64_t)_observersCount
 {
-  v2 = [(CSAttSiriSignalProvider *)self observerAndOptions];
-  v3 = [v2 keyEnumerator];
+  observerAndOptions = [(CSAttSiriSignalProvider *)self observerAndOptions];
+  keyEnumerator = [observerAndOptions keyEnumerator];
 
   v4 = 0;
   v5 = -1;
   do
   {
-    v6 = [v3 nextObject];
+    nextObject = [keyEnumerator nextObject];
 
     ++v5;
-    v4 = v6;
+    v4 = nextObject;
   }
 
-  while (v6);
+  while (nextObject);
 
   return v5;
 }
 
-- (id)_startStreamOptionWithMachAbsTime:(unint64_t)a3
+- (id)_startStreamOptionWithMachAbsTime:(unint64_t)time
 {
   v4 = +[CSAudioStartStreamOption noAlertOption];
-  [v4 setStartRecordingHostTime:a3];
+  [v4 setStartRecordingHostTime:time];
   [v4 setRequireSingleChannelLookup:1];
   [v4 setSelectedChannel:0];
 
@@ -96,11 +96,11 @@
   }
 
   self->_audioRequested = 0;
-  v4 = [(CSAttSiriSignalProvider *)self observerAndOptions];
-  [v4 removeAllObjects];
+  observerAndOptions = [(CSAttSiriSignalProvider *)self observerAndOptions];
+  [observerAndOptions removeAllObjects];
 }
 
-- (void)osdProvider:(id)a3 silenceFramesCountMs:(double)a4 silenceProbability:(double)a5 silenceDurationMs:(double)a6 processedAudioMs:(double)a7 deviceHasBoronEnabled:(BOOL)a8 latestBoronActiveSampleCount:(int64_t)a9
+- (void)osdProvider:(id)provider silenceFramesCountMs:(double)ms silenceProbability:(double)probability silenceDurationMs:(double)durationMs processedAudioMs:(double)audioMs deviceHasBoronEnabled:(BOOL)enabled latestBoronActiveSampleCount:(int64_t)count
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -108,26 +108,26 @@
   block[2] = sub_100051604;
   block[3] = &unk_10024F400;
   block[4] = self;
-  *&block[5] = a4;
-  *&block[6] = a5;
-  *&block[7] = a6;
-  *&block[8] = a7;
-  v11 = a8;
-  block[9] = a9;
+  *&block[5] = ms;
+  *&block[6] = probability;
+  *&block[7] = durationMs;
+  *&block[8] = audioMs;
+  enabledCopy = enabled;
+  block[9] = count;
   dispatch_async(queue, block);
 }
 
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available
 {
-  v5 = a4;
+  availableCopy = available;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10005181C;
   v8[3] = &unk_100253C48;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = availableCopy;
+  selfCopy = self;
+  v7 = availableCopy;
   dispatch_async(queue, v8);
 }
 
@@ -142,13 +142,13 @@
 
 - (void)_deliverSignalProviderDidStopUnexpectedly
 {
-  v2 = [(CSAttSiriSignalProvider *)self observerAndOptions];
-  v6 = [v2 keyEnumerator];
+  observerAndOptions = [(CSAttSiriSignalProvider *)self observerAndOptions];
+  keyEnumerator = [observerAndOptions keyEnumerator];
 
-  v3 = [v6 nextObject];
-  if (v3)
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v4 = v3;
+    v4 = nextObject;
     do
     {
       if (objc_opt_respondsToSelector())
@@ -156,16 +156,16 @@
         [v4 attSiriSignalProviderDidStopUnexpectedly];
       }
 
-      v5 = [v6 nextObject];
+      nextObject2 = [keyEnumerator nextObject];
 
-      v4 = v5;
+      v4 = nextObject2;
     }
 
-    while (v5);
+    while (nextObject2);
   }
 }
 
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -187,117 +187,117 @@
   dispatch_async(queue, block);
 }
 
-- (void)fetchStartSpeechWithOwnVoiceVadByProcessedAudioInMs:(double)a3 fetchOwnVoiceVADSignal:(BOOL)a4 prependAudioDuration:(double)a5 speechDetectSampleCountThreshold:(unint64_t)a6 completion:(id)a7
+- (void)fetchStartSpeechWithOwnVoiceVadByProcessedAudioInMs:(double)ms fetchOwnVoiceVADSignal:(BOOL)signal prependAudioDuration:(double)duration speechDetectSampleCountThreshold:(unint64_t)threshold completion:(id)completion
 {
-  v12 = a7;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100051CF0;
   v15[3] = &unk_10024F3B8;
-  v20 = a4;
-  v17 = a3;
-  v18 = a5;
-  v19 = a6;
+  signalCopy = signal;
+  msCopy = ms;
+  durationCopy = duration;
+  thresholdCopy = threshold;
   v15[4] = self;
-  v16 = v12;
-  v14 = v12;
+  v16 = completionCopy;
+  v14 = completionCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)stopWithObserver:(id)a3 holdAudioStream:(BOOL)a4
+- (void)stopWithObserver:(id)observer holdAudioStream:(BOOL)stream
 {
-  v6 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000521F0;
   block[3] = &unk_100253900;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = observerCopy;
+  selfCopy = self;
+  streamCopy = stream;
+  v8 = observerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_startAudioStreamingWithSignalOptions:(id)a3 completion:(id)a4
+- (void)_startAudioStreamingWithSignalOptions:(id)options completion:(id)completion
 {
-  v21 = a3;
-  v6 = a4;
-  v7 = [v21 audioStreamRequest];
+  optionsCopy = options;
+  completionCopy = completion;
+  audioStreamRequest = [optionsCopy audioStreamRequest];
 
-  if (v7)
+  if (audioStreamRequest)
   {
-    v8 = [v21 audioStreamRequest];
+    audioStreamRequest2 = [optionsCopy audioStreamRequest];
   }
 
   else
   {
-    v9 = [v21 attendingOptions];
+    attendingOptions = [optionsCopy attendingOptions];
     v10 = [CSAudioRecordContext alloc];
-    v11 = [v9 recordType];
-    v12 = [v9 deviceId];
-    v13 = [v10 initWithRecordType:v11 deviceId:v12];
+    recordType = [attendingOptions recordType];
+    deviceId = [attendingOptions deviceId];
+    v13 = [v10 initWithRecordType:recordType deviceId:deviceId];
 
-    v8 = [CSAudioStreamRequest defaultRequestWithContext:v13];
+    audioStreamRequest2 = [CSAudioStreamRequest defaultRequestWithContext:v13];
   }
 
-  [v8 setClientIdentity:3];
-  [v8 setRequestListeningMicIndicatorLock:1];
+  [audioStreamRequest2 setClientIdentity:3];
+  [audioStreamRequest2 setRequestListeningMicIndicatorLock:1];
   audioProviderSelector = self->_audioProviderSelector;
-  v15 = [v8 recordContext];
-  v16 = [(CSAudioProviderSelecting *)audioProviderSelector audioProviderWithContext:v15 error:0];
+  recordContext = [audioStreamRequest2 recordContext];
+  v16 = [(CSAudioProviderSelecting *)audioProviderSelector audioProviderWithContext:recordContext error:0];
 
   if (v16)
   {
-    v17 = [[CSAudioStream alloc] initWithAudioStreamProvider:v16 streamName:@"CSAttSiriAttendingAudioStream" streamRequest:v8];
+    v17 = [[CSAudioStream alloc] initWithAudioStreamProvider:v16 streamName:@"CSAttSiriAttendingAudioStream" streamRequest:audioStreamRequest2];
     audioStream = self->_audioStream;
     self->_audioStream = v17;
 
     [(CSAudioStream *)self->_audioStream setDelegate:self];
-    v19 = [v21 attendingOptions];
-    v20 = -[CSAttSiriSignalProvider _startStreamOptionWithMachAbsTime:](self, "_startStreamOptionWithMachAbsTime:", [v19 startAttendingHostTime]);
+    attendingOptions2 = [optionsCopy attendingOptions];
+    v20 = -[CSAttSiriSignalProvider _startStreamOptionWithMachAbsTime:](self, "_startStreamOptionWithMachAbsTime:", [attendingOptions2 startAttendingHostTime]);
 
-    [(CSAudioStream *)self->_audioStream startAudioStreamWithOption:v20 completion:v6];
+    [(CSAudioStream *)self->_audioStream startAudioStreamWithOption:v20 completion:completionCopy];
   }
 
   else
   {
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_9;
     }
 
     v20 = [NSError errorWithDomain:CSErrorDomain code:2104 userInfo:0];
-    v6[2](v6, 0, v20);
+    completionCopy[2](completionCopy, 0, v20);
   }
 
 LABEL_9:
 }
 
-- (void)startWithSignalOptions:(id)a3 observer:(id)a4 completion:(id)a5
+- (void)startWithSignalOptions:(id)options observer:(id)observer completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  observerCopy = observer;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100052904;
   v15[3] = &unk_100252E58;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = optionsCopy;
+  v17 = observerCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = observerCopy;
+  v13 = optionsCopy;
+  v14 = completionCopy;
   dispatch_async(queue, v15);
 }
 
-- (CSAttSiriSignalProvider)initWithAudioProviderSelector:(id)a3
+- (CSAttSiriSignalProvider)initWithAudioProviderSelector:(id)selector
 {
-  v5 = a3;
+  selectorCopy = selector;
   v14.receiver = self;
   v14.super_class = CSAttSiriSignalProvider;
   v6 = [(CSAttSiriSignalProvider *)&v14 init];
@@ -307,7 +307,7 @@ LABEL_9:
     queue = v6->_queue;
     v6->_queue = v7;
 
-    objc_storeStrong(&v6->_audioProviderSelector, a3);
+    objc_storeStrong(&v6->_audioProviderSelector, selector);
     v6->_audioRequested = 0;
     v9 = +[NSMapTable weakToStrongObjectsMapTable];
     observerAndOptions = v6->_observerAndOptions;

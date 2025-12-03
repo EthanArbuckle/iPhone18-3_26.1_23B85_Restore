@@ -1,20 +1,20 @@
 @interface CKEncryptedDateArray
-- (CKEncryptedDateArray)initWithDateArray:(id)a3;
+- (CKEncryptedDateArray)initWithDateArray:(id)array;
 - (NSArray)dateArray;
 @end
 
 @implementation CKEncryptedDateArray
 
-- (CKEncryptedDateArray)initWithDateArray:(id)a3
+- (CKEncryptedDateArray)initWithDateArray:(id)array
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_alloc_init(CKDPRecordFieldValueEncryptedValue);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v27, v31, 16);
   if (v8)
   {

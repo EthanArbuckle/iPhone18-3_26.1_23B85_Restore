@@ -11,20 +11,20 @@
 
 + (double)bulletImageSize
 {
-  v6 = [MEMORY[0x277CF0228] sharedManager];
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
   v7 = 0;
-  if ([v6 isAuthKitSolariumFeatureEnabled])
+  if ([mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled])
   {
     v5 = 34.0;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
     v7 = 1;
-    v2 = [v8 userInterfaceIdiom];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
     v3 = 44.0;
-    if (v2 != 1)
+    if (userInterfaceIdiom != 1)
     {
       v3 = 36.0;
     }
@@ -34,35 +34,35 @@
 
   if (v7)
   {
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](currentDevice);
   }
 
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](mEMORY[0x277CF0228]);
   return v5;
 }
 
 + (double)bulletLeadingSpacing
 {
-  v9 = [MEMORY[0x277CF0228] sharedManager];
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
   v14 = 0;
   v12 = 0;
   v10 = 0;
-  if ([v9 isAuthKitSolariumFeatureEnabled])
+  if ([mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled])
   {
-    v15 = [MEMORY[0x277CF0228] sharedManager];
+    mEMORY[0x277CF0228]2 = [MEMORY[0x277CF0228] sharedManager];
     v14 = 1;
-    if ([v15 isAuthKitSolariumFeatureEnabled])
+    if ([mEMORY[0x277CF0228]2 isAuthKitSolariumFeatureEnabled])
     {
       v8 = 38.0;
     }
 
     else
     {
-      v13 = [MEMORY[0x277D75418] currentDevice];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
       v12 = 1;
-      v2 = [v13 userInterfaceIdiom];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
       v3 = 50.0;
-      if (v2 != 1)
+      if (userInterfaceIdiom != 1)
       {
         v3 = 32.0;
       }
@@ -75,11 +75,11 @@
 
   else
   {
-    v11 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
     v10 = 1;
-    v4 = [v11 userInterfaceIdiom];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
     v5 = 64.0;
-    if (v4 != 1)
+    if (userInterfaceIdiom2 != 1)
     {
       v5 = 42.0;
     }
@@ -89,45 +89,45 @@
 
   if (v10)
   {
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](currentDevice2);
   }
 
   if (v12)
   {
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](currentDevice);
   }
 
   if (v14)
   {
-    MEMORY[0x277D82BD8](v15);
+    MEMORY[0x277D82BD8](mEMORY[0x277CF0228]2);
   }
 
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](mEMORY[0x277CF0228]);
   return v7;
 }
 
 + (double)bulletTrailingSpacing
 {
-  v9 = [MEMORY[0x277CF0228] sharedManager];
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
   v14 = 0;
   v12 = 0;
   v10 = 0;
-  if ([v9 isAuthKitSolariumFeatureEnabled])
+  if ([mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled])
   {
-    v15 = [MEMORY[0x277CF0228] sharedManager];
+    mEMORY[0x277CF0228]2 = [MEMORY[0x277CF0228] sharedManager];
     v14 = 1;
-    if ([v15 isAuthKitSolariumFeatureEnabled])
+    if ([mEMORY[0x277CF0228]2 isAuthKitSolariumFeatureEnabled])
     {
       v8 = 38.0;
     }
 
     else
     {
-      v13 = [MEMORY[0x277D75418] currentDevice];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
       v12 = 1;
-      v2 = [v13 userInterfaceIdiom];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
       v3 = 50.0;
-      if (v2 != 1)
+      if (userInterfaceIdiom != 1)
       {
         v3 = 32.0;
       }
@@ -140,11 +140,11 @@
 
   else
   {
-    v11 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
     v10 = 1;
-    v4 = [v11 userInterfaceIdiom];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
     v5 = -64.0;
-    if (v4 != 1)
+    if (userInterfaceIdiom2 != 1)
     {
       v5 = -36.0;
     }
@@ -154,45 +154,45 @@
 
   if (v10)
   {
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](currentDevice2);
   }
 
   if (v12)
   {
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](currentDevice);
   }
 
   if (v14)
   {
-    MEMORY[0x277D82BD8](v15);
+    MEMORY[0x277D82BD8](mEMORY[0x277CF0228]2);
   }
 
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](mEMORY[0x277CF0228]);
   return v7;
 }
 
 + (double)bulletImageToInfoLabelSpacing
 {
-  v9 = [MEMORY[0x277CF0228] sharedManager];
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
   v14 = 0;
   v12 = 0;
   v10 = 0;
-  if ([v9 isAuthKitSolariumFeatureEnabled])
+  if ([mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled])
   {
-    v15 = [MEMORY[0x277CF0228] sharedManager];
+    mEMORY[0x277CF0228]2 = [MEMORY[0x277CF0228] sharedManager];
     v14 = 1;
-    if ([v15 isAuthKitSolariumFeatureEnabled])
+    if ([mEMORY[0x277CF0228]2 isAuthKitSolariumFeatureEnabled])
     {
       v8 = 38.0;
     }
 
     else
     {
-      v13 = [MEMORY[0x277D75418] currentDevice];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
       v12 = 1;
-      v2 = [v13 userInterfaceIdiom];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
       v3 = 50.0;
-      if (v2 != 1)
+      if (userInterfaceIdiom != 1)
       {
         v3 = 32.0;
       }
@@ -205,11 +205,11 @@
 
   else
   {
-    v11 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
     v10 = 1;
-    v4 = [v11 userInterfaceIdiom];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
     v5 = 16.0;
-    if (v4 != 1)
+    if (userInterfaceIdiom2 != 1)
     {
       v5 = 26.0;
     }
@@ -219,39 +219,39 @@
 
   if (v10)
   {
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](currentDevice2);
   }
 
   if (v12)
   {
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](currentDevice);
   }
 
   if (v14)
   {
-    MEMORY[0x277D82BD8](v15);
+    MEMORY[0x277D82BD8](mEMORY[0x277CF0228]2);
   }
 
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](mEMORY[0x277CF0228]);
   return v7;
 }
 
 + (double)infoLabelMarginInset
 {
-  v6 = [MEMORY[0x277CF0228] sharedManager];
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
   v7 = 0;
-  if ([v6 isAuthKitSolariumFeatureEnabled])
+  if ([mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled])
   {
     v5 = 38.0;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
     v7 = 1;
-    v2 = [v8 userInterfaceIdiom];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
     v3 = 50.0;
-    if (v2 != 1)
+    if (userInterfaceIdiom != 1)
     {
       v3 = 32.0;
     }
@@ -261,35 +261,35 @@
 
   if (v7)
   {
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](currentDevice);
   }
 
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](mEMORY[0x277CF0228]);
   return v5;
 }
 
 + (double)privacyLinkMarginInset
 {
-  v9 = [MEMORY[0x277CF0228] sharedManager];
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
   v14 = 0;
   v12 = 0;
   v10 = 0;
-  if ([v9 isAuthKitSolariumFeatureEnabled])
+  if ([mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled])
   {
-    v15 = [MEMORY[0x277CF0228] sharedManager];
+    mEMORY[0x277CF0228]2 = [MEMORY[0x277CF0228] sharedManager];
     v14 = 1;
-    if ([v15 isAuthKitSolariumFeatureEnabled])
+    if ([mEMORY[0x277CF0228]2 isAuthKitSolariumFeatureEnabled])
     {
       v8 = 0x4043000000000000;
     }
 
     else
     {
-      v13 = [MEMORY[0x277D75418] currentDevice];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
       v12 = 1;
-      v2 = [v13 userInterfaceIdiom];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
       v3 = 50.0;
-      if (v2 != 1)
+      if (userInterfaceIdiom != 1)
       {
         v3 = 32.0;
       }
@@ -302,11 +302,11 @@
 
   else
   {
-    v11 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
     v10 = 1;
-    v4 = [v11 userInterfaceIdiom];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
     v5 = 76.0;
-    if (v4 != 1)
+    if (userInterfaceIdiom2 != 1)
     {
       v5 = 42.0;
     }
@@ -316,20 +316,20 @@
 
   if (v10)
   {
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](currentDevice2);
   }
 
   if (v12)
   {
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](currentDevice);
   }
 
   if (v14)
   {
-    MEMORY[0x277D82BD8](v15);
+    MEMORY[0x277D82BD8](mEMORY[0x277CF0228]2);
   }
 
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](mEMORY[0x277CF0228]);
   return v7;
 }
 

@@ -1,6 +1,6 @@
 @interface TSTCellRegionColMajorIterator
-- (TSTCellRegionColMajorIterator)initWithCellRegion:(id)a3;
-- (TSUCellCoord)advanceToCellID:(TSUCellCoord)a3;
+- (TSTCellRegionColMajorIterator)initWithCellRegion:(id)region;
+- (TSUCellCoord)advanceToCellID:(TSUCellCoord)d;
 - (TSUCellCoord)getNext;
 - (id).cxx_construct;
 - (void)terminate;
@@ -8,17 +8,17 @@
 
 @implementation TSTCellRegionColMajorIterator
 
-- (TSTCellRegionColMajorIterator)initWithCellRegion:(id)a3
+- (TSTCellRegionColMajorIterator)initWithCellRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v15.receiver = self;
   v15.super_class = TSTCellRegionColMajorIterator;
   v5 = [(TSTCellRegionColMajorIterator *)&v15 init];
   v8 = v5;
   if (v5)
   {
-    objc_msgSend_fillCellRangeColMajorSet_topToBottom_(v4, v6, &v5->mCellRangeSet, 1, v7);
-    v8->mBoundingCellRange.origin = objc_msgSend_boundingCellRange(v4, v9, v10, v11, v12);
+    objc_msgSend_fillCellRangeColMajorSet_topToBottom_(regionCopy, v6, &v5->mCellRangeSet, 1, v7);
+    v8->mBoundingCellRange.origin = objc_msgSend_boundingCellRange(regionCopy, v9, v10, v11, v12);
     v8->mBoundingCellRange.size = v13;
     v8->mCellID = *(v8->mCellRangeSet.__tree_.__begin_node_ + 28);
   }
@@ -73,10 +73,10 @@
   self->mCellID = 0x7FFF7FFFFFFFLL;
 }
 
-- (TSUCellCoord)advanceToCellID:(TSUCellCoord)a3
+- (TSUCellCoord)advanceToCellID:(TSUCellCoord)d
 {
   row = self->mCellID.row;
-  if (row > a3.row || row == a3.row && self->mCellID.column > a3.column || a3.row == 0x7FFFFFFF || (*&a3 & 0xFFFF00000000) == 0x7FFF00000000)
+  if (row > d.row || row == d.row && self->mCellID.column > d.column || d.row == 0x7FFFFFFF || (*&d & 0xFFFF00000000) == 0x7FFF00000000)
   {
     return self->mCellID;
   }
@@ -88,7 +88,7 @@ LABEL_34:
     goto LABEL_36;
   }
 
-  column = a3.column;
+  column = d.column;
   while (1)
   {
     begin_node = self->mCellRangeSet.__tree_.__begin_node_;
@@ -146,7 +146,7 @@ LABEL_32:
 
     v14 = !HIDWORD(*&v19.size) || v19.origin.row == 0x7FFFFFFF;
     v15 = v14 ? 0x7FFFFFFF : v19.origin.row + v19.size.numberOfRows - 1;
-    if (v15 >= a3.row)
+    if (v15 >= d.row)
     {
       break;
     }
@@ -166,9 +166,9 @@ LABEL_33:
     }
   }
 
-  if (v9 != 0x7FFF00000000 && v19.origin.row == 0x7FFFFFFF || v19.origin.row <= a3.row)
+  if (v9 != 0x7FFF00000000 && v19.origin.row == 0x7FFFFFFF || v19.origin.row <= d.row)
   {
-    origin = a3;
+    origin = d;
   }
 
 LABEL_36:

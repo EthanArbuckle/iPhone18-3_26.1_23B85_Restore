@@ -1,13 +1,13 @@
 @interface FBWorkspaceEventQueue
 + (id)sharedInstance;
-- (BOOL)_shouldProcessEvent:(id)a3 enqueuedDuringExecutionOfEvent:(id)a4;
+- (BOOL)_shouldProcessEvent:(id)event enqueuedDuringExecutionOfEvent:(id)ofEvent;
 - (void)_noteQueueDidLock;
 - (void)_noteQueueDidUnlock;
-- (void)_noteWillCancelEventsWithName:(id)a3 count:(unint64_t)a4;
-- (void)_noteWillExecuteEvent:(id)a3;
-- (void)_noteWillPendEvents:(id)a3 atPosition:(int)a4;
-- (void)executeOrAppendEvent:(id)a3;
-- (void)executeOrPrependEvent:(id)a3;
+- (void)_noteWillCancelEventsWithName:(id)name count:(unint64_t)count;
+- (void)_noteWillExecuteEvent:(id)event;
+- (void)_noteWillPendEvents:(id)events atPosition:(int)position;
+- (void)executeOrAppendEvent:(id)event;
+- (void)executeOrPrependEvent:(id)event;
 @end
 
 @implementation FBWorkspaceEventQueue
@@ -50,36 +50,36 @@ void __39__FBWorkspaceEventQueue_sharedInstance__block_invoke()
   sharedInstance___instance_1 = v1;
 }
 
-- (void)executeOrAppendEvent:(id)a3
+- (void)executeOrAppendEvent:(id)event
 {
   v9 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  eventCopy = event;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  eventCopy2 = event;
+  v6 = [v4 arrayWithObjects:&eventCopy count:1];
 
-  [(BSEventQueue *)self executeOrInsertEvents:v6 atPosition:1, v8, v9];
+  [(BSEventQueue *)self executeOrInsertEvents:v6 atPosition:1, eventCopy, v9];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)executeOrPrependEvent:(id)a3
+- (void)executeOrPrependEvent:(id)event
 {
   v9 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  eventCopy = event;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  eventCopy2 = event;
+  v6 = [v4 arrayWithObjects:&eventCopy count:1];
 
-  [(FBWorkspaceEventQueue *)self executeOrPrependEvents:v6, v8, v9];
+  [(FBWorkspaceEventQueue *)self executeOrPrependEvents:v6, eventCopy, v9];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_shouldProcessEvent:(id)a3 enqueuedDuringExecutionOfEvent:(id)a4
+- (BOOL)_shouldProcessEvent:(id)event enqueuedDuringExecutionOfEvent:(id)ofEvent
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && ([v6 name], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "name"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToString:", v9), v9, v8, v10))
+  eventCopy = event;
+  ofEventCopy = ofEvent;
+  v7 = ofEventCopy;
+  if (ofEventCopy && ([ofEventCopy name], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(eventCopy, "name"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToString:", v9), v9, v8, v10))
   {
     v11 = FBLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -98,33 +98,33 @@ void __39__FBWorkspaceEventQueue_sharedInstance__block_invoke()
   return v12;
 }
 
-- (void)_noteWillPendEvents:(id)a3 atPosition:(int)a4
+- (void)_noteWillPendEvents:(id)events atPosition:(int)position
 {
-  v5 = a3;
+  eventsCopy = events;
   v6 = FBLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(FBWorkspaceEventQueue *)v5 _noteWillPendEvents:a4 atPosition:v6];
+    [(FBWorkspaceEventQueue *)eventsCopy _noteWillPendEvents:position atPosition:v6];
   }
 }
 
-- (void)_noteWillCancelEventsWithName:(id)a3 count:(unint64_t)a4
+- (void)_noteWillCancelEventsWithName:(id)name count:(unint64_t)count
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = FBLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(FBWorkspaceEventQueue *)v5 _noteWillCancelEventsWithName:a4 count:v6];
+    [(FBWorkspaceEventQueue *)nameCopy _noteWillCancelEventsWithName:count count:v6];
   }
 }
 
-- (void)_noteWillExecuteEvent:(id)a3
+- (void)_noteWillExecuteEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = FBLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(FBWorkspaceEventQueue *)v3 _noteWillExecuteEvent:v4];
+    [(FBWorkspaceEventQueue *)eventCopy _noteWillExecuteEvent:v4];
   }
 }
 

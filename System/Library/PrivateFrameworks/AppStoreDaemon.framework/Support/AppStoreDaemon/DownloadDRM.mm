@@ -6,13 +6,13 @@
 
 - (DownloadDRM)init
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     v15.receiver = self;
     v15.super_class = DownloadDRM;
-    v2 = [(DownloadDRM *)&v15 init];
-    if (v2)
+    selfCopy = [(DownloadDRM *)&v15 init];
+    if (selfCopy)
     {
       v3 = objc_alloc_init(NSMutableArray);
       v11 = 0u;
@@ -50,12 +50,12 @@
         while (v5);
       }
 
-      sinfs = v2->_sinfs;
-      v2->_sinfs = v3;
+      sinfs = selfCopy->_sinfs;
+      selfCopy->_sinfs = v3;
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

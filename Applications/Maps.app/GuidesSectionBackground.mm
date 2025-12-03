@@ -1,14 +1,14 @@
 @interface GuidesSectionBackground
-- (GuidesSectionBackground)initWithFrame:(CGRect)a3;
+- (GuidesSectionBackground)initWithFrame:(CGRect)frame;
 @end
 
 @implementation GuidesSectionBackground
 
-- (GuidesSectionBackground)initWithFrame:(CGRect)a3
+- (GuidesSectionBackground)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = GuidesSectionBackground;
-  v3 = [(GuidesSectionBackground *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GuidesSectionBackground *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

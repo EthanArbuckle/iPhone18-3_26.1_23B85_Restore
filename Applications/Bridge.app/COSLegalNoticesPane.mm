@@ -16,9 +16,9 @@
 - (id)markupString
 {
   WeakRetained = objc_loadWeakRetained(&qword_1002BD2D0);
-  v3 = [WeakRetained legalNoticesMarkup];
+  legalNoticesMarkup = [WeakRetained legalNoticesMarkup];
 
-  return v3;
+  return legalNoticesMarkup;
 }
 
 @end

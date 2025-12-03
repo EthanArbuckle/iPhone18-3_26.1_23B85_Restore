@@ -1,37 +1,37 @@
 @interface WBSSavedAccountAdditionalSite
-- (BOOL)isEqual:(id)a3;
-- (WBSSavedAccountAdditionalSite)initWithDictionaryRepresentation:(id)a3;
-- (WBSSavedAccountAdditionalSite)initWithSite:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WBSSavedAccountAdditionalSite)initWithDictionaryRepresentation:(id)representation;
+- (WBSSavedAccountAdditionalSite)initWithSite:(id)site;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation WBSSavedAccountAdditionalSite
 
-- (WBSSavedAccountAdditionalSite)initWithSite:(id)a3
+- (WBSSavedAccountAdditionalSite)initWithSite:(id)site
 {
-  v5 = a3;
+  siteCopy = site;
   v10.receiver = self;
   v10.super_class = WBSSavedAccountAdditionalSite;
   v6 = [(WBSSavedAccountAdditionalSite *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_site, a3);
+    objc_storeStrong(&v6->_site, site);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (WBSSavedAccountAdditionalSite)initWithDictionaryRepresentation:(id)a3
+- (WBSSavedAccountAdditionalSite)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v10.receiver = self;
   v10.super_class = WBSSavedAccountAdditionalSite;
   v5 = [(WBSSavedAccountAdditionalSite *)&v10 init];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v4 objectForKeyedSubscript:@"s"];
+    v6 = [representationCopy objectForKeyedSubscript:@"s"];
     site = v5->_site;
     v5->_site = v6;
 
@@ -59,10 +59,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -73,8 +73,8 @@
     if (objc_opt_isKindOfClass())
     {
       site = self->_site;
-      v6 = [(WBSSavedAccountAdditionalSite *)v4 site];
-      v7 = WBSIsEqual(site, v6);
+      site = [(WBSSavedAccountAdditionalSite *)equalCopy site];
+      v7 = WBSIsEqual(site, site);
     }
 
     else

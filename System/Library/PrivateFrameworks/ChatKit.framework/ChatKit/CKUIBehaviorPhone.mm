@@ -16,11 +16,11 @@
   v7.super_class = CKUIBehaviorPhone;
   [(CKUIBehavior *)&v7 welcomeViewContentViewLeadingAnchorLayoutConstraintConstant];
   v3 = v2;
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v5 = [v4 ck_screenSizeCategory];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  ck_screenSizeCategory = [mainScreen ck_screenSizeCategory];
 
   result = 16.0;
-  if (v5 != 1)
+  if (ck_screenSizeCategory != 1)
   {
     return v3;
   }
@@ -34,11 +34,11 @@
   v7.super_class = CKUIBehaviorPhone;
   [(CKUIBehavior *)&v7 welcomeViewContentViewTopAnchorLayoutConstraintConstant];
   v3 = v2;
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v5 = [v4 ck_screenSizeCategory];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  ck_screenSizeCategory = [mainScreen ck_screenSizeCategory];
 
   result = 88.0;
-  if (v5 != 4)
+  if (ck_screenSizeCategory != 4)
   {
     return v3;
   }
@@ -52,11 +52,11 @@
   v7.super_class = CKUIBehaviorPhone;
   [(CKUIBehavior *)&v7 whatsNewViewBulletPointSymbolLeadingAnchorLayoutConstraintConstant];
   v3 = v2;
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v5 = [v4 ck_screenSizeCategory];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  ck_screenSizeCategory = [mainScreen ck_screenSizeCategory];
 
   result = 16.0;
-  if (v5 != 1)
+  if (ck_screenSizeCategory != 1)
   {
     return v3;
   }
@@ -70,11 +70,11 @@
   v7.super_class = CKUIBehaviorPhone;
   [(CKUIBehavior *)&v7 whatsNewViewBulletPointTextTrailingAnchorLayoutConstraintConstant];
   v3 = v2;
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v5 = [v4 ck_screenSizeCategory];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  ck_screenSizeCategory = [mainScreen ck_screenSizeCategory];
 
   result = 16.0;
-  if (v5 != 1)
+  if (ck_screenSizeCategory != 1)
   {
     return v3;
   }
@@ -86,18 +86,18 @@
 {
   v7.receiver = self;
   v7.super_class = CKUIBehaviorPhone;
-  v2 = [(CKUIBehavior *)&v7 whatsNewViewApplePayImage];
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v4 = [v3 ck_screenSizeCategory];
+  whatsNewViewApplePayImage = [(CKUIBehavior *)&v7 whatsNewViewApplePayImage];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  ck_screenSizeCategory = [mainScreen ck_screenSizeCategory];
 
-  if (v4 == 4)
+  if (ck_screenSizeCategory == 4)
   {
     v5 = [MEMORY[0x1E69DCAB8] ckImageNamed:@"CKSurfEducationScreen_D22"];
 
-    v2 = v5;
+    whatsNewViewApplePayImage = v5;
   }
 
-  return v2;
+  return whatsNewViewApplePayImage;
 }
 
 - (CGSize)detonatedItemBalloonViewSize

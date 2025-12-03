@@ -1,12 +1,12 @@
 @interface HMDNetworkRouterCredential
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterCredential)init;
-- (HMDNetworkRouterCredential)initWithMacAddress:(id)a3 psk:(id)a4;
+- (HMDNetworkRouterCredential)initWithMacAddress:(id)address psk:(id)psk;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDNetworkRouterCredential
@@ -14,17 +14,17 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDNetworkRouterCredential *)self macAddress];
+  macAddress = [(HMDNetworkRouterCredential *)self macAddress];
   v5 = [(HMDNetworkRouterCredential *)self psk];
-  v6 = [v3 stringWithFormat:@"<HMDNetworkRouterCredential macAddress=%@, psk=%@>", v4, v5];
+  v6 = [v3 stringWithFormat:@"<HMDNetworkRouterCredential macAddress=%@, psk=%@>", macAddress, v5];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -34,14 +34,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMDNetworkRouterCredential *)self macAddress];
-      v8 = [(HMDNetworkRouterCredential *)v6 macAddress];
-      if (v7 != v8)
+      v6 = equalCopy;
+      macAddress = [(HMDNetworkRouterCredential *)self macAddress];
+      macAddress2 = [(HMDNetworkRouterCredential *)v6 macAddress];
+      if (macAddress != macAddress2)
       {
-        v9 = [(HMDNetworkRouterCredential *)self macAddress];
-        v3 = [(HMDNetworkRouterCredential *)v6 macAddress];
-        if (![v9 isEqual:v3])
+        macAddress3 = [(HMDNetworkRouterCredential *)self macAddress];
+        macAddress4 = [(HMDNetworkRouterCredential *)v6 macAddress];
+        if (![macAddress3 isEqual:macAddress4])
         {
           v10 = 0;
 LABEL_13:
@@ -50,7 +50,7 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = macAddress3;
       }
 
       v11 = [(HMDNetworkRouterCredential *)self psk];
@@ -67,8 +67,8 @@ LABEL_14:
         v10 = [v13 isEqual:v14];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      macAddress3 = v16;
+      if (macAddress == macAddress2)
       {
         goto LABEL_14;
       }
@@ -84,17 +84,17 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterCredential allocWithZone:a3];
-  v5 = [(HMDNetworkRouterCredential *)self macAddress];
+  v4 = [HMDNetworkRouterCredential allocWithZone:zone];
+  macAddress = [(HMDNetworkRouterCredential *)self macAddress];
   v6 = [(HMDNetworkRouterCredential *)self psk];
-  v7 = [(HMDNetworkRouterCredential *)v4 initWithMacAddress:v5 psk:v6];
+  v7 = [(HMDNetworkRouterCredential *)v4 initWithMacAddress:macAddress psk:v6];
 
   return v7;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
   v38 = 0u;
@@ -119,13 +119,13 @@ LABEL_15:
   v21 = 0u;
   v19 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDNetworkRouterCredential *)self macAddress];
+  macAddress = [(HMDNetworkRouterCredential *)self macAddress];
 
-  if (v5)
+  if (macAddress)
   {
-    v6 = [(HMDNetworkRouterCredential *)self macAddress];
+    macAddress2 = [(HMDNetworkRouterCredential *)self macAddress];
     v18 = 0;
-    v7 = [v6 serializeWithError:&v18];
+    v7 = [macAddress2 serializeWithError:&v18];
     v8 = v18;
 
     if (v8)
@@ -140,11 +140,11 @@ LABEL_15:
     if (v9)
     {
 LABEL_9:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus();
         v8 = 0;
-        *a3 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_14;
       }
 
@@ -184,11 +184,11 @@ LABEL_11:
 
 LABEL_6:
 
-  if (a3)
+  if (error)
   {
     v12 = v8;
     v13 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_14;
   }
 
@@ -202,34 +202,34 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v9 = [v7 length];
   if (!v9)
   {
     v10 = 0;
     v11 = 0;
 LABEL_19:
-    [(HMDNetworkRouterCredential *)self setMacAddress:v11, v22];
+    [(HMDNetworkRouterCredential *)self setMacAddress:v11, errorCopy];
     [(HMDNetworkRouterCredential *)self setPsk:v10];
     v12 = 0;
     v18 = 1;
     goto LABEL_26;
   }
 
-  v22 = a4;
+  errorCopy = error;
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  v13 = v8 + v9;
+  v13 = bytes + v9;
   while (1)
   {
     v29 = 0;
@@ -239,10 +239,10 @@ LABEL_19:
     v26 = 0;
     if (TLV8GetNext() || TLV8GetOrCopyCoalesced())
     {
-      if (v22)
+      if (errorCopy)
       {
         HMErrorFromOSStatus();
-        *v22 = v18 = 0;
+        *errorCopy = v18 = 0;
         goto LABEL_26;
       }
 
@@ -302,11 +302,11 @@ LABEL_12:
   }
 
 LABEL_23:
-  if (v22)
+  if (errorCopy)
   {
     v20 = v12;
     v18 = 0;
-    *v22 = v12;
+    *errorCopy = v12;
     goto LABEL_26;
   }
 
@@ -317,18 +317,18 @@ LABEL_26:
   return v18;
 }
 
-- (HMDNetworkRouterCredential)initWithMacAddress:(id)a3 psk:(id)a4
+- (HMDNetworkRouterCredential)initWithMacAddress:(id)address psk:(id)psk
 {
-  v7 = a3;
-  v8 = a4;
+  addressCopy = address;
+  pskCopy = psk;
   v12.receiver = self;
   v12.super_class = HMDNetworkRouterCredential;
   v9 = [(HMDNetworkRouterCredential *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_macAddress, a3);
-    objc_storeStrong(&v10->_psk, a4);
+    objc_storeStrong(&v9->_macAddress, address);
+    objc_storeStrong(&v10->_psk, psk);
   }
 
   return v10;
@@ -341,24 +341,24 @@ LABEL_26:
   return [(HMDNetworkRouterCredential *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterCredential);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterCredential *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterCredential *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

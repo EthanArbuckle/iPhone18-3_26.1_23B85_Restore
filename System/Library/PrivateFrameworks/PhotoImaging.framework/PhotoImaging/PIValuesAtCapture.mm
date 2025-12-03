@@ -1,7 +1,7 @@
 @interface PIValuesAtCapture
-+ (id)valuesAtCaptureFromImageProperties:(id)a3 error:(id *)a4;
++ (id)valuesAtCaptureFromImageProperties:(id)properties error:(id *)error;
 - (id)description;
-- (id)initFromMinAperture:(float)a3 maxAperture:(float)a4 aperture:(float)a5 focusRect:(id)a6 portraitStrength:(float)a7 SDOFRenderingVersion:(unint64_t)a8 depthVersionInfo:(id)a9;
+- (id)initFromMinAperture:(float)aperture maxAperture:(float)maxAperture aperture:(float)a5 focusRect:(id)rect portraitStrength:(float)strength SDOFRenderingVersion:(unint64_t)version depthVersionInfo:(id)info;
 @end
 
 @implementation PIValuesAtCapture
@@ -12,25 +12,25 @@
   v4 = objc_opt_class();
   [(PIValuesAtCapture *)self aperture];
   v6 = v5;
-  v7 = [(PIValuesAtCapture *)self minimumAperture];
-  v8 = [(PIValuesAtCapture *)self maximumAperture];
-  v9 = [(PIValuesAtCapture *)self focusRect];
+  minimumAperture = [(PIValuesAtCapture *)self minimumAperture];
+  maximumAperture = [(PIValuesAtCapture *)self maximumAperture];
+  focusRect = [(PIValuesAtCapture *)self focusRect];
   [(PIValuesAtCapture *)self portraitStrength];
-  v11 = [v3 stringWithFormat:@"<%@:%p \n\taperture:%f \n\tminimumAperture:%@ \n\tmaximumAperture:%@ \n\tfocusRect:%@ \n\tportraitStrength:%f \n\tSDOFRenderingVersion:%lu \n\tportraitMajorVersion:%lu \n\tportraitMinorVersion:%lu \n\tdepthInfoMajorVersion:%d \n\tdepthInfoMinorVersion:%d>", v4, self, *&v6, v7, v8, v9, v10, -[PIValuesAtCapture SDOFRenderingVersion](self, "SDOFRenderingVersion"), -[PIValuesAtCapture portraitMajorVersion](self, "portraitMajorVersion"), -[PIValuesAtCapture portraitMinorVersion](self, "portraitMinorVersion"), -[PIValuesAtCapture depthVersionInfo](self, "depthVersionInfo"), -[PIValuesAtCapture depthVersionInfo](self, "depthVersionInfo") >> 32];
+  v11 = [v3 stringWithFormat:@"<%@:%p \n\taperture:%f \n\tminimumAperture:%@ \n\tmaximumAperture:%@ \n\tfocusRect:%@ \n\tportraitStrength:%f \n\tSDOFRenderingVersion:%lu \n\tportraitMajorVersion:%lu \n\tportraitMinorVersion:%lu \n\tdepthInfoMajorVersion:%d \n\tdepthInfoMinorVersion:%d>", v4, self, *&v6, minimumAperture, maximumAperture, focusRect, v10, -[PIValuesAtCapture SDOFRenderingVersion](self, "SDOFRenderingVersion"), -[PIValuesAtCapture portraitMajorVersion](self, "portraitMajorVersion"), -[PIValuesAtCapture portraitMinorVersion](self, "portraitMinorVersion"), -[PIValuesAtCapture depthVersionInfo](self, "depthVersionInfo"), -[PIValuesAtCapture depthVersionInfo](self, "depthVersionInfo") >> 32];
 
   return v11;
 }
 
-- (id)initFromMinAperture:(float)a3 maxAperture:(float)a4 aperture:(float)a5 focusRect:(id)a6 portraitStrength:(float)a7 SDOFRenderingVersion:(unint64_t)a8 depthVersionInfo:(id)a9
+- (id)initFromMinAperture:(float)aperture maxAperture:(float)maxAperture aperture:(float)a5 focusRect:(id)rect portraitStrength:(float)strength SDOFRenderingVersion:(unint64_t)version depthVersionInfo:(id)info
 {
   v33.receiver = self;
   v33.super_class = PIValuesAtCapture;
-  v15 = a6;
+  rectCopy = rect;
   v16 = [(PIValuesAtCapture *)&v33 init];
   v17 = v16;
-  v19 = a4 > 0.0 && a3 > 0.0;
-  v21 = a7 <= 1.0 && a7 >= 0.0;
-  if (a8 >= 4)
+  v19 = maxAperture > 0.0 && aperture > 0.0;
+  v21 = strength <= 1.0 && strength >= 0.0;
+  if (version >= 4)
   {
     v22 = xmmword_1C7845DF0;
 LABEL_17:
@@ -54,7 +54,7 @@ LABEL_18:
   }
 
   v16->_aperture = v23;
-  v24 = [v15 copy];
+  v24 = [rectCopy copy];
 
   focusRect = v17->_focusRect;
   v17->_focusRect = v24;
@@ -62,48 +62,48 @@ LABEL_18:
   LODWORD(v26) = 0.5;
   if (v21)
   {
-    *&v26 = a7;
+    *&v26 = strength;
   }
 
   v17->_portraitStrength = *&v26;
-  if (a3 <= 0.0)
+  if (aperture <= 0.0)
   {
     v27 = 0;
   }
 
   else
   {
-    *&v26 = a3;
+    *&v26 = aperture;
     v27 = [MEMORY[0x1E696AD98] numberWithFloat:v26];
   }
 
   minimumAperture = v17->_minimumAperture;
   v17->_minimumAperture = v27;
 
-  if (a4 <= 0.0)
+  if (maxAperture <= 0.0)
   {
     v30 = 0;
   }
 
   else
   {
-    *&v29 = a4;
+    *&v29 = maxAperture;
     v30 = [MEMORY[0x1E696AD98] numberWithFloat:v29];
   }
 
   maximumAperture = v17->_maximumAperture;
   v17->_maximumAperture = v30;
 
-  v17->_depthVersionInfo = a9;
-  v17->_SDOFRenderingVersion = a8;
+  v17->_depthVersionInfo = info;
+  v17->_SDOFRenderingVersion = version;
   return v17;
 }
 
-+ (id)valuesAtCaptureFromImageProperties:(id)a3 error:(id *)a4
++ (id)valuesAtCaptureFromImageProperties:(id)properties error:(id *)error
 {
   v71 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!a4)
+  propertiesCopy = properties;
+  if (!error)
   {
     v48 = NUAssertLogger_27584();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -125,8 +125,8 @@ LABEL_18:
         v56 = dispatch_get_specific(*v50);
         v57 = MEMORY[0x1E696AF00];
         v58 = v56;
-        v59 = [v57 callStackSymbols];
-        v60 = [v59 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v57 callStackSymbols];
+        v60 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *v68 = v56;
         *&v68[8] = 2114;
@@ -137,8 +137,8 @@ LABEL_18:
 
     else if (v53)
     {
-      v54 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v55 = [v54 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v55 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *v68 = v55;
       _os_log_error_impl(&dword_1C7694000, v52, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -147,17 +147,17 @@ LABEL_18:
     _NUAssertFailHandler();
   }
 
-  v6 = v5;
-  v7 = [v5 metadata];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
+  v6 = propertiesCopy;
+  metadata = [propertiesCopy metadata];
+  v8 = [metadata objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
 
   v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69867F8]];
-  v10 = [v9 unsignedIntValue];
+  unsignedIntValue = [v9 unsignedIntValue];
 
-  if ((v10 & 0x40) != 0)
+  if ((unsignedIntValue & 0x40) != 0)
   {
     [MEMORY[0x1E69B3A48] invalidError:@"Portrait was previously applied." object:0];
-    *a4 = v25 = 0;
+    *error = v25 = 0;
     goto LABEL_19;
   }
 
@@ -167,14 +167,14 @@ LABEL_18:
   v13 = v66;
   if (v12)
   {
-    v14 = [v12 underlyingAVDepthData];
-    if ([v14 isDepthDataFiltered])
+    underlyingAVDepthData = [v12 underlyingAVDepthData];
+    if ([underlyingAVDepthData isDepthDataFiltered])
     {
-      if ([v14 depthDataQuality])
+      if ([underlyingAVDepthData depthDataQuality])
       {
-        v15 = [v14 cameraCalibrationData];
+        cameraCalibrationData = [underlyingAVDepthData cameraCalibrationData];
 
-        if (v15)
+        if (cameraCalibrationData)
         {
           v65 = 0;
           v16 = [v11 auxiliaryCoreGraphicsInfoDictionary:&v65];
@@ -188,17 +188,17 @@ LABEL_18:
             {
               v62 = v16;
               v19 = CGImageMetadataCopyStringValueWithPath(v18, 0, @"depthData:DepthDataVersion");
-              v20 = [(__CFString *)v19 intValue];
-              v21 = HIWORD(v20);
-              v61 = [(__CFString *)v19 intValue];
+              intValue = [(__CFString *)v19 intValue];
+              v21 = HIWORD(intValue);
+              intValue2 = [(__CFString *)v19 intValue];
 
-              if (v20 < 0x20000)
+              if (intValue < 0x20000)
               {
                 v64 = 0;
                 v63 = 0.0;
                 v31 = MEMORY[0x1E695F648];
-                v32 = [v14 depthBlurEffectRenderingParameters];
-                v33 = [v31 getMinMaxSimulatedApertureFrom:v32 minValue:&v64 maxValue:&v63 version:&v64 + 4];
+                depthBlurEffectRenderingParameters = [underlyingAVDepthData depthBlurEffectRenderingParameters];
+                v33 = [v31 getMinMaxSimulatedApertureFrom:depthBlurEffectRenderingParameters minValue:&v64 maxValue:&v63 version:&v64 + 4];
 
                 if (v33)
                 {
@@ -217,30 +217,30 @@ LABEL_18:
                   }
                 }
 
-                v35 = [MEMORY[0x1E695F648] maxSDOFRenderingVersionSupported];
-                if (SHIDWORD(v64) <= v35)
+                maxSDOFRenderingVersionSupported = [MEMORY[0x1E695F648] maxSDOFRenderingVersionSupported];
+                if (SHIDWORD(v64) <= maxSDOFRenderingVersionSupported)
                 {
-                  [v14 depthBlurEffectSimulatedAperture];
+                  [underlyingAVDepthData depthBlurEffectSimulatedAperture];
                   v38 = v37;
-                  [v14 portraitLightingEffectStrength];
+                  [underlyingAVDepthData portraitLightingEffectStrength];
                   v40 = v39;
                   v41 = SHIDWORD(v64);
-                  v42 = [v6 metadata];
-                  v36 = [PIPortraitAutoCalculator focusRectDictionaryFromMetadata:v42];
+                  metadata2 = [v6 metadata];
+                  v36 = [PIPortraitAutoCalculator focusRectDictionaryFromMetadata:metadata2];
 
                   v43 = [PIValuesAtCapture alloc];
                   *&v45 = v63;
                   LODWORD(v44) = v64;
                   LODWORD(v46) = v38;
                   LODWORD(v47) = v40;
-                  v25 = [(PIValuesAtCapture *)v43 initFromMinAperture:v36 maxAperture:v41 aperture:v21 | (v61 << 32) focusRect:v44 portraitStrength:v45 SDOFRenderingVersion:v46 depthVersionInfo:v47];
+                  v25 = [(PIValuesAtCapture *)v43 initFromMinAperture:v36 maxAperture:v41 aperture:v21 | (intValue2 << 32) focusRect:v44 portraitStrength:v45 SDOFRenderingVersion:v46 depthVersionInfo:v47];
                 }
 
                 else
                 {
-                  v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"We only know up to sDOF version %d. Found: %d", v35, HIDWORD(v64)];
+                  v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"We only know up to sDOF version %d. Found: %d", maxSDOFRenderingVersionSupported, HIDWORD(v64)];
                   [MEMORY[0x1E69B3A48] unsupportedError:v36 object:0];
-                  *a4 = v25 = 0;
+                  *error = v25 = 0;
                 }
 
                 v16 = v62;
@@ -253,7 +253,7 @@ LABEL_18:
                 v24 = [v22 stringWithFormat:@"Depth data version mismatch, asset has %@ but we can only handle %@", v23, &unk_1F471F2D0];
 
                 v16 = v62;
-                *a4 = [MEMORY[0x1E69B3A48] unsupportedError:v24 object:v62];
+                *error = [MEMORY[0x1E69B3A48] unsupportedError:v24 object:v62];
 
                 v25 = 0;
               }
@@ -270,16 +270,16 @@ LABEL_18:
           }
 
           v25 = 0;
-          *a4 = v30;
+          *error = v30;
 LABEL_34:
 
           goto LABEL_17;
         }
 
-        v28 = [MEMORY[0x1E69B3A48] missingError:@"Missing camera calibration data" object:v14];
+        v28 = [MEMORY[0x1E69B3A48] missingError:@"Missing camera calibration data" object:underlyingAVDepthData];
 LABEL_16:
         v25 = 0;
-        *a4 = v28;
+        *error = v28;
         v17 = v13;
 LABEL_17:
 
@@ -297,12 +297,12 @@ LABEL_17:
       v27 = @"Unfiltered depth data is not supported";
     }
 
-    v28 = [v26 unsupportedError:v27 object:v14];
+    v28 = [v26 unsupportedError:v27 object:underlyingAVDepthData];
     goto LABEL_16;
   }
 
   [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to load depth data" object:v11 underlyingError:v13];
-  *a4 = v25 = 0;
+  *error = v25 = 0;
 LABEL_18:
 
 LABEL_19:

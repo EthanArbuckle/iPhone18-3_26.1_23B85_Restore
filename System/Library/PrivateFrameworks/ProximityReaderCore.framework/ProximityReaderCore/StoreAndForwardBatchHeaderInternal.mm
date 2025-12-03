@@ -1,14 +1,14 @@
 @interface StoreAndForwardBatchHeaderInternal
 - (NSString)description;
 - (_TtC19ProximityReaderCore34StoreAndForwardBatchHeaderInternal)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation StoreAndForwardBatchHeaderInternal
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_2611DB998();
 
   v3 = sub_26121CC50();
@@ -16,11 +16,11 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2611DBF80(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2611DBF80(coderCopy);
 }
 
 - (_TtC19ProximityReaderCore34StoreAndForwardBatchHeaderInternal)init

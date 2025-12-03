@@ -1,6 +1,6 @@
 @interface QLPreviewSceneActivationConfiguration
 - (QLPreviewSceneActivationConfiguration)initWithItemsAtURLs:(NSArray *)urls options:(QLPreviewSceneOptions *)options;
-- (void)setOptions:(id)a3;
+- (void)setOptions:(id)options;
 @end
 
 @implementation QLPreviewSceneActivationConfiguration
@@ -15,18 +15,18 @@
   [v8 setRequiredUserInfoKeys:v9];
   if (v7)
   {
-    v10 = [(QLPreviewSceneOptions *)v7 initialPreviewIndex];
+    initialPreviewIndex = [(QLPreviewSceneOptions *)v7 initialPreviewIndex];
   }
 
   else
   {
-    v10 = 0;
+    initialPreviewIndex = 0;
   }
 
   v18[1] = @"com.apple.quicklook.private.activity.IndexKey";
   v19[0] = v6;
   v18[0] = @"com.apple.quicklook.private.activity.URLsKey";
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:initialPreviewIndex];
   v19[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
 
@@ -44,13 +44,13 @@
   return v14;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  optionsCopy = options;
+  v5 = optionsCopy;
+  if (optionsCopy)
   {
-    v6 = v4;
+    v6 = optionsCopy;
   }
 
   else

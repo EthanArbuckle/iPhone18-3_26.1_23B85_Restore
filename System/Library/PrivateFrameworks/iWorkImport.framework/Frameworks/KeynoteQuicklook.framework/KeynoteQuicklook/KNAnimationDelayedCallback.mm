@@ -1,6 +1,6 @@
 @interface KNAnimationDelayedCallback
-- (KNAnimationDelayedCallback)initWithBlock:(id)a3 delay:(double)a4;
-- (KNAnimationDelayedCallback)initWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5 delay:(double)a6;
+- (KNAnimationDelayedCallback)initWithBlock:(id)block delay:(double)delay;
+- (KNAnimationDelayedCallback)initWithTarget:(id)target selector:(SEL)selector object:(id)object delay:(double)delay;
 - (void)cancel;
 - (void)p_performSelectorOnTarget;
 - (void)run;
@@ -8,48 +8,48 @@
 
 @implementation KNAnimationDelayedCallback
 
-- (KNAnimationDelayedCallback)initWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5 delay:(double)a6
+- (KNAnimationDelayedCallback)initWithTarget:(id)target selector:(SEL)selector object:(id)object delay:(double)delay
 {
-  v11 = a3;
-  v12 = a5;
+  targetCopy = target;
+  objectCopy = object;
   v17.receiver = self;
   v17.super_class = KNAnimationDelayedCallback;
   v13 = [(KNAnimationDelayedCallback *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_target, a3);
-    if (a4)
+    objc_storeStrong(&v13->_target, target);
+    if (selector)
     {
-      v15 = a4;
+      selectorCopy = selector;
     }
 
     else
     {
-      v15 = 0;
+      selectorCopy = 0;
     }
 
-    v14->_selector = v15;
-    objc_storeStrong(&v14->_object, a5);
-    v14->_delay = a6;
+    v14->_selector = selectorCopy;
+    objc_storeStrong(&v14->_object, object);
+    v14->_delay = delay;
   }
 
   return v14;
 }
 
-- (KNAnimationDelayedCallback)initWithBlock:(id)a3 delay:(double)a4
+- (KNAnimationDelayedCallback)initWithBlock:(id)block delay:(double)delay
 {
-  v6 = a3;
+  blockCopy = block;
   v13.receiver = self;
   v13.super_class = KNAnimationDelayedCallback;
   v9 = [(KNAnimationDelayedCallback *)&v13 init];
   if (v9)
   {
-    v10 = objc_msgSend_copy(v6, v7, v8);
+    v10 = objc_msgSend_copy(blockCopy, v7, v8);
     block = v9->_block;
     v9->_block = v10;
 
-    v9->_delay = a4;
+    v9->_delay = delay;
   }
 
   return v9;

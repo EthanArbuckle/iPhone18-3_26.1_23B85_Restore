@@ -1,11 +1,11 @@
 @interface MKCallHistoryMigrator
 - (MKCallHistoryMigrator)init;
 - (MKSIMLabel)label;
-- (void)didImportCallHistory:(unint64_t)a3 size:(unint64_t)a4;
-- (void)import:(id)a3;
-- (void)importCallHistory:(id)a3 size:(unint64_t)a4;
-- (void)importDataEncodedInJSON:(id)a3;
-- (void)importNumbers:(id)a3;
+- (void)didImportCallHistory:(unint64_t)history size:(unint64_t)size;
+- (void)import:(id)import;
+- (void)importCallHistory:(id)history size:(unint64_t)size;
+- (void)importDataEncodedInJSON:(id)n;
+- (void)importNumbers:(id)numbers;
 @end
 
 @implementation MKCallHistoryMigrator
@@ -27,22 +27,22 @@
   return v3;
 }
 
-- (void)importDataEncodedInJSON:(id)a3
+- (void)importDataEncodedInJSON:(id)n
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  nCopy = n;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = objc_autoreleasePoolPush();
-  [(MKCallHistoryMigrator *)v4 import:v6];
+  [(MKCallHistoryMigrator *)selfCopy import:nCopy];
   objc_autoreleasePoolPop(v5);
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)import:(id)a3
+- (void)import:(id)import
 {
-  v4 = a3;
+  importCopy = import;
   v8 = 0;
-  v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:0 error:&v8];
+  v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:importCopy options:0 error:&v8];
   v6 = v8;
   if (v6)
   {
@@ -64,34 +64,34 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[MKCallHistoryMigrator importCallHistory:size:](self, "importCallHistory:size:", v5, [v4 length]);
+      -[MKCallHistoryMigrator importCallHistory:size:](self, "importCallHistory:size:", v5, [importCopy length]);
     }
   }
 }
 
-- (void)importNumbers:(id)a3
+- (void)importNumbers:(id)numbers
 {
-  v4 = a3;
-  v9 = [[MKCallHistoryNumbers alloc] initWithSerializedData:v4];
+  numbersCopy = numbers;
+  v9 = [[MKCallHistoryNumbers alloc] initWithSerializedData:numbersCopy];
 
   v5 = MEMORY[0x277CBEB98];
-  v6 = [(MKCallHistoryNumbers *)v9 numbersInUse];
-  v7 = [v5 setWithArray:v6];
+  numbersInUse = [(MKCallHistoryNumbers *)v9 numbersInUse];
+  v7 = [v5 setWithArray:numbersInUse];
 
   WeakRetained = objc_loadWeakRetained(&self->_label);
   [WeakRetained createLabelsForNumbersInUse:v7];
 }
 
-- (void)importCallHistory:(id)a3 size:(unint64_t)a4
+- (void)importCallHistory:(id)history size:(unint64_t)size
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 count])
+  historyCopy = history;
+  if ([historyCopy count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_label);
-    v8 = [MKCallHistory calls:v6 label:WeakRetained];
+    v8 = [MKCallHistory calls:historyCopy label:WeakRetained];
 
-    v9 = [v6 count];
+    v9 = [historyCopy count];
     v10 = v9 - [v8 count];
     v11 = [v8 count];
     if (v10 >= 1)
@@ -106,8 +106,8 @@
 
     if (v11)
     {
-      v15 = [(MKMigrator *)self delegate];
-      [v15 migratorWillExecuteOperation:self];
+      delegate = [(MKMigrator *)self delegate];
+      [delegate migratorWillExecuteOperation:self];
 
       objc_initWeak(&location, self);
       callHistoryManager = self->_callHistoryManager;
@@ -117,7 +117,7 @@
       v21[3] = &unk_2798DCE10;
       objc_copyWeak(v22, &location);
       v22[1] = v11;
-      v22[2] = a4;
+      v22[2] = size;
       [(CHManager *)callHistoryManager addArrayToCallHistory:v8 withCompletion:v21];
       objc_destroyWeak(v22);
       objc_destroyWeak(&location);
@@ -149,21 +149,21 @@ void __48__MKCallHistoryMigrator_importCallHistory_size___block_invoke(uint64_t 
   [WeakRetained didImportCallHistory:*(a1 + 40) size:*(a1 + 48)];
 }
 
-- (void)didImportCallHistory:(unint64_t)a3 size:(unint64_t)a4
+- (void)didImportCallHistory:(unint64_t)history size:(unint64_t)size
 {
   v12 = *MEMORY[0x277D85DE8];
   v7 = +[MKLog log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v10 = 134217984;
-    v11 = a3;
+    historyCopy = history;
     _os_log_impl(&dword_2592D2000, v7, OS_LOG_TYPE_INFO, "did import call history. count=%lu", &v10, 0xCu);
   }
 
-  [(MKMigrator *)self migratorDidAppendDataSize:a4];
-  [(MKMigrator *)self migratorDidImportWithCount:a3];
-  v8 = [(MKMigrator *)self delegate];
-  [v8 migratorDidExecuteOperation:self];
+  [(MKMigrator *)self migratorDidAppendDataSize:size];
+  [(MKMigrator *)self migratorDidImportWithCount:history];
+  delegate = [(MKMigrator *)self delegate];
+  [delegate migratorDidExecuteOperation:self];
 
   v9 = *MEMORY[0x277D85DE8];
 }

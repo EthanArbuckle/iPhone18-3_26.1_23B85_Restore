@@ -1,18 +1,18 @@
 @interface BKCoverCacheURLSchemeHandler
-+ (id)urlStringForAssetID:(id)a3 dataSourceID:(id)a4;
++ (id)urlStringForAssetID:(id)d dataSourceID:(id)iD;
 - (BKCoverCacheURLSchemeHandler)init;
-- (void)_fetchCoverForDataSourceURL:(id)a3 completion:(id)a4;
-- (void)fetchCoverForURL:(id)a3 completion:(id)a4;
+- (void)_fetchCoverForDataSourceURL:(id)l completion:(id)completion;
+- (void)fetchCoverForURL:(id)l completion:(id)completion;
 @end
 
 @implementation BKCoverCacheURLSchemeHandler
 
-+ (id)urlStringForAssetID:(id)a3 dataSourceID:(id)a4
++ (id)urlStringForAssetID:(id)d dataSourceID:(id)iD
 {
-  v11[0] = a3;
-  v11[1] = a4;
-  v5 = a4;
-  v6 = a3;
+  v11[0] = d;
+  v11[1] = iD;
+  iDCopy = iD;
+  dCopy = d;
   v7 = [NSArray arrayWithObjects:v11 count:2];
 
   v8 = [v7 componentsJoinedByString:@"#item#"];
@@ -49,21 +49,21 @@
   return v3;
 }
 
-- (void)fetchCoverForURL:(id)a3 completion:(id)a4
+- (void)fetchCoverForURL:(id)l completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v7 hasPrefix:@"datasource://assetID-"])
+  lCopy = l;
+  completionCopy = completion;
+  if ([lCopy hasPrefix:@"datasource://assetID-"])
   {
-    [(BKCoverCacheURLSchemeHandler *)self _fetchCoverForDataSourceURL:v7 completion:v6];
+    [(BKCoverCacheURLSchemeHandler *)self _fetchCoverForDataSourceURL:lCopy completion:completionCopy];
   }
 }
 
-- (void)_fetchCoverForDataSourceURL:(id)a3 completion:(id)a4
+- (void)_fetchCoverForDataSourceURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 stringByReplacingOccurrencesOfString:@"datasource://assetID-" withString:&stru_100A30A68];
+  lCopy = l;
+  completionCopy = completion;
+  v8 = [lCopy stringByReplacingOccurrencesOfString:@"datasource://assetID-" withString:&stru_100A30A68];
   v9 = [v8 componentsSeparatedByString:@"#item#"];
 
   if ([v9 count])
@@ -95,14 +95,14 @@
   v20[2] = sub_1001574E4;
   v21 = v20[3] = &unk_100A08858;
   v22 = v10;
-  v23 = self;
+  selfCopy = self;
   v24 = v11;
-  v26 = v6;
-  v27 = v7;
+  v26 = lCopy;
+  v27 = completionCopy;
   v25 = v13;
-  v14 = v6;
+  v14 = lCopy;
   v15 = v13;
-  v16 = v7;
+  v16 = completionCopy;
   v17 = v11;
   v18 = v10;
   v19 = v21;

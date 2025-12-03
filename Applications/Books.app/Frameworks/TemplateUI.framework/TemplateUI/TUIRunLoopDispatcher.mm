@@ -1,14 +1,14 @@
 @interface TUIRunLoopDispatcher
 + (id)sharedInstance;
-+ (int)drainWithTimeout:(double)a3;
-+ (void)dispatchAfter:(unint64_t)a3 toMain:(id)a4;
-+ (void)dispatchAsyncToMain:(id)a3;
-+ (void)dispatchGroup:(id)a3 notifyMain:(id)a4;
++ (int)drainWithTimeout:(double)timeout;
++ (void)dispatchAfter:(unint64_t)after toMain:(id)main;
++ (void)dispatchAsyncToMain:(id)main;
++ (void)dispatchGroup:(id)group notifyMain:(id)main;
 - (id)initSharedInstance;
-- (int)_drainWithTimeout:(double)a3;
-- (void)_dispatchAfter:(unint64_t)a3 toMain:(id)a4;
-- (void)_dispatchAsyncToMain:(id)a3;
-- (void)_dispatchGroup:(id)a3 notifyMain:(id)a4;
+- (int)_drainWithTimeout:(double)timeout;
+- (void)_dispatchAfter:(unint64_t)after toMain:(id)main;
+- (void)_dispatchAsyncToMain:(id)main;
+- (void)_dispatchGroup:(id)group notifyMain:(id)main;
 - (void)_performPendingBlocks;
 - (void)dealloc;
 @end
@@ -67,39 +67,39 @@
   [(TUIRunLoopDispatcher *)&v3 dealloc];
 }
 
-+ (void)dispatchAsyncToMain:(id)a3
++ (void)dispatchAsyncToMain:(id)main
 {
-  v4 = a3;
-  v5 = [a1 sharedInstance];
-  [v5 _dispatchAsyncToMain:v4];
+  mainCopy = main;
+  sharedInstance = [self sharedInstance];
+  [sharedInstance _dispatchAsyncToMain:mainCopy];
 }
 
-+ (void)dispatchAfter:(unint64_t)a3 toMain:(id)a4
++ (void)dispatchAfter:(unint64_t)after toMain:(id)main
 {
-  v6 = a4;
-  v7 = [a1 sharedInstance];
-  [v7 _dispatchAfter:a3 toMain:v6];
+  mainCopy = main;
+  sharedInstance = [self sharedInstance];
+  [sharedInstance _dispatchAfter:after toMain:mainCopy];
 }
 
-+ (int)drainWithTimeout:(double)a3
++ (int)drainWithTimeout:(double)timeout
 {
-  v4 = [a1 sharedInstance];
-  v5 = [v4 _drainWithTimeout:a3];
+  sharedInstance = [self sharedInstance];
+  v5 = [sharedInstance _drainWithTimeout:timeout];
 
   return v5;
 }
 
-+ (void)dispatchGroup:(id)a3 notifyMain:(id)a4
++ (void)dispatchGroup:(id)group notifyMain:(id)main
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 sharedInstance];
-  [v8 _dispatchGroup:v7 notifyMain:v6];
+  mainCopy = main;
+  groupCopy = group;
+  sharedInstance = [self sharedInstance];
+  [sharedInstance _dispatchGroup:groupCopy notifyMain:mainCopy];
 }
 
-- (void)_dispatchAsyncToMain:(id)a3
+- (void)_dispatchAsyncToMain:(id)main
 {
-  v9 = a3;
+  mainCopy = main;
   os_unfair_lock_lock_with_options();
   v4 = [(NSMutableArray *)self->_pendingBlocks count];
   pendingBlocks = self->_pendingBlocks;
@@ -112,7 +112,7 @@
     pendingBlocks = self->_pendingBlocks;
   }
 
-  v8 = objc_retainBlock(v9);
+  v8 = objc_retainBlock(mainCopy);
   [(NSMutableArray *)pendingBlocks addObject:v8];
 
   os_unfair_lock_unlock(&self->_lock);
@@ -123,26 +123,26 @@
   }
 }
 
-- (void)_dispatchAfter:(unint64_t)a3 toMain:(id)a4
+- (void)_dispatchAfter:(unint64_t)after toMain:(id)main
 {
-  v6 = a4;
+  mainCopy = main;
   runLoopDispatchQueue = self->_runLoopDispatchQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_13F37C;
   v9[3] = &unk_25EA78;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_after(a3, runLoopDispatchQueue, v9);
+  v10 = mainCopy;
+  v8 = mainCopy;
+  dispatch_after(after, runLoopDispatchQueue, v9);
 }
 
-- (int)_drainWithTimeout:(double)a3
+- (int)_drainWithTimeout:(double)timeout
 {
   if (CFRunLoopGetCurrent() == self->_runLoop)
   {
 
-    return CFRunLoopRunInMode(@"com.apple.iBooks.TemplateUI", a3, 1u);
+    return CFRunLoopRunInMode(@"com.apple.iBooks.TemplateUI", timeout, 1u);
   }
 
   else
@@ -162,18 +162,18 @@
   }
 }
 
-- (void)_dispatchGroup:(id)a3 notifyMain:(id)a4
+- (void)_dispatchGroup:(id)group notifyMain:(id)main
 {
-  v6 = a4;
+  mainCopy = main;
   runLoopDispatchQueue = self->_runLoopDispatchQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_13F4FC;
   v9[3] = &unk_25EA78;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_group_notify(a3, runLoopDispatchQueue, v9);
+  v10 = mainCopy;
+  v8 = mainCopy;
+  dispatch_group_notify(group, runLoopDispatchQueue, v9);
 }
 
 - (void)_performPendingBlocks

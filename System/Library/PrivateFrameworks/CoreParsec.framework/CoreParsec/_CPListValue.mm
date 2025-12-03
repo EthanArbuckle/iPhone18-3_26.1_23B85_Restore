@@ -1,25 +1,25 @@
 @interface _CPListValue
-- (BOOL)isEqual:(id)a3;
-- (_CPListValue)initWithFacade:(id)a3;
-- (void)addValues:(id)a3;
-- (void)setValues:(id)a3;
-- (void)writeTo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CPListValue)initWithFacade:(id)facade;
+- (void)addValues:(id)values;
+- (void)setValues:(id)values;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPListValue
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_CPListValue *)self values];
-    v6 = [v4 values];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    values = [(_CPListValue *)self values];
+    values2 = [equalCopy values];
+    v7 = values2;
+    if ((values != 0) != (values2 == 0))
     {
-      v8 = [(_CPListValue *)self values];
-      if (!v8)
+      values3 = [(_CPListValue *)self values];
+      if (!values3)
       {
 
 LABEL_10:
@@ -27,10 +27,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_CPListValue *)self values];
-      v11 = [v4 values];
-      v12 = [v10 isEqual:v11];
+      v9 = values3;
+      values4 = [(_CPListValue *)self values];
+      values5 = [equalCopy values];
+      v12 = [values4 isEqual:values5];
 
       if (v12)
       {
@@ -49,10 +49,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -88,37 +88,37 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addValues:(id)a3
+- (void)addValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   values = self->_values;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!values)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_values;
-    self->_values = v6;
+    self->_values = array;
 
-    v4 = v8;
+    valuesCopy = v8;
     values = self->_values;
   }
 
-  [(NSArray *)values addObject:v4];
+  [(NSArray *)values addObject:valuesCopy];
 }
 
-- (void)setValues:(id)a3
+- (void)setValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   values = self->_values;
   self->_values = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (_CPListValue)initWithFacade:(id)a3
+- (_CPListValue)initWithFacade:(id)facade
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_CPListValue *)self init];
   if (v5)
   {
@@ -126,7 +126,7 @@ LABEL_8:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v4;
+    v6 = facadeCopy;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {

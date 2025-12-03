@@ -5,55 +5,55 @@
 - (void)_recordIDSError;
 - (void)_recoredTimeoutError;
 - (void)_transactionDidComplete;
-- (void)_transactionDidCompleteWithSuccess:(BOOL)a3;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)_transactionDidCompleteWithSuccess:(BOOL)success;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 - (void)cancel;
 @end
 
 @implementation EPSagaTransactionSendPing
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_routingSlipEntry, a3);
-  v9 = [v7 objectForKeyedSubscript:@"pingType"];
+  entryCopy = entry;
+  registryCopy = registry;
+  objc_storeStrong(&self->_routingSlipEntry, entry);
+  v9 = [entryCopy objectForKeyedSubscript:@"pingType"];
   v26 = v9;
   if (v9)
   {
-    v30 = [v9 integerValue];
+    integerValue = [v9 integerValue];
   }
 
   else
   {
-    v30 = 0;
+    integerValue = 0;
   }
 
-  v10 = [v7 objectForKeyedSubscript:@"idsMessagePriority"];
+  v10 = [entryCopy objectForKeyedSubscript:@"idsMessagePriority"];
   v11 = v10;
   if (v10)
   {
-    v29 = [v10 integerValue];
+    integerValue2 = [v10 integerValue];
   }
 
   else
   {
-    v29 = 200;
+    integerValue2 = 200;
   }
 
-  v12 = [v7 objectForKeyedSubscript:@"pingMessageSize"];
+  v12 = [entryCopy objectForKeyedSubscript:@"pingMessageSize"];
   v13 = v12;
   if (v12)
   {
-    v28 = [v12 integerValue];
+    integerValue3 = [v12 integerValue];
   }
 
   else
   {
-    v28 = 0;
+    integerValue3 = 0;
   }
 
-  v14 = [v7 objectForKeyedSubscript:@"timeoutDuration"];
+  v14 = [entryCopy objectForKeyedSubscript:@"timeoutDuration"];
   v15 = v14;
   if (v14)
   {
@@ -66,17 +66,17 @@
     v17 = IDSMaxMessageTimeout;
   }
 
-  v18 = [v7 objectForKeyedSubscript:@"idsDeviceIdentifier"];
+  v18 = [entryCopy objectForKeyedSubscript:@"idsDeviceIdentifier"];
   self->_waitForPingResponse = 0;
-  v19 = [v7 objectForKeyedSubscript:@"waitForPingResponse"];
+  v19 = [entryCopy objectForKeyedSubscript:@"waitForPingResponse"];
   v20 = v19;
   if (v19)
   {
     self->_waitForPingResponse = [v19 BOOLValue];
   }
 
-  v27 = v8;
-  v21 = [v8 serviceFromClass:objc_opt_class()];
+  v27 = registryCopy;
+  v21 = [registryCopy serviceFromClass:objc_opt_class()];
   v22 = nr_daemon_log();
   v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
 
@@ -96,14 +96,14 @@
   v32[2] = sub_1000BF954;
   v32[3] = &unk_100179278;
   objc_copyWeak(&v33, buf);
-  [v21 sendPingRequestType:v30 withMessagePriority:v29 withMessageSize:v28 withTimeout:v18 toIDSBTUUID:v32 withResponseBlock:v17];
-  v25 = [(EPRoutingSlipEntry *)self->_routingSlipEntry queue];
+  [v21 sendPingRequestType:integerValue withMessagePriority:integerValue2 withMessageSize:integerValue3 withTimeout:v18 toIDSBTUUID:v32 withResponseBlock:v17];
+  queue = [(EPRoutingSlipEntry *)self->_routingSlipEntry queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000BFB48;
   block[3] = &unk_100175660;
   block[4] = self;
-  dispatch_async(v25, block);
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v33);
   objc_destroyWeak(buf);
@@ -169,8 +169,8 @@
     }
 
     objc_initWeak(buf, self);
-    v11 = [(EPRoutingSlipEntry *)self->_routingSlipEntry queue];
-    v12 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v11);
+    queue = [(EPRoutingSlipEntry *)self->_routingSlipEntry queue];
+    v12 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
     v13 = self->_currentTimer;
     self->_currentTimer = v12;
 
@@ -191,9 +191,9 @@
   }
 }
 
-- (void)_transactionDidCompleteWithSuccess:(BOOL)a3
+- (void)_transactionDidCompleteWithSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v4 = nr_daemon_log();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -272,12 +272,12 @@
     }
   }
 
-  v13 = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
+  errors = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
   v16 = NSLocalizedDescriptionKey;
   v17 = @"Unable to send ping to device.";
   v14 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
   v15 = [NSError errorWithDomain:@"com.apple.nanoregistry.saga.EPSagaTransactionSendPringError" code:1 userInfo:v14];
-  [v13 addObject:v15];
+  [errors addObject:v15];
 
   [(EPRoutingSlipEntry *)self->_routingSlipEntry persist];
 }
@@ -296,12 +296,12 @@
     }
   }
 
-  v13 = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
+  errors = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
   v16 = NSLocalizedDescriptionKey;
   v17 = @"Time out sending message to device";
   v14 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
   v15 = [NSError errorWithDomain:@"com.apple.nanoregistry.saga.EPSagaTransactionSendPringError" code:0 userInfo:v14];
-  [v13 addObject:v15];
+  [errors addObject:v15];
 
   [(EPRoutingSlipEntry *)self->_routingSlipEntry persist];
 }

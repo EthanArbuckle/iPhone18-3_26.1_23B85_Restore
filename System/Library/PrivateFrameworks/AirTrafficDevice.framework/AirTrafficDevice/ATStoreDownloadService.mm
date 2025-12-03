@@ -2,35 +2,35 @@
 + (NSString)downloadDirectoryPath;
 + (id)sharedService;
 - (ATStoreDownloadService)init;
-- (id)_newAssetOperationForAsset:(id)a3 prepareOperationResult:(id)a4;
-- (id)_newPrepareOperationForAsset:(id)a3;
-- (id)_newProcessAssetOperationForasset:(id)a3 assetsOperationResult:(id)a4;
-- (void)_finishAsset:(id)a3 withError:(id)a4 cancelPendingDownloads:(BOOL)a5;
+- (id)_newAssetOperationForAsset:(id)asset prepareOperationResult:(id)result;
+- (id)_newPrepareOperationForAsset:(id)asset;
+- (id)_newProcessAssetOperationForasset:(id)forasset assetsOperationResult:(id)result;
+- (void)_finishAsset:(id)asset withError:(id)error cancelPendingDownloads:(BOOL)downloads;
 - (void)_prepareDownloadDirectory;
-- (void)_updateProgressForAsset:(id)a3 progress:(float)a4;
-- (void)_updateStateForAsset:(id)a3 oldState:(int64_t)a4 newState:(int64_t)a5;
-- (void)addDownloadObserver:(id)a3;
-- (void)cancelAsset:(id)a3;
-- (void)enqueueAsset:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)prioritizeAsset:(id)a3;
-- (void)removeDownloadObserver:(id)a3;
+- (void)_updateProgressForAsset:(id)asset progress:(float)progress;
+- (void)_updateStateForAsset:(id)asset oldState:(int64_t)state newState:(int64_t)newState;
+- (void)addDownloadObserver:(id)observer;
+- (void)cancelAsset:(id)asset;
+- (void)enqueueAsset:(id)asset;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)prioritizeAsset:(id)asset;
+- (void)removeDownloadObserver:(id)observer;
 @end
 
 @implementation ATStoreDownloadService
 
-- (void)_finishAsset:(id)a3 withError:(id)a4 cancelPendingDownloads:(BOOL)a5
+- (void)_finishAsset:(id)asset withError:(id)error cancelPendingDownloads:(BOOL)downloads
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  assetCopy = asset;
+  errorCopy = error;
   v10 = _ATLogCategoryStoreDownloads();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
-    v21 = v8;
+    v21 = assetCopy;
     _os_log_impl(&dword_223819000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Finished asset %{public}@", buf, 0x16u);
   }
 
@@ -40,11 +40,11 @@
   v14[2] = __72__ATStoreDownloadService__finishAsset_withError_cancelPendingDownloads___block_invoke;
   v14[3] = &unk_2784E4A80;
   v14[4] = self;
-  v15 = v8;
-  v17 = a5;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
+  v15 = assetCopy;
+  downloadsCopy = downloads;
+  v16 = errorCopy;
+  v12 = errorCopy;
+  v13 = assetCopy;
   [(ICUnfairLock *)lock lockWithBlock:v14];
 }
 
@@ -138,18 +138,18 @@ uint64_t __72__ATStoreDownloadService__finishAsset_withError_cancelPendingDownlo
   return result;
 }
 
-- (void)_updateProgressForAsset:(id)a3 progress:(float)a4
+- (void)_updateProgressForAsset:(id)asset progress:(float)progress
 {
-  v6 = a3;
+  assetCopy = asset;
   lock = self->_lock;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__ATStoreDownloadService__updateProgressForAsset_progress___block_invoke;
   v9[3] = &unk_2784E5848;
   v9[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = assetCopy;
+  progressCopy = progress;
+  v8 = assetCopy;
   [(ICUnfairLock *)lock lockWithBlock:v9];
 }
 
@@ -243,19 +243,19 @@ uint64_t __59__ATStoreDownloadService__updateProgressForAsset_progress___block_i
   return result;
 }
 
-- (void)_updateStateForAsset:(id)a3 oldState:(int64_t)a4 newState:(int64_t)a5
+- (void)_updateStateForAsset:(id)asset oldState:(int64_t)state newState:(int64_t)newState
 {
-  v8 = a3;
+  assetCopy = asset;
   lock = self->_lock;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __65__ATStoreDownloadService__updateStateForAsset_oldState_newState___block_invoke;
   v11[3] = &unk_2784E4880;
   v11[4] = self;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = assetCopy;
+  stateCopy = state;
+  newStateCopy = newState;
+  v10 = assetCopy;
   [(ICUnfairLock *)lock lockWithBlock:v11];
 }
 
@@ -323,20 +323,20 @@ uint64_t __65__ATStoreDownloadService__updateStateForAsset_oldState_newState___b
   return result;
 }
 
-- (id)_newProcessAssetOperationForasset:(id)a3 assetsOperationResult:(id)a4
+- (id)_newProcessAssetOperationForasset:(id)forasset assetsOperationResult:(id)result
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 assetType];
-  if ([v7 isEqualToString:@"Podcast"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"VideoPodcast"))
+  forassetCopy = forasset;
+  resultCopy = result;
+  assetType = [forassetCopy assetType];
+  if ([assetType isEqualToString:@"Podcast"] & 1) != 0 || (objc_msgSend(assetType, "isEqualToString:", @"VideoPodcast"))
   {
     v8 = off_2784E3F08;
   }
 
   else
   {
-    v11 = [v5 dataclass];
-    if ([v11 isEqualToString:@"Book"])
+    dataclass = [forassetCopy dataclass];
+    if ([dataclass isEqualToString:@"Book"])
     {
 
       v8 = off_2784E3EB8;
@@ -344,7 +344,7 @@ uint64_t __65__ATStoreDownloadService__updateStateForAsset_oldState_newState___b
 
     else
     {
-      v12 = [v7 isEqualToString:@"Audiobook"];
+      v12 = [assetType isEqualToString:@"Audiobook"];
 
       v8 = off_2784E3EE8;
       if (v12)
@@ -354,25 +354,25 @@ uint64_t __65__ATStoreDownloadService__updateStateForAsset_oldState_newState___b
     }
   }
 
-  v9 = [objc_alloc(*v8) initWithAsset:v5 assetsOperationResult:v6];
+  v9 = [objc_alloc(*v8) initWithAsset:forassetCopy assetsOperationResult:resultCopy];
 
   return v9;
 }
 
-- (id)_newAssetOperationForAsset:(id)a3 prepareOperationResult:(id)a4
+- (id)_newAssetOperationForAsset:(id)asset prepareOperationResult:(id)result
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 assetType];
-  if ([v7 isEqualToString:@"Podcast"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"VideoPodcast"))
+  assetCopy = asset;
+  resultCopy = result;
+  assetType = [assetCopy assetType];
+  if ([assetType isEqualToString:@"Podcast"] & 1) != 0 || (objc_msgSend(assetType, "isEqualToString:", @"VideoPodcast"))
   {
     v8 = off_2784E3EF8;
   }
 
   else
   {
-    v11 = [v5 dataclass];
-    if ([v11 isEqualToString:@"Book"])
+    dataclass = [assetCopy dataclass];
+    if ([dataclass isEqualToString:@"Book"])
     {
 
       v8 = off_2784E3EA8;
@@ -380,7 +380,7 @@ uint64_t __65__ATStoreDownloadService__updateStateForAsset_oldState_newState___b
 
     else
     {
-      v12 = [v7 isEqualToString:@"Audiobook"];
+      v12 = [assetType isEqualToString:@"Audiobook"];
 
       v8 = off_2784E3ED8;
       if (v12)
@@ -390,23 +390,23 @@ uint64_t __65__ATStoreDownloadService__updateStateForAsset_oldState_newState___b
     }
   }
 
-  v9 = [objc_alloc(*v8) initWithAsset:v5 prepareOperationResult:v6];
+  v9 = [objc_alloc(*v8) initWithAsset:assetCopy prepareOperationResult:resultCopy];
 
   return v9;
 }
 
-- (id)_newPrepareOperationForAsset:(id)a3
+- (id)_newPrepareOperationForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 assetType];
-  if ([v4 isEqualToString:@"Podcast"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"VideoPodcast"))
+  assetCopy = asset;
+  assetType = [assetCopy assetType];
+  if ([assetType isEqualToString:@"Podcast"] & 1) != 0 || (objc_msgSend(assetType, "isEqualToString:", @"VideoPodcast"))
   {
     v5 = off_2784E3F00;
     goto LABEL_4;
   }
 
-  v8 = [v3 dataclass];
-  if ([v8 isEqualToString:@"Book"])
+  dataclass = [assetCopy dataclass];
+  if ([dataclass isEqualToString:@"Book"])
   {
 
 LABEL_8:
@@ -414,18 +414,18 @@ LABEL_8:
     goto LABEL_4;
   }
 
-  v9 = [v4 isEqualToString:@"Audiobook"];
+  v9 = [assetType isEqualToString:@"Audiobook"];
 
   if (v9)
   {
     goto LABEL_8;
   }
 
-  v10 = [v3 storeInfo];
-  v11 = [v10 endpointType];
-  v12 = [v11 integerValue];
+  storeInfo = [assetCopy storeInfo];
+  endpointType = [storeInfo endpointType];
+  integerValue = [endpointType integerValue];
 
-  if (([v3 isRestore] & (v12 < 2)) != 0)
+  if (([assetCopy isRestore] & (integerValue < 2)) != 0)
   {
     v5 = off_2784E3EF0;
   }
@@ -436,7 +436,7 @@ LABEL_8:
   }
 
 LABEL_4:
-  v6 = [objc_alloc(*v5) initWithAsset:v3];
+  v6 = [objc_alloc(*v5) initWithAsset:assetCopy];
 
   return v6;
 }
@@ -445,9 +445,9 @@ LABEL_4:
 {
   v33 = *MEMORY[0x277D85DE8];
   v2 = +[ATStoreDownloadService downloadDirectoryPath];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v25 = 0;
-  [v3 createDirectoryAtPath:v2 withIntermediateDirectories:1 attributes:0 error:&v25];
+  [defaultManager createDirectoryAtPath:v2 withIntermediateDirectories:1 attributes:0 error:&v25];
   v4 = v25;
 
   if (v4)
@@ -456,7 +456,7 @@ LABEL_4:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 2114;
       v30 = v2;
       v31 = 2114;
@@ -465,8 +465,8 @@ LABEL_4:
     }
   }
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 enumeratorAtPath:v2];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager2 enumeratorAtPath:v2];
 
   v23 = 0u;
   v24 = 0u;
@@ -491,9 +491,9 @@ LABEL_4:
         }
 
         v14 = [v2 stringByAppendingPathComponent:{*(*(&v21 + 1) + 8 * v13), v18}];
-        v15 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
         v20 = 0;
-        [v15 removeItemAtPath:v14 error:&v20];
+        [defaultManager3 removeItemAtPath:v14 error:&v20];
         v16 = v20;
 
         if (v16)
@@ -502,7 +502,7 @@ LABEL_4:
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
             *buf = v18;
-            v28 = self;
+            selfCopy2 = self;
             v29 = 2114;
             v30 = v14;
             v31 = 2114;
@@ -524,64 +524,64 @@ LABEL_4:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v17 = a3;
-  v10 = a5;
-  v11 = a4;
+  pathCopy = path;
+  changeCopy = change;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if ((isKindOfClass & 1) != 0 && [v17 isEqualToString:@"fractionCompleted"])
+  if ((isKindOfClass & 1) != 0 && [pathCopy isEqualToString:@"fractionCompleted"])
   {
-    v13 = [v10 objectForKey:*MEMORY[0x277CCA2F0]];
+    v13 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
     [v13 floatValue];
     v15 = v14;
 
     LODWORD(v16) = v15;
-    [(ATStoreDownloadService *)self _updateProgressForAsset:a6 progress:v16];
+    [(ATStoreDownloadService *)self _updateProgressForAsset:context progress:v16];
   }
 }
 
-- (void)removeDownloadObserver:(id)a3
+- (void)removeDownloadObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__ATStoreDownloadService_removeDownloadObserver___block_invoke;
   v7[3] = &unk_2784E5960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   [(ICUnfairLock *)lock lockWithBlock:v7];
 }
 
-- (void)addDownloadObserver:(id)a3
+- (void)addDownloadObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__ATStoreDownloadService_addDownloadObserver___block_invoke;
   v7[3] = &unk_2784E5960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   [(ICUnfairLock *)lock lockWithBlock:v7];
 }
 
-- (void)prioritizeAsset:(id)a3
+- (void)prioritizeAsset:(id)asset
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   v5 = _ATLogCategoryStoreDownloads();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v4;
+    v13 = assetCopy;
     _os_log_impl(&dword_223819000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ prioritizing download %{public}@", buf, 0x16u);
   }
 
@@ -591,8 +591,8 @@ LABEL_4:
   v8[2] = __42__ATStoreDownloadService_prioritizeAsset___block_invoke;
   v8[3] = &unk_2784E5960;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = assetCopy;
+  v7 = assetCopy;
   [(ICUnfairLock *)lock lockWithBlock:v8];
 }
 
@@ -610,17 +610,17 @@ void __42__ATStoreDownloadService_prioritizeAsset___block_invoke(uint64_t a1)
   }
 }
 
-- (void)cancelAsset:(id)a3
+- (void)cancelAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__ATStoreDownloadService_cancelAsset___block_invoke;
   v7[3] = &unk_2784E5960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   [(ICUnfairLock *)lock lockWithBlock:v7];
 }
 
@@ -651,25 +651,25 @@ void __38__ATStoreDownloadService_cancelAsset___block_invoke(uint64_t a1)
   }
 }
 
-- (void)enqueueAsset:(id)a3
+- (void)enqueueAsset:(id)asset
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  assetCopy = asset;
   v6 = _ATLogCategoryStoreDownloads();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544130;
-    v45 = self;
+    selfCopy = self;
     v46 = 2114;
-    v47 = v5;
+    v47 = assetCopy;
     v48 = 1024;
-    v49 = [v5 powerRequired];
+    powerRequired = [assetCopy powerRequired];
     v50 = 1024;
-    v51 = [v5 canUseCellularData];
+    canUseCellularData = [assetCopy canUseCellularData];
     _os_log_impl(&dword_223819000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Enqueing download for asset %{public}@. requiresPower=%d, canUseCellularData=%d", buf, 0x22u);
   }
 
-  v7 = [(ATStoreDownloadService *)self _newPrepareOperationForAsset:v5];
+  v7 = [(ATStoreDownloadService *)self _newPrepareOperationForAsset:assetCopy];
   v8 = v7;
   if (v7)
   {
@@ -683,8 +683,8 @@ void __38__ATStoreDownloadService_cancelAsset___block_invoke(uint64_t a1)
     v27 = v7;
     v26 = v7;
     v41 = v26;
-    v29 = v5;
-    v10 = v5;
+    v29 = assetCopy;
+    v10 = assetCopy;
     v42 = v10;
     [(ICUnfairLock *)lock lockWithBlock:v40];
     v38 = 0u;
@@ -725,15 +725,15 @@ void __38__ATStoreDownloadService_cancelAsset___block_invoke(uint64_t a1)
     }
 
     v18 = [MEMORY[0x277CCAC48] progressWithTotalUnitCount:100];
-    v19 = [v26 progress];
-    [v18 addChild:v19 withPendingUnitCount:5];
+    progress = [v26 progress];
+    [v18 addChild:progress withPendingUnitCount:5];
 
     v20 = NSStringFromSelector(sel_fractionCompleted);
     [v18 addObserver:self forKeyPath:v20 options:3 context:v10];
 
     progressForAsset = self->_progressForAsset;
-    v22 = [v10 identifier];
-    [(NSMutableDictionary *)progressForAsset setObject:v18 forKey:v22];
+    identifier = [v10 identifier];
+    [(NSMutableDictionary *)progressForAsset setObject:v18 forKey:identifier];
 
     [(ATStoreDownloadService *)self _updateStateForAsset:v10 oldState:0 newState:1];
     prepareOperationQueue = self->_prepareOperationQueue;
@@ -748,14 +748,14 @@ void __38__ATStoreDownloadService_cancelAsset___block_invoke(uint64_t a1)
     v24 = v18;
     [v26 performOnOperationQueue:prepareOperationQueue completion:v30];
 
-    v5 = v29;
+    assetCopy = v29;
     v8 = v27;
   }
 
   else
   {
     v25 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ATError" code:21 userInfo:0];
-    [(ATStoreDownloadService *)self _finishAsset:v5 withError:v25 cancelPendingDownloads:0];
+    [(ATStoreDownloadService *)self _finishAsset:assetCopy withError:v25 cancelPendingDownloads:0];
   }
 }
 
@@ -1015,9 +1015,9 @@ void __39__ATStoreDownloadService_enqueueAsset___block_invoke_2_33(uint64_t a1, 
 
     [(NSOperationQueue *)v2->_processAssetsOperationQueue setMaxConcurrentOperationCount:3];
     [(NSOperationQueue *)v2->_processAssetsOperationQueue setQualityOfService:-1];
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     downloadOperations = v2->_downloadOperations;
-    v2->_downloadOperations = v9;
+    v2->_downloadOperations = dictionary;
 
     v11 = [MEMORY[0x277CBEB58] set];
     observers = v2->_observers;
@@ -1032,7 +1032,7 @@ void __39__ATStoreDownloadService_enqueueAsset___block_invoke_2_33(uint64_t a1, 
     v2->_lock = v15;
 
     [(ATStoreDownloadService *)v2 _prepareDownloadDirectory];
-    v17 = [MEMORY[0x277D7FA28] defaultManager];
+    defaultManager = [MEMORY[0x277D7FA28] defaultManager];
   }
 
   return v2;

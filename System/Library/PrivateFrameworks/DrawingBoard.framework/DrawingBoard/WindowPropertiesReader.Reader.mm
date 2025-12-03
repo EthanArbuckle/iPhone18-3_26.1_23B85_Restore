@@ -1,14 +1,14 @@
 @interface WindowPropertiesReader.Reader
-- (_TtCV12DrawingBoard22WindowPropertiesReader6Reader)initWithCoder:(id)a3;
-- (_TtCV12DrawingBoard22WindowPropertiesReader6Reader)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
+- (_TtCV12DrawingBoard22WindowPropertiesReader6Reader)initWithCoder:(id)coder;
+- (_TtCV12DrawingBoard22WindowPropertiesReader6Reader)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
 - (void)viewDidLayoutSubviews;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 @end
 
 @implementation WindowPropertiesReader.Reader
 
-- (_TtCV12DrawingBoard22WindowPropertiesReader6Reader)initWithCoder:(id)a3
+- (_TtCV12DrawingBoard22WindowPropertiesReader6Reader)initWithCoder:(id)coder
 {
   sub_249D73274();
   sub_249D73264();
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   sub_249D73274();
   sub_249D73264();
@@ -33,12 +33,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = a3;
-  v7 = self;
-  sub_249D71598(a3);
+  windowCopy = window;
+  selfCopy = self;
+  sub_249D71598(window);
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   sub_249D73274();
   sub_249D73264();
@@ -48,7 +48,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_249D71910();
 }
 
@@ -62,11 +62,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_249D7079C();
 }
 
-- (_TtCV12DrawingBoard22WindowPropertiesReader6Reader)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtCV12DrawingBoard22WindowPropertiesReader6Reader)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_249D73274();
   sub_249D73264();

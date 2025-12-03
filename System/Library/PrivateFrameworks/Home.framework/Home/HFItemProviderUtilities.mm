@@ -1,25 +1,25 @@
 @interface HFItemProviderUtilities
-+ (id)_servicesForHome:(id)a3 canShowInControlCentre:(BOOL)a4 withLimit:(unint64_t)a5 includes:(unint64_t)a6 ignoreUUIDs:(id)a7;
-+ (id)favoriteActionSetsForHome:(id)a3 withLimit:(unint64_t)a4;
++ (id)_servicesForHome:(id)home canShowInControlCentre:(BOOL)centre withLimit:(unint64_t)limit includes:(unint64_t)includes ignoreUUIDs:(id)ds;
++ (id)favoriteActionSetsForHome:(id)home withLimit:(unint64_t)limit;
 @end
 
 @implementation HFItemProviderUtilities
 
-+ (id)favoriteActionSetsForHome:(id)a3 withLimit:(unint64_t)a4
++ (id)favoriteActionSetsForHome:(id)home withLimit:(unint64_t)limit
 {
-  if (a4)
+  if (limit)
   {
-    v5 = a3;
-    v6 = [v5 hf_reorderableActionSetsList];
-    v7 = [v5 actionSets];
+    homeCopy = home;
+    hf_reorderableActionSetsList = [homeCopy hf_reorderableActionSetsList];
+    actionSets = [homeCopy actionSets];
 
-    v8 = [v7 na_filter:&__block_literal_global_170];
-    v9 = [v6 sortedHomeKitObjectComparator];
-    v10 = [v8 sortedArrayUsingComparator:v9];
+    v8 = [actionSets na_filter:&__block_literal_global_170];
+    sortedHomeKitObjectComparator = [hf_reorderableActionSetsList sortedHomeKitObjectComparator];
+    v10 = [v8 sortedArrayUsingComparator:sortedHomeKitObjectComparator];
 
-    if ([v10 count] > a4)
+    if ([v10 count] > limit)
     {
-      v11 = [v10 subarrayWithRange:{0, a4}];
+      v11 = [v10 subarrayWithRange:{0, limit}];
 
       v10 = v11;
     }
@@ -49,54 +49,54 @@ uint64_t __63__HFItemProviderUtilities_favoriteActionSetsForHome_withLimit___blo
   return v5;
 }
 
-+ (id)_servicesForHome:(id)a3 canShowInControlCentre:(BOOL)a4 withLimit:(unint64_t)a5 includes:(unint64_t)a6 ignoreUUIDs:(id)a7
++ (id)_servicesForHome:(id)home canShowInControlCentre:(BOOL)centre withLimit:(unint64_t)limit includes:(unint64_t)includes ignoreUUIDs:(id)ds
 {
-  v11 = a7;
-  if (a5)
+  dsCopy = ds;
+  if (limit)
   {
-    v12 = a3;
-    v47 = [v12 hf_reorderableServicesList];
+    homeCopy = home;
+    hf_reorderableServicesList = [homeCopy hf_reorderableServicesList];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __98__HFItemProviderUtilities__servicesForHome_canShowInControlCentre_withLimit_includes_ignoreUUIDs___block_invoke;
     aBlock[3] = &__block_descriptor_41_e75_B16__0___HFFavoritable__HFIncludedContextProtocol__HFShowInHomeDashboard__8l;
-    aBlock[4] = a6;
-    v73 = a6 == 0;
+    aBlock[4] = includes;
+    v73 = includes == 0;
     v13 = _Block_copy(aBlock);
-    v48 = a5;
+    limitCopy = limit;
     v14 = MEMORY[0x277CBEB98];
-    v15 = [v12 hf_allVisibleServices];
+    hf_allVisibleServices = [homeCopy hf_allVisibleServices];
     v67[0] = MEMORY[0x277D85DD0];
     v67[1] = 3221225472;
     v67[2] = __98__HFItemProviderUtilities__servicesForHome_canShowInControlCentre_withLimit_includes_ignoreUUIDs___block_invoke_3;
     v67[3] = &unk_277DFE828;
     v16 = v13;
     v69 = v16;
-    v49 = v11;
-    v17 = v11;
-    v71 = a4;
+    v49 = dsCopy;
+    v17 = dsCopy;
+    centreCopy = centre;
     v68 = v17;
     v70 = &__block_literal_global_4_11;
-    v18 = [v15 na_filter:v67];
+    v18 = [hf_allVisibleServices na_filter:v67];
     v50 = [v14 setWithSet:v18];
 
     v19 = MEMORY[0x277CBEB98];
-    v20 = [v12 hf_visibleAccessories];
+    hf_visibleAccessories = [homeCopy hf_visibleAccessories];
     v62[0] = MEMORY[0x277D85DD0];
     v62[1] = 3221225472;
     v62[2] = __98__HFItemProviderUtilities__servicesForHome_canShowInControlCentre_withLimit_includes_ignoreUUIDs___block_invoke_4;
     v62[3] = &unk_277DFE850;
-    v66 = a4;
+    centreCopy2 = centre;
     v21 = v16;
     v64 = v21;
     v22 = v17;
     v63 = v22;
     v65 = &__block_literal_global_4_11;
-    v23 = [v20 na_filter:v62];
+    v23 = [hf_visibleAccessories na_filter:v62];
     v24 = [v19 setWithArray:v23];
 
     v25 = MEMORY[0x277CBEB58];
-    v26 = [v12 serviceGroups];
+    serviceGroups = [homeCopy serviceGroups];
     v59[0] = MEMORY[0x277D85DD0];
     v59[1] = 3221225472;
     v59[2] = __98__HFItemProviderUtilities__servicesForHome_canShowInControlCentre_withLimit_includes_ignoreUUIDs___block_invoke_7;
@@ -105,11 +105,11 @@ uint64_t __63__HFItemProviderUtilities_favoriteActionSetsForHome_withLimit___blo
     v60 = v27;
     v28 = v21;
     v61 = v28;
-    v29 = [v26 na_filter:v59];
+    v29 = [serviceGroups na_filter:v59];
     v30 = [v25 setWithArray:v29];
 
     v31 = objc_opt_new();
-    v32 = [v12 hf_mediaAccessories];
+    hf_mediaAccessories = [homeCopy hf_mediaAccessories];
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __98__HFItemProviderUtilities__servicesForHome_canShowInControlCentre_withLimit_includes_ignoreUUIDs___block_invoke_9;
@@ -120,10 +120,10 @@ uint64_t __63__HFItemProviderUtilities_favoriteActionSetsForHome_withLimit___blo
     v56 = v34;
     v35 = v31;
     v57 = v35;
-    [v32 enumerateObjectsUsingBlock:v55];
+    [hf_mediaAccessories enumerateObjectsUsingBlock:v55];
 
     v36 = objc_opt_new();
-    v37 = [v12 mediaSystems];
+    mediaSystems = [homeCopy mediaSystems];
 
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
@@ -134,7 +134,7 @@ uint64_t __63__HFItemProviderUtilities_favoriteActionSetsForHome_withLimit___blo
     v52 = v34;
     v39 = v36;
     v53 = v39;
-    [v37 enumerateObjectsUsingBlock:v51];
+    [mediaSystems enumerateObjectsUsingBlock:v51];
 
     v40 = [MEMORY[0x277CBEB58] set];
     [v40 unionSet:v24];
@@ -142,21 +142,21 @@ uint64_t __63__HFItemProviderUtilities_favoriteActionSetsForHome_withLimit___blo
     [v40 unionSet:v30];
     [v40 unionSet:v35];
     [v40 unionSet:v39];
-    v41 = [v40 allObjects];
-    v42 = [v41 mutableCopy];
+    allObjects = [v40 allObjects];
+    v42 = [allObjects mutableCopy];
 
-    v43 = [v47 sortedHomeKitObjectComparator];
-    [v42 sortUsingComparator:v43];
+    sortedHomeKitObjectComparator = [hf_reorderableServicesList sortedHomeKitObjectComparator];
+    [v42 sortUsingComparator:sortedHomeKitObjectComparator];
 
     v44 = [v42 copy];
-    if ([v44 count] > v48)
+    if ([v44 count] > limitCopy)
     {
-      v45 = [v44 subarrayWithRange:{0, v48}];
+      v45 = [v44 subarrayWithRange:{0, limitCopy}];
 
       v44 = v45;
     }
 
-    v11 = v49;
+    dsCopy = v49;
   }
 
   else

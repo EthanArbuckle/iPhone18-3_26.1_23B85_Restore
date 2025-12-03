@@ -4,16 +4,16 @@
 - (MKMapSnapshotter)initWithOptions:(MKMapSnapshotOptions *)options;
 - (void)_cancel;
 - (void)_cleanupSnapshotCreator;
-- (void)_deliverSnapshot:(id)a3;
-- (void)_drawAppleLogoIfNecessaryOnSnapshot:(id)a3;
-- (void)_enterBackground:(id)a3;
-- (void)_exitBackground:(id)a3;
-- (void)_failWithError:(id)a3;
+- (void)_deliverSnapshot:(id)snapshot;
+- (void)_drawAppleLogoIfNecessaryOnSnapshot:(id)snapshot;
+- (void)_enterBackground:(id)background;
+- (void)_exitBackground:(id)background;
+- (void)_failWithError:(id)error;
 - (void)_performSnapshot;
 - (void)_performSnapshotOnSnapshotQueue;
-- (void)_respondWithError:(id)a3;
+- (void)_respondWithError:(id)error;
 - (void)_setupCustomFeaturesForAnnotationViewsIfNeeded;
-- (void)_succeedWithSnapshot:(id)a3;
+- (void)_succeedWithSnapshot:(id)snapshot;
 - (void)cancel;
 - (void)dealloc;
 - (void)startWithQueue:(dispatch_queue_t)queue completionHandler:(MKMapSnapshotCompletionHandler)completionHandler;
@@ -529,10 +529,10 @@ void __51__MKMapSnapshotter__performSnapshotOnSnapshotQueue__block_invoke_2(uint
 - (void)_performSnapshot
 {
   v3 = MKGetSnapshotLog();
-  v4 = [(MKMapSnapshotOptions *)self->_options signpostId];
-  if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId = [(MKMapSnapshotOptions *)self->_options signpostId];
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v5 = v4;
+    v5 = signpostId;
     if (os_signpost_enabled(v3))
     {
       *buf = 0;
@@ -540,8 +540,8 @@ void __51__MKMapSnapshotter__performSnapshotOnSnapshotQueue__block_invoke_2(uint
     }
   }
 
-  v6 = [(MKMapSnapshotOptions *)self->_options annotationViews];
-  v7 = [v6 count];
+  annotationViews = [(MKMapSnapshotOptions *)self->_options annotationViews];
+  v7 = [annotationViews count];
 
   if (!v7)
   {
@@ -575,13 +575,13 @@ uint64_t __36__MKMapSnapshotter__performSnapshot__block_invoke(uint64_t a1)
 - (void)_setupCustomFeaturesForAnnotationViewsIfNeeded
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(MKMapSnapshotOptions *)self->_options annotationViews];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  annotationViews = [(MKMapSnapshotOptions *)self->_options annotationViews];
+  v5 = [annotationViews countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -594,7 +594,7 @@ uint64_t __36__MKMapSnapshotter__performSnapshot__block_invoke(uint64_t a1)
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(annotationViews);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
@@ -602,33 +602,33 @@ uint64_t __36__MKMapSnapshotter__performSnapshot__block_invoke(uint64_t a1)
         if ([v11 isProvidingCustomFeature])
         {
           [v11 _updateAnchorPosition:1 alignToPixels:{v8, v9}];
-          v12 = [v11 customFeatureAnnotation];
-          [v3 addObject:v12];
+          customFeatureAnnotation = [v11 customFeatureAnnotation];
+          [array addObject:customFeatureAnnotation];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [annotationViews countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v13 = [(MKMapSnapshotOptions *)self->_options _customFeatureAnnotations];
-    v14 = [v13 count];
+    _customFeatureAnnotations = [(MKMapSnapshotOptions *)self->_options _customFeatureAnnotations];
+    v14 = [_customFeatureAnnotations count];
 
     options = self->_options;
     if (v14)
     {
-      v16 = [(MKMapSnapshotOptions *)options _customFeatureAnnotations];
-      v17 = [v3 arrayByAddingObjectsFromArray:v16];
+      _customFeatureAnnotations2 = [(MKMapSnapshotOptions *)options _customFeatureAnnotations];
+      v17 = [array arrayByAddingObjectsFromArray:_customFeatureAnnotations2];
       [(MKMapSnapshotOptions *)self->_options _setCustomFeatureAnnotations:v17];
     }
 
     else
     {
-      [(MKMapSnapshotOptions *)options _setCustomFeatureAnnotations:v3];
+      [(MKMapSnapshotOptions *)options _setCustomFeatureAnnotations:array];
     }
   }
 }
@@ -649,10 +649,10 @@ uint64_t __36__MKMapSnapshotter__performSnapshot__block_invoke(uint64_t a1)
     }
 
     v12 = MKGetSnapshotLog();
-    v13 = [(MKMapSnapshotOptions *)self->_options signpostId];
-    if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostId = [(MKMapSnapshotOptions *)self->_options signpostId];
+    if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v14 = v13;
+      v14 = signpostId;
       if (os_signpost_enabled(v12))
       {
         *buf = 0;
@@ -688,10 +688,10 @@ LABEL_17:
 
     [(MKMapSnapshotter *)self _performSnapshot];
     v17 = MKGetSnapshotLog();
-    v18 = [(MKMapSnapshotOptions *)self->_options signpostId];
-    if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostId2 = [(MKMapSnapshotOptions *)self->_options signpostId];
+    if (signpostId2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v19 = v18;
+      v19 = signpostId2;
       if (os_signpost_enabled(v17))
       {
         *buf = 0;
@@ -732,19 +732,19 @@ void __53__MKMapSnapshotter_startWithQueue_completionHandler___block_invoke(uint
     return 0;
   }
 
-  v2 = [MEMORY[0x1E6963668] extensionPointRecordForCurrentProcess];
-  v3 = v2;
-  if (!v2)
+  extensionPointRecordForCurrentProcess = [MEMORY[0x1E6963668] extensionPointRecordForCurrentProcess];
+  v3 = extensionPointRecordForCurrentProcess;
+  if (!extensionPointRecordForCurrentProcess)
   {
     v6 = 0;
     goto LABEL_8;
   }
 
-  v4 = [v2 identifier];
+  identifier = [extensionPointRecordForCurrentProcess identifier];
   CHSIsWidgetExtensionPointSymbolLoc = getCHSIsWidgetExtensionPointSymbolLoc();
   if (CHSIsWidgetExtensionPointSymbolLoc)
   {
-    v6 = CHSIsWidgetExtensionPointSymbolLoc(v4);
+    v6 = CHSIsWidgetExtensionPointSymbolLoc(identifier);
 
 LABEL_8:
     return v6;
@@ -755,9 +755,9 @@ LABEL_8:
   return ChronoServicesLibraryCore();
 }
 
-- (void)_deliverSnapshot:(id)a3
+- (void)_deliverSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   if (_gate_onceToken != -1)
   {
     dispatch_once(&_gate_onceToken, &__block_literal_global_169);
@@ -768,9 +768,9 @@ LABEL_8:
   v9 = 3221225472;
   v10 = __37__MKMapSnapshotter__deliverSnapshot___block_invoke;
   v11 = &unk_1E76CD810;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = snapshotCopy;
+  v6 = snapshotCopy;
   [v5 dispatch:&v8];
   v7 = [MKUsageCounter sharedCounter:v8];
   [v7 count:54];
@@ -887,48 +887,48 @@ void __37__MKMapSnapshotter__deliverSnapshot___block_invoke_34(uint64_t a1)
   *(v5 + 32) = 0;
 }
 
-- (void)_drawAppleLogoIfNecessaryOnSnapshot:(id)a3
+- (void)_drawAppleLogoIfNecessaryOnSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   if (-[MKMapSnapshotter _shouldRenderLogoForSnapshotDimensions](self, "_shouldRenderLogoForSnapshotDimensions") && -[MKMapSnapshotOptions _showsAppleLogo](self->_options, "_showsAppleLogo") && _MKLinkedOnOrAfterReleaseSet(2310) && [MEMORY[0x1E696AAE8] _mapkit_shouldShowAppleLogo] && !-[MKMapSnapshotter _isWidget](self, "_isWidget"))
   {
-    v5 = [(MKMapSnapshotOptions *)self->_options mapType];
+    mapType = [(MKMapSnapshotOptions *)self->_options mapType];
     v6 = _snapshotQueue();
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __56__MKMapSnapshotter__drawAppleLogoIfNecessaryOnSnapshot___block_invoke;
     v7[3] = &unk_1E76CD810;
     v7[4] = self;
-    v8 = v4;
-    [v8 _displayAppleLogoForMapType:v5 callbackQueue:v6 completionHandler:v7];
+    v8 = snapshotCopy;
+    [v8 _displayAppleLogoForMapType:mapType callbackQueue:v6 completionHandler:v7];
   }
 
   else
   {
-    [(MKMapSnapshotter *)self _deliverSnapshot:v4];
+    [(MKMapSnapshotter *)self _deliverSnapshot:snapshotCopy];
   }
 }
 
-- (void)_succeedWithSnapshot:(id)a3
+- (void)_succeedWithSnapshot:(id)snapshot
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  snapshotCopy = snapshot;
   [(MKMapSnapshotter *)self _cleanupSnapshotCreator];
-  v5 = [(MKMapSnapshotOptions *)self->_options annotationViews];
-  v6 = [v5 count];
+  annotationViews = [(MKMapSnapshotOptions *)self->_options annotationViews];
+  v6 = [annotationViews count];
 
   if (v6)
   {
     v7 = MEMORY[0x1E695DF70];
-    v8 = [(MKMapSnapshotOptions *)self->_options annotationViews];
-    v9 = [v7 arrayWithCapacity:{objc_msgSend(v8, "count")}];
+    annotationViews2 = [(MKMapSnapshotOptions *)self->_options annotationViews];
+    v9 = [v7 arrayWithCapacity:{objc_msgSend(annotationViews2, "count")}];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [(MKMapSnapshotOptions *)self->_options annotationViews];
-    v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    annotationViews3 = [(MKMapSnapshotOptions *)self->_options annotationViews];
+    v11 = [annotationViews3 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v11)
     {
       v12 = v11;
@@ -939,7 +939,7 @@ void __37__MKMapSnapshotter__deliverSnapshot___block_invoke_34(uint64_t a1)
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(annotationViews3);
           }
 
           v15 = *(*(&v19 + 1) + 8 * i);
@@ -949,7 +949,7 @@ void __37__MKMapSnapshotter__deliverSnapshot___block_invoke_34(uint64_t a1)
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v12 = [annotationViews3 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v12);
@@ -961,26 +961,26 @@ void __37__MKMapSnapshotter__deliverSnapshot___block_invoke_34(uint64_t a1)
     v17[2] = __41__MKMapSnapshotter__succeedWithSnapshot___block_invoke;
     v17[3] = &unk_1E76CD810;
     v17[4] = self;
-    v18 = v4;
+    v18 = snapshotCopy;
     [v18 _prepareForRenderWithAnnotationViews:v9 workQueue:v16 completionHandler:v17];
   }
 
   else
   {
-    [(MKMapSnapshotter *)self _drawAppleLogoIfNecessaryOnSnapshot:v4];
+    [(MKMapSnapshotter *)self _drawAppleLogoIfNecessaryOnSnapshot:snapshotCopy];
   }
 }
 
-- (void)_failWithError:(id)a3
+- (void)_failWithError:(id)error
 {
-  [(MKMapSnapshotter *)self _respondWithError:a3];
+  [(MKMapSnapshotter *)self _respondWithError:error];
   v3 = +[MKUsageCounter sharedCounter];
   [v3 count:55];
 }
 
-- (void)_respondWithError:(id)a3
+- (void)_respondWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(MKMapSnapshotter *)self _cleanupSnapshotCreator];
   callbackQueue = self->_callbackQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -988,8 +988,8 @@ void __37__MKMapSnapshotter__deliverSnapshot___block_invoke_34(uint64_t a1)
   v7[2] = __38__MKMapSnapshotter__respondWithError___block_invoke;
   v7[3] = &unk_1E76CD810;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(callbackQueue, v7);
 }
 
@@ -1127,7 +1127,7 @@ void __27__MKMapSnapshotter__cancel__block_invoke(uint64_t a1)
   *(v1 + 40) = 0;
 }
 
-- (void)_exitBackground:(id)a3
+- (void)_exitBackground:(id)background
 {
   if (self->_needsResume)
   {
@@ -1138,9 +1138,9 @@ void __27__MKMapSnapshotter__cancel__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_enterBackground:(id)a3
+- (void)_enterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   if (![(MKMapSnapshotOptions *)self->_options _rendersInBackground]&& (_shouldUseSnapshotService(self->_options) & 1) == 0)
   {
     CFRetain(self);
@@ -1194,14 +1194,14 @@ void __37__MKMapSnapshotter__enterBackground___block_invoke(uint64_t a1)
     dispatch_async(MEMORY[0x1E69E96A0], &__block_literal_global_16_46258);
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6 = MKGetSnapshotLog();
-  v7 = [(MKMapSnapshotOptions *)self->_options signpostId];
-  if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId = [(MKMapSnapshotOptions *)self->_options signpostId];
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v8 = v7;
+    v8 = signpostId;
     if (os_signpost_enabled(v6))
     {
       *buf = 0;
@@ -1244,10 +1244,10 @@ void __27__MKMapSnapshotter_dealloc__block_invoke()
     }
 
     v12 = MKGetSnapshotLog();
-    v13 = [(MKMapSnapshotOptions *)v5->_options signpostId];
-    if ((v13 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostId = [(MKMapSnapshotOptions *)v5->_options signpostId];
+    if ((signpostId - 1) <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v14 = v13;
+      v14 = signpostId;
       if (os_signpost_enabled(v12))
       {
         *v20 = 0;
@@ -1266,11 +1266,11 @@ void __27__MKMapSnapshotter_dealloc__block_invoke()
       dispatch_async(MEMORY[0x1E69E96A0], &__block_literal_global_46270);
     }
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v5 selector:sel__enterBackground_ name:@"MKApplicationStateDidEnterBackgroundNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__enterBackground_ name:@"MKApplicationStateDidEnterBackgroundNotification" object:0];
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v5 selector:sel__exitBackground_ name:@"MKApplicationStateWillEnterForegroundNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v5 selector:sel__exitBackground_ name:@"MKApplicationStateWillEnterForegroundNotification" object:0];
 
     v18 = v5;
   }

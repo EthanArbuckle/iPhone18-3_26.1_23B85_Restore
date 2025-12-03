@@ -1,16 +1,16 @@
 @interface VTUIProximityDataSharingOptInView
-- (VTUIProximityDataSharingOptInView)initWithFrame:(CGRect)a3;
+- (VTUIProximityDataSharingOptInView)initWithFrame:(CGRect)frame;
 - (void)_setupContent;
 - (void)_setupPortraitConstraints;
 @end
 
 @implementation VTUIProximityDataSharingOptInView
 
-- (VTUIProximityDataSharingOptInView)initWithFrame:(CGRect)a3
+- (VTUIProximityDataSharingOptInView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VTUIProximityDataSharingOptInView;
-  v3 = [(VTUIProximityDataSharingOptInView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VTUIProximityDataSharingOptInView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -51,12 +51,12 @@
   [(UILabel *)self->_titleLabel setNumberOfLines:0];
   [(UILabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   v11 = self->_titleLabel;
-  v12 = [v4 proxHeaderFont];
-  [(UILabel *)v11 setFont:v12];
+  proxHeaderFont = [v4 proxHeaderFont];
+  [(UILabel *)v11 setFont:proxHeaderFont];
 
   v13 = self->_titleLabel;
-  v14 = [v4 proxHeaderColor];
-  [(UILabel *)v13 setTextColor:v14];
+  proxHeaderColor = [v4 proxHeaderColor];
+  [(UILabel *)v13 setTextColor:proxHeaderColor];
 
   [(UILabel *)self->_titleLabel setTextAlignment:1];
   [(UILabel *)self->_titleLabel setAdjustsFontSizeToFitWidth:1];
@@ -78,8 +78,8 @@
 
   [(UILabel *)self->_subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   v22 = self->_subtitleLabel;
-  v23 = [v4 proxSubtitleFont];
-  [(UILabel *)v22 setFont:v23];
+  proxSubtitleFont = [v4 proxSubtitleFont];
+  [(UILabel *)v22 setFont:proxSubtitleFont];
 
   [(UILabel *)self->_subtitleLabel setTextAlignment:1];
   [(UILabel *)self->_subtitleLabel setNumberOfLines:0];
@@ -88,8 +88,8 @@
   [(UILabel *)v24 setText:v25];
 
   v26 = self->_subtitleLabel;
-  v27 = [v4 proxSubtitleColor];
-  [(UILabel *)v26 setTextColor:v27];
+  proxSubtitleColor = [v4 proxSubtitleColor];
+  [(UILabel *)v26 setTextColor:proxSubtitleColor];
 
   [(UILabel *)self->_subtitleLabel setAdjustsFontSizeToFitWidth:1];
   [(UIScrollView *)self->_scrollView addSubview:self->_subtitleLabel];
@@ -113,17 +113,17 @@
   self->_aboutLink = v40;
 
   [(UIButton *)self->_aboutLink setTranslatesAutoresizingMaskIntoConstraints:0];
-  v42 = [(UIButton *)self->_aboutLink titleLabel];
-  v43 = [v4 proxSubtitleFont];
-  [v42 setFont:v43];
+  titleLabel = [(UIButton *)self->_aboutLink titleLabel];
+  proxSubtitleFont2 = [v4 proxSubtitleFont];
+  [titleLabel setFont:proxSubtitleFont2];
 
   v44 = self->_aboutLink;
   v45 = +[VTUIStringsHelper sharedStringsHelper];
   v46 = [v45 uiLocalizedStringForKey:@"DATA_SHARING_DETAIL_LINK"];
   [(UIButton *)v44 setTitle:v46 forState:0];
 
-  v47 = [(UIButton *)self->_aboutLink titleLabel];
-  [v47 setNumberOfLines:0];
+  titleLabel2 = [(UIButton *)self->_aboutLink titleLabel];
+  [titleLabel2 setNumberOfLines:0];
 
   [(VTUIProximityContainerView *)self->_containerView addSubview:self->_aboutLink];
   v48 = +[VTUIButton _vtuiProximityButtonWithPrimaryStyle];
@@ -136,8 +136,8 @@
   v52 = [v51 uiLocalizedStringForKey:@"DATA_SHARING_CONFIRMATION_BUTTON_TITLE"];
   [(VTUIButton *)v50 setTitle:v52 forState:0];
 
-  v53 = [(VTUIButton *)self->_shareButton titleLabel];
-  [v53 setNumberOfLines:0];
+  titleLabel3 = [(VTUIButton *)self->_shareButton titleLabel];
+  [titleLabel3 setNumberOfLines:0];
 
   [(VTUIProximityContainerView *)self->_containerView addSubview:self->_shareButton];
   v54 = +[VTUIButton _vtuiProximityButtonWithSecondaryStyle];
@@ -150,8 +150,8 @@
   v58 = [v57 uiLocalizedStringForKey:@"DATA_SHARING_DECLINE_BUTTON_TITLE"];
   [(VTUIButton *)v56 setTitle:v58 forState:0];
 
-  v59 = [(VTUIButton *)self->_notNowButton titleLabel];
-  [v59 setNumberOfLines:0];
+  titleLabel4 = [(VTUIButton *)self->_notNowButton titleLabel];
+  [titleLabel4 setNumberOfLines:0];
 
   [(VTUIProximityContainerView *)self->_containerView addSubview:self->_notNowButton];
   v60 = *MEMORY[0x277D85DE8];
@@ -160,33 +160,33 @@
 - (void)_setupPortraitConstraints
 {
   v168[5] = *MEMORY[0x277D85DE8];
-  v3 = [(VTUIProximityDataSharingOptInView *)self safeAreaLayoutGuide];
-  v156 = [(VTUIProximityContainerView *)self->_containerView safeAreaLayoutGuide];
+  safeAreaLayoutGuide = [(VTUIProximityDataSharingOptInView *)self safeAreaLayoutGuide];
+  safeAreaLayoutGuide2 = [(VTUIProximityContainerView *)self->_containerView safeAreaLayoutGuide];
   v157 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = +[VTUIStyle sharedStyle];
-  v5 = [(VTUIProximityContainerView *)self->_containerView bottomAnchor];
-  v6 = [(VTUIProximityDataSharingOptInView *)self bottomAnchor];
+  bottomAnchor = [(VTUIProximityContainerView *)self->_containerView bottomAnchor];
+  bottomAnchor2 = [(VTUIProximityDataSharingOptInView *)self bottomAnchor];
   [v4 proxContainerHorizontalVerticalPadding];
-  v8 = [v5 constraintEqualToAnchor:v6 constant:-v7];
+  v8 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v7];
 
-  v9 = [(VTUIProximityContainerView *)self->_containerView leadingAnchor];
-  v10 = [v3 leadingAnchor];
+  leadingAnchor = [(VTUIProximityContainerView *)self->_containerView leadingAnchor];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
   [v4 proxContainerHorizontalVerticalPadding];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:?];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
 
-  v12 = [(VTUIProximityContainerView *)self->_containerView trailingAnchor];
-  v13 = [v3 trailingAnchor];
+  trailingAnchor = [(VTUIProximityContainerView *)self->_containerView trailingAnchor];
+  trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
   [v4 proxContainerHorizontalVerticalPadding];
-  v15 = [v12 constraintEqualToAnchor:v13 constant:-v14];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v14];
 
-  v16 = [(VTUIProximityContainerView *)self->_containerView heightAnchor];
+  heightAnchor = [(VTUIProximityContainerView *)self->_containerView heightAnchor];
   [v4 proxViewHeight];
-  v17 = [v16 constraintGreaterThanOrEqualToConstant:?];
+  v17 = [heightAnchor constraintGreaterThanOrEqualToConstant:?];
 
-  v18 = [(VTUIProximityContainerView *)self->_containerView heightAnchor];
-  v155 = v3;
-  v19 = [v3 heightAnchor];
-  v20 = [v18 constraintLessThanOrEqualToAnchor:v19 constant:0.0];
+  heightAnchor2 = [(VTUIProximityContainerView *)self->_containerView heightAnchor];
+  v155 = safeAreaLayoutGuide;
+  heightAnchor3 = [safeAreaLayoutGuide heightAnchor];
+  v20 = [heightAnchor2 constraintLessThanOrEqualToAnchor:heightAnchor3 constant:0.0];
 
   v154 = v8;
   v168[0] = v8;
@@ -200,23 +200,23 @@
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v168 count:5];
   [v157 addObjectsFromArray:v21];
 
-  v22 = [(UIScrollView *)self->_scrollView topAnchor];
-  v23 = [v156 topAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23 constant:0.0];
+  topAnchor = [(UIScrollView *)self->_scrollView topAnchor];
+  topAnchor2 = [safeAreaLayoutGuide2 topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
 
-  v25 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v26 = [v156 leadingAnchor];
+  leadingAnchor3 = [(UIScrollView *)self->_scrollView leadingAnchor];
+  leadingAnchor4 = [safeAreaLayoutGuide2 leadingAnchor];
   [v4 proxLeading];
-  v27 = [v25 constraintEqualToAnchor:v26 constant:?];
+  v27 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:?];
 
-  v28 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v29 = [v156 trailingAnchor];
+  trailingAnchor3 = [(UIScrollView *)self->_scrollView trailingAnchor];
+  trailingAnchor4 = [safeAreaLayoutGuide2 trailingAnchor];
   [v4 proxTrailing];
-  v31 = [v28 constraintEqualToAnchor:v29 constant:-v30];
+  v31 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v30];
 
-  v32 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v33 = [(UIButton *)self->_aboutLink bottomAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33 constant:0.0];
+  bottomAnchor3 = [(UIScrollView *)self->_scrollView bottomAnchor];
+  bottomAnchor4 = [(UIButton *)self->_aboutLink bottomAnchor];
+  v34 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:0.0];
 
   v149 = v27;
   v150 = v24;
@@ -229,22 +229,22 @@
   v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v167 count:4];
   [v157 addObjectsFromArray:v35];
 
-  v36 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-  v37 = [(UIScrollView *)self->_scrollView topAnchor];
+  firstBaselineAnchor = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+  topAnchor3 = [(UIScrollView *)self->_scrollView topAnchor];
   [v4 proxTitleFirstBaselineFromTop];
   v39 = v38;
   [v4 proxAboutLinkFirstBaselineFromTop];
-  v41 = [v36 constraintEqualToAnchor:v37 constant:v39 - v40];
+  v41 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor3 constant:v39 - v40];
 
-  v42 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v43 = [v156 leadingAnchor];
+  leadingAnchor5 = [(UILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor6 = [safeAreaLayoutGuide2 leadingAnchor];
   [v4 proxLeading];
-  v44 = [v42 constraintEqualToAnchor:v43 constant:?];
+  v44 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:?];
 
-  v45 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v46 = [v156 trailingAnchor];
+  trailingAnchor5 = [(UILabel *)self->_titleLabel trailingAnchor];
+  trailingAnchor6 = [safeAreaLayoutGuide2 trailingAnchor];
   [v4 proxTrailing];
-  v48 = [v45 constraintEqualToAnchor:v46 constant:-v47];
+  v48 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-v47];
 
   v145 = v44;
   v146 = v41;
@@ -255,23 +255,23 @@
   v49 = [MEMORY[0x277CBEA60] arrayWithObjects:v166 count:3];
   [v157 addObjectsFromArray:v49];
 
-  v50 = [(UIButton *)self->_dismissButton centerYAnchor];
-  v51 = [v156 topAnchor];
+  centerYAnchor = [(UIButton *)self->_dismissButton centerYAnchor];
+  topAnchor4 = [safeAreaLayoutGuide2 topAnchor];
   [v4 proxTrainingDismissButtonVerticalPaddingTop];
-  v52 = [v50 constraintEqualToAnchor:v51 constant:?];
+  v52 = [centerYAnchor constraintEqualToAnchor:topAnchor4 constant:?];
 
-  v53 = [(UIButton *)self->_dismissButton centerXAnchor];
-  v54 = [v156 trailingAnchor];
+  centerXAnchor = [(UIButton *)self->_dismissButton centerXAnchor];
+  trailingAnchor7 = [safeAreaLayoutGuide2 trailingAnchor];
   [v4 proxTrainingDismissButtonHorizontalPadding];
-  v55 = [v53 constraintEqualToAnchor:v54 constant:?];
+  v55 = [centerXAnchor constraintEqualToAnchor:trailingAnchor7 constant:?];
 
-  v56 = [(UIButton *)self->_dismissButton widthAnchor];
+  widthAnchor = [(UIButton *)self->_dismissButton widthAnchor];
   [v4 proxTrainingDismissButtonWidthOrHeight];
-  v57 = [v56 constraintEqualToConstant:?];
+  v57 = [widthAnchor constraintEqualToConstant:?];
 
-  v58 = [(UIButton *)self->_dismissButton heightAnchor];
+  heightAnchor4 = [(UIButton *)self->_dismissButton heightAnchor];
   [v4 proxTrainingDismissButtonWidthOrHeight];
-  v59 = [v58 constraintEqualToConstant:?];
+  v59 = [heightAnchor4 constraintEqualToConstant:?];
 
   v142 = v55;
   v143 = v52;
@@ -284,25 +284,25 @@
   v60 = [MEMORY[0x277CBEA60] arrayWithObjects:v165 count:4];
   [v157 addObjectsFromArray:v60];
 
-  v61 = [(UILabel *)self->_subtitleLabel topAnchor];
-  v62 = [(UILabel *)self->_titleLabel bottomAnchor];
+  topAnchor5 = [(UILabel *)self->_subtitleLabel topAnchor];
+  bottomAnchor5 = [(UILabel *)self->_titleLabel bottomAnchor];
   [v4 proxPaddingDataSharingSubtitle];
-  v63 = [v61 constraintEqualToAnchor:v62 constant:?];
+  v63 = [topAnchor5 constraintEqualToAnchor:bottomAnchor5 constant:?];
 
-  v64 = [(UILabel *)self->_subtitleLabel leadingAnchor];
-  v65 = [v156 leadingAnchor];
+  leadingAnchor7 = [(UILabel *)self->_subtitleLabel leadingAnchor];
+  leadingAnchor8 = [safeAreaLayoutGuide2 leadingAnchor];
   [v4 proxLeading];
-  v66 = [v64 constraintEqualToAnchor:v65 constant:?];
+  v66 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:?];
 
-  v67 = [(UILabel *)self->_subtitleLabel trailingAnchor];
-  v68 = [v156 trailingAnchor];
+  trailingAnchor8 = [(UILabel *)self->_subtitleLabel trailingAnchor];
+  trailingAnchor9 = [safeAreaLayoutGuide2 trailingAnchor];
   [v4 proxTrailing];
-  v70 = [v67 constraintEqualToAnchor:v68 constant:-v69];
+  v70 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9 constant:-v69];
 
-  v71 = [(UILabel *)self->_subtitleLabel bottomAnchor];
-  v72 = [(UIScrollView *)self->_scrollView bottomAnchor];
+  bottomAnchor6 = [(UILabel *)self->_subtitleLabel bottomAnchor];
+  bottomAnchor7 = [(UIScrollView *)self->_scrollView bottomAnchor];
   [v4 proxPrimaryButtonHeight];
-  v74 = [v71 constraintEqualToAnchor:v72 constant:-v73];
+  v74 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7 constant:-v73];
 
   v138 = v66;
   v139 = v63;
@@ -315,25 +315,25 @@
   v75 = [MEMORY[0x277CBEA60] arrayWithObjects:v164 count:4];
   [v157 addObjectsFromArray:v75];
 
-  v76 = [(UIButton *)self->_aboutLink leadingAnchor];
-  v77 = [v156 leadingAnchor];
+  leadingAnchor9 = [(UIButton *)self->_aboutLink leadingAnchor];
+  leadingAnchor10 = [safeAreaLayoutGuide2 leadingAnchor];
   [v4 proxLeading];
-  v78 = [v76 constraintEqualToAnchor:v77 constant:?];
+  v78 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:?];
 
-  v79 = [(UIButton *)self->_aboutLink trailingAnchor];
-  v80 = [v156 trailingAnchor];
+  trailingAnchor10 = [(UIButton *)self->_aboutLink trailingAnchor];
+  trailingAnchor11 = [safeAreaLayoutGuide2 trailingAnchor];
   [v4 proxTrailing];
-  v82 = [v79 constraintEqualToAnchor:v80 constant:-v81];
+  v82 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11 constant:-v81];
 
-  v83 = [(UIButton *)self->_aboutLink bottomAnchor];
-  v84 = [(VTUIButton *)self->_shareButton topAnchor];
-  v85 = [v83 constraintEqualToAnchor:v84 constant:0.0];
+  bottomAnchor8 = [(UIButton *)self->_aboutLink bottomAnchor];
+  topAnchor6 = [(VTUIButton *)self->_shareButton topAnchor];
+  v85 = [bottomAnchor8 constraintEqualToAnchor:topAnchor6 constant:0.0];
 
   if (+[VTUIFeatureFlags isNaturalUIEnabled])
   {
-    v86 = [(UIButton *)self->_aboutLink heightAnchor];
+    heightAnchor5 = [(UIButton *)self->_aboutLink heightAnchor];
     [v4 proxPrimaryButtonHeight];
-    v87 = [v86 constraintEqualToConstant:?];
+    v87 = [heightAnchor5 constraintEqualToConstant:?];
 
     v163[0] = v78;
     v163[1] = v82;
@@ -354,28 +354,28 @@
 
   v134 = v78;
 
-  v89 = [(VTUIButton *)self->_notNowButton leadingAnchor];
-  v90 = [v156 leadingAnchor];
+  leadingAnchor11 = [(VTUIButton *)self->_notNowButton leadingAnchor];
+  leadingAnchor12 = [safeAreaLayoutGuide2 leadingAnchor];
   [v4 proxLeading];
-  v91 = [v89 constraintEqualToAnchor:v90 constant:?];
+  v91 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12 constant:?];
 
-  v92 = [(VTUIButton *)self->_notNowButton trailingAnchor];
-  v93 = [v156 trailingAnchor];
+  trailingAnchor12 = [(VTUIButton *)self->_notNowButton trailingAnchor];
+  trailingAnchor13 = [safeAreaLayoutGuide2 trailingAnchor];
   [v4 proxTrailing];
-  v95 = [v92 constraintEqualToAnchor:v93 constant:-v94];
+  v95 = [trailingAnchor12 constraintEqualToAnchor:trailingAnchor13 constant:-v94];
 
   v96 = +[VTUIFeatureFlags isNaturalUIEnabled];
   notNowButton = self->_notNowButton;
   if (v96)
   {
     v98 = [(VTUIButton *)notNowButton bottomAnchor:v91];
-    v99 = [(VTUIProximityContainerView *)self->_containerView bottomAnchor];
+    bottomAnchor9 = [(VTUIProximityContainerView *)self->_containerView bottomAnchor];
     [v4 proxTrainingDismissButtonVerticalPaddingBottom];
-    v101 = [v98 constraintEqualToAnchor:v99 constant:-v100];
+    v101 = [v98 constraintEqualToAnchor:bottomAnchor9 constant:-v100];
 
-    v102 = [(VTUIButton *)self->_notNowButton heightAnchor];
+    heightAnchor6 = [(VTUIButton *)self->_notNowButton heightAnchor];
     [v4 proxPrimaryButtonHeight];
-    v103 = [v102 constraintEqualToConstant:?];
+    v103 = [heightAnchor6 constraintEqualToConstant:?];
 
     v161[0] = v91;
     v161[1] = v95;
@@ -389,9 +389,9 @@
   else
   {
     v106 = [(VTUIButton *)notNowButton firstBaselineAnchor:v91];
-    v107 = [(VTUIProximityContainerView *)self->_containerView bottomAnchor];
+    bottomAnchor10 = [(VTUIProximityContainerView *)self->_containerView bottomAnchor];
     [v4 proxTrainingDismissButtonVerticalPaddingBottom];
-    v101 = [v106 constraintEqualToAnchor:v107 constant:-v108];
+    v101 = [v106 constraintEqualToAnchor:bottomAnchor10 constant:-v108];
 
     v160[0] = v91;
     v160[1] = v95;
@@ -401,28 +401,28 @@
     [v157 addObjectsFromArray:v103];
   }
 
-  v109 = [(VTUIButton *)self->_shareButton leadingAnchor];
-  v110 = [v156 leadingAnchor];
+  leadingAnchor13 = [(VTUIButton *)self->_shareButton leadingAnchor];
+  leadingAnchor14 = [safeAreaLayoutGuide2 leadingAnchor];
   [v4 proxLeading];
-  v111 = [v109 constraintEqualToAnchor:v110 constant:?];
+  v111 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14 constant:?];
 
-  v112 = [(VTUIButton *)self->_shareButton trailingAnchor];
-  v113 = [v156 trailingAnchor];
+  trailingAnchor14 = [(VTUIButton *)self->_shareButton trailingAnchor];
+  trailingAnchor15 = [safeAreaLayoutGuide2 trailingAnchor];
   [v4 proxTrailing];
-  v115 = [v112 constraintEqualToAnchor:v113 constant:-v114];
+  v115 = [trailingAnchor14 constraintEqualToAnchor:trailingAnchor15 constant:-v114];
 
   v116 = +[VTUIFeatureFlags isNaturalUIEnabled];
   shareButton = self->_shareButton;
   if (v116)
   {
-    v118 = [(VTUIButton *)shareButton bottomAnchor];
-    v119 = [(VTUIButton *)self->_notNowButton topAnchor];
+    bottomAnchor11 = [(VTUIButton *)shareButton bottomAnchor];
+    topAnchor7 = [(VTUIButton *)self->_notNowButton topAnchor];
     [v4 proxTrainingNotNowButtonVerticalPaddingTop];
-    v121 = [v118 constraintEqualToAnchor:v119 constant:-v120];
+    v121 = [bottomAnchor11 constraintEqualToAnchor:topAnchor7 constant:-v120];
 
-    v122 = [(VTUIButton *)self->_shareButton heightAnchor];
+    heightAnchor7 = [(VTUIButton *)self->_shareButton heightAnchor];
     [v4 proxPrimaryButtonHeight];
-    v123 = [v122 constraintEqualToConstant:?];
+    v123 = [heightAnchor7 constraintEqualToConstant:?];
 
     v159 = v111;
     v124 = &v159;
@@ -430,14 +430,14 @@
 
   else
   {
-    v125 = [(VTUIButton *)shareButton firstBaselineAnchor];
-    v126 = [(VTUIButton *)self->_notNowButton topAnchor];
+    firstBaselineAnchor2 = [(VTUIButton *)shareButton firstBaselineAnchor];
+    topAnchor8 = [(VTUIButton *)self->_notNowButton topAnchor];
     [v4 proxTrainingDismissButtonVerticalPaddingTop];
-    v121 = [v125 constraintEqualToAnchor:v126 constant:-v127];
+    v121 = [firstBaselineAnchor2 constraintEqualToAnchor:topAnchor8 constant:-v127];
 
-    v128 = [(VTUIButton *)self->_shareButton heightAnchor];
+    heightAnchor8 = [(VTUIButton *)self->_shareButton heightAnchor];
     [v4 proxPrimaryButtonHeight];
-    v123 = [v128 constraintEqualToConstant:?];
+    v123 = [heightAnchor8 constraintEqualToConstant:?];
 
     v158 = v111;
     v124 = &v158;

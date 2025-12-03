@@ -11,23 +11,23 @@
   v7 = [v5 alloc];
   if (a4)
   {
-    v8 = [v6 endDate];
-    v9 = [v6 startDate];
+    endDate = [v6 endDate];
+    startDate = [v6 startDate];
 
     v10 = v7;
-    v11 = v8;
-    v12 = v9;
+    v11 = endDate;
+    v12 = startDate;
     v13 = 1;
   }
 
   else
   {
-    v8 = [v6 startDate];
-    v9 = [v6 endDate];
+    endDate = [v6 startDate];
+    startDate = [v6 endDate];
 
     v10 = v7;
-    v11 = v8;
-    v12 = v9;
+    v11 = endDate;
+    v12 = startDate;
     v13 = 0;
   }
 

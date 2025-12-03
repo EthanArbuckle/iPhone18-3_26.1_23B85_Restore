@@ -1,20 +1,20 @@
 @interface MFEmailSnippetSearchResultCellView
 + (id)reuseIdentifier;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MFEmailSnippetSearchResultCellView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MFEmailSnippetSearchResultCellView)initWithFrame:(CGRect)frame;
 - (void)_createViews;
 - (void)_setUpConstraints;
-- (void)_setUpConstraintsForVerticalStatusIndicators:(id)a3;
-- (void)setEmail:(id)a3;
+- (void)_setUpConstraintsForVerticalStatusIndicators:(id)indicators;
+- (void)setEmail:(id)email;
 @end
 
 @implementation MFEmailSnippetSearchResultCellView
 
-- (MFEmailSnippetSearchResultCellView)initWithFrame:(CGRect)a3
+- (MFEmailSnippetSearchResultCellView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MFEmailSnippetSearchResultCellView;
-  v3 = [(MFEmailSnippetSearchResultCellView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFEmailSnippetSearchResultCellView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -34,9 +34,9 @@
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v4 = sub_8310(105.0);
   v5 = width;
   result.height = v4;
@@ -44,23 +44,23 @@
   return result;
 }
 
-- (void)setEmail:(id)a3
+- (void)setEmail:(id)email
 {
-  v4 = a3;
-  v101 = v4;
-  v98 = [v4 subject];
-  v97 = [v4 message];
-  v5 = [v4 outgoing];
-  if ([v5 BOOLValue])
+  emailCopy = email;
+  v101 = emailCopy;
+  subject = [emailCopy subject];
+  message = [emailCopy message];
+  outgoing = [emailCopy outgoing];
+  if ([outgoing BOOLValue])
   {
     v92 = 1;
   }
 
   else
   {
-    v6 = [v4 identifier];
-    v7 = [v6 scheme];
-    v92 = [v7 isEqualToString:@"amos"];
+    identifier = [emailCopy identifier];
+    scheme = [identifier scheme];
+    v92 = [scheme isEqualToString:@"amos"];
   }
 
   v8 = MFLogGeneral();
@@ -84,30 +84,30 @@
   if (v92)
   {
     v11 = +[NSMutableArray array];
-    v12 = [v4 recipientsTo];
-    v13 = [v4 recipientsCc];
-    if ([v12 count])
+    recipientsTo = [emailCopy recipientsTo];
+    recipientsCc = [emailCopy recipientsCc];
+    if ([recipientsTo count])
     {
-      v14 = MFCommentedEmailsFromSAPersonAttributes(v12);
+      v14 = MFCommentedEmailsFromSAPersonAttributes(recipientsTo);
       [v11 addObjectsFromArray:v14];
     }
 
-    if ([v13 count])
+    if ([recipientsCc count])
     {
-      v15 = MFCommentedEmailsFromSAPersonAttributes(v13);
+      v15 = MFCommentedEmailsFromSAPersonAttributes(recipientsCc);
       [v11 addObjectsFromArray:v15];
     }
 
     goto LABEL_13;
   }
 
-  v16 = [v4 fromEmail];
-  v12 = v16;
-  if (v16)
+  fromEmail = [emailCopy fromEmail];
+  recipientsTo = fromEmail;
+  if (fromEmail)
   {
-    v120 = v16;
-    v13 = [NSArray arrayWithObjects:&v120 count:1];
-    v11 = MFCommentedEmailsFromSAPersonAttributes(v13);
+    v120 = fromEmail;
+    recipientsCc = [NSArray arrayWithObjects:&v120 count:1];
+    v11 = MFCommentedEmailsFromSAPersonAttributes(recipientsCc);
 LABEL_13:
 
     goto LABEL_14;
@@ -142,20 +142,20 @@ LABEL_14:
         }
 
         v22 = v21;
-        v23 = [v22 emailAddressValue];
-        v24 = [v23 displayName];
-        v25 = v24;
-        if (v24)
+        emailAddressValue = [v22 emailAddressValue];
+        displayName = [emailAddressValue displayName];
+        v25 = displayName;
+        if (displayName)
         {
-          v26 = v24;
+          stringValue = displayName;
         }
 
         else
         {
-          v26 = [v22 stringValue];
+          stringValue = [v22 stringValue];
         }
 
-        v27 = v26;
+        v27 = stringValue;
 
         [v17 appendString:v27];
       }
@@ -184,8 +184,8 @@ LABEL_14:
   }
 
   v29 = [[NSAttributedString alloc] initWithString:v102 attributes:v94];
-  v30 = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
-  [v30 setAttributedText:v29];
+  addressLabel = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
+  [addressLabel setAttributedText:v29];
 
   v89 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleSubheadline];
   [v89 pointSize];
@@ -198,8 +198,8 @@ LABEL_14:
   v93 = [NSDictionary dictionaryWithObjects:v118 forKeys:v117 count:2];
 
   v32 = [NSAttributedString alloc];
-  v33 = [v98 length];
-  v34 = v98;
+  v33 = [subject length];
+  v34 = subject;
   if (!v33)
   {
     v31 = [NSBundle bundleForClass:objc_opt_class()];
@@ -207,26 +207,26 @@ LABEL_14:
   }
 
   v35 = [v32 initWithString:v34 attributes:v93];
-  v36 = [(MFEmailSnippetSearchResultCellView *)self subjectLabel];
-  [v36 setAttributedText:v35];
+  subjectLabel = [(MFEmailSnippetSearchResultCellView *)self subjectLabel];
+  [subjectLabel setAttributedText:v35];
 
   if (!v33)
   {
   }
 
-  v37 = [(MFEmailSnippetSearchResultCellView *)self subjectLabel];
-  v38 = [v37 text];
-  v39 = [v38 _isNaturallyRTL];
+  subjectLabel2 = [(MFEmailSnippetSearchResultCellView *)self subjectLabel];
+  text = [subjectLabel2 text];
+  _isNaturallyRTL = [text _isNaturallyRTL];
 
-  v40 = [(MFEmailSnippetSearchResultCellView *)self subjectLabel];
-  if (v39)
+  subjectLabel3 = [(MFEmailSnippetSearchResultCellView *)self subjectLabel];
+  if (_isNaturallyRTL)
   {
-    [v40 setTextAlignment:2];
+    [subjectLabel3 setTextAlignment:2];
   }
 
   else
   {
-    [v40 setTextAlignment:0];
+    [subjectLabel3 setTextAlignment:0];
   }
 
   v115[0] = NSFontAttributeName;
@@ -238,8 +238,8 @@ LABEL_14:
   v91 = [NSDictionary dictionaryWithObjects:v116 forKeys:v115 count:2];
 
   v43 = [NSAttributedString alloc];
-  v44 = [v97 length];
-  v45 = v97;
+  v44 = [message length];
+  v45 = message;
   if (!v44)
   {
     v41 = [NSBundle bundleForClass:objc_opt_class()];
@@ -247,26 +247,26 @@ LABEL_14:
   }
 
   v46 = [v43 initWithString:v45 attributes:v91];
-  v47 = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
-  [v47 setAttributedText:v46];
+  bodyLabel = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
+  [bodyLabel setAttributedText:v46];
 
   if (!v44)
   {
   }
 
-  v48 = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
-  v49 = [v48 text];
-  v50 = [v49 _isNaturallyRTL];
+  bodyLabel2 = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
+  text2 = [bodyLabel2 text];
+  _isNaturallyRTL2 = [text2 _isNaturallyRTL];
 
-  v51 = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
-  if (v50)
+  bodyLabel3 = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
+  if (_isNaturallyRTL2)
   {
-    [v51 setTextAlignment:2];
+    [bodyLabel3 setTextAlignment:2];
   }
 
   else
   {
-    [v51 setTextAlignment:0];
+    [bodyLabel3 setTextAlignment:0];
   }
 
   v113[0] = NSFontAttributeName;
@@ -277,25 +277,25 @@ LABEL_14:
   v114[1] = v53;
   v100 = [NSDictionary dictionaryWithObjects:v114 forKeys:v113 count:2];
 
-  v54 = [v101 dateSent];
-  v55 = v54;
-  if (!v54)
+  dateSent = [v101 dateSent];
+  v55 = dateSent;
+  if (!dateSent)
   {
     v55 = +[NSDate date];
   }
 
-  v56 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
-  [v56 setDate:v55];
+  dateLabel = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
+  [dateLabel setDate:v55];
 
-  if (!v54)
+  if (!dateSent)
   {
   }
 
   v57 = [[NSAttributedString alloc] initWithString:v102 attributes:v100];
-  v58 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
-  [v58 setAttributedText:v57];
+  dateLabel2 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
+  [dateLabel2 setAttributedText:v57];
 
-  v59 = [v101 statusFlags];
+  statusFlags = [v101 statusFlags];
   v60 = MFLogGeneral();
   if (os_log_type_enabled(v60, OS_LOG_TYPE_DEBUG))
   {
@@ -303,7 +303,7 @@ LABEL_14:
   }
 
   v61 = MFLogGeneral();
-  v62 = (v59 >> 1) & 4 | v59 & 1 | (v59 >> 4) & 2 | (32 * ((v59 >> 4) & 1)) | (8 * ((v59 >> 1) & 3)) | (v59 >> 1) & 0xC0;
+  v62 = (statusFlags >> 1) & 4 | statusFlags & 1 | (statusFlags >> 4) & 2 | (32 * ((statusFlags >> 4) & 1)) | (8 * ((statusFlags >> 1) & 3)) | (statusFlags >> 1) & 0xC0;
   if (os_log_type_enabled(v61, OS_LOG_TYPE_DEBUG))
   {
     sub_B734();
@@ -318,16 +318,16 @@ LABEL_14:
       sub_B7A8();
     }
 
-    v99 = objc_alloc_init(MessageListStatusIndicatorManager);
-    [(MessageStatusIndicatorManager *)v99 setIndicatorOptions:self->_mask];
-    v88 = [(MessageListStatusIndicatorManager *)v99 verticalStatusIndicatorViews];
-    v64 = [(MessageListStatusIndicatorManager *)v99 horizontalStatusIndicatorViews];
+    verticalStatusIconView2 = objc_alloc_init(MessageListStatusIndicatorManager);
+    [(MessageStatusIndicatorManager *)verticalStatusIconView2 setIndicatorOptions:self->_mask];
+    verticalStatusIndicatorViews = [(MessageListStatusIndicatorManager *)verticalStatusIconView2 verticalStatusIndicatorViews];
+    horizontalStatusIndicatorViews = [(MessageListStatusIndicatorManager *)verticalStatusIconView2 horizontalStatusIndicatorViews];
     v106 = 0u;
     v107 = 0u;
     v104 = 0u;
     v105 = 0u;
-    v65 = v88;
-    v66 = [v65 countByEnumeratingWithState:&v104 objects:v112 count:16];
+    subviews = verticalStatusIndicatorViews;
+    v66 = [subviews countByEnumeratingWithState:&v104 objects:v112 count:16];
     if (v66)
     {
       v67 = *v105;
@@ -337,22 +337,22 @@ LABEL_14:
         {
           if (*v105 != v67)
           {
-            objc_enumerationMutation(v65);
+            objc_enumerationMutation(subviews);
           }
 
           v69 = *(*(&v104 + 1) + 8 * j);
-          v70 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
-          [v70 addSubview:v69];
+          verticalStatusIconView = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
+          [verticalStatusIconView addSubview:v69];
         }
 
-        v66 = [v65 countByEnumeratingWithState:&v104 objects:v112 count:16];
+        v66 = [subviews countByEnumeratingWithState:&v104 objects:v112 count:16];
       }
 
       while (v66);
     }
 
-    [(MFEmailSnippetSearchResultCellView *)self _setUpConstraintsForVerticalStatusIndicators:v65];
-    v71 = [v64 count];
+    [(MFEmailSnippetSearchResultCellView *)self _setUpConstraintsForVerticalStatusIndicators:subviews];
+    v71 = [horizontalStatusIndicatorViews count];
     v72 = v71;
     if (v71 - 1 < 0)
     {
@@ -365,13 +365,13 @@ LABEL_14:
       v74 = v71;
       do
       {
-        v75 = [v64 objectAtIndex:--v74];
+        v75 = [horizontalStatusIndicatorViews objectAtIndex:--v74];
         LODWORD(v76) = 1148846080;
         [v75 setContentCompressionResistancePriority:0 forAxis:v76];
         LODWORD(v77) = 1148846080;
         [v75 setContentHuggingPriority:0 forAxis:v77];
-        v78 = [(MFEmailSnippetSearchResultCellView *)self subjectAndHorizontalStatusIconStackView];
-        [v78 addArrangedSubview:v75];
+        subjectAndHorizontalStatusIconStackView = [(MFEmailSnippetSearchResultCellView *)self subjectAndHorizontalStatusIconStackView];
+        [subjectAndHorizontalStatusIconStackView addArrangedSubview:v75];
 
         if (v73)
         {
@@ -379,8 +379,8 @@ LABEL_14:
           v80 = v79;
           [v73 intrinsicContentSize];
           v82 = v81;
-          v83 = [(MFEmailSnippetSearchResultCellView *)self subjectAndHorizontalStatusIconStackView];
-          [v83 setCustomSpacing:v73 afterView:18.0 - v80 * 0.5 - v82 * 0.5];
+          subjectAndHorizontalStatusIconStackView2 = [(MFEmailSnippetSearchResultCellView *)self subjectAndHorizontalStatusIconStackView];
+          [subjectAndHorizontalStatusIconStackView2 setCustomSpacing:v73 afterView:18.0 - v80 * 0.5 - v82 * 0.5];
         }
 
         v73 = v75;
@@ -399,9 +399,9 @@ LABEL_14:
       v85 = 3.40282347e38;
     }
 
-    v86 = [(MFEmailSnippetSearchResultCellView *)self subjectAndHorizontalStatusIconStackView];
-    v87 = [(MFEmailSnippetSearchResultCellView *)self subjectLabel];
-    [v86 setCustomSpacing:v87 afterView:v85];
+    subjectAndHorizontalStatusIconStackView3 = [(MFEmailSnippetSearchResultCellView *)self subjectAndHorizontalStatusIconStackView];
+    subjectLabel4 = [(MFEmailSnippetSearchResultCellView *)self subjectLabel];
+    [subjectAndHorizontalStatusIconStackView3 setCustomSpacing:subjectLabel4 afterView:v85];
   }
 
   else
@@ -412,9 +412,9 @@ LABEL_14:
       sub_B7E8();
     }
 
-    v99 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
-    v65 = [(MessageListStatusIndicatorManager *)v99 subviews];
-    [v65 makeObjectsPerformSelector:"removeFromSuperview"];
+    verticalStatusIconView2 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
+    subviews = [(MessageListStatusIndicatorManager *)verticalStatusIconView2 subviews];
+    [subviews makeObjectsPerformSelector:"removeFromSuperview"];
   }
 }
 
@@ -425,62 +425,62 @@ LABEL_14:
   v19 = [v3 initWithFrame:{0.0, 0.0, 20.0}];
   [(MFEmailSnippetSearchResultCellView *)self setVerticalStatusIconView:?];
 
-  v20 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
-  [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+  verticalStatusIconView = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
+  [verticalStatusIconView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v21 = +[UIColor clearColor];
-  v4 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
-  [v4 setBackgroundColor:v21];
+  verticalStatusIconView2 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
+  [verticalStatusIconView2 setBackgroundColor:v21];
 
-  v22 = [(MFEmailSnippetSearchResultCellView *)self contentView];
-  v5 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
-  [v22 addSubview:v5];
+  contentView = [(MFEmailSnippetSearchResultCellView *)self contentView];
+  verticalStatusIconView3 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
+  [contentView addSubview:verticalStatusIconView3];
 
   v23 = +[UIStackView mf_baselineAlignedVerticalStackView];
   [(MFEmailSnippetSearchResultCellView *)self setSubjectAndBodyStackView:?];
 
-  v24 = [(MFEmailSnippetSearchResultCellView *)self contentView];
-  v6 = [(MFEmailSnippetSearchResultCellView *)self subjectAndBodyStackView];
-  [v24 addSubview:v6];
+  contentView2 = [(MFEmailSnippetSearchResultCellView *)self contentView];
+  subjectAndBodyStackView = [(MFEmailSnippetSearchResultCellView *)self subjectAndBodyStackView];
+  [contentView2 addSubview:subjectAndBodyStackView];
 
   v25 = objc_alloc_init(UILabel);
   [(MFEmailSnippetSearchResultCellView *)self setAddressLabel:?];
 
-  v26 = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
-  [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
+  addressLabel = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
+  [addressLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v27 = +[UIColor clearColor];
-  v7 = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
-  [v7 setBackgroundColor:v27];
+  addressLabel2 = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
+  [addressLabel2 setBackgroundColor:v27];
 
-  v28 = [(MFEmailSnippetSearchResultCellView *)self contentView];
-  v8 = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
-  [v28 addSubview:v8];
+  contentView3 = [(MFEmailSnippetSearchResultCellView *)self contentView];
+  addressLabel3 = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
+  [contentView3 addSubview:addressLabel3];
 
   v29 = objc_alloc_init(UIDateLabel);
   [(MFEmailSnippetSearchResultCellView *)self setDateLabel:?];
 
-  v30 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
-  [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
+  dateLabel = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
+  [dateLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v31 = +[UIColor clearColor];
-  v9 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
-  [v9 setBackgroundColor:v31];
+  dateLabel2 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
+  [dateLabel2 setBackgroundColor:v31];
 
   v32 = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
-  v10 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
-  [v10 setFont:v32];
+  dateLabel3 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
+  [dateLabel3 setFont:v32];
 
   v33 = +[UIColor siriui_semiTransparentTextColor];
-  v11 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
-  [v11 setTextColor:v33];
+  dateLabel4 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
+  [dateLabel4 setTextColor:v33];
 
-  v34 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
-  [v34 setTextAlignment:2];
+  dateLabel5 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
+  [dateLabel5 setTextAlignment:2];
 
-  v35 = [(MFEmailSnippetSearchResultCellView *)self contentView];
-  v12 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
-  [v35 addSubview:v12];
+  contentView4 = [(MFEmailSnippetSearchResultCellView *)self contentView];
+  dateLabel6 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
+  [contentView4 addSubview:dateLabel6];
 
   v36 = +[UIStackView mf_baselineAlignedHorizontalStackView];
   [(MFEmailSnippetSearchResultCellView *)self setSubjectAndHorizontalStatusIconStackView:?];
@@ -488,171 +488,171 @@ LABEL_14:
   v37 = objc_alloc_init(UILabel);
   [(MFEmailSnippetSearchResultCellView *)self setSubjectLabel:?];
 
-  v38 = [(MFEmailSnippetSearchResultCellView *)self subjectLabel];
-  [v38 setTranslatesAutoresizingMaskIntoConstraints:0];
+  subjectLabel = [(MFEmailSnippetSearchResultCellView *)self subjectLabel];
+  [subjectLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v39 = +[UIColor clearColor];
-  v13 = [(MFEmailSnippetSearchResultCellView *)self subjectLabel];
-  [v13 setBackgroundColor:v39];
+  subjectLabel2 = [(MFEmailSnippetSearchResultCellView *)self subjectLabel];
+  [subjectLabel2 setBackgroundColor:v39];
 
-  v40 = [(MFEmailSnippetSearchResultCellView *)self subjectAndHorizontalStatusIconStackView];
-  v14 = [(MFEmailSnippetSearchResultCellView *)self subjectLabel];
-  [v40 addArrangedSubview:v14];
+  subjectAndHorizontalStatusIconStackView = [(MFEmailSnippetSearchResultCellView *)self subjectAndHorizontalStatusIconStackView];
+  subjectLabel3 = [(MFEmailSnippetSearchResultCellView *)self subjectLabel];
+  [subjectAndHorizontalStatusIconStackView addArrangedSubview:subjectLabel3];
 
-  v41 = [(MFEmailSnippetSearchResultCellView *)self subjectAndBodyStackView];
-  v15 = [(MFEmailSnippetSearchResultCellView *)self subjectAndHorizontalStatusIconStackView];
-  [v41 addArrangedSubview:v15];
+  subjectAndBodyStackView2 = [(MFEmailSnippetSearchResultCellView *)self subjectAndBodyStackView];
+  subjectAndHorizontalStatusIconStackView2 = [(MFEmailSnippetSearchResultCellView *)self subjectAndHorizontalStatusIconStackView];
+  [subjectAndBodyStackView2 addArrangedSubview:subjectAndHorizontalStatusIconStackView2];
 
   v42 = objc_alloc_init(UILabel);
   [(MFEmailSnippetSearchResultCellView *)self setBodyLabel:?];
 
-  v43 = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
-  [v43 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bodyLabel = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
+  [bodyLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v44 = +[UIColor clearColor];
-  v16 = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
-  [v16 setBackgroundColor:v44];
+  bodyLabel2 = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
+  [bodyLabel2 setBackgroundColor:v44];
 
   v45 = +[UIFont siriui_lightWeightBodySizeFont];
-  v17 = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
-  [v17 setFont:v45];
+  bodyLabel3 = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
+  [bodyLabel3 setFont:v45];
 
-  v46 = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
-  [v46 setNumberOfLines:2];
+  bodyLabel4 = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
+  [bodyLabel4 setNumberOfLines:2];
 
-  v47 = [(MFEmailSnippetSearchResultCellView *)self subjectAndBodyStackView];
-  v18 = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
-  [v47 addArrangedSubview:v18];
+  subjectAndBodyStackView3 = [(MFEmailSnippetSearchResultCellView *)self subjectAndBodyStackView];
+  bodyLabel5 = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
+  [subjectAndBodyStackView3 addArrangedSubview:bodyLabel5];
 }
 
 - (void)_setUpConstraints
 {
-  v70 = [(MFEmailSnippetSearchResultCellView *)self contentView];
-  v3 = [(MFEmailSnippetSearchResultCellView *)self contentView];
-  v4 = [v3 constraints];
-  [v70 removeConstraints:v4];
+  contentView = [(MFEmailSnippetSearchResultCellView *)self contentView];
+  contentView2 = [(MFEmailSnippetSearchResultCellView *)self contentView];
+  constraints = [contentView2 constraints];
+  [contentView removeConstraints:constraints];
 
-  v71 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
-  [v71 sizeToFit];
+  dateLabel = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
+  [dateLabel sizeToFit];
 
-  v5 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
+  dateLabel2 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
   LODWORD(v6) = 1148846080;
-  v72 = v5;
-  [v5 setContentCompressionResistancePriority:0 forAxis:v6];
+  v72 = dateLabel2;
+  [dateLabel2 setContentCompressionResistancePriority:0 forAxis:v6];
 
-  v7 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
+  dateLabel3 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
   LODWORD(v8) = 1148846080;
-  v73 = v7;
-  [v7 setContentCompressionResistancePriority:1 forAxis:v8];
+  v73 = dateLabel3;
+  [dateLabel3 setContentCompressionResistancePriority:1 forAxis:v8];
 
-  v9 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
+  dateLabel4 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
   LODWORD(v10) = 1148846080;
-  v74 = v9;
-  [v9 setContentHuggingPriority:0 forAxis:v10];
+  v74 = dateLabel4;
+  [dateLabel4 setContentHuggingPriority:0 forAxis:v10];
 
-  v11 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
+  dateLabel5 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
   LODWORD(v12) = 1148846080;
-  v75 = v11;
-  [v11 setContentHuggingPriority:1 forAxis:v12];
+  v75 = dateLabel5;
+  [dateLabel5 setContentHuggingPriority:1 forAxis:v12];
 
   v76 = +[NSMutableArray array];
-  v13 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
-  v14 = [v13 widthAnchor];
-  v15 = [v14 constraintEqualToConstant:SiriUIPlatterStyle[2]];
+  verticalStatusIconView = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
+  widthAnchor = [verticalStatusIconView widthAnchor];
+  v15 = [widthAnchor constraintEqualToConstant:SiriUIPlatterStyle[2]];
   [v76 addObject:v15];
 
-  v16 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
-  v17 = [v16 heightAnchor];
-  v18 = [(MFEmailSnippetSearchResultCellView *)self contentView];
-  v19 = [v18 heightAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  verticalStatusIconView2 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
+  heightAnchor = [verticalStatusIconView2 heightAnchor];
+  contentView3 = [(MFEmailSnippetSearchResultCellView *)self contentView];
+  heightAnchor2 = [contentView3 heightAnchor];
+  v20 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   [v76 addObject:v20];
 
-  v21 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
-  v22 = [v21 leadingAnchor];
-  v23 = [(MFEmailSnippetSearchResultCellView *)self leadingAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23 constant:SiriUIPlatterStyle[0]];
+  verticalStatusIconView3 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
+  leadingAnchor = [verticalStatusIconView3 leadingAnchor];
+  leadingAnchor2 = [(MFEmailSnippetSearchResultCellView *)self leadingAnchor];
+  v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:SiriUIPlatterStyle[0]];
   [v76 addObject:v24];
 
-  v25 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
-  v26 = [v25 topAnchor];
-  v27 = [(MFEmailSnippetSearchResultCellView *)self topAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  verticalStatusIconView4 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
+  topAnchor = [verticalStatusIconView4 topAnchor];
+  topAnchor2 = [(MFEmailSnippetSearchResultCellView *)self topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v76 addObject:v28];
 
-  v29 = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
-  v30 = [v29 firstBaselineAnchor];
-  v31 = [(MFEmailSnippetSearchResultCellView *)self topAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31 constant:sub_8310(28.0)];
+  addressLabel = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
+  firstBaselineAnchor = [addressLabel firstBaselineAnchor];
+  topAnchor3 = [(MFEmailSnippetSearchResultCellView *)self topAnchor];
+  v32 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor3 constant:sub_8310(28.0)];
   [v76 addObject:v32];
 
-  v33 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
-  v34 = [v33 centerYAnchor];
-  v35 = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
-  v36 = [v35 centerYAnchor];
-  v37 = [v34 constraintEqualToAnchor:v36];
+  dateLabel6 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
+  centerYAnchor = [dateLabel6 centerYAnchor];
+  addressLabel2 = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
+  centerYAnchor2 = [addressLabel2 centerYAnchor];
+  v37 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v76 addObject:v37];
 
-  v38 = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
-  v39 = [v38 leadingAnchor];
-  v40 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
-  v41 = [v40 trailingAnchor];
+  addressLabel3 = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
+  leadingAnchor3 = [addressLabel3 leadingAnchor];
+  verticalStatusIconView5 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
+  trailingAnchor = [verticalStatusIconView5 trailingAnchor];
   v42 = SiriUIPlatterStyle[28];
-  v43 = [v39 constraintEqualToAnchor:v41 constant:v42];
+  v43 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:v42];
   [v76 addObject:v43];
 
-  v44 = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
-  v45 = [v44 trailingAnchor];
-  v46 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
-  v47 = [v46 leadingAnchor];
-  v48 = [v45 constraintLessThanOrEqualToAnchor:v47 constant:-SiriUIPlatterStyle[29]];
+  addressLabel4 = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
+  trailingAnchor2 = [addressLabel4 trailingAnchor];
+  dateLabel7 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
+  leadingAnchor4 = [dateLabel7 leadingAnchor];
+  v48 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:leadingAnchor4 constant:-SiriUIPlatterStyle[29]];
   [v76 addObject:v48];
 
-  v49 = [(MFEmailSnippetSearchResultCellView *)self trailingAnchor];
-  v50 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
-  v51 = [v50 trailingAnchor];
-  v52 = [v49 constraintEqualToAnchor:v51 constant:SiriUIPlatterStyle[34]];
+  trailingAnchor3 = [(MFEmailSnippetSearchResultCellView *)self trailingAnchor];
+  dateLabel8 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
+  trailingAnchor4 = [dateLabel8 trailingAnchor];
+  v52 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:SiriUIPlatterStyle[34]];
   [v76 addObject:v52];
 
-  v53 = [(MFEmailSnippetSearchResultCellView *)self subjectAndBodyStackView];
-  v54 = [v53 firstBaselineAnchor];
-  v55 = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
-  v56 = [v55 bottomAnchor];
-  v57 = [v54 constraintEqualToAnchor:v56 constant:sub_8310(17.0)];
+  subjectAndBodyStackView = [(MFEmailSnippetSearchResultCellView *)self subjectAndBodyStackView];
+  firstBaselineAnchor2 = [subjectAndBodyStackView firstBaselineAnchor];
+  addressLabel5 = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
+  bottomAnchor = [addressLabel5 bottomAnchor];
+  v57 = [firstBaselineAnchor2 constraintEqualToAnchor:bottomAnchor constant:sub_8310(17.0)];
   [v76 addObject:v57];
 
-  v58 = [(MFEmailSnippetSearchResultCellView *)self subjectAndBodyStackView];
-  v59 = [v58 leadingAnchor];
-  v60 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
-  v61 = [v60 trailingAnchor];
-  v62 = [v59 constraintEqualToAnchor:v61 constant:v42];
+  subjectAndBodyStackView2 = [(MFEmailSnippetSearchResultCellView *)self subjectAndBodyStackView];
+  leadingAnchor5 = [subjectAndBodyStackView2 leadingAnchor];
+  verticalStatusIconView6 = [(MFEmailSnippetSearchResultCellView *)self verticalStatusIconView];
+  trailingAnchor5 = [verticalStatusIconView6 trailingAnchor];
+  v62 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor5 constant:v42];
   [v76 addObject:v62];
 
-  v63 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
-  v64 = [v63 trailingAnchor];
-  v65 = [(MFEmailSnippetSearchResultCellView *)self subjectAndBodyStackView];
-  v66 = [v65 trailingAnchor];
-  v67 = [v64 constraintEqualToAnchor:v66 constant:0.5];
+  dateLabel9 = [(MFEmailSnippetSearchResultCellView *)self dateLabel];
+  trailingAnchor6 = [dateLabel9 trailingAnchor];
+  subjectAndBodyStackView3 = [(MFEmailSnippetSearchResultCellView *)self subjectAndBodyStackView];
+  trailingAnchor7 = [subjectAndBodyStackView3 trailingAnchor];
+  v67 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:0.5];
   [v76 addObject:v67];
 
   v68 = sub_8310(20.0);
-  v69 = [(MFEmailSnippetSearchResultCellView *)self subjectAndBodyStackView];
-  [v69 setSpacing:v68];
+  subjectAndBodyStackView4 = [(MFEmailSnippetSearchResultCellView *)self subjectAndBodyStackView];
+  [subjectAndBodyStackView4 setSpacing:v68];
 
   [NSLayoutConstraint activateConstraints:v76];
 }
 
-- (void)_setUpConstraintsForVerticalStatusIndicators:(id)a3
+- (void)_setUpConstraintsForVerticalStatusIndicators:(id)indicators
 {
-  v30 = a3;
+  indicatorsCopy = indicators;
   v28 = +[NSMutableArray array];
-  v4 = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
-  v36[0] = v4;
-  v5 = [(MFEmailSnippetSearchResultCellView *)self subjectLabel];
-  v36[1] = v5;
-  v27 = self;
-  v6 = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
-  v36[2] = v6;
+  addressLabel = [(MFEmailSnippetSearchResultCellView *)self addressLabel];
+  v36[0] = addressLabel;
+  subjectLabel = [(MFEmailSnippetSearchResultCellView *)self subjectLabel];
+  v36[1] = subjectLabel;
+  selfCopy = self;
+  bodyLabel = [(MFEmailSnippetSearchResultCellView *)self bodyLabel];
+  v36[2] = bodyLabel;
   v7 = [NSArray arrayWithObjects:v36 count:3];
 
   v33 = 0u;
@@ -676,36 +676,36 @@ LABEL_14:
         }
 
         v12 = *(*(&v31 + 1) + 8 * v11);
-        if (v9 >= [v30 count])
+        if (v9 >= [indicatorsCopy count])
         {
           v14 = 0;
         }
 
         else
         {
-          v13 = [v30 objectAtIndex:v9];
+          v13 = [indicatorsCopy objectAtIndex:v9];
           v14 = v13;
           ++v9;
           if (v13)
           {
-            v15 = [v13 layer];
-            [v15 opacity];
+            layer = [v13 layer];
+            [layer opacity];
             v17 = v16 > 0.0;
 
             if (v17)
             {
               [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-              v18 = [v14 centerXAnchor];
-              v19 = [(MFEmailSnippetSearchResultCellView *)v27 verticalStatusIconView];
-              v20 = [v19 centerXAnchor];
-              v21 = [v18 constraintEqualToAnchor:v20];
+              centerXAnchor = [v14 centerXAnchor];
+              verticalStatusIconView = [(MFEmailSnippetSearchResultCellView *)selfCopy verticalStatusIconView];
+              centerXAnchor2 = [verticalStatusIconView centerXAnchor];
+              v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
               [v28 addObject:v21];
 
-              v22 = [v14 centerYAnchor];
-              v23 = [v12 firstBaselineAnchor];
-              v24 = [v12 font];
-              [v24 capHeight];
-              v26 = [v22 constraintEqualToAnchor:v23 constant:v25 * -0.5];
+              centerYAnchor = [v14 centerYAnchor];
+              firstBaselineAnchor = [v12 firstBaselineAnchor];
+              font = [v12 font];
+              [font capHeight];
+              v26 = [centerYAnchor constraintEqualToAnchor:firstBaselineAnchor constant:v25 * -0.5];
               [v28 addObject:v26];
             }
           }

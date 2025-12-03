@@ -1,15 +1,15 @@
 @interface ComposeReviewDelegate
 - (_TtC22SubscribePageExtensionP33_17E5165BDAD277E02C837297BEA7454621ComposeReviewDelegate)init;
-- (void)reviewComposeViewController:(id)a3 didFinishSubmitting:(BOOL)a4;
+- (void)reviewComposeViewController:(id)controller didFinishSubmitting:(BOOL)submitting;
 @end
 
 @implementation ComposeReviewDelegate
 
-- (void)reviewComposeViewController:(id)a3 didFinishSubmitting:(BOOL)a4
+- (void)reviewComposeViewController:(id)controller didFinishSubmitting:(BOOL)submitting
 {
-  v7 = a3;
-  v8 = self;
-  sub_10046F430(a3, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_10046F430(controller, submitting);
 }
 
 - (_TtC22SubscribePageExtensionP33_17E5165BDAD277E02C837297BEA7454621ComposeReviewDelegate)init

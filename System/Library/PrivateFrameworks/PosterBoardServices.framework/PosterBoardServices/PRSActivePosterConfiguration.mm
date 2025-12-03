@@ -1,18 +1,18 @@
 @interface PRSActivePosterConfiguration
-- (PRSActivePosterConfiguration)initWithBSXPCCoder:(id)a3;
-- (PRSActivePosterConfiguration)initWithCoder:(id)a3;
-- (PRSActivePosterConfiguration)initWithLockScreenPosterConfiguration:(id)a3 homeScreenPosterConfiguration:(id)a4;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PRSActivePosterConfiguration)initWithBSXPCCoder:(id)coder;
+- (PRSActivePosterConfiguration)initWithCoder:(id)coder;
+- (PRSActivePosterConfiguration)initWithLockScreenPosterConfiguration:(id)configuration homeScreenPosterConfiguration:(id)posterConfiguration;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRSActivePosterConfiguration
 
-- (PRSActivePosterConfiguration)initWithLockScreenPosterConfiguration:(id)a3 homeScreenPosterConfiguration:(id)a4
+- (PRSActivePosterConfiguration)initWithLockScreenPosterConfiguration:(id)configuration homeScreenPosterConfiguration:(id)posterConfiguration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  configurationCopy = configuration;
+  posterConfigurationCopy = posterConfiguration;
+  v10 = configurationCopy;
   NSClassFromString(&cfstr_Prsposterconfi_1.isa);
   if (!v10)
   {
@@ -24,7 +24,7 @@
     [PRSActivePosterConfiguration initWithLockScreenPosterConfiguration:a2 homeScreenPosterConfiguration:?];
   }
 
-  v11 = v9;
+  v11 = posterConfigurationCopy;
   if (v11)
   {
     NSClassFromString(&cfstr_Prsposterconfi_1.isa);
@@ -40,26 +40,26 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_lockScreenPosterConfiguration, a3);
-    objc_storeStrong(&v13->_homeScreenPosterConfiguration, a4);
+    objc_storeStrong(&v12->_lockScreenPosterConfiguration, configuration);
+    objc_storeStrong(&v13->_homeScreenPosterConfiguration, posterConfiguration);
   }
 
   return v13;
 }
 
-- (PRSActivePosterConfiguration)initWithCoder:(id)a3
+- (PRSActivePosterConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PRSActivePosterConfiguration;
   v5 = [(PRSActivePosterConfiguration *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_lockScreenPosterConfiguration"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lockScreenPosterConfiguration"];
     lockScreenPosterConfiguration = v5->_lockScreenPosterConfiguration;
     v5->_lockScreenPosterConfiguration = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_homeScreenPosterConfiguration"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_homeScreenPosterConfiguration"];
     homeScreenPosterConfiguration = v5->_homeScreenPosterConfiguration;
     v5->_homeScreenPosterConfiguration = v8;
   }
@@ -67,35 +67,35 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   lockScreenPosterConfiguration = self->_lockScreenPosterConfiguration;
-  v5 = a3;
-  [v5 encodeObject:lockScreenPosterConfiguration forKey:@"_lockScreenPosterConfiguration"];
-  [v5 encodeObject:self->_homeScreenPosterConfiguration forKey:@"_homeScreenPosterConfiguration"];
+  coderCopy = coder;
+  [coderCopy encodeObject:lockScreenPosterConfiguration forKey:@"_lockScreenPosterConfiguration"];
+  [coderCopy encodeObject:self->_homeScreenPosterConfiguration forKey:@"_homeScreenPosterConfiguration"];
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   lockScreenPosterConfiguration = self->_lockScreenPosterConfiguration;
-  v5 = a3;
-  [v5 encodeObject:lockScreenPosterConfiguration forKey:@"_lockScreenPosterConfiguration"];
-  [v5 encodeObject:self->_homeScreenPosterConfiguration forKey:@"_homeScreenPosterConfiguration"];
+  coderCopy = coder;
+  [coderCopy encodeObject:lockScreenPosterConfiguration forKey:@"_lockScreenPosterConfiguration"];
+  [coderCopy encodeObject:self->_homeScreenPosterConfiguration forKey:@"_homeScreenPosterConfiguration"];
 }
 
-- (PRSActivePosterConfiguration)initWithBSXPCCoder:(id)a3
+- (PRSActivePosterConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PRSActivePosterConfiguration;
   v5 = [(PRSActivePosterConfiguration *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_lockScreenPosterConfiguration"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lockScreenPosterConfiguration"];
     lockScreenPosterConfiguration = v5->_lockScreenPosterConfiguration;
     v5->_lockScreenPosterConfiguration = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_homeScreenPosterConfiguration"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_homeScreenPosterConfiguration"];
     homeScreenPosterConfiguration = v5->_homeScreenPosterConfiguration;
     v5->_homeScreenPosterConfiguration = v8;
   }

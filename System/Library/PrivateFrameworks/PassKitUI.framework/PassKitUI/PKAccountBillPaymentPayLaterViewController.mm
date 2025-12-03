@@ -1,70 +1,70 @@
 @interface PKAccountBillPaymentPayLaterViewController
 - (PKAccountBillPaymentObserver)observer;
-- (PKAccountBillPaymentPayLaterViewController)initWithAccount:(id)a3 accountUserCollection:(id)a4 billPaymentController:(id)a5 transactionSource:(id)a6 suggestionList:(id)a7 selectedAmount:(id)a8;
+- (PKAccountBillPaymentPayLaterViewController)initWithAccount:(id)account accountUserCollection:(id)collection billPaymentController:(id)controller transactionSource:(id)source suggestionList:(id)list selectedAmount:(id)amount;
 - (double)_payButtonTopPadding;
 - (double)_sideMargin;
 - (id)_addBankAccountInformationViewController;
-- (id)_dateForRow:(int64_t)a3;
-- (id)_dateStringForRow:(int64_t)a3 formatter:(id)a4;
-- (id)_interestForSelectedDate:(id)a3;
+- (id)_dateForRow:(int64_t)row;
+- (id)_dateStringForRow:(int64_t)row formatter:(id)formatter;
+- (id)_interestForSelectedDate:(id)date;
 - (id)_payOnTitle;
-- (id)_stripTimeFromDate:(id)a3;
-- (id)presentationSceneIdentifierForAccountBillPaymentController:(id)a3;
-- (void)_accountDidChange:(id)a3;
-- (void)_dismissViewControllerWithSuccess:(BOOL)a3;
-- (void)_payOnButtonTapped:(id)a3;
-- (void)_performBillPaymentWithAmount:(id)a3 scheduledDate:(id)a4 billPaymentSuggestedAmountDataEvent:(id)a5;
+- (id)_stripTimeFromDate:(id)date;
+- (id)presentationSceneIdentifierForAccountBillPaymentController:(id)controller;
+- (void)_accountDidChange:(id)change;
+- (void)_dismissViewControllerWithSuccess:(BOOL)success;
+- (void)_payOnButtonTapped:(id)tapped;
+- (void)_performBillPaymentWithAmount:(id)amount scheduledDate:(id)date billPaymentSuggestedAmountDataEvent:(id)event;
 - (void)_presentAddBankAccount;
-- (void)_presentAlertControllerForError:(id)a3;
-- (void)_setEnabled:(BOOL)a3;
-- (void)_setNavigationBarEnabled:(BOOL)a3;
+- (void)_presentAlertControllerForError:(id)error;
+- (void)_setEnabled:(BOOL)enabled;
+- (void)_setNavigationBarEnabled:(BOOL)enabled;
 - (void)_updateLabelText;
-- (void)accountBillPaymentController:(id)a3 hasChangedState:(unint64_t)a4 error:(id)a5 updatedAccount:(id)a6;
-- (void)addBankAccountInformationViewController:(id)a3 didAddFundingSource:(id)a4;
-- (void)addBankAccountInformationViewControllerDidFinish:(id)a3;
-- (void)billPaymentPayInterestDescriptionViewHasTappedLearnMore:(id)a3;
+- (void)accountBillPaymentController:(id)controller hasChangedState:(unint64_t)state error:(id)error updatedAccount:(id)account;
+- (void)addBankAccountInformationViewController:(id)controller didAddFundingSource:(id)source;
+- (void)addBankAccountInformationViewControllerDidFinish:(id)finish;
+- (void)billPaymentPayInterestDescriptionViewHasTappedLearnMore:(id)more;
 - (void)dealloc;
 - (void)loadView;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKAccountBillPaymentPayLaterViewController
 
-- (PKAccountBillPaymentPayLaterViewController)initWithAccount:(id)a3 accountUserCollection:(id)a4 billPaymentController:(id)a5 transactionSource:(id)a6 suggestionList:(id)a7 selectedAmount:(id)a8
+- (PKAccountBillPaymentPayLaterViewController)initWithAccount:(id)account accountUserCollection:(id)collection billPaymentController:(id)controller transactionSource:(id)source suggestionList:(id)list selectedAmount:(id)amount
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v70 = a6;
-  v69 = a7;
-  v68 = a8;
+  accountCopy = account;
+  collectionCopy = collection;
+  controllerCopy = controller;
+  sourceCopy = source;
+  listCopy = list;
+  amountCopy = amount;
   v71.receiver = self;
   v71.super_class = PKAccountBillPaymentPayLaterViewController;
   v18 = [(PKAccountBillPaymentPayLaterViewController *)&v71 initWithNibName:0 bundle:0];
   v19 = v18;
   if (v18)
   {
-    v67 = v16;
-    objc_storeStrong(&v18->_account, a3);
-    objc_storeStrong(&v19->_accountUserCollection, a4);
-    objc_storeStrong(&v19->_transactionSource, a6);
-    objc_storeStrong(&v19->_billPaymentCoordinator, a5);
+    v67 = collectionCopy;
+    objc_storeStrong(&v18->_account, account);
+    objc_storeStrong(&v19->_accountUserCollection, collection);
+    objc_storeStrong(&v19->_transactionSource, source);
+    objc_storeStrong(&v19->_billPaymentCoordinator, controller);
     [(PKAccountBillPaymentController *)v19->_billPaymentCoordinator setDelegate:v19];
-    objc_storeStrong(&v19->_suggestionList, a7);
-    objc_storeStrong(&v19->_selectedAmount, a8);
-    v66 = [(PKAccount *)v19->_account creditDetails];
-    v20 = [v66 accountSummary];
-    v21 = [v20 remainingStatementBalance];
+    objc_storeStrong(&v19->_suggestionList, list);
+    objc_storeStrong(&v19->_selectedAmount, amount);
+    creditDetails = [(PKAccount *)v19->_account creditDetails];
+    accountSummary = [creditDetails accountSummary];
+    remainingStatementBalance = [accountSummary remainingStatementBalance];
     remainingStatementBalance = v19->_remainingStatementBalance;
-    v19->_remainingStatementBalance = v21;
+    v19->_remainingStatementBalance = remainingStatementBalance;
 
-    v23 = [v15 creditDetails];
-    v24 = [v23 rates];
-    v25 = [v24 aprForPurchases];
+    creditDetails2 = [accountCopy creditDetails];
+    rates = [creditDetails2 rates];
+    aprForPurchases = [rates aprForPurchases];
     apr = v19->_apr;
-    v19->_apr = v25;
+    v19->_apr = aprForPurchases;
 
     v19->_currentPickerViewRow[0] = -1;
     v27 = objc_alloc(MEMORY[0x1E695DEE8]);
@@ -74,9 +74,9 @@
     v19->_productCalendar = v29;
 
     v31 = v19->_productCalendar;
-    v32 = [v15 creditDetails];
-    v33 = [v32 productTimeZone];
-    [(NSCalendar *)v31 setTimeZone:v33];
+    creditDetails3 = [accountCopy creditDetails];
+    productTimeZone = [creditDetails3 productTimeZone];
+    [(NSCalendar *)v31 setTimeZone:productTimeZone];
 
     v34 = [objc_alloc(MEMORY[0x1E695DEE8]) initWithCalendarIdentifier:v28];
     localCalendar = v19->_localCalendar;
@@ -87,13 +87,13 @@
     v19->_dateFormatterDayOfWeek = v36;
 
     v38 = v19->_dateFormatterDayOfWeek;
-    v39 = [v15 creditDetails];
-    v40 = [v39 productTimeZone];
-    [(NSDateFormatter *)v38 setTimeZone:v40];
+    creditDetails4 = [accountCopy creditDetails];
+    productTimeZone2 = [creditDetails4 productTimeZone];
+    [(NSDateFormatter *)v38 setTimeZone:productTimeZone2];
 
     v41 = v19->_dateFormatterDayOfWeek;
-    v42 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    [(NSDateFormatter *)v41 setLocale:v42];
+    autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    [(NSDateFormatter *)v41 setLocale:autoupdatingCurrentLocale];
 
     [(NSDateFormatter *)v19->_dateFormatterDayOfWeek setLocalizedDateFormatFromTemplate:@"EEEE, MMMM d"];
     [(NSDateFormatter *)v19->_dateFormatterDayOfWeek setFormattingContext:2];
@@ -102,34 +102,34 @@
     v19->_dateFormatter = v43;
 
     v45 = v19->_dateFormatter;
-    v46 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    [(NSDateFormatter *)v45 setLocale:v46];
+    autoupdatingCurrentLocale2 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    [(NSDateFormatter *)v45 setLocale:autoupdatingCurrentLocale2];
 
     v47 = v19->_dateFormatter;
-    v48 = [v15 creditDetails];
-    v49 = [v48 productTimeZone];
-    [(NSDateFormatter *)v47 setTimeZone:v49];
+    creditDetails5 = [accountCopy creditDetails];
+    productTimeZone3 = [creditDetails5 productTimeZone];
+    [(NSDateFormatter *)v47 setTimeZone:productTimeZone3];
 
     [(NSDateFormatter *)v19->_dateFormatter setLocalizedDateFormatFromTemplate:@"MMMM d"];
     v50 = objc_alloc_init(MEMORY[0x1E695DF10]);
     [v50 setDay:1];
     v51 = v19->_productCalendar;
-    v52 = [MEMORY[0x1E695DF00] date];
-    v53 = [(NSCalendar *)v51 dateByAddingComponents:v50 toDate:v52 options:0];
+    date = [MEMORY[0x1E695DF00] date];
+    v53 = [(NSCalendar *)v51 dateByAddingComponents:v50 toDate:date options:0];
 
     v54 = [(PKAccountBillPaymentPayLaterViewController *)v19 _stripTimeFromDate:v53];
     minDate = v19->_minDate;
     v19->_minDate = v54;
 
-    v56 = [v20 paymentDueDate];
-    if (!v56 || [v15 isClosedAndChargedOff])
+    paymentDueDate = [accountSummary paymentDueDate];
+    if (!paymentDueDate || [accountCopy isClosedAndChargedOff])
     {
       v57 = PKEndOfNextMonth();
 
-      v56 = v57;
+      paymentDueDate = v57;
     }
 
-    v58 = [(PKAccountBillPaymentPayLaterViewController *)v19 _stripTimeFromDate:v56];
+    v58 = [(PKAccountBillPaymentPayLaterViewController *)v19 _stripTimeFromDate:paymentDueDate];
     maxDate = v19->_maxDate;
     v19->_maxDate = v58;
 
@@ -145,16 +145,16 @@
 
     if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
     {
-      v62 = [(PKAccountBillPaymentPayLaterViewController *)v19 navigationItem];
+      navigationItem = [(PKAccountBillPaymentPayLaterViewController *)v19 navigationItem];
       v63 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
       [v63 configureWithTransparentBackground];
-      [v62 setStandardAppearance:v63];
+      [navigationItem setStandardAppearance:v63];
     }
 
-    v64 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v64 addObserver:v19 selector:sel__accountDidChange_ name:*MEMORY[0x1E69B9E60] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v19 selector:sel__accountDidChange_ name:*MEMORY[0x1E69B9E60] object:0];
 
-    v16 = v67;
+    collectionCopy = v67;
   }
 
   return v19;
@@ -180,8 +180,8 @@
   v56.receiver = self;
   v56.super_class = PKAccountBillPaymentPayLaterViewController;
   [(PKAccountBillPaymentPayLaterViewController *)&v56 loadView];
-  v3 = [(PKAccountBillPaymentPayLaterViewController *)self view];
-  [v3 pkui_applyContainerConcentricCornerConfiguration];
+  view = [(PKAccountBillPaymentPayLaterViewController *)self view];
+  [view pkui_applyContainerConcentricCornerConfiguration];
 
   [(PKAccount *)self->_account feature];
   v4 = PKUIGetMinScreenWidthType();
@@ -229,8 +229,8 @@
 
   [(UILabel *)self->_whenToPayQuestionLabel setTextAlignment:v6];
   v16 = self->_whenToPayQuestionLabel;
-  v17 = [(PKAccount *)self->_account creditDetails];
-  v18 = [v17 currencyCode];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  currencyCode = [creditDetails currencyCode];
   v19 = PKFormattedCurrencyStringFromNumber();
   v20 = PKLocalizedFeatureString();
   [(UILabel *)v16 setText:v20, v19];
@@ -266,25 +266,25 @@
   interestDescriptionView = self->_interestDescriptionView;
   self->_interestDescriptionView = v29;
 
-  v31 = [(PKAccount *)self->_account creditDetails];
-  v32 = [v31 accountSummary];
-  v33 = [v32 paymentDueDate];
+  creditDetails2 = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails2 accountSummary];
+  paymentDueDate = [accountSummary paymentDueDate];
 
   if ([(PKAccount *)self->_account showBillPaymentInterest])
   {
-    [(PKAccountBillPaymentPayInterestDescriptionView *)self->_interestDescriptionView setInterestChargeDate:v33];
+    [(PKAccountBillPaymentPayInterestDescriptionView *)self->_interestDescriptionView setInterestChargeDate:paymentDueDate];
   }
 
   [(PKAccountBillPaymentPayInterestDescriptionView *)self->_interestDescriptionView setDelegate:self];
   if (_UISolariumFeatureFlagEnabled())
   {
-    v34 = [MEMORY[0x1E69DC740] prominentGlassButtonConfiguration];
+    prominentGlassButtonConfiguration = [MEMORY[0x1E69DC740] prominentGlassButtonConfiguration];
     v35 = PKAccountBillPaymentPrimaryButtonTextColor();
-    [v34 setBaseForegroundColor:v35];
+    [prominentGlassButtonConfiguration setBaseForegroundColor:v35];
 
-    [v34 setContentInsets:{0.0, 14.0, 0.0, 14.0}];
-    [v34 setTitleTextAttributesTransformer:&__block_literal_global_123];
-    v36 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v34 primaryAction:0];
+    [prominentGlassButtonConfiguration setContentInsets:{0.0, 14.0, 0.0, 14.0}];
+    [prominentGlassButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_123];
+    v36 = [MEMORY[0x1E69DC738] buttonWithConfiguration:prominentGlassButtonConfiguration primaryAction:0];
     payOnButton = self->_payOnButton;
     self->_payOnButton = v36;
 
@@ -310,10 +310,10 @@
     v42 = +[PKAccountBillPaymentViewController backgroundColor];
     [(UIButton *)v41 updateTitleColorWithColor:v42];
 
-    v43 = [(UIButton *)self->_payOnButton titleLabel];
+    titleLabel = [(UIButton *)self->_payOnButton titleLabel];
     v44 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *v23, 2, 0);
-    v45 = [v44 pk_fixedWidthFont];
-    [v43 setFont:v45];
+    pk_fixedWidthFont = [v44 pk_fixedWidthFont];
+    [titleLabel setFont:pk_fixedWidthFont];
 
     [(UIButton *)self->_payOnButton setContentEdgeInsets:0.0, 14.0, 0.0, 14.0];
   }
@@ -322,23 +322,23 @@
   v47 = PKAccountBillPaymentPrimaryButtonTintColor();
   [(UIButton *)v46 setTintColor:v47];
 
-  v48 = [(UIButton *)self->_payOnButton titleLabel];
-  [v48 setAdjustsFontSizeToFitWidth:1];
+  titleLabel2 = [(UIButton *)self->_payOnButton titleLabel];
+  [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
   [(UIButton *)self->_payOnButton addTarget:self action:sel__payOnButtonTapped_ forControlEvents:64];
   [(UIButton *)self->_payOnButton setAccessibilityIdentifier:*MEMORY[0x1E69B9AE0]];
-  v49 = [(PKAccountBillPaymentPayLaterViewController *)self view];
+  view2 = [(PKAccountBillPaymentPayLaterViewController *)self view];
   v50 = +[PKAccountBillPaymentViewController backgroundColor];
-  [v49 setBackgroundColor:v50];
+  [view2 setBackgroundColor:v50];
 
-  [v49 addSubview:self->_payLaterTitleLabel];
-  [v49 addSubview:self->_whenToPayQuestionLabel];
-  [v49 addSubview:self->_datePicker];
-  [v49 addSubview:self->_payOnButton];
-  [v49 addSubview:self->_interestDescriptionView];
+  [view2 addSubview:self->_payLaterTitleLabel];
+  [view2 addSubview:self->_whenToPayQuestionLabel];
+  [view2 addSubview:self->_datePicker];
+  [view2 addSubview:self->_payOnButton];
+  [view2 addSubview:self->_interestDescriptionView];
   [(PKAccountBillPaymentPayLaterViewController *)self _updateLabelText];
-  v51 = [(PKAccountBillPaymentPayLaterViewController *)self view];
-  [v51 setAccessibilityIdentifier:*MEMORY[0x1E69B9A18]];
+  view3 = [(PKAccountBillPaymentPayLaterViewController *)self view];
+  [view3 setAccessibilityIdentifier:*MEMORY[0x1E69B9A18]];
 }
 
 id __54__PKAccountBillPaymentPayLaterViewController_loadView__block_invoke(uint64_t a1, void *a2)
@@ -380,13 +380,13 @@ void __54__PKAccountBillPaymentPayLaterViewController_loadView__block_invoke_2(u
   v41.receiver = self;
   v41.super_class = PKAccountBillPaymentPayLaterViewController;
   [(PKAccountBillPaymentPayLaterViewController *)&v41 viewWillLayoutSubviews];
-  v3 = [(PKAccountBillPaymentPayLaterViewController *)self view];
-  [v3 bounds];
+  view = [(PKAccountBillPaymentPayLaterViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   v13 = v12;
   v15 = v14;
   [(PKAccountBillPaymentPayLaterViewController *)self _sideMargin];
@@ -465,8 +465,8 @@ void __54__PKAccountBillPaymentPayLaterViewController_loadView__block_invoke_2(u
     v42.size.width = v9;
     v42.size.height = v11;
     v26 = CGRectGetMaxY(v42) + -50.0;
-    v27 = [(PKAccountBillPaymentPayLaterViewController *)self view];
-    [v27 _concentricEdgeInsetsForEdge:4 bounds:0.0 minimumEdgeInsets:{v26, v9, 50.0, 0.0, 28.0, 28.0, 28.0}];
+    view2 = [(PKAccountBillPaymentPayLaterViewController *)self view];
+    [view2 _concentricEdgeInsetsForEdge:4 bounds:0.0 minimumEdgeInsets:{v26, v9, 50.0, 0.0, 28.0, 28.0, 28.0}];
     v29 = v28;
     v31 = v30;
     v33 = v32;
@@ -506,11 +506,11 @@ void __54__PKAccountBillPaymentPayLaterViewController_loadView__block_invoke_2(u
   [(UIPickerView *)self->_datePicker setFrame:?];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PKAccountBillPaymentPayLaterViewController;
-  [(PKAccountBillPaymentPayLaterViewController *)&v6 viewWillDisappear:a3];
+  [(PKAccountBillPaymentPayLaterViewController *)&v6 viewWillDisappear:disappear];
   CLInUse = self->_CLInUse;
   if (CLInUse)
   {
@@ -520,36 +520,36 @@ void __54__PKAccountBillPaymentPayLaterViewController_loadView__block_invoke_2(u
   }
 }
 
-- (void)accountBillPaymentController:(id)a3 hasChangedState:(unint64_t)a4 error:(id)a5 updatedAccount:(id)a6
+- (void)accountBillPaymentController:(id)controller hasChangedState:(unint64_t)state error:(id)error updatedAccount:(id)account
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
+  controllerCopy = controller;
+  errorCopy = error;
+  accountCopy = account;
+  v13 = accountCopy;
   self->_performingAction = 0;
-  switch(a4)
+  switch(state)
   {
     case 2uLL:
       [(PKAccountBillPaymentPayLaterViewController *)self _setEnabled:1];
       break;
     case 1uLL:
-      if (v12)
+      if (accountCopy)
       {
-        objc_storeStrong(&self->_account, a6);
+        objc_storeStrong(&self->_account, account);
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_observer);
       if (objc_opt_respondsToSelector())
       {
-        v15 = [(PKAccountBillPaymentController *)self->_billPaymentCoordinator payments];
-        [WeakRetained accountBillPaymentViewController:self didSchedulePayments:v15];
+        payments = [(PKAccountBillPaymentController *)self->_billPaymentCoordinator payments];
+        [WeakRetained accountBillPaymentViewController:self didSchedulePayments:payments];
       }
 
-      v16 = [(PKAccountBillPaymentController *)self->_billPaymentCoordinator payments];
-      if ([v16 count])
+      payments2 = [(PKAccountBillPaymentController *)self->_billPaymentCoordinator payments];
+      if ([payments2 count])
       {
-        v17 = [(PKTransactionSource *)self->_transactionSource paymentPass];
-        v18 = [[PKAccountBillPaymentConfirmationViewController alloc] initWithAccount:self->_account paymentPass:v17 scheduledPayments:v16];
+        paymentPass = [(PKTransactionSource *)self->_transactionSource paymentPass];
+        v18 = [[PKAccountBillPaymentConfirmationViewController alloc] initWithAccount:self->_account paymentPass:paymentPass scheduledPayments:payments2];
         objc_initWeak(&location, self);
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
@@ -571,7 +571,7 @@ void __54__PKAccountBillPaymentPayLaterViewController_loadView__block_invoke_2(u
 
       break;
     case 0uLL:
-      [(PKAccountBillPaymentPayLaterViewController *)self _presentAlertControllerForError:v11];
+      [(PKAccountBillPaymentPayLaterViewController *)self _presentAlertControllerForError:errorCopy];
       break;
   }
 }
@@ -602,28 +602,28 @@ void __112__PKAccountBillPaymentPayLaterViewController_accountBillPaymentControl
   }
 }
 
-- (id)presentationSceneIdentifierForAccountBillPaymentController:(id)a3
+- (id)presentationSceneIdentifierForAccountBillPaymentController:(id)controller
 {
-  v3 = [(PKAccountBillPaymentPayLaterViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _sceneIdentifier];
+  view = [(PKAccountBillPaymentPayLaterViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
-  return v6;
+  return _sceneIdentifier;
 }
 
-- (void)addBankAccountInformationViewController:(id)a3 didAddFundingSource:(id)a4
+- (void)addBankAccountInformationViewController:(id)controller didAddFundingSource:(id)source
 {
   v9 = *MEMORY[0x1E69E9840];
   billPaymentCoordinator = self->_billPaymentCoordinator;
-  v8 = a4;
+  sourceCopy = source;
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a4;
-  v7 = [v5 arrayWithObjects:&v8 count:1];
-  [(PKAccountBillPaymentController *)billPaymentCoordinator setFundingSources:v7, v8, v9];
+  sourceCopy2 = source;
+  v7 = [v5 arrayWithObjects:&sourceCopy count:1];
+  [(PKAccountBillPaymentController *)billPaymentCoordinator setFundingSources:v7, sourceCopy, v9];
 }
 
-- (void)addBankAccountInformationViewControllerDidFinish:(id)a3
+- (void)addBankAccountInformationViewControllerDidFinish:(id)finish
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -676,39 +676,39 @@ void __95__PKAccountBillPaymentPayLaterViewController_addBankAccountInformationV
 LABEL_6:
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  if (self->_currentPickerViewRow[a5] != a4)
+  if (self->_currentPickerViewRow[component] != row)
   {
-    self->_currentPickerViewRow[a5] = a4;
+    self->_currentPickerViewRow[component] = row;
     [(PKAccountBillPaymentPayLaterViewController *)self _updateLabelText];
   }
 }
 
-- (void)billPaymentPayInterestDescriptionViewHasTappedLearnMore:(id)a3
+- (void)billPaymentPayInterestDescriptionViewHasTappedLearnMore:(id)more
 {
   v6 = [[PKAccountBillPaymentLearnMoreViewController alloc] initWithAccount:self->_account];
   v4 = [[PKNavigationController alloc] initWithRootViewController:v6];
   if ([(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts])
   {
     [(PKNavigationController *)v4 setModalPresentationStyle:3];
-    v5 = [(PKAccountBillPaymentPayLaterViewController *)self navigationController];
-    [v5 presentViewController:v4 withTransition:8 completion:0];
+    navigationController = [(PKAccountBillPaymentPayLaterViewController *)self navigationController];
+    [navigationController presentViewController:v4 withTransition:8 completion:0];
   }
 
   else
   {
-    v5 = [(PKAccountBillPaymentPayLaterViewController *)self navigationController];
-    [v5 presentViewController:v4 animated:1 completion:0];
+    navigationController = [(PKAccountBillPaymentPayLaterViewController *)self navigationController];
+    [navigationController presentViewController:v4 animated:1 completion:0];
   }
 }
 
-- (void)_performBillPaymentWithAmount:(id)a3 scheduledDate:(id)a4 billPaymentSuggestedAmountDataEvent:(id)a5
+- (void)_performBillPaymentWithAmount:(id)amount scheduledDate:(id)date billPaymentSuggestedAmountDataEvent:(id)event
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  amountCopy = amount;
+  dateCopy = date;
+  eventCopy = event;
   if (!self->_CLInUse)
   {
     v11 = MEMORY[0x1E695FBE0];
@@ -733,22 +733,22 @@ LABEL_6:
   {
     self->_performingAction = 1;
     [(PKAccountBillPaymentPayLaterViewController *)self _setEnabled:0];
-    [(PKAccountBillPaymentController *)self->_billPaymentCoordinator performBillPaymentActionWithAmount:v8 scheduledDate:v9 billPaymentSuggestedAmountDataEvent:v10];
+    [(PKAccountBillPaymentController *)self->_billPaymentCoordinator performBillPaymentActionWithAmount:amountCopy scheduledDate:dateCopy billPaymentSuggestedAmountDataEvent:eventCopy];
   }
 }
 
-- (void)_accountDidChange:(id)a3
+- (void)_accountDidChange:(id)change
 {
   if (self->_account)
   {
-    v4 = [MEMORY[0x1E69B8400] sharedInstance];
-    v5 = [(PKAccount *)self->_account accountIdentifier];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __64__PKAccountBillPaymentPayLaterViewController__accountDidChange___block_invoke;
     v6[3] = &unk_1E80112C0;
     v6[4] = self;
-    [v4 accountWithIdentifier:v5 completion:v6];
+    [mEMORY[0x1E69B8400] accountWithIdentifier:accountIdentifier completion:v6];
   }
 }
 
@@ -765,7 +765,7 @@ void __64__PKAccountBillPaymentPayLaterViewController__accountDidChange___block_
   dispatch_async(MEMORY[0x1E69E96A0], v5);
 }
 
-- (void)_payOnButtonTapped:(id)a3
+- (void)_payOnButtonTapped:(id)tapped
 {
   [(PKAccountBillPaymentPayLaterViewController *)self _setEnabled:0];
   v4 = [(PKAccountBillPaymentPayLaterViewController *)self _dateForRow:[(UIPickerView *)self->_datePicker selectedRowInComponent:0]];
@@ -815,9 +815,9 @@ void __65__PKAccountBillPaymentPayLaterViewController__payOnButtonTapped___block
   }
 }
 
-- (id)_interestForSelectedDate:(id)a3
+- (id)_interestForSelectedDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   interestCalculator = self->_interestCalculator;
   if (!interestCalculator)
   {
@@ -827,36 +827,36 @@ void __65__PKAccountBillPaymentPayLaterViewController__payOnButtonTapped___block
     v8 = self->_interestCalculator;
     self->_interestCalculator = v7;
 
-    v9 = [(PKTransactionSource *)self->_transactionSource transactionSourceIdentifiers];
+    transactionSourceIdentifiers = [(PKTransactionSource *)self->_transactionSource transactionSourceIdentifiers];
     accountUserCollection = self->_accountUserCollection;
     if (accountUserCollection)
     {
-      v11 = [(PKAccountUserCollection *)accountUserCollection transactionSourceIdentifiers];
-      if (v11)
+      transactionSourceIdentifiers2 = [(PKAccountUserCollection *)accountUserCollection transactionSourceIdentifiers];
+      if (transactionSourceIdentifiers2)
       {
-        v12 = [v9 setByAddingObjectsFromSet:v11];
+        v12 = [transactionSourceIdentifiers setByAddingObjectsFromSet:transactionSourceIdentifiers2];
 
-        v9 = v12;
+        transactionSourceIdentifiers = v12;
       }
     }
 
-    v13 = [MEMORY[0x1E69B8DB8] paymentService];
-    v14 = [v6 periodStartDate];
-    v15 = [v6 periodEndDate];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
+    periodStartDate = [v6 periodStartDate];
+    periodEndDate = [v6 periodEndDate];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __71__PKAccountBillPaymentPayLaterViewController__interestForSelectedDate___block_invoke;
     v19[3] = &unk_1E8013E48;
     v19[4] = self;
-    [v13 approvedTransactionsForTransactionSourceIdentifiers:v9 withTransactionSource:0 withBackingData:1 startDate:v14 endDate:v15 limit:0 completion:v19];
+    [paymentService approvedTransactionsForTransactionSourceIdentifiers:transactionSourceIdentifiers withTransactionSource:0 withBackingData:1 startDate:periodStartDate endDate:periodEndDate limit:0 completion:v19];
 
     interestCalculator = self->_interestCalculator;
   }
 
-  v16 = [(PKCompoundInterestCalculator *)interestCalculator configuration];
-  [v16 updateWithCreditAccount:self->_account];
+  configuration = [(PKCompoundInterestCalculator *)interestCalculator configuration];
+  [configuration updateWithCreditAccount:self->_account];
 
-  v17 = [(PKCompoundInterestCalculator *)self->_interestCalculator compoundInterestForPaymentOfAmount:self->_selectedAmount onDate:v4];
+  v17 = [(PKCompoundInterestCalculator *)self->_interestCalculator compoundInterestForPaymentOfAmount:self->_selectedAmount onDate:dateCopy];
 
   return v17;
 }
@@ -928,15 +928,15 @@ uint64_t __71__PKAccountBillPaymentPayLaterViewController__interestForSelectedDa
   return result;
 }
 
-- (void)_setEnabled:(BOOL)a3
+- (void)_setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(PKAccountBillPaymentPayLaterViewController *)self view];
-  [v5 setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  view = [(PKAccountBillPaymentPayLaterViewController *)self view];
+  [view setUserInteractionEnabled:enabledCopy];
 
-  [(UIPickerView *)self->_datePicker setUserInteractionEnabled:v3];
-  [(UIButton *)self->_payOnButton setEnabled:v3];
-  self->_showSpinner = !v3;
+  [(UIPickerView *)self->_datePicker setUserInteractionEnabled:enabledCopy];
+  [(UIButton *)self->_payOnButton setEnabled:enabledCopy];
+  self->_showSpinner = !enabledCopy;
   v6 = _UISolariumFeatureFlagEnabled();
   payOnButton = self->_payOnButton;
   if (v6)
@@ -946,55 +946,55 @@ uint64_t __71__PKAccountBillPaymentPayLaterViewController__interestForSelectedDa
 
   else
   {
-    [(UIButton *)payOnButton setShowSpinner:v3 ^ 1];
+    [(UIButton *)payOnButton setShowSpinner:enabledCopy ^ 1];
   }
 
-  [(PKAccountBillPaymentPayLaterViewController *)self _setNavigationBarEnabled:v3];
-  v8 = [(PKAccountBillPaymentPayLaterViewController *)self navigationItem];
-  v9 = [v8 backBarButtonItem];
-  [v9 setEnabled:v3];
+  [(PKAccountBillPaymentPayLaterViewController *)self _setNavigationBarEnabled:enabledCopy];
+  navigationItem = [(PKAccountBillPaymentPayLaterViewController *)self navigationItem];
+  backBarButtonItem = [navigationItem backBarButtonItem];
+  [backBarButtonItem setEnabled:enabledCopy];
 
-  v10 = [(PKAccountBillPaymentPayLaterViewController *)self view];
-  [v10 setNeedsLayout];
+  view2 = [(PKAccountBillPaymentPayLaterViewController *)self view];
+  [view2 setNeedsLayout];
 }
 
-- (void)_setNavigationBarEnabled:(BOOL)a3
+- (void)_setNavigationBarEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v9 = [(PKAccountBillPaymentPayLaterViewController *)self navigationController];
-  v5 = [v9 navigationBar];
-  [v5 setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  navigationController = [(PKAccountBillPaymentPayLaterViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setUserInteractionEnabled:enabledCopy];
 
-  v6 = [v9 interactivePopGestureRecognizer];
-  [v6 setEnabled:v3];
+  interactivePopGestureRecognizer = [navigationController interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setEnabled:enabledCopy];
 
-  v7 = [(PKAccountBillPaymentPayLaterViewController *)self navigationItem];
-  [v7 setHidesBackButton:v3 ^ 1 animated:1];
-  v8 = [v7 leftBarButtonItem];
-  [v8 setEnabled:v3];
+  navigationItem = [(PKAccountBillPaymentPayLaterViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:enabledCopy ^ 1 animated:1];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem setEnabled:enabledCopy];
 }
 
-- (id)_dateForRow:(int64_t)a3
+- (id)_dateForRow:(int64_t)row
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  [v5 setDay:a3];
+  [v5 setDay:row];
   v6 = [(NSCalendar *)self->_productCalendar dateByAddingComponents:v5 toDate:self->_minDate options:0];
 
   return v6;
 }
 
-- (id)_dateStringForRow:(int64_t)a3 formatter:(id)a4
+- (id)_dateStringForRow:(int64_t)row formatter:(id)formatter
 {
-  v6 = a4;
-  v7 = [(PKAccountBillPaymentPayLaterViewController *)self _dateForRow:a3];
-  v8 = [v6 stringFromDate:v7];
+  formatterCopy = formatter;
+  v7 = [(PKAccountBillPaymentPayLaterViewController *)self _dateForRow:row];
+  v8 = [formatterCopy stringFromDate:v7];
 
   return v8;
 }
 
-- (id)_stripTimeFromDate:(id)a3
+- (id)_stripTimeFromDate:(id)date
 {
-  v4 = [(NSCalendar *)self->_productCalendar components:28 fromDate:a3];
+  v4 = [(NSCalendar *)self->_productCalendar components:28 fromDate:date];
   v5 = [(NSCalendar *)self->_productCalendar dateFromComponents:v4];
 
   return v5;
@@ -1012,8 +1012,8 @@ uint64_t __71__PKAccountBillPaymentPayLaterViewController__interestForSelectedDa
 
   else
   {
-    v4 = [(PKAccountBillPaymentPayLaterViewController *)self _payOnTitle];
-    [(UIButton *)self->_payOnButton setTitle:v4 forState:0];
+    _payOnTitle = [(PKAccountBillPaymentPayLaterViewController *)self _payOnTitle];
+    [(UIButton *)self->_payOnButton setTitle:_payOnTitle forState:0];
     [(UIButton *)self->_payOnButton sizeToFit];
   }
 
@@ -1023,16 +1023,16 @@ uint64_t __71__PKAccountBillPaymentPayLaterViewController__interestForSelectedDa
   }
 
   [(PKAccountBillPaymentPayInterestDescriptionView *)self->_interestDescriptionView setSelectedPaymentDate:v6];
-  v5 = [(PKAccountBillPaymentPayLaterViewController *)self view];
-  [v5 setNeedsLayout];
+  view = [(PKAccountBillPaymentPayLaterViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (id)_payOnTitle
 {
   [(PKAccount *)self->_account feature];
   v3 = [(PKAccountBillPaymentPayLaterViewController *)self _dateStringForRow:[(UIPickerView *)self->_datePicker selectedRowInComponent:0] formatter:self->_dateFormatter];
-  v4 = [(PKAccount *)self->_account creditDetails];
-  v5 = [v4 currencyCode];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  currencyCode = [creditDetails currencyCode];
   v6 = PKFormattedCurrencyStringFromNumber();
 
   v7 = PKLocalizedFeatureString();
@@ -1042,9 +1042,9 @@ uint64_t __71__PKAccountBillPaymentPayLaterViewController__interestForSelectedDa
 
 - (void)_presentAddBankAccount
 {
-  v4 = [(PKAccountBillPaymentPayLaterViewController *)self _addBankAccountInformationViewController];
-  [v4 setOfferKeychainPreFill:1];
-  v3 = [[PKNavigationController alloc] initWithRootViewController:v4];
+  _addBankAccountInformationViewController = [(PKAccountBillPaymentPayLaterViewController *)self _addBankAccountInformationViewController];
+  [_addBankAccountInformationViewController setOfferKeychainPreFill:1];
+  v3 = [[PKNavigationController alloc] initWithRootViewController:_addBankAccountInformationViewController];
   [(PKNavigationController *)v3 setSupportedInterfaceOrientations:2];
   if ([(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts])
   {
@@ -1061,9 +1061,9 @@ uint64_t __71__PKAccountBillPaymentPayLaterViewController__interestForSelectedDa
   {
     v4 = [PKAddBankAccountInformationViewController alloc];
     v5 = [objc_alloc(MEMORY[0x1E69B86A8]) initWithType:1];
-    v6 = [(PKAccount *)self->_account creditDetails];
-    v7 = [v6 countryCode];
-    v8 = [(PKAddBankAccountInformationViewController *)v4 initWithDelegate:self bankInformation:v5 accountCountryCode:v7 featureAccount:self->_account];
+    creditDetails = [(PKAccount *)self->_account creditDetails];
+    countryCode = [creditDetails countryCode];
+    v8 = [(PKAddBankAccountInformationViewController *)v4 initWithDelegate:self bankInformation:v5 accountCountryCode:countryCode featureAccount:self->_account];
     v9 = self->_addBankAccountViewController;
     self->_addBankAccountViewController = v8;
 
@@ -1073,17 +1073,17 @@ uint64_t __71__PKAccountBillPaymentPayLaterViewController__interestForSelectedDa
   return addBankAccountViewController;
 }
 
-- (void)_dismissViewControllerWithSuccess:(BOOL)a3
+- (void)_dismissViewControllerWithSuccess:(BOOL)success
 {
-  v3 = [(PKAccountBillPaymentPayLaterViewController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PKAccountBillPaymentPayLaterViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_presentAlertControllerForError:(id)a3
+- (void)_presentAlertControllerForError:(id)error
 {
   account = self->_account;
-  v5 = a3;
-  v7 = [PKAccountFlowController displayableErrorForError:v5 featureIdentifier:[(PKAccount *)account feature] genericErrorTitle:0 genericErrorMessage:0];
+  errorCopy = error;
+  v7 = [PKAccountFlowController displayableErrorForError:errorCopy featureIdentifier:[(PKAccount *)account feature] genericErrorTitle:0 genericErrorMessage:0];
 
   v6 = [PKAccountBillPaymentViewController alertControllerForDisplayableError:v7];
   if (v6)

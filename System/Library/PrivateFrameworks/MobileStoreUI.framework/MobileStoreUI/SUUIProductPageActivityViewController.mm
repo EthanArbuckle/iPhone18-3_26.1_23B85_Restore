@@ -1,20 +1,20 @@
 @interface SUUIProductPageActivityViewController
-- (SUUIProductPageActivityViewController)initWithProductPageItem:(id)a3 clientContext:(id)a4;
-- (id)_activityItemsForProductPageItem:(id)a3 clientContext:(id)a4;
-- (id)_activityItemsForProductPageItemProvider:(id)a3 clientContext:(id)a4;
-- (id)_applicationActivitiesForProductPageItem:(id)a3 clientContext:(id)a4;
-- (id)_titleForActivity:(id)a3;
+- (SUUIProductPageActivityViewController)initWithProductPageItem:(id)item clientContext:(id)context;
+- (id)_activityItemsForProductPageItem:(id)item clientContext:(id)context;
+- (id)_activityItemsForProductPageItemProvider:(id)provider clientContext:(id)context;
+- (id)_applicationActivitiesForProductPageItem:(id)item clientContext:(id)context;
+- (id)_titleForActivity:(id)activity;
 @end
 
 @implementation SUUIProductPageActivityViewController
 
-- (SUUIProductPageActivityViewController)initWithProductPageItem:(id)a3 clientContext:(id)a4
+- (SUUIProductPageActivityViewController)initWithProductPageItem:(id)item clientContext:(id)context
 {
   v17[5] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [(SUUIProductPageActivityViewController *)self _activityItemsForProductPageItem:v8 clientContext:v7];
-  v10 = [(SUUIProductPageActivityViewController *)self _applicationActivitiesForProductPageItem:v8 clientContext:v7];
+  contextCopy = context;
+  itemCopy = item;
+  v9 = [(SUUIProductPageActivityViewController *)self _activityItemsForProductPageItem:itemCopy clientContext:contextCopy];
+  v10 = [(SUUIProductPageActivityViewController *)self _applicationActivitiesForProductPageItem:itemCopy clientContext:contextCopy];
 
   v16.receiver = self;
   v16.super_class = SUUIProductPageActivityViewController;
@@ -31,16 +31,16 @@
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:5];
     [(SUUIProductPageActivityViewController *)v11 setExcludedActivityTypes:v14];
 
-    objc_storeStrong(&v11->_clientContext, a4);
+    objc_storeStrong(&v11->_clientContext, context);
   }
 
   return v11;
 }
 
-- (id)_titleForActivity:(id)a3
+- (id)_titleForActivity:(id)activity
 {
-  v4 = a3;
-  if (*MEMORY[0x277D54720] == v4)
+  activityCopy = activity;
+  if (*MEMORY[0x277D54720] == activityCopy)
   {
     clientContext = self->_clientContext;
     if (clientContext)
@@ -63,14 +63,14 @@
   return v5;
 }
 
-- (id)_activityItemsForProductPageItem:(id)a3 clientContext:(id)a4
+- (id)_activityItemsForProductPageItem:(id)item clientContext:(id)context
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SUUIURLActivityItemProvider alloc] initWithProductPageItem:v6 clientContext:v5];
-  v8 = [(SUUIDeferredActivityItemProvider *)[SUUITextActivityItemProvider alloc] initWithProductPageItem:v6 clientContext:v5];
-  v9 = [(SUUIDeferredActivityItemProvider *)[SUUIImageActivityItemProvider alloc] initWithProductPageItem:v6 clientContext:v5];
+  contextCopy = context;
+  itemCopy = item;
+  v7 = [[SUUIURLActivityItemProvider alloc] initWithProductPageItem:itemCopy clientContext:contextCopy];
+  v8 = [(SUUIDeferredActivityItemProvider *)[SUUITextActivityItemProvider alloc] initWithProductPageItem:itemCopy clientContext:contextCopy];
+  v9 = [(SUUIDeferredActivityItemProvider *)[SUUIImageActivityItemProvider alloc] initWithProductPageItem:itemCopy clientContext:contextCopy];
 
   v12[0] = v8;
   v12[1] = v7;
@@ -80,14 +80,14 @@
   return v10;
 }
 
-- (id)_activityItemsForProductPageItemProvider:(id)a3 clientContext:(id)a4
+- (id)_activityItemsForProductPageItemProvider:(id)provider clientContext:(id)context
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SUUIURLActivityItemProvider alloc] initWithProductPageItemProvider:v6 clientContext:v5];
-  v8 = [(SUUIDeferredActivityItemProvider *)[SUUITextActivityItemProvider alloc] initWithProductPageItemProvider:v6 clientContext:v5];
-  v9 = [(SUUIDeferredActivityItemProvider *)[SUUIImageActivityItemProvider alloc] initWithProductPageItemProvider:v6 clientContext:v5];
+  contextCopy = context;
+  providerCopy = provider;
+  v7 = [[SUUIURLActivityItemProvider alloc] initWithProductPageItemProvider:providerCopy clientContext:contextCopy];
+  v8 = [(SUUIDeferredActivityItemProvider *)[SUUITextActivityItemProvider alloc] initWithProductPageItemProvider:providerCopy clientContext:contextCopy];
+  v9 = [(SUUIDeferredActivityItemProvider *)[SUUIImageActivityItemProvider alloc] initWithProductPageItemProvider:providerCopy clientContext:contextCopy];
 
   v12[0] = v8;
   v12[1] = v7;
@@ -97,41 +97,41 @@
   return v10;
 }
 
-- (id)_applicationActivitiesForProductPageItem:(id)a3 clientContext:(id)a4
+- (id)_applicationActivitiesForProductPageItem:(id)item clientContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [v5 primaryItemOffer];
-  [v8 price];
+  itemCopy = item;
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
+  primaryItemOffer = [itemCopy primaryItemOffer];
+  [primaryItemOffer price];
   if (v9 > 0.0)
   {
-    v10 = [v5 itemIdentifier];
+    itemIdentifier = [itemCopy itemIdentifier];
     v11 = +[SUUIWishlist activeWishlist];
     v12 = v11;
-    if (v11 && ([v11 containsItemWithIdentifier:v10] & 1) == 0)
+    if (v11 && ([v11 containsItemWithIdentifier:itemIdentifier] & 1) == 0)
     {
       v13 = +[SUUIItemStateCenter defaultCenter];
-      v14 = [v13 stateForItemWithIdentifier:v10];
+      v14 = [v13 stateForItemWithIdentifier:itemIdentifier];
 
       if (([v14 state] & 0xF) == 0)
       {
-        v15 = [[SUUIAddToWishlistActivity alloc] initWithItem:v5 clientContext:v6];
-        [v7 addObject:v15];
+        v15 = [[SUUIAddToWishlistActivity alloc] initWithItem:itemCopy clientContext:contextCopy];
+        [array addObject:v15];
       }
     }
 
     v16 = +[SUUIItemStateCenter defaultCenter];
-    v17 = [v16 isItemRestrictedWithParentalControlsRank:{objc_msgSend(v5, "parentalControlsRank")}];
+    v17 = [v16 isItemRestrictedWithParentalControlsRank:{objc_msgSend(itemCopy, "parentalControlsRank")}];
 
     if ((v17 & 1) == 0)
     {
-      v18 = [[SUUIGiftActivity alloc] initWithItem:v5 clientContext:v6];
-      [v7 addObject:v18];
+      v18 = [[SUUIGiftActivity alloc] initWithItem:itemCopy clientContext:contextCopy];
+      [array addObject:v18];
     }
   }
 
-  return v7;
+  return array;
 }
 
 @end

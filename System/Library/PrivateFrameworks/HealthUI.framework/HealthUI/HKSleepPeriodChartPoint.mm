@@ -1,5 +1,5 @@
 @interface HKSleepPeriodChartPoint
-+ (id)chartPointsForInformationProviders:(id)a3 context:(id)a4;
++ (id)chartPointsForInformationProviders:(id)providers context:(id)context;
 - (id)allYValues;
 - (id)maxYValue;
 - (id)minYValue;
@@ -9,12 +9,12 @@
 
 - (id)minYValue
 {
-  v2 = [(HKSleepPeriodChartPoint *)self allYValues];
-  v3 = [v2 lastObject];
+  allYValues = [(HKSleepPeriodChartPoint *)self allYValues];
+  lastObject = [allYValues lastObject];
 
-  if (v3)
+  if (lastObject)
   {
-    [v3 doubleValue];
+    [lastObject doubleValue];
     if (v4 > 1.79769313e308)
     {
       v4 = 1.79769313e308;
@@ -33,12 +33,12 @@
 
 - (id)maxYValue
 {
-  v2 = [(HKSleepPeriodChartPoint *)self allYValues];
-  v3 = [v2 firstObject];
+  allYValues = [(HKSleepPeriodChartPoint *)self allYValues];
+  firstObject = [allYValues firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    [v3 doubleValue];
+    [firstObject doubleValue];
     v5 = fmax(v4, -1.79769313e308);
   }
 
@@ -55,36 +55,36 @@
 - (id)allYValues
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 addObjectsFromArray:self->_inBedOffsets];
-  [v3 addObjectsFromArray:self->_asleepOffsets];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObjectsFromArray:self->_inBedOffsets];
+  [array addObjectsFromArray:self->_asleepOffsets];
   v4 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"value" ascending:0];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-  [v3 sortUsingDescriptors:v5];
+  [array sortUsingDescriptors:v5];
 
-  v6 = [v3 hk_map:&__block_literal_global_46];
+  v6 = [array hk_map:&__block_literal_global_46];
 
   return v6;
 }
 
-+ (id)chartPointsForInformationProviders:(id)a3 context:(id)a4
++ (id)chartPointsForInformationProviders:(id)providers context:(id)context
 {
   v109 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  providersCopy = providers;
+  contextCopy = context;
   v7 = objc_opt_new();
   v100 = 0u;
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
-  obj = v5;
+  obj = providersCopy;
   v81 = [obj countByEnumeratingWithState:&v100 objects:v108 count:16];
   if (v81)
   {
     v8 = 0x1E81B2000uLL;
     v80 = *v101;
-    v76 = v6;
+    v76 = contextCopy;
     v77 = v7;
     do
     {
@@ -99,14 +99,14 @@
         v11 = objc_alloc_init(*(v8 + 3672));
         if ([v10 isAveraged])
         {
-          v12 = [v10 sleepStartOffset];
+          sleepStartOffset = [v10 sleepStartOffset];
 
-          if (v12)
+          if (sleepStartOffset)
           {
             v13 = i;
             v14 = MEMORY[0x1E696AD98];
-            v15 = [v10 sleepStartOffset];
-            [v15 doubleValue];
+            sleepStartOffset2 = [v10 sleepStartOffset];
+            [sleepStartOffset2 doubleValue];
             v16 = [v14 numberWithDouble:?];
             v17 = [HKSleepPeriodChartPointOffset chartPointOffsetWithValue:v16 continuation:0];
             v105[0] = v17;
@@ -123,7 +123,7 @@
 
             v10 = v23;
             i = v13;
-            v6 = v76;
+            contextCopy = v76;
 
             v11 = v19;
             v7 = v77;
@@ -133,24 +133,24 @@
 
           if (([v10 hasSleepStageData] & 1) == 0)
           {
-            v25 = [v10 inBedStartOffset];
+            inBedStartOffset = [v10 inBedStartOffset];
 
-            if (v25)
+            if (inBedStartOffset)
             {
               v26 = MEMORY[0x1E696AD98];
               [v10 inBedStartOffset];
-              v27 = v6;
-              v29 = v28 = v10;
-              [v29 doubleValue];
+              v27 = contextCopy;
+              firstObject = v28 = v10;
+              [firstObject doubleValue];
               v30 = [v26 numberWithDouble:?];
               v31 = [HKSleepPeriodChartPointOffset chartPointOffsetWithValue:v30 continuation:0];
               v104[0] = v31;
               v32 = MEMORY[0x1E696AD98];
               v82 = v28;
               v33 = v28;
-              v6 = v27;
-              v34 = [v33 inBedEndOffset];
-              [v34 doubleValue];
+              contextCopy = v27;
+              inBedEndOffset = [v33 inBedEndOffset];
+              [inBedEndOffset doubleValue];
               v35 = [v32 numberWithDouble:?];
               v36 = [HKSleepPeriodChartPointOffset chartPointOffsetWithValue:v35 continuation:0];
               v104[1] = v36;
@@ -171,8 +171,8 @@
         v78 = v11;
         v79 = i;
         v82 = v10;
-        v39 = [v10 sleepDaySummaries];
-        v29 = [v39 firstObject];
+        sleepDaySummaries = [v10 sleepDaySummaries];
+        firstObject = [sleepDaySummaries firstObject];
 
         v89 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v87 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -180,8 +180,8 @@
         v97 = 0u;
         v98 = 0u;
         v99 = 0u;
-        v83 = [v29 periods];
-        v85 = [v83 countByEnumeratingWithState:&v96 objects:v107 count:16];
+        periods = [firstObject periods];
+        v85 = [periods countByEnumeratingWithState:&v96 objects:v107 count:16];
         if (!v85)
         {
           goto LABEL_31;
@@ -195,7 +195,7 @@
           {
             if (*v97 != v84)
             {
-              objc_enumerationMutation(v83);
+              objc_enumerationMutation(periods);
             }
 
             v86 = v40;
@@ -204,8 +204,8 @@
             v93 = 0u;
             v94 = 0u;
             v95 = 0u;
-            v88 = [v41 segments];
-            v91 = [v88 countByEnumeratingWithState:&v92 objects:v106 count:16];
+            segments = [v41 segments];
+            v91 = [segments countByEnumeratingWithState:&v92 objects:v106 count:16];
             if (v91)
             {
               v90 = *v93;
@@ -215,30 +215,30 @@
                 {
                   if (*v93 != v90)
                   {
-                    objc_enumerationMutation(v88);
+                    objc_enumerationMutation(segments);
                   }
 
                   v43 = *(*(&v92 + 1) + 8 * j);
-                  v44 = [v43 dateInterval];
-                  v45 = [v44 startDate];
-                  v46 = [v29 dateInterval];
-                  v47 = [v46 startDate];
-                  v48 = [v45 hk_isBeforeDate:v47];
+                  dateInterval = [v43 dateInterval];
+                  startDate = [dateInterval startDate];
+                  dateInterval2 = [firstObject dateInterval];
+                  startDate2 = [dateInterval2 startDate];
+                  v48 = [startDate hk_isBeforeDate:startDate2];
 
-                  v49 = [v43 dateInterval];
-                  v50 = [v49 endDate];
-                  v51 = [v29 dateInterval];
-                  v52 = [v51 endDate];
-                  v53 = [v50 hk_isAfterDate:v52];
+                  dateInterval3 = [v43 dateInterval];
+                  endDate = [dateInterval3 endDate];
+                  dateInterval4 = [firstObject dateInterval];
+                  endDate2 = [dateInterval4 endDate];
+                  v53 = [endDate hk_isAfterDate:endDate2];
 
-                  v54 = [v29 dateInterval];
-                  v55 = [v43 dateInterval];
-                  v56 = [v54 intersectionWithDateInterval:v55];
+                  dateInterval5 = [firstObject dateInterval];
+                  dateInterval6 = [v43 dateInterval];
+                  v56 = [dateInterval5 intersectionWithDateInterval:dateInterval6];
 
-                  v57 = [v56 startDate];
-                  v58 = [v29 dateInterval];
-                  v59 = [v58 startDate];
-                  [v57 timeIntervalSinceDate:v59];
+                  startDate3 = [v56 startDate];
+                  dateInterval7 = [firstObject dateInterval];
+                  startDate4 = [dateInterval7 startDate];
+                  [startDate3 timeIntervalSinceDate:startDate4];
                   v61 = v60;
 
                   [v56 duration];
@@ -249,16 +249,16 @@
                   v66 = [MEMORY[0x1E696AD98] numberWithDouble:v63];
                   v67 = [HKSleepPeriodChartPointOffset chartPointOffsetWithValue:v66 continuation:v53];
 
-                  v68 = [v43 category];
-                  if ((v68 - 3) < 3)
+                  category = [v43 category];
+                  if ((category - 3) < 3)
                   {
                     goto LABEL_25;
                   }
 
                   v69 = v87;
-                  if (v68)
+                  if (category)
                   {
-                    if (v68 != 1)
+                    if (category != 1)
                     {
                       goto LABEL_27;
                     }
@@ -272,7 +272,7 @@ LABEL_25:
 LABEL_27:
                 }
 
-                v91 = [v88 countByEnumeratingWithState:&v92 objects:v106 count:16];
+                v91 = [segments countByEnumeratingWithState:&v92 objects:v106 count:16];
               }
 
               while (v91);
@@ -282,7 +282,7 @@ LABEL_27:
           }
 
           while (v86 + 1 != v85);
-          v85 = [v83 countByEnumeratingWithState:&v96 objects:v107 count:16];
+          v85 = [periods countByEnumeratingWithState:&v96 objects:v107 count:16];
         }
 
         while (v85);
@@ -293,7 +293,7 @@ LABEL_31:
         [v78 setAsleepOffsets:v89];
         v38 = v87;
         [v78 setInBedOffsets:v87];
-        v6 = v76;
+        contextCopy = v76;
         v7 = v77;
         v8 = 0x1E81B2000;
         i = v79;
@@ -305,13 +305,13 @@ LABEL_33:
         [v11 setXValue:v70];
 
         [v11 setHighlighted:0];
-        v71 = [v10 scheduledBedtimeValue];
-        [v11 setLowerGoal:v71];
+        scheduledBedtimeValue = [v10 scheduledBedtimeValue];
+        [v11 setLowerGoal:scheduledBedtimeValue];
 
-        v72 = [v10 scheduledWakeTimeValue];
-        [v11 setUpperGoal:v72];
+        scheduledWakeTimeValue = [v10 scheduledWakeTimeValue];
+        [v11 setUpperGoal:scheduledWakeTimeValue];
 
-        v73 = -[HKSleepChartPointUserInfo initWithSeriesType:chartPointInfoProvider:]([HKSleepChartPointUserInfo alloc], "initWithSeriesType:chartPointInfoProvider:", [v6 chartType], v10);
+        v73 = -[HKSleepChartPointUserInfo initWithSeriesType:chartPointInfoProvider:]([HKSleepChartPointUserInfo alloc], "initWithSeriesType:chartPointInfoProvider:", [contextCopy chartType], v10);
         [v11 setUserInfo:v73];
 
         [v7 addObject:v11];

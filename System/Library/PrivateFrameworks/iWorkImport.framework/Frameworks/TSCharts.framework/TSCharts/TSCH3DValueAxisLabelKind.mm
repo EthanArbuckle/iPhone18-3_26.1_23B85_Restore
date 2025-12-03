@@ -1,17 +1,17 @@
 @interface TSCH3DValueAxisLabelKind
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)kind;
-- (double)unitSpaceValueForAxis:(id)a3 index:(unint64_t)a4;
-- (id)labelForAxis:(id)a3 index:(unint64_t)a4;
-- (unint64_t)count:(id)a3;
+- (double)unitSpaceValueForAxis:(id)axis index:(unint64_t)index;
+- (id)labelForAxis:(id)axis index:(unint64_t)index;
+- (unint64_t)count:(id)count;
 @end
 
 @implementation TSCH3DValueAxisLabelKind
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSCH3DValueAxisLabelKind;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = sub_2762227E4;
   block[3] = &unk_27A6B6250;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A46B48 != -1)
   {
     dispatch_once(&qword_280A46B48, block);
@@ -33,7 +33,7 @@
   return v2;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v6 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "+[TSCH3DValueAxisLabelKind allocWithZone:]");
@@ -44,19 +44,19 @@
   return 0;
 }
 
-- (unint64_t)count:(id)a3
+- (unint64_t)count:(id)count
 {
-  v6 = objc_msgSend_majorGridLocations(a3, a2, v3, v4, v5);
+  v6 = objc_msgSend_majorGridLocations(count, a2, v3, v4, v5);
   v11 = objc_msgSend_count(v6, v7, v8, v9, v10);
 
   return v11;
 }
 
-- (double)unitSpaceValueForAxis:(id)a3 index:(unint64_t)a4
+- (double)unitSpaceValueForAxis:(id)axis index:(unint64_t)index
 {
-  v5 = a3;
-  v10 = objc_msgSend_majorGridLocations(v5, v6, v7, v8, v9);
-  v15 = objc_msgSend_objectAtIndexedSubscript_(v10, v11, v12, v13, v14, a4);
+  axisCopy = axis;
+  v10 = objc_msgSend_majorGridLocations(axisCopy, v6, v7, v8, v9);
+  v15 = objc_msgSend_objectAtIndexedSubscript_(v10, v11, v12, v13, v14, index);
 
   if (v15)
   {
@@ -68,18 +68,18 @@
     v20 = NAN;
   }
 
-  objc_msgSend_unitSpaceValueForDataSpaceValue_(v5, v16, v20, v18, v19);
+  objc_msgSend_unitSpaceValueForDataSpaceValue_(axisCopy, v16, v20, v18, v19);
   v22 = v21;
 
   return v22;
 }
 
-- (id)labelForAxis:(id)a3 index:(unint64_t)a4
+- (id)labelForAxis:(id)axis index:(unint64_t)index
 {
-  v5 = a3;
-  v10 = objc_msgSend_majorGridLocations(v5, v6, v7, v8, v9);
-  v15 = objc_msgSend_objectAtIndexedSubscript_(v10, v11, v12, v13, v14, a4);
-  v20 = objc_msgSend_formattedStringForAxisValue_(v5, v16, v17, v18, v19, v15);
+  axisCopy = axis;
+  v10 = objc_msgSend_majorGridLocations(axisCopy, v6, v7, v8, v9);
+  v15 = objc_msgSend_objectAtIndexedSubscript_(v10, v11, v12, v13, v14, index);
+  v20 = objc_msgSend_formattedStringForAxisValue_(axisCopy, v16, v17, v18, v19, v15);
 
   return v20;
 }

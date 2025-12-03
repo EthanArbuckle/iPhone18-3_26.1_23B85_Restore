@@ -1,72 +1,72 @@
 @interface LNCompoundPropertyQuery
-+ (id)andComparisons:(id)a3;
-+ (id)orComparisons:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (LNCompoundPropertyQuery)initWithCoder:(id)a3;
-- (LNCompoundPropertyQuery)initWithType:(unint64_t)a3 comparisons:(id)a4;
++ (id)andComparisons:(id)comparisons;
++ (id)orComparisons:(id)comparisons;
+- (BOOL)isEqual:(id)equal;
+- (LNCompoundPropertyQuery)initWithCoder:(id)coder;
+- (LNCompoundPropertyQuery)initWithType:(unint64_t)type comparisons:(id)comparisons;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNCompoundPropertyQuery
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeObject:self->_comparisons forKey:@"comparisons"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeObject:self->_comparisons forKey:@"comparisons"];
 }
 
-- (LNCompoundPropertyQuery)initWithCoder:(id)a3
+- (LNCompoundPropertyQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"comparisons"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"comparisons"];
 
   if (v9)
   {
     self = [(LNCompoundPropertyQuery *)self initWithType:v5 comparisons:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LNCompoundPropertyQuery *)self comparisons];
-  v4 = [v3 hash];
-  v5 = [(LNCompoundPropertyQuery *)self type];
+  comparisons = [(LNCompoundPropertyQuery *)self comparisons];
+  v4 = [comparisons hash];
+  type = [(LNCompoundPropertyQuery *)self type];
 
-  return v5 ^ v4;
+  return type ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(LNCompoundPropertyQuery *)self comparisons];
-        v8 = [v7 count];
-        v9 = [(LNCompoundPropertyQuery *)v6 comparisons];
-        v10 = [v9 count];
+        comparisons = [(LNCompoundPropertyQuery *)self comparisons];
+        v8 = [comparisons count];
+        comparisons2 = [(LNCompoundPropertyQuery *)v6 comparisons];
+        v10 = [comparisons2 count];
 
         if (v8 != v10)
         {
@@ -74,22 +74,22 @@
           goto LABEL_10;
         }
 
-        v11 = [(LNCompoundPropertyQuery *)self comparisons];
-        v12 = [(LNCompoundPropertyQuery *)v6 comparisons];
-        v13 = [v11 isEqual:v12];
+        comparisons3 = [(LNCompoundPropertyQuery *)self comparisons];
+        comparisons4 = [(LNCompoundPropertyQuery *)v6 comparisons];
+        v13 = [comparisons3 isEqual:comparisons4];
       }
 
       else
       {
         v13 = 0;
-        v11 = v6;
+        comparisons3 = v6;
         v6 = 0;
       }
     }
 
     else
     {
-      v11 = 0;
+      comparisons3 = 0;
       v13 = 0;
     }
 
@@ -106,15 +106,15 @@ LABEL_11:
 - (id)description
 {
   v3 = [@"<" mutableCopy];
-  v4 = [(LNCompoundPropertyQuery *)self comparisons];
+  comparisons = [(LNCompoundPropertyQuery *)self comparisons];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __38__LNCompoundPropertyQuery_description__block_invoke;
   v11 = &unk_1E72B0E60;
   v12 = v3;
-  v13 = self;
+  selfCopy = self;
   v5 = v3;
-  [v4 enumerateObjectsUsingBlock:&v8];
+  [comparisons enumerateObjectsUsingBlock:&v8];
 
   v6 = [v5 copy];
 
@@ -157,17 +157,17 @@ uint64_t __38__LNCompoundPropertyQuery_description__block_invoke(uint64_t a1, ui
   }
 }
 
-- (LNCompoundPropertyQuery)initWithType:(unint64_t)a3 comparisons:(id)a4
+- (LNCompoundPropertyQuery)initWithType:(unint64_t)type comparisons:(id)comparisons
 {
-  v6 = a4;
+  comparisonsCopy = comparisons;
   v12.receiver = self;
   v12.super_class = LNCompoundPropertyQuery;
-  v7 = [(LNPropertyQuery *)&v12 _init];
-  v8 = v7;
-  if (v7)
+  _init = [(LNPropertyQuery *)&v12 _init];
+  v8 = _init;
+  if (_init)
   {
-    v7->_type = a3;
-    v9 = [v6 copy];
+    _init->_type = type;
+    v9 = [comparisonsCopy copy];
     comparisons = v8->_comparisons;
     v8->_comparisons = v9;
   }
@@ -175,18 +175,18 @@ uint64_t __38__LNCompoundPropertyQuery_description__block_invoke(uint64_t a1, ui
   return v8;
 }
 
-+ (id)orComparisons:(id)a3
++ (id)orComparisons:(id)comparisons
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithType:1 comparisons:v4];
+  comparisonsCopy = comparisons;
+  v5 = [[self alloc] initWithType:1 comparisons:comparisonsCopy];
 
   return v5;
 }
 
-+ (id)andComparisons:(id)a3
++ (id)andComparisons:(id)comparisons
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithType:0 comparisons:v4];
+  comparisonsCopy = comparisons;
+  v5 = [[self alloc] initWithType:0 comparisons:comparisonsCopy];
 
   return v5;
 }

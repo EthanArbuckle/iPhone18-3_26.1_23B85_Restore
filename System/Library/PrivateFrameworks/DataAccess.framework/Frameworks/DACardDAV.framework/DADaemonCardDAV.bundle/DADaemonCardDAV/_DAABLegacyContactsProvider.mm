@@ -1,10 +1,10 @@
 @interface _DAABLegacyContactsProvider
-- (_DAABLegacyContactsProvider)initWithAddressBook:(void *)a3;
-- (id)contactFromItem:(id)a3;
-- (id)contactsInContainer:(id)a3;
-- (id)contactsWithExternalHREFs:(id)a3 container:(id)a4;
-- (id)contactsWithExternalUUIDs:(id)a3 container:(id)a4;
-- (id)meContactInContainer:(id)a3;
+- (_DAABLegacyContactsProvider)initWithAddressBook:(void *)book;
+- (id)contactFromItem:(id)item;
+- (id)contactsInContainer:(id)container;
+- (id)contactsWithExternalHREFs:(id)fs container:(id)container;
+- (id)contactsWithExternalUUIDs:(id)ds container:(id)container;
+- (id)meContactInContainer:(id)container;
 - (unint64_t)countOfContacts;
 - (unint64_t)countOfGroups;
 - (void)dealloc;
@@ -12,14 +12,14 @@
 
 @implementation _DAABLegacyContactsProvider
 
-- (_DAABLegacyContactsProvider)initWithAddressBook:(void *)a3
+- (_DAABLegacyContactsProvider)initWithAddressBook:(void *)book
 {
   v6.receiver = self;
   v6.super_class = _DAABLegacyContactsProvider;
   v4 = [(_DAABLegacyContactsProvider *)&v6 init];
   if (v4)
   {
-    v4->_addressBook = CFRetain(a3);
+    v4->_addressBook = CFRetain(book);
   }
 
   return v4;
@@ -33,10 +33,10 @@
   [(_DAABLegacyContactsProvider *)&v3 dealloc];
 }
 
-- (id)contactsInContainer:(id)a3
+- (id)contactsInContainer:(id)container
 {
-  v4 = a3;
-  v5 = ABAddressBookCopyArrayOfAllPeopleInSource(-[_DAABLegacyContactsProvider addressBook](self, "addressBook"), [v4 asSource]);
+  containerCopy = container;
+  v5 = ABAddressBookCopyArrayOfAllPeopleInSource(-[_DAABLegacyContactsProvider addressBook](self, "addressBook"), [containerCopy asSource]);
   v6 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
@@ -74,9 +74,9 @@
   return v15;
 }
 
-- (id)meContactInContainer:(id)a3
+- (id)meContactInContainer:(id)container
 {
-  [a3 asSource];
+  [container asSource];
   Me = ABSourceGetMe();
   if (Me)
   {
@@ -86,34 +86,34 @@
   return Me;
 }
 
-- (id)contactFromItem:(id)a3
+- (id)contactFromItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 cardDAVRecordItem];
-  v5 = [v4 isContact];
+  itemCopy = item;
+  cardDAVRecordItem = [itemCopy cardDAVRecordItem];
+  isContact = [cardDAVRecordItem isContact];
 
-  if (v5)
+  if (isContact)
   {
-    v6 = [v3 cardDAVRecordItem];
+    cardDAVRecordItem2 = [itemCopy cardDAVRecordItem];
   }
 
   else
   {
-    v6 = 0;
+    cardDAVRecordItem2 = 0;
   }
 
-  return v6;
+  return cardDAVRecordItem2;
 }
 
-- (id)contactsWithExternalHREFs:(id)a3 container:(id)a4
+- (id)contactsWithExternalHREFs:(id)fs container:(id)container
 {
-  v6 = a3;
-  v7 = a4;
+  fsCopy = fs;
+  containerCopy = container;
   v8 = +[NSMutableArray array];
-  if ([v6 count])
+  if ([fsCopy count])
   {
     addressBook = self->_addressBook;
-    [v7 asSource];
+    [containerCopy asSource];
     v10 = ABAddressBookCopyArrayOfAllPeopleWithExternalIdentifiersInSource();
     if (v10)
     {
@@ -136,15 +136,15 @@
   return v8;
 }
 
-- (id)contactsWithExternalUUIDs:(id)a3 container:(id)a4
+- (id)contactsWithExternalUUIDs:(id)ds container:(id)container
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  containerCopy = container;
   v8 = +[NSMutableArray array];
-  if ([v6 count])
+  if ([dsCopy count])
   {
     addressBook = self->_addressBook;
-    [v7 asSource];
+    [containerCopy asSource];
     v10 = ABAddressBookCopyArrayOfAllPeopleWithExternalUUIDsInSource();
     if (v10)
     {
@@ -169,16 +169,16 @@
 
 - (unint64_t)countOfContacts
 {
-  v2 = [(_DAABLegacyContactsProvider *)self addressBook];
+  addressBook = [(_DAABLegacyContactsProvider *)self addressBook];
 
-  return ABAddressBookGetPersonCount(v2);
+  return ABAddressBookGetPersonCount(addressBook);
 }
 
 - (unint64_t)countOfGroups
 {
-  v2 = [(_DAABLegacyContactsProvider *)self addressBook];
+  addressBook = [(_DAABLegacyContactsProvider *)self addressBook];
 
-  return ABAddressBookGetGroupCount(v2);
+  return ABAddressBookGetGroupCount(addressBook);
 }
 
 @end

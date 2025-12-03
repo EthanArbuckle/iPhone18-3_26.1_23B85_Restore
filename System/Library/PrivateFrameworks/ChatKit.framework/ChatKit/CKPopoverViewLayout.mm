@@ -5,16 +5,16 @@
 - (CGSize)anchorSize;
 - (CGSize)containerSize;
 - (CGSize)preferredContentSize;
-- (CKPopoverViewLayout)initWithConfiguration:(id)a3;
-- (id)newLayoutMetricsWithCoordinateSpace:(id)a3;
-- (void)updateProperties:(id)a3;
+- (CKPopoverViewLayout)initWithConfiguration:(id)configuration;
+- (id)newLayoutMetricsWithCoordinateSpace:(id)space;
+- (void)updateProperties:(id)properties;
 @end
 
 @implementation CKPopoverViewLayout
 
-- (CKPopoverViewLayout)initWithConfiguration:(id)a3
+- (CKPopoverViewLayout)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = CKPopoverViewLayout;
   v6 = [(CKPopoverViewLayout *)&v10 init];
@@ -28,7 +28,7 @@
     v6->_containerSize = v8;
     v6->_preferredContentSize = v8;
     v6->_state = 0;
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v7;
@@ -47,10 +47,10 @@
   return result;
 }
 
-- (void)updateProperties:(id)a3
+- (void)updateProperties:(id)properties
 {
   self->_mutating = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(properties + 2))(properties, a2);
   self->_mutating = 0;
 }
 
@@ -119,13 +119,13 @@
   return result;
 }
 
-- (id)newLayoutMetricsWithCoordinateSpace:(id)a3
+- (id)newLayoutMetricsWithCoordinateSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   v5 = [CKPopoverViewLayoutMetrics alloc];
-  v6 = [(CKPopoverViewLayout *)self state];
+  state = [(CKPopoverViewLayout *)self state];
   [(CKPopoverViewLayout *)self popoverFrameInContainer];
-  v7 = [(CKPopoverViewLayoutMetrics *)v5 initWithState:v6 frame:v4 coordinateSpace:?];
+  v7 = [(CKPopoverViewLayoutMetrics *)v5 initWithState:state frame:spaceCopy coordinateSpace:?];
 
   return v7;
 }

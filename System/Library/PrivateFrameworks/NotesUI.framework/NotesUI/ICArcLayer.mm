@@ -1,10 +1,10 @@
 @interface ICArcLayer
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation ICArcLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   [(ICArcLayer *)self bounds];
   x = v20.origin.x;
@@ -14,11 +14,11 @@
   v9 = CGRectGetWidth(v20) * 0.5;
   [(ICCircleLayer *)self strokeWidth];
   v11 = v9 - v10;
-  CGContextGetCTM(&v19, a3);
-  CGContextScaleCTM(a3, 1.0, -1.0);
+  CGContextGetCTM(&v19, context);
+  CGContextScaleCTM(context, 1.0, -1.0);
   [(ICArcLayer *)self bounds];
-  CGContextTranslateCTM(a3, 0.0, -v12);
-  CGContextSetLineCap(a3, kCGLineCapRound);
+  CGContextTranslateCTM(context, 0.0, -v12);
+  CGContextSetLineCap(context, kCGLineCapRound);
   v21.origin.x = x;
   v21.origin.y = y;
   v21.size.width = width;
@@ -32,11 +32,11 @@
   [(ICArcLayer *)self startAngle];
   v16 = v15;
   [(ICArcLayer *)self endAngle];
-  CGContextAddArc(a3, MidX, MidY, v11, v16, v17, [(ICArcLayer *)self drawClockwise]);
+  CGContextAddArc(context, MidX, MidY, v11, v16, v17, [(ICArcLayer *)self drawClockwise]);
   [(ICCircleLayer *)self strokeWidth];
-  CGContextSetLineWidth(a3, v18);
-  CGContextSetStrokeColorWithColor(a3, [(ICCircleLayer *)self strokeColor]);
-  CGContextStrokePath(a3);
+  CGContextSetLineWidth(context, v18);
+  CGContextSetStrokeColorWithColor(context, [(ICCircleLayer *)self strokeColor]);
+  CGContextStrokePath(context);
 }
 
 @end

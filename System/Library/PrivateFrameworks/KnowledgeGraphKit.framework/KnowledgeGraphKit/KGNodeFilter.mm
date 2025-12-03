@@ -1,14 +1,14 @@
 @interface KGNodeFilter
-- (BOOL)matchesNode:(id)a3;
+- (BOOL)matchesNode:(id)node;
 @end
 
 @implementation KGNodeFilter
 
-- (BOOL)matchesNode:(id)a3
+- (BOOL)matchesNode:(id)node
 {
   v4.receiver = self;
   v4.super_class = KGNodeFilter;
-  return [(KGElementFilter *)&v4 matchesElement:a3];
+  return [(KGElementFilter *)&v4 matchesElement:node];
 }
 
 @end

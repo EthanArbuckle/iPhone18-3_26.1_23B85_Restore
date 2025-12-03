@@ -1,24 +1,24 @@
 @interface PKCommutePlanDetailsTableViewCell
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKCommutePlanDetailsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 passDetailViewStyle:(int64_t)a5;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKCommutePlanDetailsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier passDetailViewStyle:(int64_t)viewStyle;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setPrimaryText:(id)a3;
-- (void)setSecondaryText:(id)a3;
+- (void)setPrimaryText:(id)text;
+- (void)setSecondaryText:(id)text;
 @end
 
 @implementation PKCommutePlanDetailsTableViewCell
 
-- (PKCommutePlanDetailsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 passDetailViewStyle:(int64_t)a5
+- (PKCommutePlanDetailsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier passDetailViewStyle:(int64_t)viewStyle
 {
   v24.receiver = self;
   v24.super_class = PKCommutePlanDetailsTableViewCell;
-  v6 = [(PKCommutePlanDetailsTableViewCell *)&v24 initWithStyle:a3 reuseIdentifier:a4];
+  v6 = [(PKCommutePlanDetailsTableViewCell *)&v24 initWithStyle:style reuseIdentifier:identifier];
   v7 = v6;
   if (v6)
   {
-    v8 = [(PKCommutePlanDetailsTableViewCell *)v6 contentView];
+    contentView = [(PKCommutePlanDetailsTableViewCell *)v6 contentView];
     v9 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     primaryLabel = v7->_primaryLabel;
     v7->_primaryLabel = v9;
@@ -41,25 +41,25 @@
     [(UILabel *)v16 setFont:v17];
 
     v18 = v7->_primaryLabel;
-    if (a5 == 2)
+    if (viewStyle == 2)
     {
-      v19 = PKBridgeAppearanceGetAppearanceSpecifier();
-      v20 = [v19 textColor];
-      [(UILabel *)v18 setTextColor:v20];
+      secondaryLabelColor = PKBridgeAppearanceGetAppearanceSpecifier();
+      textColor = [secondaryLabelColor textColor];
+      [(UILabel *)v18 setTextColor:textColor];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E69DC888] labelColor];
-      [(UILabel *)v18 setTextColor:v21];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      [(UILabel *)v18 setTextColor:labelColor];
 
       v22 = v7->_secondaryLabel;
-      v19 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [(UILabel *)v22 setTextColor:v19];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [(UILabel *)v22 setTextColor:secondaryLabelColor];
     }
 
-    [v8 addSubview:v7->_primaryLabel];
-    [v8 addSubview:v7->_secondaryLabel];
+    [contentView addSubview:v7->_primaryLabel];
+    [contentView addSubview:v7->_secondaryLabel];
   }
 
   return v7;
@@ -70,15 +70,15 @@
   v4.receiver = self;
   v4.super_class = PKCommutePlanDetailsTableViewCell;
   [(PKCommutePlanDetailsTableViewCell *)&v4 layoutSubviews];
-  v3 = [(PKCommutePlanDetailsTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKCommutePlanDetailsTableViewCell *)self contentView];
+  [contentView bounds];
   [(PKCommutePlanDetailsTableViewCell *)self _layoutWithBounds:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_templateLayout = 1;
-  [(PKCommutePlanDetailsTableViewCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, 1.79769313e308];
+  [(PKCommutePlanDetailsTableViewCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, 1.79769313e308];
   self->_templateLayout = 0;
   result.height = v5;
   result.width = v4;
@@ -97,11 +97,11 @@
   self->_secondaryText = 0;
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   primaryText = self->_primaryText;
-  v10 = v4;
+  v10 = textCopy;
   v6 = primaryText;
   if (v6 == v10)
   {
@@ -131,11 +131,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   secondaryText = self->_secondaryText;
-  v10 = v4;
+  v10 = textCopy;
   v6 = secondaryText;
   if (v6 == v10)
   {
@@ -165,12 +165,12 @@ LABEL_8:
 LABEL_9:
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   memset(&slice, 0, sizeof(slice));
   [(UITableViewCell *)self pkui_effectiveLayoutMargins];
   v10 = width - (v8 + v9);

@@ -1,68 +1,68 @@
 @interface WDClinicalSampleAccountsLoader
-- (BOOL)_triggerIngestOfDataBatch:(id)a3 accountIdentifier:(id)a4 error:(id *)a5;
+- (BOOL)_triggerIngestOfDataBatch:(id)batch accountIdentifier:(id)identifier error:(id *)error;
 - (NSArray)cachedAccounts;
-- (WDClinicalSampleAccountsLoader)initWithProfile:(id)a3;
-- (id)_createTemporaryFileForDataBatch:(id)a3 error:(id *)a4;
+- (WDClinicalSampleAccountsLoader)initWithProfile:(id)profile;
+- (id)_createTemporaryFileForDataBatch:(id)batch error:(id *)error;
 - (id)_parseAccounts;
-- (id)_sampleAccountForGatewayWithExternalID:(id)a3 error:(id *)a4;
-- (id)providerForSampleDataSearchResultWithExternalID:(id)a3 error:(id *)a4;
+- (id)_sampleAccountForGatewayWithExternalID:(id)d error:(id *)error;
+- (id)providerForSampleDataSearchResultWithExternalID:(id)d error:(id *)error;
 - (id)sampleAccountsAsSearchResults;
-- (void)_createAccountAndTriggerIngestForDataBatch:(id)a3 account:(id)a4 completion:(id)a5;
-- (void)loadFirstSampleAccountDataBatchForGatewayWithExternalID:(id)a3 completion:(id)a4;
+- (void)_createAccountAndTriggerIngestForDataBatch:(id)batch account:(id)account completion:(id)completion;
+- (void)loadFirstSampleAccountDataBatchForGatewayWithExternalID:(id)d completion:(id)completion;
 @end
 
 @implementation WDClinicalSampleAccountsLoader
 
-- (WDClinicalSampleAccountsLoader)initWithProfile:(id)a3
+- (WDClinicalSampleAccountsLoader)initWithProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   v9.receiver = self;
   v9.super_class = WDClinicalSampleAccountsLoader;
   v6 = [(WDClinicalSampleAccountsLoader *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_profile, a3);
+    objc_storeStrong(&v6->_profile, profile);
   }
 
   return v7;
 }
 
-- (void)loadFirstSampleAccountDataBatchForGatewayWithExternalID:(id)a3 completion:(id)a4
+- (void)loadFirstSampleAccountDataBatchForGatewayWithExternalID:(id)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v12 = 0;
-  v7 = [(WDClinicalSampleAccountsLoader *)self _sampleAccountForGatewayWithExternalID:a3 error:&v12];
+  v7 = [(WDClinicalSampleAccountsLoader *)self _sampleAccountForGatewayWithExternalID:d error:&v12];
   v8 = v12;
   if (v7)
   {
-    v9 = [v7 batches];
-    v10 = [v9 firstObject];
+    batches = [v7 batches];
+    firstObject = [batches firstObject];
 
-    if (v10)
+    if (firstObject)
     {
-      [(WDClinicalSampleAccountsLoader *)self _createAccountAndTriggerIngestForDataBatch:v10 account:v7 completion:v6];
+      [(WDClinicalSampleAccountsLoader *)self _createAccountAndTriggerIngestForDataBatch:firstObject account:v7 completion:completionCopy];
     }
 
     else
     {
       v11 = [MEMORY[0x1E696ABC0] hk_error:3 description:@"There are no sample data batches for this account"];
 
-      v6[2](v6, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
       v8 = v11;
     }
   }
 
   else
   {
-    v6[2](v6, 0, v8);
+    completionCopy[2](completionCopy, 0, v8);
   }
 }
 
-- (id)_sampleAccountForGatewayWithExternalID:(id)a3 error:(id *)a4
+- (id)_sampleAccountForGatewayWithExternalID:(id)d error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   [(WDClinicalSampleAccountsLoader *)self cachedAccounts];
   v19 = 0u;
   v20 = 0u;
@@ -83,10 +83,10 @@
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 provider];
-        v13 = [v12 gateway];
-        v14 = [v13 identifier];
-        v15 = [v5 isEqualToString:v14];
+        provider = [v11 provider];
+        gateway = [provider gateway];
+        identifier = [gateway identifier];
+        v15 = [dCopy isEqualToString:identifier];
 
         if (v15)
         {
@@ -106,55 +106,55 @@
     }
   }
 
-  [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 description:{@"No matching cached sample account found, please start over"}];
+  [MEMORY[0x1E696ABC0] hk_assignError:error code:3 description:{@"No matching cached sample account found, please start over"}];
   v16 = 0;
 LABEL_11:
 
   return v16;
 }
 
-- (void)_createAccountAndTriggerIngestForDataBatch:(id)a3 account:(id)a4 completion:(id)a5
+- (void)_createAccountAndTriggerIngestForDataBatch:(id)batch account:(id)account completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  batchCopy = batch;
+  completionCopy = completion;
   v10 = MEMORY[0x1E69A3F10];
-  v11 = a4;
+  accountCopy = account;
   v12 = [v10 alloc];
-  v13 = [(HRProfile *)self->_profile healthStore];
-  v38 = [v12 initWithHealthStore:v13];
+  healthStore = [(HRProfile *)self->_profile healthStore];
+  v38 = [v12 initWithHealthStore:healthStore];
 
-  v37 = [v11 provider];
-  v36 = [v37 gateway];
-  v27 = [v36 title];
-  v35 = [v11 provider];
-  v34 = [v35 gateway];
-  v33 = [v34 properties];
-  v24 = [v33 objectForKeyedSubscript:@"subtitle"];
-  v32 = [v11 provider];
-  v31 = [v32 gateway];
-  v28 = [v31 properties];
-  v21 = [v28 objectForKeyedSubscript:@"description"];
-  v26 = [v11 provider];
-  v25 = [v26 gateway];
-  v22 = [v25 properties];
-  v14 = [v22 objectForKeyedSubscript:@"country"];
-  v15 = [v11 provider];
-  v16 = [v15 gateway];
-  v17 = [v16 FHIRVersion];
-  v18 = [v11 provider];
+  provider = [accountCopy provider];
+  gateway = [provider gateway];
+  title = [gateway title];
+  provider2 = [accountCopy provider];
+  gateway2 = [provider2 gateway];
+  properties = [gateway2 properties];
+  v24 = [properties objectForKeyedSubscript:@"subtitle"];
+  provider3 = [accountCopy provider];
+  gateway3 = [provider3 gateway];
+  properties2 = [gateway3 properties];
+  v21 = [properties2 objectForKeyedSubscript:@"description"];
+  provider4 = [accountCopy provider];
+  gateway4 = [provider4 gateway];
+  properties3 = [gateway4 properties];
+  v14 = [properties3 objectForKeyedSubscript:@"country"];
+  provider5 = [accountCopy provider];
+  gateway5 = [provider5 gateway];
+  fHIRVersion = [gateway5 FHIRVersion];
+  provider6 = [accountCopy provider];
 
-  v19 = [v18 gateway];
-  v20 = [v19 identifier];
+  gateway6 = [provider6 gateway];
+  identifier = [gateway6 identifier];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __96__WDClinicalSampleAccountsLoader__createAccountAndTriggerIngestForDataBatch_account_completion___block_invoke;
   v39[3] = &unk_1E83DCDD8;
-  v40 = v8;
-  v41 = v9;
+  v40 = batchCopy;
+  v41 = completionCopy;
   v39[4] = self;
-  v30 = v8;
-  v23 = v9;
-  [v38 createStaticAccountWithTitle:v27 subtitle:v24 description:v21 countryCode:v14 fhirVersion:v17 onlyIfNeededForSimulatedGatewayID:v20 completion:v39];
+  v30 = batchCopy;
+  v23 = completionCopy;
+  [v38 createStaticAccountWithTitle:title subtitle:v24 description:v21 countryCode:v14 fhirVersion:fHIRVersion onlyIfNeededForSimulatedGatewayID:identifier completion:v39];
 }
 
 void __96__WDClinicalSampleAccountsLoader__createAccountAndTriggerIngestForDataBatch_account_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -192,29 +192,29 @@ void __96__WDClinicalSampleAccountsLoader__createAccountAndTriggerIngestForDataB
   }
 }
 
-- (id)_createTemporaryFileForDataBatch:(id)a3 error:(id *)a4
+- (id)_createTemporaryFileForDataBatch:(id)batch error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696ACB0];
   v19 = @"resources";
-  v6 = [a3 resourceObjectsByResourceType];
-  v20[0] = v6;
+  resourceObjectsByResourceType = [batch resourceObjectsByResourceType];
+  v20[0] = resourceObjectsByResourceType;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-  v8 = [v5 dataWithJSONObject:v7 options:0 error:a4];
+  v8 = [v5 dataWithJSONObject:v7 options:0 error:error];
 
   if (v8)
   {
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [v10 UUIDString];
-    v12 = [v9 stringWithFormat:@"%@_SimulatorSampleData", v11];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v12 = [v9 stringWithFormat:@"%@_SimulatorSampleData", uUIDString];
     v13 = [v12 stringByAppendingPathExtension:@"json"];
 
     v14 = NSTemporaryDirectory();
     v15 = [v14 stringByAppendingPathComponent:v13];
 
     v16 = [MEMORY[0x1E695DFF8] fileURLWithPath:v15];
-    if ([v8 writeToURL:v16 options:1 error:a4])
+    if ([v8 writeToURL:v16 options:1 error:error])
     {
       v17 = v16;
     }
@@ -233,19 +233,19 @@ void __96__WDClinicalSampleAccountsLoader__createAccountAndTriggerIngestForDataB
   return v17;
 }
 
-- (BOOL)_triggerIngestOfDataBatch:(id)a3 accountIdentifier:(id)a4 error:(id *)a5
+- (BOOL)_triggerIngestOfDataBatch:(id)batch accountIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
-  v9 = [(WDClinicalSampleAccountsLoader *)self _createTemporaryFileForDataBatch:a3 error:a5];
+  identifierCopy = identifier;
+  v9 = [(WDClinicalSampleAccountsLoader *)self _createTemporaryFileForDataBatch:batch error:error];
   if (v9)
   {
-    v10 = [MEMORY[0x1E696AC00] fileHandleForReadingFromURL:v9 error:a5];
+    v10 = [MEMORY[0x1E696AC00] fileHandleForReadingFromURL:v9 error:error];
     v11 = v10 != 0;
     if (v10)
     {
       v12 = objc_alloc(MEMORY[0x1E69A3F38]);
-      v13 = [(HRProfile *)self->_profile healthStore];
-      v14 = [v12 initWithHealthStore:v13];
+      healthStore = [(HRProfile *)self->_profile healthStore];
+      v14 = [v12 initWithHealthStore:healthStore];
 
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
@@ -253,7 +253,7 @@ void __96__WDClinicalSampleAccountsLoader__createAccountAndTriggerIngestForDataB
       v16[3] = &unk_1E83DCE00;
       v16[4] = self;
       v17 = v9;
-      [v14 ingestHealthRecordsWithFHIRDocumentHandle:v10 accountIdentifier:v8 options:0 completion:v16];
+      [v14 ingestHealthRecordsWithFHIRDocumentHandle:v10 accountIdentifier:identifierCopy options:0 completion:v16];
     }
   }
 
@@ -309,10 +309,10 @@ void __84__WDClinicalSampleAccountsLoader__triggerIngestOfDataBatch_accountIdent
   }
 }
 
-- (id)providerForSampleDataSearchResultWithExternalID:(id)a3 error:(id *)a4
+- (id)providerForSampleDataSearchResultWithExternalID:(id)d error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   [(WDClinicalSampleAccountsLoader *)self cachedAccounts];
   v19 = 0u;
   v20 = 0u;
@@ -333,14 +333,14 @@ void __84__WDClinicalSampleAccountsLoader__triggerIngestOfDataBatch_accountIdent
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 provider];
-        v14 = [v13 identifier];
-        v15 = [v6 isEqualToString:v14];
+        provider = [v12 provider];
+        identifier = [provider identifier];
+        v15 = [dCopy isEqualToString:identifier];
 
         if (v15)
         {
-          v17 = [MEMORY[0x1E696BFB8] localDevelopmentSampleBrand];
-          v16 = [v12 asClinicalProviderWithBrand:v17];
+          localDevelopmentSampleBrand = [MEMORY[0x1E696BFB8] localDevelopmentSampleBrand];
+          v16 = [v12 asClinicalProviderWithBrand:localDevelopmentSampleBrand];
 
           goto LABEL_11;
         }
@@ -356,7 +356,7 @@ void __84__WDClinicalSampleAccountsLoader__triggerIngestOfDataBatch_accountIdent
     }
   }
 
-  [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 description:{@"No matching cached sample account found, please start over"}];
+  [MEMORY[0x1E696ABC0] hk_assignError:error code:3 description:{@"No matching cached sample account found, please start over"}];
   v16 = 0;
 LABEL_11:
 
@@ -366,13 +366,13 @@ LABEL_11:
 - (id)sampleAccountsAsSearchResults
 {
   v34 = *MEMORY[0x1E69E9840];
-  v2 = [(WDClinicalSampleAccountsLoader *)self cachedAccounts];
-  v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v2, "count")}];
+  cachedAccounts = [(WDClinicalSampleAccountsLoader *)self cachedAccounts];
+  v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(cachedAccounts, "count")}];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v2;
+  obj = cachedAccounts;
   v17 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v17)
   {
@@ -388,24 +388,24 @@ LABEL_11:
 
         v4 = *(*(&v29 + 1) + 8 * i);
         v5 = objc_alloc(MEMORY[0x1E69A3F58]);
-        v27 = [v4 provider];
-        v28 = [v27 identifier];
-        v26 = [MEMORY[0x1E696AFB0] UUID];
-        v6 = [v26 UUIDString];
-        v25 = [v4 provider];
-        v20 = [v25 title];
-        v24 = [v4 provider];
-        v23 = [v24 properties];
-        v18 = [v23 objectForKeyedSubscript:@"subtitle"];
-        v22 = [v4 provider];
-        v21 = [v22 properties];
-        v7 = [v21 objectForKeyedSubscript:@"location"];
-        v8 = [v4 provider];
-        v9 = [v8 properties];
-        v10 = [v9 objectForKeyedSubscript:@"country"];
-        v11 = [MEMORY[0x1E696BFB8] localDevelopmentSampleBrand];
-        v12 = [v4 provider];
-        v19 = [v5 initWithExternalID:v28 batchID:v6 title:v20 subtitle:v18 location:v7 supported:1 countryCode:v10 brand:v11 minCompatibleAPIVersion:{objc_msgSend(v12, "minCompatibleAPIVersion")}];
+        provider = [v4 provider];
+        identifier = [provider identifier];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
+        provider2 = [v4 provider];
+        title = [provider2 title];
+        provider3 = [v4 provider];
+        properties = [provider3 properties];
+        v18 = [properties objectForKeyedSubscript:@"subtitle"];
+        provider4 = [v4 provider];
+        properties2 = [provider4 properties];
+        v7 = [properties2 objectForKeyedSubscript:@"location"];
+        provider5 = [v4 provider];
+        properties3 = [provider5 properties];
+        v10 = [properties3 objectForKeyedSubscript:@"country"];
+        localDevelopmentSampleBrand = [MEMORY[0x1E696BFB8] localDevelopmentSampleBrand];
+        provider6 = [v4 provider];
+        v19 = [v5 initWithExternalID:identifier batchID:uUIDString title:title subtitle:v18 location:v7 supported:1 countryCode:v10 brand:localDevelopmentSampleBrand minCompatibleAPIVersion:{objc_msgSend(provider6, "minCompatibleAPIVersion")}];
 
         [v16 addObject:v19];
       }
@@ -424,8 +424,8 @@ LABEL_11:
   cachedAccounts = self->_cachedAccounts;
   if (!cachedAccounts)
   {
-    v4 = [(WDClinicalSampleAccountsLoader *)self _parseAccounts];
-    [(WDClinicalSampleAccountsLoader *)self setCachedAccounts:v4];
+    _parseAccounts = [(WDClinicalSampleAccountsLoader *)self _parseAccounts];
+    [(WDClinicalSampleAccountsLoader *)self setCachedAccounts:_parseAccounts];
 
     cachedAccounts = self->_cachedAccounts;
   }

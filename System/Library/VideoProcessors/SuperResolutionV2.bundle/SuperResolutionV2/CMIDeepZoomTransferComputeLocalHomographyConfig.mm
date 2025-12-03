@@ -1,6 +1,6 @@
 @interface CMIDeepZoomTransferComputeLocalHomographyConfig
 - (CMIDeepZoomTransferComputeLocalHomographyConfig)init;
-- (int)readPlist:(id)a3;
+- (int)readPlist:(id)plist;
 @end
 
 @implementation CMIDeepZoomTransferComputeLocalHomographyConfig
@@ -18,17 +18,17 @@
   return result;
 }
 
-- (int)readPlist:(id)a3
+- (int)readPlist:(id)plist
 {
-  v4 = a3;
-  if ([v4 count])
+  plistCopy = plist;
+  if ([plistCopy count])
   {
-    v5 = [v4 allKeys];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    allKeys = [plistCopy allKeys];
+    v6 = [allKeys objectAtIndexedSubscript:0];
 
     if (v6)
     {
-      sub_CDF0(v4, v6, self, &v9);
+      sub_CDF0(plistCopy, v6, self, &v9);
       v7 = v9;
     }
 

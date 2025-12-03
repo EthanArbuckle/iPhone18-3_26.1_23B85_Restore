@@ -1,7 +1,7 @@
 @interface AVTimebaseObserver
-- (AVTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)a3 queue:(id)a4;
+- (AVTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)timebase queue:(id)queue;
 - (OpaqueCMTimebase)timebase;
-- (void)_finishInitializationWithTimerEventHandler:(id)a3;
+- (void)_finishInitializationWithTimerEventHandler:(id)handler;
 - (void)_reallyInvalidate;
 - (void)_removeTimebaseFromTimerSource;
 - (void)_startObservingTimebaseNotifications;
@@ -12,7 +12,7 @@
 
 @implementation AVTimebaseObserver
 
-- (AVTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)a3 queue:(id)a4
+- (AVTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)timebase queue:(id)queue
 {
   v21.receiver = self;
   v21.super_class = AVTimebaseObserver;
@@ -20,7 +20,7 @@
   v8 = v7;
   if (v7)
   {
-    if (!a3)
+    if (!timebase)
     {
       timerQueue = v7->_timerQueue;
       if (timerQueue)
@@ -44,17 +44,17 @@
     }
 
     v9 = [[AVWeakReference alloc] initWithReferencedObject:v7];
-    v10 = MEMORY[0x1E69E96A0];
-    if (a4)
+    queueCopy = MEMORY[0x1E69E96A0];
+    if (queue)
     {
-      v10 = a4;
+      queueCopy = queue;
     }
 
-    v8->_timerQueue = v10;
+    v8->_timerQueue = queueCopy;
     v8->_weakReference = v9;
-    dispatch_retain(v10);
-    CFRetain(a3);
-    v8->_timebase = a3;
+    dispatch_retain(queueCopy);
+    CFRetain(timebase);
+    v8->_timebase = timebase;
   }
 
   return v8;
@@ -141,11 +141,11 @@
   }
 }
 
-- (void)_finishInitializationWithTimerEventHandler:(id)a3
+- (void)_finishInitializationWithTimerEventHandler:(id)handler
 {
   v5 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 1uLL, self->_timerQueue);
   self->_timerSource = v5;
-  dispatch_source_set_event_handler(v5, a3);
+  dispatch_source_set_event_handler(v5, handler);
   dispatch_resume(self->_timerSource);
   [(AVTimebaseObserver *)self _attachTimerSourceToTimebase];
   [(AVTimebaseObserver *)self _startObservingTimebaseNotifications];
@@ -182,9 +182,9 @@
   if (self->_timebase)
   {
     v3 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-    v4 = [(AVTimebaseObserver *)self _weakReference];
-    [v3 addListenerWithWeakReference:v4 callback:AVTimebaseObserver_timebaseNotificationCallback name:*MEMORY[0x1E6960CE8] object:self->_timebase flags:0];
-    [v3 addListenerWithWeakReference:v4 callback:AVTimebaseObserver_timebaseNotificationCallback name:*MEMORY[0x1E6960CD0] object:self->_timebase flags:0];
+    _weakReference = [(AVTimebaseObserver *)self _weakReference];
+    [v3 addListenerWithWeakReference:_weakReference callback:AVTimebaseObserver_timebaseNotificationCallback name:*MEMORY[0x1E6960CE8] object:self->_timebase flags:0];
+    [v3 addListenerWithWeakReference:_weakReference callback:AVTimebaseObserver_timebaseNotificationCallback name:*MEMORY[0x1E6960CD0] object:self->_timebase flags:0];
     self->_isObservingTimebase = 1;
   }
 }
@@ -196,9 +196,9 @@
     if (self->_isObservingTimebase)
     {
       v3 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-      v4 = [(AVTimebaseObserver *)self _weakReference];
-      [v3 removeListenerWithWeakReference:v4 callback:AVTimebaseObserver_timebaseNotificationCallback name:*MEMORY[0x1E6960CE8] object:self->_timebase];
-      [v3 removeListenerWithWeakReference:v4 callback:AVTimebaseObserver_timebaseNotificationCallback name:*MEMORY[0x1E6960CD0] object:self->_timebase];
+      _weakReference = [(AVTimebaseObserver *)self _weakReference];
+      [v3 removeListenerWithWeakReference:_weakReference callback:AVTimebaseObserver_timebaseNotificationCallback name:*MEMORY[0x1E6960CE8] object:self->_timebase];
+      [v3 removeListenerWithWeakReference:_weakReference callback:AVTimebaseObserver_timebaseNotificationCallback name:*MEMORY[0x1E6960CD0] object:self->_timebase];
       self->_isObservingTimebase = 0;
     }
   }

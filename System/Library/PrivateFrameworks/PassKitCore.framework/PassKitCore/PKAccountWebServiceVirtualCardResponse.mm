@@ -1,23 +1,23 @@
 @interface PKAccountWebServiceVirtualCardResponse
-- (PKAccountWebServiceVirtualCardResponse)initWithData:(id)a3;
+- (PKAccountWebServiceVirtualCardResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceVirtualCardResponse
 
-- (PKAccountWebServiceVirtualCardResponse)initWithData:(id)a3
+- (PKAccountWebServiceVirtualCardResponse)initWithData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = PKAccountWebServiceVirtualCardResponse;
-  v3 = [(PKWebServiceResponse *)&v16 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v16 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = jSONObject;
       v7 = [PKVirtualCard alloc];
       v8 = [v6 PKDictionaryForKey:@"virtualCard"];
 

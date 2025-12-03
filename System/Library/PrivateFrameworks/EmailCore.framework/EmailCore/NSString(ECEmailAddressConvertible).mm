@@ -6,17 +6,17 @@
 
 - (id)stringValue
 {
-  v2 = [a1 emailAddressValue];
-  v3 = [v2 stringValue];
-  v4 = v3;
-  if (v3)
+  emailAddressValue = [self emailAddressValue];
+  stringValue = [emailAddressValue stringValue];
+  v4 = stringValue;
+  if (stringValue)
   {
-    v5 = v3;
+    v5 = stringValue;
   }
 
   else
   {
-    v6 = [a1 copy];
+    v6 = [self copy];
     v5 = [v6 stringByReplacingOccurrencesOfString:&stru_284042A88 withString:&stru_284041D88];
   }
 

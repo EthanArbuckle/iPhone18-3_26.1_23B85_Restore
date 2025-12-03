@@ -8,8 +8,8 @@
 {
   v12.receiver = self;
   v12.super_class = CalDAVCalendarServerCollectionUpdatesElement;
-  v2 = [(CalDAVCalendarServerResourceChangeElement *)&v12 copyParseRules];
-  v3 = [v2 mutableCopy];
+  copyParseRules = [(CalDAVCalendarServerResourceChangeElement *)&v12 copyParseRules];
+  v3 = [copyParseRules mutableCopy];
   v11 = objc_alloc(MEMORY[0x277CBEAC0]);
   v4 = *MEMORY[0x277CFDE90];
   v5 = [MEMORY[0x277CFDC50] ruleWithMinimumNumber:0 maximumNumber:1 nameSpace:*MEMORY[0x277CFDE90] elementName:@"collection-publish" objectClass:objc_opt_class() setterMethod:sel_setPublish_];

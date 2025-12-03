@@ -1,9 +1,9 @@
 @interface BSXPCServiceConnectionPeer
-+ (id)peerOfConnection:(uint64_t)a1;
-+ (void)invalidateConnection:(uint64_t)a1;
++ (id)peerOfConnection:(uint64_t)connection;
++ (void)invalidateConnection:(uint64_t)connection;
 - (BSXPCServiceConnectionPeer)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
@@ -24,7 +24,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSXPCServiceConnectionPeer.m";
     v18 = 1024;
@@ -41,7 +41,7 @@
   return result;
 }
 
-+ (id)peerOfConnection:(uint64_t)a1
++ (id)peerOfConnection:(uint64_t)connection
 {
   v34 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -153,7 +153,7 @@
   return v7;
 }
 
-+ (void)invalidateConnection:(uint64_t)a1
++ (void)invalidateConnection:(uint64_t)connection
 {
   v2 = a2;
   objc_opt_self();
@@ -213,10 +213,10 @@ void __51__BSXPCServiceConnectionPeer_invalidateConnection___block_invoke(void *
 
 - (id)succinctDescription
 {
-  v2 = [(BSXPCServiceConnectionPeer *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSXPCServiceConnectionPeer *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -225,24 +225,24 @@ void __51__BSXPCServiceConnectionPeer_invalidateConnection___block_invoke(void *
   os_unfair_lock_lock(&self->_lock);
   v4 = [(NSMutableSet *)self->_lock_connections count];
   os_unfair_lock_unlock(&self->_lock);
-  v5 = [(BSProcessHandle *)self->_processHandle name];
-  v6 = [(BSProcessHandle *)self->_processHandle bundleIdentifier];
-  v7 = v6;
-  if (v5 && v6)
+  name = [(BSProcessHandle *)self->_processHandle name];
+  bundleIdentifier = [(BSProcessHandle *)self->_processHandle bundleIdentifier];
+  v7 = bundleIdentifier;
+  if (name && bundleIdentifier)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@)", v5, v6];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@)", name, bundleIdentifier];
   }
 
   else
   {
-    if (v5)
+    if (name)
     {
-      v9 = v5;
+      v9 = name;
     }
 
     else
     {
-      v9 = v6;
+      v9 = bundleIdentifier;
     }
 
     v8 = v9;
@@ -256,19 +256,19 @@ void __51__BSXPCServiceConnectionPeer_invalidateConnection___block_invoke(void *
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSXPCServiceConnectionPeer *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSXPCServiceConnectionPeer *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSXPCServiceConnectionPeer *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(BSXPCServiceConnectionPeer *)self succinctDescriptionBuilder];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
 @end

@@ -1,162 +1,162 @@
 @interface BMAppClipLaunchSource
-- (BMAppClipLaunchSource)initWithStoreSource:(id)a3;
-- (void)sendEvent:(id)a3;
+- (BMAppClipLaunchSource)initWithStoreSource:(id)source;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation BMAppClipLaunchSource
 
-- (BMAppClipLaunchSource)initWithStoreSource:(id)a3
+- (BMAppClipLaunchSource)initWithStoreSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v13.receiver = self;
   v13.super_class = BMAppClipLaunchSource;
   v6 = [(BMAppClipLaunchSource *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storeSource, a3);
-    v8 = [get_CDClientContextClass() userContext];
+    objc_storeStrong(&v6->_storeSource, source);
+    userContext = [get_CDClientContextClass() userContext];
     contextStore = v7->_contextStore;
-    v7->_contextStore = v8;
+    v7->_contextStore = userContext;
 
-    v10 = [get_DKKnowledgeStoreClass() knowledgeStore];
+    knowledgeStore = [get_DKKnowledgeStoreClass() knowledgeStore];
     knowledgeStore = v7->_knowledgeStore;
-    v7->_knowledgeStore = v10;
+    v7->_knowledgeStore = knowledgeStore;
   }
 
   return v7;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
   v65[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = __biome_log_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [(BMAppClipLaunchSource *)self sendEvent:v5];
   }
 
-  [(BMSource *)self->_storeSource sendEvent:v4];
+  [(BMSource *)self->_storeSource sendEvent:eventCopy];
   v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:CFAbsoluteTimeGetCurrent()];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v4;
-    v8 = [MEMORY[0x1E695DF90] dictionary];
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    v10 = [v7 URLHash];
+    v7 = eventCopy;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    uRLHash = [v7 URLHash];
 
-    if (v10)
+    if (uRLHash)
     {
-      v11 = [v7 URLHash];
-      v12 = [get_CDContextQueriesClass_0() URLHashKey];
-      [v8 setObject:v11 forKeyedSubscript:v12];
+      uRLHash2 = [v7 URLHash];
+      uRLHashKey = [get_CDContextQueriesClass_0() URLHashKey];
+      [dictionary setObject:uRLHash2 forKeyedSubscript:uRLHashKey];
 
-      v13 = [v7 URLHash];
-      v14 = [get_DKAppClipUsageMetadataKeyClass() URLHash];
-      [v9 setObject:v13 forKeyedSubscript:v14];
+      uRLHash3 = [v7 URLHash];
+      uRLHash4 = [get_DKAppClipUsageMetadataKeyClass() URLHash];
+      [dictionary2 setObject:uRLHash3 forKeyedSubscript:uRLHash4];
     }
 
-    v15 = [v7 clipBundleID];
+    clipBundleID = [v7 clipBundleID];
 
-    if (v15)
+    if (clipBundleID)
     {
-      v16 = [v7 clipBundleID];
-      v17 = [get_CDContextQueriesClass_0() clipBundleIDKey];
-      [v8 setObject:v16 forKeyedSubscript:v17];
+      clipBundleID2 = [v7 clipBundleID];
+      clipBundleIDKey = [get_CDContextQueriesClass_0() clipBundleIDKey];
+      [dictionary setObject:clipBundleID2 forKeyedSubscript:clipBundleIDKey];
 
-      v18 = [v7 clipBundleID];
-      v19 = [get_DKAppClipUsageMetadataKeyClass() clipBundleID];
-      [v9 setObject:v18 forKeyedSubscript:v19];
+      clipBundleID3 = [v7 clipBundleID];
+      clipBundleID4 = [get_DKAppClipUsageMetadataKeyClass() clipBundleID];
+      [dictionary2 setObject:clipBundleID3 forKeyedSubscript:clipBundleID4];
     }
 
-    v20 = [v7 appBundleID];
+    appBundleID = [v7 appBundleID];
 
-    if (v20)
+    if (appBundleID)
     {
-      v21 = [v7 appBundleID];
-      v22 = [get_CDContextQueriesClass_0() appBundleIdKey];
-      [v8 setObject:v21 forKeyedSubscript:v22];
+      appBundleID2 = [v7 appBundleID];
+      appBundleIdKey = [get_CDContextQueriesClass_0() appBundleIdKey];
+      [dictionary setObject:appBundleID2 forKeyedSubscript:appBundleIdKey];
 
-      v23 = [v7 appBundleID];
-      v24 = [get_DKAppClipUsageMetadataKeyClass() appBundleID];
-      [v9 setObject:v23 forKeyedSubscript:v24];
+      appBundleID3 = [v7 appBundleID];
+      appBundleID4 = [get_DKAppClipUsageMetadataKeyClass() appBundleID];
+      [dictionary2 setObject:appBundleID3 forKeyedSubscript:appBundleID4];
     }
 
-    v25 = [v7 webAppBundleID];
+    webAppBundleID = [v7 webAppBundleID];
 
-    if (v25)
+    if (webAppBundleID)
     {
-      v26 = [v7 webAppBundleID];
-      v27 = [get_CDContextQueriesClass_0() webAppBundleIDKey];
-      [v8 setObject:v26 forKeyedSubscript:v27];
+      webAppBundleID2 = [v7 webAppBundleID];
+      webAppBundleIDKey = [get_CDContextQueriesClass_0() webAppBundleIDKey];
+      [dictionary setObject:webAppBundleID2 forKeyedSubscript:webAppBundleIDKey];
 
-      v28 = [v7 webAppBundleID];
-      v29 = [get_DKAppClipUsageMetadataKeyClass() webAppBundleID];
-      [v9 setObject:v28 forKeyedSubscript:v29];
+      webAppBundleID3 = [v7 webAppBundleID];
+      webAppBundleID4 = [get_DKAppClipUsageMetadataKeyClass() webAppBundleID];
+      [dictionary2 setObject:webAppBundleID3 forKeyedSubscript:webAppBundleID4];
     }
 
-    v30 = [v7 launchReason];
+    launchReason = [v7 launchReason];
 
-    if (v30)
+    if (launchReason)
     {
-      v31 = [v7 launchReason];
-      v32 = [get_CDContextQueriesClass_0() appLaunchReasonKey];
-      [v8 setObject:v31 forKeyedSubscript:v32];
+      launchReason2 = [v7 launchReason];
+      appLaunchReasonKey = [get_CDContextQueriesClass_0() appLaunchReasonKey];
+      [dictionary setObject:launchReason2 forKeyedSubscript:appLaunchReasonKey];
 
-      v33 = [v7 launchReason];
-      v34 = [get_DKAppClipUsageMetadataKeyClass() launchReason];
-      [v9 setObject:v33 forKeyedSubscript:v34];
+      launchReason3 = [v7 launchReason];
+      launchReason4 = [get_DKAppClipUsageMetadataKeyClass() launchReason];
+      [dictionary2 setObject:launchReason3 forKeyedSubscript:launchReason4];
     }
 
-    v35 = [v7 fullURL];
+    fullURL = [v7 fullURL];
 
-    if (v35)
+    if (fullURL)
     {
-      v36 = [v7 fullURL];
-      v37 = [get_CDContextQueriesClass_0() fullURLKey];
-      [v8 setObject:v36 forKeyedSubscript:v37];
+      fullURL2 = [v7 fullURL];
+      fullURLKey = [get_CDContextQueriesClass_0() fullURLKey];
+      [dictionary setObject:fullURL2 forKeyedSubscript:fullURLKey];
 
-      v38 = [v7 fullURL];
-      v39 = [get_DKAppClipUsageMetadataKeyClass() fullURL];
-      [v9 setObject:v38 forKeyedSubscript:v39];
+      fullURL3 = [v7 fullURL];
+      fullURL4 = [get_DKAppClipUsageMetadataKeyClass() fullURL];
+      [dictionary2 setObject:fullURL3 forKeyedSubscript:fullURL4];
     }
 
-    v40 = [v7 referrerURL];
+    referrerURL = [v7 referrerURL];
 
-    if (v40)
+    if (referrerURL)
     {
-      v41 = [v7 referrerURL];
-      v42 = [get_CDContextQueriesClass_0() referrerURLKey];
-      [v8 setObject:v41 forKeyedSubscript:v42];
+      referrerURL2 = [v7 referrerURL];
+      referrerURLKey = [get_CDContextQueriesClass_0() referrerURLKey];
+      [dictionary setObject:referrerURL2 forKeyedSubscript:referrerURLKey];
 
-      v43 = [v7 referrerURL];
-      v44 = [get_DKAppClipUsageMetadataKeyClass() referrerURL];
-      [v9 setObject:v43 forKeyedSubscript:v44];
+      referrerURL3 = [v7 referrerURL];
+      referrerURL4 = [get_DKAppClipUsageMetadataKeyClass() referrerURL];
+      [dictionary2 setObject:referrerURL3 forKeyedSubscript:referrerURL4];
     }
 
-    v45 = v8;
-    v46 = [v7 referrerBundleID];
+    v45 = dictionary;
+    referrerBundleID = [v7 referrerBundleID];
 
-    if (v46)
+    if (referrerBundleID)
     {
-      v47 = [v7 referrerBundleID];
-      v48 = [get_DKAppClipUsageMetadataKeyClass() referrerBundleID];
-      [v9 setObject:v47 forKeyedSubscript:v48];
+      referrerBundleID2 = [v7 referrerBundleID];
+      referrerBundleID3 = [get_DKAppClipUsageMetadataKeyClass() referrerBundleID];
+      [dictionary2 setObject:referrerBundleID2 forKeyedSubscript:referrerBundleID3];
     }
 
     DKEventClass_0 = get_DKEventClass_0();
-    v50 = [get_DKSystemEventStreamsClass_0() appClipUsageStream];
-    v51 = [v7 clipBundleID];
+    appClipUsageStream = [get_DKSystemEventStreamsClass_0() appClipUsageStream];
+    clipBundleID5 = [v7 clipBundleID];
     v52 = v6;
-    v53 = [DKEventClass_0 eventWithStream:v50 startDate:v6 endDate:v6 identifierStringValue:v51 metadata:v9];
+    v53 = [DKEventClass_0 eventWithStream:appClipUsageStream startDate:v6 endDate:v6 identifierStringValue:clipBundleID5 metadata:dictionary2];
 
-    v54 = [(BMAppClipLaunchSource *)self knowledgeStore];
+    knowledgeStore = [(BMAppClipLaunchSource *)self knowledgeStore];
     v65[0] = v53;
     v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v65 count:1];
     v64 = 0;
-    v56 = [v54 saveObjects:v55 error:&v64];
+    v56 = [knowledgeStore saveObjects:v55 error:&v64];
     v57 = v64;
 
     if ((v56 & 1) == 0)
@@ -169,12 +169,12 @@
     }
 
     v59 = [v45 copy];
-    v60 = [(BMAppClipLaunchSource *)self contextStore];
-    v61 = [get_CDContextQueriesClass_0() keyPathForAppClipLaunch];
-    [v60 setObject:v59 forKeyedSubscript:v61];
+    contextStore = [(BMAppClipLaunchSource *)self contextStore];
+    keyPathForAppClipLaunch = [get_CDContextQueriesClass_0() keyPathForAppClipLaunch];
+    [contextStore setObject:v59 forKeyedSubscript:keyPathForAppClipLaunch];
 
     v6 = v52;
-    v4 = v63;
+    eventCopy = v63;
   }
 
   else

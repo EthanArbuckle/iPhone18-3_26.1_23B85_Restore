@@ -1,25 +1,25 @@
 @interface ShareItem
-+ (id)shareItemForCurrentLocationIncludingPrintActivity:(BOOL)a3 withBackingMapItem:(id)a4;
-+ (id)shareItemForObject:(id)a3;
-+ (id)shareItemWithRoute:(id)a3 includeRoutingApps:(BOOL)a4;
-+ (id)shareItemWithSearchResult:(id)a3 contact:(id)a4 includePrintActivity:(BOOL)a5 applicationActivities:(id)a6;
-+ (void)loadURLForShareItem:(id)a3 completion:(id)a4;
++ (id)shareItemForCurrentLocationIncludingPrintActivity:(BOOL)activity withBackingMapItem:(id)item;
++ (id)shareItemForObject:(id)object;
++ (id)shareItemWithRoute:(id)route includeRoutingApps:(BOOL)apps;
++ (id)shareItemWithSearchResult:(id)result contact:(id)contact includePrintActivity:(BOOL)activity applicationActivities:(id)activities;
++ (void)loadURLForShareItem:(id)item completion:(id)completion;
 @end
 
 @implementation ShareItem
 
-+ (void)loadURLForShareItem:(id)a3 completion:(id)a4
++ (void)loadURLForShareItem:(id)item completion:(id)completion
 {
-  v5 = a3;
-  v20 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   v21 = [[UIActivityViewController alloc] initWithActivityItems:&__NSArray0__struct applicationActivities:0];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v19 = v5;
-  v6 = [v5 activityProviders];
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v19 = itemCopy;
+  activityProviders = [itemCopy activityProviders];
+  v7 = [activityProviders countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -30,7 +30,7 @@
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activityProviders);
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
@@ -52,18 +52,18 @@
 
           if (v14)
           {
-            v15 = [UTTypeURL identifier];
-            v16 = [v14 hasRepresentationConformingToTypeIdentifier:v15 fileOptions:0];
+            identifier = [UTTypeURL identifier];
+            v16 = [v14 hasRepresentationConformingToTypeIdentifier:identifier fileOptions:0];
 
             if (v16)
             {
-              v17 = [UTTypeURL identifier];
+              identifier2 = [UTTypeURL identifier];
               v22[0] = _NSConcreteStackBlock;
               v22[1] = 3221225472;
               v22[2] = sub_100CD982C;
               v22[3] = &unk_10165E2E0;
-              v23 = v20;
-              v18 = [v14 loadDataRepresentationForTypeIdentifier:v17 completionHandler:v22];
+              v23 = completionCopy;
+              v18 = [v14 loadDataRepresentationForTypeIdentifier:identifier2 completionHandler:v22];
 
               goto LABEL_17;
             }
@@ -71,7 +71,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v8 = [activityProviders countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v8)
       {
         continue;
@@ -84,9 +84,9 @@
 LABEL_17:
 }
 
-+ (id)shareItemForObject:(id)a3
++ (id)shareItemForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
@@ -97,7 +97,7 @@ LABEL_17:
   if (objc_opt_isKindOfClass())
   {
     v4 = v54;
-    v5 = v3;
+    v5 = objectCopy;
     v6 = v4[5];
     v4[5] = v5;
     goto LABEL_3;
@@ -106,14 +106,14 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v3;
-    v10 = [v6 MKMapItem];
+    v6 = objectCopy;
+    mKMapItem = [v6 MKMapItem];
 
-    if (v10)
+    if (mKMapItem)
     {
       v11 = [SearchResult alloc];
-      v12 = [v6 MKMapItem];
-      v13 = [(SearchResult *)v11 initWithMapItem:v12];
+      mKMapItem2 = [v6 MKMapItem];
+      v13 = [(SearchResult *)v11 initWithMapItem:mKMapItem2];
       v14 = v54[5];
       v54[5] = v13;
     }
@@ -136,8 +136,8 @@ LABEL_4:
       v7 = v54[5];
       if (v7)
       {
-        v8 = [v7 unknownContact];
-        v9 = [ShareItem shareItemWithSearchResult:v54[5] contact:v8 includePrintActivity:1];
+        unknownContact = [v7 unknownContact];
+        v9 = [ShareItem shareItemWithSearchResult:v54[5] contact:unknownContact includePrintActivity:1];
       }
 
       else
@@ -148,7 +148,7 @@ LABEL_4:
       goto LABEL_12;
     }
 
-    v6 = v3;
+    v6 = objectCopy;
     v30 = +[Recents sharedRecents];
     v31 = [v30 cachedMapItemForContactID:{objc_msgSend(v6, "contactID")}];
 
@@ -163,14 +163,14 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  v16 = v3;
+  v16 = objectCopy;
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
   v50 = sub_100CD9E44;
   v51 = sub_100CD9E54;
   v52 = 0;
-  v17 = [v16 historyEntry];
+  historyEntry = [v16 historyEntry];
   v46[0] = _NSConcreteStackBlock;
   v46[1] = 3221225472;
   v46[2] = sub_100CD9E5C;
@@ -181,7 +181,7 @@ LABEL_3:
   v45[2] = sub_100CD9EB4;
   v45[3] = &unk_101661C68;
   v45[4] = &v47;
-  [v17 ifSearch:0 ifRoute:v46 ifPlaceDisplay:v45 ifTransitLineItem:0];
+  [historyEntry ifSearch:0 ifRoute:v46 ifPlaceDisplay:v45 ifTransitLineItem:0];
 
   if (v48[5])
   {
@@ -248,9 +248,9 @@ LABEL_3:
     }
 
     v42 = [CuratedCollectionShareItemSource alloc];
-    v43 = [v41 historyEntry];
-    v44 = [v43 placeCollection];
-    v9 = [(CuratedCollectionShareItemSource *)v42 initWithPlaceCollection:v44 refinedMapItems:&__NSArray0__struct];
+    historyEntry2 = [v41 historyEntry];
+    placeCollection = [historyEntry2 placeCollection];
+    v9 = [(CuratedCollectionShareItemSource *)v42 initWithPlaceCollection:placeCollection refinedMapItems:&__NSArray0__struct];
   }
 
   _Block_object_dispose(&v47, 8);
@@ -266,24 +266,24 @@ LABEL_12:
   return v9;
 }
 
-+ (id)shareItemWithRoute:(id)a3 includeRoutingApps:(BOOL)a4
++ (id)shareItemWithRoute:(id)route includeRoutingApps:(BOOL)apps
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[ShareItemRoute alloc] initWithRoute:v5 includeRoutingApps:v4];
+  appsCopy = apps;
+  routeCopy = route;
+  v6 = [[ShareItemRoute alloc] initWithRoute:routeCopy includeRoutingApps:appsCopy];
 
   return v6;
 }
 
-+ (id)shareItemForCurrentLocationIncludingPrintActivity:(BOOL)a3 withBackingMapItem:(id)a4
++ (id)shareItemForCurrentLocationIncludingPrintActivity:(BOOL)activity withBackingMapItem:(id)item
 {
-  v4 = a3;
-  v6 = a4;
+  activityCopy = activity;
+  itemCopy = item;
   v7 = +[SearchResult currentLocationSearchResult];
   v8 = v7;
-  if (v6)
+  if (itemCopy)
   {
-    [v7 setMapItem:v6];
+    [v7 setMapItem:itemCopy];
   }
 
   v9 = objc_alloc_init(CNContactStore);
@@ -312,43 +312,43 @@ LABEL_12:
     {
       v17 = +[NSBundle mainBundle];
       [v17 localizedStringForKey:@"Person_Name_Location_Callout_Label" value:@"localized string not found" table:0];
-      v25 = v6;
-      v18 = a1;
-      v20 = v19 = v4;
+      v25 = itemCopy;
+      selfCopy = self;
+      v20 = v19 = activityCopy;
       v21 = [NSString stringWithFormat:v20, v16];
 
-      v4 = v19;
-      a1 = v18;
-      v6 = v25;
+      activityCopy = v19;
+      self = selfCopy;
+      itemCopy = v25;
 
-      v22 = [v8 place];
-      [v22 setName:v21];
+      place = [v8 place];
+      [place setName:v21];
 
       v16 = v21;
     }
 
-    v15 = objc_alloc_init(CNMutableContact);
-    [v15 setContactType:0];
-    [v15 setGivenName:v16];
+    unknownContact = objc_alloc_init(CNMutableContact);
+    [unknownContact setContactType:0];
+    [unknownContact setGivenName:v16];
   }
 
   else
   {
-    v15 = [v8 unknownContact];
+    unknownContact = [v8 unknownContact];
   }
 
-  v23 = [a1 shareItemWithSearchResult:v8 contact:v15 includePrintActivity:v4];
+  v23 = [self shareItemWithSearchResult:v8 contact:unknownContact includePrintActivity:activityCopy];
 
   return v23;
 }
 
-+ (id)shareItemWithSearchResult:(id)a3 contact:(id)a4 includePrintActivity:(BOOL)a5 applicationActivities:(id)a6
++ (id)shareItemWithSearchResult:(id)result contact:(id)contact includePrintActivity:(BOOL)activity applicationActivities:(id)activities
 {
-  v6 = a5;
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[ShareItemSearchResult alloc] initWithSearchResult:v11 contact:v10 includePrintActivity:v6 applicationActivities:v9];
+  activityCopy = activity;
+  activitiesCopy = activities;
+  contactCopy = contact;
+  resultCopy = result;
+  v12 = [[ShareItemSearchResult alloc] initWithSearchResult:resultCopy contact:contactCopy includePrintActivity:activityCopy applicationActivities:activitiesCopy];
 
   return v12;
 }

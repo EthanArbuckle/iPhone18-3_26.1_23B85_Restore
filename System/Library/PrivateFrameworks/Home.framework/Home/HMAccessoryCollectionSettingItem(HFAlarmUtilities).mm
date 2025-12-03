@@ -11,8 +11,8 @@
   v5 = a3;
   if (!v5)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"HFAccessorySettingMobileTimerUtilities.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"alarm"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessorySettingMobileTimerUtilities.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"alarm"}];
   }
 
   v6 = objc_autoreleasePoolPush();
@@ -22,8 +22,8 @@
   [v7 encodeObject:v8 forKey:@"MTAlarms"];
 
   v9 = objc_alloc(MEMORY[0x277CD1690]);
-  v10 = [v7 encodedDictionary];
-  v11 = [v9 initWithValue:v10];
+  encodedDictionary = [v7 encodedDictionary];
+  v11 = [v9 initWithValue:encodedDictionary];
 
   objc_autoreleasePoolPop(v6);
   v12 = *MEMORY[0x277D85DE8];

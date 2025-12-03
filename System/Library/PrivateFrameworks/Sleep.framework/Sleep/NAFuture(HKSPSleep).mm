@@ -13,7 +13,7 @@
   v3[1] = 3221225472;
   v3[2] = __61__NAFuture_HKSPSleep__hksp_BOOLErrorCompletionHandlerAdapter__block_invoke;
   v3[3] = &unk_279C75A18;
-  v3[4] = a1;
+  v3[4] = self;
   v1 = MEMORY[0x26D64AA30](v3);
 
   return v1;
@@ -22,9 +22,9 @@
 + (id)hksp_expiringFutureWithTimeout:()HKSPSleep
 {
   v2 = objc_alloc_init(MEMORY[0x277D2C900]);
-  if (a1 > 0.0)
+  if (self > 0.0)
   {
-    v3 = dispatch_time(0, (a1 * 1000000000.0));
+    v3 = dispatch_time(0, (self * 1000000000.0));
     v4 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -43,7 +43,7 @@
   v9 = a4;
   if ([v8 count])
   {
-    [a1 _hksp_chainFutureHelperWithFutures:v8 index:0 block:v9 ignoreErrors:a5];
+    [self _hksp_chainFutureHelperWithFutures:v8 index:0 block:v9 ignoreErrors:a5];
   }
 
   else
@@ -65,7 +65,7 @@
   v28[2] = __83__NAFuture_HKSPSleep___hksp_chainFutureHelperWithFutures_index_block_ignoreErrors___block_invoke;
   v28[3] = &unk_279C75A40;
   v31 = a4;
-  v32 = a1;
+  selfCopy = self;
   v29 = v10;
   v13 = v11;
   v30 = v13;

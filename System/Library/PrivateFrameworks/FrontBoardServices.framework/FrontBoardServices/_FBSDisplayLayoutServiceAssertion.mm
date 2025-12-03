@@ -1,6 +1,6 @@
 @interface _FBSDisplayLayoutServiceAssertion
 - (FBSDisplayLayout)currentLayout;
-- (_FBSDisplayLayoutServiceAssertion)initWithEndpoint:(id)a3 qos:(char)a4 observer:(id)a5;
+- (_FBSDisplayLayoutServiceAssertion)initWithEndpoint:(id)endpoint qos:(char)qos observer:(id)observer;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -10,10 +10,10 @@
 - (FBSDisplayLayout)currentLayout
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(_FBSDisplayLayoutService *)self->_lock_service currentLayout];
+  currentLayout = [(_FBSDisplayLayoutService *)self->_lock_service currentLayout];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return currentLayout;
 }
 
 - (void)invalidate
@@ -39,11 +39,11 @@
   [(_FBSDisplayLayoutServiceAssertion *)&v3 dealloc];
 }
 
-- (_FBSDisplayLayoutServiceAssertion)initWithEndpoint:(id)a3 qos:(char)a4 observer:(id)a5
+- (_FBSDisplayLayoutServiceAssertion)initWithEndpoint:(id)endpoint qos:(char)qos observer:(id)observer
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  qosCopy = qos;
+  endpointCopy = endpoint;
+  observerCopy = observer;
   v15.receiver = self;
   v15.super_class = _FBSDisplayLayoutServiceAssertion;
   v10 = [(_FBSDisplayLayoutServiceAssertion *)&v15 init];
@@ -51,13 +51,13 @@
   if (v10)
   {
     v10->_lock._os_unfair_lock_opaque = 0;
-    v12 = [_FBSDisplayLayoutEndpointServices _checkoutServiceWithEndpoint:v8 qos:v6];
+    v12 = [_FBSDisplayLayoutEndpointServices _checkoutServiceWithEndpoint:endpointCopy qos:qosCopy];
     lock_service = v11->_lock_service;
     v11->_lock_service = v12;
 
-    if (v9)
+    if (observerCopy)
     {
-      [(_FBSDisplayLayoutService *)v11->_lock_service addObserver:v9 forKey:v11];
+      [(_FBSDisplayLayoutService *)v11->_lock_service addObserver:observerCopy forKey:v11];
     }
   }
 

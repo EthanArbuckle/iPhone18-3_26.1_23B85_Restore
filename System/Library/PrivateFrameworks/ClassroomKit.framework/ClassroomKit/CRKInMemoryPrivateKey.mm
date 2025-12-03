@@ -1,7 +1,7 @@
 @interface CRKInMemoryPrivateKey
 - (CRKInMemoryPrivateKey)init;
-- (CRKInMemoryPrivateKey)initWithConfiguration:(id)a3;
-- (CRKInMemoryPrivateKey)initWithData:(id)a3;
+- (CRKInMemoryPrivateKey)initWithConfiguration:(id)configuration;
+- (CRKInMemoryPrivateKey)initWithData:(id)data;
 - (NSData)dataRepresentation;
 - (__SecKey)underlyingPrivateKey;
 @end
@@ -16,23 +16,23 @@
   return v4;
 }
 
-- (CRKInMemoryPrivateKey)initWithData:(id)a3
+- (CRKInMemoryPrivateKey)initWithData:(id)data
 {
-  v4 = [CRKIdentityConfiguration configurationWithData:a3];
+  v4 = [CRKIdentityConfiguration configurationWithData:data];
   v5 = [(CRKInMemoryPrivateKey *)self initWithConfiguration:v4];
 
   return v5;
 }
 
-- (CRKInMemoryPrivateKey)initWithConfiguration:(id)a3
+- (CRKInMemoryPrivateKey)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = CRKInMemoryPrivateKey;
   v5 = [(CRKInMemoryPrivateKey *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     configuration = v5->_configuration;
     v5->_configuration = v6;
   }
@@ -42,16 +42,16 @@
 
 - (NSData)dataRepresentation
 {
-  v2 = [(CRKInMemoryPrivateKey *)self configuration];
-  v3 = [v2 dataRepresentation];
+  configuration = [(CRKInMemoryPrivateKey *)self configuration];
+  dataRepresentation = [configuration dataRepresentation];
 
-  return v3;
+  return dataRepresentation;
 }
 
 - (__SecKey)underlyingPrivateKey
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CRKInMemoryPrivateKey.m" lineNumber:47 description:@"Reconsider what you are trying to test"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CRKInMemoryPrivateKey.m" lineNumber:47 description:@"Reconsider what you are trying to test"];
 
   return 0;
 }

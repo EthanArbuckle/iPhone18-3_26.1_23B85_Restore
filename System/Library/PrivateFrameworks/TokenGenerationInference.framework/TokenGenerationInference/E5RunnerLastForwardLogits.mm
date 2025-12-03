@@ -1,5 +1,5 @@
 @interface E5RunnerLastForwardLogits
-- (E5RunnerLastForwardLogits)initWithLogits:(Logits)a3;
+- (E5RunnerLastForwardLogits)initWithLogits:(Logits)logits;
 - (id).cxx_construct;
 @end
 
@@ -12,12 +12,12 @@
   return self;
 }
 
-- (E5RunnerLastForwardLogits)initWithLogits:(Logits)a3
+- (E5RunnerLastForwardLogits)initWithLogits:(Logits)logits
 {
-  numTokens = a3.numTokens;
+  numTokens = logits.numTokens;
   v10.receiver = self;
   v10.super_class = E5RunnerLastForwardLogits;
-  result = [(E5RunnerLastForwardLogits *)&v10 init:a3.numTokens];
+  result = [(E5RunnerLastForwardLogits *)&v10 init:logits.numTokens];
   if (result)
   {
     v8 = *numTokens;

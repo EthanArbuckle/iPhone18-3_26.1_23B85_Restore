@@ -1,28 +1,28 @@
 @interface PXStoryDummyStyleProducer
-- (PXStoryDummyStyleProducer)initWithStyleConfiguration:(id)a3;
-- (id)styleWithCustomColorGradeKind:(int64_t)a3 originalColorGradeCategory:(id)a4 songResource:(id)a5 cueSource:(id)a6 autoEditDecisionList:(id)a7 styleOptions:(id)a8 isCustomized:(BOOL)a9;
+- (PXStoryDummyStyleProducer)initWithStyleConfiguration:(id)configuration;
+- (id)styleWithCustomColorGradeKind:(int64_t)kind originalColorGradeCategory:(id)category songResource:(id)resource cueSource:(id)source autoEditDecisionList:(id)list styleOptions:(id)options isCustomized:(BOOL)customized;
 @end
 
 @implementation PXStoryDummyStyleProducer
 
-- (id)styleWithCustomColorGradeKind:(int64_t)a3 originalColorGradeCategory:(id)a4 songResource:(id)a5 cueSource:(id)a6 autoEditDecisionList:(id)a7 styleOptions:(id)a8 isCustomized:(BOOL)a9
+- (id)styleWithCustomColorGradeKind:(int64_t)kind originalColorGradeCategory:(id)category songResource:(id)resource cueSource:(id)source autoEditDecisionList:(id)list styleOptions:(id)options isCustomized:(BOOL)customized
 {
   v10 = [PXStoryDummyStyle alloc];
-  v11 = [(PXStoryDummyStyleProducer *)self styleConfiguration];
-  v12 = [(PXStoryDummyStyle *)v10 initWithConfiguration:v11];
+  styleConfiguration = [(PXStoryDummyStyleProducer *)self styleConfiguration];
+  v12 = [(PXStoryDummyStyle *)v10 initWithConfiguration:styleConfiguration];
 
   return v12;
 }
 
-- (PXStoryDummyStyleProducer)initWithStyleConfiguration:(id)a3
+- (PXStoryDummyStyleProducer)initWithStyleConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = PXStoryDummyStyleProducer;
   v5 = [(PXStoryDummyStyleProducer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     styleConfiguration = v5->_styleConfiguration;
     v5->_styleConfiguration = v6;
   }

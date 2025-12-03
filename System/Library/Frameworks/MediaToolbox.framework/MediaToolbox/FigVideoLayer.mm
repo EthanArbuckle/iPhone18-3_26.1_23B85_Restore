@@ -1,16 +1,16 @@
 @interface FigVideoLayer
 - (BOOL)isVideoLayerBeingServiced;
-- (FigVideoLayer)initWithDeferredTransaction:(OpaqueFigDeferredTransaction *)a3;
-- (FigVideoLayer)initWithLayer:(id)a3;
+- (FigVideoLayer)initWithDeferredTransaction:(OpaqueFigDeferredTransaction *)transaction;
+- (FigVideoLayer)initWithLayer:(id)layer;
 - (FigVideoLayer)initWithoutDeferredTransaction;
-- (id)actionForKey:(id)a3;
+- (id)actionForKey:(id)key;
 - (id)layerDisplayName;
 - (void)_sendVideoLayerIsBeingServicedNotification;
 - (void)_setupInternalFigVideoLayer;
 - (void)dealloc;
-- (void)layerDidBecomeVisible:(BOOL)a3;
+- (void)layerDidBecomeVisible:(BOOL)visible;
 - (void)notificationBarrier;
-- (void)setContentsSlotID:(unsigned int)a3;
+- (void)setContentsSlotID:(unsigned int)d;
 @end
 
 @implementation FigVideoLayer
@@ -23,25 +23,25 @@
   self->_videoLayer->notificationSerialQueue = dispatch_queue_create("com.apple.coremedia.videolayer.notificationqueue", 0);
 }
 
-- (FigVideoLayer)initWithDeferredTransaction:(OpaqueFigDeferredTransaction *)a3
+- (FigVideoLayer)initWithDeferredTransaction:(OpaqueFigDeferredTransaction *)transaction
 {
   cf = 0;
   FigNote_AllowInternalDefaultLogs();
   fig_note_initialize_category_with_default_work_cf();
   fig_note_initialize_category_with_default_work_cf();
-  if (!a3)
+  if (!transaction)
   {
     if (FigDeferredTransactionCreate(*MEMORY[0x1E695E480], &cf))
     {
       goto LABEL_11;
     }
 
-    a3 = cf;
+    transaction = cf;
   }
 
   v7.receiver = self;
   v7.super_class = FigVideoLayer;
-  self = [(FigThreadSafeCALayer *)&v7 initWithDeferredTransaction:a3];
+  self = [(FigThreadSafeCALayer *)&v7 initWithDeferredTransaction:transaction];
   if (!self)
   {
     goto LABEL_7;
@@ -53,7 +53,7 @@
   {
     CFRetain(v5);
     [(FigVideoLayer *)self _setupTraceLevel];
-    FBLSupportAppendDeferredTransactionChangeToSetAllowsDisplayCompositing(a3, self, 1, "[FigVideoLayer initWithDeferredTransaction:]");
+    FBLSupportAppendDeferredTransactionChangeToSetAllowsDisplayCompositing(transaction, self, 1, "[FigVideoLayer initWithDeferredTransaction:]");
     [(FigVideoLayer *)self _setupInternalFigVideoLayer];
     goto LABEL_7;
   }
@@ -87,15 +87,15 @@ LABEL_11:
   fig_note_initialize_category_with_default_work_cf();
   v6.receiver = self;
   v6.super_class = FigVideoLayer;
-  v3 = [(FigThreadSafeCALayer *)&v6 initWithoutDeferredTransaction];
-  if (v3)
+  initWithoutDeferredTransaction = [(FigThreadSafeCALayer *)&v6 initWithoutDeferredTransaction];
+  if (initWithoutDeferredTransaction)
   {
     v4 = objc_alloc_init(FigVideoLayerInternal);
-    v3->_videoLayer = v4;
+    initWithoutDeferredTransaction->_videoLayer = v4;
     if (v4)
     {
       CFRetain(v4);
-      [(FigVideoLayer *)v3 _setupTraceLevel];
+      [(FigVideoLayer *)initWithoutDeferredTransaction _setupTraceLevel];
       [MEMORY[0x1E6979518] begin];
       if (!pthread_main_np())
       {
@@ -103,9 +103,9 @@ LABEL_11:
       }
 
       [MEMORY[0x1E6979518] setDisableActions:1];
-      [(FigVideoLayer *)v3 setAllowsDisplayCompositing:1];
+      [(FigVideoLayer *)initWithoutDeferredTransaction setAllowsDisplayCompositing:1];
       [MEMORY[0x1E6979518] commit];
-      [(FigVideoLayer *)v3 _setupInternalFigVideoLayer];
+      [(FigVideoLayer *)initWithoutDeferredTransaction _setupInternalFigVideoLayer];
     }
 
     else
@@ -115,10 +115,10 @@ LABEL_11:
     }
   }
 
-  return v3;
+  return initWithoutDeferredTransaction;
 }
 
-- (FigVideoLayer)initWithLayer:(id)a3
+- (FigVideoLayer)initWithLayer:(id)layer
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -129,7 +129,7 @@ LABEL_11:
 
   v8.receiver = self;
   v8.super_class = FigVideoLayer;
-  v5 = [(FigVideoLayer *)&v8 initWithLayer:a3];
+  v5 = [(FigVideoLayer *)&v8 initWithLayer:layer];
   if (v5)
   {
     v6 = objc_alloc_init(FigVideoLayerInternal);
@@ -173,25 +173,25 @@ LABEL_11:
   [(FigBaseCALayer *)&v5 dealloc];
 }
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
-  if (([a3 isEqualToString:@"contentsCDRStrength"] & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", @"contentsEDRStrength") & 1) == 0 && !objc_msgSend(a3, "isEqualToString:", @"preferredDynamicRange"))
+  if (([key isEqualToString:@"contentsCDRStrength"] & 1) == 0 && (objc_msgSend(key, "isEqualToString:", @"contentsEDRStrength") & 1) == 0 && !objc_msgSend(key, "isEqualToString:", @"preferredDynamicRange"))
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = FigVideoLayer;
-  return [(FigBaseCALayer *)&v6 actionForKey:a3];
+  return [(FigBaseCALayer *)&v6 actionForKey:key];
 }
 
-- (void)layerDidBecomeVisible:(BOOL)a3
+- (void)layerDidBecomeVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   if (!self->_videoLayer->isPresentationLayer)
   {
     FigSimpleMutexLock();
-    self->_videoLayer->visible = v3;
+    self->_videoLayer->visible = visibleCopy;
     FigSimpleMutexUnlock();
     notificationSerialQueue = self->_videoLayer->notificationSerialQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -204,7 +204,7 @@ LABEL_11:
 
   v6.receiver = self;
   v6.super_class = FigVideoLayer;
-  [(FigVideoLayer *)&v6 layerDidBecomeVisible:v3];
+  [(FigVideoLayer *)&v6 layerDidBecomeVisible:visibleCopy];
 }
 
 - (BOOL)isVideoLayerBeingServiced
@@ -227,13 +227,13 @@ LABEL_11:
   v3 = [v2 objectForKey:*MEMORY[0x1E6979698]];
   if (v3)
   {
-    v4 = [v3 unsignedIntValue];
+    unsignedIntValue = [v3 unsignedIntValue];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [MEMORY[0x1E6979328] displays];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    displays = [MEMORY[0x1E6979328] displays];
+    v6 = [displays countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -244,18 +244,18 @@ LABEL_5:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(displays);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        if (v4 == [v10 displayId])
+        if (unsignedIntValue == [v10 displayId])
         {
           break;
         }
 
         if (v7 == ++v9)
         {
-          v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v7 = [displays countByEnumeratingWithState:&v12 objects:v16 count:16];
           if (v7)
           {
             goto LABEL_5;
@@ -299,10 +299,10 @@ LABEL_14:
   CMNotificationCenterPostNotification();
 }
 
-- (void)setContentsSlotID:(unsigned int)a3
+- (void)setContentsSlotID:(unsigned int)d
 {
   v8 = *MEMORY[0x1E69E9840];
-  self->_contentsSlotID = a3;
+  self->_contentsSlotID = d;
   v4 = [MEMORY[0x1E6979320] objectForSlot:?];
   if (dword_1ED4CBEF0)
   {

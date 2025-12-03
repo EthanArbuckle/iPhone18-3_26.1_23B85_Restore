@@ -1,27 +1,27 @@
 @interface RMExternalStatusPublisher
 + (RMExternalStatusPublisher)sharedPublisher;
 + (void)start;
-- (BOOL)persistStatusWithStoreIdentifier:(id)a3 status:(id)a4 error:(id *)a5;
-- (RMExternalStatusPublisher)initWithContext:(id)a3;
-- (id)_buildDictionaryFromArrayValue:(id)a3;
+- (BOOL)persistStatusWithStoreIdentifier:(id)identifier status:(id)status error:(id *)error;
+- (RMExternalStatusPublisher)initWithContext:(id)context;
+- (id)_buildDictionaryFromArrayValue:(id)value;
 - (id)_fetchSubscribedStatusKeyPaths;
-- (id)_filteredArray:(id)a3 metadata:(id)a4 lastAcknowledgedDate:(id)a5;
-- (id)_mergeOldStatus:(id)a3 newStatus:(id)a4 changedStatusKeyPaths:(id)a5 error:(id *)a6;
-- (id)_queryForFilteredStatusWithKeyPaths:(id)a3 lastAcknowledgedDateByKeyPath:(id)a4 onBehalfOfManagementChannel:(id)a5 error:(id *)a6;
-- (id)_subscribedStatusKeyPathsByStoreForKeyPaths:(id)a3;
+- (id)_filteredArray:(id)array metadata:(id)metadata lastAcknowledgedDate:(id)date;
+- (id)_mergeOldStatus:(id)status newStatus:(id)newStatus changedStatusKeyPaths:(id)paths error:(id *)error;
+- (id)_queryForFilteredStatusWithKeyPaths:(id)paths lastAcknowledgedDateByKeyPath:(id)path onBehalfOfManagementChannel:(id)channel error:(id *)error;
+- (id)_subscribedStatusKeyPathsByStoreForKeyPaths:(id)paths;
 - (id)reportDetails;
-- (id)statusForChannel:(id)a3 error:(id *)a4;
+- (id)statusForChannel:(id)channel error:(id *)error;
 - (void)_buildPredicateStatusKeyPaths;
 - (void)_loadAllStatusPublishers;
-- (void)_mergeOldArrayValue:(id)a3 oldValueMetadata:(id)a4 newValue:(id)a5 completionHandler:(id)a6;
-- (void)_notifyChangesWithStoreIdentifier:(id)a3 statusKeyPaths:(id)a4;
+- (void)_mergeOldArrayValue:(id)value oldValueMetadata:(id)metadata newValue:(id)newValue completionHandler:(id)handler;
+- (void)_notifyChangesWithStoreIdentifier:(id)identifier statusKeyPaths:(id)paths;
 - (void)_start;
-- (void)_waitForQueueWithCompletionHandler:(id)a3;
-- (void)didReceiveNotificationForStream:(id)a3 notificationName:(id)a4;
+- (void)_waitForQueueWithCompletionHandler:(id)handler;
+- (void)didReceiveNotificationForStream:(id)stream notificationName:(id)name;
 - (void)listenToNotificationsForAllKeyPaths;
-- (void)listenToNotificationsForSubscribedKeyPaths:(id)a3;
+- (void)listenToNotificationsForSubscribedKeyPaths:(id)paths;
 - (void)publishAllSubscribedStatus;
-- (void)publishStatusKeys:(id)a3 storeIdentifier:(id)a4;
+- (void)publishStatusKeys:(id)keys storeIdentifier:(id)identifier;
 @end
 
 @implementation RMExternalStatusPublisher
@@ -44,23 +44,23 @@
   block[1] = 3221225472;
   block[2] = sub_10002A8EC;
   block[3] = &unk_1000D12D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000E6858 != -1)
   {
     dispatch_once(&qword_1000E6858, block);
   }
 }
 
-- (RMExternalStatusPublisher)initWithContext:(id)a3
+- (RMExternalStatusPublisher)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v20.receiver = self;
   v20.super_class = RMExternalStatusPublisher;
   v6 = [(RMExternalStatusPublisher *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     XPCEventPublisher = v7->_XPCEventPublisher;
     v7->_XPCEventPublisher = 0;
 
@@ -139,8 +139,8 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [(RMExternalStatusPublisher *)self plugins];
-  v6 = [v5 countByEnumeratingWithState:&v29 objects:v36 count:16];
+  plugins = [(RMExternalStatusPublisher *)self plugins];
+  v6 = [plugins countByEnumeratingWithState:&v29 objects:v36 count:16];
   if (v6)
   {
     v7 = *v30;
@@ -150,11 +150,11 @@
       {
         if (*v30 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(plugins);
         }
 
         v9 = *(*(&v29 + 1) + 8 * i);
-        v10 = [v9 statusKeysByXPCEvent];
+        statusKeysByXPCEvent = [v9 statusKeysByXPCEvent];
         v24[0] = _NSConcreteStackBlock;
         v24[1] = 3221225472;
         v24[2] = sub_10002AF24;
@@ -163,13 +163,13 @@
         v26 = v9;
         v27 = v22;
         v28 = v21;
-        [v10 enumerateKeysAndObjectsUsingBlock:v24];
+        [statusKeysByXPCEvent enumerateKeysAndObjectsUsingBlock:v24];
 
-        v11 = [v9 statusKeys];
-        [v4 unionSet:v11];
+        statusKeys = [v9 statusKeys];
+        [v4 unionSet:statusKeys];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v29 objects:v36 count:16];
+      v6 = [plugins countByEnumeratingWithState:&v29 objects:v36 count:16];
     }
 
     while (v6);
@@ -190,8 +190,8 @@
   v16 = +[RMLog externalStatusPublisher];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [(RMExternalStatusPublisher *)self plugins];
-    v18 = [v17 valueForKey:@"identifier"];
+    plugins2 = [(RMExternalStatusPublisher *)self plugins];
+    v18 = [plugins2 valueForKey:@"identifier"];
     *buf = 138543362;
     v35 = v18;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Finished loading status publisher XPC service plugins: %{public}@", buf, 0xCu);
@@ -202,33 +202,33 @@
 
 - (void)listenToNotificationsForAllKeyPaths
 {
-  v3 = [(RMExternalStatusPublisher *)self _fetchSubscribedStatusKeyPaths];
+  _fetchSubscribedStatusKeyPaths = [(RMExternalStatusPublisher *)self _fetchSubscribedStatusKeyPaths];
   [(RMExternalStatusPublisher *)self _buildPredicateStatusKeyPaths];
   v4 = +[RMLog externalStatusPublisher];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = 138543362;
-    v6 = v3;
+    v6 = _fetchSubscribedStatusKeyPaths;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Subscribing to all key paths: %{public}@", &v5, 0xCu);
   }
 
-  [(RMExternalStatusPublisher *)self listenToNotificationsForSubscribedKeyPaths:v3];
+  [(RMExternalStatusPublisher *)self listenToNotificationsForSubscribedKeyPaths:_fetchSubscribedStatusKeyPaths];
 }
 
-- (void)listenToNotificationsForSubscribedKeyPaths:(id)a3
+- (void)listenToNotificationsForSubscribedKeyPaths:(id)paths
 {
-  v4 = [NSMutableSet setWithSet:a3];
-  v5 = [(RMExternalStatusPublisher *)self predicateStatusKeysByStoreIdentifier];
+  v4 = [NSMutableSet setWithSet:paths];
+  predicateStatusKeysByStoreIdentifier = [(RMExternalStatusPublisher *)self predicateStatusKeysByStoreIdentifier];
   v51[0] = _NSConcreteStackBlock;
   v51[1] = 3221225472;
   v51[2] = sub_10002B568;
   v51[3] = &unk_1000D1B30;
   v6 = v4;
   v52 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v51];
+  [predicateStatusKeysByStoreIdentifier enumerateKeysAndObjectsUsingBlock:v51];
 
-  v7 = [(RMExternalStatusPublisher *)self allEvents];
-  v8 = [v7 mutableCopy];
+  allEvents = [(RMExternalStatusPublisher *)self allEvents];
+  v8 = [allEvents mutableCopy];
 
   v9 = objc_opt_new();
   v47 = 0u;
@@ -256,9 +256,9 @@
         v44 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v14 = self;
-        v15 = [(RMExternalStatusPublisher *)self eventsByStatusKey];
-        v16 = [v15 objectForKeyedSubscript:v13];
+        selfCopy = self;
+        eventsByStatusKey = [(RMExternalStatusPublisher *)self eventsByStatusKey];
+        v16 = [eventsByStatusKey objectForKeyedSubscript:v13];
 
         v17 = [v16 countByEnumeratingWithState:&v43 objects:v55 count:16];
         if (v17)
@@ -293,7 +293,7 @@
         }
 
         v12 = v12 + 1;
-        self = v14;
+        self = selfCopy;
       }
 
       while (v12 != v11);
@@ -367,9 +367,9 @@
   }
 }
 
-- (void)didReceiveNotificationForStream:(id)a3 notificationName:(id)a4
+- (void)didReceiveNotificationForStream:(id)stream notificationName:(id)name
 {
-  v5 = [RMXPCEvent eventKeyForStream:a3 notificationName:a4];
+  v5 = [RMXPCEvent eventKeyForStream:stream notificationName:name];
   v6 = +[RMLog externalStatusPublisher];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -378,13 +378,13 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Received status notification: %{public}@", buf, 0xCu);
   }
 
-  v7 = [(RMExternalStatusPublisher *)self publisherByEventKey];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  publisherByEventKey = [(RMExternalStatusPublisher *)self publisherByEventKey];
+  v8 = [publisherByEventKey objectForKeyedSubscript:v5];
 
   if (v8)
   {
     v20 = v5;
-    v19 = [v8 statusKeys];
+    statusKeys = [v8 statusKeys];
     v9 = [(RMExternalStatusPublisher *)self _subscribedStatusKeyPathsByStoreForKeyPaths:?];
     v25 = 0u;
     v26 = 0u;
@@ -406,7 +406,7 @@
 
           v14 = *(*(&v25 + 1) + 8 * i);
           v15 = [v9 objectForKeyedSubscript:v14];
-          v16 = [(RMExternalStatusPublisher *)self dispatchQueue];
+          dispatchQueue = [(RMExternalStatusPublisher *)self dispatchQueue];
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_10002B808;
@@ -415,7 +415,7 @@
           v23 = v15;
           v24 = v14;
           v17 = v15;
-          dispatch_async(v16, block);
+          dispatch_async(dispatchQueue, block);
         }
 
         v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -424,7 +424,7 @@
       while (v11);
     }
 
-    v18 = v19;
+    v18 = statusKeys;
     v5 = v20;
   }
 
@@ -438,40 +438,40 @@
   }
 }
 
-- (void)_waitForQueueWithCompletionHandler:(id)a3
+- (void)_waitForQueueWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RMExternalStatusPublisher *)self dispatchQueue];
+  handlerCopy = handler;
+  dispatchQueue = [(RMExternalStatusPublisher *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002B8C4;
   block[3] = &unk_1000D1678;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (id)_queryForFilteredStatusWithKeyPaths:(id)a3 lastAcknowledgedDateByKeyPath:(id)a4 onBehalfOfManagementChannel:(id)a5 error:(id *)a6
+- (id)_queryForFilteredStatusWithKeyPaths:(id)paths lastAcknowledgedDateByKeyPath:(id)path onBehalfOfManagementChannel:(id)channel error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathsCopy = paths;
+  pathCopy = path;
+  channelCopy = channel;
   v46 = 0;
-  v41 = self;
-  v13 = [(RMExternalStatusPublisher *)self statusForChannel:v12 error:&v46];
+  selfCopy = self;
+  v13 = [(RMExternalStatusPublisher *)self statusForChannel:channelCopy error:&v46];
   v14 = v46;
   v15 = v14;
   if (v13)
   {
     v36 = v14;
-    v37 = v12;
-    v16 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v10 count]);
+    v37 = channelCopy;
+    v16 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [pathsCopy count]);
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v38 = v10;
-    v17 = v10;
+    v38 = pathsCopy;
+    v17 = pathsCopy;
     v18 = [v17 countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v18)
     {
@@ -492,20 +492,20 @@
           v23 = [v13 valueForKeyPath:v22];
           if (v23)
           {
-            if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+            if (pathCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
               v24 = [NSString stringWithFormat:@"%@.%@", @"_metadata", v22];
               [v13 objectForKeyedSubscript:v24];
               v26 = v25 = v16;
 
-              v27 = [v11 objectForKeyedSubscript:v22];
-              [(RMExternalStatusPublisher *)v41 _filteredArray:v23 metadata:v26 lastAcknowledgedDate:v27];
+              v27 = [pathCopy objectForKeyedSubscript:v22];
+              [(RMExternalStatusPublisher *)selfCopy _filteredArray:v23 metadata:v26 lastAcknowledgedDate:v27];
               v28 = v19;
               v29 = v20;
-              v31 = v30 = v11;
+              v31 = v30 = pathCopy;
               [v25 setObject:v31 forKeyedSubscript:v22];
 
-              v11 = v30;
+              pathCopy = v30;
               v20 = v29;
               v19 = v28;
 
@@ -533,8 +533,8 @@
       while (v19);
     }
 
-    v12 = v37;
-    v10 = v38;
+    channelCopy = v37;
+    pathsCopy = v38;
     v15 = v36;
   }
 
@@ -543,24 +543,24 @@
     v33 = +[RMLog externalStatusPublisher];
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
-      sub_10002EBEC(v12, v15, v33);
+      sub_10002EBEC(channelCopy, v15, v33);
     }
 
     v16 = 0;
-    if (a6 && v15)
+    if (error && v15)
     {
       v34 = v15;
       v16 = 0;
-      *a6 = v15;
+      *error = v15;
     }
   }
 
   return v16;
 }
 
-- (id)statusForChannel:(id)a3 error:(id *)a4
+- (id)statusForChannel:(id)channel error:(id *)error
 {
-  v6 = a3;
+  channelCopy = channel;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -573,23 +573,23 @@
   v19 = sub_10002BDE0;
   v20 = sub_10002BDF0;
   v21 = 0;
-  v7 = [(RMExternalStatusPublisher *)self persistLock];
+  persistLock = [(RMExternalStatusPublisher *)self persistLock];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10002BDF8;
   v12[3] = &unk_1000D1B80;
   v14 = &v22;
-  v8 = v6;
+  v8 = channelCopy;
   v13 = v8;
   v15 = &v16;
-  [v7 performBlockUnderLock:v12];
+  [persistLock performBlockUnderLock:v12];
 
-  if (a4)
+  if (error)
   {
     v9 = v17[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -649,8 +649,8 @@
         v30 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v8 = [(RMExternalStatusPublisher *)self plugins];
-        v9 = [v8 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        plugins = [(RMExternalStatusPublisher *)self plugins];
+        v9 = [plugins countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v9)
         {
           v10 = v9;
@@ -661,17 +661,17 @@
             {
               if (*v28 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(plugins);
               }
 
               v13 = *(*(&v27 + 1) + 8 * i);
-              v14 = [v13 statusKeys];
-              v15 = [v14 mutableCopy];
+              statusKeys = [v13 statusKeys];
+              v15 = [statusKeys mutableCopy];
 
               [v15 intersectSet:v6];
               if ([v15 count])
               {
-                v16 = [(RMExternalStatusPublisher *)self dispatchQueue];
+                dispatchQueue = [(RMExternalStatusPublisher *)self dispatchQueue];
                 block[0] = _NSConcreteStackBlock;
                 block[1] = 3221225472;
                 block[2] = sub_10002C1DC;
@@ -679,11 +679,11 @@
                 block[4] = v13;
                 v25 = v15;
                 v26 = v5;
-                dispatch_async(v16, block);
+                dispatch_async(dispatchQueue, block);
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v27 objects:v35 count:16];
+            v10 = [plugins countByEnumeratingWithState:&v27 objects:v35 count:16];
           }
 
           while (v10);
@@ -700,10 +700,10 @@
   }
 }
 
-- (BOOL)persistStatusWithStoreIdentifier:(id)a3 status:(id)a4 error:(id *)a5
+- (BOOL)persistStatusWithStoreIdentifier:(id)identifier status:(id)status error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  statusCopy = status;
   v10 = objc_opt_new();
   v27 = 0;
   v28 = &v27;
@@ -711,20 +711,20 @@
   v30 = sub_10002BDE0;
   v31 = sub_10002BDF0;
   v32 = 0;
-  v11 = [(RMExternalStatusPublisher *)self persistLock];
+  persistLock = [(RMExternalStatusPublisher *)self persistLock];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10002C4B8;
   v21[3] = &unk_1000D1BA8;
-  v12 = v8;
+  v12 = identifierCopy;
   v26 = &v27;
   v22 = v12;
-  v23 = self;
-  v13 = v9;
+  selfCopy = self;
+  v13 = statusCopy;
   v24 = v13;
   v14 = v10;
   v25 = v14;
-  [v11 performBlockUnderLock:v21];
+  [persistLock performBlockUnderLock:v21];
 
   v15 = v28[5];
   if (v15)
@@ -735,12 +735,12 @@
       sub_10002ED48();
     }
 
-    if (a5)
+    if (error)
     {
       v17 = v28[5];
       if (v17)
       {
-        *a5 = v17;
+        *error = v17;
       }
     }
   }
@@ -769,18 +769,18 @@
   return v15 == 0;
 }
 
-- (void)_notifyChangesWithStoreIdentifier:(id)a3 statusKeyPaths:(id)a4
+- (void)_notifyChangesWithStoreIdentifier:(id)identifier statusKeyPaths:(id)paths
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  pathsCopy = paths;
   v8 = +[RMSubscribedStatusKeyPathUpdater sharedUpdater];
-  [v8 notifyStatusDidChangeForKeyPaths:v7 managementSourceIdentifier:v6];
+  [v8 notifyStatusDidChangeForKeyPaths:pathsCopy managementSourceIdentifier:identifierCopy];
 
-  v9 = [(RMExternalStatusPublisher *)self predicateStatusKeysByStoreIdentifier];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  predicateStatusKeysByStoreIdentifier = [(RMExternalStatusPublisher *)self predicateStatusKeysByStoreIdentifier];
+  v10 = [predicateStatusKeysByStoreIdentifier objectForKeyedSubscript:identifierCopy];
   v11 = [NSMutableSet setWithArray:v10];
 
-  [v11 intersectSet:v7];
+  [v11 intersectSet:pathsCopy];
   if ([v11 count])
   {
     v12 = +[RMLog externalStatusPublisher];
@@ -790,21 +790,21 @@
     }
 
     v13 = +[RMPredicateStatusUpdater sharedUpdater];
-    [v13 notifyPredicateStatusDidChangeForManagementSourceIdentifier:v6];
+    [v13 notifyPredicateStatusDidChangeForManagementSourceIdentifier:identifierCopy];
   }
 }
 
-- (void)publishStatusKeys:(id)a3 storeIdentifier:(id)a4
+- (void)publishStatusKeys:(id)keys storeIdentifier:(id)identifier
 {
-  v6 = a3;
-  v17 = self;
-  v18 = a4;
+  keysCopy = keys;
+  selfCopy = self;
+  identifierCopy = identifier;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [(RMExternalStatusPublisher *)self plugins];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  plugins = [(RMExternalStatusPublisher *)self plugins];
+  v8 = [plugins countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v8)
   {
     goto LABEL_12;
@@ -819,39 +819,39 @@
     {
       if (*v23 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(plugins);
       }
 
       v13 = *(*(&v22 + 1) + 8 * i);
-      v14 = [v6 mutableCopy];
-      v15 = [v13 statusKeys];
-      [v14 intersectSet:v15];
+      v14 = [keysCopy mutableCopy];
+      statusKeys = [v13 statusKeys];
+      [v14 intersectSet:statusKeys];
 
       if ([v14 count])
       {
-        v16 = [(RMExternalStatusPublisher *)v17 dispatchQueue];
+        dispatchQueue = [(RMExternalStatusPublisher *)selfCopy dispatchQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_10002C96C;
         block[3] = &unk_1000D1B58;
         block[4] = v13;
         v20 = v14;
-        v21 = v18;
-        dispatch_async(v16, block);
+        v21 = identifierCopy;
+        dispatch_async(dispatchQueue, block);
 
         v10 = 1;
       }
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v9 = [plugins countByEnumeratingWithState:&v22 objects:v26 count:16];
   }
 
   while (v9);
 
   if (v10)
   {
-    v7 = [(RMExternalStatusPublisher *)v17 dispatchQueue];
-    dispatch_sync(v7, &stru_1000D1BC8);
+    plugins = [(RMExternalStatusPublisher *)selfCopy dispatchQueue];
+    dispatch_sync(plugins, &stru_1000D1BC8);
 LABEL_12:
   }
 }
@@ -863,8 +863,8 @@ LABEL_12:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(RMExternalStatusPublisher *)self plugins];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  plugins = [(RMExternalStatusPublisher *)self plugins];
+  v5 = [plugins countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -875,14 +875,14 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(plugins);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) reportDetails];
-        [v3 addObject:v9];
+        reportDetails = [*(*(&v11 + 1) + 8 * i) reportDetails];
+        [v3 addObject:reportDetails];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [plugins countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -899,13 +899,13 @@ LABEL_12:
   v11 = sub_10002BDE0;
   v12 = sub_10002BDF0;
   v13 = 0;
-  v2 = [(RMExternalStatusPublisher *)self context];
+  context = [(RMExternalStatusPublisher *)self context];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002CBDC;
   v7[3] = &unk_1000D13E0;
   v7[4] = &v8;
-  [v2 performBlockAndWait:v7];
+  [context performBlockAndWait:v7];
   v3 = v9[5];
   if (v3)
   {
@@ -926,50 +926,50 @@ LABEL_12:
 
 - (void)_buildPredicateStatusKeyPaths
 {
-  v3 = [(RMExternalStatusPublisher *)self context];
+  context = [(RMExternalStatusPublisher *)self context];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10002CDFC;
   v6[3] = &unk_1000D0F50;
   v6[4] = self;
-  [v3 performBlockAndWait:v6];
+  [context performBlockAndWait:v6];
   v4 = +[RMLog externalStatusPublisher];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(RMExternalStatusPublisher *)self predicateStatusKeysByStoreIdentifier];
+    predicateStatusKeysByStoreIdentifier = [(RMExternalStatusPublisher *)self predicateStatusKeysByStoreIdentifier];
     *buf = 138543362;
-    v8 = v5;
+    v8 = predicateStatusKeysByStoreIdentifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "All predicate status key paths: %{public}@", buf, 0xCu);
   }
 }
 
-- (id)_subscribedStatusKeyPathsByStoreForKeyPaths:(id)a3
+- (id)_subscribedStatusKeyPathsByStoreForKeyPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   v5 = objc_opt_new();
-  v6 = [(RMExternalStatusPublisher *)self context];
+  context = [(RMExternalStatusPublisher *)self context];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10002D110;
   v12[3] = &unk_1000D1B58;
-  v13 = v4;
-  v14 = self;
+  v13 = pathsCopy;
+  selfCopy = self;
   v7 = v5;
   v15 = v7;
-  v8 = v4;
-  [v6 performBlockAndWait:v12];
+  v8 = pathsCopy;
+  [context performBlockAndWait:v12];
   v9 = v15;
   v10 = v7;
 
   return v7;
 }
 
-- (id)_mergeOldStatus:(id)a3 newStatus:(id)a4 changedStatusKeyPaths:(id)a5 error:(id *)a6
+- (id)_mergeOldStatus:(id)status newStatus:(id)newStatus changedStatusKeyPaths:(id)paths error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [NSMutableDictionary dictionaryWithDictionary:v10];
+  statusCopy = status;
+  newStatusCopy = newStatus;
+  pathsCopy = paths;
+  v13 = [NSMutableDictionary dictionaryWithDictionary:statusCopy];
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -980,22 +980,22 @@ LABEL_12:
   v20[1] = 3221225472;
   v20[2] = sub_10002D7E4;
   v20[3] = &unk_1000D1C18;
-  v14 = v10;
+  v14 = statusCopy;
   v21 = v14;
   v15 = v13;
   v22 = v15;
-  v16 = v12;
-  v24 = self;
+  v16 = pathsCopy;
+  selfCopy = self;
   v25 = &v26;
   v23 = v16;
-  [v11 enumerateKeysAndObjectsUsingBlock:v20];
+  [newStatusCopy enumerateKeysAndObjectsUsingBlock:v20];
   v17 = v27[5];
   if (v17)
   {
     v18 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v17;
+      *error = v17;
     }
   }
 
@@ -1009,23 +1009,23 @@ LABEL_12:
   return v18;
 }
 
-- (void)_mergeOldArrayValue:(id)a3 oldValueMetadata:(id)a4 newValue:(id)a5 completionHandler:(id)a6
+- (void)_mergeOldArrayValue:(id)value oldValueMetadata:(id)metadata newValue:(id)newValue completionHandler:(id)handler
 {
-  v29 = a3;
-  v27 = a4;
-  v30 = a5;
-  v28 = a6;
+  valueCopy = value;
+  metadataCopy = metadata;
+  newValueCopy = newValue;
+  handlerCopy = handler;
   v31 = [RMDateFormat stringUTCFractionalSecondsWithDate:0];
-  v26 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v30 count]);
-  v10 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v30 count]);
-  if (v29)
+  v26 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [newValueCopy count]);
+  v10 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [newValueCopy count]);
+  if (valueCopy)
   {
     v11 = [(RMExternalStatusPublisher *)self _buildDictionaryFromArrayValue:?];
-    v12 = [(RMExternalStatusPublisher *)self _buildDictionaryFromArrayValue:v30];
-    v13 = [v27 mutableCopy];
+    v12 = [(RMExternalStatusPublisher *)self _buildDictionaryFromArrayValue:newValueCopy];
+    v13 = [metadataCopy mutableCopy];
     if ([v11 isEqualToDictionary:v12])
     {
-      v28[2](v28, v29, v27, 0);
+      handlerCopy[2](handlerCopy, valueCopy, metadataCopy, 0);
     }
 
     else
@@ -1044,7 +1044,7 @@ LABEL_12:
       v22 = v31;
       v39 = v22;
       v43 = &v44;
-      v40 = v27;
+      v40 = metadataCopy;
       v23 = v26;
       v41 = v23;
       v24 = v13;
@@ -1059,7 +1059,7 @@ LABEL_12:
       v34 = v22;
       v35 = &v44;
       [v24 enumerateKeysAndObjectsUsingBlock:v32];
-      v28[2](v28, v23, v25, *(v45 + 24));
+      handlerCopy[2](handlerCopy, v23, v25, *(v45 + 24));
 
       _Block_object_dispose(&v44, 8);
     }
@@ -1071,7 +1071,7 @@ LABEL_12:
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v14 = v30;
+    v14 = newValueCopy;
     v15 = [v14 countByEnumeratingWithState:&v48 objects:v54 count:16];
     if (v15)
     {
@@ -1099,22 +1099,22 @@ LABEL_12:
       while (v15);
     }
 
-    v28[2](v28, v14, v10, 1);
+    handlerCopy[2](handlerCopy, v14, v10, 1);
   }
 }
 
-- (id)_filteredArray:(id)a3 metadata:(id)a4 lastAcknowledgedDate:(id)a5
+- (id)_filteredArray:(id)array metadata:(id)metadata lastAcknowledgedDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v26 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
-  v25 = [RMDateFormat stringUTCFractionalSecondsWithDate:v9];
+  arrayCopy = array;
+  metadataCopy = metadata;
+  dateCopy = date;
+  v26 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [arrayCopy count]);
+  v25 = [RMDateFormat stringUTCFractionalSecondsWithDate:dateCopy];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v7;
+  obj = arrayCopy;
   v10 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v10)
   {
@@ -1131,10 +1131,10 @@ LABEL_12:
 
         v14 = *(*(&v31 + 1) + 8 * i);
         v15 = [v14 objectForKeyedSubscript:@"identifier"];
-        v16 = [v8 objectForKeyedSubscript:v15];
+        v16 = [metadataCopy objectForKeyedSubscript:v15];
         v17 = [v16 objectForKeyedSubscript:@"last-received"];
 
-        if (!v9 || [v17 compare:v25] == 1)
+        if (!dateCopy || [v17 compare:v25] == 1)
         {
           [v26 addObject:v14];
         }
@@ -1150,28 +1150,28 @@ LABEL_12:
   v27[1] = 3221225472;
   v27[2] = sub_10002E680;
   v27[3] = &unk_1000D1C90;
-  v28 = v9;
+  v28 = dateCopy;
   v29 = v25;
   v18 = v26;
   v30 = v18;
   v19 = v25;
-  v20 = v9;
-  [v8 enumerateKeysAndObjectsUsingBlock:v27];
+  v20 = dateCopy;
+  [metadataCopy enumerateKeysAndObjectsUsingBlock:v27];
   v21 = v30;
   v22 = v18;
 
   return v18;
 }
 
-- (id)_buildDictionaryFromArrayValue:(id)a3
+- (id)_buildDictionaryFromArrayValue:(id)value
 {
-  v3 = a3;
-  v4 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v3 count]);
+  valueCopy = value;
+  v4 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [valueCopy count]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = valueCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {

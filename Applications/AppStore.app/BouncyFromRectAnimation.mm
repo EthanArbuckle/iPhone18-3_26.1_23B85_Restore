@@ -1,18 +1,18 @@
 @interface BouncyFromRectAnimation
 - (_TtC8AppStore23BouncyFromRectAnimation)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation BouncyFromRectAnimation
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_10017AEAC(a3);
-  if (*(&v5->super.super.isa + OBJC_IVAR____TtC8AppStore23BouncyFromRectAnimation_shouldAnimateTabBar) == 1)
+  selfCopy = self;
+  sub_10017AEAC(transition);
+  if (*(&selfCopy->super.super.isa + OBJC_IVAR____TtC8AppStore23BouncyFromRectAnimation_shouldAnimateTabBar) == 1)
   {
-    sub_10017ACF4(a3);
+    sub_10017ACF4(transition);
   }
 
   swift_unknownObjectRelease();

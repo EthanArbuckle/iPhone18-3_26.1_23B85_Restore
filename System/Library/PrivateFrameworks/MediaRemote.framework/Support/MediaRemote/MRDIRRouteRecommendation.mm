@@ -1,30 +1,30 @@
 @interface MRDIRRouteRecommendation
-+ (id)recommendationWithIRCandidateResult:(id)a3 contextIdentifier:(id)a4;
++ (id)recommendationWithIRCandidateResult:(id)result contextIdentifier:(id)identifier;
 - (NSString)description;
 @end
 
 @implementation MRDIRRouteRecommendation
 
-+ (id)recommendationWithIRCandidateResult:(id)a3 contextIdentifier:(id)a4
++ (id)recommendationWithIRCandidateResult:(id)result contextIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  resultCopy = result;
   v7 = objc_alloc_init(MRDIRRouteRecommendation);
-  -[MRDIRRouteRecommendation setClassification:](v7, "setClassification:", [v6 classification]);
-  v8 = [v6 sortingHint];
-  [(MRDIRRouteRecommendation *)v7 setSortingHint:v8];
+  -[MRDIRRouteRecommendation setClassification:](v7, "setClassification:", [resultCopy classification]);
+  sortingHint = [resultCopy sortingHint];
+  [(MRDIRRouteRecommendation *)v7 setSortingHint:sortingHint];
 
-  -[MRDIRRouteRecommendation setCallToAction:](v7, "setCallToAction:", [v6 isCallToAction]);
-  -[MRDIRRouteRecommendation setLockScreenControl:](v7, "setLockScreenControl:", [v6 isLockScreenControl]);
-  -[MRDIRRouteRecommendation setConservativelyFiltered:](v7, "setConservativelyFiltered:", [v6 isConservativeFiltered]);
-  v9 = [v6 candidate];
-  v10 = [MRIRRoute routeWithCandidate:v9];
+  -[MRDIRRouteRecommendation setCallToAction:](v7, "setCallToAction:", [resultCopy isCallToAction]);
+  -[MRDIRRouteRecommendation setLockScreenControl:](v7, "setLockScreenControl:", [resultCopy isLockScreenControl]);
+  -[MRDIRRouteRecommendation setConservativelyFiltered:](v7, "setConservativelyFiltered:", [resultCopy isConservativeFiltered]);
+  candidate = [resultCopy candidate];
+  v10 = [MRIRRoute routeWithCandidate:candidate];
   [(MRDIRRouteRecommendation *)v7 setRoute:v10];
 
-  [(MRDIRRouteRecommendation *)v7 setContextIdentifier:v5];
-  v11 = [v6 classificationDescription];
+  [(MRDIRRouteRecommendation *)v7 setContextIdentifier:identifierCopy];
+  classificationDescription = [resultCopy classificationDescription];
 
-  [(MRDIRRouteRecommendation *)v7 setReason:v11];
+  [(MRDIRRouteRecommendation *)v7 setReason:classificationDescription];
 
   return v7;
 }
@@ -36,19 +36,19 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@ (%p): ", v5, self];
 
-  v7 = [(MRDIRRouteRecommendation *)self route];
-  v8 = [v7 routeIdentifier];
-  [v6 appendFormat:@"routeIdentifier: %@", v8];
+  route = [(MRDIRRouteRecommendation *)self route];
+  routeIdentifier = [route routeIdentifier];
+  [v6 appendFormat:@"routeIdentifier: %@", routeIdentifier];
 
-  v9 = [(MRDIRRouteRecommendation *)self classification];
-  if ((v9 - 1) > 3)
+  classification = [(MRDIRRouteRecommendation *)self classification];
+  if ((classification - 1) > 3)
   {
     v10 = @"Unknown";
   }
 
   else
   {
-    v10 = *(&off_1004BC798 + v9 - 1);
+    v10 = *(&off_1004BC798 + classification - 1);
   }
 
   [v6 appendFormat:@", classification: %@", v10];

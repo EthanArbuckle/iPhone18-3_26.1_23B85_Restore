@@ -1,22 +1,22 @@
 @interface InlineRecentStickersViewController
 + (id)_exportedInterface;
 + (id)_remoteViewControllerInterface;
-- (id)stickerCollectionViewController:(id)a3 requestsMSStickerFromURL:(id)a4 externalURI:(id)a5 localizedDescription:(id)a6 error:(id *)a7;
-- (void)applyEffect:(int64_t)a3 toSticker:(id)a4 completion:(id)a5;
-- (void)insertSticker:(id)a3 forceStage:(BOOL)a4 frameInRemoteView:(CGRect)a5 completionHandler:(id)a6;
-- (void)requestStageStickerWithIdentifier:(id)a3 representations:(id)a4 name:(id)a5 effectType:(int64_t)a6 externalURI:(id)a7 accessibilityLabel:(id)a8 metadata:(id)a9 ckAttributionInfo:(id)a10;
-- (void)setHostBundleID:(id)a3;
-- (void)showBrowserForPluginIdentifier:(id)a3 style:(unint64_t)a4 completion:(id)a5;
-- (void)stickerCollectionViewController:(id)a3 didSelectSticker:(id)a4;
-- (void)stickerCollectionViewController:(id)a3 didSelectSticker:(id)a4 withFrame:(CGRect)a5;
-- (void)stickerCollectionViewController:(id)a3 isDonePresentingViewController:(id)a4;
-- (void)stickerCollectionViewController:(id)a3 isPresentingViewController:(id)a4;
-- (void)stickerCollectionViewController:(id)a3 requestsMSStickerFromSticker:(id)a4 completionHandler:(id)a5;
-- (void)stickerCollectionViewControllerPrepareForNewSticker:(id)a3 fromPhotoPicker:(BOOL)a4;
-- (void)stickerCollectionViewControllerRequestsMoreStickers:(id)a3;
+- (id)stickerCollectionViewController:(id)controller requestsMSStickerFromURL:(id)l externalURI:(id)i localizedDescription:(id)description error:(id *)error;
+- (void)applyEffect:(int64_t)effect toSticker:(id)sticker completion:(id)completion;
+- (void)insertSticker:(id)sticker forceStage:(BOOL)stage frameInRemoteView:(CGRect)view completionHandler:(id)handler;
+- (void)requestStageStickerWithIdentifier:(id)identifier representations:(id)representations name:(id)name effectType:(int64_t)type externalURI:(id)i accessibilityLabel:(id)label metadata:(id)metadata ckAttributionInfo:(id)self0;
+- (void)setHostBundleID:(id)d;
+- (void)showBrowserForPluginIdentifier:(id)identifier style:(unint64_t)style completion:(id)completion;
+- (void)stickerCollectionViewController:(id)controller didSelectSticker:(id)sticker;
+- (void)stickerCollectionViewController:(id)controller didSelectSticker:(id)sticker withFrame:(CGRect)frame;
+- (void)stickerCollectionViewController:(id)controller isDonePresentingViewController:(id)viewController;
+- (void)stickerCollectionViewController:(id)controller isPresentingViewController:(id)viewController;
+- (void)stickerCollectionViewController:(id)controller requestsMSStickerFromSticker:(id)sticker completionHandler:(id)handler;
+- (void)stickerCollectionViewControllerPrepareForNewSticker:(id)sticker fromPhotoPicker:(BOOL)picker;
+- (void)stickerCollectionViewControllerRequestsMoreStickers:(id)stickers;
 - (void)stickerDragCanceled;
-- (void)stickerDruidDragEndedWithIMSticker:(id)a3;
-- (void)stickerDruidDragEndedWithMSSticker:(id)a3;
+- (void)stickerDruidDragEndedWithIMSticker:(id)sticker;
+- (void)stickerDruidDragEndedWithMSSticker:(id)sticker;
 - (void)stickerDruidDragStarted;
 - (void)viewDidLoad;
 @end
@@ -28,9 +28,9 @@
   v12.receiver = self;
   v12.super_class = InlineRecentStickersViewController;
   [(InlineRecentStickersViewController *)&v12 viewDidLoad];
-  v3 = [(InlineRecentStickersViewController *)self view];
+  view = [(InlineRecentStickersViewController *)self view];
   v4 = +[UIColor clearColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   if (IMIsStickersStripInCling())
   {
@@ -58,22 +58,22 @@
     v8 = objc_alloc_init(v6);
     [v8 setDelegate:self];
     [(InlineRecentStickersViewController *)self addChildViewController:v8];
-    v9 = [v8 view];
-    v10 = [(InlineRecentStickersViewController *)self view];
-    [v10 bounds];
-    [v9 setFrame:?];
+    view2 = [v8 view];
+    view3 = [(InlineRecentStickersViewController *)self view];
+    [view3 bounds];
+    [view2 setFrame:?];
 
-    [v9 setAutoresizingMask:18];
-    v11 = [(InlineRecentStickersViewController *)self view];
-    [v11 addSubview:v9];
+    [view2 setAutoresizingMask:18];
+    view4 = [(InlineRecentStickersViewController *)self view];
+    [view4 addSubview:view2];
 
     [v8 didMoveToParentViewController:self];
   }
 }
 
-- (void)setHostBundleID:(id)a3
+- (void)setHostBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(InlineRecentStickersViewController *)self _hostAuditToken];
   v5 = SecTaskCreateWithAuditToken(0, &v12);
   if (v5)
@@ -93,7 +93,7 @@
   v10 = v9;
   if (v8)
   {
-    v11 = v4;
+    v11 = dCopy;
   }
 
   else
@@ -104,96 +104,96 @@
   [v9 setHostBundleID:v11];
 }
 
-- (void)applyEffect:(int64_t)a3 toSticker:(id)a4 completion:(id)a5
+- (void)applyEffect:(int64_t)effect toSticker:(id)sticker completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  if (a3 < 1 || ([v7 representations], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "indexOfObjectPassingTest:", &stru_1000103F8), v9, v10 == 0x7FFFFFFFFFFFFFFFLL))
+  stickerCopy = sticker;
+  completionCopy = completion;
+  if (effect < 1 || ([stickerCopy representations], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "indexOfObjectPassingTest:", &stru_1000103F8), v9, v10 == 0x7FFFFFFFFFFFFFFFLL))
   {
-    v8[2](v8, v7);
+    completionCopy[2](completionCopy, stickerCopy);
   }
 
   else
   {
-    v11 = [VKCStickerEffect effectWithType:a3];
+    v11 = [VKCStickerEffect effectWithType:effect];
     v20 = 0;
     v21 = &v20;
     v22 = 0x3032000000;
     v23 = sub_100001638;
     v24 = sub_100001648;
-    v12 = [v7 representations];
-    v25 = [v12 objectAtIndexedSubscript:v10];
+    representations = [stickerCopy representations];
+    v25 = [representations objectAtIndexedSubscript:v10];
 
     v13 = [UIImage alloc];
-    v14 = [v21[5] data];
-    v15 = [v13 initWithData:v14];
+    data = [v21[5] data];
+    v15 = [v13 initWithData:data];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100001650;
     v16[3] = &unk_100010420;
     v19 = &v20;
-    v18 = v8;
-    v17 = v7;
+    v18 = completionCopy;
+    v17 = stickerCopy;
     [v11 applyToImage:v15 completion:v16];
 
     _Block_object_dispose(&v20, 8);
   }
 }
 
-- (void)requestStageStickerWithIdentifier:(id)a3 representations:(id)a4 name:(id)a5 effectType:(int64_t)a6 externalURI:(id)a7 accessibilityLabel:(id)a8 metadata:(id)a9 ckAttributionInfo:(id)a10
+- (void)requestStageStickerWithIdentifier:(id)identifier representations:(id)representations name:(id)name effectType:(int64_t)type externalURI:(id)i accessibilityLabel:(id)label metadata:(id)metadata ckAttributionInfo:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  identifierCopy = identifier;
+  representationsCopy = representations;
+  nameCopy = name;
+  iCopy = i;
+  labelCopy = label;
+  metadataCopy = metadata;
+  infoCopy = info;
   v22 = sub_100007044();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v15;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Staging sticker with identifier %@", &buf, 0xCu);
   }
 
   v23 = objc_opt_new();
-  [v23 setIdentifier:v15];
-  [v23 setRepresentations:v16];
-  [v23 setName:v17];
-  [v23 setEffectType:a6];
-  [v23 setExternalURI:v18];
-  [v23 setAccessibilityLabel:v19];
-  [v23 setMetadata:v20];
-  [v23 setAttributionInfo:v21];
+  [v23 setIdentifier:identifierCopy];
+  [v23 setRepresentations:representationsCopy];
+  [v23 setName:nameCopy];
+  [v23 setEffectType:type];
+  [v23 setExternalURI:iCopy];
+  [v23 setAccessibilityLabel:labelCopy];
+  [v23 setMetadata:metadataCopy];
+  [v23 setAttributionInfo:infoCopy];
   v45[0] = _NSConcreteStackBlock;
   v45[1] = 3221225472;
   v45[2] = sub_100001A80;
   v45[3] = &unk_100010448;
   v45[4] = self;
-  [(InlineRecentStickersViewController *)self applyEffect:a6 toSticker:v23 completion:v45];
-  v24 = [(InlineRecentStickersViewController *)self _remoteProxy];
+  [(InlineRecentStickersViewController *)self applyEffect:type toSticker:v23 completion:v45];
+  _remoteProxy = [(InlineRecentStickersViewController *)self _remoteProxy];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_100001AE0;
   v36[3] = &unk_100010470;
-  v25 = v15;
+  v25 = identifierCopy;
   v37 = v25;
-  v26 = v16;
+  v26 = representationsCopy;
   v38 = v26;
-  v44 = a6;
-  v27 = v18;
+  typeCopy = type;
+  v27 = iCopy;
   v39 = v27;
-  v28 = v17;
+  v28 = nameCopy;
   v40 = v28;
-  v29 = v19;
+  v29 = labelCopy;
   v41 = v29;
-  v30 = v20;
+  v30 = metadataCopy;
   v42 = v30;
-  v31 = v21;
+  v31 = infoCopy;
   v43 = v31;
-  [v24 remoteHandlesRecentsStickerDonationWithCompletionHandler:v36];
+  [_remoteProxy remoteHandlesRecentsStickerDonationWithCompletionHandler:v36];
 
   v46 = 0;
   v47 = &v46;
@@ -215,8 +215,8 @@
   _Block_object_dispose(&v46, 8);
   if (objc_opt_respondsToSelector())
   {
-    v34 = [(InlineRecentStickersViewController *)self _hostApplicationBundleIdentifier];
-    [v32 trackStickerSentFromHostBundleIdentifier:v34];
+    _hostApplicationBundleIdentifier = [(InlineRecentStickersViewController *)self _hostApplicationBundleIdentifier];
+    [v32 trackStickerSentFromHostBundleIdentifier:_hostApplicationBundleIdentifier];
   }
 }
 
@@ -244,7 +244,7 @@
   return v3;
 }
 
-- (void)stickerCollectionViewController:(id)a3 didSelectSticker:(id)a4
+- (void)stickerCollectionViewController:(id)controller didSelectSticker:(id)sticker
 {
   v4 = sub_100007044();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -253,7 +253,7 @@
   }
 }
 
-- (void)stickerCollectionViewController:(id)a3 didSelectSticker:(id)a4 withFrame:(CGRect)a5
+- (void)stickerCollectionViewController:(id)controller didSelectSticker:(id)sticker withFrame:(CGRect)frame
 {
   v5 = sub_100007044();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -262,7 +262,7 @@
   }
 }
 
-- (void)stickerCollectionViewControllerPrepareForNewSticker:(id)a3 fromPhotoPicker:(BOOL)a4
+- (void)stickerCollectionViewControllerPrepareForNewSticker:(id)sticker fromPhotoPicker:(BOOL)picker
 {
   v4 = sub_100007044();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -271,22 +271,22 @@
   }
 }
 
-- (void)stickerCollectionViewControllerRequestsMoreStickers:(id)a3
+- (void)stickerCollectionViewControllerRequestsMoreStickers:(id)stickers
 {
-  v3 = [(InlineRecentStickersViewController *)self _remoteViewControllerProxy];
-  [v3 presentCard];
+  _remoteViewControllerProxy = [(InlineRecentStickersViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy presentCard];
 }
 
-- (void)stickerCollectionViewController:(id)a3 requestsMSStickerFromSticker:(id)a4 completionHandler:(id)a5
+- (void)stickerCollectionViewController:(id)controller requestsMSStickerFromSticker:(id)sticker completionHandler:(id)handler
 {
-  v6 = a4;
-  v39 = a5;
-  v7 = [v6 representations];
-  v8 = [v7 sortedArrayUsingComparator:&stru_100010510];
+  stickerCopy = sticker;
+  handlerCopy = handler;
+  representations = [stickerCopy representations];
+  v8 = [representations sortedArrayUsingComparator:&stru_100010510];
 
-  v40 = v6;
-  v9 = [v6 representations];
-  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v9 count]);
+  v40 = stickerCopy;
+  representations2 = [stickerCopy representations];
+  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [representations2 count]);
 
   v43 = 0u;
   v44 = 0u;
@@ -309,17 +309,17 @@
 
         v16 = *(*(&v41 + 1) + 8 * i);
         v17 = objc_opt_new();
-        v18 = [v16 data];
-        [v17 setData:v18];
+        data = [v16 data];
+        [v17 setData:data];
 
         v19 = [v16 uti];
-        v20 = [v19 identifier];
-        [v17 setType:v20];
+        identifier = [v19 identifier];
+        [v17 setType:identifier];
 
         [v16 size];
         [v17 setSize:?];
-        v21 = [v16 role];
-        [v17 setRole:v21];
+        role = [v16 role];
+        [v17 setRole:role];
 
         [v10 addObject:v17];
       }
@@ -333,57 +333,57 @@
   v22 = [NSMutableDictionary dictionaryWithCapacity:3];
   if (objc_opt_respondsToSelector())
   {
-    v23 = [v40 attributionInfo];
+    attributionInfo = [v40 attributionInfo];
 
-    if (v23)
+    if (attributionInfo)
     {
-      v24 = [v40 attributionInfo];
-      v25 = [v24 adamID];
-      [v22 setObject:v25 forKeyedSubscript:IMFileTransferAttributionInfoAdamIDKey];
+      attributionInfo2 = [v40 attributionInfo];
+      adamID = [attributionInfo2 adamID];
+      [v22 setObject:adamID forKeyedSubscript:IMFileTransferAttributionInfoAdamIDKey];
 
-      v26 = [v40 attributionInfo];
-      v27 = [v26 bundleIdentifier];
-      [v22 setObject:v27 forKeyedSubscript:IMFileTransferAttributionInfoBundleIDKey];
+      attributionInfo3 = [v40 attributionInfo];
+      bundleIdentifier = [attributionInfo3 bundleIdentifier];
+      [v22 setObject:bundleIdentifier forKeyedSubscript:IMFileTransferAttributionInfoBundleIDKey];
 
-      v28 = [v40 attributionInfo];
-      v29 = [v28 name];
-      [v22 setObject:v29 forKeyedSubscript:IMFileTransferAttributionInfoAppNameKey];
+      attributionInfo4 = [v40 attributionInfo];
+      name = [attributionInfo4 name];
+      [v22 setObject:name forKeyedSubscript:IMFileTransferAttributionInfoAppNameKey];
     }
   }
 
   v30 = v22;
   if (objc_opt_respondsToSelector())
   {
-    v38 = [v40 accessibilityName];
+    accessibilityName = [v40 accessibilityName];
   }
 
   else
   {
-    v38 = 0;
+    accessibilityName = 0;
   }
 
   v31 = [MSSticker alloc];
-  v32 = [v40 identifier];
-  v33 = [v40 name];
-  v34 = [v40 effect];
-  v35 = [v40 externalURI];
-  v36 = [v40 metadata];
-  v37 = [v31 initWithStickerIdentifier:v32 representations:v10 stickerName:v33 effectType:v34 externalURI:v35 localizedDescription:v38 metadata:v36 attributionInfo:v30];
+  identifier2 = [v40 identifier];
+  name2 = [v40 name];
+  effect = [v40 effect];
+  externalURI = [v40 externalURI];
+  metadata = [v40 metadata];
+  v37 = [v31 initWithStickerIdentifier:identifier2 representations:v10 stickerName:name2 effectType:effect externalURI:externalURI localizedDescription:accessibilityName metadata:metadata attributionInfo:v30];
 
-  v39[2](v39, v37, 0);
+  handlerCopy[2](handlerCopy, v37, 0);
 }
 
-- (id)stickerCollectionViewController:(id)a3 requestsMSStickerFromURL:(id)a4 externalURI:(id)a5 localizedDescription:(id)a6 error:(id *)a7
+- (id)stickerCollectionViewController:(id)controller requestsMSStickerFromURL:(id)l externalURI:(id)i localizedDescription:(id)description error:(id *)error
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [[MSSticker alloc] initWithContentsOfURL:v12 externalURI:v11 localizedDescription:v10 error:a7];
+  descriptionCopy = description;
+  iCopy = i;
+  lCopy = l;
+  v13 = [[MSSticker alloc] initWithContentsOfURL:lCopy externalURI:iCopy localizedDescription:descriptionCopy error:error];
 
   return v13;
 }
 
-- (void)stickerCollectionViewController:(id)a3 isPresentingViewController:(id)a4
+- (void)stickerCollectionViewController:(id)controller isPresentingViewController:(id)viewController
 {
   v4 = sub_100007044();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -392,7 +392,7 @@
   }
 }
 
-- (void)stickerCollectionViewController:(id)a3 isDonePresentingViewController:(id)a4
+- (void)stickerCollectionViewController:(id)controller isDonePresentingViewController:(id)viewController
 {
   v4 = sub_100007044();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -401,37 +401,37 @@
   }
 }
 
-- (void)insertSticker:(id)a3 forceStage:(BOOL)a4 frameInRemoteView:(CGRect)a5 completionHandler:(id)a6
+- (void)insertSticker:(id)sticker forceStage:(BOOL)stage frameInRemoteView:(CGRect)view completionHandler:(id)handler
 {
-  v20 = a3;
-  v7 = [v20 stickerIdentifier];
-  v8 = [v7 UUIDString];
+  stickerCopy = sticker;
+  stickerIdentifier = [stickerCopy stickerIdentifier];
+  uUIDString = [stickerIdentifier UUIDString];
 
-  if (!v8)
+  if (!uUIDString)
   {
-    v9 = [v20 imageFileURL];
-    v10 = [v9 lastPathComponent];
-    v11 = v10;
-    if (v10)
+    imageFileURL = [stickerCopy imageFileURL];
+    lastPathComponent = [imageFileURL lastPathComponent];
+    v11 = lastPathComponent;
+    if (lastPathComponent)
     {
-      v8 = v10;
+      uUIDString = lastPathComponent;
     }
 
     else
     {
       v12 = +[NSUUID UUID];
-      v8 = [v12 UUIDString];
+      uUIDString = [v12 UUIDString];
     }
   }
 
-  v13 = [v20 stickerEffectType];
-  v14 = [v20 representations];
-  v15 = [v20 stickerName];
-  v16 = [v20 externalURI];
-  v17 = [v20 localizedDescription];
-  v18 = [v20 metadata];
-  v19 = [v20 attributionInfo];
-  [(InlineRecentStickersViewController *)self requestStageStickerWithIdentifier:v8 representations:v14 name:v15 effectType:v13 externalURI:v16 accessibilityLabel:v17 metadata:v18 ckAttributionInfo:v19];
+  stickerEffectType = [stickerCopy stickerEffectType];
+  representations = [stickerCopy representations];
+  stickerName = [stickerCopy stickerName];
+  externalURI = [stickerCopy externalURI];
+  localizedDescription = [stickerCopy localizedDescription];
+  metadata = [stickerCopy metadata];
+  attributionInfo = [stickerCopy attributionInfo];
+  [(InlineRecentStickersViewController *)self requestStageStickerWithIdentifier:uUIDString representations:representations name:stickerName effectType:stickerEffectType externalURI:externalURI accessibilityLabel:localizedDescription metadata:metadata ckAttributionInfo:attributionInfo];
 }
 
 - (void)stickerDragCanceled
@@ -451,36 +451,36 @@
   _objc_release_x1();
 }
 
-- (void)stickerDruidDragEndedWithIMSticker:(id)a3
+- (void)stickerDruidDragEndedWithIMSticker:(id)sticker
 {
-  v4 = a3;
+  stickerCopy = sticker;
   v5 = qword_100015DC0;
-  v6 = [(InlineRecentStickersViewController *)self _remoteProxy];
+  _remoteProxy = [(InlineRecentStickersViewController *)self _remoteProxy];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100002814;
   v9[3] = &unk_100010538;
-  v10 = v4;
+  v10 = stickerCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
-  [v6 remoteHandlesRecentsStickerDonationWithCompletionHandler:v9];
+  v8 = stickerCopy;
+  [_remoteProxy remoteHandlesRecentsStickerDonationWithCompletionHandler:v9];
 }
 
-- (void)stickerDruidDragEndedWithMSSticker:(id)a3
+- (void)stickerDruidDragEndedWithMSSticker:(id)sticker
 {
-  v3 = a3;
+  stickerCopy = sticker;
   v4 = sub_100001BA8();
-  v5 = [v3 stickerPackGUID];
-  v6 = [v3 representations];
-  v7 = [v3 stickerEffectType];
-  v8 = [v3 externalURI];
-  v9 = [v3 stickerName];
-  v10 = [v3 localizedDescription];
-  v11 = [v3 metadata];
-  v12 = [v3 attributionInfo];
+  stickerPackGUID = [stickerCopy stickerPackGUID];
+  representations = [stickerCopy representations];
+  stickerEffectType = [stickerCopy stickerEffectType];
+  externalURI = [stickerCopy externalURI];
+  stickerName = [stickerCopy stickerName];
+  localizedDescription = [stickerCopy localizedDescription];
+  metadata = [stickerCopy metadata];
+  attributionInfo = [stickerCopy attributionInfo];
 
-  [v4 donateStickerToRecentsWithIdentifier:v5 representations:v6 stickerEffectType:v7 externalURI:v8 name:v9 accessibilityLabel:v10 metadata:v11 ckAttributionInfo:v12];
+  [v4 donateStickerToRecentsWithIdentifier:stickerPackGUID representations:representations stickerEffectType:stickerEffectType externalURI:externalURI name:stickerName accessibilityLabel:localizedDescription metadata:metadata ckAttributionInfo:attributionInfo];
   v13 = qword_100015DB8;
   qword_100015DB8 = 0;
 
@@ -488,7 +488,7 @@
   qword_100015DC0 = 0;
 }
 
-- (void)showBrowserForPluginIdentifier:(id)a3 style:(unint64_t)a4 completion:(id)a5
+- (void)showBrowserForPluginIdentifier:(id)identifier style:(unint64_t)style completion:(id)completion
 {
   v5 = sub_100007044();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))

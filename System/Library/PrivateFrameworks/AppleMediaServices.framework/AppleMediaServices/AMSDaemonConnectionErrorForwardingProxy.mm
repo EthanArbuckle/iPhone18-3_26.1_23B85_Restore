@@ -1,69 +1,69 @@
 @interface AMSDaemonConnectionErrorForwardingProxy
-- (AMSDaemonConnectionErrorForwardingProxy)initWithProxy:(id)a3 fromInterface:(id)a4 isSync:(BOOL)a5;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (AMSDaemonConnectionErrorForwardingProxy)initWithProxy:(id)proxy fromInterface:(id)interface isSync:(BOOL)sync;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation AMSDaemonConnectionErrorForwardingProxy
 
-- (AMSDaemonConnectionErrorForwardingProxy)initWithProxy:(id)a3 fromInterface:(id)a4 isSync:(BOOL)a5
+- (AMSDaemonConnectionErrorForwardingProxy)initWithProxy:(id)proxy fromInterface:(id)interface isSync:(BOOL)sync
 {
-  v8 = a3;
-  v9 = a4;
+  proxyCopy = proxy;
+  interfaceCopy = interface;
   proxy = self->_proxy;
-  self->_proxy = v8;
-  v11 = v8;
+  self->_proxy = proxyCopy;
+  v11 = proxyCopy;
 
   interface = self->_interface;
-  self->_interface = v9;
+  self->_interface = interfaceCopy;
 
-  self->_isSync = a5;
+  self->_isSync = sync;
   return self;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v25 = 0;
-  v5 = [(AMSDaemonConnectionErrorForwardingProxy *)self _blockToInvokeWithErrorForwardingForInvocation:v4 errorArgumentIndex:&v25];
+  v5 = [(AMSDaemonConnectionErrorForwardingProxy *)self _blockToInvokeWithErrorForwardingForInvocation:invocationCopy errorArgumentIndex:&v25];
   if (v5)
   {
-    v6 = [v4 selector];
-    v7 = [(AMSDaemonConnectionErrorForwardingProxy *)self interface];
+    selector = [invocationCopy selector];
+    interface = [(AMSDaemonConnectionErrorForwardingProxy *)self interface];
     v8 = AMSLogKey();
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __61__AMSDaemonConnectionErrorForwardingProxy_forwardInvocation___block_invoke;
     v19 = &unk_1E73B6760;
     v20 = v8;
-    v21 = v7;
-    v23 = v6;
+    v21 = interface;
+    v23 = selector;
     v24 = v25;
     v22 = v5;
-    v9 = v7;
-    v10 = v8;
+    v9 = interface;
+    proxy2 = v8;
     v11 = _Block_copy(&v16);
     v12 = [(AMSDaemonConnectionErrorForwardingProxy *)self isSync:v16];
-    v13 = [(AMSDaemonConnectionErrorForwardingProxy *)self proxy];
-    v14 = v13;
+    proxy = [(AMSDaemonConnectionErrorForwardingProxy *)self proxy];
+    v14 = proxy;
     if (v12)
     {
-      [v13 synchronousRemoteObjectProxyWithErrorHandler:v11];
+      [proxy synchronousRemoteObjectProxyWithErrorHandler:v11];
     }
 
     else
     {
-      [v13 remoteObjectProxyWithErrorHandler:v11];
+      [proxy remoteObjectProxyWithErrorHandler:v11];
     }
     v15 = ;
 
-    [v4 invokeWithTarget:v15];
+    [invocationCopy invokeWithTarget:v15];
   }
 
   else
   {
-    v10 = [(AMSDaemonConnectionErrorForwardingProxy *)self proxy];
-    [v4 invokeWithTarget:v10];
+    proxy2 = [(AMSDaemonConnectionErrorForwardingProxy *)self proxy];
+    [invocationCopy invokeWithTarget:proxy2];
   }
 }
 
@@ -100,10 +100,10 @@ void __61__AMSDaemonConnectionErrorForwardingProxy_forwardInvocation___block_inv
   [v11 invokeWithTarget:*(a1 + 48)];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = [(AMSDaemonConnectionErrorForwardingProxy *)self proxy];
-  v5 = [v4 methodSignatureForSelector:a3];
+  proxy = [(AMSDaemonConnectionErrorForwardingProxy *)self proxy];
+  v5 = [proxy methodSignatureForSelector:selector];
 
   return v5;
 }

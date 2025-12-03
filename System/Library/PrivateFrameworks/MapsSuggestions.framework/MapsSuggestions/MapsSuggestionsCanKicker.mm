@@ -1,11 +1,11 @@
 @interface MapsSuggestionsCanKicker
-- (MapsSuggestionsCanKicker)initWithName:(id)a3 time:(double)a4 leeway:(double)a5 queue:(id)a6 block:(id)a7;
+- (MapsSuggestionsCanKicker)initWithName:(id)name time:(double)time leeway:(double)leeway queue:(id)queue block:(id)block;
 - (void)_kickCan;
 - (void)cancel;
 - (void)dealloc;
 - (void)kickCanBySameTime;
-- (void)kickCanByTime:(double)a3;
-- (void)kickCanByTime:(double)a3 leeway:;
+- (void)kickCanByTime:(double)time;
+- (void)kickCanByTime:(double)time leeway:;
 @end
 
 @implementation MapsSuggestionsCanKicker
@@ -40,22 +40,22 @@
 - (void)_kickCan
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    objc_sync_enter(v1);
-    v1[7] = v1[7] + 1;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    selfCopy[7] = selfCopy[7] + 1;
     if (MapsSuggestionsLoggingIsVerbose())
     {
       v2 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
       {
-        v3 = [v1 uniqueName];
-        v4 = v1[4];
-        v5 = v1[5];
-        v6 = v1[7];
+        uniqueName = [selfCopy uniqueName];
+        v4 = selfCopy[4];
+        v5 = selfCopy[5];
+        v6 = selfCopy[7];
         v7 = 138413058;
-        v8 = v3;
+        v8 = uniqueName;
         v9 = 2048;
         v10 = v4;
         v11 = 2048;
@@ -66,27 +66,27 @@
       }
     }
 
-    [v1[6] scheduleWithTimeInterval:*(v1 + 4) leeway:*(v1 + 5)];
-    objc_sync_exit(v1);
+    [selfCopy[6] scheduleWithTimeInterval:*(selfCopy + 4) leeway:*(selfCopy + 5)];
+    objc_sync_exit(selfCopy);
   }
 }
 
 - (void)cancel
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(MapsSuggestionsCanKicker *)v2 uniqueName];
+    uniqueName = [(MapsSuggestionsCanKicker *)selfCopy uniqueName];
     v5 = 138412290;
-    v6 = v4;
+    v6 = uniqueName;
     _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "CanKicker{%@} cancels", &v5, 0xCu);
   }
 
-  [(MapsSuggestionsGCDTimer *)v2->_timer unschedule];
-  objc_sync_exit(v2);
+  [(MapsSuggestionsGCDTimer *)selfCopy->_timer unschedule];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)dealloc
@@ -101,14 +101,14 @@
   [(MapsSuggestionsCanKicker *)&v4 dealloc];
 }
 
-- (MapsSuggestionsCanKicker)initWithName:(id)a3 time:(double)a4 leeway:(double)a5 queue:(id)a6 block:(id)a7
+- (MapsSuggestionsCanKicker)initWithName:(id)name time:(double)time leeway:(double)leeway queue:(id)queue block:(id)block
 {
   v40 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = v14;
-  if (!v12)
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
+  v15 = blockCopy;
+  if (!nameCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -127,7 +127,7 @@
     goto LABEL_23;
   }
 
-  if (a4 < 0.0)
+  if (time < 0.0)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -145,11 +145,11 @@
 
 LABEL_23:
 
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_24;
   }
 
-  if (a5 < 0.0)
+  if (leeway < 0.0)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -168,7 +168,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (!v13)
+  if (!queueCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -187,7 +187,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (!v14)
+  if (!blockCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -211,13 +211,13 @@ LABEL_23:
   v17 = [(MapsSuggestionsCanKicker *)&v31 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [nameCopy copy];
     name = v17->_name;
     v17->_name = v18;
 
-    v17->_time = a4;
-    v17->_leeway = a5;
-    objc_storeStrong(&v17->_targetQueue, a6);
+    v17->_time = time;
+    v17->_leeway = leeway;
+    objc_storeStrong(&v17->_targetQueue, queue);
     v20 = [v15 copy];
     block = v17->_block;
     v17->_block = v20;
@@ -241,10 +241,10 @@ LABEL_23:
   }
 
   self = v17;
-  v26 = self;
+  selfCopy = self;
 LABEL_24:
 
-  return v26;
+  return selfCopy;
 }
 
 void __65__MapsSuggestionsCanKicker_initWithName_time_leeway_queue_block___block_invoke(uint64_t a1)
@@ -290,10 +290,10 @@ void __65__MapsSuggestionsCanKicker_initWithName_time_leeway_queue_block___block
   }
 }
 
-- (void)kickCanByTime:(double)a3
+- (void)kickCanByTime:(double)time
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3 <= 0.0)
+  if (time <= 0.0)
   {
     v3 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -315,7 +315,7 @@ void __65__MapsSuggestionsCanKicker_initWithName_time_leeway_queue_block___block
   {
     if (self->_leeway >= 0.0)
     {
-      [(MapsSuggestionsCanKicker *)self kickCanByTime:a3];
+      [(MapsSuggestionsCanKicker *)self kickCanByTime:time];
       return;
     }
 
@@ -337,10 +337,10 @@ LABEL_7:
   }
 }
 
-- (void)kickCanByTime:(double)a3 leeway:
+- (void)kickCanByTime:(double)time leeway:
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     if (a2 <= 0.0)
     {
@@ -364,7 +364,7 @@ LABEL_9:
       return;
     }
 
-    if (a3 < 0.0)
+    if (time < 0.0)
     {
       v5 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -386,13 +386,13 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v7 = a1;
-    objc_sync_enter(v7);
-    v7[4] = a2;
-    v7[5] = a3;
-    objc_sync_exit(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    selfCopy[4] = a2;
+    selfCopy[5] = time;
+    objc_sync_exit(selfCopy);
 
-    [(MapsSuggestionsCanKicker *)v7 _kickCan];
+    [(MapsSuggestionsCanKicker *)selfCopy _kickCan];
   }
 }
 

@@ -1,70 +1,70 @@
 @interface RCPVizualizerView
 - (CGRect)screenRect;
 - (void)layout;
-- (void)setFrame:(CGRect)a3;
-- (void)setRecapMovie:(id)a3;
-- (void)setTime:(unint64_t)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setRecapMovie:(id)movie;
+- (void)setTime:(unint64_t)time;
 @end
 
 @implementation RCPVizualizerView
 
-- (void)setRecapMovie:(id)a3
+- (void)setRecapMovie:(id)movie
 {
-  objc_storeStrong(&self->_recapMovie, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_recapMovie, movie);
+  movieCopy = movie;
   v6 = objc_alloc(MEMORY[0x277CE65B0]);
-  v7 = [(RCPVizualizerView *)self recapMovie];
-  v8 = [v7 screenRecording];
-  v29 = [v6 initWithAsset:v8];
+  recapMovie = [(RCPVizualizerView *)self recapMovie];
+  screenRecording = [recapMovie screenRecording];
+  v29 = [v6 initWithAsset:screenRecording];
 
   v9 = [MEMORY[0x277CE6598] playerWithPlayerItem:v29];
   [(RCPVizualizerView *)self setPlayer:v9];
 
   v10 = MEMORY[0x277CE65D8];
-  v11 = [(RCPVizualizerView *)self player];
-  v12 = [v10 playerLayerWithPlayer:v11];
+  player = [(RCPVizualizerView *)self player];
+  v12 = [v10 playerLayerWithPlayer:player];
   [(RCPVizualizerView *)self setPlayerLayer:v12];
 
-  v13 = [(RCPVizualizerView *)self layer];
-  v14 = [(RCPVizualizerView *)self playerLayer];
-  [v13 addSublayer:v14];
+  layer = [(RCPVizualizerView *)self layer];
+  playerLayer = [(RCPVizualizerView *)self playerLayer];
+  [layer addSublayer:playerLayer];
 
-  v15 = [(RCPVizualizerView *)self player];
-  [v15 pause];
+  player2 = [(RCPVizualizerView *)self player];
+  [player2 pause];
 
   v16 = objc_alloc_init(MEMORY[0x277CD9ED0]);
   [(RCPVizualizerView *)self setScreenshotLayer:v16];
 
-  v17 = [(RCPVizualizerView *)self layer];
-  v18 = [(RCPVizualizerView *)self screenshotLayer];
-  [v17 addSublayer:v18];
+  layer2 = [(RCPVizualizerView *)self layer];
+  screenshotLayer = [(RCPVizualizerView *)self screenshotLayer];
+  [layer2 addSublayer:screenshotLayer];
 
   v19 = objc_alloc_init(RCPTraceLayer);
   [(RCPVizualizerView *)self setTraceLayer:v19];
 
-  v20 = [(RCPVizualizerView *)self recapMovie];
-  v21 = [v20 eventStream];
-  v22 = [(RCPVizualizerView *)self traceLayer];
-  [v22 setEventStream:v21];
+  recapMovie2 = [(RCPVizualizerView *)self recapMovie];
+  eventStream = [recapMovie2 eventStream];
+  traceLayer = [(RCPVizualizerView *)self traceLayer];
+  [traceLayer setEventStream:eventStream];
 
-  v23 = [(RCPVizualizerView *)self recapMovie];
-  v24 = [v23 interfaceOrientation];
-  v25 = [(RCPVizualizerView *)self traceLayer];
-  [v25 setInterfaceOrientation:v24];
+  recapMovie3 = [(RCPVizualizerView *)self recapMovie];
+  interfaceOrientation = [recapMovie3 interfaceOrientation];
+  traceLayer2 = [(RCPVizualizerView *)self traceLayer];
+  [traceLayer2 setInterfaceOrientation:interfaceOrientation];
 
-  v26 = [(RCPVizualizerView *)self layer];
-  v27 = [(RCPVizualizerView *)self traceLayer];
-  [v26 addSublayer:v27];
+  layer3 = [(RCPVizualizerView *)self layer];
+  traceLayer3 = [(RCPVizualizerView *)self traceLayer];
+  [layer3 addSublayer:traceLayer3];
 
-  v28 = [(RCPVizualizerView *)self recapMovie];
-  -[RCPVizualizerView setTime:](self, "setTime:", [v28 startTimestamp]);
+  recapMovie4 = [(RCPVizualizerView *)self recapMovie];
+  -[RCPVizualizerView setTime:](self, "setTime:", [recapMovie4 startTimestamp]);
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = RCPVizualizerView;
-  [(RCPVizualizerView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(RCPVizualizerView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(RCPVizualizerView *)self layout];
 }
 
@@ -77,54 +77,54 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(RCPVizualizerView *)self traceLayer];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  traceLayer = [(RCPVizualizerView *)self traceLayer];
+  [traceLayer setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(RCPVizualizerView *)self screenshotLayer];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  screenshotLayer = [(RCPVizualizerView *)self screenshotLayer];
+  [screenshotLayer setFrame:{v4, v6, v8, v10}];
 
-  v13 = [(RCPVizualizerView *)self playerLayer];
-  [v13 setFrame:{v4, v6, v8, v10}];
+  playerLayer = [(RCPVizualizerView *)self playerLayer];
+  [playerLayer setFrame:{v4, v6, v8, v10}];
 
   v14 = MEMORY[0x277CD9FF0];
 
   [v14 commit];
 }
 
-- (void)setTime:(unint64_t)a3
+- (void)setTime:(unint64_t)time
 {
-  self->_time = a3;
-  v5 = [(RCPVizualizerView *)self traceLayer];
-  [v5 setTime:a3];
+  self->_time = time;
+  traceLayer = [(RCPVizualizerView *)self traceLayer];
+  [traceLayer setTime:time];
 
-  v6 = [(RCPVizualizerView *)self recapMovie];
-  v7 = [v6 startTimestamp];
-  v8 = [(RCPVizualizerView *)self recapMovie];
-  v9 = v8;
-  if (v7)
+  recapMovie = [(RCPVizualizerView *)self recapMovie];
+  startTimestamp = [recapMovie startTimestamp];
+  recapMovie2 = [(RCPVizualizerView *)self recapMovie];
+  v9 = recapMovie2;
+  if (startTimestamp)
   {
-    v10 = [v8 startTimestamp];
+    startTimestamp2 = [recapMovie2 startTimestamp];
   }
 
   else
   {
-    v11 = [v8 eventStream];
-    v12 = [v11 events];
-    v13 = [v12 firstObject];
-    v10 = [v13 timestamp];
+    eventStream = [recapMovie2 eventStream];
+    events = [eventStream events];
+    firstObject = [events firstObject];
+    startTimestamp2 = [firstObject timestamp];
   }
 
-  v14 = [(RCPVizualizerView *)self recapMovie];
-  v15 = [v14 eventStream];
-  v16 = [v15 environment];
+  recapMovie3 = [(RCPVizualizerView *)self recapMovie];
+  eventStream2 = [recapMovie3 eventStream];
+  environment = [eventStream2 environment];
 
-  v17 = [(RCPVizualizerView *)self player];
-  v18 = [v17 currentItem];
-  v19 = [v18 asset];
-  v20 = v19;
-  if (v19)
+  player = [(RCPVizualizerView *)self player];
+  currentItem = [player currentItem];
+  asset = [currentItem asset];
+  v20 = asset;
+  if (asset)
   {
-    [v19 duration];
+    [asset duration];
     v21 = v45;
   }
 
@@ -136,75 +136,75 @@
     v46 = 0;
   }
 
-  v22 = a3 - v10;
-  if (a3 < v10)
+  v22 = time - startTimestamp2;
+  if (time < startTimestamp2)
   {
     v22 = 0;
   }
 
   memset(&v43, 0, sizeof(v43));
   v23 = v22;
-  [v16 timeScale];
+  [environment timeScale];
   CMTimeMakeWithSeconds(&v43, v24 * v23 / 1000000000.0, v21);
-  v25 = [(RCPVizualizerView *)self player];
-  v26 = [v25 currentItem];
+  player2 = [(RCPVizualizerView *)self player];
+  currentItem2 = [player2 currentItem];
   v42 = v43;
   v40 = *MEMORY[0x277CC08F0];
   v41 = *(MEMORY[0x277CC08F0] + 16);
   v38 = v40;
   v39 = v41;
-  [v26 seekToTime:&v42 toleranceBefore:&v40 toleranceAfter:&v38 completionHandler:0];
+  [currentItem2 seekToTime:&v42 toleranceBefore:&v40 toleranceAfter:&v38 completionHandler:0];
 
-  v27 = [(RCPVizualizerView *)self recapMovie];
-  v28 = [v27 screenshot];
-  if (!v28)
+  recapMovie4 = [(RCPVizualizerView *)self recapMovie];
+  screenshot = [recapMovie4 screenshot];
+  if (!screenshot)
   {
 
     goto LABEL_13;
   }
 
-  v29 = v28;
+  v29 = screenshot;
   time = self->_time;
-  v31 = [(RCPVizualizerView *)self recapMovie];
-  v32 = [v31 endTimestamp];
+  recapMovie5 = [(RCPVizualizerView *)self recapMovie];
+  endTimestamp = [recapMovie5 endTimestamp];
 
-  if (time < v32)
+  if (time < endTimestamp)
   {
 LABEL_13:
-    v33 = [(RCPVizualizerView *)self screenshotLayer];
-    [v33 setContents:0];
+    screenshotLayer = [(RCPVizualizerView *)self screenshotLayer];
+    [screenshotLayer setContents:0];
     goto LABEL_14;
   }
 
-  v33 = [(RCPVizualizerView *)self recapMovie];
-  v34 = [v33 screenshot];
-  v35 = [v34 CGImage];
-  v36 = [(RCPVizualizerView *)self screenshotLayer];
-  [v36 setContents:v35];
+  screenshotLayer = [(RCPVizualizerView *)self recapMovie];
+  screenshot2 = [screenshotLayer screenshot];
+  cGImage = [screenshot2 CGImage];
+  screenshotLayer2 = [(RCPVizualizerView *)self screenshotLayer];
+  [screenshotLayer2 setContents:cGImage];
 
 LABEL_14:
-  v37 = [(RCPVizualizerView *)self traceLayer];
-  [v37 setNeedsDisplay];
+  traceLayer2 = [(RCPVizualizerView *)self traceLayer];
+  [traceLayer2 setNeedsDisplay];
 }
 
 - (CGRect)screenRect
 {
-  v3 = [(RCPVizualizerView *)self recapMovie];
-  v4 = [v3 eventStream];
-  v5 = [v4 environment];
-  v6 = [v5 screens];
-  v7 = [v6 firstObject];
-  [v7 pointSize];
+  recapMovie = [(RCPVizualizerView *)self recapMovie];
+  eventStream = [recapMovie eventStream];
+  environment = [eventStream environment];
+  screens = [environment screens];
+  firstObject = [screens firstObject];
+  [firstObject pointSize];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(RCPVizualizerView *)self recapMovie];
-  if ([v12 interfaceOrientation])
+  recapMovie2 = [(RCPVizualizerView *)self recapMovie];
+  if ([recapMovie2 interfaceOrientation])
   {
-    v13 = [(RCPVizualizerView *)self recapMovie];
-    v14 = [v13 interfaceOrientation];
+    recapMovie3 = [(RCPVizualizerView *)self recapMovie];
+    interfaceOrientation = [recapMovie3 interfaceOrientation];
 
-    if (v14 == 1)
+    if (interfaceOrientation == 1)
     {
       v15 = v11;
     }
@@ -214,7 +214,7 @@ LABEL_14:
       v15 = v9;
     }
 
-    if (v14 != 1)
+    if (interfaceOrientation != 1)
     {
       v9 = v11;
     }

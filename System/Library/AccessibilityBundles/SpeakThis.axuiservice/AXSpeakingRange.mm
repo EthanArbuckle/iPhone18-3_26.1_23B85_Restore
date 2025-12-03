@@ -10,10 +10,10 @@
   v8.receiver = self;
   v8.super_class = AXSpeakingRange;
   v3 = [(AXSpeakingRange *)&v8 description];
-  v4 = [(AXSpeakingRange *)self element];
+  element = [(AXSpeakingRange *)self element];
   v10.location = [(AXSpeakingRange *)self range];
   v5 = NSStringFromRange(v10);
-  v6 = [v3 stringByAppendingFormat:@" - %@, %@", v4, v5];
+  v6 = [v3 stringByAppendingFormat:@" - %@, %@", element, v5];
 
   return v6;
 }

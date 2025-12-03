@@ -37,8 +37,8 @@
 - (BOOL)wantsResponse;
 - (IDSDestination)destinations;
 - (IDSPrioritizedTokenList)prioritizedTokenList;
-- (IDSSendParameters)initWithCoder:(id)a3;
-- (IDSSendParameters)initWithDictionary:(id)a3;
+- (IDSSendParameters)initWithCoder:(id)coder;
+- (IDSSendParameters)initWithDictionary:(id)dictionary;
 - (NSArray)bulkedPayload;
 - (NSArray)duetIdentifiersOverride;
 - (NSArray)finalDestinationURIs;
@@ -88,51 +88,51 @@
 - (NSString)subService;
 - (NSString)subServiceAccountUUID;
 - (double)timeout;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)objectForKey:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)objectForKey:(id)key;
 - (int64_t)forceQuery;
 - (int64_t)priority;
-- (void)encodeWithCoder:(id)a3;
-- (void)setActivityContinuation:(BOOL)a3;
-- (void)setAllowCloudDelivery:(BOOL)a3;
-- (void)setAlwaysIncludeSelf:(BOOL)a3;
-- (void)setAlwaysSkipSelf:(BOOL)a3;
-- (void)setBypassDuet:(BOOL)a3;
-- (void)setBypassSizeCheck:(BOOL)a3;
-- (void)setBypassStorage:(BOOL)a3;
-- (void)setCompressPayload:(BOOL)a3;
-- (void)setCompressed:(BOOL)a3;
-- (void)setDaemonDeathResend:(BOOL)a3;
-- (void)setDisableAliasValidation:(BOOL)a3;
-- (void)setDisallowRefresh:(BOOL)a3;
-- (void)setEncryptPayload:(BOOL)a3;
-- (void)setEnforceRemoteTimeouts:(BOOL)a3;
-- (void)setExpectsPeerResponse:(BOOL)a3;
-- (void)setFakeMessage:(BOOL)a3;
-- (void)setFireAndForget:(BOOL)a3;
-- (void)setForceEncryptionOff:(BOOL)a3;
-- (void)setForceQuery:(int64_t)a3;
-- (void)setHomeKitPayload:(BOOL)a3;
-- (void)setIgnoreMaxRetryCount:(BOOL)a3;
-- (void)setIsProxiedOutgoingMessage:(BOOL)a3;
-- (void)setIsUPlusOne:(BOOL)a3;
-- (void)setLiveMessageDelivery:(BOOL)a3;
-- (void)setLocalDelivery:(BOOL)a3;
-- (void)setNonCloudWaking:(BOOL)a3;
-- (void)setNonWaking:(BOOL)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setPriority:(int64_t)a3;
-- (void)setRequireBluetooth:(BOOL)a3;
-- (void)setRequireLocalWiFi:(BOOL)a3;
-- (void)setSessionForceInternetInvitation:(BOOL)a3;
-- (void)setTimeout:(double)a3;
-- (void)setUseDictAsTopLevel:(BOOL)a3;
-- (void)setWantsAppAck:(BOOL)a3;
-- (void)setWantsCertifiedDelivery:(BOOL)a3;
-- (void)setWantsDeliveryStatus:(BOOL)a3;
-- (void)setWantsFirewallDonation:(BOOL)a3;
-- (void)setWantsProgress:(BOOL)a3;
-- (void)setWantsResponse:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setActivityContinuation:(BOOL)continuation;
+- (void)setAllowCloudDelivery:(BOOL)delivery;
+- (void)setAlwaysIncludeSelf:(BOOL)self;
+- (void)setAlwaysSkipSelf:(BOOL)self;
+- (void)setBypassDuet:(BOOL)duet;
+- (void)setBypassSizeCheck:(BOOL)check;
+- (void)setBypassStorage:(BOOL)storage;
+- (void)setCompressPayload:(BOOL)payload;
+- (void)setCompressed:(BOOL)compressed;
+- (void)setDaemonDeathResend:(BOOL)resend;
+- (void)setDisableAliasValidation:(BOOL)validation;
+- (void)setDisallowRefresh:(BOOL)refresh;
+- (void)setEncryptPayload:(BOOL)payload;
+- (void)setEnforceRemoteTimeouts:(BOOL)timeouts;
+- (void)setExpectsPeerResponse:(BOOL)response;
+- (void)setFakeMessage:(BOOL)message;
+- (void)setFireAndForget:(BOOL)forget;
+- (void)setForceEncryptionOff:(BOOL)off;
+- (void)setForceQuery:(int64_t)query;
+- (void)setHomeKitPayload:(BOOL)payload;
+- (void)setIgnoreMaxRetryCount:(BOOL)count;
+- (void)setIsProxiedOutgoingMessage:(BOOL)message;
+- (void)setIsUPlusOne:(BOOL)one;
+- (void)setLiveMessageDelivery:(BOOL)delivery;
+- (void)setLocalDelivery:(BOOL)delivery;
+- (void)setNonCloudWaking:(BOOL)waking;
+- (void)setNonWaking:(BOOL)waking;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setPriority:(int64_t)priority;
+- (void)setRequireBluetooth:(BOOL)bluetooth;
+- (void)setRequireLocalWiFi:(BOOL)fi;
+- (void)setSessionForceInternetInvitation:(BOOL)invitation;
+- (void)setTimeout:(double)timeout;
+- (void)setUseDictAsTopLevel:(BOOL)level;
+- (void)setWantsAppAck:(BOOL)ack;
+- (void)setWantsCertifiedDelivery:(BOOL)delivery;
+- (void)setWantsDeliveryStatus:(BOOL)status;
+- (void)setWantsFirewallDonation:(BOOL)donation;
+- (void)setWantsProgress:(BOOL)progress;
+- (void)setWantsResponse:(BOOL)response;
 @end
 
 @implementation IDSSendParameters
@@ -252,9 +252,9 @@
 - (int64_t)forceQuery
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersForceQueryKey"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (IDSDestination)destinations
@@ -268,9 +268,9 @@
 - (int64_t)priority
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersPriorityKey"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (NSDictionary)dictionaryRepresentation
@@ -281,16 +281,16 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 dictionaryRepresentation];
-    [v3 setObject:v5 forKeyedSubscript:@"IDSSendParametersSendMetricKey"];
+    dictionaryRepresentation = [v4 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"IDSSendParametersSendMetricKey"];
   }
 
   v6 = [v3 objectForKeyedSubscript:@"IDSSendParametersSendReasonKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 reasonString];
-    [v3 setObject:v7 forKeyedSubscript:@"IDSSendParametersSendReasonKey"];
+    reasonString = [v6 reasonString];
+    [v3 setObject:reasonString forKeyedSubscript:@"IDSSendParametersSendReasonKey"];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -325,9 +325,9 @@
 - (BOOL)encryptPayload
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersEncryptPayloadKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSDictionary)deliveryStatusContext
@@ -341,33 +341,33 @@
 - (BOOL)localDelivery
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersLocalDeliveryKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)useDictAsTopLevel
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersUseDictAsTopLevelKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)wantsResponse
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersWantsResponseKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)compressPayload
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersCompressPayloadKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (double)timeout
@@ -382,33 +382,33 @@
 - (BOOL)wantsCertifiedDelivery
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersWantsCertifiedDeliveryKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)wantsDeliveryStatus
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersWantsDeliveryStatusKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)bypassSizeCheck
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersBypassSizeCheckKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)sessionForceInternetInvitation
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersSessionForceInternetInvitationKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)metricReportIdentifier
@@ -430,25 +430,25 @@
 - (BOOL)requireLocalWiFi
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersRequireLocalWiFiKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)requireBluetooth
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersRequireBluetoothKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)enforceRemoteTimeouts
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersEnforceRemoteTimeoutsKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)peerResponseIdentifier
@@ -462,33 +462,33 @@
 - (BOOL)liveMessageDelivery
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersLiveMessageDeliveryKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)nonCloudWaking
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersNonCloudWakingKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)bypassDuet
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersBypassDuetKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)bypassStorage
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersBypassStorageKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSArray)duetIdentifiersOverride
@@ -502,9 +502,9 @@
 - (BOOL)nonWaking
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersNonWakingKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSNumber)messageType
@@ -518,17 +518,17 @@
 - (BOOL)allowCloudDelivery
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersAllowCloudDeliveryKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)disableAliasValidation
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersDisableAliasValidationKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSArray)requireAllRegistrationProperties
@@ -566,25 +566,25 @@
 - (BOOL)wantsProgress
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersWantsProgressKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)homeKitPayload
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersHomeKitPayloadKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)forceEncryptionOff
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersForceEncryptionOffKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)resourcePath
@@ -630,33 +630,33 @@
 - (BOOL)expectsPeerResponse
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersExpectsPeerResponseKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)wantsAppAck
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersWantsAppAckKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)compressed
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersCompressedKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isProxiedOutgoingMessage
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersIsProxiedOutgoingMessageKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSNumber)commandContext
@@ -678,9 +678,9 @@
 - (BOOL)isUPlusOne
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersIsUPlusOneKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSNumber)isInitiator
@@ -734,9 +734,9 @@
 - (BOOL)fireAndForget
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersFireAndForgetKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)fromShortHandle
@@ -758,25 +758,25 @@
 - (BOOL)fakeMessage
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersFakeMessageKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)alwaysSkipSelf
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersAlwaysSkipSelfKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)alwaysIncludeSelf
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersAlwaysIncludeSelfKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSNumber)pushPriority
@@ -790,17 +790,17 @@
 - (BOOL)ignoreMaxRetryCount
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersIgnoreMaxRetryCountKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)disallowRefresh
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersDisallowRefreshKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (IDSPrioritizedTokenList)prioritizedTokenList
@@ -814,9 +814,9 @@
 - (BOOL)wantsFirewallDonation
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersWantsFirewallDonationKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSNumber)sendMode
@@ -838,14 +838,14 @@
 - (BOOL)daemonDeathResend
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersDaemonDeathResendKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (IDSSendParameters)initWithDictionary:(id)a3
+- (IDSSendParameters)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = IDSSendParameters;
   v5 = [(IDSSendParameters *)&v16 init];
@@ -853,7 +853,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 mutableCopy];
+    v7 = [dictionaryCopy mutableCopy];
     v8 = v7;
     if (v7)
     {
@@ -888,15 +888,15 @@
   return v6;
 }
 
-- (IDSSendParameters)initWithCoder:(id)a3
+- (IDSSendParameters)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeObjectForKey:@"params"];
+  v4 = [coder decodeObjectForKey:@"params"];
   v5 = [(IDSSendParameters *)self initWithDictionary:v4];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock(&self->_lock);
   v4 = [objc_alloc(objc_opt_class()) initWithDictionary:self->_params];
@@ -904,41 +904,41 @@
   return v4;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_params objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_params objectForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
   params = self->_params;
-  if (v8)
+  if (objectCopy)
   {
-    [(NSMutableDictionary *)params setObject:v8 forKey:v6];
+    [(NSMutableDictionary *)params setObject:objectCopy forKey:keyCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)params removeObjectForKey:v6];
+    [(NSMutableDictionary *)params removeObjectForKey:keyCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
-  [v4 encodeObject:self->_params forKey:@"params"];
+  [coderCopy encodeObject:self->_params forKey:@"params"];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -967,11 +967,11 @@
   return v3;
 }
 
-- (void)setExpectsPeerResponse:(BOOL)a3
+- (void)setExpectsPeerResponse:(BOOL)response
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!response)
   {
 
     v6 = 0;
@@ -981,11 +981,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersExpectsPeerResponseKey"];
 }
 
-- (void)setCompressed:(BOOL)a3
+- (void)setCompressed:(BOOL)compressed
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!compressed)
   {
 
     v6 = 0;
@@ -995,11 +995,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersCompressedKey"];
 }
 
-- (void)setUseDictAsTopLevel:(BOOL)a3
+- (void)setUseDictAsTopLevel:(BOOL)level
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!level)
   {
 
     v6 = 0;
@@ -1009,11 +1009,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersUseDictAsTopLevelKey"];
 }
 
-- (void)setWantsAppAck:(BOOL)a3
+- (void)setWantsAppAck:(BOOL)ack
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!ack)
   {
 
     v6 = 0;
@@ -1023,11 +1023,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersWantsAppAckKey"];
 }
 
-- (void)setEncryptPayload:(BOOL)a3
+- (void)setEncryptPayload:(BOOL)payload
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!payload)
   {
 
     v6 = 0;
@@ -1037,11 +1037,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersEncryptPayloadKey"];
 }
 
-- (void)setCompressPayload:(BOOL)a3
+- (void)setCompressPayload:(BOOL)payload
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!payload)
   {
 
     v6 = 0;
@@ -1051,11 +1051,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersCompressPayloadKey"];
 }
 
-- (void)setWantsResponse:(BOOL)a3
+- (void)setWantsResponse:(BOOL)response
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!response)
   {
 
     v6 = 0;
@@ -1065,11 +1065,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersWantsResponseKey"];
 }
 
-- (void)setWantsProgress:(BOOL)a3
+- (void)setWantsProgress:(BOOL)progress
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!progress)
   {
 
     v6 = 0;
@@ -1079,11 +1079,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersWantsProgressKey"];
 }
 
-- (void)setWantsDeliveryStatus:(BOOL)a3
+- (void)setWantsDeliveryStatus:(BOOL)status
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!status)
   {
 
     v6 = 0;
@@ -1093,11 +1093,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersWantsDeliveryStatusKey"];
 }
 
-- (void)setWantsCertifiedDelivery:(BOOL)a3
+- (void)setWantsCertifiedDelivery:(BOOL)delivery
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!delivery)
   {
 
     v6 = 0;
@@ -1107,11 +1107,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersWantsCertifiedDeliveryKey"];
 }
 
-- (void)setPriority:(int64_t)a3
+- (void)setPriority:(int64_t)priority
 {
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   v6 = v5;
-  if (!a3 && sel_integerValue == sel_BOOLValue)
+  if (!priority && sel_integerValue == sel_BOOLValue)
   {
 
     v6 = 0;
@@ -1121,11 +1121,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersPriorityKey"];
 }
 
-- (void)setLocalDelivery:(BOOL)a3
+- (void)setLocalDelivery:(BOOL)delivery
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!delivery)
   {
 
     v6 = 0;
@@ -1135,11 +1135,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersLocalDeliveryKey"];
 }
 
-- (void)setRequireBluetooth:(BOOL)a3
+- (void)setRequireBluetooth:(BOOL)bluetooth
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!bluetooth)
   {
 
     v6 = 0;
@@ -1149,11 +1149,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersRequireBluetoothKey"];
 }
 
-- (void)setRequireLocalWiFi:(BOOL)a3
+- (void)setRequireLocalWiFi:(BOOL)fi
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!fi)
   {
 
     v6 = 0;
@@ -1163,11 +1163,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersRequireLocalWiFiKey"];
 }
 
-- (void)setTimeout:(double)a3
+- (void)setTimeout:(double)timeout
 {
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:?];
   v6 = v5;
-  if (a3 == 0.0 && sel_doubleValue == sel_BOOLValue)
+  if (timeout == 0.0 && sel_doubleValue == sel_BOOLValue)
   {
 
     v6 = 0;
@@ -1177,11 +1177,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersTimeoutKey"];
 }
 
-- (void)setBypassDuet:(BOOL)a3
+- (void)setBypassDuet:(BOOL)duet
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!duet)
   {
 
     v6 = 0;
@@ -1191,11 +1191,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersBypassDuetKey"];
 }
 
-- (void)setFakeMessage:(BOOL)a3
+- (void)setFakeMessage:(BOOL)message
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!message)
   {
 
     v6 = 0;
@@ -1205,11 +1205,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersFakeMessageKey"];
 }
 
-- (void)setBypassStorage:(BOOL)a3
+- (void)setBypassStorage:(BOOL)storage
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!storage)
   {
 
     v6 = 0;
@@ -1219,11 +1219,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersBypassStorageKey"];
 }
 
-- (void)setActivityContinuation:(BOOL)a3
+- (void)setActivityContinuation:(BOOL)continuation
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!continuation)
   {
 
     v6 = 0;
@@ -1236,16 +1236,16 @@
 - (BOOL)activityContinuation
 {
   v2 = [(IDSSendParameters *)self objectForKey:@"IDSSendParametersActivityContinuationKey"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setNonWaking:(BOOL)a3
+- (void)setNonWaking:(BOOL)waking
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!waking)
   {
 
     v6 = 0;
@@ -1255,11 +1255,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersNonWakingKey"];
 }
 
-- (void)setNonCloudWaking:(BOOL)a3
+- (void)setNonCloudWaking:(BOOL)waking
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!waking)
   {
 
     v6 = 0;
@@ -1269,11 +1269,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersNonCloudWakingKey"];
 }
 
-- (void)setDaemonDeathResend:(BOOL)a3
+- (void)setDaemonDeathResend:(BOOL)resend
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!resend)
   {
 
     v6 = 0;
@@ -1283,11 +1283,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersDaemonDeathResendKey"];
 }
 
-- (void)setBypassSizeCheck:(BOOL)a3
+- (void)setBypassSizeCheck:(BOOL)check
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!check)
   {
 
     v6 = 0;
@@ -1297,11 +1297,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersBypassSizeCheckKey"];
 }
 
-- (void)setFireAndForget:(BOOL)a3
+- (void)setFireAndForget:(BOOL)forget
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!forget)
   {
 
     v6 = 0;
@@ -1311,11 +1311,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersFireAndForgetKey"];
 }
 
-- (void)setIsProxiedOutgoingMessage:(BOOL)a3
+- (void)setIsProxiedOutgoingMessage:(BOOL)message
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!message)
   {
 
     v6 = 0;
@@ -1325,11 +1325,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersIsProxiedOutgoingMessageKey"];
 }
 
-- (void)setEnforceRemoteTimeouts:(BOOL)a3
+- (void)setEnforceRemoteTimeouts:(BOOL)timeouts
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!timeouts)
   {
 
     v6 = 0;
@@ -1339,11 +1339,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersEnforceRemoteTimeoutsKey"];
 }
 
-- (void)setHomeKitPayload:(BOOL)a3
+- (void)setHomeKitPayload:(BOOL)payload
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!payload)
   {
 
     v6 = 0;
@@ -1353,11 +1353,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersHomeKitPayloadKey"];
 }
 
-- (void)setDisableAliasValidation:(BOOL)a3
+- (void)setDisableAliasValidation:(BOOL)validation
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!validation)
   {
 
     v6 = 0;
@@ -1367,11 +1367,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersDisableAliasValidationKey"];
 }
 
-- (void)setForceEncryptionOff:(BOOL)a3
+- (void)setForceEncryptionOff:(BOOL)off
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!off)
   {
 
     v6 = 0;
@@ -1381,11 +1381,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersForceEncryptionOffKey"];
 }
 
-- (void)setAllowCloudDelivery:(BOOL)a3
+- (void)setAllowCloudDelivery:(BOOL)delivery
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!delivery)
   {
 
     v6 = 0;
@@ -1395,11 +1395,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersAllowCloudDeliveryKey"];
 }
 
-- (void)setAlwaysSkipSelf:(BOOL)a3
+- (void)setAlwaysSkipSelf:(BOOL)self
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!self)
   {
 
     v6 = 0;
@@ -1409,11 +1409,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersAlwaysSkipSelfKey"];
 }
 
-- (void)setForceQuery:(int64_t)a3
+- (void)setForceQuery:(int64_t)query
 {
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   v6 = v5;
-  if (!a3 && sel_integerValue == sel_BOOLValue)
+  if (!query && sel_integerValue == sel_BOOLValue)
   {
 
     v6 = 0;
@@ -1423,11 +1423,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersForceQueryKey"];
 }
 
-- (void)setAlwaysIncludeSelf:(BOOL)a3
+- (void)setAlwaysIncludeSelf:(BOOL)self
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!self)
   {
 
     v6 = 0;
@@ -1437,11 +1437,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersAlwaysIncludeSelfKey"];
 }
 
-- (void)setDisallowRefresh:(BOOL)a3
+- (void)setDisallowRefresh:(BOOL)refresh
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!refresh)
   {
 
     v6 = 0;
@@ -1451,11 +1451,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersDisallowRefreshKey"];
 }
 
-- (void)setLiveMessageDelivery:(BOOL)a3
+- (void)setLiveMessageDelivery:(BOOL)delivery
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!delivery)
   {
 
     v6 = 0;
@@ -1465,11 +1465,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersLiveMessageDeliveryKey"];
 }
 
-- (void)setIsUPlusOne:(BOOL)a3
+- (void)setIsUPlusOne:(BOOL)one
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!one)
   {
 
     v6 = 0;
@@ -1479,11 +1479,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersIsUPlusOneKey"];
 }
 
-- (void)setSessionForceInternetInvitation:(BOOL)a3
+- (void)setSessionForceInternetInvitation:(BOOL)invitation
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!invitation)
   {
 
     v6 = 0;
@@ -1493,11 +1493,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersSessionForceInternetInvitationKey"];
 }
 
-- (void)setWantsFirewallDonation:(BOOL)a3
+- (void)setWantsFirewallDonation:(BOOL)donation
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!donation)
   {
 
     v6 = 0;
@@ -1507,11 +1507,11 @@
   [(IDSSendParameters *)self setObject:v6 forKey:@"IDSSendParametersWantsFirewallDonationKey"];
 }
 
-- (void)setIgnoreMaxRetryCount:(BOOL)a3
+- (void)setIgnoreMaxRetryCount:(BOOL)count
 {
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v6 = v5;
-  if (!a3)
+  if (!count)
   {
 
     v6 = 0;

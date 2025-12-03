@@ -1,24 +1,24 @@
 @interface MUHikingTipModel
-- (MUHikingTipModel)initWithHikingTipViewModel:(id)a3;
+- (MUHikingTipModel)initWithHikingTipViewModel:(id)model;
 @end
 
 @implementation MUHikingTipModel
 
-- (MUHikingTipModel)initWithHikingTipViewModel:(id)a3
+- (MUHikingTipModel)initWithHikingTipViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v13.receiver = self;
   v13.super_class = MUHikingTipModel;
   v5 = [(MUHikingTipModel *)&v13 init];
   if (v5)
   {
-    v6 = [v4 title];
-    v7 = [v6 copy];
+    title = [modelCopy title];
+    v7 = [title copy];
     title = v5->_title;
     v5->_title = v7;
 
-    v9 = [v4 subtitle];
-    v10 = [v9 copy];
+    subtitle = [modelCopy subtitle];
+    v10 = [subtitle copy];
     subtitle = v5->_subtitle;
     v5->_subtitle = v10;
   }

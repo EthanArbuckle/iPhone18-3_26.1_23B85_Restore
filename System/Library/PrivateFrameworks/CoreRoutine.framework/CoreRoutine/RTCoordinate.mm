@@ -1,12 +1,12 @@
 @interface RTCoordinate
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCoordinate:(id)a3;
-- (RTCoordinate)initWithCoder:(id)a3;
-- (RTCoordinate)initWithLatitude:(double)a3 longitude:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCoordinate:(id)coordinate;
+- (RTCoordinate)initWithCoder:(id)coder;
+- (RTCoordinate)initWithLatitude:(double)latitude longitude:(double)longitude;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTCoordinate
@@ -20,57 +20,57 @@
   return [v3 stringWithFormat:@"<%.6f, %.6f>", v5, v6];
 }
 
-- (RTCoordinate)initWithLatitude:(double)a3 longitude:(double)a4
+- (RTCoordinate)initWithLatitude:(double)latitude longitude:(double)longitude
 {
   v7.receiver = self;
   v7.super_class = RTCoordinate;
   result = [(RTCoordinate *)&v7 init];
   if (result)
   {
-    result->_latitude = a3;
-    result->_longitude = a4;
+    result->_latitude = latitude;
+    result->_longitude = longitude;
   }
 
   return result;
 }
 
-- (RTCoordinate)initWithCoder:(id)a3
+- (RTCoordinate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"latitude"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"latitude"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"longitude"];
+  [coderCopy decodeDoubleForKey:@"longitude"];
   v8 = v7;
 
   return [(RTCoordinate *)self initWithLatitude:v6 longitude:v8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   latitude = self->_latitude;
-  v5 = a3;
-  [v5 encodeDouble:@"latitude" forKey:latitude];
-  [v5 encodeDouble:@"longitude" forKey:self->_longitude];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"latitude" forKey:latitude];
+  [coderCopy encodeDouble:@"longitude" forKey:self->_longitude];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   latitude = self->_latitude;
   longitude = self->_longitude;
 
   return [v4 initWithLatitude:latitude longitude:longitude];
 }
 
-- (BOOL)isEqualToCoordinate:(id)a3
+- (BOOL)isEqualToCoordinate:(id)coordinate
 {
-  v4 = a3;
+  coordinateCopy = coordinate;
   v5 = round(self->_latitude * 1000000.0);
-  [v4 latitude];
+  [coordinateCopy latitude];
   if (v5 == round(v6 * 1000000.0))
   {
     v7 = round(self->_longitude * 1000000.0);
-    [v4 longitude];
+    [coordinateCopy longitude];
     v9 = v7 == round(v8 * 1000000.0);
   }
 
@@ -82,18 +82,18 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTCoordinate *)self isEqualToCoordinate:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTCoordinate *)self isEqualToCoordinate:v5];
   }
 
   return v6;

@@ -1,22 +1,22 @@
 @interface EKEventFetchRequestToken
-- (EKEventFetchRequestToken)initWithEventStore:(id)a3 token:(int)a4;
+- (EKEventFetchRequestToken)initWithEventStore:(id)store token:(int)token;
 - (EKEventStore)eventStore;
 - (void)cancel;
 @end
 
 @implementation EKEventFetchRequestToken
 
-- (EKEventFetchRequestToken)initWithEventStore:(id)a3 token:(int)a4
+- (EKEventFetchRequestToken)initWithEventStore:(id)store token:(int)token
 {
-  v6 = a3;
+  storeCopy = store;
   v10.receiver = self;
   v10.super_class = EKEventFetchRequestToken;
   v7 = [(EKEventFetchRequestToken *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_eventStore, v6);
-    v8->_token = a4;
+    objc_storeWeak(&v7->_eventStore, storeCopy);
+    v8->_token = token;
   }
 
   return v8;
@@ -24,9 +24,9 @@
 
 - (void)cancel
 {
-  v4 = [(EKEventFetchRequestToken *)self eventStore];
-  v3 = [v4 connection];
-  [v3 cancelRemoteOperation:{-[EKEventFetchRequestToken token](self, "token")}];
+  eventStore = [(EKEventFetchRequestToken *)self eventStore];
+  connection = [eventStore connection];
+  [connection cancelRemoteOperation:{-[EKEventFetchRequestToken token](self, "token")}];
 }
 
 - (EKEventStore)eventStore

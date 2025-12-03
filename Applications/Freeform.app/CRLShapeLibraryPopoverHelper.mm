@@ -1,57 +1,57 @@
 @interface CRLShapeLibraryPopoverHelper
-+ (void)changeShapeForEditor:(id)a3 shapePathSource:(id)a4 interactiveCanvasController:(id)a5;
-+ (void)dismissShapeLibraryForEditor:(id)a3;
-+ (void)showShapeLibraryForEditor:(id)a3;
-+ (void)showShapeLibraryPopoverToAddShapeToConnectionLineWithUnscaledPopoverAnchorPoint:(CGPoint)a3 forEditor:(id)a4;
++ (void)changeShapeForEditor:(id)editor shapePathSource:(id)source interactiveCanvasController:(id)controller;
++ (void)dismissShapeLibraryForEditor:(id)editor;
++ (void)showShapeLibraryForEditor:(id)editor;
++ (void)showShapeLibraryPopoverToAddShapeToConnectionLineWithUnscaledPopoverAnchorPoint:(CGPoint)point forEditor:(id)editor;
 - (_TtC8Freeform28CRLShapeLibraryPopoverHelper)init;
 @end
 
 @implementation CRLShapeLibraryPopoverHelper
 
-+ (void)changeShapeForEditor:(id)a3 shapePathSource:(id)a4 interactiveCanvasController:(id)a5
++ (void)changeShapeForEditor:(id)editor shapePathSource:(id)source interactiveCanvasController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  sub_100BE8394(v7, v8, v9);
+  editorCopy = editor;
+  sourceCopy = source;
+  controllerCopy = controller;
+  sub_100BE8394(editorCopy, sourceCopy, controllerCopy);
 }
 
-+ (void)showShapeLibraryForEditor:(id)a3
++ (void)showShapeLibraryForEditor:(id)editor
 {
-  v3 = a3;
-  sub_100BE95C0(v3);
+  editorCopy = editor;
+  sub_100BE95C0(editorCopy);
 }
 
-+ (void)showShapeLibraryPopoverToAddShapeToConnectionLineWithUnscaledPopoverAnchorPoint:(CGPoint)a3 forEditor:(id)a4
++ (void)showShapeLibraryPopoverToAddShapeToConnectionLineWithUnscaledPopoverAnchorPoint:(CGPoint)point forEditor:(id)editor
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
-  sub_100BE9AD4(v6, x, y);
+  y = point.y;
+  x = point.x;
+  editorCopy = editor;
+  sub_100BE9AD4(editorCopy, x, y);
 }
 
-+ (void)dismissShapeLibraryForEditor:(id)a3
++ (void)dismissShapeLibraryForEditor:(id)editor
 {
-  if (!a3)
+  if (!editor)
   {
     return;
   }
 
-  v8 = a3;
-  v3 = [v8 interactiveCanvasController];
-  if (!v3 || (v4 = v3, v5 = [v3 layerHost], v4, !v5))
+  editorCopy = editor;
+  interactiveCanvasController = [editorCopy interactiveCanvasController];
+  if (!interactiveCanvasController || (v4 = interactiveCanvasController, v5 = [interactiveCanvasController layerHost], v4, !v5))
   {
-    v6 = v8;
+    v6 = editorCopy;
     goto LABEL_7;
   }
 
   if ([v5 respondsToSelector:"shapeLibraryPopoverController"])
   {
-    v7 = [v5 shapeLibraryPopoverController];
+    shapeLibraryPopoverController = [v5 shapeLibraryPopoverController];
     swift_unknownObjectRelease();
     sub_100C00ED4();
 
-    v6 = v7;
+    v6 = shapeLibraryPopoverController;
 LABEL_7:
 
     return;

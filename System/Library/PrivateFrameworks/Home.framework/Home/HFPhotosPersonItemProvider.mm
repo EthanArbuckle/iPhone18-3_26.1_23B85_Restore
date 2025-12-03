@@ -1,44 +1,44 @@
 @interface HFPhotosPersonItemProvider
-- (HFPhotosPersonItemProvider)initWithHome:(id)a3 forUser:(id)a4;
-- (HFPhotosPersonItemProvider)initWithHome:(id)a3 personManager:(id)a4;
+- (HFPhotosPersonItemProvider)initWithHome:(id)home forUser:(id)user;
+- (HFPhotosPersonItemProvider)initWithHome:(id)home personManager:(id)manager;
 @end
 
 @implementation HFPhotosPersonItemProvider
 
-- (HFPhotosPersonItemProvider)initWithHome:(id)a3 forUser:(id)a4
+- (HFPhotosPersonItemProvider)initWithHome:(id)home forUser:(id)user
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 hf_allUsersIncludingCurrentUser];
-  v9 = [v8 containsObject:v6];
+  userCopy = user;
+  homeCopy = home;
+  hf_allUsersIncludingCurrentUser = [homeCopy hf_allUsersIncludingCurrentUser];
+  v9 = [hf_allUsersIncludingCurrentUser containsObject:userCopy];
 
   if (v9)
   {
-    v10 = [v6 photosPersonManager];
+    photosPersonManager = [userCopy photosPersonManager];
     v15.receiver = self;
     v15.super_class = HFPhotosPersonItemProvider;
-    v11 = [(HFPersonItemProvider *)&v15 initWithHome:v7 personManager:v10];
+    v11 = [(HFPersonItemProvider *)&v15 initWithHome:homeCopy personManager:photosPersonManager];
 
     self = v11;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = [v7 hf_allUsersIncludingCurrentUser];
-    NSLog(&cfstr_SHomeDoesnTInc_0.isa, self, "[HFPhotosPersonItemProvider initWithHome:forUser:]", v7, v6, v13);
+    hf_allUsersIncludingCurrentUser2 = [homeCopy hf_allUsersIncludingCurrentUser];
+    NSLog(&cfstr_SHomeDoesnTInc_0.isa, self, "[HFPhotosPersonItemProvider initWithHome:forUser:]", homeCopy, userCopy, hf_allUsersIncludingCurrentUser2);
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (HFPhotosPersonItemProvider)initWithHome:(id)a3 personManager:(id)a4
+- (HFPhotosPersonItemProvider)initWithHome:(id)home personManager:(id)manager
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithHome_forUser_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HFPersonItemProvider.m" lineNumber:106 description:{@"%s is unavailable; use %@ instead", "-[HFPhotosPersonItemProvider initWithHome:personManager:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFPersonItemProvider.m" lineNumber:106 description:{@"%s is unavailable; use %@ instead", "-[HFPhotosPersonItemProvider initWithHome:personManager:]", v7}];
 
   return 0;
 }

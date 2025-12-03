@@ -4,7 +4,7 @@
 - (BOOL)isRead;
 - (BOOL)isSensitive;
 - (BOOL)isTranscriptionAvailable;
-- (BOOL)shouldMarkAsReadForPlaybackCurrentTime:(double)a3;
+- (BOOL)shouldMarkAsReadForPlaybackCurrentTime:(double)time;
 - (BOOL)transcriptionAttempted;
 - (MPMessageID)identifier;
 - (MPTranscriptMessage)transcript;
@@ -13,12 +13,12 @@
 - (TUHandle)senderHandle;
 - (_TtC8FaceTime9FTMessage)init;
 - (double)duration;
-- (id)contactUsingContactStore:(id)a3 withKeysToFetch:(id)a4;
-- (id)displayNameUsingContactStore:(id)a3;
+- (id)contactUsingContactStore:(id)store withKeysToFetch:(id)fetch;
+- (id)displayNameUsingContactStore:(id)store;
 - (int64_t)folder;
 - (int64_t)messageType;
-- (void)setFolder:(int64_t)a3;
-- (void)setIsRead:(BOOL)a3;
+- (void)setFolder:(int64_t)folder;
+- (void)setIsRead:(BOOL)read;
 @end
 
 @implementation FTMessage
@@ -31,7 +31,7 @@
   v7 = &v17 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v5);
   v9 = &v17 - v8;
-  v10 = self;
+  selfCopy = self;
   dispatch thunk of Message.recordUUID.getter();
   v11 = *(v4 + 16);
   v11(v7, v9, v3);
@@ -52,7 +52,7 @@
 
 - (NSString)provider
 {
-  v2 = self;
+  selfCopy = self;
   dispatch thunk of Message.provider.getter();
 
   v3 = String._bridgeToObjectiveC()();
@@ -62,7 +62,7 @@
 
 - (int64_t)messageType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000B1F98();
 
   return v3;
@@ -70,7 +70,7 @@
 
 - (TUHandle)senderHandle
 {
-  v2 = self;
+  selfCopy = self;
   if (dispatch thunk of Message.isFromUnknown.getter())
   {
     v3 = 0;
@@ -90,7 +90,7 @@
 
 - (NSString)callbackDestinationID
 {
-  v2 = self;
+  selfCopy = self;
   if (dispatch thunk of Message.isFromUnknown.getter())
   {
 
@@ -111,18 +111,18 @@
 
 - (int64_t)folder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000B2628();
 
   return v3;
 }
 
-- (void)setFolder:(int64_t)a3
+- (void)setFolder:(int64_t)folder
 {
   v4 = (self + OBJC_IVAR____TtC8FaceTime9FTMessage_dirtyFolder);
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v4);
-  *&v4[2]._os_unfair_lock_opaque = a3;
+  *&v4[2]._os_unfair_lock_opaque = folder;
   LOBYTE(v4[4]._os_unfair_lock_opaque) = 0;
   os_unfair_lock_unlock(v4);
 }
@@ -130,7 +130,7 @@
 - (BOOL)isRead
 {
   v2 = (self + OBJC_IVAR____TtC8FaceTime9FTMessage_dirtyRead);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   os_unfair_lock_opaque_low = LOBYTE(v2[1]._os_unfair_lock_opaque);
   os_unfair_lock_unlock(v2);
@@ -142,18 +142,18 @@
   return os_unfair_lock_opaque_low & 1;
 }
 
-- (void)setIsRead:(BOOL)a3
+- (void)setIsRead:(BOOL)read
 {
   v4 = (self + OBJC_IVAR____TtC8FaceTime9FTMessage_dirtyRead);
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v4);
-  LOBYTE(v4[1]._os_unfair_lock_opaque) = a3;
+  LOBYTE(v4[1]._os_unfair_lock_opaque) = read;
   os_unfair_lock_unlock(v4);
 }
 
 - (BOOL)isTranscriptionAvailable
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B2974();
   v4 = v3;
 
@@ -162,7 +162,7 @@
 
 - (double)duration
 {
-  v2 = self;
+  selfCopy = self;
   dispatch thunk of Message.duration.getter();
   v4 = v3;
 
@@ -171,7 +171,7 @@
 
 - (BOOL)transcriptionAttempted
 {
-  v2 = self;
+  selfCopy = self;
   dispatch thunk of Message.transcriptionStatus.getter();
   v3 = TranscriptionStatus.rawValue.getter();
   v4 = TranscriptionStatus.rawValue.getter();
@@ -181,7 +181,7 @@
 
 - (BOOL)isSensitive
 {
-  v2 = self;
+  selfCopy = self;
   v3 = dispatch thunk of Message.isSensitive.getter();
 
   return v3 & 1;
@@ -189,7 +189,7 @@
 
 - (BOOL)isRTT
 {
-  v2 = self;
+  selfCopy = self;
   v3 = dispatch thunk of Message.isRTT.getter();
 
   return v3 & 1;
@@ -197,7 +197,7 @@
 
 - (BOOL)isDataAvailable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000B3514();
 
   return v3 & 1;
@@ -205,7 +205,7 @@
 
 - (MPTranscriptMessage)transcript
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000B2EEC();
 
   return v3;
@@ -218,30 +218,30 @@
   return result;
 }
 
-- (BOOL)shouldMarkAsReadForPlaybackCurrentTime:(double)a3
+- (BOOL)shouldMarkAsReadForPlaybackCurrentTime:(double)time
 {
-  v4 = self;
-  v5 = sub_1000B4C60(a3);
+  selfCopy = self;
+  v5 = sub_1000B4C60(time);
 
   return v5;
 }
 
-- (id)contactUsingContactStore:(id)a3 withKeysToFetch:(id)a4
+- (id)contactUsingContactStore:(id)store withKeysToFetch:(id)fetch
 {
   sub_1000525C4(&unk_100124BB0);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1000B4D54(v6);
+  storeCopy = store;
+  selfCopy = self;
+  v8 = sub_1000B4D54(storeCopy);
 
   return v8;
 }
 
-- (id)displayNameUsingContactStore:(id)a3
+- (id)displayNameUsingContactStore:(id)store
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000B4F80(v4);
+  storeCopy = store;
+  selfCopy = self;
+  sub_1000B4F80(storeCopy);
   v7 = v6;
 
   if (v7)

@@ -5,8 +5,8 @@
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
 - (void)layoutSubviews;
-- (void)panGestureRecognized:(id)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
+- (void)panGestureRecognized:(id)recognized;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
 @end
 
 @implementation SliderView
@@ -18,22 +18,22 @@
   return [(SliderView *)&v3 semanticContentAttribute];
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   ObjectType = swift_getObjectType();
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = self;
-  [(SliderView *)&v9 setSemanticContentAttribute:a3];
-  v7 = *(&v6->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles10SliderView_stackView);
-  v8.receiver = v6;
+  selfCopy = self;
+  [(SliderView *)&v9 setSemanticContentAttribute:attribute];
+  v7 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles10SliderView_stackView);
+  v8.receiver = selfCopy;
   v8.super_class = ObjectType;
   [v7 setSemanticContentAttribute_];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7D25864();
 }
 
@@ -48,10 +48,10 @@
 - (CGPoint)accessibilityActivationPoint
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles10SliderView_elapsedTrack);
-  v3 = self;
+  selfCopy = self;
   [v2 accessibilityFrame];
   MaxX = CGRectGetMaxX(v9);
-  [(SliderView *)v3 accessibilityFrame];
+  [(SliderView *)selfCopy accessibilityFrame];
   MidY = CGRectGetMidY(v10);
 
   v6 = MaxX;
@@ -63,21 +63,21 @@
 
 - (void)accessibilityIncrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7D25A64();
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7D25B74();
 }
 
-- (void)panGestureRecognized:(id)a3
+- (void)panGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D7D25C90(v4);
+  recognizedCopy = recognized;
+  selfCopy = self;
+  sub_1D7D25C90(recognizedCopy);
 }
 
 @end

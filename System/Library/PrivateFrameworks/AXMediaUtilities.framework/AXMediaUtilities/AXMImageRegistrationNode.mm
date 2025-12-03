@@ -1,10 +1,10 @@
 @interface AXMImageRegistrationNode
 - (BOOL)validateVisionKitSoftLinkSymbols;
-- (id)_translationalImageRegistrationRequestForInput:(id)a3;
-- (void)_recordTransposition:(CGPoint)a3;
+- (id)_translationalImageRegistrationRequestForInput:(id)input;
+- (void)_recordTransposition:(CGPoint)transposition;
 - (void)_resetImageRegistration;
 - (void)_resetTranspositionHistory;
-- (void)evaluate:(id)a3 metrics:(id)a4;
+- (void)evaluate:(id)evaluate metrics:(id)metrics;
 - (void)nodeInitialize;
 @end
 
@@ -48,31 +48,31 @@
   return 0;
 }
 
-- (id)_translationalImageRegistrationRequestForInput:(id)a3
+- (id)_translationalImageRegistrationRequestForInput:(id)input
 {
-  v3 = a3;
-  v4 = [v3 inputType];
-  switch(v4)
+  inputCopy = input;
+  inputType = [inputCopy inputType];
+  switch(inputType)
   {
     case 2:
       v13 = objc_alloc(getVNTranslationalImageRegistrationRequestClass());
-      v6 = [v3 URL];
-      v7 = [v13 initWithTargetedImageURL:v6 options:MEMORY[0x1E695E0F8]];
+      pixelBuffer = [inputCopy URL];
+      v7 = [v13 initWithTargetedImageURL:pixelBuffer options:MEMORY[0x1E695E0F8]];
       goto LABEL_7;
     case 1:
       v8 = objc_alloc(getVNTranslationalImageRegistrationRequestClass());
-      v6 = [v3 pixelBuffer];
-      v9 = [v6 pixelBuffer];
-      v10 = [v3 pixelBuffer];
-      v11 = [v10 orientation];
-      v12 = [v8 initWithTargetedCVPixelBuffer:v9 orientation:v11 options:MEMORY[0x1E695E0F8]];
+      pixelBuffer = [inputCopy pixelBuffer];
+      v6PixelBuffer = [pixelBuffer pixelBuffer];
+      pixelBuffer2 = [inputCopy pixelBuffer];
+      orientation = [pixelBuffer2 orientation];
+      v12 = [v8 initWithTargetedCVPixelBuffer:v6PixelBuffer orientation:orientation options:MEMORY[0x1E695E0F8]];
 
 LABEL_8:
       goto LABEL_10;
     case 0:
       v5 = objc_alloc(getVNTranslationalImageRegistrationRequestClass());
-      v6 = [v3 ciImage];
-      v7 = [v5 initWithTargetedCIImage:v6 options:MEMORY[0x1E695E0F8]];
+      pixelBuffer = [inputCopy ciImage];
+      v7 = [v5 initWithTargetedCIImage:pixelBuffer options:MEMORY[0x1E695E0F8]];
 LABEL_7:
       v12 = v7;
       goto LABEL_8;
@@ -84,26 +84,26 @@ LABEL_10:
   return v12;
 }
 
-- (void)evaluate:(id)a3 metrics:(id)a4
+- (void)evaluate:(id)evaluate metrics:(id)metrics
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  evaluateCopy = evaluate;
+  metricsCopy = metrics;
   v39.receiver = self;
   v39.super_class = AXMImageRegistrationNode;
-  [(AXMEvaluationNode *)&v39 evaluate:v6 metrics:v7];
+  [(AXMEvaluationNode *)&v39 evaluate:evaluateCopy metrics:metricsCopy];
   v8 = objc_autoreleasePoolPush();
   objc_storeStrong(&self->_previousInput, self->_currentInput);
-  v9 = [v6 sourceInput];
+  sourceInput = [evaluateCopy sourceInput];
   currentInput = self->_currentInput;
-  self->_currentInput = v9;
+  self->_currentInput = sourceInput;
 
   if (self->_previousInput)
   {
-    v11 = [v6 sequenceRequestManager];
-    v12 = [v11 sequenceRequestHandler];
+    sequenceRequestManager = [evaluateCopy sequenceRequestManager];
+    sequenceRequestHandler = [sequenceRequestManager sequenceRequestHandler];
 
-    if (!v12)
+    if (!sequenceRequestHandler)
     {
       v18 = AXMediaLogCommon();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -117,40 +117,40 @@ LABEL_10:
     v13 = [(AXMImageRegistrationNode *)self _translationalImageRegistrationRequestForInput:self->_currentInput];
     if (v13)
     {
-      v14 = [(AXMPipelineContextInput *)self->_previousInput inputType];
-      if (v14 == 1)
+      inputType = [(AXMPipelineContextInput *)self->_previousInput inputType];
+      if (inputType == 1)
       {
         v41[0] = v13;
         v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
-        v27 = [(AXMPipelineContextInput *)self->_previousInput pixelBuffer];
-        v28 = [v27 pixelBuffer];
-        v29 = [(AXMPipelineContextInput *)self->_previousInput pixelBuffer];
+        pixelBuffer = [(AXMPipelineContextInput *)self->_previousInput pixelBuffer];
+        v27PixelBuffer = [pixelBuffer pixelBuffer];
+        pixelBuffer2 = [(AXMPipelineContextInput *)self->_previousInput pixelBuffer];
         v38 = 0;
-        v30 = [v12 performRequests:v36 onCVPixelBuffer:v28 orientation:objc_msgSend(v29 error:{"orientation"), &v38}];
+        v30 = [sequenceRequestHandler performRequests:v36 onCVPixelBuffer:v27PixelBuffer orientation:objc_msgSend(pixelBuffer2 error:{"orientation"), &v38}];
         v18 = v38;
 
         if (v30)
         {
 LABEL_16:
-          v31 = [v13 results];
-          v32 = [v31 firstObject];
+          results = [v13 results];
+          firstObject = [results firstObject];
           getVNImageTranslationAlignmentObservationClass();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v34 = [v13 results];
-            v35 = [v34 firstObject];
+            results2 = [v13 results];
+            firstObject2 = [results2 firstObject];
 
-            if (v35)
+            if (firstObject2)
             {
-              [v35 alignmentTransform];
+              [firstObject2 alignmentTransform];
             }
 
             [(AXMImageRegistrationNode *)self _recordTransposition:0.0, 0.0];
           }
 
-          [v6 setImageRegistrationState:self->_registrationState];
+          [evaluateCopy setImageRegistrationState:self->_registrationState];
 LABEL_21:
 
 LABEL_22:
@@ -167,13 +167,13 @@ LABEL_12:
         goto LABEL_21;
       }
 
-      if (!v14)
+      if (!inputType)
       {
         v40 = v13;
         v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v40 count:1];
-        v16 = [(AXMPipelineContextInput *)self->_previousInput ciImage];
+        ciImage = [(AXMPipelineContextInput *)self->_previousInput ciImage];
         v37 = 0;
-        v17 = [v12 performRequests:v15 onCIImage:v16 error:&v37];
+        v17 = [sequenceRequestHandler performRequests:v15 onCIImage:ciImage error:&v37];
         v18 = v37;
 
         if (v17)
@@ -222,11 +222,11 @@ LABEL_23:
   [(AXMImageRegistrationNode *)self _resetTranspositionHistory];
 }
 
-- (void)_recordTransposition:(CGPoint)a3
+- (void)_recordTransposition:(CGPoint)transposition
 {
   v3 = (self->_transpositionHistoryLastRecordedIndex + 1) % 0xA;
   self->_transpositionHistoryLastRecordedIndex = v3;
-  self->_transpositionHistoryCircularBuffer[v3] = a3;
+  self->_transpositionHistoryCircularBuffer[v3] = transposition;
   fillingHistoryBuffer = self->_fillingHistoryBuffer;
   if (v3)
   {

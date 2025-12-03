@@ -7,15 +7,15 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"active cost: %d, ", -[VCPMADResource activeCost](self, "activeCost")];
-  [v3 appendFormat:@"inactive cost: %d>", -[VCPMADResource inactiveCost](self, "inactiveCost")];
+  [string appendFormat:@"active cost: %d, ", -[VCPMADResource activeCost](self, "activeCost")];
+  [string appendFormat:@"inactive cost: %d>", -[VCPMADResource inactiveCost](self, "inactiveCost")];
 
-  return v3;
+  return string;
 }
 
 - (void)purge

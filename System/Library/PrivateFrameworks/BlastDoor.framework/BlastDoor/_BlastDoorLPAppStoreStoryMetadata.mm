@@ -1,21 +1,21 @@
 @interface _BlastDoorLPAppStoreStoryMetadata
-- (BOOL)isEqual:(id)a3;
-- (_BlastDoorLPAppStoreStoryMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_BlastDoorLPAppStoreStoryMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _BlastDoorLPAppStoreStoryMetadata
 
-- (_BlastDoorLPAppStoreStoryMetadata)initWithCoder:(id)a3
+- (_BlastDoorLPAppStoreStoryMetadata)initWithCoder:(id)coder
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _BlastDoorLPAppStoreStoryMetadata;
   v5 = [(_BlastDoorLPAppStoreStoryMetadata *)&v11 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"subtitle");
+    v6 = decodeStringForKey(coderCopy, @"subtitle");
     subtitle = v5->_subtitle;
     v5->_subtitle = v6;
 
@@ -26,13 +26,13 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_BlastDoorLPAppStoreStoryMetadata allocWithZone:a3];
+  v4 = [_BlastDoorLPAppStoreStoryMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(_BlastDoorLPAppStoreStoryMetadata *)self subtitle];
-    [(_BlastDoorLPAppStoreStoryMetadata *)v4 setSubtitle:v5];
+    subtitle = [(_BlastDoorLPAppStoreStoryMetadata *)self subtitle];
+    [(_BlastDoorLPAppStoreStoryMetadata *)v4 setSubtitle:subtitle];
 
     v6 = v4;
   }
@@ -40,13 +40,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = _BlastDoorLPAppStoreStoryMetadata;
-  if ([(_BlastDoorLPAppStoreStoryMetadata *)&v9 isEqual:v4])
+  if ([(_BlastDoorLPAppStoreStoryMetadata *)&v9 isEqual:equalCopy])
   {
     goto LABEL_2;
   }
@@ -58,7 +58,7 @@
     goto LABEL_7;
   }
 
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (!(v6 | self->_subtitle))
   {
 LABEL_2:

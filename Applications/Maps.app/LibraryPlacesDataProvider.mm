@@ -1,7 +1,7 @@
 @interface LibraryPlacesDataProvider
 - (NSArray)storeSubscriptionTypes;
-- (void)setStoreSubscriptionTypes:(id)a3;
-- (void)storeDidChange:(id)a3;
+- (void)setStoreSubscriptionTypes:(id)types;
+- (void)storeDidChange:(id)change;
 @end
 
 @implementation LibraryPlacesDataProvider
@@ -16,7 +16,7 @@
   return v2.super.isa;
 }
 
-- (void)setStoreSubscriptionTypes:(id)a3
+- (void)setStoreSubscriptionTypes:(id)types
 {
   sub_1000CE6B8(&qword_1019083F0);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -24,7 +24,7 @@
   *(self + 10) = v4;
 }
 
-- (void)storeDidChange:(id)a3
+- (void)storeDidChange:(id)change
 {
   v3 = *(self + 7);
   v4 = *(self + 8);

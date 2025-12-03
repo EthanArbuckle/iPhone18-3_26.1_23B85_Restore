@@ -1,47 +1,47 @@
 @interface UIDotsInputSwitcherView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (UIDotsInputSwitcherView)initWithRenderConfig:(id)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (UIDotsInputSwitcherView)initWithRenderConfig:(id)config;
 - (id)_actionsForKeyboardPositions;
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)_addDotViewAtPoint:(CGPoint)a3;
-- (void)_handleTap:(id)a3;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)_addDotViewAtPoint:(CGPoint)point;
+- (void)_handleTap:(id)tap;
 - (void)_updateBackgroundColor;
 @end
 
 @implementation UIDotsInputSwitcherView
 
-- (UIDotsInputSwitcherView)initWithRenderConfig:(id)a3
+- (UIDotsInputSwitcherView)initWithRenderConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v21.receiver = self;
   v21.super_class = UIDotsInputSwitcherView;
   v5 = [(UIView *)&v21 init];
   if (v5)
   {
-    if ([v4 colorAdaptiveBackground])
+    if ([configCopy colorAdaptiveBackground])
     {
-      v6 = [(UIView *)v5 layer];
+      layer = [(UIView *)v5 layer];
       LODWORD(v7) = 1060320051;
-      [v6 setOpacity:v7];
+      [layer setOpacity:v7];
 
-      v8 = [(UIView *)v5 layer];
-      v9 = [(UIView *)v5 traitCollection];
-      v10 = [v9 userInterfaceStyle];
+      layer2 = [(UIView *)v5 layer];
+      traitCollection = [(UIView *)v5 traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
       v11 = MEMORY[0x1E6979CF8];
-      if (v10 != 2)
+      if (userInterfaceStyle != 2)
       {
         v11 = MEMORY[0x1E6979CE8];
       }
 
-      [v8 setCompositingFilter:*v11];
+      [layer2 setCompositingFilter:*v11];
     }
 
     [(UIDotsInputSwitcherView *)v5 _updateBackgroundColor];
     [(UIView *)v5 setClipsToBounds:1];
     [(UIView *)v5 setBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), 46.0, 24.0];
-    v12 = [(UIView *)v5 layer];
-    [v12 setCornerRadius:12.0];
+    layer3 = [(UIView *)v5 layer];
+    [layer3 setCornerRadius:12.0];
 
     [(UIDotsInputSwitcherView *)v5 _addDotViewAtPoint:11.5, 12.0];
     [(UIDotsInputSwitcherView *)v5 _addDotViewAtPoint:23.0, 12.0];
@@ -73,10 +73,10 @@
   return v5;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(UIView *)self bounds];
   v11 = CGRectInset(v10, -20.0, -10.0);
   v6 = x;
@@ -85,9 +85,9 @@
   return CGRectContainsPoint(v11, *&v6);
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
+  interactionCopy = interaction;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -110,9 +110,9 @@ id __81__UIDotsInputSwitcherView_contextMenuInteraction_configurationForMenuAtLo
   return v3;
 }
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
-  v4 = [_UIContextMenuStyle defaultStyle:a3];
+  v4 = [_UIContextMenuStyle defaultStyle:interaction];
   v5 = v4;
   if (v4)
   {
@@ -144,13 +144,13 @@ id __81__UIDotsInputSwitcherView_contextMenuInteraction_configurationForMenuAtLo
   return v5;
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
-    v5 = [(UIDotsInputSwitcherView *)self contextMenuInteraction];
+    contextMenuInteraction = [(UIDotsInputSwitcherView *)self contextMenuInteraction];
     [(UIView *)self bounds];
-    [v5 _presentMenuAtLocation:{v4 * 0.5, 0.0}];
+    [contextMenuInteraction _presentMenuAtLocation:{v4 * 0.5, 0.0}];
   }
 }
 
@@ -171,10 +171,10 @@ id __81__UIDotsInputSwitcherView_contextMenuInteraction_configurationForMenuAtLo
   }
 
   v6 = +[UIKeyboard activeKeyboard];
-  v7 = [v6 _overrideTextInputTraits];
-  v8 = [v7 forceFloatingKeyboard];
+  _overrideTextInputTraits = [v6 _overrideTextInputTraits];
+  forceFloatingKeyboard = [_overrideTextInputTraits forceFloatingKeyboard];
 
-  if ((v8 & 1) == 0)
+  if ((forceFloatingKeyboard & 1) == 0)
   {
     v9 = _UILocalizedStringInSystemLanguage(@"Full", @"Full");
     v10 = [UIImage systemImageNamed:@"inset.filled.bottomhalf.rectangle"];
@@ -285,8 +285,8 @@ void __55__UIDotsInputSwitcherView__actionsForKeyboardPositions__block_invoke_7(
 
 - (void)_updateBackgroundColor
 {
-  v6 = [(UIView *)self traitCollection];
-  if ([v6 userInterfaceStyle] == 2)
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 2)
   {
     v3 = 0.16;
     v4 = 1.0;
@@ -302,22 +302,22 @@ void __55__UIDotsInputSwitcherView__actionsForKeyboardPositions__block_invoke_7(
   [(UIView *)self setBackgroundColor:v5];
 }
 
-- (void)_addDotViewAtPoint:(CGPoint)a3
+- (void)_addDotViewAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v14[1] = *MEMORY[0x1E69E9840];
   v6 = objc_alloc_init(UIView);
   [(UIView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)v6 setFrame:x + -3.7, y + -3.7, 7.4, 7.4];
   [(UIView *)v6 setClipsToBounds:1];
-  v7 = [(UIView *)v6 layer];
-  [v7 setCornerRadius:3.7];
+  layer = [(UIView *)v6 layer];
+  [layer setCornerRadius:3.7];
 
-  v8 = [(UIView *)self traitCollection];
-  v9 = [v8 userInterfaceStyle];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v10 = 0.0;
-  if (v9 == 2)
+  if (userInterfaceStyle == 2)
   {
     v10 = 1.0;
   }

@@ -1,17 +1,17 @@
 @interface CarTaitStyleView
 - (CGSize)contentSize;
-- (CarTaitStyleView)initWithFrame:(CGRect)a3;
-- (void)_refreshStyleText:(unint64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (CarTaitStyleView)initWithFrame:(CGRect)frame;
+- (void)_refreshStyleText:(unint64_t)text;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CarTaitStyleView
 
-- (CarTaitStyleView)initWithFrame:(CGRect)a3
+- (CarTaitStyleView)initWithFrame:(CGRect)frame
 {
   v30.receiver = self;
   v30.super_class = CarTaitStyleView;
-  v3 = [(CarTaitStyleView *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarTaitStyleView *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -42,24 +42,24 @@
     [(UILabel *)v4->_traitStyleLabel setBackgroundColor:v11];
 
     [(CarTaitStyleView *)v4 addSubview:v4->_traitStyleLabel];
-    v27 = [(UILabel *)v4->_traitStyleLabel topAnchor];
-    v26 = [(CarTaitStyleView *)v4 topAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26 constant:5.0];
+    topAnchor = [(UILabel *)v4->_traitStyleLabel topAnchor];
+    topAnchor2 = [(CarTaitStyleView *)v4 topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
     v31[0] = v25;
-    v24 = [(UILabel *)v4->_traitStyleLabel leftAnchor];
-    v23 = [(CarTaitStyleView *)v4 leftAnchor];
-    v22 = [v24 constraintEqualToAnchor:v23 constant:5.0];
+    leftAnchor = [(UILabel *)v4->_traitStyleLabel leftAnchor];
+    leftAnchor2 = [(CarTaitStyleView *)v4 leftAnchor];
+    v22 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:5.0];
     v31[1] = v22;
-    v12 = [(UILabel *)v4->_traitStyleLabel rightAnchor];
-    v13 = [(CarTaitStyleView *)v4 rightAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13 constant:-5.0];
+    rightAnchor = [(UILabel *)v4->_traitStyleLabel rightAnchor];
+    rightAnchor2 = [(CarTaitStyleView *)v4 rightAnchor];
+    v14 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-5.0];
     v31[2] = v14;
-    v15 = [(UILabel *)v4->_traitStyleLabel bottomAnchor];
-    v16 = [(CarTaitStyleView *)v4 bottomAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16 constant:-5.0];
+    bottomAnchor = [(UILabel *)v4->_traitStyleLabel bottomAnchor];
+    bottomAnchor2 = [(CarTaitStyleView *)v4 bottomAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
     v31[3] = v17;
-    v18 = [(UILabel *)v4->_traitStyleLabel widthAnchor];
-    v19 = [v18 constraintEqualToConstant:100.0];
+    widthAnchor = [(UILabel *)v4->_traitStyleLabel widthAnchor];
+    v19 = [widthAnchor constraintEqualToConstant:100.0];
     v31[4] = v19;
     v20 = [NSArray arrayWithObjects:v31 count:5];
     [NSLayoutConstraint activateConstraints:v20];
@@ -70,13 +70,13 @@
   return v4;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [a3 userInterfaceStyle];
-  v5 = [(CarTaitStyleView *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  userInterfaceStyle = [change userInterfaceStyle];
+  traitCollection = [(CarTaitStyleView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v4 == v6)
+  if (userInterfaceStyle == userInterfaceStyle2)
   {
     v7 = 3;
   }
@@ -89,34 +89,34 @@
   [(CarTaitStyleView *)self _refreshStyleText:v7];
 }
 
-- (void)_refreshStyleText:(unint64_t)a3
+- (void)_refreshStyleText:(unint64_t)text
 {
-  v5 = [(CarTaitStyleView *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  traitCollection = [(CarTaitStyleView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v6 > 2)
+  if (userInterfaceStyle > 2)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = off_1000DAFC0[v6];
+    v7 = off_1000DAFC0[userInterfaceStyle];
   }
 
-  if (a3 > 3)
+  if (text > 3)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = off_1000DAFD8[a3];
+    v8 = off_1000DAFD8[text];
   }
 
   v9 = [NSString stringWithFormat:@"%@\n%@", v7, v8];
-  v10 = [(CarTaitStyleView *)self traitStyleLabel];
-  [v10 setText:v9];
+  traitStyleLabel = [(CarTaitStyleView *)self traitStyleLabel];
+  [traitStyleLabel setText:v9];
 
   [(CarTaitStyleView *)self systemLayoutSizeFittingSize:UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height];
   [(CarTaitStyleView *)self setContentSize:?];

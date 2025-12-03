@@ -1,40 +1,40 @@
 @interface PLAssetsdCrashRecoverySupport
-+ (void)trackPerformChangesRequestInProgressWithBlock:(id)a3;
++ (void)trackPerformChangesRequestInProgressWithBlock:(id)block;
 - (BOOL)isSafeToRecoverAfterCrash;
-- (PLAssetsdCrashRecoverySupport)initWithPathManager:(id)a3;
-- (void)_enqeueRecoveryJob:(id)a3 date:(id)a4 toImageWriter:(id)a5;
-- (void)recoverFromCrashIfNeededWithImageWriter:(id)a3;
+- (PLAssetsdCrashRecoverySupport)initWithPathManager:(id)manager;
+- (void)_enqeueRecoveryJob:(id)job date:(id)date toImageWriter:(id)writer;
+- (void)recoverFromCrashIfNeededWithImageWriter:(id)writer;
 @end
 
 @implementation PLAssetsdCrashRecoverySupport
 
-- (void)_enqeueRecoveryJob:(id)a3 date:(id)a4 toImageWriter:(id)a5
+- (void)_enqeueRecoveryJob:(id)job date:(id)date toImageWriter:(id)writer
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  jobCopy = job;
+  dateCopy = date;
+  writerCopy = writer;
+  if ([jobCopy count])
   {
-    v11 = PLAssetImportGetLog();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    incomingDirectoryPath = PLAssetImportGetLog();
+    if (os_log_type_enabled(incomingDirectoryPath, OS_LOG_TYPE_DEFAULT))
     {
       v12 = NSStringFromSelector(a2);
       v21 = 138543618;
       v22 = v12;
       v23 = 1024;
-      LODWORD(v24) = [v8 count];
-      _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] passed %d incoming files", &v21, 0x12u);
+      LODWORD(v24) = [jobCopy count];
+      _os_log_impl(&dword_19BF1F000, incomingDirectoryPath, OS_LOG_TYPE_DEFAULT, "[%{public}@] passed %d incoming files", &v21, 0x12u);
     }
 
-    v13 = v8;
+    v13 = jobCopy;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69BF178] incomingDirectoryPath];
-    v14 = [MEMORY[0x1E696AC08] defaultManager];
-    v13 = [v14 contentsOfDirectoryAtPath:v11 error:0];
+    incomingDirectoryPath = [MEMORY[0x1E69BF178] incomingDirectoryPath];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v13 = [defaultManager contentsOfDirectoryAtPath:incomingDirectoryPath error:0];
 
     v15 = PLAssetImportGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -54,7 +54,7 @@
     v18 = *MEMORY[0x1E69C0438];
     [v17 setObject:*MEMORY[0x1E69C0438] forKey:*MEMORY[0x1E69C0410]];
     [v17 setObject:v13 forKey:@"CrashRecoveryFilenamesKey"];
-    [v17 setObject:v9 forKey:@"CrashRecoveryJobCreationDateKey"];
+    [v17 setObject:dateCopy forKey:@"CrashRecoveryJobCreationDateKey"];
     v19 = PLAssetImportGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
@@ -68,17 +68,17 @@
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "[%@] enqueing existing files recovery job %@ (%@)", &v21, 0x20u);
     }
 
-    [v10 enqueueJob:v17];
+    [writerCopy enqueueJob:v17];
   }
 }
 
 - (BOOL)isSafeToRecoverAfterCrash
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69BF168] takingVideoIndicatorFilePath];
-  v20[0] = v2;
-  v3 = [MEMORY[0x1E69BF168] takingPhotoIndicatorFilePath];
-  v20[1] = v3;
+  takingVideoIndicatorFilePath = [MEMORY[0x1E69BF168] takingVideoIndicatorFilePath];
+  v20[0] = takingVideoIndicatorFilePath;
+  takingPhotoIndicatorFilePath = [MEMORY[0x1E69BF168] takingPhotoIndicatorFilePath];
+  v20[1] = takingPhotoIndicatorFilePath;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
 
   v17 = 0u;
@@ -135,28 +135,28 @@ LABEL_14:
   return v13;
 }
 
-- (void)recoverFromCrashIfNeededWithImageWriter:(id)a3
+- (void)recoverFromCrashIfNeededWithImageWriter:(id)writer
 {
   v52 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  writerCopy = writer;
+  if (!writerCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PLAssetsdCrashRecoverySupport.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"imageWriter"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdCrashRecoverySupport.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"imageWriter"}];
   }
 
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PLAssetsdCrashRecoverySupport.m" lineNumber:66 description:@"recoverFromCrashIfNeededWithImageWriter can only be called from assetsd"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAssetsdCrashRecoverySupport.m" lineNumber:66 description:@"recoverFromCrashIfNeededWithImageWriter can only be called from assetsd"];
   }
 
   v6 = +[PLPhotoLibraryBundleController sharedBundleController];
-  v7 = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
-  v8 = [v6 openBundleAtLibraryURL:v7];
+  libraryURL = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
+  v8 = [v6 openBundleAtLibraryURL:libraryURL];
 
-  v9 = [v8 indicatorFileCoordinator];
-  v10 = [MEMORY[0x1E69BF178] incomingDirectoryPath];
+  indicatorFileCoordinator = [v8 indicatorFileCoordinator];
+  incomingDirectoryPath = [MEMORY[0x1E69BF178] incomingDirectoryPath];
   v44 = 0;
   v45 = &v44;
   v46 = 0x2020000000;
@@ -186,8 +186,8 @@ LABEL_14:
     _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] checking for crash recovery files", buf, 0xCu);
   }
 
-  v13 = v9;
-  v14 = v10;
+  v13 = indicatorFileCoordinator;
+  v14 = incomingDirectoryPath;
   PLSafeRunWithUnfairLock();
   if (*(v45 + 24) == 1)
   {
@@ -207,8 +207,8 @@ LABEL_14:
 
       dispatch_time(0, 2000000000);
       v18 = +[PLConcurrencyLimiter sharedLimiter];
-      v19 = [v18 sharedUtilityQueue];
-      v27 = v5;
+      sharedUtilityQueue = [v18 sharedUtilityQueue];
+      v27 = writerCopy;
       pl_dispatch_after();
     }
 
@@ -226,7 +226,7 @@ LABEL_14:
         _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] enqueing recovery job requested at %{public}@", buf, 0x16u);
       }
 
-      [(PLAssetsdCrashRecoverySupport *)self _enqeueRecoveryJob:v35[5] date:v29[5] toImageWriter:v5];
+      [(PLAssetsdCrashRecoverySupport *)self _enqeueRecoveryJob:v35[5] date:v29[5] toImageWriter:writerCopy];
     }
   }
 
@@ -278,12 +278,12 @@ void __73__PLAssetsdCrashRecoverySupport_recoverFromCrashIfNeededWithImageWriter
   }
 }
 
-- (PLAssetsdCrashRecoverySupport)initWithPathManager:(id)a3
+- (PLAssetsdCrashRecoverySupport)initWithPathManager:(id)manager
 {
-  v6 = a3;
+  managerCopy = manager;
   if (PLIsAssetsd())
   {
-    if (v6)
+    if (managerCopy)
     {
       goto LABEL_3;
     }
@@ -291,17 +291,17 @@ void __73__PLAssetsdCrashRecoverySupport_recoverFromCrashIfNeededWithImageWriter
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLAssetsdCrashRecoverySupport.m" lineNumber:54 description:@"Must only be used in assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdCrashRecoverySupport.m" lineNumber:54 description:@"Must only be used in assetsd"];
 
-    if (v6)
+    if (managerCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"PLAssetsdCrashRecoverySupport.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAssetsdCrashRecoverySupport.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
 LABEL_3:
   v12.receiver = self;
@@ -310,17 +310,17 @@ LABEL_3:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_pathManager, a3);
+    objc_storeStrong(&v7->_pathManager, manager);
     v8->_recoveryIndicatorCheckLock._os_unfair_lock_opaque = 0;
   }
 
   return v8;
 }
 
-+ (void)trackPerformChangesRequestInProgressWithBlock:(id)a3
++ (void)trackPerformChangesRequestInProgressWithBlock:(id)block
 {
-  v4 = a3;
-  v3 = v4;
+  blockCopy = block;
+  v3 = blockCopy;
   PLRunWithIncrementedAtomicInt32();
 }
 

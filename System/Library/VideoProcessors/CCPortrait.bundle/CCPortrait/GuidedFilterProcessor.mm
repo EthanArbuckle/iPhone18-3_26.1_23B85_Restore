@@ -1,36 +1,36 @@
 @interface GuidedFilterProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
-+ (int)formatForInputAtIndex:(int)a3;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
++ (int)formatForInputAtIndex:(int)index;
 @end
 
 @implementation GuidedFilterProcessor
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v13 = objc_msgSend_metalCommandBuffer(v10, v11, v12);
+  inputsCopy = inputs;
+  argumentsCopy = arguments;
+  outputCopy = output;
+  v13 = objc_msgSend_metalCommandBuffer(outputCopy, v11, v12);
   v16 = objc_msgSend_device(v13, v14, v15);
-  v19 = objc_msgSend_findKernel_device_(UniDeviceCache, v17, v9, v16);
+  v19 = objc_msgSend_findKernel_device_(UniDeviceCache, v17, argumentsCopy, v16);
   if (v19)
   {
-    v20 = objc_msgSend_objectAtIndexedSubscript_(v8, v18, 0);
+    v20 = objc_msgSend_objectAtIndexedSubscript_(inputsCopy, v18, 0);
     v23 = objc_msgSend_metalTexture(v20, v21, v22);
 
-    v42 = v8;
-    v25 = objc_msgSend_objectAtIndexedSubscript_(v8, v24, 1);
+    v42 = inputsCopy;
+    v25 = objc_msgSend_objectAtIndexedSubscript_(inputsCopy, v24, 1);
     v44 = objc_msgSend_metalTexture(v25, v26, v27);
 
-    v43 = objc_msgSend_metalTexture(v10, v28, v29);
+    v43 = objc_msgSend_metalTexture(outputCopy, v28, v29);
     v41 = v23;
     v46 = v23;
     v31 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x29EDB8D80], v30, &v46, 1);
-    v34 = objc_msgSend_objectForKeyedSubscript_(v9, v32, @"iterations");
+    v34 = objc_msgSend_objectForKeyedSubscript_(argumentsCopy, v32, @"iterations");
     if (v34)
     {
-      v23 = objc_msgSend_objectForKeyedSubscript_(v9, v33, @"iterations");
+      v23 = objc_msgSend_objectForKeyedSubscript_(argumentsCopy, v33, @"iterations");
       v37 = objc_msgSend_unsignedIntegerValue(v23, v35, v36);
     }
 
@@ -47,17 +47,17 @@
     {
     }
 
-    v8 = v42;
+    inputsCopy = v42;
   }
 
   return v19 != 0;
 }
 
-+ (int)formatForInputAtIndex:(int)a3
++ (int)formatForInputAtIndex:(int)index
 {
-  if (a3)
+  if (index)
   {
-    if (a3 != 1)
+    if (index != 1)
     {
       sub_2956CD920();
     }
@@ -73,23 +73,23 @@
   return *v3;
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  v6 = a4;
-  v8 = objc_msgSend_objectForKeyedSubscript_(v6, v7, @"imageExtents");
+  argumentsCopy = arguments;
+  v8 = objc_msgSend_objectForKeyedSubscript_(argumentsCopy, v7, @"imageExtents");
   if (!v8)
   {
     sub_2956CD978();
   }
 
-  v10 = objc_msgSend_objectForKeyedSubscript_(v6, v9, @"imageExtents");
-  if (objc_msgSend_count(v10, v11, v12) <= a3)
+  v10 = objc_msgSend_objectForKeyedSubscript_(argumentsCopy, v9, @"imageExtents");
+  if (objc_msgSend_count(v10, v11, v12) <= input)
   {
     sub_2956CD94C();
   }
 
-  v14 = objc_msgSend_objectForKeyedSubscript_(v6, v13, @"imageExtents");
-  v16 = objc_msgSend_objectAtIndexedSubscript_(v14, v15, a3);
+  v14 = objc_msgSend_objectForKeyedSubscript_(argumentsCopy, v13, @"imageExtents");
+  v16 = objc_msgSend_objectAtIndexedSubscript_(v14, v15, input);
   objc_msgSend_CGRectValue(v16, v17, v18);
   v20 = v19;
   v22 = v21;

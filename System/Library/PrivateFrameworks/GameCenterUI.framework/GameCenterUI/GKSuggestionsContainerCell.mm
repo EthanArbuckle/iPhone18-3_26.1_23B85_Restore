@@ -1,40 +1,40 @@
 @interface GKSuggestionsContainerCell
 + (NSString)reuseIdentifier;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (BOOL)playerIsSelectable:(id)a3;
-- (BOOL)playerIsSelected:(id)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (BOOL)playerIsSelectable:(id)selectable;
+- (BOOL)playerIsSelected:(id)selected;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (GKDashboardMultiplayerPickerDataSource)multiplayerPickerDataSource;
 - (NSLayoutConstraint)containerViewLeadingConstraint;
 - (NSLayoutConstraint)containerViewTrailingConstraint;
 - (UICollectionView)suggestionsCollectionView;
 - (UIView)containerView;
 - (UIViewController)presentationViewController;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)getSuggestedPlayerGroups;
 - (id)nearbyIconTapHandler;
 - (int64_t)getMaxPlayerCount;
 - (int64_t)getSelectedPlayerCount;
 - (void)awakeFromNib;
-- (void)configureWithDelegate:(id)a3 nearbyPlayers:(id)a4;
-- (void)didAttemptSelectingAlreadySelectedPlayers:(id)a3 inGroup:(id)a4;
-- (void)didDeselectPlayerGroup:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6;
-- (void)didDeselectPlayers:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6;
+- (void)configureWithDelegate:(id)delegate nearbyPlayers:(id)players;
+- (void)didAttemptSelectingAlreadySelectedPlayers:(id)players inGroup:(id)group;
+- (void)didDeselectPlayerGroup:(id)group indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion;
+- (void)didDeselectPlayers:(id)players indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion;
 - (void)didExceedAvailablePlayers;
-- (void)didSelectPlayerGroup:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6;
-- (void)didSelectPlayers:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6;
-- (void)donateGroupToPeopleSuggester:(id)a3;
-- (void)handleLongPressGesture:(id)a3;
+- (void)didSelectPlayerGroup:(id)group indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion;
+- (void)didSelectPlayers:(id)players indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion;
+- (void)donateGroupToPeopleSuggester:(id)suggester;
+- (void)handleLongPressGesture:(id)gesture;
 - (void)layoutSubviews;
-- (void)setContainerView:(id)a3;
-- (void)setContainerViewLeadingConstraint:(id)a3;
-- (void)setContainerViewTrailingConstraint:(id)a3;
-- (void)setMultiplayerPickerDataSource:(id)a3;
-- (void)setNearbyIconTapHandler:(id)a3;
-- (void)setPresentationViewController:(id)a3;
-- (void)setSuggestionsCollectionView:(id)a3;
-- (void)updateNearbyPlayers:(id)a3;
-- (void)updateVisibleItemsWithPlayers:(id)a3 excludedIndexPath:(id)a4;
+- (void)setContainerView:(id)view;
+- (void)setContainerViewLeadingConstraint:(id)constraint;
+- (void)setContainerViewTrailingConstraint:(id)constraint;
+- (void)setMultiplayerPickerDataSource:(id)source;
+- (void)setNearbyIconTapHandler:(id)handler;
+- (void)setPresentationViewController:(id)controller;
+- (void)setSuggestionsCollectionView:(id)view;
+- (void)updateNearbyPlayers:(id)players;
+- (void)updateVisibleItemsWithPlayers:(id)players excludedIndexPath:(id)path;
 @end
 
 @implementation GKSuggestionsContainerCell
@@ -54,10 +54,10 @@
   return v2;
 }
 
-- (void)setSuggestionsCollectionView:(id)a3
+- (void)setSuggestionsCollectionView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_24E1BB53C();
 }
 
@@ -68,10 +68,10 @@
   return v2;
 }
 
-- (void)setContainerView:(id)a3
+- (void)setContainerView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_24E1BB61C();
 }
 
@@ -82,11 +82,11 @@
   return v2;
 }
 
-- (void)setPresentationViewController:(id)a3
+- (void)setPresentationViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  GKSuggestionsContainerCell.presentationViewController.setter(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  GKSuggestionsContainerCell.presentationViewController.setter(controller);
 }
 
 - (GKDashboardMultiplayerPickerDataSource)multiplayerPickerDataSource
@@ -96,11 +96,11 @@
   return v2;
 }
 
-- (void)setMultiplayerPickerDataSource:(id)a3
+- (void)setMultiplayerPickerDataSource:(id)source
 {
-  v5 = a3;
-  v6 = self;
-  GKSuggestionsContainerCell.multiplayerPickerDataSource.setter(a3);
+  sourceCopy = source;
+  selfCopy = self;
+  GKSuggestionsContainerCell.multiplayerPickerDataSource.setter(source);
 }
 
 - (NSLayoutConstraint)containerViewLeadingConstraint
@@ -110,10 +110,10 @@
   return v2;
 }
 
-- (void)setContainerViewLeadingConstraint:(id)a3
+- (void)setContainerViewLeadingConstraint:(id)constraint
 {
-  v4 = a3;
-  v5 = self;
+  constraintCopy = constraint;
+  selfCopy = self;
   sub_24E1BBAD0();
 }
 
@@ -124,34 +124,34 @@
   return v2;
 }
 
-- (void)setContainerViewTrailingConstraint:(id)a3
+- (void)setContainerViewTrailingConstraint:(id)constraint
 {
-  v4 = a3;
-  v5 = self;
+  constraintCopy = constraint;
+  selfCopy = self;
   sub_24E1BBBB0();
 }
 
 - (void)awakeFromNib
 {
-  v2 = self;
+  selfCopy = self;
   GKSuggestionsContainerCell.awakeFromNib()();
 }
 
-- (void)configureWithDelegate:(id)a3 nearbyPlayers:(id)a4
+- (void)configureWithDelegate:(id)delegate nearbyPlayers:(id)players
 {
   sub_24DF88A8C(0, &qword_27F1DF028);
   v6 = sub_24E347F08();
   swift_unknownObjectRetain();
-  v7 = self;
-  GKSuggestionsContainerCell.configure(delegate:nearbyPlayers:)(a3, v6);
+  selfCopy = self;
+  GKSuggestionsContainerCell.configure(delegate:nearbyPlayers:)(delegate, v6);
   swift_unknownObjectRelease();
 }
 
-- (void)updateNearbyPlayers:(id)a3
+- (void)updateNearbyPlayers:(id)players
 {
   sub_24DF88A8C(0, &qword_27F1DF028);
   v4 = sub_24E347F08();
-  v5 = self;
+  selfCopy = self;
   GKSuggestionsContainerCell.updateNearbyPlayers(_:)(v4);
 }
 
@@ -177,9 +177,9 @@
   return v4;
 }
 
-- (void)setNearbyIconTapHandler:(id)a3
+- (void)setNearbyIconTapHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -192,58 +192,58 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   GKSuggestionsContainerCell.nearbyIconTapHandler.setter(v4, v5);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   GKSuggestionsContainerCell.layoutSubviews()();
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_24E343518();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_24E343498();
-  v10 = a3;
-  v11 = self;
-  v12 = GKSuggestionsContainerCell.collectionView(_:cellForItemAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = GKSuggestionsContainerCell.collectionView(_:cellForItemAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
   v6 = sub_24E343518();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_24E343498();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(self) = GKSuggestionsContainerCell.collectionView(_:shouldSelectItemAt:)();
 
   (*(v7 + 8))(v9, v6);
   return self & 1;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v8 = sub_24E343518();
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8);
   v11 = &v21 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_24E343498();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  GKSuggestionsContainerCell.collectionView(_:layout:sizeForItemAt:)(v12);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  GKSuggestionsContainerCell.collectionView(_:layout:sizeForItemAt:)(viewCopy);
   v16 = v15;
   v18 = v17;
 
@@ -255,14 +255,14 @@
   return result;
 }
 
-- (void)updateVisibleItemsWithPlayers:(id)a3 excludedIndexPath:(id)a4
+- (void)updateVisibleItemsWithPlayers:(id)players excludedIndexPath:(id)path
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27F1E6C80);
   MEMORY[0x28223BE20](v6 - 8);
   v8 = &v12 - v7;
   sub_24DF88A8C(0, &qword_27F1DF028);
   sub_24E347F08();
-  if (a4)
+  if (path)
   {
     sub_24E343498();
     v9 = sub_24E343518();
@@ -276,22 +276,22 @@
   }
 
   __swift_storeEnumTagSinglePayload(v8, v10, 1, v9);
-  v11 = self;
+  selfCopy = self;
   GKSuggestionsContainerCell.updateVisibleItems(players:excludedIndexPath:)();
 
   sub_24DF8C95C(v8, &unk_27F1E6C80);
 }
 
-- (void)handleLongPressGesture:(id)a3
+- (void)handleLongPressGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  GKSuggestionsContainerCell.handleLongPressGesture(_:)(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  GKSuggestionsContainerCell.handleLongPressGesture(_:)(gestureCopy);
 }
 
 - (int64_t)getSelectedPlayerCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GKSuggestionsContainerCell.getSelectedPlayerCount()();
 
   return v3;
@@ -299,19 +299,19 @@
 
 - (int64_t)getMaxPlayerCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GKSuggestionsContainerCell.getMaxPlayerCount()();
 
   return v3;
 }
 
-- (void)didSelectPlayerGroup:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6
+- (void)didSelectPlayerGroup:(id)group indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion
 {
   v9 = sub_24E343518();
   v10 = *(v9 - 8);
   MEMORY[0x28223BE20](v9);
   v12 = &v20 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v13 = _Block_copy(a6);
+  v13 = _Block_copy(completion);
   sub_24E343498();
   v14 = sub_24E347CF8();
   v16 = v15;
@@ -327,21 +327,21 @@
     v17 = 0;
   }
 
-  v18 = a3;
-  v19 = self;
-  GKSuggestionsContainerCell.didSelectPlayerGroup(_:indexPath:dataSourceIdentifier:completion:)(v18, v12, v14, v16, v13, v17);
+  groupCopy = group;
+  selfCopy = self;
+  GKSuggestionsContainerCell.didSelectPlayerGroup(_:indexPath:dataSourceIdentifier:completion:)(groupCopy, v12, v14, v16, v13, v17);
   sub_24DE73FA0(v13);
 
   (*(v10 + 8))(v12, v9);
 }
 
-- (void)didSelectPlayers:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6
+- (void)didSelectPlayers:(id)players indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion
 {
   v8 = sub_24E343518();
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8);
   v11 = &v19 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = _Block_copy(a6);
+  v12 = _Block_copy(completion);
   sub_24DF88A8C(0, &qword_27F1DF028);
   v13 = sub_24E347F08();
   sub_24E343498();
@@ -359,20 +359,20 @@
     v17 = 0;
   }
 
-  v18 = self;
+  selfCopy = self;
   GKSuggestionsContainerCell.didSelectPlayers(_:indexPath:dataSourceIdentifier:completion:)(v13, v11, v14, v16, v12, v17);
   sub_24DE73FA0(v12);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)didDeselectPlayerGroup:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6
+- (void)didDeselectPlayerGroup:(id)group indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion
 {
   v9 = sub_24E343518();
   v10 = *(v9 - 8);
   MEMORY[0x28223BE20](v9);
   v12 = &v20 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v13 = _Block_copy(a6);
+  v13 = _Block_copy(completion);
   sub_24E343498();
   v14 = sub_24E347CF8();
   v16 = v15;
@@ -388,21 +388,21 @@
     v17 = 0;
   }
 
-  v18 = a3;
-  v19 = self;
-  GKSuggestionsContainerCell.didDeselectPlayerGroup(_:indexPath:dataSourceIdentifier:completion:)(v18, v12, v14, v16, v13, v17);
+  groupCopy = group;
+  selfCopy = self;
+  GKSuggestionsContainerCell.didDeselectPlayerGroup(_:indexPath:dataSourceIdentifier:completion:)(groupCopy, v12, v14, v16, v13, v17);
   sub_24DE73FA0(v13);
 
   (*(v10 + 8))(v12, v9);
 }
 
-- (void)didDeselectPlayers:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6
+- (void)didDeselectPlayers:(id)players indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion
 {
   v8 = sub_24E343518();
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8);
   v11 = &v19 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = _Block_copy(a6);
+  v12 = _Block_copy(completion);
   sub_24DF88A8C(0, &qword_27F1DF028);
   v13 = sub_24E347F08();
   sub_24E343498();
@@ -420,7 +420,7 @@
     v17 = 0;
   }
 
-  v18 = self;
+  selfCopy = self;
   GKSuggestionsContainerCell.didDeselectPlayers(_:indexPath:dataSourceIdentifier:completion:)(v13, v11, v14, v16, v12, v17);
   sub_24DE73FA0(v12);
 
@@ -429,13 +429,13 @@
 
 - (void)didExceedAvailablePlayers
 {
-  v2 = self;
+  selfCopy = self;
   GKSuggestionsContainerCell.didExceedAvailablePlayers()();
 }
 
 - (id)getSuggestedPlayerGroups
 {
-  v2 = self;
+  selfCopy = self;
   GKSuggestionsContainerCell.getSuggestedPlayerGroups()();
 
   type metadata accessor for GKSuggestedPlayerGroup();
@@ -444,38 +444,38 @@
   return v3;
 }
 
-- (BOOL)playerIsSelectable:(id)a3
+- (BOOL)playerIsSelectable:(id)selectable
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = GKSuggestionsContainerCell.playerIsSelectable(_:)(v4);
+  selectableCopy = selectable;
+  selfCopy = self;
+  LOBYTE(self) = GKSuggestionsContainerCell.playerIsSelectable(_:)(selectableCopy);
 
   return self & 1;
 }
 
-- (BOOL)playerIsSelected:(id)a3
+- (BOOL)playerIsSelected:(id)selected
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = GKSuggestionsContainerCell.playerIsSelected(_:)(v4);
+  selectedCopy = selected;
+  selfCopy = self;
+  LOBYTE(self) = GKSuggestionsContainerCell.playerIsSelected(_:)(selectedCopy);
 
   return self & 1;
 }
 
-- (void)donateGroupToPeopleSuggester:(id)a3
+- (void)donateGroupToPeopleSuggester:(id)suggester
 {
-  v4 = a3;
-  v5 = self;
-  GKSuggestionsContainerCell.donateGroupToPeopleSuggester(_:)(v4);
+  suggesterCopy = suggester;
+  selfCopy = self;
+  GKSuggestionsContainerCell.donateGroupToPeopleSuggester(_:)(suggesterCopy);
 }
 
-- (void)didAttemptSelectingAlreadySelectedPlayers:(id)a3 inGroup:(id)a4
+- (void)didAttemptSelectingAlreadySelectedPlayers:(id)players inGroup:(id)group
 {
   sub_24DF88A8C(0, &qword_27F1DF028);
   v6 = sub_24E347F08();
-  v7 = a4;
-  v8 = self;
-  GKSuggestionsContainerCell.didAttemptSelectingAlreadySelectedPlayers(_:inGroup:)(v6, a4);
+  groupCopy = group;
+  selfCopy = self;
+  GKSuggestionsContainerCell.didAttemptSelectingAlreadySelectedPlayers(_:inGroup:)(v6, group);
 }
 
 @end

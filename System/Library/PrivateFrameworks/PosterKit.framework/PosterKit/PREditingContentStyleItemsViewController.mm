@@ -1,37 +1,37 @@
 @interface PREditingContentStyleItemsViewController
-- (PREditingContentStyleItemsViewController)initWithDataSource:(id)a3 configuration:(id)a4;
+- (PREditingContentStyleItemsViewController)initWithDataSource:(id)source configuration:(id)configuration;
 - (PREditingContentStyleItemsViewControllerDelegate)delegate;
 - (double)estimatedHeight;
 - (void)_deselectColorWell;
 - (void)_deselectSelectedContentStyle;
-- (void)_didSelectContentStyleCoordinator:(id)a3;
+- (void)_didSelectContentStyleCoordinator:(id)coordinator;
 - (void)_initializeContent;
 - (void)_setupItemViews;
 - (void)_updateLayoutForCurrentSize;
-- (void)colorWellDidUpdateColor:(id)a3;
-- (void)didTapContentStyleItem:(id)a3;
-- (void)layoutWithItemViews:(id)a3;
-- (void)setContentsLuminance:(double)a3;
-- (void)setSelectedContentStyle:(id)a3 fromUIKitPicker:(BOOL)a4;
-- (void)updateDataSource:(id)a3 configuration:(id)a4;
+- (void)colorWellDidUpdateColor:(id)color;
+- (void)didTapContentStyleItem:(id)item;
+- (void)layoutWithItemViews:(id)views;
+- (void)setContentsLuminance:(double)luminance;
+- (void)setSelectedContentStyle:(id)style fromUIKitPicker:(BOOL)picker;
+- (void)updateDataSource:(id)source configuration:(id)configuration;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation PREditingContentStyleItemsViewController
 
-- (PREditingContentStyleItemsViewController)initWithDataSource:(id)a3 configuration:(id)a4
+- (PREditingContentStyleItemsViewController)initWithDataSource:(id)source configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = PREditingContentStyleItemsViewController;
   v9 = [(PREditingContentStyleItemsViewController *)&v12 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataSource, a3);
-    objc_storeStrong(&v10->_configuration, a4);
+    objc_storeStrong(&v9->_dataSource, source);
+    objc_storeStrong(&v10->_configuration, configuration);
     [(PREditingContentStyleItemsViewController *)v10 _initializeContent];
   }
 
@@ -40,14 +40,14 @@
 
 - (void)_initializeContent
 {
-  v3 = [(PREditorContentStylePickerConfiguration *)self->_configuration selectedStyle];
-  v4 = __62__PREditingContentStyleItemsViewController__initializeContent__block_invoke(v3, v3);
+  selectedStyle = [(PREditorContentStylePickerConfiguration *)self->_configuration selectedStyle];
+  v4 = __62__PREditingContentStyleItemsViewController__initializeContent__block_invoke(selectedStyle, selectedStyle);
   dataSource = self->_dataSource;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __62__PREditingContentStyleItemsViewController__initializeContent__block_invoke_2;
   v26[3] = &unk_1E78433F8;
-  v6 = v3;
+  v6 = selectedStyle;
   v27 = v6;
   v28 = &__block_literal_global_5;
   v29 = v4;
@@ -55,20 +55,20 @@
   v8 = v7;
   if (v7)
   {
-    v9 = [(PREditingPosterContentStyleCoordinator *)v7 style];
-    if ([v9 allowsVariation])
+    style = [(PREditingPosterContentStyleCoordinator *)v7 style];
+    if ([style allowsVariation])
     {
-      v10 = [v6 allowsVariation];
+      allowsVariation = [v6 allowsVariation];
 
-      if (!v10)
+      if (!allowsVariation)
       {
         goto LABEL_6;
       }
 
       [v6 variation];
       v12 = v11;
-      v9 = [(PREditorContentStylePickerConfiguration *)self->_configuration stylePalette];
-      -[PREditingPosterContentStyleCoordinator setVariation:glassStyleApplied:](v8, "setVariation:glassStyleApplied:", [v9 displayingGlassStyles], v12);
+      style = [(PREditorContentStylePickerConfiguration *)self->_configuration stylePalette];
+      -[PREditingPosterContentStyleCoordinator setVariation:glassStyleApplied:](v8, "setVariation:glassStyleApplied:", [style displayingGlassStyles], v12);
     }
   }
 
@@ -80,10 +80,10 @@ LABEL_6:
     colorWellView = self->_colorWellView;
     self->_colorWellView = v14;
 
-    v16 = [(PUIColorWellView *)self->_colorWellView colorWell];
-    [v16 addTarget:self action:sel_colorWellDidUpdateColor_ forControlEvents:4096];
-    [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
-    objc_storeStrong(&self->_colorWell, v16);
+    colorWell = [(PUIColorWellView *)self->_colorWellView colorWell];
+    [colorWell addTarget:self action:sel_colorWellDidUpdateColor_ forControlEvents:4096];
+    [colorWell setTranslatesAutoresizingMaskIntoConstraints:0];
+    objc_storeStrong(&self->_colorWell, colorWell);
     if ([v6 allowsVariation])
     {
       [v6 variationAppliedColors];
@@ -94,16 +94,16 @@ LABEL_6:
       [v6 colors];
     }
     v17 = ;
-    v18 = [v17 firstObject];
+    firstObject = [v17 firstObject];
 
-    [v16 setSelectedColor:v18];
-    if (v18)
+    [colorWell setSelectedColor:firstObject];
+    if (firstObject)
     {
-      v19 = [(PREditorContentStylePickerConfiguration *)self->_configuration stylePalette];
-      if ([v19 context] == 2)
+      stylePalette = [(PREditorContentStylePickerConfiguration *)self->_configuration stylePalette];
+      if ([stylePalette context] == 2)
       {
-        v20 = [(PREditorContentStylePickerConfiguration *)self->_configuration stylePalette];
-        v21 = [v20 displayingGlassStyles] ^ 1;
+        stylePalette2 = [(PREditorContentStylePickerConfiguration *)self->_configuration stylePalette];
+        v21 = [stylePalette2 displayingGlassStyles] ^ 1;
       }
 
       else
@@ -117,7 +117,7 @@ LABEL_6:
     }
 
     v24 = [(PREditingContentStyleItemsDataSource *)self->_dataSource indexForCoordinator:v8];
-    if (!v18 || v24 != 0x7FFFFFFFFFFFFFFFLL)
+    if (!firstObject || v24 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(PREditingContentStyleItemsViewController *)self _deselectColorWell];
     }
@@ -198,25 +198,25 @@ LABEL_9:
 
 - (void)_setupItemViews
 {
-  v3 = [(PREditingContentStyleItemsViewController *)self selectedContentStyleCoordinator];
-  v18 = [v3 style];
+  selectedContentStyleCoordinator = [(PREditingContentStyleItemsViewController *)self selectedContentStyleCoordinator];
+  style = [selectedContentStyleCoordinator style];
 
-  v4 = [(PREditingContentStyleItemsDataSource *)self->_dataSource numberOfCoordinators];
-  v20 = [MEMORY[0x1E695DF70] array];
-  if (v4 >= 1)
+  numberOfCoordinators = [(PREditingContentStyleItemsDataSource *)self->_dataSource numberOfCoordinators];
+  array = [MEMORY[0x1E695DF70] array];
+  if (numberOfCoordinators >= 1)
   {
     v5 = 0;
     do
     {
-      v6 = [(PREditingContentStyleItemsDataSource *)self->_dataSource coordinatorForIndex:v5, v18];
+      v6 = [(PREditingContentStyleItemsDataSource *)self->_dataSource coordinatorForIndex:v5, style];
       v7 = [PREditingContentStyleItemView alloc];
-      v8 = [(PREditorContentStylePickerConfiguration *)self->_configuration stylePalette];
-      v9 = -[PREditingContentStyleItemView initWithContentStyleCoordinator:applyGlassStyle:](v7, "initWithContentStyleCoordinator:applyGlassStyle:", v6, [v8 displayingGlassStyles]);
+      stylePalette = [(PREditorContentStylePickerConfiguration *)self->_configuration stylePalette];
+      v9 = -[PREditingContentStyleItemView initWithContentStyleCoordinator:applyGlassStyle:](v7, "initWithContentStyleCoordinator:applyGlassStyle:", v6, [stylePalette displayingGlassStyles]);
 
       v10 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_didTapContentStyleItem_];
       [(PREditingContentStyleItemView *)v9 addGestureRecognizer:v10];
-      v11 = [v6 style];
-      v12 = [v11 isEqual:v18 ignoringVariation:1];
+      style2 = [v6 style];
+      v12 = [style2 isEqual:style ignoringVariation:1];
 
       if (v12)
       {
@@ -225,19 +225,19 @@ LABEL_9:
       }
 
       [(PREditingContentStyleItemView *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v20 addObject:v9];
+      [array addObject:v9];
       ++v5;
     }
 
-    while (v4 != v5);
+    while (numberOfCoordinators != v5);
   }
 
-  v13 = [v20 copy];
+  v13 = [array copy];
   allItemViews = self->_allItemViews;
   self->_allItemViews = v13;
 
   [(PREditingContentStyleItemsDataSource *)self->_dataSource setContentsLuminance:self->_contentsLuminance];
-  v15 = [MEMORY[0x1E695DF70] arrayWithArray:v20];
+  v15 = [MEMORY[0x1E695DF70] arrayWithArray:array];
   if ([(PREditorContentStylePickerConfiguration *)self->_configuration colorWellDisplayMode]== 1)
   {
     [(NSArray *)v15 addObject:self->_colorWellView];
@@ -250,14 +250,14 @@ LABEL_9:
   [(PREditingContentStyleItemsViewController *)self layoutWithItemViews:v17];
 }
 
-- (void)didTapContentStyleItem:(id)a3
+- (void)didTapContentStyleItem:(id)item
 {
-  v8 = [a3 view];
-  v4 = [v8 contentStyleCoordinator];
-  [(PREditingContentStyleItemsViewController *)self setSelectedContentStyleCoordinator:v4];
-  [(PREditingContentStyleItemsViewController *)self _didSelectContentStyleCoordinator:v4];
-  v5 = [(PREditingContentStyleItemsViewController *)self dataSource];
-  v6 = [v5 indexForCoordinator:v4];
+  view = [item view];
+  contentStyleCoordinator = [view contentStyleCoordinator];
+  [(PREditingContentStyleItemsViewController *)self setSelectedContentStyleCoordinator:contentStyleCoordinator];
+  [(PREditingContentStyleItemsViewController *)self _didSelectContentStyleCoordinator:contentStyleCoordinator];
+  dataSource = [(PREditingContentStyleItemsViewController *)self dataSource];
+  v6 = [dataSource indexForCoordinator:contentStyleCoordinator];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -267,21 +267,21 @@ LABEL_9:
   else
   {
     [(PREditingContentStyleItemsViewController *)self _deselectColorWell];
-    v7 = [(PREditingContentStyleItemsViewController *)self selectedContentStyleItemView];
-    [v7 setSelected:0];
+    selectedContentStyleItemView = [(PREditingContentStyleItemsViewController *)self selectedContentStyleItemView];
+    [selectedContentStyleItemView setSelected:0];
 
-    [(PREditingContentStyleItemsViewController *)self setSelectedContentStyleItemView:v8];
-    [v8 setSelected:1];
+    [(PREditingContentStyleItemsViewController *)self setSelectedContentStyleItemView:view];
+    [view setSelected:1];
   }
 }
 
-- (void)layoutWithItemViews:(id)a3
+- (void)layoutWithItemViews:(id)views
 {
   v45[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [v3 count] / 6uLL;
-  if (__ROR8__(0xAAAAAAAAAAAAAAABLL * [v3 count], 1) <= 0x2AAAAAAAAAAAAAAAuLL)
+  viewsCopy = views;
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = [viewsCopy count] / 6uLL;
+  if (__ROR8__(0xAAAAAAAAAAAAAAABLL * [viewsCopy count], 1) <= 0x2AAAAAAAAAAAAAAAuLL)
   {
     v6 = v5;
   }
@@ -291,44 +291,44 @@ LABEL_9:
     v6 = v5 + 1;
   }
 
-  v7 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   if (v6)
   {
     v8 = 0;
     for (i = 0; i != v6; ++i)
     {
-      v10 = [MEMORY[0x1E695DF70] array];
+      array3 = [MEMORY[0x1E695DF70] array];
       v11 = v8;
       v12 = 6;
       do
       {
-        if ([v3 count] <= v11)
+        if ([viewsCopy count] <= v11)
         {
           break;
         }
 
-        v13 = [v3 objectAtIndexedSubscript:v11];
-        [v10 addObject:v13];
+        v13 = [viewsCopy objectAtIndexedSubscript:v11];
+        [array3 addObject:v13];
 
         ++v11;
         --v12;
       }
 
       while (v12);
-      v14 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:v10];
+      v14 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:array3];
       [v14 setAxis:0];
       [v14 setDistribution:3];
       [v14 setAlignment:1];
       [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v7 addObject:v14];
-      [v4 addObject:v14];
+      [array2 addObject:v14];
+      [array addObject:v14];
 
       v8 += 6;
     }
   }
 
-  v43 = v7;
-  v15 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:v7];
+  v43 = array2;
+  v15 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:array2];
   [(UIStackView *)v15 setAxis:1];
   [(UIStackView *)v15 setDistribution:3];
   [(UIStackView *)v15 setAlignment:3];
@@ -337,27 +337,27 @@ LABEL_9:
   self->_stackView = v15;
   v17 = v15;
 
-  v42 = v4;
-  v18 = [v4 copy];
+  v42 = array;
+  v18 = [array copy];
   horizontalStackViews = self->_horizontalStackViews;
   self->_horizontalStackViews = v18;
 
-  v20 = [(PREditingContentStyleItemsViewController *)self view];
-  [v20 addSubview:v17];
+  view = [(PREditingContentStyleItemsViewController *)self view];
+  [view addSubview:v17];
 
-  v21 = [(UIStackView *)v17 leadingAnchor];
-  v22 = [(PREditingContentStyleItemsViewController *)self view];
-  v23 = [v22 leadingAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23 constant:31.0];
+  leadingAnchor = [(UIStackView *)v17 leadingAnchor];
+  view2 = [(PREditingContentStyleItemsViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:31.0];
 
   stackViewLeadingConstraint = self->_stackViewLeadingConstraint;
   self->_stackViewLeadingConstraint = v24;
   v41 = v24;
 
-  v26 = [(UIStackView *)v17 trailingAnchor];
-  v27 = [(PREditingContentStyleItemsViewController *)self view];
-  v28 = [v27 trailingAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28 constant:-31.0];
+  trailingAnchor = [(UIStackView *)v17 trailingAnchor];
+  view3 = [(PREditingContentStyleItemsViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-31.0];
 
   stackViewTrailingConstraint = self->_stackViewTrailingConstraint;
   self->_stackViewTrailingConstraint = v29;
@@ -365,15 +365,15 @@ LABEL_9:
 
   v45[0] = v41;
   v45[1] = v40;
-  v38 = [(UIStackView *)v17 bottomAnchor];
-  v39 = [(PREditingContentStyleItemsViewController *)self view];
-  v31 = [v39 bottomAnchor];
-  v32 = [v38 constraintEqualToAnchor:v31];
+  bottomAnchor = [(UIStackView *)v17 bottomAnchor];
+  view4 = [(PREditingContentStyleItemsViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v45[2] = v32;
-  v33 = [(UIStackView *)v17 topAnchor];
-  v34 = [(PREditingContentStyleItemsViewController *)self view];
-  v35 = [v34 topAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35];
+  topAnchor = [(UIStackView *)v17 topAnchor];
+  view5 = [(PREditingContentStyleItemsViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v36 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v45[3] = v36;
   v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:4];
 
@@ -384,8 +384,8 @@ LABEL_9:
 - (void)_updateLayoutForCurrentSize
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(PREditingContentStyleItemsViewController *)self view];
-  [v3 bounds];
+  view = [(PREditingContentStyleItemsViewController *)self view];
+  [view bounds];
   v5 = v4;
 
   v6 = (v5 + -326.0) / 5.0;
@@ -424,17 +424,17 @@ LABEL_9:
       while (v9);
     }
 
-    v13 = [(PREditingContentStyleItemsViewController *)self delegate];
-    [v13 contentStyleItemsViewControllerDidUpdateEstimatedSize:self];
+    delegate = [(PREditingContentStyleItemsViewController *)self delegate];
+    [delegate contentStyleItemsViewControllerDidUpdateEstimatedSize:self];
   }
 
   if (v5 != self->_configuredViewWidth)
   {
-    v14 = [(PREditingContentStyleItemsViewController *)self stackViewLeadingConstraint];
-    [v14 constant];
+    stackViewLeadingConstraint = [(PREditingContentStyleItemsViewController *)self stackViewLeadingConstraint];
+    [stackViewLeadingConstraint constant];
     v16 = v15;
-    v17 = [(PREditingContentStyleItemsViewController *)self stackViewTrailingConstraint];
-    [v17 constant];
+    stackViewTrailingConstraint = [(PREditingContentStyleItemsViewController *)self stackViewTrailingConstraint];
+    [stackViewTrailingConstraint constant];
     v19 = v16 - v18;
 
     if (v5 + -264.0 >= v19)
@@ -447,8 +447,8 @@ LABEL_9:
       v20 = (v5 + -264.0) * 0.5;
     }
 
-    v21 = [(PREditingContentStyleItemsViewController *)self stackViewLeadingConstraint];
-    v22 = v21;
+    stackViewLeadingConstraint2 = [(PREditingContentStyleItemsViewController *)self stackViewLeadingConstraint];
+    v22 = stackViewLeadingConstraint2;
     if (v20 >= 0.0)
     {
       v23 = v20;
@@ -459,10 +459,10 @@ LABEL_9:
       v23 = 0.0;
     }
 
-    [v21 setConstant:v23];
+    [stackViewLeadingConstraint2 setConstant:v23];
 
-    v24 = [(PREditingContentStyleItemsViewController *)self stackViewTrailingConstraint];
-    [v24 setConstant:{fmin(-v20, 0.0)}];
+    stackViewTrailingConstraint2 = [(PREditingContentStyleItemsViewController *)self stackViewTrailingConstraint];
+    [stackViewTrailingConstraint2 setConstant:{fmin(-v20, 0.0)}];
 
     self->_configuredViewWidth = v5;
   }
@@ -470,15 +470,15 @@ LABEL_9:
 
 - (double)estimatedHeight
 {
-  v3 = [(PREditingContentStyleItemsDataSource *)self->_dataSource numberOfCoordinators];
+  numberOfCoordinators = [(PREditingContentStyleItemsDataSource *)self->_dataSource numberOfCoordinators];
   if ([(PREditorContentStylePickerConfiguration *)self->_configuration colorWellDisplayMode]== 1)
   {
-    v4 = v3 + 1;
+    v4 = numberOfCoordinators + 1;
   }
 
   else
   {
-    v4 = v3;
+    v4 = numberOfCoordinators;
   }
 
   if (v4 % 6)
@@ -494,22 +494,22 @@ LABEL_9:
   return self->_interitemSpacing * (v5 - 1) + v5 * 44.0;
 }
 
-- (void)setContentsLuminance:(double)a3
+- (void)setContentsLuminance:(double)luminance
 {
-  self->_contentsLuminance = a3;
+  self->_contentsLuminance = luminance;
   if ([(PREditingContentStyleItemsViewController *)self isViewLoaded])
   {
     dataSource = self->_dataSource;
 
-    [(PREditingContentStyleItemsDataSource *)dataSource setContentsLuminance:a3];
+    [(PREditingContentStyleItemsDataSource *)dataSource setContentsLuminance:luminance];
   }
 }
 
-- (void)_didSelectContentStyleCoordinator:(id)a3
+- (void)_didSelectContentStyleCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(PREditingContentStyleItemsViewController *)self delegate];
-  [v5 contentStyleItemsViewController:self didSelectContentStyleCoordinator:v4];
+  coordinatorCopy = coordinator;
+  delegate = [(PREditingContentStyleItemsViewController *)self delegate];
+  [delegate contentStyleItemsViewController:self didSelectContentStyleCoordinator:coordinatorCopy];
 }
 
 - (void)_deselectSelectedContentStyle
@@ -537,14 +537,14 @@ LABEL_9:
   [(PUIColorWellView *)colorWellView setNeedsLayout];
 }
 
-- (void)setSelectedContentStyle:(id)a3 fromUIKitPicker:(BOOL)a4
+- (void)setSelectedContentStyle:(id)style fromUIKitPicker:(BOOL)picker
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  pickerCopy = picker;
+  styleCopy = style;
+  v7 = styleCopy;
+  if (styleCopy)
   {
-    if (v4)
+    if (pickerCopy)
     {
       [(PRSelectableEditingItemView *)self->_selectedContentStyleItemView setSelected:0];
       selectedContentStyleItemView = self->_selectedContentStyleItemView;
@@ -558,7 +558,7 @@ LABEL_9:
       v15[1] = 3221225472;
       v15[2] = __84__PREditingContentStyleItemsViewController_setSelectedContentStyle_fromUIKitPicker___block_invoke;
       v15[3] = &unk_1E7843420;
-      v16 = v6;
+      v16 = styleCopy;
       v10 = [(PREditingContentStyleItemsDataSource *)dataSource firstCoordinatorPassingTest:v15];
       v11 = [(PREditingContentStyleItemsDataSource *)self->_dataSource indexForCoordinator:v10];
       if (v11 == 0x7FFFFFFFFFFFFFFFLL)
@@ -596,10 +596,10 @@ uint64_t __84__PREditingContentStyleItemsViewController_setSelectedContentStyle_
   return v4;
 }
 
-- (void)updateDataSource:(id)a3 configuration:(id)a4
+- (void)updateDataSource:(id)source configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  configurationCopy = configuration;
   [(UIStackView *)self->_stackView removeFromSuperview];
   stackView = self->_stackView;
   self->_stackView = 0;
@@ -609,17 +609,17 @@ uint64_t __84__PREditingContentStyleItemsViewController_setSelectedContentStyle_
   self->_configuredViewWidth = 0.0;
   self->_interitemSpacing = 0.0;
   dataSource = self->_dataSource;
-  self->_dataSource = v6;
-  v10 = v6;
+  self->_dataSource = sourceCopy;
+  v10 = sourceCopy;
 
   configuration = self->_configuration;
-  self->_configuration = v7;
-  v12 = v7;
+  self->_configuration = configurationCopy;
+  v12 = configurationCopy;
 
   [(PREditingContentStyleItemsViewController *)self _initializeContent];
   [(PREditingContentStyleItemsViewController *)self _setupItemViews];
-  v13 = [(PREditingContentStyleItemsViewController *)self view];
-  [v13 layoutIfNeeded];
+  view = [(PREditingContentStyleItemsViewController *)self view];
+  [view layoutIfNeeded];
 
   v14 = [(PREditingContentStyleItemsDataSource *)self->_dataSource indexForCoordinator:self->_selectedContentStyleCoordinator];
   [(PREditingContentStyleItemsViewController *)self _didSelectContentStyleCoordinator:self->_selectedContentStyleCoordinator];
@@ -632,23 +632,23 @@ uint64_t __84__PREditingContentStyleItemsViewController_setSelectedContentStyle_
   [(PRSelectableEditingItemView *)v17 setSelected:1];
 }
 
-- (void)colorWellDidUpdateColor:(id)a3
+- (void)colorWellDidUpdateColor:(id)color
 {
   [(PRSelectableEditingItemView *)self->_selectedContentStyleItemView setSelected:0];
   selectedContentStyleItemView = self->_selectedContentStyleItemView;
   self->_selectedContentStyleItemView = 0;
 
-  v11 = [(PREditingContentStyleItemsViewController *)self colorWellView];
-  v5 = [(PREditingContentStyleItemsViewController *)self colorWell];
-  [v5 invalidateIntrinsicContentSize];
+  colorWellView = [(PREditingContentStyleItemsViewController *)self colorWellView];
+  colorWell = [(PREditingContentStyleItemsViewController *)self colorWell];
+  [colorWell invalidateIntrinsicContentSize];
 
-  [v11 setNeedsLayout];
-  v6 = [(PREditorContentStylePickerConfiguration *)self->_configuration stylePalette];
+  [colorWellView setNeedsLayout];
+  stylePalette = [(PREditorContentStylePickerConfiguration *)self->_configuration stylePalette];
   v7 = 0;
-  if ([v6 context] == 2)
+  if ([stylePalette context] == 2)
   {
-    v8 = [(PREditorContentStylePickerConfiguration *)self->_configuration stylePalette];
-    v7 = [v8 displayingGlassStyles] ^ 1;
+    stylePalette2 = [(PREditorContentStylePickerConfiguration *)self->_configuration stylePalette];
+    v7 = [stylePalette2 displayingGlassStyles] ^ 1;
   }
 
   v9 = [PREditingPosterContentStyleCoordinator coordinatorForColorWellView:self->_colorWellView vibrant:v7];

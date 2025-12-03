@@ -1,9 +1,9 @@
 @interface CLVisitHistoryAuthPromptPluginViewController
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (id)mostRecentUniqueVisitsFrom:(id)a3;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (id)mostRecentUniqueVisitsFrom:(id)from;
 - (void)configureMapView;
-- (void)configureMapViewUsing:(id)a3;
-- (void)constructAnnotationsFrom:(id)a3 completionHandler:(id)a4;
+- (void)configureMapViewUsing:(id)using;
+- (void)constructAnnotationsFrom:(id)from completionHandler:(id)handler;
 - (void)fetchVisitedPlacesAndConfigureMapView;
 - (void)viewDidLoad;
 @end
@@ -31,11 +31,11 @@
   v4 = objc_alloc_init(NSRelativeDateTimeFormatter);
   [(CLVisitHistoryAuthPromptPluginViewController *)self setFormatter:v4];
 
-  v5 = [(CLVisitHistoryAuthPromptPluginViewController *)self formatter];
-  [v5 setDateTimeStyle:1];
+  formatter = [(CLVisitHistoryAuthPromptPluginViewController *)self formatter];
+  [formatter setDateTimeStyle:1];
 
-  v6 = [(CLVisitHistoryAuthPromptPluginViewController *)self formatter];
-  [v6 setUnitsStyle:2];
+  formatter2 = [(CLVisitHistoryAuthPromptPluginViewController *)self formatter];
+  [formatter2 setUnitsStyle:2];
 
   if (+[CLLocationManager authorizationPromptMapDisplayEnabled])
   {
@@ -105,9 +105,9 @@
   [v4 fetchStoredVisitsWithOptions:v12 handler:v14];
 }
 
-- (id)mostRecentUniqueVisitsFrom:(id)a3
+- (id)mostRecentUniqueVisitsFrom:(id)from
 {
-  v16 = a3;
+  fromCopy = from;
   if (qword_100011820 != -1)
   {
     sub_100005710();
@@ -142,9 +142,9 @@ LABEL_7:
       }
 
       v9 = *(*(&v19 + 1) + 8 * v8);
-      v10 = [v9 placeInference];
-      v11 = [v10 mapItem];
-      v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v11 muid]);
+      placeInference = [v9 placeInference];
+      mapItem = [placeInference mapItem];
+      v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [mapItem muid]);
 
       if (([v4 containsObject:v12] & 1) == 0)
       {
@@ -177,9 +177,9 @@ LABEL_7:
   return v14;
 }
 
-- (void)configureMapViewUsing:(id)a3
+- (void)configureMapViewUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   if (qword_100011820 != -1)
   {
     sub_100005710();
@@ -193,13 +193,13 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v6 = [v4 count];
+  v6 = [usingCopy count];
   v7 = v6;
   if (v6)
   {
     if (v6 < 4)
     {
-      [(CLVisitHistoryAuthPromptPluginViewController *)self setVisits:v4];
+      [(CLVisitHistoryAuthPromptPluginViewController *)self setVisits:usingCopy];
     }
 
     else
@@ -217,17 +217,17 @@ LABEL_7:
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Unexpectedly got more than three visits (%lu); recovering by showing just the last three", buf, 0xCu);
       }
 
-      v9 = [v4 subarrayWithRange:{v7 - 3, 3}];
+      v9 = [usingCopy subarrayWithRange:{v7 - 3, 3}];
       [(CLVisitHistoryAuthPromptPluginViewController *)self setVisits:v9];
     }
 
-    v11 = [(CLVisitHistoryAuthPromptPluginViewController *)self visits];
+    visits = [(CLVisitHistoryAuthPromptPluginViewController *)self visits];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100003938;
     v12[3] = &unk_10000C3A8;
     v12[4] = self;
-    [(CLVisitHistoryAuthPromptPluginViewController *)self constructAnnotationsFrom:v11 completionHandler:v12];
+    [(CLVisitHistoryAuthPromptPluginViewController *)self constructAnnotationsFrom:visits completionHandler:v12];
   }
 
   else
@@ -268,35 +268,35 @@ LABEL_7:
     [(CLAuthBaseViewController *)&v26 configureMapView];
     if ([(CLVisitHistoryAuthPromptPluginViewController *)self didInitializationFinish]&& ![(CLVisitHistoryAuthPromptPluginViewController *)self didConfigureMapView])
     {
-      v4 = [(CLAuthBaseViewController *)self mapView];
-      v5 = [v4 mapType] == 105;
+      mapView = [(CLAuthBaseViewController *)self mapView];
+      v5 = [mapView mapType] == 105;
 
       if (v5)
       {
-        v6 = [(CLAuthBaseViewController *)self mapView];
-        [v6 setMapType:0];
+        mapView2 = [(CLAuthBaseViewController *)self mapView];
+        [mapView2 setMapType:0];
       }
 
-      v7 = [(CLAuthBaseViewController *)self mapView];
-      [v7 registerClass:objc_opt_class() forAnnotationViewWithReuseIdentifier:@"place"];
+      mapView3 = [(CLAuthBaseViewController *)self mapView];
+      [mapView3 registerClass:objc_opt_class() forAnnotationViewWithReuseIdentifier:@"place"];
 
-      v8 = [(CLAuthBaseViewController *)self mapView];
-      v9 = [(CLVisitHistoryAuthPromptPluginViewController *)self annotations];
-      [v8 addAnnotations:v9];
+      mapView4 = [(CLAuthBaseViewController *)self mapView];
+      annotations = [(CLVisitHistoryAuthPromptPluginViewController *)self annotations];
+      [mapView4 addAnnotations:annotations];
 
-      v10 = [(CLAuthBaseViewController *)self mapView];
-      v11 = [(CLVisitHistoryAuthPromptPluginViewController *)self annotations];
-      [v10 showAnnotations:v11 animated:0];
+      mapView5 = [(CLAuthBaseViewController *)self mapView];
+      annotations2 = [(CLVisitHistoryAuthPromptPluginViewController *)self annotations];
+      [mapView5 showAnnotations:annotations2 animated:0];
 
-      v12 = [(CLAuthBaseViewController *)self mapView];
-      [v12 visibleMapRect];
+      mapView6 = [(CLAuthBaseViewController *)self mapView];
+      [mapView6 visibleMapRect];
       v14 = v13;
       v16 = v15;
       v18 = v17;
       v20 = v19;
 
-      v21 = [(CLAuthBaseViewController *)self mapView];
-      [v21 setVisibleMapRect:0 edgePadding:v14 animated:{v16, v18, v20, -38.0, 0.0, 38.0, 0.0}];
+      mapView7 = [(CLAuthBaseViewController *)self mapView];
+      [mapView7 setVisibleMapRect:0 edgePadding:v14 animated:{v16, v18, v20, -38.0, 0.0, 38.0, 0.0}];
 
       v22 = +[NSBundle mainBundle];
       v23 = [v22 localizedStringForKey:@"Your Recent Visits" value:&stru_10000C6F8 table:0];
@@ -320,15 +320,15 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "Hiding map view and footnote label because Show Map in Location Alerts is turned on.", buf, 2u);
     }
 
-    v25 = [(CLAuthWithFootnoteViewController *)self footnoteLabelContainer];
-    [v25 setHidden:1];
+    footnoteLabelContainer = [(CLAuthWithFootnoteViewController *)self footnoteLabelContainer];
+    [footnoteLabelContainer setHidden:1];
   }
 }
 
-- (void)constructAnnotationsFrom:(id)a3 completionHandler:(id)a4
+- (void)constructAnnotationsFrom:(id)from completionHandler:(id)handler
 {
-  v5 = a3;
-  v41 = a4;
+  fromCopy = from;
+  handlerCopy = handler;
   if (qword_100011820 != -1)
   {
     sub_100005710();
@@ -348,7 +348,7 @@ LABEL_7:
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = v5;
+  obj = fromCopy;
   v7 = [obj countByEnumeratingWithState:&v57 objects:v61 count:16];
   if (v7)
   {
@@ -364,8 +364,8 @@ LABEL_7:
         }
 
         v9 = *(*(&v57 + 1) + 8 * i);
-        v10 = [v9 placeInference];
-        v11 = [v10 preferredName];
+        placeInference = [v9 placeInference];
+        preferredName = [placeInference preferredName];
 
         if (qword_100011820 != -1)
         {
@@ -390,11 +390,11 @@ LABEL_7:
         if (os_log_type_enabled(qword_100011828, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138739971;
-          v63 = v11;
+          v63 = preferredName;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Title: %{sensitive}@", buf, 0xCu);
         }
 
-        if (!v11 || [v11 isEqualToString:&stru_10000C6F8])
+        if (!preferredName || [preferredName isEqualToString:&stru_10000C6F8])
         {
           if (qword_100011820 != -1)
           {
@@ -411,11 +411,11 @@ LABEL_7:
           v16 = +[NSBundle mainBundle];
           v17 = [v16 localizedStringForKey:@"Visited Place" value:&stru_10000C6F8 table:0];
 
-          v11 = v17;
+          preferredName = v17;
         }
 
-        v18 = [v9 date];
-        if (v18)
+        date = [v9 date];
+        if (date)
         {
           if (qword_100011820 != -1)
           {
@@ -426,16 +426,16 @@ LABEL_7:
           if (os_log_type_enabled(qword_100011828, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138739971;
-            v63 = v18;
+            v63 = date;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "Date: %{sensitive}@", buf, 0xCu);
           }
 
           v20 = +[NSCalendar currentCalendar];
-          v21 = [v20 startOfDayForDate:v18];
+          v21 = [v20 startOfDayForDate:date];
 
-          v22 = [(CLVisitHistoryAuthPromptPluginViewController *)self formatter];
+          formatter = [(CLVisitHistoryAuthPromptPluginViewController *)self formatter];
           v23 = +[NSDate now];
-          v24 = [v22 localizedStringForDate:v21 relativeToDate:v23];
+          v24 = [formatter localizedStringForDate:v21 relativeToDate:v23];
 
           if (qword_100011820 != -1)
           {
@@ -462,25 +462,25 @@ LABEL_7:
           if (os_log_type_enabled(qword_100011828, OS_LOG_TYPE_ERROR))
           {
             *buf = 138739971;
-            v63 = v11;
+            v63 = preferredName;
             _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Date is null for %{sensitive}@, subtitle will be hidden.", buf, 0xCu);
           }
 
           v24 = 0;
         }
 
-        v27 = [v9 location];
-        [v27 latitude];
+        location = [v9 location];
+        [location latitude];
         v29 = v28;
-        v30 = [v9 location];
-        [v30 longitude];
+        location2 = [v9 location];
+        [location2 longitude];
         v32 = CLLocationCoordinate2DMake(v29, v31);
 
-        v33 = [v9 placeInference];
-        v34 = [v33 mapItem];
-        v35 = [v34 geoMapItemHandle];
+        placeInference2 = [v9 placeInference];
+        mapItem = [placeInference2 mapItem];
+        geoMapItemHandle = [mapItem geoMapItemHandle];
 
-        if (v35)
+        if (geoMapItemHandle)
         {
           if (qword_100011820 != -1)
           {
@@ -502,10 +502,10 @@ LABEL_7:
           v51[3] = &unk_10000C3D0;
           v52 = v46;
           v56 = v32;
-          v53 = v11;
+          v53 = preferredName;
           v54 = v24;
           v55 = group;
-          [v37 resolveMapItemFromHandle:v35 completionHandler:v51];
+          [v37 resolveMapItemFromHandle:geoMapItemHandle completionHandler:v51];
         }
 
         else
@@ -522,7 +522,7 @@ LABEL_7:
             _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "Map item handle is nil; marker will be a generic red icon!", buf, 2u);
           }
 
-          v37 = [[MKPointAnnotation alloc] initWithCoordinate:v11 title:v24 subtitle:{v32.latitude, v32.longitude}];
+          v37 = [[MKPointAnnotation alloc] initWithCoordinate:preferredName title:v24 subtitle:{v32.latitude, v32.longitude}];
           [v46 addObject:v37];
         }
       }
@@ -538,16 +538,16 @@ LABEL_7:
   block[2] = sub_10000487C;
   block[3] = &unk_10000C3F8;
   v49 = v46;
-  v50 = v41;
+  v50 = handlerCopy;
   v39 = v46;
-  v40 = v41;
+  v40 = handlerCopy;
   dispatch_group_notify(group, &_dispatch_main_q, block);
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  annotationCopy = annotation;
   if (qword_100011820 != -1)
   {
     sub_100005710();
@@ -561,8 +561,8 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s", &v18, 0xCu);
   }
 
-  v9 = [(CLAuthBaseViewController *)self mapView];
-  v10 = [v9 dequeueReusableAnnotationViewWithIdentifier:@"place"];
+  mapView = [(CLAuthBaseViewController *)self mapView];
+  v10 = [mapView dequeueReusableAnnotationViewWithIdentifier:@"place"];
 
   LODWORD(v11) = 1132068864;
   [v10 setDisplayPriority:v11];
@@ -571,7 +571,7 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v7;
+    v12 = annotationCopy;
   }
 
   else
@@ -583,8 +583,8 @@ LABEL_7:
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 styleAttributes];
-    [v10 _setStyleAttributes:v15];
+    styleAttributes = [v13 styleAttributes];
+    [v10 _setStyleAttributes:styleAttributes];
   }
 
   else

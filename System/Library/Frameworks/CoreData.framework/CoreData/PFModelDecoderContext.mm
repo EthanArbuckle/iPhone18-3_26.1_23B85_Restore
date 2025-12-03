@@ -16,7 +16,7 @@
 
   else
   {
-    v3 = objc_alloc_init(a1);
+    v3 = objc_alloc_init(self);
     v7.version = *MEMORY[0x1E695E9F8];
     *&v7.retain = *(MEMORY[0x1E695E9F8] + 8);
     v5 = *(MEMORY[0x1E695E9F8] + 24);

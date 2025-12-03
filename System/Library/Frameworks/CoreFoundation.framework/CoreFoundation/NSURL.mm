@@ -38,13 +38,13 @@
 
 - (BOOL)isFileReferenceURL
 {
-  v2 = [(NSURL *)self _cfurl];
-  if (v2 == +[NSURL __unurl])
+  _cfurl = [(NSURL *)self _cfurl];
+  if (_cfurl == +[NSURL __unurl])
   {
     [NSURL isFileReferenceURL];
   }
 
-  return v2 && CFURLIsFileReferenceURL(v2) != 0;
+  return _cfurl && CFURLIsFileReferenceURL(_cfurl) != 0;
 }
 
 CFURLRef __16__NSURL___unurl__block_invoke()
@@ -65,9 +65,9 @@ CFURLRef __16__NSURL___unurl__block_invoke()
   {
     if ([(NSURL *)self query])
     {
-      v3 = [(NSURL *)self query];
+      query = [(NSURL *)self query];
 
-      return [(NSString *)v3 _queryResolveFlags];
+      return [(NSString *)query _queryResolveFlags];
     }
 
     return 0;
@@ -92,13 +92,13 @@ CFURLRef __16__NSURL___unurl__block_invoke()
 
 - (BOOL)startAccessingSecurityScopedResource
 {
-  v2 = [(NSURL *)self _cfurl];
-  if (v2 == +[NSURL __unurl])
+  _cfurl = [(NSURL *)self _cfurl];
+  if (_cfurl == +[NSURL __unurl])
   {
     [NSURL startAccessingSecurityScopedResource];
   }
 
-  return v2 && CFURLStartAccessingSecurityScopedResource(v2) != 0;
+  return _cfurl && CFURLStartAccessingSecurityScopedResource(_cfurl) != 0;
 }
 
 - (void)stopAccessingSecurityScopedResource
@@ -117,21 +117,21 @@ CFURLRef __16__NSURL___unurl__block_invoke()
 
 - (NSURL)filePathURL
 {
-  v3 = [(NSURL *)self _cfurl];
-  if (v3 == +[NSURL __unurl])
+  _cfurl = [(NSURL *)self _cfurl];
+  if (_cfurl == +[NSURL __unurl])
   {
     [NSURL filePathURL];
   }
 
-  if (!v3)
+  if (!_cfurl)
   {
     return 0;
   }
 
-  __CFURLBeginResourcePropertyCacheAccess(v3);
-  v4 = CFGetAllocator(v3);
+  __CFURLBeginResourcePropertyCacheAccess(_cfurl);
+  v4 = CFGetAllocator(_cfurl);
   v5 = CFURLCreateFilePathURL(v4, [(NSURL *)self _cfurl], 0);
-  __CFURLEndResourcePropertyCacheAccess(v3);
+  __CFURLEndResourcePropertyCacheAccess(_cfurl);
   if (!v5)
   {
     return 0;
@@ -142,21 +142,21 @@ CFURLRef __16__NSURL___unurl__block_invoke()
 
 - (NSURL)fileReferenceURL
 {
-  v3 = [(NSURL *)self _cfurl];
-  if (v3 == +[NSURL __unurl])
+  _cfurl = [(NSURL *)self _cfurl];
+  if (_cfurl == +[NSURL __unurl])
   {
     [NSURL fileReferenceURL];
   }
 
-  if (!v3)
+  if (!_cfurl)
   {
     return 0;
   }
 
-  __CFURLBeginResourcePropertyCacheAccess(v3);
-  v4 = CFGetAllocator(v3);
+  __CFURLBeginResourcePropertyCacheAccess(_cfurl);
+  v4 = CFGetAllocator(_cfurl);
   v5 = CFURLCreateFileReferenceURL(v4, [(NSURL *)self _cfurl], 0);
-  __CFURLEndResourcePropertyCacheAccess(v3);
+  __CFURLEndResourcePropertyCacheAccess(_cfurl);
   if (!v5)
   {
     return 0;
@@ -167,20 +167,20 @@ CFURLRef __16__NSURL___unurl__block_invoke()
 
 - (BOOL)getResourceValue:(id *)value forKey:(NSURLResourceKey)key error:(NSError *)error
 {
-  v8 = [(NSURL *)self _cfurl];
-  if (v8 == +[NSURL __unurl])
+  _cfurl = [(NSURL *)self _cfurl];
+  if (_cfurl == +[NSURL __unurl])
   {
     [NSURL getResourceValue:forKey:error:];
   }
 
-  if (!v8)
+  if (!_cfurl)
   {
     return 0;
   }
 
-  __CFURLBeginResourcePropertyCacheAccess(v8);
-  v9 = CFURLCopyResourcePropertyForKey(v8, key, value, error);
-  __CFURLEndResourcePropertyCacheAccess(v8);
+  __CFURLBeginResourcePropertyCacheAccess(_cfurl);
+  v9 = CFURLCopyResourcePropertyForKey(_cfurl, key, value, error);
+  __CFURLEndResourcePropertyCacheAccess(_cfurl);
   if (!v9)
   {
     if (error)
@@ -204,20 +204,20 @@ CFURLRef __16__NSURL___unurl__block_invoke()
 
 - (NSDictionary)resourceValuesForKeys:(NSArray *)keys error:(NSError *)error
 {
-  v6 = [(NSURL *)self _cfurl];
-  if (v6 == +[NSURL __unurl])
+  _cfurl = [(NSURL *)self _cfurl];
+  if (_cfurl == +[NSURL __unurl])
   {
     [NSURL resourceValuesForKeys:error:];
   }
 
-  if (!v6)
+  if (!_cfurl)
   {
     return 0;
   }
 
-  __CFURLBeginResourcePropertyCacheAccess(v6);
-  v7 = CFURLCopyResourcePropertiesForKeys(v6, keys, error);
-  __CFURLEndResourcePropertyCacheAccess(v6);
+  __CFURLBeginResourcePropertyCacheAccess(_cfurl);
+  v7 = CFURLCopyResourcePropertiesForKeys(_cfurl, keys, error);
+  __CFURLEndResourcePropertyCacheAccess(_cfurl);
   if (!v7)
   {
     if (error)
@@ -233,21 +233,21 @@ CFURLRef __16__NSURL___unurl__block_invoke()
 
 - (BOOL)setResourceValue:(id)value forKey:(NSURLResourceKey)key error:(NSError *)error
 {
-  v8 = [(NSURL *)self _cfurl];
-  if (v8 == +[NSURL __unurl])
+  _cfurl = [(NSURL *)self _cfurl];
+  if (_cfurl == +[NSURL __unurl])
   {
     [NSURL setResourceValue:forKey:error:];
   }
 
-  if (!v8)
+  if (!_cfurl)
   {
     return 0;
   }
 
-  __CFURLBeginResourcePropertyCacheAccess(v8);
-  v9 = CFURLSetResourcePropertyForKey(v8, key, value, error);
+  __CFURLBeginResourcePropertyCacheAccess(_cfurl);
+  v9 = CFURLSetResourcePropertyForKey(_cfurl, key, value, error);
   v10 = v9 != 0;
-  __CFURLEndResourcePropertyCacheAccess(v8);
+  __CFURLEndResourcePropertyCacheAccess(_cfurl);
   if (error && !v9)
   {
     v10 = 0;
@@ -259,21 +259,21 @@ CFURLRef __16__NSURL___unurl__block_invoke()
 
 - (BOOL)setResourceValues:(NSDictionary *)keyedValues error:(NSError *)error
 {
-  v6 = [(NSURL *)self _cfurl];
-  if (v6 == +[NSURL __unurl])
+  _cfurl = [(NSURL *)self _cfurl];
+  if (_cfurl == +[NSURL __unurl])
   {
     [NSURL setResourceValues:error:];
   }
 
-  if (!v6)
+  if (!_cfurl)
   {
     return 0;
   }
 
-  __CFURLBeginResourcePropertyCacheAccess(v6);
-  v7 = CFURLSetResourcePropertiesForKeys(v6, keyedValues, error);
+  __CFURLBeginResourcePropertyCacheAccess(_cfurl);
+  v7 = CFURLSetResourcePropertiesForKeys(_cfurl, keyedValues, error);
   v8 = v7 != 0;
-  __CFURLEndResourcePropertyCacheAccess(v6);
+  __CFURLEndResourcePropertyCacheAccess(_cfurl);
   if (error && !v7)
   {
     v8 = 0;
@@ -285,35 +285,35 @@ CFURLRef __16__NSURL___unurl__block_invoke()
 
 - (void)removeCachedResourceValueForKey:(NSURLResourceKey)key
 {
-  v4 = [(NSURL *)self _cfurl];
-  if (v4 == +[NSURL __unurl])
+  _cfurl = [(NSURL *)self _cfurl];
+  if (_cfurl == +[NSURL __unurl])
   {
     [NSURL removeCachedResourceValueForKey:];
   }
 
-  if (v4)
+  if (_cfurl)
   {
-    __CFURLBeginResourcePropertyCacheAccess(v4);
-    CFURLClearResourcePropertyCacheForKey(v4, key);
+    __CFURLBeginResourcePropertyCacheAccess(_cfurl);
+    CFURLClearResourcePropertyCacheForKey(_cfurl, key);
 
-    __CFURLEndResourcePropertyCacheAccess(v4);
+    __CFURLEndResourcePropertyCacheAccess(_cfurl);
   }
 }
 
 - (void)setTemporaryResourceValue:(id)value forKey:(NSURLResourceKey)key
 {
-  v6 = [(NSURL *)self _cfurl];
-  if (v6 == +[NSURL __unurl])
+  _cfurl = [(NSURL *)self _cfurl];
+  if (_cfurl == +[NSURL __unurl])
   {
     [NSURL setTemporaryResourceValue:forKey:];
   }
 
-  if (v6)
+  if (_cfurl)
   {
-    __CFURLBeginResourcePropertyCacheAccess(v6);
-    CFURLSetTemporaryResourcePropertyForKey(v6, key, value);
+    __CFURLBeginResourcePropertyCacheAccess(_cfurl);
+    CFURLSetTemporaryResourcePropertyForKey(_cfurl, key, value);
 
-    __CFURLEndResourcePropertyCacheAccess(v6);
+    __CFURLEndResourcePropertyCacheAccess(_cfurl);
   }
 }
 
@@ -321,34 +321,34 @@ CFURLRef __16__NSURL___unurl__block_invoke()
 {
   if ([(NSURL *)self isFileURL]&& (v3 = [(NSString *)[(NSURL *)self absoluteString] _urlStringByRemovingResolveFlags]) != 0)
   {
-    v4 = CFURLCreateWithString(0, v3, 0);
+    selfCopy = CFURLCreateWithString(0, v3, 0);
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (NSData)bookmarkDataWithOptions:(NSURLBookmarkCreationOptions)options includingResourceValuesForKeys:(NSArray *)keys relativeToURL:(NSURL *)relativeURL error:(NSError *)error
 {
-  v10 = [(NSURL *)self _cfurl];
-  if (v10 == +[NSURL __unurl])
+  _cfurl = [(NSURL *)self _cfurl];
+  if (_cfurl == +[NSURL __unurl])
   {
     [NSURL bookmarkDataWithOptions:includingResourceValuesForKeys:relativeToURL:error:];
   }
 
-  if (!v10)
+  if (!_cfurl)
   {
     return 0;
   }
 
-  __CFURLBeginResourcePropertyCacheAccess(v10);
-  v11 = CFGetAllocator(v10);
-  v12 = CFURLCreateBookmarkData(v11, v10, options, keys, [(NSURL *)relativeURL _cfurl], error);
-  __CFURLEndResourcePropertyCacheAccess(v10);
+  __CFURLBeginResourcePropertyCacheAccess(_cfurl);
+  v11 = CFGetAllocator(_cfurl);
+  v12 = CFURLCreateBookmarkData(v11, _cfurl, options, keys, [(NSURL *)relativeURL _cfurl], error);
+  __CFURLEndResourcePropertyCacheAccess(_cfurl);
   if (!v12)
   {
     if (error && *error)

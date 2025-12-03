@@ -1,24 +1,24 @@
 @interface ACAssistantAlternateProviderResultView
-- (ACAssistantAlternateProviderResultView)initWithAlternateProviderResult:(id)a3 usingPersistentStore:(id)a4;
+- (ACAssistantAlternateProviderResultView)initWithAlternateProviderResult:(id)result usingPersistentStore:(id)store;
 - (CGSize)sizeThatFits:(CGSize)result;
 - (UIEdgeInsets)edgeInsets;
-- (void)_configureUsingImage:(id)a3;
+- (void)_configureUsingImage:(id)image;
 - (void)updateConstraints;
 @end
 
 @implementation ACAssistantAlternateProviderResultView
 
-- (ACAssistantAlternateProviderResultView)initWithAlternateProviderResult:(id)a3 usingPersistentStore:(id)a4
+- (ACAssistantAlternateProviderResultView)initWithAlternateProviderResult:(id)result usingPersistentStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  storeCopy = store;
   v38.receiver = self;
   v38.super_class = ACAssistantAlternateProviderResultView;
   v8 = [(ACAssistantAlternateProviderResultView *)&v38 init];
   if (v8)
   {
-    v9 = [v6 commands];
-    [(ACAssistantAlternateProviderResultView *)v8 setCommands:v9];
+    commands = [resultCopy commands];
+    [(ACAssistantAlternateProviderResultView *)v8 setCommands:commands];
 
     v10 = objc_alloc_init(UIView);
     containerView = v8->_containerView;
@@ -26,9 +26,9 @@
 
     [(ACAssistantAlternateProviderResultView *)v8 addSubview:v8->_containerView];
     [(UIView *)v8->_containerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [v6 providerName];
+    providerName = [resultCopy providerName];
 
-    if (v12)
+    if (providerName)
     {
       v13 = +[SiriSharedUIContentLabel label];
       providerNameLabel = v8->_providerNameLabel;
@@ -40,8 +40,8 @@
       [(UILabel *)v15 setFont:v16];
 
       v17 = v8->_providerNameLabel;
-      v18 = [v6 providerName];
-      [(UILabel *)v17 setText:v18];
+      providerName2 = [resultCopy providerName];
+      [(UILabel *)v17 setText:providerName2];
 
       v19 = v8->_providerNameLabel;
       v20 = +[UIColor siriui_maskingColor];
@@ -61,11 +61,11 @@
     [(UIImageView *)v23 setBackgroundColor:v24];
 
     [(UIView *)v8->_containerView addSubview:v8->_providerLogoImageView];
-    v25 = [v6 providerImage];
-    v26 = [v25 resourceUrl];
-    v27 = [v26 absoluteString];
+    providerImage = [resultCopy providerImage];
+    resourceUrl = [providerImage resourceUrl];
+    absoluteString = [resourceUrl absoluteString];
 
-    v28 = [v7 imageForKey:v27];
+    v28 = [storeCopy imageForKey:absoluteString];
     if (v28)
     {
       [(ACAssistantAlternateProviderResultView *)v8 _configureUsingImage:v28];
@@ -74,16 +74,16 @@
     else
     {
       v29 = +[SiriUIURLSession sharedURLSession];
-      v30 = [v6 providerImage];
-      v31 = [v30 resourceUrl];
+      providerImage2 = [resultCopy providerImage];
+      resourceUrl2 = [providerImage2 resourceUrl];
       v34[0] = _NSConcreteStackBlock;
       v34[1] = 3221225472;
       v34[2] = sub_46B0;
       v34[3] = &unk_18570;
-      v35 = v7;
-      v36 = v27;
+      v35 = storeCopy;
+      v36 = absoluteString;
       v37 = v8;
-      v32 = [v29 imageTaskWithHTTPGetRequest:v31 client:v37 completionHandler:v34];
+      v32 = [v29 imageTaskWithHTTPGetRequest:resourceUrl2 client:v37 completionHandler:v34];
     }
 
     [(ACAssistantAlternateProviderResultView *)v8 setNeedsUpdateConstraints];
@@ -105,16 +105,16 @@
   return result;
 }
 
-- (void)_configureUsingImage:(id)a3
+- (void)_configureUsingImage:(id)image
 {
   providerLogoImageView = self->_providerLogoImageView;
-  v5 = a3;
+  imageCopy = image;
   v6 = +[UIColor siriui_maskingColor];
-  v7 = [v5 _flatImageWithColor:v6];
+  v7 = [imageCopy _flatImageWithColor:v6];
 
   [(UIImageView *)providerLogoImageView setImage:v7];
   [(UIImageView *)self->_providerLogoImageView sizeToFit];
-  if (v5)
+  if (imageCopy)
   {
     providerNameLabel = self->_providerNameLabel;
     if (providerNameLabel)

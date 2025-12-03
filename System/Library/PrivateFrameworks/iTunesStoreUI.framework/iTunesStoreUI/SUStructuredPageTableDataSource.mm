@@ -1,27 +1,27 @@
 @interface SUStructuredPageTableDataSource
-- (BOOL)_shouldShowItemOfferButtonForItem:(id)a3;
-- (BOOL)canDeleteIndexPath:(id)a3;
-- (BOOL)canSelectIndexPath:(id)a3;
-- (BOOL)deleteIndexPath:(id)a3;
-- (Class)cellClassForItem:(id)a3 reuseIdentifier:(id *)a4;
-- (Class)cellConfigurationClassForItem:(id)a3;
-- (double)cellHeightForIndexPath:(id)a3;
-- (id)_itemOfferButtonForCell:(id)a3 item:(id)a4;
-- (id)cellConfigurationForIndex:(int64_t)a3 item:(id)a4;
-- (id)cellForIndexPath:(id)a3;
-- (id)headerViewForSection:(int64_t)a3;
+- (BOOL)_shouldShowItemOfferButtonForItem:(id)item;
+- (BOOL)canDeleteIndexPath:(id)path;
+- (BOOL)canSelectIndexPath:(id)path;
+- (BOOL)deleteIndexPath:(id)path;
+- (Class)cellClassForItem:(id)item reuseIdentifier:(id *)identifier;
+- (Class)cellConfigurationClassForItem:(id)item;
+- (double)cellHeightForIndexPath:(id)path;
+- (id)_itemOfferButtonForCell:(id)cell item:(id)item;
+- (id)cellConfigurationForIndex:(int64_t)index item:(id)item;
+- (id)cellForIndexPath:(id)path;
+- (id)headerViewForSection:(int64_t)section;
 - (id)sectionIndexTitles;
-- (id)titleForDeleteConfirmationForIndexPath:(id)a3;
-- (id)titleForHeaderInSection:(int64_t)a3;
-- (int64_t)numberOfRowsInSection:(int64_t)a3;
+- (id)titleForDeleteConfirmationForIndexPath:(id)path;
+- (id)titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfRowsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
-- (int64_t)sectionIndexForIndexTitle:(id)a3 atIndex:(int64_t)a4;
-- (void)_configureLoadMoreCell:(id)a3 forItem:(id)a4;
-- (void)configureCell:(id)a3 forIndexPath:(id)a4;
+- (int64_t)sectionIndexForIndexTitle:(id)title atIndex:(int64_t)index;
+- (void)_configureLoadMoreCell:(id)cell forItem:(id)item;
+- (void)configureCell:(id)cell forIndexPath:(id)path;
 - (void)dealloc;
 - (void)reloadCellContexts;
 - (void)reloadData;
-- (void)setStructuredPage:(id)a3;
+- (void)setStructuredPage:(id)page;
 @end
 
 @implementation SUStructuredPageTableDataSource
@@ -33,40 +33,40 @@
   [(SUTableDataSource *)&v3 dealloc];
 }
 
-- (Class)cellClassForItem:(id)a3 reuseIdentifier:(id *)a4
+- (Class)cellClassForItem:(id)item reuseIdentifier:(id *)identifier
 {
-  v5 = [a3 itemType];
+  itemType = [item itemType];
   result = objc_opt_class();
-  if (a4)
+  if (identifier)
   {
     v7 = @"su0";
-    if (v5 == 8)
+    if (itemType == 8)
     {
       v7 = @"su1";
     }
 
-    *a4 = v7;
+    *identifier = v7;
   }
 
   return result;
 }
 
-- (Class)cellConfigurationClassForItem:(id)a3
+- (Class)cellConfigurationClassForItem:(id)item
 {
-  v4 = [a3 itemType];
-  if (v4 <= 8)
+  itemType = [item itemType];
+  if (itemType <= 8)
   {
-    if ((v4 - 4) < 2 || v4 == 8)
+    if ((itemType - 4) < 2 || itemType == 8)
     {
       goto LABEL_8;
     }
 
 LABEL_11:
-    NSLog(&cfstr_UnknownItemTyp.isa, [a3 itemType]);
+    NSLog(&cfstr_UnknownItemTyp.isa, [item itemType]);
     return 0;
   }
 
-  if (v4 != 9 && v4 != 10)
+  if (itemType != 9 && itemType != 10)
   {
     goto LABEL_11;
   }
@@ -76,35 +76,35 @@ LABEL_8:
   return objc_opt_class();
 }
 
-- (id)cellConfigurationForIndex:(int64_t)a3 item:(id)a4
+- (id)cellConfigurationForIndex:(int64_t)index item:(id)item
 {
-  v7 = [(SUStructuredPageTableDataSource *)self cellConfigurationClassForItem:a4];
+  v7 = [(SUStructuredPageTableDataSource *)self cellConfigurationClassForItem:item];
   if (!v7)
   {
     return 0;
   }
 
-  v8 = [(SUTableDataSource *)self cachedConfigurationForClass:v7 index:a3];
-  [v8 setRepresentedObject:a4];
+  v8 = [(SUTableDataSource *)self cachedConfigurationForClass:v7 index:index];
+  [v8 setRepresentedObject:item];
   return v8;
 }
 
-- (void)setStructuredPage:(id)a3
+- (void)setStructuredPage:(id)page
 {
   structuredPage = self->_structuredPage;
-  if (structuredPage != a3)
+  if (structuredPage != page)
   {
 
-    v6 = a3;
-    self->_structuredPage = v6;
-    v7 = [(SUStructuredPage *)v6 itemList];
+    pageCopy = page;
+    self->_structuredPage = pageCopy;
+    itemList = [(SUStructuredPage *)pageCopy itemList];
     v8 = [(SUStructuredPageTableDataSource *)self tableViewStyle]!= 1;
 
-    [(SUItemList *)v7 setIgnoresEmptySections:v8];
+    [(SUItemList *)itemList setIgnoresEmptySections:v8];
   }
 }
 
-- (BOOL)canDeleteIndexPath:(id)a3
+- (BOOL)canDeleteIndexPath:(id)path
 {
   if ([objc_msgSend(-[SUItemList itemAtIndexPath:](-[SUStructuredPage itemList](self->_structuredPage "itemList")])
   {
@@ -113,10 +113,10 @@ LABEL_8:
 
   v6.receiver = self;
   v6.super_class = SUStructuredPageTableDataSource;
-  return [(SUTableDataSource *)&v6 canDeleteIndexPath:a3];
+  return [(SUTableDataSource *)&v6 canDeleteIndexPath:path];
 }
 
-- (BOOL)canSelectIndexPath:(id)a3
+- (BOOL)canSelectIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = SUStructuredPageTableDataSource;
@@ -130,12 +130,12 @@ LABEL_8:
   return v5;
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
   v8 = 0;
-  v4 = [(SUStructuredPageTableDataSource *)self cellClassForItem:[(SUItemList *)[(SUStructuredPage *)self->_structuredPage itemList] itemAtIndexPath:a3] reuseIdentifier:&v8];
-  v5 = [(SUTableDataSource *)self cellReuseSource];
-  result = [v5 dequeueReusableCellWithIdentifier:v8];
+  v4 = [(SUStructuredPageTableDataSource *)self cellClassForItem:[(SUItemList *)[(SUStructuredPage *)self->_structuredPage itemList] itemAtIndexPath:path] reuseIdentifier:&v8];
+  cellReuseSource = [(SUTableDataSource *)self cellReuseSource];
+  result = [cellReuseSource dequeueReusableCellWithIdentifier:v8];
   if (!result)
   {
     v7 = [v4 alloc];
@@ -145,9 +145,9 @@ LABEL_8:
   return result;
 }
 
-- (double)cellHeightForIndexPath:(id)a3
+- (double)cellHeightForIndexPath:(id)path
 {
-  v4 = [(SUItemList *)[(SUStructuredPage *)self->_structuredPage itemList] itemAtIndexPath:a3];
+  v4 = [(SUItemList *)[(SUStructuredPage *)self->_structuredPage itemList] itemAtIndexPath:path];
   v5 = [(SUStructuredPageTableDataSource *)self cellConfigurationClassForItem:v4];
   v6 = [-[SUVariableCellConfigurationCache cacheForClass:](self->super._configurationCache cacheForClass:{v5), "cellContext"}];
   [v6 setTableViewStyle:{-[SUStructuredPageTableDataSource tableViewStyle](self, "tableViewStyle")}];
@@ -156,18 +156,18 @@ LABEL_8:
   return result;
 }
 
-- (void)configureCell:(id)a3 forIndexPath:(id)a4
+- (void)configureCell:(id)cell forIndexPath:(id)path
 {
-  v7 = [(SUTableDataSource *)self cellReuseSource];
-  v8 = [(SUStructuredPage *)self->_structuredPage itemList];
-  v9 = [(SUItemList *)v8 itemAtIndexPath:a4];
+  cellReuseSource = [(SUTableDataSource *)self cellReuseSource];
+  itemList = [(SUStructuredPage *)self->_structuredPage itemList];
+  v9 = [(SUItemList *)itemList itemAtIndexPath:path];
   if ([(SUStructuredPageTableDataSource *)self _shouldShowItemOfferButtonForItem:v9])
   {
-    v10 = [(SUStructuredPageTableDataSource *)self _itemOfferButtonForCell:a3 item:v9];
+    v10 = [(SUStructuredPageTableDataSource *)self _itemOfferButtonForCell:cell item:v9];
     if ([v10 isShowingConfirmation])
     {
       [v10 setShowingConfirmation:0 duration:0.0];
-      [a3 setNeedsLayout];
+      [cell setNeedsLayout];
     }
   }
 
@@ -176,91 +176,91 @@ LABEL_8:
     v10 = 0;
   }
 
-  v11 = [v7 globalRowForRowAtIndexPath:a4];
+  v11 = [cellReuseSource globalRowForRowAtIndexPath:path];
   v12 = [(SUStructuredPageTableDataSource *)self cellConfigurationForIndex:v11 item:v9];
-  [a3 setAccessoryView:v10];
-  [a3 setConfiguration:v12];
+  [cell setAccessoryView:v10];
+  [cell setConfiguration:v12];
   v13 = self->_style == 1 && [v9 itemType] == 3;
-  [a3 setHighlightsOnlyContentView:v13];
-  v18[0] = [a4 row];
-  v18[1] = [-[SUItemList itemsForSectionAtIndex:](v8 itemsForSectionAtIndex:{objc_msgSend(a4, "section")), "count"}];
+  [cell setHighlightsOnlyContentView:v13];
+  v18[0] = [path row];
+  v18[1] = [-[SUItemList itemsForSectionAtIndex:](itemList itemsForSectionAtIndex:{objc_msgSend(path, "section")), "count"}];
   v18[2] = v11;
-  v18[3] = [(SUItemList *)v8 numberOfItems];
-  [a3 setPosition:v18];
-  v14 = [v9 itemType];
-  if (v14 <= 3)
+  v18[3] = [(SUItemList *)itemList numberOfItems];
+  [cell setPosition:v18];
+  itemType = [v9 itemType];
+  if (itemType <= 3)
   {
-    if (v14 == 1)
+    if (itemType == 1)
     {
-      [a3 setAccessoryType:0];
-      [a3 setHighlightsOnlyContentView:{-[SUStructuredPageTableDataSource canSelectIndexPath:](self, "canSelectIndexPath:", a4)}];
+      [cell setAccessoryType:0];
+      [cell setHighlightsOnlyContentView:{-[SUStructuredPageTableDataSource canSelectIndexPath:](self, "canSelectIndexPath:", path)}];
       return;
     }
 
-    if (v14 != 2)
+    if (itemType != 2)
     {
-      if (v14 == 3 && self->_style == 1)
+      if (itemType == 3 && self->_style == 1)
       {
-        [a3 setAccessoryType:0];
+        [cell setAccessoryType:0];
         goto LABEL_24;
       }
 
 LABEL_18:
       v17 = !v10 && ![(SUStructuredPage *)self->_structuredPage wantsIndexBar];
-      [a3 setAccessoryType:v17];
-      [a3 setDrawAsDisabled:0];
-      [a3 setHighlightsOnlyContentView:0];
+      [cell setAccessoryType:v17];
+      [cell setDrawAsDisabled:0];
+      [cell setHighlightsOnlyContentView:0];
       if ([v10 isUserInteractionEnabled])
       {
         v16 = 1;
 LABEL_25:
-        v15 = a3;
+        cellCopy3 = cell;
         goto LABEL_29;
       }
 
 LABEL_24:
-      v16 = [(SUStructuredPageTableDataSource *)self canSelectIndexPath:a4];
+      v16 = [(SUStructuredPageTableDataSource *)self canSelectIndexPath:path];
       goto LABEL_25;
     }
 
-    [a3 setAccessoryType:0];
+    [cell setAccessoryType:0];
 LABEL_28:
-    v15 = a3;
+    cellCopy3 = cell;
     v16 = 0;
     goto LABEL_29;
   }
 
-  if ((v14 - 9) < 2)
+  if ((itemType - 9) < 2)
   {
-    [a3 setAccessoryType:0];
-    [a3 setDrawAsDisabled:0];
+    [cell setAccessoryType:0];
+    [cell setDrawAsDisabled:0];
     goto LABEL_28;
   }
 
-  if (v14 == 4)
+  if (itemType == 4)
   {
-    [a3 setAccessoryType:0];
-    [(SUStructuredPageTableDataSource *)self _configureLoadMoreCell:a3 forItem:v9];
+    [cell setAccessoryType:0];
+    [(SUStructuredPageTableDataSource *)self _configureLoadMoreCell:cell forItem:v9];
     return;
   }
 
-  if (v14 != 8)
+  if (itemType != 8)
   {
     goto LABEL_18;
   }
 
-  [a3 setAccessoryType:0];
-  [a3 setBackgroundView:0];
-  v15 = a3;
+  [cell setAccessoryType:0];
+  [cell setBackgroundView:0];
+  cellCopy3 = cell;
   v16 = 1;
 LABEL_29:
-  [v15 setUserInteractionEnabled:v16];
+  [cellCopy3 setUserInteractionEnabled:v16];
 }
 
-- (BOOL)deleteIndexPath:(id)a3
+- (BOOL)deleteIndexPath:(id)path
 {
-  v5 = [(SUStructuredPage *)self->_structuredPage itemList];
-  v6 = [-[SUItemList itemAtIndexPath:](v5 itemAtIndexPath:{a3), "firstItemLinkForType:", 4}];
+  itemList = [(SUStructuredPage *)self->_structuredPage itemList];
+  v6 = [-[SUItemList itemAtIndexPath:](itemList itemAtIndexPath:{path), "firstItemLinkForType:", 4}];
   if ([v6 URL])
   {
     v7 = objc_alloc_init(MEMORY[0x1E69E47E0]);
@@ -268,7 +268,7 @@ LABEL_29:
     [v7 setRequestProperties:v8];
     [objc_msgSend(MEMORY[0x1E69E4798] "mainQueue")];
 
-    [(SUItemList *)v5 removeItemAtIndexPath:a3];
+    [(SUItemList *)itemList removeItemAtIndexPath:path];
     return 1;
   }
 
@@ -276,26 +276,26 @@ LABEL_29:
   {
     v10.receiver = self;
     v10.super_class = SUStructuredPageTableDataSource;
-    return [(SUTableDataSource *)&v10 deleteIndexPath:a3];
+    return [(SUTableDataSource *)&v10 deleteIndexPath:path];
   }
 }
 
-- (id)headerViewForSection:(int64_t)a3
+- (id)headerViewForSection:(int64_t)section
 {
-  if ([(NSMutableArray *)self->_cachedHeaderViews count]> a3 && (v5 = [(NSMutableArray *)self->_cachedHeaderViews objectAtIndex:a3]) != 0 && (v6 = v5, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (v6 = [(SUStructuredPageTableDataSource *)self newHeaderViewForSection:a3]) != 0)
+  if ([(NSMutableArray *)self->_cachedHeaderViews count]> section && (v5 = [(NSMutableArray *)self->_cachedHeaderViews objectAtIndex:section]) != 0 && (v6 = v5, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (v6 = [(SUStructuredPageTableDataSource *)self newHeaderViewForSection:section]) != 0)
   {
     if (!self->_cachedHeaderViews)
     {
       self->_cachedHeaderViews = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
 
-    v7 = [MEMORY[0x1E695DFB0] null];
-    while ([(NSMutableArray *)self->_cachedHeaderViews count]<= a3)
+    null = [MEMORY[0x1E695DFB0] null];
+    while ([(NSMutableArray *)self->_cachedHeaderViews count]<= section)
     {
-      [(NSMutableArray *)self->_cachedHeaderViews addObject:v7];
+      [(NSMutableArray *)self->_cachedHeaderViews addObject:null];
     }
 
-    [(NSMutableArray *)self->_cachedHeaderViews replaceObjectAtIndex:a3 withObject:v6];
+    [(NSMutableArray *)self->_cachedHeaderViews replaceObjectAtIndex:section withObject:v6];
   }
 
   return v6;
@@ -303,14 +303,14 @@ LABEL_29:
 
 - (int64_t)numberOfSections
 {
-  v2 = [(SUStructuredPage *)self->_structuredPage itemList];
+  itemList = [(SUStructuredPage *)self->_structuredPage itemList];
 
-  return [(SUItemList *)v2 numberOfSections];
+  return [(SUItemList *)itemList numberOfSections];
 }
 
-- (int64_t)numberOfRowsInSection:(int64_t)a3
+- (int64_t)numberOfRowsInSection:(int64_t)section
 {
-  v3 = [(SUItemList *)[(SUStructuredPage *)self->_structuredPage itemList] itemsForSectionAtIndex:a3];
+  v3 = [(SUItemList *)[(SUStructuredPage *)self->_structuredPage itemList] itemsForSectionAtIndex:section];
 
   return [v3 count];
 }
@@ -321,23 +321,23 @@ LABEL_29:
   v25.receiver = self;
   v25.super_class = SUStructuredPageTableDataSource;
   [(SUTableDataSource *)&v25 reloadCellContexts];
-  v3 = [(SUTableDataSource *)self imageCache];
-  v4 = [(SUTableDataSource *)self imagePool];
+  imageCache = [(SUTableDataSource *)self imageCache];
+  imagePool = [(SUTableDataSource *)self imagePool];
   v5 = objc_alloc_init(SUItemCellContext);
-  [(SUArtworkCellContext *)v5 setImageCache:v3];
-  v19 = v4;
-  [(SUArtworkCellContext *)v5 setImagePool:v4];
+  [(SUArtworkCellContext *)v5 setImageCache:imageCache];
+  v19 = imagePool;
+  [(SUArtworkCellContext *)v5 setImagePool:imagePool];
   [(SUVariableCellConfigurationCache *)self->super._configurationCache setCellContext:v5];
 
-  v6 = [(SUItemList *)[(SUStructuredPage *)self->_structuredPage itemList] copyItems];
+  copyItems = [(SUItemList *)[(SUStructuredPage *)self->_structuredPage itemList] copyItems];
   v7 = objc_alloc_init(SUItemOfferButton);
   self->_offerButtonWidth = 0.0;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v6;
-  v8 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  obj = copyItems;
+  v8 = [copyItems countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -356,10 +356,10 @@ LABEL_29:
         v14 = [(SUVariableCellConfigurationCache *)self->super._configurationCache cacheForClass:v13];
         if (![v14 cellContext])
         {
-          v15 = [(objc_class *)v13 copyDefaultContext];
-          [v15 setImageCache:v3];
-          [v15 setImagePool:v19];
-          [v14 setCellContext:v15];
+          copyDefaultContext = [(objc_class *)v13 copyDefaultContext];
+          [copyDefaultContext setImageCache:imageCache];
+          [copyDefaultContext setImagePool:v19];
+          [v14 setCellContext:copyDefaultContext];
         }
 
         if ([(SUStructuredPageTableDataSource *)self _shouldShowItemOfferButtonForItem:v12])
@@ -398,11 +398,11 @@ LABEL_29:
   [(SUTableDataSource *)&v3 reloadData];
 }
 
-- (int64_t)sectionIndexForIndexTitle:(id)a3 atIndex:(int64_t)a4
+- (int64_t)sectionIndexForIndexTitle:(id)title atIndex:(int64_t)index
 {
-  v6 = [(SUStructuredPage *)self->_structuredPage itemList];
+  itemList = [(SUStructuredPage *)self->_structuredPage itemList];
 
-  return [(SUItemList *)v6 sectionIndexForIndexTitle:a3 atIndex:a4];
+  return [(SUItemList *)itemList sectionIndexForIndexTitle:title atIndex:index];
 }
 
 - (id)sectionIndexTitles
@@ -412,89 +412,89 @@ LABEL_29:
     return 0;
   }
 
-  v3 = [(SUStructuredPage *)self->_structuredPage itemList];
+  itemList = [(SUStructuredPage *)self->_structuredPage itemList];
 
-  return [(SUItemList *)v3 sectionIndexTitles];
+  return [(SUItemList *)itemList sectionIndexTitles];
 }
 
-- (id)titleForDeleteConfirmationForIndexPath:(id)a3
+- (id)titleForDeleteConfirmationForIndexPath:(id)path
 {
   result = [objc_msgSend(-[SUItemList itemAtIndexPath:](-[SUStructuredPage itemList](self->_structuredPage "itemList")];
   if (!result)
   {
     v6.receiver = self;
     v6.super_class = SUStructuredPageTableDataSource;
-    return [(SUTableDataSource *)&v6 titleForDeleteConfirmationForIndexPath:a3];
+    return [(SUTableDataSource *)&v6 titleForDeleteConfirmationForIndexPath:path];
   }
 
   return result;
 }
 
-- (id)titleForHeaderInSection:(int64_t)a3
+- (id)titleForHeaderInSection:(int64_t)section
 {
-  v3 = [(SUItemList *)[(SUStructuredPage *)self->_structuredPage itemList] sectionItemForSectionAtIndex:a3];
+  v3 = [(SUItemList *)[(SUStructuredPage *)self->_structuredPage itemList] sectionItemForSectionAtIndex:section];
 
   return [v3 title];
 }
 
-- (void)_configureLoadMoreCell:(id)a3 forItem:(id)a4
+- (void)_configureLoadMoreCell:(id)cell forItem:(id)item
 {
-  if (self->_activeLoadMoreItem == a4)
+  if (self->_activeLoadMoreItem == item)
   {
-    v5 = [a3 accessoryView];
-    if (!v5)
+    accessoryView = [cell accessoryView];
+    if (!accessoryView)
     {
       v6 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:2];
       [v6 sizeToFit];
       [v6 startAnimating];
-      v5 = v6;
+      accessoryView = v6;
     }
   }
 
   else
   {
-    v5 = 0;
+    accessoryView = 0;
   }
 
-  [a3 setAccessoryView:v5];
-  v7 = v5 != 0;
-  v8 = v5 == 0;
-  [a3 setDrawAsDisabled:v7];
+  [cell setAccessoryView:accessoryView];
+  v7 = accessoryView != 0;
+  v8 = accessoryView == 0;
+  [cell setDrawAsDisabled:v7];
 
-  [a3 setUserInteractionEnabled:v8];
+  [cell setUserInteractionEnabled:v8];
 }
 
-- (id)_itemOfferButtonForCell:(id)a3 item:(id)a4
+- (id)_itemOfferButtonForCell:(id)cell item:(id)item
 {
-  v5 = [a3 itemOfferButton];
-  [v5 addTarget:0 action:sel_itemOfferButtonAction_ forControlEvents:64];
-  [v5 setAnimationHorizontalAlignment:2];
-  [v5 configureForItem:a4 offer:{objc_msgSend(a4, "defaultStoreOffer")}];
-  [v5 frame];
-  [v5 setFrame:?];
-  return v5;
+  itemOfferButton = [cell itemOfferButton];
+  [itemOfferButton addTarget:0 action:sel_itemOfferButtonAction_ forControlEvents:64];
+  [itemOfferButton setAnimationHorizontalAlignment:2];
+  [itemOfferButton configureForItem:item offer:{objc_msgSend(item, "defaultStoreOffer")}];
+  [itemOfferButton frame];
+  [itemOfferButton setFrame:?];
+  return itemOfferButton;
 }
 
-- (BOOL)_shouldShowItemOfferButtonForItem:(id)a3
+- (BOOL)_shouldShowItemOfferButtonForItem:(id)item
 {
-  v5 = [a3 defaultStoreOffer];
-  if (-[SUPurchaseManager itemIdentifierIsPurchased:](-[SUClientInterface purchaseManager](-[SUStructuredPageTableDataSource clientInterface](self, "clientInterface"), "purchaseManager"), "itemIdentifierIsPurchased:", [a3 itemIdentifier]))
+  defaultStoreOffer = [item defaultStoreOffer];
+  if (-[SUPurchaseManager itemIdentifierIsPurchased:](-[SUClientInterface purchaseManager](-[SUStructuredPageTableDataSource clientInterface](self, "clientInterface"), "purchaseManager"), "itemIdentifierIsPurchased:", [item itemIdentifier]))
   {
     return 0;
   }
 
-  if (![v5 priceDisplay])
+  if (![defaultStoreOffer priceDisplay])
   {
     return 0;
   }
 
-  v6 = [v5 actionType];
-  if (![v6 isEqualToString:*MEMORY[0x1E69D4D08]])
+  actionType = [defaultStoreOffer actionType];
+  if (![actionType isEqualToString:*MEMORY[0x1E69D4D08]])
   {
     return 0;
   }
 
-  return [(SUStructuredPageTableDataSource *)self canShowItemOfferButtonForItem:a3];
+  return [(SUStructuredPageTableDataSource *)self canShowItemOfferButtonForItem:item];
 }
 
 @end

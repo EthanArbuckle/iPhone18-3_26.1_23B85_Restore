@@ -1,41 +1,41 @@
 @interface SQLiteMemoryEntity
-+ (id)anyOnConnection:(id)a3 predicate:(id)a4;
-+ (id)queryOnConnection:(id)a3 predicate:(id)a4 orderingProperties:(id)a5;
-+ (id)queryOnConnection:(id)a3 predicate:(id)a4 orderingProperties:(id)a5 orderingDirections:(id)a6;
-- (BOOL)BOOLValueForProperty:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SQLiteMemoryEntity)initWithDatabaseEntity:(id)a3 properties:(id)a4;
-- (SQLiteMemoryEntity)initWithDatabaseID:(int64_t)a3 propertyValues:(id)a4 externalPropertyValues:(id)a5;
-- (id)arrayValueForProperty:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dateValueForProperty:(id)a3;
++ (id)anyOnConnection:(id)connection predicate:(id)predicate;
++ (id)queryOnConnection:(id)connection predicate:(id)predicate orderingProperties:(id)properties;
++ (id)queryOnConnection:(id)connection predicate:(id)predicate orderingProperties:(id)properties orderingDirections:(id)directions;
+- (BOOL)BOOLValueForProperty:(id)property;
+- (BOOL)isEqual:(id)equal;
+- (SQLiteMemoryEntity)initWithDatabaseEntity:(id)entity properties:(id)properties;
+- (SQLiteMemoryEntity)initWithDatabaseID:(int64_t)d propertyValues:(id)values externalPropertyValues:(id)propertyValues;
+- (id)arrayValueForProperty:(id)property;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dateValueForProperty:(id)property;
 - (id)description;
-- (id)dictValueForProperty:(id)a3;
-- (id)numberValueForProperty:(id)a3;
-- (id)stringValueForProperty:(id)a3;
-- (id)urlValueForProperty:(id)a3;
-- (id)uuidValueForProperty:(id)a3;
-- (int64_t)integerValueForProperty:(id)a3;
-- (void)reloadFromDatabaseEntity:(id)a3 properties:(id)a4;
-- (void)setValue:(id)a3 forExternalProperty:(id)a4;
-- (void)setValue:(id)a3 forProperty:(id)a4;
-- (void)setValues:(id *)a3 forExternalProperties:(const void *)a4 count:(int64_t)a5;
-- (void)setValues:(id *)a3 forProperties:(const void *)a4 count:(int64_t)a5;
+- (id)dictValueForProperty:(id)property;
+- (id)numberValueForProperty:(id)property;
+- (id)stringValueForProperty:(id)property;
+- (id)urlValueForProperty:(id)property;
+- (id)uuidValueForProperty:(id)property;
+- (int64_t)integerValueForProperty:(id)property;
+- (void)reloadFromDatabaseEntity:(id)entity properties:(id)properties;
+- (void)setValue:(id)value forExternalProperty:(id)property;
+- (void)setValue:(id)value forProperty:(id)property;
+- (void)setValues:(id *)values forExternalProperties:(const void *)properties count:(int64_t)count;
+- (void)setValues:(id *)values forProperties:(const void *)properties count:(int64_t)count;
 @end
 
 @implementation SQLiteMemoryEntity
 
-+ (id)anyOnConnection:(id)a3 predicate:(id)a4
++ (id)anyOnConnection:(id)connection predicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  predicateCopy = predicate;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_10000A1C8;
   v16 = sub_10000A1D8;
   v17 = 0;
-  v8 = [a1 queryOnConnection:v6 predicate:v7];
+  v8 = [self queryOnConnection:connectionCopy predicate:predicateCopy];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000AAC0;
@@ -49,51 +49,51 @@
   return v9;
 }
 
-+ (id)queryOnConnection:(id)a3 predicate:(id)a4 orderingProperties:(id)a5
++ (id)queryOnConnection:(id)connection predicate:(id)predicate orderingProperties:(id)properties
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = -[SQLiteQueryDescriptor initWithEntityClass:memoryEntityClass:]([SQLiteQueryDescriptor alloc], "initWithEntityClass:memoryEntityClass:", [a1 databaseEntityClass], a1);
-  [(SQLiteQueryDescriptor *)v11 setOrderingProperties:v8];
+  propertiesCopy = properties;
+  predicateCopy = predicate;
+  connectionCopy = connection;
+  v11 = -[SQLiteQueryDescriptor initWithEntityClass:memoryEntityClass:]([SQLiteQueryDescriptor alloc], "initWithEntityClass:memoryEntityClass:", [self databaseEntityClass], self);
+  [(SQLiteQueryDescriptor *)v11 setOrderingProperties:propertiesCopy];
 
-  [(SQLiteQueryDescriptor *)v11 setPredicate:v9];
-  v12 = [[SQLiteQuery alloc] initOnConnection:v10 descriptor:v11];
+  [(SQLiteQueryDescriptor *)v11 setPredicate:predicateCopy];
+  v12 = [[SQLiteQuery alloc] initOnConnection:connectionCopy descriptor:v11];
 
   return v12;
 }
 
-+ (id)queryOnConnection:(id)a3 predicate:(id)a4 orderingProperties:(id)a5 orderingDirections:(id)a6
++ (id)queryOnConnection:(id)connection predicate:(id)predicate orderingProperties:(id)properties orderingDirections:(id)directions
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = -[SQLiteQueryDescriptor initWithEntityClass:memoryEntityClass:]([SQLiteQueryDescriptor alloc], "initWithEntityClass:memoryEntityClass:", [a1 databaseEntityClass], a1);
-  [(SQLiteQueryDescriptor *)v14 setOrderingProperties:v11];
+  directionsCopy = directions;
+  propertiesCopy = properties;
+  predicateCopy = predicate;
+  connectionCopy = connection;
+  v14 = -[SQLiteQueryDescriptor initWithEntityClass:memoryEntityClass:]([SQLiteQueryDescriptor alloc], "initWithEntityClass:memoryEntityClass:", [self databaseEntityClass], self);
+  [(SQLiteQueryDescriptor *)v14 setOrderingProperties:propertiesCopy];
 
-  [(SQLiteQueryDescriptor *)v14 setOrderingDirections:v10];
-  [(SQLiteQueryDescriptor *)v14 setPredicate:v12];
+  [(SQLiteQueryDescriptor *)v14 setOrderingDirections:directionsCopy];
+  [(SQLiteQueryDescriptor *)v14 setPredicate:predicateCopy];
 
-  v15 = [[SQLiteQuery alloc] initOnConnection:v13 descriptor:v14];
+  v15 = [[SQLiteQuery alloc] initOnConnection:connectionCopy descriptor:v14];
 
   return v15;
 }
 
-- (SQLiteMemoryEntity)initWithDatabaseID:(int64_t)a3 propertyValues:(id)a4 externalPropertyValues:(id)a5
+- (SQLiteMemoryEntity)initWithDatabaseID:(int64_t)d propertyValues:(id)values externalPropertyValues:(id)propertyValues
 {
-  v8 = a4;
-  v9 = a5;
+  valuesCopy = values;
+  propertyValuesCopy = propertyValues;
   v19.receiver = self;
   v19.super_class = SQLiteMemoryEntity;
   v10 = [(SQLiteMemoryEntity *)&v19 init];
   v11 = v10;
   if (v10)
   {
-    v10->_databaseID = a3;
-    if (v8)
+    v10->_databaseID = d;
+    if (valuesCopy)
     {
-      v12 = v8;
+      v12 = valuesCopy;
     }
 
     else
@@ -105,9 +105,9 @@
     propertyValues = v11->_propertyValues;
     v11->_propertyValues = v13;
 
-    if (v9)
+    if (propertyValuesCopy)
     {
-      v15 = v9;
+      v15 = propertyValuesCopy;
     }
 
     else
@@ -123,22 +123,22 @@
   return v11;
 }
 
-- (SQLiteMemoryEntity)initWithDatabaseEntity:(id)a3 properties:(id)a4
+- (SQLiteMemoryEntity)initWithDatabaseEntity:(id)entity properties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[SQLiteMemoryEntity initWithDatabaseID:propertyValues:externalPropertyValues:](self, "initWithDatabaseID:propertyValues:externalPropertyValues:", [v6 persistentID], &__NSDictionary0__struct, &__NSDictionary0__struct);
-  if (v8 && [v7 count])
+  entityCopy = entity;
+  propertiesCopy = properties;
+  v8 = -[SQLiteMemoryEntity initWithDatabaseID:propertyValues:externalPropertyValues:](self, "initWithDatabaseID:propertyValues:externalPropertyValues:", [entityCopy persistentID], &__NSDictionary0__struct, &__NSDictionary0__struct);
+  if (v8 && [propertiesCopy count])
   {
-    [(SQLiteMemoryEntity *)v8 reloadFromDatabaseEntity:v6 properties:v7];
+    [(SQLiteMemoryEntity *)v8 reloadFromDatabaseEntity:entityCopy properties:propertiesCopy];
   }
 
   return v8;
 }
 
-- (void)reloadFromDatabaseEntity:(id)a3 properties:(id)a4
+- (void)reloadFromDatabaseEntity:(id)entity properties:(id)properties
 {
-  v5 = [a3 getValuesForProperties:a4];
+  v5 = [entity getValuesForProperties:properties];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000E0F8;
@@ -147,76 +147,76 @@
   [v5 enumerateKeysAndObjectsUsingBlock:v6];
 }
 
-- (void)setValue:(id)a3 forProperty:(id)a4
+- (void)setValue:(id)value forProperty:(id)property
 {
-  v7 = a3;
-  v8 = a4;
-  v5 = v7;
-  [(SQLiteMemoryEntity *)self setValues:&v7 forProperties:&v8 count:1];
-  v6 = v7;
+  valueCopy = value;
+  propertyCopy = property;
+  v5 = valueCopy;
+  [(SQLiteMemoryEntity *)self setValues:&valueCopy forProperties:&propertyCopy count:1];
+  v6 = valueCopy;
 }
 
-- (void)setValues:(id *)a3 forProperties:(const void *)a4 count:(int64_t)a5
+- (void)setValues:(id *)values forProperties:(const void *)properties count:(int64_t)count
 {
-  if (a5 >= 1)
+  if (count >= 1)
   {
-    v5 = a5;
+    countCopy = count;
     do
     {
       propertyValues = self->_propertyValues;
-      if (*a3)
+      if (*values)
       {
-        [(NSMutableDictionary *)self->_propertyValues setObject:*a3 forKey:*a4];
+        [(NSMutableDictionary *)self->_propertyValues setObject:*values forKey:*properties];
       }
 
       else
       {
         v10 = +[NSNull null];
-        [(NSMutableDictionary *)propertyValues setObject:v10 forKey:*a4];
+        [(NSMutableDictionary *)propertyValues setObject:v10 forKey:*properties];
       }
 
-      ++a4;
-      ++a3;
-      --v5;
+      ++properties;
+      ++values;
+      --countCopy;
     }
 
-    while (v5);
+    while (countCopy);
   }
 }
 
-- (void)setValue:(id)a3 forExternalProperty:(id)a4
+- (void)setValue:(id)value forExternalProperty:(id)property
 {
-  v7 = a3;
-  v8 = a4;
-  v5 = v7;
-  [(SQLiteMemoryEntity *)self setValues:&v7 forExternalProperties:&v8 count:1];
-  v6 = v7;
+  valueCopy = value;
+  propertyCopy = property;
+  v5 = valueCopy;
+  [(SQLiteMemoryEntity *)self setValues:&valueCopy forExternalProperties:&propertyCopy count:1];
+  v6 = valueCopy;
 }
 
-- (void)setValues:(id *)a3 forExternalProperties:(const void *)a4 count:(int64_t)a5
+- (void)setValues:(id *)values forExternalProperties:(const void *)properties count:(int64_t)count
 {
-  if (a5 >= 1)
+  if (count >= 1)
   {
-    v5 = a5;
+    countCopy = count;
     do
     {
       externalPropertyValues = self->_externalPropertyValues;
-      if (*a3)
+      if (*values)
       {
-        [(NSMutableDictionary *)externalPropertyValues setObject:*a3 forKey:*a4];
+        [(NSMutableDictionary *)externalPropertyValues setObject:*values forKey:*properties];
       }
 
       else
       {
-        [(NSMutableDictionary *)externalPropertyValues removeObjectForKey:*a4];
+        [(NSMutableDictionary *)externalPropertyValues removeObjectForKey:*properties];
       }
 
-      ++a4;
-      ++a3;
-      --v5;
+      ++properties;
+      ++values;
+      --countCopy;
     }
 
-    while (v5);
+    while (countCopy);
   }
 }
 
@@ -230,19 +230,19 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (v5 == objc_opt_class() && (v6 = -[SQLiteMemoryEntity databaseID](self, "databaseID"), v6 == [v4 databaseID]))
+  if (v5 == objc_opt_class() && (v6 = -[SQLiteMemoryEntity databaseID](self, "databaseID"), v6 == [equalCopy databaseID]))
   {
-    v7 = [(SQLiteMemoryEntity *)self propertyValues];
-    v8 = [v4 propertyValues];
-    if ([v7 isEqualToDictionary:v8])
+    propertyValues = [(SQLiteMemoryEntity *)self propertyValues];
+    propertyValues2 = [equalCopy propertyValues];
+    if ([propertyValues isEqualToDictionary:propertyValues2])
     {
-      v9 = [(SQLiteMemoryEntity *)self externalPropertyValues];
-      v10 = [v4 externalPropertyValues];
-      v11 = [v9 isEqualToDictionary:v10];
+      externalPropertyValues = [(SQLiteMemoryEntity *)self externalPropertyValues];
+      externalPropertyValues2 = [equalCopy externalPropertyValues];
+      v11 = [externalPropertyValues isEqualToDictionary:externalPropertyValues2];
     }
 
     else
@@ -259,9 +259,9 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   databaseID = self->_databaseID;
   propertyValues = self->_propertyValues;
   externalPropertyValues = self->_externalPropertyValues;
@@ -269,17 +269,17 @@
   return [v4 initWithDatabaseID:databaseID propertyValues:propertyValues externalPropertyValues:externalPropertyValues];
 }
 
-- (BOOL)BOOLValueForProperty:(id)a3
+- (BOOL)BOOLValueForProperty:(id)property
 {
-  v3 = [(SQLiteMemoryEntity *)self numberValueForProperty:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(SQLiteMemoryEntity *)self numberValueForProperty:property];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)dateValueForProperty:(id)a3
+- (id)dateValueForProperty:(id)property
 {
-  v3 = [(SQLiteMemoryEntity *)self valueForProperty:a3];
+  v3 = [(SQLiteMemoryEntity *)self valueForProperty:property];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -296,17 +296,17 @@
   return v4;
 }
 
-- (int64_t)integerValueForProperty:(id)a3
+- (int64_t)integerValueForProperty:(id)property
 {
-  v3 = [(SQLiteMemoryEntity *)self numberValueForProperty:a3];
-  v4 = [v3 integerValue];
+  v3 = [(SQLiteMemoryEntity *)self numberValueForProperty:property];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (id)numberValueForProperty:(id)a3
+- (id)numberValueForProperty:(id)property
 {
-  v3 = [(SQLiteMemoryEntity *)self valueForProperty:a3];
+  v3 = [(SQLiteMemoryEntity *)self valueForProperty:property];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -323,9 +323,9 @@
   return v4;
 }
 
-- (id)stringValueForProperty:(id)a3
+- (id)stringValueForProperty:(id)property
 {
-  v3 = [(SQLiteMemoryEntity *)self valueForProperty:a3];
+  v3 = [(SQLiteMemoryEntity *)self valueForProperty:property];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -342,9 +342,9 @@
   return v4;
 }
 
-- (id)uuidValueForProperty:(id)a3
+- (id)uuidValueForProperty:(id)property
 {
-  v3 = [(SQLiteMemoryEntity *)self valueForProperty:a3];
+  v3 = [(SQLiteMemoryEntity *)self valueForProperty:property];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -361,9 +361,9 @@
   return v4;
 }
 
-- (id)urlValueForProperty:(id)a3
+- (id)urlValueForProperty:(id)property
 {
-  v3 = [(SQLiteMemoryEntity *)self valueForProperty:a3];
+  v3 = [(SQLiteMemoryEntity *)self valueForProperty:property];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -380,9 +380,9 @@
   return v4;
 }
 
-- (id)arrayValueForProperty:(id)a3
+- (id)arrayValueForProperty:(id)property
 {
-  v3 = [(SQLiteMemoryEntity *)self valueForProperty:a3];
+  v3 = [(SQLiteMemoryEntity *)self valueForProperty:property];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -399,9 +399,9 @@
   return v4;
 }
 
-- (id)dictValueForProperty:(id)a3
+- (id)dictValueForProperty:(id)property
 {
-  v3 = [(SQLiteMemoryEntity *)self valueForProperty:a3];
+  v3 = [(SQLiteMemoryEntity *)self valueForProperty:property];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

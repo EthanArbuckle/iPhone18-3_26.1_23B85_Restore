@@ -1,14 +1,14 @@
 @interface CKTranscriptNavigationBarController
 - (CKTranscriptNavigationBarController)init;
-- (CKTranscriptNavigationBarController)initWithDelegate:(id)a3 contextProviders:(id)a4 navigationItem:(id)a5 backNavigationItem:(id)a6;
+- (CKTranscriptNavigationBarController)initWithDelegate:(id)delegate contextProviders:(id)providers navigationItem:(id)item backNavigationItem:(id)navigationItem;
 - (CKTranscriptNavigationBarDelegate)delegate;
 - (_TtC7ChatKit34CKTranscriptNavigationBarViewProxy)viewProxy;
-- (void)applyChange:(id)a3;
-- (void)applyChange:(id)a3 animation:(id)a4;
-- (void)configureFindMySessionCoordinatorIfNeededForConversation:(id)a3;
-- (void)configurePocketInteractionForScrollView:(id)a3;
-- (void)setCurrentState:(id)a3;
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3;
+- (void)applyChange:(id)change;
+- (void)applyChange:(id)change animation:(id)animation;
+- (void)configureFindMySessionCoordinatorIfNeededForConversation:(id)conversation;
+- (void)configurePocketInteractionForScrollView:(id)view;
+- (void)setCurrentState:(id)state;
+- (void)setOverrideUserInterfaceStyle:(int64_t)style;
 - (void)transcriptDidDismiss;
 @end
 
@@ -21,20 +21,20 @@
   return Strong;
 }
 
-- (void)setCurrentState:(id)a3
+- (void)setCurrentState:(id)state
 {
   v4 = *(self + OBJC_IVAR___CKTranscriptNavigationBarController_currentState);
-  *(self + OBJC_IVAR___CKTranscriptNavigationBarController_currentState) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___CKTranscriptNavigationBarController_currentState) = state;
+  stateCopy = state;
 }
 
-- (CKTranscriptNavigationBarController)initWithDelegate:(id)a3 contextProviders:(id)a4 navigationItem:(id)a5 backNavigationItem:(id)a6
+- (CKTranscriptNavigationBarController)initWithDelegate:(id)delegate contextProviders:(id)providers navigationItem:(id)item backNavigationItem:(id)navigationItem
 {
   swift_unknownObjectRetain();
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  return sub_190A7B878(a3, v10, v11, a6);
+  providersCopy = providers;
+  itemCopy = item;
+  navigationItemCopy = navigationItem;
+  return sub_190A7B878(delegate, providersCopy, itemCopy, navigationItem);
 }
 
 - (void)transcriptDidDismiss
@@ -46,15 +46,15 @@
   }
 }
 
-- (void)applyChange:(id)a3
+- (void)applyChange:(id)change
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAD53820);
   inited = swift_initStackObject();
   *(inited + 16) = xmmword_190DD55F0;
-  *(inited + 32) = a3;
+  *(inited + 32) = change;
   v6 = qword_1EAD46808;
-  v7 = a3;
-  v8 = self;
+  changeCopy = change;
+  selfCopy = self;
   if (v6 != -1)
   {
     swift_once();
@@ -66,25 +66,25 @@
   swift_arrayDestroy();
 }
 
-- (void)applyChange:(id)a3 animation:(id)a4
+- (void)applyChange:(id)change animation:(id)animation
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAD53820);
   inited = swift_initStackObject();
   *(inited + 16) = xmmword_190DD55F0;
-  *(inited + 32) = a3;
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_190A7BEF0(inited, v9);
+  *(inited + 32) = change;
+  changeCopy = change;
+  animationCopy = animation;
+  selfCopy = self;
+  sub_190A7BEF0(inited, animationCopy);
 
   swift_setDeallocating();
   swift_arrayDestroy();
 }
 
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3
+- (void)setOverrideUserInterfaceStyle:(int64_t)style
 {
-  v4 = self;
-  sub_190A7C878(a3);
+  selfCopy = self;
+  sub_190A7C878(style);
 }
 
 - (_TtC7ChatKit34CKTranscriptNavigationBarViewProxy)viewProxy
@@ -105,18 +105,18 @@
   return v9;
 }
 
-- (void)configurePocketInteractionForScrollView:(id)a3
+- (void)configurePocketInteractionForScrollView:(id)view
 {
-  v5 = a3;
-  v4 = self;
-  sub_190C249F4(v5);
+  viewCopy = view;
+  selfCopy = self;
+  sub_190C249F4(viewCopy);
 }
 
-- (void)configureFindMySessionCoordinatorIfNeededForConversation:(id)a3
+- (void)configureFindMySessionCoordinatorIfNeededForConversation:(id)conversation
 {
-  v5 = a3;
-  v6 = self;
-  sub_190A7CB2C(a3);
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_190A7CB2C(conversation);
 }
 
 - (CKTranscriptNavigationBarController)init

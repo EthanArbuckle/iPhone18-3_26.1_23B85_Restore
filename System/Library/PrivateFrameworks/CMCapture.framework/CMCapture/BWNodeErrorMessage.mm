@@ -1,6 +1,6 @@
 @interface BWNodeErrorMessage
-+ (id)newMessageWithNodeError:(id)a3;
-- (void)_initWithNodeError:(void *)a1;
++ (id)newMessageWithNodeError:(id)error;
+- (void)_initWithNodeError:(void *)error;
 - (void)dealloc;
 @end
 
@@ -13,14 +13,14 @@
   [(BWNodeErrorMessage *)&v3 dealloc];
 }
 
-- (void)_initWithNodeError:(void *)a1
+- (void)_initWithNodeError:(void *)error
 {
-  if (!a1)
+  if (!error)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = error;
   v6.super_class = BWNodeErrorMessage;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   v4 = v3;
@@ -33,11 +33,11 @@
   return v4;
 }
 
-+ (id)newMessageWithNodeError:(id)a3
++ (id)newMessageWithNodeError:(id)error
 {
   v4 = [BWNodeErrorMessage alloc];
 
-  return [(BWNodeErrorMessage *)v4 _initWithNodeError:a3];
+  return [(BWNodeErrorMessage *)v4 _initWithNodeError:error];
 }
 
 @end

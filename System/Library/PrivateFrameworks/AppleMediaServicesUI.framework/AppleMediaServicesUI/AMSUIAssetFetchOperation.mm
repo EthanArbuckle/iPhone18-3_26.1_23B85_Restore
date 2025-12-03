@@ -1,30 +1,30 @@
 @interface AMSUIAssetFetchOperation
-- (void)_finishWithImage:(id)a3 error:(id)a4;
+- (void)_finishWithImage:(id)image error:(id)error;
 - (void)cancel;
 - (void)main;
-- (void)setQueuePriority:(int64_t)a3;
+- (void)setQueuePriority:(int64_t)priority;
 @end
 
 @implementation AMSUIAssetFetchOperation
 
-- (void)setQueuePriority:(int64_t)a3
+- (void)setQueuePriority:(int64_t)priority
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = AMSUIAssetFetchOperation;
-  v5 = [(AMSUIAssetFetchOperation *)&v12 queuePriority];
+  queuePriority = [(AMSUIAssetFetchOperation *)&v12 queuePriority];
   v11.receiver = self;
   v11.super_class = AMSUIAssetFetchOperation;
-  [(AMSUIAssetFetchOperation *)&v11 setQueuePriority:a3];
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  [(AMSUIAssetFetchOperation *)&v11 setQueuePriority:priority];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v13[0] = @"oldPriority";
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:queuePriority];
   v13[1] = @"newPriority";
   v14[0] = v7;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:priority];
   v14[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
-  [v6 postNotificationName:@"com.apple.AppleMediaServicesUI.AssetFetchOperation.didChangePriority" object:self userInfo:v9];
+  [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesUI.AssetFetchOperation.didChangePriority" object:self userInfo:v9];
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -41,22 +41,22 @@
   v4.receiver = self;
   v4.super_class = AMSUIAssetFetchOperation;
   [(AMSUIAssetFetchOperation *)&v4 cancel];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"com.apple.AppleMediaServicesUI.AssetFetchOperation.didCancel" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesUI.AssetFetchOperation.didCancel" object:self];
 }
 
-- (void)_finishWithImage:(id)a3 error:(id)a4
+- (void)_finishWithImage:(id)image error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
+  imageCopy = image;
+  errorCopy = error;
   if (([(AMSUIAssetFetchOperation *)self isCancelled]& 1) == 0)
   {
-    v7 = [(AMSUIAssetFetchOperation *)self operationPromise];
+    operationPromise = [(AMSUIAssetFetchOperation *)self operationPromise];
 
-    if (v7)
+    if (operationPromise)
     {
-      v8 = [(AMSUIAssetFetchOperation *)self operationPromise];
-      [v8 finishWithResult:v9 error:v6];
+      operationPromise2 = [(AMSUIAssetFetchOperation *)self operationPromise];
+      [operationPromise2 finishWithResult:imageCopy error:errorCopy];
     }
 
     [(AMSUIAssetFetchOperation *)self setOperationPromise:0];

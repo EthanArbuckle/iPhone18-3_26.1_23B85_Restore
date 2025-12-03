@@ -1,15 +1,15 @@
 @interface PKColor
-+ (id)colorFromString:(id)a3;
-+ (id)colorWithH:(double)a3 S:(double)a4 B:(double)a5 A:(double)a6;
-+ (id)colorWithR:(double)a3 G:(double)a4 B:(double)a5 A:(double)a6;
-+ (id)matchingColorFromColor:(CGColor *)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)colorFromString:(id)string;
++ (id)colorWithH:(double)h S:(double)s B:(double)b A:(double)a;
++ (id)colorWithR:(double)r G:(double)g B:(double)b A:(double)a;
++ (id)matchingColorFromColor:(CGColor *)color;
+- (BOOL)isEqual:(id)equal;
 - (CGColor)CGColor;
 - (NSString)string;
-- (PKColor)initWithCoder:(id)a3;
+- (PKColor)initWithCoder:(id)coder;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKColor
@@ -57,14 +57,14 @@
   [(PKColor *)&v4 dealloc];
 }
 
-+ (id)matchingColorFromColor:(CGColor *)a3
++ (id)matchingColorFromColor:(CGColor *)color
 {
-  if (!a3)
+  if (!color)
   {
     goto LABEL_13;
   }
 
-  v3 = a3;
+  colorCopy = color;
   if (qword_1ED6D1820 != -1)
   {
     goto LABEL_14;
@@ -84,14 +84,14 @@ LABEL_14:
     dispatch_once(&qword_1ED6D1820, &__block_literal_global_23);
   }
 
-  if (CGColorGetColorSpace(v3) == v4)
+  if (CGColorGetColorSpace(colorCopy) == v4)
   {
-    CopyByMatchingToColorSpace = CFRetain(v3);
+    CopyByMatchingToColorSpace = CFRetain(colorCopy);
   }
 
   else
   {
-    CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v4, kCGRenderingIntentPerceptual, v3, 0);
+    CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v4, kCGRenderingIntentPerceptual, colorCopy, 0);
   }
 
   v6 = CopyByMatchingToColorSpace;
@@ -119,53 +119,53 @@ LABEL_14:
   return v8;
 }
 
-+ (id)colorWithR:(double)a3 G:(double)a4 B:(double)a5 A:(double)a6
++ (id)colorWithR:(double)r G:(double)g B:(double)b A:(double)a
 {
   v6 = objc_alloc_init(PKColor);
-  v7.f64[0] = a3;
-  v7.f64[1] = a4;
+  v7.f64[0] = r;
+  v7.f64[1] = g;
   __asm { FMOV            V1.2D, #1.0 }
 
   *&v6->_red = vbicq_s8(vbslq_s8(vcgtq_f64(v7, _Q1), _Q1, v7), vcltzq_f64(v7));
-  v7.f64[0] = a5;
-  v7.f64[1] = a6;
+  v7.f64[0] = b;
+  v7.f64[1] = a;
   *&v6->_blue = vbicq_s8(vbslq_s8(vcgtq_f64(v7, _Q1), _Q1, v7), vcltzq_f64(v7));
 
   return v6;
 }
 
-+ (id)colorWithH:(double)a3 S:(double)a4 B:(double)a5 A:(double)a6
++ (id)colorWithH:(double)h S:(double)s B:(double)b A:(double)a
 {
-  if (a3 <= 1.0)
+  if (h <= 1.0)
   {
-    v6 = a3;
+    hCopy = h;
   }
 
   else
   {
-    v6 = 1.0;
+    hCopy = 1.0;
   }
 
-  v7 = a3 < 0.0;
+  v7 = h < 0.0;
   v8 = 0.0;
   if (v7)
   {
-    v6 = 0.0;
+    hCopy = 0.0;
   }
 
-  if (a4 <= 1.0)
+  if (s <= 1.0)
   {
-    v9 = a4;
+    sCopy = s;
   }
 
   else
   {
-    v9 = 1.0;
+    sCopy = 1.0;
   }
 
-  if (a4 >= 0.0)
+  if (s >= 0.0)
   {
-    v10 = v9;
+    v10 = sCopy;
   }
 
   else
@@ -173,19 +173,19 @@ LABEL_14:
     v10 = 0.0;
   }
 
-  if (a5 <= 1.0)
+  if (b <= 1.0)
   {
-    v11 = a5;
+    bCopy = b;
   }
 
   else
   {
-    v11 = 1.0;
+    bCopy = 1.0;
   }
 
-  if (a5 >= 0.0)
+  if (b >= 0.0)
   {
-    v12 = v11;
+    v12 = bCopy;
   }
 
   else
@@ -193,14 +193,14 @@ LABEL_14:
     v12 = 0.0;
   }
 
-  if (v6 == 1.0)
+  if (hCopy == 1.0)
   {
     v13 = 0.0;
   }
 
   else
   {
-    v13 = v6 * 6.0;
+    v13 = hCopy * 6.0;
   }
 
   v14 = v13;
@@ -325,16 +325,16 @@ LABEL_14:
     v30 = v25;
   }
 
-  return [a1 colorWithR:v29 G:v22 B:v30 A:{a6, v20}];
+  return [self colorWithR:v29 G:v22 B:v30 A:{a, v20}];
 }
 
-+ (id)colorFromString:(id)a3
++ (id)colorFromString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v3 = MEMORY[0x1E696AE88];
-    v4 = a3;
-    v5 = [[v3 alloc] initWithString:v4];
+    stringCopy = string;
+    v5 = [[v3 alloc] initWithString:stringCopy];
 
     v15 = 0;
     if ([v5 scanString:@"#" intoString:0] && objc_msgSend(v5, "scanHexInt:", &v15) && objc_msgSend(v5, "isAtEnd"))
@@ -404,48 +404,48 @@ LABEL_17:
   return (v5 << 16) | (v3 << 24) | (llroundf(v6) << 8) | llroundf(v7);
 }
 
-- (PKColor)initWithCoder:(id)a3
+- (PKColor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKColor;
   v5 = [(PKColor *)&v11 init];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"red"];
+    [coderCopy decodeFloatForKey:@"red"];
     v5->_red = v6;
-    [v4 decodeFloatForKey:@"green"];
+    [coderCopy decodeFloatForKey:@"green"];
     v5->_green = v7;
-    [v4 decodeFloatForKey:@"blue"];
+    [coderCopy decodeFloatForKey:@"blue"];
     v5->_blue = v8;
-    [v4 decodeFloatForKey:@"alpha"];
+    [coderCopy decodeFloatForKey:@"alpha"];
     v5->_alpha = v9;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   red = self->_red;
-  v9 = a3;
+  coderCopy = coder;
   *&v5 = red;
-  [v9 encodeFloat:@"red" forKey:v5];
+  [coderCopy encodeFloat:@"red" forKey:v5];
   green = self->_green;
   *&green = green;
-  [v9 encodeFloat:@"green" forKey:green];
+  [coderCopy encodeFloat:@"green" forKey:green];
   blue = self->_blue;
   *&blue = blue;
-  [v9 encodeFloat:@"blue" forKey:blue];
+  [coderCopy encodeFloat:@"blue" forKey:blue];
   alpha = self->_alpha;
   *&alpha = alpha;
-  [v9 encodeFloat:@"alpha" forKey:alpha];
+  [coderCopy encodeFloat:@"alpha" forKey:alpha];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(self) = 1;
   }
@@ -455,7 +455,7 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self)
       {
         LOBYTE(self) = self->_red == v5[1] && self->_green == v5[2] && self->_blue == v5[3] && self->_alpha == v5[4];

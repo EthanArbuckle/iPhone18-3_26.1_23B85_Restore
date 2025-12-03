@@ -1,9 +1,9 @@
 @interface SCATModernMenuGestureFreehandBendSheet
-- (BOOL)shouldUpdateMenuItem:(id)a3;
+- (BOOL)shouldUpdateMenuItem:(id)item;
 - (id)makeMenuItemsIfNeeded;
 - (id)menuItemStruts;
-- (void)menuItem:(id)a3 didBecomeFocused:(BOOL)a4;
-- (void)menuItemWasActivated:(id)a3;
+- (void)menuItem:(id)item didBecomeFocused:(BOOL)focused;
+- (void)menuItemWasActivated:(id)activated;
 @end
 
 @implementation SCATModernMenuGestureFreehandBendSheet
@@ -51,7 +51,7 @@
     v13 = [(SCATModernMenuGestureFreehandSheetBase *)self touchToggleMenuItemWithPreferredNumberOfLines:1];
     [v4 addObject:v13];
 
-    v14 = [(SCATModernMenuGestureFreehandSheetBase *)self moveToolbarMenuItem];
+    moveToolbarMenuItem = [(SCATModernMenuGestureFreehandSheetBase *)self moveToolbarMenuItem];
   }
 
   else
@@ -64,27 +64,27 @@
     v15 = [(SCATModernMenuGestureFreehandSheetBase *)self moveMenuItemWithPreferredNumberOfLines:1];
     [v4 addObject:v15];
 
-    v14 = [(SCATModernMenuGestureFreehandSheetBase *)self touchToggleMenuItemWithPreferredNumberOfLines:1];
+    moveToolbarMenuItem = [(SCATModernMenuGestureFreehandSheetBase *)self touchToggleMenuItemWithPreferredNumberOfLines:1];
   }
 
-  v16 = v14;
-  [v4 addObject:v14];
+  v16 = moveToolbarMenuItem;
+  [v4 addObject:moveToolbarMenuItem];
 
 LABEL_12:
 
   return v4;
 }
 
-- (BOOL)shouldUpdateMenuItem:(id)a3
+- (BOOL)shouldUpdateMenuItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:@"freehand_straighten"];
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  v6 = [identifier isEqualToString:@"freehand_straighten"];
 
   if (v6)
   {
-    v7 = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
-    [v7 curvatureForFreehandSheet:self];
+    delegate = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
+    [delegate curvatureForFreehandSheet:self];
     v9 = v8;
 
     IsPad = AXDeviceIsPad();
@@ -126,80 +126,80 @@ LABEL_12:
       v13 = v15;
     }
 
-    [v4 setTitle:v12];
-    [v4 setImagePrefixForTouchDependentGlyph:v13];
-    [v4 setDisabled:v9 == 0.0];
+    [itemCopy setTitle:v12];
+    [itemCopy setImagePrefixForTouchDependentGlyph:v13];
+    [itemCopy setDisabled:v9 == 0.0];
   }
 
   v18.receiver = self;
   v18.super_class = SCATModernMenuGestureFreehandBendSheet;
-  v16 = [(SCATModernMenuGestureFreehandSheetBase *)&v18 shouldUpdateMenuItem:v4];
+  v16 = [(SCATModernMenuGestureFreehandSheetBase *)&v18 shouldUpdateMenuItem:itemCopy];
 
   return v16;
 }
 
-- (void)menuItem:(id)a3 didBecomeFocused:(BOOL)a4
+- (void)menuItem:(id)item didBecomeFocused:(BOOL)focused
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 identifier];
-  if ([v7 isEqualToString:@"freehand_bendRight"])
+  focusedCopy = focused;
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  if ([identifier isEqualToString:@"freehand_bendRight"])
   {
-    v8 = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
-    [v8 freehandSheet:self didHighlightBendRight:v4];
+    delegate = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
+    [delegate freehandSheet:self didHighlightBendRight:focusedCopy];
   }
 
-  else if ([v7 isEqualToString:@"freehand_bendLeft"])
+  else if ([identifier isEqualToString:@"freehand_bendLeft"])
   {
-    v8 = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
-    [v8 freehandSheet:self didHighlightBendLeft:v4];
+    delegate = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
+    [delegate freehandSheet:self didHighlightBendLeft:focusedCopy];
   }
 
   else
   {
-    if (![v7 isEqualToString:@"freehand_straighten"])
+    if (![identifier isEqualToString:@"freehand_straighten"])
     {
       v9.receiver = self;
       v9.super_class = SCATModernMenuGestureFreehandBendSheet;
-      [(SCATModernMenuGestureFreehandSheetBase *)&v9 menuItem:v6 didBecomeFocused:v4];
+      [(SCATModernMenuGestureFreehandSheetBase *)&v9 menuItem:itemCopy didBecomeFocused:focusedCopy];
       goto LABEL_8;
     }
 
-    v8 = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
-    [v8 freehandSheet:self didHighlightStraighten:v4];
+    delegate = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
+    [delegate freehandSheet:self didHighlightStraighten:focusedCopy];
   }
 
 LABEL_8:
 }
 
-- (void)menuItemWasActivated:(id)a3
+- (void)menuItemWasActivated:(id)activated
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:@"freehand_bendRight"])
+  activatedCopy = activated;
+  identifier = [activatedCopy identifier];
+  if ([identifier isEqualToString:@"freehand_bendRight"])
   {
-    v6 = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
-    [v6 bendRightForFreehandSheet:self];
+    delegate = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
+    [delegate bendRightForFreehandSheet:self];
   }
 
-  else if ([v5 isEqualToString:@"freehand_bendLeft"])
+  else if ([identifier isEqualToString:@"freehand_bendLeft"])
   {
-    v6 = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
-    [v6 bendLeftForFreehandSheet:self];
+    delegate = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
+    [delegate bendLeftForFreehandSheet:self];
   }
 
   else
   {
-    if (![v5 isEqualToString:@"freehand_straighten"])
+    if (![identifier isEqualToString:@"freehand_straighten"])
     {
       v7.receiver = self;
       v7.super_class = SCATModernMenuGestureFreehandBendSheet;
-      [(SCATModernMenuGestureFreehandSheetBase *)&v7 menuItemWasActivated:v4];
+      [(SCATModernMenuGestureFreehandSheetBase *)&v7 menuItemWasActivated:activatedCopy];
       goto LABEL_8;
     }
 
-    v6 = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
-    [v6 straightenForFreehandSheet:self];
+    delegate = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
+    [delegate straightenForFreehandSheet:self];
   }
 
 LABEL_8:

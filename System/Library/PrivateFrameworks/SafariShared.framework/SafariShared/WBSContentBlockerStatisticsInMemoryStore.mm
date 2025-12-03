@@ -2,14 +2,14 @@
 + (NSArray)allStores;
 + (int64_t)totalBlockedTrackerCount;
 - (WBSContentBlockerStatisticsInMemoryStore)init;
-- (void)_clearStatisticsPassingTest:(id)a3;
+- (void)_clearStatisticsPassingTest:(id)test;
 - (void)_clearUnusedDomains;
-- (void)blockedThirdPartiesAfter:(id)a3 before:(id)a4 onFirstParty:(id)a5 completionHandler:(id)a6;
-- (void)clearAllStatisticsWithCompletionHandler:(id)a3;
-- (void)clearStatisticsAfter:(id)a3 before:(id)a4;
-- (void)clearStatisticsForDomains:(id)a3;
+- (void)blockedThirdPartiesAfter:(id)after before:(id)before onFirstParty:(id)party completionHandler:(id)handler;
+- (void)clearAllStatisticsWithCompletionHandler:(id)handler;
+- (void)clearStatisticsAfter:(id)after before:(id)before;
+- (void)clearStatisticsForDomains:(id)domains;
 - (void)dealloc;
-- (void)recordThirdPartyResourceBlocked:(id)a3 onFirstParty:(id)a4 completionHandler:(id)a5;
+- (void)recordThirdPartyResourceBlocked:(id)blocked onFirstParty:(id)party completionHandler:(id)handler;
 @end
 
 @implementation WBSContentBlockerStatisticsInMemoryStore
@@ -17,17 +17,17 @@
 + (NSArray)allStores
 {
   v2 = allStores();
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 + (int64_t)totalBlockedTrackerCount
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF00] distantPast];
-  v3 = [MEMORY[0x1E695DF00] distantFuture];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -53,8 +53,8 @@
         v13[1] = 3221225472;
         v13[2] = __68__WBSContentBlockerStatisticsInMemoryStore_totalBlockedTrackerCount__block_invoke;
         v13[3] = &unk_1E7FB6B08;
-        v14 = v4;
-        [v9 blockedThirdPartiesAfter:v2 before:v3 onFirstParty:0 completionHandler:v13];
+        v14 = dictionary;
+        [v9 blockedThirdPartiesAfter:distantPast before:distantFuture onFirstParty:0 completionHandler:v13];
 
         ++v8;
       }
@@ -66,7 +66,7 @@
     while (v6);
   }
 
-  v10 = [v4 count];
+  v10 = [dictionary count];
   return v10;
 }
 
@@ -77,9 +77,9 @@
   v2 = [(WBSContentBlockerStatisticsInMemoryStore *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     firstPartiesByBlockedThirdParty = v2->_firstPartiesByBlockedThirdParty;
-    v2->_firstPartiesByBlockedThirdParty = v3;
+    v2->_firstPartiesByBlockedThirdParty = dictionary;
 
     v5 = allStores();
     [v5 addObject:v2];
@@ -95,61 +95,61 @@
   v3 = allStores();
   [v3 removeObject:self];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:WBSContentBlockerStatisticsInMemoryStoreDidCloseNotification object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:WBSContentBlockerStatisticsInMemoryStoreDidCloseNotification object:0];
 
   v5.receiver = self;
   v5.super_class = WBSContentBlockerStatisticsInMemoryStore;
   [(WBSContentBlockerStatisticsInMemoryStore *)&v5 dealloc];
 }
 
-- (void)recordThirdPartyResourceBlocked:(id)a3 onFirstParty:(id)a4 completionHandler:(id)a5
+- (void)recordThirdPartyResourceBlocked:(id)blocked onFirstParty:(id)party completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 host];
-  v11 = [v10 safari_highLevelDomainFromHost];
+  handlerCopy = handler;
+  partyCopy = party;
+  host = [blocked host];
+  safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
 
-  v12 = [v9 host];
+  host2 = [partyCopy host];
 
-  v13 = [v12 safari_highLevelDomainFromHost];
+  safari_highLevelDomainFromHost2 = [host2 safari_highLevelDomainFromHost];
 
-  if (v11)
+  if (safari_highLevelDomainFromHost)
   {
-    v14 = [(NSMutableDictionary *)self->_firstPartiesByBlockedThirdParty objectForKeyedSubscript:v11];
+    v14 = [(NSMutableDictionary *)self->_firstPartiesByBlockedThirdParty objectForKeyedSubscript:safari_highLevelDomainFromHost];
     if (v14)
     {
-      v15 = v14;
+      array = v14;
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __107__WBSContentBlockerStatisticsInMemoryStore_recordThirdPartyResourceBlocked_onFirstParty_completionHandler___block_invoke;
       v20[3] = &unk_1E7FC47C0;
-      v21 = v13;
-      [v15 safari_removeObjectsPassingTest:v20];
+      v21 = safari_highLevelDomainFromHost2;
+      [array safari_removeObjectsPassingTest:v20];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DF70] array];
-      [(NSMutableDictionary *)self->_firstPartiesByBlockedThirdParty setObject:v15 forKeyedSubscript:v11];
+      array = [MEMORY[0x1E695DF70] array];
+      [(NSMutableDictionary *)self->_firstPartiesByBlockedThirdParty setObject:array forKeyedSubscript:safari_highLevelDomainFromHost];
     }
 
     v16 = [MEMORY[0x1E695DF00] now];
     [v16 timeIntervalSince1970];
     v18 = v17;
 
-    v19 = [[WBSContentBlockerStatisticsFirstParty alloc] initWithDomain:v13 lastSeen:v18];
-    [v15 addObject:v19];
+    v19 = [[WBSContentBlockerStatisticsFirstParty alloc] initWithDomain:safari_highLevelDomainFromHost2 lastSeen:v18];
+    [array addObject:v19];
 
-    if (v8)
+    if (handlerCopy)
     {
-      v8[2](v8, 1);
+      handlerCopy[2](handlerCopy, 1);
     }
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
@@ -166,29 +166,29 @@ uint64_t __107__WBSContentBlockerStatisticsInMemoryStore_recordThirdPartyResourc
   return v7;
 }
 
-- (void)blockedThirdPartiesAfter:(id)a3 before:(id)a4 onFirstParty:(id)a5 completionHandler:(id)a6
+- (void)blockedThirdPartiesAfter:(id)after before:(id)before onFirstParty:(id)party completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  [a3 timeIntervalSince1970];
+  partyCopy = party;
+  handlerCopy = handler;
+  beforeCopy = before;
+  [after timeIntervalSince1970];
   v14 = v13;
-  [v12 timeIntervalSince1970];
+  [beforeCopy timeIntervalSince1970];
   v16 = v15;
 
-  v17 = [v10 length];
+  v17 = [partyCopy length];
   firstPartiesByBlockedThirdParty = self->_firstPartiesByBlockedThirdParty;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __107__WBSContentBlockerStatisticsInMemoryStore_blockedThirdPartiesAfter_before_onFirstParty_completionHandler___block_invoke;
   v21[3] = &unk_1E7FC4810;
   v25 = v17 != 0;
-  v22 = v10;
+  v22 = partyCopy;
   v23 = v14;
   v24 = v16;
-  v19 = v10;
+  v19 = partyCopy;
   v20 = [(NSMutableDictionary *)firstPartiesByBlockedThirdParty safari_mapAndFilterKeysAndObjectsUsingBlock:v21];
-  v11[2](v11, v20);
+  handlerCopy[2](handlerCopy, v20);
 }
 
 id __107__WBSContentBlockerStatisticsInMemoryStore_blockedThirdPartiesAfter_before_onFirstParty_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -222,24 +222,24 @@ BOOL __107__WBSContentBlockerStatisticsInMemoryStore_blockedThirdPartiesAfter_be
   return v8;
 }
 
-- (void)clearAllStatisticsWithCompletionHandler:(id)a3
+- (void)clearAllStatisticsWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(NSMutableDictionary *)self->_firstPartiesByBlockedThirdParty removeAllObjects];
-  v4 = v5;
-  if (v5)
+  v4 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v5 + 2))(v5);
-    v4 = v5;
+    (*(handlerCopy + 2))(handlerCopy);
+    v4 = handlerCopy;
   }
 }
 
-- (void)clearStatisticsAfter:(id)a3 before:(id)a4
+- (void)clearStatisticsAfter:(id)after before:(id)before
 {
-  v6 = a4;
-  [a3 timeIntervalSince1970];
+  beforeCopy = before;
+  [after timeIntervalSince1970];
   v8 = v7;
-  [v6 timeIntervalSince1970];
+  [beforeCopy timeIntervalSince1970];
   v10 = v9;
 
   v11[0] = MEMORY[0x1E69E9820];
@@ -251,10 +251,10 @@ BOOL __107__WBSContentBlockerStatisticsInMemoryStore_blockedThirdPartiesAfter_be
   [(WBSContentBlockerStatisticsInMemoryStore *)self _clearStatisticsPassingTest:v11];
 }
 
-- (void)clearStatisticsForDomains:(id)a3
+- (void)clearStatisticsForDomains:(id)domains
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = [a3 safari_filterObjectsUsingBlock:&__block_literal_global_28];
+  v5 = [domains safari_filterObjectsUsingBlock:&__block_literal_global_28];
   v6 = [v4 setWithArray:v5];
 
   v8[0] = MEMORY[0x1E69E9820];
@@ -293,16 +293,16 @@ uint64_t __70__WBSContentBlockerStatisticsInMemoryStore_clearStatisticsForDomain
   return v4;
 }
 
-- (void)_clearStatisticsPassingTest:(id)a3
+- (void)_clearStatisticsPassingTest:(id)test
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  testCopy = test;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMutableDictionary *)self->_firstPartiesByBlockedThirdParty allValues];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_firstPartiesByBlockedThirdParty allValues];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -314,7 +314,7 @@ uint64_t __70__WBSContentBlockerStatisticsInMemoryStore_clearStatisticsForDomain
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
@@ -322,14 +322,14 @@ uint64_t __70__WBSContentBlockerStatisticsInMemoryStore_clearStatisticsForDomain
         v11[1] = 3221225472;
         v11[2] = __72__WBSContentBlockerStatisticsInMemoryStore__clearStatisticsPassingTest___block_invoke;
         v11[3] = &unk_1E7FC48A0;
-        v12 = v4;
+        v12 = testCopy;
         [v10 safari_removeObjectsPassingTest:v11];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);

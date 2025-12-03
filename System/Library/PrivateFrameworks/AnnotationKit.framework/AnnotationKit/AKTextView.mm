@@ -1,13 +1,13 @@
 @interface AKTextView
 - (AKTextViewKeyCommandDelegate)keyCommandDelegate;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)isBlockedAction:(SEL)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)isBlockedAction:(SEL)action;
 - (id)keyCommands;
 - (id)textInputTraits;
-- (void)handleBackTabCommand:(id)a3;
-- (void)handleTabCommand:(id)a3;
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4;
+- (void)handleBackTabCommand:(id)command;
+- (void)handleTabCommand:(id)command;
+- (void)motionEnded:(int64_t)ended withEvent:(id)event;
 @end
 
 @implementation AKTextView
@@ -24,28 +24,28 @@
   return v4;
 }
 
-- (void)handleTabCommand:(id)a3
+- (void)handleTabCommand:(id)command
 {
-  v3 = [(AKTextView *)self keyCommandDelegate];
+  keyCommandDelegate = [(AKTextView *)self keyCommandDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 handleTabCommand];
+    [keyCommandDelegate handleTabCommand];
   }
 }
 
-- (void)handleBackTabCommand:(id)a3
+- (void)handleBackTabCommand:(id)command
 {
-  v3 = [(AKTextView *)self keyCommandDelegate];
+  keyCommandDelegate = [(AKTextView *)self keyCommandDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 handleBackTabCommand];
+    [keyCommandDelegate handleBackTabCommand];
   }
 }
 
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4
+- (void)motionEnded:(int64_t)ended withEvent:(id)event
 {
-  v6 = a4;
-  if (a3 != 1)
+  eventCopy = event;
+  if (ended != 1)
   {
     v8.receiver = self;
     v8.super_class = AKTextView;
@@ -53,7 +53,7 @@
     {
       v7.receiver = self;
       v7.super_class = AKTextView;
-      [(AKTextView *)&v7 motionEnded:a3 withEvent:v6];
+      [(AKTextView *)&v7 motionEnded:ended withEvent:eventCopy];
     }
   }
 }
@@ -62,29 +62,29 @@
 {
   v5.receiver = self;
   v5.super_class = AKTextView;
-  v3 = [(AKTextView *)&v5 canBecomeFirstResponder];
+  canBecomeFirstResponder = [(AKTextView *)&v5 canBecomeFirstResponder];
   [(AKTextView *)self setAutocorrectionType:sub_23F46A014()];
   [(AKTextView *)self setSpellCheckingType:sub_23F46A014()];
-  return v3;
+  return canBecomeFirstResponder;
 }
 
 - (id)textInputTraits
 {
-  v2 = [MEMORY[0x277D75C00] defaultTextInputTraits];
+  defaultTextInputTraits = [MEMORY[0x277D75C00] defaultTextInputTraits];
   if (sub_23F46A014())
   {
-    [v2 setShortcutConversionType:1];
-    [v2 setDisablePrediction:1];
-    [v2 setHidePrediction:1];
+    [defaultTextInputTraits setShortcutConversionType:1];
+    [defaultTextInputTraits setDisablePrediction:1];
+    [defaultTextInputTraits setHidePrediction:1];
   }
 
-  return v2;
+  return defaultTextInputTraits;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if ([(AKTextView *)self isBlockedAction:a3])
+  senderCopy = sender;
+  if ([(AKTextView *)self isBlockedAction:action])
   {
     v7 = 0;
   }
@@ -93,25 +93,25 @@
   {
     v9.receiver = self;
     v9.super_class = AKTextView;
-    v7 = [(AKTextView *)&v9 canPerformAction:a3 withSender:v6];
+    v7 = [(AKTextView *)&v9 canPerformAction:action withSender:senderCopy];
   }
 
   return v7;
 }
 
-- (BOOL)isBlockedAction:(SEL)a3
+- (BOOL)isBlockedAction:(SEL)action
 {
-  v4 = [(AKTextView *)self isFirstResponder];
-  if (v4)
+  isFirstResponder = [(AKTextView *)self isFirstResponder];
+  if (isFirstResponder)
   {
-    v4 = sub_23F46A014();
-    if (v4)
+    isFirstResponder = sub_23F46A014();
+    if (isFirstResponder)
     {
-      LOBYTE(v4) = sel_cut_ == a3 || sel_copy_ == a3 || sel_paste_ == a3;
+      LOBYTE(isFirstResponder) = sel_cut_ == action || sel_copy_ == action || sel_paste_ == action;
     }
   }
 
-  return v4;
+  return isFirstResponder;
 }
 
 - (AKTextViewKeyCommandDelegate)keyCommandDelegate

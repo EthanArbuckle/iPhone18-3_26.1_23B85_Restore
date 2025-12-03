@@ -1,47 +1,47 @@
 @interface MFLibraryMessage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMessageContentsLocallyAvailable;
-- (MFLibraryMessage)initWithLibraryID:(unsigned int)a3;
+- (MFLibraryMessage)initWithLibraryID:(unsigned int)d;
 - (id)_attachmentStorageLocation;
 - (id)_privacySafeDescription;
 - (id)account;
 - (id)copyMessageInfo;
-- (id)dataConsumerForMimePart:(id)a3;
-- (id)dataPathForMimePart:(id)a3;
+- (id)dataConsumerForMimePart:(id)part;
+- (id)dataPathForMimePart:(id)part;
 - (id)library;
 - (id)mailbox;
 - (id)mailboxName;
 - (id)messageID;
 - (id)messageStore;
-- (id)metadataValueOfClass:(Class)a3 forKey:(id)a4;
+- (id)metadataValueOfClass:(Class)class forKey:(id)key;
 - (id)originalMailboxURL;
 - (id)path;
 - (id)preferredEmailAddressToReplyWith;
 - (id)remoteID;
-- (int64_t)compareByUidWithMessage:(id)a3;
+- (int64_t)compareByUidWithMessage:(id)message;
 - (void)_forceLoadOfMessageSummaryFromProtectedStore;
 - (void)_initializeMetadata;
 - (void)_updateUID;
 - (void)commit;
 - (void)dealloc;
-- (void)loadCachedHeaderValuesFromHeaders:(id)a3;
+- (void)loadCachedHeaderValuesFromHeaders:(id)headers;
 - (void)markAsFlagged;
 - (void)markAsForwarded;
 - (void)markAsNotFlagged;
 - (void)markAsNotViewed;
 - (void)markAsReplied;
 - (void)markAsViewed;
-- (void)setHasTemporaryUid:(BOOL)a3;
-- (void)setMessageFlags:(unint64_t)a3;
-- (void)setMessageFlagsWithoutCommitting:(unint64_t)a3;
-- (void)setMetadataValue:(id)a3 forKey:(id)a4;
-- (void)setMutableInfoFromMessage:(id)a3;
-- (void)setPreferredEncoding:(unsigned int)a3;
-- (void)setRemoteID:(const char *)a3 flags:(unint64_t)a4 size:(unsigned int)a5 mailboxID:(unsigned int)a6 originalMailboxID:(unsigned int)a7;
-- (void)setRemoteID:(id)a3;
-- (void)setSummary:(id)a3;
-- (void)setUid:(unsigned int)a3;
-- (void)setUniqueRemoteId:(unint64_t)a3;
+- (void)setHasTemporaryUid:(BOOL)uid;
+- (void)setMessageFlags:(unint64_t)flags;
+- (void)setMessageFlagsWithoutCommitting:(unint64_t)committing;
+- (void)setMetadataValue:(id)value forKey:(id)key;
+- (void)setMutableInfoFromMessage:(id)message;
+- (void)setPreferredEncoding:(unsigned int)encoding;
+- (void)setRemoteID:(const char *)d flags:(unint64_t)flags size:(unsigned int)size mailboxID:(unsigned int)iD originalMailboxID:(unsigned int)mailboxID;
+- (void)setRemoteID:(id)d;
+- (void)setSummary:(id)summary;
+- (void)setUid:(unsigned int)uid;
+- (void)setUniqueRemoteId:(unint64_t)id;
 @end
 
 @implementation MFLibraryMessage
@@ -53,7 +53,7 @@
   [(MFMailMessage *)&v3 dealloc];
 }
 
-- (MFLibraryMessage)initWithLibraryID:(unsigned int)a3
+- (MFLibraryMessage)initWithLibraryID:(unsigned int)d
 {
   v7.receiver = self;
   v7.super_class = MFLibraryMessage;
@@ -61,7 +61,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_libraryID = a3;
+    v4->_libraryID = d;
     v4->_originalMailboxID = -1;
     v4->_mailboxID = -1;
     v4->_metadataLock = [objc_alloc(MEMORY[0x277D24F28]) initWithName:@"Metadata Lock" andDelegate:0];
@@ -72,9 +72,9 @@
 
 - (id)library
 {
-  v2 = [(MFLibraryMessage *)self messageStore];
+  messageStore = [(MFLibraryMessage *)self messageStore];
 
-  return [v2 library];
+  return [messageStore library];
 }
 
 - (id)messageID
@@ -98,10 +98,10 @@
 
 - (id)originalMailboxURL
 {
-  v3 = [(MFLibraryMessage *)self library];
+  library = [(MFLibraryMessage *)self library];
   originalMailboxID = self->_originalMailboxID;
 
-  return [v3 urlForMailboxID:originalMailboxID];
+  return [library urlForMailboxID:originalMailboxID];
 }
 
 - (id)messageStore
@@ -119,16 +119,16 @@
 
 - (id)mailbox
 {
-  v3 = [(MFLibraryMessage *)self library];
+  library = [(MFLibraryMessage *)self library];
 
-  return [v3 mailboxUidForMessage:self];
+  return [library mailboxUidForMessage:self];
 }
 
 - (void)_updateUID
 {
-  v3 = [(NSString *)self->_remoteID intValue];
-  self->_uid = v3;
-  if (!v3)
+  intValue = [(NSString *)self->_remoteID intValue];
+  self->_uid = intValue;
+  if (!intValue)
   {
     v4 = [(NSString *)self->_remoteID rangeOfString:@"temp-" options:8];
     if (v4 != 0x7FFFFFFFFFFFFFFFLL)
@@ -138,14 +138,14 @@
   }
 }
 
-- (void)setRemoteID:(id)a3
+- (void)setRemoteID:(id)d
 {
   _MFLockGlobalLock();
   remoteID = self->_remoteID;
-  if (remoteID != a3)
+  if (remoteID != d)
   {
 
-    self->_remoteID = a3;
+    self->_remoteID = d;
     [(MFLibraryMessage *)self _updateUID];
   }
 
@@ -159,9 +159,9 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -171,20 +171,20 @@
   if (objc_opt_respondsToSelector())
   {
     libraryID = self->_libraryID;
-    return libraryID == [a3 libraryID];
+    return libraryID == [equal libraryID];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = MFLibraryMessage;
-    return [(MFLibraryMessage *)&v9 isEqual:a3];
+    return [(MFLibraryMessage *)&v9 isEqual:equal];
   }
 }
 
-- (void)setUid:(unsigned int)a3
+- (void)setUid:(unsigned int)uid
 {
-  if (self->_uid != a3)
+  if (self->_uid != uid)
   {
     -[MFLibraryMessage setRemoteID:](self, "setRemoteID:", [objc_msgSend(MEMORY[0x277CCABB0] "numberWithUnsignedInt:"stringValue"")]);
 
@@ -192,12 +192,12 @@
   }
 }
 
-- (void)setUniqueRemoteId:(unint64_t)a3
+- (void)setUniqueRemoteId:(unint64_t)id
 {
   _MFLockGlobalLock();
-  if (self->_uniqueRemoteId != a3)
+  if (self->_uniqueRemoteId != id)
   {
-    self->_uniqueRemoteId = a3;
+    self->_uniqueRemoteId = id;
   }
 
   _MFUnlockGlobalLock();
@@ -205,23 +205,23 @@
 
 - (BOOL)isMessageContentsLocallyAvailable
 {
-  v3 = [(MFLibraryMessage *)self library];
+  library = [(MFLibraryMessage *)self library];
 
-  return [v3 isMessageContentsLocallyAvailable:self];
+  return [library isMessageContentsLocallyAvailable:self];
 }
 
-- (void)setPreferredEncoding:(unsigned int)a3
+- (void)setPreferredEncoding:(unsigned int)encoding
 {
-  self->super._messageFlags = self->super._messageFlags & 0xFFFFFFF7FFFFFFFFLL | ((a3 != -1) << 35);
+  self->super._messageFlags = self->super._messageFlags & 0xFFFFFFF7FFFFFFFFLL | ((encoding != -1) << 35);
   v3.receiver = self;
   v3.super_class = MFLibraryMessage;
   [(MFLibraryMessage *)&v3 setPreferredEncoding:?];
 }
 
-- (void)setHasTemporaryUid:(BOOL)a3
+- (void)setHasTemporaryUid:(BOOL)uid
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!uid)
   {
     v3 = 0;
   }
@@ -232,20 +232,20 @@
 - (id)mailboxName
 {
   v2 = [-[MFLibraryMessage library](self "library")];
-  v3 = [v2 account];
+  account = [v2 account];
 
-  return [v3 nameForMailboxUid:v2];
+  return [account nameForMailboxUid:v2];
 }
 
-- (int64_t)compareByUidWithMessage:(id)a3
+- (int64_t)compareByUidWithMessage:(id)message
 {
   v5 = HIDWORD(self->super._messageFlags) & 1;
-  v6 = [a3 hasTemporaryUid];
-  v7 = v5 - v6;
-  if (v5 == v6)
+  hasTemporaryUid = [message hasTemporaryUid];
+  v7 = v5 - hasTemporaryUid;
+  if (v5 == hasTemporaryUid)
   {
     uid = self->_uid;
-    v7 = uid - [a3 uid];
+    v7 = uid - [message uid];
   }
 
   v9 = v7 < 0;
@@ -261,25 +261,25 @@
   }
 }
 
-- (void)setMessageFlagsWithoutCommitting:(unint64_t)a3
+- (void)setMessageFlagsWithoutCommitting:(unint64_t)committing
 {
   [(MFLibraryMessage *)self mf_lock];
-  self->super._messageFlags = a3;
+  self->super._messageFlags = committing;
 
   [(MFLibraryMessage *)self mf_unlock];
 }
 
-- (void)setMessageFlags:(unint64_t)a3
+- (void)setMessageFlags:(unint64_t)flags
 {
-  if ([(MFMailMessage *)self messageFlags]!= a3)
+  if ([(MFMailMessage *)self messageFlags]!= flags)
   {
-    v5 = [(MFLibraryMessage *)self library];
+    library = [(MFLibraryMessage *)self library];
 
-    [v5 setFlags:a3 forMessage:self];
+    [library setFlags:flags forMessage:self];
   }
 }
 
-- (void)setSummary:(id)a3
+- (void)setSummary:(id)summary
 {
   v5.receiver = self;
   v5.super_class = MFLibraryMessage;
@@ -289,17 +289,17 @@
 
 - (void)commit
 {
-  v3 = [(MFLibraryMessage *)self library];
-  v4 = [(MFMailMessage *)self messageFlags];
+  library = [(MFLibraryMessage *)self library];
+  messageFlags = [(MFMailMessage *)self messageFlags];
 
-  [v3 setFlags:v4 forMessage:self];
+  [library setFlags:messageFlags forMessage:self];
 }
 
-- (void)setMutableInfoFromMessage:(id)a3
+- (void)setMutableInfoFromMessage:(id)message
 {
-  v4 = [a3 messageFlags];
+  messageFlags = [message messageFlags];
 
-  [(MFLibraryMessage *)self setMessageFlagsWithoutCommitting:v4];
+  [(MFLibraryMessage *)self setMessageFlagsWithoutCommitting:messageFlags];
 }
 
 - (id)_privacySafeDescription
@@ -311,32 +311,32 @@
 
 - (id)path
 {
-  v3 = [(MFLibraryMessage *)self library];
+  library = [(MFLibraryMessage *)self library];
 
-  return [v3 dataPathForMessage:self];
+  return [library dataPathForMessage:self];
 }
 
-- (id)dataPathForMimePart:(id)a3
+- (id)dataPathForMimePart:(id)part
 {
-  v5 = [(MFLibraryMessage *)self messageStore];
+  messageStore = [(MFLibraryMessage *)self messageStore];
 
-  return [v5 dataPathForMessage:self part:a3];
+  return [messageStore dataPathForMessage:self part:part];
 }
 
 - (id)account
 {
-  v3 = [(MFLibraryMessage *)self messageStore];
-  if (+[MFLibraryStore sharedInstanceIfExists]== v3)
+  messageStore = [(MFLibraryMessage *)self messageStore];
+  if (+[MFLibraryStore sharedInstanceIfExists]== messageStore)
   {
-    v5 = [(MFLibraryMessage *)self library];
+    library = [(MFLibraryMessage *)self library];
 
-    return [v5 accountForMessage:self];
+    return [library accountForMessage:self];
   }
 
   else
   {
 
-    return [v3 account];
+    return [messageStore account];
   }
 }
 
@@ -345,12 +345,12 @@
   v8[1] = *MEMORY[0x277D85DE8];
   if (([(MFMailMessage *)self messageFlags]& 1) == 0)
   {
-    v3 = [(MFLibraryMessage *)self messageStore];
+    messageStore = [(MFLibraryMessage *)self messageStore];
     v7 = @"MessageIsRead";
     v8[0] = MEMORY[0x277CBEC38];
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-    v6 = self;
-    [v3 setFlagsFromDictionary:v4 forMessages:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &v6, 1)}];
+    selfCopy = self;
+    [messageStore setFlagsFromDictionary:v4 forMessages:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &selfCopy, 1)}];
   }
 
   v5 = *MEMORY[0x277D85DE8];
@@ -361,12 +361,12 @@
   v8[1] = *MEMORY[0x277D85DE8];
   if (([(MFMailMessage *)self messageFlags]& 1) != 0)
   {
-    v3 = [(MFLibraryMessage *)self messageStore];
+    messageStore = [(MFLibraryMessage *)self messageStore];
     v7 = @"MessageIsRead";
     v8[0] = MEMORY[0x277CBEC28];
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-    v6 = self;
-    [v3 setFlagsFromDictionary:v4 forMessages:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &v6, 1)}];
+    selfCopy = self;
+    [messageStore setFlagsFromDictionary:v4 forMessages:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &selfCopy, 1)}];
   }
 
   v5 = *MEMORY[0x277D85DE8];
@@ -377,12 +377,12 @@
   v8[1] = *MEMORY[0x277D85DE8];
   if (([(MFMailMessage *)self messageFlags]& 0x10) == 0)
   {
-    v3 = [(MFLibraryMessage *)self messageStore];
+    messageStore = [(MFLibraryMessage *)self messageStore];
     v7 = @"MessageIsFlagged";
     v8[0] = MEMORY[0x277CBEC38];
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-    v6 = self;
-    [v3 setFlagsFromDictionary:v4 forMessages:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &v6, 1)}];
+    selfCopy = self;
+    [messageStore setFlagsFromDictionary:v4 forMessages:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &selfCopy, 1)}];
   }
 
   v5 = *MEMORY[0x277D85DE8];
@@ -393,12 +393,12 @@
   v8[1] = *MEMORY[0x277D85DE8];
   if (([(MFMailMessage *)self messageFlags]& 0x10) != 0)
   {
-    v3 = [(MFLibraryMessage *)self messageStore];
+    messageStore = [(MFLibraryMessage *)self messageStore];
     v7 = @"MessageIsFlagged";
     v8[0] = MEMORY[0x277CBEC28];
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-    v6 = self;
-    [v3 setFlagsFromDictionary:v4 forMessages:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &v6, 1)}];
+    selfCopy = self;
+    [messageStore setFlagsFromDictionary:v4 forMessages:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &selfCopy, 1)}];
   }
 
   v5 = *MEMORY[0x277D85DE8];
@@ -409,12 +409,12 @@
   v8[1] = *MEMORY[0x277D85DE8];
   if (([(MFMailMessage *)self messageFlags]& 4) == 0)
   {
-    v3 = [(MFLibraryMessage *)self messageStore];
+    messageStore = [(MFLibraryMessage *)self messageStore];
     v7 = @"MessageWasRepliedTo";
     v8[0] = MEMORY[0x277CBEC38];
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-    v6 = self;
-    [v3 setFlagsFromDictionary:v4 forMessages:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &v6, 1)}];
+    selfCopy = self;
+    [messageStore setFlagsFromDictionary:v4 forMessages:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &selfCopy, 1)}];
   }
 
   v5 = *MEMORY[0x277D85DE8];
@@ -425,12 +425,12 @@
   v8[1] = *MEMORY[0x277D85DE8];
   if (([(MFMailMessage *)self messageFlags]& 0x100) == 0)
   {
-    v3 = [(MFLibraryMessage *)self messageStore];
+    messageStore = [(MFLibraryMessage *)self messageStore];
     v7 = @"MessageWasForwarded";
     v8[0] = MEMORY[0x277CBEC38];
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-    v6 = self;
-    [v3 setFlagsFromDictionary:v4 forMessages:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &v6, 1)}];
+    selfCopy = self;
+    [messageStore setFlagsFromDictionary:v4 forMessages:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &selfCopy, 1)}];
   }
 
   v5 = *MEMORY[0x277D85DE8];
@@ -441,17 +441,17 @@
   v23 = *MEMORY[0x277D85DE8];
   v3 = [+[MailAccount mailboxUidFromActiveAccountsForURL:](MailAccount mailboxUidFromActiveAccountsForURL:{objc_msgSend(-[MFLibraryMessage library](self, "library"), "urlForMailboxID:", -[MFLibraryMessage originalMailboxID](self, "originalMailboxID"))), "account"}];
   v4 = [MailAccount addressesThatReceivedMessage:self];
-  v5 = [v3 firstEmailAddress];
-  if (!v5)
+  firstEmailAddress = [v3 firstEmailAddress];
+  if (!firstEmailAddress)
   {
     goto LABEL_30;
   }
 
-  v6 = v5;
-  if ([v4 count] && (objc_msgSend(v4, "containsObject:", v6) & 1) == 0)
+  defaultEmailAddress = firstEmailAddress;
+  if ([v4 count] && (objc_msgSend(v4, "containsObject:", defaultEmailAddress) & 1) == 0)
   {
     v7 = [objc_msgSend(objc_msgSend(v3 "emailAddressesAndAliasesList")];
-    [v7 removeObject:v6];
+    [v7 removeObject:defaultEmailAddress];
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
@@ -477,10 +477,10 @@
         v12 = *(*(&v18 + 1) + 8 * i);
         if ([v4 containsObject:v12])
         {
-          v6 = v12;
+          defaultEmailAddress = v12;
           if (([v7 containsObject:v12] & 1) == 0)
           {
-            v6 = [v3 defaultEmailAddress];
+            defaultEmailAddress = [v3 defaultEmailAddress];
           }
 
           goto LABEL_15;
@@ -498,17 +498,17 @@
 
 LABEL_15:
 
-    if (!v6)
+    if (!defaultEmailAddress)
     {
 LABEL_30:
       if ([-[MFLibraryMessage mailbox](self "mailbox")])
       {
-        v13 = [(MFLibraryMessage *)self senders];
-        if ([v13 count])
+        senders = [(MFLibraryMessage *)self senders];
+        if ([senders count])
         {
-          v14 = v13;
+          v14 = senders;
 LABEL_21:
-          v6 = [v14 objectAtIndex:0];
+          defaultEmailAddress = [v14 objectAtIndex:0];
           goto LABEL_24;
         }
       }
@@ -519,55 +519,55 @@ LABEL_21:
         goto LABEL_21;
       }
 
-      v6 = 0;
+      defaultEmailAddress = 0;
     }
   }
 
 LABEL_24:
-  if ([v6 isEqualToString:{objc_msgSend(v6, "mf_addressComment")}])
+  if ([defaultEmailAddress isEqualToString:{objc_msgSend(defaultEmailAddress, "mf_addressComment")}])
   {
-    v15 = [+[MailAccount accountContainingEmailAddress:](MailAccount accountContainingEmailAddress:{v6), "fullUserName"}];
+    v15 = [+[MailAccount accountContainingEmailAddress:](MailAccount accountContainingEmailAddress:{defaultEmailAddress), "fullUserName"}];
     if (v15)
     {
-      v6 = [MEMORY[0x277CCACA8] mf_formattedAddressWithName:v15 email:v6 useQuotes:1];
+      defaultEmailAddress = [MEMORY[0x277CCACA8] mf_formattedAddressWithName:v15 email:defaultEmailAddress useQuotes:1];
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v6;
+  return defaultEmailAddress;
 }
 
-- (void)setRemoteID:(const char *)a3 flags:(unint64_t)a4 size:(unsigned int)a5 mailboxID:(unsigned int)a6 originalMailboxID:(unsigned int)a7
+- (void)setRemoteID:(const char *)d flags:(unint64_t)flags size:(unsigned int)size mailboxID:(unsigned int)iD originalMailboxID:(unsigned int)mailboxID
 {
-  if (a3)
+  if (d)
   {
 
-    self->_remoteID = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:a3];
+    self->_remoteID = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:d];
     [(MFLibraryMessage *)self _updateUID];
   }
 
-  self->super._messageFlags = a4;
-  self->_size = a5;
-  self->_mailboxID = a6;
-  self->_originalMailboxID = a7;
+  self->super._messageFlags = flags;
+  self->_size = size;
+  self->_mailboxID = iD;
+  self->_originalMailboxID = mailboxID;
 }
 
-- (id)dataConsumerForMimePart:(id)a3
+- (id)dataConsumerForMimePart:(id)part
 {
-  v5 = [(MFLibraryMessage *)self library];
+  library = [(MFLibraryMessage *)self library];
 
-  return [v5 dataConsumerForMessage:self part:a3];
+  return [library dataConsumerForMessage:self part:part];
 }
 
 - (id)copyMessageInfo
 {
   v5.receiver = self;
   v5.super_class = MFLibraryMessage;
-  v3 = [(MFMailMessage *)&v5 copyMessageInfo];
-  [v3 setUid:{-[MFLibraryMessage libraryID](self, "libraryID")}];
-  [v3 setMailboxID:self->_mailboxID];
-  [v3 setUidIsLibraryID:1];
-  return v3;
+  copyMessageInfo = [(MFMailMessage *)&v5 copyMessageInfo];
+  [copyMessageInfo setUid:{-[MFLibraryMessage libraryID](self, "libraryID")}];
+  [copyMessageInfo setMailboxID:self->_mailboxID];
+  [copyMessageInfo setUidIsLibraryID:1];
+  return copyMessageInfo;
 }
 
 - (void)_initializeMetadata
@@ -579,7 +579,7 @@ LABEL_24:
   }
 }
 
-- (void)setMetadataValue:(id)a3 forKey:(id)a4
+- (void)setMetadataValue:(id)value forKey:(id)key
 {
   [(MFLock *)self->_metadataLock lock];
   metadata = self->_metadata;
@@ -589,19 +589,19 @@ LABEL_24:
     metadata = self->_metadata;
   }
 
-  [(NSMutableDictionary *)metadata setObject:a3 forKeyedSubscript:a4];
+  [(NSMutableDictionary *)metadata setObject:value forKeyedSubscript:key];
   v8 = [(NSMutableSet *)self->_metadataChangedKeys count];
-  [(NSMutableSet *)self->_metadataChangedKeys addObject:a4];
+  [(NSMutableSet *)self->_metadataChangedKeys addObject:key];
   [(MFLock *)self->_metadataLock unlock];
   if (!v8)
   {
-    v9 = [(MFLibraryMessage *)self library];
+    library = [(MFLibraryMessage *)self library];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __44__MFLibraryMessage_setMetadataValue_forKey___block_invoke;
     v10[3] = &unk_2798B6668;
     v10[4] = self;
-    [v9 updateMessage:self withMetadata:v10];
+    [library updateMessage:self withMetadata:v10];
   }
 }
 
@@ -644,7 +644,7 @@ void *__44__MFLibraryMessage_setMetadataValue_forKey___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)metadataValueOfClass:(Class)a3 forKey:(id)a4
+- (id)metadataValueOfClass:(Class)class forKey:(id)key
 {
   [(MFLock *)self->_metadataLock lock];
   metadata = self->_metadata;
@@ -654,15 +654,15 @@ void *__44__MFLibraryMessage_setMetadataValue_forKey___block_invoke(uint64_t a1)
     metadata = self->_metadata;
   }
 
-  v8 = [(NSMutableDictionary *)metadata objectForKeyedSubscript:a4];
-  if (v8 || ((-[MFLock unlock](self->_metadataLock, "unlock"), v9 = [-[MFLibraryMessage library](self "library")], -[MFLock lock](self->_metadataLock, "lock"), (v8 = -[NSMutableDictionary objectForKeyedSubscript:](self->_metadata, "objectForKeyedSubscript:", a4)) == 0) ? (v10 = v9 == 0) : (v10 = 1), v10))
+  v8 = [(NSMutableDictionary *)metadata objectForKeyedSubscript:key];
+  if (v8 || ((-[MFLock unlock](self->_metadataLock, "unlock"), v9 = [-[MFLibraryMessage library](self "library")], -[MFLock lock](self->_metadataLock, "lock"), (v8 = -[NSMutableDictionary objectForKeyedSubscript:](self->_metadata, "objectForKeyedSubscript:", key)) == 0) ? (v10 = v9 == 0) : (v10 = 1), v10))
   {
     v12 = v8;
   }
 
   else
   {
-    [(NSMutableDictionary *)self->_metadata setObject:v9 forKeyedSubscript:a4];
+    [(NSMutableDictionary *)self->_metadata setObject:v9 forKeyedSubscript:key];
     v12 = v9;
   }
 
@@ -686,8 +686,8 @@ void *__44__MFLibraryMessage_setMetadataValue_forKey___block_invoke(uint64_t a1)
 
 - (void)_forceLoadOfMessageSummaryFromProtectedStore
 {
-  v4 = [(MFLibraryMessage *)self library];
-  v5 = [v4 messageWithLibraryID:-[MFLibraryMessage libraryID](self options:"libraryID") inMailbox:{4111, objc_msgSend(v4, "urlForMailboxID:", -[MFLibraryMessage mailboxID](self, "mailboxID"))}];
+  library = [(MFLibraryMessage *)self library];
+  v5 = [library messageWithLibraryID:-[MFLibraryMessage libraryID](self options:"libraryID") inMailbox:{4111, objc_msgSend(library, "urlForMailboxID:", -[MFLibraryMessage mailboxID](self, "mailboxID"))}];
   if (v5)
   {
     if (v5 != self)
@@ -697,12 +697,12 @@ void *__44__MFLibraryMessage_setMetadataValue_forKey___block_invoke(uint64_t a1)
   }
 }
 
-- (void)loadCachedHeaderValuesFromHeaders:(id)a3
+- (void)loadCachedHeaderValuesFromHeaders:(id)headers
 {
   [(MFLibraryMessage *)self _forceLoadOfMessageSummaryFromProtectedStore];
   v5.receiver = self;
   v5.super_class = MFLibraryMessage;
-  [(MFMailMessage *)&v5 loadCachedHeaderValuesFromHeaders:a3];
+  [(MFMailMessage *)&v5 loadCachedHeaderValuesFromHeaders:headers];
 }
 
 @end

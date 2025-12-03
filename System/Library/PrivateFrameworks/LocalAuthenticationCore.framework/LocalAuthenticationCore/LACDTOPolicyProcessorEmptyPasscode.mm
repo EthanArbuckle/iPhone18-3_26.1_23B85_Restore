@@ -1,50 +1,50 @@
 @interface LACDTOPolicyProcessorEmptyPasscode
-- (BOOL)canProcessRequest:(id)a3;
-- (LACDTOPolicyProcessorEmptyPasscode)initWithCredentialStore:(id)a3 device:(id)a4;
-- (void)_processAndEvaluateRequest:(id)a3 completion:(id)a4;
-- (void)processRequest:(id)a3 configuration:(id)a4 completion:(id)a5;
+- (BOOL)canProcessRequest:(id)request;
+- (LACDTOPolicyProcessorEmptyPasscode)initWithCredentialStore:(id)store device:(id)device;
+- (void)_processAndEvaluateRequest:(id)request completion:(id)completion;
+- (void)processRequest:(id)request configuration:(id)configuration completion:(id)completion;
 @end
 
 @implementation LACDTOPolicyProcessorEmptyPasscode
 
-- (LACDTOPolicyProcessorEmptyPasscode)initWithCredentialStore:(id)a3 device:(id)a4
+- (LACDTOPolicyProcessorEmptyPasscode)initWithCredentialStore:(id)store device:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  deviceCopy = device;
   v12.receiver = self;
   v12.super_class = LACDTOPolicyProcessorEmptyPasscode;
   v9 = [(LACDTOPolicyProcessorEmptyPasscode *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_store, a3);
-    objc_storeStrong(&v10->_device, a4);
+    objc_storeStrong(&v9->_store, store);
+    objc_storeStrong(&v10->_device, device);
   }
 
   return v10;
 }
 
-- (BOOL)canProcessRequest:(id)a3
+- (BOOL)canProcessRequest:(id)request
 {
-  v3 = [a3 options];
+  options = [request options];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:1081];
-  v5 = [v3 objectForKey:v4];
-  v6 = [v5 BOOLValue];
+  v5 = [options objectForKey:v4];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)processRequest:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)processRequest:(id)request configuration:(id)configuration completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v11 = LACLogDTOProcessor();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B0233000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ started", buf, 0xCu);
   }
 
@@ -54,9 +54,9 @@
   v14[2] = __78__LACDTOPolicyProcessorEmptyPasscode_processRequest_configuration_completion___block_invoke;
   v14[3] = &unk_1E7A95FC0;
   objc_copyWeak(&v16, buf);
-  v12 = v10;
+  v12 = completionCopy;
   v15 = v12;
-  [(LACDTOPolicyProcessorEmptyPasscode *)self _processAndEvaluateRequest:v8 completion:v14];
+  [(LACDTOPolicyProcessorEmptyPasscode *)self _processAndEvaluateRequest:requestCopy completion:v14];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -81,28 +81,28 @@ void __78__LACDTOPolicyProcessorEmptyPasscode_processRequest_configuration_compl
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_processAndEvaluateRequest:(id)a3 completion:(id)a4
+- (void)_processAndEvaluateRequest:(id)request completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (![(LACDTOPolicyProcessorEmptyPasscode *)self canProcessRequest:v6])
+  requestCopy = request;
+  completionCopy = completion;
+  if (![(LACDTOPolicyProcessorEmptyPasscode *)self canProcessRequest:requestCopy])
   {
 LABEL_6:
-    v14 = [LACEvaluationResult resultWithNext:v6];
-    v7[2](v7, v14);
+    v14 = [LACEvaluationResult resultWithNext:requestCopy];
+    completionCopy[2](completionCopy, v14);
 
     goto LABEL_7;
   }
 
-  if (!-[LACDTODeviceInfoProvider hasPasscodeSetForUser:](self->_device, "hasPasscodeSetForUser:", [v6 evaluationUserId]))
+  if (!-[LACDTODeviceInfoProvider hasPasscodeSetForUser:](self->_device, "hasPasscodeSetForUser:", [requestCopy evaluationUserId]))
   {
-    v16 = [v6 options];
+    options = [requestCopy options];
     v17 = [MEMORY[0x1E696AD98] numberWithInteger:1000];
-    v18 = [v16 objectForKey:v17];
-    v19 = [v18 BOOLValue];
+    v18 = [options objectForKey:v17];
+    bOOLValue = [v18 BOOLValue];
 
-    if (!v19)
+    if (!bOOLValue)
     {
       objc_initWeak(buf, self);
       store = self->_store;
@@ -111,7 +111,7 @@ LABEL_6:
       v28[1] = 3221225472;
       v28[2] = __76__LACDTOPolicyProcessorEmptyPasscode__processAndEvaluateRequest_completion___block_invoke;
       v28[3] = &unk_1E7A95FE8;
-      v22 = v6;
+      v22 = requestCopy;
       v29 = v22;
       v23 = __76__LACDTOPolicyProcessorEmptyPasscode__processAndEvaluateRequest_completion___block_invoke(v28);
       v24[0] = MEMORY[0x1E69E9820];
@@ -119,7 +119,7 @@ LABEL_6:
       v24[2] = __76__LACDTOPolicyProcessorEmptyPasscode__processAndEvaluateRequest_completion___block_invoke_2;
       v24[3] = &unk_1E7A95648;
       objc_copyWeak(&v27, buf);
-      v26 = v7;
+      v26 = completionCopy;
       v25 = v22;
       [(LACCredentialStore *)store setValue:v21 forCredential:v23 completion:v24];
 
@@ -132,27 +132,27 @@ LABEL_6:
   }
 
   v8 = objc_alloc(MEMORY[0x1E695DF90]);
-  v9 = [v6 options];
-  v10 = [v8 initWithDictionary:v9];
+  options2 = [requestCopy options];
+  v10 = [v8 initWithDictionary:options2];
 
   v11 = LACLogDTOProcessor();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v31 = self;
+    selfCopy = self;
     v32 = 1024;
     v33 = 1081;
     v34 = 1024;
-    v35 = [v6 evaluationUserId];
+    evaluationUserId = [requestCopy evaluationUserId];
     _os_log_impl(&dword_1B0233000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Removing %d option because user %d has passcode", buf, 0x18u);
   }
 
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:1081];
   [v10 setObject:0 forKeyedSubscript:v12];
 
-  [v6 updateOptions:v10];
-  v13 = [LACEvaluationResult resultWithNext:v6];
-  v7[2](v7, v13);
+  [requestCopy updateOptions:v10];
+  v13 = [LACEvaluationResult resultWithNext:requestCopy];
+  completionCopy[2](completionCopy, v13);
 
 LABEL_7:
   v15 = *MEMORY[0x1E69E9840];

@@ -1,7 +1,7 @@
 @interface CurrencyUITextField
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (_TtC9PassKitUI19CurrencyUITextField)initWithCoder:(id)a3;
-- (_TtC9PassKitUI19CurrencyUITextField)initWithFrame:(CGRect)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (_TtC9PassKitUI19CurrencyUITextField)initWithCoder:(id)coder;
+- (_TtC9PassKitUI19CurrencyUITextField)initWithFrame:(CGRect)frame;
 - (void)deleteBackward;
 - (void)editingChanged;
 - (void)resetSelection;
@@ -9,7 +9,7 @@
 
 @implementation CurrencyUITextField
 
-- (_TtC9PassKitUI19CurrencyUITextField)initWithCoder:(id)a3
+- (_TtC9PassKitUI19CurrencyUITextField)initWithCoder:(id)coder
 {
   result = sub_1BE053994();
   __break(1u);
@@ -18,11 +18,11 @@
 
 - (void)deleteBackward
 {
-  v12 = self;
-  v2 = [(CurrencyUITextField *)v12 text];
-  if (v2)
+  selfCopy = self;
+  text = [(CurrencyUITextField *)selfCopy text];
+  if (text)
   {
-    v3 = v2;
+    v3 = text;
     sub_1BE052434();
   }
 
@@ -37,41 +37,41 @@
 
   v11 = sub_1BE052404();
 
-  [(CurrencyUITextField *)v12 setText:v11];
+  [(CurrencyUITextField *)selfCopy setText:v11];
 
-  [(CurrencyUITextField *)v12 sendActionsForControlEvents:0x20000];
+  [(CurrencyUITextField *)selfCopy sendActionsForControlEvents:0x20000];
 }
 
 - (void)editingChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD643E74();
 }
 
 - (void)resetSelection
 {
-  v5 = self;
-  v2 = [(CurrencyUITextField *)v5 endOfDocument];
-  v3 = [(CurrencyUITextField *)v5 endOfDocument];
-  v4 = [(CurrencyUITextField *)v5 textRangeFromPosition:v2 toPosition:v3];
+  selfCopy = self;
+  endOfDocument = [(CurrencyUITextField *)selfCopy endOfDocument];
+  endOfDocument2 = [(CurrencyUITextField *)selfCopy endOfDocument];
+  v4 = [(CurrencyUITextField *)selfCopy textRangeFromPosition:endOfDocument toPosition:endOfDocument2];
 
-  [(CurrencyUITextField *)v5 setSelectedTextRange:v4];
+  [(CurrencyUITextField *)selfCopy setSelectedTextRange:v4];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9 = sub_1BE052434();
   v11 = v10;
-  v12 = a3;
-  v13 = self;
-  LOBYTE(length) = sub_1BD644240(v12, location, length, v9, v11);
+  fieldCopy = field;
+  selfCopy = self;
+  LOBYTE(length) = sub_1BD644240(fieldCopy, location, length, v9, v11);
 
   return length & 1;
 }
 
-- (_TtC9PassKitUI19CurrencyUITextField)initWithFrame:(CGRect)a3
+- (_TtC9PassKitUI19CurrencyUITextField)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

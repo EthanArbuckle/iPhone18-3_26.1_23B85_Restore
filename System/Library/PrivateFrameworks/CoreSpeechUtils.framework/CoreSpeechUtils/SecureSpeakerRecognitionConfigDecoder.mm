@@ -1,14 +1,14 @@
 @interface SecureSpeakerRecognitionConfigDecoder
-- (id)decode:(id)a3;
+- (id)decode:(id)decode;
 @end
 
 @implementation SecureSpeakerRecognitionConfigDecoder
 
-- (id)decode:(id)a3
+- (id)decode:(id)decode
 {
-  v4 = a3;
-  v5 = self;
-  v6 = SecureSpeakerRecognitionConfigDecoder.decode(_:)(v4);
+  decodeCopy = decode;
+  selfCopy = self;
+  v6 = SecureSpeakerRecognitionConfigDecoder.decode(_:)(decodeCopy);
 
   return v6;
 }

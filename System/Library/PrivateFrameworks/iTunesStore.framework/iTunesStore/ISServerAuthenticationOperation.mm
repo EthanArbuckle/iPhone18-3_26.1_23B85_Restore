@@ -56,30 +56,30 @@
 
   else
   {
-    v6 = [(ISServerAuthenticationOperation *)self dialog];
-    v7 = [(ISDialog *)v6 copyXPCEncoding];
-    v8 = [objc_alloc(MEMORY[0x277D69D10]) initWithEncodedDialog:v7];
+    dialog = [(ISServerAuthenticationOperation *)self dialog];
+    copyXPCEncoding = [(ISDialog *)dialog copyXPCEncoding];
+    v8 = [objc_alloc(MEMORY[0x277D69D10]) initWithEncodedDialog:copyXPCEncoding];
     [v8 setAuthenticationContext:{-[ISServerAuthenticationOperation authenticationContext](self, "authenticationContext")}];
-    v9 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
-    if (!v9)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v9 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
-    v11 = [v9 shouldLogToDisk];
-    v12 = [v9 OSLogObject];
-    if (v11)
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    shouldLogToDisk = [mEMORY[0x277D69B38] shouldLogToDisk];
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (shouldLogToDisk)
     {
-      v10 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v10 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v10)
+    if (shouldLog)
     {
       v13 = objc_opt_class();
       [objc_msgSend(v8 "authenticationContext")];
@@ -109,7 +109,7 @@
     v23[2] = __38__ISServerAuthenticationOperation_run__block_invoke;
     v23[3] = &unk_27A671360;
     v23[4] = self;
-    v23[5] = v6;
+    v23[5] = dialog;
     v23[7] = &v28;
     v23[8] = &v24;
     v23[6] = v18;
@@ -118,12 +118,12 @@
     dispatch_release(v18);
     if (*(v25 + 24) == 1 && [(ISServerAuthenticationOperation *)self performsButtonAction])
     {
-      [(ISDialogButton *)[(ISServerAuthenticationOperation *)self performedButton] performDefaultActionForDialog:v6];
+      [(ISDialogButton *)[(ISServerAuthenticationOperation *)self performedButton] performDefaultActionForDialog:dialog];
     }
 
     v19 = v29[5];
 
-    xpc_release(v7);
+    xpc_release(copyXPCEncoding);
   }
 
   [(ISOperation *)self setError:v29[5], v21];

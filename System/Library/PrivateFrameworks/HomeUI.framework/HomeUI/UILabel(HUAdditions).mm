@@ -15,9 +15,9 @@
   [v9 setFont:v6];
 
   [v9 setText:v7];
-  v10 = [v9 traitCollection];
-  v11 = [v10 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v11))
+  traitCollection = [v9 traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v12 = 0;
   }

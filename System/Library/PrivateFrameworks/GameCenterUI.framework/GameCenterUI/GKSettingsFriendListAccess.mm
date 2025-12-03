@@ -11,9 +11,9 @@
 - (id)specifiers;
 - (void)dealloc;
 - (void)loadAllGames;
-- (void)reloadWithClearLocalCache:(BOOL)a3;
-- (void)setGames:(id)a3;
-- (void)setLoadingGames:(BOOL)a3;
+- (void)reloadWithClearLocalCache:(BOOL)cache;
+- (void)setGames:(id)games;
+- (void)setLoadingGames:(BOOL)games;
 @end
 
 @implementation GKSettingsFriendListAccess
@@ -29,9 +29,9 @@
     v4 = GKGetLocalizedStringFromTableInBundle();
     [(GKSettingsFriendListAccess *)v2 setTitle:v4];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    v6 = [MEMORY[0x277D0BFD8] willEnterForeground];
-    [v5 addObserver:v2 selector:sel_applicationWillEnterForeground_ name:v6 object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    willEnterForeground = [MEMORY[0x277D0BFD8] willEnterForeground];
+    [defaultCenter addObserver:v2 selector:sel_applicationWillEnterForeground_ name:willEnterForeground object:0];
 
     [(GKSettingsFriendListAccess *)v2 loadAllGames];
     v7 = v2;
@@ -42,22 +42,22 @@
 
 - (void)loadAllGames
 {
-  v3 = [(GKSettingsFriendListAccess *)self games];
+  games = [(GKSettingsFriendListAccess *)self games];
 
-  if (!v3 && ![(GKSettingsFriendListAccess *)self isFriendListSharingRestricted])
+  if (!games && ![(GKSettingsFriendListAccess *)self isFriendListSharingRestricted])
   {
     [(GKSettingsFriendListAccess *)self setLoadingGames:1];
     objc_initWeak(&location, self);
     v4 = MEMORY[0x277D0C010];
-    v5 = [(GKSettingsFriendListAccess *)self localPlayer];
-    v6 = [v4 proxyForPlayer:v5];
-    v7 = [v6 gameServicePrivate];
+    localPlayer = [(GKSettingsFriendListAccess *)self localPlayer];
+    v6 = [v4 proxyForPlayer:localPlayer];
+    gameServicePrivate = [v6 gameServicePrivate];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __42__GKSettingsFriendListAccess_loadAllGames__block_invoke;
     v8[3] = &unk_279669FB8;
     objc_copyWeak(&v9, &location);
-    [v7 getFriendListAccessForAllGames:v8];
+    [gameServicePrivate getFriendListAccessForAllGames:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -113,8 +113,8 @@ void __42__GKSettingsFriendListAccess_loadAllGames__block_invoke_3(uint64_t a1, 
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = GKSettingsFriendListAccess;
@@ -126,26 +126,26 @@ void __42__GKSettingsFriendListAccess_loadAllGames__block_invoke_3(uint64_t a1, 
   localPlayer = self->_localPlayer;
   if (localPlayer)
   {
-    v3 = localPlayer;
+    local = localPlayer;
   }
 
   else
   {
-    v3 = [MEMORY[0x277D0C138] local];
+    local = [MEMORY[0x277D0C138] local];
   }
 
-  return v3;
+  return local;
 }
 
-- (void)setGames:(id)a3
+- (void)setGames:(id)games
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAC98];
-  v5 = a3;
+  gamesCopy = games;
   v6 = [v4 sortDescriptorWithKey:@"name" ascending:1];
   v10[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-  v8 = [v5 sortedArrayUsingDescriptors:v7];
+  v8 = [gamesCopy sortedArrayUsingDescriptors:v7];
 
   games = self->_games;
   self->_games = v8;
@@ -153,40 +153,40 @@ void __42__GKSettingsFriendListAccess_loadAllGames__block_invoke_3(uint64_t a1, 
 
 - (id)loadFreshSpecifiers
 {
-  v3 = [(GKSettingsFriendListAccess *)self table];
-  [v3 setTableHeaderView:0];
+  table = [(GKSettingsFriendListAccess *)self table];
+  [table setTableHeaderView:0];
 
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [(GKSettingsFriendListAccess *)self globalFriendListAccessSpecifier];
-  [v4 addObjectsFromArray:v5];
+  array = [MEMORY[0x277CBEB18] array];
+  globalFriendListAccessSpecifier = [(GKSettingsFriendListAccess *)self globalFriendListAccessSpecifier];
+  [array addObjectsFromArray:globalFriendListAccessSpecifier];
 
   if ([(GKSettingsFriendListAccess *)self loadingGames])
   {
-    v6 = [(GKSettingsFriendListAccess *)self loadingSpecifier];
-    [v4 addObjectsFromArray:v6];
+    loadingSpecifier = [(GKSettingsFriendListAccess *)self loadingSpecifier];
+    [array addObjectsFromArray:loadingSpecifier];
   }
 
   if (![(GKSettingsFriendListAccess *)self isFriendListSharingRestricted])
   {
     if ([(GKSettingsFriendListAccess *)self globalFriendListAccess])
     {
-      v7 = [(GKSettingsFriendListAccess *)self games];
-      v8 = [v7 count];
+      games = [(GKSettingsFriendListAccess *)self games];
+      v8 = [games count];
 
       if (v8)
       {
-        v9 = [(GKSettingsFriendListAccess *)self individualBundleIDFriendListAccessSpecifier];
-        [v4 addObjectsFromArray:v9];
+        individualBundleIDFriendListAccessSpecifier = [(GKSettingsFriendListAccess *)self individualBundleIDFriendListAccessSpecifier];
+        [array addObjectsFromArray:individualBundleIDFriendListAccessSpecifier];
       }
     }
   }
 
-  return v4;
+  return array;
 }
 
-- (void)setLoadingGames:(BOOL)a3
+- (void)setLoadingGames:(BOOL)games
 {
-  if (a3)
+  if (games)
   {
     objc_initWeak(&location, self);
     v3 = dispatch_time(0, 600000023);
@@ -221,10 +221,10 @@ void __46__GKSettingsFriendListAccess_setLoadingGames___block_invoke(uint64_t a1
 
 - (id)specifiers
 {
-  v3 = [(GKSettingsFriendListAccess *)self loadFreshSpecifiers];
+  loadFreshSpecifiers = [(GKSettingsFriendListAccess *)self loadFreshSpecifiers];
   v4 = *MEMORY[0x277D3FC48];
   v5 = *(&self->super.super.super.super.super.isa + v4);
-  *(&self->super.super.super.super.super.isa + v4) = v3;
+  *(&self->super.super.super.super.super.isa + v4) = loadFreshSpecifiers;
 
   v6 = *(&self->super.super.super.super.super.isa + v4);
 
@@ -233,13 +233,13 @@ void __46__GKSettingsFriendListAccess_setLoadingGames___block_invoke(uint64_t a1
 
 - (id)globalFriendListAccessSpecifier
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = GKGameCenterUIFrameworkBundle();
   v5 = GKGetLocalizedStringFromTableInBundle();
 
-  v6 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-  [v6 setProperty:v5 forKey:*MEMORY[0x277D3FF88]];
-  [v3 addObject:v6];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  [emptyGroupSpecifier setProperty:v5 forKey:*MEMORY[0x277D3FF88]];
+  [array addObject:emptyGroupSpecifier];
   v7 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:&stru_28612D290 target:self set:sel_setGlobalFriendListAccess_withSpecifier_ get:0 detail:0 cell:6 edit:0];
   [v7 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
   if ([(GKSettingsFriendListAccess *)self isFriendListSharingRestricted])
@@ -247,9 +247,9 @@ void __46__GKSettingsFriendListAccess_setLoadingGames___block_invoke(uint64_t a1
     [v7 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
   }
 
-  [v3 addObject:v7];
+  [array addObject:v7];
 
-  return v3;
+  return array;
 }
 
 - (BOOL)globalFriendListAccess
@@ -259,55 +259,55 @@ void __46__GKSettingsFriendListAccess_setLoadingGames___block_invoke(uint64_t a1
     return 0;
   }
 
-  v4 = [(GKSettingsFriendListAccess *)self localPlayer];
-  v5 = [v4 internal];
-  v3 = [v5 globalFriendListAccess] == 0;
+  localPlayer = [(GKSettingsFriendListAccess *)self localPlayer];
+  internal = [localPlayer internal];
+  v3 = [internal globalFriendListAccess] == 0;
 
   return v3;
 }
 
-- (void)reloadWithClearLocalCache:(BOOL)a3
+- (void)reloadWithClearLocalCache:(BOOL)cache
 {
-  if (a3)
+  if (cache)
   {
     [(GKSettingsFriendListAccess *)self setGames:0];
   }
 
   [(GKSettingsFriendListAccess *)self loadAllGames];
-  v4 = [(GKSettingsFriendListAccess *)self loadFreshSpecifiers];
+  loadFreshSpecifiers = [(GKSettingsFriendListAccess *)self loadFreshSpecifiers];
 
   [(GKSettingsFriendListAccess *)self reloadSpecifiers];
 }
 
 - (id)loadingSpecifier
 {
-  v2 = [MEMORY[0x277CBEB18] array];
-  v3 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-  [v2 addObject:v3];
+  array = [MEMORY[0x277CBEB18] array];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  [array addObject:emptyGroupSpecifier];
   v4 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:15 edit:0];
-  [v2 addObject:v4];
+  [array addObject:v4];
 
-  return v2;
+  return array;
 }
 
 - (id)individualBundleIDFriendListAccessSpecifier
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  array = [MEMORY[0x277CBEB18] array];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
   v5 = GKGameCenterUIFrameworkBundle();
   v6 = GKGetLocalizedStringFromTableInBundle();
 
-  [v4 setProperty:v6 forKey:*MEMORY[0x277D3FF88]];
-  [v3 addObject:v4];
-  v7 = [(GKSettingsFriendListAccess *)self games];
+  [emptyGroupSpecifier setProperty:v6 forKey:*MEMORY[0x277D3FF88]];
+  [array addObject:emptyGroupSpecifier];
+  games = [(GKSettingsFriendListAccess *)self games];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __73__GKSettingsFriendListAccess_individualBundleIDFriendListAccessSpecifier__block_invoke;
   v12[3] = &unk_27966A008;
   v12[4] = self;
-  v8 = v3;
+  v8 = array;
   v13 = v8;
-  [v7 enumerateObjectsUsingBlock:v12];
+  [games enumerateObjectsUsingBlock:v12];
 
   v9 = v13;
   v10 = v8;
@@ -336,10 +336,10 @@ void __73__GKSettingsFriendListAccess_individualBundleIDFriendListAccessSpecifie
 
 - (BOOL)isFriendListSharingRestricted
 {
-  v2 = [MEMORY[0x277D0C1D8] shared];
-  v3 = [v2 isFriendsSharingRestricted];
+  mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+  isFriendsSharingRestricted = [mEMORY[0x277D0C1D8] isFriendsSharingRestricted];
 
-  return v3;
+  return isFriendsSharingRestricted;
 }
 
 - (PSSpecifier)globalAccessSpecifier

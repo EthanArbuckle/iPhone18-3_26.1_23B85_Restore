@@ -1,7 +1,7 @@
 @interface SWClearMessagesAction
 - (NSString)collaborationIdentifier;
 - (_TtC17SharedWithYouCore21SWClearMessagesAction)init;
-- (_TtC17SharedWithYouCore21SWClearMessagesAction)initWithCollaborationIdentifier:(id)a3;
+- (_TtC17SharedWithYouCore21SWClearMessagesAction)initWithCollaborationIdentifier:(id)identifier;
 @end
 
 @implementation SWClearMessagesAction
@@ -16,7 +16,7 @@
   return v4;
 }
 
-- (_TtC17SharedWithYouCore21SWClearMessagesAction)initWithCollaborationIdentifier:(id)a3
+- (_TtC17SharedWithYouCore21SWClearMessagesAction)initWithCollaborationIdentifier:(id)identifier
 {
   v4 = sub_1D2C307C8();
   v5 = (self + OBJC_IVAR____TtC17SharedWithYouCore21SWClearMessagesAction_collaborationIdentifier);

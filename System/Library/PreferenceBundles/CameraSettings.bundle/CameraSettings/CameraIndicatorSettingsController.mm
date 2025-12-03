@@ -1,8 +1,8 @@
 @interface CameraIndicatorSettingsController
 - (id)_createSpecifiers;
 - (id)specifiers;
-- (void)_addPhotoSpecifiers:(id)a3;
-- (void)_addVideoSpecifiers:(id)a3;
+- (void)_addPhotoSpecifiers:(id)specifiers;
+- (void)_addVideoSpecifiers:(id)specifiers;
 - (void)viewDidLoad;
 @end
 
@@ -42,9 +42,9 @@
   v4 = *&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(CameraIndicatorSettingsController *)self _createSpecifiers];
-    [CameraSettingsBaseController allowMultilineTitlesForSpecifiers:v5];
-    v6 = [v5 copy];
+    _createSpecifiers = [(CameraIndicatorSettingsController *)self _createSpecifiers];
+    [CameraSettingsBaseController allowMultilineTitlesForSpecifiers:_createSpecifiers];
+    v6 = [_createSpecifiers copy];
     v7 = *&self->super.PSListController_opaque[v3];
     *&self->super.PSListController_opaque[v3] = v6;
 
@@ -67,34 +67,34 @@
   return v3;
 }
 
-- (void)_addPhotoSpecifiers:(id)a3
+- (void)_addPhotoSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   v7 = [(CameraSettingsBaseController *)self groupSpecifierWithTitle:@"CAM_INDICATORS_PHOTO_TITLE" footer:0 identifier:0];
   v5 = [(CameraSettingsBaseController *)self switchSpecifierWithLabel:@"CAM_INDICATORS_FLASH" key:CAMUserPreferenceAlwaysShowFlashIndicator defaultValue:CAMUserPreferenceAlwaysShowFlashIndicatorDefaultValue];
   v6 = [(CameraSettingsBaseController *)self switchSpecifierWithLabel:@"CAM_INDICATORS_LIVE_PHOTO" key:CAMUserPreferenceAlwaysShowLivePhotoIndicator defaultValue:CAMUserPreferenceAlwaysShowLivePhotoIndicatorDefaultValue];
-  [v4 addObject:v7];
-  [v4 addObject:v5];
-  [v4 addObject:v6];
+  [specifiersCopy addObject:v7];
+  [specifiersCopy addObject:v5];
+  [specifiersCopy addObject:v6];
 }
 
-- (void)_addVideoSpecifiers:(id)a3
+- (void)_addVideoSpecifiers:(id)specifiers
 {
-  v12 = a3;
+  specifiersCopy = specifiers;
   v4 = objc_alloc_init(NSMutableArray);
   v5 = +[CameraSettingsBaseController capabilities];
-  v6 = [v5 isActionModeControlSupported];
+  isActionModeControlSupported = [v5 isActionModeControlSupported];
 
-  if (v6)
+  if (isActionModeControlSupported)
   {
     v7 = [(CameraSettingsBaseController *)self switchSpecifierWithLabel:@"CAM_INDICATORS_ACTION_MODE" key:CAMUserPreferenceAlwaysShowActionModeIndicator defaultValue:CAMUserPreferenceAlwaysShowActionModeIndicatorDefaultValue];
     [v4 addObject:v7];
   }
 
   v8 = +[CameraSettingsBaseController capabilities];
-  v9 = [v8 isFrontRearSimultaneousVideoSupported];
+  isFrontRearSimultaneousVideoSupported = [v8 isFrontRearSimultaneousVideoSupported];
 
-  if (v9)
+  if (isFrontRearSimultaneousVideoSupported)
   {
     v10 = [(CameraSettingsBaseController *)self switchSpecifierWithLabel:@"CAM_INDICATORS_FRSV" key:CAMUserPreferenceAlwaysShowFrontPIPIndicator defaultValue:CAMUserPreferenceAlwaysShowFrontPIPIndicatorDefaultValue];
     [v4 addObject:v10];
@@ -103,8 +103,8 @@
   if ([v4 count])
   {
     v11 = [(CameraSettingsBaseController *)self groupSpecifierWithTitle:@"CAM_INDICATORS_VIDEO_TITLE" footer:0 identifier:0];
-    [v12 addObject:v11];
-    [v12 addObjectsFromArray:v4];
+    [specifiersCopy addObject:v11];
+    [specifiersCopy addObjectsFromArray:v4];
   }
 }
 

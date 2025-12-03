@@ -1,21 +1,21 @@
 @interface _ECHeaderAuthenticationResultsParser
-+ (BOOL)_propertiesWithScanner:(id)a3 intoArray:(id *)a4;
-+ (BOOL)_scanQuotedValueWithScanner:(id)a3 intoString:(id *)a4;
-+ (BOOL)_scanToCFWSOrEqualWithScanner:(id)a3 intoString:(id *)a4;
-+ (BOOL)_scanToCFWSOrPeriodOrSemicolonWithScanner:(id)a3 intoString:(id *)a4;
-+ (BOOL)_scanToCFWSOrSemicolonWithScanner:(id)a3 intoString:(id *)a4;
-+ (BOOL)_skipCFWSWithScanner:(id)a3;
-+ (BOOL)_statementWithScanner:(id)a3 intoStatement:(id *)a4;
-+ (BOOL)_statementsWithScanner:(id)a3 intoArray:(id *)a4;
-+ (id)_authenticationResultsForHeaderBodies:(id)a3;
-+ (id)authenticationResultsForHeaders:(uint64_t)a1;
-+ (id)authenticationResultsForRawHeaders:(uint64_t)a1;
-+ (int64_t)_versionWithScanner:(id)a3;
++ (BOOL)_propertiesWithScanner:(id)scanner intoArray:(id *)array;
++ (BOOL)_scanQuotedValueWithScanner:(id)scanner intoString:(id *)string;
++ (BOOL)_scanToCFWSOrEqualWithScanner:(id)scanner intoString:(id *)string;
++ (BOOL)_scanToCFWSOrPeriodOrSemicolonWithScanner:(id)scanner intoString:(id *)string;
++ (BOOL)_scanToCFWSOrSemicolonWithScanner:(id)scanner intoString:(id *)string;
++ (BOOL)_skipCFWSWithScanner:(id)scanner;
++ (BOOL)_statementWithScanner:(id)scanner intoStatement:(id *)statement;
++ (BOOL)_statementsWithScanner:(id)scanner intoArray:(id *)array;
++ (id)_authenticationResultsForHeaderBodies:(id)bodies;
++ (id)authenticationResultsForHeaders:(uint64_t)headers;
++ (id)authenticationResultsForRawHeaders:(uint64_t)headers;
++ (int64_t)_versionWithScanner:(id)scanner;
 @end
 
 @implementation _ECHeaderAuthenticationResultsParser
 
-+ (id)authenticationResultsForHeaders:(uint64_t)a1
++ (id)authenticationResultsForHeaders:(uint64_t)headers
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -25,7 +25,7 @@
   return v5;
 }
 
-+ (id)authenticationResultsForRawHeaders:(uint64_t)a1
++ (id)authenticationResultsForRawHeaders:(uint64_t)headers
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -37,34 +37,34 @@
   return v6;
 }
 
-+ (id)_authenticationResultsForHeaderBodies:(id)a3
++ (id)_authenticationResultsForHeaderBodies:(id)bodies
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __78___ECHeaderAuthenticationResultsParser__authenticationResultsForHeaderBodies___block_invoke;
   v5[3] = &__block_descriptor_40_e49___ECHeaderAuthenticationResults_16__0__NSString_8l;
-  v5[4] = a1;
-  v3 = [a3 ef_compactMap:v5];
+  v5[4] = self;
+  v3 = [bodies ef_compactMap:v5];
 
   return v3;
 }
 
-+ (BOOL)_skipCFWSWithScanner:(id)a3
++ (BOOL)_skipCFWSWithScanner:(id)scanner
 {
-  v3 = a3;
+  scannerCopy = scanner;
   if (_skipCFWSWithScanner__onceToken != -1)
   {
     +[_ECHeaderAuthenticationResultsParser _skipCFWSWithScanner:];
   }
 
-  v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  [v3 scanCharactersFromSet:v4 intoString:0];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  [scannerCopy scanCharactersFromSet:whitespaceAndNewlineCharacterSet intoString:0];
 
   v5 = 0;
   for (i = 0; ; i = v8)
   {
     v14 = i;
-    v7 = [v3 scanCharactersFromSet:_skipCFWSWithScanner__parentheses intoString:&v14];
+    v7 = [scannerCopy scanCharactersFromSet:_skipCFWSWithScanner__parentheses intoString:&v14];
     v8 = v14;
 
     if (!v7)
@@ -82,13 +82,13 @@
 LABEL_12:
     if (v5)
     {
-      [v3 scanUpToCharactersFromSet:_skipCFWSWithScanner__parentheses intoString:0];
+      [scannerCopy scanUpToCharactersFromSet:_skipCFWSWithScanner__parentheses intoString:0];
     }
 
     else
     {
-      v11 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      [v3 scanCharactersFromSet:v11 intoString:0];
+      whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      [scannerCopy scanCharactersFromSet:whitespaceAndNewlineCharacterSet2 intoString:0];
     }
   }
 
@@ -115,41 +115,41 @@ LABEL_17:
   return v12;
 }
 
-+ (BOOL)_scanToCFWSOrSemicolonWithScanner:(id)a3 intoString:(id *)a4
++ (BOOL)_scanToCFWSOrSemicolonWithScanner:(id)scanner intoString:(id *)string
 {
-  v5 = a3;
+  scannerCopy = scanner;
   if (_scanToCFWSOrSemicolonWithScanner_intoString__onceToken != -1)
   {
     +[_ECHeaderAuthenticationResultsParser _scanToCFWSOrSemicolonWithScanner:intoString:];
   }
 
-  v6 = [v5 scanUpToCharactersFromSet:_scanToCFWSOrSemicolonWithScanner_intoString__whitespaceAndSemicolon intoString:a4];
+  v6 = [scannerCopy scanUpToCharactersFromSet:_scanToCFWSOrSemicolonWithScanner_intoString__whitespaceAndSemicolon intoString:string];
 
   return v6;
 }
 
-+ (BOOL)_scanQuotedValueWithScanner:(id)a3 intoString:(id *)a4
++ (BOOL)_scanQuotedValueWithScanner:(id)scanner intoString:(id *)string
 {
-  v6 = a3;
+  scannerCopy = scanner;
   if (_scanQuotedValueWithScanner_intoString__onceToken != -1)
   {
     +[_ECHeaderAuthenticationResultsParser _scanQuotedValueWithScanner:intoString:];
   }
 
-  if ([v6 scanCharactersFromSet:_scanQuotedValueWithScanner_intoString__quotes intoString:0])
+  if ([scannerCopy scanCharactersFromSet:_scanQuotedValueWithScanner_intoString__quotes intoString:0])
   {
-    if (![v6 scanUpToCharactersFromSet:_scanQuotedValueWithScanner_intoString__quotes intoString:a4])
+    if (![scannerCopy scanUpToCharactersFromSet:_scanQuotedValueWithScanner_intoString__quotes intoString:string])
     {
       v8 = 0;
       goto LABEL_9;
     }
 
-    v7 = [v6 scanCharactersFromSet:_scanQuotedValueWithScanner_intoString__quotes intoString:0];
+    v7 = [scannerCopy scanCharactersFromSet:_scanQuotedValueWithScanner_intoString__quotes intoString:0];
   }
 
   else
   {
-    v7 = [a1 _scanToCFWSOrSemicolonWithScanner:v6 intoString:a4];
+    v7 = [self _scanToCFWSOrSemicolonWithScanner:scannerCopy intoString:string];
   }
 
   v8 = v7;
@@ -158,36 +158,36 @@ LABEL_9:
   return v8;
 }
 
-+ (BOOL)_scanToCFWSOrEqualWithScanner:(id)a3 intoString:(id *)a4
++ (BOOL)_scanToCFWSOrEqualWithScanner:(id)scanner intoString:(id *)string
 {
-  v5 = a3;
+  scannerCopy = scanner;
   if (_scanToCFWSOrEqualWithScanner_intoString__onceToken != -1)
   {
     +[_ECHeaderAuthenticationResultsParser _scanToCFWSOrEqualWithScanner:intoString:];
   }
 
-  v6 = [v5 scanUpToCharactersFromSet:_scanToCFWSOrEqualWithScanner_intoString__whitespaceAndEqual intoString:a4];
+  v6 = [scannerCopy scanUpToCharactersFromSet:_scanToCFWSOrEqualWithScanner_intoString__whitespaceAndEqual intoString:string];
 
   return v6;
 }
 
-+ (BOOL)_scanToCFWSOrPeriodOrSemicolonWithScanner:(id)a3 intoString:(id *)a4
++ (BOOL)_scanToCFWSOrPeriodOrSemicolonWithScanner:(id)scanner intoString:(id *)string
 {
-  v5 = a3;
+  scannerCopy = scanner;
   if (_scanToCFWSOrPeriodOrSemicolonWithScanner_intoString__onceToken != -1)
   {
     +[_ECHeaderAuthenticationResultsParser _scanToCFWSOrPeriodOrSemicolonWithScanner:intoString:];
   }
 
-  v6 = [v5 scanUpToCharactersFromSet:_scanToCFWSOrPeriodOrSemicolonWithScanner_intoString__whitespacePeriodSemicolon intoString:a4];
+  v6 = [scannerCopy scanUpToCharactersFromSet:_scanToCFWSOrPeriodOrSemicolonWithScanner_intoString__whitespacePeriodSemicolon intoString:string];
 
   return v6;
 }
 
-+ (int64_t)_versionWithScanner:(id)a3
++ (int64_t)_versionWithScanner:(id)scanner
 {
   v4 = 1;
-  if ([a3 scanInteger:&v4])
+  if ([scanner scanInteger:&v4])
   {
     return v4;
   }
@@ -198,16 +198,16 @@ LABEL_9:
   }
 }
 
-+ (BOOL)_statementsWithScanner:(id)a3 intoArray:(id *)a4
++ (BOOL)_statementsWithScanner:(id)scanner intoArray:(id *)array
 {
-  v6 = a3;
-  if ([a1 _skipCFWSWithScanner:v6] && objc_msgSend(v6, "scanString:intoString:", @";", 0) && (objc_msgSend(a1, "_skipCFWSWithScanner:", v6) & 1) != 0)
+  scannerCopy = scanner;
+  if ([self _skipCFWSWithScanner:scannerCopy] && objc_msgSend(scannerCopy, "scanString:intoString:", @";", 0) && (objc_msgSend(self, "_skipCFWSWithScanner:", scannerCopy) & 1) != 0)
   {
-    if ([v6 scanString:@"none" intoString:0])
+    if ([scannerCopy scanString:@"none" intoString:0])
     {
-      if (a4)
+      if (array)
       {
-        *a4 = MEMORY[0x277CBEBF8];
+        *array = MEMORY[0x277CBEBF8];
       }
 
       LOBYTE(v7) = 1;
@@ -220,7 +220,7 @@ LABEL_9:
       while (1)
       {
         v13 = v10;
-        v7 = [a1 _statementWithScanner:v6 intoStatement:&v13];
+        v7 = [self _statementWithScanner:scannerCopy intoStatement:&v13];
         v11 = v13;
 
         if (v11)
@@ -239,20 +239,20 @@ LABEL_9:
         }
 
         [v9 addObject:v11];
-        if (([a1 _skipCFWSWithScanner:v6] & 1) == 0)
+        if (([self _skipCFWSWithScanner:scannerCopy] & 1) == 0)
         {
           goto LABEL_19;
         }
 
-        if ([v6 isAtEnd])
+        if ([scannerCopy isAtEnd])
         {
           break;
         }
 
-        if ([v6 scanString:@";" intoString:0])
+        if ([scannerCopy scanString:@";" intoString:0])
         {
           v10 = v11;
-          if ([a1 _skipCFWSWithScanner:v6])
+          if ([self _skipCFWSWithScanner:scannerCopy])
           {
             continue;
           }
@@ -261,18 +261,18 @@ LABEL_9:
 LABEL_19:
         LOBYTE(v7) = 0;
 LABEL_20:
-        if (!a4)
+        if (!array)
         {
           goto LABEL_22;
         }
 
 LABEL_21:
-        *a4 = [v9 ef_notEmpty];
+        *array = [v9 ef_notEmpty];
         goto LABEL_22;
       }
 
       LOBYTE(v7) = 1;
-      if (a4)
+      if (array)
       {
         goto LABEL_21;
       }
@@ -289,22 +289,22 @@ LABEL_22:
   return v7;
 }
 
-+ (BOOL)_statementWithScanner:(id)a3 intoStatement:(id *)a4
++ (BOOL)_statementWithScanner:(id)scanner intoStatement:(id *)statement
 {
-  v6 = a3;
+  scannerCopy = scanner;
   v20 = 0;
-  v7 = [a1 _scanToCFWSOrEqualWithScanner:v6 intoString:&v20];
+  v7 = [self _scanToCFWSOrEqualWithScanner:scannerCopy intoString:&v20];
   v8 = v20;
-  if (v7 && [a1 _skipCFWSWithScanner:v6] && objc_msgSend(v6, "scanString:intoString:", @"=", 0) && objc_msgSend(a1, "_skipCFWSWithScanner:", v6))
+  if (v7 && [self _skipCFWSWithScanner:scannerCopy] && objc_msgSend(scannerCopy, "scanString:intoString:", @"=", 0) && objc_msgSend(self, "_skipCFWSWithScanner:", scannerCopy))
   {
     v19 = 0;
-    v9 = [a1 _scanQuotedValueWithScanner:v6 intoString:&v19];
+    v9 = [self _scanQuotedValueWithScanner:scannerCopy intoString:&v19];
     v10 = v19;
-    if (v9 && ([a1 _skipCFWSWithScanner:v6] & 1) != 0)
+    if (v9 && ([self _skipCFWSWithScanner:scannerCopy] & 1) != 0)
     {
-      if ([v6 scanString:@"reason" intoString:0])
+      if ([scannerCopy scanString:@"reason" intoString:0])
       {
-        if (![a1 _skipCFWSWithScanner:v6] || !objc_msgSend(v6, "scanString:intoString:", @"=", 0) || !objc_msgSend(a1, "_skipCFWSWithScanner:", v6))
+        if (![self _skipCFWSWithScanner:scannerCopy] || !objc_msgSend(scannerCopy, "scanString:intoString:", @"=", 0) || !objc_msgSend(self, "_skipCFWSWithScanner:", scannerCopy))
         {
           v13 = 0;
           v12 = 0;
@@ -312,9 +312,9 @@ LABEL_22:
         }
 
         v18 = 0;
-        v11 = [a1 _scanQuotedValueWithScanner:v6 intoString:&v18];
+        v11 = [self _scanQuotedValueWithScanner:scannerCopy intoString:&v18];
         v12 = v18;
-        if (!v11 || ([a1 _skipCFWSWithScanner:v6] & 1) == 0)
+        if (!v11 || ([self _skipCFWSWithScanner:scannerCopy] & 1) == 0)
         {
           v13 = 0;
 LABEL_25:
@@ -329,9 +329,9 @@ LABEL_25:
       }
 
       v17 = 0;
-      v13 = [a1 _propertiesWithScanner:v6 intoArray:&v17];
+      v13 = [self _propertiesWithScanner:scannerCopy intoArray:&v17];
       v15 = v17;
-      if (a4)
+      if (statement)
       {
         v16 = v13;
       }
@@ -343,7 +343,7 @@ LABEL_25:
 
       if (v16)
       {
-        *a4 = [[ECHeaderAuthenticationResultStatement alloc] initWithMethod:v8 result:v10 reason:v12 properties:v15];
+        *statement = [[ECHeaderAuthenticationResultStatement alloc] initWithMethod:v8 result:v10 reason:v12 properties:v15];
       }
 
       goto LABEL_25;
@@ -363,14 +363,14 @@ LABEL_15:
   return v13;
 }
 
-+ (BOOL)_propertiesWithScanner:(id)a3 intoArray:(id *)a4
++ (BOOL)_propertiesWithScanner:(id)scanner intoArray:(id *)array
 {
-  v5 = a3;
+  scannerCopy = scanner;
   v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
   for (i = 0; ; i = v8)
   {
     v22 = i;
-    v7 = [a1 _scanToCFWSOrPeriodOrSemicolonWithScanner:v5 intoString:&v22];
+    v7 = [self _scanToCFWSOrPeriodOrSemicolonWithScanner:scannerCopy intoString:&v22];
     v8 = v22;
 
     if (!v7)
@@ -378,14 +378,14 @@ LABEL_15:
       break;
     }
 
-    if (([a1 _skipCFWSWithScanner:v5] & 1) == 0)
+    if (([self _skipCFWSWithScanner:scannerCopy] & 1) == 0)
     {
       goto LABEL_16;
     }
 
-    if ([v5 scanString:@"." intoString:0])
+    if ([scannerCopy scanString:@"." intoString:0])
     {
-      if (![a1 _skipCFWSWithScanner:v5])
+      if (![self _skipCFWSWithScanner:scannerCopy])
       {
 LABEL_16:
         v10 = 0;
@@ -398,17 +398,17 @@ LABEL_19:
       }
 
       v21 = 0;
-      v9 = [a1 _scanToCFWSOrEqualWithScanner:v5 intoString:&v21];
+      v9 = [self _scanToCFWSOrEqualWithScanner:scannerCopy intoString:&v21];
       v10 = v21;
-      if (!v9 || ![a1 _skipCFWSWithScanner:v5] || !objc_msgSend(v5, "scanString:intoString:", @"=", 0) || !objc_msgSend(a1, "_skipCFWSWithScanner:", v5))
+      if (!v9 || ![self _skipCFWSWithScanner:scannerCopy] || !objc_msgSend(scannerCopy, "scanString:intoString:", @"=", 0) || !objc_msgSend(self, "_skipCFWSWithScanner:", scannerCopy))
       {
         goto LABEL_17;
       }
 
       v20 = 0;
-      v11 = [a1 _scanQuotedValueWithScanner:v5 intoString:&v20];
+      v11 = [self _scanQuotedValueWithScanner:scannerCopy intoString:&v20];
       v12 = v20;
-      if (!v11 || ![a1 _skipCFWSWithScanner:v5])
+      if (!v11 || ![self _skipCFWSWithScanner:scannerCopy])
       {
         goto LABEL_18;
       }
@@ -425,9 +425,9 @@ LABEL_19:
         goto LABEL_19;
       }
 
-      v14 = [v10 firstObject];
-      v15 = [v14 lowercaseString];
-      v16 = [v15 hasPrefix:@"x-"];
+      firstObject = [v10 firstObject];
+      lowercaseString = [firstObject lowercaseString];
+      v16 = [lowercaseString hasPrefix:@"x-"];
 
       if ((v16 & 1) == 0)
       {
@@ -436,9 +436,9 @@ LABEL_19:
     }
   }
 
-  if (a4)
+  if (array)
   {
-    *a4 = v19;
+    *array = v19;
   }
 
 LABEL_20:

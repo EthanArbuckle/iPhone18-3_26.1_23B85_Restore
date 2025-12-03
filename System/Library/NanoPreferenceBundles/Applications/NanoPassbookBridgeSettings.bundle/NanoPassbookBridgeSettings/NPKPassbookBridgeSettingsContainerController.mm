@@ -1,21 +1,21 @@
 @interface NPKPassbookBridgeSettingsContainerController
-- (BOOL)prepareHandlingURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 animatePush:(BOOL *)a5;
+- (BOOL)prepareHandlingURLForSpecifierID:(id)d resourceDictionary:(id)dictionary animatePush:(BOOL *)push;
 - (BOOL)suppressMirrorOption;
 - (BOOL)suppressSendToNotificationCenterOption;
 - (NPKPassbookBridgeSettingsContainerController)init;
-- (id)_currentViewControllerForScreen:(unint64_t)a3;
+- (id)_currentViewControllerForScreen:(unint64_t)screen;
 - (id)applicationBundleIdentifier;
 - (id)localizedMirroringDetailFooter;
 - (id)localizedPaneTitle;
 - (void)_applicationDidBecomeActive;
-- (void)_applicationDidRemoveDeactivationReasonNotification:(id)a3;
+- (void)_applicationDidRemoveDeactivationReasonNotification:(id)notification;
 - (void)_applicationDidResignActive;
-- (void)_applicationWillAddDeactivationReasonNotification:(id)a3;
+- (void)_applicationWillAddDeactivationReasonNotification:(id)notification;
 - (void)_loadCurrentScreen;
 - (void)_restrictToShield;
-- (void)_setCurrentScreen:(unint64_t)a3;
+- (void)_setCurrentScreen:(unint64_t)screen;
 - (void)dealloc;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
+- (void)handleURL:(id)l withCompletion:(id)completion;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -39,8 +39,8 @@
     v5 = +[PKAppProtectionCoordinator shared];
     [(NPKPassbookBridgeSettingsContainerController *)v3 setAppProtectionCoordinator:v5];
 
-    v6 = [(NPKPassbookBridgeSettingsContainerController *)v3 appProtectionCoordinator];
-    [v6 registerObserver:v3];
+    appProtectionCoordinator = [(NPKPassbookBridgeSettingsContainerController *)v3 appProtectionCoordinator];
+    [appProtectionCoordinator registerObserver:v3];
 
     v7 = objc_alloc_init(NPKPassbookBridgeSettingsController);
     [(NPKPassbookBridgeSettingsContainerController *)v3 setListSettingsController:v7];
@@ -59,8 +59,8 @@
 
 - (void)dealloc
 {
-  v3 = [(NPKPassbookBridgeSettingsContainerController *)self appProtectionCoordinator];
-  [v3 unregisterObserver:self];
+  appProtectionCoordinator = [(NPKPassbookBridgeSettingsContainerController *)self appProtectionCoordinator];
+  [appProtectionCoordinator unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = NPKPassbookBridgeSettingsContainerController;
@@ -72,14 +72,14 @@
   v8.receiver = self;
   v8.super_class = NPKPassbookBridgeSettingsContainerController;
   [(NPKPassbookBridgeSettingsContainerController *)&v8 viewDidLoad];
-  v3 = [(NPKPassbookBridgeSettingsContainerController *)self view];
+  view = [(NPKPassbookBridgeSettingsContainerController *)self view];
   v4 = +[UIColor systemGroupedBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
-  v5 = [(NPKPassbookBridgeSettingsContainerController *)self navigationItem];
-  v6 = [(NPKPassbookBridgeSettingsContainerController *)self specifier];
-  v7 = [v6 name];
-  [v5 setTitle:v7];
+  navigationItem = [(NPKPassbookBridgeSettingsContainerController *)self navigationItem];
+  specifier = [(NPKPassbookBridgeSettingsContainerController *)self specifier];
+  name = [specifier name];
+  [navigationItem setTitle:name];
 
   [(NPKPassbookBridgeSettingsContainerController *)self _loadCurrentScreen];
 }
@@ -89,46 +89,46 @@
   v8.receiver = self;
   v8.super_class = NPKPassbookBridgeSettingsContainerController;
   [(NPKPassbookBridgeSettingsContainerController *)&v8 viewWillLayoutSubviews];
-  v3 = [(NPKPassbookBridgeSettingsContainerController *)self currentScreen];
-  if (v3 - 2 >= 2)
+  currentScreen = [(NPKPassbookBridgeSettingsContainerController *)self currentScreen];
+  if (currentScreen - 2 >= 2)
   {
-    if (v3 != 1)
+    if (currentScreen != 1)
     {
       return;
     }
 
-    v4 = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
+    listSettingsController = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
   }
 
   else
   {
-    v4 = [(NPKPassbookBridgeSettingsContainerController *)self shieldViewController];
+    listSettingsController = [(NPKPassbookBridgeSettingsContainerController *)self shieldViewController];
   }
 
-  v5 = v4;
-  v6 = [v4 view];
-  v7 = [(NPKPassbookBridgeSettingsContainerController *)self view];
-  [v7 bounds];
-  [v6 setFrame:?];
+  v5 = listSettingsController;
+  view = [listSettingsController view];
+  view2 = [(NPKPassbookBridgeSettingsContainerController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 }
 
 - (void)_loadCurrentScreen
 {
   if ([(NPKPassbookBridgeSettingsContainerController *)self isActive]&& ![(NPKPassbookBridgeSettingsContainerController *)self isInAppSwitcher]&& [(NPKPassbookBridgeSettingsContainerController *)self isViewVisible])
   {
-    v3 = [(NPKPassbookBridgeSettingsContainerController *)self appProtectionCoordinator];
-    v4 = [v3 isEffectivelyLocked];
+    appProtectionCoordinator = [(NPKPassbookBridgeSettingsContainerController *)self appProtectionCoordinator];
+    isEffectivelyLocked = [appProtectionCoordinator isEffectivelyLocked];
 
-    if (v4)
+    if (isEffectivelyLocked)
     {
       objc_initWeak(&location, self);
-      v5 = [(NPKPassbookBridgeSettingsContainerController *)self appProtectionCoordinator];
+      appProtectionCoordinator2 = [(NPKPassbookBridgeSettingsContainerController *)self appProtectionCoordinator];
       v7[0] = _NSConcreteStackBlock;
       v7[1] = 3221225472;
       v7[2] = sub_FA04;
       v7[3] = &unk_2CEA0;
       objc_copyWeak(&v8, &location);
-      [v5 isShieldRequiredWithCompletion:v7];
+      [appProtectionCoordinator2 isShieldRequiredWithCompletion:v7];
 
       objc_destroyWeak(&v8);
       objc_destroyWeak(&location);
@@ -148,10 +148,10 @@
 
 - (void)_restrictToShield
 {
-  v3 = [(NPKPassbookBridgeSettingsContainerController *)self appProtectionCoordinator];
-  v4 = [v3 isEffectivelyLocked];
+  appProtectionCoordinator = [(NPKPassbookBridgeSettingsContainerController *)self appProtectionCoordinator];
+  isEffectivelyLocked = [appProtectionCoordinator isEffectivelyLocked];
 
-  if (v4 && ([(NPKPassbookBridgeSettingsContainerController *)self currentScreen]== &dword_0 + 1 || ![(NPKPassbookBridgeSettingsContainerController *)self currentScreen]))
+  if (isEffectivelyLocked && ([(NPKPassbookBridgeSettingsContainerController *)self currentScreen]== &dword_0 + 1 || ![(NPKPassbookBridgeSettingsContainerController *)self currentScreen]))
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -162,25 +162,25 @@
   }
 }
 
-- (void)_setCurrentScreen:(unint64_t)a3
+- (void)_setCurrentScreen:(unint64_t)screen
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if ([(NPKPassbookBridgeSettingsContainerController *)self currentScreen]== a3)
+  if ([(NPKPassbookBridgeSettingsContainerController *)self currentScreen]== screen)
   {
     return;
   }
 
   v5 = [(NPKPassbookBridgeSettingsContainerController *)self _currentViewControllerForScreen:[(NPKPassbookBridgeSettingsContainerController *)self currentScreen]];
   v6 = 0;
-  if (a3 > 1)
+  if (screen > 1)
   {
-    if (a3 == 2)
+    if (screen == 2)
     {
-      v10 = [(NPKPassbookBridgeSettingsContainerController *)self appProtectionCoordinator];
-      [v10 requestAccess];
+      appProtectionCoordinator = [(NPKPassbookBridgeSettingsContainerController *)self appProtectionCoordinator];
+      [appProtectionCoordinator requestAccess];
     }
 
-    else if (a3 != 3)
+    else if (screen != 3)
     {
       goto LABEL_21;
     }
@@ -192,9 +192,9 @@
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Settings screen: Shield", v30, 2u);
     }
 
-    v12 = [(NPKPassbookBridgeSettingsContainerController *)self shieldViewController];
+    shieldViewController = [(NPKPassbookBridgeSettingsContainerController *)self shieldViewController];
 
-    if (!v12)
+    if (!shieldViewController)
     {
       v13 = objc_alloc_init(PKAppProtectionShieldConfiguration);
       [v13 setShowAuthOnAppear:0];
@@ -202,11 +202,11 @@
       [(NPKPassbookBridgeSettingsContainerController *)self setShieldViewController:v14];
     }
 
-    v8 = [(NPKPassbookBridgeSettingsContainerController *)self shieldViewController];
+    shieldViewController2 = [(NPKPassbookBridgeSettingsContainerController *)self shieldViewController];
     goto LABEL_20;
   }
 
-  if (!a3)
+  if (!screen)
   {
     v9 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -219,7 +219,7 @@
     goto LABEL_21;
   }
 
-  if (a3 == 1)
+  if (screen == 1)
   {
     v7 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -228,47 +228,47 @@
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Settings screen: List Settings", buf, 2u);
     }
 
-    v8 = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
+    shieldViewController2 = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
 LABEL_20:
-    v6 = v8;
+    v6 = shieldViewController2;
   }
 
 LABEL_21:
   if (v5)
   {
-    v15 = [(NPKPassbookBridgeSettingsContainerController *)self isInAppSwitcher];
-    v16 = [(NPKPassbookBridgeSettingsContainerController *)self navigationController];
-    v17 = [v5 presentedViewController];
-    v18 = v17;
-    if (v17)
+    isInAppSwitcher = [(NPKPassbookBridgeSettingsContainerController *)self isInAppSwitcher];
+    navigationController = [(NPKPassbookBridgeSettingsContainerController *)self navigationController];
+    presentedViewController = [v5 presentedViewController];
+    v18 = presentedViewController;
+    if (presentedViewController)
     {
-      [v17 dismissViewControllerAnimated:v15 completion:0];
+      [presentedViewController dismissViewControllerAnimated:isInAppSwitcher completion:0];
     }
 
-    v19 = [v16 presentedViewController];
+    presentedViewController2 = [navigationController presentedViewController];
 
-    if (v19)
+    if (presentedViewController2)
     {
-      [v19 dismissViewControllerAnimated:v15 completion:0];
+      [presentedViewController2 dismissViewControllerAnimated:isInAppSwitcher completion:0];
     }
 
-    v20 = [v16 viewControllers];
-    if ([v20 indexOfObject:self] == 0x7FFFFFFFFFFFFFFFLL)
+    viewControllers = [navigationController viewControllers];
+    if ([viewControllers indexOfObject:self] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v21 = [(NPKPassbookBridgeSettingsContainerController *)self parentViewController];
-      if ([v20 indexOfObject:v21] != 0x7FFFFFFFFFFFFFFFLL)
+      parentViewController = [(NPKPassbookBridgeSettingsContainerController *)self parentViewController];
+      if ([viewControllers indexOfObject:parentViewController] != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v22 = [v16 popToViewController:v21 animated:v15];
+        v22 = [navigationController popToViewController:parentViewController animated:isInAppSwitcher];
       }
     }
 
     else
     {
-      v23 = [v16 popToViewController:self animated:v15];
+      v23 = [navigationController popToViewController:self animated:isInAppSwitcher];
     }
 
-    v24 = [v5 view];
-    [v24 removeFromSuperview];
+    view = [v5 view];
+    [view removeFromSuperview];
 
     [v5 removeFromParentViewController];
     [v5 didMoveToParentViewController:0];
@@ -277,46 +277,46 @@ LABEL_21:
   if (v6)
   {
     [(NPKPassbookBridgeSettingsContainerController *)self addChildViewController:v6];
-    v25 = [(NPKPassbookBridgeSettingsContainerController *)self view];
-    v26 = [v6 view];
-    [v25 addSubview:v26];
+    view2 = [(NPKPassbookBridgeSettingsContainerController *)self view];
+    view3 = [v6 view];
+    [view2 addSubview:view3];
 
     [v6 didMoveToParentViewController:self];
-    v27 = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
+    listSettingsController = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
 
-    if (v6 == v27)
+    if (v6 == listSettingsController)
     {
-      v28 = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
-      [v28 handlePendingURL];
+      listSettingsController2 = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
+      [listSettingsController2 handlePendingURL];
     }
   }
 
-  [(NPKPassbookBridgeSettingsContainerController *)self setCurrentScreen:a3];
-  v29 = [(NPKPassbookBridgeSettingsContainerController *)self view];
-  [v29 setNeedsLayout];
+  [(NPKPassbookBridgeSettingsContainerController *)self setCurrentScreen:screen];
+  view4 = [(NPKPassbookBridgeSettingsContainerController *)self view];
+  [view4 setNeedsLayout];
 }
 
-- (id)_currentViewControllerForScreen:(unint64_t)a3
+- (id)_currentViewControllerForScreen:(unint64_t)screen
 {
-  if (a3 - 2 >= 2)
+  if (screen - 2 >= 2)
   {
-    if (a3 == 1)
+    if (screen == 1)
     {
-      v3 = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
+      listSettingsController = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
     }
 
     else
     {
-      v3 = 0;
+      listSettingsController = 0;
     }
   }
 
   else
   {
-    v3 = [(NPKPassbookBridgeSettingsContainerController *)self shieldViewController];
+    listSettingsController = [(NPKPassbookBridgeSettingsContainerController *)self shieldViewController];
   }
 
-  return v3;
+  return listSettingsController;
 }
 
 - (void)_applicationDidResignActive
@@ -336,13 +336,13 @@ LABEL_21:
   [(NPKPassbookBridgeSettingsContainerController *)self _loadCurrentScreen];
 }
 
-- (void)_applicationWillAddDeactivationReasonNotification:(id)a3
+- (void)_applicationWillAddDeactivationReasonNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:_UIApplicationDeactivationReasonUserInfoKey];
-  v6 = [v5 longLongValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:_UIApplicationDeactivationReasonUserInfoKey];
+  longLongValue = [v5 longLongValue];
 
-  if (v6 == 3)
+  if (longLongValue == 3)
   {
     [(NPKPassbookBridgeSettingsContainerController *)self setIsInAppSwitcher:1];
     if (![(NPKPassbookBridgeSettingsContainerController *)self isActive])
@@ -353,13 +353,13 @@ LABEL_21:
   }
 }
 
-- (void)_applicationDidRemoveDeactivationReasonNotification:(id)a3
+- (void)_applicationDidRemoveDeactivationReasonNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:_UIApplicationDeactivationReasonUserInfoKey];
-  v6 = [v5 longLongValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:_UIApplicationDeactivationReasonUserInfoKey];
+  longLongValue = [v5 longLongValue];
 
-  if (v6 == 3)
+  if (longLongValue == 3)
   {
     [(NPKPassbookBridgeSettingsContainerController *)self setIsInAppSwitcher:0];
 
@@ -367,39 +367,39 @@ LABEL_21:
   }
 }
 
-- (BOOL)prepareHandlingURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 animatePush:(BOOL *)a5
+- (BOOL)prepareHandlingURLForSpecifierID:(id)d resourceDictionary:(id)dictionary animatePush:(BOOL *)push
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
-  LOBYTE(a5) = [v10 prepareHandlingURLForSpecifierID:v9 resourceDictionary:v8 animatePush:a5];
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  listSettingsController = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
+  LOBYTE(push) = [listSettingsController prepareHandlingURLForSpecifierID:dCopy resourceDictionary:dictionaryCopy animatePush:push];
 
-  return a5;
+  return push;
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(NPKPassbookBridgeSettingsContainerController *)self currentScreen];
-  if (v7 - 2 >= 2 && v7)
+  lCopy = l;
+  completionCopy = completion;
+  currentScreen = [(NPKPassbookBridgeSettingsContainerController *)self currentScreen];
+  if (currentScreen - 2 >= 2 && currentScreen)
   {
-    if (v7 != 1)
+    if (currentScreen != 1)
     {
       goto LABEL_7;
     }
 
-    v8 = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
-    [v8 handleURL:v10 withCompletion:v6];
+    listSettingsController = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
+    [listSettingsController handleURL:lCopy withCompletion:completionCopy];
   }
 
   else
   {
-    v9 = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
-    [v9 setPendingURLResourceDictionary:v10];
+    listSettingsController2 = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
+    [listSettingsController2 setPendingURLResourceDictionary:lCopy];
 
-    v8 = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
-    [v8 setUrlHandlingCompletion:v6];
+    listSettingsController = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
+    [listSettingsController setUrlHandlingCompletion:completionCopy];
   }
 
 LABEL_7:
@@ -407,42 +407,42 @@ LABEL_7:
 
 - (id)localizedPaneTitle
 {
-  v2 = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
-  v3 = [v2 localizedPaneTitle];
+  listSettingsController = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
+  localizedPaneTitle = [listSettingsController localizedPaneTitle];
 
-  return v3;
+  return localizedPaneTitle;
 }
 
 - (id)applicationBundleIdentifier
 {
-  v2 = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
-  v3 = [v2 applicationBundleIdentifier];
+  listSettingsController = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
+  applicationBundleIdentifier = [listSettingsController applicationBundleIdentifier];
 
-  return v3;
+  return applicationBundleIdentifier;
 }
 
 - (id)localizedMirroringDetailFooter
 {
-  v2 = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
-  v3 = [v2 localizedMirroringDetailFooter];
+  listSettingsController = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
+  localizedMirroringDetailFooter = [listSettingsController localizedMirroringDetailFooter];
 
-  return v3;
+  return localizedMirroringDetailFooter;
 }
 
 - (BOOL)suppressSendToNotificationCenterOption
 {
-  v2 = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
-  v3 = [v2 suppressSendToNotificationCenterOption];
+  listSettingsController = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
+  suppressSendToNotificationCenterOption = [listSettingsController suppressSendToNotificationCenterOption];
 
-  return v3;
+  return suppressSendToNotificationCenterOption;
 }
 
 - (BOOL)suppressMirrorOption
 {
-  v2 = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
-  v3 = [v2 suppressMirrorOption];
+  listSettingsController = [(NPKPassbookBridgeSettingsContainerController *)self listSettingsController];
+  suppressMirrorOption = [listSettingsController suppressMirrorOption];
 
-  return v3;
+  return suppressMirrorOption;
 }
 
 @end

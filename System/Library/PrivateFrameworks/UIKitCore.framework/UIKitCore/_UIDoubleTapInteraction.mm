@@ -1,17 +1,17 @@
 @interface _UIDoubleTapInteraction
-- (BOOL)continueProcessingSecondTapAtLocation:(CGPoint)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)continueProcessingSecondTapAtLocation:(CGPoint)location;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (CGPoint)initialTapLocationInView;
 - (UIDelayedAction)doubleTapAction;
 - (UIView)view;
-- (void)_handleTap:(id)a3;
+- (void)_handleTap:(id)tap;
 - (void)_invalidateDoubleTap;
-- (void)didMoveToView:(id)a3;
-- (void)doubleTapOccurredAtLocation:(CGPoint)a3;
+- (void)didMoveToView:(id)view;
+- (void)doubleTapOccurredAtLocation:(CGPoint)location;
 - (void)resetState;
-- (void)willMoveToView:(id)a3;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UIDoubleTapInteraction
@@ -23,22 +23,22 @@
   return WeakRetained;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = [(_UIDoubleTapInteraction *)self tapGesture];
-  v5 = [v4 view];
-  v6 = [(_UIDoubleTapInteraction *)self tapGesture];
-  [v5 removeGestureRecognizer:v6];
+  tapGesture = [(_UIDoubleTapInteraction *)self tapGesture];
+  view = [tapGesture view];
+  tapGesture2 = [(_UIDoubleTapInteraction *)self tapGesture];
+  [view removeGestureRecognizer:tapGesture2];
 
   objc_storeWeak(&self->_view, 0);
 
   [(_UIDoubleTapInteraction *)self setInitialTapLocationInView:1.79769313e308, 1.79769313e308];
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = objc_storeWeak(&self->_view, a3);
-  if (a3)
+  v4 = objc_storeWeak(&self->_view, view);
+  if (view)
   {
     if (!self->_tapGesture)
     {
@@ -54,25 +54,25 @@
   }
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
-  v4 = [a3 state];
-  if (v4 == 4)
+  state = [tap state];
+  if (state == 4)
   {
 
     [(_UIDoubleTapInteraction *)self resetState];
   }
 
-  else if (v4 == 3 && self)
+  else if (state == 3 && self)
   {
-    v5 = [(_UIDoubleTapInteraction *)self tapGesture];
+    tapGesture = [(_UIDoubleTapInteraction *)self tapGesture];
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    [v5 locationInView:WeakRetained];
+    [tapGesture locationInView:WeakRetained];
     v8 = v7;
     v10 = v9;
 
-    v11 = [(_UIDoubleTapInteraction *)self doubleTapAction];
-    LODWORD(WeakRetained) = [v11 scheduled];
+    doubleTapAction = [(_UIDoubleTapInteraction *)self doubleTapAction];
+    LODWORD(WeakRetained) = [doubleTapAction scheduled];
 
     if (WeakRetained)
     {
@@ -112,53 +112,53 @@
   doubleTapAction = self->_doubleTapAction;
   self->_doubleTapAction = 0;
 
-  v4 = [(_UIDoubleTapInteraction *)self tapGesture];
-  [v4 setEnabled:0];
+  tapGesture = [(_UIDoubleTapInteraction *)self tapGesture];
+  [tapGesture setEnabled:0];
 
-  v5 = [(_UIDoubleTapInteraction *)self tapGesture];
-  [v5 setEnabled:1];
+  tapGesture2 = [(_UIDoubleTapInteraction *)self tapGesture];
+  [tapGesture2 setEnabled:1];
 
-  v6 = [(_UIDoubleTapInteraction *)self didTimeOut];
+  didTimeOut = [(_UIDoubleTapInteraction *)self didTimeOut];
 
-  if (v6)
+  if (didTimeOut)
   {
-    v7 = [(_UIDoubleTapInteraction *)self didTimeOut];
+    didTimeOut2 = [(_UIDoubleTapInteraction *)self didTimeOut];
     [(_UIDoubleTapInteraction *)self initialTapLocationInView];
-    v7[2](v7);
+    didTimeOut2[2](didTimeOut2);
   }
 
   [(_UIDoubleTapInteraction *)self setInitialTapLocationInView:1.79769313e308, 1.79769313e308];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event
 {
-  v5 = [(_UIDoubleTapInteraction *)self doubleTapAction:a3];
-  v6 = [v5 scheduled];
+  v5 = [(_UIDoubleTapInteraction *)self doubleTapAction:recognizer];
+  scheduled = [v5 scheduled];
 
   if (self)
   {
-    v7 = [(_UIDoubleTapInteraction *)self tapGesture];
-    [v7 setCancelsTouchesInView:v6];
+    tapGesture = [(_UIDoubleTapInteraction *)self tapGesture];
+    [tapGesture setCancelsTouchesInView:scheduled];
 
-    v8 = [(_UIDoubleTapInteraction *)self tapGesture];
-    [v8 setDelaysTouchesEnded:v6];
+    tapGesture2 = [(_UIDoubleTapInteraction *)self tapGesture];
+    [tapGesture2 setDelaysTouchesEnded:scheduled];
   }
 
   return 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
+  touchCopy = touch;
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  [v5 locationInView:WeakRetained];
+  [touchCopy locationInView:WeakRetained];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(_UIDoubleTapInteraction *)self doubleTapAction];
-  v12 = [v11 scheduled];
+  doubleTapAction = [(_UIDoubleTapInteraction *)self doubleTapAction];
+  scheduled = [doubleTapAction scheduled];
 
-  if (v12)
+  if (scheduled)
   {
     if (self)
     {
@@ -180,7 +180,7 @@ LABEL_6:
 
   if ([(_UIDoubleTapInteraction *)self ignoresUIControls])
   {
-    v17 = [v5 view];
+    view = [touchCopy view];
     objc_opt_class();
     v15 = objc_opt_isKindOfClass() ^ 1;
   }
@@ -195,49 +195,49 @@ LABEL_10:
   return v15 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  if ([(_UIDoubleTapInteraction *)self neverRecognizeSimultaneouslyWithOtherGestures:a3])
+  if ([(_UIDoubleTapInteraction *)self neverRecognizeSimultaneouslyWithOtherGestures:recognizer])
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v6 = [(_UIDoubleTapInteraction *)self doubleTapAction];
-    v5 = [v6 scheduled] ^ 1;
+    doubleTapAction = [(_UIDoubleTapInteraction *)self doubleTapAction];
+    v5 = [doubleTapAction scheduled] ^ 1;
   }
 
   return v5;
 }
 
-- (BOOL)continueProcessingSecondTapAtLocation:(CGPoint)a3
+- (BOOL)continueProcessingSecondTapAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UIDoubleTapInteraction *)self shouldContinueProcessingSecondTap];
+  y = location.y;
+  x = location.x;
+  shouldContinueProcessingSecondTap = [(_UIDoubleTapInteraction *)self shouldContinueProcessingSecondTap];
 
-  if (!v6)
+  if (!shouldContinueProcessingSecondTap)
   {
     return 1;
   }
 
-  v7 = [(_UIDoubleTapInteraction *)self shouldContinueProcessingSecondTap];
-  v8 = v7[2](x, y);
+  shouldContinueProcessingSecondTap2 = [(_UIDoubleTapInteraction *)self shouldContinueProcessingSecondTap];
+  v8 = shouldContinueProcessingSecondTap2[2](x, y);
 
   return v8;
 }
 
-- (void)doubleTapOccurredAtLocation:(CGPoint)a3
+- (void)doubleTapOccurredAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UIDoubleTapInteraction *)self didDoubleTap];
+  y = location.y;
+  x = location.x;
+  didDoubleTap = [(_UIDoubleTapInteraction *)self didDoubleTap];
 
-  if (v6)
+  if (didDoubleTap)
   {
-    v7 = [(_UIDoubleTapInteraction *)self didDoubleTap];
-    v7[2](x, y);
+    didDoubleTap2 = [(_UIDoubleTapInteraction *)self didDoubleTap];
+    didDoubleTap2[2](x, y);
   }
 }
 

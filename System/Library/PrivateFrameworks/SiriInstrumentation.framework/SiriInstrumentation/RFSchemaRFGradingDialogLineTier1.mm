@@ -1,26 +1,26 @@
 @interface RFSchemaRFGradingDialogLineTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RFSchemaRFGradingDialogLineTier1)initWithDictionary:(id)a3;
-- (RFSchemaRFGradingDialogLineTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (RFSchemaRFGradingDialogLineTier1)initWithDictionary:(id)dictionary;
+- (RFSchemaRFGradingDialogLineTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RFSchemaRFGradingDialogLineTier1
 
-- (RFSchemaRFGradingDialogLineTier1)initWithDictionary:(id)a3
+- (RFSchemaRFGradingDialogLineTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = RFSchemaRFGradingDialogLineTier1;
   v5 = [(RFSchemaRFGradingDialogLineTier1 *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dialogId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dialogId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,14 +28,14 @@
       [(RFSchemaRFGradingDialogLineTier1 *)v5 setDialogId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isApprovedForGrading"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isApprovedForGrading"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[RFSchemaRFGradingDialogLineTier1 setIsApprovedForGrading:](v5, "setIsApprovedForGrading:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"spokenDialog"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"spokenDialog"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(RFSchemaRFGradingDialogLineTier1 *)v5 setSpokenDialog:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"displayedDialog"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"displayedDialog"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (RFSchemaRFGradingDialogLineTier1)initWithJSON:(id)a3
+- (RFSchemaRFGradingDialogLineTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RFSchemaRFGradingDialogLineTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RFSchemaRFGradingDialogLineTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RFSchemaRFGradingDialogLineTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,37 +93,37 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_dialogId)
   {
-    v4 = [(RFSchemaRFGradingDialogLineTier1 *)self dialogId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"dialogId"];
+    dialogId = [(RFSchemaRFGradingDialogLineTier1 *)self dialogId];
+    v5 = [dialogId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"dialogId"];
   }
 
   if (self->_displayedDialog)
   {
-    v6 = [(RFSchemaRFGradingDialogLineTier1 *)self displayedDialog];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"displayedDialog"];
+    displayedDialog = [(RFSchemaRFGradingDialogLineTier1 *)self displayedDialog];
+    v7 = [displayedDialog copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"displayedDialog"];
   }
 
   if (*&self->_has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[RFSchemaRFGradingDialogLineTier1 isApprovedForGrading](self, "isApprovedForGrading")}];
-    [v3 setObject:v8 forKeyedSubscript:@"isApprovedForGrading"];
+    [dictionary setObject:v8 forKeyedSubscript:@"isApprovedForGrading"];
   }
 
   if (self->_spokenDialog)
   {
-    v9 = [(RFSchemaRFGradingDialogLineTier1 *)self spokenDialog];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"spokenDialog"];
+    spokenDialog = [(RFSchemaRFGradingDialogLineTier1 *)self spokenDialog];
+    v10 = [spokenDialog copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"spokenDialog"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -144,28 +144,28 @@
   return v5 ^ v6 ^ [(NSString *)self->_displayedDialog hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(RFSchemaRFGradingDialogLineTier1 *)self dialogId];
-  v6 = [v4 dialogId];
-  if ((v5 != 0) == (v6 == 0))
+  dialogId = [(RFSchemaRFGradingDialogLineTier1 *)self dialogId];
+  dialogId2 = [equalCopy dialogId];
+  if ((dialogId != 0) == (dialogId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(RFSchemaRFGradingDialogLineTier1 *)self dialogId];
-  if (v7)
+  dialogId3 = [(RFSchemaRFGradingDialogLineTier1 *)self dialogId];
+  if (dialogId3)
   {
-    v8 = v7;
-    v9 = [(RFSchemaRFGradingDialogLineTier1 *)self dialogId];
-    v10 = [v4 dialogId];
-    v11 = [v9 isEqual:v10];
+    v8 = dialogId3;
+    dialogId4 = [(RFSchemaRFGradingDialogLineTier1 *)self dialogId];
+    dialogId5 = [equalCopy dialogId];
+    v11 = [dialogId4 isEqual:dialogId5];
 
     if (!v11)
     {
@@ -177,7 +177,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_20;
   }
@@ -185,26 +185,26 @@
   if (*&self->_has)
   {
     isApprovedForGrading = self->_isApprovedForGrading;
-    if (isApprovedForGrading != [v4 isApprovedForGrading])
+    if (isApprovedForGrading != [equalCopy isApprovedForGrading])
     {
       goto LABEL_20;
     }
   }
 
-  v5 = [(RFSchemaRFGradingDialogLineTier1 *)self spokenDialog];
-  v6 = [v4 spokenDialog];
-  if ((v5 != 0) == (v6 == 0))
+  dialogId = [(RFSchemaRFGradingDialogLineTier1 *)self spokenDialog];
+  dialogId2 = [equalCopy spokenDialog];
+  if ((dialogId != 0) == (dialogId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v13 = [(RFSchemaRFGradingDialogLineTier1 *)self spokenDialog];
-  if (v13)
+  spokenDialog = [(RFSchemaRFGradingDialogLineTier1 *)self spokenDialog];
+  if (spokenDialog)
   {
-    v14 = v13;
-    v15 = [(RFSchemaRFGradingDialogLineTier1 *)self spokenDialog];
-    v16 = [v4 spokenDialog];
-    v17 = [v15 isEqual:v16];
+    v14 = spokenDialog;
+    spokenDialog2 = [(RFSchemaRFGradingDialogLineTier1 *)self spokenDialog];
+    spokenDialog3 = [equalCopy spokenDialog];
+    v17 = [spokenDialog2 isEqual:spokenDialog3];
 
     if (!v17)
     {
@@ -216,12 +216,12 @@
   {
   }
 
-  v5 = [(RFSchemaRFGradingDialogLineTier1 *)self displayedDialog];
-  v6 = [v4 displayedDialog];
-  if ((v5 != 0) != (v6 == 0))
+  dialogId = [(RFSchemaRFGradingDialogLineTier1 *)self displayedDialog];
+  dialogId2 = [equalCopy displayedDialog];
+  if ((dialogId != 0) != (dialogId2 == 0))
   {
-    v18 = [(RFSchemaRFGradingDialogLineTier1 *)self displayedDialog];
-    if (!v18)
+    displayedDialog = [(RFSchemaRFGradingDialogLineTier1 *)self displayedDialog];
+    if (!displayedDialog)
     {
 
 LABEL_23:
@@ -229,10 +229,10 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v19 = v18;
-    v20 = [(RFSchemaRFGradingDialogLineTier1 *)self displayedDialog];
-    v21 = [v4 displayedDialog];
-    v22 = [v20 isEqual:v21];
+    v19 = displayedDialog;
+    displayedDialog2 = [(RFSchemaRFGradingDialogLineTier1 *)self displayedDialog];
+    displayedDialog3 = [equalCopy displayedDialog];
+    v22 = [displayedDialog2 isEqual:displayedDialog3];
 
     if (v22)
     {
@@ -252,12 +252,12 @@ LABEL_21:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(RFSchemaRFGradingDialogLineTier1 *)self dialogId];
+  toCopy = to;
+  dialogId = [(RFSchemaRFGradingDialogLineTier1 *)self dialogId];
 
-  if (v4)
+  if (dialogId)
   {
     PBDataWriterWriteStringField();
   }
@@ -267,54 +267,54 @@ LABEL_21:
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(RFSchemaRFGradingDialogLineTier1 *)self spokenDialog];
+  spokenDialog = [(RFSchemaRFGradingDialogLineTier1 *)self spokenDialog];
 
-  if (v5)
+  if (spokenDialog)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(RFSchemaRFGradingDialogLineTier1 *)self displayedDialog];
+  displayedDialog = [(RFSchemaRFGradingDialogLineTier1 *)self displayedDialog];
 
-  v7 = v8;
-  if (v6)
+  v7 = toCopy;
+  if (displayedDialog)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = RFSchemaRFGradingDialogLineTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(RFSchemaRFGradingDialogLineTier1 *)self deleteSpokenDialog];
     [(RFSchemaRFGradingDialogLineTier1 *)self deleteDisplayedDialog];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(RFSchemaRFGradingDialogLineTier1 *)self deleteSpokenDialog];
     [(RFSchemaRFGradingDialogLineTier1 *)self deleteDisplayedDialog];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(RFSchemaRFGradingDialogLineTier1 *)self deleteSpokenDialog];
     [(RFSchemaRFGradingDialogLineTier1 *)self deleteDisplayedDialog];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(RFSchemaRFGradingDialogLineTier1 *)self deleteSpokenDialog];
     [(RFSchemaRFGradingDialogLineTier1 *)self deleteDisplayedDialog];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(RFSchemaRFGradingDialogLineTier1 *)self deleteSpokenDialog];
     [(RFSchemaRFGradingDialogLineTier1 *)self deleteDisplayedDialog];

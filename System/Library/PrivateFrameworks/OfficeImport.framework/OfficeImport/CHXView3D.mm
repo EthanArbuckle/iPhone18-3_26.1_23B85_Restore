@@ -1,61 +1,61 @@
 @interface CHXView3D
-+ (id)chdView3DFromXmlView3DElement:(_xmlNode *)a3 state:(id)a4;
++ (id)chdView3DFromXmlView3DElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation CHXView3D
 
-+ (id)chdView3DFromXmlView3DElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdView3DFromXmlView3DElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v6 = objc_alloc_init(CHDView3D);
-  v7 = [v5 drawingState];
-  v8 = [v7 OAXChartNamespace];
-  v9 = OCXFindChild(a3, v8, "rotX");
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v9 = OCXFindChild(element, oAXChartNamespace, "rotX");
 
   if (v9)
   {
     [(CHDView3D *)v6 setRotationX:CXRequiredLongAttribute(v9, CXNoNamespace, "val")];
   }
 
-  v10 = [v5 drawingState];
-  v11 = [v10 OAXChartNamespace];
-  v12 = OCXFindChild(a3, v11, "rotY");
+  drawingState2 = [stateCopy drawingState];
+  oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+  v12 = OCXFindChild(element, oAXChartNamespace2, "rotY");
 
   if (v12)
   {
     [(CHDView3D *)v6 setRotationY:CXRequiredLongAttribute(v12, CXNoNamespace, "val")];
   }
 
-  v13 = [v5 drawingState];
-  v14 = [v13 OAXChartNamespace];
-  v15 = OCXFindChild(a3, v14, "hPercent");
+  drawingState3 = [stateCopy drawingState];
+  oAXChartNamespace3 = [drawingState3 OAXChartNamespace];
+  v15 = OCXFindChild(element, oAXChartNamespace3, "hPercent");
 
   if (v15)
   {
     [(CHDView3D *)v6 setHeightPercent:CXRequiredLongAttribute(v15, CXNoNamespace, "val")];
   }
 
-  v16 = [v5 drawingState];
-  v17 = [v16 OAXChartNamespace];
-  v18 = OCXFindChild(a3, v17, "depthPercent");
+  drawingState4 = [stateCopy drawingState];
+  oAXChartNamespace4 = [drawingState4 OAXChartNamespace];
+  v18 = OCXFindChild(element, oAXChartNamespace4, "depthPercent");
 
   if (v18)
   {
     [(CHDView3D *)v6 setDepthPercent:CXRequiredLongAttribute(v18, CXNoNamespace, "val")];
   }
 
-  v19 = [v5 drawingState];
-  v20 = [v19 OAXChartNamespace];
-  v21 = OCXFindChild(a3, v20, "perspective");
+  drawingState5 = [stateCopy drawingState];
+  oAXChartNamespace5 = [drawingState5 OAXChartNamespace];
+  v21 = OCXFindChild(element, oAXChartNamespace5, "perspective");
 
   if (v21)
   {
     [(CHDView3D *)v6 setPerspective:CXRequiredLongAttribute(v21, CXNoNamespace, "val")];
   }
 
-  v22 = [v5 drawingState];
-  v23 = [v22 OAXChartNamespace];
-  v24 = OCXFindChild(a3, v23, "rAngAx");
+  drawingState6 = [stateCopy drawingState];
+  oAXChartNamespace6 = [drawingState6 OAXChartNamespace];
+  v24 = OCXFindChild(element, oAXChartNamespace6, "rAngAx");
 
   if (v24)
   {

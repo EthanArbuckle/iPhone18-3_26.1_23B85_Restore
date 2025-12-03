@@ -1,19 +1,19 @@
 @interface UIPopoverControllerAccessibility
-- (void)_dismissPopoverAnimated:(BOOL)a3 stateOnly:(BOOL)a4 notifyDelegate:(BOOL)a5;
+- (void)_dismissPopoverAnimated:(BOOL)animated stateOnly:(BOOL)only notifyDelegate:(BOOL)delegate;
 @end
 
 @implementation UIPopoverControllerAccessibility
 
-- (void)_dismissPopoverAnimated:(BOOL)a3 stateOnly:(BOOL)a4 notifyDelegate:(BOOL)a5
+- (void)_dismissPopoverAnimated:(BOOL)animated stateOnly:(BOOL)only notifyDelegate:(BOOL)delegate
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  v7 = a4;
-  v6 = a5;
+  animatedCopy = animated;
+  onlyCopy = only;
+  delegateCopy = delegate;
   v5.receiver = self;
   v5.super_class = UIPopoverControllerAccessibility;
-  [(UIPopoverControllerAccessibility *)&v5 _dismissPopoverAnimated:a3 stateOnly:a4 notifyDelegate:a5];
+  [(UIPopoverControllerAccessibility *)&v5 _dismissPopoverAnimated:animated stateOnly:only notifyDelegate:delegate];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
 }
 

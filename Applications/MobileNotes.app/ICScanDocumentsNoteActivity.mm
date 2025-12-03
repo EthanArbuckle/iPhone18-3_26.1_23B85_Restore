@@ -1,15 +1,15 @@
 @interface ICScanDocumentsNoteActivity
-- (ICScanDocumentsNoteActivity)initWithScanDocumentsBlock:(id)a3;
+- (ICScanDocumentsNoteActivity)initWithScanDocumentsBlock:(id)block;
 - (id)activityTitle;
 @end
 
 @implementation ICScanDocumentsNoteActivity
 
-- (ICScanDocumentsNoteActivity)initWithScanDocumentsBlock:(id)a3
+- (ICScanDocumentsNoteActivity)initWithScanDocumentsBlock:(id)block
 {
   v4.receiver = self;
   v4.super_class = ICScanDocumentsNoteActivity;
-  return [(ICScanDocumentsNoteActivity *)&v4 initWithPerformActivity:a3];
+  return [(ICScanDocumentsNoteActivity *)&v4 initWithPerformActivity:block];
 }
 
 - (id)activityTitle

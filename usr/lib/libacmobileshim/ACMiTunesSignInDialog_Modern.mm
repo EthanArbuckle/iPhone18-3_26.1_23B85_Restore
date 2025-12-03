@@ -1,8 +1,8 @@
 @interface ACMiTunesSignInDialog_Modern
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (void)alertView:(id)a3 clickedButtonAtIndex:(int64_t)a4;
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4;
-- (void)didPresentAlertView:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (void)alertView:(id)view clickedButtonAtIndex:(int64_t)index;
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index;
+- (void)didPresentAlertView:(id)view;
 - (void)loadView;
 - (void)viewDidLoad;
 @end
@@ -14,19 +14,19 @@
   v8.receiver = self;
   v8.super_class = ACMiTunesSignInDialog_Modern;
   [(ACMiTunesSignInDialog *)&v8 loadView];
-  v3 = [(ACMiTunesSignInDialog *)self dialogTitle];
+  dialogTitle = [(ACMiTunesSignInDialog *)self dialogTitle];
   v4 = objc_alloc(MEMORY[0x29EDC7930]);
   if ([(ACMiTunesSignInDialog *)self isUserNameEditable]|| ![(NSString *)[(ACMSignInDialog *)self requestedUserName] length])
   {
-    v5 = 0;
+    requestedUserName = 0;
   }
 
   else
   {
-    v5 = [(ACMSignInDialog *)self requestedUserName];
+    requestedUserName = [(ACMSignInDialog *)self requestedUserName];
   }
 
-  v6 = [v4 initWithTitle:v3 message:v5 delegate:self cancelButtonTitle:+[ACMBaseLocale localizedString:](ACMBaseLocale otherButtonTitles:{"localizedString:", @"Cancel", +[ACMBaseLocale localizedString:](ACMBaseLocale, "localizedString:", @"Sign In", 0}];
+  v6 = [v4 initWithTitle:dialogTitle message:requestedUserName delegate:self cancelButtonTitle:+[ACMBaseLocale localizedString:](ACMBaseLocale otherButtonTitles:{"localizedString:", @"Cancel", +[ACMBaseLocale localizedString:](ACMBaseLocale, "localizedString:", @"Sign In", 0}];
   if ([(ACMiTunesSignInDialog *)self isUserNameEditable])
   {
     v7 = 3;
@@ -43,8 +43,8 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(ACMiTunesSignInDialog_Modern *)self view];
-  -[ACMSignInDialog setPasswordField:](self, "setPasswordField:", [v3 textFieldAtIndex:{objc_msgSend(v3, "alertViewStyle") != 1}]);
+  view = [(ACMiTunesSignInDialog_Modern *)self view];
+  -[ACMSignInDialog setPasswordField:](self, "setPasswordField:", [view textFieldAtIndex:{objc_msgSend(view, "alertViewStyle") != 1}]);
   [(UITextField *)[(ACMSignInDialog *)self passwordField] setDelegate:self];
   [(UITextField *)[(ACMSignInDialog *)self passwordField] setPlaceholder:[ACMBaseLocale localizedString:@"Password"]];
   if ([objc_msgSend(+[ACMAppleConnectImplComponents components](ACMAppleConnectImplComponents "components")])
@@ -55,9 +55,9 @@
   [(UITextField *)[(ACMSignInDialog *)self passwordField] setClearButtonMode:1];
   [(UITextField *)[(ACMSignInDialog *)self passwordField] setReturnKeyType:1];
   [(UITextField *)[(ACMSignInDialog *)self passwordField] setKeyboardAppearance:0];
-  if ([v3 alertViewStyle] == 3)
+  if ([view alertViewStyle] == 3)
   {
-    -[ACMSignInDialog setAccountNameField:](self, "setAccountNameField:", [v3 textFieldAtIndex:0]);
+    -[ACMSignInDialog setAccountNameField:](self, "setAccountNameField:", [view textFieldAtIndex:0]);
     [(UITextField *)[(ACMSignInDialog *)self accountNameField] setPlaceholder:[ACMBaseLocale localizedString:@"Apple ID"]];
     if ([objc_msgSend(+[ACMAppleConnectImplComponents components](ACMAppleConnectImplComponents "components")])
     {
@@ -77,9 +77,9 @@
   [(ACMiTunesSignInDialog *)&v4 viewDidLoad];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  if ([(ACMSignInDialog *)self passwordField]!= a3)
+  if ([(ACMSignInDialog *)self passwordField]!= return)
   {
     [(ACMiTunesSignInDialog *)self handleTextFieldShouldReturnOnNonPasswordField];
     return 1;
@@ -94,30 +94,30 @@
   return [(ACMiTunesSignInDialog_Modern *)self shouldPasswordTextFieldReturnOnSignInDisallowed];
 }
 
-- (void)alertView:(id)a3 clickedButtonAtIndex:(int64_t)a4
+- (void)alertView:(id)view clickedButtonAtIndex:(int64_t)index
 {
-  v7 = [(ACMiTunesSignInDialog *)self signInDialog];
-  if (!a4 && v7 == a3)
+  signInDialog = [(ACMiTunesSignInDialog *)self signInDialog];
+  if (!index && signInDialog == view)
   {
     [(ACMSignInDialog *)self controlsWillChangeState:1];
     [(ACMSignInDialog *)self controlsDidChangeState:1];
-    v8 = [(ACMSignInDialog *)self delegate];
+    delegate = [(ACMSignInDialog *)self delegate];
 
-    [(ACMSignInDialogDelegate *)v8 onSignInCancel:a3];
+    [(ACMSignInDialogDelegate *)delegate onSignInCancel:view];
   }
 }
 
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index
 {
-  v7 = [(ACMiTunesSignInDialog *)self signInDialog];
-  if (a4 == 1 && v7 == a3)
+  signInDialog = [(ACMiTunesSignInDialog *)self signInDialog];
+  if (index == 1 && signInDialog == view)
   {
     if ([(ACMiTunesSignInDialog *)self isUserNameEditable])
     {
       [(ACMSignInDialog *)self setRequestedUserName:[(UITextField *)[(ACMSignInDialog *)self accountNameField] text]];
     }
 
-    [(ACMSignInDialogDelegate *)[(ACMSignInDialog *)self delegate] onSignIn:a3];
+    [(ACMSignInDialogDelegate *)[(ACMSignInDialog *)self delegate] onSignIn:view];
   }
 
   [(ACMiTunesSignInDialog_Modern *)self setView:0];
@@ -125,24 +125,24 @@
   [(ACMiTunesSignInDialog_Modern *)self setIsPresented:0];
 }
 
-- (void)didPresentAlertView:(id)a3
+- (void)didPresentAlertView:(id)view
 {
-  if ([(ACMiTunesSignInDialog *)self signInDialog]== a3 && ![(ACMiTunesSignInDialog_Modern *)self isPresented])
+  if ([(ACMiTunesSignInDialog *)self signInDialog]== view && ![(ACMiTunesSignInDialog_Modern *)self isPresented])
   {
     [(ACMiTunesSignInDialog_Modern *)self setIsPresented:1];
-    v4 = [(ACMSignInDialog *)self passwordField];
+    passwordField = [(ACMSignInDialog *)self passwordField];
     if ([(ACMSignInDialog *)self accountNameField]&& ![(NSString *)[(UITextField *)[(ACMSignInDialog *)self accountNameField] text] length])
     {
-      v4 = [(ACMSignInDialog *)self accountNameField];
+      passwordField = [(ACMSignInDialog *)self accountNameField];
     }
 
-    if (v4 == [(ACMSignInDialog *)self passwordField])
+    if (passwordField == [(ACMSignInDialog *)self passwordField])
     {
       v5[0] = MEMORY[0x29EDCA5F8];
       v5[1] = 3221225472;
       v5[2] = __52__ACMiTunesSignInDialog_Modern_didPresentAlertView___block_invoke;
       v5[3] = &unk_29EE91778;
-      v5[4] = v4;
+      v5[4] = passwordField;
       dispatch_async_on_main_thread(v5);
     }
   }

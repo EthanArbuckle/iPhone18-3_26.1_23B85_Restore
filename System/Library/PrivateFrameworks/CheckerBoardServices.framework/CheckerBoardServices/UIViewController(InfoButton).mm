@@ -35,9 +35,9 @@
   [v9 setValue:v8 forKey:@"inputMessage"];
   memset(&v15, 0, sizeof(v15));
   CGAffineTransformMakeScale(&v15, v5, v5);
-  v10 = [v9 outputImage];
+  outputImage = [v9 outputImage];
   v14 = v15;
-  v11 = [v10 imageByApplyingTransform:&v14];
+  v11 = [outputImage imageByApplyingTransform:&v14];
 
   v12 = [objc_alloc(MEMORY[0x277D755B8]) initWithCIImage:v11];
 
@@ -46,44 +46,44 @@
 
 - (id)_deviceInformation
 {
-  v0 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v1 = +[CBSGestaltEquipmentInfo CurrentEquipmentInfo];
-  v2 = [v1 serialNumber];
+  serialNumber = [v1 serialNumber];
 
-  if (v2)
+  if (serialNumber)
   {
-    v3 = [v1 serialNumber];
-    v4 = [CBSDeviceInformationField fieldWithFormat:0 value:v3];
-    [v0 addObject:v4];
+    serialNumber2 = [v1 serialNumber];
+    v4 = [CBSDeviceInformationField fieldWithFormat:0 value:serialNumber2];
+    [array addObject:v4];
   }
 
-  v5 = [v1 meid];
+  meid = [v1 meid];
 
-  if (v5)
+  if (meid)
   {
-    v6 = [v1 meid];
-    v7 = [CBSDeviceInformationField fieldWithFormat:1 value:v6];
-    [v0 addObject:v7];
+    meid2 = [v1 meid];
+    v7 = [CBSDeviceInformationField fieldWithFormat:1 value:meid2];
+    [array addObject:v7];
   }
 
-  v8 = [v1 imeiArray];
-  if (v8)
+  imeiArray = [v1 imeiArray];
+  if (imeiArray)
   {
-    v9 = v8;
-    v10 = [v1 imeiArray];
-    v11 = [v10 count];
+    v9 = imeiArray;
+    imeiArray2 = [v1 imeiArray];
+    v11 = [imeiArray2 count];
 
     if (v11)
     {
-      v12 = [v1 imeiArray];
-      v13 = [v12 componentsJoinedByString:@""];;
+      imeiArray3 = [v1 imeiArray];
+      v13 = [imeiArray3 componentsJoinedByString:@""];;
 
       v14 = [CBSDeviceInformationField fieldWithFormat:2 value:v13];
-      [v0 addObject:v14];
+      [array addObject:v14];
     }
   }
 
-  v15 = [v0 copy];
+  v15 = [array copy];
 
   return v15;
 }
@@ -102,13 +102,13 @@
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = [a1 _deviceInformation];
+  obj = [self _deviceInformation];
   v39 = [obj countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v39)
   {
     v37 = *v45;
     v38 = v4;
-    v32 = a1;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v39; ++i)
@@ -127,8 +127,8 @@
         v9 = [MEMORY[0x277D74300] boldSystemFontOfSize:20.0];
         [v8 setFont:v9];
 
-        v10 = [v6 formattedTitle];
-        [v8 setText:v10];
+        formattedTitle = [v6 formattedTitle];
+        [v8 setText:formattedTitle];
 
         [v7 addArrangedSubview:v8];
         if ([v6 multiLineFormatted])
@@ -137,8 +137,8 @@
           v43 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v11 = [v6 formattedValuesArray];
-          v12 = [v11 countByEnumeratingWithState:&v40 objects:v48 count:16];
+          formattedValuesArray = [v6 formattedValuesArray];
+          v12 = [formattedValuesArray countByEnumeratingWithState:&v40 objects:v48 count:16];
           if (v12)
           {
             v13 = v12;
@@ -152,7 +152,7 @@
               {
                 if (*v41 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(formattedValuesArray);
                 }
 
                 v16 = *(*(&v40 + 1) + 8 * j);
@@ -164,11 +164,11 @@
                 [v7 addArrangedSubview:v17];
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v40 objects:v48 count:16];
+              v13 = [formattedValuesArray countByEnumeratingWithState:&v40 objects:v48 count:16];
             }
 
             while (v13);
-            a1 = v32;
+            self = selfCopy;
             v2 = 0x277D75000;
             v4 = v38;
             v8 = v35;
@@ -184,29 +184,29 @@
 
         else
         {
-          v11 = objc_alloc_init(MEMORY[0x277D756B8]);
+          formattedValuesArray = objc_alloc_init(MEMORY[0x277D756B8]);
           [MEMORY[0x277D74300] systemFontOfSize:20.0];
           v19 = v2;
-          v20 = a1;
+          selfCopy2 = self;
           v22 = v21 = v6;
-          [v11 setFont:v22];
+          [formattedValuesArray setFont:v22];
 
-          v23 = [v21 formattedValue];
-          [v11 setText:v23];
+          formattedValue = [v21 formattedValue];
+          [formattedValuesArray setText:formattedValue];
 
           v6 = v21;
-          a1 = v20;
+          self = selfCopy2;
           v2 = v19;
           v4 = v38;
-          [v7 addArrangedSubview:v11];
+          [v7 addArrangedSubview:formattedValuesArray];
         }
 
         [v4 addArrangedSubview:v7];
         if (![v6 format])
         {
           v24 = v8;
-          v25 = [v6 formattedValue];
-          v26 = [a1 generateBarcode:v25 showAsQRCode:1];
+          formattedValue2 = [v6 formattedValue];
+          v26 = [self generateBarcode:formattedValue2 showAsQRCode:1];
 
           if (v26)
           {
@@ -214,7 +214,7 @@
             [v27 setTag:1];
             [v27 setUserInteractionEnabled:1];
             v28 = i;
-            v29 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:a1 action:sel_barcodeViewTapped_];
+            v29 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_barcodeViewTapped_];
             [v29 setNumberOfTapsRequired:2];
             [v27 addGestureRecognizer:v29];
             [v4 addArrangedSubview:v27];
@@ -240,36 +240,36 @@
 
 - (void)setupInfoButton
 {
-  v2 = [a1 _deviceInformationView];
-  [a1 setDeviceInformationView:v2];
+  _deviceInformationView = [self _deviceInformationView];
+  [self setDeviceInformationView:_deviceInformationView];
 
   v6 = [MEMORY[0x277D755B8] systemImageNamed:@"info.circle"];
-  v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v6 style:0 target:a1 action:sel_infoButtonTapped];
-  v4 = [MEMORY[0x277D75348] systemBlueColor];
-  [v3 setTintColor:v4];
+  v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v6 style:0 target:self action:sel_infoButtonTapped];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  [v3 setTintColor:systemBlueColor];
 
-  v5 = [a1 navigationItem];
-  [v5 setRightBarButtonItem:v3];
+  navigationItem = [self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 }
 
 - (void)_layoutDeviceInformationView
 {
-  v16 = [a1 substitutableView];
-  [v16 frame];
+  substitutableView = [self substitutableView];
+  [substitutableView frame];
   v3 = v2;
-  v4 = [a1 substitutableView];
-  [v4 frame];
+  substitutableView2 = [self substitutableView];
+  [substitutableView2 frame];
   v6 = v5;
-  v7 = [a1 substitutableView];
-  [v7 frame];
+  substitutableView3 = [self substitutableView];
+  [substitutableView3 frame];
   v9 = v8;
-  v10 = [a1 deviceInformationView];
-  v11 = [a1 view];
-  [v11 frame];
-  [v10 systemLayoutSizeFittingSize:{v12, *(MEMORY[0x277D76C78] + 8)}];
+  deviceInformationView = [self deviceInformationView];
+  view = [self view];
+  [view frame];
+  [deviceInformationView systemLayoutSizeFittingSize:{v12, *(MEMORY[0x277D76C78] + 8)}];
   v14 = v13;
-  v15 = [a1 deviceInformationView];
-  [v15 setFrame:{v3, v6, v9, v14}];
+  deviceInformationView2 = [self deviceInformationView];
+  [deviceInformationView2 setFrame:{v3, v6, v9, v14}];
 }
 
 - (void)infoButtonTapped
@@ -281,38 +281,38 @@
     _os_log_impl(&dword_2433DB000, v2, OS_LOG_TYPE_DEFAULT, "[Info] button was tapped. Toggling device information…", v8, 2u);
   }
 
-  [a1 setShowingDeviceInformation:{objc_msgSend(a1, "showingDeviceInformation") ^ 1}];
-  v3 = [a1 showingDeviceInformation];
-  if (v3)
+  [self setShowingDeviceInformation:{objc_msgSend(self, "showingDeviceInformation") ^ 1}];
+  showingDeviceInformation = [self showingDeviceInformation];
+  if (showingDeviceInformation)
   {
-    [a1 _layoutDeviceInformationView];
-    v4 = [a1 substitutableView];
-    v5 = [v4 superview];
-    v6 = [a1 deviceInformationView];
-    [v5 addSubview:v6];
+    [self _layoutDeviceInformationView];
+    substitutableView = [self substitutableView];
+    superview = [substitutableView superview];
+    deviceInformationView = [self deviceInformationView];
+    [superview addSubview:deviceInformationView];
   }
 
   else
   {
-    v4 = [a1 deviceInformationView];
-    [v4 removeFromSuperview];
+    substitutableView = [self deviceInformationView];
+    [substitutableView removeFromSuperview];
   }
 
-  v7 = [a1 substitutableView];
-  [v7 setHidden:v3];
+  substitutableView2 = [self substitutableView];
+  [substitutableView2 setHidden:showingDeviceInformation];
 }
 
 - (void)barcodeViewTapped:()InfoButton
 {
   v4 = a3;
   v11 = +[CBSGestaltEquipmentInfo CurrentEquipmentInfo];
-  v5 = [v4 view];
+  view = [v4 view];
 
-  v6 = [v11 serialNumber];
+  serialNumber = [v11 serialNumber];
 
-  if (v6)
+  if (serialNumber)
   {
-    v7 = v5 == 0;
+    v7 = view == 0;
   }
 
   else
@@ -322,14 +322,14 @@
 
   if (!v7)
   {
-    [v5 setTag:{objc_msgSend(v5, "tag") == 0}];
-    v8 = [v11 serialNumber];
-    v9 = [a1 generateBarcode:v8 showAsQRCode:{objc_msgSend(v5, "tag") == 1}];
-    [v5 setImage:v9];
+    [view setTag:{objc_msgSend(view, "tag") == 0}];
+    serialNumber2 = [v11 serialNumber];
+    v9 = [self generateBarcode:serialNumber2 showAsQRCode:{objc_msgSend(view, "tag") == 1}];
+    [view setImage:v9];
 
-    [a1 _layoutDeviceInformationView];
-    v10 = [a1 view];
-    [v10 setNeedsLayout];
+    [self _layoutDeviceInformationView];
+    view2 = [self view];
+    [view2 setNeedsLayout];
   }
 }
 

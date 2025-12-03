@@ -1,16 +1,16 @@
 @interface FTCinematicTracker
 + (id)highPriorityExemplarNetworkDescriptor;
 + (id)highPriorityInstanceNetworkDescriptor;
-- (FTCinematicTracker)initWithConfig:(id)a3;
+- (FTCinematicTracker)initWithConfig:(id)config;
 - (id).cxx_construct;
-- (id)computeTrackingStateForInput:(id)a3;
+- (id)computeTrackingStateForInput:(id)input;
 @end
 
 @implementation FTCinematicTracker
 
-- (FTCinematicTracker)initWithConfig:(id)a3
+- (FTCinematicTracker)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v6.receiver = self;
   v6.super_class = FTCinematicTracker;
   if ([(FTCinematicTracker *)&v6 init])
@@ -21,9 +21,9 @@
   return 0;
 }
 
-- (id)computeTrackingStateForInput:(id)a3
+- (id)computeTrackingStateForInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   ptr = self->_tracker.__ptr_;
   std::recursive_mutex::lock((ptr + 80));
   v7 = self->_tracker.__ptr_;
@@ -63,15 +63,15 @@
 + (id)highPriorityInstanceNetworkDescriptor
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 highPriorityExemplarNetworkDescriptor];
-  v3 = [v2 name];
+  highPriorityExemplarNetworkDescriptor = [self highPriorityExemplarNetworkDescriptor];
+  name = [highPriorityExemplarNetworkDescriptor name];
 
   v4 = objc_alloc_init(FTTensorReference);
-  [(FTTensorReference *)v4 setSourceNetworkName:v3];
+  [(FTTensorReference *)v4 setSourceNetworkName:name];
   [(FTTensorReference *)v4 setSourceOutputName:@"net_exempler_reg"];
   [(FTTensorReference *)v4 setDestinationInputName:@"r1_kernel"];
   v5 = objc_alloc_init(FTTensorReference);
-  [(FTTensorReference *)v5 setSourceNetworkName:v3];
+  [(FTTensorReference *)v5 setSourceNetworkName:name];
   [(FTTensorReference *)v5 setSourceOutputName:@"net_exempler_cls"];
   [(FTTensorReference *)v5 setDestinationInputName:@"cls1_kernel"];
   v6 = objc_alloc_init(FTNetworkDescriptor);

@@ -1,21 +1,21 @@
 @interface NNMKDirectoryProvider
 + (void)removePairedDeviceRegistryPathFromUserDefaults;
 - (NSString)pairedDeviceRegistryPath;
-- (void)setPairedDeviceRegistryPath:(id)a3;
+- (void)setPairedDeviceRegistryPath:(id)path;
 @end
 
 @implementation NNMKDirectoryProvider
 
-- (void)setPairedDeviceRegistryPath:(id)a3
+- (void)setPairedDeviceRegistryPath:(id)path
 {
-  v5 = a3;
-  if (v5)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v3 setObject:v5 forKey:@"kPairedDeviceRegistryPathKey"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setObject:pathCopy forKey:@"kPairedDeviceRegistryPathKey"];
 
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v4 synchronize];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults2 synchronize];
   }
 
   else
@@ -26,8 +26,8 @@
 
 - (NSString)pairedDeviceRegistryPath
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 stringForKey:@"kPairedDeviceRegistryPathKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"kPairedDeviceRegistryPathKey"];
 
   return v3;
 }
@@ -37,11 +37,11 @@
   CFPreferencesSetAppValue(@"kPairedDeviceRegistryPathKey", 0, *MEMORY[0x277CBF008]);
   CFPreferencesSetAppValue(@"kPairedDeviceRegistryPathKey", 0, *MEMORY[0x277CBF028]);
   [MEMORY[0x277CBEBD0] resetStandardUserDefaults];
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 removeObjectForKey:@"kPairedDeviceRegistryPathKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"kPairedDeviceRegistryPathKey"];
 
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v3 synchronize];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults2 synchronize];
 }
 
 @end

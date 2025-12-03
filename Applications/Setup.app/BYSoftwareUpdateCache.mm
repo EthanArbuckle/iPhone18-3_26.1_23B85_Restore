@@ -1,29 +1,29 @@
 @interface BYSoftwareUpdateCache
-- (void)_scanUsingCache:(BOOL)a3 allowBootstrap:(BOOL)a4 attemptCount:(unint64_t)a5 attemptsAllowed:(unint64_t)a6 withCompletion:(id)a7;
-- (void)_scanUsingCache:(BOOL)a3 allowBootstrap:(BOOL)a4 attemptsAllowed:(unint64_t)a5 withCompletion:(id)a6;
+- (void)_scanUsingCache:(BOOL)cache allowBootstrap:(BOOL)bootstrap attemptCount:(unint64_t)count attemptsAllowed:(unint64_t)allowed withCompletion:(id)completion;
+- (void)_scanUsingCache:(BOOL)cache allowBootstrap:(BOOL)bootstrap attemptsAllowed:(unint64_t)allowed withCompletion:(id)completion;
 - (void)reset;
-- (void)scanUsingCache:(BOOL)a3 allowBootstrap:(BOOL)a4 retry:(BOOL)a5 withCompletion:(id)a6;
-- (void)scanUsingCache:(BOOL)a3 allowBootstrap:(BOOL)a4 withCompletion:(id)a5;
-- (void)scanUsingCache:(BOOL)a3 withCompletion:(id)a4;
+- (void)scanUsingCache:(BOOL)cache allowBootstrap:(BOOL)bootstrap retry:(BOOL)retry withCompletion:(id)completion;
+- (void)scanUsingCache:(BOOL)cache allowBootstrap:(BOOL)bootstrap withCompletion:(id)completion;
+- (void)scanUsingCache:(BOOL)cache withCompletion:(id)completion;
 @end
 
 @implementation BYSoftwareUpdateCache
 
-- (void)scanUsingCache:(BOOL)a3 withCompletion:(id)a4
+- (void)scanUsingCache:(BOOL)cache withCompletion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
-  v23 = a3;
+  cacheCopy = cache;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, completion);
   v20 = 0;
   v4 = 0;
-  if (v23)
+  if (cacheCopy)
   {
-    v21 = [(BYSoftwareUpdateCache *)v25 preferredUpdate];
+    preferredUpdate = [(BYSoftwareUpdateCache *)selfCopy preferredUpdate];
     v20 = 1;
     v4 = 0;
-    if (v21)
+    if (preferredUpdate)
     {
       v4 = location != 0;
     }
@@ -36,10 +36,10 @@
   if (v4)
   {
     v5 = location;
-    v6 = [(BYSoftwareUpdateCache *)v25 preferredUpdate];
-    v7 = [(BYSoftwareUpdateCache *)v25 alternateUpdate];
-    v8 = [(BYSoftwareUpdateCache *)v25 latestUpdate];
-    v5[2](v5, v6, v7, v8, 0);
+    preferredUpdate2 = [(BYSoftwareUpdateCache *)selfCopy preferredUpdate];
+    alternateUpdate = [(BYSoftwareUpdateCache *)selfCopy alternateUpdate];
+    latestUpdate = [(BYSoftwareUpdateCache *)selfCopy latestUpdate];
+    v5[2](v5, preferredUpdate2, alternateUpdate, latestUpdate, 0);
 
     v19 = 1;
   }
@@ -57,7 +57,7 @@
     v12 = 0;
     v13 = sub_1001F8408;
     v14 = &unk_10032EF38;
-    v15 = v25;
+    v15 = selfCopy;
     v16 = location;
     [v17 scanForUpdates:v18 withScanResults:&v10];
     objc_storeStrong(&v16, 0);
@@ -70,22 +70,22 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)scanUsingCache:(BOOL)a3 allowBootstrap:(BOOL)a4 withCompletion:(id)a5
+- (void)scanUsingCache:(BOOL)cache allowBootstrap:(BOOL)bootstrap withCompletion:(id)completion
 {
-  v42 = self;
+  selfCopy = self;
   v41 = a2;
-  v40 = a3;
-  v39 = a4;
+  cacheCopy = cache;
+  bootstrapCopy = bootstrap;
   location = 0;
-  objc_storeStrong(&location, a5);
+  objc_storeStrong(&location, completion);
   v36 = 0;
   v5 = 0;
-  if (v40)
+  if (cacheCopy)
   {
-    v37 = [(BYSoftwareUpdateCache *)v42 preferredUpdate];
+    preferredUpdate = [(BYSoftwareUpdateCache *)selfCopy preferredUpdate];
     v36 = 1;
     v5 = 0;
-    if (v37)
+    if (preferredUpdate)
     {
       v5 = location != 0;
     }
@@ -98,10 +98,10 @@
   if (v5)
   {
     v6 = location;
-    v7 = [(BYSoftwareUpdateCache *)v42 preferredUpdate];
-    v8 = [(BYSoftwareUpdateCache *)v42 alternateUpdate];
-    v9 = [(BYSoftwareUpdateCache *)v42 latestUpdate];
-    v6[2](v6, v7, v8, v9, 0);
+    preferredUpdate2 = [(BYSoftwareUpdateCache *)selfCopy preferredUpdate];
+    alternateUpdate = [(BYSoftwareUpdateCache *)selfCopy alternateUpdate];
+    latestUpdate = [(BYSoftwareUpdateCache *)selfCopy latestUpdate];
+    v6[2](v6, preferredUpdate2, alternateUpdate, latestUpdate, 0);
 
     v35 = 1;
   }
@@ -109,7 +109,7 @@
   else
   {
     v34 = 0;
-    if (v39)
+    if (bootstrapCopy)
     {
       v33 = dispatch_queue_create("Telephony Queue", 0);
       v32 = [[CoreTelephonyClient alloc] initWithQueue:v33];
@@ -144,9 +144,9 @@
 
           else if (v31)
           {
-            v27 = [v31 domain];
+            domain = [v31 domain];
             v26 = 1;
-            v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v27, [v31 code]);
+            v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v31 code]);
             v25 = v12;
             v24 = 1;
           }
@@ -175,14 +175,14 @@
       objc_storeStrong(&v33, 0);
     }
 
-    v14 = v42;
-    v15 = v40;
+    v14 = selfCopy;
+    v15 = cacheCopy;
     v16 = _NSConcreteStackBlock;
     v17 = -1073741824;
     v18 = 0;
     v19 = sub_1001F8CD4;
     v20 = &unk_10032EF60;
-    v23 = v39;
+    v23 = bootstrapCopy;
     v21 = v34;
     v22 = location;
     [(BYSoftwareUpdateCache *)v14 scanUsingCache:v15 withCompletion:&v16];
@@ -195,23 +195,23 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)scanUsingCache:(BOOL)a3 allowBootstrap:(BOOL)a4 retry:(BOOL)a5 withCompletion:(id)a6
+- (void)scanUsingCache:(BOOL)cache allowBootstrap:(BOOL)bootstrap retry:(BOOL)retry withCompletion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
-  v8 = a4;
-  v7 = a5;
+  cacheCopy = cache;
+  bootstrapCopy = bootstrap;
+  retryCopy = retry;
   location = 0;
-  objc_storeStrong(&location, a6);
-  if (v7)
+  objc_storeStrong(&location, completion);
+  if (retryCopy)
   {
-    [(BYSoftwareUpdateCache *)v11 _scanUsingCache:v9 allowBootstrap:v8 attemptsAllowed:3 withCompletion:location];
+    [(BYSoftwareUpdateCache *)selfCopy _scanUsingCache:cacheCopy allowBootstrap:bootstrapCopy attemptsAllowed:3 withCompletion:location];
   }
 
   else
   {
-    [(BYSoftwareUpdateCache *)v11 scanUsingCache:v9 allowBootstrap:v8 withCompletion:location];
+    [(BYSoftwareUpdateCache *)selfCopy scanUsingCache:cacheCopy allowBootstrap:bootstrapCopy withCompletion:location];
   }
 
   objc_storeStrong(&location, 0);
@@ -219,7 +219,7 @@
 
 - (void)reset
 {
-  v7 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v5 = OS_LOG_TYPE_DEFAULT;
@@ -232,49 +232,49 @@
   }
 
   objc_storeStrong(oslog, 0);
-  [(BYSoftwareUpdateCache *)v7 setPreferredUpdate:0];
-  [(BYSoftwareUpdateCache *)v7 setAlternateUpdate:0];
-  [(BYSoftwareUpdateCache *)v7 setLatestUpdate:0];
-  [(BYSoftwareUpdateCache *)v7 setLastScanDate:0];
+  [(BYSoftwareUpdateCache *)selfCopy setPreferredUpdate:0];
+  [(BYSoftwareUpdateCache *)selfCopy setAlternateUpdate:0];
+  [(BYSoftwareUpdateCache *)selfCopy setLatestUpdate:0];
+  [(BYSoftwareUpdateCache *)selfCopy setLastScanDate:0];
 }
 
-- (void)_scanUsingCache:(BOOL)a3 allowBootstrap:(BOOL)a4 attemptsAllowed:(unint64_t)a5 withCompletion:(id)a6
+- (void)_scanUsingCache:(BOOL)cache allowBootstrap:(BOOL)bootstrap attemptsAllowed:(unint64_t)allowed withCompletion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
-  v8 = a4;
-  v7 = a5;
+  cacheCopy = cache;
+  bootstrapCopy = bootstrap;
+  allowedCopy = allowed;
   location = 0;
-  objc_storeStrong(&location, a6);
-  [(BYSoftwareUpdateCache *)v11 _scanUsingCache:v9 allowBootstrap:v8 attemptCount:0 attemptsAllowed:v7 withCompletion:location];
+  objc_storeStrong(&location, completion);
+  [(BYSoftwareUpdateCache *)selfCopy _scanUsingCache:cacheCopy allowBootstrap:bootstrapCopy attemptCount:0 attemptsAllowed:allowedCopy withCompletion:location];
   objc_storeStrong(&location, 0);
 }
 
-- (void)_scanUsingCache:(BOOL)a3 allowBootstrap:(BOOL)a4 attemptCount:(unint64_t)a5 attemptsAllowed:(unint64_t)a6 withCompletion:(id)a7
+- (void)_scanUsingCache:(BOOL)cache allowBootstrap:(BOOL)bootstrap attemptCount:(unint64_t)count attemptsAllowed:(unint64_t)allowed withCompletion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v20 = a6;
+  cacheCopy = cache;
+  bootstrapCopy = bootstrap;
+  countCopy = count;
+  allowedCopy = allowed;
   location = 0;
-  objc_storeStrong(&location, a7);
-  v7 = v25;
-  v8 = v23;
-  v9 = v22;
+  objc_storeStrong(&location, completion);
+  v7 = selfCopy;
+  v8 = cacheCopy;
+  v9 = bootstrapCopy;
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
   v12 = 0;
   v13 = sub_1001F9104;
   v14 = &unk_10032EFB0;
-  v16[1] = v21;
-  v16[2] = v20;
+  v16[1] = countCopy;
+  v16[2] = allowedCopy;
   v16[0] = location;
-  v15 = v25;
-  v17 = v23;
-  v18 = v22;
+  v15 = selfCopy;
+  v17 = cacheCopy;
+  v18 = bootstrapCopy;
   [(BYSoftwareUpdateCache *)v7 scanUsingCache:v8 allowBootstrap:v9 withCompletion:&v10];
   objc_storeStrong(&v15, 0);
   objc_storeStrong(v16, 0);

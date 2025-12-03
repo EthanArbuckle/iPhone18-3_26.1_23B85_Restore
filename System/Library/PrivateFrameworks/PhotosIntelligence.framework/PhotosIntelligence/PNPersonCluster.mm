@@ -1,7 +1,7 @@
 @interface PNPersonCluster
 - (BOOL)favorite;
 - (BOOL)hidden;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isVerified;
 - (NSDate)firstSeenDate;
 - (NSDate)lastSeenDate;
@@ -12,26 +12,26 @@
 - (NSString)description;
 - (NSString)localIdentifier;
 - (PNFaceProtocol)keyFace;
-- (PNPersonCluster)initWithFaceGroup:(id)a3 inPhotoLibrary:(id)a4;
-- (PNPersonCluster)initWithPerson:(id)a3 inPhotoLibrary:(id)a4;
+- (PNPersonCluster)initWithFaceGroup:(id)group inPhotoLibrary:(id)library;
+- (PNPersonCluster)initWithPerson:(id)person inPhotoLibrary:(id)library;
 - (PNPhotoLibraryProtocol)photoLibrary;
 - (double)libraryTimespan;
 - (double)sideFaceRatio;
 - (id)fetchAssets;
 - (id)fetchFaces;
 - (id)fetchMoments;
-- (id)firstSeenDateWithoutOutliersForAgeType:(unsigned __int16)a3;
+- (id)firstSeenDateWithoutOutliersForAgeType:(unsigned __int16)type;
 - (id)personLocalIdentifiers;
 - (int64_t)manualOrder;
 - (int64_t)verifiedType;
 - (unint64_t)faceCount;
 - (void)_cacheDates;
-- (void)_cacheDatesWithoutOutliersWithMaximumDistanceBetweenMoments:(double)a3;
+- (void)_cacheDatesWithoutOutliersWithMaximumDistanceBetweenMoments:(double)moments;
 - (void)invalidateCaches;
-- (void)pn_addMergeCandidatePersons:(id)a3;
-- (void)setIsVerified:(BOOL)a3;
-- (void)setKeyFace:(id)a3;
-- (void)setManualOrder:(int64_t)a3;
+- (void)pn_addMergeCandidatePersons:(id)persons;
+- (void)setIsVerified:(BOOL)verified;
+- (void)setKeyFace:(id)face;
+- (void)setManualOrder:(int64_t)order;
 @end
 
 @implementation PNPersonCluster
@@ -46,12 +46,12 @@
 - (double)sideFaceRatio
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(PNPersonCluster *)self fetchFaces];
+  fetchFaces = [(PNPersonCluster *)self fetchFaces];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v3 = [fetchFaces countByEnumeratingWithState:&v13 objects:v17 count:16];
   v4 = 0.0;
   if (v3)
   {
@@ -65,18 +65,18 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(fetchFaces);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) poseType];
-        if (v10 == 4 || v10 == 2)
+        poseType = [*(*(&v13 + 1) + 8 * i) poseType];
+        if (poseType == 4 || poseType == 2)
         {
           ++v7;
         }
       }
 
       v6 += v5;
-      v5 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [fetchFaces countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -102,14 +102,14 @@
   self->_firstSeenDateWithoutOutliers = 0;
 }
 
-- (void)_cacheDatesWithoutOutliersWithMaximumDistanceBetweenMoments:(double)a3
+- (void)_cacheDatesWithoutOutliersWithMaximumDistanceBetweenMoments:(double)moments
 {
   v55 = *MEMORY[0x1E69E9840];
-  v5 = [(PNPersonCluster *)self photoLibrary];
-  v44 = self;
-  v6 = [(PNPersonCluster *)self backingMomentIdentifiers];
-  v7 = [v6 allObjects];
-  v8 = [v5 pn_fetchMomentsWithLocalIdentifiers:v7];
+  photoLibrary = [(PNPersonCluster *)self photoLibrary];
+  selfCopy = self;
+  backingMomentIdentifiers = [(PNPersonCluster *)self backingMomentIdentifiers];
+  allObjects = [backingMomentIdentifiers allObjects];
+  v8 = [photoLibrary pn_fetchMomentsWithLocalIdentifiers:allObjects];
 
   v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
   v49 = 0u;
@@ -133,13 +133,13 @@
         }
 
         v16 = *(*(&v49 + 1) + 8 * i);
-        v17 = [v16 startDate];
-        [v9 addObject:v17];
+        startDate = [v16 startDate];
+        [v9 addObject:startDate];
 
-        v18 = [v16 endDate];
-        if (!v13 || [(NSDate *)v13 compare:v18]== NSOrderedAscending)
+        endDate = [v16 endDate];
+        if (!v13 || [(NSDate *)v13 compare:endDate]== NSOrderedAscending)
         {
-          v19 = v18;
+          v19 = endDate;
 
           v13 = v19;
         }
@@ -159,7 +159,7 @@
   v43 = v10;
 
   [v9 sortUsingSelector:sel_compare_];
-  v20 = [v9 firstObject];
+  firstObject = [v9 firstObject];
   v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v45 = 0u;
@@ -168,7 +168,7 @@
   v48 = 0u;
   v23 = v9;
   v24 = [v23 countByEnumeratingWithState:&v45 objects:v53 count:16];
-  v42 = v20;
+  v42 = firstObject;
   if (v24)
   {
     v25 = v24;
@@ -176,7 +176,7 @@
     do
     {
       v27 = 0;
-      v28 = v20;
+      v28 = firstObject;
       do
       {
         if (*v46 != v26)
@@ -186,7 +186,7 @@
 
         v29 = *(*(&v45 + 1) + 8 * v27);
         [v29 timeIntervalSinceDate:v28];
-        if (v30 <= a3)
+        if (v30 <= moments)
         {
           [v22 addObject:v29];
         }
@@ -206,10 +206,10 @@
           v22 = v33;
         }
 
-        v20 = v29;
+        firstObject = v29;
 
         ++v27;
-        v28 = v20;
+        v28 = firstObject;
       }
 
       while (v25 != v27);
@@ -227,26 +227,26 @@
     v21 = v35;
   }
 
-  firstSeenDate = v44->_firstSeenDate;
-  v44->_firstSeenDate = v42;
+  firstSeenDate = selfCopy->_firstSeenDate;
+  selfCopy->_firstSeenDate = v42;
   v37 = v42;
 
-  lastSeenDate = v44->_lastSeenDate;
-  v44->_lastSeenDate = v13;
+  lastSeenDate = selfCopy->_lastSeenDate;
+  selfCopy->_lastSeenDate = v13;
   v39 = v13;
 
-  v40 = [v21 firstObject];
-  firstSeenDateWithoutOutliers = v44->_firstSeenDateWithoutOutliers;
-  v44->_firstSeenDateWithoutOutliers = v40;
+  firstObject2 = [v21 firstObject];
+  firstSeenDateWithoutOutliers = selfCopy->_firstSeenDateWithoutOutliers;
+  selfCopy->_firstSeenDateWithoutOutliers = firstObject2;
 }
 
 - (void)_cacheDates
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(PNPersonCluster *)self photoLibrary];
-  v4 = [(PNPersonCluster *)self backingMomentIdentifiers];
-  v5 = [v4 allObjects];
-  v6 = [v3 pn_fetchMomentsWithLocalIdentifiers:v5];
+  photoLibrary = [(PNPersonCluster *)self photoLibrary];
+  backingMomentIdentifiers = [(PNPersonCluster *)self backingMomentIdentifiers];
+  allObjects = [backingMomentIdentifiers allObjects];
+  v6 = [photoLibrary pn_fetchMomentsWithLocalIdentifiers:allObjects];
 
   v25 = 0u;
   v26 = 0u;
@@ -270,18 +270,18 @@
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        v15 = [v14 startDate];
-        if (!v11 || [(NSDate *)v11 compare:v15]== NSOrderedDescending)
+        startDate = [v14 startDate];
+        if (!v11 || [(NSDate *)v11 compare:startDate]== NSOrderedDescending)
         {
-          v16 = v15;
+          v16 = startDate;
 
           v11 = v16;
         }
 
-        v17 = [v14 endDate];
-        if (!v10 || [(NSDate *)v10 compare:v17]== NSOrderedAscending)
+        endDate = [v14 endDate];
+        if (!v10 || [(NSDate *)v10 compare:endDate]== NSOrderedAscending)
         {
-          v18 = v17;
+          v18 = endDate;
 
           v10 = v18;
         }
@@ -308,7 +308,7 @@
   v22 = v10;
 }
 
-- (id)firstSeenDateWithoutOutliersForAgeType:(unsigned __int16)a3
+- (id)firstSeenDateWithoutOutliersForAgeType:(unsigned __int16)type
 {
   firstSeenDateWithoutOutliers = self->_firstSeenDateWithoutOutliers;
   if (firstSeenDateWithoutOutliers)
@@ -316,19 +316,19 @@
     goto LABEL_4;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     [(PNPersonCluster *)self _cacheDatesWithoutOutliersWithMaximumDistanceBetweenMoments:15778800.0];
     firstSeenDateWithoutOutliers = self->_firstSeenDateWithoutOutliers;
 LABEL_4:
-    v5 = firstSeenDateWithoutOutliers;
+    firstSeenDate = firstSeenDateWithoutOutliers;
     goto LABEL_5;
   }
 
-  v5 = [(PNPersonCluster *)self firstSeenDate];
+  firstSeenDate = [(PNPersonCluster *)self firstSeenDate];
 LABEL_5:
 
-  return v5;
+  return firstSeenDate;
 }
 
 - (NSDate)lastSeenDate
@@ -369,144 +369,144 @@ LABEL_5:
   return result;
 }
 
-- (void)pn_addMergeCandidatePersons:(id)a3
+- (void)pn_addMergeCandidatePersons:(id)persons
 {
-  v4 = a3;
-  v5 = [(PNPersonCluster *)self sourcePerson];
-  [v5 pn_addMergeCandidatePersons:v4];
+  personsCopy = persons;
+  sourcePerson = [(PNPersonCluster *)self sourcePerson];
+  [sourcePerson pn_addMergeCandidatePersons:personsCopy];
 }
 
 - (NSString)anonymizedName
 {
-  v3 = [(PNPersonCluster *)self sourcePerson];
-  v4 = [v3 anonymizedName];
-  v5 = v4;
-  if (v4)
+  sourcePerson = [(PNPersonCluster *)self sourcePerson];
+  anonymizedName = [sourcePerson anonymizedName];
+  v5 = anonymizedName;
+  if (anonymizedName)
   {
-    v6 = v4;
+    localIdentifier = anonymizedName;
   }
 
   else
   {
-    v6 = [(PNPersonCluster *)self localIdentifier];
+    localIdentifier = [(PNPersonCluster *)self localIdentifier];
   }
 
-  v7 = v6;
+  v7 = localIdentifier;
 
   return v7;
 }
 
 - (BOOL)hidden
 {
-  v2 = [(PNPersonCluster *)self sourcePerson];
-  v3 = [v2 hidden];
+  sourcePerson = [(PNPersonCluster *)self sourcePerson];
+  hidden = [sourcePerson hidden];
 
-  return v3;
+  return hidden;
 }
 
 - (BOOL)favorite
 {
-  v2 = [(PNPersonCluster *)self sourcePerson];
-  v3 = [v2 favorite];
+  sourcePerson = [(PNPersonCluster *)self sourcePerson];
+  favorite = [sourcePerson favorite];
 
-  return v3;
+  return favorite;
 }
 
 - (unint64_t)faceCount
 {
-  v2 = [(PNPersonCluster *)self backingFaceIdentifiers];
-  v3 = [v2 count];
+  backingFaceIdentifiers = [(PNPersonCluster *)self backingFaceIdentifiers];
+  v3 = [backingFaceIdentifiers count];
 
   return v3;
 }
 
-- (void)setKeyFace:(id)a3
+- (void)setKeyFace:(id)face
 {
-  v4 = a3;
-  v5 = [(PNPersonCluster *)self sourcePerson];
-  [v5 setKeyFace:v4];
+  faceCopy = face;
+  sourcePerson = [(PNPersonCluster *)self sourcePerson];
+  [sourcePerson setKeyFace:faceCopy];
 }
 
 - (PNFaceProtocol)keyFace
 {
-  v2 = [(PNPersonCluster *)self sourcePerson];
-  v3 = [v2 keyFace];
+  sourcePerson = [(PNPersonCluster *)self sourcePerson];
+  keyFace = [sourcePerson keyFace];
 
-  return v3;
+  return keyFace;
 }
 
-- (void)setManualOrder:(int64_t)a3
+- (void)setManualOrder:(int64_t)order
 {
-  v4 = [(PNPersonCluster *)self sourcePerson];
-  [v4 setManualOrder:a3];
+  sourcePerson = [(PNPersonCluster *)self sourcePerson];
+  [sourcePerson setManualOrder:order];
 }
 
 - (int64_t)manualOrder
 {
-  v2 = [(PNPersonCluster *)self sourcePerson];
-  v3 = [v2 manualOrder];
+  sourcePerson = [(PNPersonCluster *)self sourcePerson];
+  manualOrder = [sourcePerson manualOrder];
 
-  return v3;
+  return manualOrder;
 }
 
 - (int64_t)verifiedType
 {
-  v2 = [(PNPersonCluster *)self sourcePerson];
-  v3 = [v2 verifiedType];
+  sourcePerson = [(PNPersonCluster *)self sourcePerson];
+  verifiedType = [sourcePerson verifiedType];
 
-  return v3;
+  return verifiedType;
 }
 
-- (void)setIsVerified:(BOOL)a3
+- (void)setIsVerified:(BOOL)verified
 {
-  v3 = a3;
-  v4 = [(PNPersonCluster *)self sourcePerson];
-  [v4 setIsVerified:v3];
+  verifiedCopy = verified;
+  sourcePerson = [(PNPersonCluster *)self sourcePerson];
+  [sourcePerson setIsVerified:verifiedCopy];
 }
 
 - (BOOL)isVerified
 {
-  v2 = [(PNPersonCluster *)self sourcePerson];
-  v3 = [v2 isVerified];
+  sourcePerson = [(PNPersonCluster *)self sourcePerson];
+  isVerified = [sourcePerson isVerified];
 
-  return v3;
+  return isVerified;
 }
 
 - (NSString)localIdentifier
 {
-  v3 = [(PNPersonCluster *)self sourcePerson];
-  v4 = [v3 localIdentifier];
-  v5 = v4;
-  if (v4)
+  sourcePerson = [(PNPersonCluster *)self sourcePerson];
+  localIdentifier = [sourcePerson localIdentifier];
+  v5 = localIdentifier;
+  if (localIdentifier)
   {
-    v6 = v4;
+    localIdentifier2 = localIdentifier;
   }
 
   else
   {
-    v7 = [(PNPersonCluster *)self sourceFaceGroup];
-    v6 = [v7 localIdentifier];
+    sourceFaceGroup = [(PNPersonCluster *)self sourceFaceGroup];
+    localIdentifier2 = [sourceFaceGroup localIdentifier];
   }
 
-  return v6;
+  return localIdentifier2;
 }
 
 - (id)personLocalIdentifiers
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(PNPersonCluster *)self sourceFaceGroup];
+  sourceFaceGroup = [(PNPersonCluster *)self sourceFaceGroup];
 
-  if (v3)
+  if (sourceFaceGroup)
   {
     context = objc_autoreleasePoolPush();
-    v4 = [(PNPersonCluster *)self fetchFaces];
-    v5 = [v4 fetchedObjectIDs];
-    v6 = [v4 photoLibrary];
-    v7 = [v6 librarySpecificFetchOptions];
-    v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY detectedFaces in %@", v5];
-    [v7 setInternalPredicate:v8];
+    fetchFaces = [(PNPersonCluster *)self fetchFaces];
+    fetchedObjectIDs = [fetchFaces fetchedObjectIDs];
+    photoLibrary = [fetchFaces photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY detectedFaces in %@", fetchedObjectIDs];
+    [librarySpecificFetchOptions setInternalPredicate:v8];
 
-    v9 = [MEMORY[0x1E6978980] fetchPersonsWithOptions:v7];
+    v9 = [MEMORY[0x1E6978980] fetchPersonsWithOptions:librarySpecificFetchOptions];
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v23 = 0u;
     v24 = 0u;
@@ -527,8 +527,8 @@ LABEL_5:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v23 + 1) + 8 * i) localIdentifier];
-          [v10 addObject:v16];
+          localIdentifier = [*(*(&v23 + 1) + 8 * i) localIdentifier];
+          [v10 addObject:localIdentifier];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -542,18 +542,18 @@ LABEL_5:
 
   else
   {
-    v17 = [(PNPersonCluster *)self mergedPersonIdentifiers];
-    if ([v17 count])
+    mergedPersonIdentifiers = [(PNPersonCluster *)self mergedPersonIdentifiers];
+    if ([mergedPersonIdentifiers count])
     {
-      v18 = [v17 allObjects];
-      v19 = [(PNPersonCluster *)self localIdentifier];
-      v10 = [v18 arrayByAddingObject:v19];
+      allObjects = [mergedPersonIdentifiers allObjects];
+      localIdentifier2 = [(PNPersonCluster *)self localIdentifier];
+      v10 = [allObjects arrayByAddingObject:localIdentifier2];
     }
 
     else
     {
-      v20 = [(PNPersonCluster *)self localIdentifier];
-      v27 = v20;
+      localIdentifier3 = [(PNPersonCluster *)self localIdentifier];
+      v27 = localIdentifier3;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
     }
   }
@@ -567,7 +567,7 @@ LABEL_5:
   if (!backingMomentIdentifiers)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [(PNPersonCluster *)self fetchMoments];
+    fetchMoments = [(PNPersonCluster *)self fetchMoments];
     objc_autoreleasePoolPop(v4);
     backingMomentIdentifiers = self->_backingMomentIdentifiers;
   }
@@ -578,20 +578,20 @@ LABEL_5:
 - (id)fetchMoments
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(PNPersonCluster *)self photoLibrary];
+  photoLibrary = [(PNPersonCluster *)self photoLibrary];
   backingMomentIdentifiers = self->_backingMomentIdentifiers;
   if (backingMomentIdentifiers)
   {
-    v5 = [(NSMutableSet *)backingMomentIdentifiers allObjects];
-    v6 = [v3 pn_fetchMomentsWithLocalIdentifiers:v5];
+    allObjects = [(NSMutableSet *)backingMomentIdentifiers allObjects];
+    v6 = [photoLibrary pn_fetchMomentsWithLocalIdentifiers:allObjects];
   }
 
   else
   {
-    v7 = [(PNPersonCluster *)self backingAssetIdentifiers];
-    v8 = [v7 allObjects];
+    backingAssetIdentifiers = [(PNPersonCluster *)self backingAssetIdentifiers];
+    allObjects2 = [backingAssetIdentifiers allObjects];
 
-    v9 = [v3 pn_fetchMomentsForAssetsWithLocalIdentifiers:v8];
+    v9 = [photoLibrary pn_fetchMomentsForAssetsWithLocalIdentifiers:allObjects2];
     v10 = objc_opt_new();
     v11 = self->_backingMomentIdentifiers;
     self->_backingMomentIdentifiers = v10;
@@ -616,8 +616,8 @@ LABEL_5:
           }
 
           v16 = self->_backingMomentIdentifiers;
-          v17 = [*(*(&v19 + 1) + 8 * i) localIdentifier];
-          [(NSMutableSet *)v16 addObject:v17];
+          localIdentifier = [*(*(&v19 + 1) + 8 * i) localIdentifier];
+          [(NSMutableSet *)v16 addObject:localIdentifier];
         }
 
         v13 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -636,7 +636,7 @@ LABEL_5:
   if (!backingAssetIdentifiers)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [(PNPersonCluster *)self fetchAssets];
+    fetchAssets = [(PNPersonCluster *)self fetchAssets];
     objc_autoreleasePoolPop(v4);
     backingAssetIdentifiers = self->_backingAssetIdentifiers;
   }
@@ -647,18 +647,18 @@ LABEL_5:
 - (id)fetchAssets
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(PNPersonCluster *)self photoLibrary];
+  photoLibrary = [(PNPersonCluster *)self photoLibrary];
   backingAssetIdentifiers = self->_backingAssetIdentifiers;
   if (backingAssetIdentifiers)
   {
-    v5 = [(NSMutableSet *)backingAssetIdentifiers allObjects];
-    v6 = [v3 pn_fetchAssetsWithLocalIdentifiers:v5];
+    allObjects = [(NSMutableSet *)backingAssetIdentifiers allObjects];
+    v6 = [photoLibrary pn_fetchAssetsWithLocalIdentifiers:allObjects];
   }
 
   else
   {
-    v7 = [(PNPersonCluster *)self backingFaceIdentifiers];
-    v8 = [v3 pn_fetchAssetsForFaceLocalIdentifiers:v7];
+    backingFaceIdentifiers = [(PNPersonCluster *)self backingFaceIdentifiers];
+    v8 = [photoLibrary pn_fetchAssetsForFaceLocalIdentifiers:backingFaceIdentifiers];
 
     v9 = objc_opt_new();
     v10 = self->_backingAssetIdentifiers;
@@ -684,8 +684,8 @@ LABEL_5:
           }
 
           v15 = self->_backingAssetIdentifiers;
-          v16 = [*(*(&v20 + 1) + 8 * i) localIdentifier];
-          [(NSMutableSet *)v15 addObject:v16];
+          localIdentifier = [*(*(&v20 + 1) + 8 * i) localIdentifier];
+          [(NSMutableSet *)v15 addObject:localIdentifier];
         }
 
         v12 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -708,7 +708,7 @@ LABEL_5:
   if (!backingFaceIdentifiers)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [(PNPersonCluster *)self fetchFaces];
+    fetchFaces = [(PNPersonCluster *)self fetchFaces];
     objc_autoreleasePoolPop(v4);
     backingFaceIdentifiers = self->_backingFaceIdentifiers;
   }
@@ -719,26 +719,26 @@ LABEL_5:
 - (id)fetchFaces
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(PNPersonCluster *)self photoLibrary];
+  photoLibrary = [(PNPersonCluster *)self photoLibrary];
   backingFaceIdentifiers = self->_backingFaceIdentifiers;
   if (backingFaceIdentifiers)
   {
-    v5 = [(NSMutableSet *)backingFaceIdentifiers allObjects];
-    v6 = [v3 pn_fetchFacesWithLocalIdentifiers:v5];
+    allObjects = [(NSMutableSet *)backingFaceIdentifiers allObjects];
+    v6 = [photoLibrary pn_fetchFacesWithLocalIdentifiers:allObjects];
   }
 
   else
   {
-    v7 = [(PNPersonCluster *)self sourcePerson];
-    if (v7)
+    sourcePerson = [(PNPersonCluster *)self sourcePerson];
+    if (sourcePerson)
     {
-      v8 = [v3 pn_fetchFacesForPerson:v7];
+      v8 = [photoLibrary pn_fetchFacesForPerson:sourcePerson];
     }
 
     else
     {
-      v9 = [(PNPersonCluster *)self sourceFaceGroup];
-      v8 = [v3 pn_fetchFacesForFaceGroup:v9];
+      sourceFaceGroup = [(PNPersonCluster *)self sourceFaceGroup];
+      v8 = [photoLibrary pn_fetchFacesForFaceGroup:sourceFaceGroup];
     }
 
     v10 = objc_opt_new();
@@ -765,8 +765,8 @@ LABEL_5:
           }
 
           v16 = self->_backingFaceIdentifiers;
-          v17 = [*(*(&v19 + 1) + 8 * i) localIdentifier];
-          [(NSMutableSet *)v16 addObject:v17];
+          localIdentifier = [*(*(&v19 + 1) + 8 * i) localIdentifier];
+          [(NSMutableSet *)v16 addObject:localIdentifier];
         }
 
         v13 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -782,36 +782,36 @@ LABEL_5:
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(PNPersonCluster *)self localIdentifier];
-  v5 = [v3 stringWithFormat:@"[%@]", v4];
+  localIdentifier = [(PNPersonCluster *)self localIdentifier];
+  v5 = [v3 stringWithFormat:@"[%@]", localIdentifier];
 
-  v6 = [(PNPersonCluster *)self sourcePerson];
-  v7 = [v6 anonymizedName];
-  v8 = [v7 length];
+  sourcePerson = [(PNPersonCluster *)self sourcePerson];
+  anonymizedName = [sourcePerson anonymizedName];
+  v8 = [anonymizedName length];
 
   if (v8)
   {
-    v9 = [(PNPersonCluster *)self sourcePerson];
-    v10 = [v9 anonymizedName];
-    [v5 appendFormat:@" Name: %@, ", v10];
+    sourcePerson2 = [(PNPersonCluster *)self sourcePerson];
+    anonymizedName2 = [sourcePerson2 anonymizedName];
+    [v5 appendFormat:@" Name: %@, ", anonymizedName2];
   }
 
-  v11 = [(PNPersonCluster *)self faceCount];
-  v12 = [(PNPersonCluster *)self backingMomentIdentifiers];
-  v13 = [v12 count];
-  v14 = [(PNPersonCluster *)self backingAssetIdentifiers];
-  v15 = [v14 count];
-  v16 = [(PNPersonCluster *)self mergedPersonIdentifiers];
-  [v5 appendFormat:@" Faces: %lu, Moments: %lu, Assets: %lu, Merges: %lu, VerifiedType: %d", v11, v13, v15, objc_msgSend(v16, "count"), -[PNPersonCluster verifiedType](self, "verifiedType")];
+  faceCount = [(PNPersonCluster *)self faceCount];
+  backingMomentIdentifiers = [(PNPersonCluster *)self backingMomentIdentifiers];
+  v13 = [backingMomentIdentifiers count];
+  backingAssetIdentifiers = [(PNPersonCluster *)self backingAssetIdentifiers];
+  v15 = [backingAssetIdentifiers count];
+  mergedPersonIdentifiers = [(PNPersonCluster *)self mergedPersonIdentifiers];
+  [v5 appendFormat:@" Faces: %lu, Moments: %lu, Assets: %lu, Merges: %lu, VerifiedType: %d", faceCount, v13, v15, objc_msgSend(mergedPersonIdentifiers, "count"), -[PNPersonCluster verifiedType](self, "verifiedType")];
 
-  v17 = [(PNPersonCluster *)self mergedPersonIdentifiers];
-  v18 = [v17 count];
+  mergedPersonIdentifiers2 = [(PNPersonCluster *)self mergedPersonIdentifiers];
+  v18 = [mergedPersonIdentifiers2 count];
 
   if (v18)
   {
-    v19 = [(PNPersonCluster *)self mergedPersonIdentifiers];
-    v20 = [v19 allObjects];
-    v21 = [v20 componentsJoinedByString:{@", "}];
+    mergedPersonIdentifiers3 = [(PNPersonCluster *)self mergedPersonIdentifiers];
+    allObjects = [mergedPersonIdentifiers3 allObjects];
+    v21 = [allObjects componentsJoinedByString:{@", "}];
     [v5 appendFormat:@", Merged Persons: [%@]", v21];
   }
 
@@ -819,9 +819,9 @@ LABEL_5:
   if (v22 >= 0.0)
   {
     v23 = v22;
-    v24 = [(PNPersonCluster *)self highlyInteresting];
+    highlyInteresting = [(PNPersonCluster *)self highlyInteresting];
     v25 = @"Interesting";
-    if (v24)
+    if (highlyInteresting)
     {
       v25 = @"Highly Interesting";
     }
@@ -832,10 +832,10 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -845,22 +845,22 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(PNPersonCluster *)self sourcePerson];
-      if (v7)
+      sourcePerson = [(PNPersonCluster *)self sourcePerson];
+      if (sourcePerson)
       {
-        v3 = [(PNPersonCluster *)v6 sourcePerson];
-        if (v3)
+        sourcePerson2 = [(PNPersonCluster *)equalCopy sourcePerson];
+        if (sourcePerson2)
         {
-          v8 = [(PNPersonCluster *)self sourcePerson];
-          v4 = [(PNPersonCluster *)v6 sourcePerson];
-          if ([v8 isEqual:v4])
+          sourcePerson3 = [(PNPersonCluster *)self sourcePerson];
+          sourcePerson4 = [(PNPersonCluster *)equalCopy sourcePerson];
+          if ([sourcePerson3 isEqual:sourcePerson4])
           {
 
             v9 = 1;
             goto LABEL_17;
           }
 
-          v18 = v8;
+          v18 = sourcePerson3;
           v10 = 1;
         }
 
@@ -875,17 +875,17 @@ LABEL_5:
         v10 = 0;
       }
 
-      v11 = [(PNPersonCluster *)self sourceFaceGroup];
-      if (v11)
+      sourceFaceGroup = [(PNPersonCluster *)self sourceFaceGroup];
+      if (sourceFaceGroup)
       {
-        v12 = v11;
-        v13 = [(PNPersonCluster *)v6 sourceFaceGroup];
-        if (v13)
+        v12 = sourceFaceGroup;
+        sourceFaceGroup2 = [(PNPersonCluster *)equalCopy sourceFaceGroup];
+        if (sourceFaceGroup2)
         {
-          v14 = v13;
-          v15 = [(PNPersonCluster *)self sourceFaceGroup];
-          v16 = [(PNPersonCluster *)v6 sourceFaceGroup];
-          v9 = [v15 isEqual:v16];
+          v14 = sourceFaceGroup2;
+          sourceFaceGroup3 = [(PNPersonCluster *)self sourceFaceGroup];
+          sourceFaceGroup4 = [(PNPersonCluster *)equalCopy sourceFaceGroup];
+          v9 = [sourceFaceGroup3 isEqual:sourceFaceGroup4];
 
           if ((v10 & 1) == 0)
           {
@@ -899,7 +899,7 @@ LABEL_5:
         if ((v10 & 1) == 0)
         {
 LABEL_16:
-          if (!v7)
+          if (!sourcePerson)
           {
 LABEL_18:
 
@@ -934,23 +934,23 @@ LABEL_19:
   return v9;
 }
 
-- (PNPersonCluster)initWithFaceGroup:(id)a3 inPhotoLibrary:(id)a4
+- (PNPersonCluster)initWithFaceGroup:(id)group inPhotoLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  libraryCopy = library;
   v13.receiver = self;
   v13.super_class = PNPersonCluster;
   v8 = [(PNPersonCluster *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    [(PNPersonCluster *)v8 setSourceFaceGroup:v6];
-    [(PNPersonCluster *)v9 setPhotoLibrary:v7];
-    v10 = [v6 localIdentifier];
-    v9->_hash = [v10 hash];
+    [(PNPersonCluster *)v8 setSourceFaceGroup:groupCopy];
+    [(PNPersonCluster *)v9 setPhotoLibrary:libraryCopy];
+    localIdentifier = [groupCopy localIdentifier];
+    v9->_hash = [localIdentifier hash];
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
-    [(PNPersonCluster *)v9 setBackingFaceIdentifiersByMomentIdentifiers:v11];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(PNPersonCluster *)v9 setBackingFaceIdentifiersByMomentIdentifiers:dictionary];
 
     v9->_detectionType = 1;
   }
@@ -958,10 +958,10 @@ LABEL_19:
   return v9;
 }
 
-- (PNPersonCluster)initWithPerson:(id)a3 inPhotoLibrary:(id)a4
+- (PNPersonCluster)initWithPerson:(id)person inPhotoLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a4;
+  personCopy = person;
+  libraryCopy = library;
   v16.receiver = self;
   v16.super_class = PNPersonCluster;
   v9 = [(PNPersonCluster *)&v16 init];
@@ -970,22 +970,22 @@ LABEL_19:
     v10 = objc_opt_class();
     if ([v10 isEqual:objc_opt_class()])
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:v9 file:@"PNPersonCluster.m" lineNumber:64 description:@"Cannot create a person cluster with another person cluster"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v9 file:@"PNPersonCluster.m" lineNumber:64 description:@"Cannot create a person cluster with another person cluster"];
     }
 
-    [(PNPersonCluster *)v9 setSourcePerson:v7];
-    [(PNPersonCluster *)v9 setPhotoLibrary:v8];
-    v11 = [v7 localIdentifier];
-    v9->_hash = [v11 hash];
+    [(PNPersonCluster *)v9 setSourcePerson:personCopy];
+    [(PNPersonCluster *)v9 setPhotoLibrary:libraryCopy];
+    localIdentifier = [personCopy localIdentifier];
+    v9->_hash = [localIdentifier hash];
 
-    v12 = [MEMORY[0x1E695DF90] dictionary];
-    [(PNPersonCluster *)v9 setBackingFaceIdentifiersByMomentIdentifiers:v12];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(PNPersonCluster *)v9 setBackingFaceIdentifiersByMomentIdentifiers:dictionary];
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
-    [(PNPersonCluster *)v9 setRepresentativeFaceByFaceIdentifiers:v13];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [(PNPersonCluster *)v9 setRepresentativeFaceByFaceIdentifiers:dictionary2];
 
-    v9->_detectionType = [v7 detectionType];
+    v9->_detectionType = [personCopy detectionType];
     [(PNPersonCluster *)v9 invalidateCaches];
   }
 

@@ -1,8 +1,8 @@
 @interface SBDisplayModePredicate
-+ (id)forDisplay:(id)a3;
-+ (id)forDisplaysSimilarToDisplay:(id)a3;
-+ (id)fromDefaultsKey:(id)a3;
-- (BOOL)matchesDisplay:(id)a3;
++ (id)forDisplay:(id)display;
++ (id)forDisplaysSimilarToDisplay:(id)display;
++ (id)fromDefaultsKey:(id)key;
+- (BOOL)matchesDisplay:(id)display;
 - (id)_init;
 - (id)defaultsKeyRepresentation;
 - (id)description;
@@ -17,40 +17,40 @@
   return [(SBDisplayModePredicate *)&v3 init];
 }
 
-+ (id)forDisplaysSimilarToDisplay:(id)a3
++ (id)forDisplaysSimilarToDisplay:(id)display
 {
-  v3 = a3;
-  v4 = [[_SBDisplaysWithSizePredicate alloc] initWithDisplay:v3];
+  displayCopy = display;
+  v4 = [[_SBDisplaysWithSizePredicate alloc] initWithDisplay:displayCopy];
 
   return v4;
 }
 
-+ (id)forDisplay:(id)a3
++ (id)forDisplay:(id)display
 {
-  v3 = a3;
-  v4 = [[_SBDisplayPredicate alloc] initWithDisplay:v3];
+  displayCopy = display;
+  v4 = [[_SBDisplayPredicate alloc] initWithDisplay:displayCopy];
 
   return v4;
 }
 
-- (BOOL)matchesDisplay:(id)a3
+- (BOOL)matchesDisplay:(id)display
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBDisplayModePredicate.m" lineNumber:54 description:@"must be overridden"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBDisplayModePredicate.m" lineNumber:54 description:@"must be overridden"];
 
   return 0;
 }
 
-+ (id)fromDefaultsKey:(id)a3
++ (id)fromDefaultsKey:(id)key
 {
-  v3 = a3;
-  v4 = [_SBAllDisplaysPredicate fromDefaultsKey:v3];
+  keyCopy = key;
+  v4 = [_SBAllDisplaysPredicate fromDefaultsKey:keyCopy];
   if (!v4)
   {
-    v4 = [_SBDisplayPredicate fromDefaultsKey:v3];
+    v4 = [_SBDisplayPredicate fromDefaultsKey:keyCopy];
     if (!v4)
     {
-      v4 = [_SBDisplaysWithSizePredicate fromDefaultsKey:v3];
+      v4 = [_SBDisplaysWithSizePredicate fromDefaultsKey:keyCopy];
     }
   }
 
@@ -61,16 +61,16 @@
 
 - (id)defaultsKeyRepresentation
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBDisplayModePredicate.m" lineNumber:72 description:@"must be overridden"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBDisplayModePredicate.m" lineNumber:72 description:@"must be overridden"];
 
   return &stru_1F3D19FF0;
 }
 
 - (id)description
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBDisplayModePredicate.m" lineNumber:77 description:@"invalid predicate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBDisplayModePredicate.m" lineNumber:77 description:@"invalid predicate"];
 
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p> [invalid]", objc_opt_class(), self];
 }

@@ -1,12 +1,12 @@
 @interface PXGAssetImageCache
-- (BOOL)getCachedImage:(CGImage *)a3 withOrientation:(unsigned int *)a4 outIsDegraded:(BOOL *)a5 forAsset:(id)a6 targetSize:(CGSize)a7 contentMode:(int64_t)a8 forRequestID:(int)a9;
-- (CGImage)cacheCGImage:(CGImage *)a3 orientation:(unsigned int)a4 isDegraded:(BOOL)a5 forRequestID:(int)a6;
+- (BOOL)getCachedImage:(CGImage *)image withOrientation:(unsigned int *)orientation outIsDegraded:(BOOL *)degraded forAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode forRequestID:(int)d;
+- (CGImage)cacheCGImage:(CGImage *)image orientation:(unsigned int)orientation isDegraded:(BOOL)degraded forRequestID:(int)d;
 - (PXGAssetImageCache)init;
 - (id)debugDescription;
 - (id)description;
-- (void)_cacheImage:(CGImage *)a3 orientation:(unsigned int)a4 isDegraded:(BOOL)a5 forRequestID:(int)a6 outCGImage:(CGImage *)a7;
+- (void)_cacheImage:(CGImage *)image orientation:(unsigned int)orientation isDegraded:(BOOL)degraded forRequestID:(int)d outCGImage:(CGImage *)gImage;
 - (void)clearAllCachedImages;
-- (void)clearCachedImagesForRequestIDs:(id)a3;
+- (void)clearCachedImagesForRequestIDs:(id)ds;
 @end
 
 @implementation PXGAssetImageCache
@@ -105,17 +105,17 @@ uint64_t __42__PXGAssetImageCache_clearAllCachedImages__block_invoke(uint64_t a1
   return [*(*(a1 + 32) + 16) removeAllIndexes];
 }
 
-- (void)clearCachedImagesForRequestIDs:(id)a3
+- (void)clearCachedImagesForRequestIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__PXGAssetImageCache_clearCachedImagesForRequestIDs___block_invoke;
   v7[3] = &unk_2782AC0A8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dsCopy;
+  selfCopy = self;
+  v6 = dsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -171,27 +171,27 @@ void __53__PXGAssetImageCache_clearCachedImagesForRequestIDs___block_invoke(uint
   [*(*(a1 + 40) + 16) removeIndexes:*(a1 + 32)];
 }
 
-- (void)_cacheImage:(CGImage *)a3 orientation:(unsigned int)a4 isDegraded:(BOOL)a5 forRequestID:(int)a6 outCGImage:(CGImage *)a7
+- (void)_cacheImage:(CGImage *)image orientation:(unsigned int)orientation isDegraded:(BOOL)degraded forRequestID:(int)d outCGImage:(CGImage *)gImage
 {
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
-  v16 = a3;
+  imageCopy = image;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__PXGAssetImageCache__cacheImage_orientation_isDegraded_forRequestID_outCGImage___block_invoke;
   block[3] = &unk_2782A86D8;
   block[5] = &v13;
-  block[6] = a3;
-  v10 = a6;
-  v11 = a4;
-  v12 = a5;
+  block[6] = image;
+  dCopy = d;
+  orientationCopy = orientation;
+  degradedCopy = degraded;
   block[4] = self;
   dispatch_sync(queue, block);
-  if (a7)
+  if (gImage)
   {
-    *a7 = v14[3];
+    *gImage = v14[3];
   }
 
   _Block_object_dispose(&v13, 8);
@@ -261,18 +261,18 @@ LABEL_14:
   }
 }
 
-- (CGImage)cacheCGImage:(CGImage *)a3 orientation:(unsigned int)a4 isDegraded:(BOOL)a5 forRequestID:(int)a6
+- (CGImage)cacheCGImage:(CGImage *)image orientation:(unsigned int)orientation isDegraded:(BOOL)degraded forRequestID:(int)d
 {
   v7 = 0;
-  [(PXGAssetImageCache *)self _cacheImage:a3 orientation:*&a4 isDegraded:a5 forRequestID:*&a6 outCGImage:&v7];
+  [(PXGAssetImageCache *)self _cacheImage:image orientation:*&orientation isDegraded:degraded forRequestID:*&d outCGImage:&v7];
   return v7;
 }
 
-- (BOOL)getCachedImage:(CGImage *)a3 withOrientation:(unsigned int *)a4 outIsDegraded:(BOOL *)a5 forAsset:(id)a6 targetSize:(CGSize)a7 contentMode:(int64_t)a8 forRequestID:(int)a9
+- (BOOL)getCachedImage:(CGImage *)image withOrientation:(unsigned int *)orientation outIsDegraded:(BOOL *)degraded forAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode forRequestID:(int)d
 {
-  height = a7.height;
-  width = a7.width;
-  v16 = a6;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -291,29 +291,29 @@ LABEL_14:
   v21[2] = __112__PXGAssetImageCache_getCachedImage_withOrientation_outIsDegraded_forAsset_targetSize_contentMode_forRequestID___block_invoke;
   v21[3] = &unk_2782A86B0;
   v21[4] = self;
-  v18 = v16;
+  v18 = assetCopy;
   v26 = width;
   v27 = height;
-  v28 = a9;
+  dCopy = d;
   v22 = v18;
   v23 = &v37;
   v24 = &v33;
   v25 = &v29;
   dispatch_sync(queue, v21);
-  *a4 = *(v34 + 6);
-  *a5 = *(v30 + 24);
-  if (a3)
+  *orientation = *(v34 + 6);
+  *degraded = *(v30 + 24);
+  if (image)
   {
     v19 = v38[3];
-    *a3 = v19;
-    LOBYTE(a3) = v19 != 0;
+    *image = v19;
+    LOBYTE(image) = v19 != 0;
   }
 
   _Block_object_dispose(&v29, 8);
   _Block_object_dispose(&v33, 8);
   _Block_object_dispose(&v37, 8);
 
-  return a3;
+  return image;
 }
 
 void __112__PXGAssetImageCache_getCachedImage_withOrientation_outIsDegraded_forAsset_targetSize_contentMode_forRequestID___block_invoke(uint64_t a1)

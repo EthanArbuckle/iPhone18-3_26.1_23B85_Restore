@@ -4,8 +4,8 @@
 - (id)motionActivity;
 - (id)motionConfidence;
 - (int64_t)deviceMotion;
-- (void)startUpdatingMotionActivityForReason:(id)a3 completion:(id)a4;
-- (void)stopUpdatingMotionActivityForReason:(id)a3 completion:(id)a4;
+- (void)startUpdatingMotionActivityForReason:(id)reason completion:(id)completion;
+- (void)stopUpdatingMotionActivityForReason:(id)reason completion:(id)completion;
 @end
 
 @implementation ADMotionManager
@@ -145,17 +145,17 @@
   return v4;
 }
 
-- (void)stopUpdatingMotionActivityForReason:(id)a3 completion:(id)a4
+- (void)stopUpdatingMotionActivityForReason:(id)reason completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  completionCopy = completion;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v14 = "[ADMotionManager stopUpdatingMotionActivityForReason:completion:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = reasonCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s reason = %@", buf, 0x16u);
   }
 
@@ -165,22 +165,22 @@
   v11[2] = sub_10031D0B0;
   v11[3] = &unk_10051E038;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
+  v12 = completionCopy;
+  v10 = completionCopy;
   dispatch_async(internalQueue, v11);
 }
 
-- (void)startUpdatingMotionActivityForReason:(id)a3 completion:(id)a4
+- (void)startUpdatingMotionActivityForReason:(id)reason completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  completionCopy = completion;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v14 = "[ADMotionManager startUpdatingMotionActivityForReason:completion:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = reasonCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s reason = %@", buf, 0x16u);
   }
 
@@ -190,8 +190,8 @@
   v11[2] = sub_10031D2C8;
   v11[3] = &unk_10051E038;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
+  v12 = completionCopy;
+  v10 = completionCopy;
   dispatch_async(internalQueue, v11);
 }
 

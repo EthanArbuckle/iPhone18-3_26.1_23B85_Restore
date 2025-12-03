@@ -1,49 +1,49 @@
 @interface HKMedicalCoding
-+ (HKMedicalCoding)medicalCodingWithSystem:(id)a3 codingVersion:(id)a4 code:(id)a5 displayString:(id)a6;
-+ (id)ICD10CodingWithCode:(id)a3 displayString:(id)a4;
-+ (id)ICD9CodingWithCode:(id)a3 displayString:(id)a4;
-+ (id)LOINCCodingWithCode:(id)a3 displayString:(id)a4;
-+ (id)RxNormCodingWithCode:(id)a3 displayString:(id)a4;
-+ (id)SNOMEDCodingWithCode:(id)a3 displayString:(id)a4;
-+ (id)appleOntologyCodingWithIdentifier:(id)a3;
-+ (id)appleOntologyCodingWithRawIdentifier:(int64_t)a3;
-+ (id)text_codingWithDisplayString:(id)a3;
-+ (id)ucum_codingWithCode:(id)a3 displayString:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalent:(id)a3;
++ (HKMedicalCoding)medicalCodingWithSystem:(id)system codingVersion:(id)version code:(id)code displayString:(id)string;
++ (id)ICD10CodingWithCode:(id)code displayString:(id)string;
++ (id)ICD9CodingWithCode:(id)code displayString:(id)string;
++ (id)LOINCCodingWithCode:(id)code displayString:(id)string;
++ (id)RxNormCodingWithCode:(id)code displayString:(id)string;
++ (id)SNOMEDCodingWithCode:(id)code displayString:(id)string;
++ (id)appleOntologyCodingWithIdentifier:(id)identifier;
++ (id)appleOntologyCodingWithRawIdentifier:(int64_t)identifier;
++ (id)text_codingWithDisplayString:(id)string;
++ (id)ucum_codingWithCode:(id)code displayString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalent:(id)equivalent;
 - (HKMedicalCoding)init;
-- (HKMedicalCoding)initWithCoder:(id)a3;
-- (HKMedicalCoding)initWithCodingSystem:(id)a3 codingVersion:(id)a4 code:(id)a5 displayString:(id)a6;
+- (HKMedicalCoding)initWithCoder:(id)coder;
+- (HKMedicalCoding)initWithCodingSystem:(id)system codingVersion:(id)version code:(id)code displayString:(id)string;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicalCoding
 
-+ (id)ICD10CodingWithCode:(id)a3 displayString:(id)a4
++ (id)ICD10CodingWithCode:(id)code displayString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  codeCopy = code;
+  stringCopy = string;
+  if (!codeCopy)
   {
-    [HKMedicalCoding(ICD10) ICD10CodingWithCode:a2 displayString:a1];
+    [HKMedicalCoding(ICD10) ICD10CodingWithCode:a2 displayString:self];
   }
 
   v9 = +[HKMedicalCodingSystem ICD10System];
-  v10 = [HKMedicalCoding medicalCodingWithSystem:v9 codingVersion:0 code:v7 displayString:v8];
+  v10 = [HKMedicalCoding medicalCodingWithSystem:v9 codingVersion:0 code:codeCopy displayString:stringCopy];
 
   return v10;
 }
 
-+ (id)ucum_codingWithCode:(id)a3 displayString:(id)a4
++ (id)ucum_codingWithCode:(id)code displayString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  codeCopy = code;
+  stringCopy = string;
+  v9 = stringCopy;
+  if (codeCopy)
   {
-    if (v8)
+    if (stringCopy)
     {
       goto LABEL_3;
     }
@@ -51,158 +51,158 @@
 
   else
   {
-    [HKMedicalCoding(UCUM) ucum_codingWithCode:a2 displayString:a1];
+    [HKMedicalCoding(UCUM) ucum_codingWithCode:a2 displayString:self];
     if (v9)
     {
       goto LABEL_3;
     }
   }
 
-  [HKMedicalCoding(UCUM) ucum_codingWithCode:a2 displayString:a1];
+  [HKMedicalCoding(UCUM) ucum_codingWithCode:a2 displayString:self];
 LABEL_3:
   v10 = +[HKMedicalCodingSystem UCUMSystem];
-  v11 = [HKMedicalCoding medicalCodingWithSystem:v10 codingVersion:0 code:v7 displayString:v9];
+  v11 = [HKMedicalCoding medicalCodingWithSystem:v10 codingVersion:0 code:codeCopy displayString:v9];
 
   return v11;
 }
 
-+ (id)LOINCCodingWithCode:(id)a3 displayString:(id)a4
++ (id)LOINCCodingWithCode:(id)code displayString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  codeCopy = code;
+  stringCopy = string;
+  if (!codeCopy)
   {
-    [HKMedicalCoding(LOINC) LOINCCodingWithCode:a2 displayString:a1];
+    [HKMedicalCoding(LOINC) LOINCCodingWithCode:a2 displayString:self];
   }
 
   v9 = +[HKMedicalCodingSystem LOINCCodeSystem];
-  v10 = [HKMedicalCoding medicalCodingWithSystem:v9 codingVersion:0 code:v7 displayString:v8];
+  v10 = [HKMedicalCoding medicalCodingWithSystem:v9 codingVersion:0 code:codeCopy displayString:stringCopy];
 
   return v10;
 }
 
-+ (id)ICD9CodingWithCode:(id)a3 displayString:(id)a4
++ (id)ICD9CodingWithCode:(id)code displayString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  codeCopy = code;
+  stringCopy = string;
+  if (!codeCopy)
   {
-    [HKMedicalCoding(ICD9) ICD9CodingWithCode:a2 displayString:a1];
+    [HKMedicalCoding(ICD9) ICD9CodingWithCode:a2 displayString:self];
   }
 
   v9 = +[HKMedicalCodingSystem ICD9System];
-  v10 = [HKMedicalCoding medicalCodingWithSystem:v9 codingVersion:0 code:v7 displayString:v8];
+  v10 = [HKMedicalCoding medicalCodingWithSystem:v9 codingVersion:0 code:codeCopy displayString:stringCopy];
 
   return v10;
 }
 
-+ (id)RxNormCodingWithCode:(id)a3 displayString:(id)a4
++ (id)RxNormCodingWithCode:(id)code displayString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  codeCopy = code;
+  stringCopy = string;
+  if (!codeCopy)
   {
-    [HKMedicalCoding(RxNorm) RxNormCodingWithCode:a2 displayString:a1];
+    [HKMedicalCoding(RxNorm) RxNormCodingWithCode:a2 displayString:self];
   }
 
   v9 = +[HKMedicalCodingSystem RxNormCodeSystem];
-  v10 = [HKMedicalCoding medicalCodingWithSystem:v9 codingVersion:0 code:v7 displayString:v8];
+  v10 = [HKMedicalCoding medicalCodingWithSystem:v9 codingVersion:0 code:codeCopy displayString:stringCopy];
 
   return v10;
 }
 
-+ (id)text_codingWithDisplayString:(id)a3
++ (id)text_codingWithDisplayString:(id)string
 {
-  v5 = a3;
-  if (!v5)
+  stringCopy = string;
+  if (!stringCopy)
   {
-    [(HKMedicalCoding(Text) *)a2 text_codingWithDisplayString:a1];
+    [(HKMedicalCoding(Text) *)a2 text_codingWithDisplayString:self];
   }
 
   v6 = +[HKMedicalCodingSystem textSystem];
-  v7 = [HKMedicalCoding medicalCodingWithSystem:v6 codingVersion:@"1" code:v5 displayString:v5];
+  v7 = [HKMedicalCoding medicalCodingWithSystem:v6 codingVersion:@"1" code:stringCopy displayString:stringCopy];
 
   return v7;
 }
 
-+ (id)SNOMEDCodingWithCode:(id)a3 displayString:(id)a4
++ (id)SNOMEDCodingWithCode:(id)code displayString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  codeCopy = code;
+  stringCopy = string;
+  if (!codeCopy)
   {
-    [HKMedicalCoding(SNOMED) SNOMEDCodingWithCode:a2 displayString:a1];
+    [HKMedicalCoding(SNOMED) SNOMEDCodingWithCode:a2 displayString:self];
   }
 
   v9 = +[HKMedicalCodingSystem SNOMEDCodeSystem];
-  v10 = [HKMedicalCoding medicalCodingWithSystem:v9 codingVersion:0 code:v7 displayString:v8];
+  v10 = [HKMedicalCoding medicalCodingWithSystem:v9 codingVersion:0 code:codeCopy displayString:stringCopy];
 
   return v10;
 }
 
-+ (id)appleOntologyCodingWithRawIdentifier:(int64_t)a3
++ (id)appleOntologyCodingWithRawIdentifier:(int64_t)identifier
 {
-  v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lld", a3];
+  identifier = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lld", identifier];
   v4 = [HKMedicalCoding alloc];
   v5 = +[HKMedicalCodingSystem appleOntologySystem];
-  v6 = [(HKMedicalCoding *)v4 initWithCodingSystem:v5 codingVersion:0 code:v3 displayString:0];
+  v6 = [(HKMedicalCoding *)v4 initWithCodingSystem:v5 codingVersion:0 code:identifier displayString:0];
 
   return v6;
 }
 
-+ (id)appleOntologyCodingWithIdentifier:(id)a3
++ (id)appleOntologyCodingWithIdentifier:(id)identifier
 {
-  v4 = [a3 rawIdentifier];
+  rawIdentifier = [identifier rawIdentifier];
 
-  return [a1 appleOntologyCodingWithRawIdentifier:v4];
+  return [self appleOntologyCodingWithRawIdentifier:rawIdentifier];
 }
 
-+ (HKMedicalCoding)medicalCodingWithSystem:(id)a3 codingVersion:(id)a4 code:(id)a5 displayString:(id)a6
++ (HKMedicalCoding)medicalCodingWithSystem:(id)system codingVersion:(id)version code:(id)code displayString:(id)string
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithCodingSystem:v13 codingVersion:v12 code:v11 displayString:v10];
+  stringCopy = string;
+  codeCopy = code;
+  versionCopy = version;
+  systemCopy = system;
+  v14 = [[self alloc] initWithCodingSystem:systemCopy codingVersion:versionCopy code:codeCopy displayString:stringCopy];
 
   return v14;
 }
 
-- (HKMedicalCoding)initWithCodingSystem:(id)a3 codingVersion:(id)a4 code:(id)a5 displayString:(id)a6
+- (HKMedicalCoding)initWithCodingSystem:(id)system codingVersion:(id)version code:(id)code displayString:(id)string
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  systemCopy = system;
+  versionCopy = version;
+  codeCopy = code;
+  stringCopy = string;
   v29.receiver = self;
   v29.super_class = HKMedicalCoding;
   v14 = [(HKMedicalCoding *)&v29 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [systemCopy copy];
     codingSystem = v14->_codingSystem;
     v14->_codingSystem = v15;
 
-    v17 = [v11 copy];
+    v17 = [versionCopy copy];
     codingVersion = v14->_codingVersion;
     v14->_codingVersion = v17;
 
-    v19 = [v12 copy];
+    v19 = [codeCopy copy];
     code = v14->_code;
     v14->_code = v19;
 
-    v21 = [v13 copy];
+    v21 = [stringCopy copy];
     displayString = v14->_displayString;
     v14->_displayString = v21;
 
-    v23 = [(HKMedicalCoding *)v14 _validateConfiguration];
-    v24 = v23;
-    if (v23)
+    _validateConfiguration = [(HKMedicalCoding *)v14 _validateConfiguration];
+    v24 = _validateConfiguration;
+    if (_validateConfiguration)
     {
       v25 = MEMORY[0x1E695DF30];
       v26 = *MEMORY[0x1E695D940];
-      v27 = [v23 localizedDescription];
-      [v25 raise:v26 format:{@"%@", v27}];
+      localizedDescription = [_validateConfiguration localizedDescription];
+      [v25 raise:v26 format:{@"%@", localizedDescription}];
     }
   }
 
@@ -219,10 +219,10 @@ LABEL_3:
   return 0;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
-  if (self == v4)
+  equivalentCopy = equivalent;
+  if (self == equivalentCopy)
   {
     v13 = 1;
   }
@@ -232,23 +232,23 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HKMedicalCoding *)v4 codingSystem];
+      codingSystem = [(HKMedicalCoding *)equivalentCopy codingSystem];
       v6 = +[HKMedicalCodingSystem LOINCCodeSystem];
-      v7 = [v5 isEqual:v6];
+      v7 = [codingSystem isEqual:v6];
 
       if (v7)
       {
-        v8 = [(HKMedicalCoding *)self codingSystem];
-        v9 = [(HKMedicalCoding *)v4 codingSystem];
-        if (v8 == v9)
+        codingSystem2 = [(HKMedicalCoding *)self codingSystem];
+        codingSystem3 = [(HKMedicalCoding *)equivalentCopy codingSystem];
+        if (codingSystem2 == codingSystem3)
         {
           [(HKMedicalCoding *)self code:v22];
         }
 
         else
         {
-          v10 = [(HKMedicalCoding *)v4 codingSystem];
-          if (!v10)
+          codingSystem4 = [(HKMedicalCoding *)equivalentCopy codingSystem];
+          if (!codingSystem4)
           {
             v13 = 0;
 LABEL_21:
@@ -256,10 +256,10 @@ LABEL_21:
             goto LABEL_22;
           }
 
-          v7 = v10;
-          v11 = [(HKMedicalCoding *)self codingSystem];
-          v12 = [(HKMedicalCoding *)v4 codingSystem];
-          if (![v11 isEqual:v12])
+          v7 = codingSystem4;
+          codingSystem5 = [(HKMedicalCoding *)self codingSystem];
+          codingSystem6 = [(HKMedicalCoding *)equivalentCopy codingSystem];
+          if (![codingSystem5 isEqual:codingSystem6])
           {
             v13 = 0;
 LABEL_20:
@@ -267,12 +267,12 @@ LABEL_20:
             goto LABEL_21;
           }
 
-          [(HKMedicalCoding *)self code:v12];
+          [(HKMedicalCoding *)self code:codingSystem6];
         }
         v14 = ;
-        v15 = [(HKMedicalCoding *)v4 code];
-        v16 = v15;
-        if (v14 == v15)
+        code = [(HKMedicalCoding *)equivalentCopy code];
+        v16 = code;
+        if (v14 == code)
         {
 
           v13 = 1;
@@ -280,13 +280,13 @@ LABEL_20:
 
         else
         {
-          v17 = [(HKMedicalCoding *)v4 code];
-          if (v17)
+          code2 = [(HKMedicalCoding *)equivalentCopy code];
+          if (code2)
           {
-            v18 = v17;
-            v19 = [(HKMedicalCoding *)self code];
-            v20 = [(HKMedicalCoding *)v4 code];
-            v13 = [v19 isEqual:v20];
+            v18 = code2;
+            code3 = [(HKMedicalCoding *)self code];
+            code4 = [(HKMedicalCoding *)equivalentCopy code];
+            v13 = [code3 isEqual:code4];
           }
 
           else
@@ -296,9 +296,9 @@ LABEL_20:
           }
         }
 
-        v12 = v23;
-        v11 = v25;
-        if (v8 == v9)
+        codingSystem6 = v23;
+        codingSystem5 = v25;
+        if (codingSystem2 == codingSystem3)
         {
           goto LABEL_21;
         }
@@ -306,7 +306,7 @@ LABEL_20:
         goto LABEL_20;
       }
 
-      v13 = [(HKMedicalCoding *)self isEqual:v4];
+      v13 = [(HKMedicalCoding *)self isEqual:equivalentCopy];
     }
 
     else
@@ -325,20 +325,20 @@ LABEL_22:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HKMedicalCoding *)self codingSystem];
-  v7 = [v6 identifier];
-  v8 = [(HKMedicalCoding *)self codingVersion];
-  v9 = [(HKMedicalCoding *)self code];
-  v10 = [(HKMedicalCoding *)self displayString];
-  v11 = [v3 stringWithFormat:@"<%@:%p, system='%@', version=%@, code='%@', displayString='%@'>", v5, self, v7, v8, v9, v10];
+  codingSystem = [(HKMedicalCoding *)self codingSystem];
+  identifier = [codingSystem identifier];
+  codingVersion = [(HKMedicalCoding *)self codingVersion];
+  code = [(HKMedicalCoding *)self code];
+  displayString = [(HKMedicalCoding *)self displayString];
+  v11 = [v3 stringWithFormat:@"<%@:%p, system='%@', version=%@, code='%@', displayString='%@'>", v5, self, identifier, codingVersion, code, displayString];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -348,26 +348,26 @@ LABEL_22:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKMedicalCoding *)v5 codingSystem];
-      v7 = [(HKMedicalCoding *)self codingSystem];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      codingSystem = [(HKMedicalCoding *)v5 codingSystem];
+      codingSystem2 = [(HKMedicalCoding *)self codingSystem];
+      v8 = codingSystem2;
+      if (codingSystem == codingSystem2)
       {
       }
 
       else
       {
-        v9 = [(HKMedicalCoding *)self codingSystem];
-        if (!v9)
+        codingSystem3 = [(HKMedicalCoding *)self codingSystem];
+        if (!codingSystem3)
         {
           goto LABEL_24;
         }
 
-        v10 = v9;
-        v11 = [(HKMedicalCoding *)v5 codingSystem];
-        v12 = [(HKMedicalCoding *)self codingSystem];
-        v13 = [v11 isEqual:v12];
+        v10 = codingSystem3;
+        codingSystem4 = [(HKMedicalCoding *)v5 codingSystem];
+        codingSystem5 = [(HKMedicalCoding *)self codingSystem];
+        v13 = [codingSystem4 isEqual:codingSystem5];
 
         if (!v13)
         {
@@ -375,25 +375,25 @@ LABEL_22:
         }
       }
 
-      v6 = [(HKMedicalCoding *)v5 codingVersion];
-      v15 = [(HKMedicalCoding *)self codingVersion];
-      v8 = v15;
-      if (v6 == v15)
+      codingSystem = [(HKMedicalCoding *)v5 codingVersion];
+      codingVersion = [(HKMedicalCoding *)self codingVersion];
+      v8 = codingVersion;
+      if (codingSystem == codingVersion)
       {
       }
 
       else
       {
-        v16 = [(HKMedicalCoding *)self codingVersion];
-        if (!v16)
+        codingVersion2 = [(HKMedicalCoding *)self codingVersion];
+        if (!codingVersion2)
         {
           goto LABEL_24;
         }
 
-        v17 = v16;
-        v18 = [(HKMedicalCoding *)v5 codingVersion];
-        v19 = [(HKMedicalCoding *)self codingVersion];
-        v20 = [v18 isEqualToString:v19];
+        v17 = codingVersion2;
+        codingVersion3 = [(HKMedicalCoding *)v5 codingVersion];
+        codingVersion4 = [(HKMedicalCoding *)self codingVersion];
+        v20 = [codingVersion3 isEqualToString:codingVersion4];
 
         if (!v20)
         {
@@ -401,25 +401,25 @@ LABEL_22:
         }
       }
 
-      v6 = [(HKMedicalCoding *)v5 code];
-      v21 = [(HKMedicalCoding *)self code];
-      v8 = v21;
-      if (v6 == v21)
+      codingSystem = [(HKMedicalCoding *)v5 code];
+      code = [(HKMedicalCoding *)self code];
+      v8 = code;
+      if (codingSystem == code)
       {
       }
 
       else
       {
-        v22 = [(HKMedicalCoding *)self code];
-        if (!v22)
+        code2 = [(HKMedicalCoding *)self code];
+        if (!code2)
         {
           goto LABEL_24;
         }
 
-        v23 = v22;
-        v24 = [(HKMedicalCoding *)v5 code];
-        v25 = [(HKMedicalCoding *)self code];
-        v26 = [v24 isEqualToString:v25];
+        v23 = code2;
+        code3 = [(HKMedicalCoding *)v5 code];
+        code4 = [(HKMedicalCoding *)self code];
+        v26 = [code3 isEqualToString:code4];
 
         if (!v26)
         {
@@ -427,10 +427,10 @@ LABEL_22:
         }
       }
 
-      v6 = [(HKMedicalCoding *)v5 displayString];
-      v27 = [(HKMedicalCoding *)self displayString];
-      v8 = v27;
-      if (v6 == v27)
+      codingSystem = [(HKMedicalCoding *)v5 displayString];
+      displayString = [(HKMedicalCoding *)self displayString];
+      v8 = displayString;
+      if (codingSystem == displayString)
       {
 
 LABEL_29:
@@ -438,13 +438,13 @@ LABEL_29:
         goto LABEL_26;
       }
 
-      v28 = [(HKMedicalCoding *)self displayString];
-      if (v28)
+      displayString2 = [(HKMedicalCoding *)self displayString];
+      if (displayString2)
       {
-        v29 = v28;
-        v30 = [(HKMedicalCoding *)v5 displayString];
-        v31 = [(HKMedicalCoding *)self displayString];
-        v32 = [v30 isEqualToString:v31];
+        v29 = displayString2;
+        displayString3 = [(HKMedicalCoding *)v5 displayString];
+        displayString4 = [(HKMedicalCoding *)self displayString];
+        v32 = [displayString3 isEqualToString:displayString4];
 
         if (v32)
         {
@@ -489,9 +489,9 @@ LABEL_27:
   return v6 ^ [(NSString *)self->_codingVersion hash]^ v5;
 }
 
-- (HKMedicalCoding)initWithCoder:(id)a3
+- (HKMedicalCoding)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = HKMedicalCoding;
   v5 = [(HKMedicalCoding *)&v17 init];
@@ -500,25 +500,25 @@ LABEL_27:
     goto LABEL_4;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CodingSystem"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CodingSystem"];
   codingSystem = v5->_codingSystem;
   v5->_codingSystem = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CodingVersion"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CodingVersion"];
   codingVersion = v5->_codingVersion;
   v5->_codingVersion = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Code"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Code"];
   code = v5->_code;
   v5->_code = v10;
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DisplayString"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DisplayString"];
   displayString = v5->_displayString;
   v5->_displayString = v12;
 
-  v14 = [(HKMedicalCoding *)v5 _validateConfiguration];
+  _validateConfiguration = [(HKMedicalCoding *)v5 _validateConfiguration];
 
-  if (v14)
+  if (_validateConfiguration)
   {
     v15 = 0;
   }
@@ -532,14 +532,14 @@ LABEL_4:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   codingSystem = self->_codingSystem;
-  v5 = a3;
-  [v5 encodeObject:codingSystem forKey:@"CodingSystem"];
-  [v5 encodeObject:self->_codingVersion forKey:@"CodingVersion"];
-  [v5 encodeObject:self->_code forKey:@"Code"];
-  [v5 encodeObject:self->_displayString forKey:@"DisplayString"];
+  coderCopy = coder;
+  [coderCopy encodeObject:codingSystem forKey:@"CodingSystem"];
+  [coderCopy encodeObject:self->_codingVersion forKey:@"CodingVersion"];
+  [coderCopy encodeObject:self->_code forKey:@"Code"];
+  [coderCopy encodeObject:self->_displayString forKey:@"DisplayString"];
 }
 
 @end

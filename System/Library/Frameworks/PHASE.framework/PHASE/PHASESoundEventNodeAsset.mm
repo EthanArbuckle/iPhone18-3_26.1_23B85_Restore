@@ -1,10 +1,10 @@
 @interface PHASESoundEventNodeAsset
 - (PHASESoundEventNodeAsset)init;
-- (PHASESoundEventNodeAsset)initWithUID:(id)a3 actionTreeWeakReference:(const void *)a4 assetRegistry:(id)a5 weakStringPoolReference:(void *)a6 details:(id)a7;
-- (PHASESoundEventNodeAsset)initWithUID:(id)a3 assetRegistry:(id)a4 weakStringPoolReference:(void *)a5;
-- (PHASESoundEventNodeAsset)initWithUID:(id)a3 ownedActionTree:()unique_ptr<Phase:(std:(id)a5 :(void *)a6 default_delete<Phase:(id)a7 :ActionTree>>)a4 :ActionTree assetRegistry:weakStringPoolReference:details:;
+- (PHASESoundEventNodeAsset)initWithUID:(id)d actionTreeWeakReference:(const void *)reference assetRegistry:(id)registry weakStringPoolReference:(void *)poolReference details:(id)details;
+- (PHASESoundEventNodeAsset)initWithUID:(id)d assetRegistry:(id)registry weakStringPoolReference:(void *)reference;
+- (PHASESoundEventNodeAsset)initWithUID:(id)d ownedActionTree:()unique_ptr<Phase:(std:(id)phase :(void *)a6 default_delete<Phase:(id)a7 :ActionTree>>)a4 :ActionTree assetRegistry:weakStringPoolReference:details:;
 - (id).cxx_construct;
-- (void)getRandomHistory:(unint64_t)a3;
+- (void)getRandomHistory:(unint64_t)history;
 @end
 
 @implementation PHASESoundEventNodeAsset
@@ -16,16 +16,16 @@
   return 0;
 }
 
-- (PHASESoundEventNodeAsset)initWithUID:(id)a3 assetRegistry:(id)a4 weakStringPoolReference:(void *)a5
+- (PHASESoundEventNodeAsset)initWithUID:(id)d assetRegistry:(id)registry weakStringPoolReference:(void *)reference
 {
-  [(PHASESoundEventNodeAsset *)self doesNotRecognizeSelector:a2, a4, a5];
+  [(PHASESoundEventNodeAsset *)self doesNotRecognizeSelector:a2, registry, reference];
 
   return 0;
 }
 
-- (PHASESoundEventNodeAsset)initWithUID:(id)a3 ownedActionTree:()unique_ptr<Phase:(std:(id)a5 :(void *)a6 default_delete<Phase:(id)a7 :ActionTree>>)a4 :ActionTree assetRegistry:weakStringPoolReference:details:
+- (PHASESoundEventNodeAsset)initWithUID:(id)d ownedActionTree:()unique_ptr<Phase:(std:(id)phase :(void *)a6 default_delete<Phase:(id)a7 :ActionTree>>)a4 :ActionTree assetRegistry:weakStringPoolReference:details:
 {
-  v8 = [(PHASESoundEventNodeAsset *)self initWithUID:a3 actionTreeWeakReference:*a4.__ptr_ assetRegistry:a5 weakStringPoolReference:a6 details:a7];
+  v8 = [(PHASESoundEventNodeAsset *)self initWithUID:d actionTreeWeakReference:*a4.__ptr_ assetRegistry:phase weakStringPoolReference:a6 details:a7];
   v9 = v8;
   if (v8)
   {
@@ -38,28 +38,28 @@
   return v9;
 }
 
-- (PHASESoundEventNodeAsset)initWithUID:(id)a3 actionTreeWeakReference:(const void *)a4 assetRegistry:(id)a5 weakStringPoolReference:(void *)a6 details:(id)a7
+- (PHASESoundEventNodeAsset)initWithUID:(id)d actionTreeWeakReference:(const void *)reference assetRegistry:(id)registry weakStringPoolReference:(void *)poolReference details:(id)details
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  dCopy = d;
+  registryCopy = registry;
+  detailsCopy = details;
   v20.receiver = self;
   v20.super_class = PHASESoundEventNodeAsset;
-  v15 = [(PHASEAsset *)&v20 initWithUID:v12 assetRegistry:v13 weakStringPoolReference:a6];
+  v15 = [(PHASEAsset *)&v20 initWithUID:dCopy assetRegistry:registryCopy weakStringPoolReference:poolReference];
   if (v15)
   {
-    v16 = [v14 streamNodeFormats];
+    streamNodeFormats = [detailsCopy streamNodeFormats];
     streamNodeFormats = v15->_streamNodeFormats;
-    v15->_streamNodeFormats = v16;
+    v15->_streamNodeFormats = streamNodeFormats;
 
-    v15->_actionTreeReference = a4;
+    v15->_actionTreeReference = reference;
     v18 = v15;
   }
 
   return v15;
 }
 
-- (void)getRandomHistory:(unint64_t)a3
+- (void)getRandomHistory:(unint64_t)history
 {
   p_randomHistory = &self->_randomHistory;
   size = self->_randomHistory.__table_.__bucket_list_.__deleter_.__size_;
@@ -75,20 +75,20 @@
   v5.i16[0] = vaddlv_u8(v5);
   if (v5.u32[0] > 1uLL)
   {
-    v6 = a3;
-    if (size <= a3)
+    historyCopy = history;
+    if (size <= history)
     {
-      v6 = a3 % size;
+      historyCopy = history % size;
     }
   }
 
   else
   {
-    v6 = (size - 1) & a3;
+    historyCopy = (size - 1) & history;
   }
 
   ptr = p_randomHistory->__table_.__bucket_list_.__ptr_;
-  v8 = p_randomHistory->__table_.__bucket_list_.__ptr_[v6];
+  v8 = p_randomHistory->__table_.__bucket_list_.__ptr_[historyCopy];
   if (v8)
   {
     v9 = *v8;
@@ -97,9 +97,9 @@
       do
       {
         v10 = v9[1];
-        if (v10 == a3)
+        if (v10 == history)
         {
-          if (v9[2] == a3)
+          if (v9[2] == history)
           {
             return v9 + 3;
           }
@@ -120,7 +120,7 @@
             v10 &= size - 1;
           }
 
-          if (v10 != v6)
+          if (v10 != historyCopy)
           {
             break;
           }
@@ -138,19 +138,19 @@
   v16 = 0u;
   if (v5.u32[0] > 1uLL)
   {
-    v11 = a3;
-    if (size <= a3)
+    historyCopy2 = history;
+    if (size <= history)
     {
-      v11 = a3 % size;
+      historyCopy2 = history % size;
     }
   }
 
   else
   {
-    v11 = (size - 1) & a3;
+    historyCopy2 = (size - 1) & history;
   }
 
-  v12 = ptr[v11];
+  v12 = ptr[historyCopy2];
   if (!v12 || (v13 = *v12) == 0)
   {
 LABEL_33:
@@ -160,7 +160,7 @@ LABEL_33:
   while (1)
   {
     v14 = v13[1];
-    if (v14 == a3)
+    if (v14 == history)
     {
       break;
     }
@@ -178,7 +178,7 @@ LABEL_33:
       v14 &= size - 1;
     }
 
-    if (v14 != v11)
+    if (v14 != historyCopy2)
     {
       goto LABEL_33;
     }
@@ -191,7 +191,7 @@ LABEL_32:
     }
   }
 
-  if (v13[2] != a3)
+  if (v13[2] != history)
   {
     goto LABEL_32;
   }

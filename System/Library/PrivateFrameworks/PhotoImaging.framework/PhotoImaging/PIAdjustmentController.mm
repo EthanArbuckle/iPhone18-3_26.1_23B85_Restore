@@ -1,49 +1,49 @@
 @interface PIAdjustmentController
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeFromInputKey:(SEL)a3 timescaleKey:(id)a4;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeFromInputKey:(SEL)key timescaleKey:(id)timescaleKey;
 - (BOOL)_isDefault;
 - (BOOL)canBeEnabled;
 - (BOOL)canHaveAuto;
 - (BOOL)enabled;
 - (BOOL)hasAutoKeyInSchema;
-- (BOOL)hasInputKey:(id)a3;
+- (BOOL)hasInputKey:(id)key;
 - (BOOL)isAuto;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqual:(id)a3 forKeys:(id)a4;
-- (BOOL)isEqual:(id)a3 visualChangesOnly:(BOOL)a4;
-- (BOOL)isEqualToAdjustmentController:(id)a3;
-- (BOOL)isSettingEqual:(id)a3 forKey:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqual:(id)equal forKeys:(id)keys;
+- (BOOL)isEqual:(id)equal visualChangesOnly:(BOOL)only;
+- (BOOL)isEqualToAdjustmentController:(id)controller;
+- (BOOL)isSettingEqual:(id)equal forKey:(id)key;
 - (NSArray)inputKeys;
 - (NSDictionary)settings;
 - (NSString)displayName;
-- (PIAdjustmentController)initWithAdjustment:(id)a3;
+- (PIAdjustmentController)initWithAdjustment:(id)adjustment;
 - (id)debugDescription;
-- (id)settingForKey:(id)a3;
-- (id)valuesForArrayInputKey:(id)a3;
+- (id)settingForKey:(id)key;
+- (id)valuesForArrayInputKey:(id)key;
 - (unint64_t)hash;
-- (void)_setPrimitiveValue:(id)a3 forKey:(id)a4;
-- (void)interpolateFromStart:(id)a3 toEnd:(id)a4 progress:(double)a5;
-- (void)pasteAdjustment:(id)a3 forMediaType:(int64_t)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFromAdjustment:(id)a3;
-- (void)setIsAuto:(BOOL)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)_setPrimitiveValue:(id)value forKey:(id)key;
+- (void)interpolateFromStart:(id)start toEnd:(id)end progress:(double)progress;
+- (void)pasteAdjustment:(id)adjustment forMediaType:(int64_t)type;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFromAdjustment:(id)adjustment;
+- (void)setIsAuto:(BOOL)auto;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation PIAdjustmentController
 
-- (void)pasteAdjustment:(id)a3 forMediaType:(int64_t)a4
+- (void)pasteAdjustment:(id)adjustment forMediaType:(int64_t)type
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PIAdjustmentController *)self pasteKeysForMediaType:a4];
-  v8 = [objc_opt_class() autoKey];
-  v9 = [v6 objectForKeyedSubscript:v8];
+  adjustmentCopy = adjustment;
+  v7 = [(PIAdjustmentController *)self pasteKeysForMediaType:type];
+  autoKey = [objc_opt_class() autoKey];
+  v9 = [adjustmentCopy objectForKeyedSubscript:autoKey];
 
   if ([v9 BOOLValue])
   {
-    v10 = [(PIAdjustmentController *)self autoKeysForPaste];
+    autoKeysForPaste = [(PIAdjustmentController *)self autoKeysForPaste];
 
-    v7 = v10;
+    v7 = autoKeysForPaste;
   }
 
   v20 = 0u;
@@ -66,7 +66,7 @@
         }
 
         v16 = *(*(&v18 + 1) + 8 * i);
-        v17 = [v6 objectForKeyedSubscript:{v16, v18}];
+        v17 = [adjustmentCopy objectForKeyedSubscript:{v16, v18}];
         [(NUAdjustment *)self->_adjustment setObject:v17 forKeyedSubscript:v16];
       }
 
@@ -81,8 +81,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PIAdjustmentController *)self adjustment];
-  v6 = [v5 debugDescription];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  v6 = [adjustment debugDescription];
   v7 = [v3 stringWithFormat:@"<%@: %p adjustment = %@>", v4, self, v6];;
 
   return v7;
@@ -112,16 +112,16 @@
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
-        v9 = [(PIAdjustmentController *)self adjustment];
-        v10 = [v9 schema];
-        v11 = [v10 settings];
-        v12 = [v11 objectForKeyedSubscript:v8];
+        adjustment = [(PIAdjustmentController *)self adjustment];
+        schema = [adjustment schema];
+        settings = [schema settings];
+        v12 = [settings objectForKeyedSubscript:v8];
 
-        v13 = [v12 defaultValue];
+        defaultValue = [v12 defaultValue];
         v14 = [(PIAdjustmentController *)self _primitiveValueForKey:v8];
-        LODWORD(v10) = [v14 isEqual:v13];
+        LODWORD(schema) = [v14 isEqual:defaultValue];
 
-        v5 += v10;
+        v5 += schema;
       }
 
       v4 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -142,28 +142,28 @@
 
 - (NSDictionary)settings
 {
-  v3 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(PIAdjustmentController *)self adjustment];
-    v6 = [v5 settings];
+    adjustment2 = [(PIAdjustmentController *)self adjustment];
+    settings = [adjustment2 settings];
   }
 
   else
   {
-    v6 = 0;
+    settings = 0;
   }
 
-  return v6;
+  return settings;
 }
 
-- (void)_setPrimitiveValue:(id)a3 forKey:(id)a4
+- (void)_setPrimitiveValue:(id)value forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
+  valueCopy = value;
+  keyCopy = key;
   if (!self->_changes)
   {
     v7 = objc_opt_new();
@@ -171,34 +171,34 @@
     self->_changes = v7;
   }
 
-  v9 = [(NUAdjustment *)self->_adjustment objectForKeyedSubscript:v6];
-  [(NSMutableDictionary *)self->_changes setObject:v9 forKeyedSubscript:v6];
+  v9 = [(NUAdjustment *)self->_adjustment objectForKeyedSubscript:keyCopy];
+  [(NSMutableDictionary *)self->_changes setObject:v9 forKeyedSubscript:keyCopy];
 
-  [(NUAdjustment *)self->_adjustment setValue:v10 forKey:v6];
+  [(NUAdjustment *)self->_adjustment setValue:valueCopy forKey:keyCopy];
 }
 
-- (BOOL)isSettingEqual:(id)a3 forKey:(id)a4
+- (BOOL)isSettingEqual:(id)equal forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PIAdjustmentController *)self adjustment];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  equalCopy = equal;
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  v9 = [adjustment objectForKeyedSubscript:keyCopy];
 
-  v10 = [v7 objectForKeyedSubscript:v6];
+  v10 = [equalCopy objectForKeyedSubscript:keyCopy];
 
-  v11 = [(PIAdjustmentController *)self adjustment];
-  v12 = [v11 schema];
-  v13 = [v12 settings];
-  v14 = [v13 objectForKeyedSubscript:v6];
+  adjustment2 = [(PIAdjustmentController *)self adjustment];
+  schema = [adjustment2 schema];
+  settings = [schema settings];
+  v14 = [settings objectForKeyedSubscript:keyCopy];
 
-  v15 = [v14 defaultValue];
-  if ([v9 isEqual:v15] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_msgSend(v9, "doubleValue"), v16 == 0.0))
+  defaultValue = [v14 defaultValue];
+  if ([v9 isEqual:defaultValue] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_msgSend(v9, "doubleValue"), v16 == 0.0))
   {
 
     v9 = 0;
   }
 
-  if ([v10 isEqual:v15] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_msgSend(v10, "doubleValue"), v17 == 0.0))
+  if ([v10 isEqual:defaultValue] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_msgSend(v10, "doubleValue"), v17 == 0.0))
   {
 
     v10 = 0;
@@ -217,16 +217,16 @@
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3 forKeys:(id)a4
+- (BOOL)isEqual:(id)equal forKeys:(id)keys
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  equalCopy = equal;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  keysCopy = keys;
+  v8 = [keysCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -237,17 +237,17 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(keysCopy);
         }
 
-        if (![(PIAdjustmentController *)self isSettingEqual:v6 forKey:*(*(&v14 + 1) + 8 * i), v14])
+        if (![(PIAdjustmentController *)self isSettingEqual:equalCopy forKey:*(*(&v14 + 1) + 8 * i), v14])
         {
           v12 = 0;
           goto LABEL_11;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [keysCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v9)
       {
         continue;
@@ -263,10 +263,10 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3 visualChangesOnly:(BOOL)a4
+- (BOOL)isEqual:(id)equal visualChangesOnly:(BOOL)only
 {
-  v6 = a3;
-  if (a4)
+  equalCopy = equal;
+  if (only)
   {
     [(PIAdjustmentController *)self visualInputKeys];
   }
@@ -276,15 +276,15 @@ LABEL_11:
     [(PIAdjustmentController *)self inputKeys];
   }
   v7 = ;
-  v8 = [(PIAdjustmentController *)self isEqual:v6 forKeys:v7];
+  v8 = [(PIAdjustmentController *)self isEqual:equalCopy forKeys:v7];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -292,64 +292,64 @@ LABEL_11:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PIAdjustmentController *)self isEqualToAdjustmentController:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PIAdjustmentController *)self isEqualToAdjustmentController:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToAdjustmentController:(id)a3
+- (BOOL)isEqualToAdjustmentController:(id)controller
 {
-  v4 = [a3 adjustment];
-  LOBYTE(self) = [(PIAdjustmentController *)self isEqual:v4 visualChangesOnly:0];
+  adjustment = [controller adjustment];
+  LOBYTE(self) = [(PIAdjustmentController *)self isEqual:adjustment visualChangesOnly:0];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
-  v3 = 0x1675E555296783 * [v2 hash];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  v3 = 0x1675E555296783 * [adjustment hash];
 
   return v3;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeFromInputKey:(SEL)a3 timescaleKey:(id)a4
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeFromInputKey:(SEL)key timescaleKey:(id)timescaleKey
 {
   v8 = a5;
-  v9 = a4;
-  v15 = [(PIAdjustmentController *)self adjustment];
-  v10 = [v15 objectForKeyedSubscript:v9];
+  timescaleKeyCopy = timescaleKey;
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  v10 = [adjustment objectForKeyedSubscript:timescaleKeyCopy];
 
-  v11 = [v10 integerValue];
-  v12 = [(PIAdjustmentController *)self adjustment];
-  v13 = [v12 objectForKeyedSubscript:v8];
+  integerValue = [v10 integerValue];
+  adjustment2 = [(PIAdjustmentController *)self adjustment];
+  v13 = [adjustment2 objectForKeyedSubscript:v8];
 
-  CMTimeMake(retstr, v11, [v13 intValue]);
+  CMTimeMake(retstr, integerValue, [v13 intValue]);
 
   return result;
 }
 
-- (void)interpolateFromStart:(id)a3 toEnd:(id)a4 progress:(double)a5
+- (void)interpolateFromStart:(id)start toEnd:(id)end progress:(double)progress
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  startCopy = start;
+  endCopy = end;
   obj = [(PIAdjustmentController *)self inputKeys];
-  v32 = v8;
-  if (!v8 || a5 == 1.0)
+  v32 = startCopy;
+  if (!startCopy || progress == 1.0)
   {
-    v10 = self;
-    v11 = v9;
+    selfCopy2 = self;
+    v11 = endCopy;
     goto LABEL_6;
   }
 
-  if (a5 == 0.0)
+  if (progress == 0.0)
   {
-    v10 = self;
-    v11 = v8;
+    selfCopy2 = self;
+    v11 = startCopy;
 LABEL_6:
-    [(PIAdjustmentController *)v10 setFromAdjustment:v11];
+    [(PIAdjustmentController *)selfCopy2 setFromAdjustment:v11];
     goto LABEL_7;
   }
 
@@ -382,9 +382,9 @@ LABEL_6:
         {
           v19 = v15;
           v20 = [v32 objectForKeyedSubscript:v17];
-          v21 = v9;
-          v22 = [v9 objectForKeyedSubscript:v17];
-          v23 = v22;
+          v21 = endCopy;
+          v22 = [endCopy objectForKeyedSubscript:v17];
+          adjustment2 = v22;
           if (v20)
           {
             v24 = v22 == 0;
@@ -397,22 +397,22 @@ LABEL_6:
 
           if (v24)
           {
-            v28 = v22;
+            progress = v22;
           }
 
           else
           {
             [v20 doubleValue];
             v26 = v25;
-            [v23 doubleValue];
-            v28 = [MEMORY[0x1E696AD98] numberWithDouble:v26 + (v27 - v26) * a5];
+            [adjustment2 doubleValue];
+            progress = [MEMORY[0x1E696AD98] numberWithDouble:v26 + (v27 - v26) * progress];
           }
 
-          v29 = v28;
-          v30 = [(PIAdjustmentController *)self adjustment];
-          [v30 setObject:v29 forKeyedSubscript:v17];
+          v29 = progress;
+          adjustment = [(PIAdjustmentController *)self adjustment];
+          [adjustment setObject:v29 forKeyedSubscript:v17];
 
-          v9 = v21;
+          endCopy = v21;
           v14 = v31;
           v15 = v19;
           v13 = v33;
@@ -420,9 +420,9 @@ LABEL_6:
 
         else
         {
-          v20 = [v9 objectForKeyedSubscript:v17];
-          v23 = [(PIAdjustmentController *)self adjustment];
-          [v23 setObject:v20 forKeyedSubscript:v17];
+          v20 = [endCopy objectForKeyedSubscript:v17];
+          adjustment2 = [(PIAdjustmentController *)self adjustment];
+          [adjustment2 setObject:v20 forKeyedSubscript:v17];
         }
 
         ++v16;
@@ -438,61 +438,61 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)setFromAdjustment:(id)a3
+- (void)setFromAdjustment:(id)adjustment
 {
-  v4 = [a3 copy];
+  v4 = [adjustment copy];
   adjustment = self->_adjustment;
   self->_adjustment = v4;
 
   MEMORY[0x1EEE66BB8](v4, adjustment);
 }
 
-- (id)valuesForArrayInputKey:(id)a3
+- (id)valuesForArrayInputKey:(id)key
 {
   adjustment = self->_adjustment;
-  v4 = a3;
-  v5 = [(NUAdjustment *)adjustment schema];
-  v6 = [v5 settings];
+  keyCopy = key;
+  schema = [(NUAdjustment *)adjustment schema];
+  settings = [schema settings];
 
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [settings objectForKeyedSubscript:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 values];
+    values = [v7 values];
   }
 
   else
   {
-    v8 = 0;
+    values = 0;
   }
 
-  return v8;
+  return values;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PIAdjustmentController *)self inputKeys];
-  v9 = [v8 containsObject:v6];
+  keyCopy = key;
+  valueCopy = value;
+  inputKeys = [(PIAdjustmentController *)self inputKeys];
+  v9 = [inputKeys containsObject:keyCopy];
 
   if (v9)
   {
-    [(PIAdjustmentController *)self _setPrimitiveValue:v7 forKey:v6];
+    [(PIAdjustmentController *)self _setPrimitiveValue:valueCopy forKey:keyCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = PIAdjustmentController;
-    [(PIAdjustmentController *)&v10 setValue:v7 forUndefinedKey:v6];
+    [(PIAdjustmentController *)&v10 setValue:valueCopy forUndefinedKey:keyCopy];
   }
 }
 
-- (void)setIsAuto:(BOOL)a3
+- (void)setIsAuto:(BOOL)auto
 {
-  v3 = a3;
+  autoCopy = auto;
   v31 = *MEMORY[0x1E69E9840];
   if (![(PIAdjustmentController *)self hasAutoKeyInSchema])
   {
@@ -540,8 +540,8 @@ LABEL_13:
         v16 = MEMORY[0x1E696AF00];
         v17 = specific;
         v18 = v14;
-        v19 = [v16 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v16 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = specific;
         v29 = 2114;
@@ -559,8 +559,8 @@ LABEL_19:
     {
       v22 = MEMORY[0x1E696AF00];
       v23 = v21;
-      v24 = [v22 callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v22 callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v25;
       _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -571,10 +571,10 @@ LABEL_19:
 
   if ([(PIAdjustmentController *)self canHaveAuto])
   {
-    v26 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    v5 = [(PIAdjustmentController *)self adjustment];
-    v6 = [objc_opt_class() autoKey];
-    [v5 setObject:v26 forKeyedSubscript:v6];
+    v26 = [MEMORY[0x1E696AD98] numberWithBool:autoCopy];
+    adjustment = [(PIAdjustmentController *)self adjustment];
+    autoKey = [objc_opt_class() autoKey];
+    [adjustment setObject:v26 forKeyedSubscript:autoKey];
   }
 }
 
@@ -627,8 +627,8 @@ LABEL_11:
         v17 = MEMORY[0x1E696AF00];
         v18 = specific;
         v19 = v15;
-        v20 = [v17 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         v27 = 138543618;
         v28 = specific;
         v29 = 2114;
@@ -646,8 +646,8 @@ LABEL_17:
     {
       v23 = MEMORY[0x1E696AF00];
       v24 = v22;
-      v25 = [v23 callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v23 callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       v27 = 138543362;
       v28 = v26;
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v27, 0xCu);
@@ -658,12 +658,12 @@ LABEL_17:
 
   if ([(PIAdjustmentController *)self canHaveAuto])
   {
-    v3 = [(PIAdjustmentController *)self adjustment];
-    v4 = [objc_opt_class() autoKey];
-    v5 = [v3 objectForKeyedSubscript:v4];
-    v6 = [v5 BOOLValue];
+    adjustment = [(PIAdjustmentController *)self adjustment];
+    autoKey = [objc_opt_class() autoKey];
+    v5 = [adjustment objectForKeyedSubscript:autoKey];
+    bOOLValue = [v5 BOOLValue];
 
-    return v6;
+    return bOOLValue;
   }
 
   return 0;
@@ -671,34 +671,34 @@ LABEL_17:
 
 - (BOOL)hasAutoKeyInSchema
 {
-  v3 = [objc_opt_class() autoKey];
-  LOBYTE(self) = [(PIAdjustmentController *)self hasInputKey:v3];
+  autoKey = [objc_opt_class() autoKey];
+  LOBYTE(self) = [(PIAdjustmentController *)self hasInputKey:autoKey];
 
   return self;
 }
 
 - (BOOL)canHaveAuto
 {
-  v3 = [objc_opt_class() autoKey];
-  LOBYTE(self) = [(PIAdjustmentController *)self hasInputKey:v3];
+  autoKey = [objc_opt_class() autoKey];
+  LOBYTE(self) = [(PIAdjustmentController *)self hasInputKey:autoKey];
 
   return self;
 }
 
 - (BOOL)canBeEnabled
 {
-  v3 = [objc_opt_class() enabledKey];
-  LOBYTE(self) = [(PIAdjustmentController *)self hasInputKey:v3];
+  enabledKey = [objc_opt_class() enabledKey];
+  LOBYTE(self) = [(PIAdjustmentController *)self hasInputKey:enabledKey];
 
   return self;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v32 = *MEMORY[0x1E69E9840];
-  v5 = [objc_opt_class() enabledKey];
-  if (![(PIAdjustmentController *)self hasInputKey:v5])
+  enabledKey = [objc_opt_class() enabledKey];
+  if (![(PIAdjustmentController *)self hasInputKey:enabledKey])
   {
     v8 = MEMORY[0x1E69B3D78];
     if (*MEMORY[0x1E69B3D78] != -1)
@@ -744,8 +744,8 @@ LABEL_12:
         v17 = MEMORY[0x1E696AF00];
         v18 = specific;
         v19 = v15;
-        v20 = [v17 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = specific;
         v30 = 2114;
@@ -764,8 +764,8 @@ LABEL_18:
     {
       v23 = MEMORY[0x1E696AF00];
       v24 = v22;
-      v25 = [v23 callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v23 callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v26;
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -774,10 +774,10 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v27 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PIAdjustmentController *)self adjustment];
-  v7 = [objc_opt_class() enabledKey];
-  [v6 setObject:v27 forKeyedSubscript:v7];
+  v27 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  enabledKey2 = [objc_opt_class() enabledKey];
+  [adjustment setObject:v27 forKeyedSubscript:enabledKey2];
 }
 
 - (BOOL)enabled
@@ -785,12 +785,12 @@ LABEL_18:
   v31 = *MEMORY[0x1E69E9840];
   if ([(PIAdjustmentController *)self canBeEnabled])
   {
-    v3 = [(PIAdjustmentController *)self adjustment];
-    v4 = [objc_opt_class() enabledKey];
-    v5 = [v3 objectForKeyedSubscript:v4];
-    v6 = [v5 BOOLValue];
+    adjustment = [(PIAdjustmentController *)self adjustment];
+    enabledKey = [objc_opt_class() enabledKey];
+    v5 = [adjustment objectForKeyedSubscript:enabledKey];
+    bOOLValue = [v5 BOOLValue];
 
-    return v6;
+    return bOOLValue;
   }
 
   v8 = MEMORY[0x1E69B3D78];
@@ -832,8 +832,8 @@ LABEL_14:
     {
       v23 = MEMORY[0x1E696AF00];
       v24 = v22;
-      v25 = [v23 callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v23 callStackSymbols];
+      v26 = [callStackSymbols componentsJoinedByString:@"\n"];
       v27 = 138543362;
       v28 = v26;
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v27, 0xCu);
@@ -855,8 +855,8 @@ LABEL_10:
     v17 = MEMORY[0x1E696AF00];
     v18 = specific;
     v19 = v15;
-    v20 = [v17 callStackSymbols];
-    v21 = [v20 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v17 callStackSymbols];
+    v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     v27 = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -869,21 +869,21 @@ LABEL_16:
   return 1;
 }
 
-- (BOOL)hasInputKey:(id)a3
+- (BOOL)hasInputKey:(id)key
 {
-  v3 = [(PIAdjustmentController *)self settingForKey:a3];
+  v3 = [(PIAdjustmentController *)self settingForKey:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)settingForKey:(id)a3
+- (id)settingForKey:(id)key
 {
   adjustment = self->_adjustment;
-  v4 = a3;
-  v5 = [(NUAdjustment *)adjustment schema];
-  v6 = [v5 settings];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  schema = [(NUAdjustment *)adjustment schema];
+  settings = [schema settings];
+  v7 = [settings objectForKeyedSubscript:keyCopy];
 
   return v7;
 }
@@ -914,8 +914,8 @@ LABEL_16:
         v15 = dispatch_get_specific(*v9);
         v16 = MEMORY[0x1E696AF00];
         v17 = v15;
-        v18 = [v16 callStackSymbols];
-        v19 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v16 callStackSymbols];
+        v19 = [callStackSymbols componentsJoinedByString:@"\n"];
         v20 = 138543618;
         v21 = v15;
         v22 = 2114;
@@ -926,8 +926,8 @@ LABEL_16:
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       v20 = 138543362;
       v21 = v14;
       _os_log_error_impl(&dword_1C7694000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v20, 0xCu);
@@ -936,11 +936,11 @@ LABEL_16:
     _NUAssertFailHandler();
   }
 
-  v3 = [(NUAdjustment *)adjustment schema];
-  v4 = [v3 settings];
-  v5 = [v4 allKeys];
+  schema = [(NUAdjustment *)adjustment schema];
+  settings = [schema settings];
+  allKeys = [settings allKeys];
 
-  return v5;
+  return allKeys;
 }
 
 - (NSString)displayName
@@ -969,8 +969,8 @@ LABEL_16:
         v14 = dispatch_get_specific(*v8);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         v19 = 138543618;
         v20 = v14;
         v21 = 2114;
@@ -981,8 +981,8 @@ LABEL_16:
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       v19 = 138543362;
       v20 = v13;
       _os_log_error_impl(&dword_1C7694000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v19, 0xCu);
@@ -991,20 +991,20 @@ LABEL_16:
     _NUAssertFailHandler();
   }
 
-  v3 = [(NUAdjustment *)adjustment identifier];
-  v4 = [v3 name];
+  identifier = [(NUAdjustment *)adjustment identifier];
+  name = [identifier name];
 
-  return v4;
+  return name;
 }
 
-- (PIAdjustmentController)initWithAdjustment:(id)a3
+- (PIAdjustmentController)initWithAdjustment:(id)adjustment
 {
-  v4 = a3;
+  adjustmentCopy = adjustment;
   v8.receiver = self;
   v8.super_class = PIAdjustmentController;
   v5 = [(PIAdjustmentController *)&v8 init];
   adjustment = v5->_adjustment;
-  v5->_adjustment = v4;
+  v5->_adjustment = adjustmentCopy;
 
   return v5;
 }

@@ -1,15 +1,15 @@
 @interface IMMessageAcknowledgmentChatItem
-- (BOOL)containsTransferGUID:(id)a3;
-- (BOOL)isEqualToTapback:(id)a3;
+- (BOOL)containsTransferGUID:(id)d;
+- (BOOL)isEqualToTapback:(id)tapback;
 - (NSArray)fileTransferGUIDs;
-- (id)_initWithItem:(id)a3 sender:(id)a4 tapback:(id)a5;
+- (id)_initWithItem:(id)item sender:(id)sender tapback:(id)tapback;
 - (id)commSafetyTransferGUID;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation IMMessageAcknowledgmentChatItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__item(self, v5, v6);
@@ -20,14 +20,14 @@
   return v15;
 }
 
-- (id)_initWithItem:(id)a3 sender:(id)a4 tapback:(id)a5
+- (id)_initWithItem:(id)item sender:(id)sender tapback:(id)tapback
 {
-  v8 = a5;
-  v10 = objc_msgSend__initWithItem_sender_(self, v9, a3, a4);
+  tapbackCopy = tapback;
+  v10 = objc_msgSend__initWithItem_sender_(self, v9, item, sender);
   v12 = v10;
   if (v10)
   {
-    objc_msgSend_setTapback_(v10, v11, v8);
+    objc_msgSend_setTapback_(v10, v11, tapbackCopy);
     v15 = 10;
     v16 = 0u;
     v17 = 0u;
@@ -38,11 +38,11 @@
   return v12;
 }
 
-- (BOOL)isEqualToTapback:(id)a3
+- (BOOL)isEqualToTapback:(id)tapback
 {
-  v4 = a3;
+  tapbackCopy = tapback;
   v7 = objc_msgSend_associatedMessageType(self, v5, v6);
-  if (v7 != objc_msgSend_associatedMessageType(v4, v8, v9))
+  if (v7 != objc_msgSend_associatedMessageType(tapbackCopy, v8, v9))
   {
     goto LABEL_6;
   }
@@ -53,9 +53,9 @@
   }
 
   v14 = objc_msgSend_associatedMessageEmoji(self, v12, v13);
-  v17 = objc_msgSend_associatedMessageEmoji(v4, v15, v16);
+  v17 = objc_msgSend_associatedMessageEmoji(tapbackCopy, v15, v16);
 
-  if (v14 == v17 || (objc_msgSend_associatedMessageEmoji(self, v18, v19), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend_associatedMessageEmoji(v4, v21, v22), v23 = objc_claimAutoreleasedReturnValue(), isEqual = objc_msgSend_isEqual_(v20, v24, v23), v23, v20, (isEqual & 1) != 0))
+  if (v14 == v17 || (objc_msgSend_associatedMessageEmoji(self, v18, v19), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend_associatedMessageEmoji(tapbackCopy, v21, v22), v23 = objc_claimAutoreleasedReturnValue(), isEqual = objc_msgSend_isEqual_(v20, v24, v23), v23, v20, (isEqual & 1) != 0))
   {
 LABEL_5:
     v26 = 1;
@@ -70,11 +70,11 @@ LABEL_6:
   return v26;
 }
 
-- (BOOL)containsTransferGUID:(id)a3
+- (BOOL)containsTransferGUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v7 = objc_msgSend_fileTransferGUIDs(self, v5, v6);
-  v9 = objc_msgSend_containsObject_(v7, v8, v4);
+  v9 = objc_msgSend_containsObject_(v7, v8, dCopy);
 
   return v9;
 }

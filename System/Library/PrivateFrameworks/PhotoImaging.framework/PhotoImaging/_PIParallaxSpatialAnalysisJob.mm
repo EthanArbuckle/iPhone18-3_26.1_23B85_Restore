@@ -1,7 +1,7 @@
 @interface _PIParallaxSpatialAnalysisJob
-- (BOOL)render:(id *)a3;
+- (BOOL)render:(id *)render;
 - (PFPosterOrientedLayout)requestLayout;
-- (_PIParallaxSpatialAnalysisJob)initWithRequest:(id)a3;
+- (_PIParallaxSpatialAnalysisJob)initWithRequest:(id)request;
 - (id)result;
 @end
 
@@ -14,14 +14,14 @@
   return v2;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v56 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!render)
   {
     v48 = NUAssertLogger_20290();
-    v10 = "error";
-    v4 = &qword_1C7845000;
+    requestLayout = "error";
+    renderCopy = &qword_1C7845000;
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
     {
       v49 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid parameter not satisfying: %s", "error"];
@@ -30,83 +30,83 @@
       _os_log_error_impl(&dword_1C7694000, v48, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v9 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    v6 = NUAssertLogger_20290();
-    v50 = os_log_type_enabled(v6, OS_LOG_TYPE_ERROR);
+    spatialAnalysisRequest = NUAssertLogger_20290();
+    v50 = os_log_type_enabled(spatialAnalysisRequest, OS_LOG_TYPE_ERROR);
     if (specific)
     {
       if (v50)
       {
-        specific = dispatch_get_specific(*v9);
+        specific = dispatch_get_specific(*callStackSymbols);
         v51 = MEMORY[0x1E696AF00];
-        v4 = specific;
-        v9 = [v51 callStackSymbols];
-        v3 = [v9 componentsJoinedByString:@"\n"];
+        renderCopy = specific;
+        callStackSymbols = [v51 callStackSymbols];
+        sharedScene = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v53 = specific;
         v54 = 2114;
-        v55 = v3;
-        _os_log_error_impl(&dword_1C7694000, v6, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+        v55 = sharedScene;
+        _os_log_error_impl(&dword_1C7694000, spatialAnalysisRequest, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
       }
     }
 
     else if (v50)
     {
       specific = [MEMORY[0x1E696AF00] callStackSymbols];
-      v9 = [specific componentsJoinedByString:@"\n"];
+      callStackSymbols = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v53 = v9;
-      _os_log_error_impl(&dword_1C7694000, v6, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+      v53 = callStackSymbols;
+      _os_log_error_impl(&dword_1C7694000, spatialAnalysisRequest, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
     _NUAssertFailHandler();
     goto LABEL_49;
   }
 
-  v4 = a3;
-  v6 = [(_PIParallaxSpatialAnalysisJob *)self spatialAnalysisRequest];
-  specific = [v6 sceneAnalyzer];
+  renderCopy = render;
+  spatialAnalysisRequest = [(_PIParallaxSpatialAnalysisJob *)self spatialAnalysisRequest];
+  specific = [spatialAnalysisRequest sceneAnalyzer];
   if (specific)
   {
-    v8 = [v6 spatialPhotoLayer];
-    v9 = v8;
-    if (!v8)
+    spatialPhotoLayer = [spatialAnalysisRequest spatialPhotoLayer];
+    callStackSymbols = spatialPhotoLayer;
+    if (!spatialPhotoLayer)
     {
       [MEMORY[0x1E69B3A48] failureError:@"Failed to analyze spatial photo object:{spatialPhotoLayer must be set", 0}];
-      *v4 = LOBYTE(v11) = 0;
+      *renderCopy = LOBYTE(layoutOrientation) = 0;
 LABEL_39:
 
       goto LABEL_40;
     }
 
-    v3 = [v8 sharedScene];
-    if (!v3)
+    sharedScene = [spatialPhotoLayer sharedScene];
+    if (!sharedScene)
     {
       [MEMORY[0x1E69B3A48] failureError:@"Failed to analyze spatial photo object:{spatialPhotoLayer.sharedScene is nil", 0}];
-      *v4 = LOBYTE(v11) = 0;
+      *renderCopy = LOBYTE(layoutOrientation) = 0;
 LABEL_38:
 
       goto LABEL_39;
     }
 
-    v10 = [(_PIParallaxSpatialAnalysisJob *)self requestLayout];
-    if (v10)
+    requestLayout = [(_PIParallaxSpatialAnalysisJob *)self requestLayout];
+    if (requestLayout)
     {
-      v11 = [v6 layoutOrientation];
-      if (v11)
+      layoutOrientation = [spatialAnalysisRequest layoutOrientation];
+      if (layoutOrientation)
       {
-        [v9 frame];
+        [callStackSymbols frame];
         v13 = v12;
         v15 = v14;
         v17 = v16;
         v19 = v18;
-        [v10 adaptiveTimeFrame];
+        [requestLayout adaptiveTimeFrame];
         v21 = v20;
         v23 = v22;
         v25 = v24;
         v27 = v26;
-        [v10 originalImageExtent];
+        [requestLayout originalImageExtent];
         v30 = v28 + v29 - (v23 + v27);
         v31 = v21 - v13;
         v32 = 0.0;
@@ -124,10 +124,10 @@ LABEL_38:
           v32 = v27 / v19;
         }
 
-        v35 = [v6 isInteractive];
+        isInteractive = [spatialAnalysisRequest isInteractive];
         v36 = *(MEMORY[0x1E695F050] + 16);
         v37 = *(MEMORY[0x1E695F050] + 24);
-        if (v11 == 1)
+        if (layoutOrientation == 1)
         {
           v38 = v32;
         }
@@ -137,7 +137,7 @@ LABEL_38:
           v38 = *(MEMORY[0x1E695F050] + 24);
         }
 
-        if (v11 == 1)
+        if (layoutOrientation == 1)
         {
           v39 = v33;
         }
@@ -149,7 +149,7 @@ LABEL_38:
 
         v40 = *MEMORY[0x1E695F050];
         v41 = *(MEMORY[0x1E695F050] + 8);
-        if (v11 == 1)
+        if (layoutOrientation == 1)
         {
           v42 = v34;
         }
@@ -159,7 +159,7 @@ LABEL_38:
           v42 = *(MEMORY[0x1E695F050] + 8);
         }
 
-        if (v11 == 1)
+        if (layoutOrientation == 1)
         {
           v43 = v31;
         }
@@ -169,7 +169,7 @@ LABEL_38:
           v43 = *MEMORY[0x1E695F050];
         }
 
-        if (v11 != 1)
+        if (layoutOrientation != 1)
         {
           v40 = v31;
           v41 = v34;
@@ -177,9 +177,9 @@ LABEL_38:
           v37 = v32;
         }
 
-        if ([specific analyzeTimeOcclusionForSpatialPhotoScene:v3 portraitNormalizedTimeRect:v35 landscapeNormalizedTimeRect:v4 isInteractive:v43 error:{v42, v39, v38, v40, v41, v36, v37}])
+        if ([specific analyzeTimeOcclusionForSpatialPhotoScene:sharedScene portraitNormalizedTimeRect:isInteractive landscapeNormalizedTimeRect:renderCopy isInteractive:v43 error:{v42, v39, v38, v40, v41, v36, v37}])
         {
-          LOBYTE(v11) = 1;
+          LOBYTE(layoutOrientation) = 1;
 LABEL_37:
 
           goto LABEL_38;
@@ -191,13 +191,13 @@ LABEL_34:
           v45 = *MEMORY[0x1E69B3D80];
           if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
           {
-            v47 = *v4;
+            v47 = *renderCopy;
             *buf = 138412290;
             v53 = v47;
             _os_log_error_impl(&dword_1C7694000, v45, OS_LOG_TYPE_ERROR, "Failed to analyze spatial scene:%@", buf, 0xCu);
           }
 
-          LOBYTE(v11) = 0;
+          LOBYTE(layoutOrientation) = 0;
           goto LABEL_37;
         }
 
@@ -212,37 +212,37 @@ LABEL_49:
     else
     {
       v44 = [MEMORY[0x1E69B3A48] failureError:@"Failed to analyze spatial photo object:{layout must be set", 0}];
-      LOBYTE(v11) = 0;
+      LOBYTE(layoutOrientation) = 0;
     }
 
-    *v4 = v44;
+    *renderCopy = v44;
     goto LABEL_37;
   }
 
   [MEMORY[0x1E69B3A48] failureError:@"Failed to analyze spatial photo object:{sceneAnalyzer is nil", 0}];
-  *v4 = LOBYTE(v11) = 0;
+  *renderCopy = LOBYTE(layoutOrientation) = 0;
 LABEL_40:
 
-  return v11;
+  return layoutOrientation;
 }
 
 - (PFPosterOrientedLayout)requestLayout
 {
-  v2 = [(_PIParallaxSpatialAnalysisJob *)self spatialAnalysisRequest];
-  v3 = [v2 layout];
+  spatialAnalysisRequest = [(_PIParallaxSpatialAnalysisJob *)self spatialAnalysisRequest];
+  layout = [spatialAnalysisRequest layout];
 
-  return v3;
+  return layout;
 }
 
-- (_PIParallaxSpatialAnalysisJob)initWithRequest:(id)a3
+- (_PIParallaxSpatialAnalysisJob)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = _PIParallaxSpatialAnalysisJob;
-  v5 = [(NURenderJob *)&v9 initWithRequest:v4];
+  v5 = [(NURenderJob *)&v9 initWithRequest:requestCopy];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [requestCopy copy];
     spatialAnalysisRequest = v5->_spatialAnalysisRequest;
     v5->_spatialAnalysisRequest = v6;
   }

@@ -1,8 +1,8 @@
 @interface CKDPipeliningInfo
 - (BOOL)isCancelled;
 - (CKDOperationPipelining)operation;
-- (id)_initWithRequest:(id)a3 operation:(id)a4;
-- (void)addPerRequestCallbackBlock:(id)a3;
+- (id)_initWithRequest:(id)request operation:(id)operation;
+- (void)addPerRequestCallbackBlock:(id)block;
 - (void)cancelAndDisablePerRequestCallbackBlocks;
 - (void)dealloc;
 - (void)disablePerRequestCallbackBlocks;
@@ -24,10 +24,10 @@
 
 - (BOOL)isCancelled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isCancelled = v2->_isCancelled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isCancelled = selfCopy->_isCancelled;
+  objc_sync_exit(selfCopy);
 
   return isCancelled;
 }
@@ -44,17 +44,17 @@
   [(CKDPipeliningInfo *)&v4 dealloc];
 }
 
-- (id)_initWithRequest:(id)a3 operation:(id)a4
+- (id)_initWithRequest:(id)request operation:(id)operation
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  operationCopy = operation;
   v37.receiver = self;
   v37.super_class = CKDPipeliningInfo;
   v9 = [(CKDPipeliningInfo *)&v37 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
+    objc_storeStrong(&v9->_request, request);
     v11 = dispatch_group_create();
     perRequestCallbackGroup = v10->_perRequestCallbackGroup;
     v10->_perRequestCallbackGroup = v11;
@@ -63,7 +63,7 @@
     perRequestGroup = v10->_perRequestGroup;
     v10->_perRequestGroup = v13;
 
-    v17 = objc_msgSend_pipeliningDescription(v8, v15, v16);
+    v17 = objc_msgSend_pipeliningDescription(operationCopy, v15, v16);
     v18 = v17;
     v19 = @"pipelining";
     if (v17)
@@ -73,7 +73,7 @@
 
     v20 = v19;
 
-    v22 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v21, @"com.apple.cloudkit.%@.callback.%p", v20, v7);
+    v22 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v21, @"com.apple.cloudkit.%@.callback.%p", v20, requestCopy);
     v23 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v24 = dispatch_queue_attr_make_initially_inactive(v23);
 
@@ -83,7 +83,7 @@
     v10->_perRequestCallbackQueue = v28;
 
     v30 = v10->_perRequestCallbackQueue;
-    v33 = objc_msgSend_callbackQueue(v8, v31, v32);
+    v33 = objc_msgSend_callbackQueue(operationCopy, v31, v32);
     dispatch_set_target_queue(v30, v33);
 
     dispatch_activate(v10->_perRequestCallbackQueue);
@@ -97,16 +97,16 @@
   return v10;
 }
 
-- (void)addPerRequestCallbackBlock:(id)a3
+- (void)addPerRequestCallbackBlock:(id)block
 {
-  aBlock = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  perRequestCallbackBlocks = v4->_perRequestCallbackBlocks;
+  aBlock = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  perRequestCallbackBlocks = selfCopy->_perRequestCallbackBlocks;
   v6 = _Block_copy(aBlock);
   objc_msgSend_addObject_(perRequestCallbackBlocks, v7, v6);
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)cancelAndDisablePerRequestCallbackBlocks

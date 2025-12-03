@@ -1,27 +1,27 @@
 @interface COMeshNodeStateTracker
-- (COMeshNodeStateTracker)initWithNode:(id)a3;
+- (COMeshNodeStateTracker)initWithNode:(id)node;
 - (COMeshNodeStateTrackerDelegate)delegate;
 - (id)description;
 - (void)didFireBackoffTimer;
 - (void)resetBackoffInformation;
-- (void)setBackoffTimer:(id)a3;
-- (void)setElectionStage:(int64_t)a3;
-- (void)setLastHeard:(double)a3;
-- (void)setState:(unint64_t)a3;
+- (void)setBackoffTimer:(id)timer;
+- (void)setElectionStage:(int64_t)stage;
+- (void)setLastHeard:(double)heard;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation COMeshNodeStateTracker
 
-- (COMeshNodeStateTracker)initWithNode:(id)a3
+- (COMeshNodeStateTracker)initWithNode:(id)node
 {
-  v5 = a3;
+  nodeCopy = node;
   v9.receiver = self;
   v9.super_class = COMeshNodeStateTracker;
   v6 = [(COMeshNodeStateTracker *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_node, a3);
+    objc_storeStrong(&v6->_node, node);
   }
 
   return v7;
@@ -29,42 +29,42 @@
 
 - (id)description
 {
-  v3 = [(COMeshNodeStateTracker *)self status];
-  if (v3 > 2)
+  status = [(COMeshNodeStateTracker *)self status];
+  if (status > 2)
   {
     v4 = @"unknown";
   }
 
   else
   {
-    v4 = off_278E18070[v3];
+    v4 = off_278E18070[status];
   }
 
   v5 = COMeshControllerStateDescription([(COMeshNodeStateTracker *)self state]);
   v6 = MEMORY[0x277CCACA8];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [(COMeshNodeStateTracker *)self node];
-  v10 = [v6 stringWithFormat:@"<%@: %p, state: %@, status: %@, node: %@>", v8, self, v5, v4, v9];
+  node = [(COMeshNodeStateTracker *)self node];
+  v10 = [v6 stringWithFormat:@"<%@: %p, state: %@, status: %@, node: %@>", v8, self, v5, v4, node];
 
   return v10;
 }
 
-- (void)setBackoffTimer:(id)a3
+- (void)setBackoffTimer:(id)timer
 {
-  v5 = a3;
+  timerCopy = timer;
   backoffTimer = self->_backoffTimer;
   p_backoffTimer = &self->_backoffTimer;
   v6 = backoffTimer;
-  v9 = v5;
-  if (backoffTimer != v5)
+  v9 = timerCopy;
+  if (backoffTimer != timerCopy)
   {
     if (v6)
     {
       dispatch_source_cancel(v6);
     }
 
-    objc_storeStrong(p_backoffTimer, a3);
+    objc_storeStrong(p_backoffTimer, timer);
     if (*p_backoffTimer)
     {
       dispatch_resume(*p_backoffTimer);
@@ -81,12 +81,12 @@
   [(COMeshNodeStateTracker *)self setOutstandingRequest:0];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  v3 = a3;
-  if (a3 <= 1)
+  stateCopy = state;
+  if (state <= 1)
   {
-    if (!a3)
+    if (!state)
     {
 LABEL_9:
       [(COMeshNodeStateTracker *)self setStatus:0];
@@ -94,7 +94,7 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    if (a3 == 1 && [(COMeshNodeStateTracker *)self status]!= 2)
+    if (state == 1 && [(COMeshNodeStateTracker *)self status]!= 2)
     {
       [(COMeshNodeStateTracker *)self setStatus:0];
     }
@@ -102,14 +102,14 @@ LABEL_9:
 
   else
   {
-    if (a3 - 2 < 2)
+    if (state - 2 < 2)
     {
       [(COMeshNodeStateTracker *)self setStatus:1];
       [(COMeshNodeStateTracker *)self setOutstandingProbe:0];
       goto LABEL_10;
     }
 
-    if (a3 == 4)
+    if (state == 4)
     {
       goto LABEL_9;
     }
@@ -121,25 +121,25 @@ LABEL_10:
   v7 = (1 << state) & 0x13;
   if (v6 || v7 == 0)
   {
-    self->_state = v3;
+    self->_state = stateCopy;
     goto LABEL_19;
   }
 
-  self->_state = v3;
-  if ((v3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  self->_state = stateCopy;
+  if ((stateCopy & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v9 = [(COMeshNodeStateTracker *)self delegate];
+    delegate = [(COMeshNodeStateTracker *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(COMeshNodeStateTracker *)self delegate];
-      [v11 nodeBecameAvailable:self];
+      delegate2 = [(COMeshNodeStateTracker *)self delegate];
+      [delegate2 nodeBecameAvailable:self];
     }
 
-    v3 = self->_state;
+    stateCopy = self->_state;
 LABEL_19:
-    if (v3 == 2)
+    if (stateCopy == 2)
     {
       return;
     }
@@ -148,34 +148,34 @@ LABEL_19:
   [(COMeshNodeStateTracker *)self setBackoffTimer:0];
   if (self->_totalBackedOffTime)
   {
-    v12 = [(COMeshNodeStateTracker *)self delegate];
+    delegate3 = [(COMeshNodeStateTracker *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(COMeshNodeStateTracker *)self delegate];
-      [v14 backedOffNodeMovedOutOfElection:self];
+      delegate4 = [(COMeshNodeStateTracker *)self delegate];
+      [delegate4 backedOffNodeMovedOutOfElection:self];
     }
   }
 
   self->_totalBackedOffTime = 0;
 }
 
-- (void)setElectionStage:(int64_t)a3
+- (void)setElectionStage:(int64_t)stage
 {
-  if (self->_electionStage != a3)
+  if (self->_electionStage != stage)
   {
-    self->_electionStage = a3;
-    if (a3 == 4)
+    self->_electionStage = stage;
+    if (stage == 4)
     {
-      v4 = [(COMeshNodeStateTracker *)self backoffTimer];
+      backoffTimer = [(COMeshNodeStateTracker *)self backoffTimer];
 
-      if (!v4)
+      if (!backoffTimer)
       {
-        v5 = [(COMeshNodeStateTracker *)self node];
-        v6 = [v5 client];
-        v7 = [v6 dispatchQueue];
-        v8 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v7);
+        node = [(COMeshNodeStateTracker *)self node];
+        client = [node client];
+        dispatchQueue = [client dispatchQueue];
+        v8 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, dispatchQueue);
 
         if (v8)
         {
@@ -218,12 +218,12 @@ void __43__COMeshNodeStateTracker_setElectionStage___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setLastHeard:(double)a3
+- (void)setLastHeard:(double)heard
 {
   [(COMeshNodeStateTracker *)self lastHeard];
-  if (v5 != a3)
+  if (v5 != heard)
   {
-    self->_lastHeard = a3;
+    self->_lastHeard = heard;
 
     [(COMeshNodeStateTracker *)self setOutstandingProbe:0];
   }
@@ -231,28 +231,28 @@ void __43__COMeshNodeStateTracker_setElectionStage___block_invoke(uint64_t a1)
 
 - (void)didFireBackoffTimer
 {
-  v3 = [(COMeshNodeStateTracker *)self backoffBucket];
-  v4 = COMeshNodeStateTrackerBackoffSeries[v3];
+  backoffBucket = [(COMeshNodeStateTracker *)self backoffBucket];
+  v4 = COMeshNodeStateTrackerBackoffSeries[backoffBucket];
   self->_totalBackedOffTime += v4;
-  if (v3 <= 0xC)
+  if (backoffBucket <= 0xC)
   {
-    v5 = v3 + 1;
-    [(COMeshNodeStateTracker *)self setBackoffBucket:v3 + 1];
+    v5 = backoffBucket + 1;
+    [(COMeshNodeStateTracker *)self setBackoffBucket:backoffBucket + 1];
     v4 = COMeshNodeStateTrackerBackoffSeries[v5];
   }
 
   v6 = 1000000 * v4;
   v7 = dispatch_walltime(0, 1000000 * v4);
-  v8 = [(COMeshNodeStateTracker *)self backoffTimer];
-  dispatch_source_set_timer(v8, v7, v6, 0);
+  backoffTimer = [(COMeshNodeStateTracker *)self backoffTimer];
+  dispatch_source_set_timer(backoffTimer, v7, v6, 0);
 
-  v9 = [(COMeshNodeStateTracker *)self delegate];
+  delegate = [(COMeshNodeStateTracker *)self delegate];
   LOBYTE(v7) = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v10 = [(COMeshNodeStateTracker *)self delegate];
-    [v10 nodeShouldRetryAfterBackoff:self];
+    delegate2 = [(COMeshNodeStateTracker *)self delegate];
+    [delegate2 nodeShouldRetryAfterBackoff:self];
   }
 }
 

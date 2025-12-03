@@ -8,34 +8,34 @@
 - (TUMomentsControllerDataSourceDelegate)delegate;
 - (TUMomentsControllerXPCClient)init;
 - (id)processBundleIdentifier;
-- (id)serverWithErrorHandler:(id)a3;
-- (id)synchronousServerWithErrorHandler:(id)a3;
+- (id)serverWithErrorHandler:(id)handler;
+- (id)synchronousServerWithErrorHandler:(id)handler;
 - (int)processIdentifier;
 - (void)_registerConnection;
 - (void)dealloc;
-- (void)didFinishProcessingRawVideoMessage:(id)a3;
-- (void)didFinishRecordingMedia:(id)a3;
-- (void)didReceiveLocallyRequestedMomentDescriptor:(id)a3;
-- (void)didReceiveMediaRecordingError:(id)a3;
-- (void)didReceiveMessageRecordingError:(id)a3;
-- (void)didUpdateCapabilities:(id)a3 forVideoStreamToken:(int64_t)a4;
-- (void)discardVideoMessageWithUUID:(id)a3 completion:(id)a4;
-- (void)endMediaRequestWithUUID:(id)a3 completion:(id)a4;
-- (void)endRecordingMessageWithUUID:(id)a3 completion:(id)a4;
-- (void)endRequestWithTransactionID:(id)a3 completion:(id)a4;
+- (void)didFinishProcessingRawVideoMessage:(id)message;
+- (void)didFinishRecordingMedia:(id)media;
+- (void)didReceiveLocallyRequestedMomentDescriptor:(id)descriptor;
+- (void)didReceiveMediaRecordingError:(id)error;
+- (void)didReceiveMessageRecordingError:(id)error;
+- (void)didUpdateCapabilities:(id)capabilities forVideoStreamToken:(int64_t)token;
+- (void)discardVideoMessageWithUUID:(id)d completion:(id)completion;
+- (void)endMediaRequestWithUUID:(id)d completion:(id)completion;
+- (void)endRecordingMessageWithUUID:(id)d completion:(id)completion;
+- (void)endRequestWithTransactionID:(id)d completion:(id)completion;
 - (void)invalidate;
-- (void)prewarmAudioClientWithCompletion:(id)a3;
-- (void)prewarmMediaRequest:(id)a3 completion:(id)a4;
-- (void)registerStreamToken:(int64_t)a3 requesterID:(id)a4 remoteIDSDestinations:(id)a5 remoteMomentsAvailable:(BOOL)a6 completion:(id)a7;
-- (void)requestSandboxExtensionForURL:(id)a3 reply:(id)a4;
-- (void)resetVideoMessagingWithSessionUUID:(id)a3 completion:(id)a4;
-- (void)saveVideoMessageWithUUID:(id)a3 completion:(id)a4;
-- (void)sendVideoMessageWithRequest:(id)a3 completion:(id)a4;
-- (void)startMediaRequest:(id)a3 completion:(id)a4;
-- (void)startRecordingMessageWithMediaType:(int)a3 completion:(id)a4;
-- (void)startRequestWithMediaType:(int)a3 forStreamToken:(int64_t)a4 requesteeID:(id)a5 destinationID:(id)a6 completion:(id)a7;
-- (void)unregisterStreamToken:(int64_t)a3 completion:(id)a4;
-- (void)willCaptureRemoteRequestFromRequesterID:(id)a3;
+- (void)prewarmAudioClientWithCompletion:(id)completion;
+- (void)prewarmMediaRequest:(id)request completion:(id)completion;
+- (void)registerStreamToken:(int64_t)token requesterID:(id)d remoteIDSDestinations:(id)destinations remoteMomentsAvailable:(BOOL)available completion:(id)completion;
+- (void)requestSandboxExtensionForURL:(id)l reply:(id)reply;
+- (void)resetVideoMessagingWithSessionUUID:(id)d completion:(id)completion;
+- (void)saveVideoMessageWithUUID:(id)d completion:(id)completion;
+- (void)sendVideoMessageWithRequest:(id)request completion:(id)completion;
+- (void)startMediaRequest:(id)request completion:(id)completion;
+- (void)startRecordingMessageWithMediaType:(int)type completion:(id)completion;
+- (void)startRequestWithMediaType:(int)type forStreamToken:(int64_t)token requesteeID:(id)d destinationID:(id)iD completion:(id)completion;
+- (void)unregisterStreamToken:(int64_t)token completion:(id)completion;
+- (void)willCaptureRemoteRequestFromRequesterID:(id)d;
 @end
 
 @implementation TUMomentsControllerXPCClient
@@ -56,26 +56,26 @@
 
 - (int)processIdentifier
 {
-  v2 = [(TUMomentsControllerXPCClient *)self xpcConnection];
-  v3 = [v2 processIdentifier];
+  xpcConnection = [(TUMomentsControllerXPCClient *)self xpcConnection];
+  processIdentifier = [xpcConnection processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
 - (id)processBundleIdentifier
 {
-  v2 = [(TUMomentsControllerXPCClient *)self xpcConnection];
-  v3 = [v2 processBundleIdentifier];
+  xpcConnection = [(TUMomentsControllerXPCClient *)self xpcConnection];
+  processBundleIdentifier = [xpcConnection processBundleIdentifier];
 
-  return v3;
+  return processBundleIdentifier;
 }
 
 - (NSString)processName
 {
-  v2 = [(TUMomentsControllerXPCClient *)self xpcConnection];
-  v3 = [v2 serviceName];
+  xpcConnection = [(TUMomentsControllerXPCClient *)self xpcConnection];
+  serviceName = [xpcConnection serviceName];
 
-  return v3;
+  return serviceName;
 }
 
 - (TUMomentsControllerXPCClient)init
@@ -145,26 +145,26 @@ void __36__TUMomentsControllerXPCClient_init__block_invoke(uint64_t a1)
   [(TUMomentsControllerXPCClient *)&v3 dealloc];
 }
 
-- (void)registerStreamToken:(int64_t)a3 requesterID:(id)a4 remoteIDSDestinations:(id)a5 remoteMomentsAvailable:(BOOL)a6 completion:(id)a7
+- (void)registerStreamToken:(int64_t)token requesterID:(id)d remoteIDSDestinations:(id)destinations remoteMomentsAvailable:(BOOL)available completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = [(TUMomentsControllerXPCClient *)self queue];
+  dCopy = d;
+  destinationsCopy = destinations;
+  completionCopy = completion;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __120__TUMomentsControllerXPCClient_registerStreamToken_requesterID_remoteIDSDestinations_remoteMomentsAvailable_completion___block_invoke;
   v19[3] = &unk_1E7427760;
-  v22 = v14;
-  v23 = a3;
+  v22 = completionCopy;
+  tokenCopy = token;
   v19[4] = self;
-  v20 = v12;
-  v21 = v13;
-  v24 = a6;
-  v16 = v13;
-  v17 = v12;
-  v18 = v14;
-  dispatch_async(v15, v19);
+  v20 = dCopy;
+  v21 = destinationsCopy;
+  availableCopy = available;
+  v16 = destinationsCopy;
+  v17 = dCopy;
+  v18 = completionCopy;
+  dispatch_async(queue, v19);
 }
 
 void __120__TUMomentsControllerXPCClient_registerStreamToken_requesterID_remoteIDSDestinations_remoteMomentsAvailable_completion___block_invoke(uint64_t a1)
@@ -191,19 +191,19 @@ void __120__TUMomentsControllerXPCClient_registerStreamToken_requesterID_remoteI
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)unregisterStreamToken:(int64_t)a3 completion:(id)a4
+- (void)unregisterStreamToken:(int64_t)token completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(TUMomentsControllerXPCClient *)self queue];
+  completionCopy = completion;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__TUMomentsControllerXPCClient_unregisterStreamToken_completion___block_invoke;
   block[3] = &unk_1E7427788;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = completionCopy;
+  tokenCopy = token;
+  v8 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __65__TUMomentsControllerXPCClient_unregisterStreamToken_completion___block_invoke(uint64_t a1)
@@ -230,26 +230,26 @@ void __65__TUMomentsControllerXPCClient_unregisterStreamToken_completion___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)startRequestWithMediaType:(int)a3 forStreamToken:(int64_t)a4 requesteeID:(id)a5 destinationID:(id)a6 completion:(id)a7
+- (void)startRequestWithMediaType:(int)type forStreamToken:(int64_t)token requesteeID:(id)d destinationID:(id)iD completion:(id)completion
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(TUMomentsControllerXPCClient *)self queue];
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __110__TUMomentsControllerXPCClient_startRequestWithMediaType_forStreamToken_requesteeID_destinationID_completion___block_invoke;
   v19[3] = &unk_1E74277B0;
-  v24 = a3;
-  v22 = v14;
-  v23 = a4;
+  typeCopy = type;
+  v22 = completionCopy;
+  tokenCopy = token;
   v19[4] = self;
-  v20 = v12;
-  v21 = v13;
-  v16 = v13;
-  v17 = v12;
-  v18 = v14;
-  dispatch_async(v15, v19);
+  v20 = dCopy;
+  v21 = iDCopy;
+  v16 = iDCopy;
+  v17 = dCopy;
+  v18 = completionCopy;
+  dispatch_async(queue, v19);
 }
 
 void __110__TUMomentsControllerXPCClient_startRequestWithMediaType_forStreamToken_requesteeID_destinationID_completion___block_invoke(uint64_t a1)
@@ -276,21 +276,21 @@ void __110__TUMomentsControllerXPCClient_startRequestWithMediaType_forStreamToke
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)endRequestWithTransactionID:(id)a3 completion:(id)a4
+- (void)endRequestWithTransactionID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUMomentsControllerXPCClient *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__TUMomentsControllerXPCClient_endRequestWithTransactionID_completion___block_invoke;
   block[3] = &unk_1E7425F68;
-  v12 = v6;
-  v13 = v7;
+  v12 = dCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = dCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __71__TUMomentsControllerXPCClient_endRequestWithTransactionID_completion___block_invoke(uint64_t a1)
@@ -319,13 +319,13 @@ void __71__TUMomentsControllerXPCClient_endRequestWithTransactionID_completion__
 
 - (void)invalidate
 {
-  v3 = [(TUMomentsControllerXPCClient *)self queue];
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__TUMomentsControllerXPCClient_invalidate__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __42__TUMomentsControllerXPCClient_invalidate__block_invoke(uint64_t a1)
@@ -335,18 +335,18 @@ void __42__TUMomentsControllerXPCClient_invalidate__block_invoke(uint64_t a1)
   [WeakRetained unregisterClient:*(a1 + 32)];
 }
 
-- (void)prewarmAudioClientWithCompletion:(id)a3
+- (void)prewarmAudioClientWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TUMomentsControllerXPCClient *)self queue];
+  completionCopy = completion;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__TUMomentsControllerXPCClient_prewarmAudioClientWithCompletion___block_invoke;
   v7[3] = &unk_1E7424E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __65__TUMomentsControllerXPCClient_prewarmAudioClientWithCompletion___block_invoke(uint64_t a1)
@@ -373,19 +373,19 @@ void __65__TUMomentsControllerXPCClient_prewarmAudioClientWithCompletion___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)startRecordingMessageWithMediaType:(int)a3 completion:(id)a4
+- (void)startRecordingMessageWithMediaType:(int)type completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(TUMomentsControllerXPCClient *)self queue];
+  completionCopy = completion;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__TUMomentsControllerXPCClient_startRecordingMessageWithMediaType_completion___block_invoke;
   block[3] = &unk_1E7424DD0;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = completionCopy;
+  typeCopy = type;
+  v8 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __78__TUMomentsControllerXPCClient_startRecordingMessageWithMediaType_completion___block_invoke(uint64_t a1)
@@ -412,21 +412,21 @@ void __78__TUMomentsControllerXPCClient_startRecordingMessageWithMediaType_compl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)endRecordingMessageWithUUID:(id)a3 completion:(id)a4
+- (void)endRecordingMessageWithUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUMomentsControllerXPCClient *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__TUMomentsControllerXPCClient_endRecordingMessageWithUUID_completion___block_invoke;
   block[3] = &unk_1E7425F68;
-  v12 = v6;
-  v13 = v7;
+  v12 = dCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = dCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __71__TUMomentsControllerXPCClient_endRecordingMessageWithUUID_completion___block_invoke(uint64_t a1)
@@ -453,21 +453,21 @@ void __71__TUMomentsControllerXPCClient_endRecordingMessageWithUUID_completion__
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)discardVideoMessageWithUUID:(id)a3 completion:(id)a4
+- (void)discardVideoMessageWithUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUMomentsControllerXPCClient *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__TUMomentsControllerXPCClient_discardVideoMessageWithUUID_completion___block_invoke;
   block[3] = &unk_1E7425F68;
-  v12 = v6;
-  v13 = v7;
+  v12 = dCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = dCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __71__TUMomentsControllerXPCClient_discardVideoMessageWithUUID_completion___block_invoke(uint64_t a1)
@@ -494,21 +494,21 @@ void __71__TUMomentsControllerXPCClient_discardVideoMessageWithUUID_completion__
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)sendVideoMessageWithRequest:(id)a3 completion:(id)a4
+- (void)sendVideoMessageWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUMomentsControllerXPCClient *)self queue];
+  requestCopy = request;
+  completionCopy = completion;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__TUMomentsControllerXPCClient_sendVideoMessageWithRequest_completion___block_invoke;
   block[3] = &unk_1E7425F68;
-  v12 = v6;
-  v13 = v7;
+  v12 = requestCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = requestCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __71__TUMomentsControllerXPCClient_sendVideoMessageWithRequest_completion___block_invoke(uint64_t a1)
@@ -535,21 +535,21 @@ void __71__TUMomentsControllerXPCClient_sendVideoMessageWithRequest_completion__
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)saveVideoMessageWithUUID:(id)a3 completion:(id)a4
+- (void)saveVideoMessageWithUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUMomentsControllerXPCClient *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__TUMomentsControllerXPCClient_saveVideoMessageWithUUID_completion___block_invoke;
   block[3] = &unk_1E7425F68;
-  v12 = v6;
-  v13 = v7;
+  v12 = dCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = dCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __68__TUMomentsControllerXPCClient_saveVideoMessageWithUUID_completion___block_invoke(uint64_t a1)
@@ -576,21 +576,21 @@ void __68__TUMomentsControllerXPCClient_saveVideoMessageWithUUID_completion___bl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)resetVideoMessagingWithSessionUUID:(id)a3 completion:(id)a4
+- (void)resetVideoMessagingWithSessionUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUMomentsControllerXPCClient *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__TUMomentsControllerXPCClient_resetVideoMessagingWithSessionUUID_completion___block_invoke;
   block[3] = &unk_1E7425F68;
-  v12 = v6;
-  v13 = v7;
+  v12 = dCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = dCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __78__TUMomentsControllerXPCClient_resetVideoMessagingWithSessionUUID_completion___block_invoke(uint64_t a1)
@@ -617,21 +617,21 @@ void __78__TUMomentsControllerXPCClient_resetVideoMessagingWithSessionUUID_compl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)prewarmMediaRequest:(id)a3 completion:(id)a4
+- (void)prewarmMediaRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUMomentsControllerXPCClient *)self queue];
+  requestCopy = request;
+  completionCopy = completion;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__TUMomentsControllerXPCClient_prewarmMediaRequest_completion___block_invoke;
   block[3] = &unk_1E7425F68;
-  v12 = v6;
-  v13 = v7;
+  v12 = requestCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = requestCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __63__TUMomentsControllerXPCClient_prewarmMediaRequest_completion___block_invoke(uint64_t a1)
@@ -658,21 +658,21 @@ void __63__TUMomentsControllerXPCClient_prewarmMediaRequest_completion___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)startMediaRequest:(id)a3 completion:(id)a4
+- (void)startMediaRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUMomentsControllerXPCClient *)self queue];
+  requestCopy = request;
+  completionCopy = completion;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__TUMomentsControllerXPCClient_startMediaRequest_completion___block_invoke;
   block[3] = &unk_1E7425F68;
-  v12 = v6;
-  v13 = v7;
+  v12 = requestCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = requestCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __61__TUMomentsControllerXPCClient_startMediaRequest_completion___block_invoke(uint64_t a1)
@@ -699,21 +699,21 @@ void __61__TUMomentsControllerXPCClient_startMediaRequest_completion___block_inv
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)endMediaRequestWithUUID:(id)a3 completion:(id)a4
+- (void)endMediaRequestWithUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUMomentsControllerXPCClient *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__TUMomentsControllerXPCClient_endMediaRequestWithUUID_completion___block_invoke;
   block[3] = &unk_1E7425F68;
-  v12 = v6;
-  v13 = v7;
+  v12 = dCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = dCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __67__TUMomentsControllerXPCClient_endMediaRequestWithUUID_completion___block_invoke(uint64_t a1)
@@ -742,8 +742,8 @@ void __67__TUMomentsControllerXPCClient_endMediaRequestWithUUID_completion___blo
 
 - (void)_registerConnection
 {
-  v3 = [(TUMomentsControllerXPCClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUMomentsControllerXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [(TUMomentsControllerXPCClient *)self serverWithErrorHandler:&__block_literal_global_57];
   [v4 registerXPCClientWithReply:&__block_literal_global_10_2];
@@ -771,8 +771,8 @@ void __51__TUMomentsControllerXPCClient__registerConnection__block_invoke_8()
 
 - (NSXPCConnection)xpcConnection
 {
-  v3 = [(TUMomentsControllerXPCClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUMomentsControllerXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   xpcConnection = self->_xpcConnection;
   if (!xpcConnection)
@@ -873,11 +873,11 @@ void __45__TUMomentsControllerXPCClient_xpcConnection__block_invoke_2_13(uint64_
   [v3 serverDiedForDataSource:*(a1 + 32)];
 }
 
-- (id)serverWithErrorHandler:(id)a3
+- (id)serverWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TUMomentsControllerXPCClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&sAsynchronousServer_6);
   v7 = WeakRetained;
@@ -888,18 +888,18 @@ void __45__TUMomentsControllerXPCClient_xpcConnection__block_invoke_2_13(uint64_
 
   else
   {
-    v9 = [(TUMomentsControllerXPCClient *)self xpcConnection];
-    v8 = [v9 remoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(TUMomentsControllerXPCClient *)self xpcConnection];
+    v8 = [xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v8;
 }
 
-- (id)synchronousServerWithErrorHandler:(id)a3
+- (id)synchronousServerWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TUMomentsControllerXPCClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&sSynchronousServer_6);
   v7 = WeakRetained;
@@ -910,26 +910,26 @@ void __45__TUMomentsControllerXPCClient_xpcConnection__block_invoke_2_13(uint64_
 
   else
   {
-    v9 = [(TUMomentsControllerXPCClient *)self xpcConnection];
-    v8 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(TUMomentsControllerXPCClient *)self xpcConnection];
+    v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v8;
 }
 
-- (void)didUpdateCapabilities:(id)a3 forVideoStreamToken:(int64_t)a4
+- (void)didUpdateCapabilities:(id)capabilities forVideoStreamToken:(int64_t)token
 {
-  v6 = a3;
-  v7 = [(TUMomentsControllerXPCClient *)self queue];
+  capabilitiesCopy = capabilities;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__TUMomentsControllerXPCClient_didUpdateCapabilities_forVideoStreamToken___block_invoke;
   block[3] = &unk_1E7425028;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = capabilitiesCopy;
+  tokenCopy = token;
+  v8 = capabilitiesCopy;
+  dispatch_async(queue, block);
 }
 
 void __74__TUMomentsControllerXPCClient_didUpdateCapabilities_forVideoStreamToken___block_invoke(uint64_t a1)
@@ -938,18 +938,18 @@ void __74__TUMomentsControllerXPCClient_didUpdateCapabilities_forVideoStreamToke
   [v2 dataSource:*(a1 + 32) didUpdateCapabilities:*(a1 + 40) forVideoStreamToken:*(a1 + 48)];
 }
 
-- (void)willCaptureRemoteRequestFromRequesterID:(id)a3
+- (void)willCaptureRemoteRequestFromRequesterID:(id)d
 {
-  v4 = a3;
-  v5 = [(TUMomentsControllerXPCClient *)self queue];
+  dCopy = d;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__TUMomentsControllerXPCClient_willCaptureRemoteRequestFromRequesterID___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(queue, v7);
 }
 
 void __72__TUMomentsControllerXPCClient_willCaptureRemoteRequestFromRequesterID___block_invoke(uint64_t a1)
@@ -958,18 +958,18 @@ void __72__TUMomentsControllerXPCClient_willCaptureRemoteRequestFromRequesterID_
   [v2 dataSource:*(a1 + 32) willCaptureRemoteRequestFromRequesterID:*(a1 + 40)];
 }
 
-- (void)didReceiveLocallyRequestedMomentDescriptor:(id)a3
+- (void)didReceiveLocallyRequestedMomentDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(TUMomentsControllerXPCClient *)self queue];
+  descriptorCopy = descriptor;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__TUMomentsControllerXPCClient_didReceiveLocallyRequestedMomentDescriptor___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = descriptorCopy;
+  v6 = descriptorCopy;
+  dispatch_async(queue, v7);
 }
 
 void __75__TUMomentsControllerXPCClient_didReceiveLocallyRequestedMomentDescriptor___block_invoke(uint64_t a1)
@@ -978,21 +978,21 @@ void __75__TUMomentsControllerXPCClient_didReceiveLocallyRequestedMomentDescript
   [v2 dataSource:*(a1 + 32) didReceiveLocallyRequestedMomentDescriptor:*(a1 + 40)];
 }
 
-- (void)requestSandboxExtensionForURL:(id)a3 reply:(id)a4
+- (void)requestSandboxExtensionForURL:(id)l reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUMomentsControllerXPCClient *)self queue];
+  lCopy = l;
+  replyCopy = reply;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__TUMomentsControllerXPCClient_requestSandboxExtensionForURL_reply___block_invoke;
   block[3] = &unk_1E7426458;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = lCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = lCopy;
+  dispatch_async(queue, block);
 }
 
 void __68__TUMomentsControllerXPCClient_requestSandboxExtensionForURL_reply___block_invoke(uint64_t a1)
@@ -1001,18 +1001,18 @@ void __68__TUMomentsControllerXPCClient_requestSandboxExtensionForURL_reply___bl
   [v2 dataSource:*(a1 + 32) requestSandboxExtensionForURL:*(a1 + 40) reply:*(a1 + 48)];
 }
 
-- (void)didFinishProcessingRawVideoMessage:(id)a3
+- (void)didFinishProcessingRawVideoMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(TUMomentsControllerXPCClient *)self queue];
+  messageCopy = message;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__TUMomentsControllerXPCClient_didFinishProcessingRawVideoMessage___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = messageCopy;
+  v6 = messageCopy;
+  dispatch_async(queue, v7);
 }
 
 void __67__TUMomentsControllerXPCClient_didFinishProcessingRawVideoMessage___block_invoke(uint64_t a1)
@@ -1021,18 +1021,18 @@ void __67__TUMomentsControllerXPCClient_didFinishProcessingRawVideoMessage___blo
   [v2 dataSource:*(a1 + 32) didFinishProcessingRawVideoMessage:*(a1 + 40)];
 }
 
-- (void)didFinishRecordingMedia:(id)a3
+- (void)didFinishRecordingMedia:(id)media
 {
-  v4 = a3;
-  v5 = [(TUMomentsControllerXPCClient *)self queue];
+  mediaCopy = media;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__TUMomentsControllerXPCClient_didFinishRecordingMedia___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = mediaCopy;
+  v6 = mediaCopy;
+  dispatch_async(queue, v7);
 }
 
 void __56__TUMomentsControllerXPCClient_didFinishRecordingMedia___block_invoke(uint64_t a1)
@@ -1041,18 +1041,18 @@ void __56__TUMomentsControllerXPCClient_didFinishRecordingMedia___block_invoke(u
   [v2 dataSource:*(a1 + 32) didFinishRecordingMedia:*(a1 + 40)];
 }
 
-- (void)didReceiveMessageRecordingError:(id)a3
+- (void)didReceiveMessageRecordingError:(id)error
 {
-  v4 = a3;
-  v5 = [(TUMomentsControllerXPCClient *)self queue];
+  errorCopy = error;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__TUMomentsControllerXPCClient_didReceiveMessageRecordingError___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = errorCopy;
+  v6 = errorCopy;
+  dispatch_async(queue, v7);
 }
 
 void __64__TUMomentsControllerXPCClient_didReceiveMessageRecordingError___block_invoke(uint64_t a1)
@@ -1061,18 +1061,18 @@ void __64__TUMomentsControllerXPCClient_didReceiveMessageRecordingError___block_
   [v2 dataSource:*(a1 + 32) didReceiveMessageRecordingError:*(a1 + 40)];
 }
 
-- (void)didReceiveMediaRecordingError:(id)a3
+- (void)didReceiveMediaRecordingError:(id)error
 {
-  v4 = a3;
-  v5 = [(TUMomentsControllerXPCClient *)self queue];
+  errorCopy = error;
+  queue = [(TUMomentsControllerXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__TUMomentsControllerXPCClient_didReceiveMediaRecordingError___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = errorCopy;
+  v6 = errorCopy;
+  dispatch_async(queue, v7);
 }
 
 void __62__TUMomentsControllerXPCClient_didReceiveMediaRecordingError___block_invoke(uint64_t a1)

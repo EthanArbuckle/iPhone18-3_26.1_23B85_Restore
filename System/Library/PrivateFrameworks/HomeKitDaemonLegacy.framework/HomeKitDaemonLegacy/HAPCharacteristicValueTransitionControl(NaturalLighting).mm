@@ -8,15 +8,15 @@
 - (id)naturalLightingActiveTransitionContextForCharacteristic:()NaturalLighting
 {
   v4 = a3;
-  v5 = [a1 transitionStart];
-  v6 = [v5 transitions];
+  transitionStart = [self transitionStart];
+  transitions = [transitionStart transitions];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __116__HAPCharacteristicValueTransitionControl_NaturalLighting__naturalLightingActiveTransitionContextForCharacteristic___block_invoke;
   v11[3] = &unk_27972EB90;
   v7 = v4;
   v12 = v7;
-  v8 = [v6 na_firstObjectPassingTest:v11];
+  v8 = [transitions na_firstObjectPassingTest:v11];
 
   if (v8)
   {
@@ -34,28 +34,28 @@
 - (uint64_t)naturalLightingEnabledForCharacteristic:()NaturalLighting
 {
   v4 = a3;
-  v5 = [a1 transitionStart];
-  v6 = [v5 transitions];
+  transitionStart = [self transitionStart];
+  transitions = [transitionStart transitions];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __100__HAPCharacteristicValueTransitionControl_NaturalLighting__naturalLightingEnabledForCharacteristic___block_invoke;
   v14[3] = &unk_27972EB90;
   v7 = v4;
   v15 = v7;
-  v8 = [v6 na_firstObjectPassingTest:v14];
+  v8 = [transitions na_firstObjectPassingTest:v14];
 
   if (v8)
   {
-    v9 = [v8 controllerContext];
-    if (v9 || ([v8 endBehavior], (v9 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v8, "linearTransition"), (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+    controllerContext = [v8 controllerContext];
+    if (controllerContext || ([v8 endBehavior], (controllerContext = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v8, "linearTransition"), (controllerContext = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v13 = [v8 linearDerivedTransition];
+      linearDerivedTransition = [v8 linearDerivedTransition];
 
-      if (!v13)
+      if (!linearDerivedTransition)
       {
         v11 = MEMORY[0x277CBEC28];
         goto LABEL_10;

@@ -2,14 +2,14 @@
 - (WBSCyclerServiceProxy)init;
 - (id)_cyclerProxy;
 - (void)dealloc;
-- (void)fetchLastErrorWithReply:(id)a3;
-- (void)fetchLogsWithReply:(id)a3;
-- (void)fetchStatusWithReply:(id)a3;
-- (void)sendRequestToTestSuite:(id)a3 reply:(id)a4;
-- (void)setTestTargetEndpoint:(id)a3 reply:(id)a4;
-- (void)setValue:(id)a3 forConfigurationKey:(id)a4 reply:(id)a5;
-- (void)startCyclingFromBeginning:(BOOL)a3 reply:(id)a4;
-- (void)stopCyclingWithReply:(id)a3;
+- (void)fetchLastErrorWithReply:(id)reply;
+- (void)fetchLogsWithReply:(id)reply;
+- (void)fetchStatusWithReply:(id)reply;
+- (void)sendRequestToTestSuite:(id)suite reply:(id)reply;
+- (void)setTestTargetEndpoint:(id)endpoint reply:(id)reply;
+- (void)setValue:(id)value forConfigurationKey:(id)key reply:(id)reply;
+- (void)startCyclingFromBeginning:(BOOL)beginning reply:(id)reply;
+- (void)stopCyclingWithReply:(id)reply;
 @end
 
 @implementation WBSCyclerServiceProxy
@@ -43,65 +43,65 @@
   [(WBSCyclerServiceProxy *)&v3 dealloc];
 }
 
-- (void)setTestTargetEndpoint:(id)a3 reply:(id)a4
+- (void)setTestTargetEndpoint:(id)endpoint reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WBSCyclerServiceProxy *)self _cyclerProxy];
-  [v8 setTestTargetEndpoint:v7 reply:v6];
+  replyCopy = reply;
+  endpointCopy = endpoint;
+  _cyclerProxy = [(WBSCyclerServiceProxy *)self _cyclerProxy];
+  [_cyclerProxy setTestTargetEndpoint:endpointCopy reply:replyCopy];
 }
 
-- (void)setValue:(id)a3 forConfigurationKey:(id)a4 reply:(id)a5
+- (void)setValue:(id)value forConfigurationKey:(id)key reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(WBSCyclerServiceProxy *)self _cyclerProxy];
-  [v11 setValue:v10 forConfigurationKey:v9 reply:v8];
+  replyCopy = reply;
+  keyCopy = key;
+  valueCopy = value;
+  _cyclerProxy = [(WBSCyclerServiceProxy *)self _cyclerProxy];
+  [_cyclerProxy setValue:valueCopy forConfigurationKey:keyCopy reply:replyCopy];
 }
 
-- (void)startCyclingFromBeginning:(BOOL)a3 reply:(id)a4
+- (void)startCyclingFromBeginning:(BOOL)beginning reply:(id)reply
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(WBSCyclerServiceProxy *)self _cyclerProxy];
-  [v7 startCyclingFromBeginning:v4 reply:v6];
+  beginningCopy = beginning;
+  replyCopy = reply;
+  _cyclerProxy = [(WBSCyclerServiceProxy *)self _cyclerProxy];
+  [_cyclerProxy startCyclingFromBeginning:beginningCopy reply:replyCopy];
 }
 
-- (void)stopCyclingWithReply:(id)a3
+- (void)stopCyclingWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(WBSCyclerServiceProxy *)self _cyclerProxy];
-  [v5 stopCyclingWithReply:v4];
+  replyCopy = reply;
+  _cyclerProxy = [(WBSCyclerServiceProxy *)self _cyclerProxy];
+  [_cyclerProxy stopCyclingWithReply:replyCopy];
 }
 
-- (void)sendRequestToTestSuite:(id)a3 reply:(id)a4
+- (void)sendRequestToTestSuite:(id)suite reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WBSCyclerServiceProxy *)self _cyclerProxy];
-  [v8 sendRequestToTestSuite:v7 reply:v6];
+  replyCopy = reply;
+  suiteCopy = suite;
+  _cyclerProxy = [(WBSCyclerServiceProxy *)self _cyclerProxy];
+  [_cyclerProxy sendRequestToTestSuite:suiteCopy reply:replyCopy];
 }
 
-- (void)fetchStatusWithReply:(id)a3
+- (void)fetchStatusWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(WBSCyclerServiceProxy *)self _cyclerProxy];
-  [v5 fetchStatusWithReply:v4];
+  replyCopy = reply;
+  _cyclerProxy = [(WBSCyclerServiceProxy *)self _cyclerProxy];
+  [_cyclerProxy fetchStatusWithReply:replyCopy];
 }
 
-- (void)fetchLogsWithReply:(id)a3
+- (void)fetchLogsWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(WBSCyclerServiceProxy *)self _cyclerProxy];
-  [v5 fetchLogsWithReply:v4];
+  replyCopy = reply;
+  _cyclerProxy = [(WBSCyclerServiceProxy *)self _cyclerProxy];
+  [_cyclerProxy fetchLogsWithReply:replyCopy];
 }
 
-- (void)fetchLastErrorWithReply:(id)a3
+- (void)fetchLastErrorWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(WBSCyclerServiceProxy *)self _cyclerProxy];
-  [v5 fetchLastErrorWithReply:v4];
+  replyCopy = reply;
+  _cyclerProxy = [(WBSCyclerServiceProxy *)self _cyclerProxy];
+  [_cyclerProxy fetchLastErrorWithReply:replyCopy];
 }
 
 - (id)_cyclerProxy

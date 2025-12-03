@@ -1,72 +1,72 @@
 @interface PKPaymentMerchantSession
-+ (PKPaymentMerchantSession)paymentMerchantSessionWithProtobuf:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPaymentMerchantSession:(id)a3;
-- (BOOL)supportsURL:(id)a3;
++ (PKPaymentMerchantSession)paymentMerchantSessionWithProtobuf:(id)protobuf;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPaymentMerchantSession:(id)session;
+- (BOOL)supportsURL:(id)l;
 - (PKPaymentMerchantSession)init;
-- (PKPaymentMerchantSession)initWithCoder:(id)a3;
+- (PKPaymentMerchantSession)initWithCoder:(id)coder;
 - (PKPaymentMerchantSession)initWithDictionary:(NSDictionary *)dictionary;
-- (PKPaymentMerchantSession)initWithMerchantIdentifier:(id)a3 merchantSessionIdentifier:(id)a4 nonce:(id)a5 epochTimestamp:(unint64_t)a6 expiresAt:(unint64_t)a7 displayName:(id)a8 initiativeContext:(id)a9 initiative:(id)a10 ampEnrollmentPinning:(id)a11 operationalAnalyticsIdentifier:(id)a12 signedFields:(id)a13 signature:(id)a14;
-- (PKPaymentMerchantSession)initWithMerchantIdentifier:(id)a3 merchantSessionIdentifier:(id)a4 nonce:(id)a5 epochTimestamp:(unint64_t)a6 expiresAt:(unint64_t)a7 domain:(id)a8 displayName:(id)a9 operationalAnalyticsIdentifier:(id)a10 signature:(id)a11;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPaymentMerchantSession)initWithMerchantIdentifier:(id)identifier merchantSessionIdentifier:(id)sessionIdentifier nonce:(id)nonce epochTimestamp:(unint64_t)timestamp expiresAt:(unint64_t)at displayName:(id)name initiativeContext:(id)context initiative:(id)self0 ampEnrollmentPinning:(id)self1 operationalAnalyticsIdentifier:(id)self2 signedFields:(id)self3 signature:(id)self4;
+- (PKPaymentMerchantSession)initWithMerchantIdentifier:(id)identifier merchantSessionIdentifier:(id)sessionIdentifier nonce:(id)nonce epochTimestamp:(unint64_t)timestamp expiresAt:(unint64_t)at domain:(id)domain displayName:(id)name operationalAnalyticsIdentifier:(id)self0 signature:(id)self1;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)protobuf;
 - (id)signedData;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentMerchantSession
 
 - (PKPaymentMerchantSession)init
 {
-  v3 = [MEMORY[0x1E695DEF0] data];
-  v4 = [(PKPaymentMerchantSession *)self initWithMerchantIdentifier:&stru_1F227FD28 merchantSessionIdentifier:&stru_1F227FD28 nonce:&stru_1F227FD28 epochTimestamp:0 domain:&stru_1F227FD28 displayName:&stru_1F227FD28 signature:v3];
+  data = [MEMORY[0x1E695DEF0] data];
+  v4 = [(PKPaymentMerchantSession *)self initWithMerchantIdentifier:&stru_1F227FD28 merchantSessionIdentifier:&stru_1F227FD28 nonce:&stru_1F227FD28 epochTimestamp:0 domain:&stru_1F227FD28 displayName:&stru_1F227FD28 signature:data];
 
   return v4;
 }
 
-- (PKPaymentMerchantSession)initWithMerchantIdentifier:(id)a3 merchantSessionIdentifier:(id)a4 nonce:(id)a5 epochTimestamp:(unint64_t)a6 expiresAt:(unint64_t)a7 domain:(id)a8 displayName:(id)a9 operationalAnalyticsIdentifier:(id)a10 signature:(id)a11
+- (PKPaymentMerchantSession)initWithMerchantIdentifier:(id)identifier merchantSessionIdentifier:(id)sessionIdentifier nonce:(id)nonce epochTimestamp:(unint64_t)timestamp expiresAt:(unint64_t)at domain:(id)domain displayName:(id)name operationalAnalyticsIdentifier:(id)self0 signature:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
+  identifierCopy = identifier;
+  sessionIdentifierCopy = sessionIdentifier;
+  nonceCopy = nonce;
+  domainCopy = domain;
+  nameCopy = name;
+  analyticsIdentifierCopy = analyticsIdentifier;
+  signatureCopy = signature;
   v40.receiver = self;
   v40.super_class = PKPaymentMerchantSession;
   v24 = [(PKPaymentMerchantSession *)&v40 init];
   if (v24)
   {
-    v25 = [v17 copy];
+    v25 = [identifierCopy copy];
     merchantIdentifier = v24->_merchantIdentifier;
     v24->_merchantIdentifier = v25;
 
-    v27 = [v18 copy];
+    v27 = [sessionIdentifierCopy copy];
     merchantSessionIdentifier = v24->_merchantSessionIdentifier;
     v24->_merchantSessionIdentifier = v27;
 
-    v29 = [v19 copy];
+    v29 = [nonceCopy copy];
     nonce = v24->_nonce;
     v24->_nonce = v29;
 
-    v24->_epochTimestamp = a6;
-    v24->_expiresAt = a7;
-    v31 = [v20 copy];
+    v24->_epochTimestamp = timestamp;
+    v24->_expiresAt = at;
+    v31 = [domainCopy copy];
     domain = v24->_domain;
     v24->_domain = v31;
 
-    v33 = [v21 copy];
+    v33 = [nameCopy copy];
     displayName = v24->_displayName;
     v24->_displayName = v33;
 
-    v35 = [v22 copy];
+    v35 = [analyticsIdentifierCopy copy];
     operationalAnalyticsIdentifier = v24->_operationalAnalyticsIdentifier;
     v24->_operationalAnalyticsIdentifier = v35;
 
-    v37 = [v23 copy];
+    v37 = [signatureCopy copy];
     signature = v24->_signature;
     v24->_signature = v37;
   }
@@ -74,64 +74,64 @@
   return v24;
 }
 
-- (PKPaymentMerchantSession)initWithMerchantIdentifier:(id)a3 merchantSessionIdentifier:(id)a4 nonce:(id)a5 epochTimestamp:(unint64_t)a6 expiresAt:(unint64_t)a7 displayName:(id)a8 initiativeContext:(id)a9 initiative:(id)a10 ampEnrollmentPinning:(id)a11 operationalAnalyticsIdentifier:(id)a12 signedFields:(id)a13 signature:(id)a14
+- (PKPaymentMerchantSession)initWithMerchantIdentifier:(id)identifier merchantSessionIdentifier:(id)sessionIdentifier nonce:(id)nonce epochTimestamp:(unint64_t)timestamp expiresAt:(unint64_t)at displayName:(id)name initiativeContext:(id)context initiative:(id)self0 ampEnrollmentPinning:(id)self1 operationalAnalyticsIdentifier:(id)self2 signedFields:(id)self3 signature:(id)self4
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v53 = a8;
-  v20 = v18;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
-  v26 = a14;
+  identifierCopy = identifier;
+  sessionIdentifierCopy = sessionIdentifier;
+  nonceCopy = nonce;
+  nameCopy = name;
+  v20 = sessionIdentifierCopy;
+  contextCopy = context;
+  initiativeCopy = initiative;
+  pinningCopy = pinning;
+  analyticsIdentifierCopy = analyticsIdentifier;
+  fieldsCopy = fields;
+  signatureCopy = signature;
   v54.receiver = self;
   v54.super_class = PKPaymentMerchantSession;
   v27 = [(PKPaymentMerchantSession *)&v54 init];
   v28 = v27;
   if (v27)
   {
-    v27->_epochTimestamp = a6;
-    v27->_expiresAt = a7;
+    v27->_epochTimestamp = timestamp;
+    v27->_expiresAt = at;
     v29 = [v20 copy];
     merchantSessionIdentifier = v28->_merchantSessionIdentifier;
     v28->_merchantSessionIdentifier = v29;
 
-    v31 = [v19 copy];
+    v31 = [nonceCopy copy];
     nonce = v28->_nonce;
     v28->_nonce = v31;
 
-    v33 = [v17 copy];
+    v33 = [identifierCopy copy];
     merchantIdentifier = v28->_merchantIdentifier;
     v28->_merchantIdentifier = v33;
 
-    v35 = [v53 copy];
+    v35 = [nameCopy copy];
     displayName = v28->_displayName;
     v28->_displayName = v35;
 
-    v37 = [v21 copy];
+    v37 = [contextCopy copy];
     initiativeContext = v28->_initiativeContext;
     v28->_initiativeContext = v37;
 
-    v39 = [v22 copy];
+    v39 = [initiativeCopy copy];
     initiative = v28->_initiative;
     v28->_initiative = v39;
 
-    v41 = [v23 copy];
+    v41 = [pinningCopy copy];
     ampEnrollmentPinning = v28->_ampEnrollmentPinning;
     v28->_ampEnrollmentPinning = v41;
 
-    v43 = [v24 copy];
+    v43 = [analyticsIdentifierCopy copy];
     operationalAnalyticsIdentifier = v28->_operationalAnalyticsIdentifier;
     v28->_operationalAnalyticsIdentifier = v43;
 
-    v45 = [v25 copy];
+    v45 = [fieldsCopy copy];
     signedFields = v28->_signedFields;
     v28->_signedFields = v45;
 
-    v47 = [v26 copy];
+    v47 = [signatureCopy copy];
     signature = v28->_signature;
     v28->_signature = v47;
   }
@@ -148,16 +148,16 @@
   v6 = [(NSDictionary *)v3 PKStringForKey:@"merchantSessionIdentifier"];
   v7 = [(NSDictionary *)v3 PKStringForKey:@"nonce"];
   v8 = [(NSDictionary *)v3 PKNumberForKey:@"epochTimestamp"];
-  v9 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
   v10 = [(NSDictionary *)v3 PKNumberForKey:@"expiresAt"];
-  v34 = [v10 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v10 unsignedIntegerValue];
   if (v4)
   {
     v28 = [(NSDictionary *)v3 PKStringForKey:@"displayName"];
     v27 = [(NSDictionary *)v3 PKStringForKey:@"initiativeContext"];
     v11 = [(NSDictionary *)v3 PKStringForKey:@"initiative"];
     v33 = [(NSDictionary *)v3 PKStringForKey:@"ampEnrollmentPinning"];
-    v12 = [v33 pk_decodeHexadecimal];
+    pk_decodeHexadecimal = [v33 pk_decodeHexadecimal];
     [(NSDictionary *)v3 PKStringForKey:@"operationalAnalyticsIdentifier"];
     v31 = v7;
     v14 = v13 = v5;
@@ -167,12 +167,12 @@
     v29 = v10;
     v17 = v16 = v6;
 
-    v18 = [v17 pk_decodeHexadecimal];
+    pk_decodeHexadecimal2 = [v17 pk_decodeHexadecimal];
     v35 = v11;
     v19 = v27;
     v26 = v11;
     v20 = v28;
-    v21 = [(PKPaymentMerchantSession *)self initWithMerchantIdentifier:v13 merchantSessionIdentifier:v16 nonce:v31 epochTimestamp:v9 expiresAt:v34 displayName:v28 initiativeContext:v27 initiative:v26 ampEnrollmentPinning:v12 operationalAnalyticsIdentifier:v14 signedFields:v15 signature:v18];
+    v21 = [(PKPaymentMerchantSession *)self initWithMerchantIdentifier:v13 merchantSessionIdentifier:v16 nonce:v31 epochTimestamp:unsignedIntegerValue expiresAt:unsignedIntegerValue2 displayName:v28 initiativeContext:v27 initiative:v26 ampEnrollmentPinning:pk_decodeHexadecimal operationalAnalyticsIdentifier:v14 signedFields:v15 signature:pk_decodeHexadecimal2];
 
     v6 = v16;
     v10 = v29;
@@ -186,106 +186,106 @@
   {
     v20 = [(NSDictionary *)v3 PKStringForKey:@"domainName"];
     [(NSDictionary *)v3 PKStringForKey:@"displayName"];
-    v22 = v32 = v9;
+    v22 = v32 = unsignedIntegerValue;
     v23 = [(NSDictionary *)v3 PKStringForKey:@"operationalAnalyticsIdentifier"];
     v24 = [(NSDictionary *)v3 PKStringForKey:@"signature"];
 
     v19 = v22;
     v33 = v24;
-    v12 = [v24 pk_decodeHexadecimal];
+    pk_decodeHexadecimal = [v24 pk_decodeHexadecimal];
     v35 = v23;
-    v21 = [(PKPaymentMerchantSession *)self initWithMerchantIdentifier:v5 merchantSessionIdentifier:v6 nonce:v7 epochTimestamp:v32 expiresAt:v34 domain:v20 displayName:v22 operationalAnalyticsIdentifier:v23 signature:v12];
+    v21 = [(PKPaymentMerchantSession *)self initWithMerchantIdentifier:v5 merchantSessionIdentifier:v6 nonce:v7 epochTimestamp:v32 expiresAt:unsignedIntegerValue2 domain:v20 displayName:v22 operationalAnalyticsIdentifier:v23 signature:pk_decodeHexadecimal];
   }
 
   return v21;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   merchantIdentifier = self->_merchantIdentifier;
-  v7 = a3;
-  [v7 encodeObject:merchantIdentifier forKey:@"merchantIdentifier"];
-  [v7 encodeObject:self->_merchantSessionIdentifier forKey:@"merchantSessionIdentifier"];
-  [v7 encodeObject:self->_nonce forKey:@"nonce"];
+  coderCopy = coder;
+  [coderCopy encodeObject:merchantIdentifier forKey:@"merchantIdentifier"];
+  [coderCopy encodeObject:self->_merchantSessionIdentifier forKey:@"merchantSessionIdentifier"];
+  [coderCopy encodeObject:self->_nonce forKey:@"nonce"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_epochTimestamp];
-  [v7 encodeObject:v5 forKey:@"epochTimestamp"];
+  [coderCopy encodeObject:v5 forKey:@"epochTimestamp"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_expiresAt];
-  [v7 encodeObject:v6 forKey:@"expiresAt"];
+  [coderCopy encodeObject:v6 forKey:@"expiresAt"];
 
-  [v7 encodeObject:self->_domain forKey:@"domainName"];
-  [v7 encodeObject:self->_displayName forKey:@"displayName"];
-  [v7 encodeObject:self->_signature forKey:@"signature"];
-  [v7 encodeObject:self->_retryNonce forKey:@"retryNonce"];
-  [v7 encodeObject:self->_initiativeContext forKey:@"initiativeContext"];
-  [v7 encodeObject:self->_initiative forKey:@"initiative"];
-  [v7 encodeObject:self->_ampEnrollmentPinning forKey:@"ampEnrollmentPinning"];
-  [v7 encodeObject:self->_operationalAnalyticsIdentifier forKey:@"operationalAnalyticsIdentifier"];
-  [v7 encodeObject:self->_signedFields forKey:@"signedFields"];
+  [coderCopy encodeObject:self->_domain forKey:@"domainName"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_signature forKey:@"signature"];
+  [coderCopy encodeObject:self->_retryNonce forKey:@"retryNonce"];
+  [coderCopy encodeObject:self->_initiativeContext forKey:@"initiativeContext"];
+  [coderCopy encodeObject:self->_initiative forKey:@"initiative"];
+  [coderCopy encodeObject:self->_ampEnrollmentPinning forKey:@"ampEnrollmentPinning"];
+  [coderCopy encodeObject:self->_operationalAnalyticsIdentifier forKey:@"operationalAnalyticsIdentifier"];
+  [coderCopy encodeObject:self->_signedFields forKey:@"signedFields"];
 }
 
-- (PKPaymentMerchantSession)initWithCoder:(id)a3
+- (PKPaymentMerchantSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v36.receiver = self;
   v36.super_class = PKPaymentMerchantSession;
   v5 = [(PKPaymentMerchantSession *)&v36 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantIdentifier"];
     merchantIdentifier = v5->_merchantIdentifier;
     v5->_merchantIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantSessionIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantSessionIdentifier"];
     merchantSessionIdentifier = v5->_merchantSessionIdentifier;
     v5->_merchantSessionIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
     nonce = v5->_nonce;
     v5->_nonce = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"epochTimestamp"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"epochTimestamp"];
     v5->_epochTimestamp = [v12 unsignedIntegerValue];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expiresAt"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expiresAt"];
     v5->_expiresAt = [v13 unsignedIntegerValue];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domainName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domainName"];
     domain = v5->_domain;
     v5->_domain = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
     signature = v5->_signature;
     v5->_signature = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"retryNonce"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"retryNonce"];
     retryNonce = v5->_retryNonce;
     v5->_retryNonce = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"initiative"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"initiative"];
     initiative = v5->_initiative;
     v5->_initiative = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"initiativeContext"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"initiativeContext"];
     initiativeContext = v5->_initiativeContext;
     v5->_initiativeContext = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ampEnrollmentPinning"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ampEnrollmentPinning"];
     ampEnrollmentPinning = v5->_ampEnrollmentPinning;
     v5->_ampEnrollmentPinning = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"operationalAnalyticsIdentifier"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"operationalAnalyticsIdentifier"];
     operationalAnalyticsIdentifier = v5->_operationalAnalyticsIdentifier;
     v5->_operationalAnalyticsIdentifier = v28;
 
     v30 = MEMORY[0x1E695DFD8];
     v31 = objc_opt_class();
     v32 = [v30 setWithObjects:{v31, objc_opt_class(), 0}];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"signedFields"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"signedFields"];
     signedFields = v5->_signedFields;
     v5->_signedFields = v33;
   }
@@ -313,56 +313,56 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentMerchantSession allocWithZone:](PKPaymentMerchantSession init];
-  v6 = [(NSString *)self->_merchantIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_merchantIdentifier copyWithZone:zone];
   merchantIdentifier = v5->_merchantIdentifier;
   v5->_merchantIdentifier = v6;
 
-  v8 = [(NSString *)self->_merchantSessionIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_merchantSessionIdentifier copyWithZone:zone];
   merchantSessionIdentifier = v5->_merchantSessionIdentifier;
   v5->_merchantSessionIdentifier = v8;
 
-  v10 = [(NSString *)self->_nonce copyWithZone:a3];
+  v10 = [(NSString *)self->_nonce copyWithZone:zone];
   nonce = v5->_nonce;
   v5->_nonce = v10;
 
-  v12 = [(NSString *)self->_domain copyWithZone:a3];
+  v12 = [(NSString *)self->_domain copyWithZone:zone];
   domain = v5->_domain;
   v5->_domain = v12;
 
   v5->_epochTimestamp = self->_epochTimestamp;
   v5->_expiresAt = self->_expiresAt;
-  v14 = [(NSString *)self->_displayName copyWithZone:a3];
+  v14 = [(NSString *)self->_displayName copyWithZone:zone];
   displayName = v5->_displayName;
   v5->_displayName = v14;
 
-  v16 = [(NSData *)self->_signature copyWithZone:a3];
+  v16 = [(NSData *)self->_signature copyWithZone:zone];
   signature = v5->_signature;
   v5->_signature = v16;
 
-  v18 = [(NSString *)self->_retryNonce copyWithZone:a3];
+  v18 = [(NSString *)self->_retryNonce copyWithZone:zone];
   retryNonce = v5->_retryNonce;
   v5->_retryNonce = v18;
 
-  v20 = [(NSString *)self->_initiative copyWithZone:a3];
+  v20 = [(NSString *)self->_initiative copyWithZone:zone];
   initiative = v5->_initiative;
   v5->_initiative = v20;
 
-  v22 = [(NSString *)self->_initiativeContext copyWithZone:a3];
+  v22 = [(NSString *)self->_initiativeContext copyWithZone:zone];
   initiativeContext = v5->_initiativeContext;
   v5->_initiativeContext = v22;
 
-  v24 = [(NSData *)self->_ampEnrollmentPinning copyWithZone:a3];
+  v24 = [(NSData *)self->_ampEnrollmentPinning copyWithZone:zone];
   ampEnrollmentPinning = v5->_ampEnrollmentPinning;
   v5->_ampEnrollmentPinning = v24;
 
-  v26 = [(NSString *)self->_operationalAnalyticsIdentifier copyWithZone:a3];
+  v26 = [(NSString *)self->_operationalAnalyticsIdentifier copyWithZone:zone];
   operationalAnalyticsIdentifier = v5->_operationalAnalyticsIdentifier;
   v5->_operationalAnalyticsIdentifier = v26;
 
-  v28 = [(NSArray *)self->_signedFields copyWithZone:a3];
+  v28 = [(NSArray *)self->_signedFields copyWithZone:zone];
   signedFields = v5->_signedFields;
   v5->_signedFields = v28;
 
@@ -433,27 +433,27 @@ LABEL_9:
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentMerchantSession *)self isEqualToPaymentMerchantSession:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentMerchantSession *)self isEqualToPaymentMerchantSession:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPaymentMerchantSession:(id)a3
+- (BOOL)isEqualToPaymentMerchantSession:(id)session
 {
-  v4 = a3;
-  v5 = v4[5];
+  sessionCopy = session;
+  v5 = sessionCopy[5];
   v6 = self->_merchantIdentifier;
   v7 = v5;
   v8 = v7;
@@ -486,7 +486,7 @@ LABEL_9:
     }
   }
 
-  v11 = v4[3];
+  v11 = sessionCopy[3];
   v6 = self->_merchantSessionIdentifier;
   v12 = v11;
   v8 = v12;
@@ -509,7 +509,7 @@ LABEL_9:
     }
   }
 
-  v14 = v4[4];
+  v14 = sessionCopy[4];
   v6 = self->_nonce;
   v15 = v14;
   v8 = v15;
@@ -532,7 +532,7 @@ LABEL_9:
     }
   }
 
-  v17 = v4[7];
+  v17 = sessionCopy[7];
   v6 = self->_domain;
   v18 = v17;
   v8 = v18;
@@ -555,7 +555,7 @@ LABEL_9:
     }
   }
 
-  v20 = v4[8];
+  v20 = sessionCopy[8];
   v6 = self->_displayName;
   v21 = v20;
   v8 = v21;
@@ -581,7 +581,7 @@ LABEL_32:
 
 LABEL_36:
   signature = self->_signature;
-  v26 = v4[13];
+  v26 = sessionCopy[13];
   if (signature && v26)
   {
     if (([(NSData *)signature isEqual:?]& 1) == 0)
@@ -595,13 +595,13 @@ LABEL_36:
     goto LABEL_33;
   }
 
-  if (self->_epochTimestamp != v4[1] || self->_expiresAt != v4[2])
+  if (self->_epochTimestamp != sessionCopy[1] || self->_expiresAt != sessionCopy[2])
   {
     goto LABEL_33;
   }
 
   initiative = self->_initiative;
-  v28 = v4[10];
+  v28 = sessionCopy[10];
   if (initiative && v28)
   {
     if (([(NSString *)initiative isEqual:?]& 1) == 0)
@@ -616,7 +616,7 @@ LABEL_36:
   }
 
   initiativeContext = self->_initiativeContext;
-  v30 = v4[9];
+  v30 = sessionCopy[9];
   if (initiativeContext && v30)
   {
     if (([(NSString *)initiativeContext isEqual:?]& 1) == 0)
@@ -631,7 +631,7 @@ LABEL_36:
   }
 
   ampEnrollmentPinning = self->_ampEnrollmentPinning;
-  v32 = v4[11];
+  v32 = sessionCopy[11];
   if (ampEnrollmentPinning && v32)
   {
     if (([(NSData *)ampEnrollmentPinning isEqual:?]& 1) == 0)
@@ -646,7 +646,7 @@ LABEL_36:
   }
 
   operationalAnalyticsIdentifier = self->_operationalAnalyticsIdentifier;
-  v34 = v4[6];
+  v34 = sessionCopy[6];
   if (operationalAnalyticsIdentifier && v34)
   {
     if (([(NSString *)operationalAnalyticsIdentifier isEqual:?]& 1) != 0)
@@ -666,7 +666,7 @@ LABEL_33:
 
 LABEL_63:
   signedFields = self->_signedFields;
-  v36 = v4[12];
+  v36 = sessionCopy[12];
   if (signedFields && v36)
   {
     v23 = [(NSArray *)signedFields isEqual:?];
@@ -682,20 +682,20 @@ LABEL_34:
   return v23;
 }
 
-- (BOOL)supportsURL:(id)a3
+- (BOOL)supportsURL:(id)l
 {
-  v4 = a3;
-  v5 = [(PKPaymentMerchantSession *)self _isModern];
+  lCopy = l;
+  _isModern = [(PKPaymentMerchantSession *)self _isModern];
   v6 = 56;
-  if (v5)
+  if (_isModern)
   {
     v6 = 72;
   }
 
   v7 = *(&self->super.isa + v6);
-  v8 = [v4 host];
+  host = [lCopy host];
 
-  v9 = v8;
+  v9 = host;
   v10 = v7;
   v11 = v10;
   if (v9 == v10)
@@ -764,15 +764,15 @@ LABEL_34:
         v11 = *(*(&v22 + 1) + 8 * i);
         if ([v11 isEqualToString:{@"nonce", v22}])
         {
-          v12 = [(NSString *)self->_nonce pk_decodeHexadecimal];
+          pk_decodeHexadecimal = [(NSString *)self->_nonce pk_decodeHexadecimal];
 LABEL_11:
-          v13 = v12;
+          v13 = pk_decodeHexadecimal;
           goto LABEL_13;
         }
 
         if ([v11 isEqualToString:@"ampEnrollmentPinning"])
         {
-          v12 = self->_ampEnrollmentPinning;
+          pk_decodeHexadecimal = self->_ampEnrollmentPinning;
           goto LABEL_11;
         }
 
@@ -805,8 +805,8 @@ LABEL_15:
   v18 = [(NSString *)self->_displayName dataUsingEncoding:4];
   [v3 appendData:v18];
 
-  v19 = [(NSString *)self->_nonce pk_decodeHexadecimal];
-  [v3 appendData:v19];
+  pk_decodeHexadecimal2 = [(NSString *)self->_nonce pk_decodeHexadecimal];
+  [v3 appendData:pk_decodeHexadecimal2];
 
 LABEL_17:
   v20 = [v3 copy];
@@ -814,52 +814,52 @@ LABEL_17:
   return v20;
 }
 
-+ (PKPaymentMerchantSession)paymentMerchantSessionWithProtobuf:(id)a3
++ (PKPaymentMerchantSession)paymentMerchantSessionWithProtobuf:(id)protobuf
 {
-  v3 = a3;
-  v4 = [v3 hasInitiative];
+  protobufCopy = protobuf;
+  hasInitiative = [protobufCopy hasInitiative];
   v5 = [PKPaymentMerchantSession alloc];
-  v6 = [v3 merchantIdentifier];
-  v7 = [v3 sessionIdentifier];
-  v8 = [v3 nonce];
-  v9 = [v3 epochTimestamp];
-  v26 = [v3 expiresAt];
-  if (v4)
+  merchantIdentifier = [protobufCopy merchantIdentifier];
+  sessionIdentifier = [protobufCopy sessionIdentifier];
+  nonce = [protobufCopy nonce];
+  epochTimestamp = [protobufCopy epochTimestamp];
+  expiresAt = [protobufCopy expiresAt];
+  if (hasInitiative)
   {
-    v24 = [v3 displayName];
-    v10 = [v3 initiativeContext];
-    v11 = [v3 initiative];
-    v12 = [v3 ampEnrollmentPinning];
-    v23 = [v3 operationalAnalyticsIdentifier];
+    displayName = [protobufCopy displayName];
+    initiativeContext = [protobufCopy initiativeContext];
+    initiative = [protobufCopy initiative];
+    ampEnrollmentPinning = [protobufCopy ampEnrollmentPinning];
+    operationalAnalyticsIdentifier = [protobufCopy operationalAnalyticsIdentifier];
     v13 = v5;
-    v25 = v6;
-    [v3 signedFields];
-    v14 = v8;
-    v16 = v15 = v7;
-    v17 = [v3 signature];
+    v25 = merchantIdentifier;
+    [protobufCopy signedFields];
+    v14 = nonce;
+    v16 = v15 = sessionIdentifier;
+    signature = [protobufCopy signature];
     v18 = v13;
-    v19 = v24;
-    v20 = [(PKPaymentMerchantSession *)v18 initWithMerchantIdentifier:v25 merchantSessionIdentifier:v15 nonce:v14 epochTimestamp:v9 expiresAt:v26 displayName:v24 initiativeContext:v10 initiative:v11 ampEnrollmentPinning:v12 operationalAnalyticsIdentifier:v23 signedFields:v16 signature:v17];
+    domain = displayName;
+    v20 = [(PKPaymentMerchantSession *)v18 initWithMerchantIdentifier:v25 merchantSessionIdentifier:v15 nonce:v14 epochTimestamp:epochTimestamp expiresAt:expiresAt displayName:displayName initiativeContext:initiativeContext initiative:initiative ampEnrollmentPinning:ampEnrollmentPinning operationalAnalyticsIdentifier:operationalAnalyticsIdentifier signedFields:v16 signature:signature];
 
-    v7 = v15;
-    v8 = v14;
+    sessionIdentifier = v15;
+    nonce = v14;
 
-    v6 = v25;
+    merchantIdentifier = v25;
   }
 
   else
   {
-    v19 = [v3 domain];
-    v10 = [v3 displayName];
-    v11 = [v3 operationalAnalyticsIdentifier];
-    v12 = [v3 signature];
-    v20 = [(PKPaymentMerchantSession *)v5 initWithMerchantIdentifier:v6 merchantSessionIdentifier:v7 nonce:v8 epochTimestamp:v9 expiresAt:v26 domain:v19 displayName:v10 operationalAnalyticsIdentifier:v11 signature:v12];
+    domain = [protobufCopy domain];
+    initiativeContext = [protobufCopy displayName];
+    initiative = [protobufCopy operationalAnalyticsIdentifier];
+    ampEnrollmentPinning = [protobufCopy signature];
+    v20 = [(PKPaymentMerchantSession *)v5 initWithMerchantIdentifier:merchantIdentifier merchantSessionIdentifier:sessionIdentifier nonce:nonce epochTimestamp:epochTimestamp expiresAt:expiresAt domain:domain displayName:initiativeContext operationalAnalyticsIdentifier:initiative signature:ampEnrollmentPinning];
   }
 
-  if ([v3 hasRetryNonce])
+  if ([protobufCopy hasRetryNonce])
   {
-    v21 = [v3 retryNonce];
-    [(PKPaymentMerchantSession *)v20 setRetryNonce:v21];
+    retryNonce = [protobufCopy retryNonce];
+    [(PKPaymentMerchantSession *)v20 setRetryNonce:retryNonce];
   }
 
   return v20;
@@ -868,48 +868,48 @@ LABEL_17:
 - (id)protobuf
 {
   v3 = objc_alloc_init(PKProtobufPaymentMerchantSession);
-  v4 = [(PKPaymentMerchantSession *)self merchantIdentifier];
-  [(PKProtobufPaymentMerchantSession *)v3 setMerchantIdentifier:v4];
+  merchantIdentifier = [(PKPaymentMerchantSession *)self merchantIdentifier];
+  [(PKProtobufPaymentMerchantSession *)v3 setMerchantIdentifier:merchantIdentifier];
 
-  v5 = [(PKPaymentMerchantSession *)self merchantSessionIdentifier];
-  [(PKProtobufPaymentMerchantSession *)v3 setSessionIdentifier:v5];
+  merchantSessionIdentifier = [(PKPaymentMerchantSession *)self merchantSessionIdentifier];
+  [(PKProtobufPaymentMerchantSession *)v3 setSessionIdentifier:merchantSessionIdentifier];
 
-  v6 = [(PKPaymentMerchantSession *)self nonce];
-  [(PKProtobufPaymentMerchantSession *)v3 setNonce:v6];
+  nonce = [(PKPaymentMerchantSession *)self nonce];
+  [(PKProtobufPaymentMerchantSession *)v3 setNonce:nonce];
 
   [(PKProtobufPaymentMerchantSession *)v3 setEpochTimestamp:[(PKPaymentMerchantSession *)self epochTimestamp]];
   [(PKProtobufPaymentMerchantSession *)v3 setExpiresAt:[(PKPaymentMerchantSession *)self expiresAt]];
-  v7 = [(PKPaymentMerchantSession *)self displayName];
-  [(PKProtobufPaymentMerchantSession *)v3 setDisplayName:v7];
+  displayName = [(PKPaymentMerchantSession *)self displayName];
+  [(PKProtobufPaymentMerchantSession *)v3 setDisplayName:displayName];
 
-  v8 = [(PKPaymentMerchantSession *)self signature];
-  [(PKProtobufPaymentMerchantSession *)v3 setSignature:v8];
+  signature = [(PKPaymentMerchantSession *)self signature];
+  [(PKProtobufPaymentMerchantSession *)v3 setSignature:signature];
 
-  v9 = [(PKPaymentMerchantSession *)self retryNonce];
-  [(PKProtobufPaymentMerchantSession *)v3 setRetryNonce:v9];
+  retryNonce = [(PKPaymentMerchantSession *)self retryNonce];
+  [(PKProtobufPaymentMerchantSession *)v3 setRetryNonce:retryNonce];
 
-  v10 = [(PKPaymentMerchantSession *)self operationalAnalyticsIdentifier];
-  [(PKProtobufPaymentMerchantSession *)v3 setOperationalAnalyticsIdentifier:v10];
+  operationalAnalyticsIdentifier = [(PKPaymentMerchantSession *)self operationalAnalyticsIdentifier];
+  [(PKProtobufPaymentMerchantSession *)v3 setOperationalAnalyticsIdentifier:operationalAnalyticsIdentifier];
 
-  v11 = [(PKPaymentMerchantSession *)self initiative];
+  initiative = [(PKPaymentMerchantSession *)self initiative];
 
-  if (v11)
+  if (initiative)
   {
-    v12 = [(PKPaymentMerchantSession *)self initiative];
-    [(PKProtobufPaymentMerchantSession *)v3 setInitiative:v12];
+    initiative2 = [(PKPaymentMerchantSession *)self initiative];
+    [(PKProtobufPaymentMerchantSession *)v3 setInitiative:initiative2];
 
-    v13 = [(PKPaymentMerchantSession *)self initiativeContext];
-    [(PKProtobufPaymentMerchantSession *)v3 setInitiativeContext:v13];
+    initiativeContext = [(PKPaymentMerchantSession *)self initiativeContext];
+    [(PKProtobufPaymentMerchantSession *)v3 setInitiativeContext:initiativeContext];
 
-    v14 = [(PKPaymentMerchantSession *)self signedFields];
-    v15 = [v14 mutableCopy];
+    signedFields = [(PKPaymentMerchantSession *)self signedFields];
+    v15 = [signedFields mutableCopy];
     [(PKProtobufPaymentMerchantSession *)v3 setSignedFields:v15];
   }
 
   else
   {
-    v14 = [(PKPaymentMerchantSession *)self domain];
-    [(PKProtobufPaymentMerchantSession *)v3 setDomain:v14];
+    signedFields = [(PKPaymentMerchantSession *)self domain];
+    [(PKProtobufPaymentMerchantSession *)v3 setDomain:signedFields];
   }
 
   return v3;

@@ -1,5 +1,5 @@
 @interface IDSSessionCancelSentMetric
-- (IDSSessionCancelSentMetric)initWithGuid:(id)a3 numberOfRecipients:(id)a4 remoteSessionEndReason:(unsigned int)a5;
+- (IDSSessionCancelSentMetric)initWithGuid:(id)guid numberOfRecipients:(id)recipients remoteSessionEndReason:(unsigned int)reason;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -8,16 +8,16 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSSessionCancelSentMetric *)self guid];
-  if (v4)
+  guid = [(IDSSessionCancelSentMetric *)self guid];
+  if (guid)
   {
-    CFDictionarySetValue(v3, @"guid", v4);
+    CFDictionarySetValue(v3, @"guid", guid);
   }
 
-  v5 = [(IDSSessionCancelSentMetric *)self numberOfRecipients];
-  if (v5)
+  numberOfRecipients = [(IDSSessionCancelSentMetric *)self numberOfRecipients];
+  if (numberOfRecipients)
   {
-    CFDictionarySetValue(v3, @"numberOfRecipients", v5);
+    CFDictionarySetValue(v3, @"numberOfRecipients", numberOfRecipients);
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[IDSSessionCancelSentMetric remoteSessionEndReason](self, "remoteSessionEndReason")}];
@@ -29,19 +29,19 @@
   return v3;
 }
 
-- (IDSSessionCancelSentMetric)initWithGuid:(id)a3 numberOfRecipients:(id)a4 remoteSessionEndReason:(unsigned int)a5
+- (IDSSessionCancelSentMetric)initWithGuid:(id)guid numberOfRecipients:(id)recipients remoteSessionEndReason:(unsigned int)reason
 {
-  v9 = a3;
-  v10 = a4;
+  guidCopy = guid;
+  recipientsCopy = recipients;
   v14.receiver = self;
   v14.super_class = IDSSessionCancelSentMetric;
   v11 = [(IDSSessionCancelSentMetric *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_guid, a3);
-    objc_storeStrong(&v12->_numberOfRecipients, a4);
-    v12->_remoteSessionEndReason = a5;
+    objc_storeStrong(&v11->_guid, guid);
+    objc_storeStrong(&v12->_numberOfRecipients, recipients);
+    v12->_remoteSessionEndReason = reason;
   }
 
   return v12;

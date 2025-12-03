@@ -1,13 +1,13 @@
 @interface BooksEngagementPluginProvider
-+ (void)performRequestWithObject:(id)a3 completion:(id)a4;
++ (void)performRequestWithObject:(id)object completion:(id)completion;
 - (_TtC24BooksEngagementExtension29BooksEngagementPluginProvider)init;
 @end
 
 @implementation BooksEngagementPluginProvider
 
-+ (void)performRequestWithObject:(id)a3 completion:(id)a4
++ (void)performRequestWithObject:(id)object completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   swift_unknownObjectRetain();
   sub_10000A460();
   swift_unknownObjectRelease();

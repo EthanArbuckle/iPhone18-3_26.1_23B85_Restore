@@ -1,6 +1,6 @@
 @interface _UITextAssistantReplacementTracker
 - (BOOL)hasProcessedOriginalRange;
-- (BOOL)selectRewriteMatchingUndoRedoReplacementText:(id)a3;
+- (BOOL)selectRewriteMatchingUndoRedoReplacementText:(id)text;
 - (NSAttributedString)activeText;
 - (NSAttributedString)processedOriginalText;
 - (NSAttributedString)unprocessedOriginalText;
@@ -12,21 +12,21 @@
 - (_NSRange)originalCharacterRange;
 - (_NSRange)processedOriginalCharacterRange;
 - (_NSRange)rewrittenCharacterRange;
-- (_NSRange)sourceRangeForChunkFromDelivery:(id)a3;
-- (_NSRange)targetRangeForChunkFromDelivery:(id)a3;
-- (id)assembledRewrittenTextToDelivery:(id)a3 matchingInitialDeliveries:(BOOL)a4;
+- (_NSRange)sourceRangeForChunkFromDelivery:(id)delivery;
+- (_NSRange)targetRangeForChunkFromDelivery:(id)delivery;
+- (id)assembledRewrittenTextToDelivery:(id)delivery matchingInitialDeliveries:(BOOL)deliveries;
 - (id)description;
-- (id)initFromSessionContext:(id)a3 offsetForSessionRange:(unint64_t)a4 withProofreadingController:(id)a5;
+- (id)initFromSessionContext:(id)context offsetForSessionRange:(unint64_t)range withProofreadingController:(id)controller;
 - (id)newEditTracker;
-- (id)nextDeliveryForDelivery:(id)a3;
-- (id)originalChunkTextForDelivery:(id)a3;
-- (id)recordRewrittenText:(id)a3 forRange:(_NSRange)a4 withContext:(id)a5 finished:(BOOL)a6;
-- (id)rewrittenChunkTextForDelivery:(id)a3;
-- (uint64_t)currentChunkCharacterRangeUpdatingLength:(uint64_t)a1;
-- (uint64_t)rangeForChunkFromDelivery:(int)a3 useOriginalLength:;
-- (void)setCompositionSessionState:(int64_t)a3;
-- (void)setOffsetForSessionRange:(unint64_t)a3;
-- (void)updateReplacementChunkForDeliveryID:(id)a3 newText:(id)a4;
+- (id)nextDeliveryForDelivery:(id)delivery;
+- (id)originalChunkTextForDelivery:(id)delivery;
+- (id)recordRewrittenText:(id)text forRange:(_NSRange)range withContext:(id)context finished:(BOOL)finished;
+- (id)rewrittenChunkTextForDelivery:(id)delivery;
+- (uint64_t)currentChunkCharacterRangeUpdatingLength:(uint64_t)length;
+- (uint64_t)rangeForChunkFromDelivery:(int)delivery useOriginalLength:;
+- (void)setCompositionSessionState:(int64_t)state;
+- (void)setOffsetForSessionRange:(unint64_t)range;
+- (void)updateReplacementChunkForDeliveryID:(id)d newText:(id)text;
 @end
 
 @implementation _UITextAssistantReplacementTracker
@@ -39,26 +39,26 @@
   return [v3 initWithContextRange:{0, length}];
 }
 
-- (id)initFromSessionContext:(id)a3 offsetForSessionRange:(unint64_t)a4 withProofreadingController:(id)a5
+- (id)initFromSessionContext:(id)context offsetForSessionRange:(unint64_t)range withProofreadingController:(id)controller
 {
-  v9 = a3;
-  v10 = a5;
+  contextCopy = context;
+  controllerCopy = controller;
   v28.receiver = self;
   v28.super_class = _UITextAssistantReplacementTracker;
   v11 = [(_UITextAssistantReplacementTracker *)&v28 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_originalContext, a3);
-    v13 = [v9 uuid];
+    objc_storeStrong(&v11->_originalContext, context);
+    uuid = [contextCopy uuid];
     contextUUID = v12->_contextUUID;
-    v12->_contextUUID = v13;
+    v12->_contextUUID = uuid;
 
-    v12->_offsetForSessionRange = a4;
-    v12->_sessionContextRange.location = [v9 range];
+    v12->_offsetForSessionRange = range;
+    v12->_sessionContextRange.location = [contextCopy range];
     v12->_sessionContextRange.length = v15;
-    v16 = [v9 attributedText];
-    v17 = [v16 attributedSubstringFromRange:{v12->_sessionContextRange.location, v12->_sessionContextRange.length}];
+    attributedText = [contextCopy attributedText];
+    v17 = [attributedText attributedSubstringFromRange:{v12->_sessionContextRange.location, v12->_sessionContextRange.length}];
     originalText = v12->_originalText;
     v12->_originalText = v17;
 
@@ -67,16 +67,16 @@
     v12->_rewrittenText = v19;
 
     v12->_selectedRewriteIndex = 0x7FFFFFFFFFFFFFFFLL;
-    objc_storeStrong(&v12->_proofreadingController, a5);
-    v12->_proofreading = v10 != 0;
-    if (v10)
+    objc_storeStrong(&v12->_proofreadingController, controller);
+    v12->_proofreading = controllerCopy != 0;
+    if (controllerCopy)
     {
       v12->_compositionSessionState = -1;
     }
 
-    v21 = [(_UITextAssistantReplacementTracker *)v12 newEditTracker];
+    newEditTracker = [(_UITextAssistantReplacementTracker *)v12 newEditTracker];
     editTracker = v12->_editTracker;
-    v12->_editTracker = v21;
+    v12->_editTracker = newEditTracker;
 
     v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
     replacementDeliveryUUIDs = v12->_replacementDeliveryUUIDs;
@@ -90,11 +90,11 @@
   return v12;
 }
 
-- (void)setOffsetForSessionRange:(unint64_t)a3
+- (void)setOffsetForSessionRange:(unint64_t)range
 {
-  if (self->_offsetForSessionRange != a3)
+  if (self->_offsetForSessionRange != range)
   {
-    self->_offsetForSessionRange = a3;
+    self->_offsetForSessionRange = range;
     processedOriginalText = self->_processedOriginalText;
     self->_processedOriginalText = 0;
 
@@ -103,23 +103,23 @@
   }
 }
 
-- (void)setCompositionSessionState:(int64_t)a3
+- (void)setCompositionSessionState:(int64_t)state
 {
-  v6 = [(_UITextAssistantReplacementTracker *)self isProofreading];
-  if (a3 != -1 && v6)
+  isProofreading = [(_UITextAssistantReplacementTracker *)self isProofreading];
+  if (state != -1 && isProofreading)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:123 description:@"Can't set replacement tracker's compositionSessionState to anything other than Invalid when proofreading"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:123 description:@"Can't set replacement tracker's compositionSessionState to anything other than Invalid when proofreading"];
   }
 
-  if (self->_compositionSessionState != a3)
+  if (self->_compositionSessionState != state)
   {
-    self->_compositionSessionState = a3;
-    if (!a3)
+    self->_compositionSessionState = state;
+    if (!state)
     {
-      v7 = [(_UITextAssistantReplacementTracker *)self newEditTracker];
+      newEditTracker = [(_UITextAssistantReplacementTracker *)self newEditTracker];
       editTracker = self->_editTracker;
-      self->_editTracker = v7;
+      self->_editTracker = newEditTracker;
 
       self->_finished = 0;
       [(NSMutableArray *)self->_replacementDeliveryUUIDs removeAllObjects];
@@ -141,8 +141,8 @@
           previousRewrites = self->_previousRewrites;
         }
 
-        v14 = [(NSAttributedString *)self->_rewrittenText string];
-        [(NSMutableArray *)previousRewrites addObject:v14];
+        string = [(NSAttributedString *)self->_rewrittenText string];
+        [(NSMutableArray *)previousRewrites addObject:string];
 
         [(NSMutableArray *)self->_previousRewrittenTexts addObject:self->_rewrittenText];
       }
@@ -160,29 +160,29 @@
   }
 }
 
-- (id)recordRewrittenText:(id)a3 forRange:(_NSRange)a4 withContext:(id)a5 finished:(BOOL)a6
+- (id)recordRewrittenText:(id)text forRange:(_NSRange)range withContext:(id)context finished:(BOOL)finished
 {
-  v6 = a6;
-  length = a4.length;
-  location = a4.location;
+  finishedCopy = finished;
+  length = range.length;
+  location = range.location;
   v124 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
-  v15 = [v14 uuid];
+  textCopy = text;
+  contextCopy = context;
+  uuid = [contextCopy uuid];
   contextUUID = self->_contextUUID;
-  v17 = v15;
+  currentHandler = uuid;
   v18 = contextUUID;
   v19 = v18;
   v113 = length;
-  if (v17 == v18)
+  if (currentHandler == v18)
   {
   }
 
   else
   {
-    if (v17 && v18)
+    if (currentHandler && v18)
     {
-      v20 = [(NSUUID *)v17 isEqual:v18];
+      v20 = [(NSUUID *)currentHandler isEqual:v18];
 
       if (v20)
       {
@@ -194,13 +194,13 @@
     {
     }
 
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [(NSUUID *)v17 handleFailureInMethod:a2 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:174 description:@"Mismatched composition session context"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [(NSUUID *)currentHandler handleFailureInMethod:a2 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:174 description:@"Mismatched composition session context"];
   }
 
 LABEL_8:
   v21 = self->_originalContext;
-  v22 = v14;
+  v22 = contextCopy;
   v23 = v22;
   v107 = a2;
   if (v21 == v22)
@@ -242,50 +242,50 @@ LABEL_8:
 LABEL_16:
   p_rewrittenText = &self->_rewrittenText;
   rewrittenText = self->_rewrittenText;
-  self->_finished = v6;
-  v27 = [(NSAttributedString *)rewrittenText string];
+  self->_finished = finishedCopy;
+  string = [(NSAttributedString *)rewrittenText string];
   if (self->_initialReplacementChunksByUUID)
   {
     v28 = [(_UITextAssistantReplacementTracker *)self assembledRewrittenTextToDelivery:0 matchingInitialDeliveries:1];
-    v29 = [v28 string];
+    string2 = [v28 string];
 
-    v27 = v29;
+    string = string2;
   }
 
-  if (v6)
+  if (finishedCopy)
   {
-    v30 = [v13 string];
-    v31 = [v30 isEqualToString:v27];
+    string3 = [textCopy string];
+    v31 = [string3 isEqualToString:string];
 
     if (v31)
     {
-      v32 = 0;
+      uUID = 0;
       self->_selectedRewriteIndex = [(NSMutableArray *)self->_previousRewrittenTexts count];
       goto LABEL_61;
     }
   }
 
-  v111 = location;
-  v108 = v27;
-  v109 = v6;
+  originalEndIndex = location;
+  v108 = string;
+  v109 = finishedCopy;
   processedOriginalText = self->_processedOriginalText;
   self->_processedOriginalText = 0;
 
   unprocessedOriginalText = self->_unprocessedOriginalText;
   self->_unprocessedOriginalText = 0;
 
-  v32 = [MEMORY[0x1E696AFB0] UUID];
-  v35 = [(_UITextAssistantReplacementTracker *)self isProofreading];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  isProofreading = [(_UITextAssistantReplacementTracker *)self isProofreading];
   fallbackDeliveryID = self->_fallbackDeliveryID;
   self->_fallbackDeliveryID = 0;
 
-  v106 = v35;
-  if (!v35)
+  v106 = isProofreading;
+  if (!isProofreading)
   {
-    v37 = [v13 length];
+    v37 = [textCopy length];
     if (v37 <= [(NSAttributedString *)*p_rewrittenText length])
     {
-      v104 = v13;
+      v104 = textCopy;
       if (os_variant_has_internal_diagnostics())
       {
         if ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantRewriteLogging, @"UITextAssistantRewriteLogging") & 1) == 0)
@@ -337,29 +337,29 @@ LABEL_16:
       [(NSMutableArray *)self->_replacementDeliveryUUIDs removeAllObjects];
       [(NSMutableDictionary *)self->_replacementChunksByUUID removeAllObjects];
       [(NSMutableDictionary *)self->_initialReplacementChunksByUUID removeAllObjects];
-      objc_storeStrong(&self->_fallbackDeliveryID, v32);
-      v13 = v104;
-      LOBYTE(v35) = v106;
+      objc_storeStrong(&self->_fallbackDeliveryID, uUID);
+      textCopy = v104;
+      LOBYTE(isProofreading) = v106;
     }
   }
 
-  v43 = [(NSMutableArray *)self->_replacementDeliveryUUIDs lastObject];
-  if (v43)
+  lastObject = [(NSMutableArray *)self->_replacementDeliveryUUIDs lastObject];
+  if (lastObject)
   {
-    v44 = [(NSMutableDictionary *)self->_replacementChunksByUUID objectForKeyedSubscript:v43];
+    v44 = [(NSMutableDictionary *)self->_replacementChunksByUUID objectForKeyedSubscript:lastObject];
     v45 = v44;
-    if (v35)
+    if (isProofreading)
     {
-      v46 = v13;
+      v46 = textCopy;
       if (v44)
       {
-        v47 = [v44 originalRange];
-        v49 = v47 + v48;
-        v50 = v111 - (v47 + v48);
+        originalRange = [v44 originalRange];
+        v49 = originalRange + v48;
+        v50 = originalEndIndex - (originalRange + v48);
         if (v50 < 0)
         {
-          v51 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v51 handleFailureInMethod:v107 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:220 description:@"Unexpected overlapping proofreading delivery range"];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:v107 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:220 description:@"Unexpected overlapping proofreading delivery range"];
         }
 
         goto LABEL_40;
@@ -387,7 +387,7 @@ LABEL_40:
         [v66 appendAttributedString:v67];
       }
 
-      v13 = v46;
+      textCopy = v46;
       [v66 appendAttributedString:v46];
       v68 = [v66 copy];
       v69 = *p_rewrittenText;
@@ -400,9 +400,9 @@ LABEL_40:
 
   else
   {
-    if (v35)
+    if (isProofreading)
     {
-      v46 = v13;
+      v46 = textCopy;
       v45 = 0;
       goto LABEL_39;
     }
@@ -410,18 +410,18 @@ LABEL_40:
     v45 = 0;
   }
 
-  objc_storeStrong(&self->_rewrittenText, a3);
-  v53 = v13;
+  objc_storeStrong(&self->_rewrittenText, text);
+  v53 = textCopy;
   v110 = v45;
-  if (v43 && v45)
+  if (lastObject && v45)
   {
-    v54 = v13;
-    v55 = v111 + v113 - [v45 originalEndIndex];
+    v54 = textCopy;
+    v55 = originalEndIndex + v113 - [v45 originalEndIndex];
     if (v55 < 0)
     {
-      v96 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v56 = v45;
-      [v96 handleFailureInMethod:v107 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:238 description:{@"Negative length found for incoming replacement.\npreviousChunk: %@\ninRange={%lu, %lu}", v45, v111, v113}];
+      [currentHandler3 handleFailureInMethod:v107 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:238 description:{@"Negative length found for incoming replacement.\npreviousChunk: %@\ninRange={%lu, %lu}", v45, originalEndIndex, v113}];
     }
 
     else
@@ -447,30 +447,30 @@ LABEL_40:
       }
     }
 
-    v111 = [v56 originalEndIndex];
+    originalEndIndex = [v56 originalEndIndex];
     editTracker = self->_editTracker;
-    v58 = [v56 originalRange];
-    v60 = [(NSWritingToolsEditTracker *)editTracker rangeOfSuggestionWithRange:v58 UUID:v59 applyDelta:v43, 1];
+    originalRange2 = [v56 originalRange];
+    v60 = [(NSWritingToolsEditTracker *)editTracker rangeOfSuggestionWithRange:originalRange2 UUID:v59 applyDelta:lastObject, 1];
     v62 = v60 + v61;
     v63 = [v53 length] - (v60 + v61);
     if (v63 < 0)
     {
-      v97 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v97 handleFailureInMethod:v107 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:248 description:@"Error in rewrite length calculation"];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler4 handleFailureInMethod:v107 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:248 description:@"Error in rewrite length calculation"];
     }
 
     v64 = [v53 attributedSubstringFromRange:{v62, v63}];
 
     v113 = v55;
     v53 = v64;
-    v13 = v54;
+    textCopy = v54;
   }
 
-  v65 = [v53 string];
+  string4 = [v53 string];
   if (os_variant_has_internal_diagnostics() && (_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantRewriteLogging, @"UITextAssistantRewriteLogging") & 1) == 0 && byte_1EA95E17C)
   {
-    v83 = v13;
-    v84 = [v65 substringWithRange:{0, objc_msgSend(v65, "length") != 0}];
+    v83 = textCopy;
+    v84 = [string4 substringWithRange:{0, objc_msgSend(string4, "length") != 0}];
     v85 = [v84 isEqualToString:@"\n"];
 
     v86 = v85;
@@ -493,7 +493,7 @@ LABEL_40:
       }
     }
 
-    v87 = [v65 length];
+    v87 = [string4 length];
     if (v87 <= 1)
     {
       v88 = 1;
@@ -504,12 +504,12 @@ LABEL_40:
       v88 = v87;
     }
 
-    v89 = [v65 substringWithRange:{v88 - 1, objc_msgSend(v65, "length") != 0}];
+    v89 = [string4 substringWithRange:{v88 - 1, objc_msgSend(string4, "length") != 0}];
     v90 = [v89 isEqualToString:@"\n"];
 
     if (v90)
     {
-      v13 = v83;
+      textCopy = v83;
       if (os_variant_has_internal_diagnostics())
       {
         if ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantRewriteLogging, @"UITextAssistantRewriteLogging") & 1) == 0)
@@ -529,7 +529,7 @@ LABEL_40:
       goto LABEL_97;
     }
 
-    v13 = v83;
+    textCopy = v83;
     if (v86)
     {
 LABEL_97:
@@ -543,7 +543,7 @@ LABEL_97:
             if (os_log_type_enabled(v98, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              v120 = v65;
+              v120 = string4;
               _os_log_impl(&dword_188A29000, v98, OS_LOG_TYPE_ERROR, "\n------------\n%@\n------------", buf, 0xCu);
             }
           }
@@ -553,26 +553,26 @@ LABEL_97:
   }
 
 LABEL_57:
-  [(NSMutableArray *)self->_replacementDeliveryUUIDs addObject:v32];
-  v70 = [[_UIWritingToolsReplacementChunk alloc] initWithReplacementChunk:v53 originalRange:v111 uuid:v113, v32];
-  [(NSMutableDictionary *)self->_replacementChunksByUUID setObject:v70 forKeyedSubscript:v32];
-  [(NSWritingToolsEditTracker *)self->_editTracker addEditForSuggestionWithRange:v111 lengthDelta:v113 UUID:[(_UIWritingToolsReplacementChunk *)v70 lengthDelta], v32];
+  [(NSMutableArray *)self->_replacementDeliveryUUIDs addObject:uUID];
+  v70 = [[_UIWritingToolsReplacementChunk alloc] initWithReplacementChunk:v53 originalRange:originalEndIndex uuid:v113, uUID];
+  [(NSMutableDictionary *)self->_replacementChunksByUUID setObject:v70 forKeyedSubscript:uUID];
+  [(NSWritingToolsEditTracker *)self->_editTracker addEditForSuggestionWithRange:originalEndIndex lengthDelta:v113 UUID:[(_UIWritingToolsReplacementChunk *)v70 lengthDelta], uUID];
   v71 = v110;
   if (os_variant_has_internal_diagnostics())
   {
-    v73 = [(_UITextAssistantReplacementTracker *)self assembledRewrittenText];
+    assembledRewrittenText = [(_UITextAssistantReplacementTracker *)self assembledRewrittenText];
     [(_UITextAssistantReplacementTracker *)self rewrittenText];
-    v74 = v105 = v13;
-    v75 = [v73 isEqualToAttributedString:v74];
+    v74 = v105 = textCopy;
+    v75 = [assembledRewrittenText isEqualToAttributedString:v74];
 
-    v13 = v105;
+    textCopy = v105;
     if ((v75 & 1) == 0)
     {
-      v114 = [(_UITextAssistantReplacementTracker *)self assembledRewrittenText];
-      v76 = [v114 string];
-      v77 = [(_UITextAssistantReplacementTracker *)self rewrittenText];
-      v78 = [v77 string];
-      v112 = [v76 isEqualToString:v78];
+      assembledRewrittenText2 = [(_UITextAssistantReplacementTracker *)self assembledRewrittenText];
+      string5 = [assembledRewrittenText2 string];
+      rewrittenText = [(_UITextAssistantReplacementTracker *)self rewrittenText];
+      string6 = [rewrittenText string];
+      v112 = [string5 isEqualToString:string6];
 
       if (os_variant_has_internal_diagnostics())
       {
@@ -598,14 +598,14 @@ LABEL_57:
           _os_log_fault_impl(&dword_188A29000, v100, OS_LOG_TYPE_FAULT, "%@ replacement improperly recorded.%@", buf, 0x16u);
         }
 
-        v13 = v105;
+        textCopy = v105;
         v71 = v110;
       }
 
       else
       {
         v79 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED49E358) + 8);
-        v13 = v105;
+        textCopy = v105;
         if (os_log_type_enabled(v79, OS_LOG_TYPE_ERROR))
         {
           v80 = @"Composition";
@@ -635,19 +635,19 @@ LABEL_57:
     self->_selectedRewriteIndex = [(NSMutableArray *)self->_previousRewrittenTexts count];
   }
 
-  v27 = v108;
+  string = v108;
 LABEL_61:
 
-  return v32;
+  return uUID;
 }
 
-- (void)updateReplacementChunkForDeliveryID:(id)a3 newText:(id)a4
+- (void)updateReplacementChunkForDeliveryID:(id)d newText:(id)text
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   replacementDeliveryUUIDs = self->_replacementDeliveryUUIDs;
-  v8 = a4;
-  if (([(NSMutableArray *)replacementDeliveryUUIDs containsObject:v6]& 1) == 0)
+  textCopy = text;
+  if (([(NSMutableArray *)replacementDeliveryUUIDs containsObject:dCopy]& 1) == 0)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -656,7 +656,7 @@ LABEL_61:
       {
         v23 = self->_replacementDeliveryUUIDs;
         v24 = 138412546;
-        v25 = v6;
+        v25 = dCopy;
         v26 = 2112;
         v27 = v23;
         _os_log_fault_impl(&dword_188A29000, v22, OS_LOG_TYPE_FAULT, "Can't update replacement chunk for abandoned delivery, %@. It's not contained in %@", &v24, 0x16u);
@@ -670,7 +670,7 @@ LABEL_61:
       {
         v21 = self->_replacementDeliveryUUIDs;
         v24 = 138412546;
-        v25 = v6;
+        v25 = dCopy;
         v26 = 2112;
         v27 = v21;
         _os_log_impl(&dword_188A29000, v20, OS_LOG_TYPE_ERROR, "Can't update replacement chunk for abandoned delivery, %@. It's not contained in %@", &v24, 0x16u);
@@ -678,9 +678,9 @@ LABEL_61:
     }
   }
 
-  v9 = [(NSMutableDictionary *)self->_replacementChunksByUUID objectForKeyedSubscript:v6];
-  [(NSWritingToolsEditTracker *)self->_editTracker removeEditForSuggestionWithUUID:v6];
-  v10 = [(NSMutableDictionary *)self->_initialReplacementChunksByUUID objectForKeyedSubscript:v6];
+  v9 = [(NSMutableDictionary *)self->_replacementChunksByUUID objectForKeyedSubscript:dCopy];
+  [(NSWritingToolsEditTracker *)self->_editTracker removeEditForSuggestionWithUUID:dCopy];
+  v10 = [(NSMutableDictionary *)self->_initialReplacementChunksByUUID objectForKeyedSubscript:dCopy];
 
   if (!v10)
   {
@@ -694,32 +694,32 @@ LABEL_61:
       initialReplacementChunksByUUID = self->_initialReplacementChunksByUUID;
     }
 
-    [(NSMutableDictionary *)initialReplacementChunksByUUID setObject:v9 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)initialReplacementChunksByUUID setObject:v9 forKeyedSubscript:dCopy];
   }
 
-  v14 = [v9 originalRange];
+  originalRange = [v9 originalRange];
   v16 = v15;
-  v17 = [[_UIWritingToolsReplacementChunk alloc] initWithReplacementChunk:v8 originalRange:v14 uuid:v15, v6];
+  dCopy = [[_UIWritingToolsReplacementChunk alloc] initWithReplacementChunk:textCopy originalRange:originalRange uuid:v15, dCopy];
 
-  [(NSWritingToolsEditTracker *)self->_editTracker addEditForSuggestionWithRange:v14 lengthDelta:v16 UUID:[(_UIWritingToolsReplacementChunk *)v17 lengthDelta], v6];
-  [(NSMutableDictionary *)self->_replacementChunksByUUID setObject:v17 forKeyedSubscript:v6];
-  v18 = [(_UITextAssistantReplacementTracker *)self assembledRewrittenText];
+  [(NSWritingToolsEditTracker *)self->_editTracker addEditForSuggestionWithRange:originalRange lengthDelta:v16 UUID:[(_UIWritingToolsReplacementChunk *)dCopy lengthDelta], dCopy];
+  [(NSMutableDictionary *)self->_replacementChunksByUUID setObject:dCopy forKeyedSubscript:dCopy];
+  assembledRewrittenText = [(_UITextAssistantReplacementTracker *)self assembledRewrittenText];
   rewrittenText = self->_rewrittenText;
-  self->_rewrittenText = v18;
+  self->_rewrittenText = assembledRewrittenText;
 }
 
-- (BOOL)selectRewriteMatchingUndoRedoReplacementText:(id)a3
+- (BOOL)selectRewriteMatchingUndoRedoReplacementText:(id)text
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  textCopy = text;
   if ([(_UITextAssistantReplacementTracker *)self isRewriting])
   {
-    v6 = [v5 string];
+    string = [textCopy string];
     previousRewrites = self->_previousRewrites;
-    if (!previousRewrites || (v8 = [(NSMutableArray *)previousRewrites indexOfObject:v6], v8 == 0x7FFFFFFFFFFFFFFFLL))
+    if (!previousRewrites || (v8 = [(NSMutableArray *)previousRewrites indexOfObject:string], v8 == 0x7FFFFFFFFFFFFFFFLL))
     {
-      v9 = [(NSAttributedString *)self->_rewrittenText string];
-      v10 = [v6 isEqualToString:v9];
+      string2 = [(NSAttributedString *)self->_rewrittenText string];
+      v10 = [string isEqualToString:string2];
 
       if (!v10 || (v8 = [(NSMutableArray *)self->_previousRewrites count], v8 == 0x7FFFFFFFFFFFFFFFLL))
       {
@@ -733,9 +733,9 @@ LABEL_61:
               if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
               {
                 v15 = v14;
-                v16 = [v5 string];
+                string3 = [textCopy string];
                 v23 = 138412290;
-                v24 = v16;
+                v24 = string3;
                 _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_ERROR, "No rewrite version matches undoRedoReplacmentText\n%@", &v23, 0xCu);
               }
             }
@@ -808,11 +808,11 @@ LABEL_13:
   return v11;
 }
 
-- (id)assembledRewrittenTextToDelivery:(id)a3 matchingInitialDeliveries:(BOOL)a4
+- (id)assembledRewrittenTextToDelivery:(id)delivery matchingInitialDeliveries:(BOOL)deliveries
 {
-  v25 = a4;
+  deliveriesCopy = deliveries;
   v32 = *MEMORY[0x1E69E9840];
-  v26 = a3;
+  deliveryCopy = delivery;
   v5 = objc_alloc_init(MEMORY[0x1E696AD40]);
   v27 = 0u;
   v28 = 0u;
@@ -835,7 +835,7 @@ LABEL_3:
       }
 
       v11 = *(*(&v27 + 1) + 8 * v10);
-      if (v25 && (initialReplacementChunksByUUID = self->_initialReplacementChunksByUUID) != 0)
+      if (deliveriesCopy && (initialReplacementChunksByUUID = self->_initialReplacementChunksByUUID) != 0)
       {
         v13 = [(NSMutableDictionary *)initialReplacementChunksByUUID objectForKeyedSubscript:*(*(&v27 + 1) + 8 * v10)];
         v14 = v13;
@@ -857,24 +857,24 @@ LABEL_3:
         v16 = [(NSMutableDictionary *)self->_replacementChunksByUUID objectForKeyedSubscript:*(*(&v27 + 1) + 8 * v10)];
       }
 
-      v17 = [v16 originalRange];
+      originalRange = [v16 originalRange];
       v19 = v18;
-      if (v17 - v8 >= 1)
+      if (originalRange - v8 >= 1)
       {
         v20 = [(NSAttributedString *)self->_originalText attributedSubstringFromRange:v8];
         [v5 appendAttributedString:v20];
       }
 
-      v21 = [v16 replacement];
-      [v5 appendAttributedString:v21];
+      replacement = [v16 replacement];
+      [v5 appendAttributedString:replacement];
 
-      LOBYTE(v21) = [v11 isEqual:v26];
-      if (v21)
+      LOBYTE(replacement) = [v11 isEqual:deliveryCopy];
+      if (replacement)
       {
         break;
       }
 
-      v8 = v17 + v19;
+      v8 = originalRange + v19;
       if (v7 == ++v10)
       {
         v7 = [(NSMutableArray *)obj countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -898,8 +898,8 @@ LABEL_3:
   processedOriginalText = self->_processedOriginalText;
   if (!processedOriginalText)
   {
-    v4 = [(_UITextAssistantReplacementTracker *)self processedOriginalCharacterRange];
-    v6 = [(NSAttributedString *)self->_originalText attributedSubstringFromRange:v4 - (self->_offsetForSessionRange + self->_sessionContextRange.location), v5];
+    processedOriginalCharacterRange = [(_UITextAssistantReplacementTracker *)self processedOriginalCharacterRange];
+    v6 = [(NSAttributedString *)self->_originalText attributedSubstringFromRange:processedOriginalCharacterRange - (self->_offsetForSessionRange + self->_sessionContextRange.location), v5];
     v7 = self->_processedOriginalText;
     self->_processedOriginalText = v6;
 
@@ -915,17 +915,17 @@ LABEL_3:
   if (!unprocessedOriginalText)
   {
     length = self->_sessionContextRange.length;
-    v6 = [(NSMutableArray *)self->_replacementDeliveryUUIDs lastObject];
-    if (v6)
+    lastObject = [(NSMutableArray *)self->_replacementDeliveryUUIDs lastObject];
+    if (lastObject)
     {
-      v7 = [(NSMutableDictionary *)self->_replacementChunksByUUID objectForKeyedSubscript:v6];
-      v8 = [v7 originalRange];
-      v10 = v8 + v9;
-      length -= v8 + v9;
+      v7 = [(NSMutableDictionary *)self->_replacementChunksByUUID objectForKeyedSubscript:lastObject];
+      originalRange = [v7 originalRange];
+      v10 = originalRange + v9;
+      length -= originalRange + v9;
       if (length < 0)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:a2 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:377 description:@"Invalid unprocessed range length"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:377 description:@"Invalid unprocessed range length"];
       }
     }
 
@@ -944,51 +944,51 @@ LABEL_3:
   return unprocessedOriginalText;
 }
 
-- (id)rewrittenChunkTextForDelivery:(id)a3
+- (id)rewrittenChunkTextForDelivery:(id)delivery
 {
-  v5 = a3;
-  v6 = v5;
-  if (([(NSMutableArray *)self->_replacementDeliveryUUIDs containsObject:v5]& 1) == 0)
+  deliveryCopy = delivery;
+  v6 = deliveryCopy;
+  if (([(NSMutableArray *)self->_replacementDeliveryUUIDs containsObject:deliveryCopy]& 1) == 0)
   {
     v6 = self->_fallbackDeliveryID;
   }
 
   if (!v6)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:392 description:@"Unknown delivery ID for retrieving chunk rewrite"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:392 description:@"Unknown delivery ID for retrieving chunk rewrite"];
   }
 
   v7 = [(NSMutableDictionary *)self->_replacementChunksByUUID objectForKeyedSubscript:v6];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 replacement];
+    replacement = [v7 replacement];
   }
 
   else
   {
-    v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1EFB14550];
+    replacement = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1EFB14550];
   }
 
-  v10 = v9;
+  v10 = replacement;
 
   return v10;
 }
 
-- (id)originalChunkTextForDelivery:(id)a3
+- (id)originalChunkTextForDelivery:(id)delivery
 {
-  v5 = a3;
-  v6 = v5;
-  if (([(NSMutableArray *)self->_replacementDeliveryUUIDs containsObject:v5]& 1) == 0)
+  deliveryCopy = delivery;
+  v6 = deliveryCopy;
+  if (([(NSMutableArray *)self->_replacementDeliveryUUIDs containsObject:deliveryCopy]& 1) == 0)
   {
     v6 = self->_fallbackDeliveryID;
   }
 
   if (!v6)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:403 description:@"Unknown delivery ID for retrieving chunk original"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:403 description:@"Unknown delivery ID for retrieving chunk original"];
   }
 
   v7 = [(NSMutableDictionary *)self->_replacementChunksByUUID objectForKeyedSubscript:v6];
@@ -996,8 +996,8 @@ LABEL_3:
   if (v7)
   {
     originalText = self->_originalText;
-    v10 = [v7 originalRange];
-    v12 = [(NSAttributedString *)originalText attributedSubstringFromRange:v10, v11];
+    originalRange = [v7 originalRange];
+    v12 = [(NSAttributedString *)originalText attributedSubstringFromRange:originalRange, v11];
   }
 
   else
@@ -1015,14 +1015,14 @@ LABEL_3:
   v31 = *MEMORY[0x1E69E9840];
   if (self->_compositionSessionState != 2)
   {
-    v6 = [(_UITextAssistantReplacementTracker *)self processedOriginalText];
+    processedOriginalText = [(_UITextAssistantReplacementTracker *)self processedOriginalText];
     goto LABEL_13;
   }
 
   if (![(_UITextAssistantReplacementTracker *)self isRewriting])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    v9 = v8;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v9 = currentHandler;
     v10 = self->_compositionSessionState + 1;
     if (v10 > 3)
     {
@@ -1034,7 +1034,7 @@ LABEL_3:
       v11 = off_1E710ADE8[v10];
     }
 
-    [v8 handleFailureInMethod:a2 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:411 description:{@"_compositionSessionState should not be set to %@ unless replacement tracker is rewriting", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:411 description:{@"_compositionSessionState should not be set to %@ unless replacement tracker is rewriting", v11}];
   }
 
   if (![(_UITextAssistantReplacementTracker *)self isFinished])
@@ -1078,7 +1078,7 @@ LABEL_3:
       }
     }
 
-    v6 = [(NSMutableArray *)self->_previousRewrittenTexts objectAtIndexedSubscript:self->_selectedRewriteIndex];
+    processedOriginalText = [(NSMutableArray *)self->_previousRewrittenTexts objectAtIndexedSubscript:self->_selectedRewriteIndex];
     goto LABEL_13;
   }
 
@@ -1152,10 +1152,10 @@ LABEL_11:
     }
   }
 
-  v6 = self->_rewrittenText;
+  processedOriginalText = self->_rewrittenText;
 LABEL_13:
 
-  return v6;
+  return processedOriginalText;
 }
 
 - (BOOL)hasProcessedOriginalRange
@@ -1206,16 +1206,16 @@ LABEL_13:
   v23 = *MEMORY[0x1E69E9840];
   offsetForSessionRange = self->_offsetForSessionRange;
   location = self->_sessionContextRange.location;
-  v6 = [(NSMutableArray *)self->_replacementDeliveryUUIDs lastObject];
-  if (v6)
+  lastObject = [(NSMutableArray *)self->_replacementDeliveryUUIDs lastObject];
+  if (lastObject)
   {
-    v7 = [(NSMutableDictionary *)self->_replacementChunksByUUID objectForKeyedSubscript:v6];
-    v8 = [v7 originalRange];
-    v10 = v8 + v9;
-    if (v8 + v9 < 0)
+    v7 = [(NSMutableDictionary *)self->_replacementChunksByUUID objectForKeyedSubscript:lastObject];
+    originalRange = [v7 originalRange];
+    v10 = originalRange + v9;
+    if (originalRange + v9 < 0)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:457 description:@"error in calculating length of processedOriginalCharacterRange"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:457 description:@"error in calculating length of processedOriginalCharacterRange"];
     }
   }
 
@@ -1254,16 +1254,16 @@ LABEL_13:
   return result;
 }
 
-- (uint64_t)currentChunkCharacterRangeUpdatingLength:(uint64_t)a1
+- (uint64_t)currentChunkCharacterRangeUpdatingLength:(uint64_t)length
 {
-  v2 = a1;
-  if (a1)
+  lengthCopy = length;
+  if (length)
   {
-    if (*(a1 + 112) == 1)
+    if (*(length + 112) == 1)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      v12 = v11;
-      v13 = *(v2 + 112) + 1;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v12 = currentHandler;
+      v13 = *(lengthCopy + 112) + 1;
       if (v13 > 3)
       {
         v14 = @"Unknown";
@@ -1274,16 +1274,16 @@ LABEL_13:
         v14 = off_1E710ADE8[v13];
       }
 
-      [v11 handleFailureInMethod:sel_currentChunkCharacterRangeUpdatingLength_ object:v2 file:@"_UITextAssistantReplacementTracker.m" lineNumber:466 description:{@"initial and final current-chunk ranges not valid for session state: %@", v14}];
+      [currentHandler handleFailureInMethod:sel_currentChunkCharacterRangeUpdatingLength_ object:lengthCopy file:@"_UITextAssistantReplacementTracker.m" lineNumber:466 description:{@"initial and final current-chunk ranges not valid for session state: %@", v14}];
     }
 
-    v4 = [*(v2 + 48) lastObject];
-    if (v4)
+    lastObject = [*(lengthCopy + 48) lastObject];
+    if (lastObject)
     {
-      v5 = [*(v2 + 56) objectForKeyedSubscript:v4];
-      v6 = *(v2 + 40);
-      v7 = [v5 originalRange];
-      v9 = [v6 rangeOfSuggestionWithRange:v7 UUID:v8 applyDelta:{v4, a2}];
+      v5 = [*(lengthCopy + 56) objectForKeyedSubscript:lastObject];
+      v6 = *(lengthCopy + 40);
+      originalRange = [v5 originalRange];
+      v9 = [v6 rangeOfSuggestionWithRange:originalRange UUID:v8 applyDelta:{lastObject, a2}];
     }
 
     else
@@ -1291,10 +1291,10 @@ LABEL_13:
       v9 = 0;
     }
 
-    v2 = v9 + *(v2 + 16) + *(v2 + 8);
+    lengthCopy = v9 + *(lengthCopy + 16) + *(lengthCopy + 8);
   }
 
-  return v2;
+  return lengthCopy;
 }
 
 - (_NSRange)initialCurrentChunkCharacterRange
@@ -1397,26 +1397,26 @@ LABEL_13:
   return result;
 }
 
-- (uint64_t)rangeForChunkFromDelivery:(int)a3 useOriginalLength:
+- (uint64_t)rangeForChunkFromDelivery:(int)delivery useOriginalLength:
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v7 = v5;
-    if (([*(a1 + 48) containsObject:v7] & 1) == 0)
+    if (([*(self + 48) containsObject:v7] & 1) == 0)
     {
-      v8 = *(a1 + 72);
+      v8 = *(self + 72);
 
       v7 = v8;
     }
 
     if (v7)
     {
-      v9 = [*(a1 + 56) objectForKeyedSubscript:v7];
+      v9 = [*(self + 56) objectForKeyedSubscript:v7];
       v10 = v9;
-      if (*(a1 + 112) == 1)
+      if (*(self + 112) == 1)
       {
         if (os_variant_has_internal_diagnostics())
         {
@@ -1435,33 +1435,33 @@ LABEL_13:
           }
         }
 
-        v11 = [v10 originalRange];
+        originalRange = [v10 originalRange];
       }
 
       else
       {
-        v12 = *(a1 + 40);
-        v13 = [v9 originalRange];
-        v11 = [v12 rangeOfSuggestionWithRange:v13 UUID:v14 applyDelta:{v7, a3 ^ 1u}];
+        v12 = *(self + 40);
+        originalRange2 = [v9 originalRange];
+        originalRange = [v12 rangeOfSuggestionWithRange:originalRange2 UUID:v14 applyDelta:{v7, delivery ^ 1u}];
       }
 
-      a1 = v11 + *(a1 + 8) + *(a1 + 16);
+      self = originalRange + *(self + 8) + *(self + 16);
     }
 
     else
     {
-      a1 = 0x7FFFFFFFFFFFFFFFLL;
+      self = 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (_NSRange)sourceRangeForChunkFromDelivery:(id)a3
+- (_NSRange)sourceRangeForChunkFromDelivery:(id)delivery
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(_UITextAssistantReplacementTracker *)self rangeForChunkFromDelivery:v5 useOriginalLength:1];
+  deliveryCopy = delivery;
+  v6 = [(_UITextAssistantReplacementTracker *)self rangeForChunkFromDelivery:deliveryCopy useOriginalLength:1];
   v8 = v7;
   if (os_variant_has_internal_diagnostics())
   {
@@ -1477,7 +1477,7 @@ LABEL_13:
           v14 = 138413058;
           v15 = v13;
           v16 = 2112;
-          v17 = v5;
+          v17 = deliveryCopy;
           v18 = 2048;
           v19 = v6;
           v20 = 2048;
@@ -1495,11 +1495,11 @@ LABEL_13:
   return result;
 }
 
-- (_NSRange)targetRangeForChunkFromDelivery:(id)a3
+- (_NSRange)targetRangeForChunkFromDelivery:(id)delivery
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(_UITextAssistantReplacementTracker *)self rangeForChunkFromDelivery:v5 useOriginalLength:0];
+  deliveryCopy = delivery;
+  v6 = [(_UITextAssistantReplacementTracker *)self rangeForChunkFromDelivery:deliveryCopy useOriginalLength:0];
   v8 = v7;
   if (os_variant_has_internal_diagnostics())
   {
@@ -1515,7 +1515,7 @@ LABEL_13:
           v14 = 138413058;
           v15 = v13;
           v16 = 2112;
-          v17 = v5;
+          v17 = deliveryCopy;
           v18 = 2048;
           v19 = v6;
           v20 = 2048;
@@ -1533,10 +1533,10 @@ LABEL_13:
   return result;
 }
 
-- (id)nextDeliveryForDelivery:(id)a3
+- (id)nextDeliveryForDelivery:(id)delivery
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [(NSMutableArray *)self->_replacementDeliveryUUIDs indexOfObject:a3];
+  v4 = [(NSMutableArray *)self->_replacementDeliveryUUIDs indexOfObject:delivery];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL || (v5 = v4, v4 >= [(NSMutableArray *)self->_replacementDeliveryUUIDs count]- 1))
   {
     v6 = 0;
@@ -1576,9 +1576,9 @@ LABEL_13:
   v22 = *MEMORY[0x1E69E9840];
   if ([(_UITextAssistantReplacementTracker *)self isProofreading]|| (compositionSessionState = self->_compositionSessionState, compositionSessionState == 2))
   {
-    v4 = [(NSWritingToolsEditTracker *)self->_editTracker currentContextRange];
+    currentContextRange = [(NSWritingToolsEditTracker *)self->_editTracker currentContextRange];
     length = v5;
-    location = v4 + self->_sessionContextRange.location;
+    location = currentContextRange + self->_sessionContextRange.location;
   }
 
   else if (compositionSessionState == 1)
@@ -1589,8 +1589,8 @@ LABEL_13:
 
   else if (compositionSessionState)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:579 description:@"Unknown composition session state"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextAssistantReplacementTracker.m" lineNumber:579 description:@"Unknown composition session state"];
 
     length = 0;
     location = 0x7FFFFFFFFFFFFFFFLL;
@@ -1649,9 +1649,9 @@ LABEL_13:
   if (![(_UITextAssistantReplacementTracker *)self isFinished])
   {
 LABEL_2:
-    v4 = [(_UITextAssistantReplacementTracker *)self rewrittenCharacterRange];
+    rewrittenCharacterRange = [(_UITextAssistantReplacementTracker *)self rewrittenCharacterRange];
 LABEL_8:
-    v9 = v4;
+    v9 = rewrittenCharacterRange;
     v8 = v5;
     goto LABEL_9;
   }
@@ -1659,13 +1659,13 @@ LABEL_8:
   if (self->_compositionSessionState != 2)
   {
 LABEL_7:
-    v4 = [(_UITextAssistantReplacementTracker *)self processedOriginalCharacterRange];
+    rewrittenCharacterRange = [(_UITextAssistantReplacementTracker *)self processedOriginalCharacterRange];
     goto LABEL_8;
   }
 
   location = self->_sessionContextRange.location;
-  v7 = [(_UITextAssistantReplacementTracker *)self activeText];
-  v8 = [v7 length];
+  activeText = [(_UITextAssistantReplacementTracker *)self activeText];
+  v8 = [activeText length];
 
   v9 = self->_offsetForSessionRange + location;
 LABEL_9:
@@ -1703,7 +1703,7 @@ LABEL_9:
 {
   v25 = *MEMORY[0x1E69E9840];
   length = self->_sessionContextRange.length;
-  v5 = [(_UITextAssistantReplacementTracker *)self processedOriginalCharacterRange];
+  processedOriginalCharacterRange = [(_UITextAssistantReplacementTracker *)self processedOriginalCharacterRange];
   v7 = v6;
   v8 = length - v6;
   if (v8 < 0)
@@ -1733,13 +1733,13 @@ LABEL_9:
 
   if ([(_UITextAssistantReplacementTracker *)self isProofreading]|| self->_compositionSessionState == 2)
   {
-    v10 = [(_UITextAssistantReplacementTracker *)self rewrittenCharacterRange];
-    v12 = v10 + v11;
+    rewrittenCharacterRange = [(_UITextAssistantReplacementTracker *)self rewrittenCharacterRange];
+    v12 = rewrittenCharacterRange + v11;
   }
 
   else
   {
-    v12 = v5 + v7;
+    v12 = processedOriginalCharacterRange + v7;
   }
 
   if (os_variant_has_internal_diagnostics())
@@ -1792,18 +1792,18 @@ LABEL_9:
   v26 = v5;
   length = self->_sessionContextRange.length;
   location = self->_sessionContextRange.location;
-  v23 = [(NSWritingToolsEditTracker *)self->_editTracker currentContextRange];
+  currentContextRange = [(NSWritingToolsEditTracker *)self->_editTracker currentContextRange];
   [(NSWritingToolsEditTracker *)self->_editTracker currentContextRange];
   v7 = v6;
   offsetForSessionRange = self->_offsetForSessionRange;
   originalText = self->_originalText;
   rewrittenText = self->_rewrittenText;
-  v11 = [(NSMutableArray *)self->_replacementDeliveryUUIDs lastObject];
-  if (v11)
+  lastObject = [(NSMutableArray *)self->_replacementDeliveryUUIDs lastObject];
+  if (lastObject)
   {
     v12 = MEMORY[0x1E696AEC0];
     replacementChunksByUUID = self->_replacementChunksByUUID;
-    v22 = [(NSMutableArray *)self->_replacementDeliveryUUIDs lastObject];
+    lastObject2 = [(NSMutableArray *)self->_replacementDeliveryUUIDs lastObject];
     v21 = [(NSMutableDictionary *)replacementChunksByUUID objectForKeyedSubscript:?];
     v14 = [v12 stringWithFormat:@" lastChunk=%p", v21];
   }
@@ -1835,12 +1835,12 @@ LABEL_9:
     v18 = @"NO";
   }
 
-  v19 = objc_msgSend(v27, "stringByAppendingFormat:", @" state=%@ originalRange={%lu, %lu} currentRange={%lu, %lu} offset=(%ld} original=%p rewrite=%p%@ editTracker=%p%@ finished=%@"), v26, location, length, v23, v7, offsetForSessionRange, originalText, rewrittenText, v14, editTracker, v17, v18;
+  v19 = objc_msgSend(v27, "stringByAppendingFormat:", @" state=%@ originalRange={%lu, %lu} currentRange={%lu, %lu} offset=(%ld} original=%p rewrite=%p%@ editTracker=%p%@ finished=%@"), v26, location, length, currentContextRange, v7, offsetForSessionRange, originalText, rewrittenText, v14, editTracker, v17, v18;
   if (proofreadingController)
   {
   }
 
-  if (v11)
+  if (lastObject)
   {
   }
 

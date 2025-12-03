@@ -2,9 +2,9 @@
 - (NSArray)prescriptionRecords;
 - (NSDictionary)localePreferences;
 - (WFSetupDataInternal)init;
-- (WFSetupDataInternal)initWithKeyboards:(id)a3 appleID:(id)a4 usesSameAccountForiTunes:(BOOL)a5 isConnectedToWiFi:(BOOL)a6 networks:(id)a7 networkPasswords:(id)a8 localePreferences:(id)a9 isAutomaticTimeZoneEnabled:(BOOL)a10 timeZone:(id)a11 accessibilitySettings:(id)a12 firstName:(id)a13 deviceModel:(id)a14 deviceClass:(id)a15 hasHomeButton:(BOOL)a16 isRestoring:(BOOL)a17 deviceName:(id)a18 backupUUID:(id)a19 isBackupEnabled:(BOOL)a20 isOptedInToLocationServices:(BOOL)a21 isOptedInToDeviceAnalytics:(BOOL)a22 locationServicesData:(id)a23 isOptedInToFindMyDevice:(BOOL)a24 isOptedInToAppAnalytics:(BOOL)a25 siriAssistantIsEnabled:(BOOL)a26 siriVoiceTriggerIsEnabled:(BOOL)a27 siriAssistantLanguageCode:(id)a28 siriAssistantOutputVoice:(id)a29 siriDataSharingIsEnabled:(BOOL)a30 dictationIsEnabled:(BOOL)a31 suppressDictationOptIn:(BOOL)a32 deviceTermsIdentifier:(int64_t)a33 productVersion:(id)a34 anisetteDataProvider:(id)a35 prescriptionRecords:(id)a36 walletData:(id)a37;
+- (WFSetupDataInternal)initWithKeyboards:(id)keyboards appleID:(id)d usesSameAccountForiTunes:(BOOL)tunes isConnectedToWiFi:(BOOL)fi networks:(id)networks networkPasswords:(id)passwords localePreferences:(id)preferences isAutomaticTimeZoneEnabled:(BOOL)self0 timeZone:(id)self1 accessibilitySettings:(id)self2 firstName:(id)self3 deviceModel:(id)self4 deviceClass:(id)self5 hasHomeButton:(BOOL)self6 isRestoring:(BOOL)self7 deviceName:(id)self8 backupUUID:(id)self9 isBackupEnabled:(BOOL)backupEnabled isOptedInToLocationServices:(BOOL)services isOptedInToDeviceAnalytics:(BOOL)analytics locationServicesData:(id)data isOptedInToFindMyDevice:(BOOL)device isOptedInToAppAnalytics:(BOOL)appAnalytics siriAssistantIsEnabled:(BOOL)isEnabled siriVoiceTriggerIsEnabled:(BOOL)triggerIsEnabled siriAssistantLanguageCode:(id)code siriAssistantOutputVoice:(id)voice siriDataSharingIsEnabled:(BOOL)keyboards0 dictationIsEnabled:(BOOL)keyboards1 suppressDictationOptIn:(BOOL)keyboards2 deviceTermsIdentifier:(int64_t)keyboards3 productVersion:(id)keyboards4 anisetteDataProvider:(id)keyboards5 prescriptionRecords:(id)keyboards6 walletData:(id)keyboards7;
 - (id)keyboards;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFSetupDataInternal
@@ -36,9 +36,9 @@
   return v3;
 }
 
-- (WFSetupDataInternal)initWithKeyboards:(id)a3 appleID:(id)a4 usesSameAccountForiTunes:(BOOL)a5 isConnectedToWiFi:(BOOL)a6 networks:(id)a7 networkPasswords:(id)a8 localePreferences:(id)a9 isAutomaticTimeZoneEnabled:(BOOL)a10 timeZone:(id)a11 accessibilitySettings:(id)a12 firstName:(id)a13 deviceModel:(id)a14 deviceClass:(id)a15 hasHomeButton:(BOOL)a16 isRestoring:(BOOL)a17 deviceName:(id)a18 backupUUID:(id)a19 isBackupEnabled:(BOOL)a20 isOptedInToLocationServices:(BOOL)a21 isOptedInToDeviceAnalytics:(BOOL)a22 locationServicesData:(id)a23 isOptedInToFindMyDevice:(BOOL)a24 isOptedInToAppAnalytics:(BOOL)a25 siriAssistantIsEnabled:(BOOL)a26 siriVoiceTriggerIsEnabled:(BOOL)a27 siriAssistantLanguageCode:(id)a28 siriAssistantOutputVoice:(id)a29 siriDataSharingIsEnabled:(BOOL)a30 dictationIsEnabled:(BOOL)a31 suppressDictationOptIn:(BOOL)a32 deviceTermsIdentifier:(int64_t)a33 productVersion:(id)a34 anisetteDataProvider:(id)a35 prescriptionRecords:(id)a36 walletData:(id)a37
+- (WFSetupDataInternal)initWithKeyboards:(id)keyboards appleID:(id)d usesSameAccountForiTunes:(BOOL)tunes isConnectedToWiFi:(BOOL)fi networks:(id)networks networkPasswords:(id)passwords localePreferences:(id)preferences isAutomaticTimeZoneEnabled:(BOOL)self0 timeZone:(id)self1 accessibilitySettings:(id)self2 firstName:(id)self3 deviceModel:(id)self4 deviceClass:(id)self5 hasHomeButton:(BOOL)self6 isRestoring:(BOOL)self7 deviceName:(id)self8 backupUUID:(id)self9 isBackupEnabled:(BOOL)backupEnabled isOptedInToLocationServices:(BOOL)services isOptedInToDeviceAnalytics:(BOOL)analytics locationServicesData:(id)data isOptedInToFindMyDevice:(BOOL)device isOptedInToAppAnalytics:(BOOL)appAnalytics siriAssistantIsEnabled:(BOOL)isEnabled siriVoiceTriggerIsEnabled:(BOOL)triggerIsEnabled siriAssistantLanguageCode:(id)code siriAssistantOutputVoice:(id)voice siriDataSharingIsEnabled:(BOOL)keyboards0 dictationIsEnabled:(BOOL)keyboards1 suppressDictationOptIn:(BOOL)keyboards2 deviceTermsIdentifier:(int64_t)keyboards3 productVersion:(id)keyboards4 anisetteDataProvider:(id)keyboards5 prescriptionRecords:(id)keyboards6 walletData:(id)keyboards7
 {
-  if (a4)
+  if (d)
   {
     v38 = sub_26C6D8A08();
     v100 = v39;
@@ -59,28 +59,28 @@
   v40 = sub_26C6D8A08();
   v95 = v41;
   v96 = v40;
-  v102 = a3;
+  keyboardsCopy = keyboards;
   swift_unknownObjectRetain();
-  v42 = a13;
-  v43 = a14;
-  v44 = a15;
-  v45 = a18;
-  v46 = a19;
-  v47 = a23;
-  v48 = a28;
-  v94 = a29;
-  v85 = a34;
-  v91 = a35;
-  v87 = a36;
-  v88 = a37;
-  if (a12)
+  nameCopy = name;
+  modelCopy = model;
+  classCopy = class;
+  deviceNameCopy = deviceName;
+  iDCopy = iD;
+  dataCopy = data;
+  codeCopy = code;
+  voiceCopy = voice;
+  versionCopy = version;
+  providerCopy = provider;
+  recordsCopy = records;
+  walletDataCopy = walletData;
+  if (settings)
   {
-    v49 = a12;
+    settingsCopy = settings;
     v50 = sub_26C6D87A8();
     v92 = v51;
     v93 = v50;
 
-    if (v42)
+    if (nameCopy)
     {
 LABEL_6:
       v52 = sub_26C6D8A08();
@@ -95,7 +95,7 @@ LABEL_6:
   {
     v92 = 0xF000000000000000;
     v93 = 0;
-    if (v42)
+    if (nameCopy)
     {
       goto LABEL_6;
     }
@@ -116,12 +116,12 @@ LABEL_9:
   v79 = v59;
   v80 = v58;
 
-  if (v46)
+  if (iDCopy)
   {
     v105 = sub_26C6D8A08();
     v78 = v60;
 
-    if (v47)
+    if (dataCopy)
     {
       goto LABEL_11;
     }
@@ -129,7 +129,7 @@ LABEL_9:
 LABEL_14:
     v61 = 0;
     v63 = 0xF000000000000000;
-    if (v48)
+    if (codeCopy)
     {
       goto LABEL_12;
     }
@@ -139,7 +139,7 @@ LABEL_14:
 
   v105 = 0;
   v78 = 0;
-  if (!v47)
+  if (!dataCopy)
   {
     goto LABEL_14;
   }
@@ -148,7 +148,7 @@ LABEL_11:
   v61 = sub_26C6D87A8();
   v63 = v62;
 
-  if (v48)
+  if (codeCopy)
   {
 LABEL_12:
     v64 = sub_26C6D8A08();
@@ -161,9 +161,9 @@ LABEL_15:
   v64 = 0;
   v66 = 0;
 LABEL_16:
-  v67 = a22;
-  v68 = a17;
-  v69 = a16;
+  analyticsCopy2 = analytics;
+  restoringCopy2 = restoring;
+  buttonCopy2 = button;
   v70 = sub_26C6D8A08();
   v76 = v71;
   v77 = v70;
@@ -171,14 +171,14 @@ LABEL_16:
   type metadata accessor for PrescriptionRecord();
   v86 = sub_26C6D8AA8();
 
-  if (v88)
+  if (walletDataCopy)
   {
     v72 = sub_26C6D87A8();
     v74 = v73;
 
-    v68 = a17;
-    v69 = a16;
-    v67 = a22;
+    restoringCopy2 = restoring;
+    buttonCopy2 = button;
+    analyticsCopy2 = analytics;
   }
 
   else
@@ -187,14 +187,14 @@ LABEL_16:
     v74 = 0xF000000000000000;
   }
 
-  return WFSetupData.init(keyboards:appleID:usesSameAccountForiTunes:isConnectedToWiFi:networks:networkPasswords:localePreferences:isAutomaticTimeZoneEnabled:timeZone:accessibilitySettings:firstName:deviceModel:deviceClass:hasHomeButton:isRestoring:deviceName:backupUUID:isBackupEnabled:isOptedInToLocationServices:isOptedInToDeviceAnalytics:locationServicesData:isOptedInToFindMyDevice:isOptedInToAppAnalytics:siriAssistantIsEnabled:siriVoiceTriggerIsEnabled:siriAssistantLanguageCode:siriAssistantOutputVoice:siriDataSharingIsEnabled:dictationIsEnabled:suppressDictationOptIn:deviceTermsIdentifier:productVersion:anisetteDataProvider:prescriptionRecords:walletData:)(v102, v101, v100, a5, a6, v99, v98, v97, a10, v96, v95, v93, v92, v90, v89, v84, v83, v82, v81, v69, v68, v80, v79, v105, v78, a20, a21, v67, v61, v63, a24, a25, a26, a27, v64, v66, v94, a30, a31, a32, a33, v77, v76, v91, v86, v72, v74);
+  return WFSetupData.init(keyboards:appleID:usesSameAccountForiTunes:isConnectedToWiFi:networks:networkPasswords:localePreferences:isAutomaticTimeZoneEnabled:timeZone:accessibilitySettings:firstName:deviceModel:deviceClass:hasHomeButton:isRestoring:deviceName:backupUUID:isBackupEnabled:isOptedInToLocationServices:isOptedInToDeviceAnalytics:locationServicesData:isOptedInToFindMyDevice:isOptedInToAppAnalytics:siriAssistantIsEnabled:siriVoiceTriggerIsEnabled:siriAssistantLanguageCode:siriAssistantOutputVoice:siriDataSharingIsEnabled:dictationIsEnabled:suppressDictationOptIn:deviceTermsIdentifier:productVersion:anisetteDataProvider:prescriptionRecords:walletData:)(keyboardsCopy, v101, v100, tunes, fi, v99, v98, v97, enabled, v96, v95, v93, v92, v90, v89, v84, v83, v82, v81, buttonCopy2, restoringCopy2, v80, v79, v105, v78, backupEnabled, services, analyticsCopy2, v61, v63, device, appAnalytics, isEnabled, triggerIsEnabled, v64, v66, voiceCopy, sharingIsEnabled, dictationIsEnabled, in, identifier, v77, v76, providerCopy, v86, v72, v74);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_26C681410(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_26C681410(coderCopy);
 }
 
 - (WFSetupDataInternal)init

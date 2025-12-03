@@ -1,41 +1,41 @@
 @interface MBCacheRefreshSummary
-- (MBCacheRefreshSummary)initWithDictionaryRepresentation:(id)a3;
+- (MBCacheRefreshSummary)initWithDictionaryRepresentation:(id)representation;
 - (id)dictionaryRepresentation;
-- (void)trackVerificationFailureForSnapshot:(id)a3 manifestID:(id)a4 domain:(id)a5 serverChecksum:(unint64_t)a6 localChecksum:(unint64_t)a7 localFileCount:(unint64_t)a8;
+- (void)trackVerificationFailureForSnapshot:(id)snapshot manifestID:(id)d domain:(id)domain serverChecksum:(unint64_t)checksum localChecksum:(unint64_t)localChecksum localFileCount:(unint64_t)count;
 @end
 
 @implementation MBCacheRefreshSummary
 
-- (MBCacheRefreshSummary)initWithDictionaryRepresentation:(id)a3
+- (MBCacheRefreshSummary)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v15.receiver = self;
   v15.super_class = MBCacheRefreshSummary;
   v5 = [(MBCacheRefreshSummary *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"cacheSnapshotCount"];
+    v6 = [representationCopy objectForKeyedSubscript:@"cacheSnapshotCount"];
     -[MBCacheRefreshSummary setCachedSnapshotCount:](v5, "setCachedSnapshotCount:", [v6 unsignedLongLongValue]);
 
-    v7 = [v4 objectForKeyedSubscript:@"serverSnapshotCount"];
+    v7 = [representationCopy objectForKeyedSubscript:@"serverSnapshotCount"];
     -[MBCacheRefreshSummary setServerSnapshotCount:](v5, "setServerSnapshotCount:", [v7 BOOLValue]);
 
-    v8 = [v4 objectForKeyedSubscript:@"journalActionCount"];
+    v8 = [representationCopy objectForKeyedSubscript:@"journalActionCount"];
     -[MBCacheRefreshSummary setJournalActionCount:](v5, "setJournalActionCount:", [v8 unsignedLongLongValue]);
 
-    v9 = [v4 objectForKeyedSubscript:@"journalReplaySucceeded"];
+    v9 = [representationCopy objectForKeyedSubscript:@"journalReplaySucceeded"];
     -[MBCacheRefreshSummary setJournalReplaySucceeded:](v5, "setJournalReplaySucceeded:", [v9 BOOLValue]);
 
-    v10 = [v4 objectForKeyedSubscript:@"journalVerificationErrorCount"];
+    v10 = [representationCopy objectForKeyedSubscript:@"journalVerificationErrorCount"];
     -[MBCacheRefreshSummary setJournalVerificationErrorCount:](v5, "setJournalVerificationErrorCount:", [v10 unsignedLongLongValue]);
 
-    v11 = [v4 objectForKeyedSubscript:@"cacheOnlySnapshotCount"];
+    v11 = [representationCopy objectForKeyedSubscript:@"cacheOnlySnapshotCount"];
     -[MBCacheRefreshSummary setCacheOnlySnapshotCount:](v5, "setCacheOnlySnapshotCount:", [v11 unsignedLongLongValue]);
 
-    v12 = [v4 objectForKeyedSubscript:@"downloadedSnapshotCount"];
+    v12 = [representationCopy objectForKeyedSubscript:@"downloadedSnapshotCount"];
     -[MBCacheRefreshSummary setDownloadedSnapshotCount:](v5, "setDownloadedSnapshotCount:", [v12 unsignedLongLongValue]);
 
-    v13 = [v4 objectForKeyedSubscript:@"downloadedSnapshotVerificationFailureCount"];
+    v13 = [representationCopy objectForKeyedSubscript:@"downloadedSnapshotVerificationFailureCount"];
     -[MBCacheRefreshSummary setDownloadedSnapshotVerificationFailureCount:](v5, "setDownloadedSnapshotVerificationFailureCount:", [v13 unsignedLongLongValue]);
   }
 
@@ -72,11 +72,11 @@
   return v3;
 }
 
-- (void)trackVerificationFailureForSnapshot:(id)a3 manifestID:(id)a4 domain:(id)a5 serverChecksum:(unint64_t)a6 localChecksum:(unint64_t)a7 localFileCount:(unint64_t)a8
+- (void)trackVerificationFailureForSnapshot:(id)snapshot manifestID:(id)d domain:(id)domain serverChecksum:(unint64_t)checksum localChecksum:(unint64_t)localChecksum localFileCount:(unint64_t)count
 {
-  v20 = a3;
-  v14 = a4;
-  v15 = a5;
+  snapshotCopy = snapshot;
+  dCopy = d;
+  domainCopy = domain;
   verificationFailures = self->_verificationFailures;
   if (!verificationFailures)
   {
@@ -89,7 +89,7 @@
 
   if ([(NSMutableOrderedSet *)verificationFailures count]<= 2)
   {
-    v19 = [NSString stringWithFormat:@"%@|%@|%@|%llx|%llx|%llu", v20, v14, v15, a7, a6, a8];
+    v19 = [NSString stringWithFormat:@"%@|%@|%@|%llx|%llx|%llu", snapshotCopy, dCopy, domainCopy, localChecksum, checksum, count];
     [(NSMutableOrderedSet *)self->_verificationFailures addObject:v19];
   }
 }

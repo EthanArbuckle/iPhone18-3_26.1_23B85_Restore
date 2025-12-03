@@ -3,23 +3,23 @@
 - (id)existingFaceCropUUIDs;
 - (id)existingPersonFaceCropUUIDs;
 - (id)existingPersonUUIDs;
-- (void)addFaceCrops:(id)a3 completion:(id)a4;
-- (void)addFaceprints:(id)a3 completion:(id)a4;
-- (void)addPersonFaceCrops:(id)a3 completion:(id)a4;
-- (void)addPersons:(id)a3 completion:(id)a4;
-- (void)associateFaceCropsWithUUIDs:(id)a3 toPersonWithUUID:(id)a4 forSource:(int64_t)a5 completion:(id)a6;
-- (void)fetchAllFaceprintsWithCompletion:(id)a3;
-- (void)fetchAllPersonFaceCropsWithCompletion:(id)a3;
-- (void)fetchAllPersonsWithCompletion:(id)a3;
-- (void)fetchAllUnassociatedFaceCropsWithCompletion:(id)a3;
-- (void)fetchFaceCropsForPersonsWithUUIDs:(id)a3 completion:(id)a4;
-- (void)fetchFaceprintsForFaceCropsWithUUIDs:(id)a3 completion:(id)a4;
-- (void)fetchPersonsWithUUIDs:(id)a3 completion:(id)a4;
-- (void)fetchSettingsWithCompletion:(id)a3;
-- (void)performCloudPullWithCompletion:(id)a3;
-- (void)removeFaceCropsWithUUIDs:(id)a3 completion:(id)a4;
-- (void)removeFaceprintsWithUUIDs:(id)a3 completion:(id)a4;
-- (void)removePersonsWithUUIDs:(id)a3 completion:(id)a4;
+- (void)addFaceCrops:(id)crops completion:(id)completion;
+- (void)addFaceprints:(id)faceprints completion:(id)completion;
+- (void)addPersonFaceCrops:(id)crops completion:(id)completion;
+- (void)addPersons:(id)persons completion:(id)completion;
+- (void)associateFaceCropsWithUUIDs:(id)ds toPersonWithUUID:(id)d forSource:(int64_t)source completion:(id)completion;
+- (void)fetchAllFaceprintsWithCompletion:(id)completion;
+- (void)fetchAllPersonFaceCropsWithCompletion:(id)completion;
+- (void)fetchAllPersonsWithCompletion:(id)completion;
+- (void)fetchAllUnassociatedFaceCropsWithCompletion:(id)completion;
+- (void)fetchFaceCropsForPersonsWithUUIDs:(id)ds completion:(id)completion;
+- (void)fetchFaceprintsForFaceCropsWithUUIDs:(id)ds completion:(id)completion;
+- (void)fetchPersonsWithUUIDs:(id)ds completion:(id)completion;
+- (void)fetchSettingsWithCompletion:(id)completion;
+- (void)performCloudPullWithCompletion:(id)completion;
+- (void)removeFaceCropsWithUUIDs:(id)ds completion:(id)completion;
+- (void)removeFaceprintsWithUUIDs:(id)ds completion:(id)completion;
+- (void)removePersonsWithUUIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation HMIHomePersonDataSourceInMemory
@@ -33,9 +33,9 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     personToFaceCrops = v3->_personToFaceCrops;
-    v3->_personToFaceCrops = v4;
+    v3->_personToFaceCrops = dictionary;
 
     v6 = [MEMORY[0x277CBEB58] set];
     unassociatedFaceCrops = v3->_unassociatedFaceCrops;
@@ -46,9 +46,9 @@
     v3->_removedPersonFaceCrops = v8;
 
     v10 = HMIDispatchQueueNameString(v3, 0);
-    v11 = [v10 UTF8String];
+    uTF8String = [v10 UTF8String];
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x277D85CD8], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v13 = dispatch_queue_create(v11, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     workQueue = v3->_workQueue;
     v3->_workQueue = v13;
   }
@@ -60,9 +60,9 @@
 {
   os_unfair_lock_lock_with_options();
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(HMIHomePersonDataSourceInMemory *)self personToFaceCrops];
-  v5 = [v4 allKeys];
-  v6 = [v5 na_map:&__block_literal_global_18];
+  personToFaceCrops = [(HMIHomePersonDataSourceInMemory *)self personToFaceCrops];
+  allKeys = [personToFaceCrops allKeys];
+  v6 = [allKeys na_map:&__block_literal_global_18];
   v7 = [v3 setWithArray:v6];
 
   os_unfair_lock_unlock(&self->_lock);
@@ -74,15 +74,15 @@
 {
   os_unfair_lock_lock_with_options();
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(HMIHomePersonDataSourceInMemory *)self personToFaceCrops];
-  v5 = [v4 allValues];
+  personToFaceCrops = [(HMIHomePersonDataSourceInMemory *)self personToFaceCrops];
+  allValues = [personToFaceCrops allValues];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__HMIHomePersonDataSourceInMemory_existingPersonFaceCropUUIDs__block_invoke;
   v9[3] = &unk_278754020;
   v6 = v3;
   v10 = v6;
-  [v5 na_each:v9];
+  [allValues na_each:v9];
 
   v7 = [v6 copy];
   os_unfair_lock_unlock(&self->_lock);
@@ -100,25 +100,25 @@ void __62__HMIHomePersonDataSourceInMemory_existingPersonFaceCropUUIDs__block_in
 - (id)existingFaceCropUUIDs
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMIHomePersonDataSourceInMemory *)self unassociatedFaceCrops];
-  v4 = [v3 na_map:&__block_literal_global_9_0];
+  unassociatedFaceCrops = [(HMIHomePersonDataSourceInMemory *)self unassociatedFaceCrops];
+  v4 = [unassociatedFaceCrops na_map:&__block_literal_global_9_0];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v4;
 }
 
-- (void)fetchAllFaceprintsWithCompletion:(id)a3
+- (void)fetchAllFaceprintsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HMIHomePersonDataSourceInMemory *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(HMIHomePersonDataSourceInMemory *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__HMIHomePersonDataSourceInMemory_fetchAllFaceprintsWithCompletion___block_invoke;
   block[3] = &unk_278754068;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __68__HMIHomePersonDataSourceInMemory_fetchAllFaceprintsWithCompletion___block_invoke(uint64_t a1)
@@ -128,18 +128,18 @@ void __68__HMIHomePersonDataSourceInMemory_fetchAllFaceprintsWithCompletion___bl
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (void)fetchAllPersonFaceCropsWithCompletion:(id)a3
+- (void)fetchAllPersonFaceCropsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HMIHomePersonDataSourceInMemory *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(HMIHomePersonDataSourceInMemory *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__HMIHomePersonDataSourceInMemory_fetchAllPersonFaceCropsWithCompletion___block_invoke;
   v7[3] = &unk_278752DF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __73__HMIHomePersonDataSourceInMemory_fetchAllPersonFaceCropsWithCompletion___block_invoke(uint64_t a1)
@@ -163,18 +163,18 @@ void __73__HMIHomePersonDataSourceInMemory_fetchAllPersonFaceCropsWithCompletion
   (*(v7 + 16))(v7, v8, 0);
 }
 
-- (void)fetchAllPersonsWithCompletion:(id)a3
+- (void)fetchAllPersonsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HMIHomePersonDataSourceInMemory *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(HMIHomePersonDataSourceInMemory *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__HMIHomePersonDataSourceInMemory_fetchAllPersonsWithCompletion___block_invoke;
   v7[3] = &unk_278752DF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __65__HMIHomePersonDataSourceInMemory_fetchAllPersonsWithCompletion___block_invoke(uint64_t a1)
@@ -191,21 +191,21 @@ void __65__HMIHomePersonDataSourceInMemory_fetchAllPersonsWithCompletion___block
   (*(v5 + 16))(v5, v6, 0);
 }
 
-- (void)fetchFaceCropsForPersonsWithUUIDs:(id)a3 completion:(id)a4
+- (void)fetchFaceCropsForPersonsWithUUIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMIHomePersonDataSourceInMemory *)self workQueue];
+  dsCopy = ds;
+  completionCopy = completion;
+  workQueue = [(HMIHomePersonDataSourceInMemory *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__HMIHomePersonDataSourceInMemory_fetchFaceCropsForPersonsWithUUIDs_completion___block_invoke;
   block[3] = &unk_2787526C0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dsCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = dsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __80__HMIHomePersonDataSourceInMemory_fetchFaceCropsForPersonsWithUUIDs_completion___block_invoke(uint64_t a1)
@@ -256,17 +256,17 @@ void __80__HMIHomePersonDataSourceInMemory_fetchFaceCropsForPersonsWithUUIDs_com
   }
 }
 
-- (void)fetchFaceprintsForFaceCropsWithUUIDs:(id)a3 completion:(id)a4
+- (void)fetchFaceprintsForFaceCropsWithUUIDs:(id)ds completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(HMIHomePersonDataSourceInMemory *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(HMIHomePersonDataSourceInMemory *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__HMIHomePersonDataSourceInMemory_fetchFaceprintsForFaceCropsWithUUIDs_completion___block_invoke;
   block[3] = &unk_278754068;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __83__HMIHomePersonDataSourceInMemory_fetchFaceprintsForFaceCropsWithUUIDs_completion___block_invoke(uint64_t a1)
@@ -276,21 +276,21 @@ void __83__HMIHomePersonDataSourceInMemory_fetchFaceprintsForFaceCropsWithUUIDs_
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (void)fetchPersonsWithUUIDs:(id)a3 completion:(id)a4
+- (void)fetchPersonsWithUUIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMIHomePersonDataSourceInMemory *)self workQueue];
+  dsCopy = ds;
+  completionCopy = completion;
+  workQueue = [(HMIHomePersonDataSourceInMemory *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__HMIHomePersonDataSourceInMemory_fetchPersonsWithUUIDs_completion___block_invoke;
   block[3] = &unk_2787526C0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dsCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = dsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __68__HMIHomePersonDataSourceInMemory_fetchPersonsWithUUIDs_completion___block_invoke(uint64_t a1)
@@ -336,30 +336,30 @@ uint64_t __68__HMIHomePersonDataSourceInMemory_fetchPersonsWithUUIDs_completion_
   return v4;
 }
 
-- (void)performCloudPullWithCompletion:(id)a3
+- (void)performCloudPullWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HMIHomePersonDataSourceInMemory *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(HMIHomePersonDataSourceInMemory *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__HMIHomePersonDataSourceInMemory_performCloudPullWithCompletion___block_invoke;
   block[3] = &unk_278754068;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)addFaceCrops:(id)a3 completion:(id)a4
+- (void)addFaceCrops:(id)crops completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(HMIHomePersonDataSourceInMemory *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(HMIHomePersonDataSourceInMemory *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__HMIHomePersonDataSourceInMemory_addFaceCrops_completion___block_invoke;
   block[3] = &unk_278754068;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __59__HMIHomePersonDataSourceInMemory_addFaceCrops_completion___block_invoke(uint64_t a1)
@@ -369,17 +369,17 @@ void __59__HMIHomePersonDataSourceInMemory_addFaceCrops_completion___block_invok
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)addPersonFaceCrops:(id)a3 completion:(id)a4
+- (void)addPersonFaceCrops:(id)crops completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(HMIHomePersonDataSourceInMemory *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(HMIHomePersonDataSourceInMemory *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__HMIHomePersonDataSourceInMemory_addPersonFaceCrops_completion___block_invoke;
   block[3] = &unk_278754068;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __65__HMIHomePersonDataSourceInMemory_addPersonFaceCrops_completion___block_invoke(uint64_t a1)
@@ -389,21 +389,21 @@ void __65__HMIHomePersonDataSourceInMemory_addPersonFaceCrops_completion___block
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)addPersons:(id)a3 completion:(id)a4
+- (void)addPersons:(id)persons completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMIHomePersonDataSourceInMemory *)self workQueue];
+  personsCopy = persons;
+  completionCopy = completion;
+  workQueue = [(HMIHomePersonDataSourceInMemory *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__HMIHomePersonDataSourceInMemory_addPersons_completion___block_invoke;
   block[3] = &unk_2787526C0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = personsCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = personsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __57__HMIHomePersonDataSourceInMemory_addPersons_completion___block_invoke(uint64_t a1)
@@ -444,18 +444,18 @@ void __57__HMIHomePersonDataSourceInMemory_addPersons_completion___block_invoke_
   [v5 setObject:v6 forKeyedSubscript:v4];
 }
 
-- (void)fetchAllUnassociatedFaceCropsWithCompletion:(id)a3
+- (void)fetchAllUnassociatedFaceCropsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HMIHomePersonDataSourceInMemory *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(HMIHomePersonDataSourceInMemory *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__HMIHomePersonDataSourceInMemory_fetchAllUnassociatedFaceCropsWithCompletion___block_invoke;
   v7[3] = &unk_278752DF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __79__HMIHomePersonDataSourceInMemory_fetchAllUnassociatedFaceCropsWithCompletion___block_invoke(uint64_t a1)
@@ -470,17 +470,17 @@ void __79__HMIHomePersonDataSourceInMemory_fetchAllUnassociatedFaceCropsWithComp
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchSettingsWithCompletion:(id)a3
+- (void)fetchSettingsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HMIHomePersonDataSourceInMemory *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(HMIHomePersonDataSourceInMemory *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__HMIHomePersonDataSourceInMemory_fetchSettingsWithCompletion___block_invoke;
   block[3] = &unk_278754068;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __63__HMIHomePersonDataSourceInMemory_fetchSettingsWithCompletion___block_invoke(uint64_t a1)
@@ -490,21 +490,21 @@ void __63__HMIHomePersonDataSourceInMemory_fetchSettingsWithCompletion___block_i
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)removeFaceCropsWithUUIDs:(id)a3 completion:(id)a4
+- (void)removeFaceCropsWithUUIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMIHomePersonDataSourceInMemory *)self workQueue];
+  dsCopy = ds;
+  completionCopy = completion;
+  workQueue = [(HMIHomePersonDataSourceInMemory *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__HMIHomePersonDataSourceInMemory_removeFaceCropsWithUUIDs_completion___block_invoke;
   block[3] = &unk_2787526C0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dsCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = dsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __71__HMIHomePersonDataSourceInMemory_removeFaceCropsWithUUIDs_completion___block_invoke(uint64_t a1)
@@ -593,21 +593,21 @@ uint64_t __71__HMIHomePersonDataSourceInMemory_removeFaceCropsWithUUIDs_completi
   return v2 ^ 1;
 }
 
-- (void)removePersonsWithUUIDs:(id)a3 completion:(id)a4
+- (void)removePersonsWithUUIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMIHomePersonDataSourceInMemory *)self workQueue];
+  dsCopy = ds;
+  completionCopy = completion;
+  workQueue = [(HMIHomePersonDataSourceInMemory *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__HMIHomePersonDataSourceInMemory_removePersonsWithUUIDs_completion___block_invoke;
   block[3] = &unk_2787526C0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dsCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = dsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __69__HMIHomePersonDataSourceInMemory_removePersonsWithUUIDs_completion___block_invoke(uint64_t a1)
@@ -668,51 +668,51 @@ void __69__HMIHomePersonDataSourceInMemory_removePersonsWithUUIDs_completion___b
   }
 }
 
-- (void)addFaceprints:(id)a3 completion:(id)a4
+- (void)addFaceprints:(id)faceprints completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(HMIHomePersonDataSourceInMemory *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(HMIHomePersonDataSourceInMemory *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__HMIHomePersonDataSourceInMemory_addFaceprints_completion___block_invoke;
   block[3] = &unk_278754068;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)removeFaceprintsWithUUIDs:(id)a3 completion:(id)a4
+- (void)removeFaceprintsWithUUIDs:(id)ds completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(HMIHomePersonDataSourceInMemory *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(HMIHomePersonDataSourceInMemory *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__HMIHomePersonDataSourceInMemory_removeFaceprintsWithUUIDs_completion___block_invoke;
   block[3] = &unk_278754068;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)associateFaceCropsWithUUIDs:(id)a3 toPersonWithUUID:(id)a4 forSource:(int64_t)a5 completion:(id)a6
+- (void)associateFaceCropsWithUUIDs:(id)ds toPersonWithUUID:(id)d forSource:(int64_t)source completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(HMIHomePersonDataSourceInMemory *)self workQueue];
+  dsCopy = ds;
+  dCopy = d;
+  completionCopy = completion;
+  workQueue = [(HMIHomePersonDataSourceInMemory *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __101__HMIHomePersonDataSourceInMemory_associateFaceCropsWithUUIDs_toPersonWithUUID_forSource_completion___block_invoke;
   block[3] = &unk_278754220;
-  v18 = v10;
-  v19 = self;
-  v20 = v11;
-  v21 = v12;
-  v22 = a5;
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = dsCopy;
+  selfCopy = self;
+  v20 = dCopy;
+  v21 = completionCopy;
+  sourceCopy = source;
+  v14 = dCopy;
+  v15 = completionCopy;
+  v16 = dsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __101__HMIHomePersonDataSourceInMemory_associateFaceCropsWithUUIDs_toPersonWithUUID_forSource_completion___block_invoke(uint64_t a1)

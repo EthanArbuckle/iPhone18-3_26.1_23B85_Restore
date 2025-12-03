@@ -1,20 +1,20 @@
 @interface SCDAMetricsAdditionalContext
-- (SCDAMetricsAdditionalContext)initWithRawGoodnessScore:(unsigned __int8)a3 goodnessScore:(unsigned __int8)a4 deviceClass:(unsigned __int8)a5 deviceProductType:(unsigned __int8)a6;
+- (SCDAMetricsAdditionalContext)initWithRawGoodnessScore:(unsigned __int8)score goodnessScore:(unsigned __int8)goodnessScore deviceClass:(unsigned __int8)class deviceProductType:(unsigned __int8)type;
 @end
 
 @implementation SCDAMetricsAdditionalContext
 
-- (SCDAMetricsAdditionalContext)initWithRawGoodnessScore:(unsigned __int8)a3 goodnessScore:(unsigned __int8)a4 deviceClass:(unsigned __int8)a5 deviceProductType:(unsigned __int8)a6
+- (SCDAMetricsAdditionalContext)initWithRawGoodnessScore:(unsigned __int8)score goodnessScore:(unsigned __int8)goodnessScore deviceClass:(unsigned __int8)class deviceProductType:(unsigned __int8)type
 {
   v11.receiver = self;
   v11.super_class = SCDAMetricsAdditionalContext;
   result = [(SCDAMetricsAdditionalContext *)&v11 init];
   if (result)
   {
-    result->_rawGoodnessScore = a3;
-    result->_goodnessScore = a4;
-    result->_deviceClass = a5;
-    result->_deviceProductType = a6;
+    result->_rawGoodnessScore = score;
+    result->_goodnessScore = goodnessScore;
+    result->_deviceClass = class;
+    result->_deviceProductType = type;
   }
 
   return result;

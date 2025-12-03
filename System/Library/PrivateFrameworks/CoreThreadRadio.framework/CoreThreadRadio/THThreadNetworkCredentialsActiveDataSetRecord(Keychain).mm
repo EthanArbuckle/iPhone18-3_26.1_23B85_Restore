@@ -8,12 +8,12 @@
 
 - (void)computedUniqueIdentifier
 {
-  v4 = [a1 network];
-  v5 = [v4 networkName];
-  v6 = [a1 network];
-  v7 = [v6 extendedPANID];
+  network = [self network];
+  networkName = [network networkName];
+  network2 = [self network];
+  extendedPANID = [network2 extendedPANID];
   v9 = 138412546;
-  v10 = v5;
+  v10 = networkName;
   OUTLINED_FUNCTION_2_5();
   v11 = v8;
   _os_log_error_impl(&_mh_execute_header, a2, OS_LOG_TYPE_ERROR, "Failed to calculate UUID (name=%@; xpanid=%@)!", &v9, 0x16u);
@@ -21,13 +21,13 @@
 
 - (void)computedUniqueIdentifierWithBorderAgent
 {
-  v2 = [a1 network];
-  v3 = [v2 networkName];
-  v4 = [a1 network];
-  v5 = [v4 extendedPANID];
-  v6 = [a1 borderAgent];
-  v7 = [v6 discriminatorId];
-  v8 = [a1 keychainAccessGroup];
+  network = [self network];
+  networkName = [network networkName];
+  network2 = [self network];
+  extendedPANID = [network2 extendedPANID];
+  borderAgent = [self borderAgent];
+  discriminatorId = [borderAgent discriminatorId];
+  keychainAccessGroup = [self keychainAccessGroup];
   OUTLINED_FUNCTION_2_5();
   OUTLINED_FUNCTION_3_2(&_mh_execute_header, v9, v10, "Failed to calculate UUID (name=%@; xpanid=%@; discriminatorId=%@; keychainAccessGroup=%@)!", v11, v12, v13, v14, 2u);
 }
@@ -79,12 +79,12 @@
 
 - (void)keyChainQueryForActiveDataSetRecordUpdateOperation
 {
-  v2 = [a1 network];
-  v3 = [v2 networkName];
-  v4 = [a1 network];
-  v5 = [v4 extendedPANID];
-  v6 = [a1 borderAgent];
-  v7 = [v6 discriminatorId];
+  network = [self network];
+  networkName = [network networkName];
+  network2 = [self network];
+  extendedPANID = [network2 extendedPANID];
+  borderAgent = [self borderAgent];
+  discriminatorId = [borderAgent discriminatorId];
   OUTLINED_FUNCTION_2_5();
   OUTLINED_FUNCTION_3_2(&_mh_execute_header, v8, v9, "Illegal attempt to form keychain item with insufficient information (name=%@; xpanid=%@; discriminatorId=%@; uuid=%@)!", v10, v11, v12, v13, 2u);
 }

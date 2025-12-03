@@ -1,21 +1,21 @@
 @interface VideoSpillMapMetalSession
-+ (unint64_t)metalPixelFormatForPixelFormat:(unsigned int)a3 withTransferFunction:(unsigned __int8)a4;
++ (unint64_t)metalPixelFormatForPixelFormat:(unsigned int)format withTransferFunction:(unsigned __int8)function;
 - (VideoSpillMapMetalSession)init;
-- (id)loadTexture:(__CVBuffer *)a3 withAttributes:(id)a4 forPlane:(unsigned int)a5 withCache:(__CVMetalTextureCache *)a6 withFormat:(unint64_t)a7;
-- (int)calculateDrmSpillmapMetal:(__CVBuffer *)a3 emitSpillmap:(__CVBuffer *)a4 setLayout:(int)a5 withAllocator:(void *)a6;
+- (id)loadTexture:(__CVBuffer *)texture withAttributes:(id)attributes forPlane:(unsigned int)plane withCache:(__CVMetalTextureCache *)cache withFormat:(unint64_t)format;
+- (int)calculateDrmSpillmapMetal:(__CVBuffer *)metal emitSpillmap:(__CVBuffer *)spillmap setLayout:(int)layout withAllocator:(void *)allocator;
 - (int)configureGPU;
-- (int)configureIntermediateTextureProcessing:(int)a3 setHeight:(int)a4 setSigma:(float)a5;
-- (int)configureSession:(__IOSurface *)a3 setWidth:(int)a4 setHeight:(int)a5;
+- (int)configureIntermediateTextureProcessing:(int)processing setHeight:(int)height setSigma:(float)sigma;
+- (int)configureSession:(__IOSurface *)session setWidth:(int)width setHeight:(int)height;
 - (void)dealloc;
-- (void)setTaskIDToken:(unsigned int)a3;
+- (void)setTaskIDToken:(unsigned int)token;
 @end
 
 @implementation VideoSpillMapMetalSession
 
-+ (unint64_t)metalPixelFormatForPixelFormat:(unsigned int)a3 withTransferFunction:(unsigned __int8)a4
++ (unint64_t)metalPixelFormatForPixelFormat:(unsigned int)format withTransferFunction:(unsigned __int8)function
 {
-  v4 = a4;
-  v5 = re::CoreVideoUtils::uncompressedPixelFormat(*&a3);
+  functionCopy = function;
+  v5 = re::CoreVideoUtils::uncompressedPixelFormat(*&format);
   result = 0;
   if (v5 > 1111970368)
   {
@@ -30,12 +30,12 @@
       {
 LABEL_11:
         v8 = 528;
-        if (v4 == 16)
+        if (functionCopy == 16)
         {
           v8 = 567;
         }
 
-        v9 = v4 == 8;
+        v9 = functionCopy == 8;
         v10 = 508;
         goto LABEL_28;
       }
@@ -53,7 +53,7 @@ LABEL_10:
     if (v5 == 1982882104)
     {
 LABEL_27:
-      v9 = v4 == 8;
+      v9 = functionCopy == 8;
       v8 = 520;
       v10 = 500;
 LABEL_28:
@@ -71,12 +71,12 @@ LABEL_28:
     if (v5 == 2016686640 || v5 == 2019963440)
     {
       v8 = 525;
-      if (v4 == 16)
+      if (functionCopy == 16)
       {
         v8 = 564;
       }
 
-      v9 = v4 == 8;
+      v9 = functionCopy == 8;
       v10 = 505;
       goto LABEL_28;
     }
@@ -101,7 +101,7 @@ LABEL_28:
     }
 
     v11 = 523;
-    if (v4 == 8)
+    if (functionCopy == 8)
     {
       v11 = 503;
     }
@@ -200,12 +200,12 @@ LABEL_28:
   [(VideoSpillMapMetalSession *)&v12 dealloc];
 }
 
-- (void)setTaskIDToken:(unsigned int)a3
+- (void)setTaskIDToken:(unsigned int)token
 {
-  if (self->_taskIDToken != a3)
+  if (self->_taskIDToken != token)
   {
-    self->_taskIDToken = a3;
-    re::memoryAttributionCVPixelBufferPool(&self->_spillBufferPoolUnprotected, *&a3);
+    self->_taskIDToken = token;
+    re::memoryAttributionCVPixelBufferPool(&self->_spillBufferPoolUnprotected, *&token);
     re::memoryAttributionCVPixelBufferPool(&self->_spillBufferPoolScreenScrapingProtected, self->_taskIDToken);
     re::memoryAttributionCVPixelBufferPool(&self->_spillBufferPoolHDCPType0, self->_taskIDToken);
     taskIDToken = self->_taskIDToken;
@@ -237,9 +237,9 @@ LABEL_13:
     return 11;
   }
 
-  v6 = [(MTLDevice *)v5 newCommandQueue];
+  newCommandQueue = [(MTLDevice *)v5 newCommandQueue];
   commandQueue = self->_commandQueue;
-  self->_commandQueue = v6;
+  self->_commandQueue = newCommandQueue;
 
   if (!self->_commandQueue)
   {
@@ -428,16 +428,16 @@ LABEL_22:
   return v13;
 }
 
-- (int)configureSession:(__IOSurface *)a3 setWidth:(int)a4 setHeight:(int)a5
+- (int)configureSession:(__IOSurface *)session setWidth:(int)width setHeight:(int)height
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (session)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-    if (Mutable && (v9 = Mutable, CFDictionarySetInt32(Mutable, *MEMORY[0x1E696D130], a4), CFDictionarySetInt32(v9, *MEMORY[0x1E696CF58], a5), CFDictionarySetInt32(v9, *MEMORY[0x1E696CFC0], 1111970369), CFDictionarySetInt32(v9, *MEMORY[0x1E696CE58], 4 * a4), CFDictionarySetInt32(v9, *MEMORY[0x1E696CE50], 4), v10 = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]), (self->_spillmapBufferProperties = v10) != 0))
+    if (Mutable && (v9 = Mutable, CFDictionarySetInt32(Mutable, *MEMORY[0x1E696D130], width), CFDictionarySetInt32(v9, *MEMORY[0x1E696CF58], height), CFDictionarySetInt32(v9, *MEMORY[0x1E696CFC0], 1111970369), CFDictionarySetInt32(v9, *MEMORY[0x1E696CE58], 4 * width), CFDictionarySetInt32(v9, *MEMORY[0x1E696CE50], 4), v10 = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]), (self->_spillmapBufferProperties = v10) != 0))
     {
-      CFDictionarySetInt32(v10, *MEMORY[0x1E6966208], a4);
-      CFDictionarySetInt32(self->_spillmapBufferProperties, *MEMORY[0x1E69660B8], a5);
+      CFDictionarySetInt32(v10, *MEMORY[0x1E6966208], width);
+      CFDictionarySetInt32(self->_spillmapBufferProperties, *MEMORY[0x1E69660B8], height);
       CFDictionarySetInt32(self->_spillmapBufferProperties, *MEMORY[0x1E6966130], 1111970369);
       CFDictionarySetValue(self->_spillmapBufferProperties, *MEMORY[0x1E69660E8], *MEMORY[0x1E695E4D0]);
       v11 = *MEMORY[0x1E696D0F0];
@@ -545,9 +545,9 @@ LABEL_21:
   return v14;
 }
 
-- (int)configureIntermediateTextureProcessing:(int)a3 setHeight:(int)a4 setSigma:(float)a5
+- (int)configureIntermediateTextureProcessing:(int)processing setHeight:(int)height setSigma:(float)sigma
 {
-  v7 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:81 width:a3 height:a4 mipmapped:0];
+  v7 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:81 width:processing height:height mipmapped:0];
   intermediateImageDescriptor = self->_intermediateImageDescriptor;
   self->_intermediateImageDescriptor = v7;
 
@@ -559,7 +559,7 @@ LABEL_21:
   }
 
   v9 = objc_alloc(MEMORY[0x1E69745C0]);
-  *&v10 = a5;
+  *&v10 = sigma;
   v11 = [v9 initWithDevice:self->_device sigma:v10];
   gaussianBlur = self->_gaussianBlur;
   self->_gaussianBlur = v11;
@@ -584,15 +584,15 @@ LABEL_21:
   }
 }
 
-- (id)loadTexture:(__CVBuffer *)a3 withAttributes:(id)a4 forPlane:(unsigned int)a5 withCache:(__CVMetalTextureCache *)a6 withFormat:(unint64_t)a7
+- (id)loadTexture:(__CVBuffer *)texture withAttributes:(id)attributes forPlane:(unsigned int)plane withCache:(__CVMetalTextureCache *)cache withFormat:(unint64_t)format
 {
   v26 = *MEMORY[0x1E69E9840];
   image = 0;
-  v10 = a5;
-  v11 = a4;
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, v10);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, v10);
-  v14 = CVMetalTextureCacheCreateTextureFromImage(0, a6, a3, v11, a7, WidthOfPlane, HeightOfPlane, v10, &image);
+  planeCopy = plane;
+  attributesCopy = attributes;
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(texture, planeCopy);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(texture, planeCopy);
+  v14 = CVMetalTextureCacheCreateTextureFromImage(0, cache, texture, attributesCopy, format, WidthOfPlane, HeightOfPlane, planeCopy, &image);
 
   v15 = image;
   if (v14)
@@ -642,16 +642,16 @@ LABEL_8:
   return v17;
 }
 
-- (int)calculateDrmSpillmapMetal:(__CVBuffer *)a3 emitSpillmap:(__CVBuffer *)a4 setLayout:(int)a5 withAllocator:(void *)a6
+- (int)calculateDrmSpillmapMetal:(__CVBuffer *)metal emitSpillmap:(__CVBuffer *)spillmap setLayout:(int)layout withAllocator:(void *)allocator
 {
-  v11 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  CVPixelBufferGetIOSurface(a3);
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  CVPixelBufferGetIOSurface(metal);
   ProtectionOptions = IOSurfaceGetProtectionOptions();
-  v13 = [v11 setProtectionOptions:ProtectionOptions];
+  v13 = [commandBuffer setProtectionOptions:ProtectionOptions];
   if (ProtectionOptions < 8 && ((0x8Bu >> ProtectionOptions) & 1) != 0)
   {
-    PixelBuffer = CVPixelBufferPoolCreatePixelBuffer(0, *(&self->super.isa + *&asc_1E310B348[8 * ProtectionOptions]), a4);
-    v15 = re::memoryAttributionCVPixelBuffer(a4, self->_taskIDToken);
+    PixelBuffer = CVPixelBufferPoolCreatePixelBuffer(0, *(&self->super.isa + *&asc_1E310B348[8 * ProtectionOptions]), spillmap);
+    v15 = re::memoryAttributionCVPixelBuffer(spillmap, self->_taskIDToken);
     if (PixelBuffer)
     {
       v16 = *re::videoLogObjects(v15);
@@ -665,7 +665,7 @@ LABEL_8:
       goto LABEL_10;
     }
 
-    v20 = [(VideoSpillMapMetalSession *)self loadTexture:*a4 withAttributes:self->_readWriteAttributes forPlane:0 withCache:self->_textureCacheSpillmap withFormat:81];
+    v20 = [(VideoSpillMapMetalSession *)self loadTexture:*spillmap withAttributes:self->_readWriteAttributes forPlane:0 withCache:self->_textureCacheSpillmap withFormat:81];
     v21 = v20;
     if (!v20)
     {
@@ -690,11 +690,11 @@ LABEL_8:
     v131 = 0u;
     *buf = 0u;
     v129 = 0u;
-    IOSurface = CVPixelBufferGetIOSurface(a3);
+    IOSurface = CVPixelBufferGetIOSurface(metal);
     re::_IOSurfaceGetBulkAttachments(IOSurface, buf);
     v24 = v23;
     v25 = BYTE12(v131);
-    v26 = CVPixelBufferGetIOSurface(*a4);
+    v26 = CVPixelBufferGetIOSurface(*spillmap);
     v127 = 13;
     v27 = re::_IOSurfaceSetBulkAttachments2();
     if (v27)
@@ -725,7 +725,7 @@ LABEL_80:
       v30 = v25;
     }
 
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(metal);
     v32 = [VideoSpillMapMetalSession metalPixelFormatForPixelFormat:PixelFormatType withTransferFunction:v30];
     if (!v32)
     {
@@ -741,7 +741,7 @@ LABEL_80:
     }
 
     v33 = v32;
-    v112 = [(VideoSpillMapMetalSession *)self loadTexture:a3 withAttributes:self->_readAttributes forPlane:0 withCache:self->_textureCacheBGRA withFormat:v32];
+    v112 = [(VideoSpillMapMetalSession *)self loadTexture:metal withAttributes:self->_readAttributes forPlane:0 withCache:self->_textureCacheBGRA withFormat:v32];
     if (!v112)
     {
       v41 = *re::videoLogObjects(0);
@@ -756,7 +756,7 @@ LABEL_80:
       goto LABEL_79;
     }
 
-    v34 = [(VideoSpillMapMetalSession *)self loadTexture:a3 withAttributes:self->_readAttributes forPlane:0 withCache:self->_textureCacheBGR withFormat:v33];
+    v34 = [(VideoSpillMapMetalSession *)self loadTexture:metal withAttributes:self->_readAttributes forPlane:0 withCache:self->_textureCacheBGR withFormat:v33];
     if (!v34)
     {
       v42 = *re::videoLogObjects(0);
@@ -775,7 +775,7 @@ LABEL_80:
     v110 = v34;
     if (IsTriPlanar)
     {
-      v36 = [(VideoSpillMapMetalSession *)self loadTexture:a3 withAttributes:self->_readAttributes forPlane:2 withCache:self->_textureCacheAlpha withFormat:10];
+      v36 = [(VideoSpillMapMetalSession *)self loadTexture:metal withAttributes:self->_readAttributes forPlane:2 withCache:self->_textureCacheAlpha withFormat:10];
       if (v36)
       {
         goto LABEL_41;
@@ -788,37 +788,37 @@ LABEL_40:
         v36 = 0;
 LABEL_41:
         v109 = v36;
-        if (!*(a6 + 6))
+        if (!*(allocator + 6))
         {
           v44 = self->_device;
           v120 = v44;
-          if (!*(a6 + 6))
+          if (!*(allocator + 6))
           {
-            re::ObjCObject::operator=(a6 + 6, &v120);
+            re::ObjCObject::operator=(allocator + 6, &v120);
           }
         }
 
-        v45 = [(MTLTextureDescriptor *)self->_intermediateImageDescriptor width];
-        v46 = [(MTLTextureDescriptor *)self->_intermediateImageDescriptor height];
-        CleanRect = CVImageBufferGetCleanRect(a3);
+        width = [(MTLTextureDescriptor *)self->_intermediateImageDescriptor width];
+        height = [(MTLTextureDescriptor *)self->_intermediateImageDescriptor height];
+        CleanRect = CVImageBufferGetCleanRect(metal);
         x = CleanRect.origin.x;
         y = CleanRect.origin.y;
         width = CleanRect.size.width;
         height = CleanRect.size.height;
-        v51 = CVBufferCopyAttachment(a3, *MEMORY[0x1E6965DF8], 0);
+        v51 = CVBufferCopyAttachment(metal, *MEMORY[0x1E6965DF8], 0);
         if (v51)
         {
           v53 = v51;
-          v59 = v46;
-          *&v100 = *&CVImageBufferGetDisplaySize(a3);
-          v61 = CVImageBufferGetDisplaySize(a3).height;
+          v59 = height;
+          *&v100 = *&CVImageBufferGetDisplaySize(metal);
+          v61 = CVImageBufferGetDisplaySize(metal).height;
           v62.f32[0] = Int32;
           v62.f32[1] = v104;
           v63.f32[0] = v103;
           v63.f32[1] = v102;
           v64.f32[0] = v101;
           v65 = v60;
-          v46 = v59;
+          height = v59;
           v64.f32[1] = v65;
           v66.f64[0] = v100;
           v66.f64[1] = v61;
@@ -832,15 +832,15 @@ LABEL_41:
           v74 = vbic_s8(v73, vcltz_f32(v73));
           v107 = vsub_f32(vbic_s8(v72, vcltz_f32(v72)), v74);
           CFRelease(v53);
-          v75 = v45 / v107.f32[0];
+          v75 = width / v107.f32[0];
           v76 = vcvtq_f64_f32(v74);
           v77 = v59 / v107.f32[1];
         }
 
         else
         {
-          v75 = v45 / width;
-          v77 = v46 / height;
+          v75 = width / width;
+          v77 = height / height;
           v76 = 0uLL;
         }
 
@@ -868,13 +868,13 @@ LABEL_41:
 
         v82 = v75 + v75;
         v83 = v80 + v80;
-        if (a5 != 1)
+        if (layout != 1)
         {
           v83 = v80;
           v82 = v75;
         }
 
-        if (a5 == 2)
+        if (layout == 2)
         {
           v81 = v81 + v81;
         }
@@ -884,7 +884,7 @@ LABEL_41:
           v80 = v83;
         }
 
-        if (a5 == 2)
+        if (layout == 2)
         {
           v77 = v77 + v77;
         }
@@ -903,11 +903,11 @@ LABEL_41:
         v122 = 0;
         bilinearScale = self->_bilinearScale;
         v123 = 0;
-        v124 = v45;
-        v125 = v46;
+        v124 = width;
+        v125 = height;
         v126 = 1;
         [(MPSImageBilinearScale *)bilinearScale setClipRect:v121];
-        re::VideoTextureAllocator::createTextureInternal(a6, v45, v46, 0x51u, 2u, 3, 0, 0, v121, v85, ProtectionOptions);
+        re::VideoTextureAllocator::createTextureInternal(allocator, width, height, 0x51u, 2u, 3, 0, 0, v121, v85, ProtectionOptions);
         v86 = *v121;
         v88 = v86;
         v34 = v110;
@@ -915,7 +915,7 @@ LABEL_41:
         {
         }
 
-        re::VideoTextureAllocator::createTextureInternal(a6, v45, v46, 0x51u, 2u, 3, 0, 0, v121, v87, ProtectionOptions);
+        re::VideoTextureAllocator::createTextureInternal(allocator, width, height, 0x51u, 2u, 3, 0, 0, v121, v87, ProtectionOptions);
         v89 = *v121;
         v90 = v89;
         if (v89)
@@ -923,32 +923,32 @@ LABEL_41:
 
           if (v88)
           {
-            v105 = v46;
-            v108 = v45;
+            v105 = height;
+            v108 = width;
             if (v109)
             {
-              v91 = CVPixelBufferGetWidth(a3);
-              v92 = CVPixelBufferGetHeight(a3);
-              v93 = [v11 computeCommandEncoder];
-              [v93 setComputePipelineState:self->_bilinearScaleWithAlpha];
-              [v93 setTexture:v110 atIndex:0];
-              [v93 setTexture:v109 atIndex:1];
-              [v93 setTexture:v88 atIndex:2];
+              v91 = CVPixelBufferGetWidth(metal);
+              v92 = CVPixelBufferGetHeight(metal);
+              computeCommandEncoder = [commandBuffer computeCommandEncoder];
+              [computeCommandEncoder setComputePipelineState:self->_bilinearScaleWithAlpha];
+              [computeCommandEncoder setTexture:v110 atIndex:0];
+              [computeCommandEncoder setTexture:v109 atIndex:1];
+              [computeCommandEncoder setTexture:v88 atIndex:2];
               *v121 = v91;
               v122 = v92;
               v123 = 1;
               v114 = vdupq_n_s64(0x20uLL);
               v115 = 1;
-              [v93 dispatchThreads:v121 threadsPerThreadgroup:&v114];
-              [v93 endEncoding];
+              [computeCommandEncoder dispatchThreads:v121 threadsPerThreadgroup:&v114];
+              [computeCommandEncoder endEncoding];
             }
 
             else
             {
-              [(MPSImageBilinearScale *)self->_bilinearScale encodeToCommandBuffer:v11 sourceTexture:v112 destinationTexture:v88];
+              [(MPSImageBilinearScale *)self->_bilinearScale encodeToCommandBuffer:commandBuffer sourceTexture:v112 destinationTexture:v88];
             }
 
-            [(MPSImageGaussianBlur *)self->_gaussianBlur encodeToCommandBuffer:v11 sourceTexture:v88 destinationTexture:v90];
+            [(MPSImageGaussianBlur *)self->_gaussianBlur encodeToCommandBuffer:commandBuffer sourceTexture:v88 destinationTexture:v90];
             v96 = IOSurfaceGetWidth(buffer);
             v97 = IOSurfaceGetHeight(buffer);
             v98 = v97;
@@ -966,10 +966,10 @@ LABEL_41:
             v126 = 1;
             [(MPSImageBilinearScale *)v99 setClipRect:v121];
             v21 = v113;
-            [(MPSImageBilinearScale *)self->_bilinearScale encodeToCommandBuffer:v11 sourceTexture:v90 destinationTexture:v113];
-            if (([v11 commitAndWaitUntilSubmitted] & 1) == 0)
+            [(MPSImageBilinearScale *)self->_bilinearScale encodeToCommandBuffer:commandBuffer sourceTexture:v90 destinationTexture:v113];
+            if (([commandBuffer commitAndWaitUntilSubmitted] & 1) == 0)
             {
-              [v11 waitUntilScheduled];
+              [commandBuffer waitUntilScheduled];
             }
 
             v17 = 0;

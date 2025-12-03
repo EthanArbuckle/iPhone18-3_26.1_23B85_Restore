@@ -1,11 +1,11 @@
 @interface KeyboardObserver
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
 @end
 
 @implementation KeyboardObserver
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
   v3 = sub_243B6F9EC();
   v4 = *(v3 - 8);
@@ -19,7 +19,7 @@
   (*(v4 + 8))(v7, v3);
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
   v3 = sub_243B6F9EC();
   v4 = *(v3 - 8);

@@ -1,6 +1,6 @@
 @interface TIMecabraWrapper
-- (TIMecabraWrapper)initWithInputMethodType:(int)a3 learningDictionaryDirectoryURL:(__CFURL *)a4 creationOptions:(unint64_t)a5;
-- (TIMecabraWrapper)initWithInputMethodType:(int)a3 learningDictionaryDirectoryURL:(id)a4 creationOptionsDictionary:(id)a5;
+- (TIMecabraWrapper)initWithInputMethodType:(int)type learningDictionaryDirectoryURL:(__CFURL *)l creationOptions:(unint64_t)options;
+- (TIMecabraWrapper)initWithInputMethodType:(int)type learningDictionaryDirectoryURL:(id)l creationOptionsDictionary:(id)dictionary;
 - (void)dealloc;
 @end
 
@@ -15,7 +15,7 @@
     v6 = 3221225472;
     v7 = __27__TIMecabraWrapper_dealloc__block_invoke;
     v8 = &unk_278733308;
-    v9 = self;
+    selfCopy = self;
     TIDispatchSync();
   }
 
@@ -24,10 +24,10 @@
   [(TIMecabraWrapper *)&v4 dealloc];
 }
 
-- (TIMecabraWrapper)initWithInputMethodType:(int)a3 learningDictionaryDirectoryURL:(id)a4 creationOptionsDictionary:(id)a5
+- (TIMecabraWrapper)initWithInputMethodType:(int)type learningDictionaryDirectoryURL:(id)l creationOptionsDictionary:(id)dictionary
 {
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = TIMecabraWrapper;
   v10 = [(TIMecabraWrapper *)&v20 init];
@@ -41,14 +41,14 @@
   v18 = 0x2020000000;
   v19 = 0;
   v11 = mecabraCreationQueue();
-  v14 = v9;
-  v15 = v8;
+  v14 = dictionaryCopy;
+  v15 = lCopy;
   TIDispatchSync();
 
   v12 = v17[3];
   if (v12)
   {
-    v10->_inputMethodType = a3;
+    v10->_inputMethodType = type;
     v10->_mecabraRef = v12;
 
     _Block_object_dispose(&v16, 8);
@@ -77,7 +77,7 @@ void __101__TIMecabraWrapper_initWithInputMethodType_learningDictionaryDirectory
   *(*(*(a1 + 48) + 8) + 24) = MecabraCreate();
 }
 
-- (TIMecabraWrapper)initWithInputMethodType:(int)a3 learningDictionaryDirectoryURL:(__CFURL *)a4 creationOptions:(unint64_t)a5
+- (TIMecabraWrapper)initWithInputMethodType:(int)type learningDictionaryDirectoryURL:(__CFURL *)l creationOptions:(unint64_t)options
 {
   v14.receiver = self;
   v14.super_class = TIMecabraWrapper;
@@ -97,7 +97,7 @@ void __101__TIMecabraWrapper_initWithInputMethodType_learningDictionaryDirectory
   v8 = v11[3];
   if (v8)
   {
-    v6->_inputMethodType = a3;
+    v6->_inputMethodType = type;
     v6->_mecabraRef = v8;
     _Block_object_dispose(&v10, 8);
     return v6;

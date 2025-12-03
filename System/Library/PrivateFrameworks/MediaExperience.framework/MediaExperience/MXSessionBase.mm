@@ -1,11 +1,11 @@
 @interface MXSessionBase
 - (MXSessionBase)init;
-- (id)copyProperties:(id)a3 outPropertyErrors:(id *)a4;
-- (id)copyPropertiesInternal:(id)a3 outPropertyErrors:(id *)a4;
-- (int)copyPropertyForKey:(id)a3 valueOut:(id *)a4;
-- (int)setOrderedPropertiesInternal:(id)a3 usingErrorHandlingStrategy:(unsigned __int8)a4 outPropertiesErrors:(id *)a5;
-- (int)setPropertiesInternal:(id)a3 usingErrorHandlingStrategy:(unsigned __int8)a4 outPropertiesErrors:(id *)a5;
-- (int)setPropertyForKey:(id)a3 value:(id)a4;
+- (id)copyProperties:(id)properties outPropertyErrors:(id *)errors;
+- (id)copyPropertiesInternal:(id)internal outPropertyErrors:(id *)errors;
+- (int)copyPropertyForKey:(id)key valueOut:(id *)out;
+- (int)setOrderedPropertiesInternal:(id)internal usingErrorHandlingStrategy:(unsigned __int8)strategy outPropertiesErrors:(id *)errors;
+- (int)setPropertiesInternal:(id)internal usingErrorHandlingStrategy:(unsigned __int8)strategy outPropertiesErrors:(id *)errors;
+- (int)setPropertyForKey:(id)key value:(id)value;
 - (void)dealloc;
 @end
 
@@ -34,15 +34,15 @@
   [(MXSessionBase *)&v3 dealloc];
 }
 
-- (int)setPropertyForKey:(id)a3 value:(id)a4
+- (int)setPropertyForKey:(id)key value:(id)value
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if (([objc_opt_class() isNonSerializedSetProperty:a3] & 1) != 0 || objc_msgSend(objc_opt_class(), "isNonSerializedSetPropertyWhenSessionIsInactive:", a3) && !-[MXCoreSessionBase isActive](-[MXSessionBase parentCoreSession](self, "parentCoreSession"), "isActive"))
+  if (([objc_opt_class() isNonSerializedSetProperty:key] & 1) != 0 || objc_msgSend(objc_opt_class(), "isNonSerializedSetPropertyWhenSessionIsInactive:", key) && !-[MXCoreSessionBase isActive](-[MXSessionBase parentCoreSession](self, "parentCoreSession"), "isActive"))
   {
-    v7 = [(MXSessionBase *)self setPropertyForKeyInternal:a3 value:a4 fromPropertiesBatch:0];
+    v7 = [(MXSessionBase *)self setPropertyForKeyInternal:key value:value fromPropertiesBatch:0];
     *(v12 + 6) = v7;
   }
 
@@ -54,8 +54,8 @@
     v10[2] = __41__MXSessionBase_setPropertyForKey_value___block_invoke;
     v10[3] = &unk_1E7AE70A8;
     v10[4] = self;
-    v10[5] = a3;
-    v10[6] = a4;
+    v10[5] = key;
+    v10[6] = value;
     v10[7] = &v11;
     MXDispatchAsyncAndWait("[MXSessionBase setPropertyForKey:value:]", "MXSessionBase.m", 113, 0, 0, v8, v10);
     v7 = *(v12 + 6);
@@ -72,15 +72,15 @@ uint64_t __41__MXSessionBase_setPropertyForKey_value___block_invoke(uint64_t a1)
   return result;
 }
 
-- (int)copyPropertyForKey:(id)a3 valueOut:(id *)a4
+- (int)copyPropertyForKey:(id)key valueOut:(id *)out
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if ([objc_opt_class() isNonSerializedCopyProperty:a3])
+  if ([objc_opt_class() isNonSerializedCopyProperty:key])
   {
-    v7 = [(MXSessionBase *)self copyPropertyForKeyInternal:a3 valueOut:a4];
+    v7 = [(MXSessionBase *)self copyPropertyForKeyInternal:key valueOut:out];
     *(v12 + 6) = v7;
   }
 
@@ -92,9 +92,9 @@ uint64_t __41__MXSessionBase_setPropertyForKey_value___block_invoke(uint64_t a1)
     v10[2] = __45__MXSessionBase_copyPropertyForKey_valueOut___block_invoke;
     v10[3] = &unk_1E7AE70D0;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = key;
     v10[6] = &v11;
-    v10[7] = a4;
+    v10[7] = out;
     MXDispatchAsyncAndWait("[MXSessionBase copyPropertyForKey:valueOut:]", "MXSessionBase.m", 143, 0, 0, v8, v10);
     v7 = *(v12 + 6);
   }
@@ -125,14 +125,14 @@ id __78__MXSessionBase_setProperties_usingErrorHandlingStrategy_outPropertiesErr
   return result;
 }
 
-- (int)setPropertiesInternal:(id)a3 usingErrorHandlingStrategy:(unsigned __int8)a4 outPropertiesErrors:(id *)a5
+- (int)setPropertiesInternal:(id)internal usingErrorHandlingStrategy:(unsigned __int8)strategy outPropertiesErrors:(id *)errors
 {
-  v6 = a4;
+  strategyCopy = strategy;
   v64 = *MEMORY[0x1E69E9840];
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v37 = a5;
-  if (a3)
+  errorsCopy = errors;
+  if (internal)
   {
     if (dword_1EB75DE40)
     {
@@ -143,13 +143,13 @@ id __78__MXSessionBase_setProperties_usingErrorHandlingStrategy_outPropertiesErr
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    CMSMDebugUtility_PrintDictionary(a3);
+    CMSMDebugUtility_PrintDictionary(internal);
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v11 = [objc_opt_class() getSetPropertiesOrder];
-    v12 = [v11 countByEnumeratingWithState:&v48 objects:v62 count:16];
+    getSetPropertiesOrder = [objc_opt_class() getSetPropertiesOrder];
+    v12 = [getSetPropertiesOrder countByEnumeratingWithState:&v48 objects:v62 count:16];
     if (v12)
     {
       v13 = v12;
@@ -160,11 +160,11 @@ id __78__MXSessionBase_setProperties_usingErrorHandlingStrategy_outPropertiesErr
         {
           if (*v49 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(getSetPropertiesOrder);
           }
 
           v16 = *(*(&v48 + 1) + 8 * i);
-          v17 = [a3 objectForKey:{v16, v35, v36}];
+          v17 = [internal objectForKey:{v16, v35, v36}];
           if (v17)
           {
             v60 = v16;
@@ -173,7 +173,7 @@ id __78__MXSessionBase_setProperties_usingErrorHandlingStrategy_outPropertiesErr
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v48 objects:v62 count:16];
+        v13 = [getSetPropertiesOrder countByEnumeratingWithState:&v48 objects:v62 count:16];
       }
 
       while (v13);
@@ -183,7 +183,7 @@ id __78__MXSessionBase_setProperties_usingErrorHandlingStrategy_outPropertiesErr
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v18 = [a3 countByEnumeratingWithState:&v44 objects:v59 count:{16, v35, v36}];
+    v18 = [internal countByEnumeratingWithState:&v44 objects:v59 count:{16, v35, v36}];
     if (v18)
     {
       v19 = v18;
@@ -194,19 +194,19 @@ id __78__MXSessionBase_setProperties_usingErrorHandlingStrategy_outPropertiesErr
         {
           if (*v45 != v20)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(internal);
           }
 
           v22 = *(*(&v44 + 1) + 8 * j);
           if (([objc_msgSend(objc_opt_class() "getSetPropertiesOrder")] & 1) == 0)
           {
             v57 = v22;
-            v58 = [a3 objectForKey:v22];
+            v58 = [internal objectForKey:v22];
             [v9 addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v58, &v57, 1)}];
           }
         }
 
-        v19 = [a3 countByEnumeratingWithState:&v44 objects:v59 count:16];
+        v19 = [internal countByEnumeratingWithState:&v44 objects:v59 count:16];
       }
 
       while (v19);
@@ -245,11 +245,11 @@ id __78__MXSessionBase_setProperties_usingErrorHandlingStrategy_outPropertiesErr
             v31 = v30;
           }
 
-          v32 = [(MXSessionBase *)self setPropertyForKeyInternal:v29 value:v31 fromPropertiesBatch:a3];
+          v32 = [(MXSessionBase *)self setPropertyForKeyInternal:v29 value:v31 fromPropertiesBatch:internal];
           v54 = v29;
           v55 = [MEMORY[0x1E696AD98] numberWithInt:v32];
           [v39 addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v55, &v54, 1)}];
-          if (v6 == 2)
+          if (strategyCopy == 2)
           {
             if (v32)
             {
@@ -257,7 +257,7 @@ id __78__MXSessionBase_setProperties_usingErrorHandlingStrategy_outPropertiesErr
             }
           }
 
-          else if (v6 == 1 && v32)
+          else if (strategyCopy == 1 && v32)
           {
             [MXSessionBase setPropertiesInternal:v28 usingErrorHandlingStrategy:v63 outPropertiesErrors:?];
             goto LABEL_44;
@@ -285,9 +285,9 @@ LABEL_44:
     v38 = v63[0];
   }
 
-  if (v37)
+  if (errorsCopy)
   {
-    *v37 = v39;
+    *errorsCopy = v39;
   }
 
   else
@@ -313,14 +313,14 @@ id __85__MXSessionBase_setOrderedProperties_usingErrorHandlingStrategy_outProper
   return result;
 }
 
-- (int)setOrderedPropertiesInternal:(id)a3 usingErrorHandlingStrategy:(unsigned __int8)a4 outPropertiesErrors:(id *)a5
+- (int)setOrderedPropertiesInternal:(id)internal usingErrorHandlingStrategy:(unsigned __int8)strategy outPropertiesErrors:(id *)errors
 {
-  v6 = a4;
+  strategyCopy = strategy;
   v38 = *MEMORY[0x1E69E9840];
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  obj = a3;
-  v25 = a5;
-  if (a3)
+  obj = internal;
+  errorsCopy = errors;
+  if (internal)
   {
     if (dword_1EB75DE40)
     {
@@ -331,12 +331,12 @@ id __85__MXSessionBase_setOrderedProperties_usingErrorHandlingStrategy_outProper
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    CMSMDebugUtility_PrintCollection(a3);
+    CMSMDebugUtility_PrintCollection(internal);
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v11 = [a3 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    v11 = [internal countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v11)
     {
       v12 = v11;
@@ -369,7 +369,7 @@ id __85__MXSessionBase_setOrderedProperties_usingErrorHandlingStrategy_outProper
           v34 = v17;
           v35 = [MEMORY[0x1E696AD98] numberWithInt:v20];
           [v9 addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v35, &v34, 1)}];
-          if (v6 == 2)
+          if (strategyCopy == 2)
           {
             if (v20)
             {
@@ -377,7 +377,7 @@ id __85__MXSessionBase_setOrderedProperties_usingErrorHandlingStrategy_outProper
             }
           }
 
-          else if (v6 == 1 && v20)
+          else if (strategyCopy == 1 && v20)
           {
             [MXSessionBase setOrderedPropertiesInternal:v16 usingErrorHandlingStrategy:v37 outPropertiesErrors:?];
             goto LABEL_26;
@@ -405,9 +405,9 @@ LABEL_26:
     v26 = v37[0];
   }
 
-  if (v25)
+  if (errorsCopy)
   {
-    *v25 = v9;
+    *errorsCopy = v9;
   }
 
   else
@@ -418,7 +418,7 @@ LABEL_26:
   return v26;
 }
 
-- (id)copyProperties:(id)a3 outPropertyErrors:(id *)a4
+- (id)copyProperties:(id)properties outPropertyErrors:(id *)errors
 {
   v28 = *MEMORY[0x1E69E9840];
   +[MXInitialization waitUntilMXIsFullyInitialized];
@@ -432,7 +432,7 @@ LABEL_26:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v17 objects:v27 count:16];
+  v7 = [properties countByEnumeratingWithState:&v17 objects:v27 count:16];
   if (v7)
   {
     v8 = *v18;
@@ -443,7 +443,7 @@ LABEL_26:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(properties);
         }
 
         if (([objc_opt_class() isNonSerializedCopyProperty:*(*(&v17 + 1) + 8 * v9)] & 1) == 0)
@@ -454,13 +454,13 @@ LABEL_26:
           v16[2] = __50__MXSessionBase_copyProperties_outPropertyErrors___block_invoke;
           v16[3] = &unk_1E7AE70D0;
           v16[4] = self;
-          v16[5] = a3;
+          v16[5] = properties;
           v16[6] = &v21;
-          v16[7] = a4;
+          v16[7] = errors;
           MXDispatchAsyncAndWait("[MXSessionBase copyProperties:outPropertyErrors:]", "MXSessionBase.m", 401, 0, 0, v11, v16);
-          if (a4)
+          if (errors)
           {
-            v12 = *a4;
+            v12 = *errors;
           }
 
           goto LABEL_12;
@@ -470,7 +470,7 @@ LABEL_26:
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v17 objects:v27 count:16];
+      v7 = [properties countByEnumeratingWithState:&v17 objects:v27 count:16];
       if (v7)
       {
         continue;
@@ -480,7 +480,7 @@ LABEL_26:
     }
   }
 
-  v10 = [(MXSessionBase *)self copyPropertiesInternal:a3 outPropertyErrors:a4];
+  v10 = [(MXSessionBase *)self copyPropertiesInternal:properties outPropertyErrors:errors];
   v22[5] = v10;
 LABEL_12:
   v13 = v22[5];
@@ -504,7 +504,7 @@ id __50__MXSessionBase_copyProperties_outPropertyErrors___block_invoke(uint64_t 
   return result;
 }
 
-- (id)copyPropertiesInternal:(id)a3 outPropertyErrors:(id *)a4
+- (id)copyPropertiesInternal:(id)internal outPropertyErrors:(id *)errors
 {
   v25 = *MEMORY[0x1E69E9840];
   v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -513,7 +513,7 @@ id __50__MXSessionBase_copyProperties_outPropertyErrors___block_invoke(uint64_t 
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v7 = [internal countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -524,7 +524,7 @@ id __50__MXSessionBase_copyProperties_outPropertyErrors___block_invoke(uint64_t 
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(internal);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
@@ -551,15 +551,15 @@ id __50__MXSessionBase_copyProperties_outPropertyErrors___block_invoke(uint64_t 
         objc_autoreleasePoolPop(v12);
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [internal countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
   }
 
-  if (a4)
+  if (errors)
   {
-    *a4 = v6;
+    *errors = v6;
   }
 
   else

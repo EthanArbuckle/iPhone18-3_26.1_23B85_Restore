@@ -1,19 +1,19 @@
 @interface SASourceInfo
-+ (id)sourceInfoWithOffsetIntoSegment:(uint64_t)a3 length:(int)a4 lineNum:(int)a5 columnNum:(void *)a6 filePath:;
++ (id)sourceInfoWithOffsetIntoSegment:(uint64_t)segment length:(int)length lineNum:(int)num columnNum:(void *)columnNum filePath:;
 - (NSString)fileName;
 - (id)debugDescription;
 @end
 
 @implementation SASourceInfo
 
-+ (id)sourceInfoWithOffsetIntoSegment:(uint64_t)a3 length:(int)a4 lineNum:(int)a5 columnNum:(void *)a6 filePath:
++ (id)sourceInfoWithOffsetIntoSegment:(uint64_t)segment length:(int)length lineNum:(int)num columnNum:(void *)columnNum filePath:
 {
   v11 = objc_alloc_init(objc_opt_self());
   *(v11 + 2) = a2;
-  *(v11 + 3) = a3;
-  *(v11 + 2) = a4;
-  *(v11 + 3) = a5;
-  objc_storeStrong(v11 + 4, a6);
+  *(v11 + 3) = segment;
+  *(v11 + 2) = length;
+  *(v11 + 3) = num;
+  objc_storeStrong(v11 + 4, columnNum);
 
   return v11;
 }

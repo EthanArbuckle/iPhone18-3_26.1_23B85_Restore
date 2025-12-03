@@ -1,27 +1,27 @@
 @interface HearingAidController
 - (HearingAidController)init;
-- (id)accessibilityPreferenceForSpecifier:(id)a3;
-- (id)hearingAidComplaince:(id)a3;
+- (id)accessibilityPreferenceForSpecifier:(id)specifier;
+- (id)hearingAidComplaince:(id)complaince;
 - (id)specifiers;
-- (void)_handleAvailableDevicesChanged:(id)a3;
-- (void)accessibilitySetPreference:(id)a3 specifier:(id)a4;
+- (void)_handleAvailableDevicesChanged:(id)changed;
+- (void)accessibilitySetPreference:(id)preference specifier:(id)specifier;
 - (void)beginSearching;
-- (void)callObserver:(id)a3 callChanged:(id)a4;
+- (void)callObserver:(id)observer callChanged:(id)changed;
 - (void)dealloc;
-- (void)displayPairingFailureAlertForDevice:(id)a3;
+- (void)displayPairingFailureAlertForDevice:(id)device;
 - (void)handleResignActive;
-- (void)hearingServerDidDie:(id)a3;
-- (void)insertBluetoothAvailabilityToSpecifiers:(id)a3;
+- (void)hearingServerDidDie:(id)die;
+- (void)insertBluetoothAvailabilityToSpecifiers:(id)specifiers;
 - (void)insertPlaceholderSpecifierIfNeeded;
-- (void)insertSearchingToSpecifiers:(id)a3;
+- (void)insertSearchingToSpecifiers:(id)specifiers;
 - (void)refreshAvailableDevices;
-- (void)setBluetoothAvailability:(BOOL)a3;
-- (void)setBluetoothAvailable:(id)a3;
-- (void)setHearingAidCompliance:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setBluetoothAvailability:(BOOL)availability;
+- (void)setBluetoothAvailable:(id)available;
+- (void)setHearingAidCompliance:(id)compliance specifier:(id)specifier;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewHearingAidDetailsWithSpecifier:(id)a3;
+- (void)viewHearingAidDetailsWithSpecifier:(id)specifier;
 - (void)willBecomeActive;
 - (void)willResignActive;
 @end
@@ -97,15 +97,15 @@
   self->_callObserver = v6;
 
   [(CXCallObserver *)self->_callObserver setDelegate:self queue:0];
-  v8 = [(HearingAidController *)self table];
+  table = [(HearingAidController *)self table];
   v9 = objc_opt_class();
   v10 = +[HearingPlaceholderCell cellReuseIdentifier];
-  [v8 registerClass:v9 forCellReuseIdentifier:v10];
+  [table registerClass:v9 forCellReuseIdentifier:v10];
 
-  v11 = [(HearingAidController *)self table];
+  table2 = [(HearingAidController *)self table];
   v12 = objc_opt_class();
   v13 = +[HearingAidConnectionTableCell cellReuseIdentifier];
-  [v11 registerClass:v12 forCellReuseIdentifier:v13];
+  [table2 registerClass:v12 forCellReuseIdentifier:v13];
 
   v14 = +[NSNotificationCenter defaultCenter];
   [v14 addObserver:self selector:"handleResignActive" name:UIApplicationWillResignActiveNotification object:0];
@@ -181,18 +181,18 @@
   v43 = v3;
   if (self->_bluetoothAvailable)
   {
-    v7 = [(HearingAidController *)self availableDevices];
-    v8 = [v7 count];
+    availableDevices = [(HearingAidController *)self availableDevices];
+    v8 = [availableDevices count];
 
     if (v8)
     {
-      v9 = [(HearingAidController *)self availableDevices];
+      availableDevices2 = [(HearingAidController *)self availableDevices];
       v51[0] = _NSConcreteStackBlock;
       v51[1] = 3221225472;
       v51[2] = sub_26BB8;
       v51[3] = &unk_491C0;
       v52 = v6;
-      [v9 enumerateObjectsUsingBlock:v51];
+      [availableDevices2 enumerateObjectsUsingBlock:v51];
     }
 
     else
@@ -202,9 +202,9 @@
 
     v10 = hearingSettingsLocString(@"MFiEducationFooter", @"HearingAidSettings");
     v11 = +[HUHearingAidSettings sharedInstance];
-    v12 = [v11 pairedHearingAids];
+    pairedHearingAids = [v11 pairedHearingAids];
 
-    if (!v12)
+    if (!pairedHearingAids)
     {
       goto LABEL_26;
     }
@@ -245,9 +245,9 @@
     v18 = hearingSettingsLocString(v17, @"HearingAidSettings");
 
     v19 = +[HUHearingAidSettings sharedInstance];
-    v20 = [v19 isiCloudPaired];
+    isiCloudPaired = [v19 isiCloudPaired];
 
-    if (v20)
+    if (isiCloudPaired)
     {
       if ((+[HCUtilities deviceIsPhone]& 1) != 0)
       {
@@ -276,8 +276,8 @@ LABEL_25:
 
     v10 = v18;
 LABEL_26:
-    v23 = [v6 firstObject];
-    [v23 setProperty:v10 forKey:PSFooterTextGroupKey];
+    firstObject = [v6 firstObject];
+    [firstObject setProperty:v10 forKey:PSFooterTextGroupKey];
 
     goto LABEL_27;
   }
@@ -307,15 +307,15 @@ LABEL_27:
 
         v30 = *(*(&v47 + 1) + 8 * i);
         [v30 setProperty:&__kCFBooleanTrue forKey:v27];
-        v31 = [v30 properties];
-        v32 = [v31 objectForKey:v28];
+        properties = [v30 properties];
+        v32 = [properties objectForKey:v28];
 
         if (([v32 hasPrefix:@"HearingAudioRouting"] & 1) != 0 || (objc_msgSend(v32, "hasPrefix:", @"HearingAidRingtone") & 1) != 0 || (objc_msgSend(v32, "hasPrefix:", @"HearingMultidevice") & 1) != 0 || objc_msgSend(v32, "hasPrefix:", @"HearingAidSystemSounds"))
         {
           v33 = +[HUHearingAidSettings sharedInstance];
-          v34 = [v33 pairedHearingAids];
+          pairedHearingAids2 = [v33 pairedHearingAids];
 
-          if (!v34)
+          if (!pairedHearingAids2)
           {
             [v45 addObject:v30];
           }
@@ -356,18 +356,18 @@ LABEL_43:
   return v4;
 }
 
-- (id)hearingAidComplaince:(id)a3
+- (id)hearingAidComplaince:(id)complaince
 {
   v3 = AXHACHearingAidComplianceEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setHearingAidCompliance:(id)a3 specifier:(id)a4
+- (void)setHearingAidCompliance:(id)compliance specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [compliance BOOLValue];
   AXHACHearingAidComplianceSetEnabled();
-  if (a3)
+  if (compliance)
   {
     if (_AXSEarpieceNoiseCancellationEnabled())
     {
@@ -391,9 +391,9 @@ LABEL_43:
   }
 }
 
-- (void)setBluetoothAvailable:(id)a3
+- (void)setBluetoothAvailable:(id)available
 {
-  if ([a3 BOOLValue])
+  if ([available BOOLValue])
   {
     v4 = +[HUAccessoryManager sharedInstance];
     v5[0] = _NSConcreteStackBlock;
@@ -405,17 +405,17 @@ LABEL_43:
   }
 }
 
-- (void)setBluetoothAvailability:(BOOL)a3
+- (void)setBluetoothAvailability:(BOOL)availability
 {
-  self->_bluetoothAvailable = a3;
+  self->_bluetoothAvailable = availability;
   AXPerformBlockOnMainThread();
   [(HearingAidController *)self beginSearching];
 }
 
-- (id)accessibilityPreferenceForSpecifier:(id)a3
+- (id)accessibilityPreferenceForSpecifier:(id)specifier
 {
-  v3 = [a3 properties];
-  v4 = [v3 objectForKey:PSKeyNameKey];
+  properties = [specifier properties];
+  v4 = [properties objectForKey:PSKeyNameKey];
 
   if ([v4 isEqualToString:@"HearingAidCompliance"])
   {
@@ -434,9 +434,9 @@ LABEL_5:
   if ([v4 isEqualToString:@"HearingMultideviceSettings"])
   {
     v7 = +[HUHearingAidSettings sharedInstance];
-    v8 = [v7 multideviceSettingsEnabled];
+    multideviceSettingsEnabled = [v7 multideviceSettingsEnabled];
 LABEL_12:
-    v6 = [NSNumber numberWithBool:v8];
+    v6 = [NSNumber numberWithBool:multideviceSettingsEnabled];
 
     goto LABEL_13;
   }
@@ -444,14 +444,14 @@ LABEL_12:
   if ([v4 isEqualToString:@"HearingMultideviceAudio"])
   {
     v7 = +[HUHearingAidSettings sharedInstance];
-    v8 = [v7 multideviceAudioEnabled];
+    multideviceSettingsEnabled = [v7 multideviceAudioEnabled];
     goto LABEL_12;
   }
 
   if ([v4 isEqualToString:@"HearingAidSystemSounds"])
   {
     v7 = +[HUHearingAidSettings sharedInstance];
-    v8 = [v7 shouldStreamSystemSounds];
+    multideviceSettingsEnabled = [v7 shouldStreamSystemSounds];
     goto LABEL_12;
   }
 
@@ -461,23 +461,23 @@ LABEL_13:
   return v6;
 }
 
-- (void)accessibilitySetPreference:(id)a3 specifier:(id)a4
+- (void)accessibilitySetPreference:(id)preference specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = [a4 properties];
-  v11 = [v7 objectForKey:PSKeyNameKey];
+  preferenceCopy = preference;
+  properties = [specifier properties];
+  v11 = [properties objectForKey:PSKeyNameKey];
 
-  v8 = [v6 BOOLValue];
+  bOOLValue = [preferenceCopy BOOLValue];
   if ([v11 isEqualToString:@"HearingAidCompliance"])
   {
     AXHACHearingAidComplianceSetEnabled();
-    if (v8)
+    if (bOOLValue)
     {
       _AXSEarpieceNoiseCancellationSetEnabled();
     }
 
-    v9 = [(HearingAidController *)self parentController];
-    [v9 reload];
+    parentController = [(HearingAidController *)self parentController];
+    [parentController reload];
   }
 
   else
@@ -491,13 +491,13 @@ LABEL_13:
     if ([v11 isEqualToString:@"HearingMultideviceSettings"])
     {
       v10 = +[HUHearingAidSettings sharedInstance];
-      [v10 setMultideviceSettingsEnabled:v8];
+      [v10 setMultideviceSettingsEnabled:bOOLValue];
     }
 
     else if ([v11 isEqualToString:@"HearingMultideviceAudio"])
     {
       v10 = +[HUHearingAidSettings sharedInstance];
-      [v10 setMultideviceAudioEnabled:v8];
+      [v10 setMultideviceAudioEnabled:bOOLValue];
     }
 
     else
@@ -508,7 +508,7 @@ LABEL_13:
       }
 
       v10 = +[HUHearingAidSettings sharedInstance];
-      [v10 setShouldStreamSystemSounds:v8];
+      [v10 setShouldStreamSystemSounds:bOOLValue];
     }
   }
 
@@ -517,9 +517,9 @@ LABEL_14:
 
 - (void)refreshAvailableDevices
 {
-  v3 = [(HearingAidController *)self deviceUpdateLock];
+  deviceUpdateLock = [(HearingAidController *)self deviceUpdateLock];
 
-  if (!v3)
+  if (!deviceUpdateLock)
   {
     v4 = objc_alloc_init(NSLock);
     [(HearingAidController *)self setDeviceUpdateLock:v4];
@@ -529,9 +529,9 @@ LABEL_14:
   {
     objc_initWeak(&location, self);
     v5 = +[HUHearingAidSettings sharedInstance];
-    v6 = [v5 pairedHearingAids];
+    pairedHearingAids = [v5 pairedHearingAids];
 
-    if (v6)
+    if (pairedHearingAids)
     {
       v7 = +[AXHAServer sharedInstance];
       v8 = objc_loadWeakRetained(&location);
@@ -568,10 +568,10 @@ LABEL_14:
   }
 }
 
-- (void)_handleAvailableDevicesChanged:(id)a3
+- (void)_handleAvailableDevicesChanged:(id)changed
 {
-  v4 = a3;
-  if ([v4 count])
+  changedCopy = changed;
+  if ([changedCopy count])
   {
     +[NSMutableArray array];
     v16 = _NSConcreteStackBlock;
@@ -580,7 +580,7 @@ LABEL_14:
     v19 = &unk_492E0;
     v5 = v20 = self;
     v21 = v5;
-    [v4 enumerateObjectsUsingBlock:&v16];
+    [changedCopy enumerateObjectsUsingBlock:&v16];
     if (![v5 count])
     {
 LABEL_10:
@@ -589,21 +589,21 @@ LABEL_10:
     }
 
     v6 = [v5 sortedArrayUsingComparator:&stru_49320];
-    v7 = [(HearingAidController *)self availableDevices];
-    if ([v7 count])
+    availableDevices = [(HearingAidController *)self availableDevices];
+    if ([availableDevices count])
     {
-      v8 = [(HearingAidController *)self availableDevices];
-      v9 = [v8 objectAtIndex:0];
+      availableDevices2 = [(HearingAidController *)self availableDevices];
+      v9 = [availableDevices2 objectAtIndex:0];
       v10 = [(HearingAidController *)self indexOfSpecifier:v9];
 
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v11 = [(HearingAidController *)self availableDevices];
-        [(HearingAidController *)self replaceContiguousSpecifiers:v11 withSpecifiers:v5 animated:1];
+        availableDevices3 = [(HearingAidController *)self availableDevices];
+        [(HearingAidController *)self replaceContiguousSpecifiers:availableDevices3 withSpecifiers:v5 animated:1];
 
 LABEL_9:
-        v15 = [(HearingAidController *)self availableDevices];
-        [v15 setArray:v5];
+        availableDevices4 = [(HearingAidController *)self availableDevices];
+        [availableDevices4 setArray:v5];
 
         goto LABEL_10;
       }
@@ -613,19 +613,19 @@ LABEL_9:
     {
     }
 
-    v14 = [(HearingAidController *)self availableDevices];
-    [(HearingAidController *)self removeContiguousSpecifiers:v14 animated:0];
+    availableDevices5 = [(HearingAidController *)self availableDevices];
+    [(HearingAidController *)self removeContiguousSpecifiers:availableDevices5 animated:0];
 
     [(HearingAidController *)self insertContiguousSpecifiers:v5 atIndex:1 animated:0];
     [(HearingAidController *)self removeSpecifierID:@"PLACEHOLDER" animated:0];
     goto LABEL_9;
   }
 
-  v12 = [(HearingAidController *)self availableDevices];
-  [(HearingAidController *)self removeContiguousSpecifiers:v12 animated:0];
+  availableDevices6 = [(HearingAidController *)self availableDevices];
+  [(HearingAidController *)self removeContiguousSpecifiers:availableDevices6 animated:0];
 
-  v13 = [(HearingAidController *)self availableDevices];
-  [v13 removeAllObjects];
+  availableDevices7 = [(HearingAidController *)self availableDevices];
+  [availableDevices7 removeAllObjects];
 
   [(HearingAidController *)self insertPlaceholderSpecifierIfNeeded];
 LABEL_11:
@@ -647,10 +647,10 @@ LABEL_11:
   }
 }
 
-- (void)viewHearingAidDetailsWithSpecifier:(id)a3
+- (void)viewHearingAidDetailsWithSpecifier:(id)specifier
 {
-  v4 = *(a3 + OBJC_IVAR___PSSpecifier_detailControllerClass);
-  v5 = a3;
+  v4 = *(specifier + OBJC_IVAR___PSSpecifier_detailControllerClass);
+  specifierCopy = specifier;
   v6 = objc_alloc_init(v4);
   if (!v6)
   {
@@ -658,23 +658,23 @@ LABEL_11:
   }
 
   v8 = v6;
-  v7 = [(HearingAidController *)self rootController];
-  [v8 setRootController:v7];
+  rootController = [(HearingAidController *)self rootController];
+  [v8 setRootController:rootController];
 
   [v8 setParentController:self];
-  [v8 setSpecifier:v5];
+  [v8 setSpecifier:specifierCopy];
 
   [(HearingAidController *)self showController:v8 animate:1];
 }
 
-- (void)displayPairingFailureAlertForDevice:(id)a3
+- (void)displayPairingFailureAlertForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 isPaired] && (objc_msgSend(v4, "isBluetoothPaired") & 1) == 0)
+  deviceCopy = device;
+  if ([deviceCopy isPaired] && (objc_msgSend(deviceCopy, "isBluetoothPaired") & 1) == 0)
   {
     v5 = +[HUHearingAidSettings sharedInstance];
-    v6 = [v5 pairedHearingAids];
-    if (v6)
+    pairedHearingAids = [v5 pairedHearingAids];
+    if (pairedHearingAids)
     {
       pairingAlertController = self->_pairingAlertController;
 
@@ -708,8 +708,8 @@ LABEL_11:
 
 - (void)insertPlaceholderSpecifierIfNeeded
 {
-  v3 = [(HearingAidController *)self availableDevices];
-  v4 = [v3 count];
+  availableDevices = [(HearingAidController *)self availableDevices];
+  v4 = [availableDevices count];
 
   if (!v4)
   {
@@ -741,9 +741,9 @@ LABEL_11:
   }
 }
 
-- (void)insertSearchingToSpecifiers:(id)a3
+- (void)insertSearchingToSpecifiers:(id)specifiers
 {
-  v7 = a3;
+  specifiersCopy = specifiers;
   v4 = hearingSettingsLocString(@"SearchingPlaceholder", @"HearingAidSettings");
   v5 = [PSSpecifier preferenceSpecifierNamed:v4 target:self set:0 get:"valueForSpecifier:" detail:objc_opt_class() cell:4 edit:0];
 
@@ -752,9 +752,9 @@ LABEL_11:
   v6 = [NSNumber numberWithBool:0];
   [v5 setProperty:v6 forKey:PSEnabledKey];
 
-  if (v7)
+  if (specifiersCopy)
   {
-    [v7 insertObject:v5 atIndex:1];
+    [specifiersCopy insertObject:v5 atIndex:1];
   }
 
   else
@@ -763,68 +763,68 @@ LABEL_11:
   }
 }
 
-- (void)insertBluetoothAvailabilityToSpecifiers:(id)a3
+- (void)insertBluetoothAvailabilityToSpecifiers:(id)specifiers
 {
-  v9 = a3;
+  specifiersCopy = specifiers;
   v4 = hearingSettingsLocString(@"BluetoothDisabledTitle", @"HearingAidSettings");
   v5 = [PSSpecifier preferenceSpecifierNamed:v4 target:self set:"setBluetoothAvailable:" get:"bluetoothAvailable" detail:0 cell:6 edit:0];
 
   [v5 setProperty:@"HEARING_AID_BLUETOOTH" forKey:PSIDKey];
-  if (v9)
+  if (specifiersCopy)
   {
-    [v9 insertObject:v5 atIndex:1];
-    v6 = [v9 firstObject];
+    [specifiersCopy insertObject:v5 atIndex:1];
+    firstObject = [specifiersCopy firstObject];
   }
 
   else
   {
     [(HearingAidController *)self insertSpecifier:v5 atIndex:1 animated:0];
-    v7 = [(HearingAidController *)self specifiers];
-    v6 = [v7 firstObject];
+    specifiers = [(HearingAidController *)self specifiers];
+    firstObject = [specifiers firstObject];
   }
 
   v8 = hearingSettingsLocString(@"BluetoothDisabledDescription", @"HearingAidSettings");
-  [v6 setProperty:v8 forKey:PSFooterTextGroupKey];
+  [firstObject setProperty:v8 forKey:PSFooterTextGroupKey];
 
-  if (!v9)
+  if (!specifiersCopy)
   {
-    [(HearingAidController *)self reloadSpecifier:v6];
+    [(HearingAidController *)self reloadSpecifier:firstObject];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v23.receiver = self;
   v23.super_class = HearingAidController;
-  v6 = a4;
-  v7 = a3;
-  [(HearingAidController *)&v23 tableView:v7 didSelectRowAtIndexPath:v6];
-  v8 = [v7 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  [(HearingAidController *)&v23 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 device];
-    if (([v9 isPaired] & 1) == 0)
+    device = [v8 device];
+    if (([device isPaired] & 1) == 0)
     {
       v12 = HCLogHearingAids();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v25 = v9;
+        v25 = device;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "HearingAidController: User requested to pair Hearing Aids\n%@", buf, 0xCu);
       }
 
-      [v9 connect];
-      [v9 setKeepInSync:1];
-      [v9 setValue:&__kCFBooleanTrue forProperty:0x4000000];
-      v13 = [(HearingAidController *)self availableDevices];
+      [device connect];
+      [device setKeepInSync:1];
+      [device setValue:&__kCFBooleanTrue forProperty:0x4000000];
+      availableDevices = [(HearingAidController *)self availableDevices];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_28A04;
       v21[3] = &unk_48D90;
       v22 = v8;
-      [v13 enumerateObjectsUsingBlock:v21];
+      [availableDevices enumerateObjectsUsingBlock:v21];
 
       if ((+[HCUtilities deviceHasHomeButton]& 1) != 0)
       {
@@ -857,14 +857,14 @@ LABEL_11:
       if (![v11 isPairedWithFakeHearingAids])
       {
         v18 = +[AXHAServer sharedInstance];
-        v19 = [v18 hearingAidReachable];
+        hearingAidReachable = [v18 hearingAidReachable];
 
-        if (v19)
+        if (hearingAidReachable)
         {
           v20 = +[AXHAServer sharedInstance];
           [v20 requestHearingAidConnectionWithReason:4];
 
-          [(HearingAidController *)self displayPairingFailureAlertForDevice:v9];
+          [(HearingAidController *)self displayPairingFailureAlertForDevice:device];
         }
 
         goto LABEL_14;
@@ -875,33 +875,33 @@ LABEL_14:
   }
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v5 = [(HearingAidController *)self indexForIndexPath:a4];
+  v5 = [(HearingAidController *)self indexForIndexPath:path];
   v6 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v5];
   [(HearingAidController *)self viewHearingAidDetailsWithSpecifier:v6];
 }
 
-- (void)hearingServerDidDie:(id)a3
+- (void)hearingServerDidDie:(id)die
 {
   v4 = +[AXHAServer sharedInstance];
   [v4 startServerWithDelegate:self];
 }
 
-- (void)callObserver:(id)a3 callChanged:(id)a4
+- (void)callObserver:(id)observer callChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v6 = HCLogHearingAids();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109376;
-    v7[1] = [v5 hasConnected];
+    v7[1] = [changedCopy hasConnected];
     v8 = 1024;
-    v9 = [v5 hasEnded];
+    hasEnded = [changedCopy hasEnded];
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Call: connected %d, ended %d", v7, 0xEu);
   }
 
-  -[HearingAidController _updateHACSwitchSettingWithStatus:](self, "_updateHACSwitchSettingWithStatus:", [v5 hasEnded]);
+  -[HearingAidController _updateHACSwitchSettingWithStatus:](self, "_updateHACSwitchSettingWithStatus:", [changedCopy hasEnded]);
 }
 
 @end

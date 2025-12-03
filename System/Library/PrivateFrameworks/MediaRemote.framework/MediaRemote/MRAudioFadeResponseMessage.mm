@@ -1,21 +1,21 @@
 @interface MRAudioFadeResponseMessage
-- (MRAudioFadeResponseMessage)initWithFadeDuration:(int64_t)a3 error:(id)a4;
+- (MRAudioFadeResponseMessage)initWithFadeDuration:(int64_t)duration error:(id)error;
 - (int64_t)fadeDuration;
 @end
 
 @implementation MRAudioFadeResponseMessage
 
-- (MRAudioFadeResponseMessage)initWithFadeDuration:(int64_t)a3 error:(id)a4
+- (MRAudioFadeResponseMessage)initWithFadeDuration:(int64_t)duration error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v10.receiver = self;
   v10.super_class = MRAudioFadeResponseMessage;
   v7 = [(MRProtocolMessage *)&v10 init];
   if (v7)
   {
     v8 = objc_alloc_init(_MRAudioFadeResponseMessageProtobuf);
-    [(_MRAudioFadeResponseMessageProtobuf *)v8 setFadeDuration:a3];
-    [(MRProtocolMessage *)v7 setError:v6];
+    [(_MRAudioFadeResponseMessageProtobuf *)v8 setFadeDuration:duration];
+    [(MRProtocolMessage *)v7 setError:errorCopy];
     [(MRProtocolMessage *)v7 setUnderlyingCodableMessage:v8];
   }
 
@@ -24,10 +24,10 @@
 
 - (int64_t)fadeDuration
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 fadeDuration];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  fadeDuration = [underlyingCodableMessage fadeDuration];
 
-  return v3;
+  return fadeDuration;
 }
 
 @end

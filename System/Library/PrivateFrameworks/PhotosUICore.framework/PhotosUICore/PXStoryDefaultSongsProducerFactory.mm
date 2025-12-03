@@ -1,39 +1,39 @@
 @interface PXStoryDefaultSongsProducerFactory
-- (id)songsProducerForConfiguration:(id)a3;
+- (id)songsProducerForConfiguration:(id)configuration;
 @end
 
 @implementation PXStoryDefaultSongsProducerFactory
 
-- (id)songsProducerForConfiguration:(id)a3
+- (id)songsProducerForConfiguration:(id)configuration
 {
-  v3 = a3;
-  if (([v3 options] & 2) != 0 || (objc_msgSend(v3, "isAllowedToPlayAnyMusicOrSound") & 1) == 0)
+  configurationCopy = configuration;
+  if (([configurationCopy options] & 2) != 0 || (objc_msgSend(configurationCopy, "isAllowedToPlayAnyMusicOrSound") & 1) == 0)
   {
     v8 = objc_alloc_init(PXStoryPassthroughSongsProducer);
     goto LABEL_20;
   }
 
-  v4 = [v3 songsProducerKind];
-  if (!v4)
+  songsProducerKind = [configurationCopy songsProducerKind];
+  if (!songsProducerKind)
   {
     v5 = +[PXStorySettings sharedInstance];
-    v4 = [v5 songsProducerKind];
+    songsProducerKind = [v5 songsProducerKind];
   }
 
-  v6 = [v3 songsConfiguration];
-  v7 = v6;
+  songsConfiguration = [configurationCopy songsConfiguration];
+  v7 = songsConfiguration;
   v8 = 0;
-  if (v4 > 1)
+  if (songsProducerKind > 1)
   {
-    if (v4 == 2)
+    if (songsProducerKind == 2)
     {
       v9 = PXStoryDummyAppleMusicSongsProducer;
       goto LABEL_15;
     }
 
-    if (v4 != 3)
+    if (songsProducerKind != 3)
     {
-      if (v4 == 4)
+      if (songsProducerKind == 4)
       {
         v9 = PXStoryExceptionThrowingSongsProducer;
 LABEL_15:
@@ -47,20 +47,20 @@ LABEL_18:
     }
 
 LABEL_17:
-    v10 = [[PXStoryPassthroughSongsProducer alloc] initWithSongsConfiguration:v6];
+    v10 = [[PXStoryPassthroughSongsProducer alloc] initWithSongsConfiguration:songsConfiguration];
     goto LABEL_18;
   }
 
-  if (!v4)
+  if (!songsProducerKind)
   {
-    if (!v6)
+    if (!songsConfiguration)
     {
-      v12 = [v3 photoKitAssetContainer];
-      if (v12)
+      photoKitAssetContainer = [configurationCopy photoKitAssetContainer];
+      if (photoKitAssetContainer)
       {
         v13 = [PXStoryDefaultSongsProducer alloc];
-        v14 = [v3 musicCurationProvider];
-        v8 = [(PXStoryDefaultSongsProducer *)v13 initWithAssetContainer:v12 configuration:v3 curationProvider:v14];
+        musicCurationProvider = [configurationCopy musicCurationProvider];
+        v8 = [(PXStoryDefaultSongsProducer *)v13 initWithAssetContainer:photoKitAssetContainer configuration:configurationCopy curationProvider:musicCurationProvider];
       }
 
       else
@@ -74,7 +74,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (v4 == 1)
+  if (songsProducerKind == 1)
   {
     v9 = PXStoryDummySongsProducer;
     goto LABEL_15;

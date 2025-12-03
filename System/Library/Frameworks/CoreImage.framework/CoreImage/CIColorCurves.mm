@@ -4,7 +4,7 @@
 - (id)curvesImage;
 - (id)outputImage;
 - (void)dealloc;
-- (void)setInputCurvesData:(id)a3;
+- (void)setInputCurvesData:(id)data;
 @end
 
 @implementation CIColorCurves
@@ -17,11 +17,11 @@
   [(CIFilter *)&v3 dealloc];
 }
 
-- (void)setInputCurvesData:(id)a3
+- (void)setInputCurvesData:(id)data
 {
   self->_curvesImage = 0;
   v5 = self->inputCurvesData;
-  self->inputCurvesData = a3;
+  self->inputCurvesData = data;
 }
 
 + (id)customAttributes
@@ -178,14 +178,14 @@ vImage_Error __28__CIColorCurves_curvesImage__block_invoke(uint64_t a1, void *__
   inputImage = self->inputImage;
   v7 = 1;
 LABEL_9:
-  v8 = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
-  v9 = [(CIColorCurves *)self curvesImage];
+  imageByUnpremultiplyingAlpha = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
+  curvesImage = [(CIColorCurves *)self curvesImage];
   v10 = [(NSData *)self->inputCurvesData length];
   v11 = [CIVector vectorWithX:(((v10 / 0xC) + -1.0) / (v10 / 0xC)) Y:(0.5 / (v10 / 0xC))];
   v12 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_colorcurves];
   [(CIImage *)self->inputImage extent];
-  v18[0] = v8;
-  v18[1] = v9;
+  v18[0] = imageByUnpremultiplyingAlpha;
+  v18[1] = curvesImage;
   v18[2] = self->inputCurvesDomain;
   v18[3] = v11;
   result = -[CIImage imageByPremultiplyingAlpha](-[CIColorKernel applyWithExtent:arguments:](v12, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:4], v13, v14, v15, v16), "imageByPremultiplyingAlpha");

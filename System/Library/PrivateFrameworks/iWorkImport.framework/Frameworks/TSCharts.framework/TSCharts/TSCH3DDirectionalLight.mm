@@ -1,34 +1,34 @@
 @interface TSCH3DDirectionalLight
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
 - (TSCH3DDirectionalLight)init;
-- (TSCH3DDirectionalLight)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSCH3DDirectionalLight)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (tvec3<float>)direction;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setDirection:(tvec3<float>)a3;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setDirection:(tvec3<float>)direction;
 @end
 
 @implementation TSCH3DDirectionalLight
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSCH3DDirectionalLight alloc];
-  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, a3, v5);
+  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, archive, unarchiverCopy);
 
   return v11;
 }
 
-- (TSCH3DDirectionalLight)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCH3DDirectionalLight)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v38.receiver = self;
   v38.super_class = TSCH3DDirectionalLight;
-  v8 = [(TSCH3DLight *)&v38 initWithLightArchive:a3 unarchiver:v6];
+  v8 = [(TSCH3DLight *)&v38 initWithLightArchive:archive unarchiver:unarchiverCopy];
   if (v8)
   {
-    if ((*(a3 + 16) & 0x40) == 0)
+    if ((*(archive + 16) & 0x40) == 0)
     {
       v12 = MEMORY[0x277D81150];
       v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, "[TSCH3DDirectionalLight(PersistenceAdditions) initWithArchive:unarchiver:]");
@@ -38,7 +38,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
     }
 
-    v27 = *(a3 + 9);
+    v27 = *(archive + 9);
     v28 = [TSCH3DVector alloc];
     v33 = &qword_2812F11C0;
     if (v27)
@@ -49,12 +49,12 @@
     v34 = v33[3];
     if (v34)
     {
-      v35 = objc_msgSend_initWithArchive_unarchiver_(v28, v29, v30, v31, v32, v34, v6);
+      v35 = objc_msgSend_initWithArchive_unarchiver_(v28, v29, v30, v31, v32, v34, unarchiverCopy);
     }
 
     else
     {
-      v35 = objc_msgSend_initWithArchive_unarchiver_(v28, v29, v30, v31, v32, &qword_2812F15A8, v6);
+      v35 = objc_msgSend_initWithArchive_unarchiver_(v28, v29, v30, v31, v32, &qword_2812F15A8, unarchiverCopy);
     }
 
     direction = v8->_direction;
@@ -64,24 +64,24 @@
   return v8;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v31.receiver = self;
   v31.super_class = TSCH3DDirectionalLight;
-  [(TSCH3DLight *)&v31 saveToLightArchive:a3 archiver:v6];
-  *(a3 + 4) |= 0x40u;
-  v11 = *(a3 + 9);
+  [(TSCH3DLight *)&v31 saveToLightArchive:archive archiver:archiverCopy];
+  *(archive + 4) |= 0x40u;
+  v11 = *(archive + 9);
   if (!v11)
   {
-    v12 = *(a3 + 1);
+    v12 = *(archive + 1);
     if (v12)
     {
       v12 = *(v12 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v11 = sub_276447390(v12);
-    *(a3 + 9) = v11;
+    *(archive + 9) = v11;
   }
 
   direction = self->_direction;
@@ -110,7 +110,7 @@
     *(v11 + 24) = v29;
   }
 
-  objc_msgSend_saveToArchive_archiver_(direction, v7, v8, v9, v10, v29, v6);
+  objc_msgSend_saveToArchive_archiver_(direction, v7, v8, v9, v10, v29, archiverCopy);
 }
 
 - (TSCH3DDirectionalLight)init
@@ -142,11 +142,11 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v17.receiver = self;
   v17.super_class = TSCH3DDirectionalLight;
-  v5 = [(TSCH3DLight *)&v17 copyWithZone:a3];
+  v5 = [(TSCH3DLight *)&v17 copyWithZone:zone];
   if (v5)
   {
     objc_msgSend_direction(self, v4, v6, v7, v8);
@@ -180,9 +180,9 @@
   return result;
 }
 
-- (void)setDirection:(tvec3<float>)a3
+- (void)setDirection:(tvec3<float>)direction
 {
-  v3 = *&a3.var0.var0;
+  v3 = *&direction.var0.var0;
   v5 = [TSCH3DVector alloc];
   v10 = objc_msgSend_initWithVec3_(v5, v6, v7, v8, v9, v3);
   direction = self->_direction;

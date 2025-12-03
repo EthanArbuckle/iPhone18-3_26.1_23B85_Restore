@@ -1,73 +1,73 @@
 @interface WPDPipeManager
-- (BOOL)sendVersionInfo:(id)a3;
+- (BOOL)sendVersionInfo:(id)info;
 - (OS_dispatch_queue)queue;
-- (WPDPipeManager)initWithServer:(id)a3;
+- (WPDPipeManager)initWithServer:(id)server;
 - (id)generateStateDumpStrings;
-- (id)pipeInfo:(id)a3 forClient:(id)a4;
-- (id)pipeManagerState:(int64_t)a3;
-- (id)streamEvent:(unint64_t)a3;
-- (int64_t)writeDataToPipe:(id)a3 pipe:(id)a4;
+- (id)pipeInfo:(id)info forClient:(id)client;
+- (id)pipeManagerState:(int64_t)state;
+- (id)streamEvent:(unint64_t)event;
+- (int64_t)writeDataToPipe:(id)pipe pipe:(id)a4;
 - (void)_signpostBegin;
 - (void)_signpostEnd;
-- (void)channelHasData:(id)a3;
-- (void)handleIncomingPipeData:(id)a3 data:(char *)a4 dataSize:(int64_t)a5;
-- (void)invalidatePipeInfo:(id)a3 forPeer:(id)a4;
-- (void)receivedAck:(id)a3 data:(char *)a4 dataSize:(int64_t)a5;
-- (void)receivedConnectStatus:(id)a3 data:(char *)a4 dataSize:(int64_t)a5;
-- (void)receivedError:(id)a3 data:(char *)a4 dataSize:(int64_t)a5;
-- (void)receivedPayload:(id)a3 data:(char *)a4 dataSize:(int64_t)a5;
-- (void)receivedVersionInfo:(id)a3 data:(char *)a4 dataSize:(int64_t)a5;
-- (void)scalablePipeManager:(id)a3 didRegisterEndpoint:(id)a4 error:(id)a5;
-- (void)scalablePipeManager:(id)a3 didUnregisterEndpoint:(id)a4;
-- (void)scalablePipeManager:(id)a3 pipeDidConnect:(id)a4;
-- (void)scalablePipeManager:(id)a3 pipeDidDisconnect:(id)a4 error:(id)a5;
-- (void)sendAck:(id)a3 errorCode:(unsigned __int8)a4;
-- (void)sendChannelData:(id)a3;
-- (void)sendConnectStatus:(id)a3 connectStatus:(unsigned __int8)a4;
-- (void)sendData:(id)a3 forPeer:(id)a4 forClient:(id)a5;
-- (void)sendErrorResponse:(id)a3 errorCode:(unsigned __int8)a4;
-- (void)sendRemainingData:(id)a3 wpClient:(id)a4;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
-- (void)unregisterEndpoint:(id)a3 forClient:(id)a4;
+- (void)channelHasData:(id)data;
+- (void)handleIncomingPipeData:(id)data data:(char *)a4 dataSize:(int64_t)size;
+- (void)invalidatePipeInfo:(id)info forPeer:(id)peer;
+- (void)receivedAck:(id)ack data:(char *)data dataSize:(int64_t)size;
+- (void)receivedConnectStatus:(id)status data:(char *)data dataSize:(int64_t)size;
+- (void)receivedError:(id)error data:(char *)data dataSize:(int64_t)size;
+- (void)receivedPayload:(id)payload data:(char *)data dataSize:(int64_t)size;
+- (void)receivedVersionInfo:(id)info data:(char *)data dataSize:(int64_t)size;
+- (void)scalablePipeManager:(id)manager didRegisterEndpoint:(id)endpoint error:(id)error;
+- (void)scalablePipeManager:(id)manager didUnregisterEndpoint:(id)endpoint;
+- (void)scalablePipeManager:(id)manager pipeDidConnect:(id)connect;
+- (void)scalablePipeManager:(id)manager pipeDidDisconnect:(id)disconnect error:(id)error;
+- (void)sendAck:(id)ack errorCode:(unsigned __int8)code;
+- (void)sendChannelData:(id)data;
+- (void)sendConnectStatus:(id)status connectStatus:(unsigned __int8)connectStatus;
+- (void)sendData:(id)data forPeer:(id)peer forClient:(id)client;
+- (void)sendErrorResponse:(id)response errorCode:(unsigned __int8)code;
+- (void)sendRemainingData:(id)data wpClient:(id)client;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
+- (void)unregisterEndpoint:(id)endpoint forClient:(id)client;
 - (void)update;
 @end
 
 @implementation WPDPipeManager
 
-- (WPDPipeManager)initWithServer:(id)a3
+- (WPDPipeManager)initWithServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v20.receiver = self;
   v20.super_class = WPDPipeManager;
-  v5 = [(WPDManager *)&v20 initWithServer:v4 Name:@"WPPM"];
+  v5 = [(WPDManager *)&v20 initWithServer:serverCopy Name:@"WPPM"];
   if (v5)
   {
-    v6 = [v4 serverQueue];
-    objc_storeWeak(&v5->_queue, v6);
+    serverQueue = [serverCopy serverQueue];
+    objc_storeWeak(&v5->_queue, serverQueue);
 
     v7 = objc_alloc(MEMORY[0x277CBE088]);
-    v8 = [v4 serverQueue];
-    v9 = [v7 initWithDelegate:v5 queue:v8];
+    serverQueue2 = [serverCopy serverQueue];
+    v9 = [v7 initWithDelegate:v5 queue:serverQueue2];
     pipeManager = v5->_pipeManager;
     v5->_pipeManager = v9;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     endpointsDict = v5->_endpointsDict;
-    v5->_endpointsDict = v11;
+    v5->_endpointsDict = dictionary;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     peerPipesDict = v5->_peerPipesDict;
-    v5->_peerPipesDict = v13;
+    v5->_peerPipesDict = dictionary2;
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     connectionInitiators = v5->_connectionInitiators;
-    v5->_connectionInitiators = v15;
+    v5->_connectionInitiators = dictionary3;
 
     v17 = [MEMORY[0x277CBEB98] setWithObject:v5->_pipeManager];
     [(WPDManager *)v5 setCbManagers:v17];
 
-    v18 = [v4 wpdState];
-    [v18 registerManager:v5->_pipeManager];
+    wpdState = [serverCopy wpdState];
+    [wpdState registerManager:v5->_pipeManager];
 
     v5->_wpPipeDataSignPostID = os_signpost_id_make_with_pointer(WiProxLog, v5);
   }
@@ -80,17 +80,17 @@
   v3 = MEMORY[0x277CBEB18];
   v14.receiver = self;
   v14.super_class = WPDPipeManager;
-  v4 = [(WPDManager *)&v14 generateStateDumpStrings];
-  v5 = [v3 arrayWithArray:v4];
+  generateStateDumpStrings = [(WPDManager *)&v14 generateStateDumpStrings];
+  v5 = [v3 arrayWithArray:generateStateDumpStrings];
 
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(WPDPipeManager *)self endpointsDict];
-  v8 = [v6 stringWithFormat:@"endpointsDict %@\n", v7];
+  endpointsDict = [(WPDPipeManager *)self endpointsDict];
+  v8 = [v6 stringWithFormat:@"endpointsDict %@\n", endpointsDict];
   [v5 addObject:v8];
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [(WPDPipeManager *)self peerPipesDict];
-  v11 = [v9 stringWithFormat:@"peerPipesDict %@\n", v10];
+  peerPipesDict = [(WPDPipeManager *)self peerPipesDict];
+  v11 = [v9 stringWithFormat:@"peerPipesDict %@\n", peerPipesDict];
   [v5 addObject:v11];
 
   v12 = [MEMORY[0x277CBEA60] arrayWithArray:v5];
@@ -98,11 +98,11 @@
   return v12;
 }
 
-- (void)unregisterEndpoint:(id)a3 forClient:(id)a4
+- (void)unregisterEndpoint:(id)endpoint forClient:(id)client
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  clientCopy = client;
   if (WPLogInitOnce != -1)
   {
     [WPDPipeManager unregisterEndpoint:forClient:];
@@ -112,34 +112,34 @@
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(WPDPipeManager *)self endpointsDict];
+    endpointsDict = [(WPDPipeManager *)self endpointsDict];
     v23 = 138412802;
-    v24 = v6;
+    v24 = endpointCopy;
     v25 = 2112;
-    v26 = v7;
+    v26 = clientCopy;
     v27 = 2112;
-    v28 = v10;
+    v28 = endpointsDict;
     _os_log_impl(&dword_272965000, v9, OS_LOG_TYPE_DEFAULT, "WPPM: unregisterEndpoint %@ for client %@ endpointsDict %@", &v23, 0x20u);
   }
 
-  if (v6)
+  if (endpointCopy)
   {
-    if (v7)
+    if (clientCopy)
     {
-      v11 = [(WPDPipeManager *)self endpointsDict];
-      v12 = [v11 count];
+      endpointsDict2 = [(WPDPipeManager *)self endpointsDict];
+      v12 = [endpointsDict2 count];
 
       if (v12)
       {
-        v13 = [(WPDPipeManager *)self endpointsDict];
-        v14 = [v13 objectForKeyedSubscript:v6];
+        endpointsDict3 = [(WPDPipeManager *)self endpointsDict];
+        v14 = [endpointsDict3 objectForKeyedSubscript:endpointCopy];
 
-        if (v14 && ([v14 clientUUID], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqual:", v7), v15, v16))
+        if (v14 && ([v14 clientUUID], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqual:", clientCopy), v15, v16))
         {
-          v17 = [(WPDPipeManager *)self endpointsDict];
-          [v17 removeObjectForKey:v6];
+          endpointsDict4 = [(WPDPipeManager *)self endpointsDict];
+          [endpointsDict4 removeObjectForKey:endpointCopy];
 
-          [(CBScalablePipeManager *)self->_pipeManager unregisterEndpoint:v6];
+          [(CBScalablePipeManager *)self->_pipeManager unregisterEndpoint:endpointCopy];
         }
 
         else
@@ -153,9 +153,9 @@
           if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
           {
             v23 = 138412546;
-            v24 = v6;
+            v24 = endpointCopy;
             v25 = 2112;
-            v26 = v7;
+            v26 = clientCopy;
             _os_log_impl(&dword_272965000, v18, OS_LOG_TYPE_DEFAULT, "WPPM: unregisterEndpoint: Endpoint %@ already unregisterd for client %@", &v23, 0x16u);
           }
         }
@@ -169,9 +169,9 @@
         if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
         {
           v20 = v19;
-          v21 = [(WPDPipeManager *)self endpointsDict];
+          endpointsDict5 = [(WPDPipeManager *)self endpointsDict];
           v23 = 138412290;
-          v24 = v21;
+          v24 = endpointsDict5;
           _os_log_impl(&dword_272965000, v20, OS_LOG_TYPE_DEFAULT, "WPPM: unregisterEndpoint: Current endpointsDict %@", &v23, 0xCu);
         }
       }
@@ -181,12 +181,12 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendData:(id)a3 forPeer:(id)a4 forClient:(id)a5
+- (void)sendData:(id)data forPeer:(id)peer forClient:(id)client
 {
   v130 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v67 = a4;
-  v68 = a5;
+  dataCopy = data;
+  peerCopy = peer;
+  clientCopy = client;
   if (WPLogInitOnce != -1)
   {
     [WPDPipeManager sendData:forPeer:forClient:];
@@ -196,20 +196,20 @@
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
   {
     v48 = v9;
-    v49 = [v8 length];
+    v49 = [dataCopy length];
     *buf = 134218754;
     v116 = v49;
     v117 = 2112;
-    v118 = v8;
+    v118 = dataCopy;
     v119 = 2112;
-    v120 = v67;
+    v120 = peerCopy;
     v121 = 2112;
-    v122 = v68;
+    v122 = clientCopy;
     _os_log_debug_impl(&dword_272965000, v48, OS_LOG_TYPE_DEBUG, "WPPM: sendData: size (%lu): %@ to peer %@ for client %@", buf, 0x2Au);
   }
 
-  v10 = [(WPDManager *)self server];
-  v11 = [v10 getClientForUUID:v68];
+  server = [(WPDManager *)self server];
+  v11 = [server getClientForUUID:clientCopy];
 
   if (v11)
   {
@@ -225,7 +225,7 @@
     v104 = __Block_byref_object_copy__5;
     v105 = __Block_byref_object_dispose__5;
     v106 = 0;
-    v65 = [v11 endpointsSet];
+    endpointsSet = [v11 endpointsSet];
     if (WPLogInitOnce != -1)
     {
       [WPDPipeManager sendData:forPeer:forClient:];
@@ -236,8 +236,8 @@
       [WPDPipeManager sendData:forPeer:forClient:];
     }
 
-    v12 = [(WPDPipeManager *)self peerPipesDict];
-    v66 = [v12 objectForKeyedSubscript:v67];
+    peerPipesDict = [(WPDPipeManager *)self peerPipesDict];
+    v66 = [peerPipesDict objectForKeyedSubscript:peerCopy];
 
     if (v66)
     {
@@ -245,7 +245,7 @@
       v97[1] = 3221225472;
       v97[2] = __45__WPDPipeManager_sendData_forPeer_forClient___block_invoke_428;
       v97[3] = &unk_279E59E20;
-      v98 = v65;
+      v98 = endpointsSet;
       v99 = &v107;
       v100 = &v101;
       [v66 enumerateObjectsUsingBlock:v97];
@@ -253,16 +253,16 @@
 
     if (v108[5])
     {
-      v13 = [v8 length];
+      v13 = [dataCopy length];
       if ([v102[5] newProtocol])
       {
         if ([v102[5] pipeDidConnectSent])
         {
-          v14 = [v102[5] pipeDataTransfer];
-          if (!v14)
+          pipeDataTransfer = [v102[5] pipeDataTransfer];
+          if (!pipeDataTransfer)
           {
-            v14 = [[PipeDataTransfer alloc] initPipeDataTransferForPeer:v67];
-            [v102[5] setPipeDataTransfer:v14];
+            pipeDataTransfer = [[PipeDataTransfer alloc] initPipeDataTransferForPeer:peerCopy];
+            [v102[5] setPipeDataTransfer:pipeDataTransfer];
             if (WPLogInitOnce != -1)
             {
               [WPDPipeManager sendData:forPeer:forClient:];
@@ -275,13 +275,13 @@
           }
 
           v96 = 0;
-          [v8 getBytes:&v96 length:2];
-          [v14 setTxTotalLenToSend:v96];
-          v15 = [v8 subdataWithRange:{2, v13 - 2}];
-          [v14 setTxTotalDataToSend:v15];
+          [dataCopy getBytes:&v96 length:2];
+          [pipeDataTransfer setTxTotalLenToSend:v96];
+          v15 = [dataCopy subdataWithRange:{2, v13 - 2}];
+          [pipeDataTransfer setTxTotalDataToSend:v15];
 
-          [v14 setTxData:v8];
-          [v14 setTxSeqNum:{objc_msgSend(v14, "generateSequenceNumber")}];
+          [pipeDataTransfer setTxData:dataCopy];
+          [pipeDataTransfer setTxSeqNum:{objc_msgSend(pipeDataTransfer, "generateSequenceNumber")}];
           if (WPLogInitOnce != -1)
           {
             [WPDPipeManager sendData:forPeer:forClient:];
@@ -290,21 +290,21 @@
           v16 = WiProxLog;
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
           {
-            -[WPDPipeManager sendData:forPeer:forClient:].cold.11(v96, buf, [v8 length], v16);
+            -[WPDPipeManager sendData:forPeer:forClient:].cold.11(v96, buf, [dataCopy length], v16);
           }
 
-          v17 = [v8 length];
-          v64 = &v61;
+          v17 = [dataCopy length];
+          peer2 = &v61;
           v18 = (v17 + 4);
           MEMORY[0x28223BE20]();
           v20 = &v61 - v19;
           bzero(&v61 - v19, v18);
           *v20 = 2;
           *(v20 + 1) = v17 + 3;
-          v20[3] = [v14 txSeqNum];
-          v21 = v8;
-          memcpy(v20 + 4, [v8 bytes], objc_msgSend(v8, "length"));
-          [v14 setTxDataLeftToSend:v18];
+          v20[3] = [pipeDataTransfer txSeqNum];
+          v21 = dataCopy;
+          memcpy(v20 + 4, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
+          [pipeDataTransfer setTxDataLeftToSend:v18];
           v22 = [MEMORY[0x277CBEA90] dataWithBytes:v20 length:v18];
           v23 = [(WPDPipeManager *)self writeDataToPipe:v22 pipe:v102[5]];
 
@@ -326,27 +326,27 @@
             v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v128 forKeys:&v127 count:1];
             v52 = [v50 errorWithDomain:@"WPErrorDomain" code:26 userInfo:v51];
 
-            v53 = [(WPDPipeManager *)self queue];
+            queue = [(WPDPipeManager *)self queue];
             v90[0] = MEMORY[0x277D85DD0];
             v90[1] = 3221225472;
             v90[2] = __45__WPDPipeManager_sendData_forPeer_forClient___block_invoke_447;
             v90[3] = &unk_279E59E48;
             v91 = v11;
-            v92 = v8;
+            v92 = dataCopy;
             v95 = &v107;
-            v54 = v67;
+            v54 = peerCopy;
             v93 = v54;
             v24 = v52;
             v94 = v24;
-            dispatch_async(v53, v90);
+            dispatch_async(queue, v90);
 
-            v55 = [v108[5] name];
-            [(WPDPipeManager *)self invalidatePipeInfo:v55 forPeer:v54];
+            name = [v108[5] name];
+            [(WPDPipeManager *)self invalidatePipeInfo:name forPeer:v54];
           }
 
           else
           {
-            [v14 setTxDataLeftToSend:{objc_msgSend(v14, "txDataLeftToSend") - v23}];
+            [pipeDataTransfer setTxDataLeftToSend:{objc_msgSend(pipeDataTransfer, "txDataLeftToSend") - v23}];
             if (WPLogInitOnce != -1)
             {
               [WPDPipeManager sendData:forPeer:forClient:];
@@ -355,7 +355,7 @@
             v24 = WiProxLog;
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
             {
-              -[WPDPipeManager sendData:forPeer:forClient:].cold.15(v129, [v14 txDataLeftToSend], v24);
+              -[WPDPipeManager sendData:forPeer:forClient:].cold.15(v129, [pipeDataTransfer txDataLeftToSend], v24);
             }
           }
         }
@@ -363,8 +363,8 @@
         else
         {
           v37 = MEMORY[0x277CCACA8];
-          v38 = [v11 processName];
-          v14 = [v37 stringWithFormat:@"sendData failure: LE pipe client %@ for %@ is not connected", v68, v38];
+          processName = [v11 processName];
+          pipeDataTransfer = [v37 stringWithFormat:@"sendData failure: LE pipe client %@ for %@ is not connected", clientCopy, processName];
 
           if (WPLogInitOnce != -1)
           {
@@ -378,28 +378,28 @@
 
           v39 = MEMORY[0x277CCA9B8];
           v125 = *MEMORY[0x277CCA450];
-          v126 = v14;
+          v126 = pipeDataTransfer;
           v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v126 forKeys:&v125 count:1];
           v41 = [v39 errorWithDomain:@"WPErrorDomain" code:7 userInfo:v40];
 
-          v42 = [(WPDPipeManager *)self queue];
+          queue2 = [(WPDPipeManager *)self queue];
           v84[0] = MEMORY[0x277D85DD0];
           v84[1] = 3221225472;
           v84[2] = __45__WPDPipeManager_sendData_forPeer_forClient___block_invoke_454;
           v84[3] = &unk_279E59E48;
           v85 = v11;
-          v86 = v8;
+          v86 = dataCopy;
           v89 = &v107;
-          v87 = v67;
+          v87 = peerCopy;
           v88 = v41;
           v43 = v41;
-          dispatch_async(v42, v84);
+          dispatch_async(queue2, v84);
         }
       }
 
       else
       {
-        v32 = [(WPDPipeManager *)self writeDataToPipe:v8 pipe:v102[5]];
+        v32 = [(WPDPipeManager *)self writeDataToPipe:dataCopy pipe:v102[5]];
         if (v32 == v13)
         {
           if (WPLogInitOnce != -1)
@@ -410,29 +410,29 @@
           v33 = WiProxLog;
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
           {
-            v34 = [v108[5] peer];
-            v35 = [v34 identifier];
+            peer = [v108[5] peer];
+            identifier = [peer identifier];
             *buf = 134218498;
             v116 = v13;
             v117 = 2048;
             v118 = v13;
             v119 = 2112;
-            v120 = v35;
+            v120 = identifier;
             _os_log_impl(&dword_272965000, v33, OS_LOG_TYPE_DEFAULT, "WPPM: sendData: bytes written %ld (expected %lu) to peer %@", buf, 0x20u);
           }
 
-          v36 = [(WPDPipeManager *)self queue];
+          queue3 = [(WPDPipeManager *)self queue];
           v74[0] = MEMORY[0x277D85DD0];
           v74[1] = 3221225472;
           v74[2] = __45__WPDPipeManager_sendData_forPeer_forClient___block_invoke_462;
           v74[3] = &unk_279E59E70;
           v75 = v11;
-          v76 = v8;
+          v76 = dataCopy;
           v78 = &v107;
-          v77 = v67;
-          dispatch_async(v36, v74);
+          v77 = peerCopy;
+          dispatch_async(queue3, v74);
 
-          v14 = v75;
+          pipeDataTransfer = v75;
         }
 
         else
@@ -445,42 +445,42 @@
           v44 = WiProxLog;
           if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
           {
-            v64 = [v108[5] peer];
-            v57 = [v64 identifier];
-            v63 = [v108[5] output];
-            v62 = [v63 streamStatus];
-            v58 = [v108[5] output];
-            v59 = [v58 streamError];
+            peer2 = [v108[5] peer];
+            identifier2 = [peer2 identifier];
+            output = [v108[5] output];
+            streamStatus = [output streamStatus];
+            output2 = [v108[5] output];
+            streamError = [output2 streamError];
             *buf = 134219010;
             v116 = v32;
             v117 = 2048;
             v118 = v13;
             v119 = 2112;
-            v120 = v57;
+            v120 = identifier2;
             v121 = 2048;
-            v122 = v62;
+            v122 = streamStatus;
             v123 = 2112;
-            v124 = v59;
-            v60 = v59;
+            v124 = streamError;
+            v60 = streamError;
             _os_log_error_impl(&dword_272965000, v44, OS_LOG_TYPE_ERROR, "WPPM: sendData: bytes written %ld (expected %lu) to peer %@ with status %lu error %@", buf, 0x34u);
           }
 
-          v45 = [(WPDPipeManager *)self queue];
+          queue4 = [(WPDPipeManager *)self queue];
           v79[0] = MEMORY[0x277D85DD0];
           v79[1] = 3221225472;
           v79[2] = __45__WPDPipeManager_sendData_forPeer_forClient___block_invoke_458;
           v79[3] = &unk_279E59E70;
           v80 = v11;
-          v81 = v8;
+          v81 = dataCopy;
           v83 = &v107;
-          v46 = v67;
+          v46 = peerCopy;
           v82 = v46;
-          dispatch_async(v45, v79);
+          dispatch_async(queue4, v79);
 
-          v47 = [v108[5] name];
-          [(WPDPipeManager *)self invalidatePipeInfo:v47 forPeer:v46];
+          name2 = [v108[5] name];
+          [(WPDPipeManager *)self invalidatePipeInfo:name2 forPeer:v46];
 
-          v14 = v80;
+          pipeDataTransfer = v80;
         }
       }
     }
@@ -488,8 +488,8 @@
     else
     {
       v25 = MEMORY[0x277CCACA8];
-      v26 = [v11 endpointsSet];
-      v14 = [v25 stringWithFormat:@"sendData failure: LE pipe set %@ not found for client %@", v26, v68];
+      endpointsSet2 = [v11 endpointsSet];
+      pipeDataTransfer = [v25 stringWithFormat:@"sendData failure: LE pipe set %@ not found for client %@", endpointsSet2, clientCopy];
 
       if (WPLogInitOnce != -1)
       {
@@ -503,21 +503,21 @@
 
       v27 = MEMORY[0x277CCA9B8];
       v113 = *MEMORY[0x277CCA450];
-      v114 = v14;
+      v114 = pipeDataTransfer;
       v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v114 forKeys:&v113 count:1];
       v29 = [v27 errorWithDomain:@"WPErrorDomain" code:7 userInfo:v28];
 
-      v30 = [(WPDPipeManager *)self queue];
+      queue5 = [(WPDPipeManager *)self queue];
       v69[0] = MEMORY[0x277D85DD0];
       v69[1] = 3221225472;
       v69[2] = __45__WPDPipeManager_sendData_forPeer_forClient___block_invoke_469;
       v69[3] = &unk_279E59E98;
       v70 = v11;
-      v71 = v8;
-      v72 = v67;
+      v71 = dataCopy;
+      v72 = peerCopy;
       v73 = v29;
       v31 = v29;
-      dispatch_async(v30, v69);
+      dispatch_async(queue5, v69);
     }
 
     _Block_object_dispose(&v101, 8);
@@ -607,12 +607,12 @@ void __45__WPDPipeManager_sendData_forPeer_forClient___block_invoke_469(uint64_t
   [v2 sentData:*(a1 + 40) toEndpoint:0 forPeripheral:*(a1 + 48) withError:*(a1 + 56)];
 }
 
-- (id)pipeInfo:(id)a3 forClient:(id)a4
+- (id)pipeInfo:(id)info forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WPDManager *)self server];
-  v9 = [v8 getClientForUUID:v7];
+  infoCopy = info;
+  clientCopy = client;
+  server = [(WPDManager *)self server];
+  v9 = [server getClientForUUID:clientCopy];
 
   v19 = 0;
   v20 = &v19;
@@ -622,7 +622,7 @@ void __45__WPDPipeManager_sendData_forPeer_forClient___block_invoke_469(uint64_t
   v24 = 0;
   if (v9)
   {
-    v10 = [v9 endpointsSet];
+    endpointsSet = [v9 endpointsSet];
     if (WPLogInitOnce != -1)
     {
       [WPDPipeManager pipeInfo:forClient:];
@@ -633,8 +633,8 @@ void __45__WPDPipeManager_sendData_forPeer_forClient___block_invoke_469(uint64_t
       [WPDPipeManager sendData:forPeer:forClient:];
     }
 
-    v11 = [(WPDPipeManager *)self peerPipesDict];
-    v12 = [v11 objectForKeyedSubscript:v6];
+    peerPipesDict = [(WPDPipeManager *)self peerPipesDict];
+    v12 = [peerPipesDict objectForKeyedSubscript:infoCopy];
 
     if (v12)
     {
@@ -642,7 +642,7 @@ void __45__WPDPipeManager_sendData_forPeer_forClient___block_invoke_469(uint64_t
       v16[1] = 3221225472;
       v16[2] = __37__WPDPipeManager_pipeInfo_forClient___block_invoke_495;
       v16[3] = &unk_279E59EC0;
-      v17 = v10;
+      v17 = endpointsSet;
       v18 = &v19;
       [v12 enumerateObjectsUsingBlock:v16];
     }
@@ -677,18 +677,18 @@ void __37__WPDPipeManager_pipeInfo_forClient___block_invoke_495(uint64_t a1, voi
   }
 }
 
-- (id)streamEvent:(unint64_t)a3
+- (id)streamEvent:(unint64_t)event
 {
-  if (a3 > 3)
+  if (event > 3)
   {
-    if (a3 == 4)
+    if (event == 4)
     {
       return @"NSStreamEventHasSpaceAvailable";
     }
 
-    if (a3 != 8)
+    if (event != 8)
     {
-      if (a3 == 16)
+      if (event == 16)
       {
         return @"NSStreamEventEndEncountered";
       }
@@ -701,14 +701,14 @@ void __37__WPDPipeManager_pipeInfo_forClient___block_invoke_495(uint64_t a1, voi
 
   else
   {
-    if (!a3)
+    if (!event)
     {
       return @"NSStreamEventNone";
     }
 
-    if (a3 != 1)
+    if (event != 1)
     {
-      if (a3 == 2)
+      if (event == 2)
       {
         return @"NSStreamEventHasBytesAvailable";
       }
@@ -720,10 +720,10 @@ void __37__WPDPipeManager_pipeInfo_forClient___block_invoke_495(uint64_t a1, voi
   }
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
   v86 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  streamCopy = stream;
   v74 = 0;
   v75 = &v74;
   v76 = 0x3032000000;
@@ -738,17 +738,17 @@ void __37__WPDPipeManager_pipeInfo_forClient___block_invoke_495(uint64_t a1, voi
   v67 = &v66;
   v68 = 0x2020000000;
   v69 = 0;
-  v7 = [(WPDPipeManager *)self peerPipesDict];
+  peerPipesDict = [(WPDPipeManager *)self peerPipesDict];
   v61[0] = MEMORY[0x277D85DD0];
   v61[1] = 3221225472;
   v61[2] = __37__WPDPipeManager_stream_handleEvent___block_invoke;
   v61[3] = &unk_279E59F10;
-  v8 = v6;
+  v8 = streamCopy;
   v62 = v8;
   v63 = &v70;
   v64 = &v74;
   v65 = &v66;
-  [v7 enumerateKeysAndObjectsUsingBlock:v61];
+  [peerPipesDict enumerateKeysAndObjectsUsingBlock:v61];
 
   v9 = v75[5];
   if (!v9)
@@ -764,29 +764,29 @@ void __37__WPDPipeManager_pipeInfo_forClient___block_invoke_495(uint64_t a1, voi
     }
 
     v18 = 0;
-    v55 = 0;
-    v16 = 0;
+    identifier = 0;
+    clientUUID = 0;
     goto LABEL_100;
   }
 
-  v10 = [v9 pipe];
-  v11 = [v10 peer];
-  v55 = [v11 identifier];
+  pipe = [v9 pipe];
+  peer = [pipe peer];
+  identifier = [peer identifier];
 
-  v12 = [(WPDPipeManager *)self endpointsDict];
-  v13 = [v75[5] pipe];
-  v14 = [v13 name];
-  v15 = [v12 objectForKeyedSubscript:v14];
-  v16 = [v15 clientUUID];
+  endpointsDict = [(WPDPipeManager *)self endpointsDict];
+  pipe2 = [v75[5] pipe];
+  name = [pipe2 name];
+  v15 = [endpointsDict objectForKeyedSubscript:name];
+  clientUUID = [v15 clientUUID];
 
-  v17 = [(WPDManager *)self server];
-  v18 = [v17 getClientForUUID:v16];
+  server = [(WPDManager *)self server];
+  v18 = [server getClientForUUID:clientUUID];
 
-  if (a4 > 3)
+  if (event > 3)
   {
-    if (a4 != 4)
+    if (event != 4)
     {
-      if (a4 == 8 && ((v71[3] & 1) != 0 || *(v67 + 24) == 1))
+      if (event == 8 && ((v71[3] & 1) != 0 || *(v67 + 24) == 1))
       {
         if (WPLogInitOnce != -1)
         {
@@ -798,12 +798,12 @@ void __37__WPDPipeManager_pipeInfo_forClient___block_invoke_495(uint64_t a1, voi
           [WPDPipeManager stream:handleEvent:];
         }
 
-        v22 = [v75[5] pipe];
-        v23 = [v22 name];
-        v24 = [v75[5] pipe];
-        v25 = [v24 peer];
-        v26 = [v25 identifier];
-        [(WPDPipeManager *)self invalidatePipeInfo:v23 forPeer:v26];
+        pipe3 = [v75[5] pipe];
+        name2 = [pipe3 name];
+        pipe4 = [v75[5] pipe];
+        peer2 = [pipe4 peer];
+        identifier2 = [peer2 identifier];
+        [(WPDPipeManager *)self invalidatePipeInfo:name2 forPeer:identifier2];
       }
 
       goto LABEL_100;
@@ -866,20 +866,20 @@ void __37__WPDPipeManager_pipeInfo_forClient___block_invoke_495(uint64_t a1, voi
         v49 = WiProxLog;
         if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
         {
-          v52 = [v75[5] pipe];
-          v53 = [v52 name];
+          pipe5 = [v75[5] pipe];
+          name3 = [pipe5 name];
           *buf = 138412802;
-          v81 = v16;
+          v81 = clientUUID;
           v82 = 2112;
-          v83 = v55;
+          v83 = identifier;
           v84 = 2112;
-          v85 = v53;
+          v85 = name3;
           _os_log_error_impl(&dword_272965000, v49, OS_LOG_TYPE_ERROR, "WPPM: output stream: Client %@ not found for peer %@ and Endpoint %@", buf, 0x20u);
         }
 
-        v50 = [v75[5] pipe];
-        v51 = [v50 name];
-        [(WPDPipeManager *)self invalidatePipeInfo:v51 forPeer:v55];
+        pipe6 = [v75[5] pipe];
+        name4 = [pipe6 name];
+        [(WPDPipeManager *)self invalidatePipeInfo:name4 forPeer:identifier];
 
 LABEL_77:
         v18 = 0;
@@ -923,7 +923,7 @@ LABEL_77:
     goto LABEL_71;
   }
 
-  if (a4 == 1)
+  if (event == 1)
   {
     if (*(v71 + 24) != 1)
     {
@@ -983,7 +983,7 @@ LABEL_71:
       {
 LABEL_90:
         [v75[5] setPipeDidConnectSent:1];
-        [v18 connectedDeviceOverLEPipe:v55];
+        [v18 connectedDeviceOverLEPipe:identifier];
         goto LABEL_100;
       }
 
@@ -1002,21 +1002,21 @@ LABEL_89:
     v37 = WiProxLog;
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
-      v45 = [v75[5] pipe];
-      v46 = [v45 name];
+      pipe7 = [v75[5] pipe];
+      name5 = [pipe7 name];
       *buf = 138412802;
-      v81 = v16;
+      v81 = clientUUID;
       v82 = 2112;
-      v83 = v55;
+      v83 = identifier;
       v84 = 2112;
-      v85 = v46;
+      v85 = name5;
       _os_log_error_impl(&dword_272965000, v37, OS_LOG_TYPE_ERROR, "WPPM: output open: Client %@ not found for peer %@ and Endpoint %@", buf, 0x20u);
     }
 
     goto LABEL_77;
   }
 
-  if (a4 != 2)
+  if (event != 2)
   {
     goto LABEL_100;
   }
@@ -1034,8 +1034,8 @@ LABEL_89:
     v34 = WiProxLog;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
-      v35 = [v8 streamError];
-      [(WPDPipeManager *)v35 stream:buf handleEvent:v34];
+      streamError = [v8 streamError];
+      [(WPDPipeManager *)streamError stream:buf handleEvent:v34];
     }
 
     goto LABEL_99;
@@ -1050,7 +1050,7 @@ LABEL_89:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v81 = v55;
+    v81 = identifier;
     v82 = 2048;
     v83 = v19;
     _os_log_impl(&dword_272965000, v20, OS_LOG_TYPE_DEFAULT, "WPPM: input stream: receivedData from peer %@ of len %ld", buf, 0x16u);
@@ -1091,7 +1091,7 @@ LABEL_89:
     if (v18)
     {
       v39 = [MEMORY[0x277CBEA90] dataWithBytes:v54 length:v19];
-      v40 = [(WPDPipeManager *)self queue];
+      queue = [(WPDPipeManager *)self queue];
       v56[0] = MEMORY[0x277D85DD0];
       v56[1] = 3221225472;
       v56[2] = __37__WPDPipeManager_stream_handleEvent___block_invoke_556;
@@ -1099,9 +1099,9 @@ LABEL_89:
       v57 = v18;
       v58 = v39;
       v60 = &v74;
-      v59 = v55;
+      v59 = identifier;
       v41 = v39;
-      dispatch_async(v40, v56);
+      dispatch_async(queue, v56);
 
       goto LABEL_100;
     }
@@ -1114,14 +1114,14 @@ LABEL_89:
     v34 = WiProxLog;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
-      v47 = [v75[5] pipe];
-      v48 = [v47 name];
+      pipe8 = [v75[5] pipe];
+      name6 = [pipe8 name];
       *buf = 138412802;
-      v81 = v16;
+      v81 = clientUUID;
       v82 = 2112;
-      v83 = v55;
+      v83 = identifier;
       v84 = 2112;
-      v85 = v48;
+      v85 = name6;
       _os_log_error_impl(&dword_272965000, v34, OS_LOG_TYPE_ERROR, "WPPM: input stream: Client %@ not found for peer %@ and Endpoint %@", buf, 0x20u);
     }
 
@@ -1203,10 +1203,10 @@ void __37__WPDPipeManager_stream_handleEvent___block_invoke_556(uint64_t a1)
   [v2 receivedData:v3 fromEndpoint:v5 forPeripheral:*(a1 + 48)];
 }
 
-- (void)handleIncomingPipeData:(id)a3 data:(char *)a4 dataSize:(int64_t)a5
+- (void)handleIncomingPipeData:(id)data data:(char *)a4 dataSize:(int64_t)size
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dataCopy = data;
   v9 = *a4;
   if (WPLogInitOnce != -1)
   {
@@ -1217,25 +1217,25 @@ void __37__WPDPipeManager_stream_handleEvent___block_invoke_556(uint64_t a1)
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [v8 pipe];
-    v13 = [v12 name];
+    pipe = [dataCopy pipe];
+    name = [pipe name];
     *v38 = 138412802;
-    *&v38[4] = v13;
+    *&v38[4] = name;
     v39 = 2048;
-    v40 = a5;
+    sizeCopy = size;
     v41 = 1024;
     v42 = v9;
     _os_log_impl(&dword_272965000, v11, OS_LOG_TYPE_DEFAULT, "WPPM: handleIncomingPipeData: %@ of size: %ld first byte 0x%x", v38, 0x1Cu);
   }
 
-  v14 = [v8 pipeDataTransfer];
-  if (v14)
+  pipeDataTransfer = [dataCopy pipeDataTransfer];
+  if (pipeDataTransfer)
   {
-    v15 = v14;
-    v16 = [v8 pipeDataTransfer];
-    v17 = [v16 rxWaitForMoreData];
+    v15 = pipeDataTransfer;
+    pipeDataTransfer2 = [dataCopy pipeDataTransfer];
+    rxWaitForMoreData = [pipeDataTransfer2 rxWaitForMoreData];
 
-    if (v17)
+    if (rxWaitForMoreData)
     {
       if (WPLogInitOnce != -1)
       {
@@ -1255,24 +1255,24 @@ void __37__WPDPipeManager_stream_handleEvent___block_invoke_556(uint64_t a1)
 LABEL_11:
       _os_log_impl(&dword_272965000, v20, OS_LOG_TYPE_DEFAULT, v19, v38, v21);
 LABEL_12:
-      v22 = self;
-      v23 = v8;
+      selfCopy3 = self;
+      v23 = dataCopy;
       v24 = a4;
-      v25 = a5;
+      sizeCopy2 = size;
 LABEL_13:
-      [(WPDPipeManager *)v22 receivedPayload:v23 data:v24 dataSize:v25, *v38];
+      [(WPDPipeManager *)selfCopy3 receivedPayload:v23 data:v24 dataSize:sizeCopy2, *v38];
       goto LABEL_44;
     }
   }
 
-  v26 = [v8 ackData];
-  if (v26)
+  ackData = [dataCopy ackData];
+  if (ackData)
   {
-    v27 = v26;
-    v28 = [v8 ackData];
-    v29 = [v28 rxWaitForMoreData];
+    v27 = ackData;
+    ackData2 = [dataCopy ackData];
+    rxWaitForMoreData2 = [ackData2 rxWaitForMoreData];
 
-    if (v29)
+    if (rxWaitForMoreData2)
     {
       if (WPLogInitOnce != -1)
       {
@@ -1286,10 +1286,10 @@ LABEL_13:
         _os_log_impl(&dword_272965000, v30, OS_LOG_TYPE_DEFAULT, "WPPM: handleIncomingPipeData: continuation of previous packet", v38, 2u);
       }
 
-      v31 = self;
-      v32 = v8;
+      selfCopy4 = self;
+      v32 = dataCopy;
       v33 = a4;
-      v34 = a5;
+      sizeCopy3 = size;
       goto LABEL_30;
     }
   }
@@ -1298,16 +1298,16 @@ LABEL_13:
   {
     if (v9 == 1)
     {
-      [(WPDPipeManager *)self receivedVersionInfo:v8 data:a4 + 1 dataSize:a5 - 1];
+      [(WPDPipeManager *)self receivedVersionInfo:dataCopy data:a4 + 1 dataSize:size - 1];
       goto LABEL_44;
     }
 
     if (v9 == 2)
     {
-      v25 = a5 - 1;
+      sizeCopy2 = size - 1;
       v24 = a4 + 1;
-      v22 = self;
-      v23 = v8;
+      selfCopy3 = self;
+      v23 = dataCopy;
       goto LABEL_13;
     }
   }
@@ -1317,23 +1317,23 @@ LABEL_13:
     switch(v9)
     {
       case 3:
-        v34 = a5 - 1;
+        sizeCopy3 = size - 1;
         v33 = a4 + 1;
-        v31 = self;
-        v32 = v8;
+        selfCopy4 = self;
+        v32 = dataCopy;
 LABEL_30:
-        [(WPDPipeManager *)v31 receivedAck:v32 data:v33 dataSize:v34];
+        [(WPDPipeManager *)selfCopy4 receivedAck:v32 data:v33 dataSize:sizeCopy3];
         goto LABEL_44;
       case 4:
-        [(WPDPipeManager *)self receivedError:v8 data:a4 + 1 dataSize:a5 - 1];
+        [(WPDPipeManager *)self receivedError:dataCopy data:a4 + 1 dataSize:size - 1];
         goto LABEL_44;
       case 5:
-        [(WPDPipeManager *)self receivedConnectStatus:v8 data:a4 + 1 dataSize:a5 - 1];
+        [(WPDPipeManager *)self receivedConnectStatus:dataCopy data:a4 + 1 dataSize:size - 1];
         goto LABEL_44;
     }
   }
 
-  if ([v8 versionInfoSent] && objc_msgSend(v8, "versionInfoReceived"))
+  if ([dataCopy versionInfoSent] && objc_msgSend(dataCopy, "versionInfoReceived"))
   {
     if (WPLogInitOnce != -1)
     {
@@ -1354,7 +1354,7 @@ LABEL_30:
     goto LABEL_11;
   }
 
-  v36 = [MEMORY[0x277CBEA90] dataWithBytes:a4 length:a5];
+  v36 = [MEMORY[0x277CBEA90] dataWithBytes:a4 length:size];
   if (WPLogInitOnce != -1)
   {
     [WPDPipeManager handleIncomingPipeData:data:dataSize:];
@@ -1369,10 +1369,10 @@ LABEL_44:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedVersionInfo:(id)a3 data:(char *)a4 dataSize:(int64_t)a5
+- (void)receivedVersionInfo:(id)info data:(char *)data dataSize:(int64_t)size
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  infoCopy = info;
   if (WPLogInitOnce != -1)
   {
     [WPDPipeManager receivedVersionInfo:data:dataSize:];
@@ -1382,35 +1382,35 @@ LABEL_44:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    *v34 = a5;
+    *v34 = size;
     _os_log_impl(&dword_272965000, v9, OS_LOG_TYPE_DEFAULT, "WPPM: receivedVersionInfo of len %ld", buf, 0xCu);
   }
 
-  if (a5 <= 5)
+  if (size <= 5)
   {
-    [(WPDPipeManager *)self sendErrorResponse:v8 errorCode:3];
+    [(WPDPipeManager *)self sendErrorResponse:infoCopy errorCode:3];
     goto LABEL_30;
   }
 
-  [v8 setVersion:a4[1]];
-  v10 = a4[2];
-  [v8 setSupportedFeatures:(a4[4] << 16) | (a4[3] << 8) | (a4[5] << 24) | v10];
-  [v8 setVersionInfoReceived:1];
-  [v8 setUseConnectStatusPDU:v10 & 1];
-  v11 = [v8 pipe];
-  v12 = [v11 peer];
-  v32 = [v12 identifier];
+  [infoCopy setVersion:data[1]];
+  v10 = data[2];
+  [infoCopy setSupportedFeatures:(data[4] << 16) | (data[3] << 8) | (data[5] << 24) | v10];
+  [infoCopy setVersionInfoReceived:1];
+  [infoCopy setUseConnectStatusPDU:v10 & 1];
+  pipe = [infoCopy pipe];
+  peer = [pipe peer];
+  identifier = [peer identifier];
 
-  v13 = [(WPDPipeManager *)self endpointsDict];
-  v14 = [v8 pipe];
-  v15 = [v14 name];
-  v16 = [v13 objectForKeyedSubscript:v15];
-  v17 = [v16 clientUUID];
+  endpointsDict = [(WPDPipeManager *)self endpointsDict];
+  pipe2 = [infoCopy pipe];
+  name = [pipe2 name];
+  v16 = [endpointsDict objectForKeyedSubscript:name];
+  clientUUID = [v16 clientUUID];
 
-  v18 = [(WPDManager *)self server];
-  v19 = [v18 getClientForUUID:v17];
+  server = [(WPDManager *)self server];
+  v19 = [server getClientForUUID:clientUUID];
 
-  if ([v8 versionInfoReceived] && objc_msgSend(v8, "versionInfoSent") && (objc_msgSend(v8, "pipeDidConnectSent") & 1) == 0)
+  if ([infoCopy versionInfoReceived] && objc_msgSend(infoCopy, "versionInfoSent") && (objc_msgSend(infoCopy, "pipeDidConnectSent") & 1) == 0)
   {
     if (!v19)
     {
@@ -1423,14 +1423,14 @@ LABEL_44:
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
       {
         v29 = v24;
-        v30 = [v8 pipe];
-        v31 = [v30 name];
+        pipe3 = [infoCopy pipe];
+        name2 = [pipe3 name];
         *buf = 138412802;
-        *v34 = v17;
+        *v34 = clientUUID;
         *&v34[8] = 2112;
-        v35 = v32;
+        v35 = identifier;
         v36 = 2112;
-        v37 = v31;
+        v37 = name2;
         _os_log_error_impl(&dword_272965000, v29, OS_LOG_TYPE_ERROR, "WPPM: receivedVersionInfo: Client %@ not found for peer %@ and Endpoint %@", buf, 0x20u);
       }
 
@@ -1446,31 +1446,31 @@ LABEL_44:
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       v21 = v20;
-      v22 = [v8 useConnectStatusPDU];
-      v23 = [v8 connectionInitiator];
+      useConnectStatusPDU = [infoCopy useConnectStatusPDU];
+      connectionInitiator = [infoCopy connectionInitiator];
       *buf = 67109376;
-      *v34 = v22;
+      *v34 = useConnectStatusPDU;
       *&v34[4] = 1024;
-      *&v34[6] = v23;
+      *&v34[6] = connectionInitiator;
       _os_log_impl(&dword_272965000, v21, OS_LOG_TYPE_DEFAULT, "WPPM: receivedVersionInfo: version info exchanged - use conn PDU: %d, initiator: %d", buf, 0xEu);
     }
 
-    if ([v8 useConnectStatusPDU])
+    if ([infoCopy useConnectStatusPDU])
     {
-      if (![v8 connectionInitiator])
+      if (![infoCopy connectionInitiator])
       {
         goto LABEL_19;
       }
 
-      [(WPDPipeManager *)self sendConnectStatus:v8 connectStatus:1];
+      [(WPDPipeManager *)self sendConnectStatus:infoCopy connectStatus:1];
     }
 
-    [v8 setPipeDidConnectSent:1];
-    [v19 connectedDeviceOverLEPipe:v32];
+    [infoCopy setPipeDidConnectSent:1];
+    [v19 connectedDeviceOverLEPipe:identifier];
 LABEL_19:
-    if (a5 != 6)
+    if (size != 6)
     {
-      [(WPDPipeManager *)self handleIncomingPipeData:v8 data:a4 + 6 dataSize:a5 - 6];
+      [(WPDPipeManager *)self handleIncomingPipeData:infoCopy data:data + 6 dataSize:size - 6];
     }
   }
 
@@ -1484,9 +1484,9 @@ LABEL_25:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v26 = v25;
-    v27 = [v8 version];
+    version = [infoCopy version];
     *buf = 67109376;
-    *v34 = v27;
+    *v34 = version;
     *&v34[4] = 1024;
     *&v34[6] = 1;
     _os_log_impl(&dword_272965000, v26, OS_LOG_TYPE_DEFAULT, "WPPM: receivedVersionInfo: remote version %d, local version %d", buf, 0xEu);
@@ -1496,10 +1496,10 @@ LABEL_30:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedPayload:(id)a3 data:(char *)a4 dataSize:(int64_t)a5
+- (void)receivedPayload:(id)payload data:(char *)data dataSize:(int64_t)size
 {
   v120[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  payloadCopy = payload;
   if (WPLogInitOnce != -1)
   {
     [WPDPipeManager receivedPayload:data:dataSize:];
@@ -1508,41 +1508,41 @@ LABEL_30:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
   {
     [WPDPipeManager receivedPayload:data:dataSize:];
-    if (a5)
+    if (size)
     {
       goto LABEL_5;
     }
   }
 
-  else if (a5)
+  else if (size)
   {
 LABEL_5:
-    v9 = [v8 pipe];
-    v10 = [v9 peer];
-    v105 = [v10 identifier];
+    pipe = [payloadCopy pipe];
+    peer = [pipe peer];
+    identifier = [peer identifier];
 
-    v11 = [(WPDPipeManager *)self endpointsDict];
-    v12 = [v8 pipe];
-    v13 = [v12 name];
-    v14 = [v11 objectForKeyedSubscript:v13];
-    v15 = [v14 clientUUID];
+    endpointsDict = [(WPDPipeManager *)self endpointsDict];
+    pipe2 = [payloadCopy pipe];
+    name = [pipe2 name];
+    v14 = [endpointsDict objectForKeyedSubscript:name];
+    clientUUID = [v14 clientUUID];
 
-    v16 = [(WPDManager *)self server];
-    v17 = [v16 getClientForUUID:v15];
+    server = [(WPDManager *)self server];
+    v17 = [server getClientForUUID:clientUUID];
 
-    v18 = [v8 pipeDataTransfer];
-    if ([v8 newProtocol] && (objc_msgSend(v8, "pipeDidConnectSent") & 1) == 0)
+    pipeDataTransfer = [payloadCopy pipeDataTransfer];
+    if ([payloadCopy newProtocol] && (objc_msgSend(payloadCopy, "pipeDidConnectSent") & 1) == 0)
     {
-      if (v18)
+      if (pipeDataTransfer)
       {
-        [v18 resetRxTransfer];
+        [pipeDataTransfer resetRxTransfer];
       }
 
-      [(WPDPipeManager *)self sendErrorResponse:v8 errorCode:6];
+      [(WPDPipeManager *)self sendErrorResponse:payloadCopy errorCode:6];
       goto LABEL_85;
     }
 
-    if (!v18)
+    if (!pipeDataTransfer)
     {
       if (WPLogInitOnce != -1)
       {
@@ -1556,21 +1556,21 @@ LABEL_5:
         _os_log_impl(&dword_272965000, v19, OS_LOG_TYPE_DEFAULT, "WPPM: receivedPayload: initialize pipe transfer object", buf, 2u);
       }
 
-      v18 = [[PipeDataTransfer alloc] initPipeDataTransferForPeer:v105];
-      [v8 setPipeDataTransfer:v18];
+      pipeDataTransfer = [[PipeDataTransfer alloc] initPipeDataTransferForPeer:identifier];
+      [payloadCopy setPipeDataTransfer:pipeDataTransfer];
     }
 
-    v104 = [MEMORY[0x277CBEB28] data];
-    if ([v18 rxFirstPacket])
+    data = [MEMORY[0x277CBEB28] data];
+    if ([pipeDataTransfer rxFirstPacket])
     {
-      v20 = [MEMORY[0x277CBEA90] dataWithBytes:a4 length:a5];
-      [v18 setRxData:v20];
+      v20 = [MEMORY[0x277CBEA90] dataWithBytes:data length:size];
+      [pipeDataTransfer setRxData:v20];
 
-      v21 = [v18 rxData];
-      v22 = [v21 length];
-      v23 = [v18 rxCurrentDataSize];
+      rxData = [pipeDataTransfer rxData];
+      v22 = [rxData length];
+      rxCurrentDataSize = [pipeDataTransfer rxCurrentDataSize];
 
-      if (v22 > v23)
+      if (v22 > rxCurrentDataSize)
       {
         if (WPLogInitOnce != -1)
         {
@@ -1580,18 +1580,18 @@ LABEL_5:
         v24 = WiProxLog;
         if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
         {
-          [WPDPipeManager receivedPayload:v24 data:v18 dataSize:?];
+          [WPDPipeManager receivedPayload:v24 data:pipeDataTransfer dataSize:?];
         }
 
-        [v18 setRxWaitForMoreData:0];
-        v25 = [v18 rxData];
-        v26 = [v18 rxCurrentDataSize];
-        v27 = [v18 rxData];
-        v28 = [v25 subdataWithRange:{v26, objc_msgSend(v27, "length") - objc_msgSend(v18, "rxCurrentDataSize")}];
-        [v104 setData:v28];
+        [pipeDataTransfer setRxWaitForMoreData:0];
+        rxData2 = [pipeDataTransfer rxData];
+        rxCurrentDataSize2 = [pipeDataTransfer rxCurrentDataSize];
+        rxData3 = [pipeDataTransfer rxData];
+        v28 = [rxData2 subdataWithRange:{rxCurrentDataSize2, objc_msgSend(rxData3, "length") - objc_msgSend(pipeDataTransfer, "rxCurrentDataSize")}];
+        [data setData:v28];
 
-        v29 = [v18 rxData];
-        v30 = [v29 subdataWithRange:{0, objc_msgSend(v18, "rxCurrentDataSize")}];
+        rxData4 = [pipeDataTransfer rxData];
+        v30 = [rxData4 subdataWithRange:{0, objc_msgSend(pipeDataTransfer, "rxCurrentDataSize")}];
 
         if (WPLogInitOnce != -1)
         {
@@ -1610,20 +1610,20 @@ LABEL_5:
           _os_log_impl(&dword_272965000, v32, OS_LOG_TYPE_DEFAULT, "WPPM: receivedPayload: of len (%lu) %@", buf, 0x16u);
         }
 
-        [v18 setRxData:v30];
+        [pipeDataTransfer setRxData:v30];
       }
 
-      v34 = [v18 rxData];
+      rxData5 = [pipeDataTransfer rxData];
 LABEL_25:
-      v35 = [v18 rxTotalDataWithLen];
-      v36 = [v18 rxData];
-      [v35 appendData:v36];
+      rxTotalDataWithLen = [pipeDataTransfer rxTotalDataWithLen];
+      rxData6 = [pipeDataTransfer rxData];
+      [rxTotalDataWithLen appendData:rxData6];
 
-      v37 = [v18 rxCurrentReceivedData];
-      [v37 appendData:v34];
+      rxCurrentReceivedData = [pipeDataTransfer rxCurrentReceivedData];
+      [rxCurrentReceivedData appendData:rxData5];
 
-      [v18 setRxCurrentDataSize:{(objc_msgSend(v18, "rxCurrentDataSize") - objc_msgSend(v34, "length"))}];
-      v103 = v15;
+      [pipeDataTransfer setRxCurrentDataSize:{(objc_msgSend(pipeDataTransfer, "rxCurrentDataSize") - objc_msgSend(rxData5, "length"))}];
+      v103 = clientUUID;
       if (WPLogInitOnce != -1)
       {
         [WPDPipeManager receivedPayload:data:dataSize:];
@@ -1633,47 +1633,47 @@ LABEL_25:
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
       {
         v39 = v38;
-        [v18 rxCurrentReceivedData];
-        v40 = self;
+        [pipeDataTransfer rxCurrentReceivedData];
+        selfCopy = self;
         v41 = v17;
-        v43 = v42 = v34;
+        v43 = v42 = rxData5;
         v44 = [v43 length];
-        v45 = [v18 rxCurrentDataSize];
-        v46 = [v18 rxTotalDataWithLen];
-        v47 = [v46 length];
+        rxCurrentDataSize3 = [pipeDataTransfer rxCurrentDataSize];
+        rxTotalDataWithLen2 = [pipeDataTransfer rxTotalDataWithLen];
+        v47 = [rxTotalDataWithLen2 length];
         *buf = 134218754;
         *v118 = v44;
         *&v118[8] = 2112;
-        *&v118[10] = v105;
+        *&v118[10] = identifier;
         v119 = 1024;
-        LODWORD(v120[0]) = v45;
+        LODWORD(v120[0]) = rxCurrentDataSize3;
         WORD2(v120[0]) = 2048;
         *(v120 + 6) = v47;
         _os_log_impl(&dword_272965000, v39, OS_LOG_TYPE_DEFAULT, "WPPM: receivedPayload: length of data received %ld from peer %@, length of data remaining to receive: %d, rxTotalData %ld", buf, 0x26u);
 
-        v34 = v42;
+        rxData5 = v42;
         v17 = v41;
-        self = v40;
+        self = selfCopy;
       }
 
       [(WPDPipeManager *)self _signpostBegin];
-      if ([v18 rxCurrentDataSize] || (objc_msgSend(v18, "rxCurrentReceivedData"), v50 = objc_claimAutoreleasedReturnValue(), v51 = objc_msgSend(v50, "length"), v50, !v51))
+      if ([pipeDataTransfer rxCurrentDataSize] || (objc_msgSend(pipeDataTransfer, "rxCurrentReceivedData"), v50 = objc_claimAutoreleasedReturnValue(), v51 = objc_msgSend(v50, "length"), v50, !v51))
       {
         if (WPLogInitOnce != -1)
         {
           [WPDPipeManager receivedPayload:data:dataSize:];
         }
 
-        v15 = v103;
+        clientUUID = v103;
         v48 = WiProxLog;
-        v49 = v104;
+        v49 = data;
         if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
           _os_log_impl(&dword_272965000, v48, OS_LOG_TYPE_DEFAULT, "WPPM: receivedPayload: transfer wait", buf, 2u);
         }
 
-        [v18 setRxWaitForMoreData:1];
+        [pipeDataTransfer setRxWaitForMoreData:1];
 LABEL_77:
         if ([v49 length])
         {
@@ -1698,7 +1698,7 @@ LABEL_82:
           _os_log_impl(&dword_272965000, v89, OS_LOG_TYPE_DEFAULT, "WPPM: receivedPayload: decode next packet of len (%lu) %@", buf, 0x16u);
 
 LABEL_83:
-          -[WPDPipeManager handleIncomingPipeData:data:dataSize:](self, "handleIncomingPipeData:data:dataSize:", v8, [v49 bytes], objc_msgSend(v49, "length"));
+          -[WPDPipeManager handleIncomingPipeData:data:dataSize:](self, "handleIncomingPipeData:data:dataSize:", payloadCopy, [v49 bytes], objc_msgSend(v49, "length"));
         }
 
 LABEL_84:
@@ -1710,25 +1710,25 @@ LABEL_85:
       if (v17)
       {
         v52 = MEMORY[0x277CBEA90];
-        v53 = [v18 rxTotalDataWithLen];
-        v54 = [v52 dataWithData:v53];
+        rxTotalDataWithLen3 = [pipeDataTransfer rxTotalDataWithLen];
+        v54 = [v52 dataWithData:rxTotalDataWithLen3];
 
-        v55 = [(WPDPipeManager *)self queue];
+        queue = [(WPDPipeManager *)self queue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __48__WPDPipeManager_receivedPayload_data_dataSize___block_invoke_629;
         block[3] = &unk_279E59F38;
         v107 = v17;
         v108 = v54;
-        v56 = v8;
+        v56 = payloadCopy;
         v109 = v56;
-        v110 = v105;
-        v111 = self;
+        v110 = identifier;
+        selfCopy2 = self;
         v57 = v54;
-        dispatch_async(v55, block);
+        dispatch_async(queue, block);
 
         [(WPDPipeManager *)self sendAck:v56 errorCode:0];
-        v15 = v103;
+        clientUUID = v103;
       }
 
       else
@@ -1738,42 +1738,42 @@ LABEL_85:
           [WPDPipeManager receivedPayload:data:dataSize:];
         }
 
-        v15 = v103;
+        clientUUID = v103;
         v87 = WiProxLog;
-        v49 = v104;
+        v49 = data;
         if (!os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_76;
         }
 
         v95 = v87;
-        v96 = [v8 pipe];
-        v97 = [v96 name];
+        pipe3 = [payloadCopy pipe];
+        name2 = [pipe3 name];
         *buf = 138412802;
         *v118 = v103;
         *&v118[8] = 2112;
-        *&v118[10] = v105;
+        *&v118[10] = identifier;
         v119 = 2112;
-        v120[0] = v97;
+        v120[0] = name2;
         _os_log_error_impl(&dword_272965000, v95, OS_LOG_TYPE_ERROR, "WPPM: receivedPayload: Client %@ not found for peer %@ and Endpoint %@", buf, 0x20u);
 
-        v15 = v103;
+        clientUUID = v103;
         v17 = 0;
       }
 
-      v49 = v104;
+      v49 = data;
 LABEL_76:
-      [v18 resetRxTransfer];
+      [pipeDataTransfer resetRxTransfer];
       goto LABEL_77;
     }
 
-    if (a5 > 2)
+    if (size > 2)
     {
       v102 = v17;
-      v58 = v15;
-      v59 = *a4;
-      v60 = a4[1];
-      v61 = a4[2];
+      v58 = clientUUID;
+      v59 = *data;
+      v60 = data[1];
+      v61 = data[2];
       if (WPLogInitOnce != -1)
       {
         [WPDPipeManager receivedPayload:data:dataSize:];
@@ -1789,63 +1789,63 @@ LABEL_76:
         _os_log_debug_impl(&dword_272965000, v62, OS_LOG_TYPE_DEBUG, "WPPM: receivedPayload: FIRST PACKET len %d, seqNum %d", buf, 0xEu);
       }
 
-      [v18 setRxSeqNum:v61];
-      v63 = [MEMORY[0x277CBEA90] dataWithBytes:a4 + 3 length:a5 - 3];
-      [v18 setRxData:v63];
+      [pipeDataTransfer setRxSeqNum:v61];
+      v63 = [MEMORY[0x277CBEA90] dataWithBytes:data + 3 length:size - 3];
+      [pipeDataTransfer setRxData:v63];
 
       if (WPLogInitOnce != -1)
       {
         [WPDPipeManager receivedPayload:data:dataSize:];
       }
 
-      v15 = v58;
+      clientUUID = v58;
       v64 = WiProxLog;
       v17 = v102;
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
       {
-        [WPDPipeManager receivedPayload:v64 data:v18 dataSize:?];
+        [WPDPipeManager receivedPayload:v64 data:pipeDataTransfer dataSize:?];
       }
 
-      if (a5 < 5)
+      if (size < 5)
       {
-        v34 = 0;
+        rxData5 = 0;
         goto LABEL_25;
       }
 
-      [v18 setRxTotalLenToReceive:*(a4 + 3)];
-      v65 = [MEMORY[0x277CBEA90] dataWithBytes:a4 + 5 length:a5 - 5];
-      [v18 setRxTotalDataToReceive:v65];
+      [pipeDataTransfer setRxTotalLenToReceive:*(data + 3)];
+      v65 = [MEMORY[0x277CBEA90] dataWithBytes:data + 5 length:size - 5];
+      [pipeDataTransfer setRxTotalDataToReceive:v65];
 
-      [v18 setRxCurrentDataSize:{objc_msgSend(v18, "rxTotalLenToReceive")}];
+      [pipeDataTransfer setRxCurrentDataSize:{objc_msgSend(pipeDataTransfer, "rxTotalLenToReceive")}];
       if (WPLogInitOnce != -1)
       {
         [WPDPipeManager receivedPayload:data:dataSize:];
       }
 
-      v66 = v104;
+      v66 = data;
       v67 = WiProxLog;
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
       {
         v68 = v67;
-        v69 = [v18 rxTotalLenToReceive];
-        v70 = [v18 rxTotalDataToReceive];
+        rxTotalLenToReceive = [pipeDataTransfer rxTotalLenToReceive];
+        rxTotalDataToReceive = [pipeDataTransfer rxTotalDataToReceive];
         *buf = 67109378;
-        *v118 = v69;
-        v66 = v104;
+        *v118 = rxTotalLenToReceive;
+        v66 = data;
         *&v118[4] = 2112;
-        *&v118[6] = v70;
+        *&v118[6] = rxTotalDataToReceive;
         _os_log_impl(&dword_272965000, v68, OS_LOG_TYPE_DEFAULT, "WPPM: receivedPayload: FIRST PACKET rxTLen %d, rxTData: %@", buf, 0x12u);
       }
 
-      v101 = [v18 rxTotalDataToReceive];
-      v71 = [v18 rxTotalDataToReceive];
-      v72 = [v71 length];
-      v73 = [v18 rxCurrentDataSize];
+      rxTotalDataToReceive2 = [pipeDataTransfer rxTotalDataToReceive];
+      rxTotalDataToReceive3 = [pipeDataTransfer rxTotalDataToReceive];
+      v72 = [rxTotalDataToReceive3 length];
+      rxCurrentDataSize4 = [pipeDataTransfer rxCurrentDataSize];
 
-      if (v72 <= v73)
+      if (v72 <= rxCurrentDataSize4)
       {
-        [v18 setRxFirstPacket:1];
-        v34 = v101;
+        [pipeDataTransfer setRxFirstPacket:1];
+        rxData5 = rxTotalDataToReceive2;
         goto LABEL_25;
       }
 
@@ -1857,19 +1857,19 @@ LABEL_76:
       v74 = WiProxLog;
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
       {
-        [WPDPipeManager receivedPayload:v74 data:v18 dataSize:?];
+        [WPDPipeManager receivedPayload:v74 data:pipeDataTransfer dataSize:?];
       }
 
-      v75 = [v18 rxTotalDataToReceive];
-      v76 = [v18 rxTotalLenToReceive];
-      v77 = [v18 rxTotalDataToReceive];
-      v78 = [v75 subdataWithRange:{v76, objc_msgSend(v77, "length") - objc_msgSend(v18, "rxTotalLenToReceive")}];
+      rxTotalDataToReceive4 = [pipeDataTransfer rxTotalDataToReceive];
+      rxTotalLenToReceive2 = [pipeDataTransfer rxTotalLenToReceive];
+      rxTotalDataToReceive5 = [pipeDataTransfer rxTotalDataToReceive];
+      v78 = [rxTotalDataToReceive4 subdataWithRange:{rxTotalLenToReceive2, objc_msgSend(rxTotalDataToReceive5, "length") - objc_msgSend(pipeDataTransfer, "rxTotalLenToReceive")}];
       [v66 setData:v78];
 
       if (v102)
       {
-        v79 = [v18 rxData];
-        v80 = [v79 subdataWithRange:{0, objc_msgSend(v18, "rxTotalLenToReceive") + 2}];
+        rxData7 = [pipeDataTransfer rxData];
+        v80 = [rxData7 subdataWithRange:{0, objc_msgSend(pipeDataTransfer, "rxTotalLenToReceive") + 2}];
 
         if (WPLogInitOnce != -1)
         {
@@ -1888,21 +1888,21 @@ LABEL_76:
           _os_log_impl(&dword_272965000, v82, OS_LOG_TYPE_DEFAULT, "WPPM: receivedPayload: notify didReceive of len (%lu) %@", buf, 0x16u);
         }
 
-        v84 = [(WPDPipeManager *)self queue];
+        queue2 = [(WPDPipeManager *)self queue];
         v112[0] = MEMORY[0x277D85DD0];
         v112[1] = 3221225472;
         v112[2] = __48__WPDPipeManager_receivedPayload_data_dataSize___block_invoke_614;
         v112[3] = &unk_279E59E98;
         v113 = v102;
         v114 = v80;
-        v85 = v8;
+        v85 = payloadCopy;
         v115 = v85;
-        v116 = v105;
+        v116 = identifier;
         v86 = v80;
-        dispatch_async(v84, v112);
+        dispatch_async(queue2, v112);
 
         [(WPDPipeManager *)self sendAck:v85 errorCode:0];
-        v34 = v101;
+        rxData5 = rxTotalDataToReceive2;
       }
 
       else
@@ -1912,27 +1912,27 @@ LABEL_76:
           [WPDPipeManager receivedPayload:data:dataSize:];
         }
 
-        v34 = v101;
+        rxData5 = rxTotalDataToReceive2;
         v92 = WiProxLog;
         if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
         {
           v98 = v92;
-          v99 = [v8 pipe];
-          v100 = [v99 name];
+          pipe4 = [payloadCopy pipe];
+          name3 = [pipe4 name];
           *buf = 138412802;
-          *v118 = v15;
+          *v118 = clientUUID;
           *&v118[8] = 2112;
-          *&v118[10] = v105;
+          *&v118[10] = identifier;
           v119 = 2112;
-          v120[0] = v100;
+          v120[0] = name3;
           _os_log_error_impl(&dword_272965000, v98, OS_LOG_TYPE_ERROR, "WPPM: receivedPayload: Client %@ not found for peer %@ and Endpoint %@", buf, 0x20u);
 
-          v34 = v101;
+          rxData5 = rxTotalDataToReceive2;
         }
       }
 
-      [v18 resetRxTransfer];
-      if ([v104 length])
+      [pipeDataTransfer resetRxTransfer];
+      if ([data length])
       {
         if (WPLogInitOnce != -1)
         {
@@ -1940,33 +1940,33 @@ LABEL_76:
         }
 
         v93 = WiProxLog;
-        v49 = v104;
+        v49 = data;
         if (!os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_83;
         }
 
         v89 = v93;
-        v94 = [v104 length];
+        v94 = [data length];
         *buf = 134218242;
         *v118 = v94;
         *&v118[8] = 2112;
-        *&v118[10] = v104;
+        *&v118[10] = data;
         goto LABEL_82;
       }
     }
 
     else
     {
-      [(WPDPipeManager *)self sendErrorResponse:v8 errorCode:3];
-      v34 = 0;
+      [(WPDPipeManager *)self sendErrorResponse:payloadCopy errorCode:3];
+      rxData5 = 0;
     }
 
-    v49 = v104;
+    v49 = data;
     goto LABEL_84;
   }
 
-  [(WPDPipeManager *)self sendErrorResponse:v8 errorCode:3];
+  [(WPDPipeManager *)self sendErrorResponse:payloadCopy errorCode:3];
 LABEL_86:
 
   v91 = *MEMORY[0x277D85DE8];
@@ -2016,10 +2016,10 @@ uint64_t __48__WPDPipeManager_receivedPayload_data_dataSize___block_invoke_629(u
   return result;
 }
 
-- (void)receivedAck:(id)a3 data:(char *)a4 dataSize:(int64_t)a5
+- (void)receivedAck:(id)ack data:(char *)data dataSize:(int64_t)size
 {
   v86 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  ackCopy = ack;
   if (WPLogInitOnce != -1)
   {
     [WPDPipeManager receivedAck:data:dataSize:];
@@ -2030,27 +2030,27 @@ uint64_t __48__WPDPipeManager_receivedPayload_data_dataSize___block_invoke_629(u
     [WPDPipeManager receivedAck:data:dataSize:];
   }
 
-  v9 = [v8 pipeDataTransfer];
-  v10 = v9;
-  if (v9)
+  pipeDataTransfer = [ackCopy pipeDataTransfer];
+  v10 = pipeDataTransfer;
+  if (pipeDataTransfer)
   {
-    v67 = a5;
-    v11 = v9;
-    v12 = [v8 pipe];
-    v13 = [v12 peer];
-    v14 = [v13 identifier];
+    sizeCopy = size;
+    v11 = pipeDataTransfer;
+    pipe = [ackCopy pipe];
+    peer = [pipe peer];
+    identifier = [peer identifier];
 
-    v15 = [(WPDPipeManager *)self endpointsDict];
-    [v8 pipe];
+    endpointsDict = [(WPDPipeManager *)self endpointsDict];
+    [ackCopy pipe];
     v17 = v16 = self;
-    v18 = [v17 name];
-    v19 = [v15 objectForKeyedSubscript:v18];
-    v20 = [v19 clientUUID];
+    name = [v17 name];
+    v19 = [endpointsDict objectForKeyedSubscript:name];
+    clientUUID = [v19 clientUUID];
 
     v66 = v16;
-    v21 = [(WPDManager *)v16 server];
-    v68 = v20;
-    v22 = [v21 getClientForUUID:v20];
+    server = [(WPDManager *)v16 server];
+    v68 = clientUUID;
+    v22 = [server getClientForUUID:clientUUID];
 
     if (!v22)
     {
@@ -2059,33 +2059,33 @@ uint64_t __48__WPDPipeManager_receivedPayload_data_dataSize___block_invoke_629(u
         [WPDPipeManager receivedAck:data:dataSize:];
       }
 
-      v27 = v14;
+      v27 = identifier;
       v42 = WiProxLog;
       v10 = v11;
       v43 = v68;
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
       {
         v44 = v42;
-        v45 = [v8 pipe];
-        v46 = [v45 name];
+        pipe2 = [ackCopy pipe];
+        name2 = [pipe2 name];
         *buf = 138412802;
         *v83 = v68;
         *&v83[8] = 2112;
         v84 = v27;
         *v85 = 2112;
-        *&v85[2] = v46;
+        *&v85[2] = name2;
         _os_log_error_impl(&dword_272965000, v44, OS_LOG_TYPE_ERROR, "WPPM: receivedAck: Client %@ not found for peer %@ and Endpoint %@", buf, 0x20u);
       }
 
       goto LABEL_59;
     }
 
-    if (v67 < 5)
+    if (sizeCopy < 5)
     {
-      v30 = [v8 ackData];
-      v27 = v14;
+      ackData = [ackCopy ackData];
+      v27 = identifier;
       v10 = v11;
-      if (!v30)
+      if (!ackData)
       {
         if (WPLogInitOnce != -1)
         {
@@ -2099,12 +2099,12 @@ uint64_t __48__WPDPipeManager_receivedPayload_data_dataSize___block_invoke_629(u
           _os_log_impl(&dword_272965000, v47, OS_LOG_TYPE_DEFAULT, "WPPM: init ackData object", buf, 2u);
         }
 
-        v30 = [[PipeDataTransfer alloc] initPipeDataTransferForPeer:v14];
-        [v8 setAckData:v30];
+        ackData = [[PipeDataTransfer alloc] initPipeDataTransferForPeer:identifier];
+        [ackCopy setAckData:ackData];
       }
 
-      v48 = [v30 rxCurrentReceivedData];
-      [v48 appendBytes:a4 length:v67];
+      rxCurrentReceivedData = [ackData rxCurrentReceivedData];
+      [rxCurrentReceivedData appendBytes:data length:sizeCopy];
 
       if (WPLogInitOnce != -1)
       {
@@ -2115,14 +2115,14 @@ uint64_t __48__WPDPipeManager_receivedPayload_data_dataSize___block_invoke_629(u
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
       {
         v50 = v49;
-        v51 = [v30 rxCurrentReceivedData];
+        rxCurrentReceivedData2 = [ackData rxCurrentReceivedData];
         *buf = 138412290;
-        *v83 = v51;
+        *v83 = rxCurrentReceivedData2;
         _os_log_impl(&dword_272965000, v50, OS_LOG_TYPE_DEFAULT, "WPPM: Currenlty received ack data: %@", buf, 0xCu);
       }
 
-      v52 = [v30 rxCurrentReceivedData];
-      v53 = [v52 length];
+      rxCurrentReceivedData3 = [ackData rxCurrentReceivedData];
+      v53 = [rxCurrentReceivedData3 length];
 
       if (v53 < 5)
       {
@@ -2139,15 +2139,15 @@ uint64_t __48__WPDPipeManager_receivedPayload_data_dataSize___block_invoke_629(u
           _os_log_impl(&dword_272965000, v58, OS_LOG_TYPE_DEFAULT, "WPPM: Still have not received full ack packet.", buf, 2u);
         }
 
-        [v30 setRxWaitForMoreData:1];
+        [ackData setRxWaitForMoreData:1];
       }
 
       else
       {
-        v54 = [v30 rxCurrentReceivedData];
-        v55 = [v54 bytes];
-        v56 = [v30 rxCurrentReceivedData];
-        -[WPDPipeManager receivedAck:data:dataSize:](v66, "receivedAck:data:dataSize:", v8, v55, [v56 length]);
+        rxCurrentReceivedData4 = [ackData rxCurrentReceivedData];
+        bytes = [rxCurrentReceivedData4 bytes];
+        rxCurrentReceivedData5 = [ackData rxCurrentReceivedData];
+        -[WPDPipeManager receivedAck:data:dataSize:](v66, "receivedAck:data:dataSize:", ackCopy, bytes, [rxCurrentReceivedData5 length]);
 
         v43 = v68;
       }
@@ -2155,10 +2155,10 @@ uint64_t __48__WPDPipeManager_receivedPayload_data_dataSize___block_invoke_629(u
 
     else
     {
-      v23 = *a4;
-      v24 = a4[1];
-      v25 = *(a4 + 1);
-      v65 = a4[4];
+      v23 = *data;
+      v24 = data[1];
+      v25 = *(data + 1);
+      v65 = data[4];
       if (WPLogInitOnce != -1)
       {
         [WPDPipeManager receivedAck:data:dataSize:];
@@ -2181,7 +2181,7 @@ uint64_t __48__WPDPipeManager_receivedPayload_data_dataSize___block_invoke_629(u
       v10 = v11;
       if (v24 != [v11 txSeqNum])
       {
-        v27 = v14;
+        v27 = identifier;
         if (WPLogInitOnce != -1)
         {
           [WPDPipeManager receivedAck:data:dataSize:];
@@ -2198,7 +2198,7 @@ uint64_t __48__WPDPipeManager_receivedPayload_data_dataSize___block_invoke_629(u
         goto LABEL_59;
       }
 
-      v27 = v14;
+      v27 = identifier;
       if (v25 != [v11 txTotalLenToSend])
       {
         if (WPLogInitOnce != -1)
@@ -2218,8 +2218,8 @@ uint64_t __48__WPDPipeManager_receivedPayload_data_dataSize___block_invoke_629(u
       }
 
       v28 = MEMORY[0x277CBEA90];
-      v29 = [v11 txData];
-      v30 = [v28 dataWithData:v29];
+      txData = [v11 txData];
+      ackData = [v28 dataWithData:txData];
 
       if (v65)
       {
@@ -2241,43 +2241,43 @@ uint64_t __48__WPDPipeManager_receivedPayload_data_dataSize___block_invoke_629(u
           [WPDPipeManager receivedAck:v35 data:? dataSize:?];
         }
 
-        v36 = [(WPDPipeManager *)v66 queue];
+        queue = [(WPDPipeManager *)v66 queue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __44__WPDPipeManager_receivedAck_data_dataSize___block_invoke_665;
         block[3] = &unk_279E59F38;
         v70 = v22;
-        v71 = v30;
-        v37 = v8;
+        v71 = ackData;
+        v37 = ackCopy;
         v72 = v37;
-        v38 = v14;
+        v38 = identifier;
         v73 = v38;
         v74 = v34;
         v39 = v34;
-        dispatch_async(v36, block);
+        dispatch_async(queue, block);
 
-        v40 = [v37 pipe];
-        v41 = [v40 name];
-        [(WPDPipeManager *)v66 invalidatePipeInfo:v41 forPeer:v38];
+        pipe3 = [v37 pipe];
+        name3 = [pipe3 name];
+        [(WPDPipeManager *)v66 invalidatePipeInfo:name3 forPeer:v38];
       }
 
       else
       {
-        v60 = [(WPDPipeManager *)v66 queue];
+        queue2 = [(WPDPipeManager *)v66 queue];
         v75[0] = MEMORY[0x277D85DD0];
         v75[1] = 3221225472;
         v75[2] = __44__WPDPipeManager_receivedAck_data_dataSize___block_invoke_659;
         v75[3] = &unk_279E59E98;
         v76 = v22;
-        v77 = v30;
-        v61 = v8;
+        v77 = ackData;
+        v61 = ackCopy;
         v78 = v61;
-        v79 = v14;
-        dispatch_async(v60, v75);
+        v79 = identifier;
+        dispatch_async(queue2, v75);
 
-        if (v67 != 5)
+        if (sizeCopy != 5)
         {
-          [(WPDPipeManager *)v66 handleIncomingPipeData:v61 data:a4 + 5 dataSize:v67 - 5];
+          [(WPDPipeManager *)v66 handleIncomingPipeData:v61 data:data + 5 dataSize:sizeCopy - 5];
         }
 
         v39 = v76;
@@ -2286,12 +2286,12 @@ uint64_t __48__WPDPipeManager_receivedPayload_data_dataSize___block_invoke_629(u
       v43 = v68;
 
       [v10 resetTxTransfer];
-      v62 = [v8 ackData];
+      ackData2 = [ackCopy ackData];
 
-      if (v62)
+      if (ackData2)
       {
-        v63 = [v8 ackData];
-        [v63 resetRxTransfer];
+        ackData3 = [ackCopy ackData];
+        [ackData3 resetRxTransfer];
       }
     }
 
@@ -2334,13 +2334,13 @@ void __44__WPDPipeManager_receivedAck_data_dataSize___block_invoke_665(uint64_t 
   [v2 sentData:v3 toEndpoint:v5 forPeripheral:*(a1 + 56) withError:*(a1 + 64)];
 }
 
-- (void)receivedError:(id)a3 data:(char *)a4 dataSize:(int64_t)a5
+- (void)receivedError:(id)error data:(char *)data dataSize:(int64_t)size
 {
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (a5 >= 2)
+  errorCopy = error;
+  if (size >= 2)
   {
-    v9 = a4[1];
+    v9 = data[1];
     if (WPLogInitOnce != -1)
     {
       [WPDPipeManager receivedError:data:dataSize:];
@@ -2349,27 +2349,27 @@ void __44__WPDPipeManager_receivedAck_data_dataSize___block_invoke_665(uint64_t 
     v10 = WiProxLog;
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
     {
-      [WPDPipeManager receivedError:v9 data:a5 dataSize:v10];
+      [WPDPipeManager receivedError:v9 data:size dataSize:v10];
     }
 
     if (v9 == 6)
     {
-      v11 = [v8 pipeDataTransfer];
-      if (v11)
+      pipeDataTransfer = [errorCopy pipeDataTransfer];
+      if (pipeDataTransfer)
       {
-        v12 = v11;
-        v13 = [v8 pipe];
-        v14 = [v13 peer];
-        v15 = [v14 identifier];
+        v12 = pipeDataTransfer;
+        pipe = [errorCopy pipe];
+        peer = [pipe peer];
+        identifier = [peer identifier];
 
-        v16 = [(WPDPipeManager *)self endpointsDict];
-        v17 = [v8 pipe];
-        v18 = [v17 name];
-        v19 = [v16 objectForKeyedSubscript:v18];
-        v20 = [v19 clientUUID];
+        endpointsDict = [(WPDPipeManager *)self endpointsDict];
+        pipe2 = [errorCopy pipe];
+        name = [pipe2 name];
+        v19 = [endpointsDict objectForKeyedSubscript:name];
+        clientUUID = [v19 clientUUID];
 
-        v21 = [(WPDManager *)self server];
-        v22 = [v21 getClientForUUID:v20];
+        server = [(WPDManager *)self server];
+        v22 = [server getClientForUUID:clientUUID];
 
         if (v22)
         {
@@ -2392,22 +2392,22 @@ void __44__WPDPipeManager_receivedAck_data_dataSize___block_invoke_665(uint64_t 
           }
 
           v28 = MEMORY[0x277CBEA90];
-          v29 = [v8 pipeDataTransfer];
-          v30 = [v29 txData];
-          v31 = [v28 dataWithData:v30];
+          pipeDataTransfer2 = [errorCopy pipeDataTransfer];
+          txData = [pipeDataTransfer2 txData];
+          v31 = [v28 dataWithData:txData];
 
-          v32 = [(WPDPipeManager *)self queue];
+          queue = [(WPDPipeManager *)self queue];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __46__WPDPipeManager_receivedError_data_dataSize___block_invoke_689;
           block[3] = &unk_279E59E98;
           v41 = v22;
           v42 = v31;
-          v43 = v8;
+          v43 = errorCopy;
           v44 = v26;
           v33 = v26;
           v34 = v31;
-          dispatch_async(v32, block);
+          dispatch_async(queue, block);
         }
 
         else
@@ -2421,14 +2421,14 @@ void __44__WPDPipeManager_receivedAck_data_dataSize___block_invoke_665(uint64_t 
           if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
           {
             v37 = v35;
-            v38 = [v8 pipe];
-            v39 = [v38 name];
+            pipe3 = [errorCopy pipe];
+            name2 = [pipe3 name];
             *buf = 138412802;
-            v48 = v20;
+            v48 = clientUUID;
             v49 = 2112;
-            v50 = v15;
+            v50 = identifier;
             v51 = 2112;
-            v52 = v39;
+            v52 = name2;
             _os_log_error_impl(&dword_272965000, v37, OS_LOG_TYPE_ERROR, "WPPM: receivedError: Client %@ not found for peer %@ and Endpoint %@", buf, 0x20u);
           }
         }
@@ -2465,13 +2465,13 @@ void __46__WPDPipeManager_receivedError_data_dataSize___block_invoke_689(uint64_
   [v2 sentData:v3 toEndpoint:v5 forPeripheral:v8 withError:*(a1 + 56)];
 }
 
-- (void)receivedConnectStatus:(id)a3 data:(char *)a4 dataSize:(int64_t)a5
+- (void)receivedConnectStatus:(id)status data:(char *)data dataSize:(int64_t)size
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (a5 >= 2)
+  statusCopy = status;
+  if (size >= 2)
   {
-    v9 = a4[1];
+    v9 = data[1];
     if (WPLogInitOnce != -1)
     {
       [WPDPipeManager receivedConnectStatus:data:dataSize:];
@@ -2483,7 +2483,7 @@ void __46__WPDPipeManager_receivedError_data_dataSize___block_invoke_689(uint64_
       *buf = 67109376;
       v39 = v9;
       v40 = 2048;
-      v41 = a5;
+      sizeCopy = size;
       _os_log_impl(&dword_272965000, v10, OS_LOG_TYPE_DEFAULT, "WPPM: receivedConnectStatus: status: %d, dataSize: %ld", buf, 0x12u);
     }
 
@@ -2491,58 +2491,58 @@ void __46__WPDPipeManager_receivedError_data_dataSize___block_invoke_689(uint64_
     {
       if (v9 == 1)
       {
-        v11 = [v8 pipe];
-        v12 = [v11 peer];
-        v13 = [v12 identifier];
+        pipe = [statusCopy pipe];
+        peer = [pipe peer];
+        identifier = [peer identifier];
 
-        v14 = [(WPDPipeManager *)self endpointsDict];
-        v15 = [v8 pipe];
-        v16 = [v15 name];
-        v17 = [v14 objectForKeyedSubscript:v16];
-        v18 = [v17 clientUUID];
+        endpointsDict = [(WPDPipeManager *)self endpointsDict];
+        pipe2 = [statusCopy pipe];
+        name = [pipe2 name];
+        v17 = [endpointsDict objectForKeyedSubscript:name];
+        clientUUID = [v17 clientUUID];
 
-        v19 = [(WPDManager *)self server];
-        v20 = [v19 getClientForUUID:v18];
+        server = [(WPDManager *)self server];
+        v20 = [server getClientForUUID:clientUUID];
 
         if (v20)
         {
-          [v8 setUseConnectStatusPDU:1];
-          [v8 setPipeDidConnectSent:1];
-          [v20 connectedDeviceOverLEPipe:v13];
+          [statusCopy setUseConnectStatusPDU:1];
+          [statusCopy setPipeDidConnectSent:1];
+          [v20 connectedDeviceOverLEPipe:identifier];
         }
       }
 
-      if (a5 != 2)
+      if (size != 2)
       {
-        [(WPDPipeManager *)self handleIncomingPipeData:v8 data:a4 + 2 dataSize:a5 - 2];
+        [(WPDPipeManager *)self handleIncomingPipeData:statusCopy data:data + 2 dataSize:size - 2];
       }
     }
 
     else
     {
-      v21 = [v8 pipe];
-      v22 = [v21 peer];
-      v23 = [v22 identifier];
+      pipe3 = [statusCopy pipe];
+      peer2 = [pipe3 peer];
+      identifier2 = [peer2 identifier];
 
-      v24 = [(WPDPipeManager *)self endpointsDict];
-      v25 = [v8 pipe];
-      v26 = [v25 name];
-      v27 = [v24 objectForKeyedSubscript:v26];
-      v28 = [v27 clientUUID];
+      endpointsDict2 = [(WPDPipeManager *)self endpointsDict];
+      pipe4 = [statusCopy pipe];
+      name2 = [pipe4 name];
+      v27 = [endpointsDict2 objectForKeyedSubscript:name2];
+      clientUUID2 = [v27 clientUUID];
 
-      v29 = [(WPDManager *)self server];
-      v30 = [v29 getClientForUUID:v28];
+      server2 = [(WPDManager *)self server];
+      v30 = [server2 getClientForUUID:clientUUID2];
 
       if (v30)
       {
         v31 = MEMORY[0x277CCA9B8];
         v36 = *MEMORY[0x277CCA450];
-        v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"Remote peer %@ disconnected the link", v23];
+        v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"Remote peer %@ disconnected the link", identifier2];
         v37 = v32;
         v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
         v34 = [v31 errorWithDomain:@"WPErrorDomain" code:7 userInfo:v33];
 
-        [v30 disconnectedDeviceOverLEPipe:v23 withError:v34];
+        [v30 disconnectedDeviceOverLEPipe:identifier2 withError:v34];
       }
     }
   }
@@ -2550,27 +2550,27 @@ void __46__WPDPipeManager_receivedError_data_dataSize___block_invoke_689(uint64_
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendAck:(id)a3 errorCode:(unsigned __int8)a4
+- (void)sendAck:(id)ack errorCode:(unsigned __int8)code
 {
-  v6 = a3;
-  v7 = [v6 pipeDataTransfer];
+  ackCopy = ack;
+  pipeDataTransfer = [ackCopy pipeDataTransfer];
 
-  if (v7)
+  if (pipeDataTransfer)
   {
-    v8 = [v6 pipe];
-    v9 = [v8 output];
+    pipe = [ackCopy pipe];
+    output = [pipe output];
 
     v23 = 1027;
-    v10 = [v6 pipeDataTransfer];
-    v24 = [v10 rxSeqNum];
+    pipeDataTransfer2 = [ackCopy pipeDataTransfer];
+    rxSeqNum = [pipeDataTransfer2 rxSeqNum];
 
-    v11 = [v6 pipeDataTransfer];
-    v12 = [v11 rxTotalLenToReceive];
+    pipeDataTransfer3 = [ackCopy pipeDataTransfer];
+    rxTotalLenToReceive = [pipeDataTransfer3 rxTotalLenToReceive];
 
-    v25 = v12;
-    v26 = a4;
+    v25 = rxTotalLenToReceive;
+    codeCopy = code;
     v13 = [MEMORY[0x277CBEA90] dataWithBytes:&v23 length:6];
-    v14 = [(WPDPipeManager *)self writeDataToPipe:v13 pipe:v6];
+    v14 = [(WPDPipeManager *)self writeDataToPipe:v13 pipe:ackCopy];
 
     if (v14 == 6)
     {
@@ -2614,15 +2614,15 @@ void __46__WPDPipeManager_receivedError_data_dataSize___block_invoke_689(uint64_
   }
 }
 
-- (BOOL)sendVersionInfo:(id)a3
+- (BOOL)sendVersionInfo:(id)info
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v10 = 1281;
   v11 = 1;
   v12 = 1;
   v5 = [MEMORY[0x277CBEA90] dataWithBytes:&v10 length:7];
-  v6 = [(WPDPipeManager *)self writeDataToPipe:v5 pipe:v4];
+  v6 = [(WPDPipeManager *)self writeDataToPipe:v5 pipe:infoCopy];
   if (WPLogInitOnce != -1)
   {
     [WPDPipeManager sendVersionInfo:];
@@ -2640,24 +2640,24 @@ void __46__WPDPipeManager_receivedError_data_dataSize___block_invoke_689(uint64_
 
   if (v6 == 7)
   {
-    [v4 setVersionInfoSent:1];
+    [infoCopy setVersionInfoSent:1];
   }
 
   v8 = *MEMORY[0x277D85DE8];
   return v6 == 7;
 }
 
-- (void)sendErrorResponse:(id)a3 errorCode:(unsigned __int8)a4
+- (void)sendErrorResponse:(id)response errorCode:(unsigned __int8)code
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 pipe];
-  v8 = [v7 output];
+  responseCopy = response;
+  pipe = [responseCopy pipe];
+  output = [pipe output];
 
   v16 = 260;
-  v17 = a4;
+  codeCopy = code;
   v9 = [MEMORY[0x277CBEA90] dataWithBytes:&v16 length:3];
-  v10 = [(WPDPipeManager *)self writeDataToPipe:v9 pipe:v6];
+  v10 = [(WPDPipeManager *)self writeDataToPipe:v9 pipe:responseCopy];
 
   if (WPLogInitOnce != -1)
   {
@@ -2668,29 +2668,29 @@ void __46__WPDPipeManager_receivedError_data_dataSize___block_invoke_689(uint64_
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v8 streamStatus];
-    v14 = [v8 streamError];
+    streamStatus = [output streamStatus];
+    streamError = [output streamError];
     *buf = 134218498;
     v19 = v10;
     v20 = 2048;
-    v21 = v13;
+    v21 = streamStatus;
     v22 = 2112;
-    v23 = v14;
+    v23 = streamError;
     _os_log_impl(&dword_272965000, v12, OS_LOG_TYPE_DEFAULT, "WPPM: sendErrorResponse: bytes written %ld (expected 3) with status %ld error %@", buf, 0x20u);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendConnectStatus:(id)a3 connectStatus:(unsigned __int8)a4
+- (void)sendConnectStatus:(id)status connectStatus:(unsigned __int8)connectStatus
 {
   v15 = *MEMORY[0x277D85DE8];
   v11 = 261;
-  v12 = a4;
+  connectStatusCopy = connectStatus;
   v5 = MEMORY[0x277CBEA90];
-  v6 = a3;
+  statusCopy = status;
   v7 = [v5 dataWithBytes:&v11 length:3];
-  v8 = [(WPDPipeManager *)self writeDataToPipe:v7 pipe:v6];
+  v8 = [(WPDPipeManager *)self writeDataToPipe:v7 pipe:statusCopy];
 
   if (WPLogInitOnce != -1)
   {
@@ -2708,27 +2708,27 @@ void __46__WPDPipeManager_receivedError_data_dataSize___block_invoke_689(uint64_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendRemainingData:(id)a3 wpClient:(id)a4
+- (void)sendRemainingData:(id)data wpClient:(id)client
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 pipeDataTransfer];
-  v9 = v8;
-  if (v8)
+  dataCopy = data;
+  clientCopy = client;
+  pipeDataTransfer = [dataCopy pipeDataTransfer];
+  v9 = pipeDataTransfer;
+  if (pipeDataTransfer)
   {
-    if ([v8 txDataLeftToSend])
+    if ([pipeDataTransfer txDataLeftToSend])
     {
-      v10 = [v9 txData];
-      v11 = [v10 length];
+      txData = [v9 txData];
+      v11 = [txData length];
 
-      v12 = [v9 txDataLeftToSend];
-      v13 = v11 - v12;
-      v14 = [v9 txData];
-      v15 = [v14 subdataWithRange:{v11 - v12, v12}];
+      txDataLeftToSend = [v9 txDataLeftToSend];
+      v13 = v11 - txDataLeftToSend;
+      txData2 = [v9 txData];
+      v15 = [txData2 subdataWithRange:{v11 - txDataLeftToSend, txDataLeftToSend}];
 
       v36 = v15;
-      v16 = [(WPDPipeManager *)self writeDataToPipe:v15 pipe:v6];
+      v16 = [(WPDPipeManager *)self writeDataToPipe:v15 pipe:dataCopy];
       if (WPLogInitOnce != -1)
       {
         [WPDPipeManager sendRemainingData:wpClient:];
@@ -2762,27 +2762,27 @@ void __46__WPDPipeManager_receivedError_data_dataSize___block_invoke_689(uint64_
         }
 
         v24 = MEMORY[0x277CBEA90];
-        v25 = [v9 txData];
-        v26 = [v24 dataWithData:v25];
+        txData3 = [v9 txData];
+        v26 = [v24 dataWithData:txData3];
 
-        v27 = [(WPDPipeManager *)self queue];
+        queue = [(WPDPipeManager *)self queue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __45__WPDPipeManager_sendRemainingData_wpClient___block_invoke_723;
         block[3] = &unk_279E59A48;
-        v38 = v7;
+        v38 = clientCopy;
         v39 = v26;
-        v28 = v6;
+        v28 = dataCopy;
         v40 = v28;
         v29 = v26;
-        dispatch_async(v27, block);
+        dispatch_async(queue, block);
 
-        v30 = [v28 pipe];
-        v31 = [v30 name];
-        v32 = [v28 pipe];
-        v33 = [v32 peer];
-        v34 = [v33 identifier];
-        [(WPDPipeManager *)self invalidatePipeInfo:v31 forPeer:v34];
+        pipe = [v28 pipe];
+        name = [pipe name];
+        pipe2 = [v28 pipe];
+        peer = [pipe2 peer];
+        identifier = [peer identifier];
+        [(WPDPipeManager *)self invalidatePipeInfo:name forPeer:identifier];
       }
 
       else
@@ -2797,9 +2797,9 @@ void __46__WPDPipeManager_receivedError_data_dataSize___block_invoke_689(uint64_
         if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
         {
           v20 = v19;
-          v21 = [v9 txDataLeftToSend];
+          txDataLeftToSend2 = [v9 txDataLeftToSend];
           *buf = 134217984;
-          v42 = v21;
+          v42 = txDataLeftToSend2;
           _os_log_impl(&dword_272965000, v20, OS_LOG_TYPE_DEFAULT, "WPPM: sendRemainingData: txLeftToSend %lu", buf, 0xCu);
         }
       }
@@ -2859,15 +2859,15 @@ void __45__WPDPipeManager_sendRemainingData_wpClient___block_invoke_723(uint64_t
   [v2 sentData:v3 toEndpoint:v5 forPeripheral:v8 withError:v11];
 }
 
-- (int64_t)writeDataToPipe:(id)a3 pipe:(id)a4
+- (int64_t)writeDataToPipe:(id)pipe pipe:(id)a4
 {
   __n[8] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  pipeCopy = pipe;
   v6 = a4;
-  v7 = [v6 pipe];
-  v8 = [v5 length];
+  pipe = [v6 pipe];
+  v8 = [pipeCopy length];
   v9 = 0;
-  if (!v5)
+  if (!pipeCopy)
   {
     goto LABEL_36;
   }
@@ -2878,19 +2878,19 @@ void __45__WPDPipeManager_sendRemainingData_wpClient___block_invoke_723(uint64_t
     goto LABEL_36;
   }
 
-  if (![v7 channel])
+  if (![pipe channel])
   {
-    v19 = [v7 output];
-    if ([v19 streamStatus] == 6)
+    output = [pipe output];
+    if ([output streamStatus] == 6)
     {
     }
 
     else
     {
-      v20 = [v7 output];
-      v21 = [v20 streamStatus];
+      output2 = [pipe output];
+      streamStatus = [output2 streamStatus];
 
-      if (v21 != 7)
+      if (streamStatus != 7)
       {
         if (WPLogInitOnce != -1)
         {
@@ -2901,14 +2901,14 @@ void __45__WPDPipeManager_sendRemainingData_wpClient___block_invoke_723(uint64_t
         if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
         {
           v27 = v26;
-          v28 = [v7 name];
+          name = [pipe name];
           LODWORD(__n[0]) = 138412290;
-          *(__n + 4) = v28;
+          *(__n + 4) = name;
           _os_log_impl(&dword_272965000, v27, OS_LOG_TYPE_DEFAULT, "WPPM: writeDataToPipe: %@ send data over stream", __n, 0xCu);
         }
 
-        v29 = [v7 output];
-        v9 = [v29 write:objc_msgSend(v5 maxLength:{"bytes"), v10}];
+        output3 = [pipe output];
+        v9 = [output3 write:objc_msgSend(pipeCopy maxLength:{"bytes"), v10}];
 
         if (v9 == v10)
         {
@@ -2921,14 +2921,14 @@ void __45__WPDPipeManager_sendRemainingData_wpClient___block_invoke_723(uint64_t
           if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
           {
             v31 = v30;
-            v32 = [v7 peer];
-            v33 = [v32 identifier];
+            peer = [pipe peer];
+            identifier = [peer identifier];
             LODWORD(__n[0]) = 134218498;
             *(__n + 4) = v10;
             WORD2(__n[1]) = 2048;
             *(&__n[1] + 6) = v10;
             HIWORD(__n[2]) = 2112;
-            __n[3] = v33;
+            __n[3] = identifier;
             _os_log_impl(&dword_272965000, v31, OS_LOG_TYPE_DEFAULT, "WPPM: writeDataToPipe: bytes written %ld (expected %lu) to peer %@", __n, 0x20u);
           }
 
@@ -2946,24 +2946,24 @@ void __45__WPDPipeManager_sendRemainingData_wpClient___block_invoke_723(uint64_t
           if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
           {
             loga = v34;
-            v45 = [v7 peer];
-            v35 = [v45 identifier];
-            v36 = [v7 output];
+            peer2 = [pipe peer];
+            identifier2 = [peer2 identifier];
+            output4 = [pipe output];
             v37 = v6;
-            v38 = [v36 streamStatus];
-            v39 = [v7 output];
-            v40 = [v39 streamError];
+            streamStatus2 = [output4 streamStatus];
+            output5 = [pipe output];
+            streamError = [output5 streamError];
             LODWORD(__n[0]) = 134219010;
             *(__n + 4) = v9;
             WORD2(__n[1]) = 2048;
             *(&__n[1] + 6) = v10;
             HIWORD(__n[2]) = 2112;
-            __n[3] = v35;
+            __n[3] = identifier2;
             LOWORD(__n[4]) = 2048;
-            *(&__n[4] + 2) = v38;
+            *(&__n[4] + 2) = streamStatus2;
             v6 = v37;
             WORD1(__n[5]) = 2112;
-            *(&__n[5] + 4) = v40;
+            *(&__n[5] + 4) = streamError;
             _os_log_impl(&dword_272965000, loga, OS_LOG_TYPE_DEFAULT, "WPPM: writeDataToPipe: bytes written %ld (expected %lu) to peer %@ status %lu with error %@", __n, 0x34u);
           }
         }
@@ -2972,7 +2972,7 @@ void __45__WPDPipeManager_sendRemainingData_wpClient___block_invoke_723(uint64_t
       }
     }
 
-    v22 = v7;
+    v22 = pipe;
     if (WPLogInitOnce != -1)
     {
       [WPDPipeManager writeDataToPipe:pipe:];
@@ -2982,7 +2982,7 @@ void __45__WPDPipeManager_sendRemainingData_wpClient___block_invoke_723(uint64_t
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
     {
       v41 = v23;
-      v7 = v22;
+      pipe = v22;
       [WPDPipeManager writeDataToPipe:v41 pipe:?];
       v9 = 0;
     }
@@ -2990,7 +2990,7 @@ void __45__WPDPipeManager_sendRemainingData_wpClient___block_invoke_723(uint64_t
     else
     {
       v9 = 0;
-      v7 = v22;
+      pipe = v22;
     }
 
     goto LABEL_36;
@@ -3006,10 +3006,10 @@ void __45__WPDPipeManager_sendRemainingData_wpClient___block_invoke_723(uint64_t
     [WPDPipeManager writeDataToPipe:pipe:];
   }
 
-  [v7 channel];
+  [pipe channel];
   os_channel_ring_id();
-  log = v7;
-  [v7 channel];
+  log = pipe;
+  [pipe channel];
   os_channel_tx_ring();
   v9 = 0;
   *&v11 = 67109376;
@@ -3046,8 +3046,8 @@ void __45__WPDPipeManager_sendRemainingData_wpClient___block_invoke_723(uint64_t
 
     WORD1(__n[0]) = v14;
     v15 = __n[2];
-    v16 = [v5 bytes];
-    memcpy(v15, (v16 + v9), WORD1(__n[0]));
+    bytes = [pipeCopy bytes];
+    memcpy(v15, (bytes + v9), WORD1(__n[0]));
     os_channel_set_slot_properties();
     v17 = WORD1(__n[0]);
     v9 += WORD1(__n[0]);
@@ -3091,7 +3091,7 @@ void __45__WPDPipeManager_sendRemainingData_wpClient___block_invoke_723(uint64_t
   }
 
 LABEL_30:
-  v7 = log;
+  pipe = log;
   [log channel];
   os_channel_sync();
 LABEL_36:
@@ -3100,16 +3100,16 @@ LABEL_36:
   return v9;
 }
 
-- (id)pipeManagerState:(int64_t)a3
+- (id)pipeManagerState:(int64_t)state
 {
-  if (a3 > 0xA)
+  if (state > 0xA)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279E59FA8[a3];
+    return off_279E59FA8[state];
   }
 }
 
@@ -3126,7 +3126,7 @@ LABEL_36:
   {
     v4 = v3;
     *buf = 134217984;
-    v24 = [(WPDManager *)self state];
+    state = [(WPDManager *)self state];
     _os_log_impl(&dword_272965000, v4, OS_LOG_TYPE_DEFAULT, "WPPM: PipeManager state: %ld", buf, 0xCu);
   }
 
@@ -3136,10 +3136,10 @@ LABEL_36:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [(WPDPipeManager *)self peerPipesDict];
-    v6 = [v5 allKeys];
+    peerPipesDict = [(WPDPipeManager *)self peerPipesDict];
+    allKeys = [peerPipesDict allKeys];
 
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v7 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
@@ -3150,12 +3150,12 @@ LABEL_36:
         {
           if (*v19 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
-          v12 = [(WPDPipeManager *)self peerPipesDict];
-          v13 = [v12 objectForKey:v11];
+          peerPipesDict2 = [(WPDPipeManager *)self peerPipesDict];
+          v13 = [peerPipesDict2 objectForKey:v11];
 
           v17[0] = MEMORY[0x277D85DD0];
           v17[1] = 3221225472;
@@ -3165,7 +3165,7 @@ LABEL_36:
           [v13 enumerateObjectsUsingBlock:v17];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v8);
@@ -3185,8 +3185,8 @@ LABEL_36:
         _os_log_impl(&dword_272965000, v14, OS_LOG_TYPE_DEFAULT, "WPPM: scalablePipeManagerDidUpdateState: remove all endpointsDict because bluetooth is not ON.", buf, 2u);
       }
 
-      v15 = [(WPDPipeManager *)self endpointsDict];
-      [v15 removeAllObjects];
+      endpointsDict = [(WPDPipeManager *)self endpointsDict];
+      [endpointsDict removeAllObjects];
     }
   }
 
@@ -3203,12 +3203,12 @@ void __24__WPDPipeManager_update__block_invoke_770(uint64_t a1, void *a2)
   [v2 scalablePipeManager:v5 pipeDidDisconnect:v4 error:0];
 }
 
-- (void)scalablePipeManager:(id)a3 didRegisterEndpoint:(id)a4 error:(id)a5
+- (void)scalablePipeManager:(id)manager didRegisterEndpoint:(id)endpoint error:(id)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  endpointCopy = endpoint;
+  errorCopy = error;
   if (WPLogInitOnce != -1)
   {
     [WPDPipeManager scalablePipeManager:didRegisterEndpoint:error:];
@@ -3218,26 +3218,26 @@ void __24__WPDPipeManager_update__block_invoke_770(uint64_t a1, void *a2)
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v9;
+    v15 = endpointCopy;
     v16 = 2112;
-    v17 = v10;
+    v17 = errorCopy;
     _os_log_impl(&dword_272965000, v11, OS_LOG_TYPE_DEFAULT, "WPPM: didRegisterEndpoint %@ (error %@)", &v14, 0x16u);
   }
 
-  if (v10)
+  if (errorCopy)
   {
-    v12 = [(WPDPipeManager *)self endpointsDict];
-    [v12 removeObjectForKey:v9];
+    endpointsDict = [(WPDPipeManager *)self endpointsDict];
+    [endpointsDict removeObjectForKey:endpointCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scalablePipeManager:(id)a3 didUnregisterEndpoint:(id)a4
+- (void)scalablePipeManager:(id)manager didUnregisterEndpoint:(id)endpoint
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  endpointCopy = endpoint;
   if (WPLogInitOnce != -1)
   {
     [WPDPipeManager scalablePipeManager:didUnregisterEndpoint:];
@@ -3247,18 +3247,18 @@ void __24__WPDPipeManager_update__block_invoke_770(uint64_t a1, void *a2)
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = endpointCopy;
     _os_log_impl(&dword_272965000, v7, OS_LOG_TYPE_DEFAULT, "WPPM: didUnregisterEndpoint %@", &v9, 0xCu);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scalablePipeManager:(id)a3 pipeDidConnect:(id)a4
+- (void)scalablePipeManager:(id)manager pipeDidConnect:(id)connect
 {
   v73 = *MEMORY[0x277D85DE8];
-  v59 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  connectCopy = connect;
   if (WPLogInitOnce != -1)
   {
     [WPDPipeManager scalablePipeManager:pipeDidConnect:];
@@ -3268,30 +3268,30 @@ void __24__WPDPipeManager_update__block_invoke_770(uint64_t a1, void *a2)
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [v6 name];
-    v10 = [v6 peer];
-    v11 = [v10 identifier];
-    v12 = [(WPDPipeManager *)self peerPipesDict];
-    v13 = [(WPDPipeManager *)self connectionInitiators];
+    name = [connectCopy name];
+    peer = [connectCopy peer];
+    identifier = [peer identifier];
+    peerPipesDict = [(WPDPipeManager *)self peerPipesDict];
+    connectionInitiators = [(WPDPipeManager *)self connectionInitiators];
     *buf = 138413058;
-    v67 = v9;
+    v67 = name;
     v68 = 2112;
-    v69 = v11;
+    v69 = identifier;
     v70 = 2112;
-    *v71 = v12;
+    *v71 = peerPipesDict;
     *&v71[8] = 2112;
-    v72 = v13;
+    v72 = connectionInitiators;
     _os_log_impl(&dword_272965000, v8, OS_LOG_TYPE_DEFAULT, "WPPM: pipeDidConnect: %@ %@ peer dict %@, initiators: %@", buf, 0x2Au);
   }
 
-  v14 = [v6 name];
-  v15 = [v14 isEqualToString:@"nearby"];
+  name2 = [connectCopy name];
+  v15 = [name2 isEqualToString:@"nearby"];
 
-  v16 = [v6 peer];
-  v17 = [v16 identifier];
+  peer2 = [connectCopy peer];
+  identifier2 = [peer2 identifier];
 
-  v18 = [(WPDPipeManager *)self peerPipesDict];
-  v19 = [v18 objectForKeyedSubscript:v17];
+  peerPipesDict2 = [(WPDPipeManager *)self peerPipesDict];
+  v19 = [peerPipesDict2 objectForKeyedSubscript:identifier2];
 
   if (v19)
   {
@@ -3299,8 +3299,8 @@ void __24__WPDPipeManager_update__block_invoke_770(uint64_t a1, void *a2)
     v62[1] = 3221225472;
     v62[2] = __53__WPDPipeManager_scalablePipeManager_pipeDidConnect___block_invoke_779;
     v62[3] = &unk_279E59F88;
-    v63 = v6;
-    v64 = v17;
+    v63 = connectCopy;
+    v64 = identifier2;
     v20 = v19;
     v65 = v20;
     [v20 enumerateObjectsUsingBlock:v62];
@@ -3312,20 +3312,20 @@ void __24__WPDPipeManager_update__block_invoke_770(uint64_t a1, void *a2)
   }
 
   v21 = objc_alloc_init(PipeInfo);
-  [(PipeInfo *)v21 setPipe:v6];
+  [(PipeInfo *)v21 setPipe:connectCopy];
   [(PipeInfo *)v21 setNewProtocol:v15 ^ 1u];
   [(PipeInfo *)v21 setLocalVersion:1];
   [(PipeInfo *)v21 setLocalSupportedFeatures:1];
-  v22 = [(WPDPipeManager *)self endpointsDict];
-  v23 = [v6 name];
-  v24 = [v22 objectForKeyedSubscript:v23];
-  v25 = [v24 clientUUID];
+  endpointsDict = [(WPDPipeManager *)self endpointsDict];
+  name3 = [connectCopy name];
+  v24 = [endpointsDict objectForKeyedSubscript:name3];
+  clientUUID = [v24 clientUUID];
 
-  v26 = v25;
-  if (v25)
+  v26 = clientUUID;
+  if (clientUUID)
   {
-    v27 = [(WPDPipeManager *)self connectionInitiators];
-    v28 = [v27 objectForKeyedSubscript:v25];
+    connectionInitiators2 = [(WPDPipeManager *)self connectionInitiators];
+    v28 = [connectionInitiators2 objectForKeyedSubscript:clientUUID];
 
     if (WPLogInitOnce != -1)
     {
@@ -3338,11 +3338,11 @@ void __24__WPDPipeManager_update__block_invoke_770(uint64_t a1, void *a2)
       *buf = 138412546;
       v67 = v28;
       v68 = 2112;
-      v69 = v25;
+      v69 = clientUUID;
       _os_log_impl(&dword_272965000, v29, OS_LOG_TYPE_DEFAULT, "WPPM: peersSet: %@ for clientUUID: %@", buf, 0x16u);
     }
 
-    if ([v28 containsObject:v17])
+    if ([v28 containsObject:identifier2])
     {
       [(PipeInfo *)v21 setConnectionInitiator:1];
       if (WPLogInitOnce != -1)
@@ -3359,31 +3359,31 @@ void __24__WPDPipeManager_update__block_invoke_770(uint64_t a1, void *a2)
     }
   }
 
-  if ([v6 channel])
+  if ([connectCopy channel])
   {
-    v58 = v25;
-    [v6 channel];
+    v58 = clientUUID;
+    [connectCopy channel];
     fd = os_channel_get_fd();
-    v32 = [(WPDPipeManager *)self queue];
-    v33 = dispatch_source_create(MEMORY[0x277D85D28], fd, 0, v32);
+    queue = [(WPDPipeManager *)self queue];
+    v33 = dispatch_source_create(MEMORY[0x277D85D28], fd, 0, queue);
     [(PipeInfo *)v21 setPipeReadSource:v33];
 
-    v34 = [(PipeInfo *)v21 pipeReadSource];
+    pipeReadSource = [(PipeInfo *)v21 pipeReadSource];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __53__WPDPipeManager_scalablePipeManager_pipeDidConnect___block_invoke_789;
     handler[3] = &unk_279E590C8;
     handler[4] = self;
-    v35 = v6;
+    v35 = connectCopy;
     v61 = v35;
-    dispatch_source_set_event_handler(v34, handler);
+    dispatch_source_set_event_handler(pipeReadSource, handler);
 
     [v20 addObject:v21];
-    v36 = [(WPDPipeManager *)self peerPipesDict];
-    [v36 setObject:v20 forKeyedSubscript:v17];
+    peerPipesDict3 = [(WPDPipeManager *)self peerPipesDict];
+    [peerPipesDict3 setObject:v20 forKeyedSubscript:identifier2];
 
-    v37 = [(PipeInfo *)v21 pipeReadSource];
-    dispatch_resume(v37);
+    pipeReadSource2 = [(PipeInfo *)v21 pipeReadSource];
+    dispatch_resume(pipeReadSource2);
 
     if (WPLogInitOnce != -1)
     {
@@ -3394,19 +3394,19 @@ void __24__WPDPipeManager_update__block_invoke_770(uint64_t a1, void *a2)
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       v39 = v38;
-      v40 = [(PipeInfo *)v21 pipeReadSource];
-      v41 = [v35 channel];
-      v42 = [v35 reliablePipe];
+      pipeReadSource3 = [(PipeInfo *)v21 pipeReadSource];
+      channel = [v35 channel];
+      reliablePipe = [v35 reliablePipe];
       *buf = 134219008;
-      v67 = v40;
+      v67 = pipeReadSource3;
       v68 = 2048;
-      v69 = v41;
+      v69 = channel;
       v70 = 1024;
       *v71 = fd;
       *&v71[4] = 1024;
       *&v71[6] = fd;
       LOWORD(v72) = 1024;
-      *(&v72 + 2) = v42;
+      *(&v72 + 2) = reliablePipe;
       _os_log_impl(&dword_272965000, v39, OS_LOG_TYPE_DEFAULT, "WPPM: Created pipe read %p for skywalk channel %p fd 0x%x(%d) isreliable? %d", buf, 0x28u);
     }
 
@@ -3420,31 +3420,31 @@ void __24__WPDPipeManager_update__block_invoke_770(uint64_t a1, void *a2)
     v43 = voucher_copy();
     [(PipeInfo *)v21 setVoucher:v43];
 
-    v44 = [v6 input];
-    [v44 setDelegate:self];
+    input = [connectCopy input];
+    [input setDelegate:self];
 
-    v45 = [v6 output];
-    [v45 setDelegate:self];
+    output = [connectCopy output];
+    [output setDelegate:self];
 
-    v46 = [v6 input];
-    v47 = [MEMORY[0x277CBEB88] currentRunLoop];
+    input2 = [connectCopy input];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
     v48 = *MEMORY[0x277CBE640];
-    [v46 scheduleInRunLoop:v47 forMode:*MEMORY[0x277CBE640]];
+    [input2 scheduleInRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE640]];
 
-    v49 = [v6 output];
-    v50 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v49 scheduleInRunLoop:v50 forMode:v48];
+    output2 = [connectCopy output];
+    currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+    [output2 scheduleInRunLoop:currentRunLoop2 forMode:v48];
 
-    v51 = [v6 input];
-    [v51 open];
+    input3 = [connectCopy input];
+    [input3 open];
 
-    v52 = [v6 output];
-    [v52 open];
+    output3 = [connectCopy output];
+    [output3 open];
 
     [(PipeInfo *)v21 applyQOSOverride];
     [v20 addObject:v21];
-    v53 = [(WPDPipeManager *)self peerPipesDict];
-    [v53 setObject:v20 forKeyedSubscript:v17];
+    peerPipesDict4 = [(WPDPipeManager *)self peerPipesDict];
+    [peerPipesDict4 setObject:v20 forKeyedSubscript:identifier2];
   }
 
   if (WPLogInitOnce != -1)
@@ -3456,11 +3456,11 @@ void __24__WPDPipeManager_update__block_invoke_770(uint64_t a1, void *a2)
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v55 = v54;
-    v56 = [(WPDPipeManager *)self peerPipesDict];
+    peerPipesDict5 = [(WPDPipeManager *)self peerPipesDict];
     *buf = 138412546;
-    v67 = v56;
+    v67 = peerPipesDict5;
     v68 = 2112;
-    v69 = v17;
+    v69 = identifier2;
     _os_log_impl(&dword_272965000, v55, OS_LOG_TYPE_DEFAULT, "WPPM: Pipes after pipeDidConnect %@ to peer %@", buf, 0x16u);
   }
 
@@ -3491,31 +3491,31 @@ void __53__WPDPipeManager_scalablePipeManager_pipeDidConnect___block_invoke_779(
   }
 }
 
-- (void)sendChannelData:(id)a3
+- (void)sendChannelData:(id)data
 {
-  v4 = a3;
-  v5 = [(WPDPipeManager *)self endpointsDict];
-  v6 = [v4 pipe];
-  v7 = [v6 name];
-  v8 = [v5 objectForKeyedSubscript:v7];
-  v9 = [v8 clientUUID];
+  dataCopy = data;
+  endpointsDict = [(WPDPipeManager *)self endpointsDict];
+  pipe = [dataCopy pipe];
+  name = [pipe name];
+  v8 = [endpointsDict objectForKeyedSubscript:name];
+  clientUUID = [v8 clientUUID];
 
-  v10 = [(WPDManager *)self server];
-  v11 = [v10 getClientForUUID:v9];
+  server = [(WPDManager *)self server];
+  v11 = [server getClientForUUID:clientUUID];
 
-  if ([v4 newProtocol])
+  if ([dataCopy newProtocol])
   {
-    if (([v4 versionInfoSent] & 1) == 0)
+    if (([dataCopy versionInfoSent] & 1) == 0)
     {
-      [(WPDPipeManager *)self sendVersionInfo:v4];
+      [(WPDPipeManager *)self sendVersionInfo:dataCopy];
       goto LABEL_31;
     }
 
-    if ([v4 versionInfoReceived])
+    if ([dataCopy versionInfoReceived])
     {
-      if (![v4 versionInfoSent] || !objc_msgSend(v4, "versionInfoReceived") || (objc_msgSend(v4, "pipeDidConnectSent") & 1) != 0 || (objc_msgSend(v4, "useConnectStatusPDU") & 1) != 0)
+      if (![dataCopy versionInfoSent] || !objc_msgSend(dataCopy, "versionInfoReceived") || (objc_msgSend(dataCopy, "pipeDidConnectSent") & 1) != 0 || (objc_msgSend(dataCopy, "useConnectStatusPDU") & 1) != 0)
       {
-        [(WPDPipeManager *)self sendRemainingData:v4 wpClient:v11];
+        [(WPDPipeManager *)self sendRemainingData:dataCopy wpClient:v11];
         goto LABEL_31;
       }
 
@@ -3537,11 +3537,11 @@ void __53__WPDPipeManager_scalablePipeManager_pipeDidConnect___block_invoke_779(
 LABEL_19:
         _os_log_impl(&dword_272965000, v13, OS_LOG_TYPE_DEFAULT, "WPPM: sendChannelData: send pipe connect notification", v14, 2u);
 LABEL_20:
-        [v4 setPipeDidConnectSent:{1, v26}];
-        v15 = [v4 pipe];
-        v16 = [v15 peer];
-        v17 = [v16 identifier];
-        [v11 connectedDeviceOverLEPipe:v17];
+        [dataCopy setPipeDidConnectSent:{1, v26}];
+        pipe2 = [dataCopy pipe];
+        peer = [pipe2 peer];
+        identifier = [peer identifier];
+        [v11 connectedDeviceOverLEPipe:identifier];
 
         goto LABEL_31;
       }
@@ -3554,7 +3554,7 @@ LABEL_20:
       v25 = WiProxLog;
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
       {
-        [(WPDPipeManager *)v9 sendChannelData:v25, v4];
+        [(WPDPipeManager *)clientUUID sendChannelData:v25, dataCopy];
       }
 
       goto LABEL_30;
@@ -3587,7 +3587,7 @@ LABEL_20:
       _os_log_impl(&dword_272965000, v12, OS_LOG_TYPE_DEFAULT, "WPPM: sendChannelData: using old protocol, send didConnect if not sent already", buf, 2u);
     }
 
-    if (([v4 pipeDidConnectSent] & 1) == 0)
+    if (([dataCopy pipeDidConnectSent] & 1) == 0)
     {
       if (v11)
       {
@@ -3615,30 +3615,30 @@ LABEL_20:
       v19 = WiProxLog;
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
       {
-        [(WPDPipeManager *)v9 sendChannelData:v19, v4];
+        [(WPDPipeManager *)clientUUID sendChannelData:v19, dataCopy];
       }
 
 LABEL_30:
-      v20 = [v4 pipe];
-      v21 = [v20 name];
-      v22 = [v4 pipe];
-      v23 = [v22 peer];
-      v24 = [v23 identifier];
-      [(WPDPipeManager *)self invalidatePipeInfo:v21 forPeer:v24];
+      pipe3 = [dataCopy pipe];
+      name2 = [pipe3 name];
+      pipe4 = [dataCopy pipe];
+      peer2 = [pipe4 peer];
+      identifier2 = [peer2 identifier];
+      [(WPDPipeManager *)self invalidatePipeInfo:name2 forPeer:identifier2];
     }
   }
 
 LABEL_31:
 }
 
-- (void)channelHasData:(id)a3
+- (void)channelHasData:(id)data
 {
   v59 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v4 = [(WPDPipeManager *)self peerPipesDict];
-  v5 = [v36 peer];
-  v6 = [v5 identifier];
-  v35 = [v4 objectForKeyedSubscript:v6];
+  dataCopy = data;
+  peerPipesDict = [(WPDPipeManager *)self peerPipesDict];
+  peer = [dataCopy peer];
+  identifier = [peer identifier];
+  v35 = [peerPipesDict objectForKeyedSubscript:identifier];
 
   v45 = 0;
   v46 = &v45;
@@ -3652,7 +3652,7 @@ LABEL_31:
     v42[1] = 3221225472;
     v42[2] = __33__WPDPipeManager_channelHasData___block_invoke_815;
     v42[3] = &unk_279E59EC0;
-    v7 = v36;
+    v7 = dataCopy;
     v43 = v7;
     v44 = &v45;
     [v35 enumerateObjectsUsingBlock:v42];
@@ -3683,11 +3683,11 @@ LABEL_31:
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
           {
             v25 = [v9 length];
-            v26 = [v7 name];
+            name = [v7 name];
             *buf = 134218242;
             v52 = v25;
             v53 = 2112;
-            v54 = v26;
+            v54 = name;
             _os_log_debug_impl(&dword_272965000, v10, OS_LOG_TYPE_DEBUG, "WPPM: channelHasData Received %lu bytes over skywalk %@", buf, 0x16u);
           }
 
@@ -3700,22 +3700,22 @@ LABEL_31:
 
           else
           {
-            v13 = [(WPDPipeManager *)self endpointsDict];
-            v14 = [v7 name];
-            v15 = [v13 objectForKeyedSubscript:v14];
-            v16 = [v15 clientUUID];
+            endpointsDict = [(WPDPipeManager *)self endpointsDict];
+            name2 = [v7 name];
+            v15 = [endpointsDict objectForKeyedSubscript:name2];
+            clientUUID = [v15 clientUUID];
 
-            v17 = [v7 peer];
-            v18 = [v17 identifier];
+            peer2 = [v7 peer];
+            identifier2 = [peer2 identifier];
 
-            if (v16 && v18)
+            if (clientUUID && identifier2)
             {
-              v19 = [(WPDManager *)self server];
-              v20 = [v19 getClientForUUID:v16];
+              server = [(WPDManager *)self server];
+              v20 = [server getClientForUUID:clientUUID];
 
               if (v20)
               {
-                v21 = [(WPDPipeManager *)self queue];
+                queue = [(WPDPipeManager *)self queue];
                 block[0] = MEMORY[0x277D85DD0];
                 block[1] = 3221225472;
                 block[2] = __33__WPDPipeManager_channelHasData___block_invoke_821;
@@ -3723,8 +3723,8 @@ LABEL_31:
                 v38 = v20;
                 v39 = v9;
                 v40 = v7;
-                v41 = v18;
-                dispatch_async(v21, block);
+                v41 = identifier2;
+                dispatch_async(queue, block);
               }
 
               else
@@ -3738,7 +3738,7 @@ LABEL_31:
                 if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
                 {
                   *buf = v34;
-                  v52 = v16;
+                  v52 = clientUUID;
                   _os_log_error_impl(&dword_272965000, v23, OS_LOG_TYPE_ERROR, "WPPM: channelHasData failure: client %@ is not found", buf, 0xCu);
                 }
               }
@@ -3755,9 +3755,9 @@ LABEL_31:
               if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412546;
-                v52 = v16;
+                v52 = clientUUID;
                 v53 = 2112;
-                v54 = v18;
+                v54 = identifier2;
                 _os_log_error_impl(&dword_272965000, v22, OS_LOG_TYPE_ERROR, "WPPM: channelHasData failure: clientUUID %@ or identfier %@ is invalid", buf, 0x16u);
               }
             }
@@ -3787,9 +3787,9 @@ LABEL_31:
       v30 = WiProxLog;
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
-        v31 = [v7 peer];
-        v32 = [v31 identifier];
-        [(WPDPipeManager *)v32 channelHasData:v30, v31];
+        peer3 = [v7 peer];
+        identifier3 = [peer3 identifier];
+        [(WPDPipeManager *)identifier3 channelHasData:v30, peer3];
       }
     }
   }
@@ -3804,9 +3804,9 @@ LABEL_31:
     v27 = WiProxLog;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
-      v28 = [v36 peer];
-      v29 = [v28 identifier];
-      [(WPDPipeManager *)v29 channelHasData:v27, v28];
+      peer4 = [dataCopy peer];
+      identifier4 = [peer4 identifier];
+      [(WPDPipeManager *)identifier4 channelHasData:v27, peer4];
     }
   }
 
@@ -3839,12 +3839,12 @@ void __33__WPDPipeManager_channelHasData___block_invoke_821(uint64_t a1)
   [v2 receivedData:v3 fromEndpoint:v4 forPeripheral:*(a1 + 56)];
 }
 
-- (void)scalablePipeManager:(id)a3 pipeDidDisconnect:(id)a4 error:(id)a5
+- (void)scalablePipeManager:(id)manager pipeDidDisconnect:(id)disconnect error:(id)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  disconnectCopy = disconnect;
+  errorCopy = error;
   if (WPLogInitOnce != -1)
   {
     [WPDPipeManager scalablePipeManager:pipeDidDisconnect:error:];
@@ -3854,60 +3854,60 @@ void __33__WPDPipeManager_channelHasData___block_invoke_821(uint64_t a1)
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v9 peer];
-    v14 = [v13 identifier];
-    v15 = [(WPDPipeManager *)self peerPipesDict];
-    v16 = [(WPDPipeManager *)self connectionInitiators];
+    peer = [disconnectCopy peer];
+    identifier = [peer identifier];
+    peerPipesDict = [(WPDPipeManager *)self peerPipesDict];
+    connectionInitiators = [(WPDPipeManager *)self connectionInitiators];
     v38 = 138413314;
-    v39 = v14;
+    v39 = identifier;
     v40 = 2112;
-    v41 = v9;
+    v41 = disconnectCopy;
     v42 = 2112;
-    v43 = v10;
+    v43 = errorCopy;
     v44 = 2112;
-    v45 = v15;
+    v45 = peerPipesDict;
     v46 = 2112;
-    v47 = v16;
+    v47 = connectionInitiators;
     _os_log_impl(&dword_272965000, v12, OS_LOG_TYPE_DEFAULT, "WPPM: pipeDidDisconnect %@ %@ (error %@), pipes %@, set: %@", &v38, 0x34u);
   }
 
-  v17 = [v9 name];
-  v18 = [v9 peer];
-  v19 = [v18 identifier];
-  [(WPDPipeManager *)self invalidatePipeInfo:v17 forPeer:v19];
+  name = [disconnectCopy name];
+  peer2 = [disconnectCopy peer];
+  identifier2 = [peer2 identifier];
+  [(WPDPipeManager *)self invalidatePipeInfo:name forPeer:identifier2];
 
-  v20 = [(WPDPipeManager *)self endpointsDict];
-  v21 = [v9 name];
-  v22 = [v20 objectForKeyedSubscript:v21];
-  v23 = [v22 clientUUID];
+  endpointsDict = [(WPDPipeManager *)self endpointsDict];
+  name2 = [disconnectCopy name];
+  v22 = [endpointsDict objectForKeyedSubscript:name2];
+  clientUUID = [v22 clientUUID];
 
-  if (v23)
+  if (clientUUID)
   {
-    v24 = [(WPDPipeManager *)self connectionInitiators];
-    v25 = [v24 objectForKeyedSubscript:v23];
+    connectionInitiators2 = [(WPDPipeManager *)self connectionInitiators];
+    v25 = [connectionInitiators2 objectForKeyedSubscript:clientUUID];
 
-    v26 = [v9 peer];
-    v27 = [v26 identifier];
-    v28 = [v25 containsObject:v27];
+    peer3 = [disconnectCopy peer];
+    identifier3 = [peer3 identifier];
+    v28 = [v25 containsObject:identifier3];
 
     if (v28)
     {
-      v29 = [v9 peer];
-      v30 = [v29 identifier];
-      [v25 removeObject:v30];
+      peer4 = [disconnectCopy peer];
+      identifier4 = [peer4 identifier];
+      [v25 removeObject:identifier4];
 
-      v31 = [(WPDPipeManager *)self connectionInitiators];
-      [v31 setObject:v25 forKeyedSubscript:v23];
+      connectionInitiators3 = [(WPDPipeManager *)self connectionInitiators];
+      [connectionInitiators3 setObject:v25 forKeyedSubscript:clientUUID];
     }
 
-    v32 = [(WPDManager *)self server];
-    v33 = [v32 getClientForUUID:v23];
+    server = [(WPDManager *)self server];
+    v33 = [server getClientForUUID:clientUUID];
 
     if (v33)
     {
-      v34 = [v9 peer];
-      v35 = [v34 identifier];
-      [v33 disconnectedDeviceOverLEPipe:v35 withError:v10];
+      peer5 = [disconnectCopy peer];
+      identifier5 = [peer5 identifier];
+      [v33 disconnectedDeviceOverLEPipe:identifier5 withError:errorCopy];
     }
 
     else
@@ -3920,7 +3920,7 @@ void __33__WPDPipeManager_channelHasData___block_invoke_821(uint64_t a1)
       v36 = WiProxLog;
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
       {
-        [WPDPipeManager scalablePipeManager:v23 pipeDidDisconnect:v36 error:v9];
+        [WPDPipeManager scalablePipeManager:clientUUID pipeDidDisconnect:v36 error:disconnectCopy];
       }
     }
   }
@@ -3941,16 +3941,16 @@ void __33__WPDPipeManager_channelHasData___block_invoke_821(uint64_t a1)
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidatePipeInfo:(id)a3 forPeer:(id)a4
+- (void)invalidatePipeInfo:(id)info forPeer:(id)peer
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  infoCopy = info;
+  peerCopy = peer;
+  v8 = peerCopy;
+  if (infoCopy && peerCopy)
   {
-    v9 = [(WPDPipeManager *)self peerPipesDict];
-    v10 = [v9 objectForKeyedSubscript:v8];
+    peerPipesDict = [(WPDPipeManager *)self peerPipesDict];
+    v10 = [peerPipesDict objectForKeyedSubscript:v8];
 
     if (v10)
     {
@@ -3964,7 +3964,7 @@ void __33__WPDPipeManager_channelHasData___block_invoke_821(uint64_t a1)
       v17 = 3221225472;
       v18 = __45__WPDPipeManager_invalidatePipeInfo_forPeer___block_invoke_838;
       v19 = &unk_279E59EC0;
-      v20 = v6;
+      v20 = infoCopy;
       v21 = &v22;
       [v10 enumerateObjectsUsingBlock:&v16];
       if (v23[5])
@@ -3972,14 +3972,14 @@ void __33__WPDPipeManager_channelHasData___block_invoke_821(uint64_t a1)
         [v10 removeObject:{v16, v17, v18, v19}];
         if ([v10 count])
         {
-          v11 = [(WPDPipeManager *)self peerPipesDict];
-          [v11 setObject:v10 forKeyedSubscript:v8];
+          peerPipesDict2 = [(WPDPipeManager *)self peerPipesDict];
+          [peerPipesDict2 setObject:v10 forKeyedSubscript:v8];
         }
 
         else
         {
-          v11 = [(WPDPipeManager *)self peerPipesDict];
-          [v11 removeObjectForKey:v8];
+          peerPipesDict2 = [(WPDPipeManager *)self peerPipesDict];
+          [peerPipesDict2 removeObjectForKey:v8];
         }
 
         if (WPLogInitOnce != -1)
@@ -3990,9 +3990,9 @@ void __33__WPDPipeManager_channelHasData___block_invoke_821(uint64_t a1)
         v13 = WiProxLog;
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [(WPDPipeManager *)self peerPipesDict];
+          peerPipesDict3 = [(WPDPipeManager *)self peerPipesDict];
           *buf = 138412546;
-          v29 = v14;
+          v29 = peerPipesDict3;
           v30 = 2112;
           v31 = v10;
           _os_log_impl(&dword_272965000, v13, OS_LOG_TYPE_DEFAULT, "WPPM: invalidatePipeInfo: current peer pipes %@, pipeInfoSet: %@", buf, 0x16u);

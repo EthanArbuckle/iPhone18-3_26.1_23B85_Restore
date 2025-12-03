@@ -1,5 +1,5 @@
 @interface WDListLevelOverride
-- (WDListLevelOverride)initWithDocument:(id)a3 level:(unsigned __int8)a4;
+- (WDListLevelOverride)initWithDocument:(id)document level:(unsigned __int8)level;
 - (id)description;
 - (id)mutableListLevel;
 @end
@@ -23,17 +23,17 @@
   return mListLevel;
 }
 
-- (WDListLevelOverride)initWithDocument:(id)a3 level:(unsigned __int8)a4
+- (WDListLevelOverride)initWithDocument:(id)document level:(unsigned __int8)level
 {
-  v6 = a3;
+  documentCopy = document;
   v10.receiver = self;
   v10.super_class = WDListLevelOverride;
   v7 = [(WDListLevelOverride *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->mDocument, v6);
-    v8->mLevel = a4;
+    objc_storeWeak(&v7->mDocument, documentCopy);
+    v8->mLevel = level;
   }
 
   return v8;

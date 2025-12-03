@@ -1,13 +1,13 @@
 @interface TIImageCacheServer
 + (id)sharedInstance;
-- (BOOL)_isValidItem:(id)a3;
-- (BOOL)_isValidKey:(id)a3 group:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_isValidItem:(id)item;
+- (BOOL)_isValidKey:(id)key group:(id)group;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (TIImageCacheServer)init;
-- (id)_bundleIdForConnection:(id)a3;
+- (id)_bundleIdForConnection:(id)connection;
 - (void)_createImageCacheIfNecessary;
 - (void)_logInvalidConnection;
-- (void)cacheItem:(id)a3 key:(id)a4 group:(id)a5;
+- (void)cacheItem:(id)item key:(id)key group:(id)group;
 - (void)dealloc;
 @end
 
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = sub_100003864;
   block[3] = &unk_10001C810;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100026568 != -1)
   {
     dispatch_once(&qword_100026568, block);
@@ -70,9 +70,9 @@
   [(TIImageCacheServer *)&v5 dealloc];
 }
 
-- (id)_bundleIdForConnection:(id)a3
+- (id)_bundleIdForConnection:(id)connection
 {
-  v3 = [a3 _xpcConnection];
+  _xpcConnection = [connection _xpcConnection];
   v4 = xpc_connection_copy_bundle_id();
 
   if (v4)
@@ -89,9 +89,9 @@
   return v5;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -102,7 +102,7 @@
   {
     if (self->_invalidBundles)
     {
-      v7 = [(TIImageCacheServer *)self _bundleIdForConnection:v5];
+      v7 = [(TIImageCacheServer *)self _bundleIdForConnection:connectionCopy];
       if (v7 && ([(NSMutableSet *)self->_invalidBundles containsObject:v7]& 1) != 0)
       {
 
@@ -111,14 +111,14 @@
       }
     }
 
-    [v5 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___TIImageCaching];
-    [v5 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
-    v9 = [(TIImageCacheServer *)self dispatchQueue];
-    [v5 _setQueue:v9];
+    dispatchQueue = [(TIImageCacheServer *)self dispatchQueue];
+    [connectionCopy _setQueue:dispatchQueue];
 
-    [v5 resume];
+    [connectionCopy resume];
     v6 = 1;
   }
 
@@ -140,17 +140,17 @@ LABEL_8:
   }
 }
 
-- (BOOL)_isValidKey:(id)a3 group:(id)a4
+- (BOOL)_isValidKey:(id)key group:(id)group
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 isEqualToString:@"Candidates"])
+  keyCopy = key;
+  groupCopy = group;
+  if (![groupCopy isEqualToString:@"Candidates"])
   {
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
     v14 = 0;
-    v10 = v6;
+    v10 = groupCopy;
     TIDispatchSync();
     v8 = *(v12 + 24);
 
@@ -165,7 +165,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (([v5 hasPrefix:@"KBTheme:"] & 1) == 0)
+  if (([keyCopy hasPrefix:@"KBTheme:"] & 1) == 0)
   {
     goto LABEL_5;
   }
@@ -177,21 +177,21 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)_isValidItem:(id)a3
+- (BOOL)_isValidItem:(id)item
 {
-  v3 = a3;
-  [v3 size];
+  itemCopy = item;
+  [itemCopy size];
   v7 = 0;
   if (v4 > 0.0)
   {
-    [v3 size];
+    [itemCopy size];
     if (v5 > 0.0)
     {
-      [v3 scale];
+      [itemCopy scale];
       if (v6 >= 1.0)
       {
-        [v3 format];
-        if ([v3 format] < 6)
+        [itemCopy format];
+        if ([itemCopy format] < 6)
         {
           v7 = 1;
         }
@@ -219,23 +219,23 @@ LABEL_6:
   }
 }
 
-- (void)cacheItem:(id)a3 key:(id)a4 group:(id)a5
+- (void)cacheItem:(id)item key:(id)key group:(id)group
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v10)
+  itemCopy = item;
+  keyCopy = key;
+  groupCopy = group;
+  if (itemCopy)
   {
-    if (v8)
+    if (keyCopy)
     {
-      if (v9)
+      if (groupCopy)
       {
         [(TIImageCacheServer *)self _createImageCacheIfNecessary];
-        if (([(TIImageCacheClient *)self->_imageCache imageExistsForKey:v8 inGroup:v9]& 1) == 0)
+        if (([(TIImageCacheClient *)self->_imageCache imageExistsForKey:keyCopy inGroup:groupCopy]& 1) == 0)
         {
-          if ([(TIImageCacheServer *)self _isValidKey:v8 group:v9]&& [(TIImageCacheServer *)self _isValidItem:v10])
+          if ([(TIImageCacheServer *)self _isValidKey:keyCopy group:groupCopy]&& [(TIImageCacheServer *)self _isValidItem:itemCopy])
           {
-            [(TIImageCacheClient *)self->_imageCache storeImageDataForKey:v8 inGroup:v9 item:v10];
+            [(TIImageCacheClient *)self->_imageCache storeImageDataForKey:keyCopy inGroup:groupCopy item:itemCopy];
           }
 
           else

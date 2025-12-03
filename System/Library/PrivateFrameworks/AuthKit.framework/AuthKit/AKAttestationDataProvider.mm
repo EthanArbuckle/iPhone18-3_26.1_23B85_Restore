@@ -1,5 +1,5 @@
 @interface AKAttestationDataProvider
-- (BOOL)signRequest:(id)a3 error:(id *)a4;
+- (BOOL)signRequest:(id)request error:(id *)error;
 - (id)authKitBody;
 @end
 
@@ -7,12 +7,12 @@
 
 - (id)authKitBody
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v8[0] = [&__NSDictionary0__struct mutableCopy];
-  [v8[0] setObject:v9->_attestationNonce forKeyedSubscript:@"attestationNonce"];
+  [v8[0] setObject:selfCopy->_attestationNonce forKeyedSubscript:@"attestationNonce"];
   v5 = +[AKDevice currentDevice];
-  v7 = [v5 sfrManifest];
+  sfrManifest = [v5 sfrManifest];
   _objc_release(v5);
   if (CFPreferencesGetAppBooleanValue(@"tamperImage4M", @"com.apple.authkit", 0))
   {
@@ -21,7 +21,7 @@
 
   else
   {
-    v6 = [v7 base64EncodedStringWithOptions:0];
+    v6 = [sfrManifest base64EncodedStringWithOptions:0];
     [v8[0] setObject:v6 forKeyedSubscript:@"image4Manifest"];
     objc_storeStrong(&v6, 0);
   }
@@ -33,28 +33,28 @@
 
   else
   {
-    v4 = [(NSData *)v9->_attestedData base64EncodedStringWithOptions:0];
+    v4 = [(NSData *)selfCopy->_attestedData base64EncodedStringWithOptions:0];
     [v8[0] setObject:? forKeyedSubscript:?];
     _objc_release(v4);
   }
 
   v3 = _objc_retain(v8[0]);
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&sfrManifest, 0);
   objc_storeStrong(v8, 0);
 
   return v3;
 }
 
-- (BOOL)signRequest:(id)a3 error:(id *)a4
+- (BOOL)signRequest:(id)request error:(id *)error
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
-  v8.receiver = v11;
+  objc_storeStrong(location, request);
+  errorCopy = error;
+  v8.receiver = selfCopy;
   v8.super_class = AKAttestationDataProvider;
-  if ([(AKGrandSlamRequestProvider *)&v8 signRequest:location[0] error:a4])
+  if ([(AKGrandSlamRequestProvider *)&v8 signRequest:location[0] error:error])
   {
     if (CFPreferencesGetAppBooleanValue(@"tamperDCRT", @"com.apple.authkit", 0))
     {
@@ -66,7 +66,7 @@
 
     else
     {
-      [location[0] ak_addHeaderForDCRT:v11->_certs];
+      [location[0] ak_addHeaderForDCRT:selfCopy->_certs];
     }
 
     [location[0] ak_addAttestationDataHeaders];

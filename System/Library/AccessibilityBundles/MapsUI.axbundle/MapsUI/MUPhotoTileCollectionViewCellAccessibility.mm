@@ -1,18 +1,18 @@
 @interface MUPhotoTileCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation MUPhotoTileCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MUPhotoTileCollectionViewCell" hasInstanceMethod:@"photoOverlay" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUPhotoTileOverlay" hasInstanceMethod:@"shouldBeShown" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MUPhotoTileOverlay" hasInstanceMethod:@"attributionTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUPhotoTileOverlay" hasInstanceMethod:@"tileTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUPhotoTileOverlay" hasInstanceMethod:@"badgeTitle" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MUPhotoTileCollectionViewCell" hasInstanceMethod:@"photoOverlay" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUPhotoTileOverlay" hasInstanceMethod:@"shouldBeShown" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MUPhotoTileOverlay" hasInstanceMethod:@"attributionTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUPhotoTileOverlay" hasInstanceMethod:@"tileTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUPhotoTileOverlay" hasInstanceMethod:@"badgeTitle" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

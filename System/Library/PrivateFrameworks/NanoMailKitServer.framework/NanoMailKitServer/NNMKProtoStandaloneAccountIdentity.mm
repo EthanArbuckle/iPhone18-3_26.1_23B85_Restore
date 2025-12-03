@@ -1,12 +1,12 @@
 @interface NNMKProtoStandaloneAccountIdentity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NNMKProtoStandaloneAccountIdentity
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NNMKProtoStandaloneAccountIdentity;
   v4 = [(NNMKProtoStandaloneAccountIdentity *)&v8 description];
-  v5 = [(NNMKProtoStandaloneAccountIdentity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NNMKProtoStandaloneAccountIdentity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   username = self->_username;
   if (username)
   {
-    [v3 setObject:username forKey:@"username"];
+    [dictionary setObject:username forKey:@"username"];
   }
 
   displayName = self->_displayName;
@@ -66,105 +66,105 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_username)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_displayName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_token)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_refreshToken)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     identityType = self->_identityType;
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_accountIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_username)
   {
-    [v4 setUsername:?];
-    v4 = v5;
+    [toCopy setUsername:?];
+    toCopy = v5;
   }
 
   if (self->_displayName)
   {
     [v5 setDisplayName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_token)
   {
     [v5 setToken:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_refreshToken)
   {
     [v5 setRefreshToken:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 6) = self->_identityType;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 6) = self->_identityType;
+    *(toCopy + 56) |= 1u;
   }
 
   if (self->_accountIdentifier)
   {
     [v5 setAccountIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_username copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_username copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
-  v8 = [(NSString *)self->_displayName copyWithZone:a3];
+  v8 = [(NSString *)self->_displayName copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSString *)self->_token copyWithZone:a3];
+  v10 = [(NSString *)self->_token copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
-  v12 = [(NSString *)self->_refreshToken copyWithZone:a3];
+  v12 = [(NSString *)self->_refreshToken copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
@@ -174,23 +174,23 @@
     *(v5 + 56) |= 1u;
   }
 
-  v14 = [(NSString *)self->_accountIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_accountIdentifier copyWithZone:zone];
   v15 = *(v5 + 8);
   *(v5 + 8) = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   username = self->_username;
-  if (username | *(v4 + 6))
+  if (username | *(equalCopy + 6))
   {
     if (![(NSString *)username isEqual:?])
     {
@@ -199,7 +199,7 @@
   }
 
   displayName = self->_displayName;
-  if (displayName | *(v4 + 2))
+  if (displayName | *(equalCopy + 2))
   {
     if (![(NSString *)displayName isEqual:?])
     {
@@ -208,7 +208,7 @@
   }
 
   token = self->_token;
-  if (token | *(v4 + 5))
+  if (token | *(equalCopy + 5))
   {
     if (![(NSString *)token isEqual:?])
     {
@@ -217,7 +217,7 @@
   }
 
   refreshToken = self->_refreshToken;
-  if (refreshToken | *(v4 + 4))
+  if (refreshToken | *(equalCopy + 4))
   {
     if (![(NSString *)refreshToken isEqual:?])
     {
@@ -225,16 +225,16 @@
     }
   }
 
-  v9 = *(v4 + 56);
+  v9 = *(equalCopy + 56);
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_identityType != *(v4 + 6))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_identityType != *(equalCopy + 6))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
 LABEL_17:
     v11 = 0;
@@ -242,7 +242,7 @@ LABEL_17:
   }
 
   accountIdentifier = self->_accountIdentifier;
-  if (accountIdentifier | *(v4 + 1))
+  if (accountIdentifier | *(equalCopy + 1))
   {
     v11 = [(NSString *)accountIdentifier isEqual:?];
   }
@@ -276,44 +276,44 @@ LABEL_18:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(NSString *)self->_accountIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 6))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(NNMKProtoStandaloneAccountIdentity *)self setUsername:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NNMKProtoStandaloneAccountIdentity *)self setDisplayName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NNMKProtoStandaloneAccountIdentity *)self setToken:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NNMKProtoStandaloneAccountIdentity *)self setRefreshToken:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[14])
+  if (fromCopy[14])
   {
-    self->_identityType = v4[6];
+    self->_identityType = fromCopy[6];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NNMKProtoStandaloneAccountIdentity *)self setAccountIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

@@ -1,14 +1,14 @@
 @interface VoicemailNotificationProvider
-- (void)voicemailInfoAvailableNotification:(id)a3 voicemailInfo:(id)a4;
+- (void)voicemailInfoAvailableNotification:(id)notification voicemailInfo:(id)info;
 @end
 
 @implementation VoicemailNotificationProvider
 
-- (void)voicemailInfoAvailableNotification:(id)a3 voicemailInfo:(id)a4
+- (void)voicemailInfoAvailableNotification:(id)notification voicemailInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  notificationCopy = notification;
+  infoCopy = info;
+  selfCopy = self;
   sub_10041D0D4();
 }
 

@@ -1,11 +1,11 @@
 @interface NUImageDataRequest
-- (NUImageDataRequest)initWithComposition:(id)a3;
-- (NUImageDataRequest)initWithComposition:(id)a3 dataExtractor:(id)a4 options:(id)a5;
-- (NUImageDataRequest)initWithMedia:(id)a3;
-- (NUImageDataRequest)initWithMedia:(id)a3 dataExtractor:(id)a4 options:(id)a5;
-- (NUImageDataRequest)initWithRequest:(id)a3;
-- (NUImageDataRequest)initWithRequest:(id)a3 dataExtractor:(id)a4 options:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NUImageDataRequest)initWithComposition:(id)composition;
+- (NUImageDataRequest)initWithComposition:(id)composition dataExtractor:(id)extractor options:(id)options;
+- (NUImageDataRequest)initWithMedia:(id)media;
+- (NUImageDataRequest)initWithMedia:(id)media dataExtractor:(id)extractor options:(id)options;
+- (NUImageDataRequest)initWithRequest:(id)request;
+- (NUImageDataRequest)initWithRequest:(id)request dataExtractor:(id)extractor options:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 @end
 
@@ -18,11 +18,11 @@
   return [(NURenderJob *)v3 initWithRequest:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NUImageDataRequest;
-  v4 = [(NUImageRenderRequest *)&v7 copyWithZone:a3];
+  v4 = [(NUImageRenderRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -34,71 +34,71 @@
   return v5;
 }
 
-- (NUImageDataRequest)initWithMedia:(id)a3 dataExtractor:(id)a4 options:(id)a5
+- (NUImageDataRequest)initWithMedia:(id)media dataExtractor:(id)extractor options:(id)options
 {
   v15.receiver = self;
   v15.super_class = NUImageDataRequest;
-  v7 = a5;
-  v8 = a4;
-  v9 = [(NURenderRequest *)&v15 initWithMedia:a3];
-  v10 = [v8 copy];
+  optionsCopy = options;
+  extractorCopy = extractor;
+  v9 = [(NURenderRequest *)&v15 initWithMedia:media];
+  v10 = [extractorCopy copy];
 
   dataExtractor = v9->_dataExtractor;
   v9->_dataExtractor = v10;
 
-  v12 = [v7 copy];
+  v12 = [optionsCopy copy];
   options = v9->_options;
   v9->_options = v12;
 
   return v9;
 }
 
-- (NUImageDataRequest)initWithRequest:(id)a3 dataExtractor:(id)a4 options:(id)a5
+- (NUImageDataRequest)initWithRequest:(id)request dataExtractor:(id)extractor options:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 internalComposition];
+  optionsCopy = options;
+  extractorCopy = extractor;
+  requestCopy = request;
+  internalComposition = [requestCopy internalComposition];
   v18.receiver = self;
   v18.super_class = NUImageDataRequest;
-  v12 = [(NURenderRequest *)&v18 initWithComposition:v11];
+  v12 = [(NURenderRequest *)&v18 initWithComposition:internalComposition];
 
-  [(NURenderRequest *)v12 takePropertiesFromRequest:v10];
-  v13 = [v9 copy];
+  [(NURenderRequest *)v12 takePropertiesFromRequest:requestCopy];
+  v13 = [extractorCopy copy];
 
   dataExtractor = v12->_dataExtractor;
   v12->_dataExtractor = v13;
 
-  v15 = [v8 copy];
+  v15 = [optionsCopy copy];
   options = v12->_options;
   v12->_options = v15;
 
   return v12;
 }
 
-- (NUImageDataRequest)initWithComposition:(id)a3 dataExtractor:(id)a4 options:(id)a5
+- (NUImageDataRequest)initWithComposition:(id)composition dataExtractor:(id)extractor options:(id)options
 {
   v15.receiver = self;
   v15.super_class = NUImageDataRequest;
-  v7 = a5;
-  v8 = a4;
-  v9 = [(NURenderRequest *)&v15 initWithComposition:a3];
-  v10 = [v8 copy];
+  optionsCopy = options;
+  extractorCopy = extractor;
+  v9 = [(NURenderRequest *)&v15 initWithComposition:composition];
+  v10 = [extractorCopy copy];
 
   dataExtractor = v9->_dataExtractor;
   v9->_dataExtractor = v10;
 
-  v12 = [v7 copy];
+  v12 = [optionsCopy copy];
   options = v9->_options;
   v9->_options = v12;
 
   return v9;
 }
 
-- (NUImageDataRequest)initWithMedia:(id)a3
+- (NUImageDataRequest)initWithMedia:(id)media
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mediaCopy = media;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_11921);
@@ -142,8 +142,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -159,8 +159,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;
@@ -176,10 +176,10 @@ LABEL_14:
   _NUAssertFailHandler("[NUImageDataRequest initWithMedia:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImageDataRequest.m", 51, @"Initializer not available: [%@ %@], use designated initializer instead.", v27, v28, v29, v30, v26);
 }
 
-- (NUImageDataRequest)initWithComposition:(id)a3
+- (NUImageDataRequest)initWithComposition:(id)composition
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  compositionCopy = composition;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_11921);
@@ -223,8 +223,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -240,8 +240,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;
@@ -257,10 +257,10 @@ LABEL_14:
   _NUAssertFailHandler("[NUImageDataRequest initWithComposition:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImageDataRequest.m", 46, @"Initializer not available: [%@ %@], use designated initializer instead.", v27, v28, v29, v30, v26);
 }
 
-- (NUImageDataRequest)initWithRequest:(id)a3
+- (NUImageDataRequest)initWithRequest:(id)request
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_11921);
@@ -304,8 +304,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -321,8 +321,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;

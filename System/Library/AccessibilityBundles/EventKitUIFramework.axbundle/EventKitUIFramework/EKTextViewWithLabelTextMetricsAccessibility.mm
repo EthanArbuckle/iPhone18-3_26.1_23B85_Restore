@@ -1,5 +1,5 @@
 @interface EKTextViewWithLabelTextMetricsAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityIsLocationLink;
 - (BOOL)isAccessibilityElement;
 - (CGRect)accessibilityFrame;
@@ -10,24 +10,24 @@
 
 @implementation EKTextViewWithLabelTextMetricsAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKEventDetailLocationItem"];
-  [v3 validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_locationItems" withType:"NSMutableArray"];
-  [v3 validateClass:@"EKEventDetailLocationItem" hasInstanceVariable:@"_locationTapRecognizer" withType:"UITapGestureRecognizer"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKEventDetailLocationItem"];
+  [validationsCopy validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_locationItems" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"EKEventDetailLocationItem" hasInstanceVariable:@"_locationTapRecognizer" withType:"UITapGestureRecognizer"];
 }
 
 - (id)_axLocationItem
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
 
   NSClassFromString(&cfstr_Ekeventdetaill.isa);
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = delegate;
   }
 
   else
@@ -41,20 +41,20 @@
 - (BOOL)accessibilityIsLocationLink
 {
   v17 = *MEMORY[0x29EDCA608];
-  v2 = [(EKTextViewWithLabelTextMetricsAccessibility *)self _axLocationItem];
-  v3 = v2;
-  if (v2)
+  _axLocationItem = [(EKTextViewWithLabelTextMetricsAccessibility *)self _axLocationItem];
+  v3 = _axLocationItem;
+  if (_axLocationItem)
   {
-    v4 = [v2 safeValueForKey:@"_locationTapRecognizer"];
+    v4 = [_axLocationItem safeValueForKey:@"_locationTapRecognizer"];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     objc_opt_class();
     v5 = __UIAccessibilityCastAsClass();
-    v6 = [v5 gestureRecognizers];
+    gestureRecognizers = [v5 gestureRecognizers];
 
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v7 = [gestureRecognizers countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = *v13;
@@ -64,7 +64,7 @@
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(gestureRecognizers);
           }
 
           if (v4 == *(*(&v12 + 1) + 8 * i))
@@ -74,7 +74,7 @@
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [gestureRecognizers countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v7)
         {
           continue;
@@ -100,42 +100,42 @@ LABEL_12:
 {
   v7.receiver = self;
   v7.super_class = EKTextViewWithLabelTextMetricsAccessibility;
-  v3 = [(EKTextViewWithLabelTextMetricsAccessibility *)&v7 accessibilityTraits];
-  v4 = [(EKTextViewWithLabelTextMetricsAccessibility *)self accessibilityIsLocationLink];
+  accessibilityTraits = [(EKTextViewWithLabelTextMetricsAccessibility *)&v7 accessibilityTraits];
+  accessibilityIsLocationLink = [(EKTextViewWithLabelTextMetricsAccessibility *)self accessibilityIsLocationLink];
   v5 = *MEMORY[0x29EDC7F98];
-  if (!v4)
+  if (!accessibilityIsLocationLink)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(EKTextViewWithLabelTextMetricsAccessibility *)self _axURLCell];
-  if (v3)
+  _axURLCell = [(EKTextViewWithLabelTextMetricsAccessibility *)self _axURLCell];
+  if (_axURLCell)
   {
-    v4 = 1;
+    isAccessibilityElement = 1;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = EKTextViewWithLabelTextMetricsAccessibility;
-    v4 = [(EKTextViewWithLabelTextMetricsAccessibility *)&v6 isAccessibilityElement];
+    isAccessibilityElement = [(EKTextViewWithLabelTextMetricsAccessibility *)&v6 isAccessibilityElement];
   }
 
-  return v4;
+  return isAccessibilityElement;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(EKTextViewWithLabelTextMetricsAccessibility *)self _axURLCell];
-  v4 = v3;
-  if (v3)
+  _axURLCell = [(EKTextViewWithLabelTextMetricsAccessibility *)self _axURLCell];
+  v4 = _axURLCell;
+  if (_axURLCell)
   {
-    [v3 accessibilityFrame];
+    [_axURLCell accessibilityFrame];
   }
 
   else
@@ -163,22 +163,22 @@ LABEL_12:
 
 - (id)accessibilityLabel
 {
-  v3 = [(EKTextViewWithLabelTextMetricsAccessibility *)self _axURLCell];
-  v4 = v3;
-  if (v3)
+  _axURLCell = [(EKTextViewWithLabelTextMetricsAccessibility *)self _axURLCell];
+  v4 = _axURLCell;
+  if (_axURLCell)
   {
-    v5 = [v3 safeValueForKey:@"_URLTitleView"];
-    v6 = [v5 accessibilityLabel];
+    v5 = [_axURLCell safeValueForKey:@"_URLTitleView"];
+    accessibilityLabel = [v5 accessibilityLabel];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = EKTextViewWithLabelTextMetricsAccessibility;
-    v6 = [(EKTextViewWithLabelTextMetricsAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel = [(EKTextViewWithLabelTextMetricsAccessibility *)&v8 accessibilityLabel];
   }
 
-  return v6;
+  return accessibilityLabel;
 }
 
 @end

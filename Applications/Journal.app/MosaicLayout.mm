@@ -1,10 +1,10 @@
 @interface MosaicLayout
 + (Class)layoutAttributesClass;
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGSize)collectionViewContentSize;
 - (_TtC7Journal12MosaicLayout)init;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)prepareLayout;
 @end
 
@@ -32,16 +32,16 @@
   return [(MosaicLayout *)&v6 init];
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v5 = self;
-  v6 = [(MosaicLayout *)v5 collectionView];
-  if (v6)
+  height = change.size.height;
+  width = change.size.width;
+  selfCopy = self;
+  collectionView = [(MosaicLayout *)selfCopy collectionView];
+  if (collectionView)
   {
-    v7 = v6;
-    [v6 bounds];
+    v7 = collectionView;
+    [collectionView bounds];
     v10.width = width;
     v10.height = height;
     v8 = CGSizeEqualToSize(v10, v11);
@@ -58,7 +58,7 @@
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000602A0();
 }
 
@@ -71,13 +71,13 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = sub_10006A51C(x, y, width, height);
 
   if (v8)
@@ -94,14 +94,14 @@
   return v9.super.isa;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_10008375C();
 
   (*(v5 + 8))(v7, v4);

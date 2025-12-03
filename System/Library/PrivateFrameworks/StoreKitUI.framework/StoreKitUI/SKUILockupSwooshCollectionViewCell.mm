@@ -1,16 +1,16 @@
 @interface SKUILockupSwooshCollectionViewCell
-- (SKUILockupSwooshCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)configureForItem:(id)a3 clientContext:(id)a4;
+- (SKUILockupSwooshCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)configureForItem:(id)item clientContext:(id)context;
 @end
 
 @implementation SKUILockupSwooshCollectionViewCell
 
-- (SKUILockupSwooshCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUILockupSwooshCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUILockupSwooshCollectionViewCell initWithFrame:];
@@ -18,49 +18,49 @@
 
   v12.receiver = self;
   v12.super_class = SKUILockupSwooshCollectionViewCell;
-  v8 = [(SKUICollectionViewCell *)&v12 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUICollectionViewCell *)&v12 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v9 = [[SKUILockupSwooshCellLayout alloc] initWithCollectionViewCell:v8];
-    layout = v8->_layout;
-    v8->_layout = v9;
+    v9 = [[SKUILockupSwooshCellLayout alloc] initWithCollectionViewCell:height];
+    layout = height->_layout;
+    height->_layout = v9;
 
-    [(SKUIItemCellLayout *)v8->_layout setDisplaysItemOfferButton:0];
+    [(SKUIItemCellLayout *)height->_layout setDisplaysItemOfferButton:0];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)configureForItem:(id)a3 clientContext:(id)a4
+- (void)configureForItem:(id)item clientContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  contextCopy = context;
   layout = self->_layout;
-  v9 = [v6 artistName];
-  [(SKUILockupSwooshCellLayout *)layout setArtistName:v9];
+  artistName = [itemCopy artistName];
+  [(SKUILockupSwooshCellLayout *)layout setArtistName:artistName];
 
   v10 = self->_layout;
-  v11 = [v6 categoryName];
-  [(SKUILockupSwooshCellLayout *)v10 setCategory:v11];
+  categoryName = [itemCopy categoryName];
+  [(SKUILockupSwooshCellLayout *)v10 setCategory:categoryName];
 
   v12 = self->_layout;
-  v13 = SKUILockupItemCountString(v6, v7);
+  v13 = SKUILockupItemCountString(itemCopy, contextCopy);
   [(SKUILockupSwooshCellLayout *)v12 setItemCountString:v13];
 
   v14 = self->_layout;
-  v15 = [v6 title];
-  [(SKUILockupSwooshCellLayout *)v14 setTitle:v15];
+  title = [itemCopy title];
+  [(SKUILockupSwooshCellLayout *)v14 setTitle:title];
 
-  v16 = [v6 primaryItemOffer];
-  if (!SKUIItemKindIsSoftwareKind([v6 itemKind]))
+  primaryItemOffer = [itemCopy primaryItemOffer];
+  if (!SKUIItemKindIsSoftwareKind([itemCopy itemKind]))
   {
     v17 = configureForItem_clientContext__sViewOffer_0;
     if (!configureForItem_clientContext__sViewOffer_0)
     {
       v18 = [SKUIItemOffer alloc];
-      if (v7)
+      if (contextCopy)
       {
-        [v7 localizedStringForKey:@"VIEW_BUTTON"];
+        [contextCopy localizedStringForKey:@"VIEW_BUTTON"];
       }
 
       else
@@ -77,13 +77,13 @@
 
     v22 = v17;
 
-    v16 = v22;
+    primaryItemOffer = v22;
   }
 
-  [(SKUILockupSwooshCellLayout *)self->_layout setItemOffer:v16];
+  [(SKUILockupSwooshCellLayout *)self->_layout setItemOffer:primaryItemOffer];
   v23.receiver = self;
   v23.super_class = SKUILockupSwooshCollectionViewCell;
-  [(SKUIItemCollectionViewCell *)&v23 configureForItem:v6 clientContext:v7];
+  [(SKUIItemCollectionViewCell *)&v23 configureForItem:itemCopy clientContext:contextCopy];
 }
 
 - (void)initWithFrame:.cold.1()

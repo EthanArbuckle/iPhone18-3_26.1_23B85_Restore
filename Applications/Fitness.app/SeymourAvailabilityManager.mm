@@ -22,7 +22,7 @@
 
 - (BOOL)available
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001C7364();
 
   return v3 & 1;
@@ -30,7 +30,7 @@
 
 - (BOOL)unavailable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001C7654();
 
   return v3;
@@ -52,7 +52,7 @@
 
 - (void)updateAvailability
 {
-  v2 = self;
+  selfCopy = self;
   sub_100007D24();
 }
 

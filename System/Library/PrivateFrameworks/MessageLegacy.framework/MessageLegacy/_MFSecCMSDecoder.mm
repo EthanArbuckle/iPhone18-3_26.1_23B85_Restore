@@ -1,20 +1,20 @@
 @interface _MFSecCMSDecoder
-- (_MFSecCMSDecoder)initWithPartData:(id)a3 error:(id *)a4;
+- (_MFSecCMSDecoder)initWithPartData:(id)data error:(id *)error;
 - (id)data;
 - (id)signedData;
-- (id)verifyAgainstSenders:(id)a3 signingError:(id *)a4;
-- (int64_t)appendData:(id)a3;
+- (id)verifyAgainstSenders:(id)senders signingError:(id *)error;
+- (int64_t)appendData:(id)data;
 - (void)dealloc;
 - (void)done;
 @end
 
 @implementation _MFSecCMSDecoder
 
-- (_MFSecCMSDecoder)initWithPartData:(id)a3 error:(id *)a4
+- (_MFSecCMSDecoder)initWithPartData:(id)data error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v21.receiver = self;
@@ -36,8 +36,8 @@
 
     else
     {
-      [a3 bytes];
-      [a3 length];
+      [data bytes];
+      [data length];
       v9 = SecCmsDecoderUpdate();
       *(v6 + 2) = v9;
       if (v9)
@@ -45,7 +45,7 @@
         v10 = MFLogGeneral();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
-          [_MFSecCMSDecoder initWithPartData:a3 error:?];
+          [_MFSecCMSDecoder initWithPartData:data error:?];
         }
       }
 
@@ -92,9 +92,9 @@
               }
 
               v6 = 0;
-              if (a4)
+              if (error)
               {
-                *a4 = [MFError errorWithDomain:*MEMORY[0x277CCA5B8] code:12 userInfo:0];
+                *error = [MFError errorWithDomain:*MEMORY[0x277CCA5B8] code:12 userInfo:0];
               }
             }
           }
@@ -107,9 +107,9 @@
       SecCmsDecoderDestroy();
     }
 
-    if (v6 && a4 && *(v6 + 2))
+    if (v6 && error && *(v6 + 2))
     {
-      *a4 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:MFLookupLocalizedString(@"SMIME_UNREADABLE_SIG", @"There was a problem reading the digital signature for this message.", @"Delayed")];
+      *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:MFLookupLocalizedString(@"SMIME_UNREADABLE_SIG", @"There was a problem reading the digital signature for this message.", @"Delayed")];
     }
   }
 
@@ -134,7 +134,7 @@
   [(_MFSecCMSDecoder *)&v4 dealloc];
 }
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
   if (self->_SecCMSError)
   {
@@ -149,10 +149,10 @@
 
   if (self->_signedData)
   {
-    v11 = [a3 length];
+    v11 = [data length];
     if (self->_digest)
     {
-      [a3 bytes];
+      [data bytes];
       SecCmsDigestContextUpdate();
     }
 
@@ -171,12 +171,12 @@
     return -1;
   }
 
-  return [a3 length];
+  return [data length];
 }
 
 - (void)done
 {
-  OUTLINED_FUNCTION_2_1(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_2_1(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_3_0();
   OUTLINED_FUNCTION_0_3(&dword_258BDA000, v1, v2, "#SMIMEErrors SecCmsSignedDataSetDigestContext on -done returned %ld", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];
@@ -200,20 +200,20 @@
   return envelopedData;
 }
 
-- (id)verifyAgainstSenders:(id)a3 signingError:(id *)a4
+- (id)verifyAgainstSenders:(id)senders signingError:(id *)error
 {
   v57 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   p_SecCMSError = &self->_SecCMSError;
   if (!self->_SecCMSError)
   {
-    if ([a3 count])
+    if ([senders count])
     {
-      v12 = [a3 objectAtIndex:0];
+      v12 = [senders objectAtIndex:0];
     }
 
     else
@@ -322,16 +322,16 @@ LABEL_22:
                   CFRelease(SignerInfo);
                 }
 
-                if (a4)
+                if (error)
                 {
-                  v37 = [(MFMessageSigner *)v36 error];
-                  *a4 = v37;
-                  if (v37)
+                  error = [(MFMessageSigner *)v36 error];
+                  *error = error;
+                  if (error)
                   {
                     v38 = MFLogGeneral();
                     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
                     {
-                      [(_MFSecCMSDecoder *)v48 verifyAgainstSenders:a4 signingError:&v49, v38];
+                      [(_MFSecCMSDecoder *)v48 verifyAgainstSenders:error signingError:&v49, v38];
                     }
                   }
                 }

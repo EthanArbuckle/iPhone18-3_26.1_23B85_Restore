@@ -1,5 +1,5 @@
 @interface SiriMoviesChevronButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)_accessibilityProxyChevronButton;
 - (id)accessibilityLabel;
@@ -8,16 +8,16 @@
 
 @implementation SiriMoviesChevronButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SiriMoviesChevronButton" hasInstanceMethod:@"primaryString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SiriMoviesChevronButton" hasInstanceMethod:@"secondaryString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SiriMoviesChevronButton" hasInstanceMethod:@"accessoryString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SiriMoviesChevronButton" hasInstanceMethod:@"showtimeListView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SiriMoviesShowtimeListView" hasInstanceMethod:@"showtimes" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SAMovieShowtime" hasInstanceMethod:@"showtime" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SACalendar" hasInstanceMethod:@"date" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SiriMoviesChevronButton" hasInstanceMethod:@"primaryString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SiriMoviesChevronButton" hasInstanceMethod:@"secondaryString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SiriMoviesChevronButton" hasInstanceMethod:@"accessoryString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SiriMoviesChevronButton" hasInstanceMethod:@"showtimeListView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SiriMoviesShowtimeListView" hasInstanceMethod:@"showtimes" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SAMovieShowtime" hasInstanceMethod:@"showtime" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SACalendar" hasInstanceMethod:@"date" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilityProxyChevronButton
@@ -71,8 +71,8 @@ void __72__SiriMoviesChevronButtonAccessibility__accessibilityProxyChevronButton
 
     else
     {
-      v6 = [(SiriMoviesChevronButtonAccessibility *)self _accessibilityProxyChevronButton];
-      v4 = v6 != 0;
+      _accessibilityProxyChevronButton = [(SiriMoviesChevronButtonAccessibility *)self _accessibilityProxyChevronButton];
+      v4 = _accessibilityProxyChevronButton != 0;
     }
   }
 
@@ -97,9 +97,9 @@ void __72__SiriMoviesChevronButtonAccessibility__accessibilityProxyChevronButton
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 accessibilityLabel];
+    accessibilityLabel = [v9 accessibilityLabel];
 
-    v8 = v11;
+    v8 = accessibilityLabel;
   }
 
   return v8;
@@ -107,11 +107,11 @@ void __72__SiriMoviesChevronButtonAccessibility__accessibilityProxyChevronButton
 
 - (id)accessibilityValue
 {
-  v3 = [(SiriMoviesChevronButtonAccessibility *)self _accessibilityProxyChevronButton];
-  v4 = v3;
-  if (v3)
+  _accessibilityProxyChevronButton = [(SiriMoviesChevronButtonAccessibility *)self _accessibilityProxyChevronButton];
+  v4 = _accessibilityProxyChevronButton;
+  if (_accessibilityProxyChevronButton)
   {
-    v5 = [v3 accessibilityValue];
+    accessibilityValue = [_accessibilityProxyChevronButton accessibilityValue];
   }
 
   else
@@ -119,15 +119,15 @@ void __72__SiriMoviesChevronButtonAccessibility__accessibilityProxyChevronButton
     v6 = [(SiriMoviesChevronButtonAccessibility *)self safeValueForKey:@"showtimeListView"];
     if (v6)
     {
-      v7 = [MEMORY[0x29EDB8DE8] array];
-      v8 = [MEMORY[0x29EDB8DE8] array];
+      array = [MEMORY[0x29EDB8DE8] array];
+      array2 = [MEMORY[0x29EDB8DE8] array];
       v9 = [v6 safeValueForKey:@"showtimes"];
       v19[0] = MEMORY[0x29EDCA5F8];
       v19[1] = 3221225472;
       v19[2] = __58__SiriMoviesChevronButtonAccessibility_accessibilityValue__block_invoke;
       v19[3] = &unk_29F2DC270;
-      v20 = v8;
-      v10 = v8;
+      v20 = array2;
+      v10 = array2;
       [v9 enumerateObjectsUsingBlock:v19];
 
       v11 = [v10 sortedArrayUsingComparator:&__block_literal_global_0];
@@ -135,19 +135,19 @@ void __72__SiriMoviesChevronButtonAccessibility__accessibilityProxyChevronButton
       v15 = 3221225472;
       v16 = __58__SiriMoviesChevronButtonAccessibility_accessibilityValue__block_invoke_3;
       v17 = &unk_29F2DC270;
-      v18 = v7;
-      v12 = v7;
+      v18 = array;
+      v12 = array;
       [v11 enumerateObjectsUsingBlock:&v14];
-      v5 = [v12 componentsJoinedByString:{@", ", v14, v15, v16, v17}];
+      accessibilityValue = [v12 componentsJoinedByString:{@", ", v14, v15, v16, v17}];
     }
 
     else
     {
-      v5 = 0;
+      accessibilityValue = 0;
     }
   }
 
-  return v5;
+  return accessibilityValue;
 }
 
 uint64_t __58__SiriMoviesChevronButtonAccessibility_accessibilityValue__block_invoke(uint64_t result, uint64_t a2)

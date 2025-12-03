@@ -1,18 +1,18 @@
 @interface TSManagedDeviceInstallFlow
-- (TSManagedDeviceInstallFlow)initWith:(BOOL)a3 fallbackToActivationCode:(BOOL)a4 ignoreTransport:(BOOL)a5;
+- (TSManagedDeviceInstallFlow)initWith:(BOOL)with fallbackToActivationCode:(BOOL)code ignoreTransport:(BOOL)transport;
 - (id)firstViewController;
 - (void)firstViewController;
-- (void)firstViewController:(id)a3;
+- (void)firstViewController:(id)controller;
 - (void)handleProvisioningWatchdogExpiry;
-- (void)hasCellularConnection:(id)a3;
-- (void)invokeCompletionWithPlanInstallResult:(unint64_t)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)planItemsUpdated:(id)a3 planListError:(id)a4;
+- (void)hasCellularConnection:(id)connection;
+- (void)invokeCompletionWithPlanInstallResult:(unint64_t)result;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)planItemsUpdated:(id)updated planListError:(id)error;
 @end
 
 @implementation TSManagedDeviceInstallFlow
 
-- (TSManagedDeviceInstallFlow)initWith:(BOOL)a3 fallbackToActivationCode:(BOOL)a4 ignoreTransport:(BOOL)a5
+- (TSManagedDeviceInstallFlow)initWith:(BOOL)with fallbackToActivationCode:(BOOL)code ignoreTransport:(BOOL)transport
 {
   v15.receiver = self;
   v15.super_class = TSManagedDeviceInstallFlow;
@@ -20,9 +20,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_waitForService = a3;
-    v8->_fallbackToActivationCode = a4;
-    v8->_ignoreTransport = a5;
+    v8->_waitForService = with;
+    v8->_fallbackToActivationCode = code;
+    v8->_ignoreTransport = transport;
     firstViewCompletion = v8->_firstViewCompletion;
     v8->_firstViewCompletion = 0;
 
@@ -51,17 +51,17 @@
   return 0;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     if (_os_feature_enabled_impl())
     {
       v5 = +[TSCellularPlanManagerCache sharedInstance];
       [v5 setDelegate:self];
 
-      v6 = MEMORY[0x2667315D0](v4);
+      v6 = MEMORY[0x2667315D0](controllerCopy);
       firstViewCompletion = self->_firstViewCompletion;
       self->_firstViewCompletion = v6;
 
@@ -73,7 +73,7 @@
       v17[3] = &unk_279B45158;
       objc_copyWeak(&v19, &location);
       v17[4] = self;
-      v18 = v4;
+      v18 = controllerCopy;
       [v8 planItemsWithCompletion:v17];
 
       objc_destroyWeak(&v19);
@@ -88,7 +88,7 @@
         [(TSManagedDeviceInstallFlow *)v9 firstViewController:v10, v11, v12, v13, v14, v15, v16];
       }
 
-      (*(v4 + 2))(v4, 0);
+      (*(controllerCopy + 2))(controllerCopy, 0);
     }
   }
 }
@@ -462,14 +462,14 @@ uint64_t __50__TSManagedDeviceInstallFlow_firstViewController___block_invoke_3_3
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invokeCompletionWithPlanInstallResult:(unint64_t)a3
+- (void)invokeCompletionWithPlanInstallResult:(unint64_t)result
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = _TSLogDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218242;
-    v11 = a3;
+    resultCopy = result;
     v12 = 2080;
     v13 = "[TSManagedDeviceInstallFlow invokeCompletionWithPlanInstallResult:]";
     _os_log_impl(&dword_262AA8000, v5, OS_LOG_TYPE_DEFAULT, "handle plan install result: %lu @%s", &v10, 0x16u);
@@ -492,9 +492,9 @@ uint64_t __50__TSManagedDeviceInstallFlow_firstViewController___block_invoke_3_3
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hasCellularConnection:(id)a3
+- (void)hasCellularConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   v5 = +[TSCellularPlanManagerCache sharedInstance];
   v7[0] = MEMORY[0x277D85DD0];
@@ -502,7 +502,7 @@ uint64_t __50__TSManagedDeviceInstallFlow_firstViewController___block_invoke_3_3
   v7[2] = __52__TSManagedDeviceInstallFlow_hasCellularConnection___block_invoke;
   v7[3] = &unk_279B45180;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = connectionCopy;
   v8 = v6;
   [v5 planItemsWithCompletion:v7];
 
@@ -573,12 +573,12 @@ LABEL_12:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)planItemsUpdated:(id)a3 planListError:(id)a4
+- (void)planItemsUpdated:(id)updated planListError:(id)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  updatedCopy = updated;
+  errorCopy = error;
+  v8 = errorCopy;
   if (self->_planInstallError)
   {
     v9 = _TSLogDomain();
@@ -593,19 +593,19 @@ LABEL_12:
     }
   }
 
-  else if (v7)
+  else if (errorCopy)
   {
-    objc_storeStrong(&self->_planInstallError, a4);
+    objc_storeStrong(&self->_planInstallError, error);
     [(TSManagedDeviceInstallFlow *)self invokeCompletionWithPlanInstallResult:1];
   }
 
-  else if (v6 && self->_startMonitoringConnection)
+  else if (updatedCopy && self->_startMonitoringConnection)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    obj = v6;
+    obj = updatedCopy;
     v12 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {
@@ -628,9 +628,9 @@ LABEL_12:
               v21 = _TSLogDomain();
               if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
               {
-                v22 = [v16 plan];
+                plan = [v16 plan];
                 *buf = 138412546;
-                v30 = v22;
+                v30 = plan;
                 v31 = 2080;
                 v32 = "[TSManagedDeviceInstallFlow planItemsUpdated:planListError:]";
                 _os_log_impl(&dword_262AA8000, v21, OS_LOG_TYPE_DEFAULT, "One plan is installing or in monitor mode, continue waiting: %@ @%s", buf, 0x16u);
@@ -640,10 +640,10 @@ LABEL_12:
             }
           }
 
-          v19 = [v16 plan];
-          v20 = [v19 status];
+          plan2 = [v16 plan];
+          status = [plan2 status];
 
-          if (!v20)
+          if (!status)
           {
             [(TSManagedDeviceInstallFlow *)self invokeCompletionWithPlanInstallResult:4];
             goto LABEL_26;
@@ -666,12 +666,12 @@ LABEL_26:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v15 = *MEMORY[0x277D85DE8];
   if (self->_startMonitoringConnection)
   {
-    v7 = [TSUtilities isWifiAvailable:a3];
+    v7 = [TSUtilities isWifiAvailable:path];
     v8 = _TSLogDomain();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -700,7 +700,7 @@ LABEL_26:
 - (void)firstViewController
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_262AA8000, a1, a3, "[E](UIViewController *)firstViewController is deprecated, please use (void)firstViewController:(void (^)(UIViewController *))completion @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_262AA8000, self, a3, "[E](UIViewController *)firstViewController is deprecated, please use (void)firstViewController:(void (^)(UIViewController *))completion @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

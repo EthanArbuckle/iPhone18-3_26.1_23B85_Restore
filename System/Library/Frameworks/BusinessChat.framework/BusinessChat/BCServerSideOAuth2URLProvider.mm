@@ -1,101 +1,101 @@
 @interface BCServerSideOAuth2URLProvider
-+ (id)URLProviderWithDictionary:(id)a3;
-- (BCServerSideOAuth2URLProvider)initWithCoder:(id)a3;
-- (BOOL)shouldHandleRedirectURI:(id)a3;
++ (id)URLProviderWithDictionary:(id)dictionary;
+- (BCServerSideOAuth2URLProvider)initWithCoder:(id)coder;
+- (BOOL)shouldHandleRedirectURI:(id)i;
 - (NSString)debugDescription;
-- (id)_initWithAuthorizationURL:(void *)a3 clientIdentifier:(void *)a4 redirectURI:(void *)a5 scope:(void *)a6 state:(void *)a7 responseType:(void *)a8 additionalParameters:;
+- (id)_initWithAuthorizationURL:(void *)l clientIdentifier:(void *)identifier redirectURI:(void *)i scope:(void *)scope state:(void *)state responseType:(void *)type additionalParameters:;
 - (id)authenticationSessionURL;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BCServerSideOAuth2URLProvider
 
-+ (id)URLProviderWithDictionary:(id)a3
++ (id)URLProviderWithDictionary:(id)dictionary
 {
   v61 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"authorizationUrl"];
-  v5 = [MEMORY[0x277CBEB68] null];
-  if (v4 == v5)
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"authorizationUrl"];
+  null = [MEMORY[0x277CBEB68] null];
+  if (v4 == null)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v3 objectForKeyedSubscript:@"authorizationUrl"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"authorizationUrl"];
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"clientIdentifier"];
-  v8 = [MEMORY[0x277CBEB68] null];
-  if (v7 == v8)
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"clientIdentifier"];
+  null2 = [MEMORY[0x277CBEB68] null];
+  if (v7 == null2)
   {
     v53 = 0;
   }
 
   else
   {
-    v53 = [v3 objectForKeyedSubscript:@"clientIdentifier"];
+    v53 = [dictionaryCopy objectForKeyedSubscript:@"clientIdentifier"];
   }
 
-  v9 = [v3 objectForKeyedSubscript:@"redirectURI"];
-  v10 = [MEMORY[0x277CBEB68] null];
-  if (v9 == v10)
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"redirectURI"];
+  null3 = [MEMORY[0x277CBEB68] null];
+  if (v9 == null3)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = [v3 objectForKeyedSubscript:@"redirectURI"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"redirectURI"];
   }
 
-  v12 = [v3 objectForKeyedSubscript:@"scope"];
-  v13 = [MEMORY[0x277CBEB68] null];
-  if (v12 == v13)
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"scope"];
+  null4 = [MEMORY[0x277CBEB68] null];
+  if (v12 == null4)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [v3 objectForKeyedSubscript:@"scope"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"scope"];
   }
 
-  v15 = [v3 objectForKeyedSubscript:@"state"];
-  v16 = [MEMORY[0x277CBEB68] null];
-  if (v15 == v16)
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"state"];
+  null5 = [MEMORY[0x277CBEB68] null];
+  if (v15 == null5)
   {
     v17 = 0;
   }
 
   else
   {
-    v17 = [v3 objectForKeyedSubscript:@"state"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"state"];
   }
 
-  v18 = [v3 objectForKeyedSubscript:@"responseType"];
-  v19 = [MEMORY[0x277CBEB68] null];
-  if (v18 == v19)
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"responseType"];
+  null6 = [MEMORY[0x277CBEB68] null];
+  if (v18 == null6)
   {
     v20 = 0;
   }
 
   else
   {
-    v20 = [v3 objectForKeyedSubscript:@"responseType"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"responseType"];
   }
 
-  v21 = [v3 objectForKeyedSubscript:@"additionalParameters"];
-  v22 = [MEMORY[0x277CBEB68] null];
-  if (v21 == v22)
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"additionalParameters"];
+  null7 = [MEMORY[0x277CBEB68] null];
+  if (v21 == null7)
   {
     v23 = 0;
   }
 
   else
   {
-    v23 = [v3 objectForKeyedSubscript:@"additionalParameters"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"additionalParameters"];
   }
 
   if (![v6 length])
@@ -149,10 +149,10 @@ LABEL_34:
 
   v51 = v24;
   v25 = [MEMORY[0x277CBEBC0] URLWithString:v11];
-  v26 = [v25 scheme];
-  v27 = [v26 lowercaseString];
+  scheme = [v25 scheme];
+  lowercaseString = [scheme lowercaseString];
   v52 = v25;
-  if ([v27 isEqualToString:@"http"])
+  if ([lowercaseString isEqualToString:@"http"])
   {
   }
 
@@ -171,9 +171,9 @@ LABEL_34:
       v24 = v51;
       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
       {
-        v43 = [v52 scheme];
+        scheme2 = [v52 scheme];
         *buf = 138412290;
-        v60 = v43;
+        v60 = scheme2;
         _os_log_error_impl(&dword_236EA0000, v41, OS_LOG_TYPE_ERROR, "BCServerSideOAuth2URLProvider: Unable to create object. Unsupported scheme '%@' for redirect URI", buf, 0xCu);
 
         v20 = v49;
@@ -304,88 +304,88 @@ LABEL_60:
   return v28;
 }
 
-- (id)_initWithAuthorizationURL:(void *)a3 clientIdentifier:(void *)a4 redirectURI:(void *)a5 scope:(void *)a6 state:(void *)a7 responseType:(void *)a8 additionalParameters:
+- (id)_initWithAuthorizationURL:(void *)l clientIdentifier:(void *)identifier redirectURI:(void *)i scope:(void *)scope state:(void *)state responseType:(void *)type additionalParameters:
 {
   v24 = a2;
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v20 = a6;
-  v16 = a7;
-  v17 = a8;
-  if (a1)
+  lCopy = l;
+  identifierCopy = identifier;
+  iCopy = i;
+  scopeCopy = scope;
+  stateCopy = state;
+  typeCopy = type;
+  if (self)
   {
-    v25.receiver = a1;
+    v25.receiver = self;
     v25.super_class = BCServerSideOAuth2URLProvider;
     v18 = objc_msgSendSuper2(&v25, sel_init);
-    a1 = v18;
+    self = v18;
     if (v18)
     {
       objc_storeStrong(v18 + 2, a2);
-      objc_storeStrong(a1 + 6, a7);
-      objc_storeStrong(a1 + 3, a3);
-      objc_storeStrong(a1 + 5, a6);
-      objc_storeStrong(a1 + 4, a5);
-      objc_storeStrong(a1 + 1, a4);
-      objc_storeStrong(a1 + 7, a8);
+      objc_storeStrong(self + 6, state);
+      objc_storeStrong(self + 3, l);
+      objc_storeStrong(self + 5, scope);
+      objc_storeStrong(self + 4, i);
+      objc_storeStrong(self + 1, identifier);
+      objc_storeStrong(self + 7, type);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_authorizationURL forKey:@"authorizationUrl"];
-  [v5 encodeObject:self->_clientIdentifier forKey:@"clientIdentifier"];
-  [v5 encodeObject:self->_responseType forKey:@"responseType"];
-  [v5 encodeObject:self->_scope forKey:@"scope"];
-  [v5 encodeObject:self->_state forKey:@"state"];
-  [v5 encodeObject:self->_redirectURI forKey:@"redirectURI"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_authorizationURL forKey:@"authorizationUrl"];
+  [coderCopy encodeObject:self->_clientIdentifier forKey:@"clientIdentifier"];
+  [coderCopy encodeObject:self->_responseType forKey:@"responseType"];
+  [coderCopy encodeObject:self->_scope forKey:@"scope"];
+  [coderCopy encodeObject:self->_state forKey:@"state"];
+  [coderCopy encodeObject:self->_redirectURI forKey:@"redirectURI"];
   additionalParameters = self->_additionalParameters;
   if (additionalParameters)
   {
-    [v5 encodeObject:additionalParameters forKey:@"additionalParameters"];
+    [coderCopy encodeObject:additionalParameters forKey:@"additionalParameters"];
   }
 }
 
-- (BCServerSideOAuth2URLProvider)initWithCoder:(id)a3
+- (BCServerSideOAuth2URLProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = BCServerSideOAuth2URLProvider;
   v5 = [(BCServerSideOAuth2URLProvider *)&v24 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authorizationUrl"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authorizationUrl"];
     authorizationURL = v5->_authorizationURL;
     v5->_authorizationURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"responseType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"responseType"];
     responseType = v5->_responseType;
     v5->_responseType = v10;
 
     v12 = MEMORY[0x277CBEB98];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"scope"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"scope"];
     scope = v5->_scope;
     v5->_scope = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
     state = v5->_state;
     v5->_state = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"redirectURI"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"redirectURI"];
     redirectURI = v5->_redirectURI;
     v5->_redirectURI = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"additionalParameters"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"additionalParameters"];
     additionalParameters = v5->_additionalParameters;
     v5->_additionalParameters = v21;
   }
@@ -401,9 +401,9 @@ LABEL_60:
   v4 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"response_type" value:self->_responseType];
   v5 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"client_id" value:self->_clientIdentifier];
   v6 = objc_alloc(MEMORY[0x277CCAD18]);
-  v7 = [(BCServerSideOAuth2URLProvider *)self redirectURI];
-  v8 = [v7 absoluteString];
-  v9 = [v6 initWithName:@"redirect_uri" value:v8];
+  redirectURI = [(BCServerSideOAuth2URLProvider *)self redirectURI];
+  absoluteString = [redirectURI absoluteString];
+  v9 = [v6 initWithName:@"redirect_uri" value:absoluteString];
 
   scope = self->_scope;
   if (scope)
@@ -454,8 +454,8 @@ LABEL_60:
   {
     v23 = [@"?" stringByAppendingString:self->_additionalParameters];
     v24 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:v23];
-    v25 = [v24 queryItems];
-    [v22 addObjectsFromArray:v25];
+    queryItems = [v24 queryItems];
+    [v22 addObjectsFromArray:queryItems];
   }
 
   [v3 setQueryItems:v22];
@@ -466,28 +466,28 @@ LABEL_60:
   return v26;
 }
 
-- (BOOL)shouldHandleRedirectURI:(id)a3
+- (BOOL)shouldHandleRedirectURI:(id)i
 {
-  v3 = [a3 scheme];
-  v4 = [v3 lowercaseString];
+  scheme = [i scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  LOBYTE(v3) = [v4 isEqualToString:@"messages-auth"];
-  return v3;
+  LOBYTE(scheme) = [lowercaseString isEqualToString:@"messages-auth"];
+  return scheme;
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-    v4 = [v2 authenticationSessionURL];
-    v5 = [v3 appendObject:v4 withName:@"Authorization URL"];
+    authenticationSessionURL = [selfCopy authenticationSessionURL];
+    v5 = [v3 appendObject:authenticationSessionURL withName:@"Authorization URL"];
 
-    v2 = [v3 build];
+    selfCopy = [v3 build];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

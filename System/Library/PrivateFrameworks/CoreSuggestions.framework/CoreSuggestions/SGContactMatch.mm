@@ -1,16 +1,16 @@
 @interface SGContactMatch
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToContactMatch:(id)a3;
-- (SGContactMatch)initWithCoder:(id)a3;
-- (SGContactMatch)initWithContact:(id)a3 matchTokens:(id)a4 matchInfo:(id)a5;
-- (SGContactMatch)initWithContact:(id)a3 matchingEmailAddressRecordId:(id)a4 matchTokens:(id)a5;
-- (SGContactMatch)initWithContact:(id)a3 matchingFieldRecordId:(id)a4 matchTokens:(id)a5;
-- (SGContactMatch)initWithContact:(id)a3 matchingNameRecordId:(id)a4 matchTokens:(id)a5;
-- (SGContactMatch)initWithContact:(id)a3 matchingPhoneRecordId:(id)a4 matchTokens:(id)a5;
-- (SGContactMatch)initWithContact:(id)a3 matchingRecordId:(id)a4 matchType:(int64_t)a5 matchTokens:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToContactMatch:(id)match;
+- (SGContactMatch)initWithCoder:(id)coder;
+- (SGContactMatch)initWithContact:(id)contact matchTokens:(id)tokens matchInfo:(id)info;
+- (SGContactMatch)initWithContact:(id)contact matchingEmailAddressRecordId:(id)id matchTokens:(id)tokens;
+- (SGContactMatch)initWithContact:(id)contact matchingFieldRecordId:(id)id matchTokens:(id)tokens;
+- (SGContactMatch)initWithContact:(id)contact matchingNameRecordId:(id)id matchTokens:(id)tokens;
+- (SGContactMatch)initWithContact:(id)contact matchingPhoneRecordId:(id)id matchTokens:(id)tokens;
+- (SGContactMatch)initWithContact:(id)contact matchingRecordId:(id)id matchType:(int64_t)type matchTokens:(id)tokens;
 - (SGObject)matchingField;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGContactMatch
@@ -28,28 +28,28 @@
 {
   v24 = *MEMORY[0x1E69E9840];
   matchingFieldType = self->_matchingFieldType;
-  v4 = MEMORY[0x1E695E0F0];
+  phones = MEMORY[0x1E695E0F0];
   if (matchingFieldType <= 2)
   {
     if (matchingFieldType == 1)
     {
-      v5 = [(SGContact *)self->_contact name];
-      v6 = [v5 recordId];
-      v7 = [v6 isEqualToRecordId:self->_matchingFieldRecordId];
+      name = [(SGContact *)self->_contact name];
+      recordId = [name recordId];
+      v7 = [recordId isEqualToRecordId:self->_matchingFieldRecordId];
 
       if (v7)
       {
-        v8 = [(SGContact *)self->_contact name];
+        name2 = [(SGContact *)self->_contact name];
         v9 = MEMORY[0x1E695E0F0];
         goto LABEL_24;
       }
 
-      v4 = MEMORY[0x1E695E0F0];
+      phones = MEMORY[0x1E695E0F0];
     }
 
     else if (matchingFieldType == 2)
     {
-      v4 = [(SGContact *)self->_contact phones];
+      phones = [(SGContact *)self->_contact phones];
     }
   }
 
@@ -58,13 +58,13 @@
     switch(matchingFieldType)
     {
       case 3:
-        v4 = [(SGContact *)self->_contact emailAddresses];
+        phones = [(SGContact *)self->_contact emailAddresses];
         break;
       case 4:
-        v4 = [(SGContact *)self->_contact postalAddresses];
+        phones = [(SGContact *)self->_contact postalAddresses];
         break;
       case 5:
-        v4 = [(SGContact *)self->_contact socialProfiles];
+        phones = [(SGContact *)self->_contact socialProfiles];
         break;
     }
   }
@@ -73,7 +73,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v4;
+  v9 = phones;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -89,12 +89,12 @@
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [v14 recordId];
-        v16 = [v15 isEqualToRecordId:self->_matchingFieldRecordId];
+        recordId2 = [v14 recordId];
+        v16 = [recordId2 isEqualToRecordId:self->_matchingFieldRecordId];
 
         if (v16)
         {
-          v8 = v14;
+          name2 = v14;
 
           goto LABEL_24;
         }
@@ -110,42 +110,42 @@
     }
   }
 
-  v8 = 0;
+  name2 = 0;
 LABEL_24:
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return name2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGContactMatch *)self isEqualToContactMatch:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGContactMatch *)self isEqualToContactMatch:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToContactMatch:(id)a3
+- (BOOL)isEqualToContactMatch:(id)match
 {
-  v4 = a3;
-  if (!v4)
+  matchCopy = match;
+  if (!matchCopy)
   {
     goto LABEL_15;
   }
 
   v5 = self->_matchingFieldRecordId;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == matchCopy[1])
   {
   }
 
@@ -163,7 +163,7 @@ LABEL_15:
 
   v8 = self->_contact;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == matchCopy[3])
   {
   }
 
@@ -177,20 +177,20 @@ LABEL_15:
     }
   }
 
-  if (self->_matchingFieldType != v4[2])
+  if (self->_matchingFieldType != matchCopy[2])
   {
     goto LABEL_15;
   }
 
   matchTokens = self->_matchTokens;
-  if (matchTokens != v4[4] && ![(NSArray *)matchTokens isEqual:?])
+  if (matchTokens != matchCopy[4] && ![(NSArray *)matchTokens isEqual:?])
   {
     goto LABEL_15;
   }
 
   matchedDetails = self->_matchedDetails;
-  v13 = [v4 matchedDetails];
-  if (matchedDetails == v13)
+  matchedDetails = [matchCopy matchedDetails];
+  if (matchedDetails == matchedDetails)
   {
     v16 = 1;
   }
@@ -198,35 +198,35 @@ LABEL_15:
   else
   {
     v14 = self->_matchedDetails;
-    v15 = [v4 matchedDetails];
-    v16 = [(SGMatchedDetails *)v14 isEqual:v15];
+    matchedDetails2 = [matchCopy matchedDetails];
+    v16 = [(SGMatchedDetails *)v14 isEqual:matchedDetails2];
   }
 
 LABEL_16:
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contact = self->_contact;
-  v5 = a3;
-  [v5 encodeObject:contact forKey:@"contact"];
-  [v5 encodeObject:self->_matchingFieldRecordId forKey:@"matchingFieldRecordId"];
-  [v5 encodeInt64:self->_matchingFieldType forKey:@"matchingFieldType"];
-  [v5 encodeObject:self->_matchTokens forKey:@"matchTokens"];
-  [v5 encodeObject:self->_matchedDetails forKey:@"matchedDetails"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contact forKey:@"contact"];
+  [coderCopy encodeObject:self->_matchingFieldRecordId forKey:@"matchingFieldRecordId"];
+  [coderCopy encodeInt64:self->_matchingFieldType forKey:@"matchingFieldType"];
+  [coderCopy encodeObject:self->_matchTokens forKey:@"matchTokens"];
+  [coderCopy encodeObject:self->_matchedDetails forKey:@"matchedDetails"];
 }
 
-- (SGContactMatch)initWithCoder:(id)a3
+- (SGContactMatch)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = SGContactMatch;
   v6 = [(SGContactMatch *)&v23 init];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v8 = [v5 decodeObjectOfClasses:v7 forKey:@"contact"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"contact"];
 
     if (v8)
     {
@@ -242,20 +242,20 @@ LABEL_16:
     }
 
     v11 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v12 = [v5 decodeObjectOfClasses:v11 forKey:@"matchingFieldRecordId"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"matchingFieldRecordId"];
     matchingFieldRecordId = v6->_matchingFieldRecordId;
     v6->_matchingFieldRecordId = v12;
 
-    v6->_matchingFieldType = [v5 decodeInt64ForKey:@"matchingFieldType"];
+    v6->_matchingFieldType = [coderCopy decodeInt64ForKey:@"matchingFieldType"];
     v14 = objc_alloc(MEMORY[0x1E695DFD8]);
     v15 = objc_opt_class();
     v16 = [v14 initWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v5 decodeObjectOfClasses:v16 forKey:@"matchTokens"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"matchTokens"];
     matchTokens = v6->_matchTokens;
     v6->_matchTokens = v17;
 
     v19 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v20 = [v5 decodeObjectOfClasses:v19 forKey:@"matchedDetails"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"matchedDetails"];
     matchedDetails = v6->_matchedDetails;
     v6->_matchedDetails = v20;
   }
@@ -263,14 +263,14 @@ LABEL_16:
   return v6;
 }
 
-- (SGContactMatch)initWithContact:(id)a3 matchingRecordId:(id)a4 matchType:(int64_t)a5 matchTokens:(id)a6
+- (SGContactMatch)initWithContact:(id)contact matchingRecordId:(id)id matchType:(int64_t)type matchTokens:(id)tokens
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v11)
+  contactCopy = contact;
+  idCopy = id;
+  tokensCopy = tokens;
+  if (contactCopy)
   {
-    if (v12)
+    if (idCopy)
     {
       goto LABEL_3;
     }
@@ -278,37 +278,37 @@ LABEL_16:
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
 
-    if (v12)
+    if (idCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"matchingRecordId"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"matchingRecordId"}];
 
 LABEL_3:
-  v14 = [(SGContactMatch *)self initWithContact:v11 matchingFieldRecordId:v12 matchTokens:v13];
+  v14 = [(SGContactMatch *)self initWithContact:contactCopy matchingFieldRecordId:idCopy matchTokens:tokensCopy];
   v15 = v14;
   if (v14)
   {
-    v14->_matchingFieldType = a5;
+    v14->_matchingFieldType = type;
   }
 
   return v15;
 }
 
-- (SGContactMatch)initWithContact:(id)a3 matchingPhoneRecordId:(id)a4 matchTokens:(id)a5
+- (SGContactMatch)initWithContact:(id)contact matchingPhoneRecordId:(id)id matchTokens:(id)tokens
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  contactCopy = contact;
+  idCopy = id;
+  tokensCopy = tokens;
+  if (contactCopy)
   {
-    if (v10)
+    if (idCopy)
     {
       goto LABEL_3;
     }
@@ -316,20 +316,20 @@ LABEL_3:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
 
-    if (v10)
+    if (idCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"matchingPhoneRecordId"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"matchingPhoneRecordId"}];
 
 LABEL_3:
-  v12 = [(SGContactMatch *)self initWithContact:v9 matchingFieldRecordId:v10 matchTokens:v11];
+  v12 = [(SGContactMatch *)self initWithContact:contactCopy matchingFieldRecordId:idCopy matchTokens:tokensCopy];
   v13 = v12;
   if (v12)
   {
@@ -339,14 +339,14 @@ LABEL_3:
   return v13;
 }
 
-- (SGContactMatch)initWithContact:(id)a3 matchingEmailAddressRecordId:(id)a4 matchTokens:(id)a5
+- (SGContactMatch)initWithContact:(id)contact matchingEmailAddressRecordId:(id)id matchTokens:(id)tokens
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  contactCopy = contact;
+  idCopy = id;
+  tokensCopy = tokens;
+  if (contactCopy)
   {
-    if (v10)
+    if (idCopy)
     {
       goto LABEL_3;
     }
@@ -354,20 +354,20 @@ LABEL_3:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
 
-    if (v10)
+    if (idCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"matchingEmailAddressRecordId"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"matchingEmailAddressRecordId"}];
 
 LABEL_3:
-  v12 = [(SGContactMatch *)self initWithContact:v9 matchingFieldRecordId:v10 matchTokens:v11];
+  v12 = [(SGContactMatch *)self initWithContact:contactCopy matchingFieldRecordId:idCopy matchTokens:tokensCopy];
   v13 = v12;
   if (v12)
   {
@@ -377,14 +377,14 @@ LABEL_3:
   return v13;
 }
 
-- (SGContactMatch)initWithContact:(id)a3 matchingNameRecordId:(id)a4 matchTokens:(id)a5
+- (SGContactMatch)initWithContact:(id)contact matchingNameRecordId:(id)id matchTokens:(id)tokens
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  contactCopy = contact;
+  idCopy = id;
+  tokensCopy = tokens;
+  if (contactCopy)
   {
-    if (v10)
+    if (idCopy)
     {
       goto LABEL_3;
     }
@@ -392,20 +392,20 @@ LABEL_3:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
 
-    if (v10)
+    if (idCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"matchingNameRecordId"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"matchingNameRecordId"}];
 
 LABEL_3:
-  v12 = [(SGContactMatch *)self initWithContact:v9 matchingFieldRecordId:v10 matchTokens:v11];
+  v12 = [(SGContactMatch *)self initWithContact:contactCopy matchingFieldRecordId:idCopy matchTokens:tokensCopy];
   v13 = v12;
   if (v12)
   {
@@ -415,14 +415,14 @@ LABEL_3:
   return v13;
 }
 
-- (SGContactMatch)initWithContact:(id)a3 matchingFieldRecordId:(id)a4 matchTokens:(id)a5
+- (SGContactMatch)initWithContact:(id)contact matchingFieldRecordId:(id)id matchTokens:(id)tokens
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  contactCopy = contact;
+  idCopy = id;
+  tokensCopy = tokens;
+  if (contactCopy)
   {
-    if (v10)
+    if (idCopy)
     {
       goto LABEL_3;
     }
@@ -430,17 +430,17 @@ LABEL_3:
 
   else
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
 
-    if (v10)
+    if (idCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"matchingFieldRecordId"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"matchingFieldRecordId"}];
 
 LABEL_3:
   v22.receiver = self;
@@ -448,15 +448,15 @@ LABEL_3:
   v12 = [(SGContactMatch *)&v22 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [contactCopy copy];
     contact = v12->_contact;
     v12->_contact = v13;
 
-    v15 = [v10 copy];
+    v15 = [idCopy copy];
     matchingFieldRecordId = v12->_matchingFieldRecordId;
     v12->_matchingFieldRecordId = v15;
 
-    v17 = [v11 copy];
+    v17 = [tokensCopy copy];
     matchTokens = v12->_matchTokens;
     v12->_matchTokens = v17;
   }
@@ -464,23 +464,23 @@ LABEL_3:
   return v12;
 }
 
-- (SGContactMatch)initWithContact:(id)a3 matchTokens:(id)a4 matchInfo:(id)a5
+- (SGContactMatch)initWithContact:(id)contact matchTokens:(id)tokens matchInfo:(id)info
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  contactCopy = contact;
+  tokensCopy = tokens;
+  infoCopy = info;
+  if (contactCopy)
   {
-    if (v10)
+    if (tokensCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"tokens"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"tokens"}];
 
-    if (v11)
+    if (infoCopy)
     {
       goto LABEL_4;
     }
@@ -488,23 +488,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
 
-  if (!v10)
+  if (!tokensCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (infoCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"matchinfoData"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"SGContactMatch.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"matchinfoData"}];
 
 LABEL_4:
   v23.receiver = self;
@@ -512,15 +512,15 @@ LABEL_4:
   v12 = [(SGContactMatch *)&v23 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [contactCopy copy];
     contact = v12->_contact;
     v12->_contact = v13;
 
-    v15 = [SGFn simpleDedupe:v10];
+    v15 = [SGFn simpleDedupe:tokensCopy];
     matchTokens = v12->_matchTokens;
     v12->_matchTokens = v15;
 
-    v17 = [SGMatchedDetails matchedDetailsWithContact:v9 matchinfoData:v11 tokens:v10];
+    v17 = [SGMatchedDetails matchedDetailsWithContact:contactCopy matchinfoData:infoCopy tokens:tokensCopy];
     matchedDetails = v12->_matchedDetails;
     v12->_matchedDetails = v17;
   }

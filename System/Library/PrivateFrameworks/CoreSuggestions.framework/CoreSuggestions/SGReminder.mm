@@ -1,18 +1,18 @@
 @interface SGReminder
-+ (id)describeReminderDueLocationTrigger:(unsigned __int8)a3;
-+ (id)describeReminderDueLocationType:(unsigned __int8)a3;
-+ (id)describeReminderStatus:(unsigned __int8)a3;
++ (id)describeReminderDueLocationTrigger:(unsigned __int8)trigger;
++ (id)describeReminderDueLocationType:(unsigned __int8)type;
++ (id)describeReminderStatus:(unsigned __int8)status;
 - (BOOL)isAllDay;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToReminder:(id)a3;
-- (SGReminder)initWithCoder:(id)a3;
-- (SGReminder)initWithRecordId:(id)a3 origin:(id)a4 title:(id)a5 dueDateComponents:(id)a6 dueLocationType:(unsigned __int8)a7 dueLocation:(id)a8 dueLocationTrigger:(unsigned __int8)a9 sourceURL:(id)a10 reminderStatus:(unsigned __int8)a11 opaqueKey:(id)a12 uniqueKey:(id)a13 contactIdentifier:(id)a14 creationDate:(id)a15;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToReminder:(id)reminder;
+- (SGReminder)initWithCoder:(id)coder;
+- (SGReminder)initWithRecordId:(id)id origin:(id)origin title:(id)title dueDateComponents:(id)components dueLocationType:(unsigned __int8)type dueLocation:(id)location dueLocationTrigger:(unsigned __int8)trigger sourceURL:(id)self0 reminderStatus:(unsigned __int8)self1 opaqueKey:(id)self2 uniqueKey:(id)self3 contactIdentifier:(id)self4 creationDate:(id)self5;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)loggingIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGReminder
@@ -52,12 +52,12 @@
   [v3 setObject:@"SGEntityTypePseudoReminder" forKeyedSubscript:@"type"];
 
   [v3 setObject:self->_title forKeyedSubscript:@"title"];
-  v5 = [(NSDateComponents *)self->_dueDateComponents date];
-  if (v5)
+  date = [(NSDateComponents *)self->_dueDateComponents date];
+  if (date)
   {
     v6 = MEMORY[0x1E696AC80];
-    v7 = [(NSDateComponents *)self->_dueDateComponents timeZone];
-    v8 = [v6 stringFromDate:v5 timeZone:v7 formatOptions:1907];
+    timeZone = [(NSDateComponents *)self->_dueDateComponents timeZone];
+    v8 = [v6 stringFromDate:date timeZone:timeZone formatOptions:1907];
     [v3 setObject:v8 forKeyedSubscript:@"dueDate"];
   }
 
@@ -67,8 +67,8 @@
     [v3 setObject:v9 forKeyedSubscript:@"dueLocationType"];
   }
 
-  v10 = [(SGLocation *)self->_dueLocation label];
-  [v3 setObject:v10 forKeyedSubscript:@"dueLocation"];
+  label = [(SGLocation *)self->_dueLocation label];
+  [v3 setObject:label forKeyedSubscript:@"dueLocation"];
 
   if (self->_dueLocationTrigger)
   {
@@ -82,17 +82,17 @@
   return v3;
 }
 
-- (BOOL)isEqualToReminder:(id)a3
+- (BOOL)isEqualToReminder:(id)reminder
 {
-  v4 = a3;
-  if (!v4)
+  reminderCopy = reminder;
+  if (!reminderCopy)
   {
     goto LABEL_31;
   }
 
   v5 = self->_title;
   v6 = v5;
-  if (v5 == v4[4])
+  if (v5 == reminderCopy[4])
   {
   }
 
@@ -108,7 +108,7 @@
 
   v8 = self->_dueDateComponents;
   v9 = v8;
-  if (v8 == v4[5])
+  if (v8 == reminderCopy[5])
   {
   }
 
@@ -123,14 +123,14 @@
   }
 
   dueLocationType = self->_dueLocationType;
-  if (dueLocationType != [v4 dueLocationType])
+  if (dueLocationType != [reminderCopy dueLocationType])
   {
     goto LABEL_31;
   }
 
   v12 = self->_dueLocation;
   v13 = v12;
-  if (v12 == v4[6])
+  if (v12 == reminderCopy[6])
   {
   }
 
@@ -145,14 +145,14 @@
   }
 
   dueLocationTrigger = self->_dueLocationTrigger;
-  if (dueLocationTrigger != [v4 dueLocationTrigger])
+  if (dueLocationTrigger != [reminderCopy dueLocationTrigger])
   {
     goto LABEL_31;
   }
 
   v16 = self->_sourceURL;
   v17 = v16;
-  if (v16 == v4[7])
+  if (v16 == reminderCopy[7])
   {
   }
 
@@ -167,7 +167,7 @@
   }
 
   reminderStatus = self->_reminderStatus;
-  if (reminderStatus != [v4 reminderStatus])
+  if (reminderStatus != [reminderCopy reminderStatus])
   {
 LABEL_31:
     v29 = 0;
@@ -176,7 +176,7 @@ LABEL_31:
 
   v20 = self->_opaqueKey;
   v21 = v20;
-  if (v20 == v4[9])
+  if (v20 == reminderCopy[9])
   {
   }
 
@@ -192,7 +192,7 @@ LABEL_31:
 
   v23 = self->_uniqueKey;
   v24 = v23;
-  if (v23 == v4[10])
+  if (v23 == reminderCopy[10])
   {
   }
 
@@ -208,7 +208,7 @@ LABEL_31:
 
   v26 = self->_contactIdentifier;
   v27 = v26;
-  if (v26 == v4[11])
+  if (v26 == reminderCopy[11])
   {
   }
 
@@ -224,7 +224,7 @@ LABEL_31:
 
   v31 = self->_creationDate;
   v32 = v31;
-  if (v31 == v4[8])
+  if (v31 == reminderCopy[8])
   {
     v29 = 1;
   }
@@ -238,52 +238,52 @@ LABEL_32:
   return v29;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGReminder *)self isEqualToReminder:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGReminder *)self isEqualToReminder:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(SGObject *)self recordId];
-  v7 = [(SGObject *)self origin];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  recordId = [(SGObject *)self recordId];
+  origin = [(SGObject *)self origin];
   title = self->_title;
-  v9 = [(NSDateComponents *)self->_dueDateComponents copyWithZone:a3];
+  v9 = [(NSDateComponents *)self->_dueDateComponents copyWithZone:zone];
   dueLocationType = self->_dueLocationType;
-  v11 = [(SGLocation *)self->_dueLocation copyWithZone:a3];
+  v11 = [(SGLocation *)self->_dueLocation copyWithZone:zone];
   dueLocationTrigger = self->_dueLocationTrigger;
-  v13 = [(NSURL *)self->_sourceURL copyWithZone:a3];
+  v13 = [(NSURL *)self->_sourceURL copyWithZone:zone];
   contactIdentifier = self->_contactIdentifier;
   LOBYTE(v18) = self->_reminderStatus;
   LOBYTE(v17) = dueLocationTrigger;
-  v15 = [v5 initWithRecordId:v6 origin:v7 title:title dueDateComponents:v9 dueLocationType:dueLocationType dueLocation:v11 dueLocationTrigger:v17 sourceURL:v13 reminderStatus:v18 opaqueKey:self->_opaqueKey uniqueKey:self->_uniqueKey contactIdentifier:contactIdentifier creationDate:self->_creationDate];
+  v15 = [v5 initWithRecordId:recordId origin:origin title:title dueDateComponents:v9 dueLocationType:dueLocationType dueLocation:v11 dueLocationTrigger:v17 sourceURL:v13 reminderStatus:v18 opaqueKey:self->_opaqueKey uniqueKey:self->_uniqueKey contactIdentifier:contactIdentifier creationDate:self->_creationDate];
 
   return v15;
 }
 
-- (SGReminder)initWithCoder:(id)a3
+- (SGReminder)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = SGReminder;
-  v6 = [(SGObject *)&v35 initWithCoder:v5];
+  v6 = [(SGObject *)&v35 initWithCoder:coderCopy];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v8 = [v5 decodeObjectOfClasses:v7 forKey:@"title"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"title"];
 
     if (v8)
     {
@@ -299,19 +299,19 @@ LABEL_32:
     }
 
     v11 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v12 = [v5 decodeObjectOfClasses:v11 forKey:@"dueDateComponents"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"dueDateComponents"];
     dueDateComponents = v6->_dueDateComponents;
     v6->_dueDateComponents = v12;
 
-    v6->_dueLocationType = [v5 decodeInt64ForKey:@"dueLocationType"];
+    v6->_dueLocationType = [coderCopy decodeInt64ForKey:@"dueLocationType"];
     v14 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v15 = [v5 decodeObjectOfClasses:v14 forKey:@"dueLocation"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"dueLocation"];
     dueLocation = v6->_dueLocation;
     v6->_dueLocation = v15;
 
-    v6->_dueLocationTrigger = [v5 decodeInt64ForKey:@"dueLocationTrigger"];
+    v6->_dueLocationTrigger = [coderCopy decodeInt64ForKey:@"dueLocationTrigger"];
     v17 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v18 = [v5 decodeObjectOfClasses:v17 forKey:@"sourceURL"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"sourceURL"];
 
     if (v18)
     {
@@ -326,24 +326,24 @@ LABEL_32:
       [sourceURL handleFailureInMethod:a2 object:v6 file:@"SGReminder.m" lineNumber:107 description:{@"nonnull property %s *%s was null when decoded", "NSURL", "sourceURL"}];
     }
 
-    v6->_reminderStatus = [v5 decodeInt64ForKey:@"reminderStatus"];
+    v6->_reminderStatus = [coderCopy decodeInt64ForKey:@"reminderStatus"];
     v21 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v22 = [v5 decodeObjectOfClasses:v21 forKey:@"opaqueKey"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"opaqueKey"];
     opaqueKey = v6->_opaqueKey;
     v6->_opaqueKey = v22;
 
     v24 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v25 = [v5 decodeObjectOfClasses:v24 forKey:@"uniqueKey"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"uniqueKey"];
     uniqueKey = v6->_uniqueKey;
     v6->_uniqueKey = v25;
 
     v27 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v28 = [v5 decodeObjectOfClasses:v27 forKey:@"contactIdentifier"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"contactIdentifier"];
     contactIdentifier = v6->_contactIdentifier;
     v6->_contactIdentifier = v28;
 
     v30 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v31 = [v5 decodeObjectOfClasses:v30 forKey:@"creationDate"];
+    v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"creationDate"];
 
     if (v31)
     {
@@ -362,23 +362,23 @@ LABEL_32:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SGReminder;
-  v4 = a3;
-  [(SGObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_title forKey:{@"title", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_dueDateComponents forKey:@"dueDateComponents"];
-  [v4 encodeInt64:self->_dueLocationType forKey:@"dueLocationType"];
-  [v4 encodeObject:self->_dueLocation forKey:@"dueLocation"];
-  [v4 encodeInt64:self->_dueLocationTrigger forKey:@"dueLocationTrigger"];
-  [v4 encodeObject:self->_sourceURL forKey:@"sourceURL"];
-  [v4 encodeInt64:self->_reminderStatus forKey:@"reminderStatus"];
-  [v4 encodeObject:self->_opaqueKey forKey:@"opaqueKey"];
-  [v4 encodeObject:self->_uniqueKey forKey:@"uniqueKey"];
-  [v4 encodeObject:self->_contactIdentifier forKey:@"contactIdentifier"];
-  [v4 encodeObject:self->_creationDate forKey:@"creationDate"];
+  coderCopy = coder;
+  [(SGObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_title forKey:{@"title", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_dueDateComponents forKey:@"dueDateComponents"];
+  [coderCopy encodeInt64:self->_dueLocationType forKey:@"dueLocationType"];
+  [coderCopy encodeObject:self->_dueLocation forKey:@"dueLocation"];
+  [coderCopy encodeInt64:self->_dueLocationTrigger forKey:@"dueLocationTrigger"];
+  [coderCopy encodeObject:self->_sourceURL forKey:@"sourceURL"];
+  [coderCopy encodeInt64:self->_reminderStatus forKey:@"reminderStatus"];
+  [coderCopy encodeObject:self->_opaqueKey forKey:@"opaqueKey"];
+  [coderCopy encodeObject:self->_uniqueKey forKey:@"uniqueKey"];
+  [coderCopy encodeObject:self->_contactIdentifier forKey:@"contactIdentifier"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
 }
 
 - (unint64_t)hash
@@ -392,8 +392,8 @@ LABEL_32:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   title = self->_title;
-  v5 = [(NSDateComponents *)self->_dueDateComponents date];
-  v6 = [v3 initWithFormat:@"<SGReminder '%@' dueDate: %@>", title, v5];
+  date = [(NSDateComponents *)self->_dueDateComponents date];
+  v6 = [v3 initWithFormat:@"<SGReminder '%@' dueDate: %@>", title, date];
 
   return v6;
 }
@@ -409,60 +409,60 @@ LABEL_32:
   return dueDateComponents;
 }
 
-- (SGReminder)initWithRecordId:(id)a3 origin:(id)a4 title:(id)a5 dueDateComponents:(id)a6 dueLocationType:(unsigned __int8)a7 dueLocation:(id)a8 dueLocationTrigger:(unsigned __int8)a9 sourceURL:(id)a10 reminderStatus:(unsigned __int8)a11 opaqueKey:(id)a12 uniqueKey:(id)a13 contactIdentifier:(id)a14 creationDate:(id)a15
+- (SGReminder)initWithRecordId:(id)id origin:(id)origin title:(id)title dueDateComponents:(id)components dueLocationType:(unsigned __int8)type dueLocation:(id)location dueLocationTrigger:(unsigned __int8)trigger sourceURL:(id)self0 reminderStatus:(unsigned __int8)self1 opaqueKey:(id)self2 uniqueKey:(id)self3 contactIdentifier:(id)self4 creationDate:(id)self5
 {
-  v32 = a5;
-  v31 = a6;
-  v30 = a8;
-  v29 = a10;
-  v28 = a12;
-  v20 = a13;
-  v21 = a14;
-  v22 = a15;
+  titleCopy = title;
+  componentsCopy = components;
+  locationCopy = location;
+  lCopy = l;
+  keyCopy = key;
+  uniqueKeyCopy = uniqueKey;
+  identifierCopy = identifier;
+  dateCopy = date;
   v33.receiver = self;
   v33.super_class = SGReminder;
-  v23 = [(SGObject *)&v33 initWithRecordId:a3 origin:a4];
+  v23 = [(SGObject *)&v33 initWithRecordId:id origin:origin];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_title, a5);
-    objc_storeStrong(&v24->_dueDateComponents, a6);
-    v24->_dueLocationType = a7;
-    objc_storeStrong(&v24->_dueLocation, a8);
-    v24->_dueLocationTrigger = a9;
-    objc_storeStrong(&v24->_sourceURL, a10);
-    v24->_reminderStatus = a11;
-    objc_storeStrong(&v24->_opaqueKey, a12);
-    objc_storeStrong(&v24->_uniqueKey, a13);
-    objc_storeStrong(&v24->_contactIdentifier, a14);
-    objc_storeStrong(&v24->_creationDate, a15);
+    objc_storeStrong(&v23->_title, title);
+    objc_storeStrong(&v24->_dueDateComponents, components);
+    v24->_dueLocationType = type;
+    objc_storeStrong(&v24->_dueLocation, location);
+    v24->_dueLocationTrigger = trigger;
+    objc_storeStrong(&v24->_sourceURL, l);
+    v24->_reminderStatus = status;
+    objc_storeStrong(&v24->_opaqueKey, key);
+    objc_storeStrong(&v24->_uniqueKey, uniqueKey);
+    objc_storeStrong(&v24->_contactIdentifier, identifier);
+    objc_storeStrong(&v24->_creationDate, date);
   }
 
   return v24;
 }
 
-+ (id)describeReminderDueLocationType:(unsigned __int8)a3
++ (id)describeReminderDueLocationType:(unsigned __int8)type
 {
-  if ((a3 - 1) > 3u)
+  if ((type - 1) > 3u)
   {
     return @"ReminderDueLocationTypeUnknown";
   }
 
   else
   {
-    return off_1E7EFAD68[(a3 - 1)];
+    return off_1E7EFAD68[(type - 1)];
   }
 }
 
-+ (id)describeReminderDueLocationTrigger:(unsigned __int8)a3
++ (id)describeReminderDueLocationTrigger:(unsigned __int8)trigger
 {
   v3 = @"ReminderDueLocationTriggerUnknown";
-  if (a3 == 1)
+  if (trigger == 1)
   {
     v3 = @"ReminderDueLocationTriggerEnter";
   }
 
-  if (a3 == 2)
+  if (trigger == 2)
   {
     return @"ReminderDueLocationTriggerLeave";
   }
@@ -473,16 +473,16 @@ LABEL_32:
   }
 }
 
-+ (id)describeReminderStatus:(unsigned __int8)a3
++ (id)describeReminderStatus:(unsigned __int8)status
 {
-  if ((a3 - 1) > 2)
+  if ((status - 1) > 2)
   {
     return @"ReminderStatusUnknown";
   }
 
   else
   {
-    return off_1E7EFAD50[(a3 - 1)];
+    return off_1E7EFAD50[(status - 1)];
   }
 }
 

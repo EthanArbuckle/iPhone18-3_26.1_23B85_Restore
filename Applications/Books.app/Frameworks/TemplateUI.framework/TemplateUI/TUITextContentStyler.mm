@@ -1,45 +1,45 @@
 @interface TUITextContentStyler
-- (BOOL)isEqualToStyle:(id)a3;
-- (void)applyStylingToLayer:(id)a3;
-- (void)applyStylingToView:(id)a3;
+- (BOOL)isEqualToStyle:(id)style;
+- (void)applyStylingToLayer:(id)layer;
+- (void)applyStylingToView:(id)view;
 @end
 
 @implementation TUITextContentStyler
 
-- (void)applyStylingToLayer:(id)a3
+- (void)applyStylingToLayer:(id)layer
 {
   v3.receiver = self;
   v3.super_class = TUITextContentStyler;
-  [(TUIBackgroundColorStyler *)&v3 applyStylingToLayer:a3];
+  [(TUIBackgroundColorStyler *)&v3 applyStylingToLayer:layer];
 }
 
-- (void)applyStylingToView:(id)a3
+- (void)applyStylingToView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5.receiver = self;
   v5.super_class = TUITextContentStyler;
-  [(TUIBackgroundColorStyler *)&v5 applyStylingToView:v4];
+  [(TUIBackgroundColorStyler *)&v5 applyStylingToView:viewCopy];
   if (self->_tintColor && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 setTintColor:self->_tintColor];
+    [viewCopy setTintColor:self->_tintColor];
   }
 
   if (self->_textColor && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 setTextColor:self->_textColor];
+    [viewCopy setTextColor:self->_textColor];
   }
 
   if (self->_font && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 setFont:self->_font];
+    [viewCopy setFont:self->_font];
   }
 }
 
-- (BOOL)isEqualToStyle:(id)a3
+- (BOOL)isEqualToStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, styleCopy);
 
   v12.receiver = self;
   v12.super_class = TUITextContentStyler;

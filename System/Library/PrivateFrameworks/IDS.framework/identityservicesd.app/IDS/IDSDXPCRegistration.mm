@@ -1,26 +1,26 @@
 @interface IDSDXPCRegistration
-- (IDSDXPCRegistration)initWithQueue:(id)a3 connection:(id)a4;
-- (IDSDXPCRegistration)initWithQueue:(id)a3 connection:(id)a4 userStore:(id)a5 accountController:(id)a6 ctAdapter:(id)a7;
-- (void)constructRAResponseDictionaryForServices:(id)a3 completionHandler:(id)a4;
-- (void)disableTemporaryPhoneAlias:(id)a3 withCompletion:(id)a4;
-- (void)enableTemporaryPhoneAlias:(id)a3 withCompletion:(id)a4;
-- (void)removeTemporaryPhoneAlias:(id)a3 withCompletion:(id)a4;
-- (void)requestSelectedSubscriptionsWithCompletion:(id)a3;
-- (void)requestUnselectedTemporaryPhoneAliasesWithCompletion:(id)a3;
-- (void)selectSubscription:(id)a3 withCompletion:(id)a4;
-- (void)setSelectedSubscriptions:(id)a3 withCompletion:(id)a4;
-- (void)unselectSubscription:(id)a3 withCompletion:(id)a4;
+- (IDSDXPCRegistration)initWithQueue:(id)queue connection:(id)connection;
+- (IDSDXPCRegistration)initWithQueue:(id)queue connection:(id)connection userStore:(id)store accountController:(id)controller ctAdapter:(id)adapter;
+- (void)constructRAResponseDictionaryForServices:(id)services completionHandler:(id)handler;
+- (void)disableTemporaryPhoneAlias:(id)alias withCompletion:(id)completion;
+- (void)enableTemporaryPhoneAlias:(id)alias withCompletion:(id)completion;
+- (void)removeTemporaryPhoneAlias:(id)alias withCompletion:(id)completion;
+- (void)requestSelectedSubscriptionsWithCompletion:(id)completion;
+- (void)requestUnselectedTemporaryPhoneAliasesWithCompletion:(id)completion;
+- (void)selectSubscription:(id)subscription withCompletion:(id)completion;
+- (void)setSelectedSubscriptions:(id)subscriptions withCompletion:(id)completion;
+- (void)unselectSubscription:(id)subscription withCompletion:(id)completion;
 @end
 
 @implementation IDSDXPCRegistration
 
-- (IDSDXPCRegistration)initWithQueue:(id)a3 connection:(id)a4 userStore:(id)a5 accountController:(id)a6 ctAdapter:(id)a7
+- (IDSDXPCRegistration)initWithQueue:(id)queue connection:(id)connection userStore:(id)store accountController:(id)controller ctAdapter:(id)adapter
 {
-  v25 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  queueCopy = queue;
+  connectionCopy = connection;
+  storeCopy = store;
+  controllerCopy = controller;
+  adapterCopy = adapter;
   v26.receiver = self;
   v26.super_class = IDSDXPCRegistration;
   v17 = [(IDSDXPCRegistration *)&v26 init];
@@ -31,8 +31,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v18 = [v13 hasEntitlement:kIDSPhoneNumberAuthenticationEntitlement];
-  v19 = [v13 hasEntitlement:@"com.apple.private.imcore.spi.database-access"];
+  v18 = [connectionCopy hasEntitlement:kIDSPhoneNumberAuthenticationEntitlement];
+  v19 = [connectionCopy hasEntitlement:@"com.apple.private.imcore.spi.database-access"];
   if (v18 & 1) != 0 || (v19)
   {
     v22 = v18 | v19 ^ 1;
@@ -42,16 +42,16 @@ LABEL_12:
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v28 = v13;
+        v28 = connectionCopy;
         _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Allowing bypass entitlement to read from IDSXPCRegistration {connection: %@}", buf, 0xCu);
       }
     }
 
-    objc_storeStrong(&v17->_queue, a3);
+    objc_storeStrong(&v17->_queue, queue);
     v17->_onlyAllowReads = (v22 & 1) == 0;
-    objc_storeStrong(&v17->_userStore, a5);
-    objc_storeStrong(&v17->_accountController, a6);
-    objc_storeStrong(&v17->_ctAdapter, a7);
+    objc_storeStrong(&v17->_userStore, store);
+    objc_storeStrong(&v17->_accountController, controller);
+    objc_storeStrong(&v17->_ctAdapter, adapter);
     goto LABEL_12;
   }
 
@@ -59,7 +59,7 @@ LABEL_12:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v13;
+    v28 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Missing phone number authentication entitlement -- failing creation of IDSDXPCRegistration collaborator {connection: %@}", buf, 0xCu);
   }
 
@@ -69,29 +69,29 @@ LABEL_13:
   return v21;
 }
 
-- (IDSDXPCRegistration)initWithQueue:(id)a3 connection:(id)a4
+- (IDSDXPCRegistration)initWithQueue:(id)queue connection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
+  connectionCopy = connection;
+  queueCopy = queue;
   v8 = +[IDSDaemon sharedInstance];
-  v9 = [v8 registrationConductor];
-  v10 = [v9 userStore];
+  registrationConductor = [v8 registrationConductor];
+  userStore = [registrationConductor userStore];
   v11 = +[IDSDAccountController sharedInstance];
   v12 = +[IDSCTAdapter sharedInstance];
-  v13 = [(IDSDXPCRegistration *)self initWithQueue:v7 connection:v6 userStore:v10 accountController:v11 ctAdapter:v12];
+  v13 = [(IDSDXPCRegistration *)self initWithQueue:queueCopy connection:connectionCopy userStore:userStore accountController:v11 ctAdapter:v12];
 
   return v13;
 }
 
-- (void)requestSelectedSubscriptionsWithCompletion:(id)a3
+- (void)requestSelectedSubscriptionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[FTUserConfiguration sharedInstance];
-  v6 = [v5 selectedPhoneNumberRegistrationSubscriptionLabels];
+  selectedPhoneNumberRegistrationSubscriptionLabels = [v5 selectedPhoneNumberRegistrationSubscriptionLabels];
 
-  v7 = [(IDSDXPCRegistration *)self ctAdapter];
+  ctAdapter = [(IDSDXPCRegistration *)self ctAdapter];
   v20 = 0;
-  v8 = [v7 currentSIMsWithError:&v20];
+  v8 = [ctAdapter currentSIMsWithError:&v20];
   v9 = v20;
 
   if (v9)
@@ -109,19 +109,19 @@ LABEL_13:
     v28 = v9;
     v12 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     v13 = [NSError errorWithDomain:v11 code:100 userInfo:v12];
-    v4[2](v4, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
   }
 
   else
   {
-    v14 = sub_10061E538(v8, v6);
+    v14 = sub_10061E538(v8, selectedPhoneNumberRegistrationSubscriptionLabels);
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10061E788;
     v17[3] = &unk_100BE2950;
     v15 = v8;
     v18 = v15;
-    v19 = self;
+    selfCopy = self;
     v12 = [v14 __imArrayByFilteringWithBlock:v17];
 
     v16 = +[IMRGLog sms];
@@ -130,40 +130,40 @@ LABEL_13:
       *buf = 138412802;
       v22 = v12;
       v23 = 2112;
-      v24 = v6;
+      v24 = selectedPhoneNumberRegistrationSubscriptionLabels;
       v25 = 2112;
       v26 = v15;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Client requested selected subscriptions {subscriptions: %@, selectedLabelIDs: %@, SIMs: %@}", buf, 0x20u);
     }
 
-    (v4)[2](v4, v12, 0);
+    (completionCopy)[2](completionCopy, v12, 0);
     v13 = v18;
   }
 }
 
-- (void)requestUnselectedTemporaryPhoneAliasesWithCompletion:(id)a3
+- (void)requestUnselectedTemporaryPhoneAliasesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSDXPCRegistration *)self accountController];
-  v6 = [v5 hasiCloudAccount];
+  completionCopy = completion;
+  accountController = [(IDSDXPCRegistration *)self accountController];
+  hasiCloudAccount = [accountController hasiCloudAccount];
 
-  v7 = [(IDSDXPCRegistration *)self ctAdapter];
-  if ([v7 isAnySIMInserted])
+  ctAdapter = [(IDSDXPCRegistration *)self ctAdapter];
+  if ([ctAdapter isAnySIMInserted])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [(IDSDXPCRegistration *)self userStore];
-    v10 = [v9 usersWithRealm:0];
+    userStore = [(IDSDXPCRegistration *)self userStore];
+    v10 = [userStore usersWithRealm:0];
     v8 = [v10 count] != 0;
   }
 
-  if (v6 & v8)
+  if (hasiCloudAccount & v8)
   {
-    v11 = [(IDSDXPCRegistration *)self userStore];
-    v12 = [v11 usersWithRealm:2];
+    userStore2 = [(IDSDXPCRegistration *)self userStore];
+    v12 = [userStore2 usersWithRealm:2];
     v13 = [v12 __imArrayByFilteringWithBlock:&stru_100BE2990];
 
     v19[0] = _NSConcreteStackBlock;
@@ -182,7 +182,7 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Client requested unselected temporary phone aliases {descriptions: %@, users: %@}", buf, 0x16u);
     }
 
-    v4[2](v4, v14, 0);
+    completionCopy[2](completionCopy, v14, 0);
   }
 
   else
@@ -191,7 +191,7 @@ LABEL_13:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v17 = @"NO";
-      if (v6)
+      if (hasiCloudAccount)
       {
         v18 = @"YES";
       }
@@ -213,21 +213,21 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Client requested unselected temporary phone aliases, but not in state where home number is allowed {isiCloudSignedIn: %@, allowHomeNumber: %@}", buf, 0x16u);
     }
 
-    v4[2](v4, &__NSArray0__struct, 0);
+    completionCopy[2](completionCopy, &__NSArray0__struct, 0);
   }
 }
 
-- (void)selectSubscription:(id)a3 withCompletion:(id)a4
+- (void)selectSubscription:(id)subscription withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  subscriptionCopy = subscription;
+  completionCopy = completion;
   if (![(IDSDXPCRegistration *)self onlyAllowReads])
   {
-    if (![v6 subscriptionSlot])
+    if (![subscriptionCopy subscriptionSlot])
     {
-      v12 = [v6 labelID];
+      labelID = [subscriptionCopy labelID];
 
-      if (!v12)
+      if (!labelID)
       {
         v30 = +[IMRGLog sms];
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -262,37 +262,37 @@ LABEL_13:
       v33 = v11;
       v17 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
       v18 = [NSError errorWithDomain:v16 code:100 userInfo:v17];
-      v7[2](v7, 0, v18);
+      completionCopy[2](completionCopy, 0, v18);
       goto LABEL_17;
     }
 
-    v17 = sub_10061F174(v14, v6);
+    v17 = sub_10061F174(v14, subscriptionCopy);
     v19 = [NSMutableSet alloc];
     v20 = +[FTUserConfiguration sharedInstance];
-    v21 = [v20 selectedPhoneNumberRegistrationSubscriptionLabels];
-    v18 = [v19 initWithArray:v21];
+    selectedPhoneNumberRegistrationSubscriptionLabels = [v20 selectedPhoneNumberRegistrationSubscriptionLabels];
+    v18 = [v19 initWithArray:selectedPhoneNumberRegistrationSubscriptionLabels];
 
     [v18 addObject:v17];
     v22 = +[FTUserConfiguration sharedInstance];
     if (([v22 isDeviceInDualPhoneIdentityMode] & 1) == 0)
     {
       v23 = +[FTUserConfiguration sharedInstance];
-      v24 = [v23 isDeviceInManualPhoneSelectionMode];
+      isDeviceInManualPhoneSelectionMode = [v23 isDeviceInManualPhoneSelectionMode];
 
-      if (!v24)
+      if (!isDeviceInManualPhoneSelectionMode)
       {
 LABEL_16:
         v25 = +[IDSRegistrationReasonTracker sharedInstance];
         [v25 setPNRReason:5 forUserUniqueIdentifier:v17];
 
         v26 = +[FTUserConfiguration sharedInstance];
-        v27 = [v18 allObjects];
-        [v26 setSelectedPhoneNumberRegistrationSubscriptionLabels:v27];
+        allObjects = [v18 allObjects];
+        [v26 setSelectedPhoneNumberRegistrationSubscriptionLabels:allObjects];
 
-        v28 = [v18 allObjects];
-        v29 = sub_10061E538(v14, v28);
+        allObjects2 = [v18 allObjects];
+        v29 = sub_10061E538(v14, allObjects2);
 
-        (v7)[2](v7, v29, 0);
+        (completionCopy)[2](completionCopy, v29, 0);
 LABEL_17:
 
         goto LABEL_18;
@@ -315,21 +315,21 @@ LABEL_17:
   v10 = 400;
 LABEL_5:
   v11 = [NSError errorWithDomain:v9 code:v10 userInfo:0];
-  v7[2](v7, 0, v11);
+  completionCopy[2](completionCopy, 0, v11);
 LABEL_18:
 }
 
-- (void)unselectSubscription:(id)a3 withCompletion:(id)a4
+- (void)unselectSubscription:(id)subscription withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  subscriptionCopy = subscription;
+  completionCopy = completion;
   if (![(IDSDXPCRegistration *)self onlyAllowReads])
   {
-    if (![v6 subscriptionSlot])
+    if (![subscriptionCopy subscriptionSlot])
     {
-      v12 = [v6 labelID];
+      labelID = [subscriptionCopy labelID];
 
-      if (!v12)
+      if (!labelID)
       {
         v29 = +[IMRGLog sms];
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -364,34 +364,34 @@ LABEL_18:
       v32 = v11;
       v17 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
       v18 = [NSError errorWithDomain:v16 code:100 userInfo:v17];
-      v7[2](v7, 0, v18);
+      completionCopy[2](completionCopy, 0, v18);
       goto LABEL_17;
     }
 
-    v17 = sub_10061F174(v14, v6);
+    v17 = sub_10061F174(v14, subscriptionCopy);
     v19 = [NSMutableSet alloc];
     v20 = +[FTUserConfiguration sharedInstance];
-    v21 = [v20 selectedPhoneNumberRegistrationSubscriptionLabels];
-    v18 = [v19 initWithArray:v21];
+    selectedPhoneNumberRegistrationSubscriptionLabels = [v20 selectedPhoneNumberRegistrationSubscriptionLabels];
+    v18 = [v19 initWithArray:selectedPhoneNumberRegistrationSubscriptionLabels];
 
     [v18 removeObject:v17];
     v22 = +[FTUserConfiguration sharedInstance];
     if (([v22 isDeviceInDualPhoneIdentityMode] & 1) == 0)
     {
       v23 = +[FTUserConfiguration sharedInstance];
-      v24 = [v23 isDeviceInManualPhoneSelectionMode];
+      isDeviceInManualPhoneSelectionMode = [v23 isDeviceInManualPhoneSelectionMode];
 
-      if (v24)
+      if (isDeviceInManualPhoneSelectionMode)
       {
 LABEL_16:
         v25 = +[FTUserConfiguration sharedInstance];
-        v26 = [v18 allObjects];
-        [v25 setSelectedPhoneNumberRegistrationSubscriptionLabels:v26];
+        allObjects = [v18 allObjects];
+        [v25 setSelectedPhoneNumberRegistrationSubscriptionLabels:allObjects];
 
-        v27 = [v18 allObjects];
-        v28 = sub_10061E538(v14, v27);
+        allObjects2 = [v18 allObjects];
+        v28 = sub_10061E538(v14, allObjects2);
 
-        (v7)[2](v7, v28, 0);
+        (completionCopy)[2](completionCopy, v28, 0);
 LABEL_17:
 
         goto LABEL_18;
@@ -414,14 +414,14 @@ LABEL_17:
   v10 = 400;
 LABEL_5:
   v11 = [NSError errorWithDomain:v9 code:v10 userInfo:0];
-  v7[2](v7, 0, v11);
+  completionCopy[2](completionCopy, 0, v11);
 LABEL_18:
 }
 
-- (void)setSelectedSubscriptions:(id)a3 withCompletion:(id)a4
+- (void)setSelectedSubscriptions:(id)subscriptions withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  subscriptionsCopy = subscriptions;
+  completionCopy = completion;
   if ([(IDSDXPCRegistration *)self onlyAllowReads])
   {
     v8 = +[IMRGLog sms];
@@ -431,7 +431,7 @@ LABEL_18:
     }
 
     v9 = [NSError errorWithDomain:IDSPhoneSubscriptionSelectorErrorDomain code:400 userInfo:0];
-    v7[2](v7, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
   }
 
   else
@@ -456,7 +456,7 @@ LABEL_18:
       v42 = v9;
       v14 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
       v15 = [NSError errorWithDomain:v13 code:100 userInfo:v14];
-      v7[2](v7, 0, v15);
+      completionCopy[2](completionCopy, 0, v15);
     }
 
     else
@@ -467,18 +467,18 @@ LABEL_18:
       v37[3] = &unk_100BE29E0;
       v16 = v11;
       v38 = v16;
-      v17 = [v6 __imArrayByApplyingBlock:v37];
+      v17 = [subscriptionsCopy __imArrayByApplyingBlock:v37];
       v18 = v17;
-      if (v17 && (v19 = [v17 count], v19 == objc_msgSend(v6, "count")))
+      if (v17 && (v19 = [v17 count], v19 == objc_msgSend(subscriptionsCopy, "count")))
       {
         v31 = v16;
         v32 = v18;
-        v20 = [v18 __imSetFromArray];
+        __imSetFromArray = [v18 __imSetFromArray];
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v21 = [v20 countByEnumeratingWithState:&v33 objects:v40 count:16];
+        v21 = [__imSetFromArray countByEnumeratingWithState:&v33 objects:v40 count:16];
         if (v21)
         {
           v22 = v21;
@@ -489,7 +489,7 @@ LABEL_18:
             {
               if (*v34 != v23)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(__imSetFromArray);
               }
 
               v25 = *(*(&v33 + 1) + 8 * i);
@@ -497,27 +497,27 @@ LABEL_18:
               [v26 setPNRReason:5 forUserUniqueIdentifier:v25];
             }
 
-            v22 = [v20 countByEnumeratingWithState:&v33 objects:v40 count:16];
+            v22 = [__imSetFromArray countByEnumeratingWithState:&v33 objects:v40 count:16];
           }
 
           while (v22);
         }
 
         v27 = +[FTUserConfiguration sharedInstance];
-        v28 = [v20 allObjects];
-        [v27 setSelectedPhoneNumberRegistrationSubscriptionLabels:v28];
+        allObjects = [__imSetFromArray allObjects];
+        [v27 setSelectedPhoneNumberRegistrationSubscriptionLabels:allObjects];
 
-        v29 = [v20 allObjects];
-        v30 = sub_10061E538(v31, v29);
+        allObjects2 = [__imSetFromArray allObjects];
+        v30 = sub_10061E538(v31, allObjects2);
 
-        (v7)[2](v7, v30, 0);
+        (completionCopy)[2](completionCopy, v30, 0);
         v18 = v32;
       }
 
       else
       {
-        v20 = [NSError errorWithDomain:IDSPhoneSubscriptionSelectorErrorDomain code:200 userInfo:0];
-        v7[2](v7, 0, v20);
+        __imSetFromArray = [NSError errorWithDomain:IDSPhoneSubscriptionSelectorErrorDomain code:200 userInfo:0];
+        completionCopy[2](completionCopy, 0, __imSetFromArray);
       }
 
       v14 = v38;
@@ -525,10 +525,10 @@ LABEL_18:
   }
 }
 
-- (void)removeTemporaryPhoneAlias:(id)a3 withCompletion:(id)a4
+- (void)removeTemporaryPhoneAlias:(id)alias withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  aliasCopy = alias;
+  completionCopy = completion;
   if ([(IDSDXPCRegistration *)self onlyAllowReads])
   {
     v8 = +[IMRGLog sms];
@@ -538,21 +538,21 @@ LABEL_18:
     }
 
     v9 = [NSError errorWithDomain:IDSPhoneSubscriptionSelectorErrorDomain code:400 userInfo:0];
-    v7[2](v7, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
     goto LABEL_22;
   }
 
-  v23 = v7;
+  v23 = completionCopy;
   v10 = +[IMRGLog registration];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v6;
+    v30 = aliasCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Told to remove temporary URI { uri: %@ }", buf, 0xCu);
   }
 
-  v11 = [(IDSDXPCRegistration *)self userStore];
-  v12 = [v11 usersWithRealm:2];
+  userStore = [(IDSDXPCRegistration *)self userStore];
+  v12 = [userStore usersWithRealm:2];
 
   v26 = 0u;
   v27 = 0u;
@@ -566,7 +566,7 @@ LABEL_17:
 
 LABEL_20:
     v18 = [NSError errorWithDomain:IDSPhoneSubscriptionSelectorErrorDomain code:200 userInfo:0];
-    v7 = v23;
+    completionCopy = v23;
     v23[2](v23, 0, v18);
     goto LABEL_21;
   }
@@ -589,9 +589,9 @@ LABEL_9:
     }
 
     v18 = v17;
-    v19 = [v18 phoneNumber];
-    v20 = [v6 unprefixedURI];
-    v21 = [v19 isEqualToString:v20];
+    phoneNumber = [v18 phoneNumber];
+    unprefixedURI = [aliasCopy unprefixedURI];
+    v21 = [phoneNumber isEqualToString:unprefixedURI];
 
     if (v21)
     {
@@ -616,20 +616,20 @@ LABEL_15:
     goto LABEL_20;
   }
 
-  v22 = [(IDSDXPCRegistration *)self userStore];
-  [v22 forceRemoveUser:v18 silently:1];
+  userStore2 = [(IDSDXPCRegistration *)self userStore];
+  [userStore2 forceRemoveUser:v18 silently:1];
 
-  v7 = v23;
+  completionCopy = v23;
   v23[2](v23, 1, 0);
 LABEL_21:
 
 LABEL_22:
 }
 
-- (void)disableTemporaryPhoneAlias:(id)a3 withCompletion:(id)a4
+- (void)disableTemporaryPhoneAlias:(id)alias withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  aliasCopy = alias;
+  completionCopy = completion;
   if ([(IDSDXPCRegistration *)self onlyAllowReads])
   {
     v8 = +[IMRGLog sms];
@@ -639,21 +639,21 @@ LABEL_22:
     }
 
     v9 = [NSError errorWithDomain:IDSPhoneSubscriptionSelectorErrorDomain code:400 userInfo:0];
-    v7[2](v7, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
     goto LABEL_25;
   }
 
-  v29 = v7;
+  v29 = completionCopy;
   v10 = +[IMRGLog registration];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v6;
+    v36 = aliasCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Told to disable temporary URI { uri: %@ }", buf, 0xCu);
   }
 
-  v11 = [(IDSDXPCRegistration *)self userStore];
-  v12 = [v11 usersWithRealm:2];
+  userStore = [(IDSDXPCRegistration *)self userStore];
+  v12 = [userStore usersWithRealm:2];
 
   v32 = 0u;
   v33 = 0u;
@@ -667,7 +667,7 @@ LABEL_17:
 
 LABEL_21:
     v18 = [NSError errorWithDomain:IDSPhoneSubscriptionSelectorErrorDomain code:200 userInfo:0];
-    v7 = v29;
+    completionCopy = v29;
     v29[2](v29, 0, v18);
     goto LABEL_24;
   }
@@ -690,9 +690,9 @@ LABEL_9:
     }
 
     v18 = v17;
-    v19 = [v18 phoneNumber];
-    v20 = [v6 unprefixedURI];
-    v21 = [v19 isEqualToString:v20];
+    phoneNumber = [v18 phoneNumber];
+    unprefixedURI = [aliasCopy unprefixedURI];
+    v21 = [phoneNumber isEqualToString:unprefixedURI];
 
     if (v21)
     {
@@ -717,10 +717,10 @@ LABEL_15:
     goto LABEL_21;
   }
 
-  v22 = [(IDSDXPCRegistration *)self userStore];
-  v23 = [v22 propertiesForUser:v18];
+  userStore2 = [(IDSDXPCRegistration *)self userStore];
+  v23 = [userStore2 propertiesForUser:v18];
   v24 = v23;
-  v7 = v29;
+  completionCopy = v29;
   if (v23)
   {
     v25 = v23;
@@ -735,8 +735,8 @@ LABEL_15:
 
   v27 = [(IDSUserProperties *)v26 propsByUpdatingDisableRegistration:1];
 
-  v28 = [(IDSDXPCRegistration *)self userStore];
-  [v28 setProperties:v27 forUser:v18];
+  userStore3 = [(IDSDXPCRegistration *)self userStore];
+  [userStore3 setProperties:v27 forUser:v18];
 
   v29[2](v29, 1, 0);
 LABEL_24:
@@ -744,10 +744,10 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)enableTemporaryPhoneAlias:(id)a3 withCompletion:(id)a4
+- (void)enableTemporaryPhoneAlias:(id)alias withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  aliasCopy = alias;
+  completionCopy = completion;
   if ([(IDSDXPCRegistration *)self onlyAllowReads])
   {
     v8 = +[IMRGLog sms];
@@ -757,21 +757,21 @@ LABEL_25:
     }
 
     v9 = [NSError errorWithDomain:IDSPhoneSubscriptionSelectorErrorDomain code:400 userInfo:0];
-    v7[2](v7, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
     goto LABEL_25;
   }
 
-  v29 = v7;
+  v29 = completionCopy;
   v10 = +[IMRGLog registration];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v6;
+    v36 = aliasCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Told to enable temporary URI { uri: %@ }", buf, 0xCu);
   }
 
-  v11 = [(IDSDXPCRegistration *)self userStore];
-  v12 = [v11 usersWithRealm:2];
+  userStore = [(IDSDXPCRegistration *)self userStore];
+  v12 = [userStore usersWithRealm:2];
 
   v32 = 0u;
   v33 = 0u;
@@ -785,7 +785,7 @@ LABEL_17:
 
 LABEL_21:
     v18 = [NSError errorWithDomain:IDSPhoneSubscriptionSelectorErrorDomain code:200 userInfo:0];
-    v7 = v29;
+    completionCopy = v29;
     v29[2](v29, 0, v18);
     goto LABEL_24;
   }
@@ -808,9 +808,9 @@ LABEL_9:
     }
 
     v18 = v17;
-    v19 = [v18 phoneNumber];
-    v20 = [v6 unprefixedURI];
-    v21 = [v19 isEqualToString:v20];
+    phoneNumber = [v18 phoneNumber];
+    unprefixedURI = [aliasCopy unprefixedURI];
+    v21 = [phoneNumber isEqualToString:unprefixedURI];
 
     if (v21)
     {
@@ -835,10 +835,10 @@ LABEL_15:
     goto LABEL_21;
   }
 
-  v22 = [(IDSDXPCRegistration *)self userStore];
-  v23 = [v22 propertiesForUser:v18];
+  userStore2 = [(IDSDXPCRegistration *)self userStore];
+  v23 = [userStore2 propertiesForUser:v18];
   v24 = v23;
-  v7 = v29;
+  completionCopy = v29;
   if (v23)
   {
     v25 = v23;
@@ -853,8 +853,8 @@ LABEL_15:
 
   v27 = [(IDSUserProperties *)v26 propsByUpdatingDisableRegistration:0];
 
-  v28 = [(IDSDXPCRegistration *)self userStore];
-  [v28 setProperties:v27 forUser:v18];
+  userStore3 = [(IDSDXPCRegistration *)self userStore];
+  [userStore3 setProperties:v27 forUser:v18];
 
   v29[2](v29, 1, 0);
 LABEL_24:
@@ -862,14 +862,14 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)constructRAResponseDictionaryForServices:(id)a3 completionHandler:(id)a4
+- (void)constructRAResponseDictionaryForServices:(id)services completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  servicesCopy = services;
   v7 = +[IDSAccountSync sharedInstance];
-  v8 = [v7 constructRAResponseDictionary:v6];
+  v8 = [v7 constructRAResponseDictionary:servicesCopy];
 
-  v5[2](v5, v8);
+  handlerCopy[2](handlerCopy, v8);
 }
 
 @end

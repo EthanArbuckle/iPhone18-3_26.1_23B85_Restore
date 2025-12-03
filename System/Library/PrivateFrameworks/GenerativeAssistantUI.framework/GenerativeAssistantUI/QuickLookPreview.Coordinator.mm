@@ -1,10 +1,10 @@
 @interface QuickLookPreview.Coordinator
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
 @end
 
 @implementation QuickLookPreview.Coordinator
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
   v5 = sub_24FEDC9E4();
   v6 = *(v5 - 8);

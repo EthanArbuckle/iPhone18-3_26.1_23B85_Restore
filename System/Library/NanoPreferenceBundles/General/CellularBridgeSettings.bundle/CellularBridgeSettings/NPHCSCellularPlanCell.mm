@@ -1,32 +1,32 @@
 @interface NPHCSCellularPlanCell
-+ (id)_planStatusDescriptionForPlanPropertyStatus:(int)a3;
-+ (id)cellForTableView:(id)a3 reuseIdentifier:(id)a4 cellularPlanItem:(id)a5 hasMultipleActiveSIM:(BOOL)a6;
-- (NPHCSCellularPlanCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (id)_planStatusDescriptionForPlanPropertyStatus:(int)status;
++ (id)cellForTableView:(id)view reuseIdentifier:(id)identifier cellularPlanItem:(id)item hasMultipleActiveSIM:(BOOL)m;
+- (NPHCSCellularPlanCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
 @implementation NPHCSCellularPlanCell
 
-- (NPHCSCellularPlanCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (NPHCSCellularPlanCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = NPHCSCellularPlanCell;
-  return [(NPHCSCellularPlanCell *)&v5 initWithStyle:a3 reuseIdentifier:a4];
+  return [(NPHCSCellularPlanCell *)&v5 initWithStyle:style reuseIdentifier:identifier];
 }
 
-+ (id)cellForTableView:(id)a3 reuseIdentifier:(id)a4 cellularPlanItem:(id)a5 hasMultipleActiveSIM:(BOOL)a6
++ (id)cellForTableView:(id)view reuseIdentifier:(id)identifier cellularPlanItem:(id)item hasMultipleActiveSIM:(BOOL)m
 {
-  v6 = a6;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a3 dequeueReusableCellWithIdentifier:v9];
+  mCopy = m;
+  identifierCopy = identifier;
+  itemCopy = item;
+  v11 = [view dequeueReusableCellWithIdentifier:identifierCopy];
   if (!v11)
   {
-    v11 = [[NPHCSCellularPlanCell alloc] initWithStyle:3 reuseIdentifier:v9];
+    v11 = [[NPHCSCellularPlanCell alloc] initWithStyle:3 reuseIdentifier:identifierCopy];
   }
 
   v12 = +[NPHCellularBridgeUIManager sharedInstance];
-  v13 = [v12 displayNameForCellularPlan:v10];
+  v13 = [v12 displayNameForCellularPlan:itemCopy];
 
   v14 = v13;
   if (!v13)
@@ -35,12 +35,12 @@
     v14 = [v12 localizedStringForKey:@"WAITING_FOR_CARRIER_NAME" value:&stru_1CD90 table:0];
   }
 
-  v15 = [(NPHCSCellularPlanCell *)v11 textLabel];
-  [v15 setText:v14];
+  textLabel = [(NPHCSCellularPlanCell *)v11 textLabel];
+  [textLabel setText:v14];
 
   if (v13)
   {
-    if (!v10)
+    if (!itemCopy)
     {
       goto LABEL_10;
     }
@@ -49,7 +49,7 @@
   else
   {
 
-    if (!v10)
+    if (!itemCopy)
     {
 LABEL_10:
       v18 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
@@ -61,8 +61,8 @@ LABEL_10:
     }
   }
 
-  v16 = [v10 plan];
-  v17 = +[NPHCSCellularPlanCell _showStatusSpinnerForPlanStatus:](NPHCSCellularPlanCell, "_showStatusSpinnerForPlanStatus:", [v16 status]);
+  plan = [itemCopy plan];
+  v17 = +[NPHCSCellularPlanCell _showStatusSpinnerForPlanStatus:](NPHCSCellularPlanCell, "_showStatusSpinnerForPlanStatus:", [plan status]);
 
   if (v17)
   {
@@ -72,28 +72,28 @@ LABEL_10:
   [(NPHCSCellularPlanCell *)v11 setAccessoryType:4];
   v19 = 0;
 LABEL_12:
-  v20 = [v10 plan];
-  v21 = +[NPHCSCellularPlanCell _planStatusDescriptionForPlanPropertyStatus:](NPHCSCellularPlanCell, "_planStatusDescriptionForPlanPropertyStatus:", [v20 status]);
+  plan2 = [itemCopy plan];
+  v21 = +[NPHCSCellularPlanCell _planStatusDescriptionForPlanPropertyStatus:](NPHCSCellularPlanCell, "_planStatusDescriptionForPlanPropertyStatus:", [plan2 status]);
 
-  if (v10)
+  if (itemCopy)
   {
     if (((v21 == 0) & ~v19) != 0)
     {
-      if (!v6)
+      if (!mCopy)
       {
         goto LABEL_24;
       }
 
-      v25 = [v10 phoneNumber];
-      v26 = [(NPHCSCellularPlanCell *)v11 detailTextLabel];
-      [v26 setText:v25];
+      phoneNumber = [itemCopy phoneNumber];
+      detailTextLabel = [(NPHCSCellularPlanCell *)v11 detailTextLabel];
+      [detailTextLabel setText:phoneNumber];
 
 LABEL_20:
       v27 = [UIImage systemImageNamed:@"checkmark"];
-      v28 = [(NPHCSCellularPlanCell *)v11 imageView];
-      [v28 setImage:v27];
+      imageView = [(NPHCSCellularPlanCell *)v11 imageView];
+      [imageView setImage:v27];
 
-      if ([v10 isSelected])
+      if ([itemCopy isSelected])
       {
         v29 = 1.0;
       }
@@ -103,25 +103,25 @@ LABEL_20:
         v29 = 0.0;
       }
 
-      v30 = [(NPHCSCellularPlanCell *)v11 imageView];
-      [v30 setAlpha:v29];
+      imageView2 = [(NPHCSCellularPlanCell *)v11 imageView];
+      [imageView2 setAlpha:v29];
 
       goto LABEL_24;
     }
 
-    v22 = [(NPHCSCellularPlanCell *)v11 detailTextLabel];
-    [v22 setText:v21];
+    detailTextLabel2 = [(NPHCSCellularPlanCell *)v11 detailTextLabel];
+    [detailTextLabel2 setText:v21];
   }
 
   else
   {
-    v22 = [NSBundle bundleForClass:objc_opt_class()];
-    v23 = [v22 localizedStringForKey:@"WAITING_FOR_CARRIER_LOADING_PLAN_INFORMATION" value:&stru_1CD90 table:0];
-    v24 = [(NPHCSCellularPlanCell *)v11 detailTextLabel];
-    [v24 setText:v23];
+    detailTextLabel2 = [NSBundle bundleForClass:objc_opt_class()];
+    v23 = [detailTextLabel2 localizedStringForKey:@"WAITING_FOR_CARRIER_LOADING_PLAN_INFORMATION" value:&stru_1CD90 table:0];
+    detailTextLabel3 = [(NPHCSCellularPlanCell *)v11 detailTextLabel];
+    [detailTextLabel3 setText:v23];
   }
 
-  if (v6)
+  if (mCopy)
   {
     goto LABEL_20;
   }
@@ -137,23 +137,23 @@ LABEL_24:
   v6.super_class = NPHCSCellularPlanCell;
   [(NPHCSCellularPlanCell *)&v6 prepareForReuse];
   [(NPHCSCellularPlanCell *)self setAccessoryView:0];
-  v3 = [(NPHCSCellularPlanCell *)self imageView];
-  [v3 setImage:0];
+  imageView = [(NPHCSCellularPlanCell *)self imageView];
+  [imageView setImage:0];
 
-  v4 = [(NPHCSCellularPlanCell *)self textLabel];
-  [v4 setText:0];
+  textLabel = [(NPHCSCellularPlanCell *)self textLabel];
+  [textLabel setText:0];
 
-  v5 = [(NPHCSCellularPlanCell *)self detailTextLabel];
-  [v5 setText:0];
+  detailTextLabel = [(NPHCSCellularPlanCell *)self detailTextLabel];
+  [detailTextLabel setText:0];
 }
 
-+ (id)_planStatusDescriptionForPlanPropertyStatus:(int)a3
++ (id)_planStatusDescriptionForPlanPropertyStatus:(int)status
 {
-  if (a3 > 5)
+  if (status > 5)
   {
-    if (a3 > 9)
+    if (status > 9)
     {
-      switch(a3)
+      switch(status)
       {
         case 10:
           v3 = @"CELLULAR_PLAN_STATUS_SWITCHING";
@@ -169,15 +169,15 @@ LABEL_24:
       goto LABEL_19;
     }
 
-    if ((a3 - 6) >= 2)
+    if ((status - 6) >= 2)
     {
-      if (a3 == 8)
+      if (status == 8)
       {
         v3 = @"CELLULAR_PLAN_STATUS_DELETING";
         goto LABEL_26;
       }
 
-      if (a3 == 9)
+      if (status == 9)
       {
         v3 = @"CELLULAR_PLAN_STATUS_WAITING";
 LABEL_26:
@@ -198,20 +198,20 @@ LABEL_11:
   }
 
   v4 = 0;
-  if (a3 <= 2)
+  if (status <= 2)
   {
-    if (!a3)
+    if (!status)
     {
       goto LABEL_27;
     }
 
-    if (a3 == 1)
+    if (status == 1)
     {
       v3 = @"CELLULAR_PLAN_STATUS_EXPIRED";
       goto LABEL_26;
     }
 
-    if (a3 != 2)
+    if (status != 2)
     {
       goto LABEL_19;
     }
@@ -219,13 +219,13 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (a3 == 3)
+  if (status == 3)
   {
     v3 = @"CELLULAR_PLAN_STATUS_DEVICE_MISMATCH";
     goto LABEL_26;
   }
 
-  if (a3 == 4)
+  if (status == 4)
   {
     v3 = @"CELLULAR_PLAN_STATUS_PROVISIONING_ERROR";
     goto LABEL_26;

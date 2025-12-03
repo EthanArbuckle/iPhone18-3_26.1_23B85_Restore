@@ -1,17 +1,17 @@
 @interface PHAQuestionController
-- (BOOL)generateQuestionsWithOptions:(int64_t)a3 limit:(unint64_t)a4 handleQuestionVersionBump:(BOOL)a5 updateInvalidQuestions:(BOOL)a6 progress:(id)a7;
-- (BOOL)generateQuestionsWithOptions:(int64_t)a3 progress:(id)a4;
-- (BOOL)persistQuestions:(id)a3;
-- (PHAQuestionController)initWithGraphManager:(id)a3;
-- (double)importanceOfQuestionType:(id)a3;
+- (BOOL)generateQuestionsWithOptions:(int64_t)options limit:(unint64_t)limit handleQuestionVersionBump:(BOOL)bump updateInvalidQuestions:(BOOL)questions progress:(id)progress;
+- (BOOL)generateQuestionsWithOptions:(int64_t)options progress:(id)progress;
+- (BOOL)persistQuestions:(id)questions;
+- (PHAQuestionController)initWithGraphManager:(id)manager;
+- (double)importanceOfQuestionType:(id)type;
 - (id)allQuestionFactories;
-- (id)questionFactoriesForOptions:(int64_t)a3;
-- (id)selectedQuestionsFromSortedQuestionsByQuestionType:(id)a3 withLimit:(unint64_t)a4;
-- (void)_handleKVSQuestionsUpdateIfNeededWithProgressBlock:(id)a3;
-- (void)_handleQuestionVersionBumpIfNeededWithProgressBlock:(id)a3;
-- (void)_syncAnsweredQuestionsWithProgressBlock:(id)a3;
-- (void)_updateInvalidQuestionsWithProgressBlock:(id)a3;
-- (void)assignScoreToQuestions:(id)a3;
+- (id)questionFactoriesForOptions:(int64_t)options;
+- (id)selectedQuestionsFromSortedQuestionsByQuestionType:(id)type withLimit:(unint64_t)limit;
+- (void)_handleKVSQuestionsUpdateIfNeededWithProgressBlock:(id)block;
+- (void)_handleQuestionVersionBumpIfNeededWithProgressBlock:(id)block;
+- (void)_syncAnsweredQuestionsWithProgressBlock:(id)block;
+- (void)_updateInvalidQuestionsWithProgressBlock:(id)block;
+- (void)assignScoreToQuestions:(id)questions;
 - (void)removeCurrentKVSData;
 @end
 
@@ -25,15 +25,15 @@
   [(NSUbiquitousKeyValueStore *)store synchronize];
 }
 
-- (void)_handleKVSQuestionsUpdateIfNeededWithProgressBlock:(id)a3
+- (void)_handleKVSQuestionsUpdateIfNeededWithProgressBlock:(id)block
 {
   v150 = *MEMORY[0x277D85DE8];
-  v118 = a3;
-  v4 = [(PHAQuestionController *)self loggingConnection];
-  v5 = os_signpost_id_generate(v4);
+  blockCopy = block;
+  loggingConnection = [(PHAQuestionController *)self loggingConnection];
+  v5 = os_signpost_id_generate(loggingConnection);
   info = 0;
   mach_timebase_info(&info);
-  v6 = v4;
+  v6 = loggingConnection;
   v7 = v6;
   if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
   {
@@ -42,8 +42,8 @@
   }
 
   v8 = mach_absolute_time();
-  v9 = [(PHAQuestionController *)self currentQuestionsKVSData];
-  v10 = [v9 count];
+  currentQuestionsKVSData = [(PHAQuestionController *)self currentQuestionsKVSData];
+  v10 = [currentQuestionsKVSData count];
   if (!v10)
   {
     goto LABEL_106;
@@ -60,8 +60,8 @@
   v137 = 0u;
   v138 = 0u;
   v139 = 0u;
-  v100 = v9;
-  obj = v9;
+  v100 = currentQuestionsKVSData;
+  obj = currentQuestionsKVSData;
   v12 = [obj countByEnumeratingWithState:&v136 objects:v149 count:16];
   if (v12)
   {
@@ -80,23 +80,23 @@
         v17 = *(*(&v136 + 1) + 8 * i);
         v18 = [v17 objectForKeyedSubscript:@"syncedEntityIdentifier"];
         v19 = [v17 objectForKeyedSubscript:@"entityType"];
-        v20 = [v19 unsignedIntValue];
+        unsignedIntValue = [v19 unsignedIntValue];
 
         if (v18)
         {
-          if ((v20 & 0xFFF7) == 0 || v20 == 3)
+          if ((unsignedIntValue & 0xFFF7) == 0 || unsignedIntValue == 3)
           {
             [v115 addObject:v18];
           }
         }
 
         v15 = v15 + v11 * 0.1;
-        v118[2](v118, &v140, v15);
+        blockCopy[2](blockCopy, &v140, v15);
         v22 = v140;
 
         if (v22)
         {
-          v23 = obj;
+          photoLibrary = obj;
           goto LABEL_105;
         }
       }
@@ -116,11 +116,11 @@
     v15 = 0.0;
   }
 
-  v23 = [(PGManager *)self->_graphManager photoLibrary];
-  v24 = [v23 librarySpecificFetchOptions];
+  photoLibrary = [(PGManager *)self->_graphManager photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
   v25 = MEMORY[0x277CD97A8];
-  v26 = [v115 allObjects];
-  v27 = [v25 fetchAssetsWithCloudIdentifiers:v26 options:v24];
+  allObjects = [v115 allObjects];
+  v27 = [v25 fetchAssetsWithCloudIdentifiers:allObjects options:librarySpecificFetchOptions];
 
   if (![v27 count])
   {
@@ -138,12 +138,12 @@
     }
   }
 
-  v118[2](v118, &v140, 0.2);
+  blockCopy[2](blockCopy, &v140, 0.2);
   if ((v140 & 1) == 0)
   {
-    v91 = v24;
-    v92 = v23;
-    v29 = [MEMORY[0x277CBEB38] dictionary];
+    v91 = librarySpecificFetchOptions;
+    v92 = photoLibrary;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v132 = 0u;
     v133 = 0u;
     v134 = 0u;
@@ -165,9 +165,9 @@
           }
 
           v35 = *(*(&v132 + 1) + 8 * j);
-          v36 = [v35 cloudIdentifier];
-          v37 = [v35 uuid];
-          [v29 setObject:v37 forKeyedSubscript:v36];
+          cloudIdentifier = [v35 cloudIdentifier];
+          uuid = [v35 uuid];
+          [dictionary setObject:uuid forKeyedSubscript:cloudIdentifier];
         }
 
         v32 = [v30 countByEnumeratingWithState:&v132 objects:v148 count:16];
@@ -176,22 +176,22 @@
       while (v32);
     }
 
-    v118[2](v118, &v140, 0.3);
-    v23 = v92;
+    blockCopy[2](blockCopy, &v140, 0.3);
+    photoLibrary = v92;
     if (v140)
     {
 LABEL_103:
 
       v7 = v102;
       v27 = v90;
-      v24 = v91;
+      librarySpecificFetchOptions = v91;
       goto LABEL_104;
     }
 
-    v93 = [MEMORY[0x277CBEB38] dictionary];
-    v94 = [MEMORY[0x277CBEB18] array];
-    v99 = [MEMORY[0x277CBEB18] array];
-    v101 = [v92 librarySpecificFetchOptions];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    librarySpecificFetchOptions2 = [v92 librarySpecificFetchOptions];
     v128 = 0u;
     v129 = 0u;
     v130 = 0u;
@@ -214,13 +214,13 @@ LABEL_103:
           v40 = objc_autoreleasePoolPush();
           v41 = [v39 objectForKeyedSubscript:@"syncedEntityIdentifier"];
           v42 = [v39 objectForKeyedSubscript:@"type"];
-          v43 = [v42 unsignedIntValue];
+          unsignedIntValue2 = [v42 unsignedIntValue];
 
           v44 = [v39 objectForKeyedSubscript:@"entityType"];
-          v45 = [v44 unsignedIntValue];
+          unsignedIntValue3 = [v44 unsignedIntValue];
 
           v46 = [v39 objectForKeyedSubscript:@"state"];
-          v47 = [v46 unsignedIntValue];
+          unsignedIntValue4 = [v46 unsignedIntValue];
 
           v48 = [v39 objectForKeyedSubscript:@"additionalInfo"];
           obja = [v39 objectForKeyedSubscript:@"creationDate"];
@@ -231,22 +231,22 @@ LABEL_103:
 
           v52 = v41;
           v53 = v52;
-          v54 = v45;
-          if ((v45 & 0xFFF7) != 0 && (v55 = v52, v45 != 3) || ([v29 objectForKeyedSubscript:v52], v55 = objc_claimAutoreleasedReturnValue(), v53, v54 = v45, v55))
+          v54 = unsignedIntValue3;
+          if ((unsignedIntValue3 & 0xFFF7) != 0 && (v55 = v52, unsignedIntValue3 != 3) || ([dictionary objectForKeyedSubscript:v52], v55 = objc_claimAutoreleasedReturnValue(), v53, v54 = unsignedIntValue3, v55))
           {
-            v107 = v45;
-            v108 = v43;
-            v111 = v47;
+            v107 = unsignedIntValue3;
+            v108 = unsignedIntValue2;
+            v111 = unsignedIntValue4;
             v112 = v53;
             context = v40;
             v110 = k;
             v114 = v55;
-            v105 = v43;
+            v105 = unsignedIntValue2;
             v106 = v54;
-            v56 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type = %d AND entityType = %d AND entityIdentifier = %@", v43, v54, v55];
-            [v101 setPredicate:v56];
+            v56 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type = %d AND entityType = %d AND entityIdentifier = %@", unsignedIntValue2, v54, v55];
+            [librarySpecificFetchOptions2 setPredicate:v56];
 
-            v57 = [MEMORY[0x277CD9970] fetchQuestionsWithOptions:v101 validQuestionsOnly:0];
+            v57 = [MEMORY[0x277CD9970] fetchQuestionsWithOptions:librarySpecificFetchOptions2 validQuestionsOnly:0];
             v124 = 0u;
             v125 = 0u;
             v126 = 0u;
@@ -267,14 +267,14 @@ LABEL_47:
                 }
 
                 v63 = *(*(&v124 + 1) + 8 * v62);
-                v64 = [v63 additionalInfo];
-                if (![v64 count] && !objc_msgSend(v48, "count"))
+                additionalInfo = [v63 additionalInfo];
+                if (![additionalInfo count] && !objc_msgSend(v48, "count"))
                 {
                   break;
                 }
 
-                v65 = [v63 additionalInfo];
-                v66 = [v65 isEqualToDictionary:v48];
+                additionalInfo2 = [v63 additionalInfo];
+                v66 = [additionalInfo2 isEqualToDictionary:v48];
 
                 if (v66)
                 {
@@ -301,10 +301,10 @@ LABEL_62:
                 goto LABEL_70;
               }
 
-              v70 = [v69 state];
-              if (v111 && v70 != v111)
+              state = [v69 state];
+              if (v111 && state != v111)
               {
-                v71 = [v69 uuid];
+                uuid2 = [v69 uuid];
                 if (__PXLog_genericOnceToken != -1)
                 {
                   dispatch_once(&__PXLog_genericOnceToken, &__block_literal_global_398);
@@ -314,14 +314,14 @@ LABEL_62:
                 if (os_log_type_enabled(__PXLog_genericOSLog, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412290;
-                  *v143 = v71;
+                  *v143 = uuid2;
                   _os_log_impl(&dword_22FA28000, v72, OS_LOG_TYPE_INFO, "[Questions] Updating question state for question %@", buf, 0xCu);
                 }
 
                 v73 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v111];
-                [v93 setObject:v73 forKeyedSubscript:v71];
+                [dictionary2 setObject:v73 forKeyedSubscript:uuid2];
 
-                [v94 addObject:v69];
+                [array addObject:v69];
                 goto LABEL_75;
               }
             }
@@ -351,31 +351,31 @@ LABEL_70:
               }
 
               v75 = [v109 objectForKeyedSubscript:@"displayType"];
-              v76 = [v75 unsignedIntValue];
+              unsignedIntValue5 = [v75 unsignedIntValue];
 
-              v71 = objc_alloc_init(MEMORY[0x277D3BC00]);
-              [v71 setEntityIdentifier:v114];
-              [v71 setType:v108];
-              [v71 setState:v111];
-              [v71 setEntityType:v107];
-              [v71 setDisplayType:v76];
-              [v71 setScore:v51];
-              [v71 setAdditionalInfo:v48];
-              [v71 setCreationDate:obja];
-              [v99 addObject:v71];
+              uuid2 = objc_alloc_init(MEMORY[0x277D3BC00]);
+              [uuid2 setEntityIdentifier:v114];
+              [uuid2 setType:v108];
+              [uuid2 setState:v111];
+              [uuid2 setEntityType:v107];
+              [uuid2 setDisplayType:unsignedIntValue5];
+              [uuid2 setScore:v51];
+              [uuid2 setAdditionalInfo:v48];
+              [uuid2 setCreationDate:obja];
+              [array2 addObject:uuid2];
               v69 = 0;
 LABEL_75:
             }
 
             v15 = v15 + v11 * 0.6;
-            v118[2](v118, &v140, v15);
+            blockCopy[2](blockCopy, &v140, v15);
             v77 = v140;
 
             if (v77)
             {
 
               objc_autoreleasePoolPop(context);
-              v23 = v92;
+              photoLibrary = v92;
               goto LABEL_102;
             }
 
@@ -416,8 +416,8 @@ LABEL_75:
       }
     }
 
-    v23 = v92;
-    if (![v99 count] && !objc_msgSend(v94, "count"))
+    photoLibrary = v92;
+    if (![array2 count] && !objc_msgSend(array, "count"))
     {
 LABEL_96:
       v85 = mach_absolute_time();
@@ -440,7 +440,7 @@ LABEL_96:
         _os_log_impl(&dword_22FA28000, v89, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
       }
 
-      v118[2](v118, &v140, 1.0);
+      blockCopy[2](blockCopy, &v140, 1.0);
 LABEL_102:
 
       goto LABEL_103;
@@ -450,9 +450,9 @@ LABEL_102:
     v120[1] = 3221225472;
     v120[2] = __76__PHAQuestionController__handleKVSQuestionsUpdateIfNeededWithProgressBlock___block_invoke_403;
     v120[3] = &unk_2788B2E50;
-    v121 = v94;
-    v122 = v93;
-    v123 = v99;
+    v121 = array;
+    v122 = dictionary2;
+    v123 = array2;
     v119 = 0;
     v78 = [v92 performChangesAndWait:v120 error:&v119];
     v79 = v119;
@@ -506,7 +506,7 @@ LABEL_95:
 LABEL_104:
 
 LABEL_105:
-  v9 = v100;
+  currentQuestionsKVSData = v100;
 
 LABEL_106:
 }
@@ -635,15 +635,15 @@ uint64_t __76__PHAQuestionController__handleKVSQuestionsUpdateIfNeededWithProgre
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_syncAnsweredQuestionsWithProgressBlock:(id)a3
+- (void)_syncAnsweredQuestionsWithProgressBlock:(id)block
 {
   v84 = *MEMORY[0x277D85DE8];
-  v65 = a3;
-  v4 = [(PHAQuestionController *)self loggingConnection];
-  v5 = os_signpost_id_generate(v4);
+  blockCopy = block;
+  loggingConnection = [(PHAQuestionController *)self loggingConnection];
+  v5 = os_signpost_id_generate(loggingConnection);
   info = 0;
   mach_timebase_info(&info);
-  v6 = v4;
+  v6 = loggingConnection;
   v7 = v6;
   v60 = v5 - 1;
   if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
@@ -655,13 +655,13 @@ uint64_t __76__PHAQuestionController__handleKVSQuestionsUpdateIfNeededWithProgre
   spid = v5;
 
   v56 = mach_absolute_time();
-  v61 = self;
-  v8 = [(PGManager *)self->_graphManager photoLibrary];
-  v9 = [v8 librarySpecificFetchOptions];
+  selfCopy = self;
+  photoLibrary = [(PGManager *)self->_graphManager photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
   v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"entityType != %d", 7];
-  [v9 setPredicate:v10];
+  [librarySpecificFetchOptions setPredicate:v10];
 
-  v11 = [MEMORY[0x277CD9970] fetchAnsweredQuestionsWithOptions:v9 validQuestionsOnly:1];
+  v11 = [MEMORY[0x277CD9970] fetchAnsweredQuestionsWithOptions:librarySpecificFetchOptions validQuestionsOnly:1];
   v12 = [v11 count];
   if (!v12)
   {
@@ -669,12 +669,12 @@ uint64_t __76__PHAQuestionController__handleKVSQuestionsUpdateIfNeededWithProgre
   }
 
   v13 = v12;
-  v57 = v9;
-  v58 = v8;
+  v57 = librarySpecificFetchOptions;
+  v58 = photoLibrary;
   v59 = v7;
   v76 = 0;
-  v67 = [v8 librarySpecificFetchOptions];
-  [v67 setFetchLimit:1];
+  librarySpecificFetchOptions2 = [photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions2 setFetchLimit:1];
   [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v11, "count")}];
   v64 = v63 = v11;
   v72 = 0u;
@@ -707,10 +707,10 @@ uint64_t __76__PHAQuestionController__handleKVSQuestionsUpdateIfNeededWithProgre
 
       v20 = *(*(&v72 + 1) + 8 * v19);
       v21 = objc_autoreleasePoolPush();
-      v22 = [v20 entityIdentifier];
+      entityIdentifier = [v20 entityIdentifier];
       if ([v20 entityType] && objc_msgSend(v20, "entityType") != 3 && objc_msgSend(v20, "entityType") != 8)
       {
-        v28 = v22;
+        cloudIdentifier = entityIdentifier;
         goto LABEL_21;
       }
 
@@ -720,24 +720,24 @@ uint64_t __76__PHAQuestionController__handleKVSQuestionsUpdateIfNeededWithProgre
       }
 
       v23 = MEMORY[0x277CD97A8];
-      v24 = [v20 entityIdentifier];
-      v82 = v24;
+      entityIdentifier2 = [v20 entityIdentifier];
+      v82 = entityIdentifier2;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v82 count:1];
-      v26 = [v23 fetchAssetsWithLocalIdentifiers:v25 options:v67];
-      v27 = [v26 firstObject];
+      v26 = [v23 fetchAssetsWithLocalIdentifiers:v25 options:librarySpecificFetchOptions2];
+      firstObject = [v26 firstObject];
 
-      v28 = [v27 cloudIdentifier];
+      cloudIdentifier = [firstObject cloudIdentifier];
 
-      if ([v28 length])
+      if ([cloudIdentifier length])
       {
 
 LABEL_21:
-        v33 = [v20 additionalInfo];
-        v34 = v33;
+        additionalInfo = [v20 additionalInfo];
+        v34 = additionalInfo;
         v35 = MEMORY[0x277CBEC10];
-        if (v33)
+        if (additionalInfo)
         {
-          v35 = v33;
+          v35 = additionalInfo;
         }
 
         v36 = v35;
@@ -751,7 +751,7 @@ LABEL_21:
           v36 = v37;
         }
 
-        v79[0] = v28;
+        v79[0] = cloudIdentifier;
         v78[0] = @"syncedEntityIdentifier";
         v78[1] = @"type";
         v38 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v20, "type")}];
@@ -774,21 +774,21 @@ LABEL_21:
         v43 = [v42 numberWithDouble:?];
         v79[6] = v43;
         v78[7] = @"creationDate";
-        v44 = [v20 creationDate];
-        v79[7] = v44;
+        creationDate = [v20 creationDate];
+        v79[7] = creationDate;
         v45 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v79 forKeys:v78 count:8];
 
         if ([MEMORY[0x277CCAC58] propertyList:v45 isValidForFormat:200])
         {
           [v64 addObject:v45];
           v18 = v16 + v18;
-          v65[2](v65, &v76, v18);
+          blockCopy[2](blockCopy, &v76, v18);
           v11 = v63;
           if (v76)
           {
 
             objc_autoreleasePoolPop(context);
-            v8 = v58;
+            photoLibrary = v58;
             v7 = v59;
             goto LABEL_41;
           }
@@ -805,12 +805,12 @@ LABEL_21:
           if (os_log_type_enabled(__PXLog_genericOSLog, OS_LOG_TYPE_ERROR))
           {
             v47 = v46;
-            v48 = [v20 type];
-            v49 = [v20 uuid];
+            type = [v20 type];
+            uuid = [v20 uuid];
             *buf = 67109378;
-            *v81 = v48;
+            *v81 = type;
             *&v81[4] = 2112;
-            *&v81[6] = v49;
+            *&v81[6] = uuid;
             _os_log_error_impl(&dword_22FA28000, v47, OS_LOG_TYPE_ERROR, "[Questions] questionDataFormatValid == NO, not syncing question. Question Type: %d. Question UUID: %@", buf, 0x12u);
           }
         }
@@ -821,7 +821,7 @@ LABEL_21:
         goto LABEL_33;
       }
 
-      v71 = v27;
+      v71 = firstObject;
       if (__PXLog_genericOnceToken != -1)
       {
         dispatch_once(&__PXLog_genericOnceToken, &__block_literal_global_354);
@@ -831,18 +831,18 @@ LABEL_21:
       if (os_log_type_enabled(__PXLog_genericOSLog, OS_LOG_TYPE_DEFAULT))
       {
         v30 = v29;
-        v31 = [v27 uuid];
-        v32 = [v20 uuid];
+        uuid2 = [firstObject uuid];
+        uuid3 = [v20 uuid];
         *buf = 138412546;
-        *v81 = v31;
+        *v81 = uuid2;
         *&v81[8] = 2112;
-        *&v81[10] = v32;
+        *&v81[10] = uuid3;
         _os_log_impl(&dword_22FA28000, v30, OS_LOG_TYPE_DEFAULT, "[Questions] cloudIdentifier not found for asset %@, not syncing question %@", buf, 0x16u);
       }
 
 LABEL_33:
 
-      v22 = v28;
+      entityIdentifier = cloudIdentifier;
 LABEL_34:
 
       objc_autoreleasePoolPop(v21);
@@ -856,8 +856,8 @@ LABEL_34:
   while (v15);
 LABEL_36:
 
-  [(NSUbiquitousKeyValueStore *)v61->_store setArray:v64 forKey:@"PHQuestionKVSDataKey"];
-  [(NSUbiquitousKeyValueStore *)v61->_store synchronizeWithCompletionHandler:&__block_literal_global_384];
+  [(NSUbiquitousKeyValueStore *)selfCopy->_store setArray:v64 forKey:@"PHQuestionKVSDataKey"];
+  [(NSUbiquitousKeyValueStore *)selfCopy->_store synchronizeWithCompletionHandler:&__block_literal_global_384];
   v50 = mach_absolute_time();
   numer = info.numer;
   denom = info.denom;
@@ -870,7 +870,7 @@ LABEL_36:
     _os_signpost_emit_with_name_impl(&dword_22FA28000, v54, OS_SIGNPOST_INTERVAL_END, spid, "PhotosChallengeQuestionKVSSync", "", buf, 2u);
   }
 
-  v8 = v58;
+  photoLibrary = v58;
   v11 = v63;
   if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
   {
@@ -883,7 +883,7 @@ LABEL_36:
 
 LABEL_41:
 
-  v9 = v57;
+  librarySpecificFetchOptions = v57;
 LABEL_42:
 }
 
@@ -931,20 +931,20 @@ uint64_t __65__PHAQuestionController__syncAnsweredQuestionsWithProgressBlock___b
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_updateInvalidQuestionsWithProgressBlock:(id)a3
+- (void)_updateInvalidQuestionsWithProgressBlock:(id)block
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGManager *)self->_graphManager photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  blockCopy = block;
+  photoLibrary = [(PGManager *)self->_graphManager photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
   v39 = 0;
-  v7 = [MEMORY[0x277CD9970] fetchUnansweredQuestionsWithOptions:v6 validQuestionsOnly:0];
-  v4[2](v4, &v39, 0.2);
+  v7 = [MEMORY[0x277CD9970] fetchUnansweredQuestionsWithOptions:librarySpecificFetchOptions validQuestionsOnly:0];
+  blockCopy[2](blockCopy, &v39, 0.2);
   if ((v39 & 1) == 0)
   {
-    v29 = v6;
+    v29 = librarySpecificFetchOptions;
     v8 = v7;
-    v9 = [MEMORY[0x277CD9970] questionsWithValidEntitiesFromQuestions:v7 photoLibrary:v5];
+    v9 = [MEMORY[0x277CD9970] questionsWithValidEntitiesFromQuestions:v7 photoLibrary:photoLibrary];
     v10 = [MEMORY[0x277CBEB58] set];
     v35 = 0u;
     v36 = 0u;
@@ -965,8 +965,8 @@ uint64_t __65__PHAQuestionController__syncAnsweredQuestionsWithProgressBlock___b
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v35 + 1) + 8 * i) uuid];
-          [v10 addObject:v16];
+          uuid = [*(*(&v35 + 1) + 8 * i) uuid];
+          [v10 addObject:uuid];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v35 objects:v42 count:16];
@@ -975,18 +975,18 @@ uint64_t __65__PHAQuestionController__syncAnsweredQuestionsWithProgressBlock___b
       while (v13);
     }
 
-    v4[2](v4, &v39, 0.4);
-    v6 = v29;
+    blockCopy[2](blockCopy, &v39, 0.4);
+    librarySpecificFetchOptions = v29;
     v7 = v8;
     if ((v39 & 1) == 0)
     {
-      v17 = [v5 librarySpecificFetchOptions];
-      v18 = [MEMORY[0x277CD9970] fetchInvalidatedQuestionsWithOptions:v17];
-      v4[2](v4, &v39, 0.6);
+      librarySpecificFetchOptions2 = [photoLibrary librarySpecificFetchOptions];
+      v18 = [MEMORY[0x277CD9970] fetchInvalidatedQuestionsWithOptions:librarySpecificFetchOptions2];
+      blockCopy[2](blockCopy, &v39, 0.6);
       if ((v39 & 1) == 0)
       {
-        v19 = [MEMORY[0x277CD9970] questionsWithValidEntitiesFromQuestions:v18 photoLibrary:v5];
-        v4[2](v4, &v39, 0.8);
+        v19 = [MEMORY[0x277CD9970] questionsWithValidEntitiesFromQuestions:v18 photoLibrary:photoLibrary];
+        blockCopy[2](blockCopy, &v39, 0.8);
         if ((v39 & 1) == 0)
         {
           if ([v7 count] || objc_msgSend(v19, "count"))
@@ -1000,7 +1000,7 @@ uint64_t __65__PHAQuestionController__syncAnsweredQuestionsWithProgressBlock___b
             v27 = v19;
             v34 = v19;
             v30 = 0;
-            v20 = [v5 performChangesAndWait:v31 error:&v30];
+            v20 = [photoLibrary performChangesAndWait:v31 error:&v30];
             v28 = v30;
             if (v28)
             {
@@ -1046,7 +1046,7 @@ uint64_t __65__PHAQuestionController__syncAnsweredQuestionsWithProgressBlock___b
             v19 = v27;
           }
 
-          v4[2](v4, &v39, 1.0);
+          blockCopy[2](blockCopy, &v39, 1.0);
         }
       }
     }
@@ -1137,18 +1137,18 @@ uint64_t __66__PHAQuestionController__updateInvalidQuestionsWithProgressBlock___
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_handleQuestionVersionBumpIfNeededWithProgressBlock:(id)a3
+- (void)_handleQuestionVersionBumpIfNeededWithProgressBlock:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGManager *)self->_graphManager photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  blockCopy = block;
+  photoLibrary = [(PGManager *)self->_graphManager photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
   v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"questionVersion < %d", self->_currentQuestionVersion];
-  [v6 setPredicate:v7];
+  [librarySpecificFetchOptions setPredicate:v7];
 
-  v8 = [MEMORY[0x277CD9970] fetchUnansweredQuestionsWithOptions:v6 validQuestionsOnly:0];
+  v8 = [MEMORY[0x277CD9970] fetchUnansweredQuestionsWithOptions:librarySpecificFetchOptions validQuestionsOnly:0];
   v16 = 0;
-  v4[2](v4, &v16, 0.5);
+  blockCopy[2](blockCopy, &v16, 0.5);
   if ((v16 & 1) == 0)
   {
     if ([v8 count])
@@ -1159,7 +1159,7 @@ uint64_t __66__PHAQuestionController__updateInvalidQuestionsWithProgressBlock___
       v14[3] = &unk_2788B2E78;
       v15 = v8;
       v13 = 0;
-      v9 = [v5 performChangesAndWait:v14 error:&v13];
+      v9 = [photoLibrary performChangesAndWait:v14 error:&v13];
       v10 = v13;
       if (v9)
       {
@@ -1193,7 +1193,7 @@ uint64_t __66__PHAQuestionController__updateInvalidQuestionsWithProgressBlock___
       }
     }
 
-    v4[2](v4, &v16, 1.0);
+    blockCopy[2](blockCopy, &v16, 1.0);
   }
 }
 
@@ -1214,64 +1214,64 @@ uint64_t __77__PHAQuestionController__handleQuestionVersionBumpIfNeededWithProgr
 - (id)allQuestionFactories
 {
   v36[29] = *MEMORY[0x277D85DE8];
-  v3 = [(PGManager *)self->_graphManager workingContext];
-  v35 = [objc_alloc(MEMORY[0x277D3B640]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  workingContext = [(PGManager *)self->_graphManager workingContext];
+  v35 = [objc_alloc(MEMORY[0x277D3B640]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[0] = v35;
-  v34 = [objc_alloc(MEMORY[0x277D3BA50]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v34 = [objc_alloc(MEMORY[0x277D3BA50]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[1] = v34;
-  v33 = [objc_alloc(MEMORY[0x277D3BB98]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v33 = [objc_alloc(MEMORY[0x277D3BB98]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[2] = v33;
-  v32 = [objc_alloc(MEMORY[0x277D3BB20]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v32 = [objc_alloc(MEMORY[0x277D3BB20]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[3] = v32;
-  v31 = [objc_alloc(MEMORY[0x277D3BA90]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v31 = [objc_alloc(MEMORY[0x277D3BA90]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[4] = v31;
-  v30 = [objc_alloc(MEMORY[0x277D3BB88]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v30 = [objc_alloc(MEMORY[0x277D3BB88]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[5] = v30;
-  v29 = [objc_alloc(MEMORY[0x277D3BC20]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v29 = [objc_alloc(MEMORY[0x277D3BC20]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[6] = v29;
-  v28 = [objc_alloc(MEMORY[0x277D3B9E8]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v28 = [objc_alloc(MEMORY[0x277D3B9E8]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[7] = v28;
-  v27 = [objc_alloc(MEMORY[0x277D3BBE0]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v27 = [objc_alloc(MEMORY[0x277D3BBE0]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[8] = v27;
-  v26 = [objc_alloc(MEMORY[0x277D3B910]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v26 = [objc_alloc(MEMORY[0x277D3B910]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[9] = v26;
-  v25 = [objc_alloc(MEMORY[0x277D3B600]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v25 = [objc_alloc(MEMORY[0x277D3B600]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[10] = v25;
-  v24 = [objc_alloc(MEMORY[0x277D3BA88]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v24 = [objc_alloc(MEMORY[0x277D3BA88]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[11] = v24;
-  v23 = [objc_alloc(MEMORY[0x277D3BB50]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v23 = [objc_alloc(MEMORY[0x277D3BB50]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[12] = v23;
-  v22 = [objc_alloc(MEMORY[0x277D3B900]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v22 = [objc_alloc(MEMORY[0x277D3B900]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[13] = v22;
-  v21 = [objc_alloc(MEMORY[0x277D3BA70]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v21 = [objc_alloc(MEMORY[0x277D3BA70]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[14] = v21;
-  v20 = [objc_alloc(MEMORY[0x277D3BA68]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v20 = [objc_alloc(MEMORY[0x277D3BA68]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[15] = v20;
-  v19 = [objc_alloc(MEMORY[0x277D3BC08]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v19 = [objc_alloc(MEMORY[0x277D3BC08]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[16] = v19;
-  v18 = [objc_alloc(MEMORY[0x277D3BB40]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v18 = [objc_alloc(MEMORY[0x277D3BB40]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[17] = v18;
-  v17 = [objc_alloc(MEMORY[0x277D3BBC0]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v17 = [objc_alloc(MEMORY[0x277D3BBC0]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[18] = v17;
-  v16 = [objc_alloc(MEMORY[0x277D3BBC8]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v16 = [objc_alloc(MEMORY[0x277D3BBC8]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[19] = v16;
-  v15 = [objc_alloc(MEMORY[0x277D3B648]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v15 = [objc_alloc(MEMORY[0x277D3B648]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[20] = v15;
-  v4 = [objc_alloc(MEMORY[0x277D3BC48]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v4 = [objc_alloc(MEMORY[0x277D3BC48]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[21] = v4;
-  v5 = [objc_alloc(MEMORY[0x277D3B608]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v5 = [objc_alloc(MEMORY[0x277D3B608]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[22] = v5;
-  v6 = [objc_alloc(MEMORY[0x277D3B6A8]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v6 = [objc_alloc(MEMORY[0x277D3B6A8]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[23] = v6;
-  v7 = [objc_alloc(MEMORY[0x277D3BC28]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v7 = [objc_alloc(MEMORY[0x277D3BC28]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[24] = v7;
-  v8 = [objc_alloc(MEMORY[0x277D3BA38]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v8 = [objc_alloc(MEMORY[0x277D3BA38]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[25] = v8;
-  v9 = [objc_alloc(MEMORY[0x277D3B9E0]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v9 = [objc_alloc(MEMORY[0x277D3B9E0]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[26] = v9;
-  v10 = [objc_alloc(MEMORY[0x277D3B6B8]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v10 = [objc_alloc(MEMORY[0x277D3B6B8]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[27] = v10;
-  v11 = [objc_alloc(MEMORY[0x277D3BBE8]) initWithWorkingContext:v3 questionVersion:self->_currentQuestionVersion];
+  v11 = [objc_alloc(MEMORY[0x277D3BBE8]) initWithWorkingContext:workingContext questionVersion:self->_currentQuestionVersion];
   v36[28] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:29];
 
@@ -1280,16 +1280,16 @@ uint64_t __77__PHAQuestionController__handleQuestionVersionBumpIfNeededWithProgr
   return v13;
 }
 
-- (id)questionFactoriesForOptions:(int64_t)a3
+- (id)questionFactoriesForOptions:(int64_t)options
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (options)
   {
-    v4 = [(PHAQuestionController *)self allQuestionFactories];
-    v5 = v4;
-    if (a3 == 536838143)
+    allQuestionFactories = [(PHAQuestionController *)self allQuestionFactories];
+    v5 = allQuestionFactories;
+    if (options == 536838143)
     {
-      v6 = v4;
+      v6 = allQuestionFactories;
     }
 
     else
@@ -1315,7 +1315,7 @@ uint64_t __77__PHAQuestionController__handleQuestionVersionBumpIfNeededWithProgr
             }
 
             v12 = *(*(&v14 + 1) + 8 * i);
-            if (([v12 questionOptions] & a3) != 0)
+            if (([v12 questionOptions] & options) != 0)
             {
               [v6 addObject:v12];
             }
@@ -1337,12 +1337,12 @@ uint64_t __77__PHAQuestionController__handleQuestionVersionBumpIfNeededWithProgr
   return v6;
 }
 
-- (double)importanceOfQuestionType:(id)a3
+- (double)importanceOfQuestionType:(id)type
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_questionTypeImportanceByQuestionType objectForKeyedSubscript:v4];
-  v6 = [v4 unsignedIntegerValue];
+  typeCopy = type;
+  v5 = [(NSMutableDictionary *)self->_questionTypeImportanceByQuestionType objectForKeyedSubscript:typeCopy];
+  unsignedIntegerValue = [typeCopy unsignedIntegerValue];
   if (v5)
   {
     [v5 doubleValue];
@@ -1352,9 +1352,9 @@ uint64_t __77__PHAQuestionController__handleQuestionVersionBumpIfNeededWithProgr
   else
   {
     v8 = 0.0;
-    if (v6 <= 0x1Eu && ((0x7FFFFDFFu >> v6) & 1) != 0)
+    if (unsignedIntegerValue <= 0x1Eu && ((0x7FFFFDFFu >> unsignedIntegerValue) & 1) != 0)
     {
-      v9 = off_2788B2EB8[v6 & 0x1F];
+      v9 = off_2788B2EB8[unsignedIntegerValue & 0x1F];
       v10 = [(PGTrialSession *)self->_trialSession levelForFactorName:v9 withNamespaceType:2];
       v11 = v10;
       if (v10)
@@ -1381,7 +1381,7 @@ uint64_t __77__PHAQuestionController__handleQuestionVersionBumpIfNeededWithProgr
     }
 
     v14 = [MEMORY[0x277CCABB0] numberWithDouble:v8];
-    [(NSMutableDictionary *)self->_questionTypeImportanceByQuestionType setObject:v14 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_questionTypeImportanceByQuestionType setObject:v14 forKeyedSubscript:typeCopy];
   }
 
   return v8;
@@ -1394,23 +1394,23 @@ uint64_t __50__PHAQuestionController_importanceOfQuestionType___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)persistQuestions:(id)a3
+- (BOOL)persistQuestions:(id)questions
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGManager *)self->_graphManager photoLibrary];
-  v6 = [MEMORY[0x277CBEAA8] date];
+  questionsCopy = questions;
+  photoLibrary = [(PGManager *)self->_graphManager photoLibrary];
+  date = [MEMORY[0x277CBEAA8] date];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __42__PHAQuestionController_persistQuestions___block_invoke;
   v18[3] = &unk_2788B2E50;
-  v7 = v4;
+  v7 = questionsCopy;
   v19 = v7;
-  v8 = v6;
+  v8 = date;
   v20 = v8;
-  v21 = self;
+  selfCopy = self;
   v17 = 0;
-  v9 = [v5 performChangesAndWait:v18 error:&v17];
+  v9 = [photoLibrary performChangesAndWait:v18 error:&v17];
   v10 = v17;
   if (!v10)
   {
@@ -1505,16 +1505,16 @@ uint64_t __42__PHAQuestionController_persistQuestions___block_invoke_2()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)assignScoreToQuestions:(id)a3
+- (void)assignScoreToQuestions:(id)questions
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  questionsCopy = questions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v3;
+  v5 = questionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -1531,7 +1531,7 @@ uint64_t __42__PHAQuestionController_persistQuestions___block_invoke_2()
 
         v10 = *(*(&v20 + 1) + 8 * i);
         v11 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v10, "type")}];
-        v12 = [v4 objectForKeyedSubscript:v11];
+        v12 = [dictionary objectForKeyedSubscript:v11];
         v13 = v12;
         if (v12)
         {
@@ -1541,7 +1541,7 @@ uint64_t __42__PHAQuestionController_persistQuestions___block_invoke_2()
         else
         {
           v14 = [MEMORY[0x277CBEB18] arrayWithObject:v10];
-          [v4 setObject:v14 forKeyedSubscript:v11];
+          [dictionary setObject:v14 forKeyedSubscript:v11];
         }
       }
 
@@ -1561,7 +1561,7 @@ uint64_t __42__PHAQuestionController_persistQuestions___block_invoke_2()
   v18[3] = &unk_2788B2E28;
   v19 = v16;
   v17 = v16;
-  [v4 enumerateKeysAndObjectsUsingBlock:v18];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v18];
 }
 
 void __48__PHAQuestionController_assignScoreToQuestions___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1587,27 +1587,27 @@ void __48__PHAQuestionController_assignScoreToQuestions___block_invoke(uint64_t 
   }
 }
 
-- (id)selectedQuestionsFromSortedQuestionsByQuestionType:(id)a3 withLimit:(unint64_t)a4
+- (id)selectedQuestionsFromSortedQuestionsByQuestionType:(id)type withLimit:(unint64_t)limit
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  typeCopy = type;
+  v7 = typeCopy;
+  if (limit)
   {
-    v8 = [v6 allKeys];
+    allKeys = [typeCopy allKeys];
     v59[0] = MEMORY[0x277D85DD0];
     v59[1] = 3221225472;
     v59[2] = __86__PHAQuestionController_selectedQuestionsFromSortedQuestionsByQuestionType_withLimit___block_invoke;
     v59[3] = &unk_2788B2E00;
     v59[4] = self;
-    v9 = [v8 sortedArrayUsingComparator:v59];
+    v9 = [allKeys sortedArrayUsingComparator:v59];
     v10 = [v9 mutableCopy];
 
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     for (i = v10; ; v10 = i)
     {
-      v12 = [v7 allValues];
-      v13 = [v12 count];
+      allValues = [v7 allValues];
+      v13 = [allValues count];
 
       if (!v13)
       {
@@ -1675,7 +1675,7 @@ LABEL_49:
       if (v43)
       {
         v44 = *v51;
-        v22 = a4;
+        limitCopy = limit;
         while (2)
         {
           for (k = 0; k != v43; ++k)
@@ -1695,7 +1695,7 @@ LABEL_49:
 
             else
             {
-              v27 = fmax(floor(v26 * v22), 1.0);
+              v27 = fmax(floor(v26 * limitCopy), 1.0);
             }
 
             v28 = [v7 objectForKeyedSubscript:v24];
@@ -1714,11 +1714,11 @@ LABEL_49:
             {
               while (1)
               {
-                v31 = [v28 firstObject];
+                firstObject = [v28 firstObject];
                 [v28 removeObjectAtIndex:0];
-                [v11 addObject:v31];
+                [array addObject:firstObject];
 
-                if (!--a4)
+                if (!--limit)
                 {
                   break;
                 }
@@ -1787,10 +1787,10 @@ LABEL_43:
 
   else
   {
-    v11 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
-  return v11;
+  return array;
 }
 
 uint64_t __86__PHAQuestionController_selectedQuestionsFromSortedQuestionsByQuestionType_withLimit___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1816,12 +1816,12 @@ uint64_t __86__PHAQuestionController_selectedQuestionsFromSortedQuestionsByQuest
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)generateQuestionsWithOptions:(int64_t)a3 limit:(unint64_t)a4 handleQuestionVersionBump:(BOOL)a5 updateInvalidQuestions:(BOOL)a6 progress:(id)a7
+- (BOOL)generateQuestionsWithOptions:(int64_t)options limit:(unint64_t)limit handleQuestionVersionBump:(BOOL)bump updateInvalidQuestions:(BOOL)questions progress:(id)progress
 {
-  v7 = a6;
-  v8 = a5;
+  questionsCopy = questions;
+  bumpCopy = bump;
   v98 = *MEMORY[0x277D85DE8];
-  v11 = a7;
+  progressCopy = progress;
   v86 = 0;
   v87 = &v86;
   v88 = 0x2020000000;
@@ -1832,7 +1832,7 @@ uint64_t __86__PHAQuestionController_selectedQuestionsFromSortedQuestionsByQuest
   v82[3] = &unk_2788B2DB0;
   v84 = &v86;
   v85 = 0;
-  v58 = v11;
+  v58 = progressCopy;
   v83 = v58;
   [(PHAQuestionController *)self _handleKVSQuestionsUpdateIfNeededWithProgressBlock:v82];
   if (*(v87 + 24) == 1)
@@ -1854,7 +1854,7 @@ LABEL_21:
     goto LABEL_68;
   }
 
-  if (v8)
+  if (bumpCopy)
   {
     v78[0] = MEMORY[0x277D85DD0];
     v78[1] = 3221225472;
@@ -1882,7 +1882,7 @@ LABEL_21:
     }
   }
 
-  if (v7)
+  if (questionsCopy)
   {
     v74[0] = MEMORY[0x277D85DD0];
     v74[1] = 3221225472;
@@ -1938,11 +1938,11 @@ LABEL_21:
 
   else
   {
-    v17 = [(PHAQuestionController *)self loggingConnection];
-    spid = os_signpost_id_generate(v17);
+    loggingConnection = [(PHAQuestionController *)self loggingConnection];
+    spid = os_signpost_id_generate(loggingConnection);
     info = 0;
     mach_timebase_info(&info);
-    v18 = v17;
+    v18 = loggingConnection;
     v19 = v18;
     if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
     {
@@ -1953,10 +1953,10 @@ LABEL_21:
     v52 = v19;
 
     v20 = mach_absolute_time();
-    v54 = [(PHAQuestionController *)self questionFactoriesForOptions:a3];
+    v54 = [(PHAQuestionController *)self questionFactoriesForOptions:options];
     if ([v54 count])
     {
-      v56 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v51 = v20;
       v21 = [v54 count];
       v67 = 0u;
@@ -1992,7 +1992,7 @@ LABEL_21:
             v64 = v25;
             v61 = v57;
             v62 = &v86;
-            v31 = [v29 generateQuestionsWithLimit:a4 progressBlock:v60];
+            v31 = [v29 generateQuestionsWithLimit:limit progressBlock:v60];
             v15 = [v31 mutableCopy];
 
             if (*(v87 + 24) == 1)
@@ -2020,7 +2020,7 @@ LABEL_21:
             [v15 sortUsingDescriptors:v33];
 
             v34 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v29, "questionType")}];
-            [v56 setObject:v15 forKeyedSubscript:v34];
+            [dictionary setObject:v15 forKeyedSubscript:v34];
 
             v35 = [v15 count];
             if (__PXLog_genericOnceToken != -1)
@@ -2061,7 +2061,7 @@ LABEL_21:
       }
 
       *&self->_numberOfQuestionsGenerated = v23;
-      v40 = [(PHAQuestionController *)self selectedQuestionsFromSortedQuestionsByQuestionType:v56 withLimit:a4];
+      v40 = [(PHAQuestionController *)self selectedQuestionsFromSortedQuestionsByQuestionType:dictionary withLimit:limit];
       [(PHAQuestionController *)self assignScoreToQuestions:v40];
       LODWORD(v15) = [(PHAQuestionController *)self persistQuestions:v40];
       if (v15)
@@ -2117,7 +2117,7 @@ LABEL_60:
       if (os_log_type_enabled(__PXLog_genericOSLog, OS_LOG_TYPE_INFO))
       {
         *buf = 67109120;
-        LODWORD(v91) = a3;
+        LODWORD(v91) = options;
         _os_log_impl(&dword_22FA28000, v49, OS_LOG_TYPE_INFO, "[Questions] No question factories for options: %d", buf, 8u);
       }
 
@@ -2238,10 +2238,10 @@ uint64_t __118__PHAQuestionController_generateQuestionsWithOptions_limit_handleQ
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)generateQuestionsWithOptions:(int64_t)a3 progress:(id)a4
+- (BOOL)generateQuestionsWithOptions:(int64_t)options progress:(id)progress
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  progressCopy = progress;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -2255,7 +2255,7 @@ uint64_t __118__PHAQuestionController_generateQuestionsWithOptions_limit_handleQ
   v28[2] = __63__PHAQuestionController_generateQuestionsWithOptions_progress___block_invoke;
   v28[3] = &unk_2788B2D60;
   v30 = v32;
-  v7 = v6;
+  v7 = progressCopy;
   v29 = v7;
   v31 = &v33;
   [(PHAQuestionController *)self _handleQuestionVersionBumpIfNeededWithProgressBlock:v28];
@@ -2306,11 +2306,11 @@ uint64_t __118__PHAQuestionController_generateQuestionsWithOptions_limit_handleQ
 
     else
     {
-      v12 = [(PGManager *)self->_graphManager photoLibrary];
-      v13 = [v12 librarySpecificFetchOptions];
+      photoLibrary = [(PGManager *)self->_graphManager photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-      [v13 setShouldPrefetchCount:1];
-      v14 = [MEMORY[0x277CD9970] fetchUnansweredQuestionsWithOptions:v13 validQuestionsOnly:1];
+      [librarySpecificFetchOptions setShouldPrefetchCount:1];
+      v14 = [MEMORY[0x277CD9970] fetchUnansweredQuestionsWithOptions:librarySpecificFetchOptions validQuestionsOnly:1];
       v15 = [v14 count];
 
       v16 = [(PGTrialSession *)self->_trialSession levelForFactorName:@"QuestionGenerationLimit" withNamespaceType:2];
@@ -2342,7 +2342,7 @@ uint64_t __118__PHAQuestionController_generateQuestionsWithOptions_limit_handleQ
         v21[3] = &unk_2788B2D88;
         v23 = v32;
         v22 = v10;
-        v9 = [(PHAQuestionController *)self generateQuestionsWithOptions:a3 limit:v18 handleQuestionVersionBump:0 updateInvalidQuestions:0 progress:v21];
+        v9 = [(PHAQuestionController *)self generateQuestionsWithOptions:options limit:v18 handleQuestionVersionBump:0 updateInvalidQuestions:0 progress:v21];
       }
     }
   }
@@ -2390,9 +2390,9 @@ uint64_t __63__PHAQuestionController_generateQuestionsWithOptions_progress___blo
   return MEMORY[0x2821F96F8]();
 }
 
-- (PHAQuestionController)initWithGraphManager:(id)a3
+- (PHAQuestionController)initWithGraphManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v18.receiver = self;
   v18.super_class = PHAQuestionController;
   v6 = [(PHAQuestionController *)&v18 init];
@@ -2402,18 +2402,18 @@ uint64_t __63__PHAQuestionController_generateQuestionsWithOptions_progress___blo
     store = v6->_store;
     v6->_store = v7;
 
-    objc_storeStrong(&v6->_graphManager, a3);
+    objc_storeStrong(&v6->_graphManager, manager);
     v9 = os_log_create("com.apple.photoanalysisd", "photosChallenge");
     loggingConnection = v6->_loggingConnection;
     v6->_loggingConnection = v9;
 
-    v11 = [MEMORY[0x277D3BC18] newTrialSession];
+    newTrialSession = [MEMORY[0x277D3BC18] newTrialSession];
     trialSession = v6->_trialSession;
-    v6->_trialSession = v11;
+    v6->_trialSession = newTrialSession;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     questionTypeImportanceByQuestionType = v6->_questionTypeImportanceByQuestionType;
-    v6->_questionTypeImportanceByQuestionType = v13;
+    v6->_questionTypeImportanceByQuestionType = dictionary;
 
     v15 = [(PGTrialSession *)v6->_trialSession levelForFactorName:@"CurrentQuestionVersion" withNamespaceType:2];
     [v15 doubleValue];

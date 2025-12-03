@@ -1,51 +1,51 @@
 @interface PAEColorSelectionChannelData
-- (PAEColorSelectionChannelData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PAEColorSelectionChannelData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PAEColorSelectionChannelData
 
-- (PAEColorSelectionChannelData)initWithCoder:(id)a3
+- (PAEColorSelectionChannelData)initWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = PAEColorSelectionChannelData;
   v4 = [(PAEColorSelectionChannelData *)&v11 init];
   if (v4)
   {
-    v4->_mode = [a3 decodeIntForKey:@"mode"];
-    v4->_state = [a3 decodeIntForKey:@"state"];
-    v4->_action = [a3 decodeIntForKey:@"action"];
-    v4->_style = [a3 decodeIntForKey:@"style"];
-    [a3 decodeDoubleForKey:@"x"];
+    v4->_mode = [coder decodeIntForKey:@"mode"];
+    v4->_state = [coder decodeIntForKey:@"state"];
+    v4->_action = [coder decodeIntForKey:@"action"];
+    v4->_style = [coder decodeIntForKey:@"style"];
+    [coder decodeDoubleForKey:@"x"];
     v4->_x = v5;
-    [a3 decodeDoubleForKey:@"y"];
+    [coder decodeDoubleForKey:@"y"];
     v4->_y = v6;
-    [a3 decodeDoubleForKey:@"radius"];
+    [coder decodeDoubleForKey:@"radius"];
     v4->_radius = v7;
-    [a3 decodeDoubleForKey:@"radiusScale"];
+    [coder decodeDoubleForKey:@"radiusScale"];
     v4->_radiusScale = v8;
-    [a3 decodeDoubleForKey:@"frame"];
+    [coder decodeDoubleForKey:@"frame"];
     v4->_frame = v9;
-    v4->_timeScale = [a3 decodeIntForKey:@"timeScale"];
+    v4->_timeScale = [coder decodeIntForKey:@"timeScale"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mode = self->_mode;
   if (mode)
   {
-    [a3 encodeInt:mode forKey:@"mode"];
+    [coder encodeInt:mode forKey:@"mode"];
   }
 
   state = self->_state;
   if (state)
   {
-    [a3 encodeInt:state forKey:@"state"];
+    [coder encodeInt:state forKey:@"state"];
     v7 = self->_state;
     if (v7)
     {
@@ -54,27 +54,27 @@
         action = self->_action;
         if (action)
         {
-          [a3 encodeInt:action forKey:@"action"];
+          [coder encodeInt:action forKey:@"action"];
         }
 
         if (self->_x != 0.0)
         {
-          [a3 encodeDouble:@"x" forKey:?];
+          [coder encodeDouble:@"x" forKey:?];
         }
 
         if (self->_y != 0.0)
         {
-          [a3 encodeDouble:@"y" forKey:?];
+          [coder encodeDouble:@"y" forKey:?];
         }
 
         if (self->_radius != 0.0)
         {
-          [a3 encodeDouble:@"radius" forKey:?];
+          [coder encodeDouble:@"radius" forKey:?];
         }
 
         if (self->_radiusScale != 0.0)
         {
-          [a3 encodeDouble:@"radiusScale" forKey:?];
+          [coder encodeDouble:@"radiusScale" forKey:?];
         }
       }
     }
@@ -82,23 +82,23 @@
 
   if (self->_frame != 0.0)
   {
-    [a3 encodeDouble:@"frame" forKey:?];
+    [coder encodeDouble:@"frame" forKey:?];
   }
 
   timeScale = self->_timeScale;
   if (timeScale)
   {
-    [a3 encodeInt:timeScale forKey:@"timeScale"];
+    [coder encodeInt:timeScale forKey:@"timeScale"];
   }
 
   if (self->_style)
   {
 
-    [a3 encodeInt:? forKey:?];
+    [coder encodeInt:? forKey:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   if (result)

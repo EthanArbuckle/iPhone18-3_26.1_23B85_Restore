@@ -1,26 +1,26 @@
 @interface NCSpokenCarPlayNotificationsDetailController
 + (BOOL)announceCarPlayEnabled;
-+ (id)globalAnnounceCarPlaySetting:(id)a3;
-+ (id)spokenCarPlayNotificationSpecifierNamed:(id)a3;
++ (id)globalAnnounceCarPlaySetting:(id)setting;
++ (id)spokenCarPlayNotificationSpecifierNamed:(id)named;
 - (NCSpokenCarPlayNotificationsDetailController)init;
 - (NCSpokenCarPlayNotificationsDetailControllerDelegate)delegate;
 - (id)_announceNewMessagesSpecifier;
-- (id)_announceOptionSpecifierNamed:(id)a3 identifier:(id)a4;
+- (id)_announceOptionSpecifierNamed:(id)named identifier:(id)identifier;
 - (id)_announceOptionsGroupSpecifier;
 - (id)_announceOptionsSectionSpecifiers;
 - (id)_rememberPreviousSettingSpecifier;
 - (id)_silenceNewMessagesSpecifier;
-- (id)globalAnnounceCarPlaySetting:(id)a3;
+- (id)globalAnnounceCarPlaySetting:(id)setting;
 - (id)specifiers;
-- (void)_setAnnounceOption:(id)a3;
-- (void)_updateAnnounceOptionsAnimated:(BOOL)a3;
-- (void)_updateAnnounceOptionsGroupSpecifiersAnimated:(BOOL)a3;
-- (void)_updateAnnounceSwitchGroupSpecifierAnimated:(BOOL)a3;
-- (void)controller:(id)a3 announceNotificationsInCarPlayTemporarilyDisabledChanged:(BOOL)a4;
-- (void)controller:(id)a3 carPlayAnnounceEnablementTypeChanged:(int64_t)a4;
+- (void)_setAnnounceOption:(id)option;
+- (void)_updateAnnounceOptionsAnimated:(BOOL)animated;
+- (void)_updateAnnounceOptionsGroupSpecifiersAnimated:(BOOL)animated;
+- (void)_updateAnnounceSwitchGroupSpecifierAnimated:(BOOL)animated;
+- (void)controller:(id)controller announceNotificationsInCarPlayTemporarilyDisabledChanged:(BOOL)changed;
+- (void)controller:(id)controller carPlayAnnounceEnablementTypeChanged:(int64_t)changed;
 - (void)dealloc;
-- (void)setGlobalAnnounceCarPlaySetting:(id)a3 specifier:(id)a4;
-- (void)settingsGatewayDidUpdateGlobalSettings:(id)a3;
+- (void)setGlobalAnnounceCarPlaySetting:(id)setting specifier:(id)specifier;
+- (void)settingsGatewayDidUpdateGlobalSettings:(id)settings;
 @end
 
 @implementation NCSpokenCarPlayNotificationsDetailController
@@ -61,8 +61,8 @@
 
 - (NCSpokenCarPlayNotificationsDetailControllerDelegate)delegate
 {
-  v2 = [(NCSpokenCarPlayNotificationsDetailController *)self specifier];
-  v3 = [v2 propertyForKey:kNotificationsSettingsDetailControllerDelegate];
+  specifier = [(NCSpokenCarPlayNotificationsDetailController *)self specifier];
+  v3 = [specifier propertyForKey:kNotificationsSettingsDetailControllerDelegate];
 
   return v3;
 }
@@ -101,10 +101,10 @@
   return v12;
 }
 
-+ (id)spokenCarPlayNotificationSpecifierNamed:(id)a3
++ (id)spokenCarPlayNotificationSpecifierNamed:(id)named
 {
-  v4 = a3;
-  v5 = [PSSpecifier preferenceSpecifierNamed:v4 target:a1 set:0 get:"globalAnnounceCarPlaySetting:" detail:objc_opt_class() cell:2 edit:0];
+  namedCopy = named;
+  v5 = [PSSpecifier preferenceSpecifierNamed:namedCopy target:self set:0 get:"globalAnnounceCarPlaySetting:" detail:objc_opt_class() cell:2 edit:0];
 
   v6 = [NSMutableArray alloc];
   v7 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
@@ -124,33 +124,33 @@
 + (BOOL)announceCarPlayEnabled
 {
   v2 = +[NCSettingsGatewayController sharedInstance];
-  v3 = [v2 effectiveGlobalAnnounceCarPlaySetting];
+  effectiveGlobalAnnounceCarPlaySetting = [v2 effectiveGlobalAnnounceCarPlaySetting];
 
-  return v3 > 1;
+  return effectiveGlobalAnnounceCarPlaySetting > 1;
 }
 
-+ (id)globalAnnounceCarPlaySetting:(id)a3
++ (id)globalAnnounceCarPlaySetting:(id)setting
 {
-  v3 = [a1 announceCarPlayEnabled];
+  announceCarPlayEnabled = [self announceCarPlayEnabled];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:announceCarPlayEnabled];
 }
 
-- (id)globalAnnounceCarPlaySetting:(id)a3
+- (id)globalAnnounceCarPlaySetting:(id)setting
 {
-  v3 = a3;
-  v4 = [objc_opt_class() globalAnnounceCarPlaySetting:v3];
+  settingCopy = setting;
+  v4 = [objc_opt_class() globalAnnounceCarPlaySetting:settingCopy];
 
   return v4;
 }
 
-- (void)setGlobalAnnounceCarPlaySetting:(id)a3 specifier:(id)a4
+- (void)setGlobalAnnounceCarPlaySetting:(id)setting specifier:(id)specifier
 {
-  v13 = a3;
+  settingCopy = setting;
   v5 = +[NCSettingsGatewayController sharedInstance];
-  v6 = [v5 effectiveGlobalAnnounceCarPlaySetting];
+  effectiveGlobalAnnounceCarPlaySetting = [v5 effectiveGlobalAnnounceCarPlaySetting];
 
-  if ([v13 BOOLValue])
+  if ([settingCopy BOOLValue])
   {
     v7 = 3;
   }
@@ -160,9 +160,9 @@
     v7 = 1;
   }
 
-  if (v6 != v7)
+  if (effectiveGlobalAnnounceCarPlaySetting != v7)
   {
-    if (v6 == &dword_0 + 1)
+    if (effectiveGlobalAnnounceCarPlaySetting == &dword_0 + 1)
     {
       v8 = +[NCAssistantPreferencesController sharedInstance];
       [v8 clearAnnounceNotificationsInCarPlayTemporarilyDisabled];
@@ -171,7 +171,7 @@
     v9 = +[NCSettingsGatewayController sharedInstance];
     [v9 setEffectiveGlobalAnnounceCarPlaySetting:v7];
 
-    if ([v13 BOOLValue])
+    if ([settingCopy BOOLValue])
     {
       v10 = 4;
     }
@@ -185,34 +185,34 @@
     [v11 setCarPlayAnnounceEnablementType:v10];
   }
 
-  v12 = [(NCSpokenCarPlayNotificationsDetailController *)self delegate];
-  [v12 didChangeSettingForSpokenCarPlayNotificationsDetailController:self];
+  delegate = [(NCSpokenCarPlayNotificationsDetailController *)self delegate];
+  [delegate didChangeSettingForSpokenCarPlayNotificationsDetailController:self];
 }
 
-- (void)_updateAnnounceOptionsAnimated:(BOOL)a3
+- (void)_updateAnnounceOptionsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = +[NCAssistantPreferencesController sharedInstance];
-  v6 = [v5 carPlayAnnounceEnablementType];
+  carPlayAnnounceEnablementType = [v5 carPlayAnnounceEnablementType];
 
-  if (v6 == &dword_4)
+  if (carPlayAnnounceEnablementType == &dword_4)
   {
-    v14 = [(NCSpokenCarPlayNotificationsDetailController *)self _rememberPreviousSettingSpecifier];
+    _rememberPreviousSettingSpecifier = [(NCSpokenCarPlayNotificationsDetailController *)self _rememberPreviousSettingSpecifier];
     v8 = @"SPOKEN_NOTIFICATIONS_CARPLAY_ANNOUNCE_OPTIONS_REMEMBER_PREVIOUS_SETTING_FOOTER";
     goto LABEL_8;
   }
 
-  if (v6 == (&dword_0 + 3))
+  if (carPlayAnnounceEnablementType == (&dword_0 + 3))
   {
-    v7 = [(NCSpokenCarPlayNotificationsDetailController *)self _silenceNewMessagesSpecifier];
+    _silenceNewMessagesSpecifier = [(NCSpokenCarPlayNotificationsDetailController *)self _silenceNewMessagesSpecifier];
     goto LABEL_6;
   }
 
-  if (v6 == (&dword_0 + 2))
+  if (carPlayAnnounceEnablementType == (&dword_0 + 2))
   {
-    v7 = [(NCSpokenCarPlayNotificationsDetailController *)self _announceNewMessagesSpecifier];
+    _silenceNewMessagesSpecifier = [(NCSpokenCarPlayNotificationsDetailController *)self _announceNewMessagesSpecifier];
 LABEL_6:
-    v14 = v7;
+    _rememberPreviousSettingSpecifier = _silenceNewMessagesSpecifier;
     v8 = @"SPOKEN_NOTIFICATIONS_CARPLAY_ANNOUNCE_OPTIONS_ANNOUNCE_OR_SILENCE_FOOTER";
 LABEL_8:
     v9 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
@@ -221,33 +221,33 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v14 = 0;
+  _rememberPreviousSettingSpecifier = 0;
   v10 = 0;
 LABEL_10:
-  v11 = [(NCSpokenCarPlayNotificationsDetailController *)self _announceOptionsGroupSpecifier];
-  [v11 setProperty:v14 forKey:PSRadioGroupCheckedSpecifierKey];
+  _announceOptionsGroupSpecifier = [(NCSpokenCarPlayNotificationsDetailController *)self _announceOptionsGroupSpecifier];
+  [_announceOptionsGroupSpecifier setProperty:_rememberPreviousSettingSpecifier forKey:PSRadioGroupCheckedSpecifierKey];
 
-  v12 = [(NCSpokenCarPlayNotificationsDetailController *)self _announceOptionsGroupSpecifier];
-  [v12 setProperty:v10 forKey:PSFooterTextGroupKey];
+  _announceOptionsGroupSpecifier2 = [(NCSpokenCarPlayNotificationsDetailController *)self _announceOptionsGroupSpecifier];
+  [_announceOptionsGroupSpecifier2 setProperty:v10 forKey:PSFooterTextGroupKey];
 
-  v13 = [(NCSpokenCarPlayNotificationsDetailController *)self _announceOptionsGroupSpecifier];
-  [(NCSpokenCarPlayNotificationsDetailController *)self reloadSpecifier:v13 animated:v3];
+  _announceOptionsGroupSpecifier3 = [(NCSpokenCarPlayNotificationsDetailController *)self _announceOptionsGroupSpecifier];
+  [(NCSpokenCarPlayNotificationsDetailController *)self reloadSpecifier:_announceOptionsGroupSpecifier3 animated:animatedCopy];
 }
 
-- (void)_setAnnounceOption:(id)a3
+- (void)_setAnnounceOption:(id)option
 {
-  v5 = [a3 identifier];
-  if ([v5 isEqualToString:@"SPOKEN_NOTIFICATIONS_CARPLAY_ANNOUNCE_OPTIONS_ANNOUNCE_NEW_ID"])
+  identifier = [option identifier];
+  if ([identifier isEqualToString:@"SPOKEN_NOTIFICATIONS_CARPLAY_ANNOUNCE_OPTIONS_ANNOUNCE_NEW_ID"])
   {
     v3 = 2;
   }
 
-  else if ([v5 isEqualToString:@"SPOKEN_NOTIFICATIONS_CARPLAY_ANNOUNCE_OPTIONS_SILENCE_NEW_ID"])
+  else if ([identifier isEqualToString:@"SPOKEN_NOTIFICATIONS_CARPLAY_ANNOUNCE_OPTIONS_SILENCE_NEW_ID"])
   {
     v3 = 3;
   }
 
-  else if ([v5 isEqualToString:@"SPOKEN_NOTIFICATIONS_CARPLAY_ANNOUNCE_OPTIONS_REMEMBER_LAST_ID"])
+  else if ([identifier isEqualToString:@"SPOKEN_NOTIFICATIONS_CARPLAY_ANNOUNCE_OPTIONS_REMEMBER_LAST_ID"])
   {
     v3 = 4;
   }
@@ -261,17 +261,17 @@ LABEL_10:
   [v4 setCarPlayAnnounceEnablementType:v3];
 }
 
-- (void)_updateAnnounceSwitchGroupSpecifierAnimated:(BOOL)a3
+- (void)_updateAnnounceSwitchGroupSpecifierAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([objc_opt_class() announceCarPlayEnabled])
   {
     v5 = +[NCAssistantPreferencesController sharedInstance];
-    v6 = [v5 announceNotificationsInCarPlayTemporarilyDisabled];
+    announceNotificationsInCarPlayTemporarilyDisabled = [v5 announceNotificationsInCarPlayTemporarilyDisabled];
 
     v7 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
     v8 = v7;
-    if (v6)
+    if (announceNotificationsInCarPlayTemporarilyDisabled)
     {
       v9 = @"SPOKEN_NOTIFICATIONS_CARPLAY_ANNOUNCE_MESSAGES_FOOTER_SILENCE_NEW_MESSAGES";
     }
@@ -292,15 +292,15 @@ LABEL_10:
   v10 = [v7 localizedStringForKey:v9 value:&stru_4E3F0 table:@"NotificationsSettings"];
 
   [(PSSpecifier *)self->_announceMessagesInCarPlaySwitchGroupSpecifier setProperty:v10 forKey:PSFooterTextGroupKey];
-  [(NCSpokenCarPlayNotificationsDetailController *)self reloadSpecifier:self->_announceMessagesInCarPlaySwitchGroupSpecifier animated:v3];
+  [(NCSpokenCarPlayNotificationsDetailController *)self reloadSpecifier:self->_announceMessagesInCarPlaySwitchGroupSpecifier animated:animatedCopy];
 }
 
-- (void)_updateAnnounceOptionsGroupSpecifiersAnimated:(BOOL)a3
+- (void)_updateAnnounceOptionsGroupSpecifiersAnimated:(BOOL)animated
 {
   [(NCSpokenCarPlayNotificationsDetailController *)self _updateAnnounceOptionsAnimated:?];
   if ([objc_opt_class() announceCarPlayEnabled] && (v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers], -[NCSpokenCarPlayNotificationsDetailController _announceOptionsGroupSpecifier](self, "_announceOptionsGroupSpecifier"), v5 = objc_claimAutoreleasedReturnValue(), LOBYTE(v4) = objc_msgSend(v4, "containsObject:", v5), v5, (v4 & 1) == 0))
   {
-    v6 = [(NCSpokenCarPlayNotificationsDetailController *)self _announceOptionsSectionSpecifiers];
+    _announceOptionsSectionSpecifiers = [(NCSpokenCarPlayNotificationsDetailController *)self _announceOptionsSectionSpecifiers];
     [NCSpokenCarPlayNotificationsDetailController addSpecifiersFromArray:"addSpecifiersFromArray:animated:" animated:?];
   }
 
@@ -311,21 +311,21 @@ LABEL_10:
       return;
     }
 
-    v6 = [(NCSpokenCarPlayNotificationsDetailController *)self _announceOptionsSectionSpecifiers];
+    _announceOptionsSectionSpecifiers = [(NCSpokenCarPlayNotificationsDetailController *)self _announceOptionsSectionSpecifiers];
     [NCSpokenCarPlayNotificationsDetailController removeContiguousSpecifiers:"removeContiguousSpecifiers:animated:" animated:?];
   }
 }
 
 - (id)_announceOptionsSectionSpecifiers
 {
-  v3 = [(NCSpokenCarPlayNotificationsDetailController *)self _announceOptionsGroupSpecifier];
-  v9[0] = v3;
-  v4 = [(NCSpokenCarPlayNotificationsDetailController *)self _announceNewMessagesSpecifier];
-  v9[1] = v4;
-  v5 = [(NCSpokenCarPlayNotificationsDetailController *)self _silenceNewMessagesSpecifier];
-  v9[2] = v5;
-  v6 = [(NCSpokenCarPlayNotificationsDetailController *)self _rememberPreviousSettingSpecifier];
-  v9[3] = v6;
+  _announceOptionsGroupSpecifier = [(NCSpokenCarPlayNotificationsDetailController *)self _announceOptionsGroupSpecifier];
+  v9[0] = _announceOptionsGroupSpecifier;
+  _announceNewMessagesSpecifier = [(NCSpokenCarPlayNotificationsDetailController *)self _announceNewMessagesSpecifier];
+  v9[1] = _announceNewMessagesSpecifier;
+  _silenceNewMessagesSpecifier = [(NCSpokenCarPlayNotificationsDetailController *)self _silenceNewMessagesSpecifier];
+  v9[2] = _silenceNewMessagesSpecifier;
+  _rememberPreviousSettingSpecifier = [(NCSpokenCarPlayNotificationsDetailController *)self _rememberPreviousSettingSpecifier];
+  v9[3] = _rememberPreviousSettingSpecifier;
   v7 = [NSArray arrayWithObjects:v9 count:4];
 
   return v7;
@@ -400,18 +400,18 @@ LABEL_10:
   return rememberPreviousSettingSpecifier;
 }
 
-- (id)_announceOptionSpecifierNamed:(id)a3 identifier:(id)a4
+- (id)_announceOptionSpecifierNamed:(id)named identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [PSSpecifier preferenceSpecifierNamed:a3 target:self set:0 get:0 detail:0 cell:3 edit:0];
-  [v7 setIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [PSSpecifier preferenceSpecifierNamed:named target:self set:0 get:0 detail:0 cell:3 edit:0];
+  [v7 setIdentifier:identifierCopy];
 
   [v7 setButtonAction:"_setAnnounceOption:"];
 
   return v7;
 }
 
-- (void)controller:(id)a3 carPlayAnnounceEnablementTypeChanged:(int64_t)a4
+- (void)controller:(id)controller carPlayAnnounceEnablementTypeChanged:(int64_t)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -421,7 +421,7 @@ LABEL_10:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)controller:(id)a3 announceNotificationsInCarPlayTemporarilyDisabledChanged:(BOOL)a4
+- (void)controller:(id)controller announceNotificationsInCarPlayTemporarilyDisabledChanged:(BOOL)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -431,7 +431,7 @@ LABEL_10:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)settingsGatewayDidUpdateGlobalSettings:(id)a3
+- (void)settingsGatewayDidUpdateGlobalSettings:(id)settings
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

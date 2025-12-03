@@ -1,25 +1,25 @@
 @interface GAXSBIdleTimerPolicyAggregatorOverride
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)idleTimerDidExpire:(id)a3;
-- (void)idleTimerDidWarn:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)idleTimerDidExpire:(id)expire;
+- (void)idleTimerDidWarn:(id)warn;
 @end
 
 @implementation GAXSBIdleTimerPolicyAggregatorOverride
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBIdleTimerPolicyAggregator" hasInstanceMethod:@"idleTimerDidWarn:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBIdleTimerPolicyAggregator" hasInstanceMethod:@"idleTimerDidExpire:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBIdleTimerPolicyAggregator" hasInstanceMethod:@"idleTimerDidWarn:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBIdleTimerPolicyAggregator" hasInstanceMethod:@"idleTimerDidExpire:" withFullSignature:{"v", "@", 0}];
 }
 
-- (void)idleTimerDidWarn:(id)a3
+- (void)idleTimerDidWarn:(id)warn
 {
-  v4 = a3;
+  warnCopy = warn;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 guestPassSessionIsActive];
+  guestPassSessionIsActive = [v5 guestPassSessionIsActive];
 
-  if (v6)
+  if (guestPassSessionIsActive)
   {
     v7 = GAXLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -33,17 +33,17 @@
   {
     v8.receiver = self;
     v8.super_class = GAXSBIdleTimerPolicyAggregatorOverride;
-    [(GAXSBIdleTimerPolicyAggregatorOverride *)&v8 idleTimerDidWarn:v4];
+    [(GAXSBIdleTimerPolicyAggregatorOverride *)&v8 idleTimerDidWarn:warnCopy];
   }
 }
 
-- (void)idleTimerDidExpire:(id)a3
+- (void)idleTimerDidExpire:(id)expire
 {
-  v4 = a3;
+  expireCopy = expire;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 guestPassSessionIsActive];
+  guestPassSessionIsActive = [v5 guestPassSessionIsActive];
 
-  if (v6)
+  if (guestPassSessionIsActive)
   {
     v7 = AXGuestPassManager();
     v8 = v7;
@@ -66,7 +66,7 @@
   {
     v10.receiver = self;
     v10.super_class = GAXSBIdleTimerPolicyAggregatorOverride;
-    [(GAXSBIdleTimerPolicyAggregatorOverride *)&v10 idleTimerDidExpire:v4];
+    [(GAXSBIdleTimerPolicyAggregatorOverride *)&v10 idleTimerDidExpire:expireCopy];
   }
 }
 

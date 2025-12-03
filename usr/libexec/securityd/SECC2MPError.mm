@@ -1,40 +1,40 @@
 @interface SECC2MPError
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SECC2MPError
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4[3])
+  fromCopy = from;
+  v7 = fromCopy;
+  if (fromCopy[3])
   {
     [(SECC2MPError *)self setErrorDomain:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
-    self->_errorCode = v4[1];
+    self->_errorCode = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(SECC2MPError *)self setErrorDescription:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   underlyingError = self->_underlyingError;
-  v6 = v4[4];
+  v6 = fromCopy[4];
   if (underlyingError)
   {
     if (v6)
@@ -69,16 +69,16 @@
   return v5 ^ v6 ^ [(SECC2MPError *)self->_underlyingError hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   errorDomain = self->_errorDomain;
-  if (errorDomain | *(v4 + 3))
+  if (errorDomain | *(equalCopy + 3))
   {
     if (![(NSString *)errorDomain isEqual:?])
     {
@@ -86,16 +86,16 @@
     }
   }
 
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_errorCode != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_errorCode != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -103,13 +103,13 @@ LABEL_13:
   }
 
   errorDescription = self->_errorDescription;
-  if (errorDescription | *(v4 + 2) && ![(NSString *)errorDescription isEqual:?])
+  if (errorDescription | *(equalCopy + 2) && ![(NSString *)errorDescription isEqual:?])
   {
     goto LABEL_13;
   }
 
   underlyingError = self->_underlyingError;
-  if (underlyingError | *(v4 + 4))
+  if (underlyingError | *(equalCopy + 4))
   {
     v9 = [(SECC2MPError *)underlyingError isEqual:?];
   }
@@ -124,10 +124,10 @@ LABEL_14:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_errorDomain copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_errorDomain copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -137,73 +137,73 @@ LABEL_14:
     *(v5 + 40) |= 1u;
   }
 
-  v8 = [(NSString *)self->_errorDescription copyWithZone:a3];
+  v8 = [(NSString *)self->_errorDescription copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(SECC2MPError *)self->_underlyingError copyWithZone:a3];
+  v10 = [(SECC2MPError *)self->_underlyingError copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_errorDomain)
   {
-    [v4 setErrorDomain:?];
-    v4 = v5;
+    [toCopy setErrorDomain:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_errorCode;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = self->_errorCode;
+    *(toCopy + 40) |= 1u;
   }
 
   if (self->_errorDescription)
   {
     [v5 setErrorDescription:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_underlyingError)
   {
     [v5 setUnderlyingError:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_errorDomain)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     errorCode = self->_errorCode;
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_errorDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_underlyingError)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
@@ -232,8 +232,8 @@ LABEL_14:
   underlyingError = self->_underlyingError;
   if (underlyingError)
   {
-    v9 = [(SECC2MPError *)underlyingError dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"underlying_error"];
+    dictionaryRepresentation = [(SECC2MPError *)underlyingError dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"underlying_error"];
   }
 
   return v4;
@@ -244,8 +244,8 @@ LABEL_14:
   v7.receiver = self;
   v7.super_class = SECC2MPError;
   v3 = [(SECC2MPError *)&v7 description];
-  v4 = [(SECC2MPError *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SECC2MPError *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

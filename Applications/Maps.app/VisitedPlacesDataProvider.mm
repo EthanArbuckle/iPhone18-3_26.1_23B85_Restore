@@ -1,25 +1,25 @@
 @interface VisitedPlacesDataProvider
 + (uint64_t)markVisitedPlacesEntrySeen;
 - (_TtC4Maps25VisitedPlacesDataProvider)init;
-- (void)setActive:(BOOL)a3;
-- (void)setObservers:(id)a3;
+- (void)setActive:(BOOL)active;
+- (void)setObservers:(id)observers;
 @end
 
 @implementation VisitedPlacesDataProvider
 
-- (void)setObservers:(id)a3
+- (void)setObservers:(id)observers
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC4Maps25VisitedPlacesDataProvider_observers);
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps25VisitedPlacesDataProvider_observers) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps25VisitedPlacesDataProvider_observers) = observers;
+  observersCopy = observers;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps25VisitedPlacesDataProvider_active) = a3;
-  if (a3)
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps25VisitedPlacesDataProvider_active) = active;
+  if (active)
   {
-    v3 = self;
+    selfCopy = self;
     sub_100460DE0();
   }
 }

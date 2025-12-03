@@ -1,5 +1,5 @@
 @interface BKDeviceDescriptor
-+ (id)deviceDescriptorForType:(int64_t)a3;
++ (id)deviceDescriptorForType:(int64_t)type;
 + (void)initialize;
 @end
 
@@ -13,10 +13,10 @@
   }
 }
 
-+ (id)deviceDescriptorForType:(int64_t)a3
++ (id)deviceDescriptorForType:(int64_t)type
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setType:a3];
+  v4 = objc_alloc_init(self);
+  [v4 setType:type];
 
   return v4;
 }

@@ -1,22 +1,22 @@
 @interface DBSmartWidgetActionButton
-- (DBSmartWidgetActionButton)initWithUIImage:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setFocusHighlightColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (DBSmartWidgetActionButton)initWithUIImage:(id)image;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setFocusHighlightColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)setNeedsDisplay;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 - (void)setupConstraints;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DBSmartWidgetActionButton
 
-- (DBSmartWidgetActionButton)initWithUIImage:(id)a3
+- (DBSmartWidgetActionButton)initWithUIImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v20.receiver = self;
   v20.super_class = DBSmartWidgetActionButton;
   v5 = *MEMORY[0x277CBF3A0];
@@ -26,28 +26,28 @@
   v9 = [(DBSmartWidgetActionButton *)&v20 initWithFrame:*MEMORY[0x277CBF3A0], v6, v7, v8];
   if (v9)
   {
-    v10 = [MEMORY[0x277D75348] secondarySystemFillColor];
-    v11 = [MEMORY[0x277D75348] _carSystemFocusColor];
+    secondarySystemFillColor = [MEMORY[0x277D75348] secondarySystemFillColor];
+    _carSystemFocusColor = [MEMORY[0x277D75348] _carSystemFocusColor];
     focusHighlightColor = v9->_focusHighlightColor;
-    v9->_focusHighlightColor = v11;
+    v9->_focusHighlightColor = _carSystemFocusColor;
 
     v13 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76920] scale:-1];
-    v14 = [v4 imageWithConfiguration:v13];
+    v14 = [imageCopy imageWithConfiguration:v13];
     [(DBSmartWidgetActionButton *)v9 setImage:v14 forState:0];
     v15 = [[DBSmartWidgetActionButtonRingView alloc] initWithFrame:v5, v6, v7, v8];
     ringView = v9->_ringView;
     v9->_ringView = v15;
 
     [(DBSmartWidgetActionButtonRingView *)v9->_ringView setUserInteractionEnabled:0];
-    [(DBSmartWidgetActionButtonRingView *)v9->_ringView setFillColor:v10];
+    [(DBSmartWidgetActionButtonRingView *)v9->_ringView setFillColor:secondarySystemFillColor];
     [(DBSmartWidgetActionButtonRingView *)v9->_ringView setFocusHighlightColor:v9->_focusHighlightColor];
-    v17 = [MEMORY[0x277D75348] clearColor];
-    [(DBSmartWidgetActionButtonRingView *)v9->_ringView setBackgroundColor:v17];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(DBSmartWidgetActionButtonRingView *)v9->_ringView setBackgroundColor:clearColor];
 
     [(DBSmartWidgetActionButtonRingView *)v9->_ringView setOpaque:0];
     [(DBSmartWidgetActionButton *)v9 addSubview:v9->_ringView];
-    v18 = [MEMORY[0x277D75348] labelColor];
-    [(DBSmartWidgetActionButton *)v9 setTintColor:v18];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(DBSmartWidgetActionButton *)v9 setTintColor:labelColor];
 
     [(DBSmartWidgetActionButton *)v9 setAdjustsImageWhenDisabled:1];
     [(DBSmartWidgetActionButton *)v9 setAdjustsImageWhenHighlighted:0];
@@ -61,50 +61,50 @@
 
 - (void)setupConstraints
 {
-  v3 = [(DBSmartWidgetActionButton *)self ringView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  ringView = [(DBSmartWidgetActionButton *)self ringView];
+  [ringView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v24 = objc_opt_new();
-  v4 = [(DBSmartWidgetActionButton *)self widthAnchor];
-  v5 = [v4 constraintEqualToConstant:44.0];
+  widthAnchor = [(DBSmartWidgetActionButton *)self widthAnchor];
+  v5 = [widthAnchor constraintEqualToConstant:44.0];
   [v24 addObject:v5];
 
-  v6 = [(DBSmartWidgetActionButton *)self heightAnchor];
-  v7 = [v6 constraintEqualToConstant:44.0];
+  heightAnchor = [(DBSmartWidgetActionButton *)self heightAnchor];
+  v7 = [heightAnchor constraintEqualToConstant:44.0];
   [v24 addObject:v7];
 
-  v8 = [(DBSmartWidgetActionButton *)self ringView];
-  v9 = [v8 leadingAnchor];
-  v10 = [(DBSmartWidgetActionButton *)self leadingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  ringView2 = [(DBSmartWidgetActionButton *)self ringView];
+  leadingAnchor = [ringView2 leadingAnchor];
+  leadingAnchor2 = [(DBSmartWidgetActionButton *)self leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v24 addObject:v11];
 
-  v12 = [(DBSmartWidgetActionButton *)self ringView];
-  v13 = [v12 trailingAnchor];
-  v14 = [(DBSmartWidgetActionButton *)self trailingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  ringView3 = [(DBSmartWidgetActionButton *)self ringView];
+  trailingAnchor = [ringView3 trailingAnchor];
+  trailingAnchor2 = [(DBSmartWidgetActionButton *)self trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v24 addObject:v15];
 
-  v16 = [(DBSmartWidgetActionButton *)self ringView];
-  v17 = [v16 topAnchor];
-  v18 = [(DBSmartWidgetActionButton *)self topAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  ringView4 = [(DBSmartWidgetActionButton *)self ringView];
+  topAnchor = [ringView4 topAnchor];
+  topAnchor2 = [(DBSmartWidgetActionButton *)self topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v24 addObject:v19];
 
-  v20 = [(DBSmartWidgetActionButton *)self ringView];
-  v21 = [v20 bottomAnchor];
-  v22 = [(DBSmartWidgetActionButton *)self bottomAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  ringView5 = [(DBSmartWidgetActionButton *)self ringView];
+  bottomAnchor = [ringView5 bottomAnchor];
+  bottomAnchor2 = [(DBSmartWidgetActionButton *)self bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v24 addObject:v23];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v24];
 }
 
-- (void)setFocusHighlightColor:(id)a3
+- (void)setFocusHighlightColor:(id)color
 {
-  v4 = a3;
-  v5 = [(DBSmartWidgetActionButton *)self ringView];
-  [v5 setFocusHighlightColor:v4];
+  colorCopy = color;
+  ringView = [(DBSmartWidgetActionButton *)self ringView];
+  [ringView setFocusHighlightColor:colorCopy];
 }
 
 - (void)setNeedsDisplay
@@ -112,90 +112,90 @@
   v4.receiver = self;
   v4.super_class = DBSmartWidgetActionButton;
   [(DBSmartWidgetActionButton *)&v4 setNeedsDisplay];
-  v3 = [(DBSmartWidgetActionButton *)self ringView];
-  [v3 setNeedsDisplay];
+  ringView = [(DBSmartWidgetActionButton *)self ringView];
+  [ringView setNeedsDisplay];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = a3;
-  v7 = [(DBSmartWidgetActionButton *)self ringView];
-  v6 = [v5 nextFocusedItem];
+  contextCopy = context;
+  ringView = [(DBSmartWidgetActionButton *)self ringView];
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
-  [v7 setFocusRingVisible:v6 == self];
+  [ringView setFocusRingVisible:nextFocusedItem == self];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (_pressesContainEvent(v6))
+  beganCopy = began;
+  eventCopy = event;
+  if (_pressesContainEvent(beganCopy))
   {
     [(DBSmartWidgetActionButton *)self setHighlighted:1];
   }
 
   v8.receiver = self;
   v8.super_class = DBSmartWidgetActionButton;
-  [(DBSmartWidgetActionButton *)&v8 pressesBegan:v6 withEvent:v7];
+  [(DBSmartWidgetActionButton *)&v8 pressesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (_pressesContainEvent(v6))
+  endedCopy = ended;
+  eventCopy = event;
+  if (_pressesContainEvent(endedCopy))
   {
     [(DBSmartWidgetActionButton *)self setHighlighted:0];
   }
 
   v8.receiver = self;
   v8.super_class = DBSmartWidgetActionButton;
-  [(DBSmartWidgetActionButton *)&v8 pressesEnded:v6 withEvent:v7];
+  [(DBSmartWidgetActionButton *)&v8 pressesEnded:endedCopy withEvent:eventCopy];
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (_pressesContainEvent(v6))
+  cancelledCopy = cancelled;
+  eventCopy = event;
+  if (_pressesContainEvent(cancelledCopy))
   {
     [(DBSmartWidgetActionButton *)self setHighlighted:0];
   }
 
   v8.receiver = self;
   v8.super_class = DBSmartWidgetActionButton;
-  [(DBSmartWidgetActionButton *)&v8 pressesCancelled:v6 withEvent:v7];
+  [(DBSmartWidgetActionButton *)&v8 pressesCancelled:cancelledCopy withEvent:eventCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = DBSmartWidgetActionButton;
-  [(DBSmartWidgetActionButton *)&v5 traitCollectionDidChange:a3];
-  v4 = [(DBSmartWidgetActionButton *)self ringView];
-  [v4 setNeedsDisplay];
+  [(DBSmartWidgetActionButton *)&v5 traitCollectionDidChange:change];
+  ringView = [(DBSmartWidgetActionButton *)self ringView];
+  [ringView setNeedsDisplay];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = DBSmartWidgetActionButton;
   [(DBSmartWidgetActionButton *)&v6 setHighlighted:?];
-  v5 = [(DBSmartWidgetActionButton *)self ringView];
-  [v5 setHighlighted:v3];
+  ringView = [(DBSmartWidgetActionButton *)self ringView];
+  [ringView setHighlighted:highlightedCopy];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v7.receiver = self;
   v7.super_class = DBSmartWidgetActionButton;
   [(DBSmartWidgetActionButton *)&v7 setSelected:?];
-  v5 = [(DBSmartWidgetActionButton *)self ringView];
-  [v5 setSelected:v3];
+  ringView = [(DBSmartWidgetActionButton *)self ringView];
+  [ringView setSelected:selectedCopy];
 
-  if (v3)
+  if (selectedCopy)
   {
     [MEMORY[0x277D75348] tableBackgroundColor];
   }

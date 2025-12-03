@@ -1,31 +1,31 @@
 @interface RTCameraManager
-+ (RTCameraManager)allocWithZone:(_NSZone *)a3;
-- (void)_shutdownWithHandler:(id)a3;
++ (RTCameraManager)allocWithZone:(_NSZone *)zone;
+- (void)_shutdownWithHandler:(id)handler;
 @end
 
 @implementation RTCameraManager
 
-+ (RTCameraManager)allocWithZone:(_NSZone *)a3
++ (RTCameraManager)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [RTCameraManager_Embedded allocWithZone:a3];
+    return [RTCameraManager_Embedded allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___RTCameraManager;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 

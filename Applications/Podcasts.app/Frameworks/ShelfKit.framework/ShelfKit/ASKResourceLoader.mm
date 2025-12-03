@@ -1,28 +1,28 @@
 @interface ASKResourceLoader
 - (ASKResourceLoader)init;
-- (ASKResourceLoader)initWithParentResourceLoader:(id)a3;
-- (ASKResourceLoader)initWithRequestQueue:(id)a3 accessQueue:(id)a4 notificationQueue:(id)a5 cacheLimit:(int64_t)a6;
+- (ASKResourceLoader)initWithParentResourceLoader:(id)loader;
+- (ASKResourceLoader)initWithRequestQueue:(id)queue accessQueue:(id)accessQueue notificationQueue:(id)notificationQueue cacheLimit:(int64_t)limit;
 - (BOOL)isIdle;
-- (BOOL)loadResourceWithRequest:(id)a3 reason:(int64_t)a4;
-- (BOOL)setReason:(int64_t)a3 forRequestWithKey:(id)a4;
-- (id)cachedResourcesForCacheKey:(id)a3;
+- (BOOL)loadResourceWithRequest:(id)request reason:(int64_t)reason;
+- (BOOL)setReason:(int64_t)reason forRequestWithKey:(id)key;
+- (id)cachedResourcesForCacheKey:(id)key;
 - (id)description;
-- (id)requestKeyForCacheKey:(id)a3;
+- (id)requestKeyForCacheKey:(id)key;
 - (int64_t)currentQualityOfService;
 - (void)_commonInit;
-- (void)addResource:(id)a3 forCacheKey:(id)a4;
+- (void)addResource:(id)resource forCacheKey:(id)key;
 - (void)cancelAllRequests;
-- (void)cancelRequestForCacheKey:(id)a3;
+- (void)cancelRequestForCacheKey:(id)key;
 - (void)dealloc;
 - (void)enterBackground;
 - (void)enterForeground;
-- (void)finishLoadForRequest:(id)a3 withResource:(id)a4 error:(id)a5;
+- (void)finishLoadForRequest:(id)request withResource:(id)resource error:(id)error;
 - (void)postDidBeginLoadingIfIdle;
 - (void)postDidIdleIfIdle;
-- (void)postDidLoadAllForReason:(int64_t)a3;
+- (void)postDidLoadAllForReason:(int64_t)reason;
 - (void)removeAllCachedResources;
 - (void)reprioritizeOperations;
-- (void)updateLoadReason:(int64_t)a3 forOperation:(id)a4;
+- (void)updateLoadReason:(int64_t)reason forOperation:(id)operation;
 @end
 
 @implementation ASKResourceLoader
@@ -38,54 +38,54 @@
   _objc_release_x1();
 }
 
-- (ASKResourceLoader)initWithRequestQueue:(id)a3 accessQueue:(id)a4 notificationQueue:(id)a5 cacheLimit:(int64_t)a6
+- (ASKResourceLoader)initWithRequestQueue:(id)queue accessQueue:(id)accessQueue notificationQueue:(id)notificationQueue cacheLimit:(int64_t)limit
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  queueCopy = queue;
+  accessQueueCopy = accessQueue;
+  notificationQueueCopy = notificationQueue;
   v19.receiver = self;
   v19.super_class = ASKResourceLoader;
   v14 = [(ASKResourceLoader *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_requestQueue, a3);
-    objc_storeStrong(&v15->_accessQueue, a4);
-    objc_storeStrong(&v15->_notificationQueue, a5);
+    objc_storeStrong(&v14->_requestQueue, queue);
+    objc_storeStrong(&v15->_accessQueue, accessQueue);
+    objc_storeStrong(&v15->_notificationQueue, notificationQueue);
     v16 = objc_alloc_init(NSCache);
     cachedResources = v15->_cachedResources;
     v15->_cachedResources = v16;
 
-    [(NSCache *)v15->_cachedResources setCountLimit:a6];
+    [(NSCache *)v15->_cachedResources setCountLimit:limit];
     [(ASKResourceLoader *)v15 _commonInit];
   }
 
   return v15;
 }
 
-- (ASKResourceLoader)initWithParentResourceLoader:(id)a3
+- (ASKResourceLoader)initWithParentResourceLoader:(id)loader
 {
-  v4 = a3;
+  loaderCopy = loader;
   v15.receiver = self;
   v15.super_class = ASKResourceLoader;
   v5 = [(ASKResourceLoader *)&v15 init];
   if (v5)
   {
-    v6 = [v4 requestQueue];
+    requestQueue = [loaderCopy requestQueue];
     requestQueue = v5->_requestQueue;
-    v5->_requestQueue = v6;
+    v5->_requestQueue = requestQueue;
 
-    v8 = [v4 accessQueue];
+    accessQueue = [loaderCopy accessQueue];
     accessQueue = v5->_accessQueue;
-    v5->_accessQueue = v8;
+    v5->_accessQueue = accessQueue;
 
-    v10 = [v4 notificationQueue];
+    notificationQueue = [loaderCopy notificationQueue];
     notificationQueue = v5->_notificationQueue;
-    v5->_notificationQueue = v10;
+    v5->_notificationQueue = notificationQueue;
 
-    v12 = [v4 cachedResources];
+    cachedResources = [loaderCopy cachedResources];
     cachedResources = v5->_cachedResources;
-    v5->_cachedResources = v12;
+    v5->_cachedResources = cachedResources;
 
     [(ASKResourceLoader *)v5 _commonInit];
     v5->_isInBackground = 1;
@@ -113,73 +113,73 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(ASKResourceLoader *)self requestQueue];
-  v6 = [(ASKResourceLoader *)self accessQueue];
-  v7 = [(ASKResourceLoader *)self notificationQueue];
+  requestQueue = [(ASKResourceLoader *)self requestQueue];
+  accessQueue = [(ASKResourceLoader *)self accessQueue];
+  notificationQueue = [(ASKResourceLoader *)self notificationQueue];
   v8 = [NSNumber numberWithBool:[(ASKResourceLoader *)self isInBackground]];
   v9 = [NSString stringWithFormat:@"{onScreen: %ld, cacheAhead: %ld, cacheFarAhead: %ld}", self->_requestCountMap[2], self->_requestCountMap[1], self->_requestCountMap[0]];
-  v10 = [NSString stringWithFormat:@"<%@:%p requestQueue = %@, accessQueue = %@, notificationQueue = %@, isInBackground = %@, loadCounts = %@>", v4, self, v5, v6, v7, v8, v9];
+  v10 = [NSString stringWithFormat:@"<%@:%p requestQueue = %@, accessQueue = %@, notificationQueue = %@, isInBackground = %@, loadCounts = %@>", v4, self, requestQueue, accessQueue, notificationQueue, v8, v9];
 
   return v10;
 }
 
-- (void)addResource:(id)a3 forCacheKey:(id)a4
+- (void)addResource:(id)resource forCacheKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ASKResourceLoader *)self cachedResources];
-  v9 = [v8 objectForKey:v7];
+  resourceCopy = resource;
+  keyCopy = key;
+  cachedResources = [(ASKResourceLoader *)self cachedResources];
+  v9 = [cachedResources objectForKey:keyCopy];
 
   if (v9)
   {
-    v10 = [v9 arrayByAddingObject:v6];
+    v10 = [v9 arrayByAddingObject:resourceCopy];
   }
 
   else
   {
-    v12 = v6;
+    v12 = resourceCopy;
     v10 = [NSArray arrayWithObjects:&v12 count:1];
   }
 
-  v11 = [(ASKResourceLoader *)self cachedResources];
-  [v11 setObject:v10 forKey:v7];
+  cachedResources2 = [(ASKResourceLoader *)self cachedResources];
+  [cachedResources2 setObject:v10 forKey:keyCopy];
 }
 
-- (id)cachedResourcesForCacheKey:(id)a3
+- (id)cachedResourcesForCacheKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ASKResourceLoader *)self cachedResources];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  cachedResources = [(ASKResourceLoader *)self cachedResources];
+  v6 = [cachedResources objectForKey:keyCopy];
 
   return v6;
 }
 
 - (void)removeAllCachedResources
 {
-  v2 = [(ASKResourceLoader *)self cachedResources];
-  [v2 removeAllObjects];
+  cachedResources = [(ASKResourceLoader *)self cachedResources];
+  [cachedResources removeAllObjects];
 }
 
-- (id)requestKeyForCacheKey:(id)a3
+- (id)requestKeyForCacheKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ASKResourceLoader *)self requestsByCacheKey];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  requestsByCacheKey = [(ASKResourceLoader *)self requestsByCacheKey];
+  v6 = [requestsByCacheKey objectForKey:keyCopy];
 
   return v6;
 }
 
 - (void)cancelAllRequests
 {
-  v3 = [(ASKResourceLoader *)self pendingOperations];
-  v4 = [v3 allValues];
-  [v4 makeObjectsPerformSelector:"cancel"];
+  pendingOperations = [(ASKResourceLoader *)self pendingOperations];
+  allValues = [pendingOperations allValues];
+  [allValues makeObjectsPerformSelector:"cancel"];
 
-  v5 = [(ASKResourceLoader *)self pendingOperations];
-  [v5 removeAllObjects];
+  pendingOperations2 = [(ASKResourceLoader *)self pendingOperations];
+  [pendingOperations2 removeAllObjects];
 
-  v6 = [(ASKResourceLoader *)self requestsByCacheKey];
-  [v6 removeAllObjects];
+  requestsByCacheKey = [(ASKResourceLoader *)self requestsByCacheKey];
+  [requestsByCacheKey removeAllObjects];
 
   if (self->_requestCountMap[2] >= 1)
   {
@@ -197,34 +197,34 @@
   }
 }
 
-- (void)cancelRequestForCacheKey:(id)a3
+- (void)cancelRequestForCacheKey:(id)key
 {
-  v11 = a3;
+  keyCopy = key;
   v4 = [(ASKResourceLoader *)self requestKeyForCacheKey:?];
   if (v4)
   {
-    v5 = [(ASKResourceLoader *)self pendingOperations];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    pendingOperations = [(ASKResourceLoader *)self pendingOperations];
+    v6 = [pendingOperations objectForKeyedSubscript:v4];
 
     if (v6)
     {
       [v6 cancel];
-      v7 = [(ASKResourceLoader *)self pendingOperations];
-      [v7 removeObjectForKey:v4];
+      pendingOperations2 = [(ASKResourceLoader *)self pendingOperations];
+      [pendingOperations2 removeObjectForKey:v4];
 
-      v8 = [(ASKResourceLoader *)self requestsByCacheKey];
-      [v8 removeObjectForKey:v11];
+      requestsByCacheKey = [(ASKResourceLoader *)self requestsByCacheKey];
+      [requestsByCacheKey removeObjectForKey:keyCopy];
 
-      v9 = [v6 _loadReason];
-      v10 = self->_requestCountMap[v9];
+      _loadReason = [v6 _loadReason];
+      v10 = self->_requestCountMap[_loadReason];
       if (v10 >= 1)
       {
-        self->_requestCountMap[v9] = --v10;
+        self->_requestCountMap[_loadReason] = --v10;
       }
 
       if (!v10)
       {
-        [(ASKResourceLoader *)self postDidLoadAllForReason:v9];
+        [(ASKResourceLoader *)self postDidLoadAllForReason:_loadReason];
       }
     }
   }
@@ -250,40 +250,40 @@
 
 - (BOOL)isIdle
 {
-  v2 = [(ASKResourceLoader *)self pendingOperations];
-  v3 = [v2 count] == 0;
+  pendingOperations = [(ASKResourceLoader *)self pendingOperations];
+  v3 = [pendingOperations count] == 0;
 
   return v3;
 }
 
-- (BOOL)loadResourceWithRequest:(id)a3 reason:(int64_t)a4
+- (BOOL)loadResourceWithRequest:(id)request reason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [v6 requestKey];
-  v8 = [(ASKResourceLoader *)self pendingOperations];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  requestCopy = request;
+  requestKey = [requestCopy requestKey];
+  pendingOperations = [(ASKResourceLoader *)self pendingOperations];
+  v9 = [pendingOperations objectForKeyedSubscript:requestKey];
 
   if (v9)
   {
-    v10 = [(ASKResourceLoader *)self isInBackground];
-    v11 = 4 * a4;
-    if (a4 >= 3)
+    isInBackground = [(ASKResourceLoader *)self isInBackground];
+    v11 = 4 * reason;
+    if (reason >= 3)
     {
       v11 = 4;
     }
 
     v12 = -8;
-    if (a4 == 1)
+    if (reason == 1)
     {
       v12 = -4;
     }
 
-    if (a4 == 2)
+    if (reason == 2)
     {
       v12 = 0;
     }
 
-    if (v10)
+    if (isInBackground)
     {
       v13 = v12;
     }
@@ -295,35 +295,35 @@
 
     if (v13 > [v9 queuePriority])
     {
-      [(ASKResourceLoader *)self updateLoadReason:a4 forOperation:v9];
+      [(ASKResourceLoader *)self updateLoadReason:reason forOperation:v9];
       [v9 setQueuePriority:v13];
     }
   }
 
   else
   {
-    v14 = [v6 makeLoadOperation];
-    [v14 _setLoadReason:a4];
-    [v14 setQualityOfService:{-[ASKResourceLoader currentQualityOfService](self, "currentQualityOfService")}];
-    v15 = [(ASKResourceLoader *)self isInBackground];
-    v16 = 4 * a4;
-    if (a4 >= 3)
+    makeLoadOperation = [requestCopy makeLoadOperation];
+    [makeLoadOperation _setLoadReason:reason];
+    [makeLoadOperation setQualityOfService:{-[ASKResourceLoader currentQualityOfService](self, "currentQualityOfService")}];
+    isInBackground2 = [(ASKResourceLoader *)self isInBackground];
+    v16 = 4 * reason;
+    if (reason >= 3)
     {
       v16 = 4;
     }
 
     v17 = -8;
-    if (a4 == 1)
+    if (reason == 1)
     {
       v17 = -4;
     }
 
-    if (a4 == 2)
+    if (reason == 2)
     {
       v17 = 0;
     }
 
-    if (v15)
+    if (isInBackground2)
     {
       v18 = v17;
     }
@@ -333,28 +333,28 @@
       v18 = v16;
     }
 
-    [v14 setQueuePriority:v18];
+    [makeLoadOperation setQueuePriority:v18];
     objc_initWeak(&location, self);
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = __52__ASKResourceLoader_loadResourceWithRequest_reason___block_invoke;
     v25[3] = &unk_4AF4C0;
     objc_copyWeak(&v27, &location);
-    v19 = v6;
+    v19 = requestCopy;
     v26 = v19;
-    [v14 setOutputBlock:v25];
+    [makeLoadOperation setOutputBlock:v25];
     [(ASKResourceLoader *)self postDidBeginLoadingIfIdle];
-    v20 = [(ASKResourceLoader *)self pendingOperations];
-    [v20 setObject:v14 forKeyedSubscript:v7];
+    pendingOperations2 = [(ASKResourceLoader *)self pendingOperations];
+    [pendingOperations2 setObject:makeLoadOperation forKeyedSubscript:requestKey];
 
-    v21 = [(ASKResourceLoader *)self requestsByCacheKey];
-    v22 = [v19 cacheKey];
-    [v21 setObject:v7 forKey:v22];
+    requestsByCacheKey = [(ASKResourceLoader *)self requestsByCacheKey];
+    cacheKey = [v19 cacheKey];
+    [requestsByCacheKey setObject:requestKey forKey:cacheKey];
 
-    v23 = [(ASKResourceLoader *)self requestQueue];
-    [v23 addOperation:v14];
+    requestQueue = [(ASKResourceLoader *)self requestQueue];
+    [requestQueue addOperation:makeLoadOperation];
 
-    ++self->_requestCountMap[a4];
+    ++self->_requestCountMap[reason];
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
   }
@@ -389,34 +389,34 @@ void __52__ASKResourceLoader_loadResourceWithRequest_reason___block_invoke_2(uin
   [WeakRetained finishLoadForRequest:*(a1 + 32) withResource:*(a1 + 40) error:*(a1 + 48)];
 }
 
-- (BOOL)setReason:(int64_t)a3 forRequestWithKey:(id)a4
+- (BOOL)setReason:(int64_t)reason forRequestWithKey:(id)key
 {
-  v6 = a4;
-  v7 = [(ASKResourceLoader *)self pendingOperations];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  pendingOperations = [(ASKResourceLoader *)self pendingOperations];
+  v8 = [pendingOperations objectForKeyedSubscript:keyCopy];
 
   if (v8)
   {
-    [(ASKResourceLoader *)self updateLoadReason:a3 forOperation:v8];
-    v9 = [(ASKResourceLoader *)self isInBackground];
-    v10 = 4 * a3;
-    if (a3 >= 3)
+    [(ASKResourceLoader *)self updateLoadReason:reason forOperation:v8];
+    isInBackground = [(ASKResourceLoader *)self isInBackground];
+    v10 = 4 * reason;
+    if (reason >= 3)
     {
       v10 = 4;
     }
 
     v11 = -8;
-    if (a3 == 1)
+    if (reason == 1)
     {
       v11 = -4;
     }
 
-    if (a3 == 2)
+    if (reason == 2)
     {
       v11 = 0;
     }
 
-    if (v9)
+    if (isInBackground)
     {
       v12 = v11;
     }
@@ -432,53 +432,53 @@ void __52__ASKResourceLoader_loadResourceWithRequest_reason___block_invoke_2(uin
   return v8 != 0;
 }
 
-- (void)finishLoadForRequest:(id)a3 withResource:(id)a4 error:(id)a5
+- (void)finishLoadForRequest:(id)request withResource:(id)resource error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 requestKey];
-  v12 = [v8 cacheKey];
-  v13 = [(ASKResourceLoader *)self pendingOperations];
-  v14 = [v13 objectForKeyedSubscript:v11];
+  requestCopy = request;
+  resourceCopy = resource;
+  errorCopy = error;
+  requestKey = [requestCopy requestKey];
+  cacheKey = [requestCopy cacheKey];
+  pendingOperations = [(ASKResourceLoader *)self pendingOperations];
+  v14 = [pendingOperations objectForKeyedSubscript:requestKey];
 
-  v15 = [v14 _loadReason];
-  v16 = [(ASKResourceLoader *)self pendingOperations];
-  [v16 removeObjectForKey:v11];
+  _loadReason = [v14 _loadReason];
+  pendingOperations2 = [(ASKResourceLoader *)self pendingOperations];
+  [pendingOperations2 removeObjectForKey:requestKey];
 
-  v17 = [(ASKResourceLoader *)self requestsByCacheKey];
-  [v17 removeObjectForKey:v12];
+  requestsByCacheKey = [(ASKResourceLoader *)self requestsByCacheKey];
+  [requestsByCacheKey removeObjectForKey:cacheKey];
 
-  if (v9)
+  if (resourceCopy)
   {
-    v18 = [v8 cacheOptions];
-    if ((v18 & 2) != 0)
+    cacheOptions = [requestCopy cacheOptions];
+    if ((cacheOptions & 2) != 0)
     {
-      if ((v18 & 4) != 0)
+      if ((cacheOptions & 4) != 0)
       {
-        v19 = [(ASKResourceLoader *)self cachedResources];
-        v22 = v9;
+        cachedResources = [(ASKResourceLoader *)self cachedResources];
+        v22 = resourceCopy;
         v20 = [NSArray arrayWithObjects:&v22 count:1];
-        [v19 setObject:v20 forKey:v12];
+        [cachedResources setObject:v20 forKey:cacheKey];
       }
 
       else
       {
-        [(ASKResourceLoader *)self addResource:v9 forCacheKey:v12];
+        [(ASKResourceLoader *)self addResource:resourceCopy forCacheKey:cacheKey];
       }
     }
   }
 
-  [v8 didLoadResource:v9 error:v10];
-  v21 = self->_requestCountMap[v15];
+  [requestCopy didLoadResource:resourceCopy error:errorCopy];
+  v21 = self->_requestCountMap[_loadReason];
   if (v21 >= 1)
   {
-    self->_requestCountMap[v15] = --v21;
+    self->_requestCountMap[_loadReason] = --v21;
   }
 
   if (!v21)
   {
-    [(ASKResourceLoader *)self postDidLoadAllForReason:v15];
+    [(ASKResourceLoader *)self postDidLoadAllForReason:_loadReason];
   }
 
   [(ASKResourceLoader *)self postDidIdleIfIdle];
@@ -497,42 +497,42 @@ void __52__ASKResourceLoader_loadResourceWithRequest_reason___block_invoke_2(uin
   }
 }
 
-- (void)updateLoadReason:(int64_t)a3 forOperation:(id)a4
+- (void)updateLoadReason:(int64_t)reason forOperation:(id)operation
 {
-  v9 = a4;
-  v6 = [v9 _loadReason];
-  v7 = v9;
-  if (v6 != a3)
+  operationCopy = operation;
+  _loadReason = [operationCopy _loadReason];
+  v7 = operationCopy;
+  if (_loadReason != reason)
   {
-    [v9 _setLoadReason:a3];
-    ++self->_requestCountMap[a3];
-    v8 = self->_requestCountMap[v6];
+    [operationCopy _setLoadReason:reason];
+    ++self->_requestCountMap[reason];
+    v8 = self->_requestCountMap[_loadReason];
     if (v8 >= 1)
     {
-      self->_requestCountMap[v6] = --v8;
+      self->_requestCountMap[_loadReason] = --v8;
     }
 
-    v7 = v9;
+    v7 = operationCopy;
     if (!v8)
     {
-      [(ASKResourceLoader *)self postDidLoadAllForReason:v6];
-      v7 = v9;
+      [(ASKResourceLoader *)self postDidLoadAllForReason:_loadReason];
+      v7 = operationCopy;
     }
   }
 }
 
 - (void)reprioritizeOperations
 {
-  v3 = [(ASKResourceLoader *)self currentQualityOfService];
-  v4 = [(ASKResourceLoader *)self isInBackground];
+  currentQualityOfService = [(ASKResourceLoader *)self currentQualityOfService];
+  isInBackground = [(ASKResourceLoader *)self isInBackground];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(ASKResourceLoader *)self pendingOperations];
-  v6 = [v5 objectEnumerator];
+  pendingOperations = [(ASKResourceLoader *)self pendingOperations];
+  objectEnumerator = [pendingOperations objectEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -543,14 +543,14 @@ void __52__ASKResourceLoader_loadResourceWithRequest_reason___block_invoke_2(uin
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 _loadReason];
-        if (v4)
+        _loadReason = [v11 _loadReason];
+        if (isInBackground)
         {
-          if (v12 == 1)
+          if (_loadReason == 1)
           {
             v13 = -4;
           }
@@ -560,7 +560,7 @@ void __52__ASKResourceLoader_loadResourceWithRequest_reason___block_invoke_2(uin
             v13 = -8;
           }
 
-          if (v12 == 2)
+          if (_loadReason == 2)
           {
             v14 = 0;
           }
@@ -571,21 +571,21 @@ void __52__ASKResourceLoader_loadResourceWithRequest_reason___block_invoke_2(uin
           }
         }
 
-        else if (v12 >= 3)
+        else if (_loadReason >= 3)
         {
           v14 = 4;
         }
 
         else
         {
-          v14 = 4 * v12;
+          v14 = 4 * _loadReason;
         }
 
         [v11 setQueuePriority:v14];
-        [v11 setQualityOfService:v3];
+        [v11 setQualityOfService:currentQualityOfService];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -597,13 +597,13 @@ void __52__ASKResourceLoader_loadResourceWithRequest_reason___block_invoke_2(uin
   if ([(ASKResourceLoader *)self isIdle])
   {
     objc_initWeak(&location, self);
-    v3 = [(ASKResourceLoader *)self notificationQueue];
+    notificationQueue = [(ASKResourceLoader *)self notificationQueue];
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = __46__ASKResourceLoader_postDidBeginLoadingIfIdle__block_invoke;
     v4[3] = &unk_4AF208;
     objc_copyWeak(&v5, &location);
-    [v3 addOperationWithBlock:v4];
+    [notificationQueue addOperationWithBlock:v4];
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
@@ -628,13 +628,13 @@ void __46__ASKResourceLoader_postDidBeginLoadingIfIdle__block_invoke(uint64_t a1
   if ([(ASKResourceLoader *)self isIdle])
   {
     objc_initWeak(&location, self);
-    v3 = [(ASKResourceLoader *)self notificationQueue];
+    notificationQueue = [(ASKResourceLoader *)self notificationQueue];
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = __38__ASKResourceLoader_postDidIdleIfIdle__block_invoke;
     v4[3] = &unk_4AF208;
     objc_copyWeak(&v5, &location);
-    [v3 addOperationWithBlock:v4];
+    [notificationQueue addOperationWithBlock:v4];
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
@@ -654,17 +654,17 @@ void __38__ASKResourceLoader_postDidIdleIfIdle__block_invoke(uint64_t a1)
   }
 }
 
-- (void)postDidLoadAllForReason:(int64_t)a3
+- (void)postDidLoadAllForReason:(int64_t)reason
 {
   objc_initWeak(&location, self);
-  v5 = [(ASKResourceLoader *)self notificationQueue];
+  notificationQueue = [(ASKResourceLoader *)self notificationQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __45__ASKResourceLoader_postDidLoadAllForReason___block_invoke;
   v6[3] = &unk_4AF4E8;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
-  [v5 addOperationWithBlock:v6];
+  v7[1] = reason;
+  [notificationQueue addOperationWithBlock:v6];
 
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);

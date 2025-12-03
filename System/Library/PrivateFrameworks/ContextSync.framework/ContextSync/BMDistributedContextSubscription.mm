@@ -1,62 +1,62 @@
 @interface BMDistributedContextSubscription
-- (BMDistributedContextSubscription)initWithIdentifier:(id)a3 dsl:(id)a4 subscribingDevice:(id)a5 subscribedDevice:(id)a6 configuration:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMDistributedContextSubscription)initWithIdentifier:(id)identifier dsl:(id)dsl subscribingDevice:(id)device subscribedDevice:(id)subscribedDevice configuration:(id)configuration;
+- (BOOL)isEqual:(id)equal;
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 - (unint64_t)hash;
 @end
 
 @implementation BMDistributedContextSubscription
 
-- (BMDistributedContextSubscription)initWithIdentifier:(id)a3 dsl:(id)a4 subscribingDevice:(id)a5 subscribedDevice:(id)a6 configuration:(id)a7
+- (BMDistributedContextSubscription)initWithIdentifier:(id)identifier dsl:(id)dsl subscribingDevice:(id)device subscribedDevice:(id)subscribedDevice configuration:(id)configuration
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  dslCopy = dsl;
+  deviceCopy = device;
+  subscribedDeviceCopy = subscribedDevice;
+  configurationCopy = configuration;
   v21.receiver = self;
   v21.super_class = BMDistributedContextSubscription;
   v17 = [(BMDistributedContextSubscription *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_identifier, a3);
-    objc_storeStrong(&v18->_dsl, a4);
-    objc_storeStrong(&v18->_subscribingDevice, a5);
-    objc_storeStrong(&v18->_subscribedDevice, a6);
-    objc_storeStrong(&v18->_configuration, a7);
+    objc_storeStrong(&v17->_identifier, identifier);
+    objc_storeStrong(&v18->_dsl, dsl);
+    objc_storeStrong(&v18->_subscribingDevice, device);
+    objc_storeStrong(&v18->_subscribedDevice, subscribedDevice);
+    objc_storeStrong(&v18->_configuration, configuration);
   }
 
   return v18;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = BMDistributedContextSubscription;
   v5 = [(BMDistributedContextSubscription *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"identifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"dsl"];
-    v9 = [(NSData *)v8 bmdsl_deserialize];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"dsl"];
+    bmdsl_deserialize = [(NSData *)v8 bmdsl_deserialize];
     dsl = v5->_dsl;
-    v5->_dsl = v9;
+    v5->_dsl = bmdsl_deserialize;
 
-    v11 = [v4 objectForKeyedSubscript:@"subscribingDevice"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"subscribingDevice"];
     subscribingDevice = v5->_subscribingDevice;
     v5->_subscribingDevice = v11;
 
-    v13 = [v4 objectForKeyedSubscript:@"subscribedDevice"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"subscribedDevice"];
     subscribedDevice = v5->_subscribedDevice;
     v5->_subscribedDevice = v13;
 
-    v15 = [v4 objectForKeyedSubscript:@"configuration"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"configuration"];
     v16 = [v15 objectForKeyedSubscript:@"oneOff"];
 
     if ([v16 BOOLValue])
@@ -69,14 +69,14 @@
       v17 = 0;
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"configuration"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"configuration"];
     v19 = [v18 objectForKeyedSubscript:@"wakeState"];
 
-    v20 = [v19 BOOLValue];
-    v21 = [v4 objectForKeyedSubscript:@"configuration"];
+    bOOLValue = [v19 BOOLValue];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"configuration"];
     v22 = [v21 objectForKeyedSubscript:@"lastChangedDate"];
 
-    v23 = [[BMDistributedContextSubscriptionConfiguration alloc] initWithOptions:v17 | v20 lastChangedDate:v22];
+    v23 = [[BMDistributedContextSubscriptionConfiguration alloc] initWithOptions:v17 | bOOLValue lastChangedDate:v22];
     configuration = v5->_configuration;
     v5->_configuration = v23;
   }
@@ -92,35 +92,35 @@
   v19[0] = identifier;
   v18[0] = @"identifier";
   v18[1] = @"dsl";
-  v5 = [(BMDSL *)dsl bmdsl_serialize];
-  v6 = v5;
-  if (!v5)
+  bmdsl_serialize = [(BMDSL *)dsl bmdsl_serialize];
+  data = bmdsl_serialize;
+  if (!bmdsl_serialize)
   {
-    v6 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
   }
 
   subscribingDevice = self->_subscribingDevice;
   subscribedDevice = self->_subscribedDevice;
-  v19[1] = v6;
+  v19[1] = data;
   v19[2] = subscribingDevice;
   v18[2] = @"subscribingDevice";
   v18[3] = @"subscribedDevice";
   v19[3] = subscribedDevice;
   v18[4] = @"configuration";
   v16[0] = @"wakeState";
-  v9 = [(BMDistributedContextSubscriptionConfiguration *)self->_configuration wakeState];
-  v17[0] = v9;
+  wakeState = [(BMDistributedContextSubscriptionConfiguration *)self->_configuration wakeState];
+  v17[0] = wakeState;
   v16[1] = @"oneOff";
-  v10 = [(BMDistributedContextSubscriptionConfiguration *)self->_configuration oneOffSubscription];
-  v17[1] = v10;
+  oneOffSubscription = [(BMDistributedContextSubscriptionConfiguration *)self->_configuration oneOffSubscription];
+  v17[1] = oneOffSubscription;
   v16[2] = @"lastChangedDate";
-  v11 = [(BMDistributedContextSubscriptionConfiguration *)self->_configuration lastChangedDate];
-  v17[2] = v11;
+  lastChangedDate = [(BMDistributedContextSubscriptionConfiguration *)self->_configuration lastChangedDate];
+  v17[2] = lastChangedDate;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:3];
   v19[4] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:5];
 
-  if (!v5)
+  if (!bmdsl_serialize)
   {
   }
 
@@ -129,24 +129,24 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 identifier];
-    if ([v6 isEqual:self->_identifier])
+    v5 = equalCopy;
+    identifier = [v5 identifier];
+    if ([identifier isEqual:self->_identifier])
     {
-      v7 = [v5 subscribingDevice];
-      if ([v7 isEqual:self->_subscribingDevice])
+      subscribingDevice = [v5 subscribingDevice];
+      if ([subscribingDevice isEqual:self->_subscribingDevice])
       {
-        v8 = [v5 subscribedDevice];
-        if ([v8 isEqual:self->_subscribedDevice])
+        subscribedDevice = [v5 subscribedDevice];
+        if ([subscribedDevice isEqual:self->_subscribedDevice])
         {
-          v9 = [v5 configuration];
-          v10 = [v9 isEqual:self->_configuration];
+          configuration = [v5 configuration];
+          v10 = [configuration isEqual:self->_configuration];
         }
 
         else

@@ -1,20 +1,20 @@
 @interface STMTelemetryController
-- (void)getTelemetry:(id)a3;
-- (void)retrieveTelemetryWithCompletionHandler:(id)a3;
+- (void)getTelemetry:(id)telemetry;
+- (void)retrieveTelemetryWithCompletionHandler:(id)handler;
 - (void)stopService;
 @end
 
 @implementation STMTelemetryController
 
-- (void)getTelemetry:(id)a3
+- (void)getTelemetry:(id)telemetry
 {
-  v4 = a3;
+  telemetryCopy = telemetry;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__STMTelemetryController_getTelemetry___block_invoke;
   v6[3] = &unk_279D1D308;
-  v7 = v4;
-  v5 = v4;
+  v7 = telemetryCopy;
+  v5 = telemetryCopy;
   [(STMTelemetryController *)self retrieveTelemetryWithCompletionHandler:v6];
 }
 
@@ -42,12 +42,12 @@ void __39__STMTelemetryController_getTelemetry___block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)retrieveTelemetryWithCompletionHandler:(id)a3
+- (void)retrieveTelemetryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STMTelemetryController *)self connection];
+  handlerCopy = handler;
+  connection = [(STMTelemetryController *)self connection];
 
-  if (!v5)
+  if (!connection)
   {
     v6 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.storagedatad" options:0];
     v7 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287C949F0];
@@ -64,14 +64,14 @@ void __39__STMTelemetryController_getTelemetry___block_invoke(uint64_t a1, void 
     _os_log_impl(&dword_26BB8E000, v8, OS_LOG_TYPE_INFO, "Connecting to StorageDataService", buf, 2u);
   }
 
-  v9 = [(STMTelemetryController *)self connection];
+  connection2 = [(STMTelemetryController *)self connection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__STMTelemetryController_retrieveTelemetryWithCompletionHandler___block_invoke;
   v15[3] = &unk_279D1D330;
-  v10 = v4;
+  v10 = handlerCopy;
   v16 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v15];
+  v11 = [connection2 remoteObjectProxyWithErrorHandler:v15];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__STMTelemetryController_retrieveTelemetryWithCompletionHandler___block_invoke_5;
@@ -95,8 +95,8 @@ void __65__STMTelemetryController_retrieveTelemetryWithCompletionHandler___block
 
 - (void)stopService
 {
-  v3 = [(STMTelemetryController *)self connection];
-  [v3 invalidate];
+  connection = [(STMTelemetryController *)self connection];
+  [connection invalidate];
 
   [(STMTelemetryController *)self setConnection:0];
 }

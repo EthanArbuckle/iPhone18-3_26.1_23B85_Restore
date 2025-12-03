@@ -1,6 +1,6 @@
 @interface RPStoreManager
 + (id)sharedManager;
-- (void)loadItemDetailsForBundleIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)loadItemDetailsForBundleIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation RPStoreManager
@@ -24,27 +24,27 @@ uint64_t __31__RPStoreManager_sharedManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)loadItemDetailsForBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)loadItemDetailsForBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v42 = 0;
   v7 = objc_alloc_init(RPStoreInfo);
   v8 = MEMORY[0x277CEE3F8];
-  v9 = [MEMORY[0x277CEE510] bagSubProfile];
-  v10 = [MEMORY[0x277CEE510] bagSubProfileVersion];
-  v11 = [v8 bagForProfile:v9 profileVersion:v10];
+  bagSubProfile = [MEMORY[0x277CEE510] bagSubProfile];
+  bagSubProfileVersion = [MEMORY[0x277CEE510] bagSubProfileVersion];
+  v11 = [v8 bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   v12 = MEMORY[0x277CEE408];
-  v13 = [MEMORY[0x277CEE510] bagKeySet];
-  v14 = [MEMORY[0x277CEE510] bagSubProfile];
-  v15 = [MEMORY[0x277CEE510] bagSubProfileVersion];
-  [v12 registerBagKeySet:v13 forProfile:v14 profileVersion:v15];
+  bagKeySet = [MEMORY[0x277CEE510] bagKeySet];
+  bagSubProfile2 = [MEMORY[0x277CEE510] bagSubProfile];
+  bagSubProfileVersion2 = [MEMORY[0x277CEE510] bagSubProfileVersion];
+  [v12 registerBagKeySet:bagKeySet forProfile:bagSubProfile2 profileVersion:bagSubProfileVersion2];
 
   v16 = objc_alloc(MEMORY[0x277CEE510]);
   v17 = [v16 initWithBag:v11 caller:@"com.apple.replayd" keyProfile:*MEMORY[0x277CEE1F0]];
-  v43[0] = v5;
+  v43[0] = identifierCopy;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:1];
   v19 = [v17 performLookupWithBundleIdentifiers:v18 itemIdentifiers:0];
 
@@ -60,15 +60,15 @@ uint64_t __31__RPStoreManager_sharedManager__block_invoke()
 
   else
   {
-    v38 = v5;
-    v22 = [v20 allItems];
-    v23 = [v22 firstObject];
+    v38 = identifierCopy;
+    allItems = [v20 allItems];
+    firstObject = [allItems firstObject];
 
-    v24 = [v23 bundleIdentifier];
-    if (v24)
+    bundleIdentifier = [firstObject bundleIdentifier];
+    if (bundleIdentifier)
     {
-      v25 = [v23 bundleIdentifier];
-      [(RPStoreInfo *)v7 setBundleID:v25];
+      bundleIdentifier2 = [firstObject bundleIdentifier];
+      [(RPStoreInfo *)v7 setBundleID:bundleIdentifier2];
     }
 
     else
@@ -76,10 +76,10 @@ uint64_t __31__RPStoreManager_sharedManager__block_invoke()
       [(RPStoreInfo *)v7 setBundleID:&stru_284D763F8];
     }
 
-    v26 = [v23 displayName];
-    if (v26)
+    displayName = [firstObject displayName];
+    if (displayName)
     {
-      [v23 displayName];
+      [firstObject displayName];
     }
 
     else
@@ -89,11 +89,11 @@ uint64_t __31__RPStoreManager_sharedManager__block_invoke()
     v27 = ;
     [(RPStoreInfo *)v7 setAppName:v27];
 
-    v28 = [v23 artistName];
-    if (v28)
+    artistName = [firstObject artistName];
+    if (artistName)
     {
-      v29 = [v23 artistName];
-      [(RPStoreInfo *)v7 setAuthor:v29];
+      artistName2 = [firstObject artistName];
+      [(RPStoreInfo *)v7 setAuthor:artistName2];
     }
 
     else
@@ -101,22 +101,22 @@ uint64_t __31__RPStoreManager_sharedManager__block_invoke()
       [(RPStoreInfo *)v7 setAuthor:&stru_284D763F8];
     }
 
-    v30 = [v23 productPageURL];
-    [(RPStoreInfo *)v7 setItemURL:v30];
+    productPageURL = [firstObject productPageURL];
+    [(RPStoreInfo *)v7 setItemURL:productPageURL];
 
-    v31 = [v23 artwork];
-    v32 = [v31 firstObject];
-    v33 = [v32 URLWithHeight:128 width:128 cropStyle:*MEMORY[0x277CEE1C8] format:*MEMORY[0x277CEE1D8]];
+    artwork = [firstObject artwork];
+    firstObject2 = [artwork firstObject];
+    v33 = [firstObject2 URLWithHeight:128 width:128 cropStyle:*MEMORY[0x277CEE1C8] format:*MEMORY[0x277CEE1D8]];
     [(RPStoreInfo *)v7 setAppArtworkURL:v33];
 
-    v34 = [(RPStoreInfo *)v7 appArtworkURL];
+    appArtworkURL = [(RPStoreInfo *)v7 appArtworkURL];
 
-    if (!v34 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+    if (!appArtworkURL && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [RPStoreManager loadItemDetailsForBundleIdentifier:completionHandler:];
     }
 
-    v5 = v38;
+    identifierCopy = v38;
   }
 
   block[0] = MEMORY[0x277D85DD0];
@@ -124,9 +124,9 @@ uint64_t __31__RPStoreManager_sharedManager__block_invoke()
   block[2] = __71__RPStoreManager_loadItemDetailsForBundleIdentifier_completionHandler___block_invoke;
   block[3] = &unk_278B61CF8;
   v40 = v7;
-  v41 = v6;
+  v41 = handlerCopy;
   v35 = v7;
-  v36 = v6;
+  v36 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   v37 = *MEMORY[0x277D85DE8];

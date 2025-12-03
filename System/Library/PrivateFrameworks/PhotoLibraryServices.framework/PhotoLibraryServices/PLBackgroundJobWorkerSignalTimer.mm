@@ -1,6 +1,6 @@
 @interface PLBackgroundJobWorkerSignalTimer
-- (BOOL)shouldCancelAndRescheduleWithDate:(id)a3;
-- (PLBackgroundJobWorkerSignalTimer)initWithQueue:(id)a3 bundle:(id)a4 workerType:(unint64_t)a5 date:(id)a6 eventHandler:(id)a7;
+- (BOOL)shouldCancelAndRescheduleWithDate:(id)date;
+- (PLBackgroundJobWorkerSignalTimer)initWithQueue:(id)queue bundle:(id)bundle workerType:(unint64_t)type date:(id)date eventHandler:(id)handler;
 - (PLPhotoLibraryBundle)bundle;
 - (void)_inq_lock_timerEventHandler;
 @end
@@ -14,9 +14,9 @@
   return WeakRetained;
 }
 
-- (BOOL)shouldCancelAndRescheduleWithDate:(id)a3
+- (BOOL)shouldCancelAndRescheduleWithDate:(id)date
 {
-  [a3 timeIntervalSinceDate:self->_date];
+  [date timeIntervalSinceDate:self->_date];
   if (v3 < 0.0)
   {
     v3 = -v3;
@@ -29,13 +29,13 @@
 {
   v11 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(PLBackgroundJobWorkerSignalTimer *)self bundle];
-  if (v3)
+  bundle = [(PLBackgroundJobWorkerSignalTimer *)self bundle];
+  if (bundle)
   {
     v4 = [PLBackgroundJobWorkerTypes workerTypesMaskForBackgroundJobWorkerType:self->_workerType];
-    v5 = [v3 libraryServicesManager];
-    v6 = [v5 backgroundJobService];
-    [v6 signalBackgroundProcessingNeededOnBundle:v3 workerTypes:v4];
+    libraryServicesManager = [bundle libraryServicesManager];
+    backgroundJobService = [libraryServicesManager backgroundJobService];
+    [backgroundJobService signalBackgroundProcessingNeededOnBundle:bundle workerTypes:v4];
 
     v7 = PLBackgroundJobServiceGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -92,15 +92,15 @@ void __42__PLBackgroundJobWorkerSignalTimer_cancel__block_invoke(uint64_t a1)
   }
 }
 
-- (PLBackgroundJobWorkerSignalTimer)initWithQueue:(id)a3 bundle:(id)a4 workerType:(unint64_t)a5 date:(id)a6 eventHandler:(id)a7
+- (PLBackgroundJobWorkerSignalTimer)initWithQueue:(id)queue bundle:(id)bundle workerType:(unint64_t)type date:(id)date eventHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  if (v14)
+  queueCopy = queue;
+  bundleCopy = bundle;
+  dateCopy = date;
+  handlerCopy = handler;
+  if (queueCopy)
   {
-    if (v15)
+    if (bundleCopy)
     {
       goto LABEL_3;
     }
@@ -108,17 +108,17 @@ void __42__PLBackgroundJobWorkerSignalTimer_cancel__block_invoke(uint64_t a1)
 
   else
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobWorkerSignalTimer.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobWorkerSignalTimer.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
 
-    if (v15)
+    if (bundleCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobWorkerSignalTimer.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"bundle"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobWorkerSignalTimer.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"bundle"}];
 
 LABEL_3:
   v26.receiver = self;
@@ -127,18 +127,18 @@ LABEL_3:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_queue, a3);
+    objc_storeStrong(&v18->_queue, queue);
     lock_timer = v19->_lock_timer;
     v19->_lock_timer = 0;
 
     v19->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v19->_bundle, v15);
-    v19->_workerType = a5;
-    v21 = [v17 copy];
+    objc_storeWeak(&v19->_bundle, bundleCopy);
+    v19->_workerType = type;
+    v21 = [handlerCopy copy];
     eventHandler = v19->_eventHandler;
     v19->_eventHandler = v21;
 
-    objc_storeStrong(&v19->_date, a6);
+    objc_storeStrong(&v19->_date, date);
   }
 
   return v19;

@@ -1,75 +1,75 @@
 @interface CRRegisterMultiValue
-- (BOOL)isEqual:(id)a3;
-- (CRRegisterMultiValue)initWithCRCoder:(id)a3;
-- (CRRegisterMultiValue)initWithContents:(id)a3 document:(id)a4;
-- (CRRegisterMultiValue)initWithValues:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CRRegisterMultiValue)initWithCRCoder:(id)coder;
+- (CRRegisterMultiValue)initWithContents:(id)contents document:(id)document;
+- (CRRegisterMultiValue)initWithValues:(id)values;
 - (id)allContents;
 - (id)contents;
-- (id)deltaSince:(id)a3 in:(id)a4;
+- (id)deltaSince:(id)since in:(id)in;
 - (id)description;
-- (void)encodeWithCRCoder:(id)a3;
-- (void)mergeWith:(id)a3;
-- (void)mergeWithRegisterMultiValue:(id)a3;
-- (void)setContents:(id)a3;
-- (void)setDocument:(id)a3;
-- (void)walkGraph:(id)a3;
+- (void)encodeWithCRCoder:(id)coder;
+- (void)mergeWith:(id)with;
+- (void)mergeWithRegisterMultiValue:(id)value;
+- (void)setContents:(id)contents;
+- (void)setDocument:(id)document;
+- (void)walkGraph:(id)graph;
 @end
 
 @implementation CRRegisterMultiValue
 
-- (CRRegisterMultiValue)initWithContents:(id)a3 document:(id)a4
+- (CRRegisterMultiValue)initWithContents:(id)contents document:(id)document
 {
-  v6 = a3;
-  v7 = a4;
+  contentsCopy = contents;
+  documentCopy = document;
   v12.receiver = self;
   v12.super_class = CRRegisterMultiValue;
   v8 = [(CRRegisterMultiValue *)&v12 init];
   if (v8)
   {
-    v9 = [[CRSet alloc] initWithDocument:v7];
+    v9 = [[CRSet alloc] initWithDocument:documentCopy];
     values = v8->_values;
     v8->_values = v9;
 
-    if (v6)
+    if (contentsCopy)
     {
-      [(CRRegisterMultiValue *)v8 setContents:v6];
+      [(CRRegisterMultiValue *)v8 setContents:contentsCopy];
     }
   }
 
   return v8;
 }
 
-- (CRRegisterMultiValue)initWithValues:(id)a3
+- (CRRegisterMultiValue)initWithValues:(id)values
 {
-  v5 = a3;
+  valuesCopy = values;
   v9.receiver = self;
   v9.super_class = CRRegisterMultiValue;
   v6 = [(CRRegisterMultiValue *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_values, a3);
+    objc_storeStrong(&v6->_values, values);
   }
 
   return v7;
 }
 
-- (void)encodeWithCRCoder:(id)a3
+- (void)encodeWithCRCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CRRegisterMultiValue *)self values];
-  [v5 encodeObject:v4 forKey:@"values"];
+  coderCopy = coder;
+  values = [(CRRegisterMultiValue *)self values];
+  [coderCopy encodeObject:values forKey:@"values"];
 }
 
-- (CRRegisterMultiValue)initWithCRCoder:(id)a3
+- (CRRegisterMultiValue)initWithCRCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 document];
-  v6 = [(CRRegisterMultiValue *)self initWithContents:0 document:v5];
+  coderCopy = coder;
+  document = [coderCopy document];
+  v6 = [(CRRegisterMultiValue *)self initWithContents:0 document:document];
 
   if (v6)
   {
-    v7 = [v4 decodeObjectForKey:@"values"];
+    v7 = [coderCopy decodeObjectForKey:@"values"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,20 +83,20 @@
 - (id)allContents
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(CRRegisterMultiValue *)self cachedValues];
+  cachedValues = [(CRRegisterMultiValue *)self cachedValues];
 
-  if (!v3)
+  if (!cachedValues)
   {
     v4 = objc_alloc(MEMORY[0x1E695DFA8]);
-    v5 = [(CRRegisterMultiValue *)self values];
-    v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+    values = [(CRRegisterMultiValue *)self values];
+    v6 = [v4 initWithCapacity:{objc_msgSend(values, "count")}];
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(CRRegisterMultiValue *)self values];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    values2 = [(CRRegisterMultiValue *)self values];
+    v8 = [values2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = *v15;
@@ -107,14 +107,14 @@
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(values2);
           }
 
           [v6 addObject:*(*(&v14 + 1) + 8 * v10++)];
         }
 
         while (v8 != v10);
-        v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [values2 countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -123,10 +123,10 @@
     [(CRRegisterMultiValue *)self setCachedValues:v6];
   }
 
-  v11 = [(CRRegisterMultiValue *)self cachedValues];
+  cachedValues2 = [(CRRegisterMultiValue *)self cachedValues];
   v12 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return cachedValues2;
 }
 
 - (id)contents
@@ -136,9 +136,9 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(CRRegisterMultiValue *)self values];
+  values = [(CRRegisterMultiValue *)self values];
   v3 = 0;
-  v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [values countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -148,7 +148,7 @@
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(values);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -160,7 +160,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [values countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -171,24 +171,24 @@
   return v3;
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
-  v5 = a3;
-  v4 = [(CRRegisterMultiValue *)self values];
-  [v4 setObject:v5];
+  contentsCopy = contents;
+  values = [(CRRegisterMultiValue *)self values];
+  [values setObject:contentsCopy];
 
   [(CRRegisterMultiValue *)self setCachedValues:0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CRRegisterMultiValue *)self values];
-    v6 = [v4 values];
-    v7 = [v5 isEqual:v6];
+    values = [(CRRegisterMultiValue *)self values];
+    values2 = [equalCopy values];
+    v7 = [values isEqual:values2];
   }
 
   else
@@ -199,9 +199,9 @@
   return v7;
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  v5 = a3;
+  withCopy = with;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -209,24 +209,24 @@
     objc_exception_throw(v4);
   }
 
-  [(CRRegisterMultiValue *)self mergeWithRegisterMultiValue:v5];
+  [(CRRegisterMultiValue *)self mergeWithRegisterMultiValue:withCopy];
   [(CRRegisterMultiValue *)self setCachedValues:0];
 }
 
-- (void)mergeWithRegisterMultiValue:(id)a3
+- (void)mergeWithRegisterMultiValue:(id)value
 {
-  v6 = a3;
-  v4 = [(CRRegisterMultiValue *)self values];
-  v5 = [v6 values];
-  [v4 mergeWith:v5];
+  valueCopy = value;
+  values = [(CRRegisterMultiValue *)self values];
+  values2 = [valueCopy values];
+  [values mergeWith:values2];
 }
 
-- (id)deltaSince:(id)a3 in:(id)a4
+- (id)deltaSince:(id)since in:(id)in
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRRegisterMultiValue *)self values];
-  v9 = [v8 deltaSince:v6 in:v7];
+  sinceCopy = since;
+  inCopy = in;
+  values = [(CRRegisterMultiValue *)self values];
+  v9 = [values deltaSince:sinceCopy in:inCopy];
 
   if (v9)
   {
@@ -241,18 +241,18 @@
   return v10;
 }
 
-- (void)walkGraph:(id)a3
+- (void)walkGraph:(id)graph
 {
-  v5 = a3;
-  v4 = [(CRRegisterMultiValue *)self values];
-  v5[2](v5, v4);
+  graphCopy = graph;
+  values = [(CRRegisterMultiValue *)self values];
+  graphCopy[2](graphCopy, values);
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
-  v5 = a3;
-  v4 = [(CRRegisterMultiValue *)self values];
-  [v4 setDocument:v5];
+  documentCopy = document;
+  values = [(CRRegisterMultiValue *)self values];
+  [values setDocument:documentCopy];
 }
 
 - (id)description
@@ -267,8 +267,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(CRRegisterMultiValue *)self values];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  values = [(CRRegisterMultiValue *)self values];
+  v8 = [values countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = *v14;
@@ -278,13 +278,13 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(values);
         }
 
         [v6 appendFormat:@"%@, ", *(*(&v13 + 1) + 8 * i)];
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [values countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);

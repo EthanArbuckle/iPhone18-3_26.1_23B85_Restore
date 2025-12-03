@@ -1,15 +1,15 @@
 @interface _MRTextInputMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsActionType:(id)a3;
+- (int)StringAsActionType:(id)type;
 - (int)actionType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActionType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasActionType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRTextInputMessageProtobuf
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasActionType:(BOOL)a3
+- (void)setHasActionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -42,30 +42,30 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsActionType:(id)a3
+- (int)StringAsActionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Insert"])
+  else if ([typeCopy isEqualToString:@"Insert"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Set"])
+  else if ([typeCopy isEqualToString:@"Set"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Delete"])
+  else if ([typeCopy isEqualToString:@"Delete"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Clear"])
+  else if ([typeCopy isEqualToString:@"Clear"])
   {
     v4 = 4;
   }
@@ -84,25 +84,25 @@
   v8.receiver = self;
   v8.super_class = _MRTextInputMessageProtobuf;
   v4 = [(_MRTextInputMessageProtobuf *)&v8 description];
-  v5 = [(_MRTextInputMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRTextInputMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   text = self->_text;
   if (text)
   {
-    [v3 setObject:text forKey:@"text"];
+    [dictionary setObject:text forKey:@"text"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -118,63 +118,63 @@
       v7 = off_1E76A08A0[actionType];
     }
 
-    [v3 setObject:v7 forKey:@"actionType"];
+    [dictionary setObject:v7 forKey:@"actionType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_text)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     actionType = self->_actionType;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_timestamp;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = *&self->_timestamp;
+    *(toCopy + 32) |= 1u;
   }
 
   if (self->_text)
   {
-    v5 = v4;
-    [v4 setText:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setText:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 4) = self->_actionType;
-    *(v4 + 32) |= 2u;
+    *(toCopy + 4) = self->_actionType;
+    *(toCopy + 32) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -182,7 +182,7 @@
     *(v5 + 32) |= 1u;
   }
 
-  v7 = [(NSString *)self->_text copyWithZone:a3];
+  v7 = [(NSString *)self->_text copyWithZone:zone];
   v8 = *(v6 + 24);
   *(v6 + 24) = v7;
 
@@ -195,31 +195,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_14;
   }
 
   text = self->_text;
-  if (text | *(v4 + 3))
+  if (text | *(equalCopy + 3))
   {
     if (![(NSString *)text isEqual:?])
     {
@@ -231,10 +231,10 @@ LABEL_14:
     has = self->_has;
   }
 
-  v8 = (*(v4 + 32) & 2) == 0;
+  v8 = (*(equalCopy + 32) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_actionType != *(v4 + 4))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_actionType != *(equalCopy + 4))
     {
       goto LABEL_14;
     }
@@ -296,25 +296,25 @@ LABEL_15:
   return v9 ^ v5 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 32))
+  fromCopy = from;
+  if (*(fromCopy + 32))
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(_MRTextInputMessageProtobuf *)self setText:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 32) & 2) != 0)
+  if ((*(fromCopy + 32) & 2) != 0)
   {
-    self->_actionType = *(v4 + 4);
+    self->_actionType = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 }

@@ -2,7 +2,7 @@
 - (NSURL)logicalLocation;
 - (NSURL)physicalLocation;
 - (_TtC18FileProviderDaemon16FPCKDetachedRoot)init;
-- (_TtC18FileProviderDaemon16FPCKDetachedRoot)initWithPhysicalLocation:(id)a3 rootURL:(id)a4 error:(id *)a5;
+- (_TtC18FileProviderDaemon16FPCKDetachedRoot)initWithPhysicalLocation:(id)location rootURL:(id)l error:(id *)error;
 @end
 
 @implementation FPCKDetachedRoot
@@ -42,7 +42,7 @@
   return v10;
 }
 
-- (_TtC18FileProviderDaemon16FPCKDetachedRoot)initWithPhysicalLocation:(id)a3 rootURL:(id)a4 error:(id *)a5
+- (_TtC18FileProviderDaemon16FPCKDetachedRoot)initWithPhysicalLocation:(id)location rootURL:(id)l error:(id *)error
 {
   v5 = sub_1CF9E5A58();
   v6 = *(*(v5 - 8) + 64);

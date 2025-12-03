@@ -1,41 +1,41 @@
 @interface SRDeletionRecord
-+ (id)tombstoneWithStartTime:(double)a3 endTime:(double)a4 extendedReason:(int64_t)a5 originatingDeviceIdentifier:(id)a6;
-+ (id)tombstoneWithStartTime:(double)a3 endTime:(double)a4 reason:(int64_t)a5 originatingDeviceIdentifier:(id)a6;
++ (id)tombstoneWithStartTime:(double)time endTime:(double)endTime extendedReason:(int64_t)reason originatingDeviceIdentifier:(id)identifier;
++ (id)tombstoneWithStartTime:(double)time endTime:(double)endTime reason:(int64_t)reason originatingDeviceIdentifier:(id)identifier;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SRDeletionReason)reason;
-- (SRDeletionRecord)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRDeletionRecord)initWithCoder:(id)a3;
+- (SRDeletionRecord)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRDeletionRecord)initWithCoder:(id)coder;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRDeletionRecord
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100071A80 = os_log_create("com.apple.SensorKit", "DeletionRecord");
   }
 }
 
-+ (id)tombstoneWithStartTime:(double)a3 endTime:(double)a4 reason:(int64_t)a5 originatingDeviceIdentifier:(id)a6
++ (id)tombstoneWithStartTime:(double)time endTime:(double)endTime reason:(int64_t)reason originatingDeviceIdentifier:(id)identifier
 {
   v10 = objc_alloc_init(SRDeletionRecord);
-  [(SRDeletionRecord *)v10 setStartTime:a3];
-  [(SRDeletionRecord *)v10 setEndTime:a4];
-  [(SRDeletionRecord *)v10 setReason:a5];
-  [(SRDeletionRecord *)v10 set_originatingDeviceIdentifier:a6];
+  [(SRDeletionRecord *)v10 setStartTime:time];
+  [(SRDeletionRecord *)v10 setEndTime:endTime];
+  [(SRDeletionRecord *)v10 setReason:reason];
+  [(SRDeletionRecord *)v10 set_originatingDeviceIdentifier:identifier];
 
   return v10;
 }
 
-+ (id)tombstoneWithStartTime:(double)a3 endTime:(double)a4 extendedReason:(int64_t)a5 originatingDeviceIdentifier:(id)a6
++ (id)tombstoneWithStartTime:(double)time endTime:(double)endTime extendedReason:(int64_t)reason originatingDeviceIdentifier:(id)identifier
 {
-  v7 = [SRDeletionRecord tombstoneWithStartTime:4 endTime:a6 reason:a3 originatingDeviceIdentifier:a4];
-  [v7 setExtendedReason:a5];
+  v7 = [SRDeletionRecord tombstoneWithStartTime:4 endTime:identifier reason:time originatingDeviceIdentifier:endTime];
+  [v7 setExtendedReason:reason];
   return v7;
 }
 
@@ -47,9 +47,9 @@
   [(SRDeletionRecord *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -62,7 +62,7 @@
 
   [(SRDeletionRecord *)self startTime];
   v6 = v5;
-  [a3 startTime];
+  [equal startTime];
   if (v6 != v7)
   {
     return 0;
@@ -70,62 +70,62 @@
 
   [(SRDeletionRecord *)self endTime];
   v9 = v8;
-  [a3 endTime];
+  [equal endTime];
   if (v9 != v10)
   {
     return 0;
   }
 
-  v11 = [(SRDeletionRecord *)self reason];
-  if (v11 != [a3 reason])
+  reason = [(SRDeletionRecord *)self reason];
+  if (reason != [equal reason])
   {
     return 0;
   }
 
-  v12 = [(SRDeletionRecord *)self extendedReason];
-  return v12 == [a3 extendedReason];
+  extendedReason = [(SRDeletionRecord *)self extendedReason];
+  return extendedReason == [equal extendedReason];
 }
 
-- (SRDeletionRecord)initWithCoder:(id)a3
+- (SRDeletionRecord)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = SRDeletionRecord;
   v4 = [(SRDeletionRecord *)&v8 init];
   if (v4)
   {
-    [a3 decodeDoubleForKey:@"SRDeletionRecordStartKey"];
+    [coder decodeDoubleForKey:@"SRDeletionRecordStartKey"];
     v4->_startTime = v5;
-    [a3 decodeDoubleForKey:@"SRDeletionRecordEndKey"];
+    [coder decodeDoubleForKey:@"SRDeletionRecordEndKey"];
     v4->_endTime = v6;
-    -[SRDeletionRecord setReason:](v4, "setReason:", [a3 decodeIntegerForKey:@"SRDeletionRecordReasonKey"]);
-    -[SRDeletionRecord setExtendedReason:](v4, "setExtendedReason:", [a3 decodeIntegerForKey:@"SRDeletionRecordExtendedReasonKey"]);
-    -[SRDeletionRecord set_originatingDeviceIdentifier:](v4, "set_originatingDeviceIdentifier:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"SRDeletionRecordOriginatingDeviceIdKey"]);
+    -[SRDeletionRecord setReason:](v4, "setReason:", [coder decodeIntegerForKey:@"SRDeletionRecordReasonKey"]);
+    -[SRDeletionRecord setExtendedReason:](v4, "setExtendedReason:", [coder decodeIntegerForKey:@"SRDeletionRecordExtendedReasonKey"]);
+    -[SRDeletionRecord set_originatingDeviceIdentifier:](v4, "set_originatingDeviceIdentifier:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"SRDeletionRecordOriginatingDeviceIdKey"]);
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeDouble:@"SRDeletionRecordStartKey" forKey:self->_startTime];
-  [a3 encodeDouble:@"SRDeletionRecordEndKey" forKey:self->_endTime];
-  [a3 encodeInteger:-[SRDeletionRecord reason](self forKey:{"reason"), @"SRDeletionRecordReasonKey"}];
-  [a3 encodeInteger:-[SRDeletionRecord extendedReason](self forKey:{"extendedReason"), @"SRDeletionRecordExtendedReasonKey"}];
-  v5 = [(SRDeletionRecord *)self _originatingDeviceIdentifier];
+  [coder encodeDouble:@"SRDeletionRecordStartKey" forKey:self->_startTime];
+  [coder encodeDouble:@"SRDeletionRecordEndKey" forKey:self->_endTime];
+  [coder encodeInteger:-[SRDeletionRecord reason](self forKey:{"reason"), @"SRDeletionRecordReasonKey"}];
+  [coder encodeInteger:-[SRDeletionRecord extendedReason](self forKey:{"extendedReason"), @"SRDeletionRecordExtendedReasonKey"}];
+  _originatingDeviceIdentifier = [(SRDeletionRecord *)self _originatingDeviceIdentifier];
 
-  [a3 encodeObject:v5 forKey:@"SRDeletionRecordOriginatingDeviceIdKey"];
+  [coder encodeObject:_originatingDeviceIdentifier forKey:@"SRDeletionRecordOriginatingDeviceIdKey"];
 }
 
-- (SRDeletionRecord)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRDeletionRecord)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
   v13.receiver = self;
   v13.super_class = SRDeletionRecord;
-  result = [(SRDeletionRecord *)&v13 init:a3];
+  result = [(SRDeletionRecord *)&v13 init:representation];
   if (result)
   {
     v7 = result;
     v12 = 0;
-    v8 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v12];
+    v8 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:representation error:&v12];
     v9 = v12;
     if (v12)
     {
@@ -176,9 +176,9 @@
 
   if (qword_100071A90 != -1)
   {
-    v5 = self;
+    selfCopy = self;
     dispatch_once(&qword_100071A90, &stru_100061148);
-    self = v5;
+    self = selfCopy;
     if (byte_100071A88 == 1)
     {
       goto LABEL_4;

@@ -1,14 +1,14 @@
 @interface PICurvesLuminanceAutoCalculator
-- (CGPoint)curvePointAtIndex:(int)a3 blackPoint:(double)a4 whitePoint:(double)a5 histogram:(id)a6;
-- (id)computeCurvesForImageHistogram:(id)a3;
+- (CGPoint)curvePointAtIndex:(int)index blackPoint:(double)point whitePoint:(double)whitePoint histogram:(id)histogram;
+- (id)computeCurvesForImageHistogram:(id)histogram;
 @end
 
 @implementation PICurvesLuminanceAutoCalculator
 
-- (CGPoint)curvePointAtIndex:(int)a3 blackPoint:(double)a4 whitePoint:(double)a5 histogram:(id)a6
+- (CGPoint)curvePointAtIndex:(int)index blackPoint:(double)point whitePoint:(double)whitePoint histogram:(id)histogram
 {
   v52 = *MEMORY[0x1E69E9840];
-  v9 = a6;
+  histogramCopy = histogram;
   v10 = 0;
   v51[2] = xmmword_1C784CDF8;
   v51[3] = unk_1C784CE08;
@@ -21,13 +21,13 @@
   v50 = xmmword_1C7845E30;
   v45 = 0u;
   v46 = 0u;
-  v41 = a4;
+  pointCopy = point;
   v42 = xmmword_1C7845E20;
   v43 = 0x3FE8000000000000;
-  v44 = a5;
+  whitePointCopy = whitePoint;
   do
   {
-    [v9 percentile:*(&v41 + v10)];
+    [histogramCopy percentile:*(&pointCopy + v10)];
     *(&v45 + v10) = v11;
     v10 += 8;
   }
@@ -38,7 +38,7 @@
   v40 = 0.0;
   do
   {
-    [v9 percentile:*&qword_1C7845EB0[v12]];
+    [histogramCopy percentile:*&qword_1C7845EB0[v12]];
     *(&v39 + v12 * 8) = v13;
     ++v12;
   }
@@ -110,7 +110,7 @@
     v27 += 16;
   }
 
-  v34 = &v51[a3 % 5];
+  v34 = &v51[index % 5];
   v35 = *v34;
   v36 = v34[1];
 
@@ -121,15 +121,15 @@
   return result;
 }
 
-- (id)computeCurvesForImageHistogram:(id)a3
+- (id)computeCurvesForImageHistogram:(id)histogram
 {
   v5 = 0;
   v55 = *MEMORY[0x1E69E9840];
   v6 = &v53;
   do
   {
-    v7 = [a3 luminance];
-    [(PICurvesLuminanceAutoCalculator *)self curvePointAtIndex:v5 blackPoint:v7 whitePoint:0.001 histogram:0.999];
+    luminance = [histogram luminance];
+    [(PICurvesLuminanceAutoCalculator *)self curvePointAtIndex:v5 blackPoint:luminance whitePoint:0.001 histogram:0.999];
     *(v6 - 1) = v8;
     *v6 = v9;
 

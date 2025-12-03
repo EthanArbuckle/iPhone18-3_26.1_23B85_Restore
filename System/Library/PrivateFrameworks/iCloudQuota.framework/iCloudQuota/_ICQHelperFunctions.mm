@@ -1,52 +1,52 @@
 @interface _ICQHelperFunctions
-+ (BOOL)_checkOptions:(id)a3 forKey:(id)a4;
-+ (BOOL)defaultKeyExists:(id)a3;
-+ (BOOL)isBackupEnabledForAccount:(id)a3 accountStore:(id)a4;
-+ (BOOL)isPhotosLibraryIncludedInBackupForAccount:(id)a3;
-+ (BOOL)userDefaultsBoolValueForKey:(id)a3;
-+ (id)_darwinNotificationNameForRequestType:(int64_t)a3;
-+ (id)_fetchNextBackupSize:(id)a3;
-+ (id)_getOfferDescriptionFromRequestType:(int64_t)a3;
++ (BOOL)_checkOptions:(id)options forKey:(id)key;
++ (BOOL)defaultKeyExists:(id)exists;
++ (BOOL)isBackupEnabledForAccount:(id)account accountStore:(id)store;
++ (BOOL)isPhotosLibraryIncludedInBackupForAccount:(id)account;
++ (BOOL)userDefaultsBoolValueForKey:(id)key;
++ (id)_darwinNotificationNameForRequestType:(int64_t)type;
++ (id)_fetchNextBackupSize:(id)size;
++ (id)_getOfferDescriptionFromRequestType:(int64_t)type;
 + (id)_remoteBackupSizeOperationQueue;
-+ (id)base64EncodeString:(id)a3;
-+ (id)defaultStringValueForKey:(id)a3;
-+ (id)defaultValueForKey:(id)a3;
-+ (id)dictionaryForKey:(id)a3 from:(id)a4;
-+ (id)findPlaceholdersInString:(id)a3;
-+ (id)followUpGroupIdentifierForString:(id)a3;
-+ (id)followUpIdentifierPrefixForRequestType:(int64_t)a3;
-+ (id)getStringFromNumber:(id)a3;
-+ (id)lastUpdatedForReason:(id)a3 decayUntil:(double)a4;
-+ (id)numberForKey:(id)a3 from:(id)a4;
-+ (id)parseTemplates:(id)a3;
-+ (id)replaceWordsIn:(id)a3 with:(id)a4;
-+ (id)standardDateFormat:(unint64_t)a3;
-+ (id)stringFromTemplates:(id)a3 key:(id)a4;
-+ (id)usedCapacityForVolume:(id)a3;
-+ (id)userDefaultsDictionaryForKey:(id)a3;
-+ (id)userDefaultsObjectForKey:(id)a3;
-+ (id)userDefaultsStringForKey:(id)a3;
-+ (int64_t)_getOfferRequestTypeFromOptions:(id)a3 bundleId:(id)a4 isBuddy:(BOOL)a5;
-+ (int64_t)_offerRequestTypeForStub:(id)a3;
-+ (void)appLaunchLinkTrackerSetLastShownDate:(id)a3 forBundleID:(id)a4;
-+ (void)bubbleBannerTrackLastDismissed:(id)a3 forReason:(id)a4;
-+ (void)getOriginalPhotosSizeWithCompletion:(id)a3;
-+ (void)remoteBackupSizeForAccount:(id)a3 timeoutInSeconds:(double)a4 completion:(id)a5;
-+ (void)setUserDefaultsObject:(id)a3 forKey:(id)a4;
++ (id)base64EncodeString:(id)string;
++ (id)defaultStringValueForKey:(id)key;
++ (id)defaultValueForKey:(id)key;
++ (id)dictionaryForKey:(id)key from:(id)from;
++ (id)findPlaceholdersInString:(id)string;
++ (id)followUpGroupIdentifierForString:(id)string;
++ (id)followUpIdentifierPrefixForRequestType:(int64_t)type;
++ (id)getStringFromNumber:(id)number;
++ (id)lastUpdatedForReason:(id)reason decayUntil:(double)until;
++ (id)numberForKey:(id)key from:(id)from;
++ (id)parseTemplates:(id)templates;
++ (id)replaceWordsIn:(id)in with:(id)with;
++ (id)standardDateFormat:(unint64_t)format;
++ (id)stringFromTemplates:(id)templates key:(id)key;
++ (id)usedCapacityForVolume:(id)volume;
++ (id)userDefaultsDictionaryForKey:(id)key;
++ (id)userDefaultsObjectForKey:(id)key;
++ (id)userDefaultsStringForKey:(id)key;
++ (int64_t)_getOfferRequestTypeFromOptions:(id)options bundleId:(id)id isBuddy:(BOOL)buddy;
++ (int64_t)_offerRequestTypeForStub:(id)stub;
++ (void)appLaunchLinkTrackerSetLastShownDate:(id)date forBundleID:(id)d;
++ (void)bubbleBannerTrackLastDismissed:(id)dismissed forReason:(id)reason;
++ (void)getOriginalPhotosSizeWithCompletion:(id)completion;
++ (void)remoteBackupSizeForAccount:(id)account timeoutInSeconds:(double)seconds completion:(id)completion;
++ (void)setUserDefaultsObject:(id)object forKey:(id)key;
 @end
 
 @implementation _ICQHelperFunctions
 
-+ (id)replaceWordsIn:(id)a3 with:(id)a4
++ (id)replaceWordsIn:(id)in with:(id)with
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  inCopy = in;
+  withCopy = with;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [withCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -54,24 +54,24 @@
     do
     {
       v10 = 0;
-      v11 = v5;
+      v11 = inCopy;
       do
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(withCopy);
         }
 
         v12 = *(*(&v16 + 1) + 8 * v10);
-        v13 = [v6 objectForKey:v12];
-        v5 = [v11 stringByReplacingOccurrencesOfString:v12 withString:v13];
+        v13 = [withCopy objectForKey:v12];
+        inCopy = [v11 stringByReplacingOccurrencesOfString:v12 withString:v13];
 
         ++v10;
-        v11 = v5;
+        v11 = inCopy;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [withCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -79,25 +79,25 @@
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return inCopy;
 }
 
-+ (id)stringFromTemplates:(id)a3 key:(id)a4
++ (id)stringFromTemplates:(id)templates key:(id)key
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:v5];
+  keyCopy = key;
+  templatesCopy = templates;
+  v7 = [templatesCopy objectForKeyedSubscript:keyCopy];
 
   if (v7)
   {
-    v8 = v6;
-    v9 = v5;
+    v8 = templatesCopy;
+    v9 = keyCopy;
   }
 
   else
   {
     v9 = @"default";
-    v8 = v6;
+    v8 = templatesCopy;
   }
 
   v10 = [v8 objectForKeyedSubscript:v9];
@@ -105,14 +105,14 @@
   return v10;
 }
 
-+ (id)findPlaceholdersInString:(id)a3
++ (id)findPlaceholdersInString:(id)string
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 containsString:@"%$"])
+  stringCopy = string;
+  if ([stringCopy containsString:@"%$"])
   {
-    v4 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v5 = [v3 componentsSeparatedByCharactersInSet:v4];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v5 = [stringCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v16 = 0u;
@@ -160,39 +160,39 @@
   return v13;
 }
 
-+ (BOOL)userDefaultsBoolValueForKey:(id)a3
++ (BOOL)userDefaultsBoolValueForKey:(id)key
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  v6 = [v5 BOOLForKey:v4];
+  keyCopy = key;
+  standardUserDefaults = [v3 standardUserDefaults];
+  v6 = [standardUserDefaults BOOLForKey:keyCopy];
 
   return v6;
 }
 
-+ (void)setUserDefaultsObject:(id)a3 forKey:(id)a4
++ (void)setUserDefaultsObject:(id)object forKey:(id)key
 {
   v5 = MEMORY[0x277CBEBD0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 standardUserDefaults];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  standardUserDefaults = [v5 standardUserDefaults];
+  [standardUserDefaults setObject:objectCopy forKey:keyCopy];
 }
 
-+ (id)userDefaultsObjectForKey:(id)a3
++ (id)userDefaultsObjectForKey:(id)key
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  standardUserDefaults = [v3 standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:keyCopy];
 
   return v6;
 }
 
-+ (id)userDefaultsDictionaryForKey:(id)a3
++ (id)userDefaultsDictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 userDefaultsObjectForKey:v4];
+  keyCopy = key;
+  v5 = [self userDefaultsObjectForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -213,10 +213,10 @@
   return v6;
 }
 
-+ (id)userDefaultsStringForKey:(id)a3
++ (id)userDefaultsStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 userDefaultsObjectForKey:v4];
+  keyCopy = key;
+  v5 = [self userDefaultsObjectForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -237,10 +237,10 @@
   return v6;
 }
 
-+ (BOOL)defaultKeyExists:(id)a3
++ (BOOL)defaultKeyExists:(id)exists
 {
   keyExistsAndHasValidFormat = 0;
-  AppBooleanValue = CFPreferencesGetAppBooleanValue(a3, @"com.apple.cloud.quota", &keyExistsAndHasValidFormat);
+  AppBooleanValue = CFPreferencesGetAppBooleanValue(exists, @"com.apple.cloud.quota", &keyExistsAndHasValidFormat);
   if (keyExistsAndHasValidFormat)
   {
     v4 = AppBooleanValue == 0;
@@ -254,18 +254,18 @@
   return !v4;
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
-  v3 = CFPreferencesCopyAppValue(a3, @"com.apple.cloud.quota");
+  v3 = CFPreferencesCopyAppValue(key, @"com.apple.cloud.quota");
 
   return v3;
 }
 
-+ (id)defaultStringValueForKey:(id)a3
++ (id)defaultStringValueForKey:(id)key
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [_ICQHelperFunctions defaultValueForKey:v3];
+  keyCopy = key;
+  v4 = [_ICQHelperFunctions defaultValueForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -280,7 +280,7 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138412290;
-        v10 = v3;
+        v10 = keyCopy;
         _os_log_impl(&dword_275572000, v6, OS_LOG_TYPE_DEFAULT, "defaults key %@ is not of correct type", &v9, 0xCu);
       }
     }
@@ -293,16 +293,16 @@
   return v5;
 }
 
-+ (id)parseTemplates:(id)a3
++ (id)parseTemplates:(id)templates
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  templatesCopy = templates;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = templatesCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -344,36 +344,36 @@
   return v4;
 }
 
-+ (id)standardDateFormat:(unint64_t)a3
++ (id)standardDateFormat:(unint64_t)format
 {
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
-  [v4 setDateStyle:a3];
-  [v4 setTimeStyle:a3];
-  v5 = [v4 dateFormat];
+  [v4 setDateStyle:format];
+  [v4 setTimeStyle:format];
+  dateFormat = [v4 dateFormat];
 
-  return v5;
+  return dateFormat;
 }
 
-+ (id)getStringFromNumber:(id)a3
++ (id)getStringFromNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  [v4 setLocale:v5];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [v4 setLocale:currentLocale];
 
   [v4 setNumberStyle:1];
   [v4 setUsesGroupingSeparator:1];
   [v4 setMaximumFractionDigits:0];
-  v6 = [v4 stringFromNumber:v3];
+  v6 = [v4 stringFromNumber:numberCopy];
 
   return v6;
 }
 
-+ (id)base64EncodeString:(id)a3
++ (id)base64EncodeString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v3 = [a3 dataUsingEncoding:4];
+    v3 = [string dataUsingEncoding:4];
     v4 = [v3 base64EncodedStringWithOptions:0];
   }
 
@@ -392,41 +392,41 @@
   return v4;
 }
 
-+ (BOOL)_checkOptions:(id)a3 forKey:(id)a4
++ (BOOL)_checkOptions:(id)options forKey:(id)key
 {
-  v4 = [a3 objectForKeyedSubscript:a4];
+  v4 = [options objectForKeyedSubscript:key];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-+ (int64_t)_getOfferRequestTypeFromOptions:(id)a3 bundleId:(id)a4 isBuddy:(BOOL)a5
++ (int64_t)_getOfferRequestTypeFromOptions:(id)options bundleId:(id)id isBuddy:(BOOL)buddy
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 _requestedFetchOffersInOptions:v8];
-  v11 = [a1 _requestedPremiumOfferInOptions:v8];
-  if ([a1 _requestedDefaultOfferInOptions:v8])
+  buddyCopy = buddy;
+  optionsCopy = options;
+  idCopy = id;
+  v10 = [self _requestedFetchOffersInOptions:optionsCopy];
+  v11 = [self _requestedPremiumOfferInOptions:optionsCopy];
+  if ([self _requestedDefaultOfferInOptions:optionsCopy])
   {
-    v12 = [a1 _requestedEventOfferInOptions:v8];
+    v12 = [self _requestedEventOfferInOptions:optionsCopy];
 LABEL_4:
     v10 = 1;
     v14 = 1;
     goto LABEL_6;
   }
 
-  v13 = [v9 isEqualToString:@"com.apple.icq"];
-  v12 = [a1 _requestedEventOfferInOptions:v8];
+  v13 = [idCopy isEqualToString:@"com.apple.icq"];
+  v12 = [self _requestedEventOfferInOptions:optionsCopy];
   if (v13)
   {
     goto LABEL_4;
@@ -440,7 +440,7 @@ LABEL_6:
     v15 = 5;
   }
 
-  if (v5)
+  if (buddyCopy)
   {
     v15 = 4;
   }
@@ -463,25 +463,25 @@ LABEL_6:
   return v16;
 }
 
-+ (int64_t)_offerRequestTypeForStub:(id)a3
++ (int64_t)_offerRequestTypeForStub:(id)stub
 {
-  v3 = a3;
-  if ([v3 isDefaultOffer])
+  stubCopy = stub;
+  if ([stubCopy isDefaultOffer])
   {
     v4 = 1;
   }
 
-  else if ([v3 isPremiumOffer])
+  else if ([stubCopy isPremiumOffer])
   {
     v4 = 2;
   }
 
-  else if ([v3 isBuddyOffer])
+  else if ([stubCopy isBuddyOffer])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEventOffer])
+  else if ([stubCopy isEventOffer])
   {
     v4 = 5;
   }
@@ -494,15 +494,15 @@ LABEL_6:
   return v4;
 }
 
-+ (id)followUpIdentifierPrefixForRequestType:(int64_t)a3
++ (id)followUpIdentifierPrefixForRequestType:(int64_t)type
 {
   v3 = @"com.apple.iCloudQuotaDaemon.ICQFollowupRegular";
-  if (a3 == 5)
+  if (type == 5)
   {
     v3 = @"com.apple.iCloudQuotaDaemon.ICQFollowupEvent";
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return @"com.apple.iCloudQuotaDaemon.ICQFollowupPremium";
   }
@@ -513,82 +513,82 @@ LABEL_6:
   }
 }
 
-+ (id)_getOfferDescriptionFromRequestType:(int64_t)a3
++ (id)_getOfferDescriptionFromRequestType:(int64_t)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
     return @"premium";
   }
 
   else
   {
-    return off_27A651748[a3];
+    return off_27A651748[type];
   }
 }
 
-+ (id)_darwinNotificationNameForRequestType:(int64_t)a3
++ (id)_darwinNotificationNameForRequestType:(int64_t)type
 {
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_27A651778[a3 - 1];
+    return off_27A651778[type - 1];
   }
 }
 
-+ (BOOL)isBackupEnabledForAccount:(id)a3 accountStore:(id)a4
++ (BOOL)isBackupEnabledForAccount:(id)account accountStore:(id)store
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 accountStore];
+  storeCopy = store;
+  accountCopy = account;
+  accountStore = [accountCopy accountStore];
 
-  if (v7)
+  if (accountStore)
   {
-    LOBYTE(v8) = [v6 isEnabledForDataclass:*MEMORY[0x277CB90C8]];
+    LOBYTE(v8) = [accountCopy isEnabledForDataclass:*MEMORY[0x277CB90C8]];
   }
 
   else
   {
-    v9 = [v5 enabledDataclassesForAccount:v6];
+    v9 = [storeCopy enabledDataclassesForAccount:accountCopy];
 
     v8 = [v9 containsObject:*MEMORY[0x277CB90C8]];
-    v6 = v9;
+    accountCopy = v9;
   }
 
   return v8;
 }
 
-+ (BOOL)isPhotosLibraryIncludedInBackupForAccount:(id)a3
++ (BOOL)isPhotosLibraryIncludedInBackupForAccount:(id)account
 {
   v3 = MEMORY[0x277D28A40];
-  v4 = a3;
+  accountCopy = account;
   v5 = [v3 alloc];
-  v6 = [v4 personaIdentifier];
+  personaIdentifier = [accountCopy personaIdentifier];
 
-  v7 = [v5 initWithDelegate:0 eventQueue:0 personaIdentifier:v6];
-  LOBYTE(v4) = [v7 isBackupEnabledForDomainName:@"CameraRollDomain"];
+  v7 = [v5 initWithDelegate:0 eventQueue:0 personaIdentifier:personaIdentifier];
+  LOBYTE(accountCopy) = [v7 isBackupEnabledForDomainName:@"CameraRollDomain"];
 
-  return v4;
+  return accountCopy;
 }
 
-+ (void)getOriginalPhotosSizeWithCompletion:(id)a3
++ (void)getOriginalPhotosSizeWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D3B238] systemLibraryURL];
-  v6 = v3;
-  v5 = v3;
+  completionCopy = completion;
+  systemLibraryURL = [MEMORY[0x277D3B238] systemLibraryURL];
+  v6 = completionCopy;
+  v5 = completionCopy;
   PLRequestSizeOfOriginalResourcesForLibrary();
 }
 
-+ (id)usedCapacityForVolume:(id)a3
++ (id)usedCapacityForVolume:(id)volume
 {
   v33[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = ICQUsedDiskSpaceForVolume(v3);
-  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v3];
+  volumeCopy = volume;
+  v4 = ICQUsedDiskSpaceForVolume(volumeCopy);
+  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:volumeCopy];
   v6 = *MEMORY[0x277CBEA00];
   v7 = *MEMORY[0x277CBE9F0];
   v33[0] = *MEMORY[0x277CBEA00];
@@ -602,11 +602,11 @@ LABEL_6:
   {
     v11 = [v9 objectForKeyedSubscript:v6];
     v12 = [v9 objectForKeyedSubscript:v7];
-    v13 = [v11 unsignedLongLongValue];
-    if (v13 <= [v12 unsignedLongLongValue])
+    unsignedLongLongValue = [v11 unsignedLongLongValue];
+    if (unsignedLongLongValue <= [v12 unsignedLongLongValue])
     {
-      v17 = [v12 unsignedLongLongValue];
-      v14 = v17 - [v11 unsignedLongLongValue];
+      unsignedLongLongValue2 = [v12 unsignedLongLongValue];
+      v14 = unsignedLongLongValue2 - [v11 unsignedLongLongValue];
       if (v14 > v4)
       {
         v18 = _ICQGetLogSystem();
@@ -615,7 +615,7 @@ LABEL_6:
           v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v4];
           v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v14];
           *buf = 138543874;
-          v28 = v3;
+          v28 = volumeCopy;
           v29 = 2114;
           v30 = v24;
           v31 = 2114;
@@ -642,7 +642,7 @@ LABEL_12:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v28 = v3;
+      v28 = volumeCopy;
       v29 = 2114;
       v30 = v16;
       _os_log_impl(&dword_275572000, v21, OS_LOG_TYPE_DEFAULT, "Used Capacity on %{public}@: %{public}@", buf, 0x16u);
@@ -665,10 +665,10 @@ LABEL_15:
   return v16;
 }
 
-+ (void)remoteBackupSizeForAccount:(id)a3 timeoutInSeconds:(double)a4 completion:(id)a5
++ (void)remoteBackupSizeForAccount:(id)account timeoutInSeconds:(double)seconds completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  accountCopy = account;
+  completionCopy = completion;
   v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v11 = dispatch_queue_create("com.apple.icloud.quota.remote-backup-size-timeout-queue", v10);
 
@@ -683,17 +683,17 @@ LABEL_15:
   v26[1] = 3221225472;
   v26[2] = __78___ICQHelperFunctions_remoteBackupSizeForAccount_timeoutInSeconds_completion___block_invoke;
   v26[3] = &unk_27A6516E0;
-  v13 = v8;
+  v13 = accountCopy;
   v29 = &v31;
-  v30 = a1;
+  selfCopy = self;
   v27 = v13;
-  v14 = v9;
+  v14 = completionCopy;
   v28 = v14;
   v15 = [v12 blockOperationWithBlock:v26];
   v16 = v32[5];
   v32[5] = v15;
 
-  v17 = dispatch_time(0, (a4 * 1000000000.0));
+  v17 = dispatch_time(0, (seconds * 1000000000.0));
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __78___ICQHelperFunctions_remoteBackupSizeForAccount_timeoutInSeconds_completion___block_invoke_2;
@@ -702,21 +702,21 @@ LABEL_15:
   v18 = v14;
   v24 = v18;
   dispatch_after(v17, v11, &v20);
-  v19 = [a1 _remoteBackupSizeOperationQueue];
-  [v19 addOperation:v32[5]];
+  _remoteBackupSizeOperationQueue = [self _remoteBackupSizeOperationQueue];
+  [_remoteBackupSizeOperationQueue addOperation:v32[5]];
 
   _Block_object_dispose(&v31, 8);
 }
 
-+ (id)_fetchNextBackupSize:(id)a3
++ (id)_fetchNextBackupSize:(id)size
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  sizeCopy = size;
   dispatch_assert_queue_not_V2(MEMORY[0x277D85CD0]);
   v27 = 0;
-  v4 = [v3 getBackupListWithError:&v27];
+  v4 = [sizeCopy getBackupListWithError:&v27];
   v5 = v27;
-  v6 = [v3 backupDeviceUUID];
+  backupDeviceUUID = [sizeCopy backupDeviceUUID];
   if (v5)
   {
     v7 = _ICQGetLogSystem();
@@ -745,8 +745,8 @@ LABEL_15:
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [v12 backupUUID];
-        v14 = [v13 isEqualToString:v6];
+        backupUUID = [v12 backupUUID];
+        v14 = [backupUUID isEqualToString:backupDeviceUUID];
 
         if (v14)
         {
@@ -767,8 +767,8 @@ LABEL_15:
 
 LABEL_15:
 
-  v15 = [v9 snapshots];
-  v16 = [v15 sortedArrayUsingComparator:&__block_literal_global_1];
+  snapshots = [v9 snapshots];
+  v16 = [snapshots sortedArrayUsingComparator:&__block_literal_global_1];
 
   v17 = _ICQGetLogSystem();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -776,7 +776,7 @@ LABEL_15:
     *buf = 138413058;
     v29 = v8;
     v30 = 2112;
-    v31 = v6;
+    v31 = backupDeviceUUID;
     v32 = 2112;
     v33 = v9;
     v34 = 2112;
@@ -785,8 +785,8 @@ LABEL_15:
   }
 
   v18 = MEMORY[0x277CCABB0];
-  v19 = [v16 lastObject];
-  v20 = [v18 numberWithLongLong:{objc_msgSend(v19, "estimatedRestoreSize")}];
+  lastObject = [v16 lastObject];
+  v20 = [v18 numberWithLongLong:{objc_msgSend(lastObject, "estimatedRestoreSize")}];
 
   v21 = *MEMORY[0x277D85DE8];
 
@@ -805,9 +805,9 @@ LABEL_15:
   return v3;
 }
 
-+ (id)dictionaryForKey:(id)a3 from:(id)a4
++ (id)dictionaryForKey:(id)key from:(id)from
 {
-  v4 = [a4 objectForKeyedSubscript:a3];
+  v4 = [from objectForKeyedSubscript:key];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = v4;
@@ -821,9 +821,9 @@ LABEL_15:
   return v5;
 }
 
-+ (id)numberForKey:(id)a3 from:(id)a4
++ (id)numberForKey:(id)key from:(id)from
 {
-  v4 = [a4 objectForKeyedSubscript:a3];
+  v4 = [from objectForKeyedSubscript:key];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = v4;
@@ -837,27 +837,27 @@ LABEL_15:
   return v5;
 }
 
-+ (id)followUpGroupIdentifierForString:(id)a3
++ (id)followUpGroupIdentifierForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FLGroupIdentifierDevice"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"FLGroupIdentifierDevice"])
   {
     v4 = MEMORY[0x277CFE440];
   }
 
-  else if ([v3 isEqualToString:@"FLGroupIdentifierNoGroup"])
+  else if ([stringCopy isEqualToString:@"FLGroupIdentifierNoGroup"])
   {
     v4 = MEMORY[0x277CFE450];
   }
 
-  else if ([v3 isEqualToString:@"FLGroupIdentifierAppleServices"])
+  else if ([stringCopy isEqualToString:@"FLGroupIdentifierAppleServices"])
   {
     v4 = MEMORY[0x277CFE438];
   }
 
   else
   {
-    v5 = [v3 isEqualToString:@"FLGroupIdentifierNewDeviceOutreach"];
+    v5 = [stringCopy isEqualToString:@"FLGroupIdentifierNewDeviceOutreach"];
     v4 = MEMORY[0x277CFE430];
     if (v5)
     {
@@ -871,38 +871,38 @@ LABEL_15:
   return v6;
 }
 
-+ (void)appLaunchLinkTrackerSetLastShownDate:(id)a3 forBundleID:(id)a4
++ (void)appLaunchLinkTrackerSetLastShownDate:(id)date forBundleID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  dateCopy = date;
   v7 = +[ICQAppLaunchLinkTracker shared];
-  [v7 setLastShownDate:v6 forBundleID:v5];
+  [v7 setLastShownDate:dateCopy forBundleID:dCopy];
 }
 
-+ (void)bubbleBannerTrackLastDismissed:(id)a3 forReason:(id)a4
++ (void)bubbleBannerTrackLastDismissed:(id)dismissed forReason:(id)reason
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x277CB8F48] defaultStore];
-  v7 = [v6 aa_primaryAppleAccount];
+  dismissedCopy = dismissed;
+  reasonCopy = reason;
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
-  if (v7)
+  if (aa_primaryAppleAccount)
   {
     v8 = +[ICQBubbleBannerTracker shared];
-    [v8 trackLastDismissed:v7 date:v9 reason:v5];
+    [v8 trackLastDismissed:aa_primaryAppleAccount date:dismissedCopy reason:reasonCopy];
   }
 }
 
-+ (id)lastUpdatedForReason:(id)a3 decayUntil:(double)a4
++ (id)lastUpdatedForReason:(id)reason decayUntil:(double)until
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CB8F48] defaultStore];
-  v7 = [v6 aa_primaryAppleAccount];
+  reasonCopy = reason;
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
-  if (v7)
+  if (aa_primaryAppleAccount)
   {
     v8 = +[ICQBubbleBannerTracker shared];
-    v9 = [v8 account:v7 lastUpdated:v5 decayUntil:a4];
+    v9 = [v8 account:aa_primaryAppleAccount lastUpdated:reasonCopy decayUntil:until];
   }
 
   else

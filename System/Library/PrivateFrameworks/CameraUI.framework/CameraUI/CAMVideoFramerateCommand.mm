@@ -1,14 +1,14 @@
 @interface CAMVideoFramerateCommand
-- (CAMVideoFramerateCommand)initWithCoder:(id)a3;
-- (CAMVideoFramerateCommand)initWithVideoConfiguration:(int64_t)a3 configureSecondaryDevice:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMVideoFramerateCommand)initWithCoder:(id)coder;
+- (CAMVideoFramerateCommand)initWithVideoConfiguration:(int64_t)configuration configureSecondaryDevice:(BOOL)device;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMVideoFramerateCommand
 
-- (CAMVideoFramerateCommand)initWithVideoConfiguration:(int64_t)a3 configureSecondaryDevice:(BOOL)a4
+- (CAMVideoFramerateCommand)initWithVideoConfiguration:(int64_t)configuration configureSecondaryDevice:(BOOL)device
 {
   v10.receiver = self;
   v10.super_class = CAMVideoFramerateCommand;
@@ -16,82 +16,82 @@
   v7 = v6;
   if (v6)
   {
-    v6->__videoConfiguration = a3;
-    v6->__configureSecondaryDevice = a4;
+    v6->__videoConfiguration = configuration;
+    v6->__configureSecondaryDevice = device;
     v8 = v6;
   }
 
   return v7;
 }
 
-- (CAMVideoFramerateCommand)initWithCoder:(id)a3
+- (CAMVideoFramerateCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CAMVideoFramerateCommand;
-  v5 = [(CAMCaptureCommand *)&v8 initWithCoder:v4];
+  v5 = [(CAMCaptureCommand *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->__videoConfiguration = [v4 decodeIntegerForKey:@"CAMVideoFramerateCommandVideoConfiguration"];
-    v5->__configureSecondaryDevice = [v4 decodeBoolForKey:@"CAMVideoFramerateCommandConfigureSecondaryDevice"];
+    v5->__videoConfiguration = [coderCopy decodeIntegerForKey:@"CAMVideoFramerateCommandVideoConfiguration"];
+    v5->__configureSecondaryDevice = [coderCopy decodeBoolForKey:@"CAMVideoFramerateCommandConfigureSecondaryDevice"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CAMVideoFramerateCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[CAMVideoFramerateCommand _videoConfiguration](self forKey:{"_videoConfiguration", v5.receiver, v5.super_class), @"CAMVideoFramerateCommandVideoConfiguration"}];
-  [v4 encodeBool:-[CAMVideoFramerateCommand _configureSecondaryDevice](self forKey:{"_configureSecondaryDevice"), @"CAMVideoFramerateCommandConfigureSecondaryDevice"}];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[CAMVideoFramerateCommand _videoConfiguration](self forKey:{"_videoConfiguration", v5.receiver, v5.super_class), @"CAMVideoFramerateCommandVideoConfiguration"}];
+  [coderCopy encodeBool:-[CAMVideoFramerateCommand _configureSecondaryDevice](self forKey:{"_configureSecondaryDevice"), @"CAMVideoFramerateCommandConfigureSecondaryDevice"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMVideoFramerateCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[4] = [(CAMVideoFramerateCommand *)self _videoConfiguration];
   *(v4 + 24) = [(CAMVideoFramerateCommand *)self _configureSecondaryDevice];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   if ([(CAMVideoFramerateCommand *)self _configureSecondaryDevice])
   {
-    v5 = [v4 currentSecondaryVideoDevice];
-    v6 = [v4 currentSecondaryVideoDeviceInput];
-    [v4 currentSecondaryVideoDeviceFormat];
+    currentSecondaryVideoDevice = [contextCopy currentSecondaryVideoDevice];
+    currentSecondaryVideoDeviceInput = [contextCopy currentSecondaryVideoDeviceInput];
+    [contextCopy currentSecondaryVideoDeviceFormat];
   }
 
   else
   {
-    v5 = [v4 currentVideoDevice];
-    v6 = [v4 currentVideoDeviceInput];
-    [v4 currentVideoDeviceFormat];
+    currentSecondaryVideoDevice = [contextCopy currentVideoDevice];
+    currentSecondaryVideoDeviceInput = [contextCopy currentVideoDeviceInput];
+    [contextCopy currentVideoDeviceFormat];
   }
   v7 = ;
 
-  v8 = [(CAMVideoFramerateCommand *)self _videoConfiguration];
-  v9 = v8;
+  _videoConfiguration = [(CAMVideoFramerateCommand *)self _videoConfiguration];
+  v9 = _videoConfiguration;
   memset(&v15, 0, sizeof(v15));
-  if (v8 <= 8)
+  if (_videoConfiguration <= 8)
   {
-    if (v8 <= 3)
+    if (_videoConfiguration <= 3)
     {
-      if (v8 != 1)
+      if (_videoConfiguration != 1)
       {
-        if (v8 != 2)
+        if (_videoConfiguration != 2)
         {
           v10 = 0;
-          if (v8 != 3)
+          if (_videoConfiguration != 3)
           {
             goto LABEL_28;
           }
@@ -109,12 +109,12 @@ LABEL_25:
       goto LABEL_28;
     }
 
-    if ((v8 - 5) >= 3)
+    if ((_videoConfiguration - 5) >= 3)
     {
-      if (v8 != 4)
+      if (_videoConfiguration != 4)
       {
         v10 = 0;
-        if (v8 != 8)
+        if (_videoConfiguration != 8)
         {
           goto LABEL_28;
         }
@@ -132,21 +132,21 @@ LABEL_23:
     goto LABEL_28;
   }
 
-  if (v8 > 12)
+  if (_videoConfiguration > 12)
   {
-    if (v8 == 13)
+    if (_videoConfiguration == 13)
     {
       goto LABEL_24;
     }
 
-    if (v8 == 14)
+    if (_videoConfiguration == 14)
     {
       v10 = 100;
       goto LABEL_28;
     }
 
     v10 = 0;
-    if (v8 != 10003)
+    if (_videoConfiguration != 10003)
     {
       goto LABEL_28;
     }
@@ -154,18 +154,18 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if ((v8 - 11) < 2)
+  if ((_videoConfiguration - 11) < 2)
   {
     v10 = 25;
     goto LABEL_28;
   }
 
-  if (v8 == 9)
+  if (_videoConfiguration == 9)
   {
     goto LABEL_25;
   }
 
-  if (v8 == 10)
+  if (_videoConfiguration == 10)
   {
     v10 = 24;
   }
@@ -181,11 +181,11 @@ LABEL_28:
   if ([v7 cam_supportsFrameDuration:&buf])
   {
     buf = v15;
-    [v5 setActiveVideoMinFrameDuration:&buf];
+    [currentSecondaryVideoDevice setActiveVideoMinFrameDuration:&buf];
     buf = v15;
-    [v5 setActiveVideoMaxFrameDuration:&buf];
+    [currentSecondaryVideoDevice setActiveVideoMaxFrameDuration:&buf];
     buf = v15;
-    [v6 setVideoMinFrameDurationOverride:&buf];
+    [currentSecondaryVideoDeviceInput setVideoMinFrameDurationOverride:&buf];
   }
 
   else
@@ -193,17 +193,17 @@ LABEL_28:
     buf = **&MEMORY[0x1E6960C70];
     v14 = *&buf.value;
     epoch = buf.epoch;
-    [v6 setVideoMinFrameDurationOverride:&buf];
+    [currentSecondaryVideoDeviceInput setVideoMinFrameDurationOverride:&buf];
     *&buf.value = v14;
     buf.epoch = epoch;
-    [v5 setActiveVideoMinFrameDuration:&buf];
+    [currentSecondaryVideoDevice setActiveVideoMinFrameDuration:&buf];
     *&buf.value = v14;
     buf.epoch = epoch;
-    [v5 setActiveVideoMaxFrameDuration:&buf];
-    if (v5)
+    [currentSecondaryVideoDevice setActiveVideoMaxFrameDuration:&buf];
+    if (currentSecondaryVideoDevice)
     {
-      [v5 activeVideoMinFrameDuration];
-      [v5 activeVideoMaxFrameDuration];
+      [currentSecondaryVideoDevice activeVideoMinFrameDuration];
+      [currentSecondaryVideoDevice activeVideoMaxFrameDuration];
     }
 
     v12 = os_log_create("com.apple.camera", "CaptureCommand");

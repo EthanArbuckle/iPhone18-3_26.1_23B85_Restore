@@ -2,10 +2,10 @@
 - (ICAttachment)attachment;
 - (ICTableTextFindingResult)init;
 - (_NSRange)rangeInFindableString;
-- (id)framesForHighlightInTextView:(id)a3;
-- (id)tableAttachmentViewControllerForTextView:(id)a3;
-- (int64_t)compare:(id)a3;
-- (void)selectInTextView:(id)a3;
+- (id)framesForHighlightInTextView:(id)view;
+- (id)tableAttachmentViewControllerForTextView:(id)view;
+- (int64_t)compare:(id)compare;
+- (void)selectInTextView:(id)view;
 @end
 
 @implementation ICTableTextFindingResult
@@ -24,23 +24,23 @@
   return result;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v17.receiver = self;
   v17.super_class = ICTableTextFindingResult;
-  v5 = [(ICTextFindingResult *)&v17 compare:v4];
-  if (!v5)
+  inlineTextFindingResult = [(ICTextFindingResult *)&v17 compare:compareCopy];
+  if (!inlineTextFindingResult)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = compareCopy;
       v7 = [(ICTableTextFindingResult *)self row];
       if (v7 < [v6 row])
       {
 LABEL_4:
-        v5 = -1;
+        inlineTextFindingResult = -1;
 LABEL_8:
 
         goto LABEL_9;
@@ -49,39 +49,39 @@ LABEL_8:
       v8 = [(ICTableTextFindingResult *)self row];
       if (v8 <= [v6 row])
       {
-        v10 = [(ICTableTextFindingResult *)self column];
-        if (v10 < [v6 column])
+        column = [(ICTableTextFindingResult *)self column];
+        if (column < [v6 column])
         {
           goto LABEL_4;
         }
 
-        v11 = [(ICTableTextFindingResult *)self column];
-        if (v11 <= [v6 column])
+        column2 = [(ICTableTextFindingResult *)self column];
+        if (column2 <= [v6 column])
         {
-          v12 = [(ICTableTextFindingResult *)self rangeInFindableString];
-          if (v12 < [v6 rangeInFindableString])
+          rangeInFindableString = [(ICTableTextFindingResult *)self rangeInFindableString];
+          if (rangeInFindableString < [v6 rangeInFindableString])
           {
             goto LABEL_4;
           }
 
-          v13 = [(ICTableTextFindingResult *)self rangeInFindableString];
-          if (v13 == [v6 rangeInFindableString])
+          rangeInFindableString2 = [(ICTableTextFindingResult *)self rangeInFindableString];
+          if (rangeInFindableString2 == [v6 rangeInFindableString])
           {
-            v5 = [(ICTableTextFindingResult *)self inlineTextFindingResult];
-            if (v5)
+            inlineTextFindingResult = [(ICTableTextFindingResult *)self inlineTextFindingResult];
+            if (inlineTextFindingResult)
             {
-              v14 = [v6 inlineTextFindingResult];
+              inlineTextFindingResult2 = [v6 inlineTextFindingResult];
 
-              if (v14)
+              if (inlineTextFindingResult2)
               {
-                v15 = [(ICTableTextFindingResult *)self inlineTextFindingResult];
-                v16 = [v6 inlineTextFindingResult];
-                v5 = [v15 compare:v16];
+                inlineTextFindingResult3 = [(ICTableTextFindingResult *)self inlineTextFindingResult];
+                inlineTextFindingResult4 = [v6 inlineTextFindingResult];
+                inlineTextFindingResult = [inlineTextFindingResult3 compare:inlineTextFindingResult4];
               }
 
               else
               {
-                v5 = 0;
+                inlineTextFindingResult = 0;
               }
             }
 
@@ -90,32 +90,32 @@ LABEL_8:
         }
       }
 
-      v5 = 1;
+      inlineTextFindingResult = 1;
       goto LABEL_8;
     }
 
-    v5 = 0;
+    inlineTextFindingResult = 0;
   }
 
 LABEL_9:
 
-  return v5;
+  return inlineTextFindingResult;
 }
 
-- (id)tableAttachmentViewControllerForTextView:(id)a3
+- (id)tableAttachmentViewControllerForTextView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (ICInternalSettingsIsTextKit2Enabled())
   {
     objc_opt_class();
-    v5 = [v4 textLayoutManager];
+    textLayoutManager = [viewCopy textLayoutManager];
 
     v6 = ICDynamicCast();
 
     objc_opt_class();
     v7 = MEMORY[0x277D36950];
-    v8 = [(ICTableTextFindingResult *)self attachment];
-    v9 = [v7 textAttachmentWithAttachment:v8];
+    attachment = [(ICTableTextFindingResult *)self attachment];
+    v9 = [v7 textAttachmentWithAttachment:attachment];
     v10 = ICDynamicCast();
 
     v11 = [v6 tableViewControllerForAttachment:v10 createIfNeeded:0];
@@ -124,14 +124,14 @@ LABEL_9:
   else
   {
     objc_opt_class();
-    v12 = [v4 layoutManager];
+    layoutManager = [viewCopy layoutManager];
 
     v6 = ICDynamicCast();
 
     objc_opt_class();
     v13 = MEMORY[0x277D36950];
-    v14 = [(ICTableTextFindingResult *)self attachment];
-    v15 = [v13 textAttachmentWithAttachment:v14];
+    attachment2 = [(ICTableTextFindingResult *)self attachment];
+    v15 = [v13 textAttachmentWithAttachment:attachment2];
     v10 = ICDynamicCast();
 
     v11 = 0;
@@ -155,28 +155,28 @@ LABEL_9:
   return v11;
 }
 
-- (id)framesForHighlightInTextView:(id)a3
+- (id)framesForHighlightInTextView:(id)view
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICTableTextFindingResult *)self tableAttachmentViewControllerForTextView:v4];
+  viewCopy = view;
+  v5 = [(ICTableTextFindingResult *)self tableAttachmentViewControllerForTextView:viewCopy];
   if (v5)
   {
-    v6 = [(ICTableTextFindingResult *)self rangeInFindableString];
+    rangeInFindableString = [(ICTableTextFindingResult *)self rangeInFindableString];
     v8 = v7;
-    v9 = [(ICTableTextFindingResult *)self findableString];
-    v10 = [v5 viewForRange:v6 inFindableString:{v8, v9}];
-    v11 = [(ICTableTextFindingResult *)self inlineTextFindingResult];
+    findableString = [(ICTableTextFindingResult *)self findableString];
+    v10 = [v5 viewForRange:rangeInFindableString inFindableString:{v8, findableString}];
+    inlineTextFindingResult = [(ICTableTextFindingResult *)self inlineTextFindingResult];
 
-    if (v11)
+    if (inlineTextFindingResult)
     {
-      v12 = [(ICTableTextFindingResult *)self inlineTextFindingResult];
-      v13 = [v12 framesForHighlightInTextView:v10];
+      inlineTextFindingResult2 = [(ICTableTextFindingResult *)self inlineTextFindingResult];
+      v13 = [inlineTextFindingResult2 framesForHighlightInTextView:v10];
     }
 
-    else if (v6 + v8 <= [v9 length])
+    else if (rangeInFindableString + v8 <= [findableString length])
     {
-      v13 = [v5 rectsForRange:v6 inFindableString:{v8, v9}];
+      v13 = [v5 rectsForRange:rangeInFindableString inFindableString:{v8, findableString}];
     }
 
     else
@@ -205,9 +205,9 @@ LABEL_9:
           }
 
           v20 = *(*(&v57 + 1) + 8 * i);
-          v21 = [(ICTableTextFindingResult *)self attachment];
-          v22 = [v21 rangeInNote];
-          [v4 ic_rectForRange:{v22, v23}];
+          attachment = [(ICTableTextFindingResult *)self attachment];
+          rangeInNote = [attachment rangeInNote];
+          [viewCopy ic_rectForRange:{rangeInNote, v23}];
           v25 = v24;
           v27 = v26;
 
@@ -216,8 +216,8 @@ LABEL_9:
           v31 = v30;
           v33 = v32;
           v35 = v34;
-          v36 = [v5 view];
-          [v10 convertRect:v36 toCoordinateSpace:{v29, v31, v33, v35}];
+          view = [v5 view];
+          [v10 convertRect:view toCoordinateSpace:{v29, v31, v33, v35}];
           v38 = v37;
           v40 = v39;
           v42 = v41;
@@ -232,9 +232,9 @@ LABEL_9:
           y = v65.origin.y;
           width = v65.size.width;
           height = v65.size.height;
-          [v4 textContainerInset];
+          [viewCopy textContainerInset];
           v50 = v49;
-          [v4 textContainerInset];
+          [viewCopy textContainerInset];
           v52 = v51;
           v66.origin.x = x;
           v66.origin.y = y;
@@ -262,31 +262,31 @@ LABEL_9:
   return v14;
 }
 
-- (void)selectInTextView:(id)a3
+- (void)selectInTextView:(id)view
 {
-  v4 = a3;
-  v5 = [(ICTableTextFindingResult *)self tableAttachmentViewControllerForTextView:v4];
-  v6 = [v5 table];
-  v7 = [v6 identifierForColumnAtIndex:{-[ICTableTextFindingResult column](self, "column")}];
-  v8 = [v6 identifierForRowAtIndex:{-[ICTableTextFindingResult row](self, "row")}];
+  viewCopy = view;
+  v5 = [(ICTableTextFindingResult *)self tableAttachmentViewControllerForTextView:viewCopy];
+  table = [v5 table];
+  v7 = [table identifierForColumnAtIndex:{-[ICTableTextFindingResult column](self, "column")}];
+  v8 = [table identifierForRowAtIndex:{-[ICTableTextFindingResult row](self, "row")}];
   if (v7)
   {
-    v9 = [v5 textViewManager];
-    v10 = [v9 textViewForColumn:v7];
+    textViewManager = [v5 textViewManager];
+    v10 = [textViewManager textViewForColumn:v7];
 
-    v11 = [v10 columnTextStorage];
-    v12 = [v11 characterRangeForRowID:v8];
+    columnTextStorage = [v10 columnTextStorage];
+    v12 = [columnTextStorage characterRangeForRowID:v8];
 
-    v13 = [(ICTableTextFindingResult *)self rangeInFindableString];
+    rangeInFindableString = [(ICTableTextFindingResult *)self rangeInFindableString];
     [(ICTableTextFindingResult *)self rangeInFindableString];
-    [v10 setSelectedRange:{v13 + v12, v14}];
+    [v10 setSelectedRange:{rangeInFindableString + v12, v14}];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = ICTableTextFindingResult;
-    [(ICTextFindingResult *)&v15 selectInTextView:v4];
+    [(ICTextFindingResult *)&v15 selectInTextView:viewCopy];
   }
 }
 

@@ -1,12 +1,12 @@
 @interface UnifiedMessageCollectionViewCell
-- (_TtC8AppStore32UnifiedMessageCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore32UnifiedMessageCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation UnifiedMessageCollectionViewCell
 
-- (_TtC8AppStore32UnifiedMessageCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore32UnifiedMessageCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore32UnifiedMessageCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -39,7 +39,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001CE028();
 }
 

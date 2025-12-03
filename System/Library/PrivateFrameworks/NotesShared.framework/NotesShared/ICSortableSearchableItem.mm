@@ -1,8 +1,8 @@
 @interface ICSortableSearchableItem
-+ (id)sortDescriptorsForRankingStrategy:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (ICSortableSearchableItem)initWithSearchableItem:(id)a3 highlightInfo:(id)a4 rankingScore:(double)a5 attachmentUniqueIdentifiers:(id)a6;
-- (ICSortableSearchableItem)initWithSearchableItem:(id)a3 searchString:(id)a4 rankingQueriesDefinition:(id)a5 rankingScore:(double)a6 attachmentUniqueIdentifiers:(id)a7 language:(id)a8;
++ (id)sortDescriptorsForRankingStrategy:(unint64_t)strategy;
+- (BOOL)isEqual:(id)equal;
+- (ICSortableSearchableItem)initWithSearchableItem:(id)item highlightInfo:(id)info rankingScore:(double)score attachmentUniqueIdentifiers:(id)identifiers;
+- (ICSortableSearchableItem)initWithSearchableItem:(id)item searchString:(id)string rankingQueriesDefinition:(id)definition rankingScore:(double)score attachmentUniqueIdentifiers:(id)identifiers language:(id)language;
 - (NSDictionary)highlightInfo;
 - (unint64_t)hash;
 - (void)lazilyInitializeHighlightInfoAndIsPrefixMatchIfNecessary;
@@ -10,75 +10,75 @@
 
 @implementation ICSortableSearchableItem
 
-- (ICSortableSearchableItem)initWithSearchableItem:(id)a3 highlightInfo:(id)a4 rankingScore:(double)a5 attachmentUniqueIdentifiers:(id)a6
+- (ICSortableSearchableItem)initWithSearchableItem:(id)item highlightInfo:(id)info rankingScore:(double)score attachmentUniqueIdentifiers:(id)identifiers
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  itemCopy = item;
+  infoCopy = info;
+  identifiersCopy = identifiers;
   v24.receiver = self;
   v24.super_class = ICSortableSearchableItem;
   v14 = [(ICSortableSearchableItem *)&v24 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_searchableItem, a3);
-    v15->_rankingScore = a5;
-    objc_storeStrong(&v15->_attachmentUniqueIdentifiers, a6);
-    objc_storeStrong(&v15->_highlightInfo, a4);
-    v15->_isPrefixMatch = [MEMORY[0x277CBEAC0] highlightInfoContainsPrefixMatch:v12];
-    v15->_relevanceBitField = [ICRankingQueriesDefinition relevanceBitFieldForSearchableItem:v11];
-    v15->_modificationDateBucket = [ICRankingQueriesDefinition modificationDateBucketForSearchableItem:v11];
-    v16 = [v11 attributeSet];
-    v17 = [v16 contentModificationDate];
+    objc_storeStrong(&v14->_searchableItem, item);
+    v15->_rankingScore = score;
+    objc_storeStrong(&v15->_attachmentUniqueIdentifiers, identifiers);
+    objc_storeStrong(&v15->_highlightInfo, info);
+    v15->_isPrefixMatch = [MEMORY[0x277CBEAC0] highlightInfoContainsPrefixMatch:infoCopy];
+    v15->_relevanceBitField = [ICRankingQueriesDefinition relevanceBitFieldForSearchableItem:itemCopy];
+    v15->_modificationDateBucket = [ICRankingQueriesDefinition modificationDateBucketForSearchableItem:itemCopy];
+    attributeSet = [itemCopy attributeSet];
+    contentModificationDate = [attributeSet contentModificationDate];
     modificationDate = v15->_modificationDate;
-    v15->_modificationDate = v17;
+    v15->_modificationDate = contentModificationDate;
 
-    v19 = [v11 attributeSet];
-    v20 = [v19 contentCreationDate];
+    attributeSet2 = [itemCopy attributeSet];
+    contentCreationDate = [attributeSet2 contentCreationDate];
     creationDate = v15->_creationDate;
-    v15->_creationDate = v20;
+    v15->_creationDate = contentCreationDate;
 
-    v22 = [v11 attributeSet];
-    v15->_searchResultType = [v22 ic_searchResultType];
+    attributeSet3 = [itemCopy attributeSet];
+    v15->_searchResultType = [attributeSet3 ic_searchResultType];
   }
 
   return v15;
 }
 
-- (ICSortableSearchableItem)initWithSearchableItem:(id)a3 searchString:(id)a4 rankingQueriesDefinition:(id)a5 rankingScore:(double)a6 attachmentUniqueIdentifiers:(id)a7 language:(id)a8
+- (ICSortableSearchableItem)initWithSearchableItem:(id)item searchString:(id)string rankingQueriesDefinition:(id)definition rankingScore:(double)score attachmentUniqueIdentifiers:(id)identifiers language:(id)language
 {
-  v15 = a3;
-  v29 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  itemCopy = item;
+  stringCopy = string;
+  definitionCopy = definition;
+  identifiersCopy = identifiers;
+  languageCopy = language;
   v30.receiver = self;
   v30.super_class = ICSortableSearchableItem;
   v19 = [(ICSortableSearchableItem *)&v30 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_searchableItem, a3);
-    objc_storeStrong(&v20->_searchString, a4);
-    objc_storeStrong(&v20->_rankingQueriesDefinition, a5);
-    v20->_rankingScore = a6;
-    objc_storeStrong(&v20->_attachmentUniqueIdentifiers, a7);
-    objc_storeStrong(&v20->_language, a8);
+    objc_storeStrong(&v19->_searchableItem, item);
+    objc_storeStrong(&v20->_searchString, string);
+    objc_storeStrong(&v20->_rankingQueriesDefinition, definition);
+    v20->_rankingScore = score;
+    objc_storeStrong(&v20->_attachmentUniqueIdentifiers, identifiers);
+    objc_storeStrong(&v20->_language, language);
     v20->_needsLazyInitialization = 1;
-    v20->_relevanceBitField = [ICRankingQueriesDefinition relevanceBitFieldForSearchableItem:v15];
-    v20->_modificationDateBucket = [ICRankingQueriesDefinition modificationDateBucketForSearchableItem:v15];
-    v21 = [v15 attributeSet];
-    v22 = [v21 contentModificationDate];
+    v20->_relevanceBitField = [ICRankingQueriesDefinition relevanceBitFieldForSearchableItem:itemCopy];
+    v20->_modificationDateBucket = [ICRankingQueriesDefinition modificationDateBucketForSearchableItem:itemCopy];
+    attributeSet = [itemCopy attributeSet];
+    contentModificationDate = [attributeSet contentModificationDate];
     modificationDate = v20->_modificationDate;
-    v20->_modificationDate = v22;
+    v20->_modificationDate = contentModificationDate;
 
-    v24 = [v15 attributeSet];
-    v25 = [v24 contentCreationDate];
+    attributeSet2 = [itemCopy attributeSet];
+    contentCreationDate = [attributeSet2 contentCreationDate];
     creationDate = v20->_creationDate;
-    v20->_creationDate = v25;
+    v20->_creationDate = contentCreationDate;
 
-    v27 = [v15 attributeSet];
-    v20->_searchResultType = [v27 ic_searchResultType];
+    attributeSet3 = [itemCopy attributeSet];
+    v20->_searchResultType = [attributeSet3 ic_searchResultType];
   }
 
   return v20;
@@ -88,16 +88,16 @@
 {
   if (self->_needsLazyInitialization)
   {
-    v3 = [(ICSortableSearchableItem *)self rankingQueriesDefinition];
-    v4 = [(ICSortableSearchableItem *)self searchableItem];
-    v5 = [v3 highlightInfoForSearchableItem:v4];
+    rankingQueriesDefinition = [(ICSortableSearchableItem *)self rankingQueriesDefinition];
+    searchableItem = [(ICSortableSearchableItem *)self searchableItem];
+    v5 = [rankingQueriesDefinition highlightInfoForSearchableItem:searchableItem];
 
     if (!v5 || ![(NSDictionary *)v5 count])
     {
       v6 = MEMORY[0x277CBEAC0];
-      v7 = [(ICSortableSearchableItem *)self searchString];
-      v8 = [(ICSortableSearchableItem *)self language];
-      v9 = [v6 highlightInfoForSearchStringWithPrefixMatchInAllFields:v7 language:v8];
+      searchString = [(ICSortableSearchableItem *)self searchString];
+      language = [(ICSortableSearchableItem *)self language];
+      v9 = [v6 highlightInfoForSearchStringWithPrefixMatchInAllFields:searchString language:language];
 
       v5 = v9;
     }
@@ -126,7 +126,7 @@
   result = self->_hash;
   if (!result)
   {
-    v4 = [(ICSortableSearchableItem *)self attachmentUniqueIdentifiers];
+    attachmentUniqueIdentifiers = [(ICSortableSearchableItem *)self attachmentUniqueIdentifiers];
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     v7 = [v6 hash];
@@ -135,7 +135,7 @@
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v8 = v4;
+    v8 = attachmentUniqueIdentifiers;
     v9 = [v8 countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v9)
     {
@@ -159,9 +159,9 @@
       while (v10);
     }
 
-    v35 = [(ICSortableSearchableItem *)self searchableItem];
-    v34 = [v35 hash];
-    v13 = [(ICSortableSearchableItem *)self highlightInfo];
+    searchableItem = [(ICSortableSearchableItem *)self searchableItem];
+    v34 = [searchableItem hash];
+    highlightInfo = [(ICSortableSearchableItem *)self highlightInfo];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
     v16 = [v15 hash];
@@ -170,7 +170,7 @@
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v17 = v13;
+    v17 = highlightInfo;
     v18 = [v17 countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v18)
     {
@@ -200,10 +200,10 @@
     [(ICSortableSearchableItem *)self relevanceBitField];
     [(ICSortableSearchableItem *)self isPrefixMatch];
     [(ICSortableSearchableItem *)self modificationDateBucket];
-    v25 = [(ICSortableSearchableItem *)self modificationDate];
-    [v25 hash];
-    v26 = [(ICSortableSearchableItem *)self creationDate];
-    [v26 hash];
+    modificationDate = [(ICSortableSearchableItem *)self modificationDate];
+    [modificationDate hash];
+    creationDate = [(ICSortableSearchableItem *)self creationDate];
+    [creationDate hash];
     [(ICSortableSearchableItem *)self searchResultType];
     self->_hash = ICHashWithHashKeys(v7, v27, v28, v29, v30, v31, v32, v33, v34);
 
@@ -213,12 +213,12 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v37.receiver = self;
   v37.super_class = ICSortableSearchableItem;
-  v4 = a3;
-  v5 = [(ICSortableSearchableItem *)&v37 isEqual:v4];
+  equalCopy = equal;
+  v5 = [(ICSortableSearchableItem *)&v37 isEqual:equalCopy];
   objc_opt_class();
   v6 = ICDynamicCast();
 
@@ -238,80 +238,80 @@
   }
 
   v8 = [(ICSortableSearchableItem *)self searchableItem:v37.receiver];
-  v9 = [v6 searchableItem];
-  v10 = [v8 isEqual:v9];
+  searchableItem = [v6 searchableItem];
+  v10 = [v8 isEqual:searchableItem];
 
   if (!v10)
   {
     goto LABEL_37;
   }
 
-  v11 = [(ICSortableSearchableItem *)self highlightInfo];
-  v12 = [v6 highlightInfo];
-  v13 = [v11 isEqualToDictionary:v12];
+  highlightInfo = [(ICSortableSearchableItem *)self highlightInfo];
+  highlightInfo2 = [v6 highlightInfo];
+  v13 = [highlightInfo isEqualToDictionary:highlightInfo2];
 
   if (!v13)
   {
     goto LABEL_37;
   }
 
-  v14 = [(ICSortableSearchableItem *)self attachmentUniqueIdentifiers];
-  v15 = [v6 attachmentUniqueIdentifiers];
-  if ([v14 isEqualToArray:v15])
+  attachmentUniqueIdentifiers = [(ICSortableSearchableItem *)self attachmentUniqueIdentifiers];
+  attachmentUniqueIdentifiers2 = [v6 attachmentUniqueIdentifiers];
+  if ([attachmentUniqueIdentifiers isEqualToArray:attachmentUniqueIdentifiers2])
   {
   }
 
   else
   {
-    v16 = [(ICSortableSearchableItem *)self attachmentUniqueIdentifiers];
-    v17 = [v6 attachmentUniqueIdentifiers];
+    attachmentUniqueIdentifiers3 = [(ICSortableSearchableItem *)self attachmentUniqueIdentifiers];
+    attachmentUniqueIdentifiers4 = [v6 attachmentUniqueIdentifiers];
 
-    if (v16 != v17)
+    if (attachmentUniqueIdentifiers3 != attachmentUniqueIdentifiers4)
     {
       goto LABEL_37;
     }
   }
 
-  v18 = [(ICSortableSearchableItem *)self relevanceBitField];
-  if (v18 != [v6 relevanceBitField])
+  relevanceBitField = [(ICSortableSearchableItem *)self relevanceBitField];
+  if (relevanceBitField != [v6 relevanceBitField])
   {
     goto LABEL_37;
   }
 
-  v19 = [(ICSortableSearchableItem *)self isPrefixMatch];
-  if (v19 != [v6 isPrefixMatch])
+  isPrefixMatch = [(ICSortableSearchableItem *)self isPrefixMatch];
+  if (isPrefixMatch != [v6 isPrefixMatch])
   {
     goto LABEL_37;
   }
 
-  v20 = [(ICSortableSearchableItem *)self modificationDateBucket];
-  if (v20 != [v6 modificationDateBucket])
+  modificationDateBucket = [(ICSortableSearchableItem *)self modificationDateBucket];
+  if (modificationDateBucket != [v6 modificationDateBucket])
   {
     goto LABEL_37;
   }
 
-  v21 = [(ICSortableSearchableItem *)self modificationDate];
-  v22 = [v6 modificationDate];
+  modificationDate = [(ICSortableSearchableItem *)self modificationDate];
+  modificationDate2 = [v6 modificationDate];
   v23 = *MEMORY[0x277CBEEE8];
-  if (*MEMORY[0x277CBEEE8] == v21)
+  if (*MEMORY[0x277CBEEE8] == modificationDate)
   {
     v24 = 0;
   }
 
   else
   {
-    v24 = v21;
+    v24 = modificationDate;
   }
 
   v25 = v24;
-  if (v23 == v22)
+  if (v23 == modificationDate2)
   {
     v26 = 0;
   }
 
   else
   {
-    v26 = v22;
+    v26 = modificationDate2;
   }
 
   v27 = v26;
@@ -337,27 +337,27 @@ LABEL_36:
   {
   }
 
-  v21 = [(ICSortableSearchableItem *)self creationDate];
-  v22 = [v6 creationDate];
-  if (v23 == v21)
+  modificationDate = [(ICSortableSearchableItem *)self creationDate];
+  modificationDate2 = [v6 creationDate];
+  if (v23 == modificationDate)
   {
     v30 = 0;
   }
 
   else
   {
-    v30 = v21;
+    v30 = modificationDate;
   }
 
   v25 = v30;
-  if (v23 == v22)
+  if (v23 == modificationDate2)
   {
     v31 = 0;
   }
 
   else
   {
-    v31 = v22;
+    v31 = modificationDate2;
   }
 
   v32 = v31;
@@ -365,8 +365,8 @@ LABEL_36:
   {
 
 LABEL_40:
-    v36 = [(ICSortableSearchableItem *)self searchResultType];
-    v34 = v36 == [v6 searchResultType];
+    searchResultType = [(ICSortableSearchableItem *)self searchResultType];
+    v34 = searchResultType == [v6 searchResultType];
     goto LABEL_38;
   }
 
@@ -390,9 +390,9 @@ LABEL_38:
   return v34;
 }
 
-+ (id)sortDescriptorsForRankingStrategy:(unint64_t)a3
++ (id)sortDescriptorsForRankingStrategy:(unint64_t)strategy
 {
-  switch(a3)
+  switch(strategy)
   {
     case 2uLL:
       v13 = objc_alloc(MEMORY[0x277CBEB18]);

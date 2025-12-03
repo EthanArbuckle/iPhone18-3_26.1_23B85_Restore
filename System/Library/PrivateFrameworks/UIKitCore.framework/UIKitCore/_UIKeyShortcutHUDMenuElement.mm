@@ -1,39 +1,39 @@
 @interface _UIKeyShortcutHUDMenuElement
-+ (id)elementWithUIMenuElement:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)elementWithUIMenuElement:(id)element;
+- (BOOL)isEqual:(id)equal;
 - (NSString)subtitle;
 - (NSString)title;
-- (_UIKeyShortcutHUDMenuElement)initWithCoder:(id)a3;
+- (_UIKeyShortcutHUDMenuElement)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIKeyShortcutHUDMenuElement
 
-+ (id)elementWithUIMenuElement:(id)a3
++ (id)elementWithUIMenuElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4 = objc_opt_new();
   v5 = v4[1];
-  v4[1] = v3;
+  v4[1] = elementCopy;
 
   return v4;
 }
 
 - (NSString)title
 {
-  v2 = [(_UIKeyShortcutHUDMenuElement *)self uiMenuElement];
-  v3 = [v2 title];
+  uiMenuElement = [(_UIKeyShortcutHUDMenuElement *)self uiMenuElement];
+  title = [uiMenuElement title];
 
-  return v3;
+  return title;
 }
 
 - (NSString)subtitle
 {
-  v2 = [(_UIKeyShortcutHUDMenuElement *)self uiMenuElement];
-  v3 = [v2 subtitle];
+  uiMenuElement = [(_UIKeyShortcutHUDMenuElement *)self uiMenuElement];
+  subtitle = [uiMenuElement subtitle];
 
-  return v3;
+  return subtitle;
 }
 
 - (id)description
@@ -43,21 +43,21 @@
   v3 = [(_UIKeyShortcutHUDMenuElement *)&v8 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(_UIKeyShortcutHUDMenuElement *)self uiMenuElement];
+  uiMenuElement = [(_UIKeyShortcutHUDMenuElement *)self uiMenuElement];
 
-  if (v5)
+  if (uiMenuElement)
   {
-    v6 = [(_UIKeyShortcutHUDMenuElement *)self uiMenuElement];
-    [v4 appendFormat:@": %@", v6];
+    uiMenuElement2 = [(_UIKeyShortcutHUDMenuElement *)self uiMenuElement];
+    [v4 appendFormat:@": %@", uiMenuElement2];
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -67,11 +67,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(_UIKeyShortcutHUDMenuElement *)self uiMenuElement];
-      v7 = [(_UIKeyShortcutHUDMenuElement *)v5 uiMenuElement];
+      v5 = equalCopy;
+      uiMenuElement = [(_UIKeyShortcutHUDMenuElement *)self uiMenuElement];
+      uiMenuElement2 = [(_UIKeyShortcutHUDMenuElement *)v5 uiMenuElement];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [uiMenuElement isEqual:uiMenuElement2];
     }
 
     else
@@ -83,21 +83,21 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_UIKeyShortcutHUDMenuElement *)self uiMenuElement];
-  [v4 encodeObject:v5 forKey:@"menuElement"];
+  coderCopy = coder;
+  uiMenuElement = [(_UIKeyShortcutHUDMenuElement *)self uiMenuElement];
+  [coderCopy encodeObject:uiMenuElement forKey:@"menuElement"];
 }
 
-- (_UIKeyShortcutHUDMenuElement)initWithCoder:(id)a3
+- (_UIKeyShortcutHUDMenuElement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIKeyShortcutHUDMenuElement *)self init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"menuElement"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"menuElement"];
     uiMenuElement = v5->_uiMenuElement;
     v5->_uiMenuElement = v7;
   }

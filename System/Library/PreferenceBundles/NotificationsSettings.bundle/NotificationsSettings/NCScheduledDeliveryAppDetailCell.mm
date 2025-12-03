@@ -9,25 +9,25 @@
 - (void)_layoutCountBarView;
 - (void)_layoutCountLabel;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation NCScheduledDeliveryAppDetailCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = NCScheduledDeliveryAppDetailCell;
-  v4 = a3;
-  [(NCScheduledDeliveryAppDetailCell *)&v8 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"SCHEDULED_DELIVERY_APP_COUNT_KEY", v8.receiver, v8.super_class}];
+  specifierCopy = specifier;
+  [(NCScheduledDeliveryAppDetailCell *)&v8 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"SCHEDULED_DELIVERY_APP_COUNT_KEY", v8.receiver, v8.super_class}];
   self->_count = [v5 unsignedIntegerValue];
 
-  v6 = [v4 propertyForKey:@"SCHEDULED_DELIVERY_MAX_COUNT_KEY"];
+  v6 = [specifierCopy propertyForKey:@"SCHEDULED_DELIVERY_MAX_COUNT_KEY"];
 
   self->_maxCount = [v6 unsignedIntegerValue];
-  v7 = [(NCScheduledDeliveryAppDetailCell *)self detailTextLabel];
-  [v7 setText:@" "];
+  detailTextLabel = [(NCScheduledDeliveryAppDetailCell *)self detailTextLabel];
+  [detailTextLabel setText:@" "];
 }
 
 - (void)layoutSubviews
@@ -56,8 +56,8 @@
     [(UIView *)v5 setBackgroundColor:v6];
 
     [(UIView *)self->_countBarView _setContinuousCornerRadius:2.0];
-    v7 = [(NCScheduledDeliveryAppDetailCell *)self _parentViewForCountBar];
-    [v7 addSubview:self->_countBarView];
+    _parentViewForCountBar = [(NCScheduledDeliveryAppDetailCell *)self _parentViewForCountBar];
+    [_parentViewForCountBar addSubview:self->_countBarView];
   }
 }
 
@@ -73,11 +73,11 @@
     v6 = +[UIColor systemRedColor];
     [(UIView *)v5 setBackgroundColor:v6];
 
-    v7 = [(UIView *)self->_countBarDotView layer];
-    [v7 setCornerRadius:4.5];
+    layer = [(UIView *)self->_countBarDotView layer];
+    [layer setCornerRadius:4.5];
 
-    v8 = [(NCScheduledDeliveryAppDetailCell *)self _parentViewForCountBar];
-    [v8 addSubview:self->_countBarDotView];
+    _parentViewForCountBar = [(NCScheduledDeliveryAppDetailCell *)self _parentViewForCountBar];
+    [_parentViewForCountBar addSubview:self->_countBarDotView];
   }
 }
 
@@ -102,8 +102,8 @@
     v11 = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
     [(UILabel *)v10 setFont:v11];
 
-    v12 = [(NCScheduledDeliveryAppDetailCell *)self _parentViewForCountBar];
-    [v12 addSubview:self->_countLabel];
+    _parentViewForCountBar = [(NCScheduledDeliveryAppDetailCell *)self _parentViewForCountBar];
+    [_parentViewForCountBar addSubview:self->_countLabel];
   }
 }
 
@@ -115,8 +115,8 @@
     [(UILabel *)countLabel frame];
     rect = v4;
     v6 = v5;
-    v7 = [(NCScheduledDeliveryAppDetailCell *)self titleLabel];
-    [v7 frame];
+    titleLabel = [(NCScheduledDeliveryAppDetailCell *)self titleLabel];
+    [titleLabel frame];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -128,12 +128,12 @@
     v20 = v19;
     v22 = v21;
     [(NCScheduledDeliveryAppDetailCell *)self _widthForCountBarView];
-    v23 = [(NCScheduledDeliveryAppDetailCell *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(NCScheduledDeliveryAppDetailCell *)self _shouldReverseLayoutDirection];
     v24 = v9;
     v25 = v11;
     v26 = v13;
     v27 = v15;
-    if (v23)
+    if (_shouldReverseLayoutDirection)
     {
       CGRectGetMaxX(*&v24);
       v31.origin.x = rect;
@@ -166,20 +166,20 @@
   if (countBarView)
   {
     [(UIView *)countBarView frame];
-    v4 = [(NCScheduledDeliveryAppDetailCell *)self titleLabel];
-    [v4 frame];
+    titleLabel = [(NCScheduledDeliveryAppDetailCell *)self titleLabel];
+    [titleLabel frame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
 
     [(NCScheduledDeliveryAppDetailCell *)self _widthForCountBarView];
-    v13 = [(NCScheduledDeliveryAppDetailCell *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(NCScheduledDeliveryAppDetailCell *)self _shouldReverseLayoutDirection];
     v14 = v6;
     v15 = v8;
     v16 = v10;
     v17 = v12;
-    if (v13)
+    if (_shouldReverseLayoutDirection)
     {
       MaxX = CGRectGetMaxX(*&v14);
     }
@@ -209,12 +209,12 @@
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(NCScheduledDeliveryAppDetailCell *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(NCScheduledDeliveryAppDetailCell *)self _shouldReverseLayoutDirection];
     v13 = v5;
     v14 = v7;
     v15 = v9;
     v16 = v11;
-    if (v12)
+    if (_shouldReverseLayoutDirection)
     {
       CGRectGetMinX(*&v13);
     }
@@ -251,16 +251,16 @@
 {
   if (([(NCScheduledDeliveryAppDetailCell *)self _shouldReverseLayoutDirection]& 1) != 0)
   {
-    v3 = [(NCScheduledDeliveryAppDetailCell *)self titleLabel];
-    [v3 frame];
+    titleLabel = [(NCScheduledDeliveryAppDetailCell *)self titleLabel];
+    [titleLabel frame];
     MaxX = CGRectGetMaxX(v8);
     [(NCScheduledDeliveryAppDetailCell *)self control];
   }
 
   else
   {
-    v3 = [(NCScheduledDeliveryAppDetailCell *)self control];
-    [v3 frame];
+    titleLabel = [(NCScheduledDeliveryAppDetailCell *)self control];
+    [titleLabel frame];
     MaxX = CGRectGetMinX(v9);
     [(NCScheduledDeliveryAppDetailCell *)self titleLabel];
   }
@@ -273,10 +273,10 @@
 
 - (id)_parentViewForCountBar
 {
-  v2 = [(NCScheduledDeliveryAppDetailCell *)self titleLabel];
-  v3 = [v2 superview];
+  titleLabel = [(NCScheduledDeliveryAppDetailCell *)self titleLabel];
+  superview = [titleLabel superview];
 
-  return v3;
+  return superview;
 }
 
 @end

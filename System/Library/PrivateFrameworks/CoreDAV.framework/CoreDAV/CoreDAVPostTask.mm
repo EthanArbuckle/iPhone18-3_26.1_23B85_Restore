@@ -1,37 +1,37 @@
 @interface CoreDAVPostTask
-- (CoreDAVPostTask)initWithDataPayload:(id)a3 dataContentType:(id)a4 atURL:(id)a5 previousETag:(id)a6;
-- (void)finishCoreDAVTaskWithError:(id)a3;
+- (CoreDAVPostTask)initWithDataPayload:(id)payload dataContentType:(id)type atURL:(id)l previousETag:(id)tag;
+- (void)finishCoreDAVTaskWithError:(id)error;
 @end
 
 @implementation CoreDAVPostTask
 
-- (CoreDAVPostTask)initWithDataPayload:(id)a3 dataContentType:(id)a4 atURL:(id)a5 previousETag:(id)a6
+- (CoreDAVPostTask)initWithDataPayload:(id)payload dataContentType:(id)type atURL:(id)l previousETag:(id)tag
 {
   v10.receiver = self;
   v10.super_class = CoreDAVPostTask;
-  v7 = [(CoreDAVPostOrPutTask *)&v10 initWithDataPayload:a3 dataContentType:a4 atURL:a5 previousETag:?];
+  v7 = [(CoreDAVPostOrPutTask *)&v10 initWithDataPayload:payload dataContentType:type atURL:l previousETag:?];
   v8 = v7;
   if (v7)
   {
-    [(CoreDAVPostOrPutTask *)v7 setForceToServer:a6 == 0];
+    [(CoreDAVPostOrPutTask *)v7 setForceToServer:tag == 0];
   }
 
   return v8;
 }
 
-- (void)finishCoreDAVTaskWithError:(id)a3
+- (void)finishCoreDAVTaskWithError:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [v4 code];
+    code = [errorCopy code];
     v7 = +[CoreDAVLogging sharedLogging];
     WeakRetained = objc_loadWeakRetained(&self->super.super.super._accountInfoProvider);
     v9 = [v7 logHandleForAccountInfoProvider:WeakRetained];
 
-    if (v6 == 1)
+    if (code == 1)
     {
       if (v9)
       {

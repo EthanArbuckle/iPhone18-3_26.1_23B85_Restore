@@ -1,7 +1,7 @@
 @interface CRMailAccountAnalyzer
-- (BOOL)isAddressRestricted:(id)a3;
+- (BOOL)isAddressRestricted:(id)restricted;
 - (CRMailAccountAnalyzer)init;
-- (CRMailAccountAnalyzer)initWithLocale:(id)a3;
+- (CRMailAccountAnalyzer)initWithLocale:(id)locale;
 - (void)dealloc;
 @end
 
@@ -14,7 +14,7 @@
   return [(CRMailAccountAnalyzer *)self initWithLocale:v3];
 }
 
-- (CRMailAccountAnalyzer)initWithLocale:(id)a3
+- (CRMailAccountAnalyzer)initWithLocale:(id)locale
 {
   v6.receiver = self;
   v6.super_class = CRMailAccountAnalyzer;
@@ -22,7 +22,7 @@
   if (v4)
   {
     v4->_cache = objc_alloc_init(CNCache);
-    v4->_locale = a3;
+    v4->_locale = locale;
   }
 
   return v4;
@@ -35,9 +35,9 @@
   [(CRMailAccountAnalyzer *)&v3 dealloc];
 }
 
-- (BOOL)isAddressRestricted:(id)a3
+- (BOOL)isAddressRestricted:(id)restricted
 {
-  v3 = [(CNCache *)self->_cache objectForKey:[(CRMailAccountAnalyzer *)self normalizeAddress:a3]];
+  v3 = [(CNCache *)self->_cache objectForKey:[(CRMailAccountAnalyzer *)self normalizeAddress:restricted]];
   if (v3)
   {
 

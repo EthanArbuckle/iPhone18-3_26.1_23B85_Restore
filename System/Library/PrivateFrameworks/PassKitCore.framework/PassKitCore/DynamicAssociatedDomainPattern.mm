@@ -1,38 +1,38 @@
 @interface DynamicAssociatedDomainPattern
-+ (id)_objectsWithQuery:(id)a3 inDatabase:(id)a4;
-+ (id)_predicateForDomainPID:(int64_t)a3;
++ (id)_objectsWithQuery:(id)query inDatabase:(id)database;
++ (id)_predicateForDomainPID:(int64_t)d;
 + (id)_propertySetters;
-+ (id)_propertyValuesFor:(id)a3;
-+ (id)patternsForDomainPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)deletePatternsForDomainPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)insertPatterns:(id)a3 forDomainPID:(int64_t)a4 inDatabase:(id)a5;
-- (DynamicAssociatedDomainPattern)initWithPattern:(id)a3 forDomainPID:(int64_t)a4 inDatabase:(id)a5;
++ (id)_propertyValuesFor:(id)for;
++ (id)patternsForDomainPID:(int64_t)d inDatabase:(id)database;
++ (void)deletePatternsForDomainPID:(int64_t)d inDatabase:(id)database;
++ (void)insertPatterns:(id)patterns forDomainPID:(int64_t)d inDatabase:(id)database;
+- (DynamicAssociatedDomainPattern)initWithPattern:(id)pattern forDomainPID:(int64_t)d inDatabase:(id)database;
 @end
 
 @implementation DynamicAssociatedDomainPattern
 
-- (DynamicAssociatedDomainPattern)initWithPattern:(id)a3 forDomainPID:(int64_t)a4 inDatabase:(id)a5
+- (DynamicAssociatedDomainPattern)initWithPattern:(id)pattern forDomainPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [objc_opt_class() _propertyValuesFor:v9];
+  databaseCopy = database;
+  patternCopy = pattern;
+  v10 = [objc_opt_class() _propertyValuesFor:patternCopy];
 
-  v11 = [NSNumber numberWithLongLong:a4];
+  v11 = [NSNumber numberWithLongLong:d];
   [v10 setObjectOrNull:v11 forKey:@"a"];
 
-  v12 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:v8];
+  v12 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:databaseCopy];
   return v12;
 }
 
-+ (void)insertPatterns:(id)a3 forDomainPID:(int64_t)a4 inDatabase:(id)a5
++ (void)insertPatterns:(id)patterns forDomainPID:(int64_t)d inDatabase:(id)database
 {
-  v7 = a3;
-  v8 = a5;
+  patternsCopy = patterns;
+  databaseCopy = database;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v9 = [patternsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -44,46 +44,46 @@
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(patternsCopy);
         }
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [patternsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-+ (id)patternsForDomainPID:(int64_t)a3 inDatabase:(id)a4
++ (id)patternsForDomainPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForDomainPID:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
-  v9 = [a1 _objectsWithQuery:v8 inDatabase:v6];
+  databaseCopy = database;
+  v7 = [self _predicateForDomainPID:d];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
+  v9 = [self _objectsWithQuery:v8 inDatabase:databaseCopy];
 
   return v9;
 }
 
-+ (id)_objectsWithQuery:(id)a3 inDatabase:(id)a4
++ (id)_objectsWithQuery:(id)query inDatabase:(id)database
 {
-  v5 = a3;
-  v6 = [a1 _propertySetters];
+  queryCopy = query;
+  _propertySetters = [self _propertySetters];
   v7 = objc_alloc_init(NSMutableArray);
-  v8 = [v6 allKeys];
+  allKeys = [_propertySetters allKeys];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100132248;
   v13[3] = &unk_10083C998;
-  v16 = a1;
-  v14 = v6;
+  selfCopy = self;
+  v14 = _propertySetters;
   v9 = v7;
   v15 = v9;
-  v10 = v6;
-  [v5 enumeratePersistentIDsAndProperties:v8 usingBlock:v13];
+  v10 = _propertySetters;
+  [queryCopy enumeratePersistentIDsAndProperties:allKeys usingBlock:v13];
 
   if ([v9 count])
   {
@@ -98,28 +98,28 @@
   return v11;
 }
 
-+ (void)deletePatternsForDomainPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deletePatternsForDomainPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForDomainPID:a3];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForDomainPID:d];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (id)_predicateForDomainPID:(int64_t)a3
++ (id)_predicateForDomainPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"a" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)_propertyValuesFor:(id)a3
++ (id)_propertyValuesFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 uri];
+  v5 = [forCopy uri];
 
   [v4 setObjectOrNull:v5 forKey:@"b"];
 

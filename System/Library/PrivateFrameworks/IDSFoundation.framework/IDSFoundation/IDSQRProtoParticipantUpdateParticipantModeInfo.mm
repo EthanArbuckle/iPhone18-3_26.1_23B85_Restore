@@ -1,16 +1,16 @@
 @interface IDSQRProtoParticipantUpdateParticipantModeInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)modeAsString:(int)a3;
-- (int)StringAsMode:(id)a3;
+- (id)modeAsString:(int)string;
+- (int)StringAsMode:(id)mode;
 - (int)mode;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoParticipantUpdateParticipantModeInfo
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasMode:(BOOL)a3
+- (void)setHasMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }
@@ -43,18 +43,18 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)modeAsString:(int)a3
+- (id)modeAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"LIGHTWEIGHT";
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 
@@ -66,17 +66,17 @@
   return v4;
 }
 
-- (int)StringAsMode:(id)a3
+- (int)StringAsMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NORMAL"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"NORMAL"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"LIGHTWEIGHT"];
+    v4 = [modeCopy isEqualToString:@"LIGHTWEIGHT"];
   }
 
   return v4;
@@ -88,20 +88,20 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoParticipantUpdateParticipantModeInfo;
   v4 = [(IDSQRProtoParticipantUpdateParticipantModeInfo *)&v8 description];
-  v5 = [(IDSQRProtoParticipantUpdateParticipantModeInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoParticipantUpdateParticipantModeInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_participantId];
-    [v3 setObject:v5 forKey:@"participant_id"];
+    [dictionary setObject:v5 forKey:@"participant_id"];
 
     has = self->_has;
   }
@@ -127,72 +127,72 @@
       v7 = @"NORMAL";
     }
 
-    [v3 setObject:v7 forKey:@"mode"];
+    [dictionary setObject:v7 forKey:@"mode"];
   }
 
   clientContextBlob = self->_clientContextBlob;
   if (clientContextBlob)
   {
-    v9 = [(IDSQRProtoMaterial *)clientContextBlob dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"client_context_blob"];
+    dictionaryRepresentation = [(IDSQRProtoMaterial *)clientContextBlob dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"client_context_blob"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_clientContextBlob)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_participantId;
-    *(v4 + 28) |= 1u;
+    toCopy[1] = self->_participantId;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 6) = self->_mode;
-    *(v4 + 28) |= 2u;
+    *(toCopy + 6) = self->_mode;
+    *(toCopy + 28) |= 2u;
   }
 
   if (self->_clientContextBlob)
   {
-    v6 = v4;
-    [v4 setClientContextBlob:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setClientContextBlob:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -208,30 +208,30 @@
     *(v5 + 28) |= 2u;
   }
 
-  v8 = [(IDSQRProtoMaterial *)self->_clientContextBlob copyWithZone:a3];
+  v8 = [(IDSQRProtoMaterial *)self->_clientContextBlob copyWithZone:zone];
   v9 = v6[2];
   v6[2] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_participantId != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_participantId != *(equalCopy + 1))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_14:
     v6 = 0;
@@ -240,19 +240,19 @@ LABEL_14:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_mode != *(v4 + 6))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_mode != *(equalCopy + 6))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_14;
   }
 
   clientContextBlob = self->_clientContextBlob;
-  if (clientContextBlob | *(v4 + 2))
+  if (clientContextBlob | *(equalCopy + 2))
   {
     v6 = [(IDSQRProtoMaterial *)clientContextBlob isEqual:?];
   }
@@ -293,21 +293,21 @@ LABEL_3:
   return v7 ^ v6 ^ [(IDSQRProtoMaterial *)self->_clientContextBlob hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 28);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 28);
   if (v6)
   {
-    self->_participantId = *(v4 + 1);
+    self->_participantId = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 28);
+    v6 = *(fromCopy + 28);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_mode = *(v4 + 6);
+    self->_mode = *(fromCopy + 6);
     *&self->_has |= 2u;
   }
 

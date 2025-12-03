@@ -3,9 +3,9 @@
 - (id)_popReusableWebView;
 - (id)_processPool;
 - (unint64_t)_numberOfConcurrentRequests;
-- (void)_discardWebViewSoon:(id)a3;
-- (void)didFinishUsingWebView:(id)a3;
-- (void)getWebViewOfSize:(CGSize)a3 withConfiguration:(id)a4 completionHandler:(id)a5;
+- (void)_discardWebViewSoon:(id)soon;
+- (void)didFinishUsingWebView:(id)view;
+- (void)getWebViewOfSize:(CGSize)size withConfiguration:(id)configuration completionHandler:(id)handler;
 @end
 
 @implementation WBSWebViewPoolManager
@@ -31,41 +31,41 @@
   return v2;
 }
 
-- (void)getWebViewOfSize:(CGSize)a3 withConfiguration:(id)a4 completionHandler:(id)a5
+- (void)getWebViewOfSize:(CGSize)size withConfiguration:(id)configuration completionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WBSWebViewPoolManager *)self _processPool];
-  [v9 setProcessPool:v11];
+  height = size.height;
+  width = size.width;
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  _processPool = [(WBSWebViewPoolManager *)self _processPool];
+  [configurationCopy setProcessPool:_processPool];
 
-  v12 = [(WBSWebViewPoolManager *)self _popReusableWebView];
-  if (v12)
+  _popReusableWebView = [(WBSWebViewPoolManager *)self _popReusableWebView];
+  if (_popReusableWebView)
   {
-    [v9 _setRelatedWebView:v12];
-    v13 = [v12 configuration];
-    v14 = [v13 websiteDataStore];
+    [configurationCopy _setRelatedWebView:_popReusableWebView];
+    configuration = [_popReusableWebView configuration];
+    websiteDataStore = [configuration websiteDataStore];
 
-    [v9 setWebsiteDataStore:v14];
-    v15 = [v12 configuration];
-    v16 = [v15 processPool];
-    [v9 setProcessPool:v16];
+    [configurationCopy setWebsiteDataStore:websiteDataStore];
+    configuration2 = [_popReusableWebView configuration];
+    processPool = [configuration2 processPool];
+    [configurationCopy setProcessPool:processPool];
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v17 = [v9 _websiteDataStoreIfExists];
-  if (!v17 || (v18 = v17, [v9 websiteDataStore], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "_configuration"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isPersistent"), v20, v19, v18, v21))
+  _websiteDataStoreIfExists = [configurationCopy _websiteDataStoreIfExists];
+  if (!_websiteDataStoreIfExists || (v18 = _websiteDataStoreIfExists, [configurationCopy websiteDataStore], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "_configuration"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isPersistent"), v20, v19, v18, v21))
   {
-    v15 = [MEMORY[0x1E69853B8] safari_nonPersistentDataStore];
-    [v9 setWebsiteDataStore:v15];
-    v14 = 0;
+    configuration2 = [MEMORY[0x1E69853B8] safari_nonPersistentDataStore];
+    [configurationCopy setWebsiteDataStore:configuration2];
+    websiteDataStore = 0;
     goto LABEL_6;
   }
 
-  v14 = 0;
+  websiteDataStore = 0;
 LABEL_7:
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -73,23 +73,23 @@ LABEL_7:
   aBlock[3] = &unk_1E8287558;
   v34 = width;
   v35 = height;
-  v22 = v9;
+  v22 = configurationCopy;
   v31 = v22;
-  v32 = self;
-  v23 = v10;
+  selfCopy = self;
+  v23 = handlerCopy;
   v33 = v23;
   v24 = _Block_copy(aBlock);
   v25 = v24;
-  if (v14)
+  if (websiteDataStore)
   {
-    v26 = [MEMORY[0x1E69853B8] allWebsiteDataTypes];
-    v27 = [MEMORY[0x1E695DF00] distantPast];
+    allWebsiteDataTypes = [MEMORY[0x1E69853B8] allWebsiteDataTypes];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __78__WBSWebViewPoolManager_getWebViewOfSize_withConfiguration_completionHandler___block_invoke_2;
     v28[3] = &unk_1E8283C40;
     v29 = v25;
-    [v14 removeDataOfTypes:v26 modifiedSince:v27 completionHandler:v28];
+    [websiteDataStore removeDataOfTypes:allWebsiteDataTypes modifiedSince:distantPast completionHandler:v28];
   }
 
   else
@@ -106,13 +106,13 @@ void __78__WBSWebViewPoolManager_getWebViewOfSize_withConfiguration_completionHa
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)didFinishUsingWebView:(id)a3
+- (void)didFinishUsingWebView:(id)view
 {
   reusableWebViews = self->_reusableWebViews;
-  v5 = a3;
-  [(NSMutableSet *)reusableWebViews addObject:v5];
-  [(NSMutableSet *)self->_usedWebViews removeObject:v5];
-  [(WBSWebViewPoolManager *)self _discardWebViewSoon:v5];
+  viewCopy = view;
+  [(NSMutableSet *)reusableWebViews addObject:viewCopy];
+  [(NSMutableSet *)self->_usedWebViews removeObject:viewCopy];
+  [(WBSWebViewPoolManager *)self _discardWebViewSoon:viewCopy];
 }
 
 - (id)_processPool
@@ -143,25 +143,25 @@ void __78__WBSWebViewPoolManager_getWebViewOfSize_withConfiguration_completionHa
   v4 = [(NSMutableSet *)self->_reusableWebViews count]+ v3;
   if (v4 >= [(WBSWebViewPoolManager *)self _numberOfConcurrentRequests])
   {
-    v5 = [(NSMutableSet *)self->_reusableWebViews anyObject];
-    if (v5)
+    anyObject = [(NSMutableSet *)self->_reusableWebViews anyObject];
+    if (anyObject)
     {
-      [(NSMutableSet *)self->_reusableWebViews removeObject:v5];
+      [(NSMutableSet *)self->_reusableWebViews removeObject:anyObject];
     }
   }
 
   else
   {
-    v5 = 0;
+    anyObject = 0;
   }
 
-  return v5;
+  return anyObject;
 }
 
 - (unint64_t)_numberOfConcurrentRequests
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  if ([v2 processorCount] == 1)
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  if ([processInfo processorCount] == 1)
   {
     v3 = 1;
   }
@@ -174,17 +174,17 @@ void __78__WBSWebViewPoolManager_getWebViewOfSize_withConfiguration_completionHa
   return v3;
 }
 
-- (void)_discardWebViewSoon:(id)a3
+- (void)_discardWebViewSoon:(id)soon
 {
-  v4 = a3;
+  soonCopy = soon;
   v5 = dispatch_time(0, 100000000);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__WBSWebViewPoolManager__discardWebViewSoon___block_invoke;
   v7[3] = &unk_1E82834A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = soonCopy;
+  v6 = soonCopy;
   dispatch_after(v5, MEMORY[0x1E69E96A0], v7);
 }
 

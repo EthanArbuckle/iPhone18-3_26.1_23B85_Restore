@@ -1,12 +1,12 @@
 @interface REHistoricSectionDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)rules;
 - (NSString)name;
 - (REHistoricSectionDescriptor)init;
 - (RESectionDescriptor)parentDescriptor;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setOrderedRules:(id)a3;
-- (void)setRules:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setOrderedRules:(id)rules;
+- (void)setRules:(id)rules;
 @end
 
 @implementation REHistoricSectionDescriptor
@@ -21,9 +21,9 @@
   {
     v2->_invertsRanking = 1;
     v2->_maxElementCount = -1;
-    v4 = [MEMORY[0x277CBEB70] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB70] orderedSet];
     rules = v3->_rules;
-    v3->_rules = v4;
+    v3->_rules = orderedSet;
   }
 
   return v3;
@@ -32,11 +32,11 @@
 - (NSString)name
 {
   WeakRetained = objc_loadWeakRetained(&self->_parentDescriptor);
-  v3 = [WeakRetained name];
+  name = [WeakRetained name];
 
-  if (v3)
+  if (name)
   {
-    v4 = [v3 stringByAppendingString:@"_historic"];
+    v4 = [name stringByAppendingString:@"_historic"];
   }
 
   else
@@ -47,10 +47,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -60,7 +60,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_maxElementCount == v5->_maxElementCount && self->_invertsRanking == v5->_invertsRanking)
       {
@@ -102,18 +102,18 @@
   return v3;
 }
 
-- (void)setRules:(id)a3
+- (void)setRules:(id)rules
 {
-  v4 = [MEMORY[0x277CBEB70] orderedSetWithSet:a3];
+  v4 = [MEMORY[0x277CBEB70] orderedSetWithSet:rules];
   rules = self->_rules;
   self->_rules = v4;
 
   MEMORY[0x2821F96F8](v4, rules);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setInvertsRanking:self->_invertsRanking];
   [v4 setMaxElementCount:self->_maxElementCount];
   objc_storeStrong(v4 + 1, self->_rules);
@@ -127,9 +127,9 @@
   return WeakRetained;
 }
 
-- (void)setOrderedRules:(id)a3
+- (void)setOrderedRules:(id)rules
 {
-  v4 = [MEMORY[0x277CBEB70] orderedSetWithArray:a3];
+  v4 = [MEMORY[0x277CBEB70] orderedSetWithArray:rules];
   rules = self->_rules;
   self->_rules = v4;
 

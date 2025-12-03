@@ -1,27 +1,27 @@
 @interface WFToggleAccessibilityContextualAction
-- (WFToggleAccessibilityContextualAction)initWithCoder:(id)a3;
-- (WFToggleAccessibilityContextualAction)initWithSetting:(unint64_t)a3;
+- (WFToggleAccessibilityContextualAction)initWithCoder:(id)coder;
+- (WFToggleAccessibilityContextualAction)initWithSetting:(unint64_t)setting;
 - (id)_staticDisplayStringForDecoding;
 - (id)associatedSettingsPreference;
 - (id)settingBiomeStreamIdentifier;
-- (id)settingDescriptionFromSetting:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)settingDescriptionFromSetting:(unint64_t)setting;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFToggleAccessibilityContextualAction
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WFToggleAccessibilityContextualAction;
-  v4 = a3;
-  [(WFContextualAction *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_setting forKey:{@"setting", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(WFContextualAction *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_setting forKey:{@"setting", v5.receiver, v5.super_class}];
 }
 
-- (WFToggleAccessibilityContextualAction)initWithCoder:(id)a3
+- (WFToggleAccessibilityContextualAction)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"setting"];
+  v4 = [coder decodeIntegerForKey:@"setting"];
 
   return [(WFToggleAccessibilityContextualAction *)self initWithSetting:v4];
 }
@@ -38,41 +38,41 @@
 
 - (id)associatedSettingsPreference
 {
-  v2 = [(WFToggleAccessibilityContextualAction *)self setting];
-  if (v2 > 9)
+  setting = [(WFToggleAccessibilityContextualAction *)self setting];
+  if (setting > 9)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7B010F0[v2];
+    return off_1E7B010F0[setting];
   }
 }
 
 - (id)settingBiomeStreamIdentifier
 {
-  v3 = [(WFToggleAccessibilityContextualAction *)self setting];
-  if (v3 > 4)
+  setting = [(WFToggleAccessibilityContextualAction *)self setting];
+  if (setting > 4)
   {
-    if (v3 > 6)
+    if (setting > 6)
     {
-      switch(v3)
+      switch(setting)
       {
         case 7:
           v4 = WFBiomeLibrary_8552();
-          v5 = [v4 Accessibility];
-          v6 = [v5 Contrast];
+          accessibility = [v4 Accessibility];
+          contrast = [accessibility Contrast];
           break;
         case 8:
           v4 = WFBiomeLibrary_8552();
-          v5 = [v4 Accessibility];
-          v6 = [v5 ClassicInvert];
+          accessibility = [v4 Accessibility];
+          contrast = [accessibility ClassicInvert];
           break;
         case 9:
           v4 = WFBiomeLibrary_8552();
-          v5 = [v4 Accessibility];
-          v6 = [v5 WhitePoint];
+          accessibility = [v4 Accessibility];
+          contrast = [accessibility WhitePoint];
           break;
         default:
           goto LABEL_24;
@@ -81,85 +81,85 @@
       goto LABEL_23;
     }
 
-    if (v3 == 5)
+    if (setting == 5)
     {
       v4 = WFBiomeLibrary_8552();
-      v5 = [v4 Accessibility];
-      [v5 Zoom];
+      accessibility = [v4 Accessibility];
+      [accessibility Zoom];
     }
 
     else
     {
       v4 = WFBiomeLibrary_8552();
-      v5 = [v4 Accessibility];
-      [v5 VoiceControl];
+      accessibility = [v4 Accessibility];
+      [accessibility VoiceControl];
     }
 
-    v6 = LABEL_6:;
+    contrast = LABEL_6:;
     goto LABEL_23;
   }
 
-  if (v3 > 1)
+  if (setting > 1)
   {
-    if (v3 == 2)
+    if (setting == 2)
     {
       v4 = WFBiomeLibrary_8552();
-      v5 = [v4 Accessibility];
-      v6 = [v5 ColorFilters];
+      accessibility = [v4 Accessibility];
+      contrast = [accessibility ColorFilters];
       goto LABEL_23;
     }
 
-    if (v3 == 3)
+    if (setting == 3)
     {
       v4 = WFBiomeLibrary_8552();
-      v5 = [v4 Accessibility];
-      [v5 SmartInvert];
+      accessibility = [v4 Accessibility];
+      [accessibility SmartInvert];
     }
 
     else
     {
       v4 = WFBiomeLibrary_8552();
-      v5 = [v4 Accessibility];
-      [v5 VoiceOver];
+      accessibility = [v4 Accessibility];
+      [accessibility VoiceOver];
     }
 
     goto LABEL_6;
   }
 
-  if (v3)
+  if (setting)
   {
-    if (v3 != 1)
+    if (setting != 1)
     {
       goto LABEL_24;
     }
 
     v4 = WFBiomeLibrary_8552();
-    v5 = [v4 Accessibility];
-    v6 = [v5 ReduceTransparency];
+    accessibility = [v4 Accessibility];
+    contrast = [accessibility ReduceTransparency];
   }
 
   else
   {
     v4 = WFBiomeLibrary_8552();
-    v5 = [v4 Accessibility];
-    v6 = [v5 ReduceMotion];
+    accessibility = [v4 Accessibility];
+    contrast = [accessibility ReduceMotion];
   }
 
 LABEL_23:
-  v7 = v6;
-  v2 = [v6 identifier];
+  v7 = contrast;
+  identifier = [contrast identifier];
 
 LABEL_24:
 
-  return v2;
+  return identifier;
 }
 
-- (WFToggleAccessibilityContextualAction)initWithSetting:(unint64_t)a3
+- (WFToggleAccessibilityContextualAction)initWithSetting:(unint64_t)setting
 {
   v27[2] = *MEMORY[0x1E69E9840];
   v4 = [(WFToggleAccessibilityContextualAction *)self settingDescriptionFromSetting:?];
   v5 = [WFContextualActionIcon iconWithSystemName:@"accessibility"];
-  if (a3 > 9)
+  if (setting > 9)
   {
     v6 = 0;
     v23 = 0;
@@ -167,9 +167,9 @@ LABEL_24:
 
   else
   {
-    v6 = off_1E7B01050[a3];
-    v23 = off_1E7B010A0[a3];
-    v7 = [WFContextualActionIcon iconWithSystemName:off_1E7B01000[a3]];
+    v6 = off_1E7B01050[setting];
+    v23 = off_1E7B010A0[setting];
+    v7 = [WFContextualActionIcon iconWithSystemName:off_1E7B01000[setting]];
 
     v5 = v7;
   }
@@ -198,7 +198,7 @@ LABEL_24:
   v18 = v17;
   if (v17)
   {
-    v17->_setting = a3;
+    v17->_setting = setting;
     v19 = v17;
   }
 
@@ -206,14 +206,14 @@ LABEL_24:
   return v18;
 }
 
-- (id)settingDescriptionFromSetting:(unint64_t)a3
+- (id)settingDescriptionFromSetting:(unint64_t)setting
 {
   v3 = 0;
-  if (a3 > 4)
+  if (setting > 4)
   {
-    if (a3 <= 6)
+    if (setting <= 6)
     {
-      if (a3 == 5)
+      if (setting == 5)
       {
         v4 = @"Contextual Action Title: Zoom";
         v5 = @"Zoom";
@@ -228,7 +228,7 @@ LABEL_24:
 
     else
     {
-      switch(a3)
+      switch(setting)
       {
         case 7uLL:
           v4 = @"Contextual Action Title: Increase Contrast";
@@ -248,11 +248,11 @@ LABEL_24:
     }
   }
 
-  else if (a3 <= 1)
+  else if (setting <= 1)
   {
-    if (a3)
+    if (setting)
     {
-      if (a3 != 1)
+      if (setting != 1)
       {
         goto LABEL_23;
       }
@@ -268,13 +268,13 @@ LABEL_24:
     }
   }
 
-  else if (a3 == 2)
+  else if (setting == 2)
   {
     v4 = @"Contextual Action Title: Color Filters";
     v5 = @"Color Filters";
   }
 
-  else if (a3 == 3)
+  else if (setting == 3)
   {
     v4 = @"Contextual Action Title: Smart Invert";
     v5 = @"Smart Invert";

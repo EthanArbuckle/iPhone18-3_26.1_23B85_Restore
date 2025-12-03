@@ -1,9 +1,9 @@
 @interface _ATXFeedbackConstants
 + (double)actionDecayHalfLifeSeconds;
-+ (double)alphaForBundleId:(id)a3;
++ (double)alphaForBundleId:(id)id;
 + (double)baseAlpha;
 + (double)baseBeta;
-+ (double)betaForBundleId:(id)a3;
++ (double)betaForBundleId:(id)id;
 + (double)decayHalfLifeSeconds;
 + (double)multiplierForAppAlphasAndBetas;
 @end
@@ -60,17 +60,17 @@
   return *&_ATXFeedbackConstantsData_4;
 }
 
-+ (double)alphaForBundleId:(id)a3
++ (double)alphaForBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   if (initFeedbackConstantsData_onceToken != -1)
   {
     +[_ATXFeedbackConstants baseAlpha];
   }
 
-  v4 = [_ATXFeedbackConstantsData_5 objectForKeyedSubscript:v3];
+  v4 = [_ATXFeedbackConstantsData_5 objectForKeyedSubscript:idCopy];
 
-  if (v4 && (([_ATXFeedbackConstantsData_5 objectForKeyedSubscript:v3], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "doubleValue"), v7 = v6, v5, v7 > 0.0) ? (v8 = v7 < 1.0) : (v8 = 0), v8))
+  if (v4 && (([_ATXFeedbackConstantsData_5 objectForKeyedSubscript:idCopy], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "doubleValue"), v7 = v6, v5, v7 > 0.0) ? (v8 = v7 < 1.0) : (v8 = 0), v8))
   {
     v9 = v7 * *&_ATXFeedbackConstantsData_2;
   }
@@ -83,17 +83,17 @@
   return v9;
 }
 
-+ (double)betaForBundleId:(id)a3
++ (double)betaForBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   if (initFeedbackConstantsData_onceToken != -1)
   {
     +[_ATXFeedbackConstants baseAlpha];
   }
 
-  v4 = [_ATXFeedbackConstantsData_5 objectForKeyedSubscript:v3];
+  v4 = [_ATXFeedbackConstantsData_5 objectForKeyedSubscript:idCopy];
 
-  if (v4 && (([_ATXFeedbackConstantsData_5 objectForKeyedSubscript:v3], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "doubleValue"), v7 = 1.0 - v6, v5, v7 > 0.0) ? (v8 = v7 < 1.0) : (v8 = 0), v8))
+  if (v4 && (([_ATXFeedbackConstantsData_5 objectForKeyedSubscript:idCopy], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "doubleValue"), v7 = 1.0 - v6, v5, v7 > 0.0) ? (v8 = v7 < 1.0) : (v8 = 0), v8))
   {
     v9 = v7 * *&_ATXFeedbackConstantsData_2;
   }

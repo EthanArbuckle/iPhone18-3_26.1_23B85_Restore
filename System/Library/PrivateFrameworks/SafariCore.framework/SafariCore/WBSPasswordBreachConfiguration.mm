@@ -1,15 +1,15 @@
 @interface WBSPasswordBreachConfiguration
 + (WBSPasswordBreachConfiguration)standardConfiguration;
-- (WBSPasswordBreachConfiguration)initWithDictionary:(id)a3 protocolClasses:(id)a4 allowValuesForTesting:(BOOL)a5;
+- (WBSPasswordBreachConfiguration)initWithDictionary:(id)dictionary protocolClasses:(id)classes allowValuesForTesting:(BOOL)testing;
 @end
 
 @implementation WBSPasswordBreachConfiguration
 
-- (WBSPasswordBreachConfiguration)initWithDictionary:(id)a3 protocolClasses:(id)a4 allowValuesForTesting:(BOOL)a5
+- (WBSPasswordBreachConfiguration)initWithDictionary:(id)dictionary protocolClasses:(id)classes allowValuesForTesting:(BOOL)testing
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  testingCopy = testing;
+  dictionaryCopy = dictionary;
+  classesCopy = classes;
   v34.receiver = self;
   v34.super_class = WBSPasswordBreachConfiguration;
   v10 = [(WBSPasswordBreachConfiguration *)&v34 init];
@@ -21,7 +21,7 @@
 
   v11 = os_variant_allows_internal_security_policies();
   v10->_isInternalBuild = v11;
-  if ((v11 & 1) == 0 && v5)
+  if ((v11 & 1) == 0 && testingCopy)
   {
     v12 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -29,10 +29,10 @@
       [WBSPasswordBreachConfiguration initWithDictionary:v12 protocolClasses:? allowValuesForTesting:?];
     }
 
-    v5 = 0;
+    testingCopy = 0;
   }
 
-  v13 = [[WBSPasswordBreachConfigurationDictionaryUnpacker alloc] initWithDictionary:v8];
+  v13 = [[WBSPasswordBreachConfigurationDictionaryUnpacker alloc] initWithDictionary:dictionaryCopy];
   v14 = [(WBSPasswordBreachConfigurationDictionaryUnpacker *)v13 stringForKey:@"HighFrequencyBucketHashSalt" minimumLength:8];
   highFrequencyBucketHashSalt = v10->_highFrequencyBucketHashSalt;
   v10->_highFrequencyBucketHashSalt = v14;
@@ -41,7 +41,7 @@
   lowFrequencyBucketHashSalt = v10->_lowFrequencyBucketHashSalt;
   v10->_lowFrequencyBucketHashSalt = v16;
 
-  if (v5)
+  if (testingCopy)
   {
     v18 = 1;
   }
@@ -51,7 +51,7 @@
     v18 = 2048;
   }
 
-  if (v5)
+  if (testingCopy)
   {
     v19 = 1;
   }
@@ -76,7 +76,7 @@
   lowFrequencyBucketURL = v10->_lowFrequencyBucketURL;
   v10->_lowFrequencyBucketURL = v22;
 
-  if (v5)
+  if (testingCopy)
   {
     v24 = 0;
   }
@@ -86,7 +86,7 @@
     v24 = 86400;
   }
 
-  if (v5)
+  if (testingCopy)
   {
     v25 = 1;
   }
@@ -96,7 +96,7 @@
     v25 = 5;
   }
 
-  if (v5)
+  if (testingCopy)
   {
     v26 = 1;
   }
@@ -106,7 +106,7 @@
     v26 = 3;
   }
 
-  if (v5)
+  if (testingCopy)
   {
     v27 = 1;
   }
@@ -123,7 +123,7 @@
   v10->_lowFrequencyBucketFetchTimeout = [(WBSPasswordBreachConfigurationDictionaryUnpacker *)v13 unsignedIntegerForKey:@"LowFrequencyBucketFetchTimeout" minimumValue:v25 maximumValue:120];
   if ([WBSPasswordBreachCryptographicOperations isValidScryptHashWorkFactor:v10->_lowFrequencyBucketHashWorkFactor blockSizeR:v10->_lowFrequencyBucketScryptBlockSizeR parallelismFactorP:v10->_lowFrequencyBucketScryptParallelismFactorP]&& [WBSPasswordBreachCryptographicOperations isValidScryptHashWorkFactor:v10->_highFrequencyBucketHashWorkFactor blockSizeR:v10->_highFrequencyBucketScryptBlockSizeR parallelismFactorP:v10->_highFrequencyBucketScryptParallelismFactorP])
   {
-    if (v5)
+    if (testingCopy)
     {
       v10->_shouldRefillBagWhenEmpty = [(WBSPasswordBreachConfigurationDictionaryUnpacker *)v13 optionalBoolForKey:@"ShouldRefillBagWhenEmptyInternalOnly" defaultValue:1];
       v28 = [(WBSPasswordBreachConfigurationDictionaryUnpacker *)v13 optionalBoolForKey:@"VerboseSensitiveLoggingInternalOnly" defaultValue:0];
@@ -138,13 +138,13 @@
     v10->_verboseSensitiveLoggingEnabled = v28;
     if (![(WBSPasswordBreachConfigurationDictionaryUnpacker *)v13 errorOccurred])
     {
-      v32 = [MEMORY[0x1E695AC80] safari_ephemeralSessionConfiguration];
+      safari_ephemeralSessionConfiguration = [MEMORY[0x1E695AC80] safari_ephemeralSessionConfiguration];
       urlSessionConfiguration = v10->_urlSessionConfiguration;
-      v10->_urlSessionConfiguration = v32;
+      v10->_urlSessionConfiguration = safari_ephemeralSessionConfiguration;
 
-      if (v9)
+      if (classesCopy)
       {
-        [(NSURLSessionConfiguration *)v10->_urlSessionConfiguration setProtocolClasses:v9];
+        [(NSURLSessionConfiguration *)v10->_urlSessionConfiguration setProtocolClasses:classesCopy];
       }
 
       v30 = v10;

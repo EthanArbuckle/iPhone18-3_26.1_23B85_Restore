@@ -1,93 +1,93 @@
 @interface OADTableUnnecessaryOverrideRemover
-- (OADTableUnnecessaryOverrideRemover)initWithTable:(id)a3 parentTextListStyle:(id)a4;
-- (void)applyResolvedPartStyle:(id)a3 leftStroke:(id)a4 rightStroke:(id)a5 topStroke:(id)a6 bottomStroke:(id)a7 toCell:(id)a8;
-- (void)applyTextBodyPropertiesToCellPropertiesInCell:(id)a3;
-- (void)applyTextStyle:(id)a3 toParagraph:(id)a4;
-- (void)fixFill:(id)a3;
-- (void)removeUnnecessaryOverridesInCellProperties:(id)a3 strokeType:(int)a4 resolvedStroke:(id)a5;
+- (OADTableUnnecessaryOverrideRemover)initWithTable:(id)table parentTextListStyle:(id)style;
+- (void)applyResolvedPartStyle:(id)style leftStroke:(id)stroke rightStroke:(id)rightStroke topStroke:(id)topStroke bottomStroke:(id)bottomStroke toCell:(id)cell;
+- (void)applyTextBodyPropertiesToCellPropertiesInCell:(id)cell;
+- (void)applyTextStyle:(id)style toParagraph:(id)paragraph;
+- (void)fixFill:(id)fill;
+- (void)removeUnnecessaryOverridesInCellProperties:(id)properties strokeType:(int)type resolvedStroke:(id)stroke;
 @end
 
 @implementation OADTableUnnecessaryOverrideRemover
 
-- (OADTableUnnecessaryOverrideRemover)initWithTable:(id)a3 parentTextListStyle:(id)a4
+- (OADTableUnnecessaryOverrideRemover)initWithTable:(id)table parentTextListStyle:(id)style
 {
-  v7 = a4;
+  styleCopy = style;
   v11.receiver = self;
   v11.super_class = OADTableUnnecessaryOverrideRemover;
-  v8 = [(OADTableStyleResolver *)&v11 initWithTable:a3];
+  v8 = [(OADTableStyleResolver *)&v11 initWithTable:table];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_parentTextListStyle, a4);
+    objc_storeStrong(&v8->_parentTextListStyle, style);
   }
 
   return v9;
 }
 
-- (void)applyTextBodyPropertiesToCellPropertiesInCell:(id)a3
+- (void)applyTextBodyPropertiesToCellPropertiesInCell:(id)cell
 {
-  v6 = a3;
-  v3 = [v6 properties];
-  v4 = [v6 textBody];
-  v5 = [v4 properties];
+  cellCopy = cell;
+  properties = [cellCopy properties];
+  textBody = [cellCopy textBody];
+  properties2 = [textBody properties];
 
-  if ([v5 hasLeftInset] && (objc_msgSend(v3, "isLeftMarginOverridden") & 1) == 0)
+  if ([properties2 hasLeftInset] && (objc_msgSend(properties, "isLeftMarginOverridden") & 1) == 0)
   {
-    [v5 leftInset];
-    [v3 setLeftMargin:?];
+    [properties2 leftInset];
+    [properties setLeftMargin:?];
   }
 
-  if ([v5 hasRightInset] && (objc_msgSend(v3, "isRightMarginOverridden") & 1) == 0)
+  if ([properties2 hasRightInset] && (objc_msgSend(properties, "isRightMarginOverridden") & 1) == 0)
   {
-    [v5 rightInset];
-    [v3 setRightMargin:?];
+    [properties2 rightInset];
+    [properties setRightMargin:?];
   }
 
-  if ([v5 hasTopInset] && (objc_msgSend(v3, "isTopMarginOverridden") & 1) == 0)
+  if ([properties2 hasTopInset] && (objc_msgSend(properties, "isTopMarginOverridden") & 1) == 0)
   {
-    [v5 topInset];
-    [v3 setTopMargin:?];
+    [properties2 topInset];
+    [properties setTopMargin:?];
   }
 
-  if ([v5 hasBottomInset] && (objc_msgSend(v3, "isBottomMarginOverridden") & 1) == 0)
+  if ([properties2 hasBottomInset] && (objc_msgSend(properties, "isBottomMarginOverridden") & 1) == 0)
   {
-    [v5 bottomInset];
-    [v3 setBottomMargin:?];
+    [properties2 bottomInset];
+    [properties setBottomMargin:?];
   }
 
-  if ([v5 hasFlowType] && (objc_msgSend(v3, "isTextFlowOverridden") & 1) == 0)
+  if ([properties2 hasFlowType] && (objc_msgSend(properties, "isTextFlowOverridden") & 1) == 0)
   {
-    [v3 setTextFlow:{objc_msgSend(v5, "flowType")}];
+    [properties setTextFlow:{objc_msgSend(properties2, "flowType")}];
   }
 
-  if ([v5 hasTextAnchorType] && (objc_msgSend(v3, "isTextAnchorOverridden") & 1) == 0)
+  if ([properties2 hasTextAnchorType] && (objc_msgSend(properties, "isTextAnchorOverridden") & 1) == 0)
   {
-    [v3 setTextAnchor:{objc_msgSend(v5, "textAnchorType")}];
+    [properties setTextAnchor:{objc_msgSend(properties2, "textAnchorType")}];
   }
 
-  if ([v5 hasIsAnchorCenter] && (objc_msgSend(v3, "isTextAnchorCenterOverridden") & 1) == 0)
+  if ([properties2 hasIsAnchorCenter] && (objc_msgSend(properties, "isTextAnchorCenterOverridden") & 1) == 0)
   {
-    [v3 setTextAnchorCenter:{objc_msgSend(v5, "isAnchorCenter")}];
+    [properties setTextAnchorCenter:{objc_msgSend(properties2, "isAnchorCenter")}];
   }
 
-  if ([v5 hasHorizontalOverflowType] && (objc_msgSend(v3, "isTextHorizontalOverflowOverridden") & 1) == 0)
+  if ([properties2 hasHorizontalOverflowType] && (objc_msgSend(properties, "isTextHorizontalOverflowOverridden") & 1) == 0)
   {
-    [v3 setTextHorizontalOverflow:{objc_msgSend(v5, "horizontalOverflowType")}];
+    [properties setTextHorizontalOverflow:{objc_msgSend(properties2, "horizontalOverflowType")}];
   }
 
-  if ([v5 hasIsAnchorCenter] && (objc_msgSend(v3, "isTextAnchorCenterOverridden") & 1) == 0)
+  if ([properties2 hasIsAnchorCenter] && (objc_msgSend(properties, "isTextAnchorCenterOverridden") & 1) == 0)
   {
-    [v3 setTextAnchorCenter:{objc_msgSend(v5, "isAnchorCenter")}];
+    [properties setTextAnchorCenter:{objc_msgSend(properties2, "isAnchorCenter")}];
   }
 }
 
-- (void)fixFill:(id)a3
+- (void)fixFill:(id)fill
 {
-  v8 = a3;
-  v3 = [v8 isMergedWithParent];
-  [v8 setMergedWithParent:0];
+  fillCopy = fill;
+  isMergedWithParent = [fillCopy isMergedWithParent];
+  [fillCopy setMergedWithParent:0];
   v4 = objc_opt_class();
-  v5 = TSUDynamicCast(v4, v8);
+  v5 = TSUDynamicCast(v4, fillCopy);
   v6 = v5;
   if (v5 && ([v5 isColorOverridden] & 1) == 0)
   {
@@ -95,144 +95,144 @@
     [v6 setColor:v7];
   }
 
-  [v8 setMergedWithParent:v3];
+  [fillCopy setMergedWithParent:isMergedWithParent];
 }
 
-- (void)removeUnnecessaryOverridesInCellProperties:(id)a3 strokeType:(int)a4 resolvedStroke:(id)a5
+- (void)removeUnnecessaryOverridesInCellProperties:(id)properties strokeType:(int)type resolvedStroke:(id)stroke
 {
-  v6 = *&a4;
-  v13 = a3;
-  v8 = a5;
-  v9 = [v13 stroke:v6];
+  v6 = *&type;
+  propertiesCopy = properties;
+  strokeCopy = stroke;
+  v9 = [propertiesCopy stroke:v6];
   if (v9)
   {
     v10 = objc_opt_new();
     [v10 setParent:v9];
-    [v10 changeParentPreservingEffectiveValues:v8];
+    [v10 changeParentPreservingEffectiveValues:strokeCopy];
     if ([v10 isAnythingOverridden])
     {
       v11 = +[OADStroke defaultProperties];
       [v9 changeParentPreservingEffectiveValues:v11];
 
-      v12 = [v9 fill];
-      [(OADTableUnnecessaryOverrideRemover *)self fixFill:v12];
+      fill = [v9 fill];
+      [(OADTableUnnecessaryOverrideRemover *)self fixFill:fill];
     }
 
     else
     {
-      [v13 setStrokeOfType:v6 toValue:0];
+      [propertiesCopy setStrokeOfType:v6 toValue:0];
     }
   }
 }
 
-- (void)applyResolvedPartStyle:(id)a3 leftStroke:(id)a4 rightStroke:(id)a5 topStroke:(id)a6 bottomStroke:(id)a7 toCell:(id)a8
+- (void)applyResolvedPartStyle:(id)style leftStroke:(id)stroke rightStroke:(id)rightStroke topStroke:(id)topStroke bottomStroke:(id)bottomStroke toCell:(id)cell
 {
-  v35 = a3;
-  v34 = a4;
-  v33 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = [v16 properties];
-  [(OADTableUnnecessaryOverrideRemover *)self applyTextBodyPropertiesToCellPropertiesInCell:v16];
-  v18 = [v35 textStyle];
-  [(OADTableStyleResolver *)self applyTextStyle:v18 toCell:v16];
+  styleCopy = style;
+  strokeCopy = stroke;
+  rightStrokeCopy = rightStroke;
+  topStrokeCopy = topStroke;
+  bottomStrokeCopy = bottomStroke;
+  cellCopy = cell;
+  properties = [cellCopy properties];
+  [(OADTableUnnecessaryOverrideRemover *)self applyTextBodyPropertiesToCellPropertiesInCell:cellCopy];
+  textStyle = [styleCopy textStyle];
+  [(OADTableStyleResolver *)self applyTextStyle:textStyle toCell:cellCopy];
 
-  v19 = [v17 fill];
+  fill = [properties fill];
   v20 = objc_opt_class();
-  v21 = [v35 cellStyle];
-  v22 = [v21 fill];
+  cellStyle = [styleCopy cellStyle];
+  fill2 = [cellStyle fill];
   v23 = objc_opt_class();
 
   if (v20 == v23)
   {
-    v24 = [v17 fill];
+    fill3 = [properties fill];
     v25 = objc_alloc_init(objc_opt_class());
 
-    v26 = [v17 fill];
-    [v25 setParent:v26];
+    fill4 = [properties fill];
+    [v25 setParent:fill4];
 
-    v27 = [v35 cellStyle];
-    v28 = [v27 fill];
-    [v25 changeParentPreservingEffectiveValues:v28];
+    cellStyle2 = [styleCopy cellStyle];
+    fill5 = [cellStyle2 fill];
+    [v25 changeParentPreservingEffectiveValues:fill5];
 
     if ([v25 isAnythingOverridden])
     {
-      v29 = [v17 fill];
-      v30 = [v17 fill];
-      v31 = [objc_opt_class() defaultProperties];
-      [v29 changeParentPreservingEffectiveValues:v31];
+      fill6 = [properties fill];
+      fill7 = [properties fill];
+      defaultProperties = [objc_opt_class() defaultProperties];
+      [fill6 changeParentPreservingEffectiveValues:defaultProperties];
 
-      v32 = [v17 fill];
-      [(OADTableUnnecessaryOverrideRemover *)self fixFill:v32];
+      fill8 = [properties fill];
+      [(OADTableUnnecessaryOverrideRemover *)self fixFill:fill8];
     }
 
     else
     {
-      [v17 setFill:0];
+      [properties setFill:0];
     }
   }
 
-  [(OADTableUnnecessaryOverrideRemover *)self removeUnnecessaryOverridesInCellProperties:v17 strokeType:1 resolvedStroke:v34];
-  [(OADTableUnnecessaryOverrideRemover *)self removeUnnecessaryOverridesInCellProperties:v17 strokeType:2 resolvedStroke:v33];
-  [(OADTableUnnecessaryOverrideRemover *)self removeUnnecessaryOverridesInCellProperties:v17 strokeType:3 resolvedStroke:v14];
-  [(OADTableUnnecessaryOverrideRemover *)self removeUnnecessaryOverridesInCellProperties:v17 strokeType:4 resolvedStroke:v15];
+  [(OADTableUnnecessaryOverrideRemover *)self removeUnnecessaryOverridesInCellProperties:properties strokeType:1 resolvedStroke:strokeCopy];
+  [(OADTableUnnecessaryOverrideRemover *)self removeUnnecessaryOverridesInCellProperties:properties strokeType:2 resolvedStroke:rightStrokeCopy];
+  [(OADTableUnnecessaryOverrideRemover *)self removeUnnecessaryOverridesInCellProperties:properties strokeType:3 resolvedStroke:topStrokeCopy];
+  [(OADTableUnnecessaryOverrideRemover *)self removeUnnecessaryOverridesInCellProperties:properties strokeType:4 resolvedStroke:bottomStrokeCopy];
 }
 
-- (void)applyTextStyle:(id)a3 toParagraph:(id)a4
+- (void)applyTextStyle:(id)style toParagraph:(id)paragraph
 {
-  v24 = a3;
-  v6 = a4;
+  styleCopy = style;
+  paragraphCopy = paragraph;
   v7 = objc_opt_new();
   [v7 setParent:0];
-  if ([v24 bold] != 2)
+  if ([styleCopy bold] != 2)
   {
-    [v7 setIsBold:{objc_msgSend(v24, "bold") == 0}];
+    [v7 setIsBold:{objc_msgSend(styleCopy, "bold") == 0}];
   }
 
-  if ([v24 italic] != 2)
+  if ([styleCopy italic] != 2)
   {
-    [v7 setIsItalic:{objc_msgSend(v24, "italic") == 0}];
+    [v7 setIsItalic:{objc_msgSend(styleCopy, "italic") == 0}];
   }
 
-  v8 = [v24 color];
+  color = [styleCopy color];
 
-  if (v8)
+  if (color)
   {
     v9 = objc_alloc_init(OADSolidFill);
-    v10 = [v24 color];
-    [(OADSolidFill *)v9 setColor:v10];
+    color2 = [styleCopy color];
+    [(OADSolidFill *)v9 setColor:color2];
 
     [v7 setFill:v9];
   }
 
   v11 = objc_opt_class();
-  v12 = [v24 fontReference];
-  v13 = TSUDynamicCast(v11, v12);
+  fontReference = [styleCopy fontReference];
+  v13 = TSUDynamicCast(v11, fontReference);
 
   if (v13)
   {
-    v14 = [v13 latinFont];
-    [v7 setLatinFont:v14];
+    latinFont = [v13 latinFont];
+    [v7 setLatinFont:latinFont];
 
-    v15 = [v13 eastAsianFont];
-    [v7 setEastAsianFont:v15];
+    eastAsianFont = [v13 eastAsianFont];
+    [v7 setEastAsianFont:eastAsianFont];
 
-    v16 = [v13 complexScriptFont];
-    [v7 setBidiFont:v16];
+    complexScriptFont = [v13 complexScriptFont];
+    [v7 setBidiFont:complexScriptFont];
     goto LABEL_9;
   }
 
   v20 = objc_opt_class();
-  v21 = [v24 fontReference];
-  v16 = TSUDynamicCast(v20, v21);
+  fontReference2 = [styleCopy fontReference];
+  complexScriptFont = TSUDynamicCast(v20, fontReference2);
 
-  if (v16)
+  if (complexScriptFont)
   {
-    v22 = [v16 index];
-    if (v22)
+    index = [complexScriptFont index];
+    if (index)
     {
-      if (v22 != 1)
+      if (index != 1)
       {
         goto LABEL_9;
       }
@@ -254,12 +254,12 @@
 
 LABEL_9:
 
-  v17 = [(OADTableUnnecessaryOverrideRemover *)self parentTextListStyle];
-  v18 = [v6 properties];
-  v19 = [v17 propertiesForListLevel:{objc_msgSend(v18, "level")}];
+  parentTextListStyle = [(OADTableUnnecessaryOverrideRemover *)self parentTextListStyle];
+  properties = [paragraphCopy properties];
+  v19 = [parentTextListStyle propertiesForListLevel:{objc_msgSend(properties, "level")}];
   [v7 setParent:v19];
 
-  [v6 changeParentParagraphPropertiesPreservingEffectiveValues:v7];
+  [paragraphCopy changeParentParagraphPropertiesPreservingEffectiveValues:v7];
 }
 
 @end

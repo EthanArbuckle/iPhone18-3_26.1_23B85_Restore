@@ -1,26 +1,26 @@
 @interface PMiOSScrubberViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation PMiOSScrubberViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PMiOSScrubberViewController" hasInstanceMethod:@"provider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PMScrubberProvider"];
-  [v3 validateClass:@"PMScrubberProvider" hasInstanceMethod:@"currentDuration" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PMScrubberProvider" hasInstanceMethod:@"currentProgress" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PMiOSScrubberViewController" hasInstanceMethod:@"scrollViewDidScroll:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PMiOSScrubberViewController" hasInstanceMethod:@"scrollViewDidEndDragging: willDecelerate:" withFullSignature:{"v", "@", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PMiOSScrubberViewController" hasInstanceMethod:@"provider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PMScrubberProvider"];
+  [validationsCopy validateClass:@"PMScrubberProvider" hasInstanceMethod:@"currentDuration" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PMScrubberProvider" hasInstanceMethod:@"currentProgress" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PMiOSScrubberViewController" hasInstanceMethod:@"scrollViewDidScroll:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PMiOSScrubberViewController" hasInstanceMethod:@"scrollViewDidEndDragging: willDecelerate:" withFullSignature:{"v", "@", "B", 0}];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v11.receiver = self;
   v11.super_class = PMiOSScrubberViewControllerAccessibility;
-  [(PMiOSScrubberViewControllerAccessibility *)&v11 scrollViewDidScroll:a3];
+  [(PMiOSScrubberViewControllerAccessibility *)&v11 scrollViewDidScroll:scroll];
   v4 = [(PMiOSScrubberViewControllerAccessibility *)self safeValueForKey:@"provider"];
   MEMORY[0x29C2DE4B0](@"PMScrubberProvider");
   if (objc_opt_isKindOfClass())

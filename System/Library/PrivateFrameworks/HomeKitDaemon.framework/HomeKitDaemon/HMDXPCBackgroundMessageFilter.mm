@@ -1,31 +1,31 @@
 @interface HMDXPCBackgroundMessageFilter
-+ (int64_t)filterMessage:(id)a3 withPolicies:(id)a4 error:(id *)a5;
++ (int64_t)filterMessage:(id)message withPolicies:(id)policies error:(id *)error;
 @end
 
 @implementation HMDXPCBackgroundMessageFilter
 
-+ (int64_t)filterMessage:(id)a3 withPolicies:(id)a4 error:(id *)a5
++ (int64_t)filterMessage:(id)message withPolicies:(id)policies error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  messageCopy = message;
+  policiesCopy = policies;
+  if (messageCopy)
   {
-    v10 = [v8 proxyConnection];
+    proxyConnection = [messageCopy proxyConnection];
 
-    v11 = [v8 isBackground];
+    isBackground = [messageCopy isBackground];
     v12 = 0;
-    if (v10 && v11)
+    if (proxyConnection && isBackground)
     {
-      v13 = [a1 requiredPolicyOfClass:objc_opt_class() fromPolicies:v9 error:0];
+      v13 = [self requiredPolicyOfClass:objc_opt_class() fromPolicies:policiesCopy error:0];
 
       if (v13)
       {
-        v14 = [a1 requiredPolicyOfClass:objc_opt_class() fromPolicies:v9 error:0];
+        v14 = [self requiredPolicyOfClass:objc_opt_class() fromPolicies:policiesCopy error:0];
         v15 = v14;
         if (v14)
         {
-          if (![v14 requiresEntitlement] || (objc_msgSend(v8, "proxyConnection"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "entitlements"), v16, (v17 & 2) != 0))
+          if (![v14 requiresEntitlement] || (objc_msgSend(messageCopy, "proxyConnection"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "entitlements"), v16, (v17 & 2) != 0))
           {
             v12 = 1;
 LABEL_19:
@@ -34,7 +34,7 @@ LABEL_19:
           }
 
           v18 = objc_autoreleasePoolPush();
-          v19 = a1;
+          selfCopy = self;
           v20 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
@@ -45,16 +45,16 @@ LABEL_19:
           }
 
           objc_autoreleasePoolPop(v18);
-          if (a5)
+          if (error)
           {
-            *a5 = [MEMORY[0x277CCA9B8] hmErrorWithCode:80 description:0 reason:@"Handler does not support background access" suggestion:0];
+            *error = [MEMORY[0x277CCA9B8] hmErrorWithCode:80 description:0 reason:@"Handler does not support background access" suggestion:0];
           }
         }
 
         else
         {
           v22 = objc_autoreleasePoolPush();
-          v23 = a1;
+          selfCopy2 = self;
           v24 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
           {

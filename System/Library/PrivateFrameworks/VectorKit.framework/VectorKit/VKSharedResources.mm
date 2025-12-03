@@ -1,7 +1,7 @@
 @interface VKSharedResources
 - (CMPhotoDecompressionSession)defaultDecompressionSession;
 - (id).cxx_construct;
-- (id)_initWithDevice:(void *)a3 standardLibrary:(const void *)a4;
+- (id)_initWithDevice:(void *)device standardLibrary:(const void *)library;
 - (shared_ptr<md::MaterialTextureManager>)materialTextureManager;
 - (shared_ptr<md::StandardCommandBufferSelector>)standardCommandBufferSelector;
 - (shared_ptr<md::StylesheetVendor>)stylesheetVendor;
@@ -10,8 +10,8 @@
 - (void)_initWithDevice:standardLibrary:;
 - (void)_removeResourceUser;
 - (void)dealloc;
-- (void)frameDidComplete:(unint64_t)a3;
-- (void)prune:(unsigned __int8)a3;
+- (void)frameDidComplete:(unint64_t)complete;
+- (void)prune:(unsigned __int8)prune;
 - (void)purgeDecompressSessionCachedBuffers;
 - (void)startDecompressionSession;
 - (void)undulationModel;
@@ -138,12 +138,12 @@
   geo::write_lock_guard::~write_lock_guard(&p_figCreationLock);
 }
 
-- (void)frameDidComplete:(unint64_t)a3
+- (void)frameDidComplete:(unint64_t)complete
 {
   ptr = self->_sharedResourceManager.__ptr_;
   std::__shared_mutex_base::lock_shared(ptr);
   v5 = 176;
-  while (*(ptr + v5) != a3)
+  while (*(ptr + v5) != complete)
   {
     v5 += 8;
     if (v5 == 304)
@@ -178,12 +178,12 @@ LABEL_11:
   std::__shared_mutex_base::unlock_shared(ptr);
 }
 
-- (void)prune:(unsigned __int8)a3
+- (void)prune:(unsigned __int8)prune
 {
-  v3 = a3;
+  pruneCopy = prune;
   md::TextureManager::purge(self->_textureManager.__ptr_);
   md::MaterialTextureManager::purge(self->_materialTextureManager.__ptr_);
-  if ((v3 - 1) <= 1)
+  if ((pruneCopy - 1) <= 1)
   {
     [(VKInternalIconManager *)self->_iconManager._obj purge];
 
@@ -322,16 +322,16 @@ LABEL_11:
   [(VKSharedResources *)&v23 dealloc];
 }
 
-- (id)_initWithDevice:(void *)a3 standardLibrary:(const void *)a4
+- (id)_initWithDevice:(void *)device standardLibrary:(const void *)library
 {
   v12 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = VKSharedResources;
   v5 = [(VKSharedResources *)&v10 init];
   v6 = v5;
-  if (a3 && v5)
+  if (device && v5)
   {
-    std::unique_ptr<md::Device>::reset[abi:nn200100](v5 + 18, a3);
+    std::unique_ptr<md::Device>::reset[abi:nn200100](v5 + 18, device);
     v7 = objc_alloc_init(VKResourceManager);
     v11.__r_.__value_.__r.__words[0] = &unk_1F2A2FC10;
     v11.__r_.__value_.__l.__size_ = v7;
@@ -347,14 +347,14 @@ LABEL_11:
 
 - (void)_initWithDevice:standardLibrary:
 {
-  *a1 = &unk_1F29E2C70;
-  v2 = a1[2];
+  *self = &unk_1F29E2C70;
+  v2 = self[2];
   if (v2)
   {
     std::__shared_weak_count::__release_weak(v2);
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)_initWithDevice:standardLibrary:
@@ -387,9 +387,9 @@ LABEL_11:
 
 - (void)undulationModel
 {
-  v5 = self;
+  selfCopy = self;
   p_undulationModelCreationFlag = &self->_undulationModelCreationFlag;
-  v4 = &v5;
+  v4 = &selfCopy;
   if (atomic_load_explicit(p_undulationModelCreationFlag, memory_order_acquire) != -1)
   {
     v7 = &v4;
@@ -397,7 +397,7 @@ LABEL_11:
     std::__call_once(&p_undulationModelCreationFlag->__state_, &v6, std::__call_once_proxy[abi:nn200100]<std::tuple<-[VKSharedResources undulationModel]::$_1 &&>>);
   }
 
-  return v5->_undulationModel.__ptr_;
+  return selfCopy->_undulationModel.__ptr_;
 }
 
 @end

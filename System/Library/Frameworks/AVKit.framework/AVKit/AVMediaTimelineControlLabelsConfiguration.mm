@@ -5,16 +5,16 @@
 + (id)inlineConfiguration;
 - (UIColor)textColor;
 - (UIFont)textFont;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)textCompositingFilter;
-- (void)setTextColor:(id)a3;
-- (void)setTextCompositingFilter:(id)a3;
-- (void)setTextFont:(id)a3;
+- (void)setTextColor:(id)color;
+- (void)setTextCompositingFilter:(id)filter;
+- (void)setTextFont:(id)font;
 @end
 
 @implementation AVMediaTimelineControlLabelsConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AVMediaTimelineControlLabelsConfiguration);
   [(AVMediaTimelineControlLabelsConfiguration *)v4 setExtendedDynamicRangeGain:self->_extendedDynamicRangeGain];
@@ -32,11 +32,11 @@
   return v2;
 }
 
-- (void)setTextFont:(id)a3
+- (void)setTextFont:(id)font
 {
-  if (self->_textFont != a3)
+  if (self->_textFont != font)
   {
-    v5 = [a3 copy];
+    v5 = [font copy];
     textFont = self->_textFont;
     self->_textFont = v5;
 
@@ -51,11 +51,11 @@
   return v2;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  if (self->_textColor != a3)
+  if (self->_textColor != color)
   {
-    v5 = [a3 copy];
+    v5 = [color copy];
     textColor = self->_textColor;
     self->_textColor = v5;
 
@@ -63,11 +63,11 @@
   }
 }
 
-- (void)setTextCompositingFilter:(id)a3
+- (void)setTextCompositingFilter:(id)filter
 {
-  if (self->_textCompositingFilter != a3)
+  if (self->_textCompositingFilter != filter)
   {
-    v5 = [a3 copy];
+    v5 = [filter copy];
     textCompositingFilter = self->_textCompositingFilter;
     self->_textCompositingFilter = v5;
 

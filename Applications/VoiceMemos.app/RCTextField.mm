@@ -1,16 +1,16 @@
 @interface RCTextField
 - (BOOL)canBecomeFocused;
-- (RCTextField)initWithFrame:(CGRect)a3;
-- (UIEdgeInsets)_scribbleInteraction:(id)a3 hitToleranceInsetsForElement:(id)a4 defaultInsets:(UIEdgeInsets)result;
+- (RCTextField)initWithFrame:(CGRect)frame;
+- (UIEdgeInsets)_scribbleInteraction:(id)interaction hitToleranceInsetsForElement:(id)element defaultInsets:(UIEdgeInsets)result;
 @end
 
 @implementation RCTextField
 
-- (RCTextField)initWithFrame:(CGRect)a3
+- (RCTextField)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = RCTextField;
-  v3 = [(RCTextField *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RCTextField *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(PKScribbleInteraction);
@@ -38,7 +38,7 @@
   return [(RCTextField *)&v5 canBecomeFocused];
 }
 
-- (UIEdgeInsets)_scribbleInteraction:(id)a3 hitToleranceInsetsForElement:(id)a4 defaultInsets:(UIEdgeInsets)result
+- (UIEdgeInsets)_scribbleInteraction:(id)interaction hitToleranceInsetsForElement:(id)element defaultInsets:(UIEdgeInsets)result
 {
   v5 = -200.0;
   v6 = -200.0;

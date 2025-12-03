@@ -2,9 +2,9 @@
 - (VCRelayData)init;
 - (void)dealloc;
 - (void)init;
-- (void)updateDataWithTime:(double)a3;
-- (void)updateReport:(id)a3;
-- (void)updateStateWithPayload:(id)a3 withTime:(double)a4;
+- (void)updateDataWithTime:(double)time;
+- (void)updateReport:(id)report;
+- (void)updateStateWithPayload:(id)payload withTime:(double)time;
 @end
 
 @implementation VCRelayData
@@ -40,20 +40,20 @@ LABEL_6:
   [(VCRelayData *)&v3 dealloc];
 }
 
-- (void)updateStateWithPayload:(id)a3 withTime:(double)a4
+- (void)updateStateWithPayload:(id)payload withTime:(double)time
 {
-  if ([a3 objectForKeyedSubscript:@"IsRelayDeviceRole"])
+  if ([payload objectForKeyedSubscript:@"IsRelayDeviceRole"])
   {
-    [(VCRelayData *)self updateDataWithTime:a4];
-    if ([objc_msgSend(a3 objectForKeyedSubscript:{@"IsRelayDeviceRole", "BOOLValue"}])
+    [(VCRelayData *)self updateDataWithTime:time];
+    if ([objc_msgSend(payload objectForKeyedSubscript:{@"IsRelayDeviceRole", "BOOLValue"}])
     {
-      self->_startTime = a4;
+      self->_startTime = time;
       self->_isRelayDeviceRole = 1;
     }
   }
 }
 
-- (void)updateDataWithTime:(double)a3
+- (void)updateDataWithTime:(double)time
 {
   startTime = self->_startTime;
   if (startTime != 0.0)
@@ -63,18 +63,18 @@ LABEL_6:
       return;
     }
 
-    LODWORD(v3) = vcvtad_u64_f64((a3 - startTime) * 1000.0);
+    LODWORD(v3) = vcvtad_u64_f64((time - startTime) * 1000.0);
     [(VCHistogram *)self->_relayThermalHistogram addOnlyExactMatchingValue:self->_thermalLevel increment:v3];
   }
 
-  self->_startTime = a3;
+  self->_startTime = time;
 }
 
-- (void)updateReport:(id)a3
+- (void)updateReport:(id)report
 {
   v4 = [(VCHistogram *)self->_relayThermalHistogram description];
 
-  [a3 setObject:v4 forKeyedSubscript:@"RELDUR"];
+  [report setObject:v4 forKeyedSubscript:@"RELDUR"];
 }
 
 - (void)init

@@ -1,12 +1,12 @@
 @interface BLSHInactiveProcessSecondsBudget
-- (BLSHInactiveProcessSecondsBudget)initWithIdentifier:(id)a3 osTimerProvider:(id)a4;
-- (BOOL)stillTrackingAfterPurgingStaleDataForNowDate:(id)a3;
+- (BLSHInactiveProcessSecondsBudget)initWithIdentifier:(id)identifier osTimerProvider:(id)provider;
+- (BOOL)stillTrackingAfterPurgingStaleDataForNowDate:(id)date;
 - (NSString)description;
-- (id)validateAndChargeFutureSpecifier:(id)a3 nextSpecifier:(id)a4 expectedFidelity:(int64_t)a5;
-- (int64_t)allowedFidelityAtDate:(id)a3 expectedFidelity:(int64_t)a4;
-- (void)chargeRenderedSpecifier:(id)a3 expectedFidelity:(int64_t)a4;
+- (id)validateAndChargeFutureSpecifier:(id)specifier nextSpecifier:(id)nextSpecifier expectedFidelity:(int64_t)fidelity;
+- (int64_t)allowedFidelityAtDate:(id)date expectedFidelity:(int64_t)fidelity;
+- (void)chargeRenderedSpecifier:(id)specifier expectedFidelity:(int64_t)fidelity;
 - (void)dealloc;
-- (void)invalidateAtRequestDate:(id)a3 expectedFidelity:(int64_t)a4 invalidationBlock:(id)a5;
+- (void)invalidateAtRequestDate:(id)date expectedFidelity:(int64_t)fidelity invalidationBlock:(id)block;
 - (void)performInvalidation;
 - (void)resetFutureSpecifiers;
 @end
@@ -21,8 +21,8 @@
   v5 = [v3 appendObject:self->_lock_previousSecondsFutureSpecifier withName:@"previousFuture" skipIfNil:1];
   v6 = [v3 appendObject:self->_lock_exemptedSecondsFutureSpecifier withName:@"exemptedFuture" skipIfNil:1];
   v7 = [v3 appendObject:self->_lock_previousSecondsRenderedSpecifier withName:@"previousRendered" skipIfNil:1];
-  v8 = [(NSDate *)self->_lock_lastInvalidation bls_loggingString];
-  v9 = [v3 appendObject:v8 withName:@"lastInvalidation" skipIfNil:1];
+  bls_loggingString = [(NSDate *)self->_lock_lastInvalidation bls_loggingString];
+  v9 = [v3 appendObject:bls_loggingString withName:@"lastInvalidation" skipIfNil:1];
 
   if ([(BSTimerScheduleQuerying *)self->_lock_invalidationTimer isScheduled])
   {
@@ -30,26 +30,26 @@
     v10 = [v3 appendTimeInterval:@"pendingInvalidation" withName:1 decomposeUnits:?];
   }
 
-  v11 = [v3 build];
+  build = [v3 build];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v11;
+  return build;
 }
 
-- (BLSHInactiveProcessSecondsBudget)initWithIdentifier:(id)a3 osTimerProvider:(id)a4
+- (BLSHInactiveProcessSecondsBudget)initWithIdentifier:(id)identifier osTimerProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = BLSHInactiveProcessSecondsBudget;
   v8 = [(BLSHInactiveProcessSecondsBudget *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    objc_storeStrong(&v8->_osTimerProvider, a4);
+    objc_storeStrong(&v8->_osTimerProvider, provider);
     v8->_lock._os_unfair_lock_opaque = 0;
   }
 
@@ -64,10 +64,10 @@
   [(BLSHInactiveProcessSecondsBudget *)&v3 dealloc];
 }
 
-- (int64_t)allowedFidelityAtDate:(id)a3 expectedFidelity:(int64_t)a4
+- (int64_t)allowedFidelityAtDate:(id)date expectedFidelity:(int64_t)fidelity
 {
-  v6 = a3;
-  if (a4 != 2)
+  dateCopy = date;
+  if (fidelity != 2)
   {
     [BLSHInactiveProcessSecondsBudget allowedFidelityAtDate:a2 expectedFidelity:?];
   }
@@ -75,18 +75,18 @@
   return 2;
 }
 
-- (id)validateAndChargeFutureSpecifier:(id)a3 nextSpecifier:(id)a4 expectedFidelity:(int64_t)a5
+- (id)validateAndChargeFutureSpecifier:(id)specifier nextSpecifier:(id)nextSpecifier expectedFidelity:(int64_t)fidelity
 {
   v48 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  if (a5 != 2)
+  specifierCopy = specifier;
+  nextSpecifierCopy = nextSpecifier;
+  if (fidelity != 2)
   {
     [BLSHInactiveProcessSecondsBudget validateAndChargeFutureSpecifier:a2 nextSpecifier:? expectedFidelity:?];
   }
 
-  v12 = v11;
-  v13 = v10;
+  v12 = nextSpecifierCopy;
+  v13 = specifierCopy;
   os_unfair_lock_lock(&self->_lock);
   lock_previousSecondsFutureSpecifier = self->_lock_previousSecondsFutureSpecifier;
   if (lock_previousSecondsFutureSpecifier)
@@ -105,18 +105,18 @@ LABEL_14:
     }
   }
 
-  v16 = [v13 date];
-  v17 = [(BLSAlwaysOnDateSpecifier *)v15 date];
-  [v16 timeIntervalSinceDate:v17];
+  date = [v13 date];
+  date2 = [(BLSAlwaysOnDateSpecifier *)v15 date];
+  [date timeIntervalSinceDate:date2];
   if (v18 >= 0.75)
   {
 
     goto LABEL_14;
   }
 
-  v19 = [v12 date];
-  v20 = [v13 date];
-  [v19 timeIntervalSinceDate:v20];
+  date3 = [v12 date];
+  date4 = [v13 date];
+  [date3 timeIntervalSinceDate:date4];
   v22 = v21;
 
   if (v22 >= 0.75)
@@ -129,9 +129,9 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v23 = [v13 date];
-  v24 = [(BLSAlwaysOnDateSpecifier *)self->_lock_exemptedSecondsFutureSpecifier date];
-  [v23 timeIntervalSinceDate:v24];
+  date5 = [v13 date];
+  date6 = [(BLSAlwaysOnDateSpecifier *)self->_lock_exemptedSecondsFutureSpecifier date];
+  [date5 timeIntervalSinceDate:date6];
   v26 = v25;
 
   if (v26 < 1.0)
@@ -141,7 +141,7 @@ LABEL_14:
 
   if (v26 >= 30.0)
   {
-    objc_storeStrong(&self->_lock_exemptedSecondsFutureSpecifier, a3);
+    objc_storeStrong(&self->_lock_exemptedSecondsFutureSpecifier, specifier);
     goto LABEL_14;
   }
 
@@ -152,7 +152,7 @@ LABEL_14:
     v34 = self->_lock_previousSecondsFutureSpecifier;
     lock_exemptedSecondsFutureSpecifier = self->_lock_exemptedSecondsFutureSpecifier;
     v36 = 134219266;
-    v37 = self;
+    selfCopy = self;
     v38 = 2114;
     v39 = identifier;
     v40 = 2114;
@@ -190,15 +190,15 @@ LABEL_15:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)chargeRenderedSpecifier:(id)a3 expectedFidelity:(int64_t)a4
+- (void)chargeRenderedSpecifier:(id)specifier expectedFidelity:(int64_t)fidelity
 {
-  v7 = a3;
-  if (a4 != 2)
+  specifierCopy = specifier;
+  if (fidelity != 2)
   {
     [BLSHInactiveProcessSecondsBudget chargeRenderedSpecifier:a2 expectedFidelity:?];
   }
 
-  v8 = v7;
+  v8 = specifierCopy;
   os_unfair_lock_lock(&self->_lock);
   lock_previousSecondsRenderedSpecifier = self->_lock_previousSecondsRenderedSpecifier;
   self->_lock_previousSecondsRenderedSpecifier = v8;
@@ -206,36 +206,36 @@ LABEL_15:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)invalidateAtRequestDate:(id)a3 expectedFidelity:(int64_t)a4 invalidationBlock:(id)a5
+- (void)invalidateAtRequestDate:(id)date expectedFidelity:(int64_t)fidelity invalidationBlock:(id)block
 {
   v39 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  if (a4 != 2)
+  dateCopy = date;
+  blockCopy = block;
+  if (fidelity != 2)
   {
     [BLSHInactiveProcessSecondsBudget invalidateAtRequestDate:a2 expectedFidelity:? invalidationBlock:?];
   }
 
-  v12 = v11;
+  v12 = blockCopy;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_lock_lastInvalidation && ([v10 timeIntervalSinceDate:?], v13 < 0.5))
+  if (self->_lock_lastInvalidation && ([dateCopy timeIntervalSinceDate:?], v13 < 0.5))
   {
-    v14 = [(BSTimerScheduleQuerying *)self->_lock_invalidationTimer isScheduled];
+    isScheduled = [(BSTimerScheduleQuerying *)self->_lock_invalidationTimer isScheduled];
     v15 = bls_budget_log();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_INFO);
-    if (v14)
+    if (isScheduled)
     {
       if (v16)
       {
         identifier = self->_identifier;
-        v18 = [v10 bls_shortLoggingString];
+        bls_shortLoggingString = [dateCopy bls_shortLoggingString];
         [(BSTimerScheduleQuerying *)self->_lock_invalidationTimer timeRemaining];
         *buf = 134218754;
-        v30 = self;
+        selfCopy2 = self;
         v31 = 2114;
         v32 = identifier;
         v33 = 2114;
-        v34 = v18;
+        v34 = bls_shortLoggingString;
         v35 = 2048;
         v36 = v19;
         _os_log_impl(&dword_21FD11000, v15, OS_LOG_TYPE_INFO, "%p:%{public}@ will ignore budgeted invalidation (BLSUpdateFidelitySeconds) requesteDate:%{public}@ already have scheduled invalidation in %.3lfs", buf, 0x2Au);
@@ -247,18 +247,18 @@ LABEL_15:
       if (v16)
       {
         v20 = self->_identifier;
-        v21 = [v10 bls_shortLoggingString];
-        v22 = [(NSDate *)self->_lock_lastInvalidation bls_shortLoggingString];
+        bls_shortLoggingString2 = [dateCopy bls_shortLoggingString];
+        bls_shortLoggingString3 = [(NSDate *)self->_lock_lastInvalidation bls_shortLoggingString];
         *buf = 134219010;
-        v30 = self;
+        selfCopy2 = self;
         v31 = 2114;
         v32 = v20;
         v33 = 2114;
-        v34 = v21;
+        v34 = bls_shortLoggingString2;
         v35 = 2048;
         v36 = 0x3FE0000000000000;
         v37 = 2114;
-        v38 = v22;
+        v38 = bls_shortLoggingString3;
         _os_log_impl(&dword_21FD11000, v15, OS_LOG_TYPE_INFO, "%p:%{public}@ will schedule budgeted invalidation (BLSUpdateFidelitySeconds) requesteDate:%{public}@ in %.0lfs  previous:%{public}@", buf, 0x34u);
       }
 
@@ -281,7 +281,7 @@ LABEL_15:
 
   else
   {
-    objc_storeStrong(&self->_lock_lastInvalidation, a3);
+    objc_storeStrong(&self->_lock_lastInvalidation, date);
     os_unfair_lock_unlock(&self->_lock);
     v12[2](v12);
   }
@@ -311,15 +311,15 @@ uint64_t __95__BLSHInactiveProcessSecondsBudget_invalidateAtRequestDate_expected
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)stillTrackingAfterPurgingStaleDataForNowDate:(id)a3
+- (BOOL)stillTrackingAfterPurgingStaleDataForNowDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
   lock_previousSecondsRenderedSpecifier = self->_lock_previousSecondsRenderedSpecifier;
   if (lock_previousSecondsRenderedSpecifier)
   {
-    v6 = [(BLSAlwaysOnDateSpecifier *)lock_previousSecondsRenderedSpecifier date];
-    [v4 timeIntervalSinceDate:v6];
+    date = [(BLSAlwaysOnDateSpecifier *)lock_previousSecondsRenderedSpecifier date];
+    [dateCopy timeIntervalSinceDate:date];
     v8 = v7;
 
     if (v8 < 1.0)
@@ -329,7 +329,7 @@ uint64_t __95__BLSHInactiveProcessSecondsBudget_invalidateAtRequestDate_expected
   }
 
   lock_previousSecondsFutureSpecifier = self->_lock_previousSecondsFutureSpecifier;
-  if (lock_previousSecondsFutureSpecifier && (-[BLSAlwaysOnDateSpecifier date](lock_previousSecondsFutureSpecifier, "date"), v10 = objc_claimAutoreleasedReturnValue(), [v4 timeIntervalSinceDate:v10], v12 = v11, v10, v12 < 1.0))
+  if (lock_previousSecondsFutureSpecifier && (-[BLSAlwaysOnDateSpecifier date](lock_previousSecondsFutureSpecifier, "date"), v10 = objc_claimAutoreleasedReturnValue(), [dateCopy timeIntervalSinceDate:v10], v12 = v11, v10, v12 < 1.0))
   {
 LABEL_5:
     v13 = 1;
@@ -337,7 +337,7 @@ LABEL_5:
 
   else if (self->_lock_lastInvalidation)
   {
-    [v4 timeIntervalSinceDate:?];
+    [dateCopy timeIntervalSinceDate:?];
     v13 = v14 < 1.0;
   }
 

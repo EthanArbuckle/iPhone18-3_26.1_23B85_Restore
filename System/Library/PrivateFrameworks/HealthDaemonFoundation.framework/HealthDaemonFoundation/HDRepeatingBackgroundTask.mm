@@ -1,22 +1,22 @@
 @interface HDRepeatingBackgroundTask
-+ (void)registerDisabledTaskWithName:(id)a3 scheduler:(id)a4 loggingCategory:(id)a5;
++ (void)registerDisabledTaskWithName:(id)name scheduler:(id)scheduler loggingCategory:(id)category;
 - (BGSystemTask)currentTask;
-- (BOOL)cancelRequestAndReturnError:(id *)a3;
+- (BOOL)cancelRequestAndReturnError:(id *)error;
 - (HDBackgroundTaskCondition)condition;
 - (HDRepeatingBackgroundTask)init;
-- (HDRepeatingBackgroundTask)initWithName:(id)a3 loggingCategory:(id)a4 scheduler:(id)a5 handler:(id)a6 condition:(id)a7;
+- (HDRepeatingBackgroundTask)initWithName:(id)name loggingCategory:(id)category scheduler:(id)scheduler handler:(id)handler condition:(id)condition;
 - (NSString)identifier;
 - (double)minimumRetryInterval;
 - (id)getRequest;
 - (id)handler;
 - (unsigned)errorCount;
-- (void)addExpirationHandler:(id)a3;
-- (void)setCondition:(id)a3;
-- (void)setDispatchQueue:(id)a3;
-- (void)setHandler:(id)a3;
-- (void)setMinimumRetryInterval:(double)a3;
-- (void)setScheduler:(id)a3;
-- (void)set_currentTask:(id)a3;
+- (void)addExpirationHandler:(id)handler;
+- (void)setCondition:(id)condition;
+- (void)setDispatchQueue:(id)queue;
+- (void)setHandler:(id)handler;
+- (void)setMinimumRetryInterval:(double)interval;
+- (void)setScheduler:(id)scheduler;
+- (void)set_currentTask:(id)task;
 @end
 
 @implementation HDRepeatingBackgroundTask
@@ -31,11 +31,11 @@
   return v4;
 }
 
-- (void)set_currentTask:(id)a3
+- (void)set_currentTask:(id)task
 {
   v4 = *(self + OBJC_IVAR___HDRepeatingBackgroundTask__currentTask);
-  *(self + OBJC_IVAR___HDRepeatingBackgroundTask__currentTask) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___HDRepeatingBackgroundTask__currentTask) = task;
+  taskCopy = task;
 }
 
 - (double)minimumRetryInterval
@@ -45,17 +45,17 @@
   return *(self + v3);
 }
 
-- (void)setMinimumRetryInterval:(double)a3
+- (void)setMinimumRetryInterval:(double)interval
 {
   v5 = OBJC_IVAR___HDRepeatingBackgroundTask_minimumRetryInterval;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = interval;
 }
 
 - (unsigned)errorCount
 {
   v2 = (self + OBJC_IVAR___HDRepeatingBackgroundTask_state);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   os_unfair_lock_opaque = v2[6]._os_unfair_lock_opaque;
   os_unfair_lock_unlock(v2);
@@ -77,9 +77,9 @@
   return v3;
 }
 
-- (void)setHandler:(id)a3
+- (void)setHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR___HDRepeatingBackgroundTask_handler);
@@ -88,11 +88,11 @@
   v6[1] = v5;
 }
 
-- (void)setScheduler:(id)a3
+- (void)setScheduler:(id)scheduler
 {
   v4 = *(self + OBJC_IVAR___HDRepeatingBackgroundTask_scheduler);
-  *(self + OBJC_IVAR___HDRepeatingBackgroundTask_scheduler) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___HDRepeatingBackgroundTask_scheduler) = scheduler;
+  schedulerCopy = scheduler;
 }
 
 - (HDBackgroundTaskCondition)condition
@@ -103,41 +103,41 @@
   return v3;
 }
 
-- (void)setCondition:(id)a3
+- (void)setCondition:(id)condition
 {
   v3 = *(self + OBJC_IVAR___HDRepeatingBackgroundTask_condition);
-  *(self + OBJC_IVAR___HDRepeatingBackgroundTask_condition) = a3;
+  *(self + OBJC_IVAR___HDRepeatingBackgroundTask_condition) = condition;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
   v4 = *(self + OBJC_IVAR___HDRepeatingBackgroundTask_dispatchQueue);
-  *(self + OBJC_IVAR___HDRepeatingBackgroundTask_dispatchQueue) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___HDRepeatingBackgroundTask_dispatchQueue) = queue;
+  queueCopy = queue;
 }
 
-- (HDRepeatingBackgroundTask)initWithName:(id)a3 loggingCategory:(id)a4 scheduler:(id)a5 handler:(id)a6 condition:(id)a7
+- (HDRepeatingBackgroundTask)initWithName:(id)name loggingCategory:(id)category scheduler:(id)scheduler handler:(id)handler condition:(id)condition
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = sub_2515BB8EC();
   v13 = v12;
   v14 = swift_allocObject();
   *(v14 + 16) = v10;
-  v15 = a4;
-  v16 = a5;
+  categoryCopy = category;
+  schedulerCopy = scheduler;
   swift_unknownObjectRetain();
-  return HDRepeatingBackgroundTask.init(name:loggingCategory:scheduler:handler:condition:)(v11, v13, v15, a5, sub_2515A82AC, v14, a7);
+  return HDRepeatingBackgroundTask.init(name:loggingCategory:scheduler:handler:condition:)(v11, v13, categoryCopy, scheduler, sub_2515A82AC, v14, condition);
 }
 
-+ (void)registerDisabledTaskWithName:(id)a3 scheduler:(id)a4 loggingCategory:(id)a5
++ (void)registerDisabledTaskWithName:(id)name scheduler:(id)scheduler loggingCategory:(id)category
 {
   v8 = sub_2515BB8EC();
   v10 = v9;
   v11 = swift_allocObject();
-  v11[2] = a5;
+  v11[2] = category;
   v11[3] = v8;
   v11[4] = v10;
   v16[4] = sub_2515A89A8;
@@ -147,36 +147,36 @@
   v16[2] = sub_2515A5914;
   v16[3] = &block_descriptor_38;
   v12 = _Block_copy(v16);
-  v13 = a5;
-  v14 = a3;
-  v15 = a4;
+  categoryCopy = category;
+  nameCopy = name;
+  schedulerCopy = scheduler;
 
-  [v15 registerForTaskWithIdentifier:v14 usingQueue:0 launchHandler:v12];
+  [schedulerCopy registerForTaskWithIdentifier:nameCopy usingQueue:0 launchHandler:v12];
 
   _Block_release(v12);
 }
 
 - (id)getRequest
 {
-  v2 = self;
+  selfCopy = self;
   v3 = HDRepeatingBackgroundTask.getRequest()();
 
   return v3;
 }
 
-- (BOOL)cancelRequestAndReturnError:(id *)a3
+- (BOOL)cancelRequestAndReturnError:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   HDRepeatingBackgroundTask.cancelRequest()();
 
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v6 = sub_2515BB84C();
 
       v7 = v6;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -187,14 +187,14 @@
   return v5 == 0;
 }
 
-- (void)addExpirationHandler:(id)a3
+- (void)addExpirationHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = self + OBJC_IVAR___HDRepeatingBackgroundTask_state;
   _Block_copy(v4);
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5);
-  sub_2515A6480(v5 + 8, v6, v4);
+  sub_2515A6480(v5 + 8, selfCopy, v4);
   os_unfair_lock_unlock(v5);
 
   _Block_release(v4);
@@ -209,9 +209,9 @@
 
 - (BGSystemTask)currentTask
 {
-  v2 = [(HDRepeatingBackgroundTask *)self _currentTask];
+  _currentTask = [(HDRepeatingBackgroundTask *)self _currentTask];
 
-  return v2;
+  return _currentTask;
 }
 
 @end

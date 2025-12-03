@@ -1,5 +1,5 @@
 @interface MKAPIServer
-+ (void)benchmark:(id)a3;
++ (void)benchmark:(id)benchmark;
 + (void)clean;
 + (void)test;
 - (MKAPIServer)init;
@@ -7,32 +7,32 @@
 - (void)cancel;
 - (void)dealloc;
 - (void)import;
-- (void)migratorDidComplete:(id)a3;
-- (void)migratorDidExecuteOperation:(id)a3;
-- (void)migratorWillExecuteOperation:(id)a3;
+- (void)migratorDidComplete:(id)complete;
+- (void)migratorDidExecuteOperation:(id)operation;
+- (void)migratorWillExecuteOperation:(id)operation;
 - (void)processPerformanceMetrics;
-- (void)router:(id)a3 didReceiveAccessibilitySettingEncodedInJSON:(id)a4;
-- (void)router:(id)a3 didReceiveAccountEncodedInJSON:(id)a4;
-- (void)router:(id)a3 didReceiveBookmarkEncodedInJSON:(id)a4;
-- (void)router:(id)a3 didReceiveClient:(id)a4;
-- (void)router:(id)a3 didReceiveDisplaySettingEncodedInJSON:(id)a4;
-- (void)router:(id)a3 didReceiveFileChunk:(id)a4 filename:(id)a5 offset:(unint64_t)a6 length:(unint64_t)a7 total:(unint64_t)a8 complete:(BOOL)a9;
-- (void)router:(id)a3 didReceiveICal:(id)a4;
-- (void)router:(id)a3 didReceiveImageChunk:(id)a4 identifier:(id)a5 offset:(unint64_t)a6 length:(unint64_t)a7 total:(unint64_t)a8 filename:(id)a9 collection:(id)a10 originalFilename:(id)a11 complete:(BOOL)a12;
-- (void)router:(id)a3 didReceiveMessageEncodedInJSON:(id)a4;
-- (void)router:(id)a3 didReceiveVCard:(id)a4;
-- (void)router:(id)a3 didReceiveVideoChunk:(id)a4 identifier:(id)a5 offset:(unint64_t)a6 length:(unint64_t)a7 total:(unint64_t)a8 filename:(id)a9 collection:(id)a10 originalFilename:(id)a11 complete:(BOOL)a12;
-- (void)router:(id)a3 didUpdateProgress:(float)a4 remainingTime:(unint64_t)a5 state:(int)a6;
-- (void)routerDidAuthenticateClient:(id)a3;
-- (void)routerDidRejectClient:(id)a3;
+- (void)router:(id)router didReceiveAccessibilitySettingEncodedInJSON:(id)n;
+- (void)router:(id)router didReceiveAccountEncodedInJSON:(id)n;
+- (void)router:(id)router didReceiveBookmarkEncodedInJSON:(id)n;
+- (void)router:(id)router didReceiveClient:(id)client;
+- (void)router:(id)router didReceiveDisplaySettingEncodedInJSON:(id)n;
+- (void)router:(id)router didReceiveFileChunk:(id)chunk filename:(id)filename offset:(unint64_t)offset length:(unint64_t)length total:(unint64_t)total complete:(BOOL)complete;
+- (void)router:(id)router didReceiveICal:(id)cal;
+- (void)router:(id)router didReceiveImageChunk:(id)chunk identifier:(id)identifier offset:(unint64_t)offset length:(unint64_t)length total:(unint64_t)total filename:(id)filename collection:(id)self0 originalFilename:(id)self1 complete:(BOOL)self2;
+- (void)router:(id)router didReceiveMessageEncodedInJSON:(id)n;
+- (void)router:(id)router didReceiveVCard:(id)card;
+- (void)router:(id)router didReceiveVideoChunk:(id)chunk identifier:(id)identifier offset:(unint64_t)offset length:(unint64_t)length total:(unint64_t)total filename:(id)filename collection:(id)self0 originalFilename:(id)self1 complete:(BOOL)self2;
+- (void)router:(id)router didUpdateProgress:(float)progress remainingTime:(unint64_t)time state:(int)state;
+- (void)routerDidAuthenticateClient:(id)client;
+- (void)routerDidRejectClient:(id)client;
 - (void)runHTTP;
-- (void)runHTTPS:(id)a3;
-- (void)server:(id)a3 didOpen:(int64_t)a4;
-- (void)serverDidCancel:(id)a3;
-- (void)setImportContext:(id)a3;
+- (void)runHTTPS:(id)s;
+- (void)server:(id)server didOpen:(int64_t)open;
+- (void)serverDidCancel:(id)cancel;
+- (void)setImportContext:(id)context;
 - (void)setImportContexts;
 - (void)setSwitcherFlags;
-- (void)usbHTTPServerDidClose:(id)a3;
+- (void)usbHTTPServerDidClose:(id)close;
 @end
 
 @implementation MKAPIServer
@@ -137,8 +137,8 @@
 
     [(MKCallHistoryMigrator *)v2->_callHistoryMigrator setLabel:v2->_simMigrator];
     v47 = v2->_applicationMigrator;
-    v48 = [(MKContainerMigrator *)v2->_containerMigrator signatures];
-    [(MKApplicationMigrator *)v47 setSignatures:v48];
+    signatures = [(MKContainerMigrator *)v2->_containerMigrator signatures];
+    [(MKApplicationMigrator *)v47 setSignatures:signatures];
 
     [(NSHashTable *)v2->_migrators addObject:v2->_accountMigrator];
     [(NSHashTable *)v2->_migrators addObject:v2->_messageMigrator];
@@ -207,34 +207,34 @@
   [(MKUSBHTTPServer *)self->_usb cancel];
   if (self->_https)
   {
-    v3 = self;
-    objc_sync_enter(v3);
-    if (!v3->_success)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!selfCopy->_success)
     {
-      [(MKAPIServer *)v3 setImportContexts];
-      WeakRetained = objc_loadWeakRetained(&v3->_delegate);
-      [WeakRetained server:v3 didChangeState:2 withContext:v3->_context];
+      [(MKAPIServer *)selfCopy setImportContexts];
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+      [WeakRetained server:selfCopy didChangeState:2 withContext:selfCopy->_context];
 
-      [(MKAPIServer *)v3 setDelegate:0];
-      [(MKSIMMigrator *)v3->_simMigrator remove];
-      [(MKPlaceholderMigrator *)v3->_placeholderMigrator remove];
+      [(MKAPIServer *)selfCopy setDelegate:0];
+      [(MKSIMMigrator *)selfCopy->_simMigrator remove];
+      [(MKPlaceholderMigrator *)selfCopy->_placeholderMigrator remove];
       v5 = +[MKAnalytics sharedInstance];
       objc_sync_enter(v5);
-      v6 = [v5 payload];
-      [v6 setState:@"com.apple.migrationkit.canceled"];
+      payload = [v5 payload];
+      [payload setState:@"com.apple.migrationkit.canceled"];
 
-      v7 = [MEMORY[0x277CBEAA8] date];
-      [v7 timeIntervalSinceDate:v3->_startDate];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceDate:selfCopy->_startDate];
       v9 = v8;
-      v10 = [v5 payload];
-      [v10 setElapsedTime:v9];
+      payload2 = [v5 payload];
+      [payload2 setElapsedTime:v9];
 
       [v5 send];
       [v5 reset];
       objc_sync_exit(v5);
     }
 
-    objc_sync_exit(v3);
+    objc_sync_exit(selfCopy);
   }
 
   v18 = 0u;
@@ -276,8 +276,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NSHashTable *)self->_migrators allObjects];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allObjects = [(NSHashTable *)self->_migrators allObjects];
+  v3 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -289,14 +289,14 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allObjects);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) import];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -316,8 +316,8 @@
   v28 = [[MKPOSTSRPRouter alloc] initWithSRP:v3];
   [(MKPOSTSRPRouter *)v28 setDelegate:self];
   v4 = [MKSRPPrecheck alloc];
-  v5 = [(MKSRPServer *)v3 password];
-  v6 = [(MKSRPPrecheck *)v4 initWithPassword:v5];
+  password = [(MKSRPServer *)v3 password];
+  v6 = [(MKSRPPrecheck *)v4 initWithPassword:password];
 
   v27 = [[MKGETSRPPrecheckRouter alloc] initWithPrecheck:v6];
   v23 = v6;
@@ -382,16 +382,16 @@
   [(MKHTTPServer *)self->_http run];
   [(MKUSBHTTPServer *)self->_usb run];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v21 = [(MKSRPServer *)v3 password];
-  [WeakRetained server:self didCreateCode:v21];
+  password2 = [(MKSRPServer *)v3 password];
+  [WeakRetained server:self didCreateCode:password2];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runHTTPS:(id)a3
+- (void)runHTTPS:(id)s
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sCopy = s;
   [(MKHTTPServer *)self->_https cancel];
   v31 = objc_alloc_init(MKPOSTClientRouter);
   [(MKPOSTClientRouter *)v31 setDelegate:self];
@@ -401,15 +401,15 @@
   [(MKPOSTProgressRouter *)v29 setDelegate:self];
   v6 = objc_alloc_init(MKGETSecuredStatusRouter);
   [(MKGETSecuredStatusRouter *)v6 setGetStatusRouter:self->_getStatusRouter];
-  v7 = [(MKPUTRouter *)v5 supportedContentTypes];
-  [(MKGETSecuredStatusRouter *)v6 setSupportedContentTypes:v7];
+  supportedContentTypes = [(MKPUTRouter *)v5 supportedContentTypes];
+  [(MKGETSecuredStatusRouter *)v6 setSupportedContentTypes:supportedContentTypes];
 
   v30 = v5;
-  v8 = [(MKPUTRouter *)v5 supportedTransferEncodings];
-  [(MKGETSecuredStatusRouter *)v6 setSupportedTransferEncodings:v8];
+  supportedTransferEncodings = [(MKPUTRouter *)v5 supportedTransferEncodings];
+  [(MKGETSecuredStatusRouter *)v6 setSupportedTransferEncodings:supportedTransferEncodings];
 
-  v9 = [(MKContainerMigrator *)self->_containerMigrator signatures];
-  [(MKGETSecuredStatusRouter *)v6 setSignatures:v9];
+  signatures = [(MKContainerMigrator *)self->_containerMigrator signatures];
+  [(MKGETSecuredStatusRouter *)v6 setSignatures:signatures];
 
   v28 = objc_alloc_init(MKGETPlaceholderRouter);
   v27 = objc_alloc_init(MKDELETEPlaceholderRouter);
@@ -423,15 +423,15 @@
 
   [(MKHTTPServer *)self->_https setDelegate:self];
   [(MKHTTPServer *)self->_https setCertificate:self->_certificate];
-  v24 = v4;
-  [(MKHTTPServer *)self->_https setClientCertificate:v4];
+  v24 = sCopy;
+  [(MKHTTPServer *)self->_https setClientCertificate:sCopy];
   [(MKHTTPServer *)self->_https setUseHTTPS:1];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
   usb = self->_usb;
-  v23 = self;
+  selfCopy = self;
   v36[0] = self->_https;
   v36[1] = usb;
   obj = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
@@ -466,13 +466,13 @@
     while (v15);
   }
 
-  [(MKHTTPServer *)v23->_https setService:@"com.apple.migrationkit.https"];
-  [(MKHTTPServer *)v23->_https run];
-  v19 = [MEMORY[0x277CBEAA8] date];
-  startDate = v23->_startDate;
-  v23->_startDate = v19;
+  [(MKHTTPServer *)selfCopy->_https setService:@"com.apple.migrationkit.https"];
+  [(MKHTTPServer *)selfCopy->_https run];
+  date = [MEMORY[0x277CBEAA8] date];
+  startDate = selfCopy->_startDate;
+  selfCopy->_startDate = date;
 
-  v21 = v23;
+  v21 = selfCopy;
   objc_sync_enter(v21);
   v21->_isImporting = 0;
   objc_sync_exit(v21);
@@ -480,54 +480,54 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)server:(id)a3 didOpen:(int64_t)a4
+- (void)server:(id)server didOpen:(int64_t)open
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  serverCopy = server;
   v7 = +[MKLog log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = serverCopy;
     v13 = 2048;
-    v14 = a4;
+    openCopy = open;
     _os_log_impl(&dword_2592D2000, v7, OS_LOG_TYPE_INFO, "%@ open %ld port.", &v11, 0x16u);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  if (v8->_http == v6)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_http == serverCopy)
   {
     v9 = 1;
     goto LABEL_7;
   }
 
-  if (v8->_https == v6)
+  if (selfCopy->_https == serverCopy)
   {
     v9 = 2;
 LABEL_7:
-    [(MKGETStatusRouter *)v8->_getStatusRouter setState:v9];
+    [(MKGETStatusRouter *)selfCopy->_getStatusRouter setState:v9];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serverDidCancel:(id)a3
+- (void)serverDidCancel:(id)cancel
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_https == v5)
+  cancelCopy = cancel;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_https == cancelCopy)
   {
-    [(MKGETStatusRouter *)v4->_getStatusRouter setState:3];
+    [(MKGETStatusRouter *)selfCopy->_getStatusRouter setState:3];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)usbHTTPServerDidClose:(id)a3
+- (void)usbHTTPServerDidClose:(id)close
 {
   if (!self->_isImporting)
   {
@@ -535,135 +535,135 @@ LABEL_7:
   }
 }
 
-- (void)routerDidAuthenticateClient:(id)a3
+- (void)routerDidAuthenticateClient:(id)client
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained serverDidAuthenticateClient:self];
 }
 
-- (void)routerDidRejectClient:(id)a3
+- (void)routerDidRejectClient:(id)client
 {
-  v7 = a3;
+  clientCopy = client;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained serverDidRejectClient:self];
 
   v5 = +[MKAnalytics sharedInstance];
   objc_sync_enter(v5);
-  v6 = [v5 payload];
-  [v6 setState:@"com.apple.migrationkit.rejected"];
+  payload = [v5 payload];
+  [payload setState:@"com.apple.migrationkit.rejected"];
 
   [v5 send];
   [v5 reset];
   objc_sync_exit(v5);
 }
 
-- (void)router:(id)a3 didReceiveClient:(id)a4
+- (void)router:(id)router didReceiveClient:(id)client
 {
   v53 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v6 = a4;
+  routerCopy = router;
+  clientCopy = client;
   v7 = +[MKLog log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v31 = [v6 hostname];
-    v8 = [v6 brand];
-    v9 = [v6 model];
-    v10 = [v6 name];
-    v11 = [v6 os];
-    v12 = [v6 version];
-    v13 = [v6 locale];
-    v14 = [v6 inputMethodLanguages];
+    hostname = [clientCopy hostname];
+    brand = [clientCopy brand];
+    model = [clientCopy model];
+    name = [clientCopy name];
+    v11 = [clientCopy os];
+    version = [clientCopy version];
+    locale = [clientCopy locale];
+    inputMethodLanguages = [clientCopy inputMethodLanguages];
     *buf = 138414594;
-    v34 = self;
+    selfCopy = self;
     v35 = 2112;
-    v36 = v31;
+    v36 = hostname;
     v37 = 2112;
-    v38 = v8;
+    v38 = brand;
     v39 = 2112;
-    v40 = v9;
+    v40 = model;
     v41 = 2112;
-    v42 = v10;
+    v42 = name;
     v43 = 2112;
     v44 = v11;
     v45 = 2112;
-    v46 = v12;
+    v46 = version;
     v47 = 2112;
-    v48 = v13;
+    v48 = locale;
     v49 = 2112;
-    v50 = v14;
+    v50 = inputMethodLanguages;
     v51 = 2048;
-    v52 = [v6 activatedCellularPlans];
+    activatedCellularPlans = [clientCopy activatedCellularPlans];
     _os_log_impl(&dword_2592D2000, v7, OS_LOG_TYPE_INFO, "%@ did receive a client. hostname=%@, brand=%@, model=%@, name=%@, os=%@, version=%@, locale=%@, inputMethodLanguages=%@ activatedCellularPlans=%lu", buf, 0x66u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained server:self didReceiveClient:v6];
+  [WeakRetained server:self didReceiveClient:clientCopy];
 
-  v16 = self;
-  objc_sync_enter(v16);
-  [(MKAPIServer *)v16 setClient:v6];
-  -[MKSIMMigrator setActivatedCellularPlansCount:](v16->_simMigrator, "setActivatedCellularPlansCount:", [v6 activatedCellularPlans]);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  [(MKAPIServer *)selfCopy2 setClient:clientCopy];
+  -[MKSIMMigrator setActivatedCellularPlansCount:](selfCopy2->_simMigrator, "setActivatedCellularPlansCount:", [clientCopy activatedCellularPlans]);
   v17 = objc_alloc_init(MKDiscoverabilitySignals);
-  [(MKAPIServer *)v16 setDiscoverabilitySignals:v17];
+  [(MKAPIServer *)selfCopy2 setDiscoverabilitySignals:v17];
 
-  v18 = [(MKAPIServer *)v16 discoverabilitySignals];
-  [v18 addSignalsForClient:v6];
+  discoverabilitySignals = [(MKAPIServer *)selfCopy2 discoverabilitySignals];
+  [discoverabilitySignals addSignalsForClient:clientCopy];
 
-  objc_sync_exit(v16);
+  objc_sync_exit(selfCopy2);
   v19 = +[MKAnalytics sharedInstance];
   objc_sync_enter(v19);
-  v20 = [v6 os];
-  v21 = [v19 payload];
-  [v21 setAndroidAPILevel:v20];
+  v20 = [clientCopy os];
+  payload = [v19 payload];
+  [payload setAndroidAPILevel:v20];
 
-  v22 = [v6 brand];
-  v23 = [v19 payload];
-  [v23 setAndroidBrand:v22];
+  brand2 = [clientCopy brand];
+  payload2 = [v19 payload];
+  [payload2 setAndroidBrand:brand2];
 
-  v24 = [v6 locale];
-  v25 = [v19 payload];
-  [v25 setAndroidLocale:v24];
+  locale2 = [clientCopy locale];
+  payload3 = [v19 payload];
+  [payload3 setAndroidLocale:locale2];
 
-  v26 = [v6 model];
-  v27 = [v19 payload];
-  [v27 setAndroidModel:v26];
+  model2 = [clientCopy model];
+  payload4 = [v19 payload];
+  [payload4 setAndroidModel:model2];
 
-  v28 = [v6 version];
-  v29 = [v19 payload];
-  [v29 setAndroidVersion:v28];
+  version2 = [clientCopy version];
+  payload5 = [v19 payload];
+  [payload5 setAndroidVersion:version2];
 
   objc_sync_exit(v19);
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)router:(id)a3 didUpdateProgress:(float)a4 remainingTime:(unint64_t)a5 state:(int)a6
+- (void)router:(id)router didUpdateProgress:(float)progress remainingTime:(unint64_t)time state:(int)state
 {
-  v10 = a3;
-  v33 = a5;
-  if (a4 <= 0.99)
+  routerCopy = router;
+  timeCopy = time;
+  if (progress <= 0.99)
   {
-    v11 = a4;
+    progressCopy = progress;
   }
 
   else
   {
-    v11 = 0.99;
+    progressCopy = 0.99;
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  v13 = [(MKProgress *)v12->_progress completedOperationCount];
-  v14 = [(MKProgress *)v12->_progress totalOperationCount];
-  v15 = v14;
-  v16 = a4 < 1.0 || v14 == 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  completedOperationCount = [(MKProgress *)selfCopy->_progress completedOperationCount];
+  totalOperationCount = [(MKProgress *)selfCopy->_progress totalOperationCount];
+  v15 = totalOperationCount;
+  v16 = progress < 1.0 || totalOperationCount == 0;
   v17 = v16;
   if (v16)
   {
-    if (a4 >= 1.0)
+    if (progress >= 1.0)
     {
 LABEL_22:
-      [(MKAPIServer *)v12 import];
-      objc_sync_exit(v12);
+      [(MKAPIServer *)selfCopy import];
+      objc_sync_exit(selfCopy);
 
       goto LABEL_29;
     }
@@ -671,25 +671,25 @@ LABEL_22:
 
   else
   {
-    v12->_isImporting = 1;
-    [(MKProgress *)v12->_progress progress:&v33];
-    v11 = (v32 * 0.01) + 0.99;
-    v33 = 0;
-    if (v11 >= 1.0)
+    selfCopy->_isImporting = 1;
+    [(MKProgress *)selfCopy->_progress progress:&timeCopy];
+    progressCopy = (v32 * 0.01) + 0.99;
+    timeCopy = 0;
+    if (progressCopy >= 1.0)
     {
       goto LABEL_22;
     }
   }
 
-  if (a4 < 0.0)
+  if (progress < 0.0)
   {
-    [(MKAPIServer *)v12 setImportContexts];
-    v12->_success = 0;
+    [(MKAPIServer *)selfCopy setImportContexts];
+    selfCopy->_success = 0;
     v18 = +[MKAnalytics sharedInstance];
     objc_sync_enter(v18);
-    v19 = [v18 payload];
-    v20 = v19;
-    if (a6 == 2)
+    payload = [v18 payload];
+    v20 = payload;
+    if (state == 2)
     {
       v21 = @"com.apple.migrationkit.android.canceled";
     }
@@ -699,141 +699,141 @@ LABEL_22:
       v21 = @"com.apple.migrationkit.failed";
     }
 
-    [v19 setState:v21];
+    [payload setState:v21];
 
-    v22 = [MEMORY[0x277CBEAA8] date];
-    [v22 timeIntervalSinceDate:v12->_startDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:selfCopy->_startDate];
     v24 = v23;
-    v25 = [v18 payload];
-    [v25 setElapsedTime:v24];
+    payload2 = [v18 payload];
+    [payload2 setElapsedTime:v24];
 
     [v18 send];
     [v18 reset];
     objc_sync_exit(v18);
   }
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 
-  WeakRetained = objc_loadWeakRetained(&v12->_delegate);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v28 = WeakRetained;
-  if (a6 == 3)
+  if (state == 3)
   {
-    context = v12->_context;
-    v30 = v12;
+    context = selfCopy->_context;
+    v30 = selfCopy;
     v31 = 3;
     goto LABEL_24;
   }
 
-  if (a6 == 2)
+  if (state == 2)
   {
-    context = v12->_context;
-    v30 = v12;
+    context = selfCopy->_context;
+    v30 = selfCopy;
     v31 = 2;
 LABEL_24:
     [WeakRetained server:v30 didChangeState:v31 withContext:context];
 
-    [(MKAPIServer *)v12 setDelegate:0];
+    [(MKAPIServer *)selfCopy setDelegate:0];
     goto LABEL_29;
   }
 
   if (v17)
   {
-    *&v27 = v11;
-    [WeakRetained server:v12 didUpdateProgress:v33 remainingTime:v13 completedOperationCount:v15 totalOperationCount:v27];
+    *&v27 = progressCopy;
+    [WeakRetained server:selfCopy didUpdateProgress:timeCopy remainingTime:completedOperationCount completedOperationCount:v15 totalOperationCount:v27];
   }
 
   else
   {
-    [WeakRetained serverWillImport:v12];
+    [WeakRetained serverWillImport:selfCopy];
   }
 
 LABEL_29:
 }
 
-- (void)migratorWillExecuteOperation:(id)a3
+- (void)migratorWillExecuteOperation:(id)operation
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(MKProgress *)v4->_progress addTotalOperationCount:1];
-  objc_sync_exit(v4);
+  operationCopy = operation;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MKProgress *)selfCopy->_progress addTotalOperationCount:1];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)migratorDidExecuteOperation:(id)a3
+- (void)migratorDidExecuteOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v12 = 0;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(MKProgress *)v5->_progress addCompletedOerationCount:1];
-  v6 = [(MKProgress *)v5->_progress completedOperationCount];
-  v7 = [(MKProgress *)v5->_progress totalOperationCount];
-  if (!v7 || !v5->_isImporting)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MKProgress *)selfCopy->_progress addCompletedOerationCount:1];
+  completedOperationCount = [(MKProgress *)selfCopy->_progress completedOperationCount];
+  totalOperationCount = [(MKProgress *)selfCopy->_progress totalOperationCount];
+  if (!totalOperationCount || !selfCopy->_isImporting)
   {
     goto LABEL_6;
   }
 
-  [(MKProgress *)v5->_progress progress:&v12];
+  [(MKProgress *)selfCopy->_progress progress:&v12];
   v9 = (v8 * 0.01) + 0.99;
   v12 = 0;
   if (v9 >= 1.0)
   {
-    [(MKAPIServer *)v5 import];
+    [(MKAPIServer *)selfCopy import];
 LABEL_6:
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
     goto LABEL_7;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  WeakRetained = objc_loadWeakRetained(&v5->_delegate);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   *&v11 = v9;
-  [(MKAPIServer *)WeakRetained server:v5 didUpdateProgress:v12 remainingTime:v6 completedOperationCount:v7 totalOperationCount:v11];
-  v5 = WeakRetained;
+  [(MKAPIServer *)WeakRetained server:selfCopy didUpdateProgress:v12 remainingTime:completedOperationCount completedOperationCount:totalOperationCount totalOperationCount:v11];
+  selfCopy = WeakRetained;
 LABEL_7:
 }
 
-- (void)migratorDidComplete:(id)a3
+- (void)migratorDidComplete:(id)complete
 {
-  v15 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(MKAPIServer *)v4 setImportContext:v15];
-  [(NSHashTable *)v4->_migrators removeObject:v15];
-  v5 = [(NSHashTable *)v4->_migrators count];
-  v6 = [(MKAPIServer *)v4 discoverabilitySignals];
-  [v6 addSignalsForMigrator:v15];
+  completeCopy = complete;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MKAPIServer *)selfCopy setImportContext:completeCopy];
+  [(NSHashTable *)selfCopy->_migrators removeObject:completeCopy];
+  v5 = [(NSHashTable *)selfCopy->_migrators count];
+  discoverabilitySignals = [(MKAPIServer *)selfCopy discoverabilitySignals];
+  [discoverabilitySignals addSignalsForMigrator:completeCopy];
 
   if (!v5)
   {
-    v4->_success = 1;
-    v7 = [(MKAPIServer *)v4 discoverabilitySignals];
-    [v7 donateSignals];
+    selfCopy->_success = 1;
+    discoverabilitySignals2 = [(MKAPIServer *)selfCopy discoverabilitySignals];
+    [discoverabilitySignals2 donateSignals];
 
     v8 = +[MKAnalytics sharedInstance];
     objc_sync_enter(v8);
-    v9 = [v8 payload];
-    [v9 setState:@"com.apple.migrationkit.completed"];
+    payload = [v8 payload];
+    [payload setState:@"com.apple.migrationkit.completed"];
 
-    v10 = [MEMORY[0x277CBEAA8] date];
-    [v10 timeIntervalSinceDate:v4->_startDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:selfCopy->_startDate];
     v12 = v11;
-    v13 = [v8 payload];
-    [v13 setElapsedTime:v12];
+    payload2 = [v8 payload];
+    [payload2 setElapsedTime:v12];
 
-    [(MKAPIServer *)v4 processPerformanceMetrics];
+    [(MKAPIServer *)selfCopy processPerformanceMetrics];
     [v8 send];
     [v8 reset];
     objc_sync_exit(v8);
 
-    WeakRetained = objc_loadWeakRetained(&v4->_delegate);
-    [WeakRetained server:v4 didImportWithContext:v4->_context];
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+    [WeakRetained server:selfCopy didImportWithContext:selfCopy->_context];
 
-    [(MKAPIServer *)v4 setDelegate:0];
-    [(MKAPIServer *)v4 setSwitcherFlags];
+    [(MKAPIServer *)selfCopy setDelegate:0];
+    [(MKAPIServer *)selfCopy setSwitcherFlags];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)setImportContexts
@@ -872,311 +872,311 @@ LABEL_7:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setImportContext:(id)a3
+- (void)setImportContext:(id)context
 {
-  v4 = a3;
-  switch([v4 type])
+  contextCopy = context;
+  switch([contextCopy type])
   {
     case 0:
-      v5 = [(MKContext *)self->_context accessibilitySetting];
+      accessibilitySetting = [(MKContext *)self->_context accessibilitySetting];
       goto LABEL_20;
     case 1:
-      v5 = [(MKContext *)self->_context account];
+      accessibilitySetting = [(MKContext *)self->_context account];
       goto LABEL_20;
     case 2:
-      v5 = [(MKContext *)self->_context application];
+      accessibilitySetting = [(MKContext *)self->_context application];
       goto LABEL_20;
     case 3:
-      v5 = [(MKContext *)self->_context bookmark];
+      accessibilitySetting = [(MKContext *)self->_context bookmark];
       goto LABEL_20;
     case 4:
-      v5 = [(MKContext *)self->_context calendar];
+      accessibilitySetting = [(MKContext *)self->_context calendar];
       goto LABEL_20;
     case 5:
-      v5 = [(MKContext *)self->_context contact];
+      accessibilitySetting = [(MKContext *)self->_context contact];
       goto LABEL_20;
     case 6:
-      v5 = [(MKContext *)self->_context callHistory];
+      accessibilitySetting = [(MKContext *)self->_context callHistory];
       goto LABEL_20;
     case 7:
-      v5 = [(MKContext *)self->_context container];
+      accessibilitySetting = [(MKContext *)self->_context container];
       goto LABEL_20;
     case 8:
-      v5 = [(MKContext *)self->_context displaySetting];
+      accessibilitySetting = [(MKContext *)self->_context displaySetting];
       goto LABEL_20;
     case 9:
-      v5 = [(MKContext *)self->_context file];
+      accessibilitySetting = [(MKContext *)self->_context file];
       goto LABEL_20;
     case 10:
-      v5 = [(MKContext *)self->_context message];
+      accessibilitySetting = [(MKContext *)self->_context message];
       goto LABEL_20;
     case 11:
-      v5 = [(MKContext *)self->_context image];
+      accessibilitySetting = [(MKContext *)self->_context image];
       goto LABEL_20;
     case 12:
-      v5 = [(MKContext *)self->_context video];
+      accessibilitySetting = [(MKContext *)self->_context video];
       goto LABEL_20;
     case 13:
-      v5 = [(MKContext *)self->_context album];
+      accessibilitySetting = [(MKContext *)self->_context album];
       goto LABEL_20;
     case 14:
-      v5 = [(MKContext *)self->_context voiceMemo];
+      accessibilitySetting = [(MKContext *)self->_context voiceMemo];
       goto LABEL_20;
     case 15:
-      v5 = [(MKContext *)self->_context placeholder];
+      accessibilitySetting = [(MKContext *)self->_context placeholder];
       goto LABEL_20;
     case 16:
-      v5 = [(MKContext *)self->_context sim];
+      accessibilitySetting = [(MKContext *)self->_context sim];
 LABEL_20:
-      v7 = v5;
+      v7 = accessibilitySetting;
       break;
     default:
       v7 = 0;
       break;
   }
 
-  [v7 setImportCount:{objc_msgSend(v4, "importCount")}];
-  [v7 setImportErrorCount:{objc_msgSend(v4, "importErrorCount")}];
-  v6 = [v4 size];
+  [v7 setImportCount:{objc_msgSend(contextCopy, "importCount")}];
+  [v7 setImportErrorCount:{objc_msgSend(contextCopy, "importErrorCount")}];
+  v6 = [contextCopy size];
 
   [v7 setSize:v6];
 }
 
-- (void)router:(id)a3 didReceiveAccountEncodedInJSON:(id)a4
+- (void)router:(id)router didReceiveAccountEncodedInJSON:(id)n
 {
-  v14 = a3;
-  v6 = a4;
-  [(MKAccountMigrator *)self->_accountMigrator importDataEncodedInJSON:v6];
+  routerCopy = router;
+  nCopy = n;
+  [(MKAccountMigrator *)self->_accountMigrator importDataEncodedInJSON:nCopy];
   v7 = +[MKAnalytics sharedInstance];
   objc_sync_enter(v7);
-  v8 = [v7 payload];
-  v9 = [v8 accounts];
-  [v9 setEnabled:1];
+  payload = [v7 payload];
+  accounts = [payload accounts];
+  [accounts setEnabled:1];
 
-  v10 = [v7 payload];
-  v11 = [v10 accounts];
-  [v11 setCount:{objc_msgSend(v11, "count") + 1}];
+  payload2 = [v7 payload];
+  accounts2 = [payload2 accounts];
+  [accounts2 setCount:{objc_msgSend(accounts2, "count") + 1}];
 
-  v12 = [v7 payload];
-  v13 = [v12 accounts];
-  [v13 setSize:{objc_msgSend(v13, "size") + objc_msgSend(v6, "length")}];
+  payload3 = [v7 payload];
+  accounts3 = [payload3 accounts];
+  [accounts3 setSize:{objc_msgSend(accounts3, "size") + objc_msgSend(nCopy, "length")}];
 
   objc_sync_exit(v7);
 }
 
-- (void)router:(id)a3 didReceiveMessageEncodedInJSON:(id)a4
+- (void)router:(id)router didReceiveMessageEncodedInJSON:(id)n
 {
-  v14 = a3;
-  v6 = a4;
-  [(MKMessageMigrator *)self->_messageMigrator importDataEncodedInJSON:v6];
+  routerCopy = router;
+  nCopy = n;
+  [(MKMessageMigrator *)self->_messageMigrator importDataEncodedInJSON:nCopy];
   v7 = +[MKAnalytics sharedInstance];
   objc_sync_enter(v7);
-  v8 = [v7 payload];
-  v9 = [v8 messages];
-  [v9 setEnabled:1];
+  payload = [v7 payload];
+  messages = [payload messages];
+  [messages setEnabled:1];
 
-  v10 = [v7 payload];
-  v11 = [v10 messages];
-  [v11 setCount:{objc_msgSend(v11, "count") + 1}];
+  payload2 = [v7 payload];
+  messages2 = [payload2 messages];
+  [messages2 setCount:{objc_msgSend(messages2, "count") + 1}];
 
-  v12 = [v7 payload];
-  v13 = [v12 messages];
-  [v13 setSize:{objc_msgSend(v13, "size") + objc_msgSend(v6, "length")}];
+  payload3 = [v7 payload];
+  messages3 = [payload3 messages];
+  [messages3 setSize:{objc_msgSend(messages3, "size") + objc_msgSend(nCopy, "length")}];
 
   objc_sync_exit(v7);
 }
 
-- (void)router:(id)a3 didReceiveBookmarkEncodedInJSON:(id)a4
+- (void)router:(id)router didReceiveBookmarkEncodedInJSON:(id)n
 {
-  v14 = a3;
-  v6 = a4;
-  [(MKBookmarkMigrator *)self->_bookmarkMigrator importDataEncodedInJSON:v6];
+  routerCopy = router;
+  nCopy = n;
+  [(MKBookmarkMigrator *)self->_bookmarkMigrator importDataEncodedInJSON:nCopy];
   v7 = +[MKAnalytics sharedInstance];
   objc_sync_enter(v7);
-  v8 = [v7 payload];
-  v9 = [v8 bookmarks];
-  [v9 setEnabled:1];
+  payload = [v7 payload];
+  bookmarks = [payload bookmarks];
+  [bookmarks setEnabled:1];
 
-  v10 = [v7 payload];
-  v11 = [v10 bookmarks];
-  [v11 setCount:{objc_msgSend(v11, "count") + 1}];
+  payload2 = [v7 payload];
+  bookmarks2 = [payload2 bookmarks];
+  [bookmarks2 setCount:{objc_msgSend(bookmarks2, "count") + 1}];
 
-  v12 = [v7 payload];
-  v13 = [v12 bookmarks];
-  [v13 setSize:{objc_msgSend(v13, "size") + objc_msgSend(v6, "length")}];
+  payload3 = [v7 payload];
+  bookmarks3 = [payload3 bookmarks];
+  [bookmarks3 setSize:{objc_msgSend(bookmarks3, "size") + objc_msgSend(nCopy, "length")}];
 
   objc_sync_exit(v7);
 }
 
-- (void)router:(id)a3 didReceiveAccessibilitySettingEncodedInJSON:(id)a4
+- (void)router:(id)router didReceiveAccessibilitySettingEncodedInJSON:(id)n
 {
-  v14 = a3;
-  v6 = a4;
-  [(MKAccessibilitySettingMigrator *)self->_accessibilitySettingMigrator importDataEncodedInJSON:v6];
+  routerCopy = router;
+  nCopy = n;
+  [(MKAccessibilitySettingMigrator *)self->_accessibilitySettingMigrator importDataEncodedInJSON:nCopy];
   v7 = +[MKAnalytics sharedInstance];
   objc_sync_enter(v7);
-  v8 = [v7 payload];
-  v9 = [v8 accessibilitySettings];
-  [v9 setEnabled:1];
+  payload = [v7 payload];
+  accessibilitySettings = [payload accessibilitySettings];
+  [accessibilitySettings setEnabled:1];
 
-  v10 = [v7 payload];
-  v11 = [v10 accessibilitySettings];
-  [v11 setCount:{objc_msgSend(v11, "count") + 1}];
+  payload2 = [v7 payload];
+  accessibilitySettings2 = [payload2 accessibilitySettings];
+  [accessibilitySettings2 setCount:{objc_msgSend(accessibilitySettings2, "count") + 1}];
 
-  v12 = [v7 payload];
-  v13 = [v12 accessibilitySettings];
-  [v13 setSize:{objc_msgSend(v13, "size") + objc_msgSend(v6, "length")}];
+  payload3 = [v7 payload];
+  accessibilitySettings3 = [payload3 accessibilitySettings];
+  [accessibilitySettings3 setSize:{objc_msgSend(accessibilitySettings3, "size") + objc_msgSend(nCopy, "length")}];
 
   objc_sync_exit(v7);
 }
 
-- (void)router:(id)a3 didReceiveDisplaySettingEncodedInJSON:(id)a4
+- (void)router:(id)router didReceiveDisplaySettingEncodedInJSON:(id)n
 {
-  v14 = a3;
-  v6 = a4;
-  [(MKDisplaySettingMigrator *)self->_displaySettingMigrator importDataEncodedInJSON:v6];
+  routerCopy = router;
+  nCopy = n;
+  [(MKDisplaySettingMigrator *)self->_displaySettingMigrator importDataEncodedInJSON:nCopy];
   v7 = +[MKAnalytics sharedInstance];
   objc_sync_enter(v7);
-  v8 = [v7 payload];
-  v9 = [v8 displaySettings];
-  [v9 setEnabled:1];
+  payload = [v7 payload];
+  displaySettings = [payload displaySettings];
+  [displaySettings setEnabled:1];
 
-  v10 = [v7 payload];
-  v11 = [v10 displaySettings];
-  [v11 setCount:{objc_msgSend(v11, "count") + 1}];
+  payload2 = [v7 payload];
+  displaySettings2 = [payload2 displaySettings];
+  [displaySettings2 setCount:{objc_msgSend(displaySettings2, "count") + 1}];
 
-  v12 = [v7 payload];
-  v13 = [v12 displaySettings];
-  [v13 setSize:{objc_msgSend(v13, "size") + objc_msgSend(v6, "length")}];
+  payload3 = [v7 payload];
+  displaySettings3 = [payload3 displaySettings];
+  [displaySettings3 setSize:{objc_msgSend(displaySettings3, "size") + objc_msgSend(nCopy, "length")}];
 
   objc_sync_exit(v7);
 }
 
-- (void)router:(id)a3 didReceiveVCard:(id)a4
+- (void)router:(id)router didReceiveVCard:(id)card
 {
-  v14 = a3;
-  v6 = a4;
-  [(MKContactMigrator *)self->_contactMigrator importVCard:v6];
+  routerCopy = router;
+  cardCopy = card;
+  [(MKContactMigrator *)self->_contactMigrator importVCard:cardCopy];
   v7 = +[MKAnalytics sharedInstance];
   objc_sync_enter(v7);
-  v8 = [v7 payload];
-  v9 = [v8 contacts];
-  [v9 setEnabled:1];
+  payload = [v7 payload];
+  contacts = [payload contacts];
+  [contacts setEnabled:1];
 
-  v10 = [v7 payload];
-  v11 = [v10 contacts];
-  [v11 setCount:{objc_msgSend(v11, "count") + 1}];
+  payload2 = [v7 payload];
+  contacts2 = [payload2 contacts];
+  [contacts2 setCount:{objc_msgSend(contacts2, "count") + 1}];
 
-  v12 = [v7 payload];
-  v13 = [v12 contacts];
-  [v13 setSize:{objc_msgSend(v13, "size") + objc_msgSend(v6, "length")}];
+  payload3 = [v7 payload];
+  contacts3 = [payload3 contacts];
+  [contacts3 setSize:{objc_msgSend(contacts3, "size") + objc_msgSend(cardCopy, "length")}];
 
   objc_sync_exit(v7);
 }
 
-- (void)router:(id)a3 didReceiveICal:(id)a4
+- (void)router:(id)router didReceiveICal:(id)cal
 {
-  v14 = a3;
-  v6 = a4;
-  [(MKCalendarMigrator *)self->_calendarMigrator importiCal:v6];
+  routerCopy = router;
+  calCopy = cal;
+  [(MKCalendarMigrator *)self->_calendarMigrator importiCal:calCopy];
   v7 = +[MKAnalytics sharedInstance];
   objc_sync_enter(v7);
-  v8 = [v7 payload];
-  v9 = [v8 calendars];
-  [v9 setEnabled:1];
+  payload = [v7 payload];
+  calendars = [payload calendars];
+  [calendars setEnabled:1];
 
-  v10 = [v7 payload];
-  v11 = [v10 calendars];
-  [v11 setCount:{objc_msgSend(v11, "count") + 1}];
+  payload2 = [v7 payload];
+  calendars2 = [payload2 calendars];
+  [calendars2 setCount:{objc_msgSend(calendars2, "count") + 1}];
 
-  v12 = [v7 payload];
-  v13 = [v12 calendars];
-  [v13 setSize:{objc_msgSend(v13, "size") + objc_msgSend(v6, "length")}];
+  payload3 = [v7 payload];
+  calendars3 = [payload3 calendars];
+  [calendars3 setSize:{objc_msgSend(calendars3, "size") + objc_msgSend(calCopy, "length")}];
 
   objc_sync_exit(v7);
 }
 
-- (void)router:(id)a3 didReceiveImageChunk:(id)a4 identifier:(id)a5 offset:(unint64_t)a6 length:(unint64_t)a7 total:(unint64_t)a8 filename:(id)a9 collection:(id)a10 originalFilename:(id)a11 complete:(BOOL)a12
+- (void)router:(id)router didReceiveImageChunk:(id)chunk identifier:(id)identifier offset:(unint64_t)offset length:(unint64_t)length total:(unint64_t)total filename:(id)filename collection:(id)self0 originalFilename:(id)self1 complete:(BOOL)self2
 {
-  v31 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  LOBYTE(v30) = a12;
-  [(MKPhotoLibraryMigrator *)self->_photoLibraryImageMigrator importChunk:v18 identifier:v19 offset:a6 length:a7 total:a8 filename:v20 collection:v21 originalFilename:v22 complete:v30];
-  if (!a6)
+  routerCopy = router;
+  chunkCopy = chunk;
+  identifierCopy = identifier;
+  filenameCopy = filename;
+  collectionCopy = collection;
+  originalFilenameCopy = originalFilename;
+  LOBYTE(v30) = complete;
+  [(MKPhotoLibraryMigrator *)self->_photoLibraryImageMigrator importChunk:chunkCopy identifier:identifierCopy offset:offset length:length total:total filename:filenameCopy collection:collectionCopy originalFilename:originalFilenameCopy complete:v30];
+  if (!offset)
   {
     v23 = +[MKAnalytics sharedInstance];
     objc_sync_enter(v23);
-    v24 = [v23 payload];
-    v25 = [v24 photos];
-    [v25 setEnabled:1];
+    payload = [v23 payload];
+    photos = [payload photos];
+    [photos setEnabled:1];
 
-    v26 = [v23 payload];
-    v27 = [v26 photos];
-    [v27 setCount:{objc_msgSend(v27, "count") + 1}];
+    payload2 = [v23 payload];
+    photos2 = [payload2 photos];
+    [photos2 setCount:{objc_msgSend(photos2, "count") + 1}];
 
-    v28 = [v23 payload];
-    v29 = [v28 photos];
-    [v29 setSize:{objc_msgSend(v29, "size") + a8}];
+    payload3 = [v23 payload];
+    photos3 = [payload3 photos];
+    [photos3 setSize:{objc_msgSend(photos3, "size") + total}];
 
     objc_sync_exit(v23);
   }
 }
 
-- (void)router:(id)a3 didReceiveVideoChunk:(id)a4 identifier:(id)a5 offset:(unint64_t)a6 length:(unint64_t)a7 total:(unint64_t)a8 filename:(id)a9 collection:(id)a10 originalFilename:(id)a11 complete:(BOOL)a12
+- (void)router:(id)router didReceiveVideoChunk:(id)chunk identifier:(id)identifier offset:(unint64_t)offset length:(unint64_t)length total:(unint64_t)total filename:(id)filename collection:(id)self0 originalFilename:(id)self1 complete:(BOOL)self2
 {
-  v31 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  LOBYTE(v30) = a12;
-  [(MKPhotoLibraryMigrator *)self->_photoLibraryVideoMigrator importChunk:v18 identifier:v19 offset:a6 length:a7 total:a8 filename:v20 collection:v21 originalFilename:v22 complete:v30];
-  if (!a6)
+  routerCopy = router;
+  chunkCopy = chunk;
+  identifierCopy = identifier;
+  filenameCopy = filename;
+  collectionCopy = collection;
+  originalFilenameCopy = originalFilename;
+  LOBYTE(v30) = complete;
+  [(MKPhotoLibraryMigrator *)self->_photoLibraryVideoMigrator importChunk:chunkCopy identifier:identifierCopy offset:offset length:length total:total filename:filenameCopy collection:collectionCopy originalFilename:originalFilenameCopy complete:v30];
+  if (!offset)
   {
     v23 = +[MKAnalytics sharedInstance];
     objc_sync_enter(v23);
-    v24 = [v23 payload];
-    v25 = [v24 videos];
-    [v25 setEnabled:1];
+    payload = [v23 payload];
+    videos = [payload videos];
+    [videos setEnabled:1];
 
-    v26 = [v23 payload];
-    v27 = [v26 videos];
-    [v27 setCount:{objc_msgSend(v27, "count") + 1}];
+    payload2 = [v23 payload];
+    videos2 = [payload2 videos];
+    [videos2 setCount:{objc_msgSend(videos2, "count") + 1}];
 
-    v28 = [v23 payload];
-    v29 = [v28 videos];
-    [v29 setSize:{objc_msgSend(v29, "size") + a8}];
+    payload3 = [v23 payload];
+    videos3 = [payload3 videos];
+    [videos3 setSize:{objc_msgSend(videos3, "size") + total}];
 
     objc_sync_exit(v23);
   }
 }
 
-- (void)router:(id)a3 didReceiveFileChunk:(id)a4 filename:(id)a5 offset:(unint64_t)a6 length:(unint64_t)a7 total:(unint64_t)a8 complete:(BOOL)a9
+- (void)router:(id)router didReceiveFileChunk:(id)chunk filename:(id)filename offset:(unint64_t)offset length:(unint64_t)length total:(unint64_t)total complete:(BOOL)complete
 {
-  v24 = a3;
-  v15 = a4;
-  v16 = a5;
-  [(MKFileMigrator *)self->_fileMigrator importChunk:v15 filename:v16 offset:a6 length:a7 total:a8 complete:a9];
-  if (!a6)
+  routerCopy = router;
+  chunkCopy = chunk;
+  filenameCopy = filename;
+  [(MKFileMigrator *)self->_fileMigrator importChunk:chunkCopy filename:filenameCopy offset:offset length:length total:total complete:complete];
+  if (!offset)
   {
     v17 = +[MKAnalytics sharedInstance];
     objc_sync_enter(v17);
-    v18 = [v17 payload];
-    v19 = [v18 files];
-    [v19 setEnabled:1];
+    payload = [v17 payload];
+    files = [payload files];
+    [files setEnabled:1];
 
-    v20 = [v17 payload];
-    v21 = [v20 files];
-    [v21 setCount:{objc_msgSend(v21, "count") + 1}];
+    payload2 = [v17 payload];
+    files2 = [payload2 files];
+    [files2 setCount:{objc_msgSend(files2, "count") + 1}];
 
-    v22 = [v17 payload];
-    v23 = [v22 files];
-    [v23 setSize:{objc_msgSend(v23, "size") + a8}];
+    payload3 = [v17 payload];
+    files3 = [payload3 files];
+    [files3 setSize:{objc_msgSend(files3, "size") + total}];
 
     objc_sync_exit(v17);
   }
@@ -1184,19 +1184,19 @@ LABEL_20:
 
 - (void)processPerformanceMetrics
 {
-  v3 = [(MKDiagnosticsMigrator *)self->_diagnosticsMigrator pathForPerformanceMetrics];
-  if (v3)
+  pathForPerformanceMetrics = [(MKDiagnosticsMigrator *)self->_diagnosticsMigrator pathForPerformanceMetrics];
+  if (pathForPerformanceMetrics)
   {
     v4 = +[MKAnalytics sharedInstance];
     objc_sync_enter(v4);
-    v5 = [[MKPerformanceTable alloc] initWithJSONFile:v3 analytics:v4];
+    v5 = [[MKPerformanceTable alloc] initWithJSONFile:pathForPerformanceMetrics analytics:v4];
     [(MKTable *)v5 writeToLog];
     [(MKPerformanceTable *)v5 writeToDisk];
 
     objc_sync_exit(v4);
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v9 = 0;
-    [v6 removeItemAtPath:v3 error:&v9];
+    [defaultManager removeItemAtPath:pathForPerformanceMetrics error:&v9];
     v7 = v9;
 
     if (v7)
@@ -1230,13 +1230,13 @@ LABEL_20:
   }
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(MKAPIServer *)self client];
-  v6 = [v5 brand];
-  v7 = [(MKAPIServer *)self client];
-  v8 = [v7 model];
-  v9 = [(MKAPIServer *)self client];
-  v10 = [v9 brand];
-  v11 = [v4 stringWithFormat:@"%@/%@/Android/%@/Android", v6, v8, v10];
+  client = [(MKAPIServer *)self client];
+  brand = [client brand];
+  client2 = [(MKAPIServer *)self client];
+  model = [client2 model];
+  client3 = [(MKAPIServer *)self client];
+  brand2 = [client3 brand];
+  v11 = [v4 stringWithFormat:@"%@/%@/Android/%@/Android", brand, model, brand2];
 
   v46[0] = MEMORY[0x277CBEC38];
   v45[0] = @"MigratedFromAndroid";
@@ -1247,8 +1247,8 @@ LABEL_20:
   v33 = v11;
   v45[2] = @"MigratedFromAndroidDeviceType";
   v45[3] = @"MigratedFromAndroidOSVersion";
-  v13 = [(MKAPIServer *)self client];
-  v14 = [v13 os];
+  client4 = [(MKAPIServer *)self client];
+  v14 = [client4 os];
   v46[3] = v14;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:4];
 
@@ -1298,11 +1298,11 @@ LABEL_20:
             goto LABEL_18;
           }
 
-          v28 = [v25 BOOLValue];
+          bOOLValue = [v25 BOOLValue];
           *buf = 138412546;
           v41 = v24;
           v42 = 1024;
-          LODWORD(v43) = v28;
+          LODWORD(v43) = bOOLValue;
           v29 = v27;
           v30 = "%@ is set to %d.";
           v31 = 18;
@@ -1350,8 +1350,8 @@ LABEL_19:
   v2 = NSHomeDirectory();
   v3 = [v2 stringByAppendingString:@"/Library/MigrationKit/matd/"];
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:v3];
 
   if (v5)
   {
@@ -1401,9 +1401,9 @@ LABEL_19:
           }
 
           v21 = *(*(&v48 + 1) + 8 * i);
-          v22 = [v21 importAndWait];
+          importAndWait = [v21 importAndWait];
           [v21 import];
-          if (!v22)
+          if (!importAndWait)
           {
 
             dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
@@ -1425,9 +1425,9 @@ LABEL_19:
       }
 
       dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
-      v23 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v47 = 0;
-      [v23 removeItemAtPath:v3 error:&v47];
+      [defaultManager2 removeItemAtPath:v3 error:&v47];
       v24 = v47;
 
       v25 = v24;
@@ -1448,22 +1448,22 @@ LABEL_19:
       {
         v42 = v25;
         v28 = [MKBenchmark alloc];
-        v29 = [(MKMigrator *)v44 importCount];
-        v30 = [(MKMigrator *)v44 importErrorCount];
+        importCount = [(MKMigrator *)v44 importCount];
+        importErrorCount = [(MKMigrator *)v44 importErrorCount];
         [(MKMigrator *)v44 importTime];
-        v41 = [(MKBenchmark *)v28 initWithLabel:@"Image" count:v30 + v29 time:?];
+        v41 = [(MKBenchmark *)v28 initWithLabel:@"Image" count:importErrorCount + importCount time:?];
         v55[0] = v41;
         v31 = [MKBenchmark alloc];
-        v32 = [(MKMigrator *)v43 importCount];
-        v33 = [(MKMigrator *)v43 importErrorCount];
+        importCount2 = [(MKMigrator *)v43 importCount];
+        importErrorCount2 = [(MKMigrator *)v43 importErrorCount];
         [(MKMigrator *)v43 importTime];
-        v40 = [(MKBenchmark *)v31 initWithLabel:@"Video" count:v33 + v32 time:?];
+        v40 = [(MKBenchmark *)v31 initWithLabel:@"Video" count:importErrorCount2 + importCount2 time:?];
         v55[1] = v40;
         v34 = [MKBenchmark alloc];
-        v35 = [(MKMigrator *)v6 importCount];
-        v36 = [(MKMigrator *)v6 importErrorCount];
+        importCount3 = [(MKMigrator *)v6 importCount];
+        importErrorCount3 = [(MKMigrator *)v6 importErrorCount];
         [(MKMigrator *)v6 importTime];
-        v37 = [(MKBenchmark *)v34 initWithLabel:@"Album" count:v36 + v35 time:?];
+        v37 = [(MKBenchmark *)v34 initWithLabel:@"Album" count:importErrorCount3 + importCount3 time:?];
         v55[2] = v37;
         v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:3];
 
@@ -1502,17 +1502,17 @@ intptr_t __20__MKAPIServer_clean__block_invoke(uint64_t a1)
   [(MKApplicationMigrator *)v2 purchase2];
 }
 
-+ (void)benchmark:(id)a3
++ (void)benchmark:(id)benchmark
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  benchmarkCopy = benchmark;
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
   [v4 appendString:@"(Internal Only)"];
   v28 = 0u;
   v29 = 0u;
   v27 = 0u;
   v26 = 0u;
-  v5 = v3;
+  v5 = benchmarkCopy;
   v6 = [v5 countByEnumeratingWithState:&v26 objects:v32 count:16];
   v7 = v5;
   if (!v6)
@@ -1534,8 +1534,8 @@ intptr_t __20__MKAPIServer_clean__block_invoke(uint64_t a1)
 
       v12 = *(*(&v26 + 1) + 8 * i);
       [v4 appendString:@"\n"];
-      v13 = [v12 benchmark];
-      [v4 appendString:v13];
+      benchmark = [v12 benchmark];
+      [v4 appendString:benchmark];
 
       v9 += [v12 count];
     }

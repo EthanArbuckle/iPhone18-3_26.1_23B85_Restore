@@ -6,7 +6,7 @@
 
 - (id)_legacy_ck_asUUID
 {
-  v1 = [a1 dataUsingEncoding:4 allowLossyConversion:0];
+  v1 = [self dataUsingEncoding:4 allowLossyConversion:0];
   if ([v1 length] < 0x10)
   {
     v3 = [MEMORY[0x1E695DF88] dataWithLength:16];
@@ -19,10 +19,10 @@
     v3 = [v2 mutableCopy];
   }
 
-  v4 = [v3 mutableBytes];
-  *(v4 + 6) = *(v4 + 6) & 0xF | 0x40;
-  *(v4 + 8) = *(v4 + 8) & 0x3F | 0x80;
-  v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v4];
+  mutableBytes = [v3 mutableBytes];
+  *(mutableBytes + 6) = *(mutableBytes + 6) & 0xF | 0x40;
+  *(mutableBytes + 8) = *(mutableBytes + 8) & 0x3F | 0x80;
+  v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:mutableBytes];
 
   return v5;
 }

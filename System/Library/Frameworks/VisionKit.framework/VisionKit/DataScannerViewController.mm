@@ -2,11 +2,11 @@
 - (void)dealloc;
 - (void)didEnterBackground;
 - (void)loadView;
-- (void)onPinch:(id)a3;
-- (void)onTap:(id)a3;
+- (void)onPinch:(id)pinch;
+- (void)onTap:(id)tap;
 - (void)removeFromParentViewController;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willEnterForeground;
 @end
 
@@ -15,11 +15,11 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver_];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for DataScannerViewController();
   [(DataScannerViewController *)&v6 dealloc];
 }
@@ -28,9 +28,9 @@
 {
   v3 = OBJC_IVAR____TtC9VisionKit25DataScannerViewController_frameProvider;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9VisionKit25DataScannerViewController_frameProvider);
-  v6 = self;
-  v5 = [v4 isProcessing];
-  *(&v6->super.super.super.isa + OBJC_IVAR____TtC9VisionKit25DataScannerViewController_shouldResumeProcessingOnEnterForeground) = v5;
+  selfCopy = self;
+  isProcessing = [v4 isProcessing];
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC9VisionKit25DataScannerViewController_shouldResumeProcessingOnEnterForeground) = isProcessing;
   [*(&self->super.super.super.isa + v3) stopRunning];
 }
 
@@ -38,9 +38,9 @@
 {
   v3 = OBJC_IVAR____TtC9VisionKit25DataScannerViewController_frameProvider;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9VisionKit25DataScannerViewController_frameProvider);
-  v5 = self;
+  selfCopy = self;
   [v4 startRunning];
-  if (*(&v5->super.super.super.isa + OBJC_IVAR____TtC9VisionKit25DataScannerViewController_shouldResumeProcessingOnEnterForeground) == 1)
+  if (*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC9VisionKit25DataScannerViewController_shouldResumeProcessingOnEnterForeground) == 1)
   {
     [*(&self->super.super.super.isa + v3) startProcessing];
   }
@@ -48,20 +48,20 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_23B2E4E74();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_23B2E5254();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_23B2E5554(a3);
+  selfCopy = self;
+  sub_23B2E5554(appear);
 }
 
 - (void)removeFromParentViewController
@@ -74,18 +74,18 @@
   [*&v2[OBJC_IVAR____TtC9VisionKit25DataScannerViewController_frameProvider] stopRunning];
 }
 
-- (void)onTap:(id)a3
+- (void)onTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  sub_23B2E5F90(v4);
+  tapCopy = tap;
+  selfCopy = self;
+  sub_23B2E5F90(tapCopy);
 }
 
-- (void)onPinch:(id)a3
+- (void)onPinch:(id)pinch
 {
-  v4 = a3;
-  v5 = self;
-  sub_23B2E6560(v4);
+  pinchCopy = pinch;
+  selfCopy = self;
+  sub_23B2E6560(pinchCopy);
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface VUIPlayableResolver
 + (id)appContext;
-+ (void)playableForAdamID:(id)a3 completion:(id)a4;
-+ (void)playableForCanonicalID:(id)a3 showID:(id)a4 mediaType:(id)a5 completion:(id)a6;
++ (void)playableForAdamID:(id)d completion:(id)completion;
++ (void)playableForCanonicalID:(id)d showID:(id)iD mediaType:(id)type completion:(id)completion;
 @end
 
 @implementation VUIPlayableResolver
@@ -9,30 +9,30 @@
 + (id)appContext
 {
   v2 = +[VUITVAppLauncher sharedInstance];
-  v3 = [v2 appController];
-  v4 = [v3 appContext];
+  appController = [v2 appController];
+  appContext = [appController appContext];
 
-  return v4;
+  return appContext;
 }
 
-+ (void)playableForAdamID:(id)a3 completion:(id)a4
++ (void)playableForAdamID:(id)d completion:(id)completion
 {
   v27[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 appContext];
+  dCopy = d;
+  completionCopy = completion;
+  appContext = [self appContext];
 
-  if (v8)
+  if (appContext)
   {
-    v9 = [a1 appContext];
+    appContext2 = [self appContext];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __52__VUIPlayableResolver_playableForAdamID_completion___block_invoke_2;
     v20[3] = &unk_1E872FC68;
-    v21 = v6;
-    v22 = v7;
-    v10 = v7;
-    [v9 evaluate:v20];
+    v21 = dCopy;
+    v22 = completionCopy;
+    v10 = completionCopy;
+    [appContext2 evaluate:v20];
 
     v11 = v21;
   }
@@ -59,8 +59,8 @@
     block[2] = __52__VUIPlayableResolver_playableForAdamID_completion___block_invoke;
     block[3] = &unk_1E872DC10;
     v24 = v18;
-    v25 = v7;
-    v19 = v7;
+    v25 = completionCopy;
+    v19 = completionCopy;
     v11 = v18;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
@@ -119,40 +119,40 @@ void __52__VUIPlayableResolver_playableForAdamID_completion___block_invoke_5(uin
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-+ (void)playableForCanonicalID:(id)a3 showID:(id)a4 mediaType:(id)a5 completion:(id)a6
++ (void)playableForCanonicalID:(id)d showID:(id)iD mediaType:(id)type completion:(id)completion
 {
   v38[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [a1 appContext];
+  dCopy = d;
+  iDCopy = iD;
+  typeCopy = type;
+  completionCopy = completion;
+  appContext = [self appContext];
 
-  if (v14)
+  if (appContext)
   {
-    if (v11)
+    if (iDCopy)
     {
-      v15 = v11;
+      null = iDCopy;
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v26 = v15;
-    v27 = [a1 appContext];
+    v26 = null;
+    appContext2 = [self appContext];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __74__VUIPlayableResolver_playableForCanonicalID_showID_mediaType_completion___block_invoke_2;
     v29[3] = &unk_1E872FC90;
-    v30 = v10;
+    v30 = dCopy;
     v31 = v26;
-    v32 = v12;
-    v33 = v13;
-    v25 = v13;
+    v32 = typeCopy;
+    v33 = completionCopy;
+    v25 = completionCopy;
     v22 = v26;
-    [v27 evaluate:v29];
+    [appContext2 evaluate:v29];
 
     v24 = v30;
   }
@@ -162,7 +162,7 @@ void __52__VUIPlayableResolver_playableForAdamID_completion___block_invoke_5(uin
     v37[0] = @"title";
     v16 = +[VUILocalizationManager sharedInstance];
     [v16 localizedStringForKey:@"TV.GroupActivities.UnknownErrorTitle"];
-    v17 = v28 = v10;
+    v17 = v28 = dCopy;
     v38[0] = v17;
     v37[1] = @"message";
     v18 = +[VUILocalizationManager sharedInstance];
@@ -174,15 +174,15 @@ void __52__VUIPlayableResolver_playableForAdamID_completion___block_invoke_5(uin
     v38[2] = v21;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:3];
 
-    v10 = v28;
+    dCopy = v28;
     v23 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VUIPlayableResolverErrorDomain" code:0 userInfo:v22];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __74__VUIPlayableResolver_playableForCanonicalID_showID_mediaType_completion___block_invoke;
     block[3] = &unk_1E872DC10;
     v35 = v23;
-    v36 = v13;
-    v24 = v13;
+    v36 = completionCopy;
+    v24 = completionCopy;
     v25 = v23;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }

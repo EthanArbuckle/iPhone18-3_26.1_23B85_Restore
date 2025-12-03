@@ -1,12 +1,12 @@
 @interface _MLCGPUPadding
-- (_MLCGPUPadding)initWithDevice:(id)a3 paddingType:(int)a4 paddingLeft:(unint64_t)a5 paddingRight:(unint64_t)a6 paddingTop:(unint64_t)a7 paddingBottom:(unint64_t)a8 constantValue:(float)a9 dataType:(int)a10;
+- (_MLCGPUPadding)initWithDevice:(id)device paddingType:(int)type paddingLeft:(unint64_t)left paddingRight:(unint64_t)right paddingTop:(unint64_t)top paddingBottom:(unint64_t)bottom constantValue:(float)value dataType:(int)self0;
 @end
 
 @implementation _MLCGPUPadding
 
-- (_MLCGPUPadding)initWithDevice:(id)a3 paddingType:(int)a4 paddingLeft:(unint64_t)a5 paddingRight:(unint64_t)a6 paddingTop:(unint64_t)a7 paddingBottom:(unint64_t)a8 constantValue:(float)a9 dataType:(int)a10
+- (_MLCGPUPadding)initWithDevice:(id)device paddingType:(int)type paddingLeft:(unint64_t)left paddingRight:(unint64_t)right paddingTop:(unint64_t)top paddingBottom:(unint64_t)bottom constantValue:(float)value dataType:(int)self0
 {
-  v12 = a3;
+  deviceCopy = device;
   v45.receiver = self;
   v45.super_class = _MLCGPUPadding;
   v13 = [(_MLCGPUPadding *)&v45 init];
@@ -14,16 +14,16 @@
   if (v13)
   {
     v36 = v13;
-    v15 = [v12 deviceList];
-    v16 = [v15 count];
+    deviceList = [deviceCopy deviceList];
+    v16 = [deviceList count];
 
     v42 = [MEMORY[0x277CBEBF8] mutableCopy];
     if (v16)
     {
       v17 = 0;
-      if (a4)
+      if (type)
       {
-        v18 = a4 == 3;
+        v18 = type == 3;
       }
 
       else
@@ -44,16 +44,16 @@
       v37 = v19;
       do
       {
-        v20 = [v12 deviceList];
-        v21 = [v20 objectAtIndexedSubscript:v17];
+        deviceList2 = [deviceCopy deviceList];
+        v21 = [deviceList2 objectAtIndexedSubscript:v17];
 
-        v22 = [v12 gpuLibrary];
-        v23 = [v22 objectAtIndexedSubscript:v17];
+        gpuLibrary = [deviceCopy gpuLibrary];
+        v23 = [gpuLibrary objectAtIndexedSubscript:v17];
         v24 = [v23 newFunctionWithName:@"padding_forward"];
 
         v25 = [v21 newComputePipelineStateWithFunction:v24 error:0];
-        v26 = [v12 gpuLibrary];
-        v27 = [v26 objectAtIndexedSubscript:v17];
+        gpuLibrary2 = [deviceCopy gpuLibrary];
+        v27 = [gpuLibrary2 objectAtIndexedSubscript:v17];
         v28 = [v27 newFunctionWithName:v19];
 
         v29 = [v21 newComputePipelineStateWithFunction:v28 error:0];
@@ -66,17 +66,17 @@
           {
             [v31 setIsMPSKernel:0];
             [v32 setMetalKernelType:2];
-            [v32 setPaddingType:a4];
-            if (a4 == 3)
+            [v32 setPaddingType:type];
+            if (type == 3)
             {
-              *&v33 = a9;
+              *&v33 = value;
               [v32 setPaddingValue:v33];
             }
 
-            [v32 setPaddingLeft:a5];
-            [v32 setPaddingRight:a6];
-            [v32 setPaddingTop:a7];
-            [v32 setPaddingBottom:a8];
+            [v32 setPaddingLeft:left];
+            [v32 setPaddingRight:right];
+            [v32 setPaddingTop:top];
+            [v32 setPaddingBottom:bottom];
             [v32 setSourceOfForwardNeededForGradient:0];
             [v32 setResultOfForwardNeededForGradient:0];
             [v42 addObject:v32];

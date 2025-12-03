@@ -143,28 +143,28 @@
 
 - (BOOL)isGIF
 {
-  v3 = [UTTypeGIF identifier];
-  v4 = [(MFAttachment *)self contentTypeIdentifier];
-  v5 = [v3 compare:v4] == 0;
+  identifier = [UTTypeGIF identifier];
+  contentTypeIdentifier = [(MFAttachment *)self contentTypeIdentifier];
+  v5 = [identifier compare:contentTypeIdentifier] == 0;
 
   return v5;
 }
 
 - (BOOL)isDXF
 {
-  v2 = [(MFAttachment *)self mimeType];
-  v3 = [@"image/vnd.dxf" caseInsensitiveCompare:v2] == 0;
+  mimeType = [(MFAttachment *)self mimeType];
+  v3 = [@"image/vnd.dxf" caseInsensitiveCompare:mimeType] == 0;
 
   return v3;
 }
 
 - (BOOL)isProfile
 {
-  v3 = [(MFAttachment *)self contentTypeIdentifier];
-  if ([@"com.apple.mobileconfig" compare:v3])
+  contentTypeIdentifier = [(MFAttachment *)self contentTypeIdentifier];
+  if ([@"com.apple.mobileconfig" compare:contentTypeIdentifier])
   {
-    v4 = [(MFAttachment *)self contentTypeIdentifier];
-    v5 = [@"com.apple.mobileprovision" compare:v4] == 0;
+    contentTypeIdentifier2 = [(MFAttachment *)self contentTypeIdentifier];
+    v5 = [@"com.apple.mobileprovision" compare:contentTypeIdentifier2] == 0;
   }
 
   else
@@ -177,25 +177,25 @@
 
 - (BOOL)isVCard
 {
-  v3 = [UTTypeVCard identifier];
-  v4 = [(MFAttachment *)self contentTypeIdentifier];
-  v5 = [v3 compare:v4] == 0;
+  identifier = [UTTypeVCard identifier];
+  contentTypeIdentifier = [(MFAttachment *)self contentTypeIdentifier];
+  v5 = [identifier compare:contentTypeIdentifier] == 0;
 
   return v5;
 }
 
 - (BOOL)isVPN
 {
-  v3 = [UTTypePKCS12 identifier];
-  v4 = [(MFAttachment *)self contentTypeIdentifier];
-  v5 = [v3 compare:v4] == 0;
+  identifier = [UTTypePKCS12 identifier];
+  contentTypeIdentifier = [(MFAttachment *)self contentTypeIdentifier];
+  v5 = [identifier compare:contentTypeIdentifier] == 0;
 
   return v5;
 }
 
 - (BOOL)isPlainText
 {
-  v2 = [(MFAttachment *)self contentTypeIdentifier];
+  contentTypeIdentifier = [(MFAttachment *)self contentTypeIdentifier];
   IsPlainText = MFContentTypeIsPlainText();
 
   return IsPlainText;
@@ -203,44 +203,44 @@
 
 - (BOOL)isRTF
 {
-  v3 = [UTTypeRTF identifier];
-  v4 = [(MFAttachment *)self contentTypeIdentifier];
-  v5 = [v3 compare:v4] == 0;
+  identifier = [UTTypeRTF identifier];
+  contentTypeIdentifier = [(MFAttachment *)self contentTypeIdentifier];
+  v5 = [identifier compare:contentTypeIdentifier] == 0;
 
   return v5;
 }
 
 - (BOOL)isCSV
 {
-  v3 = [UTTypeCommaSeparatedText identifier];
-  v4 = [(MFAttachment *)self contentTypeIdentifier];
-  v5 = [v3 compare:v4] == 0;
+  identifier = [UTTypeCommaSeparatedText identifier];
+  contentTypeIdentifier = [(MFAttachment *)self contentTypeIdentifier];
+  v5 = [identifier compare:contentTypeIdentifier] == 0;
 
   return v5;
 }
 
 - (BOOL)isCertificate
 {
-  v3 = [UTTypeX509Certificate identifier];
-  v4 = [(MFAttachment *)self contentTypeIdentifier];
-  v5 = [v3 compare:v4] == 0;
+  identifier = [UTTypeX509Certificate identifier];
+  contentTypeIdentifier = [(MFAttachment *)self contentTypeIdentifier];
+  v5 = [identifier compare:contentTypeIdentifier] == 0;
 
   return v5;
 }
 
 - (BOOL)isZip
 {
-  v3 = [UTTypeZIP identifier];
-  v4 = [(MFAttachment *)self contentTypeIdentifier];
-  if ([v3 compare:v4])
+  identifier = [UTTypeZIP identifier];
+  contentTypeIdentifier = [(MFAttachment *)self contentTypeIdentifier];
+  if ([identifier compare:contentTypeIdentifier])
   {
-    v5 = [UTTypeGZIP identifier];
-    v6 = [(MFAttachment *)self contentTypeIdentifier];
-    if ([v5 compare:v6])
+    identifier2 = [UTTypeGZIP identifier];
+    contentTypeIdentifier2 = [(MFAttachment *)self contentTypeIdentifier];
+    if ([identifier2 compare:contentTypeIdentifier2])
     {
-      v7 = [UTTypeBZ2 identifier];
-      v8 = [(MFAttachment *)self contentTypeIdentifier];
-      v9 = [v7 compare:v8] == 0;
+      identifier3 = [UTTypeBZ2 identifier];
+      contentTypeIdentifier3 = [(MFAttachment *)self contentTypeIdentifier];
+      v9 = [identifier3 compare:contentTypeIdentifier3] == 0;
     }
 
     else
@@ -259,9 +259,9 @@
 
 - (BOOL)isHTML
 {
-  v3 = [UTTypeHTML identifier];
-  v4 = [(MFAttachment *)self contentTypeIdentifier];
-  v5 = [v3 compare:v4] == 0;
+  identifier = [UTTypeHTML identifier];
+  contentTypeIdentifier = [(MFAttachment *)self contentTypeIdentifier];
+  v5 = [identifier compare:contentTypeIdentifier] == 0;
 
   return v5;
 }
@@ -269,11 +269,11 @@
 - (BOOL)isExcel
 {
   v3 = [NSSet setWithObjects:@"application/vnd.ms-excel", @"application/vnd.ms-excel.sheet.macroenabled.12", @"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", @"application/vnd.ms-excel.template.macroenabled.12", @"application/vnd.openxmlformats-officedocument.spreadsheetml.template", 0];
-  v4 = [(MFAttachment *)self mimeType];
-  if (v4)
+  mimeType = [(MFAttachment *)self mimeType];
+  if (mimeType)
   {
-    v5 = [(MFAttachment *)self mimeType];
-    v6 = [v3 containsObject:v5];
+    mimeType2 = [(MFAttachment *)self mimeType];
+    v6 = [v3 containsObject:mimeType2];
   }
 
   else
@@ -287,11 +287,11 @@
 - (BOOL)isPowerpoint
 {
   v3 = [NSSet setWithObjects:@"application/vnd.ms-powerpoint", @"application/vnd.ms-powerpoint", @"application/vnd.ms-powerpoint.template.macroenabled.12", @"application/vnd.openxmlformats-officedocument.presentationml.template", @"application/vnd.ms-powerpoint.slideshow.macroenabled.12", @"application/vnd.openxmlformats-officedocument.presentationml.slideshow", @"application/vnd.ms-powerpoint.presentation.macroenabled.12", @"application/vnd.openxmlformats-officedocument.presentationml.presentation", 0];
-  v4 = [(MFAttachment *)self mimeType];
-  if (v4)
+  mimeType = [(MFAttachment *)self mimeType];
+  if (mimeType)
   {
-    v5 = [(MFAttachment *)self mimeType];
-    v6 = [v3 containsObject:v5];
+    mimeType2 = [(MFAttachment *)self mimeType];
+    v6 = [v3 containsObject:mimeType2];
   }
 
   else
@@ -305,11 +305,11 @@
 - (BOOL)isMSWord
 {
   v3 = [NSSet setWithObjects:@"application/msword", @"application/vnd.ms-word.document.macroenabled.12", @"application/vnd.openxmlformats-officedocument.wordprocessingml.document", @"application/vnd.ms-word.template.macroenabled.12", @"application/vnd.openxmlformats-officedocument.wordprocessingml.template", 0];
-  v4 = [(MFAttachment *)self mimeType];
-  if (v4)
+  mimeType = [(MFAttachment *)self mimeType];
+  if (mimeType)
   {
-    v5 = [(MFAttachment *)self mimeType];
-    v6 = [v3 containsObject:v5];
+    mimeType2 = [(MFAttachment *)self mimeType];
+    v6 = [v3 containsObject:mimeType2];
   }
 
   else
@@ -322,17 +322,17 @@
 
 - (BOOL)isWatchFace
 {
-  v2 = [(MFAttachment *)self contentTypeIdentifier];
-  v3 = [@"com.apple.watchface" compare:v2] == 0;
+  contentTypeIdentifier = [(MFAttachment *)self contentTypeIdentifier];
+  v3 = [@"com.apple.watchface" compare:contentTypeIdentifier] == 0;
 
   return v3;
 }
 
 - (BOOL)isWorkout
 {
-  v2 = [(MFAttachment *)self contentType];
-  v3 = [v2 identifier];
-  v4 = [@"com.apple.workout" compare:v3] == 0;
+  contentType = [(MFAttachment *)self contentType];
+  identifier = [contentType identifier];
+  v4 = [@"com.apple.workout" compare:identifier] == 0;
 
   return v4;
 }

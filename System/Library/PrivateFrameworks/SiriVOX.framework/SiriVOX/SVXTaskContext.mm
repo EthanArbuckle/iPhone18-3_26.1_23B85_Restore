@@ -1,82 +1,82 @@
 @interface SVXTaskContext
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SVXTaskContext)initWithCoder:(id)a3;
-- (SVXTaskContext)initWithOrigin:(int64_t)a3 timestamp:(unint64_t)a4 sessionUUID:(id)a5 requestUUID:(id)a6 aceId:(id)a7 refId:(id)a8 dialogIdentifier:(id)a9 dialogPhase:(id)a10 isUUFR:(BOOL)a11 listensAfterSpeaking:(BOOL)a12 listenAfterSpeakingBehavior:(id)a13 activationContext:(id)a14 deactivationContext:(id)a15 error:(id)a16;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SVXTaskContext)initWithCoder:(id)coder;
+- (SVXTaskContext)initWithOrigin:(int64_t)origin timestamp:(unint64_t)timestamp sessionUUID:(id)d requestUUID:(id)iD aceId:(id)id refId:(id)refId dialogIdentifier:(id)identifier dialogPhase:(id)self0 isUUFR:(BOOL)self1 listensAfterSpeaking:(BOOL)self2 listenAfterSpeakingBehavior:(id)self3 activationContext:(id)self4 deactivationContext:(id)self5 error:(id)self6;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVXTaskContext
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   origin = self->_origin;
-  v10 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:origin];
-  [v10 encodeObject:v6 forKey:@"SVXTaskContext::origin"];
+  [coderCopy encodeObject:v6 forKey:@"SVXTaskContext::origin"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-  [v10 encodeObject:v7 forKey:@"SVXTaskContext::timestamp"];
+  [coderCopy encodeObject:v7 forKey:@"SVXTaskContext::timestamp"];
 
-  [v10 encodeObject:self->_sessionUUID forKey:@"SVXTaskContext::sessionUUID"];
-  [v10 encodeObject:self->_requestUUID forKey:@"SVXTaskContext::requestUUID"];
-  [v10 encodeObject:self->_aceId forKey:@"SVXTaskContext::aceId"];
-  [v10 encodeObject:self->_refId forKey:@"SVXTaskContext::refId"];
-  [v10 encodeObject:self->_dialogIdentifier forKey:@"SVXTaskContext::dialogIdentifier"];
-  [v10 encodeObject:self->_dialogPhase forKey:@"SVXTaskContext::dialogPhase"];
+  [coderCopy encodeObject:self->_sessionUUID forKey:@"SVXTaskContext::sessionUUID"];
+  [coderCopy encodeObject:self->_requestUUID forKey:@"SVXTaskContext::requestUUID"];
+  [coderCopy encodeObject:self->_aceId forKey:@"SVXTaskContext::aceId"];
+  [coderCopy encodeObject:self->_refId forKey:@"SVXTaskContext::refId"];
+  [coderCopy encodeObject:self->_dialogIdentifier forKey:@"SVXTaskContext::dialogIdentifier"];
+  [coderCopy encodeObject:self->_dialogPhase forKey:@"SVXTaskContext::dialogPhase"];
   v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_isUUFR];
-  [v10 encodeObject:v8 forKey:@"SVXTaskContext::isUUFR"];
+  [coderCopy encodeObject:v8 forKey:@"SVXTaskContext::isUUFR"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_listensAfterSpeaking];
-  [v10 encodeObject:v9 forKey:@"SVXTaskContext::listensAfterSpeaking"];
+  [coderCopy encodeObject:v9 forKey:@"SVXTaskContext::listensAfterSpeaking"];
 
-  [v10 encodeObject:self->_listenAfterSpeakingBehavior forKey:@"SVXTaskContext::listenAfterSpeakingBehavior"];
-  [v10 encodeObject:self->_activationContext forKey:@"SVXTaskContext::activationContext"];
-  [v10 encodeObject:self->_deactivationContext forKey:@"SVXTaskContext::deactivationContext"];
-  [v10 encodeObject:self->_error forKey:@"SVXTaskContext::error"];
+  [coderCopy encodeObject:self->_listenAfterSpeakingBehavior forKey:@"SVXTaskContext::listenAfterSpeakingBehavior"];
+  [coderCopy encodeObject:self->_activationContext forKey:@"SVXTaskContext::activationContext"];
+  [coderCopy encodeObject:self->_deactivationContext forKey:@"SVXTaskContext::deactivationContext"];
+  [coderCopy encodeObject:self->_error forKey:@"SVXTaskContext::error"];
 }
 
-- (SVXTaskContext)initWithCoder:(id)a3
+- (SVXTaskContext)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::origin"];
-  v23 = [v4 integerValue];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::origin"];
+  integerValue = [v4 integerValue];
 
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::timestamp"];
-  v22 = [v5 unsignedLongLongValue];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::timestamp"];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::sessionUUID"];
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::requestUUID"];
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::aceId"];
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::refId"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::dialogIdentifier"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::dialogPhase"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::isUUFR"];
-  v9 = [v8 BOOLValue];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::sessionUUID"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::requestUUID"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::aceId"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::refId"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::dialogIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::dialogPhase"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::isUUFR"];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::listensAfterSpeaking"];
-  v11 = [v10 BOOLValue];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::listensAfterSpeaking"];
+  bOOLValue2 = [v10 BOOLValue];
 
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::listenAfterSpeakingBehavior"];
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::activationContext"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::deactivationContext"];
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::error"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::listenAfterSpeakingBehavior"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::activationContext"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::deactivationContext"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXTaskContext::error"];
 
-  BYTE1(v17) = v11;
-  LOBYTE(v17) = v9;
-  v25 = [(SVXTaskContext *)self initWithOrigin:v23 timestamp:v22 sessionUUID:v19 requestUUID:v18 aceId:v21 refId:v20 dialogIdentifier:v6 dialogPhase:v7 isUUFR:v17 listensAfterSpeaking:v12 listenAfterSpeakingBehavior:v13 activationContext:v14 deactivationContext:v15 error:?];
+  BYTE1(v17) = bOOLValue2;
+  LOBYTE(v17) = bOOLValue;
+  v25 = [(SVXTaskContext *)self initWithOrigin:integerValue timestamp:unsignedLongLongValue sessionUUID:v19 requestUUID:v18 aceId:v21 refId:v20 dialogIdentifier:v6 dialogPhase:v7 isUUFR:v17 listensAfterSpeaking:v12 listenAfterSpeakingBehavior:v13 activationContext:v14 deactivationContext:v15 error:?];
 
   return v25;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v32 = 1;
   }
@@ -86,55 +86,55 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       origin = self->_origin;
       if (origin == [(SVXTaskContext *)v5 origin]&& (timestamp = self->_timestamp, timestamp == [(SVXTaskContext *)v5 timestamp]) && (isUUFR = self->_isUUFR, isUUFR == [(SVXTaskContext *)v5 isUUFR]) && (listensAfterSpeaking = self->_listensAfterSpeaking, listensAfterSpeaking == [(SVXTaskContext *)v5 listensAfterSpeaking]))
       {
-        v10 = [(SVXTaskContext *)v5 sessionUUID];
+        sessionUUID = [(SVXTaskContext *)v5 sessionUUID];
         sessionUUID = self->_sessionUUID;
-        if (sessionUUID == v10 || [(NSUUID *)sessionUUID isEqual:v10])
+        if (sessionUUID == sessionUUID || [(NSUUID *)sessionUUID isEqual:sessionUUID])
         {
-          v12 = [(SVXTaskContext *)v5 requestUUID];
+          requestUUID = [(SVXTaskContext *)v5 requestUUID];
           requestUUID = self->_requestUUID;
-          if (requestUUID == v12 || [(NSUUID *)requestUUID isEqual:v12])
+          if (requestUUID == requestUUID || [(NSUUID *)requestUUID isEqual:requestUUID])
           {
-            v14 = [(SVXTaskContext *)v5 aceId];
+            aceId = [(SVXTaskContext *)v5 aceId];
             aceId = self->_aceId;
-            if (aceId == v14 || [(NSString *)aceId isEqual:v14])
+            if (aceId == aceId || [(NSString *)aceId isEqual:aceId])
             {
-              v16 = [(SVXTaskContext *)v5 refId];
+              refId = [(SVXTaskContext *)v5 refId];
               refId = self->_refId;
-              if (refId == v16 || [(NSString *)refId isEqual:v16])
+              if (refId == refId || [(NSString *)refId isEqual:refId])
               {
-                v18 = [(SVXTaskContext *)v5 dialogIdentifier];
+                dialogIdentifier = [(SVXTaskContext *)v5 dialogIdentifier];
                 dialogIdentifier = self->_dialogIdentifier;
-                if (dialogIdentifier == v18 || [(NSString *)dialogIdentifier isEqual:v18])
+                if (dialogIdentifier == dialogIdentifier || [(NSString *)dialogIdentifier isEqual:dialogIdentifier])
                 {
-                  v20 = [(SVXTaskContext *)v5 dialogPhase];
+                  dialogPhase = [(SVXTaskContext *)v5 dialogPhase];
                   dialogPhase = self->_dialogPhase;
-                  if (dialogPhase == v20 || [(NSString *)dialogPhase isEqual:v20])
+                  if (dialogPhase == dialogPhase || [(NSString *)dialogPhase isEqual:dialogPhase])
                   {
-                    v22 = [(SVXTaskContext *)v5 listenAfterSpeakingBehavior];
+                    listenAfterSpeakingBehavior = [(SVXTaskContext *)v5 listenAfterSpeakingBehavior];
                     listenAfterSpeakingBehavior = self->_listenAfterSpeakingBehavior;
-                    if (listenAfterSpeakingBehavior == v22 || [(SAUIListenAfterSpeakingBehavior *)listenAfterSpeakingBehavior isEqual:v22])
+                    if (listenAfterSpeakingBehavior == listenAfterSpeakingBehavior || [(SAUIListenAfterSpeakingBehavior *)listenAfterSpeakingBehavior isEqual:listenAfterSpeakingBehavior])
                     {
-                      v35 = v22;
-                      v24 = [(SVXTaskContext *)v5 activationContext];
+                      v35 = listenAfterSpeakingBehavior;
+                      activationContext = [(SVXTaskContext *)v5 activationContext];
                       activationContext = self->_activationContext;
-                      if (activationContext == v24 || [(SVXActivationContext *)activationContext isEqual:v24])
+                      if (activationContext == activationContext || [(SVXActivationContext *)activationContext isEqual:activationContext])
                       {
-                        v26 = [(SVXTaskContext *)v5 deactivationContext];
+                        deactivationContext = [(SVXTaskContext *)v5 deactivationContext];
                         deactivationContext = self->_deactivationContext;
-                        if (deactivationContext == v26 || [(SVXDeactivationContext *)deactivationContext isEqual:v26])
+                        if (deactivationContext == deactivationContext || [(SVXDeactivationContext *)deactivationContext isEqual:deactivationContext])
                         {
-                          v28 = [(SVXTaskContext *)v5 error];
+                          error = [(SVXTaskContext *)v5 error];
                           error = self->_error;
                           v32 = 1;
-                          if (error != v28)
+                          if (error != error)
                           {
-                            v30 = v28;
-                            v31 = [(NSError *)error isEqual:v28];
-                            v28 = v30;
+                            v30 = error;
+                            v31 = [(NSError *)error isEqual:error];
+                            error = v30;
                             if (!v31)
                             {
                               v32 = 0;
@@ -147,7 +147,7 @@
                           v32 = 0;
                         }
 
-                        v24 = v34;
+                        activationContext = v34;
                       }
 
                       else
@@ -155,7 +155,7 @@
                         v32 = 0;
                       }
 
-                      v22 = v35;
+                      listenAfterSpeakingBehavior = v35;
                     }
 
                     else
@@ -239,7 +239,7 @@
   return v16 ^ v20;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v14.receiver = self;
@@ -279,65 +279,65 @@
   return v12;
 }
 
-- (SVXTaskContext)initWithOrigin:(int64_t)a3 timestamp:(unint64_t)a4 sessionUUID:(id)a5 requestUUID:(id)a6 aceId:(id)a7 refId:(id)a8 dialogIdentifier:(id)a9 dialogPhase:(id)a10 isUUFR:(BOOL)a11 listensAfterSpeaking:(BOOL)a12 listenAfterSpeakingBehavior:(id)a13 activationContext:(id)a14 deactivationContext:(id)a15 error:(id)a16
+- (SVXTaskContext)initWithOrigin:(int64_t)origin timestamp:(unint64_t)timestamp sessionUUID:(id)d requestUUID:(id)iD aceId:(id)id refId:(id)refId dialogIdentifier:(id)identifier dialogPhase:(id)self0 isUUFR:(BOOL)self1 listensAfterSpeaking:(BOOL)self2 listenAfterSpeakingBehavior:(id)self3 activationContext:(id)self4 deactivationContext:(id)self5 error:(id)self6
 {
-  v52 = a5;
-  v53 = a6;
-  v20 = a7;
-  v54 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a13;
-  v24 = a14;
-  v25 = a15;
-  v26 = a16;
+  dCopy = d;
+  iDCopy = iD;
+  idCopy = id;
+  refIdCopy = refId;
+  identifierCopy = identifier;
+  phaseCopy = phase;
+  behaviorCopy = behavior;
+  contextCopy = context;
+  deactivationContextCopy = deactivationContext;
+  errorCopy = error;
   v55.receiver = self;
   v55.super_class = SVXTaskContext;
   v27 = [(SVXTaskContext *)&v55 init];
   v28 = v27;
   if (v27)
   {
-    v27->_origin = a3;
-    v27->_timestamp = a4;
-    v29 = [v52 copy];
+    v27->_origin = origin;
+    v27->_timestamp = timestamp;
+    v29 = [dCopy copy];
     sessionUUID = v28->_sessionUUID;
     v28->_sessionUUID = v29;
 
-    v31 = [v53 copy];
+    v31 = [iDCopy copy];
     requestUUID = v28->_requestUUID;
     v28->_requestUUID = v31;
 
-    v33 = [v20 copy];
+    v33 = [idCopy copy];
     aceId = v28->_aceId;
     v28->_aceId = v33;
 
-    v35 = [v54 copy];
+    v35 = [refIdCopy copy];
     refId = v28->_refId;
     v28->_refId = v35;
 
-    v37 = [v21 copy];
+    v37 = [identifierCopy copy];
     dialogIdentifier = v28->_dialogIdentifier;
     v28->_dialogIdentifier = v37;
 
-    v39 = [v22 copy];
+    v39 = [phaseCopy copy];
     dialogPhase = v28->_dialogPhase;
     v28->_dialogPhase = v39;
 
-    v28->_isUUFR = a11;
-    v28->_listensAfterSpeaking = a12;
-    v41 = [v23 copy];
+    v28->_isUUFR = r;
+    v28->_listensAfterSpeaking = speaking;
+    v41 = [behaviorCopy copy];
     listenAfterSpeakingBehavior = v28->_listenAfterSpeakingBehavior;
     v28->_listenAfterSpeakingBehavior = v41;
 
-    v43 = [v24 copy];
+    v43 = [contextCopy copy];
     activationContext = v28->_activationContext;
     v28->_activationContext = v43;
 
-    v45 = [v25 copy];
+    v45 = [deactivationContextCopy copy];
     deactivationContext = v28->_deactivationContext;
     v28->_deactivationContext = v45;
 
-    v47 = [v26 copy];
+    v47 = [errorCopy copy];
     error = v28->_error;
     v28->_error = v47;
   }
@@ -345,36 +345,36 @@
   return v28;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SVXTaskContextMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SVXTaskContextMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SVXTaskContextMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SVXTaskContext *)self copy];
+    generate = [(SVXTaskContext *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SVXTaskContextMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SVXTaskContextMutation *)v4 generate];
+  generate = [(_SVXTaskContextMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

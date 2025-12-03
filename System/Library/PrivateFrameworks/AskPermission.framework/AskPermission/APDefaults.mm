@@ -1,18 +1,18 @@
 @interface APDefaults
-+ (BOOL)_BOOLForKey:(id)a3 defaultValue:(BOOL)a4 domain:(__CFString *)a5;
-+ (id)_valueForKey:(id)a3 domain:(__CFString *)a4;
-+ (int64_t)_integerForKey:(id)a3 defaultValue:(int64_t)a4 domain:(__CFString *)a5;
-+ (void)_setBool:(BOOL)a3 forKey:(id)a4 domain:(__CFString *)a5;
-+ (void)_setInteger:(int64_t)a3 forKey:(id)a4;
-+ (void)_setValue:(id)a3 forKey:(id)a4 domain:(__CFString *)a5;
-+ (void)setAPSDevelopmentEnvironment:(BOOL)a3;
++ (BOOL)_BOOLForKey:(id)key defaultValue:(BOOL)value domain:(__CFString *)domain;
++ (id)_valueForKey:(id)key domain:(__CFString *)domain;
++ (int64_t)_integerForKey:(id)key defaultValue:(int64_t)value domain:(__CFString *)domain;
++ (void)_setBool:(BOOL)bool forKey:(id)key domain:(__CFString *)domain;
++ (void)_setInteger:(int64_t)integer forKey:(id)key;
++ (void)_setValue:(id)value forKey:(id)key domain:(__CFString *)domain;
++ (void)setAPSDevelopmentEnvironment:(BOOL)environment;
 @end
 
 @implementation APDefaults
 
-+ (void)setAPSDevelopmentEnvironment:(BOOL)a3
++ (void)setAPSDevelopmentEnvironment:(BOOL)environment
 {
-  if (a3)
+  if (environment)
   {
     v3 = 2;
   }
@@ -22,15 +22,15 @@
     v3 = 0;
   }
 
-  [a1 _setInteger:v3 forKey:@"notificationEnvironment"];
+  [self _setInteger:v3 forKey:@"notificationEnvironment"];
 }
 
-+ (BOOL)_BOOLForKey:(id)a3 defaultValue:(BOOL)a4 domain:(__CFString *)a5
++ (BOOL)_BOOLForKey:(id)key defaultValue:(BOOL)value domain:(__CFString *)domain
 {
-  v7 = a3;
-  CFPreferencesAppSynchronize(a5);
+  keyCopy = key;
+  CFPreferencesAppSynchronize(domain);
   keyExistsAndHasValidFormat = 0;
-  AppBooleanValue = CFPreferencesGetAppBooleanValue(v7, a5, &keyExistsAndHasValidFormat);
+  AppBooleanValue = CFPreferencesGetAppBooleanValue(keyCopy, domain, &keyExistsAndHasValidFormat);
 
   if (keyExistsAndHasValidFormat)
   {
@@ -39,16 +39,16 @@
 
   else
   {
-    return a4;
+    return value;
   }
 }
 
-+ (int64_t)_integerForKey:(id)a3 defaultValue:(int64_t)a4 domain:(__CFString *)a5
++ (int64_t)_integerForKey:(id)key defaultValue:(int64_t)value domain:(__CFString *)domain
 {
-  v7 = a3;
-  CFPreferencesAppSynchronize(a5);
+  keyCopy = key;
+  CFPreferencesAppSynchronize(domain);
   keyExistsAndHasValidFormat = 0;
-  AppIntegerValue = CFPreferencesGetAppIntegerValue(v7, a5, &keyExistsAndHasValidFormat);
+  AppIntegerValue = CFPreferencesGetAppIntegerValue(keyCopy, domain, &keyExistsAndHasValidFormat);
 
   if (keyExistsAndHasValidFormat)
   {
@@ -57,43 +57,43 @@
 
   else
   {
-    return a4;
+    return value;
   }
 }
 
-+ (void)_setBool:(BOOL)a3 forKey:(id)a4 domain:(__CFString *)a5
++ (void)_setBool:(BOOL)bool forKey:(id)key domain:(__CFString *)domain
 {
   v6 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!bool)
   {
     v6 = MEMORY[0x277CBED10];
   }
 
-  CFPreferencesSetAppValue(a4, *v6, a5);
+  CFPreferencesSetAppValue(key, *v6, domain);
 
-  CFPreferencesAppSynchronize(a5);
+  CFPreferencesAppSynchronize(domain);
 }
 
-+ (void)_setInteger:(int64_t)a3 forKey:(id)a4
++ (void)_setInteger:(int64_t)integer forKey:(id)key
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithInteger:a3];
-  [a1 _setValue:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithInteger:integer];
+  [self _setValue:v8 forKey:keyCopy];
 }
 
-+ (void)_setValue:(id)a3 forKey:(id)a4 domain:(__CFString *)a5
++ (void)_setValue:(id)value forKey:(id)key domain:(__CFString *)domain
 {
-  CFPreferencesSetAppValue(a4, a3, a5);
+  CFPreferencesSetAppValue(key, value, domain);
 
-  CFPreferencesAppSynchronize(a5);
+  CFPreferencesAppSynchronize(domain);
 }
 
-+ (id)_valueForKey:(id)a3 domain:(__CFString *)a4
++ (id)_valueForKey:(id)key domain:(__CFString *)domain
 {
-  v5 = a3;
-  CFPreferencesAppSynchronize(a4);
-  v6 = CFPreferencesCopyAppValue(v5, a4);
+  keyCopy = key;
+  CFPreferencesAppSynchronize(domain);
+  v6 = CFPreferencesCopyAppValue(keyCopy, domain);
 
   return v6;
 }

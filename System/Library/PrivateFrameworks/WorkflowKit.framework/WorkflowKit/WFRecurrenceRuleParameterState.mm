@@ -1,22 +1,22 @@
 @interface WFRecurrenceRuleParameterState
-+ (id)serializedRepresentationFromValue:(id)a3;
++ (id)serializedRepresentationFromValue:(id)value;
 @end
 
 @implementation WFRecurrenceRuleParameterState
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"WFRecurrenceRuleParameterState.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[LNRecurrenceRuleBridge class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRecurrenceRuleParameterState.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[LNRecurrenceRuleBridge class]]"}];
   }
 
-  v6 = [v5 serializedRepresentation];
+  serializedRepresentation = [valueCopy serializedRepresentation];
 
-  return v6;
+  return serializedRepresentation;
 }
 
 @end

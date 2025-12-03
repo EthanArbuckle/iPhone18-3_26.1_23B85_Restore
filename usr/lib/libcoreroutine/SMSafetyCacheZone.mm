@@ -5,33 +5,33 @@
 - (NSData)phoneSafetyCache;
 - (NSData)watchSafetyCache;
 - (NSDate)releaseTime;
-- (SMSafetyCacheZone)initWithSessionID:(id)a3 ownerName:(id)a4 token:(id)a5 defaultsManager:(id)a6 queue:(id)a7;
-- (void)createRecordsWithParticipants:(id)a3 qos:(id)a4 completion:(id)a5;
-- (void)fetchAccessDataRecordWithQos:(id)a3 completion:(id)a4;
-- (void)fetchSafetyCacheRecordWithQos:(id)a3 completion:(id)a4;
-- (void)fetchSafetyCacheRecordsWithQos:(id)a3 completion:(id)a4;
-- (void)fetchShareParticipantsWithRetryCount:(int64_t)a3 conversation:(id)a4 qos:(id)a5 completion:(id)a6;
-- (void)fetchShareWithQos:(id)a3 completion:(id)a4;
-- (void)saveZoneToDatabaseWithRetryCount:(int64_t)a3 qos:(id)a4 completion:(id)a5;
-- (void)setupZoneAndShareWithConversation:(id)a3 qos:(id)a4 completion:(id)a5;
-- (void)updateAccessDataRecord:(id *)a3 cacheReleaseTime:(id)a4;
-- (void)updateAccessDataRecordWithCacheReleaseTime:(id)a3 qos:(id)a4 completion:(id)a5;
-- (void)updateSafetyCacheRecordWithData:(id)a3 qos:(id)a4 completion:(id)a5;
-- (void)updateSafetyCacheWithData:(id)a3 cacheReleaseTime:(id)a4 qos:(id)a5 completion:(id)a6;
+- (SMSafetyCacheZone)initWithSessionID:(id)d ownerName:(id)name token:(id)token defaultsManager:(id)manager queue:(id)queue;
+- (void)createRecordsWithParticipants:(id)participants qos:(id)qos completion:(id)completion;
+- (void)fetchAccessDataRecordWithQos:(id)qos completion:(id)completion;
+- (void)fetchSafetyCacheRecordWithQos:(id)qos completion:(id)completion;
+- (void)fetchSafetyCacheRecordsWithQos:(id)qos completion:(id)completion;
+- (void)fetchShareParticipantsWithRetryCount:(int64_t)count conversation:(id)conversation qos:(id)qos completion:(id)completion;
+- (void)fetchShareWithQos:(id)qos completion:(id)completion;
+- (void)saveZoneToDatabaseWithRetryCount:(int64_t)count qos:(id)qos completion:(id)completion;
+- (void)setupZoneAndShareWithConversation:(id)conversation qos:(id)qos completion:(id)completion;
+- (void)updateAccessDataRecord:(id *)record cacheReleaseTime:(id)time;
+- (void)updateAccessDataRecordWithCacheReleaseTime:(id)time qos:(id)qos completion:(id)completion;
+- (void)updateSafetyCacheRecordWithData:(id)data qos:(id)qos completion:(id)completion;
+- (void)updateSafetyCacheWithData:(id)data cacheReleaseTime:(id)time qos:(id)qos completion:(id)completion;
 @end
 
 @implementation SMSafetyCacheZone
 
-- (SMSafetyCacheZone)initWithSessionID:(id)a3 ownerName:(id)a4 token:(id)a5 defaultsManager:(id)a6 queue:(id)a7
+- (SMSafetyCacheZone)initWithSessionID:(id)d ownerName:(id)name token:(id)token defaultsManager:(id)manager queue:(id)queue
 {
   v47 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = v17;
-  if (!v13)
+  dCopy = d;
+  nameCopy = name;
+  tokenCopy = token;
+  managerCopy = manager;
+  queueCopy = queue;
+  v18 = queueCopy;
+  if (!dCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -46,7 +46,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (!v14)
+  if (!nameCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -59,7 +59,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (!v15)
+  if (!tokenCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -72,7 +72,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (!v17)
+  if (!queueCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -83,11 +83,11 @@ LABEL_20:
     }
 
 LABEL_21:
-    v29 = 0;
+    selfCopy = 0;
     goto LABEL_22;
   }
 
-  v34 = v16;
+  v34 = managerCopy;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -97,20 +97,20 @@ LABEL_21:
       v21 = NSStringFromClass(v20);
       v32 = NSStringFromSelector(a2);
       *buf = 138413058;
-      v40 = v13;
+      v40 = dCopy;
       v41 = 2112;
       v42 = v21;
       v43 = 2112;
       v44 = v32;
       v45 = 2112;
-      v46 = v14;
+      v46 = nameCopy;
       _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_INFO, "#SafetyCache,Initiator,sessionID:%@,%@,%@,ownerName,%@", buf, 0x2Au);
     }
   }
 
   v22 = objc_alloc(MEMORY[0x277CBC5F8]);
-  v23 = [v13 UUIDString];
-  v24 = [v22 initWithZoneName:v23 ownerName:v14];
+  uUIDString = [dCopy UUIDString];
+  v24 = [v22 initWithZoneName:uUIDString ownerName:nameCopy];
 
   v25 = [objc_alloc(MEMORY[0x277CBC5E8]) initWithZoneID:v24];
   v38.receiver = self;
@@ -120,27 +120,27 @@ LABEL_21:
   if (v26)
   {
     v33 = v25;
-    objc_storeStrong(&v26->_token, a5);
-    objc_storeStrong(p_isa + 8, a6);
-    v28 = [p_isa queue];
+    objc_storeStrong(&v26->_token, token);
+    objc_storeStrong(p_isa + 8, manager);
+    queue = [p_isa queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __77__SMSafetyCacheZone_initWithSessionID_ownerName_token_defaultsManager_queue___block_invoke;
     block[3] = &unk_2788C52E8;
     v36 = p_isa;
     v37 = a2;
-    dispatch_async(v28, block);
+    dispatch_async(queue, block);
 
     v25 = v33;
   }
 
   self = p_isa;
 
-  v29 = self;
-  v16 = v34;
+  selfCopy = self;
+  managerCopy = v34;
 LABEL_22:
 
-  return v29;
+  return selfCopy;
 }
 
 void __77__SMSafetyCacheZone_initWithSessionID_ownerName_token_defaultsManager_queue___block_invoke(uint64_t a1)
@@ -186,14 +186,14 @@ void __77__SMSafetyCacheZone_initWithSessionID_ownerName_token_defaultsManager_q
   }
 }
 
-- (void)setupZoneAndShareWithConversation:(id)a3 qos:(id)a4 completion:(id)a5
+- (void)setupZoneAndShareWithConversation:(id)conversation qos:(id)qos completion:(id)completion
 {
   v81 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  conversationCopy = conversation;
+  qosCopy = qos;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (!conversationCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -205,7 +205,7 @@ void __77__SMSafetyCacheZone_initWithSessionID_ownerName_token_defaultsManager_q
     goto LABEL_21;
   }
 
-  if (!v11)
+  if (!completionCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -249,12 +249,12 @@ LABEL_21:
   aBlock[4] = self;
   v63 = v71;
   v64 = a2;
-  v13 = v10;
+  v13 = qosCopy;
   v58 = v13;
   v59 = v12;
   v36 = _Block_copy(aBlock);
-  v14 = [(SMSafetyCacheZone *)self defaultsManager];
-  v15 = [v14 objectForKey:@"RTDefaultsSafetyCacheCloudKitZoneTTL"];
+  defaultsManager = [(SMSafetyCacheZone *)self defaultsManager];
+  v15 = [defaultsManager objectForKey:@"RTDefaultsSafetyCacheCloudKitZoneTTL"];
 
   if (!v15)
   {
@@ -270,13 +270,13 @@ LABEL_21:
     v17 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v35 = [(SMCloudKitZone *)self zoneID];
-      v18 = [v35 zoneName];
+      zoneID = [(SMCloudKitZone *)self zoneID];
+      zoneName = [zoneID zoneName];
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
       v21 = NSStringFromSelector(a2);
       *buf = 138413058;
-      *&buf[4] = v18;
+      *&buf[4] = zoneName;
       *&buf[12] = 2112;
       *&buf[14] = v20;
       *&buf[22] = 2112;
@@ -341,7 +341,7 @@ LABEL_21:
   v42 = v71;
   v38[4] = self;
   v43 = a2;
-  v39 = v9;
+  v39 = conversationCopy;
   v33 = v27;
   v40 = v33;
   [(SMSafetyCacheZone *)self fetchShareParticipantsWithRetryCount:2 conversation:v39 qos:v13 completion:v38];
@@ -552,12 +552,12 @@ void __70__SMSafetyCacheZone_setupZoneAndShareWithConversation_qos_completion___
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)saveZoneToDatabaseWithRetryCount:(int64_t)a3 qos:(id)a4 completion:(id)a5
+- (void)saveZoneToDatabaseWithRetryCount:(int64_t)count qos:(id)qos completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  if (a3 < 0)
+  qosCopy = qos;
+  completionCopy = completion;
+  if (count < 0)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -569,26 +569,26 @@ void __70__SMSafetyCacheZone_setupZoneAndShareWithConversation_qos_completion___
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: pendingRetryCount >= 0 (in %s:%d)", buf, 0x12u);
     }
 
-    if (v9)
+    if (qosCopy)
     {
       goto LABEL_3;
     }
   }
 
-  else if (v9)
+  else if (qosCopy)
   {
 LABEL_3:
-    v11 = [(SMCloudKitZone *)self privateDatabase];
+    privateDatabase = [(SMCloudKitZone *)self privateDatabase];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __69__SMSafetyCacheZone_saveZoneToDatabaseWithRetryCount_qos_completion___block_invoke;
     v14[3] = &unk_2788CF630;
     v14[4] = self;
     v17 = a2;
-    v16 = v10;
-    v18 = a3;
-    v15 = v9;
-    [(SMCloudKitZone *)self saveZoneToDatabase:v11 qos:v15 withCompletion:v14];
+    v16 = completionCopy;
+    countCopy = count;
+    v15 = qosCopy;
+    [(SMCloudKitZone *)self saveZoneToDatabase:privateDatabase qos:v15 withCompletion:v14];
 
     goto LABEL_10;
   }
@@ -708,13 +708,13 @@ LABEL_16:
 LABEL_14:
 }
 
-- (void)fetchShareParticipantsWithRetryCount:(int64_t)a3 conversation:(id)a4 qos:(id)a5 completion:(id)a6
+- (void)fetchShareParticipantsWithRetryCount:(int64_t)count conversation:(id)conversation qos:(id)qos completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (a3 < 0)
+  conversationCopy = conversation;
+  qosCopy = qos;
+  completionCopy = completion;
+  if (count < 0)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -726,10 +726,10 @@ LABEL_14:
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: pendingRetryCount >= 0 (in %s:%d)", buf, 0x12u);
     }
 
-    if (v11)
+    if (conversationCopy)
     {
 LABEL_3:
-      if (v12)
+      if (qosCopy)
       {
         goto LABEL_14;
       }
@@ -738,7 +738,7 @@ LABEL_3:
     }
   }
 
-  else if (v11)
+  else if (conversationCopy)
   {
     goto LABEL_3;
   }
@@ -753,7 +753,7 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: conversation (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v12)
+  if (!qosCopy)
   {
 LABEL_11:
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -773,14 +773,14 @@ LABEL_14:
   v20[2] = __86__SMSafetyCacheZone_fetchShareParticipantsWithRetryCount_conversation_qos_completion___block_invoke;
   v20[3] = &unk_2788CF658;
   v20[4] = self;
-  v21 = v11;
+  v21 = conversationCopy;
   v24 = a2;
-  v25 = a3;
-  v22 = v12;
-  v23 = v13;
-  v17 = v12;
-  v18 = v13;
-  v19 = v11;
+  countCopy = count;
+  v22 = qosCopy;
+  v23 = completionCopy;
+  v17 = qosCopy;
+  v18 = completionCopy;
+  v19 = conversationCopy;
   [(SMCloudKitZone *)self fetchShareParticipantsWithConversation:v19 qos:v17 completion:v20];
 }
 
@@ -903,14 +903,14 @@ LABEL_17:
 LABEL_15:
 }
 
-- (void)createRecordsWithParticipants:(id)a3 qos:(id)a4 completion:(id)a5
+- (void)createRecordsWithParticipants:(id)participants qos:(id)qos completion:(id)completion
 {
   v88 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v7)
+  participantsCopy = participants;
+  qosCopy = qos;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (!participantsCopy)
   {
     v45 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -925,7 +925,7 @@ LABEL_25:
     goto LABEL_28;
   }
 
-  if (!v8)
+  if (!qosCopy)
   {
     v45 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -938,7 +938,7 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  if (!v9)
+  if (!completionCopy)
   {
     v45 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -951,16 +951,16 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v52 = v9;
-  v53 = v8;
+  v52 = completionCopy;
+  v53 = qosCopy;
   v11 = objc_alloc(MEMORY[0x277CBC5A0]);
-  v12 = [(SMSafetyCacheZone *)self safetyCacheRecordID];
-  v13 = [v11 initWithRecordType:@"SafetyCacheRecord" recordID:v12];
+  safetyCacheRecordID = [(SMSafetyCacheZone *)self safetyCacheRecordID];
+  v13 = [v11 initWithRecordType:@"SafetyCacheRecord" recordID:safetyCacheRecordID];
   [(SMSafetyCacheZone *)self setSafetyCacheRecord:v13];
 
   v14 = objc_alloc(MEMORY[0x277CBC5A0]);
-  v15 = [(SMSafetyCacheZone *)self accessDataRecordID];
-  v16 = [v14 initWithRecordType:@"AccessDataRecord" recordID:v15];
+  accessDataRecordID = [(SMSafetyCacheZone *)self accessDataRecordID];
+  v16 = [v14 initWithRecordType:@"AccessDataRecord" recordID:accessDataRecordID];
 
   v73 = v16;
   v17 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:7200.0];
@@ -970,17 +970,17 @@ LABEL_25:
   v51 = v18;
   [(SMSafetyCacheZone *)self setAccessDataRecord:v18];
   v19 = objc_alloc(MEMORY[0x277CBC680]);
-  v20 = [(SMCloudKitZone *)self zoneID];
-  v21 = [v19 initWithRecordZoneID:v20];
+  zoneID = [(SMCloudKitZone *)self zoneID];
+  v21 = [v19 initWithRecordZoneID:zoneID];
   [(SMCloudKitZone *)self setShare:v21];
 
-  v54 = v7;
-  v55 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  v54 = participantsCopy;
+  v55 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(participantsCopy, "count")}];
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v22 = v7;
+  v22 = participantsCopy;
   v23 = [v22 countByEnumeratingWithState:&v69 objects:v87 count:16];
   if (v23)
   {
@@ -1001,44 +1001,44 @@ LABEL_25:
         v28 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
-          v63 = [(SMCloudKitZone *)self zoneID];
-          v60 = [v63 zoneName];
+          zoneID2 = [(SMCloudKitZone *)self zoneID];
+          zoneName = [zoneID2 zoneName];
           v29 = objc_opt_class();
           v61 = NSStringFromClass(v29);
           v30 = NSStringFromSelector(a2);
-          v62 = [v27 userIdentity];
+          userIdentity = [v27 userIdentity];
           v31 = v24;
-          v32 = [v62 hasiCloudAccount];
-          v33 = [v27 userIdentity];
-          v34 = [v33 publicSharingKey];
+          hasiCloudAccount = [userIdentity hasiCloudAccount];
+          userIdentity2 = [v27 userIdentity];
+          publicSharingKey = [userIdentity2 publicSharingKey];
           *buf = 138413314;
-          v78 = v60;
+          v78 = zoneName;
           v79 = 2112;
           v80 = v61;
           v81 = 2112;
           v82 = v30;
           v83 = 1024;
-          v84 = v32;
+          v84 = hasiCloudAccount;
           v24 = v31;
           v85 = 2112;
-          v86 = v34;
+          v86 = publicSharingKey;
           _os_log_impl(&dword_2304B3000, v28, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Initiator,sessionID:%@,%@,%@,share participant,hasiCloudAccount,%d,publicSharingKey,%@", buf, 0x30u);
 
           v25 = v56;
           v22 = v57;
         }
 
-        v35 = [v27 userIdentity];
-        if ([v35 hasiCloudAccount])
+        userIdentity3 = [v27 userIdentity];
+        if ([userIdentity3 hasiCloudAccount])
         {
-          v36 = [v27 userIdentity];
-          v37 = [v36 publicSharingKey];
+          userIdentity4 = [v27 userIdentity];
+          publicSharingKey2 = [userIdentity4 publicSharingKey];
 
-          if (v37)
+          if (publicSharingKey2)
           {
             [v27 setPermission:2];
-            v38 = [(SMCloudKitZone *)self share];
-            [v38 addParticipant:v27];
+            share = [(SMCloudKitZone *)self share];
+            [share addParticipant:v27];
 
             [v55 addObject:v27];
           }
@@ -1058,14 +1058,14 @@ LABEL_25:
   v39 = v55;
   if ([v55 count])
   {
-    v40 = [(SMSafetyCacheZone *)self safetyCacheRecord];
-    v74[0] = v40;
-    v41 = [(SMSafetyCacheZone *)self accessDataRecord];
-    v74[1] = v41;
-    v42 = [(SMCloudKitZone *)self share];
-    v74[2] = v42;
+    safetyCacheRecord = [(SMSafetyCacheZone *)self safetyCacheRecord];
+    v74[0] = safetyCacheRecord;
+    accessDataRecord = [(SMSafetyCacheZone *)self accessDataRecord];
+    v74[1] = accessDataRecord;
+    share2 = [(SMCloudKitZone *)self share];
+    v74[2] = share2;
     v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v74 count:3];
-    v44 = [(SMCloudKitZone *)self privateDatabase];
+    privateDatabase = [(SMCloudKitZone *)self privateDatabase];
     v64[0] = MEMORY[0x277D85DD0];
     v64[1] = 3221225472;
     v64[2] = __66__SMSafetyCacheZone_createRecordsWithParticipants_qos_completion___block_invoke;
@@ -1076,8 +1076,8 @@ LABEL_25:
     v67 = v52;
     v65 = v22;
     v66 = v55;
-    v8 = v53;
-    [(SMCloudKitZone *)self saveRecordsWithRetry:2 records:v43 toDatabase:v44 qos:v53 withCompletion:v64];
+    qosCopy = v53;
+    [(SMCloudKitZone *)self saveRecordsWithRetry:2 records:v43 toDatabase:privateDatabase qos:v53 withCompletion:v64];
 
     v39 = v55;
   }
@@ -1093,10 +1093,10 @@ LABEL_25:
     v10 = v52;
     (v52)[2](v52, 0, v50);
 
-    v8 = v53;
+    qosCopy = v53;
   }
 
-  v7 = v54;
+  participantsCopy = v54;
   v45 = v51;
 LABEL_28:
 }
@@ -1315,14 +1315,14 @@ void __66__SMSafetyCacheZone_createRecordsWithParticipants_qos_completion___bloc
   }
 }
 
-- (void)updateSafetyCacheWithData:(id)a3 cacheReleaseTime:(id)a4 qos:(id)a5 completion:(id)a6
+- (void)updateSafetyCacheWithData:(id)data cacheReleaseTime:(id)time qos:(id)qos completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v11)
+  dataCopy = data;
+  timeCopy = time;
+  qosCopy = qos;
+  completionCopy = completion;
+  v15 = completionCopy;
+  if (!dataCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1339,7 +1339,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (!v14)
+  if (!completionCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1373,12 +1373,12 @@ LABEL_10:
   v26 = v35;
   v27 = buf;
   v25 = v37;
-  v23 = self;
+  selfCopy = self;
   v28 = a2;
-  v24 = v14;
+  v24 = completionCopy;
   v16 = _Block_copy(&v19);
-  [(SMSafetyCacheZone *)self updateSafetyCacheRecordWithData:v11 qos:v13 completion:v16, v19, v20, v21, v22, v23];
-  [(SMSafetyCacheZone *)self updateAccessDataRecordWithCacheReleaseTime:v12 qos:v13 completion:v16];
+  [(SMSafetyCacheZone *)self updateSafetyCacheRecordWithData:dataCopy qos:qosCopy completion:v16, v19, v20, v21, v22, selfCopy];
+  [(SMSafetyCacheZone *)self updateAccessDataRecordWithCacheReleaseTime:timeCopy qos:qosCopy completion:v16];
 
   _Block_object_dispose(buf, 8);
   _Block_object_dispose(v35, 8);
@@ -1430,12 +1430,12 @@ void __79__SMSafetyCacheZone_updateSafetyCacheWithData_cacheReleaseTime_qos_comp
   }
 }
 
-- (void)fetchSafetyCacheRecordsWithQos:(id)a3 completion:(id)a4
+- (void)fetchSafetyCacheRecordsWithQos:(id)qos completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  qosCopy = qos;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (completionCopy)
   {
     v30[0] = 0;
     v30[1] = v30;
@@ -1458,13 +1458,13 @@ void __79__SMSafetyCacheZone_updateSafetyCacheWithData_cacheReleaseTime_qos_comp
     v19 = v28;
     v20 = buf;
     v18 = v30;
-    v16 = self;
+    selfCopy = self;
     v21 = a2;
-    v17 = v8;
+    v17 = completionCopy;
     v10 = _Block_copy(&v12);
-    [(SMSafetyCacheZone *)self fetchSafetyCacheRecordWithQos:v7 completion:v10, v12, v13, v14, v15, v16];
-    [(SMSafetyCacheZone *)self fetchAccessDataRecordWithQos:v7 completion:v10];
-    [(SMSafetyCacheZone *)self fetchShareWithQos:v7 completion:v10];
+    [(SMSafetyCacheZone *)self fetchSafetyCacheRecordWithQos:qosCopy completion:v10, v12, v13, v14, v15, selfCopy];
+    [(SMSafetyCacheZone *)self fetchAccessDataRecordWithQos:qosCopy completion:v10];
+    [(SMSafetyCacheZone *)self fetchShareWithQos:qosCopy completion:v10];
 
     _Block_object_dispose(buf, 8);
     _Block_object_dispose(v28, 8);
@@ -1529,19 +1529,19 @@ void __63__SMSafetyCacheZone_fetchSafetyCacheRecordsWithQos_completion___block_i
 - (CKRecordID)safetyCacheRecordID
 {
   v3 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v4 = [(SMCloudKitZone *)self zoneID];
-  v5 = [v3 initWithRecordName:@"SafetyCache" zoneID:v4];
+  zoneID = [(SMCloudKitZone *)self zoneID];
+  v5 = [v3 initWithRecordName:@"SafetyCache" zoneID:zoneID];
 
   return v5;
 }
 
-- (void)updateSafetyCacheRecordWithData:(id)a3 qos:(id)a4 completion:(id)a5
+- (void)updateSafetyCacheRecordWithData:(id)data qos:(id)qos completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  dataCopy = data;
+  qosCopy = qos;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (!dataCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1556,7 +1556,7 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  if (!v11)
+  if (!completionCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1569,13 +1569,13 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v13 = [(SMSafetyCacheZone *)self safetyCacheRecordID];
-  v14 = [(SMCloudKitZone *)self privateDatabase];
+  safetyCacheRecordID = [(SMSafetyCacheZone *)self safetyCacheRecordID];
+  privateDatabase = [(SMCloudKitZone *)self privateDatabase];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __68__SMSafetyCacheZone_updateSafetyCacheRecordWithData_qos_completion___block_invoke;
   v20[3] = &unk_2788CF6F8;
-  v21 = v9;
+  v21 = dataCopy;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __68__SMSafetyCacheZone_updateSafetyCacheRecordWithData_qos_completion___block_invoke_63;
@@ -1583,7 +1583,7 @@ LABEL_9:
   v17[4] = self;
   v19 = a2;
   v18 = v12;
-  [(SMCloudKitZone *)self updateRecord:v13 inDatabase:v14 qos:v10 usingBlock:v20 withCompletion:v17];
+  [(SMCloudKitZone *)self updateRecord:safetyCacheRecordID inDatabase:privateDatabase qos:qosCopy usingBlock:v20 withCompletion:v17];
 
   v15 = v21;
 LABEL_7:
@@ -1661,22 +1661,22 @@ void __68__SMSafetyCacheZone_updateSafetyCacheRecordWithData_qos_completion___bl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchSafetyCacheRecordWithQos:(id)a3 completion:(id)a4
+- (void)fetchSafetyCacheRecordWithQos:(id)qos completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  qosCopy = qos;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v9 = [(SMSafetyCacheZone *)self safetyCacheRecordID];
-    v10 = [(SMCloudKitZone *)self privateDatabase];
+    safetyCacheRecordID = [(SMSafetyCacheZone *)self safetyCacheRecordID];
+    privateDatabase = [(SMCloudKitZone *)self privateDatabase];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __62__SMSafetyCacheZone_fetchSafetyCacheRecordWithQos_completion___block_invoke;
     v12[3] = &unk_2788C7BD0;
     v12[4] = self;
     v14 = a2;
-    v13 = v8;
-    [(SMCloudKitZone *)self fetchRecord:v9 fromDatabase:v10 qos:v7 withCompletion:v12];
+    v13 = completionCopy;
+    [(SMCloudKitZone *)self fetchRecord:safetyCacheRecordID fromDatabase:privateDatabase qos:qosCopy withCompletion:v12];
   }
 
   else
@@ -1744,13 +1744,13 @@ void __62__SMSafetyCacheZone_fetchSafetyCacheRecordWithQos_completion___block_in
 
 - (NSData)phoneSafetyCache
 {
-  v3 = [(SMSafetyCacheZone *)self safetyCacheRecord];
+  safetyCacheRecord = [(SMSafetyCacheZone *)self safetyCacheRecord];
 
-  if (v3)
+  if (safetyCacheRecord)
   {
-    v4 = [(SMSafetyCacheZone *)self safetyCacheRecord];
-    v5 = [v4 encryptedValues];
-    v6 = [v5 objectForKeyedSubscript:@"PhoneSafetyCacheEncryptedData"];
+    safetyCacheRecord2 = [(SMSafetyCacheZone *)self safetyCacheRecord];
+    encryptedValues = [safetyCacheRecord2 encryptedValues];
+    v6 = [encryptedValues objectForKeyedSubscript:@"PhoneSafetyCacheEncryptedData"];
   }
 
   else
@@ -1763,13 +1763,13 @@ void __62__SMSafetyCacheZone_fetchSafetyCacheRecordWithQos_completion___block_in
 
 - (NSData)watchSafetyCache
 {
-  v3 = [(SMSafetyCacheZone *)self safetyCacheRecord];
+  safetyCacheRecord = [(SMSafetyCacheZone *)self safetyCacheRecord];
 
-  if (v3)
+  if (safetyCacheRecord)
   {
-    v4 = [(SMSafetyCacheZone *)self safetyCacheRecord];
-    v5 = [v4 encryptedValues];
-    v6 = [v5 objectForKeyedSubscript:@"WatchSafetyCacheEncryptedData"];
+    safetyCacheRecord2 = [(SMSafetyCacheZone *)self safetyCacheRecord];
+    encryptedValues = [safetyCacheRecord2 encryptedValues];
+    v6 = [encryptedValues objectForKeyedSubscript:@"WatchSafetyCacheEncryptedData"];
   }
 
   else
@@ -1783,35 +1783,35 @@ void __62__SMSafetyCacheZone_fetchSafetyCacheRecordWithQos_completion___block_in
 - (CKRecordID)accessDataRecordID
 {
   v3 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v4 = [(SMCloudKitZone *)self zoneID];
-  v5 = [v3 initWithRecordName:@"AccessData" zoneID:v4];
+  zoneID = [(SMCloudKitZone *)self zoneID];
+  v5 = [v3 initWithRecordName:@"AccessData" zoneID:zoneID];
 
   return v5;
 }
 
-- (void)updateAccessDataRecordWithCacheReleaseTime:(id)a3 qos:(id)a4 completion:(id)a5
+- (void)updateAccessDataRecordWithCacheReleaseTime:(id)time qos:(id)qos completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  timeCopy = time;
+  qosCopy = qos;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v12 = [(SMSafetyCacheZone *)self accessDataRecordID];
-    v13 = [(SMCloudKitZone *)self privateDatabase];
+    accessDataRecordID = [(SMSafetyCacheZone *)self accessDataRecordID];
+    privateDatabase = [(SMCloudKitZone *)self privateDatabase];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __79__SMSafetyCacheZone_updateAccessDataRecordWithCacheReleaseTime_qos_completion___block_invoke;
     v18[3] = &unk_2788CF720;
     v18[4] = self;
-    v19 = v9;
+    v19 = timeCopy;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __79__SMSafetyCacheZone_updateAccessDataRecordWithCacheReleaseTime_qos_completion___block_invoke_65;
     v15[3] = &unk_2788C7BD0;
     v15[4] = self;
     v17 = a2;
-    v16 = v11;
-    [(SMCloudKitZone *)self updateRecord:v12 inDatabase:v13 qos:v10 usingBlock:v18 withCompletion:v15];
+    v16 = completionCopy;
+    [(SMCloudKitZone *)self updateRecord:accessDataRecordID inDatabase:privateDatabase qos:qosCopy usingBlock:v18 withCompletion:v15];
   }
 
   else
@@ -1900,22 +1900,22 @@ void __79__SMSafetyCacheZone_updateAccessDataRecordWithCacheReleaseTime_qos_comp
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchAccessDataRecordWithQos:(id)a3 completion:(id)a4
+- (void)fetchAccessDataRecordWithQos:(id)qos completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  qosCopy = qos;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v9 = [(SMSafetyCacheZone *)self accessDataRecordID];
-    v10 = [(SMCloudKitZone *)self privateDatabase];
+    accessDataRecordID = [(SMSafetyCacheZone *)self accessDataRecordID];
+    privateDatabase = [(SMCloudKitZone *)self privateDatabase];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __61__SMSafetyCacheZone_fetchAccessDataRecordWithQos_completion___block_invoke;
     v12[3] = &unk_2788C7BD0;
     v12[4] = self;
     v14 = a2;
-    v13 = v8;
-    [(SMCloudKitZone *)self fetchRecord:v9 fromDatabase:v10 qos:v7 withCompletion:v12];
+    v13 = completionCopy;
+    [(SMCloudKitZone *)self fetchRecord:accessDataRecordID fromDatabase:privateDatabase qos:qosCopy withCompletion:v12];
   }
 
   else
@@ -1981,11 +1981,11 @@ void __61__SMSafetyCacheZone_fetchAccessDataRecordWithQos_completion___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchShareWithQos:(id)a3 completion:(id)a4
+- (void)fetchShareWithQos:(id)qos completion:(id)completion
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -1993,8 +1993,8 @@ void __61__SMSafetyCacheZone_fetchAccessDataRecordWithQos_completion___block_inv
     v10[3] = &unk_2788CF748;
     v10[4] = self;
     v12 = a2;
-    v11 = v7;
-    [(SMCloudKitZone *)self fetchShareWithQos:a3 withCompletion:v10];
+    v11 = completionCopy;
+    [(SMCloudKitZone *)self fetchShareWithQos:qos withCompletion:v10];
   }
 
   else
@@ -2060,23 +2060,23 @@ void __50__SMSafetyCacheZone_fetchShareWithQos_completion___block_invoke(uint64_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)updateAccessDataRecord:(id *)a3 cacheReleaseTime:(id)a4
+- (void)updateAccessDataRecord:(id *)record cacheReleaseTime:(id)time
 {
-  v7 = a4;
-  v6 = [(SMSafetyCacheZone *)self token];
-  [*a3 setObject:v6 forKeyedSubscript:@"Token"];
+  timeCopy = time;
+  token = [(SMSafetyCacheZone *)self token];
+  [*record setObject:token forKeyedSubscript:@"Token"];
 
-  [*a3 setObject:v7 forKeyedSubscript:@"CacheReleaseTime"];
+  [*record setObject:timeCopy forKeyedSubscript:@"CacheReleaseTime"];
 }
 
 - (NSData)allowReadToken
 {
-  v3 = [(SMSafetyCacheZone *)self accessDataRecord];
-  if (v3 && (v4 = v3, -[SMSafetyCacheZone accessDataRecord](self, "accessDataRecord"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:@"Token"], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, v6))
+  accessDataRecord = [(SMSafetyCacheZone *)self accessDataRecord];
+  if (accessDataRecord && (v4 = accessDataRecord, -[SMSafetyCacheZone accessDataRecord](self, "accessDataRecord"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:@"Token"], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, v6))
   {
     v7 = objc_alloc(MEMORY[0x277CBEA90]);
-    v8 = [(SMSafetyCacheZone *)self accessDataRecord];
-    v9 = [v8 objectForKeyedSubscript:@"Token"];
+    accessDataRecord2 = [(SMSafetyCacheZone *)self accessDataRecord];
+    v9 = [accessDataRecord2 objectForKeyedSubscript:@"Token"];
     v10 = [v7 initWithBase64EncodedString:v9 options:0];
   }
 
@@ -2090,11 +2090,11 @@ void __50__SMSafetyCacheZone_fetchShareWithQos_completion___block_invoke(uint64_
 
 - (NSDate)releaseTime
 {
-  v3 = [(SMSafetyCacheZone *)self accessDataRecord];
-  if (v3 && (v4 = v3, -[SMSafetyCacheZone accessDataRecord](self, "accessDataRecord"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:@"CacheReleaseTime"], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, v6))
+  accessDataRecord = [(SMSafetyCacheZone *)self accessDataRecord];
+  if (accessDataRecord && (v4 = accessDataRecord, -[SMSafetyCacheZone accessDataRecord](self, "accessDataRecord"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:@"CacheReleaseTime"], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, v6))
   {
-    v7 = [(SMSafetyCacheZone *)self accessDataRecord];
-    v8 = [v7 objectForKeyedSubscript:@"CacheReleaseTime"];
+    accessDataRecord2 = [(SMSafetyCacheZone *)self accessDataRecord];
+    v8 = [accessDataRecord2 objectForKeyedSubscript:@"CacheReleaseTime"];
   }
 
   else

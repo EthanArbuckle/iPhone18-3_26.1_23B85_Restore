@@ -3,42 +3,42 @@
 - (CPSDaemonConnection)init;
 - (NSXPCConnection)xpcConnection;
 - (NSXPCConnection)xpcConnectionNotEntitled;
-- (void)cancelPrewarmingClipWithURL:(id)a3 completionHandler:(id)a4;
-- (void)checkAndConsumeShowsAppAttributionBannerForBundleID:(id)a3 completion:(id)a4;
-- (void)confirmLocationWithURL:(id)a3 inRegion:(id)a4 completion:(id)a5;
-- (void)didDetermineAvailability:(BOOL)a3 options:(id)a4;
-- (void)didFinishLoadingWithError:(id)a3;
-- (void)didFinishTestingAtTime:(double)a3;
+- (void)cancelPrewarmingClipWithURL:(id)l completionHandler:(id)handler;
+- (void)checkAndConsumeShowsAppAttributionBannerForBundleID:(id)d completion:(id)completion;
+- (void)confirmLocationWithURL:(id)l inRegion:(id)region completion:(id)completion;
+- (void)didDetermineAvailability:(BOOL)availability options:(id)options;
+- (void)didFinishLoadingWithError:(id)error;
+- (void)didFinishTestingAtTime:(double)time;
 - (void)didInstallApplicationPlaceholder;
-- (void)didRetrieveApplicationIcon:(id)a3;
-- (void)didRetrieveBusinessIcon:(id)a3;
-- (void)didRetrieveHeroImage:(id)a3;
-- (void)didUpdateInstallProgress:(id)a3;
-- (void)didUpdateMetadata:(id)a3;
-- (void)fetchABRMetadataForDiagnosticsWithURL:(id)a3 completion:(id)a4;
-- (void)fetchAMPMetadataForDiagnosticsWithBundleID:(id)a3 completion:(id)a4;
-- (void)fetchClipMetadataAndImagesWithURL:(id)a3 completionHandler:(id)a4;
-- (void)fetchClipMetadataWithURL:(id)a3 completionHandler:(id)a4;
-- (void)fetchClipURLWithURLHash:(id)a3 completionHandler:(id)a4;
-- (void)fetchWebClipsURLStringForClientBundleID:(id)a3 completion:(id)a4;
-- (void)fetchWebClipsUUIDStringForClientBundleID:(id)a3 completion:(id)a4;
-- (void)getLastLaunchOptionsWithBundleID:(id)a3 completion:(id)a4;
-- (void)getUserNotificationConsentForBundleID:(id)a3 completion:(id)a4;
-- (void)getWebClipDictionaryWithIdentifier:(id)a3 completion:(id)a4;
-- (void)installClipWithURL:(id)a3 completionHandler:(id)a4;
-- (void)isClipURL:(id)a3 completionHandler:(id)a4;
-- (void)notifyWebClipActivationWithBundleID:(id)a3 referrerBundleID:(id)a4;
-- (void)openClipWithInvocationUIIfNeededWithURL:(id)a3 completionHandler:(id)a4;
-- (void)openClipWithURL:(id)a3 completionHandler:(id)a4;
-- (void)openClipWithURL:(id)a3 launchOptions:(id)a4 completion:(id)a5;
-- (void)performValidationWithRequest:(id)a3 completion:(id)a4;
-- (void)prewarmClipWithURL:(id)a3 completionHandler:(id)a4;
-- (void)registerSessionProxy:(id)a3;
+- (void)didRetrieveApplicationIcon:(id)icon;
+- (void)didRetrieveBusinessIcon:(id)icon;
+- (void)didRetrieveHeroImage:(id)image;
+- (void)didUpdateInstallProgress:(id)progress;
+- (void)didUpdateMetadata:(id)metadata;
+- (void)fetchABRMetadataForDiagnosticsWithURL:(id)l completion:(id)completion;
+- (void)fetchAMPMetadataForDiagnosticsWithBundleID:(id)d completion:(id)completion;
+- (void)fetchClipMetadataAndImagesWithURL:(id)l completionHandler:(id)handler;
+- (void)fetchClipMetadataWithURL:(id)l completionHandler:(id)handler;
+- (void)fetchClipURLWithURLHash:(id)hash completionHandler:(id)handler;
+- (void)fetchWebClipsURLStringForClientBundleID:(id)d completion:(id)completion;
+- (void)fetchWebClipsUUIDStringForClientBundleID:(id)d completion:(id)completion;
+- (void)getLastLaunchOptionsWithBundleID:(id)d completion:(id)completion;
+- (void)getUserNotificationConsentForBundleID:(id)d completion:(id)completion;
+- (void)getWebClipDictionaryWithIdentifier:(id)identifier completion:(id)completion;
+- (void)installClipWithURL:(id)l completionHandler:(id)handler;
+- (void)isClipURL:(id)l completionHandler:(id)handler;
+- (void)notifyWebClipActivationWithBundleID:(id)d referrerBundleID:(id)iD;
+- (void)openClipWithInvocationUIIfNeededWithURL:(id)l completionHandler:(id)handler;
+- (void)openClipWithURL:(id)l completionHandler:(id)handler;
+- (void)openClipWithURL:(id)l launchOptions:(id)options completion:(id)completion;
+- (void)performValidationWithRequest:(id)request completion:(id)completion;
+- (void)prewarmClipWithURL:(id)l completionHandler:(id)handler;
+- (void)registerSessionProxy:(id)proxy;
 - (void)remoteServiceDidCrash;
-- (void)stopStallingCurrentInstallationWithCompletionHandler:(id)a3;
-- (void)uninstallClipWithURL:(id)a3 completionHandler:(id)a4;
-- (void)uninstallClipsWithBundleIDs:(id)a3 completionHandler:(id)a4;
-- (void)unregisterSessionProxy:(id)a3;
+- (void)stopStallingCurrentInstallationWithCompletionHandler:(id)handler;
+- (void)uninstallClipWithURL:(id)l completionHandler:(id)handler;
+- (void)uninstallClipsWithBundleIDs:(id)ds completionHandler:(id)handler;
+- (void)unregisterSessionProxy:(id)proxy;
 @end
 
 @implementation CPSDaemonConnection
@@ -234,18 +234,18 @@ uint64_t __44__CPSDaemonConnection_remoteServiceDidCrash__block_invoke(uint64_t 
   return [v4 remoteServiceDidCrash];
 }
 
-- (void)didDetermineAvailability:(BOOL)a3 options:(id)a4
+- (void)didDetermineAvailability:(BOOL)availability options:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__CPSDaemonConnection_didDetermineAvailability_options___block_invoke;
   block[3] = &unk_278DCF148;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = optionsCopy;
+  availabilityCopy = availability;
+  v8 = optionsCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -268,45 +268,45 @@ uint64_t __56__CPSDaemonConnection_didDetermineAvailability_options___block_invo
   return [v5 didDetermineAvailability:v6];
 }
 
-- (void)didUpdateMetadata:(id)a3
+- (void)didUpdateMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   connectionQueue = self->_connectionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__CPSDaemonConnection_didUpdateMetadata___block_invoke;
   v7[3] = &unk_278DCDE58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = metadataCopy;
+  v6 = metadataCopy;
   dispatch_async(connectionQueue, v7);
 }
 
-- (void)didFinishLoadingWithError:(id)a3
+- (void)didFinishLoadingWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   connectionQueue = self->_connectionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__CPSDaemonConnection_didFinishLoadingWithError___block_invoke;
   v7[3] = &unk_278DCDE58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(connectionQueue, v7);
 }
 
-- (void)didUpdateInstallProgress:(id)a3
+- (void)didUpdateInstallProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   connectionQueue = self->_connectionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__CPSDaemonConnection_didUpdateInstallProgress___block_invoke;
   v7[3] = &unk_278DCDE58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = progressCopy;
+  v6 = progressCopy;
   dispatch_async(connectionQueue, v7);
 }
 
@@ -321,35 +321,35 @@ uint64_t __56__CPSDaemonConnection_didDetermineAvailability_options___block_invo
   dispatch_async(connectionQueue, block);
 }
 
-- (void)didRetrieveApplicationIcon:(id)a3
+- (void)didRetrieveApplicationIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   connectionQueue = self->_connectionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__CPSDaemonConnection_didRetrieveApplicationIcon___block_invoke;
   v7[3] = &unk_278DCDE58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = iconCopy;
+  v6 = iconCopy;
   dispatch_async(connectionQueue, v7);
 }
 
-- (void)didRetrieveHeroImage:(id)a3
+- (void)didRetrieveHeroImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   connectionQueue = self->_connectionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__CPSDaemonConnection_didRetrieveHeroImage___block_invoke;
   v7[3] = &unk_278DCDE58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = imageCopy;
+  v6 = imageCopy;
   dispatch_async(connectionQueue, v7);
 }
 
-- (void)didFinishTestingAtTime:(double)a3
+- (void)didFinishTestingAtTime:(double)time
 {
   connectionQueue = self->_connectionQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -357,7 +357,7 @@ uint64_t __56__CPSDaemonConnection_didDetermineAvailability_options___block_invo
   v4[2] = __46__CPSDaemonConnection_didFinishTestingAtTime___block_invoke;
   v4[3] = &unk_278DCE278;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = time;
   dispatch_async(connectionQueue, v4);
 }
 
@@ -375,31 +375,31 @@ uint64_t __46__CPSDaemonConnection_didFinishTestingAtTime___block_invoke(uint64_
   return result;
 }
 
-- (void)didRetrieveBusinessIcon:(id)a3
+- (void)didRetrieveBusinessIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   connectionQueue = self->_connectionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__CPSDaemonConnection_didRetrieveBusinessIcon___block_invoke;
   v7[3] = &unk_278DCDE58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = iconCopy;
+  v6 = iconCopy;
   dispatch_async(connectionQueue, v7);
 }
 
-- (void)registerSessionProxy:(id)a3
+- (void)registerSessionProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   connectionQueue = self->_connectionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__CPSDaemonConnection_registerSessionProxy___block_invoke;
   v7[3] = &unk_278DCDE58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = proxyCopy;
+  v6 = proxyCopy;
   dispatch_async(connectionQueue, v7);
 }
 
@@ -447,17 +447,17 @@ void __44__CPSDaemonConnection_registerSessionProxy___block_invoke_132(uint64_t 
   }
 }
 
-- (void)unregisterSessionProxy:(id)a3
+- (void)unregisterSessionProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   connectionQueue = self->_connectionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__CPSDaemonConnection_unregisterSessionProxy___block_invoke;
   v7[3] = &unk_278DCDE58;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = proxyCopy;
+  selfCopy = self;
+  v6 = proxyCopy;
   dispatch_async(connectionQueue, v7);
 }
 
@@ -507,20 +507,20 @@ void __46__CPSDaemonConnection_unregisterSessionProxy___block_invoke_136(uint64_
   }
 }
 
-- (void)isClipURL:(id)a3 completionHandler:(id)a4
+- (void)isClipURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__CPSDaemonConnection_isClipURL_completionHandler___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = lCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = lCopy;
+  v10 = handlerCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -554,20 +554,20 @@ void __51__CPSDaemonConnection_isClipURL_completionHandler___block_invoke_2(uint
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchClipMetadataAndImagesWithURL:(id)a3 completionHandler:(id)a4
+- (void)fetchClipMetadataAndImagesWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__CPSDaemonConnection_fetchClipMetadataAndImagesWithURL_completionHandler___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = lCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = lCopy;
+  v10 = handlerCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -637,20 +637,20 @@ void __75__CPSDaemonConnection_fetchClipMetadataAndImagesWithURL_completionHandl
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prewarmClipWithURL:(id)a3 completionHandler:(id)a4
+- (void)prewarmClipWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__CPSDaemonConnection_prewarmClipWithURL_completionHandler___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = lCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = lCopy;
+  v10 = handlerCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -720,20 +720,20 @@ void __60__CPSDaemonConnection_prewarmClipWithURL_completionHandler___block_invo
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelPrewarmingClipWithURL:(id)a3 completionHandler:(id)a4
+- (void)cancelPrewarmingClipWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__CPSDaemonConnection_cancelPrewarmingClipWithURL_completionHandler___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = lCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = lCopy;
+  v10 = handlerCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -803,20 +803,20 @@ void __69__CPSDaemonConnection_cancelPrewarmingClipWithURL_completionHandler___b
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openClipWithURL:(id)a3 completionHandler:(id)a4
+- (void)openClipWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__CPSDaemonConnection_openClipWithURL_completionHandler___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = lCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = lCopy;
+  v10 = handlerCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -886,20 +886,20 @@ void __57__CPSDaemonConnection_openClipWithURL_completionHandler___block_invoke_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)installClipWithURL:(id)a3 completionHandler:(id)a4
+- (void)installClipWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__CPSDaemonConnection_installClipWithURL_completionHandler___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = lCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = lCopy;
+  v10 = handlerCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -948,20 +948,20 @@ uint64_t __60__CPSDaemonConnection_installClipWithURL_completionHandler___block_
   return result;
 }
 
-- (void)uninstallClipWithURL:(id)a3 completionHandler:(id)a4
+- (void)uninstallClipWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__CPSDaemonConnection_uninstallClipWithURL_completionHandler___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = lCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = lCopy;
+  v10 = handlerCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -1010,20 +1010,20 @@ uint64_t __62__CPSDaemonConnection_uninstallClipWithURL_completionHandler___bloc
   return result;
 }
 
-- (void)uninstallClipsWithBundleIDs:(id)a3 completionHandler:(id)a4
+- (void)uninstallClipsWithBundleIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__CPSDaemonConnection_uninstallClipsWithBundleIDs_completionHandler___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = dsCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dsCopy;
+  v10 = handlerCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -1072,20 +1072,20 @@ uint64_t __69__CPSDaemonConnection_uninstallClipsWithBundleIDs_completionHandler
   return result;
 }
 
-- (void)fetchClipMetadataWithURL:(id)a3 completionHandler:(id)a4
+- (void)fetchClipMetadataWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__CPSDaemonConnection_fetchClipMetadataWithURL_completionHandler___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = lCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = lCopy;
+  v10 = handlerCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -1134,20 +1134,20 @@ uint64_t __66__CPSDaemonConnection_fetchClipMetadataWithURL_completionHandler___
   return result;
 }
 
-- (void)fetchClipURLWithURLHash:(id)a3 completionHandler:(id)a4
+- (void)fetchClipURLWithURLHash:(id)hash completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  hashCopy = hash;
+  handlerCopy = handler;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__CPSDaemonConnection_fetchClipURLWithURLHash_completionHandler___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = hashCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = hashCopy;
+  v10 = handlerCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -1178,20 +1178,20 @@ void __65__CPSDaemonConnection_fetchClipURLWithURLHash_completionHandler___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)openClipWithInvocationUIIfNeededWithURL:(id)a3 completionHandler:(id)a4
+- (void)openClipWithInvocationUIIfNeededWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__CPSDaemonConnection_openClipWithInvocationUIIfNeededWithURL_completionHandler___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = lCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = lCopy;
+  v10 = handlerCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -1225,17 +1225,17 @@ void __81__CPSDaemonConnection_openClipWithInvocationUIIfNeededWithURL_completio
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)stopStallingCurrentInstallationWithCompletionHandler:(id)a3
+- (void)stopStallingCurrentInstallationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   connectionQueue = self->_connectionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__CPSDaemonConnection_stopStallingCurrentInstallationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278DCDD70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(connectionQueue, v7);
 }
 
@@ -1268,23 +1268,23 @@ void __76__CPSDaemonConnection_stopStallingCurrentInstallationWithCompletionHand
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)openClipWithURL:(id)a3 launchOptions:(id)a4 completion:(id)a5
+- (void)openClipWithURL:(id)l launchOptions:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  optionsCopy = options;
+  completionCopy = completion;
   connectionQueue = self->_connectionQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __64__CPSDaemonConnection_openClipWithURL_launchOptions_completion___block_invoke;
   v15[3] = &unk_278DCF198;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = lCopy;
+  v17 = optionsCopy;
+  v18 = completionCopy;
+  v12 = optionsCopy;
+  v13 = lCopy;
+  v14 = completionCopy;
   dispatch_async(connectionQueue, v15);
 }
 
@@ -1342,20 +1342,20 @@ void __64__CPSDaemonConnection_openClipWithURL_launchOptions_completion___block_
   }
 }
 
-- (void)getUserNotificationConsentForBundleID:(id)a3 completion:(id)a4
+- (void)getUserNotificationConsentForBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__CPSDaemonConnection_getUserNotificationConsentForBundleID_completion___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = dCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dCopy;
+  v10 = completionCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -1405,20 +1405,20 @@ void __72__CPSDaemonConnection_getUserNotificationConsentForBundleID_completion_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)notifyWebClipActivationWithBundleID:(id)a3 referrerBundleID:(id)a4
+- (void)notifyWebClipActivationWithBundleID:(id)d referrerBundleID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__CPSDaemonConnection_notifyWebClipActivationWithBundleID_referrerBundleID___block_invoke;
   block[3] = &unk_278DCE110;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = iDCopy;
+  v9 = iDCopy;
+  v10 = dCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -1452,20 +1452,20 @@ void __76__CPSDaemonConnection_notifyWebClipActivationWithBundleID_referrerBundl
   }
 }
 
-- (void)getLastLaunchOptionsWithBundleID:(id)a3 completion:(id)a4
+- (void)getLastLaunchOptionsWithBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__CPSDaemonConnection_getLastLaunchOptionsWithBundleID_completion___block_invoke;
   block[3] = &unk_278DCDCF8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -1486,20 +1486,20 @@ void __67__CPSDaemonConnection_getLastLaunchOptionsWithBundleID_completion___blo
   }
 }
 
-- (void)checkAndConsumeShowsAppAttributionBannerForBundleID:(id)a3 completion:(id)a4
+- (void)checkAndConsumeShowsAppAttributionBannerForBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__CPSDaemonConnection_checkAndConsumeShowsAppAttributionBannerForBundleID_completion___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = dCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dCopy;
+  v10 = completionCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -1526,23 +1526,23 @@ void __86__CPSDaemonConnection_checkAndConsumeShowsAppAttributionBannerForBundle
   }
 }
 
-- (void)confirmLocationWithURL:(id)a3 inRegion:(id)a4 completion:(id)a5
+- (void)confirmLocationWithURL:(id)l inRegion:(id)region completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  regionCopy = region;
+  completionCopy = completion;
   connectionQueue = self->_connectionQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __66__CPSDaemonConnection_confirmLocationWithURL_inRegion_completion___block_invoke;
   v15[3] = &unk_278DCE070;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = lCopy;
+  v17 = regionCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = regionCopy;
+  v14 = lCopy;
   dispatch_async(connectionQueue, v15);
 }
 
@@ -1563,20 +1563,20 @@ void __66__CPSDaemonConnection_confirmLocationWithURL_inRegion_completion___bloc
   }
 }
 
-- (void)performValidationWithRequest:(id)a3 completion:(id)a4
+- (void)performValidationWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__CPSDaemonConnection_performValidationWithRequest_completion___block_invoke;
   block[3] = &unk_278DCDCF8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -1597,20 +1597,20 @@ void __63__CPSDaemonConnection_performValidationWithRequest_completion___block_i
   }
 }
 
-- (void)fetchAMPMetadataForDiagnosticsWithBundleID:(id)a3 completion:(id)a4
+- (void)fetchAMPMetadataForDiagnosticsWithBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__CPSDaemonConnection_fetchAMPMetadataForDiagnosticsWithBundleID_completion___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = dCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dCopy;
+  v10 = completionCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -1637,20 +1637,20 @@ void __77__CPSDaemonConnection_fetchAMPMetadataForDiagnosticsWithBundleID_comple
   }
 }
 
-- (void)fetchABRMetadataForDiagnosticsWithURL:(id)a3 completion:(id)a4
+- (void)fetchABRMetadataForDiagnosticsWithURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__CPSDaemonConnection_fetchABRMetadataForDiagnosticsWithURL_completion___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = lCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = lCopy;
+  v10 = completionCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -1677,20 +1677,20 @@ void __72__CPSDaemonConnection_fetchABRMetadataForDiagnosticsWithURL_completion_
   }
 }
 
-- (void)fetchWebClipsUUIDStringForClientBundleID:(id)a3 completion:(id)a4
+- (void)fetchWebClipsUUIDStringForClientBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__CPSDaemonConnection_fetchWebClipsUUIDStringForClientBundleID_completion___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = dCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dCopy;
+  v10 = completionCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -1717,20 +1717,20 @@ void __75__CPSDaemonConnection_fetchWebClipsUUIDStringForClientBundleID_completi
   }
 }
 
-- (void)fetchWebClipsURLStringForClientBundleID:(id)a3 completion:(id)a4
+- (void)fetchWebClipsURLStringForClientBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__CPSDaemonConnection_fetchWebClipsURLStringForClientBundleID_completion___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = dCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dCopy;
+  v10 = completionCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -1757,20 +1757,20 @@ void __74__CPSDaemonConnection_fetchWebClipsURLStringForClientBundleID_completio
   }
 }
 
-- (void)getWebClipDictionaryWithIdentifier:(id)a3 completion:(id)a4
+- (void)getWebClipDictionaryWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__CPSDaemonConnection_getWebClipDictionaryWithIdentifier_completion___block_invoke;
   block[3] = &unk_278DCF078;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = completionCopy;
   dispatch_async(connectionQueue, block);
 }
 

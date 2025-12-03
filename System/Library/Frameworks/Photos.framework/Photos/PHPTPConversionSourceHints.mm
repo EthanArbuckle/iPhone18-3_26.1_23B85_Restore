@@ -1,29 +1,29 @@
 @interface PHPTPConversionSourceHints
-+ (id)hintsForPTPAsset:(id)a3 isVideo:(BOOL)a4 isRender:(BOOL)a5;
-- (PHPTPConversionSourceHints)initWithPTPAsset:(id)a3 isVideo:(BOOL)a4 isRender:(BOOL)a5;
++ (id)hintsForPTPAsset:(id)asset isVideo:(BOOL)video isRender:(BOOL)render;
+- (PHPTPConversionSourceHints)initWithPTPAsset:(id)asset isVideo:(BOOL)video isRender:(BOOL)render;
 @end
 
 @implementation PHPTPConversionSourceHints
 
-- (PHPTPConversionSourceHints)initWithPTPAsset:(id)a3 isVideo:(BOOL)a4 isRender:(BOOL)a5
+- (PHPTPConversionSourceHints)initWithPTPAsset:(id)asset isVideo:(BOOL)video isRender:(BOOL)render
 {
-  v8 = a3;
+  assetCopy = asset;
   v14.receiver = self;
   v14.super_class = PHPTPConversionSourceHints;
   v9 = [(PHPTPConversionSourceHints *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_isVideo = a4;
-    v9->_isRender = a5;
-    if ([v8 isPhoto])
+    v9->_isVideo = video;
+    v9->_isRender = render;
+    if ([assetCopy isPhoto])
     {
-      if ([v8 isPartOfLivePhoto])
+      if ([assetCopy isPartOfLivePhoto])
       {
         v10->_isLivePhoto = 1;
-        v11 = [v8 contentType];
+        contentType = [assetCopy contentType];
         livePhotoImageContentType = v10->_livePhotoImageContentType;
-        v10->_livePhotoImageContentType = v11;
+        v10->_livePhotoImageContentType = contentType;
       }
     }
   }
@@ -31,12 +31,12 @@
   return v10;
 }
 
-+ (id)hintsForPTPAsset:(id)a3 isVideo:(BOOL)a4 isRender:(BOOL)a5
++ (id)hintsForPTPAsset:(id)asset isVideo:(BOOL)video isRender:(BOOL)render
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [[a1 alloc] initWithPTPAsset:v8 isVideo:v6 isRender:v5];
+  renderCopy = render;
+  videoCopy = video;
+  assetCopy = asset;
+  v9 = [[self alloc] initWithPTPAsset:assetCopy isVideo:videoCopy isRender:renderCopy];
 
   return v9;
 }

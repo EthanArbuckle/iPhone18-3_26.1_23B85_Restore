@@ -7,8 +7,8 @@
 - (void)main
 {
   v3 = [HDCloudSyncFetchSharesOperation alloc];
-  v4 = [(HDCloudSyncOperation *)self configuration];
-  v5 = [(HDCloudSyncFetchSharesOperation *)v3 initWithConfiguration:v4 cloudState:0];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  v5 = [(HDCloudSyncFetchSharesOperation *)v3 initWithConfiguration:configuration cloudState:0];
 
   [(HDCloudSyncFetchSharesOperation *)v5 setFetchAllShares:self->_fetchAllShares];
   v10[0] = MEMORY[0x277D85DD0];
@@ -23,10 +23,10 @@
   v9[3] = &unk_278613088;
   v9[4] = self;
   [(HDCloudSyncOperation *)v5 setOnError:v9];
-  v6 = [(HDCloudSyncOperation *)self progress];
-  v7 = [(HDCloudSyncOperation *)v5 progress];
-  v8 = [(HDCloudSyncOperation *)self progress];
-  [v6 addChild:v7 withPendingUnitCount:{objc_msgSend(v8, "totalUnitCount")}];
+  progress = [(HDCloudSyncOperation *)self progress];
+  progress2 = [(HDCloudSyncOperation *)v5 progress];
+  progress3 = [(HDCloudSyncOperation *)self progress];
+  [progress addChild:progress2 withPendingUnitCount:{objc_msgSend(progress3, "totalUnitCount")}];
 
   [(HDCloudSyncOperation *)v5 start];
 }

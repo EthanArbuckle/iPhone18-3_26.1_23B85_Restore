@@ -1,27 +1,27 @@
 @interface _MFDelayedNotification
-- (_MFDelayedNotification)initWithNotificationMessage:(id)a3 identifier:(id)a4 submissionDate:(double)a5 context:(id)a6;
+- (_MFDelayedNotification)initWithNotificationMessage:(id)message identifier:(id)identifier submissionDate:(double)date context:(id)context;
 @end
 
 @implementation _MFDelayedNotification
 
-- (_MFDelayedNotification)initWithNotificationMessage:(id)a3 identifier:(id)a4 submissionDate:(double)a5 context:(id)a6
+- (_MFDelayedNotification)initWithNotificationMessage:(id)message identifier:(id)identifier submissionDate:(double)date context:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  messageCopy = message;
+  identifierCopy = identifier;
+  contextCopy = context;
   v20.receiver = self;
   v20.super_class = _MFDelayedNotification;
   v14 = [(_MFDelayedNotification *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_notificationMessage, a3);
-    v16 = [v12 copy];
+    objc_storeStrong(&v14->_notificationMessage, message);
+    v16 = [identifierCopy copy];
     identifier = v15->_identifier;
     v15->_identifier = v16;
 
-    v15->_submissionDate = a5;
-    objc_storeStrong(&v15->_context, a6);
+    v15->_submissionDate = date;
+    objc_storeStrong(&v15->_context, context);
     atomic_store(0, &v15->_invalidated);
     atomic_store(0, &v15->_processing);
     v18 = v15;

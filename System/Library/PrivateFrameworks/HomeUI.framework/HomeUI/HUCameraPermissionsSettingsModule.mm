@@ -1,69 +1,69 @@
 @interface HUCameraPermissionsSettingsModule
-- (BOOL)isItemHeader:(id)a3;
-- (HUCameraPermissionsSettingsModule)initWithItemUpdater:(id)a3;
-- (HUCameraPermissionsSettingsModule)initWithItemUpdater:(id)a3 home:(id)a4 displayStyle:(unint64_t)a5;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (id)didSelectItem:(id)a3;
-- (unint64_t)accessModeSettingForUser:(id)a3;
+- (BOOL)isItemHeader:(id)header;
+- (HUCameraPermissionsSettingsModule)initWithItemUpdater:(id)updater;
+- (HUCameraPermissionsSettingsModule)initWithItemUpdater:(id)updater home:(id)home displayStyle:(unint64_t)style;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (id)didSelectItem:(id)item;
+- (unint64_t)accessModeSettingForUser:(id)user;
 - (void)_buildItemProviders;
 @end
 
 @implementation HUCameraPermissionsSettingsModule
 
-- (HUCameraPermissionsSettingsModule)initWithItemUpdater:(id)a3 home:(id)a4 displayStyle:(unint64_t)a5
+- (HUCameraPermissionsSettingsModule)initWithItemUpdater:(id)updater home:(id)home displayStyle:(unint64_t)style
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  updaterCopy = updater;
+  homeCopy = home;
+  if (!homeCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HUCameraPermissionsSettingsModule.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUCameraPermissionsSettingsModule.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
   }
 
   v16.receiver = self;
   v16.super_class = HUCameraPermissionsSettingsModule;
-  v11 = [(HFItemModule *)&v16 initWithItemUpdater:v9];
+  v11 = [(HFItemModule *)&v16 initWithItemUpdater:updaterCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_home, a4);
+    objc_storeStrong(&v11->_home, home);
     userSectionModules = v12->_userSectionModules;
     v12->_userSectionModules = MEMORY[0x277CBEBF8];
 
-    v12->_displayStyle = a5;
+    v12->_displayStyle = style;
     [(HUCameraPermissionsSettingsModule *)v12 _buildItemProviders];
   }
 
   return v12;
 }
 
-- (HUCameraPermissionsSettingsModule)initWithItemUpdater:(id)a3
+- (HUCameraPermissionsSettingsModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_home_displayStyle_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUCameraPermissionsSettingsModule.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HUCameraPermissionsSettingsModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCameraPermissionsSettingsModule.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HUCameraPermissionsSettingsModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
 
-- (BOOL)isItemHeader:(id)a3
+- (BOOL)isItemHeader:(id)header
 {
-  v4 = a3;
-  v5 = [(HUCameraPermissionsSettingsModule *)self headerItemProvider];
-  v6 = [v5 items];
-  v7 = [v6 containsObject:v4];
+  headerCopy = header;
+  headerItemProvider = [(HUCameraPermissionsSettingsModule *)self headerItemProvider];
+  items = [headerItemProvider items];
+  v7 = [items containsObject:headerCopy];
 
   return v7;
 }
 
-- (unint64_t)accessModeSettingForUser:(id)a3
+- (unint64_t)accessModeSettingForUser:(id)user
 {
-  v4 = a3;
-  v5 = [(HUCameraPermissionsSettingsModule *)self home];
-  v6 = [v5 homeAccessControlForUser:v4];
+  userCopy = user;
+  home = [(HUCameraPermissionsSettingsModule *)self home];
+  v6 = [home homeAccessControlForUser:userCopy];
 
-  v7 = [v6 camerasAccessLevel];
-  return v7;
+  camerasAccessLevel = [v6 camerasAccessLevel];
+  return camerasAccessLevel;
 }
 
 - (void)_buildItemProviders
@@ -78,15 +78,15 @@
   v6 = [v4 initWithItems:v5];
   [(HUCameraPermissionsSettingsModule *)self setHeaderItemProvider:v6];
 
-  v7 = [(HUCameraPermissionsSettingsModule *)self home];
-  v8 = [v7 hf_allNonOwnerUsers];
+  home = [(HUCameraPermissionsSettingsModule *)self home];
+  hf_allNonOwnerUsers = [home hf_allNonOwnerUsers];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __56__HUCameraPermissionsSettingsModule__buildItemProviders__block_invoke_2;
   v24[3] = &unk_277DB7D60;
-  v25 = v7;
-  v9 = v7;
-  v10 = [v8 na_filter:v24];
+  v25 = home;
+  v9 = home;
+  v10 = [hf_allNonOwnerUsers na_filter:v24];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -97,19 +97,19 @@
   [(HUCameraPermissionsSettingsModule *)self setUserSectionModules:v11];
 
   v12 = MEMORY[0x277CBEB98];
-  v13 = [(HUCameraPermissionsSettingsModule *)self expandableModules];
-  v14 = [v12 setWithArray:v13];
+  expandableModules = [(HUCameraPermissionsSettingsModule *)self expandableModules];
+  v14 = [v12 setWithArray:expandableModules];
   v15 = [v14 na_flatMap:&__block_literal_global_11];
-  v16 = [(HUCameraPermissionsSettingsModule *)self headerItemProvider];
-  v17 = [v15 setByAddingObject:v16];
+  headerItemProvider = [(HUCameraPermissionsSettingsModule *)self headerItemProvider];
+  v17 = [v15 setByAddingObject:headerItemProvider];
   [(HUCameraPermissionsSettingsModule *)self setItemProviders:v17];
 
   v18 = MEMORY[0x277D14788];
-  v19 = [(HUCameraPermissionsSettingsModule *)self itemProviders];
-  v20 = [v18 requestToReloadItemProviders:v19 senderSelector:a2];
+  itemProviders = [(HUCameraPermissionsSettingsModule *)self itemProviders];
+  v20 = [v18 requestToReloadItemProviders:itemProviders senderSelector:a2];
 
-  v21 = [(HFItemModule *)self itemUpdater];
-  v22 = [v21 performItemUpdateRequest:v20];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v22 = [itemUpdater performItemUpdateRequest:v20];
 }
 
 id __56__HUCameraPermissionsSettingsModule__buildItemProviders__block_invoke(uint64_t a1)
@@ -151,23 +151,23 @@ HUCameraUserPermissionsSettingsModule *__56__HUCameraPermissionsSettingsModule__
   return v7;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"PermissionsOptionsHeader"];
-  v6 = [(HUCameraPermissionsSettingsModule *)self headerItemProvider];
-  v7 = [v6 items];
-  v8 = [v7 allObjects];
-  [v5 setItems:v8];
+  headerItemProvider = [(HUCameraPermissionsSettingsModule *)self headerItemProvider];
+  items = [headerItemProvider items];
+  allObjects = [items allObjects];
+  [v5 setItems:allObjects];
 
   v9 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = [(HUCameraPermissionsSettingsModule *)self expandableModules];
-  v11 = [v10 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  expandableModules = [(HUCameraPermissionsSettingsModule *)self expandableModules];
+  v11 = [expandableModules countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v11)
   {
     v12 = v11;
@@ -178,15 +178,15 @@ HUCameraUserPermissionsSettingsModule *__56__HUCameraPermissionsSettingsModule__
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(expandableModules);
         }
 
-        v15 = [*(*(&v22 + 1) + 8 * i) buildSectionsWithDisplayedItems:v4];
+        v15 = [*(*(&v22 + 1) + 8 * i) buildSectionsWithDisplayedItems:itemsCopy];
         v16 = [v15 na_flatMap:&__block_literal_global_35_0];
         [v9 addObjectsFromArray:v16];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v12 = [expandableModules countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v12);
@@ -198,29 +198,29 @@ HUCameraUserPermissionsSettingsModule *__56__HUCameraPermissionsSettingsModule__
   v26[0] = v5;
   v26[1] = v17;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
-  v20 = [v18 filterSections:v19 toDisplayedItems:v4];
+  v20 = [v18 filterSections:v19 toDisplayedItems:itemsCopy];
 
   return v20;
 }
 
-- (id)didSelectItem:(id)a3
+- (id)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__1;
   v16 = __Block_byref_object_dispose__1;
-  v17 = [MEMORY[0x277D2C900] futureWithNoResult];
-  v5 = [(HUCameraPermissionsSettingsModule *)self expandableModules];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
+  expandableModules = [(HUCameraPermissionsSettingsModule *)self expandableModules];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__HUCameraPermissionsSettingsModule_didSelectItem___block_invoke;
   v9[3] = &unk_277DB7DF0;
   v11 = &v12;
-  v6 = v4;
+  v6 = itemCopy;
   v10 = v6;
-  [v5 na_each:v9];
+  [expandableModules na_each:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);

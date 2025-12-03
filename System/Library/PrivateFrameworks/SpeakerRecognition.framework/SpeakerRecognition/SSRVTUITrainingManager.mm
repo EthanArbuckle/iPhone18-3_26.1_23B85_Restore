@@ -1,55 +1,55 @@
 @interface SSRVTUITrainingManager
-+ (SSRVTUITrainingManager)trainingManagerWithLocaleID:(id)a3 withAppDomain:(id)a4 withSiriSharedUserId:(id)a5;
++ (SSRVTUITrainingManager)trainingManagerWithLocaleID:(id)d withAppDomain:(id)domain withSiriSharedUserId:(id)id;
 + (id)sharedtrainingSessionQueue;
-- (BOOL)CSVTUITrainingSession:(id)a3 hasTrainUtterance:(id)a4 languageCode:(id)a5 payload:(BOOL)a6;
+- (BOOL)CSVTUITrainingSession:(id)session hasTrainUtterance:(id)utterance languageCode:(id)code payload:(BOOL)payload;
 - (BOOL)_createAudioAnalyzer;
 - (BOOL)_otaAssetsAvailable;
 - (BOOL)_setupAudioSession;
 - (BOOL)_shouldShowHeadsetDisconnectionMessage;
 - (BOOL)_startAudioSession;
 - (BOOL)_stopAudioSession;
-- (BOOL)cancelTrainingForID:(int64_t)a3;
+- (BOOL)cancelTrainingForID:(int64_t)d;
 - (BOOL)createKeywordDetector;
-- (SSRVTUITrainingManager)initWithLocaleIdentifier:(id)a3 withAppDomain:(id)a4 withSiriSharedUserId:(id)a5 withAudioProviderSelector:(id)a6 shouldTrainViaXPC:(BOOL)a7;
+- (SSRVTUITrainingManager)initWithLocaleIdentifier:(id)identifier withAppDomain:(id)domain withSiriSharedUserId:(id)id withAudioProviderSelector:(id)selector shouldTrainViaXPC:(BOOL)c;
 - (SSRVTUITrainingManagerDelegate)delegate;
 - (SSRVoiceProfile)voiceProfile;
 - (id)_fetchPreInstalledSecureAsset;
-- (id)_getAudioToneFileName:(int)a3;
-- (id)_secureAssetWithAssetResourcePathURL:(id)a3 assetFileName:(id)a4;
-- (id)cleanupWithCompletion:(id)a3;
-- (id)updateTrainingManagerForDevice:(unint64_t)a3 trainingDeviceUUIDList:(id)a4;
-- (int64_t)trainUtterance:(int64_t)a3 shouldUseASR:(BOOL)a4 mhUUID:(id)a5 completionWithResult:(id)a6;
+- (id)_getAudioToneFileName:(int)name;
+- (id)_secureAssetWithAssetResourcePathURL:(id)l assetFileName:(id)name;
+- (id)cleanupWithCompletion:(id)completion;
+- (id)updateTrainingManagerForDevice:(unint64_t)device trainingDeviceUUIDList:(id)list;
+- (int64_t)trainUtterance:(int64_t)utterance shouldUseASR:(BOOL)r mhUUID:(id)d completionWithResult:(id)result;
 - (unint64_t)_audioSource;
-- (unint64_t)_validateRecordingStartHostTime:(unint64_t)a3;
+- (unint64_t)_validateRecordingStartHostTime:(unint64_t)time;
 - (unint64_t)audioSource;
-- (void)CSVTUIRemoteTrainingSessionRMSAvailable:(float)a3;
-- (void)CSVTUITrainingSessionRMSAvailable:(float)a3;
+- (void)CSVTUIRemoteTrainingSessionRMSAvailable:(float)available;
+- (void)CSVTUITrainingSessionRMSAvailable:(float)available;
 - (void)CSVTUITrainingSessionStopListen;
-- (void)_createAudioSessionRecorderWithAudioProviderSelector:(id)a3;
+- (void)_createAudioSessionRecorderWithAudioProviderSelector:(id)selector;
 - (void)_destroyAudioSession;
 - (void)_fetchCurrentAsset;
 - (void)_logSessionSummary;
 - (void)_resetAudioAnalyzer;
-- (void)_updateAttemptForPageNumber:(unint64_t)a3;
-- (void)audioSessionDidStartRecording:(BOOL)a3 error:(id)a4;
-- (void)audioSessionDidStopRecording:(int64_t)a3;
-- (void)audioSessionErrorDidOccur:(id)a3;
-- (void)audioSessionRecordBufferAvailable:(id)a3;
+- (void)_updateAttemptForPageNumber:(unint64_t)number;
+- (void)audioSessionDidStartRecording:(BOOL)recording error:(id)error;
+- (void)audioSessionDidStopRecording:(int64_t)recording;
+- (void)audioSessionErrorDidOccur:(id)occur;
+- (void)audioSessionRecordBufferAvailable:(id)available;
 - (void)audioSessionUnsupportedAudioRoute;
-- (void)closeSessionBeforeStartWithStatus:(int)a3 successfully:(BOOL)a4 completionWithResult:(id)a5;
-- (void)closeSessionBeforeStartWithStatus:(int)a3 successfully:(BOOL)a4 withCompletion:(id)a5;
+- (void)closeSessionBeforeStartWithStatus:(int)status successfully:(BOOL)successfully completionWithResult:(id)result;
+- (void)closeSessionBeforeStartWithStatus:(int)status successfully:(BOOL)successfully withCompletion:(id)completion;
 - (void)createSpeechRecognizer;
 - (void)destroySpeakerTrainer;
 - (void)didDetectForceEndPoint;
-- (void)endpointer:(id)a3 didDetectHardEndpointAtTime:(double)a4;
-- (void)endpointer:(id)a3 didDetectStartpointAtTime:(double)a4;
-- (void)getAudioSessionID:(id)a3;
-- (void)playSoundEffectWithAudioTone:(int)a3;
-- (void)playSoundsEffect:(int64_t)a3;
-- (void)prepareWithCompletion:(id)a3;
-- (void)setLocaleIdentifier:(id)a3;
-- (void)setRecordingStartHostTime:(unint64_t)a3;
-- (void)setSuspendAudio:(BOOL)a3;
+- (void)endpointer:(id)endpointer didDetectHardEndpointAtTime:(double)time;
+- (void)endpointer:(id)endpointer didDetectStartpointAtTime:(double)time;
+- (void)getAudioSessionID:(id)d;
+- (void)playSoundEffectWithAudioTone:(int)tone;
+- (void)playSoundsEffect:(int64_t)effect;
+- (void)prepareWithCompletion:(id)completion;
+- (void)setLocaleIdentifier:(id)identifier;
+- (void)setRecordingStartHostTime:(unint64_t)time;
+- (void)setSuspendAudio:(BOOL)audio;
 - (void)startRMS;
 - (void)stopRMS;
 @end
@@ -63,7 +63,7 @@
   return WeakRetained;
 }
 
-- (void)CSVTUIRemoteTrainingSessionRMSAvailable:(float)a3
+- (void)CSVTUIRemoteTrainingSessionRMSAvailable:(float)available
 {
   if (self->_shouldTrainViaXPC)
   {
@@ -77,7 +77,7 @@
       if (v8)
       {
         v10 = objc_loadWeakRetained(&self->_delegate);
-        *&v9 = a3;
+        *&v9 = available;
         [v10 VTUITrainingManagerFeedLevel:v9];
       }
     }
@@ -108,7 +108,7 @@ void __48__SSRVTUITrainingManager_didDetectForceEndPoint__block_invoke(uint64_t 
   }
 }
 
-- (void)endpointer:(id)a3 didDetectHardEndpointAtTime:(double)a4
+- (void)endpointer:(id)endpointer didDetectHardEndpointAtTime:(double)time
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -137,7 +137,7 @@ uint64_t __65__SSRVTUITrainingManager_endpointer_didDetectHardEndpointAtTime___b
   return [v2 _resetAudioAnalyzer];
 }
 
-- (void)endpointer:(id)a3 didDetectStartpointAtTime:(double)a4
+- (void)endpointer:(id)endpointer didDetectStartpointAtTime:(double)time
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -185,17 +185,17 @@ void __59__SSRVTUITrainingManager_audioSessionUnsupportedAudioRoute__block_invok
   }
 }
 
-- (void)audioSessionErrorDidOccur:(id)a3
+- (void)audioSessionErrorDidOccur:(id)occur
 {
-  v4 = a3;
+  occurCopy = occur;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__SSRVTUITrainingManager_audioSessionErrorDidOccur___block_invoke;
   v7[3] = &unk_278579350;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = occurCopy;
+  v6 = occurCopy;
   dispatch_async(queue, v7);
 }
 
@@ -212,17 +212,17 @@ void __52__SSRVTUITrainingManager_audioSessionErrorDidOccur___block_invoke(uint6
   }
 }
 
-- (void)audioSessionRecordBufferAvailable:(id)a3
+- (void)audioSessionRecordBufferAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__SSRVTUITrainingManager_audioSessionRecordBufferAvailable___block_invoke;
   v7[3] = &unk_278579350;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = availableCopy;
+  selfCopy = self;
+  v6 = availableCopy;
   dispatch_async(queue, v7);
 }
 
@@ -263,7 +263,7 @@ void __60__SSRVTUITrainingManager_audioSessionRecordBufferAvailable___block_invo
   }
 }
 
-- (void)audioSessionDidStopRecording:(int64_t)a3
+- (void)audioSessionDidStopRecording:(int64_t)recording
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -271,7 +271,7 @@ void __60__SSRVTUITrainingManager_audioSessionRecordBufferAvailable___block_invo
   v4[2] = __55__SSRVTUITrainingManager_audioSessionDidStopRecording___block_invoke;
   v4[3] = &unk_278578170;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = recording;
   dispatch_async(queue, v4);
 }
 
@@ -299,18 +299,18 @@ void __55__SSRVTUITrainingManager_audioSessionDidStopRecording___block_invoke(ui
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionDidStartRecording:(BOOL)a3 error:(id)a4
+- (void)audioSessionDidStartRecording:(BOOL)recording error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__SSRVTUITrainingManager_audioSessionDidStartRecording_error___block_invoke;
   block[3] = &unk_278578210;
-  v11 = a3;
+  recordingCopy = recording;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_async(queue, block);
 }
 
@@ -327,15 +327,15 @@ void __62__SSRVTUITrainingManager_audioSessionDidStartRecording_error___block_in
   }
 }
 
-- (BOOL)CSVTUITrainingSession:(id)a3 hasTrainUtterance:(id)a4 languageCode:(id)a5 payload:(BOOL)a6
+- (BOOL)CSVTUITrainingSession:(id)session hasTrainUtterance:(id)utterance languageCode:(id)code payload:(BOOL)payload
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  utteranceCopy = utterance;
   v8 = +[SSRVoiceProfileComposer sharedTrainer];
   profile = self->_profile;
   currentAsset = self->_currentAsset;
   v17 = 0;
-  v11 = [v8 addUtterance:v7 toProfile:profile withAsset:currentAsset error:&v17];
+  v11 = [v8 addUtterance:utteranceCopy toProfile:profile withAsset:currentAsset error:&v17];
 
   v12 = v17;
   if ((v11 & 1) == 0)
@@ -413,7 +413,7 @@ id __87__SSRVTUITrainingManager_CSVTUITrainingSession_hasTrainUtterance_language
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CSVTUITrainingSessionRMSAvailable:(float)a3
+- (void)CSVTUITrainingSessionRMSAvailable:(float)available
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -425,7 +425,7 @@ id __87__SSRVTUITrainingManager_CSVTUITrainingSession_hasTrainUtterance_language
     if (v8)
     {
       v10 = objc_loadWeakRetained(&self->_delegate);
-      *&v9 = a3;
+      *&v9 = available;
       [v10 VTUITrainingManagerFeedLevel:v9];
     }
   }
@@ -477,9 +477,9 @@ uint64_t __34__SSRVTUITrainingManager_startRMS__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)setSuspendAudio:(BOOL)a3
+- (void)setSuspendAudio:(BOOL)audio
 {
-  v3 = a3;
+  audioCopy = audio;
   v14 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
@@ -487,7 +487,7 @@ uint64_t __34__SSRVTUITrainingManager_startRMS__block_invoke(uint64_t result)
     *buf = 136315394;
     v11 = "[SSRVTUITrainingManager setSuspendAudio:]";
     v12 = 1026;
-    v13 = v3;
+    v13 = audioCopy;
     _os_log_impl(&dword_225E12000, v5, OS_LOG_TYPE_DEFAULT, "%s Setting suspendAudio:[%{public}d]", buf, 0x12u);
   }
 
@@ -497,7 +497,7 @@ uint64_t __34__SSRVTUITrainingManager_startRMS__block_invoke(uint64_t result)
   v8[2] = __42__SSRVTUITrainingManager_setSuspendAudio___block_invoke;
   v8[3] = &unk_278579460;
   v8[4] = self;
-  v9 = v3;
+  v9 = audioCopy;
   dispatch_async(queue, v8);
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -543,13 +543,13 @@ uint64_t __42__SSRVTUITrainingManager_setSuspendAudio___block_invoke(uint64_t re
   return result;
 }
 
-- (unint64_t)_validateRecordingStartHostTime:(unint64_t)a3
+- (unint64_t)_validateRecordingStartHostTime:(unint64_t)time
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = mach_absolute_time();
-  if (v4 >= a3)
+  if (v4 >= time)
   {
-    [MEMORY[0x277D01798] hostTimeToSeconds:v4 - a3];
+    [MEMORY[0x277D01798] hostTimeToSeconds:v4 - time];
     v7 = v6;
     if (v6 > 4.0)
     {
@@ -564,7 +564,7 @@ uint64_t __42__SSRVTUITrainingManager_setSuspendAudio___block_invoke(uint64_t re
       }
 
       LODWORD(v9) = 4.0;
-      a3 = v4 - [MEMORY[0x277D01798] secondsToHostTime:v9];
+      time = v4 - [MEMORY[0x277D01798] secondsToHostTime:v9];
     }
   }
 
@@ -578,14 +578,14 @@ uint64_t __42__SSRVTUITrainingManager_setSuspendAudio___block_invoke(uint64_t re
       _os_log_error_impl(&dword_225E12000, v5, OS_LOG_TYPE_ERROR, "%s Asked to record in the future, using currentTime", &v12, 0xCu);
     }
 
-    a3 = v4;
+    time = v4;
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return a3;
+  return time;
 }
 
-- (void)setRecordingStartHostTime:(unint64_t)a3
+- (void)setRecordingStartHostTime:(unint64_t)time
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -593,7 +593,7 @@ uint64_t __42__SSRVTUITrainingManager_setSuspendAudio___block_invoke(uint64_t re
   v4[2] = __52__SSRVTUITrainingManager_setRecordingStartHostTime___block_invoke;
   v4[3] = &unk_278578170;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = time;
   dispatch_async(queue, v4);
 }
 
@@ -632,17 +632,17 @@ void __52__SSRVTUITrainingManager_setRecordingStartHostTime___block_invoke(uint6
   }
 }
 
-- (void)getAudioSessionID:(id)a3
+- (void)getAudioSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__SSRVTUITrainingManager_getAudioSessionID___block_invoke;
   v7[3] = &unk_278579618;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
@@ -864,17 +864,17 @@ uint64_t __37__SSRVTUITrainingManager_audioSource__block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (void)closeSessionBeforeStartWithStatus:(int)a3 successfully:(BOOL)a4 completionWithResult:(id)a5
+- (void)closeSessionBeforeStartWithStatus:(int)status successfully:(BOOL)successfully completionWithResult:(id)result
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  resultCopy = result;
   v9 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v18 = "[SSRVTUITrainingManager closeSessionBeforeStartWithStatus:successfully:completionWithResult:]";
     v19 = 1026;
-    v20 = a3;
+    statusCopy = status;
     _os_log_impl(&dword_225E12000, v9, OS_LOG_TYPE_DEFAULT, "%s Called with status : %{public}d", buf, 0x12u);
   }
 
@@ -883,10 +883,10 @@ uint64_t __37__SSRVTUITrainingManager_audioSource__block_invoke_3(uint64_t a1)
   v13[1] = 3221225472;
   v13[2] = __94__SSRVTUITrainingManager_closeSessionBeforeStartWithStatus_successfully_completionWithResult___block_invoke;
   v13[3] = &unk_278578198;
-  v15 = a3;
-  v14 = v8;
-  v16 = a4;
-  v11 = v8;
+  statusCopy2 = status;
+  v14 = resultCopy;
+  successfullyCopy = successfully;
+  v11 = resultCopy;
   dispatch_async(queue, v13);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -917,17 +917,17 @@ uint64_t __94__SSRVTUITrainingManager_closeSessionBeforeStartWithStatus_successf
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)closeSessionBeforeStartWithStatus:(int)a3 successfully:(BOOL)a4 withCompletion:(id)a5
+- (void)closeSessionBeforeStartWithStatus:(int)status successfully:(BOOL)successfully withCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   v9 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v18 = "[SSRVTUITrainingManager closeSessionBeforeStartWithStatus:successfully:withCompletion:]";
     v19 = 1026;
-    v20 = a3;
+    statusCopy = status;
     _os_log_impl(&dword_225E12000, v9, OS_LOG_TYPE_DEFAULT, "%s Called with status : %{public}d", buf, 0x12u);
   }
 
@@ -936,10 +936,10 @@ uint64_t __94__SSRVTUITrainingManager_closeSessionBeforeStartWithStatus_successf
   v13[1] = 3221225472;
   v13[2] = __88__SSRVTUITrainingManager_closeSessionBeforeStartWithStatus_successfully_withCompletion___block_invoke;
   v13[3] = &unk_278578198;
-  v14 = v8;
-  v15 = a3;
-  v16 = a4;
-  v11 = v8;
+  v14 = completionCopy;
+  statusCopy2 = status;
+  successfullyCopy = successfully;
+  v11 = completionCopy;
   dispatch_async(queue, v13);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -968,7 +968,7 @@ uint64_t __88__SSRVTUITrainingManager_closeSessionBeforeStartWithStatus_successf
   return result;
 }
 
-- (BOOL)cancelTrainingForID:(int64_t)a3
+- (BOOL)cancelTrainingForID:(int64_t)d
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D01970];
@@ -989,7 +989,7 @@ uint64_t __88__SSRVTUITrainingManager_closeSessionBeforeStartWithStatus_successf
     v11[2] = __46__SSRVTUITrainingManager_cancelTrainingForID___block_invoke;
     v11[3] = &unk_278578170;
     v11[4] = self;
-    v11[5] = a3;
+    v11[5] = d;
     v7 = v11;
   }
 
@@ -1018,7 +1018,7 @@ uint64_t __46__SSRVTUITrainingManager_cancelTrainingForID___block_invoke_2(uint6
   return [v2 endAudio];
 }
 
-- (void)playSoundEffectWithAudioTone:(int)a3
+- (void)playSoundEffectWithAudioTone:(int)tone
 {
   shouldTrainViaXPC = self->_shouldTrainViaXPC;
   queue = self->_queue;
@@ -1041,14 +1041,14 @@ uint64_t __46__SSRVTUITrainingManager_cancelTrainingForID___block_invoke_2(uint6
   v6[2] = v7;
   v6[3] = &unk_278579190;
   v6[4] = self;
-  *(v6 + 10) = a3;
+  *(v6 + 10) = tone;
   dispatch_async(queue, v6);
 }
 
-- (void)playSoundsEffect:(int64_t)a3
+- (void)playSoundsEffect:(int64_t)effect
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a3 >= 6)
+  if (effect >= 6)
   {
     v5 = *MEMORY[0x277D015D8];
     if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
@@ -1063,30 +1063,30 @@ uint64_t __46__SSRVTUITrainingManager_cancelTrainingForID___block_invoke_2(uint6
 
   else
   {
-    v3 = dword_225EA9E58[a3];
+    v3 = dword_225EA9E58[effect];
     v4 = *MEMORY[0x277D85DE8];
 
     [(SSRVTUITrainingManager *)self playSoundEffectWithAudioTone:v3];
   }
 }
 
-- (id)_getAudioToneFileName:(int)a3
+- (id)_getAudioToneFileName:(int)name
 {
   if (CSIsIOS())
   {
-    if (a3 > 6)
+    if (name > 6)
     {
       return 0;
     }
 
-    return off_278578230[a3];
+    return off_278578230[name];
   }
 
   v5 = CSIsOSX();
   result = 0;
-  if (v5 && a3 < 7)
+  if (v5 && name < 7)
   {
-    return off_278578230[a3];
+    return off_278578230[name];
   }
 
   return result;
@@ -1094,11 +1094,11 @@ uint64_t __46__SSRVTUITrainingManager_cancelTrainingForID___block_invoke_2(uint6
 
 - (void)_logSessionSummary
 {
-  v3 = [MEMORY[0x277D01908] sharedLogger];
-  [v3 logSiriSetupEnrollmentSessionSummaryWithSiriSetupID:self->_mhUUID lastOpenedPage:LODWORD(self->_lastAttemptedUtterance) completedPage:(LODWORD(self->_lastAttemptedUtterance) - 1) pageAttemptsMap:self->_pageAttemptMap];
+  mEMORY[0x277D01908] = [MEMORY[0x277D01908] sharedLogger];
+  [mEMORY[0x277D01908] logSiriSetupEnrollmentSessionSummaryWithSiriSetupID:self->_mhUUID lastOpenedPage:LODWORD(self->_lastAttemptedUtterance) completedPage:(LODWORD(self->_lastAttemptedUtterance) - 1) pageAttemptsMap:self->_pageAttemptMap];
 }
 
-- (void)_updateAttemptForPageNumber:(unint64_t)a3
+- (void)_updateAttemptForPageNumber:(unint64_t)number
 {
   pageAttemptMap = self->_pageAttemptMap;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
@@ -1107,7 +1107,7 @@ uint64_t __46__SSRVTUITrainingManager_cancelTrainingForID___block_invoke_2(uint6
   {
     v8 = MEMORY[0x277CCABB0];
     v9 = self->_pageAttemptMap;
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:number];
     v11 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v10];
     v14 = [v8 numberWithInteger:{objc_msgSend(v11, "integerValue") + 1}];
   }
@@ -1118,16 +1118,16 @@ uint64_t __46__SSRVTUITrainingManager_cancelTrainingForID___block_invoke_2(uint6
   }
 
   v12 = self->_pageAttemptMap;
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:number];
   [(NSMutableDictionary *)v12 setObject:v14 forKey:v13];
 }
 
-- (int64_t)trainUtterance:(int64_t)a3 shouldUseASR:(BOOL)a4 mhUUID:(id)a5 completionWithResult:(id)a6
+- (int64_t)trainUtterance:(int64_t)utterance shouldUseASR:(BOOL)r mhUUID:(id)d completionWithResult:(id)result
 {
-  v7 = a4;
+  rCopy = r;
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  resultCopy = result;
   v12 = MEMORY[0x277D01970];
   v13 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
@@ -1135,9 +1135,9 @@ uint64_t __46__SSRVTUITrainingManager_cancelTrainingForID___block_invoke_2(uint6
     *buf = 136315650;
     v33 = "[SSRVTUITrainingManager trainUtterance:shouldUseASR:mhUUID:completionWithResult:]";
     v34 = 2050;
-    v35 = a3;
+    utteranceCopy = utterance;
     v36 = 1026;
-    v37 = v7;
+    v37 = rCopy;
     _os_log_impl(&dword_225E12000, v13, OS_LOG_TYPE_DEFAULT, "%s BEGIN num:%{public}ld use:%{public}d", buf, 0x1Cu);
   }
 
@@ -1149,10 +1149,10 @@ uint64_t __46__SSRVTUITrainingManager_cancelTrainingForID___block_invoke_2(uint6
     block[2] = __82__SSRVTUITrainingManager_trainUtterance_shouldUseASR_mhUUID_completionWithResult___block_invoke;
     block[3] = &unk_278578120;
     block[4] = self;
-    v30 = a3;
-    v31 = v7;
-    v28 = v10;
-    v29 = v11;
+    utteranceCopy2 = utterance;
+    v31 = rCopy;
+    v28 = dCopy;
+    v29 = resultCopy;
     dispatch_async(queue, block);
 
     v15 = 0;
@@ -1167,11 +1167,11 @@ uint64_t __46__SSRVTUITrainingManager_cancelTrainingForID___block_invoke_2(uint6
     v21[3] = &unk_278578148;
     v21[4] = self;
     objc_copyWeak(v24, &location);
-    v22 = v10;
-    v16 = v11;
-    v25 = v7;
+    v22 = dCopy;
+    v16 = resultCopy;
+    v25 = rCopy;
     v23 = v16;
-    v24[1] = a3;
+    v24[1] = utterance;
     dispatch_async(MEMORY[0x277D85CD0], v21);
     v17 = *v12;
     if (os_log_type_enabled(*v12, OS_LOG_TYPE_DEFAULT))
@@ -1180,7 +1180,7 @@ uint64_t __46__SSRVTUITrainingManager_cancelTrainingForID___block_invoke_2(uint6
       *buf = 136315394;
       v33 = "[SSRVTUITrainingManager trainUtterance:shouldUseASR:mhUUID:completionWithResult:]";
       v34 = 2050;
-      v35 = sessionNumber;
+      utteranceCopy = sessionNumber;
       _os_log_impl(&dword_225E12000, v17, OS_LOG_TYPE_DEFAULT, "%s _sessionNumber [%{public}ld]", buf, 0x16u);
     }
 
@@ -1446,10 +1446,10 @@ uint64_t __65__SSRVTUITrainingManager_trainUtterance_shouldUseASR_completion___b
   self->_currentAsset = 0;
 }
 
-- (id)cleanupWithCompletion:(id)a3
+- (id)cleanupWithCompletion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
   {
@@ -1464,7 +1464,7 @@ uint64_t __65__SSRVTUITrainingManager_trainUtterance_shouldUseASR_completion___b
   v27[1] = 3221225472;
   v27[2] = __48__SSRVTUITrainingManager_cleanupWithCompletion___block_invoke;
   v27[3] = &unk_2785795F0;
-  v6 = v4;
+  v6 = completionCopy;
   v28 = v6;
   v7 = MEMORY[0x22AA71400](v27);
   if (self->_shouldTrainViaXPC)
@@ -1747,15 +1747,15 @@ uint64_t __48__SSRVTUITrainingManager_cleanupWithCompletion___block_invoke_2(uin
   return v11;
 }
 
-- (id)_secureAssetWithAssetResourcePathURL:(id)a3 assetFileName:(id)a4
+- (id)_secureAssetWithAssetResourcePathURL:(id)l assetFileName:(id)name
 {
   v4 = 0;
-  if (a3 && a4)
+  if (l && name)
   {
     v6 = MEMORY[0x277D01F40];
-    v7 = a4;
-    v8 = a3;
-    v4 = [[v6 alloc] initWithResourcePath:v8 assetFileName:v7 assetVersion:0 assetHash:0];
+    nameCopy = name;
+    lCopy = l;
+    v4 = [[v6 alloc] initWithResourcePath:lCopy assetFileName:nameCopy assetVersion:0 assetHash:0];
   }
 
   return v4;
@@ -1790,15 +1790,15 @@ uint64_t __48__SSRVTUITrainingManager_cleanupWithCompletion___block_invoke_2(uin
   return audioSession != 0;
 }
 
-- (void)prepareWithCompletion:(id)a3
+- (void)prepareWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __48__SSRVTUITrainingManager_prepareWithCompletion___block_invoke;
   v11[3] = &unk_278578080;
-  v12 = v4;
-  v5 = v4;
+  v12 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x22AA71400](v11);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1894,15 +1894,15 @@ void __48__SSRVTUITrainingManager_prepareWithCompletion___block_invoke_3(uint64_
       if ([MEMORY[0x277D018F8] supportsMphForLanguageCode:self->_locale])
       {
         v5 = [[CSVoiceTriggerUserSelectedPhrase alloc] initWithEndpointId:0];
-        v6 = [(CSVoiceTriggerUserSelectedPhrase *)v5 multiPhraseSelected];
+        multiPhraseSelected = [(CSVoiceTriggerUserSelectedPhrase *)v5 multiPhraseSelected];
       }
 
       else
       {
-        v6 = 0;
+        multiPhraseSelected = 0;
       }
 
-      v7 = [[CSVTUITwoPassKeywordDetector alloc] initWithAsset:self->_currentAsset supportMph:v6];
+      v7 = [[CSVTUITwoPassKeywordDetector alloc] initWithAsset:self->_currentAsset supportMph:multiPhraseSelected];
     }
 
     else
@@ -1944,11 +1944,11 @@ void __48__SSRVTUITrainingManager_prepareWithCompletion___block_invoke_3(uint64_
   return v9;
 }
 
-- (void)setLocaleIdentifier:(id)a3
+- (void)setLocaleIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  identifierCopy = identifier;
+  v6 = identifierCopy;
   if (self->_shouldTrainViaXPC)
   {
     queue = self->_queue;
@@ -1957,13 +1957,13 @@ void __48__SSRVTUITrainingManager_prepareWithCompletion___block_invoke_3(uint64_
     v14[2] = __46__SSRVTUITrainingManager_setLocaleIdentifier___block_invoke;
     v14[3] = &unk_278579350;
     v14[4] = self;
-    v15 = v5;
+    v15 = identifierCopy;
     dispatch_async(queue, v14);
   }
 
   else
   {
-    objc_storeStrong(&self->_locale, a3);
+    objc_storeStrong(&self->_locale, identifier);
     [(SSRVTUITrainingManager *)self _fetchCurrentAsset];
     if (self->_keywordDetector)
     {
@@ -1973,9 +1973,9 @@ void __48__SSRVTUITrainingManager_prepareWithCompletion___block_invoke_3(uint64_
     currentAsset = self->_currentAsset;
     if (currentAsset)
     {
-      v9 = [(CSAsset *)currentAsset configVersion];
+      configVersion = [(CSAsset *)currentAsset configVersion];
       vtAssetConfigVersion = self->_vtAssetConfigVersion;
-      self->_vtAssetConfigVersion = v9;
+      self->_vtAssetConfigVersion = configVersion;
     }
 
     v11 = *MEMORY[0x277D01970];
@@ -2012,9 +2012,9 @@ void __48__SSRVTUITrainingManager_prepareWithCompletion___block_invoke_3(uint64_
       _os_log_impl(&dword_225E12000, v7, OS_LOG_TYPE_DEFAULT, "%s Cannot find voicetrigger asset from asset manager, let's fallback to asset in the framework", &v13, 0xCu);
     }
 
-    v8 = [MEMORY[0x277D015F8] defaultFallBackAssetForVoiceTrigger];
+    defaultFallBackAssetForVoiceTrigger = [MEMORY[0x277D015F8] defaultFallBackAssetForVoiceTrigger];
     v9 = self->_currentAsset;
-    self->_currentAsset = v8;
+    self->_currentAsset = defaultFallBackAssetForVoiceTrigger;
   }
 
   v10 = *v6;
@@ -2031,19 +2031,19 @@ void __48__SSRVTUITrainingManager_prepareWithCompletion___block_invoke_3(uint64_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)updateTrainingManagerForDevice:(unint64_t)a3 trainingDeviceUUIDList:(id)a4
+- (id)updateTrainingManagerForDevice:(unint64_t)device trainingDeviceUUIDList:(id)list
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  listCopy = list;
   v6 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_INFO))
   {
     v9 = 136315651;
     v10 = "[SSRVTUITrainingManager updateTrainingManagerForDevice:trainingDeviceUUIDList:]";
     v11 = 2048;
-    v12 = a3;
+    deviceCopy = device;
     v13 = 2113;
-    v14 = v5;
+    v14 = listCopy;
     _os_log_impl(&dword_225E12000, v6, OS_LOG_TYPE_INFO, "%s Remote device type: %zu, Remote device UUID list: %{private}@", &v9, 0x20u);
   }
 
@@ -2051,9 +2051,9 @@ void __48__SSRVTUITrainingManager_prepareWithCompletion___block_invoke_3(uint64_
   return 0;
 }
 
-- (void)_createAudioSessionRecorderWithAudioProviderSelector:(id)a3
+- (void)_createAudioSessionRecorderWithAudioProviderSelector:(id)selector
 {
-  v8 = a3;
+  selectorCopy = selector;
   audioSession = self->_audioSession;
   if (audioSession)
   {
@@ -2069,20 +2069,20 @@ void __48__SSRVTUITrainingManager_prepareWithCompletion___block_invoke_3(uint64_
 
   self->_audioSession = 0;
 
-  v6 = [[CSVTUIAudioSessionRecorder alloc] initWithAudioProviderSelector:v8];
+  v6 = [[CSVTUIAudioSessionRecorder alloc] initWithAudioProviderSelector:selectorCopy];
   v7 = self->_audioSession;
   self->_audioSession = v6;
 
   [(CSVTUIAudioSession *)self->_audioSession setDelegate:self];
 }
 
-- (SSRVTUITrainingManager)initWithLocaleIdentifier:(id)a3 withAppDomain:(id)a4 withSiriSharedUserId:(id)a5 withAudioProviderSelector:(id)a6 shouldTrainViaXPC:(BOOL)a7
+- (SSRVTUITrainingManager)initWithLocaleIdentifier:(id)identifier withAppDomain:(id)domain withSiriSharedUserId:(id)id withAudioProviderSelector:(id)selector shouldTrainViaXPC:(BOOL)c
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  cCopy = c;
+  identifierCopy = identifier;
+  domainCopy = domain;
+  idCopy = id;
+  selectorCopy = selector;
   v35.receiver = self;
   v35.super_class = SSRVTUITrainingManager;
   v16 = [(SSRVTUITrainingManager *)&v35 init];
@@ -2093,21 +2093,21 @@ void __48__SSRVTUITrainingManager_prepareWithCompletion___block_invoke_3(uint64_
     queue = v16->_queue;
     v16->_queue = v17;
 
-    v16->_shouldTrainViaXPC = v7;
-    if (v7)
+    v16->_shouldTrainViaXPC = cCopy;
+    if (cCopy)
     {
       v19 = [[SSRVTUITrainingServiceClient alloc] initWithDelegate:v16];
       trainingServiceClient = v16->_trainingServiceClient;
       v16->_trainingServiceClient = v19;
 
-      [(SSRVTUITrainingServiceClient *)v16->_trainingServiceClient setupWithLocaleID:v12 appDomain:v13 siriSharedUserId:v14];
+      [(SSRVTUITrainingServiceClient *)v16->_trainingServiceClient setupWithLocaleID:identifierCopy appDomain:domainCopy siriSharedUserId:idCopy];
       v16->_shouldUseRecordingStartHostTime = 0;
     }
 
     else
     {
-      objc_storeStrong(&v16->_audioProviderSelector, a6);
-      [(SSRVTUITrainingManager *)v16 setLocaleIdentifier:v12];
+      objc_storeStrong(&v16->_audioProviderSelector, selector);
+      [(SSRVTUITrainingManager *)v16 setLocaleIdentifier:identifierCopy];
       [(SSRVTUITrainingManager *)v16 _createAudioSessionRecorderWithAudioProviderSelector:v16->_audioProviderSelector];
       v16->_suspendAudio = 0;
       keywordDetector = v16->_keywordDetector;
@@ -2128,20 +2128,20 @@ void __48__SSRVTUITrainingManager_prepareWithCompletion___block_invoke_3(uint64_
       audioZeroCounter = v16->_audioZeroCounter;
       v16->_audioZeroCounter = v28;
 
-      v30 = [[SSRVoiceProfile alloc] initNewVoiceProfileWithLocale:v12 withAppDomain:v13];
+      v30 = [[SSRVoiceProfile alloc] initNewVoiceProfileWithLocale:identifierCopy withAppDomain:domainCopy];
       profile = v16->_profile;
       v16->_profile = v30;
 
-      if (v14)
+      if (idCopy)
       {
-        [(SSRVoiceProfile *)v16->_profile setSharedSiriProfileId:v14];
+        [(SSRVoiceProfile *)v16->_profile setSharedSiriProfileId:idCopy];
       }
     }
 
     v16->_lastAttemptedUtterance = -1;
-    v32 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     pageAttemptMap = v16->_pageAttemptMap;
-    v16->_pageAttemptMap = v32;
+    v16->_pageAttemptMap = dictionary;
   }
 
   return v16;
@@ -2207,13 +2207,13 @@ uint64_t __52__SSRVTUITrainingManager_sharedtrainingSessionQueue__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (SSRVTUITrainingManager)trainingManagerWithLocaleID:(id)a3 withAppDomain:(id)a4 withSiriSharedUserId:(id)a5
++ (SSRVTUITrainingManager)trainingManagerWithLocaleID:(id)d withAppDomain:(id)domain withSiriSharedUserId:(id)id
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  idCopy = id;
+  domainCopy = domain;
+  dCopy = d;
   SSRLogInitIfNeeded();
-  v10 = -[SSRVTUITrainingManager initWithLocaleIdentifier:withAppDomain:withSiriSharedUserId:withAudioProviderSelector:shouldTrainViaXPC:]([SSRVTUITrainingManager alloc], "initWithLocaleIdentifier:withAppDomain:withSiriSharedUserId:withAudioProviderSelector:shouldTrainViaXPC:", v9, v8, v7, 0, [MEMORY[0x277D018F8] isExclaveHardware]);
+  v10 = -[SSRVTUITrainingManager initWithLocaleIdentifier:withAppDomain:withSiriSharedUserId:withAudioProviderSelector:shouldTrainViaXPC:]([SSRVTUITrainingManager alloc], "initWithLocaleIdentifier:withAppDomain:withSiriSharedUserId:withAudioProviderSelector:shouldTrainViaXPC:", dCopy, domainCopy, idCopy, 0, [MEMORY[0x277D018F8] isExclaveHardware]);
 
   return v10;
 }

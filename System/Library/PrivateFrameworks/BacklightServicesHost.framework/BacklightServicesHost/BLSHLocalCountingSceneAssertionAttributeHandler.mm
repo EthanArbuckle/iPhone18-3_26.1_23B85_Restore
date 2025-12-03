@@ -1,12 +1,12 @@
 @interface BLSHLocalCountingSceneAssertionAttributeHandler
 + (Class)attributeBaseClass;
 + (id)attributeClasses;
-- (id)sceneIdentityTokenForEntry:(void *)a1;
-- (void)activateForSceneEnvironment:(id)a3;
-- (void)activateWithFirstEntry:(id)a3;
-- (void)deactivateForSceneEnvironment:(id)a3;
-- (void)deactivateWithFinalEntry:(id)a3;
-- (void)sceneDidInvalidate:(id)a3 environment:(id)a4;
+- (id)sceneIdentityTokenForEntry:(void *)entry;
+- (void)activateForSceneEnvironment:(id)environment;
+- (void)activateWithFirstEntry:(id)entry;
+- (void)deactivateForSceneEnvironment:(id)environment;
+- (void)deactivateWithFinalEntry:(id)entry;
+- (void)sceneDidInvalidate:(id)invalidate environment:(id)environment;
 @end
 
 @implementation BLSHLocalCountingSceneAssertionAttributeHandler
@@ -15,7 +15,7 @@
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = NSStringFromSelector(a2);
-  v6 = [v4 stringWithFormat:@"%@ must subclass BLSHLocalCountingSceneAssertionAttributeHandler and override %@", a1, v5];
+  v6 = [v4 stringWithFormat:@"%@ must subclass BLSHLocalCountingSceneAssertionAttributeHandler and override %@", self, v5];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -27,7 +27,7 @@
     v13 = 2114;
     v14 = v9;
     v15 = 2048;
-    v16 = a1;
+    selfCopy = self;
     v17 = 2114;
     v18 = @"BLSHLocalCountingSceneAssertionAttributeHandler.m";
     v19 = 1024;
@@ -47,7 +47,7 @@
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = NSStringFromSelector(a2);
-  v6 = [v4 stringWithFormat:@"%@ must subclass BLSHLocalCountingSceneAssertionAttributeHandler and override %@", a1, v5];
+  v6 = [v4 stringWithFormat:@"%@ must subclass BLSHLocalCountingSceneAssertionAttributeHandler and override %@", self, v5];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -59,7 +59,7 @@
     v13 = 2114;
     v14 = v9;
     v15 = 2048;
-    v16 = a1;
+    selfCopy = self;
     v17 = 2114;
     v18 = @"BLSHLocalCountingSceneAssertionAttributeHandler.m";
     v19 = 1024;
@@ -75,39 +75,39 @@
   return result;
 }
 
-- (void)activateWithFirstEntry:(id)a3
+- (void)activateWithFirstEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v5 = bls_assertions_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [BLSHLocalCountingSceneAssertionAttributeHandler activateWithFirstEntry:];
   }
 
-  v6 = [(BLSHLocalCountingSceneAssertionAttributeHandler *)self sceneIdentityTokenForEntry:v4];
-  v9 = v4;
-  v7 = v4;
+  v6 = [(BLSHLocalCountingSceneAssertionAttributeHandler *)self sceneIdentityTokenForEntry:entryCopy];
+  v9 = entryCopy;
+  v7 = entryCopy;
   v8 = v6;
   BSDispatchMain();
 }
 
-- (id)sceneIdentityTokenForEntry:(void *)a1
+- (id)sceneIdentityTokenForEntry:(void *)entry
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (entry)
   {
-    v5 = [v3 attribute];
+    attribute = [v3 attribute];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       [BLSHLocalCountingSceneAssertionAttributeHandler sceneIdentityTokenForEntry:?];
     }
 
-    a1 = [v5 sceneIdentityToken];
+    entry = [attribute sceneIdentityToken];
   }
 
-  return a1;
+  return entry;
 }
 
 void __74__BLSHLocalCountingSceneAssertionAttributeHandler_activateWithFirstEntry___block_invoke(uint64_t a1)
@@ -145,9 +145,9 @@ void __74__BLSHLocalCountingSceneAssertionAttributeHandler_activateWithFirstEntr
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activateForSceneEnvironment:(id)a3
+- (void)activateForSceneEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   v6 = MEMORY[0x277CCACA8];
   v7 = NSStringFromSelector(a2);
   v8 = [v6 stringWithFormat:@"%@ must subclass BLSHLocalCountingSceneAssertionAttributeHandler and override %@", self, v7];
@@ -162,7 +162,7 @@ void __74__BLSHLocalCountingSceneAssertionAttributeHandler_activateWithFirstEntr
     v14 = 2114;
     v15 = v11;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
     v19 = @"BLSHLocalCountingSceneAssertionAttributeHandler.m";
     v20 = 1024;
@@ -177,18 +177,18 @@ void __74__BLSHLocalCountingSceneAssertionAttributeHandler_activateWithFirstEntr
   __break(0);
 }
 
-- (void)deactivateWithFinalEntry:(id)a3
+- (void)deactivateWithFinalEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v5 = bls_assertions_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [BLSHLocalCountingSceneAssertionAttributeHandler deactivateWithFinalEntry:];
   }
 
-  v6 = [(BLSHLocalCountingSceneAssertionAttributeHandler *)self sceneIdentityTokenForEntry:v4];
-  v9 = v4;
-  v7 = v4;
+  v6 = [(BLSHLocalCountingSceneAssertionAttributeHandler *)self sceneIdentityTokenForEntry:entryCopy];
+  v9 = entryCopy;
+  v7 = entryCopy;
   v8 = v6;
   BSDispatchMain();
 }
@@ -228,9 +228,9 @@ void __76__BLSHLocalCountingSceneAssertionAttributeHandler_deactivateWithFinalEn
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deactivateForSceneEnvironment:(id)a3
+- (void)deactivateForSceneEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   v6 = MEMORY[0x277CCACA8];
   v7 = NSStringFromSelector(a2);
   v8 = [v6 stringWithFormat:@"%@ must subclass BLSHLocalCountingSceneAssertionAttributeHandler and override %@", self, v7];
@@ -245,7 +245,7 @@ void __76__BLSHLocalCountingSceneAssertionAttributeHandler_deactivateWithFinalEn
     v14 = 2114;
     v15 = v11;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
     v19 = @"BLSHLocalCountingSceneAssertionAttributeHandler.m";
     v20 = 1024;
@@ -260,16 +260,16 @@ void __76__BLSHLocalCountingSceneAssertionAttributeHandler_deactivateWithFinalEn
   __break(0);
 }
 
-- (void)sceneDidInvalidate:(id)a3 environment:(id)a4
+- (void)sceneDidInvalidate:(id)invalidate environment:(id)environment
 {
   v58 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v32 = a4;
-  v35 = [(BLSHLocalAssertionAttributeHandler *)self service];
+  invalidateCopy = invalidate;
+  environmentCopy = environment;
+  service = [(BLSHLocalAssertionAttributeHandler *)self service];
   v8 = [MEMORY[0x277CBEB58] set];
-  v31 = self;
-  v33 = v7;
-  [(BLSHLocalCountingAssertionAttributeHandler *)self entriesForCountingTarget:v7];
+  selfCopy = self;
+  v33 = invalidateCopy;
+  [(BLSHLocalCountingAssertionAttributeHandler *)self entriesForCountingTarget:invalidateCopy];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -289,17 +289,17 @@ void __76__BLSHLocalCountingSceneAssertionAttributeHandler_deactivateWithFinalEn
         }
 
         v14 = *(*(&v40 + 1) + 8 * i);
-        v15 = [v14 service];
+        service2 = [v14 service];
 
-        if (v15 != v35)
+        if (service2 != service)
         {
           [BLSHLocalCountingSceneAssertionAttributeHandler sceneDidInvalidate:a2 environment:?];
         }
 
-        v16 = [v14 assertion];
-        if (v16)
+        assertion = [v14 assertion];
+        if (assertion)
         {
-          [v8 addObject:v16];
+          [v8 addObject:assertion];
         }
       }
 
@@ -336,17 +336,17 @@ void __76__BLSHLocalCountingSceneAssertionAttributeHandler_deactivateWithFinalEn
         v24 = bls_assertions_log();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
         {
-          v25 = [v32 identifier];
+          identifier = [environmentCopy identifier];
           *buf = 134219010;
-          v47 = v31;
+          v47 = selfCopy;
           v48 = 2114;
-          v49 = v31;
+          v49 = selfCopy;
           v50 = 2114;
           v51 = v23;
           v52 = 2114;
           v53 = v33;
           v54 = 2114;
-          v55 = v25;
+          v55 = identifier;
           _os_log_impl(&dword_21FD11000, v24, OS_LOG_TYPE_INFO, "%p handler:%{public}@ will cancel assertion:%{public}@ due to invalidated scene:%{public}@ environment:%{public}@", buf, 0x34u);
         }
 
@@ -355,7 +355,7 @@ void __76__BLSHLocalCountingSceneAssertionAttributeHandler_deactivateWithFinalEn
         v45 = @"scene invalidated";
         v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
         v28 = [v26 errorWithDomain:v20 code:20 userInfo:v27];
-        [v35 cancelAssertion:v23 withError:v28];
+        [service cancelAssertion:v23 withError:v28];
       }
 
       v18 = [obj countByEnumeratingWithState:&v36 objects:v56 count:16];

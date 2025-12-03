@@ -1,40 +1,40 @@
 @interface FUScrollWheel
-- (CGRect)_frameForLabelAtIndex:(unint64_t)a3;
-- (FUScrollWheel)initWithFrame:(CGRect)a3;
+- (CGRect)_frameForLabelAtIndex:(unint64_t)index;
+- (FUScrollWheel)initWithFrame:(CGRect)frame;
 - (FUScrollWheelDataSource)dataSource;
 - (FUScrollWheelDelegate)delegate;
 - (double)_startingLocation;
-- (double)_yPositionForLabelAtIndex:(unint64_t)a3;
+- (double)_yPositionForLabelAtIndex:(unint64_t)index;
 - (id)_dequeueLabel;
-- (id)_titleForItemAtIndex:(unint64_t)a3;
+- (id)_titleForItemAtIndex:(unint64_t)index;
 - (unint64_t)_numberOfRows;
-- (void)_alertDidChangeToCurrentIndex:(unint64_t)a3;
+- (void)_alertDidChangeToCurrentIndex:(unint64_t)index;
 - (void)_generateOpacityMask;
 - (void)_layoutScrollView;
 - (void)_recycleAllLabels;
-- (void)_recycleLabel:(id)a3 forKey:(id)a4;
-- (void)_reuseLabelsWithRange:(_NSRange)a3 contentOffset:(CGPoint)a4;
+- (void)_recycleLabel:(id)label forKey:(id)key;
+- (void)_reuseLabelsWithRange:(_NSRange)range contentOffset:(CGPoint)offset;
 - (void)_setActiveScrollwheelIfNotActive;
 - (void)_textSizeDidChange;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)reloadData;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)setCurrentIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setItemTitleAligmnent:(int64_t)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)setCurrentIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
+- (void)setItemTitleAligmnent:(int64_t)aligmnent;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation FUScrollWheel
 
-- (FUScrollWheel)initWithFrame:(CGRect)a3
+- (FUScrollWheel)initWithFrame:(CGRect)frame
 {
-  width = a3.size.width;
+  width = frame.size.width;
   v30.receiver = self;
   v30.super_class = FUScrollWheel;
-  v4 = [(FUScrollWheel *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(FUScrollWheel *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v4)
   {
     v5 = [MEMORY[0x1E69DB878] systemFontOfSize:13.0];
@@ -64,25 +64,25 @@
     reusableLabelsQueue = v4->_reusableLabelsQueue;
     v4->_reusableLabelsQueue = v12;
 
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     usedLabels = v4->_usedLabels;
-    v4->_usedLabels = v14;
+    v4->_usedLabels = dictionary;
 
     v16 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, width, 0.5}];
     topDividerView = v4->_topDividerView;
     v4->_topDividerView = v16;
 
     v18 = v4->_topDividerView;
-    v19 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v18 setBackgroundColor:v19];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v18 setBackgroundColor:whiteColor];
 
     v20 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, width, 0.5}];
     bottomDividerView = v4->_bottomDividerView;
     v4->_bottomDividerView = v20;
 
     v22 = v4->_bottomDividerView;
-    v23 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v22 setBackgroundColor:v23];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v22 setBackgroundColor:whiteColor2];
 
     v24 = objc_alloc(MEMORY[0x1E69DCAE0]);
     [(FUScrollWheel *)v4 bounds];
@@ -99,8 +99,8 @@
     [(UIView *)v4->_bottomDividerView setHidden:1];
     v27 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v4 action:sel__setActiveScrollwheelIfNotActive];
     [(FUScrollWheel *)v4 addGestureRecognizer:v27];
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v28 addObserver:v4 selector:sel__textSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__textSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
 
     [(FUScrollWheel *)v4 _setActiveScrollwheelIfNotActive];
   }
@@ -118,13 +118,13 @@
 
 - (void)_setActiveScrollwheelIfNotActive
 {
-  v3 = [(FUScrollWheel *)self delegate];
+  delegate = [(FUScrollWheel *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(FUScrollWheel *)self delegate];
-    v6 = [v5 scrollWheelShouldBecomeFirstResponder:self];
+    delegate2 = [(FUScrollWheel *)self delegate];
+    v6 = [delegate2 scrollWheelShouldBecomeFirstResponder:self];
 
     v7 = v6 ^ 1;
   }
@@ -138,13 +138,13 @@
   {
     [(FUScrollWheel *)self setIsActive:1];
     [(UIScrollView *)self->_scrollView becomeFirstResponder];
-    v8 = [(FUScrollWheel *)self delegate];
+    delegate3 = [(FUScrollWheel *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(FUScrollWheel *)self delegate];
-      [v10 tappedScrollWheel:self];
+      delegate4 = [(FUScrollWheel *)self delegate];
+      [delegate4 tappedScrollWheel:self];
     }
   }
 }
@@ -159,33 +159,33 @@
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v5.receiver = self;
   v5.super_class = FUScrollWheel;
   [(FUScrollWheel *)&v5 setHidden:?];
-  if (!a3)
+  if (!hidden)
   {
     [(UIScrollView *)self->_scrollView becomeFirstResponder];
   }
 }
 
-- (void)setItemTitleAligmnent:(int64_t)a3
+- (void)setItemTitleAligmnent:(int64_t)aligmnent
 {
-  self->_itemTitleAligmnent = a3;
+  self->_itemTitleAligmnent = aligmnent;
   usedLabels = self->_usedLabels;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __39__FUScrollWheel_setItemTitleAligmnent___block_invoke;
   v8[3] = &__block_descriptor_40_e24_v32__0_8__UILabel_16_B24l;
-  v8[4] = a3;
+  v8[4] = aligmnent;
   [(NSMutableDictionary *)usedLabels enumerateKeysAndObjectsUsingBlock:v8];
   reusableLabelsQueue = self->_reusableLabelsQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__FUScrollWheel_setItemTitleAligmnent___block_invoke_2;
   v7[3] = &__block_descriptor_40_e24_v32__0__UILabel_8Q16_B24l;
-  v7[4] = a3;
+  v7[4] = aligmnent;
   [(NSMutableArray *)reusableLabelsQueue enumerateObjectsUsingBlock:v7];
 }
 
@@ -228,11 +228,11 @@
   }
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v4.receiver = self;
   v4.super_class = FUScrollWheel;
-  [(FUScrollWheel *)&v4 willMoveToSuperview:a3];
+  [(FUScrollWheel *)&v4 willMoveToSuperview:superview];
   if (!self->_loaded)
   {
     [(FUScrollWheel *)self reloadData];
@@ -249,12 +249,12 @@
   [(FUScrollWheel *)self _layoutScrollView];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(FUScrollWheel *)self frame];
   v14.origin.x = v8;
   v14.origin.y = v9;
@@ -271,24 +271,24 @@
   [(FUScrollWheel *)self setNeedsLayout];
 }
 
-- (void)setCurrentIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)setCurrentIndex:(unint64_t)index animated:(BOOL)animated
 {
-  self->_currentIndex = a3;
-  v4 = self->_numberOfRows - 1;
-  if (v4 >= a3)
+  self->_currentIndex = index;
+  indexCopy = self->_numberOfRows - 1;
+  if (indexCopy >= index)
   {
-    v4 = a3;
+    indexCopy = index;
   }
 
-  self->_currentIndex = v4;
-  [(UIScrollView *)self->_scrollView setContentOffset:a4 animated:0.0, self->_scrollWheelLabelPageSize * v4];
+  self->_currentIndex = indexCopy;
+  [(UIScrollView *)self->_scrollView setContentOffset:animated animated:0.0, self->_scrollWheelLabelPageSize * indexCopy];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
-    [(FUScrollWheel *)self scrollViewDidEndDecelerating:a3];
+    [(FUScrollWheel *)self scrollViewDidEndDecelerating:dragging];
   }
 }
 
@@ -296,13 +296,13 @@
 {
   v28[2] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:1.0];
-  v4 = [v3 CGColor];
+  cGColor = [v3 CGColor];
 
   v5 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.0];
-  v6 = [v5 CGColor];
+  cGColor2 = [v5 CGColor];
 
-  v28[0] = v4;
-  v28[1] = v6;
+  v28[0] = cGColor;
+  v28[1] = cGColor2;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
   [(FUScrollWheel *)self bounds];
   x = v30.origin.x;
@@ -313,31 +313,31 @@
     [(FUScrollWheel *)self bounds];
     UIRoundToViewScale();
     v12 = v11;
-    v13 = [MEMORY[0x1E6979380] layer];
-    [v13 setFrame:{x, y, width, v12}];
-    [v13 setColors:v7];
-    [v13 setLocations:&unk_1F5F9B280];
+    layer = [MEMORY[0x1E6979380] layer];
+    [layer setFrame:{x, y, width, v12}];
+    [layer setColors:v7];
+    [layer setLocations:&unk_1F5F9B280];
     [(FUScrollWheel *)self bounds];
     v15 = v14 - v12;
-    v16 = [MEMORY[0x1E6979380] layer];
-    [v16 setFrame:{x, v15, width, v12}];
-    v17 = [v7 reverseObjectEnumerator];
-    v18 = [v17 allObjects];
-    [v16 setColors:v18];
+    layer2 = [MEMORY[0x1E6979380] layer];
+    [layer2 setFrame:{x, v15, width, v12}];
+    reverseObjectEnumerator = [v7 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    [layer2 setColors:allObjects];
 
-    [v16 setLocations:&unk_1F5F9B298];
-    [v13 addSublayer:v16];
+    [layer2 setLocations:&unk_1F5F9B298];
+    [layer addSublayer:layer2];
     [(FUScrollWheel *)self bounds];
     v20 = v19;
     v22 = v21;
-    v23 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v23 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v25 = v24;
     v29.width = v20;
     v29.height = v22;
     UIGraphicsBeginImageContextWithOptions(v29, 0, v25);
 
-    [v13 renderInContext:UIGraphicsGetCurrentContext()];
+    [layer renderInContext:UIGraphicsGetCurrentContext()];
     v26 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     maskLayer = self->_maskLayer;
@@ -375,11 +375,11 @@
   return result;
 }
 
-- (void)_reuseLabelsWithRange:(_NSRange)a3 contentOffset:(CGPoint)a4
+- (void)_reuseLabelsWithRange:(_NSRange)range contentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  length = a3.length;
-  location = a3.location;
+  y = offset.y;
+  length = range.length;
+  location = range.location;
   v53 = *MEMORY[0x1E69E9840];
   [(UIScrollView *)self->_scrollView contentOffset];
   v9 = v8;
@@ -391,8 +391,8 @@
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v14 = [(NSMutableDictionary *)self->_usedLabels allKeys];
-  v15 = [v14 countByEnumeratingWithState:&v48 objects:v52 count:16];
+  allKeys = [(NSMutableDictionary *)self->_usedLabels allKeys];
+  v15 = [allKeys countByEnumeratingWithState:&v48 objects:v52 count:16];
   if (v15)
   {
     v16 = v15;
@@ -403,7 +403,7 @@
       {
         if (*v49 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allKeys);
         }
 
         v19 = *(*(&v48 + 1) + 8 * i);
@@ -419,7 +419,7 @@
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v48 objects:v52 count:16];
+      v16 = [allKeys countByEnumeratingWithState:&v48 objects:v52 count:16];
     }
 
     while (v16);
@@ -441,30 +441,30 @@
     {
       usedLabels = self->_usedLabels;
       v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:location];
-      v24 = [(NSMutableDictionary *)usedLabels objectForKeyedSubscript:v23];
+      _dequeueLabel = [(NSMutableDictionary *)usedLabels objectForKeyedSubscript:v23];
 
-      if (!v24)
+      if (!_dequeueLabel)
       {
-        v24 = [(FUScrollWheel *)self _dequeueLabel];
+        _dequeueLabel = [(FUScrollWheel *)self _dequeueLabel];
         v25 = [(FUScrollWheel *)self _textForLabelAtIndex:location];
-        [v24 setText:v25];
+        [_dequeueLabel setText:v25];
 
         v26 = self->_usedLabels;
         v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:location];
-        [(NSMutableDictionary *)v26 setObject:v24 forKeyedSubscript:v27];
+        [(NSMutableDictionary *)v26 setObject:_dequeueLabel forKeyedSubscript:v27];
       }
 
-      [v24 setHidden:0];
+      [_dequeueLabel setHidden:0];
       [(FUScrollWheel *)self _frameForLabelAtIndex:location];
-      [v24 setFrame:?];
-      v28 = [(FUScrollWheel *)self font];
-      [v24 setFont:v28];
+      [_dequeueLabel setFrame:?];
+      font = [(FUScrollWheel *)self font];
+      [_dequeueLabel setFont:font];
 
       [(FUScrollWheel *)self bounds];
       v30 = v29 + -7.5;
-      [v24 frame];
+      [_dequeueLabel frame];
       v32 = v31;
-      [v24 center];
+      [_dequeueLabel center];
       v34 = v33 - y - v30 * 0.5;
       if (v34 < 0.0)
       {
@@ -492,7 +492,7 @@
       }
 
 LABEL_26:
-      [v24 frame];
+      [_dequeueLabel frame];
       if (v35 > 0.7)
       {
         v43 = 3.0;
@@ -525,7 +525,7 @@ LABEL_26:
 
       v47 = v40 + v43 + v46 / 0.2 * 3.0;
       v55 = CGRectIntegral(*&v39);
-      [v24 setFrame:{v55.origin.x, v55.origin.y, v55.size.width, v55.size.height}];
+      [_dequeueLabel setFrame:{v55.origin.x, v55.origin.y, v55.size.width, v55.size.height}];
 
       if (numberOfRows == ++location)
       {
@@ -537,20 +537,20 @@ LABEL_26:
     v36 = round(((v37 + -0.05) / -0.15 + 1.0) * 3.0 + ((v37 + -0.05) / -0.15 + 1.0) * 3.0) * 0.5 + 12.0;
 LABEL_25:
     v38 = [MEMORY[0x1E69DB878] systemFontOfSize:v36];
-    [v24 setFont:v38];
+    [_dequeueLabel setFont:v38];
 
     goto LABEL_26;
   }
 }
 
-- (void)_recycleLabel:(id)a3 forKey:(id)a4
+- (void)_recycleLabel:(id)label forKey:(id)key
 {
-  v7 = a4;
-  v6 = a3;
-  [v6 setHidden:1];
-  [(NSMutableArray *)self->_reusableLabelsQueue addObject:v6];
+  keyCopy = key;
+  labelCopy = label;
+  [labelCopy setHidden:1];
+  [(NSMutableArray *)self->_reusableLabelsQueue addObject:labelCopy];
 
-  [(NSMutableDictionary *)self->_usedLabels removeObjectForKey:v7];
+  [(NSMutableDictionary *)self->_usedLabels removeObjectForKey:keyCopy];
 }
 
 - (void)_recycleAllLabels
@@ -560,8 +560,8 @@ LABEL_25:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMutableDictionary *)self->_usedLabels allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allKeys = [(NSMutableDictionary *)self->_usedLabels allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -572,7 +572,7 @@ LABEL_25:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -581,7 +581,7 @@ LABEL_25:
         [(NSMutableDictionary *)self->_usedLabels removeObjectForKey:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -595,8 +595,8 @@ LABEL_25:
     v3 = objc_alloc(MEMORY[0x1E69DCC10]);
     [(FUScrollWheel *)self frame];
     v5 = [v3 initWithFrame:{2.0, 0.0, v4 + -4.0, self->_scrollWheelLabelHeight}];
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
-    [v5 setTextColor:v6];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v5 setTextColor:whiteColor];
 
     [v5 setTextAlignment:{-[FUScrollWheel itemTitleAligmnent](self, "itemTitleAligmnent")}];
     [v5 setOpaque:1];
@@ -605,15 +605,15 @@ LABEL_25:
     [(UIScrollView *)self->_scrollView addSubview:v5];
   }
 
-  v7 = [(NSMutableArray *)self->_reusableLabelsQueue lastObject];
+  lastObject = [(NSMutableArray *)self->_reusableLabelsQueue lastObject];
   [(NSMutableArray *)self->_reusableLabelsQueue removeLastObject];
 
-  return v7;
+  return lastObject;
 }
 
-- (CGRect)_frameForLabelAtIndex:(unint64_t)a3
+- (CGRect)_frameForLabelAtIndex:(unint64_t)index
 {
-  [(FUScrollWheel *)self _yPositionForLabelAtIndex:a3];
+  [(FUScrollWheel *)self _yPositionForLabelAtIndex:index];
   v5 = v4;
   [(FUScrollWheel *)self frame];
   v7 = v6 + -4.0;
@@ -627,22 +627,22 @@ LABEL_25:
   return result;
 }
 
-- (double)_yPositionForLabelAtIndex:(unint64_t)a3
+- (double)_yPositionForLabelAtIndex:(unint64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   scrollWheelLabelPageSize = self->_scrollWheelLabelPageSize;
   [(FUScrollWheel *)self _startingLocation];
-  return v5 + v3 * scrollWheelLabelPageSize;
+  return v5 + indexCopy * scrollWheelLabelPageSize;
 }
 
-- (id)_titleForItemAtIndex:(unint64_t)a3
+- (id)_titleForItemAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_dataSource);
-    v7 = [v6 scrollWheel:self titleForItemAtIndex:a3];
+    v7 = [v6 scrollWheel:self titleForItemAtIndex:index];
   }
 
   else
@@ -668,19 +668,19 @@ LABEL_25:
   return v5;
 }
 
-- (void)_alertDidChangeToCurrentIndex:(unint64_t)a3
+- (void)_alertDidChangeToCurrentIndex:(unint64_t)index
 {
-  v5 = [(FUScrollWheel *)self delegate];
-  if (v5)
+  delegate = [(FUScrollWheel *)self delegate];
+  if (delegate)
   {
-    v6 = v5;
-    v7 = [(FUScrollWheel *)self delegate];
+    v6 = delegate;
+    delegate2 = [(FUScrollWheel *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(FUScrollWheel *)self delegate];
-      [v9 scrollWheel:self didChangeCurrentIndexTo:a3];
+      delegate3 = [(FUScrollWheel *)self delegate];
+      [delegate3 scrollWheel:self didChangeCurrentIndexTo:index];
     }
   }
 }

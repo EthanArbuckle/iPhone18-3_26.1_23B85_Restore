@@ -1,6 +1,6 @@
 @interface PosterRenderingViewController
-- (_TtC14ContactsUICore29PosterRenderingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)renderingViewControllerDidFinishShowingContent:(id)a3;
+- (_TtC14ContactsUICore29PosterRenderingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)renderingViewControllerDidFinishShowingContent:(id)content;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -8,20 +8,20 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A345574C();
 }
 
-- (_TtC14ContactsUICore29PosterRenderingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14ContactsUICore29PosterRenderingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)renderingViewControllerDidFinishShowingContent:(id)a3
+- (void)renderingViewControllerDidFinishShowingContent:(id)content
 {
-  v3 = self;
+  selfCopy = self;
   sub_1A3457858(1);
 }
 

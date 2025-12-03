@@ -1,113 +1,113 @@
 @interface NDODevice
-+ (NDODevice)deviceWithCBDevice:(id)a3 isVisibleInCC:(BOOL)a4;
-+ (NDODevice)deviceWithDeviceListDevice:(id)a3;
-+ (NDODevice)deviceWithName:(id)a3 serialNumber:(id)a4 activationDate:(id)a5 deviceType:(unint64_t)a6;
-+ (NDODevice)deviceWithName:(id)a3 serialNumber:(id)a4 activationDate:(id)a5 deviceType:(unint64_t)a6 productID:(id)a7 productName:(id)a8;
-+ (NDODevice)deviceWithName:(id)a3 serialNumber:(id)a4 activationDate:(id)a5 deviceType:(unint64_t)a6 productID:(id)a7 productName:(id)a8 color:(id)a9 enclosureColor:(id)a10 coverGlassColor:(id)a11;
-+ (NDODevice)deviceWithName:(id)a3 serialNumber:(id)a4 activationDate:(id)a5 deviceType:(unint64_t)a6 productID:(id)a7 productName:(id)a8 isVisibleInCC:(BOOL)a9;
-- (NDODevice)initWithCoder:(id)a3;
-- (NDODevice)initWithName:(id)a3 serialNumber:(id)a4 activationDate:(id)a5 deviceType:(unint64_t)a6 productID:(id)a7 productName:(id)a8 color:(id)a9 enclosureColor:(id)a10 coverGlassColor:(id)a11 isVisibleInCC:(BOOL)a12 cachingPolicy:(BOOL)a13;
++ (NDODevice)deviceWithCBDevice:(id)device isVisibleInCC:(BOOL)c;
++ (NDODevice)deviceWithDeviceListDevice:(id)device;
++ (NDODevice)deviceWithName:(id)name serialNumber:(id)number activationDate:(id)date deviceType:(unint64_t)type;
++ (NDODevice)deviceWithName:(id)name serialNumber:(id)number activationDate:(id)date deviceType:(unint64_t)type productID:(id)d productName:(id)productName;
++ (NDODevice)deviceWithName:(id)name serialNumber:(id)number activationDate:(id)date deviceType:(unint64_t)type productID:(id)d productName:(id)productName color:(id)color enclosureColor:(id)self0 coverGlassColor:(id)self1;
++ (NDODevice)deviceWithName:(id)name serialNumber:(id)number activationDate:(id)date deviceType:(unint64_t)type productID:(id)d productName:(id)productName isVisibleInCC:(BOOL)c;
+- (NDODevice)initWithCoder:(id)coder;
+- (NDODevice)initWithName:(id)name serialNumber:(id)number activationDate:(id)date deviceType:(unint64_t)type productID:(id)d productName:(id)productName color:(id)color enclosureColor:(id)self0 coverGlassColor:(id)self1 isVisibleInCC:(BOOL)self2 cachingPolicy:(BOOL)self3;
 - (NSString)description;
 - (NSString)sourceFromDeviceType;
 - (id)deviceTypeString;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithWarranty:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithWarranty:(id)warranty;
 @end
 
 @implementation NDODevice
 
-+ (NDODevice)deviceWithName:(id)a3 serialNumber:(id)a4 activationDate:(id)a5 deviceType:(unint64_t)a6
++ (NDODevice)deviceWithName:(id)name serialNumber:(id)number activationDate:(id)date deviceType:(unint64_t)type
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  dateCopy = date;
+  numberCopy = number;
+  nameCopy = name;
   LOWORD(v15) = 257;
-  v13 = [[a1 alloc] initWithName:v12 serialNumber:v11 activationDate:v10 deviceType:a6 productID:0 productName:0 color:0 enclosureColor:0 coverGlassColor:0 isVisibleInCC:v15 cachingPolicy:?];
+  v13 = [[self alloc] initWithName:nameCopy serialNumber:numberCopy activationDate:dateCopy deviceType:type productID:0 productName:0 color:0 enclosureColor:0 coverGlassColor:0 isVisibleInCC:v15 cachingPolicy:?];
 
   return v13;
 }
 
-+ (NDODevice)deviceWithName:(id)a3 serialNumber:(id)a4 activationDate:(id)a5 deviceType:(unint64_t)a6 productID:(id)a7 productName:(id)a8
++ (NDODevice)deviceWithName:(id)name serialNumber:(id)number activationDate:(id)date deviceType:(unint64_t)type productID:(id)d productName:(id)productName
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  productNameCopy = productName;
+  dCopy = d;
+  dateCopy = date;
+  numberCopy = number;
+  nameCopy = name;
   LOWORD(v21) = 257;
-  v19 = [[a1 alloc] initWithName:v18 serialNumber:v17 activationDate:v16 deviceType:a6 productID:v15 productName:v14 color:0 enclosureColor:0 coverGlassColor:0 isVisibleInCC:v21 cachingPolicy:?];
+  v19 = [[self alloc] initWithName:nameCopy serialNumber:numberCopy activationDate:dateCopy deviceType:type productID:dCopy productName:productNameCopy color:0 enclosureColor:0 coverGlassColor:0 isVisibleInCC:v21 cachingPolicy:?];
 
   return v19;
 }
 
-+ (NDODevice)deviceWithName:(id)a3 serialNumber:(id)a4 activationDate:(id)a5 deviceType:(unint64_t)a6 productID:(id)a7 productName:(id)a8 color:(id)a9 enclosureColor:(id)a10 coverGlassColor:(id)a11
++ (NDODevice)deviceWithName:(id)name serialNumber:(id)number activationDate:(id)date deviceType:(unint64_t)type productID:(id)d productName:(id)productName color:(id)color enclosureColor:(id)self0 coverGlassColor:(id)self1
 {
-  v18 = a11;
-  v19 = a10;
-  v20 = a9;
-  v21 = a8;
-  v22 = a7;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
+  glassColorCopy = glassColor;
+  enclosureColorCopy = enclosureColor;
+  colorCopy = color;
+  productNameCopy = productName;
+  dCopy = d;
+  dateCopy = date;
+  numberCopy = number;
+  nameCopy = name;
   LOWORD(v28) = 257;
-  v26 = [[a1 alloc] initWithName:v25 serialNumber:v24 activationDate:v23 deviceType:a6 productID:v22 productName:v21 color:v20 enclosureColor:v19 coverGlassColor:v18 isVisibleInCC:v28 cachingPolicy:?];
+  v26 = [[self alloc] initWithName:nameCopy serialNumber:numberCopy activationDate:dateCopy deviceType:type productID:dCopy productName:productNameCopy color:colorCopy enclosureColor:enclosureColorCopy coverGlassColor:glassColorCopy isVisibleInCC:v28 cachingPolicy:?];
 
   return v26;
 }
 
-+ (NDODevice)deviceWithName:(id)a3 serialNumber:(id)a4 activationDate:(id)a5 deviceType:(unint64_t)a6 productID:(id)a7 productName:(id)a8 isVisibleInCC:(BOOL)a9
++ (NDODevice)deviceWithName:(id)name serialNumber:(id)number activationDate:(id)date deviceType:(unint64_t)type productID:(id)d productName:(id)productName isVisibleInCC:(BOOL)c
 {
-  v15 = a8;
-  v16 = a7;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  productNameCopy = productName;
+  dCopy = d;
+  dateCopy = date;
+  numberCopy = number;
+  nameCopy = name;
   BYTE1(v22) = 1;
-  LOBYTE(v22) = a9;
-  v20 = [[a1 alloc] initWithName:v19 serialNumber:v18 activationDate:v17 deviceType:a6 productID:v16 productName:v15 color:0 enclosureColor:0 coverGlassColor:0 isVisibleInCC:v22 cachingPolicy:?];
+  LOBYTE(v22) = c;
+  v20 = [[self alloc] initWithName:nameCopy serialNumber:numberCopy activationDate:dateCopy deviceType:type productID:dCopy productName:productNameCopy color:0 enclosureColor:0 coverGlassColor:0 isVisibleInCC:v22 cachingPolicy:?];
 
   return v20;
 }
 
-- (NDODevice)initWithName:(id)a3 serialNumber:(id)a4 activationDate:(id)a5 deviceType:(unint64_t)a6 productID:(id)a7 productName:(id)a8 color:(id)a9 enclosureColor:(id)a10 coverGlassColor:(id)a11 isVisibleInCC:(BOOL)a12 cachingPolicy:(BOOL)a13
+- (NDODevice)initWithName:(id)name serialNumber:(id)number activationDate:(id)date deviceType:(unint64_t)type productID:(id)d productName:(id)productName color:(id)color enclosureColor:(id)self0 coverGlassColor:(id)self1 isVisibleInCC:(BOOL)self2 cachingPolicy:(BOOL)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
+  nameCopy = name;
+  numberCopy = number;
+  dateCopy = date;
+  dCopy = d;
+  productNameCopy = productName;
+  colorCopy = color;
+  enclosureColorCopy = enclosureColor;
+  glassColorCopy = glassColor;
   v30.receiver = self;
   v30.super_class = NDODevice;
   v26 = [(NDODevice *)&v30 init];
   v27 = v26;
   if (v26)
   {
-    [(NDODevice *)v26 setName:v18];
-    [(NDODevice *)v27 setSerialNumber:v19];
-    [(NDODevice *)v27 setDeviceType:a6];
-    [(NDODevice *)v27 setActivationDate:v20];
-    [(NDODevice *)v27 setProductID:v21];
-    [(NDODevice *)v27 setProductName:v22];
-    [(NDODevice *)v27 setColor:v23];
-    [(NDODevice *)v27 setEnclosureColor:v24];
-    [(NDODevice *)v27 setCoverGlassColor:v25];
-    [(NDODevice *)v27 setIsVisibleInCC:a12];
-    [(NDODevice *)v27 setCachingPolicy:a13];
+    [(NDODevice *)v26 setName:nameCopy];
+    [(NDODevice *)v27 setSerialNumber:numberCopy];
+    [(NDODevice *)v27 setDeviceType:type];
+    [(NDODevice *)v27 setActivationDate:dateCopy];
+    [(NDODevice *)v27 setProductID:dCopy];
+    [(NDODevice *)v27 setProductName:productNameCopy];
+    [(NDODevice *)v27 setColor:colorCopy];
+    [(NDODevice *)v27 setEnclosureColor:enclosureColorCopy];
+    [(NDODevice *)v27 setCoverGlassColor:glassColorCopy];
+    [(NDODevice *)v27 setIsVisibleInCC:c];
+    [(NDODevice *)v27 setCachingPolicy:policy];
   }
 
   return v27;
 }
 
-+ (NDODevice)deviceWithDeviceListDevice:(id)a3
++ (NDODevice)deviceWithDeviceListDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"coverageInfo"];
-  v5 = [v3 objectForKeyedSubscript:@"deviceInfo"];
-  v6 = [v3 objectForKeyedSubscript:@"deviceType"];
+  deviceCopy = device;
+  v4 = [deviceCopy objectForKeyedSubscript:@"coverageInfo"];
+  v5 = [deviceCopy objectForKeyedSubscript:@"deviceInfo"];
+  v6 = [deviceCopy objectForKeyedSubscript:@"deviceType"];
   if ([v6 isEqualToString:@"APPLE_ID"])
   {
     v7 = 2;
@@ -123,7 +123,7 @@
     v7 = 3;
   }
 
-  v8 = [v3 objectForKeyedSubscript:@"cachePolicy"];
+  v8 = [deviceCopy objectForKeyedSubscript:@"cachePolicy"];
   v9 = [v8 isEqualToString:@"NO_CACHE"];
 
   v10 = [v5 objectForKeyedSubscript:@"nickName"];
@@ -181,35 +181,35 @@
   return v15;
 }
 
-+ (NDODevice)deviceWithCBDevice:(id)a3 isVisibleInCC:(BOOL)a4
++ (NDODevice)deviceWithCBDevice:(id)device isVisibleInCC:(BOOL)c
 {
-  v5 = a3;
-  v6 = [v5 name];
-  v7 = v6;
-  if (v6)
+  deviceCopy = device;
+  name = [deviceCopy name];
+  v7 = name;
+  if (name)
   {
-    v8 = v6;
+    v8 = name;
 LABEL_3:
     v9 = v8;
     goto LABEL_54;
   }
 
-  v10 = [v5 productID];
-  v11 = v10;
-  if (v10 <= 619)
+  productID = [deviceCopy productID];
+  v11 = productID;
+  if (productID <= 619)
   {
-    if (v10 > 569)
+    if (productID > 569)
     {
-      if (v10 > 598)
+      if (productID > 598)
       {
-        if (v10 > 614)
+        if (productID > 614)
         {
-          if (v10 == 615)
+          if (productID == 615)
           {
             goto LABEL_86;
           }
 
-          if (v10 != 617)
+          if (productID != 617)
           {
             goto LABEL_141;
           }
@@ -217,9 +217,9 @@ LABEL_3:
           goto LABEL_90;
         }
 
-        if (v10 != 599)
+        if (productID != 599)
         {
-          if (v10 != 613)
+          if (productID != 613)
           {
             goto LABEL_141;
           }
@@ -228,23 +228,23 @@ LABEL_3:
         }
       }
 
-      else if (v10 <= 596 && v10 != 570 && v10 != 571)
+      else if (productID <= 596 && productID != 570 && productID != 571)
       {
         goto LABEL_141;
       }
     }
 
-    else if (v10 > 555)
+    else if (productID > 555)
     {
-      if (v10 > 558 && v10 != 569)
+      if (productID > 558 && productID != 569)
       {
         goto LABEL_141;
       }
     }
 
-    else if (v10 > 520)
+    else if (productID > 520)
     {
-      if (v10 != 521 && v10 != 522)
+      if (productID != 521 && productID != 522)
       {
         goto LABEL_141;
       }
@@ -252,15 +252,15 @@ LABEL_3:
 
     else
     {
-      if (!v10)
+      if (!productID)
       {
 LABEL_64:
-        [v5 deviceType];
+        [deviceCopy deviceType];
         v8 = CBDeviceTypeToNSLocalizedString();
         goto LABEL_3;
       }
 
-      if (v10 != 520)
+      if (productID != 520)
       {
         goto LABEL_141;
       }
@@ -272,13 +272,13 @@ LABEL_64:
     goto LABEL_52;
   }
 
-  if (v10 <= 799)
+  if (productID <= 799)
   {
-    if (v10 > 776)
+    if (productID > 776)
     {
-      if (v10 <= 780)
+      if (productID <= 780)
       {
-        if (v10 == 777)
+        if (productID == 777)
         {
           v13 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CoreBluetooth"];
           v14 = v13;
@@ -286,7 +286,7 @@ LABEL_64:
           goto LABEL_52;
         }
 
-        if (v10 != 780)
+        if (productID != 780)
         {
           goto LABEL_141;
         }
@@ -295,13 +295,13 @@ LABEL_64:
         v14 = v13;
         v15 = @"apple_mighty_mouse";
 LABEL_52:
-        v16 = [v13 localizedStringForKey:v15 value:&stru_286D686B8 table:@"CBLocalizable"];
+        productName = [v13 localizedStringForKey:v15 value:&stru_286D686B8 table:@"CBLocalizable"];
         goto LABEL_53;
       }
 
-      if (v10 != 781)
+      if (productID != 781)
       {
-        if (v10 != 782)
+        if (productID != 782)
         {
           goto LABEL_141;
         }
@@ -312,9 +312,9 @@ LABEL_52:
       goto LABEL_90;
     }
 
-    if (v10 <= 667)
+    if (productID <= 667)
     {
-      if (v10 == 620)
+      if (productID == 620)
       {
         v13 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CoreBluetooth"];
         v14 = v13;
@@ -322,7 +322,7 @@ LABEL_52:
         goto LABEL_52;
       }
 
-      if (v10 != 666)
+      if (productID != 666)
       {
         goto LABEL_141;
       }
@@ -330,7 +330,7 @@ LABEL_52:
       goto LABEL_29;
     }
 
-    if (v10 == 668)
+    if (productID == 668)
     {
 LABEL_86:
       v13 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CoreBluetooth"];
@@ -339,7 +339,7 @@ LABEL_86:
       goto LABEL_52;
     }
 
-    if (v10 != 671)
+    if (productID != 671)
     {
       goto LABEL_141;
     }
@@ -347,11 +347,11 @@ LABEL_86:
     goto LABEL_85;
   }
 
-  if (v10 <= 803)
+  if (productID <= 803)
   {
-    if (v10 <= 801)
+    if (productID <= 801)
     {
-      if (v10 != 800)
+      if (productID != 800)
       {
 LABEL_29:
         v13 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CoreBluetooth"];
@@ -363,7 +363,7 @@ LABEL_29:
       goto LABEL_86;
     }
 
-    if (v10 != 802)
+    if (productID != 802)
     {
 LABEL_90:
       v13 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CoreBluetooth"];
@@ -379,9 +379,9 @@ LABEL_85:
     goto LABEL_52;
   }
 
-  if (v10 <= 8215)
+  if (productID <= 8215)
   {
-    if (v10 != 804)
+    if (productID != 804)
     {
       v12 = 8213;
       goto LABEL_44;
@@ -394,14 +394,14 @@ LABEL_89:
     goto LABEL_52;
   }
 
-  if (v10 == 8216 || v10 == 8220)
+  if (productID == 8216 || productID == 8220)
   {
     goto LABEL_45;
   }
 
   v12 = 8233;
 LABEL_44:
-  if (v10 == v12)
+  if (productID == v12)
   {
 LABEL_45:
     v13 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CoreBluetooth"];
@@ -411,10 +411,10 @@ LABEL_45:
   }
 
 LABEL_141:
-  v14 = [MEMORY[0x277CBE070] productInfoWithProductID:v10];
-  v16 = [v14 productName];
+  v14 = [MEMORY[0x277CBE070] productInfoWithProductID:productID];
+  productName = [v14 productName];
 LABEL_53:
-  v9 = v16;
+  v9 = productName;
 
   if (!v9)
   {
@@ -423,22 +423,22 @@ LABEL_53:
 
 LABEL_54:
 
-  v17 = [v5 serialNumber];
+  serialNumber = [deviceCopy serialNumber];
   v18 = MEMORY[0x277CCACA8];
-  v19 = [v5 productID];
-  if (v19 > 21759)
+  productID2 = [deviceCopy productID];
+  if (productID2 > 21759)
   {
-    if (v19 > 28943)
+    if (productID2 > 28943)
     {
-      if (v19 <= 29714)
+      if (productID2 <= 29714)
       {
-        if (v19 == 28944)
+        if (productID2 == 28944)
         {
           v20 = "AudioAccessory1,2";
           goto LABEL_134;
         }
 
-        if (v19 == 29455)
+        if (productID2 == 29455)
         {
           v20 = "AppleTV11,1";
           goto LABEL_134;
@@ -447,7 +447,7 @@ LABEL_54:
 
       else
       {
-        switch(v19)
+        switch(productID2)
         {
           case 29715:
             v20 = "AudioAccessory5,1";
@@ -462,15 +462,15 @@ LABEL_54:
       }
     }
 
-    else if (v19 <= 28419)
+    else if (productID2 <= 28419)
     {
-      if (v19 == 21760)
+      if (productID2 == 21760)
       {
         v20 = "Device1,21760";
         goto LABEL_134;
       }
 
-      if (v19 == 22034)
+      if (productID2 == 22034)
       {
         v20 = "Device1,22034";
         goto LABEL_134;
@@ -479,7 +479,7 @@ LABEL_54:
 
     else
     {
-      switch(v19)
+      switch(productID2)
       {
         case 28420:
           v20 = "AppleTV5,3";
@@ -498,9 +498,9 @@ LABEL_133:
     goto LABEL_134;
   }
 
-  if (v19 <= 8193)
+  if (productID2 <= 8193)
   {
-    switch(v19)
+    switch(productID2)
     {
       case 0:
         v20 = "Invalid";
@@ -516,7 +516,7 @@ LABEL_133:
     goto LABEL_133;
   }
 
-  switch(v19)
+  switch(productID2)
   {
     case 8194:
       v20 = "AirPods1,1";
@@ -629,13 +629,13 @@ LABEL_133:
 
 LABEL_134:
   v21 = [v18 stringWithUTF8String:v20];
-  v22 = [v5 productName];
-  LOBYTE(v26) = a4;
-  v23 = [NDODevice deviceWithName:v9 serialNumber:v17 activationDate:0 deviceType:3 productID:v21 productName:v22 isVisibleInCC:v26];
+  productName2 = [deviceCopy productName];
+  LOBYTE(v26) = c;
+  v23 = [NDODevice deviceWithName:v9 serialNumber:serialNumber activationDate:0 deviceType:3 productID:v21 productName:productName2 isVisibleInCC:v26];
 
-  if ([v5 colorCodeBest])
+  if ([deviceCopy colorCodeBest])
   {
-    v24 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%hhu", objc_msgSend(v5, "colorCodeBest")];
+    v24 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%hhu", objc_msgSend(deviceCopy, "colorCodeBest")];
     [v23 setColor:v24];
   }
 
@@ -644,197 +644,197 @@ LABEL_134:
 
 - (NSString)sourceFromDeviceType
 {
-  v2 = [(NDODevice *)self deviceType];
-  if (v2 - 1 > 3)
+  deviceType = [(NDODevice *)self deviceType];
+  if (deviceType - 1 > 3)
   {
     return @"DEFAULT";
   }
 
   else
   {
-    return &off_2799762B0[v2 - 1]->isa;
+    return &off_2799762B0[deviceType - 1]->isa;
   }
 }
 
 - (id)deviceTypeString
 {
-  v2 = [(NDODevice *)self deviceType];
-  if (v2 - 1 > 3)
+  deviceType = [(NDODevice *)self deviceType];
+  if (deviceType - 1 > 3)
   {
     return @"Default";
   }
 
   else
   {
-    return off_2799762D0[v2 - 1];
+    return off_2799762D0[deviceType - 1];
   }
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NDODevice *)self name];
-  v5 = [(NDODevice *)self serialNumber];
-  v6 = [(NDODevice *)self activationDate];
-  v7 = [(NDODevice *)self deviceTypeString];
-  v8 = [(NDODevice *)self productID];
-  v9 = [(NDODevice *)self productName];
-  v10 = [v3 stringWithFormat:@"%@ :: (%@) :: (%@) :: %@ - %@ :: (%@) :: %d", v4, v5, v6, v7, v8, v9, -[NDODevice isVisibleInCC](self, "isVisibleInCC")];
+  name = [(NDODevice *)self name];
+  serialNumber = [(NDODevice *)self serialNumber];
+  activationDate = [(NDODevice *)self activationDate];
+  deviceTypeString = [(NDODevice *)self deviceTypeString];
+  productID = [(NDODevice *)self productID];
+  productName = [(NDODevice *)self productName];
+  v10 = [v3 stringWithFormat:@"%@ :: (%@) :: (%@) :: %@ - %@ :: (%@) :: %d", name, serialNumber, activationDate, deviceTypeString, productID, productName, -[NDODevice isVisibleInCC](self, "isVisibleInCC")];
 
   return v10;
 }
 
-- (void)updateWithWarranty:(id)a3
+- (void)updateWithWarranty:(id)warranty
 {
-  v9 = a3;
-  -[NDODevice setAcOfferEligible:](self, "setAcOfferEligible:", [v9 acOfferEligible]);
-  -[NDODevice setCovered:](self, "setCovered:", [v9 covered]);
-  v4 = [v9 coverageLocalizedLabel];
-  [(NDODevice *)self setCoverageLocalizedLabel:v4];
+  warrantyCopy = warranty;
+  -[NDODevice setAcOfferEligible:](self, "setAcOfferEligible:", [warrantyCopy acOfferEligible]);
+  -[NDODevice setCovered:](self, "setCovered:", [warrantyCopy covered]);
+  coverageLocalizedLabel = [warrantyCopy coverageLocalizedLabel];
+  [(NDODevice *)self setCoverageLocalizedLabel:coverageLocalizedLabel];
 
-  v5 = [v9 acLocalizedOfferStatusLabel];
-  [(NDODevice *)self setAcLocalizedOfferStatusLabel:v5];
+  acLocalizedOfferStatusLabel = [warrantyCopy acLocalizedOfferStatusLabel];
+  [(NDODevice *)self setAcLocalizedOfferStatusLabel:acLocalizedOfferStatusLabel];
 
-  v6 = [v9 acLocalizedUnlinkedPlanStatusLabel];
-  [(NDODevice *)self setAcLocalizedUnlinkedPlanStatusLabel:v6];
+  acLocalizedUnlinkedPlanStatusLabel = [warrantyCopy acLocalizedUnlinkedPlanStatusLabel];
+  [(NDODevice *)self setAcLocalizedUnlinkedPlanStatusLabel:acLocalizedUnlinkedPlanStatusLabel];
 
-  v7 = [(NDODevice *)self deviceImageUrl];
+  deviceImageUrl = [(NDODevice *)self deviceImageUrl];
 
-  if (!v7)
+  if (!deviceImageUrl)
   {
-    v8 = [v9 deviceImageUrl];
-    [(NDODevice *)self setDeviceImageUrl:v8];
+    deviceImageUrl2 = [warrantyCopy deviceImageUrl];
+    [(NDODevice *)self setDeviceImageUrl:deviceImageUrl2];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NDODevice *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(NDODevice *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(NDODevice *)self serialNumber];
-  [v4 encodeObject:v6 forKey:@"serialNumber"];
+  serialNumber = [(NDODevice *)self serialNumber];
+  [coderCopy encodeObject:serialNumber forKey:@"serialNumber"];
 
-  v7 = [(NDODevice *)self activationDate];
-  [v4 encodeObject:v7 forKey:@"activationDate"];
+  activationDate = [(NDODevice *)self activationDate];
+  [coderCopy encodeObject:activationDate forKey:@"activationDate"];
 
-  [v4 encodeInteger:-[NDODevice deviceType](self forKey:{"deviceType"), @"deviceType"}];
-  v8 = [(NDODevice *)self color];
-  [v4 encodeObject:v8 forKey:@"color"];
+  [coderCopy encodeInteger:-[NDODevice deviceType](self forKey:{"deviceType"), @"deviceType"}];
+  color = [(NDODevice *)self color];
+  [coderCopy encodeObject:color forKey:@"color"];
 
-  v9 = [(NDODevice *)self enclosureColor];
-  [v4 encodeObject:v9 forKey:@"enclosureColor"];
+  enclosureColor = [(NDODevice *)self enclosureColor];
+  [coderCopy encodeObject:enclosureColor forKey:@"enclosureColor"];
 
-  v10 = [(NDODevice *)self coverGlassColor];
-  [v4 encodeObject:v10 forKey:@"coverGlassColor"];
+  coverGlassColor = [(NDODevice *)self coverGlassColor];
+  [coderCopy encodeObject:coverGlassColor forKey:@"coverGlassColor"];
 
-  v11 = [(NDODevice *)self productID];
-  [v4 encodeObject:v11 forKey:@"productID"];
+  productID = [(NDODevice *)self productID];
+  [coderCopy encodeObject:productID forKey:@"productID"];
 
-  v12 = [(NDODevice *)self productName];
-  [v4 encodeObject:v12 forKey:@"productName"];
+  productName = [(NDODevice *)self productName];
+  [coderCopy encodeObject:productName forKey:@"productName"];
 
-  [v4 encodeBool:-[NDODevice isActiveWatch](self forKey:{"isActiveWatch"), @"isActiveWatch"}];
-  [v4 encodeBool:-[NDODevice isVisibleInCC](self forKey:{"isVisibleInCC"), @"isVisibleInCC"}];
-  [v4 encodeBool:-[NDODevice acOfferEligible](self forKey:{"acOfferEligible"), @"acOfferEligible"}];
-  [v4 encodeBool:-[NDODevice covered](self forKey:{"covered"), @"covered"}];
-  v13 = [(NDODevice *)self coverageLocalizedLabel];
-  [v4 encodeObject:v13 forKey:@"coverageLocalizedLabel"];
+  [coderCopy encodeBool:-[NDODevice isActiveWatch](self forKey:{"isActiveWatch"), @"isActiveWatch"}];
+  [coderCopy encodeBool:-[NDODevice isVisibleInCC](self forKey:{"isVisibleInCC"), @"isVisibleInCC"}];
+  [coderCopy encodeBool:-[NDODevice acOfferEligible](self forKey:{"acOfferEligible"), @"acOfferEligible"}];
+  [coderCopy encodeBool:-[NDODevice covered](self forKey:{"covered"), @"covered"}];
+  coverageLocalizedLabel = [(NDODevice *)self coverageLocalizedLabel];
+  [coderCopy encodeObject:coverageLocalizedLabel forKey:@"coverageLocalizedLabel"];
 
-  v14 = [(NDODevice *)self acLocalizedOfferStatusLabel];
-  [v4 encodeObject:v14 forKey:@"acLocalizedOfferStatusLabel"];
+  acLocalizedOfferStatusLabel = [(NDODevice *)self acLocalizedOfferStatusLabel];
+  [coderCopy encodeObject:acLocalizedOfferStatusLabel forKey:@"acLocalizedOfferStatusLabel"];
 
-  v15 = [(NDODevice *)self acLocalizedUnlinkedPlanStatusLabel];
-  [v4 encodeObject:v15 forKey:@"acLocalizedUnlinkedPlanStatusLabel"];
+  acLocalizedUnlinkedPlanStatusLabel = [(NDODevice *)self acLocalizedUnlinkedPlanStatusLabel];
+  [coderCopy encodeObject:acLocalizedUnlinkedPlanStatusLabel forKey:@"acLocalizedUnlinkedPlanStatusLabel"];
 
-  v16 = [(NDODevice *)self deviceImageUrl];
-  [v4 encodeObject:v16 forKey:@"deviceImageUrl"];
+  deviceImageUrl = [(NDODevice *)self deviceImageUrl];
+  [coderCopy encodeObject:deviceImageUrl forKey:@"deviceImageUrl"];
 
-  v17 = [(NDODevice *)self deviceDesc];
-  [v4 encodeObject:v17 forKey:@"deviceDesc"];
+  deviceDesc = [(NDODevice *)self deviceDesc];
+  [coderCopy encodeObject:deviceDesc forKey:@"deviceDesc"];
 
-  v18 = [(NDODevice *)self sgId];
-  [v4 encodeObject:v18 forKey:@"sgId"];
+  sgId = [(NDODevice *)self sgId];
+  [coderCopy encodeObject:sgId forKey:@"sgId"];
 
-  v19 = [(NDODevice *)self pfcId];
-  [v4 encodeObject:v19 forKey:@"pfcId"];
+  pfcId = [(NDODevice *)self pfcId];
+  [coderCopy encodeObject:pfcId forKey:@"pfcId"];
 
-  v20 = [(NDODevice *)self pgfId];
-  [v4 encodeObject:v20 forKey:@"pgfId"];
+  pgfId = [(NDODevice *)self pgfId];
+  [coderCopy encodeObject:pgfId forKey:@"pgfId"];
 
-  v21 = [(NDODevice *)self parentId];
-  [v4 encodeObject:v21 forKey:@"parentId"];
+  parentId = [(NDODevice *)self parentId];
+  [coderCopy encodeObject:parentId forKey:@"parentId"];
 
-  v22 = [(NDODevice *)self acOfferEligibleUntil];
-  [v4 encodeObject:v22 forKey:@"acOfferEligibleUntil"];
+  acOfferEligibleUntil = [(NDODevice *)self acOfferEligibleUntil];
+  [coderCopy encodeObject:acOfferEligibleUntil forKey:@"acOfferEligibleUntil"];
 }
 
-- (NDODevice)initWithCoder:(id)a3
+- (NDODevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = NDODevice;
   v5 = [(NDODevice *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     [(NDODevice *)v5 setName:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     [(NDODevice *)v5 setSerialNumber:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activationDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activationDate"];
     [(NDODevice *)v5 setActivationDate:v8];
 
-    -[NDODevice setDeviceType:](v5, "setDeviceType:", [v4 decodeIntegerForKey:@"deviceType"]);
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+    -[NDODevice setDeviceType:](v5, "setDeviceType:", [coderCopy decodeIntegerForKey:@"deviceType"]);
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color"];
     [(NDODevice *)v5 setColor:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"enclosureColor"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enclosureColor"];
     [(NDODevice *)v5 setEnclosureColor:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coverGlassColor"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coverGlassColor"];
     [(NDODevice *)v5 setCoverGlassColor:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productID"];
     [(NDODevice *)v5 setProductID:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productName"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productName"];
     [(NDODevice *)v5 setProductName:v13];
 
-    -[NDODevice setIsActiveWatch:](v5, "setIsActiveWatch:", [v4 decodeBoolForKey:@"isActiveWatch"]);
-    -[NDODevice setIsVisibleInCC:](v5, "setIsVisibleInCC:", [v4 decodeBoolForKey:@"isVisibleInCC"]);
-    -[NDODevice setAcOfferEligible:](v5, "setAcOfferEligible:", [v4 decodeBoolForKey:@"acOfferEligible"]);
-    -[NDODevice setCovered:](v5, "setCovered:", [v4 decodeBoolForKey:@"covered"]);
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coverageLocalizedLabel"];
+    -[NDODevice setIsActiveWatch:](v5, "setIsActiveWatch:", [coderCopy decodeBoolForKey:@"isActiveWatch"]);
+    -[NDODevice setIsVisibleInCC:](v5, "setIsVisibleInCC:", [coderCopy decodeBoolForKey:@"isVisibleInCC"]);
+    -[NDODevice setAcOfferEligible:](v5, "setAcOfferEligible:", [coderCopy decodeBoolForKey:@"acOfferEligible"]);
+    -[NDODevice setCovered:](v5, "setCovered:", [coderCopy decodeBoolForKey:@"covered"]);
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coverageLocalizedLabel"];
     [(NDODevice *)v5 setCoverageLocalizedLabel:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"acLocalizedOfferStatusLabel"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"acLocalizedOfferStatusLabel"];
     [(NDODevice *)v5 setAcLocalizedOfferStatusLabel:v15];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"acLocalizedUnlinkedPlanStatusLabel"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"acLocalizedUnlinkedPlanStatusLabel"];
     [(NDODevice *)v5 setAcLocalizedUnlinkedPlanStatusLabel:v16];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceImageUrl"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceImageUrl"];
     [(NDODevice *)v5 setDeviceImageUrl:v17];
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceDesc"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceDesc"];
     [(NDODevice *)v5 setDeviceDesc:v18];
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sgId"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sgId"];
     [(NDODevice *)v5 setSgId:v19];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pfcId"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pfcId"];
     [(NDODevice *)v5 setPfcId:v20];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pgfId"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pgfId"];
     [(NDODevice *)v5 setPgfId:v21];
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parentId"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parentId"];
     [(NDODevice *)v5 setParentId:v22];
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"acOfferEligibleUntil"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"acOfferEligibleUntil"];
     [(NDODevice *)v5 setAcOfferEligibleUntil:v23];
   }
 

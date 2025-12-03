@@ -1,21 +1,21 @@
 @interface _UIFocusEnvironmentPreferenceEnumerationContext
-- (BOOL)_isAllowedToPreferEnvironment:(id)a3;
+- (BOOL)_isAllowedToPreferEnvironment:(id)environment;
 - (BOOL)isLeafPreference;
 - (BOOL)isPreferredByItself;
 - (BOOL)prefersNothingFocused;
 - (NSArray)preferredEnvironments;
 - (UIFocusEnvironment)preferringEnvironment;
 - (_UIFocusEnvironmentPreferenceEnumerationContext)init;
-- (_UIFocusEnvironmentPreferenceEnumerationContext)initWithFocusEnvironment:(id)a3 enumerationMode:(int64_t)a4;
+- (_UIFocusEnvironmentPreferenceEnumerationContext)initWithFocusEnvironment:(id)environment enumerationMode:(int64_t)mode;
 - (_UIFocusEnvironmentPreferenceEnumerationContextDelegate)delegate;
-- (id)_inferPreferencesForEnvironment:(id)a3;
+- (id)_inferPreferencesForEnvironment:(id)environment;
 - (id)_startLogging;
 - (void)_invalidatePreferredEnvironments;
-- (void)_reportInferredPreferredFocusEnvironment:(id)a3;
+- (void)_reportInferredPreferredFocusEnvironment:(id)environment;
 - (void)_resolvePreferredFocusEnvironments;
 - (void)_stopLogging;
 - (void)popEnvironment;
-- (void)pushEnvironment:(id)a3;
+- (void)pushEnvironment:(id)environment;
 @end
 
 @implementation _UIFocusEnvironmentPreferenceEnumerationContext
@@ -23,8 +23,8 @@
 - (BOOL)isPreferredByItself
 {
   environment = self->_environment;
-  v3 = [(_UIFocusEnvironmentPreferenceEnumerationContext *)self preferringEnvironment];
-  LOBYTE(environment) = environment == v3;
+  preferringEnvironment = [(_UIFocusEnvironmentPreferenceEnumerationContext *)self preferringEnvironment];
+  LOBYTE(environment) = environment == preferringEnvironment;
 
   return environment;
 }
@@ -123,12 +123,12 @@
     {
       v9 = self->_environment;
       v10 = [UIFocusSystem focusSystemForEnvironment:v9];
-      v11 = [v10 _topEnvironment];
-      v12 = v11;
+      _topEnvironment = [v10 _topEnvironment];
+      v12 = _topEnvironment;
       v13 = 0;
-      if (v11 && v11 != v10)
+      if (_topEnvironment && _topEnvironment != v10)
       {
-        if (!_UIFocusEnvironmentIsAncestorOfEnvironment(v9, v11) || ([v10 focusedItem], v14 = objc_claimAutoreleasedReturnValue(), v14, v14 == v12))
+        if (!_UIFocusEnvironmentIsAncestorOfEnvironment(v9, _topEnvironment) || ([v10 focusedItem], v14 = objc_claimAutoreleasedReturnValue(), v14, v14 == v12))
         {
           v13 = 0;
         }
@@ -204,8 +204,8 @@
 
 - (BOOL)isLeafPreference
 {
-  v2 = [(_UIFocusEnvironmentPreferenceEnumerationContext *)self preferredEnvironments];
-  v3 = [v2 count] == 0;
+  preferredEnvironments = [(_UIFocusEnvironmentPreferenceEnumerationContext *)self preferredEnvironments];
+  v3 = [preferredEnvironments count] == 0;
 
   return v3;
 }
@@ -214,18 +214,18 @@
 {
   if ([(NSMutableArray *)self->_visitedEnvironmentStack count]!= 1)
   {
-    v8 = [(NSMutableArray *)self->_visitedEnvironmentStack lastObject];
+    lastObject = [(NSMutableArray *)self->_visitedEnvironmentStack lastObject];
     [(NSMutableArray *)self->_visitedEnvironmentStack removeLastObject];
-    v3 = [(NSMutableArray *)self->_visitedEnvironmentStack lastObject];
+    lastObject2 = [(NSMutableArray *)self->_visitedEnvironmentStack lastObject];
 
-    if (v3 != v8)
+    if (lastObject2 != lastObject)
     {
-      v4 = [(_UIDebugLogStack *)self->_debugStack popNode];
+      popNode = [(_UIDebugLogStack *)self->_debugStack popNode];
     }
 
-    v5 = [(NSMutableArray *)self->_visitedEnvironmentStack lastObject];
+    lastObject3 = [(NSMutableArray *)self->_visitedEnvironmentStack lastObject];
     environment = self->_environment;
-    self->_environment = v5;
+    self->_environment = lastObject3;
 
     [(_UIFocusEnvironmentPreferenceEnumerationContext *)self _invalidatePreferredEnvironments];
     if ([(_UIFocusEnvironmentPreferenceEnumerationContext *)self isInPreferredSubtree])
@@ -236,7 +236,7 @@
     if (self->_preferredSubtree)
     {
       preferredSubtreeEntryPoint = self->_preferredSubtreeEntryPoint;
-      if (preferredSubtreeEntryPoint == v8)
+      if (preferredSubtreeEntryPoint == lastObject)
       {
         self->_preferredSubtreeEntryPoint = 0;
       }
@@ -246,19 +246,19 @@
 
 - (_UIFocusEnvironmentPreferenceEnumerationContext)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:72 description:@"-init is not a valid initializer for this class. Use -initWithFocusEnvironment:enumerationMode: instead."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:72 description:@"-init is not a valid initializer for this class. Use -initWithFocusEnvironment:enumerationMode: instead."];
 
   return 0;
 }
 
-- (_UIFocusEnvironmentPreferenceEnumerationContext)initWithFocusEnvironment:(id)a3 enumerationMode:(int64_t)a4
+- (_UIFocusEnvironmentPreferenceEnumerationContext)initWithFocusEnvironment:(id)environment enumerationMode:(int64_t)mode
 {
-  v7 = a3;
-  if (!v7)
+  environmentCopy = environment;
+  if (!environmentCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"focusEnvironment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"focusEnvironment"}];
   }
 
   v31.receiver = self;
@@ -266,7 +266,7 @@
   v8 = [(_UIFocusEnvironmentPreferenceEnumerationContext *)&v31 init];
   if (v8)
   {
-    if (a4 && dyld_program_sdk_at_least())
+    if (mode && dyld_program_sdk_at_least())
     {
       v9 = objc_opt_new();
       v25 = 0;
@@ -282,28 +282,28 @@
       v10 = v9;
       v23 = v10;
       v24 = &v25;
-      _UIFocusEnvironmentEnumerateAncestorEnvironments(v7, v22);
+      _UIFocusEnvironmentEnumerateAncestorEnvironments(environmentCopy, v22);
       objc_storeStrong(&v8->_preferredEnvironmentsMap, v9);
       v11 = v26[5];
-      if (v11 && v11 != v7)
+      if (v11 && v11 != environmentCopy)
       {
         preferredSubtree = v8->_preferredSubtree;
-        v8->_preferredSubtree = v7;
-        v13 = v7;
+        v8->_preferredSubtree = environmentCopy;
+        v13 = environmentCopy;
 
-        v7 = v26[5];
+        environmentCopy = v26[5];
       }
 
       _Block_object_dispose(&v25, 8);
     }
 
-    objc_storeStrong(&v8->_environment, v7);
-    v14 = [UIFocusSystem focusSystemForEnvironment:v7];
+    objc_storeStrong(&v8->_environment, environmentCopy);
+    v14 = [UIFocusSystem focusSystemForEnvironment:environmentCopy];
     focusSystem = v8->_focusSystem;
     v8->_focusSystem = v14;
 
-    objc_storeStrong(&v8->_lastPrimaryPreferredEnvironment, v7);
-    v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v7, 0}];
+    objc_storeStrong(&v8->_lastPrimaryPreferredEnvironment, environmentCopy);
+    v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{environmentCopy, 0}];
     visitedEnvironmentStack = v8->_visitedEnvironmentStack;
     v8->_visitedEnvironmentStack = v16;
 
@@ -312,16 +312,16 @@
     allVisitedEnvironments = v8->_allVisitedEnvironments;
     v8->_allVisitedEnvironments = v18;
 
-    [(NSHashTable *)v8->_allVisitedEnvironments addObject:v7];
+    [(NSHashTable *)v8->_allVisitedEnvironments addObject:environmentCopy];
   }
 
   return v8;
 }
 
-- (id)_inferPreferencesForEnvironment:(id)a3
+- (id)_inferPreferencesForEnvironment:(id)environment
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  environmentCopy = environment;
   v5 = self->_focusSystem;
   if (!v5)
   {
@@ -329,15 +329,15 @@
     goto LABEL_13;
   }
 
-  v6 = _UIFocusEnvironmentPreferredFocusMapContainer(v4);
+  v6 = _UIFocusEnvironmentPreferredFocusMapContainer(environmentCopy);
   if (v6)
   {
     v7 = [[_UIFocusMap alloc] initWithFocusSystem:v5 rootContainer:v6 coordinateSpace:0 searchInfo:0 ignoresRootContainerClippingRect:0];
-    v8 = [(_UIFocusMap *)v7 _inferredDefaultFocusItemInEnvironment:v4];
+    v8 = [(_UIFocusMap *)v7 _inferredDefaultFocusItemInEnvironment:environmentCopy];
     v9 = v8;
     if (v8)
     {
-      if (v8 != v4 && [(_UIFocusEnvironmentPreferenceEnumerationContext *)self _isAllowedToPreferEnvironment:v8])
+      if (v8 != environmentCopy && [(_UIFocusEnvironmentPreferenceEnumerationContext *)self _isAllowedToPreferEnvironment:v8])
       {
         [(_UIFocusEnvironmentPreferenceEnumerationContext *)self _reportInferredPreferredFocusEnvironment:v9];
         v12[0] = v9;
@@ -365,16 +365,16 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)_isAllowedToPreferEnvironment:(id)a3
+- (BOOL)_isAllowedToPreferEnvironment:(id)environment
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (self->_environment == v4)
+  environmentCopy = environment;
+  if (self->_environment == environmentCopy)
   {
     LODWORD(v5) = ![(_UIFocusEnvironmentPreferenceEnumerationContext *)self isPreferredByItself];
   }
 
-  else if ([(NSMutableArray *)self->_visitedEnvironmentStack containsObject:v4])
+  else if ([(NSMutableArray *)self->_visitedEnvironmentStack containsObject:environmentCopy])
   {
     v5 = *(__UILogGetCategoryCachedImpl("UIFocus", &_isAllowedToPreferEnvironment____s_category) + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -383,19 +383,19 @@ LABEL_13:
       if (environment)
       {
         v7 = MEMORY[0x1E696AEC0];
-        v8 = environment;
+        environmentCopy2 = environment;
         v9 = objc_opt_class();
         v10 = NSStringFromClass(v9);
-        v11 = [v7 stringWithFormat:@"<%@: %p>", v10, v8];
+        environmentCopy2 = [v7 stringWithFormat:@"<%@: %p>", v10, environmentCopy2];
       }
 
       else
       {
-        v11 = @"(nil)";
+        environmentCopy2 = @"(nil)";
       }
 
-      v12 = v11;
-      v13 = v4;
+      v12 = environmentCopy2;
+      v13 = environmentCopy;
       if (v13)
       {
         v14 = MEMORY[0x1E696AEC0];
@@ -430,28 +430,28 @@ LABEL_13:
   return v5;
 }
 
-- (void)pushEnvironment:(id)a3
+- (void)pushEnvironment:(id)environment
 {
-  v6 = a3;
-  v18 = v6;
-  if (!v6)
+  environmentCopy = environment;
+  v18 = environmentCopy;
+  if (!environmentCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:350 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:350 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
 
-    v6 = 0;
+    environmentCopy = 0;
   }
 
-  if (self->_environment != v6)
+  if (self->_environment != environmentCopy)
   {
-    objc_storeStrong(&self->_environment, a3);
+    objc_storeStrong(&self->_environment, environment);
     if (self->_hasNeverPoppedInPreferredSubtree)
     {
-      objc_storeStrong(&self->_lastPrimaryPreferredEnvironment, a3);
+      objc_storeStrong(&self->_lastPrimaryPreferredEnvironment, environment);
     }
 
     preferredSubtree = self->_preferredSubtree;
-    v6 = v18;
+    environmentCopy = v18;
     if (preferredSubtree)
     {
       if (!self->_preferredSubtreeEntryPoint)
@@ -459,11 +459,11 @@ LABEL_13:
         v8 = _UIFocusEnvironmentFirstCommonAncestor(preferredSubtree, v18);
         v9 = self->_preferredSubtree;
 
-        v6 = v18;
+        environmentCopy = v18;
         if (v8 == v9)
         {
-          objc_storeStrong(&self->_preferredSubtreeEntryPoint, a3);
-          v6 = v18;
+          objc_storeStrong(&self->_preferredSubtreeEntryPoint, environment);
+          environmentCopy = v18;
         }
       }
     }
@@ -471,10 +471,10 @@ LABEL_13:
 
   if (self->_debugStack)
   {
-    v10 = [(NSMutableArray *)self->_visitedEnvironmentStack lastObject];
+    lastObject = [(NSMutableArray *)self->_visitedEnvironmentStack lastObject];
 
-    v6 = v18;
-    if (v10 != v18)
+    environmentCopy = v18;
+    if (lastObject != v18)
     {
       v11 = v18;
       if (v18)
@@ -493,11 +493,11 @@ LABEL_13:
       v16 = [off_1E70ECC58 messageWithString:v15];
 
       [(_UIDebugLogStack *)self->_debugStack pushNode:v16];
-      v6 = v18;
+      environmentCopy = v18;
     }
   }
 
-  [(NSMutableArray *)self->_visitedEnvironmentStack addObject:v6];
+  [(NSMutableArray *)self->_visitedEnvironmentStack addObject:environmentCopy];
   [(NSHashTable *)self->_allVisitedEnvironments addObject:v18];
   [(_UIFocusEnvironmentPreferenceEnumerationContext *)self _invalidatePreferredEnvironments];
 }
@@ -507,8 +507,8 @@ LABEL_13:
   v26 = *MEMORY[0x1E69E9840];
   if (self->_debugStack)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:417 description:@"Logging already in progress. Starting to log again would cause an undefined state."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:417 description:@"Logging already in progress. Starting to log again would cause an undefined state."];
   }
 
   v3 = objc_opt_new();
@@ -560,9 +560,9 @@ LABEL_13:
     while (v7);
   }
 
-  v17 = [(_UIDebugLogStack *)self->_debugStack rootNode];
+  rootNode = [(_UIDebugLogStack *)self->_debugStack rootNode];
 
-  return v17;
+  return rootNode;
 }
 
 - (void)_stopLogging
@@ -571,13 +571,13 @@ LABEL_13:
   self->_debugStack = 0;
 }
 
-- (void)_reportInferredPreferredFocusEnvironment:(id)a3
+- (void)_reportInferredPreferredFocusEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   debugStack = self->_debugStack;
   if (debugStack)
   {
-    v14 = v4;
+    v14 = environmentCopy;
     v6 = [off_1E70ECC50 messageWithString:@"No more preferred environments. Trying to infer environment from visual layout..."];
     [(_UIDebugLogStack *)debugStack addMessage:v6];
 
@@ -600,7 +600,7 @@ LABEL_13:
       [(_UIDebugLogStack *)v7 addMessage:v12];
     }
 
-    v4 = v14;
+    environmentCopy = v14;
   }
 }
 

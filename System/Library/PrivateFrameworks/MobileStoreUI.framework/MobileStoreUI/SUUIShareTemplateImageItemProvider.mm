@@ -1,13 +1,13 @@
 @interface SUUIShareTemplateImageItemProvider
-- (SUUIShareTemplateImageItemProvider)initWithTemplateElement:(id)a3;
+- (SUUIShareTemplateImageItemProvider)initWithTemplateElement:(id)element;
 - (id)item;
 @end
 
 @implementation SUUIShareTemplateImageItemProvider
 
-- (SUUIShareTemplateImageItemProvider)initWithTemplateElement:(id)a3
+- (SUUIShareTemplateImageItemProvider)initWithTemplateElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v6 = objc_alloc_init(MEMORY[0x277D755B8]);
   v10.receiver = self;
   v10.super_class = SUUIShareTemplateImageItemProvider;
@@ -15,7 +15,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_templateElement, a3);
+    objc_storeStrong(&v7->_templateElement, element);
   }
 
   return v8;
@@ -29,17 +29,17 @@
   v15 = __Block_byref_object_copy__4;
   v16 = __Block_byref_object_dispose__4;
   v17 = 0;
-  v3 = [(UIActivityItemProvider *)self activityType];
-  if ([MEMORY[0x277D546D0] activityTypeShouldProvideImage:v3])
+  activityType = [(UIActivityItemProvider *)self activityType];
+  if ([MEMORY[0x277D546D0] activityTypeShouldProvideImage:activityType])
   {
-    v4 = [(SUUIShareTemplateViewElement *)self->_templateElement activityForUIActivityType:v3];
-    v5 = [v4 image];
-    v6 = [v5 URL];
+    v4 = [(SUUIShareTemplateViewElement *)self->_templateElement activityForUIActivityType:activityType];
+    image = [v4 image];
+    v6 = [image URL];
     if (v6)
     {
       v7 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURL:v6];
       [v7 setITunesStoreRequest:0];
-      v8 = [[SUUIStyledImageDataConsumer alloc] initWithViewElement:v5];
+      v8 = [[SUUIStyledImageDataConsumer alloc] initWithViewElement:image];
       [(SUUIStyledImageDataConsumer *)v8 setImageSize:100.0, 100.0];
       [v7 setDataConsumer:v8];
       v11[0] = MEMORY[0x277D85DD0];

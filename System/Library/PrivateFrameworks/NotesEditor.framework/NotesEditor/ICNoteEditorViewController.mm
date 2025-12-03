@@ -1,28 +1,28 @@
 @interface ICNoteEditorViewController
 + (UIMenu)indentationMenu;
 + (UIMenu)textAlignmentMenu;
-+ (id)editorViewControllerWithIdentifier:(int64_t)a3 options:(unint64_t)a4;
-+ (void)dismissChildPresentedViewControllersInPostOrder:(id)a3 animated:(BOOL)a4 completion:(id)a5;
++ (id)editorViewControllerWithIdentifier:(int64_t)identifier options:(unint64_t)options;
++ (void)dismissChildPresentedViewControllersInPostOrder:(id)order animated:(BOOL)animated completion:(id)completion;
 + (void)initialize;
-- (BOOL)_scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4;
-- (BOOL)addSystemPaperLink:(id)a3 updateFirstResponder:(BOOL)a4;
+- (BOOL)_scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location;
+- (BOOL)addSystemPaperLink:(id)link updateFirstResponder:(BOOL)responder;
 - (BOOL)allowsAccessibilityChildReparenting;
-- (BOOL)allowsNewTextLength:(unint64_t)a3;
-- (BOOL)attachmentView:(id)a3 shouldRespondToPanGestureTouch:(id)a4 forAttachment:(id)a5;
+- (BOOL)allowsNewTextLength:(unint64_t)length;
+- (BOOL)attachmentView:(id)view shouldRespondToPanGestureTouch:(id)touch forAttachment:(id)attachment;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canAddToTags;
 - (BOOL)canBecomeFirstResponder;
 - (BOOL)canConvertToTag;
 - (BOOL)canConvertToText;
 - (BOOL)canFindInNote;
-- (BOOL)canIndentByAmount:(int64_t)a3;
+- (BOOL)canIndentByAmount:(int64_t)amount;
 - (BOOL)canIndentLeft;
 - (BOOL)canIndentRight;
 - (BOOL)canMoveCheckedToBottom;
 - (BOOL)canMoveSelectedListItemDown;
 - (BOOL)canMoveSelectedListItemUp;
 - (BOOL)canOpenLink;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canPerformCreateImageWithSelection;
 - (BOOL)canPerformTodoCheckAll;
 - (BOOL)canPerformTodoUncheckAll;
@@ -36,61 +36,61 @@
 - (BOOL)canToggleTodoStyle;
 - (BOOL)containsUnCheckedItems;
 - (BOOL)currentSelectionContainsListOrFixedWidth;
-- (BOOL)documentCameraController:(id)a3 canAddImages:(unint64_t)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)handleTapGestureForAttribution:(id)a3;
+- (BOOL)documentCameraController:(id)controller canAddImages:(unint64_t)images;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)handleTapGestureForAttribution:(id)attribution;
 - (BOOL)headerSubviewsFadeInOnUnderscrolling;
 - (BOOL)ignoresTaps;
-- (BOOL)isAssociatedWindowScene:(id)a3;
+- (BOOL)isAssociatedWindowScene:(id)scene;
 - (BOOL)isBlockQuoteSet;
 - (BOOL)isChecklistSelected;
 - (BOOL)isDocumentCameraAvailable;
 - (BOOL)isEditingOnSystemPaperOnPad;
 - (BOOL)isEditingOnSystemPaperOnPhone;
 - (BOOL)isInkPickerShowing;
-- (BOOL)isNewInk:(id)a3;
+- (BOOL)isNewInk:(id)ink;
 - (BOOL)isOnlyBlockQuoteEnabled;
 - (BOOL)isPasswordEntryShowing;
 - (BOOL)isPhotosLibraryAvailable;
-- (BOOL)isPositionOnTodoItem:(CGPoint)a3;
+- (BOOL)isPositionOnTodoItem:(CGPoint)item;
 - (BOOL)isShowingAudioInspector;
 - (BOOL)isShowingMiniPlayer;
-- (BOOL)isSwipeOnTodoItem:(id)a3;
+- (BOOL)isSwipeOnTodoItem:(id)item;
 - (BOOL)languageHasSpaces;
 - (BOOL)noteEditorNavigationItemConfigurationIsToolbarHidden;
 - (BOOL)noteHasAnyPencilKitDrawings;
 - (BOOL)resignFirstResponder;
 - (BOOL)safeAreaContainsKeyboard;
 - (BOOL)shouldAllowAttributionSidebar;
-- (BOOL)shouldBlockHitTestOnTextView:(id)a3 event:(id)a4;
+- (BOOL)shouldBlockHitTestOnTextView:(id)view event:(id)event;
 - (BOOL)shouldEnablePencilGestures;
 - (BOOL)shouldForceLightContent;
-- (BOOL)shouldIgnoreTapToStartEditingTextView:(id)a3;
+- (BOOL)shouldIgnoreTapToStartEditingTextView:(id)view;
 - (BOOL)shouldInsertNewDrawingsAsPaper;
 - (BOOL)shouldLockTextViewContentOffset;
 - (BOOL)shouldShowMenuItems;
-- (BOOL)shouldStartEditingForTapGesture:(id)a3;
+- (BOOL)shouldStartEditingForTapGesture:(id)gesture;
 - (BOOL)shouldUseiPadBarLayout;
 - (BOOL)styleSelectorInputViewShowing;
-- (BOOL)styleSelectorShouldDisableTextStyles:(id)a3;
-- (BOOL)styleSelectorShouldUseCompactTopInset:(id)a3;
-- (BOOL)textView:(id)a3 canAddDrawingAtIndex:(unint64_t)a4;
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (BOOL)textViewCanAddStroke:(id)a3;
-- (BOOL)textViewCanSelectDrawing:(id)a3;
-- (BOOL)textViewShouldBeginEditing:(id)a3;
-- (BOOL)toggleInkPickerAnimated:(BOOL)a3;
+- (BOOL)styleSelectorShouldDisableTextStyles:(id)styles;
+- (BOOL)styleSelectorShouldUseCompactTopInset:(id)inset;
+- (BOOL)textView:(id)view canAddDrawingAtIndex:(unint64_t)index;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (BOOL)textViewCanAddStroke:(id)stroke;
+- (BOOL)textViewCanSelectDrawing:(id)drawing;
+- (BOOL)textViewShouldBeginEditing:(id)editing;
+- (BOOL)toggleInkPickerAnimated:(BOOL)animated;
 - (BOOL)useInputViewForStyleSelector;
 - (BOOL)usesContextualFormatBar;
 - (BOOL)usesCustomTransition;
 - (BOOL)wantsToRemainFirstResponder;
 - (CGPoint)changePasswordContentOffset;
-- (CGRect)notesQuickLookActivityItem:(id)a3 rectForPreviewItem:(id)a4 inView:(id *)a5 previewController:(id)a6;
+- (CGRect)notesQuickLookActivityItem:(id)item rectForPreviewItem:(id)previewItem inView:(id *)view previewController:(id)controller;
 - (ICAttributionSidebarView)attributionSidebarView;
 - (ICAuxiliaryStyling)auxiliaryStylingController;
 - (ICBluetoothKeyboardHintViewController)bluetoothKeyboardHintViewController;
@@ -101,7 +101,7 @@
 - (ICNote)previousNote;
 - (ICNoteEditorContextualInputAccessoryView)formatBarView;
 - (ICNoteEditorDelegate)delegate;
-- (ICNoteEditorViewController)initWithIdentifier:(int64_t)a3 options:(unint64_t)a4;
+- (ICNoteEditorViewController)initWithIdentifier:(int64_t)identifier options:(unint64_t)options;
 - (ICNoteFormattingViewController)noteFormattingControllerCreateIfNecessary;
 - (ICSelectorDelayer)applyAccessibilityInfoDelayer;
 - (ICSelectorDelayer)showOrHideSearchPatternHighlightsDelayer;
@@ -123,436 +123,436 @@
 - (UIView)rulerHostingView;
 - (UIView)styleSelectorDummyInputView;
 - (UIViewController)rootViewController;
-- (_NSRange)charRangeForSwipeTextRange:(id)a3;
+- (_NSRange)charRangeForSwipeTextRange:(id)range;
 - (_NSRange)lastSelectedRange;
 - (_NSRange)lastSelectedRangeForAccelerator;
-- (_NSRange)rangeForIndentationGestureAtPoint:(CGPoint)a3;
+- (_NSRange)rangeForIndentationGestureAtPoint:(CGPoint)point;
 - (_NSRange)textViewVisibleRange;
 - (_NSRange)visibleRange;
 - (double)inputAccessoryViewHeight;
 - (double)textViewBottomInsetThatWeWant;
-- (double)textViewBottomInsetThatWeWantForEditing:(BOOL)a3;
+- (double)textViewBottomInsetThatWeWantForEditing:(BOOL)editing;
 - (double)textViewBottomPaddingVisibleRatio;
 - (double)textViewScrollPosition;
 - (double)textViewTopInsetThatWeWant;
-- (id)addNewNoteWithEvent:(id)a3;
-- (id)addQuickNoteWithPencil:(BOOL)a3;
-- (id)attachmentViewForTextAttachment:(id)a3 characterIndex:(int64_t)a4;
-- (id)attributedStringFromHTML:(id)a3;
-- (id)barButtonItemWithImage:(id)a3 selector:(SEL)a4;
-- (id)contextMenuInteraction:(id)a3 atLocation:(CGPoint)a4 inTableTextView:(id)a5;
+- (id)addNewNoteWithEvent:(id)event;
+- (id)addQuickNoteWithPencil:(BOOL)pencil;
+- (id)attachmentViewForTextAttachment:(id)attachment characterIndex:(int64_t)index;
+- (id)attributedStringFromHTML:(id)l;
+- (id)barButtonItemWithImage:(id)image selector:(SEL)selector;
+- (id)contextMenuInteraction:(id)interaction atLocation:(CGPoint)location inTableTextView:(id)view;
 - (id)createNewNote;
-- (id)currentStylesForStyleSelectorIgnoreTypingAttributes:(BOOL)a3;
+- (id)currentStylesForStyleSelectorIgnoreTypingAttributes:(BOOL)attributes;
 - (id)currentValidToolForNewDrawingOrNote;
 - (id)defaultInkColor;
 - (id)documentCameraControllerCreateDataCryptorIfNecessary;
 - (id)drawingsForHandwritingDebug;
 - (id)dynamicBarColor;
-- (id)firstEmbeddedScrollViewInView:(id)a3;
+- (id)firstEmbeddedScrollViewInView:(id)view;
 - (id)flexibleSpaceBarButtonItem;
-- (id)getTableControllerFor:(id)a3;
+- (id)getTableControllerFor:(id)for;
 - (id)iCloudShareBarButtonItem;
 - (id)icSplitViewController;
 - (id)icaxDateView;
 - (id)icaxMiniPlayerView;
 - (id)icaxUserTitleView;
-- (id)inkPaletteButtonView:(id)a3;
-- (id)inkPaletteUndoManager:(id)a3;
-- (id)inlineDrawingAttachmentForPoint:(CGPoint)a3;
+- (id)inkPaletteButtonView:(id)view;
+- (id)inkPaletteUndoManager:(id)manager;
+- (id)inlineDrawingAttachmentForPoint:(CGPoint)point;
 - (id)lastPaperDocumentAttachmentView;
 - (id)linkForSelection;
-- (id)managedObjectContextChangeController:(id)a3 managedObjectIDsToUpdateForUpdatedManagedObjects:(id)a4;
+- (id)managedObjectContextChangeController:(id)controller managedObjectIDsToUpdateForUpdatedManagedObjects:(id)objects;
 - (id)nibBundle;
-- (id)noteEditorNavigationItemConfigurationChecklistAccessibilityValue:(id)a3;
-- (id)noteEditorNavigationItemConfigurationEmphasisAccessibilityCustomContentValue:(id)a3;
-- (id)noteEditorNavigationItemConfigurationIndentationAccessibilityValue:(id)a3;
-- (id)noteEditorNavigationItemConfigurationInputAccessoryToolbar:(id)a3;
-- (id)noteEditorNavigationItemConfigurationInputAssistantItem:(id)a3;
-- (id)noteEditorNavigationItemConfigurationTableAttachmentViewController:(id)a3;
+- (id)noteEditorNavigationItemConfigurationChecklistAccessibilityValue:(id)value;
+- (id)noteEditorNavigationItemConfigurationEmphasisAccessibilityCustomContentValue:(id)value;
+- (id)noteEditorNavigationItemConfigurationIndentationAccessibilityValue:(id)value;
+- (id)noteEditorNavigationItemConfigurationInputAccessoryToolbar:(id)toolbar;
+- (id)noteEditorNavigationItemConfigurationInputAssistantItem:(id)item;
+- (id)noteEditorNavigationItemConfigurationTableAttachmentViewController:(id)controller;
 - (id)noteFormattingTintColor;
-- (id)notePreviewView:(id)a3;
-- (id)notesQuickLookActivityItem:(id)a3 transitionViewForPreviewItem:(id)a4 previewController:(id)a5;
+- (id)notePreviewView:(id)view;
+- (id)notesQuickLookActivityItem:(id)item transitionViewForPreviewItem:(id)previewItem previewController:(id)controller;
 - (id)radarTitleForHandwritingDebug;
-- (id)scanDataDelegateWithIdentifier:(id)a3;
-- (id)systemImageNameForAddCollaboratorsActivity:(id)a3;
-- (id)textView:(id)a3 menuConfigurationForTextItem:(id)a4 defaultMenu:(id)a5;
-- (id)textView:(id)a3 newAttachmentForFileType:(id)a4;
-- (id)textView:(id)a3 writingToolsIgnoredRangesInEnclosingRange:(_NSRange)a4;
-- (id)titleForAddCollaboratorsActivity:(id)a3;
+- (id)scanDataDelegateWithIdentifier:(id)identifier;
+- (id)systemImageNameForAddCollaboratorsActivity:(id)activity;
+- (id)textView:(id)view menuConfigurationForTextItem:(id)item defaultMenu:(id)menu;
+- (id)textView:(id)view newAttachmentForFileType:(id)type;
+- (id)textView:(id)view writingToolsIgnoredRangesInEnclosingRange:(_NSRange)range;
+- (id)titleForAddCollaboratorsActivity:(id)activity;
 - (id)undoManager;
 - (id)userActivity;
-- (id)viewForAttachment:(id)a3;
+- (id)viewForAttachment:(id)attachment;
 - (int64_t)attributionSidebarVisibility;
 - (int64_t)currentEmphasisType;
 - (int64_t)currentWritingDirection;
-- (int64_t)icasPalettePositionFromPKPalettePosition:(int64_t)a3;
-- (int64_t)indentAmountIncreasing:(BOOL)a3;
+- (int64_t)icasPalettePositionFromPKPalettePosition:(int64_t)position;
+- (int64_t)indentAmountIncreasing:(BOOL)increasing;
 - (int64_t)preferredStatusBarStyle;
 - (int64_t)writingDirection;
 - (unint64_t)currentBIUSForStyleSelector;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_beginLiveResize:(id)a3;
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4;
-- (void)_endLiveResize:(id)a3;
-- (void)_scribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4;
-- (void)_scrollViewDidInterruptDecelerating:(id)a3;
-- (void)_textViewDidEndUndoCoalescingForWritingTools:(id)a3;
-- (void)_textViewWillBeginUndoCoalescingForWritingTools:(id)a3;
+- (void)_beginLiveResize:(id)resize;
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only;
+- (void)_endLiveResize:(id)resize;
+- (void)_scribbleInteraction:(id)interaction willBeginWritingInElement:(id)element;
+- (void)_scrollViewDidInterruptDecelerating:(id)decelerating;
+- (void)_textViewDidEndUndoCoalescingForWritingTools:(id)tools;
+- (void)_textViewWillBeginUndoCoalescingForWritingTools:(id)tools;
 - (void)acceleratorOriginNeedsUpdate;
-- (void)addKVOObserversForNote:(id)a3;
+- (void)addKVOObserversForNote:(id)note;
 - (void)addNewNoteIfNeeded;
-- (void)addNote:(id)a3 event:(id)a4 shouldInstrumentAsNewNoteAffordanceUsage:(BOOL)a5;
+- (void)addNote:(id)note event:(id)event shouldInstrumentAsNewNoteAffordanceUsage:(BOOL)usage;
 - (void)addSystemPaperAttachment;
-- (void)addSystemPaperImageData:(id)a3 updateFirstResponder:(BOOL)a4 forceAddToPaper:(BOOL)a5;
-- (void)addTable:(id)a3;
-- (void)addToGraph:(id)a3;
-- (void)addToTags:(id)a3;
+- (void)addSystemPaperImageData:(id)data updateFirstResponder:(BOOL)responder forceAddToPaper:(BOOL)paper;
+- (void)addTable:(id)table;
+- (void)addToGraph:(id)graph;
+- (void)addToTags:(id)tags;
 - (void)addTodoListAtEndOfNote;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)applicationDidEnterBackground:(id)a3;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)applicationDidEnterBackground:(id)background;
 - (void)applyAccessibilityInfo;
-- (void)applyScrollStateFromArchive:(id)a3;
+- (void)applyScrollStateFromArchive:(id)archive;
 - (void)applyScrollStateIfAvailable;
-- (void)attachFile:(id)a3;
+- (void)attachFile:(id)file;
 - (void)attachmentBrickDidChangeSize;
-- (void)attachmentInsertionController:(id)a3 didAddAttachment:(id)a4 atRange:(_NSRange)a5;
-- (void)attachmentInsertionController:(id)a3 didAddInlineAttachment:(id)a4 atRange:(_NSRange)a5 textStorage:(id)a6;
-- (void)attachmentInsertionController:(id)a3 willAddAttachment:(id)a4 atRange:(_NSRange)a5;
-- (void)attachmentPresenterDidDismiss:(id)a3;
-- (void)attachmentView:(id)a3 shouldPresentAttachment:(id)a4;
-- (void)attachmentView:(id)a3 shouldPresentNote:(id)a4;
-- (void)attachmentView:(id)a3 shouldShareAttachment:(id)a4;
-- (void)audioEventReporterLostSession:(id)a3;
-- (void)audioFindInTranscript:(id)a3;
-- (void)audioRecordingStarted:(id)a3;
-- (void)audioRecordingStopped:(id)a3;
-- (void)audioTranscriptInteraction:(id)a3;
-- (void)authenticationAuthenticateBiometricsAttemptDidFail:(id)a3;
-- (void)blockAccessibilityScreenChangedNotificationsIfNecessaryForDuration:(double)a3;
-- (void)calculateDocumentControllerDidUpdateHighlights:(id)a3;
-- (void)cancelFromSystemPaperCard:(id)a3;
-- (void)changeIndentationByIncreasing:(BOOL)a3 sender:(id)a4;
-- (void)checkAll:(id)a3;
+- (void)attachmentInsertionController:(id)controller didAddAttachment:(id)attachment atRange:(_NSRange)range;
+- (void)attachmentInsertionController:(id)controller didAddInlineAttachment:(id)attachment atRange:(_NSRange)range textStorage:(id)storage;
+- (void)attachmentInsertionController:(id)controller willAddAttachment:(id)attachment atRange:(_NSRange)range;
+- (void)attachmentPresenterDidDismiss:(id)dismiss;
+- (void)attachmentView:(id)view shouldPresentAttachment:(id)attachment;
+- (void)attachmentView:(id)view shouldPresentNote:(id)note;
+- (void)attachmentView:(id)view shouldShareAttachment:(id)attachment;
+- (void)audioEventReporterLostSession:(id)session;
+- (void)audioFindInTranscript:(id)transcript;
+- (void)audioRecordingStarted:(id)started;
+- (void)audioRecordingStopped:(id)stopped;
+- (void)audioTranscriptInteraction:(id)interaction;
+- (void)authenticationAuthenticateBiometricsAttemptDidFail:(id)fail;
+- (void)blockAccessibilityScreenChangedNotificationsIfNecessaryForDuration:(double)duration;
+- (void)calculateDocumentControllerDidUpdateHighlights:(id)highlights;
+- (void)cancelFromSystemPaperCard:(id)card;
+- (void)changeIndentationByIncreasing:(BOOL)increasing sender:(id)sender;
+- (void)checkAll:(id)all;
 - (void)cleanupAfterAddImageAttachmentOperation;
 - (void)cleanupAfterBarSourcedPopoverPresentation;
 - (void)cleanupAfterFingerDrawing;
 - (void)clearTextViewSelection;
 - (void)configureBarAppearancesIfNecessary;
 - (void)contentSizeCategoryDidChange;
-- (void)convertToTag:(id)a3;
-- (void)convertToText:(id)a3;
-- (void)createAndPresentCloudSharingControllerBySender:(id)a3;
-- (void)createImage:(id)a3;
+- (void)convertToTag:(id)tag;
+- (void)convertToText:(id)text;
+- (void)createAndPresentCloudSharingControllerBySender:(id)sender;
+- (void)createImage:(id)image;
 - (void)createInkPickerControllerIfNecessary;
-- (void)createLink:(id)a3 title:(id)a4 textSelection:(id)a5 range:(_NSRange)a6 addApproach:(int64_t)a7;
-- (void)createNoteLinkAttachment:(id)a3 textSelection:(id)a4 range:(_NSRange)a5 addApproach:(int64_t)a6;
+- (void)createLink:(id)link title:(id)title textSelection:(id)selection range:(_NSRange)range addApproach:(int64_t)approach;
+- (void)createNoteLinkAttachment:(id)attachment textSelection:(id)selection range:(_NSRange)range addApproach:(int64_t)approach;
 - (void)createSystemPaperLinkBarIfNecessary;
-- (void)createTodoListItem:(id)a3;
+- (void)createTodoListItem:(id)item;
 - (void)dealloc;
-- (void)decreaseIndentation:(id)a3;
-- (void)deleteCurrentNote:(id)a3;
-- (void)didAddAttachmentForNoteNotification:(id)a3;
+- (void)decreaseIndentation:(id)indentation;
+- (void)deleteCurrentNote:(id)note;
+- (void)didAddAttachmentForNoteNotification:(id)notification;
 - (void)didBeginFindInteraction;
 - (void)didEndEditingNote;
 - (void)didEndFindInteraction;
-- (void)didInvokeAnalyticsCalloutBarButtonActionOfType:(int64_t)a3;
-- (void)didInvokeAnalyticsChecklistActionChecked:(BOOL)a3;
-- (void)didInvokePasteWithAttributedString:(id)a3;
-- (void)didUpdateSearchQueryInFindInteraction:(id)a3;
+- (void)didInvokeAnalyticsCalloutBarButtonActionOfType:(int64_t)type;
+- (void)didInvokeAnalyticsChecklistActionChecked:(BOOL)checked;
+- (void)didInvokePasteWithAttributedString:(id)string;
+- (void)didUpdateSearchQueryInFindInteraction:(id)interaction;
 - (void)disableBoldface;
 - (void)disableItalics;
 - (void)disableStrikethrough;
 - (void)disableUnderline;
-- (void)documentCameraController:(id)a3 didFinishWithDocInfoCollection:(id)a4 imageCache:(id)a5 warnUser:(BOOL)a6;
-- (void)documentCameraController:(id)a3 didFinishWithDocInfoCollection:(id)a4 imageCache:(id)a5 warnUser:(BOOL)a6 closeViewController:(BOOL)a7;
-- (void)documentCameraControllerDidCancelWithPresentingViewController:(id)a3;
-- (void)documentCameraControllerDidRetake:(id)a3 pageCount:(unint64_t)a4;
-- (void)documentCameraPresentingViewController:(id)a3 didFinishWithInfoCollection:(id)a4 imageCache:(id)a5 warnUser:(BOOL)a6 closeViewController:(BOOL)a7;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
+- (void)documentCameraController:(id)controller didFinishWithDocInfoCollection:(id)collection imageCache:(id)cache warnUser:(BOOL)user;
+- (void)documentCameraController:(id)controller didFinishWithDocInfoCollection:(id)collection imageCache:(id)cache warnUser:(BOOL)user closeViewController:(BOOL)viewController;
+- (void)documentCameraControllerDidCancelWithPresentingViewController:(id)controller;
+- (void)documentCameraControllerDidRetake:(id)retake pageCount:(unint64_t)count;
+- (void)documentCameraPresentingViewController:(id)controller didFinishWithInfoCollection:(id)collection imageCache:(id)cache warnUser:(BOOL)user closeViewController:(BOOL)viewController;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
 - (void)donateEditingIntentIfNecessary;
 - (void)doneEditing;
-- (void)doneEditing:(id)a3;
+- (void)doneEditing:(id)editing;
 - (void)enableBoldface;
 - (void)enableItalics;
 - (void)enableStrikethrough;
 - (void)enableUnderline;
 - (void)ensurePaperPreviewsExistIfNecessary;
 - (void)ensureValidInkForNewDrawingOrNote;
-- (void)eventReporterLostSession:(id)a3;
+- (void)eventReporterLostSession:(id)session;
 - (void)fetchAll;
-- (void)handleLeftOrRightSwipe:(id)a3;
-- (void)handleMenuBarButtonTap:(id)a3;
-- (void)hashtagInsertedInNote:(id)a3 tokenContentIdentifier:(id)a4 viaAutoComplete:(BOOL)a5;
-- (void)hashtagViewController:(id)a3 insertFutureHashtagWithText:(id)a4;
-- (void)hashtagViewController:(id)a3 insertHashtagWithText:(id)a4;
-- (void)hashtagViewController:(id)a3 insertUnknownInlineAttachmentWithText:(id)a4;
+- (void)handleLeftOrRightSwipe:(id)swipe;
+- (void)handleMenuBarButtonTap:(id)tap;
+- (void)hashtagInsertedInNote:(id)note tokenContentIdentifier:(id)identifier viaAutoComplete:(BOOL)complete;
+- (void)hashtagViewController:(id)controller insertFutureHashtagWithText:(id)text;
+- (void)hashtagViewController:(id)controller insertHashtagWithText:(id)text;
+- (void)hashtagViewController:(id)controller insertUnknownInlineAttachmentWithText:(id)text;
 - (void)hideAcceleratorIfNecessary;
-- (void)hideActivityStreamToolbarAnimated:(BOOL)a3;
+- (void)hideActivityStreamToolbarAnimated:(BOOL)animated;
 - (void)hideAndDismissPresentedViewController;
 - (void)hideInkPicker;
-- (void)iCloudShareButtonPressed:(id)a3;
-- (void)icBaseTextViewDidSetHidden:(BOOL)a3;
-- (void)ic_alignCenter:(id)a3;
-- (void)ic_alignLeft:(id)a3;
-- (void)ic_alignRight:(id)a3;
-- (void)increaseIndentation:(id)a3;
-- (void)indentSelectionIfPossibleByAmount:(int64_t)a3;
-- (void)inkPalette:(id)a3 didChangeColor:(id)a4;
-- (void)inkPalette:(id)a3 didChangePalettePositionStart:(int64_t)a4 end:(int64_t)a5;
-- (void)inkPalette:(id)a3 didHideAnimated:(BOOL)a4;
-- (void)inkPalette:(id)a3 didPickTool:(id)a4;
-- (void)inkPalette:(id)a3 didShowAnimated:(BOOL)a4;
-- (void)inkPalette:(id)a3 willHideAnimated:(BOOL)a4;
-- (void)inkPalette:(id)a3 willShowAnimated:(BOOL)a4;
-- (void)inkPaletteDidToggleRuler:(id)a3 isRulerActive:(BOOL)a4;
-- (void)inlineAttachmentDeleted:(id)a3;
-- (void)inputAccessoryDisclosureStateDidChange:(id)a3 tapped:(BOOL)a4;
-- (void)inputAccessoryDisclosureStateWillChange:(id)a3;
-- (void)insertGraph:(id)a3;
-- (void)insertSidecarItems:(id)a3 service:(int64_t)a4;
-- (void)keyboardDidShow:(id)a3;
-- (void)keyboardResizerAdjustInsetsWithKeyboardFrame:(CGRect)a3 scrollAboveHeight:(double)a4 duration:(double)a5;
+- (void)iCloudShareButtonPressed:(id)pressed;
+- (void)icBaseTextViewDidSetHidden:(BOOL)hidden;
+- (void)ic_alignCenter:(id)center;
+- (void)ic_alignLeft:(id)left;
+- (void)ic_alignRight:(id)right;
+- (void)increaseIndentation:(id)indentation;
+- (void)indentSelectionIfPossibleByAmount:(int64_t)amount;
+- (void)inkPalette:(id)palette didChangeColor:(id)color;
+- (void)inkPalette:(id)palette didChangePalettePositionStart:(int64_t)start end:(int64_t)end;
+- (void)inkPalette:(id)palette didHideAnimated:(BOOL)animated;
+- (void)inkPalette:(id)palette didPickTool:(id)tool;
+- (void)inkPalette:(id)palette didShowAnimated:(BOOL)animated;
+- (void)inkPalette:(id)palette willHideAnimated:(BOOL)animated;
+- (void)inkPalette:(id)palette willShowAnimated:(BOOL)animated;
+- (void)inkPaletteDidToggleRuler:(id)ruler isRulerActive:(BOOL)active;
+- (void)inlineAttachmentDeleted:(id)deleted;
+- (void)inputAccessoryDisclosureStateDidChange:(id)change tapped:(BOOL)tapped;
+- (void)inputAccessoryDisclosureStateWillChange:(id)change;
+- (void)insertGraph:(id)graph;
+- (void)insertSidecarItems:(id)items service:(int64_t)service;
+- (void)keyboardDidShow:(id)show;
+- (void)keyboardResizerAdjustInsetsWithKeyboardFrame:(CGRect)frame scrollAboveHeight:(double)height duration:(double)duration;
 - (void)lastSavedInkingTool;
 - (void)linkEditorDidDismiss;
-- (void)localeChanged:(id)a3;
-- (void)lockBarButtonPressed:(id)a3;
-- (void)lockNoteManagerDidToggleLock:(id)a3;
-- (void)lockNoteManagerWillToggleLock:(id)a3;
+- (void)localeChanged:(id)changed;
+- (void)lockBarButtonPressed:(id)pressed;
+- (void)lockNoteManagerDidToggleLock:(id)lock;
+- (void)lockNoteManagerWillToggleLock:(id)lock;
 - (void)magicGenerativePlaygroundWillDisappear;
-- (void)managedObjectContextChangeController:(id)a3 performUpdatesForManagedObjectIDs:(id)a4;
-- (void)mentionInsertedInNote:(id)a3 mentionID:(id)a4 participantID:(id)a5 viaAutoComplete:(BOOL)a6;
-- (void)mergeRelatedOperationsDidEnd:(id)a3;
-- (void)moveCheckedToBottom:(id)a3;
-- (void)moveSelectedListItemDown:(id)a3;
-- (void)moveSelectedListItemUp:(id)a3;
-- (void)moveToFolderPressed:(id)a3;
-- (void)noteDecryptedStatusDidChange:(id)a3;
-- (void)noteDidChangeCalculatePreviewBehaviorNotification:(id)a3;
-- (void)noteDidDeauthenticateAfterMerge:(id)a3;
-- (void)noteEditorNavigationItemConfiguration:(id)a3 addNoteFromBarButtonItem:(id)a4 event:(id)a5;
-- (void)noteEditorNavigationItemConfiguration:(id)a3 closeAuxiliaryWindowFromBarButtonItem:(id)a4;
-- (void)noteEditorNavigationItemConfiguration:(id)a3 openLinkEditorWithSender:(id)a4;
-- (void)noteEditorNavigationItemConfiguration:(id)a3 setToolbarHidden:(BOOL)a4 animated:(BOOL)a5;
-- (void)noteEditorNavigationItemConfiguration:(id)a3 showWritingToolsFromBarButtonItem:(id)a4;
-- (void)noteEditorNavigationItemConfiguration:(id)a3 toggleListStyle:(unsigned int)a4 withSender:(id)a5;
-- (void)noteEditorNavigationItemConfiguration:(id)a3 toggleSidebarFromBarButtonItem:(id)a4;
-- (void)noteFormattingDidFinish:(id)a3;
-- (void)noteFormattingNeedsUpdate:(id)a3;
+- (void)managedObjectContextChangeController:(id)controller performUpdatesForManagedObjectIDs:(id)ds;
+- (void)mentionInsertedInNote:(id)note mentionID:(id)d participantID:(id)iD viaAutoComplete:(BOOL)complete;
+- (void)mergeRelatedOperationsDidEnd:(id)end;
+- (void)moveCheckedToBottom:(id)bottom;
+- (void)moveSelectedListItemDown:(id)down;
+- (void)moveSelectedListItemUp:(id)up;
+- (void)moveToFolderPressed:(id)pressed;
+- (void)noteDecryptedStatusDidChange:(id)change;
+- (void)noteDidChangeCalculatePreviewBehaviorNotification:(id)notification;
+- (void)noteDidDeauthenticateAfterMerge:(id)merge;
+- (void)noteEditorNavigationItemConfiguration:(id)configuration addNoteFromBarButtonItem:(id)item event:(id)event;
+- (void)noteEditorNavigationItemConfiguration:(id)configuration closeAuxiliaryWindowFromBarButtonItem:(id)item;
+- (void)noteEditorNavigationItemConfiguration:(id)configuration openLinkEditorWithSender:(id)sender;
+- (void)noteEditorNavigationItemConfiguration:(id)configuration setToolbarHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)noteEditorNavigationItemConfiguration:(id)configuration showWritingToolsFromBarButtonItem:(id)item;
+- (void)noteEditorNavigationItemConfiguration:(id)configuration toggleListStyle:(unsigned int)style withSender:(id)sender;
+- (void)noteEditorNavigationItemConfiguration:(id)configuration toggleSidebarFromBarButtonItem:(id)item;
+- (void)noteFormattingDidFinish:(id)finish;
+- (void)noteFormattingNeedsUpdate:(id)update;
 - (void)noteOrFolderChangedCallback;
-- (void)noteWillAppear:(id)a3;
-- (void)noteWillBeDeleted:(id)a3;
-- (void)noteWillDisappear:(id)a3;
-- (void)notesContextRefreshNotification:(id)a3;
-- (void)observeAttachmentDeleted:(id)a3;
-- (void)observeDrawingConverted:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)openExperimentalHashtagUI:(id)a3;
-- (void)openLink:(id)a3;
-- (void)openLinkEditor:(id)a3;
-- (void)openLinkEditorForLink:(id)a3 atRange:(_NSRange)a4 delegate:(id)a5;
-- (void)openLinkEditorForLinkTextItem:(id)a3;
-- (void)paperKitBundleDidMerge:(id)a3;
-- (void)passwordEntryAlertControllerAttemptDidFail:(id)a3;
-- (void)performDeleteAnimation:(id)a3;
-- (void)performFindInNote:(id)a3;
-- (void)performReplaceInNote:(id)a3;
+- (void)noteWillAppear:(id)appear;
+- (void)noteWillBeDeleted:(id)deleted;
+- (void)noteWillDisappear:(id)disappear;
+- (void)notesContextRefreshNotification:(id)notification;
+- (void)observeAttachmentDeleted:(id)deleted;
+- (void)observeDrawingConverted:(id)converted;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)openExperimentalHashtagUI:(id)i;
+- (void)openLink:(id)link;
+- (void)openLinkEditor:(id)editor;
+- (void)openLinkEditorForLink:(id)link atRange:(_NSRange)range delegate:(id)delegate;
+- (void)openLinkEditorForLinkTextItem:(id)item;
+- (void)paperKitBundleDidMerge:(id)merge;
+- (void)passwordEntryAlertControllerAttemptDidFail:(id)fail;
+- (void)performDeleteAnimation:(id)animation;
+- (void)performFindInNote:(id)note;
+- (void)performReplaceInNote:(id)note;
 - (void)prepareForBarSourcedPopoverPresentation;
 - (void)prepareSelectionForAddingAttachment;
-- (void)prepareToSnapToPaperDocumentAtStartOfDragIfNecessary:(id)a3;
-- (void)presentRecordingStoppedAlertForNoteIfNeeded:(id)a3;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)quickNoteAllNotes:(id)a3;
+- (void)prepareToSnapToPaperDocumentAtStartOfDragIfNecessary:(id)necessary;
+- (void)presentRecordingStoppedAlertForNoteIfNeeded:(id)needed;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)quickNoteAllNotes:(id)notes;
 - (void)rebuildInputAccessoryView;
 - (void)recreateTextView;
 - (void)recreateTextViewIfNecessary;
 - (void)recreateTextViewIfPasswordEntryScreenExistsButNoteIsUnlocked;
-- (void)redoAction:(id)a3;
+- (void)redoAction:(id)action;
 - (void)registerForTraitChanges;
 - (void)reloadCurrentNote;
 - (void)rememberNoteContentForEditingIntent;
-- (void)remoteDocumentCameraController:(id)a3 didFinishWithInfoCollection:(id)a4;
-- (void)removeChecked:(id)a3;
+- (void)remoteDocumentCameraController:(id)controller didFinishWithInfoCollection:(id)collection;
+- (void)removeChecked:(id)checked;
 - (void)removeCurrentScrollState;
-- (void)removeKVOObserversForNote:(id)a3;
-- (void)removeLinkForLinkTextItem:(id)a3;
+- (void)removeKVOObserversForNote:(id)note;
+- (void)removeLinkForLinkTextItem:(id)item;
 - (void)removeLinksFromCurrentSelection;
-- (void)removeLinksFromRange:(_NSRange)a3;
-- (void)removeLinksFromTextSelection:(id)a3 range:(_NSRange)a4;
+- (void)removeLinksFromRange:(_NSRange)range;
+- (void)removeLinksFromTextSelection:(id)selection range:(_NSRange)range;
 - (void)renameAttachment;
-- (void)resetBarButtonsAnimated:(BOOL)a3;
-- (void)resetBarButtonsAnimated:(BOOL)a3 checkIfVisible:(BOOL)a4;
+- (void)resetBarButtonsAnimated:(BOOL)animated;
+- (void)resetBarButtonsAnimated:(BOOL)animated checkIfVisible:(BOOL)visible;
 - (void)resetDateView;
 - (void)resetTextViewContentOffset;
 - (void)resetTextViewUndoManager;
-- (void)restoreTextViewScrollPosition:(double)a3;
-- (void)restoreTextViewVisibleRange:(_NSRange)a3 animated:(BOOL)a4;
-- (void)runScrollPerformanceTest:(id)a3 iterations:(int)a4 offset:(int)a5;
-- (void)runTableHorizontalScrollPerformanceTest:(id)a3 iterations:(int)a4 offset:(int)a5;
+- (void)restoreTextViewScrollPosition:(double)position;
+- (void)restoreTextViewVisibleRange:(_NSRange)range animated:(BOOL)animated;
+- (void)runScrollPerformanceTest:(id)test iterations:(int)iterations offset:(int)offset;
+- (void)runTableHorizontalScrollPerformanceTest:(id)test iterations:(int)iterations offset:(int)offset;
 - (void)saveCurrentScrollState;
-- (void)saveFromSystemPaperCard:(id)a3;
+- (void)saveFromSystemPaperCard:(id)card;
 - (void)saveInlineDrawings;
 - (void)saveNote;
-- (void)saveToolAsCurrentTool:(id)a3;
-- (void)sceneDidActivate:(id)a3;
-- (void)sceneWillDeactivate:(id)a3;
-- (void)scrollRangeToVisible:(_NSRange)a3 animated:(BOOL)a4 inSearchableString:(id)a5 searchHighlightRegexFinder:(id)a6;
-- (void)scrollRangeToVisibleWhenViewAppears:(_NSRange)a3 animated:(BOOL)a4 inSearchableString:(id)a5 searchHighlightRegexFinder:(id)a6;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDecelerating:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)selectDrawingAttachmentIfNeeded:(id)a3;
-- (void)setArchivedScrollStateToApply:(id)a3;
-- (void)setAuxiliaryStylingController:(id)a3;
-- (void)setBodyStyle:(id)a3;
-- (void)setCanShowLinkBar:(BOOL)a3;
-- (void)setCurrentTextStyle:(unsigned int)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setFixedWidthStyle:(id)a3;
+- (void)saveToolAsCurrentTool:(id)tool;
+- (void)sceneDidActivate:(id)activate;
+- (void)sceneWillDeactivate:(id)deactivate;
+- (void)scrollRangeToVisible:(_NSRange)visible animated:(BOOL)animated inSearchableString:(id)string searchHighlightRegexFinder:(id)finder;
+- (void)scrollRangeToVisibleWhenViewAppears:(_NSRange)appears animated:(BOOL)animated inSearchableString:(id)string searchHighlightRegexFinder:(id)finder;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDecelerating:(id)decelerating;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)selectDrawingAttachmentIfNeeded:(id)needed;
+- (void)setArchivedScrollStateToApply:(id)apply;
+- (void)setAuxiliaryStylingController:(id)controller;
+- (void)setBodyStyle:(id)style;
+- (void)setCanShowLinkBar:(BOOL)bar;
+- (void)setCurrentTextStyle:(unsigned int)style;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setFixedWidthStyle:(id)style;
 - (void)setHasMadeEdits;
-- (void)setHeadingStyle:(id)a3;
-- (void)setIgnoresTaps:(BOOL)a3;
-- (void)setInvitation:(id)a3;
-- (void)setIsDrawingStroke:(BOOL)a3;
-- (void)setMagicGenerativePlaygroundUndoManager:(id)a3;
+- (void)setHeadingStyle:(id)style;
+- (void)setIgnoresTaps:(BOOL)taps;
+- (void)setInvitation:(id)invitation;
+- (void)setIsDrawingStroke:(BOOL)stroke;
+- (void)setMagicGenerativePlaygroundUndoManager:(id)manager;
 - (void)setNeedsStatusBarAppearanceUpdate;
-- (void)setNote:(id)a3 delayedForLaunch:(BOOL)a4 startEditing:(BOOL)a5 successHandler:(id)a6;
-- (void)setNote:(id)a3 overrideScrollState:(id)a4 startEditing:(BOOL)a5;
-- (void)setPaperLinkBarShowing:(BOOL)a3;
-- (void)setSearchRegexFinder:(id)a3;
-- (void)setSelectedRange:(_NSRange)a3;
-- (void)setSplitViewExpandingOrCollapsing:(BOOL)a3;
-- (void)setSubheadingStyle:(id)a3;
-- (void)setTextStyle:(unsigned int)a3 sender:(id)a4;
-- (void)setTitleStyle:(id)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)setUserWantsToSeeDateLabel:(BOOL)a3;
-- (void)setWritingToolsShowing:(BOOL)a3;
+- (void)setNote:(id)note delayedForLaunch:(BOOL)launch startEditing:(BOOL)editing successHandler:(id)handler;
+- (void)setNote:(id)note overrideScrollState:(id)state startEditing:(BOOL)editing;
+- (void)setPaperLinkBarShowing:(BOOL)showing;
+- (void)setSearchRegexFinder:(id)finder;
+- (void)setSelectedRange:(_NSRange)range;
+- (void)setSplitViewExpandingOrCollapsing:(BOOL)collapsing;
+- (void)setSubheadingStyle:(id)style;
+- (void)setTextStyle:(unsigned int)style sender:(id)sender;
+- (void)setTitleStyle:(id)style;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)setUserWantsToSeeDateLabel:(BOOL)label;
+- (void)setWritingToolsShowing:(BOOL)showing;
 - (void)setupForFingerDrawing;
-- (void)setupLinedPaperOnNewNote:(id)a3 willStartEditing:(BOOL)a4;
-- (void)shareButtonPressedWithSender:(id)a3;
-- (void)sharedWithYouControllerDidUpdateHighlights:(id)a3;
-- (void)shiftReturn:(id)a3;
-- (void)showActivityStreamToolbarForObject:(id)a3 selection:(id)a4 animated:(BOOL)a5;
+- (void)setupLinedPaperOnNewNote:(id)note willStartEditing:(BOOL)editing;
+- (void)shareButtonPressedWithSender:(id)sender;
+- (void)sharedWithYouControllerDidUpdateHighlights:(id)highlights;
+- (void)shiftReturn:(id)return;
+- (void)showActivityStreamToolbarForObject:(id)object selection:(id)selection animated:(BOOL)animated;
 - (void)showDocumentCamera;
 - (void)showDocumentPicker;
 - (void)showDrawingUpdateAlert;
-- (void)showHandwritingDebug:(BOOL)a3;
-- (void)showInkPicker:(BOOL)a3 animated:(BOOL)a4;
-- (void)showInkPicker:(id)a3;
+- (void)showHandwritingDebug:(BOOL)debug;
+- (void)showInkPicker:(BOOL)picker animated:(BOOL)animated;
+- (void)showInkPicker:(id)picker;
 - (void)showInkPickerAndEndEditingIfNecessary;
-- (void)showInsertUIForSourceType:(unint64_t)a3 sender:(id)a4;
-- (void)showInsertUIWithPreferredSourceType:(unint64_t)a3;
+- (void)showInsertUIForSourceType:(unint64_t)type sender:(id)sender;
+- (void)showInsertUIWithPreferredSourceType:(unint64_t)type;
 - (void)showOrHideActivityStreamToolbarIfNeeded;
-- (void)showOrHideLockIconCoverViewControllerIfNeededIsBackgrounding:(BOOL)a3;
+- (void)showOrHideLockIconCoverViewControllerIfNeededIsBackgrounding:(BOOL)backgrounding;
 - (void)showOrHidePasswordEntryViewControllerIfNeeded;
 - (void)showOrHideSearchPatternHighlightsIfNecessary;
 - (void)showOverscrollContentAndScrollToTop;
 - (void)showRecoverNoteAlert;
-- (void)showStyleSelector:(BOOL)a3 animated:(BOOL)a4 sender:(id)a5;
-- (void)showStyleSelectorInputView:(BOOL)a3 animated:(BOOL)a4 doneEditing:(BOOL)a5;
-- (void)showStyleSelectorPopover:(BOOL)a3 animated:(BOOL)a4 sender:(id)a5;
-- (void)splitViewModeChangeDidEnd:(id)a3;
+- (void)showStyleSelector:(BOOL)selector animated:(BOOL)animated sender:(id)sender;
+- (void)showStyleSelectorInputView:(BOOL)view animated:(BOOL)animated doneEditing:(BOOL)editing;
+- (void)showStyleSelectorPopover:(BOOL)popover animated:(BOOL)animated sender:(id)sender;
+- (void)splitViewModeChangeDidEnd:(id)end;
 - (void)startEditing;
 - (void)startEditingForWritingTools;
 - (void)stopTextFindingIfNecessary;
-- (void)styleSelector:(id)a3 didChangeIndentAmount:(int64_t)a4;
-- (void)styleSelector:(id)a3 didSelectStyle:(unsigned int)a4;
-- (void)styleSelector:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)styleSelector:(id)a3 toggleBIUS:(unint64_t)a4;
-- (void)styleSelectorDidCancel:(id)a3;
-- (void)styleSelectorDidIndentLeft:(id)a3;
-- (void)styleSelectorDidIndentRight:(id)a3;
-- (void)styleSelectorWillShowInlineMenu:(id)a3;
-- (void)submitChecklistAnalyticsEventForActionType:(int64_t)a3;
+- (void)styleSelector:(id)selector didChangeIndentAmount:(int64_t)amount;
+- (void)styleSelector:(id)selector didSelectStyle:(unsigned int)style;
+- (void)styleSelector:(id)selector presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)styleSelector:(id)selector toggleBIUS:(unint64_t)s;
+- (void)styleSelectorDidCancel:(id)cancel;
+- (void)styleSelectorDidIndentLeft:(id)left;
+- (void)styleSelectorDidIndentRight:(id)right;
+- (void)styleSelectorWillShowInlineMenu:(id)menu;
+- (void)submitChecklistAnalyticsEventForActionType:(int64_t)type;
 - (void)submitNoteEditEventIfNecessary;
-- (void)submitNoteViewEventForModernNote:(id)a3;
+- (void)submitNoteViewEventForModernNote:(id)note;
 - (void)submitPendingInlineDrawingDataIfNecessary;
-- (void)systemPaperLinkBarVisibilityPreferenceChanged:(id)a3;
-- (void)tab:(id)a3;
+- (void)systemPaperLinkBarVisibilityPreferenceChanged:(id)changed;
+- (void)tab:(id)tab;
 - (void)tableCellFirstResponderChanged;
 - (void)tearDownAudioPlayers;
 - (void)teardownSystemPaperLinkBarIfNecessary;
-- (void)textView:(id)a3 didRemoveDrawingAtIndex:(unint64_t)a4;
-- (void)textView:(id)a3 upgradeDrawingAtIndex:(unint64_t)a4 itemProviders:(id)a5 insertionLocationInDrawing:(CGPoint)a6;
-- (void)textView:(id)a3 willAddDrawingAtIndex:(unint64_t)a4;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidBreakRubberBand:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidChangeSelection:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
-- (void)textViewDidEndStroke:(id)a3;
-- (void)textViewWillBeginStroke:(id)a3 forTouch:(id)a4;
-- (void)textViewWritingToolsDidEnd:(id)a3;
-- (void)textViewWritingToolsWillBegin:(id)a3;
-- (void)toggleBIUS:(unint64_t)a3 sender:(id)a4;
-- (void)toggleBlockQuote:(id)a3;
+- (void)textView:(id)view didRemoveDrawingAtIndex:(unint64_t)index;
+- (void)textView:(id)view upgradeDrawingAtIndex:(unint64_t)index itemProviders:(id)providers insertionLocationInDrawing:(CGPoint)drawing;
+- (void)textView:(id)view willAddDrawingAtIndex:(unint64_t)index;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidBreakRubberBand:(id)band;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidChangeSelection:(id)selection;
+- (void)textViewDidEndEditing:(id)editing;
+- (void)textViewDidEndStroke:(id)stroke;
+- (void)textViewWillBeginStroke:(id)stroke forTouch:(id)touch;
+- (void)textViewWritingToolsDidEnd:(id)end;
+- (void)textViewWritingToolsWillBegin:(id)begin;
+- (void)toggleBIUS:(unint64_t)s sender:(id)sender;
+- (void)toggleBlockQuote:(id)quote;
 - (void)toggleBoldface;
-- (void)toggleBulletedListStyle:(id)a3;
-- (void)toggleCurrentTextStyle:(unsigned int)a3;
-- (void)toggleDashedListStyle:(id)a3;
+- (void)toggleBulletedListStyle:(id)style;
+- (void)toggleCurrentTextStyle:(unsigned int)style;
+- (void)toggleDashedListStyle:(id)style;
 - (void)toggleEmphasis;
-- (void)toggleEmphasisWithType:(int64_t)a3;
+- (void)toggleEmphasisWithType:(int64_t)type;
 - (void)toggleItalics;
-- (void)toggleNumberedListStyle:(id)a3;
+- (void)toggleNumberedListStyle:(id)style;
 - (void)toggleStrikethrough;
-- (void)toggleTodoChecked:(id)a3;
-- (void)toggleTodoStyle:(id)a3;
+- (void)toggleTodoChecked:(id)checked;
+- (void)toggleTodoStyle:(id)style;
 - (void)toggleUnderline;
-- (void)uncheckAll:(id)a3;
-- (void)undoAction:(id)a3;
-- (void)undoablySwitchToPPK:(BOOL)a3;
+- (void)uncheckAll:(id)all;
+- (void)undoAction:(id)action;
+- (void)undoablySwitchToPPK:(BOOL)k;
 - (void)updateActionMenu;
 - (void)updateAuthorHighlightsIfNeeded;
-- (void)updateBarButtonsAnimated:(BOOL)a3 checkIfVisible:(BOOL)a4;
+- (void)updateBarButtonsAnimated:(BOOL)animated checkIfVisible:(BOOL)visible;
 - (void)updateBottomContentPadding;
-- (void)updateContentViewBezelsStandalone:(BOOL)a3 needsAdditionalBottomMargin:(BOOL)a4 needsAdditionalLeadingMargin:(BOOL)a5 force:(BOOL)a6;
+- (void)updateContentViewBezelsStandalone:(BOOL)standalone needsAdditionalBottomMargin:(BOOL)margin needsAdditionalLeadingMargin:(BOOL)leadingMargin force:(BOOL)force;
 - (void)updateDataOwnerForCopyAndPaste;
 - (void)updateDateLabelAccessibility;
 - (void)updateDrawingAttachmentsIfNeeded;
 - (void)updateDrawingAttachmentsInNote;
 - (void)updateForceLightContentIfNecessary;
-- (void)updateFormatToolbarLayoutWithSize:(CGSize)a3;
-- (void)updateInkPickerAndTextViewToTool:(id)a3;
+- (void)updateFormatToolbarLayoutWithSize:(CGSize)size;
+- (void)updateInkPickerAndTextViewToTool:(id)tool;
 - (void)updateInlineDrawings;
 - (void)updateInlineDrawingsPaletteVisibility;
 - (void)updateLastViewedMetadataIfNessessary;
 - (void)updateNoteUserActivityState;
 - (void)updatePencilKitPaperStyleType;
 - (void)updatePencilKitSelectionViewEnabled;
-- (void)updateSelectionOnUndo:(id)a3;
-- (void)updateStyleSelectorStateIfNeededIgnoreTypingAttributes:(BOOL)a3;
-- (void)updateTextInputAccessoryViewForDidBeginEditing:(id)a3;
-- (void)updateTextInputAccessoryViewForDidEndEditing:(id)a3;
-- (void)updateTextInputAccessoryViewForTextViewDidChange:(id)a3;
+- (void)updateSelectionOnUndo:(id)undo;
+- (void)updateStyleSelectorStateIfNeededIgnoreTypingAttributes:(BOOL)attributes;
+- (void)updateTextInputAccessoryViewForDidBeginEditing:(id)editing;
+- (void)updateTextInputAccessoryViewForDidEndEditing:(id)editing;
+- (void)updateTextInputAccessoryViewForTextViewDidChange:(id)change;
 - (void)updateTextViewBackground;
-- (void)updateTextViewContentInsetsAnimated:(BOOL)a3;
+- (void)updateTextViewContentInsetsAnimated:(BOOL)animated;
 - (void)updateTextViewContentOffset;
-- (void)updateUIEnabledStatePencilActive:(BOOL)a3;
+- (void)updateUIEnabledStatePencilActive:(BOOL)active;
 - (void)updateUnsupportedNoteView;
 - (void)updateUserAndDateViewVisibility;
-- (void)upgradeAllAttachmentsInNoteWithUpgradeHelper:(id)a3 forSydney:(BOOL)a4;
+- (void)upgradeAllAttachmentsInNoteWithUpgradeHelper:(id)helper forSydney:(BOOL)sydney;
 - (void)upgradePencilKitDrawingsForNewInksPromptingIfNecessary;
-- (void)userActivity:(id)a3 didReceiveInputStream:(id)a4 outputStream:(id)a5;
-- (void)userActivityWillSave:(id)a3;
-- (void)viewControllerWillStartEditModeNotification:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)userActivity:(id)activity didReceiveInputStream:(id)stream outputStream:(id)outputStream;
+- (void)userActivityWillSave:(id)save;
+- (void)viewControllerWillStartEditModeNotification:(id)notification;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)warnLimitExceededWithTitle:(id)a3 andMessage:(id)a4;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)warnLimitExceededWithTitle:(id)title andMessage:(id)message;
 - (void)warnUserAttachmentLimitExceeded;
-- (void)warnUserAttachmentSizeExceededWithAttachmentCount:(unint64_t)a3;
+- (void)warnUserAttachmentSizeExceededWithAttachmentCount:(unint64_t)count;
 - (void)warnUserNoteLengthExceeded;
-- (void)willAddAttachmentForNoteNotification:(id)a3;
+- (void)willAddAttachmentForNoteNotification:(id)notification;
 @end
 
 @implementation ICNoteEditorViewController
@@ -560,7 +560,7 @@
 + (void)initialize
 {
   v5[10] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v4[0] = &unk_28277E310;
     v4[1] = &unk_28277E340;
@@ -591,7 +591,7 @@
 - (NotesBackgroundView)backgroundView
 {
   objc_opt_class();
-  v3 = [(ICNoteEditorViewController *)self view];
+  view = [(ICNoteEditorViewController *)self view];
   v4 = ICCheckedDynamicCast();
 
   return v4;
@@ -612,57 +612,57 @@
   v46.super_class = ICNoteEditorViewController;
   [(ICNoteEditorViewController *)&v46 viewDidLoad];
   BundleBoolSettingValue = ICInternalSettingsGetBundleBoolSettingValue();
-  v4 = [(ICNoteEditorViewController *)self backgroundView];
-  [v4 setHasBarBlur:BundleBoolSettingValue];
+  backgroundView = [(ICNoteEditorViewController *)self backgroundView];
+  [backgroundView setHasBarBlur:BundleBoolSettingValue];
 
   if ([(ICNoteEditorBaseViewController *)self isEditingOnSecureScreen])
   {
     v5 = objc_alloc(MEMORY[0x277D75A78]);
     v6 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(ICNoteEditorViewController *)self view];
-    v8 = [v7 window];
-    v9 = [v8 windowScene];
-    v10 = [v9 statusBarManager];
-    [v6 requestStyle:{objc_msgSend(v10, "statusBarStyle")}];
+    view = [(ICNoteEditorViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    statusBarManager = [windowScene statusBarManager];
+    [v6 requestStyle:{objc_msgSend(statusBarManager, "statusBarStyle")}];
 
-    v11 = [(ICNoteEditorViewController *)self view];
-    [v11 addSubview:v6];
+    view2 = [(ICNoteEditorViewController *)self view];
+    [view2 addSubview:v6];
 
     v39 = MEMORY[0x277CCAAD0];
-    v44 = [v6 leftAnchor];
-    v45 = [(ICNoteEditorViewController *)self view];
-    v43 = [v45 leftAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    leftAnchor = [v6 leftAnchor];
+    view3 = [(ICNoteEditorViewController *)self view];
+    leftAnchor2 = [view3 leftAnchor];
+    v42 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v47[0] = v42;
-    v40 = [v6 rightAnchor];
-    v41 = [(ICNoteEditorViewController *)self view];
-    v38 = [v41 rightAnchor];
-    v12 = [v40 constraintEqualToAnchor:v38];
+    rightAnchor = [v6 rightAnchor];
+    view4 = [(ICNoteEditorViewController *)self view];
+    rightAnchor2 = [view4 rightAnchor];
+    v12 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v47[1] = v12;
-    v13 = [v6 topAnchor];
-    v14 = [(ICNoteEditorViewController *)self view];
-    v15 = [v14 topAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    topAnchor = [v6 topAnchor];
+    view5 = [(ICNoteEditorViewController *)self view];
+    topAnchor2 = [view5 topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v47[2] = v16;
-    v17 = [v6 heightAnchor];
-    v18 = [v17 constraintEqualToConstant:*MEMORY[0x277D76F08]];
+    heightAnchor = [v6 heightAnchor];
+    v18 = [heightAnchor constraintEqualToConstant:*MEMORY[0x277D76F08]];
     v47[3] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:4];
     [v39 activateConstraints:v19];
   }
 
-  v20 = [(ICNoteEditorViewController *)self usesContextualFormatBar];
-  v21 = [(ICNoteEditorViewController *)self navigationItem];
-  [v21 _setToolbarAvoidsKeyboard:v20];
+  usesContextualFormatBar = [(ICNoteEditorViewController *)self usesContextualFormatBar];
+  navigationItem = [(ICNoteEditorViewController *)self navigationItem];
+  [navigationItem _setToolbarAvoidsKeyboard:usesContextualFormatBar];
 
-  v22 = [(ICNoteEditorViewController *)self navigationItem];
-  [v22 setLargeTitleDisplayMode:2];
+  navigationItem2 = [(ICNoteEditorViewController *)self navigationItem];
+  [navigationItem2 setLargeTitleDisplayMode:2];
 
-  v23 = [(ICNoteEditorViewController *)self backgroundView];
-  v24 = [(ICNoteEditorViewController *)self ic_safeAreaLayoutGuide];
-  v25 = [(ICNoteEditorViewController *)self backgroundView];
-  [v23 addConstraintsForSafeAreaLayoutGuide:v24 toContainer:v25];
+  backgroundView2 = [(ICNoteEditorViewController *)self backgroundView];
+  ic_safeAreaLayoutGuide = [(ICNoteEditorViewController *)self ic_safeAreaLayoutGuide];
+  backgroundView3 = [(ICNoteEditorViewController *)self backgroundView];
+  [backgroundView2 addConstraintsForSafeAreaLayoutGuide:ic_safeAreaLayoutGuide toContainer:backgroundView3];
 
   v26 = [[ICNoteEditorNavigationItemConfiguration alloc] initWithDataSource:self delegate:self];
   [(ICNoteEditorViewController *)self setNavigationItemConfiguration:v26];
@@ -670,35 +670,35 @@
   v27 = objc_alloc_init(ICStyleSelectorViewController);
   [(ICNoteEditorViewController *)self setStyleSelectorController:v27];
 
-  v28 = [(ICNoteEditorViewController *)self styleSelectorController];
-  [v28 setDelegate:self];
+  styleSelectorController = [(ICNoteEditorViewController *)self styleSelectorController];
+  [styleSelectorController setDelegate:self];
 
   if (UIAccessibilityIsVoiceOverRunning())
   {
     [(ICNoteEditorViewController *)self applyAccessibilityInfo];
   }
 
-  v29 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v29 addObserver:self selector:sel_localeChanged_ name:*MEMORY[0x277CBE620] object:0];
-  [v29 addObserver:self selector:sel_sceneWillDeactivate_ name:*MEMORY[0x277D76E78] object:0];
-  [v29 addObserver:self selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
-  [v29 addObserver:self selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
-  [v29 addObserver:self selector:sel_contentSizeCategoryDidChange name:*MEMORY[0x277D76810] object:0];
-  [v29 addObserver:self selector:sel_attachmentBrickDidChangeSize name:*MEMORY[0x277D35B78] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_localeChanged_ name:*MEMORY[0x277CBE620] object:0];
+  [defaultCenter addObserver:self selector:sel_sceneWillDeactivate_ name:*MEMORY[0x277D76E78] object:0];
+  [defaultCenter addObserver:self selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
+  [defaultCenter addObserver:self selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
+  [defaultCenter addObserver:self selector:sel_contentSizeCategoryDidChange name:*MEMORY[0x277D76810] object:0];
+  [defaultCenter addObserver:self selector:sel_attachmentBrickDidChangeSize name:*MEMORY[0x277D35B78] object:0];
   v30 = *MEMORY[0x277D36100];
-  v31 = [MEMORY[0x277CBC6A0] ic_mentionableNamesCache];
-  [v29 addObserver:self selector:sel_updateParticipantsInDrawings name:v30 object:v31];
+  ic_mentionableNamesCache = [MEMORY[0x277CBC6A0] ic_mentionableNamesCache];
+  [defaultCenter addObserver:self selector:sel_updateParticipantsInDrawings name:v30 object:ic_mentionableNamesCache];
 
-  [v29 addObserver:self selector:sel_splitViewModeChangeWillBegin_ name:@"ICSplitViewControllerWillBeginDisplayModeChange" object:0];
-  [v29 addObserver:self selector:sel_navigationControllerWillChange_ name:@"ICNavigationControllerWillChange" object:0];
-  [v29 addObserver:self selector:sel_splitViewModeChangeDidEnd_ name:@"ICSplitViewControllerDidEndDisplayModeChange" object:0];
-  [v29 addObserver:self selector:sel_paperKitBundleDidMerge_ name:*MEMORY[0x277D35B90] object:0];
-  [v29 addObserver:self selector:sel_observeAttachmentDeleted_ name:*MEMORY[0x277D35B68] object:0];
-  [v29 addObserver:self selector:sel_observeDrawingConverted_ name:*MEMORY[0x277D364E0] object:0];
-  [v29 addObserver:self selector:sel_audioFindInTranscript_ name:*MEMORY[0x277D36578] object:0];
-  [v29 addObserver:self selector:sel_audioRecordingStarted_ name:*MEMORY[0x277D35C80] object:0];
-  [v29 addObserver:self selector:sel_audioRecordingStopped_ name:*MEMORY[0x277D35C88] object:0];
-  [v29 addObserver:self selector:sel_audioTranscriptInteraction_ name:*MEMORY[0x277D36548] object:0];
+  [defaultCenter addObserver:self selector:sel_splitViewModeChangeWillBegin_ name:@"ICSplitViewControllerWillBeginDisplayModeChange" object:0];
+  [defaultCenter addObserver:self selector:sel_navigationControllerWillChange_ name:@"ICNavigationControllerWillChange" object:0];
+  [defaultCenter addObserver:self selector:sel_splitViewModeChangeDidEnd_ name:@"ICSplitViewControllerDidEndDisplayModeChange" object:0];
+  [defaultCenter addObserver:self selector:sel_paperKitBundleDidMerge_ name:*MEMORY[0x277D35B90] object:0];
+  [defaultCenter addObserver:self selector:sel_observeAttachmentDeleted_ name:*MEMORY[0x277D35B68] object:0];
+  [defaultCenter addObserver:self selector:sel_observeDrawingConverted_ name:*MEMORY[0x277D364E0] object:0];
+  [defaultCenter addObserver:self selector:sel_audioFindInTranscript_ name:*MEMORY[0x277D36578] object:0];
+  [defaultCenter addObserver:self selector:sel_audioRecordingStarted_ name:*MEMORY[0x277D35C80] object:0];
+  [defaultCenter addObserver:self selector:sel_audioRecordingStopped_ name:*MEMORY[0x277D35C88] object:0];
+  [defaultCenter addObserver:self selector:sel_audioTranscriptInteraction_ name:*MEMORY[0x277D36548] object:0];
   [(ICScrollViewDelegateViewController *)self setupScrollViewKeyboardResizer];
   if (objc_opt_respondsToSelector())
   {
@@ -707,28 +707,28 @@
 
   [(ICNoteEditorViewController *)self setShouldResetTextViewContentOffsetWhenAppearing:1];
   [MEMORY[0x277D75820] ic_addObserver:self forKeyPath:@"prefersPencilOnlyDrawing" context:&compoundliteral_0];
-  v32 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v32 ic_addObserver:self forKeyPath:*MEMORY[0x277D36448] context:&compoundliteral_3029];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults ic_addObserver:self forKeyPath:*MEMORY[0x277D36448] context:&compoundliteral_3029];
 
-  [v29 addObserver:self selector:sel_willAddAttachmentForNoteNotification_ name:*MEMORY[0x277D35DD8] object:0];
-  [v29 addObserver:self selector:sel_didAddAttachmentForNoteNotification_ name:*MEMORY[0x277D35C50] object:0];
+  [defaultCenter addObserver:self selector:sel_willAddAttachmentForNoteNotification_ name:*MEMORY[0x277D35DD8] object:0];
+  [defaultCenter addObserver:self selector:sel_didAddAttachmentForNoteNotification_ name:*MEMORY[0x277D35C50] object:0];
   v33 = *MEMORY[0x277D35C30];
-  v34 = [MEMORY[0x277D35E50] sharedState];
-  [v29 addObserver:self selector:sel_noteDecryptedStatusDidChange_ name:v33 object:v34];
+  mEMORY[0x277D35E50] = [MEMORY[0x277D35E50] sharedState];
+  [defaultCenter addObserver:self selector:sel_noteDecryptedStatusDidChange_ name:v33 object:mEMORY[0x277D35E50]];
 
   v35 = *MEMORY[0x277D35C38];
-  v36 = [MEMORY[0x277D35E50] sharedState];
-  [v29 addObserver:self selector:sel_noteDecryptedStatusDidChange_ name:v35 object:v36];
+  mEMORY[0x277D35E50]2 = [MEMORY[0x277D35E50] sharedState];
+  [defaultCenter addObserver:self selector:sel_noteDecryptedStatusDidChange_ name:v35 object:mEMORY[0x277D35E50]2];
 
-  [v29 addObserver:self selector:sel_noteDecryptedStatusDidChange_ name:*MEMORY[0x277D35B58] object:0];
-  [v29 addObserver:self selector:sel_noteDidDeauthenticateAfterMerge_ name:*MEMORY[0x277D35CD8] object:0];
-  [v29 addObserver:self selector:sel_sceneDidActivate_ name:*MEMORY[0x277D76E48] object:0];
-  [v29 addObserver:self selector:sel_passwordEntryAlertControllerAttemptDidFail_ name:*MEMORY[0x277D365B8] object:0];
-  [v29 addObserver:self selector:sel_authenticationAuthenticateBiometricsAttemptDidFail_ name:*MEMORY[0x277D36488] object:0];
-  [v29 addObserver:self selector:sel_lockNoteManagerWillToggleLock_ name:*MEMORY[0x277D365A8] object:0];
-  [v29 addObserver:self selector:sel_lockNoteManagerDidToggleLock_ name:*MEMORY[0x277D365A0] object:0];
-  [v29 addObserver:self selector:sel__beginLiveResize_ name:*MEMORY[0x277D776B0] object:0];
-  [v29 addObserver:self selector:sel__endLiveResize_ name:*MEMORY[0x277D776B8] object:0];
+  [defaultCenter addObserver:self selector:sel_noteDecryptedStatusDidChange_ name:*MEMORY[0x277D35B58] object:0];
+  [defaultCenter addObserver:self selector:sel_noteDidDeauthenticateAfterMerge_ name:*MEMORY[0x277D35CD8] object:0];
+  [defaultCenter addObserver:self selector:sel_sceneDidActivate_ name:*MEMORY[0x277D76E48] object:0];
+  [defaultCenter addObserver:self selector:sel_passwordEntryAlertControllerAttemptDidFail_ name:*MEMORY[0x277D365B8] object:0];
+  [defaultCenter addObserver:self selector:sel_authenticationAuthenticateBiometricsAttemptDidFail_ name:*MEMORY[0x277D36488] object:0];
+  [defaultCenter addObserver:self selector:sel_lockNoteManagerWillToggleLock_ name:*MEMORY[0x277D365A8] object:0];
+  [defaultCenter addObserver:self selector:sel_lockNoteManagerDidToggleLock_ name:*MEMORY[0x277D365A0] object:0];
+  [defaultCenter addObserver:self selector:sel__beginLiveResize_ name:*MEMORY[0x277D776B0] object:0];
+  [defaultCenter addObserver:self selector:sel__endLiveResize_ name:*MEMORY[0x277D776B8] object:0];
   if (ICInternalSettingsIsAudioTranscriptionEnabled())
   {
     v37 = [[ICAudioAttachmentEditorCoordinator alloc] initWithNoteEditorViewController:self];
@@ -748,8 +748,8 @@
     return 0;
   }
 
-  v3 = [(ICNoteEditorViewController *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom] == 0;
+  traitCollection = [(ICNoteEditorViewController *)self traitCollection];
+  v4 = [traitCollection userInterfaceIdiom] == 0;
 
   return v4;
 }
@@ -789,50 +789,50 @@
     return 0;
   }
 
-  v3 = [(ICNoteEditorViewController *)self preferredTransition];
-  v4 = v3 != 0;
+  preferredTransition = [(ICNoteEditorViewController *)self preferredTransition];
+  v4 = preferredTransition != 0;
 
   return v4;
 }
 
 - (void)submitNoteEditEventIfNecessary
 {
-  v12 = [(ICNoteEditorBaseViewController *)self note];
-  v3 = [v12 modificationDate];
-  if (v3)
+  note = [(ICNoteEditorBaseViewController *)self note];
+  modificationDate = [note modificationDate];
+  if (modificationDate)
   {
-    v4 = v3;
-    v5 = [(ICNoteEditorBaseViewController *)self note];
-    v6 = [v5 modificationDate];
-    v7 = [(ICNoteEditorViewController *)self noteLastModificationDate];
-    v8 = [v6 isEqualToDate:v7];
+    v4 = modificationDate;
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    modificationDate2 = [note2 modificationDate];
+    noteLastModificationDate = [(ICNoteEditorViewController *)self noteLastModificationDate];
+    v8 = [modificationDate2 isEqualToDate:noteLastModificationDate];
 
     if (v8)
     {
       return;
     }
 
-    v9 = [(ICNoteEditorViewController *)self eventReporter];
-    v10 = [(ICNoteEditorBaseViewController *)self note];
-    [v9 submitNoteEditEventForModernNote:v10 fromQuickNote:{-[ICNoteEditorBaseViewController isEditingOnSecureScreen](self, "isEditingOnSecureScreen")}];
+    eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+    note3 = [(ICNoteEditorBaseViewController *)self note];
+    [eventReporter submitNoteEditEventForModernNote:note3 fromQuickNote:{-[ICNoteEditorBaseViewController isEditingOnSecureScreen](self, "isEditingOnSecureScreen")}];
 
-    v12 = [(ICNoteEditorBaseViewController *)self note];
-    v11 = [v12 modificationDate];
-    [(ICNoteEditorViewController *)self setNoteLastModificationDate:v11];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    modificationDate3 = [note modificationDate];
+    [(ICNoteEditorViewController *)self setNoteLastModificationDate:modificationDate3];
   }
 }
 
 - (BOOL)useInputViewForStyleSelector
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  v3 = [v2 traitCollection];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
 
-  if ([v3 horizontalSizeClass] == 1)
+  if ([traitCollection horizontalSizeClass] == 1)
   {
     LOBYTE(v4) = 1;
   }
 
-  else if ([v3 userInterfaceIdiom] == 1)
+  else if ([traitCollection userInterfaceIdiom] == 1)
   {
     LOBYTE(v4) = 0;
   }
@@ -847,19 +847,19 @@
 
 - (BOOL)styleSelectorInputViewShowing
 {
-  v3 = [(ICNoteEditorViewController *)self styleSelectorDummyInputView];
-  v4 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-  v5 = [v4 inputView];
-  if (v3 == v5)
+  styleSelectorDummyInputView = [(ICNoteEditorViewController *)self styleSelectorDummyInputView];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  inputView = [auxiliaryStylingController inputView];
+  if (styleSelectorDummyInputView == inputView)
   {
     v8 = 1;
   }
 
   else
   {
-    v6 = [(ICNoteEditorViewController *)self textView];
-    v7 = [v6 inputView];
-    v8 = v3 == v7;
+    textView = [(ICNoteEditorViewController *)self textView];
+    inputView2 = [textView inputView];
+    v8 = styleSelectorDummyInputView == inputView2;
   }
 
   return v8;
@@ -891,15 +891,15 @@
 
 - (void)stopTextFindingIfNecessary
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 findInteraction];
-  v5 = [v4 isFindNavigatorVisible];
+  textView = [(ICNoteEditorViewController *)self textView];
+  findInteraction = [textView findInteraction];
+  isFindNavigatorVisible = [findInteraction isFindNavigatorVisible];
 
-  if (v5)
+  if (isFindNavigatorVisible)
   {
-    v6 = [(ICNoteEditorViewController *)self textView];
-    v7 = [v6 findInteraction];
-    [v7 dismissFindNavigator];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    findInteraction2 = [textView2 findInteraction];
+    [findInteraction2 dismissFindNavigator];
 
     [(ICNoteEditorViewController *)self showOrHideSearchPatternHighlightsIfNecessary];
   }
@@ -907,31 +907,31 @@
 
 - (void)tearDownAudioPlayers
 {
-  v2 = [(ICNoteEditorViewController *)self audioAttachmentEditorCoordinator];
-  [v2 teardown];
+  audioAttachmentEditorCoordinator = [(ICNoteEditorViewController *)self audioAttachmentEditorCoordinator];
+  [audioAttachmentEditorCoordinator teardown];
 }
 
 - (void)saveCurrentScrollState
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v9 = [ICTextViewScrollState scrollStateForTextView:v3];
+  textView = [(ICNoteEditorViewController *)self textView];
+  v9 = [ICTextViewScrollState scrollStateForTextView:textView];
 
-  v4 = [v9 note];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
+  note = [v9 note];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
 
-  if (v4 == v5)
+  if (note == note2)
   {
-    v6 = [(ICNoteEditorViewController *)self savedScrollStates];
-    v7 = [v9 note];
-    v8 = [v7 identifier];
-    [v6 ic_setNonNilObject:v9 forNonNilKey:v8];
+    savedScrollStates = [(ICNoteEditorViewController *)self savedScrollStates];
+    note3 = [v9 note];
+    identifier = [note3 identifier];
+    [savedScrollStates ic_setNonNilObject:v9 forNonNilKey:identifier];
   }
 }
 
 - (void)resetTextViewUndoManager
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  [v3 resetUndoManager];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView resetUndoManager];
 
   [(ICNoteEditorViewController *)self updateBarButtons];
 }
@@ -947,17 +947,17 @@
 {
   if ([(ICNoteEditorViewController *)self isViewLoaded])
   {
-    v3 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-    if (v3)
+    passwordEntryViewController = [(ICNoteEditorViewController *)self passwordEntryViewController];
+    if (passwordEntryViewController)
     {
     }
 
     else
     {
-      v4 = [(ICNoteEditorBaseViewController *)self note];
-      v5 = [v4 isPasswordProtectedAndLocked];
+      note = [(ICNoteEditorBaseViewController *)self note];
+      isPasswordProtectedAndLocked = [note isPasswordProtectedAndLocked];
 
-      if ((v5 & 1) == 0)
+      if ((isPasswordProtectedAndLocked & 1) == 0)
       {
 
         [(ICNoteEditorViewController *)self recreateTextView];
@@ -978,21 +978,21 @@
   if ([(ICNoteEditorViewController *)self usesContextualFormatBar])
   {
     [(ICNoteEditorViewController *)self setTextViewInputAccessoryView:0];
-    v3 = [(ICNoteEditorViewController *)self textView];
-    [v3 setInputAccessoryView:0];
+    textView = [(ICNoteEditorViewController *)self textView];
+    [textView setInputAccessoryView:0];
 
     objc_opt_class();
-    v4 = [(ICNoteEditorViewController *)self auxiliaryResponder];
-    v15 = ICDynamicCast();
+    auxiliaryResponder = [(ICNoteEditorViewController *)self auxiliaryResponder];
+    icSplitViewController = ICDynamicCast();
 
-    [v15 setInputAccessoryView:0];
+    [icSplitViewController setInputAccessoryView:0];
   }
 
   else
   {
-    v15 = [(ICNoteEditorViewController *)self icSplitViewController];
-    v5 = [v15 view];
-    [v5 frame];
+    icSplitViewController = [(ICNoteEditorViewController *)self icSplitViewController];
+    view = [icSplitViewController view];
+    [view frame];
     v7 = v6;
 
     if ([MEMORY[0x277D75418] ic_isiPhone])
@@ -1019,16 +1019,16 @@
     [(ICNoteEditorViewController *)self setDismissableInputAccessoryView:v8];
     [(ICNoteEditorInputAccessoryView *)v8 setDelegate:self];
     [(ICNoteEditorViewController *)self setTextViewInputAccessoryView:v8];
-    v10 = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
-    v11 = [(ICNoteEditorViewController *)self textView];
-    [v11 setInputAccessoryView:v10];
+    textViewInputAccessoryView = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    [textView2 setInputAccessoryView:textViewInputAccessoryView];
 
     objc_opt_class();
-    v12 = [(ICNoteEditorViewController *)self auxiliaryResponder];
+    auxiliaryResponder2 = [(ICNoteEditorViewController *)self auxiliaryResponder];
     v13 = ICDynamicCast();
 
-    v14 = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
-    [v13 setInputAccessoryView:v14];
+    textViewInputAccessoryView2 = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
+    [v13 setInputAccessoryView:textViewInputAccessoryView2];
   }
 }
 
@@ -1036,38 +1036,38 @@
 {
   if ([(ICNoteEditorBaseViewController *)self isEditingOnSecureScreen])
   {
-    v3 = 0;
+    mainSplitViewController = 0;
   }
 
   else
   {
-    v4 = [(ICNoteEditorViewController *)self viewControllerManager];
-    v3 = [v4 mainSplitViewController];
+    viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+    mainSplitViewController = [viewControllerManager mainSplitViewController];
   }
 
-  return v3;
+  return mainSplitViewController;
 }
 
 - (BOOL)shouldForceLightContent
 {
-  v2 = [(ICNoteEditorBaseViewController *)self note];
-  if ([v2 prefersLightBackground])
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if ([note prefersLightBackground])
   {
-    v3 = 1;
+    ic_alwaysShowLightContent = 1;
   }
 
   else
   {
-    v3 = [MEMORY[0x277D75C80] ic_alwaysShowLightContent];
+    ic_alwaysShowLightContent = [MEMORY[0x277D75C80] ic_alwaysShowLightContent];
   }
 
-  return v3;
+  return ic_alwaysShowLightContent;
 }
 
 - (BOOL)shouldAllowAttributionSidebar
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  if ([v3 isSharedViaICloud] && !-[ICNoteEditorBaseViewController isEditingOnSystemPaper](self, "isEditingOnSystemPaper"))
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if ([note isSharedViaICloud] && !-[ICNoteEditorBaseViewController isEditingOnSystemPaper](self, "isEditingOnSystemPaper"))
   {
     v4 = ![(ICNoteEditorBaseViewController *)self isEditingOnSecureScreen];
   }
@@ -1082,10 +1082,10 @@
 
 - (void)updateForceLightContentIfNecessary
 {
-  v3 = [(ICNoteEditorViewController *)self shouldForceLightContent];
-  v4 = v3;
-  v5 = v3;
-  if (v3)
+  shouldForceLightContent = [(ICNoteEditorViewController *)self shouldForceLightContent];
+  v4 = shouldForceLightContent;
+  v5 = shouldForceLightContent;
+  if (shouldForceLightContent)
   {
     v6 = 2;
   }
@@ -1095,49 +1095,49 @@
     v6 = 0;
   }
 
-  [(ICNoteEditorViewController *)self setOverrideUserInterfaceStyle:v3];
-  v7 = [(ICNoteEditorViewController *)self view];
-  [v7 setOverrideUserInterfaceStyle:v5];
+  [(ICNoteEditorViewController *)self setOverrideUserInterfaceStyle:shouldForceLightContent];
+  view = [(ICNoteEditorViewController *)self view];
+  [view setOverrideUserInterfaceStyle:v5];
 
-  v8 = [(ICNoteEditorViewController *)self textView];
-  [v8 setOverrideUserInterfaceStyle:v5];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView setOverrideUserInterfaceStyle:v5];
 
   [(ICNoteEditorViewController *)self updateTextViewBackground];
-  v9 = [(ICNoteEditorViewController *)self textView];
-  [v9 setNeedsDisplay];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  [textView2 setNeedsDisplay];
 
-  v10 = [(ICNoteEditorViewController *)self navigationController];
-  [v10 setOverrideUserInterfaceStyle:v5];
+  navigationController = [(ICNoteEditorViewController *)self navigationController];
+  [navigationController setOverrideUserInterfaceStyle:v5];
 
-  v11 = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
-  [v11 setOverrideUserInterfaceStyle:v5];
+  textViewInputAccessoryView = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
+  [textViewInputAccessoryView setOverrideUserInterfaceStyle:v5];
 
-  v12 = [(ICNoteEditorViewController *)self formatBarView];
-  [v12 setOverrideUserInterfaceStyle:v5];
+  formatBarView = [(ICNoteEditorViewController *)self formatBarView];
+  [formatBarView setOverrideUserInterfaceStyle:v5];
 
-  v13 = [(ICNoteEditorViewController *)self textView];
-  [v13 setKeyboardAppearance:v6];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  [textView3 setKeyboardAppearance:v6];
 
   [(ICNoteEditorViewController *)self configureBarAppearancesIfNecessary];
   [(ICNoteEditorViewController *)self setNeedsStatusBarAppearanceUpdate];
-  v14 = [(ICNoteEditorViewController *)self inkPaletteController];
+  inkPaletteController = [(ICNoteEditorViewController *)self inkPaletteController];
 
-  if (v4 || v14)
+  if (v4 || inkPaletteController)
   {
-    v15 = [(ICNoteEditorViewController *)self inkPaletteController];
-    v16 = [v15 selectedTool];
+    inkPaletteController2 = [(ICNoteEditorViewController *)self inkPaletteController];
+    selectedTool = [inkPaletteController2 selectedTool];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v18 = [(ICNoteEditorViewController *)self inkPaletteController];
-      v19 = [v18 colorCorrectedTool];
-      [(ICNoteEditorViewController *)self updateInkPickerAndTextViewToTool:v19];
+      inkPaletteController3 = [(ICNoteEditorViewController *)self inkPaletteController];
+      colorCorrectedTool = [inkPaletteController3 colorCorrectedTool];
+      [(ICNoteEditorViewController *)self updateInkPickerAndTextViewToTool:colorCorrectedTool];
     }
 
-    v20 = [(ICNoteEditorViewController *)self inkPaletteController];
-    [v20 setColorUserInterfaceStyle:v5];
+    inkPaletteController4 = [(ICNoteEditorViewController *)self inkPaletteController];
+    [inkPaletteController4 setColorUserInterfaceStyle:v5];
   }
 }
 
@@ -1150,42 +1150,42 @@
 
   if (!ICInternalSettingsIsTextKit2Enabled())
   {
-    v8 = [MEMORY[0x277D75348] ic_noteEditorBackgroundColor];
-    v9 = [(ICNoteEditorViewController *)self textViewController];
-    [v9 setBackgroundColor:v8];
+    ic_noteEditorBackgroundColor = [MEMORY[0x277D75348] ic_noteEditorBackgroundColor];
+    textViewController = [(ICNoteEditorViewController *)self textViewController];
+    [textViewController setBackgroundColor:ic_noteEditorBackgroundColor];
 
     if ([MEMORY[0x277D75418] ic_isVision])
     {
       return;
     }
 
-    v10 = [(ICNoteEditorViewController *)self textViewController];
-    v4 = [v10 backgroundColor];
-    v5 = [(ICNoteEditorViewController *)self view];
-    v6 = v5;
-    v7 = v4;
+    textViewController2 = [(ICNoteEditorViewController *)self textViewController];
+    backgroundColor = [textViewController2 backgroundColor];
+    view = [(ICNoteEditorViewController *)self view];
+    v6 = view;
+    v7 = backgroundColor;
     goto LABEL_9;
   }
 
   if ([MEMORY[0x277D75418] ic_isVision])
   {
-    v3 = [(ICNoteEditorViewController *)self textView];
-    [v3 setBackgroundColor:0];
+    textView = [(ICNoteEditorViewController *)self textView];
+    [textView setBackgroundColor:0];
 
-    v10 = [MEMORY[0x277D75348] ic_noteEditorBackgroundColor];
-    v4 = [(ICNoteEditorViewController *)self backgroundView];
-    v5 = [v4 contentView];
-    v6 = v5;
-    v7 = v10;
+    textViewController2 = [MEMORY[0x277D75348] ic_noteEditorBackgroundColor];
+    backgroundColor = [(ICNoteEditorViewController *)self backgroundView];
+    view = [backgroundColor contentView];
+    v6 = view;
+    v7 = textViewController2;
 LABEL_9:
-    [v5 setBackgroundColor:v7];
+    [view setBackgroundColor:v7];
 
     goto LABEL_10;
   }
 
-  v10 = [MEMORY[0x277D75348] ic_noteEditorBackgroundColor];
-  v4 = [(ICNoteEditorViewController *)self view];
-  [v4 setBackgroundColor:v10];
+  textViewController2 = [MEMORY[0x277D75348] ic_noteEditorBackgroundColor];
+  backgroundColor = [(ICNoteEditorViewController *)self view];
+  [backgroundColor setBackgroundColor:textViewController2];
 LABEL_10:
 }
 
@@ -1193,43 +1193,43 @@ LABEL_10:
 {
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v18 = [(ICNoteEditorViewController *)self dynamicBarColor];
+    dynamicBarColor = [(ICNoteEditorViewController *)self dynamicBarColor];
     v3 = objc_alloc_init(MEMORY[0x277D75788]);
     [v3 configureWithTransparentBackground];
-    [v3 setBackgroundColor:v18];
-    v4 = [(ICNoteEditorViewController *)self navigationItem];
-    [v4 setStandardAppearance:v3];
+    [v3 setBackgroundColor:dynamicBarColor];
+    navigationItem = [(ICNoteEditorViewController *)self navigationItem];
+    [navigationItem setStandardAppearance:v3];
 
-    v5 = [(ICNoteEditorViewController *)self navigationItem];
-    [v5 setCompactAppearance:v3];
+    navigationItem2 = [(ICNoteEditorViewController *)self navigationItem];
+    [navigationItem2 setCompactAppearance:v3];
 
     if (![(ICNoteEditorViewController *)self usesCustomTransition])
     {
-      v6 = [(ICNoteEditorViewController *)self navigationItem];
-      [v6 setScrollEdgeAppearance:v3];
+      navigationItem3 = [(ICNoteEditorViewController *)self navigationItem];
+      [navigationItem3 setScrollEdgeAppearance:v3];
     }
 
-    v7 = [(ICNoteEditorViewController *)self navigationController];
-    v8 = [v7 toolbar];
-    v9 = [v8 standardAppearance];
+    navigationController = [(ICNoteEditorViewController *)self navigationController];
+    toolbar = [navigationController toolbar];
+    standardAppearance = [toolbar standardAppearance];
 
-    [v9 configureWithTransparentBackground];
-    [v9 setBackgroundColor:v18];
-    v10 = [(ICNoteEditorViewController *)self navigationController];
-    v11 = [v10 toolbar];
-    [v11 setStandardAppearance:v9];
+    [standardAppearance configureWithTransparentBackground];
+    [standardAppearance setBackgroundColor:dynamicBarColor];
+    navigationController2 = [(ICNoteEditorViewController *)self navigationController];
+    toolbar2 = [navigationController2 toolbar];
+    [toolbar2 setStandardAppearance:standardAppearance];
 
-    v12 = [(ICNoteEditorViewController *)self navigationController];
-    v13 = [v12 toolbar];
-    [v13 setCompactAppearance:v9];
+    navigationController3 = [(ICNoteEditorViewController *)self navigationController];
+    toolbar3 = [navigationController3 toolbar];
+    [toolbar3 setCompactAppearance:standardAppearance];
 
-    v14 = [(ICNoteEditorViewController *)self navigationController];
-    v15 = [v14 toolbar];
-    [v15 setScrollEdgeAppearance:v9];
+    navigationController4 = [(ICNoteEditorViewController *)self navigationController];
+    toolbar4 = [navigationController4 toolbar];
+    [toolbar4 setScrollEdgeAppearance:standardAppearance];
 
-    v16 = [(ICNoteEditorViewController *)self navigationController];
-    v17 = [v16 toolbar];
-    [v17 setCompactScrollEdgeAppearance:v9];
+    navigationController5 = [(ICNoteEditorViewController *)self navigationController];
+    toolbar5 = [navigationController5 toolbar];
+    [toolbar5 setCompactScrollEdgeAppearance:standardAppearance];
   }
 }
 
@@ -1238,18 +1238,18 @@ LABEL_10:
   v4.receiver = self;
   v4.super_class = ICNoteEditorViewController;
   [(ICNoteEditorViewController *)&v4 setNeedsStatusBarAppearanceUpdate];
-  v3 = [(ICNoteEditorViewController *)self navigationController];
-  [v3 setNeedsStatusBarAppearanceUpdate];
+  navigationController = [(ICNoteEditorViewController *)self navigationController];
+  [navigationController setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)updatePencilKitPaperStyleType
 {
   v3 = MEMORY[0x277D36890];
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  v13 = [v3 linedPaperWithPaperStyleType:{objc_msgSend(v4, "paperStyleType")}];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  v13 = [v3 linedPaperWithPaperStyleType:{objc_msgSend(note, "paperStyleType")}];
 
-  v5 = [(ICNoteEditorViewController *)self viewIfLoaded];
-  if (v5 && ([MEMORY[0x277D75418] ic_isVision] & 1) == 0)
+  viewIfLoaded = [(ICNoteEditorViewController *)self viewIfLoaded];
+  if (viewIfLoaded && ([MEMORY[0x277D75418] ic_isVision] & 1) == 0)
   {
     v6 = _UISolariumEnabled();
 
@@ -1258,32 +1258,32 @@ LABEL_10:
       goto LABEL_6;
     }
 
-    v5 = objc_alloc_init(MEMORY[0x277D75C60]);
-    [v5 configureWithTransparentBackground];
-    v7 = [(ICNoteEditorViewController *)self dynamicBarColor];
-    [v5 setBackgroundColor:v7];
+    viewIfLoaded = objc_alloc_init(MEMORY[0x277D75C60]);
+    [viewIfLoaded configureWithTransparentBackground];
+    dynamicBarColor = [(ICNoteEditorViewController *)self dynamicBarColor];
+    [viewIfLoaded setBackgroundColor:dynamicBarColor];
 
-    v8 = [(ICNoteEditorViewController *)self navigationController];
-    v9 = [v8 toolbar];
-    [v9 setScrollEdgeAppearance:v5];
+    navigationController = [(ICNoteEditorViewController *)self navigationController];
+    toolbar = [navigationController toolbar];
+    [toolbar setScrollEdgeAppearance:viewIfLoaded];
 
-    v10 = [(ICNoteEditorViewController *)self navigationController];
-    v11 = [v10 toolbar];
-    [v11 setCompactScrollEdgeAppearance:v5];
+    navigationController2 = [(ICNoteEditorViewController *)self navigationController];
+    toolbar2 = [navigationController2 toolbar];
+    [toolbar2 setCompactScrollEdgeAppearance:viewIfLoaded];
   }
 
 LABEL_6:
-  v12 = [(ICNoteEditorViewController *)self textView];
-  [v12 setLinedPaper:v13];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView setLinedPaper:v13];
 }
 
 - (void)showOrHidePasswordEntryViewControllerIfNeeded
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  if ([v4 isPasswordProtectedAndLocked] && (objc_msgSend(v3, "isUnsupported") & 1) == 0)
+  note = [(ICNoteEditorBaseViewController *)self note];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  if ([note2 isPasswordProtectedAndLocked] && (objc_msgSend(note, "isUnsupported") & 1) == 0)
   {
-    v5 = [v3 hasMissingKeychainItem] ^ 1;
+    v5 = [note hasMissingKeychainItem] ^ 1;
   }
 
   else
@@ -1291,26 +1291,26 @@ LABEL_6:
     v5 = 0;
   }
 
-  v6 = [(ICNoteEditorBaseViewController *)self note];
-  v7 = [v6 isPasswordProtected];
+  note3 = [(ICNoteEditorBaseViewController *)self note];
+  isPasswordProtected = [note3 isPasswordProtected];
 
-  if (!v7)
+  if (!isPasswordProtected)
   {
-    v17 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+    passwordEntryViewController = [(ICNoteEditorViewController *)self passwordEntryViewController];
 
-    if (v17)
+    if (passwordEntryViewController)
     {
-      v18 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-      v19 = [v18 view];
-      [v19 removeFromSuperview];
+      passwordEntryViewController2 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+      view = [passwordEntryViewController2 view];
+      [view removeFromSuperview];
 
-      v20 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-      [(ICNoteEditorViewController *)self removeChildViewController:v20];
+      passwordEntryViewController3 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+      [(ICNoteEditorViewController *)self removeChildViewController:passwordEntryViewController3];
 
       [(ICNoteEditorViewController *)self setPasswordEntryViewController:0];
       [(ICNoteEditorViewController *)self recreateTextViewIfNecessary];
-      v21 = [(ICNoteEditorViewController *)self textView];
-      [v21 setAlpha:1.0];
+      textView = [(ICNoteEditorViewController *)self textView];
+      [textView setAlpha:1.0];
 
 LABEL_42:
       [(ICNoteEditorViewController *)self showOrHideActivityStreamToolbarIfNeeded];
@@ -1318,8 +1318,8 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    v34 = [(ICNoteEditorViewController *)self textView];
-    [v34 setAlpha:1.0];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    [textView2 setAlpha:1.0];
     goto LABEL_21;
   }
 
@@ -1327,44 +1327,44 @@ LABEL_42:
   {
     [(ICNoteEditorViewController *)self stopTextFindingIfNecessary];
     [(ICNoteEditorViewController *)self blockAccessibilityScreenChangedNotificationsIfNecessaryForDuration:2.0];
-    v8 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-    v9 = [v8 isAnimatingOut];
+    passwordEntryViewController4 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+    isAnimatingOut = [passwordEntryViewController4 isAnimatingOut];
 
-    if (v9)
+    if (isAnimatingOut)
     {
-      v10 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-      v11 = [v10 view];
-      [v11 removeFromSuperview];
+      passwordEntryViewController5 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+      view2 = [passwordEntryViewController5 view];
+      [view2 removeFromSuperview];
 
-      v12 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-      [v12 removeFromParentViewController];
+      passwordEntryViewController6 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+      [passwordEntryViewController6 removeFromParentViewController];
 
       [(ICNoteEditorViewController *)self setPasswordEntryViewController:0];
     }
 
-    v13 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+    passwordEntryViewController7 = [(ICNoteEditorViewController *)self passwordEntryViewController];
 
-    if (v13)
+    if (passwordEntryViewController7)
     {
       goto LABEL_33;
     }
 
-    v14 = [(ICNoteEditorViewController *)self presentedViewController];
+    presentedViewController = [(ICNoteEditorViewController *)self presentedViewController];
     if (objc_opt_respondsToSelector())
     {
-      v15 = [(ICNoteEditorViewController *)self presentedViewController];
-      v16 = [v15 performSelector:sel_canAppearAbovePasswordEntryView];
+      presentedViewController2 = [(ICNoteEditorViewController *)self presentedViewController];
+      v16 = [presentedViewController2 performSelector:sel_canAppearAbovePasswordEntryView];
 
       if (v16)
       {
 LABEL_28:
-        v49 = [(ICNoteEditorViewController *)self textView];
-        v50 = [v49 isEditing];
+        textView3 = [(ICNoteEditorViewController *)self textView];
+        isEditing = [textView3 isEditing];
 
-        if (v50)
+        if (isEditing)
         {
-          v51 = [(ICNoteEditorViewController *)self textView];
-          [v51 endEditing:1];
+          textView4 = [(ICNoteEditorViewController *)self textView];
+          [textView4 endEditing:1];
         }
 
         if ([(ICNoteEditorViewController *)self isEditing])
@@ -1372,11 +1372,11 @@ LABEL_28:
           [(ICNoteEditorViewController *)self setEditing:0 animated:0];
         }
 
-        v52 = [objc_alloc(MEMORY[0x277D36898]) initWithNibName:0 bundle:0 note:v3 intent:0];
+        v52 = [objc_alloc(MEMORY[0x277D36898]) initWithNibName:0 bundle:0 note:note intent:0];
         [(ICNoteEditorViewController *)self setPasswordEntryViewController:v52];
 
-        v53 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-        [v53 setMode:0];
+        passwordEntryViewController8 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+        [passwordEntryViewController8 setMode:0];
 
         objc_initWeak(&location, self);
         v89[0] = MEMORY[0x277D85DD0];
@@ -1384,77 +1384,77 @@ LABEL_28:
         v89[2] = __75__ICNoteEditorViewController_showOrHidePasswordEntryViewControllerIfNeeded__block_invoke;
         v89[3] = &unk_2781AD170;
         objc_copyWeak(&v90, &location);
-        v54 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-        [v54 setPasswordEntryCompletionHandler:v89];
+        passwordEntryViewController9 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+        [passwordEntryViewController9 setPasswordEntryCompletionHandler:v89];
 
-        v55 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-        v56 = [v55 view];
-        [v56 setAutoresizingMask:18];
+        passwordEntryViewController10 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+        view3 = [passwordEntryViewController10 view];
+        [view3 setAutoresizingMask:18];
 
-        v57 = [(ICNoteEditorViewController *)self view];
-        [v57 bounds];
+        view4 = [(ICNoteEditorViewController *)self view];
+        [view4 bounds];
         v59 = v58;
         v61 = v60;
         v63 = v62;
         v65 = v64;
-        v66 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-        v67 = [v66 view];
-        [v67 setFrame:{v59, v61, v63, v65}];
+        passwordEntryViewController11 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+        view5 = [passwordEntryViewController11 view];
+        [view5 setFrame:{v59, v61, v63, v65}];
 
-        v68 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-        [(ICNoteEditorViewController *)self addChildViewController:v68];
+        passwordEntryViewController12 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+        [(ICNoteEditorViewController *)self addChildViewController:passwordEntryViewController12];
 
         objc_destroyWeak(&v90);
         objc_destroyWeak(&location);
 LABEL_33:
-        v69 = [(ICNoteEditorBaseViewController *)self note];
-        v70 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-        [v70 setNote:v69];
+        note4 = [(ICNoteEditorBaseViewController *)self note];
+        passwordEntryViewController13 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+        [passwordEntryViewController13 setNote:note4];
 
-        v71 = [(ICNoteEditorViewController *)self backgroundView];
-        v72 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-        v73 = [v72 view];
-        [v71 addSubviewAboveAllViews:v73];
+        backgroundView = [(ICNoteEditorViewController *)self backgroundView];
+        passwordEntryViewController14 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+        view6 = [passwordEntryViewController14 view];
+        [backgroundView addSubviewAboveAllViews:view6];
 
-        v74 = [(ICNoteEditorViewController *)self traitCollection];
-        if ([v74 ic_hasCompactWidth])
+        traitCollection = [(ICNoteEditorViewController *)self traitCollection];
+        if ([traitCollection ic_hasCompactWidth])
         {
-          v75 = 1;
+          isMainSplitViewDisplayModeSecondaryOnly = 1;
         }
 
         else
         {
-          v76 = [(ICNoteEditorViewController *)self viewControllerManager];
-          if ([v76 isAuxiliary])
+          viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+          if ([viewControllerManager isAuxiliary])
           {
-            v75 = 1;
+            isMainSplitViewDisplayModeSecondaryOnly = 1;
           }
 
           else if ([MEMORY[0x277D75418] ic_isVision])
           {
-            v77 = [(ICNoteEditorViewController *)self viewControllerManager];
-            v75 = [v77 isMainSplitViewDisplayModeSecondaryOnly];
+            viewControllerManager2 = [(ICNoteEditorViewController *)self viewControllerManager];
+            isMainSplitViewDisplayModeSecondaryOnly = [viewControllerManager2 isMainSplitViewDisplayModeSecondaryOnly];
           }
 
           else
           {
-            v75 = 0;
+            isMainSplitViewDisplayModeSecondaryOnly = 0;
           }
         }
 
-        v78 = [(ICNoteEditorViewController *)self viewControllerManager];
-        v79 = [v78 noteContainerViewMode] == 0;
+        viewControllerManager3 = [(ICNoteEditorViewController *)self viewControllerManager];
+        v79 = [viewControllerManager3 noteContainerViewMode] == 0;
 
-        v80 = [(ICNoteEditorViewController *)self viewControllerManager];
-        v81 = ([v80 noteContainerViewMode] == 1) | v75;
+        viewControllerManager4 = [(ICNoteEditorViewController *)self viewControllerManager];
+        v81 = ([viewControllerManager4 noteContainerViewMode] == 1) | isMainSplitViewDisplayModeSecondaryOnly;
 
-        [(ICNoteEditorViewController *)self updateContentViewBezelsStandalone:v75 needsAdditionalBottomMargin:v79 needsAdditionalLeadingMargin:v81 & 1 force:1];
-        v82 = [(ICNoteEditorViewController *)self view];
-        [v82 layoutIfNeeded];
+        [(ICNoteEditorViewController *)self updateContentViewBezelsStandalone:isMainSplitViewDisplayModeSecondaryOnly needsAdditionalBottomMargin:v79 needsAdditionalLeadingMargin:v81 & 1 force:1];
+        view7 = [(ICNoteEditorViewController *)self view];
+        [view7 layoutIfNeeded];
 
         [(ICNoteEditorViewController *)self recreateTextView];
-        v83 = [(ICNoteEditorViewController *)self textView];
-        [v83 setHidden:1];
+        textView5 = [(ICNoteEditorViewController *)self textView];
+        [textView5 setHidden:1];
 
         [(ICNoteEditorViewController *)self hideInkPicker];
         [(ICNoteEditorViewController *)self updateForceLightContentIfNecessary];
@@ -1470,96 +1470,96 @@ LABEL_33:
     goto LABEL_28;
   }
 
-  v22 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+  passwordEntryViewController15 = [(ICNoteEditorViewController *)self passwordEntryViewController];
 
-  if (v22)
+  if (passwordEntryViewController15)
   {
-    v23 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-    v24 = [v23 note];
-    v25 = [(ICNoteEditorBaseViewController *)self note];
+    passwordEntryViewController16 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+    note5 = [passwordEntryViewController16 note];
+    note6 = [(ICNoteEditorBaseViewController *)self note];
 
-    if (v24 != v25)
+    if (note5 != note6)
     {
       [(ICNoteEditorViewController *)self recreateTextView];
-      v26 = [(ICNoteEditorViewController *)self textView];
-      [v26 layoutIfNeeded];
+      textView6 = [(ICNoteEditorViewController *)self textView];
+      [textView6 layoutIfNeeded];
 
       if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
       {
-        v27 = [(ICNoteEditorViewController *)self textView];
-        v28 = [v27 layoutManager];
-        v29 = [(ICNoteEditorViewController *)self textView];
-        v30 = [v29 textContainer];
-        [v28 ensureLayoutForTextContainer:v30];
+        textView7 = [(ICNoteEditorViewController *)self textView];
+        layoutManager = [textView7 layoutManager];
+        textView8 = [(ICNoteEditorViewController *)self textView];
+        textContainer = [textView8 textContainer];
+        [layoutManager ensureLayoutForTextContainer:textContainer];
       }
 
       [(ICNoteEditorViewController *)self updateTextViewContentInsetsAnimated:0];
       [(ICNoteEditorViewController *)self resetTextViewContentOffset];
       [(ICNoteEditorViewController *)self updatePencilKitPaperStyleType];
       [(ICNoteEditorViewController *)self updateBarButtonsAnimated:[(ICNoteEditorViewController *)self ic_isViewVisible]];
-      v31 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-      v32 = [v31 view];
-      [v32 removeFromSuperview];
+      passwordEntryViewController17 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+      view8 = [passwordEntryViewController17 view];
+      [view8 removeFromSuperview];
 
-      v33 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-      [v33 removeFromParentViewController];
+      passwordEntryViewController18 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+      [passwordEntryViewController18 removeFromParentViewController];
 
       [(ICNoteEditorViewController *)self setPasswordEntryViewController:0];
       [(ICNoteEditorViewController *)self showOrHideActivityStreamToolbarIfNeeded];
       goto LABEL_43;
     }
 
-    v35 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-    v36 = [v35 isAnimatingOut];
+    passwordEntryViewController19 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+    isAnimatingOut2 = [passwordEntryViewController19 isAnimatingOut];
 
-    if (v36)
+    if (isAnimatingOut2)
     {
       goto LABEL_43;
     }
 
-    v37 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-    [v37 setIsAnimatingOut:1];
+    passwordEntryViewController20 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+    [passwordEntryViewController20 setIsAnimatingOut:1];
 
     [(ICNoteEditorViewController *)self recreateTextView];
-    v38 = [(ICNoteEditorViewController *)self textView];
-    [v38 layoutIfNeeded];
+    textView9 = [(ICNoteEditorViewController *)self textView];
+    [textView9 layoutIfNeeded];
 
     if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
     {
-      v39 = [(ICNoteEditorViewController *)self textView];
-      v40 = [v39 layoutManager];
-      v41 = [(ICNoteEditorViewController *)self textView];
-      v42 = [v41 textContainer];
-      [v40 ensureLayoutForTextContainer:v42];
+      textView10 = [(ICNoteEditorViewController *)self textView];
+      layoutManager2 = [textView10 layoutManager];
+      textView11 = [(ICNoteEditorViewController *)self textView];
+      textContainer2 = [textView11 textContainer];
+      [layoutManager2 ensureLayoutForTextContainer:textContainer2];
     }
 
     [(ICNoteEditorViewController *)self updateTextViewContentInsetsAnimated:0];
     v43 = *MEMORY[0x277CBF348];
     v44 = *(MEMORY[0x277CBF348] + 8);
-    v45 = [(ICNoteEditorViewController *)self textView];
-    [v45 setContentOffset:{v43, v44}];
+    textView12 = [(ICNoteEditorViewController *)self textView];
+    [textView12 setContentOffset:{v43, v44}];
 
     [(ICNoteEditorViewController *)self resetTextViewContentOffset];
     [(ICNoteEditorViewController *)self updatePencilKitPaperStyleType];
     [(ICNoteEditorViewController *)self updateBarButtonsAnimated:[(ICNoteEditorViewController *)self ic_isViewVisible]];
-    v46 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-    v47 = [(ICNoteEditorViewController *)self textView];
-    [v47 setAlpha:0.0];
+    passwordEntryViewController21 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+    textView13 = [(ICNoteEditorViewController *)self textView];
+    [textView13 setAlpha:0.0];
 
     v48 = MEMORY[0x277D75D18];
     v87[0] = MEMORY[0x277D85DD0];
     v87[1] = 3221225472;
     v87[2] = __75__ICNoteEditorViewController_showOrHidePasswordEntryViewControllerIfNeeded__block_invoke_2;
     v87[3] = &unk_2781ABCF8;
-    v88 = v46;
+    v88 = passwordEntryViewController21;
     v84[0] = MEMORY[0x277D85DD0];
     v84[1] = 3221225472;
     v84[2] = __75__ICNoteEditorViewController_showOrHidePasswordEntryViewControllerIfNeeded__block_invoke_3;
     v84[3] = &unk_2781AD198;
     v84[4] = self;
     v85 = v88;
-    v86 = v3;
-    v34 = v88;
+    v86 = note;
+    textView2 = v88;
     [v48 animateWithDuration:v87 animations:v84 completion:0.25];
 
 LABEL_21:
@@ -1571,36 +1571,36 @@ LABEL_43:
 - (void)updateUnsupportedNoteView
 {
   v36[3] = *MEMORY[0x277D85DE8];
-  v3 = [(ICNoteEditorViewController *)self unsupportedNoteView];
-  [v3 removeFromSuperview];
+  unsupportedNoteView = [(ICNoteEditorViewController *)self unsupportedNoteView];
+  [unsupportedNoteView removeFromSuperview];
 
   [(ICNoteEditorViewController *)self setUnsupportedNoteView:0];
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  v5 = [v4 isUnsupported];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isUnsupported = [note isUnsupported];
 
-  if (v5)
+  if (isUnsupported)
   {
     v6 = [[ICUnsupportedNoteView alloc] initWithReason:0];
     [(ICNoteEditorViewController *)self setUnsupportedNoteView:v6];
 
-    v7 = [(ICNoteEditorViewController *)self unsupportedNoteView];
-    [v7 setUserInteractionEnabled:0];
+    unsupportedNoteView2 = [(ICNoteEditorViewController *)self unsupportedNoteView];
+    [unsupportedNoteView2 setUserInteractionEnabled:0];
   }
 
-  v8 = [(ICNoteEditorBaseViewController *)self note];
-  if ([v8 canAuthenticate])
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  if ([note2 canAuthenticate])
   {
   }
 
   else
   {
-    v9 = [(ICNoteEditorBaseViewController *)self note];
-    v10 = [v9 hasMissingKeychainItem];
+    note3 = [(ICNoteEditorBaseViewController *)self note];
+    hasMissingKeychainItem = [note3 hasMissingKeychainItem];
 
-    if (v10)
+    if (hasMissingKeychainItem)
     {
-      v11 = [(ICNoteEditorBaseViewController *)self note];
-      objc_initWeak(&location, v11);
+      note4 = [(ICNoteEditorBaseViewController *)self note];
+      objc_initWeak(&location, note4);
 
       v12 = [[ICUnsupportedNoteView alloc] initWithReason:1];
       [(ICNoteEditorViewController *)self setUnsupportedNoteView:v12];
@@ -1610,41 +1610,41 @@ LABEL_43:
       v33[2] = __55__ICNoteEditorViewController_updateUnsupportedNoteView__block_invoke;
       v33[3] = &unk_2781AC0B8;
       objc_copyWeak(&v34, &location);
-      v13 = [(ICNoteEditorViewController *)self unsupportedNoteView];
-      [v13 setDidTapActionButton:v33];
+      unsupportedNoteView3 = [(ICNoteEditorViewController *)self unsupportedNoteView];
+      [unsupportedNoteView3 setDidTapActionButton:v33];
 
       objc_destroyWeak(&v34);
       objc_destroyWeak(&location);
     }
   }
 
-  v14 = [(ICNoteEditorViewController *)self unsupportedNoteView];
+  unsupportedNoteView4 = [(ICNoteEditorViewController *)self unsupportedNoteView];
 
-  if (v14)
+  if (unsupportedNoteView4)
   {
-    v15 = [(ICNoteEditorViewController *)self textView];
-    [v15 setHidden:1];
+    textView = [(ICNoteEditorViewController *)self textView];
+    [textView setHidden:1];
 
-    v16 = [(ICNoteEditorViewController *)self view];
-    v17 = [(ICNoteEditorViewController *)self unsupportedNoteView];
-    [v16 addSubview:v17];
+    view = [(ICNoteEditorViewController *)self view];
+    unsupportedNoteView5 = [(ICNoteEditorViewController *)self unsupportedNoteView];
+    [view addSubview:unsupportedNoteView5];
 
     v28 = MEMORY[0x277CCAAD0];
-    v32 = [(ICNoteEditorViewController *)self unsupportedNoteView];
-    v30 = [v32 centerXAnchor];
-    v31 = [(ICNoteEditorViewController *)self view];
-    v29 = [v31 centerXAnchor];
-    v18 = [v30 constraintEqualToAnchor:v29];
+    unsupportedNoteView6 = [(ICNoteEditorViewController *)self unsupportedNoteView];
+    centerXAnchor = [unsupportedNoteView6 centerXAnchor];
+    view2 = [(ICNoteEditorViewController *)self view];
+    centerXAnchor2 = [view2 centerXAnchor];
+    v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v36[0] = v18;
-    v19 = [(ICNoteEditorViewController *)self unsupportedNoteView];
-    v20 = [v19 centerYAnchor];
-    v21 = [(ICNoteEditorViewController *)self view];
-    v22 = [v21 centerYAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    unsupportedNoteView7 = [(ICNoteEditorViewController *)self unsupportedNoteView];
+    centerYAnchor = [unsupportedNoteView7 centerYAnchor];
+    view3 = [(ICNoteEditorViewController *)self view];
+    centerYAnchor2 = [view3 centerYAnchor];
+    v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v36[1] = v23;
-    v24 = [(ICNoteEditorViewController *)self unsupportedNoteView];
-    v25 = [v24 widthAnchor];
-    v26 = [v25 constraintLessThanOrEqualToConstant:310.0];
+    unsupportedNoteView8 = [(ICNoteEditorViewController *)self unsupportedNoteView];
+    widthAnchor = [unsupportedNoteView8 widthAnchor];
+    v26 = [widthAnchor constraintLessThanOrEqualToConstant:310.0];
     v36[2] = v26;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:3];
     [v28 activateConstraints:v27];
@@ -1668,19 +1668,19 @@ LABEL_43:
 
 - (void)applyScrollStateIfAvailable
 {
-  v31 = [(ICNoteEditorViewController *)self view];
-  v3 = [v31 window];
-  if (v3)
+  view = [(ICNoteEditorViewController *)self view];
+  window = [view window];
+  if (window)
   {
-    v4 = v3;
+    v4 = window;
     v5 = +[ICExtensionSafeAPIShims applicationState];
 
     if (v5 != 2)
     {
-      v6 = [(ICNoteEditorBaseViewController *)self note];
-      v7 = [v6 isPasswordProtectedAndLocked];
+      note = [(ICNoteEditorBaseViewController *)self note];
+      isPasswordProtectedAndLocked = [note isPasswordProtectedAndLocked];
 
-      if ((v7 & 1) == 0 && ![(ICNoteEditorViewController *)self isEditingOnSystemPaperOnPad])
+      if ((isPasswordProtectedAndLocked & 1) == 0 && ![(ICNoteEditorViewController *)self isEditingOnSystemPaperOnPad])
       {
         v33 = 0;
         v34 = &v33;
@@ -1688,54 +1688,54 @@ LABEL_43:
         v36 = __Block_byref_object_copy__4;
         v37 = __Block_byref_object_dispose__4;
         v38 = 0;
-        v8 = [(ICNoteEditorViewController *)self archivedScrollStateToApply];
-        v9 = [v8 note];
-        v10 = [v9 managedObjectContext];
+        archivedScrollStateToApply = [(ICNoteEditorViewController *)self archivedScrollStateToApply];
+        note2 = [archivedScrollStateToApply note];
+        managedObjectContext = [note2 managedObjectContext];
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __57__ICNoteEditorViewController_applyScrollStateIfAvailable__block_invoke;
         v32[3] = &unk_2781ACF80;
         v32[4] = self;
         v32[5] = &v33;
-        [v10 performBlockAndWait:v32];
+        [managedObjectContext performBlockAndWait:v32];
 
         v11 = v34[5];
-        v12 = [(ICNoteEditorBaseViewController *)self note];
-        v13 = [v12 identifier];
-        LODWORD(v11) = [v11 isEqualToString:v13];
+        note3 = [(ICNoteEditorBaseViewController *)self note];
+        identifier = [note3 identifier];
+        LODWORD(v11) = [v11 isEqualToString:identifier];
 
         if (v11)
         {
-          v14 = [(ICNoteEditorViewController *)self archivedScrollStateToApply];
+          archivedScrollStateToApply2 = [(ICNoteEditorViewController *)self archivedScrollStateToApply];
         }
 
         else
         {
-          v15 = [(ICNoteEditorViewController *)self savedScrollStates];
-          v16 = [(ICNoteEditorBaseViewController *)self note];
-          v17 = [v16 identifier];
-          v18 = [v15 ic_objectForNonNilKey:v17];
+          savedScrollStates = [(ICNoteEditorViewController *)self savedScrollStates];
+          note4 = [(ICNoteEditorBaseViewController *)self note];
+          identifier2 = [note4 identifier];
+          v18 = [savedScrollStates ic_objectForNonNilKey:identifier2];
 
           if ([v18 captureIsWithinTimeThreshold])
           {
-            v14 = v18;
+            archivedScrollStateToApply2 = v18;
           }
 
           else
           {
-            v14 = 0;
+            archivedScrollStateToApply2 = 0;
           }
         }
 
-        v19 = [(ICNoteEditorViewController *)self view];
-        [v19 layoutIfNeeded];
+        view2 = [(ICNoteEditorViewController *)self view];
+        [view2 layoutIfNeeded];
 
-        v20 = [(ICNoteEditorViewController *)self textView];
-        if ([v14 applyToTextView:v20])
+        textView = [(ICNoteEditorViewController *)self textView];
+        if ([archivedScrollStateToApply2 applyToTextView:textView])
         {
-          v21 = [(ICNoteEditorViewController *)self archivedScrollStateToApply];
+          archivedScrollStateToApply3 = [(ICNoteEditorViewController *)self archivedScrollStateToApply];
 
-          if (v14 == v21)
+          if (archivedScrollStateToApply2 == archivedScrollStateToApply3)
           {
             [(ICNoteEditorViewController *)self setArchivedScrollStateToApply:0];
           }
@@ -1749,17 +1749,17 @@ LABEL_43:
         {
           if ([(ICNoteEditorViewController *)self shouldOverscrollScrollState])
           {
-            v22 = [(ICNoteEditorViewController *)self textView];
-            [v22 contentOffset];
+            textView2 = [(ICNoteEditorViewController *)self textView];
+            [textView2 contentOffset];
             v24 = v23;
             v26 = v25;
 
-            v27 = [(ICNoteEditorViewController *)self view];
-            [v27 safeAreaInsets];
+            view3 = [(ICNoteEditorViewController *)self view];
+            [view3 safeAreaInsets];
             v29 = v28;
 
-            v30 = [(ICNoteEditorViewController *)self textView];
-            [v30 setContentOffset:{v24, fmax(v26 + -100.0, -v29)}];
+            textView3 = [(ICNoteEditorViewController *)self textView];
+            [textView3 setContentOffset:{v24, fmax(v26 + -100.0, -v29)}];
           }
         }
 
@@ -1776,20 +1776,20 @@ LABEL_43:
 - (void)rememberNoteContentForEditingIntent
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  -[ICNoteEditorViewController setIsEditingNewNote:](self, "setIsEditingNewNote:", [v3 isEmpty]);
+  note = [(ICNoteEditorBaseViewController *)self note];
+  -[ICNoteEditorViewController setIsEditingNewNote:](self, "setIsEditingNewNote:", [note isEmpty]);
 
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  v5 = [v4 textStorage];
-  v6 = [v5 mergeableString];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  textStorage = [note2 textStorage];
+  mergeableString = [textStorage mergeableString];
   v7 = MEMORY[0x277CCAE60];
-  v8 = [(ICNoteEditorBaseViewController *)self note];
-  v9 = [v8 textStorage];
-  v10 = [v9 mergeableString];
-  v11 = [v7 valueWithRange:{objc_msgSend(v10, "length"), 0}];
+  note3 = [(ICNoteEditorBaseViewController *)self note];
+  textStorage2 = [note3 textStorage];
+  mergeableString2 = [textStorage2 mergeableString];
+  v11 = [v7 valueWithRange:{objc_msgSend(mergeableString2, "length"), 0}];
   v14[0] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  v13 = [v6 selectionForCharacterRanges:v12];
+  v13 = [mergeableString selectionForCharacterRanges:v12];
   [(ICNoteEditorViewController *)self setOriginalEndOfNote:v13];
 }
 
@@ -1800,15 +1800,15 @@ LABEL_43:
     return;
   }
 
-  v3 = [(ICNoteEditorViewController *)self navigationItem];
+  navigationItem = [(ICNoteEditorViewController *)self navigationItem];
 
-  if (!v3)
+  if (!navigationItem)
   {
     return;
   }
 
-  v4 = [(ICNoteEditorViewController *)self invitationViewController];
-  if (v4)
+  invitationViewController = [(ICNoteEditorViewController *)self invitationViewController];
+  if (invitationViewController)
   {
 
 LABEL_6:
@@ -1817,20 +1817,20 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  v6 = [v5 isDeletedOrInTrash];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isDeletedOrInTrash = [note isDeletedOrInTrash];
 
-  if (v6)
+  if (isDeletedOrInTrash)
   {
     goto LABEL_6;
   }
 
-  v10 = [(ICNoteEditorViewController *)self viewControllerManager];
-  v8 = [v10 createDeferredActionMenuElementForEditorViewController:self];
+  viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+  v8 = [viewControllerManager createDeferredActionMenuElementForEditorViewController:self];
   v7 = 1;
 LABEL_7:
-  v9 = [(ICNoteEditorViewController *)self navigationItem];
-  [v9 setAdditionalOverflowItems:v8];
+  navigationItem2 = [(ICNoteEditorViewController *)self navigationItem];
+  [navigationItem2 setAdditionalOverflowItems:v8];
 
   if (v7)
   {
@@ -1839,9 +1839,9 @@ LABEL_7:
 
 - (void)updateDataOwnerForCopyAndPaste
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  v4 = [v3 account];
-  if ([v4 isManaged])
+  note = [(ICNoteEditorBaseViewController *)self note];
+  account = [note account];
+  if ([account isManaged])
   {
     v5 = 2;
   }
@@ -1851,50 +1851,50 @@ LABEL_7:
     v5 = 1;
   }
 
-  v6 = [(ICNoteEditorViewController *)self textView];
-  [v6 _setDataOwnerForCopy:v5];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView _setDataOwnerForCopy:v5];
 
-  v7 = [(ICNoteEditorViewController *)self textView];
-  [v7 _setDataOwnerForPaste:v5];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  [textView2 _setDataOwnerForPaste:v5];
 
-  v8 = [(ICNoteEditorViewController *)self textView];
-  [v8 _setDragDataOwner:v5];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  [textView3 _setDragDataOwner:v5];
 
-  v9 = [(ICNoteEditorViewController *)self textView];
-  [v9 _setDropDataOwner:v5];
+  textView4 = [(ICNoteEditorViewController *)self textView];
+  [textView4 _setDropDataOwner:v5];
 }
 
 - (void)updateDrawingAttachmentsIfNeeded
 {
-  v4 = [MEMORY[0x277D36790] sharedConverter];
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  [v4 convertDrawingsInNoteIfNeeded:v3];
+  mEMORY[0x277D36790] = [MEMORY[0x277D36790] sharedConverter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [mEMORY[0x277D36790] convertDrawingsInNoteIfNeeded:note];
 }
 
 - (void)showOrHideActivityStreamToolbarIfNeeded
 {
-  v3 = [(ICNoteEditorViewController *)self activityStreamToolbar];
+  activityStreamToolbar = [(ICNoteEditorViewController *)self activityStreamToolbar];
 
-  if (v3)
+  if (activityStreamToolbar)
   {
-    v6 = [(ICNoteEditorViewController *)self navigationController];
-    v4 = [v6 view];
-    v5 = [(ICNoteEditorViewController *)self activityStreamToolbar];
-    [v4 bringSubviewToFront:v5];
+    navigationController = [(ICNoteEditorViewController *)self navigationController];
+    view = [navigationController view];
+    activityStreamToolbar2 = [(ICNoteEditorViewController *)self activityStreamToolbar];
+    [view bringSubviewToFront:activityStreamToolbar2];
   }
 }
 
 - (void)updateAuthorHighlightsIfNeeded
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  v8 = [v3 textStorageWithoutCreating];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  textStorageWithoutCreating = [note textStorageWithoutCreating];
 
-  if (v8)
+  if (textStorageWithoutCreating)
   {
-    v4 = [(ICNoteEditorViewController *)self textController];
-    v5 = [v4 authorHighlightsController];
-    v6 = [v8 ic_range];
-    [v5 performHighlightUpdatesForRange:v6 inTextStorage:v7 updates:{v8, 0}];
+    textController = [(ICNoteEditorViewController *)self textController];
+    authorHighlightsController = [textController authorHighlightsController];
+    ic_range = [textStorageWithoutCreating ic_range];
+    [authorHighlightsController performHighlightUpdatesForRange:ic_range inTextStorage:v7 updates:{textStorageWithoutCreating, 0}];
   }
 }
 
@@ -1925,21 +1925,21 @@ LABEL_7:
 
 - (BOOL)isShowingAudioInspector
 {
-  v2 = [(ICNoteEditorViewController *)self audioAttachmentEditorCoordinator];
-  v3 = [v2 isShowingInspector];
+  audioAttachmentEditorCoordinator = [(ICNoteEditorViewController *)self audioAttachmentEditorCoordinator];
+  isShowingInspector = [audioAttachmentEditorCoordinator isShowingInspector];
 
-  return v3;
+  return isShowingInspector;
 }
 
 - (ICNAEventReporter)eventReporter
 {
   if (!self->_eventReporter && [MEMORY[0x277D35978] isOptedInForAnalytics])
   {
-    v3 = [(ICNoteEditorViewController *)self isEditingOnSystemPaperOnPhone];
+    isEditingOnSystemPaperOnPhone = [(ICNoteEditorViewController *)self isEditingOnSystemPaperOnPhone];
     v4 = objc_alloc(MEMORY[0x277D35978]);
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    if (v3)
+    if (isEditingOnSystemPaperOnPhone)
     {
       v7 = [v4 initWithSubTrackerName:v6];
       eventReporter = self->_eventReporter;
@@ -1949,15 +1949,15 @@ LABEL_7:
     else
     {
       eventReporter = [(ICNoteEditorViewController *)self viewControllerManager];
-      v9 = [eventReporter window];
-      v10 = [v9 windowScene];
-      v11 = [v4 initWithSubTrackerName:v6 windowScene:v10];
+      window = [eventReporter window];
+      windowScene = [window windowScene];
+      v11 = [v4 initWithSubTrackerName:v6 windowScene:windowScene];
       v12 = self->_eventReporter;
       self->_eventReporter = v11;
     }
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:self selector:sel_eventReporterLostSession_ name:*MEMORY[0x277D35958] object:self->_eventReporter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_eventReporterLostSession_ name:*MEMORY[0x277D35958] object:self->_eventReporter];
   }
 
   v14 = self->_eventReporter;
@@ -1974,39 +1974,39 @@ LABEL_7:
 
 - (BOOL)isInkPickerShowing
 {
-  v3 = [(ICNoteEditorViewController *)self inkPaletteController];
-  if (v3)
+  inkPaletteController = [(ICNoteEditorViewController *)self inkPaletteController];
+  if (inkPaletteController)
   {
-    v4 = [(ICNoteEditorViewController *)self inkPaletteController];
-    v5 = [v4 isInkPaletteShowing];
+    inkPaletteController2 = [(ICNoteEditorViewController *)self inkPaletteController];
+    isInkPaletteShowing = [inkPaletteController2 isInkPaletteShowing];
   }
 
   else
   {
-    v5 = 0;
+    isInkPaletteShowing = 0;
   }
 
-  return v5;
+  return isInkPaletteShowing;
 }
 
 - (void)hideAcceleratorIfNecessary
 {
-  v3 = [(ICNoteEditorViewController *)self linkAcceleratorController];
-  v4 = [v3 isShowing];
+  linkAcceleratorController = [(ICNoteEditorViewController *)self linkAcceleratorController];
+  isShowing = [linkAcceleratorController isShowing];
 
-  if (v4)
+  if (isShowing)
   {
-    v5 = [(ICNoteEditorViewController *)self linkAcceleratorController];
-    [v5 hideAccelerator];
+    linkAcceleratorController2 = [(ICNoteEditorViewController *)self linkAcceleratorController];
+    [linkAcceleratorController2 hideAccelerator];
   }
 }
 
 - (int64_t)attributionSidebarVisibility
 {
-  v2 = [(ICNoteEditorViewController *)self attributionSidebarController];
-  v3 = [v2 attributionSidebarVisibility];
+  attributionSidebarController = [(ICNoteEditorViewController *)self attributionSidebarController];
+  attributionSidebarVisibility = [attributionSidebarController attributionSidebarVisibility];
 
-  return v3;
+  return attributionSidebarVisibility;
 }
 
 - (BOOL)shouldLockTextViewContentOffset
@@ -2014,16 +2014,16 @@ LABEL_7:
   result = 1;
   if (![(ICNoteEditorViewController *)self isDrawingStroke])
   {
-    v3 = [(ICNoteEditorViewController *)self dateOfLastStrokeOrNewDrawing];
+    dateOfLastStrokeOrNewDrawing = [(ICNoteEditorViewController *)self dateOfLastStrokeOrNewDrawing];
 
-    if (!v3)
+    if (!dateOfLastStrokeOrNewDrawing)
     {
       return 0;
     }
 
-    v4 = [MEMORY[0x277CBEAA8] date];
-    v5 = [(ICNoteEditorViewController *)self dateOfLastStrokeOrNewDrawing];
-    [v4 timeIntervalSinceDate:v5];
+    date = [MEMORY[0x277CBEAA8] date];
+    dateOfLastStrokeOrNewDrawing2 = [(ICNoteEditorViewController *)self dateOfLastStrokeOrNewDrawing];
+    [date timeIntervalSinceDate:dateOfLastStrokeOrNewDrawing2];
     v7 = v6;
 
     if (v7 >= 0.1)
@@ -2039,14 +2039,14 @@ LABEL_7:
 {
   if ([(ICNoteEditorBaseViewController *)self isEditingOnSystemPaper])
   {
-    v3 = [(ICNoteEditorViewController *)self textView];
-    v4 = [v3 userTitleView];
-    [v4 alpha];
+    textView = [(ICNoteEditorViewController *)self textView];
+    userTitleView = [textView userTitleView];
+    [userTitleView alpha];
     if (fabs(v5) >= 0.00999999978)
     {
-      v17 = [(ICNoteEditorViewController *)self textView];
-      v18 = [v17 dateView];
-      [v18 alpha];
+      textView2 = [(ICNoteEditorViewController *)self textView];
+      dateView = [textView2 dateView];
+      [dateView alpha];
       v6 = fabs(v19) < 0.00999999978;
     }
 
@@ -2055,8 +2055,8 @@ LABEL_7:
       v6 = 1;
     }
 
-    v20 = [(ICNoteEditorViewController *)self textView];
-    [v20 safeAreaInsets];
+    textView3 = [(ICNoteEditorViewController *)self textView];
+    [textView3 safeAreaInsets];
     if (v21 == 0.0)
     {
       v24 = 0.0;
@@ -2064,16 +2064,16 @@ LABEL_7:
 
     else
     {
-      v22 = [(ICNoteEditorViewController *)self textView];
-      [v22 safeAreaInsets];
+      textView4 = [(ICNoteEditorViewController *)self textView];
+      [textView4 safeAreaInsets];
       v24 = -v23;
     }
 
-    v25 = [(ICNoteEditorViewController *)self textView];
-    [v25 contentOffset];
+    textView5 = [(ICNoteEditorViewController *)self textView];
+    [textView5 contentOffset];
     v27 = v26;
-    v28 = [(ICNoteEditorViewController *)self textView];
-    [v28 contentInset];
+    textView6 = [(ICNoteEditorViewController *)self textView];
+    [textView6 contentInset];
     v30 = v29;
 
     if (v27 < v24 - v30 && v6)
@@ -2091,12 +2091,12 @@ LABEL_7:
 
   else if ([(ICNoteEditorViewController *)self headerSubviewsFadeInOnUnderscrolling])
   {
-    v7 = [(ICNoteEditorViewController *)self textView];
-    [v7 safeAreaInsets];
+    textView7 = [(ICNoteEditorViewController *)self textView];
+    [textView7 safeAreaInsets];
     v9 = v8;
 
-    v10 = [(ICNoteEditorViewController *)self textView];
-    [v10 contentOffset];
+    textView8 = [(ICNoteEditorViewController *)self textView];
+    [textView8 contentOffset];
     v12 = fabs(v11);
 
     if ((v12 - v9) * 0.0625 <= 1.0)
@@ -2109,21 +2109,21 @@ LABEL_7:
       v13 = 1.0;
     }
 
-    v14 = [(ICNoteEditorViewController *)self textView];
-    v15 = [v14 userTitleView];
-    [v15 setAlpha:v13];
+    textView9 = [(ICNoteEditorViewController *)self textView];
+    userTitleView2 = [textView9 userTitleView];
+    [userTitleView2 setAlpha:v13];
 
-    v33 = [(ICNoteEditorViewController *)self textView];
-    v16 = [v33 dateView];
-    [v16 setAlpha:v13];
+    textView10 = [(ICNoteEditorViewController *)self textView];
+    dateView2 = [textView10 dateView];
+    [dateView2 setAlpha:v13];
   }
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
+  textView = [(ICNoteEditorViewController *)self textView];
 
-  if (!v3)
+  if (!textView)
   {
     [(ICNoteEditorViewController *)self setSuspendBarButtonUpdates:[(ICNoteEditorViewController *)self needsInitialBarConfiguration]];
     [(ICNoteEditorViewController *)self recreateTextViewIfNecessary];
@@ -2137,8 +2137,8 @@ LABEL_7:
     if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
     {
       [(ICNoteEditorViewController *)self resetTextViewContentOffset];
-      v4 = [(ICNoteEditorViewController *)self textViewController];
-      [v4 applyInitialScrollState];
+      textViewController = [(ICNoteEditorViewController *)self textViewController];
+      [textViewController applyInitialScrollState];
     }
   }
 
@@ -2156,8 +2156,8 @@ LABEL_7:
   v6.receiver = self;
   v6.super_class = ICNoteEditorViewController;
   [(ICScrollViewDelegateViewController *)&v6 viewDidLayoutSubviews];
-  v5 = [(ICNoteEditorViewController *)self viewControllerManager];
-  [v5 updateHostedNotesAppearance];
+  viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+  [viewControllerManager updateHostedNotesAppearance];
 
   if (objc_opt_respondsToSelector())
   {
@@ -2167,46 +2167,46 @@ LABEL_7:
 
 - (void)updateBottomContentPadding
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 isTransitioningToNewSize];
+  textView = [(ICNoteEditorViewController *)self textView];
+  isTransitioningToNewSize = [textView isTransitioningToNewSize];
 
-  if ((v4 & 1) == 0)
+  if ((isTransitioningToNewSize & 1) == 0)
   {
-    v5 = [(ICNoteEditorViewController *)self view];
-    [v5 bounds];
+    view = [(ICNoteEditorViewController *)self view];
+    [view bounds];
     Height = CGRectGetHeight(v24);
-    v7 = [(ICNoteEditorViewController *)self view];
-    [v7 safeAreaInsets];
+    view2 = [(ICNoteEditorViewController *)self view];
+    [view2 safeAreaInsets];
     v9 = Height - v8;
 
     [(ICNoteEditorViewController *)self textViewBottomInsetThatWeWant];
     v11 = v9 - (v10 + 0.0 + 70.0);
     [(ICNoteEditorViewController *)self textViewBottomPaddingVisibleRatio];
     v13 = v12 * v11;
-    v14 = [(ICNoteEditorViewController *)self textView];
-    v15 = [v14 bottomContentPadding];
-    [v15 targetValue];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    bottomContentPadding = [textView2 bottomContentPadding];
+    [bottomContentPadding targetValue];
     v17 = vabdd_f64(v16, v13);
 
     if (v17 >= 0.00999999978)
     {
       v18 = [MEMORY[0x277D36260] BOOLForKey:*MEMORY[0x277D362F8]];
-      v19 = [(ICNoteEditorViewController *)self textView];
-      v20 = [v19 bottomContentPadding];
-      [v20 setMode:v18];
+      textView3 = [(ICNoteEditorViewController *)self textView];
+      bottomContentPadding2 = [textView3 bottomContentPadding];
+      [bottomContentPadding2 setMode:v18];
 
-      v22 = [(ICNoteEditorViewController *)self textView];
-      v21 = [v22 bottomContentPadding];
-      [v21 setTargetValue:v13];
+      textView4 = [(ICNoteEditorViewController *)self textView];
+      bottomContentPadding3 = [textView4 bottomContentPadding];
+      [bottomContentPadding3 setTargetValue:v13];
     }
   }
 }
 
 - (double)textViewBottomInsetThatWeWant
 {
-  v3 = [(ICNoteEditorViewController *)self isEditing];
+  isEditing = [(ICNoteEditorViewController *)self isEditing];
 
-  [(ICNoteEditorViewController *)self textViewBottomInsetThatWeWantForEditing:v3];
+  [(ICNoteEditorViewController *)self textViewBottomInsetThatWeWantForEditing:isEditing];
   return result;
 }
 
@@ -2216,13 +2216,13 @@ LABEL_7:
   v43 = v3;
   [(ICNoteEditorViewController *)self textViewScrollIndicatorBottomInsetOverride];
   v42 = v4;
-  v5 = [(ICNoteEditorViewController *)self textView];
-  [v5 verticalScrollIndicatorInsets];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView verticalScrollIndicatorInsets];
   v39 = v7;
   v40 = v6;
 
-  v8 = [(ICNoteEditorViewController *)self textView];
-  [v8 bounds];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  [textView2 bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -2242,8 +2242,8 @@ LABEL_7:
   y = v46.origin.y;
   width = v46.size.width;
   height = v46.size.height;
-  v22 = [(ICNoteEditorViewController *)self textView];
-  [v22 _inscribedRectInBoundingPathByInsettingRect:10 onEdges:1 withOptions:{x, y, width, height}];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  [textView3 _inscribedRectInBoundingPathByInsettingRect:10 onEdges:1 withOptions:{x, y, width, height}];
   v24 = v23;
   v26 = v25;
   v28 = v27;
@@ -2304,26 +2304,26 @@ LABEL_7:
     v3 = v4;
   }
 
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = [v5 compatibilityBannerView];
+  textView = [(ICNoteEditorViewController *)self textView];
+  compatibilityBannerView = [textView compatibilityBannerView];
 
-  if (v6)
+  if (compatibilityBannerView)
   {
-    v7 = [(ICNoteEditorViewController *)self textView];
-    v8 = [v7 compatibilityBannerView];
-    [v8 preferredHeight];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    compatibilityBannerView2 = [textView2 compatibilityBannerView];
+    [compatibilityBannerView2 preferredHeight];
     v3 = v3 + v9;
   }
 
   if ([(ICNoteEditorViewController *)self userWantsToSeeDateLabel])
   {
-    v10 = [(ICNoteEditorViewController *)self textView];
-    v11 = [v10 dateView];
-    [v11 preferredHeight];
+    textView3 = [(ICNoteEditorViewController *)self textView];
+    dateView = [textView3 dateView];
+    [dateView preferredHeight];
     v13 = v12;
-    v14 = [(ICNoteEditorViewController *)self textView];
-    v15 = [v14 userTitleView];
-    [v15 preferredHeight];
+    textView4 = [(ICNoteEditorViewController *)self textView];
+    userTitleView = [textView4 userTitleView];
+    [userTitleView preferredHeight];
     v3 = v3 + v13 + v16;
   }
 
@@ -2347,23 +2347,23 @@ LABEL_7:
   v3 = 1.0;
   if (([(ICNoteEditorViewController *)self isEditing]& 1) == 0)
   {
-    v4 = [(ICNoteEditorViewController *)self textStorage];
-    v5 = [v4 length];
+    textStorage = [(ICNoteEditorViewController *)self textStorage];
+    v5 = [textStorage length];
 
     v3 = 0.5;
     if (v5)
     {
-      v6 = [(ICNoteEditorViewController *)self textStorage];
-      v7 = [v6 string];
-      v8 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v9 = [v8 invertedSet];
-      v10 = [v7 rangeOfCharacterFromSet:v9 options:4];
+      textStorage2 = [(ICNoteEditorViewController *)self textStorage];
+      string = [textStorage2 string];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      invertedSet = [whitespaceAndNewlineCharacterSet invertedSet];
+      v10 = [string rangeOfCharacterFromSet:invertedSet options:4];
 
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
       {
         objc_opt_class();
-        v11 = [(ICNoteEditorViewController *)self textStorage];
-        v12 = [v11 attribute:*MEMORY[0x277D74060] atIndex:v10 effectiveRange:0];
+        textStorage3 = [(ICNoteEditorViewController *)self textStorage];
+        v12 = [textStorage3 attribute:*MEMORY[0x277D74060] atIndex:v10 effectiveRange:0];
         v13 = ICDynamicCast();
 
         if (v13)
@@ -2389,36 +2389,36 @@ LABEL_7:
     return 0;
   }
 
-  v3 = [(ICNoteEditorViewController *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom] == 1;
+  traitCollection = [(ICNoteEditorViewController *)self traitCollection];
+  v4 = [traitCollection userInterfaceIdiom] == 1;
 
   return v4;
 }
 
 - (id)iCloudShareBarButtonItem
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  if ([v3 isPubliclySharedOrHasInvitees] && (objc_opt_respondsToSelector() & 1) != 0)
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if ([note isPubliclySharedOrHasInvitees] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [(ICNoteEditorViewController *)self collaborationButtons_collaborationBarButtonItem];
+    collaborationButtons_collaborationBarButtonItem = [(ICNoteEditorViewController *)self collaborationButtons_collaborationBarButtonItem];
   }
 
   else
   {
-    v4 = 0;
+    collaborationButtons_collaborationBarButtonItem = 0;
   }
 
-  return v4;
+  return collaborationButtons_collaborationBarButtonItem;
 }
 
 - (BOOL)becomeFirstResponder
 {
   if ([(ICNoteEditorViewController *)self isInkPickerShowing])
   {
-    v3 = [(ICNoteEditorViewController *)self paletteResponder];
-    v4 = [v3 becomeFirstResponder];
+    paletteResponder = [(ICNoteEditorViewController *)self paletteResponder];
+    becomeFirstResponder = [paletteResponder becomeFirstResponder];
 
-    return v4;
+    return becomeFirstResponder;
   }
 
   else
@@ -2431,24 +2431,24 @@ LABEL_7:
 
 - (BOOL)canBecomeFirstResponder
 {
-  v3 = [(ICNoteEditorViewController *)self viewControllerManager];
-  if ([v3 hasCompactWidth])
+  viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+  if ([viewControllerManager hasCompactWidth])
   {
   }
 
   else
   {
-    v5 = [(ICNoteEditorViewController *)self viewControllerManager];
-    if ([v5 isPrimaryContentVisible])
+    viewControllerManager2 = [(ICNoteEditorViewController *)self viewControllerManager];
+    if ([viewControllerManager2 isPrimaryContentVisible])
     {
 
       return 0;
     }
 
-    v6 = [(ICNoteEditorViewController *)self viewControllerManager];
-    v7 = [v6 isSupplementaryContentVisible];
+    viewControllerManager3 = [(ICNoteEditorViewController *)self viewControllerManager];
+    isSupplementaryContentVisible = [viewControllerManager3 isSupplementaryContentVisible];
 
-    if (v7)
+    if (isSupplementaryContentVisible)
     {
       return 0;
     }
@@ -2459,24 +2459,24 @@ LABEL_7:
     return 0;
   }
 
-  v4 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-  if (v4)
+  passwordEntryViewController = [(ICNoteEditorViewController *)self passwordEntryViewController];
+  if (passwordEntryViewController)
   {
 
     return 0;
   }
 
-  v8 = [(ICNoteEditorViewController *)self invitationViewController];
+  invitationViewController = [(ICNoteEditorViewController *)self invitationViewController];
 
-  return !v8;
+  return !invitationViewController;
 }
 
-- (ICNoteEditorViewController)initWithIdentifier:(int64_t)a3 options:(unint64_t)a4
+- (ICNoteEditorViewController)initWithIdentifier:(int64_t)identifier options:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v14.receiver = self;
   v14.super_class = ICNoteEditorViewController;
-  v5 = [(ICNoteEditorBaseViewController *)&v14 initWithIdentifier:a3 options:a4 nibName:0 bundle:0];
+  v5 = [(ICNoteEditorBaseViewController *)&v14 initWithIdentifier:identifier options:options nibName:0 bundle:0];
   if (v5)
   {
     if (ICInternalSettingsIsTextKit2Enabled())
@@ -2495,14 +2495,14 @@ LABEL_7:
     v9 = *(&v5->super.super.super.super.super.isa + v8);
     *(&v5->super.super.super.super.super.isa + v8) = v6;
 
-    v5->_canShowLinkBar = (v4 & 2) != 0;
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    v5->_canShowLinkBar = (optionsCopy & 2) != 0;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     savedScrollStates = v5->_savedScrollStates;
-    v5->_savedScrollStates = v10;
+    v5->_savedScrollStates = dictionary;
 
     v5->_needsInitialBarConfiguration = 1;
-    v12 = [(ICNoteEditorViewController *)v5 backgroundView];
-    [v12 setAccessibilityElementReparentingDelegate:v5];
+    backgroundView = [(ICNoteEditorViewController *)v5 backgroundView];
+    [backgroundView setAccessibilityElementReparentingDelegate:v5];
 
     [(ICNoteEditorViewController *)v5 registerForTraitChanges];
   }
@@ -2510,7 +2510,7 @@ LABEL_7:
   return v5;
 }
 
-+ (id)editorViewControllerWithIdentifier:(int64_t)a3 options:(unint64_t)a4
++ (id)editorViewControllerWithIdentifier:(int64_t)identifier options:(unint64_t)options
 {
   IsTextKit2Enabled = ICInternalSettingsIsTextKit2Enabled();
   v7 = off_2781A8E28;
@@ -2519,33 +2519,33 @@ LABEL_7:
     v7 = off_2781A8D90;
   }
 
-  v8 = [objc_alloc(*v7) initWithIdentifier:a3 options:a4];
+  v8 = [objc_alloc(*v7) initWithIdentifier:identifier options:options];
 
   return v8;
 }
 
 - (ICTextView)textView
 {
-  v2 = [(ICNoteEditorViewController *)self textViewController];
-  v3 = [v2 textView];
+  textViewController = [(ICNoteEditorViewController *)self textViewController];
+  textView = [textViewController textView];
 
-  return v3;
+  return textView;
 }
 
 - (ICTextView)textViewIfLoaded
 {
-  v2 = [(ICNoteEditorViewController *)self textViewController];
-  v3 = [v2 textViewIfLoaded];
+  textViewController = [(ICNoteEditorViewController *)self textViewController];
+  textViewIfLoaded = [textViewController textViewIfLoaded];
 
-  return v3;
+  return textViewIfLoaded;
 }
 
 - (ICTextController)textController
 {
-  v2 = [(ICNoteEditorViewController *)self textViewController];
-  v3 = [v2 textController];
+  textViewController = [(ICNoteEditorViewController *)self textViewController];
+  textController = [textViewController textController];
 
-  return v3;
+  return textController;
 }
 
 - (void)startEditing
@@ -2556,102 +2556,102 @@ LABEL_7:
     goto LABEL_5;
   }
 
-  v4 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+  passwordEntryViewController = [(ICNoteEditorViewController *)self passwordEntryViewController];
 
-  if (v4)
+  if (passwordEntryViewController)
   {
-    v5 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-    [v5 beginAuthentication];
+    passwordEntryViewController2 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+    [passwordEntryViewController2 beginAuthentication];
 
     [(ICNoteEditorViewController *)self setShouldBeginEditingAfterNoteUnlock:1];
     goto LABEL_5;
   }
 
-  v6 = [(ICNoteEditorViewController *)self invitationViewController];
-  if (v6)
+  invitationViewController = [(ICNoteEditorViewController *)self invitationViewController];
+  if (invitationViewController)
   {
 
     goto LABEL_5;
   }
 
-  v7 = [(ICNoteEditorViewController *)self textView];
-  v8 = [v7 isFirstResponder];
-  if (v8)
+  textView = [(ICNoteEditorViewController *)self textView];
+  isFirstResponder = [textView isFirstResponder];
+  if (isFirstResponder)
   {
-    v2 = [(ICNoteEditorViewController *)self textView];
-    if ([v2 isEditable])
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    if ([textView2 isEditable])
     {
 
       goto LABEL_5;
     }
   }
 
-  v9 = [(ICNoteEditorViewController *)self textView];
-  v10 = [v9 canBecomeFirstResponder];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  canBecomeFirstResponder = [textView3 canBecomeFirstResponder];
 
-  if (v8)
+  if (isFirstResponder)
   {
   }
 
-  if (v10)
+  if (canBecomeFirstResponder)
   {
     [(ICNoteEditorViewController *)self stopTextFindingIfNecessary];
-    v11 = [(ICNoteEditorViewController *)self textView];
-    [v11 setEditable:1];
+    textView4 = [(ICNoteEditorViewController *)self textView];
+    [textView4 setEditable:1];
 
-    v12 = [(ICNoteEditorViewController *)self textView];
-    v13 = [v12 selectedRange];
+    textView5 = [(ICNoteEditorViewController *)self textView];
+    selectedRange = [textView5 selectedRange];
     v15 = v14;
 
-    v16 = [(ICNoteEditorViewController *)self textView];
-    v17 = [v16 textStorage];
-    if ([v17 length] && !v15)
+    textView6 = [(ICNoteEditorViewController *)self textView];
+    textStorage = [textView6 textStorage];
+    if ([textStorage length] && !v15)
     {
-      v18 = [(ICNoteEditorViewController *)self textView];
-      v19 = [v18 textStorage];
-      v20 = [v19 length];
+      textView7 = [(ICNoteEditorViewController *)self textView];
+      textStorage2 = [textView7 textStorage];
+      v20 = [textStorage2 length];
 
-      if (v13 != v20)
+      if (selectedRange != v20)
       {
         goto LABEL_24;
       }
 
       objc_opt_class();
-      v21 = [(ICNoteEditorViewController *)self textView];
-      v22 = [v21 textStorage];
-      v23 = [v22 attribute:*MEMORY[0x277D74060] atIndex:v13 - 1 effectiveRange:0];
-      v16 = ICDynamicCast();
+      textView8 = [(ICNoteEditorViewController *)self textView];
+      textStorage3 = [textView8 textStorage];
+      v23 = [textStorage3 attribute:*MEMORY[0x277D74060] atIndex:selectedRange - 1 effectiveRange:0];
+      textView6 = ICDynamicCast();
 
-      if (!v16 || [v16 embeddingType] != 1)
+      if (!textView6 || [textView6 embeddingType] != 1)
       {
 LABEL_23:
 
 LABEL_24:
-        v25 = [(ICNoteEditorViewController *)self view];
-        v26 = [v25 window];
-        [v26 makeKeyWindow];
+        view = [(ICNoteEditorViewController *)self view];
+        window = [view window];
+        [window makeKeyWindow];
 
-        v27 = [(ICNoteEditorViewController *)self textView];
-        [v27 becomeFirstResponder];
+        textView9 = [(ICNoteEditorViewController *)self textView];
+        [textView9 becomeFirstResponder];
 
         if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
         {
-          v28 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-          v29 = [v28 BOOLForKey:@"DisableInitialCursorSizeWorkaround"];
+          standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+          v29 = [standardUserDefaults BOOLForKey:@"DisableInitialCursorSizeWorkaround"];
 
           if ((v29 & 1) == 0)
           {
-            v30 = [(ICNoteEditorViewController *)self textView];
-            v31 = [v30 textStorage];
-            v32 = [v31 length];
+            textView10 = [(ICNoteEditorViewController *)self textView];
+            textStorage4 = [textView10 textStorage];
+            v32 = [textStorage4 length];
 
             if (!v32)
             {
-              v33 = [(ICNoteEditorViewController *)self textView];
-              v34 = [v33 layoutManager];
-              v35 = [(ICNoteEditorViewController *)self textView];
-              v36 = [v35 textContainer];
-              [v34 setExtraLineFragmentRect:v36 usedRect:*MEMORY[0x277CBF3A0] textContainer:{*(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+              textView11 = [(ICNoteEditorViewController *)self textView];
+              layoutManager = [textView11 layoutManager];
+              textView12 = [(ICNoteEditorViewController *)self textView];
+              textContainer = [textView12 textContainer];
+              [layoutManager setExtraLineFragmentRect:textContainer usedRect:*MEMORY[0x277CBF3A0] textContainer:{*(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
             }
           }
         }
@@ -2660,25 +2660,25 @@ LABEL_24:
         goto LABEL_5;
       }
 
-      v17 = [(ICNoteEditorViewController *)self textView];
+      textStorage = [(ICNoteEditorViewController *)self textView];
       v24 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@"\n"];
-      [v17 _pasteAttributedString:v24 pasteAsRichText:0];
+      [textStorage _pasteAttributedString:v24 pasteAsRichText:0];
     }
 
     goto LABEL_23;
   }
 
 LABEL_5:
-  v37 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v37 postNotificationName:@"ICNoteEditorViewControllerDidStartEditingNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ICNoteEditorViewControllerDidStartEditingNotification" object:self];
 }
 
-- (void)keyboardDidShow:(id)a3
+- (void)keyboardDidShow:(id)show
 {
-  v4 = a3;
+  showCopy = show;
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(ICNoteEditorViewController *)self setKeyboardDidShowAnimationDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(ICNoteEditorViewController *)self setKeyboardDidShowAnimationDate:date];
 
   v6 = dispatch_time(0, 300000000);
   v7 = MEMORY[0x277D85DD0];
@@ -2700,89 +2700,89 @@ void __46__ICNoteEditorViewController_keyboardDidShow___block_invoke(uint64_t a1
 
 - (BOOL)shouldUseiPadBarLayout
 {
-  v3 = [(ICNoteEditorViewController *)self traitCollection];
-  if (![v3 horizontalSizeClass])
+  traitCollection = [(ICNoteEditorViewController *)self traitCollection];
+  if (![traitCollection horizontalSizeClass])
   {
-    v4 = [(ICNoteEditorViewController *)self view];
-    v5 = [v4 window];
-    v6 = [v5 rootViewController];
-    v7 = [v6 traitCollection];
+    view = [(ICNoteEditorViewController *)self view];
+    window = [view window];
+    rootViewController = [window rootViewController];
+    traitCollection2 = [rootViewController traitCollection];
 
-    v3 = v7;
+    traitCollection = traitCollection2;
   }
 
-  if (([v3 ic_hasCompactWidth] & 1) != 0 || (objc_msgSend(MEMORY[0x277D75418], "ic_isiPad") & 1) == 0)
+  if (([traitCollection ic_hasCompactWidth] & 1) != 0 || (objc_msgSend(MEMORY[0x277D75418], "ic_isiPad") & 1) == 0)
   {
-    v8 = [MEMORY[0x277D75418] ic_isVision];
+    ic_isVision = [MEMORY[0x277D75418] ic_isVision];
   }
 
   else
   {
-    v8 = 1;
+    ic_isVision = 1;
   }
 
-  return v8;
+  return ic_isVision;
 }
 
-- (void)scrollRangeToVisible:(_NSRange)a3 animated:(BOOL)a4 inSearchableString:(id)a5 searchHighlightRegexFinder:(id)a6
+- (void)scrollRangeToVisible:(_NSRange)visible animated:(BOOL)animated inSearchableString:(id)string searchHighlightRegexFinder:(id)finder
 {
-  v7 = a4;
-  length = a3.length;
-  location = a3.location;
-  v17 = a5;
-  v11 = a6;
+  animatedCopy = animated;
+  length = visible.length;
+  location = visible.location;
+  stringCopy = string;
+  finderCopy = finder;
   if ([(ICNoteEditorViewController *)self _appearState]== 2)
   {
     if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
     {
-      v12 = [(ICNoteEditorViewController *)self textView];
-      v13 = [v12 layoutManager];
-      v14 = [(ICNoteEditorViewController *)self textView];
-      v15 = [v14 textContainer];
-      [v13 ensureLayoutForTextContainer:v15];
+      textView = [(ICNoteEditorViewController *)self textView];
+      layoutManager = [textView layoutManager];
+      textView2 = [(ICNoteEditorViewController *)self textView];
+      textContainer = [textView2 textContainer];
+      [layoutManager ensureLayoutForTextContainer:textContainer];
     }
 
-    v16 = [(ICNoteEditorViewController *)self textView];
-    [v16 scrollRangeToVisible:location consideringInsets:length animated:1 inSearchableString:{0, v17}];
+    textView3 = [(ICNoteEditorViewController *)self textView];
+    [textView3 scrollRangeToVisible:location consideringInsets:length animated:1 inSearchableString:{0, stringCopy}];
 
-    [(ICNoteEditorViewController *)self setSearchRegexFinder:v11];
+    [(ICNoteEditorViewController *)self setSearchRegexFinder:finderCopy];
   }
 
   else
   {
-    [(ICNoteEditorViewController *)self scrollRangeToVisibleWhenViewAppears:location animated:length inSearchableString:v7 searchHighlightRegexFinder:v17, v11];
+    [(ICNoteEditorViewController *)self scrollRangeToVisibleWhenViewAppears:location animated:length inSearchableString:animatedCopy searchHighlightRegexFinder:stringCopy, finderCopy];
   }
 }
 
-- (void)scrollRangeToVisibleWhenViewAppears:(_NSRange)a3 animated:(BOOL)a4 inSearchableString:(id)a5 searchHighlightRegexFinder:(id)a6
+- (void)scrollRangeToVisibleWhenViewAppears:(_NSRange)appears animated:(BOOL)animated inSearchableString:(id)string searchHighlightRegexFinder:(id)finder
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a6;
-  v10 = [(ICNoteEditorViewController *)self view];
+  length = appears.length;
+  location = appears.location;
+  finderCopy = finder;
+  view = [(ICNoteEditorViewController *)self view];
   [(ICNoteEditorViewController *)self setShouldResetTextViewContentOffsetWhenAppearing:0];
-  v11 = [(ICNoteEditorBaseViewController *)self note];
-  v12 = [ICTextViewScrollState scrollStateForRange:location inNote:length, v11];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  v12 = [ICTextViewScrollState scrollStateForRange:location inNote:length, note];
 
   [(ICNoteEditorViewController *)self setArchivedScrollStateToApply:v12];
-  [(ICNoteEditorViewController *)self setSearchRegexFinder:v9];
+  [(ICNoteEditorViewController *)self setSearchRegexFinder:finderCopy];
 
   [(ICNoteEditorViewController *)self setShouldOverscrollScrollState:1];
 }
 
-- (void)setSelectedRange:(_NSRange)a3
+- (void)setSelectedRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(ICNoteEditorViewController *)self textView];
-  [v5 setSelectedRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView setSelectedRange:{location, length}];
 }
 
-- (id)barButtonItemWithImage:(id)a3 selector:(SEL)a4
+- (id)barButtonItemWithImage:(id)image selector:(SEL)selector
 {
   v6 = MEMORY[0x277D751E0];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithImage:v7 style:0 target:self action:a4];
+  imageCopy = image;
+  v8 = [[v6 alloc] initWithImage:imageCopy style:0 target:self action:selector];
 
   return v8;
 }
@@ -2796,14 +2796,14 @@ void __46__ICNoteEditorViewController_keyboardDidShow___block_invoke(uint64_t a1
 
 - (void)recreateTextViewIfPasswordEntryScreenExistsButNoteIsUnlocked
 {
-  v3 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-  if (v3)
+  passwordEntryViewController = [(ICNoteEditorViewController *)self passwordEntryViewController];
+  if (passwordEntryViewController)
   {
-    v4 = v3;
-    v5 = [(ICNoteEditorBaseViewController *)self note];
-    v6 = [v5 isPasswordProtectedAndLocked];
+    v4 = passwordEntryViewController;
+    note = [(ICNoteEditorBaseViewController *)self note];
+    isPasswordProtectedAndLocked = [note isPasswordProtectedAndLocked];
 
-    if ((v6 & 1) == 0)
+    if ((isPasswordProtectedAndLocked & 1) == 0)
     {
 
       [(ICNoteEditorViewController *)self recreateTextView];
@@ -2819,338 +2819,338 @@ void __46__ICNoteEditorViewController_keyboardDidShow___block_invoke(uint64_t a1
     [(ICNoteEditorViewController *)self ppt_willLoadNoteIntoEditor];
   }
 
-  v3 = [(ICNoteEditorViewController *)self textView];
-  [v3 contentOffset];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView contentOffset];
   v245 = v5;
   v246 = v4;
 
-  v6 = [(ICNoteEditorViewController *)self textView];
-  [v6 contentInset];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  [textView2 contentInset];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(ICNoteEditorViewController *)self textView];
-  [v15 verticalScrollIndicatorInsets];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  [textView3 verticalScrollIndicatorInsets];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
-  v24 = [(ICNoteEditorViewController *)self textView];
+  textView4 = [(ICNoteEditorViewController *)self textView];
 
-  if (v24)
+  if (textView4)
   {
-    v25 = [(ICNoteEditorViewController *)self textView];
-    [v25 _removeBoundingPathChangeObserver:self];
+    textView5 = [(ICNoteEditorViewController *)self textView];
+    [textView5 _removeBoundingPathChangeObserver:self];
 
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v27 = *MEMORY[0x277CCA7F8];
-    v28 = [(ICNoteEditorViewController *)self textView];
-    v29 = [v28 undoManager];
-    [v26 removeObserver:self name:v27 object:v29];
+    textView6 = [(ICNoteEditorViewController *)self textView];
+    undoManager = [textView6 undoManager];
+    [defaultCenter removeObserver:self name:v27 object:undoManager];
 
-    v30 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
     v31 = *MEMORY[0x277CCA810];
-    v32 = [(ICNoteEditorViewController *)self textView];
-    v33 = [v32 undoManager];
-    [v30 removeObserver:self name:v31 object:v33];
+    textView7 = [(ICNoteEditorViewController *)self textView];
+    undoManager2 = [textView7 undoManager];
+    [defaultCenter2 removeObserver:self name:v31 object:undoManager2];
 
-    v34 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
     v35 = *MEMORY[0x277CCA808];
-    v36 = [(ICNoteEditorViewController *)self textView];
-    v37 = [v36 undoManager];
-    [v34 removeObserver:self name:v35 object:v37];
+    textView8 = [(ICNoteEditorViewController *)self textView];
+    undoManager3 = [textView8 undoManager];
+    [defaultCenter3 removeObserver:self name:v35 object:undoManager3];
 
-    v38 = [(ICNoteEditorViewController *)self textView];
-    [v38 setDelegate:0];
+    textView9 = [(ICNoteEditorViewController *)self textView];
+    [textView9 setDelegate:0];
 
-    v39 = [(ICNoteEditorViewController *)self textView];
-    [v39 removeFromSuperview];
+    textView10 = [(ICNoteEditorViewController *)self textView];
+    [textView10 removeFromSuperview];
   }
 
-  v40 = [(ICNoteEditorViewController *)self textViewController];
+  textViewController = [(ICNoteEditorViewController *)self textViewController];
 
-  if (v40)
+  if (textViewController)
   {
-    v41 = [(ICNoteEditorViewController *)self textViewController];
-    [(ICNoteEditorViewController *)self removeChildViewController:v41];
+    textViewController2 = [(ICNoteEditorViewController *)self textViewController];
+    [(ICNoteEditorViewController *)self removeChildViewController:textViewController2];
   }
 
-  v42 = [(ICNoteEditorViewController *)self textView];
-  v43 = [v42 textStorage];
-  v44 = [v43 layoutManagers];
-  v45 = [(ICNoteEditorViewController *)self textView];
-  v46 = [v45 layoutManager];
-  v47 = [v44 containsObject:v46];
+  textView11 = [(ICNoteEditorViewController *)self textView];
+  textStorage = [textView11 textStorage];
+  layoutManagers = [textStorage layoutManagers];
+  textView12 = [(ICNoteEditorViewController *)self textView];
+  layoutManager = [textView12 layoutManager];
+  v47 = [layoutManagers containsObject:layoutManager];
 
   if (v47)
   {
-    v48 = [(ICNoteEditorViewController *)self textView];
-    v49 = [v48 textStorage];
-    v50 = [(ICNoteEditorViewController *)self textView];
-    v51 = [v50 layoutManager];
-    [v49 removeLayoutManager:v51];
+    textView13 = [(ICNoteEditorViewController *)self textView];
+    textStorage2 = [textView13 textStorage];
+    textView14 = [(ICNoteEditorViewController *)self textView];
+    layoutManager2 = [textView14 layoutManager];
+    [textStorage2 removeLayoutManager:layoutManager2];
   }
 
-  v52 = [(ICNoteEditorBaseViewController *)self note];
-  if ([v52 isPasswordProtectedAndLocked])
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if ([note isPasswordProtectedAndLocked])
   {
     goto LABEL_12;
   }
 
-  v53 = [(ICNoteEditorViewController *)self invitation];
-  if (v53)
+  invitation = [(ICNoteEditorViewController *)self invitation];
+  if (invitation)
   {
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  v64 = [(ICNoteEditorBaseViewController *)self note];
-  v65 = [v64 isUnsupported];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  isUnsupported = [note2 isUnsupported];
 
-  if (v65)
+  if (isUnsupported)
   {
 LABEL_13:
     if ([MEMORY[0x277D75418] ic_isVision])
     {
       v54 = [ICTextViewController alloc];
-      v55 = [(ICNoteEditorViewController *)self viewControllerManager];
-      v56 = [(ICNoteEditorBaseViewController *)self note];
-      v57 = [(ICNoteEditorViewController *)self view];
-      [v57 bounds];
+      viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+      note3 = [(ICNoteEditorBaseViewController *)self note];
+      view = [(ICNoteEditorViewController *)self view];
+      [view bounds];
       v59 = v58;
       v60 = objc_alloc_init(ICTextViewScrollState);
-      v61 = [(ICTextViewController *)v54 initWithViewControllerManager:v55 editorViewController:self note:v56 initialContainerWidth:v60 scrollState:v59];
+      v61 = [(ICTextViewController *)v54 initWithViewControllerManager:viewControllerManager editorViewController:self note:note3 initialContainerWidth:v60 scrollState:v59];
       [(ICNoteEditorViewController *)self setTextViewController:v61];
 
-      v247 = [(ICNoteEditorViewController *)self textViewController];
-      v62 = [v247 view];
-      v63 = [(ICNoteEditorViewController *)self backgroundView];
-      [v63 setContentView:v62];
+      textViewController3 = [(ICNoteEditorViewController *)self textViewController];
+      view2 = [textViewController3 view];
+      backgroundView = [(ICNoteEditorViewController *)self backgroundView];
+      [backgroundView setContentView:view2];
     }
 
     return;
   }
 
-  v66 = [(ICNoteEditorViewController *)self archivedScrollStateToApply];
-  v67 = [v66 note];
-  v68 = [(ICNoteEditorBaseViewController *)self note];
-  if ([v67 isEqual:v68])
+  archivedScrollStateToApply = [(ICNoteEditorViewController *)self archivedScrollStateToApply];
+  note4 = [archivedScrollStateToApply note];
+  note5 = [(ICNoteEditorBaseViewController *)self note];
+  if ([note4 isEqual:note5])
   {
-    v69 = [(ICNoteEditorViewController *)self archivedScrollStateToApply];
+    archivedScrollStateToApply2 = [(ICNoteEditorViewController *)self archivedScrollStateToApply];
   }
 
   else
   {
-    v69 = 0;
+    archivedScrollStateToApply2 = 0;
   }
 
-  if (!v69)
+  if (!archivedScrollStateToApply2)
   {
-    v70 = [(ICNoteEditorViewController *)self savedScrollStates];
-    v71 = [(ICNoteEditorBaseViewController *)self note];
-    v72 = [v71 identifier];
-    v69 = [v70 ic_objectForNonNilKey:v72];
+    savedScrollStates = [(ICNoteEditorViewController *)self savedScrollStates];
+    note6 = [(ICNoteEditorBaseViewController *)self note];
+    identifier = [note6 identifier];
+    archivedScrollStateToApply2 = [savedScrollStates ic_objectForNonNilKey:identifier];
   }
 
-  if (([v69 captureIsWithinTimeThreshold] & 1) == 0 && (objc_msgSend(v69, "isFromArchive") & 1) == 0)
+  if (([archivedScrollStateToApply2 captureIsWithinTimeThreshold] & 1) == 0 && (objc_msgSend(archivedScrollStateToApply2, "isFromArchive") & 1) == 0)
   {
 
-    v69 = 0;
+    archivedScrollStateToApply2 = 0;
   }
 
   v73 = [ICTextViewController alloc];
-  v74 = [(ICNoteEditorViewController *)self viewControllerManager];
-  v75 = [(ICNoteEditorBaseViewController *)self note];
-  v76 = [(ICNoteEditorViewController *)self view];
-  [v76 bounds];
-  v78 = [(ICTextViewController *)v73 initWithViewControllerManager:v74 editorViewController:self note:v75 initialContainerWidth:v69 scrollState:v77];
+  viewControllerManager2 = [(ICNoteEditorViewController *)self viewControllerManager];
+  note7 = [(ICNoteEditorBaseViewController *)self note];
+  view3 = [(ICNoteEditorViewController *)self view];
+  [view3 bounds];
+  v78 = [(ICTextViewController *)v73 initWithViewControllerManager:viewControllerManager2 editorViewController:self note:note7 initialContainerWidth:archivedScrollStateToApply2 scrollState:v77];
   [(ICNoteEditorViewController *)self setTextViewController:v78];
 
-  v79 = [(ICNoteEditorViewController *)self textViewController];
-  [v79 setPerformingInitialSetup:1];
+  textViewController4 = [(ICNoteEditorViewController *)self textViewController];
+  [textViewController4 setPerformingInitialSetup:1];
 
-  v80 = [(ICNoteEditorViewController *)self textViewController];
-  v81 = [v80 textView];
-  [v81 setContentInsetAdjustmentBehavior:2];
+  textViewController5 = [(ICNoteEditorViewController *)self textViewController];
+  textView15 = [textViewController5 textView];
+  [textView15 setContentInsetAdjustmentBehavior:2];
 
-  v82 = [(ICNoteEditorBaseViewController *)self note];
-  LODWORD(v81) = [v82 isPasswordProtected];
-  v83 = [(ICNoteEditorViewController *)self textViewController];
-  v84 = [v83 textView];
-  [v84 setLearnsCorrections:v81 ^ 1];
+  note8 = [(ICNoteEditorBaseViewController *)self note];
+  LODWORD(textView15) = [note8 isPasswordProtected];
+  textViewController6 = [(ICNoteEditorViewController *)self textViewController];
+  textView16 = [textViewController6 textView];
+  [textView16 setLearnsCorrections:textView15 ^ 1];
 
-  v85 = [(ICNoteEditorViewController *)self textViewController];
-  [(ICNoteEditorViewController *)self addChildViewController:v85];
+  textViewController7 = [(ICNoteEditorViewController *)self textViewController];
+  [(ICNoteEditorViewController *)self addChildViewController:textViewController7];
 
-  v86 = [(ICNoteEditorViewController *)self textView];
-  [v86 setContentInsetAdjustmentBehavior:2];
+  textView17 = [(ICNoteEditorViewController *)self textView];
+  [textView17 setContentInsetAdjustmentBehavior:2];
 
-  v87 = [(ICNoteEditorViewController *)self textView];
-  [v87 setDrawingDelegate:self];
+  textView18 = [(ICNoteEditorViewController *)self textView];
+  [textView18 setDrawingDelegate:self];
 
   v88 = objc_alloc_init(MEMORY[0x277CD9660]);
   [v88 setDelegate:self];
-  v89 = [(ICNoteEditorViewController *)self textView];
-  [v89 addInteraction:v88];
+  textView19 = [(ICNoteEditorViewController *)self textView];
+  [textView19 addInteraction:v88];
 
-  v90 = [(ICNoteEditorViewController *)self textView];
-  [v90 setAutomaticallyAdjustsScrollIndicatorInsets:0];
+  textView20 = [(ICNoteEditorViewController *)self textView];
+  [textView20 setAutomaticallyAdjustsScrollIndicatorInsets:0];
 
   v91 = objc_alloc(MEMORY[0x277D366A8]);
-  v92 = [(ICNoteEditorBaseViewController *)self note];
-  v93 = [v91 initWithNote:v92];
+  note9 = [(ICNoteEditorBaseViewController *)self note];
+  v93 = [v91 initWithNote:note9];
   [(ICNoteEditorViewController *)self setAttachmentInsertionController:v93];
 
-  v94 = [(ICNoteEditorViewController *)self attachmentInsertionController];
-  [v94 setAttachmentDelegate:self];
+  attachmentInsertionController = [(ICNoteEditorViewController *)self attachmentInsertionController];
+  [attachmentInsertionController setAttachmentDelegate:self];
 
-  v95 = [(ICNoteEditorViewController *)self attachmentInsertionController];
-  v96 = [(ICNoteEditorViewController *)self textController];
-  [v96 setAttachmentInsertionController:v95];
+  attachmentInsertionController2 = [(ICNoteEditorViewController *)self attachmentInsertionController];
+  textController = [(ICNoteEditorViewController *)self textController];
+  [textController setAttachmentInsertionController:attachmentInsertionController2];
 
   v97 = [ICVisualAssetImportController alloc];
-  v98 = [(ICNoteEditorBaseViewController *)self note];
-  v99 = [(ICNoteEditorViewController *)self textView];
-  v100 = [(ICVisualAssetImportController *)v97 initWithNote:v98 textView:v99];
+  note10 = [(ICNoteEditorBaseViewController *)self note];
+  textView21 = [(ICNoteEditorViewController *)self textView];
+  v100 = [(ICVisualAssetImportController *)v97 initWithNote:note10 textView:textView21];
   [(ICNoteEditorViewController *)self setVisualAssetImportController:v100];
 
   v101 = objc_alloc(MEMORY[0x277D35F20]);
-  v102 = [(ICNoteEditorBaseViewController *)self note];
-  v103 = [v101 initWithNote:v102];
+  note11 = [(ICNoteEditorBaseViewController *)self note];
+  v103 = [v101 initWithNote:note11];
   [(ICNoteEditorViewController *)self setMentionsController:v103];
 
-  v104 = [(ICNoteEditorViewController *)self mentionsController];
-  [v104 setAnalyticsDelegate:self];
+  mentionsController = [(ICNoteEditorViewController *)self mentionsController];
+  [mentionsController setAnalyticsDelegate:self];
 
-  v105 = [(ICNoteEditorViewController *)self attachmentInsertionController];
-  v106 = [(ICNoteEditorViewController *)self mentionsController];
-  [v106 setAttachmentInsertionController:v105];
+  attachmentInsertionController3 = [(ICNoteEditorViewController *)self attachmentInsertionController];
+  mentionsController2 = [(ICNoteEditorViewController *)self mentionsController];
+  [mentionsController2 setAttachmentInsertionController:attachmentInsertionController3];
 
-  v107 = [(ICNoteEditorViewController *)self mentionsController];
-  v108 = [(ICNoteEditorViewController *)self textController];
-  [v108 setMentionsController:v107];
+  mentionsController3 = [(ICNoteEditorViewController *)self mentionsController];
+  textController2 = [(ICNoteEditorViewController *)self textController];
+  [textController2 setMentionsController:mentionsController3];
 
-  v109 = [(ICNoteEditorViewController *)self textView];
-  v110 = [(ICNoteEditorViewController *)self mentionsController];
-  [v110 setTextView:v109];
+  textView22 = [(ICNoteEditorViewController *)self textView];
+  mentionsController4 = [(ICNoteEditorViewController *)self mentionsController];
+  [mentionsController4 setTextView:textView22];
 
   v111 = objc_alloc(MEMORY[0x277D35EE8]);
-  v112 = [(ICNoteEditorBaseViewController *)self note];
-  v113 = [v111 initWithNote:v112];
+  note12 = [(ICNoteEditorBaseViewController *)self note];
+  v113 = [v111 initWithNote:note12];
   [(ICNoteEditorViewController *)self setHashtagController:v113];
 
-  v114 = [(ICNoteEditorViewController *)self hashtagController];
-  [v114 setAnalyticsDelegate:self];
+  hashtagController = [(ICNoteEditorViewController *)self hashtagController];
+  [hashtagController setAnalyticsDelegate:self];
 
-  v115 = [(ICNoteEditorViewController *)self textView];
-  v116 = [(ICNoteEditorViewController *)self hashtagController];
-  [v116 setTextView:v115];
+  textView23 = [(ICNoteEditorViewController *)self textView];
+  hashtagController2 = [(ICNoteEditorViewController *)self hashtagController];
+  [hashtagController2 setTextView:textView23];
 
-  v117 = [(ICNoteEditorViewController *)self attachmentInsertionController];
-  v118 = [(ICNoteEditorViewController *)self hashtagController];
-  [v118 setAttachmentInsertionController:v117];
+  attachmentInsertionController4 = [(ICNoteEditorViewController *)self attachmentInsertionController];
+  hashtagController3 = [(ICNoteEditorViewController *)self hashtagController];
+  [hashtagController3 setAttachmentInsertionController:attachmentInsertionController4];
 
-  v119 = [(ICNoteEditorViewController *)self hashtagController];
-  v120 = [(ICNoteEditorViewController *)self textController];
-  [v120 setHashtagController:v119];
+  hashtagController4 = [(ICNoteEditorViewController *)self hashtagController];
+  textController3 = [(ICNoteEditorViewController *)self textController];
+  [textController3 setHashtagController:hashtagController4];
 
   v121 = [ICLinkAcceleratorController alloc];
-  v122 = [MEMORY[0x277D35E70] sharedConfiguration];
-  v123 = [(ICLinkAcceleratorController *)v121 initWithCloudConfiguration:v122 mode:0];
+  mEMORY[0x277D35E70] = [MEMORY[0x277D35E70] sharedConfiguration];
+  v123 = [(ICLinkAcceleratorController *)v121 initWithCloudConfiguration:mEMORY[0x277D35E70] mode:0];
   [(ICNoteEditorViewController *)self setLinkAcceleratorController:v123];
 
-  v124 = [(ICNoteEditorViewController *)self linkAcceleratorController];
-  [v124 setDelegate:self];
+  linkAcceleratorController = [(ICNoteEditorViewController *)self linkAcceleratorController];
+  [linkAcceleratorController setDelegate:self];
 
-  v125 = [(ICNoteEditorViewController *)self linkAcceleratorController];
-  [v125 setLinkDelegate:self];
+  linkAcceleratorController2 = [(ICNoteEditorViewController *)self linkAcceleratorController];
+  [linkAcceleratorController2 setLinkDelegate:self];
 
   if (ICInternalSettingsIsNotesMathEnabled())
   {
     v126 = objc_alloc(MEMORY[0x277D36738]);
-    v127 = [(ICNoteEditorBaseViewController *)self note];
-    v128 = [v126 initWithNote:v127];
+    note13 = [(ICNoteEditorBaseViewController *)self note];
+    v128 = [v126 initWithNote:note13];
     [(ICNoteEditorViewController *)self setCalculateRecognitionController:v128];
 
-    v129 = [(ICNoteEditorViewController *)self textView];
-    v130 = [(ICNoteEditorViewController *)self calculateRecognitionController];
-    [v130 setTextView:v129];
+    textView24 = [(ICNoteEditorViewController *)self textView];
+    calculateRecognitionController = [(ICNoteEditorViewController *)self calculateRecognitionController];
+    [calculateRecognitionController setTextView:textView24];
 
-    v131 = [(ICNoteEditorViewController *)self attachmentInsertionController];
-    v132 = [(ICNoteEditorViewController *)self calculateRecognitionController];
-    [v132 setAttachmentInsertionController:v131];
+    attachmentInsertionController5 = [(ICNoteEditorViewController *)self attachmentInsertionController];
+    calculateRecognitionController2 = [(ICNoteEditorViewController *)self calculateRecognitionController];
+    [calculateRecognitionController2 setAttachmentInsertionController:attachmentInsertionController5];
 
-    v133 = [(ICNoteEditorViewController *)self textView];
-    v134 = [(ICNoteEditorViewController *)self calculateRecognitionController];
-    [v134 setSuggestionsDelegate:v133];
+    textView25 = [(ICNoteEditorViewController *)self textView];
+    calculateRecognitionController3 = [(ICNoteEditorViewController *)self calculateRecognitionController];
+    [calculateRecognitionController3 setSuggestionsDelegate:textView25];
 
-    v135 = [(ICNoteEditorBaseViewController *)self note];
-    v136 = [v135 calculatePreviewBehavior] != 1;
-    v137 = [(ICNoteEditorViewController *)self calculateRecognitionController];
-    [v137 setInsertsResults:v136];
+    note14 = [(ICNoteEditorBaseViewController *)self note];
+    v136 = [note14 calculatePreviewBehavior] != 1;
+    calculateRecognitionController4 = [(ICNoteEditorViewController *)self calculateRecognitionController];
+    [calculateRecognitionController4 setInsertsResults:v136];
 
-    v138 = [(ICNoteEditorBaseViewController *)self note];
-    v139 = [v138 calculatePreviewBehavior];
-    v140 = [(ICNoteEditorViewController *)self calculateRecognitionController];
-    [v140 setPreviewBehavior:v139];
+    note15 = [(ICNoteEditorBaseViewController *)self note];
+    calculatePreviewBehavior = [note15 calculatePreviewBehavior];
+    calculateRecognitionController5 = [(ICNoteEditorViewController *)self calculateRecognitionController];
+    [calculateRecognitionController5 setPreviewBehavior:calculatePreviewBehavior];
 
-    v141 = [(ICNoteEditorViewController *)self calculateRecognitionController];
-    [v141 addErrorInteraction];
+    calculateRecognitionController6 = [(ICNoteEditorViewController *)self calculateRecognitionController];
+    [calculateRecognitionController6 addErrorInteraction];
   }
 
   if (ICInternalSettingsIsScrubbingEnabled())
   {
     v142 = objc_alloc(MEMORY[0x277D36750]);
-    v143 = [(ICNoteEditorViewController *)self textView];
-    v144 = [v142 initWithTextView:v143];
+    textView26 = [(ICNoteEditorViewController *)self textView];
+    v144 = [v142 initWithTextView:textView26];
     [(ICNoteEditorViewController *)self setCalculateScrubberController:v144];
 
-    v145 = [(ICNoteEditorBaseViewController *)self note];
-    v146 = [(ICNoteEditorViewController *)self calculateScrubberController];
-    [v146 setNote:v145];
+    note16 = [(ICNoteEditorBaseViewController *)self note];
+    calculateScrubberController = [(ICNoteEditorViewController *)self calculateScrubberController];
+    [calculateScrubberController setNote:note16];
   }
 
   if (ICInternalSettingsIsGraphingEnabled())
   {
     v147 = objc_alloc(MEMORY[0x277D36728]);
-    v148 = [(ICNoteEditorBaseViewController *)self note];
-    v149 = [v147 initWithNote:v148];
+    note17 = [(ICNoteEditorBaseViewController *)self note];
+    v149 = [v147 initWithNote:note17];
     [(ICNoteEditorViewController *)self setCalculateGraphingController:v149];
 
-    v150 = [(ICNoteEditorViewController *)self textView];
-    v151 = [(ICNoteEditorViewController *)self calculateGraphingController];
-    [v151 setTextView:v150];
+    textView27 = [(ICNoteEditorViewController *)self textView];
+    calculateGraphingController = [(ICNoteEditorViewController *)self calculateGraphingController];
+    [calculateGraphingController setTextView:textView27];
 
-    v152 = [(ICNoteEditorViewController *)self attachmentInsertionController];
-    v153 = [(ICNoteEditorViewController *)self calculateGraphingController];
-    [v153 setAttachmentInsertionController:v152];
+    attachmentInsertionController6 = [(ICNoteEditorViewController *)self attachmentInsertionController];
+    calculateGraphingController2 = [(ICNoteEditorViewController *)self calculateGraphingController];
+    [calculateGraphingController2 setAttachmentInsertionController:attachmentInsertionController6];
 
-    v154 = [(ICNoteEditorViewController *)self calculateScrubberController];
-    v155 = [(ICNoteEditorViewController *)self calculateGraphingController];
-    [v155 setScrubberController:v154];
+    calculateScrubberController2 = [(ICNoteEditorViewController *)self calculateScrubberController];
+    calculateGraphingController3 = [(ICNoteEditorViewController *)self calculateGraphingController];
+    [calculateGraphingController3 setScrubberController:calculateScrubberController2];
   }
 
   if ([(ICNoteEditorBaseViewController *)self isEditingOnSystemPaper]&& +[ICPaperCommonUtilities shouldShowLinksWhenComposingQuickNote])
   {
     [(ICNoteEditorViewController *)self createSystemPaperLinkBarIfNecessary];
-    v156 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
-    [v156 refresh];
+    paperLinkBarViewController = [(ICNoteEditorViewController *)self paperLinkBarViewController];
+    [paperLinkBarViewController refresh];
   }
 
   v157 = [ICPaperTextAttachmentManager alloc];
-  v158 = [(ICNoteEditorBaseViewController *)self note];
-  v159 = [(ICNoteEditorViewController *)self textView];
-  v160 = [(ICPaperTextAttachmentManager *)v157 initWithNote:v158 textView:v159 delegate:self];
+  note18 = [(ICNoteEditorBaseViewController *)self note];
+  textView28 = [(ICNoteEditorViewController *)self textView];
+  v160 = [(ICPaperTextAttachmentManager *)v157 initWithNote:note18 textView:textView28 delegate:self];
   [(ICNoteEditorViewController *)self setPaperTextAttachmentManager:v160];
 
-  v161 = [(ICNoteEditorBaseViewController *)self note];
-  v162 = [(ICNoteEditorViewController *)self textView];
-  v163 = [v162 dateView];
-  [v163 setNote:v161];
+  note19 = [(ICNoteEditorBaseViewController *)self note];
+  textView29 = [(ICNoteEditorViewController *)self textView];
+  dateView = [textView29 dateView];
+  [dateView setNote:note19];
 
   if ([(ICNoteEditorViewController *)self userWantsToSeeDateLabel])
   {
@@ -3159,28 +3159,28 @@ LABEL_13:
 
   else
   {
-    v164 = [(ICNoteEditorBaseViewController *)self note];
-    -[ICNoteEditorViewController setUserWantsToSeeDateLabel:](self, "setUserWantsToSeeDateLabel:", [v164 isSharedAndEmpty]);
+    note20 = [(ICNoteEditorBaseViewController *)self note];
+    -[ICNoteEditorViewController setUserWantsToSeeDateLabel:](self, "setUserWantsToSeeDateLabel:", [note20 isSharedAndEmpty]);
   }
 
-  v165 = [(ICNoteEditorViewController *)self textView];
-  v166 = [(ICNoteEditorBaseViewController *)self note];
-  [v165 createUserTitleViewIfNecessaryForNote:v166];
+  textView30 = [(ICNoteEditorViewController *)self textView];
+  note21 = [(ICNoteEditorBaseViewController *)self note];
+  [textView30 createUserTitleViewIfNecessaryForNote:note21];
 
-  v167 = [(ICNoteEditorViewController *)self textView];
-  v168 = [(ICNoteEditorBaseViewController *)self note];
-  [v167 updateCompatibilityBannerForNote:v168 parentViewController:self updateTextViewContentInsets:0];
+  textView31 = [(ICNoteEditorViewController *)self textView];
+  note22 = [(ICNoteEditorBaseViewController *)self note];
+  [textView31 updateCompatibilityBannerForNote:note22 parentViewController:self updateTextViewContentInsets:0];
 
   if ([(ICNoteEditorBaseViewController *)self isEditingOnSecureScreen]&& ![(ICNoteEditorBaseViewController *)self isEditingOnSystemPaper])
   {
-    v171 = [(ICNoteEditorViewController *)self textView];
-    [v171 setDataDetectorTypes:2];
+    textView32 = [(ICNoteEditorViewController *)self textView];
+    [textView32 setDataDetectorTypes:2];
   }
 
   else
   {
-    v169 = [(ICNoteEditorViewController *)self textView];
-    objc_initWeak(&location, v169);
+    textView33 = [(ICNoteEditorViewController *)self textView];
+    objc_initWeak(&location, textView33);
 
     v170 = dispatch_time(0, 250000000);
     block[0] = MEMORY[0x277D85DD0];
@@ -3193,145 +3193,145 @@ LABEL_13:
     objc_destroyWeak(&location);
   }
 
-  v172 = [(ICNoteEditorViewController *)self traitCollection];
-  if ([v172 ic_hasCompactWidth])
+  traitCollection = [(ICNoteEditorViewController *)self traitCollection];
+  if ([traitCollection ic_hasCompactWidth])
   {
-    v173 = 1;
+    isMainSplitViewDisplayModeSecondaryOnly = 1;
   }
 
   else
   {
-    v174 = [(ICNoteEditorViewController *)self viewControllerManager];
-    if ([v174 isAuxiliary])
+    viewControllerManager3 = [(ICNoteEditorViewController *)self viewControllerManager];
+    if ([viewControllerManager3 isAuxiliary])
     {
-      v173 = 1;
+      isMainSplitViewDisplayModeSecondaryOnly = 1;
     }
 
     else if ([MEMORY[0x277D75418] ic_isVision])
     {
-      v175 = [(ICNoteEditorViewController *)self viewControllerManager];
-      v173 = [v175 isMainSplitViewDisplayModeSecondaryOnly];
+      viewControllerManager4 = [(ICNoteEditorViewController *)self viewControllerManager];
+      isMainSplitViewDisplayModeSecondaryOnly = [viewControllerManager4 isMainSplitViewDisplayModeSecondaryOnly];
     }
 
     else
     {
-      v173 = 0;
+      isMainSplitViewDisplayModeSecondaryOnly = 0;
     }
   }
 
-  v176 = [(ICNoteEditorViewController *)self viewControllerManager];
-  v177 = [v176 noteContainerViewMode] == 0;
+  viewControllerManager5 = [(ICNoteEditorViewController *)self viewControllerManager];
+  v177 = [viewControllerManager5 noteContainerViewMode] == 0;
 
-  v178 = [(ICNoteEditorViewController *)self viewControllerManager];
-  v179 = ([v178 noteContainerViewMode] == 1) | v173;
+  viewControllerManager6 = [(ICNoteEditorViewController *)self viewControllerManager];
+  v179 = ([viewControllerManager6 noteContainerViewMode] == 1) | isMainSplitViewDisplayModeSecondaryOnly;
 
-  v180 = [(ICNoteEditorViewController *)self backgroundView];
-  v181 = [(ICNoteEditorViewController *)self textViewController];
-  v182 = [v181 view];
-  [v180 setContentView:v182 useSafeAreaLayoutGuide:objc_msgSend(MEMORY[0x277D75418] standalone:"ic_isVision") needsAdditionalBottomMargin:v173 needsAdditionalLeadingMargin:v177 force:{v179 & 1, 0}];
+  backgroundView2 = [(ICNoteEditorViewController *)self backgroundView];
+  textViewController8 = [(ICNoteEditorViewController *)self textViewController];
+  view4 = [textViewController8 view];
+  [backgroundView2 setContentView:view4 useSafeAreaLayoutGuide:objc_msgSend(MEMORY[0x277D75418] standalone:"ic_isVision") needsAdditionalBottomMargin:isMainSplitViewDisplayModeSecondaryOnly needsAdditionalLeadingMargin:v177 force:{v179 & 1, 0}];
 
   v183 = objc_alloc(MEMORY[0x277D366F8]);
-  v184 = [(ICNoteEditorBaseViewController *)self note];
-  v185 = [v183 initWithNote:v184 textLayoutManager:0];
+  note23 = [(ICNoteEditorBaseViewController *)self note];
+  v185 = [v183 initWithNote:note23 textLayoutManager:0];
   [(ICNoteEditorViewController *)self setAuthorHighlightsController:v185];
 
-  v186 = [(ICNoteEditorViewController *)self authorHighlightsController];
-  v187 = [(ICNoteEditorViewController *)self textController];
-  [v187 setAuthorHighlightsController:v186];
+  authorHighlightsController = [(ICNoteEditorViewController *)self authorHighlightsController];
+  textController4 = [(ICNoteEditorViewController *)self textController];
+  [textController4 setAuthorHighlightsController:authorHighlightsController];
 
   v188 = [ICAuthorHighlightsUpdater alloc];
-  v189 = [(ICNoteEditorViewController *)self authorHighlightsController];
-  v190 = [(ICAuthorHighlightsUpdater *)v188 initWithAuthorHighlightsController:v189 textLayoutManager:0];
+  authorHighlightsController2 = [(ICNoteEditorViewController *)self authorHighlightsController];
+  v190 = [(ICAuthorHighlightsUpdater *)v188 initWithAuthorHighlightsController:authorHighlightsController2 textLayoutManager:0];
   [(ICNoteEditorViewController *)self setAuthorHighlightsUpdater:v190];
 
-  v191 = [(ICNoteEditorViewController *)self authorHighlightsUpdater];
-  [v191 setHighlightedValue:0.0];
+  authorHighlightsUpdater = [(ICNoteEditorViewController *)self authorHighlightsUpdater];
+  [authorHighlightsUpdater setHighlightedValue:0.0];
 
-  v192 = [(ICNoteEditorViewController *)self authorHighlightsUpdater];
-  v193 = [(ICNoteEditorViewController *)self attributionSidebarView];
-  [v193 setAuthorHighlightsUpdater:v192];
+  authorHighlightsUpdater2 = [(ICNoteEditorViewController *)self authorHighlightsUpdater];
+  attributionSidebarView = [(ICNoteEditorViewController *)self attributionSidebarView];
+  [attributionSidebarView setAuthorHighlightsUpdater:authorHighlightsUpdater2];
 
-  v194 = [(ICNoteEditorViewController *)self view];
-  [v194 layoutIfNeeded];
+  view5 = [(ICNoteEditorViewController *)self view];
+  [view5 layoutIfNeeded];
 
-  v195 = [(ICNoteEditorViewController *)self authorHighlightsUpdater];
-  [v195 scheduleUpdateAnimated:0];
+  authorHighlightsUpdater3 = [(ICNoteEditorViewController *)self authorHighlightsUpdater];
+  [authorHighlightsUpdater3 scheduleUpdateAnimated:0];
 
-  v196 = [(ICNoteEditorViewController *)self textView];
-  v197 = [(ICNoteEditorViewController *)self textView];
-  [v197 layoutMargins];
-  [v196 applyEdgeInsets:?];
+  textView34 = [(ICNoteEditorViewController *)self textView];
+  textView35 = [(ICNoteEditorViewController *)self textView];
+  [textView35 layoutMargins];
+  [textView34 applyEdgeInsets:?];
 
-  v198 = [(ICNoteEditorViewController *)self textView];
-  [v198 setDelegate:self];
+  textView36 = [(ICNoteEditorViewController *)self textView];
+  [textView36 setDelegate:self];
 
-  v199 = [(ICNoteEditorViewController *)self textView];
-  [v199 setIcDelegate:self];
+  textView37 = [(ICNoteEditorViewController *)self textView];
+  [textView37 setIcDelegate:self];
 
-  v200 = [(ICNoteEditorViewController *)self textView];
-  [v200 setAttachmentViewDelegate:self];
+  textView38 = [(ICNoteEditorViewController *)self textView];
+  [textView38 setAttachmentViewDelegate:self];
 
-  v201 = [(ICNoteEditorViewController *)self textView];
-  [v201 setCanCancelContentTouches:1];
+  textView39 = [(ICNoteEditorViewController *)self textView];
+  [textView39 setCanCancelContentTouches:1];
 
-  v202 = [(ICNoteEditorViewController *)self textView];
-  [v202 setDelaysContentTouches:0];
+  textView40 = [(ICNoteEditorViewController *)self textView];
+  [textView40 setDelaysContentTouches:0];
 
-  v203 = [(ICNoteEditorBaseViewController *)self note];
-  v204 = [v203 isEditable];
-  v205 = [(ICNoteEditorViewController *)self textView];
-  [v205 setDisplayingEditableContent:v204];
+  note24 = [(ICNoteEditorBaseViewController *)self note];
+  isEditable = [note24 isEditable];
+  textView41 = [(ICNoteEditorViewController *)self textView];
+  [textView41 setDisplayingEditableContent:isEditable];
 
   [(ICNoteEditorViewController *)self rebuildInputAccessoryView];
-  v206 = [(ICNoteEditorViewController *)self textView];
-  [v206 _addBoundingPathChangeObserver:self];
+  textView42 = [(ICNoteEditorViewController *)self textView];
+  [textView42 _addBoundingPathChangeObserver:self];
 
-  if (v24)
+  if (textView4)
   {
-    v207 = [(ICNoteEditorViewController *)self textView];
-    [v207 setContentInset:{v8, v10, v12, v14}];
+    textView43 = [(ICNoteEditorViewController *)self textView];
+    [textView43 setContentInset:{v8, v10, v12, v14}];
 
-    v208 = [(ICNoteEditorViewController *)self textView];
-    [v208 setVerticalScrollIndicatorInsets:{v17, v19, v21, v23}];
+    textView44 = [(ICNoteEditorViewController *)self textView];
+    [textView44 setVerticalScrollIndicatorInsets:{v17, v19, v21, v23}];
 
-    v209 = [(ICNoteEditorViewController *)self textView];
-    [v209 setContentOffset:{*&v246, v245}];
+    textView45 = [(ICNoteEditorViewController *)self textView];
+    [textView45 setContentOffset:{*&v246, v245}];
   }
 
   v210 = [objc_alloc(MEMORY[0x277D75AE0]) initWithTarget:self action:sel_handleLeftOrRightSwipe_];
   [v210 setDirection:1];
   [v210 setDelegate:self];
-  v211 = [(ICNoteEditorViewController *)self textView];
-  [v211 addGestureRecognizer:v210];
+  textView46 = [(ICNoteEditorViewController *)self textView];
+  [textView46 addGestureRecognizer:v210];
 
   v212 = [objc_alloc(MEMORY[0x277D75AE0]) initWithTarget:self action:sel_handleLeftOrRightSwipe_];
   [v212 setDirection:2];
   [v212 setDelegate:self];
-  v213 = [(ICNoteEditorViewController *)self textView];
-  [v213 addGestureRecognizer:v212];
+  textView47 = [(ICNoteEditorViewController *)self textView];
+  [textView47 addGestureRecognizer:v212];
 
   v251[0] = v210;
   v251[1] = v212;
   v214 = [MEMORY[0x277CBEA60] arrayWithObjects:v251 count:2];
   [(ICNoteEditorViewController *)self setSwipeGestureRecognizers:v214];
 
-  v215 = [(ICNoteEditorViewController *)self textViewController];
-  v216 = [(ICNoteEditorViewController *)self attributionSidebarController];
-  [v216 setTextViewController:v215];
+  textViewController9 = [(ICNoteEditorViewController *)self textViewController];
+  attributionSidebarController = [(ICNoteEditorViewController *)self attributionSidebarController];
+  [attributionSidebarController setTextViewController:textViewController9];
 
-  v217 = [(ICNoteEditorViewController *)self attributionSidebarController];
-  v218 = [v217 panGestureRecognizer];
-  [v218 setDelegate:self];
+  attributionSidebarController2 = [(ICNoteEditorViewController *)self attributionSidebarController];
+  panGestureRecognizer = [attributionSidebarController2 panGestureRecognizer];
+  [panGestureRecognizer setDelegate:self];
 
-  v219 = [(ICNoteEditorViewController *)self shouldAllowAttributionSidebar];
-  v220 = [(ICNoteEditorViewController *)self attributionSidebarController];
-  [v220 setEnabled:v219];
+  shouldAllowAttributionSidebar = [(ICNoteEditorViewController *)self shouldAllowAttributionSidebar];
+  attributionSidebarController3 = [(ICNoteEditorViewController *)self attributionSidebarController];
+  [attributionSidebarController3 setEnabled:shouldAllowAttributionSidebar];
 
-  v221 = [(ICNoteEditorViewController *)self textView];
-  [v221 setKeyboardDismissMode:4];
+  textView48 = [(ICNoteEditorViewController *)self textView];
+  [textView48 setKeyboardDismissMode:4];
 
-  v222 = [(ICNoteEditorViewController *)self textView];
-  [v222 setAlwaysBounceVertical:1];
+  textView49 = [(ICNoteEditorViewController *)self textView];
+  [textView49 setAlwaysBounceVertical:1];
 
   [(ICNoteEditorViewController *)self setIsPreviewingAttachmentFromNote:0];
   v223 = os_log_create("com.apple.notes", "UI");
@@ -3340,55 +3340,55 @@ LABEL_13:
     [ICNoteEditorViewController recreateTextView];
   }
 
-  v224 = [(ICNoteEditorViewController *)self textView];
-  v225 = [v224 ic_pkTiledView];
-  [v225 setRulerHostingDelegate:self];
+  textView50 = [(ICNoteEditorViewController *)self textView];
+  ic_pkTiledView = [textView50 ic_pkTiledView];
+  [ic_pkTiledView setRulerHostingDelegate:self];
 
-  v226 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
   v227 = *MEMORY[0x277CCA7F8];
-  v228 = [(ICNoteEditorViewController *)self textView];
-  v229 = [v228 undoManager];
-  [v226 addObserver:self selector:sel_updateBarButtons name:v227 object:v229];
+  textView51 = [(ICNoteEditorViewController *)self textView];
+  undoManager4 = [textView51 undoManager];
+  [defaultCenter4 addObserver:self selector:sel_updateBarButtons name:v227 object:undoManager4];
 
-  v230 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
   v231 = *MEMORY[0x277CCA810];
-  v232 = [(ICNoteEditorViewController *)self textView];
-  v233 = [v232 undoManager];
-  [v230 addObserver:self selector:sel_updateBarButtons name:v231 object:v233];
+  textView52 = [(ICNoteEditorViewController *)self textView];
+  undoManager5 = [textView52 undoManager];
+  [defaultCenter5 addObserver:self selector:sel_updateBarButtons name:v231 object:undoManager5];
 
-  v234 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
   v235 = *MEMORY[0x277CCA808];
-  v236 = [(ICNoteEditorViewController *)self textView];
-  v237 = [v236 undoManager];
-  [v234 addObserver:self selector:sel_updateBarButtons name:v235 object:v237];
+  textView53 = [(ICNoteEditorViewController *)self textView];
+  undoManager6 = [textView53 undoManager];
+  [defaultCenter6 addObserver:self selector:sel_updateBarButtons name:v235 object:undoManager6];
 
-  v238 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v238 addObserver:self selector:sel_hideInkPicker name:@"ICNoteEditorTitleEditingViewDidShowNotification" object:0];
+  defaultCenter7 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter7 addObserver:self selector:sel_hideInkPicker name:@"ICNoteEditorTitleEditingViewDidShowNotification" object:0];
 
   [(ICNoteEditorViewController *)self updateBarButtons];
   [(ICNoteEditorViewController *)self updatePencilKitPaperStyleType];
   [(ICNoteEditorViewController *)self updateAuthorHighlightsIfNeeded];
   [(ICNoteEditorViewController *)self showOrHideSearchPatternHighlightsIfNecessary];
   [(ICNoteEditorViewController *)self updateForceLightContentIfNecessary];
-  v239 = [(ICNoteEditorViewController *)self backgroundView];
-  v240 = [(ICNoteEditorViewController *)self textView];
-  [v239 reparentAccessibilityChildrenOfElement:v240];
+  backgroundView3 = [(ICNoteEditorViewController *)self backgroundView];
+  textView54 = [(ICNoteEditorViewController *)self textView];
+  [backgroundView3 reparentAccessibilityChildrenOfElement:textView54];
 
-  v241 = [(ICNoteEditorViewController *)self backgroundView];
-  [v241 setAxChildReparentingController:self];
+  backgroundView4 = [(ICNoteEditorViewController *)self backgroundView];
+  [backgroundView4 setAxChildReparentingController:self];
 
-  v242 = [(ICNoteEditorBaseViewController *)self note];
-  LODWORD(v240) = [v242 isNewNoteWithHashtagsInsertedIntoBody];
+  note25 = [(ICNoteEditorBaseViewController *)self note];
+  LODWORD(textView54) = [note25 isNewNoteWithHashtagsInsertedIntoBody];
 
-  if (v240)
+  if (textView54)
   {
     -[ICNoteEditorViewController setCurrentTextStyle:](self, "setCurrentTextStyle:", [MEMORY[0x277D36978] noteDefaultNamedStyle]);
-    v243 = [(ICNoteEditorBaseViewController *)self note];
-    [v243 setIsNewNoteWithHashtagsInsertedIntoBody:0];
+    note26 = [(ICNoteEditorBaseViewController *)self note];
+    [note26 setIsNewNoteWithHashtagsInsertedIntoBody:0];
   }
 
-  v244 = [(ICNoteEditorViewController *)self textViewController];
-  [v244 setPerformingInitialSetup:0];
+  textViewController10 = [(ICNoteEditorViewController *)self textViewController];
+  [textViewController10 setPerformingInitialSetup:0];
 }
 
 void __46__ICNoteEditorViewController_recreateTextView__block_invoke(uint64_t a1)
@@ -3399,8 +3399,8 @@ void __46__ICNoteEditorViewController_recreateTextView__block_invoke(uint64_t a1
 
 - (double)inputAccessoryViewHeight
 {
-  v2 = [(ICNoteEditorViewController *)self inputAccessoryView];
-  [v2 intrinsicContentSize];
+  inputAccessoryView = [(ICNoteEditorViewController *)self inputAccessoryView];
+  [inputAccessoryView intrinsicContentSize];
   v4 = v3;
 
   return v4;
@@ -3423,9 +3423,9 @@ void __46__ICNoteEditorViewController_recreateTextView__block_invoke(uint64_t a1
 {
   if ([(ICNoteEditorViewController *)self usesContextualFormatBar]&& !self->_formatBarView)
   {
-    v3 = [(ICNoteEditorViewController *)self icSplitViewController];
-    v4 = [v3 view];
-    [v4 frame];
+    icSplitViewController = [(ICNoteEditorViewController *)self icSplitViewController];
+    view = [icSplitViewController view];
+    [view frame];
     v6 = v5;
     +[ICNoteEditorContextualInputAccessoryView height];
     v8 = v7;
@@ -3440,18 +3440,18 @@ void __46__ICNoteEditorViewController_recreateTextView__block_invoke(uint64_t a1
   return v11;
 }
 
-- (void)paperKitBundleDidMerge:(id)a3
+- (void)paperKitBundleDidMerge:(id)merge
 {
-  v3 = a3;
+  mergeCopy = merge;
   objc_opt_class();
-  v4 = [v3 object];
+  object = [mergeCopy object];
 
   v5 = ICDynamicCast();
-  v6 = [v5 objectID];
+  objectID = [v5 objectID];
 
-  if (v6)
+  if (objectID)
   {
-    v7 = v6;
+    v7 = objectID;
     performBlockOnMainThread();
   }
 }
@@ -3501,12 +3501,12 @@ void __53__ICNoteEditorViewController_paperKitBundleDidMerge___block_invoke(uint
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v51 = *MEMORY[0x277D85DE8];
   v49.receiver = self;
   v49.super_class = ICNoteEditorViewController;
-  [(ICNoteEditorBaseViewController *)&v49 viewDidAppear:a3];
+  [(ICNoteEditorBaseViewController *)&v49 viewDidAppear:appear];
   if (objc_opt_respondsToSelector())
   {
     [(ICNoteEditorViewController *)self collaboration_setupActivityItemsConfigurationProvider];
@@ -3517,23 +3517,23 @@ void __53__ICNoteEditorViewController_paperKitBundleDidMerge___block_invoke(uint
     [(ICNoteEditorViewController *)self setActivityItemsConfigurationProvider:0];
   }
 
-  v4 = [(ICNoteEditorViewController *)self activityItemsConfigurationProvider];
-  v5 = [(ICNoteEditorViewController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
-  [v7 setActivityItemsConfigurationSource:v4];
+  activityItemsConfigurationProvider = [(ICNoteEditorViewController *)self activityItemsConfigurationProvider];
+  view = [(ICNoteEditorViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  [windowScene setActivityItemsConfigurationSource:activityItemsConfigurationProvider];
 
   [(ICNoteEditorViewController *)self setShouldTrackNoteViewEventAnalyticsFromSettingNote:1];
-  v8 = [(ICNoteEditorViewController *)self eventReporter];
-  if (v8)
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  if (eventReporter)
   {
-    v9 = [(ICNoteEditorViewController *)self shouldFireNoteViewEventOnViewDisappear];
+    shouldFireNoteViewEventOnViewDisappear = [(ICNoteEditorViewController *)self shouldFireNoteViewEventOnViewDisappear];
 
-    if (!v9)
+    if (!shouldFireNoteViewEventOnViewDisappear)
     {
-      v10 = [(ICNoteEditorViewController *)self eventReporter];
-      v11 = [(ICNoteEditorBaseViewController *)self note];
-      [v10 startNoteViewEventDurationTrackingForModernNote:v11 reportCoreAnalytics:1];
+      eventReporter2 = [(ICNoteEditorViewController *)self eventReporter];
+      note = [(ICNoteEditorBaseViewController *)self note];
+      [eventReporter2 startNoteViewEventDurationTrackingForModernNote:note reportCoreAnalytics:1];
 
       [(ICNoteEditorViewController *)self setShouldFireNoteViewEventOnViewDisappear:1];
     }
@@ -3545,22 +3545,22 @@ void __53__ICNoteEditorViewController_paperKitBundleDidMerge___block_invoke(uint
     [(ICNoteEditorViewController *)self contentSizeCategoryDidChange];
   }
 
-  v12 = self;
-  v13 = [(ICNoteEditorViewController *)v12 view];
-  [v13 frame];
-  [(ICNoteEditorViewController *)v12 updateFormatToolbarLayoutWithSize:v14, v15];
+  selfCopy = self;
+  view2 = [(ICNoteEditorViewController *)selfCopy view];
+  [view2 frame];
+  [(ICNoteEditorViewController *)selfCopy updateFormatToolbarLayoutWithSize:v14, v15];
 
-  [(ICNoteEditorViewController *)v12 setShouldResetTextViewContentOffsetWhenAppearing:0];
-  if ([(ICNoteEditorViewController *)v12 startEditingAfterViewAppears])
+  [(ICNoteEditorViewController *)selfCopy setShouldResetTextViewContentOffsetWhenAppearing:0];
+  if ([(ICNoteEditorViewController *)selfCopy startEditingAfterViewAppears])
   {
-    [(ICNoteEditorViewController *)v12 startEditing];
-    [(ICNoteEditorViewController *)v12 setStartEditingAfterViewAppears:0];
+    [(ICNoteEditorViewController *)selfCopy startEditing];
+    [(ICNoteEditorViewController *)selfCopy setStartEditingAfterViewAppears:0];
   }
 
-  if ([(ICNoteEditorViewController *)v12 showInkPickerAfterViewAppears])
+  if ([(ICNoteEditorViewController *)selfCopy showInkPickerAfterViewAppears])
   {
-    v16 = [(ICNoteEditorViewController *)v12 presentedViewController];
-    v17 = v16 == 0;
+    presentedViewController = [(ICNoteEditorViewController *)selfCopy presentedViewController];
+    v17 = presentedViewController == 0;
 
     if (v17)
     {
@@ -3568,65 +3568,65 @@ void __53__ICNoteEditorViewController_paperKitBundleDidMerge___block_invoke(uint
       block[1] = 3221225472;
       block[2] = __44__ICNoteEditorViewController_viewDidAppear___block_invoke;
       block[3] = &unk_2781ABCF8;
-      block[4] = v12;
+      block[4] = selfCopy;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
 
-    [(ICNoteEditorViewController *)v12 setShowInkPickerAfterViewAppears:0];
+    [(ICNoteEditorViewController *)selfCopy setShowInkPickerAfterViewAppears:0];
   }
 
-  if ([(ICNoteEditorViewController *)v12 showInsertUIAfterViewAppears])
+  if ([(ICNoteEditorViewController *)selfCopy showInsertUIAfterViewAppears])
   {
-    [(ICNoteEditorViewController *)v12 showInsertUIWithPreferredSourceType:1];
-    [(ICNoteEditorViewController *)v12 setShowInsertUIAfterViewAppears:0];
+    [(ICNoteEditorViewController *)selfCopy showInsertUIWithPreferredSourceType:1];
+    [(ICNoteEditorViewController *)selfCopy setShowInsertUIAfterViewAppears:0];
   }
 
-  if ([(ICNoteEditorViewController *)v12 showInsertAudioAfterViewAppears])
+  if ([(ICNoteEditorViewController *)selfCopy showInsertAudioAfterViewAppears])
   {
-    [(ICNoteEditorViewController *)v12 showInsertUIWithPreferredSourceType:7];
-    [(ICNoteEditorViewController *)v12 setShowInsertAudioAfterViewAppears:0];
+    [(ICNoteEditorViewController *)selfCopy showInsertUIWithPreferredSourceType:7];
+    [(ICNoteEditorViewController *)selfCopy setShowInsertAudioAfterViewAppears:0];
   }
 
-  if ([(ICNoteEditorViewController *)v12 addToDoListAfterViewAppears])
+  if ([(ICNoteEditorViewController *)selfCopy addToDoListAfterViewAppears])
   {
-    [(ICNoteEditorViewController *)v12 addTodoListAtEndOfNote];
-    [(ICNoteEditorViewController *)v12 setAddToDoListAfterViewAppears:0];
+    [(ICNoteEditorViewController *)selfCopy addTodoListAtEndOfNote];
+    [(ICNoteEditorViewController *)selfCopy setAddToDoListAfterViewAppears:0];
   }
 
-  if ([(ICNoteEditorViewController *)v12 addDocumentScanAfterViewAppears])
+  if ([(ICNoteEditorViewController *)selfCopy addDocumentScanAfterViewAppears])
   {
-    [(ICNoteEditorViewController *)v12 showInsertUIWithPreferredSourceType:4];
-    [(ICNoteEditorViewController *)v12 setAddDocumentScanAfterViewAppears:0];
+    [(ICNoteEditorViewController *)selfCopy showInsertUIWithPreferredSourceType:4];
+    [(ICNoteEditorViewController *)selfCopy setAddDocumentScanAfterViewAppears:0];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [(ICNoteEditorViewController *)v12 ppt_didFinishExtendedLaunch];
+    [(ICNoteEditorViewController *)selfCopy ppt_didFinishExtendedLaunch];
   }
 
-  v18 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v18 addObserver:v12 selector:sel_systemPaperLinkBarVisibilityPreferenceChanged_ name:@"ICShouldQuickNoteLinksBarDefaultsChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter addObserver:selfCopy selector:sel_systemPaperLinkBarVisibilityPreferenceChanged_ name:@"ICShouldQuickNoteLinksBarDefaultsChangedNotification" object:0];
 
   if (objc_opt_respondsToSelector())
   {
-    [(ICNoteEditorViewController *)v12 ppt_didShowNoteEditor];
+    [(ICNoteEditorViewController *)selfCopy ppt_didShowNoteEditor];
   }
 
-  [(ICNoteEditorViewController *)v12 updateTextViewContentInsetsAnimated:1];
-  v19 = [(ICNoteEditorViewController *)v12 passwordEntryViewController];
-  [v19 setIsAnimatingOut:0];
+  [(ICNoteEditorViewController *)selfCopy updateTextViewContentInsetsAnimated:1];
+  passwordEntryViewController = [(ICNoteEditorViewController *)selfCopy passwordEntryViewController];
+  [passwordEntryViewController setIsAnimatingOut:0];
 
-  if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0 && [(ICNoteEditorViewController *)v12 wasWindowlessDuringTransitionToSize])
+  if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0 && [(ICNoteEditorViewController *)selfCopy wasWindowlessDuringTransitionToSize])
   {
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v20 = [(ICNoteEditorBaseViewController *)v12 note];
-    v21 = [v20 textStorage];
-    v22 = [v21 layoutManagers];
+    note2 = [(ICNoteEditorBaseViewController *)selfCopy note];
+    textStorage = [note2 textStorage];
+    layoutManagers = [textStorage layoutManagers];
 
-    v23 = [v22 countByEnumeratingWithState:&v44 objects:v50 count:16];
+    v23 = [layoutManagers countByEnumeratingWithState:&v44 objects:v50 count:16];
     if (v23)
     {
       v24 = *v45;
@@ -3637,40 +3637,40 @@ void __53__ICNoteEditorViewController_paperKitBundleDidMerge___block_invoke(uint
         {
           if (*v45 != v24)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(layoutManagers);
           }
 
           v26 = *(*(&v44 + 1) + 8 * v25);
-          v27 = [(ICNoteEditorViewController *)v12 visibleRange];
+          visibleRange = [(ICNoteEditorViewController *)selfCopy visibleRange];
           v29 = v28;
-          [v26 invalidateLayoutForCharacterRange:v27 actualCharacterRange:{v28, 0}];
-          [v26 invalidateDisplayForCharacterRange:{v27, v29}];
+          [v26 invalidateLayoutForCharacterRange:visibleRange actualCharacterRange:{v28, 0}];
+          [v26 invalidateDisplayForCharacterRange:{visibleRange, v29}];
           ++v25;
         }
 
         while (v23 != v25);
-        v23 = [v22 countByEnumeratingWithState:&v44 objects:v50 count:16];
+        v23 = [layoutManagers countByEnumeratingWithState:&v44 objects:v50 count:16];
       }
 
       while (v23);
     }
 
-    [(ICNoteEditorViewController *)v12 setWasWindowlessDuringTransitionToSize:0];
+    [(ICNoteEditorViewController *)selfCopy setWasWindowlessDuringTransitionToSize:0];
   }
 
-  if (![(ICNoteEditorViewController *)v12 isInLiveWindowResize])
+  if (![(ICNoteEditorViewController *)selfCopy isInLiveWindowResize])
   {
-    [(ICNoteEditorViewController *)v12 updateBarButtonsAnimated:0];
+    [(ICNoteEditorViewController *)selfCopy updateBarButtonsAnimated:0];
   }
 
-  v30 = [(ICNoteEditorViewController *)v12 view];
-  v31 = [v30 window];
+  view3 = [(ICNoteEditorViewController *)selfCopy view];
+  window2 = [view3 window];
 
-  if (v31)
+  if (window2)
   {
     if ([MEMORY[0x277D361D0] deviceSupportsPencil] && (objc_msgSend(MEMORY[0x277D361D0], "deviceSupportsFirstGenPencil") & 1) == 0)
     {
-      objc_initWeak(&location, v12);
+      objc_initWeak(&location, selfCopy);
       v38 = MEMORY[0x277D85DD0];
       v39 = 3221225472;
       v40 = __44__ICNoteEditorViewController_viewDidAppear___block_invoke_2;
@@ -3691,35 +3691,35 @@ void __53__ICNoteEditorViewController_paperKitBundleDidMerge___block_invoke(uint
     }
   }
 
-  v33 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  if ([v33 BOOLForKey:*MEMORY[0x277D365C0]])
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  if ([standardUserDefaults BOOLForKey:*MEMORY[0x277D365C0]])
   {
-    [(ICNoteEditorViewController *)v12 showHandwritingDebug:1];
+    [(ICNoteEditorViewController *)selfCopy showHandwritingDebug:1];
   }
 
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    [(ICNoteEditorViewController *)v12 applyScrollStateIfAvailable];
+    [(ICNoteEditorViewController *)selfCopy applyScrollStateIfAvailable];
   }
 
-  [(ICNoteEditorViewController *)v12 setArchivedScrollStateToApply:0];
-  [(ICNoteEditorViewController *)v12 setShouldOverscrollScrollState:0];
-  v34 = [(ICNoteEditorBaseViewController *)v12 note];
+  [(ICNoteEditorViewController *)selfCopy setArchivedScrollStateToApply:0];
+  [(ICNoteEditorViewController *)selfCopy setShouldOverscrollScrollState:0];
+  note3 = [(ICNoteEditorBaseViewController *)selfCopy note];
 
-  if (v34)
+  if (note3)
   {
-    v35 = [(ICNoteEditorBaseViewController *)v12 note];
-    [(ICNoteEditorBaseViewController *)v12 noteDidAppear:v35];
+    note4 = [(ICNoteEditorBaseViewController *)selfCopy note];
+    [(ICNoteEditorBaseViewController *)selfCopy noteDidAppear:note4];
 
     if (objc_opt_respondsToSelector())
     {
-      v36 = [(ICNoteEditorBaseViewController *)v12 note];
-      [(ICNoteEditorViewController *)v12 performSelector:sel_updateFastSyncParticipantCursorsForNote_ withObject:v36];
+      note5 = [(ICNoteEditorBaseViewController *)selfCopy note];
+      [(ICNoteEditorViewController *)selfCopy performSelector:sel_updateFastSyncParticipantCursorsForNote_ withObject:note5];
     }
   }
 
-  v37 = [(ICNoteEditorViewController *)v12 viewControllerManager];
-  [v37 setSelectedNewNoteShortcutItem:0];
+  viewControllerManager = [(ICNoteEditorViewController *)selfCopy viewControllerManager];
+  [viewControllerManager setSelectedNewNoteShortcutItem:0];
 }
 
 void __44__ICNoteEditorViewController_viewDidAppear___block_invoke_2(uint64_t a1)
@@ -3728,26 +3728,26 @@ void __44__ICNoteEditorViewController_viewDidAppear___block_invoke_2(uint64_t a1
   [WeakRetained createInkPickerControllerIfNecessary];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v17.receiver = self;
   v17.super_class = ICNoteEditorViewController;
-  [(ICNoteEditorViewController *)&v17 viewIsAppearing:a3];
-  v4 = [(ICNoteEditorViewController *)self view];
-  v5 = [v4 window];
+  [(ICNoteEditorViewController *)&v17 viewIsAppearing:appearing];
+  view = [(ICNoteEditorViewController *)self view];
+  window = [view window];
 
-  if (v5)
+  if (window)
   {
     [(ICNoteEditorViewController *)self updateForceLightContentIfNecessary];
-    v6 = [(ICNoteEditorViewController *)self view];
-    v7 = [v6 window];
-    v8 = [v7 windowScene];
-    -[ICNoteEditorViewController showOrHideLockIconCoverViewControllerIfNeededIsBackgrounding:](self, "showOrHideLockIconCoverViewControllerIfNeededIsBackgrounding:", [v8 activationState] != 0);
+    view2 = [(ICNoteEditorViewController *)self view];
+    window2 = [view2 window];
+    windowScene = [window2 windowScene];
+    -[ICNoteEditorViewController showOrHideLockIconCoverViewControllerIfNeededIsBackgrounding:](self, "showOrHideLockIconCoverViewControllerIfNeededIsBackgrounding:", [windowScene activationState] != 0);
 
-    v9 = [(ICNoteEditorViewController *)self viewControllerManager];
-    v10 = [v9 isAuxiliary];
-    v11 = [(ICNoteEditorViewController *)self navigationItem];
-    [v11 setHidesBackButton:v10];
+    viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+    isAuxiliary = [viewControllerManager isAuxiliary];
+    navigationItem = [(ICNoteEditorViewController *)self navigationItem];
+    [navigationItem setHidesBackButton:isAuxiliary];
 
     if (ICInternalSettingsIsTextKit2Enabled())
     {
@@ -3756,100 +3756,100 @@ void __44__ICNoteEditorViewController_viewDidAppear___block_invoke_2(uint64_t a1
 
     if ([(ICNoteEditorViewController *)self usesContextualFormatBar])
     {
-      v12 = [(ICNoteEditorViewController *)self navigationController];
-      v13 = [v12 interactiveContentPopGestureRecognizer];
-      v14 = [(ICNoteEditorViewController *)self formatBarView];
-      v15 = [v14 scrollView];
-      v16 = [v15 panGestureRecognizer];
-      [v13 requireGestureRecognizerToFail:v16];
+      navigationController = [(ICNoteEditorViewController *)self navigationController];
+      interactiveContentPopGestureRecognizer = [navigationController interactiveContentPopGestureRecognizer];
+      formatBarView = [(ICNoteEditorViewController *)self formatBarView];
+      scrollView = [formatBarView scrollView];
+      panGestureRecognizer = [scrollView panGestureRecognizer];
+      [interactiveContentPopGestureRecognizer requireGestureRecognizerToFail:panGestureRecognizer];
     }
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = MEMORY[0x277D75418];
-  v8 = a4;
+  coordinatorCopy = coordinator;
   if (([v7 ic_isVision] & 1) == 0)
   {
-    v9 = [(ICNoteEditorViewController *)self attributionSidebarController];
-    [v9 hideSidebarAnimated:1];
+    attributionSidebarController = [(ICNoteEditorViewController *)self attributionSidebarController];
+    [attributionSidebarController hideSidebarAnimated:1];
   }
 
-  v10 = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
-  [v10 hideDisclosureViewForTransition:1];
+  dismissableInputAccessoryView = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
+  [dismissableInputAccessoryView hideDisclosureViewForTransition:1];
 
-  v11 = [(ICNoteEditorViewController *)self auxiliaryResponder];
-  if ([v11 isFirstResponder])
+  auxiliaryResponder = [(ICNoteEditorViewController *)self auxiliaryResponder];
+  if ([auxiliaryResponder isFirstResponder])
   {
-    v12 = [(ICNoteEditorViewController *)self auxiliaryResponder];
+    auxiliaryResponder2 = [(ICNoteEditorViewController *)self auxiliaryResponder];
   }
 
   else
   {
-    v12 = 0;
+    auxiliaryResponder2 = 0;
   }
 
-  v13 = [(ICNoteEditorViewController *)self textView];
-  if ([v13 isFirstResponder])
+  textView = [(ICNoteEditorViewController *)self textView];
+  if ([textView isFirstResponder])
   {
-    v14 = [(ICNoteEditorViewController *)self textView];
+    textView2 = [(ICNoteEditorViewController *)self textView];
   }
 
   else
   {
-    v14 = v12;
+    textView2 = auxiliaryResponder2;
   }
 
-  v15 = v14;
+  v15 = textView2;
 
-  v16 = [(ICNoteEditorViewController *)self isInkPickerShowing];
-  v17 = [(ICNoteEditorViewController *)self noteFormattingController];
-  v18 = [v17 presentingViewController];
+  isInkPickerShowing = [(ICNoteEditorViewController *)self isInkPickerShowing];
+  noteFormattingController = [(ICNoteEditorViewController *)self noteFormattingController];
+  presentingViewController = [noteFormattingController presentingViewController];
 
   [(ICNoteEditorViewController *)self updateFormatToolbarLayoutWithSize:width, height];
   [(ICNoteEditorViewController *)self hideAcceleratorIfNecessary];
-  v19 = [(ICNoteEditorViewController *)self linkEditorController];
+  linkEditorController = [(ICNoteEditorViewController *)self linkEditorController];
 
-  if (v19)
+  if (linkEditorController)
   {
-    v20 = [(ICNoteEditorViewController *)self linkEditorController];
-    [v20 hideAccelerator];
+    linkEditorController2 = [(ICNoteEditorViewController *)self linkEditorController];
+    [linkEditorController2 hideAccelerator];
   }
 
-  v21 = [(ICNoteEditorViewController *)self isInLiveWindowResize];
-  v22 = [(ICNoteEditorViewController *)self textView];
-  [v22 setNeedsLayout];
+  isInLiveWindowResize = [(ICNoteEditorViewController *)self isInLiveWindowResize];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  [textView3 setNeedsLayout];
 
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __81__ICNoteEditorViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v33[3] = &unk_2781ACD68;
   v33[4] = self;
-  v34 = v21;
+  v34 = isInLiveWindowResize;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __81__ICNoteEditorViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v29[3] = &unk_2781ACD90;
-  v32 = v16;
+  v32 = isInkPickerShowing;
   v29[4] = self;
   v30 = v15;
-  v31 = v18;
-  v23 = v18;
+  v31 = presentingViewController;
+  v23 = presentingViewController;
   v24 = v15;
-  [v8 animateAlongsideTransition:v33 completion:v29];
-  v25 = [(ICNoteEditorViewController *)self view];
-  v26 = [v25 window];
-  [(ICNoteEditorViewController *)self setWasWindowlessDuringTransitionToSize:v26 == 0];
+  [coordinatorCopy animateAlongsideTransition:v33 completion:v29];
+  view = [(ICNoteEditorViewController *)self view];
+  window = [view window];
+  [(ICNoteEditorViewController *)self setWasWindowlessDuringTransitionToSize:window == 0];
 
-  v27 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
-  [v27 viewWillTransitionToSize:v8 withTransitionCoordinator:{width, height}];
+  paperLinkBarViewController = [(ICNoteEditorViewController *)self paperLinkBarViewController];
+  [paperLinkBarViewController viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:{width, height}];
 
   v28.receiver = self;
   v28.super_class = ICNoteEditorViewController;
-  [(ICNoteEditorViewController *)&v28 viewWillTransitionToSize:v8 withTransitionCoordinator:width, height];
+  [(ICNoteEditorViewController *)&v28 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 void __81__ICNoteEditorViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1, void *a2)
@@ -3958,9 +3958,9 @@ void __81__ICNoteEditorViewController_viewWillTransitionToSize_withTransitionCoo
   ICCurrentInkDataDefaultsKey_block_invoke_disableWorkaroundFor150051673 = [v0 BOOLForKey:@"DisableWorkaroundFor150051673"];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v28 = *MEMORY[0x277D85DE8];
   v5 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -3974,42 +3974,42 @@ void __81__ICNoteEditorViewController_viewWillTransitionToSize_withTransitionCoo
 
   v24.receiver = self;
   v24.super_class = ICNoteEditorViewController;
-  [(ICNoteEditorBaseViewController *)&v24 viewWillAppear:v3];
+  [(ICNoteEditorBaseViewController *)&v24 viewWillAppear:appearCopy];
   if (![(ICNoteEditorViewController *)self isInLiveWindowResize])
   {
     [(ICNoteEditorViewController *)self setNeedsInitialBarConfiguration:1];
   }
 
-  v6 = [(ICNoteEditorViewController *)self view];
-  [v6 setNeedsLayout];
+  view = [(ICNoteEditorViewController *)self view];
+  [view setNeedsLayout];
 
   [(ICNoteEditorViewController *)self updatePencilKitPaperStyleType];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel_notesContextRefreshNotification_ name:*MEMORY[0x277D35D38] object:0];
-  [v7 addObserver:self selector:sel_viewControllerWillStartEditModeNotification_ name:@"ICViewControllerWillStartEditModeNotification" object:0];
-  [v7 addObserver:self selector:sel_migrationStateDidChange_ name:*MEMORY[0x277D36138] object:0];
-  [v7 addObserver:self selector:sel_keyboardDidShow_ name:*MEMORY[0x277D76BA8] object:0];
-  [v7 addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
-  [v7 addObserver:self selector:sel_keyboardDidHide_ name:*MEMORY[0x277D76BA0] object:0];
-  [v7 addObserver:self selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x277D76B98] object:0];
-  [v7 addObserver:self selector:sel_noteWillBeDeleted_ name:*MEMORY[0x277D35D20] object:0];
-  [v7 addObserver:self selector:sel_noteWillBeDeleted_ name:*MEMORY[0x277D35D18] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_notesContextRefreshNotification_ name:*MEMORY[0x277D35D38] object:0];
+  [defaultCenter addObserver:self selector:sel_viewControllerWillStartEditModeNotification_ name:@"ICViewControllerWillStartEditModeNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_migrationStateDidChange_ name:*MEMORY[0x277D36138] object:0];
+  [defaultCenter addObserver:self selector:sel_keyboardDidShow_ name:*MEMORY[0x277D76BA8] object:0];
+  [defaultCenter addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+  [defaultCenter addObserver:self selector:sel_keyboardDidHide_ name:*MEMORY[0x277D76BA0] object:0];
+  [defaultCenter addObserver:self selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x277D76B98] object:0];
+  [defaultCenter addObserver:self selector:sel_noteWillBeDeleted_ name:*MEMORY[0x277D35D20] object:0];
+  [defaultCenter addObserver:self selector:sel_noteWillBeDeleted_ name:*MEMORY[0x277D35D18] object:0];
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
     [(ICNoteEditorViewController *)self applyScrollStateIfAvailable];
   }
 
-  v8 = [(ICNoteEditorViewController *)self transitionCoordinator];
+  transitionCoordinator = [(ICNoteEditorViewController *)self transitionCoordinator];
 
-  if (v8)
+  if (transitionCoordinator)
   {
-    v9 = [(ICNoteEditorViewController *)self transitionCoordinator];
+    transitionCoordinator2 = [(ICNoteEditorViewController *)self transitionCoordinator];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __45__ICNoteEditorViewController_viewWillAppear___block_invoke;
     v23[3] = &unk_2781AC788;
     v23[4] = self;
-    [v9 animateAlongsideTransition:v23 completion:0];
+    [transitionCoordinator2 animateAlongsideTransition:v23 completion:0];
   }
 
   else
@@ -4024,42 +4024,42 @@ void __81__ICNoteEditorViewController_viewWillTransitionToSize_withTransitionCoo
 
   else
   {
-    v10 = [(ICNoteEditorBaseViewController *)self note];
-    -[ICNoteEditorViewController setUserWantsToSeeDateLabel:](self, "setUserWantsToSeeDateLabel:", [v10 isSharedAndEmpty]);
+    note = [(ICNoteEditorBaseViewController *)self note];
+    -[ICNoteEditorViewController setUserWantsToSeeDateLabel:](self, "setUserWantsToSeeDateLabel:", [note isSharedAndEmpty]);
   }
 
   v11 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [(ICNoteEditorViewController *)self userWantsToSeeDateLabel];
-    v13 = [(ICNoteEditorBaseViewController *)self note];
-    v14 = [v13 isSharedAndEmpty];
-    v15 = [(ICNoteEditorViewController *)self textView];
-    v16 = [v15 window];
+    userWantsToSeeDateLabel = [(ICNoteEditorViewController *)self userWantsToSeeDateLabel];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    isSharedAndEmpty = [note2 isSharedAndEmpty];
+    textView = [(ICNoteEditorViewController *)self textView];
+    window = [textView window];
     *buf = 67109632;
-    *v26 = v12;
+    *v26 = userWantsToSeeDateLabel;
     *&v26[4] = 1024;
-    *&v26[6] = v14;
+    *&v26[6] = isSharedAndEmpty;
     LOWORD(v27[0]) = 1024;
-    *(v27 + 2) = v16 != 0;
+    *(v27 + 2) = window != 0;
     _os_log_impl(&dword_2151A1000, v11, OS_LOG_TYPE_INFO, "wants to see date label: %d shared and empty: %d, has window: %d", buf, 0x14u);
   }
 
   if ([(ICNoteEditorViewController *)self userWantsToSeeDateLabel]|| [(ICNoteEditorViewController *)self isEditingOnSystemPaperOnPad])
   {
-    v17 = [(ICNoteEditorViewController *)self textView];
-    v18 = [v17 window];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    window2 = [textView2 window];
 
-    if (v18)
+    if (window2)
     {
       [(ICNoteEditorViewController *)self updateTextViewContentOffset];
     }
   }
 
-  v19 = [(ICNoteEditorBaseViewController *)self note];
-  v20 = [v19 needsRefresh];
+  note3 = [(ICNoteEditorBaseViewController *)self note];
+  needsRefresh = [note3 needsRefresh];
 
-  if (v20)
+  if (needsRefresh)
   {
     [(ICNoteEditorViewController *)self fetchAll];
   }
@@ -4079,32 +4079,32 @@ void __81__ICNoteEditorViewController_viewWillTransitionToSize_withTransitionCoo
     [(ICNoteEditorViewController *)self link_addReplaceSelectionInteraction];
   }
 
-  v21 = [(ICNoteEditorBaseViewController *)self note];
+  note4 = [(ICNoteEditorBaseViewController *)self note];
 
-  if (v21)
+  if (note4)
   {
-    v22 = [(ICNoteEditorBaseViewController *)self note];
-    [(ICNoteEditorViewController *)self noteWillAppear:v22];
+    note5 = [(ICNoteEditorBaseViewController *)self note];
+    [(ICNoteEditorViewController *)self noteWillAppear:note5];
   }
 }
 
-- (void)noteWillAppear:(id)a3
+- (void)noteWillAppear:(id)appear
 {
-  v4 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = ICNoteEditorViewController;
-  [(ICNoteEditorBaseViewController *)&v5 noteWillAppear:v4];
+  [(ICNoteEditorBaseViewController *)&v5 noteWillAppear:appearCopy];
   if (objc_opt_respondsToSelector())
   {
-    [(ICNoteEditorViewController *)self performSelector:sel_updateFastSyncParticipantCursorsForNote_ withObject:v4];
+    [(ICNoteEditorViewController *)self performSelector:sel_updateFastSyncParticipantCursorsForNote_ withObject:appearCopy];
   }
 }
 
-- (void)noteWillDisappear:(id)a3
+- (void)noteWillDisappear:(id)disappear
 {
   v4.receiver = self;
   v4.super_class = ICNoteEditorViewController;
-  [(ICNoteEditorBaseViewController *)&v4 noteWillDisappear:a3];
+  [(ICNoteEditorBaseViewController *)&v4 noteWillDisappear:disappear];
   [(ICNoteEditorViewController *)self magicGenerativePlaygroundWillDisappear];
 }
 
@@ -4122,27 +4122,27 @@ void __81__ICNoteEditorViewController_viewWillTransitionToSize_withTransitionCoo
   }
 
   [(ICNoteEditorViewController *)self updateTextViewContentInsetsAnimated:1];
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [(ICNoteEditorViewController *)self textView];
-  [v5 adjustedContentInset];
-  [v4 setContentOffset:{0.0, -v6}];
+  textView = [(ICNoteEditorViewController *)self textView];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  [textView2 adjustedContentInset];
+  [textView setContentOffset:{0.0, -v6}];
 
-  v7 = [(ICNoteEditorViewController *)self textView];
-  [v7 icaxClearCachedChildrenForReparenting];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  [textView3 icaxClearCachedChildrenForReparenting];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v33.receiver = self;
   v33.super_class = ICNoteEditorViewController;
   [(ICNoteEditorBaseViewController *)&v33 viewWillDisappear:?];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
+  note = [(ICNoteEditorBaseViewController *)self note];
 
-  if (v5)
+  if (note)
   {
-    v6 = [(ICNoteEditorBaseViewController *)self note];
-    [(ICNoteEditorViewController *)self noteWillDisappear:v6];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    [(ICNoteEditorViewController *)self noteWillDisappear:note2];
   }
 
   if (objc_opt_respondsToSelector())
@@ -4151,45 +4151,45 @@ void __81__ICNoteEditorViewController_viewWillTransitionToSize_withTransitionCoo
   }
 
   [(ICNoteEditorViewController *)self setShouldTrackNoteViewEventAnalyticsFromSettingNote:0];
-  v7 = [(ICNoteEditorBaseViewController *)self note];
-  if (v7)
+  note3 = [(ICNoteEditorBaseViewController *)self note];
+  if (note3)
   {
-    v8 = v7;
-    v9 = [(ICNoteEditorViewController *)self shouldFireNoteViewEventOnViewDisappear];
+    v8 = note3;
+    shouldFireNoteViewEventOnViewDisappear = [(ICNoteEditorViewController *)self shouldFireNoteViewEventOnViewDisappear];
 
-    if (v9)
+    if (shouldFireNoteViewEventOnViewDisappear)
     {
-      v10 = [(ICNoteEditorBaseViewController *)self note];
-      [(ICNoteEditorViewController *)self submitNoteViewEventForModernNote:v10];
+      note4 = [(ICNoteEditorBaseViewController *)self note];
+      [(ICNoteEditorViewController *)self submitNoteViewEventForModernNote:note4];
 
       [(ICNoteEditorViewController *)self setShouldFireNoteViewEventOnViewDisappear:0];
     }
   }
 
   [(ICNoteEditorViewController *)self saveCurrentScrollState];
-  [(ICNoteEditorViewController *)self showInkPicker:0 animated:v3];
-  v11 = [(ICNoteEditorViewController *)self textView];
-  v12 = [v11 findInteraction];
-  [v12 dismissFindNavigator];
+  [(ICNoteEditorViewController *)self showInkPicker:0 animated:disappearCopy];
+  textView = [(ICNoteEditorViewController *)self textView];
+  findInteraction = [textView findInteraction];
+  [findInteraction dismissFindNavigator];
 
-  v13 = [(ICNoteEditorViewController *)self textView];
-  LODWORD(v12) = [v13 isEditing];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  LODWORD(findInteraction) = [textView2 isEditing];
 
-  if (v12)
+  if (findInteraction)
   {
     [(ICNoteEditorViewController *)self doneEditing];
-    v14 = [(ICNoteEditorViewController *)self noteFormattingController];
-    v15 = [v14 presentingViewController];
-    if (v15)
+    noteFormattingController = [(ICNoteEditorViewController *)self noteFormattingController];
+    presentingViewController = [noteFormattingController presentingViewController];
+    if (presentingViewController)
     {
-      v16 = v15;
-      v17 = [(ICNoteEditorViewController *)self isSplitViewExpandingOrCollapsing];
+      v16 = presentingViewController;
+      isSplitViewExpandingOrCollapsing = [(ICNoteEditorViewController *)self isSplitViewExpandingOrCollapsing];
 
-      if (!v17)
+      if (!isSplitViewExpandingOrCollapsing)
       {
-        v18 = [(ICNoteEditorViewController *)self noteFormattingController];
-        v19 = [v18 presentingViewController];
-        [v19 dismissViewControllerAnimated:v3 completion:0];
+        noteFormattingController2 = [(ICNoteEditorViewController *)self noteFormattingController];
+        presentingViewController2 = [noteFormattingController2 presentingViewController];
+        [presentingViewController2 dismissViewControllerAnimated:disappearCopy completion:0];
 
         goto LABEL_14;
       }
@@ -4200,49 +4200,49 @@ void __81__ICNoteEditorViewController_viewWillTransitionToSize_withTransitionCoo
     }
 
     [(ICNoteEditorViewController *)self setStartEditingAfterViewAppears:1];
-    v20 = [(ICNoteEditorViewController *)self transitionCoordinator];
+    transitionCoordinator = [(ICNoteEditorViewController *)self transitionCoordinator];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __48__ICNoteEditorViewController_viewWillDisappear___block_invoke;
     v32[3] = &unk_2781AC788;
     v32[4] = self;
-    [v20 animateAlongsideTransition:0 completion:v32];
+    [transitionCoordinator animateAlongsideTransition:0 completion:v32];
   }
 
 LABEL_14:
   v21 = objc_alloc_init(MEMORY[0x277D75C60]);
   [v21 configureWithTransparentBackground];
-  v22 = [(ICNoteEditorViewController *)self navigationController];
-  v23 = [v22 toolbar];
-  [v23 setScrollEdgeAppearance:v21];
+  navigationController = [(ICNoteEditorViewController *)self navigationController];
+  toolbar = [navigationController toolbar];
+  [toolbar setScrollEdgeAppearance:v21];
 
-  v24 = [(ICNoteEditorViewController *)self navigationController];
-  v25 = [v24 toolbar];
-  [v25 setCompactScrollEdgeAppearance:v21];
+  navigationController2 = [(ICNoteEditorViewController *)self navigationController];
+  toolbar2 = [navigationController2 toolbar];
+  [toolbar2 setCompactScrollEdgeAppearance:v21];
 
-  v26 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v26 removeObserver:self name:*MEMORY[0x277D35D38] object:0];
-  [v26 removeObserver:self name:@"ICViewControllerWillStartEditModeNotification" object:0];
-  [v26 removeObserver:self name:*MEMORY[0x277D36138] object:0];
-  [v26 removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
-  [v26 removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
-  [v26 removeObserver:self name:*MEMORY[0x277D76B98] object:0];
-  [v26 removeObserver:self name:*MEMORY[0x277D35D20] object:0];
-  [v26 removeObserver:self name:*MEMORY[0x277D35D18] object:0];
-  v27 = [(ICNoteEditorViewController *)self navigationController];
-  v28 = [v27 toolbar];
-  [v28 setAccessibilityElementsHidden:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D35D38] object:0];
+  [defaultCenter removeObserver:self name:@"ICViewControllerWillStartEditModeNotification" object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D36138] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76B98] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D35D20] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D35D18] object:0];
+  navigationController3 = [(ICNoteEditorViewController *)self navigationController];
+  toolbar3 = [navigationController3 toolbar];
+  [toolbar3 setAccessibilityElementsHidden:0];
 
-  v29 = [(ICNoteEditorViewController *)self navigationItem];
-  [v29 setCenterItemGroups:MEMORY[0x277CBEBF8]];
+  navigationItem = [(ICNoteEditorViewController *)self navigationItem];
+  [navigationItem setCenterItemGroups:MEMORY[0x277CBEBF8]];
 
-  v30 = [(ICNoteEditorViewController *)self transitionCoordinator];
+  transitionCoordinator2 = [(ICNoteEditorViewController *)self transitionCoordinator];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __48__ICNoteEditorViewController_viewWillDisappear___block_invoke_2;
   v31[3] = &unk_2781AC788;
   v31[4] = self;
-  [v30 animateAlongsideTransition:0 completion:v31];
+  [transitionCoordinator2 animateAlongsideTransition:0 completion:v31];
 }
 
 uint64_t __48__ICNoteEditorViewController_viewWillDisappear___block_invoke(uint64_t a1, void *a2)
@@ -4271,11 +4271,11 @@ uint64_t __48__ICNoteEditorViewController_viewWillDisappear___block_invoke_2(uin
   return result;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v9.receiver = self;
   v9.super_class = ICNoteEditorViewController;
-  [(ICNoteEditorBaseViewController *)&v9 viewDidDisappear:a3];
+  [(ICNoteEditorBaseViewController *)&v9 viewDidDisappear:disappear];
   [(ICNoteEditorViewController *)self submitPendingInlineDrawingDataIfNecessary];
   [(ICNoteEditorViewController *)self submitNoteEditEventIfNecessary];
   if ([(ICNoteEditorViewController *)self shouldRemoveEmptyNoteWhenViewDisappeared])
@@ -4295,30 +4295,30 @@ uint64_t __48__ICNoteEditorViewController_viewWillDisappear___block_invoke_2(uin
   }
 
   [(ICNoteEditorViewController *)self highlightSearchMatchesForRegexFinder:0];
-  v6 = [(ICNoteEditorViewController *)self paletteResponder];
-  [v6 resignFirstResponder];
+  paletteResponder = [(ICNoteEditorViewController *)self paletteResponder];
+  [paletteResponder resignFirstResponder];
 
-  v7 = [(ICNoteEditorBaseViewController *)self note];
+  note = [(ICNoteEditorBaseViewController *)self note];
 
-  if (v7)
+  if (note)
   {
-    v8 = [(ICNoteEditorBaseViewController *)self note];
-    [(ICNoteEditorBaseViewController *)self noteDidDisappear:v8];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    [(ICNoteEditorBaseViewController *)self noteDidDisappear:note2];
   }
 }
 
-- (void)setUserWantsToSeeDateLabel:(BOOL)a3
+- (void)setUserWantsToSeeDateLabel:(BOOL)label
 {
-  self->_userWantsToSeeDateLabel = a3;
-  if (!a3 && [(ICNoteEditorViewController *)self headerSubviewsFadeInOnUnderscrolling])
+  self->_userWantsToSeeDateLabel = label;
+  if (!label && [(ICNoteEditorViewController *)self headerSubviewsFadeInOnUnderscrolling])
   {
-    v4 = [(ICNoteEditorViewController *)self textView];
-    v5 = [v4 dateView];
-    [v5 setAlpha:0.0];
+    textView = [(ICNoteEditorViewController *)self textView];
+    dateView = [textView dateView];
+    [dateView setAlpha:0.0];
 
-    v7 = [(ICNoteEditorViewController *)self textView];
-    v6 = [v7 userTitleView];
-    [v6 setAlpha:0.0];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    userTitleView = [textView2 userTitleView];
+    [userTitleView setAlpha:0.0];
   }
 }
 
@@ -4377,15 +4377,15 @@ void __53__ICNoteEditorViewController_registerForTraitChanges__block_invoke(uint
 
 - (BOOL)resignFirstResponder
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 isFirstResponder];
+  textView = [(ICNoteEditorViewController *)self textView];
+  isFirstResponder = [textView isFirstResponder];
 
-  if (v4)
+  if (isFirstResponder)
   {
-    v5 = [(ICNoteEditorViewController *)self textView];
-    v6 = [v5 resignFirstResponder];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    resignFirstResponder = [textView2 resignFirstResponder];
 
-    return v6;
+    return resignFirstResponder;
   }
 
   else
@@ -4398,26 +4398,26 @@ void __53__ICNoteEditorViewController_registerForTraitChanges__block_invoke(uint
 
 - (void)dealloc
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
+  note = [(ICNoteEditorBaseViewController *)self note];
 
-  if (v3)
+  if (note)
   {
-    v4 = [(ICNoteEditorBaseViewController *)self note];
-    [(ICNoteEditorViewController *)self removeKVOObserversForNote:v4];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    [(ICNoteEditorViewController *)self removeKVOObserversForNote:note2];
   }
 
   [MEMORY[0x277D75820] ic_removeObserver:self forKeyPath:@"prefersPencilOnlyDrawing" context:&compoundliteral_0];
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v5 ic_removeObserver:self forKeyPath:*MEMORY[0x277D36448] context:&compoundliteral_3029];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults ic_removeObserver:self forKeyPath:*MEMORY[0x277D36448] context:&compoundliteral_3029];
 
-  v6 = [(ICNoteEditorViewController *)self textView];
-  [v6 setDelegate:0];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView setDelegate:0];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v8 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v8 removeObserver:self];
+  defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter2 removeObserver:self];
 
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self];
   v9.receiver = self;
@@ -4425,57 +4425,57 @@ void __53__ICNoteEditorViewController_registerForTraitChanges__block_invoke(uint
   [(ICNoteEditorViewController *)&v9 dealloc];
 }
 
-- (void)warnLimitExceededWithTitle:(id)a3 andMessage:(id)a4
+- (void)warnLimitExceededWithTitle:(id)title andMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICNoteEditorViewController *)self limitExceededAlertController];
+  titleCopy = title;
+  messageCopy = message;
+  limitExceededAlertController = [(ICNoteEditorViewController *)self limitExceededAlertController];
 
-  if (!v8)
+  if (!limitExceededAlertController)
   {
-    v9 = [MEMORY[0x277D75110] alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+    v9 = [MEMORY[0x277D75110] alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
     [(ICNoteEditorViewController *)self setLimitExceededAlertController:v9];
 
-    v10 = [(ICNoteEditorViewController *)self limitExceededAlertController];
+    limitExceededAlertController2 = [(ICNoteEditorViewController *)self limitExceededAlertController];
     v11 = MEMORY[0x277D750F8];
-    v12 = [MEMORY[0x277CCA8D8] mainBundle];
-    v13 = [v12 localizedStringForKey:@"OK" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v13 = [mainBundle localizedStringForKey:@"OK" value:&stru_282757698 table:0];
     v14 = [v11 actionWithTitle:v13 style:0 handler:0];
-    [v10 addAction:v14];
+    [limitExceededAlertController2 addAction:v14];
 
-    v15 = [(ICNoteEditorViewController *)self limitExceededAlertController];
+    limitExceededAlertController3 = [(ICNoteEditorViewController *)self limitExceededAlertController];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __68__ICNoteEditorViewController_warnLimitExceededWithTitle_andMessage___block_invoke;
     v16[3] = &unk_2781ABCF8;
     v16[4] = self;
-    [(ICNoteEditorViewController *)self presentViewController:v15 animated:1 completion:v16];
+    [(ICNoteEditorViewController *)self presentViewController:limitExceededAlertController3 animated:1 completion:v16];
   }
 }
 
 - (void)warnUserNoteLengthExceeded
 {
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v4 localizedStringForKey:@"Maximum note length reached." value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Maximum note length reached." value:&stru_282757698 table:0];
   [(ICNoteEditorViewController *)self warnLimitExceededWithTitle:v3 andMessage:0];
 }
 
 - (void)warnUserAttachmentLimitExceeded
 {
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v4 localizedStringForKey:@"Maximum attachments reached." value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Maximum attachments reached." value:&stru_282757698 table:0];
   [(ICNoteEditorViewController *)self warnLimitExceededWithTitle:v3 andMessage:0];
 }
 
-- (void)warnUserAttachmentSizeExceededWithAttachmentCount:(unint64_t)a3
+- (void)warnUserAttachmentSizeExceededWithAttachmentCount:(unint64_t)count
 {
-  v5 = [MEMORY[0x277D35E70] sharedConfiguration];
-  v6 = [v5 maximumAttachmentSizeMB];
-  v7 = [v6 unsignedLongLongValue] << 20;
+  mEMORY[0x277D35E70] = [MEMORY[0x277D35E70] sharedConfiguration];
+  maximumAttachmentSizeMB = [mEMORY[0x277D35E70] maximumAttachmentSizeMB];
+  v7 = [maximumAttachmentSizeMB unsignedLongLongValue] << 20;
 
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v9 = v8;
-  if (a3 == 1)
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v9 = mainBundle;
+  if (count == 1)
   {
     v10 = @"Large Attachment.";
   }
@@ -4485,7 +4485,7 @@ void __53__ICNoteEditorViewController_registerForTraitChanges__block_invoke(uint
     v10 = @"Large Attachments";
   }
 
-  if (a3 == 1)
+  if (count == 1)
   {
     v11 = @"To add this attachment to your note, you’ll need to make it smaller than %@.";
   }
@@ -4495,11 +4495,11 @@ void __53__ICNoteEditorViewController_registerForTraitChanges__block_invoke(uint
     v11 = @"Some of these attachments are too large. Each attachment must be smaller than %@.";
   }
 
-  v12 = [v8 localizedStringForKey:v10 value:&stru_282757698 table:0];
+  v12 = [mainBundle localizedStringForKey:v10 value:&stru_282757698 table:0];
 
   v13 = MEMORY[0x277CCACA8];
-  v14 = [MEMORY[0x277CCA8D8] mainBundle];
-  v15 = [v14 localizedStringForKey:v11 value:&stru_282757698 table:0];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v15 = [mainBundle2 localizedStringForKey:v11 value:&stru_282757698 table:0];
   v16 = [MEMORY[0x277CCA8E8] stringFromByteCount:v7 countStyle:3];
   v17 = [v13 localizedStringWithFormat:v15, v16];
 
@@ -4519,8 +4519,8 @@ void __53__ICNoteEditorViewController_registerForTraitChanges__block_invoke(uint
     _os_log_impl(&dword_2151A1000, v3, OS_LOG_TYPE_DEFAULT, "%s:%d", &v8, 0x12u);
   }
 
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  if (v4 && (v5 = v4, v6 = [(ICNoteEditorViewController *)self _appearState], v5, v6 == 2))
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if (note && (v5 = note, v6 = [(ICNoteEditorViewController *)self _appearState], v5, v6 == 2))
   {
     if (objc_opt_respondsToSelector())
     {
@@ -4538,33 +4538,33 @@ void __53__ICNoteEditorViewController_registerForTraitChanges__block_invoke(uint
   }
 }
 
-- (BOOL)shouldIgnoreTapToStartEditingTextView:(id)a3
+- (BOOL)shouldIgnoreTapToStartEditingTextView:(id)view
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorViewController *)self calculateRecognitionController];
-  v6 = [v5 isPreviewingResult];
+  viewCopy = view;
+  calculateRecognitionController = [(ICNoteEditorViewController *)self calculateRecognitionController];
+  isPreviewingResult = [calculateRecognitionController isPreviewingResult];
 
-  if ((v6 & 1) == 0)
+  if ((isPreviewingResult & 1) == 0)
   {
-    v7 = [(ICNoteEditorViewController *)self calculateScrubberController];
-    v8 = [v7 isShowing];
+    calculateScrubberController = [(ICNoteEditorViewController *)self calculateScrubberController];
+    isShowing = [calculateScrubberController isShowing];
 
-    if ((v8 & 1) == 0)
+    if ((isShowing & 1) == 0)
     {
       v9 = objc_opt_self();
-      v10 = [v9 note];
-      v11 = [v10 textStorageWithoutCreating];
-      v12 = [v11 isMarkingTextForHeadingRename];
+      note = [v9 note];
+      textStorageWithoutCreating = [note textStorageWithoutCreating];
+      isMarkingTextForHeadingRename = [textStorageWithoutCreating isMarkingTextForHeadingRename];
 
-      if ((v12 & 1) == 0)
+      if ((isMarkingTextForHeadingRename & 1) == 0)
       {
         if ([(ICNoteEditorViewController *)self isEditing])
         {
-          v15 = [(ICNoteEditorViewController *)self auxiliaryResponder];
-          if (v15)
+          auxiliaryResponder = [(ICNoteEditorViewController *)self auxiliaryResponder];
+          if (auxiliaryResponder)
           {
-            v16 = [(ICNoteEditorViewController *)self auxiliaryResponder];
-            v13 = v16 == v4;
+            auxiliaryResponder2 = [(ICNoteEditorViewController *)self auxiliaryResponder];
+            v13 = auxiliaryResponder2 == viewCopy;
 LABEL_12:
 
             goto LABEL_13;
@@ -4573,11 +4573,11 @@ LABEL_12:
 
         else
         {
-          v15 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-          if (!v15)
+          auxiliaryResponder = [(ICNoteEditorViewController *)self passwordEntryViewController];
+          if (!auxiliaryResponder)
           {
-            v16 = [(ICNoteEditorViewController *)self invitationViewController];
-            v13 = v16 != 0;
+            auxiliaryResponder2 = [(ICNoteEditorViewController *)self invitationViewController];
+            v13 = auxiliaryResponder2 != 0;
             goto LABEL_12;
           }
         }
@@ -4599,82 +4599,82 @@ LABEL_5:
 - (id)createNewNote
 {
   objc_opt_class();
-  v3 = [(ICNoteEditorViewController *)self viewControllerManager];
-  v4 = [v3 showNewNoteWithApproach:0 sender:0 animated:0];
+  viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+  v4 = [viewControllerManager showNewNoteWithApproach:0 sender:0 animated:0];
   v5 = ICDynamicCast();
 
   return v5;
 }
 
-- (void)calculateDocumentControllerDidUpdateHighlights:(id)a3
+- (void)calculateDocumentControllerDidUpdateHighlights:(id)highlights
 {
-  v3 = [(ICNoteEditorViewController *)self authorHighlightsUpdater];
-  [v3 scheduleUpdateAnimated:0 force:1];
+  authorHighlightsUpdater = [(ICNoteEditorViewController *)self authorHighlightsUpdater];
+  [authorHighlightsUpdater scheduleUpdateAnimated:0 force:1];
 }
 
-- (void)noteDidChangeCalculatePreviewBehaviorNotification:(id)a3
+- (void)noteDidChangeCalculatePreviewBehaviorNotification:(id)notification
 {
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  v5 = [v4 calculatePreviewBehavior] != 1;
-  v6 = [(ICNoteEditorViewController *)self calculateRecognitionController];
-  [v6 setInsertsResults:v5];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  v5 = [note calculatePreviewBehavior] != 1;
+  calculateRecognitionController = [(ICNoteEditorViewController *)self calculateRecognitionController];
+  [calculateRecognitionController setInsertsResults:v5];
 
-  v9 = [(ICNoteEditorBaseViewController *)self note];
-  v7 = [v9 calculatePreviewBehavior];
-  v8 = [(ICNoteEditorViewController *)self calculateRecognitionController];
-  [v8 setPreviewBehavior:v7];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  calculatePreviewBehavior = [note2 calculatePreviewBehavior];
+  calculateRecognitionController2 = [(ICNoteEditorViewController *)self calculateRecognitionController];
+  [calculateRecognitionController2 setPreviewBehavior:calculatePreviewBehavior];
 }
 
-- (void)noteWillBeDeleted:(id)a3
+- (void)noteWillBeDeleted:(id)deleted
 {
-  v13 = a3;
-  v4 = [v13 object];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
+  deletedCopy = deleted;
+  object = [deletedCopy object];
+  note = [(ICNoteEditorBaseViewController *)self note];
 
-  if (v4 != v5)
+  if (object != note)
   {
     goto LABEL_9;
   }
 
-  v6 = [(ICNoteEditorViewController *)self viewControllerManager];
-  if ([v6 isAuxiliary] && !-[ICNoteEditorBaseViewController isEditingOnSystemPaper](self, "isEditingOnSystemPaper"))
+  viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+  if ([viewControllerManager isAuxiliary] && !-[ICNoteEditorBaseViewController isEditingOnSystemPaper](self, "isEditingOnSystemPaper"))
   {
-    v7 = [(ICNoteEditorViewController *)self isTogglingLock];
+    isTogglingLock = [(ICNoteEditorViewController *)self isTogglingLock];
 
-    if (v7)
+    if (isTogglingLock)
     {
       goto LABEL_7;
     }
 
-    v6 = [(ICNoteEditorViewController *)self viewControllerManager];
-    [v6 closeAuxiliaryWindowAnimated:1];
+    viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+    [viewControllerManager closeAuxiliaryWindowAnimated:1];
   }
 
 LABEL_7:
-  v8 = [v13 object];
-  v9 = [MEMORY[0x277D366C0] sharedAudioController];
-  v10 = [v9 currentAttachment];
-  v11 = [v10 note];
+  object2 = [deletedCopy object];
+  mEMORY[0x277D366C0] = [MEMORY[0x277D366C0] sharedAudioController];
+  currentAttachment = [mEMORY[0x277D366C0] currentAttachment];
+  note2 = [currentAttachment note];
 
-  if (v8 == v11)
+  if (object2 == note2)
   {
-    v12 = [MEMORY[0x277D366C0] sharedAudioController];
-    [v12 stop];
+    mEMORY[0x277D366C0]2 = [MEMORY[0x277D366C0] sharedAudioController];
+    [mEMORY[0x277D366C0]2 stop];
   }
 
 LABEL_9:
 }
 
-- (void)updateTextViewContentInsetsAnimated:(BOOL)a3
+- (void)updateTextViewContentInsetsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(ICNoteEditorViewController *)self textView];
-  [v5 contentInset];
+  animatedCopy = animated;
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView contentInset];
   v7 = v6;
   v49 = v8;
 
-  v9 = [(ICNoteEditorViewController *)self textView];
-  [v9 verticalScrollIndicatorInsets];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  [textView2 verticalScrollIndicatorInsets];
   v11 = v10;
   v48 = v12;
 
@@ -4689,9 +4689,9 @@ LABEL_9:
   v24 = v23;
   if ([(ICNoteEditorViewController *)self userWantsToSeeDateLabel])
   {
-    v25 = [(ICNoteEditorViewController *)self textView];
-    v26 = [v25 dateView];
-    [v26 preferredHeight];
+    textView3 = [(ICNoteEditorViewController *)self textView];
+    dateView = [textView3 dateView];
+    [dateView preferredHeight];
     v47 = v18;
     v27 = v16;
     v28 = v11;
@@ -4701,9 +4701,9 @@ LABEL_9:
     v32 = v20;
     v33 = v24;
     v35 = v34;
-    v36 = [(ICNoteEditorViewController *)self textView];
-    v37 = [v36 userTitleView];
-    [v37 preferredHeight];
+    textView4 = [(ICNoteEditorViewController *)self textView];
+    userTitleView = [textView4 userTitleView];
+    [userTitleView preferredHeight];
     v39 = v35 + v38;
     v24 = v33;
     v20 = v32;
@@ -4715,20 +4715,20 @@ LABEL_9:
     v18 = v47 - v39;
   }
 
-  v40 = [(ICNoteEditorViewController *)self textView];
-  v41 = [v40 compatibilityBannerView];
+  textView5 = [(ICNoteEditorViewController *)self textView];
+  compatibilityBannerView = [textView5 compatibilityBannerView];
 
-  if (v41)
+  if (compatibilityBannerView)
   {
-    v42 = [(ICNoteEditorViewController *)self textView];
-    v43 = [v42 compatibilityBannerView];
-    [v43 preferredHeight];
+    textView6 = [(ICNoteEditorViewController *)self textView];
+    compatibilityBannerView2 = [textView6 compatibilityBannerView];
+    [compatibilityBannerView2 preferredHeight];
     v18 = v18 - v44;
   }
 
   if (vabdd_f64(v49, v16) >= 0.00999999978 || vabdd_f64(v7, v14) >= 0.00999999978 || vabdd_f64(v48, v22) >= 0.00999999978 || vabdd_f64(v11, v18) >= 0.00999999978)
   {
-    if (v3)
+    if (animatedCopy)
     {
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
@@ -4748,13 +4748,13 @@ LABEL_9:
 
     else
     {
-      v45 = [(ICNoteEditorViewController *)self textView];
-      [v45 setContentInset:{v14, 0.0, v16, 0.0}];
+      textView7 = [(ICNoteEditorViewController *)self textView];
+      [textView7 setContentInset:{v14, 0.0, v16, 0.0}];
 
       if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
       {
-        v46 = [(ICNoteEditorViewController *)self textView];
-        [v46 setVerticalScrollIndicatorInsets:{v18, v20, v22, v24}];
+        textView8 = [(ICNoteEditorViewController *)self textView];
+        [textView8 setVerticalScrollIndicatorInsets:{v18, v20, v22, v24}];
       }
     }
   }
@@ -4789,11 +4789,11 @@ void __66__ICNoteEditorViewController_updateTextViewContentInsetsAnimated___bloc
   [(ICNoteEditorViewController *)self updateTextViewContentOffset];
 }
 
-- (double)textViewBottomInsetThatWeWantForEditing:(BOOL)a3
+- (double)textViewBottomInsetThatWeWantForEditing:(BOOL)editing
 {
   [(ICNoteEditorViewController *)self textViewScrollIndicatorInsetsThatWeWant];
   v6 = v5;
-  if (a3)
+  if (editing)
   {
     if ([(ICNoteEditorViewController *)self isShowingMiniPlayer])
     {
@@ -4802,43 +4802,43 @@ void __66__ICNoteEditorViewController_updateTextViewContentInsetsAnimated___bloc
 
     if (([MEMORY[0x277D75658] isInHardwareKeyboardMode] & 1) == 0)
     {
-      v7 = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
-      if (-[ICNoteEditorViewController isSelecting](self, "isSelecting") && v7 && ([v7 buttonsVisible] & 1) == 0)
+      dismissableInputAccessoryView = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
+      if (-[ICNoteEditorViewController isSelecting](self, "isSelecting") && dismissableInputAccessoryView && ([dismissableInputAccessoryView buttonsVisible] & 1) == 0)
       {
         [(ICNoteEditorViewController *)self inputAccessoryViewHeight];
         v6 = v6 - v8;
       }
 
-      v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v10 = [v9 BOOLForKey:*MEMORY[0x277D362E0]];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v10 = [standardUserDefaults BOOLForKey:*MEMORY[0x277D362E0]];
 
       if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0 && (v10 & 1) == 0)
       {
-        v11 = [(ICNoteEditorBaseViewController *)self note];
-        v12 = [v11 textStorage];
+        note = [(ICNoteEditorBaseViewController *)self note];
+        textStorage = [note textStorage];
 
-        v13 = [v12 length];
+        v13 = [textStorage length];
         if (v13)
         {
           v14 = v13;
-          v15 = [v12 string];
+          string = [textStorage string];
           v16 = v14 - 1;
-          v17 = [v15 characterAtIndex:v16];
+          v17 = [string characterAtIndex:v16];
 
-          v18 = [MEMORY[0x277CCA900] newlineCharacterSet];
-          LODWORD(v17) = [v18 characterIsMember:v17];
+          newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+          LODWORD(v17) = [newlineCharacterSet characterIsMember:v17];
 
           if (v17)
           {
-            v19 = [(ICNoteEditorViewController *)self textView];
-            v20 = [v19 selectedRange];
+            textView = [(ICNoteEditorViewController *)self textView];
+            selectedRange = [textView selectedRange];
             v22 = v21;
 
-            if (!v22 && v20 == v16)
+            if (!v22 && selectedRange == v16)
             {
-              v23 = [(ICNoteEditorViewController *)self textView];
-              v24 = [v23 layoutManager];
-              [v24 extraLineFragmentRect];
+              textView2 = [(ICNoteEditorViewController *)self textView];
+              layoutManager = [textView2 layoutManager];
+              [layoutManager extraLineFragmentRect];
               v6 = v6 - v25;
             }
           }
@@ -4855,32 +4855,32 @@ void __66__ICNoteEditorViewController_updateTextViewContentInsetsAnimated___bloc
   return v6;
 }
 
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only
 {
-  v19 = a3;
+  viewCopy = view;
   IsTextKit2Enabled = ICInternalSettingsIsTextKit2Enabled();
-  v7 = v19;
-  if (v19)
+  v7 = viewCopy;
+  if (viewCopy)
   {
     if ((IsTextKit2Enabled & 1) == 0)
     {
-      v8 = [(ICNoteEditorViewController *)self textView];
+      textView = [(ICNoteEditorViewController *)self textView];
 
-      v7 = v19;
-      if (v8 == v19 && !a4)
+      v7 = viewCopy;
+      if (textView == viewCopy && !only)
       {
-        v9 = [(ICNoteEditorViewController *)self textView];
-        [v9 verticalScrollIndicatorInsets];
+        textView2 = [(ICNoteEditorViewController *)self textView];
+        [textView2 verticalScrollIndicatorInsets];
         v11 = v10;
         v13 = v12;
 
         [(ICNoteEditorViewController *)self textViewScrollIndicatorInsetsThatWeWant];
         v15 = v14;
         v17 = v16;
-        v18 = [(ICNoteEditorViewController *)self textView];
-        [v18 setVerticalScrollIndicatorInsets:{v11, v15, v13, v17}];
+        textView3 = [(ICNoteEditorViewController *)self textView];
+        [textView3 setVerticalScrollIndicatorInsets:{v11, v15, v13, v17}];
 
-        v7 = v19;
+        v7 = viewCopy;
       }
     }
   }
@@ -4893,8 +4893,8 @@ void __66__ICNoteEditorViewController_updateTextViewContentInsetsAnimated___bloc
   {
     if (ICInternalSettingsIsTextKit2Enabled())
     {
-      v3 = [(ICNoteEditorViewController *)self textView];
-      [v3 setNeedsStylingRefreshOnNextLayout:1];
+      textView = [(ICNoteEditorViewController *)self textView];
+      [textView setNeedsStylingRefreshOnNextLayout:1];
     }
 
     else
@@ -4903,11 +4903,11 @@ void __66__ICNoteEditorViewController_updateTextViewContentInsetsAnimated___bloc
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v4 = [(ICNoteEditorBaseViewController *)self note];
-      v5 = [v4 textStorage];
-      v6 = [v5 layoutManagers];
+      note = [(ICNoteEditorBaseViewController *)self note];
+      textStorage = [note textStorage];
+      layoutManagers = [textStorage layoutManagers];
 
-      v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [layoutManagers countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v7)
       {
         v8 = v7;
@@ -4918,37 +4918,37 @@ void __66__ICNoteEditorViewController_updateTextViewContentInsetsAnimated___bloc
           {
             if (*v19 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(layoutManagers);
             }
 
             [*(*(&v18 + 1) + 8 * i) contentSizeCategoryDidChange];
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v8 = [layoutManagers countByEnumeratingWithState:&v18 objects:v22 count:16];
         }
 
         while (v8);
       }
 
       objc_opt_class();
-      v11 = [(ICNoteEditorViewController *)self textView];
-      v12 = [v11 textStorage];
-      v3 = ICDynamicCast();
+      textView2 = [(ICNoteEditorViewController *)self textView];
+      textStorage2 = [textView2 textStorage];
+      textView = ICDynamicCast();
 
       objc_opt_class();
-      v13 = [v3 styler];
+      styler = [textView styler];
       v14 = ICCheckedDynamicCast();
 
-      [v14 refreshTextStylingForTextStorage:v3 withTextController:v14];
+      [v14 refreshTextStylingForTextStorage:textView withTextController:v14];
     }
 
-    v15 = [(ICNoteEditorViewController *)self textView];
-    v16 = [v15 compatibilityBannerView];
-    [v16 contentSizeCategoryDidChange];
+    textView3 = [(ICNoteEditorViewController *)self textView];
+    compatibilityBannerView = [textView3 compatibilityBannerView];
+    [compatibilityBannerView contentSizeCategoryDidChange];
 
     [(ICNoteEditorViewController *)self setUpdateContentSizeCategoryWhenVisible:0];
-    v17 = [(ICNoteEditorViewController *)self attributionSidebarView];
-    [v17 reload];
+    attributionSidebarView = [(ICNoteEditorViewController *)self attributionSidebarView];
+    [attributionSidebarView reload];
   }
 
   else
@@ -4960,48 +4960,48 @@ void __66__ICNoteEditorViewController_updateTextViewContentInsetsAnimated___bloc
 
 - (BOOL)isShowingMiniPlayer
 {
-  v2 = [(ICNoteEditorViewController *)self audioAttachmentEditorCoordinator];
-  v3 = [v2 isShowingMiniPlayer];
+  audioAttachmentEditorCoordinator = [(ICNoteEditorViewController *)self audioAttachmentEditorCoordinator];
+  isShowingMiniPlayer = [audioAttachmentEditorCoordinator isShowingMiniPlayer];
 
-  return v3;
+  return isShowingMiniPlayer;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  if (([(ICNoteEditorViewController *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/Editor/ICNoteEditorViewController.m"]& 1) == 0)
+  pathCopy = path;
+  changeCopy = change;
+  objectCopy = object;
+  if (([(ICNoteEditorViewController *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/Editor/ICNoteEditorViewController.m"]& 1) == 0)
   {
     v73.receiver = self;
     v73.super_class = ICNoteEditorViewController;
-    [(ICNoteEditorViewController *)&v73 observeValueForKeyPath:v10 ofObject:v12 change:v11 context:a6];
+    [(ICNoteEditorViewController *)&v73 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 
     goto LABEL_10;
   }
 
-  v13 = [(ICNoteEditorViewController *)self ic_shouldIgnoreObserveValue:v11 ofObject:v12 forKeyPath:v10];
+  v13 = [(ICNoteEditorViewController *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
   if ((v13 & 1) == 0)
   {
-    if (a6 == &compoundliteral_3031)
+    if (context == &compoundliteral_3031)
     {
       [(ICNoteEditorViewController *)self updateForceLightContentIfNecessary];
       goto LABEL_10;
     }
 
-    if (a6 != &compoundliteral_3033)
+    if (context != &compoundliteral_3033)
     {
-      if (a6 != &compoundliteral_3035)
+      if (context != &compoundliteral_3035)
       {
-        if (a6 == &compoundliteral_0)
+        if (context == &compoundliteral_0)
         {
           if ([(ICNoteEditorViewController *)self isInkPickerShowing])
           {
-            v23 = [(ICNoteEditorViewController *)self textViewController];
-            v24 = [v23 isViewLoaded];
+            textViewController = [(ICNoteEditorViewController *)self textViewController];
+            isViewLoaded = [textViewController isViewLoaded];
 
-            if (v24)
+            if (isViewLoaded)
             {
               if ([MEMORY[0x277D75820] prefersPencilOnlyDrawing])
               {
@@ -5016,7 +5016,7 @@ void __66__ICNoteEditorViewController_updateTextViewContentInsetsAnimated___bloc
           }
         }
 
-        else if (a6 == &compoundliteral_3029)
+        else if (context == &compoundliteral_3029)
         {
           [(ICNoteEditorViewController *)self forceLightContentDidChange:0];
         }
@@ -5024,37 +5024,37 @@ void __66__ICNoteEditorViewController_updateTextViewContentInsetsAnimated___bloc
         goto LABEL_10;
       }
 
-      v20 = [(ICNoteEditorViewController *)self textViewIfLoaded];
-      v21 = [(ICNoteEditorBaseViewController *)self note];
-      [v20 createUserTitleViewIfNecessaryForNote:v21];
+      textViewIfLoaded = [(ICNoteEditorViewController *)self textViewIfLoaded];
+      note = [(ICNoteEditorBaseViewController *)self note];
+      [textViewIfLoaded createUserTitleViewIfNecessaryForNote:note];
 
       if (![(ICNoteEditorViewController *)self headerSubviewsFadeInOnUnderscrolling])
       {
         goto LABEL_10;
       }
 
-      v19 = [(ICNoteEditorViewController *)self textView];
-      v22 = [v19 userTitleView];
-      [v22 setAlpha:0.0];
+      textView = [(ICNoteEditorViewController *)self textView];
+      userTitleView = [textView userTitleView];
+      [userTitleView setAlpha:0.0];
 
 LABEL_18:
       goto LABEL_10;
     }
 
-    v14 = [(ICNoteEditorBaseViewController *)self note];
-    if (v14)
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    if (note2)
     {
-      v15 = v14;
-      v16 = [(ICNoteEditorBaseViewController *)self note];
-      v17 = [v16 noteHasChanges];
-      if ([v17 BOOLValue])
+      v15 = note2;
+      note3 = [(ICNoteEditorBaseViewController *)self note];
+      noteHasChanges = [note3 noteHasChanges];
+      if ([noteHasChanges BOOLValue])
       {
-        v18 = [v10 isEqualToString:@"noteHasChanges"];
+        v18 = [pathCopy isEqualToString:@"noteHasChanges"];
 
         if (v18)
         {
-          v19 = [(ICNoteEditorBaseViewController *)self note];
-          [v19 setNoteHasChanges:MEMORY[0x277CBEC28]];
+          textView = [(ICNoteEditorBaseViewController *)self note];
+          [textView setNoteHasChanges:MEMORY[0x277CBEC28]];
           goto LABEL_18;
         }
       }
@@ -5064,11 +5064,11 @@ LABEL_18:
       }
     }
 
-    v25 = [(ICNoteEditorBaseViewController *)self note];
-    if (v25)
+    note4 = [(ICNoteEditorBaseViewController *)self note];
+    if (note4)
     {
-      v26 = v25;
-      v27 = [v10 isEqualToString:@"modificationDate"];
+      v26 = note4;
+      v27 = [pathCopy isEqualToString:@"modificationDate"];
 
       if (v27)
       {
@@ -5077,20 +5077,20 @@ LABEL_18:
       }
     }
 
-    v28 = [(ICNoteEditorBaseViewController *)self note];
-    if (v28)
+    note5 = [(ICNoteEditorBaseViewController *)self note];
+    if (note5)
     {
-      v29 = v28;
-      v30 = [v10 isEqualToString:@"attachmentViewType"];
+      v29 = note5;
+      v30 = [pathCopy isEqualToString:@"attachmentViewType"];
 
       if (v30)
       {
         objc_opt_class();
-        v31 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+        v31 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
         v32 = ICDynamicCast();
 
         objc_opt_class();
-        v33 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+        v33 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
         v34 = ICDynamicCast();
 
         if (!v34)
@@ -5127,8 +5127,8 @@ LABEL_18:
         {
           [(ICNoteEditorViewController *)self resetTextViewContentOffset];
           objc_opt_class();
-          v69 = [(ICNoteEditorViewController *)self textView];
-          v70 = [v69 layoutManager];
+          textView2 = [(ICNoteEditorViewController *)self textView];
+          layoutManager = [textView2 layoutManager];
           v71 = ICDynamicCast();
 
           [v71 invalidateLayoutAfterAttachmentViewTypeChangeIfNecessary];
@@ -5138,11 +5138,11 @@ LABEL_18:
       }
     }
 
-    v42 = [(ICNoteEditorBaseViewController *)self note];
-    if (v42)
+    note6 = [(ICNoteEditorBaseViewController *)self note];
+    if (note6)
     {
-      v43 = v42;
-      v44 = [v10 isEqualToString:@"paperStyleType"];
+      v43 = note6;
+      v44 = [pathCopy isEqualToString:@"paperStyleType"];
 
       if (v44)
       {
@@ -5151,20 +5151,20 @@ LABEL_18:
       }
     }
 
-    v45 = [(ICNoteEditorBaseViewController *)self note];
-    if (v45)
+    note7 = [(ICNoteEditorBaseViewController *)self note];
+    if (note7)
     {
-      v46 = v45;
-      v47 = [v10 isEqualToString:@"isEmpty"];
+      v46 = note7;
+      v47 = [pathCopy isEqualToString:@"isEmpty"];
 
       if (v47)
       {
         objc_opt_class();
-        v48 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+        v48 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
         v32 = ICCheckedDynamicCast();
 
         objc_opt_class();
-        v49 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+        v49 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
         v34 = ICCheckedDynamicCast();
 
         if (!v34)
@@ -5209,34 +5209,34 @@ LABEL_73:
       }
     }
 
-    v57 = [(ICNoteEditorBaseViewController *)self note];
-    if (v57 && (v58 = v57, v59 = [v10 isEqualToString:@"serverShareData"], v58, v59))
+    note8 = [(ICNoteEditorBaseViewController *)self note];
+    if (note8 && (v58 = note8, v59 = [pathCopy isEqualToString:@"serverShareData"], v58, v59))
     {
-      v60 = [(ICNoteEditorViewController *)self mentionsController];
-      [v60 updateNoteParticipants];
+      mentionsController = [(ICNoteEditorViewController *)self mentionsController];
+      [mentionsController updateNoteParticipants];
 
       [(ICNoteEditorViewController *)self updateParticipantsInDrawings];
     }
 
     else
     {
-      v61 = [(ICNoteEditorBaseViewController *)self note];
-      if (v61 && (v62 = v61, v63 = [v10 isEqualToString:@"isSharedViaICloud"], v62, v63))
+      note9 = [(ICNoteEditorBaseViewController *)self note];
+      if (note9 && (v62 = note9, v63 = [pathCopy isEqualToString:@"isSharedViaICloud"], v62, v63))
       {
-        v64 = [(ICNoteEditorViewController *)self shouldAllowAttributionSidebar];
-        v65 = [(ICNoteEditorViewController *)self attributionSidebarController];
-        [v65 setEnabled:v64];
+        shouldAllowAttributionSidebar = [(ICNoteEditorViewController *)self shouldAllowAttributionSidebar];
+        attributionSidebarController = [(ICNoteEditorViewController *)self attributionSidebarController];
+        [attributionSidebarController setEnabled:shouldAllowAttributionSidebar];
 
         [(ICNoteEditorViewController *)self resetDateView];
       }
 
       else
       {
-        v66 = [(ICNoteEditorBaseViewController *)self note];
-        if (v66)
+        note10 = [(ICNoteEditorBaseViewController *)self note];
+        if (note10)
         {
-          v67 = v66;
-          v68 = [v10 isEqualToString:@"lastActivitySummaryViewedDate"];
+          v67 = note10;
+          v68 = [pathCopy isEqualToString:@"lastActivitySummaryViewedDate"];
 
           if (v68)
           {
@@ -5250,51 +5250,51 @@ LABEL_73:
 LABEL_10:
 }
 
-- (void)willAddAttachmentForNoteNotification:(id)a3
+- (void)willAddAttachmentForNoteNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
+  object = [notification object];
+  note = [(ICNoteEditorBaseViewController *)self note];
 
-  if (v4 == v5)
+  if (object == note)
   {
     objc_opt_class();
-    v8 = [(ICNoteEditorViewController *)self textView];
-    v6 = [v8 textStorage];
+    textView = [(ICNoteEditorViewController *)self textView];
+    textStorage = [textView textStorage];
     v7 = ICDynamicCast();
     [v7 breakUndoCoalescing];
   }
 }
 
-- (void)didAddAttachmentForNoteNotification:(id)a3
+- (void)didAddAttachmentForNoteNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
+  object = [notification object];
+  note = [(ICNoteEditorBaseViewController *)self note];
 
-  if (v4 == v5)
+  if (object == note)
   {
     objc_opt_class();
-    v8 = [(ICNoteEditorViewController *)self textView];
-    v6 = [v8 textStorage];
+    textView = [(ICNoteEditorViewController *)self textView];
+    textStorage = [textView textStorage];
     v7 = ICDynamicCast();
     [v7 breakUndoCoalescing];
   }
 }
 
-- (void)audioFindInTranscript:(id)a3
+- (void)audioFindInTranscript:(id)transcript
 {
-  v4 = a3;
+  transcriptCopy = transcript;
   objc_opt_class();
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D36580]];
+  userInfo = [transcriptCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D36580]];
   v7 = ICDynamicCast();
 
   objc_opt_class();
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D36588]];
+  userInfo2 = [transcriptCopy userInfo];
+  v9 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277D36588]];
   v10 = ICDynamicCast();
 
-  v11 = [MEMORY[0x277D35F30] sharedContext];
-  v12 = [v11 managedObjectContext];
+  mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
+  managedObjectContext = [mEMORY[0x277D35F30] managedObjectContext];
 
   v25 = 0;
   v26 = &v25;
@@ -5307,17 +5307,17 @@ LABEL_10:
   v19 = __52__ICNoteEditorViewController_audioFindInTranscript___block_invoke;
   v20 = &unk_2781ACE08;
   v24 = &v25;
-  v13 = v12;
+  v13 = managedObjectContext;
   v21 = v13;
   v14 = v7;
   v22 = v14;
-  v23 = self;
+  selfCopy = self;
   [v13 performBlockAndWait:&v17];
   if (v26[5])
   {
     v15 = [(ICNoteEditorViewController *)self eventReporter:v17];
-    v16 = [v10 BOOLValue];
-    [v15 submitFindInTranscriptEventWasSearchQueryEntered:v16 audioAttachment:v26[5]];
+    bOOLValue = [v10 BOOLValue];
+    [v15 submitFindInTranscriptEventWasSearchQueryEntered:bOOLValue audioAttachment:v26[5]];
   }
 
   _Block_object_dispose(&v25, 8);
@@ -5344,36 +5344,36 @@ void __52__ICNoteEditorViewController_audioFindInTranscript___block_invoke(uint6
   }
 }
 
-- (void)audioTranscriptInteraction:(id)a3
+- (void)audioTranscriptInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   objc_opt_class();
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D36550]];
+  userInfo = [interactionCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D36550]];
   v7 = ICDynamicCast();
 
   objc_opt_class();
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D36558]];
+  userInfo2 = [interactionCopy userInfo];
+  v9 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277D36558]];
   v10 = ICDynamicCast();
 
   objc_opt_class();
-  v11 = [v4 userInfo];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277D36568]];
+  userInfo3 = [interactionCopy userInfo];
+  v12 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x277D36568]];
   v13 = ICDynamicCast();
 
   objc_opt_class();
-  v14 = [v4 userInfo];
-  v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277D36560]];
+  userInfo4 = [interactionCopy userInfo];
+  v15 = [userInfo4 objectForKeyedSubscript:*MEMORY[0x277D36560]];
   v16 = ICDynamicCast();
 
   objc_opt_class();
-  v17 = [v4 userInfo];
-  v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277D36570]];
+  userInfo5 = [interactionCopy userInfo];
+  v18 = [userInfo5 objectForKeyedSubscript:*MEMORY[0x277D36570]];
   v19 = ICDynamicCast();
 
-  v20 = [MEMORY[0x277D35F30] sharedContext];
-  v21 = [v20 managedObjectContext];
+  mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
+  managedObjectContext = [mEMORY[0x277D35F30] managedObjectContext];
 
   v35 = 0;
   v36 = &v35;
@@ -5386,18 +5386,18 @@ void __52__ICNoteEditorViewController_audioFindInTranscript___block_invoke(uint6
   v29 = __57__ICNoteEditorViewController_audioTranscriptInteraction___block_invoke;
   v30 = &unk_2781ACE08;
   v34 = &v35;
-  v22 = v21;
+  v22 = managedObjectContext;
   v31 = v22;
   v23 = v7;
   v32 = v23;
-  v33 = self;
+  selfCopy = self;
   [v22 performBlockAndWait:&v27];
   if (v36[5])
   {
     v24 = [(ICNoteEditorViewController *)self eventReporter:v27];
-    v25 = [v10 BOOLValue];
-    v26 = [v13 BOOLValue];
-    [v24 submitAudioTranscriptInteractionEventSummaryViewed:v25 transcriptViewed:v26 interactionTargets:v16 interactionTypes:v19 audioAttachment:v36[5]];
+    bOOLValue = [v10 BOOLValue];
+    bOOLValue2 = [v13 BOOLValue];
+    [v24 submitAudioTranscriptInteractionEventSummaryViewed:bOOLValue transcriptViewed:bOOLValue2 interactionTargets:v16 interactionTypes:v19 audioAttachment:v36[5]];
   }
 
   _Block_object_dispose(&v35, 8);
@@ -5424,50 +5424,50 @@ void __57__ICNoteEditorViewController_audioTranscriptInteraction___block_invoke(
   }
 }
 
-- (void)audioRecordingStarted:(id)a3
+- (void)audioRecordingStarted:(id)started
 {
-  v3 = [(ICNoteEditorViewController *)self audioEventReporter];
-  [v3 startAudioRecordingEvent];
+  audioEventReporter = [(ICNoteEditorViewController *)self audioEventReporter];
+  [audioEventReporter startAudioRecordingEvent];
 }
 
-- (void)audioRecordingStopped:(id)a3
+- (void)audioRecordingStopped:(id)stopped
 {
-  v4 = a3;
+  stoppedCopy = stopped;
   objc_opt_class();
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D35C90]];
+  userInfo = [stoppedCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D35C90]];
   v7 = ICDynamicCast();
 
   objc_opt_class();
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D35C98]];
+  userInfo2 = [stoppedCopy userInfo];
+  v9 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277D35C98]];
   v10 = ICDynamicCast();
 
   objc_opt_class();
-  v11 = [v4 userInfo];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277D35CA0]];
+  userInfo3 = [stoppedCopy userInfo];
+  v12 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x277D35CA0]];
   v13 = ICDynamicCast();
 
   objc_opt_class();
-  v14 = [v4 userInfo];
-  v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277D35CA8]];
+  userInfo4 = [stoppedCopy userInfo];
+  v15 = [userInfo4 objectForKeyedSubscript:*MEMORY[0x277D35CA8]];
   v16 = ICDynamicCast();
 
   objc_opt_class();
-  v17 = [v4 userInfo];
-  v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277D35CB0]];
+  userInfo5 = [stoppedCopy userInfo];
+  v18 = [userInfo5 objectForKeyedSubscript:*MEMORY[0x277D35CB0]];
   v19 = ICDynamicCast();
-  v20 = [v19 BOOLValue];
+  bOOLValue = [v19 BOOLValue];
 
   objc_opt_class();
-  v21 = [v4 userInfo];
-  v22 = [v21 objectForKeyedSubscript:*MEMORY[0x277D35CB8]];
+  userInfo6 = [stoppedCopy userInfo];
+  v22 = [userInfo6 objectForKeyedSubscript:*MEMORY[0x277D35CB8]];
   v23 = ICDynamicCast();
 
-  if (!v20 || v23)
+  if (!bOOLValue || v23)
   {
-    v24 = [MEMORY[0x277D35F30] sharedContext];
-    v25 = [v24 managedObjectContext];
+    mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
+    managedObjectContext = [mEMORY[0x277D35F30] managedObjectContext];
 
     v32 = 0;
     v33 = &v32;
@@ -5480,14 +5480,14 @@ void __57__ICNoteEditorViewController_audioTranscriptInteraction___block_invoke(
     v28[2] = __52__ICNoteEditorViewController_audioRecordingStopped___block_invoke;
     v28[3] = &unk_2781ACE30;
     v31 = &v32;
-    v26 = v25;
+    v26 = managedObjectContext;
     v29 = v26;
     v30 = v7;
     [v26 performBlockAndWait:v28];
     if (v33[5])
     {
-      v27 = [(ICNoteEditorViewController *)self audioEventReporter];
-      [v27 submitAudioRecordingEventWithAttachment:v33[5] appBackgroundOccurred:objc_msgSend(v10 noteMultitaskingOccurred:"BOOLValue") audioAttachmentDuration:{objc_msgSend(v13, "BOOLValue"), v16}];
+      audioEventReporter = [(ICNoteEditorViewController *)self audioEventReporter];
+      [audioEventReporter submitAudioRecordingEventWithAttachment:v33[5] appBackgroundOccurred:objc_msgSend(v10 noteMultitaskingOccurred:"BOOLValue") audioAttachmentDuration:{objc_msgSend(v13, "BOOLValue"), v16}];
     }
 
     _Block_object_dispose(&v32, 8);
@@ -5502,21 +5502,21 @@ void __52__ICNoteEditorViewController_audioRecordingStopped___block_invoke(uint6
   *(v3 + 40) = v2;
 }
 
-- (void)observeAttachmentDeleted:(id)a3
+- (void)observeAttachmentDeleted:(id)deleted
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D35B70]];
+  userInfo = [deleted userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D35B70]];
 
   if (v5)
   {
-    v6 = [v5 managedObjectContext];
+    managedObjectContext = [v5 managedObjectContext];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __55__ICNoteEditorViewController_observeAttachmentDeleted___block_invoke;
     v7[3] = &unk_2781ABEB8;
     v8 = v5;
-    v9 = self;
-    [v6 performBlock:v7];
+    selfCopy = self;
+    [managedObjectContext performBlock:v7];
   }
 }
 
@@ -5572,17 +5572,17 @@ void __55__ICNoteEditorViewController_observeAttachmentDeleted___block_invoke(ui
   }
 }
 
-- (void)observeDrawingConverted:(id)a3
+- (void)observeDrawingConverted:(id)converted
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D364F0]];
+  convertedCopy = converted;
+  userInfo = [convertedCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D364F0]];
 
   objc_opt_class();
-  v7 = [MEMORY[0x277D35F30] sharedContext];
-  v8 = [v7 managedObjectContext];
+  mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
+  managedObjectContext = [mEMORY[0x277D35F30] managedObjectContext];
   v19 = 0;
-  v9 = [v8 existingObjectWithID:v6 error:&v19];
+  v9 = [managedObjectContext existingObjectWithID:v6 error:&v19];
   v10 = v19;
   v11 = ICDynamicCast();
 
@@ -5598,15 +5598,15 @@ void __55__ICNoteEditorViewController_observeAttachmentDeleted___block_invoke(ui
 
   if (v12)
   {
-    v14 = [v11 managedObjectContext];
+    managedObjectContext2 = [v11 managedObjectContext];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __54__ICNoteEditorViewController_observeDrawingConverted___block_invoke;
     v15[3] = &unk_2781AC5B0;
     v16 = v11;
-    v17 = self;
-    v18 = v4;
-    [v14 performBlock:v15];
+    selfCopy = self;
+    v18 = convertedCopy;
+    [managedObjectContext2 performBlock:v15];
 
     v13 = v16;
   }
@@ -5655,45 +5655,45 @@ void __54__ICNoteEditorViewController_observeDrawingConverted___block_invoke(id 
   }
 }
 
-- (void)lockNoteManagerWillToggleLock:(id)a3
+- (void)lockNoteManagerWillToggleLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [lockCopy object];
 
   v8 = ICCheckedDynamicCast();
 
-  v6 = [v8 note];
-  v7 = [(ICNoteEditorBaseViewController *)self note];
+  note = [v8 note];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
 
-  if (v6 == v7)
+  if (note == note2)
   {
     [(ICNoteEditorViewController *)self setTogglingLock:1];
   }
 }
 
-- (void)lockNoteManagerDidToggleLock:(id)a3
+- (void)lockNoteManagerDidToggleLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [lockCopy object];
 
   v11 = ICCheckedDynamicCast();
 
-  v6 = [v11 note];
-  v7 = [(ICNoteEditorBaseViewController *)self note];
+  note = [v11 note];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
 
-  if (v6 == v7)
+  if (note == note2)
   {
-    v8 = [v11 updatedNote];
+    updatedNote = [v11 updatedNote];
 
-    if (v8)
+    if (updatedNote)
     {
-      v9 = [(ICNoteEditorViewController *)self userWantsToSeeDateLabel];
-      v10 = [v11 updatedNote];
-      [(ICNoteEditorViewController *)self setNote:v10];
+      userWantsToSeeDateLabel = [(ICNoteEditorViewController *)self userWantsToSeeDateLabel];
+      updatedNote2 = [v11 updatedNote];
+      [(ICNoteEditorViewController *)self setNote:updatedNote2];
 
-      [(ICNoteEditorViewController *)self setUserWantsToSeeDateLabel:v9];
+      [(ICNoteEditorViewController *)self setUserWantsToSeeDateLabel:userWantsToSeeDateLabel];
       UIAccessibilityPostNotification(*MEMORY[0x277D76488], 0);
     }
 
@@ -5705,12 +5705,12 @@ void __54__ICNoteEditorViewController_observeDrawingConverted___block_invoke(id 
 - (void)attachmentBrickDidChangeSize
 {
   objc_opt_class();
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 textStorage];
+  textView = [(ICNoteEditorViewController *)self textView];
+  textStorage = [textView textStorage];
   v7 = ICDynamicCast();
 
   objc_opt_class();
-  v5 = [v7 styler];
+  styler = [v7 styler];
   v6 = ICCheckedDynamicCast();
 
   [v6 refreshTextStylingForTextStorage:v7 withTextController:v6];
@@ -5718,17 +5718,17 @@ void __54__ICNoteEditorViewController_observeDrawingConverted___block_invoke(id 
 
 - (void)tableCellFirstResponderChanged
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
+  note = [(ICNoteEditorBaseViewController *)self note];
 
-  if (v3)
+  if (note)
   {
-    v5 = [(ICNoteEditorViewController *)self mentionsController];
-    v4 = [(ICNoteEditorBaseViewController *)self note];
-    [v5 tableCellFirstResponderChangedInNote:v4];
+    mentionsController = [(ICNoteEditorViewController *)self mentionsController];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    [mentionsController tableCellFirstResponderChangedInNote:note2];
   }
 }
 
-- (void)sharedWithYouControllerDidUpdateHighlights:(id)a3
+- (void)sharedWithYouControllerDidUpdateHighlights:(id)highlights
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -5746,49 +5746,49 @@ uint64_t __73__ICNoteEditorViewController_sharedWithYouControllerDidUpdateHighli
   return [v2 resetBarButtonsAnimated:0];
 }
 
-- (void)passwordEntryAlertControllerAttemptDidFail:(id)a3
+- (void)passwordEntryAlertControllerAttemptDidFail:(id)fail
 {
-  v4 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-  v5 = [v4 note];
+  passwordEntryViewController = [(ICNoteEditorViewController *)self passwordEntryViewController];
+  note = [passwordEntryViewController note];
 
-  if (v5)
+  if (note)
   {
-    v8 = [(ICNoteEditorViewController *)self eventReporter];
-    v6 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-    v7 = [v6 note];
-    [v8 submitPasswordFailEventForModernNote:v7];
+    eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+    passwordEntryViewController2 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+    note2 = [passwordEntryViewController2 note];
+    [eventReporter submitPasswordFailEventForModernNote:note2];
   }
 }
 
-- (void)authenticationAuthenticateBiometricsAttemptDidFail:(id)a3
+- (void)authenticationAuthenticateBiometricsAttemptDidFail:(id)fail
 {
-  v4 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-  v5 = [v4 note];
+  passwordEntryViewController = [(ICNoteEditorViewController *)self passwordEntryViewController];
+  note = [passwordEntryViewController note];
 
-  if (v5)
+  if (note)
   {
-    v8 = [(ICNoteEditorViewController *)self eventReporter];
-    v6 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-    v7 = [v6 note];
-    [v8 submitBiometricsFailEventForModernNote:v7];
+    eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+    passwordEntryViewController2 = [(ICNoteEditorViewController *)self passwordEntryViewController];
+    note2 = [passwordEntryViewController2 note];
+    [eventReporter submitBiometricsFailEventForModernNote:note2];
   }
 }
 
-- (id)managedObjectContextChangeController:(id)a3 managedObjectIDsToUpdateForUpdatedManagedObjects:(id)a4
+- (id)managedObjectContextChangeController:(id)controller managedObjectIDsToUpdateForUpdatedManagedObjects:(id)objects
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICNoteEditorViewController *)self inlineAttachmentChangeController];
+  controllerCopy = controller;
+  objectsCopy = objects;
+  inlineAttachmentChangeController = [(ICNoteEditorViewController *)self inlineAttachmentChangeController];
 
-  if (v8 == v6)
+  if (inlineAttachmentChangeController == controllerCopy)
   {
-    v10 = [v7 ic_compactMap:&__block_literal_global_566];
+    v10 = [objectsCopy ic_compactMap:&__block_literal_global_566];
     goto LABEL_5;
   }
 
-  v9 = [(ICNoteEditorViewController *)self noteAndFolderChangeController];
+  noteAndFolderChangeController = [(ICNoteEditorViewController *)self noteAndFolderChangeController];
 
-  if (v9 != v6)
+  if (noteAndFolderChangeController != controllerCopy)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICNoteEditorViewController managedObjectContextChangeController:managedObjectIDsToUpdateForUpdatedManagedObjects:]" simulateCrash:1 showAlert:0 format:@"Need to update this method for a new change controller"];
     v10 = [MEMORY[0x277CBEB98] set];
@@ -5797,17 +5797,17 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v12 = [(ICNoteEditorBaseViewController *)self note];
-  v13 = [v12 folder];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  folder = [note folder];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __116__ICNoteEditorViewController_managedObjectContextChangeController_managedObjectIDsToUpdateForUpdatedManagedObjects___block_invoke_2;
   v17[3] = &unk_2781ACE78;
-  v18 = v12;
-  v19 = v13;
-  v14 = v13;
-  v15 = v12;
-  v11 = [v7 ic_compactMap:v17];
+  v18 = note;
+  v19 = folder;
+  v14 = folder;
+  v15 = note;
+  v11 = [objectsCopy ic_compactMap:v17];
 
 LABEL_7:
 
@@ -5881,13 +5881,13 @@ LABEL_9:
   return v4;
 }
 
-- (void)managedObjectContextChangeController:(id)a3 performUpdatesForManagedObjectIDs:(id)a4
+- (void)managedObjectContextChangeController:(id)controller performUpdatesForManagedObjectIDs:(id)ds
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(ICNoteEditorViewController *)self inlineAttachmentChangeController];
+  controllerCopy = controller;
+  inlineAttachmentChangeController = [(ICNoteEditorViewController *)self inlineAttachmentChangeController];
 
-  if (v6 == v5)
+  if (inlineAttachmentChangeController == controllerCopy)
   {
     v8 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -5896,17 +5896,17 @@ LABEL_9:
     }
 
     objc_opt_class();
-    v9 = [(ICNoteEditorViewController *)self textView];
-    v10 = [v9 textStorage];
+    textView = [(ICNoteEditorViewController *)self textView];
+    textStorage = [textView textStorage];
     v11 = ICDynamicCast();
 
     objc_opt_class();
-    v12 = [(ICNoteEditorViewController *)self textView];
-    v13 = [v12 textLayoutManager];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    textLayoutManager = [textView2 textLayoutManager];
     v14 = ICDynamicCast();
 
     objc_opt_class();
-    v15 = [v11 styler];
+    styler = [v11 styler];
     v16 = ICCheckedDynamicCast();
 
     if (ICInternalSettingsIsTextKit2Enabled())
@@ -5919,10 +5919,10 @@ LABEL_9:
       [v16 refreshTextStylingForTextStorage:v11 withTextController:v16];
     }
 
-    v17 = [(ICNoteEditorBaseViewController *)self note];
-    v18 = [v17 visibleAttachmentTextStoragesForTextLayoutManager:v14];
-    v19 = [v18 allValues];
-    v20 = [v19 ic_flatMap:&__block_literal_global_578];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    v18 = [note visibleAttachmentTextStoragesForTextLayoutManager:v14];
+    allValues = [v18 allValues];
+    v20 = [allValues ic_flatMap:&__block_literal_global_578];
 
     v28 = 0u;
     v29 = 0u;
@@ -5957,9 +5957,9 @@ LABEL_9:
 
   else
   {
-    v7 = [(ICNoteEditorViewController *)self noteAndFolderChangeController];
+    noteAndFolderChangeController = [(ICNoteEditorViewController *)self noteAndFolderChangeController];
 
-    if (v7 == v5)
+    if (noteAndFolderChangeController == controllerCopy)
     {
       [(ICNoteEditorViewController *)self noteOrFolderChangedCallback];
     }
@@ -5971,45 +5971,45 @@ LABEL_9:
   }
 }
 
-- (void)updateTextInputAccessoryViewForDidBeginEditing:(id)a3
+- (void)updateTextInputAccessoryViewForDidBeginEditing:(id)editing
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  editingCopy = editing;
   if ([(ICNoteEditorViewController *)self usesContextualFormatBar])
   {
     goto LABEL_31;
   }
 
-  v5 = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
-  v6 = [(ICNoteEditorViewController *)self noteFormattingController];
-  v7 = [v6 view];
-  if (!v7)
+  textViewInputAccessoryView = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
+  noteFormattingController = [(ICNoteEditorViewController *)self noteFormattingController];
+  view = [noteFormattingController view];
+  if (!view)
   {
 
     goto LABEL_6;
   }
 
-  v8 = v7;
-  v9 = [(ICNoteEditorViewController *)self styleSelectorInputViewShowing];
+  v8 = view;
+  styleSelectorInputViewShowing = [(ICNoteEditorViewController *)self styleSelectorInputViewShowing];
 
-  if (!v9)
+  if (!styleSelectorInputViewShowing)
   {
 LABEL_6:
-    v10 = [v4 inputAccessoryView];
+    inputAccessoryView = [editingCopy inputAccessoryView];
 
-    [v4 setInputAccessoryView:v5];
-    if (!v10 && v5)
+    [editingCopy setInputAccessoryView:textViewInputAccessoryView];
+    if (!inputAccessoryView && textViewInputAccessoryView)
     {
-      [v4 reloadInputViews];
+      [editingCopy reloadInputViews];
     }
   }
 
-  v11 = [(ICNoteEditorViewController *)self keyboardAnimateInFinishTime];
+  keyboardAnimateInFinishTime = [(ICNoteEditorViewController *)self keyboardAnimateInFinishTime];
 
-  if (v11)
+  if (keyboardAnimateInFinishTime)
   {
-    v12 = [(ICNoteEditorViewController *)self keyboardAnimateInFinishTime];
-    [v12 timeIntervalSinceNow];
+    keyboardAnimateInFinishTime2 = [(ICNoteEditorViewController *)self keyboardAnimateInFinishTime];
+    [keyboardAnimateInFinishTime2 timeIntervalSinceNow];
     v14 = v13;
 
     if (v14 <= 0.0 || v14 >= 0.5)
@@ -6035,25 +6035,25 @@ LABEL_6:
 
   if (![MEMORY[0x277D75658] isInHardwareKeyboardMode] || (objc_msgSend(MEMORY[0x277D75418], "currentDevice"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "userInterfaceIdiom"), v16, !v17))
   {
-    v18 = [(ICNoteEditorViewController *)self inStartEditingForWritingTools];
-    v19 = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
-    v20 = v19;
-    if (v18)
+    inStartEditingForWritingTools = [(ICNoteEditorViewController *)self inStartEditingForWritingTools];
+    dismissableInputAccessoryView = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
+    v20 = dismissableInputAccessoryView;
+    if (inStartEditingForWritingTools)
     {
-      [v19 hide];
+      [dismissableInputAccessoryView hide];
     }
 
     else
     {
-      [v19 showWithDelay:v14];
+      [dismissableInputAccessoryView showWithDelay:v14];
     }
 
     if (![(ICNoteEditorViewController *)self hasKeyboardBeenVisibleBefore])
     {
       [(ICNoteEditorViewController *)self setHasKeyboardBeenVisibleBefore:1];
-      v21 = [(ICNoteEditorViewController *)self view];
-      v22 = [v21 window];
-      [v22 frame];
+      view2 = [(ICNoteEditorViewController *)self view];
+      window = [view2 window];
+      [window frame];
       v24 = v23;
       v26 = v25;
 
@@ -6062,22 +6062,22 @@ LABEL_6:
 
     if ([(ICNoteEditorViewController *)self inStartEditingForWritingTools])
     {
-      v27 = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
-      [v27 setButtonsVisible:0];
+      dismissableInputAccessoryView2 = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
+      [dismissableInputAccessoryView2 setButtonsVisible:0];
 
-      v28 = [(ICNoteEditorViewController *)self shouldInputAccessoryViewButtonsBeVisible];
-      v29 = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
-      [v29 setSetButtonsVisibleWhenShown:v28];
+      shouldInputAccessoryViewButtonsBeVisible = [(ICNoteEditorViewController *)self shouldInputAccessoryViewButtonsBeVisible];
+      dismissableInputAccessoryView3 = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
+      [dismissableInputAccessoryView3 setSetButtonsVisibleWhenShown:shouldInputAccessoryViewButtonsBeVisible];
     }
 
     else
     {
-      v30 = [(ICNoteEditorViewController *)self shouldInputAccessoryViewButtonsBeVisible];
-      v29 = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
-      [v29 setButtonsVisible:v30];
+      shouldInputAccessoryViewButtonsBeVisible2 = [(ICNoteEditorViewController *)self shouldInputAccessoryViewButtonsBeVisible];
+      dismissableInputAccessoryView3 = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
+      [dismissableInputAccessoryView3 setButtonsVisible:shouldInputAccessoryViewButtonsBeVisible2];
     }
 
-    if (v5)
+    if (textViewInputAccessoryView)
     {
       [(ICNoteEditorViewController *)self updateTextViewContentInsetsAnimated:1];
     }
@@ -6086,8 +6086,8 @@ LABEL_6:
     v31[1] = 3221225472;
     v31[2] = __77__ICNoteEditorViewController_updateTextInputAccessoryViewForDidBeginEditing___block_invoke;
     v31[3] = &unk_2781ABEB8;
-    v32 = v4;
-    v33 = self;
+    v32 = editingCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], v31);
   }
 
@@ -6111,40 +6111,40 @@ uint64_t __77__ICNoteEditorViewController_updateTextInputAccessoryViewForDidBegi
   return result;
 }
 
-- (void)updateTextInputAccessoryViewForTextViewDidChange:(id)a3
+- (void)updateTextInputAccessoryViewForTextViewDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   if ([(ICNoteEditorViewController *)self usesContextualFormatBar])
   {
-    v4 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v4 textViewDidChange:v5];
+    navigationItemConfiguration = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration textViewDidChange:changeCopy];
   }
 }
 
-- (void)updateTextInputAccessoryViewForDidEndEditing:(id)a3
+- (void)updateTextInputAccessoryViewForDidEndEditing:(id)editing
 {
-  v9 = a3;
-  v4 = [(ICNoteEditorViewController *)self textView];
-  if (([v4 isFirstResponder] & 1) == 0)
+  editingCopy = editing;
+  textView = [(ICNoteEditorViewController *)self textView];
+  if (([textView isFirstResponder] & 1) == 0)
   {
-    v5 = [(ICNoteEditorViewController *)self auxiliaryResponder];
-    v6 = [v5 isFirstResponder];
+    auxiliaryResponder = [(ICNoteEditorViewController *)self auxiliaryResponder];
+    isFirstResponder = [auxiliaryResponder isFirstResponder];
 
-    if (v6)
+    if (isFirstResponder)
     {
       goto LABEL_6;
     }
 
-    v4 = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
-    -[ICNoteEditorViewController setShouldInputAccessoryViewButtonsBeVisible:](self, "setShouldInputAccessoryViewButtonsBeVisible:", [v4 buttonsVisible]);
-    [v4 setButtonsVisible:0];
-    [v4 hide];
-    v7 = [(ICNoteEditorViewController *)self textView];
-    [v7 setInputAccessoryView:0];
+    textView = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
+    -[ICNoteEditorViewController setShouldInputAccessoryViewButtonsBeVisible:](self, "setShouldInputAccessoryViewButtonsBeVisible:", [textView buttonsVisible]);
+    [textView setButtonsVisible:0];
+    [textView hide];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    [textView2 setInputAccessoryView:0];
 
-    v8 = [(ICNoteEditorViewController *)self textView];
+    textView3 = [(ICNoteEditorViewController *)self textView];
 
-    if (v8 != v9)
+    if (textView3 != editingCopy)
     {
       [(ICNoteEditorViewController *)self showOrHideActivityStreamToolbarIfNeeded];
     }
@@ -6153,28 +6153,28 @@ uint64_t __77__ICNoteEditorViewController_updateTextInputAccessoryViewForDidBegi
 LABEL_6:
 }
 
-- (void)inputAccessoryDisclosureStateWillChange:(id)a3
+- (void)inputAccessoryDisclosureStateWillChange:(id)change
 {
-  v4 = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
-  v5 = [v4 buttonsVisible];
+  dismissableInputAccessoryView = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
+  buttonsVisible = [dismissableInputAccessoryView buttonsVisible];
 
-  if ((v5 & 1) == 0)
+  if ((buttonsVisible & 1) == 0)
   {
 
     [(ICNoteEditorViewController *)self resetBarButtonsAnimated:0];
   }
 }
 
-- (void)inputAccessoryDisclosureStateDidChange:(id)a3 tapped:(BOOL)a4
+- (void)inputAccessoryDisclosureStateDidChange:(id)change tapped:(BOOL)tapped
 {
-  v4 = a4;
+  tappedCopy = tapped;
   [(ICNoteEditorViewController *)self updateTextViewContentInsetsAnimated:1];
-  v6 = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
-  v7 = [v6 buttonsVisible];
+  dismissableInputAccessoryView = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
+  buttonsVisible = [dismissableInputAccessoryView buttonsVisible];
 
-  if (!v7)
+  if (!buttonsVisible)
   {
-    if (!v4)
+    if (!tappedCopy)
     {
       return;
     }
@@ -6182,31 +6182,31 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v8 = [(ICNoteEditorViewController *)self textView];
-  [v8 selectedRange];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView selectedRange];
   v10 = v9;
 
   if (!v10)
   {
-    v11 = [(ICNoteEditorViewController *)self textView];
-    v12 = [(ICNoteEditorViewController *)self textView];
-    v13 = [v12 selectedTextRange];
-    v14 = [v13 end];
-    [v11 caretRectForPosition:v14];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    textView3 = [(ICNoteEditorViewController *)self textView];
+    selectedTextRange = [textView3 selectedTextRange];
+    v14 = [selectedTextRange end];
+    [textView2 caretRectForPosition:v14];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
 
-    v23 = [(ICNoteEditorViewController *)self textView];
-    [v23 bounds];
+    textView4 = [(ICNoteEditorViewController *)self textView];
+    [textView4 bounds];
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v31 = v30;
 
-    v32 = [(ICNoteEditorViewController *)self textView];
-    [v32 contentInset];
+    textView5 = [(ICNoteEditorViewController *)self textView];
+    [textView5 contentInset];
     v34 = v31 - v33;
 
     v39 = v16;
@@ -6225,65 +6225,65 @@ LABEL_6:
       [(ICNoteEditorViewController *)self inputAccessoryViewHeight];
       if (v36 < v22 + v37)
       {
-        v38 = [(ICNoteEditorViewController *)self textView];
-        [v38 scrollRectToVisible:1 animated:{v39, v18, v20, v22}];
+        textView6 = [(ICNoteEditorViewController *)self textView];
+        [textView6 scrollRectToVisible:1 animated:{v39, v18, v20, v22}];
       }
     }
   }
 
-  if (v4)
+  if (tappedCopy)
   {
 LABEL_9:
 
-    [(ICNoteEditorViewController *)self setShouldInputAccessoryViewButtonsBeVisible:v7];
+    [(ICNoteEditorViewController *)self setShouldInputAccessoryViewButtonsBeVisible:buttonsVisible];
   }
 }
 
-- (void)notesContextRefreshNotification:(id)a3
+- (void)notesContextRefreshNotification:(id)notification
 {
   [(ICNoteEditorViewController *)self fetchAll];
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  [v4 refreshNoteTextFromDataStore];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [note refreshNoteTextFromDataStore];
 }
 
 - (void)fetchAll
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
+  note = [(ICNoteEditorBaseViewController *)self note];
 
-  if (v3)
+  if (note)
   {
     v4 = MEMORY[0x277D35F28];
-    v9 = [(ICNoteEditorBaseViewController *)self note];
-    v5 = [v9 identifier];
-    v6 = [(ICNoteEditorBaseViewController *)self note];
-    v7 = [v6 managedObjectContext];
-    v8 = [v4 refreshAllOfNoteWithIdentifier:v5 context:v7];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    identifier = [note2 identifier];
+    note3 = [(ICNoteEditorBaseViewController *)self note];
+    managedObjectContext = [note3 managedObjectContext];
+    v8 = [v4 refreshAllOfNoteWithIdentifier:identifier context:managedObjectContext];
   }
 }
 
-- (void)viewControllerWillStartEditModeNotification:(id)a3
+- (void)viewControllerWillStartEditModeNotification:(id)notification
 {
-  v11 = a3;
+  notificationCopy = notification;
   objc_opt_class();
-  v4 = [v11 object];
+  object = [notificationCopy object];
   v5 = ICDynamicCast();
 
-  v6 = [v5 ic_windowScene];
-  v7 = [(ICNoteEditorViewController *)self ic_windowScene];
+  ic_windowScene = [v5 ic_windowScene];
+  ic_windowScene2 = [(ICNoteEditorViewController *)self ic_windowScene];
 
-  if (v6 == v7)
+  if (ic_windowScene == ic_windowScene2)
   {
-    v8 = [v11 object];
-    if (v8 == self || ([(ICNoteEditorViewController *)self isEditing]& 1) == 0)
+    object2 = [notificationCopy object];
+    if (object2 == self || ([(ICNoteEditorViewController *)self isEditing]& 1) == 0)
     {
     }
 
     else
     {
-      v9 = [MEMORY[0x277D369A0] sharedInstance];
-      v10 = [v9 isSecureScreenShowing];
+      mEMORY[0x277D369A0] = [MEMORY[0x277D369A0] sharedInstance];
+      isSecureScreenShowing = [mEMORY[0x277D369A0] isSecureScreenShowing];
 
-      if ((v10 & 1) == 0)
+      if ((isSecureScreenShowing & 1) == 0)
       {
         [(ICNoteEditorViewController *)self setEditing:0 animated:1];
       }
@@ -6291,81 +6291,81 @@ LABEL_9:
   }
 }
 
-- (void)submitChecklistAnalyticsEventForActionType:(int64_t)a3
+- (void)submitChecklistAnalyticsEventForActionType:(int64_t)type
 {
-  v5 = [(ICNoteEditorViewController *)self textController];
-  v6 = [(ICNoteEditorViewController *)self textView];
-  v7 = [v6 selectedRange];
-  v8 = [(ICNoteEditorViewController *)self textView];
-  v11 = [v5 analyticsInfoForChecklistAtIndex:v7 textView:v8];
+  textController = [(ICNoteEditorViewController *)self textController];
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView selectedRange];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  v11 = [textController analyticsInfoForChecklistAtIndex:selectedRange textView:textView2];
 
-  v9 = [(ICNoteEditorViewController *)self eventReporter];
-  v10 = [(ICNoteEditorBaseViewController *)self note];
-  [v9 submitChecklistUsageEventForModernNote:v10 countOfCheckedItems:objc_msgSend(v11 countOfTotalItems:"numberOfCheckedItems") checklistActionType:{objc_msgSend(v11, "numberOfItems"), a3}];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitChecklistUsageEventForModernNote:note countOfCheckedItems:objc_msgSend(v11 countOfTotalItems:"numberOfCheckedItems") checklistActionType:{objc_msgSend(v11, "numberOfItems"), type}];
 }
 
 - (void)donateEditingIntentIfNecessary
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  v4 = [v3 textStorage];
-  v5 = [v4 length];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  textStorage = [note textStorage];
+  v5 = [textStorage length];
 
   if (v5)
   {
     if ([(ICNoteEditorViewController *)self isEditingNewNote])
     {
-      v6 = [(ICNoteEditorBaseViewController *)self note];
-      v7 = [ICIntentsUtilities interactionForCreateNote:v6];
+      note2 = [(ICNoteEditorBaseViewController *)self note];
+      v7 = [ICIntentsUtilities interactionForCreateNote:note2];
       [ICIntentsUtilities donateInteraction:v7];
     }
 
     else
     {
-      v8 = [(ICNoteEditorViewController *)self originalEndOfNote];
+      originalEndOfNote = [(ICNoteEditorViewController *)self originalEndOfNote];
 
-      if (!v8)
+      if (!originalEndOfNote)
       {
         goto LABEL_11;
       }
 
-      v9 = [(ICNoteEditorBaseViewController *)self note];
-      v10 = [v9 textStorage];
-      v11 = [v10 mergeableString];
-      v12 = [(ICNoteEditorViewController *)self originalEndOfNote];
-      v6 = [v11 characterRangesForSelection:v12];
+      note3 = [(ICNoteEditorBaseViewController *)self note];
+      textStorage2 = [note3 textStorage];
+      mergeableString = [textStorage2 mergeableString];
+      originalEndOfNote2 = [(ICNoteEditorViewController *)self originalEndOfNote];
+      note2 = [mergeableString characterRangesForSelection:originalEndOfNote2];
 
-      v13 = [v6 firstObject];
-      v14 = [v13 rangeValue];
+      firstObject = [note2 firstObject];
+      rangeValue = [firstObject rangeValue];
 
-      v15 = [(ICNoteEditorBaseViewController *)self note];
-      v16 = [v15 textStorage];
-      v17 = [v16 length] - v14;
+      note4 = [(ICNoteEditorBaseViewController *)self note];
+      textStorage3 = [note4 textStorage];
+      v17 = [textStorage3 length] - rangeValue;
 
       if (v17 < 2)
       {
         goto LABEL_10;
       }
 
-      v18 = [(ICNoteEditorBaseViewController *)self note];
-      v19 = [v18 textStorage];
-      v20 = [v19 length];
+      note5 = [(ICNoteEditorBaseViewController *)self note];
+      textStorage4 = [note5 textStorage];
+      v20 = [textStorage4 length];
 
-      if (v14 >= v20)
+      if (rangeValue >= v20)
       {
         goto LABEL_10;
       }
 
-      v21 = [(ICNoteEditorBaseViewController *)self note];
-      v22 = [v21 textStorage];
-      v23 = [v22 string];
-      v7 = [v23 substringWithRange:{v14, v17}];
+      note6 = [(ICNoteEditorBaseViewController *)self note];
+      textStorage5 = [note6 textStorage];
+      string = [textStorage5 string];
+      v7 = [string substringWithRange:{rangeValue, v17}];
 
       if ([v7 hasPrefix:@"\n"])
       {
         v24 = [v7 substringFromIndex:1];
 
-        v25 = [(ICNoteEditorBaseViewController *)self note];
-        v26 = [ICIntentsUtilities interactionForAppendToNote:v25 withAppendedText:v24];
+        note7 = [(ICNoteEditorBaseViewController *)self note];
+        v26 = [ICIntentsUtilities interactionForAppendToNote:note7 withAppendedText:v24];
         [ICIntentsUtilities donateInteraction:v26];
 
         v7 = v24;
@@ -6383,25 +6383,25 @@ LABEL_11:
 
 - (void)didEndEditingNote
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  if (v3)
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if (note)
   {
-    v4 = v3;
-    v5 = [(ICNoteEditorViewController *)self isAddingImageAttachment];
+    v4 = note;
+    isAddingImageAttachment = [(ICNoteEditorViewController *)self isAddingImageAttachment];
 
-    if (!v5)
+    if (!isAddingImageAttachment)
     {
       [(ICNoteEditorViewController *)self saveNote];
-      v6 = [(ICNoteEditorViewController *)self bluetoothKeyboardHintViewController];
-      [v6 didEditNote];
+      bluetoothKeyboardHintViewController = [(ICNoteEditorViewController *)self bluetoothKeyboardHintViewController];
+      [bluetoothKeyboardHintViewController didEditNote];
     }
   }
 }
 
 - (void)saveNote
 {
-  v1 = [a1 note];
-  v2 = [v1 shortLoggingDescription];
+  note = [self note];
+  shortLoggingDescription = [note shortLoggingDescription];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
   _os_log_debug_impl(v3, v4, v5, v6, v7, 0xCu);
@@ -6409,10 +6409,10 @@ LABEL_11:
 
 - (void)saveInlineDrawings
 {
-  v2 = [(ICNoteEditorViewController *)self textView];
-  v3 = [v2 textStorage];
+  textView = [(ICNoteEditorViewController *)self textView];
+  textStorage = [textView textStorage];
 
-  [v3 enumerateAttribute:*MEMORY[0x277D74060] inRange:0 options:objc_msgSend(v3 usingBlock:{"length"), 0, &__block_literal_global_584}];
+  [textStorage enumerateAttribute:*MEMORY[0x277D74060] inRange:0 options:objc_msgSend(textStorage usingBlock:{"length"), 0, &__block_literal_global_584}];
 }
 
 void __48__ICNoteEditorViewController_saveInlineDrawings__block_invoke(uint64_t a1, void *a2)
@@ -6434,19 +6434,19 @@ void __48__ICNoteEditorViewController_saveInlineDrawings__block_invoke(uint64_t 
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
     objc_opt_class();
-    v3 = [(ICNoteEditorViewController *)self textView];
-    v4 = [v3 layoutManager];
+    textView = [(ICNoteEditorViewController *)self textView];
+    layoutManager = [textView layoutManager];
     v5 = ICDynamicCast();
 
     [v5 updateInlineDrawingViews];
   }
 }
 
-- (id)attributedStringFromHTML:(id)a3
+- (id)attributedStringFromHTML:(id)l
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 dataUsingEncoding:4];
+  lCopy = l;
+  v4 = [lCopy dataUsingEncoding:4];
   v5 = objc_alloc(MEMORY[0x277CCAB48]);
   v19 = *MEMORY[0x277D74090];
   v20[0] = *MEMORY[0x277D740C8];
@@ -6463,7 +6463,7 @@ void __48__ICNoteEditorViewController_saveInlineDrawings__block_invoke(uint64_t 
     v7 = v9;
   }
 
-  if ([v3 rangeOfString:@"<meta name=Generator content=Cocoa HTML Writer>"] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([lCopy rangeOfString:@"<meta name=Generator content=Cocoa HTML Writer>"] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v16[0] = 0;
     v16[1] = v16;
@@ -6521,24 +6521,24 @@ LABEL_6:
 - (_NSRange)visibleRange
 {
   IsTextKit2Enabled = ICInternalSettingsIsTextKit2Enabled();
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = v4;
+  textView = [(ICNoteEditorViewController *)self textView];
+  v5 = textView;
   if (IsTextKit2Enabled)
   {
-    v6 = [v4 textLayoutManager];
-    v7 = [v6 textViewportLayoutController];
-    v8 = [v7 viewportRange];
+    textLayoutManager = [textView textLayoutManager];
+    textViewportLayoutController = [textLayoutManager textViewportLayoutController];
+    viewportRange = [textViewportLayoutController viewportRange];
 
-    v9 = [(ICNoteEditorViewController *)self textView];
-    v10 = [v9 textLayoutManager];
-    v11 = [v10 ic_rangeForTextRange:v8];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    textLayoutManager2 = [textView2 textLayoutManager];
+    v11 = [textLayoutManager2 ic_rangeForTextRange:viewportRange];
     v13 = v12;
   }
 
   else
   {
-    v14 = [v4 textStorage];
-    v11 = [v14 length];
+    textStorage = [textView textStorage];
+    v11 = [textStorage length];
 
     if (!v11)
     {
@@ -6546,20 +6546,20 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v15 = [(ICNoteEditorViewController *)self textView];
-    [v15 bounds];
+    textView3 = [(ICNoteEditorViewController *)self textView];
+    [textView3 bounds];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
 
-    v24 = [(ICNoteEditorViewController *)self textView];
-    v25 = [(ICNoteEditorViewController *)self textView];
-    [v25 bounds];
-    v26 = [v24 characterRangeAtPoint:?];
-    v8 = [v26 start];
+    textView4 = [(ICNoteEditorViewController *)self textView];
+    textView5 = [(ICNoteEditorViewController *)self textView];
+    [textView5 bounds];
+    v26 = [textView4 characterRangeAtPoint:?];
+    viewportRange = [v26 start];
 
-    v27 = [(ICNoteEditorViewController *)self textView];
+    textView6 = [(ICNoteEditorViewController *)self textView];
     v36.origin.x = v17;
     v36.origin.y = v19;
     v36.size.width = v21;
@@ -6569,16 +6569,16 @@ LABEL_6:
     v37.origin.y = v19;
     v37.size.width = v21;
     v37.size.height = v23;
-    v29 = [v27 characterRangeAtPoint:{MaxX, CGRectGetMaxY(v37)}];
-    v9 = [v29 end];
+    v29 = [textView6 characterRangeAtPoint:{MaxX, CGRectGetMaxY(v37)}];
+    textView2 = [v29 end];
 
-    v30 = [(ICNoteEditorViewController *)self textView];
-    v31 = [(ICNoteEditorViewController *)self textView];
-    v32 = [v31 beginningOfDocument];
-    v11 = [v30 offsetFromPosition:v32 toPosition:v8];
+    textView7 = [(ICNoteEditorViewController *)self textView];
+    textView8 = [(ICNoteEditorViewController *)self textView];
+    beginningOfDocument = [textView8 beginningOfDocument];
+    v11 = [textView7 offsetFromPosition:beginningOfDocument toPosition:viewportRange];
 
-    v10 = [(ICNoteEditorViewController *)self textView];
-    v13 = [v10 offsetFromPosition:v8 toPosition:v9];
+    textLayoutManager2 = [(ICNoteEditorViewController *)self textView];
+    v13 = [textLayoutManager2 offsetFromPosition:viewportRange toPosition:textView2];
   }
 
 LABEL_6:
@@ -6598,37 +6598,37 @@ LABEL_6:
   v25 = __Block_byref_object_copy__4;
   v26 = __Block_byref_object_dispose__4;
   v27 = 0;
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 selectedRange];
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView selectedRange];
   v6 = v5;
 
   if (v6)
   {
-    v7 = [(ICNoteEditorViewController *)self textView];
-    v8 = [v7 textStorage];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    textStorage = [textView2 textStorage];
     v9 = *MEMORY[0x277D740E8];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __46__ICNoteEditorViewController_linkForSelection__block_invoke;
     v21[3] = &unk_2781ABC80;
     v21[4] = &v22;
-    [v8 enumerateAttribute:v9 inRange:v4 options:v6 usingBlock:{0, v21}];
+    [textStorage enumerateAttribute:v9 inRange:selectedRange options:v6 usingBlock:{0, v21}];
   }
 
   else
   {
-    v10 = [(ICNoteEditorViewController *)self textView];
-    v11 = [v10 textStorage];
-    v12 = v4 < [v11 length];
+    textView3 = [(ICNoteEditorViewController *)self textView];
+    textStorage2 = [textView3 textStorage];
+    v12 = selectedRange < [textStorage2 length];
 
     if (!v12)
     {
       goto LABEL_6;
     }
 
-    v7 = [(ICNoteEditorViewController *)self textView];
-    v8 = [v7 textStorage];
-    v13 = [v8 attribute:*MEMORY[0x277D740E8] atIndex:v4 effectiveRange:0];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    textStorage = [textView2 textStorage];
+    v13 = [textStorage attribute:*MEMORY[0x277D740E8] atIndex:selectedRange effectiveRange:0];
     v14 = v23[5];
     v23[5] = v13;
   }
@@ -6698,36 +6698,36 @@ void __46__ICNoteEditorViewController_linkForSelection__block_invoke(uint64_t a1
 
 - (BOOL)canFindInNote
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  if (v3)
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if (note)
   {
-    v4 = [(ICNoteEditorBaseViewController *)self note];
-    if ([v4 isPasswordProtectedAndLocked])
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    if ([note2 isPasswordProtectedAndLocked])
     {
-      v5 = 0;
+      ic_isViewVisible = 0;
     }
 
     else
     {
-      v6 = [(ICNoteEditorViewController *)self invitation];
-      if (v6)
+      invitation = [(ICNoteEditorViewController *)self invitation];
+      if (invitation)
       {
-        v5 = 0;
+        ic_isViewVisible = 0;
       }
 
       else
       {
-        v5 = [(ICNoteEditorViewController *)self ic_isViewVisible];
+        ic_isViewVisible = [(ICNoteEditorViewController *)self ic_isViewVisible];
       }
     }
   }
 
   else
   {
-    v5 = 0;
+    ic_isViewVisible = 0;
   }
 
-  return v5;
+  return ic_isViewVisible;
 }
 
 - (BOOL)canOpenLink
@@ -6737,10 +6737,10 @@ void __46__ICNoteEditorViewController_linkForSelection__block_invoke(uint64_t a1
     return 0;
   }
 
-  v4 = [(ICNoteEditorViewController *)self linkForSelection];
-  if (v4)
+  linkForSelection = [(ICNoteEditorViewController *)self linkForSelection];
+  if (linkForSelection)
   {
-    v3 = [ICExtensionSafeAPIShims canOpenURL:v4];
+    v3 = [ICExtensionSafeAPIShims canOpenURL:linkForSelection];
   }
 
   else
@@ -6753,16 +6753,16 @@ void __46__ICNoteEditorViewController_linkForSelection__block_invoke(uint64_t a1
 
 - (BOOL)canRecordAudio
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  v4 = [v3 textStorage];
-  if (!v4)
+  note = [(ICNoteEditorBaseViewController *)self note];
+  textStorage = [note textStorage];
+  if (!textStorage)
   {
     goto LABEL_8;
   }
 
-  v5 = v4;
-  v6 = [(ICNoteEditorBaseViewController *)self note];
-  if (![v6 isEditable])
+  v5 = textStorage;
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  if (![note2 isEditable])
   {
 LABEL_7:
 
@@ -6770,37 +6770,37 @@ LABEL_8:
     return 0;
   }
 
-  v7 = [(ICNoteEditorViewController *)self textView];
-  if (![v7 isEditable])
+  textView = [(ICNoteEditorViewController *)self textView];
+  if (![textView isEditable])
   {
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v8 = [(ICNoteEditorBaseViewController *)self note];
-  if ([v8 isPasswordProtected])
+  note3 = [(ICNoteEditorBaseViewController *)self note];
+  if ([note3 isPasswordProtected])
   {
 
     goto LABEL_6;
   }
 
-  v10 = [MEMORY[0x277D366C8] isRecording];
+  isRecording = [MEMORY[0x277D366C8] isRecording];
 
-  return (v10 & 1) == 0;
+  return (isRecording & 1) == 0;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(ICNoteEditorViewController *)self viewControllerManager];
-  v8 = [v7 window];
-  v9 = [v8 ic_topmostPresentedViewController];
+  senderCopy = sender;
+  viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+  window = [viewControllerManager window];
+  ic_topmostPresentedViewController = [window ic_topmostPresentedViewController];
 
-  if (sel_decreaseIndentation_ == a3 || sel_increaseIndentation_ == a3)
+  if (sel_decreaseIndentation_ == action || sel_increaseIndentation_ == action)
   {
-    v11 = [(ICNoteEditorViewController *)self textView];
-    if ([v11 isEditing])
+    textView = [(ICNoteEditorViewController *)self textView];
+    if ([textView isEditing])
     {
       LOBYTE(v12) = [(ICNoteEditorViewController *)self canIndentLeft]|| [(ICNoteEditorViewController *)self canIndentRight];
       goto LABEL_67;
@@ -6809,45 +6809,45 @@ LABEL_6:
     goto LABEL_66;
   }
 
-  if (sel_checkAll_ == a3)
+  if (sel_checkAll_ == action)
   {
-    v15 = [(ICNoteEditorViewController *)self canPerformTodoCheckAll];
+    canPerformTodoCheckAll = [(ICNoteEditorViewController *)self canPerformTodoCheckAll];
     goto LABEL_45;
   }
 
-  if (sel_uncheckAll_ == a3)
+  if (sel_uncheckAll_ == action)
   {
-    v15 = [(ICNoteEditorViewController *)self canPerformTodoUncheckAll];
+    canPerformTodoCheckAll = [(ICNoteEditorViewController *)self canPerformTodoUncheckAll];
     goto LABEL_45;
   }
 
-  if (sel_removeChecked_ == a3)
+  if (sel_removeChecked_ == action)
   {
-    v15 = [(ICNoteEditorViewController *)self canRemoveCheckedListItem];
+    canPerformTodoCheckAll = [(ICNoteEditorViewController *)self canRemoveCheckedListItem];
     goto LABEL_45;
   }
 
-  if (sel_moveCheckedToBottom_ == a3)
+  if (sel_moveCheckedToBottom_ == action)
   {
-    v15 = [(ICNoteEditorViewController *)self canMoveCheckedToBottom];
+    canPerformTodoCheckAll = [(ICNoteEditorViewController *)self canMoveCheckedToBottom];
     goto LABEL_45;
   }
 
-  if (sel_performFindInNote_ == a3)
+  if (sel_performFindInNote_ == action)
   {
-    v15 = [(ICNoteEditorViewController *)self canFindInNote];
+    canPerformTodoCheckAll = [(ICNoteEditorViewController *)self canFindInNote];
     goto LABEL_45;
   }
 
-  if (sel_insertGraph_ == a3 || sel_addToGraph_ == a3)
+  if (sel_insertGraph_ == action || sel_addToGraph_ == action)
   {
-    v11 = [(ICNoteEditorBaseViewController *)self note];
-    if ([v11 isEditable])
+    textView = [(ICNoteEditorBaseViewController *)self note];
+    if ([textView isEditable])
     {
-      v16 = [(ICNoteEditorBaseViewController *)self note];
-      v17 = [v16 isDeletedOrInTrash];
+      note = [(ICNoteEditorBaseViewController *)self note];
+      isDeletedOrInTrash = [note isDeletedOrInTrash];
 LABEL_48:
-      LOBYTE(v12) = v17 ^ 1;
+      LOBYTE(v12) = isDeletedOrInTrash ^ 1;
 
 LABEL_67:
       goto LABEL_68;
@@ -6858,7 +6858,7 @@ LABEL_66:
     goto LABEL_67;
   }
 
-  if (sel_createImage_ == a3)
+  if (sel_createImage_ == action)
   {
     if ([(ICNoteEditorViewController *)self canPerformCreateImageWithSelection])
     {
@@ -6866,100 +6866,100 @@ LABEL_66:
       goto LABEL_68;
     }
 
-    v18 = [(ICNoteEditorViewController *)self textView];
-    [v18 selectedRange];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    [textView2 selectedRange];
     LOBYTE(v12) = v19 == 0;
     goto LABEL_52;
   }
 
-  if (v9)
+  if (ic_topmostPresentedViewController)
   {
     goto LABEL_73;
   }
 
-  v13 = [(ICNoteEditorViewController *)self textView];
-  v14 = [v13 isEditing];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  isEditing = [textView3 isEditing];
 
-  if (!v14)
+  if (!isEditing)
   {
     goto LABEL_73;
   }
 
-  if (sel_moveSelectedListItemUp_ == a3)
+  if (sel_moveSelectedListItemUp_ == action)
   {
-    v15 = [(ICNoteEditorViewController *)self canMoveSelectedListItemUp];
+    canPerformTodoCheckAll = [(ICNoteEditorViewController *)self canMoveSelectedListItemUp];
     goto LABEL_45;
   }
 
-  if (sel_moveSelectedListItemDown_ == a3)
+  if (sel_moveSelectedListItemDown_ == action)
   {
-    v15 = [(ICNoteEditorViewController *)self canMoveSelectedListItemDown];
+    canPerformTodoCheckAll = [(ICNoteEditorViewController *)self canMoveSelectedListItemDown];
     goto LABEL_45;
   }
 
-  if (sel_openLink_ == a3)
+  if (sel_openLink_ == action)
   {
-    v15 = [(ICNoteEditorViewController *)self canOpenLink];
+    canPerformTodoCheckAll = [(ICNoteEditorViewController *)self canOpenLink];
     goto LABEL_45;
   }
 
   LOBYTE(v12) = 1;
-  if (sel_tab_ == a3 || sel_shiftTab_ == a3 || sel_shiftReturn_ == a3)
+  if (sel_tab_ == action || sel_shiftTab_ == action || sel_shiftReturn_ == action)
   {
     goto LABEL_68;
   }
 
-  if (sel_indentLeft_ == a3)
+  if (sel_indentLeft_ == action)
   {
-    v15 = [(ICNoteEditorViewController *)self canIndentLeft];
+    canPerformTodoCheckAll = [(ICNoteEditorViewController *)self canIndentLeft];
     goto LABEL_45;
   }
 
-  if (sel_indentRight_ == a3)
+  if (sel_indentRight_ == action)
   {
-    v15 = [(ICNoteEditorViewController *)self canIndentRight];
+    canPerformTodoCheckAll = [(ICNoteEditorViewController *)self canIndentRight];
     goto LABEL_45;
   }
 
-  if (sel_ic_alignLeft_ == a3 || sel_ic_alignCenter_ == a3 || sel_ic_alignRight_ == a3)
+  if (sel_ic_alignLeft_ == action || sel_ic_alignCenter_ == action || sel_ic_alignRight_ == action)
   {
     if (!ICDebugModeEnabled())
     {
       goto LABEL_73;
     }
 
-    v18 = [(ICNoteEditorViewController *)self textView];
-    v20 = [v18 isEditing];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    isEditing2 = [textView2 isEditing];
 LABEL_62:
-    LOBYTE(v12) = v20;
+    LOBYTE(v12) = isEditing2;
     goto LABEL_52;
   }
 
-  if (sel_copy_ == a3 || sel_cut_ == a3)
+  if (sel_copy_ == action || sel_cut_ == action)
   {
     v24.receiver = self;
     v24.super_class = ICNoteEditorViewController;
-    if (![(ICNoteEditorViewController *)&v24 canPerformAction:a3 withSender:v6])
+    if (![(ICNoteEditorViewController *)&v24 canPerformAction:action withSender:senderCopy])
     {
       goto LABEL_73;
     }
 
-    v18 = [(ICNoteEditorViewController *)self textView];
-    v20 = [v18 isSelectionCopyableSize];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    isEditing2 = [textView2 isSelectionCopyableSize];
     goto LABEL_62;
   }
 
-  if (sel__share_ == a3)
+  if (sel__share_ == action)
   {
     v23.receiver = self;
     v23.super_class = ICNoteEditorViewController;
-    if ([(ICNoteEditorViewController *)&v23 canPerformAction:a3 withSender:v6])
+    if ([(ICNoteEditorViewController *)&v23 canPerformAction:action withSender:senderCopy])
     {
-      v11 = [(ICNoteEditorViewController *)self textView];
-      if ([v11 isSelectionCopyableSize])
+      textView = [(ICNoteEditorViewController *)self textView];
+      if ([textView isSelectionCopyableSize])
       {
-        v16 = [(ICNoteEditorViewController *)self textView];
-        v17 = [v16 ic_isInSecureWindow];
+        note = [(ICNoteEditorViewController *)self textView];
+        isDeletedOrInTrash = [note ic_isInSecureWindow];
         goto LABEL_48;
       }
 
@@ -6971,45 +6971,45 @@ LABEL_73:
     goto LABEL_68;
   }
 
-  if (sel_addToTags_ == a3)
+  if (sel_addToTags_ == action)
   {
-    v15 = [(ICNoteEditorViewController *)self canAddToTags];
+    canPerformTodoCheckAll = [(ICNoteEditorViewController *)self canAddToTags];
     goto LABEL_45;
   }
 
-  if (sel_convertToText_ == a3)
+  if (sel_convertToText_ == action)
   {
-    v15 = [(ICNoteEditorViewController *)self canConvertToText];
+    canPerformTodoCheckAll = [(ICNoteEditorViewController *)self canConvertToText];
     goto LABEL_45;
   }
 
-  if (sel_convertToTag_ == a3)
+  if (sel_convertToTag_ == action)
   {
-    v15 = [(ICNoteEditorViewController *)self canConvertToTag];
+    canPerformTodoCheckAll = [(ICNoteEditorViewController *)self canConvertToTag];
     goto LABEL_45;
   }
 
-  if (sel_openLinkEditor_ == a3)
+  if (sel_openLinkEditor_ == action)
   {
     if ([(ICNoteEditorBaseViewController *)self isEditingOnSecureScreen])
     {
       goto LABEL_73;
     }
 
-    v18 = [(ICNoteEditorBaseViewController *)self note];
-    v12 = [v18 isSharedReadOnly] ^ 1;
+    textView2 = [(ICNoteEditorBaseViewController *)self note];
+    v12 = [textView2 isSharedReadOnly] ^ 1;
 LABEL_52:
 
     goto LABEL_68;
   }
 
-  if (sel_toggleBlockQuote_ != a3)
+  if (sel_toggleBlockQuote_ != action)
   {
     v22.receiver = self;
     v22.super_class = ICNoteEditorViewController;
-    v15 = [(ICNoteEditorViewController *)&v22 canPerformAction:a3 withSender:v6];
+    canPerformTodoCheckAll = [(ICNoteEditorViewController *)&v22 canPerformAction:action withSender:senderCopy];
 LABEL_45:
-    LOBYTE(v12) = v15;
+    LOBYTE(v12) = canPerformTodoCheckAll;
   }
 
 LABEL_68:
@@ -7019,38 +7019,38 @@ LABEL_68:
 
 - (BOOL)canRenameAttachmentForSelection
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  v4 = [v3 isDeletedOrInTrash];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isDeletedOrInTrash = [note isDeletedOrInTrash];
 
-  if (v4)
+  if (isDeletedOrInTrash)
   {
     return 0;
   }
 
-  v6 = [(ICNoteEditorViewController *)self textView];
-  v7 = [v6 singleSelectedAttachment];
-  v8 = [v7 attachment];
+  textView = [(ICNoteEditorViewController *)self textView];
+  singleSelectedAttachment = [textView singleSelectedAttachment];
+  attachment = [singleSelectedAttachment attachment];
 
-  LOBYTE(v6) = [v8 supportsRenaming];
-  return v6;
+  LOBYTE(textView) = [attachment supportsRenaming];
+  return textView;
 }
 
 - (void)renameAttachment
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 singleSelectedAttachment];
-  v5 = [v4 attachment];
+  textView = [(ICNoteEditorViewController *)self textView];
+  singleSelectedAttachment = [textView singleSelectedAttachment];
+  attachment = [singleSelectedAttachment attachment];
 
   v6 = objc_alloc(MEMORY[0x277D05D48]);
-  v7 = [v5 title];
-  v8 = [v6 initWithExistingTitle:v7];
+  title = [attachment title];
+  v8 = [v6 initWithExistingTitle:title];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __46__ICNoteEditorViewController_renameAttachment__block_invoke;
   v10[3] = &unk_2781ACF08;
-  v11 = v5;
-  v9 = v5;
+  v11 = attachment;
+  v9 = attachment;
   [v8 showFromViewController:self completion:v10];
 }
 
@@ -7066,19 +7066,19 @@ void __46__ICNoteEditorViewController_renameAttachment__block_invoke(uint64_t a1
 
 - (OS_dispatch_queue)userActivityUpdateQueue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_userActivityUpdateQueue)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_userActivityUpdateQueue)
   {
     v3 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v4 = dispatch_queue_create("com.apple.notes.user-activity", v3);
-    userActivityUpdateQueue = v2->_userActivityUpdateQueue;
-    v2->_userActivityUpdateQueue = v4;
+    userActivityUpdateQueue = selfCopy->_userActivityUpdateQueue;
+    selfCopy->_userActivityUpdateQueue = v4;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v6 = v2->_userActivityUpdateQueue;
+  v6 = selfCopy->_userActivityUpdateQueue;
 
   return v6;
 }
@@ -7086,24 +7086,24 @@ void __46__ICNoteEditorViewController_renameAttachment__block_invoke(uint64_t a1
 - (void)updateNoteUserActivityState
 {
   v71[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ICNoteEditorViewController *)self updateNoteUserActivityStateDelayer];
-  [v3 cancelPreviousFireRequests];
+  updateNoteUserActivityStateDelayer = [(ICNoteEditorViewController *)self updateNoteUserActivityStateDelayer];
+  [updateNoteUserActivityStateDelayer cancelPreviousFireRequests];
 
-  v4 = [(ICNoteEditorBaseViewController *)self note];
+  note = [(ICNoteEditorBaseViewController *)self note];
 
-  if (v4)
+  if (note)
   {
-    v5 = [(ICNoteEditorViewController *)self noteUserActivity];
-    if (v5)
+    noteUserActivity = [(ICNoteEditorViewController *)self noteUserActivity];
+    if (noteUserActivity)
     {
     }
 
     else
     {
-      v6 = [(ICNoteEditorBaseViewController *)self note];
-      v7 = [v6 isEmpty];
+      note2 = [(ICNoteEditorBaseViewController *)self note];
+      isEmpty = [note2 isEmpty];
 
-      if (v7)
+      if (isEmpty)
       {
         return;
       }
@@ -7111,47 +7111,47 @@ void __46__ICNoteEditorViewController_renameAttachment__block_invoke(uint64_t a1
 
     if ([(ICNoteEditorViewController *)self isDrawingStroke])
     {
-      v59 = [(ICNoteEditorViewController *)self updateNoteUserActivityStateDelayer];
-      [v59 requestFire];
+      updateNoteUserActivityStateDelayer2 = [(ICNoteEditorViewController *)self updateNoteUserActivityStateDelayer];
+      [updateNoteUserActivityStateDelayer2 requestFire];
     }
 
     else
     {
-      v8 = [(ICNoteEditorViewController *)self noteUserActivity];
+      noteUserActivity2 = [(ICNoteEditorViewController *)self noteUserActivity];
 
-      if (!v8)
+      if (!noteUserActivity2)
       {
         v9 = [objc_alloc(MEMORY[0x277CCAE58]) initWithActivityType:@"com.apple.notes.activity.edit-note"];
         [v9 setEligibleForSearch:1];
-        v10 = [(ICNoteEditorBaseViewController *)self note];
-        v11 = [v10 title];
-        v12 = [v11 localizeForLanguage:0];
+        note3 = [(ICNoteEditorBaseViewController *)self note];
+        title = [note3 title];
+        v12 = [title localizeForLanguage:0];
         [v9 setTitle:v12];
 
         [v9 setDelegate:self];
         [(ICNoteEditorViewController *)self setNoteUserActivity:v9];
-        v13 = [(ICNoteEditorViewController *)self noteUserActivity];
-        [v13 becomeCurrent];
+        noteUserActivity3 = [(ICNoteEditorViewController *)self noteUserActivity];
+        [noteUserActivity3 becomeCurrent];
       }
 
-      v14 = [(ICNoteEditorBaseViewController *)self note];
-      v60 = [v14 objectID];
+      note4 = [(ICNoteEditorBaseViewController *)self note];
+      objectID = [note4 objectID];
 
-      v58 = [(ICNoteEditorViewController *)self isEditing];
-      v15 = [(ICNoteEditorBaseViewController *)self note];
-      v16 = [v15 textStorage];
-      v17 = [v16 mergeableString];
+      isEditing = [(ICNoteEditorViewController *)self isEditing];
+      note5 = [(ICNoteEditorBaseViewController *)self note];
+      textStorage = [note5 textStorage];
+      mergeableString = [textStorage mergeableString];
       v18 = MEMORY[0x277CCAE60];
-      v19 = [(ICNoteEditorViewController *)self textView];
-      v20 = [v19 selectedRange];
-      v22 = [v18 valueWithRange:{v20, v21}];
+      textView = [(ICNoteEditorViewController *)self textView];
+      selectedRange = [textView selectedRange];
+      v22 = [v18 valueWithRange:{selectedRange, v21}];
       v71[0] = v22;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:1];
-      v24 = [v17 selectionForCharacterRanges:v23];
-      v57 = [v24 serialize];
+      v24 = [mergeableString selectionForCharacterRanges:v23];
+      serialize = [v24 serialize];
 
-      v25 = [(ICNoteEditorViewController *)self textView];
-      [v25 bounds];
+      textView2 = [(ICNoteEditorViewController *)self textView];
+      [textView2 bounds];
       v27 = v26;
       v29 = v28;
       v31 = v30;
@@ -7159,45 +7159,45 @@ void __46__ICNoteEditorViewController_renameAttachment__block_invoke(uint64_t a1
 
       if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
       {
-        v34 = [(ICNoteEditorViewController *)self textView];
-        v35 = [v34 layoutManager];
-        v36 = [(ICNoteEditorViewController *)self textView];
-        v37 = [v36 textContainer];
-        [v35 ensureLayoutForBoundingRect:v37 inTextContainer:{v27, v29, v31, v33}];
+        textView3 = [(ICNoteEditorViewController *)self textView];
+        layoutManager = [textView3 layoutManager];
+        textView4 = [(ICNoteEditorViewController *)self textView];
+        textContainer = [textView4 textContainer];
+        [layoutManager ensureLayoutForBoundingRect:textContainer inTextContainer:{v27, v29, v31, v33}];
       }
 
-      v38 = [(ICNoteEditorViewController *)self visibleRange];
+      visibleRange = [(ICNoteEditorViewController *)self visibleRange];
       v40 = v39;
-      v41 = [(ICNoteEditorBaseViewController *)self note];
-      v42 = [v41 textStorage];
-      v43 = [v42 mergeableString];
+      note6 = [(ICNoteEditorBaseViewController *)self note];
+      textStorage2 = [note6 textStorage];
+      mergeableString2 = [textStorage2 mergeableString];
       v44 = MEMORY[0x277CCAE60];
-      v45 = [(ICNoteEditorViewController *)self visibleRange];
-      v47 = [v44 valueWithRange:{v45, v46}];
+      visibleRange2 = [(ICNoteEditorViewController *)self visibleRange];
+      v47 = [v44 valueWithRange:{visibleRange2, v46}];
       v70 = v47;
       v48 = [MEMORY[0x277CBEA60] arrayWithObjects:&v70 count:1];
-      v49 = [v43 selectionForCharacterRanges:v48];
-      v50 = [v49 serialize];
+      v49 = [mergeableString2 selectionForCharacterRanges:v48];
+      serialize2 = [v49 serialize];
 
-      v51 = [(ICNoteEditorViewController *)self currentScrollState];
-      v52 = [(ICNoteEditorViewController *)self userActivityUpdateQueue];
+      currentScrollState = [(ICNoteEditorViewController *)self currentScrollState];
+      userActivityUpdateQueue = [(ICNoteEditorViewController *)self userActivityUpdateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __57__ICNoteEditorViewController_updateNoteUserActivityState__block_invoke;
       block[3] = &unk_2781ACF58;
-      v69 = v58;
-      v62 = v60;
-      v63 = v57;
-      v67 = v38;
+      v69 = isEditing;
+      v62 = objectID;
+      v63 = serialize;
+      v67 = visibleRange;
       v68 = v40;
-      v64 = v51;
-      v65 = v50;
-      v66 = self;
-      v53 = v50;
-      v54 = v51;
-      v55 = v57;
-      v56 = v60;
-      dispatch_async(v52, block);
+      v64 = currentScrollState;
+      v65 = serialize2;
+      selfCopy = self;
+      v53 = serialize2;
+      v54 = currentScrollState;
+      v55 = serialize;
+      v56 = objectID;
+      dispatch_async(userActivityUpdateQueue, block);
     }
   }
 }
@@ -7265,60 +7265,60 @@ void __57__ICNoteEditorViewController_updateNoteUserActivityState__block_invoke_
 
 - (void)removeCurrentScrollState
 {
-  v5 = [(ICNoteEditorViewController *)self savedScrollStates];
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  v4 = [v3 identifier];
-  [v5 ic_removeObjectForNonNilKey:v4];
+  savedScrollStates = [(ICNoteEditorViewController *)self savedScrollStates];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  identifier = [note identifier];
+  [savedScrollStates ic_removeObjectForNonNilKey:identifier];
 }
 
 - (ICTextViewScrollState)currentScrollState
 {
-  v2 = [(ICNoteEditorViewController *)self textView];
-  v3 = [ICTextViewScrollState scrollStateForTextView:v2];
+  textView = [(ICNoteEditorViewController *)self textView];
+  v3 = [ICTextViewScrollState scrollStateForTextView:textView];
 
   return v3;
 }
 
-- (void)applyScrollStateFromArchive:(id)a3
+- (void)applyScrollStateFromArchive:(id)archive
 {
-  if (a3)
+  if (archive)
   {
     [(ICNoteEditorViewController *)self setArchivedScrollStateToApply:?];
   }
 }
 
-- (void)setArchivedScrollStateToApply:(id)a3
+- (void)setArchivedScrollStateToApply:(id)apply
 {
-  v5 = a3;
+  applyCopy = apply;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__4;
   v20 = __Block_byref_object_dispose__4;
   v21 = 0;
-  v6 = [v5 note];
-  v7 = [v6 managedObjectContext];
+  note = [applyCopy note];
+  managedObjectContext = [note managedObjectContext];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __60__ICNoteEditorViewController_setArchivedScrollStateToApply___block_invoke;
   v13[3] = &unk_2781ACF80;
   v15 = &v16;
-  v8 = v5;
+  v8 = applyCopy;
   v14 = v8;
-  [v7 performBlockAndWait:v13];
+  [managedObjectContext performBlockAndWait:v13];
 
-  v9 = [(ICNoteEditorViewController *)self savedScrollStates];
-  [v9 ic_removeObjectForNonNilKey:v17[5]];
+  savedScrollStates = [(ICNoteEditorViewController *)self savedScrollStates];
+  [savedScrollStates ic_removeObjectForNonNilKey:v17[5]];
 
   if (self->_archivedScrollStateToApply != v8)
   {
-    objc_storeStrong(&self->_archivedScrollStateToApply, a3);
+    objc_storeStrong(&self->_archivedScrollStateToApply, apply);
     if ([(ICNoteEditorViewController *)self ic_isViewVisible])
     {
-      v10 = [(ICNoteEditorBaseViewController *)self note];
-      v11 = [(ICTextViewScrollState *)self->_archivedScrollStateToApply note];
+      note2 = [(ICNoteEditorBaseViewController *)self note];
+      note3 = [(ICTextViewScrollState *)self->_archivedScrollStateToApply note];
 
-      if (v10 == v11)
+      if (note2 == note3)
       {
         [(ICNoteEditorViewController *)self applyScrollStateIfAvailable];
         if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
@@ -7372,13 +7372,13 @@ void __57__ICNoteEditorViewController_applyScrollStateIfAvailable__block_invoke(
 - (void)submitPendingInlineDrawingDataIfNecessary
 {
   v47 = *MEMORY[0x277D85DE8];
-  v2 = [(ICNoteEditorBaseViewController *)self note];
-  if (v2)
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if (note)
   {
-    v3 = v2;
-    v4 = [(ICNoteEditorViewController *)self eventReporter];
-    v5 = [v4 pendingInlineDrawingInformation];
-    v6 = [v5 count];
+    v3 = note;
+    eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+    pendingInlineDrawingInformation = [eventReporter pendingInlineDrawingInformation];
+    v6 = [pendingInlineDrawingInformation count];
 
     if (v6)
     {
@@ -7386,10 +7386,10 @@ void __57__ICNoteEditorViewController_applyScrollStateIfAvailable__block_invoke(
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v7 = [(ICNoteEditorViewController *)self eventReporter];
-      v8 = [v7 pendingInlineDrawingInformation];
+      eventReporter2 = [(ICNoteEditorViewController *)self eventReporter];
+      pendingInlineDrawingInformation2 = [eventReporter2 pendingInlineDrawingInformation];
 
-      v41 = [v8 countByEnumeratingWithState:&v42 objects:v46 count:16];
+      v41 = [pendingInlineDrawingInformation2 countByEnumeratingWithState:&v42 objects:v46 count:16];
       if (!v41)
       {
         goto LABEL_22;
@@ -7405,67 +7405,67 @@ void __57__ICNoteEditorViewController_applyScrollStateIfAvailable__block_invoke(
         {
           if (*v43 != v9)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(pendingInlineDrawingInformation2);
           }
 
           v13 = *(*(&v42 + 1) + 8 * v12);
           v14 = *(v10 + 3584);
-          v15 = [*(v11 + 3888) sharedContext];
-          v16 = [v15 managedObjectContext];
-          v17 = [v14 attachmentWithIdentifier:v13 context:v16];
+          sharedContext = [*(v11 + 3888) sharedContext];
+          managedObjectContext = [sharedContext managedObjectContext];
+          v17 = [v14 attachmentWithIdentifier:v13 context:managedObjectContext];
 
           if (v17 && ([v17 markedForDeletion] & 1) == 0)
           {
-            v18 = [(ICNoteEditorViewController *)self eventReporter];
-            v19 = [v18 pendingInlineDrawingInformation];
-            v20 = [v19 objectForKeyedSubscript:v13];
+            eventReporter3 = [(ICNoteEditorViewController *)self eventReporter];
+            pendingInlineDrawingInformation3 = [eventReporter3 pendingInlineDrawingInformation];
+            v20 = [pendingInlineDrawingInformation3 objectForKeyedSubscript:v13];
 
-            v21 = [v17 systemPaperModel];
-            v22 = [v17 inlineDrawingModel];
-            v23 = v22;
-            if (v21)
+            systemPaperModel = [v17 systemPaperModel];
+            inlineDrawingModel = [v17 inlineDrawingModel];
+            v23 = inlineDrawingModel;
+            if (systemPaperModel)
             {
               v24 = [[ICSystemPaperIndexableTextContentHelper alloc] initWithPaperAttachment:v17];
-              v25 = [(ICSystemPaperIndexableTextContentHelper *)v24 drawing];
+              drawing = [(ICSystemPaperIndexableTextContentHelper *)v24 drawing];
 LABEL_12:
-              v26 = v25;
+              v26 = drawing;
 
               if (v26)
               {
-                v27 = [(ICNoteEditorViewController *)self eventReporter];
-                v39 = v21;
+                eventReporter4 = [(ICNoteEditorViewController *)self eventReporter];
+                v39 = systemPaperModel;
                 v28 = v9;
-                v29 = [v27 pencilStrokeCountForDrawing:v26];
+                v29 = [eventReporter4 pencilStrokeCountForDrawing:v26];
 
-                v30 = [(ICSystemPaperIndexableTextContentHelper *)v26 strokes];
-                v31 = v8;
-                v32 = [v30 count] - v29;
+                strokes = [(ICSystemPaperIndexableTextContentHelper *)v26 strokes];
+                v31 = pendingInlineDrawingInformation2;
+                v32 = [strokes count] - v29;
 
                 [v20 setEndPencilStrokeCount:v29];
                 [v20 setEndFingerStrokeCount:v32];
                 v33 = v29 - [v20 addedPencilStrokeCount];
                 v9 = v28;
-                v21 = v39;
+                systemPaperModel = v39;
                 [v20 setStartPencilStrokeCount:v33];
                 v34 = v32 - [v20 addedFingerStrokeCount];
-                v8 = v31;
+                pendingInlineDrawingInformation2 = v31;
                 [v20 setStartFingerStrokeCount:v34];
               }
             }
 
-            else if (v22)
+            else if (inlineDrawingModel)
             {
-              v35 = [v22 handwritingRecognitionDrawing];
-              v24 = v35;
-              if (v35)
+              handwritingRecognitionDrawing = [inlineDrawingModel handwritingRecognitionDrawing];
+              v24 = handwritingRecognitionDrawing;
+              if (handwritingRecognitionDrawing)
               {
-                v25 = v35;
-                v24 = v25;
+                drawing = handwritingRecognitionDrawing;
+                v24 = drawing;
               }
 
               else
               {
-                v25 = [v23 newDrawingFromMergeableData];
+                drawing = [v23 newDrawingFromMergeableData];
               }
 
               goto LABEL_12;
@@ -7479,7 +7479,7 @@ LABEL_12:
         }
 
         while (v41 != v12);
-        v36 = [v8 countByEnumeratingWithState:&v42 objects:v46 count:16];
+        v36 = [pendingInlineDrawingInformation2 countByEnumeratingWithState:&v42 objects:v46 count:16];
         v41 = v36;
         if (!v36)
         {
@@ -7491,21 +7491,21 @@ LABEL_22:
     }
   }
 
-  v37 = [(ICNoteEditorViewController *)self eventReporter];
-  v38 = [(ICNoteEditorBaseViewController *)self note];
-  [v37 submitPendingInlineDrawingDataForNote:v38];
+  eventReporter5 = [(ICNoteEditorViewController *)self eventReporter];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter5 submitPendingInlineDrawingDataForNote:note2];
 }
 
-- (void)handleMenuBarButtonTap:(id)a3
+- (void)handleMenuBarButtonTap:(id)tap
 {
-  v3 = a3;
+  tapCopy = tap;
   objc_opt_class();
-  v4 = [v3 view];
+  view = [tapCopy view];
 
   v7 = ICDynamicCast();
 
   objc_opt_class();
-  v5 = [v7 contextMenuInteraction];
+  contextMenuInteraction = [v7 contextMenuInteraction];
   v6 = ICDynamicCast();
 
   [v6 _presentMenuAtLocation:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
@@ -7572,19 +7572,19 @@ void __58__ICNoteEditorViewController_updateParticipantsInDrawings__block_invoke
   }
 }
 
-- (void)updateContentViewBezelsStandalone:(BOOL)a3 needsAdditionalBottomMargin:(BOOL)a4 needsAdditionalLeadingMargin:(BOOL)a5 force:(BOOL)a6
+- (void)updateContentViewBezelsStandalone:(BOOL)standalone needsAdditionalBottomMargin:(BOOL)margin needsAdditionalLeadingMargin:(BOOL)leadingMargin force:(BOOL)force
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(ICNoteEditorViewController *)self backgroundView];
-  [v10 updateContentViewBezelsStandalone:v9 needsAdditionalBottomMargin:v8 needsAdditionalLeadingMargin:v7 force:v6];
+  forceCopy = force;
+  leadingMarginCopy = leadingMargin;
+  marginCopy = margin;
+  standaloneCopy = standalone;
+  backgroundView = [(ICNoteEditorViewController *)self backgroundView];
+  [backgroundView updateContentViewBezelsStandalone:standaloneCopy needsAdditionalBottomMargin:marginCopy needsAdditionalLeadingMargin:leadingMarginCopy force:forceCopy];
 }
 
-- (void)submitNoteViewEventForModernNote:(id)a3
+- (void)submitNoteViewEventForModernNote:(id)note
 {
-  v4 = a3;
+  noteCopy = note;
   if ([MEMORY[0x277D35978] isOptedInForAnalytics])
   {
     v13[0] = 0;
@@ -7593,16 +7593,16 @@ void __58__ICNoteEditorViewController_updateParticipantsInDrawings__block_invoke
     v13[3] = __Block_byref_object_copy__4;
     v13[4] = __Block_byref_object_dispose__4;
     v14 = 0;
-    v5 = [v4 managedObjectContext];
+    managedObjectContext = [noteCopy managedObjectContext];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __63__ICNoteEditorViewController_submitNoteViewEventForModernNote___block_invoke;
     v9[3] = &unk_2781ACFA8;
     v9[4] = self;
     v12 = v13;
-    v6 = v5;
+    v6 = managedObjectContext;
     v10 = v6;
-    v7 = v4;
+    v7 = noteCopy;
     v11 = v7;
     [v6 performBlockAndWait:v9];
     [(ICNoteEditorViewController *)self setNoteViewEventSourceObjectID:0];
@@ -7684,56 +7684,56 @@ uint64_t __63__ICNoteEditorViewController_submitNoteViewEventForModernNote___blo
   return MEMORY[0x2821F9730]();
 }
 
-- (void)styleSelector:(id)a3 didSelectStyle:(unsigned int)a4
+- (void)styleSelector:(id)selector didSelectStyle:(unsigned int)style
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [(ICNoteEditorViewController *)self textView];
-  [v7 setIsSettingStyleWithStyleUI:1];
+  v4 = *&style;
+  selectorCopy = selector;
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView setIsSettingStyleWithStyleUI:1];
 
   [(ICNoteEditorViewController *)self setCurrentTextStyle:v4];
-  [v6 setCurrentBIUS:{-[ICNoteEditorViewController currentBIUSForStyleSelector](self, "currentBIUSForStyleSelector")}];
+  [selectorCopy setCurrentBIUS:{-[ICNoteEditorViewController currentBIUSForStyleSelector](self, "currentBIUSForStyleSelector")}];
 
-  v8 = [(ICNoteEditorViewController *)self textView];
-  [v8 setIsSettingStyleWithStyleUI:0];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  [textView2 setIsSettingStyleWithStyleUI:0];
 
   v9 = topoTextStylesToAnalyticsStyles;
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v4];
   v11 = [v9 objectForKeyedSubscript:v10];
-  v12 = [v11 integerValue];
+  integerValue = [v11 integerValue];
 
-  if (v12)
+  if (integerValue)
   {
-    v14 = [(ICNoteEditorViewController *)self eventReporter];
-    v13 = [(ICNoteEditorBaseViewController *)self note];
-    [v14 submitStyleFormatEventForModernNote:v13 styleTypeValue:v12];
+    eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:integerValue];
   }
 }
 
-- (void)toggleBlockQuote:(id)a3
+- (void)toggleBlockQuote:(id)quote
 {
-  v4 = [(ICNoteEditorViewController *)self textController];
-  v5 = [(ICNoteEditorViewController *)self textView];
-  [v4 toggleBlockQuoteInTextView:v5];
+  textController = [(ICNoteEditorViewController *)self textController];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textController toggleBlockQuoteInTextView:textView];
 
-  v6 = [(ICNoteEditorViewController *)self textView];
-  v7 = [(ICNoteEditorViewController *)self textView];
-  v8 = [v7 ic_visibleRange];
-  [v6 updateStyleLayersInRange:{v8, v9}];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  ic_visibleRange = [textView3 ic_visibleRange];
+  [textView2 updateStyleLayersInRange:{ic_visibleRange, v9}];
 
-  v10 = [(ICNoteEditorViewController *)self textView];
-  [v10 setNeedsLayout];
+  textView4 = [(ICNoteEditorViewController *)self textView];
+  [textView4 setNeedsLayout];
 
-  v11 = [(ICNoteEditorViewController *)self textView];
-  [v11 layoutIfNeeded];
+  textView5 = [(ICNoteEditorViewController *)self textView];
+  [textView5 layoutIfNeeded];
 
-  v12 = [(ICNoteEditorViewController *)self eventReporter];
-  v13 = [(ICNoteEditorBaseViewController *)self note];
-  [v12 submitStyleFormatEventForModernNote:v13 styleTypeValue:15];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:15];
 
-  v15 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-  v14 = [(ICNoteEditorViewController *)self textView];
-  [v15 updateFormatBarButtonsForChangeInTextView:v14];
+  navigationItemConfiguration = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+  textView6 = [(ICNoteEditorViewController *)self textView];
+  [navigationItemConfiguration updateFormatBarButtonsForChangeInTextView:textView6];
 }
 
 - (void)toggleEmphasis
@@ -7743,44 +7743,44 @@ uint64_t __63__ICNoteEditorViewController_submitNoteViewEventForModernNote___blo
   [(ICNoteEditorViewController *)self toggleEmphasisWithType:v3];
 }
 
-- (void)toggleEmphasisWithType:(int64_t)a3
+- (void)toggleEmphasisWithType:(int64_t)type
 {
-  v8 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-  if (v8)
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  if (auxiliaryStylingController)
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    [v8 toggleEmphasis:self onValue:v5];
+    eventReporter = [MEMORY[0x277CCABB0] numberWithInteger:type];
+    [auxiliaryStylingController toggleEmphasis:self onValue:eventReporter];
   }
 
   else
   {
-    if (a3 && ic_currentEmphasisColorTypeDefault() != a3)
+    if (type && ic_currentEmphasisColorTypeDefault() != type)
     {
       ic_setCurrentEmphasisColorTypeDefault();
     }
 
-    v6 = [(ICNoteEditorViewController *)self textView];
-    [v6 ic_toggleEmphasisWithType:a3];
+    textView = [(ICNoteEditorViewController *)self textView];
+    [textView ic_toggleEmphasisWithType:type];
 
-    v5 = [(ICNoteEditorViewController *)self eventReporter];
-    v7 = [(ICNoteEditorBaseViewController *)self note];
-    [v5 submitStyleFormatEventForModernNote:v7 styleTypeValue:16];
+    eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:16];
   }
 }
 
-- (void)styleSelector:(id)a3 didChangeIndentAmount:(int64_t)a4
+- (void)styleSelector:(id)selector didChangeIndentAmount:(int64_t)amount
 {
-  v6 = [(ICNoteEditorViewController *)self textView];
-  [v6 setIsSettingStyleWithStyleUI:1];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView setIsSettingStyleWithStyleUI:1];
 
-  [(ICNoteEditorViewController *)self indentSelectionIfPossibleByAmount:a4];
-  v7 = [(ICNoteEditorViewController *)self textView];
-  [v7 setIsSettingStyleWithStyleUI:0];
+  [(ICNoteEditorViewController *)self indentSelectionIfPossibleByAmount:amount];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  [textView2 setIsSettingStyleWithStyleUI:0];
 }
 
-- (void)styleSelectorDidIndentLeft:(id)a3
+- (void)styleSelectorDidIndentLeft:(id)left
 {
-  v5 = a3;
+  leftCopy = left;
   if ([(ICNoteEditorViewController *)self currentWritingDirection]== 1)
   {
     v4 = 1;
@@ -7791,12 +7791,12 @@ uint64_t __63__ICNoteEditorViewController_submitNoteViewEventForModernNote___blo
     v4 = -1;
   }
 
-  [(ICNoteEditorViewController *)self styleSelector:v5 didChangeIndentAmount:v4];
+  [(ICNoteEditorViewController *)self styleSelector:leftCopy didChangeIndentAmount:v4];
 }
 
-- (void)styleSelectorDidIndentRight:(id)a3
+- (void)styleSelectorDidIndentRight:(id)right
 {
-  v5 = a3;
+  rightCopy = right;
   if ([(ICNoteEditorViewController *)self currentWritingDirection]== 1)
   {
     v4 = -1;
@@ -7807,329 +7807,329 @@ uint64_t __63__ICNoteEditorViewController_submitNoteViewEventForModernNote___blo
     v4 = 1;
   }
 
-  [(ICNoteEditorViewController *)self styleSelector:v5 didChangeIndentAmount:v4];
+  [(ICNoteEditorViewController *)self styleSelector:rightCopy didChangeIndentAmount:v4];
 }
 
 - (void)toggleBoldface
 {
-  v3 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v3)
+  if (auxiliaryStylingController)
   {
-    v4 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v4 toggleBoldface:self];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 toggleBoldface:self];
   }
 
   else
   {
-    v4 = [(ICNoteEditorViewController *)self textView];
-    [v4 ic_toggleBoldface];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    [auxiliaryStylingController2 ic_toggleBoldface];
   }
 
-  v6 = [(ICNoteEditorViewController *)self eventReporter];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  [v6 submitStyleFormatEventForModernNote:v5 styleTypeValue:9];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:9];
 }
 
 - (void)enableBoldface
 {
-  v3 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v3)
+  if (auxiliaryStylingController)
   {
-    v4 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v4 enableBoldface:self];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 enableBoldface:self];
   }
 
   else
   {
-    v4 = [(ICNoteEditorViewController *)self textView];
-    [v4 ic_enableBoldface];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    [auxiliaryStylingController2 ic_enableBoldface];
   }
 
-  v6 = [(ICNoteEditorViewController *)self eventReporter];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  [v6 submitStyleFormatEventForModernNote:v5 styleTypeValue:9];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:9];
 }
 
 - (void)disableBoldface
 {
-  v3 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v3)
+  if (auxiliaryStylingController)
   {
-    v4 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v4 disableBoldface:self];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 disableBoldface:self];
   }
 
   else
   {
-    v4 = [(ICNoteEditorViewController *)self textView];
-    [v4 ic_disableBoldface];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    [auxiliaryStylingController2 ic_disableBoldface];
   }
 
-  v6 = [(ICNoteEditorViewController *)self eventReporter];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  [v6 submitStyleFormatEventForModernNote:v5 styleTypeValue:9];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:9];
 }
 
 - (void)toggleItalics
 {
-  v3 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v3)
+  if (auxiliaryStylingController)
   {
-    v4 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v4 toggleItalics:self];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 toggleItalics:self];
   }
 
   else
   {
-    v4 = [(ICNoteEditorViewController *)self textView];
-    [v4 ic_toggleItalics];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    [auxiliaryStylingController2 ic_toggleItalics];
   }
 
-  v6 = [(ICNoteEditorViewController *)self eventReporter];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  [v6 submitStyleFormatEventForModernNote:v5 styleTypeValue:10];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:10];
 }
 
 - (void)enableItalics
 {
-  v3 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v3)
+  if (auxiliaryStylingController)
   {
-    v4 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v4 enableItalics:self];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 enableItalics:self];
   }
 
   else
   {
-    v4 = [(ICNoteEditorViewController *)self textView];
-    [v4 ic_enableItalics];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    [auxiliaryStylingController2 ic_enableItalics];
   }
 
-  v6 = [(ICNoteEditorViewController *)self eventReporter];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  [v6 submitStyleFormatEventForModernNote:v5 styleTypeValue:10];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:10];
 }
 
 - (void)disableItalics
 {
-  v3 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v3)
+  if (auxiliaryStylingController)
   {
-    v4 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v4 disableItalics:self];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 disableItalics:self];
   }
 
   else
   {
-    v4 = [(ICNoteEditorViewController *)self textView];
-    [v4 ic_disableItalics];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    [auxiliaryStylingController2 ic_disableItalics];
   }
 
-  v6 = [(ICNoteEditorViewController *)self eventReporter];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  [v6 submitStyleFormatEventForModernNote:v5 styleTypeValue:10];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:10];
 }
 
 - (void)toggleUnderline
 {
-  v3 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v3)
+  if (auxiliaryStylingController)
   {
-    v4 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v4 toggleUnderline:self];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 toggleUnderline:self];
   }
 
   else
   {
-    v4 = [(ICNoteEditorViewController *)self textView];
-    [v4 ic_toggleUnderline];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    [auxiliaryStylingController2 ic_toggleUnderline];
   }
 
-  v6 = [(ICNoteEditorViewController *)self eventReporter];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  [v6 submitStyleFormatEventForModernNote:v5 styleTypeValue:11];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:11];
 }
 
 - (void)enableUnderline
 {
-  v3 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v3)
+  if (auxiliaryStylingController)
   {
-    v4 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v4 enableUnderline:self];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 enableUnderline:self];
   }
 
   else
   {
-    v4 = [(ICNoteEditorViewController *)self textView];
-    [v4 ic_enableUnderline];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    [auxiliaryStylingController2 ic_enableUnderline];
   }
 
-  v6 = [(ICNoteEditorViewController *)self eventReporter];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  [v6 submitStyleFormatEventForModernNote:v5 styleTypeValue:11];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:11];
 }
 
 - (void)disableUnderline
 {
-  v3 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v3)
+  if (auxiliaryStylingController)
   {
-    v4 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v4 disableUnderline:self];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 disableUnderline:self];
   }
 
   else
   {
-    v4 = [(ICNoteEditorViewController *)self textView];
-    [v4 ic_disableUnderline];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    [auxiliaryStylingController2 ic_disableUnderline];
   }
 
-  v6 = [(ICNoteEditorViewController *)self eventReporter];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  [v6 submitStyleFormatEventForModernNote:v5 styleTypeValue:11];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:11];
 }
 
 - (void)toggleStrikethrough
 {
-  v3 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v3)
+  if (auxiliaryStylingController)
   {
-    v4 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v4 toggleStrikethrough:self];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 toggleStrikethrough:self];
   }
 
   else
   {
-    v4 = [(ICNoteEditorViewController *)self textView];
-    [v4 ic_toggleStrikethrough];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    [auxiliaryStylingController2 ic_toggleStrikethrough];
   }
 
-  v6 = [(ICNoteEditorViewController *)self eventReporter];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  [v6 submitStyleFormatEventForModernNote:v5 styleTypeValue:12];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:12];
 }
 
 - (void)enableStrikethrough
 {
-  v3 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v3)
+  if (auxiliaryStylingController)
   {
-    v4 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v4 enableStrikethrough:self];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 enableStrikethrough:self];
   }
 
   else
   {
-    v4 = [(ICNoteEditorViewController *)self textView];
-    [v4 ic_enableStrikethrough];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    [auxiliaryStylingController2 ic_enableStrikethrough];
   }
 
-  v6 = [(ICNoteEditorViewController *)self eventReporter];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  [v6 submitStyleFormatEventForModernNote:v5 styleTypeValue:12];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:12];
 }
 
 - (void)disableStrikethrough
 {
-  v3 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v3)
+  if (auxiliaryStylingController)
   {
-    v4 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v4 disableStrikethrough:self];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 disableStrikethrough:self];
   }
 
   else
   {
-    v4 = [(ICNoteEditorViewController *)self textView];
-    [v4 ic_disableStrikethrough];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    [auxiliaryStylingController2 ic_disableStrikethrough];
   }
 
-  v6 = [(ICNoteEditorViewController *)self eventReporter];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  [v6 submitStyleFormatEventForModernNote:v5 styleTypeValue:12];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:12];
 }
 
-- (void)styleSelector:(id)a3 toggleBIUS:(unint64_t)a4
+- (void)styleSelector:(id)selector toggleBIUS:(unint64_t)s
 {
-  v6 = a3;
-  [(ICNoteEditorViewController *)self toggleBIUS:a4 sender:v6];
-  [v6 setCurrentBIUS:{-[ICNoteEditorViewController currentBIUSForStyleSelector](self, "currentBIUSForStyleSelector")}];
+  selectorCopy = selector;
+  [(ICNoteEditorViewController *)self toggleBIUS:s sender:selectorCopy];
+  [selectorCopy setCurrentBIUS:{-[ICNoteEditorViewController currentBIUSForStyleSelector](self, "currentBIUSForStyleSelector")}];
 }
 
-- (void)styleSelectorDidCancel:(id)a3
+- (void)styleSelectorDidCancel:(id)cancel
 {
   [(ICNoteEditorViewController *)self showStyleSelector:0 animated:1];
   v4 = *MEMORY[0x277D76488];
-  v7 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-  v5 = [v7 styleBarButtonItem];
-  v6 = [v5 view];
-  UIAccessibilityPostNotification(v4, v6);
+  navigationItemConfiguration = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+  styleBarButtonItem = [navigationItemConfiguration styleBarButtonItem];
+  view = [styleBarButtonItem view];
+  UIAccessibilityPostNotification(v4, view);
 }
 
-- (BOOL)styleSelectorShouldDisableTextStyles:(id)a3
+- (BOOL)styleSelectorShouldDisableTextStyles:(id)styles
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 ic_shouldEnableBlockQuoteForAttachmentsOnlySelection];
+  textView = [(ICNoteEditorViewController *)self textView];
+  ic_shouldEnableBlockQuoteForAttachmentsOnlySelection = [textView ic_shouldEnableBlockQuoteForAttachmentsOnlySelection];
 
-  return v4;
+  return ic_shouldEnableBlockQuoteForAttachmentsOnlySelection;
 }
 
-- (void)styleSelector:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)styleSelector:(id)selector presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  v9 = a6;
-  v10 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
   [(ICNoteEditorViewController *)self doneEditing:0];
-  [(ICNoteEditorViewController *)self presentViewController:v10 animated:v6 completion:v9];
+  [(ICNoteEditorViewController *)self presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)styleSelectorWillShowInlineMenu:(id)a3
+- (void)styleSelectorWillShowInlineMenu:(id)menu
 {
-  v4 = a3;
+  menuCopy = menu;
   v5 = [(ICNoteEditorViewController *)self currentStylesForStyleSelectorIgnoreTypingAttributes:0];
-  [v4 setCurrentStyles:v5 bius:-[ICNoteEditorViewController currentBIUSForStyleSelector](self animated:{"currentBIUSForStyleSelector"), 0}];
+  [menuCopy setCurrentStyles:v5 bius:-[ICNoteEditorViewController currentBIUSForStyleSelector](self animated:{"currentBIUSForStyleSelector"), 0}];
 }
 
-- (BOOL)styleSelectorShouldUseCompactTopInset:(id)a3
+- (BOOL)styleSelectorShouldUseCompactTopInset:(id)inset
 {
   if ([(ICNoteEditorViewController *)self isEditingOnSystemPaperOnPad])
   {
     return 1;
   }
 
-  v5 = [(ICNoteEditorViewController *)self viewControllerManager];
-  v6 = [v5 hasCompactWidth];
+  viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+  hasCompactWidth = [viewControllerManager hasCompactWidth];
 
-  return v6;
+  return hasCompactWidth;
 }
 
-- (id)currentStylesForStyleSelectorIgnoreTypingAttributes:(BOOL)a3
+- (id)currentStylesForStyleSelectorIgnoreTypingAttributes:(BOOL)attributes
 {
-  v3 = a3;
-  v5 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-  if (v5)
+  attributesCopy = attributes;
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  if (auxiliaryStylingController)
   {
-    v6 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v6 selectedStyles];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 selectedStyles];
   }
 
   else
   {
-    v6 = [(ICNoteEditorViewController *)self textView];
-    [v6 ic_selectedStylesIgnoreTypingAttributes:v3];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    [auxiliaryStylingController2 ic_selectedStylesIgnoreTypingAttributes:attributesCopy];
   }
   v7 = ;
 
@@ -8138,49 +8138,49 @@ uint64_t __63__ICNoteEditorViewController_submitNoteViewEventForModernNote___blo
 
 - (unint64_t)currentBIUSForStyleSelector
 {
-  v3 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v3)
+  if (auxiliaryStylingController)
   {
-    v4 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    v5 = [v4 selectedStyleBIUS];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    selectedStyleBIUS = [auxiliaryStylingController2 selectedStyleBIUS];
   }
 
   else
   {
-    v4 = [(ICNoteEditorViewController *)self textView];
-    v5 = [v4 currentBIUSForStyleSelector];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    selectedStyleBIUS = [auxiliaryStylingController2 currentBIUSForStyleSelector];
   }
 
-  v6 = v5;
+  v6 = selectedStyleBIUS;
 
   return v6;
 }
 
 - (int64_t)currentEmphasisType
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  [v3 selectedRange];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView selectedRange];
   v5 = v4;
 
-  v6 = [(ICNoteEditorViewController *)self textView];
-  v7 = v6;
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  v7 = textView2;
   if (v5)
   {
-    v8 = [v6 textStorage];
+    textStorage = [textView2 textStorage];
     v9 = *MEMORY[0x277D35D88];
-    v10 = [(ICNoteEditorViewController *)self textView];
-    v11 = [(ICNoteEditorViewController *)self textView];
-    v12 = [v11 selectedRange];
-    v14 = [v8 attribute:v9 atIndex:objc_msgSend(v10 effectiveRange:{"firstValidEmphasisLocationWithinSelection:", v12, v13), 0}];
+    textView3 = [(ICNoteEditorViewController *)self textView];
+    textView4 = [(ICNoteEditorViewController *)self textView];
+    selectedRange = [textView4 selectedRange];
+    v14 = [textStorage attribute:v9 atIndex:objc_msgSend(textView3 effectiveRange:{"firstValidEmphasisLocationWithinSelection:", selectedRange, v13), 0}];
     [v14 intValue];
   }
 
   else
   {
-    v8 = [v6 typingAttributes];
-    v10 = [v8 objectForKeyedSubscript:*MEMORY[0x277D35D88]];
-    [v10 intValue];
+    textStorage = [textView2 typingAttributes];
+    textView3 = [textStorage objectForKeyedSubscript:*MEMORY[0x277D35D88]];
+    [textView3 intValue];
   }
 
   return ICEmphasisColorTypeForTag();
@@ -8192,31 +8192,31 @@ uint64_t __63__ICNoteEditorViewController_submitNoteViewEventForModernNote___blo
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 textStorage];
-  v5 = [v4 string];
-  v6 = [(ICNoteEditorViewController *)self textView];
-  v7 = [v6 selectedRange];
-  v9 = [v5 ic_rangeIsValid:{v7, v8}];
+  textView = [(ICNoteEditorViewController *)self textView];
+  textStorage = [textView textStorage];
+  string = [textStorage string];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView2 selectedRange];
+  v9 = [string ic_rangeIsValid:{selectedRange, v8}];
 
   if (v9)
   {
-    v10 = [(ICNoteEditorViewController *)self textView];
-    v11 = [v10 textStorage];
-    v12 = [v11 string];
-    v13 = [(ICNoteEditorViewController *)self textView];
-    v14 = [v13 selectedRange];
-    v16 = [v12 paragraphRangeForRange:{v14, v15}];
+    textView3 = [(ICNoteEditorViewController *)self textView];
+    textStorage2 = [textView3 textStorage];
+    string2 = [textStorage2 string];
+    textView4 = [(ICNoteEditorViewController *)self textView];
+    selectedRange2 = [textView4 selectedRange];
+    v16 = [string2 paragraphRangeForRange:{selectedRange2, v15}];
     v18 = v17;
 
-    v19 = [(ICNoteEditorViewController *)self textStorage];
+    textStorage3 = [(ICNoteEditorViewController *)self textStorage];
     v20 = *MEMORY[0x277D35DA8];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __45__ICNoteEditorViewController_isBlockQuoteSet__block_invoke;
     v23[3] = &unk_2781ABC80;
     v23[4] = &v24;
-    [v19 enumerateAttribute:v20 inRange:v16 options:v18 usingBlock:{0, v23}];
+    [textStorage3 enumerateAttribute:v20 inRange:v16 options:v18 usingBlock:{0, v23}];
   }
 
   v21 = *(v25 + 24);
@@ -8245,65 +8245,65 @@ void __45__ICNoteEditorViewController_isBlockQuoteSet__block_invoke(uint64_t a1,
 
 - (BOOL)isOnlyBlockQuoteEnabled
 {
-  v2 = [(ICNoteEditorViewController *)self textView];
-  v3 = [v2 ic_shouldEnableBlockQuoteForAttachmentsOnlySelection];
+  textView = [(ICNoteEditorViewController *)self textView];
+  ic_shouldEnableBlockQuoteForAttachmentsOnlySelection = [textView ic_shouldEnableBlockQuoteForAttachmentsOnlySelection];
 
-  return v3;
+  return ic_shouldEnableBlockQuoteForAttachmentsOnlySelection;
 }
 
 - (ICNoteFormattingViewController)noteFormattingControllerCreateIfNecessary
 {
-  v3 = [(ICNoteEditorViewController *)self noteFormattingController];
+  noteFormattingController = [(ICNoteEditorViewController *)self noteFormattingController];
 
-  if (!v3)
+  if (!noteFormattingController)
   {
     v4 = objc_alloc_init(ICNoteFormattingViewController);
     [(ICNoteEditorViewController *)self setNoteFormattingController:v4];
 
-    v5 = [(ICNoteEditorViewController *)self noteFormattingController];
-    [v5 setFormattingDelegate:self];
+    noteFormattingController2 = [(ICNoteEditorViewController *)self noteFormattingController];
+    [noteFormattingController2 setFormattingDelegate:self];
   }
 
-  v6 = [(ICNoteEditorViewController *)self noteFormattingController];
+  noteFormattingController3 = [(ICNoteEditorViewController *)self noteFormattingController];
 
-  return v6;
+  return noteFormattingController3;
 }
 
-- (void)showStyleSelector:(BOOL)a3 animated:(BOOL)a4 sender:(id)a5
+- (void)showStyleSelector:(BOOL)selector animated:(BOOL)animated sender:(id)sender
 {
-  v5 = a4;
-  v6 = a3;
-  v10 = a5;
-  if (v6)
+  animatedCopy = animated;
+  selectorCopy = selector;
+  senderCopy = sender;
+  if (selectorCopy)
   {
-    v8 = [(ICNoteEditorViewController *)self noteFormattingControllerCreateIfNecessary];
-    [v8 updateWithDataSource:self ignoreTypingAttributes:0];
+    noteFormattingControllerCreateIfNecessary = [(ICNoteEditorViewController *)self noteFormattingControllerCreateIfNecessary];
+    [noteFormattingControllerCreateIfNecessary updateWithDataSource:self ignoreTypingAttributes:0];
   }
 
   if ([(ICNoteEditorViewController *)self useInputViewForStyleSelector])
   {
-    [(ICNoteEditorViewController *)self showStyleSelectorInputView:v6 animated:v5 doneEditing:0];
+    [(ICNoteEditorViewController *)self showStyleSelectorInputView:selectorCopy animated:animatedCopy doneEditing:0];
   }
 
   else
   {
-    [(ICNoteEditorViewController *)self showStyleSelectorPopover:v6 animated:v5 sender:v10];
-    v9 = [(ICNoteEditorViewController *)self styleSelectorController];
-    [v9 setElementForAXFocusOnDismissal:v10];
+    [(ICNoteEditorViewController *)self showStyleSelectorPopover:selectorCopy animated:animatedCopy sender:senderCopy];
+    styleSelectorController = [(ICNoteEditorViewController *)self styleSelectorController];
+    [styleSelectorController setElementForAXFocusOnDismissal:senderCopy];
   }
 }
 
-- (void)showStyleSelectorPopover:(BOOL)a3 animated:(BOOL)a4 sender:(id)a5
+- (void)showStyleSelectorPopover:(BOOL)popover animated:(BOOL)animated sender:(id)sender
 {
-  v5 = a4;
-  v6 = a3;
-  v20 = a5;
-  if (v6)
+  animatedCopy = animated;
+  popoverCopy = popover;
+  senderCopy = sender;
+  if (popoverCopy)
   {
-    v8 = [(ICNoteEditorViewController *)self noteFormattingControllerCreateIfNecessary];
-    v9 = [v8 presentingViewController];
+    noteFormattingControllerCreateIfNecessary = [(ICNoteEditorViewController *)self noteFormattingControllerCreateIfNecessary];
+    presentingViewController = [noteFormattingControllerCreateIfNecessary presentingViewController];
 
-    if (!v9)
+    if (!presentingViewController)
     {
       if ([MEMORY[0x277D75418] ic_isVision])
       {
@@ -8315,46 +8315,46 @@ void __45__ICNoteEditorViewController_isBlockQuoteSet__block_invoke(uint64_t a1,
         v10 = 7;
       }
 
-      [v8 setModalPresentationStyle:v10];
-      v11 = [v8 view];
-      v12 = [v11 backgroundColor];
-      v13 = [v8 popoverPresentationController];
-      [v13 setBackgroundColor:v12];
+      [noteFormattingControllerCreateIfNecessary setModalPresentationStyle:v10];
+      view = [noteFormattingControllerCreateIfNecessary view];
+      backgroundColor = [view backgroundColor];
+      popoverPresentationController = [noteFormattingControllerCreateIfNecessary popoverPresentationController];
+      [popoverPresentationController setBackgroundColor:backgroundColor];
 
-      v14 = [v8 popoverPresentationController];
-      [v14 setDelegate:self];
+      popoverPresentationController2 = [noteFormattingControllerCreateIfNecessary popoverPresentationController];
+      [popoverPresentationController2 setDelegate:self];
 
-      v15 = [v8 popoverPresentationController];
-      [v15 setBarButtonItem:v20];
+      popoverPresentationController3 = [noteFormattingControllerCreateIfNecessary popoverPresentationController];
+      [popoverPresentationController3 setBarButtonItem:senderCopy];
 
-      v16 = [v8 popoverPresentationController];
-      [v16 setPopoverLayoutMargins:{0.0, 0.0, 0.0, 1.0}];
+      popoverPresentationController4 = [noteFormattingControllerCreateIfNecessary popoverPresentationController];
+      [popoverPresentationController4 setPopoverLayoutMargins:{0.0, 0.0, 0.0, 1.0}];
 
-      [(ICNoteEditorViewController *)self presentViewController:v8 animated:v5 completion:0];
+      [(ICNoteEditorViewController *)self presentViewController:noteFormattingControllerCreateIfNecessary animated:animatedCopy completion:0];
     }
   }
 
   else
   {
-    v17 = [(ICNoteEditorViewController *)self noteFormattingController];
-    v18 = [v17 presentingViewController];
+    noteFormattingController = [(ICNoteEditorViewController *)self noteFormattingController];
+    presentingViewController2 = [noteFormattingController presentingViewController];
 
-    if (!v18)
+    if (!presentingViewController2)
     {
       goto LABEL_10;
     }
 
-    v8 = [(ICNoteEditorViewController *)self noteFormattingController];
-    v19 = [v8 presentingViewController];
-    [v19 dismissViewControllerAnimated:v5 completion:0];
+    noteFormattingControllerCreateIfNecessary = [(ICNoteEditorViewController *)self noteFormattingController];
+    presentingViewController3 = [noteFormattingControllerCreateIfNecessary presentingViewController];
+    [presentingViewController3 dismissViewControllerAnimated:animatedCopy completion:0];
   }
 
 LABEL_10:
 }
 
-- (void)setAuxiliaryStylingController:(id)a3
+- (void)setAuxiliaryStylingController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_auxiliaryStylingController);
 
   if (WeakRetained != obj)
@@ -8364,40 +8364,40 @@ LABEL_10:
     {
       objc_storeWeak(&self->_auxiliaryStylingController, obj);
       [(ICNoteEditorViewController *)self updateBarButtons];
-      v9 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+      navigationItemConfiguration = [(ICNoteEditorViewController *)self navigationItemConfiguration];
       if (obj)
       {
         objc_opt_class();
-        v10 = [(ICNoteEditorViewController *)self auxiliaryResponder];
+        auxiliaryResponder = [(ICNoteEditorViewController *)self auxiliaryResponder];
         v11 = ICDynamicCast();
-        [v9 updateSelectionInTextView:v11];
+        [navigationItemConfiguration updateSelectionInTextView:v11];
       }
 
       else
       {
-        v10 = [(ICNoteEditorViewController *)self textView];
-        [v9 updateSelectionInTextView:v10];
+        auxiliaryResponder = [(ICNoteEditorViewController *)self textView];
+        [navigationItemConfiguration updateSelectionInTextView:auxiliaryResponder];
       }
     }
   }
 }
 
-- (void)showStyleSelectorInputView:(BOOL)a3 animated:(BOOL)a4 doneEditing:(BOOL)a5
+- (void)showStyleSelectorInputView:(BOOL)view animated:(BOOL)animated doneEditing:(BOOL)editing
 {
-  v5 = a3;
+  viewCopy = view;
   v30[1] = *MEMORY[0x277D85DE8];
-  [(ICNoteEditorViewController *)self setIsLoadingStyleSelectorInputView:1, a4, a5];
-  if ([(ICNoteEditorViewController *)self styleSelectorInputViewShowing]!= v5)
+  [(ICNoteEditorViewController *)self setIsLoadingStyleSelectorInputView:1, animated, editing];
+  if ([(ICNoteEditorViewController *)self styleSelectorInputViewShowing]!= viewCopy)
   {
     [(ICNoteEditorViewController *)self setSuspendBarButtonUpdates:1];
     [(ICNoteEditorViewController *)self setSuspendSelectedRangeUpdates:1];
-    v7 = [(ICNoteEditorViewController *)self textView];
-    v8 = [v7 typingAttributes];
+    textView = [(ICNoteEditorViewController *)self textView];
+    typingAttributes = [textView typingAttributes];
 
-    if (v5)
+    if (viewCopy)
     {
-      v9 = [(ICNoteEditorViewController *)self noteFormattingControllerCreateIfNecessary];
-      v10 = [v9 presentationController];
+      noteFormattingControllerCreateIfNecessary = [(ICNoteEditorViewController *)self noteFormattingControllerCreateIfNecessary];
+      presentationController = [noteFormattingControllerCreateIfNecessary presentationController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -8406,8 +8406,8 @@ LABEL_10:
         v28[1] = 3221225472;
         v28[2] = __78__ICNoteEditorViewController_showStyleSelectorInputView_animated_doneEditing___block_invoke;
         v28[3] = &unk_2781ACFD0;
-        v29 = v9;
-        v12 = v10;
+        v29 = noteFormattingControllerCreateIfNecessary;
+        v12 = presentationController;
         v13 = [v11 customDetentWithIdentifier:@"compactStyleSelector" resolver:v28];
         v30[0] = v13;
         v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
@@ -8418,76 +8418,76 @@ LABEL_10:
         [v12 _setShouldDismissWhenTappedOutside:0];
       }
 
-      v15 = [v9 view];
-      [v15 setHidden:0];
+      view = [noteFormattingControllerCreateIfNecessary view];
+      [view setHidden:0];
 
-      [(ICNoteEditorViewController *)self presentViewController:v9 animated:1 completion:0];
-      v16 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+      [(ICNoteEditorViewController *)self presentViewController:noteFormattingControllerCreateIfNecessary animated:1 completion:0];
+      auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-      v17 = [(ICNoteEditorViewController *)self styleSelectorDummyInputView];
-      if (v16)
+      styleSelectorDummyInputView = [(ICNoteEditorViewController *)self styleSelectorDummyInputView];
+      if (auxiliaryStylingController)
       {
-        v18 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-        [v18 setInputView:v17];
+        auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+        [auxiliaryStylingController2 setInputView:styleSelectorDummyInputView];
       }
 
       else
       {
-        v21 = [(ICNoteEditorViewController *)self textView];
-        [v21 setInputView:v17];
+        textView2 = [(ICNoteEditorViewController *)self textView];
+        [textView2 setInputView:styleSelectorDummyInputView];
 
-        v22 = [(ICNoteEditorViewController *)self textView];
-        [v22 setInputAccessoryView:0];
+        textView3 = [(ICNoteEditorViewController *)self textView];
+        [textView3 setInputAccessoryView:0];
 
         if ([(ICNoteEditorViewController *)self usesContextualFormatBar])
         {
-          v23 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-          [v23 setForceHideToolbar:1];
+          navigationItemConfiguration = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+          [navigationItemConfiguration setForceHideToolbar:1];
         }
 
-        v17 = [(ICNoteEditorViewController *)self textView];
-        [v17 reloadInputViews];
+        styleSelectorDummyInputView = [(ICNoteEditorViewController *)self textView];
+        [styleSelectorDummyInputView reloadInputViews];
       }
     }
 
     else
     {
-      v19 = [(ICNoteEditorViewController *)self noteFormattingController];
-      [v19 dismissViewControllerAnimated:1 completion:0];
+      noteFormattingController = [(ICNoteEditorViewController *)self noteFormattingController];
+      [noteFormattingController dismissViewControllerAnimated:1 completion:0];
 
-      v20 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+      auxiliaryStylingController3 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-      if (v20)
+      if (auxiliaryStylingController3)
       {
-        v9 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-        [v9 setInputView:0];
+        noteFormattingControllerCreateIfNecessary = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+        [noteFormattingControllerCreateIfNecessary setInputView:0];
       }
 
       else
       {
-        v24 = [(ICNoteEditorViewController *)self textView];
-        [v24 setInputView:0];
+        textView4 = [(ICNoteEditorViewController *)self textView];
+        [textView4 setInputView:0];
 
         if ([(ICNoteEditorViewController *)self usesContextualFormatBar])
         {
-          v25 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-          [v25 setForceHideToolbar:0];
+          navigationItemConfiguration2 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+          [navigationItemConfiguration2 setForceHideToolbar:0];
         }
 
         else
         {
-          v25 = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
-          v26 = [(ICNoteEditorViewController *)self textView];
-          [v26 setInputAccessoryView:v25];
+          navigationItemConfiguration2 = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
+          textView5 = [(ICNoteEditorViewController *)self textView];
+          [textView5 setInputAccessoryView:navigationItemConfiguration2];
         }
 
-        v9 = [(ICNoteEditorViewController *)self textView];
-        [v9 reloadInputViews];
+        noteFormattingControllerCreateIfNecessary = [(ICNoteEditorViewController *)self textView];
+        [noteFormattingControllerCreateIfNecessary reloadInputViews];
       }
     }
 
-    v27 = [(ICNoteEditorViewController *)self textView];
-    [v27 setTypingAttributes:v8];
+    textView6 = [(ICNoteEditorViewController *)self textView];
+    [textView6 setTypingAttributes:typingAttributes];
 
     [(ICNoteEditorViewController *)self setSuspendBarButtonUpdates:0];
     [(ICNoteEditorViewController *)self setSuspendSelectedRangeUpdates:0];
@@ -8496,65 +8496,65 @@ LABEL_10:
   [(ICNoteEditorViewController *)self setIsLoadingStyleSelectorInputView:0];
 }
 
-- (void)toggleCurrentTextStyle:(unsigned int)a3
+- (void)toggleCurrentTextStyle:(unsigned int)style
 {
-  v5 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v5)
+  if (auxiliaryStylingController)
   {
-    v6 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    v7 = [v6 selectedStyles];
-    v8 = [v7 containsIndex:a3];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    selectedStyles = [auxiliaryStylingController2 selectedStyles];
+    v8 = [selectedStyles containsIndex:style];
   }
 
   else
   {
-    v6 = [(ICNoteEditorViewController *)self textView];
-    v8 = [v6 ic_getTextStyleForCurrentSelection] == a3;
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    v8 = [auxiliaryStylingController2 ic_getTextStyleForCurrentSelection] == style;
   }
 
   if (v8)
   {
-    v9 = 3;
+    styleCopy = 3;
   }
 
   else
   {
-    v9 = a3;
+    styleCopy = style;
   }
 
-  [(ICNoteEditorViewController *)self setCurrentTextStyle:v9];
+  [(ICNoteEditorViewController *)self setCurrentTextStyle:styleCopy];
 }
 
-- (void)setCurrentTextStyle:(unsigned int)a3
+- (void)setCurrentTextStyle:(unsigned int)style
 {
-  v3 = *&a3;
-  v5 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  v3 = *&style;
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v5)
+  if (auxiliaryStylingController)
   {
-    v6 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v6 setTextStyleForCurrentSelection:v3];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 setTextStyleForCurrentSelection:v3];
   }
 
   else
   {
-    v6 = [(ICNoteEditorViewController *)self textView];
-    [v6 ic_setTextStyleForCurrentSelection:v3];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    [auxiliaryStylingController2 ic_setTextStyleForCurrentSelection:v3];
   }
 }
 
-- (void)setSplitViewExpandingOrCollapsing:(BOOL)a3
+- (void)setSplitViewExpandingOrCollapsing:(BOOL)collapsing
 {
-  self->_splitViewExpandingOrCollapsing = a3;
-  if (a3)
+  self->_splitViewExpandingOrCollapsing = collapsing;
+  if (collapsing)
   {
-    v5 = [(ICNoteEditorViewController *)self textView];
-    if ([v5 isFirstResponder])
+    textView = [(ICNoteEditorViewController *)self textView];
+    if ([textView isFirstResponder])
     {
-      v6 = [(ICNoteEditorViewController *)self textView];
-      v7 = [v6 selectedRanges];
-      [(ICNoteEditorViewController *)self setSelectedRangesBeforeSplitViewTransition:v7];
+      textView2 = [(ICNoteEditorViewController *)self textView];
+      selectedRanges = [textView2 selectedRanges];
+      [(ICNoteEditorViewController *)self setSelectedRangesBeforeSplitViewTransition:selectedRanges];
     }
 
     else
@@ -8562,130 +8562,130 @@ LABEL_10:
       [(ICNoteEditorViewController *)self setSelectedRangesBeforeSplitViewTransition:0];
     }
 
-    LODWORD(v5) = [(ICNoteEditorViewController *)self isInkPickerShowing];
+    LODWORD(textView) = [(ICNoteEditorViewController *)self isInkPickerShowing];
   }
 
   else
   {
-    v5 = [(ICNoteEditorViewController *)self selectedRangesBeforeSplitViewTransition];
+    textView = [(ICNoteEditorViewController *)self selectedRangesBeforeSplitViewTransition];
 
-    if (v5)
+    if (textView)
     {
       [(ICNoteEditorViewController *)self startEditing];
-      v8 = [(ICNoteEditorViewController *)self selectedRangesBeforeSplitViewTransition];
-      v9 = [(ICNoteEditorViewController *)self textView];
-      [v9 setSelectedRanges:v8];
+      selectedRangesBeforeSplitViewTransition = [(ICNoteEditorViewController *)self selectedRangesBeforeSplitViewTransition];
+      textView3 = [(ICNoteEditorViewController *)self textView];
+      [textView3 setSelectedRanges:selectedRangesBeforeSplitViewTransition];
 
-      v5 = [(ICNoteEditorViewController *)self textView];
-      [v5 scrollSelectionToVisible:1];
+      textView = [(ICNoteEditorViewController *)self textView];
+      [textView scrollSelectionToVisible:1];
 
       [(ICNoteEditorViewController *)self setSelectedRangesBeforeSplitViewTransition:0];
-      LODWORD(v5) = 0;
+      LODWORD(textView) = 0;
     }
   }
 
-  [(ICNoteEditorViewController *)self setShowInkPickerAfterViewAppears:v5 | [(ICNoteEditorViewController *)self showInkPickerAfterViewAppears]];
-  v10 = [(ICNoteEditorViewController *)self attributionSidebarController];
-  [v10 hideSidebarAnimated:1];
+  [(ICNoteEditorViewController *)self setShowInkPickerAfterViewAppears:textView | [(ICNoteEditorViewController *)self showInkPickerAfterViewAppears]];
+  attributionSidebarController = [(ICNoteEditorViewController *)self attributionSidebarController];
+  [attributionSidebarController hideSidebarAnimated:1];
 
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
     if (_os_feature_enabled_impl())
     {
-      if (!a3)
+      if (!collapsing)
       {
-        v11 = [(ICNoteEditorViewController *)self viewIfLoaded];
+        viewIfLoaded = [(ICNoteEditorViewController *)self viewIfLoaded];
 
-        if (v11)
+        if (viewIfLoaded)
         {
           [(ICNoteEditorViewController *)self updateTextViewContentInsetsAnimated:0];
-          v12 = [(ICNoteEditorViewController *)self textView];
-          [v12 frame];
+          textView4 = [(ICNoteEditorViewController *)self textView];
+          [textView4 frame];
           v26 = CGRectInset(v25, 1.0, 0.0);
           x = v26.origin.x;
           y = v26.origin.y;
           width = v26.size.width;
           height = v26.size.height;
-          v17 = [(ICNoteEditorViewController *)self textView];
-          [v17 setFrame:{x, y, width, height}];
+          textView5 = [(ICNoteEditorViewController *)self textView];
+          [textView5 setFrame:{x, y, width, height}];
 
-          v23 = [(ICNoteEditorViewController *)self textView];
-          [v23 frame];
+          textView6 = [(ICNoteEditorViewController *)self textView];
+          [textView6 frame];
           v28 = CGRectInset(v27, -1.0, 0.0);
           v18 = v28.origin.x;
           v19 = v28.origin.y;
           v20 = v28.size.width;
           v21 = v28.size.height;
-          v22 = [(ICNoteEditorViewController *)self textView];
-          [v22 setFrame:{v18, v19, v20, v21}];
+          textView7 = [(ICNoteEditorViewController *)self textView];
+          [textView7 setFrame:{v18, v19, v20, v21}];
         }
       }
     }
   }
 }
 
-- (void)setTextStyle:(unsigned int)a3 sender:(id)a4
+- (void)setTextStyle:(unsigned int)style sender:(id)sender
 {
-  v4 = *&a3;
-  v6 = [(ICNoteEditorViewController *)self textView:*&a3];
+  v4 = *&style;
+  v6 = [(ICNoteEditorViewController *)self textView:*&style];
   [v6 setIsSettingStyleWithStyleUI:1];
 
   [(ICNoteEditorViewController *)self setCurrentTextStyle:v4];
-  v7 = [(ICNoteEditorViewController *)self textView];
-  [v7 setIsSettingStyleWithStyleUI:0];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView setIsSettingStyleWithStyleUI:0];
 
   v8 = topoTextStylesToAnalyticsStyles;
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v4];
   v10 = [v8 objectForKeyedSubscript:v9];
-  v11 = [v10 integerValue];
+  integerValue = [v10 integerValue];
 
-  if (v11)
+  if (integerValue)
   {
-    v13 = [(ICNoteEditorViewController *)self eventReporter];
-    v12 = [(ICNoteEditorBaseViewController *)self note];
-    [v13 submitStyleFormatEventForModernNote:v12 styleTypeValue:v11];
+    eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:integerValue];
   }
 }
 
-- (void)toggleBIUS:(unint64_t)a3 sender:(id)a4
+- (void)toggleBIUS:(unint64_t)s sender:(id)sender
 {
-  v17 = a4;
-  v6 = [(ICNoteEditorViewController *)self textView];
+  senderCopy = sender;
+  textView = [(ICNoteEditorViewController *)self textView];
   v7 = 1;
-  [v6 setIsSettingStyleWithStyleUI:1];
+  [textView setIsSettingStyleWithStyleUI:1];
 
-  v8 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-  v9 = [(ICNoteEditorViewController *)self textView];
-  v10 = v9;
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  v10 = textView2;
   v11 = 0;
-  if (a3 <= 3)
+  if (s <= 3)
   {
-    if (a3 == 1)
+    if (s == 1)
     {
-      if (v8)
+      if (auxiliaryStylingController)
       {
-        [v8 toggleBoldface:v17];
+        [auxiliaryStylingController toggleBoldface:senderCopy];
       }
 
       else
       {
-        [v9 ic_toggleBoldface];
+        [textView2 ic_toggleBoldface];
       }
 
       v7 = 0;
       v11 = 9;
     }
 
-    else if (a3 == 2)
+    else if (s == 2)
     {
-      if (v8)
+      if (auxiliaryStylingController)
       {
-        [v8 toggleItalics:v17];
+        [auxiliaryStylingController toggleItalics:senderCopy];
       }
 
       else
       {
-        [v9 ic_toggleItalics];
+        [textView2 ic_toggleItalics];
       }
 
       v7 = 0;
@@ -8695,31 +8695,31 @@ LABEL_10:
 
   else
   {
-    switch(a3)
+    switch(s)
     {
       case 4uLL:
-        if (v8)
+        if (auxiliaryStylingController)
         {
-          [v8 toggleUnderline:v17];
+          [auxiliaryStylingController toggleUnderline:senderCopy];
         }
 
         else
         {
-          [v9 ic_toggleUnderline];
+          [textView2 ic_toggleUnderline];
         }
 
         v7 = 0;
         v11 = 11;
         break;
       case 8uLL:
-        if (v8)
+        if (auxiliaryStylingController)
         {
-          [v8 toggleStrikethrough:v17];
+          [auxiliaryStylingController toggleStrikethrough:senderCopy];
         }
 
         else
         {
-          [v9 ic_toggleStrikethrough];
+          [textView2 ic_toggleStrikethrough];
         }
 
         v7 = 0;
@@ -8727,10 +8727,10 @@ LABEL_10:
         break;
       case 0x10uLL:
         v12 = ic_currentEmphasisColorTypeDefault();
-        if (v8)
+        if (auxiliaryStylingController)
         {
           v13 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
-          [v8 toggleEmphasis:v17 onValue:v13];
+          [auxiliaryStylingController toggleEmphasis:senderCopy onValue:v13];
         }
 
         else
@@ -8744,20 +8744,20 @@ LABEL_10:
     }
   }
 
-  v14 = [(ICNoteEditorViewController *)self textView];
-  [v14 setIsSettingStyleWithStyleUI:0];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  [textView3 setIsSettingStyleWithStyleUI:0];
 
   if ((v7 & 1) == 0)
   {
-    v15 = [(ICNoteEditorViewController *)self eventReporter];
-    v16 = [(ICNoteEditorBaseViewController *)self note];
-    [v15 submitStyleFormatEventForModernNote:v16 styleTypeValue:v11];
+    eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:v11];
   }
 }
 
-- (void)changeIndentationByIncreasing:(BOOL)a3 sender:(id)a4
+- (void)changeIndentationByIncreasing:(BOOL)increasing sender:(id)sender
 {
-  if ([(ICNoteEditorViewController *)self currentWritingDirection:a3]== !a3)
+  if ([(ICNoteEditorViewController *)self currentWritingDirection:increasing]== !increasing)
   {
     v5 = 1;
   }
@@ -8767,31 +8767,31 @@ LABEL_10:
     v5 = -1;
   }
 
-  v6 = [(ICNoteEditorViewController *)self textView];
-  [v6 setIsSettingStyleWithStyleUI:1];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView setIsSettingStyleWithStyleUI:1];
 
   [(ICNoteEditorViewController *)self indentSelectionIfPossibleByAmount:v5];
-  v7 = [(ICNoteEditorViewController *)self textView];
-  [v7 setIsSettingStyleWithStyleUI:0];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  [textView2 setIsSettingStyleWithStyleUI:0];
 }
 
 - (id)noteFormattingTintColor
 {
-  v2 = [(ICNoteEditorViewController *)self view];
-  v3 = [v2 tintColor];
+  view = [(ICNoteEditorViewController *)self view];
+  tintColor = [view tintColor];
 
-  return v3;
+  return tintColor;
 }
 
-- (void)noteFormattingNeedsUpdate:(id)a3
+- (void)noteFormattingNeedsUpdate:(id)update
 {
-  v4 = a3;
-  v6 = [(ICNoteEditorViewController *)self textView];
-  [v6 selectedRange];
-  [v4 updateWithDataSource:self ignoreTypingAttributes:v5 != 0];
+  updateCopy = update;
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView selectedRange];
+  [updateCopy updateWithDataSource:self ignoreTypingAttributes:v5 != 0];
 }
 
-- (void)noteFormattingDidFinish:(id)a3
+- (void)noteFormattingDidFinish:(id)finish
 {
   if ([(ICNoteEditorViewController *)self styleSelectorInputViewShowing])
   {
@@ -8804,28 +8804,28 @@ LABEL_10:
   }
 
   v4 = *MEMORY[0x277D76488];
-  v7 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-  v5 = [v7 styleBarButtonItem];
-  v6 = [v5 view];
-  UIAccessibilityPostNotification(v4, v6);
+  navigationItemConfiguration = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+  styleBarButtonItem = [navigationItemConfiguration styleBarButtonItem];
+  view = [styleBarButtonItem view];
+  UIAccessibilityPostNotification(v4, view);
 }
 
-- (void)attachmentInsertionController:(id)a3 willAddAttachment:(id)a4 atRange:(_NSRange)a5
+- (void)attachmentInsertionController:(id)controller willAddAttachment:(id)attachment atRange:(_NSRange)range
 {
-  v5 = [(ICNoteEditorViewController *)self textView:a3];
+  v5 = [(ICNoteEditorViewController *)self textView:controller];
   [v5 unmarkText];
 }
 
-- (void)attachmentInsertionController:(id)a3 didAddAttachment:(id)a4 atRange:(_NSRange)a5
+- (void)attachmentInsertionController:(id)controller didAddAttachment:(id)attachment atRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v8 = a4;
+  length = range.length;
+  location = range.location;
+  attachmentCopy = attachment;
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [(ICNoteEditorViewController *)self textView];
+    textView = [(ICNoteEditorViewController *)self textView];
     objc_opt_class();
-    v10 = [v9 textStorage];
+    textStorage = [textView textStorage];
     v11 = ICCheckedDynamicCast();
 
     v12 = location + length;
@@ -8841,31 +8841,31 @@ LABEL_10:
     }
 
     objc_opt_class();
-    v14 = [v11 styler];
+    styler = [v11 styler];
     v15 = ICDynamicCast();
 
-    v16 = [v11 string];
+    string = [v11 string];
     v43 = length;
-    v17 = [v16 paragraphRangeForRange:{location, length}];
-    v18 = v9;
-    v19 = self;
+    v17 = [string paragraphRangeForRange:{location, length}];
+    v18 = textView;
+    selfCopy = self;
     v20 = v11;
-    v21 = v8;
+    v21 = attachmentCopy;
     v22 = v17;
     v24 = v23;
 
     v25 = v22;
-    v8 = v21;
+    attachmentCopy = v21;
     v11 = v20;
-    v26 = v19;
-    v9 = v18;
+    v26 = selfCopy;
+    textView = v18;
     [v15 updateParagraphWritingDirectionToKeyboardWritingDirectionInRange:v25 textStorage:v24 textView:{v11, v18}];
     [(ICNoteEditorViewController *)v26 textViewDidChange:v18];
     [v11 breakUndoCoalescing];
     [(ICNoteEditorViewController *)v26 updateBarButtons];
     UIAccessibilityPostNotification(*MEMORY[0x277D76488], 0);
-    v27 = [v8 attachmentType];
-    if (v27 < 0xC || v27 - 13 < 3)
+    attachmentType = [attachmentCopy attachmentType];
+    if (attachmentType < 0xC || attachmentType - 13 < 3)
     {
       if (!-[ICNoteEditorViewController doNotAdvanceInsertionPointAfterInsertingAttachment](v26, "doNotAdvanceInsertionPointAfterInsertingAttachment") && v12 + 1 <= [v11 length])
       {
@@ -8877,38 +8877,38 @@ LABEL_10:
       if (ICInternalSettingsIsTextKit2Enabled())
       {
         objc_opt_class();
-        v28 = [(ICNoteEditorViewController *)v26 textView];
-        v29 = [v28 textLayoutManager];
+        textView2 = [(ICNoteEditorViewController *)v26 textView];
+        textLayoutManager = [textView2 textLayoutManager];
         v30 = ICCheckedDynamicCast();
 
         if (v30 && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [(ICNoteEditorViewController *)v26 rcc_updatePaperKitMessengerForAttachment:v8 textLayoutManager:v30];
+          [(ICNoteEditorViewController *)v26 rcc_updatePaperKitMessengerForAttachment:attachmentCopy textLayoutManager:v30];
         }
       }
 
       else
       {
         objc_opt_class();
-        v31 = [v18 layoutManager];
+        layoutManager = [v18 layoutManager];
         v30 = ICCheckedDynamicCast();
 
         if (v30 && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [(ICNoteEditorViewController *)v26 rcc_updatePaperKitMessengerForAttachment:v8 layoutManager:v30];
+          [(ICNoteEditorViewController *)v26 rcc_updatePaperKitMessengerForAttachment:attachmentCopy layoutManager:v30];
         }
       }
     }
 
     else
     {
-      if (v27 != 12)
+      if (attachmentType != 12)
       {
         goto LABEL_20;
       }
 
-      v32 = [(ICNoteEditorViewController *)v26 textStorage];
-      v33 = [v32 length];
+      textStorage2 = [(ICNoteEditorViewController *)v26 textStorage];
+      v33 = [textStorage2 length];
 
       if (location >= v33)
       {
@@ -8916,8 +8916,8 @@ LABEL_10:
       }
 
       objc_opt_class();
-      v34 = [(ICNoteEditorViewController *)v26 textStorage];
-      v35 = [v34 attribute:*MEMORY[0x277D74060] atIndex:location effectiveRange:0];
+      textStorage3 = [(ICNoteEditorViewController *)v26 textStorage];
+      v35 = [textStorage3 attribute:*MEMORY[0x277D74060] atIndex:location effectiveRange:0];
       v30 = ICDynamicCast();
 
       if (!v30)
@@ -8928,8 +8928,8 @@ LABEL_10:
       if (ICInternalSettingsIsTextKit2Enabled())
       {
         objc_opt_class();
-        v36 = [(ICNoteEditorViewController *)v26 textView];
-        v37 = [v36 textLayoutManager];
+        textView3 = [(ICNoteEditorViewController *)v26 textView];
+        textLayoutManager2 = [textView3 textLayoutManager];
         v38 = ICDynamicCast();
 
         v39 = [v38 tableViewControllerForAttachment:v30 createIfNeeded:1];
@@ -8938,8 +8938,8 @@ LABEL_10:
       else
       {
         objc_opt_class();
-        v40 = [(ICNoteEditorViewController *)v26 textView];
-        v41 = [v40 layoutManager];
+        textView4 = [(ICNoteEditorViewController *)v26 textView];
+        layoutManager2 = [textView4 layoutManager];
         v38 = ICDynamicCast();
 
         objc_opt_class();
@@ -8957,8 +8957,8 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v9 = os_log_create("com.apple.notes", "UI");
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  textView = os_log_create("com.apple.notes", "UI");
+  if (os_log_type_enabled(textView, OS_LOG_TYPE_ERROR))
   {
     [ICNoteEditorViewController attachmentInsertionController:didAddAttachment:atRange:];
   }
@@ -8966,19 +8966,19 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)attachmentInsertionController:(id)a3 didAddInlineAttachment:(id)a4 atRange:(_NSRange)a5 textStorage:(id)a6
+- (void)attachmentInsertionController:(id)controller didAddInlineAttachment:(id)attachment atRange:(_NSRange)range textStorage:(id)storage
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a6;
-  v10 = [(ICNoteEditorViewController *)self textView];
-  v11 = [v10 textStorage];
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
+  textView = [(ICNoteEditorViewController *)self textView];
+  textStorage = [textView textStorage];
 
-  if (v11 == v9)
+  if (textStorage == storageCopy)
   {
     objc_opt_class();
-    v12 = [(ICNoteEditorViewController *)self textView];
-    v13 = [v12 textStorage];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    textStorage2 = [textView2 textStorage];
     v16 = ICCheckedDynamicCast();
 
     if (([v16 isEditing] & 1) == 0)
@@ -8991,8 +8991,8 @@ LABEL_22:
           v14 = location + 1;
         }
 
-        v15 = [(ICNoteEditorViewController *)self textView];
-        [v15 setSelectedRange:{v14, 0}];
+        textView3 = [(ICNoteEditorViewController *)self textView];
+        [textView3 setSelectedRange:{v14, 0}];
 
         [(ICNoteEditorViewController *)self scrollRangeToVisible:location animated:length, 1];
       }
@@ -9004,39 +9004,39 @@ LABEL_22:
 
 - (void)addSystemPaperAttachment
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  v4 = [v3 canAddAttachment];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  canAddAttachment = [note canAddAttachment];
 
-  if (v4)
+  if (canAddAttachment)
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [v5 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v6 = [(ICNoteEditorBaseViewController *)self note];
-    v7 = [v6 addSystemPaperAttachmentWithIdentifier:v15];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    v7 = [note2 addSystemPaperAttachmentWithIdentifier:uUIDString];
 
-    v8 = [(ICNoteEditorViewController *)self attachmentInsertionController];
-    v9 = [(ICNoteEditorViewController *)self textView];
-    v10 = [v9 selectedRange];
-    v12 = [v8 addAttachment:v7 atTextLocation:v10 + v11];
+    attachmentInsertionController = [(ICNoteEditorViewController *)self attachmentInsertionController];
+    textView = [(ICNoteEditorViewController *)self textView];
+    selectedRange = [textView selectedRange];
+    v12 = [attachmentInsertionController addAttachment:v7 atTextLocation:selectedRange + v11];
 
-    v13 = [(ICNoteEditorBaseViewController *)self note];
-    v14 = [v13 managedObjectContext];
-    [v14 ic_save];
+    note3 = [(ICNoteEditorBaseViewController *)self note];
+    managedObjectContext = [note3 managedObjectContext];
+    [managedObjectContext ic_save];
   }
 }
 
 - (void)showDocumentCamera
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  v4 = [v3 canAddAttachment];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  canAddAttachment = [note canAddAttachment];
 
-  if (v4)
+  if (canAddAttachment)
   {
-    v5 = [(ICNoteEditorBaseViewController *)self note];
-    v6 = [v5 isDeletedOrInTrash];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    isDeletedOrInTrash = [note2 isDeletedOrInTrash];
 
-    if (v6)
+    if (isDeletedOrInTrash)
     {
 
       [(ICNoteEditorViewController *)self showRecoverNoteAlert];
@@ -9057,23 +9057,23 @@ LABEL_22:
   }
 }
 
-- (void)documentCameraPresentingViewController:(id)a3 didFinishWithInfoCollection:(id)a4 imageCache:(id)a5 warnUser:(BOOL)a6 closeViewController:(BOOL)a7
+- (void)documentCameraPresentingViewController:(id)controller didFinishWithInfoCollection:(id)collection imageCache:(id)cache warnUser:(BOOL)user closeViewController:(BOOL)viewController
 {
-  v7 = a7;
-  v8 = a6;
+  viewControllerCopy = viewController;
+  userCopy = user;
   v164 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v124 = v8;
-  if (v8 && !v7)
+  controllerCopy = controller;
+  collectionCopy = collection;
+  cacheCopy = cache;
+  v124 = userCopy;
+  if (userCopy && !viewControllerCopy)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"!(warnUser && !closeViewController)" functionName:"-[ICNoteEditorViewController documentCameraPresentingViewController:didFinishWithInfoCollection:imageCache:warnUser:closeViewController:]" simulateCrash:1 showAlert:0 format:@"Cannot warn user if not closing the view controller"];
   }
 
-  v127 = v7;
-  v14 = [v12 docInfos];
-  v15 = [v14 count];
+  v127 = viewControllerCopy;
+  docInfos = [collectionCopy docInfos];
+  v15 = [docInfos count];
 
   if (!v15)
   {
@@ -9081,15 +9081,15 @@ LABEL_22:
   }
 
   v16 = MEMORY[0x277CBEB18];
-  v17 = [v12 docInfos];
-  v18 = [v16 arrayWithCapacity:{objc_msgSend(v17, "count")}];
+  docInfos2 = [collectionCopy docInfos];
+  v18 = [v16 arrayWithCapacity:{objc_msgSend(docInfos2, "count")}];
 
   v158 = 0u;
   v159 = 0u;
   v156 = 0u;
   v157 = 0u;
-  v19 = [v12 docInfos];
-  v20 = [v19 countByEnumeratingWithState:&v156 objects:v163 count:16];
+  docInfos3 = [collectionCopy docInfos];
+  v20 = [docInfos3 countByEnumeratingWithState:&v156 objects:v163 count:16];
   if (v20)
   {
     v21 = v20;
@@ -9100,26 +9100,26 @@ LABEL_22:
       {
         if (*v157 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(docInfos3);
         }
 
-        v24 = [*(*(&v156 + 1) + 8 * i) croppedAndFilteredImageUUID];
-        v25 = [v13 getImageURL:v24 async:0];
+        croppedAndFilteredImageUUID = [*(*(&v156 + 1) + 8 * i) croppedAndFilteredImageUUID];
+        v25 = [cacheCopy getImageURL:croppedAndFilteredImageUUID async:0];
         [v18 ic_addNonNilObject:v25];
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v156 objects:v163 count:16];
+      v21 = [docInfos3 countByEnumeratingWithState:&v156 objects:v163 count:16];
     }
 
     while (v21);
   }
 
-  v128 = v12;
+  v128 = collectionCopy;
 
   objc_opt_class();
   v26 = [MEMORY[0x277D36260] objectForKey:@"ICShouldSavePhotosAndVideosToCameraRollKey"];
   v27 = ICDynamicCast();
-  v28 = [v27 BOOLValue];
+  bOOLValue = [v27 BOOLValue];
 
   v154 = 0u;
   v155 = 0u;
@@ -9147,10 +9147,10 @@ LABEL_22:
         [v36 getResourceValue:&v151 forKey:v34 error:0];
         if (v151)
         {
-          v37 = [v151 unsignedIntegerValue];
-          if (v32 <= v37)
+          unsignedIntegerValue = [v151 unsignedIntegerValue];
+          if (v32 <= unsignedIntegerValue)
           {
-            v32 = v37;
+            v32 = unsignedIntegerValue;
           }
         }
       }
@@ -9166,20 +9166,20 @@ LABEL_22:
     v32 = 0;
   }
 
-  v38 = self;
-  v39 = [(ICNoteEditorBaseViewController *)self note];
-  v40 = [v39 canAddAttachment];
+  selfCopy3 = self;
+  note = [(ICNoteEditorBaseViewController *)self note];
+  canAddAttachment = [note canAddAttachment];
 
-  v41 = [(ICNoteEditorBaseViewController *)self note];
-  v42 = [v41 attachmentExceedsMaxSizeAllowed:v32];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  v42 = [note2 attachmentExceedsMaxSizeAllowed:v32];
 
-  v43 = [(ICNoteEditorBaseViewController *)self note];
-  v44 = [v43 isPasswordProtected];
+  note3 = [(ICNoteEditorBaseViewController *)self note];
+  isPasswordProtected = [note3 isPasswordProtected];
 
-  if (!v44 && ((v28 | v42 | v40 ^ 1) & 1) != 0)
+  if (!isPasswordProtected && ((bOOLValue | v42 | canAddAttachment ^ 1) & 1) != 0)
   {
-    v120 = v40;
-    v122 = v11;
+    v120 = canAddAttachment;
+    v122 = controllerCopy;
     v149 = 0u;
     v150 = 0u;
     v147 = 0u;
@@ -9213,112 +9213,112 @@ LABEL_22:
       while (v47);
     }
 
-    v11 = v122;
-    v38 = self;
-    LOBYTE(v40) = v120;
+    controllerCopy = v122;
+    selfCopy3 = self;
+    LOBYTE(canAddAttachment) = v120;
   }
 
-  if (v40)
+  if (canAddAttachment)
   {
     v53 = v128;
     if ((v42 & 1) == 0)
     {
       if (ICInternalSettingsDefaultToPaperKitPDFsAndScans())
       {
-        v57 = [(ICNoteEditorViewController *)v38 createdGalleryAttachmentUUID];
-        v125 = [v57 UUIDString];
+        createdGalleryAttachmentUUID = [(ICNoteEditorViewController *)selfCopy3 createdGalleryAttachmentUUID];
+        uUIDString = [createdGalleryAttachmentUUID UUIDString];
 
-        v58 = [(ICNoteEditorBaseViewController *)v38 note];
-        v59 = [v58 addPaperDocumentAttachmentWithIdentifier:v125 subtype:*MEMORY[0x277D35BF8]];
+        note4 = [(ICNoteEditorBaseViewController *)selfCopy3 note];
+        v59 = [note4 addPaperDocumentAttachmentWithIdentifier:uUIDString subtype:*MEMORY[0x277D35BF8]];
 
-        v60 = [v128 docInfos];
-        v61 = [v60 count];
+        docInfos4 = [v128 docInfos];
+        v61 = [docInfos4 count];
         objc_opt_class();
-        v62 = [v59 paperBundleModel];
+        paperBundleModel = [v59 paperBundleModel];
         v63 = ICDynamicCast();
         [v63 setPaperPageCount:v61];
 
-        v64 = [v59 managedObjectContext];
-        [v64 ic_save];
+        managedObjectContext = [v59 managedObjectContext];
+        [managedObjectContext ic_save];
 
         v65 = MEMORY[0x277D35F48];
-        v66 = [v128 docInfos];
+        docInfos5 = [v128 docInfos];
         v140[0] = MEMORY[0x277D85DD0];
         v140[1] = 3221225472;
         v140[2] = __137__ICNoteEditorViewController_documentCameraPresentingViewController_didFinishWithInfoCollection_imageCache_warnUser_closeViewController___block_invoke_2;
         v140[3] = &unk_2781AD020;
         v141 = v59;
-        v142 = v38;
+        v142 = selfCopy3;
         v67 = v59;
-        [v65 createPaperBundleForAttachment:v67 fromDocCamInfoCollection:v66 imageCache:v13 completion:v140];
+        [v65 createPaperBundleForAttachment:v67 fromDocCamInfoCollection:docInfos5 imageCache:cacheCopy completion:v140];
 
-        v68 = [(ICNoteEditorViewController *)v38 eventReporter];
-        v69 = [v67 identifier];
-        [v68 pushDocScanDataWithID:v69 actionType:1 stage:2];
+        eventReporter = [(ICNoteEditorViewController *)selfCopy3 eventReporter];
+        identifier = [v67 identifier];
+        [eventReporter pushDocScanDataWithID:identifier actionType:1 stage:2];
 
-        v70 = [(ICNoteEditorViewController *)v38 eventReporter];
-        v71 = [(ICNoteEditorBaseViewController *)v38 note];
-        v72 = [v128 docInfos];
-        [v70 submitDocScanEventForNote:v71 pageCount:{objc_msgSend(v72, "count")}];
+        eventReporter2 = [(ICNoteEditorViewController *)selfCopy3 eventReporter];
+        note5 = [(ICNoteEditorBaseViewController *)selfCopy3 note];
+        docInfos6 = [v128 docInfos];
+        [eventReporter2 submitDocScanEventForNote:note5 pageCount:{objc_msgSend(docInfos6, "count")}];
 
-        v73 = v125;
-        v74 = [(ICNoteEditorViewController *)v38 eventReporter];
-        [v74 submitAttachmentAddEventForAttachment:v67];
+        v73 = uUIDString;
+        eventReporter3 = [(ICNoteEditorViewController *)selfCopy3 eventReporter];
+        [eventReporter3 submitAttachmentAddEventForAttachment:v67];
 
-        [(ICNoteEditorViewController *)v38 setCreatedGalleryAttachmentUUID:0];
+        [(ICNoteEditorViewController *)selfCopy3 setCreatedGalleryAttachmentUUID:0];
         v75 = v141;
       }
 
       else
       {
-        v123 = v11;
+        v123 = controllerCopy;
         v76 = objc_alloc(MEMORY[0x277D05D58]);
-        v77 = [v128 docInfos];
-        v78 = [v76 initWithImageCache:v13 docInfos:v77];
+        docInfos7 = [v128 docInfos];
+        v78 = [v76 initWithImageCache:cacheCopy docInfos:docInfos7];
 
         v126 = v78;
         [MEMORY[0x277D05D50] setCachedItem:v78];
-        v79 = [(ICNoteEditorBaseViewController *)v38 note];
-        v80 = [(ICNoteEditorViewController *)v38 createdGalleryAttachmentUUID];
-        v81 = [v80 UUIDString];
-        v67 = [v79 addGalleryAttachmentWithIdentifier:v81];
+        note6 = [(ICNoteEditorBaseViewController *)selfCopy3 note];
+        createdGalleryAttachmentUUID2 = [(ICNoteEditorViewController *)selfCopy3 createdGalleryAttachmentUUID];
+        uUIDString2 = [createdGalleryAttachmentUUID2 UUIDString];
+        v67 = [note6 addGalleryAttachmentWithIdentifier:uUIDString2];
 
         objc_opt_class();
-        v82 = [v67 attachmentModel];
+        attachmentModel = [v67 attachmentModel];
         v83 = ICCheckedDynamicCast();
 
-        v84 = [v128 docInfos];
-        v85 = [v84 firstObject];
+        docInfos8 = [v128 docInfos];
+        firstObject = [docInfos8 firstObject];
 
-        v86 = [MEMORY[0x277D36798] createSubAttachmentFromDocument:v85 imageCache:v13 galleryAttachment:v67];
+        v86 = [MEMORY[0x277D36798] createSubAttachmentFromDocument:firstObject imageCache:cacheCopy galleryAttachment:v67];
         v87 = v86;
         if (v86)
         {
-          v88 = [v86 identifier];
-          [v85 setScanDataDelegateIdentifier:v88];
+          identifier2 = [v86 identifier];
+          [firstObject setScanDataDelegateIdentifier:identifier2];
 
           [v83 addSubAttachment:v87];
         }
 
         v118 = v87;
-        v119 = v85;
+        v119 = firstObject;
         v121 = v83;
         [v67 saveMergeableDataIfNeeded];
-        v89 = [(ICNoteEditorViewController *)v38 attachmentInsertionController];
-        v90 = [(ICNoteEditorViewController *)v38 textView];
-        v91 = [v90 selectedRange];
-        v93 = [v89 addAttachment:v67 atTextLocation:v91 + v92];
+        attachmentInsertionController = [(ICNoteEditorViewController *)selfCopy3 attachmentInsertionController];
+        textView = [(ICNoteEditorViewController *)selfCopy3 textView];
+        selectedRange = [textView selectedRange];
+        v93 = [attachmentInsertionController addAttachment:v67 atTextLocation:selectedRange + v92];
 
-        v94 = [(ICNoteEditorBaseViewController *)v38 note];
-        v95 = [v94 managedObjectContext];
-        [v95 ic_saveWithLogDescription:@"Insert gallery attachment"];
+        note7 = [(ICNoteEditorBaseViewController *)selfCopy3 note];
+        managedObjectContext2 = [note7 managedObjectContext];
+        [managedObjectContext2 ic_saveWithLogDescription:@"Insert gallery attachment"];
 
         v138 = 0u;
         v139 = 0u;
         v136 = 0u;
         v137 = 0u;
-        v96 = [v67 subAttachments];
-        v97 = [v96 countByEnumeratingWithState:&v136 objects:v160 count:16];
+        subAttachments = [v67 subAttachments];
+        v97 = [subAttachments countByEnumeratingWithState:&v136 objects:v160 count:16];
         if (v97)
         {
           v98 = v97;
@@ -9329,40 +9329,40 @@ LABEL_22:
             {
               if (*v137 != v99)
               {
-                objc_enumerationMutation(v96);
+                objc_enumerationMutation(subAttachments);
               }
 
               v101 = *(*(&v136 + 1) + 8 * m);
-              v102 = [MEMORY[0x277D366B0] sharedGenerator];
-              [v102 generatePreviewIfNeededForAttachment:v101];
+              mEMORY[0x277D366B0] = [MEMORY[0x277D366B0] sharedGenerator];
+              [mEMORY[0x277D366B0] generatePreviewIfNeededForAttachment:v101];
             }
 
-            v98 = [v96 countByEnumeratingWithState:&v136 objects:v160 count:16];
+            v98 = [subAttachments countByEnumeratingWithState:&v136 objects:v160 count:16];
           }
 
           while (v98);
         }
 
-        v103 = [MEMORY[0x277D366B0] sharedGenerator];
-        [v103 generatePreviewIfNeededForAttachment:v67];
+        mEMORY[0x277D366B0]2 = [MEMORY[0x277D366B0] sharedGenerator];
+        [mEMORY[0x277D366B0]2 generatePreviewIfNeededForAttachment:v67];
 
-        v38 = self;
-        v104 = [(ICNoteEditorViewController *)self eventReporter];
-        v105 = [v67 identifier];
-        [v104 pushDocScanDataWithID:v105 actionType:1 stage:2];
+        selfCopy3 = self;
+        eventReporter4 = [(ICNoteEditorViewController *)self eventReporter];
+        identifier3 = [v67 identifier];
+        [eventReporter4 pushDocScanDataWithID:identifier3 actionType:1 stage:2];
 
-        v106 = [(ICNoteEditorViewController *)self eventReporter];
-        v107 = [(ICNoteEditorBaseViewController *)self note];
+        eventReporter5 = [(ICNoteEditorViewController *)self eventReporter];
+        note8 = [(ICNoteEditorBaseViewController *)self note];
         v53 = v128;
-        v108 = [v128 docInfos];
-        [v106 submitDocScanEventForNote:v107 pageCount:{objc_msgSend(v108, "count")}];
+        docInfos9 = [v128 docInfos];
+        [eventReporter5 submitDocScanEventForNote:note8 pageCount:{objc_msgSend(docInfos9, "count")}];
 
-        v109 = [(ICNoteEditorViewController *)self eventReporter];
-        [v109 submitAttachmentAddEventForAttachment:v67];
+        eventReporter6 = [(ICNoteEditorViewController *)self eventReporter];
+        [eventReporter6 submitAttachmentAddEventForAttachment:v67];
 
         [(ICNoteEditorViewController *)self setCreatedGalleryAttachmentUUID:0];
-        v110 = [v128 docInfos];
-        v111 = [v110 count];
+        docInfos10 = [v128 docInfos];
+        v111 = [docInfos10 count];
 
         if (v111 < 2)
         {
@@ -9372,9 +9372,9 @@ LABEL_22:
 
         else
         {
-          v112 = [v128 docInfos];
-          v113 = [v128 docInfos];
-          v114 = [v112 subarrayWithRange:{1, objc_msgSend(v113, "count") - 1}];
+          docInfos11 = [v128 docInfos];
+          docInfos12 = [v128 docInfos];
+          v114 = [docInfos11 subarrayWithRange:{1, objc_msgSend(docInfos12, "count") - 1}];
 
           v115 = [MEMORY[0x277CBEB18] arrayWithArray:v114];
           [v128 setDocInfos:v115];
@@ -9386,20 +9386,20 @@ LABEL_22:
           block[3] = &unk_2781AC878;
           v132 = v67;
           v133 = v128;
-          v134 = v13;
+          v134 = cacheCopy;
           v73 = v126;
           v135 = v126;
           dispatch_async(v116, block);
         }
 
         v75 = v121;
-        v11 = v123;
+        controllerCopy = v123;
       }
 
       if (!v127)
       {
-        [(ICNoteEditorViewController *)v38 cleanupAfterAddImageAttachmentOperation];
-        v117 = v11;
+        [(ICNoteEditorViewController *)selfCopy3 cleanupAfterAddImageAttachmentOperation];
+        v117 = controllerCopy;
         v55 = 0;
         goto LABEL_67;
       }
@@ -9408,10 +9408,10 @@ LABEL_22:
       v130[1] = 3221225472;
       v130[2] = __137__ICNoteEditorViewController_documentCameraPresentingViewController_didFinishWithInfoCollection_imageCache_warnUser_closeViewController___block_invoke_4;
       v130[3] = &unk_2781ABCF8;
-      v130[4] = v38;
+      v130[4] = selfCopy3;
       v55 = v130;
 LABEL_66:
-      v117 = v11;
+      v117 = controllerCopy;
 LABEL_67:
       [v117 dismissViewControllerAnimated:1 completion:v55];
       goto LABEL_68;
@@ -9420,7 +9420,7 @@ LABEL_67:
     v54 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
     {
-      [ICNoteEditorViewController documentCameraPresentingViewController:v38 didFinishWithInfoCollection:? imageCache:? warnUser:? closeViewController:?];
+      [ICNoteEditorViewController documentCameraPresentingViewController:selfCopy3 didFinishWithInfoCollection:? imageCache:? warnUser:? closeViewController:?];
     }
 
     if (v127)
@@ -9429,7 +9429,7 @@ LABEL_67:
       v143[1] = 3221225472;
       v143[2] = __137__ICNoteEditorViewController_documentCameraPresentingViewController_didFinishWithInfoCollection_imageCache_warnUser_closeViewController___block_invoke_749;
       v143[3] = &unk_2781ACFF8;
-      v143[4] = v38;
+      v143[4] = selfCopy3;
       v144 = v124;
       v55 = v143;
       goto LABEL_66;
@@ -9437,7 +9437,7 @@ LABEL_67:
 
     if (v124)
     {
-      [(ICNoteEditorViewController *)v38 warnUserAttachmentSizeExceededWithAttachmentCount:1];
+      [(ICNoteEditorViewController *)selfCopy3 warnUserAttachmentSizeExceededWithAttachmentCount:1];
     }
   }
 
@@ -9447,7 +9447,7 @@ LABEL_67:
     v53 = v128;
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
     {
-      [ICNoteEditorViewController documentCameraPresentingViewController:v38 didFinishWithInfoCollection:? imageCache:? warnUser:? closeViewController:?];
+      [ICNoteEditorViewController documentCameraPresentingViewController:selfCopy3 didFinishWithInfoCollection:? imageCache:? warnUser:? closeViewController:?];
     }
 
     if (v127)
@@ -9456,7 +9456,7 @@ LABEL_67:
       v145[1] = 3221225472;
       v145[2] = __137__ICNoteEditorViewController_documentCameraPresentingViewController_didFinishWithInfoCollection_imageCache_warnUser_closeViewController___block_invoke;
       v145[3] = &unk_2781ACFF8;
-      v145[4] = v38;
+      v145[4] = selfCopy3;
       v146 = v124;
       v55 = v145;
       goto LABEL_66;
@@ -9464,7 +9464,7 @@ LABEL_67:
 
     if (v124)
     {
-      [(ICNoteEditorViewController *)v38 warnUserAttachmentLimitExceeded];
+      [(ICNoteEditorViewController *)selfCopy3 warnUserAttachmentLimitExceeded];
     }
   }
 
@@ -9579,14 +9579,14 @@ uint64_t __137__ICNoteEditorViewController_documentCameraPresentingViewControlle
   return [v6 doneBuildingCache];
 }
 
-- (void)documentCameraControllerDidCancelWithPresentingViewController:(id)a3
+- (void)documentCameraControllerDidCancelWithPresentingViewController:(id)controller
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __92__ICNoteEditorViewController_documentCameraControllerDidCancelWithPresentingViewController___block_invoke;
   v3[3] = &unk_2781ABCF8;
   v3[4] = self;
-  [a3 dismissViewControllerAnimated:1 completion:v3];
+  [controller dismissViewControllerAnimated:1 completion:v3];
 }
 
 uint64_t __92__ICNoteEditorViewController_documentCameraControllerDidCancelWithPresentingViewController___block_invoke(uint64_t a1)
@@ -9599,15 +9599,15 @@ uint64_t __92__ICNoteEditorViewController_documentCameraControllerDidCancelWithP
 
 - (id)documentCameraControllerCreateDataCryptorIfNecessary
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  v4 = [v3 isPasswordProtected];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isPasswordProtected = [note isPasswordProtected];
 
-  if (v4)
+  if (isPasswordProtected)
   {
     v5 = objc_alloc(MEMORY[0x277D35E98]);
-    v6 = [(ICNoteEditorBaseViewController *)self note];
-    v7 = [v6 identifier];
-    v8 = [v5 initWithObjectIdentifier:v7];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    identifier = [note2 identifier];
+    v8 = [v5 initWithObjectIdentifier:identifier];
   }
 
   else
@@ -9618,110 +9618,110 @@ uint64_t __92__ICNoteEditorViewController_documentCameraControllerDidCancelWithP
   return v8;
 }
 
-- (void)documentCameraController:(id)a3 didFinishWithDocInfoCollection:(id)a4 imageCache:(id)a5 warnUser:(BOOL)a6
+- (void)documentCameraController:(id)controller didFinishWithDocInfoCollection:(id)collection imageCache:(id)cache warnUser:(BOOL)user
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [a3 presentingViewController];
-  [(ICNoteEditorViewController *)self documentCameraPresentingViewController:v12 didFinishWithInfoCollection:v11 imageCache:v10 warnUser:v6 closeViewController:1];
+  userCopy = user;
+  cacheCopy = cache;
+  collectionCopy = collection;
+  presentingViewController = [controller presentingViewController];
+  [(ICNoteEditorViewController *)self documentCameraPresentingViewController:presentingViewController didFinishWithInfoCollection:collectionCopy imageCache:cacheCopy warnUser:userCopy closeViewController:1];
 }
 
-- (void)documentCameraController:(id)a3 didFinishWithDocInfoCollection:(id)a4 imageCache:(id)a5 warnUser:(BOOL)a6 closeViewController:(BOOL)a7
+- (void)documentCameraController:(id)controller didFinishWithDocInfoCollection:(id)collection imageCache:(id)cache warnUser:(BOOL)user closeViewController:(BOOL)viewController
 {
-  v7 = a7;
-  v8 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [a3 presentingViewController];
-  [(ICNoteEditorViewController *)self documentCameraPresentingViewController:v14 didFinishWithInfoCollection:v13 imageCache:v12 warnUser:v8 closeViewController:v7];
+  viewControllerCopy = viewController;
+  userCopy = user;
+  cacheCopy = cache;
+  collectionCopy = collection;
+  presentingViewController = [controller presentingViewController];
+  [(ICNoteEditorViewController *)self documentCameraPresentingViewController:presentingViewController didFinishWithInfoCollection:collectionCopy imageCache:cacheCopy warnUser:userCopy closeViewController:viewControllerCopy];
 }
 
-- (void)documentCameraControllerDidRetake:(id)a3 pageCount:(unint64_t)a4
+- (void)documentCameraControllerDidRetake:(id)retake pageCount:(unint64_t)count
 {
-  v6 = [(ICNoteEditorViewController *)self eventReporter];
-  v7 = [(ICNoteEditorViewController *)self createdGalleryAttachmentUUID];
-  v8 = [v7 UUIDString];
-  [v6 pushDocScanDataWithID:v8 actionType:2 stage:1];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  createdGalleryAttachmentUUID = [(ICNoteEditorViewController *)self createdGalleryAttachmentUUID];
+  uUIDString = [createdGalleryAttachmentUUID UUIDString];
+  [eventReporter pushDocScanDataWithID:uUIDString actionType:2 stage:1];
 
-  v10 = [(ICNoteEditorViewController *)self eventReporter];
-  v9 = [(ICNoteEditorBaseViewController *)self note];
-  [v10 submitDocScanEventForNote:v9 pageCount:a4];
+  eventReporter2 = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter2 submitDocScanEventForNote:note pageCount:count];
 }
 
-- (BOOL)documentCameraController:(id)a3 canAddImages:(unint64_t)a4
+- (BOOL)documentCameraController:(id)controller canAddImages:(unint64_t)images
 {
-  v5 = [MEMORY[0x277D35E70] sharedConfiguration];
-  LOBYTE(a4) = [v5 maxSubAttachmentsPerAttachment] >= a4;
+  mEMORY[0x277D35E70] = [MEMORY[0x277D35E70] sharedConfiguration];
+  LOBYTE(images) = [mEMORY[0x277D35E70] maxSubAttachmentsPerAttachment] >= images;
 
-  return a4;
+  return images;
 }
 
-- (id)scanDataDelegateWithIdentifier:(id)a3
+- (id)scanDataDelegateWithIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D35E00];
   v4 = MEMORY[0x277D35F30];
-  v5 = a3;
-  v6 = [v4 sharedContext];
-  v7 = [v6 managedObjectContext];
-  v8 = [v3 attachmentWithIdentifier:v5 context:v7];
+  identifierCopy = identifier;
+  sharedContext = [v4 sharedContext];
+  managedObjectContext = [sharedContext managedObjectContext];
+  v8 = [v3 attachmentWithIdentifier:identifierCopy context:managedObjectContext];
 
   return v8;
 }
 
-- (void)remoteDocumentCameraController:(id)a3 didFinishWithInfoCollection:(id)a4
+- (void)remoteDocumentCameraController:(id)controller didFinishWithInfoCollection:(id)collection
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [v7 presentingViewController];
-  v8 = [v7 imageCache];
+  collectionCopy = collection;
+  controllerCopy = controller;
+  presentingViewController = [controllerCopy presentingViewController];
+  imageCache = [controllerCopy imageCache];
 
-  [(ICNoteEditorViewController *)self documentCameraPresentingViewController:v9 didFinishWithInfoCollection:v6 imageCache:v8 warnUser:1 closeViewController:1];
+  [(ICNoteEditorViewController *)self documentCameraPresentingViewController:presentingViewController didFinishWithInfoCollection:collectionCopy imageCache:imageCache warnUser:1 closeViewController:1];
 }
 
-- (void)addSystemPaperImageData:(id)a3 updateFirstResponder:(BOOL)a4 forceAddToPaper:(BOOL)a5
+- (void)addSystemPaperImageData:(id)data updateFirstResponder:(BOOL)responder forceAddToPaper:(BOOL)paper
 {
-  v5 = a5;
-  v6 = a4;
+  paperCopy = paper;
+  responderCopy = responder;
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(ICNoteEditorBaseViewController *)self note];
-  v10 = [v9 isSharedReadOnly];
+  dataCopy = data;
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isSharedReadOnly = [note isSharedReadOnly];
 
-  if (v10)
+  if (isSharedReadOnly)
   {
-    v11 = os_log_create("com.apple.notes", "UI");
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    paperLinkBarViewController = os_log_create("com.apple.notes", "UI");
+    if (os_log_type_enabled(paperLinkBarViewController, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(buf) = 0;
-      _os_log_impl(&dword_2151A1000, v11, OS_LOG_TYPE_DEFAULT, "Not adding system paper image data since note is read-only.", &buf, 2u);
+      _os_log_impl(&dword_2151A1000, paperLinkBarViewController, OS_LOG_TYPE_DEFAULT, "Not adding system paper image data since note is read-only.", &buf, 2u);
     }
 
     goto LABEL_18;
   }
 
-  if (v5)
+  if (paperCopy)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
     v30 = 0x2020000000;
     v31 = 0;
-    v12 = [(ICNoteEditorBaseViewController *)self note];
-    v13 = [v12 textStorage];
-    v14 = [(ICNoteEditorBaseViewController *)self note];
-    v15 = [v14 textStorage];
-    v16 = [v15 ic_range];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    textStorage = [note2 textStorage];
+    note3 = [(ICNoteEditorBaseViewController *)self note];
+    textStorage2 = [note3 textStorage];
+    ic_range = [textStorage2 ic_range];
     v17 = *MEMORY[0x277D74060];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __91__ICNoteEditorViewController_addSystemPaperImageData_updateFirstResponder_forceAddToPaper___block_invoke;
     v28[3] = &unk_2781ABC80;
     v28[4] = &buf;
-    [v13 enumerateAttribute:v17 inRange:v16 options:v18 usingBlock:{0, v28}];
+    [textStorage enumerateAttribute:v17 inRange:ic_range options:v18 usingBlock:{0, v28}];
 
     v19 = *(*(&buf + 1) + 24);
     _Block_object_dispose(&buf, 8);
-    if (!v6)
+    if (!responderCopy)
     {
       goto LABEL_14;
     }
@@ -9730,29 +9730,29 @@ uint64_t __92__ICNoteEditorViewController_documentCameraControllerDidCancelWithP
   else
   {
     v19 = 0;
-    if (!v6)
+    if (!responderCopy)
     {
       goto LABEL_14;
     }
   }
 
-  v20 = [(ICNoteEditorViewController *)self textView];
-  if ([v20 isFirstResponder])
+  textView = [(ICNoteEditorViewController *)self textView];
+  if ([textView isFirstResponder])
   {
   }
 
   else
   {
-    v21 = [(ICNoteEditorViewController *)self paletteResponder];
-    if ([v21 isFirstResponder])
+    paletteResponder = [(ICNoteEditorViewController *)self paletteResponder];
+    if ([paletteResponder isFirstResponder])
     {
     }
 
     else
     {
-      v22 = [(ICNoteEditorViewController *)self isFirstResponder];
+      isFirstResponder = [(ICNoteEditorViewController *)self isFirstResponder];
 
-      if ((v22 & 1) == 0)
+      if ((isFirstResponder & 1) == 0)
       {
         [(ICNoteEditorViewController *)self becomeFirstResponder];
       }
@@ -9763,25 +9763,25 @@ LABEL_14:
   v23 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [v8 count];
+    v24 = [dataCopy count];
     LODWORD(buf) = 134217984;
     *(&buf + 4) = v24;
     _os_log_impl(&dword_2151A1000, v23, OS_LOG_TYPE_DEFAULT, "System Paper received %lu images", &buf, 0xCu);
   }
 
-  v25 = [(ICNoteEditorViewController *)self visualAssetImportController];
-  [v25 addImageData:v8 typeIdentifier:0 forceAddToPaper:v19 & 1];
+  visualAssetImportController = [(ICNoteEditorViewController *)self visualAssetImportController];
+  [visualAssetImportController addImageData:dataCopy typeIdentifier:0 forceAddToPaper:v19 & 1];
 
-  v26 = [(ICNoteEditorBaseViewController *)self note];
-  [v26 updateModificationDateAndChangeCountAndSaveImmediately];
+  note4 = [(ICNoteEditorBaseViewController *)self note];
+  [note4 updateModificationDateAndChangeCountAndSaveImmediately];
 
-  v27 = [MEMORY[0x277D366B0] sharedGenerator];
-  [v27 generatePreviewsIfNeeded];
+  mEMORY[0x277D366B0] = [MEMORY[0x277D366B0] sharedGenerator];
+  [mEMORY[0x277D366B0] generatePreviewsIfNeeded];
 
   if (+[ICPaperCommonUtilities shouldShowLinksWhenComposingQuickNote])
   {
-    v11 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
-    [v11 refresh];
+    paperLinkBarViewController = [(ICNoteEditorViewController *)self paperLinkBarViewController];
+    [paperLinkBarViewController refresh];
 LABEL_18:
   }
 }
@@ -9799,10 +9799,10 @@ void __91__ICNoteEditorViewController_addSystemPaperImageData_updateFirstRespond
   }
 }
 
-- (BOOL)addSystemPaperLink:(id)a3 updateFirstResponder:(BOOL)a4
+- (BOOL)addSystemPaperLink:(id)link updateFirstResponder:(BOOL)responder
 {
-  v4 = a4;
-  v6 = a3;
+  responderCopy = responder;
+  linkCopy = link;
   IsSystemPaperEnabled = ICInternalSettingsIsSystemPaperEnabled();
   if ((IsSystemPaperEnabled & 1) == 0)
   {
@@ -9820,10 +9820,10 @@ LABEL_8:
     goto LABEL_20;
   }
 
-  v8 = [(ICNoteEditorBaseViewController *)self note];
-  v9 = [v8 isSharedReadOnly];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isSharedReadOnly = [note isSharedReadOnly];
 
-  if (v9)
+  if (isSharedReadOnly)
   {
     v10 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -9839,17 +9839,17 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v4)
+  if (responderCopy)
   {
-    v13 = [(ICNoteEditorViewController *)self textView];
-    if (![v13 isFirstResponder])
+    textView = [(ICNoteEditorViewController *)self textView];
+    if (![textView isFirstResponder])
     {
-      v14 = [(ICNoteEditorViewController *)self paletteResponder];
-      if (![v14 isFirstResponder])
+      paletteResponder = [(ICNoteEditorViewController *)self paletteResponder];
+      if (![paletteResponder isFirstResponder])
       {
-        v31 = [(ICNoteEditorViewController *)self isFirstResponder];
+        isFirstResponder = [(ICNoteEditorViewController *)self isFirstResponder];
 
-        if ((v31 & 1) == 0)
+        if ((isFirstResponder & 1) == 0)
         {
           [(ICNoteEditorViewController *)self becomeFirstResponder];
         }
@@ -9860,44 +9860,44 @@ LABEL_7:
   }
 
 LABEL_14:
-  v15 = [(ICNoteEditorBaseViewController *)self note];
-  v16 = [v15 addSynapseLinkAttachmentWithContentItem:v6];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  v16 = [note2 addSynapseLinkAttachmentWithContentItem:linkCopy];
 
-  v17 = [v6 displayTitle];
-  [v16 setTitle:v17];
+  displayTitle = [linkCopy displayTitle];
+  [v16 setTitle:displayTitle];
 
   [v16 updateChangeCountWithReason:@"Add System Paper Link"];
   if ([(ICNoteEditorViewController *)self isEditing])
   {
-    v18 = [(ICNoteEditorViewController *)self textView];
-    v19 = [v18 selectedRange];
-    v21 = v19 + v20;
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    selectedRange = [textView2 selectedRange];
+    v21 = selectedRange + v20;
   }
 
   else
   {
-    v18 = [(ICNoteEditorBaseViewController *)self note];
-    v22 = [v18 textStorage];
-    v21 = [v22 length];
+    textView2 = [(ICNoteEditorBaseViewController *)self note];
+    textStorage = [textView2 textStorage];
+    v21 = [textStorage length];
   }
 
-  v23 = [(ICNoteEditorViewController *)self attachmentInsertionController];
-  v24 = [v23 addAttachment:v16 atTextLocation:v21];
+  attachmentInsertionController = [(ICNoteEditorViewController *)self attachmentInsertionController];
+  v24 = [attachmentInsertionController addAttachment:v16 atTextLocation:v21];
 
-  v25 = [(ICNoteEditorBaseViewController *)self note];
-  [v25 updateModificationDateAndChangeCountAndSaveImmediately];
+  note3 = [(ICNoteEditorBaseViewController *)self note];
+  [note3 updateModificationDateAndChangeCountAndSaveImmediately];
 
-  v26 = [MEMORY[0x277D366B0] sharedGenerator];
-  [v26 generatePreviewsIfNeeded];
+  mEMORY[0x277D366B0] = [MEMORY[0x277D366B0] sharedGenerator];
+  [mEMORY[0x277D366B0] generatePreviewsIfNeeded];
 
-  v27 = [MEMORY[0x277D35970] sharedReporter];
-  v28 = [(ICNoteEditorBaseViewController *)self note];
-  [v27 fireDeepLinkCreationEventWithNote:v28 contentItem:v6];
+  mEMORY[0x277D35970] = [MEMORY[0x277D35970] sharedReporter];
+  note4 = [(ICNoteEditorBaseViewController *)self note];
+  [mEMORY[0x277D35970] fireDeepLinkCreationEventWithNote:note4 contentItem:linkCopy];
 
   if (+[ICPaperCommonUtilities shouldShowLinksWhenComposingQuickNote])
   {
-    v29 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
-    [v29 refresh];
+    paperLinkBarViewController = [(ICNoteEditorViewController *)self paperLinkBarViewController];
+    [paperLinkBarViewController refresh];
   }
 
 LABEL_20:
@@ -9913,20 +9913,20 @@ LABEL_20:
     [ICNoteEditorViewController createSystemPaperLinkBarIfNecessary];
   }
 
-  v4 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
-  if (v4)
+  paperLinkBarViewController = [(ICNoteEditorViewController *)self paperLinkBarViewController];
+  if (paperLinkBarViewController)
   {
 
     goto LABEL_5;
   }
 
-  v6 = [(ICNoteEditorViewController *)self textView];
+  textView = [(ICNoteEditorViewController *)self textView];
 
-  if (!v6)
+  if (!textView)
   {
 LABEL_5:
-    v5 = os_log_create("com.apple.notes", "UI");
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    view = os_log_create("com.apple.notes", "UI");
+    if (os_log_type_enabled(view, OS_LOG_TYPE_DEBUG))
     {
       [ICNoteEditorViewController createSystemPaperLinkBarIfNecessary];
     }
@@ -9935,62 +9935,62 @@ LABEL_5:
   }
 
   v7 = [ICSystemPaperLinkBarViewController alloc];
-  v8 = [(ICNoteEditorViewController *)self textView];
-  v9 = [(ICSystemPaperLinkBarViewController *)v7 initWithNoteEditorViewController:self textView:v8];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  v9 = [(ICSystemPaperLinkBarViewController *)v7 initWithNoteEditorViewController:self textView:textView2];
   [(ICNoteEditorViewController *)self setPaperLinkBarViewController:v9];
 
-  v10 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
-  [(ICNoteEditorViewController *)self addChildViewController:v10];
+  paperLinkBarViewController2 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
+  [(ICNoteEditorViewController *)self addChildViewController:paperLinkBarViewController2];
 
-  v11 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
-  v5 = [v11 view];
+  paperLinkBarViewController3 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
+  view = [paperLinkBarViewController3 view];
 
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
   v12 = 0.0;
-  [v5 setAlpha:0.0];
-  v13 = [(ICNoteEditorViewController *)self view];
-  [v13 addSubview:v5];
+  [view setAlpha:0.0];
+  view2 = [(ICNoteEditorViewController *)self view];
+  [view2 addSubview:view];
 
-  v14 = [(ICNoteEditorViewController *)self ic_safeAreaLayoutGuide];
-  v15 = [v14 topAnchor];
+  ic_safeAreaLayoutGuide = [(ICNoteEditorViewController *)self ic_safeAreaLayoutGuide];
+  topAnchor = [ic_safeAreaLayoutGuide topAnchor];
 
   if (_UISolariumEnabled() && [MEMORY[0x277D75418] ic_isiPad] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v16 = [(ICNoteEditorViewController *)self app_systemPaperNavigationBar];
-    [v16 frame];
+    app_systemPaperNavigationBar = [(ICNoteEditorViewController *)self app_systemPaperNavigationBar];
+    [app_systemPaperNavigationBar frame];
     v18 = v17 + 0.0;
-    [v16 safeAreaInsets];
+    [app_systemPaperNavigationBar safeAreaInsets];
     v20 = v19 + v18;
-    [v5 safeAreaInsets];
+    [view safeAreaInsets];
     v22 = v21 + v20;
     +[ICSystemPaperConstants toolbarTopMarginOnPad];
     v12 = v23 + v22;
   }
 
   v35 = MEMORY[0x277CCAAD0];
-  v38 = [v5 leadingAnchor];
-  v39 = [(ICNoteEditorViewController *)self textView];
-  v37 = [v39 leadingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  leadingAnchor = [view leadingAnchor];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  leadingAnchor2 = [textView3 leadingAnchor];
+  v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v41[0] = v36;
-  v34 = [v5 trailingAnchor];
-  v24 = [(ICNoteEditorViewController *)self textView];
-  v25 = [v24 trailingAnchor];
-  v26 = [v34 constraintEqualToAnchor:v25];
+  trailingAnchor = [view trailingAnchor];
+  textView4 = [(ICNoteEditorViewController *)self textView];
+  trailingAnchor2 = [textView4 trailingAnchor];
+  v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v41[1] = v26;
-  v27 = [v5 topAnchor];
-  [v27 constraintEqualToAnchor:v15 constant:v12];
-  v28 = v40 = v15;
+  topAnchor2 = [view topAnchor];
+  [topAnchor2 constraintEqualToAnchor:topAnchor constant:v12];
+  v28 = v40 = topAnchor;
   v41[2] = v28;
-  v29 = [v5 heightAnchor];
+  heightAnchor = [view heightAnchor];
   +[ICSystemPaperConstants linkBarHeight];
-  v30 = [v29 constraintEqualToConstant:?];
+  v30 = [heightAnchor constraintEqualToConstant:?];
   v41[3] = v30;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:4];
   [v35 activateConstraints:v31];
 
-  v32 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
-  [v32 didMoveToParentViewController:self];
+  paperLinkBarViewController4 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
+  [paperLinkBarViewController4 didMoveToParentViewController:self];
 
   v33 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -10009,19 +10009,19 @@ LABEL_15:
     [ICNoteEditorViewController teardownSystemPaperLinkBarIfNecessary];
   }
 
-  v4 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
+  paperLinkBarViewController = [(ICNoteEditorViewController *)self paperLinkBarViewController];
 
-  if (v4)
+  if (paperLinkBarViewController)
   {
     if ([(ICNoteEditorViewController *)self isPaperLinkBarShowing])
     {
       [(ICNoteEditorViewController *)self setPaperLinkBarShowing:0];
     }
 
-    v5 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
-    v6 = [v5 view];
+    paperLinkBarViewController2 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
+    view = [paperLinkBarViewController2 view];
 
-    [v6 removeFromSuperview];
+    [view removeFromSuperview];
     [(ICNoteEditorViewController *)self setPaperLinkBarViewController:0];
     v7 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -10032,29 +10032,29 @@ LABEL_15:
 
   else
   {
-    v6 = os_log_create("com.apple.notes", "UI");
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    view = os_log_create("com.apple.notes", "UI");
+    if (os_log_type_enabled(view, OS_LOG_TYPE_DEBUG))
     {
       [ICNoteEditorViewController teardownSystemPaperLinkBarIfNecessary];
     }
   }
 }
 
-- (void)systemPaperLinkBarVisibilityPreferenceChanged:(id)a3
+- (void)systemPaperLinkBarVisibilityPreferenceChanged:(id)changed
 {
   v4 = +[ICPaperCommonUtilities shouldShowLinksWhenComposingQuickNote];
-  v5 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
+  paperLinkBarViewController = [(ICNoteEditorViewController *)self paperLinkBarViewController];
 
-  if (!v5 || v4)
+  if (!paperLinkBarViewController || v4)
   {
-    v6 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
-    v7 = v6 == 0 && v4;
+    paperLinkBarViewController2 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
+    v7 = paperLinkBarViewController2 == 0 && v4;
 
     if (v7 == 1)
     {
       [(ICNoteEditorViewController *)self createSystemPaperLinkBarIfNecessary];
-      v8 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
-      [v8 refresh];
+      paperLinkBarViewController3 = [(ICNoteEditorViewController *)self paperLinkBarViewController];
+      [paperLinkBarViewController3 refresh];
     }
   }
 
@@ -10065,21 +10065,21 @@ LABEL_15:
   }
 }
 
-- (void)setCanShowLinkBar:(BOOL)a3
+- (void)setCanShowLinkBar:(BOOL)bar
 {
-  if (self->_canShowLinkBar != a3)
+  if (self->_canShowLinkBar != bar)
   {
-    self->_canShowLinkBar = a3;
-    if (!a3)
+    self->_canShowLinkBar = bar;
+    if (!bar)
     {
       [(ICNoteEditorViewController *)self teardownSystemPaperLinkBarIfNecessary];
     }
   }
 }
 
-- (void)setPaperLinkBarShowing:(BOOL)a3
+- (void)setPaperLinkBarShowing:(BOOL)showing
 {
-  LODWORD(v3) = a3;
+  LODWORD(v3) = showing;
   if ((ICInternalSettingsIsSystemPaperEnabled() & 1) == 0)
   {
     v6 = os_log_create("com.apple.notes", "UI");
@@ -10141,9 +10141,9 @@ LABEL_14:
     }
 
     self->_paperLinkBarShowing = v3;
-    v7 = [(ICNoteEditorViewController *)self textView];
-    v8 = [(ICNoteEditorBaseViewController *)self note];
-    [v7 createUserTitleViewIfNecessaryForNote:v8];
+    textView = [(ICNoteEditorViewController *)self textView];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    [textView createUserTitleViewIfNecessaryForNote:note];
 
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -10152,8 +10152,8 @@ LABEL_14:
     v18 = v3;
     aBlock[4] = self;
     v9 = _Block_copy(aBlock);
-    v10 = [(ICNoteEditorViewController *)self view];
-    [v10 setNeedsUpdateConstraints];
+    view = [(ICNoteEditorViewController *)self view];
+    [view setNeedsUpdateConstraints];
 
     if ([(ICNoteEditorViewController *)self linksBarNeedsAnimationWhileEditorIsVisible]|| [(ICNoteEditorViewController *)self needsToPerformInitialPaperAnimations])
     {
@@ -10175,8 +10175,8 @@ LABEL_14:
 
     [(ICNoteEditorViewController *)self setNeedsToPerformInitialPaperAnimations:0];
     [(ICNoteEditorViewController *)self setLinksBarNeedsAnimationWhileEditorIsVisible:1];
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 postNotificationName:@"ICNoteEditorViewControllerSystemPaperLinkBarVisibilityChangedNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"ICNoteEditorViewControllerSystemPaperLinkBarVisibilityChangedNotification" object:self];
   }
 }
 
@@ -10231,39 +10231,39 @@ void __53__ICNoteEditorViewController_setPaperLinkBarShowing___block_invoke(uint
   [v22 layoutIfNeeded];
 }
 
-- (void)cancelFromSystemPaperCard:(id)a3
+- (void)cancelFromSystemPaperCard:(id)card
 {
-  v4 = a3;
+  cardCopy = card;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__ICNoteEditorViewController_cancelFromSystemPaperCard___block_invoke;
   aBlock[3] = &unk_2781ABCF8;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  v6 = [(ICNoteEditorViewController *)self textStorage];
-  v7 = [v6 length];
+  textStorage = [(ICNoteEditorViewController *)self textStorage];
+  v7 = [textStorage length];
 
   if (v7)
   {
-    v8 = [(ICNoteEditorViewController *)self presentedViewController];
-    if (v8 && (v9 = v8, -[ICNoteEditorViewController presentedViewController](self, "presentedViewController"), v10 = objc_claimAutoreleasedReturnValue(), -[ICNoteEditorViewController noteFormattingController](self, "noteFormattingController"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v10 isEqual:v11], v11, v10, v9, v12))
+    presentedViewController = [(ICNoteEditorViewController *)self presentedViewController];
+    if (presentedViewController && (v9 = presentedViewController, -[ICNoteEditorViewController presentedViewController](self, "presentedViewController"), v10 = objc_claimAutoreleasedReturnValue(), -[ICNoteEditorViewController noteFormattingController](self, "noteFormattingController"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v10 isEqual:v11], v11, v10, v9, v12))
     {
-      v13 = [(ICNoteEditorViewController *)self noteFormattingController];
+      noteFormattingController = [(ICNoteEditorViewController *)self noteFormattingController];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __56__ICNoteEditorViewController_cancelFromSystemPaperCard___block_invoke_3;
       v30[3] = &unk_2781ABEB8;
       v30[4] = self;
-      v31 = v4;
-      [v13 dismissViewControllerAnimated:1 completion:v30];
+      v31 = cardCopy;
+      [noteFormattingController dismissViewControllerAnimated:1 completion:v30];
     }
 
     else
     {
       v14 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:0];
       v15 = MEMORY[0x277D750F8];
-      v16 = [MEMORY[0x277CCA8D8] mainBundle];
-      v17 = [v16 localizedStringForKey:@"Delete Quick Note" value:&stru_282757698 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v17 = [mainBundle localizedStringForKey:@"Delete Quick Note" value:&stru_282757698 table:0];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __56__ICNoteEditorViewController_cancelFromSystemPaperCard___block_invoke_4;
@@ -10273,8 +10273,8 @@ void __53__ICNoteEditorViewController_setPaperLinkBarShowing___block_invoke(uint
       [v14 addAction:v18];
 
       v19 = MEMORY[0x277D750F8];
-      v20 = [MEMORY[0x277CCA8D8] mainBundle];
-      v21 = [v20 localizedStringForKey:@"Save Quick Note" value:&stru_282757698 table:0];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v21 = [mainBundle2 localizedStringForKey:@"Save Quick Note" value:&stru_282757698 table:0];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __56__ICNoteEditorViewController_cancelFromSystemPaperCard___block_invoke_5;
@@ -10284,8 +10284,8 @@ void __53__ICNoteEditorViewController_setPaperLinkBarShowing___block_invoke(uint
       [v14 addAction:v22];
 
       v23 = MEMORY[0x277D750F8];
-      v24 = [MEMORY[0x277CCA8D8] mainBundle];
-      v25 = [v24 localizedStringForKey:@"Cancel" value:&stru_282757698 table:0];
+      mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+      v25 = [mainBundle3 localizedStringForKey:@"Cancel" value:&stru_282757698 table:0];
       v26 = [v23 actionWithTitle:v25 style:1 handler:0];
       [v14 addAction:v26];
 
@@ -10344,13 +10344,13 @@ uint64_t __56__ICNoteEditorViewController_cancelFromSystemPaperCard___block_invo
   return [v2 cancelFromSystemPaperCard:v3];
 }
 
-- (void)saveFromSystemPaperCard:(id)a3
+- (void)saveFromSystemPaperCard:(id)card
 {
   [(ICNoteEditorViewController *)self saveNote];
   [(ICNoteEditorViewController *)self setQuickNoteiPhoneDidSaveOrCancel:1];
   [(ICNoteEditorViewController *)self ensurePaperPreviewsExistIfNecessary];
-  v4 = [(ICNoteEditorViewController *)self delegate];
-  [v4 noteEditorRequestsDismissal:self cancelled:0];
+  delegate = [(ICNoteEditorViewController *)self delegate];
+  [delegate noteEditorRequestsDismissal:self cancelled:0];
 }
 
 - (void)ensurePaperPreviewsExistIfNecessary
@@ -10360,10 +10360,10 @@ uint64_t __56__ICNoteEditorViewController_cancelFromSystemPaperCard___block_invo
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  v4 = [v3 visibleAttachments];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  visibleAttachments = [note visibleAttachments];
 
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v5 = [visibleAttachments countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -10375,7 +10375,7 @@ uint64_t __56__ICNoteEditorViewController_cancelFromSystemPaperCard___block_invo
       {
         if (*v25 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleAttachments);
         }
 
         v9 = *(*(&v24 + 1) + 8 * v8);
@@ -10383,8 +10383,8 @@ uint64_t __56__ICNoteEditorViewController_cancelFromSystemPaperCard___block_invo
         if ([v9 attachmentType] == 13)
         {
           v11 = MEMORY[0x277D35E40];
-          v12 = [v9 identifier];
-          [v11 generatePreviewsForAttachment:v9 paperIdentifier:v12];
+          identifier = [v9 identifier];
+          [v11 generatePreviewsForAttachment:v9 paperIdentifier:identifier];
         }
 
         objc_autoreleasePoolPop(v10);
@@ -10392,24 +10392,24 @@ uint64_t __56__ICNoteEditorViewController_cancelFromSystemPaperCard___block_invo
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v6 = [visibleAttachments countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v6);
   }
 
   v13 = dispatch_semaphore_create(0);
-  v14 = [MEMORY[0x277CCAC38] processInfo];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __65__ICNoteEditorViewController_ensurePaperPreviewsExistIfNecessary__block_invoke;
   v22[3] = &unk_2781AD098;
   v15 = v13;
   v23 = v15;
-  [v14 performExpiringActivityWithReason:@"Generating thumbnails for System Paper card" usingBlock:v22];
+  [processInfo performExpiringActivityWithReason:@"Generating thumbnails for System Paper card" usingBlock:v22];
 
-  v16 = [MEMORY[0x277D368F0] sharedService];
-  v17 = [(ICNoteEditorBaseViewController *)self note];
+  mEMORY[0x277D368F0] = [MEMORY[0x277D368F0] sharedService];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __65__ICNoteEditorViewController_ensurePaperPreviewsExistIfNecessary__block_invoke_2;
@@ -10417,7 +10417,7 @@ uint64_t __56__ICNoteEditorViewController_cancelFromSystemPaperCard___block_invo
   v21 = 1;
   v20 = v15;
   v18 = v15;
-  [v16 updateIfNeededForNote:v17 completion:v19];
+  [mEMORY[0x277D368F0] updateIfNeededForNote:note2 completion:v19];
 }
 
 intptr_t __65__ICNoteEditorViewController_ensurePaperPreviewsExistIfNecessary__block_invoke(intptr_t result, char a2)
@@ -10443,105 +10443,105 @@ intptr_t __65__ICNoteEditorViewController_ensurePaperPreviewsExistIfNecessary__b
   return dispatch_semaphore_signal(v3);
 }
 
-- (void)showActivityStreamToolbarForObject:(id)a3 selection:(id)a4 animated:(BOOL)a5
+- (void)showActivityStreamToolbarForObject:(id)object selection:(id)selection animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v63[3] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a3;
-  v10 = [(ICNoteEditorViewController *)self activityStreamToolbar];
-  if (v10)
+  selectionCopy = selection;
+  objectCopy = object;
+  activityStreamToolbar = [(ICNoteEditorViewController *)self activityStreamToolbar];
+  if (activityStreamToolbar)
   {
-    v11 = v10;
-    v12 = [(ICNoteEditorViewController *)self activityStreamToolbar];
-    v13 = [v12 superview];
-    v14 = [(ICNoteEditorViewController *)self navigationController];
-    v15 = [v14 view];
+    v11 = activityStreamToolbar;
+    activityStreamToolbar2 = [(ICNoteEditorViewController *)self activityStreamToolbar];
+    superview = [activityStreamToolbar2 superview];
+    navigationController = [(ICNoteEditorViewController *)self navigationController];
+    view = [navigationController view];
 
-    if (v13 != v15)
+    if (superview != view)
     {
-      v16 = [(ICNoteEditorViewController *)self activityStreamToolbar];
-      [v16 removeFromSuperview];
+      activityStreamToolbar3 = [(ICNoteEditorViewController *)self activityStreamToolbar];
+      [activityStreamToolbar3 removeFromSuperview];
 
       [(ICNoteEditorViewController *)self setActivityStreamToolbar:0];
     }
   }
 
-  v17 = [(ICNoteEditorViewController *)self activityStreamToolbar];
-  if (v17)
+  activityStreamToolbar4 = [(ICNoteEditorViewController *)self activityStreamToolbar];
+  if (activityStreamToolbar4)
   {
   }
 
   else
   {
-    v18 = [(ICNoteEditorViewController *)self navigationController];
+    navigationController2 = [(ICNoteEditorViewController *)self navigationController];
 
-    if (v18)
+    if (navigationController2)
     {
-      v60 = v8;
-      v61 = v9;
-      v58 = [(ICNoteEditorViewController *)self viewControllerManager];
-      v19 = [[ICActivityStreamDockView alloc] initWithCoordinator:v58 isDisplayedInCard:0];
+      v60 = selectionCopy;
+      v61 = objectCopy;
+      viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+      v19 = [[ICActivityStreamDockView alloc] initWithCoordinator:viewControllerManager isDisplayedInCard:0];
       [(ICNoteEditorViewController *)self setActivityStreamToolbar:v19];
 
-      v20 = [(ICNoteEditorViewController *)self activityStreamToolbar];
-      [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+      activityStreamToolbar5 = [(ICNoteEditorViewController *)self activityStreamToolbar];
+      [activityStreamToolbar5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v21 = [(ICNoteEditorViewController *)self navigationController];
-      v22 = [v21 view];
-      v23 = [(ICNoteEditorViewController *)self activityStreamToolbar];
-      [v22 addSubview:v23];
+      navigationController3 = [(ICNoteEditorViewController *)self navigationController];
+      view2 = [navigationController3 view];
+      activityStreamToolbar6 = [(ICNoteEditorViewController *)self activityStreamToolbar];
+      [view2 addSubview:activityStreamToolbar6];
 
-      v24 = [(ICNoteEditorViewController *)self navigationController];
-      v25 = [v24 view];
-      [v25 layoutIfNeeded];
+      navigationController4 = [(ICNoteEditorViewController *)self navigationController];
+      view3 = [navigationController4 view];
+      [view3 layoutIfNeeded];
 
       v26 = 0.0;
-      v59 = v5;
-      if (v5)
+      v59 = animatedCopy;
+      if (animatedCopy)
       {
-        v27 = [(ICNoteEditorViewController *)self navigationController];
-        v28 = [v27 view];
-        [v28 safeAreaInsets];
+        navigationController5 = [(ICNoteEditorViewController *)self navigationController];
+        view4 = [navigationController5 view];
+        [view4 safeAreaInsets];
         v30 = v29;
-        v31 = [(ICNoteEditorViewController *)self activityStreamToolbar];
-        [v31 frame];
+        activityStreamToolbar7 = [(ICNoteEditorViewController *)self activityStreamToolbar];
+        [activityStreamToolbar7 frame];
         v26 = v30 + v32;
       }
 
-      v33 = [(ICNoteEditorViewController *)self activityStreamToolbar];
-      v34 = [v33 bottomAnchor];
-      v35 = [(ICNoteEditorViewController *)self navigationController];
-      v36 = [v35 view];
-      v37 = [v36 bottomAnchor];
-      v38 = [v34 constraintEqualToAnchor:v37 constant:v26];
+      activityStreamToolbar8 = [(ICNoteEditorViewController *)self activityStreamToolbar];
+      bottomAnchor = [activityStreamToolbar8 bottomAnchor];
+      navigationController6 = [(ICNoteEditorViewController *)self navigationController];
+      view5 = [navigationController6 view];
+      bottomAnchor2 = [view5 bottomAnchor];
+      v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v26];
       [(ICNoteEditorViewController *)self setActivityStreamToolbarBottomConstraint:v38];
 
       v52 = MEMORY[0x277CCAAD0];
-      v57 = [(ICNoteEditorViewController *)self activityStreamToolbarBottomConstraint];
-      v63[0] = v57;
-      v56 = [(ICNoteEditorViewController *)self activityStreamToolbar];
-      v54 = [v56 leadingAnchor];
-      v55 = [(ICNoteEditorViewController *)self navigationController];
-      v53 = [v55 view];
-      v39 = [v53 leadingAnchor];
-      v40 = [v54 constraintEqualToAnchor:v39];
+      activityStreamToolbarBottomConstraint = [(ICNoteEditorViewController *)self activityStreamToolbarBottomConstraint];
+      v63[0] = activityStreamToolbarBottomConstraint;
+      activityStreamToolbar9 = [(ICNoteEditorViewController *)self activityStreamToolbar];
+      leadingAnchor = [activityStreamToolbar9 leadingAnchor];
+      navigationController7 = [(ICNoteEditorViewController *)self navigationController];
+      view6 = [navigationController7 view];
+      leadingAnchor2 = [view6 leadingAnchor];
+      v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v63[1] = v40;
-      v41 = [(ICNoteEditorViewController *)self activityStreamToolbar];
-      v42 = [v41 trailingAnchor];
-      v43 = [(ICNoteEditorViewController *)self navigationController];
-      v44 = [v43 view];
-      v45 = [v44 trailingAnchor];
-      v46 = [v42 constraintEqualToAnchor:v45];
+      activityStreamToolbar10 = [(ICNoteEditorViewController *)self activityStreamToolbar];
+      trailingAnchor = [activityStreamToolbar10 trailingAnchor];
+      navigationController8 = [(ICNoteEditorViewController *)self navigationController];
+      view7 = [navigationController8 view];
+      trailingAnchor2 = [view7 trailingAnchor];
+      v46 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v63[2] = v46;
       v47 = [MEMORY[0x277CBEA60] arrayWithObjects:v63 count:3];
       [v52 activateConstraints:v47];
 
       if (v59)
       {
-        v48 = [(ICNoteEditorViewController *)self navigationController];
-        v49 = [v48 view];
-        [v49 layoutIfNeeded];
+        navigationController9 = [(ICNoteEditorViewController *)self navigationController];
+        view8 = [navigationController9 view];
+        [view8 layoutIfNeeded];
 
         v62[0] = MEMORY[0x277D85DD0];
         v62[1] = 3221225472;
@@ -10551,16 +10551,16 @@ intptr_t __65__ICNoteEditorViewController_ensurePaperPreviewsExistIfNecessary__b
         [MEMORY[0x277D75D18] animateWithDuration:v62 animations:0.25];
       }
 
-      v8 = v60;
-      v9 = v61;
+      selectionCopy = v60;
+      objectCopy = v61;
     }
   }
 
-  v50 = [(ICNoteEditorViewController *)self activityStreamToolbar];
-  [v50 setSelection:v8];
+  activityStreamToolbar11 = [(ICNoteEditorViewController *)self activityStreamToolbar];
+  [activityStreamToolbar11 setSelection:selectionCopy];
 
-  v51 = [(ICNoteEditorViewController *)self activityStreamToolbar];
-  [v51 setObject:v9];
+  activityStreamToolbar12 = [(ICNoteEditorViewController *)self activityStreamToolbar];
+  [activityStreamToolbar12 setObject:objectCopy];
 }
 
 void __84__ICNoteEditorViewController_showActivityStreamToolbarForObject_selection_animated___block_invoke(uint64_t a1)
@@ -10573,11 +10573,11 @@ void __84__ICNoteEditorViewController_showActivityStreamToolbarForObject_selecti
   [v3 layoutIfNeeded];
 }
 
-- (void)hideActivityStreamToolbarAnimated:(BOOL)a3
+- (void)hideActivityStreamToolbarAnimated:(BOOL)animated
 {
-  if (a3 && ([(ICNoteEditorViewController *)self activityStreamToolbar], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  if (animated && ([(ICNoteEditorViewController *)self activityStreamToolbar], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [(ICNoteEditorViewController *)self activityStreamToolbar];
+    activityStreamToolbar = [(ICNoteEditorViewController *)self activityStreamToolbar];
     v6 = MEMORY[0x277D75D18];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -10588,15 +10588,15 @@ void __84__ICNoteEditorViewController_showActivityStreamToolbarForObject_selecti
     v10 = 3221225472;
     v11 = __64__ICNoteEditorViewController_hideActivityStreamToolbarAnimated___block_invoke_2;
     v12 = &unk_2781AD098;
-    v13 = v5;
-    v7 = v5;
+    v13 = activityStreamToolbar;
+    v7 = activityStreamToolbar;
     [v6 animateWithDuration:v14 animations:&v9 completion:0.25];
   }
 
   else
   {
-    v8 = [(ICNoteEditorViewController *)self activityStreamToolbar];
-    [v8 removeFromSuperview];
+    activityStreamToolbar2 = [(ICNoteEditorViewController *)self activityStreamToolbar];
+    [activityStreamToolbar2 removeFromSuperview];
   }
 
   [(ICNoteEditorViewController *)self setActivityStreamToolbar:0, v9, v10, v11, v12];
@@ -10618,12 +10618,12 @@ void __64__ICNoteEditorViewController_hideActivityStreamToolbarAnimated___block_
 
 - (UIViewController)rootViewController
 {
-  v2 = [(ICNoteEditorViewController *)self navigationController];
-  v3 = [v2 view];
-  v4 = [v3 window];
-  v5 = [v4 rootViewController];
+  navigationController = [(ICNoteEditorViewController *)self navigationController];
+  view = [navigationController view];
+  window = [view window];
+  rootViewController = [window rootViewController];
 
-  return v5;
+  return rootViewController;
 }
 
 - (void)noteOrFolderChangedCallback
@@ -10632,18 +10632,18 @@ void __64__ICNoteEditorViewController_hideActivityStreamToolbarAnimated___block_
   {
     if (![(ICNoteEditorViewController *)self quickNoteiPhoneDidSaveOrCancel])
     {
-      v3 = [(ICNoteEditorBaseViewController *)self note];
-      v4 = [v3 isDeletedOrInTrash];
+      note = [(ICNoteEditorBaseViewController *)self note];
+      isDeletedOrInTrash = [note isDeletedOrInTrash];
 
-      if (v4)
+      if (isDeletedOrInTrash)
       {
-        v5 = [(ICNoteEditorViewController *)self delegate];
+        delegate = [(ICNoteEditorViewController *)self delegate];
         v6 = objc_opt_respondsToSelector();
 
         if (v6)
         {
-          v7 = [(ICNoteEditorViewController *)self delegate];
-          [v7 noteEditorRequestsDismissal:self cancelled:1];
+          delegate2 = [(ICNoteEditorViewController *)self delegate];
+          [delegate2 noteEditorRequestsDismissal:self cancelled:1];
         }
       }
     }
@@ -10651,25 +10651,25 @@ void __64__ICNoteEditorViewController_hideActivityStreamToolbarAnimated___block_
 
   if ([(ICNoteEditorViewController *)self isDrawingStroke])
   {
-    v8 = [(ICNoteEditorViewController *)self noteOrFolderChangedCallbackSelectorDelayer];
+    noteOrFolderChangedCallbackSelectorDelayer = [(ICNoteEditorViewController *)self noteOrFolderChangedCallbackSelectorDelayer];
 
-    if (!v8)
+    if (!noteOrFolderChangedCallbackSelectorDelayer)
     {
       v9 = [objc_alloc(MEMORY[0x277D36258]) initWithTarget:self selector:sel_noteOrFolderChangedCallback delay:0 waitToFireUntilRequestsStop:1 callOnMainThread:0.25];
       [(ICNoteEditorViewController *)self setNoteOrFolderChangedCallbackSelectorDelayer:v9];
     }
 
-    v18 = [(ICNoteEditorViewController *)self noteOrFolderChangedCallbackSelectorDelayer];
-    [v18 requestFire];
+    noteOrFolderChangedCallbackSelectorDelayer2 = [(ICNoteEditorViewController *)self noteOrFolderChangedCallbackSelectorDelayer];
+    [noteOrFolderChangedCallbackSelectorDelayer2 requestFire];
   }
 
   else
   {
     [(ICNoteEditorViewController *)self updateBarButtonsAnimated:1];
     [(ICNoteEditorViewController *)self updateActionMenu];
-    v10 = [(ICNoteEditorViewController *)self textView];
-    v11 = [(ICNoteEditorBaseViewController *)self note];
-    [v10 updateCompatibilityBannerForNote:v11 parentViewController:self updateTextViewContentInsets:1];
+    textView = [(ICNoteEditorViewController *)self textView];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    [textView updateCompatibilityBannerForNote:note2 parentViewController:self updateTextViewContentInsets:1];
 
     [(ICNoteEditorViewController *)self showOrHidePasswordEntryViewControllerIfNeeded];
     [(ICNoteEditorViewController *)self updateBarButtons];
@@ -10678,141 +10678,141 @@ void __64__ICNoteEditorViewController_hideActivityStreamToolbarAnimated___block_
       [(ICNoteEditorViewController *)self resetDateView];
     }
 
-    v14 = [(ICNoteEditorViewController *)self textView];
-    v15 = [v14 userTitleView];
-    [v15 updateContentToCurrentNote];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    userTitleView = [textView2 userTitleView];
+    [userTitleView updateContentToCurrentNote];
 
     [(ICNoteEditorViewController *)self updatePencilKitSelectionViewEnabled];
-    v18 = [(ICNoteEditorViewController *)self textView];
-    if ([v18 ic_isFirstResponder])
+    noteOrFolderChangedCallbackSelectorDelayer2 = [(ICNoteEditorViewController *)self textView];
+    if ([noteOrFolderChangedCallbackSelectorDelayer2 ic_isFirstResponder])
     {
-      v16 = [(ICNoteEditorBaseViewController *)self note];
-      v17 = [v16 isEditable];
+      note3 = [(ICNoteEditorBaseViewController *)self note];
+      isEditable = [note3 isEditable];
 
-      if (v17)
+      if (isEditable)
       {
         return;
       }
 
-      v18 = [(ICNoteEditorViewController *)self textView];
-      [v18 resignFirstResponder];
+      noteOrFolderChangedCallbackSelectorDelayer2 = [(ICNoteEditorViewController *)self textView];
+      [noteOrFolderChangedCallbackSelectorDelayer2 resignFirstResponder];
     }
   }
 }
 
-- (void)resetBarButtonsAnimated:(BOOL)a3 checkIfVisible:(BOOL)a4
+- (void)resetBarButtonsAnimated:(BOOL)animated checkIfVisible:(BOOL)visible
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-  [v7 reset];
+  visibleCopy = visible;
+  animatedCopy = animated;
+  navigationItemConfiguration = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+  [navigationItemConfiguration reset];
 
   if (![(ICNoteEditorViewController *)self suspendBarButtonUpdates])
   {
 
-    [(ICNoteEditorViewController *)self updateBarButtonsAnimated:v5 checkIfVisible:v4];
+    [(ICNoteEditorViewController *)self updateBarButtonsAnimated:animatedCopy checkIfVisible:visibleCopy];
   }
 }
 
-- (void)resetBarButtonsAnimated:(BOOL)a3
+- (void)resetBarButtonsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-  [v5 reset];
+  animatedCopy = animated;
+  navigationItemConfiguration = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+  [navigationItemConfiguration reset];
 
   if (![(ICNoteEditorViewController *)self suspendBarButtonUpdates])
   {
 
-    [(ICNoteEditorViewController *)self updateBarButtonsAnimated:v3];
+    [(ICNoteEditorViewController *)self updateBarButtonsAnimated:animatedCopy];
   }
 }
 
-- (void)_beginLiveResize:(id)a3
+- (void)_beginLiveResize:(id)resize
 {
-  v4 = a3;
+  resizeCopy = resize;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [resizeCopy object];
 
   v9 = ICDynamicCast();
 
-  v6 = [(ICNoteEditorViewController *)self ic_windowScene];
+  ic_windowScene = [(ICNoteEditorViewController *)self ic_windowScene];
 
   v7 = v9;
-  if (v6 == v9)
+  if (ic_windowScene == v9)
   {
     [(ICNoteEditorViewController *)self setIsInLiveWindowResize:1];
-    v8 = [(ICNoteEditorViewController *)self textView];
-    [v8 setDisableContentOffsetChanges:1];
+    textView = [(ICNoteEditorViewController *)self textView];
+    [textView setDisableContentOffsetChanges:1];
 
     v7 = v9;
   }
 }
 
-- (void)_endLiveResize:(id)a3
+- (void)_endLiveResize:(id)resize
 {
-  v4 = a3;
+  resizeCopy = resize;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [resizeCopy object];
 
   v9 = ICDynamicCast();
 
-  v6 = [(ICNoteEditorViewController *)self ic_windowScene];
+  ic_windowScene = [(ICNoteEditorViewController *)self ic_windowScene];
 
   v7 = v9;
-  if (v6 == v9)
+  if (ic_windowScene == v9)
   {
     [(ICNoteEditorViewController *)self setIsInLiveWindowResize:0];
-    v8 = [(ICNoteEditorViewController *)self textView];
-    [v8 setDisableContentOffsetChanges:0];
+    textView = [(ICNoteEditorViewController *)self textView];
+    [textView setDisableContentOffsetChanges:0];
 
     [(ICNoteEditorViewController *)self resetBarButtonsAnimated:0];
     v7 = v9;
   }
 }
 
-- (void)updateBarButtonsAnimated:(BOOL)a3 checkIfVisible:(BOOL)a4
+- (void)updateBarButtonsAnimated:(BOOL)animated checkIfVisible:(BOOL)visible
 {
-  v6 = a3;
-  if ((!a4 || [(ICNoteEditorViewController *)self _appearState]!= 3 && [(ICNoteEditorViewController *)self _appearState]) && ![(ICNoteEditorViewController *)self suspendBarButtonUpdates])
+  animatedCopy = animated;
+  if ((!visible || [(ICNoteEditorViewController *)self _appearState]!= 3 && [(ICNoteEditorViewController *)self _appearState]) && ![(ICNoteEditorViewController *)self suspendBarButtonUpdates])
   {
     if (objc_opt_respondsToSelector())
     {
       [(ICNoteEditorViewController *)self collaborationButtons_updateCollaborationStateIfNeeded];
     }
 
-    v8 = [(ICNoteEditorBaseViewController *)self note];
-    if ([v8 isEditable])
+    note = [(ICNoteEditorBaseViewController *)self note];
+    if ([note isEditable])
     {
-      v9 = [(ICNoteEditorBaseViewController *)self note];
-      v4 = [v9 folder];
-      if ([v4 supportsEditingNotes])
+      note2 = [(ICNoteEditorBaseViewController *)self note];
+      folder = [note2 folder];
+      if ([folder supportsEditingNotes])
       {
-        v10 = [(ICNoteEditorViewController *)self invitation];
-        if (v10)
+        invitation = [(ICNoteEditorViewController *)self invitation];
+        if (invitation)
         {
-          v11 = 0;
+          selectedContainerItemID = 0;
         }
 
         else
         {
-          v12 = [(ICNoteEditorBaseViewController *)self note];
-          if ([v12 isPasswordProtectedAndLocked])
+          note3 = [(ICNoteEditorBaseViewController *)self note];
+          if ([note3 isPasswordProtectedAndLocked])
           {
-            v11 = 0;
+            selectedContainerItemID = 0;
           }
 
           else
           {
-            v5 = [(ICNoteEditorBaseViewController *)self note];
-            if ([v5 isUnsupported])
+            note4 = [(ICNoteEditorBaseViewController *)self note];
+            if ([note4 isUnsupported])
             {
-              v11 = 0;
+              selectedContainerItemID = 0;
             }
 
             else
             {
-              v13 = [(ICNoteEditorViewController *)self unsupportedNoteView];
-              v11 = v13 == 0;
+              unsupportedNoteView = [(ICNoteEditorViewController *)self unsupportedNoteView];
+              selectedContainerItemID = unsupportedNoteView == 0;
             }
           }
         }
@@ -10820,47 +10820,47 @@ void __64__ICNoteEditorViewController_hideActivityStreamToolbarAnimated___block_
 
       else
       {
-        v11 = 0;
+        selectedContainerItemID = 0;
       }
     }
 
     else
     {
-      v11 = 0;
+      selectedContainerItemID = 0;
     }
 
-    v14 = [(ICNoteEditorViewController *)self textStorage];
-    v15 = [(ICNoteEditorViewController *)self textView];
-    v16 = [v15 selectedRange];
-    if ([v14 ic_containsBlockAttachmentsInRange:{v16, v17}])
+    textStorage = [(ICNoteEditorViewController *)self textStorage];
+    textView = [(ICNoteEditorViewController *)self textView];
+    selectedRange = [textView selectedRange];
+    if ([textStorage ic_containsBlockAttachmentsInRange:{selectedRange, v17}])
     {
       LODWORD(v168) = 0;
     }
 
     else
     {
-      v18 = [(ICNoteEditorViewController *)self auxiliaryResponder];
-      LODWORD(v168) = (v18 == 0) & v11;
+      auxiliaryResponder = [(ICNoteEditorViewController *)self auxiliaryResponder];
+      LODWORD(v168) = (auxiliaryResponder == 0) & selectedContainerItemID;
     }
 
-    v19 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    if ([v19 canToggleTodo])
+    auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    if ([auxiliaryStylingController canToggleTodo])
     {
       v166 = 1;
       goto LABEL_38;
     }
 
-    v20 = [(ICNoteEditorViewController *)self textView];
-    v21 = [v20 isFirstResponder];
-    if ((v21 & 1) != 0 || ([(ICNoteEditorViewController *)self auxiliaryResponder], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    isFirstResponder = [textView2 isFirstResponder];
+    if ((isFirstResponder & 1) != 0 || ([(ICNoteEditorViewController *)self auxiliaryResponder], (folder = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v22 = [(ICNoteEditorViewController *)self textView];
-      if ([v22 ic_canChangeStyle])
+      textView3 = [(ICNoteEditorViewController *)self textView];
+      if ([textView3 ic_canChangeStyle])
       {
-        v23 = [(ICNoteEditorViewController *)self auxiliaryResponder];
-        v166 = v23 == 0;
+        auxiliaryResponder2 = [(ICNoteEditorViewController *)self auxiliaryResponder];
+        v166 = auxiliaryResponder2 == 0;
 
-        if (v21)
+        if (isFirstResponder)
         {
           goto LABEL_37;
         }
@@ -10870,7 +10870,7 @@ void __64__ICNoteEditorViewController_hideActivityStreamToolbarAnimated___block_
       {
 
         v166 = 0;
-        if (v21)
+        if (isFirstResponder)
         {
           goto LABEL_37;
         }
@@ -10885,47 +10885,47 @@ void __64__ICNoteEditorViewController_hideActivityStreamToolbarAnimated___block_
 LABEL_37:
 LABEL_38:
 
-    v24 = [(ICNoteEditorViewController *)self textView];
-    v25 = [v24 ic_shouldEnableBlockQuoteForAttachmentsOnlySelection];
+    textView4 = [(ICNoteEditorViewController *)self textView];
+    ic_shouldEnableBlockQuoteForAttachmentsOnlySelection = [textView4 ic_shouldEnableBlockQuoteForAttachmentsOnlySelection];
 
-    if (v25)
+    if (ic_shouldEnableBlockQuoteForAttachmentsOnlySelection)
     {
-      LODWORD(v167) = 0;
+      LODWORD(note10) = 0;
     }
 
     else
     {
-      v26 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-      if ([v26 canStyleText])
+      auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+      if ([auxiliaryStylingController2 canStyleText])
       {
-        LODWORD(v167) = 0;
+        LODWORD(note10) = 0;
       }
 
       else
       {
-        v27 = [(ICNoteEditorViewController *)self textView];
-        v28 = [v27 ic_canChangeStyle];
+        textView5 = [(ICNoteEditorViewController *)self textView];
+        ic_canChangeStyle = [textView5 ic_canChangeStyle];
 
-        LODWORD(v167) = v28 ^ 1;
+        LODWORD(note10) = ic_canChangeStyle ^ 1;
       }
     }
 
-    v29 = [(ICNoteEditorBaseViewController *)self note];
-    if (v29)
+    note5 = [(ICNoteEditorBaseViewController *)self note];
+    if (note5)
     {
       v165 = 0;
     }
 
     else
     {
-      v30 = [(ICNoteEditorViewController *)self invitation];
-      v165 = v30 == 0;
+      invitation2 = [(ICNoteEditorViewController *)self invitation];
+      v165 = invitation2 == 0;
     }
 
     if ([MEMORY[0x277D75658] isInHardwareKeyboardMode])
     {
-      v31 = [MEMORY[0x277D75678] sharedInstance];
-      HIDWORD(v162) = [v31 isMinimized] ^ 1;
+      mEMORY[0x277D75678] = [MEMORY[0x277D75678] sharedInstance];
+      HIDWORD(v162) = [mEMORY[0x277D75678] isMinimized] ^ 1;
     }
 
     else
@@ -10933,17 +10933,17 @@ LABEL_38:
       HIDWORD(v162) = 1;
     }
 
-    v32 = [(ICNoteEditorViewController *)self traitCollection];
-    v33 = [v32 ic_hasCompactWidth];
+    traitCollection = [(ICNoteEditorViewController *)self traitCollection];
+    ic_hasCompactWidth = [traitCollection ic_hasCompactWidth];
 
-    v34 = [MEMORY[0x277D75418] ic_isVision];
-    v35 = v34 ^ 1u;
-    if ((v34 & 1) == 0 && (v33 & 1) == 0)
+    ic_isVision = [MEMORY[0x277D75418] ic_isVision];
+    ic_isiPhone = ic_isVision ^ 1u;
+    if ((ic_isVision & 1) == 0 && (ic_hasCompactWidth & 1) == 0)
     {
-      v35 = [MEMORY[0x277D75418] ic_isiPhone];
+      ic_isiPhone = [MEMORY[0x277D75418] ic_isiPhone];
     }
 
-    v36 = [(ICNoteEditorViewController *)self ic_behavior];
+    ic_behavior = [(ICNoteEditorViewController *)self ic_behavior];
     if (_UISolariumEnabled() && [MEMORY[0x277D75418] ic_isiPad])
     {
       LODWORD(v162) = ICInternalSettingsIsDoneButtonHidingDisabled();
@@ -10955,16 +10955,16 @@ LABEL_38:
     }
 
     v37 = ICAccessibilityAccessibilityLargerTextSizesEnabled();
-    v38 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v38 setAccessibilityTextSizeEnabled:v37];
+    navigationItemConfiguration = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration setAccessibilityTextSizeEnabled:v37];
 
-    v39 = [MEMORY[0x277D75418] ic_isVision];
-    v169 = v6;
-    LODWORD(v170) = v11;
-    if (v39)
+    ic_isVision2 = [MEMORY[0x277D75418] ic_isVision];
+    v169 = animatedCopy;
+    LODWORD(v170) = selectedContainerItemID;
+    if (ic_isVision2)
     {
-      v38 = [(ICNoteEditorBaseViewController *)self note];
-      if (v38)
+      navigationItemConfiguration = [(ICNoteEditorBaseViewController *)self note];
+      if (navigationItemConfiguration)
       {
         v40 = 0;
         v41 = 1;
@@ -10972,9 +10972,9 @@ LABEL_38:
 
       else
       {
-        v5 = [(ICNoteEditorViewController *)self viewControllerManager];
-        v11 = [v5 selectedContainerItemID];
-        v41 = v11 != 0;
+        note4 = [(ICNoteEditorViewController *)self viewControllerManager];
+        selectedContainerItemID = [note4 selectedContainerItemID];
+        v41 = selectedContainerItemID != 0;
         v40 = 1;
       }
     }
@@ -10985,76 +10985,76 @@ LABEL_38:
       v41 = 0;
     }
 
-    v42 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v42 setCanShowPillOrnament:v41];
+    navigationItemConfiguration2 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration2 setCanShowPillOrnament:v41];
 
     if (v40)
     {
     }
 
-    if (v39)
+    if (ic_isVision2)
     {
     }
 
-    v43 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v43 setCompact:v35];
+    navigationItemConfiguration3 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration3 setCompact:ic_isiPhone];
 
-    v44 = [(ICNoteEditorBaseViewController *)self note];
-    v45 = [v44 isDeletedOrInTrash];
-    v46 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v46 setDeleted:v45];
+    note6 = [(ICNoteEditorBaseViewController *)self note];
+    isDeletedOrInTrash = [note6 isDeletedOrInTrash];
+    navigationItemConfiguration4 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration4 setDeleted:isDeletedOrInTrash];
 
-    v47 = [MEMORY[0x277D75418] ic_isVision];
-    if (v47)
+    ic_isVision3 = [MEMORY[0x277D75418] ic_isVision];
+    if (ic_isVision3)
     {
-      v46 = [(ICNoteEditorViewController *)self viewControllerManager];
-      v48 = [v46 canTilePrimaryContent] ^ 1;
+      navigationItemConfiguration4 = [(ICNoteEditorViewController *)self viewControllerManager];
+      ic_windowScene = [navigationItemConfiguration4 canTilePrimaryContent] ^ 1;
     }
 
     else
     {
-      v48 = 0;
+      ic_windowScene = 0;
     }
 
-    v49 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v49 setHidesBackButton:v48];
+    navigationItemConfiguration5 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration5 setHidesBackButton:ic_windowScene];
 
-    if (v47)
+    if (ic_isVision3)
     {
     }
 
-    v50 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v50 setHidesDefaultCenterItems:v36 == 1];
+    navigationItemConfiguration6 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration6 setHidesDefaultCenterItems:ic_behavior == 1];
 
-    v51 = [(ICNoteEditorViewController *)self traitCollection];
-    v52 = [v51 userInterfaceIdiom];
-    if (v52)
+    traitCollection2 = [(ICNoteEditorViewController *)self traitCollection];
+    userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
+    if (userInterfaceIdiom)
     {
       v53 = 0;
     }
 
     else
     {
-      v48 = [(ICNoteEditorViewController *)self ic_windowScene];
-      v5 = [v48 effectiveGeometry];
-      v53 = ([v5 interfaceOrientation] - 3) < 2;
+      ic_windowScene = [(ICNoteEditorViewController *)self ic_windowScene];
+      note4 = [ic_windowScene effectiveGeometry];
+      v53 = ([note4 interfaceOrientation] - 3) < 2;
     }
 
-    v54 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v54 setLandscape:v53];
+    navigationItemConfiguration7 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration7 setLandscape:v53];
 
-    if (!v52)
+    if (!userInterfaceIdiom)
     {
     }
 
-    v55 = [(ICNoteEditorBaseViewController *)self isEditingOnSecureScreen];
-    v56 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v56 setInSecureScreen:v55];
+    isEditingOnSecureScreen = [(ICNoteEditorBaseViewController *)self isEditingOnSecureScreen];
+    navigationItemConfiguration8 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration8 setInSecureScreen:isEditingOnSecureScreen];
 
-    v57 = [(ICNoteEditorViewController *)self viewControllerManager];
-    v58 = [v57 proposedMainSplitViewControllerDisplayMode] == 4;
-    v59 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v59 setInTripleColumnSplitView:v58];
+    viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+    v58 = [viewControllerManager proposedMainSplitViewControllerDisplayMode] == 4;
+    navigationItemConfiguration9 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration9 setInTripleColumnSplitView:v58];
 
     if ([MEMORY[0x277D75418] ic_isVision])
     {
@@ -11066,12 +11066,12 @@ LABEL_38:
       v60 = ([(ICNoteEditorViewController *)self isEditingOnSystemPaperOnPhone]^ 1) & v163;
     }
 
-    v61 = v36 == 1;
-    v62 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v62 setShowsDoneWhileEditing:v60];
+    v61 = ic_behavior == 1;
+    navigationItemConfiguration10 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration10 setShowsDoneWhileEditing:v60];
 
-    v63 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v63 setShowsCalculatorModeButton:v61];
+    navigationItemConfiguration11 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration11 setShowsCalculatorModeButton:v61];
 
     if (_UISolariumEnabled())
     {
@@ -11083,61 +11083,61 @@ LABEL_38:
       v64 = 0;
     }
 
-    v65 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v65 setShowsAddNoteButtonOnLeadingEdge:v64];
+    navigationItemConfiguration12 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration12 setShowsAddNoteButtonOnLeadingEdge:v64];
 
-    v66 = [(ICNoteEditorViewController *)self auxiliaryResponder];
+    auxiliaryResponder3 = [(ICNoteEditorViewController *)self auxiliaryResponder];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v68 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v68 setTableSelected:isKindOfClass & 1];
+    navigationItemConfiguration13 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration13 setTableSelected:isKindOfClass & 1];
 
-    v69 = [MEMORY[0x277D75418] ic_isVision];
-    if (v69)
+    ic_isVision4 = [MEMORY[0x277D75418] ic_isVision];
+    if (ic_isVision4)
     {
-      v68 = [(ICNoteEditorViewController *)self viewControllerManager];
-      v70 = [v68 noteContainerViewMode] == 1;
+      navigationItemConfiguration13 = [(ICNoteEditorViewController *)self viewControllerManager];
+      note7 = [navigationItemConfiguration13 noteContainerViewMode] == 1;
     }
 
     else
     {
-      v70 = 0;
+      note7 = 0;
     }
 
-    v71 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v71 setUsesCustomBackButton:v70];
+    navigationItemConfiguration14 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration14 setUsesCustomBackButton:note7];
 
-    if (v69)
+    if (ic_isVision4)
     {
     }
 
-    v72 = [MEMORY[0x277D75418] ic_isLargeiPad];
-    v73 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v73 setUsesOnlyTrailingInputAssistantItems:v72 & v164];
+    ic_isLargeiPad = [MEMORY[0x277D75418] ic_isLargeiPad];
+    navigationItemConfiguration15 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration15 setUsesOnlyTrailingInputAssistantItems:ic_isLargeiPad & v164];
 
-    v74 = [MEMORY[0x277D75418] ic_isVision];
-    v75 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v75 setUsesPillOrnament:v74];
+    ic_isVision5 = [MEMORY[0x277D75418] ic_isVision];
+    navigationItemConfiguration16 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration16 setUsesPillOrnament:ic_isVision5];
 
-    v76 = [MEMORY[0x277D75418] ic_isVision];
-    v77 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v77 setUsesSidecarMenu:v76];
+    ic_isVision6 = [MEMORY[0x277D75418] ic_isVision];
+    navigationItemConfiguration17 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration17 setUsesSidecarMenu:ic_isVision6];
 
-    v78 = [MEMORY[0x277D75418] ic_isVision];
-    v79 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v79 setUsesStyleMenu:v78];
+    ic_isVision7 = [MEMORY[0x277D75418] ic_isVision];
+    navigationItemConfiguration18 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration18 setUsesStyleMenu:ic_isVision7];
 
-    v80 = [(ICNoteEditorViewController *)self usesContextualFormatBar];
-    v81 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v81 setCanShowContextualFormatBar:v80];
+    usesContextualFormatBar = [(ICNoteEditorViewController *)self usesContextualFormatBar];
+    navigationItemConfiguration19 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration19 setCanShowContextualFormatBar:usesContextualFormatBar];
 
     v82 = ([(ICNoteEditorViewController *)self isEditing]& 1) != 0 || [(ICNoteEditorViewController *)self didEndEditingForAddingImageAttachment];
-    v83 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v83 setEditing:v82];
+    navigationItemConfiguration20 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration20 setEditing:v82];
 
-    v84 = [(ICNoteEditorViewController *)self isWritingToolsShowing];
-    v85 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v85 setWritingToolsVisible:v84];
+    isWritingToolsShowing = [(ICNoteEditorViewController *)self isWritingToolsShowing];
+    navigationItemConfiguration21 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration21 setWritingToolsVisible:isWritingToolsShowing];
 
     if ([(ICNoteEditorViewController *)self isInkPickerShowing])
     {
@@ -11158,28 +11158,28 @@ LABEL_38:
     {
       if (([MEMORY[0x277D75418] ic_isVision] & 1) != 0 || -[ICNoteEditorViewController usesContextualFormatBar](self, "usesContextualFormatBar"))
       {
-        v87 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-        v88 = [v87 inlineSketchEditingState];
+        navigationItemConfiguration22 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+        inlineSketchEditingState = [navigationItemConfiguration22 inlineSketchEditingState];
 
-        if (v88 == 4)
+        if (inlineSketchEditingState == 4)
         {
 LABEL_101:
-          v90 = [(ICNoteEditorViewController *)self firstResponder];
+          firstResponder = [(ICNoteEditorViewController *)self firstResponder];
           objc_opt_class();
           v91 = objc_opt_isKindOfClass();
 
           v92 = v91 & ~([(ICNoteEditorViewController *)self isSplitViewExpandingOrCollapsing]| v168);
-          v93 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-          [v93 setEditingTable:v92 & 1];
+          navigationItemConfiguration23 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+          [navigationItemConfiguration23 setEditingTable:v92 & 1];
 
-          v94 = [MEMORY[0x277D361D0] isWritingToolsAvailable];
-          v95 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-          [v95 setCanShowWritingTools:v94];
+          isWritingToolsAvailable = [MEMORY[0x277D361D0] isWritingToolsAvailable];
+          navigationItemConfiguration24 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+          [navigationItemConfiguration24 setCanShowWritingTools:isWritingToolsAvailable];
 
-          if (v94)
+          if (isWritingToolsAvailable)
           {
-            v70 = [(ICNoteEditorBaseViewController *)self note];
-            v96 = [v70 isPasswordProtectedAndLocked] ^ 1;
+            note7 = [(ICNoteEditorBaseViewController *)self note];
+            v96 = [note7 isPasswordProtectedAndLocked] ^ 1;
           }
 
           else
@@ -11187,37 +11187,37 @@ LABEL_101:
             v96 = 0;
           }
 
-          v97 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-          [v97 setCanUseWritingTools:v96];
+          navigationItemConfiguration25 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+          [navigationItemConfiguration25 setCanUseWritingTools:v96];
 
-          if (v94)
+          if (isWritingToolsAvailable)
           {
           }
 
           v98 = v91 ^ 1;
-          v99 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-          [v99 setCanAddChecklist:(v166 & v170 | v165) & (v91 ^ 1) & 1];
+          navigationItemConfiguration26 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+          [navigationItemConfiguration26 setCanAddChecklist:(v166 & v170 | v165) & (v91 ^ 1) & 1];
 
-          v100 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-          [v100 setCanAddMedia:(v170 | v165) & 1];
+          navigationItemConfiguration27 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+          [navigationItemConfiguration27 setCanAddMedia:(v170 | v165) & 1];
 
-          v101 = [(ICNoteEditorBaseViewController *)self note];
-          v102 = [v101 isEmpty];
-          if (v102)
+          note8 = [(ICNoteEditorBaseViewController *)self note];
+          isEmpty = [note8 isEmpty];
+          if (isEmpty)
           {
-            v103 = 0;
+            canAddNewNoteToSelectedContainers = 0;
           }
 
           else
           {
-            v70 = [(ICNoteEditorViewController *)self viewControllerManager];
-            v103 = [v70 canAddNewNoteToSelectedContainers];
+            note7 = [(ICNoteEditorViewController *)self viewControllerManager];
+            canAddNewNoteToSelectedContainers = [note7 canAddNewNoteToSelectedContainers];
           }
 
-          v104 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-          [v104 setCanAddNote:v103];
+          navigationItemConfiguration28 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+          [navigationItemConfiguration28 setCanAddNote:canAddNewNoteToSelectedContainers];
 
-          if ((v102 & 1) == 0)
+          if ((isEmpty & 1) == 0)
           {
           }
 
@@ -11230,22 +11230,22 @@ LABEL_101:
 
           else
           {
-            v101 = [(ICNoteEditorViewController *)self auxiliaryResponder];
-            v106 = v101 != 0;
+            note8 = [(ICNoteEditorViewController *)self auxiliaryResponder];
+            v106 = note8 != 0;
           }
 
-          v107 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-          [v107 setCanAddTable:v106];
+          navigationItemConfiguration29 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+          [navigationItemConfiguration29 setCanAddTable:v106];
 
           if ((v168 & 1) == 0)
           {
           }
 
-          v108 = [(ICNoteEditorBaseViewController *)self isEditingOnSecureScreen];
-          v109 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-          [v109 setCanAddLink:!v108];
+          isEditingOnSecureScreen2 = [(ICNoteEditorBaseViewController *)self isEditingOnSecureScreen];
+          navigationItemConfiguration30 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+          [navigationItemConfiguration30 setCanAddLink:!isEditingOnSecureScreen2];
 
-          if ((v167 | v105))
+          if ((note10 | v105))
           {
             v110 = 0;
           }
@@ -11255,49 +11255,49 @@ LABEL_101:
             v110 = [(ICNoteEditorViewController *)self isEditing]& v98;
           }
 
-          v111 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-          [v111 setCanChangeStyle:v110];
+          navigationItemConfiguration31 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+          [navigationItemConfiguration31 setCanChangeStyle:v110];
 
-          LODWORD(v111) = [MEMORY[0x277D75418] ic_isVision];
-          v112 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-          [v112 setCanCustomizeCenterItems:v111 ^ 1];
+          LODWORD(navigationItemConfiguration31) = [MEMORY[0x277D75418] ic_isVision];
+          navigationItemConfiguration32 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+          [navigationItemConfiguration32 setCanCustomizeCenterItems:navigationItemConfiguration31 ^ 1];
 
-          v113 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-          if (!v113 || (-[ICNoteEditorViewController passwordEntryViewController](self, "passwordEntryViewController"), v170 = objc_claimAutoreleasedReturnValue(), [v170 isAnimatingOut]))
+          passwordEntryViewController = [(ICNoteEditorViewController *)self passwordEntryViewController];
+          if (!passwordEntryViewController || (-[ICNoteEditorViewController passwordEntryViewController](self, "passwordEntryViewController"), v170 = objc_claimAutoreleasedReturnValue(), [v170 isAnimatingOut]))
           {
-            v119 = [(ICNoteEditorViewController *)self invitationViewController];
-            if (v119)
+            invitationViewController = [(ICNoteEditorViewController *)self invitationViewController];
+            if (invitationViewController)
             {
-              v105 = v119;
+              v105 = invitationViewController;
               v115 = 0;
               v116 = 0;
               v117 = 0;
-              v118 = 0;
+              isEditable = 0;
               v114 = 1;
             }
 
             else
             {
-              v120 = [(ICNoteEditorViewController *)self unsupportedNoteView];
-              if (v120)
+              unsupportedNoteView2 = [(ICNoteEditorViewController *)self unsupportedNoteView];
+              if (unsupportedNoteView2)
               {
-                v106 = v120;
+                v106 = unsupportedNoteView2;
                 v105 = 0;
                 v116 = 0;
                 v117 = 0;
-                v118 = 0;
+                isEditable = 0;
                 v114 = 1;
                 v115 = 1;
               }
 
               else
               {
-                v121 = [(ICNoteEditorBaseViewController *)self note];
-                if (v121)
+                note9 = [(ICNoteEditorBaseViewController *)self note];
+                if (note9)
                 {
-                  v168 = v121;
-                  v167 = [(ICNoteEditorBaseViewController *)self note];
-                  v118 = [v167 isEditable];
+                  v168 = note9;
+                  note10 = [(ICNoteEditorBaseViewController *)self note];
+                  isEditable = [note10 isEditable];
                   v105 = 0;
                   v106 = 0;
                   v114 = 1;
@@ -11315,7 +11315,7 @@ LABEL_101:
                   v114 = 1;
                   v115 = 1;
                   v116 = 1;
-                  v118 = 1;
+                  isEditable = 1;
                 }
               }
             }
@@ -11327,11 +11327,11 @@ LABEL_101:
             v115 = 0;
             v116 = 0;
             v117 = 0;
-            v118 = 0;
+            isEditable = 0;
           }
 
-          v122 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-          [v122 setCanInlineSketch:v118];
+          navigationItemConfiguration33 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+          [navigationItemConfiguration33 setCanInlineSketch:isEditable];
 
           if (v117)
           {
@@ -11361,79 +11361,79 @@ LABEL_133:
           {
 LABEL_134:
 
-            if (!v113)
+            if (!passwordEntryViewController)
             {
 LABEL_140:
 
-              v123 = [(ICNoteEditorBaseViewController *)self note];
-              v124 = [v123 isEmpty];
-              v125 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-              [v125 setCanSaveQuickNote:v124 ^ 1u];
+              note11 = [(ICNoteEditorBaseViewController *)self note];
+              isEmpty2 = [note11 isEmpty];
+              navigationItemConfiguration34 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+              [navigationItemConfiguration34 setCanSaveQuickNote:isEmpty2 ^ 1u];
 
-              v126 = [(ICNoteEditorViewController *)self invitation];
-              if (v126)
+              invitation3 = [(ICNoteEditorViewController *)self invitation];
+              if (invitation3)
               {
-                v127 = 0;
+                isSharable = 0;
               }
 
               else
               {
-                v125 = [(ICNoteEditorBaseViewController *)self note];
-                v127 = [v125 isSharable];
+                navigationItemConfiguration34 = [(ICNoteEditorBaseViewController *)self note];
+                isSharable = [navigationItemConfiguration34 isSharable];
               }
 
-              v128 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-              [v128 setCanShare:v127];
+              navigationItemConfiguration35 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+              [navigationItemConfiguration35 setCanShare:isSharable];
 
-              if (!v126)
+              if (!invitation3)
               {
               }
 
-              v129 = [(ICNoteEditorViewController *)self magicGenerativePlaygroundUndoManager];
-              v130 = v129;
-              if (v129)
+              magicGenerativePlaygroundUndoManager = [(ICNoteEditorViewController *)self magicGenerativePlaygroundUndoManager];
+              v130 = magicGenerativePlaygroundUndoManager;
+              if (magicGenerativePlaygroundUndoManager)
               {
-                v171 = v129;
+                undoManager = magicGenerativePlaygroundUndoManager;
               }
 
               else
               {
-                v131 = [(ICNoteEditorViewController *)self textView];
-                v171 = [v131 undoManager];
+                textView6 = [(ICNoteEditorViewController *)self textView];
+                undoManager = [textView6 undoManager];
               }
 
-              v132 = [(ICNoteEditorBaseViewController *)self note];
-              if ([v132 isEditable])
+              note12 = [(ICNoteEditorBaseViewController *)self note];
+              if ([note12 isEditable])
               {
-                v133 = [v171 canRedo];
+                canRedo = [undoManager canRedo];
               }
 
               else
               {
-                v133 = 0;
+                canRedo = 0;
               }
 
-              v134 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-              [v134 setCanRedo:v133];
+              navigationItemConfiguration36 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+              [navigationItemConfiguration36 setCanRedo:canRedo];
 
-              v135 = [(ICNoteEditorBaseViewController *)self note];
-              if ([v135 isEditable])
+              note13 = [(ICNoteEditorBaseViewController *)self note];
+              if ([note13 isEditable])
               {
-                v136 = [v171 canUndo];
+                canUndo = [undoManager canUndo];
               }
 
               else
               {
-                v136 = 0;
+                canUndo = 0;
               }
 
-              v137 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-              [v137 setCanUndo:v136];
+              navigationItemConfiguration37 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+              [navigationItemConfiguration37 setCanUndo:canUndo];
 
-              v138 = [(ICNoteEditorViewController *)self viewControllerManager];
-              v139 = [v138 isAuxiliary];
+              viewControllerManager2 = [(ICNoteEditorViewController *)self viewControllerManager];
+              isAuxiliary = [viewControllerManager2 isAuxiliary];
 
-              if (v139)
+              if (isAuxiliary)
               {
                 if (_UISolariumEnabled())
                 {
@@ -11456,45 +11456,45 @@ LABEL_140:
                 v140 = 0;
               }
 
-              v141 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-              [v141 setAuxiliaryWindowType:v140];
+              navigationItemConfiguration38 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+              [navigationItemConfiguration38 setAuxiliaryWindowType:v140];
 
-              v142 = [(ICNoteEditorBaseViewController *)self note];
-              if ([v142 isPasswordProtected])
+              note14 = [(ICNoteEditorBaseViewController *)self note];
+              if ([note14 isPasswordProtected])
               {
-                v143 = [(ICNoteEditorBaseViewController *)self note];
-                v144 = [v143 isUnsupported];
+                note15 = [(ICNoteEditorBaseViewController *)self note];
+                isUnsupported = [note15 isUnsupported];
 
-                if (v144)
+                if (isUnsupported)
                 {
                   v145 = 0;
 LABEL_169:
-                  v146 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-                  [v146 setLockState:v145];
+                  navigationItemConfiguration39 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+                  [navigationItemConfiguration39 setLockState:v145];
 
                   if ([(ICNoteEditorViewController *)self isEditingOnSystemPaperOnPhone])
                   {
-                    v147 = 2;
+                    isEditingOnSystemPaperOnPad = 2;
                   }
 
                   else
                   {
-                    v147 = [(ICNoteEditorViewController *)self isEditingOnSystemPaperOnPad];
+                    isEditingOnSystemPaperOnPad = [(ICNoteEditorViewController *)self isEditingOnSystemPaperOnPad];
                   }
 
-                  v148 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-                  [v148 setQuickNoteType:v147];
+                  navigationItemConfiguration40 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+                  [navigationItemConfiguration40 setQuickNoteType:isEditingOnSystemPaperOnPad];
 
                   if ([MEMORY[0x277D75418] ic_isiPad])
                   {
-                    v149 = [(ICNoteEditorViewController *)self viewControllerManager];
-                    v150 = [v149 proposedMainSplitViewControllerDisplayMode];
+                    viewControllerManager3 = [(ICNoteEditorViewController *)self viewControllerManager];
+                    proposedMainSplitViewControllerDisplayMode = [viewControllerManager3 proposedMainSplitViewControllerDisplayMode];
 
-                    v151 = [(ICNoteEditorViewController *)self icSplitViewController];
-                    v152 = [v151 traitCollection];
-                    v153 = [v152 horizontalSizeClass];
+                    icSplitViewController = [(ICNoteEditorViewController *)self icSplitViewController];
+                    traitCollection3 = [icSplitViewController traitCollection];
+                    horizontalSizeClass = [traitCollection3 horizontalSizeClass];
 
-                    v155 = v150 != 2 || v153 == 1;
+                    v155 = proposedMainSplitViewControllerDisplayMode != 2 || horizontalSizeClass == 1;
                   }
 
                   else
@@ -11502,23 +11502,23 @@ LABEL_169:
                     v155 = 1;
                   }
 
-                  v156 = [(ICNoteEditorViewController *)self hasMadeEdits];
-                  v157 = v145 != 1 && v156;
-                  v158 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-                  [v158 setCanShowUndoRedo:v157 & v155];
+                  hasMadeEdits = [(ICNoteEditorViewController *)self hasMadeEdits];
+                  v157 = v145 != 1 && hasMadeEdits;
+                  navigationItemConfiguration41 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+                  [navigationItemConfiguration41 setCanShowUndoRedo:v157 & v155];
 
-                  v159 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-                  [v159 updateAnimated:v169];
+                  navigationItemConfiguration42 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+                  [navigationItemConfiguration42 updateAnimated:v169];
 
-                  v160 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-                  v161 = [(ICNoteEditorViewController *)self textView];
-                  [v160 updateFormatBarButtonsForChangeInTextView:v161];
+                  navigationItemConfiguration43 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+                  textView7 = [(ICNoteEditorViewController *)self textView];
+                  [navigationItemConfiguration43 updateFormatBarButtonsForChangeInTextView:textView7];
 
                   return;
                 }
 
-                v142 = [(ICNoteEditorBaseViewController *)self note];
-                if ([v142 isAuthenticated])
+                note14 = [(ICNoteEditorBaseViewController *)self note];
+                if ([note14 isAuthenticated])
                 {
                   v145 = 2;
                 }
@@ -11543,7 +11543,7 @@ LABEL_139:
           }
 
 LABEL_138:
-          if (!v113)
+          if (!passwordEntryViewController)
           {
             goto LABEL_140;
           }
@@ -11555,53 +11555,53 @@ LABEL_138:
       v86 = 0;
     }
 
-    v89 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v89 setInlineSketchEditingState:v86];
+    navigationItemConfiguration44 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration44 setInlineSketchEditingState:v86];
 
     goto LABEL_101;
   }
 }
 
-- (void)updateFormatToolbarLayoutWithSize:(CGSize)a3
+- (void)updateFormatToolbarLayoutWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(ICNoteEditorViewController *)self traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  height = size.height;
+  width = size.width;
+  traitCollection = [(ICNoteEditorViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v7)
+  if (!userInterfaceIdiom)
   {
-    v8 = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
-    [v8 updateLayoutWithSize:{width, height}];
+    textViewInputAccessoryView = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
+    [textViewInputAccessoryView updateLayoutWithSize:{width, height}];
   }
 }
 
-- (void)undoAction:(id)a3
+- (void)undoAction:(id)action
 {
-  v4 = [(ICNoteEditorViewController *)self magicGenerativePlaygroundUndoManager];
+  magicGenerativePlaygroundUndoManager = [(ICNoteEditorViewController *)self magicGenerativePlaygroundUndoManager];
 
-  if (v4)
+  if (magicGenerativePlaygroundUndoManager)
   {
-    v8 = [(ICNoteEditorViewController *)self magicGenerativePlaygroundUndoManager];
-    [v8 undo];
+    magicGenerativePlaygroundUndoManager2 = [(ICNoteEditorViewController *)self magicGenerativePlaygroundUndoManager];
+    [magicGenerativePlaygroundUndoManager2 undo];
   }
 
   else
   {
-    v8 = [(ICNoteEditorViewController *)self textView];
-    v5 = [v8 undoManager];
-    if ([v5 canUndo])
+    magicGenerativePlaygroundUndoManager2 = [(ICNoteEditorViewController *)self textView];
+    undoManager = [magicGenerativePlaygroundUndoManager2 undoManager];
+    if ([undoManager canUndo])
     {
-      v6 = [(ICNoteEditorViewController *)self isDrawingStroke];
+      isDrawingStroke = [(ICNoteEditorViewController *)self isDrawingStroke];
 
-      if (v6)
+      if (isDrawingStroke)
       {
         return;
       }
 
-      v8 = [(ICNoteEditorViewController *)self textView];
-      v7 = [v8 undoManager];
-      [v7 undo];
+      magicGenerativePlaygroundUndoManager2 = [(ICNoteEditorViewController *)self textView];
+      undoManager2 = [magicGenerativePlaygroundUndoManager2 undoManager];
+      [undoManager2 undo];
     }
 
     else
@@ -11610,32 +11610,32 @@ LABEL_138:
   }
 }
 
-- (void)redoAction:(id)a3
+- (void)redoAction:(id)action
 {
-  v4 = [(ICNoteEditorViewController *)self magicGenerativePlaygroundUndoManager];
+  magicGenerativePlaygroundUndoManager = [(ICNoteEditorViewController *)self magicGenerativePlaygroundUndoManager];
 
-  if (v4)
+  if (magicGenerativePlaygroundUndoManager)
   {
-    v8 = [(ICNoteEditorViewController *)self magicGenerativePlaygroundUndoManager];
-    [v8 redo];
+    magicGenerativePlaygroundUndoManager2 = [(ICNoteEditorViewController *)self magicGenerativePlaygroundUndoManager];
+    [magicGenerativePlaygroundUndoManager2 redo];
   }
 
   else
   {
-    v8 = [(ICNoteEditorViewController *)self textView];
-    v5 = [v8 undoManager];
-    if ([v5 canRedo])
+    magicGenerativePlaygroundUndoManager2 = [(ICNoteEditorViewController *)self textView];
+    undoManager = [magicGenerativePlaygroundUndoManager2 undoManager];
+    if ([undoManager canRedo])
     {
-      v6 = [(ICNoteEditorViewController *)self isDrawingStroke];
+      isDrawingStroke = [(ICNoteEditorViewController *)self isDrawingStroke];
 
-      if (v6)
+      if (isDrawingStroke)
       {
         return;
       }
 
-      v8 = [(ICNoteEditorViewController *)self textView];
-      v7 = [v8 undoManager];
-      [v7 redo];
+      magicGenerativePlaygroundUndoManager2 = [(ICNoteEditorViewController *)self textView];
+      undoManager2 = [magicGenerativePlaygroundUndoManager2 undoManager];
+      [undoManager2 redo];
     }
 
     else
@@ -11648,46 +11648,46 @@ LABEL_138:
 {
   if ([(ICNoteEditorViewController *)self ic_isViewVisible])
   {
-    v3 = [(ICNoteEditorBaseViewController *)self note];
-    v4 = [v3 updateLastViewedTimestampWithCurrentTimestamp];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    updateLastViewedTimestampWithCurrentTimestamp = [note updateLastViewedTimestampWithCurrentTimestamp];
 
-    if (v4)
+    if (updateLastViewedTimestampWithCurrentTimestamp)
     {
-      v5 = [(ICNoteEditorBaseViewController *)self note];
-      [v5 saveAfterDelay];
+      note2 = [(ICNoteEditorBaseViewController *)self note];
+      [note2 saveAfterDelay];
     }
   }
 
-  v6 = [(ICNoteEditorBaseViewController *)self note];
-  v7 = [v6 recordID];
+  note3 = [(ICNoteEditorBaseViewController *)self note];
+  recordID = [note3 recordID];
 
-  if (v7)
+  if (recordID)
   {
     v8 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __66__ICNoteEditorViewController_updateLastViewedMetadataIfNessessary__block_invoke;
     block[3] = &unk_2781ABCF8;
-    v10 = v7;
+    v10 = recordID;
     dispatch_async(v8, block);
   }
 }
 
-- (void)localeChanged:(id)a3
+- (void)localeChanged:(id)changed
 {
   if (ICInternalSettingsIsTextKit2Enabled())
   {
-    v4 = [(ICNoteEditorBaseViewController *)self note];
-    v5 = [v4 textStorage];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    textStorage = [note textStorage];
 
     v6 = *MEMORY[0x277D35DA8];
-    v7 = [v5 length];
+    v7 = [textStorage length];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __44__ICNoteEditorViewController_localeChanged___block_invoke;
     v9[3] = &unk_2781ACC80;
-    v10 = v5;
-    v8 = v5;
+    v10 = textStorage;
+    v8 = textStorage;
     [v8 enumerateAttribute:v6 inRange:0 options:v7 usingBlock:{0, v9}];
   }
 }
@@ -11736,11 +11736,11 @@ void __44__ICNoteEditorViewController_localeChanged___block_invoke(uint64_t a1, 
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 ic_selectedRanges];
+  textView = [(ICNoteEditorViewController *)self textView];
+  ic_selectedRanges = [textView ic_selectedRanges];
 
-  obj = v4;
-  v22 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  obj = ic_selectedRanges;
+  v22 = [ic_selectedRanges countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v22)
   {
     v24 = *v28;
@@ -11755,11 +11755,11 @@ void __44__ICNoteEditorViewController_localeChanged___block_invoke(uint64_t a1, 
         }
 
         v7 = *(*(&v27 + 1) + 8 * i);
-        v8 = [(ICNoteEditorBaseViewController *)self note];
-        v9 = [v8 textStorage];
-        v10 = [v9 string];
-        v11 = [v7 rangeValue];
-        v13 = [v10 paragraphRangeForRange:{v11, v12}];
+        note = [(ICNoteEditorBaseViewController *)self note];
+        textStorage = [note textStorage];
+        string = [textStorage string];
+        rangeValue = [v7 rangeValue];
+        v13 = [string paragraphRangeForRange:{rangeValue, v12}];
         v15 = v14;
 
         if (v13 < v13 + v15)
@@ -11769,9 +11769,9 @@ void __44__ICNoteEditorViewController_localeChanged___block_invoke(uint64_t a1, 
           {
             v25 = 0;
             v26 = 0;
-            v17 = [(ICNoteEditorBaseViewController *)self note];
-            v18 = [v17 textStorage];
-            v19 = [v18 attribute:*v5 atIndex:v16 longestEffectiveRange:&v25 inRange:{v13, v15}];
+            note2 = [(ICNoteEditorBaseViewController *)self note];
+            textStorage2 = [note2 textStorage];
+            v19 = [textStorage2 attribute:*v5 atIndex:v16 longestEffectiveRange:&v25 inRange:{v13, v15}];
 
             if (v19)
             {
@@ -11818,19 +11818,19 @@ LABEL_16:
   return v20;
 }
 
-- (void)addKVOObserversForNote:(id)a3
+- (void)addKVOObserversForNote:(id)note
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 ic_addObserver:self forKeyPath:@"noteHasChanges" context:&compoundliteral_3033];
-  [v4 ic_addObserver:self forKeyPath:@"modificationDate" context:&compoundliteral_3033];
-  [v4 ic_addObserver:self forKeyPath:@"lastActivitySummaryViewedDate" context:&compoundliteral_3033];
-  [v4 ic_addObserver:self forKeyPath:@"attachmentViewType" context:&compoundliteral_3033];
-  [v4 ic_addObserver:self forKeyPath:@"paperStyleType" context:&compoundliteral_3033];
-  [v4 ic_addObserver:self forKeyPath:@"isEmpty" context:&compoundliteral_3033];
-  [v4 ic_addObserver:self forKeyPath:@"serverShareData" context:&compoundliteral_3033];
-  [v4 ic_addObserver:self forKeyPath:@"isSharedViaICloud" context:&compoundliteral_3033];
-  [v4 ic_addObserver:self forKeyPath:@"prefersLightBackground" context:&compoundliteral_3031];
+  noteCopy = note;
+  [noteCopy ic_addObserver:self forKeyPath:@"noteHasChanges" context:&compoundliteral_3033];
+  [noteCopy ic_addObserver:self forKeyPath:@"modificationDate" context:&compoundliteral_3033];
+  [noteCopy ic_addObserver:self forKeyPath:@"lastActivitySummaryViewedDate" context:&compoundliteral_3033];
+  [noteCopy ic_addObserver:self forKeyPath:@"attachmentViewType" context:&compoundliteral_3033];
+  [noteCopy ic_addObserver:self forKeyPath:@"paperStyleType" context:&compoundliteral_3033];
+  [noteCopy ic_addObserver:self forKeyPath:@"isEmpty" context:&compoundliteral_3033];
+  [noteCopy ic_addObserver:self forKeyPath:@"serverShareData" context:&compoundliteral_3033];
+  [noteCopy ic_addObserver:self forKeyPath:@"isSharedViaICloud" context:&compoundliteral_3033];
+  [noteCopy ic_addObserver:self forKeyPath:@"prefersLightBackground" context:&compoundliteral_3031];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -11851,7 +11851,7 @@ LABEL_16:
           objc_enumerationMutation(v5);
         }
 
-        [v4 ic_addObserver:self forKeyPath:*(*(&v10 + 1) + 8 * v9++) context:&compoundliteral_3035];
+        [noteCopy ic_addObserver:self forKeyPath:*(*(&v10 + 1) + 8 * v9++) context:&compoundliteral_3035];
       }
 
       while (v7 != v9);
@@ -11862,19 +11862,19 @@ LABEL_16:
   }
 }
 
-- (void)removeKVOObserversForNote:(id)a3
+- (void)removeKVOObserversForNote:(id)note
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 ic_removeObserver:self forKeyPath:@"noteHasChanges" context:&compoundliteral_3033];
-  [v4 ic_removeObserver:self forKeyPath:@"modificationDate" context:&compoundliteral_3033];
-  [v4 ic_removeObserver:self forKeyPath:@"lastActivitySummaryViewedDate" context:&compoundliteral_3033];
-  [v4 ic_removeObserver:self forKeyPath:@"attachmentViewType" context:&compoundliteral_3033];
-  [v4 ic_removeObserver:self forKeyPath:@"paperStyleType" context:&compoundliteral_3033];
-  [v4 ic_removeObserver:self forKeyPath:@"isEmpty" context:&compoundliteral_3033];
-  [v4 ic_removeObserver:self forKeyPath:@"serverShareData" context:&compoundliteral_3033];
-  [v4 ic_removeObserver:self forKeyPath:@"isSharedViaICloud" context:&compoundliteral_3033];
-  [v4 ic_removeObserver:self forKeyPath:@"prefersLightBackground" context:&compoundliteral_3031];
+  noteCopy = note;
+  [noteCopy ic_removeObserver:self forKeyPath:@"noteHasChanges" context:&compoundliteral_3033];
+  [noteCopy ic_removeObserver:self forKeyPath:@"modificationDate" context:&compoundliteral_3033];
+  [noteCopy ic_removeObserver:self forKeyPath:@"lastActivitySummaryViewedDate" context:&compoundliteral_3033];
+  [noteCopy ic_removeObserver:self forKeyPath:@"attachmentViewType" context:&compoundliteral_3033];
+  [noteCopy ic_removeObserver:self forKeyPath:@"paperStyleType" context:&compoundliteral_3033];
+  [noteCopy ic_removeObserver:self forKeyPath:@"isEmpty" context:&compoundliteral_3033];
+  [noteCopy ic_removeObserver:self forKeyPath:@"serverShareData" context:&compoundliteral_3033];
+  [noteCopy ic_removeObserver:self forKeyPath:@"isSharedViaICloud" context:&compoundliteral_3033];
+  [noteCopy ic_removeObserver:self forKeyPath:@"prefersLightBackground" context:&compoundliteral_3031];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -11895,7 +11895,7 @@ LABEL_16:
           objc_enumerationMutation(v5);
         }
 
-        [v4 ic_removeObserver:self forKeyPath:*(*(&v10 + 1) + 8 * v9++) context:&compoundliteral_3035];
+        [noteCopy ic_removeObserver:self forKeyPath:*(*(&v10 + 1) + 8 * v9++) context:&compoundliteral_3035];
       }
 
       while (v7 != v9);
@@ -11906,109 +11906,109 @@ LABEL_16:
   }
 }
 
-- (void)setNote:(id)a3 overrideScrollState:(id)a4 startEditing:(BOOL)a5
+- (void)setNote:(id)note overrideScrollState:(id)state startEditing:(BOOL)editing
 {
-  v5 = a5;
-  v10 = a3;
-  v8 = a4;
-  if (v8)
+  editingCopy = editing;
+  noteCopy = note;
+  stateCopy = state;
+  if (stateCopy)
   {
-    [(ICNoteEditorViewController *)self setArchivedScrollStateToApply:v8];
+    [(ICNoteEditorViewController *)self setArchivedScrollStateToApply:stateCopy];
   }
 
-  [(ICNoteEditorViewController *)self setNote:v10 delayedForLaunch:0 startEditing:v5 successHandler:0];
+  [(ICNoteEditorViewController *)self setNote:noteCopy delayedForLaunch:0 startEditing:editingCopy successHandler:0];
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    v9 = [(ICNoteEditorViewController *)self archivedScrollStateToApply];
+    archivedScrollStateToApply = [(ICNoteEditorViewController *)self archivedScrollStateToApply];
 
-    if (v9)
+    if (archivedScrollStateToApply)
     {
       [(ICNoteEditorViewController *)self applyScrollStateIfAvailable];
     }
   }
 }
 
-- (void)setNote:(id)a3 delayedForLaunch:(BOOL)a4 startEditing:(BOOL)a5 successHandler:(id)a6
+- (void)setNote:(id)note delayedForLaunch:(BOOL)launch startEditing:(BOOL)editing successHandler:(id)handler
 {
-  v130 = a5;
-  v7 = a4;
+  editingCopy = editing;
+  launchCopy = launch;
   v150[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v135 = a6;
+  noteCopy = note;
+  handlerCopy = handler;
   [(ICNoteEditorViewController *)self setSuspendBarButtonUpdates:1];
-  v10 = [(ICNoteEditorViewController *)self textViewController];
-  [v10 setIgnoresTaps:0];
+  textViewController = [(ICNoteEditorViewController *)self textViewController];
+  [textViewController setIgnoresTaps:0];
 
-  v11 = [(ICNoteEditorViewController *)self unsupportedNoteTapGestureRecognizer];
+  unsupportedNoteTapGestureRecognizer = [(ICNoteEditorViewController *)self unsupportedNoteTapGestureRecognizer];
 
-  if (v11)
+  if (unsupportedNoteTapGestureRecognizer)
   {
-    v12 = [(ICNoteEditorViewController *)self view];
-    v13 = [(ICNoteEditorViewController *)self unsupportedNoteTapGestureRecognizer];
-    [v12 removeGestureRecognizer:v13];
+    view = [(ICNoteEditorViewController *)self view];
+    unsupportedNoteTapGestureRecognizer2 = [(ICNoteEditorViewController *)self unsupportedNoteTapGestureRecognizer];
+    [view removeGestureRecognizer:unsupportedNoteTapGestureRecognizer2];
 
     [(ICNoteEditorViewController *)self setUnsupportedNoteTapGestureRecognizer:0];
   }
 
-  if ([v9 isUnsupported] && objc_msgSend(v9, "isDeletedOrInTrash"))
+  if ([noteCopy isUnsupported] && objc_msgSend(noteCopy, "isDeletedOrInTrash"))
   {
     v14 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_showRecoverNoteAlert];
     [(ICNoteEditorViewController *)self setUnsupportedNoteTapGestureRecognizer:v14];
 
-    v15 = [(ICNoteEditorViewController *)self view];
-    v16 = [(ICNoteEditorViewController *)self unsupportedNoteTapGestureRecognizer];
-    [v15 addGestureRecognizer:v16];
+    view2 = [(ICNoteEditorViewController *)self view];
+    unsupportedNoteTapGestureRecognizer3 = [(ICNoteEditorViewController *)self unsupportedNoteTapGestureRecognizer];
+    [view2 addGestureRecognizer:unsupportedNoteTapGestureRecognizer3];
   }
 
-  if (v9 && [MEMORY[0x277D75418] ic_isVision])
+  if (noteCopy && [MEMORY[0x277D75418] ic_isVision])
   {
-    v17 = [(ICNoteEditorViewController *)self viewControllerManager];
-    if ([v17 isMainSplitViewDisplayModeSecondaryOnly])
+    viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+    if ([viewControllerManager isMainSplitViewDisplayModeSecondaryOnly])
     {
-      v18 = 1;
+      isAuxiliary = 1;
     }
 
     else
     {
-      v19 = [(ICNoteEditorViewController *)self viewControllerManager];
-      v18 = [v19 isAuxiliary];
+      viewControllerManager2 = [(ICNoteEditorViewController *)self viewControllerManager];
+      isAuxiliary = [viewControllerManager2 isAuxiliary];
     }
 
-    v20 = [(ICNoteEditorViewController *)self viewControllerManager];
-    v21 = [v20 noteContainerViewMode] == 0;
+    viewControllerManager3 = [(ICNoteEditorViewController *)self viewControllerManager];
+    v21 = [viewControllerManager3 noteContainerViewMode] == 0;
 
-    v22 = [(ICNoteEditorViewController *)self viewControllerManager];
-    v23 = ([v22 noteContainerViewMode] == 1) | v18;
+    viewControllerManager4 = [(ICNoteEditorViewController *)self viewControllerManager];
+    v23 = ([viewControllerManager4 noteContainerViewMode] == 1) | isAuxiliary;
 
-    [(ICNoteEditorViewController *)self updateContentViewBezelsStandalone:v18 needsAdditionalBottomMargin:v21 needsAdditionalLeadingMargin:v23 & 1 force:0];
+    [(ICNoteEditorViewController *)self updateContentViewBezelsStandalone:isAuxiliary needsAdditionalBottomMargin:v21 needsAdditionalLeadingMargin:v23 & 1 force:0];
   }
 
-  if ([v9 isSharedReadOnly])
+  if ([noteCopy isSharedReadOnly])
   {
-    v24 = 1;
+    isSharedAndEmpty = 1;
   }
 
   else
   {
-    v24 = [v9 isSharedAndEmpty];
+    isSharedAndEmpty = [noteCopy isSharedAndEmpty];
   }
 
-  [(ICNoteEditorViewController *)self setUserWantsToSeeDateLabel:v24];
-  v136 = [(ICNoteEditorBaseViewController *)self note];
-  if (v136 != v9)
+  [(ICNoteEditorViewController *)self setUserWantsToSeeDateLabel:isSharedAndEmpty];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if (note != noteCopy)
   {
     [(ICNoteEditorViewController *)self setHasMadeEdits:0];
-    v25 = [(ICNoteEditorViewController *)self shouldTrackNoteViewEventAnalyticsFromSettingNote];
-    if (v136)
+    shouldTrackNoteViewEventAnalyticsFromSettingNote = [(ICNoteEditorViewController *)self shouldTrackNoteViewEventAnalyticsFromSettingNote];
+    if (note)
     {
-      if (v25)
+      if (shouldTrackNoteViewEventAnalyticsFromSettingNote)
       {
-        v26 = [(ICNoteEditorViewController *)self viewIfLoaded];
-        v27 = [v26 window];
+        viewIfLoaded = [(ICNoteEditorViewController *)self viewIfLoaded];
+        window = [viewIfLoaded window];
 
-        if (v27)
+        if (window)
         {
-          [(ICNoteEditorViewController *)self submitNoteViewEventForModernNote:v136];
+          [(ICNoteEditorViewController *)self submitNoteViewEventForModernNote:note];
         }
       }
     }
@@ -12018,32 +12018,32 @@ LABEL_16:
     v28 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
     {
-      [ICNoteEditorViewController setNote:v9 delayedForLaunch:? startEditing:? successHandler:?];
+      [ICNoteEditorViewController setNote:noteCopy delayedForLaunch:? startEditing:? successHandler:?];
     }
 
-    v29 = [MEMORY[0x277D35E50] sharedState];
-    [v29 extendDeauthenticationTimer];
+    mEMORY[0x277D35E50] = [MEMORY[0x277D35E50] sharedState];
+    [mEMORY[0x277D35E50] extendDeauthenticationTimer];
 
-    v133 = [(ICNoteEditorViewController *)self presentedViewController];
+    presentedViewController = [(ICNoteEditorViewController *)self presentedViewController];
     objc_opt_class();
     v30 = ICDynamicCast();
     v131 = v30;
     if (v30)
     {
-      v31 = [v30 shouldDismissWhenShowingNote];
+      shouldDismissWhenShowingNote = [v30 shouldDismissWhenShowingNote];
     }
 
     else
     {
-      v31 = 1;
+      shouldDismissWhenShowingNote = 1;
     }
 
     if (NSClassFromString(&cfstr_Icallownotific.isa))
     {
-      v31 &= objc_opt_isKindOfClass() ^ 1;
+      shouldDismissWhenShowingNote &= objc_opt_isKindOfClass() ^ 1;
     }
 
-    if ((v31 & 1) != 0 && v133)
+    if ((shouldDismissWhenShowingNote & 1) != 0 && presentedViewController)
     {
       [(ICNoteEditorViewController *)self dismissViewControllerAnimated:1 completion:0];
     }
@@ -12057,45 +12057,45 @@ LABEL_16:
     [(ICNoteEditorViewController *)self setCalculateRecognitionController:0];
     [(ICNoteEditorViewController *)self setCollaborationButtonsController:0];
     [(ICNoteEditorViewController *)self setCollaborationBarButtonItem:0];
-    v134 = [(ICNoteEditorViewController *)self linkAcceleratorController];
-    if (v134)
+    linkAcceleratorController = [(ICNoteEditorViewController *)self linkAcceleratorController];
+    if (linkAcceleratorController)
     {
-      if ([v134 isShowing])
+      if ([linkAcceleratorController isShowing])
       {
-        [v134 hideAccelerator];
+        [linkAcceleratorController hideAccelerator];
       }
 
-      [v134 setLinkDelegate:0];
+      [linkAcceleratorController setLinkDelegate:0];
     }
 
     [(ICNoteEditorViewController *)self setLinkAcceleratorController:0];
-    v34 = [(ICNoteEditorViewController *)self linkAcceleratorController];
-    [v34 setLinkDelegate:0];
+    linkAcceleratorController2 = [(ICNoteEditorViewController *)self linkAcceleratorController];
+    [linkAcceleratorController2 setLinkDelegate:0];
 
-    if (v136)
+    if (note)
     {
       [(ICNoteEditorViewController *)self setInkPickerState:2];
       [(ICNoteEditorViewController *)self showInkPicker:0 animated:0];
       [(ICNoteEditorViewController *)self updateInlineDrawingsPaletteVisibility];
-      v35 = [MEMORY[0x277D36860] sharedController];
-      [v35 sendPendingNotifications];
+      mEMORY[0x277D36860] = [MEMORY[0x277D36860] sharedController];
+      [mEMORY[0x277D36860] sendPendingNotifications];
 
-      [v136 markActivitySummaryViewed];
-      if ([v136 isPasswordProtected])
+      [note markActivitySummaryViewed];
+      if ([note isPasswordProtected])
       {
-        v36 = [v136 account];
-        v37 = [v36 accountData];
-        v38 = [v37 cryptoPassphraseVerifier];
-        v39 = v38 == 0;
+        account = [note account];
+        accountData = [account accountData];
+        cryptoPassphraseVerifier = [accountData cryptoPassphraseVerifier];
+        v39 = cryptoPassphraseVerifier == 0;
 
         if (!v39)
         {
-          v40 = [MEMORY[0x277D36830] sharedMigrator];
-          [v40 migrateNoteToV1NeoIfNeeded:v136 completionHandler:&__block_literal_global_834];
+          mEMORY[0x277D36830] = [MEMORY[0x277D36830] sharedMigrator];
+          [mEMORY[0x277D36830] migrateNoteToV1NeoIfNeeded:note completionHandler:&__block_literal_global_834];
         }
       }
 
-      [(ICNoteEditorViewController *)self presentRecordingStoppedAlertForNoteIfNeeded:v136];
+      [(ICNoteEditorViewController *)self presentRecordingStoppedAlertForNoteIfNeeded:note];
     }
 
     [(ICNoteEditorViewController *)self showStyleSelector:0 animated:0];
@@ -12103,15 +12103,15 @@ LABEL_16:
     [(ICNoteEditorViewController *)self tearDownAudioPlayers];
     [(ICNoteEditorViewController *)self saveCurrentScrollState];
     +[ICMovieController stopIfPlaying];
-    if (v7)
+    if (launchCopy)
     {
-      v41 = [v9 textStorage];
-      v42 = [v41 length] > 0x10000;
+      textStorage = [noteCopy textStorage];
+      v42 = [textStorage length] > 0x10000;
 
       if (v42)
       {
-        v43 = v9;
-        v44 = [v135 copy];
+        v43 = noteCopy;
+        v44 = [handlerCopy copy];
         v45 = dispatch_time(0, 0);
         v46 = MEMORY[0x277D85CD0];
         v47 = MEMORY[0x277D85CD0];
@@ -12126,12 +12126,12 @@ LABEL_16:
         v147 = v49;
         dispatch_after(v45, v46, block);
 
-        v9 = 0;
+        noteCopy = 0;
       }
     }
 
-    v132 = [(ICNoteEditorViewController *)self isEditing];
-    if (v132)
+    isEditing = [(ICNoteEditorViewController *)self isEditing];
+    if (isEditing)
     {
       [(ICNoteEditorViewController *)self textViewScrollIndicatorBottomInsetOverride];
       [(ICNoteEditorViewController *)self setTextViewScrollIndicatorBottomInsetOverrideToRestore:?];
@@ -12140,32 +12140,32 @@ LABEL_16:
     v50 = MEMORY[0x277D35CC0];
     v51 = MEMORY[0x277D364D0];
     v52 = MEMORY[0x277D36590];
-    if (v136)
+    if (note)
     {
       [(ICNoteEditorViewController *)self removeKVOObserversForNote:?];
-      v53 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v53 removeObserver:self name:*v50 object:v136];
-      [v53 removeObserver:self name:*MEMORY[0x277D35CF8] object:v136];
-      [v53 removeObserver:self name:*MEMORY[0x277D35C60] object:v136];
-      v54 = [v136 calculateDocumentController];
-      [v53 removeObserver:self name:*v51 object:v54];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self name:*v50 object:note];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277D35CF8] object:note];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277D35C60] object:note];
+      calculateDocumentController = [note calculateDocumentController];
+      [defaultCenter removeObserver:self name:*v51 object:calculateDocumentController];
 
-      [v53 removeObserver:self name:*v52 object:v136];
+      [defaultCenter removeObserver:self name:*v52 object:note];
       if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
       {
         objc_opt_class();
-        v55 = [(ICNoteEditorViewController *)self textView];
-        v56 = [v55 layoutManager];
+        textView = [(ICNoteEditorViewController *)self textView];
+        layoutManager = [textView layoutManager];
         v57 = ICCheckedDynamicCast();
 
         [v57 clearAllSupplementalViews];
       }
 
-      v58 = [(ICNoteEditorViewController *)self textController];
-      [v58 resetTrackedToDoParagraphs];
+      textController = [(ICNoteEditorViewController *)self textController];
+      [textController resetTrackedToDoParagraphs];
 
-      v59 = [(ICNoteEditorViewController *)self calculateRecognitionController];
-      [v59 discardPreviewedResult];
+      calculateRecognitionController = [(ICNoteEditorViewController *)self calculateRecognitionController];
+      [calculateRecognitionController discardPreviewedResult];
 
       [(ICNoteEditorViewController *)self setNoteAndFolderChangeController:0];
       [(ICNoteEditorViewController *)self setInlineAttachmentChangeController:0];
@@ -12177,61 +12177,61 @@ LABEL_16:
         goto LABEL_56;
       }
 
-      [(ICNoteEditorViewController *)self noteWillDisappear:v136];
-      if (!v9)
+      [(ICNoteEditorViewController *)self noteWillDisappear:note];
+      if (!noteCopy)
       {
 LABEL_61:
         [(ICNoteEditorViewController *)self resetTextViewUndoManager];
-        v62 = v9 != 0;
+        v62 = noteCopy != 0;
 LABEL_62:
-        v64 = [(ICNoteEditorViewController *)self previousNote];
-        v65 = v9 == v64;
+        previousNote = [(ICNoteEditorViewController *)self previousNote];
+        v65 = noteCopy == previousNote;
 
         if (!v65)
         {
-          v66 = [(ICNoteEditorViewController *)self previousNote];
-          [v66 setHandwritingRecognitionEnabled:0];
+          previousNote2 = [(ICNoteEditorViewController *)self previousNote];
+          [previousNote2 setHandwritingRecognitionEnabled:0];
         }
 
-        [(ICNoteEditorViewController *)self setPreviousNote:v136];
+        [(ICNoteEditorViewController *)self setPreviousNote:note];
         v144.receiver = self;
         v144.super_class = ICNoteEditorViewController;
-        [(ICNoteEditorBaseViewController *)&v144 setNote:v9];
+        [(ICNoteEditorBaseViewController *)&v144 setNote:noteCopy];
         [(ICNoteEditorViewController *)self setLastSelectedRange:0x7FFFFFFFFFFFFFFFLL, 0];
-        if ([v9 needsRefresh])
+        if ([noteCopy needsRefresh])
         {
           [(ICNoteEditorViewController *)self fetchAll];
         }
 
-        v67 = [MEMORY[0x277D35F30] sharedContext];
-        [v67 setCurrentNote:v9];
+        mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
+        [mEMORY[0x277D35F30] setCurrentNote:noteCopy];
 
         if (v62)
         {
-          [(ICNoteEditorViewController *)self addKVOObserversForNote:v9];
-          v68 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v68 addObserver:self selector:sel_attachmentsExceeded_ name:*v50 object:v9];
-          [v68 addObserver:self selector:sel_mergeRelatedOperationsDidEnd_ name:*MEMORY[0x277D35CF8] object:v9];
-          [v68 addObserver:self selector:sel_inlineAttachmentDeleted_ name:*MEMORY[0x277D35C60] object:v9];
-          v69 = [v9 calculateDocumentController];
-          [v68 addObserver:self selector:sel_calculateDocumentControllerDidUpdateHighlights_ name:*v51 object:v69];
+          [(ICNoteEditorViewController *)self addKVOObserversForNote:noteCopy];
+          defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter2 addObserver:self selector:sel_attachmentsExceeded_ name:*v50 object:noteCopy];
+          [defaultCenter2 addObserver:self selector:sel_mergeRelatedOperationsDidEnd_ name:*MEMORY[0x277D35CF8] object:noteCopy];
+          [defaultCenter2 addObserver:self selector:sel_inlineAttachmentDeleted_ name:*MEMORY[0x277D35C60] object:noteCopy];
+          calculateDocumentController2 = [noteCopy calculateDocumentController];
+          [defaultCenter2 addObserver:self selector:sel_calculateDocumentControllerDidUpdateHighlights_ name:*v51 object:calculateDocumentController2];
 
-          [v68 addObserver:self selector:sel_noteDidChangeCalculatePreviewBehaviorNotification_ name:*v52 object:v9];
+          [defaultCenter2 addObserver:self selector:sel_noteDidChangeCalculatePreviewBehaviorNotification_ name:*v52 object:noteCopy];
           [(ICNoteEditorViewController *)self setInvitation:0];
           v70 = objc_alloc(MEMORY[0x277D36840]);
           v71 = MEMORY[0x277CBEB98];
-          v72 = [v9 managedObjectContext];
-          v73 = [v71 setWithObject:v72];
+          managedObjectContext = [noteCopy managedObjectContext];
+          v73 = [v71 setWithObject:managedObjectContext];
           v74 = [v70 initWithManagedObjectContexts:v73 delegate:self];
           [(ICNoteEditorViewController *)self setNoteAndFolderChangeController:v74];
 
-          v75 = [(ICNoteEditorViewController *)self noteAndFolderChangeController];
-          [v75 setObjectTypes:9];
+          noteAndFolderChangeController = [(ICNoteEditorViewController *)self noteAndFolderChangeController];
+          [noteAndFolderChangeController setObjectTypes:9];
 
           v76 = objc_alloc(MEMORY[0x277D36840]);
           v77 = MEMORY[0x277CBEB98];
-          v78 = [v9 managedObjectContext];
-          v79 = [v77 setWithObject:v78];
+          managedObjectContext2 = [noteCopy managedObjectContext];
+          v79 = [v77 setWithObject:managedObjectContext2];
           v80 = [v76 initWithManagedObjectContexts:v79 delegate:self];
           [(ICNoteEditorViewController *)self setInlineAttachmentChangeController:v80];
 
@@ -12241,77 +12241,77 @@ LABEL_62:
 
         if ([(ICNoteEditorBaseViewController *)self viewAppearanceState]>= 2)
         {
-          v82 = [(ICNoteEditorViewController *)self previousNote];
+          previousNote3 = [(ICNoteEditorViewController *)self previousNote];
 
-          if (v82)
+          if (previousNote3)
           {
-            v83 = [(ICNoteEditorViewController *)self previousNote];
-            [(ICNoteEditorBaseViewController *)self noteDidDisappear:v83];
+            previousNote4 = [(ICNoteEditorViewController *)self previousNote];
+            [(ICNoteEditorBaseViewController *)self noteDidDisappear:previousNote4];
           }
 
           if (v62 && [(ICNoteEditorBaseViewController *)self viewAppearanceState]== 3)
           {
-            [(ICNoteEditorBaseViewController *)self noteDidAppear:v9];
+            [(ICNoteEditorBaseViewController *)self noteDidAppear:noteCopy];
           }
         }
 
         [(ICNoteEditorViewController *)self recreateTextViewIfNecessary];
         [(ICNoteEditorViewController *)self showOrHidePasswordEntryViewControllerIfNeeded];
         [(ICNoteEditorViewController *)self updateUnsupportedNoteView];
-        v84 = [MEMORY[0x277CCAB98] defaultCenter];
+        defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
         v149[0] = *MEMORY[0x277D35CF0];
-        v85 = [(ICNoteEditorViewController *)self previousNote];
-        v86 = v85;
-        if (!v85)
+        previousNote5 = [(ICNoteEditorViewController *)self previousNote];
+        null = previousNote5;
+        if (!previousNote5)
         {
-          v86 = [MEMORY[0x277CBEB68] null];
+          null = [MEMORY[0x277CBEB68] null];
         }
 
-        v150[0] = v86;
+        v150[0] = null;
         v149[1] = *MEMORY[0x277D35CE8];
-        v87 = v9;
+        null2 = noteCopy;
         if (!v62)
         {
-          v87 = [MEMORY[0x277CBEB68] null];
+          null2 = [MEMORY[0x277CBEB68] null];
         }
 
-        v150[1] = v87;
+        v150[1] = null2;
         v88 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v150 forKeys:v149 count:2];
-        [v84 postNotificationName:*MEMORY[0x277D35CE0] object:self userInfo:v88];
+        [defaultCenter3 postNotificationName:*MEMORY[0x277D35CE0] object:self userInfo:v88];
 
         if (!v62)
         {
         }
 
-        if (!v85)
+        if (!previousNote5)
         {
         }
 
-        v89 = [(ICNoteEditorViewController *)self previousNote];
-        v90 = [v89 isPasswordProtectedAndLocked];
+        previousNote6 = [(ICNoteEditorViewController *)self previousNote];
+        isPasswordProtectedAndLocked = [previousNote6 isPasswordProtectedAndLocked];
 
-        if ((v90 & 1) == 0)
+        if ((isPasswordProtectedAndLocked & 1) == 0)
         {
-          v91 = [(ICNoteEditorViewController *)self previousNote];
-          v92 = [v91 calculateDocumentController];
-          [v92 resetHighlights];
+          previousNote7 = [(ICNoteEditorViewController *)self previousNote];
+          calculateDocumentController3 = [previousNote7 calculateDocumentController];
+          [calculateDocumentController3 resetHighlights];
         }
 
-        v93 = [(ICNoteEditorViewController *)self textView];
-        [v93 setEditable:0];
+        textView2 = [(ICNoteEditorViewController *)self textView];
+        [textView2 setEditable:0];
 
-        v94 = [(ICNoteEditorViewController *)self noteUserActivity];
-        [v94 setDelegate:0];
+        noteUserActivity = [(ICNoteEditorViewController *)self noteUserActivity];
+        [noteUserActivity setDelegate:0];
 
-        v95 = [(ICNoteEditorViewController *)self noteUserActivity];
-        [v95 invalidate];
+        noteUserActivity2 = [(ICNoteEditorViewController *)self noteUserActivity];
+        [noteUserActivity2 invalidate];
 
         [(ICNoteEditorViewController *)self setNoteUserActivity:0];
         [(ICNoteEditorViewController *)self setNoteUserActivityState:0];
         if (v62)
         {
-          v96 = [(ICNoteEditorViewController *)self updateNoteUserActivityStateDelayer];
-          [v96 requestFire];
+          updateNoteUserActivityStateDelayer = [(ICNoteEditorViewController *)self updateNoteUserActivityStateDelayer];
+          [updateNoteUserActivityStateDelayer requestFire];
         }
 
         if ([(ICNoteEditorViewController *)self ic_isViewVisible])
@@ -12320,8 +12320,8 @@ LABEL_62:
           if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
           {
             [(ICNoteEditorViewController *)self resetTextViewContentOffset];
-            v97 = [(ICNoteEditorViewController *)self textViewController];
-            [v97 applyInitialScrollState];
+            textViewController2 = [(ICNoteEditorViewController *)self textViewController];
+            [textViewController2 applyInitialScrollState];
           }
         }
 
@@ -12335,10 +12335,10 @@ LABEL_62:
           [(ICNoteEditorViewController *)self applyScrollStateIfAvailable];
         }
 
-        [(ICNoteEditorViewController *)self setEditing:v132 & v62 | v130];
+        [(ICNoteEditorViewController *)self setEditing:isEditing & v62 | editingCopy];
         [(ICNoteEditorViewController *)self rememberNoteContentForEditingIntent];
-        v98 = [(ICNoteEditorBaseViewController *)self note];
-        [v98 mergeUnappliedEncryptedRecordRecursivelyInBackground];
+        note2 = [(ICNoteEditorBaseViewController *)self note];
+        [note2 mergeUnappliedEncryptedRecordRecursivelyInBackground];
 
         [(ICNoteEditorViewController *)self setDidDrawWithPencilWithoutPalette:0];
         [(ICNoteEditorViewController *)self setSuspendBarButtonUpdates:0];
@@ -12349,22 +12349,22 @@ LABEL_62:
         }
 
         [(ICNoteEditorViewController *)self updateActionMenu];
-        if (v135)
+        if (handlerCopy)
         {
-          v135[2]();
+          handlerCopy[2]();
         }
 
         [(ICNoteEditorViewController *)self updateDataOwnerForCopyAndPaste];
-        v99 = [(ICNoteEditorViewController *)self textView];
-        v100 = [v99 dateView];
-        [v100 setNote:v9];
+        textView3 = [(ICNoteEditorViewController *)self textView];
+        dateView = [textView3 dateView];
+        [dateView setNote:noteCopy];
 
-        v101 = [(ICNoteEditorViewController *)self textView];
-        v102 = [v101 userTitleView];
-        [v102 setNote:v9];
+        textView4 = [(ICNoteEditorViewController *)self textView];
+        userTitleView = [textView4 userTitleView];
+        [userTitleView setNote:noteCopy];
 
-        v103 = [(ICNoteEditorViewController *)self textView];
-        [v103 icaxClearCaches];
+        textView5 = [(ICNoteEditorViewController *)self textView];
+        [textView5 icaxClearCaches];
 
         UIAccessibilityPostNotification(*MEMORY[0x277D76488], 0);
         objc_initWeak(&location, self);
@@ -12377,9 +12377,9 @@ LABEL_62:
         v105 = MEMORY[0x277D85CD0];
         dispatch_async(MEMORY[0x277D85CD0], v141);
 
-        v106 = [(ICNoteEditorViewController *)self inkPaletteController];
+        inkPaletteController = [(ICNoteEditorViewController *)self inkPaletteController];
 
-        if (v106)
+        if (inkPaletteController)
         {
           [(ICNoteEditorViewController *)self ensureValidInkForNewDrawingOrNote];
         }
@@ -12388,34 +12388,34 @@ LABEL_62:
         [(ICNoteEditorViewController *)self showOrHideActivityStreamToolbarIfNeeded];
         [(ICNoteEditorViewController *)self updatePencilKitPaperStyleType];
         [(ICNoteEditorViewController *)self updateAuthorHighlightsIfNeeded];
-        v107 = [v9 modificationDate];
-        [(ICNoteEditorViewController *)self setNoteLastModificationDate:v107];
+        modificationDate = [noteCopy modificationDate];
+        [(ICNoteEditorViewController *)self setNoteLastModificationDate:modificationDate];
 
         if ((v62 & [(ICNoteEditorViewController *)self shouldTrackNoteViewEventAnalyticsFromSettingNote]) == 1)
         {
-          v108 = [(ICNoteEditorViewController *)self viewIfLoaded];
-          v109 = [v108 window];
-          v110 = v109 == 0;
+          viewIfLoaded2 = [(ICNoteEditorViewController *)self viewIfLoaded];
+          window2 = [viewIfLoaded2 window];
+          v110 = window2 == 0;
 
           if (!v110)
           {
-            v111 = [(ICNoteEditorViewController *)self eventReporter];
-            [v111 startNoteViewEventDurationTrackingForModernNote:v9 reportCoreAnalytics:1];
+            eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+            [eventReporter startNoteViewEventDurationTrackingForModernNote:noteCopy reportCoreAnalytics:1];
           }
         }
 
-        v112 = [(ICNoteEditorViewController *)self previousNote];
+        previousNote8 = [(ICNoteEditorViewController *)self previousNote];
 
-        if (v112)
+        if (previousNote8)
         {
           v139 = 0u;
           v140 = 0u;
           v137 = 0u;
           v138 = 0u;
-          v113 = [(ICNoteEditorViewController *)self previousNote];
-          v114 = [v113 attachments];
+          previousNote9 = [(ICNoteEditorViewController *)self previousNote];
+          attachments = [previousNote9 attachments];
 
-          v115 = [v114 countByEnumeratingWithState:&v137 objects:v148 count:16];
+          v115 = [attachments countByEnumeratingWithState:&v137 objects:v148 count:16];
           if (v115)
           {
             v116 = *v138;
@@ -12425,48 +12425,48 @@ LABEL_62:
               {
                 if (*v138 != v116)
                 {
-                  objc_enumerationMutation(v114);
+                  objc_enumerationMutation(attachments);
                 }
 
                 v118 = *(*(&v137 + 1) + 8 * i);
                 if (([v118 hasChanges] & 1) == 0)
                 {
-                  v119 = [v118 managedObjectContext];
-                  [v119 ic_refreshObject:v118 mergeChanges:0];
+                  managedObjectContext3 = [v118 managedObjectContext];
+                  [managedObjectContext3 ic_refreshObject:v118 mergeChanges:0];
                 }
               }
 
-              v115 = [v114 countByEnumeratingWithState:&v137 objects:v148 count:16];
+              v115 = [attachments countByEnumeratingWithState:&v137 objects:v148 count:16];
             }
 
             while (v115);
           }
 
-          v120 = [(ICNoteEditorViewController *)self previousNote];
-          v121 = [v120 hasChanges];
+          previousNote10 = [(ICNoteEditorViewController *)self previousNote];
+          hasChanges = [previousNote10 hasChanges];
 
-          if ((v121 & 1) == 0)
+          if ((hasChanges & 1) == 0)
           {
-            v122 = [(ICNoteEditorViewController *)self previousNote];
-            v123 = [v122 managedObjectContext];
-            v124 = [(ICNoteEditorViewController *)self previousNote];
-            [v123 ic_refreshObject:v124 mergeChanges:0];
+            previousNote11 = [(ICNoteEditorViewController *)self previousNote];
+            managedObjectContext4 = [previousNote11 managedObjectContext];
+            previousNote12 = [(ICNoteEditorViewController *)self previousNote];
+            [managedObjectContext4 ic_refreshObject:previousNote12 mergeChanges:0];
           }
         }
 
-        if ([v9 isPasswordProtected])
+        if ([noteCopy isPasswordProtected])
         {
-          v125 = [MEMORY[0x277D35F50] sharedController];
-          v126 = [v9 account];
-          [v125 reaskPasswordForAccountIfNecessary:v126];
+          mEMORY[0x277D35F50] = [MEMORY[0x277D35F50] sharedController];
+          account2 = [noteCopy account];
+          [mEMORY[0x277D35F50] reaskPasswordForAccountIfNecessary:account2];
         }
 
-        v127 = [v9 isEditable];
-        v128 = [(ICNoteEditorViewController *)self textView];
-        [v128 setDisplayingEditableContent:v127];
+        isEditable = [noteCopy isEditable];
+        textView6 = [(ICNoteEditorViewController *)self textView];
+        [textView6 setDisplayingEditableContent:isEditable];
 
-        v129 = [(ICNoteEditorViewController *)self bluetoothKeyboardHintViewController];
-        [v129 hide];
+        bluetoothKeyboardHintViewController = [(ICNoteEditorViewController *)self bluetoothKeyboardHintViewController];
+        [bluetoothKeyboardHintViewController hide];
 
         if (objc_opt_respondsToSelector())
         {
@@ -12482,20 +12482,20 @@ LABEL_62:
 
     else
     {
-      v61 = [(ICNoteEditorBaseViewController *)self viewAppearanceState];
-      if (!v9 || v61 < 2)
+      viewAppearanceState = [(ICNoteEditorBaseViewController *)self viewAppearanceState];
+      if (!noteCopy || viewAppearanceState < 2)
       {
         goto LABEL_61;
       }
     }
 
-    [(ICNoteEditorViewController *)self noteWillAppear:v9];
+    [(ICNoteEditorViewController *)self noteWillAppear:noteCopy];
 LABEL_56:
     [(ICNoteEditorViewController *)self resetTextViewUndoManager];
-    v62 = v9 != 0;
-    if (v9)
+    v62 = noteCopy != 0;
+    if (noteCopy)
     {
-      v63 = v136 != 0;
+      v63 = note != 0;
     }
 
     else
@@ -12514,14 +12514,14 @@ LABEL_56:
 
   if ([(ICNoteEditorViewController *)self shouldAllowAttributionSidebar])
   {
-    v32 = [(ICNoteEditorViewController *)self attributionSidebarView];
-    [v32 reload];
+    attributionSidebarView = [(ICNoteEditorViewController *)self attributionSidebarView];
+    [attributionSidebarView reload];
   }
 
   [(ICNoteEditorViewController *)self setSuspendBarButtonUpdates:0];
   [(ICNoteEditorViewController *)self updateBarButtonsAnimated:[(ICNoteEditorViewController *)self ic_isViewVisible]];
-  v33 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-  [v33 setIsAnimatingOut:0];
+  passwordEntryViewController = [(ICNoteEditorViewController *)self passwordEntryViewController];
+  [passwordEntryViewController setIsAnimatingOut:0];
 
   [(ICNoteEditorViewController *)self showOrHidePasswordEntryViewControllerIfNeeded];
 LABEL_118:
@@ -12571,7 +12571,7 @@ void __83__ICNoteEditorViewController_setNote_delayedForLaunch_startEditing_succ
 - (ICTableAttachmentViewController)currentTableAttachmentViewController
 {
   objc_opt_class();
-  v3 = [(ICNoteEditorViewController *)self auxiliaryResponder];
+  auxiliaryResponder = [(ICNoteEditorViewController *)self auxiliaryResponder];
   v4 = ICDynamicCast();
 
   v5 = [(ICNoteEditorViewController *)self getTableControllerFor:v4];
@@ -12579,13 +12579,13 @@ void __83__ICNoteEditorViewController_setNote_delayedForLaunch_startEditing_succ
   return v5;
 }
 
-- (void)presentRecordingStoppedAlertForNoteIfNeeded:(id)a3
+- (void)presentRecordingStoppedAlertForNoteIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D366C8] currentAttachment];
-  v6 = [v5 note];
+  neededCopy = needed;
+  currentAttachment = [MEMORY[0x277D366C8] currentAttachment];
+  note = [currentAttachment note];
 
-  if (v6 == v4)
+  if (note == neededCopy)
   {
     v7 = MEMORY[0x277D366C8];
     v8[0] = MEMORY[0x277D85DD0];
@@ -12593,7 +12593,7 @@ void __83__ICNoteEditorViewController_setNote_delayedForLaunch_startEditing_succ
     v8[2] = __74__ICNoteEditorViewController_presentRecordingStoppedAlertForNoteIfNeeded___block_invoke;
     v8[3] = &unk_2781AD020;
     v8[4] = self;
-    v9 = v4;
+    v9 = neededCopy;
     [v7 cancelCurrentAudioRecordingSessionWithCompletionHandler:v8];
   }
 }
@@ -12658,43 +12658,43 @@ void __74__ICNoteEditorViewController_presentRecordingStoppedAlertForNoteIfNeede
 
 - (void)reloadCurrentNote
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 selectedRange];
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView selectedRange];
   v6 = v5;
 
-  v8 = [(ICNoteEditorBaseViewController *)self note];
+  note = [(ICNoteEditorBaseViewController *)self note];
   [(ICNoteEditorViewController *)self setNote:0];
-  [(ICNoteEditorViewController *)self setNote:v8];
-  v7 = [(ICNoteEditorViewController *)self textView];
-  [v7 setSelectedRange:{v4, v6}];
+  [(ICNoteEditorViewController *)self setNote:note];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  [textView2 setSelectedRange:{selectedRange, v6}];
 }
 
-- (void)noteDidDeauthenticateAfterMerge:(id)a3
+- (void)noteDidDeauthenticateAfterMerge:(id)merge
 {
-  v6 = a3;
+  mergeCopy = merge;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v4 = [v6 object];
-    v5 = [(ICNoteEditorBaseViewController *)self note];
+    object = [mergeCopy object];
+    note = [(ICNoteEditorBaseViewController *)self note];
 
-    if (v4 == v5)
+    if (object == note)
     {
-      [(ICNoteEditorViewController *)self noteDecryptedStatusDidChange:v6];
+      [(ICNoteEditorViewController *)self noteDecryptedStatusDidChange:mergeCopy];
     }
   }
 }
 
-- (void)noteDecryptedStatusDidChange:(id)a3
+- (void)noteDecryptedStatusDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_opt_class();
-  v5 = [v4 userInfo];
+  userInfo = [changeCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D35C40]];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D35C40]];
   v7 = ICCheckedDynamicCast();
 
-  v8 = [MEMORY[0x277D35E50] sharedState];
-  if ([v8 isBlockingDeauthentication])
+  mEMORY[0x277D35E50] = [MEMORY[0x277D35E50] sharedState];
+  if ([mEMORY[0x277D35E50] isBlockingDeauthentication])
   {
   }
 
@@ -12702,9 +12702,9 @@ void __74__ICNoteEditorViewController_presentRecordingStoppedAlertForNoteIfNeede
   {
     if (v7)
     {
-      v9 = [(ICNoteEditorBaseViewController *)self note];
-      v10 = [v9 objectID];
-      v11 = [v7 isEqual:v10];
+      note = [(ICNoteEditorBaseViewController *)self note];
+      objectID = [note objectID];
+      v11 = [v7 isEqual:objectID];
 
       if (!v11)
       {
@@ -12825,28 +12825,28 @@ void __59__ICNoteEditorViewController_noteDecryptedStatusDidChange___block_invok
 
 - (id)dynamicBarColor
 {
-  v3 = [(ICNoteEditorViewController *)self shouldForceLightContent];
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [v4 backgroundColor];
-  v6 = v5;
-  if (v5)
+  shouldForceLightContent = [(ICNoteEditorViewController *)self shouldForceLightContent];
+  textView = [(ICNoteEditorViewController *)self textView];
+  backgroundColor = [textView backgroundColor];
+  v6 = backgroundColor;
+  if (backgroundColor)
   {
-    v7 = v5;
+    ic_noteEditorBackgroundColor = backgroundColor;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D75348] ic_noteEditorBackgroundColor];
+    ic_noteEditorBackgroundColor = [MEMORY[0x277D75348] ic_noteEditorBackgroundColor];
   }
 
-  v8 = v7;
+  v8 = ic_noteEditorBackgroundColor;
 
   v9 = MEMORY[0x277D75348];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __45__ICNoteEditorViewController_dynamicBarColor__block_invoke;
   v13[3] = &unk_2781AD148;
-  v15 = v3;
+  v15 = shouldForceLightContent;
   v14 = v8;
   v10 = v8;
   v11 = [v9 colorWithDynamicProvider:v13];
@@ -12886,37 +12886,37 @@ id __45__ICNoteEditorViewController_dynamicBarColor__block_invoke(uint64_t a1, v
   }
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
   if (_UISolariumEnabled() && ([MEMORY[0x277D75418] ic_isVision] & 1) == 0)
   {
-    v10 = [(ICNoteEditorViewController *)self traitCollection];
-    if ([v10 ic_hasCompactSize])
+    traitCollection = [(ICNoteEditorViewController *)self traitCollection];
+    if ([traitCollection ic_hasCompactSize])
     {
-      v11 = [MEMORY[0x277D75D28] ic_isPerformingNotesActivity];
+      ic_isPerformingNotesActivity = [MEMORY[0x277D75D28] ic_isPerformingNotesActivity];
 
-      if (v11)
+      if (ic_isPerformingNotesActivity)
       {
         [MEMORY[0x277CD9FF0] begin];
-        [MEMORY[0x277CD9FF0] setDisableActions:v6 ^ 1];
+        [MEMORY[0x277CD9FF0] setDisableActions:animatedCopy ^ 1];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __72__ICNoteEditorViewController_presentViewController_animated_completion___block_invoke;
         v15[3] = &unk_2781ABCF8;
         v15[4] = self;
         [MEMORY[0x277CD9FF0] setCompletionBlock:v15];
-        v12 = [(ICNoteEditorViewController *)self navigationController];
-        [v12 setToolbarHidden:1];
+        navigationController = [(ICNoteEditorViewController *)self navigationController];
+        [navigationController setToolbarHidden:1];
 
-        v13 = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
-        [v13 setContentVisible:0];
+        textViewInputAccessoryView = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
+        [textViewInputAccessoryView setContentVisible:0];
 
         if ([(ICNoteEditorViewController *)self isEditing])
         {
-          [(ICNoteEditorViewController *)self setEditing:0 animated:v6];
+          [(ICNoteEditorViewController *)self setEditing:0 animated:animatedCopy];
         }
 
         else if ([(ICNoteEditorViewController *)self isInkPickerShowing])
@@ -12935,7 +12935,7 @@ id __45__ICNoteEditorViewController_dynamicBarColor__block_invoke(uint64_t a1, v
 
   v14.receiver = self;
   v14.super_class = ICNoteEditorViewController;
-  [(ICNoteEditorViewController *)&v14 presentViewController:v8 animated:v6 completion:v9];
+  [(ICNoteEditorViewController *)&v14 presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
 void __72__ICNoteEditorViewController_presentViewController_animated_completion___block_invoke(uint64_t a1)
@@ -12949,40 +12949,40 @@ void __72__ICNoteEditorViewController_presentViewController_animated_completion_
 
 - (void)hideAndDismissPresentedViewController
 {
-  v3 = [(ICNoteEditorViewController *)self presentedViewController];
-  v4 = [v3 view];
-  [v4 setHidden:1];
+  presentedViewController = [(ICNoteEditorViewController *)self presentedViewController];
+  view = [presentedViewController view];
+  [view setHidden:1];
 
   v5 = objc_opt_class();
-  v6 = [(ICNoteEditorViewController *)self presentedViewController];
+  presentedViewController2 = [(ICNoteEditorViewController *)self presentedViewController];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__ICNoteEditorViewController_hideAndDismissPresentedViewController__block_invoke;
   v7[3] = &unk_2781ABCF8;
   v7[4] = self;
-  [v5 dismissChildPresentedViewControllersInPostOrder:v6 animated:0 completion:v7];
+  [v5 dismissChildPresentedViewControllersInPostOrder:presentedViewController2 animated:0 completion:v7];
 }
 
-+ (void)dismissChildPresentedViewControllersInPostOrder:(id)a3 animated:(BOOL)a4 completion:(id)a5
++ (void)dismissChildPresentedViewControllersInPostOrder:(id)order animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v11 = a3;
-  v8 = a5;
-  v9 = [v11 presentedViewController];
+  animatedCopy = animated;
+  orderCopy = order;
+  completionCopy = completion;
+  presentedViewController = [orderCopy presentedViewController];
 
-  if (v9)
+  if (presentedViewController)
   {
-    v10 = [v11 presentedViewController];
-    [a1 dismissChildPresentedViewControllersInPostOrder:v10 animated:0 completion:0];
+    presentedViewController2 = [orderCopy presentedViewController];
+    [self dismissChildPresentedViewControllersInPostOrder:presentedViewController2 animated:0 completion:0];
   }
 
-  [v11 dismissViewControllerAnimated:v6 completion:v8];
+  [orderCopy dismissViewControllerAnimated:animatedCopy completion:completionCopy];
 }
 
 - (void)resetTextViewContentOffset
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  [v3 contentOffset];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView contentOffset];
   v5 = v4;
 
   [(ICNoteEditorViewController *)self textViewTopInsetThatWeWant];
@@ -12993,16 +12993,16 @@ void __72__ICNoteEditorViewController_presentViewController_animated_completion_
     v7 = v7 - v8;
   }
 
-  v9 = [(ICNoteEditorViewController *)self textView];
-  [v9 resetContentOffset:{v5, v7}];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  [textView2 resetContentOffset:{v5, v7}];
 }
 
 - (int64_t)currentWritingDirection
 {
-  v2 = [(ICNoteEditorViewController *)self textView];
-  v3 = [v2 ic_currentWritingDirection];
+  textView = [(ICNoteEditorViewController *)self textView];
+  ic_currentWritingDirection = [textView ic_currentWritingDirection];
 
-  return v3;
+  return ic_currentWritingDirection;
 }
 
 - (BOOL)ignoresTaps
@@ -13012,29 +13012,29 @@ void __72__ICNoteEditorViewController_presentViewController_animated_completion_
     return self->_ignoresTaps;
   }
 
-  v4 = [(ICNoteEditorViewController *)self textViewController];
-  v5 = [v4 ignoresTaps];
+  textViewController = [(ICNoteEditorViewController *)self textViewController];
+  ignoresTaps = [textViewController ignoresTaps];
 
-  return v5;
+  return ignoresTaps;
 }
 
-- (void)setIgnoresTaps:(BOOL)a3
+- (void)setIgnoresTaps:(BOOL)taps
 {
-  v3 = a3;
+  tapsCopy = taps;
   v30 = *MEMORY[0x277D85DE8];
   if (ICInternalSettingsIsTextKit2Enabled())
   {
-    self->_ignoresTaps = v3;
-    if (v3)
+    self->_ignoresTaps = tapsCopy;
+    if (tapsCopy)
     {
       v26 = 0uLL;
       v27 = 0uLL;
       v24 = 0uLL;
       v25 = 0uLL;
-      v5 = [(ICNoteEditorViewController *)self textView];
-      v6 = [v5 subviews];
+      textView = [(ICNoteEditorViewController *)self textView];
+      subviews = [textView subviews];
 
-      v7 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v24 objects:v29 count:16];
       if (v7)
       {
         v8 = v7;
@@ -13045,7 +13045,7 @@ void __72__ICNoteEditorViewController_presentViewController_animated_completion_
           {
             if (*v25 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(subviews);
             }
 
             v11 = *(*(&v24 + 1) + 8 * i);
@@ -13054,15 +13054,15 @@ void __72__ICNoteEditorViewController_presentViewController_animated_completion_
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                v12 = [(ICNoteEditorViewController *)self enabledSubviews];
-                [v12 addObject:v11];
+                enabledSubviews = [(ICNoteEditorViewController *)self enabledSubviews];
+                [enabledSubviews addObject:v11];
 
                 [v11 setUserInteractionEnabled:0];
               }
             }
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+          v8 = [subviews countByEnumeratingWithState:&v24 objects:v29 count:16];
         }
 
         while (v8);
@@ -13075,8 +13075,8 @@ void __72__ICNoteEditorViewController_presentViewController_animated_completion_
       v23 = 0uLL;
       v20 = 0uLL;
       v21 = 0uLL;
-      v13 = [(ICNoteEditorViewController *)self enabledSubviews];
-      v14 = [v13 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      enabledSubviews2 = [(ICNoteEditorViewController *)self enabledSubviews];
+      v14 = [enabledSubviews2 countByEnumeratingWithState:&v20 objects:v28 count:16];
       if (v14)
       {
         v15 = v14;
@@ -13087,39 +13087,39 @@ void __72__ICNoteEditorViewController_presentViewController_animated_completion_
           {
             if (*v21 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(enabledSubviews2);
             }
 
             [*(*(&v20 + 1) + 8 * j) setUserInteractionEnabled:1];
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v20 objects:v28 count:16];
+          v15 = [enabledSubviews2 countByEnumeratingWithState:&v20 objects:v28 count:16];
         }
 
         while (v15);
       }
 
-      v6 = [(ICNoteEditorViewController *)self enabledSubviews];
-      [v6 removeAllObjects];
+      subviews = [(ICNoteEditorViewController *)self enabledSubviews];
+      [subviews removeAllObjects];
     }
 
-    v18 = [(ICNoteEditorViewController *)self textView];
-    [v18 setSelectable:v3 ^ 1];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    [textView2 setSelectable:tapsCopy ^ 1];
   }
 
   else
   {
-    v19 = [(ICNoteEditorViewController *)self textViewController];
-    [v19 setIgnoresTaps:v3];
+    textViewController = [(ICNoteEditorViewController *)self textViewController];
+    [textViewController setIgnoresTaps:tapsCopy];
   }
 }
 
 - (ICAttributionSidebarView)attributionSidebarView
 {
-  v2 = [(ICNoteEditorViewController *)self textViewController];
-  v3 = [v2 attributionSidebarView];
+  textViewController = [(ICNoteEditorViewController *)self textViewController];
+  attributionSidebarView = [textViewController attributionSidebarView];
 
-  return v3;
+  return attributionSidebarView;
 }
 
 void __55__ICNoteEditorViewController_updateUnsupportedNoteView__block_invoke(uint64_t a1)
@@ -13137,16 +13137,16 @@ void __55__ICNoteEditorViewController_updateUnsupportedNoteView__block_invoke(ui
   }
 }
 
-- (void)setInvitation:(id)a3
+- (void)setInvitation:(id)invitation
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorViewController *)self invitation];
+  invitationCopy = invitation;
+  invitation = [(ICNoteEditorViewController *)self invitation];
 
-  if (v5 != v4)
+  if (invitation != invitationCopy)
   {
-    v6 = [v4 shareURL];
+    shareURL = [invitationCopy shareURL];
 
-    if (!v6)
+    if (!shareURL)
     {
       v7 = os_log_create("com.apple.notes", "UI");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -13155,60 +13155,60 @@ void __55__ICNoteEditorViewController_updateUnsupportedNoteView__block_invoke(ui
         _os_log_impl(&dword_2151A1000, v7, OS_LOG_TYPE_INFO, "The invitation was likely dismissed/deleted causing the shareURL to be empty. This is an invalid state, and the invitation will be removed from the editor.", buf, 2u);
       }
 
-      v4 = 0;
+      invitationCopy = 0;
     }
 
-    objc_storeStrong(&self->_invitation, v4);
-    if (v4)
+    objc_storeStrong(&self->_invitation, invitationCopy);
+    if (invitationCopy)
     {
       [(ICNoteEditorViewController *)self setNote:0];
-      v8 = [(ICNoteEditorViewController *)self textView];
-      [v8 setHidden:1];
+      textView = [(ICNoteEditorViewController *)self textView];
+      [textView setHidden:1];
 
-      v9 = [(ICNoteEditorViewController *)self invitationViewController];
+      invitationViewController = [(ICNoteEditorViewController *)self invitationViewController];
 
-      if (!v9)
+      if (!invitationViewController)
       {
         v10 = objc_alloc_init(ICInvitationViewController);
         [(ICNoteEditorViewController *)self setInvitationViewController:v10];
 
-        v11 = [(ICNoteEditorViewController *)self invitationViewController];
-        v12 = [v11 view];
-        [v12 setAutoresizingMask:18];
+        invitationViewController2 = [(ICNoteEditorViewController *)self invitationViewController];
+        view = [invitationViewController2 view];
+        [view setAutoresizingMask:18];
 
-        v13 = [(ICNoteEditorViewController *)self view];
-        [v13 bounds];
+        view2 = [(ICNoteEditorViewController *)self view];
+        [view2 bounds];
         v15 = v14;
         v17 = v16;
         v19 = v18;
         v21 = v20;
-        v22 = [(ICNoteEditorViewController *)self invitationViewController];
-        v23 = [v22 view];
-        [v23 setFrame:{v15, v17, v19, v21}];
+        invitationViewController3 = [(ICNoteEditorViewController *)self invitationViewController];
+        view3 = [invitationViewController3 view];
+        [view3 setFrame:{v15, v17, v19, v21}];
 
-        v24 = [(ICNoteEditorViewController *)self invitationViewController];
-        [(ICNoteEditorViewController *)self addChildViewController:v24];
+        invitationViewController4 = [(ICNoteEditorViewController *)self invitationViewController];
+        [(ICNoteEditorViewController *)self addChildViewController:invitationViewController4];
 
-        v25 = [(ICNoteEditorViewController *)self backgroundView];
-        v26 = [(ICNoteEditorViewController *)self invitationViewController];
-        v27 = [v26 view];
-        [v25 addSubviewAboveAllViews:v27];
+        backgroundView = [(ICNoteEditorViewController *)self backgroundView];
+        invitationViewController5 = [(ICNoteEditorViewController *)self invitationViewController];
+        view4 = [invitationViewController5 view];
+        [backgroundView addSubviewAboveAllViews:view4];
       }
 
       objc_initWeak(buf, self);
-      v28 = [(ICNoteEditorViewController *)self invitationViewController];
-      [v28 setInvitation:v4];
+      invitationViewController6 = [(ICNoteEditorViewController *)self invitationViewController];
+      [invitationViewController6 setInvitation:invitationCopy];
 
-      v29 = [v4 highlight];
-      v30 = [(ICNoteEditorViewController *)self invitationViewController];
-      [v30 setHighlight:v29];
+      highlight = [invitationCopy highlight];
+      invitationViewController7 = [(ICNoteEditorViewController *)self invitationViewController];
+      [invitationViewController7 setHighlight:highlight];
 
-      v31 = [(ICNoteEditorViewController *)self invitationViewController];
-      [v31 setShowsActivityIndicator:0];
+      invitationViewController8 = [(ICNoteEditorViewController *)self invitationViewController];
+      [invitationViewController8 setShowsActivityIndicator:0];
 
       v36 = MEMORY[0x277D85DD0];
       objc_copyWeak(&v38, buf);
-      v37 = v4;
+      v37 = invitationCopy;
       v32 = [(ICNoteEditorViewController *)self invitationViewController:v36];
       [v32 setDidTapViewButton:&v36];
 
@@ -13218,12 +13218,12 @@ void __55__ICNoteEditorViewController_updateUnsupportedNoteView__block_invoke(ui
 
     else
     {
-      v33 = [(ICNoteEditorViewController *)self invitationViewController];
-      v34 = [v33 view];
-      [v34 removeFromSuperview];
+      invitationViewController9 = [(ICNoteEditorViewController *)self invitationViewController];
+      view5 = [invitationViewController9 view];
+      [view5 removeFromSuperview];
 
-      v35 = [(ICNoteEditorViewController *)self invitationViewController];
-      [(ICNoteEditorViewController *)self removeChildViewController:v35];
+      invitationViewController10 = [(ICNoteEditorViewController *)self invitationViewController];
+      [(ICNoteEditorViewController *)self removeChildViewController:invitationViewController10];
 
       [(ICNoteEditorViewController *)self setInvitationViewController:0];
       [(ICNoteEditorViewController *)self recreateTextViewIfNecessary];
@@ -13253,8 +13253,8 @@ void __44__ICNoteEditorViewController_setInvitation___block_invoke(uint64_t a1)
 
 - (BOOL)isPasswordEntryShowing
 {
-  v2 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-  v3 = v2 != 0;
+  passwordEntryViewController = [(ICNoteEditorViewController *)self passwordEntryViewController];
+  v3 = passwordEntryViewController != 0;
 
   return v3;
 }
@@ -13346,46 +13346,46 @@ void __75__ICNoteEditorViewController_showOrHidePasswordEntryViewControllerIfNee
   [v1 setAlpha:1.0];
 }
 
-- (void)showOrHideLockIconCoverViewControllerIfNeededIsBackgrounding:(BOOL)a3
+- (void)showOrHideLockIconCoverViewControllerIfNeededIsBackgrounding:(BOOL)backgrounding
 {
-  v3 = a3;
+  backgroundingCopy = backgrounding;
   if ([MEMORY[0x277D75418] ic_isVision])
   {
     return;
   }
 
-  if (v3)
+  if (backgroundingCopy)
   {
-    v5 = [(ICNoteEditorBaseViewController *)self note];
-    if ([v5 isPasswordProtected])
+    note = [(ICNoteEditorBaseViewController *)self note];
+    if ([note isPasswordProtected])
     {
-      v6 = [(ICNoteEditorBaseViewController *)self note];
-      v7 = [v6 isAuthenticated];
+      note2 = [(ICNoteEditorBaseViewController *)self note];
+      isAuthenticated = [note2 isAuthenticated];
 
-      if (v7)
+      if (isAuthenticated)
       {
         if (![(ICNoteEditorViewController *)self styleSelectorInputViewShowing])
         {
-          v8 = [(ICNoteEditorViewController *)self visualAssetImportController];
-          v9 = [v8 isShowing];
+          visualAssetImportController = [(ICNoteEditorViewController *)self visualAssetImportController];
+          isShowing = [visualAssetImportController isShowing];
 
-          if ((v9 & 1) == 0)
+          if ((isShowing & 1) == 0)
           {
-            v10 = [(ICNoteEditorViewController *)self viewControllerManager];
-            v11 = [v10 currentAttachmentPresenter];
-            [v11 dismissAnimated:0 completion:0];
+            viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+            currentAttachmentPresenter = [viewControllerManager currentAttachmentPresenter];
+            [currentAttachmentPresenter dismissAnimated:0 completion:0];
 
             [(ICNoteEditorViewController *)self hideAndDismissPresentedViewController];
           }
         }
 
-        v12 = [(ICNoteEditorViewController *)self lockIconCoverViewController];
+        lockIconCoverViewController = [(ICNoteEditorViewController *)self lockIconCoverViewController];
 
-        if (v12)
+        if (lockIconCoverViewController)
         {
-          v13 = [(ICNoteEditorViewController *)self lockIconCoverViewController];
-          v14 = [v13 view];
-          [v14 removeFromSuperview];
+          lockIconCoverViewController2 = [(ICNoteEditorViewController *)self lockIconCoverViewController];
+          view = [lockIconCoverViewController2 view];
+          [view removeFromSuperview];
 
           [(ICNoteEditorViewController *)self setLockIconCoverViewController:0];
         }
@@ -13393,48 +13393,48 @@ void __75__ICNoteEditorViewController_showOrHidePasswordEntryViewControllerIfNee
         v15 = [objc_alloc(MEMORY[0x277D36898]) initWithNibName:0 bundle:0 note:0 intent:0];
         [(ICNoteEditorViewController *)self setLockIconCoverViewController:v15];
 
-        v16 = [(ICNoteEditorViewController *)self lockIconCoverViewController];
-        [v16 setMode:1];
+        lockIconCoverViewController3 = [(ICNoteEditorViewController *)self lockIconCoverViewController];
+        [lockIconCoverViewController3 setMode:1];
 
-        v17 = [(ICNoteEditorViewController *)self lockIconCoverViewController];
-        v18 = [v17 view];
-        [v18 setAutoresizingMask:18];
+        lockIconCoverViewController4 = [(ICNoteEditorViewController *)self lockIconCoverViewController];
+        view2 = [lockIconCoverViewController4 view];
+        [view2 setAutoresizingMask:18];
 
-        v19 = [(ICNoteEditorViewController *)self view];
-        [v19 bounds];
+        view3 = [(ICNoteEditorViewController *)self view];
+        [view3 bounds];
         v21 = v20;
         v23 = v22;
         v25 = v24;
         v27 = v26;
-        v28 = [(ICNoteEditorViewController *)self lockIconCoverViewController];
-        v29 = [v28 view];
-        [v29 setFrame:{v21, v23, v25, v27}];
+        lockIconCoverViewController5 = [(ICNoteEditorViewController *)self lockIconCoverViewController];
+        view4 = [lockIconCoverViewController5 view];
+        [view4 setFrame:{v21, v23, v25, v27}];
 
-        v30 = [(ICNoteEditorViewController *)self view];
-        v31 = [(ICNoteEditorViewController *)self lockIconCoverViewController];
-        v32 = [v31 view];
-        [v30 addSubview:v32];
+        view5 = [(ICNoteEditorViewController *)self view];
+        lockIconCoverViewController6 = [(ICNoteEditorViewController *)self lockIconCoverViewController];
+        view6 = [lockIconCoverViewController6 view];
+        [view5 addSubview:view6];
 
         if (ICInternalSettingsIsTextKit2Enabled())
         {
-          v33 = [(ICNoteEditorViewController *)self view];
-          v34 = [(ICNoteEditorViewController *)self lockIconCoverViewController];
-          v35 = [v34 view];
-          [v33 bringSubviewToFront:v35];
+          view7 = [(ICNoteEditorViewController *)self view];
+          lockIconCoverViewController7 = [(ICNoteEditorViewController *)self lockIconCoverViewController];
+          view8 = [lockIconCoverViewController7 view];
+          [view7 bringSubviewToFront:view8];
         }
 
         if ([(ICNoteEditorViewController *)self isEditing])
         {
-          v36 = [(ICNoteEditorViewController *)self textView];
-          v37 = [v36 hidePrediction];
+          textView = [(ICNoteEditorViewController *)self textView];
+          hidePrediction = [textView hidePrediction];
 
-          if ((v37 & 1) == 0)
+          if ((hidePrediction & 1) == 0)
           {
-            v38 = [(ICNoteEditorViewController *)self textView];
-            [v38 setHidePrediction:1];
+            textView2 = [(ICNoteEditorViewController *)self textView];
+            [textView2 setHidePrediction:1];
 
-            v47 = [MEMORY[0x277D75658] activeKeyboard];
-            [v47 textInputTraitsDidChange];
+            activeKeyboard = [MEMORY[0x277D75658] activeKeyboard];
+            [activeKeyboard textInputTraitsDidChange];
           }
         }
 
@@ -13447,16 +13447,16 @@ void __75__ICNoteEditorViewController_showOrHidePasswordEntryViewControllerIfNee
     }
   }
 
-  v39 = [(ICNoteEditorViewController *)self lockIconCoverViewController];
-  v40 = v39;
-  if (v39)
+  lockIconCoverViewController8 = [(ICNoteEditorViewController *)self lockIconCoverViewController];
+  v40 = lockIconCoverViewController8;
+  if (lockIconCoverViewController8)
   {
     v41 = MEMORY[0x277D75D18];
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = __91__ICNoteEditorViewController_showOrHideLockIconCoverViewControllerIfNeededIsBackgrounding___block_invoke;
     v50[3] = &unk_2781ABCF8;
-    v51 = v39;
+    v51 = lockIconCoverViewController8;
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __91__ICNoteEditorViewController_showOrHideLockIconCoverViewControllerIfNeededIsBackgrounding___block_invoke_2;
@@ -13465,21 +13465,21 @@ void __75__ICNoteEditorViewController_showOrHidePasswordEntryViewControllerIfNee
     [v41 animateWithDuration:v50 animations:v48 completion:0.5];
   }
 
-  v42 = [(ICNoteEditorViewController *)self textView];
-  v43 = [v42 hidePrediction];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  hidePrediction2 = [textView3 hidePrediction];
 
-  if (v43)
+  if (hidePrediction2)
   {
-    v44 = [(ICNoteEditorViewController *)self textView];
-    [v44 setHidePrediction:0];
+    textView4 = [(ICNoteEditorViewController *)self textView];
+    [textView4 setHidePrediction:0];
 
-    v45 = [(ICNoteEditorViewController *)self textView];
-    LODWORD(v44) = [v45 isEditing];
+    textView5 = [(ICNoteEditorViewController *)self textView];
+    LODWORD(textView4) = [textView5 isEditing];
 
-    if (v44)
+    if (textView4)
     {
-      v46 = [MEMORY[0x277D75658] activeKeyboard];
-      [v46 textInputTraitsDidChange];
+      activeKeyboard2 = [MEMORY[0x277D75658] activeKeyboard];
+      [activeKeyboard2 textInputTraitsDidChange];
     }
   }
 }
@@ -13496,9 +13496,9 @@ void __91__ICNoteEditorViewController_showOrHideLockIconCoverViewControllerIfNee
   [v1 removeFromSuperview];
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  if (!a3 && [(ICNoteEditorViewController *)self isEditing])
+  if (!enabled && [(ICNoteEditorViewController *)self isEditing])
   {
 
     [(ICNoteEditorViewController *)self setEditing:0 animated:0];
@@ -13510,67 +13510,67 @@ void __91__ICNoteEditorViewController_showOrHideLockIconCoverViewControllerIfNee
   [(ICNoteEditorViewController *)self setUserInteractionEnabled:0];
   if (([(ICNoteEditorViewController *)self isEditing]& 1) == 0)
   {
-    v3 = [(ICNoteEditorViewController *)self textView];
-    v4 = [v3 selectedTextRange];
-    [(ICNoteEditorViewController *)self setSelectedTextRangeToRestoreAfterBarSourcedPopoverPresentation:v4];
+    textView = [(ICNoteEditorViewController *)self textView];
+    selectedTextRange = [textView selectedTextRange];
+    [(ICNoteEditorViewController *)self setSelectedTextRangeToRestoreAfterBarSourcedPopoverPresentation:selectedTextRange];
 
-    v5 = [(ICNoteEditorViewController *)self textView];
-    [v5 setSelectedTextRange:0];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    [textView2 setSelectedTextRange:0];
   }
 }
 
 - (void)cleanupAfterBarSourcedPopoverPresentation
 {
   [(ICNoteEditorViewController *)self setUserInteractionEnabled:1];
-  v3 = [(ICNoteEditorViewController *)self selectedTextRangeToRestoreAfterBarSourcedPopoverPresentation];
+  selectedTextRangeToRestoreAfterBarSourcedPopoverPresentation = [(ICNoteEditorViewController *)self selectedTextRangeToRestoreAfterBarSourcedPopoverPresentation];
 
-  if (v3)
+  if (selectedTextRangeToRestoreAfterBarSourcedPopoverPresentation)
   {
-    v4 = [(ICNoteEditorViewController *)self selectedTextRangeToRestoreAfterBarSourcedPopoverPresentation];
-    v5 = [(ICNoteEditorViewController *)self textView];
-    [v5 setSelectedTextRange:v4];
+    selectedTextRangeToRestoreAfterBarSourcedPopoverPresentation2 = [(ICNoteEditorViewController *)self selectedTextRangeToRestoreAfterBarSourcedPopoverPresentation];
+    textView = [(ICNoteEditorViewController *)self textView];
+    [textView setSelectedTextRange:selectedTextRangeToRestoreAfterBarSourcedPopoverPresentation2];
 
     [(ICNoteEditorViewController *)self setSelectedTextRangeToRestoreAfterBarSourcedPopoverPresentation:0];
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if (a3)
+  animatedCopy = animated;
+  editingCopy = editing;
+  if (editing)
   {
-    v7 = [(ICNoteEditorViewController *)self textView];
-    if ([v7 canBecomeFirstResponder])
+    textView = [(ICNoteEditorViewController *)self textView];
+    if ([textView canBecomeFirstResponder])
     {
     }
 
     else
     {
-      v8 = [(ICNoteEditorViewController *)self isSettingEditing];
+      isSettingEditing = [(ICNoteEditorViewController *)self isSettingEditing];
 
-      if (!v8)
+      if (!isSettingEditing)
       {
         return;
       }
     }
   }
 
-  if ([(ICNoteEditorViewController *)self isEditing]!= v5)
+  if ([(ICNoteEditorViewController *)self isEditing]!= editingCopy)
   {
     [(ICNoteEditorViewController *)self setIsSettingEditing:1];
-    if (v5)
+    if (editingCopy)
     {
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 postNotificationName:@"ICViewControllerWillStartEditModeNotification" object:self];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"ICViewControllerWillStartEditModeNotification" object:self];
 
-      v10 = [(ICNoteEditorViewController *)self textView];
-      if (![v10 isFirstResponder])
+      textView2 = [(ICNoteEditorViewController *)self textView];
+      if (![textView2 isFirstResponder])
       {
-        v11 = [(ICNoteEditorViewController *)self auxiliaryResponder];
-        v12 = [v11 isFirstResponder];
+        auxiliaryResponder = [(ICNoteEditorViewController *)self auxiliaryResponder];
+        isFirstResponder = [auxiliaryResponder isFirstResponder];
 
-        if ((v12 & 1) == 0)
+        if ((isFirstResponder & 1) == 0)
         {
           [(ICNoteEditorViewController *)self startEditing];
         }
@@ -13581,45 +13581,45 @@ void __91__ICNoteEditorViewController_showOrHideLockIconCoverViewControllerIfNee
 
     else
     {
-      v13 = [(ICNoteEditorViewController *)self auxiliaryResponder];
-      v14 = [v13 isFirstResponder];
+      auxiliaryResponder2 = [(ICNoteEditorViewController *)self auxiliaryResponder];
+      isFirstResponder2 = [auxiliaryResponder2 isFirstResponder];
 
-      if (v14)
+      if (isFirstResponder2)
       {
-        v15 = [(ICNoteEditorViewController *)self auxiliaryResponder];
-        [v15 resignFirstResponder];
+        auxiliaryResponder3 = [(ICNoteEditorViewController *)self auxiliaryResponder];
+        [auxiliaryResponder3 resignFirstResponder];
       }
 
-      v16 = [(ICNoteEditorViewController *)self textView];
-      v17 = [v16 isFirstResponder];
+      textView3 = [(ICNoteEditorViewController *)self textView];
+      isFirstResponder3 = [textView3 isFirstResponder];
 
-      if (!v17)
+      if (!isFirstResponder3)
       {
         goto LABEL_15;
       }
 
-      v10 = [(ICNoteEditorViewController *)self textView];
-      [v10 resignFirstResponder];
+      textView2 = [(ICNoteEditorViewController *)self textView];
+      [textView2 resignFirstResponder];
     }
 
 LABEL_15:
     [(ICNoteEditorViewController *)self showStyleSelectorInputView:0 animated:1 doneEditing:1];
     v20.receiver = self;
     v20.super_class = ICNoteEditorViewController;
-    [(ICNoteEditorViewController *)&v20 setEditing:v5 animated:v4];
+    [(ICNoteEditorViewController *)&v20 setEditing:editingCopy animated:animatedCopy];
     [(ICNoteEditorViewController *)self setIsSettingEditing:0];
     [(ICNoteEditorViewController *)self showOrHideSearchPatternHighlightsIfNecessary];
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 postNotificationName:@"ICNoteEditorViewControllerSelectionDidChangeNotification" object:self];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 postNotificationName:@"ICNoteEditorViewControllerSelectionDidChangeNotification" object:self];
 
-    v19 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v19 setEditing:v5];
+    navigationItemConfiguration = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration setEditing:editingCopy];
   }
 }
 
-- (id)addQuickNoteWithPencil:(BOOL)a3
+- (id)addQuickNoteWithPencil:(BOOL)pencil
 {
-  v3 = a3;
+  pencilCopy = pencil;
   v22 = *MEMORY[0x277D85DE8];
   v5 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -13633,35 +13633,35 @@ LABEL_15:
 
   if ([(ICNoteEditorBaseViewController *)self isEditingOnSecureScreen])
   {
-    v6 = [(ICNoteEditorViewController *)self textView];
-    if ([v6 isFirstResponder])
+    textView = [(ICNoteEditorViewController *)self textView];
+    if ([textView isFirstResponder])
     {
-      v7 = !v3;
+      v7 = !pencilCopy;
     }
 
     else
     {
-      v9 = [MEMORY[0x277D75418] currentDevice];
-      if ([v9 userInterfaceIdiom])
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice userInterfaceIdiom])
       {
         v7 = 0;
       }
 
       else
       {
-        v7 = !v3;
+        v7 = !pencilCopy;
       }
     }
 
     v10 = MEMORY[0x277D35DE0];
-    v11 = [MEMORY[0x277D35F30] sharedContext];
-    v12 = [v11 managedObjectContext];
-    v13 = [v10 defaultAccountInContext:v12];
+    mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
+    managedObjectContext = [mEMORY[0x277D35F30] managedObjectContext];
+    v13 = [v10 defaultAccountInContext:managedObjectContext];
 
-    v14 = [v13 defaultFolder];
-    v15 = [MEMORY[0x277D35F28] newEmptyNoteInFolder:v14];
-    v16 = [(ICNoteEditorViewController *)self eventReporter];
-    [v16 submitNoteCreateEventForModernNote:v15 createApproach:12];
+    defaultFolder = [v13 defaultFolder];
+    v15 = [MEMORY[0x277D35F28] newEmptyNoteInFolder:defaultFolder];
+    eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+    [eventReporter submitNoteCreateEventForModernNote:v15 createApproach:12];
 
     [(ICNoteEditorViewController *)self setNote:v15];
     [(ICNoteEditorViewController *)self updateBarButtons];
@@ -13671,42 +13671,42 @@ LABEL_15:
       [(ICNoteEditorViewController *)self startEditing];
     }
 
-    v8 = [(ICNoteEditorBaseViewController *)self note];
+    note = [(ICNoteEditorBaseViewController *)self note];
   }
 
   else
   {
-    v8 = 0;
+    note = 0;
   }
 
-  return v8;
+  return note;
 }
 
-- (id)addNewNoteWithEvent:(id)a3
+- (id)addNewNoteWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(ICNoteEditorViewController *)self saveNote];
   if ([(ICNoteEditorBaseViewController *)self isEditingOnSecureScreen])
   {
-    v5 = [(ICNoteEditorViewController *)self addQuickNoteWithPencil:[(ICNoteEditorViewController *)v4 ic_isPencilEvent]];
+    v5 = [(ICNoteEditorViewController *)self addQuickNoteWithPencil:[(ICNoteEditorViewController *)eventCopy ic_isPencilEvent]];
   }
 
   else
   {
-    v6 = [(ICNoteEditorBaseViewController *)self isEditingOnSystemPaper];
-    v7 = [(ICNoteEditorViewController *)self viewControllerManager];
-    v8 = v7;
-    if (v4)
+    isEditingOnSystemPaper = [(ICNoteEditorBaseViewController *)self isEditingOnSystemPaper];
+    viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+    v8 = viewControllerManager;
+    if (eventCopy)
     {
-      v9 = v4;
+      selfCopy = eventCopy;
     }
 
     else
     {
-      v9 = self;
+      selfCopy = self;
     }
 
-    if (v6)
+    if (isEditingOnSystemPaper)
     {
       v10 = 18;
     }
@@ -13716,32 +13716,32 @@ LABEL_15:
       v10 = 2;
     }
 
-    v5 = [v7 showNewNoteWithApproach:v10 sender:v9 animated:1];
+    v5 = [viewControllerManager showNewNoteWithApproach:v10 sender:selfCopy animated:1];
   }
 
   return v5;
 }
 
-- (void)setupLinedPaperOnNewNote:(id)a3 willStartEditing:(BOOL)a4
+- (void)setupLinedPaperOnNewNote:(id)note willStartEditing:(BOOL)editing
 {
-  v4 = a4;
-  v5 = a3;
+  editingCopy = editing;
+  noteCopy = note;
   objc_opt_class();
   v6 = [MEMORY[0x277D36260] objectForKey:@"PaperStyle"];
   v7 = ICCheckedDynamicCast();
-  v8 = [v7 intValue];
+  intValue = [v7 intValue];
 
-  if (v8 <= 1)
+  if (intValue <= 1)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = v8;
+    v9 = intValue;
   }
 
-  if (v4)
+  if (editingCopy)
   {
     v10 = v9;
     v11 = dispatch_time(0, 1000000000);
@@ -13749,74 +13749,74 @@ LABEL_15:
     v12[1] = 3221225472;
     v12[2] = __72__ICNoteEditorViewController_setupLinedPaperOnNewNote_willStartEditing___block_invoke;
     v12[3] = &unk_2781AD1C0;
-    v13 = v5;
+    v13 = noteCopy;
     v14 = v10;
     dispatch_after(v11, MEMORY[0x277D85CD0], v12);
   }
 
   else
   {
-    [v5 setPaperStyleType:v9];
+    [noteCopy setPaperStyleType:v9];
   }
 }
 
-- (void)addNote:(id)a3 event:(id)a4 shouldInstrumentAsNewNoteAffordanceUsage:(BOOL)a5
+- (void)addNote:(id)note event:(id)event shouldInstrumentAsNewNoteAffordanceUsage:(BOOL)usage
 {
-  v5 = a5;
-  v11 = a4;
-  if (v5)
+  usageCopy = usage;
+  eventCopy = event;
+  if (usageCopy)
   {
-    v7 = [(ICNoteEditorViewController *)self eventReporter];
-    [v7 pushNoteCreateDataWithCreateApproach:2];
+    eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+    [eventReporter pushNoteCreateDataWithCreateApproach:2];
 
-    v8 = [(ICNoteEditorViewController *)self addNewNoteWithEvent:v11];
-    v9 = [(ICNoteEditorViewController *)self eventReporter];
-    [v9 popNoteCreateData];
+    v8 = [(ICNoteEditorViewController *)self addNewNoteWithEvent:eventCopy];
+    eventReporter2 = [(ICNoteEditorViewController *)self eventReporter];
+    [eventReporter2 popNoteCreateData];
   }
 
   else
   {
-    v10 = [(ICNoteEditorViewController *)self addNewNoteWithEvent:v11];
+    v10 = [(ICNoteEditorViewController *)self addNewNoteWithEvent:eventCopy];
   }
 }
 
 - (void)addNewNoteIfNeeded
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
+  note = [(ICNoteEditorBaseViewController *)self note];
 
-  if (!v3)
+  if (!note)
   {
-    v4 = [MEMORY[0x277D369A0] sharedInstance];
-    v5 = [v4 isQuickNoteSessionActive];
+    mEMORY[0x277D369A0] = [MEMORY[0x277D369A0] sharedInstance];
+    isQuickNoteSessionActive = [mEMORY[0x277D369A0] isQuickNoteSessionActive];
 
-    if (v5)
+    if (isQuickNoteSessionActive)
     {
       v6 = [(ICNoteEditorViewController *)self addQuickNoteWithPencil:1];
     }
 
     else
     {
-      v8 = [(ICNoteEditorViewController *)self viewControllerManager];
-      v7 = [v8 showNewNoteWithApproach:0 sender:self animated:1];
+      viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+      v7 = [viewControllerManager showNewNoteWithApproach:0 sender:self animated:1];
     }
   }
 }
 
-- (void)deleteCurrentNote:(id)a3
+- (void)deleteCurrentNote:(id)note
 {
-  v4 = a3;
+  noteCopy = note;
   if (![(ICNoteEditorViewController *)self isPerformingDeleteAnimation])
   {
-    v5 = [(ICNoteEditorBaseViewController *)self note];
+    note = [(ICNoteEditorBaseViewController *)self note];
 
-    if (v5)
+    if (note)
     {
       v9 = MEMORY[0x277D85DD0];
       v10 = 3221225472;
       v11 = __48__ICNoteEditorViewController_deleteCurrentNote___block_invoke;
       v12 = &unk_2781ABEB8;
-      v13 = self;
-      v14 = v4;
+      selfCopy = self;
+      v14 = noteCopy;
       v6 = _Block_copy(&v9);
       objc_opt_class();
       v7 = [(ICNoteEditorViewController *)self presentedViewController:v9];
@@ -13887,30 +13887,30 @@ uint64_t __48__ICNoteEditorViewController_deleteCurrentNote___block_invoke_2(uin
   return [v6 setSuspendBarButtonUpdates:0];
 }
 
-- (void)performDeleteAnimation:(id)a3
+- (void)performDeleteAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   if (![(ICNoteEditorBaseViewController *)self isEditingOnSystemPaper])
   {
-    v5 = [v4 view];
-    if (v5 || (-[ICNoteEditorViewController navigationItem](self, "navigationItem"), v7 = objc_claimAutoreleasedReturnValue(), [v7 rightBarButtonItem], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "view"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, !v9))
+    view = [animationCopy view];
+    if (view || (-[ICNoteEditorViewController navigationItem](self, "navigationItem"), v7 = objc_claimAutoreleasedReturnValue(), [v7 rightBarButtonItem], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "view"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, !v9))
     {
       v6 = 0;
-      if (v5)
+      if (view)
       {
 LABEL_7:
         [(ICNoteEditorViewController *)self setIsPerformingDeleteAnimation:1];
-        v12 = [(ICNoteEditorViewController *)self backgroundView];
-        v13 = [v12 contentView];
+        backgroundView = [(ICNoteEditorViewController *)self backgroundView];
+        contentView = [backgroundView contentView];
         v14 = objc_alloc(MEMORY[0x277D75D18]);
-        [v13 bounds];
+        [contentView bounds];
         v15 = [v14 initWithFrame:?];
-        [v13 frame];
+        [contentView frame];
         v17 = v16;
         v19 = v18;
         v21 = v20;
         v23 = v22;
-        v24 = [v12 snapshotViewAfterScreenUpdates:0];
+        v24 = [backgroundView snapshotViewAfterScreenUpdates:0];
         if (UIAccessibilityIsReduceMotionEnabled())
         {
           v25 = 0;
@@ -13924,18 +13924,18 @@ LABEL_7:
 
           if ([MEMORY[0x277D75418] ic_isVision])
           {
-            [v25 ic_applyRoundedCornersFromView:v13];
+            [v25 ic_applyRoundedCornersFromView:contentView];
           }
 
           [v15 addSubview:v25];
         }
 
         [v15 addSubview:v24];
-        v27 = [(ICNoteEditorViewController *)self backgroundView];
-        [v27 addSubviewAboveAllViews:v15];
+        backgroundView2 = [(ICNoteEditorViewController *)self backgroundView];
+        [backgroundView2 addSubviewAboveAllViews:v15];
 
-        [v5 bounds];
-        [v15 convertRect:v5 fromView:?];
+        [view bounds];
+        [v15 convertRect:view fromView:?];
         if (v6)
         {
           CGRectGetWidth(*&v28);
@@ -13953,12 +13953,12 @@ LABEL_7:
 
     else
     {
-      v10 = [(ICNoteEditorViewController *)self navigationItem];
-      v11 = [v10 rightBarButtonItem];
-      v5 = [v11 view];
+      navigationItem = [(ICNoteEditorViewController *)self navigationItem];
+      rightBarButtonItem = [navigationItem rightBarButtonItem];
+      view = [rightBarButtonItem view];
 
       v6 = 1;
-      if (v5)
+      if (view)
       {
         goto LABEL_7;
       }
@@ -14036,7 +14036,7 @@ uint64_t __53__ICNoteEditorViewController_performDeleteAnimation___block_invoke_
   return [v2 updateBarButtons];
 }
 
-- (void)moveToFolderPressed:(id)a3
+- (void)moveToFolderPressed:(id)pressed
 {
   if (objc_opt_respondsToSelector())
   {
@@ -14045,131 +14045,131 @@ uint64_t __53__ICNoteEditorViewController_performDeleteAnimation___block_invoke_
   }
 }
 
-- (void)quickNoteAllNotes:(id)a3
+- (void)quickNoteAllNotes:(id)notes
 {
   [(ICNoteEditorViewController *)self didEndEditingNote];
-  v4 = [(ICNoteEditorViewController *)self delegate];
+  delegate = [(ICNoteEditorViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICNoteEditorViewController *)self delegate];
-    [v6 noteEditorDidTapAllNotes:self];
+    delegate2 = [(ICNoteEditorViewController *)self delegate];
+    [delegate2 noteEditorDidTapAllNotes:self];
   }
 }
 
-- (void)lockBarButtonPressed:(id)a3
+- (void)lockBarButtonPressed:(id)pressed
 {
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  v5 = [v4 isAuthenticated];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isAuthenticated = [note isAuthenticated];
 
-  if (v5)
+  if (isAuthenticated)
   {
     [(ICNoteEditorViewController *)self saveNote];
-    v6 = [MEMORY[0x277D35E50] sharedState];
-    [v6 deauthenticate];
+    mEMORY[0x277D35E50] = [MEMORY[0x277D35E50] sharedState];
+    [mEMORY[0x277D35E50] deauthenticate];
 
     [(ICNoteEditorViewController *)self stopTextFindingIfNecessary];
-    v7 = [(ICNoteEditorBaseViewController *)self note];
-    v12 = [v7 account];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    account = [note2 account];
 
-    v8 = v12;
-    if (!v12)
+    v8 = account;
+    if (!account)
     {
       goto LABEL_6;
     }
 
-    v9 = [MEMORY[0x277D36830] sharedMigrator];
-    v10 = [(ICNoteEditorViewController *)self view];
-    v11 = [v10 window];
-    [v9 showMigrationPromptAndMigrateIfNeededForAccount:v12 window:v11];
+    mEMORY[0x277D36830] = [MEMORY[0x277D36830] sharedMigrator];
+    view = [(ICNoteEditorViewController *)self view];
+    window = [view window];
+    [mEMORY[0x277D36830] showMigrationPromptAndMigrateIfNeededForAccount:account window:window];
   }
 
   else
   {
-    v12 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-    [v12 beginAuthentication];
+    account = [(ICNoteEditorViewController *)self passwordEntryViewController];
+    [account beginAuthentication];
   }
 
-  v8 = v12;
+  v8 = account;
 LABEL_6:
 }
 
-- (void)iCloudShareButtonPressed:(id)a3
+- (void)iCloudShareButtonPressed:(id)pressed
 {
-  v4 = [(ICNoteEditorViewController *)self delegate];
+  delegate = [(ICNoteEditorViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICNoteEditorViewController *)self delegate];
-    [v6 noteEditorDidTapAddPeople:self];
+    delegate2 = [(ICNoteEditorViewController *)self delegate];
+    [delegate2 noteEditorDidTapAddPeople:self];
   }
 
   else
   {
-    v6 = [(ICNoteEditorViewController *)self view];
-    [v6 ic_crashIfWindowIsSecure];
+    delegate2 = [(ICNoteEditorViewController *)self view];
+    [delegate2 ic_crashIfWindowIsSecure];
   }
 }
 
-- (void)shareButtonPressedWithSender:(id)a3
+- (void)shareButtonPressedWithSender:(id)sender
 {
-  v12 = a3;
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [v4 findInteraction];
-  [v5 dismissFindNavigator];
+  senderCopy = sender;
+  textView = [(ICNoteEditorViewController *)self textView];
+  findInteraction = [textView findInteraction];
+  [findInteraction dismissFindNavigator];
 
-  v6 = [(ICNoteEditorViewController *)self delegate];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  delegate = [(ICNoteEditorViewController *)self delegate];
+  LOBYTE(findInteraction) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (findInteraction)
   {
-    v7 = [(ICNoteEditorViewController *)self delegate];
-    [v7 noteEditorDidTapAddPeople:self];
+    delegate2 = [(ICNoteEditorViewController *)self delegate];
+    [delegate2 noteEditorDidTapAddPeople:self];
   }
 
   else
   {
-    v8 = [(ICNoteEditorViewController *)self view];
-    [v8 ic_crashIfWindowIsSecure];
+    view = [(ICNoteEditorViewController *)self view];
+    [view ic_crashIfWindowIsSecure];
 
     objc_opt_class();
     v9 = ICDynamicCast();
     v10 = v9;
     if (v9)
     {
-      v7 = v9;
+      delegate2 = v9;
     }
 
     else
     {
-      v11 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-      v7 = [v11 shareBarButtonItem];
+      navigationItemConfiguration = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+      delegate2 = [navigationItemConfiguration shareBarButtonItem];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [(ICNoteEditorViewController *)self performSelector:sel_app_shareButtonPressed_ withObject:v7];
+      [(ICNoteEditorViewController *)self performSelector:sel_app_shareButtonPressed_ withObject:delegate2];
     }
   }
 }
 
-- (void)createAndPresentCloudSharingControllerBySender:(id)a3
+- (void)createAndPresentCloudSharingControllerBySender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   if (objc_opt_respondsToSelector())
   {
-    [(ICNoteEditorViewController *)self app_createAndPresentCloudSharingControllerBySender:v4];
+    [(ICNoteEditorViewController *)self app_createAndPresentCloudSharingControllerBySender:senderCopy];
   }
 }
 
 - (void)didBeginFindInteraction
 {
-  v3 = [(ICNoteEditorViewController *)self noteFormattingController];
-  v4 = [v3 ic_isViewVisible];
+  noteFormattingController = [(ICNoteEditorViewController *)self noteFormattingController];
+  ic_isViewVisible = [noteFormattingController ic_isViewVisible];
 
-  if (v4)
+  if (ic_isViewVisible)
   {
     [(ICNoteEditorViewController *)self showStyleSelector:0 animated:1];
   }
@@ -14180,40 +14180,40 @@ LABEL_6:
     [(ICNoteEditorViewController *)self hideInkPicker];
   }
 
-  v5 = [(ICNoteEditorViewController *)self findResultReporter];
-  [v5 startTrackingFindSession];
+  findResultReporter = [(ICNoteEditorViewController *)self findResultReporter];
+  [findResultReporter startTrackingFindSession];
 }
 
-- (void)didUpdateSearchQueryInFindInteraction:(id)a3
+- (void)didUpdateSearchQueryInFindInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorViewController *)self findResultReporter];
-  [v5 updateWithSearchQuery:v4];
+  interactionCopy = interaction;
+  findResultReporter = [(ICNoteEditorViewController *)self findResultReporter];
+  [findResultReporter updateWithSearchQuery:interactionCopy];
 }
 
 - (void)didEndFindInteraction
 {
   [(ICNoteEditorViewController *)self showOrHideSearchPatternHighlightsIfNecessary];
   [(ICNoteEditorViewController *)self clearTextViewSelection];
-  v4 = [(ICNoteEditorViewController *)self findResultReporter];
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  [v4 submitEventIfApplicableForNote:v3];
+  findResultReporter = [(ICNoteEditorViewController *)self findResultReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [findResultReporter submitEventIfApplicableForNote:note];
 }
 
-- (void)performFindInNote:(id)a3
+- (void)performFindInNote:(id)note
 {
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [v4 findInteraction];
-  [v5 presentFindNavigatorShowingReplace:0];
+  textView = [(ICNoteEditorViewController *)self textView];
+  findInteraction = [textView findInteraction];
+  [findInteraction presentFindNavigatorShowingReplace:0];
 
   [(ICNoteEditorViewController *)self showOrHideSearchPatternHighlightsIfNecessary];
 }
 
-- (void)performReplaceInNote:(id)a3
+- (void)performReplaceInNote:(id)note
 {
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [v4 findInteraction];
-  [v5 presentFindNavigatorShowingReplace:1];
+  textView = [(ICNoteEditorViewController *)self textView];
+  findInteraction = [textView findInteraction];
+  [findInteraction presentFindNavigatorShowingReplace:1];
 
   [(ICNoteEditorViewController *)self showOrHideSearchPatternHighlightsIfNecessary];
 }
@@ -14226,7 +14226,7 @@ LABEL_6:
   [(ICNoteEditorViewController *)self becomeFirstResponder];
 }
 
-- (void)doneEditing:(id)a3
+- (void)doneEditing:(id)editing
 {
   if ([(ICNoteEditorViewController *)self isInkPickerShowing])
   {
@@ -14242,13 +14242,13 @@ LABEL_6:
     aBlock[3] = &unk_2781ABCF8;
     aBlock[4] = self;
     v4 = _Block_copy(aBlock);
-    v5 = [(ICNoteEditorViewController *)self keyboardDidShowAnimationDate];
+    keyboardDidShowAnimationDate = [(ICNoteEditorViewController *)self keyboardDidShowAnimationDate];
 
-    if (v5)
+    if (keyboardDidShowAnimationDate)
     {
-      v6 = [MEMORY[0x277CBEAA8] date];
-      v7 = [(ICNoteEditorViewController *)self keyboardDidShowAnimationDate];
-      [v6 timeIntervalSinceDate:v7];
+      date = [MEMORY[0x277CBEAA8] date];
+      keyboardDidShowAnimationDate2 = [(ICNoteEditorViewController *)self keyboardDidShowAnimationDate];
+      [date timeIntervalSinceDate:keyboardDidShowAnimationDate2];
       v9 = v8;
 
       if (v9 < 0.3 && (-[ICNoteEditorViewController textView](self, "textView"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isScrolling], v10, v11))
@@ -14274,12 +14274,12 @@ LABEL_6:
   }
 
   v12 = [(ICNoteEditorViewController *)self calculateScrubberController:v15];
-  v13 = [v12 isShowing];
+  isShowing = [v12 isShowing];
 
-  if (v13)
+  if (isShowing)
   {
-    v14 = [(ICNoteEditorViewController *)self calculateScrubberController];
-    [v14 hideScrubber];
+    calculateScrubberController = [(ICNoteEditorViewController *)self calculateScrubberController];
+    [calculateScrubberController hideScrubber];
   }
 
   [(ICNoteEditorViewController *)self submitPendingInlineDrawingDataIfNecessary];
@@ -14310,30 +14310,30 @@ uint64_t __42__ICNoteEditorViewController_doneEditing___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)toggleTodoStyle:(id)a3
+- (void)toggleTodoStyle:(id)style
 {
-  v14 = a3;
-  v4 = [(ICNoteEditorViewController *)self attributionSidebarController];
-  [v4 hideSidebarAnimated:1];
+  styleCopy = style;
+  attributionSidebarController = [(ICNoteEditorViewController *)self attributionSidebarController];
+  [attributionSidebarController hideSidebarAnimated:1];
 
-  v5 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v5)
+  if (auxiliaryStylingController)
   {
-    v6 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v6 toggleTodoStyle:v14];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 toggleTodoStyle:styleCopy];
   }
 
   else
   {
-    v6 = [(ICNoteEditorViewController *)self textController];
-    v7 = [(ICNoteEditorViewController *)self textView];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textController];
+    textView = [(ICNoteEditorViewController *)self textView];
     objc_opt_class();
-    v8 = [v7 textStorage];
+    textStorage = [textView textStorage];
     v9 = ICCheckedDynamicCast();
 
-    v10 = [v7 selectedRange];
-    v12 = [v6 todoForRange:v10 inTextStorage:{v11, v9}];
+    selectedRange = [textView selectedRange];
+    v12 = [auxiliaryStylingController2 todoForRange:selectedRange inTextStorage:{v11, v9}];
     if (v12)
     {
       [(ICNoteEditorViewController *)self setCurrentTextStyle:3];
@@ -14347,40 +14347,40 @@ uint64_t __42__ICNoteEditorViewController_doneEditing___block_invoke(uint64_t a1
 
     [(ICNoteEditorViewController *)self showStyleSelector:0 animated:1];
     [(ICNoteEditorViewController *)self updateBarButtons];
-    v13 = [(ICNoteEditorViewController *)self textView];
-    [v13 icaxClearCaches];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    [textView2 icaxClearCaches];
   }
 }
 
-- (void)toggleTodoChecked:(id)a3
+- (void)toggleTodoChecked:(id)checked
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  v6 = [v5 isEditable];
+  checkedCopy = checked;
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isEditable = [note isEditable];
 
-  if (v6)
+  if (isEditable)
   {
-    v7 = [(ICNoteEditorViewController *)self textView];
-    v8 = [v7 selectedRange];
+    textView = [(ICNoteEditorViewController *)self textView];
+    selectedRange = [textView selectedRange];
     v10 = v9;
 
-    v11 = [(ICNoteEditorViewController *)self textController];
-    v12 = [(ICNoteEditorViewController *)self textView];
-    v13 = [(ICNoteEditorViewController *)self textView];
-    v14 = [v13 textStorage];
-    v15 = [v11 paragraphStyleForRange:v8 inTextView:v10 inTextStorage:{v12, v14}];
+    textController = [(ICNoteEditorViewController *)self textController];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    textView3 = [(ICNoteEditorViewController *)self textView];
+    textStorage = [textView3 textStorage];
+    v15 = [textController paragraphStyleForRange:selectedRange inTextView:v10 inTextStorage:{textView2, textStorage}];
 
     if (v15 == 103)
     {
-      v16 = [(ICNoteEditorViewController *)self textController];
-      v17 = [(ICNoteEditorViewController *)self textView];
-      v18 = [v17 textStorage];
-      v19 = [v16 isTodoDoneRange:v8 inTextStorage:{v10, v18}];
+      textController2 = [(ICNoteEditorViewController *)self textController];
+      textView4 = [(ICNoteEditorViewController *)self textView];
+      textStorage2 = [textView4 textStorage];
+      v19 = [textController2 isTodoDoneRange:selectedRange inTextStorage:{v10, textStorage2}];
 
-      v20 = [(ICNoteEditorViewController *)self textController];
-      v21 = [(ICNoteEditorViewController *)self textView];
-      v22 = [v21 textStorage];
-      [v20 setDone:v19 ^ 1u range:v8 inTextStorage:{v10, v22}];
+      textController3 = [(ICNoteEditorViewController *)self textController];
+      textView5 = [(ICNoteEditorViewController *)self textView];
+      textStorage3 = [textView5 textStorage];
+      [textController3 setDone:v19 ^ 1u range:selectedRange inTextStorage:{v10, textStorage3}];
 
       if (v19)
       {
@@ -14393,20 +14393,20 @@ uint64_t __42__ICNoteEditorViewController_doneEditing___block_invoke(uint64_t a1
       }
 
       [(ICNoteEditorViewController *)self submitChecklistAnalyticsEventForActionType:v23];
-      v24 = [(ICNoteEditorViewController *)self textController];
-      v25 = [(ICNoteEditorViewController *)self textView];
-      v26 = [v24 expandedChecklistTrackedParagraphsInTextView:v25 forIndex:v8];
-      v27 = [v26 firstObject];
+      textController4 = [(ICNoteEditorViewController *)self textController];
+      textView6 = [(ICNoteEditorViewController *)self textView];
+      v26 = [textController4 expandedChecklistTrackedParagraphsInTextView:textView6 forIndex:selectedRange];
+      firstObject = [v26 firstObject];
 
       objc_initWeak(&location, self);
-      v28 = [(ICNoteEditorViewController *)self textController];
-      v29 = [(ICNoteEditorViewController *)self textView];
+      textController5 = [(ICNoteEditorViewController *)self textController];
+      textView7 = [(ICNoteEditorViewController *)self textView];
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __48__ICNoteEditorViewController_toggleTodoChecked___block_invoke;
       v32[3] = &unk_2781ACC10;
       objc_copyWeak(&v33, &location);
-      [v28 autoSortChecklistIfNecessaryForTrackedParagraph:v27 textView:v29 analyticsHandler:v32];
+      [textController5 autoSortChecklistIfNecessaryForTrackedParagraph:firstObject textView:textView7 analyticsHandler:v32];
 
       objc_destroyWeak(&v33);
       objc_destroyWeak(&location);
@@ -14415,10 +14415,10 @@ uint64_t __42__ICNoteEditorViewController_doneEditing___block_invoke(uint64_t a1
 
   else
   {
-    v30 = [(ICNoteEditorBaseViewController *)self note];
-    v31 = [v30 isDeletedOrInTrash];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    isDeletedOrInTrash = [note2 isDeletedOrInTrash];
 
-    if (v31)
+    if (isDeletedOrInTrash)
     {
       [(ICNoteEditorViewController *)self showRecoverNoteAlert];
     }
@@ -14434,18 +14434,18 @@ void __48__ICNoteEditorViewController_toggleTodoChecked___block_invoke(uint64_t 
 
 - (BOOL)canPerformToggleTodoChecked
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  if ([v3 isEditable])
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if ([note isEditable])
   {
-    v4 = [(ICNoteEditorViewController *)self isChecklistSelected];
+    isChecklistSelected = [(ICNoteEditorViewController *)self isChecklistSelected];
   }
 
   else
   {
-    v4 = 0;
+    isChecklistSelected = 0;
   }
 
-  return v4;
+  return isChecklistSelected;
 }
 
 - (BOOL)canPerformTodoCheckAll
@@ -14457,18 +14457,18 @@ void __48__ICNoteEditorViewController_toggleTodoChecked___block_invoke(uint64_t 
   }
 
   v3 = MEMORY[0x277CCAE60];
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [v4 selectedRange];
-  v7 = [v3 valueWithRange:{v5, v6}];
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView selectedRange];
+  v7 = [v3 valueWithRange:{selectedRange, v6}];
   v14[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
 
-  v9 = [(ICNoteEditorBaseViewController *)self note];
-  if ([v9 isEditable])
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if ([note isEditable])
   {
-    v10 = [(ICNoteEditorViewController *)self textController];
-    v11 = [(ICNoteEditorViewController *)self textView];
-    v12 = [v10 checklistItemExistsMarkedCompleted:0 inTextView:v11 forRanges:v8];
+    textController = [(ICNoteEditorViewController *)self textController];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    v12 = [textController checklistItemExistsMarkedCompleted:0 inTextView:textView2 forRanges:v8];
   }
 
   else
@@ -14483,18 +14483,18 @@ void __48__ICNoteEditorViewController_toggleTodoChecked___block_invoke(uint64_t 
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAE60];
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [v4 selectedRange];
-  v7 = [v3 valueWithRange:{v5, v6}];
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView selectedRange];
+  v7 = [v3 valueWithRange:{selectedRange, v6}];
   v14[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
 
-  v9 = [(ICNoteEditorBaseViewController *)self note];
-  if ([v9 isEditable])
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if ([note isEditable])
   {
-    v10 = [(ICNoteEditorViewController *)self textController];
-    v11 = [(ICNoteEditorViewController *)self textView];
-    v12 = [v10 checklistItemExistsMarkedCompleted:1 inTextView:v11 forRanges:v8];
+    textController = [(ICNoteEditorViewController *)self textController];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    v12 = [textController checklistItemExistsMarkedCompleted:1 inTextView:textView2 forRanges:v8];
   }
 
   else
@@ -14507,21 +14507,21 @@ void __48__ICNoteEditorViewController_toggleTodoChecked___block_invoke(uint64_t 
 
 - (BOOL)isChecklistSelected
 {
-  v3 = [(ICNoteEditorViewController *)self textController];
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [v4 selectedRange];
+  textController = [(ICNoteEditorViewController *)self textController];
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView selectedRange];
   v7 = v6;
-  v8 = [(ICNoteEditorViewController *)self textView];
-  v9 = [(ICNoteEditorViewController *)self textView];
-  v10 = [v9 textStorage];
-  LODWORD(v5) = [v3 paragraphStyleForRange:v5 inTextView:v7 inTextStorage:{v8, v10}];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  textStorage = [textView3 textStorage];
+  LODWORD(selectedRange) = [textController paragraphStyleForRange:selectedRange inTextView:v7 inTextStorage:{textView2, textStorage}];
 
-  return v5 == 103;
+  return selectedRange == 103;
 }
 
 - (BOOL)canToggleTodoStyle
 {
-  v3 = [(ICNoteEditorViewController *)self firstResponder];
+  firstResponder = [(ICNoteEditorViewController *)self firstResponder];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -14530,121 +14530,121 @@ void __48__ICNoteEditorViewController_toggleTodoChecked___block_invoke(uint64_t 
     return 0;
   }
 
-  v6 = [(ICNoteEditorBaseViewController *)self note];
-  v7 = [v6 isEditable];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isEditable = [note isEditable];
 
-  return v7;
+  return isEditable;
 }
 
 - (BOOL)canSetParagraphStyle
 {
-  v2 = [(ICNoteEditorBaseViewController *)self note];
-  v3 = [v2 isEditable];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isEditable = [note isEditable];
 
-  return v3;
+  return isEditable;
 }
 
 - (BOOL)canSetListStyle
 {
-  v2 = [(ICNoteEditorBaseViewController *)self note];
-  v3 = [v2 isEditable];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isEditable = [note isEditable];
 
-  return v3;
+  return isEditable;
 }
 
-- (void)setTitleStyle:(id)a3
+- (void)setTitleStyle:(id)style
 {
   [(ICNoteEditorViewController *)self setCurrentTextStyle:0];
-  v5 = [(ICNoteEditorViewController *)self eventReporter];
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  [v5 submitStyleFormatEventForModernNote:v4 styleTypeValue:1];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:1];
 }
 
-- (void)setHeadingStyle:(id)a3
+- (void)setHeadingStyle:(id)style
 {
   [(ICNoteEditorViewController *)self setCurrentTextStyle:1];
-  v5 = [(ICNoteEditorViewController *)self eventReporter];
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  [v5 submitStyleFormatEventForModernNote:v4 styleTypeValue:2];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:2];
 }
 
-- (void)setSubheadingStyle:(id)a3
+- (void)setSubheadingStyle:(id)style
 {
   [(ICNoteEditorViewController *)self setCurrentTextStyle:2];
-  v5 = [(ICNoteEditorViewController *)self eventReporter];
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  [v5 submitStyleFormatEventForModernNote:v4 styleTypeValue:3];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:3];
 }
 
-- (void)setBodyStyle:(id)a3
+- (void)setBodyStyle:(id)style
 {
   [(ICNoteEditorViewController *)self setCurrentTextStyle:3];
-  v5 = [(ICNoteEditorViewController *)self eventReporter];
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  [v5 submitStyleFormatEventForModernNote:v4 styleTypeValue:4];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:4];
 }
 
-- (void)setFixedWidthStyle:(id)a3
+- (void)setFixedWidthStyle:(id)style
 {
   [(ICNoteEditorViewController *)self setCurrentTextStyle:4];
-  v5 = [(ICNoteEditorViewController *)self eventReporter];
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  [v5 submitStyleFormatEventForModernNote:v4 styleTypeValue:5];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:5];
 }
 
-- (void)toggleBulletedListStyle:(id)a3
+- (void)toggleBulletedListStyle:(id)style
 {
   [(ICNoteEditorViewController *)self toggleCurrentTextStyle:100];
-  v5 = [(ICNoteEditorViewController *)self eventReporter];
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  [v5 submitStyleFormatEventForModernNote:v4 styleTypeValue:6];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:6];
 }
 
-- (void)toggleDashedListStyle:(id)a3
+- (void)toggleDashedListStyle:(id)style
 {
   [(ICNoteEditorViewController *)self toggleCurrentTextStyle:101];
-  v5 = [(ICNoteEditorViewController *)self eventReporter];
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  [v5 submitStyleFormatEventForModernNote:v4 styleTypeValue:7];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:7];
 }
 
-- (void)toggleNumberedListStyle:(id)a3
+- (void)toggleNumberedListStyle:(id)style
 {
   [(ICNoteEditorViewController *)self toggleCurrentTextStyle:102];
-  v5 = [(ICNoteEditorViewController *)self eventReporter];
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  [v5 submitStyleFormatEventForModernNote:v4 styleTypeValue:8];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:8];
 }
 
 - (void)prepareSelectionForAddingAttachment
 {
   if (([(ICNoteEditorViewController *)self isEditing]& 1) == 0)
   {
-    v3 = [(ICNoteEditorViewController *)self textView];
-    v4 = [v3 textStorage];
-    v5 = [v4 length];
+    textView = [(ICNoteEditorViewController *)self textView];
+    textStorage = [textView textStorage];
+    v5 = [textStorage length];
 
-    v6 = [(ICNoteEditorViewController *)self textView];
-    [v6 setSelectedRange:{v5, 0}];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    [textView2 setSelectedRange:{v5, 0}];
   }
 }
 
-- (void)createTodoListItem:(id)a3
+- (void)createTodoListItem:(id)item
 {
-  v15 = a3;
-  v4 = [(ICNoteEditorViewController *)self attributionSidebarController];
-  [v4 hideSidebarAnimated:1];
+  itemCopy = item;
+  attributionSidebarController = [(ICNoteEditorViewController *)self attributionSidebarController];
+  [attributionSidebarController hideSidebarAnimated:1];
 
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = [v5 selectedRange];
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView selectedRange];
   v8 = v7;
 
   if ([(ICNoteEditorViewController *)self isEditing])
   {
-    [(ICNoteEditorViewController *)self toggleTodoStyle:v15];
+    [(ICNoteEditorViewController *)self toggleTodoStyle:itemCopy];
   }
 
-  else if (v6 == 0x7FFFFFFFFFFFFFFFLL || !v8)
+  else if (selectedRange == 0x7FFFFFFFFFFFFFFFLL || !v8)
   {
     [(ICNoteEditorViewController *)self addTodoListAtEndOfNote];
   }
@@ -14652,12 +14652,12 @@ void __48__ICNoteEditorViewController_toggleTodoChecked___block_invoke(uint64_t 
   else
   {
     objc_opt_class();
-    v9 = [(ICNoteEditorViewController *)self textView];
-    v10 = [v9 textStorage];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    textStorage = [textView2 textStorage];
     v11 = ICCheckedDynamicCast();
 
-    v12 = [(ICNoteEditorViewController *)self textController];
-    v13 = [v12 containsOnlyStyle:103 inRange:v6 inTextStorage:{v8, v11}];
+    textController = [(ICNoteEditorViewController *)self textController];
+    v13 = [textController containsOnlyStyle:103 inRange:selectedRange inTextStorage:{v8, v11}];
 
     if (v13)
     {
@@ -14678,33 +14678,33 @@ void __48__ICNoteEditorViewController_toggleTodoChecked___block_invoke(uint64_t 
 {
   if (([(ICNoteEditorViewController *)self ic_isViewVisible]& 1) != 0)
   {
-    v3 = [(ICNoteEditorViewController *)self viewControllerManager];
-    v4 = [v3 isWelcomeScreenVisible];
+    viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+    isWelcomeScreenVisible = [viewControllerManager isWelcomeScreenVisible];
 
-    if (v4)
+    if (isWelcomeScreenVisible)
     {
       return;
     }
 
     [(ICNoteEditorViewController *)self addNewNoteIfNeeded];
-    v25 = [(ICNoteEditorViewController *)self textView];
+    textView = [(ICNoteEditorViewController *)self textView];
     objc_opt_class();
-    v5 = [v25 textStorage];
+    textStorage = [textView textStorage];
     v6 = ICCheckedDynamicCast();
 
     v7 = [v6 length];
     if (v7)
     {
       v8 = v7;
-      v9 = [v6 string];
-      v10 = [v9 characterAtIndex:v8 - 1];
+      string = [v6 string];
+      v10 = [string characterAtIndex:v8 - 1];
 
-      v11 = [MEMORY[0x277CCA900] newlineCharacterSet];
-      if ([v11 characterIsMember:v10])
+      newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+      if ([newlineCharacterSet characterIsMember:v10])
       {
-        v12 = [(ICNoteEditorViewController *)self textController];
-        v13 = [(ICNoteEditorViewController *)self textView];
-        v14 = [v12 paragraphStyleForRange:v8 - 1 inTextView:1 inTextStorage:{v13, v6}];
+        textController = [(ICNoteEditorViewController *)self textController];
+        textView2 = [(ICNoteEditorViewController *)self textView];
+        v14 = [textController paragraphStyleForRange:v8 - 1 inTextView:1 inTextStorage:{textView2, v6}];
 
         if (v14 == 103)
         {
@@ -14715,23 +14715,23 @@ void __48__ICNoteEditorViewController_toggleTodoChecked___block_invoke(uint64_t 
 
           else
           {
-            v15 = [v6 string];
-            v16 = [v15 characterAtIndex:v8 - 2];
+            string2 = [v6 string];
+            v16 = [string2 characterAtIndex:v8 - 2];
 
-            if ([v11 characterIsMember:v16])
+            if ([newlineCharacterSet characterIsMember:v16])
             {
               --v8;
             }
 
             else
             {
-              v23 = [(ICNoteEditorViewController *)self textController];
-              [v23 insertNewlineAtCharacterIndex:v8 - 1 textStorage:v6];
+              textController2 = [(ICNoteEditorViewController *)self textController];
+              [textController2 insertNewlineAtCharacterIndex:v8 - 1 textStorage:v6];
             }
           }
 
-          v24 = [(ICNoteEditorViewController *)self textView];
-          [v24 setSelectedRange:{v8, 0}];
+          textView3 = [(ICNoteEditorViewController *)self textView];
+          [textView3 setSelectedRange:{v8, 0}];
 
           goto LABEL_17;
         }
@@ -14739,32 +14739,32 @@ void __48__ICNoteEditorViewController_toggleTodoChecked___block_invoke(uint64_t 
 
       else
       {
-        [v25 setSelectedRange:{v8, 0}];
-        [v25 insertText:@"\n"];
+        [textView setSelectedRange:{v8, 0}];
+        [textView insertText:@"\n"];
         v8 = [v6 length];
       }
 
-      v17 = [(ICNoteEditorViewController *)self textView];
-      v18 = v17;
+      textView4 = [(ICNoteEditorViewController *)self textView];
+      v18 = textView4;
       v19 = v8;
     }
 
     else
     {
-      v17 = [(ICNoteEditorViewController *)self textView];
-      v18 = v17;
+      textView4 = [(ICNoteEditorViewController *)self textView];
+      v18 = textView4;
       v19 = 0;
     }
 
-    [v17 setSelectedRange:{v19, 0}];
+    [textView4 setSelectedRange:{v19, 0}];
 
     [(ICNoteEditorViewController *)self setCurrentTextStyle:103];
 LABEL_17:
     if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
     {
       objc_opt_class();
-      v20 = [(ICNoteEditorViewController *)self textView];
-      v21 = [v20 layoutManager];
+      textView5 = [(ICNoteEditorViewController *)self textView];
+      layoutManager = [textView5 layoutManager];
       v22 = ICDynamicCast();
 
       [v22 updateVisibleSupplementalViews];
@@ -14785,8 +14785,8 @@ LABEL_17:
   [MEMORY[0x277D75D28] attemptRotationToDeviceOrientation];
   if ([(ICNoteEditorViewController *)self didEndEditingForAddingImageAttachment])
   {
-    v3 = [(ICNoteEditorViewController *)self textView];
-    [v3 setShouldAvoidBecomingFirstResponder:0];
+    textView = [(ICNoteEditorViewController *)self textView];
+    [textView setShouldAvoidBecomingFirstResponder:0];
 
     if (!+[ICExtensionSafeAPIShims applicationState])
     {
@@ -14820,13 +14820,13 @@ LABEL_17:
   return v3;
 }
 
-- (void)showInsertUIWithPreferredSourceType:(unint64_t)a3
+- (void)showInsertUIWithPreferredSourceType:(unint64_t)type
 {
   if (([(ICNoteEditorViewController *)self ic_isViewVisible]& 1) != 0)
   {
-    if (a3 > 3)
+    if (type > 3)
     {
-      if (a3 == 4)
+      if (type == 4)
       {
         if ([(ICNoteEditorViewController *)self isDocumentCameraAvailable])
         {
@@ -14834,16 +14834,16 @@ LABEL_17:
         }
       }
 
-      else if (a3 == 6 && ([MEMORY[0x277D75418] ic_isVision] & 1) != 0)
+      else if (type == 6 && ([MEMORY[0x277D75418] ic_isVision] & 1) != 0)
       {
 LABEL_27:
 
-        [(ICNoteEditorViewController *)self showInsertUIForSourceType:a3 sender:0];
+        [(ICNoteEditorViewController *)self showInsertUIForSourceType:type sender:0];
         return;
       }
     }
 
-    else if (a3 == 1)
+    else if (type == 1)
     {
       if ([MEMORY[0x277D361D0] isCameraAvailable])
       {
@@ -14851,7 +14851,7 @@ LABEL_27:
       }
     }
 
-    else if (a3 == 3 && ([MEMORY[0x277D75418] ic_isLiveTextAvailable] & 1) != 0)
+    else if (type == 3 && ([MEMORY[0x277D75418] ic_isLiveTextAvailable] & 1) != 0)
     {
       goto LABEL_27;
     }
@@ -14870,7 +14870,7 @@ LABEL_27:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 7uLL:
 
@@ -14888,16 +14888,16 @@ LABEL_27:
   }
 }
 
-- (void)attachFile:(id)a3
+- (void)attachFile:(id)file
 {
-  v6 = a3;
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  v5 = [v4 canAddAttachment];
+  fileCopy = file;
+  note = [(ICNoteEditorBaseViewController *)self note];
+  canAddAttachment = [note canAddAttachment];
 
-  if (v5)
+  if (canAddAttachment)
   {
     [(ICNoteEditorViewController *)self prepareSelectionForAddingAttachment];
-    [(ICNoteEditorViewController *)self showInsertUIForSourceType:5 sender:v6];
+    [(ICNoteEditorViewController *)self showInsertUIForSourceType:5 sender:fileCopy];
   }
 
   else
@@ -14906,9 +14906,9 @@ LABEL_27:
   }
 }
 
-- (void)showInsertUIForSourceType:(unint64_t)a3 sender:(id)a4
+- (void)showInsertUIForSourceType:(unint64_t)type sender:(id)sender
 {
-  v6 = [(ICNoteEditorBaseViewController *)self note:a3];
+  v6 = [(ICNoteEditorBaseViewController *)self note:type];
   if (v6 && (v7 = v6, -[ICNoteEditorBaseViewController note](self, "note"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 canAddAttachment], v8, v7, (v9 & 1) == 0))
   {
 
@@ -14920,9 +14920,9 @@ LABEL_27:
     [(ICNoteEditorViewController *)self addNewNoteIfNeeded];
     [(ICNoteEditorViewController *)self prepareSelectionForAddingAttachment];
     [(ICNoteEditorViewController *)self showInkPicker:0 animated:1];
-    if (a3 <= 3)
+    if (type <= 3)
     {
-      switch(a3)
+      switch(type)
       {
         case 1uLL:
           if ([(ICNoteEditorViewController *)self isEditing])
@@ -14930,21 +14930,21 @@ LABEL_27:
             [(ICNoteEditorViewController *)self setEditing:0 animated:1];
           }
 
-          v26 = [(ICNoteEditorViewController *)self visualAssetImportController];
-          v25 = [(ICNoteEditorViewController *)self traitCollection];
-          [v26 presentVisualAssetCaptureControllerWithDisableAutorotate:{objc_msgSend(v25, "userInterfaceIdiom") == 0}];
+          visualAssetImportController = [(ICNoteEditorViewController *)self visualAssetImportController];
+          traitCollection = [(ICNoteEditorViewController *)self traitCollection];
+          [visualAssetImportController presentVisualAssetCaptureControllerWithDisableAutorotate:{objc_msgSend(traitCollection, "userInterfaceIdiom") == 0}];
 
           break;
         case 2uLL:
-          v26 = [(ICNoteEditorViewController *)self visualAssetImportController];
-          [v26 presentVisualAssetPickerController];
+          visualAssetImportController = [(ICNoteEditorViewController *)self visualAssetImportController];
+          [visualAssetImportController presentVisualAssetPickerController];
           break;
         case 3uLL:
-          v10 = [(ICNoteEditorViewController *)self textView];
-          [v10 becomeFirstResponder];
+          textView = [(ICNoteEditorViewController *)self textView];
+          [textView becomeFirstResponder];
 
-          v26 = [(ICNoteEditorViewController *)self textView];
-          [v26 captureTextFromCamera:self];
+          visualAssetImportController = [(ICNoteEditorViewController *)self textView];
+          [visualAssetImportController captureTextFromCamera:self];
           break;
         default:
           return;
@@ -14955,7 +14955,7 @@ LABEL_24:
       return;
     }
 
-    if (a3 == 7)
+    if (type == 7)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -14966,49 +14966,49 @@ LABEL_24:
       return;
     }
 
-    if (a3 != 5)
+    if (type != 5)
     {
-      if (a3 != 4)
+      if (type != 4)
       {
         return;
       }
 
-      v11 = [MEMORY[0x277CCAD78] UUID];
-      [(ICNoteEditorViewController *)self setCreatedGalleryAttachmentUUID:v11];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      [(ICNoteEditorViewController *)self setCreatedGalleryAttachmentUUID:uUID];
 
       v12 = objc_alloc(MEMORY[0x277D05D28]);
-      v13 = [(ICNoteEditorViewController *)self documentCameraControllerCreateDataCryptorIfNecessary];
-      v26 = [v12 initWithDataCryptorDelegate:v13];
+      documentCameraControllerCreateDataCryptorIfNecessary = [(ICNoteEditorViewController *)self documentCameraControllerCreateDataCryptorIfNecessary];
+      visualAssetImportController = [v12 initWithDataCryptorDelegate:documentCameraControllerCreateDataCryptorIfNecessary];
 
-      v14 = [(ICNoteEditorViewController *)self navigationController];
-      v15 = v14;
-      if (v14)
+      navigationController = [(ICNoteEditorViewController *)self navigationController];
+      v15 = navigationController;
+      if (navigationController)
       {
-        v16 = v14;
+        selfCopy = navigationController;
       }
 
       else
       {
-        v16 = self;
+        selfCopy = self;
       }
 
-      v17 = v16;
+      v17 = selfCopy;
 
-      v18 = [objc_alloc(MEMORY[0x277D05D38]) initWithImageCache:v26 docCamDelegate:self remoteDocCamDelegate:self];
+      v18 = [objc_alloc(MEMORY[0x277D05D38]) initWithImageCache:visualAssetImportController docCamDelegate:self remoteDocCamDelegate:self];
       [v18 setModalTransitionStyle:2];
       [(ICNoteEditorViewController *)v17 presentViewController:v18 animated:1 completion:0];
-      v19 = [(ICNoteEditorViewController *)self eventReporter];
-      [v19 pushStartDocScanPageCountData:0];
+      eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+      [eventReporter pushStartDocScanPageCountData:0];
 
-      v20 = [(ICNoteEditorViewController *)self eventReporter];
-      v21 = [(ICNoteEditorViewController *)self createdGalleryAttachmentUUID];
-      v22 = [v21 UUIDString];
-      [v20 pushDocScanDataWithID:v22 actionType:1 stage:1];
+      eventReporter2 = [(ICNoteEditorViewController *)self eventReporter];
+      createdGalleryAttachmentUUID = [(ICNoteEditorViewController *)self createdGalleryAttachmentUUID];
+      uUIDString = [createdGalleryAttachmentUUID UUIDString];
+      [eventReporter2 pushDocScanDataWithID:uUIDString actionType:1 stage:1];
 
-      v23 = [(ICNoteEditorViewController *)self eventReporter];
-      v24 = [(ICNoteEditorBaseViewController *)self note];
+      eventReporter3 = [(ICNoteEditorViewController *)self eventReporter];
+      note = [(ICNoteEditorBaseViewController *)self note];
 
-      [v23 submitDocScanEventForNote:v24 pageCount:0];
+      [eventReporter3 submitDocScanEventForNote:note pageCount:0];
       goto LABEL_24;
     }
 
@@ -15035,14 +15035,14 @@ void __63__ICNoteEditorViewController_showInsertUIForSourceType_sender___block_i
   [(ICNoteEditorViewController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   v59 = *MEMORY[0x277D85DE8];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = a4;
+  obj = ls;
   v5 = [obj countByEnumeratingWithState:&v50 objects:v58 count:16];
   if (!v5)
   {
@@ -15067,117 +15067,117 @@ void __63__ICNoteEditorViewController_showInsertUIForSourceType_sender___block_i
       }
 
       v9 = *(*(&v50 + 1) + 8 * i);
-      v10 = [(ICNoteEditorBaseViewController *)self note];
-      v11 = [v10 canAddAttachment];
+      note = [(ICNoteEditorBaseViewController *)self note];
+      canAddAttachment = [note canAddAttachment];
 
-      if ((v11 & 1) == 0)
+      if ((canAddAttachment & 1) == 0)
       {
         [(ICNoteEditorViewController *)self warnUserAttachmentLimitExceeded];
         goto LABEL_30;
       }
 
-      v12 = [(ICNoteEditorBaseViewController *)self note];
-      v13 = [v12 attachmentExceedsMaxSizeAllowed:{objc_msgSend(v9, "ic_fileSize")}];
+      note2 = [(ICNoteEditorBaseViewController *)self note];
+      v13 = [note2 attachmentExceedsMaxSizeAllowed:{objc_msgSend(v9, "ic_fileSize")}];
 
       if (v13)
       {
-        v39 = [MEMORY[0x277CCA8D8] mainBundle];
-        v40 = [v39 localizedStringForKey:@"Maximum attachment size reached." value:&stru_282757698 table:0];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        v40 = [mainBundle localizedStringForKey:@"Maximum attachment size reached." value:&stru_282757698 table:0];
         [(ICNoteEditorViewController *)self warnLimitExceededWithTitle:v40 andMessage:0];
 
         goto LABEL_30;
       }
 
-      v14 = [v9 lastPathComponent];
-      v15 = [v14 stringByDeletingPathExtension];
+      lastPathComponent = [v9 lastPathComponent];
+      stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
       v49 = 0;
-      LODWORD(v14) = [v9 getResourceValue:&v49 forKey:v46 error:0];
+      LODWORD(lastPathComponent) = [v9 getResourceValue:&v49 forKey:v46 error:0];
       v16 = v49;
       v17 = v16;
-      if (!v14 || !v16)
+      if (!lastPathComponent || !v16)
       {
-        v26 = [(ICNoteEditorBaseViewController *)self note];
-        v22 = [v26 addAttachmentWithFileURL:v9];
+        note3 = [(ICNoteEditorBaseViewController *)self note];
+        identifier2 = [note3 addAttachmentWithFileURL:v9];
         goto LABEL_23;
       }
 
       if (![v16 conformsToType:v44])
       {
-        v26 = [(ICNoteEditorBaseViewController *)self note];
-        v27 = [v17 identifier];
-        v22 = [v26 addAttachmentWithUTI:v27 withURL:v9];
+        note3 = [(ICNoteEditorBaseViewController *)self note];
+        identifier = [v17 identifier];
+        identifier2 = [note3 addAttachmentWithUTI:identifier withURL:v9];
 
         goto LABEL_23;
       }
 
       v18 = ICInternalSettingsDefaultToPaperKitPDFsAndScans();
-      v19 = [(ICNoteEditorBaseViewController *)self note];
+      note4 = [(ICNoteEditorBaseViewController *)self note];
       if (!v18)
       {
-        v22 = [v17 identifier];
-        v25 = [v19 addAttachmentWithUTI:v22 withURL:v9];
+        identifier2 = [v17 identifier];
+        v25 = [note4 addAttachmentWithUTI:identifier2 withURL:v9];
 LABEL_19:
 
-        v22 = v25;
+        identifier2 = v25;
         goto LABEL_20;
       }
 
-      v20 = [MEMORY[0x277CCAD78] UUID];
-      v21 = [v20 UUIDString];
-      v22 = [v19 addPaperDocumentAttachmentWithIdentifier:v21 subtype:v42];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      identifier2 = [note4 addPaperDocumentAttachmentWithIdentifier:uUIDString subtype:v42];
 
-      v23 = [v22 managedObjectContext];
-      [v23 ic_save];
+      managedObjectContext = [identifier2 managedObjectContext];
+      [managedObjectContext ic_save];
 
       v48 = 0;
-      LOBYTE(v23) = [MEMORY[0x277D35F48] createPaperDocumentForAttachment:v22 fromLegacyMediaAtURL:v9 error:&v48];
-      v19 = v48;
-      if ((v23 & 1) == 0)
+      LOBYTE(managedObjectContext) = [MEMORY[0x277D35F48] createPaperDocumentForAttachment:identifier2 fromLegacyMediaAtURL:v9 error:&v48];
+      note4 = v48;
+      if ((managedObjectContext & 1) == 0)
       {
         v24 = os_log_create("com.apple.notes", "UI");
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          v38 = [v22 ic_loggingDescription];
+          ic_loggingDescription = [identifier2 ic_loggingDescription];
           *buf = v41;
-          v55 = v19;
+          v55 = note4;
           v56 = 2112;
-          v57 = v38;
+          v57 = ic_loggingDescription;
           _os_log_error_impl(&dword_2151A1000, v24, OS_LOG_TYPE_ERROR, "Failed to create paper document from PDF with error: %@ -- deleting attachment %@", buf, 0x16u);
         }
 
-        [MEMORY[0x277D35E00] deleteAttachment:v22];
+        [MEMORY[0x277D35E00] deleteAttachment:identifier2];
         v25 = 0;
         goto LABEL_19;
       }
 
 LABEL_20:
 
-      v26 = [objc_alloc(MEMORY[0x277CD93D8]) initWithURL:v9];
-      v28 = [v26 documentAttributes];
-      v29 = [v28 objectForKeyedSubscript:v43];
+      note3 = [objc_alloc(MEMORY[0x277CD93D8]) initWithURL:v9];
+      documentAttributes = [note3 documentAttributes];
+      v29 = [documentAttributes objectForKeyedSubscript:v43];
 
       if ([v29 length])
       {
         v30 = v29;
 
-        v15 = v30;
+        stringByDeletingPathExtension = v30;
       }
 
 LABEL_23:
-      if (v22)
+      if (identifier2)
       {
-        [v22 setTitle:v15];
-        v31 = [(ICNoteEditorViewController *)self attachmentInsertionController];
-        v32 = [(ICNoteEditorViewController *)self textView];
-        v33 = [v32 selectedRange];
-        v35 = [v31 addAttachment:v22 atTextLocation:v33 + v34];
+        [identifier2 setTitle:stringByDeletingPathExtension];
+        attachmentInsertionController = [(ICNoteEditorViewController *)self attachmentInsertionController];
+        textView = [(ICNoteEditorViewController *)self textView];
+        selectedRange = [textView selectedRange];
+        v35 = [attachmentInsertionController addAttachment:identifier2 atTextLocation:selectedRange + v34];
 
-        v36 = [(ICNoteEditorBaseViewController *)self note];
-        [v36 save];
+        note5 = [(ICNoteEditorBaseViewController *)self note];
+        [note5 save];
 
-        v37 = [(ICNoteEditorViewController *)self eventReporter];
-        [v37 submitAttachmentAddEventForAttachment:v22];
+        eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+        [eventReporter submitAttachmentAddEventForAttachment:identifier2];
       }
     }
 
@@ -15193,12 +15193,12 @@ LABEL_23:
 LABEL_30:
 }
 
-- (void)insertSidecarItems:(id)a3 service:(int64_t)a4
+- (void)insertSidecarItems:(id)items service:(int64_t)service
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  itemsCopy = items;
   [(ICNoteEditorViewController *)self prepareSelectionForAddingAttachment];
-  if (!a4)
+  if (!service)
   {
     v12 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -15206,15 +15206,15 @@ LABEL_30:
       [ICNoteEditorViewController insertSidecarItems:service:];
     }
 
-    v8 = [v6 ic_compactMap:&__block_literal_global_928];
-    v11 = [(ICNoteEditorViewController *)self visualAssetImportController];
-    [v11 addImageData:v8 typeIdentifier:0];
+    v8 = [itemsCopy ic_compactMap:&__block_literal_global_928];
+    visualAssetImportController = [(ICNoteEditorViewController *)self visualAssetImportController];
+    [visualAssetImportController addImageData:v8 typeIdentifier:0];
     goto LABEL_10;
   }
 
-  if (a4 > 2)
+  if (service > 2)
   {
-    if (a4 != 3)
+    if (service != 3)
     {
       goto LABEL_12;
     }
@@ -15229,12 +15229,12 @@ LABEL_30:
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v8 = v6;
+    v8 = itemsCopy;
     v14 = [v8 countByEnumeratingWithState:&v52 objects:v58 count:16];
     if (v14)
     {
       v15 = v14;
-      v47 = v6;
+      v47 = itemsCopy;
       v16 = *v53;
       v17 = *MEMORY[0x277CD96A8];
       v18 = *MEMORY[0x277CD96C0];
@@ -15252,15 +15252,15 @@ LABEL_30:
           }
 
           v22 = *(*(&v52 + 1) + 8 * v21);
-          v23 = [v22 type];
-          v24 = [v23 isEqualToString:v17];
+          type = [v22 type];
+          v24 = [type isEqualToString:v17];
 
           if (v24)
           {
-            v25 = [(ICNoteEditorBaseViewController *)self note];
-            v26 = [v25 canAddAttachment];
+            note = [(ICNoteEditorBaseViewController *)self note];
+            canAddAttachment = [note canAddAttachment];
 
-            if ((v26 & 1) == 0)
+            if ((canAddAttachment & 1) == 0)
             {
               v46 = os_log_create("com.apple.notes", "UI");
               if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
@@ -15273,8 +15273,8 @@ LABEL_30:
             }
 
             v27 = v17;
-            v28 = [v22 data];
-            v29 = [objc_alloc(MEMORY[0x277CD95F8]) initWithData:v28 error:0];
+            data = [v22 data];
+            v29 = [objc_alloc(MEMORY[0x277CD95F8]) initWithData:data error:0];
             [v29 bounds];
             MaxX = CGRectGetMaxX(v60);
             if (MaxX > v18)
@@ -15292,20 +15292,20 @@ LABEL_30:
             }
 
             v35 = MEMORY[0x277D35F48];
-            v36 = [(ICNoteEditorBaseViewController *)self note];
-            v37 = [v35 createSystemPaperAttachmentWithPKDrawing:v29 inNote:v36];
+            note2 = [(ICNoteEditorBaseViewController *)self note];
+            v37 = [v35 createSystemPaperAttachmentWithPKDrawing:v29 inNote:note2];
 
-            v38 = [(ICNoteEditorViewController *)self attachmentInsertionController];
-            v39 = [(ICNoteEditorViewController *)self textView];
-            v40 = [v39 selectedRange];
-            v42 = [v38 addAttachment:v37 atTextLocation:v40 + v41];
+            attachmentInsertionController = [(ICNoteEditorViewController *)self attachmentInsertionController];
+            textView = [(ICNoteEditorViewController *)self textView];
+            selectedRange = [textView selectedRange];
+            v42 = [attachmentInsertionController addAttachment:v37 atTextLocation:selectedRange + v41];
 
-            v43 = [(ICNoteEditorBaseViewController *)self note];
-            v44 = [v43 managedObjectContext];
-            [v44 ic_save];
+            note3 = [(ICNoteEditorBaseViewController *)self note];
+            managedObjectContext = [note3 managedObjectContext];
+            [managedObjectContext ic_save];
 
-            v45 = [MEMORY[0x277D366B0] sharedGenerator];
-            [v45 generatePreviewIfNeededForAttachment:v37];
+            mEMORY[0x277D366B0] = [MEMORY[0x277D366B0] sharedGenerator];
+            [mEMORY[0x277D366B0] generatePreviewIfNeededForAttachment:v37];
 
             v16 = v31;
             v17 = v27;
@@ -15314,10 +15314,10 @@ LABEL_30:
 
           else
           {
-            v28 = os_log_create("com.apple.notes", "UI");
-            if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+            data = os_log_create("com.apple.notes", "UI");
+            if (os_log_type_enabled(data, OS_LOG_TYPE_ERROR))
             {
-              [(ICNoteEditorViewController *)&buf insertSidecarItems:v51 service:v28];
+              [(ICNoteEditorViewController *)&buf insertSidecarItems:v51 service:data];
             }
           }
 
@@ -15335,7 +15335,7 @@ LABEL_30:
       }
 
 LABEL_40:
-      v6 = v47;
+      itemsCopy = v47;
     }
 
     goto LABEL_11;
@@ -15349,7 +15349,7 @@ LABEL_40:
       [ICNoteEditorViewController insertSidecarItems:service:];
     }
 
-    v8 = [v6 ic_map:&__block_literal_global_935];
+    v8 = [itemsCopy ic_map:&__block_literal_global_935];
     v9 = [objc_alloc(MEMORY[0x277D05D28]) initWithDataCryptorDelegate:0];
     v10 = MEMORY[0x277D05D10];
     v56[0] = MEMORY[0x277D85DD0];
@@ -15358,8 +15358,8 @@ LABEL_40:
     v56[3] = &unk_2781AD278;
     v56[4] = self;
     v57 = v9;
-    v11 = v9;
-    [v10 infoCollectionFromSidecarItems:v8 imageCache:v11 completion:v56];
+    visualAssetImportController = v9;
+    [v10 infoCollectionFromSidecarItems:v8 imageCache:visualAssetImportController completion:v56];
 
 LABEL_10:
 LABEL_11:
@@ -15401,16 +15401,16 @@ void __57__ICNoteEditorViewController_insertSidecarItems_service___block_invoke_
   }
 }
 
-- (id)getTableControllerFor:(id)a3
+- (id)getTableControllerFor:(id)for
 {
-  v3 = a3;
-  v4 = v3;
+  forCopy = for;
+  nextResponder = forCopy;
   while (1)
   {
-    v5 = v4;
-    v4 = [v4 nextResponder];
+    v5 = nextResponder;
+    nextResponder = [nextResponder nextResponder];
 
-    if (!v4)
+    if (!nextResponder)
     {
       break;
     }
@@ -15430,58 +15430,58 @@ LABEL_6:
   return v6;
 }
 
-- (void)addTable:(id)a3
+- (void)addTable:(id)table
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  v5 = [v4 canAddAttachment];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  canAddAttachment = [note canAddAttachment];
 
-  if (v5)
+  if (canAddAttachment)
   {
-    v6 = [(ICNoteEditorBaseViewController *)self note];
-    v7 = [v6 isEditable];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    isEditable = [note2 isEditable];
 
-    if (v7)
+    if (isEditable)
     {
       [(ICNoteEditorViewController *)self showStyleSelector:0 animated:0];
-      v8 = [(ICNoteEditorViewController *)self textView];
-      [v8 selectedRange];
+      textView = [(ICNoteEditorViewController *)self textView];
+      [textView selectedRange];
       v10 = v9;
 
       if (v10)
       {
-        v11 = [(ICNoteEditorViewController *)self textStorage];
-        v12 = [(ICNoteEditorViewController *)self textView];
-        v13 = [v12 selectedRange];
-        v15 = [v11 ic_attributedSubstringFromRange:{v13, v14}];
+        textStorage = [(ICNoteEditorViewController *)self textStorage];
+        textView2 = [(ICNoteEditorViewController *)self textView];
+        selectedRange = [textView2 selectedRange];
+        v15 = [textStorage ic_attributedSubstringFromRange:{selectedRange, v14}];
 
-        v16 = [(ICNoteEditorBaseViewController *)self note];
-        v17 = [v16 managedObjectContext];
-        v18 = [v15 ic_attributedStringByFlatteningCalculateAttachmentsWithContext:v17];
+        note3 = [(ICNoteEditorBaseViewController *)self note];
+        managedObjectContext = [note3 managedObjectContext];
+        note5 = [v15 ic_attributedStringByFlatteningCalculateAttachmentsWithContext:managedObjectContext];
 
-        v19 = [(ICNoteEditorBaseViewController *)self note];
-        v33 = [v19 addTableAttachmentWithText:v18];
+        note4 = [(ICNoteEditorBaseViewController *)self note];
+        addTableAttachment = [note4 addTableAttachmentWithText:note5];
       }
 
       else
       {
-        v18 = [(ICNoteEditorBaseViewController *)self note];
-        v33 = [v18 addTableAttachment];
+        note5 = [(ICNoteEditorBaseViewController *)self note];
+        addTableAttachment = [note5 addTableAttachment];
       }
 
-      v23 = [(ICNoteEditorViewController *)self eventReporter];
-      v24 = [(ICNoteEditorBaseViewController *)self note];
-      [v23 submitTableCreateEventForAttachment:v33 inNote:v24];
+      eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+      note6 = [(ICNoteEditorBaseViewController *)self note];
+      [eventReporter submitTableCreateEventForAttachment:addTableAttachment inNote:note6];
 
-      v25 = [(ICNoteEditorViewController *)self attachmentInsertionController];
-      v26 = [(ICNoteEditorViewController *)self textView];
-      v27 = [v26 selectedRange];
-      v29 = [v25 addAttachment:v33 atTextRange:{v27, v28}];
+      attachmentInsertionController = [(ICNoteEditorViewController *)self attachmentInsertionController];
+      textView3 = [(ICNoteEditorViewController *)self textView];
+      selectedRange2 = [textView3 selectedRange];
+      v29 = [attachmentInsertionController addAttachment:addTableAttachment atTextRange:{selectedRange2, v28}];
 
-      v30 = [(ICNoteEditorViewController *)self undoManager];
-      v31 = [MEMORY[0x277CCA8D8] mainBundle];
-      v32 = [v31 localizedStringForKey:@"Add Table" value:&stru_282757698 table:0];
-      [v30 setActionName:v32];
+      undoManager = [(ICNoteEditorViewController *)self undoManager];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v32 = [mainBundle localizedStringForKey:@"Add Table" value:&stru_282757698 table:0];
+      [undoManager setActionName:v32];
     }
 
     else
@@ -15489,10 +15489,10 @@ LABEL_6:
       v20 = os_log_create("com.apple.notes", "UI");
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(ICNoteEditorBaseViewController *)self note];
-        v22 = [v21 shortLoggingDescription];
+        note7 = [(ICNoteEditorBaseViewController *)self note];
+        shortLoggingDescription = [note7 shortLoggingDescription];
         *buf = 138412290;
-        v35 = v22;
+        v35 = shortLoggingDescription;
         _os_log_impl(&dword_2151A1000, v20, OS_LOG_TYPE_DEFAULT, "Trying to add table to non-editable note %@", buf, 0xCu);
       }
     }
@@ -15507,17 +15507,17 @@ LABEL_6:
 
 - (void)resetDateView
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v2 = [v3 dateView];
-  [v2 reset];
+  textView = [(ICNoteEditorViewController *)self textView];
+  dateView = [textView dateView];
+  [dateView reset];
 }
 
 - (void)updatePencilKitSelectionViewEnabled
 {
   if ([MEMORY[0x277D75418] ic_isiPad])
   {
-    v6 = [(ICNoteEditorBaseViewController *)self note];
-    if ([v6 isEditable])
+    note = [(ICNoteEditorBaseViewController *)self note];
+    if ([note isEditable])
     {
       v3 = [(ICNoteEditorViewController *)self attributionSidebarVisibility]== 0;
     }
@@ -15527,20 +15527,20 @@ LABEL_6:
       v3 = 0;
     }
 
-    v4 = [(ICNoteEditorViewController *)self textView];
-    v5 = [v4 ic_pkSelectionInteraction];
-    [v5 setEnabled:v3];
+    textView = [(ICNoteEditorViewController *)self textView];
+    ic_pkSelectionInteraction = [textView ic_pkSelectionInteraction];
+    [ic_pkSelectionInteraction setEnabled:v3];
   }
 }
 
-- (void)openLink:(id)a3
+- (void)openLink:(id)link
 {
-  v5 = [(ICNoteEditorViewController *)self linkForSelection];
-  v4 = [(ICNoteEditorViewController *)self view];
-  [ICExtensionSafeAPIShims openURL:v5 originatingView:v4 completionHandler:0];
+  linkForSelection = [(ICNoteEditorViewController *)self linkForSelection];
+  view = [(ICNoteEditorViewController *)self view];
+  [ICExtensionSafeAPIShims openURL:linkForSelection originatingView:view completionHandler:0];
 }
 
-- (void)tab:(id)a3
+- (void)tab:(id)tab
 {
   if ([(ICNoteEditorViewController *)self currentSelectionContainsListOrFixedWidth])
   {
@@ -15550,102 +15550,102 @@ LABEL_6:
 
   else
   {
-    v4 = [(ICNoteEditorViewController *)self textView];
-    [v4 insertText:@"\t"];
+    textView = [(ICNoteEditorViewController *)self textView];
+    [textView insertText:@"\t"];
   }
 }
 
-- (void)shiftReturn:(id)a3
+- (void)shiftReturn:(id)return
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  [v3 insertText:@"\u2028"];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView insertText:@"\u2028"];
 }
 
-- (void)checkAll:(id)a3
+- (void)checkAll:(id)all
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = [(ICNoteEditorViewController *)self textController];
-  v5 = [(ICNoteEditorViewController *)self textView];
+  textController = [(ICNoteEditorViewController *)self textController];
+  textView = [(ICNoteEditorViewController *)self textView];
   v6 = MEMORY[0x277CCAE60];
-  v7 = [(ICNoteEditorViewController *)self textView];
-  v8 = [v7 selectedRange];
-  v10 = [v6 valueWithRange:{v8, v9}];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView2 selectedRange];
+  v10 = [v6 valueWithRange:{selectedRange, v9}];
   v12[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  [v4 markAllChecklistItemsCompleted:1 inTextview:v5 forSelectedRanges:v11];
+  [textController markAllChecklistItemsCompleted:1 inTextview:textView forSelectedRanges:v11];
 
   [(ICNoteEditorViewController *)self submitChecklistAnalyticsEventForActionType:2];
 }
 
-- (void)uncheckAll:(id)a3
+- (void)uncheckAll:(id)all
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = [(ICNoteEditorViewController *)self textController];
-  v5 = [(ICNoteEditorViewController *)self textView];
+  textController = [(ICNoteEditorViewController *)self textController];
+  textView = [(ICNoteEditorViewController *)self textView];
   v6 = MEMORY[0x277CCAE60];
-  v7 = [(ICNoteEditorViewController *)self textView];
-  v8 = [v7 selectedRange];
-  v10 = [v6 valueWithRange:{v8, v9}];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView2 selectedRange];
+  v10 = [v6 valueWithRange:{selectedRange, v9}];
   v12[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  [v4 markAllChecklistItemsCompleted:0 inTextview:v5 forSelectedRanges:v11];
+  [textController markAllChecklistItemsCompleted:0 inTextview:textView forSelectedRanges:v11];
 
   [(ICNoteEditorViewController *)self submitChecklistAnalyticsEventForActionType:3];
 }
 
 - (BOOL)canRemoveCheckedListItem
 {
-  v2 = self;
+  selfCopy = self;
   v17[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAE60];
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [v4 selectedRange];
-  v7 = [v3 valueWithRange:{v5, v6}];
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView selectedRange];
+  v7 = [v3 valueWithRange:{selectedRange, v6}];
   v17[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
 
-  v9 = [(ICNoteEditorViewController *)v2 textController];
-  v10 = [(ICNoteEditorViewController *)v2 textView];
-  LOBYTE(v4) = [v9 checklistItemExistsMarkedCompleted:1 inTextView:v10 forRanges:v8];
+  textController = [(ICNoteEditorViewController *)selfCopy textController];
+  textView2 = [(ICNoteEditorViewController *)selfCopy textView];
+  LOBYTE(textView) = [textController checklistItemExistsMarkedCompleted:1 inTextView:textView2 forRanges:v8];
 
-  v11 = [(ICNoteEditorViewController *)v2 textController];
-  v12 = [(ICNoteEditorViewController *)v2 textView];
-  v13 = [(ICNoteEditorViewController *)v2 textView];
-  v14 = [v13 selectedRange];
-  LOBYTE(v2) = [v11 containsOnlyChecklistItemsInTextView:v12 forRange:{v14, v15}];
+  textController2 = [(ICNoteEditorViewController *)selfCopy textController];
+  textView3 = [(ICNoteEditorViewController *)selfCopy textView];
+  textView4 = [(ICNoteEditorViewController *)selfCopy textView];
+  selectedRange2 = [textView4 selectedRange];
+  LOBYTE(selfCopy) = [textController2 containsOnlyChecklistItemsInTextView:textView3 forRange:{selectedRange2, v15}];
 
-  return v4 & v2;
+  return textView & selfCopy;
 }
 
-- (void)removeChecked:(id)a3
+- (void)removeChecked:(id)checked
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = [(ICNoteEditorViewController *)self textController];
-  v5 = [(ICNoteEditorViewController *)self textView];
+  textController = [(ICNoteEditorViewController *)self textController];
+  textView = [(ICNoteEditorViewController *)self textView];
   v6 = MEMORY[0x277CCAE60];
-  v7 = [(ICNoteEditorViewController *)self textView];
-  v8 = [v7 selectedRange];
-  v10 = [v6 valueWithRange:{v8, v9}];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView2 selectedRange];
+  v10 = [v6 valueWithRange:{selectedRange, v9}];
   v12[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  [v4 removeChecklistItemsMarkedCompleted:1 inTextView:v5 forRanges:v11];
+  [textController removeChecklistItemsMarkedCompleted:1 inTextView:textView forRanges:v11];
 
   [(ICNoteEditorViewController *)self submitChecklistAnalyticsEventForActionType:4];
 }
 
 - (BOOL)canMoveCheckedToBottom
 {
-  v3 = [(ICNoteEditorViewController *)self textController];
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = [v5 selectedRange];
-  v8 = [v3 canMoveCheckedChecklistsToBottomInTextView:v4 forRange:{v6, v7}];
+  textController = [(ICNoteEditorViewController *)self textController];
+  textView = [(ICNoteEditorViewController *)self textView];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView2 selectedRange];
+  v8 = [textController canMoveCheckedChecklistsToBottomInTextView:textView forRange:{selectedRange, v7}];
 
-  v9 = [(ICNoteEditorViewController *)self textController];
-  v10 = [(ICNoteEditorViewController *)self textView];
-  v11 = [(ICNoteEditorViewController *)self textView];
-  v12 = [v11 selectedRange];
-  v14 = [v9 containsOnlyChecklistItemsInTextView:v10 forRange:{v12, v13}];
+  textController2 = [(ICNoteEditorViewController *)self textController];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  textView4 = [(ICNoteEditorViewController *)self textView];
+  selectedRange2 = [textView4 selectedRange];
+  v14 = [textController2 containsOnlyChecklistItemsInTextView:textView3 forRange:{selectedRange2, v13}];
 
   return [(ICNoteEditorViewController *)self containsUnCheckedItems]& v8 & v14;
 }
@@ -15653,73 +15653,73 @@ LABEL_6:
 - (BOOL)containsUnCheckedItems
 {
   v6 = 0;
-  v3 = [(ICNoteEditorViewController *)self textController];
-  v4 = [(ICNoteEditorViewController *)self textView];
-  [v3 getTodoSelected:&v6 + 1 andAtLeastOneTodoUnchecked:&v6 inTextView:v4];
+  textController = [(ICNoteEditorViewController *)self textController];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textController getTodoSelected:&v6 + 1 andAtLeastOneTodoUnchecked:&v6 inTextView:textView];
 
   return v6 & 1 | ((v6 & 0x100) == 0);
 }
 
-- (void)moveCheckedToBottom:(id)a3
+- (void)moveCheckedToBottom:(id)bottom
 {
-  v4 = [(ICNoteEditorViewController *)self textController];
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = [(ICNoteEditorViewController *)self textView];
-  v7 = [v6 selectedRange];
-  [v4 moveCheckedChecklistsToBottomInTextView:v5 forRange:v7 animated:{v8, 1}];
+  textController = [(ICNoteEditorViewController *)self textController];
+  textView = [(ICNoteEditorViewController *)self textView];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView2 selectedRange];
+  [textController moveCheckedChecklistsToBottomInTextView:textView forRange:selectedRange animated:{v8, 1}];
 
-  v10 = [(ICNoteEditorViewController *)self eventReporter];
-  v9 = [(ICNoteEditorBaseViewController *)self note];
-  [v10 submitNoteEditorCallOutBarButtonSelectionEventForModernNote:v9 buttonTypeValue:14];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitNoteEditorCallOutBarButtonSelectionEventForModernNote:note buttonTypeValue:14];
 }
 
 - (BOOL)canMoveSelectedListItemUp
 {
-  v3 = [(ICNoteEditorViewController *)self textController];
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = [v5 selectedRange];
-  v8 = [v3 canMoveListItemInDirection:0 inTextView:v4 forRange:{v6, v7}];
+  textController = [(ICNoteEditorViewController *)self textController];
+  textView = [(ICNoteEditorViewController *)self textView];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView2 selectedRange];
+  v8 = [textController canMoveListItemInDirection:0 inTextView:textView forRange:{selectedRange, v7}];
 
   return v8;
 }
 
 - (BOOL)canMoveSelectedListItemDown
 {
-  v3 = [(ICNoteEditorViewController *)self textController];
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = [v5 selectedRange];
-  v8 = [v3 canMoveListItemInDirection:1 inTextView:v4 forRange:{v6, v7}];
+  textController = [(ICNoteEditorViewController *)self textController];
+  textView = [(ICNoteEditorViewController *)self textView];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView2 selectedRange];
+  v8 = [textController canMoveListItemInDirection:1 inTextView:textView forRange:{selectedRange, v7}];
 
   return v8;
 }
 
-- (void)moveSelectedListItemUp:(id)a3
+- (void)moveSelectedListItemUp:(id)up
 {
-  v8 = [(ICNoteEditorViewController *)self textController];
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = [v5 selectedRange];
-  [v8 moveListItemInDirection:0 inTextView:v4 forRange:{v6, v7}];
+  textController = [(ICNoteEditorViewController *)self textController];
+  textView = [(ICNoteEditorViewController *)self textView];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView2 selectedRange];
+  [textController moveListItemInDirection:0 inTextView:textView forRange:{selectedRange, v7}];
 }
 
-- (void)moveSelectedListItemDown:(id)a3
+- (void)moveSelectedListItemDown:(id)down
 {
-  v8 = [(ICNoteEditorViewController *)self textController];
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = [v5 selectedRange];
-  [v8 moveListItemInDirection:1 inTextView:v4 forRange:{v6, v7}];
+  textController = [(ICNoteEditorViewController *)self textController];
+  textView = [(ICNoteEditorViewController *)self textView];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView2 selectedRange];
+  [textController moveListItemInDirection:1 inTextView:textView forRange:{selectedRange, v7}];
 }
 
 - (BOOL)canConvertToText
 {
-  v3 = [(ICNoteEditorViewController *)self textController];
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = [v5 selectedRange];
-  v8 = [v3 canConvertInlineAttachmentToTextInTextView:v4 forRange:{v6, v7}];
+  textController = [(ICNoteEditorViewController *)self textController];
+  textView = [(ICNoteEditorViewController *)self textView];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView2 selectedRange];
+  v8 = [textController canConvertInlineAttachmentToTextInTextView:textView forRange:{selectedRange, v7}];
 
   if (v8)
   {
@@ -15729,17 +15729,17 @@ LABEL_6:
   else
   {
     objc_opt_class();
-    v10 = [(ICNoteEditorViewController *)self textStorage];
+    textStorage = [(ICNoteEditorViewController *)self textStorage];
     v11 = *MEMORY[0x277D74060];
-    v12 = [(ICNoteEditorViewController *)self textView];
-    v13 = [v10 attribute:v11 atIndex:objc_msgSend(v12 effectiveRange:{"selectedRange"), 0}];
+    textView3 = [(ICNoteEditorViewController *)self textView];
+    v13 = [textStorage attribute:v11 atIndex:objc_msgSend(textView3 effectiveRange:{"selectedRange"), 0}];
     v14 = ICDynamicCast();
 
-    v15 = [(ICNoteEditorViewController *)self firstResponder];
+    firstResponder = [(ICNoteEditorViewController *)self firstResponder];
     objc_opt_class();
-    LOBYTE(v10) = objc_opt_isKindOfClass();
+    LOBYTE(textStorage) = objc_opt_isKindOfClass();
 
-    v9 = (v14 != 0) | v10;
+    v9 = (v14 != 0) | textStorage;
   }
 
   return v9 & 1;
@@ -15747,7 +15747,7 @@ LABEL_6:
 
 - (BOOL)canReverseTableDirection
 {
-  v2 = [(ICNoteEditorViewController *)self firstResponder];
+  firstResponder = [(ICNoteEditorViewController *)self firstResponder];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -15756,9 +15756,9 @@ LABEL_6:
 
 - (BOOL)canConvertToTag
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 selectedText];
-  if ([v4 ic_canConvertToTag])
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedText = [textView selectedText];
+  if ([selectedText ic_canConvertToTag])
   {
     v5 = ![(ICNoteEditorViewController *)self canConvertToText];
   }
@@ -15771,23 +15771,23 @@ LABEL_6:
   return v5;
 }
 
-- (void)convertToText:(id)a3
+- (void)convertToText:(id)text
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  textCopy = text;
   objc_opt_class();
-  v5 = [(ICNoteEditorViewController *)self textStorage];
+  textStorage = [(ICNoteEditorViewController *)self textStorage];
   v6 = *MEMORY[0x277D74060];
-  v7 = [(ICNoteEditorViewController *)self textView];
-  v8 = [v5 attribute:v6 atIndex:objc_msgSend(v7 effectiveRange:{"selectedRange"), 0}];
+  textView = [(ICNoteEditorViewController *)self textView];
+  v8 = [textStorage attribute:v6 atIndex:objc_msgSend(textView effectiveRange:{"selectedRange"), 0}];
   v9 = ICDynamicCast();
 
-  v10 = [(ICNoteEditorViewController *)self currentTableAttachmentViewController];
+  currentTableAttachmentViewController = [(ICNoteEditorViewController *)self currentTableAttachmentViewController];
 
-  if (v10)
+  if (currentTableAttachmentViewController)
   {
-    v11 = [(ICNoteEditorViewController *)self currentTableAttachmentViewController];
-    [v11 convertTableToText:v4];
+    currentTableAttachmentViewController2 = [(ICNoteEditorViewController *)self currentTableAttachmentViewController];
+    [currentTableAttachmentViewController2 convertTableToText:textCopy];
   }
 
   else
@@ -15795,12 +15795,12 @@ LABEL_6:
     if (v9)
     {
       objc_opt_class();
-      v12 = [(ICNoteEditorViewController *)self textView];
-      v13 = [v12 textLayoutManager];
+      textView2 = [(ICNoteEditorViewController *)self textView];
+      textLayoutManager = [textView2 textLayoutManager];
       v14 = ICDynamicCast();
 
       v15 = [v14 tableViewControllerForAttachment:v9 createIfNeeded:1];
-      [v15 convertTableToText:v4];
+      [v15 convertTableToText:textCopy];
 
       goto LABEL_6;
     }
@@ -15808,48 +15808,48 @@ LABEL_6:
     v16 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [(ICNoteEditorViewController *)self textView];
-      v29.location = [v17 selectedRange];
+      textView3 = [(ICNoteEditorViewController *)self textView];
+      v29.location = [textView3 selectedRange];
       v18 = NSStringFromRange(v29);
       v26 = 138412290;
       v27 = v18;
       _os_log_impl(&dword_2151A1000, v16, OS_LOG_TYPE_INFO, "Converting inline attachment at %@ to text", &v26, 0xCu);
     }
 
-    v19 = [(ICNoteEditorViewController *)self textController];
-    v20 = [(ICNoteEditorViewController *)self textView];
-    v21 = [(ICNoteEditorViewController *)self textView];
-    v22 = [v21 selectedRange];
-    [v19 convertInlineAttachmentToTextInTextView:v20 forRange:{v22, v23}];
+    textController = [(ICNoteEditorViewController *)self textController];
+    textView4 = [(ICNoteEditorViewController *)self textView];
+    textView5 = [(ICNoteEditorViewController *)self textView];
+    selectedRange = [textView5 selectedRange];
+    [textController convertInlineAttachmentToTextInTextView:textView4 forRange:{selectedRange, v23}];
 
-    v24 = [(ICNoteEditorViewController *)self textView];
-    [(ICNoteEditorViewController *)self textViewDidChange:v24];
+    textView6 = [(ICNoteEditorViewController *)self textView];
+    [(ICNoteEditorViewController *)self textViewDidChange:textView6];
 
-    v25 = [(ICNoteEditorBaseViewController *)self note];
-    [v25 updateChangeCountWithReason:@"Converted inline attachment to text"];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    [note updateChangeCountWithReason:@"Converted inline attachment to text"];
 
-    v11 = [(ICNoteEditorBaseViewController *)self note];
-    [v11 save];
+    currentTableAttachmentViewController2 = [(ICNoteEditorBaseViewController *)self note];
+    [currentTableAttachmentViewController2 save];
   }
 
 LABEL_6:
 }
 
-- (void)convertToTag:(id)a3
+- (void)convertToTag:(id)tag
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = [(ICNoteEditorViewController *)self eventReporter];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  v6 = [(ICNoteEditorViewController *)self textView];
-  v7 = [v6 selectedText];
-  [v4 submitHashtagAddEventForNote:v5 tokenContentIdentifier:v7 viaAutoComplete:0];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedText = [textView selectedText];
+  [eventReporter submitHashtagAddEventForNote:note tokenContentIdentifier:selectedText viaAutoComplete:0];
 
   [(ICNoteEditorViewController *)self setIsConvertToTag:1];
   v8 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(ICNoteEditorViewController *)self textView];
-    v28.location = [v9 selectedRange];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    v28.location = [textView2 selectedRange];
     v10 = NSStringFromRange(v28);
     v25 = 138412290;
     v26 = v10;
@@ -15857,28 +15857,28 @@ LABEL_6:
   }
 
   v11 = MEMORY[0x277D35EF8];
-  v12 = [(ICNoteEditorViewController *)self textView];
-  v13 = [v12 selectedText];
-  v14 = [v13 ic_stringByReplacingLeadingFullWidthHashSignIfPossible];
-  v15 = [(ICNoteEditorBaseViewController *)self note];
-  v16 = [v11 createHashtagAttachmentIfApplicableWithHashtagText:v14 creatingHashtagIfNecessary:1 note:v15 parentAttachment:0];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  selectedText2 = [textView3 selectedText];
+  ic_stringByReplacingLeadingFullWidthHashSignIfPossible = [selectedText2 ic_stringByReplacingLeadingFullWidthHashSignIfPossible];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  v16 = [v11 createHashtagAttachmentIfApplicableWithHashtagText:ic_stringByReplacingLeadingFullWidthHashSignIfPossible creatingHashtagIfNecessary:1 note:note2 parentAttachment:0];
 
   if (v16)
   {
-    v17 = [(ICNoteEditorViewController *)self attachmentInsertionController];
-    v18 = [(ICNoteEditorViewController *)self textView];
-    v19 = [v18 selectedRange];
-    v21 = [v17 addInlineAttachment:v16 atTextRange:{v19, v20}];
+    attachmentInsertionController = [(ICNoteEditorViewController *)self attachmentInsertionController];
+    textView4 = [(ICNoteEditorViewController *)self textView];
+    selectedRange = [textView4 selectedRange];
+    v21 = [attachmentInsertionController addInlineAttachment:v16 atTextRange:{selectedRange, v20}];
 
     [v16 updateChangeCountWithReason:@"Created tag from text"];
-    v22 = [(ICNoteEditorBaseViewController *)self note];
-    [v22 updateChangeCountWithReason:@"Created tag from text"];
+    note3 = [(ICNoteEditorBaseViewController *)self note];
+    [note3 updateChangeCountWithReason:@"Created tag from text"];
 
-    v23 = [(ICNoteEditorBaseViewController *)self note];
-    [v23 save];
+    note4 = [(ICNoteEditorBaseViewController *)self note];
+    [note4 save];
 
-    v24 = [(ICNoteEditorViewController *)self hashtagController];
-    [v24 updateNoteHashtags];
+    hashtagController = [(ICNoteEditorViewController *)self hashtagController];
+    [hashtagController updateNoteHashtags];
   }
 
   [(ICNoteEditorViewController *)self setEditing:1 animated:1];
@@ -15886,16 +15886,16 @@ LABEL_6:
 
 - (BOOL)canAddToTags
 {
-  v3 = [(ICNoteEditorViewController *)self textController];
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = [v5 selectedRange];
-  v8 = [v3 canAddToTagsInTextView:v4 forRange:{v6, v7}];
+  textController = [(ICNoteEditorViewController *)self textController];
+  textView = [(ICNoteEditorViewController *)self textView];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView2 selectedRange];
+  v8 = [textController canAddToTagsInTextView:textView forRange:{selectedRange, v7}];
 
   return v8;
 }
 
-- (void)addToTags:(id)a3
+- (void)addToTags:(id)tags
 {
   v4 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -15903,14 +15903,14 @@ LABEL_6:
     [ICNoteEditorViewController addToTags:?];
   }
 
-  v5 = [(ICNoteEditorViewController *)self textController];
-  v6 = [(ICNoteEditorViewController *)self textView];
-  v7 = [(ICNoteEditorViewController *)self textView];
-  v8 = [v7 selectedRange];
-  [v5 addToTagsInTextView:v6 forRange:{v8, v9}];
+  textController = [(ICNoteEditorViewController *)self textController];
+  textView = [(ICNoteEditorViewController *)self textView];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView2 selectedRange];
+  [textController addToTagsInTextView:textView forRange:{selectedRange, v9}];
 }
 
-- (void)openExperimentalHashtagUI:(id)a3
+- (void)openExperimentalHashtagUI:(id)i
 {
   if (ICDebugModeEnabled())
   {
@@ -15920,244 +15920,244 @@ LABEL_6:
   }
 }
 
-- (void)openLinkEditor:(id)a3
+- (void)openLinkEditor:(id)editor
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  v5 = [v4 isDeletedOrInTrash];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isDeletedOrInTrash = [note isDeletedOrInTrash];
 
-  if (v5)
+  if (isDeletedOrInTrash)
   {
 
     [(ICNoteEditorViewController *)self showRecoverNoteAlert];
     return;
   }
 
-  v6 = [(ICNoteEditorViewController *)self linkForSelection];
-  v7 = [(ICNoteEditorViewController *)self textView];
-  v8 = [v7 selectedText];
+  linkForSelection = [(ICNoteEditorViewController *)self linkForSelection];
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedText = [textView selectedText];
 
-  v9 = [(ICNoteEditorViewController *)self textView];
-  v10 = [v9 textStorage];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  textStorage = [textView2 textStorage];
   v11 = *MEMORY[0x277D74060];
-  v12 = [(ICNoteEditorViewController *)self textView];
-  v13 = [v10 attribute:v11 atIndex:objc_msgSend(v12 effectiveRange:{"selectedRange"), 0}];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  v13 = [textStorage attribute:v11 atIndex:objc_msgSend(textView3 effectiveRange:{"selectedRange"), 0}];
 
   objc_opt_class();
   v34 = v13;
   v14 = ICDynamicCast();
-  v15 = [v14 attachment];
+  attachment = [v14 attachment];
   v35 = xmmword_2154BBE70;
-  if (!v6)
+  if (!linkForSelection)
   {
-    v6 = [MEMORY[0x277D35DF0] detectedURLInString:v8 allowNonLinkCharacters:0];
+    linkForSelection = [MEMORY[0x277D35DF0] detectedURLInString:selectedText allowNonLinkCharacters:0];
 
-    if (v6)
+    if (linkForSelection)
     {
-      v6 = [MEMORY[0x277CBEBC0] URLWithString:v8];
+      linkForSelection = [MEMORY[0x277CBEBC0] URLWithString:selectedText];
     }
 
     goto LABEL_11;
   }
 
-  v16 = [(ICNoteEditorViewController *)self textStorage];
+  textStorage2 = [(ICNoteEditorViewController *)self textStorage];
   v17 = *MEMORY[0x277D740E8];
-  v18 = [(ICNoteEditorViewController *)self textView];
-  v19 = [v18 selectedRange];
-  v20 = [(ICNoteEditorViewController *)self textStorage];
-  v21 = [v16 attribute:v17 atIndex:v19 longestEffectiveRange:&v35 inRange:{0, objc_msgSend(v20, "length")}];
+  textView4 = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView4 selectedRange];
+  textStorage3 = [(ICNoteEditorViewController *)self textStorage];
+  v21 = [textStorage2 attribute:v17 atIndex:selectedRange longestEffectiveRange:&v35 inRange:{0, objc_msgSend(textStorage3, "length")}];
 
   if (v35 == 0x7FFFFFFFFFFFFFFFLL || !*(&v35 + 1))
   {
 LABEL_11:
-    v23 = [(ICNoteEditorViewController *)self textView];
-    *&v35 = [v23 selectedRange];
+    textView5 = [(ICNoteEditorViewController *)self textView];
+    *&v35 = [textView5 selectedRange];
     *(&v35 + 1) = v26;
     goto LABEL_12;
   }
 
-  v22 = [(ICNoteEditorViewController *)self textView];
-  v23 = [v22 ic_textRangeFromCharacterRange:v35];
+  textView6 = [(ICNoteEditorViewController *)self textView];
+  textView5 = [textView6 ic_textRangeFromCharacterRange:v35];
 
-  v24 = [(ICNoteEditorViewController *)self textView];
-  v25 = [v24 textInRange:v23];
+  textView7 = [(ICNoteEditorViewController *)self textView];
+  v25 = [textView7 textInRange:textView5];
 
-  v8 = v25;
+  selectedText = v25;
 LABEL_12:
 
-  v27 = [(ICNoteEditorViewController *)self presentedViewController];
+  presentedViewController = [(ICNoteEditorViewController *)self presentedViewController];
 
-  if (v27)
+  if (presentedViewController)
   {
     [(ICNoteEditorViewController *)self hideAndDismissPresentedViewController];
   }
 
-  v28 = [(ICNoteEditorBaseViewController *)self note];
-  v29 = [v28 mergeableString];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  mergeableString = [note2 mergeableString];
   v30 = [MEMORY[0x277CCAE60] valueWithRange:v35];
   v36[0] = v30;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
-  v32 = [v29 selectionForCharacterRanges:v31 selectionAffinity:1];
+  v32 = [mergeableString selectionForCharacterRanges:v31 selectionAffinity:1];
 
-  v33 = [ICLinkEditorControllerHelper presentFromViewController:self delegate:self text:v8 url:v6 attachment:v15 stringSelection:v32 range:v35 addApproach:3];
+  v33 = [ICLinkEditorControllerHelper presentFromViewController:self delegate:self text:selectedText url:linkForSelection attachment:attachment stringSelection:v32 range:v35 addApproach:3];
   [(ICNoteEditorViewController *)self setLinkEditorController:v33];
 }
 
-- (void)openLinkEditorForLink:(id)a3 atRange:(_NSRange)a4 delegate:(id)a5
+- (void)openLinkEditorForLink:(id)link atRange:(_NSRange)range delegate:(id)delegate
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (link)
   {
-    length = a4.length;
-    location = a4.location;
-    v9 = a5;
-    v10 = a3;
-    v11 = [(ICNoteEditorBaseViewController *)self note];
-    v12 = [v11 mergeableString];
+    length = range.length;
+    location = range.location;
+    delegateCopy = delegate;
+    linkCopy = link;
+    note = [(ICNoteEditorBaseViewController *)self note];
+    mergeableString = [note mergeableString];
     v13 = [MEMORY[0x277CCAE60] valueWithRange:{location, length}];
     v19[0] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-    v15 = [v12 selectionForCharacterRanges:v14 selectionAffinity:1];
+    v15 = [mergeableString selectionForCharacterRanges:v14 selectionAffinity:1];
 
-    v16 = [(ICNoteEditorViewController *)self presentedViewController];
+    presentedViewController = [(ICNoteEditorViewController *)self presentedViewController];
 
-    if (v16)
+    if (presentedViewController)
     {
       [(ICNoteEditorViewController *)self hideAndDismissPresentedViewController];
     }
 
-    v17 = [v10 displayText];
-    v18 = [ICLinkEditorControllerHelper presentFromViewController:self delegate:v9 text:v17 url:0 attachment:v10 stringSelection:v15 range:location addApproach:length, 3];
+    displayText = [linkCopy displayText];
+    v18 = [ICLinkEditorControllerHelper presentFromViewController:self delegate:delegateCopy text:displayText url:0 attachment:linkCopy stringSelection:v15 range:location addApproach:length, 3];
 
     [(ICNoteEditorViewController *)self setLinkEditorController:v18];
   }
 }
 
-- (void)openLinkEditorForLinkTextItem:(id)a3
+- (void)openLinkEditorForLinkTextItem:(id)item
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy)
   {
-    v6 = [v4 range];
+    range = [itemCopy range];
     v8 = v7;
-    v9 = [(ICNoteEditorViewController *)self textView];
-    v10 = [v9 ic_textRangeFromCharacterRange:{v6, v8}];
+    textView = [(ICNoteEditorViewController *)self textView];
+    v10 = [textView ic_textRangeFromCharacterRange:{range, v8}];
 
-    v11 = [(ICNoteEditorViewController *)self textView];
-    v12 = [v11 textInRange:v10];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    v12 = [textView2 textInRange:v10];
 
-    v13 = [(ICNoteEditorBaseViewController *)self note];
-    v14 = [v13 mergeableString];
-    v15 = [MEMORY[0x277CCAE60] valueWithRange:{v6, v8}];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    mergeableString = [note mergeableString];
+    v15 = [MEMORY[0x277CCAE60] valueWithRange:{range, v8}];
     v24[0] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
-    v17 = [v14 selectionForCharacterRanges:v16 selectionAffinity:1];
+    v17 = [mergeableString selectionForCharacterRanges:v16 selectionAffinity:1];
 
-    v18 = [(ICNoteEditorViewController *)self presentedViewController];
+    presentedViewController = [(ICNoteEditorViewController *)self presentedViewController];
 
-    if (v18)
+    if (presentedViewController)
     {
       [(ICNoteEditorViewController *)self hideAndDismissPresentedViewController];
     }
 
-    v19 = [v5 link];
-    v20 = [(ICNoteEditorViewController *)self textView];
-    v21 = [v20 selectedRange];
-    v23 = [ICLinkEditorControllerHelper presentFromViewController:self delegate:self text:v12 url:v19 attachment:0 stringSelection:v17 range:v21 addApproach:v22, 3];
+    link = [v5 link];
+    textView3 = [(ICNoteEditorViewController *)self textView];
+    selectedRange = [textView3 selectedRange];
+    v23 = [ICLinkEditorControllerHelper presentFromViewController:self delegate:self text:v12 url:link attachment:0 stringSelection:v17 range:selectedRange addApproach:v22, 3];
     [(ICNoteEditorViewController *)self setLinkEditorController:v23];
   }
 }
 
-- (void)removeLinkForLinkTextItem:(id)a3
+- (void)removeLinkForLinkTextItem:(id)item
 {
-  if (a3)
+  if (item)
   {
-    v5 = [a3 range];
+    range = [item range];
 
-    [(ICNoteEditorViewController *)self removeLinksFromRange:v5, v4];
+    [(ICNoteEditorViewController *)self removeLinksFromRange:range, v4];
   }
 }
 
-- (void)insertGraph:(id)a3
+- (void)insertGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   objc_opt_class();
   v5 = ICDynamicCast();
 
-  v7 = [v5 calculateGraphingControllerInsertionDecision];
+  calculateGraphingControllerInsertionDecision = [v5 calculateGraphingControllerInsertionDecision];
 
-  if (v7)
+  if (calculateGraphingControllerInsertionDecision)
   {
-    v6 = [(ICNoteEditorViewController *)self calculateGraphingController];
-    [v6 performDecision:v7];
+    calculateGraphingController = [(ICNoteEditorViewController *)self calculateGraphingController];
+    [calculateGraphingController performDecision:calculateGraphingControllerInsertionDecision];
   }
 }
 
-- (void)addToGraph:(id)a3
+- (void)addToGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   objc_opt_class();
   v5 = ICDynamicCast();
 
-  v7 = [v5 calculateGraphingControllerInsertionDecision];
+  calculateGraphingControllerInsertionDecision = [v5 calculateGraphingControllerInsertionDecision];
 
-  if (v7)
+  if (calculateGraphingControllerInsertionDecision)
   {
-    [v7 setPrefersExistingGraph:1];
-    v6 = [(ICNoteEditorViewController *)self calculateGraphingController];
-    [v6 performDecision:v7];
+    [calculateGraphingControllerInsertionDecision setPrefersExistingGraph:1];
+    calculateGraphingController = [(ICNoteEditorViewController *)self calculateGraphingController];
+    [calculateGraphingController performDecision:calculateGraphingControllerInsertionDecision];
   }
 }
 
-- (void)createNoteLinkAttachment:(id)a3 textSelection:(id)a4 range:(_NSRange)a5 addApproach:(int64_t)a6
+- (void)createNoteLinkAttachment:(id)attachment textSelection:(id)selection range:(_NSRange)range addApproach:(int64_t)approach
 {
-  length = a5.length;
-  location = a5.location;
-  v11 = a4;
+  length = range.length;
+  location = range.location;
+  selectionCopy = selection;
   v12 = MEMORY[0x277D35F28];
-  v13 = a3;
-  v14 = [(ICNoteEditorBaseViewController *)self note];
-  v15 = [v14 managedObjectContext];
-  v16 = [v12 noteWithIdentifier:v13 context:v15];
+  attachmentCopy = attachment;
+  note = [(ICNoteEditorBaseViewController *)self note];
+  managedObjectContext = [note managedObjectContext];
+  v16 = [v12 noteWithIdentifier:attachmentCopy context:managedObjectContext];
 
   if (v16)
   {
-    v44 = a6;
+    approachCopy = approach;
     v17 = MEMORY[0x277D35EF8];
-    v18 = [(ICNoteEditorBaseViewController *)self note];
-    v19 = [v17 newLinkAttachmentToNote:v16 fromNote:v18 parentAttachment:0];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    v19 = [v17 newLinkAttachmentToNote:v16 fromNote:note2 parentAttachment:0];
 
-    v20 = [(ICNoteEditorBaseViewController *)self note];
-    v21 = [v20 mergeableString];
-    v22 = [v21 characterRangesForSelection:v11];
-    v23 = [v22 firstObject];
+    note3 = [(ICNoteEditorBaseViewController *)self note];
+    mergeableString = [note3 mergeableString];
+    v22 = [mergeableString characterRangesForSelection:selectionCopy];
+    firstObject = [v22 firstObject];
 
-    if (v23)
+    if (firstObject)
     {
-      location = [v23 rangeValue];
+      location = [firstObject rangeValue];
       length = v24;
     }
 
     if (v19)
     {
-      v43 = v11;
+      v43 = selectionCopy;
       if (!length && location)
       {
         v42 = v19;
-        v25 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-        v26 = [(ICNoteEditorViewController *)self textView];
-        v27 = [v26 textStorage];
-        v28 = [v27 string];
-        v29 = [v25 characterIsMember:{objc_msgSend(v28, "characterAtIndex:", location - 1)}];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+        textView = [(ICNoteEditorViewController *)self textView];
+        textStorage = [textView textStorage];
+        string = [textStorage string];
+        v29 = [whitespaceAndNewlineCharacterSet characterIsMember:{objc_msgSend(string, "characterAtIndex:", location - 1)}];
 
         if ((v29 & 1) == 0)
         {
-          v30 = [(ICNoteEditorViewController *)self textView];
-          v31 = [v30 textStorage];
+          textView2 = [(ICNoteEditorViewController *)self textView];
+          textStorage2 = [textView2 textStorage];
           v32 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@" "];
-          [v31 insertAttributedString:v32 atIndex:location];
+          [textStorage2 insertAttributedString:v32 atIndex:location];
 
           length = 0;
           ++location;
@@ -16166,27 +16166,27 @@ LABEL_12:
         v19 = v42;
       }
 
-      v33 = [(ICNoteEditorViewController *)self attachmentInsertionController];
-      v34 = [v33 addInlineAttachment:v19 atTextRange:{location, length}];
+      attachmentInsertionController = [(ICNoteEditorViewController *)self attachmentInsertionController];
+      v34 = [attachmentInsertionController addInlineAttachment:v19 atTextRange:{location, length}];
 
-      [v23 rangeValue];
+      [firstObject rangeValue];
       if (v35)
       {
-        v36 = [v23 rangeValue];
-        v37 = [(ICNoteEditorViewController *)self textView];
-        [v37 setSelectedRange:{v36 + 1, 0}];
+        rangeValue = [firstObject rangeValue];
+        textView3 = [(ICNoteEditorViewController *)self textView];
+        [textView3 setSelectedRange:{rangeValue + 1, 0}];
       }
 
       [v19 updateChangeCountWithReason:@"Created note link"];
-      v38 = [(ICNoteEditorBaseViewController *)self note];
-      [v38 updateModificationDateAndChangeCountAndSaveImmediately];
+      note4 = [(ICNoteEditorBaseViewController *)self note];
+      [note4 updateModificationDateAndChangeCountAndSaveImmediately];
 
-      v39 = [(ICNoteEditorViewController *)self eventReporter];
-      v40 = [(ICNoteEditorBaseViewController *)self note];
-      [v39 submitAddLinkEvent:v40 addApproach:v44 contentType:1 isTokenized:1];
+      eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+      note5 = [(ICNoteEditorBaseViewController *)self note];
+      [eventReporter submitAddLinkEvent:note5 addApproach:approachCopy contentType:1 isTokenized:1];
 
       [(ICNoteEditorViewController *)self startEditing];
-      v11 = v43;
+      selectionCopy = v43;
     }
   }
 
@@ -16201,16 +16201,16 @@ LABEL_12:
   }
 }
 
-- (void)createLink:(id)a3 title:(id)a4 textSelection:(id)a5 range:(_NSRange)a6 addApproach:(int64_t)a7
+- (void)createLink:(id)link title:(id)title textSelection:(id)selection range:(_NSRange)range addApproach:(int64_t)approach
 {
   v65 = *MEMORY[0x277D85DE8];
-  v56 = a3;
-  v55 = a4;
-  v10 = a5;
-  v11 = [(ICNoteEditorBaseViewController *)self note];
-  v12 = [v11 mergeableString];
-  v48 = v10;
-  v13 = [v12 characterRangesForSelection:v10];
+  linkCopy = link;
+  titleCopy = title;
+  selectionCopy = selection;
+  note = [(ICNoteEditorBaseViewController *)self note];
+  mergeableString = [note mergeableString];
+  v48 = selectionCopy;
+  v13 = [mergeableString characterRangesForSelection:selectionCopy];
 
   v62 = 0u;
   v63 = 0u;
@@ -16236,20 +16236,20 @@ LABEL_12:
         }
 
         v18 = *(*(&v60 + 1) + 8 * v17);
-        v19 = [(ICNoteEditorViewController *)self textView];
-        v20 = [v19 textStorage];
-        v21 = [v20 attributesAtIndex:objc_msgSend(v18 effectiveRange:{"rangeValue"), 0}];
+        textView = [(ICNoteEditorViewController *)self textView];
+        textStorage = [textView textStorage];
+        v21 = [textStorage attributesAtIndex:objc_msgSend(v18 effectiveRange:{"rangeValue"), 0}];
 
-        v22 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v55];
-        v23 = [v22 ic_range];
-        [v22 addAttributes:v21 range:{v23, v24}];
-        v25 = [v22 ic_range];
-        [v22 addAttribute:v53 value:v56 range:{v25, v26}];
-        v27 = [v22 ic_range];
-        [v22 removeAttribute:v52 range:{v27, v28}];
-        v29 = [(ICNoteEditorViewController *)self textView];
-        v30 = [v29 textStorage];
-        v31 = [v18 rangeValue];
+        v22 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:titleCopy];
+        ic_range = [v22 ic_range];
+        [v22 addAttributes:v21 range:{ic_range, v24}];
+        ic_range2 = [v22 ic_range];
+        [v22 addAttribute:v53 value:linkCopy range:{ic_range2, v26}];
+        ic_range3 = [v22 ic_range];
+        [v22 removeAttribute:v52 range:{ic_range3, v28}];
+        textView2 = [(ICNoteEditorViewController *)self textView];
+        textStorage2 = [textView2 textStorage];
+        rangeValue = [v18 rangeValue];
         v33 = v32;
         v58[0] = MEMORY[0x277D85DD0];
         v58[1] = 3221225472;
@@ -16258,22 +16258,22 @@ LABEL_12:
         v58[4] = v18;
         v34 = v22;
         v59 = v34;
-        [v30 enumerateAttribute:v51 inRange:v31 options:v33 usingBlock:{0, v58}];
+        [textStorage2 enumerateAttribute:v51 inRange:rangeValue options:v33 usingBlock:{0, v58}];
 
-        v35 = [(ICNoteEditorViewController *)self textView];
-        v36 = [v35 textStorage];
-        v37 = [v18 rangeValue];
+        textView3 = [(ICNoteEditorViewController *)self textView];
+        textStorage3 = [textView3 textStorage];
+        rangeValue2 = [v18 rangeValue];
         v39 = v38;
         v40 = [v34 copy];
-        [v36 replaceCharactersInRange:v37 withAttributedString:{v39, v40}];
+        [textStorage3 replaceCharactersInRange:rangeValue2 withAttributedString:{v39, v40}];
 
         [v18 rangeValue];
         if (v41)
         {
-          v42 = [v18 rangeValue];
+          rangeValue3 = [v18 rangeValue];
           v43 = [v34 length];
-          v44 = [(ICNoteEditorViewController *)self textView];
-          [v44 setSelectedRange:{v42, v43}];
+          textView4 = [(ICNoteEditorViewController *)self textView];
+          [textView4 setSelectedRange:{rangeValue3, v43}];
         }
 
         ++v17;
@@ -16286,12 +16286,12 @@ LABEL_12:
     while (v57);
   }
 
-  v45 = [(ICNoteEditorBaseViewController *)self note];
-  [v45 updateModificationDateAndChangeCountAndSaveImmediately];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  [note2 updateModificationDateAndChangeCountAndSaveImmediately];
 
-  v46 = [(ICNoteEditorViewController *)self eventReporter];
-  v47 = [(ICNoteEditorBaseViewController *)self note];
-  [v46 submitAddLinkEvent:v47 addApproach:a7 url:v56];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note3 = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitAddLinkEvent:note3 addApproach:approach url:linkCopy];
 
   [(ICNoteEditorViewController *)self startEditing];
 }
@@ -16307,13 +16307,13 @@ void __79__ICNoteEditorViewController_createLink_title_textSelection_range_addAp
   }
 }
 
-- (void)removeLinksFromTextSelection:(id)a3 range:(_NSRange)a4
+- (void)removeLinksFromTextSelection:(id)selection range:(_NSRange)range
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(ICNoteEditorBaseViewController *)self note];
-  v7 = [v6 mergeableString];
-  v8 = [v7 characterRangesForSelection:v5];
+  selectionCopy = selection;
+  note = [(ICNoteEditorBaseViewController *)self note];
+  mergeableString = [note mergeableString];
+  v8 = [mergeableString characterRangesForSelection:selectionCopy];
 
   v18 = 0u;
   v19 = 0u;
@@ -16335,8 +16335,8 @@ void __79__ICNoteEditorViewController_createLink_title_textSelection_range_addAp
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * v13) rangeValue];
-        [(ICNoteEditorViewController *)self removeLinksFromRange:v14, v15];
+        rangeValue = [*(*(&v16 + 1) + 8 * v13) rangeValue];
+        [(ICNoteEditorViewController *)self removeLinksFromRange:rangeValue, v15];
         ++v13;
       }
 
@@ -16348,63 +16348,63 @@ void __79__ICNoteEditorViewController_createLink_title_textSelection_range_addAp
   }
 }
 
-- (void)removeLinksFromRange:(_NSRange)a3
+- (void)removeLinksFromRange:(_NSRange)range
 {
-  location = a3.location;
-  if (a3.length)
+  location = range.location;
+  if (range.length)
   {
-    length = a3.length;
-    v6 = [(ICNoteEditorViewController *)self textStorage];
-    [v6 removeAttribute:*MEMORY[0x277D740E8] range:{location, length}];
+    length = range.length;
+    textStorage = [(ICNoteEditorViewController *)self textStorage];
+    [textStorage removeAttribute:*MEMORY[0x277D740E8] range:{location, length}];
 
-    v7 = [(ICNoteEditorViewController *)self textStorage];
+    textStorage2 = [(ICNoteEditorViewController *)self textStorage];
     v8 = *MEMORY[0x277D74060];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __51__ICNoteEditorViewController_removeLinksFromRange___block_invoke;
     v29[3] = &unk_2781AC5D8;
     v29[4] = self;
-    [v7 enumerateAttribute:v8 inRange:location options:length usingBlock:{0, v29}];
+    [textStorage2 enumerateAttribute:v8 inRange:location options:length usingBlock:{0, v29}];
   }
 
   else
   {
     v30 = xmmword_2154BBE70;
-    v9 = [(ICNoteEditorViewController *)self textStorage];
+    textStorage3 = [(ICNoteEditorViewController *)self textStorage];
     v10 = *MEMORY[0x277D740E8];
-    v11 = [(ICNoteEditorViewController *)self textStorage];
-    v12 = [v9 attribute:v10 atIndex:location longestEffectiveRange:&v30 inRange:{0, objc_msgSend(v11, "length")}];
+    textStorage4 = [(ICNoteEditorViewController *)self textStorage];
+    v12 = [textStorage3 attribute:v10 atIndex:location longestEffectiveRange:&v30 inRange:{0, objc_msgSend(textStorage4, "length")}];
 
     if (v30 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v13 = [(ICNoteEditorViewController *)self textView];
-      v14 = [v13 textStorage];
-      [v14 removeAttribute:v10 range:v30];
+      textView = [(ICNoteEditorViewController *)self textView];
+      textStorage5 = [textView textStorage];
+      [textStorage5 removeAttribute:v10 range:v30];
     }
 
-    v15 = [(ICNoteEditorViewController *)self textView];
-    v16 = [v15 textStorage];
-    v17 = [v16 attribute:*MEMORY[0x277D74060] atIndex:location effectiveRange:0];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    textStorage6 = [textView2 textStorage];
+    v17 = [textStorage6 attribute:*MEMORY[0x277D74060] atIndex:location effectiveRange:0];
 
     objc_opt_class();
     v18 = ICDynamicCast();
     v19 = v18;
     if (v18)
     {
-      v20 = [v18 attachment];
-      v21 = [(ICNoteEditorBaseViewController *)self note];
-      v22 = [v21 rangeForAttachment:v20];
+      attachment = [v18 attachment];
+      note = [(ICNoteEditorBaseViewController *)self note];
+      v22 = [note rangeForAttachment:attachment];
       v24 = v23;
 
-      v25 = [(ICNoteEditorViewController *)self textView];
-      v26 = [v25 textStorage];
-      v27 = [v20 displayText];
-      [v26 replaceCharactersInRange:v22 withString:{v24, v27}];
+      textView3 = [(ICNoteEditorViewController *)self textView];
+      textStorage7 = [textView3 textStorage];
+      displayText = [attachment displayText];
+      [textStorage7 replaceCharactersInRange:v22 withString:{v24, displayText}];
     }
   }
 
-  v28 = [(ICNoteEditorBaseViewController *)self note];
-  [v28 updateModificationDateAndChangeCountAndSaveImmediately];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  [note2 updateModificationDateAndChangeCountAndSaveImmediately];
 }
 
 void __51__ICNoteEditorViewController_removeLinksFromRange___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -16428,119 +16428,119 @@ void __51__ICNoteEditorViewController_removeLinksFromRange___block_invoke(uint64
 
 - (void)removeLinksFromCurrentSelection
 {
-  v3 = [(ICNoteEditorViewController *)self auxiliaryResponder];
+  auxiliaryResponder = [(ICNoteEditorViewController *)self auxiliaryResponder];
 
-  if (v3)
+  if (auxiliaryResponder)
   {
     objc_opt_class();
-    v4 = [(ICNoteEditorViewController *)self auxiliaryResponder];
-    v7 = ICDynamicCast();
+    auxiliaryResponder2 = [(ICNoteEditorViewController *)self auxiliaryResponder];
+    textView = ICDynamicCast();
 
-    [v7 removeLinksFromCurrentSelection];
+    [textView removeLinksFromCurrentSelection];
   }
 
   else
   {
-    v7 = [(ICNoteEditorViewController *)self textView];
-    v5 = [v7 selectedRange];
-    [(ICNoteEditorViewController *)self removeLinksFromRange:v5, v6];
+    textView = [(ICNoteEditorViewController *)self textView];
+    selectedRange = [textView selectedRange];
+    [(ICNoteEditorViewController *)self removeLinksFromRange:selectedRange, v6];
   }
 }
 
 - (void)linkEditorDidDismiss
 {
   [(ICNoteEditorViewController *)self setLinkEditorController:0];
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 isEditing];
+  textView = [(ICNoteEditorViewController *)self textView];
+  isEditing = [textView isEditing];
 
-  if ((v4 & 1) == 0)
+  if ((isEditing & 1) == 0)
   {
 
     [(ICNoteEditorViewController *)self startEditing];
   }
 }
 
-- (void)hashtagViewController:(id)a3 insertHashtagWithText:(id)a4
+- (void)hashtagViewController:(id)controller insertHashtagWithText:(id)text
 {
   v5 = MEMORY[0x277D35EF8];
-  v6 = a4;
-  v7 = [(ICNoteEditorBaseViewController *)self note];
-  v15 = [v5 createHashtagAttachmentIfApplicableWithHashtagText:v6 creatingHashtagIfNecessary:1 note:v7 parentAttachment:0];
+  textCopy = text;
+  note = [(ICNoteEditorBaseViewController *)self note];
+  v15 = [v5 createHashtagAttachmentIfApplicableWithHashtagText:textCopy creatingHashtagIfNecessary:1 note:note parentAttachment:0];
 
   if (v15)
   {
-    v8 = [(ICNoteEditorViewController *)self attachmentInsertionController];
-    v9 = [(ICNoteEditorViewController *)self textView];
-    v10 = [v9 selectedRange];
-    v12 = [v8 addInlineAttachment:v15 atTextRange:{v10, v11}];
+    attachmentInsertionController = [(ICNoteEditorViewController *)self attachmentInsertionController];
+    textView = [(ICNoteEditorViewController *)self textView];
+    selectedRange = [textView selectedRange];
+    v12 = [attachmentInsertionController addInlineAttachment:v15 atTextRange:{selectedRange, v11}];
 
     [v15 updateChangeCountWithReason:@"Created tag"];
-    v13 = [(ICNoteEditorBaseViewController *)self note];
-    [v13 updateChangeCountWithReason:@"Inserted tag"];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    [note2 updateChangeCountWithReason:@"Inserted tag"];
 
-    v14 = [(ICNoteEditorBaseViewController *)self note];
-    [v14 save];
+    note3 = [(ICNoteEditorBaseViewController *)self note];
+    [note3 save];
   }
 
   [(ICNoteEditorViewController *)self setEditing:1 animated:1];
 }
 
-- (void)hashtagViewController:(id)a3 insertUnknownInlineAttachmentWithText:(id)a4
+- (void)hashtagViewController:(id)controller insertUnknownInlineAttachmentWithText:(id)text
 {
   v5 = MEMORY[0x277D35EF8];
   v6 = *MEMORY[0x277D35D48];
-  v7 = a4;
+  textCopy = text;
   v8 = [v6 stringByAppendingString:@".unknown"];
-  v9 = [(ICNoteEditorBaseViewController *)self note];
-  v17 = [v5 createInlineAttachmentIfApplicableWithTypeUTI:v8 altText:v7 tokenContentIdentifier:v7 note:v9 parentAttachment:0];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  v17 = [v5 createInlineAttachmentIfApplicableWithTypeUTI:v8 altText:textCopy tokenContentIdentifier:textCopy note:note parentAttachment:0];
 
   if (v17)
   {
-    v10 = [(ICNoteEditorViewController *)self attachmentInsertionController];
-    v11 = [(ICNoteEditorViewController *)self textView];
-    v12 = [v11 selectedRange];
-    v14 = [v10 addInlineAttachment:v17 atTextRange:{v12, v13}];
+    attachmentInsertionController = [(ICNoteEditorViewController *)self attachmentInsertionController];
+    textView = [(ICNoteEditorViewController *)self textView];
+    selectedRange = [textView selectedRange];
+    v14 = [attachmentInsertionController addInlineAttachment:v17 atTextRange:{selectedRange, v13}];
 
     [v17 updateChangeCountWithReason:@"Created unknown inline attachment"];
-    v15 = [(ICNoteEditorBaseViewController *)self note];
-    [v15 updateChangeCountWithReason:@"Inserted unknown inline attachment"];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    [note2 updateChangeCountWithReason:@"Inserted unknown inline attachment"];
 
-    v16 = [(ICNoteEditorBaseViewController *)self note];
-    [v16 save];
+    note3 = [(ICNoteEditorBaseViewController *)self note];
+    [note3 save];
   }
 
   [(ICNoteEditorViewController *)self setEditing:1 animated:1];
 }
 
-- (void)hashtagViewController:(id)a3 insertFutureHashtagWithText:(id)a4
+- (void)hashtagViewController:(id)controller insertFutureHashtagWithText:(id)text
 {
   v5 = MEMORY[0x277D35EF8];
-  v6 = a4;
-  v7 = [(ICNoteEditorBaseViewController *)self note];
-  v15 = [v5 createHashtagAttachmentIfApplicableWithHashtagText:v6 creatingHashtagIfNecessary:1 note:v7 parentAttachment:0];
+  textCopy = text;
+  note = [(ICNoteEditorBaseViewController *)self note];
+  v15 = [v5 createHashtagAttachmentIfApplicableWithHashtagText:textCopy creatingHashtagIfNecessary:1 note:note parentAttachment:0];
 
   if (v15)
   {
     [v15 requireMinimumSupportedVersionAndPropagateToChildObjects:{objc_msgSend(MEMORY[0x277D35E80], "currentNotesVersion") + 1}];
-    v8 = [(ICNoteEditorViewController *)self attachmentInsertionController];
-    v9 = [(ICNoteEditorViewController *)self textView];
-    v10 = [v9 selectedRange];
-    v12 = [v8 addInlineAttachment:v15 atTextRange:{v10, v11}];
+    attachmentInsertionController = [(ICNoteEditorViewController *)self attachmentInsertionController];
+    textView = [(ICNoteEditorViewController *)self textView];
+    selectedRange = [textView selectedRange];
+    v12 = [attachmentInsertionController addInlineAttachment:v15 atTextRange:{selectedRange, v11}];
 
     [v15 updateChangeCountWithReason:@"Created tag from the future"];
-    v13 = [(ICNoteEditorBaseViewController *)self note];
-    [v13 updateChangeCountWithReason:@"Inserted tag from the future"];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    [note2 updateChangeCountWithReason:@"Inserted tag from the future"];
 
-    v14 = [(ICNoteEditorBaseViewController *)self note];
-    [v14 save];
+    note3 = [(ICNoteEditorBaseViewController *)self note];
+    [note3 save];
   }
 
   [(ICNoteEditorViewController *)self setEditing:1 animated:1];
 }
 
-- (void)decreaseIndentation:(id)a3
+- (void)decreaseIndentation:(id)indentation
 {
-  v4 = a3;
+  indentationCopy = indentation;
   [(ICNoteEditorViewController *)self indentSelectionIfPossibleByAmount:-1];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -16557,15 +16557,15 @@ void __51__ICNoteEditorViewController_removeLinksFromRange___block_invoke(uint64
       v6 = 13;
     }
 
-    v8 = [(ICNoteEditorViewController *)self eventReporter];
-    v7 = [(ICNoteEditorBaseViewController *)self note];
-    [v8 submitNoteEditorCallOutBarButtonSelectionEventForModernNote:v7 buttonTypeValue:v6];
+    eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    [eventReporter submitNoteEditorCallOutBarButtonSelectionEventForModernNote:note buttonTypeValue:v6];
   }
 }
 
-- (void)increaseIndentation:(id)a3
+- (void)increaseIndentation:(id)indentation
 {
-  v4 = a3;
+  indentationCopy = indentation;
   [(ICNoteEditorViewController *)self indentSelectionIfPossibleByAmount:1];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -16582,15 +16582,15 @@ void __51__ICNoteEditorViewController_removeLinksFromRange___block_invoke(uint64
       v6 = 12;
     }
 
-    v8 = [(ICNoteEditorViewController *)self eventReporter];
-    v7 = [(ICNoteEditorBaseViewController *)self note];
-    [v8 submitNoteEditorCallOutBarButtonSelectionEventForModernNote:v7 buttonTypeValue:v6];
+    eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    [eventReporter submitNoteEditorCallOutBarButtonSelectionEventForModernNote:note buttonTypeValue:v6];
   }
 }
 
-- (int64_t)indentAmountIncreasing:(BOOL)a3
+- (int64_t)indentAmountIncreasing:(BOOL)increasing
 {
-  if ([(ICNoteEditorViewController *)self currentWritingDirection]== !a3)
+  if ([(ICNoteEditorViewController *)self currentWritingDirection]== !increasing)
   {
     return 1;
   }
@@ -16615,28 +16615,28 @@ void __51__ICNoteEditorViewController_removeLinksFromRange___block_invoke(uint64
   return [(ICNoteEditorViewController *)self canIndentByAmount:v3];
 }
 
-- (void)indentSelectionIfPossibleByAmount:(int64_t)a3
+- (void)indentSelectionIfPossibleByAmount:(int64_t)amount
 {
   if ([(ICNoteEditorViewController *)self canIndentByAmount:?])
   {
-    v5 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-    if (v5)
+    if (auxiliaryStylingController)
     {
-      v6 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-      [v6 indentByamount:a3];
+      auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+      [auxiliaryStylingController2 indentByamount:amount];
     }
 
     else
     {
-      v7 = [(ICNoteEditorViewController *)self textView];
-      [v7 ic_indentByAmount:a3];
+      textView = [(ICNoteEditorViewController *)self textView];
+      [textView ic_indentByAmount:amount];
 
-      v6 = [(ICNoteEditorViewController *)self textView];
-      [(ICNoteEditorViewController *)self textViewDidChange:v6];
+      auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+      [(ICNoteEditorViewController *)self textViewDidChange:auxiliaryStylingController2];
     }
 
-    if (a3 > 0)
+    if (amount > 0)
     {
       v8 = 13;
     }
@@ -16646,9 +16646,9 @@ void __51__ICNoteEditorViewController_removeLinksFromRange___block_invoke(uint64
       v8 = 14;
     }
 
-    v9 = [(ICNoteEditorViewController *)self eventReporter];
-    v10 = [(ICNoteEditorBaseViewController *)self note];
-    [v9 submitStyleFormatEventForModernNote:v10 styleTypeValue:v8];
+    eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    [eventReporter submitStyleFormatEventForModernNote:note styleTypeValue:v8];
   }
 
   dispatchMainAfterDelay();
@@ -16660,28 +16660,28 @@ void __64__ICNoteEditorViewController_indentSelectionIfPossibleByAmount___block_
   [v1 icaxSpeakIndentationLevelForCurrentSelectedRange];
 }
 
-- (BOOL)canIndentByAmount:(int64_t)a3
+- (BOOL)canIndentByAmount:(int64_t)amount
 {
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  v6 = [v5 isEditable];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isEditable = [note isEditable];
 
-  if (!v6)
+  if (!isEditable)
   {
     return 0;
   }
 
-  v7 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v7)
+  if (auxiliaryStylingController)
   {
-    v8 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    v9 = [v8 canIndentByamount:a3];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    v9 = [auxiliaryStylingController2 canIndentByamount:amount];
   }
 
   else
   {
-    v8 = [(ICNoteEditorViewController *)self textView];
-    v9 = [v8 ic_canIndentByDelta:a3];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    v9 = [auxiliaryStylingController2 ic_canIndentByDelta:amount];
   }
 
   v10 = v9;
@@ -16689,85 +16689,85 @@ void __64__ICNoteEditorViewController_indentSelectionIfPossibleByAmount___block_
   return v10;
 }
 
-- (void)ic_alignLeft:(id)a3
+- (void)ic_alignLeft:(id)left
 {
-  v4 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v4)
+  if (auxiliaryStylingController)
   {
-    v5 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v5 setSelectionAlignment:0];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 setSelectionAlignment:0];
   }
 
   else
   {
-    v5 = [(ICNoteEditorViewController *)self textView];
-    [v5 ic_setTextAlignmentForCurrentSelection:0];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    [auxiliaryStylingController2 ic_setTextAlignmentForCurrentSelection:0];
   }
 }
 
-- (void)ic_alignCenter:(id)a3
+- (void)ic_alignCenter:(id)center
 {
-  v4 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v4)
+  if (auxiliaryStylingController)
   {
-    v5 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v5 setSelectionAlignment:1];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 setSelectionAlignment:1];
   }
 
   else
   {
-    v5 = [(ICNoteEditorViewController *)self textView];
-    [v5 ic_setTextAlignmentForCurrentSelection:1];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    [auxiliaryStylingController2 ic_setTextAlignmentForCurrentSelection:1];
   }
 }
 
-- (void)ic_alignRight:(id)a3
+- (void)ic_alignRight:(id)right
 {
-  v4 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+  auxiliaryStylingController = [(ICNoteEditorViewController *)self auxiliaryStylingController];
 
-  if (v4)
+  if (auxiliaryStylingController)
   {
-    v5 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
-    [v5 setSelectionAlignment:2];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self auxiliaryStylingController];
+    [auxiliaryStylingController2 setSelectionAlignment:2];
   }
 
   else
   {
-    v5 = [(ICNoteEditorViewController *)self textView];
-    [v5 ic_setTextAlignmentForCurrentSelection:2];
+    auxiliaryStylingController2 = [(ICNoteEditorViewController *)self textView];
+    [auxiliaryStylingController2 ic_setTextAlignmentForCurrentSelection:2];
   }
 }
 
-- (void)handleLeftOrRightSwipe:(id)a3
+- (void)handleLeftOrRightSwipe:(id)swipe
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = [(ICNoteEditorViewController *)self textController];
-  v7 = [(ICNoteEditorBaseViewController *)self note];
-  if ([v7 isEditable] && objc_msgSend(v4, "state") == 3)
+  swipeCopy = swipe;
+  textView = [(ICNoteEditorViewController *)self textView];
+  textController = [(ICNoteEditorViewController *)self textController];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if ([note isEditable] && objc_msgSend(swipeCopy, "state") == 3)
   {
-    v8 = [(ICNoteEditorViewController *)self attributionSidebarController];
-    v9 = [v8 attributionSidebarVisibility];
+    attributionSidebarController = [(ICNoteEditorViewController *)self attributionSidebarController];
+    attributionSidebarVisibility = [attributionSidebarController attributionSidebarVisibility];
 
-    if (!v9)
+    if (!attributionSidebarVisibility)
     {
-      [v4 locationInView:v5];
+      [swipeCopy locationInView:textView];
       v10 = [(ICNoteEditorViewController *)self rangeForIndentationGestureAtPoint:?];
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v12 = v10;
         v13 = v11;
-        if ([(ICNoteEditorViewController *)self isSwipeOnTodoItem:v4])
+        if ([(ICNoteEditorViewController *)self isSwipeOnTodoItem:swipeCopy])
         {
-          v14 = [v5 textStorage];
-          [v6 paragraphStyleForRange:v12 inTextView:v13 inTextStorage:{v5, v14}];
+          textStorage = [textView textStorage];
+          [textController paragraphStyleForRange:v12 inTextView:v13 inTextStorage:{textView, textStorage}];
 
           if (ICTTNamedStyleIsList())
           {
-            if ([v4 direction] == 1)
+            if ([swipeCopy direction] == 1)
             {
               v15 = 1;
             }
@@ -16777,8 +16777,8 @@ void __64__ICNoteEditorViewController_indentSelectionIfPossibleByAmount___block_
               v15 = -1;
             }
 
-            v16 = [v5 textStorage];
-            v17 = [v6 writingDirectionForRange:v12 inTextView:v13 inTextStorage:{v5, v16}];
+            textStorage2 = [textView textStorage];
+            v17 = [textController writingDirectionForRange:v12 inTextView:v13 inTextStorage:{textView, textStorage2}];
 
             if (v17 == 1)
             {
@@ -16793,7 +16793,7 @@ void __64__ICNoteEditorViewController_indentSelectionIfPossibleByAmount___block_
             v19 = [MEMORY[0x277CCAE60] valueWithRange:{v12, v13}];
             v30[0] = v19;
             v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
-            v21 = [v6 canIndentTextView:v5 byDelta:v18 forRanges:v20];
+            v21 = [textController canIndentTextView:textView byDelta:v18 forRanges:v20];
 
             if (v21)
             {
@@ -16803,10 +16803,10 @@ void __64__ICNoteEditorViewController_indentSelectionIfPossibleByAmount___block_
               v24[2] = __53__ICNoteEditorViewController_handleLeftOrRightSwipe___block_invoke;
               v24[3] = &unk_2781AD2A0;
               v24[4] = self;
-              v25 = v5;
+              v25 = textView;
               v27 = v12;
               v28 = v13;
-              v26 = v6;
+              v26 = textController;
               v29 = v18;
               v23 = [v22 scheduledTimerWithTimeInterval:0 repeats:v24 block:0.1];
             }
@@ -16852,26 +16852,26 @@ void __53__ICNoteEditorViewController_handleLeftOrRightSwipe___block_invoke(uint
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  beginCopy = begin;
   objc_opt_class();
   v5 = ICDynamicCast();
 
   if (v5)
   {
-    v6 = [(ICNoteEditorViewController *)self textView];
-    v7 = [(ICNoteEditorViewController *)self textController];
-    v8 = [(ICNoteEditorBaseViewController *)self note];
-    if ([v8 isEditable])
+    textView = [(ICNoteEditorViewController *)self textView];
+    textController = [(ICNoteEditorViewController *)self textController];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    if ([note isEditable])
     {
-      v9 = [(ICNoteEditorViewController *)self attributionSidebarController];
-      v10 = [v9 attributionSidebarVisibility];
+      attributionSidebarController = [(ICNoteEditorViewController *)self attributionSidebarController];
+      attributionSidebarVisibility = [attributionSidebarController attributionSidebarVisibility];
 
-      if (!v10)
+      if (!attributionSidebarVisibility)
       {
-        [v5 locationInView:v6];
+        [v5 locationInView:textView];
         v11 = [(ICNoteEditorViewController *)self rangeForIndentationGestureAtPoint:?];
         if (v11 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -16879,8 +16879,8 @@ void __53__ICNoteEditorViewController_handleLeftOrRightSwipe___block_invoke(uint
           v14 = v12;
           if ([(ICNoteEditorViewController *)self isSwipeOnTodoItem:v5])
           {
-            v15 = [v6 textStorage];
-            [v7 paragraphStyleForRange:v13 inTextView:v14 inTextStorage:{v6, v15}];
+            textStorage = [textView textStorage];
+            [textController paragraphStyleForRange:v13 inTextView:v14 inTextStorage:{textView, textStorage}];
 
             if (ICTTNamedStyleIsList())
             {
@@ -16894,8 +16894,8 @@ void __53__ICNoteEditorViewController_handleLeftOrRightSwipe___block_invoke(uint
                 v16 = -1;
               }
 
-              v17 = [v6 textStorage];
-              v18 = [v7 writingDirectionForRange:v13 inTextView:v14 inTextStorage:{v6, v17}];
+              textStorage2 = [textView textStorage];
+              v18 = [textController writingDirectionForRange:v13 inTextView:v14 inTextStorage:{textView, textStorage2}];
 
               if (v18 == 1)
               {
@@ -16910,7 +16910,7 @@ void __53__ICNoteEditorViewController_handleLeftOrRightSwipe___block_invoke(uint
               v20 = [MEMORY[0x277CCAE60] valueWithRange:{v13, v14}];
               v24[0] = v20;
               v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
-              v22 = [v7 canIndentTextView:v6 byDelta:v19 forRanges:v21];
+              v22 = [textController canIndentTextView:textView byDelta:v19 forRanges:v21];
 
               goto LABEL_17;
             }
@@ -16935,12 +16935,12 @@ LABEL_18:
   return v22;
 }
 
-- (_NSRange)rangeForIndentationGestureAtPoint:(CGPoint)a3
+- (_NSRange)rangeForIndentationGestureAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(ICNoteEditorViewController *)self textView];
-  v7 = [v6 characterRangeAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  textView = [(ICNoteEditorViewController *)self textView];
+  v7 = [textView characterRangeAtPoint:{x, y}];
 
   if (v7)
   {
@@ -16961,31 +16961,31 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)isPositionOnTodoItem:(CGPoint)a3
+- (BOOL)isPositionOnTodoItem:(CGPoint)item
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(ICNoteEditorViewController *)self textView];
-  v7 = [(ICNoteEditorViewController *)self textController];
-  v8 = [v6 characterRangeAtPoint:{x, y}];
+  y = item.y;
+  x = item.x;
+  textView = [(ICNoteEditorViewController *)self textView];
+  textController = [(ICNoteEditorViewController *)self textController];
+  v8 = [textView characterRangeAtPoint:{x, y}];
   if (v8)
   {
     v9 = [(ICNoteEditorViewController *)self charRangeForSwipeTextRange:v8];
     v11 = v10;
-    v12 = [v6 textStorage];
-    v13 = [v7 writingDirectionForRange:v9 inTextView:v11 inTextStorage:{v6, v12}];
+    textStorage = [textView textStorage];
+    v13 = [textController writingDirectionForRange:v9 inTextView:v11 inTextStorage:{textView, textStorage}];
 
     if (ICInternalSettingsIsTextKit2Enabled())
     {
-      v14 = [v6 textLayoutManager];
-      v15 = [v6 textLayoutManager];
-      v16 = [v15 documentRange];
-      [v16 location];
+      textLayoutManager = [textView textLayoutManager];
+      textLayoutManager2 = [textView textLayoutManager];
+      documentRange = [textLayoutManager2 documentRange];
+      [documentRange location];
       v17 = v33 = v13;
-      v18 = [v14 locationFromLocation:v17 withOffset:v9];
+      layoutManager = [textLayoutManager locationFromLocation:v17 withOffset:v9];
 
-      v19 = [v6 icTextLayoutManager];
-      v20 = [v19 textLayoutFragmentForLocation:v18];
+      icTextLayoutManager = [textView icTextLayoutManager];
+      v20 = [icTextLayoutManager textLayoutFragmentForLocation:layoutManager];
       [v20 layoutFragmentFrame];
       v22 = v21;
       v24 = v23;
@@ -16995,14 +16995,14 @@ LABEL_18:
 
     else
     {
-      v18 = [v6 layoutManager];
-      [v18 lineFragmentUsedRectForGlyphAtIndex:v9 effectiveRange:0];
+      layoutManager = [textView layoutManager];
+      [layoutManager lineFragmentUsedRectForGlyphAtIndex:v9 effectiveRange:0];
       v22 = v26;
       v24 = v27;
     }
 
-    [v6 textContainerInset];
-    [v6 textContainerInset];
+    [textView textContainerInset];
+    [textView textContainerInset];
     TSDAddPoints();
     v35.origin.x = v28 - dbl_2154BBFC0[v13 == 1];
     v35.size.width = v22 + 286.0;
@@ -17011,8 +17011,8 @@ LABEL_18:
     v34.x = x;
     v34.y = y;
     v30 = CGRectContainsPoint(v35, v34);
-    v31 = [v6 textStorage];
-    [v7 paragraphStyleForRange:v9 inTextView:v11 inTextStorage:{v6, v31}];
+    textStorage2 = [textView textStorage];
+    [textController paragraphStyleForRange:v9 inTextView:v11 inTextStorage:{textView, textStorage2}];
 
     v25 = v30 & ICTTNamedStyleIsList();
   }
@@ -17025,40 +17025,40 @@ LABEL_18:
   return v25;
 }
 
-- (BOOL)isSwipeOnTodoItem:(id)a3
+- (BOOL)isSwipeOnTodoItem:(id)item
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorViewController *)self textView];
-  [v4 locationInView:v5];
+  itemCopy = item;
+  textView = [(ICNoteEditorViewController *)self textView];
+  [itemCopy locationInView:textView];
   v7 = v6;
   v9 = v8;
 
   return [(ICNoteEditorViewController *)self isPositionOnTodoItem:v7, v9];
 }
 
-- (_NSRange)charRangeForSwipeTextRange:(id)a3
+- (_NSRange)charRangeForSwipeTextRange:(id)range
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = [v5 ic_characterRangeFromTextRange:v4];
+  rangeCopy = range;
+  textView = [(ICNoteEditorViewController *)self textView];
+  v6 = [textView ic_characterRangeFromTextRange:rangeCopy];
   v8 = v7;
 
   if (v8 == 1)
   {
-    v9 = [(ICNoteEditorViewController *)self textView];
-    v10 = [v9 textStorage];
-    v11 = [v10 attributedSubstringFromRange:{v6, 1}];
-    v12 = [v11 string];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    textStorage = [textView2 textStorage];
+    v11 = [textStorage attributedSubstringFromRange:{v6, 1}];
+    string = [v11 string];
 
-    v13 = [v12 characterAtIndex:0];
-    v14 = [MEMORY[0x277CCA900] newlineCharacterSet];
-    LODWORD(v13) = [v14 characterIsMember:v13];
+    v13 = [string characterAtIndex:0];
+    newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+    LODWORD(v13) = [newlineCharacterSet characterIsMember:v13];
 
     if (v13)
     {
-      v15 = [(ICNoteEditorViewController *)self textView];
-      v16 = [v15 textStorage];
-      [v16 ic_range];
+      textView3 = [(ICNoteEditorViewController *)self textView];
+      textStorage2 = [textView3 textStorage];
+      [textStorage2 ic_range];
       v6 = TSUClampRange();
       v8 = v17;
     }
@@ -17076,22 +17076,22 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICNoteEditorViewController *)self swipeGestureRecognizers];
-  v9 = [v8 containsObject:v6];
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  swipeGestureRecognizers = [(ICNoteEditorViewController *)self swipeGestureRecognizers];
+  v9 = [swipeGestureRecognizers containsObject:recognizerCopy];
 
   if (v9)
   {
-    v10 = [(ICNoteEditorViewController *)self splitViewController];
-    v11 = [v10 displayMode];
+    splitViewController = [(ICNoteEditorViewController *)self splitViewController];
+    displayMode = [splitViewController displayMode];
 
-    if (v11 == 1)
+    if (displayMode == 1)
     {
-      v12 = [(ICNoteEditorViewController *)self view];
-      [v7 locationInView:v12];
+      view = [(ICNoteEditorViewController *)self view];
+      [touchCopy locationInView:view];
       v14 = v13 > 44.0;
 LABEL_21:
 
@@ -17101,25 +17101,25 @@ LABEL_21:
     goto LABEL_5;
   }
 
-  v15 = [(ICNoteEditorViewController *)self attributionSidebarController];
-  v16 = [v15 panGestureRecognizer];
+  attributionSidebarController = [(ICNoteEditorViewController *)self attributionSidebarController];
+  panGestureRecognizer = [attributionSidebarController panGestureRecognizer];
 
-  if (v16 != v6)
+  if (panGestureRecognizer != recognizerCopy)
   {
 LABEL_5:
     v14 = 1;
     goto LABEL_22;
   }
 
-  v12 = [v7 view];
+  view = [touchCopy view];
   NSClassFromString(&cfstr_Icpaperdocumen.isa);
-  if (v12)
+  if (view)
   {
     while (1)
     {
-      v17 = [(ICNoteEditorViewController *)self textView];
+      textView = [(ICNoteEditorViewController *)self textView];
 
-      if (v12 == v17)
+      if (view == textView)
       {
 LABEL_10:
 
@@ -17131,10 +17131,10 @@ LABEL_10:
         break;
       }
 
-      v18 = [v12 superview];
+      superview = [view superview];
 
-      v12 = v18;
-      if (!v18)
+      view = superview;
+      if (!superview)
       {
         goto LABEL_10;
       }
@@ -17147,18 +17147,18 @@ LABEL_10:
 LABEL_11:
   if (![(ICNoteEditorViewController *)self isInkPickerShowing])
   {
-    v12 = [(ICNoteEditorViewController *)self textView];
-    v19 = [v12 ic_pkSelectionInteraction];
-    if ([v19 hasCurrentSelection])
+    view = [(ICNoteEditorViewController *)self textView];
+    ic_pkSelectionInteraction = [view ic_pkSelectionInteraction];
+    if ([ic_pkSelectionInteraction hasCurrentSelection])
     {
       v14 = 0;
     }
 
     else
     {
-      v20 = [(ICNoteEditorViewController *)self textView];
-      v21 = [v20 ic_pkSelectionInteraction];
-      v14 = ([v21 hasStrokesOrElementsSelection] & 1) == 0 && objc_msgSend(v7, "type") == 0;
+      textView2 = [(ICNoteEditorViewController *)self textView];
+      ic_pkSelectionInteraction2 = [textView2 ic_pkSelectionInteraction];
+      v14 = ([ic_pkSelectionInteraction2 hasStrokesOrElementsSelection] & 1) == 0 && objc_msgSend(touchCopy, "type") == 0;
     }
 
     goto LABEL_21;
@@ -17170,28 +17170,28 @@ LABEL_22:
   return v14;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICNoteEditorViewController *)self attributionSidebarController];
-  v9 = [v8 panGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  attributionSidebarController = [(ICNoteEditorViewController *)self attributionSidebarController];
+  panGestureRecognizer = [attributionSidebarController panGestureRecognizer];
 
-  if (v9 != v7)
+  if (panGestureRecognizer != recognizerCopy)
   {
 LABEL_12:
     v17 = 0;
     goto LABEL_13;
   }
 
-  v10 = [v6 view];
-  v11 = [(ICNoteEditorViewController *)self textView];
-  if (v10 == v11)
+  view = [gestureRecognizerCopy view];
+  textView = [(ICNoteEditorViewController *)self textView];
+  if (view == textView)
   {
     goto LABEL_10;
   }
 
-  v12 = [v6 view];
+  view2 = [gestureRecognizerCopy view];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -17199,17 +17199,17 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v13 = [v6 view];
-  v14 = [v13 panGestureRecognizer];
+  view3 = [gestureRecognizerCopy view];
+  panGestureRecognizer2 = [view3 panGestureRecognizer];
 
-  if (v14 != v6)
+  if (panGestureRecognizer2 != gestureRecognizerCopy)
   {
     goto LABEL_11;
   }
 
-  v10 = [v6 view];
-  v11 = v6;
-  [v11 velocityInView:v10];
+  view = [gestureRecognizerCopy view];
+  textView = gestureRecognizerCopy;
+  [textView velocityInView:view];
   if (v15 <= 0.0)
   {
 LABEL_10:
@@ -17217,12 +17217,12 @@ LABEL_10:
 LABEL_11:
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v19 = [v6 view];
+    view4 = [gestureRecognizerCopy view];
     objc_opt_class();
     v20 = objc_opt_isKindOfClass();
 
-    v21 = [v6 className];
-    v22 = [v21 isEqualToString:@"UITextRangeAdjustmentGestureRecognizer"];
+    className = [gestureRecognizerCopy className];
+    v22 = [className isEqualToString:@"UITextRangeAdjustmentGestureRecognizer"];
 
     if ((isKindOfClass & 1) == 0)
     {
@@ -17233,25 +17233,25 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  [v10 contentOffset];
+  [view contentOffset];
   v17 = v16 <= 0.0;
   if (v16 <= 0.0)
   {
-    [v11 setState:4];
-    [v10 contentOffset];
-    [v10 setContentOffset:1 animated:0.0];
+    [textView setState:4];
+    [view contentOffset];
+    [view setContentOffset:1 animated:0.0];
   }
 
 LABEL_13:
   return v17 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICNoteEditorViewController *)self swipeGestureRecognizers];
-  if ([v8 containsObject:v6])
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  swipeGestureRecognizers = [(ICNoteEditorViewController *)self swipeGestureRecognizers];
+  if ([swipeGestureRecognizers containsObject:recognizerCopy])
   {
 
 LABEL_5:
@@ -17262,10 +17262,10 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [(ICNoteEditorViewController *)self attributionSidebarController];
-  v10 = [v9 panGestureRecognizer];
+  attributionSidebarController = [(ICNoteEditorViewController *)self attributionSidebarController];
+  panGestureRecognizer = [attributionSidebarController panGestureRecognizer];
 
-  if (v10 == v6)
+  if (panGestureRecognizer == recognizerCopy)
   {
     goto LABEL_5;
   }
@@ -17276,26 +17276,26 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICNoteEditorViewController *)self navigationController];
-  v9 = [v8 interactiveContentPopGestureRecognizer];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  navigationController = [(ICNoteEditorViewController *)self navigationController];
+  interactiveContentPopGestureRecognizer = [navigationController interactiveContentPopGestureRecognizer];
 
-  if (v9 == v7)
+  if (interactiveContentPopGestureRecognizer == gestureRecognizerCopy)
   {
-    v11 = [(ICNoteEditorViewController *)self swipeGestureRecognizers];
-    if ([v11 containsObject:v6])
+    swipeGestureRecognizers = [(ICNoteEditorViewController *)self swipeGestureRecognizers];
+    if ([swipeGestureRecognizers containsObject:recognizerCopy])
     {
       v10 = 1;
     }
 
     else
     {
-      v12 = [(ICNoteEditorViewController *)self attributionSidebarController];
-      v13 = [v12 panGestureRecognizer];
-      v10 = v13 == v6;
+      attributionSidebarController = [(ICNoteEditorViewController *)self attributionSidebarController];
+      panGestureRecognizer = [attributionSidebarController panGestureRecognizer];
+      v10 = panGestureRecognizer == recognizerCopy;
     }
   }
 
@@ -17307,11 +17307,11 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)textViewShouldBeginEditing:(id)a3
+- (BOOL)textViewShouldBeginEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   objc_opt_class();
-  v5 = [v4 textStorage];
+  textStorage = [editingCopy textStorage];
 
   v6 = ICDynamicCast();
 
@@ -17325,17 +17325,17 @@ LABEL_6:
     LOBYTE(v7) = 1;
   }
 
-  v8 = [(ICNoteEditorBaseViewController *)self note];
-  v9 = [v8 isEditable];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isEditable = [note isEditable];
 
-  if ((v9 & 1) == 0)
+  if ((isEditable & 1) == 0)
   {
-    v10 = [(ICNoteEditorBaseViewController *)self note];
-    if ([v10 isDeletedOrInTrash])
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    if ([note2 isDeletedOrInTrash])
     {
-      v11 = [(ICNoteEditorViewController *)self isTogglingLock];
+      isTogglingLock = [(ICNoteEditorViewController *)self isTogglingLock];
 
-      if (!v11)
+      if (!isTogglingLock)
       {
         [(ICNoteEditorViewController *)self showRecoverNoteAlert];
       }
@@ -17351,38 +17351,38 @@ LABEL_6:
   return v7;
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
-  v22 = a3;
+  editingCopy = editing;
   [MEMORY[0x277D35E88] prefetchHashtagDisplayTextsFromOtherApps];
   [(ICNoteEditorViewController *)self setEditing:1];
-  v4 = [(ICNoteEditorBaseViewController *)self note];
+  note = [(ICNoteEditorBaseViewController *)self note];
 
-  if (v4)
+  if (note)
   {
-    v5 = [(ICNoteEditorViewController *)self updateNoteUserActivityStateDelayer];
-    [v5 requestFire];
+    updateNoteUserActivityStateDelayer = [(ICNoteEditorViewController *)self updateNoteUserActivityStateDelayer];
+    [updateNoteUserActivityStateDelayer requestFire];
   }
 
   else
   {
     v6 = MEMORY[0x277D35F28];
-    v7 = [(ICNoteEditorViewController *)self noteContext];
-    v8 = [v7 managedObjectContext];
-    v9 = [v6 newEmptyNoteInContext:v8];
+    noteContext = [(ICNoteEditorViewController *)self noteContext];
+    managedObjectContext = [noteContext managedObjectContext];
+    v9 = [v6 newEmptyNoteInContext:managedObjectContext];
     [(ICNoteEditorViewController *)self setNote:v9];
 
     [(ICNoteEditorViewController *)self performSelector:sel_startEditing withObject:0 afterDelay:0.0];
   }
 
-  v10 = [(ICNoteEditorViewController *)self textController];
-  v11 = [v22 selectedRange];
+  textController = [(ICNoteEditorViewController *)self textController];
+  selectedRange = [editingCopy selectedRange];
   v13 = v12;
-  v14 = [(ICNoteEditorViewController *)self isLoadingStyleSelectorInputView];
-  v15 = [v22 typingAttributes];
-  v16 = [(ICNoteEditorViewController *)self textStorage];
-  v17 = [v10 typingAttributesForRange:v11 forSelectionChange:v13 currentTypingAttributes:!v14 inTextStorage:{v15, v16}];
-  [v22 setTypingAttributes:v17];
+  isLoadingStyleSelectorInputView = [(ICNoteEditorViewController *)self isLoadingStyleSelectorInputView];
+  typingAttributes = [editingCopy typingAttributes];
+  textStorage = [(ICNoteEditorViewController *)self textStorage];
+  v17 = [textController typingAttributesForRange:selectedRange forSelectionChange:v13 currentTypingAttributes:!isLoadingStyleSelectorInputView inTextStorage:{typingAttributes, textStorage}];
+  [editingCopy setTypingAttributes:v17];
 
   [(ICNoteEditorViewController *)self textViewScrollIndicatorBottomInsetOverrideToRestore];
   if (v18 > 0.0)
@@ -17393,16 +17393,16 @@ LABEL_6:
   }
 
   [(ICNoteEditorViewController *)self setInkPickerState:2];
-  v19 = [(ICNoteEditorViewController *)self textView];
-  v20 = [v19 ink];
-  v21 = [v20 _isHandwritingInk];
+  textView = [(ICNoteEditorViewController *)self textView];
+  v20 = [textView ink];
+  _isHandwritingInk = [v20 _isHandwritingInk];
 
-  if ((v21 & 1) == 0)
+  if ((_isHandwritingInk & 1) == 0)
   {
     [(ICNoteEditorViewController *)self hideInkPicker];
   }
 
-  [(ICNoteEditorViewController *)self updateTextInputAccessoryViewForDidBeginEditing:v22];
+  [(ICNoteEditorViewController *)self updateTextInputAccessoryViewForDidBeginEditing:editingCopy];
   [(ICNoteEditorViewController *)self updateStyleSelectorStateIfNeededIgnoreTypingAttributes:0];
   [(ICNoteEditorViewController *)self updateBarButtonsAnimated:1];
   if (objc_opt_respondsToSelector())
@@ -17411,12 +17411,12 @@ LABEL_6:
   }
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v10 = a3;
-  v4 = [(ICNoteEditorViewController *)self auxiliaryResponder];
+  editingCopy = editing;
+  auxiliaryResponder = [(ICNoteEditorViewController *)self auxiliaryResponder];
 
-  if (!v4)
+  if (!auxiliaryResponder)
   {
     if ([(ICNoteEditorViewController *)self inkPickerState]== 1)
     {
@@ -17429,25 +17429,25 @@ LABEL_6:
     }
 
     [(ICNoteEditorViewController *)self showOrHideActivityStreamToolbarIfNeeded];
-    [(ICNoteEditorViewController *)self updateTextInputAccessoryViewForDidEndEditing:v10];
-    v5 = [(ICNoteEditorViewController *)self calculateRecognitionController];
-    [v5 discardPreviewedResult];
+    [(ICNoteEditorViewController *)self updateTextInputAccessoryViewForDidEndEditing:editingCopy];
+    calculateRecognitionController = [(ICNoteEditorViewController *)self calculateRecognitionController];
+    [calculateRecognitionController discardPreviewedResult];
 
-    v6 = [(ICNoteEditorViewController *)self calculateScrubberController];
+    calculateScrubberController = [(ICNoteEditorViewController *)self calculateScrubberController];
 
-    if (v6)
+    if (calculateScrubberController)
     {
-      v7 = [(ICNoteEditorViewController *)self calculateScrubberController];
-      [v7 hideScrubber];
+      calculateScrubberController2 = [(ICNoteEditorViewController *)self calculateScrubberController];
+      [calculateScrubberController2 hideScrubber];
     }
 
     [(ICNoteEditorViewController *)self setEditing:0];
-    v8 = [(ICNoteEditorViewController *)self updateNoteUserActivityStateDelayer];
-    [v8 requestFire];
+    updateNoteUserActivityStateDelayer = [(ICNoteEditorViewController *)self updateNoteUserActivityStateDelayer];
+    [updateNoteUserActivityStateDelayer requestFire];
 
     [(ICNoteEditorViewController *)self didEndEditingNote];
-    v9 = [(ICNoteEditorViewController *)self textView];
-    [v9 setEditable:0];
+    textView = [(ICNoteEditorViewController *)self textView];
+    [textView setEditable:0];
 
     [(ICNoteEditorViewController *)self updateTextViewContentInsetsAnimated:1];
   }
@@ -17458,8 +17458,8 @@ LABEL_6:
 
 - (double)textViewScrollPosition
 {
-  v2 = [(ICNoteEditorViewController *)self textView];
-  [v2 contentOffset];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView contentOffset];
   v4 = v3;
 
   return v4;
@@ -17467,149 +17467,149 @@ LABEL_6:
 
 - (_NSRange)textViewVisibleRange
 {
-  v2 = [(ICNoteEditorViewController *)self textView];
-  v3 = [v2 ic_visibleRange];
+  textView = [(ICNoteEditorViewController *)self textView];
+  ic_visibleRange = [textView ic_visibleRange];
   v5 = v4;
 
-  v6 = v3;
+  v6 = ic_visibleRange;
   v7 = v5;
   result.length = v7;
   result.location = v6;
   return result;
 }
 
-- (void)restoreTextViewScrollPosition:(double)a3
+- (void)restoreTextViewScrollPosition:(double)position
 {
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    v5 = [(ICNoteEditorViewController *)self textView];
-    v6 = [v5 layoutManager];
-    v7 = [(ICNoteEditorViewController *)self textView];
-    v8 = [v7 textContainer];
-    [v6 ensureLayoutForTextContainer:v8];
+    textView = [(ICNoteEditorViewController *)self textView];
+    layoutManager = [textView layoutManager];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    textContainer = [textView2 textContainer];
+    [layoutManager ensureLayoutForTextContainer:textContainer];
   }
 
-  v9 = [(ICNoteEditorViewController *)self textView];
-  [v9 contentOffset];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  [textView3 contentOffset];
   v11 = v10;
 
-  v12 = [(ICNoteEditorViewController *)self textView];
-  [v12 setClippedContentOffset:{v11, a3}];
+  textView4 = [(ICNoteEditorViewController *)self textView];
+  [textView4 setClippedContentOffset:{v11, position}];
 }
 
-- (void)restoreTextViewVisibleRange:(_NSRange)a3 animated:(BOOL)a4
+- (void)restoreTextViewVisibleRange:(_NSRange)range animated:(BOOL)animated
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    v7 = [(ICNoteEditorViewController *)self textView];
-    v8 = [v7 layoutManager];
-    v9 = [(ICNoteEditorViewController *)self textView];
-    v10 = [v9 textContainer];
-    [v8 ensureLayoutForTextContainer:v10];
+    textView = [(ICNoteEditorViewController *)self textView];
+    layoutManager = [textView layoutManager];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    textContainer = [textView2 textContainer];
+    [layoutManager ensureLayoutForTextContainer:textContainer];
   }
 
-  v11 = [(ICNoteEditorViewController *)self textView];
-  [v11 ic_scrollRangeToVisible:location consideringInsets:length animated:{1, 0}];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  [textView3 ic_scrollRangeToVisible:location consideringInsets:length animated:{1, 0}];
 }
 
 - (BOOL)wantsToRemainFirstResponder
 {
   if (-[ICNoteEditorViewController isViewLoaded](self, "isViewLoaded") && ((-[ICNoteEditorViewController isEditing](self, "isEditing") & 1) != 0 || (-[ICNoteEditorViewController textView](self, "textView"), v3 = objc_claimAutoreleasedReturnValue(), [v3 selectedTextRange], v4 = objc_claimAutoreleasedReturnValue(), v3, v4) && (v5 = objc_msgSend(v4, "isEmpty"), v4, !v5)) || (-[ICNoteEditorViewController textView](self, "textView"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "findInteraction"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isFindNavigatorVisible"), v7, v6, (v8 & 1) != 0))
   {
-    LOBYTE(v9) = 1;
+    LOBYTE(isInkPickerShowing) = 1;
   }
 
   else
   {
-    v9 = [(ICNoteEditorViewController *)self isInkPickerShowing];
-    if (v9)
+    isInkPickerShowing = [(ICNoteEditorViewController *)self isInkPickerShowing];
+    if (isInkPickerShowing)
     {
 
-      LOBYTE(v9) = [(ICNoteEditorViewController *)self ic_isViewVisible];
+      LOBYTE(isInkPickerShowing) = [(ICNoteEditorViewController *)self ic_isViewVisible];
     }
   }
 
-  return v9;
+  return isInkPickerShowing;
 }
 
 - (ICTTTextStorage)textStorage
 {
   objc_opt_class();
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 textStorage];
+  textView = [(ICNoteEditorViewController *)self textView];
+  textStorage = [textView textStorage];
   v5 = ICCheckedDynamicCast();
 
   return v5;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v30 = a3;
-  v4 = [(ICNoteEditorViewController *)self textStorage];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  v6 = [v5 textStorageWithoutCreating];
+  changeCopy = change;
+  textStorage = [(ICNoteEditorViewController *)self textStorage];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  textStorageWithoutCreating = [note textStorageWithoutCreating];
 
-  if (v4 != v6)
+  if (textStorage != textStorageWithoutCreating)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"The text storage set on the editor does not match the text storage on the note"];
   }
 
-  v7 = [(ICNoteEditorViewController *)self ic_topViewController];
-  v8 = [v7 modalPresentationStyle];
+  ic_topViewController = [(ICNoteEditorViewController *)self ic_topViewController];
+  modalPresentationStyle = [ic_topViewController modalPresentationStyle];
 
-  if (v8 == 7)
+  if (modalPresentationStyle == 7)
   {
-    v9 = [(ICNoteEditorViewController *)self viewControllerManager];
-    [v9 dismissOverlayContent];
+    viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+    [viewControllerManager dismissOverlayContent];
   }
 
-  [v30 updateTextViewForDidChange];
+  [changeCopy updateTextViewForDidChange];
   [(ICNoteEditorViewController *)self setIsSelecting:0];
   [(ICNoteEditorViewController *)self updateTextViewContentInsetsAnimated:1];
-  v10 = [(ICNoteEditorBaseViewController *)self note];
-  [v10 updateModificationDateAndChangeCountAndSaveAfterDelay];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  [note2 updateModificationDateAndChangeCountAndSaveAfterDelay];
 
-  v11 = [(ICNoteEditorViewController *)self textStorage];
-  v12 = [v11 isEditingOrConvertingMarkedText:0];
+  textStorage2 = [(ICNoteEditorViewController *)self textStorage];
+  v12 = [textStorage2 isEditingOrConvertingMarkedText:0];
 
   if (![(ICNoteEditorViewController *)self previouslyHadMarkedText])
   {
     if (v12)
     {
-      v13 = [(ICNoteEditorViewController *)self textView];
-      v14 = [v13 markedTextRange];
+      textView = [(ICNoteEditorViewController *)self textView];
+      markedTextRange = [textView markedTextRange];
 
-      if (v14)
+      if (markedTextRange)
       {
-        v15 = [(ICNoteEditorViewController *)self textView];
-        v16 = [(ICNoteEditorViewController *)self textView];
-        v17 = [v16 markedTextRange];
-        v18 = [v15 ic_characterRangeFromTextRange:v17];
+        textView2 = [(ICNoteEditorViewController *)self textView];
+        textView3 = [(ICNoteEditorViewController *)self textView];
+        markedTextRange2 = [textView3 markedTextRange];
+        v18 = [textView2 ic_characterRangeFromTextRange:markedTextRange2];
         v20 = v19;
 
-        v21 = [(ICNoteEditorViewController *)self textController];
-        v22 = [(ICNoteEditorViewController *)self textView];
-        v23 = [v22 TTTextStorage];
-        v24 = [(ICNoteEditorViewController *)self textView];
-        [v21 updateParagraphWritingDirectionToKeyboardWritingDirectionInRange:v18 textStorage:v20 textView:{v23, v24}];
+        textController = [(ICNoteEditorViewController *)self textController];
+        textView4 = [(ICNoteEditorViewController *)self textView];
+        tTTextStorage = [textView4 TTTextStorage];
+        textView5 = [(ICNoteEditorViewController *)self textView];
+        [textController updateParagraphWritingDirectionToKeyboardWritingDirectionInRange:v18 textStorage:v20 textView:{tTTextStorage, textView5}];
       }
     }
   }
 
-  v25 = [(ICNoteEditorViewController *)self calculateScrubberController];
-  [v25 hideIfNotScrubbing];
+  calculateScrubberController = [(ICNoteEditorViewController *)self calculateScrubberController];
+  [calculateScrubberController hideIfNotScrubbing];
 
   [(ICNoteEditorViewController *)self setPreviouslyHadMarkedText:v12];
   [(ICNoteEditorViewController *)self setHasMadeEdits];
-  v26 = [(ICNoteEditorBaseViewController *)self note];
-  v27 = [v26 calculateDocumentController];
-  [v27 scheduleUpdateAffectingChangeCounts:1 isHighPriority:0];
+  note3 = [(ICNoteEditorBaseViewController *)self note];
+  calculateDocumentController = [note3 calculateDocumentController];
+  [calculateDocumentController scheduleUpdateAffectingChangeCounts:1 isHighPriority:0];
 
-  v28 = [(ICNoteEditorViewController *)self inkPaletteController];
+  inkPaletteController = [(ICNoteEditorViewController *)self inkPaletteController];
 
-  if (v28)
+  if (inkPaletteController)
   {
     [(ICNoteEditorViewController *)self ensureValidInkForNewDrawingOrNote];
   }
@@ -17619,20 +17619,20 @@ LABEL_6:
     [(ICNoteEditorViewController *)self ppt_textViewDidChange];
   }
 
-  v29 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v29 postNotificationName:@"ICNoteEditorViewControllerDidEditNoteNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ICNoteEditorViewControllerDidEditNoteNotification" object:self];
 }
 
 - (void)setHasMadeEdits
 {
-  v3 = [(ICNoteEditorViewController *)self auxiliaryResponder];
-  if ([v3 isFirstResponder])
+  auxiliaryResponder = [(ICNoteEditorViewController *)self auxiliaryResponder];
+  if ([auxiliaryResponder isFirstResponder])
   {
     objc_opt_class();
-    v4 = [(ICNoteEditorViewController *)self auxiliaryResponder];
-    v5 = ICDynamicCast();
+    auxiliaryResponder2 = [(ICNoteEditorViewController *)self auxiliaryResponder];
+    textView = ICDynamicCast();
 
-    if (v5)
+    if (textView)
     {
       goto LABEL_6;
     }
@@ -17642,9 +17642,9 @@ LABEL_6:
   {
   }
 
-  v5 = [(ICNoteEditorViewController *)self textView];
+  textView = [(ICNoteEditorViewController *)self textView];
 LABEL_6:
-  [(ICNoteEditorViewController *)self updateTextInputAccessoryViewForTextViewDidChange:v5];
+  [(ICNoteEditorViewController *)self updateTextInputAccessoryViewForTextViewDidChange:textView];
 
   if (![(ICNoteEditorViewController *)self hasMadeEdits])
   {
@@ -17654,25 +17654,25 @@ LABEL_6:
   }
 }
 
-- (void)updateStyleSelectorStateIfNeededIgnoreTypingAttributes:(BOOL)a3
+- (void)updateStyleSelectorStateIfNeededIgnoreTypingAttributes:(BOOL)attributes
 {
-  v3 = a3;
-  v5 = [(ICNoteEditorViewController *)self noteFormattingController];
-  v6 = [v5 popoverPresentationController];
+  attributesCopy = attributes;
+  noteFormattingController = [(ICNoteEditorViewController *)self noteFormattingController];
+  popoverPresentationController = [noteFormattingController popoverPresentationController];
 
-  if (v6)
+  if (popoverPresentationController)
   {
-    v7 = [(ICNoteEditorViewController *)self noteFormattingController];
-    v8 = [v7 popoverPresentationController];
-    v9 = [v8 presentingViewController];
+    noteFormattingController2 = [(ICNoteEditorViewController *)self noteFormattingController];
+    popoverPresentationController2 = [noteFormattingController2 popoverPresentationController];
+    presentingViewController = [popoverPresentationController2 presentingViewController];
 
-    if (!v9)
+    if (!presentingViewController)
     {
 LABEL_5:
-      v10 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-      v11 = [v10 usesStyleMenu];
+      navigationItemConfiguration = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+      usesStyleMenu = [navigationItemConfiguration usesStyleMenu];
 
-      if (!v11)
+      if (!usesStyleMenu)
       {
         return;
       }
@@ -17684,25 +17684,25 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v12 = [(ICNoteEditorViewController *)self noteFormattingController];
-  [v12 updateWithDataSource:self ignoreTypingAttributes:v3];
+  noteFormattingController3 = [(ICNoteEditorViewController *)self noteFormattingController];
+  [noteFormattingController3 updateWithDataSource:self ignoreTypingAttributes:attributesCopy];
 }
 
-- (void)selectDrawingAttachmentIfNeeded:(id)a3
+- (void)selectDrawingAttachmentIfNeeded:(id)needed
 {
-  v12 = a3;
+  neededCopy = needed;
   objc_opt_class();
   v4 = ICCheckedDynamicCast();
   [v4 setTextSelectionHidden:0];
-  v5 = [(ICNoteEditorViewController *)self selectedCanvasAttachment];
-  v6 = [v12 window];
-  [v5 setViewSelected:0 inWindow:v6];
+  selectedCanvasAttachment = [(ICNoteEditorViewController *)self selectedCanvasAttachment];
+  window = [neededCopy window];
+  [selectedCanvasAttachment setViewSelected:0 inWindow:window];
 
-  [v12 selectedRange];
+  [neededCopy selectedRange];
   if (v7 == 1)
   {
-    v8 = [v12 textStorage];
-    v9 = [v8 attribute:*MEMORY[0x277D74060] atIndex:objc_msgSend(v12 effectiveRange:{"selectedRange"), 0}];
+    textStorage = [neededCopy textStorage];
+    v9 = [textStorage attribute:*MEMORY[0x277D74060] atIndex:objc_msgSend(neededCopy effectiveRange:{"selectedRange"), 0}];
 
     objc_opt_class();
     v10 = ICDynamicCast();
@@ -17710,28 +17710,28 @@ LABEL_5:
     if ((objc_opt_isKindOfClass() & 1) == 0 && v10)
     {
       [(ICNoteEditorViewController *)self setSelectedCanvasAttachment:v10];
-      v11 = [v12 window];
-      [v10 setViewSelected:1 inWindow:v11];
+      window2 = [neededCopy window];
+      [v10 setViewSelected:1 inWindow:window2];
 
       [v4 setTextSelectionHidden:1];
     }
   }
 }
 
-- (void)textViewDidChangeSelection:(id)a3
+- (void)textViewDidChangeSelection:(id)selection
 {
   v59[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 selectedRange];
+  selectionCopy = selection;
+  selectedRange = [selectionCopy selectedRange];
   v7 = v6;
-  if (v5 != [(ICNoteEditorViewController *)self lastSelectedRange]|| v7 != v8)
+  if (selectedRange != [(ICNoteEditorViewController *)self lastSelectedRange]|| v7 != v8)
   {
-    v9 = [MEMORY[0x277D35E50] sharedState];
-    [v9 extendDeauthenticationTimer];
+    mEMORY[0x277D35E50] = [MEMORY[0x277D35E50] sharedState];
+    [mEMORY[0x277D35E50] extendDeauthenticationTimer];
 
     if (![(ICNoteEditorViewController *)self isSelecting])
     {
-      [v4 selectedRange];
+      [selectionCopy selectedRange];
       if (v10)
       {
         [(ICNoteEditorViewController *)self setIsSelecting:1];
@@ -17742,115 +17742,115 @@ LABEL_5:
     if (![(ICNoteEditorViewController *)self isSettingSelection])
     {
       [(ICNoteEditorViewController *)self setIsSettingSelection:1];
-      v11 = [(ICNoteEditorViewController *)self textController];
-      v12 = [v4 selectedRange];
+      textController = [(ICNoteEditorViewController *)self textController];
+      selectedRange2 = [selectionCopy selectedRange];
       v14 = v13;
-      v15 = [v4 typingAttributes];
-      v16 = [(ICNoteEditorViewController *)self textStorage];
-      v17 = [v11 typingAttributesForRange:v12 forSelectionChange:v14 currentTypingAttributes:1 inTextStorage:{v15, v16}];
-      [v4 setTypingAttributes:v17];
+      typingAttributes = [selectionCopy typingAttributes];
+      textStorage = [(ICNoteEditorViewController *)self textStorage];
+      v17 = [textController typingAttributesForRange:selectedRange2 forSelectionChange:v14 currentTypingAttributes:1 inTextStorage:{typingAttributes, textStorage}];
+      [selectionCopy setTypingAttributes:v17];
 
       [(ICNoteEditorViewController *)self setIsSettingSelection:0];
     }
 
-    v18 = [(ICNoteEditorViewController *)self updateNoteUserActivityStateDelayer];
-    [v18 requestFire];
+    updateNoteUserActivityStateDelayer = [(ICNoteEditorViewController *)self updateNoteUserActivityStateDelayer];
+    [updateNoteUserActivityStateDelayer requestFire];
 
     [(ICNoteEditorViewController *)self updateBarButtons];
-    [(ICNoteEditorViewController *)self selectDrawingAttachmentIfNeeded:v4];
+    [(ICNoteEditorViewController *)self selectDrawingAttachmentIfNeeded:selectionCopy];
     if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
     {
-      v19 = [(ICNoteEditorViewController *)self textController];
-      v20 = [v4 textStorage];
+      textController2 = [(ICNoteEditorViewController *)self textController];
+      textStorage2 = [selectionCopy textStorage];
       v21 = MEMORY[0x277CCAE60];
-      v22 = [v4 selectedRange];
-      v24 = [v21 valueWithRange:{v22, v23}];
+      selectedRange3 = [selectionCopy selectedRange];
+      v24 = [v21 valueWithRange:{selectedRange3, v23}];
       v59[0] = v24;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:1];
-      v26 = [v4 layoutManager];
-      v27 = [(ICNoteEditorViewController *)self textView];
-      [v19 updateAttachmentsSelectionStateInTextStorage:v20 forSelectedRanges:v25 layoutManager:v26 textView:v27];
+      layoutManager = [selectionCopy layoutManager];
+      textView = [(ICNoteEditorViewController *)self textView];
+      [textController2 updateAttachmentsSelectionStateInTextStorage:textStorage2 forSelectedRanges:v25 layoutManager:layoutManager textView:textView];
     }
 
     [(ICNoteEditorViewController *)self updateStyleSelectorStateIfNeededIgnoreTypingAttributes:0];
-    v28 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    [v28 updateSelectionInTextView:v4];
+    navigationItemConfiguration = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    [navigationItemConfiguration updateSelectionInTextView:selectionCopy];
 
-    v29 = [(ICNoteEditorViewController *)self textView];
-    [v29 icaxTextDidChangeSelection];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    [textView2 icaxTextDidChangeSelection];
 
-    v30 = [v4 selectedRange];
-    [(ICNoteEditorViewController *)self setLastSelectedRange:v30, v31];
+    selectedRange4 = [selectionCopy selectedRange];
+    [(ICNoteEditorViewController *)self setLastSelectedRange:selectedRange4, v31];
     objc_opt_class();
-    v32 = [(ICNoteEditorViewController *)self textView];
-    v33 = [v32 textStorage];
+    textView3 = [(ICNoteEditorViewController *)self textView];
+    textStorage3 = [textView3 textStorage];
     v34 = ICDynamicCast();
 
-    v35 = [(ICNoteEditorViewController *)self textView];
-    v36 = [(ICNoteEditorViewController *)self hashtagController];
-    [v36 setHashtagKeyboardDelegate:v35];
+    textView4 = [(ICNoteEditorViewController *)self textView];
+    hashtagController = [(ICNoteEditorViewController *)self hashtagController];
+    [hashtagController setHashtagKeyboardDelegate:textView4];
 
-    v37 = [(ICNoteEditorViewController *)self textView];
-    v38 = [(ICNoteEditorViewController *)self mentionsController];
-    [v38 setMentionsKeyboardDelegate:v37];
+    textView5 = [(ICNoteEditorViewController *)self textView];
+    mentionsController = [(ICNoteEditorViewController *)self mentionsController];
+    [mentionsController setMentionsKeyboardDelegate:textView5];
 
-    v39 = [(ICNoteEditorViewController *)self mentionsController];
-    v40 = [(ICNoteEditorViewController *)self lastSelectedRange];
+    mentionsController2 = [(ICNoteEditorViewController *)self mentionsController];
+    lastSelectedRange = [(ICNoteEditorViewController *)self lastSelectedRange];
     v42 = v41;
-    v43 = [(ICNoteEditorBaseViewController *)self note];
-    v44 = [(ICNoteEditorViewController *)self textView];
-    v45 = [(ICNoteEditorViewController *)self textView];
-    BYTE1(v57) = [v45 languageHasSpaces];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    textView6 = [(ICNoteEditorViewController *)self textView];
+    textView7 = [(ICNoteEditorViewController *)self textView];
+    BYTE1(v57) = [textView7 languageHasSpaces];
     LOBYTE(v57) = 0;
-    LOBYTE(v40) = [v39 checkForMentionInEditedRange:v40 ofTextStorage:v42 note:v34 textView:v43 allowAutoExplicitMention:v44 isEndingEditing:0 languageHasSpaces:v57 parentAttachment:0];
+    LOBYTE(lastSelectedRange) = [mentionsController2 checkForMentionInEditedRange:lastSelectedRange ofTextStorage:v42 note:v34 textView:note allowAutoExplicitMention:textView6 isEndingEditing:0 languageHasSpaces:v57 parentAttachment:0];
 
-    if ((v40 & 1) == 0)
+    if ((lastSelectedRange & 1) == 0)
     {
-      v46 = [(ICNoteEditorViewController *)self hashtagController];
-      v47 = [(ICNoteEditorViewController *)self lastSelectedRange];
+      hashtagController2 = [(ICNoteEditorViewController *)self hashtagController];
+      lastSelectedRange2 = [(ICNoteEditorViewController *)self lastSelectedRange];
       v49 = v48;
-      v50 = [(ICNoteEditorBaseViewController *)self note];
-      v51 = [(ICNoteEditorViewController *)self textView];
-      v52 = [(ICNoteEditorViewController *)self textView];
-      BYTE1(v58) = [v52 languageHasSpaces];
+      note2 = [(ICNoteEditorBaseViewController *)self note];
+      textView8 = [(ICNoteEditorViewController *)self textView];
+      textView9 = [(ICNoteEditorViewController *)self textView];
+      BYTE1(v58) = [textView9 languageHasSpaces];
       LOBYTE(v58) = 0;
-      [v46 checkForHashtagInEditedRange:v47 ofTextStorage:v49 note:v34 textView:v50 allowAutoExplicitHashtag:v51 isEndingEditing:0 languageHasSpaces:v58 parentAttachment:0];
+      [hashtagController2 checkForHashtagInEditedRange:lastSelectedRange2 ofTextStorage:v49 note:v34 textView:note2 allowAutoExplicitHashtag:textView8 isEndingEditing:0 languageHasSpaces:v58 parentAttachment:0];
     }
 
-    v53 = [(ICNoteEditorViewController *)self linkAcceleratorController];
-    [v53 setDelegate:self];
+    linkAcceleratorController = [(ICNoteEditorViewController *)self linkAcceleratorController];
+    [linkAcceleratorController setDelegate:self];
 
-    v54 = [(ICNoteEditorViewController *)self linkAcceleratorController];
-    [v54 setLinkDelegate:self];
+    linkAcceleratorController2 = [(ICNoteEditorViewController *)self linkAcceleratorController];
+    [linkAcceleratorController2 setLinkDelegate:self];
 
-    v55 = [(ICNoteEditorViewController *)self linkAcceleratorController];
-    [v55 presentLinkAcceleratorIfNecessaryWithCompletionHandler:&__block_literal_global_1013];
+    linkAcceleratorController3 = [(ICNoteEditorViewController *)self linkAcceleratorController];
+    [linkAcceleratorController3 presentLinkAcceleratorIfNecessaryWithCompletionHandler:&__block_literal_global_1013];
 
-    v56 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v56 postNotificationName:@"ICNoteEditorViewControllerSelectionDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"ICNoteEditorViewControllerSelectionDidChangeNotification" object:self];
   }
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ICNoteEditorBaseViewController *)self note];
+  length = range.length;
+  viewCopy = view;
+  textCopy = text;
+  note = [(ICNoteEditorBaseViewController *)self note];
 
-  if (!v10)
+  if (!note)
   {
     goto LABEL_25;
   }
 
   if (([MEMORY[0x277D75658] isInHardwareKeyboardMode] & 1) == 0)
   {
-    v11 = [(ICNoteEditorViewController *)self textView];
-    v12 = [v11 isInsertingTextFromKeyboardInput];
+    textView = [(ICNoteEditorViewController *)self textView];
+    isInsertingTextFromKeyboardInput = [textView isInsertingTextFromKeyboardInput];
 
-    if (v12)
+    if (isInsertingTextFromKeyboardInput)
     {
-      if ([v9 isEqualToString:@"\t"])
+      if ([textCopy isEqualToString:@"\t"])
       {
         if ([MEMORY[0x277D75658] ic_isShiftKeyPressed])
         {
@@ -17865,7 +17865,7 @@ LABEL_5:
         goto LABEL_25;
       }
 
-      if ([v9 isEqualToString:@"\n"] && objc_msgSend(MEMORY[0x277D75658], "ic_isShiftKeyPressed"))
+      if ([textCopy isEqualToString:@"\n"] && objc_msgSend(MEMORY[0x277D75658], "ic_isShiftKeyPressed"))
       {
         [(ICNoteEditorViewController *)self shiftReturn:0];
 LABEL_25:
@@ -17875,16 +17875,16 @@ LABEL_25:
     }
   }
 
-  v13 = [(ICNoteEditorBaseViewController *)self note];
-  v14 = [v13 textStorage];
-  v15 = [v14 length];
-  v16 = [v9 length];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  textStorage = [note2 textStorage];
+  v15 = [textStorage length];
+  v16 = [textCopy length];
 
-  if ([v9 length] > length)
+  if ([textCopy length] > length)
   {
     v17 = v15 - length;
-    v18 = [(ICNoteEditorBaseViewController *)self note];
-    v19 = [v18 allowsNewTextLength:v17 + v16];
+    note3 = [(ICNoteEditorBaseViewController *)self note];
+    v19 = [note3 allowsNewTextLength:v17 + v16];
 
     if ((v19 & 1) == 0)
     {
@@ -17893,10 +17893,10 @@ LABEL_25:
     }
   }
 
-  if ([v9 isEqualToString:@"\n"])
+  if ([textCopy isEqualToString:@"\n"])
   {
-    v20 = [(ICNoteEditorViewController *)self textController];
-    v21 = [v20 insertNewlineForSpecialCasesInTextView:v8];
+    textController = [(ICNoteEditorViewController *)self textController];
+    v21 = [textController insertNewlineForSpecialCasesInTextView:viewCopy];
 
     if (v21)
     {
@@ -17905,22 +17905,22 @@ LABEL_25:
     }
   }
 
-  v22 = [(ICNoteEditorViewController *)self textView];
-  if ([v22 isInsertingTextFromKeyboardInput])
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  if ([textView2 isInsertingTextFromKeyboardInput])
   {
-    v23 = [(ICNoteEditorBaseViewController *)self note];
-    if ([v23 isEmpty])
+    note4 = [(ICNoteEditorBaseViewController *)self note];
+    if ([note4 isEmpty])
     {
-      v24 = [v9 length];
+      v24 = [textCopy length];
 
       if (v24 >= 0x41)
       {
-        v25 = [(ICNoteEditorViewController *)self textView];
-        v26 = [v25 typingAttributes];
-        v27 = [v26 objectForKeyedSubscript:*MEMORY[0x277D35DA8]];
-        v28 = [v27 style];
+        textView3 = [(ICNoteEditorViewController *)self textView];
+        typingAttributes = [textView3 typingAttributes];
+        v27 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x277D35DA8]];
+        style = [v27 style];
 
-        if (v28 <= 2)
+        if (style <= 2)
         {
           [(ICNoteEditorViewController *)self setCurrentTextStyle:3];
         }
@@ -17937,12 +17937,12 @@ LABEL_26:
   return v29;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  lCopy = l;
   IsExtension = _UIApplicationIsExtension();
-  if (a6)
+  if (interaction)
   {
     v11 = 0;
   }
@@ -17954,52 +17954,52 @@ LABEL_26:
 
   if (v11 == 1)
   {
-    [ICExtensionSafeAPIShims openURL:v9 originatingView:v8 completionHandler:0];
+    [ICExtensionSafeAPIShims openURL:lCopy originatingView:viewCopy completionHandler:0];
   }
 
   return v11 ^ 1;
 }
 
-- (id)textView:(id)a3 menuConfigurationForTextItem:(id)a4 defaultMenu:(id)a5
+- (id)textView:(id)view menuConfigurationForTextItem:(id)item defaultMenu:(id)menu
 {
-  v7 = a4;
-  v8 = a5;
-  if ([v7 contentType])
+  itemCopy = item;
+  menuCopy = menu;
+  if ([itemCopy contentType])
   {
     goto LABEL_19;
   }
 
-  v9 = [(ICNoteEditorBaseViewController *)self note];
-  if (![v9 isSharedReadOnly])
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if (![note isSharedReadOnly])
   {
-    v10 = [(ICNoteEditorBaseViewController *)self isEditingOnSecureScreen];
+    isEditingOnSecureScreen = [(ICNoteEditorBaseViewController *)self isEditingOnSecureScreen];
 
-    if (v10)
+    if (isEditingOnSecureScreen)
     {
       goto LABEL_19;
     }
 
-    v11 = [v8 children];
-    v12 = [v11 mutableCopy];
+    children = [menuCopy children];
+    v12 = [children mutableCopy];
 
     v13 = objc_alloc(MEMORY[0x277D36808]);
-    v14 = [(ICNoteEditorViewController *)self attachmentInsertionController];
-    v15 = [v13 initWithInsertionController:v14];
+    attachmentInsertionController = [(ICNoteEditorViewController *)self attachmentInsertionController];
+    v15 = [v13 initWithInsertionController:attachmentInsertionController];
 
     v16 = &off_2154BB000;
-    if (!-[ICNoteEditorBaseViewController isEditingOnSystemPaper](self, "isEditingOnSystemPaper") && [v15 canConvertLinkAtLocationToAttachment:{objc_msgSend(v7, "range")}])
+    if (!-[ICNoteEditorBaseViewController isEditingOnSystemPaper](self, "isEditingOnSystemPaper") && [v15 canConvertLinkAtLocationToAttachment:{objc_msgSend(itemCopy, "range")}])
     {
       v17 = MEMORY[0x277D750C8];
-      v18 = [MEMORY[0x277D36808] convertLinkToAttachmentActionTitle];
-      v19 = [MEMORY[0x277D36808] convertLinkToAttachmentSystemImageName];
+      convertLinkToAttachmentActionTitle = [MEMORY[0x277D36808] convertLinkToAttachmentActionTitle];
+      convertLinkToAttachmentSystemImageName = [MEMORY[0x277D36808] convertLinkToAttachmentSystemImageName];
       v73[0] = MEMORY[0x277D85DD0];
       v73[1] = 3221225472;
       v73[2] = __80__ICNoteEditorViewController_textView_menuConfigurationForTextItem_defaultMenu___block_invoke;
       v73[3] = &unk_2781AD2C8;
       v73[4] = self;
       v74 = v15;
-      v75 = v7;
-      v20 = [v17 ic_actionWithTitle:v18 imageName:v19 handler:v73];
+      v75 = itemCopy;
+      v20 = [v17 ic_actionWithTitle:convertLinkToAttachmentActionTitle imageName:convertLinkToAttachmentSystemImageName handler:v73];
 
       v16 = &off_2154BB000;
       [v12 addObject:v20];
@@ -18015,16 +18015,16 @@ LABEL_26:
     v24 = v68;
     v69 = __80__ICNoteEditorViewController_textView_menuConfigurationForTextItem_defaultMenu___block_invoke_3;
     v70 = &unk_2781AD2F0;
-    v71 = self;
-    v25 = v7;
+    selfCopy = self;
+    v25 = itemCopy;
     v72 = v25;
     v26 = [v21 ic_actionWithTitle:v23 imageName:@"pencil" handler:&v67];
 
     v62 = v26;
     [v64 addObject:v26];
     v27 = MEMORY[0x277D750C8];
-    v28 = [MEMORY[0x277CCA8D8] mainBundle];
-    v29 = [v28 localizedStringForKey:@"Remove Link" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v29 = [mainBundle localizedStringForKey:@"Remove Link" value:&stru_282757698 table:0];
     v65[0] = MEMORY[0x277D85DD0];
     v65[1] = v24;
     v65[2] = __80__ICNoteEditorViewController_textView_menuConfigurationForTextItem_defaultMenu___block_invoke_4;
@@ -18040,23 +18040,23 @@ LABEL_26:
     v33 = [v64 copy];
     v34 = [v32 menuWithChildren:v33];
 
-    v35 = [v30 link];
-    v36 = [v35 absoluteString];
+    link = [v30 link];
+    absoluteString = [link absoluteString];
     v37 = NotesAppURLForNoteIdentifierOrTokenContentIdentifier();
 
     v60 = v37;
     v38 = [MEMORY[0x277D35DF0] predicateForNotesMentionedInURL:v37];
-    v39 = [MEMORY[0x277D35F30] sharedContext];
-    v40 = v39;
-    if (v38 && v39)
+    mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
+    v40 = mEMORY[0x277D35F30];
+    if (v38 && mEMORY[0x277D35F30])
     {
       v59 = v34;
       v41 = MEMORY[0x277D35F28];
-      v42 = [v39 managedObjectContext];
-      v43 = [v41 notesMatchingPredicate:v38 context:v42];
+      managedObjectContext = [mEMORY[0x277D35F30] managedObjectContext];
+      v43 = [v41 notesMatchingPredicate:v38 context:managedObjectContext];
 
-      v44 = [v43 firstObject];
-      if (!v44 || ([(ICNoteEditorViewController *)self notePreviewView:v44], (v45 = objc_claimAutoreleasedReturnValue()) == 0))
+      firstObject = [v43 firstObject];
+      if (!firstObject || ([(ICNoteEditorViewController *)self notePreviewView:firstObject], (v45 = objc_claimAutoreleasedReturnValue()) == 0))
       {
 
         v51 = 1;
@@ -18067,8 +18067,8 @@ LABEL_26:
 
       v46 = v45;
       v47 = objc_alloc(MEMORY[0x277D75C18]);
-      v48 = [v46 view];
-      v49 = [v47 initWithView:v48];
+      view = [v46 view];
+      v49 = [v47 initWithView:view];
 
       v50 = v49;
       v58 = v46;
@@ -18082,15 +18082,15 @@ LABEL_26:
     else
     {
       v52 = objc_alloc(MEMORY[0x277CCACE0]);
-      v53 = [v30 link];
-      v43 = [v52 initWithURL:v53 resolvingAgainstBaseURL:0];
+      link2 = [v30 link];
+      v43 = [v52 initWithURL:link2 resolvingAgainstBaseURL:0];
 
-      v54 = [v43 scheme];
-      self = [v54 isEqualToString:@"x-apple-data-detectors"];
+      scheme = [v43 scheme];
+      self = [scheme isEqualToString:@"x-apple-data-detectors"];
 
       if (self)
       {
-        v55 = [MEMORY[0x277D75C10] configurationWithMenu:v8];
+        v55 = [MEMORY[0x277D75C10] configurationWithMenu:menuCopy];
         v51 = 1;
       }
 
@@ -18113,7 +18113,7 @@ LABEL_18:
   }
 
 LABEL_19:
-  self = [MEMORY[0x277D75C10] configurationWithMenu:v8];
+  self = [MEMORY[0x277D75C10] configurationWithMenu:menuCopy];
 LABEL_20:
 
   return self;
@@ -18150,70 +18150,70 @@ uint64_t __80__ICNoteEditorViewController_textView_menuConfigurationForTextItem_
   return [v1 convertLinkAtLocationToAttachment:v2];
 }
 
-- (void)textViewWritingToolsWillBegin:(id)a3
+- (void)textViewWritingToolsWillBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   objc_opt_class();
   v11 = ICDynamicCast();
 
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  v6 = [v5 documentMergeController];
-  [v6 beginBlockingMergeForReason:7 textView:v11];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  documentMergeController = [note documentMergeController];
+  [documentMergeController beginBlockingMergeForReason:7 textView:v11];
 
-  v7 = [v11 TTTextStorage];
-  [v7 setIsEditingViaWritingTools:1];
+  tTTextStorage = [v11 TTTextStorage];
+  [tTTextStorage setIsEditingViaWritingTools:1];
 
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v11 TTTextStorage];
-  [v9 setWritingToolsSessionUUID:v8];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  tTTextStorage2 = [v11 TTTextStorage];
+  [tTTextStorage2 setWritingToolsSessionUUID:uUID];
 
-  v10 = [v11 TTTextStorage];
-  [v10 breakUndoCoalescing];
+  tTTextStorage3 = [v11 TTTextStorage];
+  [tTTextStorage3 breakUndoCoalescing];
 }
 
-- (void)textViewWritingToolsDidEnd:(id)a3
+- (void)textViewWritingToolsDidEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   objc_opt_class();
   v13 = ICDynamicCast();
 
-  v5 = [v13 TTTextStorage];
-  [v5 setIsEditingViaWritingTools:0];
+  tTTextStorage = [v13 TTTextStorage];
+  [tTTextStorage setIsEditingViaWritingTools:0];
 
-  v6 = [v13 TTTextStorage];
-  [v6 setWritingToolsSessionUUID:0];
+  tTTextStorage2 = [v13 TTTextStorage];
+  [tTTextStorage2 setWritingToolsSessionUUID:0];
 
-  v7 = [v13 TTTextStorage];
-  [v7 breakUndoCoalescing];
+  tTTextStorage3 = [v13 TTTextStorage];
+  [tTTextStorage3 breakUndoCoalescing];
 
-  v8 = [(ICNoteEditorBaseViewController *)self note];
-  [v8 save];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [note save];
 
-  v9 = [(ICNoteEditorBaseViewController *)self note];
-  v10 = [v9 documentMergeController];
-  [v10 endBlockingMergeForReason:7 textView:v13];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  documentMergeController = [note2 documentMergeController];
+  [documentMergeController endBlockingMergeForReason:7 textView:v13];
 
-  v11 = [(ICNoteEditorBaseViewController *)self note];
-  v12 = [v11 calculateDocumentController];
-  [v12 updateHighlights];
+  note3 = [(ICNoteEditorBaseViewController *)self note];
+  calculateDocumentController = [note3 calculateDocumentController];
+  [calculateDocumentController updateHighlights];
 }
 
-- (id)textView:(id)a3 writingToolsIgnoredRangesInEnclosingRange:(_NSRange)a4
+- (id)textView:(id)view writingToolsIgnoredRangesInEnclosingRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  viewCopy = view;
   objc_opt_class();
   v8 = ICDynamicCast();
 
-  v9 = [v8 TTTextStorage];
+  tTTextStorage = [v8 TTTextStorage];
 
-  if (v9)
+  if (tTTextStorage)
   {
-    v10 = [(ICNoteEditorViewController *)self textController];
-    v11 = [v8 TTTextStorage];
-    v12 = [(ICNoteEditorBaseViewController *)self note];
-    v13 = [v10 writingToolsIgnoredRangesForTextStorage:v11 inEnclosingRange:location note:{length, v12}];
+    textController = [(ICNoteEditorViewController *)self textController];
+    tTTextStorage2 = [v8 TTTextStorage];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    v13 = [textController writingToolsIgnoredRangesForTextStorage:tTTextStorage2 inEnclosingRange:location note:{length, note}];
   }
 
   else
@@ -18224,51 +18224,51 @@ uint64_t __80__ICNoteEditorViewController_textView_menuConfigurationForTextItem_
   return v13;
 }
 
-- (void)_textViewWillBeginUndoCoalescingForWritingTools:(id)a3
+- (void)_textViewWillBeginUndoCoalescingForWritingTools:(id)tools
 {
-  v3 = a3;
+  toolsCopy = tools;
   objc_opt_class();
   v5 = ICDynamicCast();
 
-  v4 = [v5 TTTextStorage];
-  [v4 setIsUndoCoalescingForWritingTools:1];
+  tTTextStorage = [v5 TTTextStorage];
+  [tTTextStorage setIsUndoCoalescingForWritingTools:1];
 }
 
-- (void)_textViewDidEndUndoCoalescingForWritingTools:(id)a3
+- (void)_textViewDidEndUndoCoalescingForWritingTools:(id)tools
 {
-  v3 = a3;
+  toolsCopy = tools;
   objc_opt_class();
   v5 = ICDynamicCast();
 
-  v4 = [v5 TTTextStorage];
-  [v4 setIsUndoCoalescingForWritingTools:0];
+  tTTextStorage = [v5 TTTextStorage];
+  [tTTextStorage setIsUndoCoalescingForWritingTools:0];
 }
 
-- (BOOL)allowsNewTextLength:(unint64_t)a3
+- (BOOL)allowsNewTextLength:(unint64_t)length
 {
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  LOBYTE(a3) = [v4 allowsNewTextLength:a3];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  LOBYTE(length) = [note allowsNewTextLength:length];
 
-  return a3;
+  return length;
 }
 
-- (void)didInvokeAnalyticsCalloutBarButtonActionOfType:(int64_t)a3
+- (void)didInvokeAnalyticsCalloutBarButtonActionOfType:(int64_t)type
 {
-  v5 = [(ICNoteEditorViewController *)self eventReporter];
-  v6 = [(ICNoteEditorBaseViewController *)self note];
-  [v5 submitNoteEditorCallOutBarButtonSelectionEventForModernNote:v6 buttonTypeValue:a3];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [eventReporter submitNoteEditorCallOutBarButtonSelectionEventForModernNote:note buttonTypeValue:type];
 
-  if ((a3 - 6) <= 3)
+  if ((type - 6) <= 3)
   {
-    v8 = [(ICNoteEditorViewController *)self eventReporter];
-    v7 = [(ICNoteEditorBaseViewController *)self note];
-    [v8 submitStyleFormatEventForModernNote:v7 styleTypeValue:a3 + 3];
+    eventReporter2 = [(ICNoteEditorViewController *)self eventReporter];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    [eventReporter2 submitStyleFormatEventForModernNote:note2 styleTypeValue:type + 3];
   }
 }
 
-- (void)didInvokeAnalyticsChecklistActionChecked:(BOOL)a3
+- (void)didInvokeAnalyticsChecklistActionChecked:(BOOL)checked
 {
-  if (a3)
+  if (checked)
   {
     v3 = 2;
   }
@@ -18281,25 +18281,25 @@ uint64_t __80__ICNoteEditorViewController_textView_menuConfigurationForTextItem_
   [(ICNoteEditorViewController *)self submitChecklistAnalyticsEventForActionType:v3];
 }
 
-- (void)didInvokePasteWithAttributedString:(id)a3
+- (void)didInvokePasteWithAttributedString:(id)string
 {
   v4 = *MEMORY[0x277D740E8];
-  v5 = a3;
-  v6 = [v5 ic_range];
+  stringCopy = string;
+  ic_range = [stringCopy ic_range];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __65__ICNoteEditorViewController_didInvokePasteWithAttributedString___block_invoke;
   v12[3] = &unk_2781AC5D8;
   v12[4] = self;
-  [v5 enumerateAttribute:v4 inRange:v6 options:v7 usingBlock:{0, v12}];
+  [stringCopy enumerateAttribute:v4 inRange:ic_range options:v7 usingBlock:{0, v12}];
   v8 = *MEMORY[0x277D74060];
-  v9 = [v5 ic_range];
+  ic_range2 = [stringCopy ic_range];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __65__ICNoteEditorViewController_didInvokePasteWithAttributedString___block_invoke_2;
   v11[3] = &unk_2781AC5D8;
   v11[4] = self;
-  [v5 enumerateAttribute:v8 inRange:v9 options:v10 usingBlock:{0, v11}];
+  [stringCopy enumerateAttribute:v8 inRange:ic_range2 options:v10 usingBlock:{0, v11}];
 }
 
 void __65__ICNoteEditorViewController_didInvokePasteWithAttributedString___block_invoke(uint64_t a1, void *a2)
@@ -18347,37 +18347,37 @@ void __65__ICNoteEditorViewController_didInvokePasteWithAttributedString___block
   }
 }
 
-- (BOOL)handleTapGestureForAttribution:(id)a3
+- (BOOL)handleTapGestureForAttribution:(id)attribution
 {
-  v4 = a3;
+  attributionCopy = attribution;
   if ([(ICNoteEditorViewController *)self attributionSidebarVisibility]== 2)
   {
-    v5 = [(ICNoteEditorViewController *)self attributionSidebarView];
-    [v5 handleTapGesture:v4];
+    attributionSidebarView = [(ICNoteEditorViewController *)self attributionSidebarView];
+    [attributionSidebarView handleTapGesture:attributionCopy];
 LABEL_8:
 
     v11 = 1;
     goto LABEL_9;
   }
 
-  v6 = [(ICNoteEditorViewController *)self attributionSidebarController];
-  v7 = [v6 filter];
+  attributionSidebarController = [(ICNoteEditorViewController *)self attributionSidebarController];
+  filter = [attributionSidebarController filter];
 
-  if (v7)
+  if (filter)
   {
-    v8 = [(ICNoteEditorViewController *)self viewControllerManager];
-    v9 = [v8 hasCompactWidth];
+    viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+    hasCompactWidth = [viewControllerManager hasCompactWidth];
 
-    v10 = [(ICNoteEditorViewController *)self viewControllerManager];
-    v5 = v10;
-    if (v9)
+    viewControllerManager2 = [(ICNoteEditorViewController *)self viewControllerManager];
+    attributionSidebarView = viewControllerManager2;
+    if (hasCompactWidth)
     {
-      [v10 hideActivityStreamWithCompletion:0];
+      [viewControllerManager2 hideActivityStreamWithCompletion:0];
     }
 
     else
     {
-      [v10 hideAttributionHighlights];
+      [viewControllerManager2 hideAttributionHighlights];
     }
 
     goto LABEL_8;
@@ -18389,9 +18389,9 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)shouldStartEditingForTapGesture:(id)a3
+- (BOOL)shouldStartEditingForTapGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if ([(ICNoteEditorViewController *)self attributionSidebarVisibility]!= 2)
   {
     if ([(ICNoteEditorViewController *)self attributionSidebarVisibility]== 1)
@@ -18399,21 +18399,21 @@ LABEL_9:
       goto LABEL_5;
     }
 
-    v9 = [(ICNoteEditorViewController *)self dateOfLastStrokeOrNewDrawing];
+    dateOfLastStrokeOrNewDrawing = [(ICNoteEditorViewController *)self dateOfLastStrokeOrNewDrawing];
 
-    if (v9)
+    if (dateOfLastStrokeOrNewDrawing)
     {
-      v10 = [MEMORY[0x277CBEAA8] date];
-      v11 = [(ICNoteEditorViewController *)self dateOfLastStrokeOrNewDrawing];
-      [v10 timeIntervalSinceDate:v11];
+      date = [MEMORY[0x277CBEAA8] date];
+      dateOfLastStrokeOrNewDrawing2 = [(ICNoteEditorViewController *)self dateOfLastStrokeOrNewDrawing];
+      [date timeIntervalSinceDate:dateOfLastStrokeOrNewDrawing2];
       v13 = v12;
 
       if (v13 < 0.5)
       {
-        v5 = os_log_create("com.apple.notes", "PencilKit");
-        if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+        viewControllerManager3 = os_log_create("com.apple.notes", "PencilKit");
+        if (os_log_type_enabled(viewControllerManager3, OS_LOG_TYPE_DEBUG))
         {
-          [(ICNoteEditorViewController *)v5 shouldStartEditingForTapGesture:v13];
+          [(ICNoteEditorViewController *)viewControllerManager3 shouldStartEditingForTapGesture:v13];
         }
 
         goto LABEL_3;
@@ -18432,16 +18432,16 @@ LABEL_9:
       }
     }
 
-    v15 = [(ICNoteEditorViewController *)self viewControllerManager];
-    if ([v15 hasCompactWidth])
+    viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+    if ([viewControllerManager hasCompactWidth])
     {
-      v16 = [(ICNoteEditorViewController *)self viewControllerManager];
-      v17 = [v16 presentedActivityStreamNavigationController];
+      viewControllerManager2 = [(ICNoteEditorViewController *)self viewControllerManager];
+      presentedActivityStreamNavigationController = [viewControllerManager2 presentedActivityStreamNavigationController];
 
-      if (v17)
+      if (presentedActivityStreamNavigationController)
       {
-        v5 = [(ICNoteEditorViewController *)self viewControllerManager];
-        [v5 hideActivityStreamWithCompletion:0];
+        viewControllerManager3 = [(ICNoteEditorViewController *)self viewControllerManager];
+        [viewControllerManager3 hideActivityStreamWithCompletion:0];
         goto LABEL_3;
       }
     }
@@ -18454,8 +18454,8 @@ LABEL_9:
     goto LABEL_6;
   }
 
-  v5 = [(ICNoteEditorViewController *)self attributionSidebarView];
-  [v5 handleTapGesture:v4];
+  viewControllerManager3 = [(ICNoteEditorViewController *)self attributionSidebarView];
+  [viewControllerManager3 handleTapGesture:gestureCopy];
 LABEL_3:
 
 LABEL_5:
@@ -18469,10 +18469,10 @@ LABEL_6:
 - (void)startEditingForWritingTools
 {
   [(ICNoteEditorViewController *)self setInStartEditingForWritingTools:1];
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  v4 = [v3 isSharedReadOnly];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isSharedReadOnly = [note isSharedReadOnly];
 
-  if ((v4 & 1) == 0)
+  if ((isSharedReadOnly & 1) == 0)
   {
     [(ICNoteEditorViewController *)self startEditing];
   }
@@ -18480,12 +18480,12 @@ LABEL_6:
   [(ICNoteEditorViewController *)self setInStartEditingForWritingTools:0];
 }
 
-- (BOOL)shouldBlockHitTestOnTextView:(id)a3 event:(id)a4
+- (BOOL)shouldBlockHitTestOnTextView:(id)view event:(id)event
 {
-  v5 = a4;
+  eventCopy = event;
   if ([(ICNoteEditorViewController *)self isDrawingStrokeWithPencil])
   {
-    v6 = [v5 ic_isPencilEvent] ^ 1;
+    v6 = [eventCopy ic_isPencilEvent] ^ 1;
   }
 
   else
@@ -18511,15 +18511,15 @@ LABEL_6:
 
 - (BOOL)shouldInsertNewDrawingsAsPaper
 {
-  v2 = [(ICNoteEditorViewController *)self textView];
-  v3 = [v2 isPaperEnabled];
+  textView = [(ICNoteEditorViewController *)self textView];
+  isPaperEnabled = [textView isPaperEnabled];
 
-  return v3;
+  return isPaperEnabled;
 }
 
-- (void)icBaseTextViewDidSetHidden:(BOOL)a3
+- (void)icBaseTextViewDidSetHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
     [(ICNoteEditorViewController *)self magicGenerativePlaygroundWillDisappear];
   }
@@ -18536,28 +18536,28 @@ void __61__ICNoteEditorViewController_updateUserAndDateViewVisibility__block_inv
   [v4 setAlpha:1.0];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v20 = a3;
-  v4 = [(ICNoteEditorViewController *)self textView];
+  scrollCopy = scroll;
+  textView = [(ICNoteEditorViewController *)self textView];
 
-  v5 = v20;
-  if (v4 == v20)
+  v5 = scrollCopy;
+  if (textView == scrollCopy)
   {
-    v6 = [(ICNoteEditorViewController *)self backgroundView];
-    [v20 contentOffset];
-    [v6 scrollView:v20 didChangeContentOffset:?];
+    backgroundView = [(ICNoteEditorViewController *)self backgroundView];
+    [scrollCopy contentOffset];
+    [backgroundView scrollView:scrollCopy didChangeContentOffset:?];
 
     if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
     {
-      v7 = [(ICNoteEditorViewController *)self textView];
-      v8 = [v7 shouldUpdateVisibleSupplementalViewsInLayoutSubviews];
+      textView2 = [(ICNoteEditorViewController *)self textView];
+      shouldUpdateVisibleSupplementalViewsInLayoutSubviews = [textView2 shouldUpdateVisibleSupplementalViewsInLayoutSubviews];
 
-      if ((v8 & 1) == 0)
+      if ((shouldUpdateVisibleSupplementalViewsInLayoutSubviews & 1) == 0)
       {
         objc_opt_class();
-        v9 = [(ICNoteEditorViewController *)self textView];
-        v10 = [v9 layoutManager];
+        textView3 = [(ICNoteEditorViewController *)self textView];
+        layoutManager = [textView3 layoutManager];
         v11 = ICDynamicCast();
 
         [v11 updateVisibleSupplementalViews];
@@ -18566,37 +18566,37 @@ void __61__ICNoteEditorViewController_updateUserAndDateViewVisibility__block_inv
     }
 
     [(ICNoteEditorViewController *)self updateUserAndDateViewVisibility];
-    v12 = [(ICNoteEditorViewController *)self linkAcceleratorController];
-    v13 = [v12 isShowing];
+    linkAcceleratorController = [(ICNoteEditorViewController *)self linkAcceleratorController];
+    isShowing = [linkAcceleratorController isShowing];
 
-    if (v13)
+    if (isShowing)
     {
-      v14 = [(ICNoteEditorViewController *)self linkAcceleratorController];
-      [v14 hideAccelerator];
+      linkAcceleratorController2 = [(ICNoteEditorViewController *)self linkAcceleratorController];
+      [linkAcceleratorController2 hideAccelerator];
     }
 
-    v15 = [(ICNoteEditorViewController *)self calculateScrubberController];
-    v16 = [v15 isShowing];
+    calculateScrubberController = [(ICNoteEditorViewController *)self calculateScrubberController];
+    isShowing2 = [calculateScrubberController isShowing];
 
-    if (v16)
+    if (isShowing2)
     {
-      v17 = [(ICNoteEditorViewController *)self calculateScrubberController];
-      [v17 hideScrubber];
+      calculateScrubberController2 = [(ICNoteEditorViewController *)self calculateScrubberController];
+      [calculateScrubberController2 hideScrubber];
     }
 
-    v18 = [(ICNoteEditorViewController *)self audioAttachmentEditorCoordinator];
-    v19 = [(ICNoteEditorViewController *)self textView];
-    [v18 textViewDidScroll:v19];
+    audioAttachmentEditorCoordinator = [(ICNoteEditorViewController *)self audioAttachmentEditorCoordinator];
+    textView4 = [(ICNoteEditorViewController *)self textView];
+    [audioAttachmentEditorCoordinator textViewDidScroll:textView4];
 
-    v5 = v20;
+    v5 = scrollCopy;
   }
 }
 
-- (void)textViewDidBreakRubberBand:(id)a3
+- (void)textViewDidBreakRubberBand:(id)band
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = [v4 isEqual:v5];
+  bandCopy = band;
+  textView = [(ICNoteEditorViewController *)self textView];
+  v6 = [bandCopy isEqual:textView];
 
   if (v6)
   {
@@ -18605,17 +18605,17 @@ void __61__ICNoteEditorViewController_updateUserAndDateViewVisibility__block_inv
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
   v46 = 0;
   IsTextKit2Enabled = ICInternalSettingsIsTextKit2Enabled();
-  v11 = -a5->y;
+  v11 = -offset->y;
   if (!IsTextKit2Enabled)
   {
     if ([(ICNoteEditorViewController *)self userWantsToSeeDateLabel])
@@ -18634,13 +18634,13 @@ void __61__ICNoteEditorViewController_updateUserAndDateViewVisibility__block_inv
 
       [(ICNoteEditorViewController *)self setUserWantsToSeeDateLabel:0];
       [(ICNoteEditorViewController *)self textViewTopInsetThatWeWant];
-      a5->y = -v18;
+      offset->y = -v18;
       [(ICNoteEditorViewController *)self updateTextViewContentInsetsAnimated:1];
     }
 
     else
     {
-      v19 = a5->y;
+      v19 = offset->y;
       [(ICNoteEditorViewController *)self textViewTopInsetThatWeWant];
       if (vabdd_f64(-v19, v20) >= 0.00999999978 || y >= 0.0)
       {
@@ -18649,7 +18649,7 @@ void __61__ICNoteEditorViewController_updateUserAndDateViewVisibility__block_inv
 
       [(ICNoteEditorViewController *)self setUserWantsToSeeDateLabel:1];
       [(ICNoteEditorViewController *)self textViewTopInsetThatWeWant];
-      a5->y = -v21;
+      offset->y = -v21;
       [(ICNoteEditorViewController *)self updateTextViewContentInsetsAnimated:1];
     }
 
@@ -18664,7 +18664,7 @@ LABEL_24:
     v11 = v11 - v12;
   }
 
-  v13 = [(ICNoteEditorViewController *)self userWantsToSeeDateLabel];
+  userWantsToSeeDateLabel = [(ICNoteEditorViewController *)self userWantsToSeeDateLabel];
   if ([(ICNoteEditorViewController *)self userWantsToSeeDateLabel]|| ([(ICNoteEditorViewController *)self textViewTopInsetThatWeWant], vabdd_f64(v11, v22) >= 0.00999999978) || y >= 0.0)
   {
     if ([(ICNoteEditorViewController *)self userWantsToSeeDateLabel])
@@ -18681,46 +18681,46 @@ LABEL_24:
         v15 = 1;
       }
 
-      v13 = v15 & v13;
+      userWantsToSeeDateLabel = v15 & userWantsToSeeDateLabel;
     }
   }
 
   else
   {
-    v13 = 1;
+    userWantsToSeeDateLabel = 1;
   }
 
-  if (v13 != [(ICNoteEditorViewController *)self userWantsToSeeDateLabel])
+  if (userWantsToSeeDateLabel != [(ICNoteEditorViewController *)self userWantsToSeeDateLabel])
   {
-    [(ICNoteEditorViewController *)self setUserWantsToSeeDateLabel:v13];
+    [(ICNoteEditorViewController *)self setUserWantsToSeeDateLabel:userWantsToSeeDateLabel];
     [(ICNoteEditorViewController *)self updateTextViewContentInsetsAnimated:1];
     goto LABEL_24;
   }
 
 LABEL_25:
-  v23 = [MEMORY[0x277D35E50] sharedState];
-  [v23 extendDeauthenticationTimer];
+  mEMORY[0x277D35E50] = [MEMORY[0x277D35E50] sharedState];
+  [mEMORY[0x277D35E50] extendDeauthenticationTimer];
 
   if ((v44[3] & 1) == 0)
   {
-    v24 = [(ICNoteEditorViewController *)self textView];
-    v25 = [v24 textStorage];
-    v26 = [(ICNoteEditorViewController *)self textView];
-    v27 = [v26 textStorage];
-    v28 = [v27 ic_range];
+    textView = [(ICNoteEditorViewController *)self textView];
+    textStorage = [textView textStorage];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    textStorage2 = [textView2 textStorage];
+    ic_range = [textStorage2 ic_range];
     v30 = v29;
     v31 = *MEMORY[0x277D74060];
     v33 = MEMORY[0x277D85DD0];
     v34 = 3221225472;
     v35 = __89__ICNoteEditorViewController_scrollViewWillEndDragging_withVelocity_targetContentOffset___block_invoke;
     v36 = &unk_2781AD360;
-    v37 = self;
-    v40 = a5;
-    v38 = v9;
+    selfCopy = self;
+    offsetCopy = offset;
+    v38 = draggingCopy;
     v39 = &v43;
     v41 = x;
     v42 = y;
-    [v25 enumerateAttribute:v31 inRange:v28 options:v30 usingBlock:{2, &v33}];
+    [textStorage enumerateAttribute:v31 inRange:ic_range options:v30 usingBlock:{2, &v33}];
 
     if (*(v44 + 24) == 1)
     {
@@ -18923,47 +18923,47 @@ void __89__ICNoteEditorViewController_scrollViewWillEndDragging_withVelocity_tar
   [v3 setContentOffset:{v1, v2}];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
-    v6 = [(ICNoteEditorBaseViewController *)self note];
-    v7 = [v6 documentMergeController];
-    v8 = [(ICNoteEditorViewController *)self textView];
-    [v7 endBlockingMergeForReason:1 textView:v8];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    documentMergeController = [note documentMergeController];
+    textView = [(ICNoteEditorViewController *)self textView];
+    [documentMergeController endBlockingMergeForReason:1 textView:textView];
 
     [(ICNoteEditorViewController *)self setPreventSnappingToLastPaperDocument:0];
   }
 }
 
-- (void)_scrollViewDidInterruptDecelerating:(id)a3
+- (void)_scrollViewDidInterruptDecelerating:(id)decelerating
 {
-  v6 = [(ICNoteEditorBaseViewController *)self note];
-  v4 = [v6 documentMergeController];
-  v5 = [(ICNoteEditorViewController *)self textView];
-  [v4 endBlockingMergeForReason:1 textView:v5];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  documentMergeController = [note documentMergeController];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [documentMergeController endBlockingMergeForReason:1 textView:textView];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  [(ICNoteEditorViewController *)self prepareToSnapToPaperDocumentAtStartOfDragIfNecessary:a3];
-  v4 = [MEMORY[0x277D35E50] sharedState];
-  [v4 extendDeauthenticationTimer];
+  [(ICNoteEditorViewController *)self prepareToSnapToPaperDocumentAtStartOfDragIfNecessary:dragging];
+  mEMORY[0x277D35E50] = [MEMORY[0x277D35E50] sharedState];
+  [mEMORY[0x277D35E50] extendDeauthenticationTimer];
 
-  v7 = [(ICNoteEditorBaseViewController *)self note];
-  v5 = [v7 documentMergeController];
-  v6 = [(ICNoteEditorViewController *)self textView];
-  [v5 beginBlockingMergeForReason:1 textView:v6];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  documentMergeController = [note documentMergeController];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [documentMergeController beginBlockingMergeForReason:1 textView:textView];
 }
 
 - (id)lastPaperDocumentAttachmentView
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 textStorage];
-  v5 = [v4 string];
-  v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v7 = [v6 invertedSet];
-  v8 = [v5 rangeOfCharacterFromSet:v7 options:4];
+  textView = [(ICNoteEditorViewController *)self textView];
+  textStorage = [textView textStorage];
+  string = [textStorage string];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  invertedSet = [whitespaceAndNewlineCharacterSet invertedSet];
+  v8 = [string rangeOfCharacterFromSet:invertedSet options:4];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -18973,8 +18973,8 @@ void __89__ICNoteEditorViewController_scrollViewWillEndDragging_withVelocity_tar
   else
   {
     objc_opt_class();
-    v10 = [v3 textStorage];
-    v11 = [v10 attribute:*MEMORY[0x277D74060] atIndex:v8 effectiveRange:0];
+    textStorage2 = [textView textStorage];
+    v11 = [textStorage2 attribute:*MEMORY[0x277D74060] atIndex:v8 effectiveRange:0];
     v12 = ICDynamicCast();
 
     if (v12 && [v12 viewportShouldSnapToAttachmentView])
@@ -18991,78 +18991,78 @@ void __89__ICNoteEditorViewController_scrollViewWillEndDragging_withVelocity_tar
   return v9;
 }
 
-- (id)attachmentViewForTextAttachment:(id)a3 characterIndex:(int64_t)a4
+- (id)attachmentViewForTextAttachment:(id)attachment characterIndex:(int64_t)index
 {
-  v6 = a3;
+  attachmentCopy = attachment;
   IsTextKit2Enabled = ICInternalSettingsIsTextKit2Enabled();
-  v8 = [(ICNoteEditorViewController *)self textView];
-  v9 = v8;
+  textView = [(ICNoteEditorViewController *)self textView];
+  v9 = textView;
   if (IsTextKit2Enabled)
   {
-    v10 = [v8 textContainer];
-    v11 = [v10 textLayoutManager];
+    textContainer = [textView textContainer];
+    textLayoutManager = [textContainer textLayoutManager];
 
-    v12 = [v11 documentRange];
-    v13 = [v12 location];
-    v14 = [v11 locationFromLocation:v13 withOffset:a4];
+    documentRange = [textLayoutManager documentRange];
+    location = [documentRange location];
+    icLayoutManager = [textLayoutManager locationFromLocation:location withOffset:index];
 
-    v15 = [v11 viewProviderForTextAttachment:v6 location:v14];
-    v9 = v11;
+    v15 = [textLayoutManager viewProviderForTextAttachment:attachmentCopy location:icLayoutManager];
+    v9 = textLayoutManager;
   }
 
   else
   {
-    v14 = [v8 icLayoutManager];
-    v15 = [v14 viewProviderForTextAttachment:v6 characterIndex:a4];
+    icLayoutManager = [textView icLayoutManager];
+    v15 = [icLayoutManager viewProviderForTextAttachment:attachmentCopy characterIndex:index];
   }
 
-  v16 = [v15 view];
+  view = [v15 view];
 
-  return v16;
+  return view;
 }
 
-- (void)prepareToSnapToPaperDocumentAtStartOfDragIfNecessary:(id)a3
+- (void)prepareToSnapToPaperDocumentAtStartOfDragIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = [v4 isEqual:v5];
+  necessaryCopy = necessary;
+  textView = [(ICNoteEditorViewController *)self textView];
+  v6 = [necessaryCopy isEqual:textView];
 
   if ((v6 & 1) == 0)
   {
-    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"[scrollView isEqual:self.textView]" functionName:"-[ICNoteEditorViewController prepareToSnapToPaperDocumentAtStartOfDragIfNecessary:]" simulateCrash:1 showAlert:0 format:{@"Unexpected scroll view: %@", v4}];
+    [MEMORY[0x277D36198] handleFailedAssertWithCondition:"[scrollView isEqual:self.textView]" functionName:"-[ICNoteEditorViewController prepareToSnapToPaperDocumentAtStartOfDragIfNecessary:]" simulateCrash:1 showAlert:0 format:{@"Unexpected scroll view: %@", necessaryCopy}];
   }
 
   [(ICNoteEditorViewController *)self setPreventSnappingToLastPaperDocument:0];
-  v7 = [(ICNoteEditorViewController *)self textView];
-  [v7 setShouldRubberBand:0];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  [textView2 setShouldRubberBand:0];
 
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = [MEMORY[0x277CBEB58] set];
-  v10 = [(ICNoteEditorBaseViewController *)self note];
-  if ([v10 isEmpty])
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if ([note isEmpty])
   {
   }
 
   else
   {
-    v11 = [(ICNoteEditorViewController *)self isEditing];
+    isEditing = [(ICNoteEditorViewController *)self isEditing];
 
-    if ((v11 & 1) == 0)
+    if ((isEditing & 1) == 0)
     {
-      v12 = [(ICNoteEditorViewController *)self lastPaperDocumentAttachmentView];
-      v13 = [MEMORY[0x277D36878] rootSettings];
-      if ([v13 isRubberBandingEnabled] && v12)
+      lastPaperDocumentAttachmentView = [(ICNoteEditorViewController *)self lastPaperDocumentAttachmentView];
+      rootSettings = [MEMORY[0x277D36878] rootSettings];
+      if ([rootSettings isRubberBandingEnabled] && lastPaperDocumentAttachmentView)
       {
-        [v12 bounds];
+        [lastPaperDocumentAttachmentView bounds];
         Height = CGRectGetHeight(v57);
-        v15 = [(ICNoteEditorViewController *)self textView];
-        [v15 bounds];
+        textView3 = [(ICNoteEditorViewController *)self textView];
+        [textView3 bounds];
         v17 = v16;
         v19 = v18;
         v21 = v20;
         v23 = v22;
-        v24 = [(ICNoteEditorViewController *)self textView];
-        [v24 safeAreaInsets];
+        textView4 = [(ICNoteEditorViewController *)self textView];
+        [textView4 safeAreaInsets];
         v26 = v19 + v25;
         v29 = v21 - (v27 + v28);
         v58.size.height = v23 - (v25 + v30);
@@ -19073,23 +19073,23 @@ void __89__ICNoteEditorViewController_scrollViewWillEndDragging_withVelocity_tar
 
         if (Height >= v31)
         {
-          [v12 bounds];
-          [v4 convertPoint:v12 fromView:?];
+          [lastPaperDocumentAttachmentView bounds];
+          [necessaryCopy convertPoint:lastPaperDocumentAttachmentView fromView:?];
           v33 = v32;
           v35 = v34;
-          [v4 safeAreaInsets];
+          [necessaryCopy safeAreaInsets];
           v37 = v35 - v36;
-          [v4 contentOffset];
-          if (v38 < v37 || ([v4 contentOffset], vabdd_f64(v39, v37) < 16.0))
+          [necessaryCopy contentOffset];
+          if (v38 < v37 || ([necessaryCopy contentOffset], vabdd_f64(v39, v37) < 16.0))
           {
-            v40 = [(ICNoteEditorViewController *)self textView];
-            [v40 setShouldRubberBand:1];
+            textView5 = [(ICNoteEditorViewController *)self textView];
+            [textView5 setShouldRubberBand:1];
 
-            v41 = [(ICNoteEditorViewController *)self textView];
-            [v41 setRubberBandContentOffset:{v33, v37}];
+            textView6 = [(ICNoteEditorViewController *)self textView];
+            [textView6 setRubberBandContentOffset:{v33, v37}];
           }
 
-          [v4 contentOffset];
+          [necessaryCopy contentOffset];
           [(ICNoteEditorViewController *)self setPreventSnappingToLastPaperDocument:v42 >= v37];
         }
       }
@@ -19098,28 +19098,28 @@ void __89__ICNoteEditorViewController_scrollViewWillEndDragging_withVelocity_tar
       {
       }
 
-      v43 = [(ICNoteEditorViewController *)self textView];
-      v44 = [v43 textStorage];
+      textView7 = [(ICNoteEditorViewController *)self textView];
+      textStorage = [textView7 textStorage];
       v51 = *MEMORY[0x277D74060];
-      v45 = [(ICNoteEditorViewController *)self textView];
-      v46 = [v45 textStorage];
-      v52 = v12;
-      v47 = [v46 ic_range];
+      textView8 = [(ICNoteEditorViewController *)self textView];
+      textStorage2 = [textView8 textStorage];
+      v52 = lastPaperDocumentAttachmentView;
+      ic_range = [textStorage2 ic_range];
       v49 = v48;
       v53[0] = MEMORY[0x277D85DD0];
       v53[1] = 3221225472;
       v53[2] = __83__ICNoteEditorViewController_prepareToSnapToPaperDocumentAtStartOfDragIfNecessary___block_invoke;
       v53[3] = &unk_2781AD388;
       v53[4] = self;
-      v54 = v4;
-      v55 = v8;
+      v54 = necessaryCopy;
+      v55 = array;
       v56 = v9;
-      [v44 enumerateAttribute:v51 inRange:v47 options:v49 usingBlock:{0, v53}];
+      [textStorage enumerateAttribute:v51 inRange:ic_range options:v49 usingBlock:{0, v53}];
     }
   }
 
-  v50 = [(ICNoteEditorViewController *)self textView];
-  [v50 setDraggingSnapPoints:v8];
+  textView9 = [(ICNoteEditorViewController *)self textView];
+  [textView9 setDraggingSnapPoints:array];
 }
 
 uint64_t __83__ICNoteEditorViewController_prepareToSnapToPaperDocumentAtStartOfDragIfNecessary___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -19159,14 +19159,14 @@ uint64_t __83__ICNoteEditorViewController_prepareToSnapToPaperDocumentAtStartOfD
   return MEMORY[0x2821F9730]();
 }
 
-- (id)firstEmbeddedScrollViewInView:(id)a3
+- (id)firstEmbeddedScrollViewInView:(id)view
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = viewCopy;
   }
 
   else
@@ -19175,8 +19175,8 @@ uint64_t __83__ICNoteEditorViewController_prepareToSnapToPaperDocumentAtStartOfD
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [v4 subviews];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subviews = [viewCopy subviews];
+    v7 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -19187,7 +19187,7 @@ uint64_t __83__ICNoteEditorViewController_prepareToSnapToPaperDocumentAtStartOfD
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
           v11 = [(ICNoteEditorViewController *)self firstEmbeddedScrollViewInView:*(*(&v13 + 1) + 8 * i)];
@@ -19199,7 +19199,7 @@ uint64_t __83__ICNoteEditorViewController_prepareToSnapToPaperDocumentAtStartOfD
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           continue;
@@ -19217,51 +19217,51 @@ LABEL_13:
   return v5;
 }
 
-- (void)scrollViewWillBeginDecelerating:(id)a3
+- (void)scrollViewWillBeginDecelerating:(id)decelerating
 {
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [v4 userTitleView];
-  v6 = [v5 isHidden];
+  textView = [(ICNoteEditorViewController *)self textView];
+  userTitleView = [textView userTitleView];
+  isHidden = [userTitleView isHidden];
 
-  if ((v6 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
 
     [(ICNoteEditorViewController *)self updateTextViewContentInsetsAnimated:1];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = [(ICNoteEditorViewController *)self updateNoteUserActivityStateDelayer];
-  [v4 requestFire];
+  updateNoteUserActivityStateDelayer = [(ICNoteEditorViewController *)self updateNoteUserActivityStateDelayer];
+  [updateNoteUserActivityStateDelayer requestFire];
 
   [(ICNoteEditorViewController *)self setPreventSnappingToLastPaperDocument:0];
-  v7 = [(ICNoteEditorBaseViewController *)self note];
-  v5 = [v7 documentMergeController];
-  v6 = [(ICNoteEditorViewController *)self textView];
-  [v5 endBlockingMergeForReason:1 textView:v6];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  documentMergeController = [note documentMergeController];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [documentMergeController endBlockingMergeForReason:1 textView:textView];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v6 = [(ICNoteEditorBaseViewController *)self note];
-  v4 = [v6 documentMergeController];
-  v5 = [(ICNoteEditorViewController *)self textView];
-  [v4 endBlockingMergeForReason:1 textView:v5];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  documentMergeController = [note documentMergeController];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [documentMergeController endBlockingMergeForReason:1 textView:textView];
 }
 
-- (void)userActivityWillSave:(id)a3
+- (void)userActivityWillSave:(id)save
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorViewController *)self userActivityUpdateQueue];
+  saveCopy = save;
+  userActivityUpdateQueue = [(ICNoteEditorViewController *)self userActivityUpdateQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__ICNoteEditorViewController_userActivityWillSave___block_invoke;
   v7[3] = &unk_2781ABEB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = saveCopy;
+  v6 = saveCopy;
+  dispatch_sync(userActivityUpdateQueue, v7);
 }
 
 void __51__ICNoteEditorViewController_userActivityWillSave___block_invoke(uint64_t a1)
@@ -19270,20 +19270,20 @@ void __51__ICNoteEditorViewController_userActivityWillSave___block_invoke(uint64
   [v2 updateUserActivity:*(a1 + 40)];
 }
 
-- (void)userActivity:(id)a3 didReceiveInputStream:(id)a4 outputStream:(id)a5
+- (void)userActivity:(id)activity didReceiveInputStream:(id)stream outputStream:(id)outputStream
 {
   v6 = MEMORY[0x277D35ED8];
-  v7 = a5;
-  v8 = a4;
-  v9 = [v6 sharedController];
-  [v9 didReceiveInputStream:v8 outputStream:v7];
+  outputStreamCopy = outputStream;
+  streamCopy = stream;
+  sharedController = [v6 sharedController];
+  [sharedController didReceiveInputStream:streamCopy outputStream:outputStreamCopy];
 }
 
 - (id)userActivity
 {
-  v3 = [(ICNoteEditorViewController *)self noteUserActivity];
+  noteUserActivity = [(ICNoteEditorViewController *)self noteUserActivity];
 
-  if (!v3)
+  if (!noteUserActivity)
   {
     [(ICNoteEditorViewController *)self updateNoteUserActivityState];
   }
@@ -19291,30 +19291,30 @@ void __51__ICNoteEditorViewController_userActivityWillSave___block_invoke(uint64
   return [(ICNoteEditorViewController *)self noteUserActivity];
 }
 
-- (void)attachmentView:(id)a3 shouldPresentNote:(id)a4
+- (void)attachmentView:(id)view shouldPresentNote:(id)note
 {
-  v5 = [(ICNoteEditorViewController *)self delegate:a3];
+  v5 = [(ICNoteEditorViewController *)self delegate:view];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ICNoteEditorViewController *)self delegate];
-    [v7 noteEditor:self didTapAttachment:0];
+    delegate = [(ICNoteEditorViewController *)self delegate];
+    [delegate noteEditor:self didTapAttachment:0];
   }
 }
 
-- (void)attachmentView:(id)a3 shouldPresentAttachment:(id)a4
+- (void)attachmentView:(id)view shouldPresentAttachment:(id)attachment
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  viewCopy = view;
+  attachmentCopy = attachment;
+  if (!attachmentCopy)
   {
-    v8 = os_log_create("com.apple.notes", "UI");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    audioAttachmentEditorCoordinator = os_log_create("com.apple.notes", "UI");
+    if (os_log_type_enabled(audioAttachmentEditorCoordinator, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_2151A1000, v8, OS_LOG_TYPE_INFO, "No attachment to present for attachment view", buf, 2u);
+      _os_log_impl(&dword_2151A1000, audioAttachmentEditorCoordinator, OS_LOG_TYPE_INFO, "No attachment to present for attachment view", buf, 2u);
     }
 
 LABEL_6:
@@ -19322,26 +19322,26 @@ LABEL_6:
     goto LABEL_32;
   }
 
-  if (![MEMORY[0x277D36790] canUpdateFullscreenSketchAttachment:v7])
+  if (![MEMORY[0x277D36790] canUpdateFullscreenSketchAttachment:attachmentCopy])
   {
-    v9 = [(ICNoteEditorViewController *)self delegate];
+    delegate = [(ICNoteEditorViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v7 attachmentType];
+      attachmentType = [attachmentCopy attachmentType];
 
-      if (v10 == 11)
+      if (attachmentType == 11)
       {
         v11 = 1;
 LABEL_13:
-        if (ICInternalSettingsIsAudioTranscriptionEnabled() && v11 && [v7 attachmentType] == 4)
+        if (ICInternalSettingsIsAudioTranscriptionEnabled() && v11 && [attachmentCopy attachmentType] == 4)
         {
-          if ([v7 needsInitialFetchFromCloud])
+          if ([attachmentCopy needsInitialFetchFromCloud])
           {
             goto LABEL_32;
           }
 
-          v8 = [(ICNoteEditorViewController *)self audioAttachmentEditorCoordinator];
-          [v8 presentRecordingViewControllerForAttachment:v7];
+          audioAttachmentEditorCoordinator = [(ICNoteEditorViewController *)self audioAttachmentEditorCoordinator];
+          [audioAttachmentEditorCoordinator presentRecordingViewControllerForAttachment:attachmentCopy];
           goto LABEL_6;
         }
 
@@ -19350,26 +19350,26 @@ LABEL_13:
           goto LABEL_32;
         }
 
-        v12 = [(ICNoteEditorBaseViewController *)self note];
-        v13 = [v12 attachmentsInOrder];
+        note = [(ICNoteEditorBaseViewController *)self note];
+        attachmentsInOrder = [note attachmentsInOrder];
 
-        v14 = [v13 indexOfObject:v7];
+        v14 = [attachmentsInOrder indexOfObject:attachmentCopy];
         if (v14 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v15 = os_log_create("com.apple.notes", "UI");
           if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
           {
-            v16 = [v7 shortLoggingDescription];
+            shortLoggingDescription = [attachmentCopy shortLoggingDescription];
             *buf = 138412290;
-            v27 = v16;
+            v27 = shortLoggingDescription;
             _os_log_impl(&dword_2151A1000, v15, OS_LOG_TYPE_INFO, "Could not find attachment %@ in its note. Falling back to showing just this attachment", buf, 0xCu);
           }
 
-          v25 = v7;
+          v25 = attachmentCopy;
           v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
 
           v18 = 0;
-          v13 = v17;
+          attachmentsInOrder = v17;
         }
 
         else
@@ -19377,46 +19377,46 @@ LABEL_13:
           v18 = v14;
         }
 
-        v19 = [(ICNoteEditorViewController *)self viewControllerManager];
+        viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
 
-        if (v19)
+        if (viewControllerManager)
         {
-          v20 = [(ICNoteEditorViewController *)self viewControllerManager];
-          -[ICAttachmentPresenter presentAttachments:startingAtIndex:delegate:displayShowInNote:editable:selectedSubAttachment:presentingViewController:](v20, "presentAttachments:startingAtIndex:delegate:displayShowInNote:editable:selectedSubAttachment:presentingViewController:", v13, v18, self, 0, [v7 isReadOnly] ^ 1, 0, self);
+          viewControllerManager2 = [(ICNoteEditorViewController *)self viewControllerManager];
+          -[ICAttachmentPresenter presentAttachments:startingAtIndex:delegate:displayShowInNote:editable:selectedSubAttachment:presentingViewController:](viewControllerManager2, "presentAttachments:startingAtIndex:delegate:displayShowInNote:editable:selectedSubAttachment:presentingViewController:", attachmentsInOrder, v18, self, 0, [attachmentCopy isReadOnly] ^ 1, 0, self);
         }
 
         else
         {
-          v20 = [(ICNoteEditorViewController *)self quickNoteiPhoneAttachmentPresenter];
-          v21 = [(ICAttachmentPresenter *)v20 presentedViewController];
-          if ([v21 isBeingPresented])
+          viewControllerManager2 = [(ICNoteEditorViewController *)self quickNoteiPhoneAttachmentPresenter];
+          presentedViewController = [(ICAttachmentPresenter *)viewControllerManager2 presentedViewController];
+          if ([presentedViewController isBeingPresented])
           {
           }
 
           else
           {
-            v22 = [(ICNoteEditorViewController *)self quickNoteiPhoneAttachmentPresenter];
-            v23 = [v22 galleryAttachmentEditorController];
+            quickNoteiPhoneAttachmentPresenter = [(ICNoteEditorViewController *)self quickNoteiPhoneAttachmentPresenter];
+            galleryAttachmentEditorController = [quickNoteiPhoneAttachmentPresenter galleryAttachmentEditorController];
 
-            if (v23)
+            if (galleryAttachmentEditorController)
             {
 LABEL_31:
 
               goto LABEL_32;
             }
 
-            v20 = -[ICAttachmentPresenter initWithViewControllerManager:attachments:startingAtIndex:delegate:displayShowInNote:editable:presentingViewController:]([ICAttachmentPresenter alloc], "initWithViewControllerManager:attachments:startingAtIndex:delegate:displayShowInNote:editable:presentingViewController:", 0, v13, v18, self, 0, [v7 isReadOnly] ^ 1, self);
-            [(ICNoteEditorViewController *)self setQuickNoteiPhoneAttachmentPresenter:v20];
-            v24 = [v13 objectAtIndexedSubscript:v18];
-            [(ICAttachmentPresenter *)v20 presentAttachmentWithSelectedSubAttachment:v24];
+            viewControllerManager2 = -[ICAttachmentPresenter initWithViewControllerManager:attachments:startingAtIndex:delegate:displayShowInNote:editable:presentingViewController:]([ICAttachmentPresenter alloc], "initWithViewControllerManager:attachments:startingAtIndex:delegate:displayShowInNote:editable:presentingViewController:", 0, attachmentsInOrder, v18, self, 0, [attachmentCopy isReadOnly] ^ 1, self);
+            [(ICNoteEditorViewController *)self setQuickNoteiPhoneAttachmentPresenter:viewControllerManager2];
+            v24 = [attachmentsInOrder objectAtIndexedSubscript:v18];
+            [(ICAttachmentPresenter *)viewControllerManager2 presentAttachmentWithSelectedSubAttachment:v24];
           }
         }
 
         goto LABEL_31;
       }
 
-      v9 = [(ICNoteEditorViewController *)self delegate];
-      v11 = [v9 noteEditor:self didTapAttachment:v7] ^ 1;
+      delegate = [(ICNoteEditorViewController *)self delegate];
+      v11 = [delegate noteEditor:self didTapAttachment:attachmentCopy] ^ 1;
     }
 
     else
@@ -19432,34 +19432,34 @@ LABEL_31:
 LABEL_32:
 }
 
-- (void)attachmentView:(id)a3 shouldShareAttachment:(id)a4
+- (void)attachmentView:(id)view shouldShareAttachment:(id)attachment
 {
-  v6 = a3;
-  v18 = [ICAttachmentActivityViewController makeWithAttachment:a4 quickLookItemDelegate:self completion:&__block_literal_global_1053];
-  v7 = [v18 popoverPresentationController];
-  [v7 setSourceView:v6];
+  viewCopy = view;
+  v18 = [ICAttachmentActivityViewController makeWithAttachment:attachment quickLookItemDelegate:self completion:&__block_literal_global_1053];
+  popoverPresentationController = [v18 popoverPresentationController];
+  [popoverPresentationController setSourceView:viewCopy];
 
-  [v6 bounds];
+  [viewCopy bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [v18 popoverPresentationController];
-  [v16 setSourceRect:{v9, v11, v13, v15}];
+  popoverPresentationController2 = [v18 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v9, v11, v13, v15}];
 
-  v17 = [v18 popoverPresentationController];
-  [v17 setCanOverlapSourceViewRect:1];
+  popoverPresentationController3 = [v18 popoverPresentationController];
+  [popoverPresentationController3 setCanOverlapSourceViewRect:1];
 
   [(ICNoteEditorViewController *)self presentViewController:v18 animated:1 completion:0];
 }
 
-- (BOOL)attachmentView:(id)a3 shouldRespondToPanGestureTouch:(id)a4 forAttachment:(id)a5
+- (BOOL)attachmentView:(id)view shouldRespondToPanGestureTouch:(id)touch forAttachment:(id)attachment
 {
-  v7 = a4;
-  if ([a5 attachmentType] == 9)
+  touchCopy = touch;
+  if ([attachment attachmentType] == 9)
   {
-    v8 = [v7 type] == 2;
+    v8 = [touchCopy type] == 2;
     v9 = v8 | [(ICNoteEditorViewController *)self isInkPickerShowing];
   }
 
@@ -19471,9 +19471,9 @@ LABEL_32:
   return v9 & 1;
 }
 
-- (CGRect)notesQuickLookActivityItem:(id)a3 rectForPreviewItem:(id)a4 inView:(id *)a5 previewController:(id)a6
+- (CGRect)notesQuickLookActivityItem:(id)item rectForPreviewItem:(id)previewItem inView:(id *)view previewController:(id)controller
 {
-  v6 = [(ICNoteEditorViewController *)self textView:a3];
+  v6 = [(ICNoteEditorViewController *)self textView:item];
   [v6 bounds];
   v8 = v7;
   v10 = v9;
@@ -19491,9 +19491,9 @@ LABEL_32:
   return result;
 }
 
-- (id)notesQuickLookActivityItem:(id)a3 transitionViewForPreviewItem:(id)a4 previewController:(id)a5
+- (id)notesQuickLookActivityItem:(id)item transitionViewForPreviewItem:(id)previewItem previewController:(id)controller
 {
-  v6 = a4;
+  previewItemCopy = previewItem;
   objc_opt_class();
   v7 = ICDynamicCast();
 
@@ -19501,68 +19501,68 @@ LABEL_32:
   v9 = v8;
   if (v8)
   {
-    v10 = v8;
+    textView = v8;
   }
 
   else
   {
-    v10 = [(ICNoteEditorViewController *)self textView];
+    textView = [(ICNoteEditorViewController *)self textView];
   }
 
-  v11 = v10;
+  v11 = textView;
 
   return v11;
 }
 
-- (id)viewForAttachment:(id)a3
+- (id)viewForAttachment:(id)attachment
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attachmentCopy = attachment;
   if (ICInternalSettingsIsTextKit2Enabled())
   {
     objc_opt_class();
-    v5 = [(ICNoteEditorViewController *)self textView];
-    v6 = [v5 icTextLayoutManager];
-    v7 = [v4 identifier];
-    v8 = [v6 existingAttachmentViewForIdentifier:v7];
-    v9 = ICDynamicCast();
+    textView = [(ICNoteEditorViewController *)self textView];
+    icTextLayoutManager = [textView icTextLayoutManager];
+    identifier = [attachmentCopy identifier];
+    v8 = [icTextLayoutManager existingAttachmentViewForIdentifier:identifier];
+    layoutManager2 = ICDynamicCast();
 
     objc_opt_class();
     v10 = ICDynamicCast();
-    v11 = [v10 drawingInlineView];
-    v12 = v11;
-    if (v11)
+    drawingInlineView = [v10 drawingInlineView];
+    v12 = drawingInlineView;
+    if (drawingInlineView)
     {
-      v13 = v11;
+      quickLookTransitionView = drawingInlineView;
     }
 
     else
     {
-      v13 = [v9 quickLookTransitionView];
+      quickLookTransitionView = [layoutManager2 quickLookTransitionView];
     }
 
-    v23 = v13;
+    v23 = quickLookTransitionView;
 
     goto LABEL_16;
   }
 
-  v14 = [(ICNoteEditorViewController *)self textView];
-  v15 = [v14 layoutManager];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  layoutManager = [textView2 layoutManager];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v17 = [(ICNoteEditorViewController *)self textView];
-    v9 = [v17 layoutManager];
+    textView3 = [(ICNoteEditorViewController *)self textView];
+    layoutManager2 = [textView3 layoutManager];
 
-    v18 = [v4 identifier];
-    v10 = [v9 supplementalViewForIdentifier:v18 allowHiddenViews:1];
+    identifier2 = [attachmentCopy identifier];
+    v10 = [layoutManager2 supplementalViewForIdentifier:identifier2 allowHiddenViews:1];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v10 drawingInlineView];
+      drawingInlineView2 = [v10 drawingInlineView];
     }
 
     else
@@ -19574,10 +19574,10 @@ LABEL_32:
         goto LABEL_16;
       }
 
-      v19 = [v10 quickLookTransitionView];
+      drawingInlineView2 = [v10 quickLookTransitionView];
     }
 
-    v23 = v19;
+    v23 = drawingInlineView2;
 LABEL_16:
 
     goto LABEL_17;
@@ -19586,9 +19586,9 @@ LABEL_16:
   v20 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
-    v21 = [v4 shortLoggingDescription];
+    shortLoggingDescription = [attachmentCopy shortLoggingDescription];
     v25 = 138412546;
-    v26 = v21;
+    v26 = shortLoggingDescription;
     v27 = 2112;
     v28 = objc_opt_class();
     v22 = v28;
@@ -19601,12 +19601,12 @@ LABEL_17:
   return v23;
 }
 
-- (void)attachmentPresenterDidDismiss:(id)a3
+- (void)attachmentPresenterDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorViewController *)self quickNoteiPhoneAttachmentPresenter];
+  dismissCopy = dismiss;
+  quickNoteiPhoneAttachmentPresenter = [(ICNoteEditorViewController *)self quickNoteiPhoneAttachmentPresenter];
 
-  if (v5 == v4)
+  if (quickNoteiPhoneAttachmentPresenter == dismissCopy)
   {
 
     [(ICNoteEditorViewController *)self setQuickNoteiPhoneAttachmentPresenter:0];
@@ -19615,16 +19615,16 @@ LABEL_17:
 
 - (void)showDrawingUpdateAlert
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 textDragInteraction];
-  v5 = [v4 isEnabled];
+  textView = [(ICNoteEditorViewController *)self textView];
+  textDragInteraction = [textView textDragInteraction];
+  isEnabled = [textDragInteraction isEnabled];
 
   v6 = MEMORY[0x277D36790];
-  v7 = [(ICNoteEditorBaseViewController *)self note];
-  v8 = [v6 countOfUpdatableDrawingsInNote:v7];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  v8 = [v6 countOfUpdatableDrawingsInNote:note];
 
-  v9 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = v9;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v10 = mainBundle;
   if (v8 >= 2)
   {
     v11 = @"Update Drawings?";
@@ -19645,22 +19645,22 @@ LABEL_17:
     v12 = @"You need to update this drawing to edit it.\n\nOnly devices upgraded to the latest version of iOS can edit this drawing.";
   }
 
-  v13 = [v9 localizedStringForKey:v11 value:&stru_282757698 table:0];
+  v13 = [mainBundle localizedStringForKey:v11 value:&stru_282757698 table:0];
 
-  v14 = [MEMORY[0x277CCA8D8] mainBundle];
-  v15 = [v14 localizedStringForKey:v12 value:&stru_282757698 table:0];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v15 = [mainBundle2 localizedStringForKey:v12 value:&stru_282757698 table:0];
 
   v16 = [MEMORY[0x277D75110] alertControllerWithTitle:v13 message:v15 preferredStyle:1];
   objc_initWeak(location, self);
   v17 = MEMORY[0x277D750F8];
-  v18 = [MEMORY[0x277CCA8D8] mainBundle];
-  v19 = [v18 localizedStringForKey:@"Learn More" value:&stru_282757698 table:0];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v19 = [mainBundle3 localizedStringForKey:@"Learn More" value:&stru_282757698 table:0];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __52__ICNoteEditorViewController_showDrawingUpdateAlert__block_invoke;
   v39[3] = &unk_2781AD3B0;
   objc_copyWeak(&v40, location);
-  v41 = v5;
+  v41 = isEnabled;
   v20 = [v17 actionWithTitle:v19 style:0 handler:v39];
   [v16 addAction:v20];
 
@@ -19684,25 +19684,25 @@ LABEL_17:
   v36[2] = __52__ICNoteEditorViewController_showDrawingUpdateAlert__block_invoke_2;
   v36[3] = &unk_2781AD3B0;
   objc_copyWeak(&v37, location);
-  v38 = v5;
+  v38 = isEnabled;
   v25 = [v24 actionWithTitle:v23 style:0 handler:v36];
   [v16 addAction:v25];
 
   v26 = *(v21 + 248);
-  v27 = [MEMORY[0x277CCA8D8] mainBundle];
-  v28 = [v27 localizedStringForKey:@"Cancel" value:&stru_282757698 table:0];
+  mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+  v28 = [mainBundle4 localizedStringForKey:@"Cancel" value:&stru_282757698 table:0];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __52__ICNoteEditorViewController_showDrawingUpdateAlert__block_invoke_3;
   v33[3] = &unk_2781AD3B0;
   objc_copyWeak(&v34, location);
-  v35 = v5;
+  v35 = isEnabled;
   v29 = [v26 actionWithTitle:v28 style:1 handler:v33];
   [v16 addAction:v29];
 
-  v30 = [(ICNoteEditorViewController *)self textView];
-  v31 = [v30 textDragInteraction];
-  [v31 setEnabled:0];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  textDragInteraction2 = [textView2 textDragInteraction];
+  [textDragInteraction2 setEnabled:0];
 
   [(ICNoteEditorViewController *)self presentViewController:v16 animated:1 completion:0];
   objc_destroyWeak(&v34);
@@ -19750,7 +19750,7 @@ void __52__ICNoteEditorViewController_showDrawingUpdateAlert__block_invoke_3(uin
 - (void)updateDrawingAttachmentsInNote
 {
   *buf = 138412290;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_debug_impl(&dword_2151A1000, log, OS_LOG_TYPE_DEBUG, "Manually updating all drawings in note %@", buf, 0xCu);
 }
 
@@ -19762,58 +19762,58 @@ void __60__ICNoteEditorViewController_updateDrawingAttachmentsInNote__block_invo
 
 - (id)undoManager
 {
-  v3 = [(ICNoteEditorViewController *)self textViewUndoManager];
-  if (([v3 canRedo] & 1) != 0 || objc_msgSend(v3, "canUndo"))
+  textViewUndoManager = [(ICNoteEditorViewController *)self textViewUndoManager];
+  if (([textViewUndoManager canRedo] & 1) != 0 || objc_msgSend(textViewUndoManager, "canUndo"))
   {
-    v4 = v3;
+    undoManager = textViewUndoManager;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = ICNoteEditorViewController;
-    v4 = [(ICNoteEditorViewController *)&v7 undoManager];
+    undoManager = [(ICNoteEditorViewController *)&v7 undoManager];
   }
 
-  v5 = v4;
+  v5 = undoManager;
 
   return v5;
 }
 
 - (NSUndoManager)textViewUndoManager
 {
-  v2 = [(ICNoteEditorViewController *)self textView];
-  v3 = [v2 undoManager];
+  textView = [(ICNoteEditorViewController *)self textView];
+  undoManager = [textView undoManager];
 
-  return v3;
+  return undoManager;
 }
 
 + (UIMenu)indentationMenu
 {
   v23[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D75650];
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"Decrease Indentation" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"Decrease Indentation" value:&stru_282757698 table:0];
   v5 = [MEMORY[0x277D755B8] systemImageNamed:@"decrease.indent"];
   v6 = [v2 ic_keyCommandWithInput:@"[" modifierFlags:0x100000 action:sel_indentLeft_ discoverabilityTitle:v4 image:v5];
 
-  v7 = [MEMORY[0x277CCA8D8] mainBundle];
-  v8 = [v7 localizedStringForKey:@"Decrease" value:&stru_282757698 table:0];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v8 = [mainBundle2 localizedStringForKey:@"Decrease" value:&stru_282757698 table:0];
   [v6 setTitle:v8];
 
   v9 = MEMORY[0x277D75650];
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 localizedStringForKey:@"Increase Indentation" value:&stru_282757698 table:0];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v11 = [mainBundle3 localizedStringForKey:@"Increase Indentation" value:&stru_282757698 table:0];
   v12 = [MEMORY[0x277D755B8] systemImageNamed:@"increase.indent"];
   v13 = [v9 ic_keyCommandWithInput:@"]" modifierFlags:0x100000 action:sel_indentRight_ discoverabilityTitle:v11 image:v12];
 
-  v14 = [MEMORY[0x277CCA8D8] mainBundle];
-  v15 = [v14 localizedStringForKey:@"Increase" value:&stru_282757698 table:0];
+  mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+  v15 = [mainBundle4 localizedStringForKey:@"Increase" value:&stru_282757698 table:0];
   [v13 setTitle:v15];
 
   v16 = MEMORY[0x277D75710];
-  v17 = [MEMORY[0x277CCA8D8] mainBundle];
-  v18 = [v17 localizedStringForKey:@"Indentation" value:&stru_282757698 table:0];
+  mainBundle5 = [MEMORY[0x277CCA8D8] mainBundle];
+  v18 = [mainBundle5 localizedStringForKey:@"Indentation" value:&stru_282757698 table:0];
   v19 = [MEMORY[0x277D755B8] systemImageNamed:@"increase.indent"];
   v23[0] = v13;
   v23[1] = v6;
@@ -19827,18 +19827,18 @@ void __60__ICNoteEditorViewController_updateDrawingAttachmentsInNote__block_invo
 {
   v19[3] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D75650];
-  v18 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v18 localizedStringForKey:@"Align Left" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Align Left" value:&stru_282757698 table:0];
   v4 = [v2 ic_keyCommandWithInput:@"{" modifierFlags:1179648 action:sel_ic_alignLeft_ discoverabilityTitle:v3];
   v19[0] = v4;
   v5 = MEMORY[0x277D75650];
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 localizedStringForKey:@"Align Center" value:&stru_282757698 table:0];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v7 = [mainBundle2 localizedStringForKey:@"Align Center" value:&stru_282757698 table:0];
   v8 = [v5 ic_keyCommandWithInput:@"|" modifierFlags:1179648 action:sel_ic_alignCenter_ discoverabilityTitle:v7];
   v19[1] = v8;
   v9 = MEMORY[0x277D75650];
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 localizedStringForKey:@"Align Right" value:&stru_282757698 table:0];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v11 = [mainBundle3 localizedStringForKey:@"Align Right" value:&stru_282757698 table:0];
   v12 = [v9 ic_keyCommandWithInput:@"}" modifierFlags:1179648 action:sel_ic_alignRight_ discoverabilityTitle:v11];
   v19[2] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:3];
@@ -19850,16 +19850,16 @@ void __60__ICNoteEditorViewController_updateDrawingAttachmentsInNote__block_invo
   return v16;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if ([MEMORY[0x277D75658] isInHardwareKeyboardMode])
   {
-    v8 = [v7 _modifierFlags];
-    v9 = [v7 _modifiedInput];
-    v10 = v9;
-    if ((*&v8 & 0x120000) == 0x100000 && [v9 length] == 1)
+    _modifierFlags = [eventCopy _modifierFlags];
+    _modifiedInput = [eventCopy _modifiedInput];
+    v10 = _modifiedInput;
+    if ((*&_modifierFlags & 0x120000) == 0x100000 && [_modifiedInput length] == 1)
     {
       v11 = [v10 characterAtIndex:0];
       if (v11 == 93)
@@ -19880,7 +19880,7 @@ LABEL_11:
 
   v12.receiver = self;
   v12.super_class = ICNoteEditorViewController;
-  [(ICNoteEditorViewController *)&v12 pressesBegan:v6 withEvent:v7];
+  [(ICNoteEditorViewController *)&v12 pressesBegan:beganCopy withEvent:eventCopy];
 LABEL_9:
 }
 
@@ -19902,26 +19902,26 @@ LABEL_9:
 - (void)applyAccessibilityInfo
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(ICNoteEditorViewController *)self applyAccessibilityInfoDelayer];
-  [v3 cancelPreviousFireRequests];
+  applyAccessibilityInfoDelayer = [(ICNoteEditorViewController *)self applyAccessibilityInfoDelayer];
+  [applyAccessibilityInfoDelayer cancelPreviousFireRequests];
 
   if (![(ICNoteEditorViewController *)self isDrawingStroke])
   {
-    v25 = self;
-    v4 = [(ICNoteEditorViewController *)self textView];
-    v5 = [v4 inputAssistantItem];
+    selfCopy = self;
+    textView = [(ICNoteEditorViewController *)self textView];
+    inputAssistantItem = [textView inputAssistantItem];
 
-    v24 = v5;
-    v6 = [v5 leadingBarButtonGroups];
-    v7 = [v6 firstObject];
+    v24 = inputAssistantItem;
+    leadingBarButtonGroups = [inputAssistantItem leadingBarButtonGroups];
+    firstObject = [leadingBarButtonGroups firstObject];
 
-    v8 = [v7 representativeItem];
-    v9 = [MEMORY[0x277CCA8D8] mainBundle];
-    v10 = [v9 localizedStringForKey:@"Edit" value:&stru_282757698 table:0];
-    [v8 setIc_titleAndAccessibilityLabel:v10];
+    representativeItem = [firstObject representativeItem];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v10 = [mainBundle localizedStringForKey:@"Edit" value:&stru_282757698 table:0];
+    [representativeItem setIc_titleAndAccessibilityLabel:v10];
 
-    v23 = v7;
-    [v7 barButtonItems];
+    v23 = firstObject;
+    [firstObject barButtonItems];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -19944,20 +19944,20 @@ LABEL_9:
         }
 
         v15 = *(*(&v28 + 1) + 8 * i);
-        v16 = [v15 action];
-        if (v16 == sel_assistantCut)
+        action = [v15 action];
+        if (action == sel_assistantCut)
         {
           v17 = @"Cut";
         }
 
-        else if (v16 == sel_assistantCopy)
+        else if (action == sel_assistantCopy)
         {
           v17 = @"Copy";
         }
 
         else
         {
-          if (v16 != sel_assistantPaste)
+          if (action != sel_assistantPaste)
           {
             continue;
           }
@@ -19965,8 +19965,8 @@ LABEL_9:
           v17 = @"Paste";
         }
 
-        v18 = [MEMORY[0x277CCA8D8] mainBundle];
-        v19 = [v18 localizedStringForKey:v17 value:&stru_282757698 table:0];
+        mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+        v19 = [mainBundle2 localizedStringForKey:v17 value:&stru_282757698 table:0];
         [v15 setAccessibilityLabel:v19];
       }
 
@@ -19974,12 +19974,12 @@ LABEL_9:
       if (!v12)
       {
 LABEL_19:
-        v20 = [(ICNoteEditorViewController *)v25 backgroundView];
-        v21 = [(ICNoteEditorViewController *)v25 textView];
-        [v20 reparentAccessibilityChildrenOfElement:v21];
+        backgroundView = [(ICNoteEditorViewController *)selfCopy backgroundView];
+        textView2 = [(ICNoteEditorViewController *)selfCopy textView];
+        [backgroundView reparentAccessibilityChildrenOfElement:textView2];
 
-        v22 = [(ICNoteEditorViewController *)v25 backgroundView];
-        [v22 setAxChildReparentingController:v25];
+        backgroundView2 = [(ICNoteEditorViewController *)selfCopy backgroundView];
+        [backgroundView2 setAxChildReparentingController:selfCopy];
 
         return;
       }
@@ -19992,19 +19992,19 @@ LABEL_19:
 
 - (void)updateDateLabelAccessibility
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 dateView];
-  v5 = [v4 isAccessibilityElement];
+  textView = [(ICNoteEditorViewController *)self textView];
+  dateView = [textView dateView];
+  isAccessibilityElement = [dateView isAccessibilityElement];
 
-  v6 = [(ICNoteEditorViewController *)self textView];
-  [v6 accessibilityFrame];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  [textView2 accessibilityFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(ICNoteEditorViewController *)self textView];
-  v16 = [v15 dateView];
-  [v16 accessibilityFrame];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  dateView2 = [textView3 dateView];
+  [dateView2 accessibilityFrame];
   v27.origin.x = v17;
   v27.origin.y = v18;
   v27.size.width = v19;
@@ -20015,11 +20015,11 @@ LABEL_19:
   v26.size.height = v14;
   v21 = CGRectContainsRect(v26, v27);
 
-  if (v5 != v21)
+  if (isAccessibilityElement != v21)
   {
-    v22 = [(ICNoteEditorViewController *)self textView];
-    v23 = [v22 dateView];
-    [v23 setIsAccessibilityElement:v21];
+    textView4 = [(ICNoteEditorViewController *)self textView];
+    dateView3 = [textView4 dateView];
+    [dateView3 setIsAccessibilityElement:v21];
 
     v24 = *MEMORY[0x277D76488];
 
@@ -20037,18 +20037,18 @@ LABEL_19:
   [(ICNoteEditorViewController *)self updateBarButtons];
 }
 
-- (void)blockAccessibilityScreenChangedNotificationsIfNecessaryForDuration:(double)a3
+- (void)blockAccessibilityScreenChangedNotificationsIfNecessaryForDuration:(double)duration
 {
-  v9 = [(ICNoteEditorViewController *)self icSplitViewController];
-  v4 = [v9 splitViewController];
-  if (v4)
+  icSplitViewController = [(ICNoteEditorViewController *)self icSplitViewController];
+  splitViewController = [icSplitViewController splitViewController];
+  if (splitViewController)
   {
-    v5 = v4;
-    v6 = [(ICNoteEditorViewController *)self icSplitViewController];
-    v7 = [v6 traitCollection];
-    v8 = [v7 horizontalSizeClass];
+    v5 = splitViewController;
+    icSplitViewController2 = [(ICNoteEditorViewController *)self icSplitViewController];
+    traitCollection = [icSplitViewController2 traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if (v8 != 1)
+    if (horizontalSizeClass != 1)
     {
       _UIAccessibilityBlockPostingOfNotification();
 
@@ -20063,43 +20063,43 @@ LABEL_19:
 
 - (BOOL)allowsAccessibilityChildReparenting
 {
-  v3 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-  if (v3)
+  passwordEntryViewController = [(ICNoteEditorViewController *)self passwordEntryViewController];
+  if (passwordEntryViewController)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(ICNoteEditorViewController *)self invitationViewController];
-    v4 = v5 == 0;
+    invitationViewController = [(ICNoteEditorViewController *)self invitationViewController];
+    v4 = invitationViewController == 0;
   }
 
   return v4;
 }
 
-- (void)runScrollPerformanceTest:(id)a3 iterations:(int)a4 offset:(int)a5
+- (void)runScrollPerformanceTest:(id)test iterations:(int)iterations offset:(int)offset
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v8 = a3;
-  v9 = [(ICNoteEditorViewController *)self textView];
-  [v9 _performScrollTest:v8 iterations:v6 delta:v5];
+  v5 = *&offset;
+  v6 = *&iterations;
+  testCopy = test;
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView _performScrollTest:testCopy iterations:v6 delta:v5];
 }
 
-- (void)runTableHorizontalScrollPerformanceTest:(id)a3 iterations:(int)a4 offset:(int)a5
+- (void)runTableHorizontalScrollPerformanceTest:(id)test iterations:(int)iterations offset:(int)offset
 {
-  v5 = *&a5;
-  v6 = *&a4;
+  v5 = *&offset;
+  v6 = *&iterations;
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  testCopy = test;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v9 = [(ICNoteEditorViewController *)self textViewController:0];
-  v10 = [v9 childViewControllers];
+  childViewControllers = [v9 childViewControllers];
 
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v11 = [childViewControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
     v12 = v11;
@@ -20110,7 +20110,7 @@ LABEL_19:
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(childViewControllers);
         }
 
         objc_opt_class();
@@ -20118,14 +20118,14 @@ LABEL_19:
         {
           objc_opt_class();
           v15 = ICDynamicCast();
-          v16 = [v15 scrollView];
-          [v16 _performScrollTest:v8 iterations:v6 delta:v5 scrollAxis:1];
+          scrollView = [v15 scrollView];
+          [scrollView _performScrollTest:testCopy iterations:v6 delta:v5 scrollAxis:1];
 
           goto LABEL_11;
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [childViewControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v12)
       {
         continue;
@@ -20138,16 +20138,16 @@ LABEL_19:
 LABEL_11:
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
   if ([(ICNoteEditorViewController *)self isEditing])
   {
-    v4 = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
-    [v4 setAlpha:0.0];
+    textViewInputAccessoryView = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
+    [textViewInputAccessoryView setAlpha:0.0];
   }
 
   objc_opt_class();
-  v5 = [(ICNoteEditorViewController *)self presentedViewController];
+  presentedViewController = [(ICNoteEditorViewController *)self presentedViewController];
   v6 = ICDynamicCast();
 
   if (v6)
@@ -20161,13 +20161,13 @@ LABEL_11:
   }
 }
 
-- (BOOL)isAssociatedWindowScene:(id)a3
+- (BOOL)isAssociatedWindowScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorViewController *)self viewIfLoaded];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
-  v8 = [v7 isEqual:v4];
+  sceneCopy = scene;
+  viewIfLoaded = [(ICNoteEditorViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
+  v8 = [windowScene isEqual:sceneCopy];
 
   if (v8)
   {
@@ -20176,53 +20176,53 @@ LABEL_11:
 
   else
   {
-    v10 = self;
-    v11 = [(ICNoteEditorViewController *)v10 presentedViewController];
+    selfCopy = self;
+    presentedViewController = [(ICNoteEditorViewController *)selfCopy presentedViewController];
 
-    if (v11)
+    if (presentedViewController)
     {
       do
       {
-        v12 = [(ICNoteEditorViewController *)v10 presentedViewController];
+        presentedViewController2 = [(ICNoteEditorViewController *)selfCopy presentedViewController];
 
-        v13 = [(ICNoteEditorViewController *)v12 presentedViewController];
+        v12PresentedViewController = [(ICNoteEditorViewController *)presentedViewController2 presentedViewController];
 
-        v10 = v12;
+        selfCopy = presentedViewController2;
       }
 
-      while (v13);
+      while (v12PresentedViewController);
     }
 
     else
     {
-      v12 = v10;
+      presentedViewController2 = selfCopy;
     }
 
-    v14 = [(ICNoteEditorViewController *)v12 viewIfLoaded];
-    v15 = [v14 window];
-    v16 = [v15 windowScene];
-    v9 = [v16 isEqual:v4];
+    viewIfLoaded2 = [(ICNoteEditorViewController *)presentedViewController2 viewIfLoaded];
+    window2 = [viewIfLoaded2 window];
+    windowScene2 = [window2 windowScene];
+    v9 = [windowScene2 isEqual:sceneCopy];
   }
 
   return v9;
 }
 
-- (void)sceneWillDeactivate:(id)a3
+- (void)sceneWillDeactivate:(id)deactivate
 {
-  v4 = [a3 object];
-  v5 = [(ICNoteEditorViewController *)self isAssociatedWindowScene:v4];
+  object = [deactivate object];
+  v5 = [(ICNoteEditorViewController *)self isAssociatedWindowScene:object];
 
   if (v5)
   {
     [(ICNoteEditorViewController *)self showOrHideLockIconCoverViewControllerIfNeededIsBackgrounding:1];
     if ([(ICNoteEditorViewController *)self ic_isViewVisible])
     {
-      v6 = [(ICNoteEditorBaseViewController *)self note];
+      note = [(ICNoteEditorBaseViewController *)self note];
 
-      if (v6)
+      if (note)
       {
-        v7 = [(ICNoteEditorBaseViewController *)self note];
-        [(ICNoteEditorViewController *)self submitNoteViewEventForModernNote:v7];
+        note2 = [(ICNoteEditorBaseViewController *)self note];
+        [(ICNoteEditorViewController *)self submitNoteViewEventForModernNote:note2];
 
         [(ICNoteEditorViewController *)self submitPendingInlineDrawingDataIfNecessary];
 
@@ -20232,39 +20232,39 @@ LABEL_11:
   }
 }
 
-- (void)sceneDidActivate:(id)a3
+- (void)sceneDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [(ICNoteEditorViewController *)self isAssociatedWindowScene:v5];
+  activateCopy = activate;
+  object = [activateCopy object];
+  v6 = [(ICNoteEditorViewController *)self isAssociatedWindowScene:object];
 
   if (!v6)
   {
     goto LABEL_13;
   }
 
-  v7 = [(ICNoteEditorBaseViewController *)self note];
-  if ([v7 isPasswordProtected])
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if ([note isPasswordProtected])
   {
-    v8 = [(ICNoteEditorViewController *)self viewControllerManager];
-    v9 = [v8 selectedNoteObjectID];
-    if (v9)
+    viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+    selectedNoteObjectID = [viewControllerManager selectedNoteObjectID];
+    if (selectedNoteObjectID)
     {
-      v10 = v9;
-      v11 = [(ICNoteEditorViewController *)self viewControllerManager];
-      v12 = [v11 selectedNoteObjectID];
-      v13 = [(ICNoteEditorBaseViewController *)self note];
-      v14 = [v13 objectID];
-      v15 = [v12 isEqual:v14];
+      v10 = selectedNoteObjectID;
+      viewControllerManager2 = [(ICNoteEditorViewController *)self viewControllerManager];
+      selectedNoteObjectID2 = [viewControllerManager2 selectedNoteObjectID];
+      note2 = [(ICNoteEditorBaseViewController *)self note];
+      objectID = [note2 objectID];
+      v15 = [selectedNoteObjectID2 isEqual:objectID];
 
       if (v15)
       {
         goto LABEL_8;
       }
 
-      v7 = [(ICNoteEditorViewController *)self viewControllerManager];
-      v8 = [v7 selectedModernNote];
-      [(ICNoteEditorViewController *)self setNote:v8];
+      note = [(ICNoteEditorViewController *)self viewControllerManager];
+      viewControllerManager = [note selectedModernNote];
+      [(ICNoteEditorViewController *)self setNote:viewControllerManager];
     }
   }
 
@@ -20272,13 +20272,13 @@ LABEL_8:
   [(ICNoteEditorViewController *)self showOrHideLockIconCoverViewControllerIfNeededIsBackgrounding:0];
   if ([(ICNoteEditorViewController *)self ic_isViewVisible])
   {
-    v16 = [(ICNoteEditorBaseViewController *)self note];
+    note3 = [(ICNoteEditorBaseViewController *)self note];
 
-    if (v16)
+    if (note3)
     {
-      v17 = [(ICNoteEditorViewController *)self eventReporter];
-      v18 = [(ICNoteEditorBaseViewController *)self note];
-      [v17 startNoteViewEventDurationTrackingForModernNote:v18 reportCoreAnalytics:0];
+      eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+      note4 = [(ICNoteEditorBaseViewController *)self note];
+      [eventReporter startNoteViewEventDurationTrackingForModernNote:note4 reportCoreAnalytics:0];
     }
   }
 
@@ -20324,7 +20324,7 @@ void __47__ICNoteEditorViewController_sceneDidActivate___block_invoke(uint64_t a
 LABEL_6:
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
   if ([(ICNoteEditorViewController *)self isEditing])
   {
@@ -20339,8 +20339,8 @@ LABEL_6:
   if ([(ICNoteEditorViewController *)self ic_isViewVisible])
   {
     [(ICNoteEditorViewController *)self updateForceLightContentIfNecessary];
-    v4 = [(ICNoteEditorViewController *)self passwordEntryViewController];
-    [v4 setIsAnimatingOut:0];
+    passwordEntryViewController = [(ICNoteEditorViewController *)self passwordEntryViewController];
+    [passwordEntryViewController setIsAnimatingOut:0];
 
     [(ICNoteEditorViewController *)self showOrHidePasswordEntryViewControllerIfNeeded];
     if (objc_opt_respondsToSelector())
@@ -20356,27 +20356,27 @@ void __57__ICNoteEditorViewController_applicationDidBecomeActive___block_invoke(
   [v1 setAlpha:1.0];
 }
 
-- (void)mergeRelatedOperationsDidEnd:(id)a3
+- (void)mergeRelatedOperationsDidEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   objc_opt_class();
-  v5 = [v4 userInfo];
+  userInfo = [endCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D35C78]];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D35C78]];
   v13 = ICDynamicCast();
 
   if (!v13 || (v7 = [v13 unsignedIntegerValue] == 2, v8 = v13, v7))
   {
-    v9 = [(ICNoteEditorViewController *)self textView];
-    v10 = [v9 isEditing];
+    textView = [(ICNoteEditorViewController *)self textView];
+    isEditing = [textView isEditing];
 
-    if ((v10 & 1) == 0)
+    if ((isEditing & 1) == 0)
     {
-      v11 = [(ICNoteEditorViewController *)self textView];
-      [v11 ic_resetDataDetectorsResults];
+      textView2 = [(ICNoteEditorViewController *)self textView];
+      [textView2 ic_resetDataDetectorsResults];
 
-      v12 = [(ICNoteEditorViewController *)self textView];
-      [v12 ic_startDataDetectors];
+      textView3 = [(ICNoteEditorViewController *)self textView];
+      [textView3 ic_startDataDetectors];
     }
 
     [(ICNoteEditorViewController *)self updateStyleSelectorStateIfNeededIgnoreTypingAttributes:1];
@@ -20388,12 +20388,12 @@ void __57__ICNoteEditorViewController_applicationDidBecomeActive___block_invoke(
 {
   if ([(ICNoteEditorViewController *)self usesContextualFormatBar])
   {
-    v3 = [(ICNoteEditorViewController *)self textView];
-    v4 = [v3 TTTextStorage];
-    v5 = ([v4 isEditingViaWritingTools] & 1) != 0 || -[ICNoteEditorViewController isWritingToolsShowing](self, "isWritingToolsShowing");
+    textView = [(ICNoteEditorViewController *)self textView];
+    tTTextStorage = [textView TTTextStorage];
+    v5 = ([tTTextStorage isEditingViaWritingTools] & 1) != 0 || -[ICNoteEditorViewController isWritingToolsShowing](self, "isWritingToolsShowing");
 
-    v7 = [(ICNoteEditorViewController *)self navigationController];
-    v6 = [v7 isToolbarHidden] ^ 1 | v5;
+    navigationController = [(ICNoteEditorViewController *)self navigationController];
+    v6 = [navigationController isToolbarHidden] ^ 1 | v5;
   }
 
   else
@@ -20404,12 +20404,12 @@ void __57__ICNoteEditorViewController_applicationDidBecomeActive___block_invoke(
   return v6 & 1;
 }
 
-- (void)keyboardResizerAdjustInsetsWithKeyboardFrame:(CGRect)a3 scrollAboveHeight:(double)a4 duration:(double)a5
+- (void)keyboardResizerAdjustInsetsWithKeyboardFrame:(CGRect)frame scrollAboveHeight:(double)height duration:(double)duration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(ICNoteEditorViewController *)self isEditingOnSystemPaperOnPad])
   {
     return;
@@ -20422,7 +20422,7 @@ void __57__ICNoteEditorViewController_applicationDidBecomeActive___block_invoke(
   v60.size.width = width;
   v60.size.height = height;
   IsNull = CGRectIsNull(v60);
-  v56 = a5;
+  durationCopy = duration;
   v57 = x;
   v58 = y;
   rect = width;
@@ -20433,38 +20433,38 @@ void __57__ICNoteEditorViewController_applicationDidBecomeActive___block_invoke(
     if ([(ICNoteEditorViewController *)self safeAreaContainsKeyboard])
     {
       v15 = 0.0;
-      v16 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      v16 = self;
+      selfCopy2 = self;
       v15 = v13;
     }
 
-    [(ICNoteEditorViewController *)v16 setTextViewScrollIndicatorBottomInsetOverride:v15];
+    [(ICNoteEditorViewController *)selfCopy2 setTextViewScrollIndicatorBottomInsetOverride:v15];
     goto LABEL_19;
   }
 
-  v17 = [(ICNoteEditorViewController *)self textView];
-  v18 = [v17 inputAccessoryView];
+  textView = [(ICNoteEditorViewController *)self textView];
+  inputAccessoryView = [textView inputAccessoryView];
 
-  if (!v18)
+  if (!inputAccessoryView)
   {
-    v19 = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
-    [v19 intrinsicContentSize];
+    textViewInputAccessoryView = [(ICNoteEditorViewController *)self textViewInputAccessoryView];
+    [textViewInputAccessoryView intrinsicContentSize];
     height = height + v20;
   }
 
-  v21 = [(ICNoteEditorViewController *)self safeAreaContainsKeyboard];
+  safeAreaContainsKeyboard = [(ICNoteEditorViewController *)self safeAreaContainsKeyboard];
   v22 = 0.0;
-  if (!v21)
+  if (!safeAreaContainsKeyboard)
   {
     v61.origin.x = x;
     v61.origin.y = y;
     v61.size.width = width;
     v61.size.height = height;
-    v22 = CGRectGetHeight(v61) - a4;
+    v22 = CGRectGetHeight(v61) - height;
     if (v22 < v13)
     {
       v22 = v13;
@@ -20474,27 +20474,27 @@ void __57__ICNoteEditorViewController_applicationDidBecomeActive___block_invoke(
   [(ICNoteEditorViewController *)self setTextViewScrollIndicatorBottomInsetOverride:v22];
   [(ICNoteEditorViewController *)self textViewMinimumBottomInset];
   [(ICNoteEditorViewController *)self setTextViewMinimumBottomInset:?];
-  v23 = [(ICNoteEditorViewController *)self textView];
-  [v23 _contentScrollInset];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  [textView2 _contentScrollInset];
   v25 = v24;
   v27 = v26;
   v29 = v28;
 
-  v30 = [(ICNoteEditorViewController *)self textView];
-  [v30 _contentScrollInset];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  [textView3 _contentScrollInset];
   if (v34 != v27 || v31 != v25 || v33 != v29)
   {
 
 LABEL_16:
-    v36 = [(ICNoteEditorViewController *)self textView];
-    [v36 _setContentScrollInset:{v25, v27, a4, v29}];
+    textView4 = [(ICNoteEditorViewController *)self textView];
+    [textView4 _setContentScrollInset:{v25, v27, height, v29}];
 
     goto LABEL_19;
   }
 
   v35 = v32;
 
-  if (v35 != a4)
+  if (v35 != height)
   {
     goto LABEL_16;
   }
@@ -20503,8 +20503,8 @@ LABEL_19:
   [(ICNoteEditorViewController *)self textViewScrollIndicatorBottomInsetOverride];
   [(ICNoteEditorViewController *)self setTextViewScrollIndicatorBottomInsetOverride:v37 + 5.0];
   [(ICNoteEditorViewController *)self setTextViewScrollIndicatorBottomInsetOverrideToRestore:0.0];
-  v38 = [(ICNoteEditorViewController *)self textView];
-  [v38 contentInset];
+  textView5 = [(ICNoteEditorViewController *)self textView];
+  [textView5 contentInset];
   v40 = v39;
   v42 = v41;
   v44 = v43;
@@ -20515,13 +20515,13 @@ LABEL_19:
   v48 = v47;
   v50 = v49;
   v52 = v51;
-  v53 = [(ICNoteEditorViewController *)self textView];
-  [v53 setContentInset:{v40, v42, v46, v44}];
+  textView6 = [(ICNoteEditorViewController *)self textView];
+  [textView6 setContentInset:{v40, v42, v46, v44}];
 
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    v54 = [(ICNoteEditorViewController *)self textView];
-    [v54 setVerticalScrollIndicatorInsets:{v40, v48, v50, v52}];
+    textView7 = [(ICNoteEditorViewController *)self textView];
+    [textView7 setVerticalScrollIndicatorInsets:{v40, v48, v50, v52}];
   }
 
   v62.origin.x = v57;
@@ -20530,7 +20530,7 @@ LABEL_19:
   v62.size.height = height;
   if (!CGRectIsNull(v62))
   {
-    v55 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v56];
+    v55 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:durationCopy];
     [(ICNoteEditorViewController *)self setKeyboardAnimateInFinishTime:v55];
   }
 
@@ -20539,110 +20539,110 @@ LABEL_19:
 
 - (void)ensureValidInkForNewDrawingOrNote
 {
-  v3 = [(ICNoteEditorViewController *)self currentValidToolForNewDrawingOrNote];
-  [(ICNoteEditorViewController *)self updateInkPickerAndTextViewToTool:v3];
+  currentValidToolForNewDrawingOrNote = [(ICNoteEditorViewController *)self currentValidToolForNewDrawingOrNote];
+  [(ICNoteEditorViewController *)self updateInkPickerAndTextViewToTool:currentValidToolForNewDrawingOrNote];
 }
 
-- (void)updateInkPickerAndTextViewToTool:(id)a3
+- (void)updateInkPickerAndTextViewToTool:(id)tool
 {
-  v10 = a3;
+  toolCopy = tool;
   [(ICNoteEditorViewController *)self createInkPickerControllerIfNecessary];
-  v4 = v10;
-  if (v10)
+  v4 = toolCopy;
+  if (toolCopy)
   {
-    v5 = [(ICNoteEditorViewController *)self inkPaletteController];
-    [v5 setSelectedTool:v10];
+    inkPaletteController = [(ICNoteEditorViewController *)self inkPaletteController];
+    [inkPaletteController setSelectedTool:toolCopy];
 
-    if ([(ICNoteEditorViewController *)self isNewInk:v10]&& [(ICNoteEditorViewController *)self noteHasAnyPencilKitDrawings])
+    if ([(ICNoteEditorViewController *)self isNewInk:toolCopy]&& [(ICNoteEditorViewController *)self noteHasAnyPencilKitDrawings])
     {
-      v6 = [(ICNoteEditorViewController *)self inkPaletteController];
-      [v6 resetToPencilKitCompatibleInk];
+      inkPaletteController2 = [(ICNoteEditorViewController *)self inkPaletteController];
+      [inkPaletteController2 resetToPencilKitCompatibleInk];
     }
 
-    v7 = [(ICNoteEditorViewController *)self inkPaletteController];
-    v8 = [v7 selectedTool];
-    v9 = [(ICNoteEditorViewController *)self textView];
-    [v9 _setTool:v8];
+    inkPaletteController3 = [(ICNoteEditorViewController *)self inkPaletteController];
+    selectedTool = [inkPaletteController3 selectedTool];
+    textView = [(ICNoteEditorViewController *)self textView];
+    [textView _setTool:selectedTool];
 
-    v4 = v10;
+    v4 = toolCopy;
   }
 }
 
 - (void)clearTextViewSelection
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 selectedRange];
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView selectedRange];
   v6 = v5;
 
   if (v6)
   {
-    v7 = [(ICNoteEditorViewController *)self textView];
-    [v7 setSelectedRange:{v4, 0}];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    [textView2 setSelectedRange:{selectedRange, 0}];
   }
 }
 
-- (void)setSearchRegexFinder:(id)a3
+- (void)setSearchRegexFinder:(id)finder
 {
-  objc_storeStrong(&self->_searchRegexFinder, a3);
-  v4 = [(ICNoteEditorViewController *)self showOrHideSearchPatternHighlightsDelayer];
-  [v4 requestFire];
+  objc_storeStrong(&self->_searchRegexFinder, finder);
+  showOrHideSearchPatternHighlightsDelayer = [(ICNoteEditorViewController *)self showOrHideSearchPatternHighlightsDelayer];
+  [showOrHideSearchPatternHighlightsDelayer requestFire];
 }
 
 - (void)showOrHideSearchPatternHighlightsIfNecessary
 {
-  v3 = [(ICNoteEditorViewController *)self showOrHideSearchPatternHighlightsDelayer];
-  [v3 cancelPreviousFireRequests];
+  showOrHideSearchPatternHighlightsDelayer = [(ICNoteEditorViewController *)self showOrHideSearchPatternHighlightsDelayer];
+  [showOrHideSearchPatternHighlightsDelayer cancelPreviousFireRequests];
 
   if (([(ICNoteEditorViewController *)self isEditing]& 1) != 0)
   {
     goto LABEL_5;
   }
 
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [v4 findInteraction];
-  if ([v5 isFindNavigatorVisible])
+  textView = [(ICNoteEditorViewController *)self textView];
+  findInteraction = [textView findInteraction];
+  if ([findInteraction isFindNavigatorVisible])
   {
 
 LABEL_5:
-    v15 = 0;
+    searchRegexFinder = 0;
     goto LABEL_6;
   }
 
-  v6 = [(ICNoteEditorViewController *)self isInkPickerShowing];
+  isInkPickerShowing = [(ICNoteEditorViewController *)self isInkPickerShowing];
 
-  if (v6)
+  if (isInkPickerShowing)
   {
     goto LABEL_5;
   }
 
-  v15 = [(ICNoteEditorViewController *)self searchRegexFinder];
+  searchRegexFinder = [(ICNoteEditorViewController *)self searchRegexFinder];
 LABEL_6:
   if (!ICInternalSettingsIsTextKit2Enabled())
   {
     objc_opt_class();
-    v9 = [(ICNoteEditorViewController *)self textView];
-    v13 = [v9 layoutManager];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    layoutManager = [textView2 layoutManager];
     v14 = ICDynamicCast();
-    [v14 setHighlightPatternRegexFinder:v15];
+    [v14 setHighlightPatternRegexFinder:searchRegexFinder];
 
     goto LABEL_11;
   }
 
   objc_opt_class();
-  v7 = [(ICNoteEditorViewController *)self textView];
-  v8 = [v7 textLayoutManager];
-  v9 = ICDynamicCast();
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  textLayoutManager = [textView3 textLayoutManager];
+  textView2 = ICDynamicCast();
 
-  v10 = v15;
-  if (v15 || ([v9 highlightPatternRegexFinder], v11 = objc_claimAutoreleasedReturnValue(), v11, v10 = 0, v11))
+  v10 = searchRegexFinder;
+  if (searchRegexFinder || ([textView2 highlightPatternRegexFinder], v11 = objc_claimAutoreleasedReturnValue(), v11, v10 = 0, v11))
   {
-    v15 = v10;
-    [v9 setHighlightPatternRegexFinder:v10];
-    v12 = [(ICNoteEditorViewController *)self authorHighlightsUpdater];
-    [v12 setSearchHighlightRegexFinder:v15];
+    searchRegexFinder = v10;
+    [textView2 setHighlightPatternRegexFinder:v10];
+    authorHighlightsUpdater = [(ICNoteEditorViewController *)self authorHighlightsUpdater];
+    [authorHighlightsUpdater setSearchHighlightRegexFinder:searchRegexFinder];
 
-    v13 = [(ICNoteEditorViewController *)self authorHighlightsUpdater];
-    [v13 updateAnimated:0];
+    layoutManager = [(ICNoteEditorViewController *)self authorHighlightsUpdater];
+    [layoutManager updateAnimated:0];
 LABEL_11:
   }
 }
@@ -20679,25 +20679,25 @@ LABEL_11:
 
 - (void)updateInlineDrawingsPaletteVisibility
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  v4 = [v3 textStorage];
-  v5 = [v4 ic_range];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  textStorage = [note textStorage];
+  ic_range = [textStorage ic_range];
   v7 = v6;
 
   v13.location = [(ICNoteEditorViewController *)self visibleRange];
   ++v13.length;
-  v14.location = v5;
+  v14.location = ic_range;
   v14.length = v7;
   v8 = NSIntersectionRange(v13, v14);
-  v9 = [(ICNoteEditorBaseViewController *)self note];
-  v10 = [v9 textStorage];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  textStorage2 = [note2 textStorage];
   v11 = *MEMORY[0x277D74060];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __67__ICNoteEditorViewController_updateInlineDrawingsPaletteVisibility__block_invoke;
   v12[3] = &unk_2781AC5D8;
   v12[4] = self;
-  [v10 enumerateAttribute:v11 inRange:v8.location options:v8.length usingBlock:{0, v12}];
+  [textStorage2 enumerateAttribute:v11 inRange:v8.location options:v8.length usingBlock:{0, v12}];
 }
 
 void __67__ICNoteEditorViewController_updateInlineDrawingsPaletteVisibility__block_invoke(uint64_t a1, void *a2)
@@ -20715,85 +20715,85 @@ void __67__ICNoteEditorViewController_updateInlineDrawingsPaletteVisibility__blo
 
 - (id)currentValidToolForNewDrawingOrNote
 {
-  v3 = [(ICNoteEditorViewController *)self inkPaletteController];
+  inkPaletteController = [(ICNoteEditorViewController *)self inkPaletteController];
 
-  if (!v3)
+  if (!inkPaletteController)
   {
     goto LABEL_19;
   }
 
   if ([(ICNoteEditorBaseViewController *)self isEditingOnSystemPaper]&& ICInternalSettingsIsSystemPaperEnabled())
   {
-    v4 = [(ICNoteEditorViewController *)self inkPaletteController];
-    v5 = [v4 colorCorrectedTool];
+    inkPaletteController2 = [(ICNoteEditorViewController *)self inkPaletteController];
+    colorCorrectedTool = [inkPaletteController2 colorCorrectedTool];
 LABEL_18:
-    v3 = v5;
+    inkPaletteController = colorCorrectedTool;
 
     goto LABEL_19;
   }
 
-  v6 = [(ICNoteEditorViewController *)self inkPaletteController];
-  v3 = [v6 selectedTool];
+  inkPaletteController3 = [(ICNoteEditorViewController *)self inkPaletteController];
+  inkPaletteController = [inkPaletteController3 selectedTool];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = [(ICNoteEditorViewController *)self inkPaletteController];
-    if ([v7 isHandwritingToolSelected])
+    inkPaletteController4 = [(ICNoteEditorViewController *)self inkPaletteController];
+    if ([inkPaletteController4 isHandwritingToolSelected])
     {
     }
 
     else
     {
-      v8 = [(ICNoteEditorViewController *)self inkPaletteController];
-      v9 = [v8 isCanvasGenerationToolSelected];
+      inkPaletteController5 = [(ICNoteEditorViewController *)self inkPaletteController];
+      isCanvasGenerationToolSelected = [inkPaletteController5 isCanvasGenerationToolSelected];
 
-      if ((v9 & 1) == 0)
+      if ((isCanvasGenerationToolSelected & 1) == 0)
       {
 
 LABEL_12:
-        v3 = [(ICNoteEditorViewController *)self lastSavedInkingTool];
+        inkPaletteController = [(ICNoteEditorViewController *)self lastSavedInkingTool];
         goto LABEL_13;
       }
     }
   }
 
-  if (!v3)
+  if (!inkPaletteController)
   {
     goto LABEL_12;
   }
 
 LABEL_13:
-  if ([(ICNoteEditorViewController *)self isNewInk:v3]&& [(ICNoteEditorViewController *)self noteHasAnyPencilKitDrawings])
+  if ([(ICNoteEditorViewController *)self isNewInk:inkPaletteController]&& [(ICNoteEditorViewController *)self noteHasAnyPencilKitDrawings])
   {
-    v10 = [(ICNoteEditorViewController *)self inkPaletteController];
-    [v10 resetToPencilKitCompatibleInk];
+    inkPaletteController6 = [(ICNoteEditorViewController *)self inkPaletteController];
+    [inkPaletteController6 resetToPencilKitCompatibleInk];
 
-    v11 = [(ICNoteEditorViewController *)self inkPaletteController];
-    v12 = [v11 selectedTool];
+    inkPaletteController7 = [(ICNoteEditorViewController *)self inkPaletteController];
+    selectedTool = [inkPaletteController7 selectedTool];
 
-    v3 = v12;
+    inkPaletteController = selectedTool;
   }
 
-  if (!v3)
+  if (!inkPaletteController)
   {
     v13 = objc_alloc(MEMORY[0x277CD9640]);
     v14 = *MEMORY[0x277CD96F8];
-    v4 = [(ICNoteEditorViewController *)self defaultInkColor];
-    v5 = [v13 initWithInkType:v14 color:v4];
+    inkPaletteController2 = [(ICNoteEditorViewController *)self defaultInkColor];
+    colorCorrectedTool = [v13 initWithInkType:v14 color:inkPaletteController2];
     goto LABEL_18;
   }
 
 LABEL_19:
 
-  return v3;
+  return inkPaletteController;
 }
 
 - (PKTool)lastSavedInkingTool
 {
   v24 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 dataForKey:@"currentInkData"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults dataForKey:@"currentInkData"];
 
   if (v3)
   {
@@ -20829,11 +20829,11 @@ LABEL_19:
 
   else
   {
-    v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v5 = [v7 dictionaryForKey:@"currentInkTool"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v5 = [standardUserDefaults2 dictionaryForKey:@"currentInkTool"];
 
-    v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v8 stringForKey:@"currentInkTool"];
+    standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults3 stringForKey:@"currentInkTool"];
 
     v9 = [v5 objectForKeyedSubscript:@"inkType"];
     v10 = [v5 objectForKeyedSubscript:@"color"];
@@ -20865,8 +20865,8 @@ LABEL_19:
 
     else
     {
-      v17 = [MEMORY[0x277CD9620] className];
-      v18 = [v4 isEqualToString:v17];
+      className = [MEMORY[0x277CD9620] className];
+      v18 = [v4 isEqualToString:className];
 
       if (v18)
       {
@@ -20883,30 +20883,30 @@ LABEL_19:
   return v15;
 }
 
-- (void)saveToolAsCurrentTool:(id)a3
+- (void)saveToolAsCurrentTool:(id)tool
 {
-  v3 = a3;
+  toolCopy = tool;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     if (objc_opt_respondsToSelector())
     {
       v4 = MEMORY[0x277CCAAB0];
-      v5 = [v3 ink];
+      v5 = [toolCopy ink];
       v9 = 0;
       v6 = [v4 archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v9];
       v7 = v9;
 
       if (v6)
       {
-        v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-        [v8 setObject:v6 forKey:@"currentInkData"];
+        standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+        [standardUserDefaults setObject:v6 forKey:@"currentInkData"];
       }
 
       else
       {
-        v8 = os_log_create("com.apple.notes", "PencilKit");
-        if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+        standardUserDefaults = os_log_create("com.apple.notes", "PencilKit");
+        if (os_log_type_enabled(standardUserDefaults, OS_LOG_TYPE_ERROR))
         {
           [ICNoteEditorViewController saveToolAsCurrentTool:];
         }
@@ -20926,14 +20926,14 @@ LABEL_19:
 
 - (id)defaultInkColor
 {
-  v3 = [(ICNoteEditorViewController *)self traitCollection];
-  if ([v3 ic_isDark])
+  traitCollection = [(ICNoteEditorViewController *)self traitCollection];
+  if ([traitCollection ic_isDark])
   {
-    v4 = [(ICNoteEditorViewController *)self shouldForceLightContent];
+    shouldForceLightContent = [(ICNoteEditorViewController *)self shouldForceLightContent];
 
-    if (!v4)
+    if (!shouldForceLightContent)
     {
-      v5 = [MEMORY[0x277D75348] whiteColor];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
       goto LABEL_6;
     }
   }
@@ -20942,10 +20942,10 @@ LABEL_19:
   {
   }
 
-  v5 = [MEMORY[0x277D75348] blackColor];
+  whiteColor = [MEMORY[0x277D75348] blackColor];
 LABEL_6:
 
-  return v5;
+  return whiteColor;
 }
 
 - (void)createInkPickerControllerIfNecessary
@@ -20955,61 +20955,61 @@ LABEL_6:
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)setWritingToolsShowing:(BOOL)a3
+- (void)setWritingToolsShowing:(BOOL)showing
 {
-  if (self->_writingToolsShowing != a3)
+  if (self->_writingToolsShowing != showing)
   {
-    self->_writingToolsShowing = a3;
+    self->_writingToolsShowing = showing;
     [(ICNoteEditorViewController *)self updateBarButtonsAnimated:1];
   }
 }
 
-- (void)showInkPicker:(id)a3
+- (void)showInkPicker:(id)picker
 {
-  v10 = a3;
+  pickerCopy = picker;
   if ([(ICNoteEditorViewController *)self isInkPickerShowing])
   {
-    [(ICNoteEditorViewController *)self doneEditing:v10];
+    [(ICNoteEditorViewController *)self doneEditing:pickerCopy];
   }
 
   else
   {
-    v4 = [(ICNoteEditorBaseViewController *)self note];
+    note = [(ICNoteEditorBaseViewController *)self note];
 
-    if (!v4)
+    if (!note)
     {
-      v5 = [MEMORY[0x277D369A0] sharedInstance];
-      v6 = [v5 isQuickNoteSessionActive];
+      mEMORY[0x277D369A0] = [MEMORY[0x277D369A0] sharedInstance];
+      isQuickNoteSessionActive = [mEMORY[0x277D369A0] isQuickNoteSessionActive];
 
-      if (v6)
+      if (isQuickNoteSessionActive)
       {
         v7 = [(ICNoteEditorViewController *)self addQuickNoteWithPencil:1];
       }
 
       else
       {
-        v8 = [(ICNoteEditorViewController *)self viewControllerManager];
-        v9 = [v8 showNewNoteWithApproach:2 sender:self animated:1];
+        viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+        v9 = [viewControllerManager showNewNoteWithApproach:2 sender:self animated:1];
       }
     }
 
-    [(ICNoteEditorViewController *)self showStyleSelectorPopover:0 animated:1 sender:v10];
+    [(ICNoteEditorViewController *)self showStyleSelectorPopover:0 animated:1 sender:pickerCopy];
     [(ICNoteEditorViewController *)self setInkPickerState:1];
     [(ICNoteEditorViewController *)self showInkPickerAndEndEditingIfNecessary];
     [(ICNoteEditorViewController *)self clearTextViewSelection];
   }
 }
 
-- (void)showInkPicker:(BOOL)a3 animated:(BOOL)a4
+- (void)showInkPicker:(BOOL)picker animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if (!a3)
+  animatedCopy = animated;
+  pickerCopy = picker;
+  if (!picker)
   {
 LABEL_4:
-    [(ICNoteEditorViewController *)self updateBarButtonsAnimated:v4];
-    v7 = [(ICNoteEditorViewController *)self inkPaletteController];
-    [v7 showInkPalette:v5 animated:v4];
+    [(ICNoteEditorViewController *)self updateBarButtonsAnimated:animatedCopy];
+    inkPaletteController = [(ICNoteEditorViewController *)self inkPaletteController];
+    [inkPaletteController showInkPalette:pickerCopy animated:animatedCopy];
 
     return;
   }
@@ -21023,21 +21023,21 @@ LABEL_4:
   [(ICNoteEditorViewController *)self setShowInkPickerAfterViewAppears:1];
 }
 
-- (BOOL)toggleInkPickerAnimated:(BOOL)a3
+- (BOOL)toggleInkPickerAnimated:(BOOL)animated
 {
-  v4 = [(ICNoteEditorViewController *)self inkPaletteController];
-  v5 = [v4 isInkPaletteShowing];
+  inkPaletteController = [(ICNoteEditorViewController *)self inkPaletteController];
+  isInkPaletteShowing = [inkPaletteController isInkPaletteShowing];
 
-  [(ICNoteEditorViewController *)self showInkPicker:v5 ^ 1u animated:1];
-  return v5 ^ 1;
+  [(ICNoteEditorViewController *)self showInkPicker:isInkPaletteShowing ^ 1u animated:1];
+  return isInkPaletteShowing ^ 1;
 }
 
 - (void)hideInkPicker
 {
   if ([(ICNoteEditorViewController *)self isInkPickerShowing])
   {
-    v3 = [(ICNoteEditorViewController *)self inkPaletteController];
-    [v3 showInkPalette:0 animated:1];
+    inkPaletteController = [(ICNoteEditorViewController *)self inkPaletteController];
+    [inkPaletteController showInkPalette:0 animated:1];
 
     [(ICNoteEditorViewController *)self updateInlineDrawingsPaletteVisibility];
   }
@@ -21045,27 +21045,27 @@ LABEL_4:
 
 - (BOOL)shouldEnablePencilGestures
 {
-  v3 = [(ICNoteEditorViewController *)self splitViewController];
-  v4 = [v3 displayMode];
+  splitViewController = [(ICNoteEditorViewController *)self splitViewController];
+  displayMode = [splitViewController displayMode];
 
-  if (v4 == 3)
+  if (displayMode == 3)
   {
     return 0;
   }
 
-  v6 = [(ICNoteEditorViewController *)self textView];
-  v7 = [v6 findInteraction];
-  v8 = [v7 isFindNavigatorVisible];
+  textView = [(ICNoteEditorViewController *)self textView];
+  findInteraction = [textView findInteraction];
+  isFindNavigatorVisible = [findInteraction isFindNavigatorVisible];
 
-  return v8 ^ 1;
+  return isFindNavigatorVisible ^ 1;
 }
 
 - (void)setupForFingerDrawing
 {
   if (!-[ICNoteEditorBaseViewController isEditingOnSecureScreen](self, "isEditingOnSecureScreen") && ([MEMORY[0x277D75820] prefersPencilOnlyDrawing] & 1) == 0)
   {
-    v3 = [(ICNoteEditorViewController *)self viewControllerManager];
-    [v3 updateForFingerDrawingEnabled:1];
+    viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+    [viewControllerManager updateForFingerDrawingEnabled:1];
   }
 }
 
@@ -21073,26 +21073,26 @@ LABEL_4:
 {
   if (![(ICNoteEditorBaseViewController *)self isEditingOnSecureScreen])
   {
-    v3 = [(ICNoteEditorViewController *)self viewControllerManager];
-    [v3 updateForFingerDrawingEnabled:0];
+    viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+    [viewControllerManager updateForFingerDrawingEnabled:0];
   }
 }
 
-- (id)inkPaletteUndoManager:(id)a3
+- (id)inkPaletteUndoManager:(id)manager
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 undoManager];
+  textView = [(ICNoteEditorViewController *)self textView];
+  undoManager = [textView undoManager];
 
-  return v4;
+  return undoManager;
 }
 
-- (BOOL)isNewInk:(id)a3
+- (BOOL)isNewInk:(id)ink
 {
-  v3 = a3;
+  inkCopy = ink;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 ink];
+    v4 = [inkCopy ink];
     v5 = [v4 inkFormatVersion] > 0;
   }
 
@@ -21110,17 +21110,17 @@ LABEL_4:
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(ICNoteEditorBaseViewController *)self note];
+  note = [(ICNoteEditorBaseViewController *)self note];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __57__ICNoteEditorViewController_noteHasAnyPencilKitDrawings__block_invoke;
   v4[3] = &unk_2781ABF08;
   v4[4] = &v5;
-  [v2 enumerateAttachmentsInOrderUsingBlock:v4];
+  [note enumerateAttachmentsInOrderUsingBlock:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(note) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return note;
 }
 
 uint64_t __57__ICNoteEditorViewController_noteHasAnyPencilKitDrawings__block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4, _BYTE *a5)
@@ -21135,23 +21135,23 @@ uint64_t __57__ICNoteEditorViewController_noteHasAnyPencilKitDrawings__block_inv
   return result;
 }
 
-- (void)inkPalette:(id)a3 didPickTool:(id)a4
+- (void)inkPalette:(id)palette didPickTool:(id)tool
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(ICNoteEditorViewController *)self isNewInk:v7]&& [(ICNoteEditorViewController *)self noteHasAnyPencilKitDrawings])
+  paletteCopy = palette;
+  toolCopy = tool;
+  if ([(ICNoteEditorViewController *)self isNewInk:toolCopy]&& [(ICNoteEditorViewController *)self noteHasAnyPencilKitDrawings])
   {
     [(ICNoteEditorViewController *)self upgradePencilKitDrawingsForNewInksPromptingIfNecessary];
   }
 
-  v8 = [(ICNoteEditorViewController *)self textView];
-  [v8 _setTool:v7];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView _setTool:toolCopy];
 
-  v9 = [(ICNoteEditorViewController *)self isEditing];
-  if (v9)
+  isEditing = [(ICNoteEditorViewController *)self isEditing];
+  if (isEditing)
   {
-    v10 = [(ICNoteEditorViewController *)self textView];
-    v11 = [v10 ink];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    v11 = [textView2 ink];
     v12 = [v11 _isHandwritingInk] ^ 1;
   }
 
@@ -21160,20 +21160,20 @@ uint64_t __57__ICNoteEditorViewController_noteHasAnyPencilKitDrawings__block_inv
     v12 = 0;
   }
 
-  v13 = [(ICNoteEditorViewController *)self textView];
-  v14 = [v13 ink];
-  if ((v9 | [v14 _isHandwritingInk] ^ 1))
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  v14 = [textView3 ink];
+  if ((isEditing | [v14 _isHandwritingInk] ^ 1))
   {
     v15 = 0;
   }
 
   else
   {
-    v16 = [(ICNoteEditorViewController *)self paletteResponder];
-    v15 = [v16 isFirstResponder] ^ 1;
+    paletteResponder = [(ICNoteEditorViewController *)self paletteResponder];
+    v15 = [paletteResponder isFirstResponder] ^ 1;
   }
 
-  if (((v12 | v15) & 1) != 0 && [v6 isInkPaletteShowing])
+  if (((v12 | v15) & 1) != 0 && [paletteCopy isInkPaletteShowing])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -21183,7 +21183,7 @@ uint64_t __57__ICNoteEditorViewController_noteHasAnyPencilKitDrawings__block_inv
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
-  [(ICNoteEditorViewController *)self saveToolAsCurrentTool:v7];
+  [(ICNoteEditorViewController *)self saveToolAsCurrentTool:toolCopy];
 }
 
 void __53__ICNoteEditorViewController_inkPalette_didPickTool___block_invoke(uint64_t a1)
@@ -21195,33 +21195,33 @@ void __53__ICNoteEditorViewController_inkPalette_didPickTool___block_invoke(uint
 - (void)upgradePencilKitDrawingsForNewInksPromptingIfNecessary
 {
   v3 = [_TtC11NotesEditor28ICInlineDrawingUpgradeHelper alloc];
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  v6 = [v5 managedObjectContext];
-  v7 = [(ICNoteEditorViewController *)self textView];
-  v8 = [(ICInlineDrawingUpgradeHelper *)v3 initWithNote:v4 managedObjectContext:v6 textView:v7];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  managedObjectContext = [note2 managedObjectContext];
+  textView = [(ICNoteEditorViewController *)self textView];
+  v8 = [(ICInlineDrawingUpgradeHelper *)v3 initWithNote:note managedObjectContext:managedObjectContext textView:textView];
 
   [(ICNoteEditorViewController *)self upgradeAllAttachmentsInNoteWithUpgradeHelper:v8 forSydney:1];
 }
 
-- (void)inkPalette:(id)a3 didChangeColor:(id)a4
+- (void)inkPalette:(id)palette didChangeColor:(id)color
 {
-  v5 = a4;
-  v6 = [(ICNoteEditorViewController *)self textView];
-  [v6 _setSelectedInkColor:v5];
+  colorCopy = color;
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView _setSelectedInkColor:colorCopy];
 }
 
-- (void)inkPaletteDidToggleRuler:(id)a3 isRulerActive:(BOOL)a4
+- (void)inkPaletteDidToggleRuler:(id)ruler isRulerActive:(BOOL)active
 {
-  v4 = a4;
-  v5 = [(ICNoteEditorViewController *)self textView];
-  [v5 setRulerEnabled:v4];
+  activeCopy = active;
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView setRulerEnabled:activeCopy];
 }
 
-- (id)inkPaletteButtonView:(id)a3
+- (id)inkPaletteButtonView:(id)view
 {
-  v4 = a3;
-  if (![(ICNoteEditorBaseViewController *)self isEditingOnSystemPaper]|| (objc_opt_respondsToSelector() & 1) == 0 || ([(ICNoteEditorViewController *)self app_systemPaperInkPaletteButtonView:v4], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  viewCopy = view;
+  if (![(ICNoteEditorBaseViewController *)self isEditingOnSystemPaper]|| (objc_opt_respondsToSelector() & 1) == 0 || ([(ICNoteEditorViewController *)self app_systemPaperInkPaletteButtonView:viewCopy], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v5 = 0;
   }
@@ -21229,20 +21229,20 @@ void __53__ICNoteEditorViewController_inkPalette_didPickTool___block_invoke(uint
   return v5;
 }
 
-- (void)inkPalette:(id)a3 willShowAnimated:(BOOL)a4
+- (void)inkPalette:(id)palette willShowAnimated:(BOOL)animated
 {
-  v4 = [(ICNoteEditorViewController *)self attributionSidebarController:a3];
+  v4 = [(ICNoteEditorViewController *)self attributionSidebarController:palette];
   [v4 hideSidebarAnimated:1];
 }
 
-- (void)inkPalette:(id)a3 didShowAnimated:(BOOL)a4
+- (void)inkPalette:(id)palette didShowAnimated:(BOOL)animated
 {
-  [(ICNoteEditorViewController *)self updateBarButtonsAnimated:a4];
+  [(ICNoteEditorViewController *)self updateBarButtonsAnimated:animated];
   [(ICNoteEditorViewController *)self setupForFingerDrawing];
   [(ICNoteEditorViewController *)self updateInlineDrawingsPaletteVisibility];
   [(ICNoteEditorViewController *)self showOrHideSearchPatternHighlightsIfNecessary];
-  v5 = [(ICNoteEditorViewController *)self viewControllerManager];
-  [v5 updateHostedNotesAppearance];
+  viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+  [viewControllerManager updateHostedNotesAppearance];
 
   UIAccessibilityPostNotification(*MEMORY[0x277D76488], 0);
   if (objc_opt_respondsToSelector())
@@ -21250,78 +21250,78 @@ void __53__ICNoteEditorViewController_inkPalette_didPickTool___block_invoke(uint
     [(ICNoteEditorViewController *)self ppt_inkPickerDidShow];
   }
 
-  v7 = [(ICNoteEditorViewController *)self navigationController];
-  v6 = [v7 toolbar];
-  [v6 setAccessibilityElementsHidden:1];
+  navigationController = [(ICNoteEditorViewController *)self navigationController];
+  toolbar = [navigationController toolbar];
+  [toolbar setAccessibilityElementsHidden:1];
 }
 
-- (void)inkPalette:(id)a3 willHideAnimated:(BOOL)a4
+- (void)inkPalette:(id)palette willHideAnimated:(BOOL)animated
 {
-  v5 = [(ICNoteEditorViewController *)self textView:a3];
+  v5 = [(ICNoteEditorViewController *)self textView:palette];
   v6 = [v5 ink];
-  v7 = [v6 _isHandwritingInk];
+  _isHandwritingInk = [v6 _isHandwritingInk];
 
-  if ((v7 & 1) == 0)
+  if ((_isHandwritingInk & 1) == 0)
   {
-    v8 = [(ICNoteEditorViewController *)self textView];
-    [v8 setShouldAvoidBecomingFirstResponder:1];
+    textView = [(ICNoteEditorViewController *)self textView];
+    [textView setShouldAvoidBecomingFirstResponder:1];
   }
 }
 
-- (void)inkPalette:(id)a3 didHideAnimated:(BOOL)a4
+- (void)inkPalette:(id)palette didHideAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(ICNoteEditorViewController *)self textView];
-  v7 = [v6 ink];
-  v8 = [v7 _isHandwritingInk];
+  animatedCopy = animated;
+  textView = [(ICNoteEditorViewController *)self textView];
+  v7 = [textView ink];
+  _isHandwritingInk = [v7 _isHandwritingInk];
 
-  if ((v8 & 1) == 0)
+  if ((_isHandwritingInk & 1) == 0)
   {
-    v9 = [(ICNoteEditorViewController *)self textView];
-    [v9 setShouldAvoidBecomingFirstResponder:0];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    [textView2 setShouldAvoidBecomingFirstResponder:0];
   }
 
   [(ICNoteEditorViewController *)self updateInlineDrawingsPaletteVisibility];
-  [(ICNoteEditorViewController *)self updateBarButtonsAnimated:v4];
-  v10 = [(ICNoteEditorViewController *)self textView];
-  [v10 setRulerEnabled:0];
+  [(ICNoteEditorViewController *)self updateBarButtonsAnimated:animatedCopy];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  [textView3 setRulerEnabled:0];
 
   v11 = MEMORY[0x277D367C0];
-  v12 = [(ICNoteEditorViewController *)self view];
-  v13 = [v12 window];
-  v14 = [v11 sharedToolPickerForWindow:v13];
+  view = [(ICNoteEditorViewController *)self view];
+  window = [view window];
+  v14 = [v11 sharedToolPickerForWindow:window];
   [v14 setRulerActive:0];
 
   [(ICNoteEditorViewController *)self cleanupAfterFingerDrawing];
   [(ICNoteEditorViewController *)self showOrHideSearchPatternHighlightsIfNecessary];
-  v15 = [(ICNoteEditorViewController *)self viewControllerManager];
-  [v15 updateHostedNotesAppearance];
+  viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+  [viewControllerManager updateHostedNotesAppearance];
 
-  v17 = [(ICNoteEditorViewController *)self navigationController];
-  v16 = [v17 toolbar];
-  [v16 setAccessibilityElementsHidden:0];
+  navigationController = [(ICNoteEditorViewController *)self navigationController];
+  toolbar = [navigationController toolbar];
+  [toolbar setAccessibilityElementsHidden:0];
 }
 
-- (int64_t)icasPalettePositionFromPKPalettePosition:(int64_t)a3
+- (int64_t)icasPalettePositionFromPKPalettePosition:(int64_t)position
 {
-  if (a3 > 9)
+  if (position > 9)
   {
     return 0;
   }
 
   else
   {
-    return qword_2154BBFD0[a3];
+    return qword_2154BBFD0[position];
   }
 }
 
-- (void)inkPalette:(id)a3 didChangePalettePositionStart:(int64_t)a4 end:(int64_t)a5
+- (void)inkPalette:(id)palette didChangePalettePositionStart:(int64_t)start end:(int64_t)end
 {
-  if (a4 != a5)
+  if (start != end)
   {
-    v8 = [(ICNoteEditorViewController *)self eventReporter];
-    v9 = [(ICNoteEditorBaseViewController *)self note];
-    [v8 submitPaletteEngagementEventForNote:v9 startPosition:-[ICNoteEditorViewController icasPalettePositionFromPKPalettePosition:](self endPosition:{"icasPalettePositionFromPKPalettePosition:", a4), -[ICNoteEditorViewController icasPalettePositionFromPKPalettePosition:](self, "icasPalettePositionFromPKPalettePosition:", a5)}];
+    eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    [eventReporter submitPaletteEngagementEventForNote:note startPosition:-[ICNoteEditorViewController icasPalettePositionFromPKPalettePosition:](self endPosition:{"icasPalettePositionFromPKPalettePosition:", start), -[ICNoteEditorViewController icasPalettePositionFromPKPalettePosition:](self, "icasPalettePositionFromPKPalettePosition:", end)}];
 
     performAfterExistingTransaction();
   }
@@ -21341,32 +21341,32 @@ void __75__ICNoteEditorViewController_inkPalette_didChangePalettePositionStart_e
     v4 = objc_alloc_init(MEMORY[0x277D75D18]);
     [(UIView *)v4 setUserInteractionEnabled:0];
     [(UIView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [(ICNoteEditorViewController *)self view];
-    [v5 addSubview:v4];
+    view = [(ICNoteEditorViewController *)self view];
+    [view addSubview:v4];
 
-    v6 = [(ICNoteEditorViewController *)self view];
+    view2 = [(ICNoteEditorViewController *)self view];
     v7 = MEMORY[0x277CCAAD0];
-    v8 = [(ICNoteEditorViewController *)self view];
-    v9 = [v7 constraintWithItem:v4 attribute:3 relatedBy:0 toItem:v8 attribute:15 multiplier:1.0 constant:0.0];
-    [v6 addConstraint:v9];
+    view3 = [(ICNoteEditorViewController *)self view];
+    v9 = [v7 constraintWithItem:v4 attribute:3 relatedBy:0 toItem:view3 attribute:15 multiplier:1.0 constant:0.0];
+    [view2 addConstraint:v9];
 
-    v10 = [(ICNoteEditorViewController *)self view];
+    view4 = [(ICNoteEditorViewController *)self view];
     v11 = MEMORY[0x277CCAAD0];
-    v12 = [(ICNoteEditorViewController *)self view];
-    v13 = [v11 constraintWithItem:v4 attribute:4 relatedBy:0 toItem:v12 attribute:16 multiplier:1.0 constant:-60.0];
-    [v10 addConstraint:v13];
+    view5 = [(ICNoteEditorViewController *)self view];
+    v13 = [v11 constraintWithItem:v4 attribute:4 relatedBy:0 toItem:view5 attribute:16 multiplier:1.0 constant:-60.0];
+    [view4 addConstraint:v13];
 
-    v14 = [(ICNoteEditorViewController *)self view];
+    view6 = [(ICNoteEditorViewController *)self view];
     v15 = MEMORY[0x277CCAAD0];
-    v16 = [(ICNoteEditorViewController *)self view];
-    v17 = [v15 constraintWithItem:v4 attribute:1 relatedBy:0 toItem:v16 attribute:1 multiplier:1.0 constant:0.0];
-    [v14 addConstraint:v17];
+    view7 = [(ICNoteEditorViewController *)self view];
+    v17 = [v15 constraintWithItem:v4 attribute:1 relatedBy:0 toItem:view7 attribute:1 multiplier:1.0 constant:0.0];
+    [view6 addConstraint:v17];
 
-    v18 = [(ICNoteEditorViewController *)self view];
+    view8 = [(ICNoteEditorViewController *)self view];
     v19 = MEMORY[0x277CCAAD0];
-    v20 = [(ICNoteEditorViewController *)self view];
-    v21 = [v19 constraintWithItem:v4 attribute:2 relatedBy:0 toItem:v20 attribute:2 multiplier:1.0 constant:0.0];
-    [v18 addConstraint:v21];
+    view9 = [(ICNoteEditorViewController *)self view];
+    v21 = [v19 constraintWithItem:v4 attribute:2 relatedBy:0 toItem:view9 attribute:2 multiplier:1.0 constant:0.0];
+    [view8 addConstraint:v21];
 
     v22 = self->_rulerHostingView;
     self->_rulerHostingView = v4;
@@ -21377,25 +21377,25 @@ void __75__ICNoteEditorViewController_inkPalette_didChangePalettePositionStart_e
   return rulerHostingView;
 }
 
-- (void)_scribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4
+- (void)_scribbleInteraction:(id)interaction willBeginWritingInElement:(id)element
 {
-  v4 = [(ICNoteEditorViewController *)self textView:a3];
+  v4 = [(ICNoteEditorViewController *)self textView:interaction];
   [v4 setEditable:1];
 }
 
-- (BOOL)_scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4
+- (BOOL)_scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(ICNoteEditorViewController *)self textView];
-  v8 = [v7 ink];
+  y = location.y;
+  x = location.x;
+  textView = [(ICNoteEditorViewController *)self textView];
+  v8 = [textView ink];
   if ([v8 _isHandwritingInk])
   {
-    v9 = [(ICNoteEditorViewController *)self textView];
-    if ([v9 canBecomeFirstResponder])
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    if ([textView2 canBecomeFirstResponder])
     {
-      v10 = [(ICNoteEditorViewController *)self textView];
-      v11 = [v10 pointInside:0 withEvent:{x, y}];
+      textView3 = [(ICNoteEditorViewController *)self textView];
+      v11 = [textView3 pointInside:0 withEvent:{x, y}];
     }
 
     else
@@ -21412,32 +21412,32 @@ void __75__ICNoteEditorViewController_inkPalette_didChangePalettePositionStart_e
   return v11;
 }
 
-- (BOOL)textViewCanAddStroke:(id)a3
+- (BOOL)textViewCanAddStroke:(id)stroke
 {
-  v4 = [(ICNoteEditorViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
+  view = [(ICNoteEditorViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  if (v6 && [v6 activationState])
+  if (windowScene && [windowScene activationState])
   {
 LABEL_3:
     v7 = 0;
     goto LABEL_11;
   }
 
-  v8 = [(ICNoteEditorBaseViewController *)self note];
-  if (v8)
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if (note)
   {
-    v9 = v8;
-    v10 = [(ICNoteEditorBaseViewController *)self note];
-    v11 = [v10 isEditable];
+    v9 = note;
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    isEditable = [note2 isEditable];
 
-    if ((v11 & 1) == 0)
+    if ((isEditable & 1) == 0)
     {
-      v17 = [(ICNoteEditorBaseViewController *)self note];
-      v18 = [v17 isDeletedOrInTrash];
+      note3 = [(ICNoteEditorBaseViewController *)self note];
+      isDeletedOrInTrash = [note3 isDeletedOrInTrash];
 
-      if (v18)
+      if (isDeletedOrInTrash)
       {
         [(ICNoteEditorViewController *)self showRecoverNoteAlert];
       }
@@ -21446,8 +21446,8 @@ LABEL_3:
     }
   }
 
-  v12 = [(ICNoteEditorViewController *)self textView];
-  [v12 hitTestPoint];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView hitTestPoint];
   v13 = [(ICNoteEditorViewController *)self inlineDrawingAttachmentForPoint:?];
 
   if (v13 && ([v13 typeUTI], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", *MEMORY[0x277D35BD8]), v14, v15))
@@ -21465,18 +21465,18 @@ LABEL_11:
   return v7;
 }
 
-- (void)setIsDrawingStroke:(BOOL)a3
+- (void)setIsDrawingStroke:(BOOL)stroke
 {
-  v3 = a3;
-  self->_isDrawingStroke = a3;
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  [v4 setIsDrawingStroke:v3];
+  strokeCopy = stroke;
+  self->_isDrawingStroke = stroke;
+  note = [(ICNoteEditorBaseViewController *)self note];
+  [note setIsDrawingStroke:strokeCopy];
 }
 
-- (void)textViewWillBeginStroke:(id)a3 forTouch:(id)a4
+- (void)textViewWillBeginStroke:(id)stroke forTouch:(id)touch
 {
-  v6 = a4;
-  v7 = a3;
+  touchCopy = touch;
+  strokeCopy = stroke;
   if ([(ICNoteEditorViewController *)self wasEditingBeforeDrawing]&& ![(ICNoteEditorViewController *)self isInkPickerShowing])
   {
     [(ICNoteEditorViewController *)self showInkPicker:1 animated:1];
@@ -21484,68 +21484,68 @@ LABEL_11:
 
   if (![(ICNoteEditorViewController *)self isDrawingStroke])
   {
-    v8 = [(ICNoteEditorBaseViewController *)self note];
-    v9 = [v8 documentMergeController];
-    v10 = [(ICNoteEditorViewController *)self textView];
-    [v9 beginBlockingMergeForReason:5 textView:v10];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    documentMergeController = [note documentMergeController];
+    textView = [(ICNoteEditorViewController *)self textView];
+    [documentMergeController beginBlockingMergeForReason:5 textView:textView];
   }
 
-  [(ICNoteEditorViewController *)self setCurrentStrokeStartTouch:v6];
+  [(ICNoteEditorViewController *)self setCurrentStrokeStartTouch:touchCopy];
   [(ICNoteEditorViewController *)self setIsDrawingStroke:1];
-  v11 = [v6 type];
+  type = [touchCopy type];
 
-  [(ICNoteEditorViewController *)self setIsDrawingStrokeWithPencil:v11 == 2];
+  [(ICNoteEditorViewController *)self setIsDrawingStrokeWithPencil:type == 2];
   [(ICNoteEditorViewController *)self setDidDrawWithPencilWithoutPalette:0];
   [(ICNoteEditorViewController *)self updateUIEnabledStatePencilActive:[(ICNoteEditorViewController *)self isDrawingStrokeWithPencil]];
-  [v7 setInputAccessoryView:0];
+  [strokeCopy setInputAccessoryView:0];
 
   [(ICNoteEditorViewController *)self setHasMadeEdits];
 }
 
-- (void)updateUIEnabledStatePencilActive:(BOOL)a3
+- (void)updateUIEnabledStatePencilActive:(BOOL)active
 {
-  v3 = a3;
-  v5 = [(ICNoteEditorViewController *)self navigationController];
-  v6 = [v5 toolbar];
-  [v6 setUserInteractionEnabled:!v3];
+  activeCopy = active;
+  navigationController = [(ICNoteEditorViewController *)self navigationController];
+  toolbar = [navigationController toolbar];
+  [toolbar setUserInteractionEnabled:!activeCopy];
 
-  v8 = [(ICNoteEditorViewController *)self navigationController];
-  v7 = [v8 navigationBar];
-  [v7 setUserInteractionEnabled:!v3];
+  navigationController2 = [(ICNoteEditorViewController *)self navigationController];
+  navigationBar = [navigationController2 navigationBar];
+  [navigationBar setUserInteractionEnabled:!activeCopy];
 }
 
-- (void)textViewDidEndStroke:(id)a3
+- (void)textViewDidEndStroke:(id)stroke
 {
   [(ICNoteEditorViewController *)self updateUIEnabledStatePencilActive:0];
   if ([(ICNoteEditorViewController *)self isDrawingStroke])
   {
-    v4 = [(ICNoteEditorBaseViewController *)self note];
-    v5 = [v4 documentMergeController];
-    v6 = [(ICNoteEditorViewController *)self textView];
-    [v5 endBlockingMergeForReason:5 textView:v6];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    documentMergeController = [note documentMergeController];
+    textView = [(ICNoteEditorViewController *)self textView];
+    [documentMergeController endBlockingMergeForReason:5 textView:textView];
   }
 
-  v7 = [(ICNoteEditorViewController *)self isDrawingStrokeWithPencil];
+  isDrawingStrokeWithPencil = [(ICNoteEditorViewController *)self isDrawingStrokeWithPencil];
   [(ICNoteEditorViewController *)self setIsDrawingStroke:0];
   [(ICNoteEditorViewController *)self setIsDrawingStrokeWithPencil:0];
-  v8 = [MEMORY[0x277CBEAA8] date];
-  [(ICNoteEditorViewController *)self setDateOfLastStrokeOrNewDrawing:v8];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(ICNoteEditorViewController *)self setDateOfLastStrokeOrNewDrawing:date];
 
   [(ICNoteEditorViewController *)self clearTextViewSelection];
-  v9 = [(ICNoteEditorViewController *)self currentStrokeStartTouch];
-  v10 = [(ICNoteEditorViewController *)self textView];
-  [v9 locationInView:v10];
+  currentStrokeStartTouch = [(ICNoteEditorViewController *)self currentStrokeStartTouch];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  [currentStrokeStartTouch locationInView:textView2];
   v12 = v11;
   v14 = v13;
 
   v19 = [(ICNoteEditorViewController *)self inlineDrawingAttachmentForPoint:v12, v14];
   if (v19)
   {
-    v15 = [v19 identifier];
+    identifier = [v19 identifier];
 
-    if (v15)
+    if (identifier)
     {
-      if (v7)
+      if (isDrawingStrokeWithPencil)
       {
         v16 = 1;
       }
@@ -21555,14 +21555,14 @@ LABEL_11:
         v16 = 2;
       }
 
-      v17 = [(ICNoteEditorViewController *)self eventReporter];
-      v18 = [v19 identifier];
-      [v17 pushInlineDrawingDataForDrawingID:v18 tool:v16];
+      eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+      identifier2 = [v19 identifier];
+      [eventReporter pushInlineDrawingDataForDrawingID:identifier2 tool:v16];
     }
   }
 
   [(ICNoteEditorViewController *)self setCurrentStrokeStartTouch:0];
-  if (v7)
+  if (isDrawingStrokeWithPencil)
   {
     if (![(ICNoteEditorViewController *)self isInkPickerShowing])
     {
@@ -21573,62 +21573,62 @@ LABEL_11:
   }
 }
 
-- (void)undoablySwitchToPPK:(BOOL)a3
+- (void)undoablySwitchToPPK:(BOOL)k
 {
-  v3 = a3;
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = v5;
-  if (v3)
+  kCopy = k;
+  textView = [(ICNoteEditorViewController *)self textView];
+  textView2 = textView;
+  if (kCopy)
   {
-    [v5 setPaperEnabled:1];
+    [textView setPaperEnabled:1];
   }
 
   else
   {
-    [v5 setPaperEnabled:0];
+    [textView setPaperEnabled:0];
 
-    v6 = [(ICNoteEditorViewController *)self textView];
-    [v6 setStylusDrawingEnabled:1];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    [textView2 setStylusDrawingEnabled:1];
   }
 
-  v7 = [(ICNoteEditorViewController *)self textView];
-  [v7 setDrawingDelegate:self];
+  textView3 = [(ICNoteEditorViewController *)self textView];
+  [textView3 setDrawingDelegate:self];
 
-  v9 = [(ICNoteEditorViewController *)self undoManager];
-  v8 = [v9 prepareWithInvocationTarget:self];
-  [v8 undoablySwitchToPPK:!v3];
+  undoManager = [(ICNoteEditorViewController *)self undoManager];
+  v8 = [undoManager prepareWithInvocationTarget:self];
+  [v8 undoablySwitchToPPK:!kCopy];
 }
 
-- (void)textView:(id)a3 upgradeDrawingAtIndex:(unint64_t)a4 itemProviders:(id)a5 insertionLocationInDrawing:(CGPoint)a6
+- (void)textView:(id)view upgradeDrawingAtIndex:(unint64_t)index itemProviders:(id)providers insertionLocationInDrawing:(CGPoint)drawing
 {
-  y = a6.y;
-  x = a6.x;
+  y = drawing.y;
+  x = drawing.x;
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a5;
+  providersCopy = providers;
   if ([MEMORY[0x277D368E8] isEnabled])
   {
-    v11 = [(ICNoteEditorViewController *)self textView];
-    v12 = [v11 textStorage];
-    v13 = [v12 attribute:*MEMORY[0x277D74060] atIndex:a4 effectiveRange:0];
+    textView = [(ICNoteEditorViewController *)self textView];
+    textStorage = [textView textStorage];
+    v13 = [textStorage attribute:*MEMORY[0x277D74060] atIndex:index effectiveRange:0];
 
     objc_opt_class();
     v14 = ICCheckedDynamicCast();
-    v15 = [v14 attachment];
+    attachment = [v14 attachment];
 
-    if (v15)
+    if (attachment)
     {
-      v16 = [(ICNoteEditorBaseViewController *)self note];
-      v17 = [v16 managedObjectContext];
+      note = [(ICNoteEditorBaseViewController *)self note];
+      managedObjectContext = [note managedObjectContext];
 
-      if (v17)
+      if (managedObjectContext)
       {
         v18 = [_TtC11NotesEditor28ICInlineDrawingUpgradeHelper alloc];
-        v19 = [(ICNoteEditorBaseViewController *)self note];
-        v20 = [(ICNoteEditorViewController *)self textView];
-        v21 = [(ICInlineDrawingUpgradeHelper *)v18 initWithNote:v19 managedObjectContext:v17 textView:v20];
+        note2 = [(ICNoteEditorBaseViewController *)self note];
+        textView2 = [(ICNoteEditorViewController *)self textView];
+        v21 = [(ICInlineDrawingUpgradeHelper *)v18 initWithNote:note2 managedObjectContext:managedObjectContext textView:textView2];
 
-        v22 = [v14 attachment];
-        v23 = [v21 upgradeWithAttachment:v22 itemProviders:v10 itemsLocation:x, y];
+        attachment2 = [v14 attachment];
+        v23 = [v21 upgradeWithAttachment:attachment2 itemProviders:providersCopy itemsLocation:x, y];
 
         if (v23)
         {
@@ -21640,10 +21640,10 @@ LABEL_11:
           v24 = os_log_create("com.apple.notes", "SystemPaper");
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
-            v25 = [v14 attachment];
-            v26 = [v25 loggingDescription];
+            attachment3 = [v14 attachment];
+            loggingDescription = [attachment3 loggingDescription];
             v27 = 138412290;
-            v28 = v26;
+            v28 = loggingDescription;
             _os_log_impl(&dword_2151A1000, v24, OS_LOG_TYPE_DEFAULT, "Upgrading drawing failed for: %@", &v27, 0xCu);
           }
         }
@@ -21662,11 +21662,11 @@ LABEL_11:
 
     else
     {
-      v17 = os_log_create("com.apple.notes", "SystemPaper");
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      managedObjectContext = os_log_create("com.apple.notes", "SystemPaper");
+      if (os_log_type_enabled(managedObjectContext, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v27) = 0;
-        _os_log_impl(&dword_2151A1000, v17, OS_LOG_TYPE_DEFAULT, "Unable to upgrade drawing since inline drawing attachment wasn't found", &v27, 2u);
+        _os_log_impl(&dword_2151A1000, managedObjectContext, OS_LOG_TYPE_DEFAULT, "Unable to upgrade drawing since inline drawing attachment wasn't found", &v27, 2u);
       }
     }
   }
@@ -21682,34 +21682,34 @@ LABEL_11:
   }
 }
 
-- (void)upgradeAllAttachmentsInNoteWithUpgradeHelper:(id)a3 forSydney:(BOOL)a4
+- (void)upgradeAllAttachmentsInNoteWithUpgradeHelper:(id)helper forSydney:(BOOL)sydney
 {
-  v4 = a4;
-  v6 = a3;
+  sydneyCopy = sydney;
+  helperCopy = helper;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __85__ICNoteEditorViewController_upgradeAllAttachmentsInNoteWithUpgradeHelper_forSydney___block_invoke;
   aBlock[3] = &unk_2781ABEB8;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = helperCopy;
   v36 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [(ICNoteEditorBaseViewController *)self isEditingOnSystemPaper];
+  isEditingOnSystemPaper = [(ICNoteEditorBaseViewController *)self isEditingOnSystemPaper];
   v10 = MEMORY[0x277D362C0];
-  if (!v4)
+  if (!sydneyCopy)
   {
     v10 = MEMORY[0x277D362B8];
   }
 
   v11 = *v10;
   v12 = *MEMORY[0x277D362B0];
-  v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v14 = [v13 BOOLForKey:v11];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v14 = [standardUserDefaults BOOLForKey:v11];
 
-  v15 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v16 = [v15 BOOLForKey:v12];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v16 = [standardUserDefaults2 BOOLForKey:v12];
 
-  if (v9 || (v14 & 1) != 0 || (v16 & 1) != 0)
+  if (isEditingOnSystemPaper || (v14 & 1) != 0 || (v16 & 1) != 0)
   {
     v29 = dispatch_time(0, 10000000);
     block[0] = MEMORY[0x277D85DD0];
@@ -21724,8 +21724,8 @@ LABEL_11:
   else
   {
     v17 = MEMORY[0x277D75110];
-    v18 = [MEMORY[0x277CCA8D8] mainBundle];
-    v19 = [v18 localizedStringForKey:@"Drawings Will Be Updated" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v19 = [mainBundle localizedStringForKey:@"Drawings Will Be Updated" value:&stru_282757698 table:0];
     [MEMORY[0x277CCA8D8] mainBundle];
     v20 = v11;
     v22 = v21 = v8;
@@ -21736,8 +21736,8 @@ LABEL_11:
     v11 = v20;
 
     v25 = MEMORY[0x277D750F8];
-    v26 = [MEMORY[0x277CCA8D8] mainBundle];
-    v27 = [v26 localizedStringForKey:@"OK" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v27 = [mainBundle2 localizedStringForKey:@"OK" value:&stru_282757698 table:0];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __85__ICNoteEditorViewController_upgradeAllAttachmentsInNoteWithUpgradeHelper_forSydney___block_invoke_2;
@@ -21768,10 +21768,10 @@ void __85__ICNoteEditorViewController_upgradeAllAttachmentsInNoteWithUpgradeHelp
   [v2 setBool:1 forKey:*(a1 + 32)];
 }
 
-- (id)inlineDrawingAttachmentForPoint:(CGPoint)a3
+- (id)inlineDrawingAttachmentForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -21784,22 +21784,22 @@ void __85__ICNoteEditorViewController_upgradeAllAttachmentsInNoteWithUpgradeHelp
   v25 = __Block_byref_object_copy__4;
   v26 = __Block_byref_object_dispose__4;
   v27 = 0;
-  v6 = [(ICNoteEditorViewController *)self textView];
-  [v6 textContainerInset];
+  textView = [(ICNoteEditorViewController *)self textView];
+  [textView textContainerInset];
   v8 = v7;
 
-  v9 = [(ICNoteEditorBaseViewController *)self note];
-  v10 = [v9 textStorage];
-  v11 = [v10 ic_range];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  textStorage = [note textStorage];
+  ic_range = [textStorage ic_range];
   v13 = v12;
 
   v35.location = [(ICNoteEditorViewController *)self visibleRange];
   ++v35.length;
-  v36.location = v11;
+  v36.location = ic_range;
   v36.length = v13;
   v14 = NSIntersectionRange(v35, v36);
-  v15 = [(ICNoteEditorBaseViewController *)self note];
-  v16 = [v15 textStorage];
+  note2 = [(ICNoteEditorBaseViewController *)self note];
+  textStorage2 = [note2 textStorage];
   v17 = *MEMORY[0x277D74060];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -21810,7 +21810,7 @@ void __85__ICNoteEditorViewController_upgradeAllAttachmentsInNoteWithUpgradeHelp
   *&v21[7] = x;
   *&v21[8] = y - v8;
   v21[6] = &v22;
-  [v16 enumerateAttribute:v17 inRange:v14.location options:v14.length usingBlock:{0, v21}];
+  [textStorage2 enumerateAttribute:v17 inRange:v14.location options:v14.length usingBlock:{0, v21}];
 
   v18 = v23[5];
   if (!v18)
@@ -21893,16 +21893,16 @@ void __62__ICNoteEditorViewController_inlineDrawingAttachmentForPoint___block_in
   }
 }
 
-- (BOOL)textView:(id)a3 canAddDrawingAtIndex:(unint64_t)a4
+- (BOOL)textView:(id)view canAddDrawingAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(ICNoteEditorBaseViewController *)self note];
-  if (v7 && (v8 = v7, -[ICNoteEditorBaseViewController note](self, "note"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEditable], v9, v8, !v10) || (-[ICNoteEditorBaseViewController note](self, "note"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "textStorage"), v12 = objc_claimAutoreleasedReturnValue(), Helper_x8__DDResultAttributeName = gotLoadHelper_x8__DDResultAttributeName(v13), objc_msgSend(v16, "attribute:atIndex:effectiveRange:", **(v15 + 472), a4, 0, Helper_x8__DDResultAttributeName), v17 = objc_claimAutoreleasedReturnValue(), v17, v12, v11, v17))
+  viewCopy = view;
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if (note && (v8 = note, -[ICNoteEditorBaseViewController note](self, "note"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEditable], v9, v8, !v10) || (-[ICNoteEditorBaseViewController note](self, "note"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "textStorage"), v12 = objc_claimAutoreleasedReturnValue(), Helper_x8__DDResultAttributeName = gotLoadHelper_x8__DDResultAttributeName(v13), objc_msgSend(v16, "attribute:atIndex:effectiveRange:", **(v15 + 472), index, 0, Helper_x8__DDResultAttributeName), v17 = objc_claimAutoreleasedReturnValue(), v17, v12, v11, v17))
   {
-    v18 = [(ICNoteEditorBaseViewController *)self note];
-    v19 = [v18 isDeletedOrInTrash];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    isDeletedOrInTrash = [note2 isDeletedOrInTrash];
 
-    if (v19)
+    if (isDeletedOrInTrash)
     {
       [(ICNoteEditorViewController *)self showRecoverNoteAlert];
     }
@@ -21910,8 +21910,8 @@ void __62__ICNoteEditorViewController_inlineDrawingAttachmentForPoint___block_in
 
   else
   {
-    v22 = [(ICNoteEditorBaseViewController *)self note];
-    if (!v22 || (v23 = v22, -[ICNoteEditorBaseViewController note](self, "note"), v24 = objc_claimAutoreleasedReturnValue(), v25 = [v24 canAddAttachment], v24, v23, (v25 & 1) != 0))
+    note3 = [(ICNoteEditorBaseViewController *)self note];
+    if (!note3 || (v23 = note3, -[ICNoteEditorBaseViewController note](self, "note"), v24 = objc_claimAutoreleasedReturnValue(), v25 = [v24 canAddAttachment], v24, v23, (v25 & 1) != 0))
     {
       v20 = 1;
       goto LABEL_7;
@@ -21926,70 +21926,70 @@ LABEL_7:
   return v20;
 }
 
-- (BOOL)textViewCanSelectDrawing:(id)a3
+- (BOOL)textViewCanSelectDrawing:(id)drawing
 {
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  v5 = [v4 isEditable];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isEditable = [note isEditable];
 
-  if ((v5 & 1) == 0)
+  if ((isEditable & 1) == 0)
   {
-    v6 = [(ICNoteEditorBaseViewController *)self note];
-    v7 = [v6 isDeletedOrInTrash];
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    isDeletedOrInTrash = [note2 isDeletedOrInTrash];
 
-    if (v7)
+    if (isDeletedOrInTrash)
     {
       [(ICNoteEditorViewController *)self showRecoverNoteAlert];
     }
   }
 
-  return v5;
+  return isEditable;
 }
 
-- (void)textView:(id)a3 willAddDrawingAtIndex:(unint64_t)a4
+- (void)textView:(id)view willAddDrawingAtIndex:(unint64_t)index
 {
   [(ICNoteEditorViewController *)self ensureValidInkForNewDrawingOrNote];
   [(ICNoteEditorViewController *)self addNewNoteIfNeeded];
-  v6 = [MEMORY[0x277D75820] prefersPencilOnlyDrawing];
-  v7 = [(ICNoteEditorViewController *)self textView];
-  v8 = [v7 textStorage];
-  v9 = [v8 length];
+  prefersPencilOnlyDrawing = [MEMORY[0x277D75820] prefersPencilOnlyDrawing];
+  textView = [(ICNoteEditorViewController *)self textView];
+  textStorage = [textView textStorage];
+  v9 = [textStorage length];
 
-  if ((v6 & 1) == 0 && a4 + 1 < v9)
+  if ((prefersPencilOnlyDrawing & 1) == 0 && index + 1 < v9)
   {
     [(ICNoteEditorViewController *)self setInkPickerState:1];
     [(ICNoteEditorViewController *)self showInkPickerAndEndEditingIfNecessary];
   }
 
-  v10 = [MEMORY[0x277CBEAA8] date];
-  [(ICNoteEditorViewController *)self setDateOfLastStrokeOrNewDrawing:v10];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(ICNoteEditorViewController *)self setDateOfLastStrokeOrNewDrawing:date];
 
   [MEMORY[0x277D367E0] updateTouchPredictionPointsFromOverride];
   objc_opt_class();
-  v14 = [(ICNoteEditorViewController *)self textView];
+  textView2 = [(ICNoteEditorViewController *)self textView];
   v11 = ICDynamicCast();
-  v12 = [v11 textContentStorage];
-  v13 = [v12 textStorage];
-  [v13 setAlwaysEnumerateTrailingParagraph:1];
+  textContentStorage = [v11 textContentStorage];
+  textStorage2 = [textContentStorage textStorage];
+  [textStorage2 setAlwaysEnumerateTrailingParagraph:1];
 }
 
-- (void)textView:(id)a3 didRemoveDrawingAtIndex:(unint64_t)a4
+- (void)textView:(id)view didRemoveDrawingAtIndex:(unint64_t)index
 {
-  v5 = [(ICNoteEditorViewController *)self textView:a3];
+  v5 = [(ICNoteEditorViewController *)self textView:view];
   [(ICNoteEditorViewController *)self textViewDidChange:v5];
 }
 
-- (id)textView:(id)a3 newAttachmentForFileType:(id)a4
+- (id)textView:(id)view newAttachmentForFileType:(id)type
 {
-  v5 = a4;
-  v6 = [(ICNoteEditorBaseViewController *)self note];
-  v7 = [v6 isEditable];
+  typeCopy = type;
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isEditable = [note isEditable];
 
-  if (v7)
+  if (isEditable)
   {
-    if ([v5 isEqualToString:*MEMORY[0x277CD96A8]])
+    if ([typeCopy isEqualToString:*MEMORY[0x277CD96A8]])
     {
-      v8 = [(ICNoteEditorBaseViewController *)self note];
-      v9 = [v8 addInlineDrawingAttachmentWithAnalytics:1];
+      note2 = [(ICNoteEditorBaseViewController *)self note];
+      v9 = [note2 addInlineDrawingAttachmentWithAnalytics:1];
       v10 = 0x277D367E8;
 LABEL_6:
 
@@ -21997,19 +21997,19 @@ LABEL_6:
       goto LABEL_8;
     }
 
-    if ([v5 isEqualToString:*MEMORY[0x277CD96B0]])
+    if ([typeCopy isEqualToString:*MEMORY[0x277CD96B0]])
     {
-      v11 = [(ICNoteEditorBaseViewController *)self note];
-      v12 = [v11 account];
-      [v12 ensureCriticalPaperDirectoriesExist];
+      note3 = [(ICNoteEditorBaseViewController *)self note];
+      account = [note3 account];
+      [account ensureCriticalPaperDirectoriesExist];
 
-      v13 = [(ICNoteEditorBaseViewController *)self note];
-      v14 = [MEMORY[0x277CCAD78] UUID];
-      v15 = [v14 UUIDString];
-      v9 = [v13 addSystemPaperAttachmentWithIdentifier:v15];
+      note4 = [(ICNoteEditorBaseViewController *)self note];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      v9 = [note4 addSystemPaperAttachmentWithIdentifier:uUIDString];
 
-      v8 = [v9 managedObjectContext];
-      [v8 ic_save];
+      note2 = [v9 managedObjectContext];
+      [note2 ic_save];
       v10 = 0x277D368E8;
       goto LABEL_6;
     }
@@ -22021,28 +22021,28 @@ LABEL_8:
   return v16;
 }
 
-- (void)showHandwritingDebug:(BOOL)a3
+- (void)showHandwritingDebug:(BOOL)debug
 {
-  v3 = a3;
-  v5 = [(ICNoteEditorViewController *)self handwritingDebugPresenter];
+  debugCopy = debug;
+  handwritingDebugPresenter = [(ICNoteEditorViewController *)self handwritingDebugPresenter];
 
-  if (!v5)
+  if (!handwritingDebugPresenter)
   {
-    v6 = [MEMORY[0x277D75418] ic_isVision];
-    v7 = [objc_alloc(MEMORY[0x277D367A0]) initWithPresentingViewController:self presentationStyle:v6 delegate:self];
+    ic_isVision = [MEMORY[0x277D75418] ic_isVision];
+    v7 = [objc_alloc(MEMORY[0x277D367A0]) initWithPresentingViewController:self presentationStyle:ic_isVision delegate:self];
     [(ICNoteEditorViewController *)self setHandwritingDebugPresenter:v7];
   }
 
-  v8 = [(ICNoteEditorViewController *)self handwritingDebugPresenter];
-  v9 = v8;
-  if (v3)
+  handwritingDebugPresenter2 = [(ICNoteEditorViewController *)self handwritingDebugPresenter];
+  v9 = handwritingDebugPresenter2;
+  if (debugCopy)
   {
-    [v8 show];
+    [handwritingDebugPresenter2 show];
   }
 
   else
   {
-    [v8 hide];
+    [handwritingDebugPresenter2 hide];
 
     [(ICNoteEditorViewController *)self setHandwritingDebugPresenter:0];
   }
@@ -22051,42 +22051,42 @@ LABEL_8:
 - (id)radarTitleForHandwritingDebug
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  v4 = [v3 title];
-  v5 = [v2 localizedStringWithFormat:@"Handwriting recognition: %@", v4];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  title = [note title];
+  v5 = [v2 localizedStringWithFormat:@"Handwriting recognition: %@", title];
 
   return v5;
 }
 
 - (id)drawingsForHandwritingDebug
 {
-  v2 = [(ICNoteEditorBaseViewController *)self note];
-  v3 = [v2 allDrawings];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  allDrawings = [note allDrawings];
 
-  return v3;
+  return allDrawings;
 }
 
-- (id)titleForAddCollaboratorsActivity:(id)a3
+- (id)titleForAddCollaboratorsActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(ICNoteEditorBaseViewController *)self note];
-  v6 = [v5 managedObjectContext];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  managedObjectContext = [note managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __63__ICNoteEditorViewController_titleForAddCollaboratorsActivity___block_invoke;
   v10[3] = &unk_2781ACF80;
   v10[4] = self;
   v10[5] = &v11;
-  [v6 performBlockAndWait:v10];
+  [managedObjectContext performBlockAndWait:v10];
 
   if (*(v12 + 24) == 1)
   {
-    v7 = [MEMORY[0x277CCA8D8] mainBundle];
-    v8 = [v7 localizedStringForKey:@"View Participants" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v8 = [mainBundle localizedStringForKey:@"View Participants" value:&stru_282757698 table:0];
   }
 
   else
@@ -22105,12 +22105,12 @@ void __63__ICNoteEditorViewController_titleForAddCollaboratorsActivity___block_i
   *(*(*(a1 + 40) + 8) + 24) = [v2 isSharedViaICloud];
 }
 
-- (id)systemImageNameForAddCollaboratorsActivity:(id)a3
+- (id)systemImageNameForAddCollaboratorsActivity:(id)activity
 {
-  v3 = [(ICNoteEditorBaseViewController *)self note];
-  v4 = [v3 isSharedViaICloud];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  isSharedViaICloud = [note isSharedViaICloud];
 
-  if (v4)
+  if (isSharedViaICloud)
   {
     return @"person.crop.circle.badge.checkmark";
   }
@@ -22121,49 +22121,49 @@ void __63__ICNoteEditorViewController_titleForAddCollaboratorsActivity___block_i
   }
 }
 
-- (void)createImage:(id)a3
+- (void)createImage:(id)image
 {
   v47[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  imageCopy = image;
   if (!ICInternalSettingsShouldShowImageGenerationUI())
   {
     goto LABEL_27;
   }
 
-  v5 = [(ICNoteEditorViewController *)self canPerformCreateImageWithSelection];
+  canPerformCreateImageWithSelection = [(ICNoteEditorViewController *)self canPerformCreateImageWithSelection];
   objc_opt_class();
   v6 = ICDynamicCast();
-  v7 = [v6 attachment];
+  attachment = [v6 attachment];
 
-  v8 = [(ICNoteEditorViewController *)self textView];
-  v9 = v8;
-  if (v7)
+  textView = [(ICNoteEditorViewController *)self textView];
+  ic_stringByTrimmingLeadingTrailingWhitespace = textView;
+  if (attachment)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = !v5;
+    v10 = !canPerformCreateImageWithSelection;
   }
 
   if (!v10)
   {
-    v23 = [v8 singleSelectedAttachment];
-    v7 = [v23 attachment];
+    singleSelectedAttachment = [textView singleSelectedAttachment];
+    attachment = [singleSelectedAttachment attachment];
     goto LABEL_13;
   }
 
-  v11 = [v8 TTTextStorage];
-  v12 = [v11 length];
+  tTTextStorage = [textView TTTextStorage];
+  v12 = [tTTextStorage length];
 
   if (v12 <= 0x18)
   {
-    v13 = [(ICNoteEditorViewController *)self textView];
-    v14 = [v13 TTTextStorage];
-    v9 = [v14 ic_stringByTrimmingLeadingTrailingWhitespace];
+    textView2 = [(ICNoteEditorViewController *)self textView];
+    tTTextStorage2 = [textView2 TTTextStorage];
+    ic_stringByTrimmingLeadingTrailingWhitespace = [tTTextStorage2 ic_stringByTrimmingLeadingTrailingWhitespace];
 
-    if (![v9 length])
+    if (![ic_stringByTrimmingLeadingTrailingWhitespace length])
     {
 LABEL_14:
 
@@ -22172,26 +22172,26 @@ LABEL_14:
 
     objc_opt_class();
     v15 = *MEMORY[0x277D74060];
-    v16 = [v9 attribute:*MEMORY[0x277D74060] atIndex:objc_msgSend(v9 effectiveRange:{"length") - 1, 0}];
+    v16 = [ic_stringByTrimmingLeadingTrailingWhitespace attribute:*MEMORY[0x277D74060] atIndex:objc_msgSend(ic_stringByTrimmingLeadingTrailingWhitespace effectiveRange:{"length") - 1, 0}];
     v17 = ICDynamicCast();
-    v23 = [v17 fileType];
+    singleSelectedAttachment = [v17 fileType];
 
-    if ([MEMORY[0x277D35E00] typeUTIIsSystemPaper:v23])
+    if ([MEMORY[0x277D35E00] typeUTIIsSystemPaper:singleSelectedAttachment])
     {
-      v18 = [v9 attributedSubstringFromRange:{0, objc_msgSend(v9, "length") - 1}];
-      v19 = [v18 ic_stringByTrimmingLeadingTrailingWhitespace];
+      v18 = [ic_stringByTrimmingLeadingTrailingWhitespace attributedSubstringFromRange:{0, objc_msgSend(ic_stringByTrimmingLeadingTrailingWhitespace, "length") - 1}];
+      ic_stringByTrimmingLeadingTrailingWhitespace2 = [v18 ic_stringByTrimmingLeadingTrailingWhitespace];
 
-      v9 = v19;
+      ic_stringByTrimmingLeadingTrailingWhitespace = ic_stringByTrimmingLeadingTrailingWhitespace2;
     }
 
-    if ([v9 length] == 1)
+    if ([ic_stringByTrimmingLeadingTrailingWhitespace length] == 1)
     {
       objc_opt_class();
-      v20 = [v9 attribute:v15 atIndex:0 effectiveRange:0];
+      v20 = [ic_stringByTrimmingLeadingTrailingWhitespace attribute:v15 atIndex:0 effectiveRange:0];
       v21 = ICDynamicCast();
-      v22 = [v21 attachment];
+      attachment2 = [v21 attachment];
 
-      v7 = v22;
+      attachment = attachment2;
     }
 
 LABEL_13:
@@ -22200,21 +22200,21 @@ LABEL_13:
   }
 
 LABEL_15:
-  if ([v7 attachmentType] == 3)
+  if ([attachment attachmentType] == 3)
   {
-    v24 = [v7 isPasswordProtected];
-    v25 = [v7 media];
-    v26 = v25;
-    if (v24)
+    isPasswordProtected = [attachment isPasswordProtected];
+    media = [attachment media];
+    v26 = media;
+    if (isPasswordProtected)
     {
-      v27 = [v25 data];
-      v28 = CGImageSourceCreateWithData(v27, 0);
+      data = [media data];
+      v28 = CGImageSourceCreateWithData(data, 0);
     }
 
     else
     {
-      v27 = [v25 mediaURL];
-      v28 = CGImageSourceCreateWithURL(v27, 0);
+      data = [media mediaURL];
+      v28 = CGImageSourceCreateWithURL(data, 0);
     }
 
     v39 = v28;
@@ -22233,8 +22233,8 @@ LABEL_15:
       if (ThumbnailAtIndex)
       {
         v43 = ThumbnailAtIndex;
-        v44 = [(ICNoteEditorViewController *)self paperTextAttachmentManager];
-        [v44 insertMagicGenerativePlaygroundWithImage:v43];
+        paperTextAttachmentManager = [(ICNoteEditorViewController *)self paperTextAttachmentManager];
+        [paperTextAttachmentManager insertMagicGenerativePlaygroundWithImage:v43];
 
         CGImageRelease(v43);
       }
@@ -22243,26 +22243,26 @@ LABEL_15:
     }
   }
 
-  else if (v5)
+  else if (canPerformCreateImageWithSelection)
   {
-    v29 = [(ICNoteEditorViewController *)self textView];
-    v30 = [v29 selectedRange];
+    textView3 = [(ICNoteEditorViewController *)self textView];
+    selectedRange = [textView3 selectedRange];
     v32 = v31;
 
-    v33 = [(ICNoteEditorViewController *)self textView];
-    v34 = [v33 TTTextStorage];
-    v35 = [*MEMORY[0x277CE1E20] identifier];
-    v36 = [v34 filteredAttributedStringForUTI:v35 range:{v30, v32}];
-    v37 = [v36 string];
+    textView4 = [(ICNoteEditorViewController *)self textView];
+    tTTextStorage3 = [textView4 TTTextStorage];
+    identifier = [*MEMORY[0x277CE1E20] identifier];
+    v36 = [tTTextStorage3 filteredAttributedStringForUTI:identifier range:{selectedRange, v32}];
+    string = [v36 string];
 
-    v38 = [(ICNoteEditorViewController *)self paperTextAttachmentManager];
-    [v38 insertMagicGenerativePlaygroundWithText:v37];
+    paperTextAttachmentManager2 = [(ICNoteEditorViewController *)self paperTextAttachmentManager];
+    [paperTextAttachmentManager2 insertMagicGenerativePlaygroundWithText:string];
   }
 
   else
   {
-    v45 = [(ICNoteEditorViewController *)self paperTextAttachmentManager];
-    [v45 insertMagicGenerativePlaygroundWithAutomaticContent];
+    paperTextAttachmentManager3 = [(ICNoteEditorViewController *)self paperTextAttachmentManager];
+    [paperTextAttachmentManager3 insertMagicGenerativePlaygroundWithAutomaticContent];
   }
 
 LABEL_27:
@@ -22270,20 +22270,20 @@ LABEL_27:
 
 - (BOOL)canPerformCreateImageWithSelection
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v4 = [v3 selectedRange];
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView selectedRange];
   v6 = v5;
 
-  v7 = [(ICNoteEditorViewController *)self textView];
-  v8 = [v7 textAttachmentsInRange:{v4, v6}];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  v8 = [textView2 textAttachmentsInRange:{selectedRange, v6}];
 
   if ([v8 count] <= 1)
   {
-    v10 = [v8 firstObject];
-    v11 = [v10 attachment];
+    firstObject = [v8 firstObject];
+    attachment = [firstObject attachment];
 
-    v12 = v6 == 1 && [v11 attachmentType] == 3;
-    v9 = (v11 == 0 || v12) && v6 != 0;
+    v12 = v6 == 1 && [attachment attachmentType] == 3;
+    v9 = (attachment == 0 || v12) && v6 != 0;
   }
 
   else
@@ -22294,43 +22294,43 @@ LABEL_27:
   return v9;
 }
 
-- (void)setMagicGenerativePlaygroundUndoManager:(id)a3
+- (void)setMagicGenerativePlaygroundUndoManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   magicGenerativePlaygroundUndoManager = self->_magicGenerativePlaygroundUndoManager;
-  if (magicGenerativePlaygroundUndoManager != v5)
+  if (magicGenerativePlaygroundUndoManager != managerCopy)
   {
-    v16 = v5;
+    v16 = managerCopy;
     v7 = MEMORY[0x277CCA7F8];
     v8 = MEMORY[0x277CCA810];
     v9 = MEMORY[0x277CCA808];
     if (magicGenerativePlaygroundUndoManager)
     {
-      v10 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v10 removeObserver:self name:*v7 object:self->_magicGenerativePlaygroundUndoManager];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self name:*v7 object:self->_magicGenerativePlaygroundUndoManager];
 
-      v11 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v11 removeObserver:self name:*v8 object:self->_magicGenerativePlaygroundUndoManager];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 removeObserver:self name:*v8 object:self->_magicGenerativePlaygroundUndoManager];
 
-      v12 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v12 removeObserver:self name:*v9 object:self->_magicGenerativePlaygroundUndoManager];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter3 removeObserver:self name:*v9 object:self->_magicGenerativePlaygroundUndoManager];
     }
 
-    objc_storeStrong(&self->_magicGenerativePlaygroundUndoManager, a3);
+    objc_storeStrong(&self->_magicGenerativePlaygroundUndoManager, manager);
     if (v16)
     {
-      v13 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v13 addObserver:self selector:sel_updateBarButtons name:*v7 object:v16];
+      defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter4 addObserver:self selector:sel_updateBarButtons name:*v7 object:v16];
 
-      v14 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v14 addObserver:self selector:sel_updateBarButtons name:*v8 object:v16];
+      defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter5 addObserver:self selector:sel_updateBarButtons name:*v8 object:v16];
 
-      v15 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v15 addObserver:self selector:sel_updateBarButtons name:*v9 object:v16];
+      defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter6 addObserver:self selector:sel_updateBarButtons name:*v9 object:v16];
     }
 
     [(ICNoteEditorViewController *)self updateBarButtons];
-    v5 = v16;
+    managerCopy = v16;
   }
 }
 
@@ -22338,44 +22338,44 @@ LABEL_27:
 {
   if ([MEMORY[0x277D75418] ic_isVision])
   {
-    v3 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    v4 = [v3 inlineSketchEditingState];
+    navigationItemConfiguration = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    inlineSketchEditingState = [navigationItemConfiguration inlineSketchEditingState];
 
-    if (v4 == 4)
+    if (inlineSketchEditingState == 4)
     {
-      v5 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-      [v5 setInlineSketchEditingState:0];
+      navigationItemConfiguration2 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+      [navigationItemConfiguration2 setInlineSketchEditingState:0];
 
-      v6 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-      [v6 updateAnimated:0];
+      navigationItemConfiguration3 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+      [navigationItemConfiguration3 updateAnimated:0];
     }
   }
 }
 
-- (void)mentionInsertedInNote:(id)a3 mentionID:(id)a4 participantID:(id)a5 viaAutoComplete:(BOOL)a6
+- (void)mentionInsertedInNote:(id)note mentionID:(id)d participantID:(id)iD viaAutoComplete:(BOOL)complete
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(ICNoteEditorViewController *)self eventReporter];
-  [v13 submitMentionAddEventForNote:v12 mentionID:v11 participantID:v10 viaAutoComplete:v6];
+  completeCopy = complete;
+  iDCopy = iD;
+  dCopy = d;
+  noteCopy = note;
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  [eventReporter submitMentionAddEventForNote:noteCopy mentionID:dCopy participantID:iDCopy viaAutoComplete:completeCopy];
 }
 
-- (void)inlineAttachmentDeleted:(id)a3
+- (void)inlineAttachmentDeleted:(id)deleted
 {
-  v4 = a3;
+  deletedCopy = deleted;
   objc_opt_class();
-  v5 = [v4 userInfo];
+  userInfo = [deletedCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D35C68]];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D35C68]];
   v9 = ICDynamicCast();
 
   if ([v9 isMentionAttachment])
   {
-    v7 = [(ICNoteEditorViewController *)self eventReporter];
-    v8 = [(ICNoteEditorBaseViewController *)self note];
-    [v7 submitMentionDeleteEvent:v8];
+    eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    [eventReporter submitMentionDeleteEvent:note];
   }
 
   else
@@ -22385,90 +22385,90 @@ LABEL_27:
       goto LABEL_6;
     }
 
-    v7 = [(ICNoteEditorViewController *)self eventReporter];
-    v8 = [(ICNoteEditorBaseViewController *)self note];
-    [v7 submitHashtagDeleteEvent:v8 approachEnum:4];
+    eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    [eventReporter submitHashtagDeleteEvent:note approachEnum:4];
   }
 
 LABEL_6:
   [v9 accessibilityAnnounceDeletionWithVoiceOver];
 }
 
-- (void)hashtagInsertedInNote:(id)a3 tokenContentIdentifier:(id)a4 viaAutoComplete:(BOOL)a5
+- (void)hashtagInsertedInNote:(id)note tokenContentIdentifier:(id)identifier viaAutoComplete:(BOOL)complete
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(ICNoteEditorViewController *)self eventReporter];
-  [v10 submitHashtagAddEventForNote:v9 tokenContentIdentifier:v8 viaAutoComplete:v5];
+  completeCopy = complete;
+  identifierCopy = identifier;
+  noteCopy = note;
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  [eventReporter submitHashtagAddEventForNote:noteCopy tokenContentIdentifier:identifierCopy viaAutoComplete:completeCopy];
 }
 
 - (BOOL)noteEditorNavigationItemConfigurationIsToolbarHidden
 {
-  v2 = [(ICNoteEditorViewController *)self navigationController];
-  v3 = [v2 isToolbarHidden];
+  navigationController = [(ICNoteEditorViewController *)self navigationController];
+  isToolbarHidden = [navigationController isToolbarHidden];
 
-  return v3;
+  return isToolbarHidden;
 }
 
-- (id)noteEditorNavigationItemConfigurationChecklistAccessibilityValue:(id)a3
+- (id)noteEditorNavigationItemConfigurationChecklistAccessibilityValue:(id)value
 {
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = [v5 selectedRange];
-  v8 = [v4 checklistStyleAccessibilityDescriptionForRange:{v6, v7}];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView selectedRange];
+  v8 = [note checklistStyleAccessibilityDescriptionForRange:{selectedRange, v7}];
 
   return v8;
 }
 
-- (id)noteEditorNavigationItemConfigurationIndentationAccessibilityValue:(id)a3
+- (id)noteEditorNavigationItemConfigurationIndentationAccessibilityValue:(id)value
 {
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = [v5 selectedRange];
-  v8 = [v4 indentationStyleAccessibilityDescriptionForRange:{v6, v7}];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView selectedRange];
+  v8 = [note indentationStyleAccessibilityDescriptionForRange:{selectedRange, v7}];
 
   return v8;
 }
 
-- (id)noteEditorNavigationItemConfigurationEmphasisAccessibilityCustomContentValue:(id)a3
+- (id)noteEditorNavigationItemConfigurationEmphasisAccessibilityCustomContentValue:(id)value
 {
-  v4 = [(ICNoteEditorBaseViewController *)self note];
-  v5 = [(ICNoteEditorViewController *)self textView];
-  v6 = [v5 selectedRange];
-  v8 = [v4 emphasisStyleAccessibilityDescriptionForRange:{v6, v7}];
+  note = [(ICNoteEditorBaseViewController *)self note];
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView selectedRange];
+  v8 = [note emphasisStyleAccessibilityDescriptionForRange:{selectedRange, v7}];
 
   return v8;
 }
 
-- (id)noteEditorNavigationItemConfigurationInputAccessoryToolbar:(id)a3
+- (id)noteEditorNavigationItemConfigurationInputAccessoryToolbar:(id)toolbar
 {
-  v3 = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
-  v4 = [v3 toolbar];
+  dismissableInputAccessoryView = [(ICNoteEditorViewController *)self dismissableInputAccessoryView];
+  toolbar = [dismissableInputAccessoryView toolbar];
 
-  return v4;
+  return toolbar;
 }
 
-- (id)noteEditorNavigationItemConfigurationInputAssistantItem:(id)a3
+- (id)noteEditorNavigationItemConfigurationInputAssistantItem:(id)item
 {
   if ([MEMORY[0x277D75418] ic_isiPad])
   {
-    v4 = [(ICNoteEditorViewController *)self textView];
-    v5 = [v4 inputAssistantItem];
+    textView = [(ICNoteEditorViewController *)self textView];
+    inputAssistantItem = [textView inputAssistantItem];
   }
 
   else
   {
-    v5 = 0;
+    inputAssistantItem = 0;
   }
 
-  return v5;
+  return inputAssistantItem;
 }
 
-- (id)noteEditorNavigationItemConfigurationTableAttachmentViewController:(id)a3
+- (id)noteEditorNavigationItemConfigurationTableAttachmentViewController:(id)controller
 {
   objc_opt_class();
-  v4 = [(ICNoteEditorViewController *)self auxiliaryResponder];
+  auxiliaryResponder = [(ICNoteEditorViewController *)self auxiliaryResponder];
   v5 = ICDynamicCast();
 
   v6 = [(ICNoteEditorViewController *)self getTableControllerFor:v5];
@@ -22476,12 +22476,12 @@ LABEL_6:
   return v6;
 }
 
-- (void)noteEditorNavigationItemConfiguration:(id)a3 setToolbarHidden:(BOOL)a4 animated:(BOOL)a5
+- (void)noteEditorNavigationItemConfiguration:(id)configuration setToolbarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = [(ICNoteEditorViewController *)self navigationController];
-  [v7 setToolbarHidden:v6 animated:v5];
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  navigationController = [(ICNoteEditorViewController *)self navigationController];
+  [navigationController setToolbarHidden:hiddenCopy animated:animatedCopy];
 
   dispatchMainAfterDelay();
 }
@@ -22492,39 +22492,39 @@ void __94__ICNoteEditorViewController_noteEditorNavigationItemConfiguration_setT
   [v1 reapplyInsets];
 }
 
-- (void)noteEditorNavigationItemConfiguration:(id)a3 addNoteFromBarButtonItem:(id)a4 event:(id)a5
+- (void)noteEditorNavigationItemConfiguration:(id)configuration addNoteFromBarButtonItem:(id)item event:(id)event
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ICNoteEditorBaseViewController *)self note];
-  if (v11 && (v12 = v11, -[ICNoteEditorBaseViewController note](self, "note"), v13 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277D366C8] currentAttachment], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "note"), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v13, v12, v13 == v15))
+  configurationCopy = configuration;
+  itemCopy = item;
+  eventCopy = event;
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if (note && (v12 = note, -[ICNoteEditorBaseViewController note](self, "note"), v13 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277D366C8] currentAttachment], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "note"), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v13, v12, v13 == v15))
   {
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v9);
+    objc_initWeak(&from, itemCopy);
     v16 = MEMORY[0x277D75110];
-    v17 = [MEMORY[0x277CCA8D8] mainBundle];
-    v18 = [v17 localizedStringForKey:@"Stop Recording?" value:&stru_282757698 table:0];
-    v19 = [MEMORY[0x277CCA8D8] mainBundle];
-    v20 = [v19 localizedStringForKey:@"Are you sure you want to create a new note? It will stop audio recording." value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v18 = [mainBundle localizedStringForKey:@"Stop Recording?" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v20 = [mainBundle2 localizedStringForKey:@"Are you sure you want to create a new note? It will stop audio recording." value:&stru_282757698 table:0];
     v21 = [v16 alertControllerWithTitle:v18 message:v20 preferredStyle:1];
 
     v22 = MEMORY[0x277D750F8];
-    v23 = [MEMORY[0x277CCA8D8] mainBundle];
-    v24 = [v23 localizedStringForKey:@"OK" value:&stru_282757698 table:0];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v24 = [mainBundle3 localizedStringForKey:@"OK" value:&stru_282757698 table:0];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __99__ICNoteEditorViewController_noteEditorNavigationItemConfiguration_addNoteFromBarButtonItem_event___block_invoke;
     v30[3] = &unk_2781AD450;
     objc_copyWeak(&v32, &location);
     objc_copyWeak(&v33, &from);
-    v31 = v10;
+    v31 = eventCopy;
     v25 = [v22 actionWithTitle:v24 style:0 handler:v30];
     [v21 addAction:v25];
 
     v26 = MEMORY[0x277D750F8];
-    v27 = [MEMORY[0x277CCA8D8] mainBundle];
-    v28 = [v27 localizedStringForKey:@"Cancel" value:&stru_282757698 table:0];
+    mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+    v28 = [mainBundle4 localizedStringForKey:@"Cancel" value:&stru_282757698 table:0];
     v29 = [v26 actionWithTitle:v28 style:1 handler:&__block_literal_global_1218];
     [v21 addAction:v29];
 
@@ -22538,7 +22538,7 @@ void __94__ICNoteEditorViewController_noteEditorNavigationItemConfiguration_setT
 
   else
   {
-    [(ICNoteEditorViewController *)self addNote:v9 event:v10 shouldInstrumentAsNewNoteAffordanceUsage:1];
+    [(ICNoteEditorViewController *)self addNote:itemCopy event:eventCopy shouldInstrumentAsNewNoteAffordanceUsage:1];
   }
 }
 
@@ -22582,16 +22582,16 @@ void __99__ICNoteEditorViewController_noteEditorNavigationItemConfiguration_addN
   [WeakRetained addNote:v7 event:*(a1 + 32) shouldInstrumentAsNewNoteAffordanceUsage:1];
 }
 
-- (void)noteEditorNavigationItemConfiguration:(id)a3 showWritingToolsFromBarButtonItem:(id)a4
+- (void)noteEditorNavigationItemConfiguration:(id)configuration showWritingToolsFromBarButtonItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __102__ICNoteEditorViewController_noteEditorNavigationItemConfiguration_showWritingToolsFromBarButtonItem___block_invoke;
   v7[3] = &unk_2781ABEB8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = itemCopy;
+  v6 = itemCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -22601,46 +22601,46 @@ void __102__ICNoteEditorViewController_noteEditorNavigationItemConfiguration_sho
   [v2 showWritingTools:*(a1 + 40)];
 }
 
-- (void)noteEditorNavigationItemConfiguration:(id)a3 openLinkEditorWithSender:(id)a4
+- (void)noteEditorNavigationItemConfiguration:(id)configuration openLinkEditorWithSender:(id)sender
 {
-  v5 = a4;
+  senderCopy = sender;
   objc_opt_class();
-  v6 = [(ICNoteEditorViewController *)self auxiliaryResponder];
+  auxiliaryResponder = [(ICNoteEditorViewController *)self auxiliaryResponder];
   v8 = ICDynamicCast();
 
-  v7 = v8;
+  selfCopy = v8;
   if (!v8)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  [(ICNoteEditorViewController *)v7 openLinkEditor:v5];
+  [(ICNoteEditorViewController *)selfCopy openLinkEditor:senderCopy];
 }
 
-- (void)noteEditorNavigationItemConfiguration:(id)a3 toggleListStyle:(unsigned int)a4 withSender:(id)a5
+- (void)noteEditorNavigationItemConfiguration:(id)configuration toggleListStyle:(unsigned int)style withSender:(id)sender
 {
-  [(ICNoteEditorViewController *)self toggleCurrentTextStyle:*&a4];
-  switch(a4)
+  [(ICNoteEditorViewController *)self toggleCurrentTextStyle:*&style];
+  switch(style)
   {
     case 'f':
-      v12 = [(ICNoteEditorViewController *)self eventReporter];
-      v7 = [(ICNoteEditorBaseViewController *)self note];
-      v8 = v12;
-      v9 = v7;
+      eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+      note = [(ICNoteEditorBaseViewController *)self note];
+      v8 = eventReporter;
+      v9 = note;
       v10 = 8;
       goto LABEL_7;
     case 'e':
-      v12 = [(ICNoteEditorViewController *)self eventReporter];
-      v7 = [(ICNoteEditorBaseViewController *)self note];
-      v8 = v12;
-      v9 = v7;
+      eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+      note = [(ICNoteEditorBaseViewController *)self note];
+      v8 = eventReporter;
+      v9 = note;
       v10 = 7;
       goto LABEL_7;
     case 'd':
-      v12 = [(ICNoteEditorViewController *)self eventReporter];
-      v7 = [(ICNoteEditorBaseViewController *)self note];
-      v8 = v12;
-      v9 = v7;
+      eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+      note = [(ICNoteEditorBaseViewController *)self note];
+      v8 = eventReporter;
+      v9 = note;
       v10 = 6;
 LABEL_7:
       [v8 submitStyleFormatEventForModernNote:v9 styleTypeValue:v10];
@@ -22655,24 +22655,24 @@ LABEL_7:
   }
 }
 
-- (void)noteEditorNavigationItemConfiguration:(id)a3 closeAuxiliaryWindowFromBarButtonItem:(id)a4
+- (void)noteEditorNavigationItemConfiguration:(id)configuration closeAuxiliaryWindowFromBarButtonItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICNoteEditorBaseViewController *)self note];
-  if (v8 && (v9 = v8, -[ICNoteEditorBaseViewController note](self, "note"), v10 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277D366C8] currentAttachment], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "note"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v10, v9, v10 == v12))
+  configurationCopy = configuration;
+  itemCopy = item;
+  note = [(ICNoteEditorBaseViewController *)self note];
+  if (note && (v9 = note, -[ICNoteEditorBaseViewController note](self, "note"), v10 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277D366C8] currentAttachment], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "note"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v10, v9, v10 == v12))
   {
     objc_initWeak(&location, self);
     v14 = MEMORY[0x277D75110];
-    v15 = [MEMORY[0x277CCA8D8] mainBundle];
-    v16 = [v15 localizedStringForKey:@"Stop Recording?" value:&stru_282757698 table:0];
-    v17 = [MEMORY[0x277CCA8D8] mainBundle];
-    v18 = [v17 localizedStringForKey:@"Are you sure you want to leave this note? It will stop audio recording." value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v16 = [mainBundle localizedStringForKey:@"Stop Recording?" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v18 = [mainBundle2 localizedStringForKey:@"Are you sure you want to leave this note? It will stop audio recording." value:&stru_282757698 table:0];
     v19 = [v14 alertControllerWithTitle:v16 message:v18 preferredStyle:1];
 
     v20 = MEMORY[0x277D750F8];
-    v21 = [MEMORY[0x277CCA8D8] mainBundle];
-    v22 = [v21 localizedStringForKey:@"OK" value:&stru_282757698 table:0];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v22 = [mainBundle3 localizedStringForKey:@"OK" value:&stru_282757698 table:0];
     v28 = MEMORY[0x277D85DD0];
     v29 = 3221225472;
     v30 = __106__ICNoteEditorViewController_noteEditorNavigationItemConfiguration_closeAuxiliaryWindowFromBarButtonItem___block_invoke;
@@ -22682,8 +22682,8 @@ LABEL_7:
     [v19 addAction:{v23, v28, v29, v30, v31}];
 
     v24 = MEMORY[0x277D750F8];
-    v25 = [MEMORY[0x277CCA8D8] mainBundle];
-    v26 = [v25 localizedStringForKey:@"Cancel" value:&stru_282757698 table:0];
+    mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+    v26 = [mainBundle4 localizedStringForKey:@"Cancel" value:&stru_282757698 table:0];
     v27 = [v24 actionWithTitle:v26 style:1 handler:&__block_literal_global_1224];
     [v19 addAction:v27];
 
@@ -22695,8 +22695,8 @@ LABEL_7:
 
   else
   {
-    v13 = [(ICNoteEditorViewController *)self viewControllerManager];
-    [v13 closeAuxiliaryWindow];
+    viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+    [viewControllerManager closeAuxiliaryWindow];
   }
 }
 
@@ -22707,119 +22707,119 @@ void __106__ICNoteEditorViewController_noteEditorNavigationItemConfiguration_clo
   [v1 closeAuxiliaryWindow];
 }
 
-- (void)noteEditorNavigationItemConfiguration:(id)a3 toggleSidebarFromBarButtonItem:(id)a4
+- (void)noteEditorNavigationItemConfiguration:(id)configuration toggleSidebarFromBarButtonItem:(id)item
 {
-  v4 = [(ICNoteEditorViewController *)self viewControllerManager:a3];
+  v4 = [(ICNoteEditorViewController *)self viewControllerManager:configuration];
   [v4 toggleSidebar];
 }
 
 - (void)acceleratorOriginNeedsUpdate
 {
-  v3 = [(ICNoteEditorViewController *)self textView];
-  v15 = [v3 selectedTextRange];
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedTextRange = [textView selectedTextRange];
 
-  v4 = [(ICNoteEditorViewController *)self textView];
-  v5 = [v15 end];
-  [v4 caretRectForPosition:v5];
+  textView2 = [(ICNoteEditorViewController *)self textView];
+  v5 = [selectedTextRange end];
+  [textView2 caretRectForPosition:v5];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(ICNoteEditorViewController *)self linkAcceleratorController];
-  [v14 updateAcceleratorOriginWith:{v7, v9, v11, v13}];
+  linkAcceleratorController = [(ICNoteEditorViewController *)self linkAcceleratorController];
+  [linkAcceleratorController updateAcceleratorOriginWith:{v7, v9, v11, v13}];
 }
 
 - (BOOL)languageHasSpaces
 {
-  v2 = [(ICNoteEditorViewController *)self textView];
-  v3 = [v2 languageHasSpaces];
+  textView = [(ICNoteEditorViewController *)self textView];
+  languageHasSpaces = [textView languageHasSpaces];
 
-  return v3;
+  return languageHasSpaces;
 }
 
 - (int64_t)writingDirection
 {
-  v2 = [(ICNoteEditorViewController *)self textView];
-  v3 = [v2 ic_currentWritingDirection];
+  textView = [(ICNoteEditorViewController *)self textView];
+  ic_currentWritingDirection = [textView ic_currentWritingDirection];
 
-  return v3;
+  return ic_currentWritingDirection;
 }
 
 - (_NSRange)lastSelectedRangeForAccelerator
 {
-  v2 = [(ICNoteEditorViewController *)self textView];
-  v3 = [v2 selectedRange];
+  textView = [(ICNoteEditorViewController *)self textView];
+  selectedRange = [textView selectedRange];
   v5 = v4;
 
-  v6 = v3;
+  v6 = selectedRange;
   v7 = v5;
   result.length = v7;
   result.location = v6;
   return result;
 }
 
-- (void)splitViewModeChangeDidEnd:(id)a3
+- (void)splitViewModeChangeDidEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [endCopy object];
 
   v7 = ICDynamicCast();
 
   if ([v7 displayMode] != 3 && objc_msgSend(v7, "displayMode") != 5)
   {
-    v6 = [(ICNoteEditorViewController *)self linkAcceleratorController];
-    [v6 presentLinkAcceleratorIfNecessaryWithCompletionHandler:&__block_literal_global_1227];
+    linkAcceleratorController = [(ICNoteEditorViewController *)self linkAcceleratorController];
+    [linkAcceleratorController presentLinkAcceleratorIfNecessaryWithCompletionHandler:&__block_literal_global_1227];
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 atLocation:(CGPoint)a4 inTableTextView:(id)a5
+- (id)contextMenuInteraction:(id)interaction atLocation:(CGPoint)location inTableTextView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
+  viewCopy = view;
+  v11 = viewCopy;
+  if (viewCopy)
   {
-    v12 = [(ICNoteEditorViewController *)v10 characterRangeAtPoint:x, y];
-    v13 = [(ICNoteEditorViewController *)v11 ic_characterRangeFromTextRange:v12];
+    note = [(ICNoteEditorViewController *)viewCopy characterRangeAtPoint:x, y];
+    v13 = [(ICNoteEditorViewController *)v11 ic_characterRangeFromTextRange:note];
     v55 = v14;
     v56 = v13;
-    v15 = v11;
+    selfCopy = v11;
   }
 
   else
   {
-    v12 = [(ICNoteEditorBaseViewController *)self note];
-    v16 = [v12 rangeForAttachment:v9];
+    note = [(ICNoteEditorBaseViewController *)self note];
+    v16 = [note rangeForAttachment:interactionCopy];
     v55 = v17;
     v56 = v16;
-    v15 = self;
+    selfCopy = self;
   }
 
-  v58 = v15;
-  v18 = [MEMORY[0x277CBEB18] array];
+  v58 = selfCopy;
+  array = [MEMORY[0x277CBEB18] array];
   v19 = MEMORY[0x277D750C8];
-  v20 = [MEMORY[0x277CCA8D8] mainBundle];
-  v21 = [v20 localizedStringForKey:@"Open Note" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v21 = [mainBundle localizedStringForKey:@"Open Note" value:&stru_282757698 table:0];
   v72[0] = MEMORY[0x277D85DD0];
   v72[1] = 3221225472;
   v72[2] = __80__ICNoteEditorViewController_contextMenuInteraction_atLocation_inTableTextView___block_invoke;
   v72[3] = &unk_2781AD2F0;
-  v22 = v9;
+  v22 = interactionCopy;
   v73 = v22;
-  v74 = self;
+  selfCopy2 = self;
   v23 = [v19 ic_actionWithTitle:v21 imageName:@"note.text" handler:v72];
 
   v57 = v23;
-  [v18 addObject:v23];
+  [array addObject:v23];
   if (objc_opt_respondsToSelector())
   {
     v24 = MEMORY[0x277D750C8];
-    v25 = [MEMORY[0x277CCA8D8] mainBundle];
-    v26 = [v25 localizedStringForKey:@"Copy Link" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v26 = [mainBundle2 localizedStringForKey:@"Copy Link" value:&stru_282757698 table:0];
     v70[0] = MEMORY[0x277D85DD0];
     v70[1] = 3221225472;
     v70[2] = __80__ICNoteEditorViewController_contextMenuInteraction_atLocation_inTableTextView___block_invoke_2;
@@ -22828,25 +22828,25 @@ void __106__ICNoteEditorViewController_noteEditorNavigationItemConfiguration_clo
     v71 = v22;
     v27 = [v24 ic_actionWithTitle:v26 imageName:@"doc.on.doc" handler:v70];
 
-    [v18 addObject:v27];
+    [array addObject:v27];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v28 = [(ICNoteEditorBaseViewController *)self note];
-    if ([v28 isSharedReadOnly])
+    note2 = [(ICNoteEditorBaseViewController *)self note];
+    if ([note2 isSharedReadOnly])
     {
     }
 
     else
     {
-      v29 = [(ICNoteEditorBaseViewController *)self isEditingOnSecureScreen];
+      isEditingOnSecureScreen = [(ICNoteEditorBaseViewController *)self isEditingOnSecureScreen];
 
-      if (!v29)
+      if (!isEditingOnSecureScreen)
       {
         v30 = MEMORY[0x277D750C8];
-        v31 = [MEMORY[0x277CCA8D8] mainBundle];
-        v32 = [v31 localizedStringForKey:@"Edit Link" value:&stru_282757698 table:0];
+        mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+        v32 = [mainBundle3 localizedStringForKey:@"Edit Link" value:&stru_282757698 table:0];
         v65[0] = MEMORY[0x277D85DD0];
         v65[1] = 3221225472;
         v65[2] = __80__ICNoteEditorViewController_contextMenuInteraction_atLocation_inTableTextView___block_invoke_3;
@@ -22858,21 +22858,21 @@ void __106__ICNoteEditorViewController_noteEditorNavigationItemConfiguration_clo
         v67 = v58;
         v33 = [v30 ic_actionWithTitle:v32 imageName:@"pencil" handler:v65];
 
-        [v18 addObject:v33];
+        [array addObject:v33];
       }
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v34 = [(ICNoteEditorBaseViewController *)self note];
-    v35 = [v34 isSharedReadOnly];
+    note3 = [(ICNoteEditorBaseViewController *)self note];
+    isSharedReadOnly = [note3 isSharedReadOnly];
 
-    if ((v35 & 1) == 0)
+    if ((isSharedReadOnly & 1) == 0)
     {
       v36 = MEMORY[0x277D750C8];
-      v37 = [MEMORY[0x277CCA8D8] mainBundle];
-      v38 = [v37 localizedStringForKey:@"Remove Link" value:&stru_282757698 table:0];
+      mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+      v38 = [mainBundle4 localizedStringForKey:@"Remove Link" value:&stru_282757698 table:0];
       v63[0] = MEMORY[0x277D85DD0];
       v63[1] = 3221225472;
       v63[2] = __80__ICNoteEditorViewController_contextMenuInteraction_atLocation_inTableTextView___block_invoke_4;
@@ -22881,28 +22881,28 @@ void __106__ICNoteEditorViewController_noteEditorNavigationItemConfiguration_clo
       v64 = v22;
       v39 = [v36 ic_actionWithTitle:v38 imageName:@"xmark.circle" attributes:2 handler:v63];
 
-      [v18 addObject:v39];
+      [array addObject:v39];
     }
   }
 
-  v40 = [v22 tokenContentIdentifier];
+  tokenContentIdentifier = [v22 tokenContentIdentifier];
   v41 = NotesAppURLForNoteIdentifierOrTokenContentIdentifier();
 
   v42 = [MEMORY[0x277D35DF0] predicateForNotesMentionedInURL:v41];
-  v43 = [MEMORY[0x277D35F30] sharedContext];
-  v44 = v43;
+  mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
+  v44 = mEMORY[0x277D35F30];
   v45 = 0;
-  if (v42 && v43)
+  if (v42 && mEMORY[0x277D35F30])
   {
     v46 = MEMORY[0x277D35F28];
-    v47 = [v43 managedObjectContext];
-    v48 = [v46 notesMatchingPredicate:v42 context:v47];
+    managedObjectContext = [mEMORY[0x277D35F30] managedObjectContext];
+    v48 = [v46 notesMatchingPredicate:v42 context:managedObjectContext];
 
-    v49 = [v48 firstObject];
-    if (v49)
+    firstObject = [v48 firstObject];
+    if (firstObject)
     {
-      v50 = v49;
-      v51 = [(ICNoteEditorViewController *)self notePreviewView:v49];
+      v50 = firstObject;
+      v51 = [(ICNoteEditorViewController *)self notePreviewView:firstObject];
       v52 = MEMORY[0x277D753B0];
       v61[0] = MEMORY[0x277D85DD0];
       v61[1] = 3221225472;
@@ -22913,7 +22913,7 @@ void __106__ICNoteEditorViewController_noteEditorNavigationItemConfiguration_clo
       v59[1] = 3221225472;
       v59[2] = __80__ICNoteEditorViewController_contextMenuInteraction_atLocation_inTableTextView___block_invoke_6;
       v59[3] = &unk_2781AD4F0;
-      v60 = v18;
+      v60 = array;
       v53 = v51;
       v45 = [v52 configurationWithIdentifier:0 previewProvider:v61 actionProvider:v59];
     }
@@ -22963,12 +22963,12 @@ uint64_t __80__ICNoteEditorViewController_contextMenuInteraction_atLocation_inTa
   return [v6 removeLinksFromRange:{v3, v5}];
 }
 
-- (id)notePreviewView:(id)a3
+- (id)notePreviewView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(ICNoteEditorViewController *)self notePreview:v4];
+    v5 = [(ICNoteEditorViewController *)self notePreview:viewCopy];
   }
 
   else
@@ -22979,17 +22979,17 @@ uint64_t __80__ICNoteEditorViewController_contextMenuInteraction_atLocation_inTa
   return v5;
 }
 
-- (void)eventReporterLostSession:(id)a3
+- (void)eventReporterLostSession:(id)session
 {
   eventReporter = self->_eventReporter;
   self->_eventReporter = 0;
-  v5 = a3;
+  sessionCopy = session;
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v6 = *MEMORY[0x277D35958];
-  v7 = [v5 object];
+  object = [sessionCopy object];
 
-  [v8 removeObserver:self name:v6 object:v7];
+  [defaultCenter removeObserver:self name:v6 object:object];
 }
 
 - (ICNAEventReporter)audioEventReporter
@@ -23003,8 +23003,8 @@ uint64_t __80__ICNoteEditorViewController_contextMenuInteraction_atLocation_inTa
     audioEventReporter = self->_audioEventReporter;
     self->_audioEventReporter = v6;
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:self selector:sel_audioEventReporterLostSession_ name:*MEMORY[0x277D35958] object:self->_audioEventReporter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_audioEventReporterLostSession_ name:*MEMORY[0x277D35958] object:self->_audioEventReporter];
   }
 
   v9 = self->_audioEventReporter;
@@ -23012,9 +23012,9 @@ uint64_t __80__ICNoteEditorViewController_contextMenuInteraction_atLocation_inTa
   return v9;
 }
 
-- (void)audioEventReporterLostSession:(id)a3
+- (void)audioEventReporterLostSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = os_log_create("com.apple.notes", "Analytics");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -23024,11 +23024,11 @@ uint64_t __80__ICNoteEditorViewController_contextMenuInteraction_atLocation_inTa
   audioEventReporter = self->_audioEventReporter;
   self->_audioEventReporter = 0;
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v8 = *MEMORY[0x277D35958];
-  v9 = [v4 object];
+  object = [sessionCopy object];
 
-  [v7 removeObserver:self name:v8 object:v9];
+  [defaultCenter removeObserver:self name:v8 object:object];
 }
 
 - (ICNAFindResultExposureReporter)findResultReporter
@@ -23037,9 +23037,9 @@ uint64_t __80__ICNoteEditorViewController_contextMenuInteraction_atLocation_inTa
   if (!findResultReporter)
   {
     v4 = objc_alloc(MEMORY[0x277D35980]);
-    v5 = [(ICNoteEditorViewController *)self viewControllerManager];
-    v6 = [v5 window];
-    v7 = [v4 initWithWindow:v6];
+    viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+    window = [viewControllerManager window];
+    v7 = [v4 initWithWindow:window];
     v8 = self->_findResultReporter;
     self->_findResultReporter = v7;
 
@@ -23051,34 +23051,34 @@ uint64_t __80__ICNoteEditorViewController_contextMenuInteraction_atLocation_inTa
 
 - (id)icaxDateView
 {
-  v2 = [(ICNoteEditorViewController *)self textView];
-  v3 = [v2 dateView];
+  textView = [(ICNoteEditorViewController *)self textView];
+  dateView = [textView dateView];
 
-  return v3;
+  return dateView;
 }
 
 - (id)icaxUserTitleView
 {
-  v2 = [(ICNoteEditorViewController *)self textView];
-  v3 = [v2 userTitleView];
+  textView = [(ICNoteEditorViewController *)self textView];
+  userTitleView = [textView userTitleView];
 
-  return v3;
+  return userTitleView;
 }
 
 - (id)icaxMiniPlayerView
 {
   if ([(ICNoteEditorViewController *)self isShowingMiniPlayer])
   {
-    v3 = [(ICNoteEditorViewController *)self audioAttachmentEditorCoordinator];
-    v4 = [v3 icaxMiniPlayerView];
+    audioAttachmentEditorCoordinator = [(ICNoteEditorViewController *)self audioAttachmentEditorCoordinator];
+    icaxMiniPlayerView = [audioAttachmentEditorCoordinator icaxMiniPlayerView];
   }
 
   else
   {
-    v4 = 0;
+    icaxMiniPlayerView = 0;
   }
 
-  return v4;
+  return icaxMiniPlayerView;
 }
 
 - (ICNoteEditorDelegate)delegate
@@ -23121,11 +23121,11 @@ uint64_t __80__ICNoteEditorViewController_contextMenuInteraction_atLocation_inTa
   return WeakRetained;
 }
 
-- (void)updateSelectionOnUndo:(id)a3
+- (void)updateSelectionOnUndo:(id)undo
 {
-  v4 = [a3 rangeValue];
+  rangeValue = [undo rangeValue];
 
-  [(ICNoteEditorViewController *)self setSelectedRange:v4, 0];
+  [(ICNoteEditorViewController *)self setSelectedRange:rangeValue, 0];
 }
 
 - (void)viewDidAppear:.cold.1()

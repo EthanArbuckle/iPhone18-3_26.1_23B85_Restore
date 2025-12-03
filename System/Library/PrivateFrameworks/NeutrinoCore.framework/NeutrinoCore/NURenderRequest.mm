@@ -3,34 +3,34 @@
 - (NSString)additionalDebugInfo;
 - (NUComposition)composition;
 - (NURenderRequest)init;
-- (NURenderRequest)initWithComposition:(id)a3;
-- (NURenderRequest)initWithMedia:(id)a3;
-- (NURenderRequest)initWithRequest:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NURenderRequest)initWithComposition:(id)composition;
+- (NURenderRequest)initWithMedia:(id)media;
+- (NURenderRequest)initWithRequest:(id)request;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)newRenderJob;
-- (id)submitGenericSynchronous:(id *)a3;
+- (id)submitGenericSynchronous:(id *)synchronous;
 - (int64_t)mediaComponentType;
 - (void)_commonInit;
-- (void)introspectPrepare:(id)a3;
-- (void)setShouldCoalesceUpdates:(BOOL)a3;
-- (void)setTime:(id *)a3;
-- (void)submitGenericConfiguringRequest:(id)a3 completion:(id)a4;
-- (void)takePropertiesFromRequest:(id)a3;
+- (void)introspectPrepare:(id)prepare;
+- (void)setShouldCoalesceUpdates:(BOOL)updates;
+- (void)setTime:(id *)time;
+- (void)submitGenericConfiguringRequest:(id)request completion:(id)completion;
+- (void)takePropertiesFromRequest:(id)request;
 @end
 
 @implementation NURenderRequest
 
-- (void)setTime:(id *)a3
+- (void)setTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_time.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_time.epoch = time->var3;
   *&self->_time.value = v3;
 }
 
-- (void)introspectPrepare:(id)a3
+- (void)introspectPrepare:(id)prepare
 {
-  v4 = a3;
+  prepareCopy = prepare;
   v5 = [(NURenderRequest *)self copy];
   [v5 setSubmitTime:NUAbsoluteTime()];
   v6 = voucher_copy_without_importance();
@@ -48,9 +48,9 @@
   v8[3] = &unk_1E810BA48;
   v8[4] = &v9;
   [v5 setCompletionBlock:v8];
-  v7 = [v5 newRenderJob];
-  [v7 runToPrepareSynchronous];
-  v4[2](v4, v7, v10[5]);
+  newRenderJob = [v5 newRenderJob];
+  [newRenderJob runToPrepareSynchronous];
+  prepareCopy[2](prepareCopy, newRenderJob, v10[5]);
 
   _Block_object_dispose(&v9, 8);
 }
@@ -63,7 +63,7 @@ void __37__NURenderRequest_introspectPrepare___block_invoke(uint64_t a1, void *a
   objc_storeStrong((v2 + 40), obj);
 }
 
-- (id)submitGenericSynchronous:(id *)a3
+- (id)submitGenericSynchronous:(id *)synchronous
 {
   v4 = [(NURenderRequest *)self copy];
   [v4 setSubmitTime:NUAbsoluteTime()];
@@ -83,36 +83,36 @@ void __37__NURenderRequest_introspectPrepare___block_invoke(uint64_t a1, void *a
   v10[4] = &v11;
   [v4 setCompletionBlock:v10];
   v6 = objc_autoreleasePoolPush();
-  v7 = [v4 newRenderJob];
-  [v7 runSynchronous];
+  newRenderJob = [v4 newRenderJob];
+  [newRenderJob runSynchronous];
 
   objc_autoreleasePoolPop(v6);
-  v8 = [v12[5] result:a3];
+  v8 = [v12[5] result:synchronous];
   _Block_object_dispose(&v11, 8);
 
   return v8;
 }
 
-- (void)submitGenericConfiguringRequest:(id)a3 completion:(id)a4
+- (void)submitGenericConfiguringRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
   v9 = [(NURenderRequest *)self copy];
-  [v9 setCompletionBlock:v7];
+  [v9 setCompletionBlock:completionCopy];
   [v9 setSubmitTime:NUAbsoluteTime()];
   v10 = voucher_copy_without_importance();
   [v9 setVoucher:v10];
 
-  if (v6)
+  if (requestCopy)
   {
-    v6[2](v6, v9);
+    requestCopy[2](requestCopy, v9);
   }
 
   if (+[NUGlobalSettings runNeutrinoSynchronously])
   {
-    v11 = [v9 newRenderJob];
-    [v11 runSynchronous];
+    newRenderJob = [v9 newRenderJob];
+    [newRenderJob runSynchronous];
   }
 
   else
@@ -173,8 +173,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -190,8 +190,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -250,8 +250,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -267,8 +267,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -324,30 +324,30 @@ LABEL_14:
 
 - (NUComposition)composition
 {
-  v2 = [(NURenderRequest *)self internalComposition];
-  v3 = [v2 copy];
+  internalComposition = [(NURenderRequest *)self internalComposition];
+  v3 = [internalComposition copy];
 
   return v3;
 }
 
 - (BOOL)shouldCoalesceUpdates
 {
-  v2 = [(NURenderRequest *)self renderContext];
-  v3 = [v2 shouldCoalesceUpdates];
+  renderContext = [(NURenderRequest *)self renderContext];
+  shouldCoalesceUpdates = [renderContext shouldCoalesceUpdates];
 
-  return v3;
+  return shouldCoalesceUpdates;
 }
 
-- (void)setShouldCoalesceUpdates:(BOOL)a3
+- (void)setShouldCoalesceUpdates:(BOOL)updates
 {
-  v3 = a3;
-  v4 = [(NURenderRequest *)self renderContext];
-  [v4 setShouldCoalesceUpdates:v3];
+  updatesCopy = updates;
+  renderContext = [(NURenderRequest *)self renderContext];
+  [renderContext setShouldCoalesceUpdates:updatesCopy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -358,21 +358,21 @@ LABEL_14:
     v7 = *(v5 + 48);
     *(v5 + 48) = v6;
 
-    v8 = [(NURenderRequest *)self name];
+    name = [(NURenderRequest *)self name];
     v9 = *(v5 + 64);
-    *(v5 + 64) = v8;
+    *(v5 + 64) = name;
 
-    v10 = [(NURenderRequest *)self priority];
+    priority = [(NURenderRequest *)self priority];
     v11 = *(v5 + 80);
-    *(v5 + 80) = v10;
+    *(v5 + 80) = priority;
 
-    v12 = [(NURenderRequest *)self responseQueue];
+    responseQueue = [(NURenderRequest *)self responseQueue];
     v13 = *(v5 + 88);
-    *(v5 + 88) = v12;
+    *(v5 + 88) = responseQueue;
 
-    v14 = [(NURenderRequest *)self renderContext];
+    renderContext = [(NURenderRequest *)self renderContext];
     v15 = *(v5 + 96);
-    *(v5 + 96) = v14;
+    *(v5 + 96) = renderContext;
 
     v16 = *&self->_time.value;
     *(v5 + 152) = self->_time.epoch;
@@ -394,33 +394,33 @@ LABEL_14:
   return v5;
 }
 
-- (void)takePropertiesFromRequest:(id)a3
+- (void)takePropertiesFromRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 device];
+  requestCopy = request;
+  device = [requestCopy device];
   device = self->_device;
-  self->_device = v5;
+  self->_device = device;
 
-  self->_sampleMode = [v4 sampleMode];
-  v7 = [v4 pipelineFilters];
+  self->_sampleMode = [requestCopy sampleMode];
+  pipelineFilters = [requestCopy pipelineFilters];
   pipelineFilters = self->_pipelineFilters;
-  self->_pipelineFilters = v7;
+  self->_pipelineFilters = pipelineFilters;
 
-  v9 = [v4 priority];
+  priority = [requestCopy priority];
   priority = self->_priority;
-  self->_priority = v9;
+  self->_priority = priority;
 
-  v11 = [v4 responseQueue];
+  responseQueue = [requestCopy responseQueue];
   responseQueue = self->_responseQueue;
-  self->_responseQueue = v11;
+  self->_responseQueue = responseQueue;
 
-  v13 = [v4 renderContext];
+  renderContext = [requestCopy renderContext];
   renderContext = self->_renderContext;
-  self->_renderContext = v13;
+  self->_renderContext = renderContext;
 
-  if (v4)
+  if (requestCopy)
   {
-    [v4 time];
+    [requestCopy time];
   }
 
   else
@@ -431,24 +431,24 @@ LABEL_14:
 
   *&self->_time.value = v24;
   self->_time.epoch = v25;
-  self->_shouldUseLowMemoryMode = [v4 shouldUseLowMemoryMode];
-  self->_isOneShot = [v4 isOneShot];
-  [v4 submitTime];
+  self->_shouldUseLowMemoryMode = [requestCopy shouldUseLowMemoryMode];
+  self->_isOneShot = [requestCopy isOneShot];
+  [requestCopy submitTime];
   self->_submitTime = v15;
-  self->_parentRequestNumber = v4[9];
-  v16 = [v4 name];
-  v17 = [v16 stringByAppendingFormat:@".%@", objc_opt_class()];
+  self->_parentRequestNumber = requestCopy[9];
+  name = [requestCopy name];
+  v17 = [name stringByAppendingFormat:@".%@", objc_opt_class()];
   name = self->_name;
   self->_name = v17;
 
-  v19 = [v4 composition];
-  v20 = [v19 copy];
+  composition = [requestCopy composition];
+  v20 = [composition copy];
   internalComposition = self->_internalComposition;
   self->_internalComposition = v20;
 
-  v22 = [v4 media];
+  media = [requestCopy media];
   media = self->_media;
-  self->_media = v22;
+  self->_media = media;
 }
 
 - (void)_commonInit
@@ -462,10 +462,10 @@ LABEL_14:
   renderContext = self->_renderContext;
   self->_renderContext = v5;
 
-  v7 = [(NURenderRequest *)self name];
-  v8 = [v7 UTF8String];
+  name = [(NURenderRequest *)self name];
+  uTF8String = [name UTF8String];
   v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v10 = dispatch_queue_create(v8, v9);
+  v10 = dispatch_queue_create(uTF8String, v9);
   responseQueue = self->_responseQueue;
   self->_responseQueue = v10;
 
@@ -477,11 +477,11 @@ LABEL_14:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (NURenderRequest)initWithRequest:(id)a3
+- (NURenderRequest)initWithRequest:(id)request
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  requestCopy = request;
+  if (!requestCopy)
   {
     v8 = NUAssertLogger_7029();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -502,8 +502,8 @@ LABEL_14:
         v15 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v16 = MEMORY[0x1E696AF00];
         v17 = v15;
-        v18 = [v16 callStackSymbols];
-        v19 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v16 callStackSymbols];
+        v19 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v15;
         v27 = 2114;
@@ -514,8 +514,8 @@ LABEL_14:
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v14;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -524,7 +524,7 @@ LABEL_14:
     _NUAssertFailHandler("[NURenderRequest initWithRequest:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderRequest.m", 63, @"Invalid parameter not satisfying: %s", v20, v21, v22, v23, "request != nil");
   }
 
-  v5 = v4;
+  v5 = requestCopy;
   v24.receiver = self;
   v24.super_class = NURenderRequest;
   v6 = [(NURenderRequest *)&v24 init];
@@ -534,11 +534,11 @@ LABEL_14:
   return v6;
 }
 
-- (NURenderRequest)initWithMedia:(id)a3
+- (NURenderRequest)initWithMedia:(id)media
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  mediaCopy = media;
+  if (!mediaCopy)
   {
     v9 = NUAssertLogger_7029();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -559,8 +559,8 @@ LABEL_14:
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v16;
         v28 = 2114;
@@ -571,8 +571,8 @@ LABEL_14:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -581,7 +581,7 @@ LABEL_14:
     _NUAssertFailHandler("[NURenderRequest initWithMedia:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderRequest.m", 50, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "media != nil");
   }
 
-  v5 = v4;
+  v5 = mediaCopy;
   v25.receiver = self;
   v25.super_class = NURenderRequest;
   v6 = [(NURenderRequest *)&v25 init];
@@ -592,11 +592,11 @@ LABEL_14:
   return v6;
 }
 
-- (NURenderRequest)initWithComposition:(id)a3
+- (NURenderRequest)initWithComposition:(id)composition
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  compositionCopy = composition;
+  if (!compositionCopy)
   {
     v10 = NUAssertLogger_7029();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -617,8 +617,8 @@ LABEL_14:
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v17;
         v29 = 2114;
@@ -629,8 +629,8 @@ LABEL_14:
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -639,7 +639,7 @@ LABEL_14:
     _NUAssertFailHandler("[NURenderRequest initWithComposition:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderRequest.m", 38, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "composition != nil");
   }
 
-  v5 = v4;
+  v5 = compositionCopy;
   v26.receiver = self;
   v26.super_class = NURenderRequest;
   v6 = [(NURenderRequest *)&v26 init];
@@ -697,8 +697,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -714,8 +714,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -738,33 +738,33 @@ LABEL_14:
   v5 = NSStringFromClass(v4);
   [v3 appendFormat:@"Request Class = %@\n", v5];
 
-  v6 = [(NURenderRequest *)self sampleMode];
-  if (v6 > 3)
+  sampleMode = [(NURenderRequest *)self sampleMode];
+  if (sampleMode > 3)
   {
     v7 = @"invalid";
   }
 
   else
   {
-    v7 = off_1E8109968[v6];
+    v7 = off_1E8109968[sampleMode];
   }
 
   v8 = v7;
   [v3 appendFormat:@"sampleMode = %@\n", v8];
 
-  v9 = [(NURenderRequest *)self pipelineFilters];
-  [v3 appendFormat:@"pipelineFilter.count = %d\n", objc_msgSend(v9, "count")];
+  pipelineFilters = [(NURenderRequest *)self pipelineFilters];
+  [v3 appendFormat:@"pipelineFilter.count = %d\n", objc_msgSend(pipelineFilters, "count")];
 
-  v10 = [(NURenderRequest *)self device];
-  [v3 appendFormat:@"device = %@\n", v10];
+  device = [(NURenderRequest *)self device];
+  [v3 appendFormat:@"device = %@\n", device];
 
-  v11 = [(NURenderRequest *)self priority];
-  [v3 appendFormat:@"priority = %@\n", v11];
+  priority = [(NURenderRequest *)self priority];
+  [v3 appendFormat:@"priority = %@\n", priority];
 
   if (objc_opt_respondsToSelector())
   {
-    v12 = [(NURenderRequest *)self scalePolicy];
-    [v3 appendFormat:@"scalePolicy = %@\n", v12];
+    scalePolicy = [(NURenderRequest *)self scalePolicy];
+    [v3 appendFormat:@"scalePolicy = %@\n", scalePolicy];
   }
 
   objc_opt_class();
@@ -776,39 +776,39 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = self;
-    v14 = [(NURenderRequest *)v13 dataExtractor];
-    [v3 appendFormat:@"dataExtractor = %@\n", v14];
+    selfCopy = self;
+    dataExtractor = [(NURenderRequest *)selfCopy dataExtractor];
+    [v3 appendFormat:@"dataExtractor = %@\n", dataExtractor];
 
-    v15 = [(NURenderRequest *)v13 options];
+    options = [(NURenderRequest *)selfCopy options];
 
-    if (v15)
+    if (options)
     {
-      [v3 appendFormat:@"options = %@\n", v15];
+      [v3 appendFormat:@"options = %@\n", options];
     }
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = self;
-    v17 = [(NURenderRequest *)v16 colorSpace];
-    [v3 appendFormat:@"colorSpace = %@\n", v17];
+    selfCopy2 = self;
+    colorSpace = [(NURenderRequest *)selfCopy2 colorSpace];
+    [v3 appendFormat:@"colorSpace = %@\n", colorSpace];
 
-    v18 = [(NURenderRequest *)v16 regionPolicy];
-    [v3 appendFormat:@"regionPolicy = %@\n", v18];
+    regionPolicy = [(NURenderRequest *)selfCopy2 regionPolicy];
+    [v3 appendFormat:@"regionPolicy = %@\n", regionPolicy];
 
-    v19 = [(NURenderRequest *)v16 pixelFormat];
-    [v3 appendFormat:@"pixelFormat = %@\n", v19];
+    pixelFormat = [(NURenderRequest *)selfCopy2 pixelFormat];
+    [v3 appendFormat:@"pixelFormat = %@\n", pixelFormat];
 
-    v20 = [(NURenderRequest *)v16 tileSize];
-    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{%ld, %ld}", v20, v21];
+    tileSize = [(NURenderRequest *)selfCopy2 tileSize];
+    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{%ld, %ld}", tileSize, v21];
     [v3 appendFormat:@"tileSize = %@\n", v22];
 
-    v23 = [(NURenderRequest *)v16 borderSize];
+    borderSize = [(NURenderRequest *)selfCopy2 borderSize];
     v25 = v24;
 
-    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{%ld, %ld}", v23, v25];
+    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{%ld, %ld}", borderSize, v25];
     [v3 appendFormat:@"borderSize = %@\n", v26];
   }
 

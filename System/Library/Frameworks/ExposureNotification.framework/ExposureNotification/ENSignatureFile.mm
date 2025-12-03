@@ -1,38 +1,38 @@
 @interface ENSignatureFile
-+ (id)_signatureFileWithProtobufCoder:(id)a3 error:(id *)a4;
-+ (id)signatureFileWithArchive:(id)a3 error:(id *)a4;
-+ (id)signatureFileWithBytes:(const char *)a3 length:(unint64_t)a4 error:(id *)a5;
-- (BOOL)closeAndReturnError:(id *)a3;
-- (BOOL)openForWritingToData:(id)a3 error:(id *)a4;
-- (BOOL)openWithFileSystemRepresentation:(const char *)a3 reading:(BOOL)a4 error:(id *)a5;
-- (BOOL)writeAndReturnError:(id *)a3;
++ (id)_signatureFileWithProtobufCoder:(id)coder error:(id *)error;
++ (id)signatureFileWithArchive:(id)archive error:(id *)error;
++ (id)signatureFileWithBytes:(const char *)bytes length:(unint64_t)length error:(id *)error;
+- (BOOL)closeAndReturnError:(id *)error;
+- (BOOL)openForWritingToData:(id)data error:(id *)error;
+- (BOOL)openWithFileSystemRepresentation:(const char *)representation reading:(BOOL)reading error:(id *)error;
+- (BOOL)writeAndReturnError:(id *)error;
 @end
 
 @implementation ENSignatureFile
 
-+ (id)signatureFileWithArchive:(id)a3 error:(id *)a4
++ (id)signatureFileWithArchive:(id)archive error:(id *)error
 {
-  v6 = a3;
+  archiveCopy = archive;
   v7 = objc_alloc_init(ENProtobufCoder);
-  [(ENProtobufCoder *)v7 setReadArchive:v6];
+  [(ENProtobufCoder *)v7 setReadArchive:archiveCopy];
 
-  v8 = [a1 _signatureFileWithProtobufCoder:v7 error:a4];
+  v8 = [self _signatureFileWithProtobufCoder:v7 error:error];
 
   return v8;
 }
 
-+ (id)signatureFileWithBytes:(const char *)a3 length:(unint64_t)a4 error:(id *)a5
++ (id)signatureFileWithBytes:(const char *)bytes length:(unint64_t)length error:(id *)error
 {
   v9 = objc_alloc_init(ENProtobufCoder);
-  [(ENProtobufCoder *)v9 setReadMemory:a3 length:a4];
-  v10 = [a1 _signatureFileWithProtobufCoder:v9 error:a5];
+  [(ENProtobufCoder *)v9 setReadMemory:bytes length:length];
+  v10 = [self _signatureFileWithProtobufCoder:v9 error:error];
 
   return v10;
 }
 
-+ (id)_signatureFileWithProtobufCoder:(id)a3 error:(id *)a4
++ (id)_signatureFileWithProtobufCoder:(id)coder error:(id *)error
 {
-  v5 = a3;
+  coderCopy = coder;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -44,7 +44,7 @@
   v29[2] = __57__ENSignatureFile__signatureFileWithProtobufCoder_error___block_invoke;
   v29[3] = &unk_278A4B610;
   v29[4] = &v30;
-  v29[5] = a4;
+  v29[5] = error;
   v6 = MEMORY[0x2383EE560](v29);
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   do
@@ -54,14 +54,14 @@
     v9 = (v31 + 5);
     obj = v31[5];
     v27 = 0;
-    v10 = [v5 readType:&v28 tag:&v27 eofOkay:1 error:&obj];
+    v10 = [coderCopy readType:&v28 tag:&v27 eofOkay:1 error:&obj];
     objc_storeStrong(v9, obj);
     if (v10)
     {
       if (v27 == 1)
       {
         v25 = 0;
-        v11 = v5;
+        v11 = coderCopy;
         v12 = (v31 + 5);
         v24 = v31[5];
         v13 = [v11 readLengthDelimited:&v25 error:&v24];
@@ -88,7 +88,7 @@ LABEL_11:
       {
         v18 = (v31 + 5);
         v22 = v31[5];
-        v19 = [v5 skipType:v28 error:&v22];
+        v19 = [coderCopy skipType:v28 error:&v22];
         objc_storeStrong(v18, v22);
         if (v19)
         {
@@ -146,11 +146,11 @@ id __57__ENSignatureFile__signatureFileWithProtobufCoder_error___block_invoke(ui
   return result;
 }
 
-- (BOOL)openWithFileSystemRepresentation:(const char *)a3 reading:(BOOL)a4 error:(id *)a5
+- (BOOL)openWithFileSystemRepresentation:(const char *)representation reading:(BOOL)reading error:(id *)error
 {
-  if (a4)
+  if (reading)
   {
-    if (a5)
+    if (error)
     {
       v9 = 5;
       goto LABEL_10;
@@ -159,7 +159,7 @@ id __57__ENSignatureFile__signatureFileWithProtobufCoder_error___block_invoke(ui
 
   else if (self->_fileHandle || self->_outputData)
   {
-    if (a5)
+    if (error)
     {
       v9 = 10;
       goto LABEL_10;
@@ -168,21 +168,21 @@ id __57__ENSignatureFile__signatureFileWithProtobufCoder_error___block_invoke(ui
 
   else
   {
-    v7 = fopen(a3, "wb");
+    v7 = fopen(representation, "wb");
     self->_fileHandle = v7;
     if (v7 || *__error() && !*__error())
     {
       return 1;
     }
 
-    if (a5)
+    if (error)
     {
       v9 = 2;
 LABEL_10:
       v10 = ENErrorF(v9);
       v11 = v10;
       result = 0;
-      *a5 = v10;
+      *error = v10;
       return result;
     }
   }
@@ -190,15 +190,15 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)openForWritingToData:(id)a3 error:(id *)a4
+- (BOOL)openForWritingToData:(id)data error:(id *)error
 {
-  v7 = a3;
+  dataCopy = data;
   if (self->_fileHandle || (outputData = self->_outputData, p_outputData = &self->_outputData, outputData))
   {
-    if (a4)
+    if (error)
     {
       ENErrorF(10);
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -209,14 +209,14 @@ LABEL_10:
 
   else
   {
-    objc_storeStrong(p_outputData, a3);
+    objc_storeStrong(p_outputData, data);
     v10 = 1;
   }
 
   return v10;
 }
 
-- (BOOL)closeAndReturnError:(id *)a3
+- (BOOL)closeAndReturnError:(id *)error
 {
   outputData = self->_outputData;
   if (outputData)
@@ -236,7 +236,7 @@ LABEL_10:
       return 1;
     }
 
-    if (a3)
+    if (error)
     {
       v12 = *__error();
       v9 = 1;
@@ -244,21 +244,21 @@ LABEL_10:
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     v9 = 10;
 LABEL_10:
     v10 = ENErrorF(v9);
     v11 = v10;
     result = 0;
-    *a3 = v10;
+    *error = v10;
     return result;
   }
 
   return 0;
 }
 
-- (BOOL)writeAndReturnError:(id *)a3
+- (BOOL)writeAndReturnError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   v36 = 0;
@@ -272,7 +272,7 @@ LABEL_10:
   v35[2] = __39__ENSignatureFile_writeAndReturnError___block_invoke;
   v35[3] = &unk_278A4B610;
   v35[4] = &v36;
-  v35[5] = a3;
+  v35[5] = error;
   v27 = MEMORY[0x2383EE560](v35, a2);
   fileHandle = self->_fileHandle;
   v28 = self->_outputData;

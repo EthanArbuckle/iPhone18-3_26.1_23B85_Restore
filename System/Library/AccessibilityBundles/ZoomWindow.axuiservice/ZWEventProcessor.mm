@@ -1,12 +1,12 @@
 @interface ZWEventProcessor
 + (id)defaultEventProcessor;
 - (CGPoint)currentTouchOffset;
-- (CGPoint)offsetForAutopanner:(id)a3;
-- (ZWEventProcessor)initWithHIDTapIdentifier:(id)a3 HIDEventTapPriority:(int)a4 systemEventTapIdentifier:(id)a5 systemEventTapPriority:(int)a6;
+- (CGPoint)offsetForAutopanner:(id)autopanner;
+- (ZWEventProcessor)initWithHIDTapIdentifier:(id)identifier HIDEventTapPriority:(int)priority systemEventTapIdentifier:(id)tapIdentifier systemEventTapPriority:(int)tapPriority;
 - (ZWEventProcessorDelegate)mainDisplayDelegate;
-- (void)_sendCancelEventToAppDirectlyWithSenderID:(id)a3;
+- (void)_sendCancelEventToAppDirectlyWithSenderID:(id)d;
 - (void)dealloc;
-- (void)sendCancelEventToAppDirectlyWithSenderID:(unint64_t)a3;
+- (void)sendCancelEventToAppDirectlyWithSenderID:(unint64_t)d;
 @end
 
 @implementation ZWEventProcessor
@@ -30,15 +30,15 @@ void __41__ZWEventProcessor_defaultEventProcessor__block_invoke(id a1)
   _objc_release_x1();
 }
 
-- (ZWEventProcessor)initWithHIDTapIdentifier:(id)a3 HIDEventTapPriority:(int)a4 systemEventTapIdentifier:(id)a5 systemEventTapPriority:(int)a6
+- (ZWEventProcessor)initWithHIDTapIdentifier:(id)identifier HIDEventTapPriority:(int)priority systemEventTapIdentifier:(id)tapIdentifier systemEventTapPriority:(int)tapPriority
 {
-  v6 = *&a6;
-  v8 = *&a4;
-  v10 = a3;
-  v11 = a5;
+  v6 = *&tapPriority;
+  v8 = *&priority;
+  identifierCopy = identifier;
+  tapIdentifierCopy = tapIdentifier;
   v25.receiver = self;
   v25.super_class = ZWEventProcessor;
-  v12 = [(ZWEventProcessor *)&v25 initWithHIDTapIdentifier:v10 HIDEventTapPriority:v8 systemEventTapIdentifier:v11 systemEventTapPriority:v6];
+  v12 = [(ZWEventProcessor *)&v25 initWithHIDTapIdentifier:identifierCopy HIDEventTapPriority:v8 systemEventTapIdentifier:tapIdentifierCopy systemEventTapPriority:v6];
   v13 = v12;
   if (v12)
   {
@@ -96,7 +96,7 @@ id __113__ZWEventProcessor_initWithHIDTapIdentifier_HIDEventTapPriority_systemEv
   [(ZWEventProcessor *)&v4 dealloc];
 }
 
-- (CGPoint)offsetForAutopanner:(id)a3
+- (CGPoint)offsetForAutopanner:(id)autopanner
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -105,10 +105,10 @@ id __113__ZWEventProcessor_initWithHIDTapIdentifier_HIDEventTapPriority_systemEv
   return result;
 }
 
-- (void)_sendCancelEventToAppDirectlyWithSenderID:(id)a3
+- (void)_sendCancelEventToAppDirectlyWithSenderID:(id)d
 {
   y = CGPointZero.y;
-  v4 = a3;
+  dCopy = d;
   v14 = [AXEventRepresentation touchRepresentationWithHandType:8 location:CGPointZero.x, y];
   v5 = +[UIScreen mainScreen];
   [v5 bounds];
@@ -119,17 +119,17 @@ id __113__ZWEventProcessor_initWithHIDTapIdentifier_HIDEventTapPriority_systemEv
   v11 = [v10 contextIdForPosition:{v7 * 0.5, v9 * 0.5}];
 
   [v14 setContextId:v11];
-  v12 = [v4 unsignedLongLongValue];
+  unsignedLongLongValue = [dCopy unsignedLongLongValue];
 
-  [v14 setSenderID:v12];
+  [v14 setSenderID:unsignedLongLongValue];
   v13 = +[AXBackBoardServer server];
   [v13 postEvent:v14 afterNamedTap:@"__NOTHING__" includeTaps:&off_7B680];
 }
 
-- (void)sendCancelEventToAppDirectlyWithSenderID:(unint64_t)a3
+- (void)sendCancelEventToAppDirectlyWithSenderID:(unint64_t)d
 {
   hidPostThread = self->_hidPostThread;
-  v5 = [NSNumber numberWithUnsignedLongLong:a3];
+  v5 = [NSNumber numberWithUnsignedLongLong:d];
   [(SCRCThread *)hidPostThread performSelector:"_sendCancelEventToAppDirectlyWithSenderID:" onTarget:self count:1 objects:v5];
 }
 

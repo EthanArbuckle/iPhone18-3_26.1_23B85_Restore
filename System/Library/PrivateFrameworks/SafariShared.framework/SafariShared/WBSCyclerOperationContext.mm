@@ -1,48 +1,48 @@
 @interface WBSCyclerOperationContext
-- (BOOL)_isItemPrefixed:(id)a3;
-- (BOOL)_isItemValid:(id)a3;
-- (id)_buildDictionaryOfDescendantIdentifiersToParentIdentifiersFromList:(id)a3;
-- (id)_copyItem:(id)a3 filteringWithIdentifierWhitelist:(id)a4;
-- (id)filterOutItemsWithoutTitlePrefixInList:(id)a3;
-- (id)randomDescendantOfList:(id)a3 enforcingTitlePrefixValidity:(BOOL)a4 passingTest:(id)a5;
+- (BOOL)_isItemPrefixed:(id)prefixed;
+- (BOOL)_isItemValid:(id)valid;
+- (id)_buildDictionaryOfDescendantIdentifiersToParentIdentifiersFromList:(id)list;
+- (id)_copyItem:(id)item filteringWithIdentifierWhitelist:(id)whitelist;
+- (id)filterOutItemsWithoutTitlePrefixInList:(id)list;
+- (id)randomDescendantOfList:(id)list enforcingTitlePrefixValidity:(BOOL)validity passingTest:(id)test;
 - (id)randomItemTitle;
 - (id)randomSymbolImageName;
-- (id)randomValidStrictDescendantOfList:(id)a3;
+- (id)randomValidStrictDescendantOfList:(id)list;
 - (id)randomValidStrictDescendantOfTopLevelItem;
-- (id)randomValidStrictListDescendantOfList:(id)a3;
+- (id)randomValidStrictListDescendantOfList:(id)list;
 - (id)randomValidStrictListDescendantOfTopLevelItem;
-- (void)setTitlePrefix:(id)a3;
+- (void)setTitlePrefix:(id)prefix;
 @end
 
 @implementation WBSCyclerOperationContext
 
-- (void)setTitlePrefix:(id)a3
+- (void)setTitlePrefix:(id)prefix
 {
-  v6 = a3;
-  v4 = [v6 length];
+  prefixCopy = prefix;
+  v4 = [prefixCopy length];
   if (v4)
   {
-    v4 = [v6 copy];
+    v4 = [prefixCopy copy];
   }
 
   titlePrefix = self->_titlePrefix;
   self->_titlePrefix = v4;
 }
 
-- (id)filterOutItemsWithoutTitlePrefixInList:(id)a3
+- (id)filterOutItemsWithoutTitlePrefixInList:(id)list
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  listCopy = list;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __68__WBSCyclerOperationContext_filterOutItemsWithoutTitlePrefixInList___block_invoke;
   v24[3] = &unk_1E7FC5198;
   v24[4] = self;
-  v5 = [v4 allDescendantsPassingTest:v24];
-  v6 = [(WBSCyclerOperationContext *)self _buildDictionaryOfDescendantIdentifiersToParentIdentifiersFromList:v4];
+  v5 = [listCopy allDescendantsPassingTest:v24];
+  v6 = [(WBSCyclerOperationContext *)self _buildDictionaryOfDescendantIdentifiersToParentIdentifiersFromList:listCopy];
   v7 = MEMORY[0x1E695DFA8];
-  v8 = [v4 uniqueIdentifier];
-  v9 = [v7 setWithObject:v8];
+  uniqueIdentifier = [listCopy uniqueIdentifier];
+  v9 = [v7 setWithObject:uniqueIdentifier];
 
   v22 = 0u;
   v23 = 0u;
@@ -63,10 +63,10 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v20 + 1) + 8 * i) uniqueIdentifier];
-        if (v15)
+        uniqueIdentifier2 = [*(*(&v20 + 1) + 8 * i) uniqueIdentifier];
+        if (uniqueIdentifier2)
         {
-          v16 = v15;
+          v16 = uniqueIdentifier2;
           do
           {
             [v9 addObject:v16];
@@ -85,7 +85,7 @@
     while (v12);
   }
 
-  v18 = [(WBSCyclerOperationContext *)self _copyItem:v4 filteringWithIdentifierWhitelist:v9];
+  v18 = [(WBSCyclerOperationContext *)self _copyItem:listCopy filteringWithIdentifierWhitelist:v9];
 
   return v18;
 }
@@ -106,25 +106,25 @@
 
 - (id)randomSymbolImageName
 {
-  v3 = [(WBSCyclerOperationContext *)self _availableSymbolImageNames];
-  v4 = [(WBSCyclerOperationContext *)self _availableSymbolImageNames];
-  v5 = [v3 objectAtIndexedSubscript:{+[WBSCyclerRandomnessUtilities randomIntegerWithUpperBound:](WBSCyclerRandomnessUtilities, "randomIntegerWithUpperBound:", objc_msgSend(v4, "count") - 1)}];
+  _availableSymbolImageNames = [(WBSCyclerOperationContext *)self _availableSymbolImageNames];
+  _availableSymbolImageNames2 = [(WBSCyclerOperationContext *)self _availableSymbolImageNames];
+  v5 = [_availableSymbolImageNames objectAtIndexedSubscript:{+[WBSCyclerRandomnessUtilities randomIntegerWithUpperBound:](WBSCyclerRandomnessUtilities, "randomIntegerWithUpperBound:", objc_msgSend(_availableSymbolImageNames2, "count") - 1)}];
 
   return v5;
 }
 
-- (id)randomDescendantOfList:(id)a3 enforcingTitlePrefixValidity:(BOOL)a4 passingTest:(id)a5
+- (id)randomDescendantOfList:(id)list enforcingTitlePrefixValidity:(BOOL)validity passingTest:(id)test
 {
-  v8 = a5;
+  testCopy = test;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __93__WBSCyclerOperationContext_randomDescendantOfList_enforcingTitlePrefixValidity_passingTest___block_invoke;
   v12[3] = &unk_1E7FC5260;
-  v14 = a4;
+  validityCopy = validity;
   v12[4] = self;
-  v13 = v8;
-  v9 = v8;
-  v10 = [a3 randomDescendantPassingTest:v12];
+  v13 = testCopy;
+  v9 = testCopy;
+  v10 = [list randomDescendantPassingTest:v12];
 
   return v10;
 }
@@ -145,15 +145,15 @@ BOOL __93__WBSCyclerOperationContext_randomDescendantOfList_enforcingTitlePrefix
   return v5;
 }
 
-- (id)randomValidStrictDescendantOfList:(id)a3
+- (id)randomValidStrictDescendantOfList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__WBSCyclerOperationContext_randomValidStrictDescendantOfList___block_invoke;
   v8[3] = &unk_1E7FC5198;
-  v9 = v4;
-  v5 = v4;
+  v9 = listCopy;
+  v5 = listCopy;
   v6 = [(WBSCyclerOperationContext *)self randomDescendantOfList:v5 enforcingTitlePrefixValidity:1 passingTest:v8];
 
   return v6;
@@ -174,15 +174,15 @@ BOOL __93__WBSCyclerOperationContext_randomDescendantOfList_enforcingTitlePrefix
   return v3;
 }
 
-- (id)randomValidStrictListDescendantOfList:(id)a3
+- (id)randomValidStrictListDescendantOfList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67__WBSCyclerOperationContext_randomValidStrictListDescendantOfList___block_invoke;
   v8[3] = &unk_1E7FC5198;
-  v9 = v4;
-  v5 = v4;
+  v9 = listCopy;
+  v5 = listCopy;
   v6 = [(WBSCyclerOperationContext *)self randomDescendantOfList:v5 enforcingTitlePrefixValidity:1 passingTest:v8];
 
   return v6;
@@ -220,30 +220,30 @@ uint64_t __67__WBSCyclerOperationContext_randomValidStrictListDescendantOfList__
   return v3;
 }
 
-- (BOOL)_isItemPrefixed:(id)a3
+- (BOOL)_isItemPrefixed:(id)prefixed
 {
   if (!self->_titlePrefix)
   {
     return 1;
   }
 
-  v3 = self;
-  v4 = [a3 title];
-  LOBYTE(v3) = [v4 hasPrefix:v3->_titlePrefix];
+  selfCopy = self;
+  title = [prefixed title];
+  LOBYTE(selfCopy) = [title hasPrefix:selfCopy->_titlePrefix];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)_isItemValid:(id)a3
+- (BOOL)_isItemValid:(id)valid
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (self->_topLevelItem == v4)
+  validCopy = valid;
+  if (self->_topLevelItem == validCopy)
   {
     goto LABEL_13;
   }
 
-  if (![(WBSCyclerOperationContext *)self _isItemPrefixed:v4])
+  if (![(WBSCyclerOperationContext *)self _isItemPrefixed:validCopy])
   {
     v10 = 0;
     goto LABEL_17;
@@ -262,7 +262,7 @@ LABEL_13:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = v4;
+    v5 = validCopy;
     v6 = [(WBSCyclerItemListRepresentation *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
@@ -303,16 +303,16 @@ LABEL_17:
   return v10;
 }
 
-- (id)_buildDictionaryOfDescendantIdentifiersToParentIdentifiersFromList:(id)a3
+- (id)_buildDictionaryOfDescendantIdentifiersToParentIdentifiersFromList:(id)list
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  listCopy = list;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = listCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -328,15 +328,15 @@ LABEL_17:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v6 uniqueIdentifier];
-        v13 = [v11 uniqueIdentifier];
-        [v5 setObject:v12 forKeyedSubscript:v13];
+        uniqueIdentifier = [v6 uniqueIdentifier];
+        uniqueIdentifier2 = [v11 uniqueIdentifier];
+        [dictionary setObject:uniqueIdentifier forKeyedSubscript:uniqueIdentifier2];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v14 = [(WBSCyclerOperationContext *)self _buildDictionaryOfDescendantIdentifiersToParentIdentifiersFromList:v11];
-          [v5 addEntriesFromDictionary:v14];
+          [dictionary addEntriesFromDictionary:v14];
         }
       }
 
@@ -346,16 +346,16 @@ LABEL_17:
     while (v8);
   }
 
-  return v5;
+  return dictionary;
 }
 
-- (id)_copyItem:(id)a3 filteringWithIdentifierWhitelist:(id)a4
+- (id)_copyItem:(id)item filteringWithIdentifierWhitelist:(id)whitelist
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uniqueIdentifier];
-  v9 = [v7 containsObject:v8];
+  itemCopy = item;
+  whitelistCopy = whitelist;
+  uniqueIdentifier = [itemCopy uniqueIdentifier];
+  v9 = [whitelistCopy containsObject:uniqueIdentifier];
 
   if (v9)
   {
@@ -363,15 +363,15 @@ LABEL_17:
     if (objc_opt_isKindOfClass())
     {
       v10 = [WBSCyclerItemListRepresentation alloc];
-      v11 = [v6 title];
-      v12 = [v6 uniqueIdentifier];
-      v13 = [(WBSCyclerItemListRepresentation *)v10 initWithTitle:v11 uniqueIdentifier:v12];
+      title = [itemCopy title];
+      uniqueIdentifier2 = [itemCopy uniqueIdentifier];
+      v13 = [(WBSCyclerItemListRepresentation *)v10 initWithTitle:title uniqueIdentifier:uniqueIdentifier2];
 
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v14 = v6;
+      v14 = itemCopy;
       v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v15)
       {
@@ -387,7 +387,7 @@ LABEL_17:
               objc_enumerationMutation(v14);
             }
 
-            v19 = [(WBSCyclerOperationContext *)self _copyItem:*(*(&v21 + 1) + 8 * v18) filteringWithIdentifierWhitelist:v7, v21];
+            v19 = [(WBSCyclerOperationContext *)self _copyItem:*(*(&v21 + 1) + 8 * v18) filteringWithIdentifierWhitelist:whitelistCopy, v21];
             if (v19)
             {
               [(WBSCyclerItemListRepresentation *)v13 addChild:v19];
@@ -406,7 +406,7 @@ LABEL_17:
 
     else
     {
-      v13 = v6;
+      v13 = itemCopy;
     }
   }
 

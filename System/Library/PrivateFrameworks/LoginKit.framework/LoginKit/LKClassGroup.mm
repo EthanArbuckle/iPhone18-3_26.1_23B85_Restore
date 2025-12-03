@@ -1,30 +1,30 @@
 @interface LKClassGroup
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLKClassGroup:(id)a3;
-- (LKClassGroup)initWithClassGroupDictionary:(id)a3 classesDictionaryByClassID:(id)a4;
-- (LKClassGroup)initWithCoder:(id)a3;
-- (LKClassGroup)initWithGroupName:(id)a3 classes:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLKClassGroup:(id)group;
+- (LKClassGroup)initWithClassGroupDictionary:(id)dictionary classesDictionaryByClassID:(id)d;
+- (LKClassGroup)initWithCoder:(id)coder;
+- (LKClassGroup)initWithGroupName:(id)name classes:(id)classes;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LKClassGroup
 
-- (LKClassGroup)initWithCoder:(id)a3
+- (LKClassGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = LKClassGroup;
   v5 = [(LKClassGroup *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"classGroupName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"classGroupName"];
     classGroupName = v5->_classGroupName;
     v5->_classGroupName = v6;
 
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"classes"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"classes"];
     classes = v5->_classes;
     v5->_classes = v11;
   }
@@ -32,43 +32,43 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   classGroupName = self->_classGroupName;
-  v5 = a3;
-  [v5 encodeObject:classGroupName forKey:@"classGroupName"];
-  [v5 encodeObject:self->_classes forKey:@"classes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:classGroupName forKey:@"classGroupName"];
+  [coderCopy encodeObject:self->_classes forKey:@"classes"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(LKClassGroup *)self isEqualToLKClassGroup:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(LKClassGroup *)self isEqualToLKClassGroup:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToLKClassGroup:(id)a3
+- (BOOL)isEqualToLKClassGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(LKClassGroup *)self classGroupName];
-  v6 = [v4 classGroupName];
-  v7 = [v5 isEqualToString:v6];
+  groupCopy = group;
+  classGroupName = [(LKClassGroup *)self classGroupName];
+  classGroupName2 = [groupCopy classGroupName];
+  v7 = [classGroupName isEqualToString:classGroupName2];
 
   if (v7)
   {
-    v8 = [(LKClassGroup *)self classes];
-    v9 = [v4 classes];
-    v10 = [v8 isEqualToArray:v9];
+    classes = [(LKClassGroup *)self classes];
+    classes2 = [groupCopy classes];
+    v10 = [classes isEqualToArray:classes2];
   }
 
   else
@@ -79,35 +79,35 @@
   return v10;
 }
 
-- (LKClassGroup)initWithGroupName:(id)a3 classes:(id)a4
+- (LKClassGroup)initWithGroupName:(id)name classes:(id)classes
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  classesCopy = classes;
   v12.receiver = self;
   v12.super_class = LKClassGroup;
   v9 = [(LKClassGroup *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_classGroupName, a3);
-    objc_storeStrong(&v10->_classes, a4);
+    objc_storeStrong(&v9->_classGroupName, name);
+    objc_storeStrong(&v10->_classes, classes);
   }
 
   return v10;
 }
 
-- (LKClassGroup)initWithClassGroupDictionary:(id)a3 classesDictionaryByClassID:(id)a4
+- (LKClassGroup)initWithClassGroupDictionary:(id)dictionary classesDictionaryByClassID:(id)d
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  dCopy = d;
   LKRegisterLoginKitLogging();
   v31.receiver = self;
   v31.super_class = LKClassGroup;
   v8 = [(LKClassGroup *)&v31 init];
   if (v8)
   {
-    v9 = [v6 objectForKey:@"Name"];
+    v9 = [dictionaryCopy objectForKey:@"Name"];
     classGroupName = v8->_classGroupName;
     v25 = v8;
     v8->_classGroupName = v9;
@@ -117,8 +117,8 @@
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v26 = v6;
-    v12 = [v6 objectForKeyedSubscript:@"GroupBeaconIDs"];
+    v26 = dictionaryCopy;
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"GroupBeaconIDs"];
     v13 = [v12 countByEnumeratingWithState:&v27 objects:v34 count:16];
     if (!v13)
     {
@@ -137,10 +137,10 @@
         }
 
         v17 = *(*(&v27 + 1) + 8 * i);
-        v18 = [v7 objectForKey:{v17, v25}];
+        v18 = [dCopy objectForKey:{v17, v25}];
         if (v18)
         {
-          v19 = [v7 objectForKey:v17];
+          v19 = [dCopy objectForKey:v17];
           [(NSArray *)v11 addObject:v19];
         }
 
@@ -153,9 +153,9 @@
           }
 
           v19 = v20;
-          v21 = [v17 stringValue];
+          stringValue = [v17 stringValue];
           *buf = 138412290;
-          v33 = v21;
+          v33 = stringValue;
           _os_log_impl(&dword_25618F000, v19, OS_LOG_TYPE_DEFAULT, "Ignoring the classID %@ because there is no class with that id.", buf, 0xCu);
         }
 
@@ -171,7 +171,7 @@ LABEL_14:
         classes = v25->_classes;
         v25->_classes = v11;
 
-        v6 = v26;
+        dictionaryCopy = v26;
         break;
       }
     }

@@ -1,8 +1,8 @@
 @interface BWPearlPortraitSceneMonitorV2
-- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)a3 frameStatisticsByPortType:(id)a4 sceneFlags:(unint64_t)a5 flashOrTorchWillBeActive:(BOOL)a6 digitalFlashWillFire:(BOOL)a7 thermalPressureLevel:(int)a8 peakPowerPressureLevel:(int)a9 effectStatus:(int *)a10 stagePreviewStatus:(int *)a11;
-- (BWPearlPortraitSceneMonitorV2)initWithTuningParameters:(id)a3 attachDebugFrameStatistics:(BOOL)a4 portraitAutoSuggestEnabled:(BOOL)a5 shallowDepthOfFieldEnabled:(BOOL)a6;
+- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)buffer frameStatisticsByPortType:(id)type sceneFlags:(unint64_t)flags flashOrTorchWillBeActive:(BOOL)active digitalFlashWillFire:(BOOL)fire thermalPressureLevel:(int)level peakPowerPressureLevel:(int)pressureLevel effectStatus:(int *)self0 stagePreviewStatus:(int *)self1;
+- (BWPearlPortraitSceneMonitorV2)initWithTuningParameters:(id)parameters attachDebugFrameStatistics:(BOOL)statistics portraitAutoSuggestEnabled:(BOOL)enabled shallowDepthOfFieldEnabled:(BOOL)fieldEnabled;
 - (void)dealloc;
-- (void)setSDOFBackgroundShiftSum:(float)a3 invalidShiftRatio:(float)a4 closeCanonicalDisparityAverage:(float)a5 faceCanonicalDisparityAverages:(id)a6 erodedForegroundRatio:(float)a7 foregroundRatio:(float)a8 occluded:(BOOL)a9 faces:(id)a10 personSegmentationRatio:(float)a11;
+- (void)setSDOFBackgroundShiftSum:(float)sum invalidShiftRatio:(float)ratio closeCanonicalDisparityAverage:(float)average faceCanonicalDisparityAverages:(id)averages erodedForegroundRatio:(float)foregroundRatio foregroundRatio:(float)a8 occluded:(BOOL)occluded faces:(id)self0 personSegmentationRatio:(float)self1;
 @end
 
 @implementation BWPearlPortraitSceneMonitorV2
@@ -15,22 +15,22 @@
   [(BWPearlPortraitSceneMonitorV2 *)&v3 dealloc];
 }
 
-- (void)setSDOFBackgroundShiftSum:(float)a3 invalidShiftRatio:(float)a4 closeCanonicalDisparityAverage:(float)a5 faceCanonicalDisparityAverages:(id)a6 erodedForegroundRatio:(float)a7 foregroundRatio:(float)a8 occluded:(BOOL)a9 faces:(id)a10 personSegmentationRatio:(float)a11
+- (void)setSDOFBackgroundShiftSum:(float)sum invalidShiftRatio:(float)ratio closeCanonicalDisparityAverage:(float)average faceCanonicalDisparityAverages:(id)averages erodedForegroundRatio:(float)foregroundRatio foregroundRatio:(float)a8 occluded:(BOOL)occluded faces:(id)self0 personSegmentationRatio:(float)self1
 {
-  self->_stageDepthQuality = 1.0 - a4;
+  self->_stageDepthQuality = 1.0 - ratio;
   if (self->_portraitSceneMonitoringRequiresStageThresholds || self->_numberOfFramesSinceLastFace > self->_sdofNumberOfFramesSinceLastFaceThreshold)
   {
-    self->_closeDepthDistanceAverage = 1.0 / fmaxf(a5, 0.0001);
+    self->_closeDepthDistanceAverage = 1.0 / fmaxf(average, 0.0001);
   }
 
-  else if ([a6 count])
+  else if ([averages count])
   {
     self->_closeDepthDistanceAverage = 1000.0;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v22 = [a6 countByEnumeratingWithState:&v31 objects:v30 count:16];
+    v22 = [averages countByEnumeratingWithState:&v31 objects:v30 count:16];
     if (v22)
     {
       v23 = v22;
@@ -41,7 +41,7 @@
         {
           if (*v32 != v24)
           {
-            objc_enumerationMutation(a6);
+            objc_enumerationMutation(averages);
           }
 
           v26 = *(*(&v31 + 1) + 8 * i);
@@ -62,14 +62,14 @@
           self->_closeDepthDistanceAverage = closeDepthDistanceAverage;
         }
 
-        v23 = [a6 countByEnumeratingWithState:&v31 objects:v30 count:16];
+        v23 = [averages countByEnumeratingWithState:&v31 objects:v30 count:16];
       }
 
       while (v23);
     }
   }
 
-  v16 = a7 / (fmaxf(a8, 0.0001) + self->_sdofDepthQualityKCount);
+  v16 = foregroundRatio / (fmaxf(a8, 0.0001) + self->_sdofDepthQualityKCount);
   v17 = v16 <= 0.0;
   v18 = 1.0;
   v19 = v16 < 1.0 || v16 <= 0.0;
@@ -90,59 +90,59 @@
 
   self->_sdofDepthQuality = v16;
   self->_sdofDepthQualityFiltered = BWModifiedMovingAverage(v16, self->_sdofDepthQualityFiltered, self->_sdofDepthQualitySmoothingFactor);
-  self->_depthSensorOccluded = a9;
-  v20 = [a10 count];
+  self->_depthSensorOccluded = occluded;
+  v20 = [faces count];
   self->_stageMostRecentFacesCount = v20;
   self->_stageFaceHasBeenSeen |= v20 > 0;
 }
 
-- (BWPearlPortraitSceneMonitorV2)initWithTuningParameters:(id)a3 attachDebugFrameStatistics:(BOOL)a4 portraitAutoSuggestEnabled:(BOOL)a5 shallowDepthOfFieldEnabled:(BOOL)a6
+- (BWPearlPortraitSceneMonitorV2)initWithTuningParameters:(id)parameters attachDebugFrameStatistics:(BOOL)statistics portraitAutoSuggestEnabled:(BOOL)enabled shallowDepthOfFieldEnabled:(BOOL)fieldEnabled
 {
-  v6 = a6;
-  v7 = a5;
+  fieldEnabledCopy = fieldEnabled;
+  enabledCopy = enabled;
   v22.receiver = self;
   v22.super_class = BWPearlPortraitSceneMonitorV2;
-  v9 = [(BWPearlPortraitSceneMonitorV2 *)&v22 init:a3];
+  v9 = [(BWPearlPortraitSceneMonitorV2 *)&v22 init:parameters];
   if (v9)
   {
-    *(v9 + 6) = [objc_msgSend(a3 objectForKeyedSubscript:{@"NumberOfFramesToStayEnabledThreshold", "unsignedIntValue"}];
-    *(v9 + 14) = [objc_msgSend(a3 objectForKeyedSubscript:{@"TooBrightLuxLevelThreshold", "unsignedIntValue"}];
-    *(v9 + 15) = [objc_msgSend(a3 objectForKeyedSubscript:{@"TooBrightMaxLuxLevelThreshold", "unsignedIntValue"}];
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"TooBrightDepthQualityThreshold", "floatValue"}];
+    *(v9 + 6) = [objc_msgSend(parameters objectForKeyedSubscript:{@"NumberOfFramesToStayEnabledThreshold", "unsignedIntValue"}];
+    *(v9 + 14) = [objc_msgSend(parameters objectForKeyedSubscript:{@"TooBrightLuxLevelThreshold", "unsignedIntValue"}];
+    *(v9 + 15) = [objc_msgSend(parameters objectForKeyedSubscript:{@"TooBrightMaxLuxLevelThreshold", "unsignedIntValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{@"TooBrightDepthQualityThreshold", "floatValue"}];
     *(v9 + 8) = v10;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"DepthQualityKCount", "floatValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{@"DepthQualityKCount", "floatValue"}];
     *(v9 + 9) = v11;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"TooCloseDepthDistanceValue", "floatValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{@"TooCloseDepthDistanceValue", "floatValue"}];
     *(v9 + 10) = v12;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"TooFarDepthDistanceValue", "floatValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{@"TooFarDepthDistanceValue", "floatValue"}];
     *(v9 + 11) = v13;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"TooBrightTooFarDepthDistanceValue", "floatValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{@"TooBrightTooFarDepthDistanceValue", "floatValue"}];
     *(v9 + 12) = v14;
     *(v9 + 13) = 3;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"StageTooBrightDepthQualityThreshold", "floatValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{@"StageTooBrightDepthQualityThreshold", "floatValue"}];
     *(v9 + 14) = v15;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"StageTooCloseDistanceThreshold", "floatValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{@"StageTooCloseDistanceThreshold", "floatValue"}];
     *(v9 + 15) = v16;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"StageTooFarDistanceThreshold", "floatValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{@"StageTooFarDistanceThreshold", "floatValue"}];
     *(v9 + 16) = v17;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"StageBackgroundTooFarDepthQualityThreshold", "floatValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{@"StageBackgroundTooFarDepthQualityThreshold", "floatValue"}];
     *(v9 + 17) = v18;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"StageBackgroundTooFarLuxLevelThreshold", "floatValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{@"StageBackgroundTooFarLuxLevelThreshold", "floatValue"}];
     *(v9 + 36) = v19;
     *(v9 + 19) = 6;
-    *(v9 + 2) = [objc_msgSend(a3 objectForKeyedSubscript:{@"NumberOfFramesToWaitForAEAndLTMToStabilize", "unsignedIntValue"}];
+    *(v9 + 2) = [objc_msgSend(parameters objectForKeyedSubscript:{@"NumberOfFramesToWaitForAEAndLTMToStabilize", "unsignedIntValue"}];
     *(v9 + 12) = 0x3DCCCCCD3CCCCCCDLL;
     *(v9 + 140) = 0x200000002;
-    v9[124] = v7;
-    if (!v7)
+    v9[124] = enabledCopy;
+    if (!enabledCopy)
     {
 LABEL_5:
-      [v9 setShallowDepthOfFieldRenderingEnabled:v6];
+      [v9 setShallowDepthOfFieldRenderingEnabled:fieldEnabledCopy];
       *(v9 + 20) = 2143289344;
       return v9;
     }
 
-    v20 = [[BWPortraitAutoSuggest alloc] initWithTuningParameters:a3];
+    v20 = [[BWPortraitAutoSuggest alloc] initWithTuningParameters:parameters];
     *(v9 + 16) = v20;
     if (v20)
     {
@@ -154,16 +154,16 @@ LABEL_5:
   return v9;
 }
 
-- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)a3 frameStatisticsByPortType:(id)a4 sceneFlags:(unint64_t)a5 flashOrTorchWillBeActive:(BOOL)a6 digitalFlashWillFire:(BOOL)a7 thermalPressureLevel:(int)a8 peakPowerPressureLevel:(int)a9 effectStatus:(int *)a10 stagePreviewStatus:(int *)a11
+- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)buffer frameStatisticsByPortType:(id)type sceneFlags:(unint64_t)flags flashOrTorchWillBeActive:(BOOL)active digitalFlashWillFire:(BOOL)fire thermalPressureLevel:(int)level peakPowerPressureLevel:(int)pressureLevel effectStatus:(int *)self0 stagePreviewStatus:(int *)self1
 {
   v39 = 1;
-  v15 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v15 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (!v15)
   {
     return v15;
   }
 
-  v16 = [a4 objectForKeyedSubscript:{objc_msgSend(v15, "objectForKeyedSubscript:", *off_1E798B540)}];
+  v16 = [type objectForKeyedSubscript:{objc_msgSend(v15, "objectForKeyedSubscript:", *off_1E798B540)}];
   v17 = v16;
   if (!self->_aeStableAfterStartStreaming)
   {
@@ -178,10 +178,10 @@ LABEL_5:
 
       else
       {
-        v19 = [a4 frameCount];
+        frameCount = [type frameCount];
         ++self->_sdofNumFramesSinceAEBecameStable;
-        self->_aeStableAfterStartStreaming = v19 > 0x13;
-        if (v19 <= 0x13)
+        self->_aeStableAfterStartStreaming = frameCount > 0x13;
+        if (frameCount <= 0x13)
         {
           goto LABEL_53;
         }
@@ -190,10 +190,10 @@ LABEL_5:
 
     else
     {
-      v20 = [a4 frameCount];
-      self->_aeStableAfterStartStreaming = v20 > 0x13;
+      frameCount2 = [type frameCount];
+      self->_aeStableAfterStartStreaming = frameCount2 > 0x13;
       self->_sdofNumFramesSinceAEBecameStable = 0;
-      if (v20 < 0x14)
+      if (frameCount2 < 0x14)
       {
         goto LABEL_53;
       }
@@ -310,19 +310,19 @@ LABEL_31:
     }
 
 LABEL_41:
-    LODWORD(v15) = [(BWPortraitAutoSuggest *)self->_autoSuggestMonitor runAutoSuggestionWithSampleBuffer:a3 portraitSceneMonitorStatus:&v39];
+    LODWORD(v15) = [(BWPortraitAutoSuggest *)self->_autoSuggestMonitor runAutoSuggestionWithSampleBuffer:buffer portraitSceneMonitorStatus:&v39];
     autoSuggestMaxThermalPressureLevel = self->_autoSuggestMaxThermalPressureLevel;
     autoSuggestMaxPeakPowerPressureLevel = self->_autoSuggestMaxPeakPowerPressureLevel;
-    v36 = autoSuggestMaxThermalPressureLevel < a8 || autoSuggestMaxPeakPowerPressureLevel < a9;
+    v36 = autoSuggestMaxThermalPressureLevel < level || autoSuggestMaxPeakPowerPressureLevel < pressureLevel;
     if (v36 && v39 <= 0xE && ((1 << v39) & 0x7A02) != 0)
     {
-      if (autoSuggestMaxThermalPressureLevel < a8)
+      if (autoSuggestMaxThermalPressureLevel < level)
       {
         v37 = 6;
         goto LABEL_52;
       }
 
-      if (autoSuggestMaxPeakPowerPressureLevel < a9)
+      if (autoSuggestMaxPeakPowerPressureLevel < pressureLevel)
       {
         v37 = 15;
 LABEL_52:
@@ -355,14 +355,14 @@ LABEL_40:
   }
 
 LABEL_55:
-  if (a10)
+  if (status)
   {
-    *a10 = v39;
+    *status = v39;
   }
 
-  if (a11)
+  if (previewStatus)
   {
-    *a11 = v33;
+    *previewStatus = v33;
   }
 
   LOBYTE(v15) = 1;

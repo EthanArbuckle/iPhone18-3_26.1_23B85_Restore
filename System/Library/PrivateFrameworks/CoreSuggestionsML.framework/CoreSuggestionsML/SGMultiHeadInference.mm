@@ -1,32 +1,32 @@
 @interface SGMultiHeadInference
-+ (id)predictForMessage:(id)a3 conversationTurns:(id)a4 localeIdentifier:(id)a5 plistPath:(id)a6 espressoBinPath:(id)a7 vocabPath:(id)a8 heads:(id)a9;
-+ (id)quickResponsesForMessage:(id)a3 conversationTurns:(id)a4 maxResponses:(unint64_t)a5 localeIdentifier:(id)a6 plistPath:(id)a7 espressoModelPath:(id)a8 vocabPath:(id)a9;
-- (SGMultiHeadInference)initWithLanguage:(id)a3 inputName:(id)a4 plistPath:(id)a5 espressoModelPath:(id)a6 vocabPath:(id)a7;
-- (id)_getMergedPromptForMessage:(id)a3 conversationTurns:(id)a4;
-- (id)predictForMessage:(id)a3 conversationTurns:(id)a4 language:(id)a5 heads:(id)a6;
-- (id)predictForMessage:(id)a3 heads:(id)a4;
-- (id)predictForVector:(id)a3 heads:(id)a4;
-- (id)quickResponsesForMessage:(id)a3 conversationTurns:(id)a4 maxResponses:(unint64_t)a5 language:(id)a6;
++ (id)predictForMessage:(id)message conversationTurns:(id)turns localeIdentifier:(id)identifier plistPath:(id)path espressoBinPath:(id)binPath vocabPath:(id)vocabPath heads:(id)heads;
++ (id)quickResponsesForMessage:(id)message conversationTurns:(id)turns maxResponses:(unint64_t)responses localeIdentifier:(id)identifier plistPath:(id)path espressoModelPath:(id)modelPath vocabPath:(id)vocabPath;
+- (SGMultiHeadInference)initWithLanguage:(id)language inputName:(id)name plistPath:(id)path espressoModelPath:(id)modelPath vocabPath:(id)vocabPath;
+- (id)_getMergedPromptForMessage:(id)message conversationTurns:(id)turns;
+- (id)predictForMessage:(id)message conversationTurns:(id)turns language:(id)language heads:(id)heads;
+- (id)predictForMessage:(id)message heads:(id)heads;
+- (id)predictForVector:(id)vector heads:(id)heads;
+- (id)quickResponsesForMessage:(id)message conversationTurns:(id)turns maxResponses:(unint64_t)responses language:(id)language;
 @end
 
 @implementation SGMultiHeadInference
 
-- (id)quickResponsesForMessage:(id)a3 conversationTurns:(id)a4 maxResponses:(unint64_t)a5 language:(id)a6
+- (id)quickResponsesForMessage:(id)message conversationTurns:(id)turns maxResponses:(unint64_t)responses language:(id)language
 {
   v42[2] = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  languageCopy = language;
   v42[0] = @"outputLabels";
   v42[1] = @"PREDICTION_REPLIES";
   v11 = MEMORY[0x277CBEA60];
-  v12 = a4;
-  v13 = a3;
+  turnsCopy = turns;
+  messageCopy = message;
   v14 = [v11 arrayWithObjects:v42 count:2];
-  v15 = [(SGMultiHeadInference *)self predictForMessage:v13 conversationTurns:v12 language:v10 heads:v14];
+  v15 = [(SGMultiHeadInference *)self predictForMessage:messageCopy conversationTurns:turnsCopy language:languageCopy heads:v14];
 
   if (v15)
   {
-    v16 = [(SGQuickResponsesConfig *)self->_config modelHeads];
-    v17 = [v16 objectForKeyedSubscript:@"outputLabels"];
+    modelHeads = [(SGQuickResponsesConfig *)self->_config modelHeads];
+    v17 = [modelHeads objectForKeyedSubscript:@"outputLabels"];
     if (v17)
     {
       v18 = @"outputLabels";
@@ -39,13 +39,13 @@
 
     v19 = v18;
 
-    v20 = [(SGQuickResponsesConfig *)self->_config modelHeads];
-    v21 = [v20 objectForKeyedSubscript:v19];
-    v22 = [v21 labels];
+    modelHeads2 = [(SGQuickResponsesConfig *)self->_config modelHeads];
+    v21 = [modelHeads2 objectForKeyedSubscript:v19];
+    labels = [v21 labels];
 
     v23 = [v15 objectForKeyedSubscript:v19];
     v24 = [v23 count];
-    v25 = [v22 count];
+    v25 = [labels count];
 
     if (v24 == v25)
     {
@@ -55,12 +55,12 @@
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
       v29 = [v27 sortedArrayUsingDescriptors:v28];
 
-      v30 = [v29 subarrayWithRange:{0, a5}];
+      v30 = [v29 subarrayWithRange:{0, responses}];
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __89__SGMultiHeadInference_quickResponsesForMessage_conversationTurns_maxResponses_language___block_invoke;
       v35[3] = &unk_278EB8160;
-      v36 = v10;
+      v36 = languageCopy;
       v31 = [v30 _pas_mappedArrayWithTransform:v35];
     }
 
@@ -72,7 +72,7 @@
         *buf = 134218240;
         v39 = [v34 count];
         v40 = 2048;
-        v41 = [v22 count];
+        v41 = [labels count];
         _os_log_fault_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_FAULT, "Predicted output space does not match number of labels for output space %lu != %lu", buf, 0x16u);
       }
 
@@ -103,21 +103,21 @@ SGQuickResponse *__89__SGMultiHeadInference_quickResponsesForMessage_conversatio
   return v6;
 }
 
-- (id)predictForMessage:(id)a3 conversationTurns:(id)a4 language:(id)a5 heads:(id)a6
+- (id)predictForMessage:(id)message conversationTurns:(id)turns language:(id)language heads:(id)heads
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(SGQuickResponsesConfig *)self->_config predictionParams];
-  v13 = [v12 maxPromptLength];
+  messageCopy = message;
+  turnsCopy = turns;
+  headsCopy = heads;
+  predictionParams = [(SGQuickResponsesConfig *)self->_config predictionParams];
+  maxPromptLength = [predictionParams maxPromptLength];
 
-  if ([v9 length] <= v13)
+  if ([messageCopy length] <= maxPromptLength)
   {
-    v15 = [(SGMultiHeadInference *)self _getMergedPromptForMessage:v9 conversationTurns:v10];
-    if ([v15 length] <= v13)
+    v15 = [(SGMultiHeadInference *)self _getMergedPromptForMessage:messageCopy conversationTurns:turnsCopy];
+    if ([v15 length] <= maxPromptLength)
     {
-      v14 = [(SGMultiHeadInference *)self predictForMessage:v15 heads:v11];
+      v14 = [(SGMultiHeadInference *)self predictForMessage:v15 heads:headsCopy];
     }
 
     else
@@ -125,7 +125,7 @@ SGQuickResponse *__89__SGMultiHeadInference_quickResponsesForMessage_conversatio
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v18 = 134217984;
-        v19 = v13;
+        v19 = maxPromptLength;
         _os_log_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Returning nil because merged message length exceeds maximum length %ld", &v18, 0xCu);
       }
 
@@ -138,7 +138,7 @@ SGQuickResponse *__89__SGMultiHeadInference_quickResponsesForMessage_conversatio
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v18 = 134217984;
-      v19 = v13;
+      v19 = maxPromptLength;
       _os_log_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Returning nil because message length exceeds maximum length %ld", &v18, 0xCu);
     }
 
@@ -150,25 +150,25 @@ SGQuickResponse *__89__SGMultiHeadInference_quickResponsesForMessage_conversatio
   return v14;
 }
 
-- (id)_getMergedPromptForMessage:(id)a3 conversationTurns:(id)a4
+- (id)_getMergedPromptForMessage:(id)message conversationTurns:(id)turns
 {
   config = self->_config;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SGQuickResponsesConfig *)config predictionParams];
-  v9 = [v8 maxPromptLength];
-  [v8 maxPromptWindowSeconds];
+  turnsCopy = turns;
+  messageCopy = message;
+  predictionParams = [(SGQuickResponsesConfig *)config predictionParams];
+  maxPromptLength = [predictionParams maxPromptLength];
+  [predictionParams maxPromptWindowSeconds];
   v11 = v10;
-  v12 = [v8 promptJoiningString];
-  v13 = [SGConversationTracker getMergedPromptForMessage:v7 conversationTurns:v6 maxPromptLength:v9 maxPromptWindowSeconds:v12 promptJoiningString:v11];
+  promptJoiningString = [predictionParams promptJoiningString];
+  v13 = [SGConversationTracker getMergedPromptForMessage:messageCopy conversationTurns:turnsCopy maxPromptLength:maxPromptLength maxPromptWindowSeconds:promptJoiningString promptJoiningString:v11];
 
   return v13;
 }
 
-- (id)predictForMessage:(id)a3 heads:(id)a4
+- (id)predictForMessage:(id)message heads:(id)heads
 {
-  v6 = a4;
-  v7 = a3;
+  headsCopy = heads;
+  messageCopy = message;
   v8 = sgLogHandle();
   v9 = os_signpost_id_generate(v8);
 
@@ -180,9 +180,9 @@ SGQuickResponse *__89__SGMultiHeadInference_quickResponsesForMessage_conversatio
     _os_signpost_emit_with_name_impl(&dword_24799E000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "QuickResponsesForMessageFeaturization", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v12 = [(SGQuickResponsesTransformerInstance *)self->_transformer featurizer];
-  v13 = [(SGQuickResponsesTransformerInstance *)self->_transformer source];
-  v14 = [SGQuickResponsesModel featuresOf:v7 withFeaturizer:v12 source:v13];
+  featurizer = [(SGQuickResponsesTransformerInstance *)self->_transformer featurizer];
+  source = [(SGQuickResponsesTransformerInstance *)self->_transformer source];
+  v14 = [SGQuickResponsesModel featuresOf:messageCopy withFeaturizer:featurizer source:source];
 
   v15 = sgLogHandle();
   v16 = v15;
@@ -194,8 +194,8 @@ SGQuickResponse *__89__SGMultiHeadInference_quickResponsesForMessage_conversatio
 
   if (v14)
   {
-    v17 = [v14 vector];
-    v18 = [(SGMultiHeadInference *)self predictForVector:v17 heads:v6];
+    vector = [v14 vector];
+    v18 = [(SGMultiHeadInference *)self predictForVector:vector heads:headsCopy];
   }
 
   else
@@ -212,11 +212,11 @@ SGQuickResponse *__89__SGMultiHeadInference_quickResponsesForMessage_conversatio
   return v18;
 }
 
-- (id)predictForVector:(id)a3 heads:(id)a4
+- (id)predictForVector:(id)vector heads:(id)heads
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  vectorCopy = vector;
+  headsCopy = heads;
   v8 = sgLogHandle();
   v9 = os_signpost_id_generate(v8);
 
@@ -233,9 +233,9 @@ SGQuickResponse *__89__SGMultiHeadInference_quickResponsesForMessage_conversatio
 
   v39 = objc_opt_new();
   context = objc_autoreleasePoolPush();
-  v37 = v7;
-  v38 = v6;
-  v12 = [(SGMultiHeadEspressoModel *)self->_model predict:v6 heads:v7];
+  v37 = headsCopy;
+  v38 = vectorCopy;
+  v12 = [(SGMultiHeadEspressoModel *)self->_model predict:vectorCopy heads:headsCopy];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -256,18 +256,18 @@ SGQuickResponse *__89__SGMultiHeadInference_quickResponsesForMessage_conversatio
         }
 
         v17 = *(*(&v42 + 1) + 8 * v16);
-        v18 = [(SGQuickResponsesConfig *)self->_config modelHeads];
-        v19 = [v18 objectForKeyedSubscript:v17];
-        v20 = [v19 labels];
+        modelHeads = [(SGQuickResponsesConfig *)self->_config modelHeads];
+        v19 = [modelHeads objectForKeyedSubscript:v17];
+        labels = [v19 labels];
 
-        if (v20 && (v21 = [v20 count], objc_msgSend(v12, "objectForKeyedSubscript:", v17), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "count"), v22, v21 != v23))
+        if (labels && (v21 = [labels count], objc_msgSend(v12, "objectForKeyedSubscript:", v17), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "count"), v22, v21 != v23))
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
           {
             v26 = MEMORY[0x277CCABB0];
             v27 = [v12 objectForKeyedSubscript:v17];
             v28 = [v26 numberWithUnsignedInteger:{objc_msgSend(v27, "count")}];
-            v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v20, "count")}];
+            v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(labels, "count")}];
             *buf = 138412802;
             v47 = v17;
             v48 = 2112;
@@ -285,7 +285,7 @@ SGQuickResponse *__89__SGMultiHeadInference_quickResponsesForMessage_conversatio
           v40[1] = 3221225472;
           v40[2] = __47__SGMultiHeadInference_predictForVector_heads___block_invoke;
           v40[3] = &unk_278EB8138;
-          v41 = v20;
+          v41 = labels;
           v25 = [v24 _pas_mappedArrayWithIndexedTransform:v40];
           [v39 setObject:v25 forKeyedSubscript:v17];
         }
@@ -336,29 +336,29 @@ SGMultiHeadPredictionItem *__47__SGMultiHeadInference_predictForVector_heads___b
   return v10;
 }
 
-- (SGMultiHeadInference)initWithLanguage:(id)a3 inputName:(id)a4 plistPath:(id)a5 espressoModelPath:(id)a6 vocabPath:(id)a7
+- (SGMultiHeadInference)initWithLanguage:(id)language inputName:(id)name plistPath:(id)path espressoModelPath:(id)modelPath vocabPath:(id)vocabPath
 {
   v54 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [SGQuickResponsesConfig configWithLanguage:v12 mode:1 plistPath:v14 vocabPath:v16];
+  languageCopy = language;
+  nameCopy = name;
+  pathCopy = path;
+  modelPathCopy = modelPath;
+  vocabPathCopy = vocabPath;
+  v17 = [SGQuickResponsesConfig configWithLanguage:languageCopy mode:1 plistPath:pathCopy vocabPath:vocabPathCopy];
   if (v17)
   {
-    v42 = v16;
-    v43 = v15;
-    v39 = self;
-    v40 = v13;
-    v41 = v12;
+    v42 = vocabPathCopy;
+    v43 = modelPathCopy;
+    selfCopy = self;
+    v40 = nameCopy;
+    v41 = languageCopy;
     v18 = objc_opt_new();
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v19 = [v17 modelHeads];
-    v20 = [v19 countByEnumeratingWithState:&v45 objects:v49 count:16];
+    modelHeads = [v17 modelHeads];
+    v20 = [modelHeads countByEnumeratingWithState:&v45 objects:v49 count:16];
     if (v20)
     {
       v21 = v20;
@@ -369,18 +369,18 @@ SGMultiHeadPredictionItem *__47__SGMultiHeadInference_predictForVector_heads___b
         {
           if (*v46 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(modelHeads);
           }
 
           v24 = *(*(&v45 + 1) + 8 * i);
-          v25 = [v17 modelHeads];
-          v26 = [v25 objectForKeyedSubscript:v24];
+          modelHeads2 = [v17 modelHeads];
+          v26 = [modelHeads2 objectForKeyedSubscript:v24];
 
           v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v26, "numberOfDimensions")}];
           [v18 setObject:v27 forKeyedSubscript:v24];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v45 objects:v49 count:16];
+        v21 = [modelHeads countByEnumeratingWithState:&v45 objects:v49 count:16];
       }
 
       while (v21);
@@ -394,22 +394,22 @@ SGMultiHeadPredictionItem *__47__SGMultiHeadInference_predictForVector_heads___b
     else
     {
       v30 = objc_alloc(MEMORY[0x277CCACA8]);
-      v31 = [v17 predictionParams];
-      v32 = [v31 subModelKeyString];
-      v28 = [v30 initWithFormat:@"%@:%@", v43, v32];
+      predictionParams = [v17 predictionParams];
+      subModelKeyString = [predictionParams subModelKeyString];
+      v28 = [v30 initWithFormat:@"%@:%@", v43, subModelKeyString];
     }
 
-    v13 = v40;
-    v12 = v41;
-    v16 = v42;
+    nameCopy = v40;
+    languageCopy = v41;
+    vocabPathCopy = v42;
     v33 = [SGMultiHeadEspressoModelCached classifierWithEspressoModelFile:v28 inputName:v40 headDimensionality:v18];
-    self = v39;
+    self = selfCopy;
     if (v33)
     {
-      v34 = [(SGQuickResponsesModel *)SGQuickResponsesClassificationModel transformerInstanceForLanguage:v41 mode:1 plistPath:v14 vocabPath:v42];
+      v34 = [(SGQuickResponsesModel *)SGQuickResponsesClassificationModel transformerInstanceForLanguage:v41 mode:1 plistPath:pathCopy vocabPath:v42];
       if (v34)
       {
-        v44.receiver = v39;
+        v44.receiver = selfCopy;
         v44.super_class = SGMultiHeadInference;
         v35 = [(SGMultiHeadInference *)&v44 init];
         p_isa = &v35->super.isa;
@@ -422,7 +422,7 @@ SGMultiHeadPredictionItem *__47__SGMultiHeadInference_predictForVector_heads___b
         }
 
         self = p_isa;
-        v29 = self;
+        selfCopy2 = self;
       }
 
       else
@@ -432,14 +432,14 @@ SGMultiHeadPredictionItem *__47__SGMultiHeadInference_predictForVector_heads___b
           *buf = 138412546;
           v51 = v41;
           v52 = 2112;
-          v53 = v14;
+          v53 = pathCopy;
           _os_log_error_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to initialize transformer prerprocessor for language %@ and plist path %@", buf, 0x16u);
         }
 
-        v29 = 0;
+        selfCopy2 = 0;
       }
 
-      v16 = v42;
+      vocabPathCopy = v42;
     }
 
     else
@@ -449,14 +449,14 @@ SGMultiHeadPredictionItem *__47__SGMultiHeadInference_predictForVector_heads___b
         *buf = 138412546;
         v51 = v41;
         v52 = 2112;
-        v53 = v14;
+        v53 = pathCopy;
         _os_log_error_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to initialize multi head model for language %@ and plist path %@", buf, 0x16u);
       }
 
-      v29 = 0;
+      selfCopy2 = 0;
     }
 
-    v15 = v43;
+    modelPathCopy = v43;
   }
 
   else
@@ -464,29 +464,29 @@ SGMultiHeadPredictionItem *__47__SGMultiHeadInference_predictForVector_heads___b
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v51 = v12;
+      v51 = languageCopy;
       v52 = 2112;
-      v53 = v14;
+      v53 = pathCopy;
       _os_log_error_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Config not found for language %@ and plist path %@", buf, 0x16u);
     }
 
-    v29 = 0;
+    selfCopy2 = 0;
   }
 
   v37 = *MEMORY[0x277D85DE8];
-  return v29;
+  return selfCopy2;
 }
 
-+ (id)predictForMessage:(id)a3 conversationTurns:(id)a4 localeIdentifier:(id)a5 plistPath:(id)a6 espressoBinPath:(id)a7 vocabPath:(id)a8 heads:(id)a9
++ (id)predictForMessage:(id)message conversationTurns:(id)turns localeIdentifier:(id)identifier plistPath:(id)path espressoBinPath:(id)binPath vocabPath:(id)vocabPath heads:(id)heads
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  if (![v17 length])
+  messageCopy = message;
+  turnsCopy = turns;
+  identifierCopy = identifier;
+  pathCopy = path;
+  binPathCopy = binPath;
+  vocabPathCopy = vocabPath;
+  headsCopy = heads;
+  if (![pathCopy length])
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -502,7 +502,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (![v18 length])
+  if (![binPathCopy length])
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -516,14 +516,14 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if ([v14 length])
+  if ([messageCopy length])
   {
-    v21 = [SGLanguageDetection languageForLocaleIdentifier:v16];
-    v22 = [[SGMultiHeadInference alloc] initWithLanguage:v21 inputName:@"inputSequence" plistPath:v17 espressoBinPath:v18 vocabPath:v19];
+    v21 = [SGLanguageDetection languageForLocaleIdentifier:identifierCopy];
+    v22 = [[SGMultiHeadInference alloc] initWithLanguage:v21 inputName:@"inputSequence" plistPath:pathCopy espressoBinPath:binPathCopy vocabPath:vocabPathCopy];
     v23 = v22;
     if (v22)
     {
-      v24 = [(SGMultiHeadInference *)v22 predictForMessage:v14 conversationTurns:v15 language:v21 heads:v20];
+      v24 = [(SGMultiHeadInference *)v22 predictForMessage:messageCopy conversationTurns:turnsCopy language:v21 heads:headsCopy];
     }
 
     else
@@ -550,15 +550,15 @@ LABEL_16:
   return v24;
 }
 
-+ (id)quickResponsesForMessage:(id)a3 conversationTurns:(id)a4 maxResponses:(unint64_t)a5 localeIdentifier:(id)a6 plistPath:(id)a7 espressoModelPath:(id)a8 vocabPath:(id)a9
++ (id)quickResponsesForMessage:(id)message conversationTurns:(id)turns maxResponses:(unint64_t)responses localeIdentifier:(id)identifier plistPath:(id)path espressoModelPath:(id)modelPath vocabPath:(id)vocabPath
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  if (![v17 length])
+  messageCopy = message;
+  turnsCopy = turns;
+  identifierCopy = identifier;
+  pathCopy = path;
+  modelPathCopy = modelPath;
+  vocabPathCopy = vocabPath;
+  if (![pathCopy length])
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -574,7 +574,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (![v18 length])
+  if (![modelPathCopy length])
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -588,14 +588,14 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if ([v14 length])
+  if ([messageCopy length])
   {
-    v20 = [SGLanguageDetection languageForLocaleIdentifier:v16];
-    v21 = [[SGMultiHeadInference alloc] initWithLanguage:v20 inputName:@"inputSequence" plistPath:v17 espressoModelPath:v18 vocabPath:v19];
+    v20 = [SGLanguageDetection languageForLocaleIdentifier:identifierCopy];
+    v21 = [[SGMultiHeadInference alloc] initWithLanguage:v20 inputName:@"inputSequence" plistPath:pathCopy espressoModelPath:modelPathCopy vocabPath:vocabPathCopy];
     v22 = v21;
     if (v21)
     {
-      v23 = [(SGMultiHeadInference *)v21 quickResponsesForMessage:v14 conversationTurns:v15 maxResponses:a5 language:v20];
+      v23 = [(SGMultiHeadInference *)v21 quickResponsesForMessage:messageCopy conversationTurns:turnsCopy maxResponses:responses language:v20];
     }
 
     else

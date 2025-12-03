@@ -1,5 +1,5 @@
 @interface CKKSCurrentItemData
-- (CKKSCurrentItemData)initWithUUID:(id)a3;
+- (CKKSCurrentItemData)initWithUUID:(id)d;
 - (id)description;
 @end
 
@@ -7,23 +7,23 @@
 
 - (id)description
 {
-  v3 = [(CKKSCurrentItemData *)self uuid];
-  v4 = [(CKKSCurrentItemData *)self modificationDate];
-  v5 = [NSString stringWithFormat:@"CKKSCurrentItemData(%@, mtime: %@)", v3, v4];
+  uuid = [(CKKSCurrentItemData *)self uuid];
+  modificationDate = [(CKKSCurrentItemData *)self modificationDate];
+  v5 = [NSString stringWithFormat:@"CKKSCurrentItemData(%@, mtime: %@)", uuid, modificationDate];
 
   return v5;
 }
 
-- (CKKSCurrentItemData)initWithUUID:(id)a3
+- (CKKSCurrentItemData)initWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = CKKSCurrentItemData;
   v5 = [(CKKSCurrentItemData *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(CKKSCurrentItemData *)v5 setUuid:v4];
+    [(CKKSCurrentItemData *)v5 setUuid:dCopy];
     v7 = v6;
   }
 

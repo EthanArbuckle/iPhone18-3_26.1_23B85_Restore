@@ -1,21 +1,21 @@
 @interface SagaSubscribedPlaylistUpdater
-- (BOOL)performUpdateWithClientIdentity:(id)a3 error:(id *)a4;
-- (SagaSubscribedPlaylistUpdater)initWithSubscribedPlaylistCloudIDs:(id)a3 cloudLibraryConnection:(id)a4;
+- (BOOL)performUpdateWithClientIdentity:(id)identity error:(id *)error;
+- (SagaSubscribedPlaylistUpdater)initWithSubscribedPlaylistCloudIDs:(id)ds cloudLibraryConnection:(id)connection;
 @end
 
 @implementation SagaSubscribedPlaylistUpdater
 
-- (BOOL)performUpdateWithClientIdentity:(id)a3 error:(id *)a4
+- (BOOL)performUpdateWithClientIdentity:(id)identity error:(id *)error
 {
-  v89 = a3;
-  v95 = self;
-  v5 = [(SagaSubscribedPlaylistUpdater *)self connection];
-  v6 = [v5 userIdentity];
-  v91 = [ML3MusicLibrary musicLibraryForUserAccount:v6];
+  identityCopy = identity;
+  selfCopy = self;
+  connection = [(SagaSubscribedPlaylistUpdater *)self connection];
+  userIdentity = [connection userIdentity];
+  v91 = [ML3MusicLibrary musicLibraryForUserAccount:userIdentity];
 
-  [v91 setClientIdentity:v89];
+  [v91 setClientIdentity:identityCopy];
   v93 = [NSMutableArray arrayWithCapacity:2];
-  if (v95->_playlistCloudIDs)
+  if (selfCopy->_playlistCloudIDs)
   {
     v7 = [NSSet setWithArray:?];
     v8 = [ML3ContainmentPredicate predicateWithProperty:ML3ContainerPropertyStoreCloudID values:v7];
@@ -34,7 +34,7 @@
     [v93 addObject:v12];
   }
 
-  if (v95->_pinnedOnly)
+  if (selfCopy->_pinnedOnly)
   {
     v13 = [ML3ComparisonPredicate predicateWithProperty:ML3EntityPropertyKeepLocal value:&off_1001ED150 comparison:3];
     [v93 addObject:v13];
@@ -62,7 +62,7 @@
   v109[1] = 3221225472;
   v109[2] = sub_10003E1BC;
   v109[3] = &unk_1001DA9F0;
-  v109[4] = v95;
+  v109[4] = selfCopy;
   v111 = v15;
   v90 = v16;
   v110 = v90;
@@ -78,30 +78,30 @@
   }
 
   v20 = [v90 copy];
-  playlistCloudIDs = v95->_playlistCloudIDs;
-  v95->_playlistCloudIDs = v20;
+  playlistCloudIDs = selfCopy->_playlistCloudIDs;
+  selfCopy->_playlistCloudIDs = v20;
 
-  if ([(NSArray *)v95->_playlistCloudIDs count])
+  if ([(NSArray *)selfCopy->_playlistCloudIDs count])
   {
-    v88 = [ICSubscribedContainersRequest requestWithDatabaseID:[(CloudLibraryConnection *)v95->_connection databaseID] containerIDs:v95->_playlistCloudIDs];
-    [v88 setReason:[(SagaSubscribedPlaylistUpdater *)v95 requestReason]];
-    v22 = [(SagaSubscribedPlaylistUpdater *)v95 payloadDownloadPathOverride];
-    if (!v22)
+    v88 = [ICSubscribedContainersRequest requestWithDatabaseID:[(CloudLibraryConnection *)selfCopy->_connection databaseID] containerIDs:selfCopy->_playlistCloudIDs];
+    [v88 setReason:[(SagaSubscribedPlaylistUpdater *)selfCopy requestReason]];
+    payloadDownloadPathOverride = [(SagaSubscribedPlaylistUpdater *)selfCopy payloadDownloadPathOverride];
+    if (!payloadDownloadPathOverride)
     {
       v23 = NSTemporaryDirectory();
       v120[0] = v23;
       v120[1] = @"com.apple.MediaServices";
       v24 = +[NSUUID UUID];
-      v25 = [v24 UUIDString];
-      v120[2] = v25;
+      uUIDString = [v24 UUIDString];
+      v120[2] = uUIDString;
       v120[3] = @"subscribed-containers.daap";
       v26 = [NSArray arrayWithObjects:v120 count:4];
       v27 = [NSURL fileURLWithPathComponents:v26];
 
-      v22 = v27;
+      payloadDownloadPathOverride = v27;
     }
 
-    v85 = v22;
+    v85 = payloadDownloadPathOverride;
     [v88 setResponseDataDestinationFileURL:?];
     v103 = 0;
     v104 = &v103;
@@ -110,7 +110,7 @@
     v107 = sub_10003E31C;
     v108 = 0;
     v28 = dispatch_semaphore_create(0);
-    connection = v95->_connection;
+    connection = selfCopy->_connection;
     v100[0] = _NSConcreteStackBlock;
     v100[1] = 3221225472;
     v100[2] = sub_10003E324;
@@ -121,8 +121,8 @@
     [(CloudLibraryConnection *)connection sendRequest:v88 withResponseHandler:v100];
     v83 = v30;
     dispatch_semaphore_wait(v30, 0xFFFFFFFFFFFFFFFFLL);
-    v31 = [v104[5] responseCode];
-    if (v31 == 200)
+    responseCode = [v104[5] responseCode];
+    if (responseCode == 200)
     {
       v119 = v85;
       v94 = [NSArray arrayWithObjects:&v119 count:1];
@@ -168,14 +168,14 @@
               v43 = v42;
               if (v41 && [v42 BOOLValue])
               {
-                v44 = [v40 lastPathComponent];
-                v45 = [v44 componentsSeparatedByString:@"_"];
-                v46 = [v45 lastObject];
-                v47 = [v46 longLongValue];
+                lastPathComponent = [v40 lastPathComponent];
+                v45 = [lastPathComponent componentsSeparatedByString:@"_"];
+                lastObject = [v45 lastObject];
+                longLongValue = [lastObject longLongValue];
 
-                if (v37 <= v47)
+                if (v37 <= longLongValue)
                 {
-                  v37 = v47;
+                  v37 = longLongValue;
                 }
 
                 v112 = 0;
@@ -206,8 +206,8 @@
 
         if ([v96 count] >= 4)
         {
-          v54 = [v96 allKeys];
-          v55 = [v54 sortedArrayUsingComparator:&stru_1001DDAF0];
+          allKeys = [v96 allKeys];
+          v55 = [allKeys sortedArrayUsingComparator:&stru_1001DDAF0];
 
           if ([v55 count] != 3)
           {
@@ -245,14 +245,14 @@
         }
       }
 
-      v65 = [v85 path];
-      v118 = v65;
+      path = [v85 path];
+      v118 = path;
       v66 = [NSArray arrayWithObjects:&v118 count:1];
       v53 = ML3DatabaseImportDataForDAAPFilePaths();
 
       v67 = [ML3MutableDatabaseImport alloc];
-      v68 = [v91 databasePath];
-      v69 = [v67 initWithLibraryPath:v68 trackData:v53 playlistData:v53 clientIdentity:v89];
+      databasePath = [v91 databasePath];
+      v69 = [v67 initWithLibraryPath:databasePath trackData:v53 playlistData:v53 clientIdentity:identityCopy];
 
       [v69 setTracksAreLibraryOwnedContent:0];
       [v69 setPlaylistsAreLibraryOwnedContent:1];
@@ -272,9 +272,9 @@
       v75 = objc_alloc_init(SubscribedContainersUpdateRequiredParserDelegate);
       [v74 setDelegate:v75];
       [v74 parse];
-      v76 = [(SubscribedContainersUpdateRequiredParserDelegate *)v75 updateRequired];
+      updateRequired = [(SubscribedContainersUpdateRequiredParserDelegate *)v75 updateRequired];
 
-      if (v76)
+      if (updateRequired)
       {
         v77 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
         if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
@@ -283,10 +283,10 @@
           _os_log_impl(&_mh_execute_header, v77, OS_LOG_TYPE_DEFAULT, "Requesting library update because the response contained update-required flag", buf, 2u);
         }
 
-        v78 = [(SagaSubscribedPlaylistUpdater *)v95 connection];
-        v79 = [v78 configuration];
-        v80 = [(BaseRequestHandler *)ICDCloudMusicLibraryRequestHandler handlerForConfiguration:v79];
-        [v80 updateSagaLibraryWithClientIdentity:v89 forReason:8 allowNoisyAuthPrompt:0 isExplicitUserAction:0 completionHandler:0];
+        connection2 = [(SagaSubscribedPlaylistUpdater *)selfCopy connection];
+        configuration = [connection2 configuration];
+        v80 = [(BaseRequestHandler *)ICDCloudMusicLibraryRequestHandler handlerForConfiguration:configuration];
+        [v80 updateSagaLibraryWithClientIdentity:identityCopy forReason:8 allowNoisyAuthPrompt:0 isExplicitUserAction:0 completionHandler:0];
       }
     }
 
@@ -296,7 +296,7 @@
       if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v124 = v31;
+        v124 = responseCode;
         _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_ERROR, "Received non-200 HTTP code: %lu, skipping import.", buf, 0xCu);
       }
     }
@@ -315,34 +315,34 @@
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (SagaSubscribedPlaylistUpdater)initWithSubscribedPlaylistCloudIDs:(id)a3 cloudLibraryConnection:(id)a4
+- (SagaSubscribedPlaylistUpdater)initWithSubscribedPlaylistCloudIDs:(id)ds cloudLibraryConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  connectionCopy = connection;
   v14.receiver = self;
   v14.super_class = SagaSubscribedPlaylistUpdater;
   v9 = [(SagaSubscribedPlaylistUpdater *)&v14 init];
   if (v9)
   {
-    if (!v8)
+    if (!connectionCopy)
     {
       v13 = +[NSAssertionHandler currentHandler];
       [v13 handleFailureInMethod:a2 object:v9 file:@"SagaSubscribedPlaylistUpdater.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
     }
 
-    v10 = [v7 copy];
+    v10 = [dsCopy copy];
     playlistCloudIDs = v9->_playlistCloudIDs;
     v9->_playlistCloudIDs = v10;
 
-    objc_storeStrong(&v9->_connection, a4);
+    objc_storeStrong(&v9->_connection, connection);
   }
 
   return v9;

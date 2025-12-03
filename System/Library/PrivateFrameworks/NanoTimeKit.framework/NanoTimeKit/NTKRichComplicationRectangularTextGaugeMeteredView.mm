@@ -1,7 +1,7 @@
 @interface NTKRichComplicationRectangularTextGaugeMeteredView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 - (NTKRichComplicationRectangularTextGaugeMeteredView)init;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 @end
 
 @implementation NTKRichComplicationRectangularTextGaugeMeteredView
@@ -20,24 +20,24 @@
   return v3;
 }
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v6 = a3;
-  v10 = [v6 headerImageProvider];
-  v7 = [v6 headerTextProvider];
-  v8 = [v6 body1TextProvider];
-  v9 = [v6 gaugeProvider];
+  templateCopy = template;
+  headerImageProvider = [templateCopy headerImageProvider];
+  headerTextProvider = [templateCopy headerTextProvider];
+  body1TextProvider = [templateCopy body1TextProvider];
+  gaugeProvider = [templateCopy gaugeProvider];
 
-  [(NTKRichComplicationRectangularTextGaugeView *)self _handleTemplateUpdateWithReason:a4 headerViewData:0 headerImageProvider:v10 headerTextProvider:v7 bodyTextProvider:v8 gaugeProvider:v9];
+  [(NTKRichComplicationRectangularTextGaugeView *)self _handleTemplateUpdateWithReason:reason headerViewData:0 headerImageProvider:headerImageProvider headerTextProvider:headerTextProvider bodyTextProvider:body1TextProvider gaugeProvider:gaugeProvider];
 }
 
 @end

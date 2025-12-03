@@ -1,26 +1,26 @@
 @interface BRLTTextFormattingRanges
-- (BOOL)isEqual:(id)a3;
-- (BRLTTextFormattingRanges)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BRLTTextFormattingRanges)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)addBoldRange:(_NSRange)a3;
-- (void)addItalicRange:(_NSRange)a3;
-- (void)addUnderlineRange:(_NSRange)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addBoldRange:(_NSRange)range;
+- (void)addItalicRange:(_NSRange)range;
+- (void)addUnderlineRange:(_NSRange)range;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BRLTTextFormattingRanges
 
-- (void)addBoldRange:(_NSRange)a3
+- (void)addBoldRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   boldRanges = self->_boldRanges;
   if (!boldRanges)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v8 = self->_boldRanges;
-    self->_boldRanges = v7;
+    self->_boldRanges = array;
 
     boldRanges = self->_boldRanges;
   }
@@ -29,16 +29,16 @@
   [(NSMutableArray *)boldRanges addObject:v9];
 }
 
-- (void)addItalicRange:(_NSRange)a3
+- (void)addItalicRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   italicRanges = self->_italicRanges;
   if (!italicRanges)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v8 = self->_italicRanges;
-    self->_italicRanges = v7;
+    self->_italicRanges = array;
 
     italicRanges = self->_italicRanges;
   }
@@ -47,16 +47,16 @@
   [(NSMutableArray *)italicRanges addObject:v9];
 }
 
-- (void)addUnderlineRange:(_NSRange)a3
+- (void)addUnderlineRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   underlineRanges = self->_underlineRanges;
   if (!underlineRanges)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v8 = self->_underlineRanges;
-    self->_underlineRanges = v7;
+    self->_underlineRanges = array;
 
     underlineRanges = self->_underlineRanges;
   }
@@ -65,33 +65,33 @@
   [(NSMutableArray *)underlineRanges addObject:v9];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   underlineRanges = self->_underlineRanges;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [(NSMutableArray *)underlineRanges copy];
-  [v5 encodeObject:v6 forKey:@"underlineRanges"];
+  [coderCopy encodeObject:v6 forKey:@"underlineRanges"];
 
   v7 = [(NSMutableArray *)self->_italicRanges copy];
-  [v5 encodeObject:v7 forKey:@"italicRanges"];
+  [coderCopy encodeObject:v7 forKey:@"italicRanges"];
 
   v8 = [(NSMutableArray *)self->_boldRanges copy];
-  [v5 encodeObject:v8 forKey:@"boldRanges"];
+  [coderCopy encodeObject:v8 forKey:@"boldRanges"];
 }
 
-- (BRLTTextFormattingRanges)initWithCoder:(id)a3
+- (BRLTTextFormattingRanges)initWithCoder:(id)coder
 {
   v25[2] = *MEMORY[0x277D85DE8];
   v22.receiver = self;
   v22.super_class = BRLTTextFormattingRanges;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(BRLTTextFormattingRanges *)&v22 init];
   v5 = MEMORY[0x277CBEB98];
   v25[0] = objc_opt_class();
   v25[1] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
   v7 = [v5 setWithArray:v6];
-  v8 = [v3 decodeObjectOfClasses:v7 forKey:@"underlineRanges"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"underlineRanges"];
   underlineRanges = v4->_underlineRanges;
   v4->_underlineRanges = v8;
 
@@ -100,7 +100,7 @@
   v24[1] = objc_opt_class();
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
   v12 = [v10 setWithArray:v11];
-  v13 = [v3 decodeObjectOfClasses:v12 forKey:@"italicRanges"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"italicRanges"];
   italicRanges = v4->_italicRanges;
   v4->_italicRanges = v13;
 
@@ -109,7 +109,7 @@
   v23[1] = objc_opt_class();
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
   v17 = [v15 setWithArray:v16];
-  v18 = [v3 decodeObjectOfClasses:v17 forKey:@"boldRanges"];
+  v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"boldRanges"];
 
   boldRanges = v4->_boldRanges;
   v4->_boldRanges = v18;
@@ -118,19 +118,19 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(BRLTTextFormattingRanges *)self underlineRanges];
-  v6 = [v5 copy];
+  underlineRanges = [(BRLTTextFormattingRanges *)self underlineRanges];
+  v6 = [underlineRanges copy];
   [v4 setUnderlineRanges:v6];
 
-  v7 = [(BRLTTextFormattingRanges *)self italicRanges];
-  v8 = [v7 copy];
+  italicRanges = [(BRLTTextFormattingRanges *)self italicRanges];
+  v8 = [italicRanges copy];
   [v4 setItalicRanges:v8];
 
-  v9 = [(BRLTTextFormattingRanges *)self boldRanges];
-  v10 = [v9 copy];
+  boldRanges = [(BRLTTextFormattingRanges *)self boldRanges];
+  v10 = [boldRanges copy];
   [v4 setBoldRanges:v10];
 
   return v4;
@@ -142,18 +142,18 @@
   v10.receiver = self;
   v10.super_class = BRLTTextFormattingRanges;
   v4 = [(BRLTTextFormattingRanges *)&v10 description];
-  v5 = [(BRLTTextFormattingRanges *)self underlineRanges];
-  v6 = [(BRLTTextFormattingRanges *)self italicRanges];
-  v7 = [(BRLTTextFormattingRanges *)self boldRanges];
-  v8 = [v3 stringWithFormat:@"%@: underline{%@}, italic{%@}, bold{%@}", v4, v5, v6, v7];
+  underlineRanges = [(BRLTTextFormattingRanges *)self underlineRanges];
+  italicRanges = [(BRLTTextFormattingRanges *)self italicRanges];
+  boldRanges = [(BRLTTextFormattingRanges *)self boldRanges];
+  v8 = [v3 stringWithFormat:@"%@: underline{%@}, italic{%@}, bold{%@}", v4, underlineRanges, italicRanges, boldRanges];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -163,19 +163,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(BRLTTextFormattingRanges *)self underlineRanges];
-      v7 = [(BRLTTextFormattingRanges *)v5 underlineRanges];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      underlineRanges = [(BRLTTextFormattingRanges *)self underlineRanges];
+      underlineRanges2 = [(BRLTTextFormattingRanges *)v5 underlineRanges];
+      v8 = underlineRanges2;
+      if (underlineRanges == underlineRanges2)
       {
       }
 
       else
       {
-        v9 = [(BRLTTextFormattingRanges *)self underlineRanges];
-        v10 = [(BRLTTextFormattingRanges *)v5 underlineRanges];
-        v11 = [v9 isEqualToArray:v10];
+        underlineRanges3 = [(BRLTTextFormattingRanges *)self underlineRanges];
+        underlineRanges4 = [(BRLTTextFormattingRanges *)v5 underlineRanges];
+        v11 = [underlineRanges3 isEqualToArray:underlineRanges4];
 
         if (!v11)
         {
@@ -183,18 +183,18 @@
         }
       }
 
-      v13 = [(BRLTTextFormattingRanges *)self italicRanges];
-      v14 = [(BRLTTextFormattingRanges *)v5 italicRanges];
-      v15 = v14;
-      if (v13 == v14)
+      italicRanges = [(BRLTTextFormattingRanges *)self italicRanges];
+      italicRanges2 = [(BRLTTextFormattingRanges *)v5 italicRanges];
+      v15 = italicRanges2;
+      if (italicRanges == italicRanges2)
       {
       }
 
       else
       {
-        v16 = [(BRLTTextFormattingRanges *)self italicRanges];
-        v17 = [(BRLTTextFormattingRanges *)v5 italicRanges];
-        v18 = [v16 isEqualToArray:v17];
+        italicRanges3 = [(BRLTTextFormattingRanges *)self italicRanges];
+        italicRanges4 = [(BRLTTextFormattingRanges *)v5 italicRanges];
+        v18 = [italicRanges3 isEqualToArray:italicRanges4];
 
         if (!v18)
         {
@@ -206,18 +206,18 @@ LABEL_17:
         }
       }
 
-      v19 = [(BRLTTextFormattingRanges *)self boldRanges];
-      v20 = [(BRLTTextFormattingRanges *)v5 boldRanges];
-      if (v19 == v20)
+      boldRanges = [(BRLTTextFormattingRanges *)self boldRanges];
+      boldRanges2 = [(BRLTTextFormattingRanges *)v5 boldRanges];
+      if (boldRanges == boldRanges2)
       {
         v12 = 1;
       }
 
       else
       {
-        v21 = [(BRLTTextFormattingRanges *)self boldRanges];
-        v22 = [(BRLTTextFormattingRanges *)v5 boldRanges];
-        v12 = [v21 isEqualToArray:v22];
+        boldRanges3 = [(BRLTTextFormattingRanges *)self boldRanges];
+        boldRanges4 = [(BRLTTextFormattingRanges *)v5 boldRanges];
+        v12 = [boldRanges3 isEqualToArray:boldRanges4];
       }
 
       goto LABEL_17;

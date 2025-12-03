@@ -1,21 +1,21 @@
 @interface SBIconListViewIconVisibilityInfo
-- (BOOL)isEqual:(id)a3;
-- (CGRect)visibleRectForIcon:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CGRect)visibleRectForIcon:(id)icon;
 - (NSMapTable)visibleIconRects;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)addValuesFromIconVisibilityInfo:(id)a3;
-- (void)enumerateVisibleIconsUsingBlock:(id)a3;
-- (void)setVisibleRect:(CGRect)a3 forIcon:(id)a4;
+- (void)addValuesFromIconVisibilityInfo:(id)info;
+- (void)enumerateVisibleIconsUsingBlock:(id)block;
+- (void)setVisibleRect:(CGRect)rect forIcon:(id)icon;
 @end
 
 @implementation SBIconListViewIconVisibilityInfo
 
-- (CGRect)visibleRectForIcon:(id)a3
+- (CGRect)visibleRectForIcon:(id)icon
 {
-  v3 = [(NSMapTable *)self->_visibleRects objectForKey:a3];
+  v3 = [(NSMapTable *)self->_visibleRects objectForKey:icon];
   v4 = v3;
   if (v3)
   {
@@ -45,13 +45,13 @@
   return result;
 }
 
-- (void)setVisibleRect:(CGRect)a3 forIcon:(id)a4
+- (void)setVisibleRect:(CGRect)rect forIcon:(id)icon
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  iconCopy = icon;
   v15.origin.x = x;
   v15.origin.y = y;
   v15.size.width = width;
@@ -67,9 +67,9 @@
       visibleRects = self->_visibleRects;
       if (!visibleRects)
       {
-        v11 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+        strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
         v12 = self->_visibleRects;
-        self->_visibleRects = v11;
+        self->_visibleRects = strongToStrongObjectsMapTable;
 
         visibleRects = self->_visibleRects;
       }
@@ -79,16 +79,16 @@
       *&v14[2] = width;
       *&v14[3] = height;
       v13 = [MEMORY[0x1E696B098] valueWithBytes:v14 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-      [(NSMapTable *)visibleRects setObject:v13 forKey:v9];
+      [(NSMapTable *)visibleRects setObject:v13 forKey:iconCopy];
     }
   }
 }
 
-- (void)addValuesFromIconVisibilityInfo:(id)a3
+- (void)addValuesFromIconVisibilityInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(SBIconListViewIconVisibilityInfo *)self isNormalized];
-  if (v5 != [v4 isNormalized])
+  infoCopy = info;
+  isNormalized = [(SBIconListViewIconVisibilityInfo *)self isNormalized];
+  if (isNormalized != [infoCopy isNormalized])
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Invalid argument to addValuesFromIconVisibilityInfo: userInfo:{mismatched normalization!", 0}];
     objc_exception_throw(v6);
@@ -99,7 +99,7 @@
   v7[2] = __68__SBIconListViewIconVisibilityInfo_addValuesFromIconVisibilityInfo___block_invoke;
   v7[3] = &unk_1E808F470;
   v7[4] = self;
-  [v4 enumerateVisibleIconsUsingBlock:v7];
+  [infoCopy enumerateVisibleIconsUsingBlock:v7];
 }
 
 - (NSMapTable)visibleIconRects
@@ -109,10 +109,10 @@
   return v2;
 }
 
-- (void)enumerateVisibleIconsUsingBlock:(id)a3
+- (void)enumerateVisibleIconsUsingBlock:(id)block
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -141,7 +141,7 @@ LABEL_3:
       v19 = v18;
 
       v20 = 0;
-      v4[2](v4, v10, &v20, v13, v15, v17, v19);
+      blockCopy[2](blockCopy, v10, &v20, v13, v15, v17, v19);
       if (v20)
       {
         break;
@@ -161,10 +161,10 @@ LABEL_3:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -174,7 +174,7 @@ LABEL_3:
     v5 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    if ((isKindOfClass & 1) != 0 && self->_normalized == v4->_normalized)
+    if ((isKindOfClass & 1) != 0 && self->_normalized == equalCopy->_normalized)
     {
       v7 = BSEqualObjects();
     }
@@ -188,14 +188,14 @@ LABEL_3:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (v5)
   {
     *(v5 + 16) = self->_normalized;
-    v7 = [(NSMapTable *)self->_visibleRects copyWithZone:a3];
+    v7 = [(NSMapTable *)self->_visibleRects copyWithZone:zone];
     v8 = v6[1];
     v6[1] = v7;
 
@@ -205,15 +205,15 @@ LABEL_3:
   return v6;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIconListViewIconVisibilityInfo *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIconListViewIconVisibilityInfo *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x1E698E680] builderWithObject:self];
   v5 = [v4 appendBool:-[SBIconListViewIconVisibilityInfo isNormalized](self withName:{"isNormalized"), @"isNormalized"}];
@@ -224,10 +224,10 @@ LABEL_3:
 
 - (id)succinctDescription
 {
-  v2 = [(SBIconListViewIconVisibilityInfo *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIconListViewIconVisibilityInfo *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 @end

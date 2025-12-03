@@ -1,162 +1,162 @@
 @interface PUPhotoEditPerfHUD
 - (NSString)detailText;
-- (PUPhotoEditPerfHUD)initWithCoder:(id)a3;
-- (PUPhotoEditPerfHUD)initWithFrame:(CGRect)a3;
-- (void)setAutoCalcInterval:(id)a3;
-- (void)setDetailText:(id)a3;
-- (void)setEnterEditTimeInterval:(id)a3;
-- (void)setExitEditTimeInterval:(id)a3;
-- (void)setFilterInterval:(id)a3;
-- (void)setFirstSinceBoot:(BOOL)a3;
-- (void)setFirstSinceLaunch:(BOOL)a3;
-- (void)setResourceCheckingInterval:(id)a3;
-- (void)setResourceDownloadInterval:(id)a3;
-- (void)setResourceLoadingInterval:(id)a3;
+- (PUPhotoEditPerfHUD)initWithCoder:(id)coder;
+- (PUPhotoEditPerfHUD)initWithFrame:(CGRect)frame;
+- (void)setAutoCalcInterval:(id)interval;
+- (void)setDetailText:(id)text;
+- (void)setEnterEditTimeInterval:(id)interval;
+- (void)setExitEditTimeInterval:(id)interval;
+- (void)setFilterInterval:(id)interval;
+- (void)setFirstSinceBoot:(BOOL)boot;
+- (void)setFirstSinceLaunch:(BOOL)launch;
+- (void)setResourceCheckingInterval:(id)interval;
+- (void)setResourceDownloadInterval:(id)interval;
+- (void)setResourceLoadingInterval:(id)interval;
 @end
 
 @implementation PUPhotoEditPerfHUD
 
-- (void)setExitEditTimeInterval:(id)a3
+- (void)setExitEditTimeInterval:(id)interval
 {
-  v5 = a3;
-  if (self->_exitEditTimeInterval != v5)
+  intervalCopy = interval;
+  if (self->_exitEditTimeInterval != intervalCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_exitEditTimeInterval, a3);
-    v6 = [(PUPhotoEditPerfHUD *)self exitEditVisualization];
-    [v6 setTimeInterval:v7];
+    v7 = intervalCopy;
+    objc_storeStrong(&self->_exitEditTimeInterval, interval);
+    exitEditVisualization = [(PUPhotoEditPerfHUD *)self exitEditVisualization];
+    [exitEditVisualization setTimeInterval:v7];
 
-    v5 = v7;
+    intervalCopy = v7;
   }
 }
 
-- (void)setFilterInterval:(id)a3
+- (void)setFilterInterval:(id)interval
 {
-  v5 = a3;
-  if (self->_filterInterval != v5)
+  intervalCopy = interval;
+  if (self->_filterInterval != intervalCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_filterInterval, a3);
-    v6 = [(PUPhotoEditPerfHUD *)self filterVisualization];
-    [v6 setTimeInterval:v7];
+    v7 = intervalCopy;
+    objc_storeStrong(&self->_filterInterval, interval);
+    filterVisualization = [(PUPhotoEditPerfHUD *)self filterVisualization];
+    [filterVisualization setTimeInterval:v7];
 
-    v5 = v7;
+    intervalCopy = v7;
   }
 }
 
-- (void)setAutoCalcInterval:(id)a3
+- (void)setAutoCalcInterval:(id)interval
 {
-  v5 = a3;
-  if (self->_autoCalcInterval != v5)
+  intervalCopy = interval;
+  if (self->_autoCalcInterval != intervalCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_autoCalcInterval, a3);
-    v6 = [(PUPhotoEditPerfHUD *)self autoCalcVisualization];
-    [v6 setTimeInterval:v7];
+    v7 = intervalCopy;
+    objc_storeStrong(&self->_autoCalcInterval, interval);
+    autoCalcVisualization = [(PUPhotoEditPerfHUD *)self autoCalcVisualization];
+    [autoCalcVisualization setTimeInterval:v7];
 
-    v5 = v7;
+    intervalCopy = v7;
   }
 }
 
-- (void)setResourceLoadingInterval:(id)a3
+- (void)setResourceLoadingInterval:(id)interval
 {
-  v5 = a3;
-  if (self->_resourceLoadingInterval != v5)
+  intervalCopy = interval;
+  if (self->_resourceLoadingInterval != intervalCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_resourceLoadingInterval, a3);
-    v6 = [(PUPhotoEditPerfHUD *)self resourceLoadingVisualization];
-    [v6 setTimeInterval:v7];
+    v7 = intervalCopy;
+    objc_storeStrong(&self->_resourceLoadingInterval, interval);
+    resourceLoadingVisualization = [(PUPhotoEditPerfHUD *)self resourceLoadingVisualization];
+    [resourceLoadingVisualization setTimeInterval:v7];
 
-    v5 = v7;
+    intervalCopy = v7;
   }
 }
 
-- (void)setResourceDownloadInterval:(id)a3
+- (void)setResourceDownloadInterval:(id)interval
 {
-  v5 = a3;
-  if (self->_resourceDownloadInterval != v5)
+  intervalCopy = interval;
+  if (self->_resourceDownloadInterval != intervalCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_resourceDownloadInterval, a3);
-    v6 = [(PUPhotoEditPerfHUD *)self resourceDownloadVisualization];
-    [v6 setTimeInterval:v7];
+    v7 = intervalCopy;
+    objc_storeStrong(&self->_resourceDownloadInterval, interval);
+    resourceDownloadVisualization = [(PUPhotoEditPerfHUD *)self resourceDownloadVisualization];
+    [resourceDownloadVisualization setTimeInterval:v7];
 
-    v5 = v7;
+    intervalCopy = v7;
   }
 }
 
-- (void)setResourceCheckingInterval:(id)a3
+- (void)setResourceCheckingInterval:(id)interval
 {
-  v5 = a3;
-  if (self->_resourceCheckingInterval != v5)
+  intervalCopy = interval;
+  if (self->_resourceCheckingInterval != intervalCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_resourceCheckingInterval, a3);
-    v6 = [(PUPhotoEditPerfHUD *)self resourceCheckingVisualization];
-    [v6 setTimeInterval:v7];
+    v7 = intervalCopy;
+    objc_storeStrong(&self->_resourceCheckingInterval, interval);
+    resourceCheckingVisualization = [(PUPhotoEditPerfHUD *)self resourceCheckingVisualization];
+    [resourceCheckingVisualization setTimeInterval:v7];
 
-    v5 = v7;
+    intervalCopy = v7;
   }
 }
 
-- (void)setEnterEditTimeInterval:(id)a3
+- (void)setEnterEditTimeInterval:(id)interval
 {
-  v5 = a3;
-  if (self->_enterEditTimeInterval != v5)
+  intervalCopy = interval;
+  if (self->_enterEditTimeInterval != intervalCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_enterEditTimeInterval, a3);
-    v6 = [(PUPhotoEditPerfHUD *)self enterEditVisualization];
-    [v6 setTimeInterval:v7];
+    v7 = intervalCopy;
+    objc_storeStrong(&self->_enterEditTimeInterval, interval);
+    enterEditVisualization = [(PUPhotoEditPerfHUD *)self enterEditVisualization];
+    [enterEditVisualization setTimeInterval:v7];
 
-    v5 = v7;
+    intervalCopy = v7;
   }
 }
 
-- (void)setDetailText:(id)a3
+- (void)setDetailText:(id)text
 {
-  v6 = a3;
-  if ([v6 length] >= 0x11)
+  textCopy = text;
+  if ([textCopy length] >= 0x11)
   {
-    v4 = [v6 substringFromIndex:{objc_msgSend(v6, "length") - 16}];
+    v4 = [textCopy substringFromIndex:{objc_msgSend(textCopy, "length") - 16}];
 
-    v6 = [@"…" stringByAppendingString:v4];
+    textCopy = [@"…" stringByAppendingString:v4];
   }
 
-  v5 = [(PUPhotoEditPerfHUD *)self detailVisualization];
-  [v5 setTitle:v6];
+  detailVisualization = [(PUPhotoEditPerfHUD *)self detailVisualization];
+  [detailVisualization setTitle:textCopy];
 }
 
 - (NSString)detailText
 {
-  v2 = [(PUPhotoEditPerfHUD *)self detailVisualization];
-  v3 = [v2 title];
+  detailVisualization = [(PUPhotoEditPerfHUD *)self detailVisualization];
+  title = [detailVisualization title];
 
-  return v3;
+  return title;
 }
 
-- (void)setFirstSinceLaunch:(BOOL)a3
+- (void)setFirstSinceLaunch:(BOOL)launch
 {
-  self->_firstSinceLaunch = a3;
+  self->_firstSinceLaunch = launch;
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  v4 = [(PUPhotoEditPerfHUD *)self firstSinceLaunchVisualization];
-  [v4 setValue:v5];
+  firstSinceLaunchVisualization = [(PUPhotoEditPerfHUD *)self firstSinceLaunchVisualization];
+  [firstSinceLaunchVisualization setValue:v5];
 }
 
-- (void)setFirstSinceBoot:(BOOL)a3
+- (void)setFirstSinceBoot:(BOOL)boot
 {
-  self->_firstSinceBoot = a3;
+  self->_firstSinceBoot = boot;
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  v4 = [(PUPhotoEditPerfHUD *)self firstSinceBootVisualization];
-  [v4 setValue:v5];
+  firstSinceBootVisualization = [(PUPhotoEditPerfHUD *)self firstSinceBootVisualization];
+  [firstSinceBootVisualization setValue:v5];
 }
 
-- (PUPhotoEditPerfHUD)initWithFrame:(CGRect)a3
+- (PUPhotoEditPerfHUD)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PUPhotoEditPerfHUD;
-  v3 = [(PUPhotoEditPerfHUD *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPhotoEditPerfHUD *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -166,11 +166,11 @@
   return v4;
 }
 
-- (PUPhotoEditPerfHUD)initWithCoder:(id)a3
+- (PUPhotoEditPerfHUD)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PUPhotoEditPerfHUD;
-  v3 = [(PUPhotoEditPerfHUD *)&v6 initWithCoder:a3];
+  v3 = [(PUPhotoEditPerfHUD *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

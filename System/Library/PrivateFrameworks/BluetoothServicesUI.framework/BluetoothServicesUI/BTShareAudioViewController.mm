@@ -1,16 +1,16 @@
 @interface BTShareAudioViewController
 + (id)instantiateViewController;
-- (id)_imageForPID:(unsigned int)a3 colorCode:(unsigned int)a4;
-- (id)_moviePathForPID:(unsigned int)a3 colorCode:(unsigned int)a4;
-- (void)_reportCompletion:(id)a3 mediaRouteID:(id)a4;
+- (id)_imageForPID:(unsigned int)d colorCode:(unsigned int)code;
+- (id)_moviePathForPID:(unsigned int)d colorCode:(unsigned int)code;
+- (void)_reportCompletion:(id)completion mediaRouteID:(id)d;
 - (void)_sessionStart;
 - (void)_showBringClose;
-- (void)_showConfirm:(id)a3;
-- (void)_showConnecting:(id)a3;
-- (void)_showError:(id)a3;
-- (void)_showPairInstructions:(id)a3;
-- (void)_transitionToViewController:(id)a3 animate:(BOOL)a4;
-- (void)reportError:(id)a3;
+- (void)_showConfirm:(id)confirm;
+- (void)_showConnecting:(id)connecting;
+- (void)_showError:(id)error;
+- (void)_showPairInstructions:(id)instructions;
+- (void)_transitionToViewController:(id)controller animate:(BOOL)animate;
+- (void)reportError:(id)error;
 - (void)reportUserCancelled;
 @end
 
@@ -25,7 +25,7 @@
   [v4 setMainStoryboard:v3];
   [v4 setModalPresentationStyle:8];
   [v4 setModalTransitionStyle:2];
-  v5 = [v4 view];
+  view = [v4 view];
   if (gLogCategory_BTShareAudioViewController <= 30 && (gLogCategory_BTShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     +[BTShareAudioViewController instantiateViewController];
@@ -34,46 +34,46 @@
   return v4;
 }
 
-- (id)_imageForPID:(unsigned int)a3 colorCode:(unsigned int)a4
+- (id)_imageForPID:(unsigned int)d colorCode:(unsigned int)code
 {
-  v5 = a3 - 8201;
-  if (a3 - 8201 < 0xA && ((0x28Du >> v5) & 1) != 0)
+  v5 = d - 8201;
+  if (d - 8201 < 0xA && ((0x28Du >> v5) & 1) != 0)
   {
-    v6 = dword_241C0A958[v5];
+    dCopy = dword_241C0A958[v5];
     v7 = 1;
   }
 
   else
   {
     v7 = 0;
-    if (a3 == 0x10000)
+    if (d == 0x10000)
     {
-      v6 = 8207;
+      dCopy = 8207;
     }
 
     else
     {
-      v6 = a3;
+      dCopy = d;
     }
   }
 
-  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"ShareAudioDetail-PID-%u-CL_%u", v6, v7];
+  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"ShareAudioDetail-PID-%u-CL_%u", dCopy, v7];
   v9 = [MEMORY[0x277D755B8] imageNamed:v8 inBundle:self->_mainBundle compatibleWithTraitCollection:0];
 
   return v9;
 }
 
-- (id)_moviePathForPID:(unsigned int)a3 colorCode:(unsigned int)a4
+- (id)_moviePathForPID:(unsigned int)d colorCode:(unsigned int)code
 {
-  v4 = a3 - 8201;
-  if (a3 == 0x10000)
+  v4 = d - 8201;
+  if (d == 0x10000)
   {
-    v5 = 8207;
+    dCopy = 8207;
   }
 
   else
   {
-    v5 = a3;
+    dCopy = d;
   }
 
   v6 = v4 > 0x1D;
@@ -82,27 +82,27 @@
   v9 = !v8;
   if (v8)
   {
-    v10 = v5;
+    dCopy2 = dCopy;
   }
 
   else
   {
-    v10 = a3;
+    dCopy2 = d;
   }
 
-  v11 = [MEMORY[0x277D759A0] mainScreen];
-  [v11 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v13 = v12;
 
-  v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"ShareAudioDetail-PID-%u-CL_%u-%ux", v10, v9, v13];
+  v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"ShareAudioDetail-PID-%u-CL_%u-%ux", dCopy2, v9, v13];
 
   return v14;
 }
 
-- (void)_reportCompletion:(id)a3 mediaRouteID:(id)a4
+- (void)_reportCompletion:(id)completion mediaRouteID:(id)d
 {
-  v12 = a3;
-  v6 = a4;
+  completionCopy = completion;
+  dCopy = d;
   [(BTShareAudioSessionClient *)self->_shareAudioSession invalidate];
   shareAudioSession = self->_shareAudioSession;
   self->_shareAudioSession = 0;
@@ -113,17 +113,17 @@
     completion = self->_completion;
     self->_completion = 0;
 
-    if (v6)
+    if (dCopy)
     {
       v10 = objc_alloc_init(BTSharedAudioDeviceInfo);
-      [(BTSharedAudioDeviceInfo *)v10 setMediaRouteIdentifier:v6];
+      [(BTSharedAudioDeviceInfo *)v10 setMediaRouteIdentifier:dCopy];
       (v8)[2](v8, v10, 0);
 LABEL_4:
 
       goto LABEL_7;
     }
 
-    if (!v12)
+    if (!completionCopy)
     {
       v11 = *MEMORY[0x277CCA590];
       v10 = NSErrorF();
@@ -137,24 +137,24 @@ LABEL_4:
 LABEL_7:
 }
 
-- (void)reportError:(id)a3
+- (void)reportError:(id)error
 {
-  v4 = a3;
-  v8 = v4;
-  if (gLogCategory_BTShareAudioViewController <= 90 && (gLogCategory_BTShareAudioViewController != -1 || (v5 = _LogCategory_Initialize(), v4 = v8, v5)))
+  errorCopy = error;
+  v8 = errorCopy;
+  if (gLogCategory_BTShareAudioViewController <= 90 && (gLogCategory_BTShareAudioViewController != -1 || (v5 = _LogCategory_Initialize(), errorCopy = v8, v5)))
   {
     [BTShareAudioViewController reportError:];
-    v4 = v8;
+    errorCopy = v8;
     if (v8)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v4)
+  else if (errorCopy)
   {
 LABEL_5:
-    [(BTShareAudioViewController *)self _reportCompletion:v4 mediaRouteID:0];
+    [(BTShareAudioViewController *)self _reportCompletion:errorCopy mediaRouteID:0];
     goto LABEL_8;
   }
 
@@ -220,9 +220,9 @@ void *__43__BTShareAudioViewController__sessionStart__block_invoke(uint64_t a1, 
   [(BTShareAudioViewController *)self _transitionToViewController:v3 animate:0];
 }
 
-- (void)_showError:(id)a3
+- (void)_showError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if (gLogCategory_BTShareAudioViewController <= 30 && (gLogCategory_BTShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [BTShareAudioViewController _showError:];
@@ -230,13 +230,13 @@ void *__43__BTShareAudioViewController__sessionStart__block_invoke(uint64_t a1, 
 
   v4 = [(UIStoryboard *)self->_mainStoryboard instantiateViewControllerWithIdentifier:@"Error"];
   [v4 setMainController:self];
-  [v4 setError:v5];
+  [v4 setError:errorCopy];
   [(BTShareAudioViewController *)self _transitionToViewController:v4 animate:0];
 }
 
-- (void)_showConfirm:(id)a3
+- (void)_showConfirm:(id)confirm
 {
-  v5 = a3;
+  confirmCopy = confirm;
   if (gLogCategory_BTShareAudioViewController <= 30 && (gLogCategory_BTShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [BTShareAudioViewController _showConfirm:];
@@ -251,9 +251,9 @@ void *__43__BTShareAudioViewController__sessionStart__block_invoke(uint64_t a1, 
   [(BTShareAudioViewController *)self _transitionToViewController:v4 animate:0];
 }
 
-- (void)_showPairInstructions:(id)a3
+- (void)_showPairInstructions:(id)instructions
 {
-  v5 = a3;
+  instructionsCopy = instructions;
   if (gLogCategory_BTShareAudioViewController <= 30 && (gLogCategory_BTShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [BTShareAudioViewController _showPairInstructions:];
@@ -266,9 +266,9 @@ void *__43__BTShareAudioViewController__sessionStart__block_invoke(uint64_t a1, 
   [(BTShareAudioViewController *)self _transitionToViewController:v4 animate:0];
 }
 
-- (void)_showConnecting:(id)a3
+- (void)_showConnecting:(id)connecting
 {
-  v5 = a3;
+  connectingCopy = connecting;
   v4 = self->_vcConnecting;
   if (!v4)
   {
@@ -284,38 +284,38 @@ void *__43__BTShareAudioViewController__sessionStart__block_invoke(uint64_t a1, 
   [(BTShareAudioViewController *)self _transitionToViewController:v4 animate:0];
 }
 
-- (void)_transitionToViewController:(id)a3 animate:(BOOL)a4
+- (void)_transitionToViewController:(id)controller animate:(BOOL)animate
 {
-  v4 = a4;
-  v15 = a3;
-  if (v4)
+  animateCopy = animate;
+  controllerCopy = controller;
+  if (animateCopy)
   {
-    v6 = [MEMORY[0x277CDA000] animation];
-    [v6 setDuration:0.5];
-    [v6 setType:*MEMORY[0x277CDA928]];
+    animation = [MEMORY[0x277CDA000] animation];
+    [animation setDuration:0.5];
+    [animation setType:*MEMORY[0x277CDA928]];
     v7 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
-    [v6 setTimingFunction:v7];
+    [animation setTimingFunction:v7];
 
-    v8 = [(BTShareAudioViewController *)self view];
-    v9 = [v8 layer];
-    [v9 addAnimation:v6 forKey:0];
+    view = [(BTShareAudioViewController *)self view];
+    layer = [view layer];
+    [layer addAnimation:animation forKey:0];
 
-    v10 = [v15 view];
-    v11 = [v10 layer];
-    [v11 addAnimation:v6 forKey:0];
+    view2 = [controllerCopy view];
+    layer2 = [view2 layer];
+    [layer2 addAnimation:animation forKey:0];
   }
 
-  v12 = [(BTShareAudioViewController *)self viewControllers];
-  v13 = [v12 containsObject:v15];
+  viewControllers = [(BTShareAudioViewController *)self viewControllers];
+  v13 = [viewControllers containsObject:controllerCopy];
 
   if (v13)
   {
-    v14 = [(BTShareAudioViewController *)self popToViewController:v15 animated:0];
+    v14 = [(BTShareAudioViewController *)self popToViewController:controllerCopy animated:0];
   }
 
   else
   {
-    [(BTShareAudioViewController *)self pushViewController:v15 animated:0];
+    [(BTShareAudioViewController *)self pushViewController:controllerCopy animated:0];
   }
 }
 

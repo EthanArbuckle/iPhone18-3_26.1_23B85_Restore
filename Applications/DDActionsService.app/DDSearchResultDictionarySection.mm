@@ -1,12 +1,12 @@
 @interface DDSearchResultDictionarySection
-- (DDSearchResultDictionarySection)initWithSearchString:(id)a3 queryId:(unint64_t)a4;
+- (DDSearchResultDictionarySection)initWithSearchString:(id)string queryId:(unint64_t)id;
 @end
 
 @implementation DDSearchResultDictionarySection
 
-- (DDSearchResultDictionarySection)initWithSearchString:(id)a3 queryId:(unint64_t)a4
+- (DDSearchResultDictionarySection)initWithSearchString:(id)string queryId:(unint64_t)id
 {
-  v6 = a3;
+  stringCopy = string;
   v20.receiver = self;
   v20.super_class = DDSearchResultDictionarySection;
   v7 = [(DDSearchResultDictionarySection *)&v20 init];
@@ -36,7 +36,7 @@
             objc_enumerationMutation(v9);
           }
 
-          [*(*(&v16 + 1) + 8 * v13) setQueryId:{a4, v16}];
+          [*(*(&v16 + 1) + 8 * v13) setQueryId:{id, v16}];
           v13 = v13 + 1;
         }
 

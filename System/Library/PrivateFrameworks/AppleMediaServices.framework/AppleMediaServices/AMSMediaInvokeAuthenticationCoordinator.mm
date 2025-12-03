@@ -1,8 +1,8 @@
 @interface AMSMediaInvokeAuthenticationCoordinator
 + (AMSMediaInvokeAuthenticationCoordinator)sharedInstance;
 - (AMSMediaInvokeAuthenticationCoordinator)init;
-- (id)addToQueueAndPerformAuthFromResponseIfNeeded:(id)a3 taskInfo:(id)a4;
-- (void)_finishQueueWithAuthResult:(id)a3 queuedObjects:(id)a4;
+- (id)addToQueueAndPerformAuthFromResponseIfNeeded:(id)needed taskInfo:(id)info;
+- (void)_finishQueueWithAuthResult:(id)result queuedObjects:(id)objects;
 - (void)updateQueueIfNeeded;
 @end
 
@@ -44,22 +44,22 @@ uint64_t __57__AMSMediaInvokeAuthenticationCoordinator_sharedInstance__block_inv
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)addToQueueAndPerformAuthFromResponseIfNeeded:(id)a3 taskInfo:(id)a4
+- (id)addToQueueAndPerformAuthFromResponseIfNeeded:(id)needed taskInfo:(id)info
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  infoCopy = info;
   v8 = objc_opt_new();
   v9 = objc_alloc_init(AMSMediaInvokeAuthenticationQueuedObject);
-  [(AMSMediaInvokeAuthenticationQueuedObject *)v9 setResponse:v6];
-  [(AMSMediaInvokeAuthenticationQueuedObject *)v9 setTaskInfo:v7];
+  [(AMSMediaInvokeAuthenticationQueuedObject *)v9 setResponse:neededCopy];
+  [(AMSMediaInvokeAuthenticationQueuedObject *)v9 setTaskInfo:infoCopy];
 
   [(AMSMediaInvokeAuthenticationQueuedObject *)v9 setPendingPromise:v8];
-  v10 = [v6 ams_statusCode] >= 200 && objc_msgSend(v6, "ams_statusCode") < 400;
+  v10 = [neededCopy ams_statusCode] >= 200 && objc_msgSend(neededCopy, "ams_statusCode") < 400;
   [(AMSMediaInvokeAuthenticationQueuedObject *)v9 setIgnoringResult:v10];
   os_unfair_lock_lock(&self->_queueLock);
-  v11 = [(AMSMediaInvokeAuthenticationCoordinator *)self invokeAuthQueue];
-  [v11 addObject:v9];
+  invokeAuthQueue = [(AMSMediaInvokeAuthenticationCoordinator *)self invokeAuthQueue];
+  [invokeAuthQueue addObject:v9];
 
   v12 = +[AMSLogConfig sharedAccountsConfig];
   if (!v12)
@@ -67,23 +67,23 @@ uint64_t __57__AMSMediaInvokeAuthenticationCoordinator_sharedInstance__block_inv
     v12 = +[AMSLogConfig sharedConfig];
   }
 
-  v13 = [v12 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v12 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v14 = objc_opt_class();
     v26 = v14;
     AMSSetLogKeyIfNeeded();
     v16 = v15 = v8;
-    v17 = [(AMSMediaInvokeAuthenticationCoordinator *)self invokeAuthQueue];
+    invokeAuthQueue2 = [(AMSMediaInvokeAuthenticationCoordinator *)self invokeAuthQueue];
     *buf = 138544130;
     v28 = v14;
     v29 = 2114;
     v30 = v16;
     v31 = 2048;
-    v32 = [v17 count];
+    v32 = [invokeAuthQueue2 count];
     v33 = 1024;
-    v34 = [(AMSMediaInvokeAuthenticationQueuedObject *)v9 ignoringResult];
-    _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Queued up Invoke Media API Authentication. Current queue count: %lu. Will ignore result: %d", buf, 0x26u);
+    ignoringResult = [(AMSMediaInvokeAuthenticationQueuedObject *)v9 ignoringResult];
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Queued up Invoke Media API Authentication. Current queue count: %lu. Will ignore result: %d", buf, 0x26u);
 
     v8 = v15;
   }
@@ -98,8 +98,8 @@ uint64_t __57__AMSMediaInvokeAuthenticationCoordinator_sharedInstance__block_inv
       v18 = +[AMSLogConfig sharedConfig];
     }
 
-    v19 = [v18 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v18 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v20 = objc_opt_class();
       v21 = v20;
@@ -108,54 +108,54 @@ uint64_t __57__AMSMediaInvokeAuthenticationCoordinator_sharedInstance__block_inv
       v28 = v20;
       v29 = 2114;
       v30 = v22;
-      _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Successful response, returned empty promise for Invoke Media API Authentication allowing handling of original response to continue while we deal with the authentication separately.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Successful response, returned empty promise for Invoke Media API Authentication allowing handling of original response to continue while we deal with the authentication separately.", buf, 0x16u);
     }
 
     v23 = +[AMSOptional optionalWithNil];
-    v24 = [AMSPromise promiseWithResult:v23];
+    pendingPromise = [AMSPromise promiseWithResult:v23];
   }
 
   else
   {
-    v24 = [(AMSMediaInvokeAuthenticationQueuedObject *)v9 pendingPromise];
+    pendingPromise = [(AMSMediaInvokeAuthenticationQueuedObject *)v9 pendingPromise];
   }
 
-  return v24;
+  return pendingPromise;
 }
 
 - (void)updateQueueIfNeeded
 {
   os_unfair_lock_lock(&self->_queueLock);
-  v3 = [(AMSMediaInvokeAuthenticationCoordinator *)self inflightAuthPromise];
-  if (v3)
+  inflightAuthPromise = [(AMSMediaInvokeAuthenticationCoordinator *)self inflightAuthPromise];
+  if (inflightAuthPromise)
   {
 
 LABEL_3:
     os_unfair_lock_unlock(&self->_queueLock);
-    v4 = 0;
+    firstObject = 0;
     v5 = 0;
     goto LABEL_4;
   }
 
-  v6 = [(AMSMediaInvokeAuthenticationCoordinator *)self invokeAuthQueue];
-  v7 = [v6 count];
+  invokeAuthQueue = [(AMSMediaInvokeAuthenticationCoordinator *)self invokeAuthQueue];
+  v7 = [invokeAuthQueue count];
 
   if (!v7)
   {
     goto LABEL_3;
   }
 
-  v8 = [(AMSMediaInvokeAuthenticationCoordinator *)self invokeAuthQueue];
-  v4 = [v8 firstObject];
+  invokeAuthQueue2 = [(AMSMediaInvokeAuthenticationCoordinator *)self invokeAuthQueue];
+  firstObject = [invokeAuthQueue2 firstObject];
 
   v5 = objc_opt_new();
   [(AMSMediaInvokeAuthenticationCoordinator *)self setInflightAuthPromise:v5];
   os_unfair_lock_unlock(&self->_queueLock);
   if (v5)
   {
-    v9 = [v4 response];
-    v10 = [v4 taskInfo];
-    v11 = [AMSMediaInvokeAuthenticationHandler performAuthFromResponse:v9 taskInfo:v10];
+    response = [firstObject response];
+    taskInfo = [firstObject taskInfo];
+    v11 = [AMSMediaInvokeAuthenticationHandler performAuthFromResponse:response taskInfo:taskInfo];
     [v5 finishWithPromise:v11];
 
     v12[0] = MEMORY[0x1E69E9820];
@@ -163,8 +163,8 @@ LABEL_3:
     v12[2] = __62__AMSMediaInvokeAuthenticationCoordinator_updateQueueIfNeeded__block_invoke;
     v12[3] = &unk_1E73B4CD0;
     v12[4] = self;
-    v4 = v4;
-    v13 = v4;
+    firstObject = firstObject;
+    v13 = firstObject;
     [v5 addFinishBlock:v12];
   }
 
@@ -253,16 +253,16 @@ LABEL_12:
   [*(a1 + 32) updateQueueIfNeeded];
 }
 
-- (void)_finishQueueWithAuthResult:(id)a3 queuedObjects:(id)a4
+- (void)_finishQueueWithAuthResult:(id)result queuedObjects:(id)objects
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  resultCopy = result;
+  objectsCopy = objects;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v40 objects:v50 count:16];
+  v7 = [objectsCopy countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (v7)
   {
     v9 = v7;
@@ -278,14 +278,14 @@ LABEL_12:
       {
         if (*v41 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectsCopy);
         }
 
         v12 = *(*(&v40 + 1) + 8 * v11);
         if (([v12 ignoringResult] & 1) == 0)
         {
-          v13 = [v5 value];
-          if (v13 && (v14 = v13, [v5 value], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "actionType"), v15, v14, v16 == 3))
+          value = [resultCopy value];
+          if (value && (v14 = value, [resultCopy value], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "actionType"), v15, v14, v16 == 3))
           {
             v17 = +[AMSLogConfig sharedAccountsConfig];
             if (!v17)
@@ -293,8 +293,8 @@ LABEL_12:
               v17 = +[AMSLogConfig sharedConfig];
             }
 
-            v18 = [v17 OSLogObject];
-            if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+            oSLogObject = [v17 OSLogObject];
+            if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
             {
               v19 = objc_opt_class();
               v20 = v19;
@@ -303,13 +303,13 @@ LABEL_12:
               v45 = v19;
               v46 = 2114;
               v47 = v21;
-              _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Invoke Media API Previous authentication finished with cancel, ignoring remaining queued up authentication requests.", buf, 0x16u);
+              _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Invoke Media API Previous authentication finished with cancel, ignoring remaining queued up authentication requests.", buf, 0x16u);
 
               v10 = v37;
             }
 
-            v22 = [v12 pendingPromise];
-            [v22 finishWithResult:v5];
+            pendingPromise = [v12 pendingPromise];
+            [pendingPromise finishWithResult:resultCopy];
           }
 
           else
@@ -320,15 +320,15 @@ LABEL_12:
               v23 = +[AMSLogConfig sharedConfig];
             }
 
-            v24 = [v23 OSLogObject];
-            if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+            oSLogObject2 = [v23 OSLogObject];
+            if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
             {
               v25 = objc_opt_class();
               v38 = v25;
               v26 = AMSSetLogKeyIfNeeded();
               [v12 response];
-              v27 = v5;
-              v29 = v28 = v6;
+              v27 = resultCopy;
+              v29 = v28 = objectsCopy;
               v30 = [v29 URL];
               *buf = 138543874;
               v45 = v25;
@@ -336,29 +336,29 @@ LABEL_12:
               v47 = v26;
               v48 = 2112;
               v49 = v30;
-              _os_log_impl(&dword_192869000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Retrying queued up request with Invoke Media API Authentication for URL: %@", buf, 0x20u);
+              _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Retrying queued up request with Invoke Media API Authentication for URL: %@", buf, 0x20u);
 
-              v6 = v28;
-              v5 = v27;
+              objectsCopy = v28;
+              resultCopy = v27;
 
               v10 = v37;
             }
 
-            v22 = +[AMSURLAction retryAction];
-            [v22 setRetryIdentifier:0x1F071ED58];
-            [v22 setReason:@"authentication"];
-            v31 = [v5 value];
+            pendingPromise = +[AMSURLAction retryAction];
+            [pendingPromise setRetryIdentifier:0x1F071ED58];
+            [pendingPromise setReason:@"authentication"];
+            value2 = [resultCopy value];
 
-            if (v31)
+            if (value2)
             {
-              v32 = [v5 value];
-              v33 = [v32 authenticateResult];
-              [v22 setAuthenticateResult:v33];
+              value3 = [resultCopy value];
+              authenticateResult = [value3 authenticateResult];
+              [pendingPromise setAuthenticateResult:authenticateResult];
             }
 
-            v34 = [v12 pendingPromise];
-            v35 = [AMSOptional optionalWithValue:v22];
-            [v34 finishWithResult:v35];
+            pendingPromise2 = [v12 pendingPromise];
+            v35 = [AMSOptional optionalWithValue:pendingPromise];
+            [pendingPromise2 finishWithResult:v35];
 
             v9 = v39;
           }
@@ -368,7 +368,7 @@ LABEL_12:
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v40 objects:v50 count:16];
+      v9 = [objectsCopy countByEnumeratingWithState:&v40 objects:v50 count:16];
     }
 
     while (v9);

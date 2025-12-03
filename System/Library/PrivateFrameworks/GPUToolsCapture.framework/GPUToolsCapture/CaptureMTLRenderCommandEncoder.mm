@@ -1,185 +1,185 @@
 @interface CaptureMTLRenderCommandEncoder
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTLRenderCommandEncoder)initWithBaseObject:(id)a3 captureCommandBuffer:(id)a4;
-- (CaptureMTLRenderCommandEncoder)initWithBaseObject:(id)a3 captureParallelRenderCommandEncoder:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTLRenderCommandEncoder)initWithBaseObject:(id)object captureCommandBuffer:(id)buffer;
+- (CaptureMTLRenderCommandEncoder)initWithBaseObject:(id)object captureParallelRenderCommandEncoder:(id)encoder;
 - (NSString)description;
 - (unint64_t)streamReference;
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4;
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages;
 - (void)dealloc;
-- (void)dispatchThreadsPerTile:(id *)a3;
-- (void)dispatchThreadsPerTile:(id *)a3 inRegion:(id *)a4;
-- (void)drawIndexedPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 controlPointIndexBuffer:(id)a6 controlPointIndexBufferOffset:(unint64_t)a7 indirectBuffer:(id)a8 indirectBufferOffset:(unint64_t)a9;
-- (void)drawIndexedPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 controlPointIndexBuffer:(id)a8 controlPointIndexBufferOffset:(unint64_t)a9 instanceCount:(unint64_t)a10 baseInstance:(unint64_t)a11;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexType:(unint64_t)a4 indexBuffer:(id)a5 indexBufferOffset:(unint64_t)a6 indirectBuffer:(id)a7 indirectBufferOffset:(unint64_t)a8;
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerObjectThreadgroup:(id *)a5 threadsPerMeshThreadgroup:(id *)a6;
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 indirectBuffer:(id)a6 indirectBufferOffset:(unint64_t)a7;
-- (void)drawPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseInstance:(unint64_t)a9;
-- (void)drawPrimitives:(unint64_t)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6 baseInstance:(unint64_t)a7;
+- (void)dispatchThreadsPerTile:(id *)tile;
+- (void)dispatchThreadsPerTile:(id *)tile inRegion:(id *)region;
+- (void)drawIndexedPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)indirectBufferOffset;
+- (void)drawIndexedPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset instanceCount:(unint64_t)self0 baseInstance:(unint64_t)self1;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset;
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset;
+- (void)drawPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance;
+- (void)drawPrimitives:(unint64_t)primitives indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance;
 - (void)endEncoding;
-- (void)executeCommandsInBuffer:(id)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5;
-- (void)executeCommandsInBuffer:(id)a3 withRange:(_NSRange)a4;
-- (void)insertDebugSignpost:(id)a3;
+- (void)executeCommandsInBuffer:(id)buffer indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)offset;
+- (void)executeCommandsInBuffer:(id)buffer withRange:(_NSRange)range;
+- (void)insertDebugSignpost:(id)signpost;
 - (void)insertSplit;
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4 afterStages:(unint64_t)a5 beforeStages:(unint64_t)a6;
-- (void)memoryBarrierWithScope:(unint64_t)a3 afterStages:(unint64_t)a4 beforeStages:(unint64_t)a5;
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count afterStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages;
+- (void)memoryBarrierWithScope:(unint64_t)scope afterStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages;
 - (void)popDebugGroup;
-- (void)pushDebugGroup:(id)a3;
-- (void)setAlphaTestReferenceValue:(float)a3;
-- (void)setBlendColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6;
-- (void)setColorAttachmentMap:(id)a3;
-- (void)setColorResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6 atIndex:(unint64_t)a7;
-- (void)setColorStoreAction:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setColorStoreActionOptions:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setCullMode:(unint64_t)a3;
-- (void)setDepthBias:(float)a3 slopeScale:(float)a4 clamp:(float)a5;
+- (void)pushDebugGroup:(id)group;
+- (void)setAlphaTestReferenceValue:(float)value;
+- (void)setBlendColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha;
+- (void)setColorAttachmentMap:(id)map;
+- (void)setColorResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level atIndex:(unint64_t)index;
+- (void)setColorStoreAction:(unint64_t)action atIndex:(unint64_t)index;
+- (void)setColorStoreActionOptions:(unint64_t)options atIndex:(unint64_t)index;
+- (void)setCullMode:(unint64_t)mode;
+- (void)setDepthBias:(float)bias slopeScale:(float)scale clamp:(float)clamp;
 - (void)setDepthCleared;
-- (void)setDepthClipMode:(unint64_t)a3;
-- (void)setDepthResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6;
-- (void)setDepthStencilState:(id)a3;
-- (void)setDepthStoreAction:(unint64_t)a3;
-- (void)setDepthStoreActionOptions:(unint64_t)a3;
-- (void)setDepthTestMinBound:(float)a3 maxBound:(float)a4;
-- (void)setFragmentAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setFragmentBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setFragmentBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setFragmentBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setFragmentBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setFragmentIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setFragmentIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setFragmentSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFragmentSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setFragmentSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 lodBias:(float)a6 atIndex:(unint64_t)a7;
-- (void)setFragmentSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setFragmentSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setFragmentTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFragmentTexture:(id)a3 atTextureIndex:(unint64_t)a4 samplerState:(id)a5 atSamplerIndex:(unint64_t)a6;
-- (void)setFragmentTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setFragmentVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setFragmentVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setFrontFacingWinding:(unint64_t)a3;
-- (void)setLabel:(id)a3;
-- (void)setLineWidth:(float)a3;
-- (void)setMeshAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setMeshBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setMeshBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setMeshBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setMeshBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setMeshIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setMeshIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setMeshSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setMeshSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setMeshSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setMeshSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setMeshTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setMeshTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setMeshVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setMeshVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setObjectAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setObjectBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setObjectBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setObjectBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setObjectBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setObjectIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setObjectIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setObjectSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setObjectSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setObjectSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setObjectSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setObjectTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setObjectTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setObjectThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setObjectVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setObjectVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setPointSize:(float)a3;
-- (void)setProvokingVertexMode:(unint64_t)a3;
-- (void)setRenderPipelineState:(id)a3;
-- (void)setScissorRect:(id *)a3;
-- (void)setScissorRects:(id *)a3 count:(unint64_t)a4;
+- (void)setDepthClipMode:(unint64_t)mode;
+- (void)setDepthResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level;
+- (void)setDepthStencilState:(id)state;
+- (void)setDepthStoreAction:(unint64_t)action;
+- (void)setDepthStoreActionOptions:(unint64_t)options;
+- (void)setDepthTestMinBound:(float)bound maxBound:(float)maxBound;
+- (void)setFragmentAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setFragmentBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setFragmentBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setFragmentBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setFragmentBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setFragmentIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setFragmentIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setFragmentSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setFragmentSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setFragmentSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp lodBias:(float)bias atIndex:(unint64_t)index;
+- (void)setFragmentSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setFragmentSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setFragmentTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setFragmentTexture:(id)texture atTextureIndex:(unint64_t)index samplerState:(id)state atSamplerIndex:(unint64_t)samplerIndex;
+- (void)setFragmentTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setFragmentVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setFragmentVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setFrontFacingWinding:(unint64_t)winding;
+- (void)setLabel:(id)label;
+- (void)setLineWidth:(float)width;
+- (void)setMeshAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setMeshBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setMeshBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setMeshBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setMeshBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setMeshIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setMeshIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setMeshSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setMeshSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setMeshSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setMeshSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setMeshTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setMeshTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setMeshVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setMeshVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setObjectAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setObjectBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setObjectBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setObjectBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setObjectBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setObjectIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setObjectIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setObjectSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setObjectSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setObjectSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setObjectSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setObjectTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setObjectTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setObjectThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setObjectVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setObjectVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setPointSize:(float)size;
+- (void)setProvokingVertexMode:(unint64_t)mode;
+- (void)setRenderPipelineState:(id)state;
+- (void)setScissorRect:(id *)rect;
+- (void)setScissorRects:(id *)rects count:(unint64_t)count;
 - (void)setStencilCleared;
-- (void)setStencilResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6;
-- (void)setStencilStoreAction:(unint64_t)a3;
-- (void)setStencilStoreActionOptions:(unint64_t)a3;
-- (void)setTessellationFactorBuffer:(id)a3 offset:(unint64_t)a4 instanceStride:(unint64_t)a5;
-- (void)setTessellationFactorScale:(float)a3;
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setTileAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setTileBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setTileBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setTileBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setTileBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setTileIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setTileIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setTileSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setTileSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setTileSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setTileSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setTileTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setTileTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setTileVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setTileVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setTriangleFillMode:(unint64_t)a3;
-- (void)setTriangleFrontFillMode:(unint64_t)a3 backFillMode:(unint64_t)a4;
-- (void)setVertexAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVertexAmplificationCount:(unint64_t)a3 viewMappings:(id *)a4;
-- (void)setVertexAmplificationMode:(unint64_t)a3 value:(unint64_t)a4;
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6;
-- (void)setVertexBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setVertexBufferOffset:(unint64_t)a3 attributeStride:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setVertexBuffers:(const void *)a3 offsets:(const unint64_t *)a4 attributeStrides:(const unint64_t *)a5 withRange:(_NSRange)a6;
-- (void)setVertexBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setVertexBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setVertexBytes:(const void *)a3 length:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6;
-- (void)setVertexIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVertexIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setVertexSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setVertexSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setVertexSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 lodBias:(float)a6 atIndex:(unint64_t)a7;
-- (void)setVertexSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setVertexSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setVertexTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setVertexTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setVertexVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVertexVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setViewport:(id *)a3;
-- (void)setViewports:(id *)a3 count:(unint64_t)a4;
-- (void)setVisibilityResultMode:(unint64_t)a3 offset:(unint64_t)a4;
+- (void)setStencilResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level;
+- (void)setStencilStoreAction:(unint64_t)action;
+- (void)setStencilStoreActionOptions:(unint64_t)options;
+- (void)setTessellationFactorBuffer:(id)buffer offset:(unint64_t)offset instanceStride:(unint64_t)stride;
+- (void)setTessellationFactorScale:(float)scale;
+- (void)setThreadgroupMemoryLength:(unint64_t)length offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setTileAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setTileBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setTileBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setTileBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setTileBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setTileIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setTileIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setTileSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setTileSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setTileSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setTileSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setTileTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setTileTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setTileVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setTileVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setTriangleFillMode:(unint64_t)mode;
+- (void)setTriangleFrontFillMode:(unint64_t)mode backFillMode:(unint64_t)fillMode;
+- (void)setVertexAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setVertexAmplificationCount:(unint64_t)count viewMappings:(id *)mappings;
+- (void)setVertexAmplificationMode:(unint64_t)mode value:(unint64_t)value;
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setVertexBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setVertexBufferOffset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setVertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets attributeStrides:(const unint64_t *)strides withRange:(_NSRange)range;
+- (void)setVertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setVertexBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setVertexBytes:(const void *)bytes length:(unint64_t)length attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setVertexIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVertexIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setVertexSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setVertexSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setVertexSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp lodBias:(float)bias atIndex:(unint64_t)index;
+- (void)setVertexSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setVertexSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setVertexTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setVertexTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setVertexVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVertexVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setViewport:(id *)viewport;
+- (void)setViewports:(id *)viewports count:(unint64_t)count;
+- (void)setVisibilityResultMode:(unint64_t)mode offset:(unint64_t)offset;
 - (void)touch;
-- (void)updateFence:(id)a3 afterStages:(unint64_t)a4;
-- (void)useHeap:(id)a3;
-- (void)useHeap:(id)a3 stages:(unint64_t)a4;
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4;
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4 stages:(unint64_t)a5;
-- (void)useResidencySet:(id)a3;
-- (void)useResidencySets:(const void *)a3 count:(unint64_t)a4;
-- (void)useResource:(id)a3 usage:(unint64_t)a4;
-- (void)useResource:(id)a3 usage:(unint64_t)a4 stages:(unint64_t)a5;
-- (void)useResourceGroup:(id)a3 usage:(unint64_t)a4 stages:(unint64_t)a5;
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5;
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5 stages:(unint64_t)a6;
-- (void)waitForFence:(id)a3 beforeStages:(unint64_t)a4;
+- (void)updateFence:(id)fence afterStages:(unint64_t)stages;
+- (void)useHeap:(id)heap;
+- (void)useHeap:(id)heap stages:(unint64_t)stages;
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count;
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count stages:(unint64_t)stages;
+- (void)useResidencySet:(id)set;
+- (void)useResidencySets:(const void *)sets count:(unint64_t)count;
+- (void)useResource:(id)resource usage:(unint64_t)usage;
+- (void)useResource:(id)resource usage:(unint64_t)usage stages:(unint64_t)stages;
+- (void)useResourceGroup:(id)group usage:(unint64_t)usage stages:(unint64_t)stages;
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage;
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage stages:(unint64_t)stages;
+- (void)waitForFence:(id)fence beforeStages:(unint64_t)stages;
 @end
 
 @implementation CaptureMTLRenderCommandEncoder
 
-- (void)waitForFence:(id)a3 beforeStages:(unint64_t)a4
+- (void)waitForFence:(id)fence beforeStages:(unint64_t)stages
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  fenceCopy = fence;
+  [fenceCopy touch];
+  if (fenceCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:fenceCopy];
     }
   }
 
@@ -189,8 +189,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject waitForFence:v10 beforeStages:a4];
+  baseObject = [fenceCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject waitForFence:baseObject beforeStages:stages];
 
   v11 = v23;
   *(v23 + 8) = -16125;
@@ -211,10 +211,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -222,10 +222,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [fenceCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -235,43 +235,43 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = stages;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5 stages:(unint64_t)a6
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage stages:(unint64_t)stages
 {
   retainedObjects = self->_retainedObjects;
-  v32 = a3;
-  RetainArray(retainedObjects, a3, a4);
+  resourcesCopy = resources;
+  RetainArray(retainedObjects, resources, count);
   v34 = 0u;
   v35 = 0u;
   v33 = 0u;
   traceStream = self->_traceStream;
   v12 = GTTraceContext_pushEncoderWithStream(self->_traceContext, &v33);
   baseObject = self->_baseObject;
-  v14 = 8 * a4;
+  v14 = 8 * count;
   __chkstk_darwin(v12, v15);
-  bzero(&v31 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  if (a4)
+  bzero(&v31 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  if (count)
   {
-    v16 = v32;
+    v16 = resourcesCopy;
     v17 = (&v31 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0));
-    v18 = a4;
+    countCopy = count;
     do
     {
       v19 = *v16++;
       *v17++ = [v19 baseObject];
-      --v18;
+      --countCopy;
     }
 
-    while (v18);
+    while (countCopy);
   }
 
-  [(MTLRenderCommandEncoderSPI *)baseObject useResources:&v31 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0) count:a4 usage:a5 stages:a6];
+  [(MTLRenderCommandEncoderSPI *)baseObject useResources:&v31 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0) count:count usage:usage stages:stages];
   v20 = v34;
   *(v34 + 8) = -15818;
   v21 = BYTE9(v35);
@@ -291,10 +291,10 @@
   }
 
   *(v20 + 13) = v21;
-  v25 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v25)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v25->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -302,13 +302,13 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v25, v26);
-  bzero(&v31 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  v28 = StreamArray(&v33, (&v31 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0)), v32, a4);
+  __chkstk_darwin(traceStream, v26);
+  bzero(&v31 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  v28 = StreamArray(&v33, (&v31 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0)), resourcesCopy, count);
   *v22 = var0;
-  *(v22 + 1) = a4;
-  *(v22 + 2) = a5;
-  *(v22 + 3) = a6;
+  *(v22 + 1) = count;
+  *(v22 + 2) = usage;
+  *(v22 + 3) = stages;
   v22[32] = v28;
   *(v22 + 33) = 0;
   *(v22 + 9) = 0;
@@ -318,34 +318,34 @@
   *(v34 + 15) |= 8u;
 }
 
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage
 {
-  RetainArray(self->_retainedObjects, a3, a4);
+  RetainArray(self->_retainedObjects, resources, count);
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
   traceStream = self->_traceStream;
   v10 = GTTraceContext_pushEncoderWithStream(self->_traceContext, &v29);
   baseObject = self->_baseObject;
-  v12 = 8 * a4;
+  v12 = 8 * count;
   __chkstk_darwin(v10, v13);
-  bzero(&v29 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  if (a4)
+  bzero(&v29 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  if (count)
   {
-    v14 = a3;
+    resourcesCopy = resources;
     v15 = (&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0));
-    v16 = a4;
+    countCopy = count;
     do
     {
-      v17 = *v14++;
+      v17 = *resourcesCopy++;
       *v15++ = [v17 baseObject];
-      --v16;
+      --countCopy;
     }
 
-    while (v16);
+    while (countCopy);
   }
 
-  [(MTLRenderCommandEncoderSPI *)baseObject useResources:&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0) count:a4 usage:a5];
+  [(MTLRenderCommandEncoderSPI *)baseObject useResources:&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0) count:count usage:usage];
   v18 = v30;
   *(v30 + 8) = -16042;
   v19 = BYTE9(v31);
@@ -365,10 +365,10 @@
   }
 
   *(v18 + 13) = v19;
-  v23 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v23)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v23->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -376,12 +376,12 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v23, v24);
-  bzero(&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  v26 = StreamArray(&v29, (&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, a4);
+  __chkstk_darwin(traceStream, v24);
+  bzero(&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  v26 = StreamArray(&v29, (&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0)), resources, count);
   *v20 = var0;
-  *(v20 + 1) = a4;
-  *(v20 + 2) = a5;
+  *(v20 + 1) = count;
+  *(v20 + 2) = usage;
   v20[24] = v26;
   *(v20 + 25) = 0;
   *(v20 + 7) = 0;
@@ -391,37 +391,37 @@
   *(v30 + 15) |= 8u;
 }
 
-- (void)useResourceGroup:(id)a3 usage:(unint64_t)a4 stages:(unint64_t)a5
+- (void)useResourceGroup:(id)group usage:(unint64_t)usage stages:(unint64_t)stages
 {
-  v12 = a3;
+  groupCopy = group;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderCommandEncoder_useResourceGroup_usage_stages", "Resource groups", 0, 0);
-  [v12 touch];
-  v8 = v12;
-  if (v12)
+  [groupCopy touch];
+  v8 = groupCopy;
+  if (groupCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v12];
-      v8 = v12;
+      [(NSMutableSet *)retainedObjects addObject:groupCopy];
+      v8 = groupCopy;
     }
   }
 
   baseObject = self->_baseObject;
-  v11 = [v8 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject useResourceGroup:v11 usage:a4 stages:a5];
+  baseObject = [v8 baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject useResourceGroup:baseObject usage:usage stages:stages];
 }
 
-- (void)useResource:(id)a3 usage:(unint64_t)a4 stages:(unint64_t)a5
+- (void)useResource:(id)resource usage:(unint64_t)usage stages:(unint64_t)stages
 {
-  v8 = a3;
-  [v8 touch];
-  if (v8)
+  resourceCopy = resource;
+  [resourceCopy touch];
+  if (resourceCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:resourceCopy];
     }
   }
 
@@ -431,8 +431,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
   baseObject = self->_baseObject;
-  v12 = [v8 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject useResource:v12 usage:a4 stages:a5];
+  baseObject = [resourceCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject useResource:baseObject usage:usage stages:stages];
 
   v13 = v25;
   *(v25 + 8) = -15819;
@@ -453,10 +453,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -464,10 +464,10 @@
     var0 = 0;
   }
 
-  v20 = [v8 traceStream];
-  if (v20)
+  traceStream2 = [resourceCopy traceStream];
+  if (traceStream2)
   {
-    v21 = *v20;
+    v21 = *traceStream2;
   }
 
   else
@@ -477,24 +477,24 @@
 
   *v15 = var0;
   *(v15 + 1) = v21;
-  *(v15 + 2) = a4;
-  *(v15 + 3) = a5;
+  *(v15 + 2) = usage;
+  *(v15 + 3) = stages;
   s();
   *v22 = v23;
   *(v22 + 8) = BYTE8(v26);
   *(v25 + 15) |= 8u;
 }
 
-- (void)useResource:(id)a3 usage:(unint64_t)a4
+- (void)useResource:(id)resource usage:(unint64_t)usage
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  resourceCopy = resource;
+  [resourceCopy touch];
+  if (resourceCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:resourceCopy];
     }
   }
 
@@ -504,8 +504,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject useResource:v10 usage:a4];
+  baseObject = [resourceCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject useResource:baseObject usage:usage];
 
   v11 = v23;
   *(v23 + 8) = -16043;
@@ -526,10 +526,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -537,10 +537,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [resourceCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -550,88 +550,88 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = usage;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)useResidencySets:(const void *)a3 count:(unint64_t)a4
+- (void)useResidencySets:(const void *)sets count:(unint64_t)count
 {
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderCommandEncoder_useResidencySets_count", "Deprecated Residency Set API", 0, 0);
-  RetainArray(self->_retainedObjects, a3, a4);
+  RetainArray(self->_retainedObjects, sets, count);
   baseObject = self->_baseObject;
-  __chkstk_darwin(v8, 8 * a4);
+  __chkstk_darwin(v8, 8 * count);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v10, v9);
-  if (a4)
+  if (count)
   {
     v11 = v10;
-    v12 = a4;
+    countCopy = count;
     do
     {
-      v13 = *a3++;
+      v13 = *sets++;
       *v11 = [v13 baseObject];
       v11 += 8;
-      --v12;
+      --countCopy;
     }
 
-    while (v12);
+    while (countCopy);
   }
 
-  [(MTLRenderCommandEncoderSPI *)baseObject useResidencySets:v10 count:a4];
+  [(MTLRenderCommandEncoderSPI *)baseObject useResidencySets:v10 count:count];
 }
 
-- (void)useResidencySet:(id)a3
+- (void)useResidencySet:(id)set
 {
-  v8 = a3;
+  setCopy = set;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderCommandEncoder_useResidencySet", "Deprecated Residency Set API", 0, 0);
-  [v8 touch];
-  v4 = v8;
-  if (v8)
+  [setCopy touch];
+  v4 = setCopy;
+  if (setCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
-      v4 = v8;
+      [(NSMutableSet *)retainedObjects addObject:setCopy];
+      v4 = setCopy;
     }
   }
 
   baseObject = self->_baseObject;
-  v7 = [v4 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject useResidencySet:v7];
+  baseObject = [v4 baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject useResidencySet:baseObject];
 }
 
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4 stages:(unint64_t)a5
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count stages:(unint64_t)stages
 {
-  RetainArray(self->_retainedObjects, a3, a4);
+  RetainArray(self->_retainedObjects, heaps, count);
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
   traceStream = self->_traceStream;
   v10 = GTTraceContext_pushEncoderWithStream(self->_traceContext, &v29);
   baseObject = self->_baseObject;
-  v12 = 8 * a4;
+  v12 = 8 * count;
   __chkstk_darwin(v10, v13);
-  bzero(&v29 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  if (a4)
+  bzero(&v29 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  if (count)
   {
-    v14 = a3;
+    heapsCopy = heaps;
     v15 = (&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0));
-    v16 = a4;
+    countCopy = count;
     do
     {
-      v17 = *v14++;
+      v17 = *heapsCopy++;
       *v15++ = [v17 baseObject];
-      --v16;
+      --countCopy;
     }
 
-    while (v16);
+    while (countCopy);
   }
 
-  [(MTLRenderCommandEncoderSPI *)baseObject useHeaps:&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0) count:a4 stages:a5];
+  [(MTLRenderCommandEncoderSPI *)baseObject useHeaps:&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0) count:count stages:stages];
   v18 = v30;
   *(v30 + 8) = -15820;
   v19 = BYTE9(v31);
@@ -651,10 +651,10 @@
   }
 
   *(v18 + 13) = v19;
-  v23 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v23)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v23->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -662,12 +662,12 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v23, v24);
-  bzero(&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  v26 = StreamArray(&v29, (&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, a4);
+  __chkstk_darwin(traceStream, v24);
+  bzero(&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  v26 = StreamArray(&v29, (&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0)), heaps, count);
   *v20 = var0;
-  *(v20 + 1) = a4;
-  *(v20 + 2) = a5;
+  *(v20 + 1) = count;
+  *(v20 + 2) = stages;
   v20[24] = v26;
   *(v20 + 25) = 0;
   *(v20 + 7) = 0;
@@ -677,34 +677,34 @@
   *(v30 + 15) |= 8u;
 }
 
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count
 {
-  RetainArray(self->_retainedObjects, a3, a4);
+  RetainArray(self->_retainedObjects, heaps, count);
   v28 = 0u;
   v29 = 0u;
   v27 = 0u;
   traceStream = self->_traceStream;
   v8 = GTTraceContext_pushEncoderWithStream(self->_traceContext, &v27);
   baseObject = self->_baseObject;
-  v10 = 8 * a4;
+  v10 = 8 * count;
   __chkstk_darwin(v8, v11);
-  bzero(&v27 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  if (a4)
+  bzero(&v27 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  if (count)
   {
-    v12 = a3;
+    heapsCopy = heaps;
     v13 = (&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0));
-    v14 = a4;
+    countCopy = count;
     do
     {
-      v15 = *v12++;
+      v15 = *heapsCopy++;
       *v13++ = [v15 baseObject];
-      --v14;
+      --countCopy;
     }
 
-    while (v14);
+    while (countCopy);
   }
 
-  [(MTLRenderCommandEncoderSPI *)baseObject useHeaps:&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0) count:a4];
+  [(MTLRenderCommandEncoderSPI *)baseObject useHeaps:&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0) count:count];
   v16 = v28;
   *(v28 + 8) = -16040;
   v17 = BYTE9(v29);
@@ -724,10 +724,10 @@
   }
 
   *(v16 + 13) = v17;
-  v21 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v21)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v21->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -735,11 +735,11 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v21, v22);
-  bzero(&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  v24 = StreamArray(&v27, (&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, a4);
+  __chkstk_darwin(traceStream, v22);
+  bzero(&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  v24 = StreamArray(&v27, (&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0)), heaps, count);
   *v18 = var0;
-  *(v18 + 1) = a4;
+  *(v18 + 1) = count;
   v18[16] = v24;
   *(v18 + 17) = 0;
   *(v18 + 5) = 0;
@@ -749,16 +749,16 @@
   *(v28 + 15) |= 8u;
 }
 
-- (void)useHeap:(id)a3 stages:(unint64_t)a4
+- (void)useHeap:(id)heap stages:(unint64_t)stages
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  heapCopy = heap;
+  [heapCopy touch];
+  if (heapCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:heapCopy];
     }
   }
 
@@ -768,8 +768,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject useHeap:v10 stages:a4];
+  baseObject = [heapCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject useHeap:baseObject stages:stages];
 
   v11 = v23;
   *(v23 + 8) = -15821;
@@ -790,10 +790,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -801,10 +801,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [heapCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -814,23 +814,23 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = stages;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)useHeap:(id)a3
+- (void)useHeap:(id)heap
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  heapCopy = heap;
+  [heapCopy touch];
+  if (heapCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:heapCopy];
     }
   }
 
@@ -840,8 +840,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject useHeap:v8];
+  baseObject = [heapCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject useHeap:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -16041;
@@ -862,10 +862,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -873,10 +873,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [heapCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -892,16 +892,16 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)updateFence:(id)a3 afterStages:(unint64_t)a4
+- (void)updateFence:(id)fence afterStages:(unint64_t)stages
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  fenceCopy = fence;
+  [fenceCopy touch];
+  if (fenceCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:fenceCopy];
     }
   }
 
@@ -911,8 +911,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject updateFence:v10 afterStages:a4];
+  baseObject = [fenceCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject updateFence:baseObject afterStages:stages];
 
   v11 = v23;
   *(v23 + 8) = -16126;
@@ -933,10 +933,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -944,10 +944,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [fenceCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -957,21 +957,21 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = stages;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setVisibilityResultMode:(unint64_t)a3 offset:(unint64_t)a4
+- (void)setVisibilityResultMode:(unint64_t)mode offset:(unint64_t)offset
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setVisibilityResultMode:a3 offset:a4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setVisibilityResultMode:mode offset:offset];
   v8 = v18;
   *(v18 + 8) = -16252;
   v9 = BYTE9(v19);
@@ -991,10 +991,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1003,22 +1003,22 @@
   }
 
   *v10 = var0;
-  *(v10 + 1) = a3;
-  *(v10 + 2) = a4;
+  *(v10 + 1) = mode;
+  *(v10 + 2) = offset;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setViewports:(id *)a3 count:(unint64_t)a4
+- (void)setViewports:(id *)viewports count:(unint64_t)count
 {
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setViewports:a3 count:a4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setViewports:viewports count:count];
   v8 = v19;
   *(v19 + 8) = -16077;
   v9 = BYTE9(v20);
@@ -1038,10 +1038,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1049,9 +1049,9 @@
     var0 = 0;
   }
 
-  v15 = GTTraceEncoder_storeBlob(&v18, a3, 48 * a4);
+  v15 = GTTraceEncoder_storeBlob(&v18, viewports, 48 * count);
   *v10 = var0;
-  *(v10 + 1) = a4;
+  *(v10 + 1) = count;
   v10[16] = v15;
   *(v10 + 17) = 0;
   *(v10 + 5) = 0;
@@ -1061,7 +1061,7 @@
   *(v19 + 15) |= 8u;
 }
 
-- (void)setViewport:(id *)a3
+- (void)setViewport:(id *)viewport
 {
   v21 = 0u;
   v22 = 0u;
@@ -1069,10 +1069,10 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v7 = *&a3->var2;
-  v19[0] = *&a3->var0;
+  v7 = *&viewport->var2;
+  v19[0] = *&viewport->var0;
   v19[1] = v7;
-  v19[2] = *&a3->var4;
+  v19[2] = *&viewport->var4;
   [(MTLRenderCommandEncoderSPI *)baseObject setViewport:v19];
   v8 = v21;
   *(v21 + 8) = -16270;
@@ -1093,10 +1093,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1105,9 +1105,9 @@
   }
 
   *v10 = var0;
-  v15 = *&a3->var2;
-  v16 = *&a3->var4;
-  *(v10 + 8) = *&a3->var0;
+  v15 = *&viewport->var2;
+  v16 = *&viewport->var4;
+  *(v10 + 8) = *&viewport->var0;
   *(v10 + 24) = v15;
   *(v10 + 40) = v16;
   s();
@@ -1116,11 +1116,11 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setVertexVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVertexVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  RetainArray(self->_retainedObjects, a3, a4.length);
+  length = range.length;
+  location = range.location;
+  RetainArray(self->_retainedObjects, tables, range.length);
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -1132,12 +1132,12 @@
   bzero(&v28 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v13 = a3;
+    tablesCopy = tables;
     v14 = (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
     v15 = length;
     do
     {
-      v16 = *v13++;
+      v16 = *tablesCopy++;
       *v14++ = [v16 baseObject];
       --v15;
     }
@@ -1165,10 +1165,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1176,9 +1176,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v22, v23);
+  __chkstk_darwin(traceStream, v23);
   bzero(&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), tables, length);
   *v19 = var0;
   *(v19 + 1) = location;
   *(v19 + 2) = length;
@@ -1191,16 +1191,16 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)setVertexVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVertexVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  tableCopy = table;
+  [tableCopy touch];
+  if (tableCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:tableCopy];
     }
   }
 
@@ -1210,8 +1210,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setVertexVisibleFunctionTable:v10 atBufferIndex:a4];
+  baseObject = [tableCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setVertexVisibleFunctionTable:baseObject atBufferIndex:index];
 
   v11 = v23;
   *(v23 + 8) = -15446;
@@ -1232,10 +1232,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1243,10 +1243,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [tableCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -1256,18 +1256,18 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = index;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setVertexTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setVertexTextures:(const void *)textures withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  RetainArray(self->_retainedObjects, a3, a4.length);
+  length = range.length;
+  location = range.location;
+  RetainArray(self->_retainedObjects, textures, range.length);
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -1279,12 +1279,12 @@
   bzero(&v28 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v13 = a3;
+    texturesCopy = textures;
     v14 = (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
     v15 = length;
     do
     {
-      v16 = *v13++;
+      v16 = *texturesCopy++;
       *v14++ = [v16 baseObject];
       --v15;
     }
@@ -1312,10 +1312,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1323,9 +1323,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v22, v23);
+  __chkstk_darwin(traceStream, v23);
   bzero(&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), textures, length);
   *v19 = var0;
   *(v19 + 1) = location;
   *(v19 + 2) = length;
@@ -1338,16 +1338,16 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)setVertexTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setVertexTexture:(id)texture atIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  textureCopy = texture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
@@ -1357,8 +1357,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setVertexTexture:v10 atIndex:a4];
+  baseObject = [textureCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setVertexTexture:baseObject atIndex:index];
 
   v11 = v23;
   *(v23 + 8) = -16276;
@@ -1379,10 +1379,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1390,10 +1390,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [textureCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -1403,18 +1403,18 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = index;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setVertexSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setVertexSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  RetainArray(self->_retainedObjects, a3, a4.length);
+  length = range.length;
+  location = range.location;
+  RetainArray(self->_retainedObjects, states, range.length);
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -1426,12 +1426,12 @@
   bzero(&v28 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v13 = a3;
+    statesCopy = states;
     v14 = (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
     v15 = length;
     do
     {
-      v16 = *v13++;
+      v16 = *statesCopy++;
       *v14++ = [v16 baseObject];
       --v15;
     }
@@ -1459,10 +1459,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1470,9 +1470,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v22, v23);
+  __chkstk_darwin(traceStream, v23);
   bzero(&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), states, length);
   *v19 = var0;
   *(v19 + 1) = location;
   *(v19 + 2) = length;
@@ -1485,14 +1485,14 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)setVertexSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setVertexSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  v36 = a4;
+  length = range.length;
+  location = range.location;
+  clampsCopy = clamps;
   retainedObjects = self->_retainedObjects;
-  v37 = a3;
-  RetainArray(retainedObjects, a3, a6.length);
+  statesCopy = states;
+  RetainArray(retainedObjects, states, range.length);
   v39 = 0u;
   v40 = 0u;
   v38 = 0u;
@@ -1501,11 +1501,11 @@
   baseObject = self->_baseObject;
   v14 = 8 * length;
   __chkstk_darwin(v12, v15);
-  bzero(&v36 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
+  bzero(&clampsCopy - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v16 = v37;
-    v17 = (&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0));
+    v16 = statesCopy;
+    v17 = (&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0));
     v18 = length;
     do
     {
@@ -1517,10 +1517,10 @@
     while (v18);
   }
 
-  v20 = v36;
-  v21 = a5;
+  v20 = clampsCopy;
+  maxClampsCopy = maxClamps;
   v22 = location;
-  [(MTLRenderCommandEncoderSPI *)baseObject setVertexSamplerStates:&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0) lodMinClamps:v36 lodMaxClamps:a5 withRange:location, length, v36];
+  [(MTLRenderCommandEncoderSPI *)baseObject setVertexSamplerStates:&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0) lodMinClamps:clampsCopy lodMaxClamps:maxClamps withRange:location, length, clampsCopy];
   v23 = v39;
   *(v39 + 8) = -16271;
   v24 = BYTE9(v40);
@@ -1531,7 +1531,7 @@
     ++BYTE10(v40);
     v25 = GTTraceMemPool_allocateBytes(v26, *(&v39 + 1), v27 | 0x2000000000) + 16;
     v24 = v27;
-    v20 = v36;
+    v20 = clampsCopy;
   }
 
   else
@@ -1541,10 +1541,10 @@
   }
 
   *(v23 + 13) = v24;
-  v28 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v28)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v28->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1552,11 +1552,11 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v28, v29);
-  bzero(&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v31 = StreamArray(&v38, (&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0)), v37, length);
+  __chkstk_darwin(traceStream, v29);
+  bzero(&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
+  v31 = StreamArray(&v38, (&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0)), statesCopy, length);
   v32 = GTTraceEncoder_storeBytes(&v38, v20, 4 * length);
-  v33 = GTTraceEncoder_storeBytes(&v38, v21, 4 * length);
+  v33 = GTTraceEncoder_storeBytes(&v38, maxClampsCopy, 4 * length);
   *v25 = var0;
   *(v25 + 1) = v22;
   *(v25 + 2) = length;
@@ -1571,39 +1571,39 @@
   *(v39 + 15) |= 8u;
 }
 
-- (void)setVertexSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 lodBias:(float)a6 atIndex:(unint64_t)a7
+- (void)setVertexSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp lodBias:(float)bias atIndex:(unint64_t)index
 {
-  v19 = a3;
-  [v19 touch];
-  v12 = v19;
-  if (v19)
+  stateCopy = state;
+  [stateCopy touch];
+  v12 = stateCopy;
+  if (stateCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v19];
-      v12 = v19;
+      [(NSMutableSet *)retainedObjects addObject:stateCopy];
+      v12 = stateCopy;
     }
   }
 
   baseObject = self->_baseObject;
-  v15 = [v12 baseObject];
-  *&v16 = a4;
-  *&v17 = a5;
-  *&v18 = a6;
-  [(MTLRenderCommandEncoderSPI *)baseObject setVertexSamplerState:v15 lodMinClamp:a7 lodMaxClamp:v16 lodBias:v17 atIndex:v18];
+  baseObject = [v12 baseObject];
+  *&v16 = clamp;
+  *&v17 = maxClamp;
+  *&v18 = bias;
+  [(MTLRenderCommandEncoderSPI *)baseObject setVertexSamplerState:baseObject lodMinClamp:index lodMaxClamp:v16 lodBias:v17 atIndex:v18];
 }
 
-- (void)setVertexSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setVertexSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
-  v10 = a3;
-  [v10 touch];
-  if (v10)
+  stateCopy = state;
+  [stateCopy touch];
+  if (stateCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:stateCopy];
     }
   }
 
@@ -1613,10 +1613,10 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v28);
   baseObject = self->_baseObject;
-  v14 = [v10 baseObject];
-  *&v15 = a4;
-  *&v16 = a5;
-  [(MTLRenderCommandEncoderSPI *)baseObject setVertexSamplerState:v14 lodMinClamp:a6 lodMaxClamp:v15 atIndex:v16];
+  baseObject = [stateCopy baseObject];
+  *&v15 = clamp;
+  *&v16 = maxClamp;
+  [(MTLRenderCommandEncoderSPI *)baseObject setVertexSamplerState:baseObject lodMinClamp:index lodMaxClamp:v15 atIndex:v16];
 
   v17 = v29;
   *(v29 + 8) = -16272;
@@ -1637,10 +1637,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1648,10 +1648,10 @@
     var0 = 0;
   }
 
-  v24 = [v10 traceStream];
-  if (v24)
+  traceStream2 = [stateCopy traceStream];
+  if (traceStream2)
   {
-    v25 = *v24;
+    v25 = *traceStream2;
   }
 
   else
@@ -1661,25 +1661,25 @@
 
   *v19 = var0;
   *(v19 + 1) = v25;
-  *(v19 + 2) = a6;
-  *(v19 + 6) = a4;
-  *(v19 + 7) = a5;
+  *(v19 + 2) = index;
+  *(v19 + 6) = clamp;
+  *(v19 + 7) = maxClamp;
   s();
   *v26 = v27;
   *(v26 + 8) = BYTE8(v30);
   *(v29 + 15) |= 8u;
 }
 
-- (void)setVertexSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setVertexSamplerState:(id)state atIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  stateCopy = state;
+  [stateCopy touch];
+  if (stateCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:stateCopy];
     }
   }
 
@@ -1689,8 +1689,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setVertexSamplerState:v10 atIndex:a4];
+  baseObject = [stateCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setVertexSamplerState:baseObject atIndex:index];
 
   v11 = v23;
   *(v23 + 8) = -16274;
@@ -1711,10 +1711,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1722,10 +1722,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [stateCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -1735,18 +1735,18 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = index;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setVertexIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVertexIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  RetainArray(self->_retainedObjects, a3, a4.length);
+  length = range.length;
+  location = range.location;
+  RetainArray(self->_retainedObjects, tables, range.length);
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -1758,12 +1758,12 @@
   bzero(&v28 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v13 = a3;
+    tablesCopy = tables;
     v14 = (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
     v15 = length;
     do
     {
-      v16 = *v13++;
+      v16 = *tablesCopy++;
       *v14++ = [v16 baseObject];
       --v15;
     }
@@ -1791,10 +1791,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1802,9 +1802,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v22, v23);
+  __chkstk_darwin(traceStream, v23);
   bzero(&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), tables, length);
   *v19 = var0;
   *(v19 + 1) = location;
   *(v19 + 2) = length;
@@ -1817,16 +1817,16 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)setVertexIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVertexIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  tableCopy = table;
+  [tableCopy touch];
+  if (tableCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:tableCopy];
     }
   }
 
@@ -1836,8 +1836,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setVertexIntersectionFunctionTable:v10 atBufferIndex:a4];
+  baseObject = [tableCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setVertexIntersectionFunctionTable:baseObject atBufferIndex:index];
 
   v11 = v23;
   *(v23 + 8) = -15448;
@@ -1858,10 +1858,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1869,10 +1869,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [tableCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -1882,21 +1882,21 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = index;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setVertexBytes:(const void *)a3 length:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6
+- (void)setVertexBytes:(const void *)bytes length:(unint64_t)length attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
   v23 = 0u;
   v24 = 0u;
   v22 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setVertexBytes:a3 length:a4 attributeStride:a5 atIndex:a6];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setVertexBytes:bytes length:length attributeStride:stride atIndex:index];
   v12 = v23;
   *(v23 + 8) = -15272;
   v13 = BYTE9(v24);
@@ -1916,10 +1916,10 @@
   }
 
   *(v12 + 13) = v13;
-  v17 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v17)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v17->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1929,7 +1929,7 @@
 
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v19 = GTTraceEncoder_storeBlob(&v22, a3, a4);
+    v19 = GTTraceEncoder_storeBlob(&v22, bytes, length);
   }
 
   else
@@ -1938,9 +1938,9 @@
   }
 
   *v14 = var0;
-  *(v14 + 1) = a4;
-  *(v14 + 2) = a5;
-  *(v14 + 3) = a6;
+  *(v14 + 1) = length;
+  *(v14 + 2) = stride;
+  *(v14 + 3) = index;
   v14[32] = v19;
   *(v14 + 33) = 0;
   *(v14 + 9) = 0;
@@ -1950,14 +1950,14 @@
   *(v23 + 15) |= 8u;
 }
 
-- (void)setVertexBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setVertexBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setVertexBytes:a3 length:a4 atIndex:a5];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setVertexBytes:bytes length:length atIndex:index];
   v10 = v21;
   *(v21 + 8) = -16225;
   v11 = BYTE9(v22);
@@ -1977,10 +1977,10 @@
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1990,7 +1990,7 @@
 
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v17 = GTTraceEncoder_storeBlob(&v20, a3, a4);
+    v17 = GTTraceEncoder_storeBlob(&v20, bytes, length);
   }
 
   else
@@ -1999,8 +1999,8 @@
   }
 
   *v12 = var0;
-  *(v12 + 1) = a4;
-  *(v12 + 2) = a5;
+  *(v12 + 1) = length;
+  *(v12 + 2) = index;
   v12[24] = v17;
   *(v12 + 25) = 0;
   *(v12 + 7) = 0;
@@ -2010,13 +2010,13 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setVertexBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setVertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   retainedObjects = self->_retainedObjects;
-  v33 = a3;
-  RetainArray(retainedObjects, a3, a5.length);
+  buffersCopy = buffers;
+  RetainArray(retainedObjects, buffers, range.length);
   v35 = 0u;
   v36 = 0u;
   v34 = 0u;
@@ -2028,7 +2028,7 @@
   bzero(&v32 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v15 = v33;
+    v15 = buffersCopy;
     v16 = (&v32 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0));
     v17 = length;
     do
@@ -2041,8 +2041,8 @@
     while (v17);
   }
 
-  v19 = a4;
-  [(MTLRenderCommandEncoderSPI *)baseObject setVertexBuffers:&v32 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0) offsets:a4 withRange:location, length];
+  offsetsCopy = offsets;
+  [(MTLRenderCommandEncoderSPI *)baseObject setVertexBuffers:&v32 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0) offsets:offsets withRange:location, length];
   v20 = v35;
   *(v35 + 8) = -16277;
   v21 = BYTE9(v36);
@@ -2062,10 +2062,10 @@
   }
 
   *(v20 + 13) = v21;
-  v25 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v25)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v25->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2073,10 +2073,10 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v25, v26);
+  __chkstk_darwin(traceStream, v26);
   bzero(&v32 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v28 = StreamArray(&v34, (&v32 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0)), v33, length);
-  v29 = GTTraceEncoder_storeBytes(&v34, v19, 8 * length);
+  v28 = StreamArray(&v34, (&v32 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0)), buffersCopy, length);
+  v29 = GTTraceEncoder_storeBytes(&v34, offsetsCopy, 8 * length);
   *v22 = var0;
   *(v22 + 1) = location;
   *(v22 + 2) = length;
@@ -2090,14 +2090,14 @@
   *(v35 + 15) |= 8u;
 }
 
-- (void)setVertexBuffers:(const void *)a3 offsets:(const unint64_t *)a4 attributeStrides:(const unint64_t *)a5 withRange:(_NSRange)a6
+- (void)setVertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets attributeStrides:(const unint64_t *)strides withRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  v36 = a4;
+  length = range.length;
+  location = range.location;
+  offsetsCopy = offsets;
   retainedObjects = self->_retainedObjects;
-  v37 = a3;
-  RetainArray(retainedObjects, a3, a6.length);
+  buffersCopy = buffers;
+  RetainArray(retainedObjects, buffers, range.length);
   v39 = 0u;
   v40 = 0u;
   v38 = 0u;
@@ -2106,11 +2106,11 @@
   baseObject = self->_baseObject;
   v14 = 8 * length;
   __chkstk_darwin(v12, v15);
-  bzero(&v36 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
+  bzero(&offsetsCopy - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v16 = v37;
-    v17 = (&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0));
+    v16 = buffersCopy;
+    v17 = (&offsetsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0));
     v18 = length;
     do
     {
@@ -2122,9 +2122,9 @@
     while (v18);
   }
 
-  v20 = a5;
+  stridesCopy = strides;
   v21 = location;
-  [(MTLRenderCommandEncoderSPI *)baseObject setVertexBuffers:&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0) offsets:v36 attributeStrides:a5 withRange:location, length, v36];
+  [(MTLRenderCommandEncoderSPI *)baseObject setVertexBuffers:&offsetsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0) offsets:offsetsCopy attributeStrides:strides withRange:location, length, offsetsCopy];
   v22 = v39;
   *(v39 + 8) = -15273;
   v23 = BYTE9(v40);
@@ -2144,10 +2144,10 @@
   }
 
   *(v22 + 13) = v23;
-  v27 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v27)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v27->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2155,13 +2155,13 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v27, v28);
-  bzero(&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v30 = StreamArray(&v38, (&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0)), v37, length);
+  __chkstk_darwin(traceStream, v28);
+  bzero(&offsetsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
+  v30 = StreamArray(&v38, (&offsetsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0)), buffersCopy, length);
   v31 = boundaryTrackerInstance;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v32 = GTTraceEncoder_storeBlob(&v38, v36, length);
+    v32 = GTTraceEncoder_storeBlob(&v38, offsetsCopy, length);
     v31 = boundaryTrackerInstance;
   }
 
@@ -2172,7 +2172,7 @@
 
   if ((*(v31 + 20) & 0xFFFFFFFE) == 2)
   {
-    v33 = GTTraceEncoder_storeBlob(&v38, v20, length);
+    v33 = GTTraceEncoder_storeBlob(&v38, stridesCopy, length);
   }
 
   else
@@ -2194,14 +2194,14 @@
   *(v39 + 15) |= 8u;
 }
 
-- (void)setVertexBufferOffset:(unint64_t)a3 attributeStride:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setVertexBufferOffset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
   v20 = 0u;
   v21 = 0u;
   v19 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v19);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setVertexBufferOffset:a3 attributeStride:a4 atIndex:a5];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setVertexBufferOffset:offset attributeStride:stride atIndex:index];
   v10 = v20;
   *(v20 + 8) = -15274;
   v11 = BYTE9(v21);
@@ -2221,10 +2221,10 @@
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2233,23 +2233,23 @@
   }
 
   *v12 = var0;
-  *(v12 + 1) = a3;
-  *(v12 + 2) = a4;
-  *(v12 + 3) = a5;
+  *(v12 + 1) = offset;
+  *(v12 + 2) = stride;
+  *(v12 + 3) = index;
   s();
   *v17 = v18;
   *(v17 + 8) = BYTE8(v21);
   *(v20 + 15) |= 8u;
 }
 
-- (void)setVertexBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setVertexBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setVertexBufferOffset:a3 atIndex:a4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setVertexBufferOffset:offset atIndex:index];
   v8 = v18;
   *(v18 + 8) = -16224;
   v9 = BYTE9(v19);
@@ -2269,10 +2269,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2281,24 +2281,24 @@
   }
 
   *v10 = var0;
-  *(v10 + 1) = a3;
-  *(v10 + 2) = a4;
+  *(v10 + 1) = offset;
+  *(v10 + 2) = index;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
-  v10 = a3;
-  [v10 touch];
-  if (v10)
+  bufferCopy = buffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
@@ -2308,8 +2308,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v26);
   baseObject = self->_baseObject;
-  v14 = [v10 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setVertexBuffer:v14 offset:a4 attributeStride:a5 atIndex:a6];
+  baseObject = [bufferCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setVertexBuffer:baseObject offset:offset attributeStride:stride atIndex:index];
 
   v15 = v27;
   *(v27 + 8) = -15275;
@@ -2330,10 +2330,10 @@
   }
 
   *(v15 + 13) = v16;
-  v20 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2341,10 +2341,10 @@
     var0 = 0;
   }
 
-  v22 = [v10 traceStream];
-  if (v22)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v23 = *v22;
+    v23 = *traceStream2;
   }
 
   else
@@ -2354,25 +2354,25 @@
 
   *v17 = var0;
   *(v17 + 1) = v23;
-  *(v17 + 2) = a4;
-  *(v17 + 3) = a5;
-  *(v17 + 4) = a6;
+  *(v17 + 2) = offset;
+  *(v17 + 3) = stride;
+  *(v17 + 4) = index;
   s();
   *v24 = v25;
   *(v24 + 8) = BYTE8(v28);
   *(v27 + 15) |= 8u;
 }
 
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v8 = a3;
-  [v8 touch];
-  if (v8)
+  bufferCopy = buffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
@@ -2382,8 +2382,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
   baseObject = self->_baseObject;
-  v12 = [v8 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setVertexBuffer:v12 offset:a4 atIndex:a5];
+  baseObject = [bufferCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setVertexBuffer:baseObject offset:offset atIndex:index];
 
   v13 = v25;
   *(v25 + 8) = -16278;
@@ -2404,10 +2404,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2415,10 +2415,10 @@
     var0 = 0;
   }
 
-  v20 = [v8 traceStream];
-  if (v20)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v21 = *v20;
+    v21 = *traceStream2;
   }
 
   else
@@ -2428,22 +2428,22 @@
 
   *v15 = var0;
   *(v15 + 1) = v21;
-  *(v15 + 2) = a4;
-  *(v15 + 3) = a5;
+  *(v15 + 2) = offset;
+  *(v15 + 3) = index;
   s();
   *v22 = v23;
   *(v22 + 8) = BYTE8(v26);
   *(v25 + 15) |= 8u;
 }
 
-- (void)setVertexAmplificationMode:(unint64_t)a3 value:(unint64_t)a4
+- (void)setVertexAmplificationMode:(unint64_t)mode value:(unint64_t)value
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setVertexAmplificationMode:a3 value:a4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setVertexAmplificationMode:mode value:value];
   v8 = v18;
   *(v18 + 8) = -15812;
   v9 = BYTE9(v19);
@@ -2463,10 +2463,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2475,22 +2475,22 @@
   }
 
   *v10 = var0;
-  *(v10 + 1) = a3;
-  *(v10 + 2) = a4;
+  *(v10 + 1) = mode;
+  *(v10 + 2) = value;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setTriangleFrontFillMode:(unint64_t)a3 backFillMode:(unint64_t)a4
+- (void)setTriangleFrontFillMode:(unint64_t)mode backFillMode:(unint64_t)fillMode
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setTriangleFrontFillMode:a3 backFillMode:a4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setTriangleFrontFillMode:mode backFillMode:fillMode];
   v8 = v18;
   *(v18 + 8) = -15721;
   v9 = BYTE9(v19);
@@ -2510,10 +2510,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2522,22 +2522,22 @@
   }
 
   *v10 = var0;
-  *(v10 + 1) = a3;
-  *(v10 + 2) = a4;
+  *(v10 + 1) = mode;
+  *(v10 + 2) = fillMode;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setTriangleFillMode:(unint64_t)a3
+- (void)setTriangleFillMode:(unint64_t)mode
 {
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setTriangleFillMode:a3];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setTriangleFillMode:mode];
   v6 = v16;
   *(v16 + 8) = -16264;
   v7 = BYTE9(v17);
@@ -2557,10 +2557,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2569,18 +2569,18 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = mode;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
 }
 
-- (void)setTileVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setTileVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  RetainArray(self->_retainedObjects, a3, a4.length);
+  length = range.length;
+  location = range.location;
+  RetainArray(self->_retainedObjects, tables, range.length);
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -2592,12 +2592,12 @@
   bzero(&v28 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v13 = a3;
+    tablesCopy = tables;
     v14 = (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
     v15 = length;
     do
     {
-      v16 = *v13++;
+      v16 = *tablesCopy++;
       *v14++ = [v16 baseObject];
       --v15;
     }
@@ -2625,10 +2625,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2636,9 +2636,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v22, v23);
+  __chkstk_darwin(traceStream, v23);
   bzero(&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), tables, length);
   *v19 = var0;
   *(v19 + 1) = location;
   *(v19 + 2) = length;
@@ -2651,16 +2651,16 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)setTileVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setTileVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  tableCopy = table;
+  [tableCopy touch];
+  if (tableCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:tableCopy];
     }
   }
 
@@ -2670,8 +2670,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setTileVisibleFunctionTable:v10 atBufferIndex:a4];
+  baseObject = [tableCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setTileVisibleFunctionTable:baseObject atBufferIndex:index];
 
   v11 = v23;
   *(v23 + 8) = -15451;
@@ -2692,10 +2692,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2703,10 +2703,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [tableCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -2716,18 +2716,18 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = index;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setTileTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setTileTextures:(const void *)textures withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  RetainArray(self->_retainedObjects, a3, a4.length);
+  length = range.length;
+  location = range.location;
+  RetainArray(self->_retainedObjects, textures, range.length);
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -2739,12 +2739,12 @@
   bzero(&v28 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v13 = a3;
+    texturesCopy = textures;
     v14 = (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
     v15 = length;
     do
     {
-      v16 = *v13++;
+      v16 = *texturesCopy++;
       *v14++ = [v16 baseObject];
       --v15;
     }
@@ -2772,10 +2772,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2783,9 +2783,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v22, v23);
+  __chkstk_darwin(traceStream, v23);
   bzero(&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), textures, length);
   *v19 = var0;
   *(v19 + 1) = location;
   *(v19 + 2) = length;
@@ -2798,16 +2798,16 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)setTileTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setTileTexture:(id)texture atIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  textureCopy = texture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
@@ -2817,8 +2817,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setTileTexture:v10 atIndex:a4];
+  baseObject = [textureCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setTileTexture:baseObject atIndex:index];
 
   v11 = v23;
   *(v23 + 8) = -16140;
@@ -2839,10 +2839,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2850,10 +2850,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [textureCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -2863,18 +2863,18 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = index;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setTileSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setTileSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  RetainArray(self->_retainedObjects, a3, a4.length);
+  length = range.length;
+  location = range.location;
+  RetainArray(self->_retainedObjects, states, range.length);
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -2886,12 +2886,12 @@
   bzero(&v28 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v13 = a3;
+    statesCopy = states;
     v14 = (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
     v15 = length;
     do
     {
-      v16 = *v13++;
+      v16 = *statesCopy++;
       *v14++ = [v16 baseObject];
       --v15;
     }
@@ -2919,10 +2919,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2930,9 +2930,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v22, v23);
+  __chkstk_darwin(traceStream, v23);
   bzero(&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), states, length);
   *v19 = var0;
   *(v19 + 1) = location;
   *(v19 + 2) = length;
@@ -2945,14 +2945,14 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)setTileSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setTileSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  v36 = a4;
+  length = range.length;
+  location = range.location;
+  clampsCopy = clamps;
   retainedObjects = self->_retainedObjects;
-  v37 = a3;
-  RetainArray(retainedObjects, a3, a6.length);
+  statesCopy = states;
+  RetainArray(retainedObjects, states, range.length);
   v39 = 0u;
   v40 = 0u;
   v38 = 0u;
@@ -2961,11 +2961,11 @@
   baseObject = self->_baseObject;
   v14 = 8 * length;
   __chkstk_darwin(v12, v15);
-  bzero(&v36 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
+  bzero(&clampsCopy - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v16 = v37;
-    v17 = (&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0));
+    v16 = statesCopy;
+    v17 = (&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0));
     v18 = length;
     do
     {
@@ -2977,10 +2977,10 @@
     while (v18);
   }
 
-  v20 = v36;
-  v21 = a5;
+  v20 = clampsCopy;
+  maxClampsCopy = maxClamps;
   v22 = location;
-  [(MTLRenderCommandEncoderSPI *)baseObject setTileSamplerStates:&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0) lodMinClamps:v36 lodMaxClamps:a5 withRange:location, length, v36];
+  [(MTLRenderCommandEncoderSPI *)baseObject setTileSamplerStates:&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0) lodMinClamps:clampsCopy lodMaxClamps:maxClamps withRange:location, length, clampsCopy];
   v23 = v39;
   *(v39 + 8) = -16084;
   v24 = BYTE9(v40);
@@ -2991,7 +2991,7 @@
     ++BYTE10(v40);
     v25 = GTTraceMemPool_allocateBytes(v26, *(&v39 + 1), v27 | 0x2000000000) + 16;
     v24 = v27;
-    v20 = v36;
+    v20 = clampsCopy;
   }
 
   else
@@ -3001,10 +3001,10 @@
   }
 
   *(v23 + 13) = v24;
-  v28 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v28)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v28->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3012,11 +3012,11 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v28, v29);
-  bzero(&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v31 = StreamArray(&v38, (&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0)), v37, length);
+  __chkstk_darwin(traceStream, v29);
+  bzero(&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
+  v31 = StreamArray(&v38, (&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0)), statesCopy, length);
   v32 = GTTraceEncoder_storeBytes(&v38, v20, 4 * length);
-  v33 = GTTraceEncoder_storeBytes(&v38, v21, 4 * length);
+  v33 = GTTraceEncoder_storeBytes(&v38, maxClampsCopy, 4 * length);
   *v25 = var0;
   *(v25 + 1) = v22;
   *(v25 + 2) = length;
@@ -3031,16 +3031,16 @@
   *(v39 + 15) |= 8u;
 }
 
-- (void)setTileSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setTileSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
-  v10 = a3;
-  [v10 touch];
-  if (v10)
+  stateCopy = state;
+  [stateCopy touch];
+  if (stateCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:stateCopy];
     }
   }
 
@@ -3050,10 +3050,10 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v28);
   baseObject = self->_baseObject;
-  v14 = [v10 baseObject];
-  *&v15 = a4;
-  *&v16 = a5;
-  [(MTLRenderCommandEncoderSPI *)baseObject setTileSamplerState:v14 lodMinClamp:a6 lodMaxClamp:v15 atIndex:v16];
+  baseObject = [stateCopy baseObject];
+  *&v15 = clamp;
+  *&v16 = maxClamp;
+  [(MTLRenderCommandEncoderSPI *)baseObject setTileSamplerState:baseObject lodMinClamp:index lodMaxClamp:v15 atIndex:v16];
 
   v17 = v29;
   *(v29 + 8) = -16138;
@@ -3074,10 +3074,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3085,10 +3085,10 @@
     var0 = 0;
   }
 
-  v24 = [v10 traceStream];
-  if (v24)
+  traceStream2 = [stateCopy traceStream];
+  if (traceStream2)
   {
-    v25 = *v24;
+    v25 = *traceStream2;
   }
 
   else
@@ -3098,25 +3098,25 @@
 
   *v19 = var0;
   *(v19 + 1) = v25;
-  *(v19 + 2) = a6;
-  *(v19 + 6) = a4;
-  *(v19 + 7) = a5;
+  *(v19 + 2) = index;
+  *(v19 + 6) = clamp;
+  *(v19 + 7) = maxClamp;
   s();
   *v26 = v27;
   *(v26 + 8) = BYTE8(v30);
   *(v29 + 15) |= 8u;
 }
 
-- (void)setTileSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setTileSamplerState:(id)state atIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  stateCopy = state;
+  [stateCopy touch];
+  if (stateCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:stateCopy];
     }
   }
 
@@ -3126,8 +3126,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setTileSamplerState:v10 atIndex:a4];
+  baseObject = [stateCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setTileSamplerState:baseObject atIndex:index];
 
   v11 = v23;
   *(v23 + 8) = -16139;
@@ -3148,10 +3148,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3159,10 +3159,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [stateCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -3172,18 +3172,18 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = index;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setTileIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setTileIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  RetainArray(self->_retainedObjects, a3, a4.length);
+  length = range.length;
+  location = range.location;
+  RetainArray(self->_retainedObjects, tables, range.length);
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -3195,12 +3195,12 @@
   bzero(&v28 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v13 = a3;
+    tablesCopy = tables;
     v14 = (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
     v15 = length;
     do
     {
-      v16 = *v13++;
+      v16 = *tablesCopy++;
       *v14++ = [v16 baseObject];
       --v15;
     }
@@ -3228,10 +3228,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3239,9 +3239,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v22, v23);
+  __chkstk_darwin(traceStream, v23);
   bzero(&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), tables, length);
   *v19 = var0;
   *(v19 + 1) = location;
   *(v19 + 2) = length;
@@ -3254,16 +3254,16 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)setTileIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setTileIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  tableCopy = table;
+  [tableCopy touch];
+  if (tableCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:tableCopy];
     }
   }
 
@@ -3273,8 +3273,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setTileIntersectionFunctionTable:v10 atBufferIndex:a4];
+  baseObject = [tableCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setTileIntersectionFunctionTable:baseObject atBufferIndex:index];
 
   v11 = v23;
   *(v23 + 8) = -15453;
@@ -3295,10 +3295,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3306,10 +3306,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [tableCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -3319,21 +3319,21 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = index;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setTileBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setTileBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setTileBytes:a3 length:a4 atIndex:a5];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setTileBytes:bytes length:length atIndex:index];
   v10 = v21;
   *(v21 + 8) = -16143;
   v11 = BYTE9(v22);
@@ -3353,10 +3353,10 @@
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3366,7 +3366,7 @@
 
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v17 = GTTraceEncoder_storeBlob(&v20, a3, a4);
+    v17 = GTTraceEncoder_storeBlob(&v20, bytes, length);
   }
 
   else
@@ -3375,8 +3375,8 @@
   }
 
   *v12 = var0;
-  *(v12 + 1) = a4;
-  *(v12 + 2) = a5;
+  *(v12 + 1) = length;
+  *(v12 + 2) = index;
   v12[24] = v17;
   *(v12 + 25) = 0;
   *(v12 + 7) = 0;
@@ -3386,13 +3386,13 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setTileBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setTileBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   retainedObjects = self->_retainedObjects;
-  v35 = a3;
-  RetainArray(retainedObjects, a3, a5.length);
+  buffersCopy = buffers;
+  RetainArray(retainedObjects, buffers, range.length);
   v37 = 0u;
   v38 = 0u;
   v36 = 0u;
@@ -3404,7 +3404,7 @@
   bzero(&v34 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v15 = v35;
+    v15 = buffersCopy;
     v16 = (&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0));
     v17 = length;
     do
@@ -3417,10 +3417,10 @@
     while (v17);
   }
 
-  v19 = a4;
-  v20 = a4;
+  offsetsCopy = offsets;
+  offsetsCopy2 = offsets;
   v21 = location;
-  [(MTLRenderCommandEncoderSPI *)baseObject setTileBuffers:&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0) offsets:v20 withRange:location, length];
+  [(MTLRenderCommandEncoderSPI *)baseObject setTileBuffers:&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0) offsets:offsetsCopy2 withRange:location, length];
   v22 = v37;
   *(v37 + 8) = -16087;
   v23 = BYTE9(v38);
@@ -3440,10 +3440,10 @@
   }
 
   *(v22 + 13) = v23;
-  v27 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v27)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v27->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3451,12 +3451,12 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v27, v28);
+  __chkstk_darwin(traceStream, v28);
   bzero(&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v30 = StreamArray(&v36, (&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0)), v35, length);
+  v30 = StreamArray(&v36, (&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0)), buffersCopy, length);
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v31 = GTTraceEncoder_storeBlob(&v36, v19, length);
+    v31 = GTTraceEncoder_storeBlob(&v36, offsetsCopy, length);
   }
 
   else
@@ -3477,14 +3477,14 @@
   *(v37 + 15) |= 8u;
 }
 
-- (void)setTileBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setTileBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setTileBufferOffset:a3 atIndex:a4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setTileBufferOffset:offset atIndex:index];
   v8 = v18;
   *(v18 + 8) = -16141;
   v9 = BYTE9(v19);
@@ -3504,10 +3504,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3516,24 +3516,24 @@
   }
 
   *v10 = var0;
-  *(v10 + 1) = a3;
-  *(v10 + 2) = a4;
+  *(v10 + 1) = offset;
+  *(v10 + 2) = index;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setTileBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setTileBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v8 = a3;
-  [v8 touch];
-  if (v8)
+  bufferCopy = buffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
@@ -3543,8 +3543,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
   baseObject = self->_baseObject;
-  v12 = [v8 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setTileBuffer:v12 offset:a4 atIndex:a5];
+  baseObject = [bufferCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setTileBuffer:baseObject offset:offset atIndex:index];
 
   v13 = v25;
   *(v25 + 8) = -16142;
@@ -3565,10 +3565,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3576,10 +3576,10 @@
     var0 = 0;
   }
 
-  v20 = [v8 traceStream];
-  if (v20)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v21 = *v20;
+    v21 = *traceStream2;
   }
 
   else
@@ -3589,22 +3589,22 @@
 
   *v15 = var0;
   *(v15 + 1) = v21;
-  *(v15 + 2) = a4;
-  *(v15 + 3) = a5;
+  *(v15 + 2) = offset;
+  *(v15 + 3) = index;
   s();
   *v22 = v23;
   *(v22 + 8) = BYTE8(v26);
   *(v25 + 15) |= 8u;
 }
 
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setThreadgroupMemoryLength:(unint64_t)length offset:(unint64_t)offset atIndex:(unint64_t)index
 {
   v20 = 0u;
   v21 = 0u;
   v19 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v19);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setThreadgroupMemoryLength:a3 offset:a4 atIndex:a5];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setThreadgroupMemoryLength:length offset:offset atIndex:index];
   v10 = v20;
   *(v20 + 8) = -16074;
   v11 = BYTE9(v21);
@@ -3624,10 +3624,10 @@
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3636,23 +3636,23 @@
   }
 
   *v12 = var0;
-  *(v12 + 1) = a3;
-  *(v12 + 2) = a4;
-  *(v12 + 3) = a5;
+  *(v12 + 1) = length;
+  *(v12 + 2) = offset;
+  *(v12 + 3) = index;
   s();
   *v17 = v18;
   *(v17 + 8) = BYTE8(v21);
   *(v20 + 15) |= 8u;
 }
 
-- (void)setTessellationFactorScale:(float)a3
+- (void)setTessellationFactorScale:(float)scale
 {
   v17 = 0u;
   v18 = 0u;
   v16 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v16);
-  *&v6 = a3;
+  *&v6 = scale;
   [(MTLRenderCommandEncoderSPI *)self->_baseObject setTessellationFactorScale:v6];
   v7 = v17;
   *(v17 + 8) = -16132;
@@ -3673,10 +3673,10 @@
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3685,7 +3685,7 @@
   }
 
   *v9 = var0;
-  *(v9 + 2) = a3;
+  *(v9 + 2) = scale;
   *(v9 + 3) = 0;
   s();
   *v14 = v15;
@@ -3693,16 +3693,16 @@
   *(v17 + 15) |= 8u;
 }
 
-- (void)setTessellationFactorBuffer:(id)a3 offset:(unint64_t)a4 instanceStride:(unint64_t)a5
+- (void)setTessellationFactorBuffer:(id)buffer offset:(unint64_t)offset instanceStride:(unint64_t)stride
 {
-  v8 = a3;
-  [v8 touch];
-  if (v8)
+  bufferCopy = buffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
@@ -3712,8 +3712,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
   baseObject = self->_baseObject;
-  v12 = [v8 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setTessellationFactorBuffer:v12 offset:a4 instanceStride:a5];
+  baseObject = [bufferCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setTessellationFactorBuffer:baseObject offset:offset instanceStride:stride];
 
   v13 = v25;
   *(v25 + 8) = -16148;
@@ -3734,10 +3734,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3745,10 +3745,10 @@
     var0 = 0;
   }
 
-  v20 = [v8 traceStream];
-  if (v20)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v21 = *v20;
+    v21 = *traceStream2;
   }
 
   else
@@ -3758,22 +3758,22 @@
 
   *v15 = var0;
   *(v15 + 1) = v21;
-  *(v15 + 2) = a4;
-  *(v15 + 3) = a5;
+  *(v15 + 2) = offset;
+  *(v15 + 3) = stride;
   s();
   *v22 = v23;
   *(v22 + 8) = BYTE8(v26);
   *(v25 + 15) |= 8u;
 }
 
-- (void)setStencilStoreActionOptions:(unint64_t)a3
+- (void)setStencilStoreActionOptions:(unint64_t)options
 {
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setStencilStoreActionOptions:a3];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setStencilStoreActionOptions:options];
   v6 = v16;
   *(v16 + 8) = -16020;
   v7 = BYTE9(v17);
@@ -3793,10 +3793,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3805,21 +3805,21 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = options;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
 }
 
-- (void)setStencilStoreAction:(unint64_t)a3
+- (void)setStencilStoreAction:(unint64_t)action
 {
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setStencilStoreAction:a3];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setStencilStoreAction:action];
   v6 = v16;
   *(v16 + 8) = -16157;
   v7 = BYTE9(v17);
@@ -3839,10 +3839,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3851,23 +3851,23 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = action;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
 }
 
-- (void)setStencilResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6
+- (void)setStencilResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level
 {
-  v10 = a3;
-  [v10 touch];
-  if (v10)
+  textureCopy = texture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
@@ -3877,8 +3877,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v26);
   baseObject = self->_baseObject;
-  v14 = [v10 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setStencilResolveTexture:v14 slice:a4 depthPlane:a5 level:a6];
+  baseObject = [textureCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setStencilResolveTexture:baseObject slice:slice depthPlane:plane level:level];
 
   v15 = v27;
   *(v27 + 8) = -15723;
@@ -3899,10 +3899,10 @@
   }
 
   *(v15 + 13) = v16;
-  v20 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3910,10 +3910,10 @@
     var0 = 0;
   }
 
-  v22 = [v10 traceStream];
-  if (v22)
+  traceStream2 = [textureCopy traceStream];
+  if (traceStream2)
   {
-    v23 = *v22;
+    v23 = *traceStream2;
   }
 
   else
@@ -3923,9 +3923,9 @@
 
   *v17 = var0;
   *(v17 + 1) = v23;
-  *(v17 + 2) = a4;
-  *(v17 + 3) = a5;
-  *(v17 + 4) = a6;
+  *(v17 + 2) = slice;
+  *(v17 + 3) = plane;
+  *(v17 + 4) = level;
   s();
   *v24 = v25;
   *(v24 + 8) = BYTE8(v28);
@@ -3959,10 +3959,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3977,14 +3977,14 @@
   *(v14 + 15) |= 8u;
 }
 
-- (void)setScissorRects:(id *)a3 count:(unint64_t)a4
+- (void)setScissorRects:(id *)rects count:(unint64_t)count
 {
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setScissorRects:a3 count:a4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setScissorRects:rects count:count];
   v8 = v19;
   *(v19 + 8) = -16076;
   v9 = BYTE9(v20);
@@ -4004,10 +4004,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -4015,9 +4015,9 @@
     var0 = 0;
   }
 
-  v15 = GTTraceEncoder_storeBlob(&v18, a3, 32 * a4);
+  v15 = GTTraceEncoder_storeBlob(&v18, rects, 32 * count);
   *v10 = var0;
-  *(v10 + 1) = a4;
+  *(v10 + 1) = count;
   v10[16] = v15;
   *(v10 + 17) = 0;
   *(v10 + 5) = 0;
@@ -4027,7 +4027,7 @@
   *(v19 + 15) |= 8u;
 }
 
-- (void)setScissorRect:(id *)a3
+- (void)setScissorRect:(id *)rect
 {
   v20 = 0u;
   v21 = 0u;
@@ -4035,8 +4035,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v19);
   baseObject = self->_baseObject;
-  v7 = *&a3->var2;
-  v18[0] = *&a3->var0;
+  v7 = *&rect->var2;
+  v18[0] = *&rect->var0;
   v18[1] = v7;
   [(MTLRenderCommandEncoderSPI *)baseObject setScissorRect:v18];
   v8 = v20;
@@ -4058,10 +4058,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -4070,8 +4070,8 @@
   }
 
   *v10 = var0;
-  v15 = *&a3->var2;
-  *(v10 + 8) = *&a3->var0;
+  v15 = *&rect->var2;
+  *(v10 + 8) = *&rect->var0;
   *(v10 + 24) = v15;
   s();
   *v16 = v17;
@@ -4079,16 +4079,16 @@
   *(v20 + 15) |= 8u;
 }
 
-- (void)setRenderPipelineState:(id)a3
+- (void)setRenderPipelineState:(id)state
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  stateCopy = state;
+  [stateCopy touch];
+  if (stateCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:stateCopy];
     }
   }
 
@@ -4098,8 +4098,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setRenderPipelineState:v8];
+  baseObject = [stateCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setRenderPipelineState:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -16279;
@@ -4120,10 +4120,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -4131,10 +4131,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [stateCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -4150,14 +4150,14 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setProvokingVertexMode:(unint64_t)a3
+- (void)setProvokingVertexMode:(unint64_t)mode
 {
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setProvokingVertexMode:a3];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setProvokingVertexMode:mode];
   v6 = v16;
   *(v16 + 8) = -15725;
   v7 = BYTE9(v17);
@@ -4177,10 +4177,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -4189,21 +4189,21 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = mode;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
 }
 
-- (void)setPointSize:(float)a3
+- (void)setPointSize:(float)size
 {
   v17 = 0u;
   v18 = 0u;
   v16 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v16);
-  *&v6 = a3;
+  *&v6 = size;
   [(MTLRenderCommandEncoderSPI *)self->_baseObject setPointSize:v6];
   v7 = v17;
   *(v17 + 8) = -15988;
@@ -4224,10 +4224,10 @@
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -4236,7 +4236,7 @@
   }
 
   *v9 = var0;
-  *(v9 + 2) = a3;
+  *(v9 + 2) = size;
   *(v9 + 3) = 0;
   s();
   *v14 = v15;
@@ -4244,12 +4244,12 @@
   *(v17 + 15) |= 8u;
 }
 
-- (void)setObjectVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setObjectVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderCommandEncoder_setObjectVisibleFunctionTables_withBufferRange", "Mesh shaders with Function Pointers", 0, 0);
-  RetainArray(self->_retainedObjects, a3, length);
+  RetainArray(self->_retainedObjects, tables, length);
   baseObject = self->_baseObject;
   __chkstk_darwin(v9, 8 * length);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -4260,7 +4260,7 @@
     v13 = length;
     do
     {
-      v14 = *a3++;
+      v14 = *tables++;
       *v12 = [v14 baseObject];
       v12 += 8;
       --v13;
@@ -4272,35 +4272,35 @@
   [(MTLRenderCommandEncoderSPI *)baseObject setObjectVisibleFunctionTables:v11 withBufferRange:location, length];
 }
 
-- (void)setObjectVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setObjectVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v10 = a3;
+  tableCopy = table;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderCommandEncoder_setObjectVisibleFunctionTable_atBufferIndex", "Mesh shaders with Function Pointers", 0, 0);
-  [v10 touch];
-  v6 = v10;
-  if (v10)
+  [tableCopy touch];
+  v6 = tableCopy;
+  if (tableCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
-      v6 = v10;
+      [(NSMutableSet *)retainedObjects addObject:tableCopy];
+      v6 = tableCopy;
     }
   }
 
   baseObject = self->_baseObject;
-  v9 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setObjectVisibleFunctionTable:v9 atBufferIndex:a4];
+  baseObject = [v6 baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setObjectVisibleFunctionTable:baseObject atBufferIndex:index];
 }
 
-- (void)setObjectThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setObjectThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setObjectThreadgroupMemoryLength:a3 atIndex:a4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setObjectThreadgroupMemoryLength:length atIndex:index];
   v8 = v18;
   *(v18 + 8) = -15381;
   v9 = BYTE9(v19);
@@ -4320,10 +4320,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -4332,19 +4332,19 @@
   }
 
   *v10 = var0;
-  *(v10 + 1) = a3;
-  *(v10 + 2) = a4;
+  *(v10 + 1) = length;
+  *(v10 + 2) = index;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setObjectTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setObjectTextures:(const void *)textures withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  RetainArray(self->_retainedObjects, a3, a4.length);
+  length = range.length;
+  location = range.location;
+  RetainArray(self->_retainedObjects, textures, range.length);
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -4356,12 +4356,12 @@
   bzero(&v28 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v13 = a3;
+    texturesCopy = textures;
     v14 = (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
     v15 = length;
     do
     {
-      v16 = *v13++;
+      v16 = *texturesCopy++;
       *v14++ = [v16 baseObject];
       --v15;
     }
@@ -4389,10 +4389,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -4400,9 +4400,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v22, v23);
+  __chkstk_darwin(traceStream, v23);
   bzero(&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), textures, length);
   *v19 = var0;
   *(v19 + 1) = location;
   *(v19 + 2) = length;
@@ -4415,16 +4415,16 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)setObjectTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setObjectTexture:(id)texture atIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  textureCopy = texture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
@@ -4434,8 +4434,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setObjectTexture:v10 atIndex:a4];
+  baseObject = [textureCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setObjectTexture:baseObject atIndex:index];
 
   v11 = v23;
   *(v23 + 8) = -15383;
@@ -4456,10 +4456,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -4467,10 +4467,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [textureCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -4480,18 +4480,18 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = index;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setObjectSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setObjectSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  RetainArray(self->_retainedObjects, a3, a4.length);
+  length = range.length;
+  location = range.location;
+  RetainArray(self->_retainedObjects, states, range.length);
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -4503,12 +4503,12 @@
   bzero(&v28 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v13 = a3;
+    statesCopy = states;
     v14 = (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
     v15 = length;
     do
     {
-      v16 = *v13++;
+      v16 = *statesCopy++;
       *v14++ = [v16 baseObject];
       --v15;
     }
@@ -4536,10 +4536,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -4547,9 +4547,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v22, v23);
+  __chkstk_darwin(traceStream, v23);
   bzero(&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), states, length);
   *v19 = var0;
   *(v19 + 1) = location;
   *(v19 + 2) = length;
@@ -4562,14 +4562,14 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)setObjectSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setObjectSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  v36 = a4;
+  length = range.length;
+  location = range.location;
+  clampsCopy = clamps;
   retainedObjects = self->_retainedObjects;
-  v37 = a3;
-  RetainArray(retainedObjects, a3, a6.length);
+  statesCopy = states;
+  RetainArray(retainedObjects, states, range.length);
   v39 = 0u;
   v40 = 0u;
   v38 = 0u;
@@ -4578,11 +4578,11 @@
   baseObject = self->_baseObject;
   v14 = 8 * length;
   __chkstk_darwin(v12, v15);
-  bzero(&v36 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
+  bzero(&clampsCopy - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v16 = v37;
-    v17 = (&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0));
+    v16 = statesCopy;
+    v17 = (&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0));
     v18 = length;
     do
     {
@@ -4594,9 +4594,9 @@
     while (v18);
   }
 
-  v20 = a5;
+  maxClampsCopy = maxClamps;
   v21 = location;
-  [(MTLRenderCommandEncoderSPI *)baseObject setObjectSamplerStates:&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0) lodMinClamps:v36 lodMaxClamps:a5 withRange:location, length, v36];
+  [(MTLRenderCommandEncoderSPI *)baseObject setObjectSamplerStates:&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0) lodMinClamps:clampsCopy lodMaxClamps:maxClamps withRange:location, length, clampsCopy];
   v22 = v39;
   *(v39 + 8) = -15385;
   v23 = BYTE9(v40);
@@ -4616,10 +4616,10 @@
   }
 
   *(v22 + 13) = v23;
-  v27 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v27)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v27->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -4627,13 +4627,13 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v27, v28);
-  bzero(&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v30 = StreamArray(&v38, (&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0)), v37, length);
+  __chkstk_darwin(traceStream, v28);
+  bzero(&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
+  v30 = StreamArray(&v38, (&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0)), statesCopy, length);
   v31 = boundaryTrackerInstance;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v32 = GTTraceEncoder_storeBlob(&v38, v36, length);
+    v32 = GTTraceEncoder_storeBlob(&v38, clampsCopy, length);
     v31 = boundaryTrackerInstance;
   }
 
@@ -4644,7 +4644,7 @@
 
   if ((*(v31 + 20) & 0xFFFFFFFE) == 2)
   {
-    v33 = GTTraceEncoder_storeBlob(&v38, v20, length);
+    v33 = GTTraceEncoder_storeBlob(&v38, maxClampsCopy, length);
   }
 
   else
@@ -4666,16 +4666,16 @@
   *(v39 + 15) |= 8u;
 }
 
-- (void)setObjectSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setObjectSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
-  v10 = a3;
-  [v10 touch];
-  if (v10)
+  stateCopy = state;
+  [stateCopy touch];
+  if (stateCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:stateCopy];
     }
   }
 
@@ -4685,10 +4685,10 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v28);
   baseObject = self->_baseObject;
-  v14 = [v10 baseObject];
-  *&v15 = a4;
-  *&v16 = a5;
-  [(MTLRenderCommandEncoderSPI *)baseObject setObjectSamplerState:v14 lodMinClamp:a6 lodMaxClamp:v15 atIndex:v16];
+  baseObject = [stateCopy baseObject];
+  *&v15 = clamp;
+  *&v16 = maxClamp;
+  [(MTLRenderCommandEncoderSPI *)baseObject setObjectSamplerState:baseObject lodMinClamp:index lodMaxClamp:v15 atIndex:v16];
 
   v17 = v29;
   *(v29 + 8) = -15386;
@@ -4709,10 +4709,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -4720,10 +4720,10 @@
     var0 = 0;
   }
 
-  v24 = [v10 traceStream];
-  if (v24)
+  traceStream2 = [stateCopy traceStream];
+  if (traceStream2)
   {
-    v25 = *v24;
+    v25 = *traceStream2;
   }
 
   else
@@ -4733,25 +4733,25 @@
 
   *v19 = var0;
   *(v19 + 1) = v25;
-  *(v19 + 2) = a6;
-  *(v19 + 6) = a4;
-  *(v19 + 7) = a5;
+  *(v19 + 2) = index;
+  *(v19 + 6) = clamp;
+  *(v19 + 7) = maxClamp;
   s();
   *v26 = v27;
   *(v26 + 8) = BYTE8(v30);
   *(v29 + 15) |= 8u;
 }
 
-- (void)setObjectSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setObjectSamplerState:(id)state atIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  stateCopy = state;
+  [stateCopy touch];
+  if (stateCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:stateCopy];
     }
   }
 
@@ -4761,8 +4761,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setObjectSamplerState:v10 atIndex:a4];
+  baseObject = [stateCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setObjectSamplerState:baseObject atIndex:index];
 
   v11 = v23;
   *(v23 + 8) = -15387;
@@ -4783,10 +4783,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -4794,10 +4794,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [stateCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -4807,19 +4807,19 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = index;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setObjectIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setObjectIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderCommandEncoder_setObjectIntersectionFunctionTables_withBufferRange", "Mesh shaders with Raytracing", 0, 0);
-  RetainArray(self->_retainedObjects, a3, length);
+  RetainArray(self->_retainedObjects, tables, length);
   baseObject = self->_baseObject;
   __chkstk_darwin(v9, 8 * length);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -4830,7 +4830,7 @@
     v13 = length;
     do
     {
-      v14 = *a3++;
+      v14 = *tables++;
       *v12 = [v14 baseObject];
       v12 += 8;
       --v13;
@@ -4842,35 +4842,35 @@
   [(MTLRenderCommandEncoderSPI *)baseObject setObjectIntersectionFunctionTables:v11 withBufferRange:location, length];
 }
 
-- (void)setObjectIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setObjectIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v10 = a3;
+  tableCopy = table;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderCommandEncoder_setObjectIntersectionFunctionTable_atBufferIndex", "Mesh shaders with Raytracing", 0, 0);
-  [v10 touch];
-  v6 = v10;
-  if (v10)
+  [tableCopy touch];
+  v6 = tableCopy;
+  if (tableCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
-      v6 = v10;
+      [(NSMutableSet *)retainedObjects addObject:tableCopy];
+      v6 = tableCopy;
     }
   }
 
   baseObject = self->_baseObject;
-  v9 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setObjectIntersectionFunctionTable:v9 atBufferIndex:a4];
+  baseObject = [v6 baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setObjectIntersectionFunctionTable:baseObject atBufferIndex:index];
 }
 
-- (void)setObjectBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setObjectBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setObjectBytes:a3 length:a4 atIndex:a5];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setObjectBytes:bytes length:length atIndex:index];
   v10 = v21;
   *(v21 + 8) = -15388;
   v11 = BYTE9(v22);
@@ -4890,10 +4890,10 @@
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -4903,7 +4903,7 @@
 
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v17 = GTTraceEncoder_storeBlob(&v20, a3, a4);
+    v17 = GTTraceEncoder_storeBlob(&v20, bytes, length);
   }
 
   else
@@ -4912,8 +4912,8 @@
   }
 
   *v12 = var0;
-  *(v12 + 1) = a4;
-  *(v12 + 2) = a5;
+  *(v12 + 1) = length;
+  *(v12 + 2) = index;
   v12[24] = v17;
   *(v12 + 25) = 0;
   *(v12 + 7) = 0;
@@ -4923,13 +4923,13 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setObjectBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setObjectBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   retainedObjects = self->_retainedObjects;
-  v35 = a3;
-  RetainArray(retainedObjects, a3, a5.length);
+  buffersCopy = buffers;
+  RetainArray(retainedObjects, buffers, range.length);
   v37 = 0u;
   v38 = 0u;
   v36 = 0u;
@@ -4941,7 +4941,7 @@
   bzero(&v34 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v15 = v35;
+    v15 = buffersCopy;
     v16 = (&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0));
     v17 = length;
     do
@@ -4954,10 +4954,10 @@
     while (v17);
   }
 
-  v19 = a4;
-  v20 = a4;
+  offsetsCopy = offsets;
+  offsetsCopy2 = offsets;
   v21 = location;
-  [(MTLRenderCommandEncoderSPI *)baseObject setObjectBuffers:&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0) offsets:v20 withRange:location, length];
+  [(MTLRenderCommandEncoderSPI *)baseObject setObjectBuffers:&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0) offsets:offsetsCopy2 withRange:location, length];
   v22 = v37;
   *(v37 + 8) = -15389;
   v23 = BYTE9(v38);
@@ -4977,10 +4977,10 @@
   }
 
   *(v22 + 13) = v23;
-  v27 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v27)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v27->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -4988,12 +4988,12 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v27, v28);
+  __chkstk_darwin(traceStream, v28);
   bzero(&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v30 = StreamArray(&v36, (&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0)), v35, length);
+  v30 = StreamArray(&v36, (&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0)), buffersCopy, length);
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v31 = GTTraceEncoder_storeBlob(&v36, v19, length);
+    v31 = GTTraceEncoder_storeBlob(&v36, offsetsCopy, length);
   }
 
   else
@@ -5014,14 +5014,14 @@
   *(v37 + 15) |= 8u;
 }
 
-- (void)setObjectBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setObjectBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setObjectBufferOffset:a3 atIndex:a4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setObjectBufferOffset:offset atIndex:index];
   v8 = v18;
   *(v18 + 8) = -15390;
   v9 = BYTE9(v19);
@@ -5041,10 +5041,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -5053,24 +5053,24 @@
   }
 
   *v10 = var0;
-  *(v10 + 1) = a3;
-  *(v10 + 2) = a4;
+  *(v10 + 1) = offset;
+  *(v10 + 2) = index;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setObjectBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setObjectBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v8 = a3;
-  [v8 touch];
-  if (v8)
+  bufferCopy = buffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
@@ -5080,8 +5080,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
   baseObject = self->_baseObject;
-  v12 = [v8 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setObjectBuffer:v12 offset:a4 atIndex:a5];
+  baseObject = [bufferCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setObjectBuffer:baseObject offset:offset atIndex:index];
 
   v13 = v25;
   *(v25 + 8) = -15391;
@@ -5102,10 +5102,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -5113,10 +5113,10 @@
     var0 = 0;
   }
 
-  v20 = [v8 traceStream];
-  if (v20)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v21 = *v20;
+    v21 = *traceStream2;
   }
 
   else
@@ -5126,41 +5126,41 @@
 
   *v15 = var0;
   *(v15 + 1) = v21;
-  *(v15 + 2) = a4;
-  *(v15 + 3) = a5;
+  *(v15 + 2) = offset;
+  *(v15 + 3) = index;
   s();
   *v22 = v23;
   *(v22 + 8) = BYTE8(v26);
   *(v25 + 15) |= 8u;
 }
 
-- (void)setObjectAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setObjectAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
-  v10 = a3;
+  structureCopy = structure;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderCommandEncoder_setObjectAccelerationStructure_atBufferIndex", "Mesh shaders with Raytracing", 0, 0);
-  [v10 touch];
-  v6 = v10;
-  if (v10)
+  [structureCopy touch];
+  v6 = structureCopy;
+  if (structureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
-      v6 = v10;
+      [(NSMutableSet *)retainedObjects addObject:structureCopy];
+      v6 = structureCopy;
     }
   }
 
   baseObject = self->_baseObject;
-  v9 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setObjectAccelerationStructure:v9 atBufferIndex:a4];
+  baseObject = [v6 baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setObjectAccelerationStructure:baseObject atBufferIndex:index];
 }
 
-- (void)setMeshVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setMeshVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderCommandEncoder_setMeshVisibleFunctionTables_withBufferRange", "Mesh shaders with Function Pointers", 0, 0);
-  RetainArray(self->_retainedObjects, a3, length);
+  RetainArray(self->_retainedObjects, tables, length);
   baseObject = self->_baseObject;
   __chkstk_darwin(v9, 8 * length);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -5171,7 +5171,7 @@
     v13 = length;
     do
     {
-      v14 = *a3++;
+      v14 = *tables++;
       *v12 = [v14 baseObject];
       v12 += 8;
       --v13;
@@ -5183,32 +5183,32 @@
   [(MTLRenderCommandEncoderSPI *)baseObject setMeshVisibleFunctionTables:v11 withBufferRange:location, length];
 }
 
-- (void)setMeshVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setMeshVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v10 = a3;
+  tableCopy = table;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderCommandEncoder_setMeshVisibleFunctionTable_atBufferIndex", "Mesh shaders with Function Pointers", 0, 0);
-  [v10 touch];
-  v6 = v10;
-  if (v10)
+  [tableCopy touch];
+  v6 = tableCopy;
+  if (tableCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
-      v6 = v10;
+      [(NSMutableSet *)retainedObjects addObject:tableCopy];
+      v6 = tableCopy;
     }
   }
 
   baseObject = self->_baseObject;
-  v9 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setMeshVisibleFunctionTable:v9 atBufferIndex:a4];
+  baseObject = [v6 baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setMeshVisibleFunctionTable:baseObject atBufferIndex:index];
 }
 
-- (void)setMeshTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setMeshTextures:(const void *)textures withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  RetainArray(self->_retainedObjects, a3, a4.length);
+  length = range.length;
+  location = range.location;
+  RetainArray(self->_retainedObjects, textures, range.length);
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -5220,12 +5220,12 @@
   bzero(&v28 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v13 = a3;
+    texturesCopy = textures;
     v14 = (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
     v15 = length;
     do
     {
-      v16 = *v13++;
+      v16 = *texturesCopy++;
       *v14++ = [v16 baseObject];
       --v15;
     }
@@ -5253,10 +5253,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -5264,9 +5264,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v22, v23);
+  __chkstk_darwin(traceStream, v23);
   bzero(&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), textures, length);
   *v19 = var0;
   *(v19 + 1) = location;
   *(v19 + 2) = length;
@@ -5279,16 +5279,16 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)setMeshTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setMeshTexture:(id)texture atIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  textureCopy = texture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
@@ -5298,8 +5298,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setMeshTexture:v10 atIndex:a4];
+  baseObject = [textureCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setMeshTexture:baseObject atIndex:index];
 
   v11 = v23;
   *(v23 + 8) = -15393;
@@ -5320,10 +5320,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -5331,10 +5331,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [textureCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -5344,18 +5344,18 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = index;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setMeshSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setMeshSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  RetainArray(self->_retainedObjects, a3, a4.length);
+  length = range.length;
+  location = range.location;
+  RetainArray(self->_retainedObjects, states, range.length);
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -5367,12 +5367,12 @@
   bzero(&v28 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v13 = a3;
+    statesCopy = states;
     v14 = (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
     v15 = length;
     do
     {
-      v16 = *v13++;
+      v16 = *statesCopy++;
       *v14++ = [v16 baseObject];
       --v15;
     }
@@ -5400,10 +5400,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -5411,9 +5411,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v22, v23);
+  __chkstk_darwin(traceStream, v23);
   bzero(&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), states, length);
   *v19 = var0;
   *(v19 + 1) = location;
   *(v19 + 2) = length;
@@ -5426,14 +5426,14 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)setMeshSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setMeshSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  v36 = a4;
+  length = range.length;
+  location = range.location;
+  clampsCopy = clamps;
   retainedObjects = self->_retainedObjects;
-  v37 = a3;
-  RetainArray(retainedObjects, a3, a6.length);
+  statesCopy = states;
+  RetainArray(retainedObjects, states, range.length);
   v39 = 0u;
   v40 = 0u;
   v38 = 0u;
@@ -5442,11 +5442,11 @@
   baseObject = self->_baseObject;
   v14 = 8 * length;
   __chkstk_darwin(v12, v15);
-  bzero(&v36 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
+  bzero(&clampsCopy - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v16 = v37;
-    v17 = (&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0));
+    v16 = statesCopy;
+    v17 = (&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0));
     v18 = length;
     do
     {
@@ -5458,9 +5458,9 @@
     while (v18);
   }
 
-  v20 = a5;
+  maxClampsCopy = maxClamps;
   v21 = location;
-  [(MTLRenderCommandEncoderSPI *)baseObject setMeshSamplerStates:&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0) lodMinClamps:v36 lodMaxClamps:a5 withRange:location, length, v36];
+  [(MTLRenderCommandEncoderSPI *)baseObject setMeshSamplerStates:&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0) lodMinClamps:clampsCopy lodMaxClamps:maxClamps withRange:location, length, clampsCopy];
   v22 = v39;
   *(v39 + 8) = -15395;
   v23 = BYTE9(v40);
@@ -5480,10 +5480,10 @@
   }
 
   *(v22 + 13) = v23;
-  v27 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v27)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v27->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -5491,13 +5491,13 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v27, v28);
-  bzero(&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v30 = StreamArray(&v38, (&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0)), v37, length);
+  __chkstk_darwin(traceStream, v28);
+  bzero(&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
+  v30 = StreamArray(&v38, (&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0)), statesCopy, length);
   v31 = boundaryTrackerInstance;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v32 = GTTraceEncoder_storeBlob(&v38, v36, length);
+    v32 = GTTraceEncoder_storeBlob(&v38, clampsCopy, length);
     v31 = boundaryTrackerInstance;
   }
 
@@ -5508,7 +5508,7 @@
 
   if ((*(v31 + 20) & 0xFFFFFFFE) == 2)
   {
-    v33 = GTTraceEncoder_storeBlob(&v38, v20, length);
+    v33 = GTTraceEncoder_storeBlob(&v38, maxClampsCopy, length);
   }
 
   else
@@ -5530,16 +5530,16 @@
   *(v39 + 15) |= 8u;
 }
 
-- (void)setMeshSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setMeshSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
-  v10 = a3;
-  [v10 touch];
-  if (v10)
+  stateCopy = state;
+  [stateCopy touch];
+  if (stateCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:stateCopy];
     }
   }
 
@@ -5549,10 +5549,10 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v28);
   baseObject = self->_baseObject;
-  v14 = [v10 baseObject];
-  *&v15 = a4;
-  *&v16 = a5;
-  [(MTLRenderCommandEncoderSPI *)baseObject setMeshSamplerState:v14 lodMinClamp:a6 lodMaxClamp:v15 atIndex:v16];
+  baseObject = [stateCopy baseObject];
+  *&v15 = clamp;
+  *&v16 = maxClamp;
+  [(MTLRenderCommandEncoderSPI *)baseObject setMeshSamplerState:baseObject lodMinClamp:index lodMaxClamp:v15 atIndex:v16];
 
   v17 = v29;
   *(v29 + 8) = -15396;
@@ -5573,10 +5573,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -5584,10 +5584,10 @@
     var0 = 0;
   }
 
-  v24 = [v10 traceStream];
-  if (v24)
+  traceStream2 = [stateCopy traceStream];
+  if (traceStream2)
   {
-    v25 = *v24;
+    v25 = *traceStream2;
   }
 
   else
@@ -5597,25 +5597,25 @@
 
   *v19 = var0;
   *(v19 + 1) = v25;
-  *(v19 + 2) = a6;
-  *(v19 + 6) = a4;
-  *(v19 + 7) = a5;
+  *(v19 + 2) = index;
+  *(v19 + 6) = clamp;
+  *(v19 + 7) = maxClamp;
   s();
   *v26 = v27;
   *(v26 + 8) = BYTE8(v30);
   *(v29 + 15) |= 8u;
 }
 
-- (void)setMeshSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setMeshSamplerState:(id)state atIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  stateCopy = state;
+  [stateCopy touch];
+  if (stateCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:stateCopy];
     }
   }
 
@@ -5625,8 +5625,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setMeshSamplerState:v10 atIndex:a4];
+  baseObject = [stateCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setMeshSamplerState:baseObject atIndex:index];
 
   v11 = v23;
   *(v23 + 8) = -15397;
@@ -5647,10 +5647,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -5658,10 +5658,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [stateCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -5671,19 +5671,19 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = index;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setMeshIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setMeshIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderCommandEncoder_setMeshIntersectionFunctionTables_withBufferRange", "Mesh shaders with Raytracing", 0, 0);
-  RetainArray(self->_retainedObjects, a3, length);
+  RetainArray(self->_retainedObjects, tables, length);
   baseObject = self->_baseObject;
   __chkstk_darwin(v9, 8 * length);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -5694,7 +5694,7 @@
     v13 = length;
     do
     {
-      v14 = *a3++;
+      v14 = *tables++;
       *v12 = [v14 baseObject];
       v12 += 8;
       --v13;
@@ -5706,35 +5706,35 @@
   [(MTLRenderCommandEncoderSPI *)baseObject setMeshIntersectionFunctionTables:v11 withBufferRange:location, length];
 }
 
-- (void)setMeshIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setMeshIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v10 = a3;
+  tableCopy = table;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderCommandEncoder_setMeshIntersectionFunctionTable_atBufferIndex", "Mesh shaders with Raytracing", 0, 0);
-  [v10 touch];
-  v6 = v10;
-  if (v10)
+  [tableCopy touch];
+  v6 = tableCopy;
+  if (tableCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
-      v6 = v10;
+      [(NSMutableSet *)retainedObjects addObject:tableCopy];
+      v6 = tableCopy;
     }
   }
 
   baseObject = self->_baseObject;
-  v9 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setMeshIntersectionFunctionTable:v9 atBufferIndex:a4];
+  baseObject = [v6 baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setMeshIntersectionFunctionTable:baseObject atBufferIndex:index];
 }
 
-- (void)setMeshBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setMeshBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setMeshBytes:a3 length:a4 atIndex:a5];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setMeshBytes:bytes length:length atIndex:index];
   v10 = v21;
   *(v21 + 8) = -15398;
   v11 = BYTE9(v22);
@@ -5754,10 +5754,10 @@
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -5767,7 +5767,7 @@
 
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v17 = GTTraceEncoder_storeBlob(&v20, a3, a4);
+    v17 = GTTraceEncoder_storeBlob(&v20, bytes, length);
   }
 
   else
@@ -5776,8 +5776,8 @@
   }
 
   *v12 = var0;
-  *(v12 + 1) = a4;
-  *(v12 + 2) = a5;
+  *(v12 + 1) = length;
+  *(v12 + 2) = index;
   v12[24] = v17;
   *(v12 + 25) = 0;
   *(v12 + 7) = 0;
@@ -5787,13 +5787,13 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setMeshBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setMeshBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   retainedObjects = self->_retainedObjects;
-  v35 = a3;
-  RetainArray(retainedObjects, a3, a5.length);
+  buffersCopy = buffers;
+  RetainArray(retainedObjects, buffers, range.length);
   v37 = 0u;
   v38 = 0u;
   v36 = 0u;
@@ -5805,7 +5805,7 @@
   bzero(&v34 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v15 = v35;
+    v15 = buffersCopy;
     v16 = (&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0));
     v17 = length;
     do
@@ -5818,10 +5818,10 @@
     while (v17);
   }
 
-  v19 = a4;
-  v20 = a4;
+  offsetsCopy = offsets;
+  offsetsCopy2 = offsets;
   v21 = location;
-  [(MTLRenderCommandEncoderSPI *)baseObject setMeshBuffers:&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0) offsets:v20 withRange:location, length];
+  [(MTLRenderCommandEncoderSPI *)baseObject setMeshBuffers:&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0) offsets:offsetsCopy2 withRange:location, length];
   v22 = v37;
   *(v37 + 8) = -15399;
   v23 = BYTE9(v38);
@@ -5841,10 +5841,10 @@
   }
 
   *(v22 + 13) = v23;
-  v27 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v27)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v27->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -5852,12 +5852,12 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v27, v28);
+  __chkstk_darwin(traceStream, v28);
   bzero(&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v30 = StreamArray(&v36, (&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0)), v35, length);
+  v30 = StreamArray(&v36, (&v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0)), buffersCopy, length);
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v31 = GTTraceEncoder_storeBlob(&v36, v19, length);
+    v31 = GTTraceEncoder_storeBlob(&v36, offsetsCopy, length);
   }
 
   else
@@ -5878,14 +5878,14 @@
   *(v37 + 15) |= 8u;
 }
 
-- (void)setMeshBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setMeshBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setMeshBufferOffset:a3 atIndex:a4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setMeshBufferOffset:offset atIndex:index];
   v8 = v18;
   *(v18 + 8) = -15400;
   v9 = BYTE9(v19);
@@ -5905,10 +5905,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -5917,24 +5917,24 @@
   }
 
   *v10 = var0;
-  *(v10 + 1) = a3;
-  *(v10 + 2) = a4;
+  *(v10 + 1) = offset;
+  *(v10 + 2) = index;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setMeshBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setMeshBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v8 = a3;
-  [v8 touch];
-  if (v8)
+  bufferCopy = buffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
@@ -5944,8 +5944,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
   baseObject = self->_baseObject;
-  v12 = [v8 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setMeshBuffer:v12 offset:a4 atIndex:a5];
+  baseObject = [bufferCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setMeshBuffer:baseObject offset:offset atIndex:index];
 
   v13 = v25;
   *(v25 + 8) = -15401;
@@ -5966,10 +5966,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -5977,10 +5977,10 @@
     var0 = 0;
   }
 
-  v20 = [v8 traceStream];
-  if (v20)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v21 = *v20;
+    v21 = *traceStream2;
   }
 
   else
@@ -5990,43 +5990,43 @@
 
   *v15 = var0;
   *(v15 + 1) = v21;
-  *(v15 + 2) = a4;
-  *(v15 + 3) = a5;
+  *(v15 + 2) = offset;
+  *(v15 + 3) = index;
   s();
   *v22 = v23;
   *(v22 + 8) = BYTE8(v26);
   *(v25 + 15) |= 8u;
 }
 
-- (void)setMeshAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setMeshAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
-  v10 = a3;
+  structureCopy = structure;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderCommandEncoder_setMeshAccelerationStructure_atBufferIndex", "Mesh shaders with Raytracing", 0, 0);
-  [v10 touch];
-  v6 = v10;
-  if (v10)
+  [structureCopy touch];
+  v6 = structureCopy;
+  if (structureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
-      v6 = v10;
+      [(NSMutableSet *)retainedObjects addObject:structureCopy];
+      v6 = structureCopy;
     }
   }
 
   baseObject = self->_baseObject;
-  v9 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setMeshAccelerationStructure:v9 atBufferIndex:a4];
+  baseObject = [v6 baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setMeshAccelerationStructure:baseObject atBufferIndex:index];
 }
 
-- (void)setLineWidth:(float)a3
+- (void)setLineWidth:(float)width
 {
   v17 = 0u;
   v18 = 0u;
   v16 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v16);
-  *&v6 = a3;
+  *&v6 = width;
   [(MTLRenderCommandEncoderSPI *)self->_baseObject setLineWidth:v6];
   v7 = v17;
   *(v17 + 8) = -16247;
@@ -6047,10 +6047,10 @@
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -6059,7 +6059,7 @@
   }
 
   *v9 = var0;
-  *(v9 + 2) = a3;
+  *(v9 + 2) = width;
   *(v9 + 3) = 0;
   s();
   *v14 = v15;
@@ -6067,14 +6067,14 @@
   *(v17 + 15) |= 8u;
 }
 
-- (void)setFrontFacingWinding:(unint64_t)a3
+- (void)setFrontFacingWinding:(unint64_t)winding
 {
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setFrontFacingWinding:a3];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setFrontFacingWinding:winding];
   v6 = v16;
   *(v16 + 8) = -16269;
   v7 = BYTE9(v17);
@@ -6094,10 +6094,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -6106,18 +6106,18 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = winding;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
 }
 
-- (void)setFragmentVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setFragmentVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  RetainArray(self->_retainedObjects, a3, a4.length);
+  length = range.length;
+  location = range.location;
+  RetainArray(self->_retainedObjects, tables, range.length);
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -6129,12 +6129,12 @@
   bzero(&v28 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v13 = a3;
+    tablesCopy = tables;
     v14 = (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
     v15 = length;
     do
     {
-      v16 = *v13++;
+      v16 = *tablesCopy++;
       *v14++ = [v16 baseObject];
       --v15;
     }
@@ -6162,10 +6162,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -6173,9 +6173,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v22, v23);
+  __chkstk_darwin(traceStream, v23);
   bzero(&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), tables, length);
   *v19 = var0;
   *(v19 + 1) = location;
   *(v19 + 2) = length;
@@ -6188,16 +6188,16 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)setFragmentVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setFragmentVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  tableCopy = table;
+  [tableCopy touch];
+  if (tableCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:tableCopy];
     }
   }
 
@@ -6207,8 +6207,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentVisibleFunctionTable:v10 atBufferIndex:a4];
+  baseObject = [tableCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentVisibleFunctionTable:baseObject atBufferIndex:index];
 
   v11 = v23;
   *(v23 + 8) = -15456;
@@ -6229,10 +6229,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -6240,10 +6240,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [tableCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -6253,18 +6253,18 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = index;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setFragmentTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFragmentTextures:(const void *)textures withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  RetainArray(self->_retainedObjects, a3, a4.length);
+  length = range.length;
+  location = range.location;
+  RetainArray(self->_retainedObjects, textures, range.length);
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -6276,12 +6276,12 @@
   bzero(&v28 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v13 = a3;
+    texturesCopy = textures;
     v14 = (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
     v15 = length;
     do
     {
-      v16 = *v13++;
+      v16 = *texturesCopy++;
       *v14++ = [v16 baseObject];
       --v15;
     }
@@ -6309,10 +6309,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -6320,9 +6320,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v22, v23);
+  __chkstk_darwin(traceStream, v23);
   bzero(&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), textures, length);
   *v19 = var0;
   *(v19 + 1) = location;
   *(v19 + 2) = length;
@@ -6335,27 +6335,27 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)setFragmentTexture:(id)a3 atTextureIndex:(unint64_t)a4 samplerState:(id)a5 atSamplerIndex:(unint64_t)a6
+- (void)setFragmentTexture:(id)texture atTextureIndex:(unint64_t)index samplerState:(id)state atSamplerIndex:(unint64_t)samplerIndex
 {
-  v10 = a3;
-  v11 = a5;
-  [v10 touch];
-  if (v10)
+  textureCopy = texture;
+  stateCopy = state;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
-  [v11 touch];
-  if (v11)
+  [stateCopy touch];
+  if (stateCopy)
   {
     v13 = self->_retainedObjects;
     if (v13)
     {
-      [(NSMutableSet *)v13 addObject:v11];
+      [(NSMutableSet *)v13 addObject:stateCopy];
     }
   }
 
@@ -6365,9 +6365,9 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v31);
   baseObject = self->_baseObject;
-  v16 = [v10 baseObject];
-  v17 = [v11 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentTexture:v16 atTextureIndex:a4 samplerState:v17 atSamplerIndex:a6];
+  baseObject = [textureCopy baseObject];
+  baseObject2 = [stateCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentTexture:baseObject atTextureIndex:index samplerState:baseObject2 atSamplerIndex:samplerIndex];
 
   v18 = v32;
   *(v32 + 8) = -16214;
@@ -6388,10 +6388,10 @@
   }
 
   *(v18 + 13) = v19;
-  v23 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v23)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v23->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -6399,10 +6399,10 @@
     var0 = 0;
   }
 
-  v25 = [v10 traceStream];
-  if (v25)
+  traceStream2 = [textureCopy traceStream];
+  if (traceStream2)
   {
-    v26 = *v25;
+    v26 = *traceStream2;
   }
 
   else
@@ -6410,10 +6410,10 @@
     v26 = 0;
   }
 
-  v27 = [v11 traceStream];
-  if (v27)
+  traceStream3 = [stateCopy traceStream];
+  if (traceStream3)
   {
-    v28 = *v27;
+    v28 = *traceStream3;
   }
 
   else
@@ -6423,25 +6423,25 @@
 
   *v20 = var0;
   *(v20 + 1) = v26;
-  *(v20 + 2) = a4;
+  *(v20 + 2) = index;
   *(v20 + 3) = v28;
-  *(v20 + 4) = a6;
+  *(v20 + 4) = samplerIndex;
   s();
   *v29 = v30;
   *(v29 + 8) = BYTE8(v33);
   *(v32 + 15) |= 8u;
 }
 
-- (void)setFragmentTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setFragmentTexture:(id)texture atIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  textureCopy = texture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
@@ -6451,8 +6451,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentTexture:v10 atIndex:a4];
+  baseObject = [textureCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentTexture:baseObject atIndex:index];
 
   v11 = v23;
   *(v23 + 8) = -16261;
@@ -6473,10 +6473,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -6484,10 +6484,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [textureCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -6497,18 +6497,18 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = index;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setFragmentSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFragmentSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  RetainArray(self->_retainedObjects, a3, a4.length);
+  length = range.length;
+  location = range.location;
+  RetainArray(self->_retainedObjects, states, range.length);
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -6520,12 +6520,12 @@
   bzero(&v28 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v13 = a3;
+    statesCopy = states;
     v14 = (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
     v15 = length;
     do
     {
-      v16 = *v13++;
+      v16 = *statesCopy++;
       *v14++ = [v16 baseObject];
       --v15;
     }
@@ -6553,10 +6553,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -6564,9 +6564,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v22, v23);
+  __chkstk_darwin(traceStream, v23);
   bzero(&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), states, length);
   *v19 = var0;
   *(v19 + 1) = location;
   *(v19 + 2) = length;
@@ -6579,14 +6579,14 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)setFragmentSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setFragmentSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  v36 = a4;
+  length = range.length;
+  location = range.location;
+  clampsCopy = clamps;
   retainedObjects = self->_retainedObjects;
-  v37 = a3;
-  RetainArray(retainedObjects, a3, a6.length);
+  statesCopy = states;
+  RetainArray(retainedObjects, states, range.length);
   v39 = 0u;
   v40 = 0u;
   v38 = 0u;
@@ -6595,11 +6595,11 @@
   baseObject = self->_baseObject;
   v14 = 8 * length;
   __chkstk_darwin(v12, v15);
-  bzero(&v36 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
+  bzero(&clampsCopy - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v16 = v37;
-    v17 = (&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0));
+    v16 = statesCopy;
+    v17 = (&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0));
     v18 = length;
     do
     {
@@ -6611,10 +6611,10 @@
     while (v18);
   }
 
-  v20 = v36;
-  v21 = a5;
+  v20 = clampsCopy;
+  maxClampsCopy = maxClamps;
   v22 = location;
-  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentSamplerStates:&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0) lodMinClamps:v36 lodMaxClamps:a5 withRange:location, length, v36];
+  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentSamplerStates:&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0) lodMinClamps:clampsCopy lodMaxClamps:maxClamps withRange:location, length, clampsCopy];
   v23 = v39;
   *(v39 + 8) = -16256;
   v24 = BYTE9(v40);
@@ -6625,7 +6625,7 @@
     ++BYTE10(v40);
     v25 = GTTraceMemPool_allocateBytes(v26, *(&v39 + 1), v27 | 0x2000000000) + 16;
     v24 = v27;
-    v20 = v36;
+    v20 = clampsCopy;
   }
 
   else
@@ -6635,10 +6635,10 @@
   }
 
   *(v23 + 13) = v24;
-  v28 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v28)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v28->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -6646,11 +6646,11 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v28, v29);
-  bzero(&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v31 = StreamArray(&v38, (&v36 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0)), v37, length);
+  __chkstk_darwin(traceStream, v29);
+  bzero(&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
+  v31 = StreamArray(&v38, (&clampsCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0)), statesCopy, length);
   v32 = GTTraceEncoder_storeBytes(&v38, v20, 4 * length);
-  v33 = GTTraceEncoder_storeBytes(&v38, v21, 4 * length);
+  v33 = GTTraceEncoder_storeBytes(&v38, maxClampsCopy, 4 * length);
   *v25 = var0;
   *(v25 + 1) = v22;
   *(v25 + 2) = length;
@@ -6665,39 +6665,39 @@
   *(v39 + 15) |= 8u;
 }
 
-- (void)setFragmentSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 lodBias:(float)a6 atIndex:(unint64_t)a7
+- (void)setFragmentSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp lodBias:(float)bias atIndex:(unint64_t)index
 {
-  v19 = a3;
-  [v19 touch];
-  v12 = v19;
-  if (v19)
+  stateCopy = state;
+  [stateCopy touch];
+  v12 = stateCopy;
+  if (stateCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v19];
-      v12 = v19;
+      [(NSMutableSet *)retainedObjects addObject:stateCopy];
+      v12 = stateCopy;
     }
   }
 
   baseObject = self->_baseObject;
-  v15 = [v12 baseObject];
-  *&v16 = a4;
-  *&v17 = a5;
-  *&v18 = a6;
-  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentSamplerState:v15 lodMinClamp:a7 lodMaxClamp:v16 lodBias:v17 atIndex:v18];
+  baseObject = [v12 baseObject];
+  *&v16 = clamp;
+  *&v17 = maxClamp;
+  *&v18 = bias;
+  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentSamplerState:baseObject lodMinClamp:index lodMaxClamp:v16 lodBias:v17 atIndex:v18];
 }
 
-- (void)setFragmentSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setFragmentSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
-  v10 = a3;
-  [v10 touch];
-  if (v10)
+  stateCopy = state;
+  [stateCopy touch];
+  if (stateCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:stateCopy];
     }
   }
 
@@ -6707,10 +6707,10 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v28);
   baseObject = self->_baseObject;
-  v14 = [v10 baseObject];
-  *&v15 = a4;
-  *&v16 = a5;
-  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentSamplerState:v14 lodMinClamp:a6 lodMaxClamp:v15 atIndex:v16];
+  baseObject = [stateCopy baseObject];
+  *&v15 = clamp;
+  *&v16 = maxClamp;
+  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentSamplerState:baseObject lodMinClamp:index lodMaxClamp:v15 atIndex:v16];
 
   v17 = v29;
   *(v29 + 8) = -16257;
@@ -6731,10 +6731,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -6742,10 +6742,10 @@
     var0 = 0;
   }
 
-  v24 = [v10 traceStream];
-  if (v24)
+  traceStream2 = [stateCopy traceStream];
+  if (traceStream2)
   {
-    v25 = *v24;
+    v25 = *traceStream2;
   }
 
   else
@@ -6755,25 +6755,25 @@
 
   *v19 = var0;
   *(v19 + 1) = v25;
-  *(v19 + 2) = a6;
-  *(v19 + 6) = a4;
-  *(v19 + 7) = a5;
+  *(v19 + 2) = index;
+  *(v19 + 6) = clamp;
+  *(v19 + 7) = maxClamp;
   s();
   *v26 = v27;
   *(v26 + 8) = BYTE8(v30);
   *(v29 + 15) |= 8u;
 }
 
-- (void)setFragmentSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setFragmentSamplerState:(id)state atIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  stateCopy = state;
+  [stateCopy touch];
+  if (stateCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:stateCopy];
     }
   }
 
@@ -6783,8 +6783,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentSamplerState:v10 atIndex:a4];
+  baseObject = [stateCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentSamplerState:baseObject atIndex:index];
 
   v11 = v23;
   *(v23 + 8) = -16259;
@@ -6805,10 +6805,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -6816,10 +6816,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [stateCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -6829,18 +6829,18 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = index;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setFragmentIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setFragmentIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  RetainArray(self->_retainedObjects, a3, a4.length);
+  length = range.length;
+  location = range.location;
+  RetainArray(self->_retainedObjects, tables, range.length);
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -6852,12 +6852,12 @@
   bzero(&v28 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v13 = a3;
+    tablesCopy = tables;
     v14 = (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
     v15 = length;
     do
     {
-      v16 = *v13++;
+      v16 = *tablesCopy++;
       *v14++ = [v16 baseObject];
       --v15;
     }
@@ -6885,10 +6885,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -6896,9 +6896,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v22, v23);
+  __chkstk_darwin(traceStream, v23);
   bzero(&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+  v25 = StreamArray(&v28, (&v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), tables, length);
   *v19 = var0;
   *(v19 + 1) = location;
   *(v19 + 2) = length;
@@ -6911,16 +6911,16 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)setFragmentIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setFragmentIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  tableCopy = table;
+  [tableCopy touch];
+  if (tableCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:tableCopy];
     }
   }
 
@@ -6930,8 +6930,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentIntersectionFunctionTable:v10 atBufferIndex:a4];
+  baseObject = [tableCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentIntersectionFunctionTable:baseObject atBufferIndex:index];
 
   v11 = v23;
   *(v23 + 8) = -15458;
@@ -6952,10 +6952,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -6963,10 +6963,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [tableCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -6976,21 +6976,21 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = index;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setFragmentBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setFragmentBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setFragmentBytes:a3 length:a4 atIndex:a5];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setFragmentBytes:bytes length:length atIndex:index];
   v10 = v21;
   *(v21 + 8) = -16223;
   v11 = BYTE9(v22);
@@ -7010,10 +7010,10 @@
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -7023,7 +7023,7 @@
 
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v17 = GTTraceEncoder_storeBlob(&v20, a3, a4);
+    v17 = GTTraceEncoder_storeBlob(&v20, bytes, length);
   }
 
   else
@@ -7032,8 +7032,8 @@
   }
 
   *v12 = var0;
-  *(v12 + 1) = a4;
-  *(v12 + 2) = a5;
+  *(v12 + 1) = length;
+  *(v12 + 2) = index;
   v12[24] = v17;
   *(v12 + 25) = 0;
   *(v12 + 7) = 0;
@@ -7043,13 +7043,13 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setFragmentBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setFragmentBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   retainedObjects = self->_retainedObjects;
-  v33 = a3;
-  RetainArray(retainedObjects, a3, a5.length);
+  buffersCopy = buffers;
+  RetainArray(retainedObjects, buffers, range.length);
   v35 = 0u;
   v36 = 0u;
   v34 = 0u;
@@ -7061,7 +7061,7 @@
   bzero(&v32 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v15 = v33;
+    v15 = buffersCopy;
     v16 = (&v32 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0));
     v17 = length;
     do
@@ -7074,8 +7074,8 @@
     while (v17);
   }
 
-  v19 = a4;
-  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentBuffers:&v32 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0) offsets:a4 withRange:location, length];
+  offsetsCopy = offsets;
+  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentBuffers:&v32 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0) offsets:offsets withRange:location, length];
   v20 = v35;
   *(v35 + 8) = -16262;
   v21 = BYTE9(v36);
@@ -7095,10 +7095,10 @@
   }
 
   *(v20 + 13) = v21;
-  v25 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v25)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v25->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -7106,10 +7106,10 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v25, v26);
+  __chkstk_darwin(traceStream, v26);
   bzero(&v32 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v28 = StreamArray(&v34, (&v32 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0)), v33, length);
-  v29 = GTTraceEncoder_storeBytes(&v34, v19, 8 * length);
+  v28 = StreamArray(&v34, (&v32 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0)), buffersCopy, length);
+  v29 = GTTraceEncoder_storeBytes(&v34, offsetsCopy, 8 * length);
   *v22 = var0;
   *(v22 + 1) = location;
   *(v22 + 2) = length;
@@ -7123,14 +7123,14 @@
   *(v35 + 15) |= 8u;
 }
 
-- (void)setFragmentBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setFragmentBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setFragmentBufferOffset:a3 atIndex:a4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setFragmentBufferOffset:offset atIndex:index];
   v8 = v18;
   *(v18 + 8) = -16222;
   v9 = BYTE9(v19);
@@ -7150,10 +7150,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -7162,24 +7162,24 @@
   }
 
   *v10 = var0;
-  *(v10 + 1) = a3;
-  *(v10 + 2) = a4;
+  *(v10 + 1) = offset;
+  *(v10 + 2) = index;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setFragmentBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setFragmentBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v8 = a3;
-  [v8 touch];
-  if (v8)
+  bufferCopy = buffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
@@ -7189,8 +7189,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
   baseObject = self->_baseObject;
-  v12 = [v8 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentBuffer:v12 offset:a4 atIndex:a5];
+  baseObject = [bufferCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setFragmentBuffer:baseObject offset:offset atIndex:index];
 
   v13 = v25;
   *(v25 + 8) = -16263;
@@ -7211,10 +7211,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -7222,10 +7222,10 @@
     var0 = 0;
   }
 
-  v20 = [v8 traceStream];
-  if (v20)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v21 = *v20;
+    v21 = *traceStream2;
   }
 
   else
@@ -7235,23 +7235,23 @@
 
   *v15 = var0;
   *(v15 + 1) = v21;
-  *(v15 + 2) = a4;
-  *(v15 + 3) = a5;
+  *(v15 + 2) = offset;
+  *(v15 + 3) = index;
   s();
   *v22 = v23;
   *(v22 + 8) = BYTE8(v26);
   *(v25 + 15) |= 8u;
 }
 
-- (void)setDepthTestMinBound:(float)a3 maxBound:(float)a4
+- (void)setDepthTestMinBound:(float)bound maxBound:(float)maxBound
 {
   v20 = 0u;
   v21 = 0u;
   v19 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v19);
-  *&v8 = a3;
-  *&v9 = a4;
+  *&v8 = bound;
+  *&v9 = maxBound;
   [(MTLRenderCommandEncoderSPI *)self->_baseObject setDepthTestMinBound:v8 maxBound:v9];
   v10 = v20;
   *(v20 + 8) = -14914;
@@ -7272,10 +7272,10 @@
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -7284,22 +7284,22 @@
   }
 
   *v12 = var0;
-  *(v12 + 2) = a3;
-  *(v12 + 3) = a4;
+  *(v12 + 2) = bound;
+  *(v12 + 3) = maxBound;
   s();
   *v17 = v18;
   *(v17 + 8) = BYTE8(v21);
   *(v20 + 15) |= 8u;
 }
 
-- (void)setDepthStoreActionOptions:(unint64_t)a3
+- (void)setDepthStoreActionOptions:(unint64_t)options
 {
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setDepthStoreActionOptions:a3];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setDepthStoreActionOptions:options];
   v6 = v16;
   *(v16 + 8) = -16021;
   v7 = BYTE9(v17);
@@ -7319,10 +7319,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -7331,21 +7331,21 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = options;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
 }
 
-- (void)setDepthStoreAction:(unint64_t)a3
+- (void)setDepthStoreAction:(unint64_t)action
 {
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setDepthStoreAction:a3];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setDepthStoreAction:action];
   v6 = v16;
   *(v16 + 8) = -16158;
   v7 = BYTE9(v17);
@@ -7365,10 +7365,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -7377,23 +7377,23 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = action;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
 }
 
-- (void)setDepthStencilState:(id)a3
+- (void)setDepthStencilState:(id)state
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  stateCopy = state;
+  [stateCopy touch];
+  if (stateCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:stateCopy];
     }
   }
 
@@ -7403,8 +7403,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setDepthStencilState:v8];
+  baseObject = [stateCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setDepthStencilState:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -16254;
@@ -7425,10 +7425,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -7436,10 +7436,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [stateCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -7455,16 +7455,16 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setDepthResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6
+- (void)setDepthResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level
 {
-  v10 = a3;
-  [v10 touch];
-  if (v10)
+  textureCopy = texture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
@@ -7474,8 +7474,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v26);
   baseObject = self->_baseObject;
-  v14 = [v10 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setDepthResolveTexture:v14 slice:a4 depthPlane:a5 level:a6];
+  baseObject = [textureCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setDepthResolveTexture:baseObject slice:slice depthPlane:plane level:level];
 
   v15 = v27;
   *(v27 + 8) = -16155;
@@ -7496,10 +7496,10 @@
   }
 
   *(v15 + 13) = v16;
-  v20 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -7507,10 +7507,10 @@
     var0 = 0;
   }
 
-  v22 = [v10 traceStream];
-  if (v22)
+  traceStream2 = [textureCopy traceStream];
+  if (traceStream2)
   {
-    v23 = *v22;
+    v23 = *traceStream2;
   }
 
   else
@@ -7520,23 +7520,23 @@
 
   *v17 = var0;
   *(v17 + 1) = v23;
-  *(v17 + 2) = a4;
-  *(v17 + 3) = a5;
-  *(v17 + 4) = a6;
+  *(v17 + 2) = slice;
+  *(v17 + 3) = plane;
+  *(v17 + 4) = level;
   s();
   *v24 = v25;
   *(v24 + 8) = BYTE8(v28);
   *(v27 + 15) |= 8u;
 }
 
-- (void)setDepthClipMode:(unint64_t)a3
+- (void)setDepthClipMode:(unint64_t)mode
 {
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setDepthClipMode:a3];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setDepthClipMode:mode];
   v6 = v16;
   *(v16 + 8) = -16267;
   v7 = BYTE9(v17);
@@ -7556,10 +7556,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -7568,7 +7568,7 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = mode;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
@@ -7602,10 +7602,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -7620,16 +7620,16 @@
   *(v14 + 15) |= 8u;
 }
 
-- (void)setDepthBias:(float)a3 slopeScale:(float)a4 clamp:(float)a5
+- (void)setDepthBias:(float)bias slopeScale:(float)scale clamp:(float)clamp
 {
   v23 = 0u;
   v24 = 0u;
   v22 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
-  *&v10 = a3;
-  *&v11 = a4;
-  *&v12 = a5;
+  *&v10 = bias;
+  *&v11 = scale;
+  *&v12 = clamp;
   [(MTLRenderCommandEncoderSPI *)self->_baseObject setDepthBias:v10 slopeScale:v11 clamp:v12];
   v13 = v23;
   *(v23 + 8) = -16266;
@@ -7650,10 +7650,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -7662,9 +7662,9 @@
   }
 
   *v15 = var0;
-  *(v15 + 2) = a3;
-  *(v15 + 3) = a4;
-  *(v15 + 4) = a5;
+  *(v15 + 2) = bias;
+  *(v15 + 3) = scale;
+  *(v15 + 4) = clamp;
   *(v15 + 5) = 0;
   s();
   *v20 = v21;
@@ -7672,14 +7672,14 @@
   *(v23 + 15) |= 8u;
 }
 
-- (void)setCullMode:(unint64_t)a3
+- (void)setCullMode:(unint64_t)mode
 {
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setCullMode:a3];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setCullMode:mode];
   v6 = v16;
   *(v16 + 8) = -16268;
   v7 = BYTE9(v17);
@@ -7699,10 +7699,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -7711,21 +7711,21 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = mode;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
 }
 
-- (void)setColorStoreActionOptions:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setColorStoreActionOptions:(unint64_t)options atIndex:(unint64_t)index
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setColorStoreActionOptions:a3 atIndex:a4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setColorStoreActionOptions:options atIndex:index];
   v8 = v18;
   *(v18 + 8) = -16022;
   v9 = BYTE9(v19);
@@ -7745,10 +7745,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -7757,22 +7757,22 @@
   }
 
   *v10 = var0;
-  *(v10 + 1) = a3;
-  *(v10 + 2) = a4;
+  *(v10 + 1) = options;
+  *(v10 + 2) = index;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setColorStoreAction:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setColorStoreAction:(unint64_t)action atIndex:(unint64_t)index
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setColorStoreAction:a3 atIndex:a4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setColorStoreAction:action atIndex:index];
   v8 = v18;
   *(v18 + 8) = -16159;
   v9 = BYTE9(v19);
@@ -7792,10 +7792,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -7804,24 +7804,24 @@
   }
 
   *v10 = var0;
-  *(v10 + 1) = a3;
-  *(v10 + 2) = a4;
+  *(v10 + 1) = action;
+  *(v10 + 2) = index;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setColorResolveTexture:(id)a3 slice:(unint64_t)a4 depthPlane:(unint64_t)a5 level:(unint64_t)a6 atIndex:(unint64_t)a7
+- (void)setColorResolveTexture:(id)texture slice:(unint64_t)slice depthPlane:(unint64_t)plane level:(unint64_t)level atIndex:(unint64_t)index
 {
-  v12 = a3;
-  [v12 touch];
-  if (v12)
+  textureCopy = texture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v12];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
@@ -7831,8 +7831,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v28);
   baseObject = self->_baseObject;
-  v16 = [v12 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject setColorResolveTexture:v16 slice:a4 depthPlane:a5 level:a6 atIndex:a7];
+  baseObject = [textureCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject setColorResolveTexture:baseObject slice:slice depthPlane:plane level:level atIndex:index];
 
   v17 = v29;
   *(v29 + 8) = -16156;
@@ -7853,10 +7853,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -7864,10 +7864,10 @@
     var0 = 0;
   }
 
-  v24 = [v12 traceStream];
-  if (v24)
+  traceStream2 = [textureCopy traceStream];
+  if (traceStream2)
   {
-    v25 = *v24;
+    v25 = *traceStream2;
   }
 
   else
@@ -7877,25 +7877,25 @@
 
   *v19 = var0;
   *(v19 + 1) = v25;
-  *(v19 + 2) = a4;
-  *(v19 + 3) = a5;
-  *(v19 + 4) = a6;
-  *(v19 + 5) = a7;
+  *(v19 + 2) = slice;
+  *(v19 + 3) = plane;
+  *(v19 + 4) = level;
+  *(v19 + 5) = index;
   s();
   *v26 = v27;
   *(v26 + 8) = BYTE8(v30);
   *(v29 + 15) |= 8u;
 }
 
-- (void)setColorAttachmentMap:(id)a3
+- (void)setColorAttachmentMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v23);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setColorAttachmentMap:v4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setColorAttachmentMap:mapCopy];
   v6 = v24;
   *(v24 + 8) = -14849;
   v7 = BYTE9(v25);
@@ -7915,11 +7915,11 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (!v11)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (!traceStream)
   {
     var0 = 0;
-    if (v4)
+    if (mapCopy)
     {
       goto LABEL_6;
     }
@@ -7936,21 +7936,21 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  var0 = v11->var0;
-  if (!v4)
+  var0 = traceStream->var0;
+  if (!mapCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_6:
-  v13 = [v4 getPhysicalIndexForLogicalIndex:0];
-  v14 = [v4 getPhysicalIndexForLogicalIndex:1];
-  v15 = [v4 getPhysicalIndexForLogicalIndex:2];
-  v16 = [v4 getPhysicalIndexForLogicalIndex:3];
-  v17 = [v4 getPhysicalIndexForLogicalIndex:4];
-  v18 = [v4 getPhysicalIndexForLogicalIndex:5];
-  v19 = [v4 getPhysicalIndexForLogicalIndex:6];
-  v20 = [v4 getPhysicalIndexForLogicalIndex:7];
+  v13 = [mapCopy getPhysicalIndexForLogicalIndex:0];
+  v14 = [mapCopy getPhysicalIndexForLogicalIndex:1];
+  v15 = [mapCopy getPhysicalIndexForLogicalIndex:2];
+  v16 = [mapCopy getPhysicalIndexForLogicalIndex:3];
+  v17 = [mapCopy getPhysicalIndexForLogicalIndex:4];
+  v18 = [mapCopy getPhysicalIndexForLogicalIndex:5];
+  v19 = [mapCopy getPhysicalIndexForLogicalIndex:6];
+  v20 = [mapCopy getPhysicalIndexForLogicalIndex:7];
 LABEL_9:
   *v8 = var0;
   v8[8] = v13;
@@ -7967,17 +7967,17 @@ LABEL_9:
   *(v24 + 15) |= 8u;
 }
 
-- (void)setBlendColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6
+- (void)setBlendColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
 {
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v25);
-  *&v12 = a3;
-  *&v13 = a4;
-  *&v14 = a5;
-  *&v15 = a6;
+  *&v12 = red;
+  *&v13 = green;
+  *&v14 = blue;
+  *&v15 = alpha;
   [(MTLRenderCommandEncoderSPI *)self->_baseObject setBlendColorRed:v12 green:v13 blue:v14 alpha:v15];
   v16 = v26;
   *(v26 + 8) = -16255;
@@ -7998,10 +7998,10 @@ LABEL_9:
   }
 
   *(v16 + 13) = v17;
-  v21 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v21)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v21->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -8010,24 +8010,24 @@ LABEL_9:
   }
 
   *v18 = var0;
-  *(v18 + 2) = a3;
-  *(v18 + 3) = a4;
-  *(v18 + 4) = a5;
-  *(v18 + 5) = a6;
+  *(v18 + 2) = red;
+  *(v18 + 3) = green;
+  *(v18 + 4) = blue;
+  *(v18 + 5) = alpha;
   s();
   *v23 = v24;
   *(v23 + 8) = BYTE8(v27);
   *(v26 + 15) |= 8u;
 }
 
-- (void)setAlphaTestReferenceValue:(float)a3
+- (void)setAlphaTestReferenceValue:(float)value
 {
   v17 = 0u;
   v18 = 0u;
   v16 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v16);
-  *&v6 = a3;
+  *&v6 = value;
   [(MTLRenderCommandEncoderSPI *)self->_baseObject setAlphaTestReferenceValue:v6];
   v7 = v17;
   *(v17 + 8) = -15729;
@@ -8048,10 +8048,10 @@ LABEL_9:
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -8060,7 +8060,7 @@ LABEL_9:
   }
 
   *v9 = var0;
-  *(v9 + 2) = a3;
+  *(v9 + 2) = value;
   *(v9 + 3) = 0;
   s();
   *v14 = v15;
@@ -8068,15 +8068,15 @@ LABEL_9:
   *(v17 + 15) |= 8u;
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject pushDebugGroup:v4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject pushDebugGroup:groupCopy];
   v6 = v19;
   *(v19 + 8) = -16244;
   v7 = BYTE9(v20);
@@ -8096,10 +8096,10 @@ LABEL_9:
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -8107,16 +8107,16 @@ LABEL_9:
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [groupCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [groupCopy UTF8String];
+    v15 = strlen([groupCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -8152,10 +8152,10 @@ LABEL_9:
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -8170,14 +8170,14 @@ LABEL_9:
   *(v14 + 15) |= 8u;
 }
 
-- (void)memoryBarrierWithScope:(unint64_t)a3 afterStages:(unint64_t)a4 beforeStages:(unint64_t)a5
+- (void)memoryBarrierWithScope:(unint64_t)scope afterStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages
 {
   v20 = 0u;
   v21 = 0u;
   v19 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v19);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject memoryBarrierWithScope:a3 afterStages:a4 beforeStages:a5];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject memoryBarrierWithScope:scope afterStages:stages beforeStages:beforeStages];
   v10 = v20;
   *(v20 + 8) = -16004;
   v11 = BYTE9(v21);
@@ -8197,10 +8197,10 @@ LABEL_9:
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -8209,39 +8209,39 @@ LABEL_9:
   }
 
   *v12 = var0;
-  *(v12 + 1) = a3;
-  *(v12 + 2) = a4;
-  *(v12 + 3) = a5;
+  *(v12 + 1) = scope;
+  *(v12 + 2) = stages;
+  *(v12 + 3) = beforeStages;
   s();
   *v17 = v18;
   *(v17 + 8) = BYTE8(v21);
   *(v20 + 15) |= 8u;
-  if (a4 == 1 && a5 == 1)
+  if (stages == 1 && beforeStages == 1)
   {
-    CaptureClearFuncSnapshot(a3, self->_snapshotMap);
+    CaptureClearFuncSnapshot(scope, self->_snapshotMap);
   }
 }
 
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4 afterStages:(unint64_t)a5 beforeStages:(unint64_t)a6
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count afterStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages
 {
-  v34 = a5;
-  v7 = a4;
-  v8 = a3;
-  RetainArray(self->_retainedObjects, a3, a4);
+  stagesCopy = stages;
+  countCopy = count;
+  resourcesCopy = resources;
+  RetainArray(self->_retainedObjects, resources, count);
   v36 = 0u;
   v37 = 0u;
   v35 = 0u;
   traceStream = self->_traceStream;
   v11 = GTTraceContext_pushEncoderWithStream(self->_traceContext, &v35);
   baseObject = self->_baseObject;
-  v13 = 8 * v7;
+  v13 = 8 * countCopy;
   __chkstk_darwin(v11, v14);
-  bzero(&v33 - ((8 * v7 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v7);
-  if (v7)
+  bzero(&v33 - ((8 * countCopy + 15) & 0xFFFFFFFFFFFFFFF0), 8 * countCopy);
+  if (countCopy)
   {
-    v15 = v8;
+    v15 = resourcesCopy;
     v16 = (&v33 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0));
-    v17 = v7;
+    v17 = countCopy;
     do
     {
       v18 = *v15++;
@@ -8252,8 +8252,8 @@ LABEL_9:
     while (v17);
   }
 
-  v19 = v34;
-  [(MTLRenderCommandEncoderSPI *)baseObject memoryBarrierWithResources:&v33 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0) count:v7 afterStages:v34 beforeStages:a6];
+  v19 = stagesCopy;
+  [(MTLRenderCommandEncoderSPI *)baseObject memoryBarrierWithResources:&v33 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0) count:countCopy afterStages:stagesCopy beforeStages:beforeStages];
   v20 = v36;
   *(v36 + 8) = -16003;
   v21 = BYTE9(v37);
@@ -8264,7 +8264,7 @@ LABEL_9:
     ++BYTE10(v37);
     v22 = GTTraceMemPool_allocateBytes(v23, *(&v36 + 1), v24 | 0x2800000000) + 16;
     v21 = v24;
-    v19 = v34;
+    v19 = stagesCopy;
   }
 
   else
@@ -8274,10 +8274,10 @@ LABEL_9:
   }
 
   *(v20 + 13) = v21;
-  v25 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v25)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v25->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -8285,13 +8285,13 @@ LABEL_9:
     var0 = 0;
   }
 
-  __chkstk_darwin(v25, v26);
-  bzero(&v33 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v7);
-  v28 = StreamArray(&v35, (&v33 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0)), v8, v7);
+  __chkstk_darwin(traceStream, v26);
+  bzero(&v33 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * countCopy);
+  v28 = StreamArray(&v35, (&v33 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0)), resourcesCopy, countCopy);
   *v22 = var0;
-  *(v22 + 1) = v7;
+  *(v22 + 1) = countCopy;
   *(v22 + 2) = v19;
-  *(v22 + 3) = a6;
+  *(v22 + 3) = beforeStages;
   v22[32] = v28;
   *(v22 + 33) = 0;
   *(v22 + 9) = 0;
@@ -8299,21 +8299,21 @@ LABEL_9:
   *v29 = v30;
   *(v29 + 8) = BYTE8(v37);
   *(v36 + 15) |= 8u;
-  if (v7)
+  if (countCopy)
   {
-    v32 = v19 == 1 && a6 == 1;
+    v32 = v19 == 1 && beforeStages == 1;
     do
     {
       if (v32)
       {
-        CaptureRemoveFuncSnapshot(*v8, self->_snapshotMap);
+        CaptureRemoveFuncSnapshot(*resourcesCopy, self->_snapshotMap);
       }
 
-      ++v8;
-      --v7;
+      ++resourcesCopy;
+      --countCopy;
     }
 
-    while (v7);
+    while (countCopy);
   }
 }
 
@@ -8325,15 +8325,15 @@ LABEL_9:
   [(MTLRenderCommandEncoderSPI *)baseObject insertSplit];
 }
 
-- (void)insertDebugSignpost:(id)a3
+- (void)insertDebugSignpost:(id)signpost
 {
-  v4 = a3;
+  signpostCopy = signpost;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject insertDebugSignpost:v4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject insertDebugSignpost:signpostCopy];
   v6 = v19;
   *(v19 + 8) = -16245;
   v7 = BYTE9(v20);
@@ -8353,10 +8353,10 @@ LABEL_9:
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -8364,16 +8364,16 @@ LABEL_9:
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [signpostCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [signpostCopy UTF8String];
+    v15 = strlen([signpostCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -8409,10 +8409,10 @@ LABEL_9:
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -8427,14 +8427,14 @@ LABEL_9:
   *(v14 + 15) |= 8u;
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6 baseInstance:(unint64_t)a7
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance
 {
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v23);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject drawPrimitives:a3 vertexStart:a4 vertexCount:a5 instanceCount:a6 baseInstance:a7];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject drawPrimitives:primitives vertexStart:start vertexCount:count instanceCount:instanceCount baseInstance:instance];
   v14 = v24;
   *(v24 + 8) = -16218;
   v15 = BYTE9(v25);
@@ -8454,10 +8454,10 @@ LABEL_9:
   }
 
   *(v14 + 13) = v15;
-  v19 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v19)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v19->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -8466,25 +8466,25 @@ LABEL_9:
   }
 
   *v16 = var0;
-  *(v16 + 1) = a3;
-  *(v16 + 2) = a4;
-  *(v16 + 3) = a5;
-  *(v16 + 4) = a6;
-  *(v16 + 5) = a7;
+  *(v16 + 1) = primitives;
+  *(v16 + 2) = start;
+  *(v16 + 3) = count;
+  *(v16 + 4) = instanceCount;
+  *(v16 + 5) = instance;
   s();
   *v21 = v22;
   *(v21 + 8) = BYTE8(v25);
   *(v24 + 15) |= 8u;
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount
 {
   v22 = 0u;
   v23 = 0u;
   v21 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v21);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject drawPrimitives:a3 vertexStart:a4 vertexCount:a5 instanceCount:a6];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject drawPrimitives:primitives vertexStart:start vertexCount:count instanceCount:instanceCount];
   v12 = v22;
   *(v22 + 8) = -16251;
   v13 = BYTE9(v23);
@@ -8504,10 +8504,10 @@ LABEL_9:
   }
 
   *(v12 + 13) = v13;
-  v17 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v17)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v17->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -8516,24 +8516,24 @@ LABEL_9:
   }
 
   *v14 = var0;
-  *(v14 + 1) = a3;
-  *(v14 + 2) = a4;
-  *(v14 + 3) = a5;
-  *(v14 + 4) = a6;
+  *(v14 + 1) = primitives;
+  *(v14 + 2) = start;
+  *(v14 + 3) = count;
+  *(v14 + 4) = instanceCount;
   s();
   *v19 = v20;
   *(v19 + 8) = BYTE8(v23);
   *(v22 + 15) |= 8u;
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count
 {
   v20 = 0u;
   v21 = 0u;
   v19 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v19);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject drawPrimitives:a3 vertexStart:a4 vertexCount:a5];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject drawPrimitives:primitives vertexStart:start vertexCount:count];
   v10 = v20;
   *(v20 + 8) = -16250;
   v11 = BYTE9(v21);
@@ -8553,10 +8553,10 @@ LABEL_9:
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -8565,25 +8565,25 @@ LABEL_9:
   }
 
   *v12 = var0;
-  *(v12 + 1) = a3;
-  *(v12 + 2) = a4;
-  *(v12 + 3) = a5;
+  *(v12 + 1) = primitives;
+  *(v12 + 2) = start;
+  *(v12 + 3) = count;
   s();
   *v17 = v18;
   *(v17 + 8) = BYTE8(v21);
   *(v20 + 15) |= 8u;
 }
 
-- (void)drawPrimitives:(unint64_t)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5
+- (void)drawPrimitives:(unint64_t)primitives indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset
 {
-  v8 = a4;
-  [v8 touch];
-  if (v8)
+  bufferCopy = buffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
@@ -8593,8 +8593,8 @@ LABEL_9:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
   baseObject = self->_baseObject;
-  v12 = [v8 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject drawPrimitives:a3 indirectBuffer:v12 indirectBufferOffset:a5];
+  baseObject = [bufferCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject drawPrimitives:primitives indirectBuffer:baseObject indirectBufferOffset:offset];
 
   v13 = v25;
   *(v25 + 8) = -16216;
@@ -8615,10 +8615,10 @@ LABEL_9:
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -8626,10 +8626,10 @@ LABEL_9:
     var0 = 0;
   }
 
-  v20 = [v8 traceStream];
-  if (v20)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v21 = *v20;
+    v21 = *traceStream2;
   }
 
   else
@@ -8638,25 +8638,25 @@ LABEL_9:
   }
 
   *v15 = var0;
-  *(v15 + 1) = a3;
+  *(v15 + 1) = primitives;
   *(v15 + 2) = v21;
-  *(v15 + 3) = a5;
+  *(v15 + 3) = offset;
   s();
   *v22 = v23;
   *(v22 + 8) = BYTE8(v26);
   *(v25 + 15) |= 8u;
 }
 
-- (void)drawPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseInstance:(unint64_t)a9
+- (void)drawPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance
 {
-  v15 = a6;
-  [v15 touch];
-  if (v15)
+  bufferCopy = buffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v15];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
@@ -8666,9 +8666,9 @@ LABEL_9:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v31);
   baseObject = self->_baseObject;
-  v19 = [v15 baseObject];
-  v30 = a8;
-  [(MTLRenderCommandEncoderSPI *)baseObject drawPatches:a3 patchStart:a4 patchCount:a5 patchIndexBuffer:v19 patchIndexBufferOffset:a7 instanceCount:a8 baseInstance:a9];
+  baseObject = [bufferCopy baseObject];
+  instanceCountCopy = instanceCount;
+  [(MTLRenderCommandEncoderSPI *)baseObject drawPatches:patches patchStart:start patchCount:count patchIndexBuffer:baseObject patchIndexBufferOffset:offset instanceCount:instanceCount baseInstance:instance];
 
   v20 = v32;
   *(v32 + 8) = -16147;
@@ -8688,10 +8688,10 @@ LABEL_9:
   }
 
   v20[13] = v22;
-  v24 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v24)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v24->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -8699,10 +8699,10 @@ LABEL_9:
     var0 = 0;
   }
 
-  v26 = [v15 traceStream];
-  if (v26)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v27 = *v26;
+    v27 = *traceStream2;
   }
 
   else
@@ -8711,40 +8711,40 @@ LABEL_9:
   }
 
   *v23 = var0;
-  *(v23 + 1) = a3;
-  *(v23 + 2) = a4;
-  *(v23 + 3) = a5;
+  *(v23 + 1) = patches;
+  *(v23 + 2) = start;
+  *(v23 + 3) = count;
   *(v23 + 4) = v27;
-  *(v23 + 5) = a7;
-  *(v23 + 6) = v30;
-  *(v23 + 7) = a9;
+  *(v23 + 5) = offset;
+  *(v23 + 6) = instanceCountCopy;
+  *(v23 + 7) = instance;
   s();
   *v28 = v29;
   *(v28 + 8) = BYTE8(v33);
   *(v32 + 15) |= 8u;
 }
 
-- (void)drawPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 indirectBuffer:(id)a6 indirectBufferOffset:(unint64_t)a7
+- (void)drawPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset
 {
-  v12 = a4;
-  v13 = a6;
-  [v12 touch];
-  if (v12)
+  bufferCopy = buffer;
+  indirectBufferCopy = indirectBuffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v12];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
-  [v13 touch];
-  if (v13)
+  [indirectBufferCopy touch];
+  if (indirectBufferCopy)
   {
     v15 = self->_retainedObjects;
     if (v15)
     {
-      [(NSMutableSet *)v15 addObject:v13];
+      [(NSMutableSet *)v15 addObject:indirectBufferCopy];
     }
   }
 
@@ -8754,9 +8754,9 @@ LABEL_9:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v33);
   baseObject = self->_baseObject;
-  v18 = [v12 baseObject];
-  v19 = [v13 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject drawPatches:a3 patchIndexBuffer:v18 patchIndexBufferOffset:a5 indirectBuffer:v19 indirectBufferOffset:a7];
+  baseObject = [bufferCopy baseObject];
+  baseObject2 = [indirectBufferCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject drawPatches:patches patchIndexBuffer:baseObject patchIndexBufferOffset:offset indirectBuffer:baseObject2 indirectBufferOffset:bufferOffset];
 
   v20 = v34;
   *(v34 + 8) = -16146;
@@ -8777,10 +8777,10 @@ LABEL_9:
   }
 
   *(v20 + 13) = v21;
-  v25 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v25)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v25->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -8788,10 +8788,10 @@ LABEL_9:
     var0 = 0;
   }
 
-  v27 = [v12 traceStream];
-  if (v27)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v28 = *v27;
+    v28 = *traceStream2;
   }
 
   else
@@ -8799,10 +8799,10 @@ LABEL_9:
     v28 = 0;
   }
 
-  v29 = [v13 traceStream];
-  if (v29)
+  traceStream3 = [indirectBufferCopy traceStream];
+  if (traceStream3)
   {
-    v30 = *v29;
+    v30 = *traceStream3;
   }
 
   else
@@ -8811,18 +8811,18 @@ LABEL_9:
   }
 
   *v22 = var0;
-  *(v22 + 1) = a3;
+  *(v22 + 1) = patches;
   *(v22 + 2) = v28;
-  *(v22 + 3) = a5;
+  *(v22 + 3) = offset;
   *(v22 + 4) = v30;
-  *(v22 + 5) = a7;
+  *(v22 + 5) = bufferOffset;
   s();
   *v31 = v32;
   *(v31 + 8) = BYTE8(v35);
   *(v34 + 15) |= 8u;
 }
 
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   v29 = 0u;
   v30 = 0u;
@@ -8830,9 +8830,9 @@ LABEL_9:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v28);
   baseObject = self->_baseObject;
-  v27 = *a3;
-  v26 = *a4;
-  v25 = *a5;
+  v27 = *threads;
+  v26 = *threadgroup;
+  v25 = *meshThreadgroup;
   [(MTLRenderCommandEncoderSPI *)baseObject drawMeshThreads:&v27 threadsPerObjectThreadgroup:&v26 threadsPerMeshThreadgroup:&v25];
   v11 = *(&v28 + 1);
   v12 = v29;
@@ -8842,10 +8842,10 @@ LABEL_9:
   ++BYTE10(v30);
   Bytes = GTTraceMemPool_allocateBytes(v13, *(&v29 + 1), v14 | 0x5000000000);
   *(v12 + 13) = v14;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -8853,13 +8853,13 @@ LABEL_9:
     var0 = 0;
   }
 
-  var2 = a3->var2;
-  v19 = a4->var2;
-  v20 = a5->var2;
+  var2 = threads->var2;
+  v19 = threadgroup->var2;
+  v20 = meshThreadgroup->var2;
   *(Bytes + 2) = var0;
-  v21 = *&a4->var0;
-  v22 = *&a5->var0;
-  *(Bytes + 24) = *&a3->var0;
+  v21 = *&threadgroup->var0;
+  v22 = *&meshThreadgroup->var0;
+  *(Bytes + 24) = *&threads->var0;
   *(Bytes + 5) = var2;
   *(Bytes + 3) = v21;
   *(Bytes + 8) = v19;
@@ -8871,16 +8871,16 @@ LABEL_9:
   *(v29 + 15) |= 8u;
 }
 
-- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerObjectThreadgroup:(id *)a5 threadsPerMeshThreadgroup:(id *)a6
+- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
-  v10 = a3;
-  [v10 touch];
-  if (v10)
+  bufferCopy = buffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
@@ -8890,12 +8890,12 @@ LABEL_9:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v33);
   baseObject = self->_baseObject;
-  v14 = [v10 baseObject];
-  v31 = *&a5->var0;
-  var2 = a5->var2;
-  v29 = *&a6->var0;
-  v30 = a6->var2;
-  [(MTLRenderCommandEncoderSPI *)baseObject drawMeshThreadgroupsWithIndirectBuffer:v14 indirectBufferOffset:a4 threadsPerObjectThreadgroup:&v31 threadsPerMeshThreadgroup:&v29];
+  baseObject = [bufferCopy baseObject];
+  v31 = *&threadgroup->var0;
+  var2 = threadgroup->var2;
+  v29 = *&meshThreadgroup->var0;
+  v30 = meshThreadgroup->var2;
+  [(MTLRenderCommandEncoderSPI *)baseObject drawMeshThreadgroupsWithIndirectBuffer:baseObject indirectBufferOffset:offset threadsPerObjectThreadgroup:&v31 threadsPerMeshThreadgroup:&v29];
 
   v15 = *(&v33 + 1);
   v16 = v34;
@@ -8905,10 +8905,10 @@ LABEL_9:
   ++BYTE10(v35);
   Bytes = GTTraceMemPool_allocateBytes(v17, *(&v34 + 1), v18 | 0x4800000000);
   *(v16 + 13) = v18;
-  v20 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -8916,10 +8916,10 @@ LABEL_9:
     var0 = 0;
   }
 
-  v22 = [v10 traceStream];
-  if (v22)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v23 = *v22;
+    v23 = *traceStream2;
   }
 
   else
@@ -8927,13 +8927,13 @@ LABEL_9:
     v23 = 0;
   }
 
-  v24 = a5->var2;
-  v25 = a6->var2;
+  v24 = threadgroup->var2;
+  v25 = meshThreadgroup->var2;
   *(Bytes + 2) = var0;
   *(Bytes + 3) = v23;
-  *(Bytes + 4) = a4;
-  v26 = *&a6->var0;
-  *(Bytes + 40) = *&a5->var0;
+  *(Bytes + 4) = offset;
+  v26 = *&meshThreadgroup->var0;
+  *(Bytes + 40) = *&threadgroup->var0;
   *(Bytes + 7) = v24;
   *(Bytes + 4) = v26;
   *(Bytes + 10) = v25;
@@ -8943,7 +8943,7 @@ LABEL_9:
   *(v34 + 15) |= 8u;
 }
 
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   v29 = 0u;
   v30 = 0u;
@@ -8951,9 +8951,9 @@ LABEL_9:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v28);
   baseObject = self->_baseObject;
-  v27 = *a3;
-  v26 = *a4;
-  v25 = *a5;
+  v27 = *threadgroups;
+  v26 = *threadgroup;
+  v25 = *meshThreadgroup;
   [(MTLRenderCommandEncoderSPI *)baseObject drawMeshThreadgroups:&v27 threadsPerObjectThreadgroup:&v26 threadsPerMeshThreadgroup:&v25];
   v11 = *(&v28 + 1);
   v12 = v29;
@@ -8963,10 +8963,10 @@ LABEL_9:
   ++BYTE10(v30);
   Bytes = GTTraceMemPool_allocateBytes(v13, *(&v29 + 1), v14 | 0x5000000000);
   *(v12 + 13) = v14;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -8974,13 +8974,13 @@ LABEL_9:
     var0 = 0;
   }
 
-  var2 = a3->var2;
-  v19 = a4->var2;
-  v20 = a5->var2;
+  var2 = threadgroups->var2;
+  v19 = threadgroup->var2;
+  v20 = meshThreadgroup->var2;
   *(Bytes + 2) = var0;
-  v21 = *&a4->var0;
-  v22 = *&a5->var0;
-  *(Bytes + 24) = *&a3->var0;
+  v21 = *&threadgroup->var0;
+  v22 = *&meshThreadgroup->var0;
+  *(Bytes + 24) = *&threadgroups->var0;
   *(Bytes + 5) = var2;
   *(Bytes + 3) = v21;
   *(Bytes + 8) = v19;
@@ -8992,27 +8992,27 @@ LABEL_9:
   *(v29 + 15) |= 8u;
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexType:(unint64_t)a4 indexBuffer:(id)a5 indexBufferOffset:(unint64_t)a6 indirectBuffer:(id)a7 indirectBufferOffset:(unint64_t)a8
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset
 {
-  v14 = a5;
-  v15 = a7;
-  [v14 touch];
-  if (v14)
+  bufferCopy = buffer;
+  indirectBufferCopy = indirectBuffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v14];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
-  [v15 touch];
-  if (v15)
+  [indirectBufferCopy touch];
+  if (indirectBufferCopy)
   {
     v17 = self->_retainedObjects;
     if (v17)
     {
-      [(NSMutableSet *)v17 addObject:v15];
+      [(NSMutableSet *)v17 addObject:indirectBufferCopy];
     }
   }
 
@@ -9022,9 +9022,9 @@ LABEL_9:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v35);
   baseObject = self->_baseObject;
-  v20 = [v14 baseObject];
-  v21 = [v15 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject drawIndexedPrimitives:a3 indexType:a4 indexBuffer:v20 indexBufferOffset:a6 indirectBuffer:v21 indirectBufferOffset:a8];
+  baseObject = [bufferCopy baseObject];
+  baseObject2 = [indirectBufferCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject drawIndexedPrimitives:primitives indexType:type indexBuffer:baseObject indexBufferOffset:offset indirectBuffer:baseObject2 indirectBufferOffset:bufferOffset];
 
   v22 = v36;
   *(v36 + 8) = -16215;
@@ -9045,10 +9045,10 @@ LABEL_9:
   }
 
   *(v22 + 13) = v23;
-  v27 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v27)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v27->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -9056,10 +9056,10 @@ LABEL_9:
     var0 = 0;
   }
 
-  v29 = [v14 traceStream];
-  if (v29)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v30 = *v29;
+    v30 = *traceStream2;
   }
 
   else
@@ -9067,10 +9067,10 @@ LABEL_9:
     v30 = 0;
   }
 
-  v31 = [v15 traceStream];
-  if (v31)
+  traceStream3 = [indirectBufferCopy traceStream];
+  if (traceStream3)
   {
-    v32 = *v31;
+    v32 = *traceStream3;
   }
 
   else
@@ -9079,28 +9079,28 @@ LABEL_9:
   }
 
   *v24 = var0;
-  *(v24 + 1) = a3;
-  *(v24 + 2) = a4;
+  *(v24 + 1) = primitives;
+  *(v24 + 2) = type;
   *(v24 + 3) = v30;
-  *(v24 + 4) = a6;
+  *(v24 + 4) = offset;
   *(v24 + 5) = v32;
-  *(v24 + 6) = a8;
+  *(v24 + 6) = bufferOffset;
   s();
   *v33 = v34;
   *(v33 + 8) = BYTE8(v37);
   *(v36 + 15) |= 8u;
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0
 {
-  v16 = a6;
-  [v16 touch];
-  if (v16)
+  bufferCopy = buffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v16];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
@@ -9110,11 +9110,11 @@ LABEL_9:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v35);
   baseObject = self->_baseObject;
-  v20 = [v16 baseObject];
-  v21 = a7;
-  v22 = a7;
-  v23 = a8;
-  [(MTLRenderCommandEncoderSPI *)baseObject drawIndexedPrimitives:a3 indexCount:a4 indexType:a5 indexBuffer:v20 indexBufferOffset:v22 instanceCount:a8 baseVertex:a9 baseInstance:a10];
+  baseObject = [bufferCopy baseObject];
+  offsetCopy = offset;
+  offsetCopy2 = offset;
+  instanceCountCopy = instanceCount;
+  [(MTLRenderCommandEncoderSPI *)baseObject drawIndexedPrimitives:primitives indexCount:count indexType:type indexBuffer:baseObject indexBufferOffset:offsetCopy2 instanceCount:instanceCount baseVertex:vertex baseInstance:instance];
 
   v24 = *(&v35 + 1);
   v25 = v36;
@@ -9124,10 +9124,10 @@ LABEL_9:
   ++BYTE10(v37);
   Bytes = GTTraceMemPool_allocateBytes(v26, *(&v36 + 1), v27 | 0x4800000000);
   *(v25 + 13) = v27;
-  v29 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v29)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v29->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -9135,10 +9135,10 @@ LABEL_9:
     var0 = 0;
   }
 
-  v31 = [v16 traceStream];
-  if (v31)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v32 = *v31;
+    v32 = *traceStream2;
   }
 
   else
@@ -9147,30 +9147,30 @@ LABEL_9:
   }
 
   *(Bytes + 2) = var0;
-  *(Bytes + 3) = a3;
-  *(Bytes + 4) = a4;
-  *(Bytes + 5) = a5;
+  *(Bytes + 3) = primitives;
+  *(Bytes + 4) = count;
+  *(Bytes + 5) = type;
   *(Bytes + 6) = v32;
-  *(Bytes + 7) = v21;
-  *(Bytes + 8) = v23;
-  *(Bytes + 9) = a9;
-  *(Bytes + 10) = a10;
+  *(Bytes + 7) = offsetCopy;
+  *(Bytes + 8) = instanceCountCopy;
+  *(Bytes + 9) = vertex;
+  *(Bytes + 10) = instance;
   s();
   *v33 = v34;
   *(v33 + 8) = BYTE8(v37);
   *(v36 + 15) |= 8u;
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount
 {
-  v14 = a6;
-  [v14 touch];
-  if (v14)
+  bufferCopy = buffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v14];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
@@ -9180,8 +9180,8 @@ LABEL_9:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v30);
   baseObject = self->_baseObject;
-  v18 = [v14 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject drawIndexedPrimitives:a3 indexCount:a4 indexType:a5 indexBuffer:v18 indexBufferOffset:a7 instanceCount:a8];
+  baseObject = [bufferCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject drawIndexedPrimitives:primitives indexCount:count indexType:type indexBuffer:baseObject indexBufferOffset:offset instanceCount:instanceCount];
 
   v19 = v31;
   *(v31 + 8) = -16249;
@@ -9202,10 +9202,10 @@ LABEL_9:
   }
 
   *(v19 + 13) = v20;
-  v24 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v24)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v24->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -9213,10 +9213,10 @@ LABEL_9:
     var0 = 0;
   }
 
-  v26 = [v14 traceStream];
-  if (v26)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v27 = *v26;
+    v27 = *traceStream2;
   }
 
   else
@@ -9225,28 +9225,28 @@ LABEL_9:
   }
 
   *v21 = var0;
-  *(v21 + 1) = a3;
-  *(v21 + 2) = a4;
-  *(v21 + 3) = a5;
+  *(v21 + 1) = primitives;
+  *(v21 + 2) = count;
+  *(v21 + 3) = type;
   *(v21 + 4) = v27;
-  *(v21 + 5) = a7;
-  *(v21 + 6) = a8;
+  *(v21 + 5) = offset;
+  *(v21 + 6) = instanceCount;
   s();
   *v28 = v29;
   *(v28 + 8) = BYTE8(v32);
   *(v31 + 15) |= 8u;
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset
 {
-  v12 = a6;
-  [v12 touch];
-  if (v12)
+  bufferCopy = buffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v12];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
@@ -9256,8 +9256,8 @@ LABEL_9:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v28);
   baseObject = self->_baseObject;
-  v16 = [v12 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject drawIndexedPrimitives:a3 indexCount:a4 indexType:a5 indexBuffer:v16 indexBufferOffset:a7];
+  baseObject = [bufferCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject drawIndexedPrimitives:primitives indexCount:count indexType:type indexBuffer:baseObject indexBufferOffset:offset];
 
   v17 = v29;
   *(v29 + 8) = -16248;
@@ -9278,10 +9278,10 @@ LABEL_9:
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -9289,10 +9289,10 @@ LABEL_9:
     var0 = 0;
   }
 
-  v24 = [v12 traceStream];
-  if (v24)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v25 = *v24;
+    v25 = *traceStream2;
   }
 
   else
@@ -9301,38 +9301,38 @@ LABEL_9:
   }
 
   *v19 = var0;
-  *(v19 + 1) = a3;
-  *(v19 + 2) = a4;
-  *(v19 + 3) = a5;
+  *(v19 + 1) = primitives;
+  *(v19 + 2) = count;
+  *(v19 + 3) = type;
   *(v19 + 4) = v25;
-  *(v19 + 5) = a7;
+  *(v19 + 5) = offset;
   s();
   *v26 = v27;
   *(v26 + 8) = BYTE8(v30);
   *(v29 + 15) |= 8u;
 }
 
-- (void)drawIndexedPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 controlPointIndexBuffer:(id)a8 controlPointIndexBufferOffset:(unint64_t)a9 instanceCount:(unint64_t)a10 baseInstance:(unint64_t)a11
+- (void)drawIndexedPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset instanceCount:(unint64_t)self0 baseInstance:(unint64_t)self1
 {
-  v14 = a6;
-  v15 = a8;
-  [v14 touch];
-  if (v14)
+  bufferCopy = buffer;
+  indexBufferCopy = indexBuffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v14];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
-  [v15 touch];
-  if (v15)
+  [indexBufferCopy touch];
+  if (indexBufferCopy)
   {
     v17 = self->_retainedObjects;
     if (v17)
     {
-      [(NSMutableSet *)v17 addObject:v15];
+      [(NSMutableSet *)v17 addObject:indexBufferCopy];
     }
   }
 
@@ -9342,9 +9342,9 @@ LABEL_9:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v38);
   baseObject = self->_baseObject;
-  v20 = [v14 baseObject];
-  v21 = [v15 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject drawIndexedPatches:a3 patchStart:a4 patchCount:a5 patchIndexBuffer:v20 patchIndexBufferOffset:a7 controlPointIndexBuffer:v21 controlPointIndexBufferOffset:a9 instanceCount:a10 baseInstance:a11];
+  baseObject = [bufferCopy baseObject];
+  baseObject2 = [indexBufferCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject drawIndexedPatches:patches patchStart:start patchCount:count patchIndexBuffer:baseObject patchIndexBufferOffset:offset controlPointIndexBuffer:baseObject2 controlPointIndexBufferOffset:bufferOffset instanceCount:instanceCount baseInstance:instance];
 
   v22 = *(&v38 + 1);
   v23 = v39;
@@ -9354,10 +9354,10 @@ LABEL_9:
   ++BYTE10(v40);
   Bytes = GTTraceMemPool_allocateBytes(v24, *(&v39 + 1), v25 | 0x5000000000);
   *(v23 + 13) = v25;
-  v27 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v27)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v27->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -9365,10 +9365,10 @@ LABEL_9:
     var0 = 0;
   }
 
-  v29 = [v14 traceStream];
-  if (v29)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v30 = *v29;
+    v30 = *traceStream2;
   }
 
   else
@@ -9376,10 +9376,10 @@ LABEL_9:
     v30 = 0;
   }
 
-  v31 = [v15 traceStream];
-  if (v31)
+  traceStream3 = [indexBufferCopy traceStream];
+  if (traceStream3)
   {
-    v32 = *v31;
+    v32 = *traceStream3;
   }
 
   else
@@ -9388,53 +9388,53 @@ LABEL_9:
   }
 
   *(Bytes + 2) = var0;
-  *(Bytes + 3) = a3;
-  *(Bytes + 4) = a4;
-  *(Bytes + 5) = a5;
+  *(Bytes + 3) = patches;
+  *(Bytes + 4) = start;
+  *(Bytes + 5) = count;
   *(Bytes + 6) = v30;
-  *(Bytes + 7) = a7;
+  *(Bytes + 7) = offset;
   *(Bytes + 8) = v32;
-  *(Bytes + 9) = a9;
-  *(Bytes + 10) = a10;
-  *(Bytes + 11) = a11;
+  *(Bytes + 9) = bufferOffset;
+  *(Bytes + 10) = instanceCount;
+  *(Bytes + 11) = instance;
   s();
   *v33 = v34;
   *(v33 + 8) = BYTE8(v40);
   *(v39 + 15) |= 8u;
 }
 
-- (void)drawIndexedPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 controlPointIndexBuffer:(id)a6 controlPointIndexBufferOffset:(unint64_t)a7 indirectBuffer:(id)a8 indirectBufferOffset:(unint64_t)a9
+- (void)drawIndexedPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)indirectBufferOffset
 {
-  v13 = a4;
-  v14 = a6;
-  v15 = a8;
-  [v13 touch];
-  if (v13)
+  bufferCopy = buffer;
+  indexBufferCopy = indexBuffer;
+  indirectBufferCopy = indirectBuffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v13];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
-  [v14 touch];
-  if (v14)
+  [indexBufferCopy touch];
+  if (indexBufferCopy)
   {
     v17 = self->_retainedObjects;
     if (v17)
     {
-      [(NSMutableSet *)v17 addObject:v14];
+      [(NSMutableSet *)v17 addObject:indexBufferCopy];
     }
   }
 
-  [v15 touch];
-  if (v15)
+  [indirectBufferCopy touch];
+  if (indirectBufferCopy)
   {
     v18 = self->_retainedObjects;
     if (v18)
     {
-      [(NSMutableSet *)v18 addObject:v15];
+      [(NSMutableSet *)v18 addObject:indirectBufferCopy];
     }
   }
 
@@ -9444,10 +9444,10 @@ LABEL_9:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v40);
   baseObject = self->_baseObject;
-  v21 = [v13 baseObject];
-  v22 = [v14 baseObject];
-  v23 = [v15 baseObject];
-  [(MTLRenderCommandEncoderSPI *)baseObject drawIndexedPatches:a3 patchIndexBuffer:v21 patchIndexBufferOffset:a5 controlPointIndexBuffer:v22 controlPointIndexBufferOffset:a7 indirectBuffer:v23 indirectBufferOffset:a9];
+  baseObject = [bufferCopy baseObject];
+  baseObject2 = [indexBufferCopy baseObject];
+  baseObject3 = [indirectBufferCopy baseObject];
+  [(MTLRenderCommandEncoderSPI *)baseObject drawIndexedPatches:patches patchIndexBuffer:baseObject patchIndexBufferOffset:offset controlPointIndexBuffer:baseObject2 controlPointIndexBufferOffset:bufferOffset indirectBuffer:baseObject3 indirectBufferOffset:indirectBufferOffset];
 
   v24 = v41;
   *(v41 + 8) = -16144;
@@ -9467,10 +9467,10 @@ LABEL_9:
   }
 
   v24[13] = v26;
-  v28 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v28)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v28->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -9478,10 +9478,10 @@ LABEL_9:
     var0 = 0;
   }
 
-  v30 = [v13 traceStream];
-  if (v30)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v31 = *v30;
+    v31 = *traceStream2;
   }
 
   else
@@ -9489,10 +9489,10 @@ LABEL_9:
     v31 = 0;
   }
 
-  v32 = [v14 traceStream];
-  if (v32)
+  traceStream3 = [indexBufferCopy traceStream];
+  if (traceStream3)
   {
-    v33 = *v32;
+    v33 = *traceStream3;
   }
 
   else
@@ -9500,10 +9500,10 @@ LABEL_9:
     v33 = 0;
   }
 
-  v34 = [v15 traceStream];
-  if (v34)
+  traceStream4 = [indirectBufferCopy traceStream];
+  if (traceStream4)
   {
-    v35 = *v34;
+    v35 = *traceStream4;
   }
 
   else
@@ -9512,20 +9512,20 @@ LABEL_9:
   }
 
   *v27 = var0;
-  *(v27 + 1) = a3;
+  *(v27 + 1) = patches;
   *(v27 + 2) = v31;
-  *(v27 + 3) = a5;
+  *(v27 + 3) = offset;
   *(v27 + 4) = v33;
-  *(v27 + 5) = a7;
+  *(v27 + 5) = bufferOffset;
   *(v27 + 6) = v35;
-  *(v27 + 7) = a9;
+  *(v27 + 7) = indirectBufferOffset;
   s();
   *v36 = v37;
   *(v36 + 8) = BYTE8(v42);
   *(v41 + 15) |= 8u;
 }
 
-- (void)dispatchThreadsPerTile:(id *)a3 inRegion:(id *)a4
+- (void)dispatchThreadsPerTile:(id *)tile inRegion:(id *)region
 {
   v28 = 0u;
   v29 = 0u;
@@ -9533,12 +9533,12 @@ LABEL_9:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v27);
   baseObject = self->_baseObject;
-  v9 = *&a3->var0;
-  var2 = a3->var2;
-  v10 = *&a4->var0.var2;
-  v24[0] = *&a4->var0.var0;
+  v9 = *&tile->var0;
+  var2 = tile->var2;
+  v10 = *&region->var0.var2;
+  v24[0] = *&region->var0.var0;
   v24[1] = v10;
-  v24[2] = *&a4->var1.var1;
+  v24[2] = *&region->var1.var1;
   v25 = v9;
   [(MTLRenderCommandEncoderSPI *)baseObject dispatchThreadsPerTile:&v25 inRegion:v24];
   v11 = *(&v27 + 1);
@@ -9549,10 +9549,10 @@ LABEL_9:
   ++BYTE10(v29);
   Bytes = GTTraceMemPool_allocateBytes(v13, *(&v28 + 1), v14 | 0x5000000000);
   *(v12 + 13) = v14;
-  v16 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -9560,12 +9560,12 @@ LABEL_9:
     var0 = 0;
   }
 
-  v18 = a3->var2;
+  v18 = tile->var2;
   *(Bytes + 2) = var0;
-  v19 = *&a4->var0.var0;
-  v20 = *&a4->var0.var2;
-  v21 = *&a4->var1.var1;
-  *(Bytes + 24) = *&a3->var0;
+  v19 = *&region->var0.var0;
+  v20 = *&region->var0.var2;
+  v21 = *&region->var1.var1;
+  *(Bytes + 24) = *&tile->var0;
   *(Bytes + 5) = v18;
   *(Bytes + 3) = v19;
   *(Bytes + 4) = v20;
@@ -9576,7 +9576,7 @@ LABEL_9:
   *(v28 + 15) |= 8u;
 }
 
-- (void)dispatchThreadsPerTile:(id *)a3
+- (void)dispatchThreadsPerTile:(id *)tile
 {
   v19 = 0u;
   v20 = 0u;
@@ -9584,7 +9584,7 @@ LABEL_9:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
   baseObject = self->_baseObject;
-  v17 = *a3;
+  v17 = *tile;
   [(MTLRenderCommandEncoderSPI *)baseObject dispatchThreadsPerTile:&v17];
   v7 = v19;
   *(v19 + 8) = -16137;
@@ -9605,10 +9605,10 @@ LABEL_9:
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -9616,9 +9616,9 @@ LABEL_9:
     var0 = 0;
   }
 
-  var2 = a3->var2;
+  var2 = tile->var2;
   *v9 = var0;
-  *(v9 + 8) = *&a3->var0;
+  *(v9 + 8) = *&tile->var0;
   *(v9 + 3) = var2;
   s();
   *v15 = v16;
@@ -9626,14 +9626,14 @@ LABEL_9:
   *(v19 + 15) |= 8u;
 }
 
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject barrierAfterQueueStages:a3 beforeStages:a4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject barrierAfterQueueStages:stages beforeStages:beforeStages];
   v8 = v18;
   *(v18 + 8) = -14954;
   v9 = BYTE9(v19);
@@ -9653,10 +9653,10 @@ LABEL_9:
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -9665,23 +9665,23 @@ LABEL_9:
   }
 
   *v10 = var0;
-  *(v10 + 1) = a3;
-  *(v10 + 2) = a4;
+  *(v10 + 1) = stages;
+  *(v10 + 2) = beforeStages;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setLabel:v4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -16281;
   v7 = BYTE9(v20);
@@ -9701,10 +9701,10 @@ LABEL_9:
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -9712,16 +9712,16 @@ LABEL_9:
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -9730,13 +9730,13 @@ LABEL_9:
   *(v19 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLRenderCommandEncoderSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLRenderCommandEncoderSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -9791,21 +9791,21 @@ LABEL_9:
   }
 }
 
-- (void)setTileAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setTileAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  structureCopy = structure;
+  v7 = structureCopy;
+  if (structureCopy)
   {
-    v8 = [v6 device];
-    v9 = [v8 captureRaytracingEnabled];
+    device = [structureCopy device];
+    captureRaytracingEnabled = [device captureRaytracingEnabled];
 
-    if ((v9 & 1) == 0)
+    if ((captureRaytracingEnabled & 1) == 0)
     {
       GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderCommandEncoder_setTileAccelerationStructure_atBufferIndex", "Raytracing", 0, 0);
       baseObject = self->_baseObject;
-      v22 = [v7 baseObject];
-      [(MTLRenderCommandEncoderSPI *)baseObject setTileAccelerationStructure:v22 atBufferIndex:a4];
+      baseObject = [v7 baseObject];
+      [(MTLRenderCommandEncoderSPI *)baseObject setTileAccelerationStructure:baseObject atBufferIndex:index];
 
       goto LABEL_17;
     }
@@ -9829,8 +9829,8 @@ LABEL_9:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v27);
   v12 = self->_baseObject;
-  v13 = [v7 baseObject];
-  [(MTLRenderCommandEncoderSPI *)v12 setTileAccelerationStructure:v13 atBufferIndex:a4];
+  baseObject2 = [v7 baseObject];
+  [(MTLRenderCommandEncoderSPI *)v12 setTileAccelerationStructure:baseObject2 atBufferIndex:index];
 
   v14 = v28;
   *(v28 + 8) = -15454;
@@ -9851,10 +9851,10 @@ LABEL_9:
   }
 
   *(v14 + 13) = v15;
-  v19 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v19)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v19->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -9862,10 +9862,10 @@ LABEL_9:
     var0 = 0;
   }
 
-  v23 = [v7 traceStream];
-  if (v23)
+  traceStream2 = [v7 traceStream];
+  if (traceStream2)
   {
-    v24 = *v23;
+    v24 = *traceStream2;
   }
 
   else
@@ -9875,7 +9875,7 @@ LABEL_9:
 
   *v16 = var0;
   *(v16 + 1) = v24;
-  *(v16 + 2) = a4;
+  *(v16 + 2) = index;
   s();
   *v25 = v26;
   *(v25 + 8) = BYTE8(v29);
@@ -9883,21 +9883,21 @@ LABEL_9:
 LABEL_17:
 }
 
-- (void)setFragmentAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setFragmentAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  structureCopy = structure;
+  v7 = structureCopy;
+  if (structureCopy)
   {
-    v8 = [v6 device];
-    v9 = [v8 captureRaytracingEnabled];
+    device = [structureCopy device];
+    captureRaytracingEnabled = [device captureRaytracingEnabled];
 
-    if ((v9 & 1) == 0)
+    if ((captureRaytracingEnabled & 1) == 0)
     {
       GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderCommandEncoder_setFragmentAccelerationStructure_atBufferIndex", "Raytracing", 0, 0);
       baseObject = self->_baseObject;
-      v22 = [v7 baseObject];
-      [(MTLRenderCommandEncoderSPI *)baseObject setFragmentAccelerationStructure:v22 atBufferIndex:a4];
+      baseObject = [v7 baseObject];
+      [(MTLRenderCommandEncoderSPI *)baseObject setFragmentAccelerationStructure:baseObject atBufferIndex:index];
 
       goto LABEL_17;
     }
@@ -9921,8 +9921,8 @@ LABEL_17:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v27);
   v12 = self->_baseObject;
-  v13 = [v7 baseObject];
-  [(MTLRenderCommandEncoderSPI *)v12 setFragmentAccelerationStructure:v13 atBufferIndex:a4];
+  baseObject2 = [v7 baseObject];
+  [(MTLRenderCommandEncoderSPI *)v12 setFragmentAccelerationStructure:baseObject2 atBufferIndex:index];
 
   v14 = v28;
   *(v28 + 8) = -15459;
@@ -9943,10 +9943,10 @@ LABEL_17:
   }
 
   *(v14 + 13) = v15;
-  v19 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v19)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v19->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -9954,10 +9954,10 @@ LABEL_17:
     var0 = 0;
   }
 
-  v23 = [v7 traceStream];
-  if (v23)
+  traceStream2 = [v7 traceStream];
+  if (traceStream2)
   {
-    v24 = *v23;
+    v24 = *traceStream2;
   }
 
   else
@@ -9967,7 +9967,7 @@ LABEL_17:
 
   *v16 = var0;
   *(v16 + 1) = v24;
-  *(v16 + 2) = a4;
+  *(v16 + 2) = index;
   s();
   *v25 = v26;
   *(v25 + 8) = BYTE8(v29);
@@ -9975,21 +9975,21 @@ LABEL_17:
 LABEL_17:
 }
 
-- (void)setVertexAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVertexAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  structureCopy = structure;
+  v7 = structureCopy;
+  if (structureCopy)
   {
-    v8 = [v6 device];
-    v9 = [v8 captureRaytracingEnabled];
+    device = [structureCopy device];
+    captureRaytracingEnabled = [device captureRaytracingEnabled];
 
-    if ((v9 & 1) == 0)
+    if ((captureRaytracingEnabled & 1) == 0)
     {
       GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderCommandEncoder_setVertexAccelerationStructure_atBufferIndex", "Raytracing", 0, 0);
       baseObject = self->_baseObject;
-      v22 = [v7 baseObject];
-      [(MTLRenderCommandEncoderSPI *)baseObject setVertexAccelerationStructure:v22 atBufferIndex:a4];
+      baseObject = [v7 baseObject];
+      [(MTLRenderCommandEncoderSPI *)baseObject setVertexAccelerationStructure:baseObject atBufferIndex:index];
 
       goto LABEL_17;
     }
@@ -10013,8 +10013,8 @@ LABEL_17:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v27);
   v12 = self->_baseObject;
-  v13 = [v7 baseObject];
-  [(MTLRenderCommandEncoderSPI *)v12 setVertexAccelerationStructure:v13 atBufferIndex:a4];
+  baseObject2 = [v7 baseObject];
+  [(MTLRenderCommandEncoderSPI *)v12 setVertexAccelerationStructure:baseObject2 atBufferIndex:index];
 
   v14 = v28;
   *(v28 + 8) = -15449;
@@ -10035,10 +10035,10 @@ LABEL_17:
   }
 
   *(v14 + 13) = v15;
-  v19 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v19)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v19->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -10046,10 +10046,10 @@ LABEL_17:
     var0 = 0;
   }
 
-  v23 = [v7 traceStream];
-  if (v23)
+  traceStream2 = [v7 traceStream];
+  if (traceStream2)
   {
-    v24 = *v23;
+    v24 = *traceStream2;
   }
 
   else
@@ -10059,7 +10059,7 @@ LABEL_17:
 
   *v16 = var0;
   *(v16 + 1) = v24;
-  *(v16 + 2) = a4;
+  *(v16 + 2) = index;
   s();
   *v25 = v26;
   *(v25 + 8) = BYTE8(v29);
@@ -10067,14 +10067,14 @@ LABEL_17:
 LABEL_17:
 }
 
-- (void)setVertexAmplificationCount:(unint64_t)a3 viewMappings:(id *)a4
+- (void)setVertexAmplificationCount:(unint64_t)count viewMappings:(id *)mappings
 {
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLRenderCommandEncoderSPI *)self->_baseObject setVertexAmplificationCount:a3 viewMappings:a4];
+  [(MTLRenderCommandEncoderSPI *)self->_baseObject setVertexAmplificationCount:count viewMappings:mappings];
   v8 = v19;
   *(v19 + 8) = -15822;
   v9 = BYTE9(v20);
@@ -10094,11 +10094,11 @@ LABEL_17:
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (!v13)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (!traceStream)
   {
     var0 = 0;
-    if (a4)
+    if (mappings)
     {
       goto LABEL_6;
     }
@@ -10108,17 +10108,17 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  var0 = v13->var0;
-  if (!a4)
+  var0 = traceStream->var0;
+  if (!mappings)
   {
     goto LABEL_8;
   }
 
 LABEL_6:
-  v15 = GTTraceEncoder_storeBlob(&v18, a4, 8 * a3);
+  v15 = GTTraceEncoder_storeBlob(&v18, mappings, 8 * count);
 LABEL_9:
   *v10 = var0;
-  *(v10 + 1) = a3;
+  *(v10 + 1) = count;
   v10[16] = v15;
   *(v10 + 17) = 0;
   *(v10 + 5) = 0;
@@ -10128,29 +10128,29 @@ LABEL_9:
   *(v19 + 15) |= 8u;
 }
 
-- (void)executeCommandsInBuffer:(id)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5
+- (void)executeCommandsInBuffer:(id)buffer indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)offset
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 size])
+  bufferCopy = buffer;
+  indirectBufferCopy = indirectBuffer;
+  if ([bufferCopy size])
   {
-    [v8 touch];
-    if (v8)
+    [bufferCopy touch];
+    if (bufferCopy)
     {
       retainedObjects = self->_retainedObjects;
       if (retainedObjects)
       {
-        [(NSMutableSet *)retainedObjects addObject:v8];
+        [(NSMutableSet *)retainedObjects addObject:bufferCopy];
       }
     }
 
-    [v9 touch];
-    if (v9)
+    [indirectBufferCopy touch];
+    if (indirectBufferCopy)
     {
       v11 = self->_retainedObjects;
       if (v11)
       {
-        [(NSMutableSet *)v11 addObject:v9];
+        [(NSMutableSet *)v11 addObject:indirectBufferCopy];
       }
     }
 
@@ -10160,9 +10160,9 @@ LABEL_9:
     traceStream = self->_traceStream;
     GTTraceContext_pushEncoderWithStream(self->_traceContext, &v78);
     baseObject = self->_baseObject;
-    v14 = [v8 baseObject];
-    v15 = [v9 baseObject];
-    [(MTLRenderCommandEncoderSPI *)baseObject executeCommandsInBuffer:v14 indirectBuffer:v15 indirectBufferOffset:a5];
+    baseObject = [bufferCopy baseObject];
+    baseObject2 = [indirectBufferCopy baseObject];
+    [(MTLRenderCommandEncoderSPI *)baseObject executeCommandsInBuffer:baseObject indirectBuffer:baseObject2 indirectBufferOffset:offset];
 
     v16 = v79;
     *(v79 + 8) = -15961;
@@ -10183,10 +10183,10 @@ LABEL_9:
     }
 
     *(v16 + 13) = v17;
-    v24 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-    if (v24)
+    traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v24->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -10194,10 +10194,10 @@ LABEL_9:
       var0 = 0;
     }
 
-    v26 = [v8 traceStream];
-    if (v26)
+    traceStream2 = [bufferCopy traceStream];
+    if (traceStream2)
     {
-      v27 = *v26;
+      v27 = *traceStream2;
     }
 
     else
@@ -10205,10 +10205,10 @@ LABEL_9:
       v27 = 0;
     }
 
-    v28 = [v9 traceStream];
-    if (v28)
+    traceStream3 = [indirectBufferCopy traceStream];
+    if (traceStream3)
     {
-      v29 = *v28;
+      v29 = *traceStream3;
     }
 
     else
@@ -10219,7 +10219,7 @@ LABEL_9:
     *v18 = var0;
     *(v18 + 1) = v27;
     *(v18 + 2) = v29;
-    *(v18 + 3) = a5;
+    *(v18 + 3) = offset;
     *(v18 + 4) = 0;
     *(v18 + 5) = 0;
     s();
@@ -10227,16 +10227,16 @@ LABEL_9:
     *(v30 + 8) = BYTE8(v80);
     *(v79 + 15) |= 8u;
     WeakRetained = objc_loadWeakRetained(&self->_captureCommandBuffer);
-    v33 = [WeakRetained isCapturing];
+    isCapturing = [WeakRetained isCapturing];
 
-    if (v33)
+    if (isCapturing)
     {
       context = objc_autoreleasePoolPush();
-      v34 = v8;
+      v34 = bufferCopy;
       v35 = MTLIndirectCommandBuffer_descriptor([v34 traceStream]);
       v36 = MakeMTLIndirectCommandBufferDescriptorWithoutResourceIndex(v35);
       FuncSnapshot = CaptureFindFuncSnapshot(v34, self->_snapshotMap);
-      v68 = a5;
+      offsetCopy = offset;
       v64 = v34;
       v62 = v36;
       if (FuncSnapshot)
@@ -10255,9 +10255,9 @@ LABEL_9:
         SnapshotMemory = AllocateSnapshotMemory(&v78, v35, [v34 size]);
         pool = self->_pool;
         snapshotMap = self->_snapshotMap;
-        v42 = [v34 streamReference];
+        streamReference = [v34 streamReference];
         v38 = apr_palloc(pool, 0x18uLL);
-        *v38 = v42;
+        *v38 = streamReference;
         apr_hash_set(snapshotMap, v38, 8, v38);
         v43 = *v79;
         v63 = SnapshotMemory;
@@ -10265,29 +10265,29 @@ LABEL_9:
         v38[2] = v43;
       }
 
-      v44 = self;
-      v69 = v9;
-      v45 = v9;
-      v46 = [(CaptureMTLRenderCommandEncoder *)v44 device];
+      selfCopy = self;
+      v69 = indirectBufferCopy;
+      v45 = indirectBufferCopy;
+      device = [(CaptureMTLRenderCommandEncoder *)selfCopy device];
       v47 = DEVICEOBJECT(v45);
 
-      v48 = [v47 device];
-      v61 = [v48 newBufferWithLength:8 options:0];
-      v49 = DEVICEOBJECT(v44);
+      device2 = [v47 device];
+      v61 = [device2 newBufferWithLength:8 options:0];
+      v49 = DEVICEOBJECT(selfCopy);
 
       [v49 setVertexBuffer:v61 offset:0 atIndex:0];
-      [v49 setVertexBuffer:v47 offset:v68 atIndex:1];
-      v50 = [v46 renderPipelineCopyBuffer];
-      [v49 setRenderPipelineState:v50];
+      [v49 setVertexBuffer:v47 offset:offsetCopy atIndex:1];
+      renderPipelineCopyBuffer = [device renderPipelineCopyBuffer];
+      [v49 setRenderPipelineState:renderPipelineCopyBuffer];
 
-      v9 = v69;
+      indirectBufferCopy = v69;
       [v49 drawPrimitives:0 vertexStart:0 vertexCount:8];
 
       v51 = *(*(&v78 + 1) + 24);
       v52 = BYTE10(v80);
       ++BYTE10(v80);
       Bytes = GTTraceMemPool_allocateBytes(v51, *(&v79 + 1), v52 | 0x1000000100);
-      RestoreRenderCommandEncoder(v44, v54);
+      RestoreRenderCommandEncoder(selfCopy, v54);
       v18[40] = v63[8];
       v18[41] = Bytes[8];
       *(v18 + 4) = v38[2];
@@ -10318,9 +10318,9 @@ LABEL_9:
   {
     GTMTLCaptureManager_notifyUnsupportedFenumWithMsg(0, "zero-length Indirect Command Buffer executions", 0, 0);
     v19 = self->_baseObject;
-    v20 = [v8 baseObject];
-    v21 = [v9 baseObject];
-    [(MTLRenderCommandEncoderSPI *)v19 executeCommandsInBuffer:v20 indirectBuffer:v21 indirectBufferOffset:a5];
+    baseObject3 = [bufferCopy baseObject];
+    baseObject4 = [indirectBufferCopy baseObject];
+    [(MTLRenderCommandEncoderSPI *)v19 executeCommandsInBuffer:baseObject3 indirectBuffer:baseObject4 indirectBufferOffset:offset];
   }
 }
 
@@ -10365,20 +10365,20 @@ float __94__CaptureMTLRenderCommandEncoder_executeCommandsInBuffer_indirectBuffe
   return result;
 }
 
-- (void)executeCommandsInBuffer:(id)a3 withRange:(_NSRange)a4
+- (void)executeCommandsInBuffer:(id)buffer withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  if ([v7 size])
+  length = range.length;
+  location = range.location;
+  bufferCopy = buffer;
+  if ([bufferCopy size])
   {
-    [v7 touch];
-    if (v7)
+    [bufferCopy touch];
+    if (bufferCopy)
     {
       retainedObjects = self->_retainedObjects;
       if (retainedObjects)
       {
-        [(NSMutableSet *)retainedObjects addObject:v7];
+        [(NSMutableSet *)retainedObjects addObject:bufferCopy];
       }
     }
 
@@ -10388,8 +10388,8 @@ float __94__CaptureMTLRenderCommandEncoder_executeCommandsInBuffer_indirectBuffe
     traceStream = self->_traceStream;
     GTTraceContext_pushEncoderWithStream(self->_traceContext, &v52);
     baseObject = self->_baseObject;
-    v11 = [v7 baseObject];
-    [(MTLRenderCommandEncoderSPI *)baseObject executeCommandsInBuffer:v11 withRange:location, length];
+    baseObject = [bufferCopy baseObject];
+    [(MTLRenderCommandEncoderSPI *)baseObject executeCommandsInBuffer:baseObject withRange:location, length];
 
     v12 = v53;
     *(v53 + 8) = -15962;
@@ -10410,10 +10410,10 @@ float __94__CaptureMTLRenderCommandEncoder_executeCommandsInBuffer_indirectBuffe
     }
 
     *(v12 + 13) = v13;
-    v19 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-    if (v19)
+    traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v19->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -10421,10 +10421,10 @@ float __94__CaptureMTLRenderCommandEncoder_executeCommandsInBuffer_indirectBuffe
       var0 = 0;
     }
 
-    v21 = [v7 traceStream];
-    if (v21)
+    traceStream2 = [bufferCopy traceStream];
+    if (traceStream2)
     {
-      v22 = *v21;
+      v22 = *traceStream2;
     }
 
     else
@@ -10443,12 +10443,12 @@ float __94__CaptureMTLRenderCommandEncoder_executeCommandsInBuffer_indirectBuffe
     *(v23 + 8) = BYTE8(v54);
     *(v53 + 15) |= 8u;
     WeakRetained = objc_loadWeakRetained(&self->_captureCommandBuffer);
-    v26 = [WeakRetained isCapturing];
+    isCapturing = [WeakRetained isCapturing];
 
-    if (v26)
+    if (isCapturing)
     {
       context = objc_autoreleasePoolPush();
-      v27 = v7;
+      v27 = bufferCopy;
       v28 = MTLIndirectCommandBuffer_descriptor([v27 traceStream]);
       v29 = MakeMTLIndirectCommandBufferDescriptorWithoutResourceIndex(v28);
       FuncSnapshot = CaptureFindFuncSnapshot(v27, self->_snapshotMap);
@@ -10468,9 +10468,9 @@ float __94__CaptureMTLRenderCommandEncoder_executeCommandsInBuffer_indirectBuffe
         SnapshotMemory = AllocateSnapshotMemory(&v52, v28, [v27 size]);
         pool = self->_pool;
         ht = self->_snapshotMap;
-        v37 = [v27 streamReference];
+        streamReference = [v27 streamReference];
         v32 = apr_palloc(pool, 0x18uLL);
-        *v32 = v37;
+        *v32 = streamReference;
         apr_hash_set(ht, v32, 8, v32);
         v38 = *v53;
         v32[1] = SnapshotMemory;
@@ -10504,8 +10504,8 @@ float __94__CaptureMTLRenderCommandEncoder_executeCommandsInBuffer_indirectBuffe
   {
     GTMTLCaptureManager_notifyUnsupportedFenumWithMsg(0, "zero-length Indirect Command Buffer executions", 0, 0);
     v15 = self->_baseObject;
-    v16 = [v7 baseObject];
-    [(MTLRenderCommandEncoderSPI *)v15 executeCommandsInBuffer:v16 withRange:location, length];
+    baseObject2 = [bufferCopy baseObject];
+    [(MTLRenderCommandEncoderSPI *)v15 executeCommandsInBuffer:baseObject2 withRange:location, length];
   }
 }
 
@@ -10559,10 +10559,10 @@ void __68__CaptureMTLRenderCommandEncoder_executeCommandsInBuffer_withRange___bl
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLRenderCommandEncoder *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLRenderCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -10585,35 +10585,35 @@ void __68__CaptureMTLRenderCommandEncoder_executeCommandsInBuffer_withRange___bl
   [(CaptureMTLRenderCommandEncoder *)&v14 dealloc];
 }
 
-- (CaptureMTLRenderCommandEncoder)initWithBaseObject:(id)a3 captureParallelRenderCommandEncoder:(id)a4
+- (CaptureMTLRenderCommandEncoder)initWithBaseObject:(id)object captureParallelRenderCommandEncoder:(id)encoder
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  encoderCopy = encoder;
   v23.receiver = self;
   v23.super_class = CaptureMTLRenderCommandEncoder;
   v9 = [(CaptureMTLRenderCommandEncoder *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    v11 = [v8 device];
+    objc_storeStrong(&v9->_baseObject, object);
+    device = [encoderCopy device];
     captureDevice = v10->_captureDevice;
-    v10->_captureDevice = v11;
+    v10->_captureDevice = device;
 
-    v13 = [v8 traceContext];
-    v10->_traceContext = v13;
-    v14 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v13, v14, 0);
+    traceContext = [encoderCopy traceContext];
+    v10->_traceContext = traceContext;
+    v14 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v14, 0);
 
     apr_pool_create_ex(&v10->_pool, 0, 0, 0);
     v10->_snapshotMap = apr_hash_make(v10->_pool);
-    v15 = [v8 commandBuffer];
-    objc_storeWeak(&v10->_captureCommandBuffer, v15);
+    commandBuffer = [encoderCopy commandBuffer];
+    objc_storeWeak(&v10->_captureCommandBuffer, commandBuffer);
 
     WeakRetained = objc_loadWeakRetained(&v10->_captureCommandBuffer);
-    v17 = [WeakRetained retainedObjects];
+    retainedObjects = [WeakRetained retainedObjects];
 
-    if (v17)
+    if (retainedObjects)
     {
       v18 = objc_alloc_init(NSMutableSet);
       retainedObjects = v10->_retainedObjects;
@@ -10628,30 +10628,30 @@ void __68__CaptureMTLRenderCommandEncoder_executeCommandsInBuffer_withRange___bl
   return v10;
 }
 
-- (CaptureMTLRenderCommandEncoder)initWithBaseObject:(id)a3 captureCommandBuffer:(id)a4
+- (CaptureMTLRenderCommandEncoder)initWithBaseObject:(id)object captureCommandBuffer:(id)buffer
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  bufferCopy = buffer;
   v20.receiver = self;
   v20.super_class = CaptureMTLRenderCommandEncoder;
   v9 = [(CaptureMTLRenderCommandEncoder *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    v11 = [v8 device];
+    objc_storeStrong(&v9->_baseObject, object);
+    device = [bufferCopy device];
     captureDevice = v10->_captureDevice;
-    v10->_captureDevice = v11;
+    v10->_captureDevice = device;
 
-    v13 = [v8 traceContext];
-    v10->_traceContext = v13;
-    v14 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openEncoderStream(v13, v14, *([v8 traceStream] + 3));
+    traceContext = [bufferCopy traceContext];
+    v10->_traceContext = traceContext;
+    v14 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openEncoderStream(traceContext, v14, *([bufferCopy traceStream] + 3));
 
-    objc_storeWeak(&v10->_captureCommandBuffer, v8);
-    v15 = [v8 retainedObjects];
+    objc_storeWeak(&v10->_captureCommandBuffer, bufferCopy);
+    retainedObjects = [bufferCopy retainedObjects];
     retainedObjects = v10->_retainedObjects;
-    v10->_retainedObjects = v15;
+    v10->_retainedObjects = retainedObjects;
 
     apr_pool_create_ex(&v10->_pool, 0, 0, 0);
     v10->_snapshotMap = apr_hash_make(v10->_pool);

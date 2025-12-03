@@ -1,49 +1,49 @@
 @interface FLOWSchemaFLOWKeyboardUsageMetadata
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWKeyboardUsageMetadata)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWKeyboardUsageMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWKeyboardUsageMetadata)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWKeyboardUsageMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsEmojiUsed:(BOOL)a3;
-- (void)setHasLevenshteinEditDistance:(BOOL)a3;
-- (void)setHasNumCharsDeleted:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsEmojiUsed:(BOOL)used;
+- (void)setHasLevenshteinEditDistance:(BOOL)distance;
+- (void)setHasNumCharsDeleted:(BOOL)deleted;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWKeyboardUsageMetadata
 
-- (FLOWSchemaFLOWKeyboardUsageMetadata)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWKeyboardUsageMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = FLOWSchemaFLOWKeyboardUsageMetadata;
   v5 = [(FLOWSchemaFLOWKeyboardUsageMetadata *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"numCharsAdded"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"numCharsAdded"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWKeyboardUsageMetadata setNumCharsAdded:](v5, "setNumCharsAdded:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"numCharsDeleted"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"numCharsDeleted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWKeyboardUsageMetadata setNumCharsDeleted:](v5, "setNumCharsDeleted:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"levenshteinEditDistance"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"levenshteinEditDistance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWKeyboardUsageMetadata setLevenshteinEditDistance:](v5, "setLevenshteinEditDistance:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isEmojiUsed"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isEmojiUsed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWKeyboardUsageMetadata)initWithJSON:(id)a3
+- (FLOWSchemaFLOWKeyboardUsageMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWKeyboardUsageMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWKeyboardUsageMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWKeyboardUsageMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,12 +92,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isEmojiUsed + 1);
   if ((v4 & 8) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWKeyboardUsageMetadata isEmojiUsed](self, "isEmojiUsed")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isEmojiUsed"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isEmojiUsed"];
 
     v4 = *(&self->_isEmojiUsed + 1);
     if ((v4 & 4) == 0)
@@ -118,7 +118,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWKeyboardUsageMetadata levenshteinEditDistance](self, "levenshteinEditDistance")}];
-  [v3 setObject:v8 forKeyedSubscript:@"levenshteinEditDistance"];
+  [dictionary setObject:v8 forKeyedSubscript:@"levenshteinEditDistance"];
 
   v4 = *(&self->_isEmojiUsed + 1);
   if ((v4 & 1) == 0)
@@ -134,19 +134,19 @@ LABEL_4:
 
 LABEL_11:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWKeyboardUsageMetadata numCharsAdded](self, "numCharsAdded")}];
-  [v3 setObject:v9 forKeyedSubscript:@"numCharsAdded"];
+  [dictionary setObject:v9 forKeyedSubscript:@"numCharsAdded"];
 
   if ((*(&self->_isEmojiUsed + 1) & 2) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWKeyboardUsageMetadata numCharsDeleted](self, "numCharsDeleted")}];
-    [v3 setObject:v5 forKeyedSubscript:@"numCharsDeleted"];
+    [dictionary setObject:v5 forKeyedSubscript:@"numCharsDeleted"];
   }
 
 LABEL_6:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -203,16 +203,16 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   v5 = *(&self->_isEmojiUsed + 1);
-  v6 = v4[21];
+  v6 = equalCopy[21];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -221,13 +221,13 @@ LABEL_5:
   if (v5)
   {
     numCharsAdded = self->_numCharsAdded;
-    if (numCharsAdded != [v4 numCharsAdded])
+    if (numCharsAdded != [equalCopy numCharsAdded])
     {
       goto LABEL_18;
     }
 
     v5 = *(&self->_isEmojiUsed + 1);
-    v6 = v4[21];
+    v6 = equalCopy[21];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -239,13 +239,13 @@ LABEL_5:
   if (v8)
   {
     numCharsDeleted = self->_numCharsDeleted;
-    if (numCharsDeleted != [v4 numCharsDeleted])
+    if (numCharsDeleted != [equalCopy numCharsDeleted])
     {
       goto LABEL_18;
     }
 
     v5 = *(&self->_isEmojiUsed + 1);
-    v6 = v4[21];
+    v6 = equalCopy[21];
   }
 
   v10 = (v5 >> 2) & 1;
@@ -257,10 +257,10 @@ LABEL_5:
   if (v10)
   {
     levenshteinEditDistance = self->_levenshteinEditDistance;
-    if (levenshteinEditDistance == [v4 levenshteinEditDistance])
+    if (levenshteinEditDistance == [equalCopy levenshteinEditDistance])
     {
       v5 = *(&self->_isEmojiUsed + 1);
-      v6 = v4[21];
+      v6 = equalCopy[21];
       goto LABEL_14;
     }
 
@@ -279,7 +279,7 @@ LABEL_14:
   if (v12)
   {
     isEmojiUsed = self->_isEmojiUsed;
-    if (isEmojiUsed != [v4 isEmojiUsed])
+    if (isEmojiUsed != [equalCopy isEmojiUsed])
     {
       goto LABEL_18;
     }
@@ -291,9 +291,9 @@ LABEL_19:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   v4 = *(&self->_isEmojiUsed + 1);
   if (v4)
   {
@@ -340,9 +340,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasIsEmojiUsed:(BOOL)a3
+- (void)setHasIsEmojiUsed:(BOOL)used
 {
-  if (a3)
+  if (used)
   {
     v3 = 8;
   }
@@ -355,9 +355,9 @@ LABEL_6:
   *(&self->_isEmojiUsed + 1) = *(&self->_isEmojiUsed + 1) & 0xF7 | v3;
 }
 
-- (void)setHasLevenshteinEditDistance:(BOOL)a3
+- (void)setHasLevenshteinEditDistance:(BOOL)distance
 {
-  if (a3)
+  if (distance)
   {
     v3 = 4;
   }
@@ -370,9 +370,9 @@ LABEL_6:
   *(&self->_isEmojiUsed + 1) = *(&self->_isEmojiUsed + 1) & 0xFB | v3;
 }
 
-- (void)setHasNumCharsDeleted:(BOOL)a3
+- (void)setHasNumCharsDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
     v3 = 2;
   }

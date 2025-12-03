@@ -1,17 +1,17 @@
 @interface GAXFeatureView
-+ (GAXFeatureView)allocWithZone:(_NSZone *)a3;
-+ (id)appFeatureViewWithIdentifier:(id)a3 icon:(id)a4 text:(id)a5 detailText:(id)a6 initialState:(BOOL)a7 styleProvider:(id)a8;
-+ (id)hardwareFeatureViewWithIdentifier:(id)a3 icon:(id)a4 text:(id)a5 initialState:(BOOL)a6 styleProvider:(id)a7;
-+ (id)optionsFeatureViewWithIdentifier:(id)a3 icon:(id)a4 text:(id)a5 styleProvider:(id)a6;
-+ (id)systemFeatureViewWithIdentifier:(id)a3 icon:(id)a4 text:(id)a5 initialState:(BOOL)a6 styleProvider:(id)a7;
-+ (id)timeRestrictionsFeatureViewWithInitialState:(BOOL)a3 initialDuration:(int64_t)a4 styleProvider:(id)a5;
++ (GAXFeatureView)allocWithZone:(_NSZone *)zone;
++ (id)appFeatureViewWithIdentifier:(id)identifier icon:(id)icon text:(id)text detailText:(id)detailText initialState:(BOOL)state styleProvider:(id)provider;
++ (id)hardwareFeatureViewWithIdentifier:(id)identifier icon:(id)icon text:(id)text initialState:(BOOL)state styleProvider:(id)provider;
++ (id)optionsFeatureViewWithIdentifier:(id)identifier icon:(id)icon text:(id)text styleProvider:(id)provider;
++ (id)systemFeatureViewWithIdentifier:(id)identifier icon:(id)icon text:(id)text initialState:(BOOL)state styleProvider:(id)provider;
++ (id)timeRestrictionsFeatureViewWithInitialState:(BOOL)state initialDuration:(int64_t)duration styleProvider:(id)provider;
 - (BOOL)_accessibilityActivateToggleSwitch;
 - (CGRect)popoverOriginRect;
-- (GAXFeatureView)initWithIdentifier:(id)a3 type:(int64_t)a4 icon:(id)a5 text:(id)a6 detailText:(id)a7 initialState:(BOOL)a8 styleProvider:(id)a9;
+- (GAXFeatureView)initWithIdentifier:(id)identifier type:(int64_t)type icon:(id)icon text:(id)text detailText:(id)detailText initialState:(BOOL)state styleProvider:(id)provider;
 - (GAXFeatureViewDelegate)delegate;
 - (id)accessibilityValue;
 - (id)description;
-- (void)_handleValueChanged:(id)a3;
+- (void)_handleValueChanged:(id)changed;
 - (void)updateMask;
 @end
 
@@ -19,34 +19,34 @@
 
 - (id)accessibilityValue
 {
-  v2 = [(GAXFeatureView *)self toggleSwitch];
-  v3 = [v2 accessibilityValue];
+  toggleSwitch = [(GAXFeatureView *)self toggleSwitch];
+  accessibilityValue = [toggleSwitch accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
-- (void)_handleValueChanged:(id)a3
+- (void)_handleValueChanged:(id)changed
 {
-  v5 = a3;
-  v4 = [(GAXFeatureView *)self delegate];
+  changedCopy = changed;
+  delegate = [(GAXFeatureView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 featureView:self didChangeState:{objc_msgSend(v5, "isOn")}];
+    [delegate featureView:self didChangeState:{objc_msgSend(changedCopy, "isOn")}];
   }
 }
 
 - (BOOL)_accessibilityActivateToggleSwitch
 {
-  v3 = [(GAXFeatureView *)self toggleSwitch];
-  [v3 setOn:{objc_msgSend(v3, "isOn") ^ 1}];
-  [(GAXFeatureView *)self _handleValueChanged:v3];
+  toggleSwitch = [(GAXFeatureView *)self toggleSwitch];
+  [toggleSwitch setOn:{objc_msgSend(toggleSwitch, "isOn") ^ 1}];
+  [(GAXFeatureView *)self _handleValueChanged:toggleSwitch];
 
   return 1;
 }
 
-+ (GAXFeatureView)allocWithZone:(_NSZone *)a3
++ (GAXFeatureView)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (GAXUserInterfaceIdiomIsPad())
     {
@@ -55,84 +55,84 @@
 
     v6 = objc_opt_class();
 
-    return [v6 allocWithZone:a3];
+    return [v6 allocWithZone:zone];
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___GAXFeatureView;
-    return objc_msgSendSuper2(&v7, "allocWithZone:", a3);
+    return objc_msgSendSuper2(&v7, "allocWithZone:", zone);
   }
 }
 
-+ (id)appFeatureViewWithIdentifier:(id)a3 icon:(id)a4 text:(id)a5 detailText:(id)a6 initialState:(BOOL)a7 styleProvider:(id)a8
++ (id)appFeatureViewWithIdentifier:(id)identifier icon:(id)icon text:(id)text detailText:(id)detailText initialState:(BOOL)state styleProvider:(id)provider
 {
-  v8 = a7;
-  v14 = a8;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [[a1 alloc] initWithIdentifier:v18 type:0 icon:v17 text:v16 detailText:v15 initialState:v8 styleProvider:v14];
+  stateCopy = state;
+  providerCopy = provider;
+  detailTextCopy = detailText;
+  textCopy = text;
+  iconCopy = icon;
+  identifierCopy = identifier;
+  v19 = [[self alloc] initWithIdentifier:identifierCopy type:0 icon:iconCopy text:textCopy detailText:detailTextCopy initialState:stateCopy styleProvider:providerCopy];
 
-  [v19 _constructViewHierarchyWithIcon:v17 text:v16 detailText:v15 initialFeatureState:v8 styleProvider:v14];
-  [v19 _applyAutolayoutConstraintsWithIcon:v17 text:v16 detailText:v15 initialFeatureState:v8 styleProvider:v14];
+  [v19 _constructViewHierarchyWithIcon:iconCopy text:textCopy detailText:detailTextCopy initialFeatureState:stateCopy styleProvider:providerCopy];
+  [v19 _applyAutolayoutConstraintsWithIcon:iconCopy text:textCopy detailText:detailTextCopy initialFeatureState:stateCopy styleProvider:providerCopy];
 
   return v19;
 }
 
-+ (id)hardwareFeatureViewWithIdentifier:(id)a3 icon:(id)a4 text:(id)a5 initialState:(BOOL)a6 styleProvider:(id)a7
++ (id)hardwareFeatureViewWithIdentifier:(id)identifier icon:(id)icon text:(id)text initialState:(BOOL)state styleProvider:(id)provider
 {
-  v7 = a6;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[a1 alloc] initWithIdentifier:v15 type:1 icon:v14 text:v13 detailText:0 initialState:v7 styleProvider:v12];
+  stateCopy = state;
+  providerCopy = provider;
+  textCopy = text;
+  iconCopy = icon;
+  identifierCopy = identifier;
+  v16 = [[self alloc] initWithIdentifier:identifierCopy type:1 icon:iconCopy text:textCopy detailText:0 initialState:stateCopy styleProvider:providerCopy];
 
-  [v16 _constructViewHierarchyWithIcon:v14 text:v13 detailText:0 initialFeatureState:v7 styleProvider:v12];
-  [v16 _applyAutolayoutConstraintsWithIcon:v14 text:v13 detailText:0 initialFeatureState:v7 styleProvider:v12];
+  [v16 _constructViewHierarchyWithIcon:iconCopy text:textCopy detailText:0 initialFeatureState:stateCopy styleProvider:providerCopy];
+  [v16 _applyAutolayoutConstraintsWithIcon:iconCopy text:textCopy detailText:0 initialFeatureState:stateCopy styleProvider:providerCopy];
 
   return v16;
 }
 
-+ (id)optionsFeatureViewWithIdentifier:(id)a3 icon:(id)a4 text:(id)a5 styleProvider:(id)a6
++ (id)optionsFeatureViewWithIdentifier:(id)identifier icon:(id)icon text:(id)text styleProvider:(id)provider
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithIdentifier:v13 type:2 icon:v12 text:v11 detailText:0 initialState:0 styleProvider:v10];
+  providerCopy = provider;
+  textCopy = text;
+  iconCopy = icon;
+  identifierCopy = identifier;
+  v14 = [[self alloc] initWithIdentifier:identifierCopy type:2 icon:iconCopy text:textCopy detailText:0 initialState:0 styleProvider:providerCopy];
 
-  [v14 _constructViewHierarchyWithIcon:v12 text:v11 detailText:0 initialFeatureState:0 styleProvider:v10];
-  [v14 _applyAutolayoutConstraintsWithIcon:v12 text:v11 detailText:0 initialFeatureState:0 styleProvider:v10];
+  [v14 _constructViewHierarchyWithIcon:iconCopy text:textCopy detailText:0 initialFeatureState:0 styleProvider:providerCopy];
+  [v14 _applyAutolayoutConstraintsWithIcon:iconCopy text:textCopy detailText:0 initialFeatureState:0 styleProvider:providerCopy];
 
   return v14;
 }
 
-+ (id)systemFeatureViewWithIdentifier:(id)a3 icon:(id)a4 text:(id)a5 initialState:(BOOL)a6 styleProvider:(id)a7
++ (id)systemFeatureViewWithIdentifier:(id)identifier icon:(id)icon text:(id)text initialState:(BOOL)state styleProvider:(id)provider
 {
-  v7 = a6;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[a1 alloc] initWithIdentifier:v15 type:3 icon:v14 text:v13 detailText:0 initialState:v7 styleProvider:v12];
+  stateCopy = state;
+  providerCopy = provider;
+  textCopy = text;
+  iconCopy = icon;
+  identifierCopy = identifier;
+  v16 = [[self alloc] initWithIdentifier:identifierCopy type:3 icon:iconCopy text:textCopy detailText:0 initialState:stateCopy styleProvider:providerCopy];
 
-  [v16 _constructViewHierarchyWithIcon:v14 text:v13 detailText:0 initialFeatureState:v7 styleProvider:v12];
-  [v16 _applyAutolayoutConstraintsWithIcon:v14 text:v13 detailText:0 initialFeatureState:v7 styleProvider:v12];
+  [v16 _constructViewHierarchyWithIcon:iconCopy text:textCopy detailText:0 initialFeatureState:stateCopy styleProvider:providerCopy];
+  [v16 _applyAutolayoutConstraintsWithIcon:iconCopy text:textCopy detailText:0 initialFeatureState:stateCopy styleProvider:providerCopy];
 
   return v16;
 }
 
-+ (id)timeRestrictionsFeatureViewWithInitialState:(BOOL)a3 initialDuration:(int64_t)a4 styleProvider:(id)a5
++ (id)timeRestrictionsFeatureViewWithInitialState:(BOOL)state initialDuration:(int64_t)duration styleProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a5;
-  if (v6)
+  stateCopy = state;
+  providerCopy = provider;
+  if (stateCopy)
   {
-    v8 = GAXLocalizedStringForTimeDuration(a4 * 60.0);
+    v8 = GAXLocalizedStringForTimeDuration(duration * 60.0);
   }
 
   else
@@ -141,27 +141,27 @@
   }
 
   v9 = GAXLocString(@"TIME_RESTRICTION_FEATURE");
-  v10 = [v7 timeRestrictionsFeatureViewTimerIcon];
-  if (a4 <= 1)
+  timeRestrictionsFeatureViewTimerIcon = [providerCopy timeRestrictionsFeatureViewTimerIcon];
+  if (duration <= 1)
   {
-    a4 = 1;
+    duration = 1;
   }
 
-  v11 = [[TimeRestrictionFeatureView alloc] initWithIdentifier:@"GAXProfileAppTimeoutDuration" type:4 icon:v10 text:v9 detailText:v8 initialState:v6 initialDuration:a4 styleProvider:v7];
-  [(TimeRestrictionFeatureView *)v11 _constructViewHierarchyWithIcon:v10 text:v9 detailText:v8 initialFeatureState:v6 styleProvider:v7];
-  [(TimeRestrictionFeatureView *)v11 _applyAutolayoutConstraintsWithIcon:v10 text:v9 detailText:v8 initialFeatureState:v6 styleProvider:v7];
+  v11 = [[TimeRestrictionFeatureView alloc] initWithIdentifier:@"GAXProfileAppTimeoutDuration" type:4 icon:timeRestrictionsFeatureViewTimerIcon text:v9 detailText:v8 initialState:stateCopy initialDuration:duration styleProvider:providerCopy];
+  [(TimeRestrictionFeatureView *)v11 _constructViewHierarchyWithIcon:timeRestrictionsFeatureViewTimerIcon text:v9 detailText:v8 initialFeatureState:stateCopy styleProvider:providerCopy];
+  [(TimeRestrictionFeatureView *)v11 _applyAutolayoutConstraintsWithIcon:timeRestrictionsFeatureViewTimerIcon text:v9 detailText:v8 initialFeatureState:stateCopy styleProvider:providerCopy];
 
   return v11;
 }
 
 - (void)updateMask
 {
-  v6 = [(GAXFeatureView *)self iconView];
-  v3 = [v6 maskView];
-  v4 = [(GAXFeatureView *)self iconView];
-  v5 = [v4 maskView];
-  [v5 frame];
-  [v3 setFrame:?];
+  iconView = [(GAXFeatureView *)self iconView];
+  maskView = [iconView maskView];
+  iconView2 = [(GAXFeatureView *)self iconView];
+  maskView2 = [iconView2 maskView];
+  [maskView2 frame];
+  [maskView setFrame:?];
 }
 
 - (id)description
@@ -169,8 +169,8 @@
   v7.receiver = self;
   v7.super_class = GAXFeatureView;
   v3 = [(GAXFeatureView *)&v7 description];
-  v4 = [(GAXFeatureView *)self identifier];
-  v5 = [NSString stringWithFormat:@"%@ identifier: %@, type: %ld", v3, v4, [(GAXFeatureView *)self type]];
+  identifier = [(GAXFeatureView *)self identifier];
+  v5 = [NSString stringWithFormat:@"%@ identifier: %@, type: %ld", v3, identifier, [(GAXFeatureView *)self type]];
 
   return v5;
 }
@@ -182,7 +182,7 @@
   return WeakRetained;
 }
 
-- (GAXFeatureView)initWithIdentifier:(id)a3 type:(int64_t)a4 icon:(id)a5 text:(id)a6 detailText:(id)a7 initialState:(BOOL)a8 styleProvider:(id)a9
+- (GAXFeatureView)initWithIdentifier:(id)identifier type:(int64_t)type icon:(id)icon text:(id)text detailText:(id)detailText initialState:(BOOL)state styleProvider:(id)provider
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

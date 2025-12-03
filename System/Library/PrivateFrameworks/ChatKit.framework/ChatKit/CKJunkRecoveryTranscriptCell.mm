@@ -1,43 +1,43 @@
 @interface CKJunkRecoveryTranscriptCell
-+ (id)attributedRecoverConversationStringWithDeletionDate:(id)a3;
++ (id)attributedRecoverConversationStringWithDeletionDate:(id)date;
 + (id)generateDeleteConversationButton;
 + (id)generateRecoverConversationLabel;
 + (id)generateRecoverJunkButton;
 + (id)reuseIdentifier;
-- (CGSize)layoutSizeForWidth:(double)a3 applyLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKJunkRecoveryTranscriptCell)initWithFrame:(CGRect)a3;
+- (CGSize)layoutSizeForWidth:(double)width applyLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKJunkRecoveryTranscriptCell)initWithFrame:(CGRect)frame;
 - (CKJunkRecoveryTranscriptCellDelegate)delegate;
 - (UIButton)deleteConversationButton;
 - (UIButton)recoverJunkButton;
 - (UILabel)recoverConversationLabel;
-- (void)_layoutLabelInAlignmentContentRect:(CGRect)a3;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
-- (void)deleteConversationButtonPressed:(id)a3;
+- (void)_layoutLabelInAlignmentContentRect:(CGRect)rect;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
+- (void)deleteConversationButtonPressed:(id)pressed;
 - (void)layoutSubviewsForAlignmentContents;
 - (void)prepareForReuse;
-- (void)recoverJunkButtonPressed:(id)a3;
-- (void)updateRecoverConversationLabelContentForDate:(id)a3;
+- (void)recoverJunkButtonPressed:(id)pressed;
+- (void)updateRecoverConversationLabelContentForDate:(id)date;
 @end
 
 @implementation CKJunkRecoveryTranscriptCell
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
-  v12 = a3;
+  animatedCopy = animated;
+  itemCopy = item;
   v16.receiver = self;
   v16.super_class = CKJunkRecoveryTranscriptCell;
-  [(CKTranscriptStampCell *)&v16 configureForChatItem:v12 context:a4 animated:v9 animationDuration:a7 animationCurve:a6];
-  v13 = [v12 IMChatItem];
+  [(CKTranscriptStampCell *)&v16 configureForChatItem:itemCopy context:context animated:animatedCopy animationDuration:curve animationCurve:duration];
+  iMChatItem = [itemCopy IMChatItem];
   objc_opt_class();
-  LOBYTE(v9) = objc_opt_isKindOfClass();
+  LOBYTE(animatedCopy) = objc_opt_isKindOfClass();
 
-  if (v9)
+  if (animatedCopy)
   {
-    v14 = [v12 IMChatItem];
-    v15 = [v14 earliestMessageDate];
-    [(CKJunkRecoveryTranscriptCell *)self updateRecoverConversationLabelContentForDate:v15];
+    iMChatItem2 = [itemCopy IMChatItem];
+    earliestMessageDate = [iMChatItem2 earliestMessageDate];
+    [(CKJunkRecoveryTranscriptCell *)self updateRecoverConversationLabelContentForDate:earliestMessageDate];
   }
 
   [(CKJunkRecoveryTranscriptCell *)self setNeedsLayout];
@@ -59,13 +59,13 @@
 
   if (CKIsRunningInMacCatalyst())
   {
-    v4 = 0;
+    centerTranscriptButtonTextAttributes = 0;
   }
 
   else
   {
     v5 = +[CKUIBehavior sharedBehaviors];
-    v4 = [v5 centerTranscriptButtonTextAttributes];
+    centerTranscriptButtonTextAttributes = [v5 centerTranscriptButtonTextAttributes];
   }
 
   v6 = objc_alloc(MEMORY[0x1E696AAB0]);
@@ -74,10 +74,10 @@
   v9 = [v8 localizedStringForKey:@"DELETE_CONVERSATION" value:&stru_1F04268F8 table:@"ChatKit"];
   v10 = [v7 localizedStringWithFormat:v9, 1];
 
-  v11 = [MEMORY[0x1E69DC668] sharedApplication];
-  v12 = [v11 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v12 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v13 = @"\u200F";
   }
@@ -89,7 +89,7 @@
 
   v14 = [(__CFString *)v13 stringByAppendingString:v10];
 
-  v15 = [v6 initWithString:v14 attributes:v4];
+  v15 = [v6 initWithString:v14 attributes:centerTranscriptButtonTextAttributes];
   [v2 setAttributedTitle:v15 forState:0];
 
   return v2;
@@ -104,19 +104,19 @@
 
   if (CKIsRunningInMacCatalyst())
   {
-    v4 = 0;
+    centerTranscriptButtonTextAttributes = 0;
   }
 
   else
   {
     v5 = +[CKUIBehavior sharedBehaviors];
-    v4 = [v5 centerTranscriptButtonTextAttributes];
+    centerTranscriptButtonTextAttributes = [v5 centerTranscriptButtonTextAttributes];
   }
 
   v6 = objc_alloc(MEMORY[0x1E696AAB0]);
   v7 = CKFrameworkBundle();
   v8 = [v7 localizedStringForKey:@"NOT_SPAM" value:&stru_1F04268F8 table:@"ChatKit"];
-  v9 = [v6 initWithString:v8 attributes:v4];
+  v9 = [v6 initWithString:v8 attributes:centerTranscriptButtonTextAttributes];
 
   [v2 setAttributedTitle:v9 forState:0];
 
@@ -127,24 +127,24 @@
 {
   v3 = objc_alloc(MEMORY[0x1E69DCC10]);
   v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  v5 = [a1 attributedRecoverConversationStringWithDeletionDate:0];
+  v5 = [self attributedRecoverConversationStringWithDeletionDate:0];
   [v4 setAttributedText:v5];
 
   return v4;
 }
 
-+ (id)attributedRecoverConversationStringWithDeletionDate:(id)a3
++ (id)attributedRecoverConversationStringWithDeletionDate:(id)date
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [CKUtilities daysUntilJunkFilterDeletionForDate:v3];
+  dateCopy = date;
+  v4 = [CKUtilities daysUntilJunkFilterDeletionForDate:dateCopy];
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v18 = v3;
+      v18 = dateCopy;
       v19 = 2048;
       v20 = v4;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Computing JunkRecovery text with date %@ → %lu days", buf, 0x16u);
@@ -156,8 +156,8 @@
   v8 = [v7 localizedStringForKey:@"JUNK_CONVERSATION_WILL_BE_DELETED_IN_DAYS" value:&stru_1F04268F8 table:@"ChatKit"];
   v9 = [v6 localizedStringWithFormat:v8, v4];
 
-  v10 = [MEMORY[0x1E69DC668] sharedApplication];
-  LODWORD(v7) = [v10 userInterfaceLayoutDirection] == 1;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  LODWORD(v7) = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection] == 1;
 
   if (v7)
   {
@@ -172,20 +172,20 @@
   v12 = [(__CFString *)v11 stringByAppendingString:v9];
 
   v13 = +[CKUIBehavior sharedBehaviors];
-  v14 = [v13 transcriptEmphasizedFontAttributes];
+  transcriptEmphasizedFontAttributes = [v13 transcriptEmphasizedFontAttributes];
 
-  v15 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v12 attributes:v14];
+  v15 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v12 attributes:transcriptEmphasizedFontAttributes];
 
   return v15;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isModernFilteringEnabled];
+  width = fits.width;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernFilteringEnabled = [mEMORY[0x1E69A8070] isModernFilteringEnabled];
 
-  if (v6)
+  if (isModernFilteringEnabled)
   {
 
     [(CKJunkRecoveryTranscriptCell *)self layoutSizeForWidth:0 applyLayout:width];
@@ -213,29 +213,29 @@
   return result;
 }
 
-- (CKJunkRecoveryTranscriptCell)initWithFrame:(CGRect)a3
+- (CKJunkRecoveryTranscriptCell)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = CKJunkRecoveryTranscriptCell;
-  v3 = [(CKTranscriptLabelCell *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTranscriptLabelCell *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v5 = [v4 isModernFilteringEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isModernFilteringEnabled = [mEMORY[0x1E69A8070] isModernFilteringEnabled];
 
-    if ((v5 & 1) == 0)
+    if ((isModernFilteringEnabled & 1) == 0)
     {
-      v6 = [(CKEditableCollectionViewCell *)v3 contentView];
-      v7 = [(CKJunkRecoveryTranscriptCell *)v3 recoverConversationLabel];
-      [v6 addSubview:v7];
+      contentView = [(CKEditableCollectionViewCell *)v3 contentView];
+      recoverConversationLabel = [(CKJunkRecoveryTranscriptCell *)v3 recoverConversationLabel];
+      [contentView addSubview:recoverConversationLabel];
 
-      v8 = [(CKEditableCollectionViewCell *)v3 contentView];
-      v9 = [(CKJunkRecoveryTranscriptCell *)v3 deleteConversationButton];
-      [v8 addSubview:v9];
+      contentView2 = [(CKEditableCollectionViewCell *)v3 contentView];
+      deleteConversationButton = [(CKJunkRecoveryTranscriptCell *)v3 deleteConversationButton];
+      [contentView2 addSubview:deleteConversationButton];
 
-      v10 = [(CKEditableCollectionViewCell *)v3 contentView];
-      v11 = [(CKJunkRecoveryTranscriptCell *)v3 recoverJunkButton];
-      [v10 addSubview:v11];
+      contentView3 = [(CKEditableCollectionViewCell *)v3 contentView];
+      recoverJunkButton = [(CKJunkRecoveryTranscriptCell *)v3 recoverJunkButton];
+      [contentView3 addSubview:recoverJunkButton];
     }
   }
 
@@ -247,12 +247,12 @@
   v41.receiver = self;
   v41.super_class = CKJunkRecoveryTranscriptCell;
   [(CKTranscriptStampCell *)&v41 layoutSubviewsForAlignmentContents];
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isModernFilteringEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernFilteringEnabled = [mEMORY[0x1E69A8070] isModernFilteringEnabled];
 
   [(CKTranscriptStampCell *)self contentAlignmentRect];
   v9 = v7;
-  if (v4)
+  if (isModernFilteringEnabled)
   {
     [(CKJunkRecoveryTranscriptCell *)self layoutSizeForWidth:1 applyLayout:v7];
   }
@@ -272,14 +272,14 @@
       v13 = 420.0;
     }
 
-    v14 = [(CKJunkRecoveryTranscriptCell *)self traitCollection];
-    [v14 displayScale];
+    traitCollection = [(CKJunkRecoveryTranscriptCell *)self traitCollection];
+    [traitCollection displayScale];
     v16 = MidX - round(v15 * ((v13 + -48.0) * 0.5)) / v15;
 
     [(CKEditableCollectionViewCell *)self setContentAlignmentRect:v16, v10, v13, v11];
     [(CKJunkRecoveryTranscriptCell *)self _layoutLabelInAlignmentContentRect:v16, v10, v13, v11];
-    v17 = [(CKJunkRecoveryTranscriptCell *)self deleteConversationButton];
-    [v17 sizeThatFits:{v13, 1.79769313e308}];
+    deleteConversationButton = [(CKJunkRecoveryTranscriptCell *)self deleteConversationButton];
+    [deleteConversationButton sizeThatFits:{v13, 1.79769313e308}];
     v19 = v18;
     v40 = v20;
 
@@ -288,19 +288,19 @@
     v42.size.width = v13;
     v42.size.height = v11;
     v21 = CGRectGetMidX(v42);
-    v22 = [(CKJunkRecoveryTranscriptCell *)self traitCollection];
-    [v22 displayScale];
+    traitCollection2 = [(CKJunkRecoveryTranscriptCell *)self traitCollection];
+    [traitCollection2 displayScale];
     v24 = v21 - round(v19 * 0.5 * v23) / v23;
 
-    v25 = [(CKJunkRecoveryTranscriptCell *)self recoverConversationLabel];
-    [v25 frame];
+    recoverConversationLabel = [(CKJunkRecoveryTranscriptCell *)self recoverConversationLabel];
+    [recoverConversationLabel frame];
     MaxY = CGRectGetMaxY(v43);
 
-    v27 = [(CKJunkRecoveryTranscriptCell *)self deleteConversationButton];
-    [v27 setFrame:{v24, MaxY, v19, v40}];
+    deleteConversationButton2 = [(CKJunkRecoveryTranscriptCell *)self deleteConversationButton];
+    [deleteConversationButton2 setFrame:{v24, MaxY, v19, v40}];
 
-    v28 = [(CKJunkRecoveryTranscriptCell *)self recoverJunkButton];
-    [v28 sizeThatFits:{v13, 1.79769313e308}];
+    recoverJunkButton = [(CKJunkRecoveryTranscriptCell *)self recoverJunkButton];
+    [recoverJunkButton sizeThatFits:{v13, 1.79769313e308}];
     v30 = v29;
     v32 = v31;
 
@@ -309,53 +309,53 @@
     v44.size.width = v13;
     v44.size.height = v11;
     v33 = CGRectGetMidX(v44);
-    v34 = [(CKJunkRecoveryTranscriptCell *)self traitCollection];
-    [v34 displayScale];
+    traitCollection3 = [(CKJunkRecoveryTranscriptCell *)self traitCollection];
+    [traitCollection3 displayScale];
     v36 = v33 - round(v30 * 0.5 * v35) / v35;
 
-    v37 = [(CKJunkRecoveryTranscriptCell *)self deleteConversationButton];
-    [v37 frame];
+    deleteConversationButton3 = [(CKJunkRecoveryTranscriptCell *)self deleteConversationButton];
+    [deleteConversationButton3 frame];
     v38 = CGRectGetMaxY(v45) + 10.0;
 
-    v39 = [(CKJunkRecoveryTranscriptCell *)self recoverJunkButton];
-    [v39 setFrame:{v36, v38, v30, v32}];
+    recoverJunkButton2 = [(CKJunkRecoveryTranscriptCell *)self recoverJunkButton];
+    [recoverJunkButton2 setFrame:{v36, v38, v30, v32}];
   }
 }
 
-- (void)_layoutLabelInAlignmentContentRect:(CGRect)a3
+- (void)_layoutLabelInAlignmentContentRect:(CGRect)rect
 {
-  width = a3.size.width;
-  x = a3.origin.x;
-  v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v7 = [v6 isModernFilteringEnabled];
+  width = rect.size.width;
+  x = rect.origin.x;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernFilteringEnabled = [mEMORY[0x1E69A8070] isModernFilteringEnabled];
 
-  if ((v7 & 1) == 0)
+  if ((isModernFilteringEnabled & 1) == 0)
   {
-    v10 = [(CKJunkRecoveryTranscriptCell *)self recoverConversationLabel];
-    [v10 sizeThatFits:{width, 1.79769313e308}];
-    [v10 setFrame:{x, 8.0, v8, v9}];
+    recoverConversationLabel = [(CKJunkRecoveryTranscriptCell *)self recoverConversationLabel];
+    [recoverConversationLabel sizeThatFits:{width, 1.79769313e308}];
+    [recoverConversationLabel setFrame:{x, 8.0, v8, v9}];
   }
 }
 
-- (CGSize)layoutSizeForWidth:(double)a3 applyLayout:(BOOL)a4
+- (CGSize)layoutSizeForWidth:(double)width applyLayout:(BOOL)layout
 {
-  v4 = a4;
+  layoutCopy = layout;
   [(CKTranscriptStampCell *)self contentAlignmentRect];
   v8 = v7;
   v10 = v9;
-  v11 = [(CKTranscriptLabelCell *)self label];
-  v12 = v11;
+  label = [(CKTranscriptLabelCell *)self label];
+  v12 = label;
   v14 = *(MEMORY[0x1E695F058] + 16);
   v13 = *(MEMORY[0x1E695F058] + 24);
-  v15 = a3 + -48.0;
-  if (v11)
+  v15 = width + -48.0;
+  if (label)
   {
-    v16 = [v11 attributedText];
+    attributedText = [label attributedText];
 
-    if (v16)
+    if (attributedText)
     {
-      v17 = [v12 attributedText];
-      [v17 boundingRectWithSize:1 options:0 context:{v15, 1.79769313e308}];
+      attributedText2 = [v12 attributedText];
+      [attributedText2 boundingRectWithSize:1 options:0 context:{v15, 1.79769313e308}];
       v14 = v18;
       v13 = v19;
     }
@@ -368,7 +368,7 @@
 
   v20 = *&CKMainScreenScale_sMainScreenScale_59;
   [v12 setNumberOfLines:0];
-  if (v4)
+  if (layoutCopy)
   {
     v21 = 1.0;
     if (v20 != 0.0)
@@ -394,16 +394,16 @@
   [(CKJunkRecoveryTranscriptCell *)self setNeedsLayout];
 }
 
-- (void)recoverJunkButtonPressed:(id)a3
+- (void)recoverJunkButtonPressed:(id)pressed
 {
-  v4 = [(CKJunkRecoveryTranscriptCell *)self delegate];
-  [v4 recoverJunkPressedInTranscriptCell:self];
+  delegate = [(CKJunkRecoveryTranscriptCell *)self delegate];
+  [delegate recoverJunkPressedInTranscriptCell:self];
 }
 
-- (void)deleteConversationButtonPressed:(id)a3
+- (void)deleteConversationButtonPressed:(id)pressed
 {
-  v4 = [(CKJunkRecoveryTranscriptCell *)self delegate];
-  [v4 deleteConversationPressedInTranscriptCell:self];
+  delegate = [(CKJunkRecoveryTranscriptCell *)self delegate];
+  [delegate deleteConversationPressedInTranscriptCell:self];
 }
 
 - (UILabel)recoverConversationLabel
@@ -422,13 +422,13 @@
   return recoverConversationLabel;
 }
 
-- (void)updateRecoverConversationLabelContentForDate:(id)a3
+- (void)updateRecoverConversationLabelContentForDate:(id)date
 {
-  v7 = [CKJunkRecoveryTranscriptCell attributedRecoverConversationStringWithDeletionDate:a3];
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isModernFilteringEnabled];
+  v7 = [CKJunkRecoveryTranscriptCell attributedRecoverConversationStringWithDeletionDate:date];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernFilteringEnabled = [mEMORY[0x1E69A8070] isModernFilteringEnabled];
 
-  if (v5)
+  if (isModernFilteringEnabled)
   {
     [(CKTranscriptLabelCell *)self label];
   }
@@ -443,10 +443,10 @@
 
 - (UIButton)deleteConversationButton
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isModernFilteringEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernFilteringEnabled = [mEMORY[0x1E69A8070] isModernFilteringEnabled];
 
-  if (v4)
+  if (isModernFilteringEnabled)
   {
     v5 = 0;
   }
@@ -472,10 +472,10 @@
 
 - (UIButton)recoverJunkButton
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isModernFilteringEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernFilteringEnabled = [mEMORY[0x1E69A8070] isModernFilteringEnabled];
 
-  if (v4)
+  if (isModernFilteringEnabled)
   {
     v5 = 0;
   }

@@ -1,26 +1,26 @@
 @interface _TUIElementControlBuilder
 - (id)finalizeLinkEntities;
-- (void)addLinkEntity:(id)a3;
+- (void)addLinkEntity:(id)entity;
 @end
 
 @implementation _TUIElementControlBuilder
 
-- (void)addLinkEntity:(id)a3
+- (void)addLinkEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   linkEntities = self->_linkEntities;
-  v8 = v4;
+  v8 = entityCopy;
   if (!linkEntities)
   {
     v6 = objc_opt_new();
     v7 = self->_linkEntities;
     self->_linkEntities = v6;
 
-    v4 = v8;
+    entityCopy = v8;
     linkEntities = self->_linkEntities;
   }
 
-  [(NSMutableArray *)linkEntities addObject:v4];
+  [(NSMutableArray *)linkEntities addObject:entityCopy];
 }
 
 - (id)finalizeLinkEntities

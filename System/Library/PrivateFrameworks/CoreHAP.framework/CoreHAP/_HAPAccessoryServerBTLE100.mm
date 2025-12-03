@@ -1,133 +1,133 @@
 @interface _HAPAccessoryServerBTLE100
-+ (id)_convertFromBTLEToHAPUUID:(id)a3;
-+ (id)deserializeCharacteristicReadData:(id)a3 characteristicFormat:(unint64_t)a4 supportsAdditionalAuthentication:(BOOL)a5 error:(id *)a6;
-+ (id)serializeCharacteristicWriteValue:(id)a3 characteristicFormat:(unint64_t)a4 supportsAdditionalAuthentication:(BOOL)a5 authenticationData:(id)a6 error:(id *)a7;
-- (BOOL)_delegateRespondsToSelector:(SEL)a3;
-- (BOOL)_parseBTLECharacteristicDescriptor:(id)a3 existingDescriptors:(id)a4 characteristics:(id)a5;
++ (id)_convertFromBTLEToHAPUUID:(id)d;
++ (id)deserializeCharacteristicReadData:(id)data characteristicFormat:(unint64_t)format supportsAdditionalAuthentication:(BOOL)authentication error:(id *)error;
++ (id)serializeCharacteristicWriteValue:(id)value characteristicFormat:(unint64_t)format supportsAdditionalAuthentication:(BOOL)authentication authenticationData:(id)data error:(id *)error;
+- (BOOL)_delegateRespondsToSelector:(SEL)selector;
+- (BOOL)_parseBTLECharacteristicDescriptor:(id)descriptor existingDescriptors:(id)descriptors characteristics:(id)characteristics;
 - (BOOL)isBLELinkConnected;
-- (BOOL)removePairingForCurrentControllerOnQueue:(id)a3 completion:(id)a4;
-- (BOOL)stopPairingWithError:(id *)a3;
-- (BOOL)tryPairingPassword:(id)a3 onboardingSetupPayloadString:(id)a4 error:(id *)a5;
+- (BOOL)removePairingForCurrentControllerOnQueue:(id)queue completion:(id)completion;
+- (BOOL)stopPairingWithError:(id *)error;
+- (BOOL)tryPairingPassword:(id)password onboardingSetupPayloadString:(id)string error:(id *)error;
 - (NSString)description;
-- (_HAPAccessoryServerBTLE100)initWithPeripheral:(id)a3 name:(id)a4 pairingUsername:(id)a5 statusFlags:(id)a6 stateNumber:(id)a7 stateChanged:(BOOL)a8 connectReason:(unsigned __int8)a9 configNumber:(id)a10 category:(id)a11 setupHash:(id)a12 connectionIdleTime:(unsigned __int8)a13 browser:(id)a14 keyStore:(id)a15 whbStableIdentifier:(id)a16;
-- (id)_btleCharacteristicForHAPCharacteristic:(id)a3;
-- (id)_decryptData:(id)a3 error:(id *)a4;
-- (id)_dequeueEnableEventCompletionTupleForCharacteristic:(id)a3;
-- (id)_dequeueReadCompletionTupleForCharacteristic:(id)a3;
-- (id)_dequeueWriteCompletionHandlerForCharacteristic:(id)a3;
-- (id)_encryptDataAndGenerateAuthTag:(id)a3 error:(id *)a4;
-- (id)_hapCharacteristicForBTLECharacteristic:(id)a3;
+- (_HAPAccessoryServerBTLE100)initWithPeripheral:(id)peripheral name:(id)name pairingUsername:(id)username statusFlags:(id)flags stateNumber:(id)number stateChanged:(BOOL)changed connectReason:(unsigned __int8)reason configNumber:(id)self0 category:(id)self1 setupHash:(id)self2 connectionIdleTime:(unsigned __int8)self3 browser:(id)self4 keyStore:(id)self5 whbStableIdentifier:(id)self6;
+- (id)_btleCharacteristicForHAPCharacteristic:(id)characteristic;
+- (id)_decryptData:(id)data error:(id *)error;
+- (id)_dequeueEnableEventCompletionTupleForCharacteristic:(id)characteristic;
+- (id)_dequeueReadCompletionTupleForCharacteristic:(id)characteristic;
+- (id)_dequeueWriteCompletionHandlerForCharacteristic:(id)characteristic;
+- (id)_encryptDataAndGenerateAuthTag:(id)tag error:(id *)error;
+- (id)_hapCharacteristicForBTLECharacteristic:(id)characteristic;
 - (id)_nextInstanceID;
 - (id)_pairSetupHAPCharacteristic;
 - (id)_pairVerifyHAPCharacteristic;
-- (id)_parseBTLEService:(id)a3 withInstanceId:(id)a4;
-- (id)securitySession:(id)a3 didReceiveLocalPairingIdentityRequestWithError:(id *)a4;
-- (id)securitySession:(id)a3 didReceiveRequestForPeerPairingIdentityWithIdentifier:(id)a4 error:(id *)a5;
-- (int)_ensurePairingSessionIsInitializedWithType:(unsigned int)a3;
-- (int)_handlePairSetupExchangeWithData:(id)a3;
+- (id)_parseBTLEService:(id)service withInstanceId:(id)id;
+- (id)securitySession:(id)session didReceiveLocalPairingIdentityRequestWithError:(id *)error;
+- (id)securitySession:(id)session didReceiveRequestForPeerPairingIdentityWithIdentifier:(id)identifier error:(id *)error;
+- (int)_ensurePairingSessionIsInitializedWithType:(unsigned int)type;
+- (int)_handlePairSetupExchangeWithData:(id)data;
 - (int)_pairSetupStart;
-- (int)_pairSetupTryPassword:(id)a3;
-- (void)_addPairingWithIdentifier:(id)a3 publicKey:(id)a4 admin:(BOOL)a5 queue:(id)a6 completion:(id)a7;
+- (int)_pairSetupTryPassword:(id)password;
+- (void)_addPairingWithIdentifier:(id)identifier publicKey:(id)key admin:(BOOL)admin queue:(id)queue completion:(id)completion;
 - (void)_cancelConnectionLifetimeTimer;
 - (void)_checkForAuthPrompt;
 - (void)_createPrimaryAccessoryFromAdvertisementData;
 - (void)_dequeueAndContinueOperation;
 - (void)_disconnect;
-- (void)_enableEvent:(BOOL)a3 forCharacteristic:(id)a4 withCompletionHandler:(id)a5 queue:(id)a6;
-- (void)_enableEvents:(BOOL)a3 forCharacteristics:(id)a4 withCompletionHandler:(id)a5 queue:(id)a6;
-- (void)_enqueueEnableEventCompletionHandler:(id)a3 queue:(id)a4 forCharacteristic:(id)a5;
-- (void)_enqueueReadCompletionHandler:(id)a3 queue:(id)a4 forCharacteristic:(id)a5;
-- (void)_enqueueWriteCompletionHandler:(id)a3 forCharacteristic:(id)a4;
+- (void)_enableEvent:(BOOL)event forCharacteristic:(id)characteristic withCompletionHandler:(id)handler queue:(id)queue;
+- (void)_enableEvents:(BOOL)events forCharacteristics:(id)characteristics withCompletionHandler:(id)handler queue:(id)queue;
+- (void)_enqueueEnableEventCompletionHandler:(id)handler queue:(id)queue forCharacteristic:(id)characteristic;
+- (void)_enqueueReadCompletionHandler:(id)handler queue:(id)queue forCharacteristic:(id)characteristic;
+- (void)_enqueueWriteCompletionHandler:(id)handler forCharacteristic:(id)characteristic;
 - (void)_getAttributeDatabase;
 - (void)_handleConnectionLifetimeTimeout;
-- (void)_handleConnectionWithError:(id)a3;
+- (void)_handleConnectionWithError:(id)error;
 - (void)_handleDescriptorDiscovery;
-- (void)_handleDisconnectionWithCompletion:(id)a3;
-- (void)_handleHAPCharacteristicDiscoveryForService:(id)a3 error:(id)a4;
-- (void)_handleHAPNotificationStateUpdateForCharacteristic:(id)a3 error:(id)a4;
+- (void)_handleDisconnectionWithCompletion:(id)completion;
+- (void)_handleHAPCharacteristicDiscoveryForService:(id)service error:(id)error;
+- (void)_handleHAPNotificationStateUpdateForCharacteristic:(id)characteristic error:(id)error;
 - (void)_handleHAPServiceDiscovery;
-- (void)_handleHAPServiceDiscoveryCompletionForService:(id)a3 withInstanceId:(id)a4;
-- (void)_handleHAPWriteConfirmationForCharacteristic:(id)a3 error:(id)a4;
+- (void)_handleHAPServiceDiscoveryCompletionForService:(id)service withInstanceId:(id)id;
+- (void)_handleHAPWriteConfirmationForCharacteristic:(id)characteristic error:(id)error;
 - (void)_handlePairingStateMachine;
-- (void)_handlePairingsReadForCharacteristic:(id)a3 readError:(id)a4 removing:(BOOL)a5 queue:(id)a6 completion:(id)a7;
-- (void)_handlePairingsWriteForCharacteristic:(id)a3 writeError:(id)a4 removing:(BOOL)a5 queue:(id)a6 completion:(id)a7;
+- (void)_handlePairingsReadForCharacteristic:(id)characteristic readError:(id)error removing:(BOOL)removing queue:(id)queue completion:(id)completion;
+- (void)_handlePairingsWriteForCharacteristic:(id)characteristic writeError:(id)error removing:(BOOL)removing queue:(id)queue completion:(id)completion;
 - (void)_handleReadDescriptorValues;
-- (void)_handleReceivedSecuritySessionSetupExchangeData:(id)a3;
+- (void)_handleReceivedSecuritySessionSetupExchangeData:(id)data;
 - (void)_handleSuccessfulBTLEConnection;
-- (void)_handleUpdatedValueForBTLECharacteristic:(id)a3 error:(id)a4;
-- (void)_notifyDelegateOfReceivedEncryptedAuthenticatedData:(id)a3 forCharacteristic:(id)a4;
-- (void)_notifyDelegateOfReceivedPlaintextData:(id)a3 forCharacteristic:(id)a4;
-- (void)_notifyDelegateOfSentEncryptedAuthenticatedData:(id)a3 forCharacteristic:(id)a4;
-- (void)_notifyDelegateOfSentPlaintextData:(id)a3 forCharacteristic:(id)a4;
-- (void)_readCharacteristicValues:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
-- (void)_readValueForCharacteristic:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
+- (void)_handleUpdatedValueForBTLECharacteristic:(id)characteristic error:(id)error;
+- (void)_notifyDelegateOfReceivedEncryptedAuthenticatedData:(id)data forCharacteristic:(id)characteristic;
+- (void)_notifyDelegateOfReceivedPlaintextData:(id)data forCharacteristic:(id)characteristic;
+- (void)_notifyDelegateOfSentEncryptedAuthenticatedData:(id)data forCharacteristic:(id)characteristic;
+- (void)_notifyDelegateOfSentPlaintextData:(id)data forCharacteristic:(id)characteristic;
+- (void)_readCharacteristicValues:(id)values completionQueue:(id)queue completionHandler:(id)handler;
+- (void)_readValueForCharacteristic:(id)characteristic completionQueue:(id)queue completionHandler:(id)handler;
 - (void)_reallyEstablishSecureSession;
-- (void)_removePairingWithIdentifier:(id)a3 publicKey:(id)a4 queue:(id)a5 completion:(id)a6;
+- (void)_removePairingWithIdentifier:(id)identifier publicKey:(id)key queue:(id)queue completion:(id)completion;
 - (void)_resetState;
 - (void)_setupBTLEConnectionToPeripheral;
 - (void)_updateConnectionLifetimeTimer;
-- (void)_writeCharacteristicValues:(id)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)_writeValue:(id)a3 forCharacteristic:(id)a4 authorizationData:(id)a5 withCompletionHandler:(id)a6 queue:(id)a7;
-- (void)addPairing:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
-- (void)configureCharacteristics:(id)a3 queue:(id)a4 withCompletionHandler:(id)a5;
-- (void)continueAuthAfterValidation:(BOOL)a3;
+- (void)_writeCharacteristicValues:(id)values queue:(id)queue completionHandler:(id)handler;
+- (void)_writeValue:(id)value forCharacteristic:(id)characteristic authorizationData:(id)data withCompletionHandler:(id)handler queue:(id)queue;
+- (void)addPairing:(id)pairing completionQueue:(id)queue completionHandler:(id)handler;
+- (void)configureCharacteristics:(id)characteristics queue:(id)queue withCompletionHandler:(id)handler;
+- (void)continueAuthAfterValidation:(BOOL)validation;
 - (void)continuePairingAfterAuthPrompt;
 - (void)dealloc;
 - (void)disconnect;
 - (void)discoverAccessories;
-- (void)enableEvents:(BOOL)a3 forCharacteristics:(id)a4 withCompletionHandler:(id)a5 queue:(id)a6;
-- (void)generateBroadcastKey:(unsigned __int8)a3 queue:(id)a4 withCompletionHandler:(id)a5;
-- (void)handleConnectionWithPeripheral:(id)a3 withError:(id)a4;
-- (void)handleDisconnectionWithError:(id)a3 completionHandler:(id)a4;
-- (void)identifyWithCompletion:(id)a3;
-- (void)listPairingsWithCompletionQueue:(id)a3 completionHandler:(id)a4;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didModifyServices:(id)a4;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForDescriptor:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)readCharacteristicValues:(id)a3 timeout:(double)a4 expiry:(id)a5 completionQueue:(id)a6 completionHandler:(id)a7;
-- (void)readValueForCharacteristic:(id)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)removePairing:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
-- (void)securitySession:(id)a3 didCloseWithError:(id)a4;
-- (void)securitySession:(id)a3 didReceiveSetupExchangeData:(id)a4;
-- (void)securitySessionDidOpen:(id)a3;
-- (void)securitySessionIsOpening:(id)a3;
-- (void)startPairingWithRequest:(id)a3;
-- (void)updateConnectionIdleTime:(unsigned __int8)a3;
-- (void)writeCharacteristicValues:(id)a3 timeout:(double)a4 expiry:(id)a5 completionQueue:(id)a6 completionHandler:(id)a7;
+- (void)enableEvents:(BOOL)events forCharacteristics:(id)characteristics withCompletionHandler:(id)handler queue:(id)queue;
+- (void)generateBroadcastKey:(unsigned __int8)key queue:(id)queue withCompletionHandler:(id)handler;
+- (void)handleConnectionWithPeripheral:(id)peripheral withError:(id)error;
+- (void)handleDisconnectionWithError:(id)error completionHandler:(id)handler;
+- (void)identifyWithCompletion:(id)completion;
+- (void)listPairingsWithCompletionQueue:(id)queue completionHandler:(id)handler;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didModifyServices:(id)services;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForDescriptor:(id)descriptor error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)readCharacteristicValues:(id)values timeout:(double)timeout expiry:(id)expiry completionQueue:(id)queue completionHandler:(id)handler;
+- (void)readValueForCharacteristic:(id)characteristic queue:(id)queue completionHandler:(id)handler;
+- (void)removePairing:(id)pairing completionQueue:(id)queue completionHandler:(id)handler;
+- (void)securitySession:(id)session didCloseWithError:(id)error;
+- (void)securitySession:(id)session didReceiveSetupExchangeData:(id)data;
+- (void)securitySessionDidOpen:(id)open;
+- (void)securitySessionIsOpening:(id)opening;
+- (void)startPairingWithRequest:(id)request;
+- (void)updateConnectionIdleTime:(unsigned __int8)time;
+- (void)writeCharacteristicValues:(id)values timeout:(double)timeout expiry:(id)expiry completionQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation _HAPAccessoryServerBTLE100
 
 - (void)disconnect
 {
-  v3 = [(HAPAccessoryServer *)self clientQueue];
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40___HAPAccessoryServerBTLE100_disconnect__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
 - (void)_dequeueAndContinueOperation
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(_HAPAccessoryServerBTLE100 *)self addRemovePairingOperationsQueue];
-  v4 = [v3 count];
+  addRemovePairingOperationsQueue = [(_HAPAccessoryServerBTLE100 *)self addRemovePairingOperationsQueue];
+  v4 = [addRemovePairingOperationsQueue count];
 
   if (v4)
   {
-    v5 = [(_HAPAccessoryServerBTLE100 *)self addRemovePairingOperationsQueue];
-    [v5 removeObjectAtIndex:0];
+    addRemovePairingOperationsQueue2 = [(_HAPAccessoryServerBTLE100 *)self addRemovePairingOperationsQueue];
+    [addRemovePairingOperationsQueue2 removeObjectAtIndex:0];
   }
 
-  v6 = [(_HAPAccessoryServerBTLE100 *)self addRemovePairingOperationsQueue];
-  v7 = [v6 count];
+  addRemovePairingOperationsQueue3 = [(_HAPAccessoryServerBTLE100 *)self addRemovePairingOperationsQueue];
+  v7 = [addRemovePairingOperationsQueue3 count];
 
   if (v7)
   {
@@ -136,49 +136,49 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [(_HAPAccessoryServerBTLE100 *)self addRemovePairingOperationsQueue];
+      addRemovePairingOperationsQueue4 = [(_HAPAccessoryServerBTLE100 *)self addRemovePairingOperationsQueue];
       v29 = 138543618;
       v30 = v10;
       v31 = 2048;
-      v32 = [v11 count];
+      v32 = [addRemovePairingOperationsQueue4 count];
       _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_INFO, "%{public}@Continuing with remaining %ld operations", &v29, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v12 = [(_HAPAccessoryServerBTLE100 *)self addRemovePairingOperationsQueue];
-    v13 = [v12 objectAtIndex:0];
+    addRemovePairingOperationsQueue5 = [(_HAPAccessoryServerBTLE100 *)self addRemovePairingOperationsQueue];
+    v13 = [addRemovePairingOperationsQueue5 objectAtIndex:0];
 
     [v13 setOperationExecuting:1];
-    v14 = [v13 operation];
-    if (v14 == 6)
+    operation = [v13 operation];
+    if (operation == 6)
     {
-      v15 = [v13 identifier];
-      v16 = [v13 publicKey];
-      v20 = [v13 queue];
-      v21 = [v13 completionHandler];
-      [(_HAPAccessoryServerBTLE100 *)self _removePairingWithIdentifier:v15 publicKey:v16 queue:v20 completion:v21];
+      identifier = [v13 identifier];
+      publicKey = [v13 publicKey];
+      queue = [v13 queue];
+      completionHandler = [v13 completionHandler];
+      [(_HAPAccessoryServerBTLE100 *)self _removePairingWithIdentifier:identifier publicKey:publicKey queue:queue completion:completionHandler];
     }
 
     else
     {
-      if (v14 != 5)
+      if (operation != 5)
       {
         v22 = objc_autoreleasePoolPush();
         v23 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           v24 = HMFGetLogIdentifier();
-          v25 = [(HAPAccessoryServer *)self name];
-          v26 = [v13 operation];
-          v27 = [v13 identifier];
+          name = [(HAPAccessoryServer *)self name];
+          operation2 = [v13 operation];
+          identifier2 = [v13 identifier];
           v29 = 138544130;
           v30 = v24;
           v31 = 2112;
-          v32 = v25;
+          v32 = name;
           v33 = 2048;
-          v34 = v26;
+          v34 = operation2;
           v35 = 2112;
-          v36 = v27;
+          v36 = identifier2;
           _os_log_impl(&dword_22AADC000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server '%@] ### Invalid Operation %tu in Q for controller: %@, Dropping and continuing", &v29, 0x2Au);
         }
 
@@ -187,12 +187,12 @@
         goto LABEL_14;
       }
 
-      v15 = [v13 identifier];
-      v16 = [v13 publicKey];
-      v17 = [v13 admin];
-      v18 = [v13 queue];
-      v19 = [v13 completionHandler];
-      [(_HAPAccessoryServerBTLE100 *)self _addPairingWithIdentifier:v15 publicKey:v16 admin:v17 queue:v18 completion:v19];
+      identifier = [v13 identifier];
+      publicKey = [v13 publicKey];
+      admin = [v13 admin];
+      queue2 = [v13 queue];
+      completionHandler2 = [v13 completionHandler];
+      [(_HAPAccessoryServerBTLE100 *)self _addPairingWithIdentifier:identifier publicKey:publicKey admin:admin queue:queue2 completion:completionHandler2];
     }
 
 LABEL_14:
@@ -201,46 +201,46 @@ LABEL_14:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)listPairingsWithCompletionQueue:(id)a3 completionHandler:(id)a4
+- (void)listPairingsWithCompletionQueue:(id)queue completionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v9 = objc_autoreleasePoolPush();
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [(HAPAccessoryServer *)self name];
+    name = [(HAPAccessoryServer *)self name];
     v13 = NSStringFromSelector(a2);
     *buf = 138543874;
     v18 = v11;
     v19 = 2112;
-    v20 = v12;
+    v20 = name;
     v21 = 2112;
     v22 = v13;
     _os_log_impl(&dword_22AADC000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server '%@] %@ is not supported over this transport", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  if (v7 && v8)
+  if (queueCopy && handlerCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __80___HAPAccessoryServerBTLE100_listPairingsWithCompletionQueue_completionHandler___block_invoke;
     block[3] = &unk_2786D6490;
-    v16 = v8;
-    dispatch_async(v7, block);
+    v16 = handlerCopy;
+    dispatch_async(queueCopy, block);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removePairingForCurrentControllerOnQueue:(id)a3 completion:(id)a4
+- (BOOL)removePairingForCurrentControllerOnQueue:(id)queue completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v24 = 0;
   v8 = [(HAPAccessoryServer *)self getControllerPairingIdentityWithError:&v24];
   v9 = v24;
@@ -251,38 +251,38 @@ LABEL_14:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [(HAPAccessoryServer *)self name];
+      name = [(HAPAccessoryServer *)self name];
       *buf = 138543618;
       v26 = v12;
       v27 = 2112;
-      v28 = v13;
+      v28 = name;
       _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server '%@] Received request to remove pairing for the current controller", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
-    v14 = [(HAPAccessoryServer *)self clientQueue];
+    clientQueue = [(HAPAccessoryServer *)self clientQueue];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __82___HAPAccessoryServerBTLE100_removePairingForCurrentControllerOnQueue_completion___block_invoke_345;
     v18[3] = &unk_2786D6808;
     v18[4] = self;
-    v20 = v7;
-    v19 = v6;
-    [(_HAPAccessoryServerBTLE100 *)self removePairing:0 completionQueue:v14 completionHandler:v18];
+    v20 = completionCopy;
+    v19 = queueCopy;
+    [(_HAPAccessoryServerBTLE100 *)self removePairing:0 completionQueue:clientQueue completionHandler:v18];
 
     v15 = v20;
     goto LABEL_7;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __82___HAPAccessoryServerBTLE100_removePairingForCurrentControllerOnQueue_completion___block_invoke;
     block[3] = &unk_2786D65D8;
-    v23 = v7;
+    v23 = completionCopy;
     v22 = v9;
-    dispatch_async(v6, block);
+    dispatch_async(queueCopy, block);
 
     v15 = v23;
 LABEL_7:
@@ -292,15 +292,15 @@ LABEL_7:
   return v8 != 0;
 }
 
-- (void)_removePairingWithIdentifier:(id)a3 publicKey:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)_removePairingWithIdentifier:(id)identifier publicKey:(id)key queue:(id)queue completion:(id)completion
 {
   v55 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v41 = a6;
-  v13 = [objc_alloc(MEMORY[0x277D0F8B0]) initWithPairingKeyData:v11];
-  v14 = [[HAPPairingIdentity alloc] initWithIdentifier:v10 publicKey:v13 privateKey:0 permissions:0];
+  identifierCopy = identifier;
+  keyCopy = key;
+  queueCopy = queue;
+  completionCopy = completion;
+  v13 = [objc_alloc(MEMORY[0x277D0F8B0]) initWithPairingKeyData:keyCopy];
+  v14 = [[HAPPairingIdentity alloc] initWithIdentifier:identifierCopy publicKey:v13 privateKey:0 permissions:0];
   v48 = 0;
   v15 = [HAPPairingUtilities createRemovePairingRequestForPairingIdentity:v14 error:&v48];
   v16 = v48;
@@ -310,39 +310,39 @@ LABEL_7:
   if (v15)
   {
     v38 = v16;
-    v39 = v11;
+    v39 = keyCopy;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v20 = HMFGetLogIdentifier();
-      v21 = [(HAPAccessoryServer *)self name];
+      name = [(HAPAccessoryServer *)self name];
       *buf = 138543874;
       v50 = v20;
       v51 = 2112;
-      v52 = v21;
+      v52 = name;
       v53 = 2112;
-      v54 = v10;
+      v54 = identifierCopy;
       _os_log_impl(&dword_22AADC000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server '%@] Received request to remove pairing for controller with identifier %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v17);
-    v22 = [(HAPAccessoryServerBTLE *)self browser];
-    v23 = [(HAPAccessoryServer *)self identifier];
-    [v22 deRegisterAccessoryWithIdentifier:v23];
+    browser = [(HAPAccessoryServerBTLE *)self browser];
+    identifier = [(HAPAccessoryServer *)self identifier];
+    [browser deRegisterAccessoryWithIdentifier:identifier];
 
-    v24 = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
-    v25 = [(_HAPAccessoryServerBTLE100 *)self pairingsCharacteristic];
-    v26 = [v24 objectForKey:v25];
+    btleCharacteristicToHAPCharacteristicMap = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
+    pairingsCharacteristic = [(_HAPAccessoryServerBTLE100 *)self pairingsCharacteristic];
+    v26 = [btleCharacteristicToHAPCharacteristicMap objectForKey:pairingsCharacteristic];
 
     if (!v26)
     {
       v27 = [HAPCharacteristic alloc];
-      v28 = [(HAPAccessoryServerBTLE *)self stateNumber];
+      stateNumber = [(HAPAccessoryServerBTLE *)self stateNumber];
       LOBYTE(v37) = 1;
-      v26 = [(HAPCharacteristic *)v27 initWithType:@"00000050-0000-1000-8000-0026BB765291" instanceID:&unk_283EA98F0 value:0 stateNumber:v28 properties:6 eventNotificationsEnabled:0 implicitWriteWithResponse:v37 metadata:0];
+      v26 = [(HAPCharacteristic *)v27 initWithType:@"00000050-0000-1000-8000-0026BB765291" instanceID:&unk_283EA98F0 value:0 stateNumber:stateNumber properties:6 eventNotificationsEnabled:0 implicitWriteWithResponse:v37 metadata:0];
 
-      v29 = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
-      v30 = [(_HAPAccessoryServerBTLE100 *)self pairingsCharacteristic];
-      [v29 setObject:v26 forKey:v30];
+      btleCharacteristicToHAPCharacteristicMap2 = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
+      pairingsCharacteristic2 = [(_HAPAccessoryServerBTLE100 *)self pairingsCharacteristic];
+      [btleCharacteristicToHAPCharacteristicMap2 setObject:v26 forKey:pairingsCharacteristic2];
     }
 
     v42[0] = MEMORY[0x277D85DD0];
@@ -350,45 +350,45 @@ LABEL_7:
     v42[2] = __86___HAPAccessoryServerBTLE100__removePairingWithIdentifier_publicKey_queue_completion___block_invoke_344;
     v42[3] = &unk_2786D67B8;
     v42[4] = self;
-    v43 = v12;
-    v31 = v41;
-    v44 = v41;
+    v43 = queueCopy;
+    v31 = completionCopy;
+    v44 = completionCopy;
     v32 = MEMORY[0x231885210](v42);
-    v33 = [(HAPAccessoryServer *)self clientQueue];
-    [(_HAPAccessoryServerBTLE100 *)self _writeValue:v15 forCharacteristic:v26 authorizationData:0 withCompletionHandler:v32 queue:v33];
+    clientQueue = [(HAPAccessoryServer *)self clientQueue];
+    [(_HAPAccessoryServerBTLE100 *)self _writeValue:v15 forCharacteristic:v26 authorizationData:0 withCompletionHandler:v32 queue:clientQueue];
 
     v16 = v38;
-    v11 = v39;
+    keyCopy = v39;
     goto LABEL_12;
   }
 
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
     HMFGetLogIdentifier();
-    v34 = v40 = v11;
-    v35 = [(HAPAccessoryServer *)self name];
+    v34 = v40 = keyCopy;
+    name2 = [(HAPAccessoryServer *)self name];
     *buf = 138543874;
     v50 = v34;
     v51 = 2112;
-    v52 = v35;
+    v52 = name2;
     v53 = 2112;
     v54 = v16;
     _os_log_impl(&dword_22AADC000, v19, OS_LOG_TYPE_ERROR, "%{public}@[BTLE Accessory Server '%@] Failed to create remove pairing request payload with error: %@", buf, 0x20u);
 
-    v11 = v40;
+    keyCopy = v40;
   }
 
   objc_autoreleasePoolPop(v17);
-  v31 = v41;
-  if (v12 && v41)
+  v31 = completionCopy;
+  if (queueCopy && completionCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __86___HAPAccessoryServerBTLE100__removePairingWithIdentifier_publicKey_queue_completion___block_invoke;
     block[3] = &unk_2786D65D8;
     v46 = v16;
-    v47 = v41;
-    dispatch_async(v12, block);
+    v47 = completionCopy;
+    dispatch_async(queueCopy, block);
 
     v26 = v46;
 LABEL_12:
@@ -397,88 +397,88 @@ LABEL_12:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removePairing:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
+- (void)removePairing:(id)pairing completionQueue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HAPAccessoryServer *)self clientQueue];
+  pairingCopy = pairing;
+  queueCopy = queue;
+  handlerCopy = handler;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __78___HAPAccessoryServerBTLE100_removePairing_completionQueue_completionHandler___block_invoke;
   v15[3] = &unk_2786D66C8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = pairingCopy;
+  v17 = queueCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = queueCopy;
+  v14 = pairingCopy;
+  dispatch_async(clientQueue, v15);
 }
 
-- (void)_handlePairingsReadForCharacteristic:(id)a3 readError:(id)a4 removing:(BOOL)a5 queue:(id)a6 completion:(id)a7
+- (void)_handlePairingsReadForCharacteristic:(id)characteristic readError:(id)error removing:(BOOL)removing queue:(id)queue completion:(id)completion
 {
-  v9 = a5;
+  removingCopy = removing;
   v51 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  queueCopy = queue;
+  completionCopy = completion;
   v16 = objc_autoreleasePoolPush();
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = HMFGetLogIdentifier();
-    v19 = [(HAPAccessoryServer *)self name];
-    v20 = v19;
+    name = [(HAPAccessoryServer *)self name];
+    v20 = name;
     v21 = "Add";
     *buf = 138544130;
     v44 = v18;
     v45 = 2112;
-    if (v9)
+    if (removingCopy)
     {
       v21 = "Remove";
     }
 
-    v46 = v19;
+    v46 = name;
     v47 = 2080;
     v48 = v21;
     v49 = 2112;
-    v50 = v13;
+    v50 = errorCopy;
     _os_log_impl(&dword_22AADC000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server '%@'] Completed Pairings read request for '%s' with error %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v16);
-  if (v13)
+  if (errorCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __103___HAPAccessoryServerBTLE100__handlePairingsReadForCharacteristic_readError_removing_queue_completion___block_invoke;
     block[3] = &unk_2786D65D8;
-    v42 = v15;
-    v41 = v13;
-    v22 = v15;
-    dispatch_async(v14, block);
+    v42 = completionCopy;
+    v41 = errorCopy;
+    v22 = completionCopy;
+    dispatch_async(queueCopy, block);
 
     v23 = v42;
   }
 
   else
   {
-    v24 = [v12 value];
-    if (v9)
+    value = [characteristicCopy value];
+    if (removingCopy)
     {
       v39 = 0;
       v25 = &v39;
-      [HAPPairingUtilities parseRemovePairingResponse:v24 error:&v39];
+      [HAPPairingUtilities parseRemovePairingResponse:value error:&v39];
     }
 
     else
     {
       v38 = 0;
       v25 = &v38;
-      [HAPPairingUtilities parseAddPairingResponse:v24 error:&v38];
+      [HAPPairingUtilities parseAddPairingResponse:value error:&v38];
     }
 
     v26 = *v25;
@@ -488,18 +488,18 @@ LABEL_12:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       v29 = HMFGetLogIdentifier();
-      v30 = [(HAPAccessoryServer *)self name];
-      v31 = v30;
+      name2 = [(HAPAccessoryServer *)self name];
+      v31 = name2;
       v32 = "Add";
       *buf = 138544130;
       v44 = v29;
       v45 = 2112;
-      if (v9)
+      if (removingCopy)
       {
         v32 = "Remove";
       }
 
-      v46 = v30;
+      v46 = name2;
       v47 = 2080;
       v48 = v32;
       v49 = 2112;
@@ -513,58 +513,58 @@ LABEL_12:
     v35[2] = __103___HAPAccessoryServerBTLE100__handlePairingsReadForCharacteristic_readError_removing_queue_completion___block_invoke_337;
     v35[3] = &unk_2786D65D8;
     v36 = v26;
-    v37 = v15;
-    v33 = v15;
+    v37 = completionCopy;
+    v33 = completionCopy;
     v23 = v26;
-    dispatch_async(v14, v35);
+    dispatch_async(queueCopy, v35);
   }
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handlePairingsWriteForCharacteristic:(id)a3 writeError:(id)a4 removing:(BOOL)a5 queue:(id)a6 completion:(id)a7
+- (void)_handlePairingsWriteForCharacteristic:(id)characteristic writeError:(id)error removing:(BOOL)removing queue:(id)queue completion:(id)completion
 {
-  v9 = a5;
+  removingCopy = removing;
   v47 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  queueCopy = queue;
+  completionCopy = completion;
   v16 = objc_autoreleasePoolPush();
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = HMFGetLogIdentifier();
-    v19 = [(HAPAccessoryServer *)self name];
-    v20 = v19;
+    name = [(HAPAccessoryServer *)self name];
+    v20 = name;
     v21 = "Add";
     *buf = 138544130;
     v40 = v18;
     v41 = 2112;
-    if (v9)
+    if (removingCopy)
     {
       v21 = "Remove";
     }
 
-    v42 = v19;
+    v42 = name;
     v43 = 2080;
     v44 = v21;
     v45 = 2112;
-    v46 = v13;
+    v46 = errorCopy;
     _os_log_impl(&dword_22AADC000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server '%@'] Completed Pairings write request for '%s' with error %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v16);
-  if (v13)
+  if (errorCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __105___HAPAccessoryServerBTLE100__handlePairingsWriteForCharacteristic_writeError_removing_queue_completion___block_invoke;
     block[3] = &unk_2786D65D8;
-    v38 = v15;
-    v37 = v13;
-    v22 = v15;
-    dispatch_async(v14, block);
+    v38 = completionCopy;
+    v37 = errorCopy;
+    v22 = completionCopy;
+    dispatch_async(queueCopy, block);
 
     v23 = v38;
   }
@@ -575,14 +575,14 @@ LABEL_12:
     v29 = 3221225472;
     v30 = __105___HAPAccessoryServerBTLE100__handlePairingsWriteForCharacteristic_writeError_removing_queue_completion___block_invoke_2;
     v31 = &unk_2786D67E0;
-    v32 = self;
-    v35 = v9;
-    v33 = v14;
-    v34 = v15;
-    v24 = v15;
+    selfCopy = self;
+    v35 = removingCopy;
+    v33 = queueCopy;
+    v34 = completionCopy;
+    v24 = completionCopy;
     v25 = MEMORY[0x231885210](&v28);
     v26 = [(HAPAccessoryServer *)self clientQueue:v28];
-    [(_HAPAccessoryServerBTLE100 *)self _readValueForCharacteristic:v12 completionQueue:v26 completionHandler:v25];
+    [(_HAPAccessoryServerBTLE100 *)self _readValueForCharacteristic:characteristicCopy completionQueue:v26 completionHandler:v25];
 
     v23 = v33;
   }
@@ -590,16 +590,16 @@ LABEL_12:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addPairingWithIdentifier:(id)a3 publicKey:(id)a4 admin:(BOOL)a5 queue:(id)a6 completion:(id)a7
+- (void)_addPairingWithIdentifier:(id)identifier publicKey:(id)key admin:(BOOL)admin queue:(id)queue completion:(id)completion
 {
-  v9 = a5;
+  adminCopy = admin;
   v55 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v41 = a7;
-  v15 = [objc_alloc(MEMORY[0x277D0F8B0]) initWithPairingKeyData:v13];
-  v16 = [[HAPPairingIdentity alloc] initWithIdentifier:v12 publicKey:v15 privateKey:0 permissions:v9];
+  identifierCopy = identifier;
+  keyCopy = key;
+  queueCopy = queue;
+  completionCopy = completion;
+  v15 = [objc_alloc(MEMORY[0x277D0F8B0]) initWithPairingKeyData:keyCopy];
+  v16 = [[HAPPairingIdentity alloc] initWithIdentifier:identifierCopy publicKey:v15 privateKey:0 permissions:adminCopy];
   v48 = 0;
   v17 = [HAPPairingUtilities createAddPairingRequestForPairingIdentity:v16 error:&v48];
   v18 = v48;
@@ -609,35 +609,35 @@ LABEL_12:
   if (v17)
   {
     v38 = v18;
-    v39 = v13;
+    v39 = keyCopy;
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [(HAPAccessoryServer *)self name];
+      name = [(HAPAccessoryServer *)self name];
       *buf = 138543874;
       v50 = v22;
       v51 = 2112;
-      v52 = v23;
+      v52 = name;
       v53 = 2112;
-      v54 = v12;
+      v54 = identifierCopy;
       _os_log_impl(&dword_22AADC000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server '%@] Received request to add pairing for controller with identifier %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v19);
-    v24 = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
-    v25 = [(_HAPAccessoryServerBTLE100 *)self pairingsCharacteristic];
-    v26 = [v24 objectForKey:v25];
+    btleCharacteristicToHAPCharacteristicMap = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
+    pairingsCharacteristic = [(_HAPAccessoryServerBTLE100 *)self pairingsCharacteristic];
+    v26 = [btleCharacteristicToHAPCharacteristicMap objectForKey:pairingsCharacteristic];
 
     if (!v26)
     {
       v27 = [HAPCharacteristic alloc];
-      v28 = [(HAPAccessoryServerBTLE *)self stateNumber];
+      stateNumber = [(HAPAccessoryServerBTLE *)self stateNumber];
       LOBYTE(v37) = 1;
-      v26 = [(HAPCharacteristic *)v27 initWithType:@"00000050-0000-1000-8000-0026BB765291" instanceID:&unk_283EA98F0 value:0 stateNumber:v28 properties:6 eventNotificationsEnabled:0 implicitWriteWithResponse:v37 metadata:0];
+      v26 = [(HAPCharacteristic *)v27 initWithType:@"00000050-0000-1000-8000-0026BB765291" instanceID:&unk_283EA98F0 value:0 stateNumber:stateNumber properties:6 eventNotificationsEnabled:0 implicitWriteWithResponse:v37 metadata:0];
 
-      v29 = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
-      v30 = [(_HAPAccessoryServerBTLE100 *)self pairingsCharacteristic];
-      [v29 setObject:v26 forKey:v30];
+      btleCharacteristicToHAPCharacteristicMap2 = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
+      pairingsCharacteristic2 = [(_HAPAccessoryServerBTLE100 *)self pairingsCharacteristic];
+      [btleCharacteristicToHAPCharacteristicMap2 setObject:v26 forKey:pairingsCharacteristic2];
     }
 
     v42[0] = MEMORY[0x277D85DD0];
@@ -645,45 +645,45 @@ LABEL_12:
     v42[2] = __89___HAPAccessoryServerBTLE100__addPairingWithIdentifier_publicKey_admin_queue_completion___block_invoke_334;
     v42[3] = &unk_2786D67B8;
     v42[4] = self;
-    v43 = v14;
-    v31 = v41;
-    v44 = v41;
+    v43 = queueCopy;
+    v31 = completionCopy;
+    v44 = completionCopy;
     v32 = MEMORY[0x231885210](v42);
-    v33 = [(HAPAccessoryServer *)self clientQueue];
-    [(_HAPAccessoryServerBTLE100 *)self _writeValue:v17 forCharacteristic:v26 authorizationData:0 withCompletionHandler:v32 queue:v33];
+    clientQueue = [(HAPAccessoryServer *)self clientQueue];
+    [(_HAPAccessoryServerBTLE100 *)self _writeValue:v17 forCharacteristic:v26 authorizationData:0 withCompletionHandler:v32 queue:clientQueue];
 
     v18 = v38;
-    v13 = v39;
+    keyCopy = v39;
     goto LABEL_12;
   }
 
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
     HMFGetLogIdentifier();
-    v34 = v40 = v13;
-    v35 = [(HAPAccessoryServer *)self name];
+    v34 = v40 = keyCopy;
+    name2 = [(HAPAccessoryServer *)self name];
     *buf = 138543874;
     v50 = v34;
     v51 = 2112;
-    v52 = v35;
+    v52 = name2;
     v53 = 2112;
     v54 = v18;
     _os_log_impl(&dword_22AADC000, v21, OS_LOG_TYPE_ERROR, "%{public}@[BTLE Accessory Server '%@] Failed to create add pairing request payload with error: %@", buf, 0x20u);
 
-    v13 = v40;
+    keyCopy = v40;
   }
 
   objc_autoreleasePoolPop(v19);
-  v31 = v41;
-  if (v14 && v41)
+  v31 = completionCopy;
+  if (queueCopy && completionCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __89___HAPAccessoryServerBTLE100__addPairingWithIdentifier_publicKey_admin_queue_completion___block_invoke;
     block[3] = &unk_2786D65D8;
     v46 = v18;
-    v47 = v41;
-    dispatch_async(v14, block);
+    v47 = completionCopy;
+    dispatch_async(queueCopy, block);
 
     v26 = v46;
 LABEL_12:
@@ -692,38 +692,38 @@ LABEL_12:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addPairing:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
+- (void)addPairing:(id)pairing completionQueue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HAPAccessoryServer *)self clientQueue];
+  pairingCopy = pairing;
+  queueCopy = queue;
+  handlerCopy = handler;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75___HAPAccessoryServerBTLE100_addPairing_completionQueue_completionHandler___block_invoke;
   v15[3] = &unk_2786D66C8;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = pairingCopy;
+  selfCopy = self;
+  v18 = queueCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = queueCopy;
+  v14 = pairingCopy;
+  dispatch_async(clientQueue, v15);
 }
 
-- (void)identifyWithCompletion:(id)a3
+- (void)identifyWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServer *)self clientQueue];
+  completionCopy = completion;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53___HAPAccessoryServerBTLE100_identifyWithCompletion___block_invoke;
   v7[3] = &unk_2786D65D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(clientQueue, v7);
 }
 
 - (void)_handleConnectionLifetimeTimeout
@@ -734,11 +734,11 @@ LABEL_12:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = HMFGetLogIdentifier();
-    v6 = [(HAPAccessoryServer *)self identifier];
+    identifier = [(HAPAccessoryServer *)self identifier];
     v8 = 138543618;
     v9 = v5;
     v10 = 2112;
-    v11 = v6;
+    v11 = identifier;
     _os_log_impl(&dword_22AADC000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server %@] Handling connection lifetime timeout", &v8, 0x16u);
   }
 
@@ -756,18 +756,18 @@ LABEL_12:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = HMFGetLogIdentifier();
-    v6 = [(HAPAccessoryServer *)self identifier];
+    identifier = [(HAPAccessoryServer *)self identifier];
     v9 = 138543618;
     v10 = v5;
     v11 = 2112;
-    v12 = v6;
+    v12 = identifier;
     _os_log_impl(&dword_22AADC000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server %@] Canceling connection lifetime timeout and disconnecting from peripheral", &v9, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
   [(_HAPAccessoryServerBTLE100 *)self setDisconnecting:1];
-  v7 = [(HAPAccessoryServerBTLE *)self browser];
-  [v7 disconnectFromBTLEAccessoryServer:self];
+  browser = [(HAPAccessoryServerBTLE *)self browser];
+  [browser disconnectFromBTLEAccessoryServer:self];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -780,21 +780,21 @@ LABEL_12:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = HMFGetLogIdentifier();
-    v6 = [(HAPAccessoryServer *)self identifier];
+    identifier = [(HAPAccessoryServer *)self identifier];
     v10 = 138543618;
     v11 = v5;
     v12 = 2112;
-    v13 = v6;
+    v13 = identifier;
     _os_log_impl(&dword_22AADC000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server %@] cancelling connection lifetime timer...", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(_HAPAccessoryServerBTLE100 *)self connectionLifetimeTimer];
+  connectionLifetimeTimer = [(_HAPAccessoryServerBTLE100 *)self connectionLifetimeTimer];
 
-  if (v7)
+  if (connectionLifetimeTimer)
   {
-    v8 = [(_HAPAccessoryServerBTLE100 *)self connectionLifetimeTimer];
-    dispatch_source_cancel(v8);
+    connectionLifetimeTimer2 = [(_HAPAccessoryServerBTLE100 *)self connectionLifetimeTimer];
+    dispatch_source_cancel(connectionLifetimeTimer2);
 
     [(_HAPAccessoryServerBTLE100 *)self setConnectionLifetimeTimer:0];
   }
@@ -804,22 +804,22 @@ LABEL_12:
 
 - (void)_updateConnectionLifetimeTimer
 {
-  v3 = [(_HAPAccessoryServerBTLE100 *)self connectionLifetimeTimer];
+  connectionLifetimeTimer = [(_HAPAccessoryServerBTLE100 *)self connectionLifetimeTimer];
 
-  if (!v3)
+  if (!connectionLifetimeTimer)
   {
-    v4 = [(HAPAccessoryServer *)self clientQueue];
-    v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v4);
+    clientQueue = [(HAPAccessoryServer *)self clientQueue];
+    v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, clientQueue);
     [(_HAPAccessoryServerBTLE100 *)self setConnectionLifetimeTimer:v5];
 
     objc_initWeak(&location, self);
-    v6 = [(_HAPAccessoryServerBTLE100 *)self connectionLifetimeTimer];
+    connectionLifetimeTimer2 = [(_HAPAccessoryServerBTLE100 *)self connectionLifetimeTimer];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __60___HAPAccessoryServerBTLE100__updateConnectionLifetimeTimer__block_invoke;
     v15 = &unk_2786D6FC8;
     objc_copyWeak(&v16, &location);
-    dispatch_source_set_event_handler(v6, &v12);
+    dispatch_source_set_event_handler(connectionLifetimeTimer2, &v12);
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -836,36 +836,36 @@ LABEL_12:
     v7 = 1000000000 * v8;
   }
 
-  v9 = [(_HAPAccessoryServerBTLE100 *)self connectionLifetimeTimer];
+  connectionLifetimeTimer3 = [(_HAPAccessoryServerBTLE100 *)self connectionLifetimeTimer];
   v10 = dispatch_time(0, v7);
-  dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+  dispatch_source_set_timer(connectionLifetimeTimer3, v10, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
 
-  if (!v3)
+  if (!connectionLifetimeTimer)
   {
-    v11 = [(_HAPAccessoryServerBTLE100 *)self connectionLifetimeTimer];
-    dispatch_resume(v11);
+    connectionLifetimeTimer4 = [(_HAPAccessoryServerBTLE100 *)self connectionLifetimeTimer];
+    dispatch_resume(connectionLifetimeTimer4);
   }
 }
 
-- (void)updateConnectionIdleTime:(unsigned __int8)a3
+- (void)updateConnectionIdleTime:(unsigned __int8)time
 {
-  v5 = [(HAPAccessoryServer *)self clientQueue];
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55___HAPAccessoryServerBTLE100_updateConnectionIdleTime___block_invoke;
   v6[3] = &unk_2786D6768;
-  v7 = a3;
+  timeCopy = time;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(clientQueue, v6);
 }
 
-- (int)_pairSetupTryPassword:(id)a3
+- (int)_pairSetupTryPassword:(id)password
 {
-  v4 = a3;
-  v5 = v4;
+  passwordCopy = password;
+  v5 = passwordCopy;
   if (self->_pairingSession)
   {
-    [v4 UTF8String];
+    [passwordCopy UTF8String];
     v6 = PairingSessionSetSetupCode();
     if (!v6)
     {
@@ -890,10 +890,10 @@ LABEL_12:
   return v6;
 }
 
-- (int)_handlePairSetupExchangeWithData:(id)a3
+- (int)_handlePairSetupExchangeWithData:(id)data
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v24 = 0;
   v25 = 0;
   v23 = 0;
@@ -914,8 +914,8 @@ LABEL_12:
 
   objc_autoreleasePoolPop(v5);
   pairingSession = self->_pairingSession;
-  [v4 bytes];
-  [v4 length];
+  [dataCopy bytes];
+  [dataCopy length];
   v10 = PairingSessionExchange();
   if (v10)
   {
@@ -953,20 +953,20 @@ LABEL_12:
       self->_pairingSession = 0;
     }
 
-    v16 = [(HAPAccessoryServerBTLE *)self browser];
-    [v16 disconnectFromBTLEAccessoryServer:self];
+    browser = [(HAPAccessoryServerBTLE *)self browser];
+    [browser disconnectFromBTLEAccessoryServer:self];
 
     v17 = HMErrorFromOSStatus(v11);
     if ([(_HAPAccessoryServerBTLE100 *)self _delegateRespondsToSelector:sel_accessoryServer_didStopPairingWithError_])
     {
-      v18 = [(HAPAccessoryServer *)self delegateQueue];
+      delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __63___HAPAccessoryServerBTLE100__handlePairSetupExchangeWithData___block_invoke_323;
       v21[3] = &unk_2786D7050;
       v21[4] = self;
       v22 = v17;
-      dispatch_async(v18, v21);
+      dispatch_async(delegateQueue, v21);
     }
 
     [(_HAPAccessoryServerBTLE100 *)self setStartPairingRequested:0];
@@ -986,13 +986,13 @@ LABEL_12:
   {
     if ([(_HAPAccessoryServerBTLE100 *)self _delegateRespondsToSelector:sel_accessoryServer_didStopPairingWithError_])
     {
-      v3 = [(HAPAccessoryServer *)self delegateQueue];
+      delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __45___HAPAccessoryServerBTLE100__pairSetupStart__block_invoke;
       block[3] = &unk_2786D6CA0;
       block[4] = self;
-      dispatch_async(v3, block);
+      dispatch_async(delegateQueue, block);
     }
 
     [(_HAPAccessoryServerBTLE100 *)self setStartPairingRequested:0];
@@ -1043,19 +1043,19 @@ LABEL_12:
       self->_pairingSession = 0;
     }
 
-    v16 = [(HAPAccessoryServerBTLE *)self browser];
-    [v16 disconnectFromBTLEAccessoryServer:self];
+    browser = [(HAPAccessoryServerBTLE *)self browser];
+    [browser disconnectFromBTLEAccessoryServer:self];
 
     if ([(_HAPAccessoryServerBTLE100 *)self _delegateRespondsToSelector:sel_accessoryServer_didStopPairingWithError_])
     {
-      v17 = [(HAPAccessoryServer *)self delegateQueue];
+      delegateQueue2 = [(HAPAccessoryServer *)self delegateQueue];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __45___HAPAccessoryServerBTLE100__pairSetupStart__block_invoke_322;
       v28[3] = &unk_2786D6740;
       v29 = v5;
       v28[4] = self;
-      dispatch_async(v17, v28);
+      dispatch_async(delegateQueue2, v28);
     }
 
     [(_HAPAccessoryServerBTLE100 *)self setStartPairingRequested:0];
@@ -1072,13 +1072,13 @@ LABEL_12:
   else
   {
     v4 = [MEMORY[0x277CBEA90] dataWithBytes:v33 length:v32];
-    v20 = [(_HAPAccessoryServerBTLE100 *)self _pairSetupHAPCharacteristic];
-    [(_HAPAccessoryServerBTLE100 *)self _notifyDelegateOfSentPlaintextData:v4 forCharacteristic:v20];
+    _pairSetupHAPCharacteristic = [(_HAPAccessoryServerBTLE100 *)self _pairSetupHAPCharacteristic];
+    [(_HAPAccessoryServerBTLE100 *)self _notifyDelegateOfSentPlaintextData:v4 forCharacteristic:_pairSetupHAPCharacteristic];
 
     [(_HAPAccessoryServerBTLE100 *)self _updateConnectionLifetimeTimer];
-    v21 = [(HAPAccessoryServerBTLE *)self peripheral];
-    v22 = [(_HAPAccessoryServerBTLE100 *)self pairSetupCharacteristic];
-    [v21 writeValue:v4 forCharacteristic:v22 type:0];
+    peripheral = [(HAPAccessoryServerBTLE *)self peripheral];
+    pairSetupCharacteristic = [(_HAPAccessoryServerBTLE100 *)self pairSetupCharacteristic];
+    [peripheral writeValue:v4 forCharacteristic:pairSetupCharacteristic type:0];
 
     v23 = objc_autoreleasePoolPush();
     v24 = HMFGetOSLogHandle();
@@ -1112,7 +1112,7 @@ LABEL_19:
   return v5;
 }
 
-- (int)_ensurePairingSessionIsInitializedWithType:(unsigned int)a3
+- (int)_ensurePairingSessionIsInitializedWithType:(unsigned int)type
 {
   v24 = *MEMORY[0x277D85DE8];
   if (self->_pairingSession)
@@ -1136,7 +1136,7 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v7 = self->_pairingFeatureFlags & 1;
   }
@@ -1144,23 +1144,23 @@ LABEL_11:
   v8 = self->_pairingSession;
   PairingSessionSetFlags();
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [(_HAPAccessoryServerBTLE100 *)v10 controllerUsername];
+    controllerUsername = [(_HAPAccessoryServerBTLE100 *)selfCopy controllerUsername];
     *buf = 138543618;
     v21 = v12;
     v22 = 2112;
-    v23 = v13;
+    v23 = controllerUsername;
     _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_INFO, "%{public}@Setting Pairing session identifier to : %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
   v14 = self->_pairingSession;
-  v15 = [(_HAPAccessoryServerBTLE100 *)v10 controllerUsername];
-  [v15 UTF8String];
+  controllerUsername2 = [(_HAPAccessoryServerBTLE100 *)selfCopy controllerUsername];
+  [controllerUsername2 UTF8String];
   v3 = PairingSessionSetIdentifier();
 
   if (v3)
@@ -1180,29 +1180,29 @@ LABEL_13:
   return v3;
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(HAPAccessoryServer *)self clientQueue];
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __91___HAPAccessoryServerBTLE100_peripheral_didUpdateNotificationStateForCharacteristic_error___block_invoke;
   block[3] = &unk_2786D7078;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = characteristicCopy;
+  selfCopy = self;
+  v15 = errorCopy;
+  v10 = errorCopy;
+  v11 = characteristicCopy;
+  dispatch_async(clientQueue, block);
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   v11 = objc_autoreleasePoolPush();
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -1213,128 +1213,128 @@ LABEL_13:
     v23 = 2080;
     v24 = "[_HAPAccessoryServerBTLE100 peripheral:didWriteValueForCharacteristic:error:]";
     v25 = 2112;
-    v26 = v9;
+    v26 = characteristicCopy;
     _os_log_impl(&dword_22AADC000, v12, OS_LOG_TYPE_INFO, "%{public}@%s: Received write confirmation for characteristic %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v14 = [(HAPAccessoryServer *)self clientQueue];
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78___HAPAccessoryServerBTLE100_peripheral_didWriteValueForCharacteristic_error___block_invoke;
   block[3] = &unk_2786D7078;
   block[4] = self;
-  v19 = v10;
-  v20 = v9;
-  v15 = v9;
-  v16 = v10;
-  dispatch_async(v14, block);
+  v19 = errorCopy;
+  v20 = characteristicCopy;
+  v15 = characteristicCopy;
+  v16 = errorCopy;
+  dispatch_async(clientQueue, block);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(HAPAccessoryServer *)self clientQueue];
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79___HAPAccessoryServerBTLE100_peripheral_didUpdateValueForCharacteristic_error___block_invoke;
   block[3] = &unk_2786D7078;
   block[4] = self;
-  v13 = v8;
-  v14 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, block);
+  v13 = errorCopy;
+  v14 = characteristicCopy;
+  v10 = characteristicCopy;
+  v11 = errorCopy;
+  dispatch_async(clientQueue, block);
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForDescriptor:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForDescriptor:(id)descriptor error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(HAPAccessoryServer *)self clientQueue];
+  descriptorCopy = descriptor;
+  errorCopy = error;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75___HAPAccessoryServerBTLE100_peripheral_didUpdateValueForDescriptor_error___block_invoke;
   block[3] = &unk_2786D7078;
-  v13 = v8;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, block);
+  v13 = errorCopy;
+  selfCopy = self;
+  v15 = descriptorCopy;
+  v10 = descriptorCopy;
+  v11 = errorCopy;
+  dispatch_async(clientQueue, block);
 }
 
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(HAPAccessoryServer *)self clientQueue];
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87___HAPAccessoryServerBTLE100_peripheral_didDiscoverDescriptorsForCharacteristic_error___block_invoke;
   block[3] = &unk_2786D7078;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = characteristicCopy;
+  v14 = errorCopy;
+  v10 = errorCopy;
+  v11 = characteristicCopy;
+  dispatch_async(clientQueue, block);
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(HAPAccessoryServer *)self clientQueue];
+  serviceCopy = service;
+  errorCopy = error;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84___HAPAccessoryServerBTLE100_peripheral_didDiscoverCharacteristicsForService_error___block_invoke;
   block[3] = &unk_2786D7078;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = serviceCopy;
+  v14 = errorCopy;
+  v10 = errorCopy;
+  v11 = serviceCopy;
+  dispatch_async(clientQueue, block);
 }
 
-- (void)peripheral:(id)a3 didModifyServices:(id)a4
+- (void)peripheral:(id)peripheral didModifyServices:(id)services
 {
-  v5 = a4;
-  v6 = [(HAPAccessoryServer *)self clientQueue];
+  servicesCopy = services;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59___HAPAccessoryServerBTLE100_peripheral_didModifyServices___block_invoke;
   v8[3] = &unk_2786D7050;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = servicesCopy;
+  v7 = servicesCopy;
+  dispatch_async(clientQueue, v8);
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v5 = a4;
-  v6 = [(HAPAccessoryServer *)self clientQueue];
+  servicesCopy = services;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61___HAPAccessoryServerBTLE100_peripheral_didDiscoverServices___block_invoke;
   v8[3] = &unk_2786D7050;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = servicesCopy;
+  v7 = servicesCopy;
+  dispatch_async(clientQueue, v8);
 }
 
 - (id)_pairVerifyHAPCharacteristic
 {
   v3 = [HAPCharacteristic alloc];
-  v4 = [(HAPAccessoryServerBTLE *)self stateNumber];
+  stateNumber = [(HAPAccessoryServerBTLE *)self stateNumber];
   LOBYTE(v7) = 1;
-  v5 = [(HAPCharacteristic *)v3 initWithType:@"0000004E-0000-1000-8000-0026BB765291" instanceID:&unk_283EA98D8 value:0 stateNumber:v4 properties:6 eventNotificationsEnabled:0 implicitWriteWithResponse:v7 metadata:0];
+  v5 = [(HAPCharacteristic *)v3 initWithType:@"0000004E-0000-1000-8000-0026BB765291" instanceID:&unk_283EA98D8 value:0 stateNumber:stateNumber properties:6 eventNotificationsEnabled:0 implicitWriteWithResponse:v7 metadata:0];
 
   return v5;
 }
@@ -1342,33 +1342,33 @@ LABEL_13:
 - (id)_pairSetupHAPCharacteristic
 {
   v3 = [HAPCharacteristic alloc];
-  v4 = [(HAPAccessoryServerBTLE *)self stateNumber];
+  stateNumber = [(HAPAccessoryServerBTLE *)self stateNumber];
   LOBYTE(v7) = 1;
-  v5 = [(HAPCharacteristic *)v3 initWithType:@"0000004C-0000-1000-8000-0026BB765291" instanceID:&unk_283EA98C0 value:0 stateNumber:v4 properties:6 eventNotificationsEnabled:0 implicitWriteWithResponse:v7 metadata:0];
+  v5 = [(HAPCharacteristic *)v3 initWithType:@"0000004C-0000-1000-8000-0026BB765291" instanceID:&unk_283EA98C0 value:0 stateNumber:stateNumber properties:6 eventNotificationsEnabled:0 implicitWriteWithResponse:v7 metadata:0];
 
   return v5;
 }
 
-- (void)_notifyDelegateOfSentPlaintextData:(id)a3 forCharacteristic:(id)a4
+- (void)_notifyDelegateOfSentPlaintextData:(id)data forCharacteristic:(id)characteristic
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAPAccessoryServer *)self delegate];
-  if ([v8 conformsToProtocol:&unk_283ED0BF8])
+  dataCopy = data;
+  characteristicCopy = characteristic;
+  delegate = [(HAPAccessoryServer *)self delegate];
+  if ([delegate conformsToProtocol:&unk_283ED0BF8])
   {
     v9 = [(_HAPAccessoryServerBTLE100 *)self _delegateRespondsToSelector:sel_accessoryServerBTLE_willSendPlaintextPayload_forCharacteristic_];
 
     if (v9)
     {
-      v10 = [(HAPAccessoryServer *)self delegateQueue];
+      delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __83___HAPAccessoryServerBTLE100__notifyDelegateOfSentPlaintextData_forCharacteristic___block_invoke;
       block[3] = &unk_2786D7078;
       block[4] = self;
-      v12 = v6;
-      v13 = v7;
-      dispatch_async(v10, block);
+      v12 = dataCopy;
+      v13 = characteristicCopy;
+      dispatch_async(delegateQueue, block);
     }
   }
 
@@ -1377,26 +1377,26 @@ LABEL_13:
   }
 }
 
-- (void)_notifyDelegateOfSentEncryptedAuthenticatedData:(id)a3 forCharacteristic:(id)a4
+- (void)_notifyDelegateOfSentEncryptedAuthenticatedData:(id)data forCharacteristic:(id)characteristic
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAPAccessoryServer *)self delegate];
-  if ([v8 conformsToProtocol:&unk_283ED0BF8])
+  dataCopy = data;
+  characteristicCopy = characteristic;
+  delegate = [(HAPAccessoryServer *)self delegate];
+  if ([delegate conformsToProtocol:&unk_283ED0BF8])
   {
     v9 = [(_HAPAccessoryServerBTLE100 *)self _delegateRespondsToSelector:sel_accessoryServerBTLE_willSendEncryptedAndAuthenticatedPayload_forCharacteristic_];
 
     if (v9)
     {
-      v10 = [(HAPAccessoryServer *)self delegateQueue];
+      delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __96___HAPAccessoryServerBTLE100__notifyDelegateOfSentEncryptedAuthenticatedData_forCharacteristic___block_invoke;
       block[3] = &unk_2786D7078;
       block[4] = self;
-      v12 = v6;
-      v13 = v7;
-      dispatch_async(v10, block);
+      v12 = dataCopy;
+      v13 = characteristicCopy;
+      dispatch_async(delegateQueue, block);
     }
   }
 
@@ -1405,26 +1405,26 @@ LABEL_13:
   }
 }
 
-- (void)_notifyDelegateOfReceivedPlaintextData:(id)a3 forCharacteristic:(id)a4
+- (void)_notifyDelegateOfReceivedPlaintextData:(id)data forCharacteristic:(id)characteristic
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAPAccessoryServer *)self delegate];
-  if ([v8 conformsToProtocol:&unk_283ED0BF8])
+  dataCopy = data;
+  characteristicCopy = characteristic;
+  delegate = [(HAPAccessoryServer *)self delegate];
+  if ([delegate conformsToProtocol:&unk_283ED0BF8])
   {
     v9 = [(_HAPAccessoryServerBTLE100 *)self _delegateRespondsToSelector:sel_accessoryServerBTLE_didReceivePlaintextPayload_forCharacteristic_];
 
     if (v9)
     {
-      v10 = [(HAPAccessoryServer *)self delegateQueue];
+      delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __87___HAPAccessoryServerBTLE100__notifyDelegateOfReceivedPlaintextData_forCharacteristic___block_invoke;
       block[3] = &unk_2786D7078;
       block[4] = self;
-      v12 = v6;
-      v13 = v7;
-      dispatch_async(v10, block);
+      v12 = dataCopy;
+      v13 = characteristicCopy;
+      dispatch_async(delegateQueue, block);
     }
   }
 
@@ -1433,27 +1433,27 @@ LABEL_13:
   }
 }
 
-- (void)_notifyDelegateOfReceivedEncryptedAuthenticatedData:(id)a3 forCharacteristic:(id)a4
+- (void)_notifyDelegateOfReceivedEncryptedAuthenticatedData:(id)data forCharacteristic:(id)characteristic
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAPAccessoryServer *)self delegate];
-  if ([v8 conformsToProtocol:&unk_283ED0BF8])
+  dataCopy = data;
+  characteristicCopy = characteristic;
+  delegate = [(HAPAccessoryServer *)self delegate];
+  if ([delegate conformsToProtocol:&unk_283ED0BF8])
   {
-    v9 = [(HAPAccessoryServer *)self delegate];
+    delegate2 = [(HAPAccessoryServer *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(HAPAccessoryServer *)self delegateQueue];
+      delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __100___HAPAccessoryServerBTLE100__notifyDelegateOfReceivedEncryptedAuthenticatedData_forCharacteristic___block_invoke;
       block[3] = &unk_2786D7078;
       block[4] = self;
-      v13 = v6;
-      v14 = v7;
-      dispatch_async(v11, block);
+      v13 = dataCopy;
+      v14 = characteristicCopy;
+      dispatch_async(delegateQueue, block);
     }
   }
 
@@ -1462,27 +1462,27 @@ LABEL_13:
   }
 }
 
-- (id)_hapCharacteristicForBTLECharacteristic:(id)a3
+- (id)_hapCharacteristicForBTLECharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
-  v6 = [v5 objectForKey:v4];
+  characteristicCopy = characteristic;
+  btleCharacteristicToHAPCharacteristicMap = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
+  v6 = [btleCharacteristicToHAPCharacteristicMap objectForKey:characteristicCopy];
 
   return v6;
 }
 
-- (id)_btleCharacteristicForHAPCharacteristic:(id)a3
+- (id)_btleCharacteristicForHAPCharacteristic:(id)characteristic
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  characteristicCopy = characteristic;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
-  v6 = [v5 keyEnumerator];
+  btleCharacteristicToHAPCharacteristicMap = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
+  keyEnumerator = [btleCharacteristicToHAPCharacteristicMap keyEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1493,13 +1493,13 @@ LABEL_13:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
-        v13 = [v12 objectForKey:v11];
-        v14 = [v13 isEqual:v4];
+        btleCharacteristicToHAPCharacteristicMap2 = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
+        v13 = [btleCharacteristicToHAPCharacteristicMap2 objectForKey:v11];
+        v14 = [v13 isEqual:characteristicCopy];
 
         if (v14)
         {
@@ -1508,7 +1508,7 @@ LABEL_13:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v8)
       {
         continue;
@@ -1526,15 +1526,15 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)_delegateRespondsToSelector:(SEL)a3
+- (BOOL)_delegateRespondsToSelector:(SEL)selector
 {
-  v4 = [(HAPAccessoryServer *)self delegate];
-  if (v4)
+  delegate = [(HAPAccessoryServer *)self delegate];
+  if (delegate)
   {
-    v5 = [(HAPAccessoryServer *)self delegateQueue];
-    if (v5)
+    delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
+    if (delegateQueue)
     {
-      v6 = [(HAPAccessoryServer *)self delegate];
+      delegate2 = [(HAPAccessoryServer *)self delegate];
       v7 = objc_opt_respondsToSelector();
     }
 
@@ -1560,40 +1560,40 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)_parseBTLECharacteristicDescriptor:(id)a3 existingDescriptors:(id)a4 characteristics:(id)a5
+- (BOOL)_parseBTLECharacteristicDescriptor:(id)descriptor existingDescriptors:(id)descriptors characteristics:(id)characteristics
 {
   v136 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
-  v12 = [v11 objectForKey:v10];
+  descriptorCopy = descriptor;
+  descriptorsCopy = descriptors;
+  characteristicsCopy = characteristics;
+  btleCharacteristicToHAPCharacteristicMap = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
+  v12 = [btleCharacteristicToHAPCharacteristicMap objectForKey:characteristicsCopy];
 
-  v13 = [v12 metadata];
+  metadata = [v12 metadata];
 
-  if (!v13)
+  if (!metadata)
   {
     v14 = objc_alloc_init(HAPCharacteristicMetadata);
     [v12 setMetadata:v14];
   }
 
-  v15 = [v8 UUID];
+  uUID = [descriptorCopy UUID];
   v16 = [MEMORY[0x277CBE0A0] UUIDWithString:@"DC46F0FE-81D2-4616-B5D9-6ABDD796939A"];
-  if (![v15 isEqual:v16])
+  if (![uUID isEqual:v16])
   {
 
 LABEL_10:
-    v24 = [v8 UUID];
+    uUID2 = [descriptorCopy UUID];
     v25 = [MEMORY[0x277CBE0A0] UUIDWithString:*MEMORY[0x277CBDF80]];
-    v26 = [v24 isEqual:v25];
+    v26 = [uUID2 isEqual:v25];
 
     if (v26)
     {
-      v27 = [v8 value];
-      v123 = v8;
+      value = [descriptorCopy value];
+      v123 = descriptorCopy;
       v124 = v12;
-      v121 = v10;
-      if ([v27 length] <= 6 || (objc_msgSend(v27, "getBytes:length:", buf, 7), buf[1]))
+      v121 = characteristicsCopy;
+      if ([value length] <= 6 || (objc_msgSend(value, "getBytes:length:", buf, 7), buf[1]))
       {
 
 LABEL_14:
@@ -1605,7 +1605,7 @@ LABEL_14:
           *buf = 138543618;
           v131 = v30;
           v132 = 2112;
-          v133 = v27;
+          v133 = value;
           _os_log_impl(&dword_22AADC000, v29, OS_LOG_TYPE_ERROR, "%{public}@### Invalid BTLE Format Descriptor: %@", buf, 0x16u);
         }
 
@@ -1702,22 +1702,22 @@ LABEL_94:
       v12 = v124;
 LABEL_17:
 
-      v32 = [(HAPCharacteristicMetadata *)v31 format];
-      v33 = [v12 metadata];
-      [v33 setFormat:v32];
+      format = [(HAPCharacteristicMetadata *)v31 format];
+      metadata2 = [v12 metadata];
+      [metadata2 setFormat:format];
 
       v120 = v31;
-      v34 = [(HAPCharacteristicMetadata *)v31 units];
-      v35 = [v12 metadata];
-      [v35 setUnits:v34];
+      units = [(HAPCharacteristicMetadata *)v31 units];
+      metadata3 = [v12 metadata];
+      [metadata3 setUnits:units];
 
-      v36 = [v12 metadata];
-      v122 = v9;
+      metadata4 = [v12 metadata];
+      v122 = descriptorsCopy;
       v126 = 0u;
       v127 = 0u;
       v128 = 0u;
       v129 = 0u;
-      obj = v9;
+      obj = descriptorsCopy;
       v37 = [obj countByEnumeratingWithState:&v126 objects:buf count:16];
       v38 = 0x277CBE000uLL;
       if (!v37)
@@ -1738,16 +1738,16 @@ LABEL_17:
           }
 
           v43 = *(*(&v126 + 1) + 8 * i);
-          v44 = [v43 UUID];
+          uUID3 = [v43 UUID];
           v45 = [*(v38 + 160) UUIDWithString:@"6EB45C6C-A230-4F3A-886F-F8A8EEFC42E8"];
-          if (![v44 isEqual:v45])
+          if (![uUID3 isEqual:v45])
           {
             goto LABEL_25;
           }
 
-          v46 = [v36 constraints];
-          v47 = [v46 stepValue];
-          if (v47)
+          constraints = [metadata4 constraints];
+          stepValue = [constraints stepValue];
+          if (stepValue)
           {
 
             v38 = 0x277CBE000uLL;
@@ -1756,28 +1756,28 @@ LABEL_25:
             goto LABEL_26;
           }
 
-          v52 = [v43 value];
+          value2 = [v43 value];
 
           v38 = 0x277CBE000;
-          if (v52)
+          if (value2)
           {
-            v48 = [v36 format];
-            v53 = [v43 value];
-            v54 = _convertFromBTLEToHAPValue(v48, v53);
-            v55 = [v36 constraints];
-            [v55 setStepValue:v54];
+            format2 = [metadata4 format];
+            value3 = [v43 value];
+            v54 = _convertFromBTLEToHAPValue(format2, value3);
+            constraints2 = [metadata4 constraints];
+            [constraints2 setStepValue:v54];
 
             goto LABEL_32;
           }
 
 LABEL_26:
-          v48 = [v43 UUID];
+          format2 = [v43 UUID];
           v49 = [*(v38 + 160) UUIDWithString:v41];
-          if ([v48 isEqual:v49])
+          if ([format2 isEqual:v49])
           {
-            v50 = [v36 constraints];
-            v51 = [v50 stepValue];
-            if (v51)
+            constraints3 = [metadata4 constraints];
+            stepValue2 = [constraints3 stepValue];
+            if (stepValue2)
             {
 
 LABEL_32:
@@ -1785,16 +1785,16 @@ LABEL_32:
               goto LABEL_35;
             }
 
-            v56 = [v43 value];
+            value4 = [v43 value];
 
             v38 = 0x277CBE000;
-            if (!v56)
+            if (!value4)
             {
               continue;
             }
 
-            v48 = [v43 value];
-            _updateHAPConstraintsFromBTLEValidRange(v36, v48);
+            format2 = [v43 value];
+            _updateHAPConstraintsFromBTLEValidRange(metadata4, format2);
           }
 
           else
@@ -1809,61 +1809,61 @@ LABEL_35:
         {
 LABEL_38:
 
-          v9 = v122;
-          v8 = v123;
-          v10 = v121;
+          descriptorsCopy = v122;
+          descriptorCopy = v123;
+          characteristicsCopy = v121;
           v12 = v124;
           goto LABEL_55;
         }
       }
     }
 
-    v57 = [v8 UUID];
+    uUID4 = [descriptorCopy UUID];
     v58 = [MEMORY[0x277CBE0A0] UUIDWithString:*MEMORY[0x277CBDF88]];
-    v59 = [v57 isEqual:v58];
+    v59 = [uUID4 isEqual:v58];
 
     if (v59)
     {
-      v60 = [v8 value];
-      if ([v60 containsString:@";"])
+      value5 = [descriptorCopy value];
+      if ([value5 containsString:@";"])
       {
-        v61 = [v60 componentsSeparatedByString:@""];;
-        v62 = [v61 mutableCopy];
+        v61 = [value5 componentsSeparatedByString:@""];;
+        value6 = [v61 mutableCopy];
 
         if ([(_HAPAccessoryServerBTLE100 *)self hapBLEProtocolVersion]!= 1)
         {
           v63 = MEMORY[0x277CCABB0];
-          v64 = [v62 objectAtIndexedSubscript:0];
+          v64 = [value6 objectAtIndexedSubscript:0];
           v65 = [v63 numberWithUnsignedInteger:{objc_msgSend(v64, "integerValue")}];
           [v12 setInstanceID:v65];
         }
 
-        [v62 removeObjectAtIndex:0];
-        v66 = [v62 componentsJoinedByString:@""];;
-        v67 = [v12 metadata];
-        [v67 setManufacturerDescription:v66];
+        [value6 removeObjectAtIndex:0];
+        metadata6 = [value6 componentsJoinedByString:@""];;
+        metadata5 = [v12 metadata];
+        [metadata5 setManufacturerDescription:metadata6];
       }
 
       else
       {
-        v62 = [v8 value];
-        v66 = [v12 metadata];
-        [v66 setManufacturerDescription:v62];
+        value6 = [descriptorCopy value];
+        metadata6 = [v12 metadata];
+        [metadata6 setManufacturerDescription:value6];
       }
     }
 
     else
     {
-      v68 = [v8 UUID];
+      uUID5 = [descriptorCopy UUID];
       v69 = [MEMORY[0x277CBE0A0] UUIDWithString:@"6EB45C6C-A230-4F3A-886F-F8A8EEFC42E8"];
-      v70 = [v68 isEqual:v69];
+      v70 = [uUID5 isEqual:v69];
 
       if (v70)
       {
-        v71 = [v12 metadata];
-        v72 = [v71 format];
+        metadata7 = [v12 metadata];
+        format3 = [metadata7 format];
 
-        if (!v72)
+        if (!format3)
         {
 LABEL_55:
           v86 = objc_autoreleasePoolPush();
@@ -1871,13 +1871,13 @@ LABEL_55:
           if (os_log_type_enabled(v87, OS_LOG_TYPE_INFO))
           {
             v88 = HMFGetLogIdentifier();
-            v89 = [v12 metadata];
+            metadata8 = [v12 metadata];
             *buf = 138543874;
             v131 = v88;
             v132 = 2112;
-            v133 = v89;
+            v133 = metadata8;
             v134 = 2112;
-            v135 = v8;
+            v135 = descriptorCopy;
             _os_log_impl(&dword_22AADC000, v87, OS_LOG_TYPE_INFO, "%{public}@HAP Metadata :%@ from BTLEDescriptor: %@", buf, 0x20u);
           }
 
@@ -1886,49 +1886,49 @@ LABEL_55:
           goto LABEL_58;
         }
 
-        v73 = [v12 metadata];
-        v74 = [v73 constraints];
+        metadata9 = [v12 metadata];
+        constraints4 = [metadata9 constraints];
 
-        if (!v74)
+        if (!constraints4)
         {
           v75 = objc_alloc_init(HAPMetadataConstraints);
-          v76 = [v12 metadata];
-          [v76 setConstraints:v75];
+          metadata10 = [v12 metadata];
+          [metadata10 setConstraints:v75];
         }
 
-        v60 = [v12 metadata];
-        v77 = [v60 format];
-        v78 = [v8 value];
-        v79 = _convertFromBTLEToHAPValue(v77, v78);
-        v80 = [v12 metadata];
-        v81 = [v80 constraints];
-        [v81 setStepValue:v79];
+        value5 = [v12 metadata];
+        format4 = [value5 format];
+        value7 = [descriptorCopy value];
+        v79 = _convertFromBTLEToHAPValue(format4, value7);
+        metadata11 = [v12 metadata];
+        constraints5 = [metadata11 constraints];
+        [constraints5 setStepValue:v79];
       }
 
       else
       {
-        v92 = [v8 UUID];
+        uUID6 = [descriptorCopy UUID];
         v93 = [MEMORY[0x277CBE0A0] UUIDWithString:*MEMORY[0x277CBDF90]];
-        v94 = [v92 isEqual:v93];
+        v94 = [uUID6 isEqual:v93];
 
         if (v94)
         {
-          v95 = [v12 metadata];
-          v96 = [v95 format];
+          metadata12 = [v12 metadata];
+          format5 = [metadata12 format];
 
-          if (v96)
+          if (format5)
           {
-            v97 = [v12 metadata];
-            v98 = [v8 value];
-            _updateHAPConstraintsFromBTLEValidRange(v97, v98);
+            metadata13 = [v12 metadata];
+            value8 = [descriptorCopy value];
+            _updateHAPConstraintsFromBTLEValidRange(metadata13, value8);
           }
 
           goto LABEL_55;
         }
 
-        v106 = [v8 UUID];
+        uUID7 = [descriptorCopy UUID];
         v107 = [MEMORY[0x277CBE0A0] UUIDWithString:@"C5FC363E-D2BF-43E5-928C-AB7D3628470E"];
-        v108 = [v106 isEqual:v107];
+        v108 = [uUID7 isEqual:v107];
 
         if (!v108)
         {
@@ -1940,7 +1940,7 @@ LABEL_55:
             *buf = 138543618;
             v131 = v119;
             v132 = 2112;
-            v133 = v8;
+            v133 = descriptorCopy;
             _os_log_impl(&dword_22AADC000, v118, OS_LOG_TYPE_ERROR, "%{public}@Unknown BTLE Descriptor: %@", buf, 0x16u);
           }
 
@@ -1948,10 +1948,10 @@ LABEL_55:
           goto LABEL_55;
         }
 
-        v109 = [v8 value];
-        v60 = _convertFromBTLEToHAPValue(@"uint16", v109);
+        value9 = [descriptorCopy value];
+        value5 = _convertFromBTLEToHAPValue(@"uint16", value9);
 
-        if (([v60 shortValue] & 4) != 0)
+        if (([value5 shortValue] & 4) != 0)
         {
           [v12 setProperties:{objc_msgSend(v12, "properties") | 0x10}];
           v110 = objc_autoreleasePoolPush();
@@ -1962,7 +1962,7 @@ LABEL_55:
             *buf = 138543618;
             v131 = v112;
             v132 = 2112;
-            v133 = v10;
+            v133 = characteristicsCopy;
             _os_log_impl(&dword_22AADC000, v111, OS_LOG_TYPE_DEFAULT, "%{public}@ ### Characteristic with AAD: %@", buf, 0x16u);
           }
 
@@ -1974,18 +1974,18 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  v17 = [(_HAPAccessoryServerBTLE100 *)self hapBLEProtocolVersion];
+  hapBLEProtocolVersion = [(_HAPAccessoryServerBTLE100 *)self hapBLEProtocolVersion];
 
-  if (v17 == 1)
+  if (hapBLEProtocolVersion == 1)
   {
     goto LABEL_10;
   }
 
-  v18 = [v8 value];
+  value10 = [descriptorCopy value];
   LOWORD(v126) = 0;
-  if ([v18 length] == 2)
+  if ([value10 length] == 2)
   {
-    [v18 getBytes:&v126 length:2];
+    [value10 getBytes:&v126 length:2];
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v126];
     [v12 setInstanceID:v19];
 
@@ -2014,7 +2014,7 @@ LABEL_55:
     *buf = 138543618;
     v131 = v84;
     v132 = 2112;
-    v133 = v18;
+    v133 = value10;
     _os_log_impl(&dword_22AADC000, v83, OS_LOG_TYPE_ERROR, "%{public}@HAP Metadata : ### Invalid Characteristic Instance ID bytes %@", buf, 0x16u);
   }
 
@@ -2026,43 +2026,43 @@ LABEL_58:
   return v85;
 }
 
-- (id)_parseBTLEService:(id)a3 withInstanceId:(id)a4
+- (id)_parseBTLEService:(id)service withInstanceId:(id)id
 {
   v65 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 UUID];
-  v9 = [v8 UUIDString];
-  v10 = [_HAPAccessoryServerBTLE100 _convertFromBTLEToHAPUUID:v9];
+  serviceCopy = service;
+  idCopy = id;
+  uUID = [serviceCopy UUID];
+  uUIDString = [uUID UUIDString];
+  v10 = [_HAPAccessoryServerBTLE100 _convertFromBTLEToHAPUUID:uUIDString];
 
   if (v10)
   {
-    v11 = self;
+    selfCopy = self;
     if ([(_HAPAccessoryServerBTLE100 *)self hapBLEProtocolVersion]== 1)
     {
-      v12 = [(_HAPAccessoryServerBTLE100 *)self _nextInstanceID];
+      _nextInstanceID = [(_HAPAccessoryServerBTLE100 *)self _nextInstanceID];
 
-      v7 = v12;
+      idCopy = _nextInstanceID;
     }
 
-    v54 = [[HAPService alloc] initWithType:v10 instanceID:v7];
+    v54 = [[HAPService alloc] initWithType:v10 instanceID:idCopy];
     if (v54)
     {
       v48 = v10;
-      v49 = v7;
+      v49 = idCopy;
       v18 = [MEMORY[0x277CBE0A0] UUIDWithString:@"00000051-0000-1000-8000-0026BB765291"];
-      v53 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v56 = 0u;
       v57 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v50 = v6;
-      obj = [v6 characteristics];
+      v50 = serviceCopy;
+      obj = [serviceCopy characteristics];
       v19 = [obj countByEnumeratingWithState:&v56 objects:v60 count:16];
       if (v19)
       {
         v20 = v19;
-        v21 = v11;
+        v21 = selfCopy;
         v22 = *v57;
         v51 = v18;
         while (2)
@@ -2077,22 +2077,22 @@ LABEL_58:
             }
 
             v24 = *(*(&v56 + 1) + 8 * v23);
-            v25 = [v24 UUID];
-            v26 = [v25 isEqual:v18];
+            uUID2 = [v24 UUID];
+            v26 = [uUID2 isEqual:v18];
 
             if ((v26 & 1) == 0)
             {
-              v27 = [v24 properties];
-              v28 = (v27 >> 1) & 4 | v27 & 2 | (v27 >> 5) & 1;
+              properties = [v24 properties];
+              v28 = (properties >> 1) & 4 | properties & 2 | (properties >> 5) & 1;
               v29 = [[HAPCharacteristicMetadata alloc] initWithConstraints:0 description:0 format:@"data" units:0];
-              v30 = [v24 UUID];
-              v31 = [v30 UUIDString];
+              uUID3 = [v24 UUID];
+              uUIDString2 = [uUID3 UUIDString];
 
               v32 = [HAPCharacteristic alloc];
-              v33 = [(_HAPAccessoryServerBTLE100 *)v21 _nextInstanceID];
-              v34 = [(HAPAccessoryServerBTLE *)v21 stateNumber];
+              _nextInstanceID2 = [(_HAPAccessoryServerBTLE100 *)v21 _nextInstanceID];
+              stateNumber = [(HAPAccessoryServerBTLE *)v21 stateNumber];
               LOBYTE(v47) = 1;
-              v35 = [(HAPCharacteristic *)v32 initWithType:v31 instanceID:v33 value:0 stateNumber:v34 properties:v28 eventNotificationsEnabled:0 implicitWriteWithResponse:v47 metadata:v29];
+              v35 = [(HAPCharacteristic *)v32 initWithType:uUIDString2 instanceID:_nextInstanceID2 value:0 stateNumber:stateNumber properties:v28 eventNotificationsEnabled:0 implicitWriteWithResponse:v47 metadata:v29];
 
               if (!v35)
               {
@@ -2108,21 +2108,21 @@ LABEL_58:
 
                 objc_autoreleasePoolPop(v42);
                 v17 = 0;
-                v7 = v49;
-                v6 = v50;
+                idCopy = v49;
+                serviceCopy = v50;
                 v10 = v48;
                 v18 = v51;
-                v38 = v53;
+                v38 = array;
                 goto LABEL_25;
               }
 
-              v36 = [MEMORY[0x277CBEAA8] distantPast];
-              [(HAPCharacteristic *)v35 setValueUpdatedTime:v36];
+              distantPast = [MEMORY[0x277CBEAA8] distantPast];
+              [(HAPCharacteristic *)v35 setValueUpdatedTime:distantPast];
 
               [(HAPCharacteristic *)v35 setService:v54];
-              [v53 addObject:v35];
-              v37 = [(_HAPAccessoryServerBTLE100 *)v21 btleCharacteristicToHAPCharacteristicMap];
-              [v37 setObject:v35 forKey:v24];
+              [array addObject:v35];
+              btleCharacteristicToHAPCharacteristicMap = [(_HAPAccessoryServerBTLE100 *)v21 btleCharacteristicToHAPCharacteristicMap];
+              [btleCharacteristicToHAPCharacteristicMap setObject:v35 forKey:v24];
 
               v18 = v51;
               v20 = v52;
@@ -2142,11 +2142,11 @@ LABEL_58:
         }
       }
 
-      v38 = v53;
-      [(HAPService *)v54 setCharacteristics:v53];
+      v38 = array;
+      [(HAPService *)v54 setCharacteristics:array];
       v17 = v54;
-      v7 = v49;
-      v6 = v50;
+      idCopy = v49;
+      serviceCopy = v50;
       v10 = v48;
 LABEL_25:
     }
@@ -2175,11 +2175,11 @@ LABEL_25:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [v6 UUID];
+      uUID4 = [serviceCopy UUID];
       *buf = 138543618;
       v62 = v15;
       v63 = 2112;
-      v64 = v16;
+      v64 = uUID4;
       _os_log_impl(&dword_22AADC000, v14, OS_LOG_TYPE_ERROR, "%{public}@### [HAP Accessory Server BTLE] Failed converting from BTLE UUID to internal: %@", buf, 0x16u);
     }
 
@@ -2192,28 +2192,28 @@ LABEL_25:
   return v17;
 }
 
-- (void)_handleHAPServiceDiscoveryCompletionForService:(id)a3 withInstanceId:(id)a4
+- (void)_handleHAPServiceDiscoveryCompletionForService:(id)service withInstanceId:(id)id
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_HAPAccessoryServerBTLE100 *)self _parseBTLEService:v6 withInstanceId:v7];
+  serviceCopy = service;
+  idCopy = id;
+  v8 = [(_HAPAccessoryServerBTLE100 *)self _parseBTLEService:serviceCopy withInstanceId:idCopy];
   if (v8)
   {
-    v9 = [(_HAPAccessoryServerBTLE100 *)self btleServiceToHAPServiceMap];
-    [v9 setObject:v8 forKey:v6];
+    btleServiceToHAPServiceMap = [(_HAPAccessoryServerBTLE100 *)self btleServiceToHAPServiceMap];
+    [btleServiceToHAPServiceMap setObject:v8 forKey:serviceCopy];
 
-    v10 = [(HAPAccessoryServer *)self primaryAccessory];
-    [v8 setAccessory:v10];
+    primaryAccessory = [(HAPAccessoryServer *)self primaryAccessory];
+    [v8 setAccessory:primaryAccessory];
 
     v11 = MEMORY[0x277CBEB18];
-    v12 = [(HAPAccessoryServer *)self primaryAccessory];
-    v13 = [v12 services];
-    v14 = [v11 arrayWithArray:v13];
+    primaryAccessory2 = [(HAPAccessoryServer *)self primaryAccessory];
+    services = [primaryAccessory2 services];
+    v14 = [v11 arrayWithArray:services];
 
     [v14 addObject:v8];
-    v15 = [(HAPAccessoryServer *)self primaryAccessory];
-    [v15 setServices:v14];
+    primaryAccessory3 = [(HAPAccessoryServer *)self primaryAccessory];
+    [primaryAccessory3 setServices:v14];
 
     [(_HAPAccessoryServerBTLE100 *)self setCharacteristicValueReadCount:[(_HAPAccessoryServerBTLE100 *)self characteristicValueReadCount]- 1];
     if (![(_HAPAccessoryServerBTLE100 *)self characteristicDiscoveryRequestCount]&& ![(_HAPAccessoryServerBTLE100 *)self characteristicValueReadCount])
@@ -2236,7 +2236,7 @@ LABEL_25:
 
     objc_autoreleasePoolPop(v16);
     v19 = [MEMORY[0x277CCA9B8] errorWithHMErrorCode:66];
-    v20 = [(HAPAccessoryServer *)self delegateQueue];
+    delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __92___HAPAccessoryServerBTLE100__handleHAPServiceDiscoveryCompletionForService_withInstanceId___block_invoke;
@@ -2244,24 +2244,24 @@ LABEL_25:
     v23[4] = self;
     v24 = v19;
     v21 = v19;
-    dispatch_async(v20, v23);
+    dispatch_async(delegateQueue, v23);
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleHAPCharacteristicDiscoveryForService:(id)a3 error:(id)a4
+- (void)_handleHAPCharacteristicDiscoveryForService:(id)service error:(id)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v24 = a4;
+  serviceCopy = service;
+  errorCopy = error;
   v7 = [MEMORY[0x277CBE0A0] UUIDWithString:@"00000051-0000-1000-8000-0026BB765291"];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [v6 characteristics];
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v37 count:16];
+  characteristics = [serviceCopy characteristics];
+  v9 = [characteristics countByEnumeratingWithState:&v25 objects:v37 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2272,24 +2272,24 @@ LABEL_25:
       {
         if (*v26 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(characteristics);
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        v14 = [v13 UUID];
-        v15 = [v14 isEqual:v7];
+        uUID = [v13 UUID];
+        v15 = [uUID isEqual:v7];
 
         if (v15)
         {
           [(_HAPAccessoryServerBTLE100 *)self setCharacteristicValueReadCount:[(_HAPAccessoryServerBTLE100 *)self characteristicValueReadCount]+ 1];
-          v22 = [(HAPAccessoryServerBTLE *)self peripheral];
-          [v22 readValueForCharacteristic:v13];
+          peripheral = [(HAPAccessoryServerBTLE *)self peripheral];
+          [peripheral readValueForCharacteristic:v13];
 
           goto LABEL_13;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v25 objects:v37 count:16];
+      v10 = [characteristics countByEnumeratingWithState:&v25 objects:v37 count:16];
       if (v10)
       {
         continue;
@@ -2304,17 +2304,17 @@ LABEL_25:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = HMFGetLogIdentifier();
-    v19 = [(HAPAccessoryServer *)self identifier];
-    v20 = [(HAPAccessoryServer *)self name];
-    v21 = [v6 UUID];
+    identifier = [(HAPAccessoryServer *)self identifier];
+    name = [(HAPAccessoryServer *)self name];
+    uUID2 = [serviceCopy UUID];
     *buf = 138544130;
     v30 = v18;
     v31 = 2112;
-    v32 = v19;
+    v32 = identifier;
     v33 = 2112;
-    v34 = v20;
+    v34 = name;
     v35 = 2112;
-    v36 = v21;
+    v36 = uUID2;
     _os_log_impl(&dword_22AADC000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server %@ '%@'] Service with UUID %@ does not have the HAP Service Instance ID characteristic, skipping HAPService creation", buf, 0x2Au);
   }
 
@@ -2350,11 +2350,11 @@ LABEL_13:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v6 = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
-    v7 = [v6 keyEnumerator];
+    btleCharacteristicToHAPCharacteristicMap = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
+    keyEnumerator = [btleCharacteristicToHAPCharacteristicMap keyEnumerator];
 
-    obj = v7;
-    v8 = [v7 countByEnumeratingWithState:&v28 objects:v35 count:16];
+    obj = keyEnumerator;
+    v8 = [keyEnumerator countByEnumeratingWithState:&v28 objects:v35 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2374,8 +2374,8 @@ LABEL_13:
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v13 = [v12 descriptors];
-          v14 = [v13 countByEnumeratingWithState:&v24 objects:v34 count:16];
+          descriptors = [v12 descriptors];
+          v14 = [descriptors countByEnumeratingWithState:&v24 objects:v34 count:16];
           if (v14)
           {
             v15 = v14;
@@ -2387,20 +2387,20 @@ LABEL_13:
               {
                 if (*v25 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(descriptors);
                 }
 
                 v18 = *(*(&v24 + 1) + 8 * v17);
                 [(_HAPAccessoryServerBTLE100 *)self setMetadataValueReadCount:[(_HAPAccessoryServerBTLE100 *)self metadataValueReadCount]+ 1];
                 [(_HAPAccessoryServerBTLE100 *)self _updateConnectionLifetimeTimer];
-                v19 = [(HAPAccessoryServerBTLE *)self peripheral];
-                [v19 readValueForDescriptor:v18];
+                peripheral = [(HAPAccessoryServerBTLE *)self peripheral];
+                [peripheral readValueForDescriptor:v18];
 
                 ++v17;
               }
 
               while (v15 != v17);
-              v15 = [v13 countByEnumeratingWithState:&v24 objects:v34 count:16];
+              v15 = [descriptors countByEnumeratingWithState:&v24 objects:v34 count:16];
             }
 
             while (v15);
@@ -2422,13 +2422,13 @@ LABEL_13:
     [(_HAPAccessoryServerBTLE100 *)self _handlePairingStateMachine];
     if ([(_HAPAccessoryServerBTLE100 *)self _delegateRespondsToSelector:sel_accessoryServer_didDiscoverAccessories_transaction_error_])
     {
-      v20 = [(HAPAccessoryServer *)self delegateQueue];
+      delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __57___HAPAccessoryServerBTLE100__handleReadDescriptorValues__block_invoke;
       block[3] = &unk_2786D6CA0;
       block[4] = self;
-      dispatch_async(v20, block);
+      dispatch_async(delegateQueue, block);
     }
   }
 
@@ -2460,10 +2460,10 @@ LABEL_13:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
-    v7 = [v6 keyEnumerator];
+    btleCharacteristicToHAPCharacteristicMap = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
+    keyEnumerator = [btleCharacteristicToHAPCharacteristicMap keyEnumerator];
 
-    v8 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
+    v8 = [keyEnumerator countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v8)
     {
       v10 = v8;
@@ -2477,7 +2477,7 @@ LABEL_13:
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v13 = *(*(&v20 + 1) + 8 * v12);
@@ -2496,14 +2496,14 @@ LABEL_13:
           objc_autoreleasePoolPop(v14);
           [(_HAPAccessoryServerBTLE100 *)self setMetadataDiscoveryRequestCount:[(_HAPAccessoryServerBTLE100 *)self metadataDiscoveryRequestCount]+ 1];
           [(_HAPAccessoryServerBTLE100 *)self _updateConnectionLifetimeTimer];
-          v17 = [(HAPAccessoryServerBTLE *)self peripheral];
-          [v17 discoverDescriptorsForCharacteristic:v13];
+          peripheral = [(HAPAccessoryServerBTLE *)self peripheral];
+          [peripheral discoverDescriptorsForCharacteristic:v13];
 
           ++v12;
         }
 
         while (v10 != v12);
-        v10 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v10 = [keyEnumerator countByEnumeratingWithState:&v20 objects:v28 count:16];
       }
 
       while (v10);
@@ -2527,12 +2527,12 @@ LABEL_13:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v33 = self;
-  v3 = [(HAPAccessoryServerBTLE *)self peripheral];
-  v4 = [v3 services];
+  selfCopy = self;
+  peripheral = [(HAPAccessoryServerBTLE *)self peripheral];
+  services = [peripheral services];
 
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  obj = services;
+  v5 = [services countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2556,27 +2556,27 @@ LABEL_13:
         }
 
         v11 = *(*(&v34 + 1) + 8 * v10);
-        v12 = [(_HAPAccessoryServerBTLE100 *)v33 pairingService];
-        if (([v11 isEqual:v12] & 1) == 0)
+        pairingService = [(_HAPAccessoryServerBTLE100 *)selfCopy pairingService];
+        if (([v11 isEqual:pairingService] & 1) == 0)
         {
           v13 = v11;
-          v14 = [v13 UUID];
+          uUID = [v13 UUID];
           v15 = [*(v9 + 160) UUIDWithString:v8];
-          if ([v14 isEqual:v15])
+          if ([uUID isEqual:v15])
           {
             goto LABEL_12;
           }
 
-          v16 = [v13 UUID];
+          uUID2 = [v13 UUID];
           v17 = [*(v9 + 160) UUIDWithString:v28];
-          if ([v16 isEqual:v17])
+          if ([uUID2 isEqual:v17])
           {
             goto LABEL_11;
           }
 
-          v18 = [v13 UUID];
+          uUID3 = [v13 UUID];
           v19 = [*(v9 + 160) UUIDWithString:v27];
-          if ([v18 isEqual:v19])
+          if ([uUID3 isEqual:v19])
           {
 
 LABEL_11:
@@ -2590,7 +2590,7 @@ LABEL_13:
           else
           {
             [v13 UUID];
-            v20 = v25 = v18;
+            v20 = v25 = uUID3;
             v21 = [*(v9 + 160) UUIDWithString:v24];
             v26 = [v20 isEqual:v21];
 
@@ -2602,10 +2602,10 @@ LABEL_13:
               goto LABEL_13;
             }
 
-            [(_HAPAccessoryServerBTLE100 *)v33 setCharacteristicDiscoveryRequestCount:[(_HAPAccessoryServerBTLE100 *)v33 characteristicDiscoveryRequestCount]+ 1];
-            [(_HAPAccessoryServerBTLE100 *)v33 _updateConnectionLifetimeTimer];
-            v12 = [(HAPAccessoryServerBTLE *)v33 peripheral];
-            [v12 discoverCharacteristics:0 forService:v13];
+            [(_HAPAccessoryServerBTLE100 *)selfCopy setCharacteristicDiscoveryRequestCount:[(_HAPAccessoryServerBTLE100 *)selfCopy characteristicDiscoveryRequestCount]+ 1];
+            [(_HAPAccessoryServerBTLE100 *)selfCopy _updateConnectionLifetimeTimer];
+            pairingService = [(HAPAccessoryServerBTLE *)selfCopy peripheral];
+            [pairingService discoverCharacteristics:0 forService:v13];
           }
 
           v6 = v31;
@@ -2651,32 +2651,32 @@ LABEL_13:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [(HAPAccessoryServer *)self identifier];
+      identifier = [(HAPAccessoryServer *)self identifier];
       *buf = 138543618;
       v16 = v9;
       v17 = 2112;
-      v18 = v10;
+      v18 = identifier;
       _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server %@] Ignoring request to discover accessories because the session is already established, calling delegate immediately", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
     if ([(_HAPAccessoryServerBTLE100 *)self _delegateRespondsToSelector:sel_accessoryServer_didDiscoverAccessories_transaction_error_])
     {
-      v11 = [(HAPAccessoryServer *)self delegateQueue];
+      delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __51___HAPAccessoryServerBTLE100__getAttributeDatabase__block_invoke;
       block[3] = &unk_2786D6CA0;
       block[4] = self;
-      dispatch_async(v11, block);
+      dispatch_async(delegateQueue, block);
     }
   }
 
   else
   {
     [(_HAPAccessoryServerBTLE100 *)self _updateConnectionLifetimeTimer];
-    v12 = [(HAPAccessoryServerBTLE *)self peripheral];
-    [v12 discoverServices:0];
+    peripheral = [(HAPAccessoryServerBTLE *)self peripheral];
+    [peripheral discoverServices:0];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2684,96 +2684,96 @@ LABEL_13:
 
 - (void)discoverAccessories
 {
-  v3 = [(HAPAccessoryServer *)self clientQueue];
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49___HAPAccessoryServerBTLE100_discoverAccessories__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
-- (void)securitySession:(id)a3 didCloseWithError:(id)a4
+- (void)securitySession:(id)session didCloseWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAPAccessoryServer *)self clientQueue];
+  sessionCopy = session;
+  errorCopy = error;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64___HAPAccessoryServerBTLE100_securitySession_didCloseWithError___block_invoke;
   block[3] = &unk_2786D7078;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = sessionCopy;
+  selfCopy = self;
+  v14 = errorCopy;
+  v9 = errorCopy;
+  v10 = sessionCopy;
+  dispatch_async(clientQueue, block);
 }
 
-- (void)securitySessionDidOpen:(id)a3
+- (void)securitySessionDidOpen:(id)open
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServer *)self clientQueue];
+  openCopy = open;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53___HAPAccessoryServerBTLE100_securitySessionDidOpen___block_invoke;
   v7[3] = &unk_2786D7050;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = openCopy;
+  selfCopy = self;
+  v6 = openCopy;
+  dispatch_async(clientQueue, v7);
 }
 
-- (void)securitySessionIsOpening:(id)a3
+- (void)securitySessionIsOpening:(id)opening
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServer *)self clientQueue];
+  openingCopy = opening;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55___HAPAccessoryServerBTLE100_securitySessionIsOpening___block_invoke;
   v7[3] = &unk_2786D7050;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = openingCopy;
+  selfCopy = self;
+  v6 = openingCopy;
+  dispatch_async(clientQueue, v7);
 }
 
-- (void)securitySession:(id)a3 didReceiveSetupExchangeData:(id)a4
+- (void)securitySession:(id)session didReceiveSetupExchangeData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAPAccessoryServer *)self clientQueue];
+  sessionCopy = session;
+  dataCopy = data;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74___HAPAccessoryServerBTLE100_securitySession_didReceiveSetupExchangeData___block_invoke;
   block[3] = &unk_2786D7078;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = sessionCopy;
+  selfCopy = self;
+  v14 = dataCopy;
+  v9 = dataCopy;
+  v10 = sessionCopy;
+  dispatch_async(clientQueue, block);
 }
 
-- (id)securitySession:(id)a3 didReceiveRequestForPeerPairingIdentityWithIdentifier:(id)a4 error:(id *)a5
+- (id)securitySession:(id)session didReceiveRequestForPeerPairingIdentityWithIdentifier:(id)identifier error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HAPAccessoryServer *)self identifier];
-  v11 = [v10 isEqualToString:v9];
+  sessionCopy = session;
+  identifierCopy = identifier;
+  identifier = [(HAPAccessoryServer *)self identifier];
+  v11 = [identifier isEqualToString:identifierCopy];
 
   if (v11)
   {
-    v12 = [(HAPAccessoryServer *)self keyStore];
+    keyStore = [(HAPAccessoryServer *)self keyStore];
     v32 = 0;
-    v13 = [v12 readPublicKeyForAccessoryName:v9 registeredWithHomeKit:0 error:&v32];
+    v13 = [keyStore readPublicKeyForAccessoryName:identifierCopy registeredWithHomeKit:0 error:&v32];
     v14 = v32;
 
     if (v13)
     {
       v15 = [objc_alloc(MEMORY[0x277D0F8B0]) initWithPairingKeyData:v13];
-      v16 = [[HAPPairingIdentity alloc] initWithIdentifier:v9 publicKey:v15 privateKey:0 permissions:0];
+      v16 = [[HAPPairingIdentity alloc] initWithIdentifier:identifierCopy publicKey:v15 privateKey:0 permissions:0];
       if (!v16)
       {
         v17 = objc_autoreleasePoolPush();
@@ -2782,13 +2782,13 @@ LABEL_13:
         {
           HMFGetLogIdentifier();
           v19 = v31 = v17;
-          v20 = [(HAPAccessoryServer *)self identifier];
+          identifier2 = [(HAPAccessoryServer *)self identifier];
           *buf = 138544130;
           v34 = v19;
           v35 = 2112;
-          v36 = v20;
+          v36 = identifier2;
           v37 = 2112;
-          v38 = v9;
+          v38 = identifierCopy;
           v39 = 2112;
           v40 = v13;
           _os_log_impl(&dword_22AADC000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server %@] Failed to create pairing identity with identifier, %@, public key, %@", buf, 0x2Au);
@@ -2797,9 +2797,9 @@ LABEL_13:
         }
 
         objc_autoreleasePoolPop(v17);
-        if (a5)
+        if (error)
         {
-          *a5 = [MEMORY[0x277CCA9B8] hapErrorWithCode:1 description:@"Failed to retrieve peer pairing identity." reason:@"Failed to create pairing identity" suggestion:0 underlyingError:0];
+          *error = [MEMORY[0x277CCA9B8] hapErrorWithCode:1 description:@"Failed to retrieve peer pairing identity." reason:@"Failed to create pairing identity" suggestion:0 underlyingError:0];
         }
       }
     }
@@ -2811,13 +2811,13 @@ LABEL_13:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         v27 = HMFGetLogIdentifier();
-        v28 = [(HAPAccessoryServer *)self identifier];
+        identifier3 = [(HAPAccessoryServer *)self identifier];
         *buf = 138544130;
         v34 = v27;
         v35 = 2112;
-        v36 = v28;
+        v36 = identifier3;
         v37 = 2112;
-        v38 = v9;
+        v38 = identifierCopy;
         v39 = 2112;
         v40 = v14;
         _os_log_impl(&dword_22AADC000, v26, OS_LOG_TYPE_ERROR, "%{public}@[BTLE Accessory Server %@] Failed to retrieved public key for accessory with identifier '%@' with error: %@", buf, 0x2Au);
@@ -2835,21 +2835,21 @@ LABEL_13:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       v23 = HMFGetLogIdentifier();
-      v24 = [(HAPAccessoryServer *)self identifier];
+      identifier4 = [(HAPAccessoryServer *)self identifier];
       *buf = 138543874;
       v34 = v23;
       v35 = 2112;
-      v36 = v24;
+      v36 = identifier4;
       v37 = 2112;
-      v38 = v9;
+      v38 = identifierCopy;
       _os_log_impl(&dword_22AADC000, v22, OS_LOG_TYPE_ERROR, "%{public}@[BTLE Accessory Server %@] Unexpected pairing peer identifier, %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v21);
-    if (a5)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] hapErrorWithCode:16 description:@"Insufficient Authorization." reason:@"Unexpected pairing peer identifier." suggestion:0 underlyingError:0];
-      *a5 = v16 = 0;
+      *error = v16 = 0;
     }
 
     else
@@ -2863,20 +2863,20 @@ LABEL_13:
   return v16;
 }
 
-- (id)securitySession:(id)a3 didReceiveLocalPairingIdentityRequestWithError:(id *)a4
+- (id)securitySession:(id)session didReceiveLocalPairingIdentityRequestWithError:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sessionCopy = session;
   v7 = objc_autoreleasePoolPush();
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [(HAPAccessoryServer *)self identifier];
+    identifier = [(HAPAccessoryServer *)self identifier];
     v17 = 138543618;
     v18 = v9;
     v19 = 2112;
-    v20 = v10;
+    v20 = identifier;
     _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_INFO, "%{public}@[BTLE Accessory Server %@] Request for local pairing identity", &v17, 0x16u);
   }
 
@@ -2888,9 +2888,9 @@ LABEL_13:
 
   if (HAPIsHH2Enabled_hh2Enabled != 1 || (-[HAPAccessoryServer keyBag](self, "keyBag"), v11 = objc_claimAutoreleasedReturnValue(), [v11 currentIdentity], v12 = objc_claimAutoreleasedReturnValue(), v11, !v12))
   {
-    v13 = [(HAPAccessoryServer *)self keyStore];
-    v14 = [(HAPAccessoryServer *)self identifier];
-    v12 = [v13 readControllerPairingKeyForAccessory:v14 error:a4];
+    keyStore = [(HAPAccessoryServer *)self keyStore];
+    identifier2 = [(HAPAccessoryServer *)self identifier];
+    v12 = [keyStore readControllerPairingKeyForAccessory:identifier2 error:error];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -2898,10 +2898,10 @@ LABEL_13:
   return v12;
 }
 
-- (id)_decryptData:(id)a3 error:(id *)a4
+- (id)_decryptData:(id)data error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   v7 = objc_autoreleasePoolPush();
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -2912,23 +2912,23 @@ LABEL_13:
     v17 = 2080;
     v18 = "[_HAPAccessoryServerBTLE100 _decryptData:error:]";
     v19 = 2048;
-    v20 = [v6 length];
+    v20 = [dataCopy length];
     _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_DEBUG, "%{public}@%s: Decrypting data with length %lu", &v15, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v10 = [(_HAPAccessoryServerBTLE100 *)self securitySession];
+  securitySession = [(_HAPAccessoryServerBTLE100 *)self securitySession];
 
-  if (v10)
+  if (securitySession)
   {
-    v11 = [(_HAPAccessoryServerBTLE100 *)self securitySession];
-    v12 = [v11 decryptData:v6 additionalAuthenticatedData:0 error:a4];
+    securitySession2 = [(_HAPAccessoryServerBTLE100 *)self securitySession];
+    v12 = [securitySession2 decryptData:dataCopy additionalAuthenticatedData:0 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:-6718 userInfo:0];
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -2941,10 +2941,10 @@ LABEL_13:
   return v12;
 }
 
-- (id)_encryptDataAndGenerateAuthTag:(id)a3 error:(id *)a4
+- (id)_encryptDataAndGenerateAuthTag:(id)tag error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  tagCopy = tag;
   v7 = objc_autoreleasePoolPush();
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -2955,23 +2955,23 @@ LABEL_13:
     v17 = 2080;
     v18 = "[_HAPAccessoryServerBTLE100 _encryptDataAndGenerateAuthTag:error:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = tagCopy;
     _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_DEBUG, "%{public}@%s: Encrypting plaintext data: %@", &v15, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v10 = [(_HAPAccessoryServerBTLE100 *)self securitySession];
+  securitySession = [(_HAPAccessoryServerBTLE100 *)self securitySession];
 
-  if (v10)
+  if (securitySession)
   {
-    v11 = [(_HAPAccessoryServerBTLE100 *)self securitySession];
-    v12 = [v11 encryptData:v6 additionalAuthenticatedData:0 error:a4];
+    securitySession2 = [(_HAPAccessoryServerBTLE100 *)self securitySession];
+    v12 = [securitySession2 encryptData:tagCopy additionalAuthenticatedData:0 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:-6718 userInfo:0];
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -2984,15 +2984,15 @@ LABEL_13:
   return v12;
 }
 
-- (void)_handleReceivedSecuritySessionSetupExchangeData:(id)a3
+- (void)_handleReceivedSecuritySessionSetupExchangeData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_HAPAccessoryServerBTLE100 *)self securitySession];
-  if (v5 && (v6 = v5, v7 = [(HAPAccessoryServer *)self isSecuritySessionOpen], v6, !v7))
+  dataCopy = data;
+  securitySession = [(_HAPAccessoryServerBTLE100 *)self securitySession];
+  if (securitySession && (v6 = securitySession, v7 = [(HAPAccessoryServer *)self isSecuritySessionOpen], v6, !v7))
   {
-    v12 = [(_HAPAccessoryServerBTLE100 *)self securitySession];
-    [v12 receivedSetupExchangeData:v4 error:0];
+    securitySession2 = [(_HAPAccessoryServerBTLE100 *)self securitySession];
+    [securitySession2 receivedSetupExchangeData:dataCopy error:0];
   }
 
   else
@@ -3002,11 +3002,11 @@ LABEL_13:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [(HAPAccessoryServer *)self identifier];
+      identifier = [(HAPAccessoryServer *)self identifier];
       v14 = 138543618;
       v15 = v10;
       v16 = 2112;
-      v17 = v11;
+      v17 = identifier;
       _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server %@] Unexpected security session setup exchange data, dropping.", &v14, 0x16u);
     }
 
@@ -3028,11 +3028,11 @@ LABEL_13:
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         v5 = HMFGetLogIdentifier();
-        v6 = [(HAPAccessoryServer *)self identifier];
+        identifier = [(HAPAccessoryServer *)self identifier];
         v13 = 138543618;
         v14 = v5;
         v15 = 2112;
-        v16 = v6;
+        v16 = identifier;
         _os_log_impl(&dword_22AADC000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server %@] A security session is already established.", &v13, 0x16u);
       }
 
@@ -3047,11 +3047,11 @@ LABEL_13:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [(HAPAccessoryServer *)self identifier];
+      identifier2 = [(HAPAccessoryServer *)self identifier];
       v13 = 138543618;
       v14 = v9;
       v15 = 2112;
-      v16 = v10;
+      v16 = identifier2;
       _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_ERROR, "%{public}@[BTLE Accessory Server %@] Unable to establish a secure session because the accessory isn't paired.", &v13, 0x16u);
     }
 
@@ -3076,31 +3076,31 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleUpdatedValueForBTLECharacteristic:(id)a3 error:(id)a4
+- (void)_handleUpdatedValueForBTLECharacteristic:(id)characteristic error:(id)error
 {
   v78 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   v8 = objc_autoreleasePoolPush();
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v6 UUID];
-    v12 = [v6 value];
+    uUID = [characteristicCopy UUID];
+    value = [characteristicCopy value];
     *buf = 138544130;
     v71 = v10;
     v72 = 2112;
-    v73 = v11;
+    v73 = uUID;
     v74 = 2112;
-    v75 = v12;
+    v75 = value;
     v76 = 2112;
-    v77 = v7;
+    v77 = errorCopy;
     _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_INFO, "%{public}@Updated value for BTLE characteristic: %@ Value: %@ error: %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = v7;
+  v13 = errorCopy;
   v14 = v13;
   if (v13)
   {
@@ -3109,7 +3109,7 @@ LABEL_13:
     goto LABEL_5;
   }
 
-  v15 = [(_HAPAccessoryServerBTLE100 *)self _hapCharacteristicForBTLECharacteristic:v6];
+  v15 = [(_HAPAccessoryServerBTLE100 *)self _hapCharacteristicForBTLECharacteristic:characteristicCopy];
   if (!v15)
   {
     v55 = objc_autoreleasePoolPush();
@@ -3120,7 +3120,7 @@ LABEL_13:
       *buf = 138543618;
       v71 = v57;
       v72 = 2112;
-      v73 = v6;
+      v73 = characteristicCopy;
       _os_log_impl(&dword_22AADC000, v56, OS_LOG_TYPE_ERROR, "%{public}@### Unable to find HAP characteristic for BTLE characteristic %@ after receiving read response", buf, 0x16u);
     }
 
@@ -3134,8 +3134,8 @@ LABEL_13:
     }
   }
 
-  v29 = [v6 value];
-  v30 = [v29 length];
+  value2 = [characteristicCopy value];
+  v30 = [value2 length];
 
   if (!v30)
   {
@@ -3144,15 +3144,15 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  v31 = [(_HAPAccessoryServerBTLE100 *)self _shouldEnableSessionSecurity];
-  v32 = [v6 value];
-  if (v31)
+  _shouldEnableSessionSecurity = [(_HAPAccessoryServerBTLE100 *)self _shouldEnableSessionSecurity];
+  value3 = [characteristicCopy value];
+  if (_shouldEnableSessionSecurity)
   {
-    [(_HAPAccessoryServerBTLE100 *)self _notifyDelegateOfReceivedEncryptedAuthenticatedData:v32 forCharacteristic:v15];
+    [(_HAPAccessoryServerBTLE100 *)self _notifyDelegateOfReceivedEncryptedAuthenticatedData:value3 forCharacteristic:v15];
 
-    v33 = [v6 value];
+    value4 = [characteristicCopy value];
     v69 = 0;
-    v32 = [(_HAPAccessoryServerBTLE100 *)self _decryptData:v33 error:&v69];
+    value3 = [(_HAPAccessoryServerBTLE100 *)self _decryptData:value4 error:&v69];
     v34 = v69;
 
     if (v34)
@@ -3165,7 +3165,7 @@ LABEL_13:
         *buf = 138543874;
         v71 = v37;
         v72 = 2112;
-        v73 = v6;
+        v73 = characteristicCopy;
         v74 = 2112;
         v75 = v34;
         _os_log_impl(&dword_22AADC000, v36, OS_LOG_TYPE_ERROR, "%{public}@### Decrypting data for characteristic %@ received after a read request failed with error: %@", buf, 0x20u);
@@ -3184,13 +3184,13 @@ LABEL_13:
 
   v38 = 0;
 LABEL_39:
-  [(_HAPAccessoryServerBTLE100 *)self _notifyDelegateOfReceivedPlaintextData:v32 forCharacteristic:v15];
-  v59 = [v15 metadata];
-  v60 = [v59 format];
-  v61 = HAPCharacteristicFormatFromString(v60);
+  [(_HAPAccessoryServerBTLE100 *)self _notifyDelegateOfReceivedPlaintextData:value3 forCharacteristic:v15];
+  metadata = [v15 metadata];
+  format = [metadata format];
+  v61 = HAPCharacteristicFormatFromString(format);
 
   v68 = v38;
-  v62 = +[_HAPAccessoryServerBTLE100 deserializeCharacteristicReadData:characteristicFormat:supportsAdditionalAuthentication:error:](_HAPAccessoryServerBTLE100, "deserializeCharacteristicReadData:characteristicFormat:supportsAdditionalAuthentication:error:", v32, v61, [v15 supportsAdditionalAuthorizationData], &v68);
+  v62 = +[_HAPAccessoryServerBTLE100 deserializeCharacteristicReadData:characteristicFormat:supportsAdditionalAuthentication:error:](_HAPAccessoryServerBTLE100, "deserializeCharacteristicReadData:characteristicFormat:supportsAdditionalAuthentication:error:", value3, v61, [v15 supportsAdditionalAuthorizationData], &v68);
   v16 = v68;
 
   if (!v16)
@@ -3207,14 +3207,14 @@ LABEL_5:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
     v19 = HMFGetLogIdentifier();
-    v20 = [(HAPAccessoryServer *)self identifier];
-    v21 = [(HAPAccessoryServer *)self name];
+    identifier = [(HAPAccessoryServer *)self identifier];
+    name = [(HAPAccessoryServer *)self name];
     *buf = 138544130;
     v71 = v19;
     v72 = 2112;
-    v73 = v20;
+    v73 = identifier;
     v74 = 2112;
-    v75 = v21;
+    v75 = name;
     v76 = 2112;
     v77 = v16;
     _os_log_impl(&dword_22AADC000, v18, OS_LOG_TYPE_ERROR, "%{public}@### [BTLE Accessory Server '%@' '%@'] Failed to process updated characteristic value with error: %@", buf, 0x2Au);
@@ -3227,15 +3227,15 @@ LABEL_8:
   v24 = v23;
   if (v23)
   {
-    v25 = [v23 completionQueue];
-    if (v25)
+    completionQueue = [v23 completionQueue];
+    if (completionQueue)
     {
-      v26 = v25;
-      v27 = [v24 handler];
+      v26 = completionQueue;
+      handler = [v24 handler];
 
-      if (v27)
+      if (handler)
       {
-        v28 = [v24 completionQueue];
+        completionQueue2 = [v24 completionQueue];
         v63[0] = MEMORY[0x277D85DD0];
         v63[1] = 3221225472;
         v63[2] = __77___HAPAccessoryServerBTLE100__handleUpdatedValueForBTLECharacteristic_error___block_invoke_188;
@@ -3243,7 +3243,7 @@ LABEL_8:
         v64 = v24;
         v65 = v15;
         v66 = v16;
-        dispatch_async(v28, v63);
+        dispatch_async(completionQueue2, v63);
       }
     }
   }
@@ -3263,12 +3263,12 @@ LABEL_8:
     }
 
     objc_autoreleasePoolPop(v39);
-    v42 = [(HAPAccessoryServerBTLE *)self browser];
-    v43 = [(HAPAccessoryServer *)self identifier];
-    [v42 markNotifyingCharacteristicUpdatedForIdentifier:v43];
+    browser = [(HAPAccessoryServerBTLE *)self browser];
+    identifier2 = [(HAPAccessoryServer *)self identifier];
+    [browser markNotifyingCharacteristicUpdatedForIdentifier:identifier2];
 
-    v44 = [v6 value];
-    if ([v44 length])
+    value5 = [characteristicCopy value];
+    if ([value5 length])
     {
       v45 = 1;
     }
@@ -3284,9 +3284,9 @@ LABEL_8:
 
     else
     {
-      v46 = [v15 eventNotificationsEnabled];
+      eventNotificationsEnabled = [v15 eventNotificationsEnabled];
 
-      if (v46)
+      if (eventNotificationsEnabled)
       {
         v67[0] = MEMORY[0x277D85DD0];
         v67[1] = 3221225472;
@@ -3295,8 +3295,8 @@ LABEL_8:
         v67[4] = self;
         v47 = MEMORY[0x231885210](v67);
         [(_HAPAccessoryServerBTLE100 *)self _updateConnectionLifetimeTimer];
-        v48 = [(HAPAccessoryServer *)self clientQueue];
-        [(_HAPAccessoryServerBTLE100 *)self readValueForCharacteristic:v15 queue:v48 completionHandler:v47];
+        clientQueue = [(HAPAccessoryServer *)self clientQueue];
+        [(_HAPAccessoryServerBTLE100 *)self readValueForCharacteristic:v15 queue:clientQueue completionHandler:v47];
 
         goto LABEL_31;
       }
@@ -3307,14 +3307,14 @@ LABEL_8:
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
     {
       v51 = HMFGetLogIdentifier();
-      v52 = [(HAPAccessoryServer *)self identifier];
-      v53 = [(HAPAccessoryServer *)self name];
+      identifier3 = [(HAPAccessoryServer *)self identifier];
+      name2 = [(HAPAccessoryServer *)self name];
       *buf = 138544130;
       v71 = v51;
       v72 = 2112;
-      v73 = v52;
+      v73 = identifier3;
       v74 = 2112;
-      v75 = v53;
+      v75 = name2;
       v76 = 2112;
       v77 = v16;
       _os_log_impl(&dword_22AADC000, v50, OS_LOG_TYPE_ERROR, "%{public}@### [BTLE Accessory Server '%@' '%@'] Failed to process updated characteristic value with error: %@", buf, 0x2Au);
@@ -3328,40 +3328,40 @@ LABEL_31:
   v54 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_readValueForCharacteristic:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
+- (void)_readValueForCharacteristic:(id)characteristic completionQueue:(id)queue completionHandler:(id)handler
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_HAPAccessoryServerBTLE100 *)self _btleCharacteristicForHAPCharacteristic:v8];
+  characteristicCopy = characteristic;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v11 = [(_HAPAccessoryServerBTLE100 *)self _btleCharacteristicForHAPCharacteristic:characteristicCopy];
   if (v11)
   {
-    if (([v8 properties] & 2) != 0)
+    if (([characteristicCopy properties] & 2) != 0)
     {
       if (![(_HAPAccessoryServerBTLE100 *)self isDisconnecting])
       {
-        [(_HAPAccessoryServerBTLE100 *)self _enqueueReadCompletionHandler:v10 queue:v9 forCharacteristic:v8];
+        [(_HAPAccessoryServerBTLE100 *)self _enqueueReadCompletionHandler:handlerCopy queue:queueCopy forCharacteristic:characteristicCopy];
         [(_HAPAccessoryServerBTLE100 *)self _updateConnectionLifetimeTimer];
-        v18 = [(HAPAccessoryServerBTLE *)self peripheral];
-        [v18 readValueForCharacteristic:v11];
+        peripheral = [(HAPAccessoryServerBTLE *)self peripheral];
+        [peripheral readValueForCharacteristic:v11];
         goto LABEL_20;
       }
 
       v27 = MEMORY[0x277CCA9B8];
-      v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to read the value of characteristic %@", v8];
-      v18 = [v27 errorWithHMErrorCode:4 reason:v28 underlyingError:0];
+      characteristicCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to read the value of characteristic %@", characteristicCopy];
+      peripheral = [v27 errorWithHMErrorCode:4 reason:characteristicCopy underlyingError:0];
 
-      if (v9 && v10)
+      if (queueCopy && handlerCopy)
       {
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __92___HAPAccessoryServerBTLE100__readValueForCharacteristic_completionQueue_completionHandler___block_invoke_2;
         v30[3] = &unk_2786D69E0;
-        v33 = v10;
-        v31 = v8;
-        v32 = v18;
-        dispatch_async(v9, v30);
+        v33 = handlerCopy;
+        v31 = characteristicCopy;
+        v32 = peripheral;
+        dispatch_async(queueCopy, v30);
 
         v19 = v33;
         goto LABEL_18;
@@ -3378,26 +3378,26 @@ LABEL_31:
         *buf = 138543618;
         v45 = v14;
         v46 = 2112;
-        v47 = v8;
+        v47 = characteristicCopy;
         _os_log_impl(&dword_22AADC000, v13, OS_LOG_TYPE_ERROR, "%{public}@### Error while attempting to read HAP characteristic %@: it does not support reading", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v12);
       v15 = MEMORY[0x277CCA9B8];
-      v16 = [MEMORY[0x277CCA8D8] mainBundle];
-      v17 = [v16 localizedStringForKey:@"The characteristic does not support reading." value:&stru_283E79C60 table:0];
-      v18 = [v15 errorWithHMErrorCode:6 reason:v17 underlyingError:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v17 = [mainBundle localizedStringForKey:@"The characteristic does not support reading." value:&stru_283E79C60 table:0];
+      peripheral = [v15 errorWithHMErrorCode:6 reason:v17 underlyingError:0];
 
-      if (v9 && v10)
+      if (queueCopy && handlerCopy)
       {
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __92___HAPAccessoryServerBTLE100__readValueForCharacteristic_completionQueue_completionHandler___block_invoke_187;
         block[3] = &unk_2786D69E0;
-        v37 = v10;
-        v35 = v8;
-        v36 = v18;
-        dispatch_async(v9, block);
+        v37 = handlerCopy;
+        v35 = characteristicCopy;
+        v36 = peripheral;
+        dispatch_async(queueCopy, block);
 
         v19 = v37;
 LABEL_18:
@@ -3415,31 +3415,31 @@ LABEL_18:
       *buf = 138543618;
       v45 = v22;
       v46 = 2112;
-      v47 = v8;
+      v47 = characteristicCopy;
       _os_log_impl(&dword_22AADC000, v21, OS_LOG_TYPE_ERROR, "%{public}@### Error while attempting to read HAP characteristic %@: it does not have a corresponding BTLE characteristic", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v20);
     v42[0] = *MEMORY[0x277CCA450];
-    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to read the value of characteristic %@", v8];
-    v43[0] = v23;
+    characteristicCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to read the value of characteristic %@", characteristicCopy];
+    v43[0] = characteristicCopy2;
     v42[1] = *MEMORY[0x277CCA470];
-    v24 = [MEMORY[0x277CCA8D8] mainBundle];
-    v25 = [v24 localizedStringForKey:@"Unable to find matching BTLE characteristic" value:&stru_283E79C60 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v25 = [mainBundle2 localizedStringForKey:@"Unable to find matching BTLE characteristic" value:&stru_283E79C60 table:0];
     v43[1] = v25;
-    v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:2];
+    peripheral = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:2];
 
-    v26 = [MEMORY[0x277CCA9B8] errorWithHMErrorCode:2 userInfo:v18];
-    if (v9 && v10)
+    v26 = [MEMORY[0x277CCA9B8] errorWithHMErrorCode:2 userInfo:peripheral];
+    if (queueCopy && handlerCopy)
     {
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
       v38[2] = __92___HAPAccessoryServerBTLE100__readValueForCharacteristic_completionQueue_completionHandler___block_invoke;
       v38[3] = &unk_2786D69E0;
-      v41 = v10;
-      v39 = v8;
+      v41 = handlerCopy;
+      v39 = characteristicCopy;
       v40 = v26;
-      dispatch_async(v9, v38);
+      dispatch_async(queueCopy, v38);
     }
   }
 
@@ -3448,20 +3448,20 @@ LABEL_20:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_readCharacteristicValues:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
+- (void)_readCharacteristicValues:(id)values completionQueue:(id)queue completionHandler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v24 = a4;
-  v23 = a5;
-  v9 = [MEMORY[0x277CBEB18] array];
+  valuesCopy = values;
+  queueCopy = queue;
+  handlerCopy = handler;
+  array = [MEMORY[0x277CBEB18] array];
   v10 = dispatch_group_create();
-  v26 = [MEMORY[0x277D0F770] currentActivity];
+  currentActivity = [MEMORY[0x277D0F770] currentActivity];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v8;
+  obj = valuesCopy;
   v11 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v11)
   {
@@ -3483,14 +3483,14 @@ LABEL_20:
         v31[1] = 3221225472;
         v31[2] = __90___HAPAccessoryServerBTLE100__readCharacteristicValues_completionQueue_completionHandler___block_invoke;
         v31[3] = &unk_2786D66A0;
-        v32 = v26;
-        v33 = v9;
+        v32 = currentActivity;
+        v33 = array;
         v34 = v10;
         v16 = MEMORY[0x231885210](v31);
         [v15 instanceID];
 
-        v17 = [(HAPAccessoryServer *)self clientQueue];
-        [(_HAPAccessoryServerBTLE100 *)self _readValueForCharacteristic:v15 completionQueue:v17 completionHandler:v16];
+        clientQueue = [(HAPAccessoryServer *)self clientQueue];
+        [(_HAPAccessoryServerBTLE100 *)self _readValueForCharacteristic:v15 completionQueue:clientQueue completionHandler:v16];
 
         ++v14;
       }
@@ -3502,70 +3502,70 @@ LABEL_20:
     while (v12);
   }
 
-  v18 = [(HAPAccessoryServer *)self clientQueue];
+  clientQueue2 = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90___HAPAccessoryServerBTLE100__readCharacteristicValues_completionQueue_completionHandler___block_invoke_179;
   block[3] = &unk_2786D66C8;
   block[4] = self;
-  v28 = v24;
-  v29 = v9;
-  v30 = v23;
-  v19 = v9;
-  v20 = v23;
-  v21 = v24;
-  dispatch_group_notify(v10, v18, block);
+  v28 = queueCopy;
+  v29 = array;
+  v30 = handlerCopy;
+  v19 = array;
+  v20 = handlerCopy;
+  v21 = queueCopy;
+  dispatch_group_notify(v10, clientQueue2, block);
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readValueForCharacteristic:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (void)readValueForCharacteristic:(id)characteristic queue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HAPAccessoryServer *)self clientQueue];
+  characteristicCopy = characteristic;
+  queueCopy = queue;
+  handlerCopy = handler;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __81___HAPAccessoryServerBTLE100_readValueForCharacteristic_queue_completionHandler___block_invoke;
   v15[3] = &unk_2786D66C8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = characteristicCopy;
+  v17 = queueCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = queueCopy;
+  v14 = characteristicCopy;
+  dispatch_async(clientQueue, v15);
 }
 
-- (void)readCharacteristicValues:(id)a3 timeout:(double)a4 expiry:(id)a5 completionQueue:(id)a6 completionHandler:(id)a7
+- (void)readCharacteristicValues:(id)values timeout:(double)timeout expiry:(id)expiry completionQueue:(id)queue completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
-  v14 = [(HAPAccessoryServer *)self clientQueue];
+  valuesCopy = values;
+  queueCopy = queue;
+  handlerCopy = handler;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __104___HAPAccessoryServerBTLE100_readCharacteristicValues_timeout_expiry_completionQueue_completionHandler___block_invoke;
   block[3] = &unk_2786D6600;
-  v22 = a4;
+  timeoutCopy = timeout;
   block[4] = self;
-  v19 = v11;
-  v20 = v12;
-  v21 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  dispatch_async(v14, block);
+  v19 = valuesCopy;
+  v20 = queueCopy;
+  v21 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = queueCopy;
+  v17 = valuesCopy;
+  dispatch_async(clientQueue, block);
 }
 
-- (void)_handleHAPWriteConfirmationForCharacteristic:(id)a3 error:(id)a4
+- (void)_handleHAPWriteConfirmationForCharacteristic:(id)characteristic error:(id)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_HAPAccessoryServerBTLE100 *)self _hapCharacteristicForBTLECharacteristic:v6];
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  v8 = [(_HAPAccessoryServerBTLE100 *)self _hapCharacteristicForBTLECharacteristic:characteristicCopy];
   v9 = objc_autoreleasePoolPush();
   v10 = HMFGetOSLogHandle();
   v11 = v10;
@@ -3579,7 +3579,7 @@ LABEL_20:
       v22 = 2112;
       v23 = v8;
       v24 = 2112;
-      v25 = v7;
+      v25 = errorCopy;
       _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_INFO, "%{public}@Received write completion for characteristic %@ with error %@", &v20, 0x20u);
     }
 
@@ -3588,7 +3588,7 @@ LABEL_20:
     v14 = v13;
     if (v13)
     {
-      (*(v13 + 16))(v13, v8, v7);
+      (*(v13 + 16))(v13, v8, errorCopy);
     }
 
     else
@@ -3627,15 +3627,15 @@ LABEL_20:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_writeValue:(id)a3 forCharacteristic:(id)a4 authorizationData:(id)a5 withCompletionHandler:(id)a6 queue:(id)a7
+- (void)_writeValue:(id)value forCharacteristic:(id)characteristic authorizationData:(id)data withCompletionHandler:(id)handler queue:(id)queue
 {
   v97 = *MEMORY[0x277D85DE8];
-  v62 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(_HAPAccessoryServerBTLE100 *)self _btleCharacteristicForHAPCharacteristic:v12];
+  valueCopy = value;
+  characteristicCopy = characteristic;
+  dataCopy = data;
+  handlerCopy = handler;
+  queueCopy = queue;
+  v16 = [(_HAPAccessoryServerBTLE100 *)self _btleCharacteristicForHAPCharacteristic:characteristicCopy];
   if (!v16)
   {
     v25 = objc_autoreleasePoolPush();
@@ -3646,49 +3646,49 @@ LABEL_20:
       *buf = 138543618;
       v94 = v27;
       v95 = 2112;
-      v96 = v12;
+      v96 = characteristicCopy;
       _os_log_impl(&dword_22AADC000, v26, OS_LOG_TYPE_ERROR, "%{public}@### Error while attempting to write HAP characteristic %@: it does not have a corresponding BTLE characteristic", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v25);
     v91[0] = *MEMORY[0x277CCA450];
-    v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to write the value of characteristic %@", v12];
-    v92[0] = v28;
+    characteristicCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to write the value of characteristic %@", characteristicCopy];
+    v92[0] = characteristicCopy;
     v91[1] = *MEMORY[0x277CCA470];
-    v29 = [MEMORY[0x277CCA8D8] mainBundle];
-    v30 = [v29 localizedStringForKey:@"Unable to find matching BTLE characteristic" value:&stru_283E79C60 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v30 = [mainBundle localizedStringForKey:@"Unable to find matching BTLE characteristic" value:&stru_283E79C60 table:0];
     v92[1] = v30;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v92 forKeys:v91 count:2];
 
     v24 = [MEMORY[0x277CCA9B8] errorWithHMErrorCode:2 userInfo:v23];
-    if (v14 && v15)
+    if (handlerCopy && queueCopy)
     {
       v87[0] = MEMORY[0x277D85DD0];
       v87[1] = 3221225472;
       v87[2] = __106___HAPAccessoryServerBTLE100__writeValue_forCharacteristic_authorizationData_withCompletionHandler_queue___block_invoke;
       v87[3] = &unk_2786D69E0;
-      v90 = v14;
-      v88 = v12;
+      v90 = handlerCopy;
+      v88 = characteristicCopy;
       v24 = v24;
       v89 = v24;
-      dispatch_async(v15, v87);
+      dispatch_async(queueCopy, v87);
     }
 
     goto LABEL_39;
   }
 
-  if (([v12 properties] & 4) != 0)
+  if (([characteristicCopy properties] & 4) != 0)
   {
-    v31 = [v12 metadata];
-    v32 = [v31 format];
-    v33 = HAPCharacteristicFormatFromString(v32);
+    metadata = [characteristicCopy metadata];
+    format = [metadata format];
+    v33 = HAPCharacteristicFormatFromString(format);
 
     v82 = 0;
-    v24 = +[_HAPAccessoryServerBTLE100 serializeCharacteristicWriteValue:characteristicFormat:supportsAdditionalAuthentication:authenticationData:error:](_HAPAccessoryServerBTLE100, "serializeCharacteristicWriteValue:characteristicFormat:supportsAdditionalAuthentication:authenticationData:error:", v62, v33, [v12 supportsAdditionalAuthorizationData], v13, &v82);
+    v24 = +[_HAPAccessoryServerBTLE100 serializeCharacteristicWriteValue:characteristicFormat:supportsAdditionalAuthentication:authenticationData:error:](_HAPAccessoryServerBTLE100, "serializeCharacteristicWriteValue:characteristicFormat:supportsAdditionalAuthentication:authenticationData:error:", valueCopy, v33, [characteristicCopy supportsAdditionalAuthorizationData], dataCopy, &v82);
     v23 = v82;
     if (v23)
     {
-      if (!v14 || !v15)
+      if (!handlerCopy || !queueCopy)
       {
         goto LABEL_39;
       }
@@ -3697,10 +3697,10 @@ LABEL_20:
       v78[1] = 3221225472;
       v78[2] = __106___HAPAccessoryServerBTLE100__writeValue_forCharacteristic_authorizationData_withCompletionHandler_queue___block_invoke_2;
       v78[3] = &unk_2786D69E0;
-      v81 = v14;
-      v79 = v12;
+      v81 = handlerCopy;
+      v79 = characteristicCopy;
       v80 = v23;
-      dispatch_async(v15, v78);
+      dispatch_async(queueCopy, v78);
 
       v34 = v81;
       goto LABEL_38;
@@ -3709,42 +3709,42 @@ LABEL_20:
     if ([(_HAPAccessoryServerBTLE100 *)self isDisconnecting])
     {
       v35 = MEMORY[0x277CCA9B8];
-      v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to write the value of characteristic %@", v12];
-      v34 = [v35 errorWithHMErrorCode:4 reason:v36 underlyingError:0];
+      characteristicCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to write the value of characteristic %@", characteristicCopy];
+      v34 = [v35 errorWithHMErrorCode:4 reason:characteristicCopy2 underlyingError:0];
 
-      if (v14 && v15)
+      if (handlerCopy && queueCopy)
       {
         v74[0] = MEMORY[0x277D85DD0];
         v74[1] = 3221225472;
         v74[2] = __106___HAPAccessoryServerBTLE100__writeValue_forCharacteristic_authorizationData_withCompletionHandler_queue___block_invoke_3;
         v74[3] = &unk_2786D69E0;
-        v77 = v14;
-        v75 = v12;
+        v77 = handlerCopy;
+        v75 = characteristicCopy;
         v34 = v34;
         v76 = v34;
-        dispatch_async(v15, v74);
+        dispatch_async(queueCopy, v74);
       }
 
       goto LABEL_38;
     }
 
-    v37 = [MEMORY[0x277D0F770] currentActivity];
+    currentActivity = [MEMORY[0x277D0F770] currentActivity];
     v68[0] = MEMORY[0x277D85DD0];
     v68[1] = 3221225472;
     v68[2] = __106___HAPAccessoryServerBTLE100__writeValue_forCharacteristic_authorizationData_withCompletionHandler_queue___block_invoke_4;
     v68[3] = &unk_2786D6628;
-    v68[4] = v62;
-    v57 = v12;
+    v68[4] = valueCopy;
+    v57 = characteristicCopy;
     v69 = v57;
-    v70 = self;
-    v60 = v37;
+    selfCopy = self;
+    v60 = currentActivity;
     v71 = v60;
-    v54 = v14;
+    v54 = handlerCopy;
     v73 = v54;
-    v38 = v15;
+    v38 = queueCopy;
     v72 = v38;
     v59 = MEMORY[0x231885210](v68);
-    v58 = v13;
+    v58 = dataCopy;
     if ([(_HAPAccessoryServerBTLE100 *)self _shouldEnableSessionSecurity])
     {
       v52 = v38;
@@ -3766,7 +3766,7 @@ LABEL_20:
           _os_log_impl(&dword_22AADC000, v41, OS_LOG_TYPE_ERROR, "%{public}@[HAPAccessoryServerBTLE] Failed to encrypt payload with error: %@", buf, 0x16u);
         }
 
-        v43 = v39;
+        peripheral = v39;
 
         objc_autoreleasePoolPop(context);
         if (v54)
@@ -3781,7 +3781,7 @@ LABEL_20:
             v63[3] = &unk_2786D69E0;
             v66 = v54;
             v64 = v57;
-            v65 = v43;
+            v65 = peripheral;
             dispatch_async(v52, v63);
           }
         }
@@ -3834,13 +3834,13 @@ LABEL_20:
     [(_HAPAccessoryServerBTLE100 *)self _notifyDelegateOfSentPlaintextData:v24 forCharacteristic:v48];
     [(_HAPAccessoryServerBTLE100 *)self _updateConnectionLifetimeTimer];
     v44 = v59;
-    v43 = [(HAPAccessoryServerBTLE *)self peripheral];
+    peripheral = [(HAPAccessoryServerBTLE *)self peripheral];
     v50 = v61;
-    [v43 writeValue:v61 forCharacteristic:v16 type:0];
+    [peripheral writeValue:v61 forCharacteristic:v16 type:0];
     v34 = v60;
 LABEL_37:
 
-    v13 = v58;
+    dataCopy = v58;
 LABEL_38:
 
     goto LABEL_39;
@@ -3854,27 +3854,27 @@ LABEL_38:
     *buf = 138543618;
     v94 = v19;
     v95 = 2112;
-    v96 = v12;
+    v96 = characteristicCopy;
     _os_log_impl(&dword_22AADC000, v18, OS_LOG_TYPE_ERROR, "%{public}@### Error while attempting to write HAP characteristic %@: it does not support writing", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v17);
   v20 = MEMORY[0x277CCA9B8];
-  v21 = [MEMORY[0x277CCA8D8] mainBundle];
-  v22 = [v21 localizedStringForKey:@"The characteristic does not support writing." value:&stru_283E79C60 table:0];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v22 = [mainBundle2 localizedStringForKey:@"The characteristic does not support writing." value:&stru_283E79C60 table:0];
   v23 = [v20 errorWithHMErrorCode:5 reason:v22 underlyingError:0];
 
-  if (v14 && v15)
+  if (handlerCopy && queueCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __106___HAPAccessoryServerBTLE100__writeValue_forCharacteristic_authorizationData_withCompletionHandler_queue___block_invoke_154;
     block[3] = &unk_2786D69E0;
-    v86 = v14;
-    v84 = v12;
+    v86 = handlerCopy;
+    v84 = characteristicCopy;
     v23 = v23;
     v85 = v23;
-    dispatch_async(v15, block);
+    dispatch_async(queueCopy, block);
 
     v24 = v86;
 LABEL_39:
@@ -3883,20 +3883,20 @@ LABEL_39:
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_writeCharacteristicValues:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (void)_writeCharacteristicValues:(id)values queue:(id)queue completionHandler:(id)handler
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v26 = a4;
-  v25 = a5;
-  v30 = [MEMORY[0x277CBEB18] array];
+  valuesCopy = values;
+  queueCopy = queue;
+  handlerCopy = handler;
+  array = [MEMORY[0x277CBEB18] array];
   v9 = dispatch_group_create();
-  v27 = [MEMORY[0x277D0F770] currentActivity];
+  currentActivity = [MEMORY[0x277D0F770] currentActivity];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v8;
+  obj = valuesCopy;
   v10 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v10)
   {
@@ -3918,17 +3918,17 @@ LABEL_39:
         v35[1] = 3221225472;
         v35[2] = __81___HAPAccessoryServerBTLE100__writeCharacteristicValues_queue_completionHandler___block_invoke;
         v35[3] = &unk_2786D6538;
-        v36 = v30;
+        v36 = array;
         v37 = v9;
         v14 = MEMORY[0x231885210](v35);
-        v15 = [v13 characteristic];
-        [v15 instanceID];
+        characteristic = [v13 characteristic];
+        [characteristic instanceID];
 
-        v16 = [v13 value];
-        v17 = [v13 characteristic];
-        v18 = [v13 authorizationData];
-        v19 = [(HAPAccessoryServer *)self clientQueue];
-        [(_HAPAccessoryServerBTLE100 *)self _writeValue:v16 forCharacteristic:v17 authorizationData:v18 withCompletionHandler:v14 queue:v19];
+        value = [v13 value];
+        characteristic2 = [v13 characteristic];
+        authorizationData = [v13 authorizationData];
+        clientQueue = [(HAPAccessoryServer *)self clientQueue];
+        [(_HAPAccessoryServerBTLE100 *)self _writeValue:value forCharacteristic:characteristic2 authorizationData:authorizationData withCompletionHandler:v14 queue:clientQueue];
 
         ++v12;
       }
@@ -3940,126 +3940,126 @@ LABEL_39:
     while (v11);
   }
 
-  v20 = [(HAPAccessoryServer *)self clientQueue];
+  clientQueue2 = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81___HAPAccessoryServerBTLE100__writeCharacteristicValues_queue_completionHandler___block_invoke_146;
   block[3] = &unk_2786D66C8;
   block[4] = self;
-  v32 = v26;
-  v33 = v30;
-  v34 = v25;
-  v21 = v30;
-  v22 = v26;
-  v23 = v25;
-  dispatch_group_notify(v9, v20, block);
+  v32 = queueCopy;
+  v33 = array;
+  v34 = handlerCopy;
+  v21 = array;
+  v22 = queueCopy;
+  v23 = handlerCopy;
+  dispatch_group_notify(v9, clientQueue2, block);
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeCharacteristicValues:(id)a3 timeout:(double)a4 expiry:(id)a5 completionQueue:(id)a6 completionHandler:(id)a7
+- (void)writeCharacteristicValues:(id)values timeout:(double)timeout expiry:(id)expiry completionQueue:(id)queue completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
-  v14 = [(HAPAccessoryServer *)self clientQueue];
+  valuesCopy = values;
+  queueCopy = queue;
+  handlerCopy = handler;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __105___HAPAccessoryServerBTLE100_writeCharacteristicValues_timeout_expiry_completionQueue_completionHandler___block_invoke;
   block[3] = &unk_2786D6600;
-  v22 = a4;
+  timeoutCopy = timeout;
   block[4] = self;
-  v19 = v11;
-  v20 = v12;
-  v21 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  dispatch_async(v14, block);
+  v19 = valuesCopy;
+  v20 = queueCopy;
+  v21 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = queueCopy;
+  v17 = valuesCopy;
+  dispatch_async(clientQueue, block);
 }
 
-- (id)_dequeueEnableEventCompletionTupleForCharacteristic:(id)a3
+- (id)_dequeueEnableEventCompletionTupleForCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicEnableEventCompletionQueues];
-  v6 = [v5 objectForKey:v4];
+  characteristicCopy = characteristic;
+  hapCharacteristicEnableEventCompletionQueues = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicEnableEventCompletionQueues];
+  v6 = [hapCharacteristicEnableEventCompletionQueues objectForKey:characteristicCopy];
 
-  v7 = [v6 firstObject];
-  if (v7)
+  firstObject = [v6 firstObject];
+  if (firstObject)
   {
-    [v6 removeObject:v7];
+    [v6 removeObject:firstObject];
   }
 
-  return v7;
+  return firstObject;
 }
 
-- (void)_enqueueEnableEventCompletionHandler:(id)a3 queue:(id)a4 forCharacteristic:(id)a5
+- (void)_enqueueEnableEventCompletionHandler:(id)handler queue:(id)queue forCharacteristic:(id)characteristic
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicEnableEventCompletionQueues];
-  v11 = [v10 objectForKey:v9];
+  handlerCopy = handler;
+  queueCopy = queue;
+  characteristicCopy = characteristic;
+  hapCharacteristicEnableEventCompletionQueues = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicEnableEventCompletionQueues];
+  array = [hapCharacteristicEnableEventCompletionQueues objectForKey:characteristicCopy];
 
-  if (!v11)
+  if (!array)
   {
-    v11 = [MEMORY[0x277CBEB18] array];
-    v12 = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicEnableEventCompletionQueues];
-    [v12 setObject:v11 forKey:v9];
+    array = [MEMORY[0x277CBEB18] array];
+    hapCharacteristicEnableEventCompletionQueues2 = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicEnableEventCompletionQueues];
+    [hapCharacteristicEnableEventCompletionQueues2 setObject:array forKey:characteristicCopy];
   }
 
-  v13 = [HAPCharacteristicEnableEventCompletionTuple enableEventCompletionTupleWithHandler:v14 queue:v8];
+  v13 = [HAPCharacteristicEnableEventCompletionTuple enableEventCompletionTupleWithHandler:handlerCopy queue:queueCopy];
   if (v13)
   {
-    [v11 addObject:v13];
+    [array addObject:v13];
   }
 }
 
-- (id)_dequeueReadCompletionTupleForCharacteristic:(id)a3
+- (id)_dequeueReadCompletionTupleForCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicReadCompletionQueues];
-  v6 = [v5 objectForKey:v4];
+  characteristicCopy = characteristic;
+  hapCharacteristicReadCompletionQueues = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicReadCompletionQueues];
+  v6 = [hapCharacteristicReadCompletionQueues objectForKey:characteristicCopy];
 
-  v7 = [v6 firstObject];
-  if (v7)
+  firstObject = [v6 firstObject];
+  if (firstObject)
   {
-    [v6 removeObject:v7];
+    [v6 removeObject:firstObject];
   }
 
-  return v7;
+  return firstObject;
 }
 
-- (void)_enqueueReadCompletionHandler:(id)a3 queue:(id)a4 forCharacteristic:(id)a5
+- (void)_enqueueReadCompletionHandler:(id)handler queue:(id)queue forCharacteristic:(id)characteristic
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicReadCompletionQueues];
-  v11 = [v10 objectForKey:v9];
+  handlerCopy = handler;
+  queueCopy = queue;
+  characteristicCopy = characteristic;
+  hapCharacteristicReadCompletionQueues = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicReadCompletionQueues];
+  array = [hapCharacteristicReadCompletionQueues objectForKey:characteristicCopy];
 
-  if (!v11)
+  if (!array)
   {
-    v11 = [MEMORY[0x277CBEB18] array];
-    v12 = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicReadCompletionQueues];
-    [v12 setObject:v11 forKey:v9];
+    array = [MEMORY[0x277CBEB18] array];
+    hapCharacteristicReadCompletionQueues2 = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicReadCompletionQueues];
+    [hapCharacteristicReadCompletionQueues2 setObject:array forKey:characteristicCopy];
   }
 
-  v13 = [HAPCharacteristicReadCompletionTuple readCompletionTupleWithHandler:v14 queue:v8];
-  [v11 addObject:v13];
+  v13 = [HAPCharacteristicReadCompletionTuple readCompletionTupleWithHandler:handlerCopy queue:queueCopy];
+  [array addObject:v13];
 }
 
-- (id)_dequeueWriteCompletionHandlerForCharacteristic:(id)a3
+- (id)_dequeueWriteCompletionHandlerForCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicWriteCompletionQueues];
-  v6 = [v5 objectForKey:v4];
+  characteristicCopy = characteristic;
+  hapCharacteristicWriteCompletionQueues = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicWriteCompletionQueues];
+  v6 = [hapCharacteristicWriteCompletionQueues objectForKey:characteristicCopy];
 
-  v7 = [v6 firstObject];
-  v8 = v7;
-  if (v7)
+  firstObject = [v6 firstObject];
+  v8 = firstObject;
+  if (firstObject)
   {
-    v9 = MEMORY[0x231885210](v7);
+    v9 = MEMORY[0x231885210](firstObject);
     [v6 removeObject:v9];
   }
 
@@ -4068,38 +4068,38 @@ LABEL_39:
   return v10;
 }
 
-- (void)_enqueueWriteCompletionHandler:(id)a3 forCharacteristic:(id)a4
+- (void)_enqueueWriteCompletionHandler:(id)handler forCharacteristic:(id)characteristic
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicWriteCompletionQueues];
-  v8 = [v7 objectForKey:v6];
+  handlerCopy = handler;
+  characteristicCopy = characteristic;
+  hapCharacteristicWriteCompletionQueues = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicWriteCompletionQueues];
+  array = [hapCharacteristicWriteCompletionQueues objectForKey:characteristicCopy];
 
-  if (!v8)
+  if (!array)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
-    v9 = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicWriteCompletionQueues];
-    [v9 setObject:v8 forKey:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    hapCharacteristicWriteCompletionQueues2 = [(_HAPAccessoryServerBTLE100 *)self hapCharacteristicWriteCompletionQueues];
+    [hapCharacteristicWriteCompletionQueues2 setObject:array forKey:characteristicCopy];
   }
 
-  v10 = MEMORY[0x231885210](v11);
-  [v8 addObject:v10];
+  v10 = MEMORY[0x231885210](handlerCopy);
+  [array addObject:v10];
 }
 
-- (void)_handleDisconnectionWithCompletion:(id)a3
+- (void)_handleDisconnectionWithCompletion:(id)completion
 {
   v117 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_autoreleasePoolPush();
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = HMFGetLogIdentifier();
-    v8 = [(HAPAccessoryServer *)self identifier];
+    identifier = [(HAPAccessoryServer *)self identifier];
     *buf = 138543618;
     v108 = v7;
     v109 = 2112;
-    v110 = v8;
+    v110 = identifier;
     _os_log_impl(&dword_22AADC000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server %@] Handling disconnection with error", buf, 0x16u);
   }
 
@@ -4111,19 +4111,19 @@ LABEL_39:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HAPAccessoryServer *)self identifier];
+      identifier2 = [(HAPAccessoryServer *)self identifier];
       *buf = 138543618;
       v108 = v11;
       v109 = 2112;
-      v110 = v12;
+      v110 = identifier2;
       _os_log_impl(&dword_22AADC000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server %@] disconnected during pairing", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v9);
     if ([(_HAPAccessoryServerBTLE100 *)self _delegateRespondsToSelector:sel_accessoryServer_didStopPairingWithError_])
     {
-      v13 = [(HAPAccessoryServer *)self delegateQueue];
-      v14 = v13;
+      delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
+      v14 = delegateQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __65___HAPAccessoryServerBTLE100__handleDisconnectionWithCompletion___block_invoke;
@@ -4131,7 +4131,7 @@ LABEL_39:
       block[4] = self;
       v15 = block;
 LABEL_8:
-      dispatch_async(v13, v15);
+      dispatch_async(delegateQueue, v15);
 LABEL_18:
     }
   }
@@ -4143,37 +4143,37 @@ LABEL_18:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [(HAPAccessoryServer *)self identifier];
+      identifier3 = [(HAPAccessoryServer *)self identifier];
       *buf = 138543618;
       v108 = v18;
       v109 = 2112;
-      v110 = v19;
+      v110 = identifier3;
       _os_log_impl(&dword_22AADC000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server %@] disconnected after unpaired identify request completed", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v16);
-    v20 = [(_HAPAccessoryServerBTLE100 *)self unpairedIdentifyCompletionBlock];
+    unpairedIdentifyCompletionBlock = [(_HAPAccessoryServerBTLE100 *)self unpairedIdentifyCompletionBlock];
 
-    if (v20)
+    if (unpairedIdentifyCompletionBlock)
     {
       v21 = objc_autoreleasePoolPush();
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         v23 = HMFGetLogIdentifier();
-        v24 = [(HAPAccessoryServer *)self identifier];
+        identifier4 = [(HAPAccessoryServer *)self identifier];
         *buf = 138543618;
         v108 = v23;
         v109 = 2112;
-        v110 = v24;
+        v110 = identifier4;
         _os_log_impl(&dword_22AADC000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server %@] identify failed calling completion block", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v21);
       v14 = [MEMORY[0x277CCA9B8] errorWithHMErrorCode:52];
-      v25 = [(_HAPAccessoryServerBTLE100 *)self unpairedIdentifyCompletionBlock];
+      unpairedIdentifyCompletionBlock2 = [(_HAPAccessoryServerBTLE100 *)self unpairedIdentifyCompletionBlock];
       [(_HAPAccessoryServerBTLE100 *)self setUnpairedIdentifyCompletionBlock:0];
-      v26 = MEMORY[0x231885210](v25);
+      v26 = MEMORY[0x231885210](unpairedIdentifyCompletionBlock2);
       v27 = v26;
       if (v26)
       {
@@ -4186,21 +4186,21 @@ LABEL_18:
 
   else
   {
-    v28 = [(_HAPAccessoryServerBTLE100 *)self state];
+    state = [(_HAPAccessoryServerBTLE100 *)self state];
     v29 = objc_autoreleasePoolPush();
     v30 = HMFGetOSLogHandle();
     v31 = os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT);
-    if (v28 == 12)
+    if (state == 12)
     {
-      v79 = v4;
+      v79 = completionCopy;
       if (v31)
       {
         v32 = HMFGetLogIdentifier();
-        v33 = [(HAPAccessoryServer *)self identifier];
+        identifier5 = [(HAPAccessoryServer *)self identifier];
         *buf = 138543618;
         v108 = v32;
         v109 = 2112;
-        v110 = v33;
+        v110 = identifier5;
         _os_log_impl(&dword_22AADC000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server %@] failed after session is up", buf, 0x16u);
       }
 
@@ -4210,10 +4210,10 @@ LABEL_18:
       v102 = 0u;
       v103 = 0u;
       v104 = 0u;
-      v35 = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
-      v36 = [v35 objectEnumerator];
+      btleCharacteristicToHAPCharacteristicMap = [(_HAPAccessoryServerBTLE100 *)self btleCharacteristicToHAPCharacteristicMap];
+      objectEnumerator = [btleCharacteristicToHAPCharacteristicMap objectEnumerator];
 
-      v81 = [v36 countByEnumeratingWithState:&v101 objects:v116 count:16];
+      v81 = [objectEnumerator countByEnumeratingWithState:&v101 objects:v116 count:16];
       if (v81)
       {
         v80 = *v102;
@@ -4223,7 +4223,7 @@ LABEL_18:
           {
             if (*v102 != v80)
             {
-              objc_enumerationMutation(v36);
+              objc_enumerationMutation(objectEnumerator);
             }
 
             v38 = *(*(&v101 + 1) + 8 * i);
@@ -4233,15 +4233,15 @@ LABEL_18:
               v40 = v39;
               do
               {
-                v41 = [v40 handler];
-                if (v41)
+                handler = [v40 handler];
+                if (handler)
                 {
-                  v42 = v41;
-                  v43 = [v40 completionQueue];
+                  v42 = handler;
+                  completionQueue = [v40 completionQueue];
 
-                  if (v43)
+                  if (completionQueue)
                   {
-                    v44 = [v40 completionQueue];
+                    completionQueue2 = [v40 completionQueue];
                     v97[0] = MEMORY[0x277D85DD0];
                     v97[1] = 3221225472;
                     v97[2] = __65___HAPAccessoryServerBTLE100__handleDisconnectionWithCompletion___block_invoke_138;
@@ -4249,7 +4249,7 @@ LABEL_18:
                     v98 = v40;
                     v99 = v38;
                     v100 = v34;
-                    dispatch_async(v44, v97);
+                    dispatch_async(completionQueue2, v97);
                   }
                 }
 
@@ -4267,7 +4267,7 @@ LABEL_18:
               v47 = v46;
               do
               {
-                v48 = [(HAPAccessoryServer *)self delegateQueue];
+                delegateQueue2 = [(HAPAccessoryServer *)self delegateQueue];
                 v94[0] = MEMORY[0x277D85DD0];
                 v94[1] = 3221225472;
                 v94[2] = __65___HAPAccessoryServerBTLE100__handleDisconnectionWithCompletion___block_invoke_2;
@@ -4276,7 +4276,7 @@ LABEL_18:
                 v94[4] = v38;
                 v95 = v34;
                 v49 = v47;
-                dispatch_async(v48, v94);
+                dispatch_async(delegateQueue2, v94);
 
                 v47 = [(_HAPAccessoryServerBTLE100 *)self _dequeueWriteCompletionHandlerForCharacteristic:v38];
               }
@@ -4290,15 +4290,15 @@ LABEL_18:
               v51 = v50;
               do
               {
-                v52 = [v51 handler];
-                if (v52)
+                handler2 = [v51 handler];
+                if (handler2)
                 {
-                  v53 = v52;
-                  v54 = [v51 completionQueue];
+                  v53 = handler2;
+                  completionQueue3 = [v51 completionQueue];
 
-                  if (v54)
+                  if (completionQueue3)
                   {
-                    v55 = [v51 completionQueue];
+                    completionQueue4 = [v51 completionQueue];
                     v90[0] = MEMORY[0x277D85DD0];
                     v90[1] = 3221225472;
                     v90[2] = __65___HAPAccessoryServerBTLE100__handleDisconnectionWithCompletion___block_invoke_3;
@@ -4306,7 +4306,7 @@ LABEL_18:
                     v91 = v51;
                     v92 = v38;
                     v93 = v34;
-                    dispatch_async(v55, v90);
+                    dispatch_async(completionQueue4, v90);
                   }
                 }
 
@@ -4319,7 +4319,7 @@ LABEL_18:
             }
           }
 
-          v81 = [v36 countByEnumeratingWithState:&v101 objects:v116 count:16];
+          v81 = [objectEnumerator countByEnumeratingWithState:&v101 objects:v116 count:16];
         }
 
         while (v81);
@@ -4329,8 +4329,8 @@ LABEL_18:
       v89 = 0u;
       v86 = 0u;
       v87 = 0u;
-      v82 = [(_HAPAccessoryServerBTLE100 *)self addRemovePairingOperationsQueue];
-      v57 = [v82 countByEnumeratingWithState:&v86 objects:v115 count:16];
+      addRemovePairingOperationsQueue = [(_HAPAccessoryServerBTLE100 *)self addRemovePairingOperationsQueue];
+      v57 = [addRemovePairingOperationsQueue countByEnumeratingWithState:&v86 objects:v115 count:16];
       if (v57)
       {
         v58 = v57;
@@ -4341,7 +4341,7 @@ LABEL_18:
           {
             if (*v87 != v59)
             {
-              objc_enumerationMutation(v82);
+              objc_enumerationMutation(addRemovePairingOperationsQueue);
             }
 
             v61 = *(*(&v86 + 1) + 8 * j);
@@ -4353,19 +4353,19 @@ LABEL_18:
               v64 = v83 = v62;
               v65 = v58;
               v66 = v59;
-              v67 = [v61 operation];
-              v68 = [v61 identifier];
-              v69 = [v61 operationExecuting];
+              operation = [v61 operation];
+              identifier6 = [v61 identifier];
+              operationExecuting = [v61 operationExecuting];
               *buf = 138544130;
               v108 = v64;
               v109 = 2048;
-              v110 = v67;
+              v110 = operation;
               v59 = v66;
               v58 = v65;
               v111 = 2112;
-              v112 = v68;
+              v112 = identifier6;
               v113 = 1024;
-              v114 = v69;
+              v114 = operationExecuting;
               _os_log_impl(&dword_22AADC000, v63, OS_LOG_TYPE_INFO, "%{public}@Failed pending operation %tu for %@, Executing: %d", buf, 0x26u);
 
               v62 = v83;
@@ -4374,37 +4374,37 @@ LABEL_18:
             objc_autoreleasePoolPop(v62);
             if (([v61 operationExecuting] & 1) == 0)
             {
-              v70 = [v61 completionHandler];
-              if (v70)
+              completionHandler = [v61 completionHandler];
+              if (completionHandler)
               {
-                v71 = v70;
-                v72 = [v61 queue];
+                v71 = completionHandler;
+                queue = [v61 queue];
 
-                if (v72)
+                if (queue)
                 {
-                  v73 = [v61 queue];
+                  queue2 = [v61 queue];
                   v84[0] = MEMORY[0x277D85DD0];
                   v84[1] = 3221225472;
                   v84[2] = __65___HAPAccessoryServerBTLE100__handleDisconnectionWithCompletion___block_invoke_139;
                   v84[3] = &unk_2786D7050;
                   v84[4] = v61;
                   v85 = v34;
-                  dispatch_async(v73, v84);
+                  dispatch_async(queue2, v84);
                 }
               }
             }
           }
 
-          v58 = [v82 countByEnumeratingWithState:&v86 objects:v115 count:16];
+          v58 = [addRemovePairingOperationsQueue countByEnumeratingWithState:&v86 objects:v115 count:16];
         }
 
         while (v58);
       }
 
-      v74 = [(_HAPAccessoryServerBTLE100 *)self addRemovePairingOperationsQueue];
-      [v74 removeAllObjects];
+      addRemovePairingOperationsQueue2 = [(_HAPAccessoryServerBTLE100 *)self addRemovePairingOperationsQueue];
+      [addRemovePairingOperationsQueue2 removeAllObjects];
 
-      v4 = v79;
+      completionCopy = v79;
     }
 
     else
@@ -4412,19 +4412,19 @@ LABEL_18:
       if (v31)
       {
         v75 = HMFGetLogIdentifier();
-        v76 = [(HAPAccessoryServer *)self identifier];
+        identifier7 = [(HAPAccessoryServer *)self identifier];
         *buf = 138543618;
         v108 = v75;
         v109 = 2112;
-        v110 = v76;
+        v110 = identifier7;
         _os_log_impl(&dword_22AADC000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server %@] disconnected before secure session was established", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v29);
       if ([(_HAPAccessoryServerBTLE100 *)self _delegateRespondsToSelector:sel_accessoryServer_didDiscoverAccessories_transaction_error_])
       {
-        v13 = [(HAPAccessoryServer *)self delegateQueue];
-        v14 = v13;
+        delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
+        v14 = delegateQueue;
         v105[0] = MEMORY[0x277D85DD0];
         v105[1] = 3221225472;
         v105[2] = __65___HAPAccessoryServerBTLE100__handleDisconnectionWithCompletion___block_invoke_137;
@@ -4437,7 +4437,7 @@ LABEL_18:
   }
 
   [(_HAPAccessoryServerBTLE100 *)self _resetState];
-  v77 = MEMORY[0x231885210](v4);
+  v77 = MEMORY[0x231885210](completionCopy);
   if (v77)
   {
     (v77)[2](v77, [(_HAPAccessoryServerBTLE100 *)self removeOnDisconnect]);
@@ -4446,32 +4446,32 @@ LABEL_18:
   v78 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleDisconnectionWithError:(id)a3 completionHandler:(id)a4
+- (void)handleDisconnectionWithError:(id)error completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [(_HAPAccessoryServerBTLE100 *)self state];
-    if (v11 - 1 > 0xB)
+    state = [(_HAPAccessoryServerBTLE100 *)self state];
+    if (state - 1 > 0xB)
     {
       v12 = @"Unknown State";
     }
 
     else
     {
-      v12 = off_2786D6DD8[v11 - 1];
+      v12 = off_2786D6DD8[state - 1];
     }
 
     v13 = v12;
     *buf = 138543874;
     v23 = v10;
     v24 = 2112;
-    v25 = v6;
+    v25 = errorCopy;
     v26 = 2112;
     v27 = v13;
     _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@[BTLE Accessory Server] Received disconnection event with error %@ in state %@", buf, 0x20u);
@@ -4485,11 +4485,11 @@ LABEL_18:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [(_HAPAccessoryServerBTLE100 *)self connectionRetryCount];
+      connectionRetryCount = [(_HAPAccessoryServerBTLE100 *)self connectionRetryCount];
       *buf = 138543618;
       v23 = v16;
       v24 = 2048;
-      v25 = v17;
+      v25 = connectionRetryCount;
       _os_log_impl(&dword_22AADC000, v15, OS_LOG_TYPE_ERROR, "%{public}@[BTLE Accessory Server] ### BLE Connection Failure, Retry count: %lu", buf, 0x16u);
     }
 
@@ -4501,14 +4501,14 @@ LABEL_18:
 
   else
   {
-    v18 = [(HAPAccessoryServer *)self clientQueue];
+    clientQueue = [(HAPAccessoryServer *)self clientQueue];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __77___HAPAccessoryServerBTLE100_handleDisconnectionWithError_completionHandler___block_invoke;
     v20[3] = &unk_2786D65D8;
     v20[4] = self;
-    v21 = v7;
-    dispatch_async(v18, v20);
+    v21 = handlerCopy;
+    dispatch_async(clientQueue, v20);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -4516,8 +4516,8 @@ LABEL_18:
 
 - (BOOL)isBLELinkConnected
 {
-  v2 = [(HAPAccessoryServerBTLE *)self peripheral];
-  v3 = [v2 state] == 2;
+  peripheral = [(HAPAccessoryServerBTLE *)self peripheral];
+  v3 = [peripheral state] == 2;
 
   return v3;
 }
@@ -4545,10 +4545,10 @@ LABEL_18:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleConnectionWithError:(id)a3
+- (void)_handleConnectionWithError:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_autoreleasePoolPush();
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -4559,13 +4559,13 @@ LABEL_18:
     v12 = 2112;
     v13 = objc_opt_class();
     v14 = 2112;
-    v15 = v4;
+    v15 = errorCopy;
     v8 = v13;
     _os_log_impl(&dword_22AADC000, v6, OS_LOG_TYPE_INFO, "%{public}@%@ connection completed with error: %@", &v10, 0x20u);
   }
 
   objc_autoreleasePoolPop(v5);
-  if (!v4)
+  if (!errorCopy)
   {
     [(_HAPAccessoryServerBTLE100 *)self _handleSuccessfulBTLEConnection];
     [(HAPAccessoryServerBTLE *)self incrementHAPBTLEMetricsConnectionCount];
@@ -4574,35 +4574,35 @@ LABEL_18:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleConnectionWithPeripheral:(id)a3 withError:(id)a4
+- (void)handleConnectionWithPeripheral:(id)peripheral withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAPAccessoryServer *)self clientQueue];
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71___HAPAccessoryServerBTLE100_handleConnectionWithPeripheral_withError___block_invoke;
   block[3] = &unk_2786D7078;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = peripheralCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = peripheralCopy;
+  dispatch_async(clientQueue, block);
 }
 
 - (void)_setupBTLEConnectionToPeripheral
 {
-  v3 = [(HAPAccessoryServerBTLE *)self browser];
-  [v3 connectToBTLEAccessoryServer:self];
+  browser = [(HAPAccessoryServerBTLE *)self browser];
+  [browser connectToBTLEAccessoryServer:self];
 }
 
-- (void)_handleHAPNotificationStateUpdateForCharacteristic:(id)a3 error:(id)a4
+- (void)_handleHAPNotificationStateUpdateForCharacteristic:(id)characteristic error:(id)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_HAPAccessoryServerBTLE100 *)self _hapCharacteristicForBTLECharacteristic:v6];
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  v8 = [(_HAPAccessoryServerBTLE100 *)self _hapCharacteristicForBTLECharacteristic:characteristicCopy];
   v9 = objc_autoreleasePoolPush();
   v10 = HMFGetOSLogHandle();
   v11 = v10;
@@ -4616,7 +4616,7 @@ LABEL_18:
       v27 = 2112;
       v28 = v8;
       v29 = 2112;
-      v30 = v7;
+      v30 = errorCopy;
       _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_INFO, "%{public}@Received notification update completion for characteristic %@ with error %@", buf, 0x20u);
     }
 
@@ -4625,15 +4625,15 @@ LABEL_18:
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 completionQueue];
+      completionQueue = [v13 completionQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __87___HAPAccessoryServerBTLE100__handleHAPNotificationStateUpdateForCharacteristic_error___block_invoke;
       block[3] = &unk_2786D7078;
       v22 = v14;
       v23 = v8;
-      v24 = v7;
-      dispatch_async(v15, block);
+      v24 = errorCopy;
+      dispatch_async(completionQueue, block);
     }
 
     else
@@ -4672,39 +4672,39 @@ LABEL_18:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enableEvent:(BOOL)a3 forCharacteristic:(id)a4 withCompletionHandler:(id)a5 queue:(id)a6
+- (void)_enableEvent:(BOOL)event forCharacteristic:(id)characteristic withCompletionHandler:(id)handler queue:(id)queue
 {
-  v42 = a3;
+  eventCopy = event;
   v75 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(_HAPAccessoryServerBTLE100 *)self _btleCharacteristicForHAPCharacteristic:v9];
+  characteristicCopy = characteristic;
+  handlerCopy = handler;
+  queueCopy = queue;
+  v12 = [(_HAPAccessoryServerBTLE100 *)self _btleCharacteristicForHAPCharacteristic:characteristicCopy];
   v13 = objc_autoreleasePoolPush();
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     HMFGetLogIdentifier();
-    v15 = v11;
-    v17 = v16 = v10;
+    v15 = queueCopy;
+    v17 = v16 = handlerCopy;
     [(HAPAccessoryServer *)self identifier];
     v19 = v18 = v12;
-    v20 = [(HAPAccessoryServer *)self name];
+    name = [(HAPAccessoryServer *)self name];
     *buf = 138544386;
     v66 = v17;
     v67 = 2112;
     v68 = v19;
     v69 = 2112;
-    v70 = v20;
+    v70 = name;
     v71 = 1024;
-    v72 = v42;
+    v72 = eventCopy;
     v73 = 2112;
-    v74 = v9;
+    v74 = characteristicCopy;
     _os_log_impl(&dword_22AADC000, v14, OS_LOG_TYPE_INFO, "%{public}@[BTLE Accessory %@ %@] Enable Events :%d for Characteristics: %@", buf, 0x30u);
 
     v12 = v18;
-    v10 = v16;
-    v11 = v15;
+    handlerCopy = v16;
+    queueCopy = v15;
   }
 
   objc_autoreleasePoolPop(v13);
@@ -4718,22 +4718,22 @@ LABEL_18:
       *buf = 138543618;
       v66 = v32;
       v67 = 2114;
-      v68 = v9;
+      v68 = characteristicCopy;
       _os_log_impl(&dword_22AADC000, v31, OS_LOG_TYPE_ERROR, "%{public}@### Error while attempting to enable Events on HAP characteristic %{public}@: it does not have a corresponding BTLE characteristic", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v30);
     v63[0] = *MEMORY[0x277CCA450];
-    v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to enable events for characteristic %@", v9];
-    v64[0] = v33;
+    characteristicCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to enable events for characteristic %@", characteristicCopy];
+    v64[0] = characteristicCopy;
     v63[1] = *MEMORY[0x277CCA470];
-    v34 = [MEMORY[0x277CCA8D8] mainBundle];
-    v35 = [v34 localizedStringForKey:@"Unable to find matching BTLE characteristic" value:&stru_283E79C60 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v35 = [mainBundle localizedStringForKey:@"Unable to find matching BTLE characteristic" value:&stru_283E79C60 table:0];
     v64[1] = v35;
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v64 forKeys:v63 count:2];
 
     v28 = [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:-6727 userInfo:v27];
-    if (!v10 || !v11)
+    if (!handlerCopy || !queueCopy)
     {
       goto LABEL_20;
     }
@@ -4742,10 +4742,10 @@ LABEL_18:
     v55[1] = 3221225472;
     v55[2] = __89___HAPAccessoryServerBTLE100__enableEvent_forCharacteristic_withCompletionHandler_queue___block_invoke;
     v55[3] = &unk_2786D69E0;
-    v58 = v10;
-    v56 = v9;
+    v58 = handlerCopy;
+    v56 = characteristicCopy;
     v57 = v28;
-    dispatch_async(v11, v55);
+    dispatch_async(queueCopy, v55);
 
     v29 = v58;
     goto LABEL_19;
@@ -4761,7 +4761,7 @@ LABEL_18:
       *buf = 138543874;
       v66 = v23;
       v67 = 2114;
-      v68 = v9;
+      v68 = characteristicCopy;
       v69 = 2114;
       v70 = v12;
       _os_log_impl(&dword_22AADC000, v22, OS_LOG_TYPE_ERROR, "%{public}@### Error while attempting to enable Events on HAP characteristic %{public}@: Corresponding BTLE Characteristics %{public}@: does not support it", buf, 0x20u);
@@ -4769,16 +4769,16 @@ LABEL_18:
 
     objc_autoreleasePoolPop(v21);
     v61[0] = *MEMORY[0x277CCA450];
-    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to enable events for characteristic %@", v9];
-    v62[0] = v24;
+    characteristicCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to enable events for characteristic %@", characteristicCopy];
+    v62[0] = characteristicCopy2;
     v61[1] = *MEMORY[0x277CCA470];
-    v25 = [MEMORY[0x277CCA8D8] mainBundle];
-    v26 = [v25 localizedStringForKey:@"BTLE characteristic does not support indication" value:&stru_283E79C60 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v26 = [mainBundle2 localizedStringForKey:@"BTLE characteristic does not support indication" value:&stru_283E79C60 table:0];
     v62[1] = v26;
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v62 forKeys:v61 count:2];
 
     v28 = [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:-6735 userInfo:v27];
-    if (!v10 || !v11)
+    if (!handlerCopy || !queueCopy)
     {
       goto LABEL_20;
     }
@@ -4787,10 +4787,10 @@ LABEL_18:
     block[1] = 3221225472;
     block[2] = __89___HAPAccessoryServerBTLE100__enableEvent_forCharacteristic_withCompletionHandler_queue___block_invoke_130;
     block[3] = &unk_2786D69E0;
-    v54 = v10;
-    v52 = v9;
+    v54 = handlerCopy;
+    v52 = characteristicCopy;
     v53 = v28;
-    dispatch_async(v11, block);
+    dispatch_async(queueCopy, block);
 
     v29 = v54;
     goto LABEL_19;
@@ -4802,39 +4802,39 @@ LABEL_18:
     v43[1] = 3221225472;
     v43[2] = __89___HAPAccessoryServerBTLE100__enableEvent_forCharacteristic_withCompletionHandler_queue___block_invoke_3;
     v43[3] = &unk_2786D65B0;
-    v46 = v42;
-    v45 = v10;
-    v39 = v11;
+    v46 = eventCopy;
+    v45 = handlerCopy;
+    v39 = queueCopy;
     v44 = v39;
     v40 = MEMORY[0x231885210](v43);
-    [(_HAPAccessoryServerBTLE100 *)self _enqueueEnableEventCompletionHandler:v40 queue:v39 forCharacteristic:v9];
+    [(_HAPAccessoryServerBTLE100 *)self _enqueueEnableEventCompletionHandler:v40 queue:v39 forCharacteristic:characteristicCopy];
     [(_HAPAccessoryServerBTLE100 *)self _updateConnectionLifetimeTimer];
-    v41 = [(HAPAccessoryServerBTLE *)self peripheral];
-    [v41 setNotifyValue:v42 forCharacteristic:v12];
+    peripheral = [(HAPAccessoryServerBTLE *)self peripheral];
+    [peripheral setNotifyValue:eventCopy forCharacteristic:v12];
 
     v27 = v45;
     goto LABEL_21;
   }
 
   v59[0] = *MEMORY[0x277CCA450];
-  v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to enable events for characteristics %@", v9];
-  v60[0] = v36;
+  characteristicCopy3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to enable events for characteristics %@", characteristicCopy];
+  v60[0] = characteristicCopy3;
   v59[1] = *MEMORY[0x277CCA470];
   v37 = [MEMORY[0x277CCA9B8] errorWithHMErrorCode:4];
   v60[1] = v37;
   v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:v59 count:2];
 
   v28 = [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:-6753 userInfo:v27];
-  if (v10 && v11)
+  if (handlerCopy && queueCopy)
   {
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
     v47[2] = __89___HAPAccessoryServerBTLE100__enableEvent_forCharacteristic_withCompletionHandler_queue___block_invoke_2;
     v47[3] = &unk_2786D69E0;
-    v50 = v10;
-    v48 = v9;
+    v50 = handlerCopy;
+    v48 = characteristicCopy;
     v49 = v28;
-    dispatch_async(v11, v47);
+    dispatch_async(queueCopy, v47);
 
     v29 = v50;
 LABEL_19:
@@ -4846,20 +4846,20 @@ LABEL_21:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enableEvents:(BOOL)a3 forCharacteristics:(id)a4 withCompletionHandler:(id)a5 queue:(id)a6
+- (void)_enableEvents:(BOOL)events forCharacteristics:(id)characteristics withCompletionHandler:(id)handler queue:(id)queue
 {
-  v27 = a3;
+  eventsCopy = events;
   v42 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v25 = a5;
-  v10 = a6;
-  v11 = [MEMORY[0x277CBEB18] array];
+  characteristicsCopy = characteristics;
+  handlerCopy = handler;
+  queueCopy = queue;
+  array = [MEMORY[0x277CBEB18] array];
   v12 = dispatch_group_create();
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v9;
+  obj = characteristicsCopy;
   v13 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v13)
   {
@@ -4881,10 +4881,10 @@ LABEL_21:
         v34[1] = 3221225472;
         v34[2] = __91___HAPAccessoryServerBTLE100__enableEvents_forCharacteristics_withCompletionHandler_queue___block_invoke;
         v34[3] = &unk_2786D6538;
-        v35 = v11;
+        v35 = array;
         v36 = v12;
         v18 = MEMORY[0x231885210](v34);
-        [(_HAPAccessoryServerBTLE100 *)self _enableEvent:v27 forCharacteristic:v17 withCompletionHandler:v18 queue:v10];
+        [(_HAPAccessoryServerBTLE100 *)self _enableEvent:eventsCopy forCharacteristic:v17 withCompletionHandler:v18 queue:queueCopy];
 
         ++v16;
       }
@@ -4896,56 +4896,56 @@ LABEL_21:
     while (v14);
   }
 
-  v19 = [(HAPAccessoryServer *)self clientQueue];
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __91___HAPAccessoryServerBTLE100__enableEvents_forCharacteristics_withCompletionHandler_queue___block_invoke_110;
   block[3] = &unk_2786D6588;
   v31 = obj;
-  v32 = v25;
+  v32 = handlerCopy;
   block[4] = self;
-  v29 = v10;
-  v33 = v27;
-  v30 = v11;
+  v29 = queueCopy;
+  v33 = eventsCopy;
+  v30 = array;
   v20 = obj;
-  v21 = v11;
-  v22 = v10;
-  v23 = v25;
-  dispatch_group_notify(v12, v19, block);
+  v21 = array;
+  v22 = queueCopy;
+  v23 = handlerCopy;
+  dispatch_group_notify(v12, clientQueue, block);
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableEvents:(BOOL)a3 forCharacteristics:(id)a4 withCompletionHandler:(id)a5 queue:(id)a6
+- (void)enableEvents:(BOOL)events forCharacteristics:(id)characteristics withCompletionHandler:(id)handler queue:(id)queue
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(HAPAccessoryServer *)self clientQueue];
+  characteristicsCopy = characteristics;
+  handlerCopy = handler;
+  queueCopy = queue;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90___HAPAccessoryServerBTLE100_enableEvents_forCharacteristics_withCompletionHandler_queue___block_invoke;
   block[3] = &unk_2786D6510;
-  v21 = a3;
+  eventsCopy = events;
   block[4] = self;
-  v18 = v10;
-  v19 = v12;
-  v20 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = characteristicsCopy;
+  v19 = queueCopy;
+  v20 = handlerCopy;
+  v14 = queueCopy;
+  v15 = handlerCopy;
+  v16 = characteristicsCopy;
+  dispatch_async(clientQueue, block);
 }
 
-- (BOOL)stopPairingWithError:(id *)a3
+- (BOOL)stopPairingWithError:(id *)error
 {
-  v4 = [(HAPAccessoryServer *)self clientQueue];
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51___HAPAccessoryServerBTLE100_stopPairingWithError___block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(clientQueue, block);
 
   return 1;
 }
@@ -4955,23 +4955,23 @@ LABEL_21:
   v150 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
   v4 = HMFGetOSLogHandle();
-  v122 = self;
+  selfCopy = self;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = HMFGetLogIdentifier();
     [(HAPAccessoryServer *)self identifier];
     v7 = v6 = self;
-    v8 = [(HAPAccessoryServer *)v6 name];
-    v9 = [(_HAPAccessoryServerBTLE100 *)v6 state];
-    v10 = [(_HAPAccessoryServerBTLE100 *)v6 state];
-    if ((v10 - 1) > 0xB)
+    name = [(HAPAccessoryServer *)v6 name];
+    state = [(_HAPAccessoryServerBTLE100 *)v6 state];
+    state2 = [(_HAPAccessoryServerBTLE100 *)v6 state];
+    if ((state2 - 1) > 0xB)
     {
       v11 = @"Unknown State";
     }
 
     else
     {
-      v11 = off_2786D6DD8[v10 - 1];
+      v11 = off_2786D6DD8[state2 - 1];
     }
 
     v12 = v11;
@@ -4980,27 +4980,27 @@ LABEL_21:
     v140 = 2112;
     v141 = v7;
     v142 = 2112;
-    v143 = v8;
+    v143 = name;
     v144 = 2080;
     v145 = "[_HAPAccessoryServerBTLE100 _handlePairingStateMachine]";
     v146 = 2048;
-    v147 = v9;
+    v147 = state;
     v148 = 2112;
     v149 = v12;
     _os_log_impl(&dword_22AADC000, v4, OS_LOG_TYPE_INFO, "%{public}@[BTLE Accessory Server %@ %@] %s with state %lu (%@)", buf, 0x3Eu);
 
-    self = v122;
+    self = selfCopy;
   }
 
   objc_autoreleasePoolPop(v3);
-  v13 = [(_HAPAccessoryServerBTLE100 *)self state];
-  if (v13 > 5)
+  state3 = [(_HAPAccessoryServerBTLE100 *)self state];
+  if (state3 > 5)
   {
-    if (v13 <= 8)
+    if (state3 <= 8)
     {
-      if (v13 != 6)
+      if (state3 != 6)
       {
-        if (v13 != 7)
+        if (state3 != 7)
         {
           [(_HAPAccessoryServerBTLE100 *)self setState:9];
           [(_HAPAccessoryServerBTLE100 *)self _handleHAPServiceDiscovery];
@@ -5017,10 +5017,10 @@ LABEL_119:
       v126 = 0u;
       v123 = 0u;
       v124 = 0u;
-      v74 = [(_HAPAccessoryServerBTLE100 *)self accessoryInfoService];
-      v75 = [v74 characteristics];
+      accessoryInfoService = [(_HAPAccessoryServerBTLE100 *)self accessoryInfoService];
+      characteristics = [accessoryInfoService characteristics];
 
-      v76 = [v75 countByEnumeratingWithState:&v123 objects:v135 count:16];
+      v76 = [characteristics countByEnumeratingWithState:&v123 objects:v135 count:16];
       if (v76)
       {
         v77 = v76;
@@ -5032,57 +5032,57 @@ LABEL_119:
           {
             if (*v124 != v78)
             {
-              objc_enumerationMutation(v75);
+              objc_enumerationMutation(characteristics);
             }
 
             v80 = *(*(&v123 + 1) + 8 * i);
-            v81 = [v80 UUID];
+            uUID = [v80 UUID];
             v82 = [MEMORY[0x277CBE0A0] UUIDWithString:@"00000014-0000-1000-8000-0026BB765291"];
-            v83 = [v81 isEqual:v82];
+            v83 = [uUID isEqual:v82];
 
             if (v83)
             {
-              [(_HAPAccessoryServerBTLE100 *)v122 setIdentifyCharacteristic:v80];
+              [(_HAPAccessoryServerBTLE100 *)selfCopy setIdentifyCharacteristic:v80];
             }
 
             else
             {
-              v84 = [v80 UUID];
+              uUID2 = [v80 UUID];
               v85 = [MEMORY[0x277CBE0A0] UUIDWithString:@"00000021-0000-1000-8000-0026BB765291"];
-              v86 = [v84 isEqual:v85];
+              v86 = [uUID2 isEqual:v85];
 
               if (v86)
               {
-                [(_HAPAccessoryServerBTLE100 *)v122 setModelCharacteristic:v80];
+                [(_HAPAccessoryServerBTLE100 *)selfCopy setModelCharacteristic:v80];
               }
 
               else
               {
-                v87 = [v80 UUID];
+                uUID3 = [v80 UUID];
                 v88 = [MEMORY[0x277CBE0A0] UUIDWithString:@"00000020-0000-1000-8000-0026BB765291"];
-                v89 = [v87 isEqual:v88];
+                v89 = [uUID3 isEqual:v88];
 
                 if (v89)
                 {
-                  [(_HAPAccessoryServerBTLE100 *)v122 setManufacturerCharacteristic:v80];
+                  [(_HAPAccessoryServerBTLE100 *)selfCopy setManufacturerCharacteristic:v80];
                 }
 
                 else
                 {
-                  v90 = [v80 UUID];
+                  uUID4 = [v80 UUID];
                   v91 = [MEMORY[0x277CBE0A0] UUIDWithString:@"00000030-0000-1000-8000-0026BB765291"];
-                  v92 = [v90 isEqual:v91];
+                  v92 = [uUID4 isEqual:v91];
 
                   if (v92)
                   {
-                    [(_HAPAccessoryServerBTLE100 *)v122 setSerialNumberCharacteristic:v80];
+                    [(_HAPAccessoryServerBTLE100 *)selfCopy setSerialNumberCharacteristic:v80];
                   }
 
                   else
                   {
-                    v93 = [v80 UUID];
+                    uUID5 = [v80 UUID];
                     v94 = [MEMORY[0x277CBE0A0] UUIDWithString:@"00000051-0000-1000-8000-0026BB765291"];
-                    v95 = [v93 isEqual:v94];
+                    v95 = [uUID5 isEqual:v94];
 
                     v121 |= v95;
                   }
@@ -5091,7 +5091,7 @@ LABEL_119:
             }
           }
 
-          v77 = [v75 countByEnumeratingWithState:&v123 objects:v135 count:16];
+          v77 = [characteristics countByEnumeratingWithState:&v123 objects:v135 count:16];
         }
 
         while (v77);
@@ -5102,33 +5102,33 @@ LABEL_119:
         v121 = 0;
       }
 
-      self = v122;
-      v107 = [(_HAPAccessoryServerBTLE100 *)v122 identifyCharacteristic];
-      if (!v107)
+      self = selfCopy;
+      identifyCharacteristic = [(_HAPAccessoryServerBTLE100 *)selfCopy identifyCharacteristic];
+      if (!identifyCharacteristic)
       {
         goto LABEL_111;
       }
 
-      v108 = v107;
-      v109 = [(_HAPAccessoryServerBTLE100 *)v122 modelCharacteristic];
-      if (v109)
+      v108 = identifyCharacteristic;
+      modelCharacteristic = [(_HAPAccessoryServerBTLE100 *)selfCopy modelCharacteristic];
+      if (modelCharacteristic)
       {
-        v110 = v109;
-        v111 = [(_HAPAccessoryServerBTLE100 *)v122 manufacturerCharacteristic];
-        if (v111)
+        v110 = modelCharacteristic;
+        manufacturerCharacteristic = [(_HAPAccessoryServerBTLE100 *)selfCopy manufacturerCharacteristic];
+        if (manufacturerCharacteristic)
         {
-          v112 = v111;
-          v113 = [(_HAPAccessoryServerBTLE100 *)v122 serialNumberCharacteristic];
-          v114 = (v113 != 0) & v121;
+          v112 = manufacturerCharacteristic;
+          serialNumberCharacteristic = [(_HAPAccessoryServerBTLE100 *)selfCopy serialNumberCharacteristic];
+          v114 = (serialNumberCharacteristic != 0) & v121;
 
           if (v114)
           {
-            if (![(_HAPAccessoryServerBTLE100 *)v122 unpairedIdentifyRequested])
+            if (![(_HAPAccessoryServerBTLE100 *)selfCopy unpairedIdentifyRequested])
             {
-              if ([(_HAPAccessoryServerBTLE100 *)v122 startPairingRequested])
+              if ([(_HAPAccessoryServerBTLE100 *)selfCopy startPairingRequested])
               {
-                [(_HAPAccessoryServerBTLE100 *)v122 setState:7];
-                [(_HAPAccessoryServerBTLE100 *)v122 _pairSetupStart];
+                [(_HAPAccessoryServerBTLE100 *)selfCopy setState:7];
+                [(_HAPAccessoryServerBTLE100 *)selfCopy _pairSetupStart];
                 goto LABEL_116;
               }
 
@@ -5136,10 +5136,10 @@ LABEL_119:
             }
 
             buf[0] = 1;
-            v14 = [MEMORY[0x277CBEA90] dataWithBytes:buf length:1];
-            v38 = [(HAPAccessoryServerBTLE *)v122 peripheral];
-            v115 = [(_HAPAccessoryServerBTLE100 *)v122 identifyCharacteristic];
-            [v38 writeValue:v14 forCharacteristic:v115 type:0];
+            browser = [MEMORY[0x277CBEA90] dataWithBytes:buf length:1];
+            peripheral = [(HAPAccessoryServerBTLE *)selfCopy peripheral];
+            identifyCharacteristic2 = [(_HAPAccessoryServerBTLE100 *)selfCopy identifyCharacteristic];
+            [peripheral writeValue:browser forCharacteristic:identifyCharacteristic2 type:0];
 
             goto LABEL_39;
           }
@@ -5150,14 +5150,14 @@ LABEL_111:
           if (os_log_type_enabled(v102, OS_LOG_TYPE_ERROR))
           {
             v103 = HMFGetLogIdentifier();
-            v104 = [(HAPAccessoryServer *)v122 identifier];
-            v105 = [(HAPAccessoryServer *)v122 name];
+            identifier = [(HAPAccessoryServer *)selfCopy identifier];
+            name2 = [(HAPAccessoryServer *)selfCopy name];
             *buf = 138543874;
             v139 = v103;
             v140 = 2112;
-            v141 = v104;
+            v141 = identifier;
             v142 = 2112;
-            v143 = v105;
+            v143 = name2;
             v106 = "%{public}@[BTLE Accessory Server %@ %@] Unable to find all accessory info characteristics in the pairing service";
             goto LABEL_113;
           }
@@ -5165,8 +5165,8 @@ LABEL_111:
 LABEL_114:
 
           objc_autoreleasePoolPop(v101);
-          v14 = [(HAPAccessoryServerBTLE *)self browser];
-          [v14 disconnectFromBTLEAccessoryServer:self];
+          browser = [(HAPAccessoryServerBTLE *)self browser];
+          [browser disconnectFromBTLEAccessoryServer:self];
           goto LABEL_115;
         }
       }
@@ -5174,7 +5174,7 @@ LABEL_114:
       goto LABEL_111;
     }
 
-    switch(v13)
+    switch(state3)
     {
       case 9:
         [(_HAPAccessoryServerBTLE100 *)self setState:10];
@@ -5192,20 +5192,20 @@ LABEL_114:
     goto LABEL_87;
   }
 
-  if (v13 > 2)
+  if (state3 > 2)
   {
-    if (v13 != 3)
+    if (state3 != 3)
     {
-      if (v13 != 4)
+      if (state3 != 4)
       {
         [(_HAPAccessoryServerBTLE100 *)self _updateConnectionLifetimeTimer];
 LABEL_15:
         [(_HAPAccessoryServerBTLE100 *)self setState:6];
-        v14 = [(HAPAccessoryServerBTLE *)self peripheral];
-        v15 = [(_HAPAccessoryServerBTLE100 *)self accessoryInfoService];
+        browser = [(HAPAccessoryServerBTLE *)self peripheral];
+        accessoryInfoService2 = [(_HAPAccessoryServerBTLE100 *)self accessoryInfoService];
 LABEL_38:
-        v38 = v15;
-        [v14 discoverCharacteristics:0 forService:v15];
+        peripheral = accessoryInfoService2;
+        [browser discoverCharacteristics:0 forService:accessoryInfoService2];
 LABEL_39:
 
 LABEL_115:
@@ -5233,19 +5233,19 @@ LABEL_115:
       }
 
       v103 = HMFGetLogIdentifier();
-      v104 = [(HAPAccessoryServer *)self identifier];
-      v105 = [(HAPAccessoryServer *)self name];
+      identifier = [(HAPAccessoryServer *)self identifier];
+      name2 = [(HAPAccessoryServer *)self name];
       *buf = 138543874;
       v139 = v103;
       v140 = 2112;
-      v141 = v104;
+      v141 = identifier;
       v142 = 2112;
-      v143 = v105;
+      v143 = name2;
       v106 = "%{public}@[BTLE Accessory Server %@ %@] Unable to read pairing features characteristic";
 LABEL_113:
       _os_log_impl(&dword_22AADC000, v102, OS_LOG_TYPE_ERROR, v106, buf, 0x20u);
 
-      self = v122;
+      self = selfCopy;
       goto LABEL_114;
     }
 
@@ -5253,10 +5253,10 @@ LABEL_113:
     v130 = 0u;
     v127 = 0u;
     v128 = 0u;
-    v48 = [(_HAPAccessoryServerBTLE100 *)self pairingService];
-    v49 = [v48 characteristics];
+    pairingService = [(_HAPAccessoryServerBTLE100 *)self pairingService];
+    characteristics2 = [pairingService characteristics];
 
-    v50 = [v49 countByEnumeratingWithState:&v127 objects:v136 count:16];
+    v50 = [characteristics2 countByEnumeratingWithState:&v127 objects:v136 count:16];
     if (v50)
     {
       v51 = v50;
@@ -5267,84 +5267,84 @@ LABEL_113:
         {
           if (*v128 != v52)
           {
-            objc_enumerationMutation(v49);
+            objc_enumerationMutation(characteristics2);
           }
 
           v54 = *(*(&v127 + 1) + 8 * j);
-          v55 = [v54 UUID];
+          uUID6 = [v54 UUID];
           v56 = [MEMORY[0x277CBE0A0] UUIDWithString:@"0000004C-0000-1000-8000-0026BB765291"];
-          v57 = [v55 isEqual:v56];
+          v57 = [uUID6 isEqual:v56];
 
           if (v57)
           {
-            [(_HAPAccessoryServerBTLE100 *)v122 setPairSetupCharacteristic:v54];
+            [(_HAPAccessoryServerBTLE100 *)selfCopy setPairSetupCharacteristic:v54];
           }
 
           else
           {
-            v58 = [v54 UUID];
+            uUID7 = [v54 UUID];
             v59 = [MEMORY[0x277CBE0A0] UUIDWithString:@"0000004E-0000-1000-8000-0026BB765291"];
-            v60 = [v58 isEqual:v59];
+            v60 = [uUID7 isEqual:v59];
 
             if (v60)
             {
-              [(_HAPAccessoryServerBTLE100 *)v122 setPairVerifyCharacteristic:v54];
+              [(_HAPAccessoryServerBTLE100 *)selfCopy setPairVerifyCharacteristic:v54];
             }
 
             else
             {
-              v61 = [v54 UUID];
+              uUID8 = [v54 UUID];
               v62 = [MEMORY[0x277CBE0A0] UUIDWithString:@"0000004F-0000-1000-8000-0026BB765291"];
-              v63 = [v61 isEqual:v62];
+              v63 = [uUID8 isEqual:v62];
 
               if (v63)
               {
-                [(_HAPAccessoryServerBTLE100 *)v122 setPairingFeaturesCharacteristic:v54];
+                [(_HAPAccessoryServerBTLE100 *)selfCopy setPairingFeaturesCharacteristic:v54];
               }
 
               else
               {
-                v64 = [v54 UUID];
+                uUID9 = [v54 UUID];
                 v65 = [MEMORY[0x277CBE0A0] UUIDWithString:@"00000050-0000-1000-8000-0026BB765291"];
-                v66 = [v64 isEqual:v65];
+                v66 = [uUID9 isEqual:v65];
 
                 if (v66)
                 {
-                  [(_HAPAccessoryServerBTLE100 *)v122 setPairingsCharacteristic:v54];
+                  [(_HAPAccessoryServerBTLE100 *)selfCopy setPairingsCharacteristic:v54];
                 }
               }
             }
           }
         }
 
-        v51 = [v49 countByEnumeratingWithState:&v127 objects:v136 count:16];
+        v51 = [characteristics2 countByEnumeratingWithState:&v127 objects:v136 count:16];
       }
 
       while (v51);
     }
 
-    self = v122;
-    v67 = [(_HAPAccessoryServerBTLE100 *)v122 pairSetupCharacteristic];
-    if (v67)
+    self = selfCopy;
+    pairSetupCharacteristic = [(_HAPAccessoryServerBTLE100 *)selfCopy pairSetupCharacteristic];
+    if (pairSetupCharacteristic)
     {
-      v68 = v67;
-      v69 = [(_HAPAccessoryServerBTLE100 *)v122 pairVerifyCharacteristic];
-      if (v69)
+      v68 = pairSetupCharacteristic;
+      pairVerifyCharacteristic = [(_HAPAccessoryServerBTLE100 *)selfCopy pairVerifyCharacteristic];
+      if (pairVerifyCharacteristic)
       {
-        v70 = v69;
-        v71 = [(_HAPAccessoryServerBTLE100 *)v122 pairingFeaturesCharacteristic];
-        if (v71)
+        v70 = pairVerifyCharacteristic;
+        pairingFeaturesCharacteristic = [(_HAPAccessoryServerBTLE100 *)selfCopy pairingFeaturesCharacteristic];
+        if (pairingFeaturesCharacteristic)
         {
-          v72 = v71;
-          v73 = [(_HAPAccessoryServerBTLE100 *)v122 pairingsCharacteristic];
+          v72 = pairingFeaturesCharacteristic;
+          pairingsCharacteristic = [(_HAPAccessoryServerBTLE100 *)selfCopy pairingsCharacteristic];
 
-          if (v73)
+          if (pairingsCharacteristic)
           {
-            [(_HAPAccessoryServerBTLE100 *)v122 setState:4];
-            [(_HAPAccessoryServerBTLE100 *)v122 _updateConnectionLifetimeTimer];
-            v14 = [(HAPAccessoryServerBTLE *)v122 peripheral];
-            v38 = [(_HAPAccessoryServerBTLE100 *)v122 pairingFeaturesCharacteristic];
-            [v14 readValueForCharacteristic:v38];
+            [(_HAPAccessoryServerBTLE100 *)selfCopy setState:4];
+            [(_HAPAccessoryServerBTLE100 *)selfCopy _updateConnectionLifetimeTimer];
+            browser = [(HAPAccessoryServerBTLE *)selfCopy peripheral];
+            peripheral = [(_HAPAccessoryServerBTLE100 *)selfCopy pairingFeaturesCharacteristic];
+            [browser readValueForCharacteristic:peripheral];
             goto LABEL_39;
           }
 
@@ -5362,21 +5362,21 @@ LABEL_107:
     }
 
     v103 = HMFGetLogIdentifier();
-    v104 = [(HAPAccessoryServer *)v122 identifier];
-    v105 = [(HAPAccessoryServer *)v122 name];
+    identifier = [(HAPAccessoryServer *)selfCopy identifier];
+    name2 = [(HAPAccessoryServer *)selfCopy name];
     *buf = 138543874;
     v139 = v103;
     v140 = 2112;
-    v141 = v104;
+    v141 = identifier;
     v142 = 2112;
-    v143 = v105;
+    v143 = name2;
     v106 = "%{public}@[BTLE Accessory Server %@ %@] Unable to find all pairing characteristics in the pairing service";
     goto LABEL_113;
   }
 
-  if (v13 != 1)
+  if (state3 != 1)
   {
-    if (v13 != 2)
+    if (state3 != 2)
     {
 LABEL_87:
       v96 = objc_autoreleasePoolPush();
@@ -5384,15 +5384,15 @@ LABEL_87:
       if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
       {
         v98 = HMFGetLogIdentifier();
-        v99 = [(_HAPAccessoryServerBTLE100 *)self state];
-        if (v99 - 1 > 0xB)
+        state4 = [(_HAPAccessoryServerBTLE100 *)self state];
+        if (state4 - 1 > 0xB)
         {
           v100 = @"Unknown State";
         }
 
         else
         {
-          v100 = off_2786D6DD8[v99 - 1];
+          v100 = off_2786D6DD8[state4 - 1];
         }
 
         v116 = v100;
@@ -5411,11 +5411,11 @@ LABEL_87:
     v134 = 0u;
     v131 = 0u;
     v132 = 0u;
-    v16 = [(HAPAccessoryServerBTLE *)self peripheral];
-    v17 = [v16 services];
+    peripheral2 = [(HAPAccessoryServerBTLE *)self peripheral];
+    services = [peripheral2 services];
 
-    obj = v17;
-    v18 = [v17 countByEnumeratingWithState:&v131 objects:v137 count:16];
+    obj = services;
+    v18 = [services countByEnumeratingWithState:&v131 objects:v137 count:16];
     if (v18)
     {
       v20 = v18;
@@ -5437,35 +5437,35 @@ LABEL_87:
           if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
           {
             v25 = HMFGetLogIdentifier();
-            v26 = [(HAPAccessoryServer *)self identifier];
-            v27 = [(HAPAccessoryServer *)v122 name];
-            v28 = [v22 UUID];
+            identifier2 = [(HAPAccessoryServer *)self identifier];
+            name3 = [(HAPAccessoryServer *)selfCopy name];
+            uUID10 = [v22 UUID];
             *buf = v118;
             v139 = v25;
             v140 = 2112;
-            v141 = v26;
+            v141 = identifier2;
             v142 = 2112;
-            v143 = v27;
+            v143 = name3;
             v144 = 2112;
-            v145 = v28;
+            v145 = uUID10;
             _os_log_impl(&dword_22AADC000, v24, OS_LOG_TYPE_INFO, "%{public}@[BTLE Accessory Server %@ %@] current service UUID: %@", buf, 0x2Au);
 
-            self = v122;
+            self = selfCopy;
           }
 
           objc_autoreleasePoolPop(v23);
-          v29 = [v22 UUID];
+          uUID11 = [v22 UUID];
           v30 = [MEMORY[0x277CBE0A0] UUIDWithString:@"FED4"];
-          v31 = [v29 isEqual:v30];
+          v31 = [uUID11 isEqual:v30];
 
           if (v31)
           {
             [(_HAPAccessoryServerBTLE100 *)self setPairingService:v22];
           }
 
-          v32 = [v22 UUID];
+          uUID12 = [v22 UUID];
           v33 = [MEMORY[0x277CBE0A0] UUIDWithString:@"FED3"];
-          v34 = [v32 isEqual:v33];
+          v34 = [uUID12 isEqual:v33];
 
           if (v34)
           {
@@ -5479,18 +5479,18 @@ LABEL_87:
       while (v20);
     }
 
-    v35 = [(_HAPAccessoryServerBTLE100 *)self pairingService];
-    if (v35)
+    pairingService2 = [(_HAPAccessoryServerBTLE100 *)self pairingService];
+    if (pairingService2)
     {
-      v36 = v35;
-      v37 = [(_HAPAccessoryServerBTLE100 *)self accessoryInfoService];
+      v36 = pairingService2;
+      accessoryInfoService3 = [(_HAPAccessoryServerBTLE100 *)self accessoryInfoService];
 
-      if (v37)
+      if (accessoryInfoService3)
       {
         [(_HAPAccessoryServerBTLE100 *)self setState:3];
         [(_HAPAccessoryServerBTLE100 *)self _updateConnectionLifetimeTimer];
-        v14 = [(HAPAccessoryServerBTLE *)self peripheral];
-        v15 = [(_HAPAccessoryServerBTLE100 *)self pairingService];
+        browser = [(HAPAccessoryServerBTLE *)self peripheral];
+        accessoryInfoService2 = [(_HAPAccessoryServerBTLE100 *)self pairingService];
         goto LABEL_38;
       }
     }
@@ -5503,32 +5503,32 @@ LABEL_87:
     }
 
     v103 = HMFGetLogIdentifier();
-    v104 = [(HAPAccessoryServer *)self identifier];
-    v105 = [(HAPAccessoryServer *)self name];
+    identifier = [(HAPAccessoryServer *)self identifier];
+    name2 = [(HAPAccessoryServer *)self name];
     *buf = 138543874;
     v139 = v103;
     v140 = 2112;
-    v141 = v104;
+    v141 = identifier;
     v142 = 2112;
-    v143 = v105;
+    v143 = name2;
     v106 = "%{public}@[BTLE Accessory Server %@ %@] Unable to discover pairing service or accessory info service!";
     goto LABEL_113;
   }
 
-  v39 = [(HAPAccessoryServerBTLE *)self peripheral];
-  v40 = [v39 state];
+  peripheral3 = [(HAPAccessoryServerBTLE *)self peripheral];
+  state5 = [peripheral3 state];
 
-  if (!v40)
+  if (!state5)
   {
     [(_HAPAccessoryServerBTLE100 *)self _updateConnectionLifetimeTimer];
     [(_HAPAccessoryServerBTLE100 *)self _setupBTLEConnectionToPeripheral];
     goto LABEL_116;
   }
 
-  v41 = [(HAPAccessoryServerBTLE *)self peripheral];
-  v42 = [v41 state];
+  peripheral4 = [(HAPAccessoryServerBTLE *)self peripheral];
+  state6 = [peripheral4 state];
 
-  if (v42 == 2)
+  if (state6 == 2)
   {
     [(_HAPAccessoryServerBTLE100 *)self setState:2];
     [(_HAPAccessoryServerBTLE100 *)self _updateConnectionLifetimeTimer];
@@ -5537,22 +5537,22 @@ LABEL_87:
     if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
     {
       v45 = HMFGetLogIdentifier();
-      v46 = [(HAPAccessoryServer *)self identifier];
-      v47 = [(HAPAccessoryServer *)v122 name];
+      identifier3 = [(HAPAccessoryServer *)self identifier];
+      name4 = [(HAPAccessoryServer *)selfCopy name];
       *buf = 138543874;
       v139 = v45;
       v140 = 2112;
-      v141 = v46;
+      v141 = identifier3;
       v142 = 2112;
-      v143 = v47;
+      v143 = name4;
       _os_log_impl(&dword_22AADC000, v44, OS_LOG_TYPE_INFO, "%{public}@[BTLE Accessory Server %@ %@] Discovering services", buf, 0x20u);
 
-      self = v122;
+      self = selfCopy;
     }
 
     objc_autoreleasePoolPop(v43);
-    v14 = [(HAPAccessoryServerBTLE *)self peripheral];
-    [v14 discoverServices:0];
+    browser = [(HAPAccessoryServerBTLE *)self peripheral];
+    [browser discoverServices:0];
     goto LABEL_115;
   }
 
@@ -5560,9 +5560,9 @@ LABEL_116:
   v117 = *MEMORY[0x277D85DE8];
 }
 
-- (void)continueAuthAfterValidation:(BOOL)a3
+- (void)continueAuthAfterValidation:(BOOL)validation
 {
-  if (a3)
+  if (validation)
   {
 
     [(_HAPAccessoryServerBTLE100 *)self continuePairingAfterAuthPrompt];
@@ -5573,30 +5573,30 @@ LABEL_116:
     v4 = [MEMORY[0x277CCA9B8] hapErrorWithCode:2 description:@"Pairing Failed." reason:@"User cancelled pairing" suggestion:0 underlyingError:0];
     if ([(_HAPAccessoryServerBTLE100 *)self _delegateRespondsToSelector:sel_accessoryServer_didStopPairingWithError_])
     {
-      v5 = [(HAPAccessoryServer *)self delegateQueue];
+      delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __58___HAPAccessoryServerBTLE100_continueAuthAfterValidation___block_invoke;
       v6[3] = &unk_2786D7050;
       v6[4] = self;
       v7 = v4;
-      dispatch_async(v5, v6);
+      dispatch_async(delegateQueue, v6);
     }
   }
 }
 
-- (BOOL)tryPairingPassword:(id)a3 onboardingSetupPayloadString:(id)a4 error:(id *)a5
+- (BOOL)tryPairingPassword:(id)password onboardingSetupPayloadString:(id)string error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HAPAccessoryServer *)self clientQueue];
+  passwordCopy = password;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __84___HAPAccessoryServerBTLE100_tryPairingPassword_onboardingSetupPayloadString_error___block_invoke;
   v10[3] = &unk_2786D7050;
   v10[4] = self;
-  v11 = v6;
-  v8 = v6;
-  dispatch_async(v7, v10);
+  v11 = passwordCopy;
+  v8 = passwordCopy;
+  dispatch_async(clientQueue, v10);
 
   return 1;
 }
@@ -5627,14 +5627,14 @@ LABEL_116:
     if (v10)
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HAPAccessoryServer *)self identifier];
-      v13 = [(HAPAccessoryServer *)self name];
+      identifier = [(HAPAccessoryServer *)self identifier];
+      name = [(HAPAccessoryServer *)self name];
       *buf = 138543874;
       v29 = v11;
       v30 = 2112;
-      v31 = v12;
+      v31 = identifier;
       v32 = 2112;
-      v33 = v13;
+      v33 = name;
       _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_INFO, "%{public}@[BTLE Accessory Server %@ %@] Accessory supports auth, skipping prompting user...", buf, 0x20u);
     }
 
@@ -5647,14 +5647,14 @@ LABEL_116:
     if (v10)
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [(HAPAccessoryServer *)self identifier];
-      v16 = [(HAPAccessoryServer *)self name];
+      identifier2 = [(HAPAccessoryServer *)self identifier];
+      name2 = [(HAPAccessoryServer *)self name];
       *buf = 138543874;
       v29 = v14;
       v30 = 2112;
-      v31 = v15;
+      v31 = identifier2;
       v32 = 2112;
-      v33 = v16;
+      v33 = name2;
       _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_INFO, "%{public}@[BTLE Accessory Server %@ %@] Accessory doesn't support auth, prompting user...", buf, 0x20u);
     }
 
@@ -5662,11 +5662,11 @@ LABEL_116:
     if ([(_HAPAccessoryServerBTLE100 *)self _delegateRespondsToSelector:sel_accessoryServer_requestUserPermission_accessoryInfo_error_])
     {
       v17 = [HAPAccessoryInfo alloc];
-      v18 = [(HAPAccessoryServer *)self name];
-      v19 = [(HAPAccessoryServer *)self category];
-      v20 = [(HAPAccessoryInfo *)v17 initWithName:v18 manufacturer:0 modelName:0 category:v19 certificationStatus:0 denylisted:0 ppid:0];
+      name3 = [(HAPAccessoryServer *)self name];
+      category = [(HAPAccessoryServer *)self category];
+      v20 = [(HAPAccessoryInfo *)v17 initWithName:name3 manufacturer:0 modelName:0 category:category certificationStatus:0 denylisted:0 ppid:0];
 
-      v21 = [(HAPAccessoryServer *)self delegateQueue];
+      delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __49___HAPAccessoryServerBTLE100__checkForAuthPrompt__block_invoke;
@@ -5674,20 +5674,20 @@ LABEL_116:
       block[4] = self;
       v27 = v20;
       v22 = v20;
-      dispatch_async(v21, block);
+      dispatch_async(delegateQueue, block);
     }
 
     else
     {
       if ([(_HAPAccessoryServerBTLE100 *)self _delegateRespondsToSelector:sel_accessoryServer_didStopPairingWithError_])
       {
-        v23 = [(HAPAccessoryServer *)self delegateQueue];
+        delegateQueue2 = [(HAPAccessoryServer *)self delegateQueue];
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
         v25[2] = __49___HAPAccessoryServerBTLE100__checkForAuthPrompt__block_invoke_2;
         v25[3] = &unk_2786D6CA0;
         v25[4] = self;
-        dispatch_async(v23, v25);
+        dispatch_async(delegateQueue2, v25);
       }
 
       [(_HAPAccessoryServerBTLE100 *)self setStartPairingRequested:0];
@@ -5699,53 +5699,53 @@ LABEL_116:
 
 - (void)continuePairingAfterAuthPrompt
 {
-  v3 = [(HAPAccessoryServer *)self clientQueue];
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60___HAPAccessoryServerBTLE100_continuePairingAfterAuthPrompt__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
-- (void)startPairingWithRequest:(id)a3
+- (void)startPairingWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServer *)self clientQueue];
+  requestCopy = request;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54___HAPAccessoryServerBTLE100_startPairingWithRequest___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = requestCopy;
+  v6 = requestCopy;
+  dispatch_async(clientQueue, v7);
 }
 
-- (void)configureCharacteristics:(id)a3 queue:(id)a4 withCompletionHandler:(id)a5
+- (void)configureCharacteristics:(id)characteristics queue:(id)queue withCompletionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = [(HAPAccessoryServer *)self clientQueue];
+  handlerCopy = handler;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83___HAPAccessoryServerBTLE100_configureCharacteristics_queue_withCompletionHandler___block_invoke;
   block[3] = &unk_2786D6490;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  dispatch_async(clientQueue, block);
 }
 
-- (void)generateBroadcastKey:(unsigned __int8)a3 queue:(id)a4 withCompletionHandler:(id)a5
+- (void)generateBroadcastKey:(unsigned __int8)key queue:(id)queue withCompletionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = [(HAPAccessoryServer *)self clientQueue];
+  handlerCopy = handler;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79___HAPAccessoryServerBTLE100_generateBroadcastKey_queue_withCompletionHandler___block_invoke;
   block[3] = &unk_2786D6490;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  dispatch_async(clientQueue, block);
 }
 
 - (void)_createPrimaryAccessoryFromAdvertisementData
@@ -5755,14 +5755,14 @@ LABEL_116:
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:1];
   v5 = [(HAPAccessory *)v3 initWithServer:self instanceID:v4];
 
-  v6 = [(HAPAccessoryServer *)self name];
-  [(HAPAccessory *)v5 setName:v6];
+  name = [(HAPAccessoryServer *)self name];
+  [(HAPAccessory *)v5 setName:name];
 
-  v7 = [(HAPAccessoryServer *)self identifier];
-  [(HAPAccessory *)v5 setIdentifier:v7];
+  identifier = [(HAPAccessoryServer *)self identifier];
+  [(HAPAccessory *)v5 setIdentifier:identifier];
 
-  v8 = [(HAPAccessoryServer *)self identifier];
-  [(HAPAccessory *)v5 setServerIdentifier:v8];
+  identifier2 = [(HAPAccessoryServer *)self identifier];
+  [(HAPAccessory *)v5 setServerIdentifier:identifier2];
 
   [(HAPAccessoryServer *)self setPrimaryAccessory:v5];
   v11[0] = v5;
@@ -5775,15 +5775,15 @@ LABEL_116:
 - (NSString)description
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v4 = [(HAPAccessoryServer *)self clientQueue];
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41___HAPAccessoryServerBTLE100_description__block_invoke;
   v8[3] = &unk_2786D7050;
   v5 = v3;
   v9 = v5;
-  v10 = self;
-  dispatch_sync(v4, v8);
+  selfCopy = self;
+  dispatch_sync(clientQueue, v8);
 
   v6 = v5;
   return v5;
@@ -5798,8 +5798,8 @@ LABEL_116:
     self->_pairingSession = 0;
   }
 
-  v4 = [(HAPAccessoryServerBTLE *)self peripheral];
-  [v4 setDelegate:0];
+  peripheral = [(HAPAccessoryServerBTLE *)self peripheral];
+  [peripheral setDelegate:0];
 
   v5.receiver = self;
   v5.super_class = _HAPAccessoryServerBTLE100;
@@ -5809,23 +5809,23 @@ LABEL_116:
 - (void)_resetState
 {
   [(_HAPAccessoryServerBTLE100 *)self setState:1];
-  v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-  [(_HAPAccessoryServerBTLE100 *)self setBtleServiceToHAPServiceMap:v3];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  [(_HAPAccessoryServerBTLE100 *)self setBtleServiceToHAPServiceMap:strongToStrongObjectsMapTable];
 
-  v4 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-  [(_HAPAccessoryServerBTLE100 *)self setBtleCharacteristicToHAPCharacteristicMap:v4];
+  strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  [(_HAPAccessoryServerBTLE100 *)self setBtleCharacteristicToHAPCharacteristicMap:strongToStrongObjectsMapTable2];
 
-  v5 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-  [(_HAPAccessoryServerBTLE100 *)self setHapCharacteristicReadCompletionQueues:v5];
+  strongToStrongObjectsMapTable3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  [(_HAPAccessoryServerBTLE100 *)self setHapCharacteristicReadCompletionQueues:strongToStrongObjectsMapTable3];
 
-  v6 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-  [(_HAPAccessoryServerBTLE100 *)self setHapCharacteristicWriteCompletionQueues:v6];
+  strongToStrongObjectsMapTable4 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  [(_HAPAccessoryServerBTLE100 *)self setHapCharacteristicWriteCompletionQueues:strongToStrongObjectsMapTable4];
 
-  v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-  [(_HAPAccessoryServerBTLE100 *)self setHapCharacteristicEnableEventCompletionQueues:v7];
+  strongToStrongObjectsMapTable5 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  [(_HAPAccessoryServerBTLE100 *)self setHapCharacteristicEnableEventCompletionQueues:strongToStrongObjectsMapTable5];
 
-  v8 = [MEMORY[0x277CBEB18] array];
-  [(_HAPAccessoryServerBTLE100 *)self setAddRemovePairingOperationsQueue:v8];
+  array = [MEMORY[0x277CBEB18] array];
+  [(_HAPAccessoryServerBTLE100 *)self setAddRemovePairingOperationsQueue:array];
 
   [(_HAPAccessoryServerBTLE100 *)self setPairingService:0];
   [(_HAPAccessoryServerBTLE100 *)self setPairingsCharacteristic:0];
@@ -5845,12 +5845,12 @@ LABEL_116:
   [(_HAPAccessoryServerBTLE100 *)self setStartPairingRequested:0];
   [(_HAPAccessoryServerBTLE100 *)self setRemoveOnDisconnect:[(_HAPAccessoryServerBTLE100 *)self unpairedIdentifyRequested]^ 1];
   [(_HAPAccessoryServerBTLE100 *)self setUnpairedIdentifyRequested:0];
-  v9 = [(_HAPAccessoryServerBTLE100 *)self connectionLifetimeTimer];
+  connectionLifetimeTimer = [(_HAPAccessoryServerBTLE100 *)self connectionLifetimeTimer];
 
-  if (v9)
+  if (connectionLifetimeTimer)
   {
-    v10 = [(_HAPAccessoryServerBTLE100 *)self connectionLifetimeTimer];
-    dispatch_source_cancel(v10);
+    connectionLifetimeTimer2 = [(_HAPAccessoryServerBTLE100 *)self connectionLifetimeTimer];
+    dispatch_source_cancel(connectionLifetimeTimer2);
 
     [(_HAPAccessoryServerBTLE100 *)self setConnectionLifetimeTimer:0];
   }
@@ -5869,36 +5869,36 @@ LABEL_116:
   [(_HAPAccessoryServerBTLE100 *)self setSecuritySessionOpening:0];
 }
 
-- (_HAPAccessoryServerBTLE100)initWithPeripheral:(id)a3 name:(id)a4 pairingUsername:(id)a5 statusFlags:(id)a6 stateNumber:(id)a7 stateChanged:(BOOL)a8 connectReason:(unsigned __int8)a9 configNumber:(id)a10 category:(id)a11 setupHash:(id)a12 connectionIdleTime:(unsigned __int8)a13 browser:(id)a14 keyStore:(id)a15 whbStableIdentifier:(id)a16
+- (_HAPAccessoryServerBTLE100)initWithPeripheral:(id)peripheral name:(id)name pairingUsername:(id)username statusFlags:(id)flags stateNumber:(id)number stateChanged:(BOOL)changed connectReason:(unsigned __int8)reason configNumber:(id)self0 category:(id)self1 setupHash:(id)self2 connectionIdleTime:(unsigned __int8)self3 browser:(id)self4 keyStore:(id)self5 whbStableIdentifier:(id)self6
 {
-  v46 = a8;
+  changedCopy = changed;
   v59 = *MEMORY[0x277D85DE8];
-  v48 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = v22;
-  v25 = a10;
-  v26 = a11;
-  v27 = a12;
-  v28 = a14;
-  v29 = a15;
-  v30 = a16;
-  v52 = v26;
-  v53 = v25;
-  v50 = v29;
-  v51 = v28;
-  v49 = v30;
+  peripheralCopy = peripheral;
+  nameCopy = name;
+  usernameCopy = username;
+  flagsCopy = flags;
+  numberCopy = number;
+  v24 = flagsCopy;
+  configNumberCopy = configNumber;
+  categoryCopy = category;
+  hashCopy = hash;
+  browserCopy = browser;
+  storeCopy = store;
+  identifierCopy = identifier;
+  v52 = categoryCopy;
+  v53 = configNumberCopy;
+  v50 = storeCopy;
+  v51 = browserCopy;
+  v49 = identifierCopy;
   if (v24)
   {
     v54.receiver = self;
     v54.super_class = _HAPAccessoryServerBTLE100;
-    v45 = v29;
-    v44 = v28;
-    v31 = v27;
-    v32 = v48;
-    v33 = [(HAPAccessoryServerBTLE *)&v54 initWithPeripheral:v48 name:v20 pairingUsername:v21 statusFlags:v24 stateNumber:v23 stateChanged:v46 connectReason:a9 configNumber:v25 category:v26 setupHash:v27 connectionIdleTime:a13 browser:v44 keyStore:v45 whbStableIdentifier:v30];
+    v45 = storeCopy;
+    v44 = browserCopy;
+    v31 = hashCopy;
+    v32 = peripheralCopy;
+    v33 = [(HAPAccessoryServerBTLE *)&v54 initWithPeripheral:peripheralCopy name:nameCopy pairingUsername:usernameCopy statusFlags:v24 stateNumber:numberCopy stateChanged:changedCopy connectReason:reason configNumber:configNumberCopy category:categoryCopy setupHash:hashCopy connectionIdleTime:time browser:v44 keyStore:v45 whbStableIdentifier:identifierCopy];
     v34 = v33;
     if (v33)
     {
@@ -5911,14 +5911,14 @@ LABEL_116:
       [(_HAPAccessoryServerBTLE100 *)v34 _createPrimaryAccessoryFromAdvertisementData];
     }
 
-    v37 = v34;
-    v38 = v37;
+    selfCopy = v34;
+    v38 = selfCopy;
   }
 
   else
   {
-    v37 = self;
-    v32 = v48;
+    selfCopy = self;
+    v32 = peripheralCopy;
     v39 = objc_autoreleasePoolPush();
     v40 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -5927,45 +5927,45 @@ LABEL_116:
       *buf = 138543618;
       v56 = v41;
       v57 = 2112;
-      v58 = v21;
+      v58 = usernameCopy;
       _os_log_impl(&dword_22AADC000, v40, OS_LOG_TYPE_ERROR, "%{public}@[HAPAccessoryServerBTLE %@] Missing required parameter 'inStatusFlags'", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v39);
     v38 = 0;
-    v31 = v27;
+    v31 = hashCopy;
   }
 
   v42 = *MEMORY[0x277D85DE8];
   return v38;
 }
 
-+ (id)_convertFromBTLEToHAPUUID:(id)a3
++ (id)_convertFromBTLEToHAPUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[HAPMetadata getSharedInstance];
-  v5 = [v4 btleToServiceType:v3];
+  v5 = [v4 btleToServiceType:dCopy];
   if (!v5)
   {
-    v5 = v3;
+    v5 = dCopy;
   }
 
   return v5;
 }
 
-+ (id)deserializeCharacteristicReadData:(id)a3 characteristicFormat:(unint64_t)a4 supportsAdditionalAuthentication:(BOOL)a5 error:(id *)a6
++ (id)deserializeCharacteristicReadData:(id)data characteristicFormat:(unint64_t)format supportsAdditionalAuthentication:(BOOL)authentication error:(id *)error
 {
-  v7 = a5;
+  authenticationCopy = authentication;
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = v9;
-  v11 = v9;
-  if (!v7)
+  dataCopy = data;
+  v10 = dataCopy;
+  v11 = dataCopy;
+  if (!authenticationCopy)
   {
     goto LABEL_9;
   }
 
-  [v9 bytes];
+  [dataCopy bytes];
   [v10 bytes];
   [v10 length];
   if (!TLV8GetBytes())
@@ -5979,7 +5979,7 @@ LABEL_116:
 
 LABEL_9:
     v16 = +[HAPDataValueTransformer defaultDataValueTransformer];
-    v15 = [v16 reverseTransformedValue:v11 format:a4 error:a6];
+    v15 = [v16 reverseTransformedValue:v11 format:format error:error];
 
     goto LABEL_10;
   }
@@ -5996,10 +5996,10 @@ LABEL_4:
   }
 
   objc_autoreleasePoolPop(v12);
-  if (a6)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:-6737 userInfo:0];
-    *a6 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -6014,15 +6014,15 @@ LABEL_10:
   return v15;
 }
 
-+ (id)serializeCharacteristicWriteValue:(id)a3 characteristicFormat:(unint64_t)a4 supportsAdditionalAuthentication:(BOOL)a5 authenticationData:(id)a6 error:(id *)a7
++ (id)serializeCharacteristicWriteValue:(id)value characteristicFormat:(unint64_t)format supportsAdditionalAuthentication:(BOOL)authentication authenticationData:(id)data error:(id *)error
 {
-  v9 = a5;
+  authenticationCopy = authentication;
   v33 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
+  valueCopy = value;
+  dataCopy = data;
   v13 = +[HAPDataValueTransformer defaultDataValueTransformer];
   v29 = 0;
-  v14 = [v13 transformedValue:v11 format:a4 error:&v29];
+  v14 = [v13 transformedValue:valueCopy format:format error:&v29];
   v15 = v29;
 
   if (v15)
@@ -6035,19 +6035,19 @@ LABEL_10:
       LODWORD(buf[0]) = 138543874;
       *(buf + 4) = v18;
       WORD6(buf[0]) = 2112;
-      *(buf + 14) = v11;
+      *(buf + 14) = valueCopy;
       WORD3(buf[1]) = 2112;
       *(&buf[1] + 1) = v15;
       _os_log_impl(&dword_22AADC000, v17, OS_LOG_TYPE_ERROR, "%{public}@[HAPAccessoryServerBTLE] Failed to transform the write value '%@' with error: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v16);
-    if (a7)
+    if (error)
     {
       v19 = v15;
 LABEL_6:
       v20 = 0;
-      *a7 = v19;
+      *error = v19;
       goto LABEL_21;
     }
 
@@ -6058,9 +6058,9 @@ LABEL_19:
 
   v21 = v14;
   v22 = v21;
-  if (v9)
+  if (authenticationCopy)
   {
-    v23 = v12;
+    v23 = dataCopy;
     memset(buf, 0, sizeof(buf));
     v30 = 0;
     v31 = 0;
@@ -6095,7 +6095,7 @@ LABEL_19:
       }
 
       objc_autoreleasePoolPop(v24);
-      if (a7)
+      if (error)
       {
         v19 = [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:-6737 userInfo:0];
         goto LABEL_6;

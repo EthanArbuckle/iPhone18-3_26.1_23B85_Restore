@@ -1,22 +1,22 @@
 @interface MPNowPlayingContentItemRemoteArtwork
-- (BOOL)isEqual:(id)a3;
-- (MPNowPlayingContentItemRemoteArtwork)initWithArtworkURLString:(id)a3 templateData:(id)a4;
-- (MPNowPlayingContentItemRemoteArtwork)initWithMediaRemoteRemoteArtwork:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MPNowPlayingContentItemRemoteArtwork)initWithArtworkURLString:(id)string templateData:(id)data;
+- (MPNowPlayingContentItemRemoteArtwork)initWithMediaRemoteRemoteArtwork:(id)artwork;
 - (unint64_t)hash;
 @end
 
 @implementation MPNowPlayingContentItemRemoteArtwork
 
-- (MPNowPlayingContentItemRemoteArtwork)initWithMediaRemoteRemoteArtwork:(id)a3
+- (MPNowPlayingContentItemRemoteArtwork)initWithMediaRemoteRemoteArtwork:(id)artwork
 {
-  v5 = a3;
+  artworkCopy = artwork;
   v9.receiver = self;
   v9.super_class = MPNowPlayingContentItemRemoteArtwork;
   v6 = [(MPNowPlayingContentItemRemoteArtwork *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaRemoteRemoteArtwork, a3);
+    objc_storeStrong(&v6->_mediaRemoteRemoteArtwork, artwork);
   }
 
   return v7;
@@ -45,15 +45,15 @@
   v82 = v3 ^ 0x6C7967656E657261;
   v8 = v5 ^ 0x7465646279746573;
   v83 = v5 ^ 0x7465646279746573;
-  v9 = [(MPNowPlayingContentItemRemoteArtwork *)self artworkURLString];
-  v10 = [v9 UTF8String];
-  v11 = [v9 length];
+  artworkURLString = [(MPNowPlayingContentItemRemoteArtwork *)self artworkURLString];
+  uTF8String = [artworkURLString UTF8String];
+  v11 = [artworkURLString length];
   if (v11 >= 8)
   {
     v12 = v11 & 0xFFFFFFFFFFFFFFF8;
     do
     {
-      v13 = *v10++;
+      v13 = *uTF8String++;
       v14 = (v4 + v6) ^ __ROR8__(v6, 51);
       v15 = v7 + (v8 ^ v13);
       v16 = __ROR8__(v8 ^ v13, 48);
@@ -92,8 +92,8 @@ LABEL_5:
   v20 = v11;
   do
   {
-    v21 = *v10;
-    v10 = (v10 + 1);
+    v21 = *uTF8String;
+    uTF8String = (uTF8String + 1);
     v19 |= v21 << v18;
     v18 += 8;
     --v20;
@@ -104,9 +104,9 @@ LABEL_5:
 LABEL_10:
   *&v84 = v22;
 
-  v23 = [(MPNowPlayingContentItemRemoteArtwork *)self artworkURLTemplateData];
-  v24 = [v23 bytes];
-  v25 = [v23 length];
+  artworkURLTemplateData = [(MPNowPlayingContentItemRemoteArtwork *)self artworkURLTemplateData];
+  bytes = [artworkURLTemplateData bytes];
+  v25 = [artworkURLTemplateData length];
   v26 = HIBYTE(v22);
   v27 = HIBYTE(v22) & 7;
   if (v27)
@@ -119,7 +119,7 @@ LABEL_10:
     }
 
     v30 = 8 * v27;
-    v31 = v24;
+    v31 = bytes;
     v32 = v22 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -141,7 +141,7 @@ LABEL_10:
     v4 = v37 ^ v32;
     v80 = v37 ^ v32;
     v81 = v6;
-    v24 = (v24 + v28);
+    bytes = (bytes + v28);
     *&v84 = (v28 + v26) << 56;
     v25 = v29;
   }
@@ -150,7 +150,7 @@ LABEL_10:
   {
     do
     {
-      v38 = *v24++;
+      v38 = *bytes++;
       v39 = (v4 + v6) ^ __ROR8__(v6, 51);
       v40 = v7 + (v8 ^ v38);
       v41 = __ROR8__(v8 ^ v38, 48);
@@ -179,8 +179,8 @@ LABEL_18:
     v45 = v25;
     do
     {
-      v46 = *v24;
-      v24 = (v24 + 1);
+      v46 = *bytes;
+      bytes = (bytes + 1);
       v44 |= v46 << v43;
       v43 += 8;
       --v45;
@@ -252,10 +252,10 @@ LABEL_25:
   return v95[1];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -265,21 +265,21 @@ LABEL_25:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MPNowPlayingContentItemRemoteArtwork *)self artworkURLString];
-      v7 = [(MPNowPlayingContentItemRemoteArtwork *)v5 artworkURLString];
-      if (v6 == v7 || [v6 isEqual:v7])
+      v5 = equalCopy;
+      artworkURLString = [(MPNowPlayingContentItemRemoteArtwork *)self artworkURLString];
+      artworkURLString2 = [(MPNowPlayingContentItemRemoteArtwork *)v5 artworkURLString];
+      if (artworkURLString == artworkURLString2 || [artworkURLString isEqual:artworkURLString2])
       {
-        v8 = [(MPNowPlayingContentItemRemoteArtwork *)self artworkURLTemplateData];
-        v9 = [(MPNowPlayingContentItemRemoteArtwork *)v5 artworkURLTemplateData];
-        if (v8 == v9)
+        artworkURLTemplateData = [(MPNowPlayingContentItemRemoteArtwork *)self artworkURLTemplateData];
+        artworkURLTemplateData2 = [(MPNowPlayingContentItemRemoteArtwork *)v5 artworkURLTemplateData];
+        if (artworkURLTemplateData == artworkURLTemplateData2)
         {
           v10 = 1;
         }
 
         else
         {
-          v10 = [v8 isEqual:v9];
+          v10 = [artworkURLTemplateData isEqual:artworkURLTemplateData2];
         }
       }
 
@@ -298,12 +298,12 @@ LABEL_25:
   return v10;
 }
 
-- (MPNowPlayingContentItemRemoteArtwork)initWithArtworkURLString:(id)a3 templateData:(id)a4
+- (MPNowPlayingContentItemRemoteArtwork)initWithArtworkURLString:(id)string templateData:(id)data
 {
   v6 = MEMORY[0x1E69B0AD8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithArtworkURLString:v8 templateData:v7];
+  dataCopy = data;
+  stringCopy = string;
+  v9 = [[v6 alloc] initWithArtworkURLString:stringCopy templateData:dataCopy];
 
   v10 = [(MPNowPlayingContentItemRemoteArtwork *)self initWithMediaRemoteRemoteArtwork:v9];
   return v10;

@@ -1,26 +1,26 @@
 @interface PGWrapperMusicForTopicCacher
-+ (BOOL)cacheMusicWithCache:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-+ (void)prefetchCuratedSongLibraryAssetsWithProgressReporter:(id)a3 completionHandler:(id)a4;
++ (BOOL)cacheMusicWithCache:(id)cache progressReporter:(id)reporter error:(id *)error;
++ (void)prefetchCuratedSongLibraryAssetsWithProgressReporter:(id)reporter completionHandler:(id)handler;
 - (PGWrapperMusicForTopicCacher)init;
 @end
 
 @implementation PGWrapperMusicForTopicCacher
 
-+ (void)prefetchCuratedSongLibraryAssetsWithProgressReporter:(id)a3 completionHandler:(id)a4
++ (void)prefetchCuratedSongLibraryAssetsWithProgressReporter:(id)reporter completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   _Block_copy(v5);
-  v6 = a3;
-  sub_22F28B894(v6, v5);
+  reporterCopy = reporter;
+  sub_22F28B894(reporterCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }
 
-+ (BOOL)cacheMusicWithCache:(id)a3 progressReporter:(id)a4 error:(id *)a5
++ (BOOL)cacheMusicWithCache:(id)cache progressReporter:(id)reporter error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  sub_22F28AC68(v6, v7);
+  cacheCopy = cache;
+  reporterCopy = reporter;
+  sub_22F28AC68(cacheCopy, reporterCopy);
 
   return 1;
 }

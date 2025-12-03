@@ -1,44 +1,44 @@
 @interface FontRegistrationInfo
-+ (id)dictionaryFileURLForTargetDirectoryURL:(id)a3;
-- (BOOL)isKnownDestinationFileURL:(id)a3 uuid:(id *)a4;
-- (BOOL)isKnownFontInfo:(id)a3;
-- (BOOL)isKnownSourceFileURL:(id)a3 uuid:(id *)a4;
-- (BOOL)isKnownUserSpecifiedInfo:(id)a3;
-- (FontRegistrationInfo)initWithTargetDirectoryURL:(id)a3;
-- (id)externalizeFontInfo:(id)a3;
-- (id)fontInfoForUUID:(id)a3;
-- (id)internalizeFontInfo:(id)a3;
-- (id)souceFontFileURLStringForUUID:(id)a3;
-- (id)subpathForAppBundlePath:(id)a3;
-- (id)uuidNameForFontInfo:(id)a3;
-- (id)uuidsForUserInfo:(id)a3;
++ (id)dictionaryFileURLForTargetDirectoryURL:(id)l;
+- (BOOL)isKnownDestinationFileURL:(id)l uuid:(id *)uuid;
+- (BOOL)isKnownFontInfo:(id)info;
+- (BOOL)isKnownSourceFileURL:(id)l uuid:(id *)uuid;
+- (BOOL)isKnownUserSpecifiedInfo:(id)info;
+- (FontRegistrationInfo)initWithTargetDirectoryURL:(id)l;
+- (id)externalizeFontInfo:(id)info;
+- (id)fontInfoForUUID:(id)d;
+- (id)internalizeFontInfo:(id)info;
+- (id)souceFontFileURLStringForUUID:(id)d;
+- (id)subpathForAppBundlePath:(id)path;
+- (id)uuidNameForFontInfo:(id)info;
+- (id)uuidsForUserInfo:(id)info;
 - (void)update;
 @end
 
 @implementation FontRegistrationInfo
 
-+ (id)dictionaryFileURLForTargetDirectoryURL:(id)a3
++ (id)dictionaryFileURLForTargetDirectoryURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 lastPathComponent];
-  v5 = [v3 URLByDeletingLastPathComponent];
+  lCopy = l;
+  lastPathComponent = [lCopy lastPathComponent];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
 
-  v6 = [v5 URLByDeletingLastPathComponent];
+  v5URLByDeletingLastPathComponent = [uRLByDeletingLastPathComponent URLByDeletingLastPathComponent];
 
-  v7 = [NSString stringWithFormat:@"%@.plist", v4];
-  v8 = [v6 URLByAppendingPathComponent:v7];
+  v7 = [NSString stringWithFormat:@"%@.plist", lastPathComponent];
+  v8 = [v5URLByDeletingLastPathComponent URLByAppendingPathComponent:v7];
 
   return v8;
 }
 
-- (id)internalizeFontInfo:(id)a3
+- (id)internalizeFontInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
+  infoCopy = info;
+  v4 = [infoCopy mutableCopy];
   v5 = [v4 objectForKey:@"CTFontIgnoreURLLocationAttribute"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     [v4 removeObjectForKey:@"CTFontIgnoreURLLocationAttribute"];
     [v4 removeObjectForKey:@"NSCTFontFileURLAttribute"];
@@ -47,12 +47,12 @@
 
   else
   {
-    v7 = [v3 objectForKey:@"NSCTFontFileURLAttribute"];
+    v7 = [infoCopy objectForKey:@"NSCTFontFileURLAttribute"];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 absoluteString];
-      [v4 setObject:v9 forKey:@"NSCTFontFileURLAttribute"];
+      absoluteString = [v7 absoluteString];
+      [v4 setObject:absoluteString forKey:@"NSCTFontFileURLAttribute"];
     }
   }
 
@@ -61,11 +61,11 @@
   return v4;
 }
 
-- (id)externalizeFontInfo:(id)a3
+- (id)externalizeFontInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  v5 = [v3 objectForKey:@"NSCTFontFileURLAttribute"];
+  infoCopy = info;
+  v4 = [infoCopy mutableCopy];
+  v5 = [infoCopy objectForKey:@"NSCTFontFileURLAttribute"];
 
   if (v5)
   {
@@ -76,23 +76,23 @@
   return v4;
 }
 
-- (FontRegistrationInfo)initWithTargetDirectoryURL:(id)a3
+- (FontRegistrationInfo)initWithTargetDirectoryURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v23.receiver = self;
   v23.super_class = FontRegistrationInfo;
   v6 = [(FontRegistrationInfo *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_targetDirectoryURL, a3);
-    v8 = [objc_opt_class() dictionaryFileURLForTargetDirectoryURL:v5];
+    objc_storeStrong(&v6->_targetDirectoryURL, l);
+    v8 = [objc_opt_class() dictionaryFileURLForTargetDirectoryURL:lCopy];
     sourceDictFileURL = v7->_sourceDictFileURL;
     v7->_sourceDictFileURL = v8;
 
     v10 = +[NSFileManager defaultManager];
-    v11 = [(NSURL *)v7->_sourceDictFileURL path];
-    v12 = [v10 fileExistsAtPath:v11];
+    path = [(NSURL *)v7->_sourceDictFileURL path];
+    v12 = [v10 fileExistsAtPath:path];
 
     if (v12)
     {
@@ -107,8 +107,8 @@
       [v13 close];
       if (v15)
       {
-        v17 = [(NSURL *)v7->_sourceDictFileURL path];
-        v21 = [v15 domain];
+        path2 = [(NSURL *)v7->_sourceDictFileURL path];
+        domain = [v15 domain];
         [v15 code];
         FSLog_Error();
       }
@@ -125,33 +125,33 @@
   return v7;
 }
 
-- (id)uuidNameForFontInfo:(id)a3
+- (id)uuidNameForFontInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"NSCTFontFileURLAttribute"];
+  infoCopy = info;
+  v5 = [infoCopy objectForKey:@"NSCTFontFileURLAttribute"];
   v13 = 0;
   v6 = [(FontRegistrationInfo *)self isKnownSourceFileURL:v5 uuid:&v13];
   v7 = v13;
   if ((v6 & 1) == 0)
   {
     v8 = +[NSUUID UUID];
-    v9 = [v8 UUIDString];
+    uUIDString = [v8 UUIDString];
 
     self->_modified = 1;
     uuidToFontInfo = self->_uuidToFontInfo;
-    v11 = [(FontRegistrationInfo *)self internalizeFontInfo:v4];
-    [(NSMutableDictionary *)uuidToFontInfo setObject:v11 forKey:v9];
+    v11 = [(FontRegistrationInfo *)self internalizeFontInfo:infoCopy];
+    [(NSMutableDictionary *)uuidToFontInfo setObject:v11 forKey:uUIDString];
 
-    v7 = v9;
+    v7 = uUIDString;
   }
 
   return v7;
 }
 
-- (id)uuidsForUserInfo:(id)a3
+- (id)uuidsForUserInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     v5 = objc_opt_new();
     uuidToFontInfo = self->_uuidToFontInfo;
@@ -159,7 +159,7 @@
     v11[1] = 3221225472;
     v11[2] = sub_10000848C;
     v11[3] = &unk_100010410;
-    v12 = v4;
+    v12 = infoCopy;
     v7 = v5;
     v13 = v7;
     [(NSMutableDictionary *)uuidToFontInfo enumerateKeysAndObjectsUsingBlock:v11];
@@ -175,18 +175,18 @@
   return v9;
 }
 
-- (id)subpathForAppBundlePath:(id)a3
+- (id)subpathForAppBundlePath:(id)path
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@".app/"];
+  pathCopy = path;
+  v4 = [pathCopy rangeOfString:@".app/"];
   if (v5)
   {
-    v6 = [v3 substringFromIndex:v4 + 5];
+    v6 = [pathCopy substringFromIndex:v4 + 5];
   }
 
   else
   {
-    v6 = v3;
+    v6 = pathCopy;
   }
 
   v7 = v6;
@@ -194,11 +194,11 @@
   return v7;
 }
 
-- (BOOL)isKnownSourceFileURL:(id)a3 uuid:(id *)a4
+- (BOOL)isKnownSourceFileURL:(id)l uuid:(id *)uuid
 {
-  v6 = a3;
-  v7 = [v6 absoluteString];
-  v8 = [(FontRegistrationInfo *)self subpathForAppBundlePath:v7];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  v8 = [(FontRegistrationInfo *)self subpathForAppBundlePath:absoluteString];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -220,9 +220,9 @@
   v15 = &v23;
   v16 = &v17;
   [(NSMutableDictionary *)uuidToFontInfo enumerateKeysAndObjectsUsingBlock:v13];
-  if (a4)
+  if (uuid)
   {
-    *a4 = v18[5];
+    *uuid = v18[5];
   }
 
   v11 = *(v24 + 24);
@@ -233,25 +233,25 @@
   return v11;
 }
 
-- (BOOL)isKnownDestinationFileURL:(id)a3 uuid:(id *)a4
+- (BOOL)isKnownDestinationFileURL:(id)l uuid:(id *)uuid
 {
-  v6 = a3;
-  v7 = [v6 path];
-  v8 = [(NSURL *)self->_targetDirectoryURL path];
-  if ([v7 hasPrefix:v8])
+  lCopy = l;
+  path = [lCopy path];
+  path2 = [(NSURL *)self->_targetDirectoryURL path];
+  if ([path hasPrefix:path2])
   {
-    v9 = [v6 lastPathComponent];
-    v10 = [(NSMutableDictionary *)self->_uuidToFontInfo objectForKey:v9];
+    lastPathComponent = [lCopy lastPathComponent];
+    v10 = [(NSMutableDictionary *)self->_uuidToFontInfo objectForKey:lastPathComponent];
 
     if (v10)
     {
-      v10 = v9;
+      v10 = lastPathComponent;
     }
 
-    if (a4)
+    if (uuid)
     {
       v11 = v10;
-      *a4 = v10;
+      *uuid = v10;
     }
 
     v12 = v10 != 0;
@@ -265,9 +265,9 @@
   return v12;
 }
 
-- (BOOL)isKnownFontInfo:(id)a3
+- (BOOL)isKnownFontInfo:(id)info
 {
-  v4 = [a3 objectForKey:@"NSCTFontFileURLAttribute"];
+  v4 = [info objectForKey:@"NSCTFontFileURLAttribute"];
   if (v4)
   {
     v5 = [(FontRegistrationInfo *)self isKnownSourceFileURL:v4 uuid:0];
@@ -281,11 +281,11 @@
   return v5;
 }
 
-- (BOOL)isKnownUserSpecifiedInfo:(id)a3
+- (BOOL)isKnownUserSpecifiedInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -297,7 +297,7 @@
     v9[2] = sub_100008A10;
     v9[3] = &unk_1000105F0;
     v11 = &v12;
-    v10 = v4;
+    v10 = infoCopy;
     [(NSMutableDictionary *)uuidToFontInfo enumerateKeysAndObjectsUsingBlock:v9];
     v7 = *(v13 + 24);
 
@@ -312,17 +312,17 @@
   return v7 & 1;
 }
 
-- (id)fontInfoForUUID:(id)a3
+- (id)fontInfoForUUID:(id)d
 {
-  v4 = [(NSMutableDictionary *)self->_uuidToFontInfo objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_uuidToFontInfo objectForKey:d];
   v5 = [(FontRegistrationInfo *)self externalizeFontInfo:v4];
 
   return v5;
 }
 
-- (id)souceFontFileURLStringForUUID:(id)a3
+- (id)souceFontFileURLStringForUUID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_uuidToFontInfo objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_uuidToFontInfo objectForKey:d];
   v4 = [v3 objectForKey:@"NSCTFontFileURLAttribute"];
 
   return v4;
@@ -335,8 +335,8 @@
     v20 = v2;
     v21 = v3;
     v5 = +[NSFileManager defaultManager];
-    v6 = [(NSURL *)self->_targetDirectoryURL path];
-    v7 = [v5 contentsOfDirectoryAtPath:v6 error:0];
+    path = [(NSURL *)self->_targetDirectoryURL path];
+    v7 = [v5 contentsOfDirectoryAtPath:path error:0];
 
     v8 = [NSMutableDictionary dictionaryWithCapacity:0];
     uuidToFontInfo = self->_uuidToFontInfo;
@@ -359,8 +359,8 @@
       [v12 close];
       if (v13)
       {
-        v14 = [(NSURL *)self->_sourceDictFileURL path];
-        v15 = [v13 domain];
+        path2 = [(NSURL *)self->_sourceDictFileURL path];
+        domain = [v13 domain];
         [v13 code];
         FSLog_Error();
       }

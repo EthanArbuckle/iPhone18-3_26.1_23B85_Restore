@@ -1,25 +1,25 @@
 @interface MASAutoAssetSetOverview
-+ (id)newServerMessageClasses:(id)a3;
-+ (id)newShimmedArrayToFramework:(id)a3;
-+ (id)newShimmedFromFramework:(id)a3;
-+ (id)newShimmedFromFrameworkMessage:(id)a3 forKey:(id)a4;
-+ (id)newShimmedToFramework:(id)a3;
++ (id)newServerMessageClasses:(id)classes;
++ (id)newShimmedArrayToFramework:(id)framework;
++ (id)newShimmedFromFramework:(id)framework;
++ (id)newShimmedFromFrameworkMessage:(id)message forKey:(id)key;
++ (id)newShimmedToFramework:(id)framework;
 @end
 
 @implementation MASAutoAssetSetOverview
 
-+ (id)newServerMessageClasses:(id)a3
++ (id)newServerMessageClasses:(id)classes
 {
-  v3 = a3;
-  if (v3)
+  classesCopy = classes;
+  if (classesCopy)
   {
-    v4 = v3;
+    v4 = classesCopy;
     if (__isPlatformVersionAtLeast(2, 17, 0, 0))
     {
-      v4 = v3;
+      v4 = classesCopy;
       if (objc_opt_class())
       {
-        v4 = [v3 setByAddingObject:objc_opt_class()];
+        v4 = [classesCopy setByAddingObject:objc_opt_class()];
       }
 
       if (objc_opt_class())
@@ -39,9 +39,9 @@
   return v4;
 }
 
-+ (id)newShimmedToFramework:(id)a3
++ (id)newShimmedToFramework:(id)framework
 {
-  if (!a3)
+  if (!framework)
   {
     return 0;
   }
@@ -62,40 +62,40 @@
   return v6;
 }
 
-+ (id)newShimmedArrayToFramework:(id)a3
++ (id)newShimmedArrayToFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (p_weak_ivar_lyt = &MAAIRBMobileAssetOperationMetadata__metaData.weak_ivar_lyt, objc_opt_class()) && (v5 = [MAAutoAssetSetOverview alloc], v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (p_weak_ivar_lyt = &MAAIRBMobileAssetOperationMetadata__metaData.weak_ivar_lyt, objc_opt_class()) && (v5 = [MAAutoAssetSetOverview alloc], v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) != 0))
   {
     v7 = objc_alloc_init(NSMutableArray);
-    v21 = [v3 count];
+    v21 = [frameworkCopy count];
     if (v21 >= 1)
     {
       v19 = v7;
-      v20 = v3;
+      v20 = frameworkCopy;
       for (i = 0; i != v21; ++i)
       {
-        v9 = [v3 objectAtIndex:i];
+        v9 = [frameworkCopy objectAtIndex:i];
         v10 = v9;
         if (v9)
         {
-          v11 = [v9 configuredAssetEntries];
-          v23 = [MASAutoAssetSetEntry newShimmedArrayToFramework:v11];
+          configuredAssetEntries = [v9 configuredAssetEntries];
+          v23 = [MASAutoAssetSetEntry newShimmedArrayToFramework:configuredAssetEntries];
 
           v22 = objc_alloc(p_weak_ivar_lyt[249]);
-          v12 = [v10 clientDomainName];
-          v13 = [v10 assetSetIdentifier];
-          v14 = [v10 latestDownloadedAtomicInstance];
-          v15 = [v10 downloadedAtomicInstances];
-          v16 = [v10 discoveredAtomicInstance];
-          v17 = [v22 initWithDomainName:v12 forAssetSetIdentifier:v13 withConfiguredAssetEntries:v23 withLatestDownloadedAtomicInstance:v14 withDownloadedAtomicInstances:v15 withDiscoveredAtomicInstance:v16 withActiveClientCount:objc_msgSend(v10 withActiveMonitorCount:"activeClientCount") withMaximumClientCount:objc_msgSend(v10 withTotalClientCount:{"activeMonitorCount"), objc_msgSend(v10, "maximumClientCount"), objc_msgSend(v10, "totalClientCount")}];
+          clientDomainName = [v10 clientDomainName];
+          assetSetIdentifier = [v10 assetSetIdentifier];
+          latestDownloadedAtomicInstance = [v10 latestDownloadedAtomicInstance];
+          downloadedAtomicInstances = [v10 downloadedAtomicInstances];
+          discoveredAtomicInstance = [v10 discoveredAtomicInstance];
+          v17 = [v22 initWithDomainName:clientDomainName forAssetSetIdentifier:assetSetIdentifier withConfiguredAssetEntries:v23 withLatestDownloadedAtomicInstance:latestDownloadedAtomicInstance withDownloadedAtomicInstances:downloadedAtomicInstances withDiscoveredAtomicInstance:discoveredAtomicInstance withActiveClientCount:objc_msgSend(v10 withActiveMonitorCount:"activeClientCount") withMaximumClientCount:objc_msgSend(v10 withTotalClientCount:{"activeMonitorCount"), objc_msgSend(v10, "maximumClientCount"), objc_msgSend(v10, "totalClientCount")}];
 
           if (v17)
           {
             [v19 addObject:v17];
           }
 
-          v3 = v20;
+          frameworkCopy = v20;
           p_weak_ivar_lyt = (&MAAIRBMobileAssetOperationMetadata__metaData + 56);
         }
       }
@@ -112,26 +112,26 @@
   return v7;
 }
 
-+ (id)newShimmedFromFramework:(id)a3
++ (id)newShimmedFromFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && objc_opt_class() && (v4 = [MAAutoAssetSetOverview alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && objc_opt_class() && (v4 = [MAAutoAssetSetOverview alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
-    v6 = v3;
+    v6 = frameworkCopy;
     v19 = [MANAutoAssetSetOverview alloc];
-    v18 = [v6 clientDomainName];
-    v17 = [v6 assetSetIdentifier];
-    v20 = [v6 configuredAssetEntries];
-    v7 = [MASAutoAssetSetEntry newShimmedArrayFromFramework:v20];
-    v8 = [v6 latestDownloadedAtomicInstance];
-    v9 = [v6 downloadedAtomicInstances];
-    v10 = [v6 discoveredAtomicInstance];
-    v11 = [v6 activeClientCount];
-    v12 = [v6 activeMonitorCount];
-    v13 = [v6 maximumClientCount];
-    v14 = [v6 totalClientCount];
+    clientDomainName = [v6 clientDomainName];
+    assetSetIdentifier = [v6 assetSetIdentifier];
+    configuredAssetEntries = [v6 configuredAssetEntries];
+    v7 = [MASAutoAssetSetEntry newShimmedArrayFromFramework:configuredAssetEntries];
+    latestDownloadedAtomicInstance = [v6 latestDownloadedAtomicInstance];
+    downloadedAtomicInstances = [v6 downloadedAtomicInstances];
+    discoveredAtomicInstance = [v6 discoveredAtomicInstance];
+    activeClientCount = [v6 activeClientCount];
+    activeMonitorCount = [v6 activeMonitorCount];
+    maximumClientCount = [v6 maximumClientCount];
+    totalClientCount = [v6 totalClientCount];
 
-    v15 = [(MANAutoAssetSetOverview *)v19 initWithDomainName:v18 forAssetSetIdentifier:v17 withConfiguredAssetEntries:v7 withLatestDownloadedAtomicInstance:v8 withDownloadedAtomicInstances:v9 withDiscoveredAtomicInstance:v10 withActiveClientCount:v11 withActiveMonitorCount:v12 withMaximumClientCount:v13 withTotalClientCount:v14];
+    v15 = [(MANAutoAssetSetOverview *)v19 initWithDomainName:clientDomainName forAssetSetIdentifier:assetSetIdentifier withConfiguredAssetEntries:v7 withLatestDownloadedAtomicInstance:latestDownloadedAtomicInstance withDownloadedAtomicInstances:downloadedAtomicInstances withDiscoveredAtomicInstance:discoveredAtomicInstance withActiveClientCount:activeClientCount withActiveMonitorCount:activeMonitorCount withMaximumClientCount:maximumClientCount withTotalClientCount:totalClientCount];
   }
 
   else
@@ -142,17 +142,17 @@
   return v15;
 }
 
-+ (id)newShimmedFromFrameworkMessage:(id)a3 forKey:(id)a4
++ (id)newShimmedFromFrameworkMessage:(id)message forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  messageCopy = message;
+  keyCopy = key;
+  v7 = keyCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (messageCopy && keyCopy)
   {
     if (__isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v9 = [MAAutoAssetSetOverview alloc], v10 = objc_opt_respondsToSelector(), v9, (v10 & 1) != 0))
     {
-      v11 = [v5 safeObjectForKey:v7 ofClass:objc_opt_class()];
+      v11 = [messageCopy safeObjectForKey:v7 ofClass:objc_opt_class()];
       v8 = [MASAutoAssetSetOverview newShimmedFromFramework:v11];
     }
 

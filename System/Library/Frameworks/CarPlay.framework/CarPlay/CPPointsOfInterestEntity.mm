@@ -1,47 +1,47 @@
 @interface CPPointsOfInterestEntity
-- (CPPointsOfInterestEntity)initWithCoder:(id)a3;
-- (CPPointsOfInterestEntity)initWithTitle:(id)a3 pointsOfInterest:(id)a4;
-- (id)objectForIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CPPointsOfInterestEntity)initWithCoder:(id)coder;
+- (CPPointsOfInterestEntity)initWithTitle:(id)title pointsOfInterest:(id)interest;
+- (id)objectForIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPPointsOfInterestEntity
 
-- (CPPointsOfInterestEntity)initWithTitle:(id)a3 pointsOfInterest:(id)a4
+- (CPPointsOfInterestEntity)initWithTitle:(id)title pointsOfInterest:(id)interest
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  interestCopy = interest;
   v12.receiver = self;
   v12.super_class = CPPointsOfInterestEntity;
-  v8 = [(CPEntity *)&v12 _init];
-  if (v8)
+  _init = [(CPEntity *)&v12 _init];
+  if (_init)
   {
-    v9 = [v6 copy];
-    title = v8->_title;
-    v8->_title = v9;
+    v9 = [titleCopy copy];
+    title = _init->_title;
+    _init->_title = v9;
 
-    objc_storeStrong(&v8->_pointsOfInterest, a4);
+    objc_storeStrong(&_init->_pointsOfInterest, interest);
   }
 
-  return v8;
+  return _init;
 }
 
-- (CPPointsOfInterestEntity)initWithCoder:(id)a3
+- (CPPointsOfInterestEntity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CPPointsOfInterestEntity;
-  v5 = [(CPEntity *)&v14 initWithCoder:v4];
+  v5 = [(CPEntity *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPPointsOfInterestEntityTitle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPPointsOfInterestEntityTitle"];
     title = v5->_title;
     v5->_title = v6;
 
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"CPPointsOfInterestEntityPointsOfInterest"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"CPPointsOfInterestEntityPointsOfInterest"];
     pointsOfInterest = v5->_pointsOfInterest;
     v5->_pointsOfInterest = v11;
   }
@@ -49,29 +49,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CPPointsOfInterestEntity;
-  v4 = a3;
-  [(CPEntity *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPEntity *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CPPointsOfInterestEntity *)self title:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"CPPointsOfInterestEntityTitle"];
+  [coderCopy encodeObject:v5 forKey:@"CPPointsOfInterestEntityTitle"];
 
-  v6 = [(CPPointsOfInterestEntity *)self pointsOfInterest];
-  [v4 encodeObject:v6 forKey:@"CPPointsOfInterestEntityPointsOfInterest"];
+  pointsOfInterest = [(CPPointsOfInterestEntity *)self pointsOfInterest];
+  [coderCopy encodeObject:pointsOfInterest forKey:@"CPPointsOfInterestEntityPointsOfInterest"];
 }
 
-- (id)objectForIdentifier:(id)a3
+- (id)objectForIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(CPPointsOfInterestEntity *)self pointsOfInterest];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  pointsOfInterest = [(CPPointsOfInterestEntity *)self pointsOfInterest];
+  v6 = [pointsOfInterest countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -82,16 +82,16 @@
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pointsOfInterest);
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 primaryButton];
-        v12 = v11;
-        if (v11)
+        primaryButton = [v10 primaryButton];
+        v12 = primaryButton;
+        if (primaryButton)
         {
-          v13 = [v11 identifier];
-          v14 = [v13 isEqual:v4];
+          identifier = [primaryButton identifier];
+          v14 = [identifier isEqual:identifierCopy];
 
           if (v14)
           {
@@ -100,12 +100,12 @@
           }
         }
 
-        v15 = [v10 secondaryButton];
-        v16 = v15;
-        if (v15)
+        secondaryButton = [v10 secondaryButton];
+        v16 = secondaryButton;
+        if (secondaryButton)
         {
-          v17 = [v15 identifier];
-          v18 = [v17 isEqual:v4];
+          identifier2 = [secondaryButton identifier];
+          v18 = [identifier2 isEqual:identifierCopy];
 
           if (v18)
           {
@@ -115,7 +115,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v7 = [pointsOfInterest countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v7)
       {
         continue;

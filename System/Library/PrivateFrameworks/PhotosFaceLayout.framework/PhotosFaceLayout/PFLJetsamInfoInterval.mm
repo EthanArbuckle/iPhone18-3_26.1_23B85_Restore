@@ -1,5 +1,5 @@
 @interface PFLJetsamInfoInterval
-- (PFLJetsamInfoInterval)initWithLabel:(id)a3;
+- (PFLJetsamInfoInterval)initWithLabel:(id)label;
 - (jetsam_info)currentInfo;
 - (void)logCurrentInterval;
 - (void)reset;
@@ -7,17 +7,17 @@
 
 @implementation PFLJetsamInfoInterval
 
-- (PFLJetsamInfoInterval)initWithLabel:(id)a3
+- (PFLJetsamInfoInterval)initWithLabel:(id)label
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  labelCopy = label;
   v14.receiver = self;
   v14.super_class = PFLJetsamInfoInterval;
   v6 = [(PFLJetsamInfoInterval *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_label, a3);
+    objc_storeStrong(&v6->_label, label);
     v8 = objc_opt_new();
     fetcher = v7->_fetcher;
     v7->_fetcher = v8;
@@ -32,7 +32,7 @@
           label = v7->_label;
           v12 = v7->_startInfo.currentKB * 0.0009765625;
           *buf = 138412546;
-          v16 = label;
+          labelCopy2 = label;
           v17 = 2048;
           v18 = v12;
           _os_log_impl(&dword_22D2ED000, v10, OS_LOG_TYPE_DEFAULT, "jetsam interval '%@': start footprint: %.3f", buf, 0x16u);

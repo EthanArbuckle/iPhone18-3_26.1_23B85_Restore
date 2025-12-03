@@ -3,10 +3,10 @@
 - (ServiceAlertProxyDelegate)delegate;
 - (void)_closeReceiverConnection;
 - (void)_disconnect;
-- (void)_handleMessage:(id)a3 connection:(id)a4;
+- (void)_handleMessage:(id)message connection:(id)connection;
 - (void)dealloc;
-- (void)finishWithResponse:(id)a3;
-- (void)setResponseConnection:(id)a3;
+- (void)finishWithResponse:(id)response;
+- (void)setResponseConnection:(id)connection;
 @end
 
 @implementation ServiceAlertProxy
@@ -22,9 +22,9 @@
     receiverConnection = v2->_receiverConnection;
     v2->_receiverConnection = v3;
 
-    v5 = [(SSXPCConnection *)v2->_receiverConnection createXPCEndpoint];
+    createXPCEndpoint = [(SSXPCConnection *)v2->_receiverConnection createXPCEndpoint];
     receiverEndpoint = v2->_receiverEndpoint;
-    v2->_receiverEndpoint = v5;
+    v2->_receiverEndpoint = createXPCEndpoint;
 
     objc_initWeak(&location, v2);
     v7 = v2->_receiverConnection;
@@ -50,7 +50,7 @@
   [(ServiceAlertProxy *)&v3 dealloc];
 }
 
-- (void)finishWithResponse:(id)a3
+- (void)finishWithResponse:(id)response
 {
   responseConnection = self->_responseConnection;
   v4[0] = _NSConcreteStackBlock;
@@ -58,17 +58,17 @@
   v4[2] = sub_10000B5D4;
   v4[3] = &unk_1000515F0;
   v4[4] = self;
-  [(SSXPCConnection *)responseConnection sendMessage:a3 withReply:v4];
+  [(SSXPCConnection *)responseConnection sendMessage:response withReply:v4];
 }
 
-- (void)setResponseConnection:(id)a3
+- (void)setResponseConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   responseConnection = self->_responseConnection;
-  if (responseConnection != v5)
+  if (responseConnection != connectionCopy)
   {
     [(SSXPCConnection *)responseConnection setDisconnectBlock:0];
-    objc_storeStrong(&self->_responseConnection, a3);
+    objc_storeStrong(&self->_responseConnection, connection);
     objc_initWeak(&location, self);
     v7 = self->_responseConnection;
     v8[0] = _NSConcreteStackBlock;
@@ -96,20 +96,20 @@
 - (void)_disconnect
 {
   [(ServiceAlertProxy *)self _closeReceiverConnection];
-  v3 = [(ServiceAlertProxy *)self delegate];
+  delegate = [(ServiceAlertProxy *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 alertProxyDidCancel:self];
+    [delegate alertProxyDidCancel:self];
   }
 }
 
-- (void)_handleMessage:(id)a3 connection:(id)a4
+- (void)_handleMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v5 = [(ServiceAlertProxy *)self delegate];
+  messageCopy = message;
+  delegate = [(ServiceAlertProxy *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 alertProxy:self didReceiveMessage:v6];
+    [delegate alertProxy:self didReceiveMessage:messageCopy];
   }
 }
 

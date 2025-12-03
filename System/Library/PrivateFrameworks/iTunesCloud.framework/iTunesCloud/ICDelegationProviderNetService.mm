@@ -1,16 +1,16 @@
 @interface ICDelegationProviderNetService
-- (ICDelegationProviderNetService)initWithNetService:(id)a3;
+- (ICDelegationProviderNetService)initWithNetService:(id)service;
 - (NSArray)delegationAccountUUIDs;
 - (NSString)deviceName;
 - (int64_t)securityMode;
-- (void)_resolveWithCompletionHandler:(id)a3;
-- (void)_setState:(int64_t)a3;
+- (void)_resolveWithCompletionHandler:(id)handler;
+- (void)_setState:(int64_t)state;
 - (void)_updateTXTRecordProperties;
 - (void)dealloc;
-- (void)getResolvedStreamsWithCompletionHandler:(id)a3;
-- (void)netService:(id)a3 didNotResolve:(id)a4;
-- (void)netService:(id)a3 didUpdateTXTRecordData:(id)a4;
-- (void)netServiceDidResolveAddress:(id)a3;
+- (void)getResolvedStreamsWithCompletionHandler:(id)handler;
+- (void)netService:(id)service didNotResolve:(id)resolve;
+- (void)netService:(id)service didUpdateTXTRecordData:(id)data;
+- (void)netServiceDidResolveAddress:(id)address;
 @end
 
 @implementation ICDelegationProviderNetService
@@ -18,10 +18,10 @@
 - (void)_updateTXTRecordProperties
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(NSNetService *)self->_netService TXTRecordData];
-  if (v3)
+  tXTRecordData = [(NSNetService *)self->_netService TXTRecordData];
+  if (tXTRecordData)
   {
-    v4 = [[ICDelegationNetServiceTXTRecord alloc] initWithTXTRecordData:v3];
+    v4 = [[ICDelegationNetServiceTXTRecord alloc] initWithTXTRecordData:tXTRecordData];
   }
 
   else
@@ -37,7 +37,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
       v12 = v4;
       _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Updated net service TXTRecord: %{public}@", buf, 0x16u);
@@ -59,11 +59,11 @@ void __60__ICDelegationProviderNetService__updateTXTRecordProperties__block_invo
   [v2 postNotificationName:@"ICDelegationProviderNetServiceDelegationAccountUUIDsDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_setState:(int64_t)a3
+- (void)_setState:(int64_t)state
 {
   v16 = *MEMORY[0x1E69E9840];
-  self->_state = a3;
-  if (a3 != 1)
+  self->_state = state;
+  if (state != 1)
   {
     v4 = [(NSMutableArray *)self->_resolutionCompletionHandlers copy];
     resolutionCompletionHandlers = self->_resolutionCompletionHandlers;
@@ -102,10 +102,10 @@ void __60__ICDelegationProviderNetService__updateTXTRecordProperties__block_invo
   }
 }
 
-- (void)_resolveWithCompletionHandler:(id)a3
+- (void)_resolveWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (self->_state == 1)
   {
     resolutionCompletionHandlers = self->_resolutionCompletionHandlers;
@@ -129,7 +129,7 @@ void __60__ICDelegationProviderNetService__updateTXTRecordProperties__block_invo
 
   else
   {
-    (*(v4 + 2))(v4);
+    (*(handlerCopy + 2))(handlerCopy);
   }
 }
 
@@ -149,10 +149,10 @@ void __60__ICDelegationProviderNetService__updateTXTRecordProperties__block_invo
   v5[4] = self;
   v5[5] = &v6;
   dispatch_sync(accessQueue, v5);
-  v3 = [v7[5] securityMode];
+  securityMode = [v7[5] securityMode];
   _Block_object_dispose(&v6, 8);
 
-  return v3;
+  return securityMode;
 }
 
 - (NSString)deviceName
@@ -171,10 +171,10 @@ void __60__ICDelegationProviderNetService__updateTXTRecordProperties__block_invo
   v5[4] = self;
   v5[5] = &v6;
   dispatch_sync(accessQueue, v5);
-  v3 = [v7[5] deviceName];
+  deviceName = [v7[5] deviceName];
   _Block_object_dispose(&v6, 8);
 
-  return v3;
+  return deviceName;
 }
 
 - (NSArray)delegationAccountUUIDs
@@ -193,23 +193,23 @@ void __60__ICDelegationProviderNetService__updateTXTRecordProperties__block_invo
   v5[4] = self;
   v5[5] = &v6;
   dispatch_sync(accessQueue, v5);
-  v3 = [v7[5] delegationAccountUUIDs];
+  delegationAccountUUIDs = [v7[5] delegationAccountUUIDs];
   _Block_object_dispose(&v6, 8);
 
-  return v3;
+  return delegationAccountUUIDs;
 }
 
-- (void)getResolvedStreamsWithCompletionHandler:(id)a3
+- (void)getResolvedStreamsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__ICDelegationProviderNetService_getResolvedStreamsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7BF9EC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
@@ -362,17 +362,17 @@ void __74__ICDelegationProviderNetService_getResolvedStreamsWithCompletionHandle
   (*(v1 + 16))(v1, 0, 0, v2);
 }
 
-- (void)netService:(id)a3 didNotResolve:(id)a4
+- (void)netService:(id)service didNotResolve:(id)resolve
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  resolveCopy = resolve;
   v6 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v5;
+    v12 = resolveCopy;
     _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Net service did not resolve address with error dictionary: %{public}@.", buf, 0x16u);
   }
 
@@ -385,14 +385,14 @@ void __74__ICDelegationProviderNetService_getResolvedStreamsWithCompletionHandle
   dispatch_barrier_async(accessQueue, block);
 }
 
-- (void)netServiceDidResolveAddress:(id)a3
+- (void)netServiceDidResolveAddress:(id)address
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Net service did resolve address.", buf, 0xCu);
   }
 
@@ -420,14 +420,14 @@ uint64_t __62__ICDelegationProviderNetService_netServiceDidResolveAddress___bloc
   return [v3 _updateTXTRecordProperties];
 }
 
-- (void)netService:(id)a3 didUpdateTXTRecordData:(id)a4
+- (void)netService:(id)service didUpdateTXTRecordData:(id)data
 {
   v10 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: TXT record data updated.", buf, 0xCu);
   }
 
@@ -448,9 +448,9 @@ uint64_t __62__ICDelegationProviderNetService_netServiceDidResolveAddress___bloc
   [(ICDelegationProviderNetService *)&v3 dealloc];
 }
 
-- (ICDelegationProviderNetService)initWithNetService:(id)a3
+- (ICDelegationProviderNetService)initWithNetService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v14.receiver = self;
   v14.super_class = ICDelegationProviderNetService;
   v6 = [(ICDelegationProviderNetService *)&v14 init];
@@ -464,12 +464,12 @@ uint64_t __62__ICDelegationProviderNetService_netServiceDidResolveAddress___bloc
     calloutQueue = v6->_calloutQueue;
     v6->_calloutQueue = v9;
 
-    objc_storeStrong(&v6->_netService, a3);
+    objc_storeStrong(&v6->_netService, service);
     [(NSNetService *)v6->_netService setDelegate:v6];
     v6->_state = 1;
     netService = v6->_netService;
-    v12 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(NSNetService *)netService scheduleInRunLoop:v12 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(NSNetService *)netService scheduleInRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     [(NSNetService *)v6->_netService resolveWithTimeout:10.0];
   }

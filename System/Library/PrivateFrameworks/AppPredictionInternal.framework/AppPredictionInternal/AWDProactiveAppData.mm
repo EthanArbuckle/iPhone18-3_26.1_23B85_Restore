@@ -1,21 +1,21 @@
 @interface AWDProactiveAppData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEngagedApp:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEngagedApp:(BOOL)app;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDProactiveAppData
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasEngagedApp:(BOOL)a3
+- (void)setHasEngagedApp:(BOOL)app
 {
-  if (a3)
+  if (app)
   {
     v3 = 4;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = AWDProactiveAppData;
   v4 = [(AWDProactiveAppData *)&v8 description];
-  v5 = [(AWDProactiveAppData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDProactiveAppData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v11 forKey:@"timestamp"];
+    [dictionary setObject:v11 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -83,48 +83,48 @@ LABEL_3:
   }
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_engagedApp];
-  [v3 setObject:v12 forKey:@"engagedApp"];
+  [dictionary setObject:v12 forKey:@"engagedApp"];
 
   if (*&self->_has)
   {
 LABEL_4:
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_score];
-    [v3 setObject:v5 forKey:@"score"];
+    [dictionary setObject:v5 forKey:@"score"];
   }
 
 LABEL_5:
   subscores = self->_subscores;
   if (subscores)
   {
-    v7 = [(AWDProactiveAppPredictionSubscores *)subscores dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"subscores"];
+    dictionaryRepresentation = [(AWDProactiveAppPredictionSubscores *)subscores dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"subscores"];
   }
 
   sessionId = self->_sessionId;
   if (sessionId)
   {
-    [v3 setObject:sessionId forKey:@"sessionId"];
+    [dictionary setObject:sessionId forKey:@"sessionId"];
   }
 
   bundleId = self->_bundleId;
   if (bundleId)
   {
-    [v3 setObject:bundleId forKey:@"bundleId"];
+    [dictionary setObject:bundleId forKey:@"bundleId"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 2) != 0)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -145,43 +145,43 @@ LABEL_3:
 
   engagedApp = self->_engagedApp;
   PBDataWriterWriteBOOLField();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_4:
     score = self->_score;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
   if (self->_subscores)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_sessionId)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_bundleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_timestamp;
-    *(v4 + 52) |= 2u;
+    toCopy[2] = self->_timestamp;
+    *(toCopy + 52) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -200,39 +200,39 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 48) = self->_engagedApp;
-  *(v4 + 52) |= 4u;
+  *(toCopy + 48) = self->_engagedApp;
+  *(toCopy + 52) |= 4u;
   if (*&self->_has)
   {
 LABEL_4:
-    v4[1] = *&self->_score;
-    *(v4 + 52) |= 1u;
+    toCopy[1] = *&self->_score;
+    *(toCopy + 52) |= 1u;
   }
 
 LABEL_5:
-  v6 = v4;
+  v6 = toCopy;
   if (self->_subscores)
   {
-    [v4 setSubscores:?];
-    v4 = v6;
+    [toCopy setSubscores:?];
+    toCopy = v6;
   }
 
   if (self->_sessionId)
   {
     [v6 setSessionId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bundleId)
   {
     [v6 setBundleId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) == 0)
@@ -270,46 +270,46 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(AWDProactiveAppPredictionSubscores *)self->_subscores copyWithZone:a3];
+  v8 = [(AWDProactiveAppPredictionSubscores *)self->_subscores copyWithZone:zone];
   v9 = v6[5];
   v6[5] = v8;
 
-  v10 = [(NSString *)self->_sessionId copyWithZone:a3];
+  v10 = [(NSString *)self->_sessionId copyWithZone:zone];
   v11 = v6[4];
   v6[4] = v10;
 
-  v12 = [(NSString *)self->_bundleId copyWithZone:a3];
+  v12 = [(NSString *)self->_bundleId copyWithZone:zone];
   v13 = v6[3];
   v6[3] = v12;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(equalCopy + 52);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_timestamp != *(v4 + 2))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_25;
   }
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 52) & 4) == 0)
+    if ((*(equalCopy + 52) & 4) == 0)
     {
       goto LABEL_9;
     }
@@ -319,21 +319,21 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if ((*(v4 + 52) & 4) == 0)
+  if ((*(equalCopy + 52) & 4) == 0)
   {
     goto LABEL_25;
   }
 
-  v6 = *(v4 + 48);
+  v6 = *(equalCopy + 48);
   if (self->_engagedApp)
   {
-    if ((*(v4 + 48) & 1) == 0)
+    if ((*(equalCopy + 48) & 1) == 0)
     {
       goto LABEL_25;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_25;
   }
@@ -341,25 +341,25 @@ LABEL_25:
 LABEL_9:
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_score != *(v4 + 1))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_score != *(equalCopy + 1))
     {
       goto LABEL_25;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_25;
   }
 
   subscores = self->_subscores;
-  if (subscores | *(v4 + 5) && ![(AWDProactiveAppPredictionSubscores *)subscores isEqual:?])
+  if (subscores | *(equalCopy + 5) && ![(AWDProactiveAppPredictionSubscores *)subscores isEqual:?])
   {
     goto LABEL_25;
   }
 
   sessionId = self->_sessionId;
-  if (sessionId | *(v4 + 4))
+  if (sessionId | *(equalCopy + 4))
   {
     if (![(NSString *)sessionId isEqual:?])
     {
@@ -368,7 +368,7 @@ LABEL_9:
   }
 
   bundleId = self->_bundleId;
-  if (bundleId | *(v4 + 3))
+  if (bundleId | *(equalCopy + 3))
   {
     v10 = [(NSString *)bundleId isEqual:?];
   }
@@ -450,16 +450,16 @@ LABEL_11:
   return v11 ^ v12 ^ [(NSString *)self->_bundleId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 52);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 52);
   if ((v6 & 2) != 0)
   {
-    self->_timestamp = *(v4 + 2);
+    self->_timestamp = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v6 = *(v4 + 52);
+    v6 = *(fromCopy + 52);
     if ((v6 & 4) == 0)
     {
 LABEL_3:
@@ -472,17 +472,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 52) & 4) == 0)
+  else if ((*(fromCopy + 52) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_engagedApp = *(v4 + 48);
+  self->_engagedApp = *(fromCopy + 48);
   *&self->_has |= 4u;
-  if (*(v4 + 52))
+  if (*(fromCopy + 52))
   {
 LABEL_4:
-    self->_score = *(v4 + 1);
+    self->_score = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

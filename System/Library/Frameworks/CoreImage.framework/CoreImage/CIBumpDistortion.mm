@@ -90,7 +90,7 @@
     v26.f64[0] = v32;
     v26.f64[1] = v27;
     v28 = vcvt_f32_f64(v26);
-    v29 = [(CIBumpDistortion *)self _kernel];
+    _kernel = [(CIBumpDistortion *)self _kernel];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __31__CIBumpDistortion_outputImage__block_invoke;
@@ -100,7 +100,7 @@
     v34 = v4;
     inputImage = self->inputImage;
     v35[0] = v20;
-    return [v29 applyWithExtent:v33 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v35, 1), x, y, width, height}];
+    return [_kernel applyWithExtent:v33 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v35, 1), x, y, width, height}];
   }
 
   else

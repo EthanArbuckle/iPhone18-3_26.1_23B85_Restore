@@ -1,30 +1,30 @@
 @interface PXPhotosExportUtilities
-+ (id)_exportAssetUsingExportRequest:(id)a3 configuration:(id)a4 completion:(id)a5;
-+ (id)_exportRequestForAsset:(id)a3 analyticsActivityType:(id)a4 error:(id *)a5;
-+ (id)_optionsForExportRequest:(id)a3 configuration:(id)a4;
-+ (void)_downscaleAssetAtURLIfNeeded:(id)a3 configuration:(id)a4 completion:(id)a5;
-+ (void)_downscaleImageAtURL:(id)a3 targetDimension:(id)a4 completion:(id)a5;
-+ (void)_exportAssets:(id)a3 toURL:(id)a4 configuration:(id)a5 progress:(id)a6;
-+ (void)_exportCollectionList:(id)a3 configuration:(id)a4 progress:(id)a5 completion:(id)a6;
-+ (void)_markURLAsPurgable:(id)a3 completionHandler:(id)a4;
-+ (void)_replaceAssetAtURL:(id)a3 withItemAtURL:(id)a4 completionHandler:(id)a5;
-+ (void)exportAsset:(id)a3 configuration:(id)a4 progress:(id)a5 completion:(id)a6;
-+ (void)exportAssets:(id)a3 configuration:(id)a4 progress:(id)a5 completion:(id)a6;
-+ (void)exportAssetsInContainer:(id)a3 configuration:(id)a4 progress:(id)a5 completion:(id)a6;
++ (id)_exportAssetUsingExportRequest:(id)request configuration:(id)configuration completion:(id)completion;
++ (id)_exportRequestForAsset:(id)asset analyticsActivityType:(id)type error:(id *)error;
++ (id)_optionsForExportRequest:(id)request configuration:(id)configuration;
++ (void)_downscaleAssetAtURLIfNeeded:(id)needed configuration:(id)configuration completion:(id)completion;
++ (void)_downscaleImageAtURL:(id)l targetDimension:(id)dimension completion:(id)completion;
++ (void)_exportAssets:(id)assets toURL:(id)l configuration:(id)configuration progress:(id)progress;
++ (void)_exportCollectionList:(id)list configuration:(id)configuration progress:(id)progress completion:(id)completion;
++ (void)_markURLAsPurgable:(id)purgable completionHandler:(id)handler;
++ (void)_replaceAssetAtURL:(id)l withItemAtURL:(id)rL completionHandler:(id)handler;
++ (void)exportAsset:(id)asset configuration:(id)configuration progress:(id)progress completion:(id)completion;
++ (void)exportAssets:(id)assets configuration:(id)configuration progress:(id)progress completion:(id)completion;
++ (void)exportAssetsInContainer:(id)container configuration:(id)configuration progress:(id)progress completion:(id)completion;
 @end
 
 @implementation PXPhotosExportUtilities
 
-+ (void)_replaceAssetAtURL:(id)a3 withItemAtURL:(id)a4 completionHandler:(id)a5
++ (void)_replaceAssetAtURL:(id)l withItemAtURL:(id)rL completionHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v10 = MEMORY[0x1E696AC08];
-  v11 = a5;
-  v12 = [v10 defaultManager];
+  handlerCopy = handler;
+  defaultManager = [v10 defaultManager];
   v15 = 0;
-  v13 = [v12 replaceItemAtURL:v8 withItemAtURL:v9 backupItemName:0 options:0 resultingItemURL:0 error:&v15];
+  v13 = [defaultManager replaceItemAtURL:lCopy withItemAtURL:rLCopy backupItemName:0 options:0 resultingItemURL:0 error:&v15];
   v14 = v15;
 
   if (v13)
@@ -32,13 +32,13 @@
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v17 = v8;
+      v17 = lCopy;
       v18 = 2112;
-      v19 = v9;
+      v19 = rLCopy;
       _os_log_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Replaced existing file at URL (%@) with URL (%@).", buf, 0x16u);
     }
 
-    [a1 _markURLAsPurgable:v8 completionHandler:v11];
+    [self _markURLAsPurgable:lCopy completionHandler:handlerCopy];
   }
 
   else
@@ -46,30 +46,30 @@
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v17 = v8;
+      v17 = lCopy;
       v18 = 2112;
-      v19 = v9;
+      v19 = rLCopy;
       v20 = 2112;
       v21 = v14;
       _os_log_error_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to replace file at URL (%@) with URL (%@) with error: %@", buf, 0x20u);
     }
 
-    v11[2](v11, 0, v14);
+    handlerCopy[2](handlerCopy, 0, v14);
   }
 }
 
-+ (void)_markURLAsPurgable:(id)a3 completionHandler:(id)a4
++ (void)_markURLAsPurgable:(id)purgable completionHandler:(id)handler
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  purgableCopy = purgable;
   v6 = MEMORY[0x1E69BE2D8];
-  v7 = a4;
-  if ([v6 markPurgeableForFileAtURL:v5 withUrgency:0 outInode:0])
+  handlerCopy = handler;
+  if ([v6 markPurgeableForFileAtURL:purgableCopy withUrgency:0 outInode:0])
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v5;
+      v9 = purgableCopy;
       _os_log_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Marked file provider URL (%@) as purgeable.", &v8, 0xCu);
     }
   }
@@ -77,38 +77,38 @@
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = purgableCopy;
     _os_log_error_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to mark file provider URL (%@) as purgeable.", &v8, 0xCu);
   }
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = purgableCopy;
     _os_log_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Successfully provided file at URL: %@", &v8, 0xCu);
   }
 
-  v7[2](v7, v5, 0);
+  handlerCopy[2](handlerCopy, purgableCopy, 0);
 }
 
-+ (id)_exportAssetUsingExportRequest:(id)a3 configuration:(id)a4 completion:(id)a5
++ (id)_exportAssetUsingExportRequest:(id)request configuration:(id)configuration completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  requestCopy = request;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (requestCopy)
   {
-    if (v10)
+    if (configurationCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_15:
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"PXPhotosExportUtilities.m" lineNumber:314 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosExportUtilities.m" lineNumber:314 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
 
-    if (v11)
+    if (completionCopy)
     {
       goto LABEL_4;
     }
@@ -116,50 +116,50 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:a1 file:@"PXPhotosExportUtilities.m" lineNumber:313 description:{@"Invalid parameter not satisfying: %@", @"exportRequest"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotosExportUtilities.m" lineNumber:313 description:{@"Invalid parameter not satisfying: %@", @"exportRequest"}];
 
-  if (!v10)
+  if (!configurationCopy)
   {
     goto LABEL_15;
   }
 
 LABEL_3:
-  if (v11)
+  if (completionCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_16:
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:a1 file:@"PXPhotosExportUtilities.m" lineNumber:315 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXPhotosExportUtilities.m" lineNumber:315 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_4:
   v12 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
-  v13 = [a1 _optionsForExportRequest:v9 configuration:v10];
+  v13 = [self _optionsForExportRequest:requestCopy configuration:configurationCopy];
   if (v13)
   {
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __83__PXPhotosExportUtilities__exportAssetUsingExportRequest_configuration_completion___block_invoke;
     v26[3] = &unk_1E7746320;
-    v27 = v10;
-    v14 = v9;
+    v27 = configurationCopy;
+    v14 = requestCopy;
     v28 = v14;
     v15 = v12;
     v29 = v15;
-    v30 = v11;
+    v30 = completionCopy;
     [v14 exportWithOptions:v13 completionHandler:v26];
-    v16 = [v14 progress];
-    [v15 addChild:v16 withPendingUnitCount:1];
+    progress = [v14 progress];
+    [v15 addChild:progress withPendingUnitCount:1];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v15 localizedDescription];
+      localizedDescription = [v15 localizedDescription];
       *buf = 138412546;
       v34 = v13;
       v35 = 2112;
-      v36 = v17;
+      v36 = localizedDescription;
       _os_log_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Exporting asset with options: %@ (export progress: %@)", buf, 0x16u);
     }
 
@@ -174,16 +174,16 @@ LABEL_4:
     v19 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PFPAssetRequestErrorDomain" code:0 userInfo:v18];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v21 = [v9 variants];
-      v22 = [v12 localizedDescription];
+      variants = [requestCopy variants];
+      localizedDescription2 = [v12 localizedDescription];
       *buf = 138412546;
-      v34 = v21;
+      v34 = variants;
       v35 = 2112;
-      v36 = v22;
+      v36 = localizedDescription2;
       _os_log_error_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to find a supported variant in: %@ (export progress: %@)", buf, 0x16u);
     }
 
-    (*(v11 + 2))(v11, 0, v19);
+    (*(completionCopy + 2))(completionCopy, 0, v19);
   }
 
   return v12;
@@ -292,14 +292,14 @@ LABEL_26:
   (*(*(a1 + 56) + 16))();
 }
 
-+ (id)_optionsForExportRequest:(id)a3 configuration:(id)a4
++ (id)_optionsForExportRequest:(id)request configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  requestCopy = request;
+  configurationCopy = configuration;
+  v9 = configurationCopy;
+  if (requestCopy)
   {
-    if (v8)
+    if (configurationCopy)
     {
       goto LABEL_3;
     }
@@ -307,8 +307,8 @@ LABEL_26:
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PXPhotosExportUtilities.m" lineNumber:285 description:{@"Invalid parameter not satisfying: %@", @"exportRequest"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosExportUtilities.m" lineNumber:285 description:{@"Invalid parameter not satisfying: %@", @"exportRequest"}];
 
     if (v9)
     {
@@ -316,14 +316,14 @@ LABEL_26:
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:a1 file:@"PXPhotosExportUtilities.m" lineNumber:286 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotosExportUtilities.m" lineNumber:286 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
 
 LABEL_3:
   v10 = objc_alloc_init(MEMORY[0x1E69786B0]);
-  v11 = [v7 variants];
-  v12 = [v7 asset];
-  v13 = [v9 variantToRequest:v11 asset:v12];
+  variants = [requestCopy variants];
+  asset = [requestCopy asset];
+  v13 = [v9 variantToRequest:variants asset:asset];
 
   if ([v9 itemType] == 2)
   {
@@ -359,19 +359,19 @@ LABEL_3:
   return v10;
 }
 
-+ (void)_exportAssets:(id)a3 toURL:(id)a4 configuration:(id)a5 progress:(id)a6
++ (void)_exportAssets:(id)assets toURL:(id)l configuration:(id)configuration progress:(id)progress
 {
   v46 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v29 = a4;
-  v11 = a5;
-  v30 = a6;
+  assetsCopy = assets;
+  lCopy = l;
+  configurationCopy = configuration;
+  progressCopy = progress;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v10;
-  v12 = [v10 countByEnumeratingWithState:&v37 objects:v45 count:16];
+  obj = assetsCopy;
+  v12 = [assetsCopy countByEnumeratingWithState:&v37 objects:v45 count:16];
   if (v12)
   {
     v14 = v12;
@@ -389,9 +389,9 @@ LABEL_3:
         }
 
         v17 = *(*(&v37 + 1) + 8 * v16);
-        v18 = [v11 activityTypeForAssetExportAnalytics];
+        activityTypeForAssetExportAnalytics = [configurationCopy activityTypeForAssetExportAnalytics];
         v36 = 0;
-        v19 = [a1 _exportRequestForAsset:v17 analyticsActivityType:v18 error:&v36];
+        v19 = [self _exportRequestForAsset:v17 analyticsActivityType:activityTypeForAssetExportAnalytics error:&v36];
         v20 = v36;
 
         if (v19)
@@ -401,21 +401,21 @@ LABEL_3:
           v31[1] = 3221225472;
           v31[2] = __70__PXPhotosExportUtilities__exportAssets_toURL_configuration_progress___block_invoke;
           v31[3] = &unk_1E77462F8;
-          v35 = a1;
-          v22 = v11;
+          selfCopy = self;
+          v22 = configurationCopy;
           v32 = v22;
-          v33 = v29;
+          v33 = lCopy;
           v34 = v21;
           v23 = v21;
-          v24 = [a1 _exportAssetUsingExportRequest:v19 configuration:v22 completion:v31];
-          [v30 addChild:v24 withPendingUnitCount:90];
+          v24 = [self _exportAssetUsingExportRequest:v19 configuration:v22 completion:v31];
+          [progressCopy addChild:v24 withPendingUnitCount:90];
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
           {
-            v25 = [v30 localizedDescription];
+            localizedDescription = [progressCopy localizedDescription];
             *buf = v27;
             v42 = v19;
             v43 = 2112;
-            v44 = v25;
+            v44 = localizedDescription;
             _os_log_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Finished creating export request: %@ (progress: %@)", buf, 0x16u);
           }
 
@@ -424,11 +424,11 @@ LABEL_3:
 
         else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v26 = [v30 localizedDescription];
+          localizedDescription2 = [progressCopy localizedDescription];
           *buf = v27;
           v42 = v20;
           v43 = 2112;
-          v44 = v26;
+          v44 = localizedDescription2;
           _os_log_error_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Creating export request failed with error: %@ (progress: %@)", buf, 0x16u);
         }
 
@@ -518,38 +518,38 @@ void __70__PXPhotosExportUtilities__exportAssets_toURL_configuration_progress___
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-+ (void)_downscaleImageAtURL:(id)a3 targetDimension:(id)a4 completion:(id)a5
++ (void)_downscaleImageAtURL:(id)l targetDimension:(id)dimension completion:(id)completion
 {
   v56[6] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  dimensionCopy = dimension;
+  completionCopy = completion;
   if (_downscaleImageAtURL_targetDimension_completion__onceToken != -1)
   {
     dispatch_once(&_downscaleImageAtURL_targetDimension_completion__onceToken, &__block_literal_global_216513);
   }
 
   v10 = MEMORY[0x1E6982C40];
-  v11 = [v7 lastPathComponent];
-  v12 = [v11 pathExtension];
-  v13 = [v10 typeWithFilenameExtension:v12];
-  v14 = [v13 identifier];
+  lastPathComponent = [lCopy lastPathComponent];
+  pathExtension = [lastPathComponent pathExtension];
+  v13 = [v10 typeWithFilenameExtension:pathExtension];
+  identifier = [v13 identifier];
 
-  v48 = v14;
-  v15 = PXPhotosFileProviderTypeIdentifierForDownscalingAssetWithTypeIdentifier(v14);
+  v48 = identifier;
+  v15 = PXPhotosFileProviderTypeIdentifierForDownscalingAssetWithTypeIdentifier(identifier);
   v55[0] = *MEMORY[0x1E69AE968];
-  v16 = [MEMORY[0x1E69C06D0] standardPolicy];
-  v56[0] = v16;
+  standardPolicy = [MEMORY[0x1E69C06D0] standardPolicy];
+  v56[0] = standardPolicy;
   v55[1] = *MEMORY[0x1E69AE980];
-  v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PUPhotosFileProviderItemProvider downscaling image to target length: %@", v8];
+  dimensionCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"PUPhotosFileProviderItemProvider downscaling image to target length: %@", dimensionCopy];
   v18 = *MEMORY[0x1E69AE920];
-  v56[1] = v17;
+  v56[1] = dimensionCopy;
   v56[2] = MEMORY[0x1E695E118];
   v19 = *MEMORY[0x1E69AE958];
   v55[2] = v18;
   v55[3] = v19;
   v20 = *MEMORY[0x1E69AE950];
-  v56[3] = v8;
+  v56[3] = dimensionCopy;
   v56[4] = &unk_1F190D9F0;
   v21 = *MEMORY[0x1E69AE978];
   v55[4] = v20;
@@ -558,34 +558,34 @@ void __70__PXPhotosExportUtilities__exportAssets_toURL_configuration_progress___
   v56[5] = v15;
   v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:v55 count:6];
 
-  v22 = [MEMORY[0x1E696AC08] defaultManager];
-  v23 = [v22 temporaryDirectory];
-  v24 = [MEMORY[0x1E696AFB0] UUID];
-  v25 = [v24 UUIDString];
-  v26 = [v23 URLByAppendingPathComponent:v25 isDirectory:1];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v26 = [temporaryDirectory URLByAppendingPathComponent:uUIDString isDirectory:1];
 
-  v27 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v54 = 0;
-  LODWORD(v23) = [v27 createDirectoryAtURL:v26 withIntermediateDirectories:1 attributes:0 error:&v54];
+  LODWORD(temporaryDirectory) = [defaultManager2 createDirectoryAtURL:v26 withIntermediateDirectories:1 attributes:0 error:&v54];
   v28 = v54;
 
-  if (v23)
+  if (temporaryDirectory)
   {
-    v29 = [MEMORY[0x1E696AFB0] UUID];
-    v30 = [v29 UUIDString];
-    v31 = [v26 URLByAppendingPathComponent:v30];
+    uUID2 = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString2 = [uUID2 UUIDString];
+    v31 = [v26 URLByAppendingPathComponent:uUIDString2];
 
-    v32 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
     v53 = 0;
-    v45 = v7;
-    LODWORD(v30) = [v32 moveItemAtURL:v7 toURL:v31 error:&v53];
+    v45 = lCopy;
+    LODWORD(uUIDString2) = [defaultManager3 moveItemAtURL:lCopy toURL:v31 error:&v53];
     v33 = v53;
 
-    if (v30)
+    if (uUIDString2)
     {
-      v34 = [MEMORY[0x1E696AFB0] UUID];
-      v35 = [v34 UUIDString];
-      v36 = [v26 URLByAppendingPathComponent:v35];
+      uUID3 = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString3 = [uUID3 UUIDString];
+      v36 = [v26 URLByAppendingPathComponent:uUIDString3];
 
       v37 = [MEMORY[0x1E69AE880] collectionWithMainResourceURL:v31];
       v38 = [MEMORY[0x1E69AE880] collectionWithMainResourceURL:v36];
@@ -594,7 +594,7 @@ void __70__PXPhotosExportUtilities__exportAssets_toURL_configuration_progress___
       v49[1] = 3221225472;
       v49[2] = __75__PXPhotosExportUtilities__downscaleImageAtURL_targetDimension_completion___block_invoke_115;
       v49[3] = &unk_1E77462A8;
-      v52 = v9;
+      v52 = completionCopy;
       v50 = v36;
       v51 = v26;
       v40 = v36;
@@ -607,16 +607,16 @@ void __70__PXPhotosExportUtilities__exportAssets_toURL_configuration_progress___
 
     else
     {
-      (*(v9 + 2))(v9, 0, v33);
+      (*(completionCopy + 2))(completionCopy, 0, v33);
       v44 = v46;
     }
 
-    v7 = v45;
+    lCopy = v45;
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0, v28);
+    (*(completionCopy + 2))(completionCopy, 0, v28);
     v44 = v46;
   }
 }
@@ -671,32 +671,32 @@ void __75__PXPhotosExportUtilities__downscaleImageAtURL_targetDimension_completi
   _downscaleImageAtURL_targetDimension_completion__client = v0;
 }
 
-+ (void)_downscaleAssetAtURLIfNeeded:(id)a3 configuration:(id)a4 completion:(id)a5
++ (void)_downscaleAssetAtURLIfNeeded:(id)needed configuration:(id)configuration completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 downscalingTargetDimension];
-  if (v11 && (v12 = v11, v13 = [v9 itemType], v12, v13 == 1))
+  neededCopy = needed;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  downscalingTargetDimension = [configurationCopy downscalingTargetDimension];
+  if (downscalingTargetDimension && (v12 = downscalingTargetDimension, v13 = [configurationCopy itemType], v12, v13 == 1))
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v9 downscalingTargetDimension];
+      downscalingTargetDimension2 = [configurationCopy downscalingTargetDimension];
       *buf = 138412546;
-      v19 = v8;
+      v19 = neededCopy;
       v20 = 2112;
-      v21 = v14;
+      v21 = downscalingTargetDimension2;
       _os_log_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Downscaling asset (%@) to target dimension: %@", buf, 0x16u);
     }
 
-    v15 = [v9 downscalingTargetDimension];
+    downscalingTargetDimension3 = [configurationCopy downscalingTargetDimension];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __81__PXPhotosExportUtilities__downscaleAssetAtURLIfNeeded_configuration_completion___block_invoke;
     v16[3] = &unk_1E77473C0;
-    v17 = v10;
-    [a1 _downscaleImageAtURL:v8 targetDimension:v15 completion:v16];
+    v17 = completionCopy;
+    [self _downscaleImageAtURL:neededCopy targetDimension:downscalingTargetDimension3 completion:v16];
   }
 
   else
@@ -704,35 +704,35 @@ void __75__PXPhotosExportUtilities__downscaleImageAtURL_targetDimension_completi
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v8;
+      v19 = neededCopy;
       _os_log_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Don't need to downscale asset: %@", buf, 0xCu);
     }
 
-    (*(v10 + 2))(v10, v8, 0);
+    (*(completionCopy + 2))(completionCopy, neededCopy, 0);
   }
 }
 
-+ (id)_exportRequestForAsset:(id)a3 analyticsActivityType:(id)a4 error:(id *)a5
++ (id)_exportRequestForAsset:(id)asset analyticsActivityType:(id)type error:(id *)error
 {
-  v7 = a4;
-  v8 = [MEMORY[0x1E69786A8] exportRequestForAsset:a3 error:a5];
+  typeCopy = type;
+  v8 = [MEMORY[0x1E69786A8] exportRequestForAsset:asset error:error];
   v9 = v8;
   if (v8)
   {
-    [v8 setAnalyticsActivityType:v7];
+    [v8 setAnalyticsActivityType:typeCopy];
     [v9 setShouldSendTimingIntervalsToAnalytics:1];
   }
 
   return v9;
 }
 
-+ (void)_exportCollectionList:(id)a3 configuration:(id)a4 progress:(id)a5 completion:(id)a6
++ (void)_exportCollectionList:(id)list configuration:(id)configuration progress:(id)progress completion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v35 = a4;
-  v34 = a5;
-  v32 = a6;
+  listCopy = list;
+  configurationCopy = configuration;
+  progressCopy = progress;
+  completionCopy = completion;
   v10 = MEMORY[0x1E696AEC0];
   v11 = [MEMORY[0x1E695DF00] now];
   [v11 timeIntervalSinceReferenceDate];
@@ -749,7 +749,7 @@ void __75__PXPhotosExportUtilities__downscaleImageAtURL_targetDimension_completi
   v38 = 0u;
   v39 = 0u;
   v30 = v17;
-  obj = [PXExportContainer containersForRootCollection:v9 destinationURL:v17];
+  obj = [PXExportContainer containersForRootCollection:listCopy destinationURL:v17];
   v18 = [obj countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v18)
   {
@@ -767,17 +767,17 @@ void __75__PXPhotosExportUtilities__downscaleImageAtURL_targetDimension_completi
         }
 
         v24 = *(*(&v38 + 1) + 8 * i);
-        v25 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
         v26 = [v24 url];
         v37 = v20;
-        v27 = [v25 createDirectoryAtURL:v26 withIntermediateDirectories:0 attributes:0 error:&v37];
+        v27 = [defaultManager createDirectoryAtURL:v26 withIntermediateDirectories:0 attributes:0 error:&v37];
         v20 = v37;
 
         if (v27)
         {
-          v28 = [v24 assets];
+          assets = [v24 assets];
           v29 = [v24 url];
-          [a1 _exportAssets:v28 toURL:v29 configuration:v35 progress:v34];
+          [self _exportAssets:assets toURL:v29 configuration:configurationCopy progress:progressCopy];
         }
 
         else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -799,18 +799,18 @@ void __75__PXPhotosExportUtilities__downscaleImageAtURL_targetDimension_completi
     v20 = 0;
   }
 
-  v32[2](v32, v30, v20);
+  completionCopy[2](completionCopy, v30, v20);
 }
 
-+ (void)exportAssets:(id)a3 configuration:(id)a4 progress:(id)a5 completion:(id)a6
++ (void)exportAssets:(id)assets configuration:(id)configuration progress:(id)progress completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  assetsCopy = assets;
+  configurationCopy = configuration;
+  progressCopy = progress;
   v13 = MEMORY[0x1E696AEC0];
   v14 = MEMORY[0x1E695DF00];
-  v15 = a6;
+  completionCopy = completion;
   v16 = [v14 now];
   [v16 timeIntervalSinceReferenceDate];
   v18 = [v13 stringWithFormat:@"AssetFetchResult-%lf", v17];
@@ -820,14 +820,14 @@ void __75__PXPhotosExportUtilities__downscaleImageAtURL_targetDimension_completi
   v21 = [v20 stringByAppendingPathComponent:v18];
   v22 = [v19 fileURLWithPath:v21 isDirectory:1];
 
-  v23 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v26 = 0;
-  v24 = [v23 createDirectoryAtURL:v22 withIntermediateDirectories:0 attributes:0 error:&v26];
+  v24 = [defaultManager createDirectoryAtURL:v22 withIntermediateDirectories:0 attributes:0 error:&v26];
   v25 = v26;
 
   if (v24)
   {
-    [a1 _exportAssets:v10 toURL:v22 configuration:v11 progress:v12];
+    [self _exportAssets:assetsCopy toURL:v22 configuration:configurationCopy progress:progressCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -837,46 +837,46 @@ void __75__PXPhotosExportUtilities__downscaleImageAtURL_targetDimension_completi
     _os_log_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Failed to create export directory: %@", buf, 0xCu);
   }
 
-  v15[2](v15, v22, v25);
+  completionCopy[2](completionCopy, v22, v25);
 }
 
-+ (void)exportAssetsInContainer:(id)a3 configuration:(id)a4 progress:(id)a5 completion:(id)a6
++ (void)exportAssetsInContainer:(id)container configuration:(id)configuration progress:(id)progress completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  containerCopy = container;
+  configurationCopy = configuration;
+  progressCopy = progress;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a1 _exportCollectionList:v10 configuration:v11 progress:v12 completion:v13];
+    [self _exportCollectionList:containerCopy configuration:configurationCopy progress:progressCopy completion:completionCopy];
     goto LABEL_13;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [MEMORY[0x1E6978630] fetchAssetsForPerson:v10 options:0];
+    v14 = [MEMORY[0x1E6978630] fetchAssetsForPerson:containerCopy options:0];
     goto LABEL_9;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [MEMORY[0x1E6978630] fetchExclusiveAssetsForSocialGroup:v10 options:0];
+    v14 = [MEMORY[0x1E6978630] fetchExclusiveAssetsForSocialGroup:containerCopy options:0];
     goto LABEL_9;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v10 options:0];
+    v14 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:containerCopy options:0];
 LABEL_9:
     v15 = v14;
     if (v14)
     {
-      [a1 exportAssets:v14 configuration:v11 progress:v12 completion:v13];
+      [self exportAssets:v14 configuration:configurationCopy progress:progressCopy completion:completionCopy];
 
       goto LABEL_13;
     }
@@ -885,23 +885,23 @@ LABEL_9:
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v16 = 138412290;
-    v17 = v10;
+    v17 = containerCopy;
     _os_log_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to determine assets contained in %@", &v16, 0xCu);
   }
 
 LABEL_13:
 }
 
-+ (void)exportAsset:(id)a3 configuration:(id)a4 progress:(id)a5 completion:(id)a6
++ (void)exportAsset:(id)asset configuration:(id)configuration progress:(id)progress completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [v10 activityTypeForAssetExportAnalytics];
+  configurationCopy = configuration;
+  progressCopy = progress;
+  completionCopy = completion;
+  assetCopy = asset;
+  activityTypeForAssetExportAnalytics = [configurationCopy activityTypeForAssetExportAnalytics];
   v27 = 0;
-  v15 = [a1 _exportRequestForAsset:v13 analyticsActivityType:v14 error:&v27];
+  v15 = [self _exportRequestForAsset:assetCopy analyticsActivityType:activityTypeForAssetExportAnalytics error:&v27];
 
   v16 = v27;
   if (v15)
@@ -910,18 +910,18 @@ LABEL_13:
     v21 = 3221225472;
     v22 = __73__PXPhotosExportUtilities_exportAsset_configuration_progress_completion___block_invoke;
     v23 = &unk_1E7746280;
-    v26 = a1;
-    v24 = v10;
-    v25 = v12;
-    v17 = [a1 _exportAssetUsingExportRequest:v15 configuration:v24 completion:&v20];
-    [v11 addChild:v17 withPendingUnitCount:{90, v20, v21, v22, v23}];
+    selfCopy = self;
+    v24 = configurationCopy;
+    v25 = completionCopy;
+    v17 = [self _exportAssetUsingExportRequest:v15 configuration:v24 completion:&v20];
+    [progressCopy addChild:v17 withPendingUnitCount:{90, v20, v21, v22, v23}];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v11 localizedDescription];
+      localizedDescription = [progressCopy localizedDescription];
       *buf = 138412546;
       v29 = v15;
       v30 = 2112;
-      v31 = v18;
+      v31 = localizedDescription;
       _os_log_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Finished creating export request: %@ (progress: %@)", buf, 0x16u);
     }
   }
@@ -930,15 +930,15 @@ LABEL_13:
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v19 = [v11 localizedDescription];
+      localizedDescription2 = [progressCopy localizedDescription];
       *buf = 138412546;
       v29 = v16;
       v30 = 2112;
-      v31 = v19;
+      v31 = localizedDescription2;
       _os_log_error_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Creating export request failed with error: %@ (progress: %@)", buf, 0x16u);
     }
 
-    (*(v12 + 2))(v12, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 }
 

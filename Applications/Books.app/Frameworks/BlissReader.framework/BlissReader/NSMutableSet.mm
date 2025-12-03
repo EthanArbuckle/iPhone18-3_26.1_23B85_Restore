@@ -1,24 +1,24 @@
 @interface NSMutableSet
-- (void)addMessageEntry:(id)a3;
+- (void)addMessageEntry:(id)entry;
 @end
 
 @implementation NSMutableSet
 
-- (void)addMessageEntry:(id)a3
+- (void)addMessageEntry:(id)entry
 {
   v5 = [(NSMutableSet *)self member:?];
   if (v5)
   {
 
-    [v5 mergeEntries:a3];
+    [v5 mergeEntries:entry];
   }
 
   else
   {
-    [(NSMutableSet *)self addObject:a3];
+    [(NSMutableSet *)self addObject:entry];
     v6 = [(NSMutableSet *)self count];
 
-    [a3 setTimeStamp:v6];
+    [entry setTimeStamp:v6];
   }
 }
 

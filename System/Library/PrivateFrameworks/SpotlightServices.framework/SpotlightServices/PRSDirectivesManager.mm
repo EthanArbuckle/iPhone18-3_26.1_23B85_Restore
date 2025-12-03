@@ -1,12 +1,12 @@
 @interface PRSDirectivesManager
 + (void)initialize;
 - (PRSDirectivesManager)init;
-- (unint64_t)getDirectiveTypeFromString:(id)a3;
+- (unint64_t)getDirectiveTypeFromString:(id)string;
 - (void)cleanup;
 - (void)dealloc;
-- (void)getAllDirectivesArraysForTesting:(void *)a3;
-- (void)processDirectives:(id)a3;
-- (void)processResultSetValuesWithMap:(id)a3 serverFeatures:(id)a4;
+- (void)getAllDirectivesArraysForTesting:(void *)testing;
+- (void)processDirectives:(id)directives;
+- (void)processResultSetValuesWithMap:(id)map serverFeatures:(id)features;
 @end
 
 @implementation PRSDirectivesManager
@@ -220,19 +220,19 @@ uint64_t __28__PRSDirectivesManager_init__block_invoke()
   [(PRSDirectivesManager *)&v31 dealloc];
 }
 
-- (unint64_t)getDirectiveTypeFromString:(id)a3
+- (unint64_t)getDirectiveTypeFromString:(id)string
 {
   v3 = getDirectiveTypeFromString__onceToken;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     [PRSDirectivesManager getDirectiveTypeFromString:];
   }
 
-  v5 = [directiveStringToEnumMapping objectForKey:v4];
+  v5 = [directiveStringToEnumMapping objectForKey:stringCopy];
 
-  v6 = [v5 integerValue];
-  return v6;
+  integerValue = [v5 integerValue];
+  return integerValue;
 }
 
 void __51__PRSDirectivesManager_getDirectiveTypeFromString___block_invoke()
@@ -241,38 +241,38 @@ void __51__PRSDirectivesManager_getDirectiveTypeFromString___block_invoke()
   directiveStringToEnumMapping = &unk_1F55B78A8;
 }
 
-- (void)getAllDirectivesArraysForTesting:(void *)a3
+- (void)getAllDirectivesArraysForTesting:(void *)testing
 {
   v3 = *&self->directive_replace_if;
   v4 = *&self->directive_value_if_not_exist;
   v5 = *&self->directive_id_mapping;
   v6 = *&self->directive_resultset_id_score_mapping;
   directive_quantize = self->directive_quantize;
-  *a3 = *&self->directive_as_is;
-  *(a3 + 1) = v3;
-  *(a3 + 2) = v4;
-  *(a3 + 3) = v5;
-  *(a3 + 4) = v6;
-  *(a3 + 10) = directive_quantize;
+  *testing = *&self->directive_as_is;
+  *(testing + 1) = v3;
+  *(testing + 2) = v4;
+  *(testing + 3) = v5;
+  *(testing + 4) = v6;
+  *(testing + 10) = directive_quantize;
 }
 
-- (void)processDirectives:(id)a3
+- (void)processDirectives:(id)directives
 {
   v353 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  directivesCopy = directives;
   disabledFeatureIndices = self->disabledFeatureIndices;
   self->disabledFeatureIndices = 0;
 
   v6 = objc_opt_new();
   mapInflatedIndexToSize = self->mapInflatedIndexToSize;
-  v311 = self;
+  selfCopy = self;
   self->mapInflatedIndexToSize = v6;
 
   v342 = 0u;
   v343 = 0u;
   v340 = 0u;
   v341 = 0u;
-  v8 = v4;
+  v8 = directivesCopy;
   v9 = [v8 countByEnumeratingWithState:&v340 objects:v352 count:16];
   v10 = &sLocaleSpecificMatchingLock.__opaque[56];
   v11 = &sLocaleSpecificMatchingLock.__opaque[56];
@@ -347,7 +347,7 @@ LABEL_18:
       {
         if (v21)
         {
-          [(PRSDirectivesManager *)v311 getDirectiveTypeFromString:v21];
+          [(PRSDirectivesManager *)selfCopy getDirectiveTypeFromString:v21];
         }
 
         v22 = 0x7FFFFFFFLL;
@@ -387,47 +387,47 @@ LABEL_18:
       {
         v292 = v26;
         v291 = v13;
-        switch([(PRSDirectivesManager *)v311 getDirectiveTypeFromString:?])
+        switch([(PRSDirectivesManager *)selfCopy getDirectiveTypeFromString:?])
         {
           case 0uLL:
-            sizeOfAsIs = v311->sizeOfAsIs;
-            indexOfAsIs = v311->indexOfAsIs;
-            directive_as_is = v311->directive_as_is;
+            sizeOfAsIs = selfCopy->sizeOfAsIs;
+            indexOfAsIs = selfCopy->indexOfAsIs;
+            directive_as_is = selfCopy->directive_as_is;
             if (sizeOfAsIs == indexOfAsIs)
             {
               v33 = sizeOfAsIs | (sizeOfAsIs >> 1) | ((sizeOfAsIs | (sizeOfAsIs >> 1)) >> 2);
               v34 = v33 | (v33 >> 4) | ((v33 | (v33 >> 4)) >> 8);
               v35 = (v34 | HIWORD(v34)) + 1;
-              v311->sizeOfAsIs = v35;
+              selfCopy->sizeOfAsIs = v35;
               directive_as_is = malloc_type_realloc(directive_as_is, 16 * v35, 0x1000040451B5BE8uLL);
-              v311->directive_as_is = directive_as_is;
-              indexOfAsIs = v311->indexOfAsIs;
+              selfCopy->directive_as_is = directive_as_is;
+              indexOfAsIs = selfCopy->indexOfAsIs;
             }
 
             directive_as_is[indexOfAsIs].var0 = v22;
             v36 = [v23 count];
-            v37 = v311->indexOfAsIs;
-            v311->directive_as_is[v37].var1 = v36 + v22;
-            v311->indexOfAsIs = v37 + 1;
+            v37 = selfCopy->indexOfAsIs;
+            selfCopy->directive_as_is[v37].var1 = v36 + v22;
+            selfCopy->indexOfAsIs = v37 + 1;
             goto LABEL_164;
           case 1uLL:
-            sizeOfAsIsRange = v311->sizeOfAsIsRange;
-            if (sizeOfAsIsRange == v311->indexOfAsIsRange)
+            sizeOfAsIsRange = selfCopy->sizeOfAsIsRange;
+            if (sizeOfAsIsRange == selfCopy->indexOfAsIsRange)
             {
               v118 = sizeOfAsIsRange | (sizeOfAsIsRange >> 1) | ((sizeOfAsIsRange | (sizeOfAsIsRange >> 1)) >> 2);
               v119 = v118 | (v118 >> 4) | ((v118 | (v118 >> 4)) >> 8);
               v120 = (v119 | HIWORD(v119)) + 1;
-              v311->sizeOfAsIsRange = v120;
-              v311->directive_as_is_range = malloc_type_realloc(v311->directive_as_is_range, 24 * v120, 0x1000040504FFAC1uLL);
+              selfCopy->sizeOfAsIsRange = v120;
+              selfCopy->directive_as_is_range = malloc_type_realloc(selfCopy->directive_as_is_range, 24 * v120, 0x1000040504FFAC1uLL);
             }
 
             v121 = [v292 objectForKey:@"count"];
-            v311->directive_as_is_range[v311->indexOfAsIsRange].var0 = v22;
-            v311->directive_as_is_range[v311->indexOfAsIsRange].var1 = [v295 count] + v22;
-            v122 = [v121 integerValue];
-            indexOfAsIsRange = v311->indexOfAsIsRange;
-            v311->directive_as_is_range[indexOfAsIsRange].var2 = v122;
-            v311->indexOfAsIsRange = indexOfAsIsRange + 1;
+            selfCopy->directive_as_is_range[selfCopy->indexOfAsIsRange].var0 = v22;
+            selfCopy->directive_as_is_range[selfCopy->indexOfAsIsRange].var1 = [v295 count] + v22;
+            integerValue = [v121 integerValue];
+            indexOfAsIsRange = selfCopy->indexOfAsIsRange;
+            selfCopy->directive_as_is_range[indexOfAsIsRange].var2 = integerValue;
+            selfCopy->indexOfAsIsRange = indexOfAsIsRange + 1;
 
             v26 = v292;
             v23 = v295;
@@ -435,24 +435,24 @@ LABEL_18:
             v11 = (&sLocaleSpecificMatchingLock + 64);
             break;
           case 2uLL:
-            sizeOfReplaceIf = v311->sizeOfReplaceIf;
-            indexOfReplaceIf = v311->indexOfReplaceIf;
-            directive_replace_if = v311->directive_replace_if;
+            sizeOfReplaceIf = selfCopy->sizeOfReplaceIf;
+            indexOfReplaceIf = selfCopy->indexOfReplaceIf;
+            directive_replace_if = selfCopy->directive_replace_if;
             if (sizeOfReplaceIf == indexOfReplaceIf)
             {
               v82 = sizeOfReplaceIf | (sizeOfReplaceIf >> 1) | ((sizeOfReplaceIf | (sizeOfReplaceIf >> 1)) >> 2);
               v83 = v82 | (v82 >> 4) | ((v82 | (v82 >> 4)) >> 8);
               v84 = (v83 | HIWORD(v83)) + 1;
-              v311->sizeOfReplaceIf = v84;
+              selfCopy->sizeOfReplaceIf = v84;
               directive_replace_if = malloc_type_realloc(directive_replace_if, 40 * v84, 0x10000400A747E1EuLL);
-              v311->directive_replace_if = directive_replace_if;
-              indexOfReplaceIf = v311->indexOfReplaceIf;
+              selfCopy->directive_replace_if = directive_replace_if;
+              indexOfReplaceIf = selfCopy->indexOfReplaceIf;
             }
 
             directive_replace_if[indexOfReplaceIf].var0 = v22;
             v215 = [v295 count];
-            v216 = v311->directive_replace_if;
-            v217 = v311->indexOfReplaceIf;
+            v216 = selfCopy->directive_replace_if;
+            v217 = selfCopy->indexOfReplaceIf;
             v216[v217].var1 = v215 + v22;
             if (v28)
             {
@@ -460,8 +460,8 @@ LABEL_18:
               v339 = 0u;
               v336 = 0u;
               v337 = 0u;
-              v299 = [v28 allKeys];
-              v218 = [v299 countByEnumeratingWithState:&v336 objects:v350 count:16];
+              allKeys = [v28 allKeys];
+              v218 = [allKeys countByEnumeratingWithState:&v336 objects:v350 count:16];
               if (v218)
               {
                 v219 = v218;
@@ -479,17 +479,17 @@ LABEL_18:
                   {
                     if (*v337 != objc)
                     {
-                      objc_enumerationMutation(v299);
+                      objc_enumerationMutation(allKeys);
                     }
 
                     v226 = *(*(&v336 + 1) + 8 * v222);
                     [v226 floatValue];
                     v221 = v225 + 1;
-                    v311->directive_replace_if[v311->indexOfReplaceIf].var2[v225] = v227;
+                    selfCopy->directive_replace_if[selfCopy->indexOfReplaceIf].var2[v225] = v227;
                     v228 = [v309 objectForKey:v226];
                     [v228 floatValue];
                     v220 = v223 + 1;
-                    v311->directive_replace_if[v311->indexOfReplaceIf].var3[v223] = v229;
+                    selfCopy->directive_replace_if[selfCopy->indexOfReplaceIf].var3[v223] = v229;
 
                     ++v222;
                     v224 += 0x100000000;
@@ -498,7 +498,7 @@ LABEL_18:
                   }
 
                   while (v219 != v222);
-                  v219 = [v299 countByEnumeratingWithState:&v336 objects:v350 count:16];
+                  v219 = [allKeys countByEnumeratingWithState:&v336 objects:v350 count:16];
                 }
 
                 while (v219);
@@ -516,8 +516,8 @@ LABEL_18:
                 v230 = 0;
               }
 
-              v216 = v311->directive_replace_if;
-              v217 = v311->indexOfReplaceIf;
+              v216 = selfCopy->directive_replace_if;
+              v217 = selfCopy->indexOfReplaceIf;
               v247 = v217;
             }
 
@@ -528,25 +528,25 @@ LABEL_18:
             }
 
             v216[v247].var4 = v230;
-            v311->indexOfReplaceIf = v217 + 1;
+            selfCopy->indexOfReplaceIf = v217 + 1;
             goto LABEL_163;
           case 3uLL:
-            sizeOfReplaceThenMin = v311->sizeOfReplaceThenMin;
-            indexOfReplaceThenMin = v311->indexOfReplaceThenMin;
-            directive_replace_then_min = v311->directive_replace_then_min;
+            sizeOfReplaceThenMin = selfCopy->sizeOfReplaceThenMin;
+            indexOfReplaceThenMin = selfCopy->indexOfReplaceThenMin;
+            directive_replace_then_min = selfCopy->directive_replace_then_min;
             if (sizeOfReplaceThenMin == indexOfReplaceThenMin)
             {
               v96 = sizeOfReplaceThenMin | (sizeOfReplaceThenMin >> 1) | ((sizeOfReplaceThenMin | (sizeOfReplaceThenMin >> 1)) >> 2);
               v97 = v96 | (v96 >> 4) | ((v96 | (v96 >> 4)) >> 8);
               v98 = (v97 | HIWORD(v97)) + 1;
-              v311->sizeOfReplaceThenMin = v98;
+              selfCopy->sizeOfReplaceThenMin = v98;
               directive_replace_then_min = malloc_type_realloc(directive_replace_then_min, 72 * v98, 0x1000040811A10F9uLL);
-              v311->directive_replace_then_min = directive_replace_then_min;
-              indexOfReplaceThenMin = v311->indexOfReplaceThenMin;
+              selfCopy->directive_replace_then_min = directive_replace_then_min;
+              indexOfReplaceThenMin = selfCopy->indexOfReplaceThenMin;
             }
 
             directive_replace_then_min[indexOfReplaceThenMin].var0 = v22;
-            v311->directive_replace_then_min[v311->indexOfReplaceThenMin].var1 = [v23 count] + v22;
+            selfCopy->directive_replace_then_min[selfCopy->indexOfReplaceThenMin].var1 = [v23 count] + v22;
             v231 = [v292 objectForKey:@"replace"];
             v232 = [v292 objectForKey:@"min"];
             v328 = 0u;
@@ -580,11 +580,11 @@ LABEL_18:
                   v242 = *(*(&v328 + 1) + 8 * v238);
                   [v242 floatValue];
                   v236 = v241 + 1;
-                  v311->directive_replace_then_min[v311->indexOfReplaceThenMin].var2[v241] = v243;
+                  selfCopy->directive_replace_then_min[selfCopy->indexOfReplaceThenMin].var2[v241] = v243;
                   v244 = [v310 objectForKey:v242];
                   [v244 floatValue];
                   v235 = v239 + 1;
-                  v311->directive_replace_then_min[v311->indexOfReplaceThenMin].var3[v239] = v245;
+                  selfCopy->directive_replace_then_min[selfCopy->indexOfReplaceThenMin].var3[v239] = v245;
 
                   ++v238;
                   v240 += 0x100000000;
@@ -611,57 +611,57 @@ LABEL_18:
               v246 = 0;
             }
 
-            v311->directive_replace_then_min[v311->indexOfReplaceThenMin].var5 = v246;
+            selfCopy->directive_replace_then_min[selfCopy->indexOfReplaceThenMin].var5 = v246;
             [v232 floatValue];
-            v248 = v311->indexOfReplaceThenMin;
-            v311->directive_replace_then_min[v248].var4 = v249;
-            v311->indexOfReplaceThenMin = v248 + 1;
+            v248 = selfCopy->indexOfReplaceThenMin;
+            selfCopy->directive_replace_then_min[v248].var4 = v249;
+            selfCopy->indexOfReplaceThenMin = v248 + 1;
 
             v12 = v289;
             v29 = v294;
             goto LABEL_163;
           case 4uLL:
-            sizeOfValueIfNotExist = v311->sizeOfValueIfNotExist;
-            indexOfValueIfNotExist = v311->indexOfValueIfNotExist;
-            directive_value_if_not_exist = v311->directive_value_if_not_exist;
+            sizeOfValueIfNotExist = selfCopy->sizeOfValueIfNotExist;
+            indexOfValueIfNotExist = selfCopy->indexOfValueIfNotExist;
+            directive_value_if_not_exist = selfCopy->directive_value_if_not_exist;
             if (sizeOfValueIfNotExist == indexOfValueIfNotExist)
             {
               v54 = sizeOfValueIfNotExist | (sizeOfValueIfNotExist >> 1) | ((sizeOfValueIfNotExist | (sizeOfValueIfNotExist >> 1)) >> 2);
               v55 = v54 | (v54 >> 4) | ((v54 | (v54 >> 4)) >> 8);
               v56 = (v55 | HIWORD(v55)) + 1;
-              v311->sizeOfValueIfNotExist = v56;
+              selfCopy->sizeOfValueIfNotExist = v56;
               directive_value_if_not_exist = malloc_type_realloc(directive_value_if_not_exist, 24 * v56, 0x10000400CE834B2uLL);
-              v311->directive_value_if_not_exist = directive_value_if_not_exist;
-              indexOfValueIfNotExist = v311->indexOfValueIfNotExist;
+              selfCopy->directive_value_if_not_exist = directive_value_if_not_exist;
+              indexOfValueIfNotExist = selfCopy->indexOfValueIfNotExist;
             }
 
             directive_value_if_not_exist[indexOfValueIfNotExist].var0 = v22;
-            v311->directive_value_if_not_exist[v311->indexOfValueIfNotExist].var1 = [v23 count] + v22;
+            selfCopy->directive_value_if_not_exist[selfCopy->indexOfValueIfNotExist].var1 = [v23 count] + v22;
             [v296 floatValue];
-            v213 = v311->indexOfValueIfNotExist;
+            v213 = selfCopy->indexOfValueIfNotExist;
             v23 = v295;
-            v311->directive_value_if_not_exist[v213].var2 = v214;
-            v311->indexOfValueIfNotExist = v213 + 1;
+            selfCopy->directive_value_if_not_exist[v213].var2 = v214;
+            selfCopy->indexOfValueIfNotExist = v213 + 1;
             goto LABEL_164;
           case 5uLL:
-            sizeOfIsPopulated = v311->sizeOfIsPopulated;
-            indexOfIsPopulated = v311->indexOfIsPopulated;
-            directive_is_populated = v311->directive_is_populated;
+            sizeOfIsPopulated = selfCopy->sizeOfIsPopulated;
+            indexOfIsPopulated = selfCopy->indexOfIsPopulated;
+            directive_is_populated = selfCopy->directive_is_populated;
             if (sizeOfIsPopulated == indexOfIsPopulated)
             {
               v127 = sizeOfIsPopulated | (sizeOfIsPopulated >> 1) | ((sizeOfIsPopulated | (sizeOfIsPopulated >> 1)) >> 2);
               v128 = v127 | (v127 >> 4) | ((v127 | (v127 >> 4)) >> 8);
               v129 = (v128 | HIWORD(v128)) + 1;
-              v311->sizeOfIsPopulated = v129;
+              selfCopy->sizeOfIsPopulated = v129;
               directive_is_populated = malloc_type_realloc(directive_is_populated, v129 << 6, 0x1000040FA0F61DDuLL);
-              v311->directive_is_populated = directive_is_populated;
-              indexOfIsPopulated = v311->indexOfIsPopulated;
+              selfCopy->directive_is_populated = directive_is_populated;
+              indexOfIsPopulated = selfCopy->indexOfIsPopulated;
             }
 
             directive_is_populated[indexOfIsPopulated].var0 = v22;
             v130 = [v23 count];
-            v131 = v311->directive_is_populated;
-            v132 = v311->indexOfIsPopulated;
+            v131 = selfCopy->directive_is_populated;
+            v132 = selfCopy->indexOfIsPopulated;
             v133 = v132;
             v131[v132].var1 = v130 + v22;
             if (v28)
@@ -694,11 +694,11 @@ LABEL_18:
 
                     v143 = *(*(&v332 + 1) + 8 * v139);
                     v137 = v142 + 1;
-                    v311->directive_is_populated[v311->indexOfIsPopulated].var2[v142] = [v143 BOOLValue];
+                    selfCopy->directive_is_populated[selfCopy->indexOfIsPopulated].var2[v142] = [v143 BOOLValue];
                     v144 = [v308 objectForKey:v143];
                     [v144 floatValue];
                     v136 = v140 + 1;
-                    v311->directive_is_populated[v311->indexOfIsPopulated].var3[v140] = v145;
+                    selfCopy->directive_is_populated[selfCopy->indexOfIsPopulated].var3[v140] = v145;
 
                     ++v139;
                     v141 += 0x100000000;
@@ -725,8 +725,8 @@ LABEL_18:
                 v146 = 0;
               }
 
-              v131 = v311->directive_is_populated;
-              v132 = v311->indexOfIsPopulated;
+              v131 = selfCopy->directive_is_populated;
+              v132 = selfCopy->indexOfIsPopulated;
               v133 = v132;
             }
 
@@ -736,49 +736,49 @@ LABEL_18:
             }
 
             v131[v133].var4 = v146;
-            v311->indexOfIsPopulated = v132 + 1;
+            selfCopy->indexOfIsPopulated = v132 + 1;
             goto LABEL_163;
           case 6uLL:
-            sizeOfIdMapping = v311->sizeOfIdMapping;
-            indexOfIdMapping = v311->indexOfIdMapping;
+            sizeOfIdMapping = selfCopy->sizeOfIdMapping;
+            indexOfIdMapping = selfCopy->indexOfIdMapping;
             if (sizeOfIdMapping == indexOfIdMapping)
             {
               v168 = sizeOfIdMapping | (sizeOfIdMapping >> 1) | ((sizeOfIdMapping | (sizeOfIdMapping >> 1)) >> 2);
               v169 = v168 | (v168 >> 4) | ((v168 | (v168 >> 4)) >> 8);
               v170 = (v169 | HIWORD(v169)) + 1;
-              v311->sizeOfIdMapping = v170;
-              v311->directive_id_mapping = malloc_type_realloc(v311->directive_id_mapping, 48 * v170, 0x1072040C780C59AuLL);
-              indexOfIdMapping = v311->indexOfIdMapping;
+              selfCopy->sizeOfIdMapping = v170;
+              selfCopy->directive_id_mapping = malloc_type_realloc(selfCopy->directive_id_mapping, 48 * v170, 0x1072040C780C59AuLL);
+              indexOfIdMapping = selfCopy->indexOfIdMapping;
             }
 
             if (v28)
             {
-              v311->directive_id_mapping[indexOfIdMapping].var0 = v22;
-              v311->directive_id_mapping[v311->indexOfIdMapping].var1 = [v28 count] + v22;
+              selfCopy->directive_id_mapping[indexOfIdMapping].var0 = v22;
+              selfCopy->directive_id_mapping[selfCopy->indexOfIdMapping].var1 = [v28 count] + v22;
               *(v11 + 285) = [v28 count] + *(v11 + 285) - 1;
-              v171 = [v295 firstObject];
-              v172 = [v171 UTF8String];
+              firstObject = [v295 firstObject];
+              uTF8String = [firstObject UTF8String];
 
-              v173 = strdup(v172);
-              v174 = v311->indexOfIdMapping;
-              v311->directive_id_mapping[v311->indexOfIdMapping].var3 = v173;
-              v311->directive_id_mapping[v174].var2.var0 = 0;
-              v175 = &v311->directive_id_mapping[v311->indexOfIdMapping];
+              v173 = strdup(uTF8String);
+              v174 = selfCopy->indexOfIdMapping;
+              selfCopy->directive_id_mapping[selfCopy->indexOfIdMapping].var3 = v173;
+              selfCopy->directive_id_mapping[v174].var2.var0 = 0;
+              v175 = &selfCopy->directive_id_mapping[selfCopy->indexOfIdMapping];
               *(v175 + 16) = 0;
               *(v175 + 24) = 0;
               *(v175 + 32) = 0;
-              v176 = [v28 allKeys];
-              v177 = [v176 objectAtIndexedSubscript:0];
-              v178 = [v177 integerValue];
+              allKeys2 = [v28 allKeys];
+              v177 = [allKeys2 objectAtIndexedSubscript:0];
+              integerValue2 = [v177 integerValue];
 
-              if (v178)
+              if (integerValue2)
               {
                 v326 = 0u;
                 v327 = 0u;
                 v324 = 0u;
                 v325 = 0u;
-                v179 = [v28 allKeys];
-                v180 = [v179 countByEnumeratingWithState:&v324 objects:v347 count:16];
+                allKeys3 = [v28 allKeys];
+                v180 = [allKeys3 countByEnumeratingWithState:&v324 objects:v347 count:16];
                 if (v180)
                 {
                   v181 = v180;
@@ -793,15 +793,15 @@ LABEL_18:
                     {
                       if (*v325 != v184)
                       {
-                        objc_enumerationMutation(v179);
+                        objc_enumerationMutation(allKeys3);
                       }
 
                       v183 = v186 + 1;
-                      v311->directive_id_mapping[v311->indexOfIdMapping].var2.var1[v186++] = [*(*(&v324 + 1) + 8 * v185++) intValue];
+                      selfCopy->directive_id_mapping[selfCopy->indexOfIdMapping].var2.var1[v186++] = [*(*(&v324 + 1) + 8 * v185++) intValue];
                     }
 
                     while (v181 != v185);
-                    v181 = [v179 countByEnumeratingWithState:&v324 objects:v347 count:16];
+                    v181 = [allKeys3 countByEnumeratingWithState:&v324 objects:v347 count:16];
                   }
 
                   while (v181);
@@ -817,57 +817,57 @@ LABEL_18:
                 v258 = lowercase_keys(v28);
                 v259 = [v257 dictionaryWithDictionary:v258];
 
-                v179 = v259;
-                v311->directive_id_mapping[v311->indexOfIdMapping].var2.var0 = v179;
+                allKeys3 = v259;
+                selfCopy->directive_id_mapping[selfCopy->indexOfIdMapping].var2.var0 = allKeys3;
               }
 
-              v260 = v311->mapInflatedIndexToSize;
+              v260 = selfCopy->mapInflatedIndexToSize;
               v261 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v28, "count") - 1}];
               v262 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v306];
               [(NSMutableDictionary *)v260 setObject:v261 forKey:v262];
 
-              indexOfIdMapping = v311->indexOfIdMapping;
+              indexOfIdMapping = selfCopy->indexOfIdMapping;
               v11 = (&sLocaleSpecificMatchingLock + 64);
               v12 = v289;
             }
 
-            v311->indexOfIdMapping = indexOfIdMapping + 1;
+            selfCopy->indexOfIdMapping = indexOfIdMapping + 1;
             goto LABEL_163;
           case 7uLL:
-            sizeOfResultSetIdMapping = v311->sizeOfResultSetIdMapping;
-            indexOfResultSetIdMapping = v311->indexOfResultSetIdMapping;
+            sizeOfResultSetIdMapping = selfCopy->sizeOfResultSetIdMapping;
+            indexOfResultSetIdMapping = selfCopy->indexOfResultSetIdMapping;
             if (sizeOfResultSetIdMapping == indexOfResultSetIdMapping)
             {
               v101 = sizeOfResultSetIdMapping | (sizeOfResultSetIdMapping >> 1) | ((sizeOfResultSetIdMapping | (sizeOfResultSetIdMapping >> 1)) >> 2);
               v102 = v101 | (v101 >> 4) | ((v101 | (v101 >> 4)) >> 8);
               v103 = (v102 | HIWORD(v102)) + 1;
-              v311->sizeOfResultSetIdMapping = v103;
-              v311->directive_resultset_id_mapping = malloc_type_realloc(v311->directive_resultset_id_mapping, 56 * v103, 0x10F20409CFFA869uLL);
-              indexOfResultSetIdMapping = v311->indexOfResultSetIdMapping;
+              selfCopy->sizeOfResultSetIdMapping = v103;
+              selfCopy->directive_resultset_id_mapping = malloc_type_realloc(selfCopy->directive_resultset_id_mapping, 56 * v103, 0x10F20409CFFA869uLL);
+              indexOfResultSetIdMapping = selfCopy->indexOfResultSetIdMapping;
             }
 
             if (v28)
             {
-              v311->directive_resultset_id_mapping[indexOfResultSetIdMapping].var0 = v22;
-              v311->directive_resultset_id_mapping[v311->indexOfResultSetIdMapping].var1 = [v28 count] + v22;
+              selfCopy->directive_resultset_id_mapping[indexOfResultSetIdMapping].var0 = v22;
+              selfCopy->directive_resultset_id_mapping[selfCopy->indexOfResultSetIdMapping].var1 = [v28 count] + v22;
               *(v11 + 285) = [v28 count] + *(v11 + 285) - 1;
-              v104 = [v295 firstObject];
-              v105 = [v104 UTF8String];
+              firstObject2 = [v295 firstObject];
+              uTF8String2 = [firstObject2 UTF8String];
 
-              v311->directive_resultset_id_mapping[v311->indexOfResultSetIdMapping].var3 = strdup(v105);
-              v106 = [v28 allKeys];
-              v107 = [v106 objectAtIndexedSubscript:0];
-              v108 = [v107 integerValue];
+              selfCopy->directive_resultset_id_mapping[selfCopy->indexOfResultSetIdMapping].var3 = strdup(uTF8String2);
+              allKeys4 = [v28 allKeys];
+              v107 = [allKeys4 objectAtIndexedSubscript:0];
+              integerValue3 = [v107 integerValue];
 
-              if (v108)
+              if (integerValue3)
               {
                 v322 = 0u;
                 v323 = 0u;
                 v320 = 0u;
                 v321 = 0u;
                 v109 = v28;
-                v110 = [v28 allKeys];
-                v111 = [v110 countByEnumeratingWithState:&v320 objects:v346 count:16];
+                allKeys5 = [v28 allKeys];
+                v111 = [allKeys5 countByEnumeratingWithState:&v320 objects:v346 count:16];
                 if (v111)
                 {
                   v112 = v111;
@@ -881,21 +881,21 @@ LABEL_18:
                     {
                       if (*v321 != v114)
                       {
-                        objc_enumerationMutation(v110);
+                        objc_enumerationMutation(allKeys5);
                       }
 
                       v113 = v116 + 1;
-                      v311->directive_resultset_id_mapping[v311->indexOfResultSetIdMapping].var2.var1[v116++] = [*(*(&v320 + 1) + 8 * v115++) intValue];
+                      selfCopy->directive_resultset_id_mapping[selfCopy->indexOfResultSetIdMapping].var2.var1[v116++] = [*(*(&v320 + 1) + 8 * v115++) intValue];
                     }
 
                     while (v112 != v115);
-                    v112 = [v110 countByEnumeratingWithState:&v320 objects:v346 count:16];
+                    v112 = [allKeys5 countByEnumeratingWithState:&v320 objects:v346 count:16];
                   }
 
                   while (v112);
                 }
 
-                v311->directive_resultset_id_mapping[v311->indexOfResultSetIdMapping].var2.var0 = 0;
+                selfCopy->directive_resultset_id_mapping[selfCopy->indexOfResultSetIdMapping].var2.var0 = 0;
                 v29 = v294;
                 v28 = v109;
                 v8 = v288;
@@ -908,57 +908,57 @@ LABEL_18:
                 v252 = [v250 dictionaryWithDictionary:v251];
 
                 v253 = v252;
-                v311->directive_resultset_id_mapping[v311->indexOfResultSetIdMapping].var2.var0 = v253;
+                selfCopy->directive_resultset_id_mapping[selfCopy->indexOfResultSetIdMapping].var2.var0 = v253;
               }
 
-              v311->directive_resultset_id_mapping[v311->indexOfResultSetIdMapping].var4 = 0;
-              v254 = v311->mapInflatedIndexToSize;
+              selfCopy->directive_resultset_id_mapping[selfCopy->indexOfResultSetIdMapping].var4 = 0;
+              v254 = selfCopy->mapInflatedIndexToSize;
               v255 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v28, "count") - 1}];
               v256 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v306];
               [(NSMutableDictionary *)v254 setObject:v255 forKey:v256];
 
-              indexOfResultSetIdMapping = v311->indexOfResultSetIdMapping;
+              indexOfResultSetIdMapping = selfCopy->indexOfResultSetIdMapping;
               v11 = (&sLocaleSpecificMatchingLock + 64);
               v12 = v289;
             }
 
-            v311->indexOfResultSetIdMapping = indexOfResultSetIdMapping + 1;
+            selfCopy->indexOfResultSetIdMapping = indexOfResultSetIdMapping + 1;
             goto LABEL_163;
           case 8uLL:
-            sizeOfResultSetIdScoreMapping = v311->sizeOfResultSetIdScoreMapping;
-            indexOfResultSetIdScoreMapping = v311->indexOfResultSetIdScoreMapping;
+            sizeOfResultSetIdScoreMapping = selfCopy->sizeOfResultSetIdScoreMapping;
+            indexOfResultSetIdScoreMapping = selfCopy->indexOfResultSetIdScoreMapping;
             if (sizeOfResultSetIdScoreMapping == indexOfResultSetIdScoreMapping)
             {
               v197 = sizeOfResultSetIdScoreMapping | (sizeOfResultSetIdScoreMapping >> 1) | ((sizeOfResultSetIdScoreMapping | (sizeOfResultSetIdScoreMapping >> 1)) >> 2);
               v198 = v197 | (v197 >> 4) | ((v197 | (v197 >> 4)) >> 8);
               v199 = (v198 | HIWORD(v198)) + 1;
-              v311->sizeOfResultSetIdScoreMapping = v199;
-              v311->directive_resultset_id_score_mapping = malloc_type_realloc(v311->directive_resultset_id_score_mapping, v199 << 6, 0x10F2040D14D0496uLL);
-              indexOfResultSetIdScoreMapping = v311->indexOfResultSetIdScoreMapping;
+              selfCopy->sizeOfResultSetIdScoreMapping = v199;
+              selfCopy->directive_resultset_id_score_mapping = malloc_type_realloc(selfCopy->directive_resultset_id_score_mapping, v199 << 6, 0x10F2040D14D0496uLL);
+              indexOfResultSetIdScoreMapping = selfCopy->indexOfResultSetIdScoreMapping;
             }
 
             if (v28)
             {
-              v311->directive_resultset_id_score_mapping[indexOfResultSetIdScoreMapping].var0 = v22;
-              v311->directive_resultset_id_score_mapping[v311->indexOfResultSetIdScoreMapping].var1 = [v28 count] + v22;
+              selfCopy->directive_resultset_id_score_mapping[indexOfResultSetIdScoreMapping].var0 = v22;
+              selfCopy->directive_resultset_id_score_mapping[selfCopy->indexOfResultSetIdScoreMapping].var1 = [v28 count] + v22;
               *(v11 + 285) = [v28 count] + *(v11 + 285) - 1;
-              v200 = [v23 firstObject];
-              v201 = [v200 UTF8String];
+              firstObject3 = [v23 firstObject];
+              uTF8String3 = [firstObject3 UTF8String];
 
-              v311->directive_resultset_id_score_mapping[v311->indexOfResultSetIdScoreMapping].var4 = strdup(v201);
-              v202 = [v28 allKeys];
-              v203 = [v202 objectAtIndexedSubscript:0];
-              v204 = [v203 integerValue];
+              selfCopy->directive_resultset_id_score_mapping[selfCopy->indexOfResultSetIdScoreMapping].var4 = strdup(uTF8String3);
+              allKeys6 = [v28 allKeys];
+              v203 = [allKeys6 objectAtIndexedSubscript:0];
+              integerValue4 = [v203 integerValue];
 
-              if (v204)
+              if (integerValue4)
               {
                 v318 = 0u;
                 v319 = 0u;
                 v316 = 0u;
                 v317 = 0u;
                 v205 = v28;
-                v206 = [v28 allKeys];
-                v207 = [v206 countByEnumeratingWithState:&v316 objects:v345 count:16];
+                allKeys7 = [v28 allKeys];
+                v207 = [allKeys7 countByEnumeratingWithState:&v316 objects:v345 count:16];
                 if (v207)
                 {
                   v208 = v207;
@@ -972,21 +972,21 @@ LABEL_18:
                     {
                       if (*v317 != v210)
                       {
-                        objc_enumerationMutation(v206);
+                        objc_enumerationMutation(allKeys7);
                       }
 
                       v209 = v212 + 1;
-                      v311->directive_resultset_id_score_mapping[v311->indexOfResultSetIdScoreMapping].var2.var1[v212++] = [*(*(&v316 + 1) + 8 * v211++) intValue];
+                      selfCopy->directive_resultset_id_score_mapping[selfCopy->indexOfResultSetIdScoreMapping].var2.var1[v212++] = [*(*(&v316 + 1) + 8 * v211++) intValue];
                     }
 
                     while (v208 != v211);
-                    v208 = [v206 countByEnumeratingWithState:&v316 objects:v345 count:16];
+                    v208 = [allKeys7 countByEnumeratingWithState:&v316 objects:v345 count:16];
                   }
 
                   while (v208);
                 }
 
-                v311->directive_resultset_id_score_mapping[v311->indexOfResultSetIdScoreMapping].var2.var0 = 0;
+                selfCopy->directive_resultset_id_score_mapping[selfCopy->indexOfResultSetIdScoreMapping].var2.var0 = 0;
                 v29 = v294;
                 v28 = v205;
               }
@@ -998,7 +998,7 @@ LABEL_18:
                 v265 = [v263 dictionaryWithDictionary:v264];
 
                 v266 = v265;
-                v311->directive_resultset_id_score_mapping[v311->indexOfResultSetIdScoreMapping].var2.var0 = v266;
+                selfCopy->directive_resultset_id_score_mapping[selfCopy->indexOfResultSetIdScoreMapping].var2.var0 = v266;
               }
 
               v11 = (&sLocaleSpecificMatchingLock + 64);
@@ -1009,30 +1009,30 @@ LABEL_18:
                 v269 = [v267 dictionaryWithDictionary:v268];
 
                 v270 = v269;
-                v311->directive_resultset_id_score_mapping[v311->indexOfResultSetIdScoreMapping].var3 = v270;
+                selfCopy->directive_resultset_id_score_mapping[selfCopy->indexOfResultSetIdScoreMapping].var3 = v270;
 
-                v271 = v311->indexOfResultSetIdScoreMapping;
+                v271 = selfCopy->indexOfResultSetIdScoreMapping;
               }
 
               else
               {
-                v271 = v311->indexOfResultSetIdScoreMapping;
-                v311->directive_resultset_id_score_mapping[v271].var3 = 0;
+                v271 = selfCopy->indexOfResultSetIdScoreMapping;
+                selfCopy->directive_resultset_id_score_mapping[v271].var3 = 0;
               }
 
-              v311->directive_resultset_id_score_mapping[v271].var5 = 0;
-              v272 = v311->mapInflatedIndexToSize;
+              selfCopy->directive_resultset_id_score_mapping[v271].var5 = 0;
+              v272 = selfCopy->mapInflatedIndexToSize;
               v273 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v28, "count") - 1}];
               v274 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v306];
               [(NSMutableDictionary *)v272 setObject:v273 forKey:v274];
 
-              indexOfResultSetIdScoreMapping = v311->indexOfResultSetIdScoreMapping;
+              indexOfResultSetIdScoreMapping = selfCopy->indexOfResultSetIdScoreMapping;
               v12 = v289;
               v13 = v291;
               v23 = v295;
             }
 
-            v311->indexOfResultSetIdScoreMapping = indexOfResultSetIdScoreMapping + 1;
+            selfCopy->indexOfResultSetIdScoreMapping = indexOfResultSetIdScoreMapping + 1;
             goto LABEL_164;
           case 9uLL:
             v78 = v23;
@@ -1040,35 +1040,35 @@ LABEL_18:
             v287 = v78;
             goto LABEL_163;
           case 10uLL:
-            sizeOfOneSidedInverse = v311->sizeOfOneSidedInverse;
-            indexOfOneSidedInverse = v311->indexOfOneSidedInverse;
-            directive_one_sided_inverse = v311->directive_one_sided_inverse;
+            sizeOfOneSidedInverse = selfCopy->sizeOfOneSidedInverse;
+            indexOfOneSidedInverse = selfCopy->indexOfOneSidedInverse;
+            directive_one_sided_inverse = selfCopy->directive_one_sided_inverse;
             if (sizeOfOneSidedInverse == indexOfOneSidedInverse)
             {
               v190 = sizeOfOneSidedInverse | (sizeOfOneSidedInverse >> 1) | ((sizeOfOneSidedInverse | (sizeOfOneSidedInverse >> 1)) >> 2);
               v191 = v190 | (v190 >> 4) | ((v190 | (v190 >> 4)) >> 8);
               v192 = (v191 | HIWORD(v191)) + 1;
-              v311->sizeOfOneSidedInverse = v192;
+              selfCopy->sizeOfOneSidedInverse = v192;
               directive_one_sided_inverse = malloc_type_realloc(directive_one_sided_inverse, 16 * v192, 0x1000040451B5BE8uLL);
-              v311->directive_one_sided_inverse = directive_one_sided_inverse;
-              indexOfOneSidedInverse = v311->indexOfOneSidedInverse;
+              selfCopy->directive_one_sided_inverse = directive_one_sided_inverse;
+              indexOfOneSidedInverse = selfCopy->indexOfOneSidedInverse;
             }
 
             directive_one_sided_inverse[indexOfOneSidedInverse].var0 = v22;
             v193 = [v23 count];
-            v194 = v311->indexOfOneSidedInverse;
-            v311->directive_one_sided_inverse[v194].var1 = v193 + v22;
-            v311->indexOfOneSidedInverse = v194 + 1;
+            v194 = selfCopy->indexOfOneSidedInverse;
+            selfCopy->directive_one_sided_inverse[v194].var1 = v193 + v22;
+            selfCopy->indexOfOneSidedInverse = v194 + 1;
             goto LABEL_164;
           case 11uLL:
-            sizeOfQuantize = v311->sizeOfQuantize;
-            if (sizeOfQuantize == v311->indexOfQuantize)
+            sizeOfQuantize = selfCopy->sizeOfQuantize;
+            if (sizeOfQuantize == selfCopy->indexOfQuantize)
             {
               v41 = sizeOfQuantize | (sizeOfQuantize >> 1) | ((sizeOfQuantize | (sizeOfQuantize >> 1)) >> 2);
               v42 = v41 | (v41 >> 4) | ((v41 | (v41 >> 4)) >> 8);
               v43 = (v42 | HIWORD(v42)) + 1;
-              v311->sizeOfQuantize = v43;
-              v311->directive_quantize = malloc_type_realloc(v311->directive_quantize, 32 * v43, 0x10800403A84FC25uLL);
+              selfCopy->sizeOfQuantize = v43;
+              selfCopy->directive_quantize = malloc_type_realloc(selfCopy->directive_quantize, 32 * v43, 0x10800403A84FC25uLL);
             }
 
             if (!v28)
@@ -1081,8 +1081,8 @@ LABEL_18:
             if (v44 && [v44 count])
             {
               v45 = [v38 count];
-              v311->directive_quantize[v311->indexOfQuantize].var3 = v45;
-              v311->directive_quantize[v311->indexOfQuantize].var2 = malloc_type_calloc(v45, 4uLL, 0x100004052888210uLL);
+              selfCopy->directive_quantize[selfCopy->indexOfQuantize].var3 = v45;
+              selfCopy->directive_quantize[selfCopy->indexOfQuantize].var2 = malloc_type_calloc(v45, 4uLL, 0x100004052888210uLL);
               if ([v38 count])
               {
                 v46 = 0;
@@ -1090,7 +1090,7 @@ LABEL_18:
                 {
                   v47 = [v38 objectAtIndex:v46];
                   [v47 floatValue];
-                  v311->directive_quantize[v311->indexOfQuantize].var2[v46] = v48;
+                  selfCopy->directive_quantize[selfCopy->indexOfQuantize].var2[v46] = v48;
 
                   ++v46;
                 }
@@ -1098,12 +1098,12 @@ LABEL_18:
                 while ([v38 count] > v46);
               }
 
-              v311->directive_quantize[v311->indexOfQuantize].var0 = v22;
-              v311->directive_quantize[v311->indexOfQuantize].var1 = [v295 count] + v22;
+              selfCopy->directive_quantize[selfCopy->indexOfQuantize].var0 = v22;
+              selfCopy->directive_quantize[selfCopy->indexOfQuantize].var1 = [v295 count] + v22;
               v49 = [v38 count];
-              indexOfQuantize = v311->indexOfQuantize;
-              v311->directive_quantize[indexOfQuantize].var3 = v49;
-              v311->indexOfQuantize = indexOfQuantize + 1;
+              indexOfQuantize = selfCopy->indexOfQuantize;
+              selfCopy->directive_quantize[indexOfQuantize].var3 = v49;
+              selfCopy->indexOfQuantize = indexOfQuantize + 1;
               v12 = v289;
             }
 
@@ -1117,8 +1117,8 @@ LABEL_18:
             v57 = [v14 objectForKey:@"features"];
             v58 = [v57 count];
             v59 = [v28 count];
-            v311->directive_local_resultset_id_values_mapping.start_idx = v22;
-            v311->directive_local_resultset_id_values_mapping.end_idx = v59 * v58 + v22;
+            selfCopy->directive_local_resultset_id_values_mapping.start_idx = v22;
+            selfCopy->directive_local_resultset_id_values_mapping.end_idx = v59 * v58 + v22;
             v60 = v59 * v58 - 1;
             *(v11 + 285) += v60;
             v61 = MEMORY[0x1E695D608];
@@ -1126,8 +1126,8 @@ LABEL_18:
             v63 = [v61 dictionaryWithDictionary:v62];
 
             obj = v63;
-            v311->directive_local_resultset_id_values_mapping.mapping = obj;
-            v64 = v311->mapInflatedIndexToSize;
+            selfCopy->directive_local_resultset_id_values_mapping.mapping = obj;
+            v64 = selfCopy->mapInflatedIndexToSize;
             v65 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v60];
             v29 = v294;
             v66 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v306];
@@ -1136,8 +1136,8 @@ LABEL_18:
             v307 = v58;
             v67 = 8 * v58;
             v8 = v288;
-            v311->directive_local_resultset_id_values_mapping.PRSRankingBundleFeatureOrder = malloc_type_malloc(v67, 0x100004000313F17uLL);
-            v311->directive_local_resultset_id_values_mapping.PRSRankingBundleFeaturePickers = malloc_type_malloc(8 * [v57 count], 0x80040B8603338uLL);
+            selfCopy->directive_local_resultset_id_values_mapping.PRSRankingBundleFeatureOrder = malloc_type_malloc(v67, 0x100004000313F17uLL);
+            selfCopy->directive_local_resultset_id_values_mapping.PRSRankingBundleFeaturePickers = malloc_type_malloc(8 * [v57 count], 0x80040B8603338uLL);
             if ([v57 count])
             {
               v68 = 0;
@@ -1155,7 +1155,7 @@ LABEL_18:
                   v74 = [v73 objectAtIndexedSubscript:4];
 
                   v75 = [sLocalRSFeatureNameToBundleFeatureMappings objectForKeyedSubscript:v72];
-                  v311->directive_local_resultset_id_values_mapping.PRSRankingBundleFeatureOrder[v68] = [v75 unsignedIntegerValue];
+                  selfCopy->directive_local_resultset_id_values_mapping.PRSRankingBundleFeatureOrder[v68] = [v75 unsignedIntegerValue];
 
                   v76 = [v74 isEqualToString:@"min"];
                   v13 = v291;
@@ -1165,7 +1165,7 @@ LABEL_18:
                     v77 = &sMaxPicker;
                   }
 
-                  v311->directive_local_resultset_id_values_mapping.PRSRankingBundleFeaturePickers[v68] = *v77;
+                  selfCopy->directive_local_resultset_id_values_mapping.PRSRankingBundleFeaturePickers[v68] = *v77;
                 }
 
                 ++v68;
@@ -1174,8 +1174,8 @@ LABEL_18:
               while (v68 < [v57 count]);
             }
 
-            v311->directive_local_resultset_id_values_mapping.numPRSRankingBundleFeatures = v307;
-            v311->directive_local_resultset_id_values_mapping.mapSize = 0;
+            selfCopy->directive_local_resultset_id_values_mapping.numPRSRankingBundleFeatures = v307;
+            selfCopy->directive_local_resultset_id_values_mapping.mapSize = 0;
 
             v11 = (&sLocaleSpecificMatchingLock + 64);
             v12 = v289;
@@ -1190,8 +1190,8 @@ LABEL_18:
             v148 = v11;
             v149 = [v147 count];
             v150 = [v28 count];
-            v311->directive_parsec_resultset_id_values_mapping.start_idx = v22;
-            v311->directive_parsec_resultset_id_values_mapping.end_idx = v150 * v149 + v22;
+            selfCopy->directive_parsec_resultset_id_values_mapping.start_idx = v22;
+            selfCopy->directive_parsec_resultset_id_values_mapping.end_idx = v150 * v149 + v22;
             objb = v150 * v149;
             v151 = v150 * v149 - 1;
             *(v148 + 285) += v151;
@@ -1200,14 +1200,14 @@ LABEL_18:
             v154 = [v152 dictionaryWithDictionary:v153];
 
             v298 = v154;
-            v311->directive_parsec_resultset_id_values_mapping.mapping = v298;
-            v155 = v311->mapInflatedIndexToSize;
+            selfCopy->directive_parsec_resultset_id_values_mapping.mapping = v298;
+            v155 = selfCopy->mapInflatedIndexToSize;
             v156 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v151];
             v157 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v306];
             [(NSMutableDictionary *)v155 setObject:v156 forKey:v157];
 
-            v311->directive_parsec_resultset_id_values_mapping.numFeatures = v149;
-            v311->directive_parsec_resultset_id_values_mapping.PRSRankingBundleFeaturePickers = malloc_type_malloc(8 * v149, 0x80040B8603338uLL);
+            selfCopy->directive_parsec_resultset_id_values_mapping.numFeatures = v149;
+            selfCopy->directive_parsec_resultset_id_values_mapping.PRSRankingBundleFeaturePickers = malloc_type_malloc(8 * v149, 0x80040B8603338uLL);
             if ([v147 count])
             {
               v158 = 0;
@@ -1228,7 +1228,7 @@ LABEL_18:
                     v164 = &sMaxPicker;
                   }
 
-                  v311->directive_parsec_resultset_id_values_mapping.PRSRankingBundleFeaturePickers[v158] = *v164;
+                  selfCopy->directive_parsec_resultset_id_values_mapping.PRSRankingBundleFeaturePickers[v158] = *v164;
                 }
 
                 ++v158;
@@ -1238,8 +1238,8 @@ LABEL_18:
             }
 
             v165 = malloc_type_malloc(4 * objb, 0x100004052888210uLL);
-            v311->directive_parsec_resultset_id_values_mapping.score_vector = v165;
-            v311->directive_parsec_resultset_id_values_mapping.mapSize = 4 * objb;
+            selfCopy->directive_parsec_resultset_id_values_mapping.score_vector = v165;
+            selfCopy->directive_parsec_resultset_id_values_mapping.mapSize = 4 * objb;
             v12 = v289;
             v29 = v294;
             if (objb)
@@ -1258,9 +1258,9 @@ LABEL_18:
             v38 = [v28 objectForKey:@"model_weight_x"];
             v39 = [v28 objectForKey:@"model_weight_y"];
             [v38 doubleValue];
-            [(PRSDirectivesManager *)v311 setWeightX:?];
+            [(PRSDirectivesManager *)selfCopy setWeightX:?];
             [v39 doubleValue];
-            [(PRSDirectivesManager *)v311 setWeightY:?];
+            [(PRSDirectivesManager *)selfCopy setWeightY:?];
 
 LABEL_45:
 LABEL_163:
@@ -1269,26 +1269,26 @@ LABEL_164:
             v26 = v292;
             break;
           case 15uLL:
-            sizeOfFanOutValue = v311->sizeOfFanOutValue;
-            indexOfFanOutValue = v311->indexOfFanOutValue;
-            directive_fan_out = v311->directive_fan_out;
+            sizeOfFanOutValue = selfCopy->sizeOfFanOutValue;
+            indexOfFanOutValue = selfCopy->indexOfFanOutValue;
+            directive_fan_out = selfCopy->directive_fan_out;
             if (sizeOfFanOutValue == indexOfFanOutValue)
             {
               v88 = sizeOfFanOutValue | (sizeOfFanOutValue >> 1) | ((sizeOfFanOutValue | (sizeOfFanOutValue >> 1)) >> 2);
               v89 = v88 | (v88 >> 4) | ((v88 | (v88 >> 4)) >> 8);
               v90 = (v89 | HIWORD(v89)) + 1;
-              v311->sizeOfFanOutValue = v90;
+              selfCopy->sizeOfFanOutValue = v90;
               directive_fan_out = malloc_type_realloc(directive_fan_out, 16 * v90, 0x1000040451B5BE8uLL);
-              v311->directive_fan_out = directive_fan_out;
-              indexOfFanOutValue = v311->indexOfFanOutValue;
+              selfCopy->directive_fan_out = directive_fan_out;
+              indexOfFanOutValue = selfCopy->indexOfFanOutValue;
             }
 
             directive_fan_out[indexOfFanOutValue].var0 = v22;
             v91 = [v23 count];
-            v92 = v311->indexOfFanOutValue;
-            v311->directive_fan_out[v92].var1 = v91 + v22;
+            v92 = selfCopy->indexOfFanOutValue;
+            selfCopy->directive_fan_out[v92].var1 = v91 + v22;
             *(v11 + 285) += 95;
-            v311->indexOfFanOutValue = v92 + 1;
+            selfCopy->indexOfFanOutValue = v92 + 1;
             goto LABEL_164;
           default:
             goto LABEL_164;
@@ -1308,15 +1308,15 @@ LABEL_176:
 
   if ([*(v10 + 343) count])
   {
-    v276 = [PRSL2FeatureVector contextWithFeatureOrder:*(v10 + 343) withInflation:*(v11 + 285) withInflatedIndexToSize:v311->mapInflatedIndexToSize];
-    [(PRSDirectivesManager *)v311 setProcessingContext:v276];
+    v276 = [PRSL2FeatureVector contextWithFeatureOrder:*(v10 + 343) withInflation:*(v11 + 285) withInflatedIndexToSize:selfCopy->mapInflatedIndexToSize];
+    [(PRSDirectivesManager *)selfCopy setProcessingContext:v276];
   }
 
   if (v287)
   {
     v277 = objc_opt_new();
-    v278 = v311->disabledFeatureIndices;
-    v311->disabledFeatureIndices = v277;
+    v278 = selfCopy->disabledFeatureIndices;
+    selfCopy->disabledFeatureIndices = v277;
 
     v314 = 0u;
     v315 = 0u;
@@ -1340,7 +1340,7 @@ LABEL_176:
           v284 = [*(v10 + 343) indexOfObject:*(*(&v312 + 1) + 8 * i)];
           if (v284 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            [(NSMutableIndexSet *)v311->disabledFeatureIndices addIndex:v284];
+            [(NSMutableIndexSet *)selfCopy->disabledFeatureIndices addIndex:v284];
           }
         }
 
@@ -1359,15 +1359,15 @@ LABEL_176:
   v285 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processResultSetValuesWithMap:(id)a3 serverFeatures:(id)a4
+- (void)processResultSetValuesWithMap:(id)map serverFeatures:(id)features
 {
   v178 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v141 = a4;
-  v131 = v6;
-  v142 = [v6 copy];
+  mapCopy = map;
+  featuresCopy = features;
+  v131 = mapCopy;
+  v142 = [mapCopy copy];
   indexOfResultSetIdScoreMapping = self->indexOfResultSetIdScoreMapping;
-  v136 = self;
+  selfCopy = self;
   if (indexOfResultSetIdScoreMapping >= 1)
   {
     v8 = 0;
@@ -1375,11 +1375,11 @@ LABEL_176:
     {
       v9 = self->directive_resultset_id_score_mapping[v8].var2.var0;
       v10 = self->directive_resultset_id_score_mapping[v8].var3;
-      v11 = [(__CFDictionary *)v9 allKeys];
-      v12 = malloc_type_malloc(4 * [v11 count], 0x100004052888210uLL);
+      allKeys = [(__CFDictionary *)v9 allKeys];
+      v12 = malloc_type_malloc(4 * [allKeys count], 0x100004052888210uLL);
 
-      v13 = [(__CFDictionary *)v9 allKeys];
-      v14 = [v13 count];
+      allKeys2 = [(__CFDictionary *)v9 allKeys];
+      v14 = [allKeys2 count];
 
       if (v14)
       {
@@ -1387,7 +1387,7 @@ LABEL_176:
       }
 
       self->directive_resultset_id_score_mapping[v8].var5 = v12;
-      if (([v142 count] || objc_msgSend(v141, "count")) && !strcmp("resultset_bundle_id_score", self->directive_resultset_id_score_mapping[v8].var4))
+      if (([v142 count] || objc_msgSend(featuresCopy, "count")) && !strcmp("resultset_bundle_id_score", self->directive_resultset_id_score_mapping[v8].var4))
       {
         v139 = v12;
         v137 = v8;
@@ -1395,8 +1395,8 @@ LABEL_176:
         v170 = 0u;
         v167 = 0u;
         v168 = 0u;
-        v138 = [v142 keyEnumerator];
-        v15 = [v138 countByEnumeratingWithState:&v167 objects:v177 count:16];
+        keyEnumerator = [v142 keyEnumerator];
+        v15 = [keyEnumerator countByEnumeratingWithState:&v167 objects:v177 count:16];
         v140 = v10;
         if (v15)
         {
@@ -1408,43 +1408,43 @@ LABEL_176:
             {
               if (*v168 != v17)
               {
-                objc_enumerationMutation(v138);
+                objc_enumerationMutation(keyEnumerator);
               }
 
               v19 = *(*(&v167 + 1) + 8 * i);
-              v20 = [v19 lowercaseString];
-              v21 = [(__CFDictionary *)v9 objectForKey:v20];
+              lowercaseString = [v19 lowercaseString];
+              v21 = [(__CFDictionary *)v9 objectForKey:lowercaseString];
               v22 = [v142 objectForKey:v19];
               v23 = [v22 objectAtIndexedSubscript:0];
 
-              v24 = [(__CFDictionary *)v10 objectForKey:v20];
+              v24 = [(__CFDictionary *)v10 objectForKey:lowercaseString];
 
               if (!v24)
               {
                 if (v21)
                 {
-                  v25 = [v21 unsignedIntegerValue];
+                  unsignedIntegerValue = [v21 unsignedIntegerValue];
                 }
 
                 else
                 {
                   v26 = [(__CFDictionary *)v9 objectForKey:@"__none_of_the_above__"];
-                  v25 = [v26 unsignedIntegerValue];
+                  unsignedIntegerValue = [v26 unsignedIntegerValue];
                 }
 
-                v27 = [(__CFDictionary *)v9 allKeys];
-                if (v25 >= [v27 count])
+                allKeys3 = [(__CFDictionary *)v9 allKeys];
+                if (unsignedIntegerValue >= [allKeys3 count])
                 {
                   [PRSDirectivesManager processResultSetValuesWithMap:serverFeatures:];
                 }
 
                 [v23 floatValue];
                 v10 = v140;
-                *&v139[4 * v25] = v28;
+                *&v139[4 * unsignedIntegerValue] = v28;
               }
             }
 
-            v16 = [v138 countByEnumeratingWithState:&v167 objects:v177 count:16];
+            v16 = [keyEnumerator countByEnumeratingWithState:&v167 objects:v177 count:16];
           }
 
           while (v16);
@@ -1454,8 +1454,8 @@ LABEL_176:
         v166 = 0u;
         v163 = 0u;
         v164 = 0u;
-        v138 = [v141 keyEnumerator];
-        v29 = [v138 countByEnumeratingWithState:&v163 objects:v176 count:16];
+        keyEnumerator = [featuresCopy keyEnumerator];
+        v29 = [keyEnumerator countByEnumeratingWithState:&v163 objects:v176 count:16];
         if (v29)
         {
           v30 = v29;
@@ -1466,49 +1466,49 @@ LABEL_176:
             {
               if (*v164 != v31)
               {
-                objc_enumerationMutation(v138);
+                objc_enumerationMutation(keyEnumerator);
               }
 
               v33 = *(*(&v163 + 1) + 8 * j);
-              v34 = [v33 lowercaseString];
-              v35 = [(__CFDictionary *)v9 objectForKey:v34];
-              v36 = [v141 objectForKey:v33];
-              v37 = [v36 maxScore];
+              lowercaseString2 = [v33 lowercaseString];
+              v35 = [(__CFDictionary *)v9 objectForKey:lowercaseString2];
+              v36 = [featuresCopy objectForKey:v33];
+              maxScore = [v36 maxScore];
 
-              v38 = [(__CFDictionary *)v10 objectForKey:v34];
+              v38 = [(__CFDictionary *)v10 objectForKey:lowercaseString2];
 
               if (!v38)
               {
                 if (v35)
                 {
-                  v39 = [v35 unsignedIntegerValue];
+                  unsignedIntegerValue2 = [v35 unsignedIntegerValue];
                 }
 
                 else
                 {
                   v40 = [(__CFDictionary *)v9 objectForKey:@"__none_of_the_above__"];
-                  v39 = [v40 unsignedIntegerValue];
+                  unsignedIntegerValue2 = [v40 unsignedIntegerValue];
                 }
 
-                v41 = [(__CFDictionary *)v9 allKeys];
-                if (v39 >= [v41 count])
+                allKeys4 = [(__CFDictionary *)v9 allKeys];
+                if (unsignedIntegerValue2 >= [allKeys4 count])
                 {
                   [PRSDirectivesManager processResultSetValuesWithMap:serverFeatures:];
                 }
 
-                [v37 floatValue];
+                [maxScore floatValue];
                 v10 = v140;
-                *&v139[4 * v39] = v42;
+                *&v139[4 * unsignedIntegerValue2] = v42;
               }
             }
 
-            v30 = [v138 countByEnumeratingWithState:&v163 objects:v176 count:16];
+            v30 = [keyEnumerator countByEnumeratingWithState:&v163 objects:v176 count:16];
           }
 
           while (v30);
         }
 
-        self = v136;
+        self = selfCopy;
         v8 = v137;
       }
 
@@ -1523,8 +1523,8 @@ LABEL_176:
   v160 = 0u;
   v161 = 0u;
   v162 = 0u;
-  v44 = [v142 keyEnumerator];
-  v45 = [v44 countByEnumeratingWithState:&v159 objects:v175 count:16];
+  keyEnumerator2 = [v142 keyEnumerator];
+  v45 = [keyEnumerator2 countByEnumeratingWithState:&v159 objects:v175 count:16];
   if (v45)
   {
     v46 = v45;
@@ -1535,13 +1535,13 @@ LABEL_176:
       {
         if (*v160 != v47)
         {
-          objc_enumerationMutation(v44);
+          objc_enumerationMutation(keyEnumerator2);
         }
 
         [v43 addObject:*(*(&v159 + 1) + 8 * k)];
       }
 
-      v46 = [v44 countByEnumeratingWithState:&v159 objects:v175 count:16];
+      v46 = [keyEnumerator2 countByEnumeratingWithState:&v159 objects:v175 count:16];
     }
 
     while (v46);
@@ -1551,8 +1551,8 @@ LABEL_176:
   v158 = 0u;
   v155 = 0u;
   v156 = 0u;
-  v49 = [v141 keyEnumerator];
-  v50 = [v49 countByEnumeratingWithState:&v155 objects:v174 count:16];
+  keyEnumerator3 = [featuresCopy keyEnumerator];
+  v50 = [keyEnumerator3 countByEnumeratingWithState:&v155 objects:v174 count:16];
   if (v50)
   {
     v51 = v50;
@@ -1563,13 +1563,13 @@ LABEL_176:
       {
         if (*v156 != v52)
         {
-          objc_enumerationMutation(v49);
+          objc_enumerationMutation(keyEnumerator3);
         }
 
         [v43 addObject:*(*(&v155 + 1) + 8 * m)];
       }
 
-      v51 = [v49 countByEnumeratingWithState:&v155 objects:v174 count:16];
+      v51 = [keyEnumerator3 countByEnumeratingWithState:&v155 objects:v174 count:16];
     }
 
     while (v51);
@@ -1583,8 +1583,8 @@ LABEL_176:
     do
     {
       v56 = self->directive_resultset_id_mapping[v55].var2.var0;
-      v57 = [(__CFDictionary *)v56 allKeys];
-      v58 = malloc_type_calloc([v57 count], 4uLL, 0x100004052888210uLL);
+      allKeys5 = [(__CFDictionary *)v56 allKeys];
+      v58 = malloc_type_calloc([allKeys5 count], 4uLL, 0x100004052888210uLL);
 
       self->directive_resultset_id_mapping[v55].var4 = v58;
       if ([v43 count] && !strcmp("resultset_bundle_id", self->directive_resultset_id_mapping[v55].var3))
@@ -1609,24 +1609,24 @@ LABEL_176:
                 objc_enumerationMutation(v140);
               }
 
-              v63 = [*(*(&v151 + 1) + 8 * n) lowercaseString];
-              v64 = [(__CFDictionary *)v56 objectForKey:v63];
+              lowercaseString3 = [*(*(&v151 + 1) + 8 * n) lowercaseString];
+              v64 = [(__CFDictionary *)v56 objectForKey:lowercaseString3];
               if (v64)
               {
-                v65 = [(__CFDictionary *)v56 objectForKey:v63];
-                v66 = [v65 unsignedIntegerValue];
+                v65 = [(__CFDictionary *)v56 objectForKey:lowercaseString3];
+                unsignedIntegerValue3 = [v65 unsignedIntegerValue];
               }
 
               else
               {
                 v65 = [(__CFDictionary *)v56 objectForKey:@"__none_of_the_above__"];
-                v66 = [v65 integerValue];
+                unsignedIntegerValue3 = [v65 integerValue];
               }
 
-              v67 = v66;
+              v67 = unsignedIntegerValue3;
 
-              v68 = [(__CFDictionary *)v56 allKeys];
-              if (v67 >= [v68 count])
+              allKeys6 = [(__CFDictionary *)v56 allKeys];
+              if (v67 >= [allKeys6 count])
               {
                 [PRSDirectivesManager processResultSetValuesWithMap:serverFeatures:];
               }
@@ -1640,7 +1640,7 @@ LABEL_176:
           while (v60);
         }
 
-        self = v136;
+        self = selfCopy;
         v43 = v132;
         v55 = v139;
       }
@@ -1692,34 +1692,34 @@ LABEL_176:
           v148 = 0u;
           v149 = 0u;
           v150 = 0u;
-          v135 = [v142 keyEnumerator];
-          v77 = [v135 countByEnumeratingWithState:&v147 objects:v172 count:16];
+          keyEnumerator4 = [v142 keyEnumerator];
+          v77 = [keyEnumerator4 countByEnumeratingWithState:&v147 objects:v172 count:16];
           if (v77)
           {
             v78 = v77;
             v79 = *v148;
             v137 = (v134 * v130);
-            v138 = v79;
+            keyEnumerator = v79;
             v133 = &score_vector[v134 * v130];
             do
             {
               for (ii = 0; ii != v78; ++ii)
               {
-                if (*v148 != v138)
+                if (*v148 != keyEnumerator)
                 {
-                  objc_enumerationMutation(v135);
+                  objc_enumerationMutation(keyEnumerator4);
                 }
 
                 v81 = score_vector;
                 v82 = *(*(&v147 + 1) + 8 * ii);
                 v83 = [v142 objectForKey:v82];
-                v84 = [v82 lowercaseString];
-                v85 = [(__CFDictionary *)v70 objectForKey:v84];
+                lowercaseString4 = [v82 lowercaseString];
+                v85 = [(__CFDictionary *)v70 objectForKey:lowercaseString4];
 
                 if (v85)
                 {
-                  v86 = [(__CFDictionary *)v70 objectForKey:v84];
-                  v87 = [v86 unsignedIntegerValue];
+                  v86 = [(__CFDictionary *)v70 objectForKey:lowercaseString4];
+                  unsignedIntegerValue4 = [v86 unsignedIntegerValue];
 
                   v88 = [v83 objectAtIndexedSubscript:v140];
                   [v88 floatValue];
@@ -1728,10 +1728,10 @@ LABEL_176:
                 else
                 {
                   v90 = [(__CFDictionary *)v70 objectForKey:@"__none_of_the_above__"];
-                  v87 = [v90 integerValue];
+                  unsignedIntegerValue4 = [v90 integerValue];
 
-                  v91 = v133[v87];
-                  v92 = v136->directive_local_resultset_id_values_mapping.PRSRankingBundleFeaturePickers[v134];
+                  v91 = v133[unsignedIntegerValue4];
+                  v92 = selfCopy->directive_local_resultset_id_values_mapping.PRSRankingBundleFeaturePickers[v134];
                   v88 = [v83 objectAtIndexedSubscript:v140];
                   [v88 floatValue];
                   v89 = v92[2](v92);
@@ -1739,33 +1739,33 @@ LABEL_176:
 
                 v93 = v89;
 
-                if (v137 + v87 >= v139)
+                if (v137 + unsignedIntegerValue4 >= v139)
                 {
                   [PRSDirectivesManager processResultSetValuesWithMap:serverFeatures:];
                 }
 
                 score_vector = v81;
-                v81[v137 + v87] = v93;
+                v81[v137 + unsignedIntegerValue4] = v93;
               }
 
-              v78 = [v135 countByEnumeratingWithState:&v147 objects:v172 count:16];
+              v78 = [keyEnumerator4 countByEnumeratingWithState:&v147 objects:v172 count:16];
             }
 
             while (v78);
           }
 
           v75 = v134 + 1;
-          self = v136;
+          self = selfCopy;
         }
 
-        while ((v134 + 1) < v136->directive_local_resultset_id_values_mapping.numPRSRankingBundleFeatures);
+        while ((v134 + 1) < selfCopy->directive_local_resultset_id_values_mapping.numPRSRankingBundleFeatures);
       }
 
       v43 = v132;
     }
   }
 
-  if ([v141 count])
+  if ([featuresCopy count])
   {
     v94 = self->directive_parsec_resultset_id_values_mapping.mapping;
     v95 = [(__CFDictionary *)v94 count];
@@ -1798,7 +1798,7 @@ LABEL_176:
     bzero(v139, v106);
     if (numFeatures)
     {
-      v138 = v105;
+      keyEnumerator = v105;
       v107 = 0;
       v108 = v139;
       do
@@ -1812,7 +1812,7 @@ LABEL_176:
       while (numFeatures != v107);
       v110 = 0;
       v137 = v94;
-      v111 = v138;
+      v111 = keyEnumerator;
       v133 = numFeatures;
       do
       {
@@ -1820,8 +1820,8 @@ LABEL_176:
         v146 = 0u;
         v143 = 0u;
         v144 = 0u;
-        v135 = [v141 keyEnumerator];
-        v112 = [v135 countByEnumeratingWithState:&v143 objects:v171 count:16];
+        keyEnumerator4 = [featuresCopy keyEnumerator];
+        v112 = [keyEnumerator4 countByEnumeratingWithState:&v143 objects:v171 count:16];
         if (v112)
         {
           v113 = v112;
@@ -1834,43 +1834,43 @@ LABEL_176:
             {
               if (*v144 != v114)
               {
-                objc_enumerationMutation(v135);
+                objc_enumerationMutation(keyEnumerator4);
               }
 
               v117 = *(*(&v143 + 1) + 8 * jj);
-              v118 = [v141 objectForKey:v117];
+              v118 = [featuresCopy objectForKey:v117];
               [objc_msgSend(v118 performSelector:{*&v139[8 * v110]), "floatValue"}];
               v120 = v119;
-              v121 = [v117 lowercaseString];
-              v122 = [(__CFDictionary *)v94 objectForKey:v121];
+              lowercaseString5 = [v117 lowercaseString];
+              v122 = [(__CFDictionary *)v94 objectForKey:lowercaseString5];
 
               if (v122)
               {
-                v123 = [(__CFDictionary *)v94 objectForKey:v121];
-                v124 = [v123 unsignedIntegerValue];
+                v123 = [(__CFDictionary *)v94 objectForKey:lowercaseString5];
+                unsignedIntegerValue5 = [v123 unsignedIntegerValue];
               }
 
               else
               {
                 v125 = [(__CFDictionary *)v94 objectForKey:@"__none_of_the_above__"];
-                v124 = [v125 integerValue];
+                unsignedIntegerValue5 = [v125 integerValue];
 
-                v120 = (*(v136->directive_local_resultset_id_values_mapping.PRSRankingBundleFeaturePickers[v110] + 2))(v120, *&v134[4 * v124]);
+                v120 = (*(selfCopy->directive_local_resultset_id_values_mapping.PRSRankingBundleFeaturePickers[v110] + 2))(v120, *&v134[4 * unsignedIntegerValue5]);
               }
 
-              v126 = v124 + v115;
-              if (v124 + v115 >= v140)
+              v126 = unsignedIntegerValue5 + v115;
+              if (unsignedIntegerValue5 + v115 >= v140)
               {
                 [PRSDirectivesManager processResultSetValuesWithMap:serverFeatures:];
               }
 
-              v111 = v138;
-              *&v138[4 * v126] = v120;
+              v111 = keyEnumerator;
+              *&keyEnumerator[4 * v126] = v120;
 
               v94 = v137;
             }
 
-            v113 = [v135 countByEnumeratingWithState:&v143 objects:v171 count:16];
+            v113 = [keyEnumerator4 countByEnumeratingWithState:&v143 objects:v171 count:16];
           }
 
           while (v113);

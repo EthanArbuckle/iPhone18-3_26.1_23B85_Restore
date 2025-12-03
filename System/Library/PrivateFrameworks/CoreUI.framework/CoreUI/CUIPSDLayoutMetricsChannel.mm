@@ -1,6 +1,6 @@
 @interface CUIPSDLayoutMetricsChannel
 - (CGRect)edgeInsets;
-- (CUIPSDLayoutMetricsChannel)initWithEdgeInsets:(CGRect)a3;
+- (CUIPSDLayoutMetricsChannel)initWithEdgeInsets:(CGRect)insets;
 - (void)dealloc;
 - (void)sanitizeEdgeInsets;
 @end
@@ -38,12 +38,12 @@
   }
 }
 
-- (CUIPSDLayoutMetricsChannel)initWithEdgeInsets:(CGRect)a3
+- (CUIPSDLayoutMetricsChannel)initWithEdgeInsets:(CGRect)insets
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = insets.size.height;
+  width = insets.size.width;
+  y = insets.origin.y;
+  x = insets.origin.x;
   v10.receiver = self;
   v10.super_class = CUIPSDLayoutMetricsChannel;
   v7 = [(CUIPSDLayoutMetricsChannel *)&v10 init];

@@ -1,89 +1,89 @@
 @interface CESRSpeechProfileSite
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSpeechProfileSite:(id)a3;
-- (BOOL)isEquivalentSpeechProfileSiteURL:(id)a3;
-- (BOOL)recordMaintenance:(id *)a3;
-- (BOOL)recordRebuild:(id *)a3;
-- (BOOL)recordReset:(id *)a3;
-- (BOOL)removeInstance:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSpeechProfileSite:(id)site;
+- (BOOL)isEquivalentSpeechProfileSiteURL:(id)l;
+- (BOOL)recordMaintenance:(id *)maintenance;
+- (BOOL)recordRebuild:(id *)rebuild;
+- (BOOL)recordReset:(id *)reset;
+- (BOOL)removeInstance:(id)instance error:(id *)error;
 - (CESRSpeechProfileSite)init;
 @end
 
 @implementation CESRSpeechProfileSite
 
-- (BOOL)isEquivalentSpeechProfileSiteURL:(id)a3
+- (BOOL)isEquivalentSpeechProfileSiteURL:(id)l
 {
   speechProfileSiteURL = self->_speechProfileSiteURL;
-  v4 = a3;
-  v5 = [(NSURL *)speechProfileSiteURL path];
-  v6 = [v4 path];
+  lCopy = l;
+  path = [(NSURL *)speechProfileSiteURL path];
+  path2 = [lCopy path];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(lCopy) = [path isEqual:path2];
+  return lCopy;
 }
 
-- (BOOL)isEqualToSpeechProfileSite:(id)a3
+- (BOOL)isEqualToSpeechProfileSite:(id)site
 {
-  v4 = [a3 speechProfileSiteURL];
-  LOBYTE(self) = [(CESRSpeechProfileSite *)self isEquivalentSpeechProfileSiteURL:v4];
+  speechProfileSiteURL = [site speechProfileSiteURL];
+  LOBYTE(self) = [(CESRSpeechProfileSite *)self isEquivalentSpeechProfileSiteURL:speechProfileSiteURL];
 
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CESRSpeechProfileSite *)self isEqualToSpeechProfileSite:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CESRSpeechProfileSite *)self isEqualToSpeechProfileSite:v5];
   }
 
   return v6;
 }
 
-- (BOOL)removeInstance:(id)a3 error:(id *)a4
+- (BOOL)removeInstance:(id)instance error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 remove:a4];
+  instanceCopy = instance;
+  v7 = [instanceCopy remove:error];
   if (v7)
   {
-    [(NSMutableArray *)self->_instances removeObject:v6];
+    [(NSMutableArray *)self->_instances removeObject:instanceCopy];
   }
 
   return v7;
 }
 
-- (BOOL)recordReset:(id *)a3
+- (BOOL)recordReset:(id *)reset
 {
   log = self->_log;
   v5 = [MEMORY[0x277CBEAA8] now];
-  LOBYTE(a3) = [(CESRDictionaryLog *)log writeUpdatedObject:v5 forKey:@"lastReset" error:a3];
+  LOBYTE(reset) = [(CESRDictionaryLog *)log writeUpdatedObject:v5 forKey:@"lastReset" error:reset];
 
-  return a3;
+  return reset;
 }
 
-- (BOOL)recordMaintenance:(id *)a3
+- (BOOL)recordMaintenance:(id *)maintenance
 {
   log = self->_log;
   v5 = [MEMORY[0x277CBEAA8] now];
-  LOBYTE(a3) = [(CESRDictionaryLog *)log writeUpdatedObject:v5 forKey:@"lastMaintenance" error:a3];
+  LOBYTE(maintenance) = [(CESRDictionaryLog *)log writeUpdatedObject:v5 forKey:@"lastMaintenance" error:maintenance];
 
-  return a3;
+  return maintenance;
 }
 
-- (BOOL)recordRebuild:(id *)a3
+- (BOOL)recordRebuild:(id *)rebuild
 {
   log = self->_log;
   v5 = [MEMORY[0x277CBEAA8] now];
-  LOBYTE(a3) = [(CESRDictionaryLog *)log writeUpdatedObject:v5 forKey:@"lastRebuild" error:a3];
+  LOBYTE(rebuild) = [(CESRDictionaryLog *)log writeUpdatedObject:v5 forKey:@"lastRebuild" error:rebuild];
 
-  return a3;
+  return rebuild;
 }
 
 - (CESRSpeechProfileSite)init

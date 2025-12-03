@@ -1,25 +1,25 @@
 @interface XPCClientBackgroundTask
-- (XPCClientBackgroundTask)initWithProcessAssertion:(id)a3 invalidationBlock:(id)a4;
+- (XPCClientBackgroundTask)initWithProcessAssertion:(id)assertion invalidationBlock:(id)block;
 - (id)invalidationBlock;
 - (void)dealloc;
 @end
 
 @implementation XPCClientBackgroundTask
 
-- (XPCClientBackgroundTask)initWithProcessAssertion:(id)a3 invalidationBlock:(id)a4
+- (XPCClientBackgroundTask)initWithProcessAssertion:(id)assertion invalidationBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  assertionCopy = assertion;
+  blockCopy = block;
   v13.receiver = self;
   v13.super_class = XPCClientBackgroundTask;
   v9 = [(XPCClientBackgroundTask *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [blockCopy copy];
     invalidationBlock = v9->_invalidationBlock;
     v9->_invalidationBlock = v10;
 
-    objc_storeStrong(&v9->_processAssertion, a3);
+    objc_storeStrong(&v9->_processAssertion, assertion);
   }
 
   return v9;

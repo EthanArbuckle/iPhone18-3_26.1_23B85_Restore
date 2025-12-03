@@ -1,15 +1,15 @@
 @interface SMCloudKitFunction
-- (SMCloudKitFunction)initWithEnvironment:(unint64_t)a3 version:(id)a4 queue:(id)a5;
-- (void)requestSafetyCacheRecordFromZone:(id)a3 withToken:(id)a4 completion:(id)a5;
+- (SMCloudKitFunction)initWithEnvironment:(unint64_t)environment version:(id)version queue:(id)queue;
+- (void)requestSafetyCacheRecordFromZone:(id)zone withToken:(id)token completion:(id)completion;
 @end
 
 @implementation SMCloudKitFunction
 
-- (SMCloudKitFunction)initWithEnvironment:(unint64_t)a3 version:(id)a4 queue:(id)a5
+- (SMCloudKitFunction)initWithEnvironment:(unint64_t)environment version:(id)version queue:(id)queue
 {
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  versionCopy = version;
+  queueCopy = queue;
+  if (queueCopy)
   {
     v19.receiver = self;
     v19.super_class = SMCloudKitFunction;
@@ -17,31 +17,31 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_queue, a5);
+      objc_storeStrong(&v10->_queue, queue);
       v12 = @"d";
-      if (a3 != 1)
+      if (environment != 1)
       {
         v12 = 0;
       }
 
-      if (!a3)
+      if (!environment)
       {
         v12 = @"p";
       }
 
-      if (!v8)
+      if (!versionCopy)
       {
-        v8 = @"1.0";
+        versionCopy = @"1.0";
       }
 
-      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@_%@", @"SafetyMonitorServer", v12, v8];
-      v14 = [[_TtC13SafetyMonitor23SMCloudKitFunctionSwift alloc] initWithServiceName:v13];
+      versionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@_%@", @"SafetyMonitorServer", v12, versionCopy];
+      v14 = [[_TtC13SafetyMonitor23SMCloudKitFunctionSwift alloc] initWithServiceName:versionCopy];
       swiftCKF = v11->_swiftCKF;
       v11->_swiftCKF = v14;
     }
 
     self = v11;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
@@ -53,19 +53,19 @@
       _os_log_error_impl(&dword_26455D000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: queue", buf, 2u);
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (void)requestSafetyCacheRecordFromZone:(id)a3 withToken:(id)a4 completion:(id)a5
+- (void)requestSafetyCacheRecordFromZone:(id)zone withToken:(id)token completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  zoneCopy = zone;
+  tokenCopy = token;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (!zoneCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -82,7 +82,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (!v11)
+  if (!completionCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -98,18 +98,18 @@ LABEL_10:
   objc_initWeak(location, self);
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  v15 = [(SMCloudKitFunction *)self swiftCKF];
+  swiftCKF = [(SMCloudKitFunction *)self swiftCKF];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __76__SMCloudKitFunction_requestSafetyCacheRecordFromZone_withToken_completion___block_invoke;
   v19[3] = &unk_279B64DC0;
   objc_copyWeak(v23, location);
-  v20 = v9;
+  v20 = zoneCopy;
   v16 = v14;
   v21 = v16;
   v23[1] = a2;
   v22 = v12;
-  [v15 requestSafetyCacheRecordFromZone:v20 token:v10 completion:v19];
+  [swiftCKF requestSafetyCacheRecordFromZone:v20 token:tokenCopy completion:v19];
 
   objc_destroyWeak(v23);
   objc_destroyWeak(location);

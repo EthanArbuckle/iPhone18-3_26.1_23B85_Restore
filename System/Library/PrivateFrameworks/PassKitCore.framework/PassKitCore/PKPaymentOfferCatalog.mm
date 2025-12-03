@@ -1,33 +1,33 @@
 @interface PKPaymentOfferCatalog
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualIgnoringLastUpdatedDate:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualIgnoringLastUpdatedDate:(id)date;
 - (BOOL)isOutOfDate;
-- (PKPaymentOfferCatalog)initWithCoder:(id)a3;
-- (PKPaymentOfferCatalog)initWithDictionary:(id)a3;
-- (id)capabilityForPassUniqueID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)criteriaWithIdentifier:(id)a3;
-- (id)criteriaWithType:(unint64_t)a3 passUniqueID:(id)a4;
+- (PKPaymentOfferCatalog)initWithCoder:(id)coder;
+- (PKPaymentOfferCatalog)initWithDictionary:(id)dictionary;
+- (id)capabilityForPassUniqueID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)criteriaWithIdentifier:(id)identifier;
+- (id)criteriaWithType:(unint64_t)type passUniqueID:(id)d;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)eligibleMerchandisingIdentifiersForPassUniqueIDs:(id)a3;
+- (id)eligibleMerchandisingIdentifiersForPassUniqueIDs:(id)ds;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferCatalog
 
-- (PKPaymentOfferCatalog)initWithDictionary:(id)a3
+- (PKPaymentOfferCatalog)initWithDictionary:(id)dictionary
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = PKPaymentOfferCatalog;
   v5 = [(PKPaymentOfferCatalog *)&v37 init];
   if (v5)
   {
-    v28 = v4;
-    v6 = [v4 PKSetContaining:objc_opt_class() forKey:@"paymentOfferCatalog"];
+    v28 = dictionaryCopy;
+    v6 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"paymentOfferCatalog"];
     v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v33 = 0u;
     v34 = 0u;
@@ -112,7 +112,7 @@
       v24 = [v17 copy];
     }
 
-    v4 = v28;
+    dictionaryCopy = v28;
     capabilities = v5->_capabilities;
     v5->_capabilities = v24;
 
@@ -123,17 +123,17 @@
   return v5;
 }
 
-- (id)criteriaWithType:(unint64_t)a3 passUniqueID:(id)a4
+- (id)criteriaWithType:(unint64_t)type passUniqueID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   catalog = self->_catalog;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__PKPaymentOfferCatalog_criteriaWithType_passUniqueID___block_invoke;
   v11[3] = &unk_1E79CA2B0;
-  v12 = v6;
-  v13 = a3;
-  v8 = v6;
+  v12 = dCopy;
+  typeCopy = type;
+  v8 = dCopy;
   v9 = [(NSSet *)catalog pk_anyObjectPassingTest:v11];
 
   return v9;
@@ -172,18 +172,18 @@ uint64_t __55__PKPaymentOfferCatalog_criteriaWithType_passUniqueID___block_invok
   return v9;
 }
 
-- (BOOL)isEqualIgnoringLastUpdatedDate:(id)a3
+- (BOOL)isEqualIgnoringLastUpdatedDate:(id)date
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  dateCopy = date;
+  v5 = dateCopy;
+  if (self == dateCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (dateCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -237,17 +237,17 @@ LABEL_18:
   return v9;
 }
 
-- (id)eligibleMerchandisingIdentifiersForPassUniqueIDs:(id)a3
+- (id)eligibleMerchandisingIdentifiersForPassUniqueIDs:(id)ds
 {
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     capabilities = self->_capabilities;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __74__PKPaymentOfferCatalog_eligibleMerchandisingIdentifiersForPassUniqueIDs___block_invoke;
     v8[3] = &unk_1E79CA2D8;
-    v9 = v4;
+    v9 = dsCopy;
     v6 = [(NSSet *)capabilities pk_setBySafelyApplyingBlock:v8];
   }
 
@@ -293,18 +293,18 @@ id __77__PKPaymentOfferCatalog_eligibleMerchandisingIdentifiersThatNeedProvision
   return v4;
 }
 
-- (id)criteriaWithIdentifier:(id)a3
+- (id)criteriaWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
     catalog = self->_catalog;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __48__PKPaymentOfferCatalog_criteriaWithIdentifier___block_invoke;
     v9[3] = &unk_1E79CA320;
-    v10 = v4;
+    v10 = identifierCopy;
     v7 = [(NSSet *)catalog pk_anyObjectPassingTest:v9];
   }
 
@@ -340,18 +340,18 @@ uint64_t __48__PKPaymentOfferCatalog_criteriaWithIdentifier___block_invoke(uint6
   return v8;
 }
 
-- (id)capabilityForPassUniqueID:(id)a3
+- (id)capabilityForPassUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     capabilities = self->_capabilities;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __51__PKPaymentOfferCatalog_capabilityForPassUniqueID___block_invoke;
     v9[3] = &unk_1E79CA348;
-    v10 = v4;
+    v10 = dCopy;
     v7 = [(NSSet *)capabilities pk_anyObjectPassingTest:v9];
   }
 
@@ -390,12 +390,12 @@ uint64_t __51__PKPaymentOfferCatalog_capabilityForPassUniqueID___block_invoke(ui
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(NSSet *)self->_catalog allObjects];
-  v5 = [v4 pk_createArrayBySafelyApplyingBlock:&__block_literal_global_37];
+  allObjects = [(NSSet *)self->_catalog allObjects];
+  v5 = [allObjects pk_createArrayBySafelyApplyingBlock:&__block_literal_global_37];
   [v3 setObject:v5 forKeyedSubscript:@"catalog"];
 
-  v6 = [(NSSet *)self->_capabilities allObjects];
-  v7 = [v6 pk_createArrayBySafelyApplyingBlock:&__block_literal_global_39];
+  allObjects2 = [(NSSet *)self->_capabilities allObjects];
+  v7 = [allObjects2 pk_createArrayBySafelyApplyingBlock:&__block_literal_global_39];
   [v3 setObject:v7 forKeyedSubscript:@"capabilities"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_proactiveFetchPeriod];
@@ -423,25 +423,25 @@ uint64_t __51__PKPaymentOfferCatalog_capabilityForPassUniqueID___block_invoke(ui
     proactiveFetchPeriod = self->_proactiveFetchPeriod;
   }
 
-  v4 = [MEMORY[0x1E695DF00] date];
-  [v4 timeIntervalSinceDate:self->_lastUpdated];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:self->_lastUpdated];
   v6 = v5 >= proactiveFetchPeriod;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -516,9 +516,9 @@ LABEL_14:
   return v3;
 }
 
-- (PKPaymentOfferCatalog)initWithCoder:(id)a3
+- (PKPaymentOfferCatalog)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = PKPaymentOfferCatalog;
   v5 = [(PKPaymentOfferCatalog *)&v21 init];
@@ -528,50 +528,50 @@ LABEL_14:
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"catalog"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"catalog"];
     catalog = v5->_catalog;
     v5->_catalog = v10;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"capabilities"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"capabilities"];
     capabilities = v5->_capabilities;
     v5->_capabilities = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdated"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdated"];
     lastUpdated = v5->_lastUpdated;
     v5->_lastUpdated = v17;
 
-    [v4 decodeDoubleForKey:@"proactiveFetchPeriod"];
+    [coderCopy decodeDoubleForKey:@"proactiveFetchPeriod"];
     v5->_proactiveFetchPeriod = v19;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   catalog = self->_catalog;
-  v5 = a3;
-  [v5 encodeObject:catalog forKey:@"catalog"];
-  [v5 encodeObject:self->_capabilities forKey:@"capabilities"];
-  [v5 encodeObject:self->_lastUpdated forKey:@"lastUpdated"];
-  [v5 encodeDouble:@"proactiveFetchPeriod" forKey:self->_proactiveFetchPeriod];
+  coderCopy = coder;
+  [coderCopy encodeObject:catalog forKey:@"catalog"];
+  [coderCopy encodeObject:self->_capabilities forKey:@"capabilities"];
+  [coderCopy encodeObject:self->_lastUpdated forKey:@"lastUpdated"];
+  [coderCopy encodeDouble:@"proactiveFetchPeriod" forKey:self->_proactiveFetchPeriod];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSSet *)self->_catalog copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSSet *)self->_catalog copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSSet *)self->_capabilities copyWithZone:a3];
+  v8 = [(NSSet *)self->_capabilities copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSDate *)self->_lastUpdated copyWithZone:a3];
+  v10 = [(NSDate *)self->_lastUpdated copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 

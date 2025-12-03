@@ -1,25 +1,25 @@
 @interface BRCRecentsEnumeratorBatch
-- (BRCRecentsEnumeratorBatch)initWithBatchSize:(unint64_t)a3;
-- (void)addDeletionOfFileObjectID:(id)a3 rank:(unint64_t)a4;
-- (void)addIndexOfItem:(id)a3;
-- (void)listItems:(id)a3;
-- (void)setRank:(unint64_t)a3;
+- (BRCRecentsEnumeratorBatch)initWithBatchSize:(unint64_t)size;
+- (void)addDeletionOfFileObjectID:(id)d rank:(unint64_t)rank;
+- (void)addIndexOfItem:(id)item;
+- (void)listItems:(id)items;
+- (void)setRank:(unint64_t)rank;
 @end
 
 @implementation BRCRecentsEnumeratorBatch
 
-- (BRCRecentsEnumeratorBatch)initWithBatchSize:(unint64_t)a3
+- (BRCRecentsEnumeratorBatch)initWithBatchSize:(unint64_t)size
 {
   v10.receiver = self;
   v10.super_class = BRCRecentsEnumeratorBatch;
   v4 = [(BRCRecentsEnumeratorBatch *)&v10 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a3];
+    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:size];
     toIndexItems = v4->_toIndexItems;
     v4->_toIndexItems = v5;
 
-    v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a3];
+    v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:size];
     deletedItemIDs = v4->_deletedItemIDs;
     v4->_deletedItemIDs = v7;
   }
@@ -27,46 +27,46 @@
   return v4;
 }
 
-- (void)addIndexOfItem:(id)a3
+- (void)addIndexOfItem:(id)item
 {
-  v4 = a3;
-  v5 = [BRCNotification notificationGatheredFromItem:v4];
-  v6 = [v4 itemID];
-  v7 = [v6 isDocumentsFolder];
+  itemCopy = item;
+  v5 = [BRCNotification notificationGatheredFromItem:itemCopy];
+  itemID = [itemCopy itemID];
+  isDocumentsFolder = [itemID isDocumentsFolder];
 
-  if (!v7)
+  if (!isDocumentsFolder)
   {
     goto LABEL_4;
   }
 
-  v8 = [v4 appLibrary];
-  v9 = [v4 dbFacade];
-  v10 = [v8 fetchRootItemWithFacade:v9];
+  appLibrary = [itemCopy appLibrary];
+  dbFacade = [itemCopy dbFacade];
+  asFileProviderItem2 = [appLibrary fetchRootItemWithFacade:dbFacade];
 
-  v11 = [BRCNotification notificationFromItem:v10];
+  v11 = [BRCNotification notificationFromItem:asFileProviderItem2];
   v12 = MEMORY[0x277CFAE98];
-  v13 = [v4 appLibrary];
-  v14 = [v13 containerMetadata];
-  v15 = [v12 containerItemForContainer:v14 withRepresentativeItem:v11];
+  appLibrary2 = [itemCopy appLibrary];
+  containerMetadata = [appLibrary2 containerMetadata];
+  v15 = [v12 containerItemForContainer:containerMetadata withRepresentativeItem:v11];
 
-  v16 = [v15 asFileProviderItem];
-  if (v16)
+  asFileProviderItem = [v15 asFileProviderItem];
+  if (asFileProviderItem)
   {
-    v17 = v16;
-    [(NSFileProviderItem *)self->_toIndexItems addObject:v16];
+    v17 = asFileProviderItem;
+    [(NSFileProviderItem *)self->_toIndexItems addObject:asFileProviderItem];
 
 LABEL_4:
     if ([v5 isDead])
     {
-      v18 = [v5 fileObjectID];
-      -[BRCRecentsEnumeratorBatch addDeletionOfFileObjectID:rank:](self, "addDeletionOfFileObjectID:rank:", v18, [v4 notifsRank]);
+      fileObjectID = [v5 fileObjectID];
+      -[BRCRecentsEnumeratorBatch addDeletionOfFileObjectID:rank:](self, "addDeletionOfFileObjectID:rank:", fileObjectID, [itemCopy notifsRank]);
     }
 
-    v10 = [v5 asFileProviderItem];
-    if (v10)
+    asFileProviderItem2 = [v5 asFileProviderItem];
+    if (asFileProviderItem2)
     {
-      [(NSFileProviderItem *)self->_toIndexItems addObject:v10];
-      -[BRCRecentsEnumeratorBatch setRank:](self, "setRank:", [v4 notifsRank]);
+      [(NSFileProviderItem *)self->_toIndexItems addObject:asFileProviderItem2];
+      -[BRCRecentsEnumeratorBatch setRank:](self, "setRank:", [itemCopy notifsRank]);
     }
 
     goto LABEL_11;
@@ -82,28 +82,28 @@ LABEL_4:
 LABEL_11:
 }
 
-- (void)addDeletionOfFileObjectID:(id)a3 rank:(unint64_t)a4
+- (void)addDeletionOfFileObjectID:(id)d rank:(unint64_t)rank
 {
-  [(NSMutableArray *)self->_deletedItemIDs addObject:a3];
+  [(NSMutableArray *)self->_deletedItemIDs addObject:d];
 
-  [(BRCRecentsEnumeratorBatch *)self setRank:a4];
+  [(BRCRecentsEnumeratorBatch *)self setRank:rank];
 }
 
-- (void)setRank:(unint64_t)a3
+- (void)setRank:(unint64_t)rank
 {
-  if (self->_rank > a3)
+  if (self->_rank > rank)
   {
     [BRCRecentsEnumeratorBatch setRank:];
   }
 
-  self->_rank = a3;
+  self->_rank = rank;
 }
 
-- (void)listItems:(id)a3
+- (void)listItems:(id)items
 {
-  if (a3)
+  if (items)
   {
-    (*(a3 + 2))(a3, self->_toIndexItems, self->_deletedItemIDs);
+    (*(items + 2))(items, self->_toIndexItems, self->_deletedItemIDs);
   }
 }
 

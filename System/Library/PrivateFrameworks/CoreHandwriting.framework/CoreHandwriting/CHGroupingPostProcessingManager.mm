@@ -1,8 +1,8 @@
 @interface CHGroupingPostProcessingManager
 - (CHGroupingPostProcessingManager)init;
-- (CHGroupingPostProcessingManager)initWithSequence:(id)a3 groupingManager:(id)a4;
-- (CHGroupingPostProcessingManager)initWithStep:(id)a3 groupingManager:(id)a4;
-- (id)process:(id)a3 options:(id)a4;
+- (CHGroupingPostProcessingManager)initWithSequence:(id)sequence groupingManager:(id)manager;
+- (CHGroupingPostProcessingManager)initWithStep:(id)step groupingManager:(id)manager;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHGroupingPostProcessingManager
@@ -22,39 +22,39 @@
   return v2;
 }
 
-- (CHGroupingPostProcessingManager)initWithStep:(id)a3 groupingManager:(id)a4
+- (CHGroupingPostProcessingManager)initWithStep:(id)step groupingManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  stepCopy = step;
+  managerCopy = manager;
   v8 = objc_alloc(MEMORY[0x1E695DEC8]);
-  v13 = objc_msgSend_initWithObjects_(v8, v9, v6, v10, v11, v12, 0);
-  v17 = objc_msgSend_initWithSequence_groupingManager_(self, v14, v13, v7, v15, v16);
+  v13 = objc_msgSend_initWithObjects_(v8, v9, stepCopy, v10, v11, v12, 0);
+  v17 = objc_msgSend_initWithSequence_groupingManager_(self, v14, v13, managerCopy, v15, v16);
 
   return v17;
 }
 
-- (CHGroupingPostProcessingManager)initWithSequence:(id)a3 groupingManager:(id)a4
+- (CHGroupingPostProcessingManager)initWithSequence:(id)sequence groupingManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  sequenceCopy = sequence;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = CHGroupingPostProcessingManager;
   v9 = [(CHGroupingPostProcessingManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sequence, a3);
-    objc_storeStrong(&v10->_groupingManager, a4);
+    objc_storeStrong(&v9->_sequence, sequence);
+    objc_storeStrong(&v10->_groupingManager, manager);
   }
 
   return v10;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v553 = *MEMORY[0x1E69E9840];
-  v517 = a3;
-  v515 = a4;
+  processCopy = process;
+  optionsCopy = options;
   for (i = 0; ; ++i)
   {
     v12 = objc_msgSend_sequence(self, v6, v7, v8, v9, v10);
@@ -73,12 +73,12 @@
 
     v45 = objc_msgSend_saveInputDrawings(self, v40, v41, v42, v43, v44);
     objc_msgSend_setSaveInputDrawings_(v29, v46, v45, v47, v48, v49);
-    v53 = objc_msgSend_process_options_(v29, v50, v517, v515, v51, v52);
+    v53 = objc_msgSend_process_options_(v29, v50, processCopy, optionsCopy, v51, v52);
 
-    v517 = v53;
+    processCopy = v53;
   }
 
-  v54 = v515;
+  v54 = optionsCopy;
   v514 = v54;
   objc_opt_self();
   if (v54)
@@ -101,7 +101,7 @@
     v520 = 0;
   }
 
-  v65 = v517;
+  v65 = processCopy;
   v527 = v65;
   if (self)
   {

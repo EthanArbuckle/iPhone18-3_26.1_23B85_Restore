@@ -1,17 +1,17 @@
 @interface TransparencyGPBExtensionDescriptor
 - (TransparencyGPBEnumDescriptor)enumDescriptor;
-- (TransparencyGPBExtensionDescriptor)initWithExtensionDescription:(TransparencyGPBExtensionDescription *)a3;
-- (TransparencyGPBExtensionDescriptor)initWithExtensionDescription:(TransparencyGPBExtensionDescription *)a3 usesClassRefs:(BOOL)a4;
+- (TransparencyGPBExtensionDescriptor)initWithExtensionDescription:(TransparencyGPBExtensionDescription *)description;
+- (TransparencyGPBExtensionDescriptor)initWithExtensionDescription:(TransparencyGPBExtensionDescription *)description usesClassRefs:(BOOL)refs;
 - (id)defaultValue;
-- (int64_t)compareByFieldNumber:(id)a3;
+- (int64_t)compareByFieldNumber:(id)number;
 - (void)dealloc;
 @end
 
 @implementation TransparencyGPBExtensionDescriptor
 
-- (TransparencyGPBExtensionDescriptor)initWithExtensionDescription:(TransparencyGPBExtensionDescription *)a3 usesClassRefs:(BOOL)a4
+- (TransparencyGPBExtensionDescriptor)initWithExtensionDescription:(TransparencyGPBExtensionDescription *)description usesClassRefs:(BOOL)refs
 {
-  if (a3->var7 >= 8u)
+  if (description->var7 >= 8u)
   {
     sub_1000EE7BC();
   }
@@ -22,11 +22,11 @@
   v7 = v6;
   if (v6)
   {
-    v6->description_ = a3;
-    var6 = a3->var6;
+    v6->description_ = description;
+    var6 = description->var6;
     if (var6 == 13)
     {
-      var2 = a3->var0.var2;
+      var2 = description->var0.var2;
       if (var2)
       {
         v6->defaultValue_.valueInt64 = [[NSData alloc] initWithBytes:var2 + 1 length:bswap32(*var2)];
@@ -35,28 +35,28 @@
 
     else if ((var6 - 15) >= 2)
     {
-      v6->defaultValue_.valueInt64 = a3->var0.var2;
+      v6->defaultValue_.valueInt64 = description->var0.var2;
     }
   }
 
   return v7;
 }
 
-- (TransparencyGPBExtensionDescriptor)initWithExtensionDescription:(TransparencyGPBExtensionDescription *)a3
+- (TransparencyGPBExtensionDescriptor)initWithExtensionDescription:(TransparencyGPBExtensionDescription *)description
 {
-  var0 = a3->var3.var0;
+  var0 = description->var3.var0;
   if (var0)
   {
-    a3->var3.var0 = objc_lookUpClass(var0);
+    description->var3.var0 = objc_lookUpClass(var0);
   }
 
-  v6 = a3->var2.var0;
+  v6 = description->var2.var0;
   if (v6)
   {
-    a3->var2.var0 = objc_lookUpClass(v6);
+    description->var2.var0 = objc_lookUpClass(v6);
   }
 
-  return [(TransparencyGPBExtensionDescriptor *)self initWithExtensionDescription:a3 usesClassRefs:1];
+  return [(TransparencyGPBExtensionDescriptor *)self initWithExtensionDescription:description usesClassRefs:1];
 }
 
 - (void)dealloc
@@ -152,10 +152,10 @@
   return result;
 }
 
-- (int64_t)compareByFieldNumber:(id)a3
+- (int64_t)compareByFieldNumber:(id)number
 {
   var5 = self->description_->var5;
-  v4 = *(*(a3 + 1) + 40);
+  v4 = *(*(number + 1) + 40);
   v5 = var5 < v4;
   v6 = var5 != v4;
   if (v5)

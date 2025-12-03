@@ -2,7 +2,7 @@
 - (AVAsset)playerAsset;
 - (BOOL)captionsEnabled;
 - (BOOL)isPlaying;
-- (TUIVideoPlayer)initWithUrl:(id)a3 videoId:(id)a4;
+- (TUIVideoPlayer)initWithUrl:(id)url videoId:(id)id;
 - (TUIVideoPlayerDelegate)delegate;
 - (id)_failureAsString;
 - (id)_stateAsString;
@@ -10,52 +10,52 @@
 - (void)_addPlaybackCheckObservers;
 - (void)_addPlayerItemObservers;
 - (void)_addPlayerObservers;
-- (void)_loadPlayerWithAsset:(id)a3;
+- (void)_loadPlayerWithAsset:(id)asset;
 - (void)_removePlaybackCheckObservers;
 - (void)_removePlayerItemObservers;
 - (void)_removePlayerObservers;
 - (void)beginLoadingResources;
 - (void)dealloc;
-- (void)handlePlaybackChecksChange:(id)a3 keyPath:(id)a4 playbackChecks:(id)a5;
-- (void)handlePlayerChange:(id)a3 keyPath:(id)a4 player:(id)a5;
-- (void)handlePlayerItemChange:(id)a3 keyPath:(id)a4 playerItem:(id)a5;
+- (void)handlePlaybackChecksChange:(id)change keyPath:(id)path playbackChecks:(id)checks;
+- (void)handlePlayerChange:(id)change keyPath:(id)path player:(id)player;
+- (void)handlePlayerItemChange:(id)change keyPath:(id)path playerItem:(id)item;
 - (void)logPlayerStatus;
-- (void)mediaSelectionDidChange:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)mediaSelectionDidChange:(id)change;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)play;
-- (void)playbackErrorOccured:(id)a3;
+- (void)playbackErrorOccured:(id)occured;
 - (void)releaseResources;
 - (void)reload;
-- (void)reloadWithNewURL:(id)a3;
+- (void)reloadWithNewURL:(id)l;
 - (void)reset;
-- (void)setDelegate:(id)a3;
-- (void)setFailureCount:(int64_t)a3;
-- (void)setFailureReason:(unint64_t)a3;
-- (void)setLastPlaybackTime:(id *)a3;
-- (void)setMuted:(BOOL)a3;
-- (void)setPlayerItem:(id)a3;
-- (void)setShouldLoop:(BOOL)a3;
-- (void)setState:(unint64_t)a3;
-- (void)setTimeObserver:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setFailureCount:(int64_t)count;
+- (void)setFailureReason:(unint64_t)reason;
+- (void)setLastPlaybackTime:(id *)time;
+- (void)setMuted:(BOOL)muted;
+- (void)setPlayerItem:(id)item;
+- (void)setShouldLoop:(BOOL)loop;
+- (void)setState:(unint64_t)state;
+- (void)setTimeObserver:(id)observer;
 - (void)videoDidPlayToEnd;
 - (void)videoPlaybackDidStall;
 @end
 
 @implementation TUIVideoPlayer
 
-- (TUIVideoPlayer)initWithUrl:(id)a3 videoId:(id)a4
+- (TUIVideoPlayer)initWithUrl:(id)url videoId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
+  urlCopy = url;
+  idCopy = id;
   v14.receiver = self;
   v14.super_class = TUIVideoPlayer;
   v9 = [(TUIVideoPlayer *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_videoUrl, a3);
-    objc_storeStrong(&v10->_videoId, a4);
+    objc_storeStrong(&v9->_videoUrl, url);
+    objc_storeStrong(&v10->_videoId, id);
     *&v10->_lastPlaybackTime.value = *&kCMTimeZero.value;
     v10->_lastPlaybackTime.epoch = kCMTimeZero.epoch;
     v11 = objc_alloc_init(_TUIVideoPlaybackChecks);
@@ -84,38 +84,38 @@
   [(TUIVideoPlayer *)&v3 dealloc];
 }
 
-- (void)setPlayerItem:(id)a3
+- (void)setPlayerItem:(id)item
 {
-  v4 = a3;
-  v5 = [(TUIVideoPlayer *)self playerItem];
+  itemCopy = item;
+  playerItem = [(TUIVideoPlayer *)self playerItem];
 
-  if (v5)
+  if (playerItem)
   {
     [(TUIVideoPlayer *)self _removePlayerItemObservers];
   }
 
   playerItem = self->_playerItem;
-  self->_playerItem = v4;
+  self->_playerItem = itemCopy;
 
   [(TUIVideoPlayer *)self replaceCurrentItemWithPlayerItem:0];
 
   [(TUIVideoPlayer *)self _addPlayerItemObservers];
 }
 
-- (void)setShouldLoop:(BOOL)a3
+- (void)setShouldLoop:(BOOL)loop
 {
-  if (self->_shouldLoop != a3)
+  if (self->_shouldLoop != loop)
   {
-    self->_shouldLoop = a3;
+    self->_shouldLoop = loop;
   }
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
-    if (a3 == 6)
+    self->_state = state;
+    if (state == 6)
     {
       self->_shouldBePlaying = 1;
     }
@@ -129,42 +129,42 @@
     v5 = TUIVideoLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(TUIVideoPlayer *)self _stateAsString];
+      _stateAsString = [(TUIVideoPlayer *)self _stateAsString];
       v7 = 138412546;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
-      v10 = v6;
+      v10 = _stateAsString;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%@ : Did change state: %@", &v7, 0x16u);
     }
   }
 }
 
-- (void)setTimeObserver:(id)a3
+- (void)setTimeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (self->_timeObserver)
   {
     [(TUIVideoPlayer *)self removeTimeObserver:?];
   }
 
   timeObserver = self->_timeObserver;
-  self->_timeObserver = v4;
+  self->_timeObserver = observerCopy;
 }
 
-- (void)setLastPlaybackTime:(id *)a3
+- (void)setLastPlaybackTime:(id *)time
 {
   [(NSLock *)self->_lastPlaybackTimeLock lock];
-  v5 = *&a3->var0;
-  self->_lastPlaybackTime.epoch = a3->var3;
+  v5 = *&time->var0;
+  self->_lastPlaybackTime.epoch = time->var3;
   *&self->_lastPlaybackTime.value = v5;
   lastPlaybackTimeLock = self->_lastPlaybackTimeLock;
 
   [(NSLock *)lastPlaybackTimeLock unlock];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -273,10 +273,10 @@
   }
 }
 
-- (void)setFailureCount:(int64_t)a3
+- (void)setFailureCount:(int64_t)count
 {
-  self->_failureCount = a3;
-  v5 = a3 - 1;
+  self->_failureCount = count;
+  v5 = count - 1;
   v6 = TUIVideoLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
   if (v5 > 1)
@@ -284,9 +284,9 @@
     if (v7)
     {
       v8 = 138412546;
-      v9 = self;
+      selfCopy2 = self;
       v10 = 2048;
-      v11 = 2;
+      countCopy = 2;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%@ : Did reach reload limit of %lu", &v8, 0x16u);
     }
 
@@ -298,9 +298,9 @@
     if (v7)
     {
       v8 = 138412802;
-      v9 = self;
+      selfCopy2 = self;
       v10 = 2048;
-      v11 = a3;
+      countCopy = count;
       v12 = 2048;
       v13 = 2;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%@ : Attempting to reload, attempt %lu of %lu", &v8, 0x20u);
@@ -310,19 +310,19 @@
   }
 }
 
-- (void)setFailureReason:(unint64_t)a3
+- (void)setFailureReason:(unint64_t)reason
 {
-  self->_failureReason = a3;
-  if (a3)
+  self->_failureReason = reason;
+  if (reason)
   {
     v4 = TUIVideoLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(TUIVideoPlayer *)self _failureAsString];
+      _failureAsString = [(TUIVideoPlayer *)self _failureAsString];
       v8 = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
-      v11 = v5;
+      v11 = _failureAsString;
       _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%@ : Playback did fail, reason: %@", &v8, 0x16u);
     }
 
@@ -338,20 +338,20 @@
   }
 }
 
-- (void)setMuted:(BOOL)a3
+- (void)setMuted:(BOOL)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if ([(TUIVideoPlayer *)self isMuted]!= v3)
+  if ([(TUIVideoPlayer *)self isMuted]!= mutedCopy)
   {
     v6.receiver = self;
     v6.super_class = TUIVideoPlayer;
-    [(TUIVideoPlayer *)&v6 setMuted:v3];
+    [(TUIVideoPlayer *)&v6 setMuted:mutedCopy];
     if ((*&self->_delegateFlags & 0x80) != 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [(TUIVideoPlayer *)self currentTimePlayed];
-      [WeakRetained player:self didSetMuted:v3 mediaTimePlayed:?];
+      [WeakRetained player:self didSetMuted:mutedCopy mediaTimePlayed:?];
     }
   }
 }
@@ -375,22 +375,22 @@
     return 0;
   }
 
-  v3 = [(TUIVideoPlayer *)self error];
-  v4 = v3 == 0;
+  error = [(TUIVideoPlayer *)self error];
+  v4 = error == 0;
 
   return v4;
 }
 
 - (BOOL)captionsEnabled
 {
-  v3 = [(TUIVideoPlayer *)self playerItem];
-  v4 = [(TUIVideoPlayer *)self playerItem];
-  v5 = [v4 asset];
-  v6 = [v5 mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+  playerItem = [(TUIVideoPlayer *)self playerItem];
+  playerItem2 = [(TUIVideoPlayer *)self playerItem];
+  asset = [playerItem2 asset];
+  v6 = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
 
   if (v6)
   {
-    v7 = v3 == 0;
+    v7 = playerItem == 0;
   }
 
   else
@@ -405,8 +405,8 @@
 
   else
   {
-    v8 = [v3 currentMediaSelection];
-    v9 = [v8 selectedMediaOptionInMediaSelectionGroup:v6];
+    currentMediaSelection = [playerItem currentMediaSelection];
+    v9 = [currentMediaSelection selectedMediaOptionInMediaSelectionGroup:v6];
 
     v10 = v9 != 0;
   }
@@ -419,12 +419,12 @@
   dispatch_assert_queue_V2(&_dispatch_main_q);
   if (self->_videoUrl)
   {
-    v3 = [(TUIVideoPlayer *)self playerAsset];
+    playerAsset = [(TUIVideoPlayer *)self playerAsset];
 
-    if (v3)
+    if (playerAsset)
     {
-      v4 = [(TUIVideoPlayer *)self playerAsset];
-      [v4 cancelLoading];
+      playerAsset2 = [(TUIVideoPlayer *)self playerAsset];
+      [playerAsset2 cancelLoading];
     }
 
     [(TUIVideoPlayer *)self setState:1];
@@ -453,11 +453,11 @@
   v5 = v7;
   v6 = v8;
   [(TUIVideoPlayer *)self setLastPlaybackTime:&v5];
-  v3 = [(TUIVideoPlayer *)self playerAsset];
-  [v3 cancelLoading];
+  playerAsset = [(TUIVideoPlayer *)self playerAsset];
+  [playerAsset cancelLoading];
 
-  v4 = [(TUIVideoPlayer *)self playbackChecks];
-  [v4 reset];
+  playbackChecks = [(TUIVideoPlayer *)self playbackChecks];
+  [playbackChecks reset];
 
   [(TUIVideoPlayer *)self setPlayerItem:0];
   [(TUIVideoPlayer *)self setState:0];
@@ -475,15 +475,15 @@
   self->_failureCount = 0;
 }
 
-- (void)reloadWithNewURL:(id)a3
+- (void)reloadWithNewURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v5 = [(TUIVideoPlayer *)self isPlaying];
+  isPlaying = [(TUIVideoPlayer *)self isPlaying];
   [(TUIVideoPlayer *)self releaseResources];
-  self->_shouldBePlaying = v5;
+  self->_shouldBePlaying = isPlaying;
   videoUrl = self->_videoUrl;
-  self->_videoUrl = v4;
+  self->_videoUrl = lCopy;
 
   [(TUIVideoPlayer *)self reload];
 }
@@ -493,17 +493,17 @@
   dispatch_assert_queue_V2(&_dispatch_main_q);
   [(TUIVideoPlayer *)self setState:0];
   [(TUIVideoPlayer *)self setFailureReason:0];
-  v3 = [(TUIVideoPlayer *)self playerAsset];
+  playerAsset = [(TUIVideoPlayer *)self playerAsset];
 
-  if (v3)
+  if (playerAsset)
   {
-    v4 = [(TUIVideoPlayer *)self playerAsset];
-    [v4 cancelLoading];
+    playerAsset2 = [(TUIVideoPlayer *)self playerAsset];
+    [playerAsset2 cancelLoading];
   }
 
   [(TUIVideoPlayer *)self setPlayerItem:0];
-  v5 = [(TUIVideoPlayer *)self playbackChecks];
-  [v5 reset];
+  playbackChecks = [(TUIVideoPlayer *)self playbackChecks];
+  [playbackChecks reset];
 
   [(TUIVideoPlayer *)self beginLoadingResources];
 }
@@ -516,10 +516,10 @@
     self->_shouldBePlaying = 1;
     if (self->_state)
     {
-      v3 = [(TUIVideoPlayer *)self playbackChecks];
-      v4 = [v3 complete];
+      playbackChecks = [(TUIVideoPlayer *)self playbackChecks];
+      complete = [playbackChecks complete];
 
-      if (v4)
+      if (complete)
       {
         v5.receiver = self;
         v5.super_class = TUIVideoPlayer;
@@ -544,9 +544,9 @@
   [(TUIVideoPlayer *)&v3 pause];
 }
 
-- (void)_loadPlayerWithAsset:(id)a3
+- (void)_loadPlayerWithAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v14[0] = @"duration";
   v14[1] = @"playable";
   v5 = [NSArray arrayWithObjects:v14 count:2];
@@ -558,9 +558,9 @@
   objc_copyWeak(&v12, &location);
   v6 = v5;
   v9 = v6;
-  v7 = v4;
+  v7 = assetCopy;
   v10 = v7;
-  v11 = self;
+  selfCopy = self;
   [v7 loadValuesAsynchronouslyForKeys:v6 completionHandler:v8];
 
   objc_destroyWeak(&v12);
@@ -676,53 +676,53 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)playbackErrorOccured:(id)a3
+- (void)playbackErrorOccured:(id)occured
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_15A358;
   v5[3] = &unk_25DCA0;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  occuredCopy = occured;
+  selfCopy = self;
+  v4 = occuredCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)mediaSelectionDidChange:(id)a3
+- (void)mediaSelectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if ((*&self->_delegateFlags & 0x200) != 0)
   {
-    v7 = v4;
-    v5 = [(TUIVideoPlayer *)self captionsEnabled];
-    v4 = v7;
-    if (self->_lastCaptionsEnabled != v5)
+    v7 = changeCopy;
+    captionsEnabled = [(TUIVideoPlayer *)self captionsEnabled];
+    changeCopy = v7;
+    if (self->_lastCaptionsEnabled != captionsEnabled)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained player:self didSetCaptionsEnabled:{-[TUIVideoPlayer captionsEnabled](self, "captionsEnabled")}];
 
-      v4 = v7;
-      self->_lastCaptionsEnabled = v5;
+      changeCopy = v7;
+      self->_lastCaptionsEnabled = captionsEnabled;
     }
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (a6 == &off_262C60)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = changeCopy;
+  if (context == &off_262C60)
   {
-    if (v10 && v12)
+    if (pathCopy && changeCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v14 = objc_opt_class();
-        v15 = TUIDynamicCast(v14, v11);
-        [(TUIVideoPlayer *)self handlePlayerItemChange:v13 keyPath:v10 playerItem:v15];
+        v15 = TUIDynamicCast(v14, objectCopy);
+        [(TUIVideoPlayer *)self handlePlayerItemChange:v13 keyPath:pathCopy playerItem:v15];
       }
 
       else
@@ -731,8 +731,8 @@
         if (objc_opt_isKindOfClass())
         {
           v16 = objc_opt_class();
-          v15 = TUIDynamicCast(v16, v11);
-          [(TUIVideoPlayer *)self handlePlayerChange:v13 keyPath:v10 player:v15];
+          v15 = TUIDynamicCast(v16, objectCopy);
+          [(TUIVideoPlayer *)self handlePlayerChange:v13 keyPath:pathCopy player:v15];
         }
 
         else
@@ -744,8 +744,8 @@
           }
 
           v17 = objc_opt_class();
-          v15 = TUIDynamicCast(v17, v11);
-          [(TUIVideoPlayer *)self handlePlaybackChecksChange:v13 keyPath:v10 playbackChecks:v15];
+          v15 = TUIDynamicCast(v17, objectCopy);
+          [(TUIVideoPlayer *)self handlePlaybackChecksChange:v13 keyPath:pathCopy playbackChecks:v15];
         }
       }
     }
@@ -755,62 +755,62 @@
   {
     v18.receiver = self;
     v18.super_class = TUIVideoPlayer;
-    [(TUIVideoPlayer *)&v18 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(TUIVideoPlayer *)&v18 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
 LABEL_12:
 }
 
-- (void)handlePlayerItemChange:(id)a3 keyPath:(id)a4 playerItem:(id)a5
+- (void)handlePlayerItemChange:(id)change keyPath:(id)path playerItem:(id)item
 {
-  v8 = a3;
-  v9 = a4;
+  changeCopy = change;
+  pathCopy = path;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if (a5)
+  if (item)
   {
-    if ([v9 isEqualToString:@"status"])
+    if ([pathCopy isEqualToString:@"status"])
     {
       v10 = objc_opt_class();
-      v11 = [v8 objectForKey:NSKeyValueChangeNewKey];
+      v11 = [changeCopy objectForKey:NSKeyValueChangeNewKey];
       v12 = TUIDynamicCast(v10, v11);
-      v13 = [v12 integerValue];
+      integerValue = [v12 integerValue];
 
-      if (v13 == &dword_0 + 1)
+      if (integerValue == &dword_0 + 1)
       {
-        v14 = [(TUIVideoPlayer *)self playbackChecks];
-        [v14 setItemIsReadyToPlay:1];
+        playbackChecks = [(TUIVideoPlayer *)self playbackChecks];
+        [playbackChecks setItemIsReadyToPlay:1];
 LABEL_8:
       }
     }
 
     else
     {
-      if (([v9 isEqualToString:@"playbackBufferFull"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"playbackLikelyToKeepUp"))
+      if (([pathCopy isEqualToString:@"playbackBufferFull"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"playbackLikelyToKeepUp"))
       {
         v15 = objc_opt_class();
-        v16 = [v8 objectForKey:NSKeyValueChangeNewKey];
+        v16 = [changeCopy objectForKey:NSKeyValueChangeNewKey];
         v17 = TUIDynamicCast(v15, v16);
-        v18 = [v17 BOOLValue];
+        bOOLValue = [v17 BOOLValue];
 
-        v14 = [(TUIVideoPlayer *)self playbackChecks];
-        [v14 setPlaybackLikelyToKeepUp:v18];
+        playbackChecks = [(TUIVideoPlayer *)self playbackChecks];
+        [playbackChecks setPlaybackLikelyToKeepUp:bOOLValue];
         goto LABEL_8;
       }
 
-      if ([v9 isEqualToString:@"playbackBufferEmpty"])
+      if ([pathCopy isEqualToString:@"playbackBufferEmpty"])
       {
         v19 = objc_opt_class();
-        v20 = [v8 objectForKey:NSKeyValueChangeNewKey];
+        v20 = [changeCopy objectForKey:NSKeyValueChangeNewKey];
         v21 = TUIDynamicCast(v19, v20);
-        v22 = [v21 BOOLValue];
+        bOOLValue2 = [v21 BOOLValue];
 
         v23 = TUIVideoLog();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           v24 = 138412546;
-          v25 = self;
+          selfCopy = self;
           v26 = 1024;
-          v27 = v22;
+          v27 = bOOLValue2;
           _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "%@ : Playback buffer is empty: %i", &v24, 0x12u);
         }
       }
@@ -818,18 +818,18 @@ LABEL_8:
   }
 }
 
-- (void)handlePlayerChange:(id)a3 keyPath:(id)a4 player:(id)a5
+- (void)handlePlayerChange:(id)change keyPath:(id)path player:(id)player
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  changeCopy = change;
+  pathCopy = path;
+  playerCopy = player;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if (v10 == self)
+  if (playerCopy == self)
   {
-    if ([v9 isEqualToString:@"rate"])
+    if ([pathCopy isEqualToString:@"rate"])
     {
       v11 = objc_opt_class();
-      v12 = [v8 objectForKey:NSKeyValueChangeNewKey];
+      v12 = [changeCopy objectForKey:NSKeyValueChangeNewKey];
       v13 = TUIDynamicCast(v11, v12);
       [v13 floatValue];
       v15 = v14;
@@ -838,7 +838,7 @@ LABEL_8:
       if (os_log_type_enabled(WeakRetained, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf.value) = 138412546;
-        *(&buf.value + 4) = v10;
+        *(&buf.value + 4) = playerCopy;
         LOWORD(buf.flags) = 2048;
         *(&buf.flags + 2) = v15;
         _os_log_impl(&dword_0, WeakRetained, OS_LOG_TYPE_DEFAULT, "%@ : Did change rate to %f", &buf, 0x16u);
@@ -847,19 +847,19 @@ LABEL_8:
       goto LABEL_24;
     }
 
-    if ([v9 isEqualToString:@"timeControlStatus"])
+    if ([pathCopy isEqualToString:@"timeControlStatus"])
     {
       v17 = objc_opt_class();
-      v18 = [v8 objectForKey:NSKeyValueChangeNewKey];
+      v18 = [changeCopy objectForKey:NSKeyValueChangeNewKey];
       v19 = TUIDynamicCast(v17, v18);
-      v20 = [v19 intValue];
+      intValue = [v19 intValue];
 
       [(TUIVideoPlayer *)self currentTime];
-      v21 = [(TUIVideoPlayer *)self currentItem];
-      v22 = v21;
-      if (v21)
+      currentItem = [(TUIVideoPlayer *)self currentItem];
+      v22 = currentItem;
+      if (currentItem)
       {
-        [v21 duration];
+        [currentItem duration];
       }
 
       else
@@ -869,7 +869,7 @@ LABEL_8:
 
       v27 = CMTimeCompare(&buf, &time2);
 
-      if (v20 == 2)
+      if (intValue == 2)
       {
         [(TUIVideoPlayer *)self setState:4];
         if ((*&self->_delegateFlags & 0x20) != 0)
@@ -881,7 +881,7 @@ LABEL_8:
         }
       }
 
-      else if (!v20 && self->_state == 4 && v27 < 0)
+      else if (!intValue && self->_state == 4 && v27 < 0)
       {
         [(TUIVideoPlayer *)self setState:5];
         self->_shouldBePlaying = 0;
@@ -895,14 +895,14 @@ LABEL_24:
       }
     }
 
-    else if ([v9 isEqualToString:@"reasonForWaitingToPlay"])
+    else if ([pathCopy isEqualToString:@"reasonForWaitingToPlay"])
     {
       v23 = objc_opt_class();
-      v24 = [v8 objectForKey:NSKeyValueChangeNewKey];
+      v24 = [changeCopy objectForKey:NSKeyValueChangeNewKey];
       WeakRetained = TUIDynamicCast(v23, v24);
 
-      v25 = [(TUIVideoPlayer *)self playbackChecks];
-      [v25 setPlayerHasNoWaitingReason:WeakRetained == 0];
+      playbackChecks = [(TUIVideoPlayer *)self playbackChecks];
+      [playbackChecks setPlayerHasNoWaitingReason:WeakRetained == 0];
 
       if (WeakRetained)
       {
@@ -915,7 +915,7 @@ LABEL_24:
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           LODWORD(buf.value) = 138412546;
-          *(&buf.value + 4) = v10;
+          *(&buf.value + 4) = playerCopy;
           LOWORD(buf.flags) = 2112;
           *(&buf.flags + 2) = WeakRetained;
           _os_log_impl(&dword_0, v26, OS_LOG_TYPE_DEFAULT, "%@ : Waiting on playback: %@", &buf, 0x16u);
@@ -927,13 +927,13 @@ LABEL_24:
   }
 }
 
-- (void)handlePlaybackChecksChange:(id)a3 keyPath:(id)a4 playbackChecks:(id)a5
+- (void)handlePlaybackChecksChange:(id)change keyPath:(id)path playbackChecks:(id)checks
 {
-  v6 = a5;
+  checksCopy = checks;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v7 = [v6 complete];
+  complete = [checksCopy complete];
 
-  if (v7)
+  if (complete)
   {
     if (self->_state == 1)
     {
@@ -988,36 +988,36 @@ LABEL_24:
   }
 
   v3 = qword_2E66C0;
-  v4 = [(TUIVideoPlayer *)self timeControlStatus];
+  timeControlStatus = [(TUIVideoPlayer *)self timeControlStatus];
 
-  return [v3 objectAtIndexedSubscript:v4];
+  return [v3 objectAtIndexedSubscript:timeControlStatus];
 }
 
 - (void)logPlayerStatus
 {
-  v3 = [(TUIVideoPlayer *)self _timeControlStatusAsString];
-  v21 = [NSString stringWithFormat:@"timeControlStatus: %@", v3];
+  _timeControlStatusAsString = [(TUIVideoPlayer *)self _timeControlStatusAsString];
+  v21 = [NSString stringWithFormat:@"timeControlStatus: %@", _timeControlStatusAsString];
 
-  v4 = [(TUIVideoPlayer *)self reasonForWaitingToPlay];
-  v5 = [NSString stringWithFormat:@"reasonForWaitingToPlay: %@", v4];
+  reasonForWaitingToPlay = [(TUIVideoPlayer *)self reasonForWaitingToPlay];
+  v5 = [NSString stringWithFormat:@"reasonForWaitingToPlay: %@", reasonForWaitingToPlay];
 
   [(TUIVideoPlayer *)self rate];
   v7 = [NSString stringWithFormat:@"playerRate: %f", v6];
   [(TUIVideoPlayer *)self currentTime];
   v8 = [NSString stringWithFormat:@"currentTime: %f", CMTimeGetSeconds(&time)];
-  v9 = [(TUIVideoPlayer *)self playerItem];
-  v10 = [v9 loadedTimeRanges];
-  v11 = [v10 description];
+  playerItem = [(TUIVideoPlayer *)self playerItem];
+  loadedTimeRanges = [playerItem loadedTimeRanges];
+  v11 = [loadedTimeRanges description];
   v12 = [NSString stringWithFormat:@"loadedTimeRanges: %@", v11];
 
-  v13 = [(TUIVideoPlayer *)self playerItem];
-  v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"isPlaybackLikelyToKeepUp: %i", [v13 isPlaybackLikelyToKeepUp]);
+  playerItem2 = [(TUIVideoPlayer *)self playerItem];
+  v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"isPlaybackLikelyToKeepUp: %i", [playerItem2 isPlaybackLikelyToKeepUp]);
 
-  v15 = [(TUIVideoPlayer *)self playerItem];
-  v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"isPlaybackBufferFull: %i", [v15 isPlaybackBufferFull]);
+  playerItem3 = [(TUIVideoPlayer *)self playerItem];
+  v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"isPlaybackBufferFull: %i", [playerItem3 isPlaybackBufferFull]);
 
-  v17 = [(TUIVideoPlayer *)self playerItem];
-  v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"isPlaybackBufferEmpty: %i", [v17 isPlaybackBufferEmpty]);
+  playerItem4 = [(TUIVideoPlayer *)self playerItem];
+  v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"isPlaybackBufferEmpty: %i", [playerItem4 isPlaybackBufferEmpty]);
 
   v19 = [NSString stringWithFormat:@"\n%@\n%@\n%@\n%@\n%@\n%@\n%@\n%@\n", v21, v5, v7, v8, v12, v14, v16, v18];
   v20 = TUIVideoLog();

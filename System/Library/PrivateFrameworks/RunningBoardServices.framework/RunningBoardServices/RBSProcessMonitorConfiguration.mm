@@ -1,27 +1,27 @@
 @interface RBSProcessMonitorConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesProcess:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesProcess:(id)process;
 - (NSArray)predicates;
 - (NSString)debugDescription;
 - (NSString)description;
 - (RBSProcessMonitorConfiguration)init;
-- (RBSProcessMonitorConfiguration)initWithRBSXPCCoder:(id)a3;
+- (RBSProcessMonitorConfiguration)initWithRBSXPCCoder:(id)coder;
 - (RBSProcessStateDescriptor)stateDescriptor;
-- (_DWORD)_initWithIdentifier:(int)a3 andPid:;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_DWORD)_initWithIdentifier:(int)identifier andPid:;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)updateHandler;
 - (os_unfair_lock_s)preventLaunchUpdateHandler;
 - (unint64_t)events;
 - (unsigned)serviceClass;
 - (void)_validate;
-- (void)encodeWithRBSXPCCoder:(id)a3;
-- (void)setEvents:(unint64_t)a3;
-- (void)setPredicates:(id)a3;
-- (void)setPreventLaunchUpdateHandle:(id)a3;
-- (void)setPreventLaunchUpdateHandler:(void *)a1;
-- (void)setServiceClass:(unsigned int)a3;
-- (void)setStateDescriptor:(id)a3;
-- (void)setUpdateHandler:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
+- (void)setEvents:(unint64_t)events;
+- (void)setPredicates:(id)predicates;
+- (void)setPreventLaunchUpdateHandle:(id)handle;
+- (void)setPreventLaunchUpdateHandler:(void *)handler;
+- (void)setServiceClass:(unsigned int)class;
+- (void)setStateDescriptor:(id)descriptor;
+- (void)setUpdateHandler:(id)handler;
 @end
 
 @implementation RBSProcessMonitorConfiguration
@@ -101,14 +101,14 @@
 - (void)_validate
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 16));
+    os_unfair_lock_lock((self + 16));
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v2 = *(a1 + 48);
+    v2 = *(self + 48);
     v3 = [v2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v3)
     {
@@ -128,13 +128,13 @@
 
           if (v7 == v8)
           {
-            v9 = *(a1 + 36);
+            v9 = *(self + 36);
             if (v9 >= 0x11)
             {
               v9 = 17;
             }
 
-            *(a1 + 36) = v9;
+            *(self + 36) = v9;
             goto LABEL_14;
           }
         }
@@ -151,17 +151,17 @@
 
 LABEL_14:
 
-    HIDWORD(v11) = *(a1 + 36) - 9;
+    HIDWORD(v11) = *(self + 36) - 9;
     LODWORD(v11) = HIDWORD(v11);
     v10 = v11 >> 2;
     v12 = v10 > 6;
     v13 = (1 << v10) & 0x5D;
     if (v12 || v13 == 0)
     {
-      *(a1 + 36) = 17;
+      *(self + 36) = 17;
     }
 
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((self + 16));
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -183,11 +183,11 @@ LABEL_14:
   return v9;
 }
 
-- (void)setPredicates:(id)a3
+- (void)setPredicates:(id)predicates
 {
-  v4 = a3;
+  predicatesCopy = predicates;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [predicatesCopy copy];
 
   predicates = self->_predicates;
   self->_predicates = v5;
@@ -195,11 +195,11 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setStateDescriptor:(id)a3
+- (void)setStateDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [descriptorCopy copy];
 
   stateDescriptor = self->_stateDescriptor;
   self->_stateDescriptor = v5;
@@ -207,27 +207,27 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setServiceClass:(unsigned int)a3
+- (void)setServiceClass:(unsigned int)class
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_serviceClass = a3;
+  self->_serviceClass = class;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setEvents:(unint64_t)a3
+- (void)setEvents:(unint64_t)events
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_events = a3;
+  self->_events = events;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setUpdateHandler:(id)a3
+- (void)setUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [handlerCopy copy];
 
   updateHandler = self->_updateHandler;
   self->_updateHandler = v5;
@@ -235,11 +235,11 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setPreventLaunchUpdateHandle:(id)a3
+- (void)setPreventLaunchUpdateHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [handleCopy copy];
 
   preventLaunchUpdateHandler = self->_preventLaunchUpdateHandler;
   self->_preventLaunchUpdateHandler = v5;
@@ -247,13 +247,13 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  processCopy = process;
   os_unfair_lock_lock(&self->_lock);
   WeakRetained = objc_loadWeakRetained(&self->_lastMatch);
-  v6 = [WeakRetained isEqual:v4];
+  v6 = [WeakRetained isEqual:processCopy];
 
   if (v6)
   {
@@ -280,9 +280,9 @@ LABEL_14:
             objc_enumerationMutation(v8);
           }
 
-          if ([*(*(&v13 + 1) + 8 * i) matchesProcess:{v4, v13}])
+          if ([*(*(&v13 + 1) + 8 * i) matchesProcess:{processCopy, v13}])
           {
-            objc_storeWeak(&self->_lastMatch, v4);
+            objc_storeWeak(&self->_lastMatch, processCopy);
             LOBYTE(v7) = 1;
             goto LABEL_13;
           }
@@ -307,10 +307,10 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -318,11 +318,11 @@ LABEL_13:
   else
   {
     v5 = objc_opt_class();
-    if (v5 == objc_opt_class() && (identifier = self->_identifier, identifier == [(RBSProcessMonitorConfiguration *)v4 identifier]))
+    if (v5 == objc_opt_class() && (identifier = self->_identifier, identifier == [(RBSProcessMonitorConfiguration *)equalCopy identifier]))
     {
-      if (v4)
+      if (equalCopy)
       {
-        clientPid = v4->_clientPid;
+        clientPid = equalCopy->_clientPid;
       }
 
       else
@@ -342,14 +342,14 @@ LABEL_13:
   return v8;
 }
 
-- (RBSProcessMonitorConfiguration)initWithRBSXPCCoder:(id)a3
+- (RBSProcessMonitorConfiguration)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"_identifier"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"_identifier"])
   {
-    if ([v4 containsValueForKey:@"_clientPid"])
+    if ([coderCopy containsValueForKey:@"_clientPid"])
     {
-      [(RBSProcessMonitorConfiguration *)v4 initWithRBSXPCCoder:&v8];
+      [(RBSProcessMonitorConfiguration *)coderCopy initWithRBSXPCCoder:&v8];
       self = v8;
       v6 = v8;
       goto LABEL_8;
@@ -377,14 +377,14 @@ LABEL_8:
   return v6;
 }
 
-- (_DWORD)_initWithIdentifier:(int)a3 andPid:
+- (_DWORD)_initWithIdentifier:(int)identifier andPid:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = RBSProcessMonitorConfiguration;
   v5 = objc_msgSendSuper2(&v9, sel_init);
   v6 = v5;
@@ -392,7 +392,7 @@ LABEL_8:
   {
     v5[4] = 0;
     *(v5 + 5) = a2;
-    v5[8] = a3;
+    v5[8] = identifier;
     v7 = *(v5 + 7);
     *(v5 + 7) = 0;
 
@@ -405,22 +405,22 @@ LABEL_8:
 
 - (os_unfair_lock_s)preventLaunchUpdateHandler
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    os_unfair_lock_lock(a1 + 4);
-    v2 = MEMORY[0x193AD5470](*&v1[20]._os_unfair_lock_opaque);
-    os_unfair_lock_unlock(v1 + 4);
-    v1 = MEMORY[0x193AD5470](v2);
+    os_unfair_lock_lock(self + 4);
+    v2 = MEMORY[0x193AD5470](*&selfCopy[20]._os_unfair_lock_opaque);
+    os_unfair_lock_unlock(selfCopy + 4);
+    selfCopy = MEMORY[0x193AD5470](v2);
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [RBSProcessMonitorConfiguration allocWithZone:a3];
-  v5 = [(RBSProcessMonitorConfiguration *)self identifier];
+  v4 = [RBSProcessMonitorConfiguration allocWithZone:zone];
+  identifier = [(RBSProcessMonitorConfiguration *)self identifier];
   if (self)
   {
     clientPid = self->_clientPid;
@@ -431,25 +431,25 @@ LABEL_8:
     clientPid = 0;
   }
 
-  v7 = [(RBSProcessMonitorConfiguration *)v4 _initWithIdentifier:v5 andPid:clientPid];
+  v7 = [(RBSProcessMonitorConfiguration *)v4 _initWithIdentifier:identifier andPid:clientPid];
   [v7 setServiceClass:{-[RBSProcessMonitorConfiguration serviceClass](self, "serviceClass")}];
-  v8 = [(RBSProcessMonitorConfiguration *)self predicates];
-  [v7 setPredicates:v8];
+  predicates = [(RBSProcessMonitorConfiguration *)self predicates];
+  [v7 setPredicates:predicates];
 
-  v9 = [(RBSProcessMonitorConfiguration *)self stateDescriptor];
-  [v7 setStateDescriptor:v9];
+  stateDescriptor = [(RBSProcessMonitorConfiguration *)self stateDescriptor];
+  [v7 setStateDescriptor:stateDescriptor];
 
   [v7 setEvents:{-[RBSProcessMonitorConfiguration events](self, "events")}];
-  v10 = [(RBSProcessMonitorConfiguration *)self updateHandler];
-  [v7 setUpdateHandler:v10];
+  updateHandler = [(RBSProcessMonitorConfiguration *)self updateHandler];
+  [v7 setUpdateHandler:updateHandler];
 
   [(RBSProcessMonitorConfiguration *)v7 _validate];
   return v7;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(RBSProcessMonitorConfiguration *)self _validate];
   if (self)
   {
@@ -461,22 +461,22 @@ LABEL_8:
     clientPid = 0;
   }
 
-  [v4 encodeInt64:clientPid forKey:@"_clientPid"];
-  [v4 encodeInt64:-[RBSProcessMonitorConfiguration identifier](self forKey:{"identifier"), @"_identifier"}];
-  [v4 encodeInt64:-[RBSProcessMonitorConfiguration events](self forKey:{"events"), @"_events"}];
-  [v4 encodeInt64:-[RBSProcessMonitorConfiguration serviceClass](self forKey:{"serviceClass"), @"_serviceClass"}];
-  v6 = [(RBSProcessMonitorConfiguration *)self predicates];
-  [v4 encodeObject:v6 forKey:@"_predicates"];
+  [coderCopy encodeInt64:clientPid forKey:@"_clientPid"];
+  [coderCopy encodeInt64:-[RBSProcessMonitorConfiguration identifier](self forKey:{"identifier"), @"_identifier"}];
+  [coderCopy encodeInt64:-[RBSProcessMonitorConfiguration events](self forKey:{"events"), @"_events"}];
+  [coderCopy encodeInt64:-[RBSProcessMonitorConfiguration serviceClass](self forKey:{"serviceClass"), @"_serviceClass"}];
+  predicates = [(RBSProcessMonitorConfiguration *)self predicates];
+  [coderCopy encodeObject:predicates forKey:@"_predicates"];
 
-  v7 = [(RBSProcessMonitorConfiguration *)self stateDescriptor];
-  [v4 encodeObject:v7 forKey:@"_stateDescriptor"];
+  stateDescriptor = [(RBSProcessMonitorConfiguration *)self stateDescriptor];
+  [coderCopy encodeObject:stateDescriptor forKey:@"_stateDescriptor"];
 }
 
-- (void)setPreventLaunchUpdateHandler:(void *)a1
+- (void)setPreventLaunchUpdateHandler:(void *)handler
 {
-  if (a1)
+  if (handler)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 80);
+    objc_setProperty_nonatomic_copy(handler, newValue, newValue, 80);
   }
 }
 

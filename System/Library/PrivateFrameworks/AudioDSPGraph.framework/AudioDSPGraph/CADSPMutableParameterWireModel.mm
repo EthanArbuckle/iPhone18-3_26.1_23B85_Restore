@@ -1,22 +1,22 @@
 @interface CADSPMutableParameterWireModel
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)setBoxName:(id)a3 ofEndpoint:(unsigned int)a4;
-- (void)setBoxParameterAddress:(CADSPParameterAddress)a3 ofEndpoint:(unsigned int)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)setBoxName:(id)name ofEndpoint:(unsigned int)endpoint;
+- (void)setBoxParameterAddress:(CADSPParameterAddress)address ofEndpoint:(unsigned int)endpoint;
 @end
 
 @implementation CADSPMutableParameterWireModel
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = CADSPMutableParameterWireModel;
-  return [(CADSPParameterWireModel *)&v4 mutableCopyWithZone:a3];
+  return [(CADSPParameterWireModel *)&v4 mutableCopyWithZone:zone];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CADSPParameterWireModel allocWithZone:a3];
+  v4 = [CADSPParameterWireModel allocWithZone:zone];
   std::string::operator=(&v4->_this, &self->super._this);
   v5 = *&self->super._this.source.var0;
   LODWORD(v4->_this.var0) = self->super._this.var0;
@@ -29,28 +29,28 @@
   return v4;
 }
 
-- (void)setBoxParameterAddress:(CADSPParameterAddress)a3 ofEndpoint:(unsigned int)a4
+- (void)setBoxParameterAddress:(CADSPParameterAddress)address ofEndpoint:(unsigned int)endpoint
 {
   v4 = 40;
-  if (!a4)
+  if (!endpoint)
   {
     v4 = 0;
   }
 
-  *(&self->super._this.source.var0 + v4) = a3;
+  *(&self->super._this.source.var0 + v4) = address;
 }
 
-- (void)setBoxName:(id)a3 ofEndpoint:(unsigned int)a4
+- (void)setBoxName:(id)name ofEndpoint:(unsigned int)endpoint
 {
-  v8 = a3;
-  v6 = [v8 UTF8String];
+  nameCopy = name;
+  uTF8String = [nameCopy UTF8String];
   v7 = 40;
-  if (!a4)
+  if (!endpoint)
   {
     v7 = 0;
   }
 
-  std::string::__assign_external(&self->super._this.source.boxName.__rep_.__s.__data_[v7], v6);
+  std::string::__assign_external(&self->super._this.source.boxName.__rep_.__s.__data_[v7], uTF8String);
 }
 
 @end

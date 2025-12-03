@@ -1,10 +1,10 @@
 @interface HMFUnfairLock
-+ (id)lockWithOptions:(unint64_t)a3;
-- (HMFUnfairLock)initWithOptions:(unint64_t)a3;
++ (id)lockWithOptions:(unint64_t)options;
+- (HMFUnfairLock)initWithOptions:(unint64_t)options;
 - (void)assertNotOwner;
 - (void)assertOwner;
 - (void)lock;
-- (void)performBlock:(id)a3;
+- (void)performBlock:(id)block;
 - (void)unlock;
 @end
 
@@ -62,39 +62,39 @@
   objc_exception_throw(v7);
 }
 
-+ (id)lockWithOptions:(unint64_t)a3
++ (id)lockWithOptions:(unint64_t)options
 {
   v3 = off_2786E6508;
-  if ((a3 & 2) != 0)
+  if ((options & 2) != 0)
   {
     v3 = &off_2786E6510;
   }
 
-  v4 = [objc_alloc(*v3) initWithOptions:a3];
+  v4 = [objc_alloc(*v3) initWithOptions:options];
 
   return v4;
 }
 
-- (HMFUnfairLock)initWithOptions:(unint64_t)a3
+- (HMFUnfairLock)initWithOptions:(unint64_t)options
 {
-  v4 = self;
+  selfCopy = self;
   if ([(HMFUnfairLock *)self isMemberOfClass:objc_opt_class()])
   {
-    v5 = [HMFUnfairLock lockWithOptions:a3];
+    v5 = [HMFUnfairLock lockWithOptions:options];
   }
 
   else
   {
-    v9.receiver = v4;
+    v9.receiver = selfCopy;
     v9.super_class = HMFUnfairLock;
     v6 = [(HMFUnfairLock *)&v9 init];
     if (v6)
     {
-      v6->_options = a3;
+      v6->_options = options;
     }
 
     v5 = v6;
-    v4 = v5;
+    selfCopy = v5;
   }
 
   v7 = v5;
@@ -102,18 +102,18 @@
   return v7;
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v6 = v4;
-    v5 = self;
-    [(HMFUnfairLock *)v5 lock];
+    v6 = blockCopy;
+    selfCopy = self;
+    [(HMFUnfairLock *)selfCopy lock];
     v6[2](v6);
-    [(HMFUnfairLock *)v5 unlock];
+    [(HMFUnfairLock *)selfCopy unlock];
 
-    v4 = v6;
+    blockCopy = v6;
   }
 }
 

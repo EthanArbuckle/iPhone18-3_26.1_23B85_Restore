@@ -1,13 +1,13 @@
 @interface MNRouteDivergenceOverlappingSection
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
 @end
 
 @implementation MNRouteDivergenceOverlappingSection
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
-  v4 = [(MNRouteDivergenceOverlappingSection *)self components];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  components = [(MNRouteDivergenceOverlappingSection *)self components];
+  v5 = [components objectAtIndexedSubscript:subscript];
 
   return v5;
 }

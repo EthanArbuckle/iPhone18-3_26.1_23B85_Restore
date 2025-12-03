@@ -1,37 +1,37 @@
 @interface CompassRichRectangularDialView
 - (CLKMonochromeFilterProvider)filterProvider;
-- (id)_filtersForStyle:(int64_t)a3 fraction:(id)a4;
-- (id)_newLabelWithFont:(id)a3 color:(id)a4 text:(id)a5;
-- (id)initFullColorImageViewWithDevice:(id)a3;
+- (id)_filtersForStyle:(int64_t)style fraction:(id)fraction;
+- (id)_newLabelWithFont:(id)font color:(id)color text:(id)text;
+- (id)initFullColorImageViewWithDevice:(id)device;
 - (id)redactionLabel;
-- (void)_applyFilters:(id)a3 toLayers:(id)a4;
-- (void)_applyFilters:(id)a3 toViews:(id)a4;
+- (void)_applyFilters:(id)filters toLayers:(id)layers;
+- (void)_applyFilters:(id)filters toViews:(id)views;
 - (void)_createAngles;
 - (void)_createBearingTicks;
 - (void)_createDirections;
 - (void)_createTicks;
-- (void)_updateForMonochrome:(id)a3;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (void)_updateForMonochrome:(id)monochrome;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 - (void)layoutSubviews;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 @end
 
 @implementation CompassRichRectangularDialView
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
   v223[2] = *MEMORY[0x277D85DE8];
-  v198 = a3;
+  deviceCopy = device;
   v221.receiver = self;
   v221.super_class = CompassRichRectangularDialView;
   v5 = [(CompassRichRectangularDialView *)&v221 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_device, a3);
+    objc_storeStrong(&v5->_device, device);
     v7 = objc_alloc(MEMORY[0x277CCAD78]);
     v10 = objc_msgSend_initWithUUIDString_(v7, v8, @"FE1BCD7B-63A2-4EB3-9EF5-D6A9E506101E", v9);
-    v13 = objc_msgSend_supportsCapability_(v198, v11, v10, v12);
+    v13 = objc_msgSend_supportsCapability_(deviceCopy, v11, v10, v12);
 
     v6->_supportsGossamer = v13;
     v16 = objc_msgSend_setClipsToBounds_(v6, v14, 1, v15);
@@ -189,10 +189,10 @@
   return v6;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v5 = a3;
-  v9 = objc_msgSend_metadata(v5, v6, v7, v8);
+  providerCopy = provider;
+  v9 = objc_msgSend_metadata(providerCopy, v6, v7, v8);
   v12 = objc_msgSend_objectForKeyedSubscript_(v9, v10, @"heading", v11);
 
   v16 = objc_msgSend_null(MEMORY[0x277CBEB68], v13, v14, v15);
@@ -204,7 +204,7 @@
     v12 = 0;
   }
 
-  v23 = objc_msgSend_metadata(v5, v20, v21, v22);
+  v23 = objc_msgSend_metadata(providerCopy, v20, v21, v22);
   v26 = objc_msgSend_objectForKeyedSubscript_(v23, v24, @"bearing", v25);
 
   v30 = objc_msgSend_null(MEMORY[0x277CBEB68], v27, v28, v29);
@@ -216,7 +216,7 @@
     v26 = 0;
   }
 
-  v37 = objc_msgSend_metadata(v5, v34, v35, v36);
+  v37 = objc_msgSend_metadata(providerCopy, v34, v35, v36);
   v40 = objc_msgSend_objectForKeyedSubscript_(v37, v38, @"nodata", v39);
   v44 = objc_msgSend_BOOLValue(v40, v41, v42, v43);
 
@@ -349,7 +349,7 @@ LABEL_21:
 {
   v263.receiver = self;
   v263.super_class = CompassRichRectangularDialView;
-  v3 = [(CompassRichRectangularDialView *)&v263 layoutSubviews];
+  layoutSubviews = [(CompassRichRectangularDialView *)&v263 layoutSubviews];
   v262 = 0.0;
   v260 = 0u;
   v261 = 0u;
@@ -364,7 +364,7 @@ LABEL_21:
   v250 = 0u;
   v251 = 0u;
   v249 = 0u;
-  sub_23BD36850(v3, self->_device);
+  sub_23BD36850(layoutSubviews, self->_device);
   *&v4 = sub_23BD36C0C(&v249, &qword_27E1C4E20).n128_u64[0];
   objc_msgSend_bounds(self, v5, v6, v7, v4);
   x = v264.origin.x;
@@ -621,22 +621,22 @@ LABEL_21:
   sub_23BD33FEC(&v249);
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  v8 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], a2, v3, v4, a3);
+  v8 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], a2, v3, v4, fraction);
   objc_msgSend__updateForMonochrome_(self, v6, v8, v7);
 }
 
-- (void)_updateForMonochrome:(id)a3
+- (void)_updateForMonochrome:(id)monochrome
 {
   v100[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v6 = objc_msgSend__filtersForStyle_fraction_(self, v5, 2, v4);
+  monochromeCopy = monochrome;
+  v6 = objc_msgSend__filtersForStyle_fraction_(self, v5, 2, monochromeCopy);
   v100[0] = self->_needleView;
   v86 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v7, v100, 1);
   v87 = v6;
   objc_msgSend__applyFilters_toViews_(self, v8, v6, v86);
-  v10 = objc_msgSend__filtersForStyle_fraction_(self, v9, 0, v4);
+  v10 = objc_msgSend__filtersForStyle_fraction_(self, v9, 0, monochromeCopy);
   directionLabel = self->_directionLabel;
   v12 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v11, &directionLabel, 1);
   v16 = objc_msgSend_allValues(self->_directions, v13, v14, v15);
@@ -647,11 +647,11 @@ LABEL_21:
   v24 = objc_msgSend_allValues(self->_ticks, v21, v22, v23);
   objc_msgSend__applyFilters_toLayers_(self, v25, v10, v24);
 
-  v27 = objc_msgSend__filtersForStyle_fraction_(self, v26, 1, v4);
+  v27 = objc_msgSend__filtersForStyle_fraction_(self, v26, 1, monochromeCopy);
   v31 = objc_msgSend_allValues(self->_angles, v28, v29, v30);
   v84 = v27;
   objc_msgSend__applyFilters_toViews_(self, v32, v27, v31);
-  v34 = objc_msgSend__filtersForStyle_fraction_(self, v33, 3, v4);
+  v34 = objc_msgSend__filtersForStyle_fraction_(self, v33, 3, monochromeCopy);
   v38 = objc_msgSend_layer(self->_bearingLabel, v35, v36, v37);
   v98[0] = v38;
   v42 = objc_msgSend_layer(self->_headingLabel, v39, v40, v41);
@@ -661,7 +661,7 @@ LABEL_21:
   v51 = objc_msgSend_arrayByAddingObjectsFromArray_(v44, v49, v48, v50);
 
   v53 = objc_msgSend__applyFilters_toLayers_(self, v52, v34, v51);
-  if (v4)
+  if (monochromeCopy)
   {
     sub_23BD36850(v53, self->_device);
     sub_23BD36C0C(v88, &qword_27E1C4E20);
@@ -670,7 +670,7 @@ LABEL_21:
     v61 = objc_msgSend_filterProvider(self, v58, v59, v60);
     v63 = objc_msgSend_colorForView_accented_(v61, v62, self, 1);
 
-    objc_msgSend_doubleValue(v4, v64, v65, v66);
+    objc_msgSend_doubleValue(monochromeCopy, v64, v65, v66);
     v67 = v57;
     v68 = v63;
     if (CLKFloatEqualsFloat())
@@ -715,13 +715,13 @@ LABEL_21:
   }
 }
 
-- (id)_filtersForStyle:(int64_t)a3 fraction:(id)a4
+- (id)_filtersForStyle:(int64_t)style fraction:(id)fraction
 {
-  v6 = a4;
-  v10 = v6;
-  if (v6)
+  fractionCopy = fraction;
+  v10 = fractionCopy;
+  if (fractionCopy)
   {
-    objc_msgSend_doubleValue(v6, v7, v8, v9);
+    objc_msgSend_doubleValue(fractionCopy, v7, v8, v9);
     if (CLKFloatEqualsFloat())
     {
       v14 = MEMORY[0x277CBEBF8];
@@ -730,13 +730,13 @@ LABEL_21:
 
     v15 = objc_msgSend_filterProvider(self, v11, v12, v13);
     objc_msgSend_doubleValue(v10, v18, v19, v20);
-    v17 = objc_msgSend_filtersForView_style_fraction_(v15, v21, self, a3);
+    v17 = objc_msgSend_filtersForView_style_fraction_(v15, v21, self, style);
   }
 
   else
   {
     v15 = objc_msgSend_filterProvider(self, v7, v8, v9);
-    v17 = objc_msgSend_filtersForView_style_(v15, v16, self, a3);
+    v17 = objc_msgSend_filtersForView_style_(v15, v16, self, style);
   }
 
   v14 = v17;
@@ -746,40 +746,40 @@ LABEL_7:
   return v14;
 }
 
-- (void)_applyFilters:(id)a3 toViews:(id)a4
+- (void)_applyFilters:(id)filters toViews:(id)views
 {
-  v5 = a3;
+  filtersCopy = filters;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_23BD356C4;
   v9[3] = &unk_278B942B8;
-  v10 = v5;
-  v6 = v5;
-  objc_msgSend_enumerateObjectsUsingBlock_(a4, v7, v9, v8);
+  v10 = filtersCopy;
+  v6 = filtersCopy;
+  objc_msgSend_enumerateObjectsUsingBlock_(views, v7, v9, v8);
 }
 
-- (void)_applyFilters:(id)a3 toLayers:(id)a4
+- (void)_applyFilters:(id)filters toLayers:(id)layers
 {
-  v5 = a3;
+  filtersCopy = filters;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_23BD35898;
   v9[3] = &unk_278B942E0;
-  v10 = v5;
-  v6 = v5;
-  objc_msgSend_enumerateObjectsUsingBlock_(a4, v7, v9, v8);
+  v10 = filtersCopy;
+  v6 = filtersCopy;
+  objc_msgSend_enumerateObjectsUsingBlock_(layers, v7, v9, v8);
 }
 
-- (id)_newLabelWithFont:(id)a3 color:(id)a4 text:(id)a5
+- (id)_newLabelWithFont:(id)font color:(id)color text:(id)text
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  textCopy = text;
+  colorCopy = color;
+  fontCopy = font;
   v10 = objc_opt_new();
-  objc_msgSend_setFont_(v10, v11, v9, v12);
+  objc_msgSend_setFont_(v10, v11, fontCopy, v12);
 
-  objc_msgSend_setTextColor_(v10, v13, v8, v14);
-  objc_msgSend_setText_(v10, v15, v7, v16);
+  objc_msgSend_setTextColor_(v10, v13, colorCopy, v14);
+  objc_msgSend_setText_(v10, v15, textCopy, v16);
 
   objc_msgSend_sizeToFit(v10, v17, v18, v19);
   return v10;
@@ -912,7 +912,7 @@ LABEL_7:
   v52 = 0u;
   v53 = 0u;
   memset(v51, 0, sizeof(v51));
-  v49 = self;
+  selfCopy = self;
   sub_23BD36850(self, self->_device);
   sub_23BD36C0C(v51, &qword_27E1C4E20);
   v2 = v52;
@@ -938,7 +938,7 @@ LABEL_7:
       }
     }
 
-    v11 = objc_msgSend_layer(MEMORY[0x277CD9F90], v5, v6, v7, v49);
+    v11 = objc_msgSend_layer(MEMORY[0x277CD9F90], v5, v6, v7, selfCopy);
     Mutable = CGPathCreateMutable();
     CGPathMoveToPoint(Mutable, 0, *&v2, 0.0);
     CGPathAddLineToPoint(Mutable, 0, *&v2, v10);
@@ -968,8 +968,8 @@ LABEL_7:
   }
 
   while (v8 < 0x163);
-  ticks = v49->_ticks;
-  v49->_ticks = v50;
+  ticks = selfCopy->_ticks;
+  selfCopy->_ticks = v50;
 
   sub_23BD33FEC(v51);
 }

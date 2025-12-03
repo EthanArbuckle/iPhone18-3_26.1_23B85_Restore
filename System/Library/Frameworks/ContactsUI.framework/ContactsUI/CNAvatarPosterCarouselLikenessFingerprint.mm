@@ -1,37 +1,37 @@
 @interface CNAvatarPosterCarouselLikenessFingerprint
-+ (id)archiveWithFingerprint:(id)a3;
-+ (id)fingerprintForPosterConfiguration:(id)a3;
-+ (id)fingerprintForPosterConfiguration:(id)a3 withConfigurationData:(id)a4;
-+ (id)fingerprintForPosterConfiguration:(id)a3 withUUID:(id)a4;
-+ (id)fingerprintFromArchive:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CNAvatarPosterCarouselLikenessFingerprint)initWithAvatarVisualFingerprint:(id)a3 sourceType:(int64_t)a4;
-- (CNAvatarPosterCarouselLikenessFingerprint)initWithCoder:(id)a3;
-- (CNAvatarPosterCarouselLikenessFingerprint)initWithImpl:(id)a3;
-- (CNAvatarPosterCarouselLikenessFingerprint)initWithPosterConfigurationData:(id)a3;
-- (CNAvatarPosterCarouselLikenessFingerprint)initWithPosterUUID:(id)a3;
++ (id)archiveWithFingerprint:(id)fingerprint;
++ (id)fingerprintForPosterConfiguration:(id)configuration;
++ (id)fingerprintForPosterConfiguration:(id)configuration withConfigurationData:(id)data;
++ (id)fingerprintForPosterConfiguration:(id)configuration withUUID:(id)d;
++ (id)fingerprintFromArchive:(id)archive;
+- (BOOL)isEqual:(id)equal;
+- (CNAvatarPosterCarouselLikenessFingerprint)initWithAvatarVisualFingerprint:(id)fingerprint sourceType:(int64_t)type;
+- (CNAvatarPosterCarouselLikenessFingerprint)initWithCoder:(id)coder;
+- (CNAvatarPosterCarouselLikenessFingerprint)initWithImpl:(id)impl;
+- (CNAvatarPosterCarouselLikenessFingerprint)initWithPosterConfigurationData:(id)data;
+- (CNAvatarPosterCarouselLikenessFingerprint)initWithPosterUUID:(id)d;
 @end
 
 @implementation CNAvatarPosterCarouselLikenessFingerprint
 
-- (CNAvatarPosterCarouselLikenessFingerprint)initWithCoder:(id)a3
+- (CNAvatarPosterCarouselLikenessFingerprint)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v4 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"impl"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"impl"];
 
   v10 = [(CNAvatarPosterCarouselLikenessFingerprint *)self initWithImpl:v9];
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -57,69 +57,69 @@
   return v8;
 }
 
-- (CNAvatarPosterCarouselLikenessFingerprint)initWithPosterUUID:(id)a3
+- (CNAvatarPosterCarouselLikenessFingerprint)initWithPosterUUID:(id)d
 {
-  v4 = a3;
-  v5 = [[_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl alloc] initWithPosterUUID:v4];
+  dCopy = d;
+  v5 = [[_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl alloc] initWithPosterUUID:dCopy];
 
   v6 = [(CNAvatarPosterCarouselLikenessFingerprint *)self initWithImpl:v5];
   return v6;
 }
 
-- (CNAvatarPosterCarouselLikenessFingerprint)initWithAvatarVisualFingerprint:(id)a3 sourceType:(int64_t)a4
+- (CNAvatarPosterCarouselLikenessFingerprint)initWithAvatarVisualFingerprint:(id)fingerprint sourceType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [[_CNAvatarPosterCarouselLikenessFingerprintAvatarImpl alloc] initWithVisualFingerprint:v6 sourceType:a4];
+  fingerprintCopy = fingerprint;
+  v7 = [[_CNAvatarPosterCarouselLikenessFingerprintAvatarImpl alloc] initWithVisualFingerprint:fingerprintCopy sourceType:type];
 
   v8 = [(CNAvatarPosterCarouselLikenessFingerprint *)self initWithImpl:v7];
   return v8;
 }
 
-- (CNAvatarPosterCarouselLikenessFingerprint)initWithPosterConfigurationData:(id)a3
+- (CNAvatarPosterCarouselLikenessFingerprint)initWithPosterConfigurationData:(id)data
 {
-  v4 = a3;
-  v5 = [CNPRUISPosterTitleStyleAttributes attributesFromData:v4 error:0];
-  v6 = [[_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl alloc] initWithPosterConfigurationData:v4 titleStyleAttributes:v5];
+  dataCopy = data;
+  v5 = [CNPRUISPosterTitleStyleAttributes attributesFromData:dataCopy error:0];
+  v6 = [[_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl alloc] initWithPosterConfigurationData:dataCopy titleStyleAttributes:v5];
 
   v7 = [(CNAvatarPosterCarouselLikenessFingerprint *)self initWithImpl:v6];
   return v7;
 }
 
-- (CNAvatarPosterCarouselLikenessFingerprint)initWithImpl:(id)a3
+- (CNAvatarPosterCarouselLikenessFingerprint)initWithImpl:(id)impl
 {
-  v5 = a3;
+  implCopy = impl;
   v10.receiver = self;
   v10.super_class = CNAvatarPosterCarouselLikenessFingerprint;
   v6 = [(CNAvatarPosterCarouselLikenessFingerprint *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_impl, a3);
+    objc_storeStrong(&v6->_impl, impl);
     v8 = v7;
   }
 
   return v7;
 }
 
-+ (id)archiveWithFingerprint:(id)a3
++ (id)archiveWithFingerprint:(id)fingerprint
 {
   v3 = MEMORY[0x1E696ACC8];
-  v4 = a3;
+  fingerprintCopy = fingerprint;
   v5 = [[v3 alloc] initRequiringSecureCoding:1];
-  [v5 encodeObject:v4 forKey:@"impl"];
+  [v5 encodeObject:fingerprintCopy forKey:@"impl"];
 
   [v5 finishEncoding];
-  v6 = [v5 encodedData];
+  encodedData = [v5 encodedData];
 
-  return v6;
+  return encodedData;
 }
 
-+ (id)fingerprintFromArchive:(id)a3
++ (id)fingerprintFromArchive:(id)archive
 {
   v3 = MEMORY[0x1E696ACD0];
-  v4 = a3;
+  archiveCopy = archive;
   v8 = 0;
-  v5 = [[v3 alloc] initForReadingFromData:v4 error:&v8];
+  v5 = [[v3 alloc] initForReadingFromData:archiveCopy error:&v8];
 
   [v5 setRequiresSecureCoding:1];
   v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"impl"];
@@ -128,10 +128,10 @@
   return v6;
 }
 
-+ (id)fingerprintForPosterConfiguration:(id)a3
++ (id)fingerprintForPosterConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695CFC8] wallpaperTypeFromConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [MEMORY[0x1E695CFC8] wallpaperTypeFromConfiguration:configurationCopy];
   if ([v4 isEqualToString:*MEMORY[0x1E695CCE0]])
   {
     if (!+[_TtC10ContactsUI33CNMemojiPosterConfigurationReader canReadConfiguration])
@@ -139,7 +139,7 @@
       goto LABEL_12;
     }
 
-    v5 = [v3 loadUserInfoWithError:0];
+    v5 = [configurationCopy loadUserInfoWithError:0];
     v6 = [_TtC10ContactsUI33CNMemojiPosterConfigurationReader memojiPosterConfigurationDataFromUserInfo:v5];
     if (v6)
     {
@@ -162,7 +162,7 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  v5 = [v3 loadUserInfoWithError:0];
+  v5 = [configurationCopy loadUserInfoWithError:0];
   v6 = [_TtC10ContactsUI35CNMonogramPosterConfigurationReader monogramPosterConfigurationDataFromUserInfo:v5];
   if (!v6)
   {
@@ -171,7 +171,7 @@ LABEL_10:
 
 LABEL_4:
   v7 = v6;
-  v8 = [CNAvatarPosterCarouselLikenessFingerprint fingerprintForPosterConfiguration:v3 withConfigurationData:v6];
+  v8 = [CNAvatarPosterCarouselLikenessFingerprint fingerprintForPosterConfiguration:configurationCopy withConfigurationData:v6];
 
   if (v8)
   {
@@ -190,8 +190,8 @@ LABEL_19:
   }
 
 LABEL_12:
-  v12 = [v3 serverUUID];
-  v8 = [CNAvatarPosterCarouselLikenessFingerprint fingerprintForPosterConfiguration:v3 withUUID:v12];
+  serverUUID = [configurationCopy serverUUID];
+  v8 = [CNAvatarPosterCarouselLikenessFingerprint fingerprintForPosterConfiguration:configurationCopy withUUID:serverUUID];
 
   if (!v8)
   {
@@ -215,17 +215,17 @@ LABEL_15:
   return v13;
 }
 
-+ (id)fingerprintForPosterConfiguration:(id)a3 withUUID:(id)a4
++ (id)fingerprintForPosterConfiguration:(id)configuration withUUID:(id)d
 {
-  v4 = [_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl fingerprintForPosterConfiguration:a3, a4];
+  v4 = [_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl fingerprintForPosterConfiguration:configuration, d];
   v5 = [[CNAvatarPosterCarouselLikenessFingerprint alloc] initWithImpl:v4];
 
   return v5;
 }
 
-+ (id)fingerprintForPosterConfiguration:(id)a3 withConfigurationData:(id)a4
++ (id)fingerprintForPosterConfiguration:(id)configuration withConfigurationData:(id)data
 {
-  v4 = [_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl fingerprintForPosterConfiguration:a3 withConfigurationData:a4];
+  v4 = [_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl fingerprintForPosterConfiguration:configuration withConfigurationData:data];
   v5 = [[CNAvatarPosterCarouselLikenessFingerprint alloc] initWithImpl:v4];
 
   return v5;

@@ -3,12 +3,12 @@
 - (BOOL)_shouldReportBoron;
 - (CSOpportuneSpeakListener)init;
 - (CSOpportuneSpeakListenerDelegate)delegate;
-- (void)_startRequestWithCompletion:(id)a3;
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4;
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4;
-- (void)spgEndpointAnalyzer:(id)a3 hasSilenceScoreEstimate:(double)a4 clientProcessedAudioTimeMS:(float)a5;
-- (void)startListenWithOption:(id)a3 completion:(id)a4;
-- (void)stopListenWithStateReset:(BOOL)a3 completion:(id)a4;
+- (void)_startRequestWithCompletion:(id)completion;
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available;
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly;
+- (void)spgEndpointAnalyzer:(id)analyzer hasSilenceScoreEstimate:(double)estimate clientProcessedAudioTimeMS:(float)s;
+- (void)startListenWithOption:(id)option completion:(id)completion;
+- (void)stopListenWithStateReset:(BOOL)reset completion:(id)completion;
 @end
 
 @implementation CSOpportuneSpeakListener
@@ -20,9 +20,9 @@
   return WeakRetained;
 }
 
-- (void)spgEndpointAnalyzer:(id)a3 hasSilenceScoreEstimate:(double)a4 clientProcessedAudioTimeMS:(float)a5
+- (void)spgEndpointAnalyzer:(id)analyzer hasSilenceScoreEstimate:(double)estimate clientProcessedAudioTimeMS:(float)s
 {
-  v8 = a3;
+  analyzerCopy = analyzer;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -53,10 +53,10 @@
   }
 
   +[CSConfig inputRecordingSampleRate];
-  v14 = [(CSAudioTimeConverter *)self->_audioTimeConverter hostTimeFromSampleCount:((v13 / 1000.0) * a5)];
+  v14 = [(CSAudioTimeConverter *)self->_audioTimeConverter hostTimeFromSampleCount:((v13 / 1000.0) * s)];
   v15 = +[CSFPreferences sharedPreferences];
-  v16 = [v15 opportuneSpeakListenerBypassEnabled];
-  v17 = a4 <= 0.150000006;
+  opportuneSpeakListenerBypassEnabled = [v15 opportuneSpeakListenerBypassEnabled];
+  v17 = estimate <= 0.150000006;
 
   v18 = objc_loadWeakRetained(&self->_delegate);
   v19 = objc_opt_respondsToSelector();
@@ -66,7 +66,7 @@
   if (v19)
   {
     *&v21 = v14;
-    [v20 opportuneSpeakListener:self hasVADAvailable:v17 | v16 withHostTime:v21];
+    [v20 opportuneSpeakListener:self hasVADAvailable:v17 | opportuneSpeakListenerBypassEnabled withHostTime:v21];
   }
 
   else
@@ -79,7 +79,7 @@
     }
 
     v22 = objc_loadWeakRetained(&self->_delegate);
-    [v22 opportuneSpeakListener:self hasVADAvailable:v17 | v16];
+    [v22 opportuneSpeakListener:self hasVADAvailable:v17 | opportuneSpeakListenerBypassEnabled];
   }
 
 LABEL_9:
@@ -95,7 +95,7 @@ LABEL_9:
     v40 = 1026;
     v41 = v26;
     v42 = 2050;
-    v43 = a4;
+    estimateCopy = estimate;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%s boronScore : %{public}d, reportBoron : %{public}d, slienceScore : %{public}lf", buf, 0x22u);
   }
 
@@ -116,45 +116,45 @@ LABEL_9:
   if (v3)
   {
     v4 = [(NSMutableArray *)self->_remoteVADAlignBuffer objectAtIndex:0];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
 
     [(NSMutableArray *)self->_remoteVADAlignBuffer removeObjectAtIndex:0];
-    LOBYTE(v3) = v5;
+    LOBYTE(v3) = bOOLValue;
   }
 
   return v3;
 }
 
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available
 {
-  v5 = a4;
-  v6 = [v5 numSamples];
+  availableCopy = available;
+  numSamples = [availableCopy numSamples];
   audioTimeConverter = self->_audioTimeConverter;
-  v8 = v6 + self->_runningSampleCount;
+  v8 = numSamples + self->_runningSampleCount;
   self->_runningSampleCount = v8;
-  -[CSAudioTimeConverter processSampleCount:hostTime:](audioTimeConverter, "processSampleCount:hostTime:", v8, [v5 hostTime]);
+  -[CSAudioTimeConverter processSampleCount:hostTime:](audioTimeConverter, "processSampleCount:hostTime:", v8, [availableCopy hostTime]);
   spgEndpointAnalyzer = self->_spgEndpointAnalyzer;
-  v10 = [v5 dataForChannel:{+[CSConfig channelForProcessedInput](CSConfig, "channelForProcessedInput")}];
-  -[CSSPGEndpointAnalyzer addAudio:numSamples:](spgEndpointAnalyzer, "addAudio:numSamples:", v10, [v5 numSamples]);
+  v10 = [availableCopy dataForChannel:{+[CSConfig channelForProcessedInput](CSConfig, "channelForProcessedInput")}];
+  -[CSSPGEndpointAnalyzer addAudio:numSamples:](spgEndpointAnalyzer, "addAudio:numSamples:", v10, [availableCopy numSamples]);
 
-  v11 = [v5 remoteVAD];
+  remoteVAD = [availableCopy remoteVAD];
 
-  if (v11)
+  if (remoteVAD)
   {
-    v12 = [v5 remoteVAD];
-    v13 = [v12 bytes];
+    remoteVAD2 = [availableCopy remoteVAD];
+    bytes = [remoteVAD2 bytes];
 
-    v14 = [v5 remoteVAD];
-    v15 = [v14 length];
+    remoteVAD3 = [availableCopy remoteVAD];
+    v15 = [remoteVAD3 length];
 
     if (v15 >= 1)
     {
       v16 = 0;
       do
       {
-        v17 = v13[v16];
+        v17 = bytes[v16];
         v18 = +[CSFPreferences sharedPreferences];
-        v19 = [v18 opportuneSpeakListenerBypassEnabled];
+        opportuneSpeakListenerBypassEnabled = [v18 opportuneSpeakListenerBypassEnabled];
 
         if (v17)
         {
@@ -163,7 +163,7 @@ LABEL_9:
 
         else
         {
-          v20 = v19;
+          v20 = opportuneSpeakListenerBypassEnabled;
         }
 
         alignBufferQueue = self->_alignBufferQueue;
@@ -175,8 +175,8 @@ LABEL_9:
         v33 = v20;
         dispatch_async(alignBufferQueue, v32);
         ++v16;
-        v22 = [v5 remoteVAD];
-        v23 = [v22 length];
+        remoteVAD4 = [availableCopy remoteVAD];
+        v23 = [remoteVAD4 length];
       }
 
       while (v16 < v23);
@@ -189,11 +189,11 @@ LABEL_9:
       +[CSConfig inputRecordingSampleRate];
       v27 = (v25 * v26);
       LODWORD(v28) = 1176256512;
-      v29 = [v5 dataWithRemoteVADWithScaleFactor:v27 numAudioSamplesPerRemoteVAD:v28];
+      v29 = [availableCopy dataWithRemoteVADWithScaleFactor:v27 numAudioSamplesPerRemoteVAD:v28];
       v30 = v29;
       if (v29)
       {
-        -[CSPlainAudioFileWriter addSamples:numSamples:](self->_audioFileWriter, "addSamples:numSamples:", [v29 bytes], objc_msgSend(v5, "numSamples"));
+        -[CSPlainAudioFileWriter addSamples:numSamples:](self->_audioFileWriter, "addSamples:numSamples:", [v29 bytes], objc_msgSend(availableCopy, "numSamples"));
       }
 
       else
@@ -210,9 +210,9 @@ LABEL_9:
   }
 }
 
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly
 {
-  [(CSSPGEndpointAnalyzer *)self->_spgEndpointAnalyzer stop:a3];
+  [(CSSPGEndpointAnalyzer *)self->_spgEndpointAnalyzer stop:provider];
   [(CSOpportuneSpeakListener *)self setAudioStream:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
@@ -228,15 +228,15 @@ LABEL_9:
   [(CSPlainAudioFileWriter *)audioFileWriter endAudio];
 }
 
-- (void)stopListenWithStateReset:(BOOL)a3 completion:(id)a4
+- (void)stopListenWithStateReset:(BOOL)reset completion:(id)completion
 {
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000756DC;
   v18[3] = &unk_100253270;
   v18[4] = self;
-  v5 = a4;
-  v19 = v5;
+  completionCopy = completion;
+  v19 = completionCopy;
   v6 = objc_retainBlock(v18);
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -247,24 +247,24 @@ LABEL_9:
   }
 
   v8 = [[CSAudioStreamHoldRequestOption alloc] initWithTimeout:10 clientIdentity:0 requireRecordModeLock:1 requireListeningMicIndicatorLock:3.0];
-  v9 = [(CSOpportuneSpeakListener *)self audioStream];
-  v10 = [v9 streamProvider];
-  v11 = [v10 holdAudioStreamWithDescription:@"Hold CSOSL stream for potential weak stream" option:v8];
+  audioStream = [(CSOpportuneSpeakListener *)self audioStream];
+  streamProvider = [audioStream streamProvider];
+  v11 = [streamProvider holdAudioStreamWithDescription:@"Hold CSOSL stream for potential weak stream" option:v8];
   audioStreamHolding = self->_audioStreamHolding;
   self->_audioStreamHolding = v11;
 
-  v13 = [(CSOpportuneSpeakListener *)self audioStream];
+  audioStream2 = [(CSOpportuneSpeakListener *)self audioStream];
 
-  if (v13)
+  if (audioStream2)
   {
-    v14 = [(CSOpportuneSpeakListener *)self audioStream];
+    audioStream3 = [(CSOpportuneSpeakListener *)self audioStream];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100075810;
     v16[3] = &unk_100253270;
     v16[4] = self;
     v17 = v6;
-    [v14 stopAudioStreamWithOption:0 completion:v16];
+    [audioStream3 stopAudioStreamWithOption:0 completion:v16];
   }
 
   else
@@ -274,14 +274,14 @@ LABEL_9:
   }
 }
 
-- (void)_startRequestWithCompletion:(id)a3
+- (void)_startRequestWithCompletion:(id)completion
 {
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_100075C60;
   v26[3] = &unk_100253220;
-  v4 = a3;
-  v27 = v4;
+  completionCopy = completion;
+  v27 = completionCopy;
   v5 = objc_retainBlock(v26);
   if (self->_audioStreamProvider)
   {
@@ -310,14 +310,14 @@ LABEL_9:
           v14 = v13;
           +[CSConfig remoteVADDuration];
           v16 = (v15 * 1000.0);
-          v17 = [(CSSPGEndpointAnalyzer *)self->_spgEndpointAnalyzer getFrameDurationMs];
+          getFrameDurationMs = [(CSSPGEndpointAnalyzer *)self->_spgEndpointAnalyzer getFrameDurationMs];
           remoteVADSPGRatio = self->_remoteVADSPGRatio;
           *buf = 136315906;
           v29 = "[CSOpportuneSpeakListener _startRequestWithCompletion:]";
           v30 = 1026;
           *v31 = v16;
           *&v31[4] = 1026;
-          *&v31[6] = v17;
+          *&v31[6] = getFrameDurationMs;
           v32 = 1026;
           v33 = remoteVADSPGRatio;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s remoteVADDuration = %{public}d, spgDuration = %{public}d, _remoteVADSPGRatio = %{public}d", buf, 0x1Eu);
@@ -340,11 +340,11 @@ LABEL_9:
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
       {
         v21 = v20;
-        v22 = [v11 localizedDescription];
+        localizedDescription = [v11 localizedDescription];
         *buf = 136315394;
         v29 = "[CSOpportuneSpeakListener _startRequestWithCompletion:]";
         v30 = 2114;
-        *v31 = v22;
+        *v31 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%s AudioStreamRequest has failed : %{public}@", buf, 0x16u);
       }
 
@@ -359,32 +359,32 @@ LABEL_9:
   }
 }
 
-- (void)startListenWithOption:(id)a3 completion:(id)a4
+- (void)startListenWithOption:(id)option completion:(id)completion
 {
-  v6 = a3;
+  optionCopy = option;
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_10007626C;
   v32[3] = &unk_100253220;
-  v7 = a4;
-  v33 = v7;
+  completionCopy = completion;
+  v33 = completionCopy;
   v8 = objc_retainBlock(v32);
   v9 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v6 deviceId];
+    deviceId = [optionCopy deviceId];
     *buf = 136315394;
     v35 = "[CSOpportuneSpeakListener startListenWithOption:completion:]";
     v36 = 2114;
-    v37 = v11;
+    v37 = deviceId;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s Start Listening request with deviceId : %{public}@", buf, 0x16u);
   }
 
   v12 = +[AFPreferences sharedPreferences];
-  v13 = [v12 opportuneSpeakingFileLoggingIsEnabled];
+  opportuneSpeakingFileLoggingIsEnabled = [v12 opportuneSpeakingFileLoggingIsEnabled];
 
-  if (v13)
+  if (opportuneSpeakingFileLoggingIsEnabled)
   {
     +[CSFAudioStreamBasicDescriptionFactory lpcmNonInterleavedWithRemoteVADASBD];
     +[CSFAudioStreamBasicDescriptionFactory lpcmInterleavedWithRemoteVADASBD];
@@ -399,25 +399,25 @@ LABEL_9:
   audioFileWriter = self->_audioFileWriter;
   self->_audioFileWriter = v14;
 
-  v16 = [v6 deviceId];
+  deviceId2 = [optionCopy deviceId];
 
-  if (v16)
+  if (deviceId2)
   {
     v17 = +[CSOpportuneSpeakListenerDeviceManager sharedManager];
-    v18 = [v6 deviceId];
-    [v17 setDeviceId:v18];
+    deviceId3 = [optionCopy deviceId];
+    [v17 setDeviceId:deviceId3];
 
-    v19 = [v6 deviceId];
-    v20 = [CSAudioRecordContext contextForHearstVoiceTriggerWithDeviceId:v19];
+    deviceId4 = [optionCopy deviceId];
+    v20 = [CSAudioRecordContext contextForHearstVoiceTriggerWithDeviceId:deviceId4];
     latestContext = self->_latestContext;
     self->_latestContext = v20;
   }
 
   else
   {
-    if ([v6 opportuneSpeakListeningType])
+    if ([optionCopy opportuneSpeakListeningType])
     {
-      if ([v6 opportuneSpeakListeningType] != 1)
+      if ([optionCopy opportuneSpeakListeningType] != 1)
       {
         goto LABEL_14;
       }
@@ -430,7 +430,7 @@ LABEL_9:
       v22 = +[CSAudioRecordContext contextForOpportuneSpeakerListener];
     }
 
-    v19 = self->_latestContext;
+    deviceId4 = self->_latestContext;
     self->_latestContext = v22;
   }
 
@@ -487,9 +487,9 @@ LABEL_14:
     alignBufferQueue = v2->_alignBufferQueue;
     v2->_alignBufferQueue = v3;
 
-    v5 = [[CSSPGEndpointAnalyzer alloc] initWithAnalyzeMode];
+    initWithAnalyzeMode = [[CSSPGEndpointAnalyzer alloc] initWithAnalyzeMode];
     spgEndpointAnalyzer = v2->_spgEndpointAnalyzer;
-    v2->_spgEndpointAnalyzer = v5;
+    v2->_spgEndpointAnalyzer = initWithAnalyzeMode;
 
     [(CSSPGEndpointAnalyzer *)v2->_spgEndpointAnalyzer setDelegate:v2];
     v7 = +[NSMutableArray array];

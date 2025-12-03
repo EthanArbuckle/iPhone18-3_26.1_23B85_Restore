@@ -1,25 +1,25 @@
 @interface BTAVRCP_ComposersFolder
-- (BOOL)composerHasSingleAlbum:(id)a3;
+- (BOOL)composerHasSingleAlbum:(id)album;
 - (BOOL)showRecentlyAddedFolder;
-- (BTAVRCP_ComposersFolder)initWithName:(id)a3 uid:(unint64_t)a4 isRecentlyAdded:(BOOL)a5;
+- (BTAVRCP_ComposersFolder)initWithName:(id)name uid:(unint64_t)uid isRecentlyAdded:(BOOL)added;
 - (id)baseQuery;
-- (id)replyAttributesForUid:(unint64_t)a3 attributeIDs:(id)a4;
-- (id)replyItemAtIndex:(unint64_t)a3 attributeIDs:(id)a4;
+- (id)replyAttributesForUid:(unint64_t)uid attributeIDs:(id)ds;
+- (id)replyItemAtIndex:(unint64_t)index attributeIDs:(id)ds;
 - (unint64_t)childrenCount;
-- (unsigned)createFolderWithUid:(unint64_t)a3 folder:(id *)a4;
-- (unsigned)playItemWithUid:(unint64_t)a3;
+- (unsigned)createFolderWithUid:(unint64_t)uid folder:(id *)folder;
+- (unsigned)playItemWithUid:(unint64_t)uid;
 @end
 
 @implementation BTAVRCP_ComposersFolder
 
-- (BTAVRCP_ComposersFolder)initWithName:(id)a3 uid:(unint64_t)a4 isRecentlyAdded:(BOOL)a5
+- (BTAVRCP_ComposersFolder)initWithName:(id)name uid:(unint64_t)uid isRecentlyAdded:(BOOL)added
 {
   v7.receiver = self;
   v7.super_class = BTAVRCP_ComposersFolder;
-  result = [(BTAVRCP_VFSFolder *)&v7 initWithName:a3 uid:a4];
+  result = [(BTAVRCP_VFSFolder *)&v7 initWithName:name uid:uid];
   if (result)
   {
-    result->_isRecentlyAdded = a5;
+    result->_isRecentlyAdded = added;
   }
 
   return result;
@@ -32,16 +32,16 @@
     return 0;
   }
 
-  v4 = [(BTAVRCP_VFSFolder *)self query];
-  v5 = [v4 collections];
-  v3 = [v5 count] > 1;
+  query = [(BTAVRCP_VFSFolder *)self query];
+  collections = [query collections];
+  v3 = [collections count] > 1;
 
   return v3;
 }
 
-- (BOOL)composerHasSingleAlbum:(id)a3
+- (BOOL)composerHasSingleAlbum:(id)album
 {
-  v3 = [a3 valueForProperty:MPMediaItemCollectionPropertyAlbumCount];
+  v3 = [album valueForProperty:MPMediaItemCollectionPropertyAlbumCount];
   v4 = [v3 unsignedIntegerValue] < 2;
 
   return v4;
@@ -60,51 +60,51 @@
 
 - (unint64_t)childrenCount
 {
-  v3 = [(BTAVRCP_VFSFolder *)self query];
-  v4 = [v3 collections];
-  v5 = [v4 count];
+  query = [(BTAVRCP_VFSFolder *)self query];
+  collections = [query collections];
+  v5 = [collections count];
 
   return v5 + [(BTAVRCP_ComposersFolder *)self showRecentlyAddedFolder];
 }
 
-- (unsigned)createFolderWithUid:(unint64_t)a3 folder:(id *)a4
+- (unsigned)createFolderWithUid:(unint64_t)uid folder:(id *)folder
 {
-  if ([(BTAVRCP_VFSFolder *)self uid]== a3 && [(BTAVRCP_ComposersFolder *)self showRecentlyAddedFolder])
+  if ([(BTAVRCP_VFSFolder *)self uid]== uid && [(BTAVRCP_ComposersFolder *)self showRecentlyAddedFolder])
   {
     v7 = [BTAVRCP_ComposersFolder alloc];
-    v8 = [(BTAVRCP_VFSFolder *)self recentlyAddedFolderName];
-    *a4 = [(BTAVRCP_ComposersFolder *)v7 initWithName:v8 uid:a3 isRecentlyAdded:1];
+    recentlyAddedFolderName = [(BTAVRCP_VFSFolder *)self recentlyAddedFolderName];
+    *folder = [(BTAVRCP_ComposersFolder *)v7 initWithName:recentlyAddedFolderName uid:uid isRecentlyAdded:1];
 LABEL_10:
     v18 = 4;
     goto LABEL_11;
   }
 
-  v9 = [(BTAVRCP_VFSFolder *)self query];
-  v8 = [v9 collectionWithUid:a3 property:MPMediaItemPropertyComposerPersistentID];
+  query = [(BTAVRCP_VFSFolder *)self query];
+  recentlyAddedFolderName = [query collectionWithUid:uid property:MPMediaItemPropertyComposerPersistentID];
 
-  if (v8)
+  if (recentlyAddedFolderName)
   {
-    v10 = [v8 representativeItem];
-    v11 = [v10 valueForProperty:MPMediaItemPropertyComposerPersistentID];
+    representativeItem = [recentlyAddedFolderName representativeItem];
+    v11 = [representativeItem valueForProperty:MPMediaItemPropertyComposerPersistentID];
 
-    v12 = [v8 representativeItem];
-    v13 = [v12 valueForProperty:MPMediaItemPropertyComposer];
+    representativeItem2 = [recentlyAddedFolderName representativeItem];
+    v13 = [representativeItem2 valueForProperty:MPMediaItemPropertyComposer];
 
-    if ([(BTAVRCP_ComposersFolder *)self composerHasSingleAlbum:v8])
+    if ([(BTAVRCP_ComposersFolder *)self composerHasSingleAlbum:recentlyAddedFolderName])
     {
       v14 = -[BTAVRCP_VFSFolder initWithName:uid:]([BTAVRCP_AlbumItemsFolder alloc], "initWithName:uid:", v13, [v11 unsignedLongLongValue]);
-      *a4 = v14;
-      v15 = [v8 representativeItem];
-      v16 = [v15 predicateForProperty:MPMediaItemPropertyAlbumPersistentID];
+      *folder = v14;
+      representativeItem3 = [recentlyAddedFolderName representativeItem];
+      v16 = [representativeItem3 predicateForProperty:MPMediaItemPropertyAlbumPersistentID];
       [(BTAVRCP_VFSFolder *)v14 storePredicate:v16];
 
-      v17 = *a4;
+      v17 = *folder;
     }
 
     else
     {
       v17 = -[BTAVRCP_AlbumsFolder initWithName:uid:]([BTAVRCP_AlbumsFolder alloc], "initWithName:uid:", v13, [v11 unsignedLongLongValue]);
-      *a4 = v17;
+      *folder = v17;
     }
 
     v19 = [MPMediaPropertyPredicate predicateWithValue:v11 forProperty:MPMediaItemPropertyComposerPersistentID];
@@ -119,24 +119,24 @@ LABEL_11:
   return v18;
 }
 
-- (id)replyItemAtIndex:(unint64_t)a3 attributeIDs:(id)a4
+- (id)replyItemAtIndex:(unint64_t)index attributeIDs:(id)ds
 {
-  v4 = a3;
-  if ([(BTAVRCP_ComposersFolder *)self showRecentlyAddedFolder:a3])
+  indexCopy = index;
+  if ([(BTAVRCP_ComposersFolder *)self showRecentlyAddedFolder:index])
   {
-    if (!v4)
+    if (!indexCopy)
     {
       v7 = [NSNumber numberWithUnsignedLongLong:[(BTAVRCP_VFSFolder *)self uid]];
-      v9 = [(BTAVRCP_VFSFolder *)self recentlyAddedFolderName];
-      v14 = [(BTAVRCP_VFSFolder *)self replyFolderWithType:3 uid:v7 name:v9];
+      recentlyAddedFolderName = [(BTAVRCP_VFSFolder *)self recentlyAddedFolderName];
+      v14 = [(BTAVRCP_VFSFolder *)self replyFolderWithType:3 uid:v7 name:recentlyAddedFolderName];
       goto LABEL_11;
     }
 
-    --v4;
+    --indexCopy;
   }
 
-  v6 = [(BTAVRCP_VFSFolder *)self query];
-  v7 = [v6 collectionAtIndex:v4];
+  query = [(BTAVRCP_VFSFolder *)self query];
+  v7 = [query collectionAtIndex:indexCopy];
 
   if (!v7)
   {
@@ -145,10 +145,10 @@ LABEL_11:
   }
 
   v8 = [(BTAVRCP_ComposersFolder *)self composerHasSingleAlbum:v7];
-  v9 = [v7 representativeItem];
-  v10 = [v9 valueForProperty:MPMediaItemPropertyComposerPersistentID];
-  v11 = [v7 representativeItem];
-  v12 = [v11 valueForProperty:MPMediaItemPropertyComposer];
+  recentlyAddedFolderName = [v7 representativeItem];
+  v10 = [recentlyAddedFolderName valueForProperty:MPMediaItemPropertyComposerPersistentID];
+  representativeItem = [v7 representativeItem];
+  v12 = [representativeItem valueForProperty:MPMediaItemPropertyComposer];
   if (v8)
   {
     v13 = 1;
@@ -167,10 +167,10 @@ LABEL_12:
   return v14;
 }
 
-- (id)replyAttributesForUid:(unint64_t)a3 attributeIDs:(id)a4
+- (id)replyAttributesForUid:(unint64_t)uid attributeIDs:(id)ds
 {
-  v5 = [(BTAVRCP_VFSFolder *)self query:a3];
-  v6 = [v5 collectionWithUid:a3 property:MPMediaItemPropertyComposerPersistentID];
+  v5 = [(BTAVRCP_VFSFolder *)self query:uid];
+  v6 = [v5 collectionWithUid:uid property:MPMediaItemPropertyComposerPersistentID];
 
   if (v6)
   {
@@ -183,10 +183,10 @@ LABEL_12:
   }
 }
 
-- (unsigned)playItemWithUid:(unint64_t)a3
+- (unsigned)playItemWithUid:(unint64_t)uid
 {
-  v4 = [(BTAVRCP_VFSFolder *)self query];
-  v5 = [v4 collectionWithUid:a3 property:MPMediaItemPropertyComposerPersistentID];
+  query = [(BTAVRCP_VFSFolder *)self query];
+  v5 = [query collectionWithUid:uid property:MPMediaItemPropertyComposerPersistentID];
 
   if (v5)
   {

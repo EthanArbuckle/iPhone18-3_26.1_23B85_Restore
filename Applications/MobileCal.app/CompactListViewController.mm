@@ -1,16 +1,16 @@
 @interface CompactListViewController
 - (id)cellFactory;
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation CompactListViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = CompactListViewController;
-  [(ListViewController *)&v7 viewDidAppear:a3];
+  [(ListViewController *)&v7 viewDidAppear:appear];
   v3 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
   {
@@ -38,16 +38,16 @@
   return v2;
 }
 
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  if (-[ListViewController destination](self, "destination") != 2 || (-[ListViewController delegate](self, "delegate"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_opt_respondsToSelector(), v12, (v13 & 1) == 0) || (-[ListViewController delegate](self, "delegate"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 listViewControllerShouldShowEvent:v10 showMode:a5], v14, v15))
+  animatedCopy = animated;
+  eventCopy = event;
+  contextCopy = context;
+  if (-[ListViewController destination](self, "destination") != 2 || (-[ListViewController delegate](self, "delegate"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_opt_respondsToSelector(), v12, (v13 & 1) == 0) || (-[ListViewController delegate](self, "delegate"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 listViewControllerShouldShowEvent:eventCopy showMode:mode], v14, v15))
   {
     v16.receiver = self;
     v16.super_class = CompactListViewController;
-    [(ListViewController *)&v16 showEvent:v10 animated:v8 showMode:a5 context:v11];
+    [(ListViewController *)&v16 showEvent:eventCopy animated:animatedCopy showMode:mode context:contextCopy];
   }
 }
 

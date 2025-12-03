@@ -1,7 +1,7 @@
 @interface VCEmulatedNetworkAlgorithmQueueLoss
 - (VCEmulatedNetworkAlgorithmQueueLoss)init;
-- (void)process:(id)a3;
-- (void)updateSettingsAtTime:(double)a3 impairments:(id)a4;
+- (void)process:(id)process;
+- (void)updateSettingsAtTime:(double)time impairments:(id)impairments;
 @end
 
 @implementation VCEmulatedNetworkAlgorithmQueueLoss
@@ -20,45 +20,45 @@
   return result;
 }
 
-- (void)updateSettingsAtTime:(double)a3 impairments:(id)a4
+- (void)updateSettingsAtTime:(double)time impairments:(id)impairments
 {
   v54 = *MEMORY[0x1E69E9840];
-  v7 = [objc_msgSend(a4 objectForKeyedSubscript:{@"FixedPLR", "objectForKeyedSubscript:", @"time"}];
-  v8 = [objc_msgSend(a4 objectForKeyedSubscript:{@"FixedPLR", "objectForKeyedSubscript:", @"value"}];
+  v7 = [objc_msgSend(impairments objectForKeyedSubscript:{@"FixedPLR", "objectForKeyedSubscript:", @"time"}];
+  v8 = [objc_msgSend(impairments objectForKeyedSubscript:{@"FixedPLR", "objectForKeyedSubscript:", @"value"}];
   v9 = [v8 count];
   if (v9 >= 1)
   {
-    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v7, &self->_currentIndexForLossRate, &self->_lastNetworkQueueLossRateLoadTime, v9, a3);
+    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v7, &self->_currentIndexForLossRate, &self->_lastNetworkQueueLossRateLoadTime, v9, time);
     [objc_msgSend(v8 objectAtIndexedSubscript:{self->_currentIndexForLossRate), "doubleValue"}];
     self->_networkQueueLossRate = v10;
   }
 
-  v11 = [objc_msgSend(a4 objectForKeyedSubscript:{@"LossPattern", "objectForKeyedSubscript:", @"time"}];
-  v12 = [objc_msgSend(a4 objectForKeyedSubscript:{@"LossPattern", "objectForKeyedSubscript:", @"value"}];
-  v13 = [objc_msgSend(a4 objectForKeyedSubscript:{@"LossPattern", "objectForKeyedSubscript:", @"type"}];
+  v11 = [objc_msgSend(impairments objectForKeyedSubscript:{@"LossPattern", "objectForKeyedSubscript:", @"time"}];
+  v12 = [objc_msgSend(impairments objectForKeyedSubscript:{@"LossPattern", "objectForKeyedSubscript:", @"value"}];
+  v13 = [objc_msgSend(impairments objectForKeyedSubscript:{@"LossPattern", "objectForKeyedSubscript:", @"type"}];
   v14 = [v12 count];
   if (v14 >= 1)
   {
-    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v11, &self->_currentIndexForLossPattern, &self->_lastNetworkQueueLossPatternLoadTime, v14, a3);
+    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v11, &self->_currentIndexForLossPattern, &self->_lastNetworkQueueLossPatternLoadTime, v14, time);
     self->_networkQueueLossPattern = [objc_msgSend(v12 objectAtIndexedSubscript:{self->_currentIndexForLossPattern), "unsignedIntValue"}];
     self->_packetTypeForNetworkQueueLossPattern = [objc_msgSend(v13 objectAtIndexedSubscript:{self->_currentIndexForLossPattern), "intValue"}];
   }
 
-  v15 = [objc_msgSend(a4 objectForKeyedSubscript:{@"QueueSize", "objectForKeyedSubscript:", @"time"}];
-  v16 = [objc_msgSend(a4 objectForKeyedSubscript:{@"QueueSize", "objectForKeyedSubscript:", @"value"}];
+  v15 = [objc_msgSend(impairments objectForKeyedSubscript:{@"QueueSize", "objectForKeyedSubscript:", @"time"}];
+  v16 = [objc_msgSend(impairments objectForKeyedSubscript:{@"QueueSize", "objectForKeyedSubscript:", @"value"}];
   v17 = [v16 count];
   if (v17 >= 1)
   {
-    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v15, &self->_currentIndexForQueueSize, &self->_lastNetworkQueueSizeLoadTime, v17, a3);
+    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v15, &self->_currentIndexForQueueSize, &self->_lastNetworkQueueSizeLoadTime, v17, time);
     self->_networkQueueMaxSize = [objc_msgSend(v16 objectAtIndexedSubscript:{self->_currentIndexForQueueSize), "intValue"}];
   }
 
-  v18 = [objc_msgSend(a4 objectForKeyedSubscript:{@"QueueSizeBytes", "objectForKeyedSubscript:", @"time"}];
-  v19 = [objc_msgSend(a4 objectForKeyedSubscript:{@"QueueSizeBytes", "objectForKeyedSubscript:", @"value"}];
+  v18 = [objc_msgSend(impairments objectForKeyedSubscript:{@"QueueSizeBytes", "objectForKeyedSubscript:", @"time"}];
+  v19 = [objc_msgSend(impairments objectForKeyedSubscript:{@"QueueSizeBytes", "objectForKeyedSubscript:", @"value"}];
   v20 = [v19 count];
   if (v20 >= 1)
   {
-    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v18, &self->_currentIndexForQueueSizeBytes, &self->_lastNetworkQueueSizeBytesLoadTime, v20, a3);
+    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v18, &self->_currentIndexForQueueSizeBytes, &self->_lastNetworkQueueSizeBytesLoadTime, v20, time);
     self->_networkQueueMaxSizeBytes = [objc_msgSend(v19 objectAtIndexedSubscript:{self->_currentIndexForQueueSizeBytes), "intValue"}];
   }
 
@@ -146,18 +146,18 @@ LABEL_19:
   }
 }
 
-- (void)process:(id)a3
+- (void)process:(id)process
 {
   v68 = *MEMORY[0x1E69E9840];
   networkQueueLossRate = self->_networkQueueLossRate;
   if (networkQueueLossRate > *"" && arc4random_uniform(0xFFFFu) / 65535.0 <= networkQueueLossRate)
   {
-    [a3 setIsLost:1];
+    [process setIsLost:1];
   }
 
-  if ([a3 type] && objc_msgSend(a3, "type") == self->_packetTypeForNetworkQueueLossPattern)
+  if ([process type] && objc_msgSend(process, "type") == self->_packetTypeForNetworkQueueLossPattern)
   {
-    [a3 setIsLost:(self->_networkQueueLossPattern >> self->_currentLossPatternShift) & 1];
+    [process setIsLost:(self->_networkQueueLossPattern >> self->_currentLossPatternShift) & 1];
     self->_currentLossPatternShift = (self->_currentLossPatternShift + 1) & 0x1F;
   }
 
@@ -199,12 +199,12 @@ LABEL_19:
         goto LABEL_23;
       }
 
-      v13 = [a3 packetID];
-      v14 = [a3 sequenceNumber];
-      v15 = [a3 size];
-      [a3 arrivalTime];
+      packetID = [process packetID];
+      sequenceNumber = [process sequenceNumber];
+      v15 = [process size];
+      [process arrivalTime];
       v17 = v16;
-      [a3 departureTime];
+      [process departureTime];
       *v63 = 136316930;
       *&v63[4] = v11;
       *&v63[12] = 2080;
@@ -212,12 +212,12 @@ LABEL_19:
       *&v63[22] = 1024;
       LODWORD(v64) = 95;
       WORD2(v64) = 1024;
-      *(&v64 + 6) = v13;
+      *(&v64 + 6) = packetID;
       WORD5(v64) = 1024;
-      HIDWORD(v64) = v14;
-      LOWORD(v65) = 1024;
-      *(&v65 + 2) = v15;
-      HIWORD(v65) = 2048;
+      HIDWORD(v64) = sequenceNumber;
+      LOWORD(selfCopy3) = 1024;
+      *(&selfCopy3 + 2) = v15;
+      HIWORD(selfCopy3) = 2048;
       v66 = v17;
       *v67 = 2048;
       *&v67[2] = v18;
@@ -250,12 +250,12 @@ LABEL_19:
         goto LABEL_23;
       }
 
-      v24 = [a3 packetID];
-      v25 = [a3 sequenceNumber];
-      v26 = [a3 size];
-      [a3 arrivalTime];
+      packetID2 = [process packetID];
+      sequenceNumber2 = [process sequenceNumber];
+      v26 = [process size];
+      [process arrivalTime];
       v28 = v27;
-      [a3 departureTime];
+      [process departureTime];
       *v63 = 136317442;
       *&v63[4] = v22;
       *&v63[12] = 2080;
@@ -265,11 +265,11 @@ LABEL_19:
       WORD2(v64) = 2112;
       *(&v64 + 6) = v10;
       HIWORD(v64) = 2048;
-      v65 = self;
+      selfCopy3 = self;
       LOWORD(v66) = 1024;
-      *(&v66 + 2) = v24;
+      *(&v66 + 2) = packetID2;
       HIWORD(v66) = 1024;
-      *v67 = v25;
+      *v67 = sequenceNumber2;
       *&v67[4] = 1024;
       *&v67[6] = v26;
       *&v67[10] = 2048;
@@ -283,7 +283,7 @@ LABEL_19:
 
     _os_log_impl(&dword_1DB56E000, v20, OS_LOG_TYPE_DEFAULT, v19, v63, v21);
 LABEL_23:
-    [a3 setIsLost:{1, *v63, *&v63[16], v64, v65, v66, *v67, *&v67[8], *&v67[24], v68}];
+    [process setIsLost:{1, *v63, *&v63[16], v64, selfCopy3, v66, *v67, *&v67[8], *&v67[24], v68}];
   }
 
   networkQueueMaxSizeBytes = self->_networkQueueMaxSizeBytes;
@@ -347,7 +347,7 @@ LABEL_36:
           WORD2(v64) = 2112;
           *(&v64 + 6) = v31;
           HIWORD(v64) = 2048;
-          v65 = self;
+          selfCopy3 = self;
           LOWORD(v66) = 1024;
           *(&v66 + 2) = v41;
           HIWORD(v66) = 1024;
@@ -374,12 +374,12 @@ LABEL_36:
         goto LABEL_48;
       }
 
-      v46 = [a3 packetID];
-      v47 = [a3 sequenceNumber];
-      v48 = [a3 size];
-      [a3 arrivalTime];
+      packetID3 = [process packetID];
+      sequenceNumber3 = [process sequenceNumber];
+      v48 = [process size];
+      [process arrivalTime];
       v50 = v49;
-      [a3 departureTime];
+      [process departureTime];
       *v63 = 136316930;
       *&v63[4] = v44;
       *&v63[12] = 2080;
@@ -387,12 +387,12 @@ LABEL_36:
       *&v63[22] = 1024;
       LODWORD(v64) = 101;
       WORD2(v64) = 1024;
-      *(&v64 + 6) = v46;
+      *(&v64 + 6) = packetID3;
       WORD5(v64) = 1024;
-      HIDWORD(v64) = v47;
-      LOWORD(v65) = 1024;
-      *(&v65 + 2) = v48;
-      HIWORD(v65) = 2048;
+      HIDWORD(v64) = sequenceNumber3;
+      LOWORD(selfCopy3) = 1024;
+      *(&selfCopy3 + 2) = v48;
+      HIWORD(selfCopy3) = 2048;
       v66 = v50;
       *v67 = 2048;
       *&v67[2] = v51;
@@ -425,12 +425,12 @@ LABEL_36:
         goto LABEL_48;
       }
 
-      v57 = [a3 packetID];
-      v58 = [a3 sequenceNumber];
-      v59 = [a3 size];
-      [a3 arrivalTime];
+      packetID4 = [process packetID];
+      sequenceNumber4 = [process sequenceNumber];
+      v59 = [process size];
+      [process arrivalTime];
       v61 = v60;
-      [a3 departureTime];
+      [process departureTime];
       *v63 = 136317442;
       *&v63[4] = v55;
       *&v63[12] = 2080;
@@ -440,11 +440,11 @@ LABEL_36:
       WORD2(v64) = 2112;
       *(&v64 + 6) = v43;
       HIWORD(v64) = 2048;
-      v65 = self;
+      selfCopy3 = self;
       LOWORD(v66) = 1024;
-      *(&v66 + 2) = v57;
+      *(&v66 + 2) = packetID4;
       HIWORD(v66) = 1024;
-      *v67 = v58;
+      *v67 = sequenceNumber4;
       *&v67[4] = 1024;
       *&v67[6] = v59;
       *&v67[10] = 2048;
@@ -458,7 +458,7 @@ LABEL_36:
 
     _os_log_impl(&dword_1DB56E000, v53, OS_LOG_TYPE_DEFAULT, v52, v63, v54);
 LABEL_48:
-    [a3 setIsLost:{1, *v63, *&v63[8], v64, v65, v66, *v67, *&v67[8], *&v67[16]}];
+    [process setIsLost:{1, *v63, *&v63[8], v64, selfCopy3, v66, *v67, *&v67[8], *&v67[16]}];
   }
 }
 

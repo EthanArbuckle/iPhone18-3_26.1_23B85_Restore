@@ -4,8 +4,8 @@
 - (double)be_autoScaleFactor;
 - (double)be_overrideAutoScale;
 - (id)be_associatedPageViewController;
-- (void)setBe_overrideAutoScale:(double)a3;
-- (void)setBe_useOverrideAutoScale:(BOOL)a3;
+- (void)setBe_overrideAutoScale:(double)scale;
+- (void)setBe_useOverrideAutoScale:(BOOL)scale;
 @end
 
 @implementation PDFView
@@ -35,17 +35,17 @@
   return result;
 }
 
-- (void)setBe_overrideAutoScale:(double)a3
+- (void)setBe_overrideAutoScale:(double)scale
 {
-  v7 = [(PDFView *)self be_associatedPageViewController];
-  v5 = [v7 be_pdfView];
+  be_associatedPageViewController = [(PDFView *)self be_associatedPageViewController];
+  be_pdfView = [be_associatedPageViewController be_pdfView];
 
-  if (v5 == self)
+  if (be_pdfView == self)
   {
-    [v7 setBe_overrideAutoScale:a3];
+    [be_associatedPageViewController setBe_overrideAutoScale:scale];
   }
 
-  v6 = [NSNumber numberWithDouble:a3];
+  v6 = [NSNumber numberWithDouble:scale];
   objc_setAssociatedObject(self, "be_overrideAutoScale", v6, &dword_0 + 1);
 }
 
@@ -58,27 +58,27 @@
   return v4;
 }
 
-- (void)setBe_useOverrideAutoScale:(BOOL)a3
+- (void)setBe_useOverrideAutoScale:(BOOL)scale
 {
-  v3 = a3;
-  v7 = [(PDFView *)self be_associatedPageViewController];
-  v5 = [v7 be_pdfView];
+  scaleCopy = scale;
+  be_associatedPageViewController = [(PDFView *)self be_associatedPageViewController];
+  be_pdfView = [be_associatedPageViewController be_pdfView];
 
-  if (v5 == self)
+  if (be_pdfView == self)
   {
-    [v7 setBe_useOverrideAutoScale:v3];
+    [be_associatedPageViewController setBe_useOverrideAutoScale:scaleCopy];
   }
 
-  v6 = [NSNumber numberWithBool:v3];
+  v6 = [NSNumber numberWithBool:scaleCopy];
   objc_setAssociatedObject(self, "be_useOverrideAutoScale", v6, &dword_0 + 1);
 }
 
 - (BOOL)be_useOverrideAutoScale
 {
   v2 = objc_getAssociatedObject(self, "be_useOverrideAutoScale");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)be_associatedPageViewController
@@ -86,10 +86,10 @@
   v2 = [(PDFView *)self valueForKeyPath:@"_private.documentViewController"];
   objc_opt_class();
   v3 = BUDynamicCast();
-  v4 = [v3 viewControllers];
-  v5 = [v4 firstObject];
+  viewControllers = [v3 viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 @end

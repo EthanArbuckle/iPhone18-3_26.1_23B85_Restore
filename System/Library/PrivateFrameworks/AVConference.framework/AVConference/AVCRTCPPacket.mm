@@ -1,14 +1,14 @@
 @interface AVCRTCPPacket
-+ (id)newPacketWithRTCPPacket:(tagRTCPPACKET *)a3 packetLength:(unint64_t)a4;
-- (AVCRTCPPacket)initWithRTCPPacket:(tagRTCPPACKET *)a3;
++ (id)newPacketWithRTCPPacket:(tagRTCPPACKET *)packet packetLength:(unint64_t)length;
+- (AVCRTCPPacket)initWithRTCPPacket:(tagRTCPPACKET *)packet;
 @end
 
 @implementation AVCRTCPPacket
 
-+ (id)newPacketWithRTCPPacket:(tagRTCPPACKET *)a3 packetLength:(unint64_t)a4
++ (id)newPacketWithRTCPPacket:(tagRTCPPACKET *)packet packetLength:(unint64_t)length
 {
   v27 = *MEMORY[0x1E69E9840];
-  var0 = a3->var0;
+  var0 = packet->var0;
   v7 = *&var0 >> 8;
   if (*&var0 >> 8 > 0xCB)
   {
@@ -18,7 +18,7 @@
     }
 
 LABEL_11:
-    if (objc_opt_class() == a1)
+    if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -34,7 +34,7 @@ LABEL_11:
     {
       if (objc_opt_respondsToSelector())
       {
-        v10 = [a1 performSelector:sel_logPrefix];
+        v10 = [self performSelector:sel_logPrefix];
       }
 
       else
@@ -48,7 +48,7 @@ LABEL_11:
         v13 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
-          v14 = *(&a3->var0 + 1);
+          v14 = *(&packet->var0 + 1);
           v15 = 136316418;
           v16 = v12;
           v17 = 2080;
@@ -58,7 +58,7 @@ LABEL_11:
           v21 = 2112;
           v22 = v10;
           v23 = 2048;
-          v24 = a1;
+          selfCopy = self;
           v25 = 1024;
           v26 = v14;
           _os_log_error_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Invalid packet type: %d", &v15, 0x36u);
@@ -71,7 +71,7 @@ LABEL_11:
 
   if (v7 == 200)
   {
-    if (24 * (*&var0 & 0x1F) + 28 <= a4)
+    if (24 * (*&var0 & 0x1F) + 28 <= length)
     {
       v8 = AVCRTCPSenderReport;
       goto LABEL_16;
@@ -82,7 +82,7 @@ LABEL_11:
 
   if (v7 == 201)
   {
-    if (24 * (*&var0 & 0x1Fu) + 8 <= a4)
+    if (24 * (*&var0 & 0x1Fu) + 8 <= length)
     {
       v8 = AVCRTCPReceiverReport;
       goto LABEL_16;
@@ -96,7 +96,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (a3->var0.var4 - 67 < 0xFFFFFFBE)
+  if (packet->var0.var4 - 67 < 0xFFFFFFBE)
   {
     return 0;
   }
@@ -105,10 +105,10 @@ LABEL_11:
 LABEL_16:
   v11 = [v8 alloc];
 
-  return [v11 initWithRTCPPacket:a3];
+  return [v11 initWithRTCPPacket:packet];
 }
 
-- (AVCRTCPPacket)initWithRTCPPacket:(tagRTCPPACKET *)a3
+- (AVCRTCPPacket)initWithRTCPPacket:(tagRTCPPACKET *)packet
 {
   v33 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
@@ -117,13 +117,13 @@ LABEL_16:
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (packet)
     {
-      v6 = *(&a3->var0 + 1);
+      v6 = *(&packet->var0 + 1);
       if (v6 == 202 || v6 == 201 || v6 == 200)
       {
         v4->_packetType = v6;
-        v4->_SSRC = a3->var1.var0.var0;
+        v4->_SSRC = packet->var1.var0.var0;
         return v5;
       }
 
@@ -158,7 +158,7 @@ LABEL_26:
         return 0;
       }
 
-      v19 = *(&a3->var0 + 1);
+      v19 = *(&packet->var0 + 1);
       *buf = 136316418;
       v22 = v16;
       v23 = 2080;

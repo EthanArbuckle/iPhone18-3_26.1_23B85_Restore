@@ -1,10 +1,10 @@
 @interface ATXClientModelPredictionReasons
 + (id)clientModelPredictionReasonsBundlePath;
 - (ATXClientModelPredictionReasons)init;
-- (id)actionAnchorReasonForAnchorType:(id)a3;
-- (id)actionHeuristicReasonForHeuristicName:(id)a3;
-- (id)appAnchorReasonForAnchorType:(id)a3;
-- (id)appMagicalMomentReasonForAnchorType:(int64_t)a3;
+- (id)actionAnchorReasonForAnchorType:(id)type;
+- (id)actionHeuristicReasonForHeuristicName:(id)name;
+- (id)appAnchorReasonForAnchorType:(id)type;
+- (id)appMagicalMomentReasonForAnchorType:(int64_t)type;
 @end
 
 @implementation ATXClientModelPredictionReasons
@@ -51,35 +51,35 @@
   return v3;
 }
 
-- (id)appMagicalMomentReasonForAnchorType:(int64_t)a3
+- (id)appMagicalMomentReasonForAnchorType:(int64_t)type
 {
-  v4 = [MEMORY[0x277D41FB8] predictedAnchorTypeToString:a3];
+  v4 = [MEMORY[0x277D41FB8] predictedAnchorTypeToString:type];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"App_MagicalMoment_%@", v4];
   v6 = [(ATXClientModelPredictionReasons *)self localizedStringForKey:v5];
 
   return v6;
 }
 
-- (id)appAnchorReasonForAnchorType:(id)a3
+- (id)appAnchorReasonForAnchorType:(id)type
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"App_Anchor_%@", a3];
-  v5 = [(ATXClientModelPredictionReasons *)self localizedStringForKey:v4];
+  type = [MEMORY[0x277CCACA8] stringWithFormat:@"App_Anchor_%@", type];
+  v5 = [(ATXClientModelPredictionReasons *)self localizedStringForKey:type];
 
   return v5;
 }
 
-- (id)actionHeuristicReasonForHeuristicName:(id)a3
+- (id)actionHeuristicReasonForHeuristicName:(id)name
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Action_Heuristic_%@", a3];
-  v5 = [(ATXClientModelPredictionReasons *)self localizedStringForKey:v4];
+  name = [MEMORY[0x277CCACA8] stringWithFormat:@"Action_Heuristic_%@", name];
+  v5 = [(ATXClientModelPredictionReasons *)self localizedStringForKey:name];
 
   return v5;
 }
 
-- (id)actionAnchorReasonForAnchorType:(id)a3
+- (id)actionAnchorReasonForAnchorType:(id)type
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Action_Anchor_%@", a3];
-  v5 = [(ATXClientModelPredictionReasons *)self localizedStringForKey:v4];
+  type = [MEMORY[0x277CCACA8] stringWithFormat:@"Action_Anchor_%@", type];
+  v5 = [(ATXClientModelPredictionReasons *)self localizedStringForKey:type];
 
   return v5;
 }

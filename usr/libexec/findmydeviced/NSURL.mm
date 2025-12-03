@@ -1,21 +1,21 @@
 @interface NSURL
-- (BOOL)encodeWithFMDCoder:(id)a3 error:(id *)a4;
-- (NSURL)initWithFMDCoder:(id)a3 error:(id *)p_isa;
-- (id)URLByReplacingHost:(id)a3;
+- (BOOL)encodeWithFMDCoder:(id)coder error:(id *)error;
+- (NSURL)initWithFMDCoder:(id)coder error:(id *)p_isa;
+- (id)URLByReplacingHost:(id)host;
 @end
 
 @implementation NSURL
 
-- (id)URLByReplacingHost:(id)a3
+- (id)URLByReplacingHost:(id)host
 {
-  v4 = a3;
-  v5 = [(NSURL *)self host];
-  v6 = v5;
+  hostCopy = host;
+  host = [(NSURL *)self host];
+  v6 = host;
   v7 = 0;
-  if (v4 && v5)
+  if (hostCopy && host)
   {
-    v8 = [(NSURL *)self absoluteString];
-    v10 = [v8 rangeOfString:v6];
+    absoluteString = [(NSURL *)self absoluteString];
+    v10 = [absoluteString rangeOfString:v6];
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = 0;
@@ -23,7 +23,7 @@
 
     else
     {
-      v11 = [v8 stringByReplacingCharactersInRange:v10 withString:{v9, v4}];
+      v11 = [absoluteString stringByReplacingCharactersInRange:v10 withString:{v9, hostCopy}];
       v7 = [NSURL URLWithString:v11];
     }
   }
@@ -31,21 +31,21 @@
   return v7;
 }
 
-- (BOOL)encodeWithFMDCoder:(id)a3 error:(id *)a4
+- (BOOL)encodeWithFMDCoder:(id)coder error:(id *)error
 {
-  v5 = a3;
-  v6 = [(NSURL *)self absoluteString];
+  coderCopy = coder;
+  absoluteString = [(NSURL *)self absoluteString];
   v7 = +[NSURL objectType];
-  [v5 encodeString:v6 forKey:v7];
+  [coderCopy encodeString:absoluteString forKey:v7];
 
   return 1;
 }
 
-- (NSURL)initWithFMDCoder:(id)a3 error:(id *)p_isa
+- (NSURL)initWithFMDCoder:(id)coder error:(id *)p_isa
 {
-  v6 = a3;
+  coderCopy = coder;
   v7 = +[NSURL objectType];
-  v8 = [v6 decodeStringForKey:v7];
+  v8 = [coderCopy decodeStringForKey:v7];
 
   if (v8)
   {

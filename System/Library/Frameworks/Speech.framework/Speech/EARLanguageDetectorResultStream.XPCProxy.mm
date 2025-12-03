@@ -1,22 +1,22 @@
 @interface EARLanguageDetectorResultStream.XPCProxy
-- (void)languageDetectorDidFinishWithError:(id)a3;
-- (void)languageDetectorDidRecognizeResult:(id)a3 processedAudioDuration:(double)a4;
+- (void)languageDetectorDidFinishWithError:(id)error;
+- (void)languageDetectorDidRecognizeResult:(id)result processedAudioDuration:(double)duration;
 @end
 
 @implementation EARLanguageDetectorResultStream.XPCProxy
 
-- (void)languageDetectorDidFinishWithError:(id)a3
+- (void)languageDetectorDidFinishWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  sub_1AC727100(a3);
+  selfCopy = self;
+  errorCopy = error;
+  sub_1AC727100(error);
 }
 
-- (void)languageDetectorDidRecognizeResult:(id)a3 processedAudioDuration:(double)a4
+- (void)languageDetectorDidRecognizeResult:(id)result processedAudioDuration:(double)duration
 {
-  v6 = a3;
-  v7 = self;
-  sub_1AC72720C(v6, a4);
+  resultCopy = result;
+  selfCopy = self;
+  sub_1AC72720C(resultCopy, duration);
 }
 
 @end

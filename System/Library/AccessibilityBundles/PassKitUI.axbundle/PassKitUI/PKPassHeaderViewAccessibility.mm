@@ -1,14 +1,14 @@
 @interface PKPassHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation PKPassHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPassHeaderView" hasInstanceVariable:@"_title" withType:"UILabel"];
-  [v3 validateClass:@"PKPassHeaderView" hasInstanceVariable:@"_subtitle" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPassHeaderView" hasInstanceVariable:@"_title" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPassHeaderView" hasInstanceVariable:@"_subtitle" withType:"UILabel"];
 }
 
 @end

@@ -1,70 +1,70 @@
 @interface MTStateMachine
-- (MTStateMachine)initWithDelegate:(id)a3 infoProvider:(id)a4;
+- (MTStateMachine)initWithDelegate:(id)delegate infoProvider:(id)provider;
 - (MTStateMachineDelegate)delegate;
 - (MTStateMachineInfoProvider)infoProvider;
 - (NSString)description;
 - (id)stateMachineName;
-- (void)enterState:(id)a3;
+- (void)enterState:(id)state;
 @end
 
 @implementation MTStateMachine
 
-- (MTStateMachine)initWithDelegate:(id)a3 infoProvider:(id)a4
+- (MTStateMachine)initWithDelegate:(id)delegate infoProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = MTStateMachine;
   v8 = [(MTStateMachine *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeWeak(&v9->_infoProvider, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeWeak(&v9->_infoProvider, providerCopy);
   }
 
   return v9;
 }
 
-- (void)enterState:(id)a3
+- (void)enterState:(id)state
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MTStateMachine *)self currentState];
+  stateCopy = state;
+  currentState = [(MTStateMachine *)self currentState];
 
-  if (v5 != v4)
+  if (currentState != stateCopy)
   {
-    v6 = [(MTStateMachine *)self stateMachineLog];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    stateMachineLog = [(MTStateMachine *)self stateMachineLog];
+    if (os_log_type_enabled(stateMachineLog, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(MTStateMachine *)self stateMachineName];
+      stateMachineName = [(MTStateMachine *)self stateMachineName];
       currentState = self->_currentState;
       v13 = 138543874;
-      v14 = v7;
+      v14 = stateMachineName;
       v15 = 2112;
-      v16 = v4;
+      v16 = stateCopy;
       v17 = 2114;
       v18 = currentState;
-      _os_log_impl(&dword_1B1F9F000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Will enter state %@ with previous state %{public}@", &v13, 0x20u);
+      _os_log_impl(&dword_1B1F9F000, stateMachineLog, OS_LOG_TYPE_DEFAULT, "[%{public}@] Will enter state %@ with previous state %{public}@", &v13, 0x20u);
     }
 
-    v9 = [(MTStateMachine *)self currentState];
-    [(MTStateMachineState *)v9 willExitWithNextState:v4];
-    [v4 willEnterWithPreviousState:v9];
-    [(MTStateMachine *)self setCurrentState:v4];
-    [(MTStateMachineState *)v9 didExitWithNextState:v4];
-    [v4 didEnterWithPreviousState:v9];
-    v10 = [(MTStateMachine *)self stateMachineLog];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    currentState2 = [(MTStateMachine *)self currentState];
+    [(MTStateMachineState *)currentState2 willExitWithNextState:stateCopy];
+    [stateCopy willEnterWithPreviousState:currentState2];
+    [(MTStateMachine *)self setCurrentState:stateCopy];
+    [(MTStateMachineState *)currentState2 didExitWithNextState:stateCopy];
+    [stateCopy didEnterWithPreviousState:currentState2];
+    stateMachineLog2 = [(MTStateMachine *)self stateMachineLog];
+    if (os_log_type_enabled(stateMachineLog2, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(MTStateMachine *)self stateMachineName];
+      stateMachineName2 = [(MTStateMachine *)self stateMachineName];
       v13 = 138543874;
-      v14 = v11;
+      v14 = stateMachineName2;
       v15 = 2114;
-      v16 = v4;
+      v16 = stateCopy;
       v17 = 2114;
-      v18 = v9;
-      _os_log_impl(&dword_1B1F9F000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Did enter state %{public}@ with previous state %{public}@", &v13, 0x20u);
+      v18 = currentState2;
+      _os_log_impl(&dword_1B1F9F000, stateMachineLog2, OS_LOG_TYPE_DEFAULT, "[%{public}@] Did enter state %{public}@ with previous state %{public}@", &v13, 0x20u);
     }
   }
 
@@ -86,8 +86,8 @@
   v4 = [v3 mutableCopy];
 
   [v4 deleteCharactersInRange:{objc_msgSend(v4, "length") - 1, 1}];
-  v5 = [(MTStateMachine *)self currentState];
-  [v4 appendFormat:@"; currentState: %@>", v5];
+  currentState = [(MTStateMachine *)self currentState];
+  [v4 appendFormat:@"; currentState: %@>", currentState];
 
   return v4;
 }

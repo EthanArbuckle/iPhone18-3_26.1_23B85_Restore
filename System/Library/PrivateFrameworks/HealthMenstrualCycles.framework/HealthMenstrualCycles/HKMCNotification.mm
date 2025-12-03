@@ -1,26 +1,26 @@
 @interface HKMCNotification
-- (BOOL)isEqual:(id)a3;
-- (HKMCNotification)initWithCategory:(id)a3 dueDateComponents:(id)a4;
-- (HKMCNotification)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKMCNotification)initWithCategory:(id)category dueDateComponents:(id)components;
+- (HKMCNotification)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMCNotification
 
-- (HKMCNotification)initWithCategory:(id)a3 dueDateComponents:(id)a4
+- (HKMCNotification)initWithCategory:(id)category dueDateComponents:(id)components
 {
-  v6 = a3;
-  v7 = a4;
+  categoryCopy = category;
+  componentsCopy = components;
   v14.receiver = self;
   v14.super_class = HKMCNotification;
   v8 = [(HKMCNotification *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [categoryCopy copy];
     category = v8->_category;
     v8->_category = v9;
 
-    v11 = [v7 copy];
+    v11 = [componentsCopy copy];
     dueDateComponents = v8->_dueDateComponents;
     v8->_dueDateComponents = v11;
   }
@@ -28,10 +28,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -41,14 +41,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       category = self->_category;
-      v7 = [(HKMCNotification *)v5 category];
-      if ([(NSString *)category isEqualToString:v7])
+      category = [(HKMCNotification *)v5 category];
+      if ([(NSString *)category isEqualToString:category])
       {
         dueDateComponents = self->_dueDateComponents;
-        v9 = [(HKMCNotification *)v5 dueDateComponents];
-        v10 = [(NSDateComponents *)dueDateComponents isEqual:v9];
+        dueDateComponents = [(HKMCNotification *)v5 dueDateComponents];
+        v10 = [(NSDateComponents *)dueDateComponents isEqual:dueDateComponents];
       }
 
       else
@@ -66,27 +66,27 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   category = self->_category;
-  v5 = a3;
-  [v5 encodeObject:category forKey:@"Category"];
-  [v5 encodeObject:self->_dueDateComponents forKey:@"DueDateComponents"];
+  coderCopy = coder;
+  [coderCopy encodeObject:category forKey:@"Category"];
+  [coderCopy encodeObject:self->_dueDateComponents forKey:@"DueDateComponents"];
 }
 
-- (HKMCNotification)initWithCoder:(id)a3
+- (HKMCNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKMCNotification;
   v5 = [(HKMCNotification *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Category"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Category"];
     category = v5->_category;
     v5->_category = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DueDateComponents"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DueDateComponents"];
     dueDateComponents = v5->_dueDateComponents;
     v5->_dueDateComponents = v8;
   }

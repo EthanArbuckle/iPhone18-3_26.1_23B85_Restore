@@ -1,9 +1,9 @@
 @interface ATXClientDonationsServer
 + (id)sharedInstance;
 - (ATXClientDonationsServer)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)donateDocumentInteraction:(id)a3 completion:(id)a4;
-- (void)donateMenuItem:(id)a3 completion:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)donateDocumentInteraction:(id)interaction completion:(id)completion;
+- (void)donateMenuItem:(id)item completion:(id)completion;
 @end
 
 @implementation ATXClientDonationsServer
@@ -47,16 +47,16 @@ uint64_t __42__ATXClientDonationsServer_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = ATXClientDonationsInterface();
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
-  [v5 setInterruptionHandler:&__block_literal_global_22];
-  [v5 setInvalidationHandler:&__block_literal_global_25_5];
-  [v5 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy setInterruptionHandler:&__block_literal_global_22];
+  [connectionCopy setInvalidationHandler:&__block_literal_global_25_5];
+  [connectionCopy resume];
 
   return 1;
 }
@@ -79,14 +79,14 @@ void __63__ATXClientDonationsServer_listener_shouldAcceptNewConnection___block_i
   }
 }
 
-- (void)donateMenuItem:(id)a3 completion:(id)a4
+- (void)donateMenuItem:(id)item completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   v7 = __atxlog_handle_client_donations();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [ATXClientDonationsServer donateMenuItem:v5 completion:v7];
+    [ATXClientDonationsServer donateMenuItem:itemCopy completion:v7];
   }
 
   v8 = __atxlog_handle_client_donations();
@@ -96,12 +96,12 @@ void __63__ATXClientDonationsServer_listener_shouldAcceptNewConnection___block_i
   }
 
   v9 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CEB260] code:4 userInfo:0];
-  v6[2](v6, v9);
+  completionCopy[2](completionCopy, v9);
 }
 
-- (void)donateDocumentInteraction:(id)a3 completion:(id)a4
+- (void)donateDocumentInteraction:(id)interaction completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = __atxlog_handle_client_donations();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -109,7 +109,7 @@ void __63__ATXClientDonationsServer_listener_shouldAcceptNewConnection___block_i
   }
 
   v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CEB260] code:4 userInfo:0];
-  v4[2](v4, v6);
+  completionCopy[2](completionCopy, v6);
 }
 
 - (void)donateMenuItem:(uint64_t)a1 completion:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

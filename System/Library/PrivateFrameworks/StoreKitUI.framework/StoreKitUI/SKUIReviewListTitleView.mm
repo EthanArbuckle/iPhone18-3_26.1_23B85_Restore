@@ -1,26 +1,26 @@
 @interface SKUIReviewListTitleView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForDateLabel:(id)a3 context:(id)a4;
-+ (id)_attributedStringForTitleLabel:(id)a3 context:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIReviewListTitleView)initWithFrame:(CGRect)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForDateLabel:(id)label context:(id)context;
++ (id)_attributedStringForTitleLabel:(id)label context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIReviewListTitleView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setContentInset:(UIEdgeInsets)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setContentInset:(UIEdgeInsets)inset;
 @end
 
 @implementation SKUIReviewListTitleView
 
-- (SKUIReviewListTitleView)initWithFrame:(CGRect)a3
+- (SKUIReviewListTitleView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -35,17 +35,17 @@
 
   v19.receiver = self;
   v19.super_class = SKUIReviewListTitleView;
-  v16 = [(SKUIViewReuseView *)&v19 initWithFrame:x, y, width, height];
-  v17 = v16;
-  if (v16)
+  height = [(SKUIViewReuseView *)&v19 initWithFrame:x, y, width, height];
+  v17 = height;
+  if (height)
   {
-    [(SKUIReviewListTitleView *)v16 setContentMode:3];
+    [(SKUIReviewListTitleView *)height setContentMode:3];
   }
 
   return v17;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -62,7 +62,7 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -83,10 +83,10 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -99,33 +99,33 @@
     }
   }
 
-  v18 = [a1 _dateLabelForViewElement:v8];
+  v18 = [self _dateLabelForViewElement:elementCopy];
   if (v18)
   {
-    v19 = [a1 _attributedStringForDateLabel:v18 context:v9];
-    v20 = [v9 labelLayoutCache];
-    [v20 requestLayoutForLabel:v18 attributedString:v19 width:a4];
+    v19 = [self _attributedStringForDateLabel:v18 context:contextCopy];
+    labelLayoutCache = [contextCopy labelLayoutCache];
+    [labelLayoutCache requestLayoutForLabel:v18 attributedString:v19 width:width];
 
     if ([v19 length])
     {
-      [v19 boundingRectWithSize:1 options:0 context:{a4, 1.79769313e308}];
-      a4 = a4 - v21;
+      [v19 boundingRectWithSize:1 options:0 context:{width, 1.79769313e308}];
+      width = width - v21;
     }
   }
 
-  v22 = [a1 _textLabelForViewElement:v8];
+  v22 = [self _textLabelForViewElement:elementCopy];
   if (v22)
   {
-    v23 = [a1 _attributedStringForTitleLabel:v22 context:v9];
-    v24 = [v9 labelLayoutCache];
-    [v24 requestLayoutForLabel:v22 attributedString:v23 width:a4];
+    v23 = [self _attributedStringForTitleLabel:v22 context:contextCopy];
+    labelLayoutCache2 = [contextCopy labelLayoutCache];
+    [labelLayoutCache2 requestLayoutForLabel:v22 attributedString:v23 width:width];
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -138,34 +138,34 @@
     }
   }
 
-  v17 = [v7 firstChildForElementType:138];
+  v17 = [elementCopy firstChildForElementType:138];
   v18 = *(MEMORY[0x277CBF3A8] + 8);
-  [v8 sizeForViewElement:v17 width:a3];
+  [contextCopy sizeForViewElement:v17 width:width];
   v20 = v18 + v19;
-  v21 = [v8 textPropertiesForViewElement:v17 width:a3];
+  v21 = [contextCopy textPropertiesForViewElement:v17 width:width];
 
   [v21 baselineOffsetFromBottom];
-  v22 = a3;
+  widthCopy = width;
   v23 = v20;
   result.height = v23;
-  result.width = v22;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__SKUIReviewListTitleView_reloadWithViewElement_width_context___block_invoke;
   v12[3] = &unk_2781F95C8;
-  v15 = a4;
+  widthCopy = width;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = elementCopy;
+  v14 = contextCopy;
+  v10 = contextCopy;
+  v11 = elementCopy;
   [(SKUIViewReuseView *)self modifyUsingBlock:v12];
 }
 
@@ -212,15 +212,15 @@ void __63__SKUIReviewListTitleView_reloadWithViewElement_width_context___block_i
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SKUIReviewListTitleView *)self setNeedsDisplay];
   }
 }
@@ -239,18 +239,18 @@ void __63__SKUIReviewListTitleView_reloadWithViewElement_width_context___block_i
   v11 = v10;
   v45 = v12;
   v14 = v13;
-  v15 = [(SKUIReviewListTitleView *)self titleView];
-  v16 = [(SKUIReviewListTitleView *)self dateView];
-  v17 = [v16 layout];
-  [v17 boundingSize];
+  titleView = [(SKUIReviewListTitleView *)self titleView];
+  dateView = [(SKUIReviewListTitleView *)self dateView];
+  layout = [dateView layout];
+  [layout boundingSize];
   v19 = v18;
   v21 = v20;
 
-  v22 = [v15 layout];
-  [v22 baselineOffset];
+  layout2 = [titleView layout];
+  [layout2 baselineOffset];
   v24 = v23;
-  v25 = [v16 layout];
-  [v25 baselineOffset];
+  layout3 = [dateView layout];
+  [layout3 baselineOffset];
   v27 = v24 - v26;
 
   v46 = v11;
@@ -272,7 +272,7 @@ void __63__SKUIReviewListTitleView_reloadWithViewElement_width_context___block_i
   v50.size.width = v19;
   v50.size.height = v21;
   v51 = CGRectIntegral(v50);
-  [v16 setFrame:{v51.origin.x, v51.origin.y, v51.size.width, v51.size.height}];
+  [dateView setFrame:{v51.origin.x, v51.origin.y, v51.size.width, v51.size.height}];
   v52.origin.x = v32;
   v52.origin.y = v30;
   v52.size.width = v19;
@@ -293,8 +293,8 @@ void __63__SKUIReviewListTitleView_reloadWithViewElement_width_context___block_i
     v34 = CGRectGetMinX(v53) - v45 + -10.0;
   }
 
-  v35 = [v15 layout];
-  [v35 boundingSize];
+  layout4 = [titleView layout];
+  [layout4 boundingSize];
   v37 = v36;
   v39 = v38;
 
@@ -312,16 +312,16 @@ void __63__SKUIReviewListTitleView_reloadWithViewElement_width_context___block_i
   v42 = v46;
   v43 = v39;
   v54 = CGRectIntegral(*(&v40 - 2));
-  [v15 setFrame:{v54.origin.x, v54.origin.y, v54.size.width, v54.size.height}];
+  [titleView setFrame:{v54.origin.x, v54.origin.y, v54.size.width, v54.size.height}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(SKUIReviewListTitleView *)self contentInset:a3.width];
+  width = fits.width;
+  [(SKUIReviewListTitleView *)self contentInset:fits.width];
   v6 = v5;
-  v7 = [(SKUIReviewListTitleView *)self titleView];
-  [v7 sizeThatFits:{width, 1.79769313e308}];
+  titleView = [(SKUIReviewListTitleView *)self titleView];
+  [titleView sizeThatFits:{width, 1.79769313e308}];
   v9 = v8;
 
   v10 = v6 + v9;
@@ -331,52 +331,52 @@ void __63__SKUIReviewListTitleView_reloadWithViewElement_width_context___block_i
   return result;
 }
 
-+ (id)_attributedStringForTitleLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForTitleLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SKUIViewElementFontWithStyle(v7);
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = SKUIViewElementFontWithStyle(style);
   if (!v8)
   {
     v8 = SKUIFontPreferredFontForTextStyle(1);
   }
 
-  v9 = [v6 tintColor];
-  v10 = SKUIViewElementPlainColorWithStyle(v7, v9);
+  tintColor = [contextCopy tintColor];
+  blackColor = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
-  if (!v10)
+  if (!blackColor)
   {
-    v10 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  v11 = [v5 text];
-  v12 = [v11 attributedStringWithDefaultFont:v8 foregroundColor:v10 style:v7];
+  text = [labelCopy text];
+  v12 = [text attributedStringWithDefaultFont:v8 foregroundColor:blackColor style:style];
 
   return v12;
 }
 
-+ (id)_attributedStringForDateLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForDateLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SKUIViewElementFontWithStyle(v7);
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = SKUIViewElementFontWithStyle(style);
   if (!v8)
   {
     v8 = SKUIFontPreferredFontForTextStyle(21);
   }
 
-  v9 = [v6 tintColor];
-  v10 = SKUIViewElementPlainColorWithStyle(v7, v9);
+  tintColor = [contextCopy tintColor];
+  v10 = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
   if (!v10)
   {
     v10 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.3];
   }
 
-  v11 = [v5 text];
-  v12 = [v11 attributedStringWithDefaultFont:v8 foregroundColor:v10 style:v7];
+  text = [labelCopy text];
+  v12 = [text attributedStringWithDefaultFont:v8 foregroundColor:v10 style:style];
 
   return v12;
 }

@@ -1,36 +1,36 @@
 @interface USDeviceActivitySchedule
-+ (id)nextIntervalForStartComponents:(id)a3 endComponents:(id)a4;
-+ (id)nextWarningDateForComponents:(id)a3 referenceDate:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)nextIntervalForStartComponents:(id)components endComponents:(id)endComponents;
++ (id)nextWarningDateForComponents:(id)components referenceDate:(id)date;
+- (BOOL)isEqual:(id)equal;
 - (NSDateInterval)nextInterval;
-- (USDeviceActivitySchedule)initWithCoder:(id)a3;
-- (USDeviceActivitySchedule)initWithIntervalStart:(id)a3 intervalEnd:(id)a4 repeats:(BOOL)a5 warningTime:(id)a6;
+- (USDeviceActivitySchedule)initWithCoder:(id)coder;
+- (USDeviceActivitySchedule)initWithIntervalStart:(id)start intervalEnd:(id)end repeats:(BOOL)repeats warningTime:(id)time;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation USDeviceActivitySchedule
 
-- (USDeviceActivitySchedule)initWithIntervalStart:(id)a3 intervalEnd:(id)a4 repeats:(BOOL)a5 warningTime:(id)a6
+- (USDeviceActivitySchedule)initWithIntervalStart:(id)start intervalEnd:(id)end repeats:(BOOL)repeats warningTime:(id)time
 {
   v20.receiver = self;
   v20.super_class = USDeviceActivitySchedule;
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
+  timeCopy = time;
+  endCopy = end;
+  startCopy = start;
   v12 = [(USDeviceActivitySchedule *)&v20 init];
-  v13 = [v11 copy];
+  v13 = [startCopy copy];
 
   intervalStart = v12->_intervalStart;
   v12->_intervalStart = v13;
 
-  v15 = [v10 copy];
+  v15 = [endCopy copy];
   intervalEnd = v12->_intervalEnd;
   v12->_intervalEnd = v15;
 
-  v12->_repeats = a5;
-  v17 = [v9 copy];
+  v12->_repeats = repeats;
+  v17 = [timeCopy copy];
 
   warningTime = v12->_warningTime;
   v12->_warningTime = v17;
@@ -38,12 +38,12 @@
   return v12;
 }
 
-- (USDeviceActivitySchedule)initWithCoder:(id)a3
+- (USDeviceActivitySchedule)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IntervalStart"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IntervalEnd"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WarningTime"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IntervalStart"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IntervalEnd"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WarningTime"];
   if (v5)
   {
     v8 = v6 == 0;
@@ -54,7 +54,7 @@
     v8 = 1;
   }
 
-  if (v8 || ![v4 containsValueForKey:@"Repeats"])
+  if (v8 || ![coderCopy containsValueForKey:@"Repeats"])
   {
 
     v9 = 0;
@@ -73,7 +73,7 @@
     intervalEnd = v9->_intervalEnd;
     v9->_intervalEnd = v12;
 
-    v9->_repeats = [v4 decodeBoolForKey:@"Repeats"];
+    v9->_repeats = [coderCopy decodeBoolForKey:@"Repeats"];
     v14 = [v7 copy];
     warningTime = v9->_warningTime;
     v9->_warningTime = v14;
@@ -82,68 +82,68 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   intervalStart = self->_intervalStart;
-  v5 = a3;
-  [v5 encodeObject:intervalStart forKey:@"IntervalStart"];
-  [v5 encodeObject:self->_intervalEnd forKey:@"IntervalEnd"];
-  [v5 encodeBool:self->_repeats forKey:@"Repeats"];
-  [v5 encodeObject:self->_warningTime forKey:@"WarningTime"];
+  coderCopy = coder;
+  [coderCopy encodeObject:intervalStart forKey:@"IntervalStart"];
+  [coderCopy encodeObject:self->_intervalEnd forKey:@"IntervalEnd"];
+  [coderCopy encodeBool:self->_repeats forKey:@"Repeats"];
+  [coderCopy encodeObject:self->_warningTime forKey:@"WarningTime"];
 }
 
 - (NSDateInterval)nextInterval
 {
   v3 = objc_opt_class();
-  v4 = [(USDeviceActivitySchedule *)self intervalStart];
-  v5 = [(USDeviceActivitySchedule *)self intervalEnd];
-  v6 = [v3 nextIntervalForStartComponents:v4 endComponents:v5];
+  intervalStart = [(USDeviceActivitySchedule *)self intervalStart];
+  intervalEnd = [(USDeviceActivitySchedule *)self intervalEnd];
+  v6 = [v3 nextIntervalForStartComponents:intervalStart endComponents:intervalEnd];
 
   return v6;
 }
 
-+ (id)nextIntervalForStartComponents:(id)a3 endComponents:(id)a4
++ (id)nextIntervalForStartComponents:(id)components endComponents:(id)endComponents
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  componentsCopy = components;
+  endComponentsCopy = endComponents;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v31 = v5;
+    v31 = componentsCopy;
     v32 = 2114;
-    v33 = v6;
+    v33 = endComponentsCopy;
     _os_log_impl(&dword_2707F8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Computing next interval with start components: %{public}@, end components: %{public}@", buf, 0x16u);
   }
 
   v7 = [MEMORY[0x277CBEAA8] now];
-  v8 = [v5 calendar];
-  v9 = v8;
-  if (v8)
+  calendar = [componentsCopy calendar];
+  v9 = calendar;
+  if (calendar)
   {
-    v10 = v8;
+    currentCalendar = calendar;
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   }
 
-  v11 = v10;
+  v11 = currentCalendar;
 
-  v12 = [v5 timeZone];
-  if (v12)
+  timeZone = [componentsCopy timeZone];
+  if (timeZone)
   {
-    [v11 setTimeZone:v12];
+    [v11 setTimeZone:timeZone];
   }
 
   else
   {
-    v13 = [MEMORY[0x277CBEBB0] localTimeZone];
-    [v11 setTimeZone:v13];
+    localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+    [v11 setTimeZone:localTimeZone];
   }
 
-  v14 = [v11 nextDateAfterDate:v7 matchingComponents:v5 options:516];
+  v14 = [v11 nextDateAfterDate:v7 matchingComponents:componentsCopy options:516];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
@@ -151,33 +151,33 @@
     _os_log_impl(&dword_2707F8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Previous start date is: %{public}@", buf, 0xCu);
   }
 
-  v15 = [v6 calendar];
-  v16 = v15;
-  if (v15)
+  calendar2 = [endComponentsCopy calendar];
+  v16 = calendar2;
+  if (calendar2)
   {
-    v17 = v15;
+    currentCalendar2 = calendar2;
   }
 
   else
   {
-    v17 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
   }
 
-  v18 = v17;
+  v18 = currentCalendar2;
 
-  v19 = [v6 timeZone];
-  if (v19)
+  timeZone2 = [endComponentsCopy timeZone];
+  if (timeZone2)
   {
-    [v18 setTimeZone:v19];
+    [v18 setTimeZone:timeZone2];
   }
 
   else
   {
-    v20 = [MEMORY[0x277CBEBB0] localTimeZone];
-    [v18 setTimeZone:v20];
+    localTimeZone2 = [MEMORY[0x277CBEBB0] localTimeZone];
+    [v18 setTimeZone:localTimeZone2];
   }
 
-  v21 = [v18 nextDateAfterDate:v7 matchingComponents:v6 options:516];
+  v21 = [v18 nextDateAfterDate:v7 matchingComponents:endComponentsCopy options:516];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
@@ -192,7 +192,7 @@
 
   else
   {
-    v22 = [v11 nextDateAfterDate:v7 matchingComponents:v5 options:512];
+    v22 = [v11 nextDateAfterDate:v7 matchingComponents:componentsCopy options:512];
   }
 
   v23 = v22;
@@ -207,7 +207,7 @@
   {
     v29 = v11;
     v24 = [v23 laterDate:v7];
-    v25 = [v18 nextDateAfterDate:v24 matchingComponents:v6 options:512];
+    v25 = [v18 nextDateAfterDate:v24 matchingComponents:endComponentsCopy options:512];
     if (v25)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -238,37 +238,37 @@
   return v26;
 }
 
-+ (id)nextWarningDateForComponents:(id)a3 referenceDate:(id)a4
++ (id)nextWarningDateForComponents:(id)components referenceDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 calendar];
-  v8 = v7;
-  if (v7)
+  componentsCopy = components;
+  dateCopy = date;
+  calendar = [componentsCopy calendar];
+  v8 = calendar;
+  if (calendar)
   {
-    v9 = v7;
+    currentCalendar = calendar;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   }
 
-  v10 = v9;
+  v10 = currentCalendar;
 
-  v11 = [v5 timeZone];
-  if (v11)
+  timeZone = [componentsCopy timeZone];
+  if (timeZone)
   {
-    [v10 setTimeZone:v11];
+    [v10 setTimeZone:timeZone];
   }
 
   else
   {
-    v12 = [MEMORY[0x277CBEBB0] localTimeZone];
-    [v10 setTimeZone:v12];
+    localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+    [v10 setTimeZone:localTimeZone];
   }
 
-  v13 = [v10 dateByAddingComponents:v5 toDate:v6 options:0];
+  v13 = [v10 dateByAddingComponents:componentsCopy toDate:dateCopy options:0];
   if (!v13)
   {
 LABEL_11:
@@ -277,12 +277,12 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  [v6 timeIntervalSinceDate:v13];
+  [dateCopy timeIntervalSinceDate:v13];
   if (v14 != 0.0)
   {
     if (v14 < 0.0)
     {
-      v15 = [v6 dateByAddingTimeInterval:?];
+      v15 = [dateCopy dateByAddingTimeInterval:?];
 
       v13 = v15;
     }
@@ -292,7 +292,7 @@ LABEL_11:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [USDeviceActivitySchedule nextWarningDateForComponents:v5 referenceDate:?];
+    [USDeviceActivitySchedule nextWarningDateForComponents:componentsCopy referenceDate:?];
   }
 
   v16 = 0;
@@ -301,31 +301,31 @@ LABEL_15:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(USDeviceActivitySchedule *)self warningTime];
-    v6 = v4;
-    v7 = [v6 warningTime];
-    v8 = [(USDeviceActivitySchedule *)self intervalStart];
-    v9 = [v6 intervalStart];
-    if ([v8 isEqual:v9])
+    warningTime = [(USDeviceActivitySchedule *)self warningTime];
+    v6 = equalCopy;
+    warningTime2 = [v6 warningTime];
+    intervalStart = [(USDeviceActivitySchedule *)self intervalStart];
+    intervalStart2 = [v6 intervalStart];
+    if ([intervalStart isEqual:intervalStart2])
     {
-      v10 = [(USDeviceActivitySchedule *)self intervalEnd];
-      v11 = [v6 intervalEnd];
-      if ([v10 isEqual:v11] && (v12 = -[USDeviceActivitySchedule repeats](self, "repeats"), v12 == objc_msgSend(v6, "repeats")))
+      intervalEnd = [(USDeviceActivitySchedule *)self intervalEnd];
+      intervalEnd2 = [v6 intervalEnd];
+      if ([intervalEnd isEqual:intervalEnd2] && (v12 = -[USDeviceActivitySchedule repeats](self, "repeats"), v12 == objc_msgSend(v6, "repeats")))
       {
-        if (v5 == v7)
+        if (warningTime == warningTime2)
         {
           v13 = 1;
         }
 
         else
         {
-          v13 = [v5 isEqual:v7];
+          v13 = [warningTime isEqual:warningTime2];
         }
       }
 
@@ -351,13 +351,13 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [(USDeviceActivitySchedule *)self intervalStart];
-  v4 = [v3 hash];
-  v5 = [(USDeviceActivitySchedule *)self intervalEnd];
-  v6 = [v5 hash] ^ v4;
+  intervalStart = [(USDeviceActivitySchedule *)self intervalStart];
+  v4 = [intervalStart hash];
+  intervalEnd = [(USDeviceActivitySchedule *)self intervalEnd];
+  v6 = [intervalEnd hash] ^ v4;
   v7 = v6 ^ [(USDeviceActivitySchedule *)self repeats];
-  v8 = [(USDeviceActivitySchedule *)self warningTime];
-  v9 = [v8 hash];
+  warningTime = [(USDeviceActivitySchedule *)self warningTime];
+  v9 = [warningTime hash];
 
   return v7 ^ v9;
 }
@@ -368,11 +368,11 @@ LABEL_15:
   v11.receiver = self;
   v11.super_class = USDeviceActivitySchedule;
   v4 = [(USDeviceActivitySchedule *)&v11 description];
-  v5 = [(USDeviceActivitySchedule *)self intervalStart];
-  v6 = [(USDeviceActivitySchedule *)self intervalEnd];
-  v7 = [(USDeviceActivitySchedule *)self repeats];
-  v8 = [(USDeviceActivitySchedule *)self warningTime];
-  v9 = [v3 stringWithFormat:@"%@\nIntervalStart: %@\nIntervalEnd: %@\nRepeats: %d\nWarningTime: %@", v4, v5, v6, v7, v8];
+  intervalStart = [(USDeviceActivitySchedule *)self intervalStart];
+  intervalEnd = [(USDeviceActivitySchedule *)self intervalEnd];
+  repeats = [(USDeviceActivitySchedule *)self repeats];
+  warningTime = [(USDeviceActivitySchedule *)self warningTime];
+  v9 = [v3 stringWithFormat:@"%@\nIntervalStart: %@\nIntervalEnd: %@\nRepeats: %d\nWarningTime: %@", v4, intervalStart, intervalEnd, repeats, warningTime];
 
   return v9;
 }

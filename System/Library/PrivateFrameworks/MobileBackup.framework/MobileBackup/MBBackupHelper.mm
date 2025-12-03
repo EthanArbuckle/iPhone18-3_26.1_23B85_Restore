@@ -1,65 +1,65 @@
 @interface MBBackupHelper
-+ (id)driveReadError:(id)a3 description:(id)a4;
-+ (id)driveWriteError:(id)a3 description:(id)a4;
-+ (id)errorForException:(id)a3;
-- (MBBackupHelper)initWithSettingsContext:(id)a3 domainManager:(id)a4;
-- (id)readBackupDatabaseWithError:(id *)a3;
-- (id)readBackupManifestWithError:(id *)a3;
-- (id)readBackupPropertiesWithError:(id *)a3;
-- (id)readSnapshotDatabaseWithError:(id *)a3;
-- (id)readSnapshotManifestDatabaseWithError:(id *)a3;
-- (id)readSnapshotManifestWithError:(id *)a3;
-- (id)readSnapshotPropertiesWithError:(id *)a3;
-- (id)readStatusWithError:(id *)a3;
++ (id)driveReadError:(id)error description:(id)description;
++ (id)driveWriteError:(id)error description:(id)description;
++ (id)errorForException:(id)exception;
+- (MBBackupHelper)initWithSettingsContext:(id)context domainManager:(id)manager;
+- (id)readBackupDatabaseWithError:(id *)error;
+- (id)readBackupManifestWithError:(id *)error;
+- (id)readBackupPropertiesWithError:(id *)error;
+- (id)readSnapshotDatabaseWithError:(id *)error;
+- (id)readSnapshotManifestDatabaseWithError:(id *)error;
+- (id)readSnapshotManifestWithError:(id *)error;
+- (id)readSnapshotPropertiesWithError:(id *)error;
+- (id)readStatusWithError:(id *)error;
 @end
 
 @implementation MBBackupHelper
 
-+ (id)driveReadError:(id)a3 description:(id)a4
++ (id)driveReadError:(id)error description:(id)description
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 domain];
-  v8 = [v7 isEqualToString:@"MBErrorDomain"];
+  errorCopy = error;
+  descriptionCopy = description;
+  domain = [errorCopy domain];
+  v8 = [domain isEqualToString:@"MBErrorDomain"];
 
   if (!v8)
   {
     v11 = MBGetDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v5 domain];
+      domain2 = [errorCopy domain];
       *buf = 138412546;
-      v18 = @"MBErrorDomain";
+      code2 = @"MBErrorDomain";
       v19 = 2112;
-      v20 = v12;
+      v20 = domain2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Drive returned error not in domain %@: %@", buf, 0x16u);
 
-      v16 = [v5 domain];
+      domain3 = [errorCopy domain];
       _MBLog();
     }
 
     goto LABEL_10;
   }
 
-  v9 = [v5 code];
+  code = [errorCopy code];
   v10 = 103;
-  if (v9 <= 10)
+  if (code <= 10)
   {
-    if (v9 == 2)
+    if (code == 2)
     {
       goto LABEL_14;
     }
 
-    if (v9 != 4)
+    if (code != 4)
     {
 LABEL_17:
       v15 = MBGetDefaultLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v18 = [v5 code];
+        code2 = [errorCopy code];
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Drive returned unexpected error code: %{MobileBackup:MBError.code}ld", buf, 0xCu);
-        [v5 code];
+        [errorCopy code];
         _MBLog();
       }
 
@@ -69,14 +69,14 @@ LABEL_10:
     }
   }
 
-  else if ((v9 - 11) >= 2)
+  else if ((code - 11) >= 2)
   {
-    if (v9 == 100)
+    if (code == 100)
     {
       goto LABEL_14;
     }
 
-    if (v9 == 203)
+    if (code == 203)
     {
       v10 = 203;
       goto LABEL_14;
@@ -87,39 +87,39 @@ LABEL_10:
 
   v10 = 205;
 LABEL_14:
-  v13 = [MBError errorWithCode:v10 error:v5 format:@"%@", v6, v16];
+  v13 = [MBError errorWithCode:v10 error:errorCopy format:@"%@", descriptionCopy, domain3];
 
   return v13;
 }
 
-+ (id)driveWriteError:(id)a3 description:(id)a4
++ (id)driveWriteError:(id)error description:(id)description
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 domain];
-  v8 = [v7 isEqualToString:@"MBErrorDomain"];
+  errorCopy = error;
+  descriptionCopy = description;
+  domain = [errorCopy domain];
+  v8 = [domain isEqualToString:@"MBErrorDomain"];
 
   if (!v8)
   {
     v12 = MBGetDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v5 domain];
+      domain2 = [errorCopy domain];
       *buf = 138412546;
-      v18 = @"MBErrorDomain";
+      code2 = @"MBErrorDomain";
       v19 = 2112;
-      v20 = v13;
+      v20 = domain2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Drive returned error not in domain %@: %@", buf, 0x16u);
 
-      v16 = [v5 domain];
+      domain3 = [errorCopy domain];
       _MBLog();
     }
 
     goto LABEL_11;
   }
 
-  v9 = [v5 code];
-  if ((v9 - 3) < 2)
+  code = [errorCopy code];
+  if ((code - 3) < 2)
   {
     v10 = 205;
   }
@@ -127,15 +127,15 @@ LABEL_14:
   else
   {
     v10 = 104;
-    if (v9 != 2 && v9 != 100)
+    if (code != 2 && code != 100)
     {
       v11 = MBGetDefaultLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v18 = [v5 code];
+        code2 = [errorCopy code];
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Drive returned unexpected error code: %{MobileBackup:MBError.code}ld", buf, 0xCu);
-        [v5 code];
+        [errorCopy code];
         _MBLog();
       }
 
@@ -144,21 +144,21 @@ LABEL_11:
     }
   }
 
-  v14 = [MBError errorWithCode:v10 error:v5 format:@"%@", v6, v16];
+  v14 = [MBError errorWithCode:v10 error:errorCopy format:@"%@", descriptionCopy, domain3];
 
   return v14;
 }
 
-+ (id)errorForException:(id)a3
++ (id)errorForException:(id)exception
 {
-  v3 = a3;
-  v4 = [v3 error];
-  v5 = [v4 code];
+  exceptionCopy = exception;
+  error = [exceptionCopy error];
+  code = [error code];
 
-  if (v5 <= 10)
+  if (code <= 10)
   {
     v6 = 1;
-    if (v5 == 1 || v5 == 10)
+    if (code == 1 || code == 10)
     {
       goto LABEL_12;
     }
@@ -166,13 +166,13 @@ LABEL_11:
 
   else
   {
-    if ((v5 - 11) < 2)
+    if ((code - 11) < 2)
     {
       v6 = 205;
       goto LABEL_12;
     }
 
-    if (v5 == 100)
+    if (code == 100)
     {
       v6 = 102;
       goto LABEL_12;
@@ -182,43 +182,43 @@ LABEL_11:
   v7 = MBGetDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v3 error];
+    error2 = [exceptionCopy error];
     *buf = 134217984;
-    v16 = [v8 code];
+    code2 = [error2 code];
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Unexpected error code from exception: %{MobileBackup:MBError.code}ld", buf, 0xCu);
 
-    v9 = [v3 error];
-    v14 = [v9 code];
+    error3 = [exceptionCopy error];
+    code3 = [error3 code];
     _MBLog();
   }
 
   v6 = 1;
 LABEL_12:
-  v10 = [v3 error];
-  v11 = [v10 localizedDescription];
-  v12 = [MBError errorWithCode:v6 description:v11];
+  error4 = [exceptionCopy error];
+  localizedDescription = [error4 localizedDescription];
+  v12 = [MBError errorWithCode:v6 description:localizedDescription];
 
   return v12;
 }
 
-- (MBBackupHelper)initWithSettingsContext:(id)a3 domainManager:(id)a4
+- (MBBackupHelper)initWithSettingsContext:(id)context domainManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = MBBackupHelper;
   v9 = [(MBBackupHelper *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_settingsContext, a3);
-    objc_storeStrong(&v10->_domainManager, a4);
+    objc_storeStrong(&v9->_settingsContext, context);
+    objc_storeStrong(&v10->_domainManager, manager);
   }
 
   return v10;
 }
 
-- (id)readStatusWithError:(id *)a3
+- (id)readStatusWithError:(id *)error
 {
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -228,16 +228,16 @@ LABEL_12:
     _MBLog();
   }
 
-  v6 = [(MBDriveSettingsContext *)self->_settingsContext drive];
-  v7 = [(MBDriveSettingsContext *)self->_settingsContext driveBackupStatusPath];
-  v8 = [MBStatus statusWithDrive:v6 path:v7 error:a3];
+  drive = [(MBDriveSettingsContext *)self->_settingsContext drive];
+  driveBackupStatusPath = [(MBDriveSettingsContext *)self->_settingsContext driveBackupStatusPath];
+  v8 = [MBStatus statusWithDrive:drive path:driveBackupStatusPath error:error];
 
   if (v8)
   {
-    v9 = [v8 isVersionAmbiguous];
+    isVersionAmbiguous = [v8 isVersionAmbiguous];
     v10 = MBGetDefaultLog();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (isVersionAmbiguous)
     {
       if (v11)
       {
@@ -246,10 +246,10 @@ LABEL_12:
         _MBLog();
       }
 
-      v12 = [(MBDriveSettingsContext *)self->_settingsContext drive];
-      v13 = [(MBDriveSettingsContext *)self->_settingsContext driveBackupPropertiesPath];
+      drive2 = [(MBDriveSettingsContext *)self->_settingsContext drive];
+      driveBackupPropertiesPath = [(MBDriveSettingsContext *)self->_settingsContext driveBackupPropertiesPath];
       v22 = 0;
-      v14 = [v12 propertyListAtPath:v13 options:0 error:&v22];
+      v14 = [drive2 propertyListAtPath:driveBackupPropertiesPath options:0 error:&v22];
       v15 = v22;
 
       if (v14)
@@ -293,10 +293,10 @@ LABEL_12:
         v19 = v8;
       }
 
-      else if (a3)
+      else if (error)
       {
         [MBBackupHelper driveReadError:v15 description:@"Error reading backup properties"];
-        *a3 = v19 = 0;
+        *error = v19 = 0;
       }
 
       else
@@ -329,7 +329,7 @@ LABEL_12:
   return v19;
 }
 
-- (id)readBackupPropertiesWithError:(id *)a3
+- (id)readBackupPropertiesWithError:(id *)error
 {
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -339,9 +339,9 @@ LABEL_12:
     _MBLog();
   }
 
-  v6 = [(MBDriveSettingsContext *)self->_settingsContext drive];
-  v7 = [(MBDriveSettingsContext *)self->_settingsContext driveBackupPropertiesPath];
-  v8 = [MBDriveProperties propertiesWithDrive:v6 path:v7 error:a3];
+  drive = [(MBDriveSettingsContext *)self->_settingsContext drive];
+  driveBackupPropertiesPath = [(MBDriveSettingsContext *)self->_settingsContext driveBackupPropertiesPath];
+  v8 = [MBDriveProperties propertiesWithDrive:drive path:driveBackupPropertiesPath error:error];
 
   if (v8)
   {
@@ -357,15 +357,15 @@ LABEL_12:
     v10 = v8;
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = [MBBackupHelper driveReadError:*a3 description:@"Error reading backup properties"];
+    *error = [MBBackupHelper driveReadError:*error description:@"Error reading backup properties"];
   }
 
   return v8;
 }
 
-- (id)readBackupDatabaseWithError:(id *)a3
+- (id)readBackupDatabaseWithError:(id *)error
 {
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -375,9 +375,9 @@ LABEL_12:
     _MBLog();
   }
 
-  v6 = [(MBDriveSettingsContext *)self->_settingsContext drive];
-  v7 = [(MBDriveSettingsContext *)self->_settingsContext driveBackupDatabasePath];
-  v8 = [MBDatabase databaseWithDrive:v6 path:v7 domainManager:self->_domainManager error:a3];
+  drive = [(MBDriveSettingsContext *)self->_settingsContext drive];
+  driveBackupDatabasePath = [(MBDriveSettingsContext *)self->_settingsContext driveBackupDatabasePath];
+  v8 = [MBDatabase databaseWithDrive:drive path:driveBackupDatabasePath domainManager:self->_domainManager error:error];
 
   if (v8)
   {
@@ -393,15 +393,15 @@ LABEL_12:
     v10 = v8;
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = [MBBackupHelper driveReadError:*a3 description:@"Error reading backup database"];
+    *error = [MBBackupHelper driveReadError:*error description:@"Error reading backup database"];
   }
 
   return v8;
 }
 
-- (id)readBackupManifestWithError:(id *)a3
+- (id)readBackupManifestWithError:(id *)error
 {
   v5 = [(MBBackupHelper *)self readBackupPropertiesWithError:?];
   v6 = v5;
@@ -412,7 +412,7 @@ LABEL_12:
 
   if (![v5 hasManifestDB])
   {
-    v24 = [(MBBackupHelper *)self readBackupDatabaseWithError:a3];
+    v24 = [(MBBackupHelper *)self readBackupDatabaseWithError:error];
     if (v24)
     {
       v25 = v24;
@@ -429,9 +429,9 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v7 = [(MBDriveSettingsContext *)self->_settingsContext keybag];
+  keybag = [(MBDriveSettingsContext *)self->_settingsContext keybag];
 
-  if (!v7)
+  if (!keybag)
   {
     v26 = MBGetDefaultLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
@@ -441,18 +441,18 @@ LABEL_12:
       _MBLog();
     }
 
-    v27 = [v6 keybagData];
-    if (v27)
+    keybagData = [v6 keybagData];
+    if (keybagData)
     {
-      v28 = [(MBDriveSettingsContext *)self->_settingsContext password];
+      password = [(MBDriveSettingsContext *)self->_settingsContext password];
       v39 = 0;
-      v29 = [MBKeyBag unlockedKeyBagWithData:v27 password:v28 error:&v39];
+      v29 = [MBKeyBag unlockedKeyBagWithData:keybagData password:password error:&v39];
       v30 = v39;
       [(MBDriveSettingsContext *)self->_settingsContext setKeybag:v29];
 
-      v31 = [(MBDriveSettingsContext *)self->_settingsContext keybag];
+      keybag2 = [(MBDriveSettingsContext *)self->_settingsContext keybag];
 
-      if (v31)
+      if (keybag2)
       {
 
         goto LABEL_5;
@@ -460,7 +460,7 @@ LABEL_12:
 
       if ([MBError isError:v30 withCode:207])
       {
-        if (a3)
+        if (error)
         {
           v35 = @"Invalid password when restoring encrypted backup";
           v36 = 207;
@@ -470,7 +470,7 @@ LABEL_42:
         }
       }
 
-      else if (a3)
+      else if (error)
       {
         v35 = @"Error decoding keybag";
         v36 = 1;
@@ -480,12 +480,12 @@ LABEL_42:
 
     else
     {
-      if (a3)
+      if (error)
       {
         v32 = [MBError errorWithCode:205 format:@"No keybag in manifest"];
         v30 = 0;
 LABEL_43:
-        *a3 = v32;
+        *error = v32;
         goto LABEL_44;
       }
 
@@ -498,17 +498,17 @@ LABEL_44:
   }
 
 LABEL_5:
-  v8 = [(MBDriveSettingsContext *)self->_settingsContext keybag];
-  if (!v8)
+  keybag3 = [(MBDriveSettingsContext *)self->_settingsContext keybag];
+  if (!keybag3)
   {
     goto LABEL_11;
   }
 
-  v9 = v8;
-  v10 = [(MBDriveSettingsContext *)self->_settingsContext keybag];
-  v11 = [v10 isUnlocked];
+  v9 = keybag3;
+  keybag4 = [(MBDriveSettingsContext *)self->_settingsContext keybag];
+  isUnlocked = [keybag4 isUnlocked];
 
-  if (v11)
+  if (isUnlocked)
   {
     goto LABEL_11;
   }
@@ -521,26 +521,26 @@ LABEL_5:
     _MBLog();
   }
 
-  v13 = [(MBDriveSettingsContext *)self->_settingsContext keybag];
-  v14 = [(MBDriveSettingsContext *)self->_settingsContext password];
+  keybag5 = [(MBDriveSettingsContext *)self->_settingsContext keybag];
+  password2 = [(MBDriveSettingsContext *)self->_settingsContext password];
   v38 = 0;
-  v15 = [v13 unlockWithPassword:v14 error:&v38];
+  v15 = [keybag5 unlockWithPassword:password2 error:&v38];
   v16 = v38;
 
   if ((v15 & 1) == 0)
   {
     if ([MBError isError:v16 withCode:207])
     {
-      if (a3)
+      if (error)
       {
         v33 = @"Invalid password when restoring encrypted backup";
         v34 = 207;
 LABEL_37:
-        *a3 = [MBError errorWithCode:v34 error:v16 format:v33];
+        *error = [MBError errorWithCode:v34 error:v16 format:v33];
       }
     }
 
-    else if (a3)
+    else if (error)
     {
       v33 = @"Error decoding keybag";
       v34 = 1;
@@ -559,23 +559,23 @@ LABEL_11:
     _MBLog();
   }
 
-  v18 = [(MBDriveSettingsContext *)self->_settingsContext drive];
-  v19 = [(MBDriveSettingsContext *)self->_settingsContext driveBackupManifestDatabasePath];
+  drive = [(MBDriveSettingsContext *)self->_settingsContext drive];
+  driveBackupManifestDatabasePath = [(MBDriveSettingsContext *)self->_settingsContext driveBackupManifestDatabasePath];
   domainManager = self->_domainManager;
-  v21 = [(MBDriveSettingsContext *)self->_settingsContext keybag];
-  v22 = [MBManifestDB manifestDBWithDrive:v18 sourcePath:v19 properties:v6 domainManager:domainManager keybag:v21 error:a3];
+  keybag6 = [(MBDriveSettingsContext *)self->_settingsContext keybag];
+  v22 = [MBManifestDB manifestDBWithDrive:drive sourcePath:driveBackupManifestDatabasePath properties:v6 domainManager:domainManager keybag:keybag6 error:error];
 
   if (!v22)
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [MBBackupHelper driveReadError:*a3 description:@"Error reading backup manifest database"];
+      *error = [MBBackupHelper driveReadError:*error description:@"Error reading backup manifest database"];
     }
 
     goto LABEL_20;
   }
 
-  if ([v22 openWithError:a3])
+  if ([v22 openWithError:error])
   {
     v23 = v22;
 LABEL_20:
@@ -590,7 +590,7 @@ LABEL_46:
   return v22;
 }
 
-- (id)readSnapshotPropertiesWithError:(id *)a3
+- (id)readSnapshotPropertiesWithError:(id *)error
 {
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -600,9 +600,9 @@ LABEL_46:
     _MBLog();
   }
 
-  v6 = [(MBDriveSettingsContext *)self->_settingsContext drive];
-  v7 = [(MBDriveSettingsContext *)self->_settingsContext driveSnapshotPropertiesPath];
-  v8 = [MBDriveProperties propertiesWithDrive:v6 path:v7 error:a3];
+  drive = [(MBDriveSettingsContext *)self->_settingsContext drive];
+  driveSnapshotPropertiesPath = [(MBDriveSettingsContext *)self->_settingsContext driveSnapshotPropertiesPath];
+  v8 = [MBDriveProperties propertiesWithDrive:drive path:driveSnapshotPropertiesPath error:error];
 
   if (v8)
   {
@@ -618,15 +618,15 @@ LABEL_46:
     v10 = v8;
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = [MBBackupHelper driveReadError:*a3 description:@"Error reading snapshot properties"];
+    *error = [MBBackupHelper driveReadError:*error description:@"Error reading snapshot properties"];
   }
 
   return v8;
 }
 
-- (id)readSnapshotDatabaseWithError:(id *)a3
+- (id)readSnapshotDatabaseWithError:(id *)error
 {
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -636,9 +636,9 @@ LABEL_46:
     _MBLog();
   }
 
-  v6 = [(MBDriveSettingsContext *)self->_settingsContext drive];
-  v7 = [(MBDriveSettingsContext *)self->_settingsContext driveSnapshotDatabasePath];
-  v8 = [MBDatabase databaseWithDrive:v6 path:v7 domainManager:self->_domainManager error:a3];
+  drive = [(MBDriveSettingsContext *)self->_settingsContext drive];
+  driveSnapshotDatabasePath = [(MBDriveSettingsContext *)self->_settingsContext driveSnapshotDatabasePath];
+  v8 = [MBDatabase databaseWithDrive:drive path:driveSnapshotDatabasePath domainManager:self->_domainManager error:error];
 
   if (v8)
   {
@@ -654,15 +654,15 @@ LABEL_46:
     v10 = v8;
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = [MBBackupHelper driveReadError:*a3 description:@"Error reading snapshot database"];
+    *error = [MBBackupHelper driveReadError:*error description:@"Error reading snapshot database"];
   }
 
   return v8;
 }
 
-- (id)readSnapshotManifestDatabaseWithError:(id *)a3
+- (id)readSnapshotManifestDatabaseWithError:(id *)error
 {
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -672,16 +672,16 @@ LABEL_46:
     _MBLog();
   }
 
-  v6 = [(MBBackupHelper *)self readSnapshotPropertiesWithError:a3];
+  v6 = [(MBBackupHelper *)self readSnapshotPropertiesWithError:error];
   if (!v6)
   {
     v12 = 0;
     goto LABEL_15;
   }
 
-  v7 = [(MBDriveSettingsContext *)self->_settingsContext drive];
-  v8 = [(MBDriveSettingsContext *)self->_settingsContext driveSnapshotManifestDatabasePath];
-  v9 = [MBManifestDB manifestDBWithDrive:v7 sourcePath:v8 properties:v6 domainManager:self->_domainManager error:a3];
+  drive = [(MBDriveSettingsContext *)self->_settingsContext drive];
+  driveSnapshotManifestDatabasePath = [(MBDriveSettingsContext *)self->_settingsContext driveSnapshotManifestDatabasePath];
+  v9 = [MBManifestDB manifestDBWithDrive:drive sourcePath:driveSnapshotManifestDatabasePath properties:v6 domainManager:self->_domainManager error:error];
 
   if (v9)
   {
@@ -694,7 +694,7 @@ LABEL_46:
       _MBLog();
     }
 
-    if (![v9 openWithError:a3])
+    if (![v9 openWithError:error])
     {
       v12 = 0;
       goto LABEL_14;
@@ -705,9 +705,9 @@ LABEL_46:
   }
 
   v12 = 0;
-  if (a3)
+  if (error)
   {
-    *a3 = [MBBackupHelper driveReadError:*a3 description:@"Error reading snapshot manifest database"];
+    *error = [MBBackupHelper driveReadError:*error description:@"Error reading snapshot manifest database"];
 LABEL_12:
     v12 = v9;
   }
@@ -719,7 +719,7 @@ LABEL_15:
   return v12;
 }
 
-- (id)readSnapshotManifestWithError:(id *)a3
+- (id)readSnapshotManifestWithError:(id *)error
 {
   v5 = [(MBBackupHelper *)self readSnapshotPropertiesWithError:?];
   v6 = v5;
@@ -735,21 +735,21 @@ LABEL_15:
         _MBLog();
       }
 
-      v8 = [(MBDriveSettingsContext *)self->_settingsContext drive];
-      v9 = [(MBDriveSettingsContext *)self->_settingsContext driveSnapshotManifestDatabasePath];
-      v10 = [MBManifestDB manifestDBWithDrive:v8 sourcePath:v9 properties:v6 domainManager:self->_domainManager error:a3];
+      drive = [(MBDriveSettingsContext *)self->_settingsContext drive];
+      driveSnapshotManifestDatabasePath = [(MBDriveSettingsContext *)self->_settingsContext driveSnapshotManifestDatabasePath];
+      v10 = [MBManifestDB manifestDBWithDrive:drive sourcePath:driveSnapshotManifestDatabasePath properties:v6 domainManager:self->_domainManager error:error];
 
       if (!v10)
       {
-        if (a3)
+        if (error)
         {
-          *a3 = [MBBackupHelper driveReadError:*a3 description:@"Error reading snapshot manifest database"];
+          *error = [MBBackupHelper driveReadError:*error description:@"Error reading snapshot manifest database"];
         }
 
         goto LABEL_12;
       }
 
-      if ([v10 openWithError:a3])
+      if ([v10 openWithError:error])
       {
         v11 = v10;
 LABEL_12:
@@ -760,7 +760,7 @@ LABEL_12:
 
     else
     {
-      v12 = [(MBBackupHelper *)self readSnapshotDatabaseWithError:a3];
+      v12 = [(MBBackupHelper *)self readSnapshotDatabaseWithError:error];
       if (v12)
       {
         v13 = v12;

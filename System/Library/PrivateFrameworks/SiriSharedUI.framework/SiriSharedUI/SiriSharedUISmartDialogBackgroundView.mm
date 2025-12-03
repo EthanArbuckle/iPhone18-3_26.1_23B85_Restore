@@ -1,25 +1,25 @@
 @interface SiriSharedUISmartDialogBackgroundView
-- (void)setContinuousCornerRadius:(double)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setContinuousCornerRadius:(double)radius;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation SiriSharedUISmartDialogBackgroundView
 
-- (void)setContinuousCornerRadius:(double)a3
+- (void)setContinuousCornerRadius:(double)radius
 {
   v17 = *MEMORY[0x277D85DE8];
   [(SiriSharedUISmartDialogBackgroundView *)self _setContinuousCornerRadius:?];
-  v5 = [(SiriSharedUISmartDialogBackgroundView *)self contentView];
-  [v5 _setContinuousCornerRadius:a3];
+  contentView = [(SiriSharedUISmartDialogBackgroundView *)self contentView];
+  [contentView _setContinuousCornerRadius:radius];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(SiriSharedUISmartDialogBackgroundView *)self contentView];
-  v7 = [v6 subviews];
+  contentView2 = [(SiriSharedUISmartDialogBackgroundView *)self contentView];
+  subviews = [contentView2 subviews];
 
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -31,34 +31,34 @@
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subviews);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) _setContinuousCornerRadius:a3];
+        [*(*(&v12 + 1) + 8 * v11++) _setContinuousCornerRadius:radius];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v17 = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = SiriSharedUISmartDialogBackgroundView;
-  [(SiriSharedUISmartDialogBackgroundView *)&v15 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SiriSharedUISmartDialogBackgroundView *)&v15 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(SiriSharedUISmartDialogBackgroundView *)self contentView];
-  v5 = [v4 subviews];
+  contentView = [(SiriSharedUISmartDialogBackgroundView *)self contentView];
+  subviews = [contentView subviews];
 
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  v6 = [subviews countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -70,7 +70,7 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
@@ -80,7 +80,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v7);

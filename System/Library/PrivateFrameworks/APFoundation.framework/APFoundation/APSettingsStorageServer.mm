@@ -1,11 +1,11 @@
 @interface APSettingsStorageServer
 + (id)baseServerURL;
-- (APSettingsStorageServer)initWithDefaultValues:(id)a3;
-- (APSettingsStorageServer)initWithURL:(id)a3 headers:(id)a4 defaultValues:(id)a5;
-- (id)valueForKey:(id)a3 error:(id *)a4;
+- (APSettingsStorageServer)initWithDefaultValues:(id)values;
+- (APSettingsStorageServer)initWithURL:(id)l headers:(id)headers defaultValues:(id)values;
+- (id)valueForKey:(id)key error:(id *)error;
 - (void)fetchNewServerData;
 - (void)retrieveServerData;
-- (void)setValue:(id)a3 forKey:(id)a4 error:(id *)a5;
+- (void)setValue:(id)value forKey:(id)key error:(id *)error;
 @end
 
 @implementation APSettingsStorageServer
@@ -64,7 +64,7 @@ LABEL_14:
   return v27;
 }
 
-- (APSettingsStorageServer)initWithDefaultValues:(id)a3
+- (APSettingsStorageServer)initWithDefaultValues:(id)values
 {
   v4 = APLogForCategory(0x2FuLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -227,20 +227,20 @@ LABEL_6:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (APSettingsStorageServer)initWithURL:(id)a3 headers:(id)a4 defaultValues:(id)a5
+- (APSettingsStorageServer)initWithURL:(id)l headers:(id)headers defaultValues:(id)values
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  headersCopy = headers;
+  valuesCopy = values;
   v28.receiver = self;
   v28.super_class = APSettingsStorageServer;
   v12 = [(APSettingsStorageServer *)&v28 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_url, a3);
-    objc_storeStrong(&v13->_headers, a4);
-    v17 = objc_msgSend_copy(v11, v14, v15, v16);
+    objc_storeStrong(&v12->_url, l);
+    objc_storeStrong(&v13->_headers, headers);
+    v17 = objc_msgSend_copy(valuesCopy, v14, v15, v16);
     defaults = v13->_defaults;
     v13->_defaults = v17;
 
@@ -256,9 +256,9 @@ LABEL_6:
   return v13;
 }
 
-- (id)valueForKey:(id)a3 error:(id *)a4
+- (id)valueForKey:(id)key error:(id *)error
 {
-  v5 = objc_msgSend_lastNamespacedComponent(a3, a2, a3, a4);
+  v5 = objc_msgSend_lastNamespacedComponent(key, a2, key, error);
   v9 = objc_msgSend_lock(self, v6, v7, v8);
   objc_msgSend_lock(v9, v10, v11, v12);
   v16 = objc_msgSend_serverData(self, v13, v14, v15);
@@ -302,9 +302,9 @@ LABEL_9:
   return v24;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4 error:(id *)a5
+- (void)setValue:(id)value forKey:(id)key error:(id *)error
 {
-  v5 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"Settings with server storage is read only. You should not be trying to overwrite server provided data. Now generating simulated crash.", a4, a5);
+  v5 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"Settings with server storage is read only. You should not be trying to overwrite server provided data. Now generating simulated crash.", key, error);
   APSimulateCrash(5, v5, 0);
 }
 

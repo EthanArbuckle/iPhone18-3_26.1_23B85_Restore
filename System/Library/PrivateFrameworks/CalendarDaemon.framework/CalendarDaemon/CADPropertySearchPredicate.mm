@@ -1,22 +1,22 @@
 @interface CADPropertySearchPredicate
 - (BOOL)validate;
-- (CADPropertySearchPredicate)initWithCoder:(id)a3;
-- (CADPropertySearchPredicate)initWithEntityType:(int)a3 filters:(id)a4 calendars:(id)a5 source:(id)a6 limit:(int64_t)a7 randomize:(BOOL)a8;
+- (CADPropertySearchPredicate)initWithCoder:(id)coder;
+- (CADPropertySearchPredicate)initWithEntityType:(int)type filters:(id)filters calendars:(id)calendars source:(id)source limit:(int64_t)limit randomize:(BOOL)randomize;
 - (id)calendarRowIDsByDatabaseID;
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3;
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database;
 - (id)databasesToQuery;
-- (id)extendWhereClauseWithEntityTypeLimitation:(id)a3 withValues:(id)a4 andTypes:(id)a5;
+- (id)extendWhereClauseWithEntityTypeLimitation:(id)limitation withValues:(id)values andTypes:(id)types;
 - (id)predicateFormat;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CADPropertySearchPredicate
 
-- (CADPropertySearchPredicate)initWithEntityType:(int)a3 filters:(id)a4 calendars:(id)a5 source:(id)a6 limit:(int64_t)a7 randomize:(BOOL)a8
+- (CADPropertySearchPredicate)initWithEntityType:(int)type filters:(id)filters calendars:(id)calendars source:(id)source limit:(int64_t)limit randomize:(BOOL)randomize
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  filtersCopy = filters;
+  calendarsCopy = calendars;
+  sourceCopy = source;
   v23.receiver = self;
   v23.super_class = CADPropertySearchPredicate;
   v17 = [(CADPropertySearchPredicate *)&v23 init];
@@ -26,15 +26,15 @@
     goto LABEL_3;
   }
 
-  v17->_entityType = a3;
-  v19 = [v14 copy];
+  v17->_entityType = type;
+  v19 = [filtersCopy copy];
   filters = v18->_filters;
   v18->_filters = v19;
 
-  objc_storeStrong(&v18->_sourceID, a6);
-  objc_storeStrong(&v18->_calendarIDs, a5);
-  v18->_limit = a7;
-  v18->_randomize = a8;
+  objc_storeStrong(&v18->_sourceID, source);
+  objc_storeStrong(&v18->_calendarIDs, calendars);
+  v18->_limit = limit;
+  v18->_randomize = randomize;
   if (![(CADPropertySearchPredicate *)v18 validate])
   {
     v21 = 0;
@@ -169,36 +169,36 @@ LABEL_28:
   return v18;
 }
 
-- (CADPropertySearchPredicate)initWithCoder:(id)a3
+- (CADPropertySearchPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = CADPropertySearchPredicate;
-  v5 = [(CADPropertySearchPredicate *)&v18 initWithCoder:v4];
+  v5 = [(CADPropertySearchPredicate *)&v18 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_3;
   }
 
-  v5->_entityType = [v4 decodeIntegerForKey:@"entityType"];
+  v5->_entityType = [coderCopy decodeIntegerForKey:@"entityType"];
   v6 = _CADPropertySearchPredicateGetAllowedFilterTypes();
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"filters"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"filters"];
   filters = v5->_filters;
   v5->_filters = v7;
 
   v9 = MEMORY[0x277CBEB98];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v4 decodeObjectOfClasses:v11 forKey:@"calendarIDs"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"calendarIDs"];
   calendarIDs = v5->_calendarIDs;
   v5->_calendarIDs = v12;
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceID"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceID"];
   sourceID = v5->_sourceID;
   v5->_sourceID = v14;
 
-  v5->_limit = [v4 decodeIntegerForKey:@"limit"];
-  v5->_randomize = [v4 decodeBoolForKey:@"randomize"];
+  v5->_limit = [coderCopy decodeIntegerForKey:@"limit"];
+  v5->_randomize = [coderCopy decodeBoolForKey:@"randomize"];
   v16 = 0;
   if ([(CADPropertySearchPredicate *)v5 validate])
   {
@@ -209,18 +209,18 @@ LABEL_3:
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CADPropertySearchPredicate;
-  v4 = a3;
-  [(CADPropertySearchPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_entityType forKey:{@"entityType", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_filters forKey:@"filters"];
-  [v4 encodeObject:self->_calendarIDs forKey:@"calendarIDs"];
-  [v4 encodeObject:self->_sourceID forKey:@"sourceID"];
-  [v4 encodeInteger:self->_limit forKey:@"limit"];
-  [v4 encodeBool:self->_randomize forKey:@"randomize"];
+  coderCopy = coder;
+  [(CADPropertySearchPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_entityType forKey:{@"entityType", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_filters forKey:@"filters"];
+  [coderCopy encodeObject:self->_calendarIDs forKey:@"calendarIDs"];
+  [coderCopy encodeObject:self->_sourceID forKey:@"sourceID"];
+  [coderCopy encodeInteger:self->_limit forKey:@"limit"];
+  [coderCopy encodeBool:self->_randomize forKey:@"randomize"];
 }
 
 - (id)databasesToQuery
@@ -230,36 +230,36 @@ LABEL_3:
   {
     v2 = [MEMORY[0x277CCABB0] numberWithInt:{-[CADObjectID databaseID](self->_sourceID, "databaseID")}];
     v6[0] = v2;
-    v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
+    calendarRowIDsByDatabaseID = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
   }
 
   else
   {
-    v3 = [(CADPropertySearchPredicate *)self calendarRowIDsByDatabaseID];
+    calendarRowIDsByDatabaseID = [(CADPropertySearchPredicate *)self calendarRowIDsByDatabaseID];
   }
 
   v4 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return calendarRowIDsByDatabaseID;
 }
 
-- (id)extendWhereClauseWithEntityTypeLimitation:(id)a3 withValues:(id)a4 andTypes:(id)a5
+- (id)extendWhereClauseWithEntityTypeLimitation:(id)limitation withValues:(id)values andTypes:(id)types
 {
-  v8 = a3;
+  limitationCopy = limitation;
   if ((self->_entityType & 0xFFFFFFFE) == 2)
   {
-    v9 = a5;
-    v10 = a4;
-    v11 = _CADPropertySearchPredicateExtendWhereClause(v8, 0, @"entity_type = ?");
+    typesCopy = types;
+    valuesCopy = values;
+    v11 = _CADPropertySearchPredicateExtendWhereClause(limitationCopy, 0, @"entity_type = ?");
 
     v12 = [MEMORY[0x277CCABB0] numberWithInt:self->_entityType];
-    [v10 addObject:v12];
+    [valuesCopy addObject:v12];
 
-    [v9 addObject:&unk_2837C74E0];
-    v8 = v11;
+    [typesCopy addObject:&unk_2837C74E0];
+    limitationCopy = v11;
   }
 
-  return v8;
+  return limitationCopy;
 }
 
 - (id)calendarRowIDsByDatabaseID
@@ -276,7 +276,7 @@ LABEL_3:
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v18 = self;
+      selfCopy = self;
       v5 = self->_calendarIDs;
       v6 = [(NSArray *)v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v6)
@@ -311,10 +311,10 @@ LABEL_3:
         while (v7);
       }
 
-      v14 = *(&v18->super.super.super.isa + v17);
-      *(&v18->super.super.super.isa + v17) = v4;
+      v14 = *(&selfCopy->super.super.super.isa + v17);
+      *(&selfCopy->super.super.super.isa + v17) = v4;
 
-      calendarRowIDsByDatabaseID = *(&v18->super.super.super.isa + v17);
+      calendarRowIDsByDatabaseID = *(&selfCopy->super.super.super.isa + v17);
     }
 
     else
@@ -328,7 +328,7 @@ LABEL_3:
   return calendarRowIDsByDatabaseID;
 }
 
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database
 {
   v4 = objc_opt_new();
   v5 = objc_opt_new();
@@ -349,22 +349,22 @@ LABEL_3:
   sourceID = self->_sourceID;
   if (sourceID)
   {
-    v6 = [(CADObjectID *)sourceID databaseID];
+    databaseID = [(CADObjectID *)sourceID databaseID];
   }
 
   else if ([(NSArray *)self->_calendarIDs count])
   {
-    v7 = [(NSArray *)self->_calendarIDs firstObject];
-    v6 = [v7 databaseID];
+    firstObject = [(NSArray *)self->_calendarIDs firstObject];
+    databaseID = [firstObject databaseID];
   }
 
   else
   {
-    v6 = *MEMORY[0x277CF7570];
+    databaseID = *MEMORY[0x277CF7570];
   }
 
   v26 = v4;
-  v8 = [(CADPropertySearchPredicate *)self buildWhereClauseWithValues:v3 andTypes:v4 forDatabase:v6];
+  v8 = [(CADPropertySearchPredicate *)self buildWhereClauseWithValues:v3 andTypes:v4 forDatabase:databaseID];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;

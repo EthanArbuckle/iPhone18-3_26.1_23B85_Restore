@@ -82,14 +82,14 @@
 - (id)hf_characteristicOfType:()Additions
 {
   v4 = a3;
-  v5 = [a1 characteristics];
+  characteristics = [self characteristics];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __48__HMService_Additions__hf_characteristicOfType___block_invoke;
   v9[3] = &unk_277DF6218;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v7 = [characteristics na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -98,14 +98,14 @@
 {
   objc_initWeak(&location, val);
   v2 = [HFServiceDescriptor alloc];
-  v3 = [val serviceType];
-  v4 = [val hf_effectiveServiceSubtype];
+  serviceType = [val serviceType];
+  hf_effectiveServiceSubtype = [val hf_effectiveServiceSubtype];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__HMService_Additions__hf_serviceDescriptor__block_invoke;
   v7[3] = &unk_277DFCC20;
   objc_copyWeak(&v8, &location);
-  v5 = [(HFServiceDescriptor *)v2 initWithServiceType:v3 serviceSubtype:v4 parentServiceDescriptorGenerator:v7];
+  v5 = [(HFServiceDescriptor *)v2 initWithServiceType:serviceType serviceSubtype:hf_effectiveServiceSubtype parentServiceDescriptorGenerator:v7];
   objc_destroyWeak(&v8);
 
   objc_destroyWeak(&location);
@@ -115,36 +115,36 @@
 
 - (id)hf_effectiveServiceType
 {
-  v2 = [a1 associatedServiceType];
-  v3 = v2;
-  if (v2)
+  associatedServiceType = [self associatedServiceType];
+  v3 = associatedServiceType;
+  if (associatedServiceType)
   {
-    v4 = v2;
+    serviceType = associatedServiceType;
   }
 
   else
   {
-    v4 = [a1 serviceType];
+    serviceType = [self serviceType];
   }
 
-  v5 = v4;
+  v5 = serviceType;
 
   return v5;
 }
 
 - (id)hf_iconDescriptor
 {
-  v2 = [a1 applicationData];
-  v3 = [v2 objectForKeyedSubscript:@"HFApplicationDataServiceIconID"];
+  applicationData = [self applicationData];
+  v3 = [applicationData objectForKeyedSubscript:@"HFApplicationDataServiceIconID"];
 
   if (v3)
   {
-    [HFServiceIconFactory iconDescriptorWithIdentifier:v3 forService:a1];
+    [HFServiceIconFactory iconDescriptorWithIdentifier:v3 forService:self];
   }
 
   else
   {
-    [HFServiceIconFactory defaultIconDescriptorForService:a1];
+    [HFServiceIconFactory defaultIconDescriptorForService:self];
   }
   v4 = ;
 
@@ -154,7 +154,7 @@
 - (id)hf_updateIconDescriptor:()Additions
 {
   v4 = a3;
-  v5 = [HFServiceIconFactory allIconDescriptorsForService:a1];
+  v5 = [HFServiceIconFactory allIconDescriptorsForService:self];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __48__HMService_Additions__hf_updateIconDescriptor___block_invoke;
@@ -165,23 +165,23 @@
 
   if (v7)
   {
-    v8 = [v6 identifier];
-    v9 = [a1 applicationData];
-    [v9 setObject:v8 forKeyedSubscript:@"HFApplicationDataServiceIconID"];
+    identifier = [v6 identifier];
+    applicationData = [self applicationData];
+    [applicationData setObject:identifier forKeyedSubscript:@"HFApplicationDataServiceIconID"];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __48__HMService_Additions__hf_updateIconDescriptor___block_invoke_2;
     v14[3] = &unk_277DF2C68;
-    v14[4] = a1;
+    v14[4] = self;
     v10 = [MEMORY[0x277D2C900] futureWithErrorOnlyHandlerAdapterBlock:v14];
   }
 
   else
   {
     v11 = MEMORY[0x277D2C900];
-    v8 = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
-    v10 = [v11 futureWithError:v8];
+    identifier = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
+    v10 = [v11 futureWithError:identifier];
   }
 
   v12 = v10;
@@ -197,8 +197,8 @@
   }
 
   v2 = qword_280E03148;
-  v3 = [a1 hf_effectiveServiceType];
-  v4 = [v2 containsObject:v3];
+  hf_effectiveServiceType = [self hf_effectiveServiceType];
+  v4 = [v2 containsObject:hf_effectiveServiceType];
 
   return v4;
 }
@@ -209,39 +209,39 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __39__HMService_Additions__hf_serviceGroup__block_invoke;
   aBlock[3] = &unk_277DF75E8;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v4 = _Block_copy(aBlock);
   v5 = +[HFHomePropertyCacheManager sharedManager];
   v6 = NSStringFromSelector(a2);
-  v7 = [v5 valueForObject:a1 key:v6 invalidationReasons:2 recalculationBlock:v4];
+  v7 = [v5 valueForObject:self key:v6 invalidationReasons:2 recalculationBlock:v4];
 
   return v7;
 }
 
 - (BOOL)hf_isInGroup
 {
-  v1 = [a1 hf_serviceGroup];
-  v2 = v1 != 0;
+  hf_serviceGroup = [self hf_serviceGroup];
+  v2 = hf_serviceGroup != 0;
 
   return v2;
 }
 
 - (uint64_t)hf_isLegacyService
 {
-  if (![a1 hf_isVisible])
+  if (![self hf_isVisible])
   {
     return 0;
   }
 
-  v2 = [a1 hf_requiredCharacteristicTypesForDisplayMetadata];
-  v3 = [a1 characteristics];
+  hf_requiredCharacteristicTypesForDisplayMetadata = [self hf_requiredCharacteristicTypesForDisplayMetadata];
+  characteristics = [self characteristics];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__HMService_Additions__hf_isLegacyService__block_invoke;
   v8[3] = &unk_277DF6218;
-  v9 = v2;
-  v4 = v2;
-  v5 = [v3 na_filter:v8];
+  v9 = hf_requiredCharacteristicTypesForDisplayMetadata;
+  v4 = hf_requiredCharacteristicTypesForDisplayMetadata;
+  v5 = [characteristics na_filter:v8];
 
   v6 = [v5 na_any:&__block_literal_global_36_0];
   return v6;
@@ -249,31 +249,31 @@
 
 - (uint64_t)hf_isVisible
 {
-  v2 = [a1 accessory];
-  v3 = [v2 hf_visibleServices];
-  v4 = [v3 containsObject:a1];
+  accessory = [self accessory];
+  hf_visibleServices = [accessory hf_visibleServices];
+  v4 = [hf_visibleServices containsObject:self];
 
   return v4;
 }
 
 - (uint64_t)hf_showsAsServiceInControlCentre
 {
-  if ([a1 hf_isProgrammableSwitch] & 1) != 0 || (objc_msgSend(a1, "hf_isSensorService") & 1) != 0 || (objc_msgSend(a1, "hf_isNetworkRouter"))
+  if ([self hf_isProgrammableSwitch] & 1) != 0 || (objc_msgSend(self, "hf_isSensorService") & 1) != 0 || (objc_msgSend(self, "hf_isNetworkRouter"))
   {
     return 0;
   }
 
   else
   {
-    return [a1 hf_isNetworkRouterSatellite] ^ 1;
+    return [self hf_isNetworkRouterSatellite] ^ 1;
   }
 }
 
 - (uint64_t)hf_isFan
 {
-  v2 = [objc_opt_class() hf_fanServiceTypes];
-  v3 = [a1 serviceType];
-  v4 = [v2 containsObject:v3];
+  hf_fanServiceTypes = [objc_opt_class() hf_fanServiceTypes];
+  serviceType = [self serviceType];
+  v4 = [hf_fanServiceTypes containsObject:serviceType];
 
   return v4;
 }
@@ -292,69 +292,69 @@
 
 - (uint64_t)hf_isNetworkRouter
 {
-  v2 = [a1 serviceType];
-  if ([v2 isEqualToString:*MEMORY[0x277CD0F48]])
+  serviceType = [self serviceType];
+  if ([serviceType isEqualToString:*MEMORY[0x277CD0F48]])
   {
-    v3 = 1;
+    hf_isNetworkRouterSatellite = 1;
   }
 
   else
   {
-    v3 = [a1 hf_isNetworkRouterSatellite];
+    hf_isNetworkRouterSatellite = [self hf_isNetworkRouterSatellite];
   }
 
-  return v3;
+  return hf_isNetworkRouterSatellite;
 }
 
 - (uint64_t)hf_isNetworkRouterSatellite
 {
-  v1 = [a1 serviceType];
-  v2 = [v1 isEqualToString:*MEMORY[0x277CD0F50]];
+  serviceType = [self serviceType];
+  v2 = [serviceType isEqualToString:*MEMORY[0x277CD0F50]];
 
   return v2;
 }
 
 - (uint64_t)hf_isTelevision
 {
-  v1 = [a1 serviceType];
-  v2 = [v1 isEqualToString:*MEMORY[0x277CD0F20]];
+  serviceType = [self serviceType];
+  v2 = [serviceType isEqualToString:*MEMORY[0x277CD0F20]];
 
   return v2;
 }
 
 - (BOOL)hf_isChildService
 {
-  v1 = [a1 hf_parentService];
-  v2 = v1 != 0;
+  hf_parentService = [self hf_parentService];
+  v2 = hf_parentService != 0;
 
   return v2;
 }
 
 - (uint64_t)hf_isSensorService
 {
-  v2 = [objc_opt_class() hf_sensorServiceTypes];
-  v3 = [a1 serviceType];
-  v4 = [v2 containsObject:v3];
+  hf_sensorServiceTypes = [objc_opt_class() hf_sensorServiceTypes];
+  serviceType = [self serviceType];
+  v4 = [hf_sensorServiceTypes containsObject:serviceType];
 
   return v4;
 }
 
 - (uint64_t)hf_isAlarmSensorService
 {
-  v2 = [objc_opt_class() hf_alarmSensorServiceTypes];
-  v3 = [a1 serviceType];
-  v4 = [v2 containsObject:v3];
+  hf_alarmSensorServiceTypes = [objc_opt_class() hf_alarmSensorServiceTypes];
+  serviceType = [self serviceType];
+  v4 = [hf_alarmSensorServiceTypes containsObject:serviceType];
 
   return v4;
 }
 
 - (uint64_t)hf_isCameraContainedMotionSensor
 {
-  v2 = [a1 accessory];
-  if ([v2 hf_isCamera])
+  accessory = [self accessory];
+  if ([accessory hf_isCamera])
   {
-    v3 = [a1 serviceType];
-    v4 = [v3 isEqualToString:*MEMORY[0x277CD0EC0]];
+    serviceType = [self serviceType];
+    v4 = [serviceType isEqualToString:*MEMORY[0x277CD0EC0]];
   }
 
   else
@@ -367,8 +367,8 @@
 
 - (uint64_t)hf_requiresDeviceUnlock
 {
-  v1 = [a1 characteristics];
-  v2 = [v1 na_any:&__block_literal_global_42_1];
+  characteristics = [self characteristics];
+  v2 = [characteristics na_any:&__block_literal_global_42_1];
 
   return v2;
 }
@@ -400,14 +400,14 @@
 - (id)hf_childServicesOfType:()Additions
 {
   v4 = a3;
-  v5 = [a1 hf_childServices];
+  hf_childServices = [self hf_childServices];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__HMService_Additions__hf_childServicesOfType___block_invoke;
   v9[3] = &unk_277DF4020;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 na_filter:v9];
+  v7 = [hf_childServices na_filter:v9];
 
   return v7;
 }
@@ -430,11 +430,11 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __40__HMService_Additions__hf_childServices__block_invoke;
   aBlock[3] = &unk_277DF75E8;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v4 = _Block_copy(aBlock);
   v5 = +[HFHomePropertyCacheManager sharedManager];
   v6 = NSStringFromSelector(a2);
-  v7 = [v5 valueForObject:a1 key:v6 invalidationReasons:3 recalculationBlock:v4];
+  v7 = [v5 valueForObject:self key:v6 invalidationReasons:3 recalculationBlock:v4];
 
   return v7;
 }
@@ -443,8 +443,8 @@
 {
   v23 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [MEMORY[0x277CBEB58] setWithObject:a1];
-  v6 = [MEMORY[0x277CBEB18] arrayWithObject:a1];
+  v5 = [MEMORY[0x277CBEB58] setWithObject:self];
+  v6 = [MEMORY[0x277CBEB18] arrayWithObject:self];
   v7 = v6;
   while ([v6 count])
   {
@@ -454,8 +454,8 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [v8 linkedServices];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    linkedServices = [v8 linkedServices];
+    v10 = [linkedServices countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -466,7 +466,7 @@
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(linkedServices);
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
@@ -484,7 +484,7 @@
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [linkedServices countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v11)
         {
           continue;
@@ -506,48 +506,48 @@ LABEL_16:
 
 - (id)hf_parentService
 {
-  v2 = [a1 accessory];
-  v3 = [v2 hf_standardServices];
-  v4 = [v3 mutableCopy];
+  accessory = [self accessory];
+  hf_standardServices = [accessory hf_standardServices];
+  v4 = [hf_standardServices mutableCopy];
 
-  v5 = [a1 accessory];
-  v6 = [v5 hf_owningBridgeAccessory];
+  accessory2 = [self accessory];
+  hf_owningBridgeAccessory = [accessory2 hf_owningBridgeAccessory];
 
-  if (v6)
+  if (hf_owningBridgeAccessory)
   {
-    v7 = [v6 hf_standardServices];
-    [v4 unionSet:v7];
+    hf_standardServices2 = [hf_owningBridgeAccessory hf_standardServices];
+    [v4 unionSet:hf_standardServices2];
   }
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __40__HMService_Additions__hf_parentService__block_invoke;
   v11[3] = &unk_277DF4020;
-  v11[4] = a1;
+  v11[4] = self;
   v8 = [v4 na_filter:v11];
   if ([v8 count] < 2)
   {
-    v9 = [v8 anyObject];
+    anyObject = [v8 anyObject];
   }
 
   else
   {
-    NSLog(&cfstr_FoundMultipleM.isa, a1, v8);
-    v9 = 0;
+    NSLog(&cfstr_FoundMultipleM.isa, self, v8);
+    anyObject = 0;
   }
 
-  return v9;
+  return anyObject;
 }
 
 - (id)hf_effectiveServiceSubtype
 {
-  v2 = [a1 serviceSubtype];
-  v3 = v2;
-  if (!v2 || [v2 isEqualToString:*MEMORY[0x277CD0DB8]])
+  serviceSubtype = [self serviceSubtype];
+  v3 = serviceSubtype;
+  if (!serviceSubtype || [serviceSubtype isEqualToString:*MEMORY[0x277CD0DB8]])
   {
     v4 = objc_opt_class();
-    v5 = [a1 serviceType];
-    v6 = [v4 hf_defaultServiceSubtypeForServiceType:v5];
+    serviceType = [self serviceType];
+    v6 = [v4 hf_defaultServiceSubtypeForServiceType:serviceType];
 
     v3 = v6;
   }
@@ -597,11 +597,11 @@ LABEL_16:
 - (uint64_t)hf_canGroupWithService:()Additions
 {
   v4 = a3;
-  if (([v4 isEqual:a1] & 1) == 0 && objc_msgSend(a1, "hf_supportsGroups") && objc_msgSend(v4, "hf_supportsGroups"))
+  if (([v4 isEqual:self] & 1) == 0 && objc_msgSend(self, "hf_supportsGroups") && objc_msgSend(v4, "hf_supportsGroups"))
   {
-    v5 = [v4 hf_effectiveServiceType];
-    v6 = [a1 hf_effectiveServiceType];
-    v7 = [v5 isEqualToString:v6];
+    hf_effectiveServiceType = [v4 hf_effectiveServiceType];
+    hf_effectiveServiceType2 = [self hf_effectiveServiceType];
+    v7 = [hf_effectiveServiceType isEqualToString:hf_effectiveServiceType2];
 
     if (v7)
     {
@@ -610,13 +610,13 @@ LABEL_16:
 
     else
     {
-      v10 = [objc_opt_class() hf_fanServiceTypes];
-      v11 = [v4 hf_effectiveServiceType];
-      if ([v10 containsObject:v11])
+      hf_fanServiceTypes = [objc_opt_class() hf_fanServiceTypes];
+      hf_effectiveServiceType3 = [v4 hf_effectiveServiceType];
+      if ([hf_fanServiceTypes containsObject:hf_effectiveServiceType3])
       {
-        v12 = [objc_opt_class() hf_fanServiceTypes];
-        v13 = [a1 hf_effectiveServiceType];
-        v8 = [v12 containsObject:v13];
+        hf_fanServiceTypes2 = [objc_opt_class() hf_fanServiceTypes];
+        hf_effectiveServiceType4 = [self hf_effectiveServiceType];
+        v8 = [hf_fanServiceTypes2 containsObject:hf_effectiveServiceType4];
       }
 
       else
@@ -638,12 +638,12 @@ LABEL_16:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 serviceType];
-  v9 = [v8 isEqualToString:v7];
+  serviceType = [self serviceType];
+  v9 = [serviceType isEqualToString:v7];
 
   if (v9)
   {
-    v10 = [a1 hf_characteristicOfType:v6];
+    v10 = [self hf_characteristicOfType:v6];
   }
 
   else
@@ -656,14 +656,14 @@ LABEL_16:
 
 - (id)hf_lightProfiles
 {
-  v2 = [a1 accessory];
-  v3 = [v2 lightProfiles];
+  accessory = [self accessory];
+  lightProfiles = [accessory lightProfiles];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__HMService_Additions__hf_lightProfiles__block_invoke;
   v6[3] = &unk_277DFCC48;
-  v6[4] = a1;
-  v4 = [v3 na_map:v6];
+  v6[4] = self;
+  v4 = [lightProfiles na_map:v6];
 
   return v4;
 }
@@ -675,113 +675,113 @@ LABEL_16:
     return 1;
   }
 
-  v3 = [a1 home];
-  v4 = [v3 hf_enabledResidentsSupportsNaturalLight];
+  home = [self home];
+  hf_enabledResidentsSupportsNaturalLight = [home hf_enabledResidentsSupportsNaturalLight];
 
-  if (!v4)
+  if (!hf_enabledResidentsSupportsNaturalLight)
   {
     return 0;
   }
 
-  v5 = [a1 hf_lightProfiles];
-  v6 = [v5 na_any:&__block_literal_global_97_0];
+  hf_lightProfiles = [self hf_lightProfiles];
+  v6 = [hf_lightProfiles na_any:&__block_literal_global_97_0];
 
   return v6;
 }
 
 - (uint64_t)hf_isDisplayableSensor
 {
-  v2 = [a1 serviceType];
-  if ([v2 isEqual:*MEMORY[0x277CD0EC0]])
+  serviceType = [self serviceType];
+  if ([serviceType isEqual:*MEMORY[0x277CD0EC0]])
   {
     v3 = 0;
   }
 
   else
   {
-    v4 = [a1 serviceType];
-    if ([v4 isEqual:*MEMORY[0x277CD0E98]])
+    serviceType2 = [self serviceType];
+    if ([serviceType2 isEqual:*MEMORY[0x277CD0E98]])
     {
       v3 = 0;
     }
 
     else
     {
-      v5 = [a1 serviceType];
-      if ([v5 isEqual:*MEMORY[0x277CD0EC8]])
+      serviceType3 = [self serviceType];
+      if ([serviceType3 isEqual:*MEMORY[0x277CD0EC8]])
       {
         v3 = 0;
       }
 
       else
       {
-        v6 = [a1 serviceType];
-        if ([v6 isEqual:*MEMORY[0x277CD0DE0]])
+        serviceType4 = [self serviceType];
+        if ([serviceType4 isEqual:*MEMORY[0x277CD0DE0]])
         {
           v3 = 0;
         }
 
         else
         {
-          v7 = [a1 serviceType];
-          if ([v7 isEqual:*MEMORY[0x277CD0E10]])
+          serviceType5 = [self serviceType];
+          if ([serviceType5 isEqual:*MEMORY[0x277CD0E10]])
           {
             v3 = 0;
           }
 
           else
           {
-            v8 = [a1 serviceType];
-            if ([v8 isEqual:*MEMORY[0x277CD0E18]])
+            serviceType6 = [self serviceType];
+            if ([serviceType6 isEqual:*MEMORY[0x277CD0E18]])
             {
               v3 = 0;
             }
 
             else
             {
-              v9 = [a1 serviceType];
-              if ([v9 isEqual:*MEMORY[0x277CD0E20]])
+              serviceType7 = [self serviceType];
+              if ([serviceType7 isEqual:*MEMORY[0x277CD0E20]])
               {
                 v3 = 0;
               }
 
               else
               {
-                v10 = [a1 serviceType];
+                serviceType8 = [self serviceType];
                 v11 = *MEMORY[0x277CD0E70];
-                if ([v10 isEqual:*MEMORY[0x277CD0E70]])
+                if ([serviceType8 isEqual:*MEMORY[0x277CD0E70]])
                 {
                   v3 = 0;
                 }
 
                 else
                 {
-                  v16 = [a1 serviceType];
-                  if ([v16 isEqual:*MEMORY[0x277CD0E90]])
+                  serviceType9 = [self serviceType];
+                  if ([serviceType9 isEqual:*MEMORY[0x277CD0E90]])
                   {
                     v3 = 0;
                   }
 
                   else
                   {
-                    v15 = [a1 serviceType];
-                    if ([v15 isEqual:*MEMORY[0x277CD0EE8]])
+                    serviceType10 = [self serviceType];
+                    if ([serviceType10 isEqual:*MEMORY[0x277CD0EE8]])
                     {
                       v3 = 0;
                     }
 
                     else
                     {
-                      v14 = [a1 serviceType];
-                      if ([v14 isEqual:*MEMORY[0x277CD0F28]])
+                      serviceType11 = [self serviceType];
+                      if ([serviceType11 isEqual:*MEMORY[0x277CD0F28]])
                       {
                         v3 = 0;
                       }
 
                       else
                       {
-                        v13 = [a1 serviceType];
-                        v3 = [v13 isEqual:v11] ^ 1;
+                        serviceType12 = [self serviceType];
+                        v3 = [serviceType12 isEqual:v11] ^ 1;
                       }
                     }
                   }
@@ -813,7 +813,7 @@ LABEL_16:
 
 + (id)hf_userFriendlyLocalizedCapitalizedDescription:()Additions
 {
-  v1 = [a1 hf_getUserFriendlyDescriptionKey:?];
+  v1 = [self hf_getUserFriendlyDescriptionKey:?];
   v2 = [v1 stringByAppendingString:@"_ServiceTypeCapitalized"];
 
   v3 = _HFLocalizedStringWithDefaultValue(v2, 0, 0);
@@ -823,7 +823,7 @@ LABEL_16:
 
 + (id)hf_userFriendlyLocalizedLowercaseDescription:()Additions
 {
-  v1 = [a1 hf_getUserFriendlyDescriptionKey:?];
+  v1 = [self hf_getUserFriendlyDescriptionKey:?];
   v2 = [v1 stringByAppendingString:@"_ServiceTypeLowercase"];
 
   v3 = _HFLocalizedStringWithDefaultValue(v2, 0, 0);
@@ -834,41 +834,41 @@ LABEL_16:
 - (id)hf_userFriendlyLocalizedCapitalizedDescription
 {
   v2 = objc_opt_class();
-  v3 = [a1 serviceType];
-  v4 = [v2 hf_userFriendlyLocalizedCapitalizedDescription:v3];
+  serviceType = [self serviceType];
+  v4 = [v2 hf_userFriendlyLocalizedCapitalizedDescription:serviceType];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    localizedCapitalizedString = v4;
   }
 
   else
   {
-    v7 = [a1 serviceType];
-    v6 = [v7 localizedCapitalizedString];
+    serviceType2 = [self serviceType];
+    localizedCapitalizedString = [serviceType2 localizedCapitalizedString];
   }
 
-  return v6;
+  return localizedCapitalizedString;
 }
 
 - (id)hf_userFriendlyLocalizedLowercaseDescription
 {
   v2 = objc_opt_class();
-  v3 = [a1 serviceType];
-  v4 = [v2 hf_userFriendlyLocalizedLowercaseDescription:v3];
+  serviceType = [self serviceType];
+  v4 = [v2 hf_userFriendlyLocalizedLowercaseDescription:serviceType];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    localizedLowercaseString = v4;
   }
 
   else
   {
-    v7 = [a1 serviceType];
-    v6 = [v7 localizedLowercaseString];
+    serviceType2 = [self serviceType];
+    localizedLowercaseString = [serviceType2 localizedLowercaseString];
   }
 
-  return v6;
+  return localizedLowercaseString;
 }
 
 @end

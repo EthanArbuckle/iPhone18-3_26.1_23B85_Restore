@@ -2,8 +2,8 @@
 - (BOOL)allocateInputBufferObjects;
 - (BOOL)getInputPortNames;
 - (BOOL)initializeInputPorts;
-- (BOOL)processSuperResolutionInputBuffer:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4;
-- (ISRNet)initWithModelPath:(id)a3 inputWidth:(unint64_t)a4 inputHeight:(unint64_t)a5;
+- (BOOL)processSuperResolutionInputBuffer:(__CVBuffer *)buffer outputBuffer:(__CVBuffer *)outputBuffer;
+- (ISRNet)initWithModelPath:(id)path inputWidth:(unint64_t)width inputHeight:(unint64_t)height;
 - (void)allocateInputBufferObjects;
 - (void)dealloc;
 - (void)getInputPortNames;
@@ -167,10 +167,10 @@ LABEL_14:
   [(SRNet *)&v3 dealloc];
 }
 
-- (BOOL)processSuperResolutionInputBuffer:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4
+- (BOOL)processSuperResolutionInputBuffer:(__CVBuffer *)buffer outputBuffer:(__CVBuffer *)outputBuffer
 {
-  v7 = [(SRNet *)self normalization];
-  [v7 convertBuffer:a3 toFP16IOSurface:self->_inputSurface];
+  normalization = [(SRNet *)self normalization];
+  [normalization convertBuffer:buffer toFP16IOSurface:self->_inputSurface];
 
   if (e5rt_io_port_bind_buffer_object())
   {
@@ -197,18 +197,18 @@ LABEL_14:
   }
 
   v9 = [(SRNet *)self executeSynchronouslyOperation:[(SRNet *)self operation] onStream:[(SRNet *)self stream]];
-  v10 = [(SRNet *)self normalization];
-  [v10 convertFP16IOSurface:-[SRNet outputSurface](self toBuffer:{"outputSurface"), a4}];
+  normalization2 = [(SRNet *)self normalization];
+  [normalization2 convertFP16IOSurface:-[SRNet outputSurface](self toBuffer:{"outputSurface"), outputBuffer}];
 
   [(SRNet *)self resetStream:[(SRNet *)self stream]];
   return v9;
 }
 
-- (ISRNet)initWithModelPath:(id)a3 inputWidth:(unint64_t)a4 inputHeight:(unint64_t)a5
+- (ISRNet)initWithModelPath:(id)path inputWidth:(unint64_t)width inputHeight:(unint64_t)height
 {
   v9.receiver = self;
   v9.super_class = ISRNet;
-  v5 = [(SRNet *)&v9 initWithModelPath:a3 inputWidth:a4 inputHeight:a5];
+  v5 = [(SRNet *)&v9 initWithModelPath:path inputWidth:width inputHeight:height];
   v6 = v5;
   if (!v5 || [(ISRNet *)v5 initializeInputPorts]&& [(ISRNet *)v6 allocateInputBufferObjects])
   {

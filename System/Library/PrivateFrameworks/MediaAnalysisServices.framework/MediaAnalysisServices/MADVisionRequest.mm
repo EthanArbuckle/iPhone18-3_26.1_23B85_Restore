@@ -1,63 +1,63 @@
 @interface MADVisionRequest
-+ (id)requestWithVisionRequest:(id)a3 error:(id *)a4;
-- (MADVisionRequest)initWithCoder:(id)a3;
-- (MADVisionRequest)initWithVisionRequest:(id)a3 error:(id *)a4;
++ (id)requestWithVisionRequest:(id)request error:(id *)error;
+- (MADVisionRequest)initWithCoder:(id)coder;
+- (MADVisionRequest)initWithVisionRequest:(id)request error:(id *)error;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVisionRequest
 
-- (MADVisionRequest)initWithVisionRequest:(id)a3 error:(id *)a4
+- (MADVisionRequest)initWithVisionRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v10.receiver = self;
   v10.super_class = MADVisionRequest;
   v7 = [(MADVisionRequest *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_visionRequest, a3);
+    objc_storeStrong(&v7->_visionRequest, request);
   }
 
   return v8;
 }
 
-+ (id)requestWithVisionRequest:(id)a3 error:(id *)a4
++ (id)requestWithVisionRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithVisionRequest:v6 error:a4];
+  requestCopy = request;
+  v7 = [[self alloc] initWithVisionRequest:requestCopy error:error];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MADVisionRequest;
-  [(MADRequest *)&v7 encodeWithCoder:v4];
+  [(MADRequest *)&v7 encodeWithCoder:coderCopy];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 encodeObject:v6 forKey:@"VisionRequestClassName"];
+  [coderCopy encodeObject:v6 forKey:@"VisionRequestClassName"];
 
-  [v4 encodeInteger:-[VNRequest revision](self->_visionRequest forKey:{"revision"), @"VisionRequestRevision"}];
+  [coderCopy encodeInteger:-[VNRequest revision](self->_visionRequest forKey:{"revision"), @"VisionRequestRevision"}];
 }
 
-- (MADVisionRequest)initWithCoder:(id)a3
+- (MADVisionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = MADVisionRequest;
-  v5 = [(MADRequest *)&v10 initWithCoder:v4];
+  v5 = [(MADRequest *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"VisionRequestClassName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"VisionRequestClassName"];
     v7 = objc_alloc_init(NSClassFromString(v6));
     visionRequest = v5->_visionRequest;
     v5->_visionRequest = v7;
 
-    -[VNRequest setRevision:](v5->_visionRequest, "setRevision:", [v4 decodeIntegerForKey:@"VisionRequestRevision"]);
+    -[VNRequest setRevision:](v5->_visionRequest, "setRevision:", [coderCopy decodeIntegerForKey:@"VisionRequestRevision"]);
   }
 
   return v5;

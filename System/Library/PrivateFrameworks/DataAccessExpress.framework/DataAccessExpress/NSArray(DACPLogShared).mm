@@ -7,14 +7,14 @@
 
 - (id)DACPLogSubarrayFromIndexToEndOfArray:()DACPLogShared
 {
-  if ([a1 count] <= a3)
+  if ([self count] <= a3)
   {
     v5 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v5 = [a1 subarrayWithRange:{a3, objc_msgSend(a1, "count") - a3}];
+    v5 = [self subarrayWithRange:{a3, objc_msgSend(self, "count") - a3}];
   }
 
   return v5;
@@ -24,7 +24,7 @@
 {
   v4 = a3;
   v5 = [v4 count];
-  if (v5 <= [a1 count])
+  if (v5 <= [self count])
   {
     if ([v4 count])
     {
@@ -32,7 +32,7 @@
       do
       {
         v8 = [v4 objectAtIndexedSubscript:v7];
-        v9 = [a1 objectAtIndexedSubscript:v7];
+        v9 = [self objectAtIndexedSubscript:v7];
         v6 = [v8 isEqual:v9];
 
         if ((v6 & 1) == 0)

@@ -1,5 +1,5 @@
 @interface WFStateMachineTransitionEvent
-- (WFStateMachineTransitionEvent)initWithState:(id)a3 reason:(id)a4 valid:(BOOL)a5;
+- (WFStateMachineTransitionEvent)initWithState:(id)state reason:(id)reason valid:(BOOL)valid;
 - (id)description;
 @end
 
@@ -18,30 +18,30 @@
     v4 = @"<INVALID TRANSITION>";
   }
 
-  v5 = [(WFStateMachineTransitionEvent *)self state];
-  v6 = [v5 description];
-  v7 = [(WFStateMachineTransitionEvent *)self reason];
-  v8 = [v3 stringWithFormat:@"%@[%@, reason: %@]", v4, v6, v7];
+  state = [(WFStateMachineTransitionEvent *)self state];
+  v6 = [state description];
+  reason = [(WFStateMachineTransitionEvent *)self reason];
+  v8 = [v3 stringWithFormat:@"%@[%@, reason: %@]", v4, v6, reason];
 
   return v8;
 }
 
-- (WFStateMachineTransitionEvent)initWithState:(id)a3 reason:(id)a4 valid:(BOOL)a5
+- (WFStateMachineTransitionEvent)initWithState:(id)state reason:(id)reason valid:(BOOL)valid
 {
-  v9 = a3;
-  v10 = a4;
+  stateCopy = state;
+  reasonCopy = reason;
   v17.receiver = self;
   v17.super_class = WFStateMachineTransitionEvent;
   v11 = [(WFStateMachineTransitionEvent *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_state, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_state, state);
+    v13 = [reasonCopy copy];
     reason = v12->_reason;
     v12->_reason = v13;
 
-    v12->_valid = a5;
+    v12->_valid = valid;
     v15 = v12;
   }
 

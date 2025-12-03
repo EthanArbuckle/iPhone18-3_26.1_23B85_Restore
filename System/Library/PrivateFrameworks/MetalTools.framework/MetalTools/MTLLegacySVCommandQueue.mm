@@ -1,19 +1,19 @@
 @interface MTLLegacySVCommandQueue
-- (MTLLegacySVCommandQueue)initWithCommandQueue:(id)a3 device:(id)a4;
+- (MTLLegacySVCommandQueue)initWithCommandQueue:(id)queue device:(id)device;
 - (id)commandBuffer;
-- (id)commandBufferWithDescriptor:(id)a3;
+- (id)commandBufferWithDescriptor:(id)descriptor;
 @end
 
 @implementation MTLLegacySVCommandQueue
 
-- (MTLLegacySVCommandQueue)initWithCommandQueue:(id)a3 device:(id)a4
+- (MTLLegacySVCommandQueue)initWithCommandQueue:(id)queue device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MTLLegacySVCommandQueue;
-  result = [(MTLToolsCommandQueue *)&v6 initWithBaseObject:a3 parent:?];
+  result = [(MTLToolsCommandQueue *)&v6 initWithBaseObject:queue parent:?];
   if (result)
   {
-    result->_deviceOptions = (a4 + 292);
+    result->_deviceOptions = (device + 292);
   }
 
   return result;
@@ -26,15 +26,15 @@
   return v2;
 }
 
-- (id)commandBufferWithDescriptor:(id)a3
+- (id)commandBufferWithDescriptor:(id)descriptor
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [(MTLToolsDevice *)self->super.super._device unwrapMTLCommandBufferDescriptor:a3 alwaysCopy:1];
+  v6 = [(MTLToolsDevice *)self->super.super._device unwrapMTLCommandBufferDescriptor:descriptor alwaysCopy:1];
   [v6 setRetainedReferences:1];
   v7 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v7)
   {
-    v8 = [[MTLLegacySVCommandBuffer alloc] initWithCommandBuffer:v7 commandQueue:self descriptor:a3];
+    v8 = [[MTLLegacySVCommandBuffer alloc] initWithCommandBuffer:v7 commandQueue:self descriptor:descriptor];
     objc_autoreleasePoolPop(v5);
 
     return v8;

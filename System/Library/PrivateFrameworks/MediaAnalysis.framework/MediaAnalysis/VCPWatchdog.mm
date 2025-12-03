@@ -4,8 +4,8 @@
 - (void)disable;
 - (void)enable;
 - (void)pet;
-- (void)petWithCrashCallback:(id)a3;
-- (void)petWithMessage:(id)a3;
+- (void)petWithCrashCallback:(id)callback;
+- (void)petWithMessage:(id)message;
 @end
 
 @implementation VCPWatchdog
@@ -63,17 +63,17 @@
   }
 }
 
-- (void)petWithMessage:(id)a3
+- (void)petWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   alarm(0x78u);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001FBF4;
   block[3] = &unk_100283210;
-  v8 = v4;
-  v6 = v4;
+  v8 = messageCopy;
+  v6 = messageCopy;
   dispatch_sync(queue, block);
 }
 
@@ -84,17 +84,17 @@
   alarm(0x78u);
 }
 
-- (void)petWithCrashCallback:(id)a3
+- (void)petWithCrashCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   alarm(0x78u);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001FD30;
   block[3] = &unk_100283258;
-  v8 = v4;
-  v6 = v4;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   dispatch_sync(queue, block);
 }
 

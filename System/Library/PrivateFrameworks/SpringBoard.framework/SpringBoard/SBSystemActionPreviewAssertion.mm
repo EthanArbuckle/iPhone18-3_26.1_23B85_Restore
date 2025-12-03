@@ -1,94 +1,94 @@
 @interface SBSystemActionPreviewAssertion
 - (id)acquireAssertionForInvalidatingAfterDefaultTimeoutForActionPerformed;
-- (id)descriptionBuilderWithMultilinePrefix:(void *)a1;
-- (id)descriptionWithMultilinePrefix:(uint64_t)a1;
-- (id)initWithIdentifier:(void *)a3 forReason:(void *)a4 expansionInvalidationBlock:(void *)a5 urgencyInvalidationBlock:(void *)a6 finalInvalidationBlock:;
+- (id)descriptionBuilderWithMultilinePrefix:(void *)prefix;
+- (id)descriptionWithMultilinePrefix:(uint64_t)prefix;
+- (id)initWithIdentifier:(void *)identifier forReason:(void *)reason expansionInvalidationBlock:(void *)block urgencyInvalidationBlock:(void *)invalidationBlock finalInvalidationBlock:;
 - (id)succinctDescriptionBuilder;
 - (uint64_t)identifier;
 - (uint64_t)reason;
-- (void)_invalidateAfterContextualTimeoutWithResult:(uint64_t)a1;
-- (void)_invalidateExpansionWithResult:(uint64_t)a1;
+- (void)_invalidateAfterContextualTimeoutWithResult:(uint64_t)result;
+- (void)_invalidateExpansionWithResult:(uint64_t)result;
 - (void)_invalidateUrgency;
 - (void)_invalidateUrgencyAfterDefaultTimeoutForActionPerformed;
-- (void)addExpansionInvalidationBlock:(id)a3;
-- (void)addInvalidationBlock:(id)a3;
+- (void)addExpansionInvalidationBlock:(id)block;
+- (void)addInvalidationBlock:(id)block;
 - (void)dealloc;
-- (void)invalidateWithResult:(unint64_t)a3;
+- (void)invalidateWithResult:(unint64_t)result;
 @end
 
 @implementation SBSystemActionPreviewAssertion
 
-- (id)initWithIdentifier:(void *)a3 forReason:(void *)a4 expansionInvalidationBlock:(void *)a5 urgencyInvalidationBlock:(void *)a6 finalInvalidationBlock:
+- (id)initWithIdentifier:(void *)identifier forReason:(void *)reason expansionInvalidationBlock:(void *)block urgencyInvalidationBlock:(void *)invalidationBlock finalInvalidationBlock:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (a1)
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  blockCopy = block;
+  invalidationBlockCopy = invalidationBlock;
+  if (self)
   {
     if (!v11)
     {
       [SBSystemActionPreviewAssertion initWithIdentifier:? forReason:? expansionInvalidationBlock:? urgencyInvalidationBlock:? finalInvalidationBlock:?];
     }
 
-    if (!v12)
+    if (!identifierCopy)
     {
       [SBSystemActionPreviewAssertion initWithIdentifier:? forReason:? expansionInvalidationBlock:? urgencyInvalidationBlock:? finalInvalidationBlock:?];
     }
 
-    if (!v13)
+    if (!reasonCopy)
     {
       [SBSystemActionPreviewAssertion initWithIdentifier:? forReason:? expansionInvalidationBlock:? urgencyInvalidationBlock:? finalInvalidationBlock:?];
     }
 
-    if (!v14)
+    if (!blockCopy)
     {
       [SBSystemActionPreviewAssertion initWithIdentifier:? forReason:? expansionInvalidationBlock:? urgencyInvalidationBlock:? finalInvalidationBlock:?];
     }
 
-    if (!v15)
+    if (!invalidationBlockCopy)
     {
       [SBSystemActionPreviewAssertion initWithIdentifier:? forReason:? expansionInvalidationBlock:? urgencyInvalidationBlock:? finalInvalidationBlock:?];
     }
 
-    v28.receiver = a1;
+    v28.receiver = self;
     v28.super_class = SBSystemActionPreviewAssertion;
-    a1 = objc_msgSendSuper2(&v28, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v28, sel_init);
+    if (self)
     {
       v16 = [v11 copy];
-      v17 = *(a1 + 10);
-      *(a1 + 10) = v16;
+      v17 = *(self + 10);
+      *(self + 10) = v16;
 
-      v18 = [v12 copy];
-      v19 = *(a1 + 11);
-      *(a1 + 11) = v18;
+      v18 = [identifierCopy copy];
+      v19 = *(self + 11);
+      *(self + 11) = v18;
 
-      v20 = [v14 copy];
-      v21 = *(a1 + 1);
-      *(a1 + 1) = v20;
+      v20 = [blockCopy copy];
+      v21 = *(self + 1);
+      *(self + 1) = v20;
 
-      v22 = [v15 copy];
-      v23 = *(a1 + 2);
-      *(a1 + 2) = v22;
+      v22 = [invalidationBlockCopy copy];
+      v23 = *(self + 2);
+      *(self + 2) = v22;
 
-      *(a1 + 18) = 65793;
+      *(self + 18) = 65793;
       v24 = +[SBSystemActionDomain rootSettings];
-      v25 = [v24 previewSettings];
-      v26 = *(a1 + 3);
-      *(a1 + 3) = v25;
+      previewSettings = [v24 previewSettings];
+      v26 = *(self + 3);
+      *(self + 3) = previewSettings;
 
-      [a1 addExpansionInvalidationBlock:v13];
+      [self addExpansionInvalidationBlock:reasonCopy];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Client code must invalidate <%@:%p> (%@: %@) before dealloc", objc_opt_class(), a1, *(a1 + 80), *(a1 + 88)];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Client code must invalidate <%@:%p> (%@: %@) before dealloc", objc_opt_class(), self, *(self + 80), *(self + 88)];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v5 = NSStringFromSelector(a2);
@@ -99,7 +99,7 @@
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = a1;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"SBSystemActionPreviewAssertion.m";
     v16 = 1024;
@@ -114,9 +114,9 @@
   __break(0);
 }
 
-- (void)addExpansionInvalidationBlock:(id)a3
+- (void)addExpansionInvalidationBlock:(id)block
 {
-  v10 = a3;
+  blockCopy = block;
   if (![(SBSystemActionPreviewAssertion *)self isValid])
   {
     [SBSystemActionPreviewAssertion addExpansionInvalidationBlock:a2];
@@ -137,14 +137,14 @@
     expansionInvalidationBlocks = self->_expansionInvalidationBlocks;
   }
 
-  v8 = [v10 copy];
+  v8 = [blockCopy copy];
   v9 = MEMORY[0x223D6F7F0]();
   [(NSMutableOrderedSet *)expansionInvalidationBlocks addObject:v9];
 }
 
-- (void)addInvalidationBlock:(id)a3
+- (void)addInvalidationBlock:(id)block
 {
-  v10 = a3;
+  blockCopy = block;
   if (![(SBSystemActionPreviewAssertion *)self isValid])
   {
     [SBSystemActionPreviewAssertion addInvalidationBlock:a2];
@@ -160,17 +160,17 @@
     invalidationBlocks = self->_invalidationBlocks;
   }
 
-  v8 = [v10 copy];
+  v8 = [blockCopy copy];
   v9 = MEMORY[0x223D6F7F0]();
   [(NSMutableOrderedSet *)invalidationBlocks addObject:v9];
 }
 
-- (void)_invalidateAfterContextualTimeoutWithResult:(uint64_t)a1
+- (void)_invalidateAfterContextualTimeoutWithResult:(uint64_t)result
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a1 && [a1 isValid] && !*(a1 + 40))
+  if (result && [result isValid] && !*(result + 40))
   {
-    [*(a1 + 24) minimumPreviewInterval];
+    [*(result + 24) minimumPreviewInterval];
     v5 = v4;
     if (a2 == 1)
     {
@@ -182,13 +182,13 @@
       v6 = 0.0;
       if (!a2)
       {
-        if (*(a1 + 48) <= 0.0)
+        if (*(result + 48) <= 0.0)
         {
           [SBSystemActionPreviewAssertion _invalidateAfterContextualTimeoutWithResult:?];
         }
 
         BSContinuousMachTimeNow();
-        v8 = v5 - (v7 - *(a1 + 48));
+        v8 = v5 - (v7 - *(result + 48));
         if (v8 >= 0.0)
         {
           v6 = v8;
@@ -207,29 +207,29 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v16 = a1;
+        resultCopy = result;
         v17 = 2048;
         v18 = v6;
         _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ creating %fs invalidation timer", buf, 0x16u);
       }
 
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Preview-minimum-interval-timer:%@", *(a1 + 80)];
+      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Preview-minimum-interval-timer:%@", *(result + 80)];
       v11 = [objc_alloc(MEMORY[0x277CF0BD8]) initWithIdentifier:v10];
-      v12 = *(a1 + 40);
-      *(a1 + 40) = v11;
+      v12 = *(result + 40);
+      *(result + 40) = v11;
 
       if (a2 == 1)
       {
-        [SBSystemActionPreviewAssertion _invalidateExpansionWithResult:a1];
-        [(SBSystemActionPreviewAssertion *)a1 _invalidateUrgency];
+        [SBSystemActionPreviewAssertion _invalidateExpansionWithResult:result];
+        [(SBSystemActionPreviewAssertion *)result _invalidateUrgency];
       }
 
-      v13 = *(a1 + 40);
+      v13 = *(result + 40);
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __78__SBSystemActionPreviewAssertion__invalidateAfterContextualTimeoutWithResult___block_invoke;
       v14[3] = &unk_2783A8AC0;
-      v14[4] = a1;
+      v14[4] = result;
       v14[5] = a2;
       [v13 scheduleWithFireInterval:MEMORY[0x277D85CD0] leewayInterval:v14 queue:v6 handler:0.05];
     }
@@ -237,7 +237,7 @@
     else
     {
 
-      [a1 invalidateWithResult:a2];
+      [result invalidateWithResult:a2];
     }
   }
 }
@@ -273,27 +273,27 @@
 - (void)_invalidateUrgencyAfterDefaultTimeoutForActionPerformed
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a1 && [a1 isValid] && !*(a1 + 32))
+  if (self && [self isValid] && !*(self + 32))
   {
-    [*(a1 + 24) additionalUrgencyInterval];
+    [*(self + 24) additionalUrgencyInterval];
     v3 = v2;
     v4 = SBLogSystemActionPreviewing();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v13 = a1;
+      selfCopy = self;
       v14 = 2048;
       v15 = v3;
       _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ creating %fs urgency invalidation timer", buf, 0x16u);
     }
 
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Urgency-interval-timer:%@", *(a1 + 80)];
+    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Urgency-interval-timer:%@", *(self + 80)];
     v6 = [objc_alloc(MEMORY[0x277CF0BD8]) initWithIdentifier:v5];
-    v7 = *(a1 + 32);
-    *(a1 + 32) = v6;
+    v7 = *(self + 32);
+    *(self + 32) = v6;
 
-    objc_initWeak(buf, a1);
-    v8 = *(a1 + 32);
+    objc_initWeak(buf, self);
+    v8 = *(self + 32);
     v9 = MEMORY[0x277D85CD0];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -307,26 +307,26 @@
   }
 }
 
-- (void)invalidateWithResult:(unint64_t)a3
+- (void)invalidateWithResult:(unint64_t)result
 {
   v7 = *MEMORY[0x277D85DE8];
   if ([(SBSystemActionPreviewAssertion *)self isValid])
   {
-    [(SBSystemActionPreviewAssertion *)self invalidateWithResult:a3, v5, v6];
+    [(SBSystemActionPreviewAssertion *)self invalidateWithResult:result, v5, v6];
   }
 }
 
-- (void)_invalidateExpansionWithResult:(uint64_t)a1
+- (void)_invalidateExpansionWithResult:(uint64_t)result
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a1 && *(a1 + 74) == 1)
+  if (result && *(result + 74) == 1)
   {
-    *(a1 + 74) = 0;
+    *(result + 74) = 0;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v2 = *(a1 + 56);
+    v2 = *(result + 56);
     v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v3)
     {
@@ -354,20 +354,20 @@
       while (v4);
     }
 
-    v10 = *(a1 + 56);
-    *(a1 + 56) = 0;
+    v10 = *(result + 56);
+    *(result + 56) = 0;
   }
 }
 
 - (void)_invalidateUrgency
 {
-  if (a1 && *(a1 + 73) == 1)
+  if (self && *(self + 73) == 1)
   {
-    *(a1 + 73) = 0;
+    *(self + 73) = 0;
     OUTLINED_FUNCTION_2_6();
     v2();
-    v3 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    v3 = *(self + 8);
+    *(self + 8) = 0;
   }
 }
 
@@ -377,35 +377,35 @@ void __89__SBSystemActionPreviewAssertion__invalidateUrgencyAfterDefaultTimeoutF
   [(SBSystemActionPreviewAssertion *)WeakRetained _invalidateUrgency];
 }
 
-- (id)descriptionWithMultilinePrefix:(uint64_t)a1
+- (id)descriptionWithMultilinePrefix:(uint64_t)prefix
 {
-  if (a1)
+  if (prefix)
   {
-    v1 = [(SBSystemActionPreviewAssertion *)a1 succinctDescriptionBuilder];
-    v2 = [v1 build];
+    succinctDescriptionBuilder = [(SBSystemActionPreviewAssertion *)prefix succinctDescriptionBuilder];
+    build = [succinctDescriptionBuilder build];
   }
 
   else
   {
-    v2 = 0;
+    build = 0;
   }
 
-  return v2;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x277CF0C00] builderWithObject:a1];
-    v3 = [v2 appendObject:*(a1 + 80) withName:@"identifier"];
-    v4 = [v2 appendObject:*(a1 + 88) withName:@"reason"];
-    v5 = [v2 appendBool:*(a1 + 72) withName:@"valid"];
-    v6 = [v2 appendBool:*(a1 + 73) withName:@"urgent"];
-    v7 = [v2 appendBool:*(a1 + 74) withName:@"expanding"];
-    v8 = [v2 appendBool:*(a1 + 75) withName:@"prominent"];
-    v9 = [v2 appendBool:objc_msgSend(*(a1 + 32) withName:"isScheduled") ifEqualTo:{@"pendingUrgencyInvalidation", 1}];
-    v10 = [v2 appendBool:objc_msgSend(*(a1 + 40) withName:"isScheduled") ifEqualTo:{@"pendingInvalidation", 1}];
+    v2 = [MEMORY[0x277CF0C00] builderWithObject:self];
+    v3 = [v2 appendObject:*(self + 80) withName:@"identifier"];
+    v4 = [v2 appendObject:*(self + 88) withName:@"reason"];
+    v5 = [v2 appendBool:*(self + 72) withName:@"valid"];
+    v6 = [v2 appendBool:*(self + 73) withName:@"urgent"];
+    v7 = [v2 appendBool:*(self + 74) withName:@"expanding"];
+    v8 = [v2 appendBool:*(self + 75) withName:@"prominent"];
+    v9 = [v2 appendBool:objc_msgSend(*(self + 32) withName:"isScheduled") ifEqualTo:{@"pendingUrgencyInvalidation", 1}];
+    v10 = [v2 appendBool:objc_msgSend(*(self + 40) withName:"isScheduled") ifEqualTo:{@"pendingInvalidation", 1}];
   }
 
   else
@@ -416,15 +416,15 @@ void __89__SBSystemActionPreviewAssertion__invalidateUrgencyAfterDefaultTimeoutF
   return v2;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(void *)a1
+- (id)descriptionBuilderWithMultilinePrefix:(void *)prefix
 {
-  if (a1)
+  if (prefix)
   {
-    a1 = [(SBSystemActionPreviewAssertion *)a1 succinctDescriptionBuilder];
+    prefix = [(SBSystemActionPreviewAssertion *)prefix succinctDescriptionBuilder];
     v1 = vars8;
   }
 
-  return a1;
+  return prefix;
 }
 
 - (uint64_t)identifier
@@ -576,23 +576,6 @@ void __89__SBSystemActionPreviewAssertion__invalidateUrgencyAfterDefaultTimeoutF
 - (void)addInvalidationBlock:(char *)a1 .cold.1(char *a1)
 {
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Can't add an invalidation block to an already-invalidated assertion"];
-  if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
-  {
-    NSStringFromSelector(a1);
-    objc_claimAutoreleasedReturnValue();
-    v3 = OUTLINED_FUNCTION_5_0();
-    v4 = NSStringFromClass(v3);
-    OUTLINED_FUNCTION_1();
-    OUTLINED_FUNCTION_4_2(&dword_21ED4E000, MEMORY[0x277D86220], v5, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", v6, v7, v8, v9, v10);
-  }
-
-  [v2 UTF8String];
-  _bs_set_crash_log_message();
-  __break(0);
-}
-
-- (void)_invalidateAfterContextualTimeoutWithResult:(char *)a1 .cold.1(char *a1)
-  v2 = {;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     NSStringFromSelector(a1);

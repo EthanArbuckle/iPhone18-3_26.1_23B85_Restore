@@ -1,30 +1,30 @@
 @interface DYGLCaptureSessionInfo
-+ (DYGLCaptureSessionInfo)captureSessionInfoWithCaptureStore:(id)a3;
-- (DYGLCaptureSessionInfo)initWithCaptureStore:(id)a3;
-- (id)contextInfoForContext:(unint64_t)a3;
++ (DYGLCaptureSessionInfo)captureSessionInfoWithCaptureStore:(id)store;
+- (DYGLCaptureSessionInfo)initWithCaptureStore:(id)store;
+- (id)contextInfoForContext:(unint64_t)context;
 - (void)dealloc;
-- (void)deleteContexts:(const void *)a3;
+- (void)deleteContexts:(const void *)contexts;
 @end
 
 @implementation DYGLCaptureSessionInfo
 
-+ (DYGLCaptureSessionInfo)captureSessionInfoWithCaptureStore:(id)a3
++ (DYGLCaptureSessionInfo)captureSessionInfoWithCaptureStore:(id)store
 {
-  v3 = [[a1 alloc] initWithCaptureStore:a3];
+  v3 = [[self alloc] initWithCaptureStore:store];
 
   return v3;
 }
 
-- (DYGLCaptureSessionInfo)initWithCaptureStore:(id)a3
+- (DYGLCaptureSessionInfo)initWithCaptureStore:(id)store
 {
   v6.receiver = self;
   v6.super_class = DYGLCaptureSessionInfo;
   v4 = [(DYCaptureSessionInfo *)&v6 initWithCaptureStore:?];
   if (v4)
   {
-    v4->_wasCheckingGLErrors = [objc_msgSend(a3 metadataValueForKey:{*MEMORY[0x277D0B0C0]), "BOOLValue"}];
-    v4->_contextsInfo = [objc_msgSend(a3 openFileWithFilename:*MEMORY[0x277D0AF38] error:{0), "decodeArchivedObject"}];
-    v4->_requiredExtensions = [objc_msgSend(a3 openFileWithFilename:*MEMORY[0x277D0AF40] error:{0), "decodeSerializedPropertyListWithOptions:error:", 0, 0}];
+    v4->_wasCheckingGLErrors = [objc_msgSend(store metadataValueForKey:{*MEMORY[0x277D0B0C0]), "BOOLValue"}];
+    v4->_contextsInfo = [objc_msgSend(store openFileWithFilename:*MEMORY[0x277D0AF38] error:{0), "decodeArchivedObject"}];
+    v4->_requiredExtensions = [objc_msgSend(store openFileWithFilename:*MEMORY[0x277D0AF40] error:{0), "decodeSerializedPropertyListWithOptions:error:", 0, 0}];
   }
 
   return v4;
@@ -37,7 +37,7 @@
   [(DYCaptureSessionInfo *)&v3 dealloc];
 }
 
-- (id)contextInfoForContext:(unint64_t)a3
+- (id)contextInfoForContext:(unint64_t)context
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -60,7 +60,7 @@ LABEL_3:
       }
 
       v9 = *(*(&v12 + 1) + 8 * v8);
-      if ([v9 identifier] == a3)
+      if ([v9 identifier] == context)
       {
         break;
       }
@@ -140,7 +140,7 @@ LABEL_9:
   return result;
 }
 
-- (void)deleteContexts:(const void *)a3
+- (void)deleteContexts:(const void *)contexts
 {
   v22 = *MEMORY[0x277D85DE8];
   if (self->_contextsInfo)
@@ -166,23 +166,23 @@ LABEL_9:
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
-          if (*a3 == *(a3 + 1))
+          if (*contexts == *(contexts + 1))
           {
             goto LABEL_15;
           }
 
-          v12 = *a3 + 8;
+          v12 = *contexts + 8;
           do
           {
-            v13 = [v11 identifier];
+            identifier = [v11 identifier];
             v14 = *(v12 - 8);
-            v15 = v12 == *(a3 + 1);
+            v15 = v12 == *(contexts + 1);
             v12 += 8;
-            v15 = v15 || v13 == v14;
+            v15 = v15 || identifier == v14;
           }
 
           while (!v15);
-          if (v13 != v14)
+          if (identifier != v14)
           {
 LABEL_15:
             [(NSArray *)v5 addObject:v11];

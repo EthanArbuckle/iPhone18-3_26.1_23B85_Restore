@@ -1,15 +1,15 @@
 @interface AKTTRController
-+ (id)generateRadarRequestFor:(unint64_t)a3;
++ (id)generateRadarRequestFor:(unint64_t)for;
 + (id)sharedController;
 - (AKTTRController)init;
-- (BOOL)shouldSuppressPushMessage:(id)a3;
-- (void)_performSilentTTRForRequest:(id)a3 completion:(id)a4;
-- (void)performSilentTTRFor:(unint64_t)a3 completion:(id)a4;
-- (void)processPushMessage:(id)a3;
-- (void)requestSilentTTRWithTitle:(id)a3 message:(id)a4 componentName:(id)a5 componentVersion:(id)a6 componentID:(id)a7 keywords:(id)a8 completion:(id)a9;
-- (void)requestSilentTTRWithTitle:(id)a3 message:(id)a4 keywords:(id)a5 completion:(id)a6;
-- (void)requestTapToRadarWithTitle:(id)a3 message:(id)a4 componentName:(id)a5 componentVersion:(id)a6 componentID:(id)a7 keywords:(id)a8;
-- (void)requestTapToRadarWithTitle:(id)a3 message:(id)a4 keywords:(id)a5;
+- (BOOL)shouldSuppressPushMessage:(id)message;
+- (void)_performSilentTTRForRequest:(id)request completion:(id)completion;
+- (void)performSilentTTRFor:(unint64_t)for completion:(id)completion;
+- (void)processPushMessage:(id)message;
+- (void)requestSilentTTRWithTitle:(id)title message:(id)message componentName:(id)name componentVersion:(id)version componentID:(id)d keywords:(id)keywords completion:(id)completion;
+- (void)requestSilentTTRWithTitle:(id)title message:(id)message keywords:(id)keywords completion:(id)completion;
+- (void)requestTapToRadarWithTitle:(id)title message:(id)message componentName:(id)name componentVersion:(id)version componentID:(id)d keywords:(id)keywords;
+- (void)requestTapToRadarWithTitle:(id)title message:(id)message keywords:(id)keywords;
 @end
 
 @implementation AKTTRController
@@ -43,12 +43,12 @@
   return v3;
 }
 
-- (BOOL)shouldSuppressPushMessage:(id)a3
+- (BOOL)shouldSuppressPushMessage:(id)message
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   if ([location[0] command] != 1700 || (v6 = +[AKDevice currentDevice](AKDevice, "currentDevice"), v7 = objc_msgSend(v6, "isInternalBuild"), _objc_release(v6), v7))
   {
     v12 = 0;
@@ -74,17 +74,17 @@
   return v12 & 1;
 }
 
-- (void)processPushMessage:(id)a3
+- (void)processPushMessage:(id)message
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   if ([location[0] command] == 1700)
   {
-    v6 = [location[0] userInfo];
-    v20 = [v6 objectForKeyedSubscript:@"ttrinfo"];
-    _objc_release(v6);
+    userInfo = [location[0] userInfo];
+    v20 = [userInfo objectForKeyedSubscript:@"ttrinfo"];
+    _objc_release(userInfo);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -128,12 +128,12 @@
       objc_storeStrong(&oslog, 0);
       if (v19 && v18 && v17 && v16)
       {
-        [(AKTTRController *)v22 requestTapToRadarWithTitle:v19 message:v14 componentName:v18 componentVersion:v17 componentID:v16 keywords:v12];
+        [(AKTTRController *)selfCopy requestTapToRadarWithTitle:v19 message:v14 componentName:v18 componentVersion:v17 componentID:v16 keywords:v12];
       }
 
       else if (v19)
       {
-        [(AKTTRController *)v22 requestTapToRadarWithTitle:v19 message:v14 keywords:v12];
+        [(AKTTRController *)selfCopy requestTapToRadarWithTitle:v19 message:v14 keywords:v12];
       }
 
       else
@@ -164,42 +164,42 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)requestTapToRadarWithTitle:(id)a3 message:(id)a4 keywords:(id)a5
+- (void)requestTapToRadarWithTitle:(id)title message:(id)message keywords:(id)keywords
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, message);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  [(AKTTRController *)v10 requestTapToRadarWithTitle:location[0] message:v8 componentName:@"AuthKit" componentVersion:@"All" componentID:@"621449" keywords:v7];
+  objc_storeStrong(&v7, keywords);
+  [(AKTTRController *)selfCopy requestTapToRadarWithTitle:location[0] message:v8 componentName:@"AuthKit" componentVersion:@"All" componentID:@"621449" keywords:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)requestTapToRadarWithTitle:(id)a3 message:(id)a4 componentName:(id)a5 componentVersion:(id)a6 componentID:(id)a7 keywords:(id)a8
+- (void)requestTapToRadarWithTitle:(id)title message:(id)message componentName:(id)name componentVersion:(id)version componentID:(id)d keywords:(id)keywords
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   v44 = 0;
-  objc_storeStrong(&v44, a4);
+  objc_storeStrong(&v44, message);
   v43 = 0;
-  objc_storeStrong(&v43, a5);
+  objc_storeStrong(&v43, name);
   v42 = 0;
-  objc_storeStrong(&v42, a6);
+  objc_storeStrong(&v42, version);
   v41 = 0;
-  objc_storeStrong(&v41, a7);
+  objc_storeStrong(&v41, d);
   v40 = 0;
-  objc_storeStrong(&v40, a8);
+  objc_storeStrong(&v40, keywords);
   v32 = +[AKDevice currentDevice];
-  v33 = [v32 isInternalBuild];
+  isInternalBuild = [v32 isInternalBuild];
   _objc_release(v32);
-  if (v33)
+  if (isInternalBuild)
   {
     v35 = objc_alloc_init(NSURLComponents);
     [v35 setScheme:@"tap-to-radar"];
@@ -277,12 +277,12 @@
   objc_storeStrong(location, 0);
 }
 
-+ (id)generateRadarRequestFor:(unint64_t)a3
++ (id)generateRadarRequestFor:(unint64_t)for
 {
-  v5[3] = a1;
+  v5[3] = self;
   v5[2] = a2;
-  v5[1] = a3;
-  if (a3 == 1)
+  v5[1] = for;
+  if (for == 1)
   {
     v5[0] = objc_opt_new();
     [v5[0] setRadarTitle:@"Silent authentication issue detected"];
@@ -304,20 +304,20 @@
   return v3;
 }
 
-- (void)performSilentTTRFor:(unint64_t)a3 completion:(id)a4
+- (void)performSilentTTRFor:(unint64_t)for completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  forCopy = for;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, completion);
   v6 = +[AKDevice currentDevice];
-  v7 = [v6 isInternalBuild];
+  isInternalBuild = [v6 isInternalBuild];
   _objc_release(v6);
-  if (v7)
+  if (isInternalBuild)
   {
-    v8 = [AKTTRController generateRadarRequestFor:v14];
-    [(AKTTRController *)v16 _performSilentTTRForRequest:v8 completion:location];
+    v8 = [AKTTRController generateRadarRequestFor:forCopy];
+    [(AKTTRController *)selfCopy _performSilentTTRForRequest:v8 completion:location];
     objc_storeStrong(&v8, 0);
     v9 = 0;
   }
@@ -346,47 +346,47 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)requestSilentTTRWithTitle:(id)a3 message:(id)a4 keywords:(id)a5 completion:(id)a6
+- (void)requestSilentTTRWithTitle:(id)title message:(id)message keywords:(id)keywords completion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, message);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
+  objc_storeStrong(&v10, keywords);
   v9 = 0;
-  objc_storeStrong(&v9, a6);
-  [(AKTTRController *)v13 requestSilentTTRWithTitle:location[0] message:v11 componentName:@"AuthKit" componentVersion:@"All" componentID:@"621449" keywords:v10 completion:v9];
+  objc_storeStrong(&v9, completion);
+  [(AKTTRController *)selfCopy requestSilentTTRWithTitle:location[0] message:v11 componentName:@"AuthKit" componentVersion:@"All" componentID:@"621449" keywords:v10 completion:v9];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)requestSilentTTRWithTitle:(id)a3 message:(id)a4 componentName:(id)a5 componentVersion:(id)a6 componentID:(id)a7 keywords:(id)a8 completion:(id)a9
+- (void)requestSilentTTRWithTitle:(id)title message:(id)message componentName:(id)name componentVersion:(id)version componentID:(id)d keywords:(id)keywords completion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, message);
   v27 = 0;
-  objc_storeStrong(&v27, a5);
+  objc_storeStrong(&v27, name);
   v26 = 0;
-  objc_storeStrong(&v26, a6);
+  objc_storeStrong(&v26, version);
   v25 = 0;
-  objc_storeStrong(&v25, a7);
+  objc_storeStrong(&v25, d);
   v24 = 0;
-  objc_storeStrong(&v24, a8);
+  objc_storeStrong(&v24, keywords);
   v23 = 0;
-  objc_storeStrong(&v23, a9);
+  objc_storeStrong(&v23, completion);
   v16 = +[AKDevice currentDevice];
-  v17 = [v16 isInternalBuild];
+  isInternalBuild = [v16 isInternalBuild];
   _objc_release(v16);
-  if (v17)
+  if (isInternalBuild)
   {
     v18 = objc_opt_new();
     [v18 setRadarTitle:location[0]];
@@ -395,7 +395,7 @@
     [v18 setComponentID:v25];
     [v18 setComponentVersion:v26];
     [v18 setKeywords:v24];
-    [(AKTTRController *)v30 _performSilentTTRForRequest:v18 completion:v23];
+    [(AKTTRController *)selfCopy _performSilentTTRForRequest:v18 completion:v23];
     objc_storeStrong(&v18, 0);
     v19 = 0;
   }
@@ -430,14 +430,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_performSilentTTRForRequest:(id)a3 completion:(id)a4
+- (void)_performSilentTTRForRequest:(id)request completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, completion);
   if (location[0])
   {
     v17 = objc_opt_new();

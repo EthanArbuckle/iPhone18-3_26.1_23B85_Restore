@@ -1,9 +1,9 @@
 @interface BaseDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
 + (NSString)appIdentifier;
 + (NSString)localizedAppName;
 - (_TtC32DepthComplicationBundleCompanion14BaseDataSource)init;
-- (void)timelineCurrentEntryModelUpdated:(id)a3;
+- (void)timelineCurrentEntryModelUpdated:(id)updated;
 @end
 
 @implementation BaseDataSource
@@ -31,13 +31,13 @@
   return v3;
 }
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
   swift_getObjCClassMetadata();
-  v6 = a4;
-  LOBYTE(a3) = sub_34594(a3, v6);
+  deviceCopy = device;
+  LOBYTE(family) = sub_34594(family, deviceCopy);
 
-  return a3 & 1;
+  return family & 1;
 }
 
 - (_TtC32DepthComplicationBundleCompanion14BaseDataSource)init
@@ -47,13 +47,13 @@
   return result;
 }
 
-- (void)timelineCurrentEntryModelUpdated:(id)a3
+- (void)timelineCurrentEntryModelUpdated:(id)updated
 {
-  v4 = self;
-  v3 = [(BaseDataSource *)v4 delegate];
-  if (v3)
+  selfCopy = self;
+  delegate = [(BaseDataSource *)selfCopy delegate];
+  if (delegate)
   {
-    [v3 invalidateEntries];
+    [delegate invalidateEntries];
     swift_unknownObjectRelease();
   }
 }

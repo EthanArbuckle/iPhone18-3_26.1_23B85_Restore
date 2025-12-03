@@ -1,10 +1,10 @@
 @interface SecTapToRadar
-+ (BOOL)askUserIfTTR:(id)a3;
-+ (BOOL)isRateLimited:(id)a3;
-+ (id)keyname:(id)a3;
-+ (void)triggerTapToRadar:(id)a3;
++ (BOOL)askUserIfTTR:(id)r;
++ (BOOL)isRateLimited:(id)limited;
++ (id)keyname:(id)keyname;
++ (void)triggerTapToRadar:(id)radar;
 - (BOOL)isRateLimited;
-- (id)initTapToRadar:(id)a3 description:(id)a4 radar:(id)a5;
+- (id)initTapToRadar:(id)radar description:(id)description radar:(id)a5;
 - (void)clearRetryTimestamp;
 - (void)trigger;
 - (void)updateRetryTimestamp;
@@ -12,10 +12,10 @@
 
 @implementation SecTapToRadar
 
-- (id)initTapToRadar:(id)a3 description:(id)a4 radar:(id)a5
+- (id)initTapToRadar:(id)radar description:(id)description radar:(id)a5
 {
-  v9 = a3;
-  v10 = a4;
+  radarCopy = radar;
+  descriptionCopy = description;
   v11 = a5;
   v23.receiver = self;
   v23.super_class = SecTapToRadar;
@@ -23,8 +23,8 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_alert, a3);
-    objc_storeStrong(&v13->_radarDescription, a4);
+    objc_storeStrong(&v12->_alert, radar);
+    objc_storeStrong(&v13->_radarDescription, description);
     objc_storeStrong(&v13->_radarnumber, a5);
     v14 = dispatch_queue_create("com.apple.EscrowSecurityAlert.diagnostic-queue", 0);
     queue = v13->_queue;
@@ -49,15 +49,15 @@
   return v13;
 }
 
-+ (id)keyname:(id)a3
++ (id)keyname:(id)keyname
 {
-  v3 = [a3 radarnumber];
-  v4 = [NSString stringWithFormat:@"%@-%@", @"NextTTRDate", v3];
+  radarnumber = [keyname radarnumber];
+  v4 = [NSString stringWithFormat:@"%@-%@", @"NextTTRDate", radarnumber];
 
   return v4;
 }
 
-+ (BOOL)isRateLimited:(id)a3
++ (BOOL)isRateLimited:(id)limited
 {
   if (byte_100015AB8)
   {
@@ -66,7 +66,7 @@
 
   else
   {
-    return [a3 isRateLimited];
+    return [limited isRateLimited];
   }
 }
 
@@ -107,42 +107,42 @@
   [v4 removeObjectForKey:v3];
 }
 
-+ (void)triggerTapToRadar:(id)a3
++ (void)triggerTapToRadar:(id)radar
 {
-  v3 = a3;
+  radarCopy = radar;
   v4 = CloudServicesLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [v3 alert];
+    alert = [radarCopy alert];
     *buf = 138412290;
-    v25 = v5;
+    v25 = alert;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Triggering TTR: %@", buf, 0xCu);
   }
 
-  v6 = [v3 queue];
-  dispatch_assert_queue_V2(v6);
+  queue = [radarCopy queue];
+  dispatch_assert_queue_V2(queue);
 
   if (qword_100015AC0 != -1)
   {
     sub_100007F0C();
   }
 
-  v7 = [v3 alert];
-  v8 = [v3 radarnumber];
-  v23 = [NSString stringWithFormat:@"Triggered ESATTR: %@ - %@", v7, v8];
+  alert2 = [radarCopy alert];
+  radarnumber = [radarCopy radarnumber];
+  v23 = [NSString stringWithFormat:@"Triggered ESATTR: %@ - %@", alert2, radarnumber];
 
   v21 = [v23 stringByAddingPercentEncodingWithAllowedCharacters:qword_100015AC8];
-  v9 = [v3 radarDescription];
-  v10 = [v3 radarnumber];
-  v22 = [NSString stringWithFormat:@"%@\nRelated radar: rdar://%@", v9, v10];
+  radarDescription = [radarCopy radarDescription];
+  radarnumber2 = [radarCopy radarnumber];
+  v22 = [NSString stringWithFormat:@"%@\nRelated radar: rdar://%@", radarDescription, radarnumber2];
 
   v11 = [v22 stringByAddingPercentEncodingWithAllowedCharacters:qword_100015AC8];
-  v12 = [v3 componentName];
-  v13 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:qword_100015AC8];
-  v14 = [v3 componentVersion];
-  v15 = [v14 stringByAddingPercentEncodingWithAllowedCharacters:qword_100015AC8];
-  v16 = [v3 componentID];
-  v17 = [v16 stringByAddingPercentEncodingWithAllowedCharacters:qword_100015AC8];
+  componentName = [radarCopy componentName];
+  v13 = [componentName stringByAddingPercentEncodingWithAllowedCharacters:qword_100015AC8];
+  componentVersion = [radarCopy componentVersion];
+  v15 = [componentVersion stringByAddingPercentEncodingWithAllowedCharacters:qword_100015AC8];
+  componentID = [radarCopy componentID];
+  v17 = [componentID stringByAddingPercentEncodingWithAllowedCharacters:qword_100015AC8];
   v18 = [NSString stringWithFormat:@"tap-to-radar://new?Title=%@&ComponentName=%@&ComponentVersion=%@&Reproducibility=Not%%20Applicable&ComponentID=%@&Classification=Crash/Hang/Data%%20Loss&Description=%@", v21, v13, v15, v17, v11];
 
   v19 = [NSURL URLWithString:v18];
@@ -150,16 +150,16 @@
   [v20 openURL:v19 configuration:0 completionHandler:&stru_1000106C8];
 }
 
-+ (BOOL)askUserIfTTR:(id)a3
++ (BOOL)askUserIfTTR:(id)r
 {
   v12[0] = kCFUserNotificationDefaultButtonTitleKey;
   v12[1] = kCFUserNotificationAlternateButtonTitleKey;
   v13[0] = @"Tap-To-Radar";
   v13[1] = @"Go away";
   v12[2] = kCFUserNotificationAlertMessageKey;
-  v3 = [a3 alert];
+  alert = [r alert];
   v12[3] = kCFUserNotificationAlertHeaderKey;
-  v13[2] = v3;
+  v13[2] = alert;
   v13[3] = @"EscrowSecurityAlert";
   v4 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:4];
 
@@ -190,13 +190,13 @@
 
 - (void)trigger
 {
-  v3 = [(SecTapToRadar *)self queue];
+  queue = [(SecTapToRadar *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100004F60;
   block[3] = &unk_1000105A0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 @end

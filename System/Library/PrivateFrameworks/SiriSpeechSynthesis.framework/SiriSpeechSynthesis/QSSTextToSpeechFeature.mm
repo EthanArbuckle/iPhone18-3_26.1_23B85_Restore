@@ -4,8 +4,8 @@
 - (NSArray)phoneme_sequence;
 - (NSArray)prompts;
 - (NSArray)replacement;
-- (Offset<siri::speech::schema_fb::TextToSpeechFeature>)addObjectToBuffer:(void *)a3;
-- (QSSTextToSpeechFeature)initWithFlatbuffData:(id)a3 root:(const TextToSpeechFeature *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::TextToSpeechFeature>)addObjectToBuffer:(void *)buffer;
+- (QSSTextToSpeechFeature)initWithFlatbuffData:(id)data root:(const TextToSpeechFeature *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 @end
 
@@ -40,11 +40,11 @@ flatbuffers::DetachedBuffer *__38__QSSTextToSpeechFeature_flatbuffData__block_in
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechFeature>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechFeature>)addObjectToBuffer:(void *)buffer
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = [(QSSTextToSpeechFeature *)self normalized_text];
-  v5 = [v4 count];
+  normalized_text = [(QSSTextToSpeechFeature *)self normalized_text];
+  v5 = [normalized_text count];
   if (v5)
   {
     if (!(v5 >> 62))
@@ -59,19 +59,19 @@ flatbuffers::DetachedBuffer *__38__QSSTextToSpeechFeature_flatbuffData__block_in
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v6 = [(QSSTextToSpeechFeature *)self normalized_text];
-  if ([v6 countByEnumeratingWithState:&v53 objects:v61 count:16])
+  normalized_text2 = [(QSSTextToSpeechFeature *)self normalized_text];
+  if ([normalized_text2 countByEnumeratingWithState:&v53 objects:v61 count:16])
   {
     *v54;
     *v54;
-    [**(&v53 + 1) addObjectToBuffer:a3];
+    [**(&v53 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v7 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  v8 = [(QSSTextToSpeechFeature *)self phoneme_sequence];
-  v9 = [v8 count];
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v7 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  phoneme_sequence = [(QSSTextToSpeechFeature *)self phoneme_sequence];
+  v9 = [phoneme_sequence count];
   v31 = v7;
   if (v9)
   {
@@ -87,19 +87,19 @@ flatbuffers::DetachedBuffer *__38__QSSTextToSpeechFeature_flatbuffData__block_in
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v10 = [(QSSTextToSpeechFeature *)self phoneme_sequence];
-  if ([v10 countByEnumeratingWithState:&v49 objects:v60 count:16])
+  phoneme_sequence2 = [(QSSTextToSpeechFeature *)self phoneme_sequence];
+  if ([phoneme_sequence2 countByEnumeratingWithState:&v49 objects:v60 count:16])
   {
     *v50;
     *v50;
-    [**(&v49 + 1) addObjectToBuffer:a3];
+    [**(&v49 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v34 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  v11 = [(QSSTextToSpeechFeature *)self prompts];
-  v12 = [v11 count];
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v34 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  prompts = [(QSSTextToSpeechFeature *)self prompts];
+  v12 = [prompts count];
   if (v12)
   {
     if (!(v12 >> 62))
@@ -114,19 +114,19 @@ flatbuffers::DetachedBuffer *__38__QSSTextToSpeechFeature_flatbuffData__block_in
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v13 = [(QSSTextToSpeechFeature *)self prompts];
-  if ([v13 countByEnumeratingWithState:&v45 objects:v59 count:16])
+  prompts2 = [(QSSTextToSpeechFeature *)self prompts];
+  if ([prompts2 countByEnumeratingWithState:&v45 objects:v59 count:16])
   {
     *v46;
     *v46;
-    [**(&v45 + 1) addObjectToBuffer:a3];
+    [**(&v45 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v33 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  v14 = [(QSSTextToSpeechFeature *)self replacement];
-  v15 = [v14 count];
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v33 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  replacement = [(QSSTextToSpeechFeature *)self replacement];
+  v15 = [replacement count];
   if (v15)
   {
     if (!(v15 >> 62))
@@ -141,19 +141,19 @@ flatbuffers::DetachedBuffer *__38__QSSTextToSpeechFeature_flatbuffData__block_in
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v16 = [(QSSTextToSpeechFeature *)self replacement];
-  if ([v16 countByEnumeratingWithState:&v41 objects:v58 count:16])
+  replacement2 = [(QSSTextToSpeechFeature *)self replacement];
+  if ([replacement2 countByEnumeratingWithState:&v41 objects:v58 count:16])
   {
     *v42;
     *v42;
-    [**(&v41 + 1) addObjectToBuffer:a3];
+    [**(&v41 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v32 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  v17 = [(QSSTextToSpeechFeature *)self neural_phoneme_sequence];
-  v18 = [v17 count];
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v32 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  neural_phoneme_sequence = [(QSSTextToSpeechFeature *)self neural_phoneme_sequence];
+  v18 = [neural_phoneme_sequence count];
   if (v18)
   {
     if (!(v18 >> 62))
@@ -173,58 +173,58 @@ flatbuffers::DetachedBuffer *__38__QSSTextToSpeechFeature_flatbuffData__block_in
   {
     *v38;
     *v38;
-    [**(&v37 + 1) addObjectToBuffer:a3];
+    [**(&v37 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v19 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v20 = *(a3 + 8);
-  v21 = *(a3 + 12);
-  v22 = *(a3 + 10);
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v19 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v20 = *(buffer + 8);
+  v21 = *(buffer + 12);
+  v22 = *(buffer + 10);
   if (v31)
   {
-    v23 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v31);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v23);
+    v23 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v31);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, v23);
   }
 
   if (v34)
   {
-    v24 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v34);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v24);
+    v24 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v34);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, v24);
   }
 
   if (v33)
   {
-    v25 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v33);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v25);
+    v25 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v33);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, v25);
   }
 
   if (v32)
   {
-    v26 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v32);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 10, v26);
+    v26 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v32);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 10, v26);
   }
 
   if (v19)
   {
-    v27 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v19);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 12, v27);
+    v27 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v19);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 12, v27);
   }
 
-  v28.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v20 - v21 + v22);
+  v28.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v20 - v21 + v22);
   v29 = *MEMORY[0x277D85DE8];
   return v28;
 }
 
 - (NSArray)neural_phoneme_sequence
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"neural_phoneme_sequence"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"neural_phoneme_sequence"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0xDu)
@@ -241,7 +241,7 @@ flatbuffers::DetachedBuffer *__38__QSSTextToSpeechFeature_flatbuffData__block_in
           do
           {
             v11 = [[QSSTTSNeuralPhonemeSequence alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -252,18 +252,18 @@ flatbuffers::DetachedBuffer *__38__QSSTextToSpeechFeature_flatbuffData__block_in
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"neural_phoneme_sequence"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"neural_phoneme_sequence"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)replacement
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"replacement"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"replacement"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0xBu)
@@ -280,7 +280,7 @@ flatbuffers::DetachedBuffer *__38__QSSTextToSpeechFeature_flatbuffData__block_in
           do
           {
             v11 = [[QSSTTSReplacement alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -291,18 +291,18 @@ flatbuffers::DetachedBuffer *__38__QSSTextToSpeechFeature_flatbuffData__block_in
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"replacement"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"replacement"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)prompts
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"prompts"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"prompts"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 9u)
@@ -319,7 +319,7 @@ flatbuffers::DetachedBuffer *__38__QSSTextToSpeechFeature_flatbuffData__block_in
           do
           {
             v11 = [[QSSTTSPrompts alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -330,18 +330,18 @@ flatbuffers::DetachedBuffer *__38__QSSTextToSpeechFeature_flatbuffData__block_in
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"prompts"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"prompts"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)phoneme_sequence
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"phoneme_sequence"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"phoneme_sequence"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 7u)
@@ -358,7 +358,7 @@ flatbuffers::DetachedBuffer *__38__QSSTextToSpeechFeature_flatbuffData__block_in
           do
           {
             v11 = [[QSSTTSPhonemeSequence alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -369,18 +369,18 @@ flatbuffers::DetachedBuffer *__38__QSSTextToSpeechFeature_flatbuffData__block_in
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"phoneme_sequence"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"phoneme_sequence"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)normalized_text
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"normalized_text"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"normalized_text"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 5u)
@@ -397,7 +397,7 @@ flatbuffers::DetachedBuffer *__38__QSSTextToSpeechFeature_flatbuffData__block_in
           do
           {
             v11 = [[QSSTTSNormalizedText alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -408,48 +408,48 @@ flatbuffers::DetachedBuffer *__38__QSSTextToSpeechFeature_flatbuffData__block_in
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"normalized_text"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"normalized_text"];
   }
 
-  return v3;
+  return array;
 }
 
-- (QSSTextToSpeechFeature)initWithFlatbuffData:(id)a3 root:(const TextToSpeechFeature *)a4 verify:(BOOL)a5
+- (QSSTextToSpeechFeature)initWithFlatbuffData:(id)data root:(const TextToSpeechFeature *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSTextToSpeechFeature;
   v10 = [(QSSTextToSpeechFeature *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -471,9 +471,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

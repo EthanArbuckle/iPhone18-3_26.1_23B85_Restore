@@ -1,29 +1,29 @@
 @interface CXCallDirectoryHost
-- (BOOL)_connectionContainsCallDirectoryHostEntitlementCapability:(id)a3;
+- (BOOL)_connectionContainsCallDirectoryHostEntitlementCapability:(id)capability;
 - (CXCallDirectoryHost)init;
 - (CXCallDirectoryHostDelegate)delegate;
-- (void)_nsExtensionWithIdentifier:(id)a3 completion:(id)a4;
-- (void)cleanUpLiveLookupDataWithReply:(id)a3;
-- (void)compactStoreWithReply:(id)a3;
-- (void)fetchLiveBlockingInfoForHandle:(id)a3 reply:(id)a4;
-- (void)firstEnabledLiveBlockingExtensionIdentifierForPhoneNumber:(id)a3 reply:(id)a4;
-- (void)firstIdentificationEntriesForEnabledExtensionsWithPhoneNumbers:(id)a3 cacheOnly:(BOOL)a4 reply:(id)a5;
-- (void)getEnabledForLiveLookupExtensionWithIdentifier:(id)a3 reply:(id)a4;
-- (void)getEnabledStatusForExtensionWithIdentifier:(id)a3 reply:(id)a4;
-- (void)getExtensionsWithReply:(id)a3;
-- (void)getLastUpdatedCallDirectoryInfoWithReply:(id)a3;
-- (void)launchCallDirectorySettingsWithReply:(id)a3;
-- (void)performDelegateCallback:(id)a3;
+- (void)_nsExtensionWithIdentifier:(id)identifier completion:(id)completion;
+- (void)cleanUpLiveLookupDataWithReply:(id)reply;
+- (void)compactStoreWithReply:(id)reply;
+- (void)fetchLiveBlockingInfoForHandle:(id)handle reply:(id)reply;
+- (void)firstEnabledLiveBlockingExtensionIdentifierForPhoneNumber:(id)number reply:(id)reply;
+- (void)firstIdentificationEntriesForEnabledExtensionsWithPhoneNumbers:(id)numbers cacheOnly:(BOOL)only reply:(id)reply;
+- (void)getEnabledForLiveLookupExtensionWithIdentifier:(id)identifier reply:(id)reply;
+- (void)getEnabledStatusForExtensionWithIdentifier:(id)identifier reply:(id)reply;
+- (void)getExtensionsWithReply:(id)reply;
+- (void)getLastUpdatedCallDirectoryInfoWithReply:(id)reply;
+- (void)launchCallDirectorySettingsWithReply:(id)reply;
+- (void)performDelegateCallback:(id)callback;
 - (void)prepareStoreIfNecessary;
-- (void)refreshExtensionContextForLiveLookupExtensionWithIdentifier:(id)a3 reply:(id)a4;
-- (void)refreshPIRParametersForLiveLookupExtensionWithIdentifier:(id)a3 reply:(id)a4;
-- (void)reloadExtensionWithIdentifier:(id)a3 reply:(id)a4;
-- (void)resetLiveLookupExtensionWithIdentifier:(id)a3 reply:(id)a4;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)setEnabled:(BOOL)a3 forExtensionWithIdentifier:(id)a4 reply:(id)a5;
-- (void)setEnabled:(BOOL)a3 forLiveLookupExtensionWithIdentifier:(id)a4 reply:(id)a5;
-- (void)setPrioritizedExtensionIdentifiers:(id)a3 reply:(id)a4;
-- (void)synchronizeExtensionsWithReply:(id)a3;
+- (void)refreshExtensionContextForLiveLookupExtensionWithIdentifier:(id)identifier reply:(id)reply;
+- (void)refreshPIRParametersForLiveLookupExtensionWithIdentifier:(id)identifier reply:(id)reply;
+- (void)reloadExtensionWithIdentifier:(id)identifier reply:(id)reply;
+- (void)resetLiveLookupExtensionWithIdentifier:(id)identifier reply:(id)reply;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)setEnabled:(BOOL)enabled forExtensionWithIdentifier:(id)identifier reply:(id)reply;
+- (void)setEnabled:(BOOL)enabled forLiveLookupExtensionWithIdentifier:(id)identifier reply:(id)reply;
+- (void)setPrioritizedExtensionIdentifiers:(id)identifiers reply:(id)reply;
+- (void)synchronizeExtensionsWithReply:(id)reply;
 @end
 
 @implementation CXCallDirectoryHost
@@ -50,21 +50,21 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CXCallDirectoryHost *)self queue];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  queue = [(CXCallDirectoryHost *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__CXCallDirectoryHost_setDelegate_queue___block_invoke;
   block[3] = &unk_1E7C06C80;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __41__CXCallDirectoryHost_setDelegate_queue___block_invoke(uint64_t a1)
@@ -85,18 +85,18 @@ uint64_t __41__CXCallDirectoryHost_setDelegate_queue___block_invoke(uint64_t a1)
   return [v3 setDelegateQueue:v2];
 }
 
-- (void)performDelegateCallback:(id)a3
+- (void)performDelegateCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(CXCallDirectoryHost *)self queue];
+  callbackCopy = callback;
+  queue = [(CXCallDirectoryHost *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__CXCallDirectoryHost_performDelegateCallback___block_invoke;
   v7[3] = &unk_1E7C06CF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = callbackCopy;
+  v6 = callbackCopy;
+  dispatch_async(queue, v7);
 }
 
 void __47__CXCallDirectoryHost_performDelegateCallback___block_invoke(uint64_t a1)
@@ -115,19 +115,19 @@ void __47__CXCallDirectoryHost_performDelegateCallback___block_invoke(uint64_t a
   }
 }
 
-- (BOOL)_connectionContainsCallDirectoryHostEntitlementCapability:(id)a3
+- (BOOL)_connectionContainsCallDirectoryHostEntitlementCapability:(id)capability
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696B0B8] currentConnection];
-  v5 = [v4 valueForEntitlement:@"com.apple.CallKit.call-directory"];
+  capabilityCopy = capability;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v5 = [currentConnection valueForEntitlement:@"com.apple.CallKit.call-directory"];
   if (!v5)
   {
     v7 = CXDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412546;
-      v11 = v4;
+      v11 = currentConnection;
       v12 = 2112;
       v13 = @"com.apple.CallKit.call-directory";
       _os_log_impl(&dword_1B47F3000, v7, OS_LOG_TYPE_DEFAULT, "[WARN] XPC connection %@ does not contain entitlement '%@'", &v10, 0x16u);
@@ -142,7 +142,7 @@ void __47__CXCallDirectoryHost_performDelegateCallback___block_invoke(uint64_t a
     v7 = CXDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(CXCallDirectoryHost *)v4 _connectionContainsCallDirectoryHostEntitlementCapability:v5, v7];
+      [(CXCallDirectoryHost *)currentConnection _connectionContainsCallDirectoryHostEntitlementCapability:v5, v7];
     }
 
 LABEL_8:
@@ -151,23 +151,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = [v5 containsObject:v3];
+  v6 = [v5 containsObject:capabilityCopy];
 LABEL_9:
 
   v8 = *MEMORY[0x1E69E9840];
   return v6;
 }
 
-- (void)reloadExtensionWithIdentifier:(id)a3 reply:(id)a4
+- (void)reloadExtensionWithIdentifier:(id)identifier reply:(id)reply
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = identifierCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "identifier %@", buf, 0xCu);
   }
 
@@ -175,11 +175,11 @@ LABEL_9:
   v12[1] = 3221225472;
   v12[2] = __59__CXCallDirectoryHost_reloadExtensionWithIdentifier_reply___block_invoke;
   v12[3] = &unk_1E7C06D48;
-  v13 = v6;
-  v14 = v7;
+  v13 = identifierCopy;
+  v14 = replyCopy;
   v12[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = replyCopy;
   [(CXCallDirectoryHost *)self _nsExtensionWithIdentifier:v9 completion:v12];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -222,16 +222,16 @@ void __59__CXCallDirectoryHost_reloadExtensionWithIdentifier_reply___block_invok
   [v2 callDirectoryHost:*(a1 + 32) requestedReloadForExtension:*(a1 + 40) completionHandler:*(a1 + 48)];
 }
 
-- (void)resetLiveLookupExtensionWithIdentifier:(id)a3 reply:(id)a4
+- (void)resetLiveLookupExtensionWithIdentifier:(id)identifier reply:(id)reply
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = identifierCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "resetLiveLookupExtensionWithIdentifier identifier %@", buf, 0xCu);
   }
 
@@ -239,11 +239,11 @@ void __59__CXCallDirectoryHost_reloadExtensionWithIdentifier_reply___block_invok
   v12[1] = 3221225472;
   v12[2] = __68__CXCallDirectoryHost_resetLiveLookupExtensionWithIdentifier_reply___block_invoke;
   v12[3] = &unk_1E7C06D48;
-  v13 = v6;
-  v14 = v7;
+  v13 = identifierCopy;
+  v14 = replyCopy;
   v12[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = replyCopy;
   [(CXCallDirectoryHost *)self _nsExtensionWithIdentifier:v9 completion:v12];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -286,16 +286,16 @@ void __68__CXCallDirectoryHost_resetLiveLookupExtensionWithIdentifier_reply___bl
   [v2 callDirectoryHost:*(a1 + 32) requestedResetForLiveLookupExtension:*(a1 + 40) completionHandler:*(a1 + 48)];
 }
 
-- (void)refreshPIRParametersForLiveLookupExtensionWithIdentifier:(id)a3 reply:(id)a4
+- (void)refreshPIRParametersForLiveLookupExtensionWithIdentifier:(id)identifier reply:(id)reply
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = identifierCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "refreshPIRParametersForLiveLookupExtensionWithIdentifier identifier %@", buf, 0xCu);
   }
 
@@ -303,11 +303,11 @@ void __68__CXCallDirectoryHost_resetLiveLookupExtensionWithIdentifier_reply___bl
   v12[1] = 3221225472;
   v12[2] = __86__CXCallDirectoryHost_refreshPIRParametersForLiveLookupExtensionWithIdentifier_reply___block_invoke;
   v12[3] = &unk_1E7C06D48;
-  v13 = v6;
-  v14 = v7;
+  v13 = identifierCopy;
+  v14 = replyCopy;
   v12[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = replyCopy;
   [(CXCallDirectoryHost *)self _nsExtensionWithIdentifier:v9 completion:v12];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -350,16 +350,16 @@ void __86__CXCallDirectoryHost_refreshPIRParametersForLiveLookupExtensionWithIde
   [v2 callDirectoryHost:*(a1 + 32) requestedRefreshPIRParametersForLiveLookupExtension:*(a1 + 40) completionHandler:*(a1 + 48)];
 }
 
-- (void)refreshExtensionContextForLiveLookupExtensionWithIdentifier:(id)a3 reply:(id)a4
+- (void)refreshExtensionContextForLiveLookupExtensionWithIdentifier:(id)identifier reply:(id)reply
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = identifierCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "refreshExtensionContextForLiveLookupExtensionWithIdentifier identifier %@", buf, 0xCu);
   }
 
@@ -367,11 +367,11 @@ void __86__CXCallDirectoryHost_refreshPIRParametersForLiveLookupExtensionWithIde
   v12[1] = 3221225472;
   v12[2] = __89__CXCallDirectoryHost_refreshExtensionContextForLiveLookupExtensionWithIdentifier_reply___block_invoke;
   v12[3] = &unk_1E7C06D48;
-  v13 = v6;
-  v14 = v7;
+  v13 = identifierCopy;
+  v14 = replyCopy;
   v12[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = replyCopy;
   [(CXCallDirectoryHost *)self _nsExtensionWithIdentifier:v9 completion:v12];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -414,16 +414,16 @@ void __89__CXCallDirectoryHost_refreshExtensionContextForLiveLookupExtensionWith
   [v2 callDirectoryHost:*(a1 + 32) requestedRefreshExtensionContextForLiveLookupExtension:*(a1 + 40) completionHandler:*(a1 + 48)];
 }
 
-- (void)getEnabledStatusForExtensionWithIdentifier:(id)a3 reply:(id)a4
+- (void)getEnabledStatusForExtensionWithIdentifier:(id)identifier reply:(id)reply
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = identifierCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "getEnabledStatusForExtensionWithIdentifieridentifier %@", buf, 0xCu);
   }
 
@@ -431,11 +431,11 @@ void __89__CXCallDirectoryHost_refreshExtensionContextForLiveLookupExtensionWith
   v12[1] = 3221225472;
   v12[2] = __72__CXCallDirectoryHost_getEnabledStatusForExtensionWithIdentifier_reply___block_invoke;
   v12[3] = &unk_1E7C06D48;
-  v13 = v6;
-  v14 = v7;
+  v13 = identifierCopy;
+  v14 = replyCopy;
   v12[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = replyCopy;
   [(CXCallDirectoryHost *)self _nsExtensionWithIdentifier:v9 completion:v12];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -478,16 +478,16 @@ void __72__CXCallDirectoryHost_getEnabledStatusForExtensionWithIdentifier_reply_
   [v2 callDirectoryHost:*(a1 + 32) requestedEnabledStatusForExtension:*(a1 + 40) completionHandler:*(a1 + 48)];
 }
 
-- (void)getEnabledForLiveLookupExtensionWithIdentifier:(id)a3 reply:(id)a4
+- (void)getEnabledForLiveLookupExtensionWithIdentifier:(id)identifier reply:(id)reply
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = identifierCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "getEnabledForLiveLookupExtensionWithIdentifier identifier %@", buf, 0xCu);
   }
 
@@ -495,11 +495,11 @@ void __72__CXCallDirectoryHost_getEnabledStatusForExtensionWithIdentifier_reply_
   v12[1] = 3221225472;
   v12[2] = __76__CXCallDirectoryHost_getEnabledForLiveLookupExtensionWithIdentifier_reply___block_invoke;
   v12[3] = &unk_1E7C06D48;
-  v13 = v6;
-  v14 = v7;
+  v13 = identifierCopy;
+  v14 = replyCopy;
   v12[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = replyCopy;
   [(CXCallDirectoryHost *)self _nsExtensionWithIdentifier:v9 completion:v12];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -528,19 +528,19 @@ void __76__CXCallDirectoryHost_getEnabledForLiveLookupExtensionWithIdentifier_re
   }
 }
 
-- (void)setEnabled:(BOOL)a3 forLiveLookupExtensionWithIdentifier:(id)a4 reply:(id)a5
+- (void)setEnabled:(BOOL)enabled forLiveLookupExtensionWithIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
+  enabledCopy = enabled;
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v10 = CXDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    v34 = v6;
+    v34 = enabledCopy;
     v35 = 2112;
-    v36 = v8;
+    v36 = identifierCopy;
     _os_log_impl(&dword_1B47F3000, v10, OS_LOG_TYPE_DEFAULT, "enabled %d identifier %@", buf, 0x12u);
   }
 
@@ -562,7 +562,7 @@ void __76__CXCallDirectoryHost_getEnabledForLiveLookupExtensionWithIdentifier_re
   }
 
   v30 = 0;
-  v11 = [MEMORY[0x1E696ABD0] extensionWithIdentifier:v8 error:&v30];
+  v11 = [MEMORY[0x1E696ABD0] extensionWithIdentifier:identifierCopy error:&v30];
   v12 = v30;
   if (!v11)
   {
@@ -575,7 +575,7 @@ void __76__CXCallDirectoryHost_getEnabledForLiveLookupExtensionWithIdentifier_re
     v22 = [MEMORY[0x1E696ABC0] cx_callDirectoryManagerErrorWithCode:1];
 LABEL_12:
     v24 = v22;
-    v9[2](v9, v22);
+    replyCopy[2](replyCopy, v22);
 
     goto LABEL_13;
   }
@@ -585,10 +585,10 @@ LABEL_12:
   v26[2] = __77__CXCallDirectoryHost_setEnabled_forLiveLookupExtensionWithIdentifier_reply___block_invoke;
   v26[3] = &unk_1E7C06D70;
   v26[4] = self;
-  v29 = v6;
+  v29 = enabledCopy;
   v11 = v11;
   v27 = v11;
-  v28 = v9;
+  v28 = replyCopy;
   [(CXCallDirectoryHost *)self performDelegateCallback:v26];
 
 LABEL_13:
@@ -601,24 +601,24 @@ void __77__CXCallDirectoryHost_setEnabled_forLiveLookupExtensionWithIdentifier_r
   [v2 callDirectoryHost:*(a1 + 32) requestedSetEnabled:*(a1 + 56) forLiveLookupExtension:*(a1 + 40) completionHandler:*(a1 + 48)];
 }
 
-- (void)_nsExtensionWithIdentifier:(id)a3 completion:(id)a4
+- (void)_nsExtensionWithIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (identifierCopy)
   {
     v7 = objc_alloc_init(CXCallDirectoryNSExtensionManager);
-    v8 = [MEMORY[0x1E696B0B8] currentConnection];
-    v9 = [v8 processIdentifier];
+    currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+    processIdentifier = [currentConnection processIdentifier];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __61__CXCallDirectoryHost__nsExtensionWithIdentifier_completion___block_invoke;
     v12[3] = &unk_1E7C06D98;
-    v14 = v6;
-    v13 = v5;
-    v15 = v9;
-    [(CXCallDirectoryNSExtensionManager *)v7 extensionWithIdentifier:v13 inContainingAppWithProcessIdentifier:v9 completion:v12];
+    v14 = completionCopy;
+    v13 = identifierCopy;
+    v15 = processIdentifier;
+    [(CXCallDirectoryNSExtensionManager *)v7 extensionWithIdentifier:v13 inContainingAppWithProcessIdentifier:processIdentifier completion:v12];
   }
 
   else
@@ -631,7 +631,7 @@ void __77__CXCallDirectoryHost_setEnabled_forLiveLookupExtensionWithIdentifier_r
     }
 
     v7 = [MEMORY[0x1E696ABC0] cx_callDirectoryManagerErrorWithCode:1];
-    (*(v6 + 2))(v6, 0, v7);
+    (*(completionCopy + 2))(completionCopy, 0, v7);
   }
 }
 
@@ -659,19 +659,19 @@ void __61__CXCallDirectoryHost__nsExtensionWithIdentifier_completion___block_inv
   }
 }
 
-- (void)setEnabled:(BOOL)a3 forExtensionWithIdentifier:(id)a4 reply:(id)a5
+- (void)setEnabled:(BOOL)enabled forExtensionWithIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
+  enabledCopy = enabled;
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v10 = CXDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    v34 = v6;
+    v34 = enabledCopy;
     v35 = 2112;
-    v36 = v8;
+    v36 = identifierCopy;
     _os_log_impl(&dword_1B47F3000, v10, OS_LOG_TYPE_DEFAULT, "enabled %d identifier %@", buf, 0x12u);
   }
 
@@ -693,7 +693,7 @@ void __61__CXCallDirectoryHost__nsExtensionWithIdentifier_completion___block_inv
   }
 
   v30 = 0;
-  v11 = [MEMORY[0x1E696ABD0] extensionWithIdentifier:v8 error:&v30];
+  v11 = [MEMORY[0x1E696ABD0] extensionWithIdentifier:identifierCopy error:&v30];
   v12 = v30;
   if (!v11)
   {
@@ -706,7 +706,7 @@ void __61__CXCallDirectoryHost__nsExtensionWithIdentifier_completion___block_inv
     v22 = [MEMORY[0x1E696ABC0] cx_callDirectoryManagerErrorWithCode:1];
 LABEL_12:
     v24 = v22;
-    v9[2](v9, v22);
+    replyCopy[2](replyCopy, v22);
 
     goto LABEL_13;
   }
@@ -716,10 +716,10 @@ LABEL_12:
   v26[2] = __67__CXCallDirectoryHost_setEnabled_forExtensionWithIdentifier_reply___block_invoke;
   v26[3] = &unk_1E7C06D70;
   v26[4] = self;
-  v29 = v6;
+  v29 = enabledCopy;
   v11 = v11;
   v27 = v11;
-  v28 = v9;
+  v28 = replyCopy;
   [(CXCallDirectoryHost *)self performDelegateCallback:v26];
 
 LABEL_13:
@@ -732,10 +732,10 @@ void __67__CXCallDirectoryHost_setEnabled_forExtensionWithIdentifier_reply___blo
   [v2 callDirectoryHost:*(a1 + 32) requestedToSetEnabled:*(a1 + 56) forExtension:*(a1 + 40) completionHandler:*(a1 + 48)];
 }
 
-- (void)getLastUpdatedCallDirectoryInfoWithReply:(id)a3
+- (void)getLastUpdatedCallDirectoryInfoWithReply:(id)reply
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -750,7 +750,7 @@ void __67__CXCallDirectoryHost_setEnabled_forExtensionWithIdentifier_reply___blo
     v19[2] = __64__CXCallDirectoryHost_getLastUpdatedCallDirectoryInfoWithReply___block_invoke;
     v19[3] = &unk_1E7C06CF8;
     v19[4] = self;
-    v20 = v4;
+    v20 = replyCopy;
     [(CXCallDirectoryHost *)self performDelegateCallback:v19];
   }
 
@@ -768,7 +768,7 @@ void __67__CXCallDirectoryHost_setEnabled_forExtensionWithIdentifier_reply___blo
     v23[0] = v14;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     v17 = [v15 cx_callDirectoryManagerErrorWithCode:100 userInfo:v16];
-    (*(v4 + 2))(v4, 0, v17);
+    (*(replyCopy + 2))(replyCopy, 0, v17);
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -780,16 +780,16 @@ void __64__CXCallDirectoryHost_getLastUpdatedCallDirectoryInfoWithReply___block_
   [v2 callDirectoryHost:*(a1 + 32) requestedLastUpdatedInfoWithCompletionHandler:*(a1 + 40)];
 }
 
-- (void)firstIdentificationEntriesForEnabledExtensionsWithPhoneNumbers:(id)a3 cacheOnly:(BOOL)a4 reply:(id)a5
+- (void)firstIdentificationEntriesForEnabledExtensionsWithPhoneNumbers:(id)numbers cacheOnly:(BOOL)only reply:(id)reply
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  numbersCopy = numbers;
+  replyCopy = reply;
   v10 = CXDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v8;
+    v31 = numbersCopy;
     _os_log_impl(&dword_1B47F3000, v10, OS_LOG_TYPE_DEFAULT, "phoneNumbers %@", buf, 0xCu);
   }
 
@@ -800,9 +800,9 @@ void __64__CXCallDirectoryHost_getLastUpdatedCallDirectoryInfoWithReply___block_
     v24[2] = __102__CXCallDirectoryHost_firstIdentificationEntriesForEnabledExtensionsWithPhoneNumbers_cacheOnly_reply___block_invoke;
     v24[3] = &unk_1E7C06D70;
     v24[4] = self;
-    v25 = v8;
-    v27 = a4;
-    v26 = v9;
+    v25 = numbersCopy;
+    onlyCopy = only;
+    v26 = replyCopy;
     [(CXCallDirectoryHost *)self performDelegateCallback:v24];
   }
 
@@ -820,7 +820,7 @@ void __64__CXCallDirectoryHost_getLastUpdatedCallDirectoryInfoWithReply___block_
     v29 = v19;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
     v22 = [v20 cx_callDirectoryManagerErrorWithCode:100 userInfo:v21];
-    (*(v9 + 2))(v9, 0, v22);
+    (*(replyCopy + 2))(replyCopy, 0, v22);
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -832,16 +832,16 @@ void __102__CXCallDirectoryHost_firstIdentificationEntriesForEnabledExtensionsWi
   [v2 callDirectoryHost:*(a1 + 32) requestedFirstIdentificationEntriesForEnabledExtensionsWithPhoneNumbers:*(a1 + 40) cacheOnly:*(a1 + 56) completionHandler:*(a1 + 48)];
 }
 
-- (void)fetchLiveBlockingInfoForHandle:(id)a3 reply:(id)a4
+- (void)fetchLiveBlockingInfoForHandle:(id)handle reply:(id)reply
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  replyCopy = reply;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v6;
+    v28 = handleCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "blockingInfoFor handle=%@", buf, 0xCu);
   }
 
@@ -852,8 +852,8 @@ void __102__CXCallDirectoryHost_firstIdentificationEntriesForEnabledExtensionsWi
     v22[2] = __60__CXCallDirectoryHost_fetchLiveBlockingInfoForHandle_reply___block_invoke;
     v22[3] = &unk_1E7C06D20;
     v22[4] = self;
-    v23 = v6;
-    v24 = v7;
+    v23 = handleCopy;
+    v24 = replyCopy;
     [(CXCallDirectoryHost *)self performDelegateCallback:v22];
   }
 
@@ -871,7 +871,7 @@ void __102__CXCallDirectoryHost_firstIdentificationEntriesForEnabledExtensionsWi
     v26 = v17;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v20 = [v18 cx_callDirectoryManagerErrorWithCode:100 userInfo:v19];
-    (*(v7 + 2))(v7, 0, v20);
+    (*(replyCopy + 2))(replyCopy, 0, v20);
   }
 
   v21 = *MEMORY[0x1E69E9840];
@@ -883,11 +883,11 @@ void __60__CXCallDirectoryHost_fetchLiveBlockingInfoForHandle_reply___block_invo
   [v2 callDirectoryHost:*(a1 + 32) requestedLiveBlockingInfoFor:*(a1 + 40) completionHandler:*(a1 + 48)];
 }
 
-- (void)firstEnabledLiveBlockingExtensionIdentifierForPhoneNumber:(id)a3 reply:(id)a4
+- (void)firstEnabledLiveBlockingExtensionIdentifierForPhoneNumber:(id)number reply:(id)reply
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  replyCopy = reply;
   if ([(CXCallDirectoryHost *)self _connectionContainsCallDirectoryHostEntitlementCapability:@"query-identification-entries"])
   {
     v21[0] = MEMORY[0x1E69E9820];
@@ -895,8 +895,8 @@ void __60__CXCallDirectoryHost_fetchLiveBlockingInfoForHandle_reply___block_invo
     v21[2] = __87__CXCallDirectoryHost_firstEnabledLiveBlockingExtensionIdentifierForPhoneNumber_reply___block_invoke;
     v21[3] = &unk_1E7C06D20;
     v21[4] = self;
-    v22 = v6;
-    v23 = v7;
+    v22 = numberCopy;
+    v23 = replyCopy;
     [(CXCallDirectoryHost *)self performDelegateCallback:v21];
   }
 
@@ -914,7 +914,7 @@ void __60__CXCallDirectoryHost_fetchLiveBlockingInfoForHandle_reply___block_invo
     v25[0] = v16;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v19 = [v17 cx_callDirectoryManagerErrorWithCode:100 userInfo:v18];
-    (*(v7 + 2))(v7, 0, v19);
+    (*(replyCopy + 2))(replyCopy, 0, v19);
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -926,10 +926,10 @@ void __87__CXCallDirectoryHost_firstEnabledLiveBlockingExtensionIdentifierForPho
   [v2 callDirectoryHost:*(a1 + 32) requestedFirstEnabledLiveBlockingExtensionIdentifierForPhoneNumber:*(a1 + 40) completionHandler:*(a1 + 48)];
 }
 
-- (void)getExtensionsWithReply:(id)a3
+- (void)getExtensionsWithReply:(id)reply
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -944,7 +944,7 @@ void __87__CXCallDirectoryHost_firstEnabledLiveBlockingExtensionIdentifierForPho
     v19[2] = __46__CXCallDirectoryHost_getExtensionsWithReply___block_invoke;
     v19[3] = &unk_1E7C06CF8;
     v19[4] = self;
-    v20 = v4;
+    v20 = replyCopy;
     [(CXCallDirectoryHost *)self performDelegateCallback:v19];
   }
 
@@ -962,7 +962,7 @@ void __87__CXCallDirectoryHost_firstEnabledLiveBlockingExtensionIdentifierForPho
     v23[0] = v14;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     v17 = [v15 cx_callDirectoryManagerErrorWithCode:100 userInfo:v16];
-    (*(v4 + 2))(v4, 0, v17);
+    (*(replyCopy + 2))(replyCopy, 0, v17);
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -974,16 +974,16 @@ void __46__CXCallDirectoryHost_getExtensionsWithReply___block_invoke(uint64_t a1
   [v2 callDirectoryHost:*(a1 + 32) requestedExtensionsWithCompletionHandler:*(a1 + 40)];
 }
 
-- (void)setPrioritizedExtensionIdentifiers:(id)a3 reply:(id)a4
+- (void)setPrioritizedExtensionIdentifiers:(id)identifiers reply:(id)reply
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  replyCopy = reply;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v6;
+    v28 = identifiersCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "prioritizedExtensionIdentifiers %@", buf, 0xCu);
   }
 
@@ -994,8 +994,8 @@ void __46__CXCallDirectoryHost_getExtensionsWithReply___block_invoke(uint64_t a1
     v22[2] = __64__CXCallDirectoryHost_setPrioritizedExtensionIdentifiers_reply___block_invoke;
     v22[3] = &unk_1E7C06D20;
     v22[4] = self;
-    v23 = v6;
-    v24 = v7;
+    v23 = identifiersCopy;
+    v24 = replyCopy;
     [(CXCallDirectoryHost *)self performDelegateCallback:v22];
   }
 
@@ -1013,7 +1013,7 @@ void __46__CXCallDirectoryHost_getExtensionsWithReply___block_invoke(uint64_t a1
     v26 = v17;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v20 = [v18 cx_callDirectoryManagerErrorWithCode:100 userInfo:v19];
-    (*(v7 + 2))(v7, v20);
+    (*(replyCopy + 2))(replyCopy, v20);
   }
 
   v21 = *MEMORY[0x1E69E9840];
@@ -1025,10 +1025,10 @@ void __64__CXCallDirectoryHost_setPrioritizedExtensionIdentifiers_reply___block_
   [v2 callDirectoryHost:*(a1 + 32) requestedToSetPrioritizedExtensionIdentifiers:*(a1 + 40) completionHandler:*(a1 + 48)];
 }
 
-- (void)synchronizeExtensionsWithReply:(id)a3
+- (void)synchronizeExtensionsWithReply:(id)reply
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1043,7 +1043,7 @@ void __64__CXCallDirectoryHost_setPrioritizedExtensionIdentifiers_reply___block_
     v19[2] = __54__CXCallDirectoryHost_synchronizeExtensionsWithReply___block_invoke;
     v19[3] = &unk_1E7C06CF8;
     v19[4] = self;
-    v20 = v4;
+    v20 = replyCopy;
     [(CXCallDirectoryHost *)self performDelegateCallback:v19];
   }
 
@@ -1061,7 +1061,7 @@ void __64__CXCallDirectoryHost_setPrioritizedExtensionIdentifiers_reply___block_
     v23[0] = v14;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     v17 = [v15 cx_callDirectoryManagerErrorWithCode:100 userInfo:v16];
-    (*(v4 + 2))(v4, v17);
+    (*(replyCopy + 2))(replyCopy, v17);
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -1073,10 +1073,10 @@ void __54__CXCallDirectoryHost_synchronizeExtensionsWithReply___block_invoke(uin
   [v2 callDirectoryHost:*(a1 + 32) requestedToSynchronizeExtensionsWithCompletionHandler:*(a1 + 40)];
 }
 
-- (void)compactStoreWithReply:(id)a3
+- (void)compactStoreWithReply:(id)reply
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1091,7 +1091,7 @@ void __54__CXCallDirectoryHost_synchronizeExtensionsWithReply___block_invoke(uin
     v19[2] = __45__CXCallDirectoryHost_compactStoreWithReply___block_invoke;
     v19[3] = &unk_1E7C06CF8;
     v19[4] = self;
-    v20 = v4;
+    v20 = replyCopy;
     [(CXCallDirectoryHost *)self performDelegateCallback:v19];
   }
 
@@ -1109,7 +1109,7 @@ void __54__CXCallDirectoryHost_synchronizeExtensionsWithReply___block_invoke(uin
     v23[0] = v14;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     v17 = [v15 cx_callDirectoryManagerErrorWithCode:100 userInfo:v16];
-    (*(v4 + 2))(v4, v17);
+    (*(replyCopy + 2))(replyCopy, v17);
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -1121,10 +1121,10 @@ void __45__CXCallDirectoryHost_compactStoreWithReply___block_invoke(uint64_t a1)
   [v2 callDirectoryHost:*(a1 + 32) requestedToCompactStoreWithCompletionHandler:*(a1 + 40)];
 }
 
-- (void)cleanUpLiveLookupDataWithReply:(id)a3
+- (void)cleanUpLiveLookupDataWithReply:(id)reply
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1139,7 +1139,7 @@ void __45__CXCallDirectoryHost_compactStoreWithReply___block_invoke(uint64_t a1)
     v19[2] = __54__CXCallDirectoryHost_cleanUpLiveLookupDataWithReply___block_invoke;
     v19[3] = &unk_1E7C06CF8;
     v19[4] = self;
-    v20 = v4;
+    v20 = replyCopy;
     [(CXCallDirectoryHost *)self performDelegateCallback:v19];
   }
 
@@ -1157,7 +1157,7 @@ void __45__CXCallDirectoryHost_compactStoreWithReply___block_invoke(uint64_t a1)
     v23[0] = v14;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     v17 = [v15 cx_callDirectoryManagerErrorWithCode:100 userInfo:v16];
-    (*(v4 + 2))(v4, v17);
+    (*(replyCopy + 2))(replyCopy, v17);
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -1173,9 +1173,9 @@ uint64_t __54__CXCallDirectoryHost_cleanUpLiveLookupDataWithReply___block_invoke
   return v3();
 }
 
-- (void)launchCallDirectorySettingsWithReply:(id)a3
+- (void)launchCallDirectorySettingsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1188,8 +1188,8 @@ uint64_t __54__CXCallDirectoryHost_cleanUpLiveLookupDataWithReply___block_invoke
   v7[2] = __60__CXCallDirectoryHost_launchCallDirectorySettingsWithReply___block_invoke;
   v7[3] = &unk_1E7C06CF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   [(CXCallDirectoryHost *)self performDelegateCallback:v7];
 }
 

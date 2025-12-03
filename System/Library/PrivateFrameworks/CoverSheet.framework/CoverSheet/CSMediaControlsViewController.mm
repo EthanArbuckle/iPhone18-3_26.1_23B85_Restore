@@ -1,18 +1,18 @@
 @interface CSMediaControlsViewController
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleEvent:(id)event;
 - (CGRect)_suggestedFrameForMediaControls;
 - (CSMediaControlsViewController)init;
 - (NSArray)requiredVisualStyleCategories;
 - (double)_preferredMediaRemoteHeight;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
+- (id)visualStylingProviderForCategory:(int64_t)category;
 - (void)_layoutMediaControls;
-- (void)_updatePersistentUpdatesEnabled:(BOOL)a3;
+- (void)_updatePersistentUpdatesEnabled:(BOOL)enabled;
 - (void)_updatePreferredContentSize;
-- (void)coverSheetViewController:(id)a3 didReceiveInteractionEvent:(id)a4;
-- (void)coverSheetViewController:(id)a3 willChangeToLayout:(int64_t)a4 animations:(id)a5 completion:(id)a6;
-- (void)setContainerSize:(CGSize)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)coverSheetViewController:(id)controller didReceiveInteractionEvent:(id)event;
+- (void)coverSheetViewController:(id)controller willChangeToLayout:(int64_t)layout animations:(id)animations completion:(id)completion;
+- (void)setContainerSize:(CGSize)size;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -39,15 +39,15 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(MRUCoverSheetViewController *)self->_mediaRemoteViewController view];
+  view = [(MRUCoverSheetViewController *)self->_mediaRemoteViewController view];
   mediaRemoteViewController = self->_mediaRemoteViewController;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__CSMediaControlsViewController_viewDidLoad__block_invoke;
   v7[3] = &unk_27838BA70;
   v7[4] = self;
-  v8 = v3;
-  v5 = v3;
+  v8 = view;
+  v5 = view;
   [(CSMediaControlsViewController *)self bs_addChildViewController:mediaRemoteViewController animated:0 transitionBlock:v7];
   [(CSCoverSheetViewControllerBase *)self registerView:v5 forRole:2];
   v6.receiver = self;
@@ -66,11 +66,11 @@ void __44__CSMediaControlsViewController_viewDidLoad__block_invoke(uint64_t a1, 
   v5[2]();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CSMediaControlsViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewDidDisappear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewDidDisappear:disappear];
   [(CSMediaControlsViewController *)self bs_endAppearanceTransitionForChildViewController:self->_mediaRemoteViewController toVisible:0];
 }
 
@@ -82,76 +82,76 @@ void __44__CSMediaControlsViewController_viewDidLoad__block_invoke(uint64_t a1, 
   [(CSMediaControlsViewController *)self _layoutMediaControls];
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = CSMediaControlsViewController;
-  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v10, sel_handleEvent_, v4) || ([v4 isConsumable] & 1) == 0)
+  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v10, sel_handleEvent_, eventCopy) || ([eventCopy isConsumable] & 1) == 0)
   {
-    v6 = [v4 type];
-    if (v6 == 25)
+    type = [eventCopy type];
+    if (type == 25)
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = 0;
     }
 
     else
     {
-      if (v6 != 24)
+      if (type != 24)
       {
 LABEL_9:
-        v5 = 0;
+        isConsumable = 0;
         goto LABEL_10;
       }
 
-      v7 = self;
+      selfCopy2 = self;
       v8 = 1;
     }
 
-    [(CSMediaControlsViewController *)v7 _updatePersistentUpdatesEnabled:v8];
+    [(CSMediaControlsViewController *)selfCopy2 _updatePersistentUpdatesEnabled:v8];
     goto LABEL_9;
   }
 
-  v5 = [v4 isConsumable];
+  isConsumable = [eventCopy isConsumable];
 LABEL_10:
 
-  return v5;
+  return isConsumable;
 }
 
-- (void)coverSheetViewController:(id)a3 didReceiveInteractionEvent:(id)a4
+- (void)coverSheetViewController:(id)controller didReceiveInteractionEvent:(id)event
 {
-  v5 = [CSAction actionWithType:3, a4];
-  [(CSCoverSheetViewControllerBase *)self sendAction:v5];
+  event = [CSAction actionWithType:3, event];
+  [(CSCoverSheetViewControllerBase *)self sendAction:event];
 }
 
-- (void)coverSheetViewController:(id)a3 willChangeToLayout:(int64_t)a4 animations:(id)a5 completion:(id)a6
+- (void)coverSheetViewController:(id)controller willChangeToLayout:(int64_t)layout animations:(id)animations completion:(id)completion
 {
-  v9 = a5;
-  v10 = a6;
+  animationsCopy = animations;
+  completionCopy = completion;
   if (_os_feature_enabled_impl())
   {
-    self->_mediaRemoteLayout = a4;
+    self->_mediaRemoteLayout = layout;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __99__CSMediaControlsViewController_coverSheetViewController_willChangeToLayout_animations_completion___block_invoke;
     v15[3] = &unk_27838BA98;
     v15[4] = self;
-    v16 = v9;
+    v16 = animationsCopy;
     v11 = MEMORY[0x223D698D0](v15);
     v12 = MEMORY[0x277D75D18];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __99__CSMediaControlsViewController_coverSheetViewController_willChangeToLayout_animations_completion___block_invoke_2;
     v13[3] = &unk_27838BAC0;
-    v14 = v10;
+    v14 = completionCopy;
     [v12 animateWithDuration:v11 animations:v13 completion:0.5];
   }
 
   else
   {
-    v9[2](v9);
-    v10[2](v10);
+    animationsCopy[2](animationsCopy);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -164,20 +164,20 @@ uint64_t __99__CSMediaControlsViewController_coverSheetViewController_willChange
   return v2();
 }
 
-- (void)setContainerSize:(CGSize)a3
+- (void)setContainerSize:(CGSize)size
 {
-  if (self->_containerSize.width != a3.width || self->_containerSize.height != a3.height)
+  if (self->_containerSize.width != size.width || self->_containerSize.height != size.height)
   {
-    self->_containerSize = a3;
+    self->_containerSize = size;
     [(CSMediaControlsViewController *)self _updatePreferredContentSize];
   }
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(MRUCoverSheetViewController *)self->_mediaRemoteViewController visualStylingProviderForCategory:a3];
+    v5 = [(MRUCoverSheetViewController *)self->_mediaRemoteViewController visualStylingProviderForCategory:category];
   }
 
   else
@@ -192,23 +192,23 @@ uint64_t __99__CSMediaControlsViewController_coverSheetViewController_willChange
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(MRUCoverSheetViewController *)self->_mediaRemoteViewController requiredVisualStyleCategories];
+    requiredVisualStyleCategories = [(MRUCoverSheetViewController *)self->_mediaRemoteViewController requiredVisualStyleCategories];
   }
 
   else
   {
-    v3 = MEMORY[0x277CBEBF8];
+    requiredVisualStyleCategories = MEMORY[0x277CBEBF8];
   }
 
-  return v3;
+  return requiredVisualStyleCategories;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v6 = a3;
+  providerCopy = provider;
   if (objc_opt_respondsToSelector())
   {
-    [(MRUCoverSheetViewController *)self->_mediaRemoteViewController setVisualStylingProvider:v6 forCategory:a4];
+    [(MRUCoverSheetViewController *)self->_mediaRemoteViewController setVisualStylingProvider:providerCopy forCategory:category];
   }
 }
 
@@ -233,16 +233,16 @@ uint64_t __99__CSMediaControlsViewController_coverSheetViewController_willChange
 
 - (void)_layoutMediaControls
 {
-  v3 = [(MRUCoverSheetViewController *)self->_mediaRemoteViewController view];
+  view = [(MRUCoverSheetViewController *)self->_mediaRemoteViewController view];
   [(CSMediaControlsViewController *)self _suggestedFrameForMediaControls];
-  [v3 setFrame:?];
+  [view setFrame:?];
 }
 
-- (void)_updatePersistentUpdatesEnabled:(BOOL)a3
+- (void)_updatePersistentUpdatesEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6 = self->_mediaRemoteViewController;
-  v5 = [(CSMediaControlsViewController *)self _appearState]== 2 && v3;
+  v5 = [(CSMediaControlsViewController *)self _appearState]== 2 && enabledCopy;
   [(CSMediaControlsViewController *)self bs_endAppearanceTransitionForChildViewController:v6 toVisible:v5];
 }
 

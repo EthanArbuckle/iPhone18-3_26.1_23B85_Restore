@@ -1,8 +1,8 @@
 @interface BSXPCConnectionListenerManager
 + (id)defaultHandlerQueue;
 + (id)sharedInstance;
-+ (void)listenForService:(id)a3 onQueue:(id)a4 withHandler:(id)a5;
-+ (void)stopListeningForService:(id)a3;
++ (void)listenForService:(id)service onQueue:(id)queue withHandler:(id)handler;
++ (void)stopListeningForService:(id)service;
 - (BSXPCConnectionListenerManager)init;
 - (void)dealloc;
 @end
@@ -61,8 +61,8 @@ void __48__BSXPCConnectionListenerManager_sharedInstance__block_invoke()
 
 - (BSXPCConnectionListenerManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"BSXPCConnectionListenerManager.m" lineNumber:114 description:@"init is not allowed"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BSXPCConnectionListenerManager.m" lineNumber:114 description:@"init is not allowed"];
 
   return 0;
 }
@@ -190,15 +190,15 @@ void __66__BSXPCConnectionListenerManager__addService_withHandler_onQueue___bloc
   return v4;
 }
 
-+ (void)listenForService:(id)a3 onQueue:(id)a4 withHandler:(id)a5
++ (void)listenForService:(id)service onQueue:(id)queue withHandler:(id)handler
 {
-  v7 = a3;
-  v34 = a4;
-  v33 = a5;
+  serviceCopy = service;
+  queueCopy = queue;
+  handlerCopy = handler;
   v8 = +[BSXPCConnectionListenerManager sharedInstance];
-  v38 = v7;
-  v9 = v33;
-  v10 = v34;
+  v38 = serviceCopy;
+  v9 = handlerCopy;
+  v10 = queueCopy;
   if (v8)
   {
     v11 = objc_autoreleasePoolPush();
@@ -206,28 +206,28 @@ void __66__BSXPCConnectionListenerManager__addService_withHandler_onQueue___bloc
     [*(v8 + 24) lock];
     if (!v9)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:sel__addService_withHandler_onQueue_ object:v8 file:@"BSXPCConnectionListenerManager.m" lineNumber:148 description:{@"cannot add a nil handler -> service = %@", v38}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__addService_withHandler_onQueue_ object:v8 file:@"BSXPCConnectionListenerManager.m" lineNumber:148 description:{@"cannot add a nil handler -> service = %@", v38}];
     }
 
     if (!v38)
     {
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v27 handleFailureInMethod:sel__addService_withHandler_onQueue_ object:v8 file:@"BSXPCConnectionListenerManager.m" lineNumber:149 description:{@"cannot add a handler for a nil service -> handler = %@", v9}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel__addService_withHandler_onQueue_ object:v8 file:@"BSXPCConnectionListenerManager.m" lineNumber:149 description:{@"cannot add a handler for a nil service -> handler = %@", v9}];
 
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v28 handleFailureInMethod:sel__addService_withHandler_onQueue_ object:v8 file:@"BSXPCConnectionListenerManager.m" lineNumber:150 description:{@"cannot add a handler without a queue -> service = %@ : handler = %@", 0, v9}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:sel__addService_withHandler_onQueue_ object:v8 file:@"BSXPCConnectionListenerManager.m" lineNumber:150 description:{@"cannot add a handler without a queue -> service = %@ : handler = %@", 0, v9}];
     }
 
     v12 = [*(v8 + 16) objectForKey:?];
 
     if (v12)
     {
-      v29 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v29 handleFailureInMethod:sel__addService_withHandler_onQueue_ object:v8 file:@"BSXPCConnectionListenerManager.m" lineNumber:151 description:{@"cannot add a service twice -> service = %@ : handler = %@", v38, v9}];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler4 handleFailureInMethod:sel__addService_withHandler_onQueue_ object:v8 file:@"BSXPCConnectionListenerManager.m" lineNumber:151 description:{@"cannot add a service twice -> service = %@ : handler = %@", v38, v9}];
     }
 
-    v35 = a4;
+    queueCopy2 = queue;
     obj = xpc_connection_create_mach_service([v38 UTF8String], *(v8 + 8), 1uLL);
     v13 = [BSXPCConnectionListener alloc];
     v14 = obj;
@@ -273,8 +273,8 @@ LABEL_16:
 LABEL_11:
         if (!v38)
         {
-          v32 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v32 handleFailureInMethod:sel_initWithConnection_forService_withHandler_onQueue_ object:v13 file:@"BSXPCConnectionListenerManager.m" lineNumber:43 description:@"cannot initialize without a service"];
+          currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler5 handleFailureInMethod:sel_initWithConnection_forService_withHandler_onQueue_ object:v13 file:@"BSXPCConnectionListenerManager.m" lineNumber:43 description:@"cannot initialize without a service"];
         }
 
         handler.receiver = v13;
@@ -284,14 +284,14 @@ LABEL_11:
         if (v18)
         {
           objc_storeStrong(v18 + 1, obj);
-          objc_storeStrong(v19 + 2, a5);
+          objc_storeStrong(v19 + 2, handler);
           v20 = [v15 copy];
           v21 = v19[3];
           v19[3] = v20;
 
           if (v17)
           {
-            objc_storeStrong(v19 + 4, v35);
+            objc_storeStrong(v19 + 4, queueCopy2);
           }
         }
 
@@ -301,8 +301,8 @@ LABEL_11:
 
     else
     {
-      v30 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v30 handleFailureInMethod:sel_initWithConnection_forService_withHandler_onQueue_ object:v13 file:@"BSXPCConnectionListenerManager.m" lineNumber:41 description:@"cannot initialize with a NULL connection"];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler6 handleFailureInMethod:sel_initWithConnection_forService_withHandler_onQueue_ object:v13 file:@"BSXPCConnectionListenerManager.m" lineNumber:41 description:@"cannot initialize with a NULL connection"];
 
       if (v9)
       {
@@ -310,8 +310,8 @@ LABEL_11:
       }
     }
 
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:sel_initWithConnection_forService_withHandler_onQueue_ object:v13 file:@"BSXPCConnectionListenerManager.m" lineNumber:42 description:@"cannot initialize without a handler"];
+    currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler7 handleFailureInMethod:sel_initWithConnection_forService_withHandler_onQueue_ object:v13 file:@"BSXPCConnectionListenerManager.m" lineNumber:42 description:@"cannot initialize without a handler"];
 
     goto LABEL_11;
   }
@@ -319,11 +319,11 @@ LABEL_11:
 LABEL_19:
 }
 
-+ (void)stopListeningForService:(id)a3
++ (void)stopListeningForService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = +[BSXPCConnectionListenerManager sharedInstance];
-  v9 = v3;
+  v9 = serviceCopy;
   if (v4)
   {
     v5 = objc_autoreleasePoolPush();

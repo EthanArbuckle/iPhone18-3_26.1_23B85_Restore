@@ -1,22 +1,22 @@
 @interface JEHashTreatmentAction
-- (JEHashTreatmentAction)initWithField:(id)a3 configuration:(id)a4 topic:(id)a5;
-- (id)hashOf:(id)a3 userId:(id)a4;
-- (id)performAction:(id)a3 context:(id)a4;
+- (JEHashTreatmentAction)initWithField:(id)field configuration:(id)configuration topic:(id)topic;
+- (id)hashOf:(id)of userId:(id)id;
+- (id)performAction:(id)action context:(id)context;
 @end
 
 @implementation JEHashTreatmentAction
 
-- (JEHashTreatmentAction)initWithField:(id)a3 configuration:(id)a4 topic:(id)a5
+- (JEHashTreatmentAction)initWithField:(id)field configuration:(id)configuration topic:(id)topic
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fieldCopy = field;
+  configurationCopy = configuration;
+  topicCopy = topic;
   v23.receiver = self;
   v23.super_class = JEHashTreatmentAction;
-  v11 = [(JETreatmentAction *)&v23 initWithField:v8 configuration:v9];
+  v11 = [(JETreatmentAction *)&v23 initWithField:fieldCopy configuration:configurationCopy];
   if (v11)
   {
-    v12 = [v9 objectForKeyedSubscript:@"scheme"];
+    v12 = [configurationCopy objectForKeyedSubscript:@"scheme"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       v13 = 0;
     }
 
-    v14 = [v9 objectForKeyedSubscript:@"crossDeviceSync"];
+    v14 = [configurationCopy objectForKeyedSubscript:@"crossDeviceSync"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,35 +44,35 @@
     if (!v16)
     {
       v17 = MEMORY[0x1E696AEC0];
-      v18 = [MEMORY[0x1E696AAE8] mainBundle];
-      v19 = [v18 bundleIdentifier];
-      v20 = v19;
-      if (!v19)
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      processName = bundleIdentifier;
+      if (!bundleIdentifier)
       {
-        v22 = [MEMORY[0x1E696AE30] processInfo];
-        v20 = [v22 processName];
+        processInfo = [MEMORY[0x1E696AE30] processInfo];
+        processName = [processInfo processName];
       }
 
-      v16 = [v17 stringWithFormat:@"%@.%lx", v20, objc_msgSend(v8, "hash")];
-      if (!v19)
+      v16 = [v17 stringWithFormat:@"%@.%lx", processName, objc_msgSend(fieldCopy, "hash")];
+      if (!bundleIdentifier)
       {
       }
     }
 
     [(JEHashTreatmentAction *)v11 setNamespace:v16];
-    [(JEHashTreatmentAction *)v11 setConfiguration:v9];
-    [(JEHashTreatmentAction *)v11 setTopic:v10];
+    [(JEHashTreatmentAction *)v11 setConfiguration:configurationCopy];
+    [(JEHashTreatmentAction *)v11 setTopic:topicCopy];
     -[JEHashTreatmentAction setCrossDeviceSync:](v11, "setCrossDeviceSync:", [v15 BOOLValue]);
   }
 
   return v11;
 }
 
-- (id)hashOf:(id)a3 userId:(id)a4
+- (id)hashOf:(id)of userId:(id)id
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  ofCopy = of;
+  idCopy = id;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -81,10 +81,10 @@
   v27 = 0;
   v8 = dispatch_group_create();
   dispatch_group_enter(v8);
-  v9 = [(JEHashTreatmentAction *)self namespace];
-  v10 = [(JEHashTreatmentAction *)self topic];
+  namespace = [(JEHashTreatmentAction *)self namespace];
+  topic = [(JEHashTreatmentAction *)self topic];
   v11 = [MEMORY[0x1E698CA18] keyWithName:@"userID" crossDeviceSync:{-[JEHashTreatmentAction crossDeviceSync](self, "crossDeviceSync")}];
-  v12 = [(JEHashTreatmentAction *)self configuration];
+  configuration = [(JEHashTreatmentAction *)self configuration];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __39__JEHashTreatmentAction_hashOf_userId___block_invoke;
@@ -92,33 +92,33 @@
   v21 = &v22;
   v13 = v8;
   v20 = v13;
-  [_TtC9JetEngine23JEMetricsSecretMigrator migrateSecretIfNecessaryAndReturnSecretValueWithNamespace:v9 topic:v10 secretKey:v11 configuration:v12 completionHandler:v19];
+  [_TtC9JetEngine23JEMetricsSecretMigrator migrateSecretIfNecessaryAndReturnSecretValueWithNamespace:namespace topic:topic secretKey:v11 configuration:configuration completionHandler:v19];
 
   v14 = dispatch_time(0, 5000000000);
   dispatch_group_wait(v13, v14);
   if (v23[5])
   {
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@\n%@", v6, v23[5], v7];
-    v16 = [v15 je_SHA1Base62String];
+    idCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@\n%@", ofCopy, v23[5], idCopy];
+    je_SHA1Base62String = [idCopy je_SHA1Base62String];
   }
 
   else
   {
-    v15 = JEMetricsOSLog();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    idCopy = JEMetricsOSLog();
+    if (os_log_type_enabled(idCopy, OS_LOG_TYPE_ERROR))
     {
-      v17 = [(JEHashTreatmentAction *)self namespace];
+      namespace2 = [(JEHashTreatmentAction *)self namespace];
       *buf = 138412290;
-      v29 = v17;
-      _os_log_impl(&dword_1AB012000, v15, OS_LOG_TYPE_ERROR, "JetEngine: Failed to retrieve secret salt for namespace %@", buf, 0xCu);
+      v29 = namespace2;
+      _os_log_impl(&dword_1AB012000, idCopy, OS_LOG_TYPE_ERROR, "JetEngine: Failed to retrieve secret salt for namespace %@", buf, 0xCu);
     }
 
-    v16 = 0;
+    je_SHA1Base62String = 0;
   }
 
   _Block_object_dispose(&v22, 8);
 
-  return v16;
+  return je_SHA1Base62String;
 }
 
 void __39__JEHashTreatmentAction_hashOf_userId___block_invoke(uint64_t a1, void *a2)
@@ -128,20 +128,20 @@ void __39__JEHashTreatmentAction_hashOf_userId___block_invoke(uint64_t a1, void 
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (id)performAction:(id)a3 context:(id)a4
+- (id)performAction:(id)action context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = JEHashTreatmentAction;
-  v7 = [(JETreatmentAction *)&v15 performAction:a3 context:v6];
+  v7 = [(JETreatmentAction *)&v15 performAction:action context:contextCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 stringValue];
+    stringValue = [v7 stringValue];
 LABEL_8:
-    v9 = v8;
-    v10 = [(JETreatmentContext *)v6 metrics];
-    v11 = [v10 objectForKeyedSubscript:@"userId"];
+    v9 = stringValue;
+    metrics = [(JETreatmentContext *)contextCopy metrics];
+    v11 = [metrics objectForKeyedSubscript:@"userId"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -162,14 +162,14 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    stringValue = v7;
     goto LABEL_8;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v8 = [v7 description];
+    stringValue = [v7 description];
     goto LABEL_8;
   }
 

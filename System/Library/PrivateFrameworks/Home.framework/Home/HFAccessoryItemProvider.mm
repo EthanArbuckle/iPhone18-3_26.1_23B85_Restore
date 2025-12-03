@@ -1,24 +1,24 @@
 @interface HFAccessoryItemProvider
 - (HFAccessoryItemProvider)init;
-- (HFAccessoryItemProvider)initWithHome:(id)a3;
+- (HFAccessoryItemProvider)initWithHome:(id)home;
 - (HFCharacteristicValueSource)valueSource;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFAccessoryItemProvider
 
-- (HFAccessoryItemProvider)initWithHome:(id)a3
+- (HFAccessoryItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HFAccessoryItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = [MEMORY[0x277CBEB58] set];
     accessoryItems = v7->_accessoryItems;
     v7->_accessoryItems = v8;
@@ -31,18 +31,18 @@
 
 - (HFAccessoryItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAccessoryItemProvider.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessoryItemProvider.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFAccessoryItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HFAccessoryItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
@@ -56,18 +56,18 @@
   aBlock[3] = &unk_277DF5228;
   objc_copyWeak(&v14, &location);
   v3 = _Block_copy(aBlock);
-  v4 = [(HFAccessoryItemProvider *)self home];
-  v5 = [v4 accessories];
+  home = [(HFAccessoryItemProvider *)self home];
+  accessories = [home accessories];
 
   if (![(HFAccessoryItemProvider *)self includesMatterOnlyAccessoryItems])
   {
-    v6 = [v5 na_filter:&__block_literal_global_32];
+    v6 = [accessories na_filter:&__block_literal_global_32];
 
-    v5 = v6;
+    accessories = v6;
   }
 
-  v7 = [(HFAccessoryItemProvider *)self filter];
-  v8 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v5 filter:v7 itemMap:v3];
+  filter = [(HFAccessoryItemProvider *)self filter];
+  v8 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:accessories filter:filter itemMap:v3];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __38__HFAccessoryItemProvider_reloadItems__block_invoke_3;
@@ -115,11 +115,11 @@ id __38__HFAccessoryItemProvider_reloadItems__block_invoke_3(uint64_t a1, void *
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HFAccessoryItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v8[0] = @"accessory";
   v8[1] = @"service";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v4 = [v2 setByAddingObjectsFromArray:v3];
+  v4 = [invalidationReasons setByAddingObjectsFromArray:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 
@@ -128,20 +128,20 @@ id __38__HFAccessoryItemProvider_reloadItems__block_invoke_3(uint64_t a1, void *
 
 - (HFCharacteristicValueSource)valueSource
 {
-  v3 = [(HFAccessoryItemProvider *)self overrideValueSource];
+  overrideValueSource = [(HFAccessoryItemProvider *)self overrideValueSource];
 
-  if (v3)
+  if (overrideValueSource)
   {
-    v4 = [(HFAccessoryItemProvider *)self overrideValueSource];
+    overrideValueSource2 = [(HFAccessoryItemProvider *)self overrideValueSource];
   }
 
   else
   {
-    v5 = [(HFAccessoryItemProvider *)self home];
-    v4 = [v5 hf_characteristicValueManager];
+    home = [(HFAccessoryItemProvider *)self home];
+    overrideValueSource2 = [home hf_characteristicValueManager];
   }
 
-  return v4;
+  return overrideValueSource2;
 }
 
 @end

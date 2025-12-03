@@ -1,18 +1,18 @@
 @interface IDSConnectionContext
-- (IDSConnectionContext)initWithReadHandler:(id)a3;
+- (IDSConnectionContext)initWithReadHandler:(id)handler;
 @end
 
 @implementation IDSConnectionContext
 
-- (IDSConnectionContext)initWithReadHandler:(id)a3
+- (IDSConnectionContext)initWithReadHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v13.receiver = self;
   v13.super_class = IDSConnectionContext;
   v5 = [(IDSConnectionContext *)&v13 init];
   if (v5)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(handlerCopy);
     readHandler = v5->_readHandler;
     v5->_readHandler = v6;
   }

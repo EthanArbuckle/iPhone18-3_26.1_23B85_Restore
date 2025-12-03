@@ -1,100 +1,100 @@
 @interface PKContactlessInterfaceSession
-+ (BOOL)_useSTSForDevicePrimaryContactlessAccessControlForSecureElementPass:(id)a3;
-+ (__SecAccessControl)_copyDevicePrimaryContactlessAccessControlForSecureElementPass:(id)a3;
-+ (__SecAccessControl)copyAccessControlForPaymentApplication:(id)a3 subcredential:(id)a4 onSecureElementPass:(id)a5;
-+ (id)transitAppletStateFromPaymentSession:(id)a3 forPaymentApplication:(id)a4;
-- (BOOL)_activatePaymentApplications:(id)a3 forPaymentPass:(id)a4 forceReactivation:(BOOL)a5;
-- (BOOL)activatePaymentApplication:(id)a3 forPaymentPass:(id)a4;
-- (BOOL)activatePaymentApplication:(id)a3 forPaymentPass:(id)a4 markAsDefault:(BOOL)a5;
-- (BOOL)activateValueAddedServicePasses:(id)a3;
-- (BOOL)authorizeAndStartCardEmulationWithCredential:(id)a3;
-- (BOOL)authorizeAndStartCardEmulationWithCredential:(id)a3 deferAuthorization:(BOOL)a4 requiresConfirmationForHandoff:(BOOL)a5 startHandoffIfPending:(BOOL)a6;
-- (BOOL)cancelRKEFunction:(id)a3;
++ (BOOL)_useSTSForDevicePrimaryContactlessAccessControlForSecureElementPass:(id)pass;
++ (__SecAccessControl)_copyDevicePrimaryContactlessAccessControlForSecureElementPass:(id)pass;
++ (__SecAccessControl)copyAccessControlForPaymentApplication:(id)application subcredential:(id)subcredential onSecureElementPass:(id)pass;
++ (id)transitAppletStateFromPaymentSession:(id)session forPaymentApplication:(id)application;
+- (BOOL)_activatePaymentApplications:(id)applications forPaymentPass:(id)pass forceReactivation:(BOOL)reactivation;
+- (BOOL)activatePaymentApplication:(id)application forPaymentPass:(id)pass;
+- (BOOL)activatePaymentApplication:(id)application forPaymentPass:(id)pass markAsDefault:(BOOL)default;
+- (BOOL)activateValueAddedServicePasses:(id)passes;
+- (BOOL)authorizeAndStartCardEmulationWithCredential:(id)credential;
+- (BOOL)authorizeAndStartCardEmulationWithCredential:(id)credential deferAuthorization:(BOOL)authorization requiresConfirmationForHandoff:(BOOL)handoff startHandoffIfPending:(BOOL)pending;
+- (BOOL)cancelRKEFunction:(id)function;
 - (BOOL)isWaitingOnConfirmationForHandoff;
-- (BOOL)paymentApplicationSupportsAutomaticAuthorization:(id)a3;
+- (BOOL)paymentApplicationSupportsAutomaticAuthorization:(id)authorization;
 - (BOOL)queuePersistentCardEmulation;
 - (BOOL)resetPersistentCardEmulation;
-- (BOOL)sendRKEFunction:(id)a3 action:(id)a4 authorization:(id)a5;
+- (BOOL)sendRKEFunction:(id)function action:(id)action authorization:(id)authorization;
 - (BOOL)stopCardEmulation;
 - (NSArray)activatedPaymentApplications;
-- (PKContactlessInterfaceSession)initWithInternalSession:(id)a3 targetQueue:(id)a4;
+- (PKContactlessInterfaceSession)initWithInternalSession:(id)session targetQueue:(id)queue;
 - (PKContactlessInterfaceSessionDelegate)delegate;
 - (PKPaymentApplication)activatedPaymentApplication;
 - (PKPaymentPass)activatedPaymentPass;
-- (id)_appletForPaymentApplication:(id)a3 inInternalSession:(id)a4;
-- (id)_appletWithIdentifier:(id)a3 inInternalSession:(id)a4;
-- (id)_createExpressTransactionForState:(id)a3 pass:(id)a4 paymentApplications:(id)a5 date:(id)a6 shouldGenerateTransaction:(BOOL *)a7 withSession:(id)a8;
-- (id)_filteredLoyaltyPassesFromVASTransactions:(id)a3 activatedPasses:(id)a4;
-- (id)_paymentApplicationForEventAppletIdentifier:(id)a3 inContext:(id)a4 withSession:(id)a5;
-- (id)transitAppletStateForPaymentApplication:(id)a3;
+- (id)_appletForPaymentApplication:(id)application inInternalSession:(id)session;
+- (id)_appletWithIdentifier:(id)identifier inInternalSession:(id)session;
+- (id)_createExpressTransactionForState:(id)state pass:(id)pass paymentApplications:(id)applications date:(id)date shouldGenerateTransaction:(BOOL *)transaction withSession:(id)session;
+- (id)_filteredLoyaltyPassesFromVASTransactions:(id)transactions activatedPasses:(id)passes;
+- (id)_paymentApplicationForEventAppletIdentifier:(id)identifier inContext:(id)context withSession:(id)session;
+- (id)transitAppletStateForPaymentApplication:(id)application;
 - (unint64_t)state;
 - (void)_endLookup;
 - (void)_endLookupAndNotify;
-- (void)_endPersistentCardEmulationForPaymentPass:(id)a3 paymentApplications:(id)a4;
-- (void)_processEndEvent:(id)a3 withPartialContext:(id)a4;
-- (void)_session:(id)a3 didEnterFieldWithNotification:(id)a4;
-- (void)_session:(id)a3 didExpireTransactionForApplet:(id)a4;
-- (void)_session:(id)a3 didExpressModeStateChange:(unsigned int)a4 withObject:(id)a5;
-- (void)_session:(id)a3 didFailDeferredAuthorization:(BOOL)a4;
-- (void)_session:(id)a3 didSelectApplet:(id)a4;
-- (void)_sessionDidEndUnexpectedly:(id)a3;
-- (void)_sessionDidExitField:(id)a3;
-- (void)_sessionDidReceiveActivityTimeout:(id)a3 result:(id)a4;
-- (void)_signalWalletTransactionForContext:(id)a3;
+- (void)_endPersistentCardEmulationForPaymentPass:(id)pass paymentApplications:(id)applications;
+- (void)_processEndEvent:(id)event withPartialContext:(id)context;
+- (void)_session:(id)_session didEnterFieldWithNotification:(id)notification;
+- (void)_session:(id)_session didExpireTransactionForApplet:(id)applet;
+- (void)_session:(id)_session didExpressModeStateChange:(unsigned int)change withObject:(id)object;
+- (void)_session:(id)_session didFailDeferredAuthorization:(BOOL)authorization;
+- (void)_session:(id)_session didSelectApplet:(id)applet;
+- (void)_sessionDidEndUnexpectedly:(id)unexpectedly;
+- (void)_sessionDidExitField:(id)field;
+- (void)_sessionDidReceiveActivityTimeout:(id)timeout result:(id)result;
+- (void)_signalWalletTransactionForContext:(id)context;
 - (void)_startLookup;
-- (void)authorize18013RequestWithDataToRelease:(id)a3 credential:(id)a4;
-- (void)handleSessionResumed:(id)a3;
-- (void)handleSessionSuspended:(id)a3 withToken:(id)a4;
-- (void)invalidateSessionWithCompletion:(id)a3;
-- (void)loyaltyAndPaymentSession:(id)a3 didEndTransaction:(id)a4;
-- (void)loyaltyAndPaymentSession:(id)a3 didEnterFieldWithNotification:(id)a4;
-- (void)loyaltyAndPaymentSession:(id)a3 didExpireTransactionForApplet:(id)a4;
-- (void)loyaltyAndPaymentSession:(id)a3 didExpressModeStateChange:(unsigned int)a4 withObject:(id)a5;
-- (void)loyaltyAndPaymentSession:(id)a3 didFailDeferredAuthorization:(BOOL)a4;
-- (void)loyaltyAndPaymentSession:(id)a3 didFelicaStateChange:(id)a4;
-- (void)loyaltyAndPaymentSession:(id)a3 didPerformValueAddedServiceTransactions:(id)a4;
-- (void)loyaltyAndPaymentSession:(id)a3 didSelectApplet:(id)a4;
-- (void)loyaltyAndPaymentSession:(id)a3 didSelectValueAddedService:(BOOL)a4;
-- (void)loyaltyAndPaymentSession:(id)a3 didStartTransaction:(id)a4;
-- (void)loyaltyAndPaymentSessionDidEndUnexpectedly:(id)a3;
-- (void)loyaltyAndPaymentSessionDidExitField:(id)a3;
-- (void)loyaltyAndPaymentSessionDidReceiveActivityTimeout:(id)a3 result:(id)a4;
-- (void)loyaltyAndPaymentSessionHasPendingServerRequest:(id)a3;
+- (void)authorize18013RequestWithDataToRelease:(id)release credential:(id)credential;
+- (void)handleSessionResumed:(id)resumed;
+- (void)handleSessionSuspended:(id)suspended withToken:(id)token;
+- (void)invalidateSessionWithCompletion:(id)completion;
+- (void)loyaltyAndPaymentSession:(id)session didEndTransaction:(id)transaction;
+- (void)loyaltyAndPaymentSession:(id)session didEnterFieldWithNotification:(id)notification;
+- (void)loyaltyAndPaymentSession:(id)session didExpireTransactionForApplet:(id)applet;
+- (void)loyaltyAndPaymentSession:(id)session didExpressModeStateChange:(unsigned int)change withObject:(id)object;
+- (void)loyaltyAndPaymentSession:(id)session didFailDeferredAuthorization:(BOOL)authorization;
+- (void)loyaltyAndPaymentSession:(id)session didFelicaStateChange:(id)change;
+- (void)loyaltyAndPaymentSession:(id)session didPerformValueAddedServiceTransactions:(id)transactions;
+- (void)loyaltyAndPaymentSession:(id)session didSelectApplet:(id)applet;
+- (void)loyaltyAndPaymentSession:(id)session didSelectValueAddedService:(BOOL)service;
+- (void)loyaltyAndPaymentSession:(id)session didStartTransaction:(id)transaction;
+- (void)loyaltyAndPaymentSessionDidEndUnexpectedly:(id)unexpectedly;
+- (void)loyaltyAndPaymentSessionDidExitField:(id)field;
+- (void)loyaltyAndPaymentSessionDidReceiveActivityTimeout:(id)timeout result:(id)result;
+- (void)loyaltyAndPaymentSessionHasPendingServerRequest:(id)request;
 - (void)resetExpressState;
-- (void)sendRKEFunction:(id)a3 action:(id)a4 withAuthorization:(id)a5 completion:(id)a6;
-- (void)session:(id)a3 didEndTransaction:(id)a4;
-- (void)session:(id)a3 didEnterFieldWithNotification:(id)a4;
-- (void)session:(id)a3 didExpireTransactionForApplet:(id)a4;
-- (void)session:(id)a3 didExpressModeStateChange:(unsigned int)a4 withObject:(id)a5;
-- (void)session:(id)a3 didSelectApplet:(id)a4;
-- (void)session:(id)a3 didStartTransaction:(id)a4;
-- (void)session:(id)a3 event:(id)a4;
-- (void)sessionDidEndUnexpectedly:(id)a3;
-- (void)sessionDidExitField:(id)a3;
-- (void)sessionDidFailDeferredAuthorization:(id)a3;
-- (void)sessionDidReceiveActivityTimeout:(id)a3 result:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setState:(unint64_t)a3;
-- (void)stsSession:(id)a3 didChangeExpressModeWithInfo:(id)a4;
-- (void)stsSession:(id)a3 didEndTransaction:(id)a4;
-- (void)stsSession:(id)a3 didExpireTransaction:(BOOL)a4;
-- (void)stsSession:(id)a3 didReceive18013Requests:(id)a4 readerAuthInfo:(id)a5;
-- (void)stsSession:(id)a3 didReceiveActivityTimeout:(id)a4;
-- (void)stsSession:(id)a3 didReceiveFieldNotification:(id)a4;
-- (void)stsSession:(id)a3 didStartTransaction:(id)a4;
-- (void)stsSessionDidEndUnexpectedly:(id)a3 errorCode:(unint64_t)a4;
-- (void)stsSessionRequestHandoffConfirmation:(id)a3;
+- (void)sendRKEFunction:(id)function action:(id)action withAuthorization:(id)authorization completion:(id)completion;
+- (void)session:(id)session didEndTransaction:(id)transaction;
+- (void)session:(id)session didEnterFieldWithNotification:(id)notification;
+- (void)session:(id)session didExpireTransactionForApplet:(id)applet;
+- (void)session:(id)session didExpressModeStateChange:(unsigned int)change withObject:(id)object;
+- (void)session:(id)session didSelectApplet:(id)applet;
+- (void)session:(id)session didStartTransaction:(id)transaction;
+- (void)session:(id)session event:(id)event;
+- (void)sessionDidEndUnexpectedly:(id)unexpectedly;
+- (void)sessionDidExitField:(id)field;
+- (void)sessionDidFailDeferredAuthorization:(id)authorization;
+- (void)sessionDidReceiveActivityTimeout:(id)timeout result:(id)result;
+- (void)setDelegate:(id)delegate;
+- (void)setState:(unint64_t)state;
+- (void)stsSession:(id)session didChangeExpressModeWithInfo:(id)info;
+- (void)stsSession:(id)session didEndTransaction:(id)transaction;
+- (void)stsSession:(id)session didExpireTransaction:(BOOL)transaction;
+- (void)stsSession:(id)session didReceive18013Requests:(id)requests readerAuthInfo:(id)info;
+- (void)stsSession:(id)session didReceiveActivityTimeout:(id)timeout;
+- (void)stsSession:(id)session didReceiveFieldNotification:(id)notification;
+- (void)stsSession:(id)session didStartTransaction:(id)transaction;
+- (void)stsSessionDidEndUnexpectedly:(id)unexpectedly errorCode:(unint64_t)code;
+- (void)stsSessionRequestHandoffConfirmation:(id)confirmation;
 @end
 
 @implementation PKContactlessInterfaceSession
 
-- (PKContactlessInterfaceSession)initWithInternalSession:(id)a3 targetQueue:(id)a4
+- (PKContactlessInterfaceSession)initWithInternalSession:(id)session targetQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 nfSession];
-  v9 = [v6 stsSession];
-  if (!v8)
+  sessionCopy = session;
+  queueCopy = queue;
+  nfSession = [sessionCopy nfSession];
+  stsSession = [sessionCopy stsSession];
+  if (!nfSession)
   {
     goto LABEL_6;
   }
@@ -121,7 +121,7 @@ LABEL_6:
 LABEL_7:
   v19.receiver = self;
   v19.super_class = PKContactlessInterfaceSession;
-  v11 = [(PKPaymentSession *)&v19 initWithInternalSession:v6 targetQueue:v7];
+  v11 = [(PKPaymentSession *)&v19 initWithInternalSession:sessionCopy targetQueue:queueCopy];
   v12 = v11;
   if (v11)
   {
@@ -134,59 +134,59 @@ LABEL_7:
     callbackQueue = v12->_callbackQueue;
     v12->_callbackQueue = v15;
 
-    if (v7)
+    if (queueCopy)
     {
-      dispatch_set_target_queue(v12->_callbackQueue, v7);
+      dispatch_set_target_queue(v12->_callbackQueue, queueCopy);
     }
 
     dispatch_activate(v12->_callbackQueue);
     sessionType = v12->_sessionType;
     if (sessionType == 2)
     {
-      [v9 setDelegate:v12];
+      [stsSession setDelegate:v12];
     }
 
     else if (sessionType <= 1)
     {
-      [v8 setDelegate:v12];
-      [v8 setSessionDelegate:v12];
+      [nfSession setDelegate:v12];
+      [nfSession setSessionDelegate:v12];
     }
   }
 
   return v12;
 }
 
-+ (__SecAccessControl)copyAccessControlForPaymentApplication:(id)a3 subcredential:(id)a4 onSecureElementPass:(id)a5
++ (__SecAccessControl)copyAccessControlForPaymentApplication:(id)application subcredential:(id)subcredential onSecureElementPass:(id)pass
 {
-  v5 = [PKPaymentSession STSCredentialForPaymentApplication:a3 subcredential:a4 onSecureElementPass:a5];
-  v6 = [v5 copyAccessControl];
+  v5 = [PKPaymentSession STSCredentialForPaymentApplication:application subcredential:subcredential onSecureElementPass:pass];
+  copyAccessControl = [v5 copyAccessControl];
 
-  return v6;
+  return copyAccessControl;
 }
 
-+ (__SecAccessControl)_copyDevicePrimaryContactlessAccessControlForSecureElementPass:(id)a3
++ (__SecAccessControl)_copyDevicePrimaryContactlessAccessControlForSecureElementPass:(id)pass
 {
-  result = a3;
+  result = pass;
   if (result)
   {
     v4 = result;
-    v5 = [(__SecAccessControl *)result devicePrimaryContactlessPaymentApplication];
-    v6 = v5;
-    if (v5)
+    devicePrimaryContactlessPaymentApplication = [(__SecAccessControl *)result devicePrimaryContactlessPaymentApplication];
+    v6 = devicePrimaryContactlessPaymentApplication;
+    if (devicePrimaryContactlessPaymentApplication)
     {
-      v7 = [v5 subcredentials];
-      v8 = [v7 anyObject];
+      subcredentials = [devicePrimaryContactlessPaymentApplication subcredentials];
+      anyObject = [subcredentials anyObject];
 
-      v9 = [PKPaymentSession STSCredentialForPaymentApplication:v6 subcredential:v8 onSecureElementPass:v4];
-      v10 = [v9 copyAccessControl];
+      v9 = [PKPaymentSession STSCredentialForPaymentApplication:v6 subcredential:anyObject onSecureElementPass:v4];
+      copyAccessControl = [v9 copyAccessControl];
     }
 
     else
     {
-      v10 = 0;
+      copyAccessControl = 0;
     }
 
-    return v10;
+    return copyAccessControl;
   }
 
   else
@@ -197,20 +197,20 @@ LABEL_7:
   return result;
 }
 
-+ (BOOL)_useSTSForDevicePrimaryContactlessAccessControlForSecureElementPass:(id)a3
++ (BOOL)_useSTSForDevicePrimaryContactlessAccessControlForSecureElementPass:(id)pass
 {
-  v3 = a3;
-  if (v3)
+  passCopy = pass;
+  if (passCopy)
   {
-    v4 = v3;
-    v5 = [v3 devicePrimaryContactlessPaymentApplication];
-    v6 = v5;
-    if (v5)
+    v4 = passCopy;
+    devicePrimaryContactlessPaymentApplication = [passCopy devicePrimaryContactlessPaymentApplication];
+    v6 = devicePrimaryContactlessPaymentApplication;
+    if (devicePrimaryContactlessPaymentApplication)
     {
-      v7 = [v5 subcredentials];
-      v8 = [v7 anyObject];
+      subcredentials = [devicePrimaryContactlessPaymentApplication subcredentials];
+      anyObject = [subcredentials anyObject];
 
-      v9 = [PKPaymentSession useSTSForPaymentApplication:v6 subcredential:v8 onSecureElementPass:v4];
+      v9 = [PKPaymentSession useSTSForPaymentApplication:v6 subcredential:anyObject onSecureElementPass:v4];
     }
 
     else
@@ -218,7 +218,7 @@ LABEL_7:
       v9 = 0;
     }
 
-    LOBYTE(v3) = v9;
+    LOBYTE(passCopy) = v9;
   }
 
   else
@@ -226,21 +226,21 @@ LABEL_7:
     __break(1u);
   }
 
-  return v3;
+  return passCopy;
 }
 
-- (void)invalidateSessionWithCompletion:(id)a3
+- (void)invalidateSessionWithCompletion:(id)completion
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__PKContactlessInterfaceSession_invalidateSessionWithCompletion___block_invoke;
   v6[3] = &unk_1E79C7A28;
   v6[4] = self;
-  v4 = a3;
+  completionCopy = completion;
   [(PKPaymentSession *)self performBlockSyncOnInternalSession:v6];
   v5.receiver = self;
   v5.super_class = PKContactlessInterfaceSession;
-  [(PKPaymentSession *)&v5 invalidateSessionWithCompletion:v4];
+  [(PKPaymentSession *)&v5 invalidateSessionWithCompletion:completionCopy];
 }
 
 void __65__PKContactlessInterfaceSession_invalidateSessionWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -267,44 +267,44 @@ void __65__PKContactlessInterfaceSession_invalidateSessionWithCompletion___block
   }
 }
 
-- (BOOL)activatePaymentApplication:(id)a3 forPaymentPass:(id)a4 markAsDefault:(BOOL)a5
+- (BOOL)activatePaymentApplication:(id)application forPaymentPass:(id)pass markAsDefault:(BOOL)default
 {
   v13 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (a3)
+  passCopy = pass;
+  if (application)
   {
-    v12 = a3;
+    applicationCopy = application;
     v8 = MEMORY[0x1E695DEC8];
-    v9 = a3;
-    a3 = [v8 arrayWithObjects:&v12 count:1];
+    applicationCopy2 = application;
+    application = [v8 arrayWithObjects:&applicationCopy count:1];
   }
 
-  v10 = [(PKContactlessInterfaceSession *)self activatePaymentApplications:a3 forPaymentPass:v7, v12, v13];
+  v10 = [(PKContactlessInterfaceSession *)self activatePaymentApplications:application forPaymentPass:passCopy, applicationCopy, v13];
 
   return v10;
 }
 
-- (BOOL)activatePaymentApplication:(id)a3 forPaymentPass:(id)a4
+- (BOOL)activatePaymentApplication:(id)application forPaymentPass:(id)pass
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3)
+  passCopy = pass;
+  if (application)
   {
-    v11 = a3;
+    applicationCopy = application;
     v7 = MEMORY[0x1E695DEC8];
-    v8 = a3;
-    a3 = [v7 arrayWithObjects:&v11 count:1];
+    applicationCopy2 = application;
+    application = [v7 arrayWithObjects:&applicationCopy count:1];
   }
 
-  v9 = [(PKContactlessInterfaceSession *)self _activatePaymentApplications:a3 forPaymentPass:v6 forceReactivation:0, v11, v12];
+  v9 = [(PKContactlessInterfaceSession *)self _activatePaymentApplications:application forPaymentPass:passCopy forceReactivation:0, applicationCopy, v12];
 
   return v9;
 }
 
-- (BOOL)_activatePaymentApplications:(id)a3 forPaymentPass:(id)a4 forceReactivation:(BOOL)a5
+- (BOOL)_activatePaymentApplications:(id)applications forPaymentPass:(id)pass forceReactivation:(BOOL)reactivation
 {
-  v8 = a3;
-  v9 = a4;
+  applicationsCopy = applications;
+  passCopy = pass;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -321,21 +321,21 @@ void __65__PKContactlessInterfaceSession_invalidateSessionWithCompletion___block
   v24[1] = v24;
   v24[2] = 0x2020000000;
   v25 = 0;
-  v10 = [v8 count];
+  v10 = [applicationsCopy count];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __95__PKContactlessInterfaceSession__activatePaymentApplications_forPaymentPass_forceReactivation___block_invoke;
   v15[3] = &unk_1E79C7A70;
   v15[4] = self;
   v18 = v24;
-  v23 = a5;
-  v11 = v8;
+  reactivationCopy = reactivation;
+  v11 = applicationsCopy;
   v16 = v11;
   v19 = &v26;
   v20 = &v30;
   v21 = &v34;
   v22 = v10;
-  v12 = v9;
+  v12 = passCopy;
   v17 = v12;
   [(PKPaymentSession *)self performBlockSyncOnInternalSession:v15];
   if (*(v35 + 24) == 1 && (v31[3] & 1) != 0)
@@ -758,14 +758,14 @@ LABEL_86:
 LABEL_98:
 }
 
-- (BOOL)activateValueAddedServicePasses:(id)a3
+- (BOOL)activateValueAddedServicePasses:(id)passes
 {
-  v4 = a3;
+  passesCopy = passes;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v5 = [v4 count];
+  v5 = [passesCopy count];
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v5];
   v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v5];
   v17[0] = MEMORY[0x1E69E9820];
@@ -776,7 +776,7 @@ LABEL_98:
   v18 = v8;
   v9 = v7;
   v19 = v9;
-  [v4 enumerateObjectsUsingBlock:v17];
+  [passesCopy enumerateObjectsUsingBlock:v17];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __65__PKContactlessInterfaceSession_activateValueAddedServicePasses___block_invoke_128;
@@ -897,19 +897,19 @@ void __65__PKContactlessInterfaceSession_activateValueAddedServicePasses___block
   }
 }
 
-- (BOOL)authorizeAndStartCardEmulationWithCredential:(id)a3
+- (BOOL)authorizeAndStartCardEmulationWithCredential:(id)credential
 {
-  v3 = self;
+  selfCopy = self;
   activatedPaymentApplications = self->_activatedPaymentApplications;
-  v5 = a3;
-  LOBYTE(v3) = [(PKContactlessInterfaceSession *)v3 authorizeAndStartCardEmulationWithCredential:v5 deferAuthorization:[(NSArray *)activatedPaymentApplications pk_containsObjectPassingTest:&__block_literal_global_131]];
+  credentialCopy = credential;
+  LOBYTE(selfCopy) = [(PKContactlessInterfaceSession *)selfCopy authorizeAndStartCardEmulationWithCredential:credentialCopy deferAuthorization:[(NSArray *)activatedPaymentApplications pk_containsObjectPassingTest:&__block_literal_global_131]];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)authorizeAndStartCardEmulationWithCredential:(id)a3 deferAuthorization:(BOOL)a4 requiresConfirmationForHandoff:(BOOL)a5 startHandoffIfPending:(BOOL)a6
+- (BOOL)authorizeAndStartCardEmulationWithCredential:(id)credential deferAuthorization:(BOOL)authorization requiresConfirmationForHandoff:(BOOL)handoff startHandoffIfPending:(BOOL)pending
 {
-  v10 = a3;
+  credentialCopy = credential;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -920,11 +920,11 @@ void __65__PKContactlessInterfaceSession_activateValueAddedServicePasses___block
   v14[3] = &unk_1E79C7AE0;
   v14[4] = self;
   v16 = &v20;
-  v17 = a6;
-  v18 = a5;
-  v11 = v10;
+  pendingCopy = pending;
+  handoffCopy = handoff;
+  v11 = credentialCopy;
   v15 = v11;
-  v19 = a4;
+  authorizationCopy = authorization;
   [(PKPaymentSession *)self performBlockSyncOnInternalSession:v14];
   v12 = *(v21 + 24);
 
@@ -1259,19 +1259,19 @@ LABEL_76:
 LABEL_83:
 }
 
-- (void)authorize18013RequestWithDataToRelease:(id)a3 credential:(id)a4
+- (void)authorize18013RequestWithDataToRelease:(id)release credential:(id)credential
 {
-  v6 = a3;
-  v7 = a4;
+  releaseCopy = release;
+  credentialCopy = credential;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __83__PKContactlessInterfaceSession_authorize18013RequestWithDataToRelease_credential___block_invoke;
   v10[3] = &unk_1E79C7B08;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = releaseCopy;
+  v12 = credentialCopy;
+  v8 = credentialCopy;
+  v9 = releaseCopy;
   [(PKPaymentSession *)self performBlockAsyncOnInternalSession:v10];
 }
 
@@ -1564,11 +1564,11 @@ void __50__PKContactlessInterfaceSession_resetExpressState__block_invoke(uint64_
   *(v1 + 112) = 0;
 }
 
-- (BOOL)sendRKEFunction:(id)a3 action:(id)a4 authorization:(id)a5
+- (BOOL)sendRKEFunction:(id)function action:(id)action authorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  functionCopy = function;
+  actionCopy = action;
+  authorizationCopy = authorization;
   v11 = 0;
   v18 = 0;
   v19 = &v18;
@@ -1580,10 +1580,10 @@ void __50__PKContactlessInterfaceSession_resetExpressState__block_invoke(uint64_
     v13[1] = 3221225472;
     v13[2] = __70__PKContactlessInterfaceSession_sendRKEFunction_action_authorization___block_invoke;
     v13[3] = &unk_1E79C7B58;
-    v14 = v9;
-    v15 = v8;
+    v14 = actionCopy;
+    v15 = functionCopy;
     v17 = &v18;
-    v16 = v10;
+    v16 = authorizationCopy;
     [(PKPaymentSession *)self performBlockSyncOnInternalSession:v13];
 
     v11 = *(v19 + 24);
@@ -1615,22 +1615,22 @@ void __70__PKContactlessInterfaceSession_sendRKEFunction_action_authorization___
   *(*(a1[7] + 8) + 24) = v8 == 0;
 }
 
-- (void)sendRKEFunction:(id)a3 action:(id)a4 withAuthorization:(id)a5 completion:(id)a6
+- (void)sendRKEFunction:(id)function action:(id)action withAuthorization:(id)authorization completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  functionCopy = function;
+  actionCopy = action;
+  authorizationCopy = authorization;
+  completionCopy = completion;
   if (self->_sessionType == 1)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __85__PKContactlessInterfaceSession_sendRKEFunction_action_withAuthorization_completion___block_invoke;
     v14[3] = &unk_1E79C7BA8;
-    v15 = v11;
-    v16 = v10;
-    v17 = v12;
-    v18 = v13;
+    v15 = actionCopy;
+    v16 = functionCopy;
+    v17 = authorizationCopy;
+    v18 = completionCopy;
     [(PKPaymentSession *)self performBlockSyncOnInternalSession:v14];
   }
 }
@@ -1674,10 +1674,10 @@ uint64_t __85__PKContactlessInterfaceSession_sendRKEFunction_action_withAuthoriz
   return result;
 }
 
-- (BOOL)cancelRKEFunction:(id)a3
+- (BOOL)cancelRKEFunction:(id)function
 {
-  v4 = a3;
-  v5 = v4;
+  functionCopy = function;
+  v5 = functionCopy;
   v6 = 0;
   v11 = 0;
   v12 = &v11;
@@ -1690,7 +1690,7 @@ uint64_t __85__PKContactlessInterfaceSession_sendRKEFunction_action_withAuthoriz
     v8[2] = __51__PKContactlessInterfaceSession_cancelRKEFunction___block_invoke;
     v8[3] = &unk_1E79C7BD0;
     v10 = &v11;
-    v9 = v4;
+    v9 = functionCopy;
     [(PKPaymentSession *)self performBlockSyncOnInternalSession:v8];
 
     v6 = *(v12 + 24);
@@ -1842,9 +1842,9 @@ LABEL_11:
   __break(1u);
 }
 
-- (BOOL)paymentApplicationSupportsAutomaticAuthorization:(id)a3
+- (BOOL)paymentApplicationSupportsAutomaticAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1857,7 +1857,7 @@ LABEL_11:
   v9[3] = &unk_1E79C7C68;
   v11 = &v12;
   v9[4] = self;
-  v5 = v4;
+  v5 = authorizationCopy;
   v10 = v5;
   [(PKPaymentSession *)self performBlockSyncOnInternalSession:v9];
   v6 = v13[5];
@@ -1914,10 +1914,10 @@ LABEL_7:
 
 - (PKPaymentApplication)activatedPaymentApplication
 {
-  v2 = [(PKContactlessInterfaceSession *)self activatedPaymentApplications];
-  v3 = [v2 firstObject];
+  activatedPaymentApplications = [(PKContactlessInterfaceSession *)self activatedPaymentApplications];
+  firstObject = [activatedPaymentApplications firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NSArray)activatedPaymentApplications
@@ -1962,14 +1962,14 @@ LABEL_7:
   return v2;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __42__PKContactlessInterfaceSession_setState___block_invoke;
   v3[3] = &unk_1E79C7C40;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = state;
   [(PKPaymentSession *)self performBlockSyncOnInternalSession:v3];
 }
 
@@ -2000,9 +2000,9 @@ void __42__PKContactlessInterfaceSession_setState___block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)transitAppletStateForPaymentApplication:(id)a3
+- (id)transitAppletStateForPaymentApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -2015,7 +2015,7 @@ void __42__PKContactlessInterfaceSession_setState___block_invoke_2(uint64_t a1)
   v8[3] = &unk_1E79C7C68;
   v8[4] = self;
   v10 = &v11;
-  v5 = v4;
+  v5 = applicationCopy;
   v9 = v5;
   [(PKPaymentSession *)self performBlockSyncOnInternalSession:v8];
   v6 = v12[5];
@@ -2040,19 +2040,19 @@ void __73__PKContactlessInterfaceSession_transitAppletStateForPaymentApplication
   }
 }
 
-+ (id)transitAppletStateFromPaymentSession:(id)a3 forPaymentApplication:(id)a4
++ (id)transitAppletStateFromPaymentSession:(id)session forPaymentApplication:(id)application
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v6 || (objc_opt_respondsToSelector() & 1) == 0)
+  sessionCopy = session;
+  applicationCopy = application;
+  if (!applicationCopy || (objc_opt_respondsToSelector() & 1) == 0)
   {
     v8 = 0;
     goto LABEL_9;
   }
 
-  v7 = [v6 applicationIdentifier];
-  v8 = [v5 appletWithIdentifier:v7];
+  applicationIdentifier = [applicationCopy applicationIdentifier];
+  v8 = [sessionCopy appletWithIdentifier:applicationIdentifier];
 
   if (!v8)
   {
@@ -2061,17 +2061,17 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v9 = [v6 appletDataFormat];
-  v10 = v9;
-  if (v9 && @"transit.felica.suica")
+  appletDataFormat = [applicationCopy appletDataFormat];
+  v10 = appletDataFormat;
+  if (appletDataFormat && @"transit.felica.suica")
   {
-    if (([(__CFString *)v9 isEqual:@"transit.felica.suica"]& 1) == 0)
+    if (([(__CFString *)appletDataFormat isEqual:@"transit.felica.suica"]& 1) == 0)
     {
       goto LABEL_21;
     }
   }
 
-  else if (v9 != @"transit.felica.suica")
+  else if (appletDataFormat != @"transit.felica.suica")
   {
     goto LABEL_21;
   }
@@ -2079,7 +2079,7 @@ LABEL_9:
   if (objc_opt_respondsToSelector())
   {
     v26 = 0;
-    v13 = [v5 felicaAppletState:v8 error:&v26];
+    v13 = [sessionCopy felicaAppletState:v8 error:&v26];
     v14 = v26;
     v15 = v14;
     if (v13)
@@ -2089,9 +2089,9 @@ LABEL_9:
         v16 = PKLogFacilityTypeGetObject(0xDuLL);
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [v6 applicationIdentifier];
+          applicationIdentifier2 = [applicationCopy applicationIdentifier];
           *buf = 138412546;
-          v28 = v17;
+          v28 = applicationIdentifier2;
           v29 = 2112;
           v30 = v13;
           _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Felica state for AID<%@>:\n%@", buf, 0x16u);
@@ -2130,7 +2130,7 @@ LABEL_43:
   }
 
   v25 = 0;
-  v13 = [v5 transitAppletState:v8 error:&v25];
+  v13 = [sessionCopy transitAppletState:v8 error:&v25];
   v19 = v25;
   v15 = v19;
   if (!v13)
@@ -2163,9 +2163,9 @@ LABEL_37:
     v20 = PKLogFacilityTypeGetObject(0xDuLL);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v6 applicationIdentifier];
+      applicationIdentifier3 = [applicationCopy applicationIdentifier];
       *buf = 138412546;
-      v28 = v21;
+      v28 = applicationIdentifier3;
       v29 = 2112;
       v30 = v13;
       _os_log_impl(&dword_1AD337000, v20, OS_LOG_TYPE_DEFAULT, "Transit state for AID<%@>:\n%@", buf, 0x16u);
@@ -2222,21 +2222,21 @@ LABEL_10:
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_delegateLock);
   v5 = PKLogFacilityTypeGetObject(7uLL);
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-  if (v4)
+  if (delegateCopy)
   {
     if (v6)
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       *buf = 134218242;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2114;
       v17 = v8;
       _os_log_debug_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEBUG, "PKContactlessInterfaceSession (%p): switching to delegate of kind %{public}@.", buf, 0x16u);
@@ -2246,15 +2246,15 @@ LABEL_10:
   else if (v6)
   {
     *buf = 134217984;
-    v15 = self;
+    selfCopy2 = self;
     _os_log_debug_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEBUG, "PKContactlessInterfaceSession (%p): switching to nil delegate.", buf, 0xCu);
   }
 
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
   os_unfair_lock_unlock(&self->_delegateLock);
-  if (v4)
+  if (delegateCopy)
   {
-    objc_initWeak(buf, v4);
+    objc_initWeak(buf, delegateCopy);
     objc_initWeak(&location, self);
     callbackQueue = self->_callbackQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -2308,14 +2308,14 @@ void __45__PKContactlessInterfaceSession_setDelegate___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)_paymentApplicationForEventAppletIdentifier:(id)a3 inContext:(id)a4 withSession:(id)a5
+- (id)_paymentApplicationForEventAppletIdentifier:(id)identifier inContext:(id)context withSession:(id)session
 {
   v70 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 paymentPass];
-  [v8 activatedPaymentApplications];
+  identifierCopy = identifier;
+  contextCopy = context;
+  sessionCopy = session;
+  paymentPass = [contextCopy paymentPass];
+  [contextCopy activatedPaymentApplications];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
@@ -2327,10 +2327,10 @@ void __45__PKContactlessInterfaceSession_setDelegate___block_invoke(uint64_t a1)
     goto LABEL_55;
   }
 
-  v44 = v8;
-  v45 = v10;
+  v44 = contextCopy;
+  v45 = paymentPass;
   v12 = *v61;
-  v49 = v9;
+  v49 = sessionCopy;
   v50 = *v61;
   v51 = v11;
 LABEL_3:
@@ -2343,11 +2343,11 @@ LABEL_3:
     }
 
     v14 = *(*(&v60 + 1) + 8 * v13);
-    v15 = [v14 applicationIdentifier];
-    v16 = v15;
-    if (v7 && v15)
+    applicationIdentifier = [v14 applicationIdentifier];
+    v16 = applicationIdentifier;
+    if (identifierCopy && applicationIdentifier)
     {
-      v17 = [v15 isEqual:v7];
+      v17 = [applicationIdentifier isEqual:identifierCopy];
 
       if (v17)
       {
@@ -2358,13 +2358,13 @@ LABEL_3:
     else
     {
 
-      if (v16 == v7)
+      if (v16 == identifierCopy)
       {
 LABEL_35:
         v33 = v14;
 LABEL_36:
-        v8 = v44;
-        v10 = v45;
+        contextCopy = v44;
+        paymentPass = v45;
         goto LABEL_55;
       }
     }
@@ -2378,8 +2378,8 @@ LABEL_36:
 
     if (objc_opt_respondsToSelector())
     {
-      v19 = [v14 applicationIdentifier];
-      v20 = [v9 appletWithIdentifier:v19];
+      applicationIdentifier2 = [v14 applicationIdentifier];
+      v20 = [sessionCopy appletWithIdentifier:applicationIdentifier2];
 
       if (v20)
       {
@@ -2401,55 +2401,55 @@ LABEL_32:
     }
   }
 
-  v21 = [v20 identifier];
-  v22 = [v20 groupMemberIDs];
-  v23 = [v20 multiSEGroupMemberIDs];
-  if (![v22 count])
+  identifier = [v20 identifier];
+  groupMemberIDs = [v20 groupMemberIDs];
+  multiSEGroupMemberIDs = [v20 multiSEGroupMemberIDs];
+  if (![groupMemberIDs count])
   {
-    v24 = v23;
-    v25 = [v20 groupHeadID];
+    v24 = multiSEGroupMemberIDs;
+    groupHeadID = [v20 groupHeadID];
     if (objc_opt_respondsToSelector())
     {
-      v46 = v21;
-      v26 = [v9 appletWithIdentifier:v25];
+      v46 = identifier;
+      v26 = [sessionCopy appletWithIdentifier:groupHeadID];
       if (v26)
       {
         v27 = v26;
-        v52 = v25;
+        v52 = groupHeadID;
 
-        v28 = [v27 groupMemberIDs];
+        groupMemberIDs2 = [v27 groupMemberIDs];
 
-        v47 = [v27 multiSEGroupMemberIDs];
+        multiSEGroupMemberIDs2 = [v27 multiSEGroupMemberIDs];
 
-        v22 = v27;
-        v24 = v47;
-        v21 = v52;
+        groupMemberIDs = v27;
+        v24 = multiSEGroupMemberIDs2;
+        identifier = v52;
       }
 
       else
       {
-        v28 = 0;
+        groupMemberIDs2 = 0;
       }
     }
 
     else
     {
-      v28 = 0;
+      groupMemberIDs2 = 0;
     }
 
-    v22 = v28;
-    v23 = v24;
-    v9 = v49;
+    groupMemberIDs = groupMemberIDs2;
+    multiSEGroupMemberIDs = v24;
+    sessionCopy = v49;
     v12 = v50;
   }
 
-  v53 = v23;
-  if ([v23 count])
+  v53 = multiSEGroupMemberIDs;
+  if ([multiSEGroupMemberIDs count])
   {
-    v29 = v21;
-    if (v22)
+    v29 = identifier;
+    if (groupMemberIDs)
     {
-      v30 = [v22 mutableCopy];
+      v30 = [groupMemberIDs mutableCopy];
     }
 
     else
@@ -2458,22 +2458,22 @@ LABEL_32:
     }
 
     v31 = v30;
-    [v30 addObjectsFromArray:v23];
+    [v30 addObjectsFromArray:multiSEGroupMemberIDs];
     v32 = [v31 copy];
 
-    v22 = v32;
-    v21 = v29;
+    groupMemberIDs = v32;
+    identifier = v29;
     v12 = v50;
   }
 
-  if (!v7 || (!v22 || ([v22 containsObject:v7] & 1) == 0) && !objc_msgSend(v21, "isEqualToString:", v7))
+  if (!identifierCopy || (!groupMemberIDs || ([groupMemberIDs containsObject:identifierCopy] & 1) == 0) && !objc_msgSend(identifier, "isEqualToString:", identifierCopy))
   {
 
     v11 = v51;
     goto LABEL_32;
   }
 
-  v48 = v21;
+  v48 = identifier;
   [v45 devicePaymentApplications];
   v56 = 0u;
   v57 = 0u;
@@ -2494,8 +2494,8 @@ LABEL_40:
       }
 
       v38 = *(*(&v56 + 1) + 8 * v37);
-      v39 = [v38 applicationIdentifier];
-      v40 = [v39 isEqualToString:v7];
+      applicationIdentifier3 = [v38 applicationIdentifier];
+      v40 = [applicationIdentifier3 isEqualToString:identifierCopy];
 
       if (v40)
       {
@@ -2521,18 +2521,18 @@ LABEL_40:
       goto LABEL_51;
     }
 
-    v9 = v49;
+    sessionCopy = v49;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v41 = [v33 applicationIdentifier];
+      applicationIdentifier4 = [v33 applicationIdentifier];
       *buf = 138412546;
-      v65 = v41;
+      v65 = applicationIdentifier4;
       v66 = 2112;
-      v67 = v7;
+      v67 = identifierCopy;
       _os_log_impl(&dword_1AD337000, v18, OS_LOG_TYPE_DEFAULT, "Contactless Interface Session: Applet is member of group and actual payment application identified; aliasing (%@ ↔ %@).", buf, 0x16u);
     }
 
-    v10 = v45;
+    paymentPass = v45;
     v42 = v48;
   }
 
@@ -2542,7 +2542,7 @@ LABEL_46:
 
 LABEL_51:
     v42 = v48;
-    v9 = v49;
+    sessionCopy = v49;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -2550,34 +2550,34 @@ LABEL_51:
     }
 
     v33 = 0;
-    v10 = v45;
+    paymentPass = v45;
   }
 
-  v8 = v44;
+  contextCopy = v44;
   v11 = v51;
 LABEL_55:
 
   return v33;
 }
 
-- (id)_appletForPaymentApplication:(id)a3 inInternalSession:(id)a4
+- (id)_appletForPaymentApplication:(id)application inInternalSession:(id)session
 {
-  v6 = a4;
-  v7 = [a3 applicationIdentifier];
-  v8 = [(PKContactlessInterfaceSession *)self _appletWithIdentifier:v7 inInternalSession:v6];
+  sessionCopy = session;
+  applicationIdentifier = [application applicationIdentifier];
+  v8 = [(PKContactlessInterfaceSession *)self _appletWithIdentifier:applicationIdentifier inInternalSession:sessionCopy];
 
   return v8;
 }
 
-- (id)_appletWithIdentifier:(id)a3 inInternalSession:(id)a4
+- (id)_appletWithIdentifier:(id)identifier inInternalSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && self->_sessionType <= 1)
+  identifierCopy = identifier;
+  sessionCopy = session;
+  v8 = sessionCopy;
+  if (identifierCopy && self->_sessionType <= 1)
   {
-    v9 = [v7 nfSession];
-    v10 = [v9 appletWithIdentifier:v6];
+    nfSession = [sessionCopy nfSession];
+    v10 = [nfSession appletWithIdentifier:identifierCopy];
   }
 
   else
@@ -2588,22 +2588,22 @@ LABEL_55:
   return v10;
 }
 
-- (id)_filteredLoyaltyPassesFromVASTransactions:(id)a3 activatedPasses:(id)a4
+- (id)_filteredLoyaltyPassesFromVASTransactions:(id)transactions activatedPasses:(id)passes
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  if ([v5 count])
+  transactionsCopy = transactions;
+  passesCopy = passes;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([transactionsCopy count])
   {
-    v30 = v5;
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    v30 = transactionsCopy;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v29 = v6;
-    v9 = v6;
+    v29 = passesCopy;
+    v9 = passesCopy;
     v10 = [v9 countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v10)
     {
@@ -2619,18 +2619,18 @@ LABEL_55:
           }
 
           v14 = *(*(&v35 + 1) + 8 * i);
-          v15 = [v14 passTypeIdentifier];
-          v16 = [v15 dataUsingEncoding:4];
-          v17 = [v16 SHA256Hash];
+          passTypeIdentifier = [v14 passTypeIdentifier];
+          v16 = [passTypeIdentifier dataUsingEncoding:4];
+          sHA256Hash = [v16 SHA256Hash];
 
-          v18 = [v8 objectForKey:v17];
-          if (!v18)
+          array2 = [dictionary objectForKey:sHA256Hash];
+          if (!array2)
           {
-            v18 = [MEMORY[0x1E695DF70] array];
-            [v8 setObject:v18 forKey:v17];
+            array2 = [MEMORY[0x1E695DF70] array];
+            [dictionary setObject:array2 forKey:sHA256Hash];
           }
 
-          [v18 addObject:v14];
+          [array2 addObject:v14];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -2658,13 +2658,13 @@ LABEL_55:
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v31 + 1) + 8 * j) merchant];
-          v25 = [v24 identifier];
-          v26 = [v8 objectForKey:v25];
+          merchant = [*(*(&v31 + 1) + 8 * j) merchant];
+          identifier = [merchant identifier];
+          v26 = [dictionary objectForKey:identifier];
 
           if (v26)
           {
-            [v7 addObjectsFromArray:v26];
+            [array addObjectsFromArray:v26];
           }
         }
 
@@ -2674,20 +2674,20 @@ LABEL_55:
       while (v21);
     }
 
-    v6 = v29;
-    v5 = v30;
+    passesCopy = v29;
+    transactionsCopy = v30;
   }
 
-  v27 = [v7 copy];
+  v27 = [array copy];
 
   return v27;
 }
 
-- (void)_endPersistentCardEmulationForPaymentPass:(id)a3 paymentApplications:(id)a4
+- (void)_endPersistentCardEmulationForPaymentPass:(id)pass paymentApplications:(id)applications
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKContactlessInterfaceSession *)self delegate];
+  passCopy = pass;
+  applicationsCopy = applications;
+  delegate = [(PKContactlessInterfaceSession *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -2695,9 +2695,9 @@ LABEL_55:
     v23[1] = 3221225472;
     v23[2] = __95__PKContactlessInterfaceSession__endPersistentCardEmulationForPaymentPass_paymentApplications___block_invoke;
     v23[3] = &unk_1E79C7CB8;
-    v24 = v7;
-    v25 = v6;
-    v26 = self;
+    v24 = applicationsCopy;
+    v25 = passCopy;
+    selfCopy = self;
     v10 = v9;
     v27 = v10;
     [(PKPaymentSession *)self performBlockSyncOnInternalSession:v23];
@@ -2706,7 +2706,7 @@ LABEL_55:
     block[1] = 3221225472;
     block[2] = __95__PKContactlessInterfaceSession__endPersistentCardEmulationForPaymentPass_paymentApplications___block_invoke_2;
     block[3] = &unk_1E79C4E00;
-    block[4] = v8;
+    block[4] = delegate;
     block[5] = self;
     v22 = v10;
     v12 = v10;
@@ -2720,7 +2720,7 @@ LABEL_5:
 
   if (objc_opt_respondsToSelector())
   {
-    v14 = [[PKContactlessInterfaceTransactionContext alloc] initWithPaymentPass:v6 activatedPaymentApplications:v7];
+    v14 = [[PKContactlessInterfaceTransactionContext alloc] initWithPaymentPass:passCopy activatedPaymentApplications:applicationsCopy];
     [(PKContactlessInterfaceTransactionContext *)v14 setSuccess:1];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -2735,7 +2735,7 @@ LABEL_5:
     v17[1] = 3221225472;
     v17[2] = __95__PKContactlessInterfaceSession__endPersistentCardEmulationForPaymentPass_paymentApplications___block_invoke_4;
     v17[3] = &unk_1E79C4E00;
-    v17[4] = v8;
+    v17[4] = delegate;
     v17[5] = self;
     v18 = v15;
     v12 = v15;
@@ -2863,37 +2863,37 @@ LABEL_12:
   }
 }
 
-- (void)_processEndEvent:(id)a3 withPartialContext:(id)a4
+- (void)_processEndEvent:(id)event withPartialContext:(id)context
 {
   v77 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKContactlessInterfaceSession *)self delegate];
-  v9 = [v7 paymentPass];
-  v10 = [v7 paymentApplication];
-  if (!v10)
+  eventCopy = event;
+  contextCopy = context;
+  delegate = [(PKContactlessInterfaceSession *)self delegate];
+  paymentPass = [contextCopy paymentPass];
+  paymentApplication = [contextCopy paymentApplication];
+  if (!paymentApplication)
   {
-    v15 = [v6 applet];
-    v16 = [v15 identifier];
+    applet = [eventCopy applet];
+    identifier = [applet identifier];
 
-    if (v8 && ((objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0))
+    if (delegate && ((objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0))
     {
       v17 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v71 = self;
+        selfCopy7 = self;
         v72 = 2112;
-        v73 = v16;
+        v73 = identifier;
         _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "PKContactlessInterfaceSession (%p): received event for unexpected applet identifier %@.", buf, 0x16u);
       }
 
       AnalyticsSendEvent();
       if (objc_opt_respondsToSelector())
       {
-        v18 = [v7 activatedPaymentApplications];
-        v19 = [v7 valueAddedServicePasses];
-        [v8 contactlessInterfaceSessionDidFail:self forPaymentApplications:v18 paymentPass:v9 valueAddedServicePasses:v19];
+        activatedPaymentApplications = [contextCopy activatedPaymentApplications];
+        valueAddedServicePasses = [contextCopy valueAddedServicePasses];
+        [delegate contactlessInterfaceSessionDidFail:self forPaymentApplications:activatedPaymentApplications paymentPass:paymentPass valueAddedServicePasses:valueAddedServicePasses];
       }
 
       else
@@ -2903,10 +2903,10 @@ LABEL_12:
           goto LABEL_80;
         }
 
-        v18 = [v7 activatedPaymentApplications];
-        v19 = [v18 firstObject];
-        v25 = [v7 valueAddedServicePasses];
-        [v8 contactlessInterfaceSessionDidFail:self forPaymentApplication:v19 paymentPass:v9 valueAddedServicePasses:v25];
+        activatedPaymentApplications = [contextCopy activatedPaymentApplications];
+        valueAddedServicePasses = [activatedPaymentApplications firstObject];
+        valueAddedServicePasses2 = [contextCopy valueAddedServicePasses];
+        [delegate contactlessInterfaceSessionDidFail:self forPaymentApplication:valueAddedServicePasses paymentPass:paymentPass valueAddedServicePasses:valueAddedServicePasses2];
       }
 
       goto LABEL_80;
@@ -2916,9 +2916,9 @@ LABEL_12:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v71 = self;
+      selfCopy7 = self;
       v72 = 2112;
-      v73 = v16;
+      v73 = identifier;
       _os_log_impl(&dword_1AD337000, v21, OS_LOG_TYPE_DEFAULT, "PKContactlessInterfaceSession (%p): received event for unexpected applet identifier %@; dropped.", buf, 0x16u);
     }
 
@@ -2928,33 +2928,33 @@ LABEL_49:
     goto LABEL_80;
   }
 
-  v11 = [v6 didError];
-  v12 = [v6 type];
-  v13 = [v10 paymentType];
-  if ((v13 - 1001) > 3 || v13 == 1002)
+  didError = [eventCopy didError];
+  type = [eventCopy type];
+  paymentType = [paymentApplication paymentType];
+  if ((paymentType - 1001) > 3 || paymentType == 1002)
   {
-    v62 = self;
-    v23 = [v6 transactionIdentifier];
-    v16 = [v23 uppercaseString];
+    selfCopy3 = self;
+    transactionIdentifier = [eventCopy transactionIdentifier];
+    identifier = [transactionIdentifier uppercaseString];
 
-    if (v11)
+    if (didError)
     {
-      if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+      if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
       {
         v24 = PKLogFacilityTypeGetObject(7uLL);
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218498;
-          v71 = v62;
+          selfCopy7 = selfCopy3;
           v72 = 2112;
-          v73 = v10;
+          v73 = paymentApplication;
           v74 = 1024;
-          LODWORD(v75) = [v6 result];
+          LODWORD(v75) = [eventCopy result];
           _os_log_impl(&dword_1AD337000, v24, OS_LOG_TYPE_DEFAULT, "PKContactlessInterfaceSession (%p): Failed Transaction for %@: result %d.", buf, 0x1Cu);
         }
 
         AnalyticsSendEvent();
-        [v8 contactlessInterfaceSessionDidFailTransaction:v62 forPaymentApplication:v10 paymentPass:v9];
+        [delegate contactlessInterfaceSessionDidFailTransaction:selfCopy3 forPaymentApplication:paymentApplication paymentPass:paymentPass];
         goto LABEL_80;
       }
 
@@ -2962,38 +2962,38 @@ LABEL_49:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218498;
-        v71 = v62;
+        selfCopy7 = selfCopy3;
         v72 = 2112;
-        v73 = v10;
+        v73 = paymentApplication;
         v74 = 1024;
-        LODWORD(v75) = [v6 result];
+        LODWORD(v75) = [eventCopy result];
         _os_log_impl(&dword_1AD337000, v21, OS_LOG_TYPE_DEFAULT, "PKContactlessInterfaceSession (%p): Failed Transaction for %@: result %d; dropped.", buf, 0x1Cu);
       }
 
       goto LABEL_49;
     }
 
-    if (v12 == 256)
+    if (type == 256)
     {
 
-      [v7 setSuccess:1];
-      v16 = 0;
+      [contextCopy setSuccess:1];
+      identifier = 0;
     }
 
     else
     {
-      [v7 setSuccess:1];
-      if (v12 <= 0x22 && ((1 << v12) & 0x500000004) != 0)
+      [contextCopy setSuccess:1];
+      if (type <= 0x22 && ((1 << type) & 0x500000004) != 0)
       {
-        [v10 supportsTransitHistory];
+        [paymentApplication supportsTransitHistory];
         v29 = 0;
-        v28 = 0;
+        appletCurrencyCode = 0;
         v26 = 1;
         goto LABEL_63;
       }
     }
 
-    if ([v9 isTransitPass])
+    if ([paymentPass isTransitPass])
     {
       v26 = 2;
     }
@@ -3003,21 +3003,21 @@ LABEL_49:
       v26 = 0;
     }
 
-    v27 = [v10 supportsTransitHistory];
-    if (v12 != 256 || (v27 & 1) != 0)
+    supportsTransitHistory = [paymentApplication supportsTransitHistory];
+    if (type != 256 || (supportsTransitHistory & 1) != 0)
     {
-      v28 = 0;
+      appletCurrencyCode = 0;
       v29 = 0;
       goto LABEL_62;
     }
 
-    v30 = [v7 transitHistory];
-    if (v30)
+    transitHistory = [contextCopy transitHistory];
+    if (transitHistory)
     {
-      v60 = v30;
-      if ((-[NSObject supportsSuica](v10, "supportsSuica") & 1) != 0 || [v6 result] == 61443)
+      v60 = transitHistory;
+      if ((-[NSObject supportsSuica](paymentApplication, "supportsSuica") & 1) != 0 || [eventCopy result] == 61443)
       {
-        v28 = 0;
+        appletCurrencyCode = 0;
         v29 = 0;
       }
 
@@ -3025,27 +3025,27 @@ LABEL_49:
       {
         if ([v60 source])
         {
-          v28 = 0;
+          appletCurrencyCode = 0;
           v29 = 0;
-          v30 = v60;
+          transitHistory = v60;
           goto LABEL_61;
         }
 
-        v40 = [v60 historyRecords];
-        v41 = [v40 firstObject];
-        v42 = [v41 felicaHistoryRecord];
-        v59 = [v42 transactionID];
+        historyRecords = [v60 historyRecords];
+        firstObject = [historyRecords firstObject];
+        felicaHistoryRecord = [firstObject felicaHistoryRecord];
+        transactionID = [felicaHistoryRecord transactionID];
 
         v68 = 0u;
         v69 = 0u;
         v66 = 0u;
         v67 = 0u;
-        obj = v40;
+        obj = historyRecords;
         v29 = [obj countByEnumeratingWithState:&v66 objects:v76 count:16];
         if (v29)
         {
           v57 = v26;
-          v58 = v9;
+          v58 = paymentPass;
           v43 = 0;
           v63 = 0;
           v65 = *v67;
@@ -3058,45 +3058,45 @@ LABEL_49:
                 objc_enumerationMutation(obj);
               }
 
-              v45 = [*(*(&v66 + 1) + 8 * i) felicaHistoryRecord];
-              v46 = v45;
-              if (v45)
+              felicaHistoryRecord2 = [*(*(&v66 + 1) + 8 * i) felicaHistoryRecord];
+              v46 = felicaHistoryRecord2;
+              if (felicaHistoryRecord2)
               {
-                v47 = [v45 transactionType];
-                v48 = [v47 unsignedIntegerValue];
+                transactionType = [felicaHistoryRecord2 transactionType];
+                unsignedIntegerValue = [transactionType unsignedIntegerValue];
 
-                if (v48 == 240 || v48 == 74)
+                if (unsignedIntegerValue == 240 || unsignedIntegerValue == 74)
                 {
-                  v49 = [v46 amountType];
-                  v50 = [v49 unsignedIntegerValue];
+                  amountType = [v46 amountType];
+                  unsignedIntegerValue2 = [amountType unsignedIntegerValue];
 
-                  if (v50 != 3)
+                  if (unsignedIntegerValue2 != 3)
                   {
                     v51 = PKLogFacilityTypeGetObject(7uLL);
                     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 67109120;
-                      LODWORD(v71) = v50;
+                      LODWORD(selfCopy7) = unsignedIntegerValue2;
                       _os_log_impl(&dword_1AD337000, v51, OS_LOG_TYPE_DEFAULT, "Invalid amount type detected for Felica transaction: %d", buf, 8u);
                     }
                   }
 
-                  v52 = [v46 amount];
-                  v53 = [v52 integerValue];
+                  amount = [v46 amount];
+                  integerValue = [amount integerValue];
 
-                  if (v53 < 0)
+                  if (integerValue < 0)
                   {
-                    v54 = v53;
+                    v54 = integerValue;
                   }
 
                   else
                   {
-                    v54 = -v53;
+                    v54 = -integerValue;
                   }
 
-                  if (v48 == 240)
+                  if (unsignedIntegerValue == 240)
                   {
-                    v54 = v53;
+                    v54 = integerValue;
                   }
 
                   v63 += v54;
@@ -3123,10 +3123,10 @@ LABEL_49:
             }
 
             v29 = [MEMORY[0x1E696AB90] decimalNumberWithMantissa:v55 exponent:0 isNegative:v63 >> 31];
-            v28 = [v10 appletCurrencyCode];
+            appletCurrencyCode = [paymentApplication appletCurrencyCode];
             v26 = v57;
-            v9 = v58;
-            if (!v28)
+            paymentPass = v58;
+            if (!appletCurrencyCode)
             {
               v56 = PKLogFacilityTypeGetObject(7uLL);
               if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
@@ -3144,28 +3144,28 @@ LABEL_49:
 
           else
           {
-            v28 = 0;
+            appletCurrencyCode = 0;
             v29 = 0;
             v26 = v57;
-            v9 = v58;
+            paymentPass = v58;
           }
         }
 
         else
         {
 
-          v28 = 0;
+          appletCurrencyCode = 0;
         }
 
-        v16 = v59;
+        identifier = transactionID;
       }
 
-      v30 = v60;
+      transitHistory = v60;
     }
 
     else
     {
-      v28 = 0;
+      appletCurrencyCode = 0;
       v29 = 0;
     }
 
@@ -3175,24 +3175,24 @@ LABEL_62:
     if (v26 == 2)
     {
 LABEL_71:
-      if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+      if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
       {
         v36 = PKLogFacilityTypeGetObject(7uLL);
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
         {
-          v37 = [v7 transaction];
+          transaction = [contextCopy transaction];
           *buf = 134218498;
-          v71 = v62;
+          selfCopy7 = selfCopy3;
           v72 = 2112;
-          v73 = v10;
+          v73 = paymentApplication;
           v74 = 2112;
-          v75 = v37;
+          v75 = transaction;
           _os_log_impl(&dword_1AD337000, v36, OS_LOG_TYPE_DEFAULT, "PKContactlessInterfaceSession (%p): Successful Transaction for %@: %@.", buf, 0x20u);
         }
 
         AnalyticsSendEvent();
-        [(PKContactlessInterfaceSession *)v62 _signalWalletTransactionForContext:v7];
-        [v8 contactlessInterfaceSession:v62 didFinishTransactionWithContext:v7];
+        [(PKContactlessInterfaceSession *)selfCopy3 _signalWalletTransactionForContext:contextCopy];
+        [delegate contactlessInterfaceSession:selfCopy3 didFinishTransactionWithContext:contextCopy];
       }
 
       else
@@ -3200,42 +3200,42 @@ LABEL_71:
         v38 = PKLogFacilityTypeGetObject(7uLL);
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
         {
-          v39 = [v7 transaction];
+          transaction2 = [contextCopy transaction];
           *buf = 134218498;
-          v71 = v62;
+          selfCopy7 = selfCopy3;
           v72 = 2112;
-          v73 = v10;
+          v73 = paymentApplication;
           v74 = 2112;
-          v75 = v39;
+          v75 = transaction2;
           _os_log_impl(&dword_1AD337000, v38, OS_LOG_TYPE_DEFAULT, "PKContactlessInterfaceSession (%p): Successful Transaction for %@: %@; dropped.", buf, 0x20u);
         }
 
         AnalyticsSendEvent();
-        [(PKContactlessInterfaceSession *)v62 _signalWalletTransactionForContext:v7];
+        [(PKContactlessInterfaceSession *)selfCopy3 _signalWalletTransactionForContext:contextCopy];
       }
 
       goto LABEL_80;
     }
 
 LABEL_63:
-    if (([v9 isEMoneyPass] & 1) == 0)
+    if (([paymentPass isEMoneyPass] & 1) == 0)
     {
       v64 = v29;
-      [v7 setTransitHistory:0];
+      [contextCopy setTransitHistory:0];
       v31 = [PKPaymentTransaction paymentTransactionWithSource:1];
       [v31 setOriginatedByDevice:1];
       [v31 setTransactionType:v26];
-      [v31 setPaymentHash:v16];
+      [v31 setPaymentHash:identifier];
       [v31 addUpdateReasons:1];
-      v32 = [v7 paymentApplication];
-      v33 = [v32 dpanIdentifier];
-      [v31 setDPANIdentifier:v33];
+      paymentApplication2 = [contextCopy paymentApplication];
+      dpanIdentifier = [paymentApplication2 dpanIdentifier];
+      [v31 setDPANIdentifier:dpanIdentifier];
 
-      [v31 setPaymentNetworkIdentifier:{objc_msgSend(v32, "paymentNetworkIdentifier")}];
-      v34 = [v7 date];
-      [v31 setTransactionDate:v34];
+      [v31 setPaymentNetworkIdentifier:{objc_msgSend(paymentApplication2, "paymentNetworkIdentifier")}];
+      date = [contextCopy date];
+      [v31 setTransactionDate:date];
 
-      if (([v6 informative] & 0x100) != 0)
+      if (([eventCopy informative] & 0x100) != 0)
       {
         v35 = 2;
       }
@@ -3246,13 +3246,13 @@ LABEL_63:
       }
 
       [v31 setTechnologyType:v35];
-      if (v28 && v64)
+      if (appletCurrencyCode && v64)
       {
         [v31 setAmount:v64];
-        [v31 setCurrencyCode:v28];
+        [v31 setCurrencyCode:appletCurrencyCode];
       }
 
-      [v7 setTransaction:v31];
+      [contextCopy setTransaction:v31];
 
       v29 = v64;
     }
@@ -3260,32 +3260,32 @@ LABEL_63:
     goto LABEL_71;
   }
 
-  if (v11)
+  if (didError)
   {
-    if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v14 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v71 = self;
+        selfCopy7 = self;
         v72 = 2112;
-        v73 = v10;
+        v73 = paymentApplication;
         _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "PKContactlessInterfaceSession (%p): Failed Access Event for %@.", buf, 0x16u);
       }
 
-      [v8 contactlessInterfaceSessionDidFailTransaction:self forPaymentApplication:v10 paymentPass:v9];
+      [delegate contactlessInterfaceSessionDidFailTransaction:self forPaymentApplication:paymentApplication paymentPass:paymentPass];
       goto LABEL_81;
     }
 
-    v16 = PKLogFacilityTypeGetObject(7uLL);
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    identifier = PKLogFacilityTypeGetObject(7uLL);
+    if (os_log_type_enabled(identifier, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v71 = self;
+      selfCopy7 = self;
       v72 = 2112;
-      v73 = v10;
-      _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "PKContactlessInterfaceSession (%p): Failed Access Event for %@; dropped.", buf, 0x16u);
+      v73 = paymentApplication;
+      _os_log_impl(&dword_1AD337000, identifier, OS_LOG_TYPE_DEFAULT, "PKContactlessInterfaceSession (%p): Failed Access Event for %@; dropped.", buf, 0x16u);
     }
 
 LABEL_80:
@@ -3293,21 +3293,21 @@ LABEL_80:
     goto LABEL_81;
   }
 
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v20 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v71 = self;
+      selfCopy7 = self;
       v72 = 2112;
-      v73 = v10;
+      v73 = paymentApplication;
       _os_log_impl(&dword_1AD337000, v20, OS_LOG_TYPE_DEFAULT, "PKContactlessInterfaceSession (%p): Successful Access Event for %@.", buf, 0x16u);
     }
 
-    [v7 setSuccess:1];
-    [(PKContactlessInterfaceSession *)self _signalWalletTransactionForContext:v7];
-    [v8 contactlessInterfaceSession:self didFinishTransactionWithContext:v7];
+    [contextCopy setSuccess:1];
+    [(PKContactlessInterfaceSession *)self _signalWalletTransactionForContext:contextCopy];
+    [delegate contactlessInterfaceSession:self didFinishTransactionWithContext:contextCopy];
   }
 
   else
@@ -3316,50 +3316,50 @@ LABEL_80:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v71 = self;
+      selfCopy7 = self;
       v72 = 2112;
-      v73 = v10;
+      v73 = paymentApplication;
       _os_log_impl(&dword_1AD337000, v22, OS_LOG_TYPE_DEFAULT, "PKContactlessInterfaceSession (%p): Successful Access Event for %@; dropped.", buf, 0x16u);
     }
 
-    [v7 setSuccess:1];
-    [(PKContactlessInterfaceSession *)self _signalWalletTransactionForContext:v7];
+    [contextCopy setSuccess:1];
+    [(PKContactlessInterfaceSession *)self _signalWalletTransactionForContext:contextCopy];
   }
 
 LABEL_81:
 }
 
-- (void)_signalWalletTransactionForContext:(id)a3
+- (void)_signalWalletTransactionForContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 paymentPass];
-  v6 = v5;
-  if (v5)
+  contextCopy = context;
+  paymentPass = [contextCopy paymentPass];
+  v6 = paymentPass;
+  if (paymentPass)
   {
-    v7 = v5;
+    firstObject = paymentPass;
   }
 
   else
   {
-    v8 = [v4 valueAddedServicePasses];
-    v7 = [v8 firstObject];
+    valueAddedServicePasses = [contextCopy valueAddedServicePasses];
+    firstObject = [valueAddedServicePasses firstObject];
   }
 
-  v9 = [v4 transaction];
-  if (v7)
+  transaction = [contextCopy transaction];
+  if (firstObject)
   {
     outstandingTransactionType = self->_outstandingTransactionType;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __68__PKContactlessInterfaceSession__signalWalletTransactionForContext___block_invoke;
     aBlock[3] = &unk_1E79C7D08;
-    v11 = v7;
+    v11 = firstObject;
     v17 = v11;
     v12 = _Block_copy(aBlock);
     callbackQueue = self->_callbackQueue;
-    if (v9)
+    if (transaction)
     {
-      [PKWalletTransactionSignal donateSignalForPass:v11 transaction:v9 queue:callbackQueue completion:v12];
+      [PKWalletTransactionSignal donateSignalForPass:v11 transaction:transaction queue:callbackQueue completion:v12];
     }
 
     else
@@ -3400,7 +3400,7 @@ void __68__PKContactlessInterfaceSession__signalWalletTransactionForContext___bl
   }
 }
 
-- (void)loyaltyAndPaymentSessionHasPendingServerRequest:(id)a3
+- (void)loyaltyAndPaymentSessionHasPendingServerRequest:(id)request
 {
   v4 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -3435,16 +3435,16 @@ void __81__PKContactlessInterfaceSession_loyaltyAndPaymentSessionHasPendingServe
   }
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didStartTransaction:(id)a4
+- (void)loyaltyAndPaymentSession:(id)session didStartTransaction:(id)transaction
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  transactionCopy = transaction;
   kdebug_trace();
   v6 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v5;
+    v11 = transactionCopy;
     _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Contactless Interface Session Started Transaction Event: %@", buf, 0xCu);
   }
 
@@ -3456,8 +3456,8 @@ void __81__PKContactlessInterfaceSession_loyaltyAndPaymentSessionHasPendingServe
   v8[2] = __78__PKContactlessInterfaceSession_loyaltyAndPaymentSession_didStartTransaction___block_invoke;
   v8[3] = &unk_1E79C7CE0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = transactionCopy;
+  v7 = transactionCopy;
   [(PKPaymentSession *)self performBlockSyncOnInternalSession:v8];
 }
 
@@ -3507,35 +3507,35 @@ void __78__PKContactlessInterfaceSession_loyaltyAndPaymentSession_didStartTransa
   }
 }
 
-- (void)loyaltyAndPaymentSessionDidReceiveActivityTimeout:(id)a3 result:(id)a4
+- (void)loyaltyAndPaymentSessionDidReceiveActivityTimeout:(id)timeout result:(id)result
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PKTransactionSessionWrapper alloc] initWithNFSession:v7];
+  resultCopy = result;
+  timeoutCopy = timeout;
+  v8 = [[PKTransactionSessionWrapper alloc] initWithNFSession:timeoutCopy];
 
-  [(PKContactlessInterfaceSession *)self _sessionDidReceiveActivityTimeout:v8 result:v6];
+  [(PKContactlessInterfaceSession *)self _sessionDidReceiveActivityTimeout:v8 result:resultCopy];
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didEndTransaction:(id)a4
+- (void)loyaltyAndPaymentSession:(id)session didEndTransaction:(id)transaction
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 result] != 61443)
+  sessionCopy = session;
+  transactionCopy = transaction;
+  if ([transactionCopy result] != 61443)
   {
     kdebug_trace();
     v8 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v7;
+      v23 = transactionCopy;
       _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Contactless Interface Session Finished Transaction Event: %@", buf, 0xCu);
     }
 
     v9 = PKTimeProfileEnd(v8, @"contactless_transaction", @"Transaction Event");
     v10 = mach_absolute_time();
     v11 = PKSecondsFromMachTimeInterval(v10 - self->_transactionStartTime);
-    v12 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v20 = @"duration";
     v13 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
     v21 = v13;
@@ -3547,10 +3547,10 @@ void __78__PKContactlessInterfaceSession_loyaltyAndPaymentSession_didStartTransa
     v16[2] = __76__PKContactlessInterfaceSession_loyaltyAndPaymentSession_didEndTransaction___block_invoke;
     v16[3] = &unk_1E79C7CB8;
     v16[4] = self;
-    v17 = v7;
-    v18 = v12;
-    v19 = v6;
-    v15 = v12;
+    v17 = transactionCopy;
+    v18 = date;
+    v19 = sessionCopy;
+    v15 = date;
     [(PKPaymentSession *)self performBlockAsyncOnInternalSession:v16];
   }
 }
@@ -3717,32 +3717,32 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didExpireTransactionForApplet:(id)a4
+- (void)loyaltyAndPaymentSession:(id)session didExpireTransactionForApplet:(id)applet
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PKTransactionSessionWrapper alloc] initWithNFSession:v7];
+  appletCopy = applet;
+  sessionCopy = session;
+  v8 = [[PKTransactionSessionWrapper alloc] initWithNFSession:sessionCopy];
 
-  [(PKContactlessInterfaceSession *)self _session:v8 didExpireTransactionForApplet:v6];
+  [(PKContactlessInterfaceSession *)self _session:v8 didExpireTransactionForApplet:appletCopy];
 }
 
-- (void)loyaltyAndPaymentSessionDidEndUnexpectedly:(id)a3
+- (void)loyaltyAndPaymentSessionDidEndUnexpectedly:(id)unexpectedly
 {
-  v4 = a3;
-  v5 = [[PKTransactionSessionWrapper alloc] initWithNFSession:v4];
+  unexpectedlyCopy = unexpectedly;
+  v5 = [[PKTransactionSessionWrapper alloc] initWithNFSession:unexpectedlyCopy];
 
   [(PKContactlessInterfaceSession *)self _sessionDidEndUnexpectedly:v5];
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didPerformValueAddedServiceTransactions:(id)a4
+- (void)loyaltyAndPaymentSession:(id)session didPerformValueAddedServiceTransactions:(id)transactions
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  transactionsCopy = transactions;
   v6 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v5;
+    v12 = transactionsCopy;
     _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Contactless Interface Session got Value Added Service Transactions: %@", buf, 0xCu);
   }
 
@@ -3750,9 +3750,9 @@ LABEL_22:
   v8[1] = 3221225472;
   v8[2] = __98__PKContactlessInterfaceSession_loyaltyAndPaymentSession_didPerformValueAddedServiceTransactions___block_invoke;
   v8[3] = &unk_1E79C7CE0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = transactionsCopy;
+  selfCopy = self;
+  v7 = transactionsCopy;
   [(PKPaymentSession *)self performBlockAsyncOnInternalSession:v8];
 }
 
@@ -3923,37 +3923,37 @@ void __98__PKContactlessInterfaceSession_loyaltyAndPaymentSession_didPerformValu
   }
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didEnterFieldWithNotification:(id)a4
+- (void)loyaltyAndPaymentSession:(id)session didEnterFieldWithNotification:(id)notification
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PKTransactionSessionWrapper alloc] initWithNFSession:v7];
+  notificationCopy = notification;
+  sessionCopy = session;
+  v8 = [[PKTransactionSessionWrapper alloc] initWithNFSession:sessionCopy];
 
-  [(PKContactlessInterfaceSession *)self _session:v8 didEnterFieldWithNotification:v6];
+  [(PKContactlessInterfaceSession *)self _session:v8 didEnterFieldWithNotification:notificationCopy];
 }
 
-- (void)loyaltyAndPaymentSessionDidExitField:(id)a3
+- (void)loyaltyAndPaymentSessionDidExitField:(id)field
 {
-  v4 = a3;
-  v5 = [[PKTransactionSessionWrapper alloc] initWithNFSession:v4];
+  fieldCopy = field;
+  v5 = [[PKTransactionSessionWrapper alloc] initWithNFSession:fieldCopy];
 
   [(PKContactlessInterfaceSession *)self _sessionDidExitField:v5];
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didSelectApplet:(id)a4
+- (void)loyaltyAndPaymentSession:(id)session didSelectApplet:(id)applet
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PKTransactionSessionWrapper alloc] initWithNFSession:v7];
+  appletCopy = applet;
+  sessionCopy = session;
+  v8 = [[PKTransactionSessionWrapper alloc] initWithNFSession:sessionCopy];
 
-  [(PKContactlessInterfaceSession *)self _session:v8 didSelectApplet:v6];
+  [(PKContactlessInterfaceSession *)self _session:v8 didSelectApplet:appletCopy];
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didSelectValueAddedService:(BOOL)a4
+- (void)loyaltyAndPaymentSession:(id)session didSelectValueAddedService:(BOOL)service
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  serviceCopy = service;
+  sessionCopy = session;
+  if (serviceCopy)
   {
     v7 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -3981,39 +3981,39 @@ void __85__PKContactlessInterfaceSession_loyaltyAndPaymentSession_didSelectValue
   }
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didFailDeferredAuthorization:(BOOL)a4
+- (void)loyaltyAndPaymentSession:(id)session didFailDeferredAuthorization:(BOOL)authorization
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[PKTransactionSessionWrapper alloc] initWithNFSession:v6];
+  authorizationCopy = authorization;
+  sessionCopy = session;
+  v7 = [[PKTransactionSessionWrapper alloc] initWithNFSession:sessionCopy];
 
-  [(PKContactlessInterfaceSession *)self _session:v7 didFailDeferredAuthorization:v4];
+  [(PKContactlessInterfaceSession *)self _session:v7 didFailDeferredAuthorization:authorizationCopy];
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didFelicaStateChange:(id)a4
+- (void)loyaltyAndPaymentSession:(id)session didFelicaStateChange:(id)change
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __79__PKContactlessInterfaceSession_loyaltyAndPaymentSession_didFelicaStateChange___block_invoke;
   v4[3] = &unk_1E79C7A28;
   v4[4] = self;
-  [(PKPaymentSession *)self performBlockAsyncOnInternalSession:v4, a4];
+  [(PKPaymentSession *)self performBlockAsyncOnInternalSession:v4, change];
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didExpressModeStateChange:(unsigned int)a4 withObject:(id)a5
+- (void)loyaltyAndPaymentSession:(id)session didExpressModeStateChange:(unsigned int)change withObject:(id)object
 {
-  v5 = *&a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [[PKTransactionSessionWrapper alloc] initWithNFSession:v9];
+  v5 = *&change;
+  objectCopy = object;
+  sessionCopy = session;
+  v10 = [[PKTransactionSessionWrapper alloc] initWithNFSession:sessionCopy];
 
-  [(PKContactlessInterfaceSession *)self _session:v10 didExpressModeStateChange:v5 withObject:v8];
+  [(PKContactlessInterfaceSession *)self _session:v10 didExpressModeStateChange:v5 withObject:objectCopy];
 }
 
-- (void)session:(id)a3 event:(id)a4
+- (void)session:(id)session event:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  eventCopy = event;
   v8 = MEMORY[0x1E696AEC0];
   if (PKGetConstantStringNF_SECURE_XPC_EVENT_KEY_EVENT_NAME_onceToken != -1)
   {
@@ -4021,17 +4021,17 @@ void __85__PKContactlessInterfaceSession_loyaltyAndPaymentSession_didSelectValue
   }
 
   v9 = [v8 stringWithUTF8String:PKGetConstantStringNF_SECURE_XPC_EVENT_KEY_EVENT_NAME_constant];
-  v10 = [v7 objectForKey:v9];
-  v11 = [v10 stringValue];
+  v10 = [eventCopy objectForKey:v9];
+  stringValue = [v10 stringValue];
 
-  if ([v11 isEqualToString:@"com.apple.secureelementservice.dck.event.vehicle.did.lock"])
+  if ([stringValue isEqualToString:@"com.apple.secureelementservice.dck.event.vehicle.did.lock"])
   {
     v12 = 1;
   }
 
   else
   {
-    if (![v11 isEqualToString:@"com.apple.secureelementservice.dck.event.vehicle.did.unlock"])
+    if (![stringValue isEqualToString:@"com.apple.secureelementservice.dck.event.vehicle.did.unlock"])
     {
       goto LABEL_13;
     }
@@ -4040,44 +4040,44 @@ void __85__PKContactlessInterfaceSession_loyaltyAndPaymentSession_didSelectValue
   }
 
   v13 = PKGetConstantStringNF_DCK_EVENT_KEY_APPLET_IDENTIFIER();
-  v14 = [v7 objectForKey:v13];
-  v15 = [v14 stringValue];
+  v14 = [eventCopy objectForKey:v13];
+  stringValue2 = [v14 stringValue];
 
-  if (v15)
+  if (stringValue2)
   {
     v29 = v12;
     v16 = PKGetConstantStringNF_DCK_EVENT_KEY_KEY_IDENTIFIER();
-    v17 = [v7 objectForKey:v16];
-    v18 = [v17 stringValue];
+    v17 = [eventCopy objectForKey:v16];
+    stringValue3 = [v17 stringValue];
 
     v19 = self->_activatedPaymentPass;
-    v20 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v21 = [[PKContactlessInterfaceTransactionContext alloc] initWithPaymentPass:v19 activatedPaymentApplications:self->_activatedPaymentApplications];
-    v30 = v20;
-    [(PKContactlessInterfaceTransactionContext *)v21 setDate:v20];
-    [(PKContactlessInterfaceTransactionContext *)v21 setAppletIdentifier:v15];
-    [(PKContactlessInterfaceTransactionContext *)v21 setCredentialIdentifier:v18];
-    v31 = v6;
-    v22 = [(PKContactlessInterfaceSession *)self _paymentApplicationForEventAppletIdentifier:v15 inContext:v21 withSession:v6];
+    v30 = date;
+    [(PKContactlessInterfaceTransactionContext *)v21 setDate:date];
+    [(PKContactlessInterfaceTransactionContext *)v21 setAppletIdentifier:stringValue2];
+    [(PKContactlessInterfaceTransactionContext *)v21 setCredentialIdentifier:stringValue3];
+    v31 = sessionCopy;
+    v22 = [(PKContactlessInterfaceSession *)self _paymentApplicationForEventAppletIdentifier:stringValue2 inContext:v21 withSession:sessionCopy];
     [(PKContactlessInterfaceTransactionContext *)v21 setPaymentApplication:v22];
 
-    v23 = [(PKContactlessInterfaceTransactionContext *)v21 paymentApplication];
+    paymentApplication = [(PKContactlessInterfaceTransactionContext *)v21 paymentApplication];
 
-    if (v23)
+    if (paymentApplication)
     {
-      v24 = [(PKObject *)v19 uniqueID];
-      v25 = [PKExpressTransactionState createForStandaloneTransaction:v29 applicationIdentifier:v15 keyIdentifier:v18 passUniqueIdentifier:v24];
+      uniqueID = [(PKObject *)v19 uniqueID];
+      v25 = [PKExpressTransactionState createForStandaloneTransaction:v29 applicationIdentifier:stringValue2 keyIdentifier:stringValue3 passUniqueIdentifier:uniqueID];
     }
 
     else
     {
-      v25 = [PKExpressTransactionState createForStandaloneTransaction:v29 applicationIdentifier:v15 keyIdentifier:v18 passUniqueIdentifier:0];
+      v25 = [PKExpressTransactionState createForStandaloneTransaction:v29 applicationIdentifier:stringValue2 keyIdentifier:stringValue3 passUniqueIdentifier:0];
     }
 
-    v26 = [v25 status];
+    status = [v25 status];
     [(PKContactlessInterfaceTransactionContext *)v21 setExpressState:v25];
-    [(PKContactlessInterfaceTransactionContext *)v21 setSuccess:v26 == 1];
-    [(PKContactlessInterfaceTransactionContext *)v21 setIncompatible:v26 == 3];
+    [(PKContactlessInterfaceTransactionContext *)v21 setSuccess:status == 1];
+    [(PKContactlessInterfaceTransactionContext *)v21 setIncompatible:status == 3];
     [(PKContactlessInterfaceSession *)self _signalWalletTransactionForContext:v21];
     callbackQueue = self->_callbackQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -4089,7 +4089,7 @@ void __85__PKContactlessInterfaceSession_loyaltyAndPaymentSession_didSelectValue
     v28 = v21;
     dispatch_async(callbackQueue, block);
 
-    v6 = v31;
+    sessionCopy = v31;
   }
 
 LABEL_13:
@@ -4104,16 +4104,16 @@ void __47__PKContactlessInterfaceSession_session_event___block_invoke(uint64_t a
   }
 }
 
-- (void)session:(id)a3 didStartTransaction:(id)a4
+- (void)session:(id)session didStartTransaction:(id)transaction
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  transactionCopy = transaction;
   kdebug_trace();
   v6 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v5;
+    v11 = transactionCopy;
     _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Contactless Interface Session Started Transaction Event: %@", buf, 0xCu);
   }
 
@@ -4125,8 +4125,8 @@ void __47__PKContactlessInterfaceSession_session_event___block_invoke(uint64_t a
   v8[2] = __61__PKContactlessInterfaceSession_session_didStartTransaction___block_invoke;
   v8[3] = &unk_1E79C7CE0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = transactionCopy;
+  v7 = transactionCopy;
   [(PKPaymentSession *)self performBlockSyncOnInternalSession:v8];
 }
 
@@ -4172,23 +4172,23 @@ void __61__PKContactlessInterfaceSession_session_didStartTransaction___block_inv
   }
 }
 
-- (void)session:(id)a3 didEndTransaction:(id)a4
+- (void)session:(id)session didEndTransaction:(id)transaction
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  transactionCopy = transaction;
   kdebug_trace();
   v6 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v5;
+    v21 = transactionCopy;
     _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Contactless Interface Session Finished Transaction Event: %@", buf, 0xCu);
   }
 
   v7 = PKTimeProfileEnd(v6, @"contactless_transaction", @"Transaction Event");
   v8 = mach_absolute_time();
   v9 = PKSecondsFromMachTimeInterval(v8 - self->_transactionStartTime);
-  v10 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v18 = @"duration";
   v11 = [MEMORY[0x1E696AD98] numberWithDouble:v9];
   v19 = v11;
@@ -4200,10 +4200,10 @@ void __61__PKContactlessInterfaceSession_session_didStartTransaction___block_inv
   v15[2] = __59__PKContactlessInterfaceSession_session_didEndTransaction___block_invoke;
   v15[3] = &unk_1E79C7B08;
   v15[4] = self;
-  v16 = v5;
-  v17 = v10;
-  v13 = v10;
-  v14 = v5;
+  v16 = transactionCopy;
+  v17 = date;
+  v13 = date;
+  v14 = transactionCopy;
   [(PKPaymentSession *)self performBlockAsyncOnInternalSession:v15];
 }
 
@@ -4341,87 +4341,87 @@ void __59__PKContactlessInterfaceSession_session_didEndTransaction___block_invok
 LABEL_22:
 }
 
-- (void)session:(id)a3 didEnterFieldWithNotification:(id)a4
+- (void)session:(id)session didEnterFieldWithNotification:(id)notification
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PKTransactionSessionWrapper alloc] initWithNFSession:v7];
+  notificationCopy = notification;
+  sessionCopy = session;
+  v8 = [[PKTransactionSessionWrapper alloc] initWithNFSession:sessionCopy];
 
-  [(PKContactlessInterfaceSession *)self _session:v8 didEnterFieldWithNotification:v6];
+  [(PKContactlessInterfaceSession *)self _session:v8 didEnterFieldWithNotification:notificationCopy];
 }
 
-- (void)sessionDidExitField:(id)a3
+- (void)sessionDidExitField:(id)field
 {
-  v4 = a3;
-  v5 = [[PKTransactionSessionWrapper alloc] initWithNFSession:v4];
+  fieldCopy = field;
+  v5 = [[PKTransactionSessionWrapper alloc] initWithNFSession:fieldCopy];
 
   [(PKContactlessInterfaceSession *)self _sessionDidExitField:v5];
 }
 
-- (void)session:(id)a3 didSelectApplet:(id)a4
+- (void)session:(id)session didSelectApplet:(id)applet
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PKTransactionSessionWrapper alloc] initWithNFSession:v7];
+  appletCopy = applet;
+  sessionCopy = session;
+  v8 = [[PKTransactionSessionWrapper alloc] initWithNFSession:sessionCopy];
 
-  [(PKContactlessInterfaceSession *)self _session:v8 didSelectApplet:v6];
+  [(PKContactlessInterfaceSession *)self _session:v8 didSelectApplet:appletCopy];
 }
 
-- (void)session:(id)a3 didExpireTransactionForApplet:(id)a4
+- (void)session:(id)session didExpireTransactionForApplet:(id)applet
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PKTransactionSessionWrapper alloc] initWithNFSession:v7];
+  appletCopy = applet;
+  sessionCopy = session;
+  v8 = [[PKTransactionSessionWrapper alloc] initWithNFSession:sessionCopy];
 
-  [(PKContactlessInterfaceSession *)self _session:v8 didExpireTransactionForApplet:v6];
+  [(PKContactlessInterfaceSession *)self _session:v8 didExpireTransactionForApplet:appletCopy];
 }
 
-- (void)sessionDidEndUnexpectedly:(id)a3
+- (void)sessionDidEndUnexpectedly:(id)unexpectedly
 {
-  v4 = a3;
-  v5 = [[PKTransactionSessionWrapper alloc] initWithNFSession:v4];
+  unexpectedlyCopy = unexpectedly;
+  v5 = [[PKTransactionSessionWrapper alloc] initWithNFSession:unexpectedlyCopy];
 
   [(PKContactlessInterfaceSession *)self _sessionDidEndUnexpectedly:v5];
 }
 
-- (void)sessionDidFailDeferredAuthorization:(id)a3
+- (void)sessionDidFailDeferredAuthorization:(id)authorization
 {
-  v4 = a3;
-  v5 = [[PKTransactionSessionWrapper alloc] initWithNFSession:v4];
+  authorizationCopy = authorization;
+  v5 = [[PKTransactionSessionWrapper alloc] initWithNFSession:authorizationCopy];
 
   [(PKContactlessInterfaceSession *)self _session:v5 didFailDeferredAuthorization:1];
 }
 
-- (void)sessionDidReceiveActivityTimeout:(id)a3 result:(id)a4
+- (void)sessionDidReceiveActivityTimeout:(id)timeout result:(id)result
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PKTransactionSessionWrapper alloc] initWithNFSession:v7];
+  resultCopy = result;
+  timeoutCopy = timeout;
+  v8 = [[PKTransactionSessionWrapper alloc] initWithNFSession:timeoutCopy];
 
-  [(PKContactlessInterfaceSession *)self _sessionDidReceiveActivityTimeout:v8 result:v6];
+  [(PKContactlessInterfaceSession *)self _sessionDidReceiveActivityTimeout:v8 result:resultCopy];
 }
 
-- (void)session:(id)a3 didExpressModeStateChange:(unsigned int)a4 withObject:(id)a5
+- (void)session:(id)session didExpressModeStateChange:(unsigned int)change withObject:(id)object
 {
-  v5 = *&a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [[PKTransactionSessionWrapper alloc] initWithNFSession:v9];
+  v5 = *&change;
+  objectCopy = object;
+  sessionCopy = session;
+  v10 = [[PKTransactionSessionWrapper alloc] initWithNFSession:sessionCopy];
 
-  [(PKContactlessInterfaceSession *)self _session:v10 didExpressModeStateChange:v5 withObject:v8];
+  [(PKContactlessInterfaceSession *)self _session:v10 didExpressModeStateChange:v5 withObject:objectCopy];
 }
 
-- (void)stsSession:(id)a3 didReceiveFieldNotification:(id)a4
+- (void)stsSession:(id)session didReceiveFieldNotification:(id)notification
 {
-  v5 = a4;
+  notificationCopy = notification;
   kdebug_trace();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__PKContactlessInterfaceSession_stsSession_didReceiveFieldNotification___block_invoke;
   v7[3] = &unk_1E79C7CE0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   [(PKPaymentSession *)self performBlockAsyncOnInternalSession:v7];
 }
 
@@ -4484,19 +4484,19 @@ void __72__PKContactlessInterfaceSession_stsSession_didReceiveFieldNotification_
   }
 }
 
-- (void)stsSession:(id)a3 didStartTransaction:(id)a4
+- (void)stsSession:(id)session didStartTransaction:(id)transaction
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  transactionCopy = transaction;
   kdebug_trace();
   v6 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 credential];
+    credential = [transactionCopy credential];
     *buf = 138412546;
-    v12 = v5;
+    v12 = transactionCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = credential;
     _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Contactless Interface Session Started Transaction Event: %@, credential: %@", buf, 0x16u);
   }
 
@@ -4508,8 +4508,8 @@ void __72__PKContactlessInterfaceSession_stsSession_didReceiveFieldNotification_
   v9[2] = __64__PKContactlessInterfaceSession_stsSession_didStartTransaction___block_invoke;
   v9[3] = &unk_1E79C7CE0;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = transactionCopy;
+  v8 = transactionCopy;
   [(PKPaymentSession *)self performBlockSyncOnInternalSession:v9];
 }
 
@@ -4589,35 +4589,35 @@ LABEL_14:
   }
 }
 
-- (void)stsSession:(id)a3 didEndTransaction:(id)a4
+- (void)stsSession:(id)session didEndTransaction:(id)transaction
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  transactionCopy = transaction;
   kdebug_trace();
   v6 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v45 = v5;
+    v45 = transactionCopy;
     _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Contactless Interface Session Finished Transaction Event: %@", buf, 0xCu);
   }
 
   v7 = PKTimeProfileEnd(v6, @"contactless_transaction", @"Transaction Event");
   v8 = mach_absolute_time();
   v9 = PKSecondsFromMachTimeInterval(v8 - self->_transactionStartTime);
-  v10 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v11 = self->_activatedPaymentPass;
   v12 = [[PKContactlessInterfaceTransactionContext alloc] initWithPaymentPass:v11 activatedPaymentApplications:self->_activatedPaymentApplications];
-  v29 = v10;
-  [(PKContactlessInterfaceTransactionContext *)v12 setDate:v10];
-  v30 = v5;
-  v13 = [(PKPaymentPass *)v5 credential];
+  v29 = date;
+  [(PKContactlessInterfaceTransactionContext *)v12 setDate:date];
+  v30 = transactionCopy;
+  credential = [(PKPaymentPass *)transactionCopy credential];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v14 = [(PKSecureElementPass *)v11 devicePaymentApplications];
-  v15 = [v14 countByEnumeratingWithState:&v37 objects:v43 count:16];
+  devicePaymentApplications = [(PKSecureElementPass *)v11 devicePaymentApplications];
+  v15 = [devicePaymentApplications countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v15)
   {
     v16 = v15;
@@ -4628,18 +4628,18 @@ LABEL_14:
       {
         if (*v38 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(devicePaymentApplications);
         }
 
         v19 = *(*(&v37 + 1) + 8 * i);
-        if (PKPaymentApplicationMatchesSTSEventCredential(v19, v13))
+        if (PKPaymentApplicationMatchesSTSEventCredential(v19, credential))
         {
           [(PKContactlessInterfaceTransactionContext *)v12 setPaymentApplication:v19];
           goto LABEL_13;
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v37 objects:v43 count:16];
+      v16 = [devicePaymentApplications countByEnumeratingWithState:&v37 objects:v43 count:16];
       if (v16)
       {
         continue;
@@ -4651,9 +4651,9 @@ LABEL_14:
 
 LABEL_13:
 
-  v20 = [(PKContactlessInterfaceTransactionContext *)v12 paymentApplication];
+  paymentApplication = [(PKContactlessInterfaceTransactionContext *)v12 paymentApplication];
 
-  if (v20)
+  if (paymentApplication)
   {
     v41 = @"duration";
     v21 = [MEMORY[0x1E696AD98] numberWithDouble:v9];
@@ -5266,30 +5266,30 @@ void __62__PKContactlessInterfaceSession_stsSession_didEndTransaction___block_in
 LABEL_6:
 }
 
-- (void)stsSessionDidEndUnexpectedly:(id)a3 errorCode:(unint64_t)a4
+- (void)stsSessionDidEndUnexpectedly:(id)unexpectedly errorCode:(unint64_t)code
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  unexpectedlyCopy = unexpectedly;
   v7 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134217984;
-    v11 = a4;
+    codeCopy = code;
     _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Contactless Interface Session did end unexpectedly, error: %lu", &v10, 0xCu);
   }
 
-  v8 = [(PKContactlessInterfaceSession *)self delegate];
+  delegate = [(PKContactlessInterfaceSession *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    if (a4 > 4)
+    if (code > 4)
     {
-      if (a4 == 5)
+      if (code == 5)
       {
         v9 = 2;
         goto LABEL_15;
       }
 
-      if (a4 == 6)
+      if (code == 6)
       {
         v9 = 3;
         goto LABEL_15;
@@ -5300,13 +5300,13 @@ LABEL_11:
       goto LABEL_15;
     }
 
-    if (a4 != 3)
+    if (code != 3)
     {
-      if (a4 == 4)
+      if (code == 4)
       {
         v9 = 4;
 LABEL_15:
-        [v8 contactlessInterfaceSessionDidTerminate:self withErrorCode:v9];
+        [delegate contactlessInterfaceSessionDidTerminate:self withErrorCode:v9];
         goto LABEL_16;
       }
 
@@ -5315,7 +5315,7 @@ LABEL_15:
 
     if (self->_noCredentialForISO18013Request)
     {
-      [v8 contactlessInterfaceSessionDidTerminate:self withErrorCode:1];
+      [delegate contactlessInterfaceSessionDidTerminate:self withErrorCode:1];
       self->_noCredentialForISO18013Request = 0;
     }
   }
@@ -5323,22 +5323,22 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)stsSession:(id)a3 didReceiveActivityTimeout:(id)a4
+- (void)stsSession:(id)session didReceiveActivityTimeout:(id)timeout
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PKTransactionSessionWrapper alloc] initWithSTSSession:v7];
+  timeoutCopy = timeout;
+  sessionCopy = session;
+  v8 = [[PKTransactionSessionWrapper alloc] initWithSTSSession:sessionCopy];
 
-  [(PKContactlessInterfaceSession *)self _sessionDidReceiveActivityTimeout:v8 result:v6];
+  [(PKContactlessInterfaceSession *)self _sessionDidReceiveActivityTimeout:v8 result:timeoutCopy];
 }
 
-- (void)stsSession:(id)a3 didChangeExpressModeWithInfo:(id)a4
+- (void)stsSession:(id)session didChangeExpressModeWithInfo:(id)info
 {
-  v6 = a3;
-  v7 = [a4 state];
-  if (v7 <= 5)
+  sessionCopy = session;
+  state = [info state];
+  if (state <= 5)
   {
-    if (v7 == 5)
+    if (state == 5)
     {
       v8 = 5;
     }
@@ -5348,17 +5348,17 @@ LABEL_16:
       v8 = 0;
     }
 
-    if (v7 == 4)
+    if (state == 4)
     {
       v8 = 4;
     }
 
-    if (v7 == 3)
+    if (state == 3)
     {
       v8 = 3;
     }
 
-    if (v7 == 2)
+    if (state == 2)
     {
       v9 = 2;
     }
@@ -5368,12 +5368,12 @@ LABEL_16:
       v9 = 0;
     }
 
-    if (v7 == 1)
+    if (state == 1)
     {
       v9 = 1;
     }
 
-    if (v7 <= 2)
+    if (state <= 2)
     {
       v10 = v9;
     }
@@ -5386,9 +5386,9 @@ LABEL_16:
     goto LABEL_26;
   }
 
-  if (v7 <= 8)
+  if (state <= 8)
   {
-    if (v7 == 8)
+    if (state == 8)
     {
       v11 = 8;
     }
@@ -5398,12 +5398,12 @@ LABEL_16:
       v11 = 0;
     }
 
-    if (v7 == 7)
+    if (state == 7)
     {
       v11 = 7;
     }
 
-    if (v7 == 6)
+    if (state == 6)
     {
       v10 = 6;
     }
@@ -5416,11 +5416,11 @@ LABEL_16:
     goto LABEL_26;
   }
 
-  if ((v7 - 9) >= 2)
+  if ((state - 9) >= 2)
   {
     v10 = 0;
 LABEL_26:
-    v12 = [[PKTransactionSessionWrapper alloc] initWithSTSSession:v6];
+    v12 = [[PKTransactionSessionWrapper alloc] initWithSTSSession:sessionCopy];
     [(PKContactlessInterfaceSession *)self _session:v12 didExpressModeStateChange:v10 withObject:0];
 
     goto LABEL_27;
@@ -5436,16 +5436,16 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)stsSession:(id)a3 didExpireTransaction:(BOOL)a4
+- (void)stsSession:(id)session didExpireTransaction:(BOOL)transaction
 {
-  v4 = a4;
+  transactionCopy = transaction;
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sessionCopy = session;
   v7 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"N";
-    if (v4)
+    if (transactionCopy)
     {
       v8 = @"Y";
     }
@@ -5455,36 +5455,36 @@ LABEL_27:
     _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Contactless Interface Session didExpireTransaction: %@", &v10, 0xCu);
   }
 
-  if (v4)
+  if (transactionCopy)
   {
-    v9 = [[PKTransactionSessionWrapper alloc] initWithSTSSession:v6];
+    v9 = [[PKTransactionSessionWrapper alloc] initWithSTSSession:sessionCopy];
     [(PKContactlessInterfaceSession *)self _session:v9 didExpireTransactionForApplet:0];
   }
 }
 
-- (void)stsSession:(id)a3 didReceive18013Requests:(id)a4 readerAuthInfo:(id)a5
+- (void)stsSession:(id)session didReceive18013Requests:(id)requests readerAuthInfo:(id)info
 {
   v72 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  v8 = a4;
-  v38 = a5;
+  sessionCopy = session;
+  requestsCopy = requests;
+  infoCopy = info;
   kdebug_trace();
   v9 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v71 = v8;
+    v71 = requestsCopy;
     _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Contactless Interface Session Received ISO18013 Requests %@", buf, 0xCu);
   }
 
-  v42 = v8;
+  v42 = requestsCopy;
 
   v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v39 = self;
+  selfCopy = self;
   obj = self->_activatedPaymentApplications;
   v11 = [(NSArray *)obj countByEnumeratingWithState:&v62 objects:v69 count:16];
   if (v11)
@@ -5500,12 +5500,12 @@ LABEL_27:
           objc_enumerationMutation(obj);
         }
 
-        v15 = [*(*(&v62 + 1) + 8 * i) subcredentials];
+        subcredentials = [*(*(&v62 + 1) + 8 * i) subcredentials];
         v58 = 0u;
         v59 = 0u;
         v60 = 0u;
         v61 = 0u;
-        v16 = [v15 countByEnumeratingWithState:&v58 objects:v68 count:16];
+        v16 = [subcredentials countByEnumeratingWithState:&v58 objects:v68 count:16];
         if (v16)
         {
           v17 = v16;
@@ -5516,14 +5516,14 @@ LABEL_27:
             {
               if (*v59 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(subcredentials);
               }
 
-              v20 = [*(*(&v58 + 1) + 8 * j) identifier];
-              [v10 pk_safelyAddObject:v20];
+              identifier = [*(*(&v58 + 1) + 8 * j) identifier];
+              [v10 pk_safelyAddObject:identifier];
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v58 objects:v68 count:16];
+            v17 = [subcredentials countByEnumeratingWithState:&v58 objects:v68 count:16];
           }
 
           while (v17);
@@ -5577,10 +5577,10 @@ LABEL_27:
               }
 
               v29 = *(*(&v50 + 1) + 8 * m);
-              v30 = [v23 credentialIdentifier];
+              credentialIdentifier = [v23 credentialIdentifier];
               v31 = v29;
               v32 = v31;
-              if (v30 == v31)
+              if (credentialIdentifier == v31)
               {
 
 LABEL_39:
@@ -5592,7 +5592,7 @@ LABEL_39:
 
               if (v31)
               {
-                v33 = v30 == 0;
+                v33 = credentialIdentifier == 0;
               }
 
               else
@@ -5606,7 +5606,7 @@ LABEL_39:
 
               else
               {
-                v34 = [v30 isEqualToString:v31];
+                v34 = [credentialIdentifier isEqualToString:v31];
 
                 if (v34)
                 {
@@ -5634,17 +5634,17 @@ LABEL_40:
     while (obja);
   }
 
-  v39->_noCredentialForISO18013Request = v21 == 0;
+  selfCopy->_noCredentialForISO18013Request = v21 == 0;
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
   v47[2] = __83__PKContactlessInterfaceSession_stsSession_didReceive18013Requests_readerAuthInfo___block_invoke;
   v47[3] = &unk_1E79C7B08;
-  v47[4] = v39;
+  v47[4] = selfCopy;
   v48 = v21;
-  v49 = v38;
-  v36 = v38;
+  v49 = infoCopy;
+  v36 = infoCopy;
   v37 = v21;
-  [(PKPaymentSession *)v39 performBlockAsyncOnInternalSession:v47];
+  [(PKPaymentSession *)selfCopy performBlockAsyncOnInternalSession:v47];
 }
 
 void __83__PKContactlessInterfaceSession_stsSession_didReceive18013Requests_readerAuthInfo___block_invoke(uint64_t a1, void *a2)
@@ -5698,9 +5698,9 @@ void __83__PKContactlessInterfaceSession_stsSession_didReceive18013Requests_read
   }
 }
 
-- (void)stsSessionRequestHandoffConfirmation:(id)a3
+- (void)stsSessionRequestHandoffConfirmation:(id)confirmation
 {
-  v4 = a3;
+  confirmationCopy = confirmation;
   v5 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5713,8 +5713,8 @@ void __83__PKContactlessInterfaceSession_stsSession_didReceive18013Requests_read
   v7[2] = __70__PKContactlessInterfaceSession_stsSessionRequestHandoffConfirmation___block_invoke;
   v7[3] = &unk_1E79C7CE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = confirmationCopy;
+  v6 = confirmationCopy;
   [(PKPaymentSession *)self performBlockAsyncOnInternalSession:v7];
 }
 
@@ -5769,17 +5769,17 @@ void __70__PKContactlessInterfaceSession_stsSessionRequestHandoffConfirmation___
   }
 }
 
-- (void)handleSessionSuspended:(id)a3 withToken:(id)a4
+- (void)handleSessionSuspended:(id)suspended withToken:(id)token
 {
-  v5 = a4;
+  tokenCopy = token;
   callbackQueue = self->_callbackQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66__PKContactlessInterfaceSession_handleSessionSuspended_withToken___block_invoke;
   v8[3] = &unk_1E79C4DD8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = tokenCopy;
+  v7 = tokenCopy;
   dispatch_async(callbackQueue, v8);
 }
 
@@ -5792,7 +5792,7 @@ void __66__PKContactlessInterfaceSession_handleSessionSuspended_withToken___bloc
   }
 }
 
-- (void)handleSessionResumed:(id)a3
+- (void)handleSessionResumed:(id)resumed
 {
   callbackQueue = self->_callbackQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -5812,17 +5812,17 @@ void __54__PKContactlessInterfaceSession_handleSessionResumed___block_invoke(uin
   }
 }
 
-- (void)_session:(id)a3 didEnterFieldWithNotification:(id)a4
+- (void)_session:(id)_session didEnterFieldWithNotification:(id)notification
 {
-  v5 = a4;
+  notificationCopy = notification;
   kdebug_trace();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__PKContactlessInterfaceSession__session_didEnterFieldWithNotification___block_invoke;
   v7[3] = &unk_1E79C7CE0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   [(PKPaymentSession *)self performBlockAsyncOnInternalSession:v7];
 }
 
@@ -5892,7 +5892,7 @@ void __72__PKContactlessInterfaceSession__session_didEnterFieldWithNotification_
   }
 }
 
-- (void)_sessionDidExitField:(id)a3
+- (void)_sessionDidExitField:(id)field
 {
   kdebug_trace();
   v4[0] = MEMORY[0x1E69E9820];
@@ -5967,10 +5967,10 @@ void __54__PKContactlessInterfaceSession__sessionDidExitField___block_invoke_228
   }
 }
 
-- (void)_session:(id)a3 didSelectApplet:(id)a4
+- (void)_session:(id)_session didSelectApplet:(id)applet
 {
-  v5 = [a4 identifier];
-  v6 = [v5 isEqualToString:@"325041592E5359532E4444463031"];
+  identifier = [applet identifier];
+  v6 = [identifier isEqualToString:@"325041592E5359532E4444463031"];
 
   if (v6)
   {
@@ -6000,14 +6000,14 @@ void __58__PKContactlessInterfaceSession__session_didSelectApplet___block_invoke
   }
 }
 
-- (void)_session:(id)a3 didExpireTransactionForApplet:(id)a4
+- (void)_session:(id)_session didExpireTransactionForApplet:(id)applet
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __72__PKContactlessInterfaceSession__session_didExpireTransactionForApplet___block_invoke;
   v4[3] = &unk_1E79C7A28;
   v4[4] = self;
-  [(PKPaymentSession *)self performBlockAsyncOnInternalSession:v4, a4];
+  [(PKPaymentSession *)self performBlockAsyncOnInternalSession:v4, applet];
 }
 
 void __72__PKContactlessInterfaceSession__session_didExpireTransactionForApplet___block_invoke(uint64_t a1, void *a2)
@@ -6091,7 +6091,7 @@ void __72__PKContactlessInterfaceSession__session_didExpireTransactionForApplet_
   }
 }
 
-- (void)_sessionDidEndUnexpectedly:(id)a3
+- (void)_sessionDidEndUnexpectedly:(id)unexpectedly
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -6225,16 +6225,16 @@ LABEL_17:
   }
 }
 
-- (void)_session:(id)a3 didFailDeferredAuthorization:(BOOL)a4
+- (void)_session:(id)_session didFailDeferredAuthorization:(BOOL)authorization
 {
-  v4 = a4;
+  authorizationCopy = authorization;
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  _sessionCopy = _session;
   v7 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @" Not";
-    if (v4)
+    if (authorizationCopy)
     {
       v8 = &stru_1F227FD28;
     }
@@ -6244,7 +6244,7 @@ LABEL_17:
     _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Contactless Interface Session Did%@ Fail Authorization", buf, 0xCu);
   }
 
-  if (v4)
+  if (authorizationCopy)
   {
     callbackQueue = self->_callbackQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -6265,7 +6265,7 @@ void __71__PKContactlessInterfaceSession__session_didFailDeferredAuthorization__
   }
 }
 
-- (void)_sessionDidReceiveActivityTimeout:(id)a3 result:(id)a4
+- (void)_sessionDidReceiveActivityTimeout:(id)timeout result:(id)result
 {
   v5 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -6308,20 +6308,20 @@ void __74__PKContactlessInterfaceSession__sessionDidReceiveActivityTimeout_resul
   }
 }
 
-- (void)_session:(id)a3 didExpressModeStateChange:(unsigned int)a4 withObject:(id)a5
+- (void)_session:(id)_session didExpressModeStateChange:(unsigned int)change withObject:(id)object
 {
-  v7 = a3;
-  v8 = [MEMORY[0x1E695DF00] date];
+  _sessionCopy = _session;
+  date = [MEMORY[0x1E695DF00] date];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __79__PKContactlessInterfaceSession__session_didExpressModeStateChange_withObject___block_invoke;
   v11[3] = &unk_1E79C7DF8;
-  v14 = a4;
+  changeCopy = change;
   v11[4] = self;
-  v12 = v8;
-  v13 = v7;
-  v9 = v7;
-  v10 = v8;
+  v12 = date;
+  v13 = _sessionCopy;
+  v9 = _sessionCopy;
+  v10 = date;
   [(PKPaymentSession *)self performBlockAsyncOnInternalSession:v11];
 }
 
@@ -6622,18 +6622,18 @@ LABEL_22:
   }
 }
 
-- (id)_createExpressTransactionForState:(id)a3 pass:(id)a4 paymentApplications:(id)a5 date:(id)a6 shouldGenerateTransaction:(BOOL *)a7 withSession:(id)a8
+- (id)_createExpressTransactionForState:(id)state pass:(id)pass paymentApplications:(id)applications date:(id)date shouldGenerateTransaction:(BOOL *)transaction withSession:(id)session
 {
   v43 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = [v14 status];
-  if (v14)
+  stateCopy = state;
+  passCopy = pass;
+  applicationsCopy = applications;
+  dateCopy = date;
+  sessionCopy = session;
+  status = [stateCopy status];
+  if (stateCopy)
   {
-    v20 = v19 == 1;
+    v20 = status == 1;
   }
 
   else
@@ -6642,32 +6642,32 @@ LABEL_22:
   }
 
   v21 = v20;
-  *a7 = v21;
+  *transaction = v21;
   if (v20)
   {
     sessionType = self->_sessionType;
     if (sessionType >= 2)
     {
-      v25 = 0;
+      activeApplet = 0;
       v38 = 0;
       v24 = sessionType == 2;
     }
 
     else
     {
-      v23 = [v18 nfSession];
-      v25 = [v23 activeApplet];
+      nfSession = [sessionCopy nfSession];
+      activeApplet = [nfSession activeApplet];
 
-      if (v25)
+      if (activeApplet)
       {
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 3221225472;
         v39[2] = __135__PKContactlessInterfaceSession__createExpressTransactionForState_pass_paymentApplications_date_shouldGenerateTransaction_withSession___block_invoke;
         v39[3] = &unk_1E79C7E20;
         v35 = &v40;
-        v25 = v25;
-        v40 = v25;
-        v24 = [v16 pk_containsObjectPassingTest:v39];
+        activeApplet = activeApplet;
+        v40 = activeApplet;
+        v24 = [applicationsCopy pk_containsObjectPassingTest:v39];
         v38 = 1;
       }
 
@@ -6678,43 +6678,43 @@ LABEL_22:
       }
     }
 
-    v27 = [[PKContactlessInterfaceTransactionContext alloc] initWithPaymentPass:v15 activatedPaymentApplications:self->_activatedPaymentApplications];
+    v27 = [[PKContactlessInterfaceTransactionContext alloc] initWithPaymentPass:passCopy activatedPaymentApplications:self->_activatedPaymentApplications];
     if (v24)
     {
-      v37 = v16;
-      v28 = [v18 nfSession];
-      if (v25)
+      v37 = applicationsCopy;
+      nfSession2 = [sessionCopy nfSession];
+      if (activeApplet)
       {
-        v29 = [v25 identifier];
-        v30 = [(PKContactlessInterfaceSession *)self _paymentApplicationForEventAppletIdentifier:v29 inContext:v27 withSession:v28];
+        identifier = [activeApplet identifier];
+        firstObject = [(PKContactlessInterfaceSession *)self _paymentApplicationForEventAppletIdentifier:identifier inContext:v27 withSession:nfSession2];
       }
 
       else
       {
-        v30 = [(NSArray *)self->_activatedPaymentApplications firstObject];
+        firstObject = [(NSArray *)self->_activatedPaymentApplications firstObject];
       }
 
       [(PKContactlessInterfaceTransactionContext *)v27 setSuccess:1];
       [(PKContactlessInterfaceTransactionContext *)v27 setIncompatible:0];
-      v36 = v17;
-      [(PKContactlessInterfaceTransactionContext *)v27 setDate:v17];
-      [(PKContactlessInterfaceTransactionContext *)v27 setPaymentApplication:v30];
-      v31 = [v30 applicationIdentifier];
-      v32 = [v15 uniqueID];
-      [v14 associateWithApplicationIdentifier:v31 keyIdentifier:0 terminalReaderIdentifier:0 passUniqueIdentifier:v32];
+      v36 = dateCopy;
+      [(PKContactlessInterfaceTransactionContext *)v27 setDate:dateCopy];
+      [(PKContactlessInterfaceTransactionContext *)v27 setPaymentApplication:firstObject];
+      applicationIdentifier = [firstObject applicationIdentifier];
+      uniqueID = [passCopy uniqueID];
+      [stateCopy associateWithApplicationIdentifier:applicationIdentifier keyIdentifier:0 terminalReaderIdentifier:0 passUniqueIdentifier:uniqueID];
 
-      [(PKContactlessInterfaceTransactionContext *)v27 setExpressState:v14];
-      if (v28)
+      [(PKContactlessInterfaceTransactionContext *)v27 setExpressState:stateCopy];
+      if (nfSession2)
       {
-        v33 = [objc_opt_class() transitAppletStateFromPaymentSession:v28 forPaymentApplication:v30];
+        v33 = [objc_opt_class() transitAppletStateFromPaymentSession:nfSession2 forPaymentApplication:firstObject];
         if (v33)
         {
           [(PKContactlessInterfaceTransactionContext *)v27 setTransitHistory:v33];
         }
       }
 
-      v17 = v36;
-      v16 = v37;
+      dateCopy = v36;
+      applicationsCopy = v37;
     }
 
     if (v38)
@@ -6724,12 +6724,12 @@ LABEL_22:
 
   else
   {
-    v25 = PKLogFacilityTypeGetObject(7uLL);
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+    activeApplet = PKLogFacilityTypeGetObject(7uLL);
+    if (os_log_type_enabled(activeApplet, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v42 = [v14 receivedEvents];
-      _os_log_impl(&dword_1AD337000, v25, OS_LOG_TYPE_DEFAULT, "Contactless Interface Session not generating transaction because missing prerequisite express activity. Activity: %lu", buf, 0xCu);
+      receivedEvents = [stateCopy receivedEvents];
+      _os_log_impl(&dword_1AD337000, activeApplet, OS_LOG_TYPE_DEFAULT, "Contactless Interface Session not generating transaction because missing prerequisite express activity. Activity: %lu", buf, 0xCu);
     }
 
     v27 = 0;

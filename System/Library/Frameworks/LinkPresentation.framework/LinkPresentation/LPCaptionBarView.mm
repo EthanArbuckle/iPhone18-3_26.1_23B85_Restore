@@ -1,63 +1,63 @@
 @interface LPCaptionBarView
 - (BOOL)captionTextIsTruncated;
-- (CGSize)_layoutCaptionBarForSize:(CGSize)a3 applyingLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (LPCaptionBarView)initWithHost:(id)a3 style:(id)a4 presentationProperties:(id)a5 captionType:(id)a6;
+- (CGSize)_layoutCaptionBarForSize:(CGSize)size applyingLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (LPCaptionBarView)initWithHost:(id)host style:(id)style presentationProperties:(id)properties captionType:(id)type;
 - (UIEdgeInsets)backgroundOutset;
 - (UIEdgeInsets)textSafeAreaInset;
 - (id)button;
-- (id)layoutExclusionsForView:(id)a3;
+- (id)layoutExclusionsForView:(id)view;
 - (id)primaryIconView;
 - (id)secondaryButton;
 - (void)_buildViewsForCaptionBarIfNeeded;
 - (void)_createBackgroundViewIfNeeded;
-- (void)addSubview:(id)a3;
-- (void)animateInWithBaseAnimation:(id)a3 currentTime:(double)a4;
+- (void)addSubview:(id)subview;
+- (void)animateInWithBaseAnimation:(id)animation currentTime:(double)time;
 - (void)animateOut;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)layoutComponentView;
-- (void)setEmphasizedTextExpression:(id)a3;
-- (void)setPlaybackInformation:(id)a3;
-- (void)setUseProgressSpinner:(BOOL)a3;
+- (void)setEmphasizedTextExpression:(id)expression;
+- (void)setPlaybackInformation:(id)information;
+- (void)setUseProgressSpinner:(BOOL)spinner;
 - (void)updateDisclosureIndicators;
 - (void)updateTextStack;
 @end
 
 @implementation LPCaptionBarView
 
-- (LPCaptionBarView)initWithHost:(id)a3 style:(id)a4 presentationProperties:(id)a5 captionType:(id)a6
+- (LPCaptionBarView)initWithHost:(id)host style:(id)style presentationProperties:(id)properties captionType:(id)type
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  styleCopy = style;
+  propertiesCopy = properties;
+  typeCopy = type;
   v18.receiver = self;
   v18.super_class = LPCaptionBarView;
-  v14 = [(LPComponentView *)&v18 initWithHost:a3];
+  v14 = [(LPComponentView *)&v18 initWithHost:host];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_style, a4);
-    objc_storeStrong(&v15->_presentationProperties, a5);
-    objc_storeStrong(&v15->_captionType, a6);
+    objc_storeStrong(&v14->_style, style);
+    objc_storeStrong(&v15->_presentationProperties, properties);
+    objc_storeStrong(&v15->_captionType, type);
     v16 = v15;
   }
 
   return v15;
 }
 
-- (void)setUseProgressSpinner:(BOOL)a3
+- (void)setUseProgressSpinner:(BOOL)spinner
 {
-  self->_useProgressSpinner = a3;
+  self->_useProgressSpinner = spinner;
   if (self->_hasEverBuilt)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Trying to update a caption bar after it has been laid out."];
   }
 }
 
-- (void)setPlaybackInformation:(id)a3
+- (void)setPlaybackInformation:(id)information
 {
-  v5 = a3;
-  objc_storeStrong(&self->_inlinePlaybackInformation, a3);
+  informationCopy = information;
+  objc_storeStrong(&self->_inlinePlaybackInformation, information);
   if (self->_hasEverBuilt)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Trying to update a caption bar after it has been laid out."];
@@ -66,8 +66,8 @@
 
 - (void)animateOut
 {
-  v15 = [(LPCaptionBarView *)self layer];
-  [v15 convertTime:0 fromLayer:CACurrentMediaTime()];
+  layer = [(LPCaptionBarView *)self layer];
+  [layer convertTime:0 fromLayer:CACurrentMediaTime()];
   v4 = v3;
 
   v16 = [MEMORY[0x1E69794A8] _lp_springWithMass:1.0 stiffness:600.0 damping:400.0];
@@ -86,72 +86,72 @@
   [v10 setRemovedOnCompletion:0];
   [v10 setFillMode:*MEMORY[0x1E69797E0]];
   [v10 setToValue:&unk_1F2483698];
-  v11 = [(LPCaptionBarView *)self layer];
-  [v11 addAnimation:v10 forKey:@"captionFadeOutSpring"];
+  layer2 = [(LPCaptionBarView *)self layer];
+  [layer2 addAnimation:v10 forKey:@"captionFadeOutSpring"];
 
   if (self->_useProgressSpinner)
   {
     v12 = [v16 copy];
     [v12 setKeyPath:@"transform.scale.xy"];
     [v12 setToValue:&unk_1F2483D98];
-    v13 = [(LPComponentView *)self->_leftIconView layer];
-    [v13 addAnimation:v12 forKey:@"spinnerShrinkOutSpring"];
+    layer3 = [(LPComponentView *)self->_leftIconView layer];
+    [layer3 addAnimation:v12 forKey:@"spinnerShrinkOutSpring"];
 
-    v14 = [(LPComponentView *)self->_rightIconView layer];
-    [v14 addAnimation:v12 forKey:@"spinnerShrinkOutSpring"];
+    layer4 = [(LPComponentView *)self->_rightIconView layer];
+    [layer4 addAnimation:v12 forKey:@"spinnerShrinkOutSpring"];
   }
 }
 
-- (void)animateInWithBaseAnimation:(id)a3 currentTime:(double)a4
+- (void)animateInWithBaseAnimation:(id)animation currentTime:(double)time
 {
-  v20 = a3;
+  animationCopy = animation;
   [(LPCaptionBarView *)self _buildViewsForCaptionBarIfNeeded];
-  v6 = [v20 _lp_copyWithBeginTime:a4 + 0.28];
-  v7 = [v20 _lp_copyWithBeginTime:a4 + 0.4];
-  v8 = [(LPTextStyleable *)self->_aboveTopCaptionView layer];
-  [v8 addAnimation:v6 forKey:@"fadeIn"];
+  v6 = [animationCopy _lp_copyWithBeginTime:time + 0.28];
+  v7 = [animationCopy _lp_copyWithBeginTime:time + 0.4];
+  layer = [(LPTextStyleable *)self->_aboveTopCaptionView layer];
+  [layer addAnimation:v6 forKey:@"fadeIn"];
 
-  v9 = [(LPTextStyleable *)self->_topCaptionView layer];
-  [v9 addAnimation:v6 forKey:@"fadeIn"];
+  layer2 = [(LPTextStyleable *)self->_topCaptionView layer];
+  [layer2 addAnimation:v6 forKey:@"fadeIn"];
 
-  v10 = [(LPTextStyleable *)self->_bottomCaptionView layer];
-  [v10 addAnimation:v7 forKey:@"fadeIn"];
+  layer3 = [(LPTextStyleable *)self->_bottomCaptionView layer];
+  [layer3 addAnimation:v7 forKey:@"fadeIn"];
 
-  v11 = [(LPTextStyleable *)self->_belowBottomCaptionView layer];
-  [v11 addAnimation:v7 forKey:@"fadeIn"];
+  layer4 = [(LPTextStyleable *)self->_belowBottomCaptionView layer];
+  [layer4 addAnimation:v7 forKey:@"fadeIn"];
 
-  v12 = [(LPComponentView *)self->_leftIconView layer];
-  [v12 addAnimation:v7 forKey:@"fadeIn"];
+  layer5 = [(LPComponentView *)self->_leftIconView layer];
+  [layer5 addAnimation:v7 forKey:@"fadeIn"];
 
-  v13 = [(LPComponentView *)self->_rightIconView layer];
-  [v13 addAnimation:v7 forKey:@"fadeIn"];
+  layer6 = [(LPComponentView *)self->_rightIconView layer];
+  [layer6 addAnimation:v7 forKey:@"fadeIn"];
 
-  v14 = [(LPComponentView *)self->_leftIconBadgeView layer];
-  [v14 addAnimation:v7 forKey:@"fadeIn"];
+  layer7 = [(LPComponentView *)self->_leftIconBadgeView layer];
+  [layer7 addAnimation:v7 forKey:@"fadeIn"];
 
-  v15 = [(LPComponentView *)self->_rightIconBadgeView layer];
-  [v15 addAnimation:v7 forKey:@"fadeIn"];
+  layer8 = [(LPComponentView *)self->_rightIconBadgeView layer];
+  [layer8 addAnimation:v7 forKey:@"fadeIn"];
 
-  v16 = [(LPPlayButtonView *)self->_playButton layer];
-  [v16 addAnimation:v7 forKey:@"fadeIn"];
+  layer9 = [(LPPlayButtonView *)self->_playButton layer];
+  [layer9 addAnimation:v7 forKey:@"fadeIn"];
 
-  v17 = [(LPCaptionBarButtonView *)self->_buttonView layer];
-  [v17 addAnimation:v7 forKey:@"fadeIn"];
+  layer10 = [(LPCaptionBarButtonView *)self->_buttonView layer];
+  [layer10 addAnimation:v7 forKey:@"fadeIn"];
 
-  v18 = [(LPCaptionBarButtonView *)self->_secondaryButtonView layer];
-  [v18 addAnimation:v7 forKey:@"fadeIn"];
+  layer11 = [(LPCaptionBarButtonView *)self->_secondaryButtonView layer];
+  [layer11 addAnimation:v7 forKey:@"fadeIn"];
 
-  v19 = [(LPCollaborationFooterView *)self->_collaborationFooterView layer];
-  [v19 addAnimation:v7 forKey:@"fadeIn"];
+  layer12 = [(LPCollaborationFooterView *)self->_collaborationFooterView layer];
+  [layer12 addAnimation:v7 forKey:@"fadeIn"];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v7 = a3;
-  v5 = [(LPCaptionBarView *)self layer];
-  v6 = [v5 animationForKey:@"captionFadeOutSpring"];
+  stopCopy = stop;
+  layer = [(LPCaptionBarView *)self layer];
+  v6 = [layer animationForKey:@"captionFadeOutSpring"];
 
-  if (v6 == v7)
+  if (v6 == stopCopy)
   {
     [(LPCaptionBarView *)self removeFromSuperview];
   }
@@ -164,40 +164,40 @@
   [(LPCaptionBarView *)self _layoutCaptionBarForSize:1 applyingLayout:v3, v4];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(LPCaptionBarView *)self _layoutCaptionBarForSize:0 applyingLayout:a3.width, a3.height];
+  [(LPCaptionBarView *)self _layoutCaptionBarForSize:0 applyingLayout:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutCaptionBarForSize:(CGSize)a3 applyingLayout:(BOOL)a4
+- (CGSize)_layoutCaptionBarForSize:(CGSize)size applyingLayout:(BOOL)layout
 {
-  v431 = a4;
-  height = a3.height;
-  width = a3.width;
+  layoutCopy = layout;
+  height = size.height;
+  width = size.width;
   [(LPCaptionBarView *)self _buildViewsForCaptionBarIfNeeded];
-  v7 = [(UIView *)self _lp_isLTR];
+  _lp_isLTR = [(UIView *)self _lp_isLTR];
   style = self->_style;
-  if (v7)
+  if (_lp_isLTR)
   {
-    v443 = [(LPCaptionBarStyle *)style leadingIcon];
+    leadingIcon = [(LPCaptionBarStyle *)style leadingIcon];
 
-    v442 = [(LPCaptionBarStyle *)self->_style trailingIcon];
+    trailingIcon = [(LPCaptionBarStyle *)self->_style trailingIcon];
 
-    v404 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIconProperties];
+    leadingIconProperties = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIconProperties];
 
     [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIconProperties];
   }
 
   else
   {
-    v443 = [(LPCaptionBarStyle *)style trailingIcon];
+    leadingIcon = [(LPCaptionBarStyle *)style trailingIcon];
 
-    v442 = [(LPCaptionBarStyle *)self->_style leadingIcon];
+    trailingIcon = [(LPCaptionBarStyle *)self->_style leadingIcon];
 
-    v404 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIconProperties];
+    leadingIconProperties = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIconProperties];
 
     [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIconProperties];
   }
@@ -205,8 +205,8 @@
 
   if (self->_leftIconView)
   {
-    v9 = [v443 margin];
-    [v9 asInsetsForLTR:v7];
+    margin = [leadingIcon margin];
+    [margin asInsetsForLTR:_lp_isLTR];
     rect1_8 = v10;
     v401 = v11;
     v397 = v12;
@@ -223,8 +223,8 @@
 
   if (self->_rightIconView)
   {
-    v15 = [v442 margin];
-    [v15 asInsetsForLTR:v7];
+    margin2 = [trailingIcon margin];
+    [margin2 asInsetsForLTR:_lp_isLTR];
     v395 = v16;
     v400 = v17;
     v19 = v18;
@@ -241,8 +241,8 @@
 
   if (self->_playButton)
   {
-    v22 = [(LPCaptionBarStyle *)self->_style playButtonPadding];
-    [v22 asInsetsForLTR:v7];
+    playButtonPadding = [(LPCaptionBarStyle *)self->_style playButtonPadding];
+    [playButtonPadding asInsetsForLTR:_lp_isLTR];
     v372 = v23;
     v25 = v24;
     v27 = v26;
@@ -259,9 +259,9 @@
 
   if (self->_buttonView)
   {
-    v30 = [(LPCaptionBarStyle *)self->_style button];
-    v31 = [v30 margin];
-    [v31 asInsetsForLTR:v7];
+    button = [(LPCaptionBarStyle *)self->_style button];
+    margin3 = [button margin];
+    [margin3 asInsetsForLTR:_lp_isLTR];
     v387 = v32;
     v424 = v33;
     v393 = v34;
@@ -278,9 +278,9 @@
 
   if (self->_secondaryButtonView)
   {
-    v36 = [(LPCaptionBarStyle *)self->_style secondaryButton];
-    v37 = [v36 margin];
-    [v37 asInsetsForLTR:v7];
+    secondaryButton = [(LPCaptionBarStyle *)self->_style secondaryButton];
+    margin4 = [secondaryButton margin];
+    [margin4 asInsetsForLTR:_lp_isLTR];
     v349 = v39;
     v351 = v38;
   }
@@ -299,9 +299,9 @@
   v428 = v21;
   if (self->_collaborationFooterView)
   {
-    v40 = [(LPCaptionBarStyle *)self->_style collaborationFooter];
-    v41 = [v40 margin];
-    [v41 asInsetsForLTR:v7];
+    collaborationFooter = [(LPCaptionBarStyle *)self->_style collaborationFooter];
+    margin5 = [collaborationFooter margin];
+    [margin5 asInsetsForLTR:_lp_isLTR];
     v378 = v42;
     v377 = v43;
     v361 = v45;
@@ -318,15 +318,15 @@
 
   left = self->_textSafeAreaInset.left;
   right = self->_textSafeAreaInset.right;
-  v48 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties button];
-  v49 = [v48 requiresInlineButton];
-  if (v49)
+  button2 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties button];
+  requiresInlineButton = [button2 requiresInlineButton];
+  if (requiresInlineButton)
   {
-    v50 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties button];
-    v51 = [v50 requiresInlineButton];
-    v52 = [v51 BOOLValue];
+    button3 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties button];
+    requiresInlineButton2 = [button3 requiresInlineButton];
+    bOOLValue = [requiresInlineButton2 BOOLValue];
 
-    if (v52)
+    if (bOOLValue)
     {
       goto LABEL_24;
     }
@@ -334,14 +334,14 @@
 
   else
   {
-    v54 = [(LPCaptionBarStyle *)self->_style usesOutOfLineButton];
+    usesOutOfLineButton = [(LPCaptionBarStyle *)self->_style usesOutOfLineButton];
 
-    if (!v54)
+    if (!usesOutOfLineButton)
     {
 LABEL_24:
       v420 = 0;
       v53 = 0;
-      if (v7)
+      if (_lp_isLTR)
       {
         v426 = v426 + self->_textSafeAreaInset.right;
       }
@@ -357,7 +357,7 @@ LABEL_24:
 
   if (![(LPCaptionBarStyle *)self->_style buttonIgnoresTextSafeAreaInsets])
   {
-    if (v7)
+    if (_lp_isLTR)
     {
       v426 = v426 + self->_textSafeAreaInset.right;
     }
@@ -385,27 +385,27 @@ LABEL_35:
   }
 
   v55 = self->_style;
-  if (v7)
+  if (_lp_isLTR)
   {
-    v56 = [(LPCaptionBarStyle *)v55 leadingAccessory];
+    leadingAccessory = [(LPCaptionBarStyle *)v55 leadingAccessory];
 
     [(LPCaptionBarStyle *)self->_style trailingAccessory];
   }
 
   else
   {
-    v56 = [(LPCaptionBarStyle *)v55 trailingAccessory];
+    leadingAccessory = [(LPCaptionBarStyle *)v55 trailingAccessory];
 
     [(LPCaptionBarStyle *)self->_style leadingAccessory];
   }
   v379 = ;
 
-  v373 = v56;
+  v373 = leadingAccessory;
   v370 = v53;
   if (self->_leftAccessoryView)
   {
-    v57 = [v56 margin];
-    [v57 asInsetsForLTR:v7];
+    margin6 = [leadingAccessory margin];
+    [margin6 asInsetsForLTR:_lp_isLTR];
     v368 = v59;
     v369 = v58;
     v415 = v60;
@@ -422,8 +422,8 @@ LABEL_35:
 
   if (self->_rightAccessoryView)
   {
-    v63 = [v379 margin];
-    [v63 asInsetsForLTR:v7];
+    margin7 = [v379 margin];
+    [margin7 asInsetsForLTR:_lp_isLTR];
     v366 = v64;
     v367 = v65;
     v413 = v66;
@@ -438,21 +438,21 @@ LABEL_35:
     v367 = *(MEMORY[0x1E69DDCE0] + 16);
   }
 
-  v69 = [(LPCaptionBarStyle *)self->_style textStack];
-  v418 = [v69 captionTextPadding];
+  textStack = [(LPCaptionBarStyle *)self->_style textStack];
+  captionTextPadding = [textStack captionTextPadding];
 
-  v70 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIcon];
-  if (v70 && ([(LPCaptionBarStyle *)self->_style trailingPaddingForPresenceOfLeadingIcon], v71 = objc_claimAutoreleasedReturnValue(), v71, v70, v71))
+  leadingIcon2 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIcon];
+  if (leadingIcon2 && ([(LPCaptionBarStyle *)self->_style trailingPaddingForPresenceOfLeadingIcon], v71 = objc_claimAutoreleasedReturnValue(), v71, leadingIcon2, v71))
   {
-    v72 = [v418 copy];
+    v72 = [captionTextPadding copy];
 
-    v73 = [(LPCaptionBarStyle *)self->_style trailingPaddingForPresenceOfLeadingIcon];
-    [v72 setTrailing:v73];
+    trailingPaddingForPresenceOfLeadingIcon = [(LPCaptionBarStyle *)self->_style trailingPaddingForPresenceOfLeadingIcon];
+    [v72 setTrailing:trailingPaddingForPresenceOfLeadingIcon];
   }
 
   else
   {
-    v72 = v418;
+    v72 = captionTextPadding;
   }
 
   if (self->_playButton || (!self->_buttonView ? (v74 = 1) : (v74 = v420), (v74 & 1) == 0))
@@ -472,7 +472,7 @@ LABEL_35:
   }
 
   v419 = v76;
-  [v76 asInsetsForLTR:v7];
+  [v76 asInsetsForLTR:_lp_isLTR];
   v79 = v78;
   v81 = v80;
   v364 = v83 + self->_textSafeAreaInset.bottom;
@@ -515,27 +515,27 @@ LABEL_35:
   v427 = width;
   if (leftIconView)
   {
-    v92 = [v443 fixedSize];
+    fixedSize = [leadingIcon fixedSize];
     v93 = v27;
-    [v92 asSize];
+    [fixedSize asSize];
     [(LPComponentView *)leftIconView sizeThatFits:?];
     v417 = v94;
     rect = v95;
 
-    v96 = [v404 verticalAlignment];
-    if (!v96)
+    verticalAlignment = [leadingIconProperties verticalAlignment];
+    if (!verticalAlignment)
     {
-      v96 = [v443 verticalAlignment];
+      verticalAlignment = [leadingIcon verticalAlignment];
     }
 
-    v97 = [v443 fixedSize];
+    fixedSize2 = [leadingIcon fixedSize];
 
-    if (v97)
+    if (fixedSize2)
     {
-      if (v96 == 3 && [v443 canAdjustVerticalPaddingForFixedSize])
+      if (verticalAlignment == 3 && [leadingIcon canAdjustVerticalPaddingForFixedSize])
       {
-        v98 = [v443 fixedSize];
-        [v98 asSize];
+        fixedSize3 = [leadingIcon fixedSize];
+        [fixedSize3 asSize];
         v100 = v99;
         v455.origin.x = rect1;
         v455.origin.y = v440;
@@ -548,10 +548,10 @@ LABEL_35:
         width = v427;
       }
 
-      if ([v404 canAdjustHorizontalPaddingForFixedSize])
+      if ([leadingIconProperties canAdjustHorizontalPaddingForFixedSize])
       {
-        v102 = [v443 fixedSize];
-        [v102 asSize];
+        fixedSize4 = [leadingIcon fixedSize];
+        [fixedSize4 asSize];
         v104 = v103;
         v456.origin.x = rect1;
         v456.origin.y = v440;
@@ -565,29 +565,29 @@ LABEL_35:
       }
     }
 
-    v106 = [v443 widthForUsingRegularSize];
-    if (v106)
+    widthForUsingRegularSize = [leadingIcon widthForUsingRegularSize];
+    if (widthForUsingRegularSize)
     {
-      v107 = [v443 widthForUsingRegularSize];
-      [v107 value];
+      widthForUsingRegularSize2 = [leadingIcon widthForUsingRegularSize];
+      [widthForUsingRegularSize2 value];
       v109 = v108;
 
       if (width < v109)
       {
         v110 = self->_leftIconView;
-        v111 = [v443 reducedSize];
-        [v111 asSize];
+        reducedSize = [leadingIcon reducedSize];
+        [reducedSize asSize];
         [(LPComponentView *)v110 sizeThatFits:?];
         v417 = v112;
         rect = v113;
       }
     }
 
-    if ([v443 scalesToFitParent])
+    if ([leadingIcon scalesToFitParent])
     {
-      v114 = [v443 preservesEdgeAlignmentWhenScaling];
+      preservesEdgeAlignmentWhenScaling = [leadingIcon preservesEdgeAlignmentWhenScaling];
       v115 = fmin(width - v410 - v397, v412 - v382 - v401);
-      if (v114)
+      if (preservesEdgeAlignmentWhenScaling)
       {
         [(LPComponentView *)self->_leftIconView sizeThatFits:v115, v115];
         v417 = v116;
@@ -630,26 +630,26 @@ LABEL_35:
   rightIconView = self->_rightIconView;
   if (rightIconView)
   {
-    v121 = [v442 fixedSize];
-    [v121 asSize];
+    fixedSize5 = [trailingIcon fixedSize];
+    [fixedSize5 asSize];
     [(LPComponentView *)rightIconView sizeThatFits:?];
     v425 = v122;
     v124 = v123;
 
-    v125 = [v403 verticalAlignment];
-    if (!v125)
+    verticalAlignment2 = [v403 verticalAlignment];
+    if (!verticalAlignment2)
     {
-      v125 = [v442 verticalAlignment];
+      verticalAlignment2 = [trailingIcon verticalAlignment];
     }
 
-    v126 = [v442 fixedSize];
+    fixedSize6 = [trailingIcon fixedSize];
 
-    if (v126)
+    if (fixedSize6)
     {
-      if (v125 == 3 && [v442 canAdjustVerticalPaddingForFixedSize])
+      if (verticalAlignment2 == 3 && [trailingIcon canAdjustVerticalPaddingForFixedSize])
       {
-        v127 = [v442 fixedSize];
-        [v127 asSize];
+        fixedSize7 = [trailingIcon fixedSize];
+        [fixedSize7 asSize];
         v129 = v128;
         v458.origin.x = rect1;
         v458.origin.y = v440;
@@ -664,8 +664,8 @@ LABEL_35:
 
       if ([v403 canAdjustHorizontalPaddingForFixedSize])
       {
-        v131 = [v442 fixedSize];
-        [v131 asSize];
+        fixedSize8 = [trailingIcon fixedSize];
+        [fixedSize8 asSize];
         v133 = v132;
         v459.origin.x = rect1;
         v459.origin.y = v440;
@@ -679,28 +679,28 @@ LABEL_35:
       }
     }
 
-    v135 = [v442 widthForUsingRegularSize];
-    if (v135)
+    widthForUsingRegularSize3 = [trailingIcon widthForUsingRegularSize];
+    if (widthForUsingRegularSize3)
     {
-      v136 = [v442 widthForUsingRegularSize];
-      [v136 value];
+      widthForUsingRegularSize4 = [trailingIcon widthForUsingRegularSize];
+      [widthForUsingRegularSize4 value];
       v138 = v137;
 
       if (width < v138)
       {
         v139 = self->_rightIconView;
-        v140 = [v442 reducedSize];
-        [v140 asSize];
+        reducedSize2 = [trailingIcon reducedSize];
+        [reducedSize2 asSize];
         [(LPComponentView *)v139 sizeThatFits:?];
         v425 = v141;
         v124 = v142;
       }
     }
 
-    if ([v442 scalesToFitParent])
+    if ([trailingIcon scalesToFitParent])
     {
       v124 = fmin(width - v395 - v119, v412 - v380 - v400);
-      if ([v442 preservesEdgeAlignmentWhenScaling])
+      if ([trailingIcon preservesEdgeAlignmentWhenScaling])
       {
         [(LPComponentView *)self->_rightIconView sizeThatFits:v124, v124];
         v425 = v143;
@@ -743,13 +743,13 @@ LABEL_35:
   v150 = v147;
   if (self->_playButton)
   {
-    v151 = [(LPCaptionBarStyle *)self->_style playButton];
-    v152 = [v151 size];
+    playButton = [(LPCaptionBarStyle *)self->_style playButton];
+    v152 = [playButton size];
     [v152 asSize];
     v394 = v153;
     v405 = v154;
 
-    if (v7)
+    if (_lp_isLTR)
     {
       v150 = width - v394 - v149;
     }
@@ -788,7 +788,7 @@ LABEL_35:
     [(LPCaptionBarButtonView *)buttonView sizeThatFits:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
     v429 = v163;
     rect1_8a = v164;
-    if (v7)
+    if (_lp_isLTR)
     {
       v165 = width - v163 - v426;
     }
@@ -865,7 +865,7 @@ LABEL_35:
   v358 = v173;
   v177 = v172 + v173 + v175;
   v178 = v172 + v173 + v176;
-  if (v7)
+  if (_lp_isLTR)
   {
     v177 = v175;
   }
@@ -877,7 +877,7 @@ LABEL_35:
 
   v179 = v172 + v175;
   v180 = v172 + v176;
-  if (v7)
+  if (_lp_isLTR)
   {
     v181 = v175;
   }
@@ -925,7 +925,7 @@ LABEL_35:
   v452[2] = __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_invoke_2;
   v452[3] = &unk_1E7A37630;
   v452[4] = self;
-  v453 = v431;
+  v453 = layoutCopy;
   *&v452[5] = v427;
   *&v452[6] = v412;
   v423 = v182 + v183 + v184;
@@ -951,7 +951,7 @@ LABEL_35:
     v189 = v188;
     v191 = v190;
     v192 = v427 - v188 - v426;
-    if (!v7)
+    if (!_lp_isLTR)
     {
       v192 = v424;
     }
@@ -960,7 +960,7 @@ LABEL_35:
     if ((v420 & 1) == 0)
     {
       v193 = v426 + v424 + v189 - v358;
-      if (v7)
+      if (_lp_isLTR)
       {
         v182 = v182 + v193;
       }
@@ -971,11 +971,11 @@ LABEL_35:
       }
     }
 
-    v198 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties button];
-    v199 = [v198 collapsedButton];
-    v200 = [v199 shouldHideIconsWhenCollapsed];
+    button4 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties button];
+    collapsedButton = [button4 collapsedButton];
+    shouldHideIconsWhenCollapsed = [collapsedButton shouldHideIconsWhenCollapsed];
 
-    if (v200)
+    if (shouldHideIconsWhenCollapsed)
     {
       v183 = v183 - v170;
       v187 = *(MEMORY[0x1E69DDCE0] + 24);
@@ -1031,12 +1031,12 @@ LABEL_35:
     v197 = rect;
   }
 
-  v203 = [(LPCaptionBarStyle *)self->_style collaborationFooter];
+  collaborationFooter2 = [(LPCaptionBarStyle *)self->_style collaborationFooter];
   v390 = v194;
-  if ((([v203 useFullWidthDuringSizing] | v431) & 1) == 0)
+  if ((([collaborationFooter2 useFullWidthDuringSizing] | layoutCopy) & 1) == 0)
   {
-    v204 = [(LPCaptionBarStyle *)self->_style minimumWidth];
-    [v204 value];
+    minimumWidth = [(LPCaptionBarStyle *)self->_style minimumWidth];
+    [minimumWidth value];
     v390 = fmax(v205, v423);
   }
 
@@ -1050,7 +1050,7 @@ LABEL_35:
   v449[2] = __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_invoke_4;
   v449[3] = &unk_1E7A37658;
   v449[4] = self;
-  v450 = v7;
+  v450 = _lp_isLTR;
   *&v449[5] = v365;
   *&v449[6] = v375;
   *&v449[7] = v364;
@@ -1106,7 +1106,7 @@ LABEL_35:
   v445[1] = 3221225472;
   v445[2] = __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_invoke_6;
   v445[3] = &__block_descriptor_137_e5_d8__0l;
-  v446 = v431;
+  v446 = layoutCopy;
   *&v445[4] = v194;
   *&v445[5] = v412;
   v398 = v215;
@@ -1123,8 +1123,8 @@ LABEL_35:
   *&v445[16] = v367 + v366 + v391;
   v218 = __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_invoke_6(v445);
   recta = v197;
-  v396 = __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_invoke_7(v218, v216, v385, v440, v417, v197, v219, v443, v404);
-  v383 = __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_invoke_7(v218, v217, v384, v440, v425, v399, v220, v442, v403);
+  v396 = __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_invoke_7(v218, v216, v385, v440, v417, v197, v219, leadingIcon, leadingIconProperties);
+  v383 = __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_invoke_7(v218, v217, v384, v440, v425, v399, v220, trailingIcon, v403);
   v221 = v218 * 0.5;
   if (v420)
   {
@@ -1134,7 +1134,7 @@ LABEL_35:
       v223 = v414;
       v224 = v416;
       v225 = v186;
-      if (v7)
+      if (_lp_isLTR)
       {
         v226 = v375 + CGRectGetMinX(*&v223);
       }
@@ -1162,8 +1162,8 @@ LABEL_35:
         v461.size.width = v429;
         v461.size.height = rect1_8a;
         v218 = fmax(v218, v393 + CGRectGetMaxY(v461));
-        v396 = __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_invoke_7(v218, v216, v385, v396, v417, recta, v228, v443, v404);
-        v383 = __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_invoke_7(v218, v217, v384, v383, v425, v399, v229, v442, v403);
+        v396 = __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_invoke_7(v218, v216, v385, v396, v417, recta, v228, leadingIcon, leadingIconProperties);
+        v383 = __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_invoke_7(v218, v217, v384, v383, v425, v399, v229, trailingIcon, v403);
         v221 = v218 * 0.5;
       }
 
@@ -1213,15 +1213,15 @@ LABEL_35:
           }
 
           v218 = v218 + v214;
-          v396 = __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_invoke_7(v218, v216, v385, v396, v417, v230, v231, v443, v404);
-          v383 = __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_invoke_7(v218, v217, v384, v383, v425, v399, v233, v442, v403);
+          v396 = __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_invoke_7(v218, v216, v385, v396, v417, v230, v231, leadingIcon, leadingIconProperties);
+          v383 = __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_invoke_7(v218, v217, v384, v383, v425, v399, v233, trailingIcon, v403);
           v221 = v218 * 0.5;
           v227 = v218 - rect1_8a - v393;
         }
       }
     }
 
-    if (v7)
+    if (_lp_isLTR)
     {
       v467.origin.x = v421;
       v467.origin.y = v227;
@@ -1248,11 +1248,11 @@ LABEL_35:
     goto LABEL_194;
   }
 
-  v235 = [(LPCaptionBarStyle *)self->_style collaborationFooter];
-  v236 = [v235 useFullWidth];
+  collaborationFooter3 = [(LPCaptionBarStyle *)self->_style collaborationFooter];
+  useFullWidth = [collaborationFooter3 useFullWidth];
   v237 = v361 + v362 + v411;
 
-  if (v236)
+  if (useFullWidth)
   {
     v423 = fmax(v423, v237);
 LABEL_194:
@@ -1260,7 +1260,7 @@ LABEL_194:
     goto LABEL_201;
   }
 
-  if (!v7)
+  if (!_lp_isLTR)
   {
     v237 = v182 + v237;
   }
@@ -1304,7 +1304,7 @@ LABEL_201:
   v245 = round((v394 - v218) * 0.5);
   v246 = round((v405 - v218) * 0.5);
   [(LPPlayButtonView *)self->_playButton setContentInset:-v245, -v246, -v246, -v245];
-  if (!v431)
+  if (!layoutCopy)
   {
     [(LPCollaborationFooterView *)self->_collaborationFooterView setAdditionalPadding:v355, v354, v353, v352];
     goto LABEL_254;
@@ -1354,7 +1354,7 @@ LABEL_201:
       v256 = v424;
       v421 = v424;
       v257 = v427 - (v426 + v424);
-      if (v7)
+      if (_lp_isLTR)
       {
         goto LABEL_216;
       }
@@ -1380,7 +1380,7 @@ LABEL_218:
     if ([(LPCaptionBarStyle *)self->_style expandButtonToCaptionEdge])
     {
       v261 = v429;
-      if (!v7)
+      if (!_lp_isLTR)
       {
         v266 = v421;
         v267 = v227;
@@ -1401,7 +1401,7 @@ LABEL_218:
       v255 = v218;
       v256 = v421;
       v257 = v429;
-      if (!v7)
+      if (!_lp_isLTR)
       {
         goto LABEL_218;
       }
@@ -1428,11 +1428,11 @@ LABEL_219:
   [(LPCaptionBarButtonView *)self->_secondaryButtonView setFrame:v259, v227, v359, v360];
   if (self->_collaborationFooterView)
   {
-    v276 = [(LPCaptionBarStyle *)self->_style collaborationFooter];
-    v277 = [v276 useFullWidth];
+    collaborationFooter4 = [(LPCaptionBarStyle *)self->_style collaborationFooter];
+    useFullWidth2 = [collaborationFooter4 useFullWidth];
 
     v278 = y;
-    if (v277)
+    if (useFullWidth2)
     {
       v278 = v378 + v255;
     }
@@ -1458,11 +1458,11 @@ LABEL_219:
     MinY = v218;
     if (self->_collaborationFooterView)
     {
-      v284 = [(LPCaptionBarStyle *)self->_style collaborationFooter];
-      v285 = [v284 useFullWidth];
+      collaborationFooter5 = [(LPCaptionBarStyle *)self->_style collaborationFooter];
+      useFullWidth3 = [collaborationFooter5 useFullWidth];
 
       MinY = v218;
-      if ((v285 & 1) == 0)
+      if ((useFullWidth3 & 1) == 0)
       {
         v475.origin.x = rect1;
         v475.origin.y = y;
@@ -1477,9 +1477,9 @@ LABEL_219:
     {
       [(LPVerticalTextStackView *)self->_textStackView setFrame:v414, 0.0, v416, v186];
       [(UIView *)self->_textStackView _lp_layoutIfNeeded];
-      v287 = [(LPVerticalTextStackView *)self->_textStackView computedNumberOfLines];
-      v288 = [(LPCaptionBarStyle *)self->_style minimumNumberOfLinesToVerticallyCenter];
-      v286 = MinY > v186 && v287 >= v288;
+      computedNumberOfLines = [(LPVerticalTextStackView *)self->_textStackView computedNumberOfLines];
+      minimumNumberOfLinesToVerticallyCenter = [(LPCaptionBarStyle *)self->_style minimumNumberOfLinesToVerticallyCenter];
+      v286 = MinY > v186 && computedNumberOfLines >= minimumNumberOfLinesToVerticallyCenter;
     }
 
     v282 = 0.0;
@@ -1491,25 +1491,25 @@ LABEL_219:
 
   [(LPVerticalTextStackView *)self->_textStackView setFrame:v414, v282, v416, v186];
   v290 = self->_style;
-  if (v7)
+  if (_lp_isLTR)
   {
-    v291 = [(LPCaptionBarStyle *)v290 leadingIconBadge];
+    leadingIconBadge = [(LPCaptionBarStyle *)v290 leadingIconBadge];
 
-    rect1_8b = v291;
+    rect1_8b = leadingIconBadge;
     [(LPCaptionBarStyle *)self->_style trailingIconBadge];
   }
 
   else
   {
-    v292 = [(LPCaptionBarStyle *)v290 trailingIconBadge];
+    trailingIconBadge = [(LPCaptionBarStyle *)v290 trailingIconBadge];
 
-    rect1_8b = v292;
+    rect1_8b = trailingIconBadge;
     [(LPCaptionBarStyle *)self->_style leadingIconBadge];
   }
   v293 = ;
 
-  v294 = [(LPComponentView *)self host];
-  v295 = [v294 allowsBadgingIconEdgeForComponentView:self];
+  host = [(LPComponentView *)self host];
+  v295 = [host allowsBadgingIconEdgeForComponentView:self];
 
   if (v295)
   {
@@ -1555,13 +1555,13 @@ LABEL_219:
       v311 = v310;
       [rect1_8b offset];
       v313 = v312;
-      v314 = [rect1_8b fixedSize];
-      v315 = [v314 width];
-      [v315 value];
+      fixedSize9 = [rect1_8b fixedSize];
+      width = [fixedSize9 width];
+      [width value];
       v317 = v316;
-      v318 = [rect1_8b fixedSize];
-      v319 = [v318 height];
-      [v319 value];
+      fixedSize10 = [rect1_8b fixedSize];
+      height = [fixedSize10 height];
+      [height value];
       [(LPComponentView *)v309 convertRect:self toView:v311, v313, v317, v320];
       v301 = v321;
       v300 = v322;
@@ -1575,20 +1575,20 @@ LABEL_219:
       [(LPComponentView *)v325 bounds];
       v441 = v326;
       rect1a = [v293 fixedSize];
-      v430 = [rect1a width];
-      [v430 value];
+      width2 = [rect1a width];
+      [width2 value];
       rect1_24a = v327;
       [v293 offset];
       v329 = v328;
       [v293 offset];
       v331 = v330;
-      v332 = [v293 fixedSize];
-      v333 = [v332 width];
-      [v333 value];
+      fixedSize11 = [v293 fixedSize];
+      width3 = [fixedSize11 width];
+      [width3 value];
       v335 = v334;
-      v336 = [v293 fixedSize];
-      v337 = [v336 height];
-      [v337 value];
+      fixedSize12 = [v293 fixedSize];
+      height2 = [fixedSize12 height];
+      [height2 value];
       [(LPComponentView *)v325 convertRect:self toView:v441 - rect1_24a - v329, v331, v335, v338];
       v440 = v339;
       rect1_24 = v340;
@@ -1601,9 +1601,9 @@ LABEL_219:
   [(LPComponentView *)self->_rightIconBadgeView setFrame:v280, v440, rect1_24, rect1_16];
 
 LABEL_254:
-  v343 = [(LPCaptionBarStyle *)self->_style minimumWidth];
-  [v343 value];
-  if (v431)
+  minimumWidth2 = [(LPCaptionBarStyle *)self->_style minimumWidth];
+  [minimumWidth2 value];
+  if (layoutCopy)
   {
     v345 = v218;
   }
@@ -1824,13 +1824,13 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
   return MaxX - (v13 + v17 * 0.5);
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   blurEffectView = self->_blurEffectView;
   if (blurEffectView)
   {
-    v6 = blurEffectView == v4;
+    v6 = blurEffectView == subviewCopy;
   }
 
   else
@@ -1842,13 +1842,13 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
   {
     v8.receiver = self;
     v8.super_class = LPCaptionBarView;
-    [(LPCaptionBarView *)&v8 addSubview:v4];
+    [(LPCaptionBarView *)&v8 addSubview:subviewCopy];
   }
 
   else
   {
-    v7 = [(UIVisualEffectView *)blurEffectView contentView];
-    [v7 addSubview:v4];
+    contentView = [(UIVisualEffectView *)blurEffectView contentView];
+    [contentView addSubview:subviewCopy];
   }
 }
 
@@ -1865,14 +1865,14 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
     [(LPCaptionBarView *)self addSubview:self->_blurEffectView];
     if ([(LPCaptionBarPresentationProperties *)self->_presentationProperties usesBlurredBackgroundWithFadeOut])
     {
-      v12 = [MEMORY[0x1E6979380] layer];
+      layer = [MEMORY[0x1E6979380] layer];
       maskLayer = self->_maskLayer;
-      self->_maskLayer = v12;
+      self->_maskLayer = layer;
 
-      v14 = [MEMORY[0x1E69DC888] clearColor];
-      v19[0] = [v14 CGColor];
-      v15 = [MEMORY[0x1E69DC888] blackColor];
-      v19[1] = [v15 CGColor];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      v19[0] = [clearColor CGColor];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      v19[1] = [blackColor CGColor];
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
       [(CAGradientLayer *)self->_maskLayer setColors:v16];
 
@@ -1880,20 +1880,20 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
       [(CAGradientLayer *)self->_maskLayer setStartPoint:0.5, 0.0];
       [(CAGradientLayer *)self->_maskLayer setEndPoint:0.5, 1.0];
       v17 = self->_maskLayer;
-      v18 = [(LPCaptionBarView *)self layer];
-      [v18 setMask:v17];
+      layer2 = [(LPCaptionBarView *)self layer];
+      [layer2 setMask:v17];
     }
   }
 
   else
   {
-    v3 = [(LPCaptionBarStyle *)self->_style backgroundColor];
+    backgroundColor = [(LPCaptionBarStyle *)self->_style backgroundColor];
 
-    if (v3)
+    if (backgroundColor)
     {
       v4 = [LPBackgroundColorView alloc];
-      v5 = [(LPCaptionBarStyle *)self->_style backgroundColor];
-      v6 = [(LPBackgroundColorView *)v4 initWithColor:v5];
+      backgroundColor2 = [(LPCaptionBarStyle *)self->_style backgroundColor];
+      v6 = [(LPBackgroundColorView *)v4 initWithColor:backgroundColor2];
       backgroundColorView = self->_backgroundColorView;
       self->_backgroundColorView = v6;
 
@@ -1909,20 +1909,20 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
   v120[1] = *MEMORY[0x1E69E9840];
   if (!self->_hasEverBuilt)
   {
-    v3 = [(UIView *)self _lp_isLTR];
+    _lp_isLTR = [(UIView *)self _lp_isLTR];
     [(LPCaptionBarView *)self _createBackgroundViewIfNeeded];
     if (self->_useProgressSpinner)
     {
       v4 = [LPIndeterminateProgressSpinnerView alloc];
-      v5 = [(LPComponentView *)self host];
+      host = [(LPComponentView *)self host];
       v6 = objc_alloc_init(LPIndeterminateProgressSpinnerStyle);
-      v7 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties spinner];
-      v8 = [(LPIndeterminateProgressSpinnerView *)v4 initWithHost:v5 style:v6 properties:v7];
+      spinner = [(LPCaptionBarPresentationProperties *)self->_presentationProperties spinner];
+      v8 = [(LPIndeterminateProgressSpinnerView *)v4 initWithHost:host style:v6 properties:spinner];
 
       [(LPCaptionBarView *)self addSubview:v8];
-      v9 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIcon];
+      leadingIcon = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIcon];
 
-      if (v9)
+      if (leadingIcon)
       {
         v10 = 0;
       }
@@ -1932,7 +1932,7 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
         v10 = v8;
       }
 
-      if (v9)
+      if (leadingIcon)
       {
         v11 = v8;
       }
@@ -1942,7 +1942,7 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
         v11 = 0;
       }
 
-      if (v3)
+      if (_lp_isLTR)
       {
         v12 = v11;
       }
@@ -1952,7 +1952,7 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
         v12 = v10;
       }
 
-      if (v3)
+      if (_lp_isLTR)
       {
         v13 = v10;
       }
@@ -1973,56 +1973,56 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
     else
     {
       presentationProperties = self->_presentationProperties;
-      if (v3)
+      if (_lp_isLTR)
       {
-        v118 = [(LPCaptionBarPresentationProperties *)presentationProperties leadingIcon];
-        v117 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIcon];
-        v116 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIconBadge];
-        v115 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIconBadge];
-        v112 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties additionalLeadingIcons];
-        v111 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties additionalTrailingIcons];
-        v18 = [(LPCaptionBarStyle *)self->_style leadingIcon];
-        v114 = [v18 copy];
+        leadingIcon2 = [(LPCaptionBarPresentationProperties *)presentationProperties leadingIcon];
+        trailingIcon = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIcon];
+        leadingIconBadge = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIconBadge];
+        trailingIconBadge = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIconBadge];
+        additionalLeadingIcons = [(LPCaptionBarPresentationProperties *)self->_presentationProperties additionalLeadingIcons];
+        additionalTrailingIcons = [(LPCaptionBarPresentationProperties *)self->_presentationProperties additionalTrailingIcons];
+        leadingIcon3 = [(LPCaptionBarStyle *)self->_style leadingIcon];
+        v114 = [leadingIcon3 copy];
 
-        v19 = [(LPCaptionBarStyle *)self->_style trailingIcon];
-        v113 = [v19 copy];
+        trailingIcon2 = [(LPCaptionBarStyle *)self->_style trailingIcon];
+        v113 = [trailingIcon2 copy];
 
-        v108 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIconProperties];
-        v107 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIconProperties];
-        v110 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIconBadgeProperties];
-        v109 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIconBadgeProperties];
-        v20 = [(LPCaptionBarStyle *)self->_style leadingIconBadge];
-        v21 = [v20 copy];
+        leadingIconProperties = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIconProperties];
+        trailingIconProperties = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIconProperties];
+        leadingIconBadgeProperties = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIconBadgeProperties];
+        trailingIconBadgeProperties = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIconBadgeProperties];
+        leadingIconBadge2 = [(LPCaptionBarStyle *)self->_style leadingIconBadge];
+        v21 = [leadingIconBadge2 copy];
 
-        v22 = [(LPCaptionBarStyle *)self->_style trailingIconBadge];
-        v23 = [v22 copy];
+        trailingIconBadge2 = [(LPCaptionBarStyle *)self->_style trailingIconBadge];
+        v23 = [trailingIconBadge2 copy];
 
         [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIconSize];
       }
 
       else
       {
-        v118 = [(LPCaptionBarPresentationProperties *)presentationProperties trailingIcon];
-        v117 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIcon];
-        v116 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIconBadge];
-        v115 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIconBadge];
-        v112 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties additionalTrailingIcons];
-        v111 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties additionalLeadingIcons];
-        v26 = [(LPCaptionBarStyle *)self->_style trailingIcon];
-        v114 = [v26 copy];
+        leadingIcon2 = [(LPCaptionBarPresentationProperties *)presentationProperties trailingIcon];
+        trailingIcon = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIcon];
+        leadingIconBadge = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIconBadge];
+        trailingIconBadge = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIconBadge];
+        additionalLeadingIcons = [(LPCaptionBarPresentationProperties *)self->_presentationProperties additionalTrailingIcons];
+        additionalTrailingIcons = [(LPCaptionBarPresentationProperties *)self->_presentationProperties additionalLeadingIcons];
+        trailingIcon3 = [(LPCaptionBarStyle *)self->_style trailingIcon];
+        v114 = [trailingIcon3 copy];
 
-        v27 = [(LPCaptionBarStyle *)self->_style leadingIcon];
-        v113 = [v27 copy];
+        leadingIcon4 = [(LPCaptionBarStyle *)self->_style leadingIcon];
+        v113 = [leadingIcon4 copy];
 
-        v108 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIconProperties];
-        v107 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIconProperties];
-        v110 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIconBadgeProperties];
-        v109 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIconBadgeProperties];
-        v28 = [(LPCaptionBarStyle *)self->_style trailingIconBadge];
-        v21 = [v28 copy];
+        leadingIconProperties = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIconProperties];
+        trailingIconProperties = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIconProperties];
+        leadingIconBadgeProperties = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIconBadgeProperties];
+        trailingIconBadgeProperties = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingIconBadgeProperties];
+        trailingIconBadge3 = [(LPCaptionBarStyle *)self->_style trailingIconBadge];
+        v21 = [trailingIconBadge3 copy];
 
-        v29 = [(LPCaptionBarStyle *)self->_style leadingIconBadge];
-        v23 = [v29 copy];
+        leadingIconBadge3 = [(LPCaptionBarStyle *)self->_style leadingIconBadge];
+        v23 = [leadingIconBadge3 copy];
 
         [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingIconSize];
       }
@@ -2043,7 +2043,7 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
       }
 
       v35 = self->_presentationProperties;
-      if (v3)
+      if (_lp_isLTR)
       {
         [(LPCaptionBarPresentationProperties *)v35 trailingIconSize];
       }
@@ -2066,16 +2066,16 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
         }
       }
 
-      if (v118)
+      if (leadingIcon2)
       {
-        if (v112)
+        if (additionalLeadingIcons)
         {
           v41 = [LPImageStackView alloc];
-          v42 = [(LPComponentView *)self host];
-          v120[0] = v118;
+          host2 = [(LPComponentView *)self host];
+          v120[0] = leadingIcon2;
           v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v120 count:1];
-          v44 = [v43 arrayByAddingObjectsFromArray:v112];
-          v45 = [(LPImageStackView *)v41 initWithHost:v42 images:v44 style:v114];
+          v44 = [v43 arrayByAddingObjectsFromArray:additionalLeadingIcons];
+          v45 = [(LPImageStackView *)v41 initWithHost:host2 images:v44 style:v114];
           v46 = self->_leftIconView;
           self->_leftIconView = v45;
         }
@@ -2083,8 +2083,8 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
         else
         {
           v47 = [LPImageView alloc];
-          v48 = [(LPComponentView *)self host];
-          v49 = [(LPImageView *)v47 initWithHost:v48 image:v118 properties:v108 style:v114];
+          host3 = [(LPComponentView *)self host];
+          v49 = [(LPImageView *)v47 initWithHost:host3 image:leadingIcon2 properties:leadingIconProperties style:v114];
           v50 = self->_leftIconView;
           self->_leftIconView = v49;
         }
@@ -2092,16 +2092,16 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
         [(LPCaptionBarView *)self addSubview:self->_leftIconView];
       }
 
-      if (v117)
+      if (trailingIcon)
       {
-        if (v111)
+        if (additionalTrailingIcons)
         {
           v51 = [LPImageStackView alloc];
-          v52 = [(LPComponentView *)self host];
-          v119 = v117;
+          host4 = [(LPComponentView *)self host];
+          v119 = trailingIcon;
           v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v119 count:1];
-          v54 = [v53 arrayByAddingObjectsFromArray:v111];
-          v55 = [(LPImageStackView *)v51 initWithHost:v52 images:v54 style:v113];
+          v54 = [v53 arrayByAddingObjectsFromArray:additionalTrailingIcons];
+          v55 = [(LPImageStackView *)v51 initWithHost:host4 images:v54 style:v113];
           rightIconView = self->_rightIconView;
           self->_rightIconView = v55;
         }
@@ -2109,8 +2109,8 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
         else
         {
           v57 = [LPImageView alloc];
-          v52 = [(LPComponentView *)self host];
-          v58 = [(LPImageView *)v57 initWithHost:v52 image:v117 properties:v107 style:v113];
+          host4 = [(LPComponentView *)self host];
+          v58 = [(LPImageView *)v57 initWithHost:host4 image:trailingIcon properties:trailingIconProperties style:v113];
           v53 = self->_rightIconView;
           self->_rightIconView = v58;
         }
@@ -2118,22 +2118,22 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
         [(LPCaptionBarView *)self addSubview:self->_rightIconView];
       }
 
-      if (v116)
+      if (leadingIconBadge)
       {
         v59 = [LPImageView alloc];
-        v60 = [(LPComponentView *)self host];
-        v61 = [(LPImageView *)v59 initWithHost:v60 image:v116 properties:v110 style:v21];
+        host5 = [(LPComponentView *)self host];
+        v61 = [(LPImageView *)v59 initWithHost:host5 image:leadingIconBadge properties:leadingIconBadgeProperties style:v21];
         leftIconBadgeView = self->_leftIconBadgeView;
         self->_leftIconBadgeView = v61;
 
         [(LPCaptionBarView *)self addSubview:self->_leftIconBadgeView];
       }
 
-      if (v115)
+      if (trailingIconBadge)
       {
         v63 = [LPImageView alloc];
-        v64 = [(LPComponentView *)self host];
-        v65 = [(LPImageView *)v63 initWithHost:v64 image:v115 properties:v109 style:v23];
+        host6 = [(LPComponentView *)self host];
+        v65 = [(LPImageView *)v63 initWithHost:host6 image:trailingIconBadge properties:trailingIconBadgeProperties style:v23];
         rightIconBadgeView = self->_rightIconBadgeView;
         self->_rightIconBadgeView = v65;
 
@@ -2145,11 +2145,11 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
     if (self->_inlinePlaybackInformation)
     {
       v67 = [LPPlayButtonView alloc];
-      v68 = [(LPComponentView *)self host];
+      host7 = [(LPComponentView *)self host];
       inlinePlaybackInformation = self->_inlinePlaybackInformation;
-      v70 = [(LPCaptionBarStyle *)self->_style playButton];
-      v71 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties playButton];
-      v72 = [(LPPlayButtonView *)v67 initWithHost:v68 playbackInformation:inlinePlaybackInformation style:v70 properties:v71];
+      playButton = [(LPCaptionBarStyle *)self->_style playButton];
+      playButton2 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties playButton];
+      v72 = [(LPPlayButtonView *)v67 initWithHost:host7 playbackInformation:inlinePlaybackInformation style:playButton properties:playButton2];
       playButton = self->_playButton;
       self->_playButton = v72;
 
@@ -2157,24 +2157,24 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
     }
 
     v74 = self->_presentationProperties;
-    if (v3)
+    if (_lp_isLTR)
     {
-      v75 = [(LPCaptionBarPresentationProperties *)v74 leadingAccessoryType];
-      v76 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingAccessoryType];
+      leadingAccessoryType = [(LPCaptionBarPresentationProperties *)v74 leadingAccessoryType];
+      trailingAccessoryType = [(LPCaptionBarPresentationProperties *)self->_presentationProperties trailingAccessoryType];
     }
 
     else
     {
-      v75 = [(LPCaptionBarPresentationProperties *)v74 trailingAccessoryType];
-      v76 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingAccessoryType];
+      leadingAccessoryType = [(LPCaptionBarPresentationProperties *)v74 trailingAccessoryType];
+      trailingAccessoryType = [(LPCaptionBarPresentationProperties *)self->_presentationProperties leadingAccessoryType];
     }
 
-    v77 = v76;
-    if (v75)
+    v77 = trailingAccessoryType;
+    if (leadingAccessoryType)
     {
       v78 = [LPCaptionBarAccessoryView alloc];
-      v79 = [(LPComponentView *)self host];
-      v80 = [(LPCaptionBarAccessoryView *)v78 initWithHost:v79 type:v75 side:0];
+      host8 = [(LPComponentView *)self host];
+      v80 = [(LPCaptionBarAccessoryView *)v78 initWithHost:host8 type:leadingAccessoryType side:0];
       leftAccessoryView = self->_leftAccessoryView;
       self->_leftAccessoryView = v80;
 
@@ -2184,53 +2184,53 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
     if (v77)
     {
       v82 = [LPCaptionBarAccessoryView alloc];
-      v83 = [(LPComponentView *)self host];
-      v84 = [(LPCaptionBarAccessoryView *)v82 initWithHost:v83 type:v77 side:1];
+      host9 = [(LPComponentView *)self host];
+      v84 = [(LPCaptionBarAccessoryView *)v82 initWithHost:host9 type:v77 side:1];
       rightAccessoryView = self->_rightAccessoryView;
       self->_rightAccessoryView = v84;
 
       [(LPCaptionBarView *)self addSubview:self->_rightAccessoryView];
     }
 
-    v86 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties button];
+    button = [(LPCaptionBarPresentationProperties *)self->_presentationProperties button];
 
-    if (v86)
+    if (button)
     {
       v87 = [LPCaptionBarButtonView alloc];
-      v88 = [(LPComponentView *)self host];
-      v89 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties button];
-      v90 = [(LPCaptionBarStyle *)self->_style button];
-      v91 = [(LPCaptionBarButtonView *)v87 initWithHost:v88 properties:v89 style:v90];
+      host10 = [(LPComponentView *)self host];
+      button2 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties button];
+      button3 = [(LPCaptionBarStyle *)self->_style button];
+      v91 = [(LPCaptionBarButtonView *)v87 initWithHost:host10 properties:button2 style:button3];
       buttonView = self->_buttonView;
       self->_buttonView = v91;
 
       [(LPCaptionBarView *)self addSubview:self->_buttonView];
     }
 
-    v93 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties secondaryButton];
+    secondaryButton = [(LPCaptionBarPresentationProperties *)self->_presentationProperties secondaryButton];
 
-    if (v93)
+    if (secondaryButton)
     {
       v94 = [LPCaptionBarButtonView alloc];
-      v95 = [(LPComponentView *)self host];
-      v96 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties secondaryButton];
-      v97 = [(LPCaptionBarStyle *)self->_style secondaryButton];
-      v98 = [(LPCaptionBarButtonView *)v94 initWithHost:v95 properties:v96 style:v97];
+      host11 = [(LPComponentView *)self host];
+      secondaryButton2 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties secondaryButton];
+      secondaryButton3 = [(LPCaptionBarStyle *)self->_style secondaryButton];
+      v98 = [(LPCaptionBarButtonView *)v94 initWithHost:host11 properties:secondaryButton2 style:secondaryButton3];
       secondaryButtonView = self->_secondaryButtonView;
       self->_secondaryButtonView = v98;
 
       [(LPCaptionBarView *)self addSubview:self->_secondaryButtonView];
     }
 
-    v100 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties collaborationFooter];
+    collaborationFooter = [(LPCaptionBarPresentationProperties *)self->_presentationProperties collaborationFooter];
 
-    if (v100)
+    if (collaborationFooter)
     {
       v101 = [LPCollaborationFooterView alloc];
-      v102 = [(LPComponentView *)self host];
-      v103 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties collaborationFooter];
-      v104 = [(LPCaptionBarStyle *)self->_style collaborationFooter];
-      v105 = [(LPCollaborationFooterView *)v101 initWithHost:v102 properties:v103 style:v104];
+      host12 = [(LPComponentView *)self host];
+      collaborationFooter2 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties collaborationFooter];
+      collaborationFooter3 = [(LPCaptionBarStyle *)self->_style collaborationFooter];
+      v105 = [(LPCollaborationFooterView *)v101 initWithHost:host12 properties:collaborationFooter2 style:collaborationFooter3];
       collaborationFooterView = self->_collaborationFooterView;
       self->_collaborationFooterView = v105;
     }
@@ -2255,48 +2255,48 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
     self->_textStackView = 0;
   }
 
-  v5 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties aboveTop];
-  v6 = [(LPCaptionBarStyle *)self->_style textStack];
-  v7 = [v6 aboveTopCaption];
+  aboveTop = [(LPCaptionBarPresentationProperties *)self->_presentationProperties aboveTop];
+  textStack = [(LPCaptionBarStyle *)self->_style textStack];
+  aboveTopCaption = [textStack aboveTopCaption];
   emphasizedTextExpression = self->_emphasizedTextExpression;
-  v9 = [(LPComponentView *)self host];
-  v10 = createViewForRow(v5, v7, emphasizedTextExpression, v9);
+  host = [(LPComponentView *)self host];
+  v10 = createViewForRow(aboveTop, aboveTopCaption, emphasizedTextExpression, host);
   aboveTopCaptionView = self->_aboveTopCaptionView;
   self->_aboveTopCaptionView = v10;
 
   v12 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties top];
-  v13 = [(LPCaptionBarStyle *)self->_style textStack];
-  v14 = [v13 topCaption];
+  textStack2 = [(LPCaptionBarStyle *)self->_style textStack];
+  topCaption = [textStack2 topCaption];
   v15 = self->_emphasizedTextExpression;
-  v16 = [(LPComponentView *)self host];
-  v17 = createViewForRow(v12, v14, v15, v16);
+  host2 = [(LPComponentView *)self host];
+  v17 = createViewForRow(v12, topCaption, v15, host2);
   topCaptionView = self->_topCaptionView;
   self->_topCaptionView = v17;
 
-  v19 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties bottom];
-  v20 = [(LPCaptionBarStyle *)self->_style textStack];
-  v21 = [v20 bottomCaption];
+  bottom = [(LPCaptionBarPresentationProperties *)self->_presentationProperties bottom];
+  textStack3 = [(LPCaptionBarStyle *)self->_style textStack];
+  bottomCaption = [textStack3 bottomCaption];
   v22 = self->_emphasizedTextExpression;
-  v23 = [(LPComponentView *)self host];
-  v24 = createViewForRow(v19, v21, v22, v23);
+  host3 = [(LPComponentView *)self host];
+  v24 = createViewForRow(bottom, bottomCaption, v22, host3);
   bottomCaptionView = self->_bottomCaptionView;
   self->_bottomCaptionView = v24;
 
-  v26 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties belowBottom];
-  v27 = [(LPCaptionBarStyle *)self->_style textStack];
-  v28 = [v27 belowBottomCaption];
+  belowBottom = [(LPCaptionBarPresentationProperties *)self->_presentationProperties belowBottom];
+  textStack4 = [(LPCaptionBarStyle *)self->_style textStack];
+  belowBottomCaption = [textStack4 belowBottomCaption];
   v29 = self->_emphasizedTextExpression;
-  v30 = [(LPComponentView *)self host];
-  v31 = createViewForRow(v26, v28, v29, v30);
+  host4 = [(LPComponentView *)self host];
+  v31 = createViewForRow(belowBottom, belowBottomCaption, v29, host4);
   belowBottomCaptionView = self->_belowBottomCaptionView;
   self->_belowBottomCaptionView = v31;
 
   if (self->_aboveTopCaptionView || self->_topCaptionView || self->_bottomCaptionView || self->_belowBottomCaptionView)
   {
     v33 = [LPVerticalTextStackView alloc];
-    v34 = [(LPComponentView *)self host];
-    v35 = [(LPCaptionBarStyle *)self->_style textStack];
-    v36 = [(LPVerticalTextStackView *)v33 initWithHost:v34 style:v35];
+    host5 = [(LPComponentView *)self host];
+    textStack5 = [(LPCaptionBarStyle *)self->_style textStack];
+    v36 = [(LPVerticalTextStackView *)v33 initWithHost:host5 style:textStack5];
     v37 = self->_textStackView;
     self->_textStackView = v36;
 
@@ -2340,8 +2340,8 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
 
 - (void)updateDisclosureIndicators
 {
-  v3 = [(LPTextStyleable *)self->_bottomCaptionView subtitleButton];
-  [v3 updateIndicator];
+  subtitleButton = [(LPTextStyleable *)self->_bottomCaptionView subtitleButton];
+  [subtitleButton updateIndicator];
 
   collaborationFooterView = self->_collaborationFooterView;
 
@@ -2350,9 +2350,9 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
 
 - (id)button
 {
-  v3 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties button];
+  button = [(LPCaptionBarPresentationProperties *)self->_presentationProperties button];
 
-  if (v3)
+  if (button)
   {
     [(LPCaptionBarView *)self _buildViewsForCaptionBarIfNeeded];
     v4 = self->_buttonView;
@@ -2368,9 +2368,9 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
 
 - (id)secondaryButton
 {
-  v3 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties secondaryButton];
+  secondaryButton = [(LPCaptionBarPresentationProperties *)self->_presentationProperties secondaryButton];
 
-  if (v3)
+  if (secondaryButton)
   {
     [(LPCaptionBarView *)self _buildViewsForCaptionBarIfNeeded];
     v4 = self->_secondaryButtonView;
@@ -2384,14 +2384,14 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
   return v4;
 }
 
-- (void)setEmphasizedTextExpression:(id)a3
+- (void)setEmphasizedTextExpression:(id)expression
 {
-  v5 = a3;
-  objc_storeStrong(&self->_emphasizedTextExpression, a3);
-  [(LPTextStyleable *)self->_aboveTopCaptionView setEmphasizedTextExpression:v5];
-  [(LPTextStyleable *)self->_topCaptionView setEmphasizedTextExpression:v5];
-  [(LPTextStyleable *)self->_bottomCaptionView setEmphasizedTextExpression:v5];
-  [(LPTextStyleable *)self->_belowBottomCaptionView setEmphasizedTextExpression:v5];
+  expressionCopy = expression;
+  objc_storeStrong(&self->_emphasizedTextExpression, expression);
+  [(LPTextStyleable *)self->_aboveTopCaptionView setEmphasizedTextExpression:expressionCopy];
+  [(LPTextStyleable *)self->_topCaptionView setEmphasizedTextExpression:expressionCopy];
+  [(LPTextStyleable *)self->_bottomCaptionView setEmphasizedTextExpression:expressionCopy];
+  [(LPTextStyleable *)self->_belowBottomCaptionView setEmphasizedTextExpression:expressionCopy];
 }
 
 - (id)primaryIconView
@@ -2405,9 +2405,9 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
   return leftIconView;
 }
 
-- (id)layoutExclusionsForView:(id)a3
+- (id)layoutExclusionsForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (*&self->_leftIconView == 0)
   {
     v15 = MEMORY[0x1E695E0F0];
@@ -2429,7 +2429,7 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
       v22.size.height = v8;
       v19 = CGRectUnion(v18, v22);
       v10 = MEMORY[0x1E69DC728];
-      [(LPCaptionBarView *)self convertRect:v4 toView:v19.origin.x, v19.origin.y, v19.size.width, v19.size.height];
+      [(LPCaptionBarView *)self convertRect:viewCopy toView:v19.origin.x, v19.origin.y, v19.size.width, v19.size.height];
       v11 = [v10 bezierPathWithRect:?];
       [v15 addObject:v11];
     }
@@ -2444,7 +2444,7 @@ double __60__LPCaptionBarView__layoutCaptionBarForSize_applyingLayout___block_in
       v23.size.height = v8;
       v21 = CGRectUnion(v20, v23);
       v13 = MEMORY[0x1E69DC728];
-      [(LPCaptionBarView *)self convertRect:v4 toView:v21.origin.x, v21.origin.y, v21.size.width, v21.size.height];
+      [(LPCaptionBarView *)self convertRect:viewCopy toView:v21.origin.x, v21.origin.y, v21.size.width, v21.size.height];
       v14 = [v13 bezierPathWithRect:?];
       [v15 addObject:v14];
     }

@@ -1,47 +1,47 @@
 @interface AFSiriTask
 + (void)initialize;
-- (AFSiriTask)initWithBSXPCCoder:(id)a3;
-- (AFSiriTask)initWithCoder:(id)a3;
+- (AFSiriTask)initWithBSXPCCoder:(id)coder;
+- (AFSiriTask)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)_initWithRequest:(id)a3 remoteResponseListenerEndpoint:(id)a4 usageResultListenerEndpoint:(id)a5;
+- (id)_initWithRequest:(id)request remoteResponseListenerEndpoint:(id)endpoint usageResultListenerEndpoint:(id)listenerEndpoint;
 - (id)_responseHandlerConnection;
 - (id)_usageResultHandlerConnection;
-- (void)_invalidateConnectionAfterMessageSent:(id)a3;
-- (void)completeWithResponse:(id)a3;
+- (void)_invalidateConnectionAfterMessageSent:(id)sent;
+- (void)completeWithResponse:(id)response;
 - (void)dealloc;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)failWithError:(id)a3;
-- (void)reportUsageResult:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)failWithError:(id)error;
+- (void)reportUsageResult:(id)result;
 @end
 
 @implementation AFSiriTask
 
-- (AFSiriTask)initWithCoder:(id)a3
+- (AFSiriTask)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Request"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RemoteResponseListenerEndpoint"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RemoteUsageResultListenerEndpoint"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Request"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RemoteResponseListenerEndpoint"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RemoteUsageResultListenerEndpoint"];
 
   v8 = [(AFSiriTask *)self _initWithRequest:v5 remoteResponseListenerEndpoint:v6 usageResultListenerEndpoint:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   request = self->_request;
-  v5 = a3;
-  [v5 encodeObject:request forKey:@"Request"];
-  [v5 encodeObject:self->_remoteResponseListenerEndpoint forKey:@"RemoteResponseListenerEndpoint"];
-  [v5 encodeObject:self->_usageResultListenerEndpoint forKey:@"RemoteUsageResultListenerEndpoint"];
+  coderCopy = coder;
+  [coderCopy encodeObject:request forKey:@"Request"];
+  [coderCopy encodeObject:self->_remoteResponseListenerEndpoint forKey:@"RemoteResponseListenerEndpoint"];
+  [coderCopy encodeObject:self->_usageResultListenerEndpoint forKey:@"RemoteUsageResultListenerEndpoint"];
 }
 
-- (AFSiriTask)initWithBSXPCCoder:(id)a3
+- (AFSiriTask)initWithBSXPCCoder:(id)coder
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Request"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Request"];
   if (!v5)
   {
     v6 = AFSiriLogContextConnection;
@@ -54,7 +54,7 @@
   }
 
   v7 = MEMORY[0x1E69E9E90];
-  v8 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E90] forKey:@"RemoteResponseListenerEndpoint"];
+  v8 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E90] forKey:@"RemoteResponseListenerEndpoint"];
   v9 = v8;
   if (!v8)
   {
@@ -99,7 +99,7 @@ LABEL_20:
 
 LABEL_11:
   v15 = MEMORY[0x1E69E9E90];
-  v16 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E90] forKey:{@"RemoteUsageResultListenerEndpoint", *v26, *&v26[16], v27}];
+  v16 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E90] forKey:{@"RemoteUsageResultListenerEndpoint", *v26, *&v26[16], v27}];
   v17 = v16;
   if (v16)
   {
@@ -148,58 +148,58 @@ LABEL_18:
   return v23;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   request = self->_request;
-  v11 = v4;
+  v11 = coderCopy;
   if (request)
   {
-    [v4 encodeObject:request forKey:@"Request"];
+    [coderCopy encodeObject:request forKey:@"Request"];
   }
 
   remoteResponseListenerEndpoint = self->_remoteResponseListenerEndpoint;
   if (remoteResponseListenerEndpoint)
   {
-    v7 = [(NSXPCListenerEndpoint *)remoteResponseListenerEndpoint _endpoint];
-    [v11 encodeXPCObject:v7 forKey:@"RemoteResponseListenerEndpoint"];
+    _endpoint = [(NSXPCListenerEndpoint *)remoteResponseListenerEndpoint _endpoint];
+    [v11 encodeXPCObject:_endpoint forKey:@"RemoteResponseListenerEndpoint"];
   }
 
   usageResultListenerEndpoint = self->_usageResultListenerEndpoint;
   v9 = v11;
   if (usageResultListenerEndpoint)
   {
-    v10 = [(NSXPCListenerEndpoint *)usageResultListenerEndpoint _endpoint];
-    [v11 encodeXPCObject:v10 forKey:@"RemoteUsageResultListenerEndpoint"];
+    _endpoint2 = [(NSXPCListenerEndpoint *)usageResultListenerEndpoint _endpoint];
+    [v11 encodeXPCObject:_endpoint2 forKey:@"RemoteUsageResultListenerEndpoint"];
 
     v9 = v11;
   }
 }
 
-- (void)reportUsageResult:(id)a3
+- (void)reportUsageResult:(id)result
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v13 = "[AFSiriTask reportUsageResult:]";
     v14 = 2112;
-    v15 = v4;
+    v15 = resultCopy;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
-  v6 = [(AFSiriTask *)self _usageResultHandlerConnection];
+  _usageResultHandlerConnection = [(AFSiriTask *)self _usageResultHandlerConnection];
   objc_initWeak(buf, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __32__AFSiriTask_reportUsageResult___block_invoke;
   v10[3] = &unk_1E7349738;
   objc_copyWeak(&v11, buf);
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v10];
-  [v7 handleSiriTaskUsageResult:v4 fromRequest:self->_request];
-  [(AFSiriTask *)self _invalidateConnectionAfterMessageSent:v6];
+  v7 = [_usageResultHandlerConnection remoteObjectProxyWithErrorHandler:v10];
+  [v7 handleSiriTaskUsageResult:resultCopy fromRequest:self->_request];
+  [(AFSiriTask *)self _invalidateConnectionAfterMessageSent:_usageResultHandlerConnection];
   usageResultListenerEndpoint = self->_usageResultListenerEndpoint;
   self->_usageResultListenerEndpoint = 0;
 
@@ -241,10 +241,10 @@ void __32__AFSiriTask_reportUsageResult___block_invoke(uint64_t a1, void *a2)
   return v2;
 }
 
-- (void)completeWithResponse:(id)a3
+- (void)completeWithResponse:(id)response
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  responseCopy = response;
   v5 = mach_absolute_time();
   v6 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -252,20 +252,20 @@ void __32__AFSiriTask_reportUsageResult___block_invoke(uint64_t a1, void *a2)
     *buf = 136315394;
     v14 = "[AFSiriTask completeWithResponse:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = responseCopy;
     _os_log_impl(&dword_1912FE000, v6, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
-  v7 = [(AFSiriTask *)self _responseHandlerConnection];
+  _responseHandlerConnection = [(AFSiriTask *)self _responseHandlerConnection];
   objc_initWeak(buf, self);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __35__AFSiriTask_completeWithResponse___block_invoke;
   v11[3] = &unk_1E7349738;
   objc_copyWeak(&v12, buf);
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v11];
-  [v8 handleSiriResponse:v4 atTime:v5];
-  [(AFSiriTask *)self _invalidateConnectionAfterMessageSent:v7];
+  v8 = [_responseHandlerConnection remoteObjectProxyWithErrorHandler:v11];
+  [v8 handleSiriResponse:responseCopy atTime:v5];
+  [(AFSiriTask *)self _invalidateConnectionAfterMessageSent:_responseHandlerConnection];
   remoteResponseListenerEndpoint = self->_remoteResponseListenerEndpoint;
   self->_remoteResponseListenerEndpoint = 0;
 
@@ -296,10 +296,10 @@ void __35__AFSiriTask_completeWithResponse___block_invoke(uint64_t a1, void *a2)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = mach_absolute_time();
   v6 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
@@ -307,22 +307,22 @@ void __35__AFSiriTask_completeWithResponse___block_invoke(uint64_t a1, void *a2)
     *location = 136315394;
     *&location[4] = "[AFSiriTask failWithError:]";
     v19 = 2114;
-    v20 = v4;
+    v20 = errorCopy;
     _os_log_error_impl(&dword_1912FE000, v6, OS_LOG_TYPE_ERROR, "%s %{public}@", location, 0x16u);
   }
 
-  v7 = [(AFSiriTask *)self _responseHandlerConnection];
+  _responseHandlerConnection = [(AFSiriTask *)self _responseHandlerConnection];
   objc_initWeak(location, self);
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __28__AFSiriTask_failWithError___block_invoke;
   v15 = &unk_1E7349710;
   objc_copyWeak(&v17, location);
-  v8 = v4;
+  v8 = errorCopy;
   v16 = v8;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:&v12];
+  v9 = [_responseHandlerConnection remoteObjectProxyWithErrorHandler:&v12];
   [v9 handleFailureOfRequest:self->_request error:v8 atTime:{v5, v12, v13, v14, v15}];
-  [(AFSiriTask *)self _invalidateConnectionAfterMessageSent:v7];
+  [(AFSiriTask *)self _invalidateConnectionAfterMessageSent:_responseHandlerConnection];
   remoteResponseListenerEndpoint = self->_remoteResponseListenerEndpoint;
   self->_remoteResponseListenerEndpoint = 0;
 
@@ -356,15 +356,15 @@ void __28__AFSiriTask_failWithError___block_invoke(uint64_t a1, void *a2)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_invalidateConnectionAfterMessageSent:(id)a3
+- (void)_invalidateConnectionAfterMessageSent:(id)sent
 {
-  v3 = a3;
+  sentCopy = sent;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __52__AFSiriTask__invalidateConnectionAfterMessageSent___block_invoke;
   v5[3] = &unk_1E73497C8;
-  v6 = v3;
-  v4 = v3;
+  v6 = sentCopy;
+  v4 = sentCopy;
   [v4 addBarrierBlock:v5];
 }
 
@@ -420,7 +420,7 @@ void __28__AFSiriTask_failWithError___block_invoke(uint64_t a1, void *a2)
     *buf = 136315394;
     v7 = "[AFSiriTask dealloc]";
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s <AFSiriTask %p>", buf, 0x16u);
   }
 
@@ -430,19 +430,19 @@ void __28__AFSiriTask_failWithError___block_invoke(uint64_t a1, void *a2)
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_initWithRequest:(id)a3 remoteResponseListenerEndpoint:(id)a4 usageResultListenerEndpoint:(id)a5
+- (id)_initWithRequest:(id)request remoteResponseListenerEndpoint:(id)endpoint usageResultListenerEndpoint:(id)listenerEndpoint
 {
   v22 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  endpointCopy = endpoint;
+  listenerEndpointCopy = listenerEndpoint;
   v12 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v19 = "[AFSiriTask _initWithRequest:remoteResponseListenerEndpoint:usageResultListenerEndpoint:]";
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1912FE000, v12, OS_LOG_TYPE_INFO, "%s <AFSiriTask %p>", buf, 0x16u);
   }
 
@@ -452,9 +452,9 @@ void __28__AFSiriTask_failWithError___block_invoke(uint64_t a1, void *a2)
   p_isa = &v13->super.isa;
   if (v13)
   {
-    objc_storeStrong(&v13->_request, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
+    objc_storeStrong(&v13->_request, request);
+    objc_storeStrong(p_isa + 2, endpoint);
+    objc_storeStrong(p_isa + 3, listenerEndpoint);
   }
 
   v15 = *MEMORY[0x1E69E9840];

@@ -5,8 +5,8 @@
 - (id)detailString;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)alternateButtonPressed:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)suggestedButtonPressed:(id)pressed;
 @end
 
 @implementation COSSettingsContactTransparencyViewController
@@ -14,14 +14,14 @@
 + (BOOL)controllerNeedsToRun
 {
   v2 = UIApp;
-  v3 = [v2 activeWatch];
+  activeWatch = [v2 activeWatch];
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 sf_isChinaRegionCellularDevice];
+  sf_isChinaRegionCellularDevice = [v4 sf_isChinaRegionCellularDevice];
 
-  v6 = [v3 valueForProperty:NRDevicePropertyGreenTeaDevice];
-  v7 = [v6 BOOLValue];
+  v6 = [activeWatch valueForProperty:NRDevicePropertyGreenTeaDevice];
+  bOOLValue = [v6 BOOLValue];
 
-  if ((v5 & 1) != 0 || v7)
+  if ((sf_isChinaRegionCellularDevice & 1) != 0 || bOOLValue)
   {
     v10 = pbb_setupflow_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -31,25 +31,25 @@
       *buf = 138412802;
       v21 = v12;
       v22 = 1024;
-      v23 = v5;
+      v23 = sf_isChinaRegionCellularDevice;
       v24 = 1024;
-      LODWORD(v25) = v7;
+      LODWORD(v25) = bOOLValue;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ ~ Found GT Device (Phone: %{BOOL}d) (Watch: %{BOOL}d)", buf, 0x18u);
     }
 
-    v13 = [v2 isRestoringToKnownDevice];
-    v14 = [v2 bridgeController];
-    v15 = [v14 isTinkerPairing];
+    isRestoringToKnownDevice = [v2 isRestoringToKnownDevice];
+    bridgeController = [v2 bridgeController];
+    isTinkerPairing = [bridgeController isTinkerPairing];
 
-    if (v15)
+    if (isTinkerPairing)
     {
-      v8 = v13 ^ 1;
-      v9 = [NSString stringWithFormat:@"(Tinker Flow) Known Device Backup: %{BOOL}d", v13];
+      v8 = isRestoringToKnownDevice ^ 1;
+      v9 = [NSString stringWithFormat:@"(Tinker Flow) Known Device Backup: %{BOOL}d", isRestoringToKnownDevice];
     }
 
     else
     {
-      if (v13)
+      if (isRestoringToKnownDevice)
       {
         v9 = @"Known Device Backup Restore";
       }
@@ -59,7 +59,7 @@
         v9 = @"New Device Flow";
       }
 
-      v8 = v13 ^ 1;
+      v8 = isRestoringToKnownDevice ^ 1;
     }
   }
 
@@ -156,10 +156,10 @@
   return v6;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v4 = [(COSSettingsContactTransparencyViewController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(COSSettingsContactTransparencyViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (id)alternateButtonTitle
@@ -170,7 +170,7 @@
   return v3;
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
   v4 = [NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/BridgeCommons.framework/NanoSettingsPrivacyProxy.bundle"];
   if (v4)

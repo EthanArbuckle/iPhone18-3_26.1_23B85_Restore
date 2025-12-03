@@ -1,25 +1,25 @@
 @interface CNFavoritesMatchingSyncStore
-- (BOOL)_saveEntries:(id)a3;
-- (CNFavoritesMatchingSyncStore)initWithContactStore:(id)a3;
+- (BOOL)_saveEntries:(id)entries;
+- (CNFavoritesMatchingSyncStore)initWithContactStore:(id)store;
 - (id)_entryRepresentations;
 - (id)_fetchEntries;
 @end
 
 @implementation CNFavoritesMatchingSyncStore
 
-- (CNFavoritesMatchingSyncStore)initWithContactStore:(id)a3
+- (CNFavoritesMatchingSyncStore)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = CNFavoritesMatchingSyncStore;
   v6 = [(CNFavoritesMatchingSyncStore *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
     v8 = +[CNEnvironment currentEnvironment];
-    v9 = [v8 featureFlags];
-    v10 = [v9 isFeatureEnabled:18];
+    featureFlags = [v8 featureFlags];
+    v10 = [featureFlags isFeatureEnabled:18];
 
     if (v10)
     {
@@ -35,17 +35,17 @@
 
 - (id)_fetchEntries
 {
-  v3 = [(CNFavoritesMatchingSyncStore *)self favoritesPersistence];
+  favoritesPersistence = [(CNFavoritesMatchingSyncStore *)self favoritesPersistence];
 
-  if (v3)
+  if (favoritesPersistence)
   {
-    v4 = [(CNFavoritesMatchingSyncStore *)self _entryRepresentations];
+    _entryRepresentations = [(CNFavoritesMatchingSyncStore *)self _entryRepresentations];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10000C35C;
     v7[3] = &unk_100045748;
     v7[4] = self;
-    v5 = [v4 _cn_map:v7];
+    v5 = [_entryRepresentations _cn_map:v7];
   }
 
   else
@@ -58,32 +58,32 @@
 
 - (id)_entryRepresentations
 {
-  v3 = [(CNFavoritesMatchingSyncStore *)self favoritesPersistence];
-  v4 = [v3 entries];
+  favoritesPersistence = [(CNFavoritesMatchingSyncStore *)self favoritesPersistence];
+  entries = [favoritesPersistence entries];
 
-  v5 = [(CNFavoritesMatchingSyncStore *)self logger];
-  v6 = v5;
-  if (v4)
+  logger = [(CNFavoritesMatchingSyncStore *)self logger];
+  v6 = logger;
+  if (entries)
   {
-    [v5 finishedReadingFavoritesForMatching];
+    [logger finishedReadingFavoritesForMatching];
   }
 
   else
   {
-    [v5 failedToReadFavoritesForMatching:0];
+    [logger failedToReadFavoritesForMatching:0];
   }
 
-  return v4;
+  return entries;
 }
 
-- (BOOL)_saveEntries:(id)a3
+- (BOOL)_saveEntries:(id)entries
 {
-  v4 = a3;
-  v5 = [(CNFavoritesMatchingSyncStore *)self favoritesPersistence];
+  entriesCopy = entries;
+  favoritesPersistence = [(CNFavoritesMatchingSyncStore *)self favoritesPersistence];
 
-  if (v5)
+  if (favoritesPersistence)
   {
-    v6 = [v4 _cn_map:&stru_100045768];
+    v6 = [entriesCopy _cn_map:&stru_100045768];
     v7 = v6;
     v8 = &__NSArray0__struct;
     if (v6)
@@ -93,37 +93,37 @@
 
     v9 = v8;
 
-    v10 = [(CNFavoritesMatchingSyncStore *)self favoritesPersistence];
+    favoritesPersistence2 = [(CNFavoritesMatchingSyncStore *)self favoritesPersistence];
     v17 = 0;
-    v11 = [v10 setWithEntries:v9 shouldSync:0 error:&v17];
+    v11 = [favoritesPersistence2 setWithEntries:v9 shouldSync:0 error:&v17];
 
     v12 = v17;
-    v13 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
 
     if (v12)
     {
-      v13 = 0;
+      bOOLValue = 0;
     }
 
-    v14 = [(CNFavoritesMatchingSyncStore *)self logger];
-    v15 = v14;
-    if (v13)
+    logger = [(CNFavoritesMatchingSyncStore *)self logger];
+    v15 = logger;
+    if (bOOLValue)
     {
-      [v14 finishedWritingFavoritesForMatching];
+      [logger finishedWritingFavoritesForMatching];
     }
 
     else
     {
-      [v14 failedToWriteFavoritesForMatching:v12];
+      [logger failedToWriteFavoritesForMatching:v12];
     }
   }
 
   else
   {
-    v13 = 0;
+    bOOLValue = 0;
   }
 
-  return v13;
+  return bOOLValue;
 }
 
 @end

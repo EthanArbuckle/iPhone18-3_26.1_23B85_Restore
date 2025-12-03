@@ -1,21 +1,21 @@
 @interface CNCoreRecentsSaveRequest
 - (id)deletedRecentContacts;
-- (void)deleteRecentContact:(id)a3;
-- (void)deleteRecentContacts:(id)a3;
+- (void)deleteRecentContact:(id)contact;
+- (void)deleteRecentContacts:(id)contacts;
 @end
 
 @implementation CNCoreRecentsSaveRequest
 
-- (void)deleteRecentContact:(id)a3
+- (void)deleteRecentContact:(id)contact
 {
-  v10 = a3;
-  v4 = [v10 coreRecentsDomain];
-  if (v4)
+  contactCopy = contact;
+  coreRecentsDomain = [contactCopy coreRecentsDomain];
+  if (coreRecentsDomain)
   {
-    v5 = v4;
-    v6 = [v10 coreRecentsIdentifier];
+    v5 = coreRecentsDomain;
+    coreRecentsIdentifier = [contactCopy coreRecentsIdentifier];
 
-    if (v6)
+    if (coreRecentsIdentifier)
     {
       mutableDeletedRecentContacts = self->_mutableDeletedRecentContacts;
       if (!mutableDeletedRecentContacts)
@@ -27,19 +27,19 @@
         mutableDeletedRecentContacts = self->_mutableDeletedRecentContacts;
       }
 
-      [(NSMutableSet *)mutableDeletedRecentContacts addObject:v10];
+      [(NSMutableSet *)mutableDeletedRecentContacts addObject:contactCopy];
     }
   }
 }
 
-- (void)deleteRecentContacts:(id)a3
+- (void)deleteRecentContacts:(id)contacts
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __49__CNCoreRecentsSaveRequest_deleteRecentContacts___block_invoke;
   v3[3] = &unk_1E7413820;
   v3[4] = self;
-  [a3 _cn_each:v3];
+  [contacts _cn_each:v3];
 }
 
 - (id)deletedRecentContacts

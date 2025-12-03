@@ -1,12 +1,12 @@
 @interface SKUISpacePageComponent
-- (SKUISpacePageComponent)initWithCustomPageContext:(id)a3;
+- (SKUISpacePageComponent)initWithCustomPageContext:(id)context;
 @end
 
 @implementation SKUISpacePageComponent
 
-- (SKUISpacePageComponent)initWithCustomPageContext:(id)a3
+- (SKUISpacePageComponent)initWithCustomPageContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISpacePageComponent initWithCustomPageContext:];
@@ -14,11 +14,11 @@
 
   v12.receiver = self;
   v12.super_class = SKUISpacePageComponent;
-  v5 = [(SKUIPageComponent *)&v12 initWithCustomPageContext:v4];
+  v5 = [(SKUIPageComponent *)&v12 initWithCustomPageContext:contextCopy];
   if (v5)
   {
-    v6 = [v4 componentDictionary];
-    v7 = [v6 objectForKey:@"size"];
+    componentDictionary = [contextCopy componentDictionary];
+    v7 = [componentDictionary objectForKey:@"size"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

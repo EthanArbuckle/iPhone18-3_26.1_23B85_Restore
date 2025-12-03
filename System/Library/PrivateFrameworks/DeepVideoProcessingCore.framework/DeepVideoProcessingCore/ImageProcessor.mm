@@ -1,20 +1,20 @@
 @interface ImageProcessor
-- (BOOL)shouldCropOutputFrame:(__CVBuffer *)a3;
-- (BOOL)shouldScaleBuffer:(__CVBuffer *)a3;
-- (ImageProcessor)initWithUsage:(int64_t)a3 normalizationMode:(int64_t)a4;
-- (unsigned)rgbaPixelFormatForBuffer:(__CVBuffer *)a3 useScaler:(BOOL)a4;
+- (BOOL)shouldCropOutputFrame:(__CVBuffer *)frame;
+- (BOOL)shouldScaleBuffer:(__CVBuffer *)buffer;
+- (ImageProcessor)initWithUsage:(int64_t)usage normalizationMode:(int64_t)mode;
+- (unsigned)rgbaPixelFormatForBuffer:(__CVBuffer *)buffer useScaler:(BOOL)scaler;
 - (void)allocateNormalizedBuffers;
-- (void)allocteRGBABuffersForBuffer:(__CVBuffer *)a3;
+- (void)allocteRGBABuffersForBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
-- (void)postProcessNormalizedFrame:(__CVBuffer *)a3 output:(__CVBuffer *)a4 timeScale:(float)a5 waitForCompletion:(BOOL)a6;
-- (void)preProcessFirstInput:(__CVBuffer *)a3 secondInput:(__CVBuffer *)a4 waitForCompletion:(BOOL)a5;
+- (void)postProcessNormalizedFrame:(__CVBuffer *)frame output:(__CVBuffer *)output timeScale:(float)scale waitForCompletion:(BOOL)completion;
+- (void)preProcessFirstInput:(__CVBuffer *)input secondInput:(__CVBuffer *)secondInput waitForCompletion:(BOOL)completion;
 - (void)releaseNormalizedBuffers;
-- (void)storeColorProperties:(__CVBuffer *)a3;
+- (void)storeColorProperties:(__CVBuffer *)properties;
 @end
 
 @implementation ImageProcessor
 
-- (ImageProcessor)initWithUsage:(int64_t)a3 normalizationMode:(int64_t)a4
+- (ImageProcessor)initWithUsage:(int64_t)usage normalizationMode:(int64_t)mode
 {
   v13.receiver = self;
   v13.super_class = ImageProcessor;
@@ -22,10 +22,10 @@
   v7 = v6;
   if (v6)
   {
-    v6->_usage = a3;
+    v6->_usage = usage;
     v6->_inputRotation = 0;
-    getInputFrameSizeForUsage(a3, &v6->_width, &v6->_height);
-    v8 = [[OFNormalization alloc] initWithMode:a4];
+    getInputFrameSizeForUsage(usage, &v6->_width, &v6->_height);
+    v8 = [[OFNormalization alloc] initWithMode:mode];
     normalization = v7->_normalization;
     v7->_normalization = v8;
 
@@ -86,12 +86,12 @@
   self->_normalizedSecond = 0;
 }
 
-- (void)allocteRGBABuffersForBuffer:(__CVBuffer *)a3
+- (void)allocteRGBABuffersForBuffer:(__CVBuffer *)buffer
 {
-  self->_rgbaPixelFormat = [(ImageProcessor *)self rgbaPixelFormatForBuffer:a3 useScaler:1];
-  Width = CVPixelBufferGetWidth(a3);
+  self->_rgbaPixelFormat = [(ImageProcessor *)self rgbaPixelFormatForBuffer:buffer useScaler:1];
+  Width = CVPixelBufferGetWidth(buffer);
   v8 = Width;
-  Height = CVPixelBufferGetHeight(a3);
+  Height = CVPixelBufferGetHeight(buffer);
   v7 = Height;
   if (self->_inputScaling)
   {
@@ -119,13 +119,13 @@
   self->_rgbaBuffersAllocated = 1;
 }
 
-- (BOOL)shouldScaleBuffer:(__CVBuffer *)a3
+- (BOOL)shouldScaleBuffer:(__CVBuffer *)buffer
 {
-  Width = CVPixelBufferGetWidth(a3);
+  Width = CVPixelBufferGetWidth(buffer);
   v9 = Width;
-  Height = CVPixelBufferGetHeight(a3);
+  Height = CVPixelBufferGetHeight(buffer);
   v8 = Height;
-  if (CVPixelBufferGetPixelFormatType(a3) == 1278226536)
+  if (CVPixelBufferGetPixelFormatType(buffer) == 1278226536)
   {
     Height /= 3uLL;
     v8 = Height;
@@ -140,39 +140,39 @@
   return self->_width < Width || self->_height < v8;
 }
 
-- (void)preProcessFirstInput:(__CVBuffer *)a3 secondInput:(__CVBuffer *)a4 waitForCompletion:(BOOL)a5
+- (void)preProcessFirstInput:(__CVBuffer *)input secondInput:(__CVBuffer *)secondInput waitForCompletion:(BOOL)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   kdebug_trace();
-  if (!a3)
+  if (!input)
   {
     *&self->_normalizedFirst = vextq_s8(*&self->_normalizedFirst, *&self->_normalizedFirst, 8uLL);
   }
 
-  [(ImageProcessor *)self storeColorProperties:a4];
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+  [(ImageProcessor *)self storeColorProperties:secondInput];
+  PixelFormatType = CVPixelBufferGetPixelFormatType(secondInput);
   v10 = 0;
   if (PixelFormatType != 1882468912 && PixelFormatType != 1885745712)
   {
-    v10 = isYUV420(a4);
+    v10 = isYUV420(secondInput);
   }
 
-  self->_isYUV = isBufferYUV(a4);
-  v11 = [(ImageProcessor *)self shouldScaleBuffer:a4];
+  self->_isYUV = isBufferYUV(secondInput);
+  v11 = [(ImageProcessor *)self shouldScaleBuffer:secondInput];
   self->_inputScaling = v11;
   if (!self->_inputRotation && !v11 && (v10 || !self->_isYUV))
   {
     self->_useGPUOnlyForPreProcessing = 1;
-    self->_rgbaFirst = a3;
-    self->_rgbaSecond = a4;
-    self->_rgbaPixelFormat = [(ImageProcessor *)self rgbaPixelFormatForBuffer:a4 useScaler:0];
+    self->_rgbaFirst = input;
+    self->_rgbaSecond = secondInput;
+    self->_rgbaPixelFormat = [(ImageProcessor *)self rgbaPixelFormatForBuffer:secondInput useScaler:0];
     goto LABEL_16;
   }
 
   if (!self->_rgbaPixelFormat)
   {
-    [(ImageProcessor *)self allocteRGBABuffersForBuffer:a4];
-    if (a3)
+    [(ImageProcessor *)self allocteRGBABuffersForBuffer:secondInput];
+    if (input)
     {
       goto LABEL_12;
     }
@@ -184,19 +184,19 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!a3)
+  if (!input)
   {
     goto LABEL_14;
   }
 
 LABEL_12:
-  [(VEScaler *)self->_scaler downScaleFrameSource:a3 destination:self->_rgbaFirst rotate:self->_inputRotation waitForCompletion:v5];
+  [(VEScaler *)self->_scaler downScaleFrameSource:input destination:self->_rgbaFirst rotate:self->_inputRotation waitForCompletion:completionCopy];
   rgbaSecond = self->_rgbaSecond;
 LABEL_15:
-  [(VEScaler *)self->_scaler downScaleFrameSource:a4 destination:rgbaSecond rotate:self->_inputRotation waitForCompletion:v5];
+  [(VEScaler *)self->_scaler downScaleFrameSource:secondInput destination:rgbaSecond rotate:self->_inputRotation waitForCompletion:completionCopy];
 LABEL_16:
   normalization = self->_normalization;
-  if (a3)
+  if (input)
   {
     rgbaFirst = self->_rgbaFirst;
     normalizedFirst = self->_normalizedFirst;
@@ -255,15 +255,15 @@ uint64_t __69__ImageProcessor_preProcessFirstInput_secondInput_waitForCompletion
   return kdebug_trace();
 }
 
-- (void)storeColorProperties:(__CVBuffer *)a3
+- (void)storeColorProperties:(__CVBuffer *)properties
 {
   v17[3] = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CC4C00];
-  v6 = CMGetAttachment(a3, *MEMORY[0x277CC4C00], 0);
+  v6 = CMGetAttachment(properties, *MEMORY[0x277CC4C00], 0);
   v7 = *MEMORY[0x277CC4CC0];
-  v8 = CMGetAttachment(a3, *MEMORY[0x277CC4CC0], 0);
+  v8 = CMGetAttachment(properties, *MEMORY[0x277CC4CC0], 0);
   v9 = *MEMORY[0x277CC4D10];
-  v10 = CMGetAttachment(a3, *MEMORY[0x277CC4D10], 0);
+  v10 = CMGetAttachment(properties, *MEMORY[0x277CC4D10], 0);
   if (v6)
   {
     v11 = v8 == 0;
@@ -294,11 +294,11 @@ uint64_t __69__ImageProcessor_preProcessFirstInput_secondInput_waitForCompletion
   }
 }
 
-- (BOOL)shouldCropOutputFrame:(__CVBuffer *)a3
+- (BOOL)shouldCropOutputFrame:(__CVBuffer *)frame
 {
-  Width = CVPixelBufferGetWidth(a3);
+  Width = CVPixelBufferGetWidth(frame);
   v8 = Width;
-  Height = CVPixelBufferGetHeight(a3);
+  Height = CVPixelBufferGetHeight(frame);
   if (Width < Height)
   {
     swapWidthAndHeight(&v8, &Height);
@@ -308,9 +308,9 @@ uint64_t __69__ImageProcessor_preProcessFirstInput_secondInput_waitForCompletion
   return Width < self->_width || Height < self->_height;
 }
 
-- (void)postProcessNormalizedFrame:(__CVBuffer *)a3 output:(__CVBuffer *)a4 timeScale:(float)a5 waitForCompletion:(BOOL)a6
+- (void)postProcessNormalizedFrame:(__CVBuffer *)frame output:(__CVBuffer *)output timeScale:(float)scale waitForCompletion:(BOOL)completion
 {
-  v6 = a6;
+  completionCopy = completion;
   if (self->_inputRotation)
   {
     v11 = 0;
@@ -324,11 +324,11 @@ uint64_t __69__ImageProcessor_preProcessFirstInput_secondInput_waitForCompletion
   colorProperties = self->_colorProperties;
   if (colorProperties)
   {
-    CMSetAttachments(a4, colorProperties, 1u);
+    CMSetAttachments(output, colorProperties, 1u);
   }
 
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
+  Width = CVPixelBufferGetWidth(output);
+  Height = CVPixelBufferGetHeight(output);
   v16 = ((Width | Height) & 1) == 0;
   if ((Width | Height))
   {
@@ -347,7 +347,7 @@ uint64_t __69__ImageProcessor_preProcessFirstInput_secondInput_waitForCompletion
     p_useGPUOnlyForPreProcessing = &self->_useGPUOnlyForPreProcessing;
     if (self->_useGPUOnlyForPreProcessing)
     {
-      pixelBufferOut = a4;
+      pixelBufferOut = output;
       goto LABEL_17;
     }
   }
@@ -367,7 +367,7 @@ uint64_t __69__ImageProcessor_preProcessFirstInput_secondInput_waitForCompletion
   }
 
 LABEL_17:
-  if (v11 && v6)
+  if (v11 && completionCopy)
   {
     v20 = 0;
   }
@@ -377,34 +377,34 @@ LABEL_17:
     v20 = &__block_literal_global_1;
   }
 
-  *&v15 = a5;
-  [(OFNormalization *)self->_normalization denormalizeFrame:a3 destination:pixelBufferOut params:&self->_normalizationParams timeScale:v20 callback:v15];
+  *&v15 = scale;
+  [(OFNormalization *)self->_normalization denormalizeFrame:frame destination:pixelBufferOut params:&self->_normalizationParams timeScale:v20 callback:v15];
   if (!v16 || !self->_useGPUOnlyForPreProcessing)
   {
-    [(VEScaler *)self->_scaler upScaleAndCropFrameSource:pixelBufferOut destination:a4 upscale:self->_inputScaling rotate:getReverseRotation(self->_inputRotation) waitForCompletion:v6];
+    [(VEScaler *)self->_scaler upScaleAndCropFrameSource:pixelBufferOut destination:output upscale:self->_inputScaling rotate:getReverseRotation(self->_inputRotation) waitForCompletion:completionCopy];
     CVPixelBufferRelease(pixelBufferOut);
   }
 }
 
-- (unsigned)rgbaPixelFormatForBuffer:(__CVBuffer *)a3 useScaler:(BOOL)a4
+- (unsigned)rgbaPixelFormatForBuffer:(__CVBuffer *)buffer useScaler:(BOOL)scaler
 {
-  v4 = a4;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  scalerCopy = scaler;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v7 = CVPixelFormatDescriptionCreateWithPixelFormatType(*MEMORY[0x277CBECE8], PixelFormatType);
   v8 = [(__CFDictionary *)v7 objectForKeyedSubscript:*MEMORY[0x277CC4ED8]];
-  v9 = [v8 intValue];
+  intValue = [v8 intValue];
 
   v10 = [(__CFDictionary *)v7 objectForKeyedSubscript:*MEMORY[0x277CC4F38]];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
-    v12 = CVPixelBufferGetPixelFormatType(a3);
+    v12 = CVPixelBufferGetPixelFormatType(buffer);
   }
 
   else
   {
-    if (v4)
+    if (scalerCopy)
     {
       v13 = 1999843442;
     }
@@ -414,7 +414,7 @@ LABEL_17:
       v13 = 1815162994;
     }
 
-    if (v9 == 10)
+    if (intValue == 10)
     {
       v14 = v13;
     }
@@ -424,7 +424,7 @@ LABEL_17:
       v14 = 1380411457;
     }
 
-    if (v9 == 8)
+    if (intValue == 8)
     {
       v12 = 1111970369;
     }

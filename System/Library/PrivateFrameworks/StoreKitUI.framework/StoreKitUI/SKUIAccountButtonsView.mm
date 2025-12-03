@@ -1,23 +1,23 @@
 @interface SKUIAccountButtonsView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIAccountButtonsView)initWithClientContext:(id)a3;
-- (id)_newLinkButtonWithTitle:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIAccountButtonsView)initWithClientContext:(id)context;
+- (id)_newLinkButtonWithTitle:(id)title;
 - (void)_layoutOneRow;
 - (void)_layoutTwoRows;
 - (void)_reloadFonts;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setAccountCredits:(id)a3;
-- (void)setECommerceLinkTitle:(id)a3;
-- (void)setGiftingHidden:(BOOL)a3;
+- (void)setAccountCredits:(id)credits;
+- (void)setECommerceLinkTitle:(id)title;
+- (void)setGiftingHidden:(BOOL)hidden;
 - (void)tintColorDidChange;
 @end
 
 @implementation SKUIAccountButtonsView
 
-- (SKUIAccountButtonsView)initWithClientContext:(id)a3
+- (SKUIAccountButtonsView)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIAccountButtonsView initWithClientContext:];
@@ -29,7 +29,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
     v8 = objc_alloc_init(SKUIRoundedRectButton);
     appleIDButton = v7->_appleIDButton;
     v7->_appleIDButton = v8;
@@ -40,9 +40,9 @@
     v7->_redeemButton = &v10->super;
 
     v12 = v7->_redeemButton;
-    if (v5)
+    if (contextCopy)
     {
-      [v5 localizedStringForKey:@"REDEEM_BUTTON" inTable:@"Redeem"];
+      [contextCopy localizedStringForKey:@"REDEEM_BUTTON" inTable:@"Redeem"];
     }
 
     else
@@ -58,9 +58,9 @@
     v7->_giftingButton = v14;
 
     v16 = v7->_giftingButton;
-    if (v5)
+    if (contextCopy)
     {
-      [v5 localizedStringForKey:@"GIFT_BUTTON"];
+      [contextCopy localizedStringForKey:@"GIFT_BUTTON"];
     }
 
     else
@@ -78,9 +78,9 @@
 
     v7->_ecommerceVisibilityHidden = 1;
     [(SKUIAccountButtonsView *)v7 addSubview:v7->_ecommerceButton];
-    if (v5)
+    if (contextCopy)
     {
-      [v5 localizedStringForKey:@"TERMS_LINK"];
+      [contextCopy localizedStringForKey:@"TERMS_LINK"];
     }
 
     else
@@ -94,8 +94,8 @@
 
     [(SKUIAccountButtonsView *)v7 addSubview:v7->_termsAndConditionsButton];
     [(SKUIAccountButtonsView *)v7 _reloadFonts];
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v23 addObserver:v7 selector:sel__reloadFonts name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__reloadFonts name:*MEMORY[0x277D76810] object:0];
   }
 
   return v7;
@@ -103,35 +103,35 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76810] object:0];
 
   v4.receiver = self;
   v4.super_class = SKUIAccountButtonsView;
   [(SKUIAccountButtonsView *)&v4 dealloc];
 }
 
-- (void)setECommerceLinkTitle:(id)a3
+- (void)setECommerceLinkTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   v4 = [(SKUILinkButton *)self->_ecommerceButton titleForState:0];
-  if (v4 != v5 && ([v5 isEqualToString:v4] & 1) == 0)
+  if (v4 != titleCopy && ([titleCopy isEqualToString:v4] & 1) == 0)
   {
-    self->_ecommerceVisibilityHidden = v5 == 0;
+    self->_ecommerceVisibilityHidden = titleCopy == 0;
     [SKUILinkButton setTitle:"setTitle:forState:" forState:?];
     [(SKUIAccountButtonsView *)self setNeedsLayout];
   }
 }
 
-- (void)setAccountCredits:(id)a3
+- (void)setAccountCredits:(id)credits
 {
-  v16 = a3;
-  v4 = [(UILabel *)self->_accountCreditsLabel text];
+  creditsCopy = credits;
+  text = [(UILabel *)self->_accountCreditsLabel text];
 
-  v5 = v16;
-  if (v4 != v16)
+  v5 = creditsCopy;
+  if (text != creditsCopy)
   {
-    if ([v16 length])
+    if ([creditsCopy length])
     {
       if (!self->_accountCreditsLabel)
       {
@@ -140,8 +140,8 @@
         self->_accountCreditsLabel = v6;
 
         v8 = self->_accountCreditsLabel;
-        v9 = [MEMORY[0x277D75348] clearColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [(UILabel *)v8 setBackgroundColor:clearColor];
 
         v10 = self->_accountCreditsLabel;
         v11 = [MEMORY[0x277D74300] systemFontOfSize:11.0];
@@ -164,8 +164,8 @@
       }
       v13 = ;
       v14 = self->_accountCreditsLabel;
-      v15 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v13 validFormatSpecifiers:@"%@" error:0, v16];
-      [(UILabel *)v14 setText:v15];
+      creditsCopy = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v13 validFormatSpecifiers:@"%@" error:0, creditsCopy];
+      [(UILabel *)v14 setText:creditsCopy];
 
       [(UILabel *)self->_accountCreditsLabel sizeToFit];
       [(SKUIRoundedRectButton *)self->_appleIDButton setNeedsLayout];
@@ -178,15 +178,15 @@
       self->_accountCreditsLabel = 0;
     }
 
-    v5 = v16;
+    v5 = creditsCopy;
   }
 }
 
-- (void)setGiftingHidden:(BOOL)a3
+- (void)setGiftingHidden:(BOOL)hidden
 {
-  if (self->_giftingVisibilityHidden != a3)
+  if (self->_giftingVisibilityHidden != hidden)
   {
-    self->_giftingVisibilityHidden = a3;
+    self->_giftingVisibilityHidden = hidden;
     [(SKUIAccountButtonsView *)self setNeedsLayout];
   }
 }
@@ -207,21 +207,21 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SKUIAccountButtonsView *)self isEcommerceHidden];
-  v7 = !v6;
-  v8 = [(UIButton *)self->_termsAndConditionsButton isHidden];
-  v9 = v8;
+  height = fits.height;
+  width = fits.width;
+  isEcommerceHidden = [(SKUIAccountButtonsView *)self isEcommerceHidden];
+  v7 = !isEcommerceHidden;
+  isHidden = [(UIButton *)self->_termsAndConditionsButton isHidden];
+  v9 = isHidden;
   v10 = 1;
-  if (!v6)
+  if (!isEcommerceHidden)
   {
     v10 = 2;
   }
 
-  if (!v8)
+  if (!isHidden)
   {
     v7 = v10;
   }
@@ -245,7 +245,7 @@ LABEL_7:
       v12 = v12 + v13 + 10.0;
     }
 
-    if (v9 & v6)
+    if (v9 & isEcommerceHidden)
     {
       v14 = 44.0;
     }
@@ -262,7 +262,7 @@ LABEL_7:
   [(SKUIRoundedRectButton *)self->_appleIDButton sizeThatFits:width, height];
   v16 = v15 + 0.0;
   v17 = v15 + 0.0 + 64.0;
-  if ((v9 & v6) != 0)
+  if ((v9 & isEcommerceHidden) != 0)
   {
     v17 = v16;
   }
@@ -276,9 +276,9 @@ LABEL_17:
 
 - (void)tintColorDidChange
 {
-  v3 = [(SKUIAccountButtonsView *)self tintColor];
-  [(SKUILinkButton *)self->_ecommerceButton setTitleColor:v3 forState:0];
-  [(UIButton *)self->_termsAndConditionsButton setTitleColor:v3 forState:0];
+  tintColor = [(SKUIAccountButtonsView *)self tintColor];
+  [(SKUILinkButton *)self->_ecommerceButton setTitleColor:tintColor forState:0];
+  [(UIButton *)self->_termsAndConditionsButton setTitleColor:tintColor forState:0];
   v4.receiver = self;
   v4.super_class = SKUIAccountButtonsView;
   [(SKUIAccountButtonsView *)&v4 tintColorDidChange];
@@ -395,9 +395,9 @@ LABEL_17:
   v4 = v3;
   v6 = v5;
   v7 = v3 + -30.0;
-  v8 = [(SKUIAccountButtonsView *)self isGiftingHidden];
+  isGiftingHidden = [(SKUIAccountButtonsView *)self isGiftingHidden];
   v9 = floor((v7 + -10.0) * 0.5);
-  if (v8)
+  if (isGiftingHidden)
   {
     v10 = v7;
   }
@@ -435,9 +435,9 @@ LABEL_17:
   v29.size.width = v7;
   v29.size.height = v16;
   MaxY = CGRectGetMaxY(v29);
-  v18 = [(UIButton *)self->_termsAndConditionsButton isHidden];
+  isHidden = [(UIButton *)self->_termsAndConditionsButton isHidden];
   v19 = MEMORY[0x277CBF390];
-  if ((v18 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
     [(UIButton *)self->_termsAndConditionsButton frame];
     [(UIButton *)self->_termsAndConditionsButton sizeThatFits:*(v19 + 16), *(v19 + 24)];
@@ -462,19 +462,19 @@ LABEL_17:
   }
 
   ecommerceButton = self->_ecommerceButton;
-  v26 = [(SKUIAccountButtonsView *)self isEcommerceHidden];
+  isEcommerceHidden = [(SKUIAccountButtonsView *)self isEcommerceHidden];
 
-  [(SKUILinkButton *)ecommerceButton setHidden:v26];
+  [(SKUILinkButton *)ecommerceButton setHidden:isEcommerceHidden];
 }
 
-- (id)_newLinkButtonWithTitle:(id)a3
+- (id)_newLinkButtonWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = [[SKUILinkButton alloc] initWithArrowStyle:0];
-  [(SKUILinkButton *)v5 setTitle:v4 forState:0];
+  [(SKUILinkButton *)v5 setTitle:titleCopy forState:0];
 
-  v6 = [(SKUIAccountButtonsView *)self tintColor];
-  [(SKUILinkButton *)v5 setTitleColor:v6 forState:0];
+  tintColor = [(SKUIAccountButtonsView *)self tintColor];
+  [(SKUILinkButton *)v5 setTitleColor:tintColor forState:0];
 
   return v5;
 }
@@ -482,11 +482,11 @@ LABEL_17:
 - (void)_reloadFonts
 {
   v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76938]];
-  v3 = [(SKUILinkButton *)self->_ecommerceButton titleLabel];
-  [v3 setFont:v5];
+  titleLabel = [(SKUILinkButton *)self->_ecommerceButton titleLabel];
+  [titleLabel setFont:v5];
 
-  v4 = [(UIButton *)self->_termsAndConditionsButton titleLabel];
-  [v4 setFont:v5];
+  titleLabel2 = [(UIButton *)self->_termsAndConditionsButton titleLabel];
+  [titleLabel2 setFont:v5];
 }
 
 - (void)initWithClientContext:.cold.1()

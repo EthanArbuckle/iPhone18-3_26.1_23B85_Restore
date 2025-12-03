@@ -1,13 +1,13 @@
 @interface BKBookmarkThumbnailDirectory
 - (id)_noBookmarksView;
 - (id)fetchedResultsController;
-- (id)locationAtIndex:(unint64_t)a3;
-- (int64_t)leftPageNumberAtIndex:(unint64_t)a3;
-- (int64_t)numberOfCellsInGridView:(id)a3;
-- (int64_t)pageNumberForCellIndex:(unint64_t)a3;
-- (int64_t)rightPageNumberAtIndex:(unint64_t)a3;
-- (unint64_t)indexForLocation:(id)a3;
-- (void)configureCell:(id)a3 atIndex:(unint64_t)a4;
+- (id)locationAtIndex:(unint64_t)index;
+- (int64_t)leftPageNumberAtIndex:(unint64_t)index;
+- (int64_t)numberOfCellsInGridView:(id)view;
+- (int64_t)pageNumberForCellIndex:(unint64_t)index;
+- (int64_t)rightPageNumberAtIndex:(unint64_t)index;
+- (unint64_t)indexForLocation:(id)location;
+- (void)configureCell:(id)cell atIndex:(unint64_t)index;
 - (void)dealloc;
 - (void)releaseViews;
 - (void)reloadData;
@@ -36,40 +36,40 @@
   [(BKThumbnailDirectory *)&v4 dealloc];
 }
 
-- (id)locationAtIndex:(unint64_t)a3
+- (id)locationAtIndex:(unint64_t)index
 {
-  v4 = [(BKBookmarkThumbnailDirectory *)self fetchedResultsController];
-  v5 = [v4 fetchedObjects];
-  v6 = [v5 objectAtIndex:a3];
+  fetchedResultsController = [(BKBookmarkThumbnailDirectory *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
+  v6 = [fetchedObjects objectAtIndex:index];
 
-  v7 = [v6 location];
+  location = [v6 location];
 
-  return v7;
+  return location;
 }
 
-- (unint64_t)indexForLocation:(id)a3
+- (unint64_t)indexForLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(BKBookmarkThumbnailDirectory *)self fetchedResultsController];
-  v6 = [v5 fetchedObjects];
+  locationCopy = location;
+  fetchedResultsController = [(BKBookmarkThumbnailDirectory *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
 
-  v7 = [v6 valueForKey:@"location"];
-  v8 = [v7 indexOfObject:v4];
+  v7 = [fetchedObjects valueForKey:@"location"];
+  v8 = [v7 indexOfObject:locationCopy];
 
   return v8;
 }
 
-- (int64_t)pageNumberForCellIndex:(unint64_t)a3
+- (int64_t)pageNumberForCellIndex:(unint64_t)index
 {
-  v4 = [(BKBookmarkThumbnailDirectory *)self locationAtIndex:a3];
+  v4 = [(BKBookmarkThumbnailDirectory *)self locationAtIndex:index];
   v5 = [(BKDirectoryContent *)self pageNumberForLocation:v4];
 
   return v5;
 }
 
-- (int64_t)leftPageNumberAtIndex:(unint64_t)a3
+- (int64_t)leftPageNumberAtIndex:(unint64_t)index
 {
-  v4 = [(BKBookmarkThumbnailDirectory *)self pageNumberForCellIndex:a3];
+  v4 = [(BKBookmarkThumbnailDirectory *)self pageNumberForCellIndex:index];
   if ([(BKViewController *)self layoutDirection])
   {
     if ((v4 & 1) == 0 && v4 > 1)
@@ -101,9 +101,9 @@
   }
 }
 
-- (int64_t)rightPageNumberAtIndex:(unint64_t)a3
+- (int64_t)rightPageNumberAtIndex:(unint64_t)index
 {
-  v4 = [(BKBookmarkThumbnailDirectory *)self pageNumberForCellIndex:a3];
+  v4 = [(BKBookmarkThumbnailDirectory *)self pageNumberForCellIndex:index];
   if ([(BKViewController *)self layoutDirection])
   {
     if (v4 - ((v4 != 0x7FFFFFFFFFFFFFFFLL) & v4) >= 2)
@@ -138,22 +138,22 @@
   }
 }
 
-- (void)configureCell:(id)a3 atIndex:(unint64_t)a4
+- (void)configureCell:(id)cell atIndex:(unint64_t)index
 {
-  v6 = a3;
+  cellCopy = cell;
   v12.receiver = self;
   v12.super_class = BKBookmarkThumbnailDirectory;
-  [(BKThumbnailDirectory *)&v12 configureCell:v6 atIndex:a4];
-  [v6 setHasRibbon:1];
-  v7 = [(BKDirectoryContent *)self directoryDelegate];
+  [(BKThumbnailDirectory *)&v12 configureCell:cellCopy atIndex:index];
+  [cellCopy setHasRibbon:1];
+  directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(BKDirectoryContent *)self directoryDelegate];
-    v10 = [v9 thumbnailDirectoryWantsPageNumber:self];
-    v11 = [v6 pageView];
-    [v11 setShowsPageNumber:v10];
+    directoryDelegate2 = [(BKDirectoryContent *)self directoryDelegate];
+    v10 = [directoryDelegate2 thumbnailDirectoryWantsPageNumber:self];
+    pageView = [cellCopy pageView];
+    [pageView setShowsPageNumber:v10];
   }
 }
 
@@ -162,27 +162,27 @@
   fetchedResultsController = self->_fetchedResultsController;
   if (!fetchedResultsController)
   {
-    v4 = [(BKContentViewController *)self book];
+    book = [(BKContentViewController *)self book];
     v5 = objc_alloc_init(NSFetchRequest);
-    v6 = [v4 databaseKey];
-    v7 = [AEAnnotation pageBookmarksPredicate:v6];
+    databaseKey = [book databaseKey];
+    v7 = [AEAnnotation pageBookmarksPredicate:databaseKey];
     [v5 setPredicate:v7];
 
-    v8 = [v4 annotationProvider];
-    v9 = [v8 uiManagedObjectContext];
+    annotationProvider = [book annotationProvider];
+    uiManagedObjectContext = [annotationProvider uiManagedObjectContext];
 
-    v10 = [NSEntityDescription entityForName:@"AEAnnotation" inManagedObjectContext:v9];
+    v10 = [NSEntityDescription entityForName:@"AEAnnotation" inManagedObjectContext:uiManagedObjectContext];
     [v5 setEntity:v10];
 
     v11 = [[NSSortDescriptor alloc] initWithKey:@"plLocationRangeStart" ascending:1];
     v12 = [[NSSortDescriptor alloc] initWithKey:@"annotationCreationDate" ascending:1];
     v13 = [[NSArray alloc] initWithObjects:{v11, v12, 0}];
     [v5 setSortDescriptors:v13];
-    v23 = v4;
-    v14 = [v4 databaseKey];
-    v15 = [NSString stringWithFormat:@"%@-bm", v14];
+    v23 = book;
+    databaseKey2 = [book databaseKey];
+    v15 = [NSString stringWithFormat:@"%@-bm", databaseKey2];
 
-    v16 = [[IMUbiquitousFetchedResultsController alloc] initWithFetchRequest:v5 managedObjectContext:v9 sectionNameKeyPath:0 cacheName:v15];
+    v16 = [[IMUbiquitousFetchedResultsController alloc] initWithFetchRequest:v5 managedObjectContext:uiManagedObjectContext sectionNameKeyPath:0 cacheName:v15];
     v17 = self->_fetchedResultsController;
     self->_fetchedResultsController = v16;
 
@@ -206,11 +206,11 @@
   return fetchedResultsController;
 }
 
-- (int64_t)numberOfCellsInGridView:(id)a3
+- (int64_t)numberOfCellsInGridView:(id)view
 {
-  v3 = [(BKBookmarkThumbnailDirectory *)self fetchedResultsController];
-  v4 = [v3 fetchedObjects];
-  v5 = [v4 count];
+  fetchedResultsController = [(BKBookmarkThumbnailDirectory *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
+  v5 = [fetchedObjects count];
 
   return v5;
 }
@@ -236,8 +236,8 @@
     }
 
     v9 = [UIFont systemFontOfSize:v8];
-    v10 = [(BKTOCBookmarksDescription *)self->_noBookmarksView titleLabel];
-    [v10 setFont:v9];
+    titleLabel = [(BKTOCBookmarksDescription *)self->_noBookmarksView titleLabel];
+    [titleLabel setFont:v9];
 
     v11 = isPad();
     v12 = 13.0;
@@ -247,19 +247,19 @@
     }
 
     v13 = [UIFont systemFontOfSize:v12];
-    v14 = [(BKTOCBookmarksDescription *)self->_noBookmarksView descriptionLabel];
-    [v14 setFont:v13];
+    descriptionLabel = [(BKTOCBookmarksDescription *)self->_noBookmarksView descriptionLabel];
+    [descriptionLabel setFont:v13];
 
-    v15 = [(BKTOCBookmarksDescription *)self->_noBookmarksView titleLabel];
+    titleLabel2 = [(BKTOCBookmarksDescription *)self->_noBookmarksView titleLabel];
     v16 = AEBundle();
     v17 = [v16 localizedStringForKey:@"Adding Bookmarks…" value:&stru_1E7188 table:0];
-    [v15 setText:v17];
+    [titleLabel2 setText:v17];
 
     v18 = +[UIColor bc_booksSecondaryLabelColor];
-    [v15 setTextColor:v18];
+    [titleLabel2 setTextColor:v18];
 
-    v19 = [(BKContentViewController *)self book];
-    LODWORD(v17) = [v19 contentType];
+    book = [(BKContentViewController *)self book];
+    LODWORD(v17) = [book contentType];
 
     v20 = AEBundle();
     v21 = v20;
@@ -275,12 +275,12 @@
 
     v23 = [v20 localizedStringForKey:v22 value:&stru_1E7188 table:0];
 
-    v24 = [(BKTOCBookmarksDescription *)self->_noBookmarksView descriptionLabel];
-    [v24 setText:v23];
+    descriptionLabel2 = [(BKTOCBookmarksDescription *)self->_noBookmarksView descriptionLabel];
+    [descriptionLabel2 setText:v23];
     v25 = +[UIColor bc_booksSecondaryLabelColor];
-    [v24 setTextColor:v25];
+    [descriptionLabel2 setTextColor:v25];
 
-    [v24 setNumberOfLines:0];
+    [descriptionLabel2 setNumberOfLines:0];
     noBookmarksView = self->_noBookmarksView;
   }
 
@@ -294,9 +294,9 @@
   [(BKThumbnailDirectory *)&v9 reloadData];
   if ([(BKBookmarkThumbnailDirectory *)self isViewLoaded])
   {
-    v3 = [(BKBookmarkThumbnailDirectory *)self fetchedResultsController];
-    v4 = [v3 fetchedObjects];
-    v5 = [v4 count];
+    fetchedResultsController = [(BKBookmarkThumbnailDirectory *)self fetchedResultsController];
+    fetchedObjects = [fetchedResultsController fetchedObjects];
+    v5 = [fetchedObjects count];
 
     if (v5)
     {
@@ -308,12 +308,12 @@
     else
     {
       noBookmarksView = [(BKBookmarkThumbnailDirectory *)self _noBookmarksView];
-      v7 = [(BKBookmarkThumbnailDirectory *)self view];
-      [v7 bounds];
+      view = [(BKBookmarkThumbnailDirectory *)self view];
+      [view bounds];
       [noBookmarksView setFrame:?];
 
-      v8 = [(BKBookmarkThumbnailDirectory *)self view];
-      [v8 addSubview:noBookmarksView];
+      view2 = [(BKBookmarkThumbnailDirectory *)self view];
+      [view2 addSubview:noBookmarksView];
     }
   }
 }

@@ -1,13 +1,13 @@
 @interface ONOXMLElement
 - (ONOXMLDocument)document;
-- (ONOXMLElement)initWithCoder:(id)a3;
-- (_xmlXPathObject)xmlXPathObjectPtrWithXPath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)firstChildWithCSS:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateElementsWithCSS:(id)a3 usingBlock:(id)a4;
-- (void)forwardInvocation:(id)a3;
+- (ONOXMLElement)initWithCoder:(id)coder;
+- (_xmlXPathObject)xmlXPathObjectPtrWithXPath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)firstChildWithCSS:(id)s;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateElementsWithCSS:(id)s usingBlock:(id)block;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation ONOXMLElement
@@ -19,45 +19,45 @@
   return WeakRetained;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ONOXMLElement *)self tag];
   v6 = NSStringFromSelector("tag");
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 
-  v7 = [(ONOXMLElement *)self attributes];
+  attributes = [(ONOXMLElement *)self attributes];
   v8 = NSStringFromSelector(sel_attributes);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:attributes forKey:v8];
 
-  v9 = [(ONOXMLElement *)self stringValue];
+  stringValue = [(ONOXMLElement *)self stringValue];
   v10 = NSStringFromSelector(sel_stringValue);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:stringValue forKey:v10];
 
-  v12 = [(ONOXMLElement *)self children];
+  children = [(ONOXMLElement *)self children];
   v11 = NSStringFromSelector(sel_children);
-  [v4 encodeObject:v12 forKey:v11];
+  [coderCopy encodeObject:children forKey:v11];
 }
 
-- (ONOXMLElement)initWithCoder:(id)a3
+- (ONOXMLElement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = ONOXMLElement;
   v5 = [(ONOXMLElement *)&v16 init];
   if (v5)
   {
     v6 = NSStringFromSelector("tag");
-    v7 = [v4 decodeObjectForKey:v6];
+    v7 = [coderCopy decodeObjectForKey:v6];
 
     v8 = NSStringFromSelector(sel_attributes);
-    v9 = [v4 decodeObjectForKey:v8];
+    v9 = [coderCopy decodeObjectForKey:v8];
 
     v10 = NSStringFromSelector(sel_stringValue);
-    v11 = [v4 decodeObjectForKey:v10];
+    v11 = [coderCopy decodeObjectForKey:v10];
 
     v12 = NSStringFromSelector(sel_children);
-    v13 = [v4 decodeObjectForKey:v12];
+    v13 = [coderCopy decodeObjectForKey:v12];
 
     v14 = 0;
     if (v7 && v9 && v11 && v13)
@@ -78,57 +78,57 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setXmlNode:{-[ONOXMLElement xmlNode](self, "xmlNode")}];
-  v5 = [(ONOXMLElement *)self document];
-  [v4 setDocument:v5];
+  document = [(ONOXMLElement *)self document];
+  [v4 setDocument:document];
 
   return v4;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v5 = a3;
-  v4 = [(ONOXMLElement *)self stringValue];
-  if (v4)
+  invocationCopy = invocation;
+  stringValue = [(ONOXMLElement *)self stringValue];
+  if (stringValue)
   {
-    [v5 invokeWithTarget:v4];
+    [invocationCopy invokeWithTarget:stringValue];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = [(ONOXMLElement *)self stringValue];
-  v5 = [v4 methodSignatureForSelector:a3];
+  stringValue = [(ONOXMLElement *)self stringValue];
+  v5 = [stringValue methodSignatureForSelector:selector];
 
   return v5;
 }
 
-- (_xmlXPathObject)xmlXPathObjectPtrWithXPath:(id)a3
+- (_xmlXPathObject)xmlXPathObjectPtrWithXPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = xmlXPathNewContext([(ONOXMLElement *)self xmlNode][64]);
   if (v5)
   {
     v6 = v5;
     v5->node = [(ONOXMLElement *)self xmlNode];
-    v7 = [(ONOXMLElement *)self xmlNode];
-    p_parent = &v7->parent;
-    parent = v7->parent;
+    xmlNode = [(ONOXMLElement *)self xmlNode];
+    p_parent = &xmlNode->parent;
+    parent = xmlNode->parent;
     if (parent)
     {
       while (1)
       {
-        nsDef = v7->nsDef;
+        nsDef = xmlNode->nsDef;
         if (nsDef)
         {
           break;
         }
 
 LABEL_14:
-        v7 = parent;
+        xmlNode = parent;
         p_parent = &parent->parent;
         parent = parent->parent;
         if (!parent)
@@ -145,15 +145,15 @@ LABEL_14:
           goto LABEL_11;
         }
 
-        v11 = [(ONOXMLElement *)self document];
-        v12 = [v11 defaultNamespaces];
+        document = [(ONOXMLElement *)self document];
+        defaultNamespaces = [document defaultNamespaces];
 
-        if (v12)
+        if (defaultNamespaces)
         {
           v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:nsDef->href];
-          v14 = [(ONOXMLElement *)self document];
-          v15 = [v14 defaultNamespaces];
-          v16 = [v15 objectForKeyedSubscript:v13];
+          document2 = [(ONOXMLElement *)self document];
+          defaultNamespaces2 = [document2 defaultNamespaces];
+          v16 = [defaultNamespaces2 objectForKeyedSubscript:v13];
 
           if (v16)
           {
@@ -181,7 +181,7 @@ LABEL_12:
     }
 
 LABEL_15:
-    v18 = MEMORY[0x23EF07980]([v4 UTF8String], v6);
+    v18 = MEMORY[0x23EF07980]([pathCopy UTF8String], v6);
     xmlXPathFreeContext(v6);
   }
 
@@ -193,11 +193,11 @@ LABEL_15:
   return v18;
 }
 
-- (id)firstChildWithCSS:(id)a3
+- (id)firstChildWithCSS:(id)s
 {
   v9 = *MEMORY[0x277D85DE8];
   memset(v7, 0, sizeof(v7));
-  v3 = [(ONOXMLElement *)self CSS:a3, 0];
+  v3 = [(ONOXMLElement *)self CSS:s, 0];
   if ([v3 countByEnumeratingWithState:v7 objects:v8 count:16])
   {
     v4 = **(&v7[0] + 1);
@@ -213,11 +213,11 @@ LABEL_15:
   return v4;
 }
 
-- (void)enumerateElementsWithCSS:(id)a3 usingBlock:(id)a4
+- (void)enumerateElementsWithCSS:(id)s usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = ONOXPathFromCSS(a3);
-  [(ONOXMLElement *)self enumerateElementsWithXPath:v7 usingBlock:v6];
+  blockCopy = block;
+  v7 = ONOXPathFromCSS(s);
+  [(ONOXMLElement *)self enumerateElementsWithXPath:v7 usingBlock:blockCopy];
 }
 
 @end

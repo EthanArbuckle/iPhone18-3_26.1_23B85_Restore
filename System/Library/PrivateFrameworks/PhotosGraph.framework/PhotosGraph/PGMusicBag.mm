@@ -1,14 +1,14 @@
 @interface PGMusicBag
 - (PGMusicBag)init;
-- (PGMusicBag)initWithCache:(id)a3;
+- (PGMusicBag)initWithCache:(id)cache;
 @end
 
 @implementation PGMusicBag
 
-- (PGMusicBag)initWithCache:(id)a3
+- (PGMusicBag)initWithCache:(id)cache
 {
-  v4 = a3;
-  v5 = sub_22F1ED5B0(a3);
+  cacheCopy = cache;
+  v5 = sub_22F1ED5B0(cache);
 
   return v5;
 }

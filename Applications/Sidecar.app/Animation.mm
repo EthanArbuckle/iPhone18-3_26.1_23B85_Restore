@@ -1,12 +1,12 @@
 @interface Animation
-- (void)animationEnded:(BOOL)a3;
+- (void)animationEnded:(BOOL)ended;
 @end
 
 @implementation Animation
 
-- (void)animationEnded:(BOOL)a3
+- (void)animationEnded:(BOOL)ended
 {
-  v3 = self;
+  selfCopy = self;
   sub_10000DB40();
 }
 

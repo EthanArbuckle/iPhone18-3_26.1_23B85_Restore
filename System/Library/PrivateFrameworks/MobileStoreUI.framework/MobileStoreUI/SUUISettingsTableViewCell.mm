@@ -1,18 +1,18 @@
 @interface SUUISettingsTableViewCell
-- (SUUISettingsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)displaySettingDescriptionView:(id)a3;
+- (SUUISettingsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)displaySettingDescriptionView:(id)view;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SUUISettingsTableViewCell
 
-- (SUUISettingsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SUUISettingsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = SUUISettingsTableViewCell;
-  result = [(SUUISettingsTableViewCell *)&v5 initWithStyle:a3 reuseIdentifier:a4];
+  result = [(SUUISettingsTableViewCell *)&v5 initWithStyle:style reuseIdentifier:identifier];
   if (result)
   {
     result->_hasDisclosureChevron = 0;
@@ -21,16 +21,16 @@
   return result;
 }
 
-- (void)displaySettingDescriptionView:(id)a3
+- (void)displaySettingDescriptionView:(id)view
 {
-  v4 = a3;
-  self->_hasDisclosureChevron = [(SUUISettingDescriptionView *)v4 hasDisclosureChevron];
+  viewCopy = view;
+  self->_hasDisclosureChevron = [(SUUISettingDescriptionView *)viewCopy hasDisclosureChevron];
   settingDescriptionView = self->_settingDescriptionView;
-  self->_settingDescriptionView = v4;
-  v6 = v4;
+  self->_settingDescriptionView = viewCopy;
+  v6 = viewCopy;
 
-  v7 = [(SUUISettingsTableViewCell *)self contentView];
-  [v7 addSubview:self->_settingDescriptionView];
+  contentView = [(SUUISettingsTableViewCell *)self contentView];
+  [contentView addSubview:self->_settingDescriptionView];
 
   [(SUUISettingsTableViewCell *)self setNeedsLayout];
 }
@@ -49,11 +49,11 @@
   v37.receiver = self;
   v37.super_class = SUUISettingsTableViewCell;
   [(SUUISettingsTableViewCell *)&v37 layoutSubviews];
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 userInterfaceLayoutDirection];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
-  v5 = [(SUUISettingsTableViewCell *)self contentView];
-  [v5 bounds];
+  contentView = [(SUUISettingsTableViewCell *)self contentView];
+  [contentView bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -69,11 +69,11 @@
     v35 = v15;
     v36 = v14;
     v22 = SUUIImageWithResourceName(@"chevronRight");
-    v23 = [v22 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [v22 imageFlippedForRightToLeftLayoutDirection];
 
     if (!self->_disclosureChevron)
     {
-      v24 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v23];
+      v24 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:imageFlippedForRightToLeftLayoutDirection];
       disclosureChevron = self->_disclosureChevron;
       self->_disclosureChevron = v24;
 
@@ -81,15 +81,15 @@
       v27 = [MEMORY[0x277D75348] colorWithWhite:0.674509804 alpha:1.0];
       [(UIImageView *)v26 setTintColor:v27];
 
-      v28 = [(SUUISettingsTableViewCell *)self contentView];
-      [v28 addSubview:self->_disclosureChevron];
+      contentView2 = [(SUUISettingsTableViewCell *)self contentView];
+      [contentView2 addSubview:self->_disclosureChevron];
     }
 
-    [v23 size];
+    [imageFlippedForRightToLeftLayoutDirection size];
     v30 = v29;
     v32 = v31;
     v34 = v21;
-    if (v4)
+    if (userInterfaceLayoutDirection)
     {
       v33 = v18;
     }
@@ -124,11 +124,11 @@
   [(SUUISettingDescriptionView *)self->_settingDescriptionView setFrame:v7, v9, v11, v13];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v3.receiver = self;
   v3.super_class = SUUISettingsTableViewCell;
-  [(SUUISettingsTableViewCell *)&v3 setBackgroundColor:a3];
+  [(SUUISettingsTableViewCell *)&v3 setBackgroundColor:color];
 }
 
 @end

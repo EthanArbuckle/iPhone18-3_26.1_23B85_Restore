@@ -33,9 +33,9 @@
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"SKCloudServiceSetupOptionsKey getSKCloudServiceSetupOptionsMessageIdentifierKey(void)"];
-    [v6 handleFailureInFunction:v7 file:@"StoreKit+PhotosUICore.m" lineNumber:22 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v7 file:@"StoreKit+PhotosUICore.m" lineNumber:22 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -68,9 +68,9 @@
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"SKCloudServiceSetupOptionsKey getSKCloudServiceSetupOptionsCampaignTokenKey(void)"];
-    [v6 handleFailureInFunction:v7 file:@"StoreKit+PhotosUICore.m" lineNumber:21 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v7 file:@"StoreKit+PhotosUICore.m" lineNumber:21 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -103,9 +103,9 @@
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"SKCloudServiceSetupOptionsKey getSKCloudServiceSetupOptionsAffiliateTokenKey(void)"];
-    [v6 handleFailureInFunction:v7 file:@"StoreKit+PhotosUICore.m" lineNumber:20 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v7 file:@"StoreKit+PhotosUICore.m" lineNumber:20 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -138,9 +138,9 @@
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"SKCloudServiceSetupOptionsKey getSKCloudServiceSetupOptionsITunesItemIdentifierKey(void)"];
-    [v6 handleFailureInFunction:v7 file:@"StoreKit+PhotosUICore.m" lineNumber:19 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v7 file:@"StoreKit+PhotosUICore.m" lineNumber:19 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -173,9 +173,9 @@
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"SKCloudServiceSetupOptionsKey getSKCloudServiceSetupOptionsActionKey(void)"];
-    [v6 handleFailureInFunction:v7 file:@"StoreKit+PhotosUICore.m" lineNumber:18 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v7 file:@"StoreKit+PhotosUICore.m" lineNumber:18 description:{@"%s", dlerror()}];
 
     __break(1u);
   }

@@ -1,37 +1,37 @@
 @interface ASSettingsOofUIController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (NSArray)externalMessageGroupSpecifiers;
-- (id)_composeNewAutoReplyStringWithDate:(id)a3;
-- (id)_stringFormatOfDate:(id)a3;
-- (id)_updateAutoReplyMessage:(id)a3 withDate:(id)a4;
+- (id)_composeNewAutoReplyStringWithDate:(id)date;
+- (id)_stringFormatOfDate:(id)date;
+- (id)_updateAutoReplyMessage:(id)message withDate:(id)date;
 - (id)autoReplyTextCellSpecifiers;
-- (id)currentDateString:(id)a3;
-- (id)externalAudiencePropertyWithSpecifier:(id)a3;
+- (id)currentDateString:(id)string;
+- (id)externalAudiencePropertyWithSpecifier:(id)specifier;
 - (id)externalAutoReplyTextboxSpecifiers;
 - (id)externalMessageRadioSpecifiers;
-- (id)externalSpecifersToRemoveAll:(BOOL)a3;
-- (id)oofExternalMessageStateWithSpecifier:(id)a3;
-- (id)oofStateWithSpecifier:(id)a3;
+- (id)externalSpecifersToRemoveAll:(BOOL)all;
+- (id)oofExternalMessageStateWithSpecifier:(id)specifier;
+- (id)oofStateWithSpecifier:(id)specifier;
 - (id)outOfOfficeEndDateDisplaySpecifier;
 - (id)specifiers;
 - (id)timePickerSpecifier;
-- (id)trimWhitespaceAndNewlinesFromString:(id)a3;
-- (void)_resetAllOutOfOfficeLocalValueToServerValue:(BOOL)a3;
-- (void)_updateAllAutoReplyMessages:(id)a3;
-- (void)datePickerCell:(id)a3 changedDate:(id)a4;
+- (id)trimWhitespaceAndNewlinesFromString:(id)string;
+- (void)_resetAllOutOfOfficeLocalValueToServerValue:(BOOL)value;
+- (void)_updateAllAutoReplyMessages:(id)messages;
+- (void)datePickerCell:(id)cell changedDate:(id)date;
 - (void)dismissKeyboard;
 - (void)enableSaveButton;
-- (void)saveButtonTapped:(id)a3;
-- (void)setAutoReplyText:(id)a3 withSpecifier:(id)a4;
-- (void)setExternalAudienceProperty:(id)a3 withSpecifier:(id)a4;
-- (void)setExternalAutoReplyText:(id)a3 withSpecifier:(id)a4;
-- (void)setOofExternalMessageState:(id)a3 withSpecifier:(id)a4;
-- (void)setOofState:(id)a3 withSpecifier:(id)a4;
+- (void)saveButtonTapped:(id)tapped;
+- (void)setAutoReplyText:(id)text withSpecifier:(id)specifier;
+- (void)setExternalAudienceProperty:(id)property withSpecifier:(id)specifier;
+- (void)setExternalAutoReplyText:(id)text withSpecifier:(id)specifier;
+- (void)setOofExternalMessageState:(id)state withSpecifier:(id)specifier;
+- (void)setOofState:(id)state withSpecifier:(id)specifier;
 - (void)showKeyboard;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textContentViewDidChange:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateSelectedDate:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textContentViewDidChange:(id)change;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateSelectedDate:(id)date;
 - (void)viewDidLoad;
 @end
 
@@ -44,17 +44,17 @@
   if (!v4)
   {
     v5 = +[UIDevice currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-    if ((v6 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
-      v7 = [(ASSettingsOofUIController *)self table];
-      [v7 setKeyboardDismissMode:1];
+      table = [(ASSettingsOofUIController *)self table];
+      [table setKeyboardDismissMode:1];
     }
 
-    v8 = [(ASSettingsOofUIController *)self specifier];
-    v9 = [v8 userInfo];
-    v10 = [v9 objectForKeyedSubscript:@"kPSOofServerData"];
+    specifier = [(ASSettingsOofUIController *)self specifier];
+    userInfo = [specifier userInfo];
+    v10 = [userInfo objectForKeyedSubscript:@"kPSOofServerData"];
     [(ASSettingsOofUIController *)self setServerData:v10];
 
     [(ASSettingsOofUIController *)self _resetAllOutOfOfficeLocalValueToServerValue:1];
@@ -68,14 +68,14 @@
     [v11 addObject:v14];
     if ([(ASSettingsOofUIController *)self ASOutOfOfficeEnabledState])
     {
-      v15 = [(ASSettingsOofUIController *)self outOfOfficeEndDateDisplaySpecifier];
-      [v11 addObject:v15];
+      outOfOfficeEndDateDisplaySpecifier = [(ASSettingsOofUIController *)self outOfOfficeEndDateDisplaySpecifier];
+      [v11 addObject:outOfOfficeEndDateDisplaySpecifier];
 
-      v16 = [(ASSettingsOofUIController *)self autoReplyTextCellSpecifiers];
-      [v11 addObjectsFromArray:v16];
+      autoReplyTextCellSpecifiers = [(ASSettingsOofUIController *)self autoReplyTextCellSpecifiers];
+      [v11 addObjectsFromArray:autoReplyTextCellSpecifiers];
 
-      v17 = [(ASSettingsOofUIController *)self externalMessageGroupSpecifiers];
-      [v11 addObjectsFromArray:v17];
+      externalMessageGroupSpecifiers = [(ASSettingsOofUIController *)self externalMessageGroupSpecifiers];
+      [v11 addObjectsFromArray:externalMessageGroupSpecifiers];
     }
 
     v18 = *&self->ACUIViewController_opaque[v3];
@@ -87,12 +87,12 @@
   return v4;
 }
 
-- (id)externalSpecifersToRemoveAll:(BOOL)a3
+- (id)externalSpecifersToRemoveAll:(BOOL)all
 {
-  v3 = a3;
+  allCopy = all;
   v5 = +[NSMutableArray array];
   v6 = v5;
-  if (v3)
+  if (allCopy)
   {
     [v5 addObject:@"kPSOofExternalMessageSpacerSpecifierID"];
     [v6 addObject:@"kPSOofExternalMessageStateGroupSpecifierID"];
@@ -144,9 +144,9 @@
 
 - (id)externalAutoReplyTextboxSpecifiers
 {
-  v3 = [(ASSettingsOofUIController *)self externalMessageSpecifiers];
+  externalMessageSpecifiers = [(ASSettingsOofUIController *)self externalMessageSpecifiers];
 
-  if (!v3)
+  if (!externalMessageSpecifiers)
   {
     v4 = +[NSMutableArray array];
     v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -191,11 +191,11 @@
   [v3 addObject:v6];
   if ([(ASSettingsOofUIController *)self oooExternalMessageAudience])
   {
-    v10 = [(ASSettingsOofUIController *)self externalMessageRadioSpecifiers];
-    [v3 addObjectsFromArray:v10];
+    externalMessageRadioSpecifiers = [(ASSettingsOofUIController *)self externalMessageRadioSpecifiers];
+    [v3 addObjectsFromArray:externalMessageRadioSpecifiers];
 
-    v11 = [(ASSettingsOofUIController *)self externalAutoReplyTextboxSpecifiers];
-    [v3 addObjectsFromArray:v11];
+    externalAutoReplyTextboxSpecifiers = [(ASSettingsOofUIController *)self externalAutoReplyTextboxSpecifiers];
+    [v3 addObjectsFromArray:externalAutoReplyTextboxSpecifiers];
   }
 
   return v3;
@@ -203,9 +203,9 @@
 
 - (id)outOfOfficeEndDateDisplaySpecifier
 {
-  v3 = [(ASSettingsOofUIController *)self currentEndTimeSpecifier];
+  currentEndTimeSpecifier = [(ASSettingsOofUIController *)self currentEndTimeSpecifier];
 
-  if (!v3)
+  if (!currentEndTimeSpecifier)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:@"OOF_END_DATE" value:&stru_30C98 table:@"ASAccountSetup"];
@@ -219,9 +219,9 @@
     [(ASSettingsOofUIController *)self setCurrentEndTimeSpecifier:v6];
   }
 
-  v8 = [(ASSettingsOofUIController *)self currentEndTimeSpecifier];
+  currentEndTimeSpecifier2 = [(ASSettingsOofUIController *)self currentEndTimeSpecifier];
   v9 = [NSNumber numberWithBool:[(ASSettingsOofUIController *)self datePickerShowing]];
-  [v8 setProperty:v9 forKey:@"kPSOofScheduleEndDateTextColor"];
+  [currentEndTimeSpecifier2 setProperty:v9 forKey:@"kPSOofScheduleEndDateTextColor"];
 
   return [(ASSettingsOofUIController *)self currentEndTimeSpecifier];
 }
@@ -231,12 +231,12 @@
   v3 = [PSSpecifier preferenceSpecifierNamed:&stru_30C98 target:self set:0 get:0 detail:0 cell:3 edit:0];
   [v3 setIdentifier:@"kPSOofDatePickerSpecifierID"];
   [v3 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  v4 = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
-  [v3 setProperty:v4 forKey:@"kPSOofPickerSelectedDate"];
+  userSelectedAutoReplyEndDate = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
+  [v3 setProperty:userSelectedAutoReplyEndDate forKey:@"kPSOofPickerSelectedDate"];
 
   [v3 setProperty:self forKey:@"kPSOofDateTimePickerDelegate"];
-  v5 = [(ASSettingsOofUIController *)self layoutDatePicker];
-  [v5 as_preferredHeight];
+  layoutDatePicker = [(ASSettingsOofUIController *)self layoutDatePicker];
+  [layoutDatePicker as_preferredHeight];
   *&v6 = v6;
   v7 = [NSNumber numberWithFloat:v6];
   [v3 setProperty:v7 forKey:PSTableCellHeightKey];
@@ -246,9 +246,9 @@
 
 - (id)autoReplyTextCellSpecifiers
 {
-  v3 = [(ASSettingsOofUIController *)self messageSpecifiers];
+  messageSpecifiers = [(ASSettingsOofUIController *)self messageSpecifiers];
 
-  if (!v3)
+  if (!messageSpecifiers)
   {
     v4 = +[NSMutableArray array];
     v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -272,34 +272,34 @@
   return [(ASSettingsOofUIController *)self messageSpecifiers];
 }
 
-- (id)oofStateWithSpecifier:(id)a3
+- (id)oofStateWithSpecifier:(id)specifier
 {
-  v3 = [(ASSettingsOofUIController *)self ASOutOfOfficeEnabledState];
+  aSOutOfOfficeEnabledState = [(ASSettingsOofUIController *)self ASOutOfOfficeEnabledState];
 
-  return [NSNumber numberWithInt:v3];
+  return [NSNumber numberWithInt:aSOutOfOfficeEnabledState];
 }
 
-- (void)setOofState:(id)a3 withSpecifier:(id)a4
+- (void)setOofState:(id)state withSpecifier:(id)specifier
 {
-  if (![a3 BOOLValue])
+  if (![state BOOLValue])
   {
     [(ASSettingsOofUIController *)self _removeAdditionalOOOSpecifiersAnimated:1];
     [(ASSettingsOofUIController *)self setASOutOfOfficeEnabledState:0];
-    v6 = [(ASSettingsOofUIController *)self ASOutOfOfficeEnabledState];
-    v7 = [(ASSettingsOofUIController *)self serverData];
-    v8 = [v7 oofState];
+    aSOutOfOfficeEnabledState = [(ASSettingsOofUIController *)self ASOutOfOfficeEnabledState];
+    serverData = [(ASSettingsOofUIController *)self serverData];
+    oofState = [serverData oofState];
 
-    v9 = [(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates];
-    if (v6 == v8)
+    aSOutOfOfficeDirtyStates = [(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates];
+    if (aSOutOfOfficeEnabledState == oofState)
     {
-      v10 = v9 & 0xFFFFFFFFFFFFFFFELL;
+      v10 = aSOutOfOfficeDirtyStates & 0xFFFFFFFFFFFFFFFELL;
 LABEL_9:
       [(ASSettingsOofUIController *)self setASOutOfOfficeDirtyStates:v10];
       goto LABEL_10;
     }
 
 LABEL_8:
-    v10 = v9 | 1;
+    v10 = aSOutOfOfficeDirtyStates | 1;
     goto LABEL_9;
   }
 
@@ -307,19 +307,19 @@ LABEL_8:
   [(ASSettingsOofUIController *)self _insertAdditionalOOOSpecifiersAnimated:1];
   [(ASSettingsOofUIController *)self setASOutOfOfficeEnabledState:1];
   [(ASSettingsOofUIController *)self setASOutOfOfficeDirtyStates:[(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates]& 0xFFFFFFFFFFFFFFFELL];
-  v5 = [(ASSettingsOofUIController *)self serverData];
-  if ([v5 oofState] == 1)
+  serverData2 = [(ASSettingsOofUIController *)self serverData];
+  if ([serverData2 oofState] == 1)
   {
 
     goto LABEL_10;
   }
 
-  v11 = [(ASSettingsOofUIController *)self serverData];
-  v12 = [v11 oofState];
+  serverData3 = [(ASSettingsOofUIController *)self serverData];
+  oofState2 = [serverData3 oofState];
 
-  if (v12 != 2)
+  if (oofState2 != 2)
   {
-    v9 = [(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates];
+    aSOutOfOfficeDirtyStates = [(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates];
     goto LABEL_8;
   }
 
@@ -328,22 +328,22 @@ LABEL_10:
   [(ASSettingsOofUIController *)self enableSaveButton];
 }
 
-- (id)oofExternalMessageStateWithSpecifier:(id)a3
+- (id)oofExternalMessageStateWithSpecifier:(id)specifier
 {
-  v3 = [(ASSettingsOofUIController *)self oooExternalMessageAudience];
+  oooExternalMessageAudience = [(ASSettingsOofUIController *)self oooExternalMessageAudience];
 
-  return [NSNumber numberWithInt:v3];
+  return [NSNumber numberWithInt:oooExternalMessageAudience];
 }
 
-- (void)setOofExternalMessageState:(id)a3 withSpecifier:(id)a4
+- (void)setOofExternalMessageState:(id)state withSpecifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([state BOOLValue])
   {
-    v5 = [(ASSettingsOofUIController *)self serverData];
-    if ([v5 externalState])
+    serverData = [(ASSettingsOofUIController *)self serverData];
+    if ([serverData externalState])
     {
-      v6 = [(ASSettingsOofUIController *)self serverData];
-      -[ASSettingsOofUIController setOooExternalMessageAudience:](self, "setOooExternalMessageAudience:", [v6 externalState]);
+      serverData2 = [(ASSettingsOofUIController *)self serverData];
+      -[ASSettingsOofUIController setOooExternalMessageAudience:](self, "setOooExternalMessageAudience:", [serverData2 externalState]);
     }
 
     else
@@ -351,9 +351,9 @@ LABEL_10:
       [(ASSettingsOofUIController *)self setOooExternalMessageAudience:1];
     }
 
-    v7 = [(ASSettingsOofUIController *)self serverData];
-    v8 = [v7 externalMessage];
-    [(ASSettingsOofUIController *)self setAutoExternalReplyMessage:v8];
+    serverData3 = [(ASSettingsOofUIController *)self serverData];
+    externalMessage = [serverData3 externalMessage];
+    [(ASSettingsOofUIController *)self setAutoExternalReplyMessage:externalMessage];
 
     [(ASSettingsOofUIController *)self _insertAdditionalExternalSpecifiersAnimated:1];
   }
@@ -364,26 +364,26 @@ LABEL_10:
     [(ASSettingsOofUIController *)self _removeAdditionalExternalSpecifiersAnimated:1];
   }
 
-  v9 = [(ASSettingsOofUIController *)self oooExternalMessageAudience];
-  v10 = [(ASSettingsOofUIController *)self serverData];
-  LOBYTE(v9) = v9 != [v10 externalState];
+  oooExternalMessageAudience = [(ASSettingsOofUIController *)self oooExternalMessageAudience];
+  serverData4 = [(ASSettingsOofUIController *)self serverData];
+  LOBYTE(oooExternalMessageAudience) = oooExternalMessageAudience != [serverData4 externalState];
 
-  [(ASSettingsOofUIController *)self setASOutOfOfficeDirtyStates:[(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates]& 0xFFFFFFFFFFFFFFEFLL | (16 * (v9 & 1))];
+  [(ASSettingsOofUIController *)self setASOutOfOfficeDirtyStates:[(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates]& 0xFFFFFFFFFFFFFFEFLL | (16 * (oooExternalMessageAudience & 1))];
 
   [(ASSettingsOofUIController *)self enableSaveButton];
 }
 
-- (void)setAutoReplyText:(id)a3 withSpecifier:(id)a4
+- (void)setAutoReplyText:(id)text withSpecifier:(id)specifier
 {
-  v13 = [a4 propertyForKey:PSTableCellKey];
-  v5 = [v13 textView];
-  v6 = [v5 text];
-  [(ASSettingsOofUIController *)self setAutoReplyMessage:v6];
+  v13 = [specifier propertyForKey:PSTableCellKey];
+  textView = [v13 textView];
+  text = [textView text];
+  [(ASSettingsOofUIController *)self setAutoReplyMessage:text];
 
-  v7 = [(ASSettingsOofUIController *)self autoReplyMessage];
-  v8 = [(ASSettingsOofUIController *)self serverData];
-  v9 = [v8 message];
-  v10 = [v7 isEqualToString:v9];
+  autoReplyMessage = [(ASSettingsOofUIController *)self autoReplyMessage];
+  serverData = [(ASSettingsOofUIController *)self serverData];
+  message = [serverData message];
+  v10 = [autoReplyMessage isEqualToString:message];
 
   v11 = [(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates]& 0xFFFFFFFFFFFFFFFBLL;
   v12 = 4;
@@ -396,17 +396,17 @@ LABEL_10:
   [(ASSettingsOofUIController *)self enableSaveButton];
 }
 
-- (void)setExternalAutoReplyText:(id)a3 withSpecifier:(id)a4
+- (void)setExternalAutoReplyText:(id)text withSpecifier:(id)specifier
 {
-  v13 = [a4 propertyForKey:PSTableCellKey];
-  v5 = [v13 textView];
-  v6 = [v5 text];
-  [(ASSettingsOofUIController *)self setAutoExternalReplyMessage:v6];
+  v13 = [specifier propertyForKey:PSTableCellKey];
+  textView = [v13 textView];
+  text = [textView text];
+  [(ASSettingsOofUIController *)self setAutoExternalReplyMessage:text];
 
-  v7 = [(ASSettingsOofUIController *)self autoExternalReplyMessage];
-  v8 = [(ASSettingsOofUIController *)self serverData];
-  v9 = [v8 externalMessage];
-  v10 = [v7 isEqualToString:v9];
+  autoExternalReplyMessage = [(ASSettingsOofUIController *)self autoExternalReplyMessage];
+  serverData = [(ASSettingsOofUIController *)self serverData];
+  externalMessage = [serverData externalMessage];
+  v10 = [autoExternalReplyMessage isEqualToString:externalMessage];
 
   v11 = [(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates]& 0xFFFFFFFFFFFFFFF7;
   v12 = 8;
@@ -419,17 +419,17 @@ LABEL_10:
   [(ASSettingsOofUIController *)self enableSaveButton];
 }
 
-- (void)setExternalAudienceProperty:(id)a3 withSpecifier:(id)a4
+- (void)setExternalAudienceProperty:(id)property withSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = [a3 intValue];
-  v10 = [v6 identifier];
+  specifierCopy = specifier;
+  intValue = [property intValue];
+  identifier = [specifierCopy identifier];
 
-  if ([v10 isEqualToString:@"kPSOofExternalMessageAudienceRadioGroupSpecifierID"] && v7 != -[ASSettingsOofUIController oooExternalMessageAudience](self, "oooExternalMessageAudience"))
+  if ([identifier isEqualToString:@"kPSOofExternalMessageAudienceRadioGroupSpecifierID"] && intValue != -[ASSettingsOofUIController oooExternalMessageAudience](self, "oooExternalMessageAudience"))
   {
-    [(ASSettingsOofUIController *)self setOooExternalMessageAudience:v7];
-    v8 = [(ASSettingsOofUIController *)self serverData];
-    v9 = v7 != [v8 externalState];
+    [(ASSettingsOofUIController *)self setOooExternalMessageAudience:intValue];
+    serverData = [(ASSettingsOofUIController *)self serverData];
+    v9 = intValue != [serverData externalState];
 
     [(ASSettingsOofUIController *)self setASOutOfOfficeDirtyStates:[(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates]& 0xFFFFFFFFFFFFFFEFLL | (16 * v9)];
   }
@@ -437,27 +437,27 @@ LABEL_10:
   [(ASSettingsOofUIController *)self enableSaveButton];
 }
 
-- (id)externalAudiencePropertyWithSpecifier:(id)a3
+- (id)externalAudiencePropertyWithSpecifier:(id)specifier
 {
-  v4 = [a3 identifier];
-  if ([v4 isEqualToString:@"kPSOofExternalMessageAudienceRadioGroupSpecifierID"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"kPSOofExternalMessageAudienceRadioGroupSpecifierID"])
   {
-    v5 = [(ASSettingsOofUIController *)self oooExternalMessageAudience];
+    oooExternalMessageAudience = [(ASSettingsOofUIController *)self oooExternalMessageAudience];
   }
 
   else
   {
-    v5 = 0;
+    oooExternalMessageAudience = 0;
   }
 
-  v6 = [NSNumber numberWithInt:v5];
+  v6 = [NSNumber numberWithInt:oooExternalMessageAudience];
 
   return v6;
 }
 
-- (id)_stringFormatOfDate:(id)a3
+- (id)_stringFormatOfDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = qword_3A2D8;
   if (!qword_3A2D8)
   {
@@ -472,14 +472,14 @@ LABEL_10:
     v4 = qword_3A2D8;
   }
 
-  v9 = [v4 stringFromDate:v3];
+  v9 = [v4 stringFromDate:dateCopy];
 
   return v9;
 }
 
-- (id)_composeNewAutoReplyStringWithDate:(id)a3
+- (id)_composeNewAutoReplyStringWithDate:(id)date
 {
-  if (a3)
+  if (date)
   {
     v3 = [(ASSettingsOofUIController *)self _stringFormatOfDate:?];
     v4 = [NSBundle bundleForClass:objc_opt_class()];
@@ -497,17 +497,17 @@ LABEL_10:
   return v6;
 }
 
-- (id)_updateAutoReplyMessage:(id)a3 withDate:(id)a4
+- (id)_updateAutoReplyMessage:(id)message withDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [(ASSettingsOofUIController *)self previousUserSelectedAutoReplyEndDate];
+  messageCopy = message;
+  dateCopy = date;
+  v8 = messageCopy;
+  previousUserSelectedAutoReplyEndDate = [(ASSettingsOofUIController *)self previousUserSelectedAutoReplyEndDate];
 
-  if (v9)
+  if (previousUserSelectedAutoReplyEndDate)
   {
-    v10 = [(ASSettingsOofUIController *)self previousUserSelectedAutoReplyEndDate];
-    v11 = [(ASSettingsOofUIController *)self _stringFormatOfDate:v10];
+    previousUserSelectedAutoReplyEndDate2 = [(ASSettingsOofUIController *)self previousUserSelectedAutoReplyEndDate];
+    v11 = [(ASSettingsOofUIController *)self _stringFormatOfDate:previousUserSelectedAutoReplyEndDate2];
 
     v12 = [v8 rangeOfString:v11];
     v14 = v13;
@@ -522,7 +522,7 @@ LABEL_10:
     v15 = 1;
   }
 
-  v16 = [(ASSettingsOofUIController *)self _stringFormatOfDate:v7];
+  v16 = [(ASSettingsOofUIController *)self _stringFormatOfDate:dateCopy];
   if (!v15 && v12 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v17 = [v8 stringByReplacingCharactersInRange:v12 withString:{v14, v16}];
@@ -545,7 +545,7 @@ LABEL_10:
   if (v20)
   {
 LABEL_9:
-    v17 = [(ASSettingsOofUIController *)self _composeNewAutoReplyStringWithDate:v7];
+    v17 = [(ASSettingsOofUIController *)self _composeNewAutoReplyStringWithDate:dateCopy];
     goto LABEL_10;
   }
 
@@ -555,18 +555,18 @@ LABEL_11:
   return v21;
 }
 
-- (void)_updateAllAutoReplyMessages:(id)a3
+- (void)_updateAllAutoReplyMessages:(id)messages
 {
-  v14 = a3;
-  v4 = [(ASSettingsOofUIController *)self autoReplyMessage];
-  v5 = [(ASSettingsOofUIController *)self autoExternalReplyMessage];
-  v6 = [v4 isEqualToString:v5];
+  messagesCopy = messages;
+  autoReplyMessage = [(ASSettingsOofUIController *)self autoReplyMessage];
+  autoExternalReplyMessage = [(ASSettingsOofUIController *)self autoExternalReplyMessage];
+  v6 = [autoReplyMessage isEqualToString:autoExternalReplyMessage];
 
-  v7 = [(ASSettingsOofUIController *)self autoReplyMessage];
-  v8 = [(ASSettingsOofUIController *)self _updateAutoReplyMessage:v7 withDate:v14];
+  autoReplyMessage2 = [(ASSettingsOofUIController *)self autoReplyMessage];
+  v8 = [(ASSettingsOofUIController *)self _updateAutoReplyMessage:autoReplyMessage2 withDate:messagesCopy];
 
-  v9 = [(ASSettingsOofUIController *)self autoReplyMessage];
-  v10 = [v9 isEqualToString:v8];
+  autoReplyMessage3 = [(ASSettingsOofUIController *)self autoReplyMessage];
+  v10 = [autoReplyMessage3 isEqualToString:v8];
 
   if ((v10 & 1) == 0)
   {
@@ -590,13 +590,13 @@ LABEL_11:
 
   else
   {
-    v11 = [(ASSettingsOofUIController *)self autoExternalReplyMessage];
-    v12 = [(ASSettingsOofUIController *)self _updateAutoReplyMessage:v11 withDate:v14];
+    autoExternalReplyMessage2 = [(ASSettingsOofUIController *)self autoExternalReplyMessage];
+    v12 = [(ASSettingsOofUIController *)self _updateAutoReplyMessage:autoExternalReplyMessage2 withDate:messagesCopy];
 
-    v13 = [(ASSettingsOofUIController *)self autoExternalReplyMessage];
-    LOBYTE(v11) = [v13 isEqualToString:v12];
+    autoExternalReplyMessage3 = [(ASSettingsOofUIController *)self autoExternalReplyMessage];
+    LOBYTE(autoExternalReplyMessage2) = [autoExternalReplyMessage3 isEqualToString:v12];
 
-    if (v11)
+    if (autoExternalReplyMessage2)
     {
       goto LABEL_12;
     }
@@ -609,7 +609,7 @@ LABEL_11:
   [(ASSettingsOofUIController *)self reloadSpecifierID:@"kPSOofExternalMessageTextBoxSpecifierID" animated:0];
   v12 = v8;
 LABEL_12:
-  [(ASSettingsOofUIController *)self setPreviousUserSelectedAutoReplyEndDate:v14];
+  [(ASSettingsOofUIController *)self setPreviousUserSelectedAutoReplyEndDate:messagesCopy];
 }
 
 - (void)viewDidLoad
@@ -617,9 +617,9 @@ LABEL_12:
   v22.receiver = self;
   v22.super_class = ASSettingsOofUIController;
   [(ASSettingsOofUIController *)&v22 viewDidLoad];
-  v3 = [(ASSettingsOofUIController *)self saveButton];
+  saveButton = [(ASSettingsOofUIController *)self saveButton];
 
-  if (!v3)
+  if (!saveButton)
   {
     v4 = [UIBarButtonItem alloc];
     v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -628,9 +628,9 @@ LABEL_12:
     [(ASSettingsOofUIController *)self setSaveButton:v7];
   }
 
-  v8 = [(ASSettingsOofUIController *)self cancelButton];
+  cancelButton = [(ASSettingsOofUIController *)self cancelButton];
 
-  if (!v8)
+  if (!cancelButton)
   {
     v9 = [UIBarButtonItem alloc];
     v10 = [NSBundle bundleForClass:objc_opt_class()];
@@ -639,52 +639,52 @@ LABEL_12:
     [(ASSettingsOofUIController *)self setCancelButton:v12];
   }
 
-  v13 = [(ASSettingsOofUIController *)self cancelButton];
-  v14 = [(ASSettingsOofUIController *)self navigationItem];
-  [v14 setLeftBarButtonItem:v13];
+  cancelButton2 = [(ASSettingsOofUIController *)self cancelButton];
+  navigationItem = [(ASSettingsOofUIController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:cancelButton2];
 
-  v15 = [(ASSettingsOofUIController *)self saveButton];
-  v16 = [(ASSettingsOofUIController *)self navigationItem];
-  [v16 setRightBarButtonItem:v15];
+  saveButton2 = [(ASSettingsOofUIController *)self saveButton];
+  navigationItem2 = [(ASSettingsOofUIController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:saveButton2];
 
   v17 = +[UIDatePicker as_newConfiguredPicker];
   [(ASSettingsOofUIController *)self setLayoutDatePicker:v17];
 
-  v18 = [(ASSettingsOofUIController *)self layoutDatePicker];
-  [v18 setHidden:1];
+  layoutDatePicker = [(ASSettingsOofUIController *)self layoutDatePicker];
+  [layoutDatePicker setHidden:1];
 
-  v19 = [(ASSettingsOofUIController *)self table];
-  v20 = [(ASSettingsOofUIController *)self layoutDatePicker];
-  [v19 insertSubview:v20 atIndex:0];
+  table = [(ASSettingsOofUIController *)self table];
+  layoutDatePicker2 = [(ASSettingsOofUIController *)self layoutDatePicker];
+  [table insertSubview:layoutDatePicker2 atIndex:0];
 
-  v21 = [(ASSettingsOofUIController *)self layoutDatePicker];
-  [v21 as_installConstraints];
+  layoutDatePicker3 = [(ASSettingsOofUIController *)self layoutDatePicker];
+  [layoutDatePicker3 as_installConstraints];
 
   [(ASSettingsOofUIController *)self enableSaveButton];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v14.receiver = self;
   v14.super_class = ASSettingsOofUIController;
-  v4 = a3;
-  [(ASSettingsOofUIController *)&v14 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(ASSettingsOofUIController *)&v14 traitCollectionDidChange:changeCopy];
   v5 = [(ASSettingsOofUIController *)self traitCollection:v14.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if ([(ASSettingsOofUIController *)self datePickerShowing]&& v6 != v7)
+  if ([(ASSettingsOofUIController *)self datePickerShowing]&& preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     v8 = [(ASSettingsOofUIController *)self specifierForID:@"kPSOofDatePickerSpecifierID"];
     v9 = [(ASSettingsOofUIController *)self indexPathForSpecifier:v8];
-    v10 = [(ASSettingsOofUIController *)self table];
-    v11 = [v10 cellForRowAtIndexPath:v9];
+    table = [(ASSettingsOofUIController *)self table];
+    v11 = [table cellForRowAtIndexPath:v9];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v11 datePicker];
-      [v12 as_preferredHeight];
+      datePicker = [v11 datePicker];
+      [datePicker as_preferredHeight];
       v13 = [NSNumber numberWithDouble:?];
       [v8 setProperty:v13 forKey:PSTableCellHeightKey];
 
@@ -693,43 +693,43 @@ LABEL_12:
   }
 }
 
-- (void)saveButtonTapped:(id)a3
+- (void)saveButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v23 = objc_alloc_init(DAOofSettingsInfo);
   if ([(ASSettingsOofUIController *)self ASOutOfOfficeEnabledState])
   {
-    v5 = [(ASSettingsOofUIController *)self ASOutOfOfficeEnabledState];
+    aSOutOfOfficeEnabledState = [(ASSettingsOofUIController *)self ASOutOfOfficeEnabledState];
   }
 
   else
   {
-    v6 = [(ASSettingsOofUIController *)self serverData];
-    [v6 setExternalState:0];
+    serverData = [(ASSettingsOofUIController *)self serverData];
+    [serverData setExternalState:0];
     [v23 setExternalState:0];
 
-    v5 = 0;
+    aSOutOfOfficeEnabledState = 0;
   }
 
-  [v23 setOofState:v5];
+  [v23 setOofState:aSOutOfOfficeEnabledState];
   if ((-[ASSettingsOofUIController ASOutOfOfficeDirtyStates](self, "ASOutOfOfficeDirtyStates") & 2) != 0 && [v23 oofState] == 2)
   {
-    v7 = [(ASSettingsOofUIController *)self autoReplyStartDate];
-    [v23 setStartTime:v7];
+    autoReplyStartDate = [(ASSettingsOofUIController *)self autoReplyStartDate];
+    [v23 setStartTime:autoReplyStartDate];
 
-    v8 = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
-    [v23 setEndTime:v8];
+    userSelectedAutoReplyEndDate = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
+    [v23 setEndTime:userSelectedAutoReplyEndDate];
   }
 
   else
   {
-    v9 = [(ASSettingsOofUIController *)self serverData];
-    v10 = [v9 startTime];
-    [v23 setStartTime:v10];
+    serverData2 = [(ASSettingsOofUIController *)self serverData];
+    startTime = [serverData2 startTime];
+    [v23 setStartTime:startTime];
 
-    v8 = [(ASSettingsOofUIController *)self serverData];
-    v11 = [v8 endTime];
-    [v23 setEndTime:v11];
+    userSelectedAutoReplyEndDate = [(ASSettingsOofUIController *)self serverData];
+    endTime = [userSelectedAutoReplyEndDate endTime];
+    [v23 setEndTime:endTime];
   }
 
   if (([(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates]& 4) != 0)
@@ -737,23 +737,23 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v12 = [(ASSettingsOofUIController *)self serverData];
-  v13 = [v12 message];
-  v14 = [(ASSettingsOofUIController *)self trimWhitespaceAndNewlinesFromString:v13];
+  serverData3 = [(ASSettingsOofUIController *)self serverData];
+  message = [serverData3 message];
+  v14 = [(ASSettingsOofUIController *)self trimWhitespaceAndNewlinesFromString:message];
   v15 = [v14 length];
 
   if (!v15)
   {
 LABEL_11:
-    v16 = [(ASSettingsOofUIController *)self autoReplyMessage];
-    [v23 setMessage:v16];
+    autoReplyMessage = [(ASSettingsOofUIController *)self autoReplyMessage];
+    [v23 setMessage:autoReplyMessage];
   }
 
   else
   {
-    v16 = [(ASSettingsOofUIController *)self serverData];
-    v17 = [v16 message];
-    [v23 setMessage:v17];
+    autoReplyMessage = [(ASSettingsOofUIController *)self serverData];
+    message2 = [autoReplyMessage message];
+    [v23 setMessage:message2];
   }
 
   if (([(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates]& 0x10) != 0)
@@ -763,26 +763,26 @@ LABEL_11:
 
   else
   {
-    v18 = [(ASSettingsOofUIController *)self serverData];
-    [v23 setExternalState:{objc_msgSend(v18, "externalState")}];
+    serverData4 = [(ASSettingsOofUIController *)self serverData];
+    [v23 setExternalState:{objc_msgSend(serverData4, "externalState")}];
   }
 
   if (([(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates]& 8) != 0)
   {
-    v19 = [(ASSettingsOofUIController *)self autoExternalReplyMessage];
-    [v23 setExternalMessage:v19];
+    autoExternalReplyMessage = [(ASSettingsOofUIController *)self autoExternalReplyMessage];
+    [v23 setExternalMessage:autoExternalReplyMessage];
   }
 
   else
   {
-    v19 = [(ASSettingsOofUIController *)self serverData];
-    v20 = [v19 externalMessage];
-    [v23 setExternalMessage:v20];
+    autoExternalReplyMessage = [(ASSettingsOofUIController *)self serverData];
+    externalMessage = [autoExternalReplyMessage externalMessage];
+    [v23 setExternalMessage:externalMessage];
   }
 
   v21 = OBJC_IVAR___PSViewController__specifier;
-  v22 = [*&self->ACUIViewController_opaque[OBJC_IVAR___PSViewController__specifier] target];
-  [v22 da_performSelectorThatDoesntAffectRetainCount:*(*&self->ACUIViewController_opaque[v21] + OBJC_IVAR___PSSpecifier_setter) withObject:v23];
+  target = [*&self->ACUIViewController_opaque[OBJC_IVAR___PSViewController__specifier] target];
+  [target da_performSelectorThatDoesntAffectRetainCount:*(*&self->ACUIViewController_opaque[v21] + OBJC_IVAR___PSSpecifier_setter) withObject:v23];
 
   [(ASSettingsOofUIController *)self dismissAnimated:1];
 }
@@ -790,21 +790,21 @@ LABEL_11:
 - (void)enableSaveButton
 {
   v3 = [(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates]!= 0;
-  v5 = [(ASSettingsOofUIController *)self navigationItem];
-  v4 = [v5 rightBarButtonItem];
-  [v4 setEnabled:v3];
+  navigationItem = [(ASSettingsOofUIController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v3];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v8 = 1;
   if ([(ASSettingsOofUIController *)self datePickerShowing])
   {
     v6 = [(ASSettingsOofUIController *)self specifierForID:@"kPSOofDatePickerSpecifierID"];
     v7 = [(ASSettingsOofUIController *)self indexPathForSpecifier:v6];
 
-    if (v7 == v5)
+    if (v7 == pathCopy)
     {
       v8 = 0;
     }
@@ -813,30 +813,30 @@ LABEL_11:
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
+  viewCopy = view;
   v16.receiver = self;
   v16.super_class = ASSettingsOofUIController;
-  v7 = a4;
-  [(ASSettingsOofUIController *)&v16 tableView:v6 didSelectRowAtIndexPath:v7];
+  pathCopy = path;
+  [(ASSettingsOofUIController *)&v16 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   v8 = [(ASSettingsOofUIController *)self currentEndTimeSpecifier:v16.receiver];
   v9 = [(ASSettingsOofUIController *)self indexPathForSpecifier:v8];
 
-  LODWORD(v8) = [v7 isEqual:v9];
-  v10 = [(ASSettingsOofUIController *)self datePickerShowing];
+  LODWORD(v8) = [pathCopy isEqual:v9];
+  datePickerShowing = [(ASSettingsOofUIController *)self datePickerShowing];
   if (v8)
   {
-    if ((v10 & 1) == 0)
+    if ((datePickerShowing & 1) == 0)
     {
       [(ASSettingsOofUIController *)self setDatePickerShowing:1];
-      v12 = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
-      [(ASSettingsOofUIController *)self updateSelectedDate:v12];
+      userSelectedAutoReplyEndDate = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
+      [(ASSettingsOofUIController *)self updateSelectedDate:userSelectedAutoReplyEndDate];
 
-      v13 = [(ASSettingsOofUIController *)self timePickerSpecifier];
-      [(ASSettingsOofUIController *)self insertSpecifier:v13 afterSpecifierID:@"kPSOofScheduleEndDate" animated:1];
+      timePickerSpecifier = [(ASSettingsOofUIController *)self timePickerSpecifier];
+      [(ASSettingsOofUIController *)self insertSpecifier:timePickerSpecifier afterSpecifierID:@"kPSOofScheduleEndDate" animated:1];
 
-      [v6 scrollToRowAtIndexPath:v9 atScrollPosition:1 animated:1];
+      [viewCopy scrollToRowAtIndexPath:v9 atScrollPosition:1 animated:1];
       goto LABEL_8;
     }
 
@@ -846,7 +846,7 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (v10)
+  if (datePickerShowing)
   {
     v11 = [(ASSettingsOofUIController *)self specifierForID:@"kPSOofDatePickerSpecifierID"];
     [(ASSettingsOofUIController *)self removeSpecifier:v11 animated:1];
@@ -855,25 +855,25 @@ LABEL_6:
   }
 
 LABEL_8:
-  v14 = [(ASSettingsOofUIController *)self currentEndTimeSpecifier];
+  currentEndTimeSpecifier = [(ASSettingsOofUIController *)self currentEndTimeSpecifier];
   v15 = [NSNumber numberWithBool:[(ASSettingsOofUIController *)self datePickerShowing]];
-  [v14 setProperty:v15 forKey:@"kPSOofScheduleEndDateTextColor"];
+  [currentEndTimeSpecifier setProperty:v15 forKey:@"kPSOofScheduleEndDateTextColor"];
 
   [(ASSettingsOofUIController *)self reloadSpecifierID:@"kPSOofScheduleEndDate" animated:0];
   [(ASSettingsOofUIController *)self dismissKeyboard];
 }
 
-- (id)currentDateString:(id)a3
+- (id)currentDateString:(id)string
 {
-  v4 = [(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates];
-  if ([(ASSettingsOofUIController *)self ASOutOfOfficeEnabledState]== 2 || (v4 & 2) != 0)
+  aSOutOfOfficeDirtyStates = [(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates];
+  if ([(ASSettingsOofUIController *)self ASOutOfOfficeEnabledState]== 2 || (aSOutOfOfficeDirtyStates & 2) != 0)
   {
-    v7 = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
+    userSelectedAutoReplyEndDate = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
 
-    if (v7)
+    if (userSelectedAutoReplyEndDate)
     {
-      v8 = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
-      v9 = [NSDateFormatter localizedStringFromDate:v8 dateStyle:2 timeStyle:1];
+      userSelectedAutoReplyEndDate2 = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
+      v9 = [NSDateFormatter localizedStringFromDate:userSelectedAutoReplyEndDate2 dateStyle:2 timeStyle:1];
 
       [(ASSettingsOofUIController *)self setASOutOfOfficeEnabledState:2];
       goto LABEL_8;
@@ -896,33 +896,33 @@ LABEL_8:
   return v9;
 }
 
-- (void)_resetAllOutOfOfficeLocalValueToServerValue:(BOOL)a3
+- (void)_resetAllOutOfOfficeLocalValueToServerValue:(BOOL)value
 {
   [(ASSettingsOofUIController *)self setASOutOfOfficeDirtyStates:0];
   v50 = +[NSDate date];
   v4 = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
   v5 = [v4 components:28 fromDate:v50];
   v6 = [v5 day];
-  v7 = [v5 month];
-  v8 = [v5 year];
+  month = [v5 month];
+  year = [v5 year];
   v9 = objc_alloc_init(NSDateComponents);
   [v9 setMinute:30];
   [v9 setHour:23];
   [v9 setDay:v6];
-  [v9 setMonth:v7];
-  [v9 setYear:v8];
+  [v9 setMonth:month];
+  [v9 setYear:year];
   v10 = [v4 dateFromComponents:v9];
-  v11 = [(ASSettingsOofUIController *)self serverData];
-  -[ASSettingsOofUIController setASOutOfOfficeEnabledState:](self, "setASOutOfOfficeEnabledState:", [v11 oofState]);
+  serverData = [(ASSettingsOofUIController *)self serverData];
+  -[ASSettingsOofUIController setASOutOfOfficeEnabledState:](self, "setASOutOfOfficeEnabledState:", [serverData oofState]);
 
   if ([(ASSettingsOofUIController *)self ASOutOfOfficeEnabledState]== 2)
   {
-    v12 = [(ASSettingsOofUIController *)self serverData];
-    v13 = [v12 startTime];
-    [(ASSettingsOofUIController *)self setAutoReplyStartDate:v13];
+    serverData2 = [(ASSettingsOofUIController *)self serverData];
+    startTime = [serverData2 startTime];
+    [(ASSettingsOofUIController *)self setAutoReplyStartDate:startTime];
 
-    v14 = [(ASSettingsOofUIController *)self autoReplyStartDate];
-    v15 = [v4 compareDate:v50 toDate:v14 toUnitGranularity:64];
+    autoReplyStartDate = [(ASSettingsOofUIController *)self autoReplyStartDate];
+    v15 = [v4 compareDate:v50 toDate:autoReplyStartDate toUnitGranularity:64];
 
     if (v15 == &dword_0 + 1)
     {
@@ -934,9 +934,9 @@ LABEL_8:
       [(ASSettingsOofUIController *)self setASOutOfOfficeEnabledState:0];
     }
 
-    v16 = [(ASSettingsOofUIController *)self serverData];
-    v17 = [v16 endTime];
-    [(ASSettingsOofUIController *)self setUserSelectedAutoReplyEndDate:v17];
+    serverData3 = [(ASSettingsOofUIController *)self serverData];
+    endTime = [serverData3 endTime];
+    [(ASSettingsOofUIController *)self setUserSelectedAutoReplyEndDate:endTime];
   }
 
   else
@@ -946,30 +946,30 @@ LABEL_8:
   }
 
   v18 = [NSRegularExpression regularExpressionWithPattern:@"\r\n" options:0 error:0];
-  v19 = [(ASSettingsOofUIController *)self serverData];
-  v20 = [v19 message];
+  serverData4 = [(ASSettingsOofUIController *)self serverData];
+  message = [serverData4 message];
 
-  if (v20)
+  if (message)
   {
     v21 = [NSMutableString alloc];
-    v22 = [(ASSettingsOofUIController *)self serverData];
-    v23 = [v22 message];
-    v24 = [v21 initWithString:v23];
+    serverData5 = [(ASSettingsOofUIController *)self serverData];
+    message2 = [serverData5 message];
+    v24 = [v21 initWithString:message2];
 
     [v18 replaceMatchesInString:v24 options:0 range:0 withTemplate:{objc_msgSend(v24, "length"), @"<br>"}];
   }
 
   else
   {
-    v25 = [(ASSettingsOofUIController *)self serverData];
-    [v25 setMessage:&stru_30C98];
+    serverData6 = [(ASSettingsOofUIController *)self serverData];
+    [serverData6 setMessage:&stru_30C98];
 
     v24 = 0;
   }
 
-  v26 = [(ASSettingsOofUIController *)self serverData];
-  v27 = [v26 message];
-  v28 = [(ASSettingsOofUIController *)self trimWhitespaceAndNewlinesFromString:v27];
+  serverData7 = [(ASSettingsOofUIController *)self serverData];
+  message3 = [serverData7 message];
+  v28 = [(ASSettingsOofUIController *)self trimWhitespaceAndNewlinesFromString:message3];
   v29 = [v28 length];
 
   if (v29)
@@ -981,36 +981,36 @@ LABEL_8:
   {
     if ([(ASSettingsOofUIController *)self ASOutOfOfficeEnabledState]== 2)
     {
-      v30 = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
-      v31 = [(ASSettingsOofUIController *)self _composeNewAutoReplyStringWithDate:v30];
+      userSelectedAutoReplyEndDate = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
+      v31 = [(ASSettingsOofUIController *)self _composeNewAutoReplyStringWithDate:userSelectedAutoReplyEndDate];
       [(ASSettingsOofUIController *)self setAutoReplyMessage:v31];
 
-      v32 = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
-      [(ASSettingsOofUIController *)self setPreviousUserSelectedAutoReplyEndDate:v32];
+      userSelectedAutoReplyEndDate2 = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
+      [(ASSettingsOofUIController *)self setPreviousUserSelectedAutoReplyEndDate:userSelectedAutoReplyEndDate2];
     }
 
     else
     {
-      v32 = [(ASSettingsOofUIController *)self _composeNewAutoReplyStringWithDate:0];
-      [(ASSettingsOofUIController *)self setAutoReplyMessage:v32];
+      userSelectedAutoReplyEndDate2 = [(ASSettingsOofUIController *)self _composeNewAutoReplyStringWithDate:0];
+      [(ASSettingsOofUIController *)self setAutoReplyMessage:userSelectedAutoReplyEndDate2];
     }
 
     [(ASSettingsOofUIController *)self setASOutOfOfficeDirtyStates:[(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates]| 4];
     [(ASSettingsOofUIController *)self enableSaveButton];
   }
 
-  v33 = [(ASSettingsOofUIController *)self serverData];
-  -[ASSettingsOofUIController setOooExternalMessageAudience:](self, "setOooExternalMessageAudience:", [v33 externalState]);
+  serverData8 = [(ASSettingsOofUIController *)self serverData];
+  -[ASSettingsOofUIController setOooExternalMessageAudience:](self, "setOooExternalMessageAudience:", [serverData8 externalState]);
 
-  v34 = [(ASSettingsOofUIController *)self serverData];
-  v35 = [v34 externalMessage];
+  serverData9 = [(ASSettingsOofUIController *)self serverData];
+  externalMessage = [serverData9 externalMessage];
 
-  if (v35)
+  if (externalMessage)
   {
     v36 = [NSMutableString alloc];
-    v37 = [(ASSettingsOofUIController *)self serverData];
-    v38 = [v37 externalMessage];
-    v39 = [v36 initWithString:v38];
+    serverData10 = [(ASSettingsOofUIController *)self serverData];
+    externalMessage2 = [serverData10 externalMessage];
+    v39 = [v36 initWithString:externalMessage2];
 
     [v18 replaceMatchesInString:v39 options:0 range:0 withTemplate:{objc_msgSend(v39, "length"), @"<br>"}];
     v24 = v39;
@@ -1018,13 +1018,13 @@ LABEL_8:
 
   else
   {
-    v40 = [(ASSettingsOofUIController *)self serverData];
-    [v40 setExternalMessage:&stru_30C98];
+    serverData11 = [(ASSettingsOofUIController *)self serverData];
+    [serverData11 setExternalMessage:&stru_30C98];
   }
 
-  v41 = [(ASSettingsOofUIController *)self serverData];
-  v42 = [v41 externalMessage];
-  v43 = [(ASSettingsOofUIController *)self trimWhitespaceAndNewlinesFromString:v42];
+  serverData12 = [(ASSettingsOofUIController *)self serverData];
+  externalMessage3 = [serverData12 externalMessage];
+  v43 = [(ASSettingsOofUIController *)self trimWhitespaceAndNewlinesFromString:externalMessage3];
   v44 = [v43 length];
 
   if (v44)
@@ -1037,18 +1037,18 @@ LABEL_8:
   {
     if ([(ASSettingsOofUIController *)self ASOutOfOfficeEnabledState]== 2)
     {
-      v46 = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
-      v47 = [(ASSettingsOofUIController *)self _composeNewAutoReplyStringWithDate:v46];
+      userSelectedAutoReplyEndDate3 = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
+      v47 = [(ASSettingsOofUIController *)self _composeNewAutoReplyStringWithDate:userSelectedAutoReplyEndDate3];
       [(ASSettingsOofUIController *)self setAutoExternalReplyMessage:v47];
 
-      v48 = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
-      [(ASSettingsOofUIController *)self setPreviousUserSelectedAutoReplyEndDate:v48];
+      userSelectedAutoReplyEndDate4 = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
+      [(ASSettingsOofUIController *)self setPreviousUserSelectedAutoReplyEndDate:userSelectedAutoReplyEndDate4];
     }
 
     else
     {
-      v48 = [(ASSettingsOofUIController *)self _composeNewAutoReplyStringWithDate:0];
-      [(ASSettingsOofUIController *)self setAutoExternalReplyMessage:v48];
+      userSelectedAutoReplyEndDate4 = [(ASSettingsOofUIController *)self _composeNewAutoReplyStringWithDate:0];
+      [(ASSettingsOofUIController *)self setAutoExternalReplyMessage:userSelectedAutoReplyEndDate4];
     }
 
     v45 = v49;
@@ -1058,60 +1058,60 @@ LABEL_8:
   }
 }
 
-- (void)datePickerCell:(id)a3 changedDate:(id)a4
+- (void)datePickerCell:(id)cell changedDate:(id)date
 {
-  v6 = a4;
-  [a3 setProperty:v6 forKey:@"kPSOofPickerSelectedDate"];
-  [(ASSettingsOofUIController *)self updateSelectedDate:v6];
+  dateCopy = date;
+  [cell setProperty:dateCopy forKey:@"kPSOofPickerSelectedDate"];
+  [(ASSettingsOofUIController *)self updateSelectedDate:dateCopy];
 }
 
-- (void)updateSelectedDate:(id)a3
+- (void)updateSelectedDate:(id)date
 {
-  v10 = a3;
+  dateCopy = date;
   v4 = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-  [(ASSettingsOofUIController *)self setUserSelectedAutoReplyEndDate:v10];
-  v5 = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
-  v6 = [(ASSettingsOofUIController *)self serverData];
-  v7 = [v6 endTime];
-  v8 = [v4 compareDate:v5 toDate:v7 toUnitGranularity:64];
+  [(ASSettingsOofUIController *)self setUserSelectedAutoReplyEndDate:dateCopy];
+  userSelectedAutoReplyEndDate = [(ASSettingsOofUIController *)self userSelectedAutoReplyEndDate];
+  serverData = [(ASSettingsOofUIController *)self serverData];
+  endTime = [serverData endTime];
+  v8 = [v4 compareDate:userSelectedAutoReplyEndDate toDate:endTime toUnitGranularity:64];
 
-  v9 = [(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates];
+  aSOutOfOfficeDirtyStates = [(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates];
   if (v8)
   {
-    [(ASSettingsOofUIController *)self setASOutOfOfficeDirtyStates:v9 | 2];
-    [(ASSettingsOofUIController *)self _updateAllAutoReplyMessages:v10];
+    [(ASSettingsOofUIController *)self setASOutOfOfficeDirtyStates:aSOutOfOfficeDirtyStates | 2];
+    [(ASSettingsOofUIController *)self _updateAllAutoReplyMessages:dateCopy];
     [(ASSettingsOofUIController *)self reloadSpecifierID:@"kPSOofScheduleEndDate" animated:0];
   }
 
   else
   {
-    [(ASSettingsOofUIController *)self setASOutOfOfficeDirtyStates:v9 & 0xFFFFFFFFFFFFFFFDLL];
+    [(ASSettingsOofUIController *)self setASOutOfOfficeDirtyStates:aSOutOfOfficeDirtyStates & 0xFFFFFFFFFFFFFFFDLL];
   }
 
   [(ASSettingsOofUIController *)self enableSaveButton];
 }
 
-- (void)textContentViewDidChange:(id)a3
+- (void)textContentViewDidChange:(id)change
 {
-  v54 = a3;
-  v4 = [(ASSettingsOofUIController *)self messageSpecifiers];
-  v5 = [v4 objectAtIndexedSubscript:1];
+  changeCopy = change;
+  messageSpecifiers = [(ASSettingsOofUIController *)self messageSpecifiers];
+  v5 = [messageSpecifiers objectAtIndexedSubscript:1];
 
   v6 = PSTableCellKey;
   v52 = [v5 propertyForKey:PSTableCellKey];
-  v7 = [v52 textView];
-  v8 = [(ASSettingsOofUIController *)self externalMessageSpecifiers];
-  v9 = [v8 objectAtIndexedSubscript:1];
+  textView = [v52 textView];
+  externalMessageSpecifiers = [(ASSettingsOofUIController *)self externalMessageSpecifiers];
+  v9 = [externalMessageSpecifiers objectAtIndexedSubscript:1];
 
-  v10 = [(ASSettingsOofUIController *)self externalMessageSpecifiers];
-  v11 = [v10 objectAtIndexedSubscript:1];
+  externalMessageSpecifiers2 = [(ASSettingsOofUIController *)self externalMessageSpecifiers];
+  v11 = [externalMessageSpecifiers2 objectAtIndexedSubscript:1];
   v12 = [v11 propertyForKey:v6];
 
   v50 = v12;
-  v13 = [v12 textView];
+  textView2 = [v12 textView];
   v53 = v5;
   v51 = v9;
-  if (v7 == v54)
+  if (textView == changeCopy)
   {
     v14 = v5;
   }
@@ -1121,15 +1121,15 @@ LABEL_8:
     v14 = v9;
   }
 
-  v48 = v13;
-  if (v7 == v54)
+  v48 = textView2;
+  if (textView == changeCopy)
   {
-    v15 = v7;
+    v15 = textView;
   }
 
   else
   {
-    v15 = v13;
+    v15 = textView2;
   }
 
   v16 = v14;
@@ -1140,8 +1140,8 @@ LABEL_8:
     PSTextViewInsets();
     v20 = v19;
     v22 = v21;
-    v23 = [v17 webView];
-    [v23 frame];
+    webView = [v17 webView];
+    [webView frame];
     v24 = v22 + v20 + CGRectGetHeight(v56);
     [v18 floatValue];
     v26 = v24 + v25;
@@ -1154,66 +1154,66 @@ LABEL_8:
 
     if ((v31 & 1) == 0)
     {
-      v32 = [v16 target];
+      target = [v16 target];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v33 = [v16 target];
-        v34 = [v33 table];
+        target2 = [v16 target];
+        table = [target2 table];
       }
 
       else
       {
-        v34 = 0;
+        table = 0;
       }
 
       v35 = +[UIView areAnimationsEnabled];
       [UIView setAnimationsEnabled:0];
-      [v34 beginUpdates];
+      [table beginUpdates];
       [v16 setProperty:v28 forKey:v29];
-      [v34 endUpdates];
+      [table endUpdates];
       [UIView setAnimationsEnabled:v35];
     }
   }
 
-  v36 = [v17 text];
-  v37 = [(ASSettingsOofUIController *)self serverData];
-  if (v7 == v54)
+  text = [v17 text];
+  serverData = [(ASSettingsOofUIController *)self serverData];
+  if (textView == changeCopy)
   {
-    v43 = [v37 message];
-    v44 = [(ASSettingsOofUIController *)self trimWhitespaceAndNewlinesFromString:v43];
-    v45 = [v36 compare:v44];
+    message = [serverData message];
+    v44 = [(ASSettingsOofUIController *)self trimWhitespaceAndNewlinesFromString:message];
+    v45 = [text compare:v44];
 
-    v46 = [(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates];
+    aSOutOfOfficeDirtyStates = [(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates];
     if (v45)
     {
-      [(ASSettingsOofUIController *)self setASOutOfOfficeDirtyStates:v46 | 4];
-      v42 = [v54 text];
-      [(ASSettingsOofUIController *)self setAutoReplyMessage:v42];
+      [(ASSettingsOofUIController *)self setASOutOfOfficeDirtyStates:aSOutOfOfficeDirtyStates | 4];
+      text2 = [changeCopy text];
+      [(ASSettingsOofUIController *)self setAutoReplyMessage:text2];
       goto LABEL_19;
     }
 
-    v47 = v46 & 0xFFFFFFFFFFFFFFFBLL;
+    v47 = aSOutOfOfficeDirtyStates & 0xFFFFFFFFFFFFFFFBLL;
   }
 
   else
   {
-    v38 = [v37 externalMessage];
-    v39 = [(ASSettingsOofUIController *)self trimWhitespaceAndNewlinesFromString:v38];
-    v40 = [v36 compare:v39];
+    externalMessage = [serverData externalMessage];
+    v39 = [(ASSettingsOofUIController *)self trimWhitespaceAndNewlinesFromString:externalMessage];
+    v40 = [text compare:v39];
 
-    v41 = [(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates];
+    aSOutOfOfficeDirtyStates2 = [(ASSettingsOofUIController *)self ASOutOfOfficeDirtyStates];
     if (v40)
     {
-      [(ASSettingsOofUIController *)self setASOutOfOfficeDirtyStates:v41 | 8];
-      v42 = [v54 text];
-      [(ASSettingsOofUIController *)self setAutoExternalReplyMessage:v42];
+      [(ASSettingsOofUIController *)self setASOutOfOfficeDirtyStates:aSOutOfOfficeDirtyStates2 | 8];
+      text2 = [changeCopy text];
+      [(ASSettingsOofUIController *)self setAutoExternalReplyMessage:text2];
 LABEL_19:
 
       goto LABEL_23;
     }
 
-    v47 = v41 & 0xFFFFFFFFFFFFFFF7;
+    v47 = aSOutOfOfficeDirtyStates2 & 0xFFFFFFFFFFFFFFF7;
   }
 
   [(ASSettingsOofUIController *)self setASOutOfOfficeDirtyStates:v47];
@@ -1223,37 +1223,37 @@ LABEL_23:
 
 - (void)dismissKeyboard
 {
-  v2 = [(ASSettingsOofUIController *)self table];
-  v3 = [v2 window];
-  v4 = [v3 firstResponder];
+  table = [(ASSettingsOofUIController *)self table];
+  window = [table window];
+  firstResponder = [window firstResponder];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 resignFirstResponder];
+    [firstResponder resignFirstResponder];
   }
 }
 
 - (void)showKeyboard
 {
-  v2 = [(ASSettingsOofUIController *)self messageSpecifiers];
-  v3 = [v2 objectAtIndexedSubscript:1];
+  messageSpecifiers = [(ASSettingsOofUIController *)self messageSpecifiers];
+  v3 = [messageSpecifiers objectAtIndexedSubscript:1];
   v6 = [v3 propertyForKey:PSTableCellKey];
 
-  v4 = [v6 textView];
-  v5 = v4;
-  if (v4)
+  textView = [v6 textView];
+  v5 = textView;
+  if (textView)
   {
-    [v4 becomeFirstResponder];
+    [textView becomeFirstResponder];
   }
 }
 
-- (id)trimWhitespaceAndNewlinesFromString:(id)a3
+- (id)trimWhitespaceAndNewlinesFromString:(id)string
 {
-  v3 = [(ASSettingsOofUIController *)self serverData];
-  v4 = [v3 message];
+  serverData = [(ASSettingsOofUIController *)self serverData];
+  message = [serverData message];
   v5 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  v6 = [message stringByTrimmingCharactersInSet:v5];
 
   return v6;
 }

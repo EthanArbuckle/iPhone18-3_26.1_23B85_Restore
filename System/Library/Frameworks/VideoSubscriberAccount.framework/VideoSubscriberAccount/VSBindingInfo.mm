@@ -1,10 +1,10 @@
 @interface VSBindingInfo
 - (VSBindingInfo)init;
-- (VSBindingInfo)initWithObservedObject:(id)a3 keyPath:(id)a4 options:(id)a5;
+- (VSBindingInfo)initWithObservedObject:(id)object keyPath:(id)path options:(id)options;
 - (id)value;
 - (id)weakObservedObject;
 - (void)requireExpectedConcurrency;
-- (void)setValue:(id)a3;
+- (void)setValue:(id)value;
 @end
 
 @implementation VSBindingInfo
@@ -19,21 +19,21 @@
   return 0;
 }
 
-- (VSBindingInfo)initWithObservedObject:(id)a3 keyPath:(id)a4 options:(id)a5
+- (VSBindingInfo)initWithObservedObject:(id)object keyPath:(id)path options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  objectCopy = object;
+  pathCopy = path;
+  optionsCopy = options;
+  if (objectCopy)
   {
-    if (v9)
+    if (pathCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_11:
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The keyPath parameter must not be nil."];
-    if (v10)
+    if (optionsCopy)
     {
       goto LABEL_4;
     }
@@ -42,13 +42,13 @@ LABEL_11:
   }
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The observedObject parameter must not be nil."];
-  if (!v9)
+  if (!pathCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_3:
-  if (v10)
+  if (optionsCopy)
   {
     goto LABEL_4;
   }
@@ -62,13 +62,13 @@ LABEL_4:
   v12 = v11;
   if (v11)
   {
-    v11->_unsafeObservedObject = v8;
-    objc_storeWeak(&v11->_weakObservedObject, v8);
-    v13 = [v9 copy];
+    v11->_unsafeObservedObject = objectCopy;
+    objc_storeWeak(&v11->_weakObservedObject, objectCopy);
+    v13 = [pathCopy copy];
     keyPath = v12->_keyPath;
     v12->_keyPath = v13;
 
-    v15 = [v10 objectForKey:@"VSValueTransformerBindingOption"];
+    v15 = [optionsCopy objectForKey:@"VSValueTransformerBindingOption"];
     v16 = v15;
     if (v15)
     {
@@ -131,7 +131,7 @@ LABEL_4:
       v22 = 0;
     }
 
-    v30 = [v10 copy];
+    v30 = [optionsCopy copy];
     options = v12->_options;
     v12->_options = v30;
 
@@ -143,33 +143,33 @@ LABEL_4:
   return v12;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v9 = a3;
-  v4 = [(VSBindingInfo *)self valueTransformer];
-  v5 = v4;
-  v6 = v9;
-  if (v4)
+  valueCopy = value;
+  valueTransformer = [(VSBindingInfo *)self valueTransformer];
+  v5 = valueTransformer;
+  v6 = valueCopy;
+  if (valueTransformer)
   {
-    v6 = [v4 reverseTransformedValue:v9];
+    v6 = [valueTransformer reverseTransformedValue:valueCopy];
   }
 
-  v7 = [(VSBindingInfo *)self weakObservedObject];
-  v8 = [(VSBindingInfo *)self keyPath];
-  [v7 setValue:v6 forKeyPath:v8];
+  weakObservedObject = [(VSBindingInfo *)self weakObservedObject];
+  keyPath = [(VSBindingInfo *)self keyPath];
+  [weakObservedObject setValue:v6 forKeyPath:keyPath];
 }
 
 - (id)value
 {
-  v3 = [(VSBindingInfo *)self weakObservedObject];
-  v4 = [(VSBindingInfo *)self keyPath];
-  v5 = [v3 valueForKeyPath:v4];
+  weakObservedObject = [(VSBindingInfo *)self weakObservedObject];
+  keyPath = [(VSBindingInfo *)self keyPath];
+  v5 = [weakObservedObject valueForKeyPath:keyPath];
 
-  v6 = [(VSBindingInfo *)self valueTransformer];
-  v7 = v6;
-  if (v6)
+  valueTransformer = [(VSBindingInfo *)self valueTransformer];
+  v7 = valueTransformer;
+  if (valueTransformer)
   {
-    v8 = [v6 transformedValue:v5];
+    v8 = [valueTransformer transformedValue:v5];
 
     v5 = v8;
   }
@@ -181,7 +181,7 @@ LABEL_4:
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = 138412546;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2112;
   v6 = a2;
   _os_log_fault_impl(&dword_23AB8E000, log, OS_LOG_TYPE_FAULT, "Running on underlying queue %@ instead of required underlying queue %@", &v3, 0x16u);

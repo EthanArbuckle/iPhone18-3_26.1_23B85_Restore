@@ -2,8 +2,8 @@
 - (TUIPagedScrollableAction)action;
 - (_NSRange)currentPageIndices;
 - (_TUIPagedScrollableProxy)init;
-- (void)pagedScrollableActionChangeToPageIndex:(unint64_t)a3;
-- (void)updateWithPageIndices:(_NSRange)a3 pageCount:(unint64_t)a4;
+- (void)pagedScrollableActionChangeToPageIndex:(unint64_t)index;
+- (void)updateWithPageIndices:(_NSRange)indices pageCount:(unint64_t)count;
 @end
 
 @implementation _TUIPagedScrollableProxy
@@ -23,13 +23,13 @@
   return v2;
 }
 
-- (void)updateWithPageIndices:(_NSRange)a3 pageCount:(unint64_t)a4
+- (void)updateWithPageIndices:(_NSRange)indices pageCount:(unint64_t)count
 {
-  v5 = self->_currentPageIndices.location == a3.location && self->_currentPageIndices.length == a3.length;
-  if (!v5 || self->_pageCount != a4)
+  v5 = self->_currentPageIndices.location == indices.location && self->_currentPageIndices.length == indices.length;
+  if (!v5 || self->_pageCount != count)
   {
-    self->_currentPageIndices = a3;
-    self->_pageCount = a4;
+    self->_currentPageIndices = indices;
+    self->_pageCount = count;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
@@ -60,10 +60,10 @@
   }
 }
 
-- (void)pagedScrollableActionChangeToPageIndex:(unint64_t)a3
+- (void)pagedScrollableActionChangeToPageIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_action);
-  [WeakRetained pagedScrollableActionChangeToPageIndex:a3];
+  [WeakRetained pagedScrollableActionChangeToPageIndex:index];
 }
 
 - (_NSRange)currentPageIndices

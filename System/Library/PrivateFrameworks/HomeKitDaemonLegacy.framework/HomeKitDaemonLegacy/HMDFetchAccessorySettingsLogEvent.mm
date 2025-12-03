@@ -1,5 +1,5 @@
 @interface HMDFetchAccessorySettingsLogEvent
-- (HMDFetchAccessorySettingsLogEvent)initWithKeyPaths:(id)a3 startTime:(unint64_t)a4 requestingClientName:(id)a5 error:(id)a6;
+- (HMDFetchAccessorySettingsLogEvent)initWithKeyPaths:(id)paths startTime:(unint64_t)time requestingClientName:(id)name error:(id)error;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -8,39 +8,39 @@
 - (NSDictionary)coreAnalyticsEventDictionary
 {
   v3 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:9];
-  v4 = [(HMMLogEvent *)self error];
-  v5 = v4;
-  if (v4)
+  error = [(HMMLogEvent *)self error];
+  v5 = error;
+  if (error)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "code")}];
+    v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(error, "code")}];
     [v3 setObject:v6 forKeyedSubscript:@"errorCode"];
 
-    v7 = [v5 domain];
-    [v3 setObject:v7 forKeyedSubscript:@"errorDomain"];
+    domain = [v5 domain];
+    [v3 setObject:domain forKeyedSubscript:@"errorDomain"];
   }
 
   v8 = +[HMDLogEventHistograms lowVolumeHistogram];
-  v9 = [(HMDFetchAccessorySettingsLogEvent *)self keyPaths];
-  v10 = [v8 intervalForValue:{objc_msgSend(v9, "count")}];
-  v11 = [v10 start];
-  [v3 setObject:v11 forKeyedSubscript:@"keyPathCount"];
+  keyPaths = [(HMDFetchAccessorySettingsLogEvent *)self keyPaths];
+  v10 = [v8 intervalForValue:{objc_msgSend(keyPaths, "count")}];
+  start = [v10 start];
+  [v3 setObject:start forKeyedSubscript:@"keyPathCount"];
 
   v12 = +[HMDLogEventHistograms lowVolumeHistogram];
-  v13 = [(HMDFetchAccessorySettingsLogEvent *)self failedKeyPaths];
-  v14 = [v12 intervalForValue:{objc_msgSend(v13, "count")}];
-  v15 = [v14 start];
-  [v3 setObject:v15 forKeyedSubscript:@"failedKeyPaths"];
+  failedKeyPaths = [(HMDFetchAccessorySettingsLogEvent *)self failedKeyPaths];
+  v14 = [v12 intervalForValue:{objc_msgSend(failedKeyPaths, "count")}];
+  start2 = [v14 start];
+  [v3 setObject:start2 forKeyedSubscript:@"failedKeyPaths"];
 
   v16 = +[HMDLogEventHistograms lowVolumeHistogram];
-  v17 = [(HMDFetchAccessorySettingsLogEvent *)self succeededKeyPaths];
-  v18 = [v16 intervalForValue:{objc_msgSend(v17, "count")}];
-  v19 = [v18 start];
-  [v3 setObject:v19 forKeyedSubscript:@"succeededKeyPaths"];
+  succeededKeyPaths = [(HMDFetchAccessorySettingsLogEvent *)self succeededKeyPaths];
+  v18 = [v16 intervalForValue:{objc_msgSend(succeededKeyPaths, "count")}];
+  start3 = [v18 start];
+  [v3 setObject:start3 forKeyedSubscript:@"succeededKeyPaths"];
 
   if ([(HMDFetchAccessorySettingsLogEvent *)self responseTimeStamp])
   {
-    v20 = [(HMDFetchAccessorySettingsLogEvent *)self responseTimeStamp];
-    v21 = v20 - [(HMDFetchAccessorySettingsLogEvent *)self startTimeStamp];
+    responseTimeStamp = [(HMDFetchAccessorySettingsLogEvent *)self responseTimeStamp];
+    v21 = responseTimeStamp - [(HMDFetchAccessorySettingsLogEvent *)self startTimeStamp];
   }
 
   else
@@ -50,33 +50,33 @@
 
   v22 = +[HMDLogEventHistograms latencyHistogram];
   v23 = [v22 intervalForValue:v21];
-  v24 = [v23 start];
-  [v3 setObject:v24 forKeyedSubscript:@"responseTime"];
+  start4 = [v23 start];
+  [v3 setObject:start4 forKeyedSubscript:@"responseTime"];
 
-  v25 = [(HMDFetchAccessorySettingsLogEvent *)self requestingClientName];
-  [v3 setObject:v25 forKeyedSubscript:@"requestingClientName"];
+  requestingClientName = [(HMDFetchAccessorySettingsLogEvent *)self requestingClientName];
+  [v3 setObject:requestingClientName forKeyedSubscript:@"requestingClientName"];
 
   return v3;
 }
 
-- (HMDFetchAccessorySettingsLogEvent)initWithKeyPaths:(id)a3 startTime:(unint64_t)a4 requestingClientName:(id)a5 error:(id)a6
+- (HMDFetchAccessorySettingsLogEvent)initWithKeyPaths:(id)paths startTime:(unint64_t)time requestingClientName:(id)name error:(id)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  pathsCopy = paths;
+  nameCopy = name;
+  errorCopy = error;
   v23.receiver = self;
   v23.super_class = HMDFetchAccessorySettingsLogEvent;
   v13 = [(HMMLogEvent *)&v23 init];
   v14 = v13;
   if (v13)
   {
-    [(HMMLogEvent *)v13 setError:v12];
-    v15 = [v10 copy];
+    [(HMMLogEvent *)v13 setError:errorCopy];
+    v15 = [pathsCopy copy];
     keyPaths = v14->_keyPaths;
     v14->_keyPaths = v15;
 
-    v14->_startTimeStamp = a4;
-    v17 = [v11 copy];
+    v14->_startTimeStamp = time;
+    v17 = [nameCopy copy];
     requestingClientName = v14->_requestingClientName;
     v14->_requestingClientName = v17;
 

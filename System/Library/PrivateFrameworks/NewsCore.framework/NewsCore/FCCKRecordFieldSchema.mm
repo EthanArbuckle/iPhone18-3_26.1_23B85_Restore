@@ -1,14 +1,14 @@
 @interface FCCKRecordFieldSchema
-+ (FCCKRecordFieldSchema)fieldWithName:(int)a3 type:(BOOL)a4 isEncrypted:;
-- (BOOL)isEqual:(id)a3;
++ (FCCKRecordFieldSchema)fieldWithName:(int)name type:(BOOL)type isEncrypted:;
+- (BOOL)isEqual:(id)equal;
 - (FCCKRecordFieldSchema)init;
-- (id)sanitizeValue:(uint64_t)a1;
+- (id)sanitizeValue:(uint64_t)value;
 - (unint64_t)hash;
 @end
 
 @implementation FCCKRecordFieldSchema
 
-+ (FCCKRecordFieldSchema)fieldWithName:(int)a3 type:(BOOL)a4 isEncrypted:
++ (FCCKRecordFieldSchema)fieldWithName:(int)name type:(BOOL)type isEncrypted:
 {
   v7 = a2;
   objc_opt_self();
@@ -23,8 +23,8 @@
     if (v10)
     {
       objc_storeStrong(&v10->_name, a2);
-      v8->_type = a3;
-      v8->_isEncrypted = a4;
+      v8->_type = name;
+      v8->_isEncrypted = type;
     }
   }
 
@@ -57,11 +57,11 @@
   objc_exception_throw(v6);
 }
 
-- (id)sanitizeValue:(uint64_t)a1
+- (id)sanitizeValue:(uint64_t)value
 {
   v52 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (!a1)
+  if (!value)
   {
     v2 = 0;
     goto LABEL_4;
@@ -75,7 +75,7 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  v7 = *(a1 + 12);
+  v7 = *(value + 12);
   if (v7 > 2)
   {
     if (v7 == 3)
@@ -86,7 +86,7 @@ LABEL_3:
         v24 = objc_alloc(MEMORY[0x1E696AEC0]);
         v25 = objc_opt_class();
         v26 = NSStringFromClass(v25);
-        v27 = *(a1 + 16);
+        v27 = *(value + 16);
         v28 = [v24 initWithFormat:@"unexpected type %@ for field %@", v26, v27];
         *buf = 136315906;
         v45 = "[FCCKRecordFieldSchema sanitizeValue:]";
@@ -130,7 +130,7 @@ LABEL_46:
             v29 = objc_alloc(MEMORY[0x1E696AEC0]);
             v30 = objc_opt_class();
             v31 = NSStringFromClass(v30);
-            v32 = *(a1 + 16);
+            v32 = *(value + 16);
             v33 = [v29 initWithFormat:@"unexpected type %@ for field %@", v31, v32];
             *buf = 136315906;
             v45 = "[FCCKRecordFieldSchema sanitizeValue:]";
@@ -163,9 +163,9 @@ LABEL_46:
           }
 
           v22 = v14;
-          v23 = [v22 firstObject];
+          firstObject = [v22 firstObject];
 
-          if (v23)
+          if (firstObject)
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -173,7 +173,7 @@ LABEL_46:
               v39 = objc_alloc(MEMORY[0x1E696AEC0]);
               v40 = objc_opt_class();
               v41 = NSStringFromClass(v40);
-              v42 = *(a1 + 16);
+              v42 = *(value + 16);
               v43 = [v39 initWithFormat:@"unexpected type within array %@ for field %@", v41, v42];
               *buf = 136315906;
               v45 = "[FCCKRecordFieldSchema sanitizeValue:]";
@@ -199,7 +199,7 @@ LABEL_46:
         v34 = objc_alloc(MEMORY[0x1E696AEC0]);
         v35 = objc_opt_class();
         v36 = NSStringFromClass(v35);
-        v37 = *(a1 + 16);
+        v37 = *(value + 16);
         v38 = [v34 initWithFormat:@"unexpected type %@ for field %@", v36, v37];
         *buf = 136315906;
         v45 = "[FCCKRecordFieldSchema sanitizeValue:]";
@@ -244,7 +244,7 @@ LABEL_46:
       v15 = objc_alloc(MEMORY[0x1E696AEC0]);
       v16 = objc_opt_class();
       v10 = NSStringFromClass(v16);
-      v11 = *(a1 + 16);
+      v11 = *(value + 16);
       v12 = [v15 initWithFormat:@"unexpected type %@ for field %@", v10, v11];
       *buf = 136315906;
       v45 = "[FCCKRecordFieldSchema sanitizeValue:]";
@@ -269,7 +269,7 @@ LABEL_37:
       v19 = objc_alloc(MEMORY[0x1E696AEC0]);
       v20 = objc_opt_class();
       v10 = NSStringFromClass(v20);
-      v11 = *(a1 + 16);
+      v11 = *(value + 16);
       v12 = [v19 initWithFormat:@"unexpected type %@ for field %@", v10, v11];
       *buf = 136315906;
       v45 = "[FCCKRecordFieldSchema sanitizeValue:]";
@@ -291,7 +291,7 @@ LABEL_37:
       v8 = objc_alloc(MEMORY[0x1E696AEC0]);
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
-      v11 = *(a1 + 16);
+      v11 = *(value + 16);
       v12 = [v8 initWithFormat:@"unexpected type %@ for field %@", v10, v11];
       *buf = 136315906;
       v45 = "[FCCKRecordFieldSchema sanitizeValue:]";
@@ -312,15 +312,15 @@ LABEL_4:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -390,16 +390,16 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_name;
   }
 
   v3 = [(FCCKRecordFieldSchema *)self hash];
-  if (v2)
+  if (selfCopy)
   {
-    type = v2->_type;
+    type = selfCopy->_type;
   }
 
   else
@@ -409,9 +409,9 @@ LABEL_17:
 
   v5 = [MEMORY[0x1E696AD98] numberWithInt:type];
   v6 = [v5 hash];
-  if (v2)
+  if (selfCopy)
   {
-    isEncrypted = v2->_isEncrypted;
+    isEncrypted = selfCopy->_isEncrypted;
   }
 
   else

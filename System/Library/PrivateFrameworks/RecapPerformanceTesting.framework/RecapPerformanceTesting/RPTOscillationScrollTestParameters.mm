@@ -1,27 +1,27 @@
 @interface RPTOscillationScrollTestParameters
-- (CGPoint)_incrementPoint:(CGPoint)a3 final:(BOOL)a4;
+- (CGPoint)_incrementPoint:(CGPoint)point final:(BOOL)final;
 - (CGPoint)finalFingerPosition;
 - (CGPoint)initialFingerPosition;
 - (CGRect)scrollingBounds;
-- (RPTOscillationScrollTestParameters)initWithTestName:(id)a3 iterations:(unint64_t)a4 scrollingBounds:(CGRect)a5 useFlicks:(BOOL)a6 preventDismissalGestures:(BOOL)a7 initialAmplitude:(double)a8 amplitudeVariationPerIteration:(double)a9 initialDirection:(int64_t)a10 iterationDuration:(double)a11 finishWithHalfIteration:(BOOL)a12 completionHandler:(id)a13;
+- (RPTOscillationScrollTestParameters)initWithTestName:(id)name iterations:(unint64_t)iterations scrollingBounds:(CGRect)bounds useFlicks:(BOOL)flicks preventDismissalGestures:(BOOL)gestures initialAmplitude:(double)amplitude amplitudeVariationPerIteration:(double)iteration initialDirection:(int64_t)self0 iterationDuration:(double)self1 finishWithHalfIteration:(BOOL)self2 completionHandler:(id)self3;
 - (id)composerBlock;
-- (void)scrollWithComposer:(id)a3 fromPoint:(CGPoint)a4 toPoint:(CGPoint)a5 duration:(double)a6;
+- (void)scrollWithComposer:(id)composer fromPoint:(CGPoint)point toPoint:(CGPoint)toPoint duration:(double)duration;
 @end
 
 @implementation RPTOscillationScrollTestParameters
 
-- (RPTOscillationScrollTestParameters)initWithTestName:(id)a3 iterations:(unint64_t)a4 scrollingBounds:(CGRect)a5 useFlicks:(BOOL)a6 preventDismissalGestures:(BOOL)a7 initialAmplitude:(double)a8 amplitudeVariationPerIteration:(double)a9 initialDirection:(int64_t)a10 iterationDuration:(double)a11 finishWithHalfIteration:(BOOL)a12 completionHandler:(id)a13
+- (RPTOscillationScrollTestParameters)initWithTestName:(id)name iterations:(unint64_t)iterations scrollingBounds:(CGRect)bounds useFlicks:(BOOL)flicks preventDismissalGestures:(BOOL)gestures initialAmplitude:(double)amplitude amplitudeVariationPerIteration:(double)iteration initialDirection:(int64_t)self0 iterationDuration:(double)self1 finishWithHalfIteration:(BOOL)self2 completionHandler:(id)self3
 {
-  v13 = a12;
-  v15 = a7;
-  v16 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  halfIterationCopy = halfIteration;
+  gesturesCopy = gestures;
+  flicksCopy = flicks;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v63 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v27 = a13;
+  nameCopy = name;
+  handlerCopy = handler;
   v28 = RPTLogTestRunning();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
@@ -33,30 +33,30 @@
     v30 = v29;
     v31 = @"YES";
     *buf = 138545922;
-    v42 = v26;
+    v42 = nameCopy;
     v43 = 2050;
-    if (!v27)
+    if (!handlerCopy)
     {
       v31 = @"NULL";
     }
 
-    v44 = a4;
+    iterationsCopy = iterations;
     v45 = 2114;
     v46 = v29;
     v47 = 1024;
-    v48 = v16;
+    v48 = flicksCopy;
     v49 = 1024;
-    v50 = v15;
+    v50 = gesturesCopy;
     v51 = 2048;
-    v52 = a8;
+    amplitudeCopy = amplitude;
     v53 = 2048;
-    v54 = a9;
+    iterationCopy = iteration;
     v55 = 2050;
-    v56 = a10;
+    directionCopy = direction;
     v57 = 2048;
-    v58 = a11;
+    durationCopy = duration;
     v59 = 1024;
-    v60 = v13;
+    v60 = halfIterationCopy;
     v61 = 2114;
     v62 = v31;
     _os_log_impl(&dword_261A17000, v28, OS_LOG_TYPE_DEFAULT, "RPT: [RPTOscillationScrollTestParameters initWithTestName:]", buf, 0x64u);
@@ -67,24 +67,24 @@
   v32 = [(RPTOscillationScrollTestParameters *)&v40 init];
   if (v32)
   {
-    v33 = [v26 copy];
+    v33 = [nameCopy copy];
     testName = v32->_testName;
     v32->_testName = v33;
 
-    v32->_iterations = a4;
+    v32->_iterations = iterations;
     v32->_scrollingBounds.origin.y = y;
     v32->_scrollingBounds.size.width = width;
     v32->_scrollingBounds.size.height = height;
-    v32->_shouldFlick = v16;
+    v32->_shouldFlick = flicksCopy;
     v32->_useDefaultDurationForFlick = 1.0;
-    v32->_preventDismissalGestures = v15;
-    v32->_amplitudeVariationPerIteration = a9;
-    v32->_initialAmplitude = a8;
-    v32->_initialDirection = a10;
-    v32->_iterationDuration = a11;
+    v32->_preventDismissalGestures = gesturesCopy;
+    v32->_amplitudeVariationPerIteration = iteration;
+    v32->_initialAmplitude = amplitude;
+    v32->_initialDirection = direction;
+    v32->_iterationDuration = duration;
     v32->_scrollingBounds.origin.x = x;
-    v32->_finishWithHalfIteration = v13;
-    v35 = MEMORY[0x2667162B0](v27);
+    v32->_finishWithHalfIteration = halfIterationCopy;
+    v35 = MEMORY[0x2667162B0](handlerCopy);
     completionHandler = v32->_completionHandler;
     v32->_completionHandler = v35;
 
@@ -96,12 +96,12 @@
   return v32;
 }
 
-- (CGPoint)_incrementPoint:(CGPoint)a3 final:(BOOL)a4
+- (CGPoint)_incrementPoint:(CGPoint)point final:(BOOL)final
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = -(self->_amplitudeVariationPerIteration * 0.5);
-  if (a4)
+  if (final)
   {
     v6 = self->_amplitudeVariationPerIteration * 0.5;
   }
@@ -230,14 +230,14 @@ uint64_t __51__RPTOscillationScrollTestParameters_composerBlock__block_invoke(ui
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)scrollWithComposer:(id)a3 fromPoint:(CGPoint)a4 toPoint:(CGPoint)a5 duration:(double)a6
+- (void)scrollWithComposer:(id)composer fromPoint:(CGPoint)point toPoint:(CGPoint)toPoint duration:(double)duration
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
+  y = toPoint.y;
+  x = toPoint.x;
+  v9 = point.y;
+  v10 = point.x;
   v36 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  composerCopy = composer;
   v13 = RPTLogTestRunning();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -248,43 +248,43 @@ uint64_t __51__RPTOscillationScrollTestParameters_composerBlock__block_invoke(ui
     v38.y = y;
     v15 = _RPTStringFromCGPoint(v38);
     v28 = 138544130;
-    v29 = v12;
+    v29 = composerCopy;
     v30 = 2114;
     v31 = v14;
     v32 = 2114;
     v33 = v15;
     v34 = 2048;
-    v35 = a6;
+    durationCopy = duration;
     _os_log_impl(&dword_261A17000, v13, OS_LOG_TYPE_DEFAULT, "RPT: [RPTOscillationScrollTestParameters scrollWithComposer:]", &v28, 0x2Au);
   }
 
   v16 = x - v10;
   v17 = y - v9;
-  v18 = [(RPTOscillationScrollTestParameters *)self shouldFlick];
-  v19 = [(RPTOscillationScrollTestParameters *)self conversion];
-  [v19 convertPoint:{v10, v9}];
+  shouldFlick = [(RPTOscillationScrollTestParameters *)self shouldFlick];
+  conversion = [(RPTOscillationScrollTestParameters *)self conversion];
+  [conversion convertPoint:{v10, v9}];
   v21 = v20;
   v23 = v22;
-  v24 = [(RPTOscillationScrollTestParameters *)self conversion];
-  [v24 convertVector:{v16, v17}];
-  if (v18)
+  conversion2 = [(RPTOscillationScrollTestParameters *)self conversion];
+  [conversion2 convertVector:{v16, v17}];
+  if (shouldFlick)
   {
     if (self->_useDefaultDurationForFlick == 0.0)
     {
-      v27 = a6;
+      durationCopy2 = duration;
     }
 
     else
     {
-      v27 = 0.5;
+      durationCopy2 = 0.5;
     }
 
-    [v12 _pointerOrFingerFlickAt:v21 byDelta:v23 duration:{v25, v26, v27}];
+    [composerCopy _pointerOrFingerFlickAt:v21 byDelta:v23 duration:{v25, v26, durationCopy2}];
   }
 
   else
   {
-    [v12 _pointerOrFingerScrollAt:0 byDelta:v21 duration:v23 touchDownAndLift:{v25, v26, a6}];
+    [composerCopy _pointerOrFingerScrollAt:0 byDelta:v21 duration:v23 touchDownAndLift:{v25, v26, duration}];
   }
 }
 
@@ -295,9 +295,9 @@ uint64_t __51__RPTOscillationScrollTestParameters_composerBlock__block_invoke(ui
   v9 = v8;
   [(RPTOscillationScrollTestParameters *)self initialAmplitude];
   v11 = v10 * 0.5;
-  v12 = [(RPTOscillationScrollTestParameters *)self initialDirection];
+  initialDirection = [(RPTOscillationScrollTestParameters *)self initialDirection];
 
-  v13 = RPTCGPointAdvanceInDirectionByAmount(v12, Midpoint, v9, v11);
+  v13 = RPTCGPointAdvanceInDirectionByAmount(initialDirection, Midpoint, v9, v11);
   result.y = v14;
   result.x = v13;
   return result;

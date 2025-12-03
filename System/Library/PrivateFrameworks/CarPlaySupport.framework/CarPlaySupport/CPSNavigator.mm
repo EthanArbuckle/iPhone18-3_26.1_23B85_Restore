@@ -1,84 +1,84 @@
 @interface CPSNavigator
 - (CARNavigationOwnershipManagerDelegate)navigationOwnershipDelegate;
-- (CPSNavigator)initWithIdentifier:(id)a3 currentSession:(id)a4 forTrip:(id)a5;
-- (void)_sync_displayUpdateManeuverTravelEstimates:(id)a3 forManeuver:(id)a4;
-- (void)_sync_displayUpdateTripTravelEstimates:(id)a3;
-- (void)addDisplayDelegate:(id)a3;
-- (void)addLaneGuidances:(id)a3;
-- (void)addManeuvers:(id)a3;
+- (CPSNavigator)initWithIdentifier:(id)identifier currentSession:(id)session forTrip:(id)trip;
+- (void)_sync_displayUpdateManeuverTravelEstimates:(id)estimates forManeuver:(id)maneuver;
+- (void)_sync_displayUpdateTripTravelEstimates:(id)estimates;
+- (void)addDisplayDelegate:(id)delegate;
+- (void)addLaneGuidances:(id)guidances;
+- (void)addManeuvers:(id)maneuvers;
 - (void)cancelTrip;
 - (void)clearCurrentLaneGuidance;
 - (void)dealloc;
 - (void)finishTrip;
 - (void)invalidate;
-- (void)navigationOwnershipChangedToOwner:(unint64_t)a3;
-- (void)pauseTripForReason:(unint64_t)a3 description:(id)a4 turnCardColor:(id)a5;
-- (void)removeDisplayDelegate:(id)a3;
-- (void)routeChangedWithReason:(unsigned __int8)a3 routeInfo:(id)a4;
-- (void)setAppSupportsInstrumentCluster:(BOOL)a3;
-- (void)setCompleted:(BOOL)a3;
-- (void)setCurrentLaneGuidance:(id)a3;
-- (void)setCurrentRoadNameVariants:(id)a3;
-- (void)setDestinationNameVariants:(id)a3;
-- (void)setManeuverState:(int64_t)a3;
-- (void)setSendsNavigationMetadata:(BOOL)a3;
-- (void)showManeuvers:(id)a3 usingDisplayStyles:(id)a4;
+- (void)navigationOwnershipChangedToOwner:(unint64_t)owner;
+- (void)pauseTripForReason:(unint64_t)reason description:(id)description turnCardColor:(id)color;
+- (void)removeDisplayDelegate:(id)delegate;
+- (void)routeChangedWithReason:(unsigned __int8)reason routeInfo:(id)info;
+- (void)setAppSupportsInstrumentCluster:(BOOL)cluster;
+- (void)setCompleted:(BOOL)completed;
+- (void)setCurrentLaneGuidance:(id)guidance;
+- (void)setCurrentRoadNameVariants:(id)variants;
+- (void)setDestinationNameVariants:(id)variants;
+- (void)setManeuverState:(int64_t)state;
+- (void)setSendsNavigationMetadata:(BOOL)metadata;
+- (void)showManeuvers:(id)maneuvers usingDisplayStyles:(id)styles;
 - (void)startRerouting;
-- (void)updateTravelEstimates:(id)a3 forManeuver:(id)a4;
-- (void)updateTripTravelEstimates:(id)a3;
+- (void)updateTravelEstimates:(id)estimates forManeuver:(id)maneuver;
+- (void)updateTripTravelEstimates:(id)estimates;
 @end
 
 @implementation CPSNavigator
 
-- (CPSNavigator)initWithIdentifier:(id)a3 currentSession:(id)a4 forTrip:(id)a5
+- (CPSNavigator)initWithIdentifier:(id)identifier currentSession:(id)session forTrip:(id)trip
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, session);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
-  v5 = v17;
-  v17 = 0;
+  objc_storeStrong(&v14, trip);
+  v5 = selfCopy;
+  selfCopy = 0;
   v13.receiver = v5;
   v13.super_class = CPSNavigator;
   v12 = [(CPSNavigator *)&v13 init];
-  v17 = v12;
-  objc_storeStrong(&v17, v12);
+  selfCopy = v12;
+  objc_storeStrong(&selfCopy, v12);
   if (v12)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    displayDelegates = v17->_displayDelegates;
-    v17->_displayDelegates = v6;
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    displayDelegates = selfCopy->_displayDelegates;
+    selfCopy->_displayDelegates = weakObjectsHashTable;
     MEMORY[0x277D82BD8](displayDelegates);
-    objc_storeStrong(&v17->_currentSession, v15);
-    objc_storeStrong(&v17->_trip, v14);
+    objc_storeStrong(&selfCopy->_currentSession, v15);
+    objc_storeStrong(&selfCopy->_trip, v14);
   }
 
-  v9 = MEMORY[0x277D82BE0](v17);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (void)setAppSupportsInstrumentCluster:(BOOL)a3
+- (void)setAppSupportsInstrumentCluster:(BOOL)cluster
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
-  if (self->_appSupportsInstrumentCluster != a3)
+  clusterCopy = cluster;
+  if (self->_appSupportsInstrumentCluster != cluster)
   {
-    v9->_appSupportsInstrumentCluster = v7;
-    if (v9->_appSupportsInstrumentCluster)
+    selfCopy->_appSupportsInstrumentCluster = clusterCopy;
+    if (selfCopy->_appSupportsInstrumentCluster)
     {
       v6 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:@"maps:/car/instrumentcluster"];
       v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:@"maps:/car/instrumentcluster/map"];
-      currentSession = v9->_currentSession;
+      currentSession = selfCopy->_currentSession;
       v10[0] = v6;
       v10[1] = v5;
       v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
@@ -93,145 +93,145 @@
 - (void)invalidate
 {
   [(CPSNavigator *)self setMetadataDelegate:0];
-  v2 = [(CPSNavigator *)self displayDelegates];
-  [(NSHashTable *)v2 removeAllObjects];
-  MEMORY[0x277D82BD8](v2);
+  displayDelegates = [(CPSNavigator *)self displayDelegates];
+  [(NSHashTable *)displayDelegates removeAllObjects];
+  MEMORY[0x277D82BD8](displayDelegates);
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(CPSNavigator *)self invalidate];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = CPSNavigator;
   [(CPSNavigator *)&v2 dealloc];
 }
 
-- (void)setCompleted:(BOOL)a3
+- (void)setCompleted:(BOOL)completed
 {
-  if (self->_completed != a3)
+  if (self->_completed != completed)
   {
-    self->_completed = a3;
+    self->_completed = completed;
   }
 }
 
-- (void)addDisplayDelegate:(id)a3
+- (void)addDisplayDelegate:(id)delegate
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(CPSNavigator *)v5 displayDelegates];
-  [(NSHashTable *)v3 addObject:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, delegate);
+  displayDelegates = [(CPSNavigator *)selfCopy displayDelegates];
+  [(NSHashTable *)displayDelegates addObject:location[0]];
+  MEMORY[0x277D82BD8](displayDelegates);
   objc_storeStrong(location, 0);
 }
 
-- (void)removeDisplayDelegate:(id)a3
+- (void)removeDisplayDelegate:(id)delegate
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(CPSNavigator *)v5 displayDelegates];
-  [(NSHashTable *)v3 removeObject:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, delegate);
+  displayDelegates = [(CPSNavigator *)selfCopy displayDelegates];
+  [(NSHashTable *)displayDelegates removeObject:location[0]];
+  MEMORY[0x277D82BD8](displayDelegates);
   objc_storeStrong(location, 0);
 }
 
-- (void)setCurrentLaneGuidance:(id)a3
+- (void)setCurrentLaneGuidance:(id)guidance
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(CPSNavigator *)v5 metadataDelegate];
-  [(CPSNavigationMetadataDelegate *)v3 setCurrentLaneGuidance:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, guidance);
+  metadataDelegate = [(CPSNavigator *)selfCopy metadataDelegate];
+  [(CPSNavigationMetadataDelegate *)metadataDelegate setCurrentLaneGuidance:location[0]];
+  MEMORY[0x277D82BD8](metadataDelegate);
   objc_storeStrong(location, 0);
 }
 
 - (void)clearCurrentLaneGuidance
 {
-  v2 = [(CPSNavigator *)self metadataDelegate];
-  [(CPSNavigationMetadataDelegate *)v2 setCurrentLaneGuidance:0];
-  MEMORY[0x277D82BD8](v2);
+  metadataDelegate = [(CPSNavigator *)self metadataDelegate];
+  [(CPSNavigationMetadataDelegate *)metadataDelegate setCurrentLaneGuidance:0];
+  MEMORY[0x277D82BD8](metadataDelegate);
 }
 
-- (void)setManeuverState:(int64_t)a3
+- (void)setManeuverState:(int64_t)state
 {
-  v3 = [(CPSNavigator *)self metadataDelegate];
-  [(CPSNavigationMetadataDelegate *)v3 setManeuverState:a3];
-  MEMORY[0x277D82BD8](v3);
+  metadataDelegate = [(CPSNavigator *)self metadataDelegate];
+  [(CPSNavigationMetadataDelegate *)metadataDelegate setManeuverState:state];
+  MEMORY[0x277D82BD8](metadataDelegate);
 }
 
-- (void)setCurrentRoadNameVariants:(id)a3
+- (void)setCurrentRoadNameVariants:(id)variants
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(CPSNavigator *)v5 metadataDelegate];
-  [(CPSNavigationMetadataDelegate *)v3 setCurrentRoadNameVariants:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, variants);
+  metadataDelegate = [(CPSNavigator *)selfCopy metadataDelegate];
+  [(CPSNavigationMetadataDelegate *)metadataDelegate setCurrentRoadNameVariants:location[0]];
+  MEMORY[0x277D82BD8](metadataDelegate);
   objc_storeStrong(location, 0);
 }
 
-- (void)addManeuvers:(id)a3
+- (void)addManeuvers:(id)maneuvers
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(CPSNavigator *)v5 metadataDelegate];
-  [(CPSNavigationMetadataDelegate *)v3 addManeuvers:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, maneuvers);
+  metadataDelegate = [(CPSNavigator *)selfCopy metadataDelegate];
+  [(CPSNavigationMetadataDelegate *)metadataDelegate addManeuvers:location[0]];
+  MEMORY[0x277D82BD8](metadataDelegate);
   objc_storeStrong(location, 0);
 }
 
-- (void)addLaneGuidances:(id)a3
+- (void)addLaneGuidances:(id)guidances
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(CPSNavigator *)v5 metadataDelegate];
-  [(CPSNavigationMetadataDelegate *)v3 addLaneGuidances:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, guidances);
+  metadataDelegate = [(CPSNavigator *)selfCopy metadataDelegate];
+  [(CPSNavigationMetadataDelegate *)metadataDelegate addLaneGuidances:location[0]];
+  MEMORY[0x277D82BD8](metadataDelegate);
   objc_storeStrong(location, 0);
 }
 
-- (void)setSendsNavigationMetadata:(BOOL)a3
+- (void)setSendsNavigationMetadata:(BOOL)metadata
 {
-  self->_sendsNavigationMetadata = a3;
-  v4 = [(CPSNavigator *)self metadataDelegate];
-  [(CPSNavigationMetadataDelegate *)v4 setSendsNavigationMetadata:a3];
-  MEMORY[0x277D82BD8](v4);
+  self->_sendsNavigationMetadata = metadata;
+  metadataDelegate = [(CPSNavigator *)self metadataDelegate];
+  [(CPSNavigationMetadataDelegate *)metadataDelegate setSendsNavigationMetadata:metadata];
+  MEMORY[0x277D82BD8](metadataDelegate);
 }
 
-- (void)setDestinationNameVariants:(id)a3
+- (void)setDestinationNameVariants:(id)variants
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, variants);
   v3 = location[0];
-  v4 = [(CPSNavigator *)v6 metadataDelegate];
-  [(CPSNavigationMetadataDelegate *)v4 setDestinationNameVariants:v3];
-  MEMORY[0x277D82BD8](v4);
+  metadataDelegate = [(CPSNavigator *)selfCopy metadataDelegate];
+  [(CPSNavigationMetadataDelegate *)metadataDelegate setDestinationNameVariants:v3];
+  MEMORY[0x277D82BD8](metadataDelegate);
   objc_storeStrong(location, 0);
 }
 
-- (void)pauseTripForReason:(unint64_t)a3 description:(id)a4 turnCardColor:(id)a5
+- (void)pauseTripForReason:(unint64_t)reason description:(id)description turnCardColor:(id)color
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
+  reasonCopy = reason;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, description);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, color);
   v7 = MEMORY[0x277D85CD0];
   v5 = MEMORY[0x277D85CD0];
   queue = v7;
@@ -240,8 +240,8 @@
   v11 = 0;
   v12 = __61__CPSNavigator_pauseTripForReason_description_turnCardColor___block_invoke;
   v13 = &unk_278D92A68;
-  v14 = MEMORY[0x277D82BE0](v21);
-  v16[1] = v19;
+  v14 = MEMORY[0x277D82BE0](selfCopy);
+  v16[1] = reasonCopy;
   v15 = MEMORY[0x277D82BE0](location);
   v16[0] = MEMORY[0x277D82BE0](v17);
   dispatch_sync(queue, &v9);
@@ -302,22 +302,22 @@ double __61__CPSNavigator_pauseTripForReason_description_turnCardColor___block_i
 
 - (void)startRerouting
 {
-  v2 = [(CPSNavigator *)self metadataDelegate];
-  [(CPSNavigationMetadataDelegate *)v2 startRerouting];
-  MEMORY[0x277D82BD8](v2);
+  metadataDelegate = [(CPSNavigator *)self metadataDelegate];
+  [(CPSNavigationMetadataDelegate *)metadataDelegate startRerouting];
+  MEMORY[0x277D82BD8](metadataDelegate);
 }
 
-- (void)routeChangedWithReason:(unsigned __int8)a3 routeInfo:(id)a4
+- (void)routeChangedWithReason:(unsigned __int8)reason routeInfo:(id)info
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
+  reasonCopy = reason;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v5 = [(CPSNavigator *)v19 metadataDelegate];
-  [(CPSNavigationMetadataDelegate *)v5 routeChangedWithReason:v17 routeInfo:location];
-  MEMORY[0x277D82BD8](v5);
-  objc_initWeak(&v15, v19);
+  objc_storeStrong(&location, info);
+  metadataDelegate = [(CPSNavigator *)selfCopy metadataDelegate];
+  [(CPSNavigationMetadataDelegate *)metadataDelegate routeChangedWithReason:reasonCopy routeInfo:location];
+  MEMORY[0x277D82BD8](metadataDelegate);
+  objc_initWeak(&v15, selfCopy);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -364,7 +364,7 @@ void __49__CPSNavigator_routeChangedWithReason_routeInfo___block_invoke(id *a1)
 
 - (void)finishTrip
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   v3 = MEMORY[0x277D85CD0];
   v2 = MEMORY[0x277D85CD0];
@@ -374,7 +374,7 @@ void __49__CPSNavigator_routeChangedWithReason_routeInfo___block_invoke(id *a1)
   v7 = 0;
   v8 = __26__CPSNavigator_finishTrip__block_invoke;
   v9 = &unk_278D913E8;
-  v10[0] = MEMORY[0x277D82BE0](v11);
+  v10[0] = MEMORY[0x277D82BE0](selfCopy);
   dispatch_sync(queue, &v5);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(v10, 0);
@@ -444,7 +444,7 @@ void __26__CPSNavigator_finishTrip__block_invoke(id *a1)
 
 - (void)cancelTrip
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   v3 = MEMORY[0x277D85CD0];
   v2 = MEMORY[0x277D85CD0];
@@ -454,7 +454,7 @@ void __26__CPSNavigator_finishTrip__block_invoke(id *a1)
   v7 = 0;
   v8 = __26__CPSNavigator_cancelTrip__block_invoke;
   v9 = &unk_278D913E8;
-  v10[0] = MEMORY[0x277D82BE0](v11);
+  v10[0] = MEMORY[0x277D82BE0](selfCopy);
   dispatch_sync(queue, &v5);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(v10, 0);
@@ -514,14 +514,14 @@ void __26__CPSNavigator_cancelTrip__block_invoke(id *a1)
   objc_storeStrong(location, 0);
 }
 
-- (void)showManeuvers:(id)a3 usingDisplayStyles:(id)a4
+- (void)showManeuvers:(id)maneuvers usingDisplayStyles:(id)styles
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, maneuvers);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, styles);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -530,7 +530,7 @@ void __26__CPSNavigator_cancelTrip__block_invoke(id *a1)
   v10 = 0;
   v11 = __49__CPSNavigator_showManeuvers_usingDisplayStyles___block_invoke;
   v12 = &unk_278D926F0;
-  v13 = MEMORY[0x277D82BE0](v18);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](location[0]);
   v15 = MEMORY[0x277D82BE0](v16);
   dispatch_sync(queue, &v8);
@@ -645,14 +645,14 @@ void __49__CPSNavigator_showManeuvers_usingDisplayStyles___block_invoke(NSObject
   }
 }
 
-- (void)updateTravelEstimates:(id)a3 forManeuver:(id)a4
+- (void)updateTravelEstimates:(id)estimates forManeuver:(id)maneuver
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, estimates);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, maneuver);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -661,7 +661,7 @@ void __49__CPSNavigator_showManeuvers_usingDisplayStyles___block_invoke(NSObject
   v10 = 0;
   v11 = __50__CPSNavigator_updateTravelEstimates_forManeuver___block_invoke;
   v12 = &unk_278D926F0;
-  v13 = MEMORY[0x277D82BE0](v18);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](location[0]);
   v15 = MEMORY[0x277D82BE0](v16);
   dispatch_sync(queue, &v8);
@@ -705,14 +705,14 @@ void __50__CPSNavigator_updateTravelEstimates_forManeuver___block_invoke(uint64_
   }
 }
 
-- (void)updateTripTravelEstimates:(id)a3
+- (void)updateTripTravelEstimates:(id)estimates
 {
   v14 = *MEMORY[0x277D85DE8];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(CPSNavigator *)v12 isCompleted])
+  objc_storeStrong(location, estimates);
+  if ([(CPSNavigator *)selfCopy isCompleted])
   {
     v10 = CarPlaySupportGeneralLogging();
     v9 = 16;
@@ -720,11 +720,11 @@ void __50__CPSNavigator_updateTravelEstimates_forManeuver___block_invoke(uint64_
     {
       log = v10;
       type = v9;
-      v7 = [(CPSNavigator *)v12 trip];
-      v8 = MEMORY[0x277D82BE0](v7);
+      trip = [(CPSNavigator *)selfCopy trip];
+      v8 = MEMORY[0x277D82BE0](trip);
       __os_log_helper_16_2_1_8_64(v13, v8);
       _os_log_error_impl(&dword_242FE8000, log, type, "cannot update trip travel estimates for completed trip %@", v13, 0xCu);
-      MEMORY[0x277D82BD8](v7);
+      MEMORY[0x277D82BD8](trip);
       objc_storeStrong(&v8, 0);
     }
 
@@ -733,27 +733,27 @@ void __50__CPSNavigator_updateTravelEstimates_forManeuver___block_invoke(uint64_
 
   else
   {
-    v4 = [(CPSNavigator *)v12 metadataDelegate];
-    [(CPSNavigationMetadataDelegate *)v4 updateTripTravelEstimates:location[0]];
-    *&v3 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-    [(CPSNavigator *)v12 _sync_displayUpdateTripTravelEstimates:location[0], v3];
+    metadataDelegate = [(CPSNavigator *)selfCopy metadataDelegate];
+    [(CPSNavigationMetadataDelegate *)metadataDelegate updateTripTravelEstimates:location[0]];
+    *&v3 = MEMORY[0x277D82BD8](metadataDelegate).n128_u64[0];
+    [(CPSNavigator *)selfCopy _sync_displayUpdateTripTravelEstimates:location[0], v3];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_sync_displayUpdateManeuverTravelEstimates:(id)a3 forManeuver:(id)a4
+- (void)_sync_displayUpdateManeuverTravelEstimates:(id)estimates forManeuver:(id)maneuver
 {
   v17 = *MEMORY[0x277D85DE8];
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, estimates);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, maneuver);
   memset(__b, 0, sizeof(__b));
-  v9 = [(CPSNavigator *)v15 displayDelegates];
-  v10 = [(NSHashTable *)v9 countByEnumeratingWithState:__b objects:v16 count:16];
+  displayDelegates = [(CPSNavigator *)selfCopy displayDelegates];
+  v10 = [(NSHashTable *)displayDelegates countByEnumeratingWithState:__b objects:v16 count:16];
   if (v10)
   {
     v5 = *__b[2];
@@ -764,7 +764,7 @@ void __50__CPSNavigator_updateTravelEstimates_forManeuver___block_invoke(uint64_
       v4 = v6;
       if (*__b[2] != v5)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(displayDelegates);
       }
 
       v12 = *(__b[1] + 8 * v6);
@@ -777,7 +777,7 @@ void __50__CPSNavigator_updateTravelEstimates_forManeuver___block_invoke(uint64_
       if (v4 + 1 >= v7)
       {
         v6 = 0;
-        v7 = [(NSHashTable *)v9 countByEnumeratingWithState:__b objects:v16 count:16];
+        v7 = [(NSHashTable *)displayDelegates countByEnumeratingWithState:__b objects:v16 count:16];
         if (!v7)
         {
           break;
@@ -786,20 +786,20 @@ void __50__CPSNavigator_updateTravelEstimates_forManeuver___block_invoke(uint64_
     }
   }
 
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](displayDelegates);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_sync_displayUpdateTripTravelEstimates:(id)a3
+- (void)_sync_displayUpdateTripTravelEstimates:(id)estimates
 {
   v14 = *MEMORY[0x277D85DE8];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, estimates);
   memset(__b, 0, sizeof(__b));
-  obj = [(CPSNavigator *)v12 displayDelegates];
+  obj = [(CPSNavigator *)selfCopy displayDelegates];
   v8 = [(NSHashTable *)obj countByEnumeratingWithState:__b objects:v13 count:16];
   if (v8)
   {
@@ -837,30 +837,30 @@ void __50__CPSNavigator_updateTravelEstimates_forManeuver___block_invoke(uint64_
   objc_storeStrong(location, 0);
 }
 
-- (void)navigationOwnershipChangedToOwner:(unint64_t)a3
+- (void)navigationOwnershipChangedToOwner:(unint64_t)owner
 {
   v14 = *MEMORY[0x277D85DE8];
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  ownerCopy = owner;
   v9 = CarPlaySupportGeneralLogging();
   v8 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     log = v9;
     type = v8;
-    v6 = NSStringFromNavigationOwner_0(v10);
+    v6 = NSStringFromNavigationOwner_0(ownerCopy);
     v7 = MEMORY[0x277D82BE0](v6);
-    __os_log_helper_16_2_2_8_64_8_64(v13, v12, v7);
+    __os_log_helper_16_2_2_8_64_8_64(v13, selfCopy, v7);
     _os_log_impl(&dword_242FE8000, log, type, "%@: Navigation ownership changed to %@", v13, 0x16u);
     MEMORY[0x277D82BD8](v6);
     objc_storeStrong(&v7, 0);
   }
 
   objc_storeStrong(&v9, 0);
-  v3 = [(CPSNavigator *)v12 navigationOwnershipDelegate];
-  [(CARNavigationOwnershipManagerDelegate *)v3 navigationOwnershipChangedToOwner:v10];
-  MEMORY[0x277D82BD8](v3);
+  navigationOwnershipDelegate = [(CPSNavigator *)selfCopy navigationOwnershipDelegate];
+  [(CARNavigationOwnershipManagerDelegate *)navigationOwnershipDelegate navigationOwnershipChangedToOwner:ownerCopy];
+  MEMORY[0x277D82BD8](navigationOwnershipDelegate);
 }
 
 - (CARNavigationOwnershipManagerDelegate)navigationOwnershipDelegate

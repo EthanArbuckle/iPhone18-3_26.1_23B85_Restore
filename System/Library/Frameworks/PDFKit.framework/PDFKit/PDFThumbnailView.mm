@@ -6,21 +6,21 @@
 - (PDFThumbnailDataSourceDelegate)thumbnailDataSourceDelegate;
 - (PDFThumbnailIconsViewProtocol)thumbnailIconsView;
 - (PDFThumbnailView)init;
-- (PDFThumbnailView)initWithCoder:(id)a3;
-- (PDFThumbnailView)initWithFrame:(CGRect)a3;
-- (PDFThumbnailView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (PDFThumbnailView)initWithStyle:(int64_t)a3;
+- (PDFThumbnailView)initWithCoder:(id)coder;
+- (PDFThumbnailView)initWithFrame:(CGRect)frame;
+- (PDFThumbnailView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (PDFThumbnailView)initWithStyle:(int64_t)style;
 - (PDFView)PDFView;
 - (UIEdgeInsets)contentInset;
-- (void)_commonInitWithStyle:(int64_t)a3;
-- (void)currentPageChanged:(id)a3;
+- (void)_commonInitWithStyle:(int64_t)style;
+- (void)currentPageChanged:(id)changed;
 - (void)dealloc;
-- (void)documentChanged:(id)a3;
-- (void)documentMutated:(id)a3;
-- (void)documentUnlocked:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)pageChanged:(id)a3;
-- (void)setAllowsPageReordering:(BOOL)a3;
+- (void)documentChanged:(id)changed;
+- (void)documentMutated:(id)mutated;
+- (void)documentUnlocked:(id)unlocked;
+- (void)encodeWithCoder:(id)coder;
+- (void)pageChanged:(id)changed;
+- (void)setAllowsPageReordering:(BOOL)reordering;
 - (void)setBackgroundColor:(UIColor *)backgroundColor;
 - (void)setPDFView:(PDFView *)PDFView;
 - (void)setThumbnailSize:(CGSize)thumbnailSize;
@@ -44,11 +44,11 @@
   return v3;
 }
 
-- (PDFThumbnailView)initWithFrame:(CGRect)a3
+- (PDFThumbnailView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PDFThumbnailView;
-  v3 = [(PDFThumbnailView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PDFThumbnailView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -58,43 +58,43 @@
   return v4;
 }
 
-- (PDFThumbnailView)initWithCoder:(id)a3
+- (PDFThumbnailView)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PDFThumbnailView;
-  v5 = [(PDFThumbnailView *)&v13 initWithCoder:v4];
+  v5 = [(PDFThumbnailView *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    if ([v4 allowsKeyedCoding])
+    if ([coderCopy allowsKeyedCoding])
     {
-      -[PDFThumbnailView _commonInitWithStyle:](v5, "_commonInitWithStyle:", [v4 decodeIntForKey:@"Style"]);
-      [v4 decodeFloatForKey:@"ThumbSizeWidth"];
+      -[PDFThumbnailView _commonInitWithStyle:](v5, "_commonInitWithStyle:", [coderCopy decodeIntForKey:@"Style"]);
+      [coderCopy decodeFloatForKey:@"ThumbSizeWidth"];
       v5->_thumbnailSize.width = v6;
-      [v4 decodeFloatForKey:@"ThumbSizeHeight"];
+      [coderCopy decodeFloatForKey:@"ThumbSizeHeight"];
       v5->_thumbnailSize.height = v7;
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PDFView"];
+      decodeObject = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PDFView"];
     }
 
     else
     {
       v12 = 1;
-      [v4 decodeValueOfObjCType:"i" at:&v12 size:4];
+      [coderCopy decodeValueOfObjCType:"i" at:&v12 size:4];
       *v11 = 0;
-      [v4 decodeValueOfObjCType:"q" at:v11 size:8];
+      [coderCopy decodeValueOfObjCType:"q" at:v11 size:8];
       [(PDFThumbnailView *)v5 _commonInitWithStyle:*v11];
       v11[0] = 0.0;
-      [v4 decodeValueOfObjCType:"f" at:v11 size:4];
+      [coderCopy decodeValueOfObjCType:"f" at:v11 size:4];
       v5->_thumbnailSize.width = v11[0];
-      [v4 decodeValueOfObjCType:"f" at:v11 size:4];
+      [coderCopy decodeValueOfObjCType:"f" at:v11 size:4];
       v5->_thumbnailSize.height = v11[0];
-      v8 = [v4 decodeObject];
+      decodeObject = [coderCopy decodeObject];
     }
 
-    v9 = v8;
-    if (v8)
+    v9 = decodeObject;
+    if (decodeObject)
     {
-      [(PDFThumbnailView *)v5 setPDFView:v8];
+      [(PDFThumbnailView *)v5 setPDFView:decodeObject];
     }
 
     if (v5->_thumbnailSize.width <= 0.0 || v5->_thumbnailSize.height <= 0.0)
@@ -109,42 +109,42 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(PDFThumbnailCollectionViewInterface *)self->_iconsView removeFromSuperview];
   v12.receiver = self;
   v12.super_class = PDFThumbnailView;
-  [(PDFThumbnailView *)&v12 encodeWithCoder:v4];
+  [(PDFThumbnailView *)&v12 encodeWithCoder:coderCopy];
   [(PDFThumbnailView *)self addSubview:self->_iconsView];
-  if ([v4 allowsKeyedCoding])
+  if ([coderCopy allowsKeyedCoding])
   {
-    [v4 encodeInt:LODWORD(self->_style) forKey:@"Style"];
+    [coderCopy encodeInt:LODWORD(self->_style) forKey:@"Style"];
     width = self->_thumbnailSize.width;
     *&width = width;
-    [v4 encodeFloat:@"ThumbSizeWidth" forKey:width];
+    [coderCopy encodeFloat:@"ThumbSizeWidth" forKey:width];
     height = self->_thumbnailSize.height;
     *&height = height;
-    [v4 encodeFloat:@"ThumbSizeHeight" forKey:height];
+    [coderCopy encodeFloat:@"ThumbSizeHeight" forKey:height];
     WeakRetained = objc_loadWeakRetained(&self->_pdfView);
-    [v4 encodeConditionalObject:WeakRetained forKey:@"PDFView"];
+    [coderCopy encodeConditionalObject:WeakRetained forKey:@"PDFView"];
   }
 
   else
   {
     v11 = 1;
-    [v4 encodeValueOfObjCType:"i" at:&v11];
-    [v4 encodeValueOfObjCType:"q" at:&self->_style];
+    [coderCopy encodeValueOfObjCType:"i" at:&v11];
+    [coderCopy encodeValueOfObjCType:"q" at:&self->_style];
     v8 = self->_thumbnailSize.width;
     v10 = v8;
-    [v4 encodeValueOfObjCType:"f" at:&v10];
+    [coderCopy encodeValueOfObjCType:"f" at:&v10];
     v9 = self->_thumbnailSize.height;
     v10 = v9;
-    [v4 encodeValueOfObjCType:"f" at:&v10];
+    [coderCopy encodeValueOfObjCType:"f" at:&v10];
   }
 }
 
-- (PDFThumbnailView)initWithStyle:(int64_t)a3
+- (PDFThumbnailView)initWithStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = PDFThumbnailView;
@@ -152,37 +152,37 @@
   v5 = v4;
   if (v4)
   {
-    [(PDFThumbnailView *)v4 _commonInitWithStyle:a3];
+    [(PDFThumbnailView *)v4 _commonInitWithStyle:style];
   }
 
   return v5;
 }
 
-- (PDFThumbnailView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (PDFThumbnailView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v8.receiver = self;
   v8.super_class = PDFThumbnailView;
-  v5 = [(PDFThumbnailView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PDFThumbnailView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    [(PDFThumbnailView *)v5 _commonInitWithStyle:a4];
+    [(PDFThumbnailView *)v5 _commonInitWithStyle:style];
   }
 
   return v6;
 }
 
-- (void)_commonInitWithStyle:(int64_t)a3
+- (void)_commonInitWithStyle:(int64_t)style
 {
   v24[4] = *MEMORY[0x1E69E9840];
   if (!self->_iconsView)
   {
-    self->_style = a3;
+    self->_style = style;
     self->_thumbnailSize = kDefaultThumbnailSize;
     v4 = *(MEMORY[0x1E69DDCE0] + 16);
     *&self->_contentInset.top = *MEMORY[0x1E69DDCE0];
     *&self->_contentInset.bottom = v4;
-    if (a3 == 1)
+    if (style == 1)
     {
       v5 = [[PDFThumbnailsCollectionView alloc] initFromThumbnailView:self];
       iconsView = self->_iconsView;
@@ -191,21 +191,21 @@
       [(PDFThumbnailView *)self addSubview:self->_iconsView];
       [(PDFThumbnailCollectionViewInterface *)self->_iconsView setTranslatesAutoresizingMaskIntoConstraints:0];
       v19 = MEMORY[0x1E696ACD8];
-      v23 = [(PDFThumbnailCollectionViewInterface *)self->_iconsView bottomAnchor];
-      v22 = [(PDFThumbnailView *)self bottomAnchor];
-      v21 = [v23 constraintEqualToAnchor:v22];
+      bottomAnchor = [(PDFThumbnailCollectionViewInterface *)self->_iconsView bottomAnchor];
+      bottomAnchor2 = [(PDFThumbnailView *)self bottomAnchor];
+      v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v24[0] = v21;
-      v20 = [(PDFThumbnailCollectionViewInterface *)self->_iconsView topAnchor];
-      v7 = [(PDFThumbnailView *)self topAnchor];
-      v8 = [v20 constraintEqualToAnchor:v7];
+      topAnchor = [(PDFThumbnailCollectionViewInterface *)self->_iconsView topAnchor];
+      topAnchor2 = [(PDFThumbnailView *)self topAnchor];
+      v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v24[1] = v8;
-      v9 = [(PDFThumbnailCollectionViewInterface *)self->_iconsView leadingAnchor];
-      v10 = [(PDFThumbnailView *)self leadingAnchor];
-      v11 = [v9 constraintEqualToAnchor:v10];
+      leadingAnchor = [(PDFThumbnailCollectionViewInterface *)self->_iconsView leadingAnchor];
+      leadingAnchor2 = [(PDFThumbnailView *)self leadingAnchor];
+      v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v24[2] = v11;
-      v12 = [(PDFThumbnailCollectionViewInterface *)self->_iconsView trailingAnchor];
-      v13 = [(PDFThumbnailView *)self trailingAnchor];
-      v14 = [v12 constraintEqualToAnchor:v13];
+      trailingAnchor = [(PDFThumbnailCollectionViewInterface *)self->_iconsView trailingAnchor];
+      trailingAnchor2 = [(PDFThumbnailView *)self trailingAnchor];
+      v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v24[3] = v14;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
       [v19 activateConstraints:v15];
@@ -230,36 +230,36 @@
 
 - (void)setupNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_documentChanged_ name:@"PDFViewChangedDocument" object:0];
-  [v3 addObserver:self selector:sel_currentPageChanged_ name:@"PDFViewChangedPage" object:0];
-  [v3 addObserver:self selector:sel_pageChanged_ name:@"PDFViewAnnotationsDidChange" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_documentChanged_ name:@"PDFViewChangedDocument" object:0];
+  [defaultCenter addObserver:self selector:sel_currentPageChanged_ name:@"PDFViewChangedPage" object:0];
+  [defaultCenter addObserver:self selector:sel_pageChanged_ name:@"PDFViewAnnotationsDidChange" object:0];
   [(PDFThumbnailView *)self updateNotificationsForDocument];
 }
 
 - (void)updateNotificationsForDocument
 {
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   WeakRetained = objc_loadWeakRetained(&self->_pdfView);
-  v4 = [WeakRetained document];
+  document = [WeakRetained document];
 
-  [v5 removeObserver:self name:@"PDFDocumentDidUnlock" object:0];
-  [v5 removeObserver:self name:@"PDFDocumentDidMutate" object:0];
-  [v5 removeObserver:self name:@"PDFPageDidChangeBounds" object:0];
-  [v5 removeObserver:self name:@"PDFPageDidRotate" object:0];
-  if (v4)
+  [defaultCenter removeObserver:self name:@"PDFDocumentDidUnlock" object:0];
+  [defaultCenter removeObserver:self name:@"PDFDocumentDidMutate" object:0];
+  [defaultCenter removeObserver:self name:@"PDFPageDidChangeBounds" object:0];
+  [defaultCenter removeObserver:self name:@"PDFPageDidRotate" object:0];
+  if (document)
   {
-    [v5 addObserver:self selector:sel_documentUnlocked_ name:@"PDFDocumentDidUnlock" object:v4];
-    [v5 addObserver:self selector:sel_documentMutated_ name:@"PDFDocumentDidMutate" object:v4];
-    [v5 addObserver:self selector:sel_pageChanged_ name:@"PDFPageDidChangeBounds" object:v4];
-    [v5 addObserver:self selector:sel_pageChanged_ name:@"PDFPageDidRotate" object:v4];
+    [defaultCenter addObserver:self selector:sel_documentUnlocked_ name:@"PDFDocumentDidUnlock" object:document];
+    [defaultCenter addObserver:self selector:sel_documentMutated_ name:@"PDFDocumentDidMutate" object:document];
+    [defaultCenter addObserver:self selector:sel_pageChanged_ name:@"PDFPageDidChangeBounds" object:document];
+    [defaultCenter addObserver:self selector:sel_pageChanged_ name:@"PDFPageDidRotate" object:document];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PDFThumbnailView;
@@ -297,11 +297,11 @@
 - (NSArray)selectedPages
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PDFThumbnailCollectionViewInterface *)self->_iconsView currentPage];
-  v3 = v2;
-  if (v2)
+  currentPage = [(PDFThumbnailCollectionViewInterface *)self->_iconsView currentPage];
+  v3 = currentPage;
+  if (currentPage)
   {
-    v6[0] = v2;
+    v6[0] = currentPage;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   }
 
@@ -331,15 +331,15 @@
   return result;
 }
 
-- (void)setAllowsPageReordering:(BOOL)a3
+- (void)setAllowsPageReordering:(BOOL)reordering
 {
-  v3 = a3;
+  reorderingCopy = reordering;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     iconsView = self->_iconsView;
 
-    [(PDFThumbnailCollectionViewInterface *)iconsView setAllowsPageReordering:v3];
+    [(PDFThumbnailCollectionViewInterface *)iconsView setAllowsPageReordering:reorderingCopy];
   }
 }
 
@@ -373,109 +373,109 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(PDFThumbnailCollectionViewInterface *)self->_iconsView thumbnailIconsView];
+    thumbnailIconsView = [(PDFThumbnailCollectionViewInterface *)self->_iconsView thumbnailIconsView];
   }
 
   else
   {
-    v3 = 0;
+    thumbnailIconsView = 0;
   }
 
-  return v3;
+  return thumbnailIconsView;
 }
 
-- (void)documentChanged:(id)a3
+- (void)documentChanged:(id)changed
 {
-  v6 = a3;
+  changedCopy = changed;
   WeakRetained = objc_loadWeakRetained(&self->_pdfView);
-  v5 = [v6 object];
+  object = [changedCopy object];
 
-  if (WeakRetained == v5)
+  if (WeakRetained == object)
   {
-    [(PDFThumbnailCollectionViewInterface *)self->_iconsView documentChanged:v6];
+    [(PDFThumbnailCollectionViewInterface *)self->_iconsView documentChanged:changedCopy];
     [(PDFThumbnailView *)self updateNotificationsForDocument];
   }
 }
 
-- (void)documentUnlocked:(id)a3
+- (void)documentUnlocked:(id)unlocked
 {
-  v7 = a3;
+  unlockedCopy = unlocked;
   WeakRetained = objc_loadWeakRetained(&self->_pdfView);
-  v5 = [WeakRetained document];
-  v6 = [v7 object];
+  document = [WeakRetained document];
+  object = [unlockedCopy object];
 
-  if (v5 == v6)
+  if (document == object)
   {
-    [(PDFThumbnailCollectionViewInterface *)self->_iconsView documentChanged:v7];
+    [(PDFThumbnailCollectionViewInterface *)self->_iconsView documentChanged:unlockedCopy];
   }
 }
 
-- (void)documentMutated:(id)a3
+- (void)documentMutated:(id)mutated
 {
-  v7 = a3;
+  mutatedCopy = mutated;
   WeakRetained = objc_loadWeakRetained(&self->_pdfView);
-  v5 = [WeakRetained document];
-  v6 = [v7 object];
+  document = [WeakRetained document];
+  object = [mutatedCopy object];
 
-  if (v5 == v6)
+  if (document == object)
   {
-    [(PDFThumbnailCollectionViewInterface *)self->_iconsView documentMutated:v7];
+    [(PDFThumbnailCollectionViewInterface *)self->_iconsView documentMutated:mutatedCopy];
   }
 }
 
-- (void)currentPageChanged:(id)a3
+- (void)currentPageChanged:(id)changed
 {
-  v6 = a3;
+  changedCopy = changed;
   WeakRetained = objc_loadWeakRetained(&self->_pdfView);
-  v5 = [v6 object];
+  object = [changedCopy object];
 
-  if (WeakRetained == v5)
+  if (WeakRetained == object)
   {
-    [(PDFThumbnailCollectionViewInterface *)self->_iconsView currentPageChanged:v6];
+    [(PDFThumbnailCollectionViewInterface *)self->_iconsView currentPageChanged:changedCopy];
   }
 }
 
-- (void)pageChanged:(id)a3
+- (void)pageChanged:(id)changed
 {
-  v14 = a3;
+  changedCopy = changed;
   WeakRetained = objc_loadWeakRetained(&self->_pdfView);
-  v5 = [WeakRetained document];
-  if (!v5)
+  document = [WeakRetained document];
+  if (!document)
   {
     goto LABEL_10;
   }
 
-  v6 = [v14 name];
-  if ([v6 isEqualToString:@"PDFPageDidChangeBounds"])
+  name = [changedCopy name];
+  if ([name isEqualToString:@"PDFPageDidChangeBounds"])
   {
 
     goto LABEL_5;
   }
 
-  v7 = [v14 name];
-  v8 = [v7 isEqualToString:@"PDFPageDidRotate"];
+  name2 = [changedCopy name];
+  v8 = [name2 isEqualToString:@"PDFPageDidRotate"];
 
   if (v8)
   {
 LABEL_5:
-    v9 = [v14 object];
+    object = [changedCopy object];
 
-    if (v9 != v5)
+    if (object != document)
     {
       goto LABEL_10;
     }
   }
 
-  v10 = [v14 userInfo];
-  v11 = [v10 objectForKey:@"page"];
+  userInfo = [changedCopy userInfo];
+  v11 = [userInfo objectForKey:@"page"];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 document];
+    document2 = [v11 document];
 
-    if (v13 == v5)
+    if (document2 == document)
     {
-      [(PDFThumbnailCollectionViewInterface *)self->_iconsView pageChanged:v14];
+      [(PDFThumbnailCollectionViewInterface *)self->_iconsView pageChanged:changedCopy];
     }
   }
 

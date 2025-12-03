@@ -1,24 +1,24 @@
 @interface SISchemaTurnInteraction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaTurnInteraction)initWithDictionary:(id)a3;
-- (SISchemaTurnInteraction)initWithJSON:(id)a3;
+- (SISchemaTurnInteraction)initWithDictionary:(id)dictionary;
+- (SISchemaTurnInteraction)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaTurnInteraction
 
-- (SISchemaTurnInteraction)initWithDictionary:(id)a3
+- (SISchemaTurnInteraction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = SISchemaTurnInteraction;
   v5 = [(SISchemaTurnInteraction *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"interactionId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"interactionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,30 +32,30 @@
   return v5;
 }
 
-- (SISchemaTurnInteraction)initWithJSON:(id)a3
+- (SISchemaTurnInteraction)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaTurnInteraction *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaTurnInteraction *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaTurnInteraction *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -68,31 +68,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_interactionId)
   {
-    v4 = [(SISchemaTurnInteraction *)self interactionId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"interactionId"];
+    interactionId = [(SISchemaTurnInteraction *)self interactionId];
+    v5 = [interactionId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"interactionId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(SISchemaTurnInteraction *)self interactionId];
-    v6 = [v4 interactionId];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    interactionId = [(SISchemaTurnInteraction *)self interactionId];
+    interactionId2 = [equalCopy interactionId];
+    v7 = interactionId2;
+    if ((interactionId != 0) != (interactionId2 == 0))
     {
-      v8 = [(SISchemaTurnInteraction *)self interactionId];
-      if (!v8)
+      interactionId3 = [(SISchemaTurnInteraction *)self interactionId];
+      if (!interactionId3)
       {
 
 LABEL_10:
@@ -100,10 +100,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(SISchemaTurnInteraction *)self interactionId];
-      v11 = [v4 interactionId];
-      v12 = [v10 isEqual:v11];
+      v9 = interactionId3;
+      interactionId4 = [(SISchemaTurnInteraction *)self interactionId];
+      interactionId5 = [equalCopy interactionId];
+      v12 = [interactionId4 isEqual:interactionId5];
 
       if (v12)
       {
@@ -122,12 +122,12 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(SISchemaTurnInteraction *)self interactionId];
+  toCopy = to;
+  interactionId = [(SISchemaTurnInteraction *)self interactionId];
 
-  if (v4)
+  if (interactionId)
   {
     PBDataWriterWriteStringField();
   }

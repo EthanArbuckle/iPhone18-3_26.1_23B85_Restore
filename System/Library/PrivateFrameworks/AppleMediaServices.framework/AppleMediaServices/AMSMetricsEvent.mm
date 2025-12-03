@@ -1,17 +1,17 @@
 @interface AMSMetricsEvent
-+ (id)_buyParamsFromString:(id)a3;
-+ (id)_buyParamsStringFromAuthenticationContext:(id)a3;
-+ (id)_deepCopiedAndSanitizedTopLevelDictionaryFromDictionary:(id)a3;
-+ (id)_deepCopiedJSONObjectOrNilForObject:(id)a3;
-+ (id)_deepCopiedJSONObjectOrNilForObject:(id)a3 key:(id)a4 enforcingClassUsingKnownPropertiesClassMapping:(id)a5;
++ (id)_buyParamsFromString:(id)string;
++ (id)_buyParamsStringFromAuthenticationContext:(id)context;
++ (id)_deepCopiedAndSanitizedTopLevelDictionaryFromDictionary:(id)dictionary;
++ (id)_deepCopiedJSONObjectOrNilForObject:(id)object;
++ (id)_deepCopiedJSONObjectOrNilForObject:(id)object key:(id)key enforcingClassUsingKnownPropertiesClassMapping:(id)mapping;
 + (id)_propertyValueClassesForKnownProperties;
-+ (id)_topicFromAuthenticationContext:(id)a3;
-+ (id)createEventFromAuthenticationContext:(id)a3 error:(id)a4;
-+ (id)metricsAuthenticationAttemptDictionaryForAuthKitError:(id)a3;
-+ (id)sanitizedObject:(id)a3;
++ (id)_topicFromAuthenticationContext:(id)context;
++ (id)createEventFromAuthenticationContext:(id)context error:(id)error;
++ (id)metricsAuthenticationAttemptDictionaryForAuthKitError:(id)error;
++ (id)sanitizedObject:(id)object;
 - (ACAccount)account;
-- (AMSMetricsEvent)initWithCoder:(id)a3;
-- (AMSMetricsEvent)initWithTopic:(id)a3;
+- (AMSMetricsEvent)initWithCoder:(id)coder;
+- (AMSMetricsEvent)initWithTopic:(id)topic;
 - (BOOL)checkDiagnosticsAndUsageSetting;
 - (BOOL)enableAccountIdentifierAutoDecoration;
 - (BOOL)engagementEvent;
@@ -24,22 +24,22 @@
 - (NSDictionary)dictionaryForPosting;
 - (NSDictionary)underlyingDictionary;
 - (NSNumber)databasePID;
-- (id)_initWithSanitizedUnderlyingDictionary:(id)a3 account:(id)a4 databasePID:(id)a5;
-- (id)_initWithUnderlyingDictionary:(id)a3 account:(id)a4 databasePID:(id)a5 addBasefields:(BOOL)a6;
-- (id)_propertyForBodyKey:(id)a3 clientOnly:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithSanitizedUnderlyingDictionary:(id)dictionary account:(id)account databasePID:(id)d;
+- (id)_initWithUnderlyingDictionary:(id)dictionary account:(id)account databasePID:(id)d addBasefields:(BOOL)basefields;
+- (id)_propertyForBodyKey:(id)key clientOnly:(BOOL)only;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initForEngagement;
-- (void)_setProperty:(id)a3 forBodyKey:(id)a4 clientOnly:(BOOL)a5;
-- (void)addPropertiesWithDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removePropertiesForKeys:(id)a3;
-- (void)setAccount:(id)a3;
-- (void)setAnonymous:(BOOL)a3;
-- (void)setCheckDiagnosticsAndUsageSetting:(BOOL)a3;
-- (void)setClientOnlyEventDate:(id)a3;
-- (void)setEnableAccountIdentifierAutoDecoration:(BOOL)a3;
-- (void)setPreventSampling:(BOOL)a3;
-- (void)setSuppressEngagement:(BOOL)a3;
+- (void)_setProperty:(id)property forBodyKey:(id)key clientOnly:(BOOL)only;
+- (void)addPropertiesWithDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
+- (void)removePropertiesForKeys:(id)keys;
+- (void)setAccount:(id)account;
+- (void)setAnonymous:(BOOL)anonymous;
+- (void)setCheckDiagnosticsAndUsageSetting:(BOOL)setting;
+- (void)setClientOnlyEventDate:(id)date;
+- (void)setEnableAccountIdentifierAutoDecoration:(BOOL)decoration;
+- (void)setPreventSampling:(BOOL)sampling;
+- (void)setSuppressEngagement:(BOOL)engagement;
 @end
 
 @implementation AMSMetricsEvent
@@ -108,9 +108,9 @@
 - (BOOL)engagementEvent
 {
   v2 = [(AMSMetricsEvent *)self _propertyForBodyKey:@"engagementEvent" clientOnly:1];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSDictionary)underlyingDictionary
@@ -125,31 +125,31 @@
 - (BOOL)checkDiagnosticsAndUsageSetting
 {
   v2 = [(AMSMetricsEvent *)self _propertyForBodyKey:@"checkDU" clientOnly:1];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)suppressEngagement
 {
   v2 = [(AMSMetricsEvent *)self _propertyForBodyKey:@"suppressEngagement" clientOnly:1];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isAnonymous
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"anonymous"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSDictionary)databaseEventBody
 {
-  v3 = [(AMSMetricsEvent *)self underlyingDictionaryOverride];
-  v4 = [v3 mutableCopy];
+  underlyingDictionaryOverride = [(AMSMetricsEvent *)self underlyingDictionaryOverride];
+  v4 = [underlyingDictionaryOverride mutableCopy];
 
   if (!v4)
   {
@@ -167,19 +167,19 @@
   return v4;
 }
 
-+ (id)createEventFromAuthenticationContext:(id)a3 error:(id)a4
++ (id)createEventFromAuthenticationContext:(id)context error:(id)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _topicFromAuthenticationContext:v6];
+  contextCopy = context;
+  errorCopy = error;
+  v8 = [self _topicFromAuthenticationContext:contextCopy];
   if (v8)
   {
     v9 = [[AMSMetricsEvent alloc] initWithTopic:v8];
     [(AMSMetricsEvent *)v9 setProperty:@"SignIn" forBodyKey:@"dialogType"];
     [(AMSMetricsEvent *)v9 setProperty:@"dialog" forBodyKey:@"eventType"];
-    v10 = [v6 username];
-    v11 = [v10 length];
+    username = [contextCopy username];
+    v11 = [username length];
 
     if (v11)
     {
@@ -193,9 +193,9 @@
 
     [(AMSMetricsEvent *)v9 setProperty:v12 forBodyKey:@"dialogId"];
     v13 = @"Ok";
-    if (v7)
+    if (errorCopy)
     {
-      if ([v7 code] == -7003)
+      if ([errorCopy code] == -7003)
       {
         v13 = @"Cancel";
         v14 = @"cancel";
@@ -218,15 +218,15 @@
     [(AMSMetricsEvent *)v9 setProperty:v14 forBodyKey:@"actionType"];
     [(AMSMetricsEvent *)v9 setProperty:v15 forBodyKey:@"result"];
     [(AMSMetricsEvent *)v9 setProperty:v13 forBodyKey:@"targetId"];
-    v16 = [v6 clientInfo];
+    clientInfo = [contextCopy clientInfo];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [v16 objectForKeyedSubscript:@"metricsAuthenticationAttempts"];
+      v17 = [clientInfo objectForKeyedSubscript:@"metricsAuthenticationAttempts"];
       [(AMSMetricsEvent *)v9 setProperty:v17 forBodyKey:@"userActions"];
     }
 
-    v18 = [a1 _buyParamsStringFromAuthenticationContext:v6];
+    v18 = [self _buyParamsStringFromAuthenticationContext:contextCopy];
     v19 = v18;
     if (v18)
     {
@@ -236,7 +236,7 @@
       [(AMSMetricsEvent *)v9 setProperty:v20 forBodyKey:@"details"];
     }
 
-    v21 = [v16 objectForKeyedSubscript:@"AMSAuthenticateOptionsUserAgentKey"];
+    v21 = [clientInfo objectForKeyedSubscript:@"AMSAuthenticateOptionsUserAgentKey"];
     if (v21)
     {
       [(AMSMetricsEvent *)v9 setProperty:v21 forBodyKey:@"userAgent"];
@@ -251,33 +251,33 @@
   return v9;
 }
 
-+ (id)metricsAuthenticationAttemptDictionaryForAuthKitError:(id)a3
++ (id)metricsAuthenticationAttemptDictionaryForAuthKitError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v4 setObject:@"authenticate" forKeyedSubscript:@"targetId"];
-  v5 = [MEMORY[0x1E695DF00] date];
-  [v5 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v7 = v6;
 
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", (v7 * 1000.0)];
   [v4 setObject:v8 forKeyedSubscript:@"responseTime"];
-  if (v3)
+  if (errorCopy)
   {
     [v4 setObject:@"failure" forKeyedSubscript:@"result"];
-    v9 = [v3 code];
+    code = [errorCopy code];
     v10 = @"unknown";
-    if (v9 == -7006)
+    if (code == -7006)
     {
       v10 = @"invalidCredentials";
     }
 
-    if (v9 == -7010)
+    if (code == -7010)
     {
       v10 = @"badServerResponse";
     }
 
-    if (v9 == -7028)
+    if (code == -7028)
     {
       v11 = @"maxNumberOfAttemptsReached";
     }
@@ -301,12 +301,12 @@
   return v4;
 }
 
-+ (id)_buyParamsFromString:(id)a3
++ (id)_buyParamsFromString:(id)string
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = [v3 componentsSeparatedByString:@"&"];
+  v5 = [stringCopy componentsSeparatedByString:@"&"];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -359,10 +359,10 @@
   return v15;
 }
 
-+ (id)_buyParamsStringFromAuthenticationContext:(id)a3
++ (id)_buyParamsStringFromAuthenticationContext:(id)context
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKeyedSubscript:@"AMSAuthenticateOptionsCreateAccountQueryParamsKey"];
+  clientInfo = [context clientInfo];
+  v4 = [clientInfo objectForKeyedSubscript:@"AMSAuthenticateOptionsCreateAccountQueryParamsKey"];
 
   if (v4)
   {
@@ -377,12 +377,12 @@
   return v5;
 }
 
-+ (id)_topicFromAuthenticationContext:(id)a3
++ (id)_topicFromAuthenticationContext:(id)context
 {
-  v4 = [a1 _buyParamsStringFromAuthenticationContext:a3];
+  v4 = [self _buyParamsStringFromAuthenticationContext:context];
   if (v4)
   {
-    v5 = [a1 _buyParamsFromString:v4];
+    v5 = [self _buyParamsFromString:v4];
     v6 = [v5 objectForKeyedSubscript:@"mtTopic"];
   }
 
@@ -404,11 +404,11 @@
   return v5;
 }
 
-- (id)_initWithSanitizedUnderlyingDictionary:(id)a3 account:(id)a4 databasePID:(id)a5
+- (id)_initWithSanitizedUnderlyingDictionary:(id)dictionary account:(id)account databasePID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dictionaryCopy = dictionary;
+  accountCopy = account;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = AMSMetricsEvent;
   v12 = [(AMSMetricsEvent *)&v15 init];
@@ -416,43 +416,43 @@
   if (v12)
   {
     v12->_internalStateLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_underlyingDictionary, a3);
-    objc_storeStrong(p_isa + 3, a4);
-    objc_storeStrong(p_isa + 4, a5);
+    objc_storeStrong(&v12->_underlyingDictionary, dictionary);
+    objc_storeStrong(p_isa + 3, account);
+    objc_storeStrong(p_isa + 4, d);
   }
 
   return p_isa;
 }
 
-- (id)_initWithUnderlyingDictionary:(id)a3 account:(id)a4 databasePID:(id)a5 addBasefields:(BOOL)a6
+- (id)_initWithUnderlyingDictionary:(id)dictionary account:(id)account databasePID:(id)d addBasefields:(BOOL)basefields
 {
-  if (a6)
+  if (basefields)
   {
-    v10 = a5;
-    v11 = a4;
-    v12 = a3;
+    dCopy = d;
+    accountCopy = account;
+    dictionaryCopy = dictionary;
     v13 = AMSMetricsEventDefaultUnderlyingDictionary();
-    v14 = [AMSMetricsEvent _deepCopiedAndSanitizedTopLevelDictionaryFromDictionary:v12];
+    dictionaryCopy2 = [AMSMetricsEvent _deepCopiedAndSanitizedTopLevelDictionaryFromDictionary:dictionaryCopy];
 
-    [v13 addEntriesFromDictionary:v14];
+    [v13 addEntriesFromDictionary:dictionaryCopy2];
   }
 
   else
   {
-    v15 = a5;
-    v16 = a4;
-    v14 = a3;
-    v13 = [AMSMetricsEvent _deepCopiedAndSanitizedTopLevelDictionaryFromDictionary:v14];
+    dCopy2 = d;
+    accountCopy2 = account;
+    dictionaryCopy2 = dictionary;
+    v13 = [AMSMetricsEvent _deepCopiedAndSanitizedTopLevelDictionaryFromDictionary:dictionaryCopy2];
   }
 
-  v17 = [(AMSMetricsEvent *)self _initWithSanitizedUnderlyingDictionary:v13 account:a4 databasePID:a5];
+  v17 = [(AMSMetricsEvent *)self _initWithSanitizedUnderlyingDictionary:v13 account:account databasePID:d];
   return v17;
 }
 
-- (AMSMetricsEvent)initWithTopic:(id)a3
+- (AMSMetricsEvent)initWithTopic:(id)topic
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  topicCopy = topic;
   v32.receiver = self;
   v32.super_class = AMSMetricsEvent;
   v5 = [(AMSMetricsEvent *)&v32 init];
@@ -468,24 +468,24 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v4 copy];
-      [(NSMutableDictionary *)v6->_underlyingDictionary setObject:v10 forKeyedSubscript:@"topic"];
+      defaultCenter = [topicCopy copy];
+      [(NSMutableDictionary *)v6->_underlyingDictionary setObject:defaultCenter forKeyedSubscript:@"topic"];
     }
 
     else
     {
       v11 = +[AMSUnitTests isRunningUnitTests];
       v12 = +[AMSLogConfig sharedMetricsConfig];
-      v10 = v12;
+      defaultCenter = v12;
       if (v11)
       {
         if (!v12)
         {
-          v10 = +[AMSLogConfig sharedConfig];
+          defaultCenter = +[AMSLogConfig sharedConfig];
         }
 
-        v13 = [v10 OSLogObject];
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        oSLogObject = [defaultCenter OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v14 = AMSLogKey();
           v15 = MEMORY[0x1E696AEC0];
@@ -502,7 +502,7 @@
             [v15 stringWithFormat:@"%@: ", v16];
           }
           v18 = ;
-          v25 = AMSHashIfNeeded(v4);
+          v25 = AMSHashIfNeeded(topicCopy);
           v26 = objc_opt_class();
           *buf = 138543874;
           v34 = v18;
@@ -511,7 +511,7 @@
           v37 = 2114;
           v38 = v26;
           v27 = v26;
-          _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_ERROR, "%{public}@Attempting to construct metrics event with non-NSString topic: topic = %{public}@, topic class = %{public}@", buf, 0x20u);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Attempting to construct metrics event with non-NSString topic: topic = %{public}@, topic class = %{public}@", buf, 0x20u);
           if (v14)
           {
 
@@ -519,20 +519,20 @@
           }
         }
 
-        v10 = [MEMORY[0x1E696AD88] defaultCenter];
-        v19 = +[AMSLogConfig sharedMetricsConfig];
-        [v10 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v19 userInfo:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        oSLogObject2 = +[AMSLogConfig sharedMetricsConfig];
+        [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
       }
 
       else
       {
         if (!v12)
         {
-          v10 = +[AMSLogConfig sharedConfig];
+          defaultCenter = +[AMSLogConfig sharedConfig];
         }
 
-        v19 = [v10 OSLogObject];
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
+        oSLogObject2 = [defaultCenter OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
         {
           v20 = AMSLogKey();
           v21 = MEMORY[0x1E696AEC0];
@@ -549,7 +549,7 @@
             [v21 stringWithFormat:@"%@: ", v22];
           }
           v24 = ;
-          v28 = AMSHashIfNeeded(v4);
+          v28 = AMSHashIfNeeded(topicCopy);
           v29 = objc_opt_class();
           *buf = 138543874;
           v34 = v24;
@@ -558,7 +558,7 @@
           v37 = 2114;
           v38 = v29;
           v30 = v29;
-          _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_FAULT, "%{public}@Attempting to construct metrics event with non-NSString topic: topic = %{public}@, topic class = %{public}@", buf, 0x20u);
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@Attempting to construct metrics event with non-NSString topic: topic = %{public}@, topic class = %{public}@", buf, 0x20u);
           if (v20)
           {
 
@@ -568,7 +568,7 @@
       }
     }
 
-    if ([v4 isEqual:0x1F0733698])
+    if ([topicCopy isEqual:0x1F0733698])
     {
       [(AMSMetricsEvent *)v6 setCheckDiagnosticsAndUsageSetting:1];
     }
@@ -577,7 +577,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock_with_options();
   v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:self->_underlyingDictionary copyItems:1];
@@ -585,7 +585,7 @@
   v7 = self->_databasePID;
   v8 = account;
   os_unfair_lock_unlock(&self->_internalStateLock);
-  v9 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "_initWithSanitizedUnderlyingDictionary:account:databasePID:", v5, v8, v7}];
+  v9 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "_initWithSanitizedUnderlyingDictionary:account:databasePID:", v5, v8, v7}];
 
   return v9;
 }
@@ -603,16 +603,16 @@
   {
     v6 = +[AMSUnitTests isRunningUnitTests];
     v7 = +[AMSLogConfig sharedMetricsConfig];
-    v8 = v7;
+    defaultCenter = v7;
     if (v6)
     {
       if (!v7)
       {
-        v8 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v9 = [v8 OSLogObject];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      oSLogObject = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v10 = AMSLogKey();
         v11 = MEMORY[0x1E696AEC0];
@@ -631,7 +631,7 @@
         v14 = ;
         *buf = 138543362;
         v39 = v14;
-        _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@canonicalAccountIdentifierOverride property exists in metrics event when posting; removing it.", buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@canonicalAccountIdentifierOverride property exists in metrics event when posting; removing it.", buf, 0xCu);
         if (v10)
         {
 
@@ -639,20 +639,20 @@
         }
       }
 
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      v15 = +[AMSLogConfig sharedMetricsConfig];
-      [v8 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v15 userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      oSLogObject2 = +[AMSLogConfig sharedMetricsConfig];
+      [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
     }
 
     else
     {
       if (!v7)
       {
-        v8 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v15 = [v8 OSLogObject];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
+      oSLogObject2 = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
       {
         v16 = AMSLogKey();
         v17 = MEMORY[0x1E696AEC0];
@@ -671,7 +671,7 @@
         v20 = ;
         *buf = 138543362;
         v39 = v20;
-        _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_FAULT, "%{public}@canonicalAccountIdentifierOverride property exists in metrics event when posting; removing it.", buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@canonicalAccountIdentifierOverride property exists in metrics event when posting; removing it.", buf, 0xCu);
         if (v16)
         {
 
@@ -689,16 +689,16 @@
   {
     v22 = +[AMSUnitTests isRunningUnitTests];
     v23 = +[AMSLogConfig sharedMetricsConfig];
-    v24 = v23;
+    defaultCenter2 = v23;
     if (v22)
     {
       if (!v23)
       {
-        v24 = +[AMSLogConfig sharedConfig];
+        defaultCenter2 = +[AMSLogConfig sharedConfig];
       }
 
-      v25 = [v24 OSLogObject];
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [defaultCenter2 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         v26 = AMSLogKey();
         v27 = MEMORY[0x1E696AEC0];
@@ -714,31 +714,31 @@
         {
           [v27 stringWithFormat:@"%@: ", v28];
         }
-        v30 = ;
+        selfCopy = ;
         *buf = 138543362;
-        v39 = v30;
-        _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_ERROR, "%{public}@enableAccountIdentifierAutoDecoration property exists in metrics event when posting; removing it.", buf, 0xCu);
+        v39 = selfCopy;
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@enableAccountIdentifierAutoDecoration property exists in metrics event when posting; removing it.", buf, 0xCu);
         if (v26)
         {
 
-          v30 = self;
+          selfCopy = self;
         }
       }
 
-      v24 = [MEMORY[0x1E696AD88] defaultCenter];
-      v31 = +[AMSLogConfig sharedMetricsConfig];
-      [v24 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v31 userInfo:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      oSLogObject4 = +[AMSLogConfig sharedMetricsConfig];
+      [defaultCenter2 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject4 userInfo:0];
     }
 
     else
     {
       if (!v23)
       {
-        v24 = +[AMSLogConfig sharedConfig];
+        defaultCenter2 = +[AMSLogConfig sharedConfig];
       }
 
-      v31 = [v24 OSLogObject];
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
+      oSLogObject4 = [defaultCenter2 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_FAULT))
       {
         v32 = AMSLogKey();
         v33 = MEMORY[0x1E696AEC0];
@@ -754,14 +754,14 @@
         {
           [v33 stringWithFormat:@"%@: ", v34];
         }
-        v36 = ;
+        selfCopy2 = ;
         *buf = 138543362;
-        v39 = v36;
-        _os_log_impl(&dword_192869000, v31, OS_LOG_TYPE_FAULT, "%{public}@enableAccountIdentifierAutoDecoration property exists in metrics event when posting; removing it.", buf, 0xCu);
+        v39 = selfCopy2;
+        _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_FAULT, "%{public}@enableAccountIdentifierAutoDecoration property exists in metrics event when posting; removing it.", buf, 0xCu);
         if (v32)
         {
 
-          v36 = self;
+          selfCopy2 = self;
         }
       }
     }
@@ -772,14 +772,14 @@
   return v4;
 }
 
-+ (id)sanitizedObject:(id)a3
++ (id)sanitizedObject:(id)object
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v5 = v4;
+    v5 = objectCopy;
 LABEL_5:
     v6 = v5;
     goto LABEL_6;
@@ -789,7 +789,7 @@ LABEL_5:
   if (objc_opt_isKindOfClass())
   {
     v8 = MEMORY[0x1E696AEC0];
-    [v4 timeIntervalSince1970];
+    [objectCopy timeIntervalSince1970];
     v5 = [v8 stringWithFormat:@"%lld", v9];
     goto LABEL_5;
   }
@@ -798,7 +798,7 @@ LABEL_5:
   if (objc_opt_isKindOfClass())
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [v4 base64EncodedStringWithOptions:0];
+    v11 = [objectCopy base64EncodedStringWithOptions:0];
     v6 = [v10 stringWithFormat:@"%@", v11];
 LABEL_34:
 
@@ -813,7 +813,7 @@ LABEL_34:
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v11 = v4;
+    v11 = objectCopy;
     v12 = [v11 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v12)
     {
@@ -830,7 +830,7 @@ LABEL_34:
 
           v16 = *(*(&v34 + 1) + 8 * i);
           v17 = objc_autoreleasePoolPush();
-          v18 = [a1 sanitizedObject:v16];
+          v18 = [self sanitizedObject:v16];
           if (v18)
           {
             [v6 addObject:v18];
@@ -856,7 +856,7 @@ LABEL_34:
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v11 = v4;
+    v11 = objectCopy;
     v19 = [v11 countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v19)
     {
@@ -873,7 +873,7 @@ LABEL_34:
 
           v23 = *(*(&v30 + 1) + 8 * j);
           v24 = objc_autoreleasePoolPush();
-          v25 = [a1 sanitizedObject:v23];
+          v25 = [self sanitizedObject:v23];
           if (v25)
           {
             [v6 addObject:v25];
@@ -899,10 +899,10 @@ LABEL_34:
     v27[1] = 3221225472;
     v27[2] = __35__AMSMetricsEvent_sanitizedObject___block_invoke;
     v27[3] = &unk_1E73B9998;
-    v29 = a1;
+    selfCopy = self;
     v6 = v26;
     v28 = v6;
-    [v4 enumerateKeysAndObjectsUsingBlock:v27];
+    [objectCopy enumerateKeysAndObjectsUsingBlock:v27];
   }
 
   else
@@ -930,21 +930,21 @@ void __35__AMSMetricsEvent_sanitizedObject___block_invoke(uint64_t a1, void *a2,
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock_with_options();
   v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:self->_underlyingDictionary copyItems:1];
   os_unfair_lock_unlock(&self->_internalStateLock);
-  [v4 encodeObject:v5 forKey:@"underlyingDictionary"];
+  [coderCopy encodeObject:v5 forKey:@"underlyingDictionary"];
 }
 
-- (AMSMetricsEvent)initWithCoder:(id)a3
+- (AMSMetricsEvent)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
-  v6 = [v4 ams_JSONClasses];
-  v7 = [v5 decodeObjectOfClasses:v6 forKey:@"underlyingDictionary"];
+  coderCopy = coder;
+  ams_JSONClasses = [v4 ams_JSONClasses];
+  v7 = [coderCopy decodeObjectOfClasses:ams_JSONClasses forKey:@"underlyingDictionary"];
 
   v8 = [(AMSMetricsEvent *)self initWithUnderlyingDictionary:v7];
   return v8;
@@ -953,9 +953,9 @@ void __35__AMSMetricsEvent_sanitizedObject___block_invoke(uint64_t a1, void *a2,
 - (BOOL)enableAccountIdentifierAutoDecoration
 {
   v2 = [(AMSMetricsEvent *)self _propertyForBodyKey:@"enableAccountIdentifierAutoDecoration" clientOnly:1];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSDate)clientOnlyEventDate
@@ -976,9 +976,9 @@ void __35__AMSMetricsEvent_sanitizedObject___block_invoke(uint64_t a1, void *a2,
   return v3;
 }
 
-- (void)setClientOnlyEventDate:(id)a3
+- (void)setClientOnlyEventDate:(id)date
 {
-  v4 = [AMSMetrics serverTimeFromDate:a3];
+  v4 = [AMSMetrics serverTimeFromDate:date];
   [(AMSMetricsEvent *)self _setProperty:v4 forBodyKey:@"clientOnlyEventDate" clientOnly:1];
 }
 
@@ -993,52 +993,52 @@ void __35__AMSMetricsEvent_sanitizedObject___block_invoke(uint64_t a1, void *a2,
   if (v3)
   {
     v4 = [(AMSMetricsEvent *)self propertyForBodyKey:@"enableAccountIdentifierAutoDecoration"];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)preventSampling
 {
   v2 = [(AMSMetricsEvent *)self _propertyForBodyKey:@"preventSampling" clientOnly:1];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setAnonymous:(BOOL)a3
+- (void)setAnonymous:(BOOL)anonymous
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:anonymous];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"anonymous"];
 }
 
-- (void)setCheckDiagnosticsAndUsageSetting:(BOOL)a3
+- (void)setCheckDiagnosticsAndUsageSetting:(BOOL)setting
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:setting];
   [(AMSMetricsEvent *)self _setProperty:v4 forBodyKey:@"checkDU" clientOnly:1];
 }
 
-- (void)setEnableAccountIdentifierAutoDecoration:(BOOL)a3
+- (void)setEnableAccountIdentifierAutoDecoration:(BOOL)decoration
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:decoration];
   [(AMSMetricsEvent *)self _setProperty:v4 forBodyKey:@"enableAccountIdentifierAutoDecoration" clientOnly:1];
 }
 
-- (void)setPreventSampling:(BOOL)a3
+- (void)setPreventSampling:(BOOL)sampling
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:sampling];
   [(AMSMetricsEvent *)self _setProperty:v4 forBodyKey:@"preventSampling" clientOnly:1];
 }
 
-- (void)setSuppressEngagement:(BOOL)a3
+- (void)setSuppressEngagement:(BOOL)engagement
 {
-  v3 = a3;
+  engagementCopy = engagement;
   v14 = *MEMORY[0x1E69E9840];
   if ([(AMSMetricsEvent *)self engagementEvent])
   {
@@ -1048,8 +1048,8 @@ void __35__AMSMetricsEvent_sanitizedObject___block_invoke(uint64_t a1, void *a2,
       v5 = +[AMSLogConfig sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v7 = objc_opt_class();
       v8 = AMSLogKey();
@@ -1057,23 +1057,23 @@ void __35__AMSMetricsEvent_sanitizedObject___block_invoke(uint64_t a1, void *a2,
       v11 = v7;
       v12 = 2114;
       v13 = v8;
-      _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attempting to suppress engagement for engagement event", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attempting to suppress engagement for engagement event", buf, 0x16u);
     }
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v9 = [MEMORY[0x1E696AD98] numberWithBool:engagementCopy];
     [AMSMetricsEvent _setProperty:"_setProperty:forBodyKey:clientOnly:" forBodyKey:? clientOnly:?];
   }
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   os_unfair_lock_lock_with_options();
   account = self->_account;
-  self->_account = v4;
+  self->_account = accountCopy;
 
   os_unfair_lock_unlock(&self->_internalStateLock);
 }
@@ -1087,13 +1087,13 @@ void __35__AMSMetricsEvent_sanitizedObject___block_invoke(uint64_t a1, void *a2,
   return v3;
 }
 
-- (void)addPropertiesWithDictionary:(id)a3
+- (void)addPropertiesWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v7 = [objc_opt_class() _deepCopiedAndSanitizedTopLevelDictionaryFromDictionary:v4];
+  dictionaryCopy = dictionary;
+  v7 = [objc_opt_class() _deepCopiedAndSanitizedTopLevelDictionaryFromDictionary:dictionaryCopy];
 
-  v5 = [(AMSMetricsEvent *)self topic];
-  v6 = [v5 isEqualToString:0x1F0733698];
+  topic = [(AMSMetricsEvent *)self topic];
+  v6 = [topic isEqualToString:0x1F0733698];
 
   if (v6)
   {
@@ -1105,30 +1105,30 @@ void __35__AMSMetricsEvent_sanitizedObject___block_invoke(uint64_t a1, void *a2,
   os_unfair_lock_unlock(&self->_internalStateLock);
 }
 
-- (void)removePropertiesForKeys:(id)a3
+- (void)removePropertiesForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   os_unfair_lock_lock_with_options();
-  [(NSMutableDictionary *)self->_underlyingDictionary removeObjectsForKeys:v4];
+  [(NSMutableDictionary *)self->_underlyingDictionary removeObjectsForKeys:keysCopy];
 
   os_unfair_lock_unlock(&self->_internalStateLock);
 }
 
-- (id)_propertyForBodyKey:(id)a3 clientOnly:(BOOL)a4
+- (id)_propertyForBodyKey:(id)key clientOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
+  onlyCopy = only;
+  keyCopy = key;
   os_unfair_lock_lock_with_options();
   underlyingDictionary = self->_underlyingDictionary;
-  if (v4)
+  if (onlyCopy)
   {
     v8 = [(NSMutableDictionary *)underlyingDictionary objectForKeyedSubscript:@"clientOnlyProperties"];
-    v9 = [v8 objectForKeyedSubscript:v6];
+    v9 = [v8 objectForKeyedSubscript:keyCopy];
   }
 
   else
   {
-    v9 = [(NSMutableDictionary *)underlyingDictionary objectForKeyedSubscript:v6];
+    v9 = [(NSMutableDictionary *)underlyingDictionary objectForKeyedSubscript:keyCopy];
   }
 
   os_unfair_lock_unlock(&self->_internalStateLock);
@@ -1136,18 +1136,18 @@ void __35__AMSMetricsEvent_sanitizedObject___block_invoke(uint64_t a1, void *a2,
   return v9;
 }
 
-- (void)_setProperty:(id)a3 forBodyKey:(id)a4 clientOnly:(BOOL)a5
+- (void)_setProperty:(id)property forBodyKey:(id)key clientOnly:(BOOL)only
 {
-  v5 = a5;
-  v13 = a3;
-  v8 = a4;
-  if (!v13)
+  onlyCopy = only;
+  propertyCopy = property;
+  keyCopy = key;
+  if (!propertyCopy)
   {
     v10 = 0;
 LABEL_5:
     os_unfair_lock_lock_with_options();
     v11 = self->_underlyingDictionary;
-    if (v5)
+    if (onlyCopy)
     {
       v12 = [(NSMutableDictionary *)self->_underlyingDictionary objectForKeyedSubscript:@"clientOnlyProperties"];
 
@@ -1172,14 +1172,14 @@ LABEL_5:
     }
 
 LABEL_12:
-    [(NSMutableDictionary *)v11 setObject:v10 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)v11 setObject:v10 forKeyedSubscript:keyCopy];
     os_unfair_lock_unlock(&self->_internalStateLock);
 
     goto LABEL_13;
   }
 
-  v9 = [objc_opt_class() _propertyValueClassesForKnownProperties];
-  v10 = [AMSMetricsEvent _deepCopiedJSONObjectOrNilForObject:v13 key:v8 enforcingClassUsingKnownPropertiesClassMapping:v9];
+  _propertyValueClassesForKnownProperties = [objc_opt_class() _propertyValueClassesForKnownProperties];
+  v10 = [AMSMetricsEvent _deepCopiedJSONObjectOrNilForObject:propertyCopy key:keyCopy enforcingClassUsingKnownPropertiesClassMapping:_propertyValueClassesForKnownProperties];
 
   if (v10)
   {
@@ -1189,24 +1189,24 @@ LABEL_12:
 LABEL_13:
 }
 
-+ (id)_deepCopiedJSONObjectOrNilForObject:(id)a3
++ (id)_deepCopiedJSONObjectOrNilForObject:(id)object
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v5 = MEMORY[0x1E696ACB0];
-  v25[0] = v4;
+  v25[0] = objectCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
   LOBYTE(v5) = [v5 isValidJSONObject:v6];
 
   if (v5)
   {
-    v7 = AMSMetricsEventDeepCopyJSONObject(v4);
+    v7 = AMSMetricsEventDeepCopyJSONObject(objectCopy);
   }
 
   else
   {
     v8 = MEMORY[0x1E696ACB0];
-    v24 = v4;
+    v24 = objectCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
     v17 = 0;
     v10 = [v8 dataWithJSONObject:v9 options:0 error:&v17];
@@ -1218,18 +1218,18 @@ LABEL_13:
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v14 = AMSLogKey();
       v15 = AMSLogableError(v11);
       *buf = 138543874;
-      v19 = a1;
+      selfCopy = self;
       v20 = 2114;
       v21 = v14;
       v22 = 2114;
       v23 = v15;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error converting object to JSON data: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error converting object to JSON data: %{public}@", buf, 0x20u);
     }
 
     v7 = 0;
@@ -1238,13 +1238,13 @@ LABEL_13:
   return v7;
 }
 
-+ (id)_deepCopiedJSONObjectOrNilForObject:(id)a3 key:(id)a4 enforcingClassUsingKnownPropertiesClassMapping:(id)a5
++ (id)_deepCopiedJSONObjectOrNilForObject:(id)object key:(id)key enforcingClassUsingKnownPropertiesClassMapping:(id)mapping
 {
   v51 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [AMSMetricsEvent _deepCopiedJSONObjectOrNilForObject:v8];
+  objectCopy = object;
+  keyCopy = key;
+  mappingCopy = mapping;
+  v11 = [AMSMetricsEvent _deepCopiedJSONObjectOrNilForObject:objectCopy];
   if (!v11)
   {
     v18 = +[AMSLogConfig sharedMetricsConfig];
@@ -1253,27 +1253,27 @@ LABEL_13:
       v18 = +[AMSLogConfig sharedConfig];
     }
 
-    v19 = [v18 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v18 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v20 = AMSLogKey();
-      v21 = AMSHashIfNeeded(v9);
-      v22 = AMSHashIfNeeded(v8);
+      v21 = AMSHashIfNeeded(keyCopy);
+      v22 = AMSHashIfNeeded(objectCopy);
       *buf = 138544130;
-      v40 = a1;
+      selfCopy4 = self;
       v41 = 2114;
       v42 = v20;
       v43 = 2114;
       v44 = v21;
       v45 = 2114;
       v46 = v22;
-      _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] [FILE A RADAR] Invalid metrics property. Property must be JSON serializable. Key: %{public}@ Property: %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] [FILE A RADAR] Invalid metrics property. Property must be JSON serializable. Key: %{public}@ Property: %{public}@", buf, 0x2Au);
     }
 
     goto LABEL_15;
   }
 
-  v12 = [v10 objectForKeyedSubscript:v9];
+  v12 = [mappingCopy objectForKeyedSubscript:keyCopy];
   if (v12)
   {
     v13 = v12;
@@ -1286,20 +1286,20 @@ LABEL_13:
         v14 = +[AMSLogConfig sharedConfig];
       }
 
-      v15 = [v14 OSLogObject];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v14 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v16 = AMSLogKey();
-        v17 = AMSHashIfNeeded(v9);
+        v17 = AMSHashIfNeeded(keyCopy);
         *buf = 138544130;
-        v40 = a1;
+        selfCopy4 = self;
         v41 = 2114;
         v42 = v16;
         v43 = 2114;
         v44 = v17;
         v45 = 2114;
         v46 = v13;
-        _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to set NSNull as property value from dictionary: key = %{public}@, expected value class = %{public}@. Not setting any value for this key.", buf, 0x2Au);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to set NSNull as property value from dictionary: key = %{public}@, expected value class = %{public}@. Not setting any value for this key.", buf, 0x2Au);
       }
 
       goto LABEL_9;
@@ -1317,14 +1317,14 @@ LABEL_13:
           v14 = +[AMSLogConfig sharedConfig];
         }
 
-        v27 = [v14 OSLogObject];
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+        oSLogObject3 = [v14 OSLogObject];
+        if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
         {
           v37 = AMSLogKey();
-          v36 = AMSHashIfNeeded(v9);
+          v36 = AMSHashIfNeeded(keyCopy);
           v28 = AMSHashIfNeeded(v11);
           *buf = 138544642;
-          v40 = a1;
+          selfCopy4 = self;
           v41 = 2114;
           v42 = v37;
           v43 = 2114;
@@ -1336,12 +1336,12 @@ LABEL_13:
           v49 = 2114;
           v50 = v13;
           v29 = v48;
-          _os_log_impl(&dword_192869000, v27, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attempting to set property of invalid class from dictionary: key = %{public}@, value = %{public}@, value class = %{public}@, expected class = %{public}@", buf, 0x3Eu);
+          _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attempting to set property of invalid class from dictionary: key = %{public}@, value = %{public}@, value class = %{public}@, expected class = %{public}@", buf, 0x3Eu);
         }
 
-        v30 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         v31 = +[AMSLogConfig sharedMetricsConfig];
-        [v30 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v31 userInfo:0];
+        [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v31 userInfo:0];
 
         goto LABEL_15;
       }
@@ -1351,14 +1351,14 @@ LABEL_13:
         v14 = +[AMSLogConfig sharedConfig];
       }
 
-      v32 = [v14 OSLogObject];
-      if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
+      oSLogObject4 = [v14 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_FAULT))
       {
         v38 = AMSLogKey();
-        v33 = AMSHashIfNeeded(v9);
+        v33 = AMSHashIfNeeded(keyCopy);
         v34 = AMSHashIfNeeded(v11);
         *buf = 138544642;
-        v40 = a1;
+        selfCopy4 = self;
         v41 = 2114;
         v42 = v38;
         v43 = 2114;
@@ -1370,7 +1370,7 @@ LABEL_13:
         v49 = 2114;
         v50 = v13;
         v35 = v48;
-        _os_log_impl(&dword_192869000, v32, OS_LOG_TYPE_FAULT, "%{public}@: [%{public}@] Attempting to set property of invalid class from dictionary: key = %{public}@, value = %{public}@, value class = %{public}@, expected class = %{public}@", buf, 0x3Eu);
+        _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_FAULT, "%{public}@: [%{public}@] Attempting to set property of invalid class from dictionary: key = %{public}@, value = %{public}@, value class = %{public}@, expected class = %{public}@", buf, 0x3Eu);
       }
 
 LABEL_9:
@@ -1386,18 +1386,18 @@ LABEL_18:
   return v23;
 }
 
-+ (id)_deepCopiedAndSanitizedTopLevelDictionaryFromDictionary:(id)a3
++ (id)_deepCopiedAndSanitizedTopLevelDictionaryFromDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v27 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  v25 = a1;
-  v26 = [a1 _propertyValueClassesForKnownProperties];
+  dictionaryCopy = dictionary;
+  v27 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
+  selfCopy = self;
+  _propertyValueClassesForKnownProperties = [self _propertyValueClassesForKnownProperties];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = v4;
+  v5 = dictionaryCopy;
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (v6)
   {
@@ -1437,8 +1437,8 @@ LABEL_18:
             v10 = v16;
           }
 
-          v18 = [v5 objectForKeyedSubscript:{v14, v24}];
-          v22 = [AMSMetricsEvent _deepCopiedJSONObjectOrNilForObject:v18 key:v15 enforcingClassUsingKnownPropertiesClassMapping:v26];
+          oSLogObject = [v5 objectForKeyedSubscript:{v14, v24}];
+          v22 = [AMSMetricsEvent _deepCopiedJSONObjectOrNilForObject:oSLogObject key:v15 enforcingClassUsingKnownPropertiesClassMapping:_propertyValueClassesForKnownProperties];
           if (v22)
           {
             [v27 setObject:v22 forKeyedSubscript:v15];
@@ -1453,19 +1453,19 @@ LABEL_18:
             v15 = +[AMSLogConfig sharedConfig];
           }
 
-          v18 = [v15 OSLogObject];
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+          oSLogObject = [v15 OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
           {
             AMSLogKey();
             v20 = v19 = v10;
             v21 = AMSHashIfNeeded(v12);
             *buf = v24;
-            v33 = v25;
+            v33 = selfCopy;
             v34 = 2114;
             v35 = v20;
             v36 = 2114;
             v37 = v21;
-            _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attempting to add a property with non-NSString key: %{public}@", buf, 0x20u);
+            _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attempting to add a property with non-NSString key: %{public}@", buf, 0x20u);
 
             v10 = v19;
           }

@@ -1,32 +1,32 @@
 @interface VCSEntity
-+ (id)stringForType:(unint64_t)a3;
-- (BOOL)hasPropertyWithName:(id)a3;
++ (id)stringForType:(unint64_t)type;
+- (BOOL)hasPropertyWithName:(id)name;
 - (NSArray)children;
 - (NSString)description;
 - (VCSEntity)init;
 - (VCSEntity)parent;
 - (id)dictify;
-- (id)propertyForName:(id)a3;
-- (void)addChildEntity:(id)a3;
-- (void)removePropertyForName:(id)a3;
-- (void)setProperty:(id)a3;
+- (id)propertyForName:(id)name;
+- (void)addChildEntity:(id)entity;
+- (void)removePropertyForName:(id)name;
+- (void)setProperty:(id)property;
 @end
 
 @implementation VCSEntity
 
-+ (id)stringForType:(unint64_t)a3
++ (id)stringForType:(unint64_t)type
 {
-  if (a3 >= 5)
+  if (type >= 5)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid(%lu)", a3];
+    type = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid(%lu)", type];
   }
 
   else
   {
-    v4 = off_27A64C480[a3];
+    type = off_27A64C480[type];
   }
 
-  return v4;
+  return type;
 }
 
 - (VCSEntity)init
@@ -90,8 +90,8 @@ void __20__VCSEntity_dictify__block_invoke(uint64_t a1, void *a2, void *a3)
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(VCSEntity *)self dictify];
-  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, v5];
+  dictify = [(VCSEntity *)self dictify];
+  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, dictify];
 
   return v6;
 }
@@ -103,37 +103,37 @@ void __20__VCSEntity_dictify__block_invoke(uint64_t a1, void *a2, void *a3)
   return v2;
 }
 
-- (void)setProperty:(id)a3
+- (void)setProperty:(id)property
 {
-  v4 = a3;
-  if (v4)
+  propertyCopy = property;
+  if (propertyCopy)
   {
-    v8 = v4;
-    v5 = [v4 name];
+    v8 = propertyCopy;
+    name = [propertyCopy name];
 
-    v4 = v8;
-    if (v5)
+    propertyCopy = v8;
+    if (name)
     {
       propertyMap = self->_propertyMap;
-      v7 = [v8 name];
-      [(NSMutableDictionary *)propertyMap setObject:v8 forKeyedSubscript:v7];
+      name2 = [v8 name];
+      [(NSMutableDictionary *)propertyMap setObject:v8 forKeyedSubscript:name2];
 
-      v4 = v8;
+      propertyCopy = v8;
     }
   }
 }
 
-- (void)removePropertyForName:(id)a3
+- (void)removePropertyForName:(id)name
 {
-  if (a3)
+  if (name)
   {
     [(NSMutableDictionary *)self->_propertyMap removeObjectForKey:?];
   }
 }
 
-- (BOOL)hasPropertyWithName:(id)a3
+- (BOOL)hasPropertyWithName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
@@ -144,9 +144,9 @@ void __20__VCSEntity_dictify__block_invoke(uint64_t a1, void *a2, void *a3)
   return v4;
 }
 
-- (id)propertyForName:(id)a3
+- (id)propertyForName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = [(NSMutableDictionary *)self->_propertyMap objectForKeyedSubscript:?];
   }
@@ -159,11 +159,11 @@ void __20__VCSEntity_dictify__block_invoke(uint64_t a1, void *a2, void *a3)
   return v4;
 }
 
-- (void)addChildEntity:(id)a3
+- (void)addChildEntity:(id)entity
 {
-  v4 = a3;
-  [v4 setParent:self];
-  [(NSMutableArray *)self->_children addObject:v4];
+  entityCopy = entity;
+  [entityCopy setParent:self];
+  [(NSMutableArray *)self->_children addObject:entityCopy];
 }
 
 - (VCSEntity)parent

@@ -1,22 +1,22 @@
 @interface CASDFGradientContourEffect
 + (id)defaultValues;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)configureLayer:(void *)a3 transaction:(void *)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)configureLayer:(void *)layer transaction:(void *)transaction;
 - (void)dealloc;
 @end
 
 @implementation CASDFGradientContourEffect
 
-- (void)configureLayer:(void *)a3 transaction:(void *)a4
+- (void)configureLayer:(void *)layer transaction:(void *)transaction
 {
   v37 = *MEMORY[0x1E69E9840];
   v33 = 0uLL;
   v34 = 0;
-  v7 = [(CASDFGradientContourEffect *)self startColor];
-  if (v7)
+  startColor = [(CASDFGradientContourEffect *)self startColor];
+  if (startColor)
   {
-    v9 = v7;
-    v10 = CA::Context::current_colorspace(a4, v8);
+    v9 = startColor;
+    v10 = CA::Context::current_colorspace(transaction, v8);
     CA::Render::convert_cgcolor(v9, v10, &v33, 0, v11);
   }
 
@@ -25,7 +25,7 @@
   if (v12)
   {
     v14 = v12;
-    v15 = CA::Context::current_colorspace(a4, v13);
+    v15 = CA::Context::current_colorspace(transaction, v13);
     CA::Render::convert_cgcolor(v14, v15, &v31, 0, v16);
   }
 
@@ -47,29 +47,29 @@
   v28 = v27;
   [(CASDFGradientContourEffect *)self gradientOffset];
   v29 = *v36;
-  *(a3 + 24) = v35;
+  *(layer + 24) = v35;
   *&v30 = v30;
-  *(a3 + 136) = 4;
-  *(a3 + 40) = v29;
-  *(a3 + 7) = *&v36[16];
-  *(a3 + 16) = v18;
-  *(a3 + 17) = v20;
-  *(a3 + 18) = v22;
-  *(a3 + 19) = v24;
-  *(a3 + 20) = v26;
-  *(a3 + 21) = v28;
-  *(a3 + 22) = LODWORD(v30);
-  *(a3 + 92) = 0u;
-  *(a3 + 108) = 0u;
-  *(a3 + 120) = 0u;
+  *(layer + 136) = 4;
+  *(layer + 40) = v29;
+  *(layer + 7) = *&v36[16];
+  *(layer + 16) = v18;
+  *(layer + 17) = v20;
+  *(layer + 18) = v22;
+  *(layer + 19) = v24;
+  *(layer + 20) = v26;
+  *(layer + 21) = v28;
+  *(layer + 22) = LODWORD(v30);
+  *(layer + 92) = 0u;
+  *(layer + 108) = 0u;
+  *(layer + 120) = 0u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = CASDFGradientContourEffect;
-  v4 = [(CASDFEffect *)&v6 copyWithZone:a3];
+  v4 = [(CASDFEffect *)&v6 copyWithZone:zone];
   if (v4)
   {
     v4[1] = CGColorRetain(self->_startColor);

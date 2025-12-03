@@ -1,29 +1,29 @@
 @interface PowerUIMLTwoStageModelPredictor
 - (MLModel)durationModel;
 - (MLModel)engageModel;
-- (PowerUIMLTwoStageModelPredictor)initWithDefaultsDomain:(id)a3 withContextStore:(id)a4 withTrialManager:(id)a5;
-- (PowerUIModelQueryResult)chargingDecision:(SEL)a3 withPluginDate:(unint64_t)a4 withPluginBatteryLevel:(id)a5 forDate:(double)a6 withLog:(id)a7;
-- (double)adjustedChargingDecision:(unint64_t)a3 withPluginDate:(id)a4 withPluginBatteryLevel:(double)a5 forDate:(id)a6 forStatus:(BOOL)a7;
-- (double)getHourBinID:(id)a3 forHourBin:(unint64_t)a4;
-- (double)loadAdjustedHoursForModel:(id)a3;
+- (PowerUIMLTwoStageModelPredictor)initWithDefaultsDomain:(id)domain withContextStore:(id)store withTrialManager:(id)manager;
+- (PowerUIModelQueryResult)chargingDecision:(SEL)decision withPluginDate:(unint64_t)date withPluginBatteryLevel:(id)level forDate:(double)forDate withLog:(id)log;
+- (double)adjustedChargingDecision:(unint64_t)decision withPluginDate:(id)date withPluginBatteryLevel:(double)level forDate:(id)forDate forStatus:(BOOL)status;
+- (double)getHourBinID:(id)d forHourBin:(unint64_t)bin;
+- (double)loadAdjustedHoursForModel:(id)model;
 - (double)loadMinInputChargeDuration;
-- (double)loadThresholdForModel:(id)a3;
+- (double)loadThresholdForModel:(id)model;
 - (id)adjustDeadlineForReengagement;
-- (id)arrayWithShape:(id)a3 values:(id)a4 type:(int64_t)a5;
-- (id)convertInputFeaturesToNeuralFeatures:(id)a3;
+- (id)arrayWithShape:(id)shape values:(id)values type:(int64_t)type;
+- (id)convertInputFeaturesToNeuralFeatures:(id)features;
 - (id)durationModelBoltID;
 - (id)engagementModelBoltID;
-- (id)getInputFeaturesWithPluginDate:(id)a3 withPluginBatteryLevel:(double)a4 forDate:(id)a5 withLog:(id)a6;
-- (id)predictFullChargeDateWithBatteryLevel:(unint64_t)a3;
-- (id)timeStringFromDate:(id)a3;
+- (id)getInputFeaturesWithPluginDate:(id)date withPluginBatteryLevel:(double)level forDate:(id)forDate withLog:(id)log;
+- (id)predictFullChargeDateWithBatteryLevel:(unint64_t)level;
+- (id)timeStringFromDate:(id)date;
 - (void)deleteCompiledModels;
 - (void)deleteUpdatedModels;
 - (void)engageModel;
-- (void)loadDurationModelFromURL:(id)a3;
-- (void)loadEngagementModelFromURL:(id)a3;
+- (void)loadDurationModelFromURL:(id)l;
+- (void)loadEngagementModelFromURL:(id)l;
 - (void)loadTrial;
 - (void)resetSavedDeadline;
-- (void)setPluginDate:(id)a3;
+- (void)setPluginDate:(id)date;
 @end
 
 @implementation PowerUIMLTwoStageModelPredictor
@@ -87,16 +87,16 @@
     {
       v18 = self->_engageModel;
       v19 = v17;
-      v37 = [(MLModel *)v18 modelDescription];
-      v36 = [v37 metadata];
+      modelDescription = [(MLModel *)v18 modelDescription];
+      metadata = [modelDescription metadata];
       v20 = *MEMORY[0x277CBFE90];
-      [v36 objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
+      [metadata objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
       v21 = v39 = v9;
       [v21 objectForKeyedSubscript:@"model_version"];
       v22 = v38 = v10;
-      v23 = [(MLModel *)self->_engageModel modelDescription];
-      v24 = [v23 metadata];
-      v25 = [v24 objectForKeyedSubscript:v20];
+      modelDescription2 = [(MLModel *)self->_engageModel modelDescription];
+      metadata2 = [modelDescription2 metadata];
+      v25 = [metadata2 objectForKeyedSubscript:v20];
       v26 = [v25 objectForKeyedSubscript:@"bolt_id"];
       v27 = [MEMORY[0x277CCABB0] numberWithDouble:self->_threshold];
       *buf = 138413058;
@@ -121,9 +121,9 @@
     }
 
     v28 = *(v3 + 2480);
-    v29 = [(MLModel *)self->_engageModel modelDescription];
-    v30 = [v29 metadata];
-    v31 = [v30 objectForKeyedSubscript:v20];
+    modelDescription3 = [(MLModel *)self->_engageModel modelDescription];
+    metadata3 = [modelDescription3 metadata];
+    v31 = [metadata3 objectForKeyedSubscript:v20];
     v32 = [v31 objectForKeyedSubscript:@"model_version"];
     [v28 setString:v32 forPreferenceKey:@"engageBoltID" inDomain:self->_defaultsDomain];
   }
@@ -185,14 +185,14 @@
     {
       v17 = self->_durationModel;
       v18 = v16;
-      v36 = [(MLModel *)v17 modelDescription];
-      v35 = [v36 metadata];
+      modelDescription = [(MLModel *)v17 modelDescription];
+      metadata = [modelDescription metadata];
       v19 = *MEMORY[0x277CBFE90];
-      v20 = [v35 objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
+      v20 = [metadata objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
       v21 = [v20 objectForKeyedSubscript:@"model_version"];
-      v22 = [(MLModel *)self->_durationModel modelDescription];
-      v23 = [v22 metadata];
-      v24 = [v23 objectForKeyedSubscript:v19];
+      modelDescription2 = [(MLModel *)self->_durationModel modelDescription];
+      metadata2 = [modelDescription2 metadata];
+      v24 = [metadata2 objectForKeyedSubscript:v19];
       v25 = [v24 objectForKeyedSubscript:@"bolt_id"];
       v26 = [MEMORY[0x277CCABB0] numberWithDouble:self->_adjustedDuration];
       *buf = 138413058;
@@ -214,9 +214,9 @@
     }
 
     v27 = *(v3 + 2480);
-    v28 = [(MLModel *)self->_durationModel modelDescription];
-    v29 = [v28 metadata];
-    v30 = [v29 objectForKeyedSubscript:v19];
+    modelDescription3 = [(MLModel *)self->_durationModel modelDescription];
+    metadata3 = [modelDescription3 metadata];
+    v30 = [metadata3 objectForKeyedSubscript:v19];
     v31 = [v30 objectForKeyedSubscript:@"model_version"];
     [v27 setString:v31 forPreferenceKey:@"durationBoltID" inDomain:self->_defaultsDomain];
   }
@@ -229,16 +229,16 @@
   return v32;
 }
 
-- (id)timeStringFromDate:(id)a3
+- (id)timeStringFromDate:(id)date
 {
   v3 = timeStringFromDate__onceToken;
-  v4 = a3;
+  dateCopy = date;
   if (v3 != -1)
   {
     [PowerUIMLTwoStageModelPredictor timeStringFromDate:];
   }
 
-  v5 = [timeStringFromDate__formatter stringFromDate:v4];
+  v5 = [timeStringFromDate__formatter stringFromDate:dateCopy];
 
   return v5;
 }
@@ -255,11 +255,11 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
   return [v2 setTimeStyle:1];
 }
 
-- (PowerUIMLTwoStageModelPredictor)initWithDefaultsDomain:(id)a3 withContextStore:(id)a4 withTrialManager:(id)a5
+- (PowerUIMLTwoStageModelPredictor)initWithDefaultsDomain:(id)domain withContextStore:(id)store withTrialManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  domainCopy = domain;
+  storeCopy = store;
+  managerCopy = manager;
   v30.receiver = self;
   v30.super_class = PowerUIMLTwoStageModelPredictor;
   v12 = [(PowerUIMLTwoStageModelPredictor *)&v30 init];
@@ -275,8 +275,8 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
     statusLog = v13->_statusLog;
     v13->_statusLog = v16;
 
-    objc_storeStrong(&v13->_defaultsDomain, a3);
-    objc_storeStrong(&v13->_context, a4);
+    objc_storeStrong(&v13->_defaultsDomain, domain);
+    objc_storeStrong(&v13->_context, store);
     v18 = [PowerUISmartChargeUtilities dateForPreferenceKey:@"twoStageModelOutput" inDomain:v13->_defaultsDomain];
     deadline = v13->_deadline;
     v13->_deadline = v18;
@@ -289,7 +289,7 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
     [v22 doubleValue];
     v13->_lastDurationResult = v23;
 
-    objc_storeStrong(&v13->_trialManager, a5);
+    objc_storeStrong(&v13->_trialManager, manager);
     [(PowerUIMLTwoStageModelPredictor *)v13 loadMinInputChargeDuration];
     v13->_minInputChargeDuration = v24;
     v13->_threshold = 1.0;
@@ -327,17 +327,17 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
   [PowerUISmartChargeUtilities logMemoryUsageInternalForEvent:@"End of loadTrial"];
 }
 
-- (double)loadThresholdForModel:(id)a3
+- (double)loadThresholdForModel:(id)model
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   [(PowerUITrialManager *)self->_trialManager loadTrialThreshold];
   v6 = v5;
   if (v5 <= 0.0)
   {
-    v7 = [v4 modelDescription];
-    v8 = [v7 metadata];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
+    modelDescription = [modelCopy modelDescription];
+    metadata = [modelDescription metadata];
+    v9 = [metadata objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
     v10 = [v9 objectForKeyedSubscript:@"threshold"];
     [v10 doubleValue];
     v6 = v11;
@@ -355,17 +355,17 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
   return v6;
 }
 
-- (double)loadAdjustedHoursForModel:(id)a3
+- (double)loadAdjustedHoursForModel:(id)model
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   [(PowerUITrialManager *)self->_trialManager loadTrialAdjustedHours];
   v6 = v5;
   if (v5 <= 0.0)
   {
-    v7 = [v4 modelDescription];
-    v8 = [v7 metadata];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
+    modelDescription = [modelCopy modelDescription];
+    metadata = [modelDescription metadata];
+    v9 = [metadata objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
     v10 = [v9 objectForKeyedSubscript:@"leeway"];
     [v10 doubleValue];
     v6 = v11;
@@ -404,22 +404,22 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
   return v4;
 }
 
-- (id)arrayWithShape:(id)a3 values:(id)a4 type:(int64_t)a5
+- (id)arrayWithShape:(id)shape values:(id)values type:(int64_t)type
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v9)
+  shapeCopy = shape;
+  valuesCopy = values;
+  v10 = valuesCopy;
+  if (valuesCopy)
   {
-    if (!v8)
+    if (!shapeCopy)
     {
-      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
+      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(valuesCopy, "count")}];
       v19[0] = v11;
-      v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
+      shapeCopy = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
     }
 
-    v12 = [objc_alloc(MEMORY[0x277CBFF48]) initWithShape:v8 dataType:a5 error:0];
+    v12 = [objc_alloc(MEMORY[0x277CBFF48]) initWithShape:shapeCopy dataType:type error:0];
     if (v12 && [v10 count])
     {
       v13 = 0;
@@ -458,10 +458,10 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
   v3 = [PowerUISmartChargeUtilities readStringForPreferenceKey:@"engageBoltID" inDomain:self->_defaultsDomain];
   if (!v3)
   {
-    v4 = [(PowerUIMLTwoStageModelPredictor *)self engageModel];
-    v5 = [v4 modelDescription];
-    v6 = [v5 metadata];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
+    engageModel = [(PowerUIMLTwoStageModelPredictor *)self engageModel];
+    modelDescription = [engageModel modelDescription];
+    metadata = [modelDescription metadata];
+    v7 = [metadata objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
     v3 = [v7 objectForKeyedSubscript:@"model_version"];
   }
 
@@ -494,10 +494,10 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
   v3 = [PowerUISmartChargeUtilities readStringForPreferenceKey:@"durationBoltID" inDomain:self->_defaultsDomain];
   if (!v3)
   {
-    v4 = [(PowerUIMLTwoStageModelPredictor *)self durationModel];
-    v5 = [v4 modelDescription];
-    v6 = [v5 metadata];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
+    durationModel = [(PowerUIMLTwoStageModelPredictor *)self durationModel];
+    modelDescription = [durationModel modelDescription];
+    metadata = [modelDescription metadata];
+    v7 = [metadata objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
     v3 = [v7 objectForKeyedSubscript:@"model_version"];
   }
 
@@ -524,13 +524,13 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
   return v9;
 }
 
-- (void)setPluginDate:(id)a3
+- (void)setPluginDate:(id)date
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  [PowerUISmartChargeUtilities batteryLevelAtDate:v5];
+  dateCopy = date;
+  [PowerUISmartChargeUtilities batteryLevelAtDate:dateCopy];
   self->_pluginBatteryLevel = v6;
-  objc_storeStrong(&self->_pluginDate, a3);
+  objc_storeStrong(&self->_pluginDate, date);
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -548,18 +548,18 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (double)getHourBinID:(id)a3 forHourBin:(unint64_t)a4
+- (double)getHourBinID:(id)d forHourBin:(unint64_t)bin
 {
   v5 = MEMORY[0x277CBEA80];
-  v6 = a3;
-  v7 = [v5 currentCalendar];
-  v8 = [v7 components:32 fromDate:v6];
+  dCopy = d;
+  currentCalendar = [v5 currentCalendar];
+  v8 = [currentCalendar components:32 fromDate:dCopy];
 
-  v9 = [v8 hour] / a4;
+  v9 = [v8 hour] / bin;
   return v9;
 }
 
-- (id)predictFullChargeDateWithBatteryLevel:(unint64_t)a3
+- (id)predictFullChargeDateWithBatteryLevel:(unint64_t)level
 {
   v19 = *MEMORY[0x277D85DE8];
   if (self->_deadline)
@@ -578,8 +578,8 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
   {
     pluginDate = self->_pluginDate;
     pluginBatteryLevel = self->_pluginBatteryLevel;
-    v9 = [MEMORY[0x277CBEAA8] date];
-    [(PowerUIMLTwoStageModelPredictor *)self adjustedChargingDecision:a3 withPluginDate:pluginDate withPluginBatteryLevel:v9 forDate:0 forStatus:pluginBatteryLevel];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(PowerUIMLTwoStageModelPredictor *)self adjustedChargingDecision:level withPluginDate:pluginDate withPluginBatteryLevel:date forDate:0 forStatus:pluginBatteryLevel];
     v11 = v10;
 
     v12 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v11];
@@ -595,19 +595,19 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
   return v14;
 }
 
-- (double)adjustedChargingDecision:(unint64_t)a3 withPluginDate:(id)a4 withPluginBatteryLevel:(double)a5 forDate:(id)a6 forStatus:(BOOL)a7
+- (double)adjustedChargingDecision:(unint64_t)decision withPluginDate:(id)date withPluginBatteryLevel:(double)level forDate:(id)forDate forStatus:(BOOL)status
 {
-  v7 = a7;
+  statusCopy = status;
   v28 = *MEMORY[0x277D85DE8];
-  v12 = a6;
+  forDateCopy = forDate;
   v13 = 88;
-  if (v7)
+  if (statusCopy)
   {
     v13 = 96;
   }
 
   v14 = *(&self->super.isa + v13);
-  [(PowerUIMLTwoStageModelPredictor *)self chargingDecision:a3 withPluginDate:a4 withPluginBatteryLevel:v12 forDate:v14 withLog:a5];
+  [(PowerUIMLTwoStageModelPredictor *)self chargingDecision:decision withPluginDate:date withPluginBatteryLevel:forDateCopy forDate:v14 withLog:level];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
@@ -626,7 +626,7 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
 
     else
     {
-      v17 = [v12 dateByAddingTimeInterval:v15 * 3600.0];
+      v17 = [forDateCopy dateByAddingTimeInterval:v15 * 3600.0];
     }
 
     adjustedDuration = self->_adjustedDuration;
@@ -642,7 +642,7 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
     }
   }
 
-  if (!v7)
+  if (!statusCopy)
   {
     self->_lastDurationResult = v15;
     v19 = [MEMORY[0x277CCABB0] numberWithDouble:v15];
@@ -653,22 +653,22 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
   return v15 * 3600.0;
 }
 
-- (id)getInputFeaturesWithPluginDate:(id)a3 withPluginBatteryLevel:(double)a4 forDate:(id)a5 withLog:(id)a6
+- (id)getInputFeaturesWithPluginDate:(id)date withPluginBatteryLevel:(double)level forDate:(id)forDate withLog:(id)log
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  dateCopy = date;
+  logCopy = log;
   v12 = MEMORY[0x277CBEA80];
-  v13 = a5;
-  v14 = [v12 currentCalendar];
-  v15 = [v14 components:32 fromDate:v13];
+  forDateCopy = forDate;
+  currentCalendar = [v12 currentCalendar];
+  v15 = [currentCalendar components:32 fromDate:forDateCopy];
 
-  v16 = [v15 hour];
-  [v10 timeIntervalSinceDate:v13];
+  hour = [v15 hour];
+  [dateCopy timeIntervalSinceDate:forDateCopy];
   v18 = v17;
 
-  v19 = [PowerUISmartChargeUtilities pluginEventsBefore:v10 withMinimumDuration:self->_minInputChargeDuration withMinimumPlugoutBatteryLevel:75.0 ignoringDisconnectsShorterThan:300.0];
-  v20 = v11;
+  v19 = [PowerUISmartChargeUtilities pluginEventsBefore:dateCopy withMinimumDuration:self->_minInputChargeDuration withMinimumPlugoutBatteryLevel:75.0 ignoringDisconnectsShorterThan:300.0];
+  v20 = logCopy;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v19, "count")}];
@@ -679,7 +679,7 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
 
   if ([v19 count])
   {
-    v22 = [(PowerUIMLTwoStageModelPredictor *)self getInputFeatures:v19 events:a4 pluginBatteryLevel:v10 timeFromPlugin:v20 pluginDate:v16 withLog:-v18];
+    v22 = [(PowerUIMLTwoStageModelPredictor *)self getInputFeatures:v19 events:level pluginBatteryLevel:dateCopy timeFromPlugin:v20 pluginDate:hour withLog:-v18];
   }
 
   else
@@ -692,36 +692,36 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
   return v22;
 }
 
-- (PowerUIModelQueryResult)chargingDecision:(SEL)a3 withPluginDate:(unint64_t)a4 withPluginBatteryLevel:(id)a5 forDate:(double)a6 withLog:(id)a7
+- (PowerUIModelQueryResult)chargingDecision:(SEL)decision withPluginDate:(unint64_t)date withPluginBatteryLevel:(id)level forDate:(double)forDate withLog:(id)log
 {
   v60 = *MEMORY[0x277D85DE8];
   v13 = a8;
-  v14 = a7;
-  v15 = a5;
+  logCopy = log;
+  levelCopy = level;
   v16 = os_transaction_create();
-  v17 = [(PowerUIMLTwoStageModelPredictor *)self getInputFeaturesWithPluginDate:v15 withPluginBatteryLevel:v14 forDate:v13 withLog:a6];
+  v17 = [(PowerUIMLTwoStageModelPredictor *)self getInputFeaturesWithPluginDate:levelCopy withPluginBatteryLevel:logCopy forDate:v13 withLog:forDate];
 
   *&retstr->var0 = 0;
   *&retstr->var1 = vdupq_n_s64(0xC0F869F000000000);
   if (v17 || self->_durationOverride && self->_confidenceOverride)
   {
-    v18 = [(PowerUIMLTwoStageModelPredictor *)self engageModel];
-    v19 = [v18 predictionFromFeatures:v17 error:0];
+    engageModel = [(PowerUIMLTwoStageModelPredictor *)self engageModel];
+    v19 = [engageModel predictionFromFeatures:v17 error:0];
 
     v20 = [v19 featureValueForName:@"classProbability"];
-    v21 = [v20 dictionaryValue];
+    dictionaryValue = [v20 dictionaryValue];
 
     v22 = v13;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      [v21 description];
+      [dictionaryValue description];
       v23 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
       *buf = 138412290;
       v57 = v23;
       _os_log_impl(&dword_21B766000, v22, OS_LOG_TYPE_DEFAULT, "Engagement model raw output %@", buf, 0xCu);
     }
 
-    v24 = [v21 objectForKeyedSubscript:&unk_282D4E0B0];
+    v24 = [dictionaryValue objectForKeyedSubscript:&unk_282D4E0B0];
     [v24 doubleValue];
     v26 = v25;
 
@@ -777,14 +777,14 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
         _os_log_impl(&dword_21B766000, v22, OS_LOG_TYPE_DEFAULT, "Engagement model says YES (Prob %lf > Threshold %lf)", buf, 0x16u);
       }
 
-      v52 = v21;
+      v52 = dictionaryValue;
       v53 = v19;
       v54 = v16;
       v55 = v13;
       retstr->var0 = 1;
       retstr->var2 = v26;
-      v34 = [(PowerUIMLTwoStageModelPredictor *)self durationModel];
-      v35 = [v34 predictionFromFeatures:v17 error:0];
+      durationModel = [(PowerUIMLTwoStageModelPredictor *)self durationModel];
+      v35 = [durationModel predictionFromFeatures:v17 error:0];
 
       v51 = v35;
       v36 = [v35 featureValueForName:@"duration_pred"];
@@ -798,17 +798,17 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
         _os_log_impl(&dword_21B766000, v22, OS_LOG_TYPE_DEFAULT, "Regression model output: %lf", buf, 0xCu);
       }
 
-      v39 = [(PowerUIMLTwoStageModelPredictor *)self durationModel];
-      v40 = [v39 modelDescription];
-      v41 = [v40 metadata];
-      v42 = [v41 objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
+      durationModel2 = [(PowerUIMLTwoStageModelPredictor *)self durationModel];
+      modelDescription = [durationModel2 modelDescription];
+      metadata = [modelDescription metadata];
+      v42 = [metadata objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
       v43 = [v42 objectForKeyedSubscript:@"adjust_duration_by_confidence"];
-      v44 = [v43 BOOLValue];
+      bOOLValue = [v43 BOOLValue];
 
       v19 = v53;
       v16 = v54;
-      v21 = v52;
-      if (v44)
+      dictionaryValue = v52;
+      if (bOOLValue)
       {
         v38 = v26 * v38;
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -856,9 +856,9 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
   return result;
 }
 
-- (id)convertInputFeaturesToNeuralFeatures:(id)a3
+- (id)convertInputFeaturesToNeuralFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -866,13 +866,13 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Convert model input features for neural model", buf, 2u);
   }
 
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [v4 dictionary];
-  v8 = [(PowerUIMLTwoStageModelPredictor *)self getMultiArrayForFeatureDict:v7];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [featuresCopy dictionary];
+  v8 = [(PowerUIMLTwoStageModelPredictor *)self getMultiArrayForFeatureDict:dictionary2];
 
-  [v6 setObject:v8 forKeyedSubscript:@"layer1_input"];
+  [dictionary setObject:v8 forKeyedSubscript:@"layer1_input"];
   v13 = 0;
-  v9 = [objc_alloc(MEMORY[0x277CBFED0]) initWithDictionary:v6 error:&v13];
+  v9 = [objc_alloc(MEMORY[0x277CBFED0]) initWithDictionary:dictionary error:&v13];
   v10 = v13;
   if (v10)
   {
@@ -961,16 +961,16 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
 - (void)deleteUpdatedModels
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = MEMORY[0x277CBEBC0];
   v30[0] = @"/var/mobile/Library/PowerUI";
   v30[1] = @"updatedClassifier.modelc";
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
   v6 = [v4 fileURLWithPathComponents:v5];
 
-  v7 = [v6 path];
+  path = [v6 path];
   v24 = 0;
-  v8 = [v3 removeItemAtPath:v7 error:&v24];
+  v8 = [defaultManager removeItemAtPath:path error:&v24];
   v9 = v24;
 
   if ((v8 & 1) == 0)
@@ -979,9 +979,9 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v11 = log;
-      v12 = [v6 path];
+      path2 = [v6 path];
       *buf = 138412546;
-      v27 = v12;
+      v27 = path2;
       v28 = 2112;
       v29 = v9;
       _os_log_impl(&dword_21B766000, v11, OS_LOG_TYPE_DEFAULT, "Failed to clean up path: %@ -- %@", buf, 0x16u);
@@ -994,9 +994,9 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
   v15 = [v13 fileURLWithPathComponents:v14];
 
-  v16 = [v15 path];
+  path3 = [v15 path];
   v23 = v9;
-  v17 = [v3 removeItemAtPath:v16 error:&v23];
+  v17 = [defaultManager removeItemAtPath:path3 error:&v23];
   v18 = v23;
 
   if ((v17 & 1) == 0)
@@ -1005,9 +1005,9 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v20 = v19;
-      v21 = [v15 path];
+      path4 = [v15 path];
       *buf = 138412546;
-      v27 = v21;
+      v27 = path4;
       v28 = 2112;
       v29 = v18;
       _os_log_impl(&dword_21B766000, v20, OS_LOG_TYPE_DEFAULT, "Failed to clean up path: %@ -- %@", buf, 0x16u);
@@ -1017,21 +1017,21 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadEngagementModelFromURL:(id)a3
+- (void)loadEngagementModelFromURL:(id)l
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->_loadModelLock);
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v5;
+    v14 = lCopy;
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Reload engagement model: %@", buf, 0xCu);
   }
 
   v12 = 0;
-  v7 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:v5 error:&v12];
+  v7 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:lCopy error:&v12];
   v8 = v12;
   engageModel = self->_engageModel;
   self->_engageModel = v7;
@@ -1046,7 +1046,7 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
 
   else
   {
-    objc_storeStrong(&self->_compiledClassifier, a3);
+    objc_storeStrong(&self->_compiledClassifier, l);
     [(PowerUIMLTwoStageModelPredictor *)self loadThresholdForModel:self->_engageModel];
     self->_threshold = v10;
   }
@@ -1056,21 +1056,21 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadDurationModelFromURL:(id)a3
+- (void)loadDurationModelFromURL:(id)l
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->_loadModelLock);
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v5;
+    v14 = lCopy;
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Reload duration model: %@", buf, 0xCu);
   }
 
   v12 = 0;
-  v7 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:v5 error:&v12];
+  v7 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:lCopy error:&v12];
   v8 = v12;
   durationModel = self->_durationModel;
   self->_durationModel = v7;
@@ -1085,7 +1085,7 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
 
   else
   {
-    objc_storeStrong(&self->_compiledRegressor, a3);
+    objc_storeStrong(&self->_compiledRegressor, l);
     [(PowerUIMLTwoStageModelPredictor *)self loadAdjustedHoursForModel:self->_durationModel];
     self->_adjustedDuration = v10;
   }
@@ -1099,8 +1099,8 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
 {
   if (self->_deadline)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    v4 = [v3 earlierDate:self->_deadline];
+    date = [MEMORY[0x277CBEAA8] date];
+    v4 = [date earlierDate:self->_deadline];
     deadline = self->_deadline;
 
     if (v4 == deadline)
@@ -1112,15 +1112,15 @@ uint64_t __54__PowerUIMLTwoStageModelPredictor_timeStringFromDate___block_invoke
       [PowerUISmartChargeUtilities setDate:self->_deadline forPreferenceKey:@"twoStageModelOutput" inDomain:self->_defaultsDomain];
     }
 
-    v8 = self->_deadline;
+    distantPast = self->_deadline;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  return v8;
+  return distantPast;
 }
 
 - (void)engageModel

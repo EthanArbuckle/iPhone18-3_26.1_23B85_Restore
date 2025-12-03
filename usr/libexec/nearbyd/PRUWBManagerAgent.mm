@@ -1,6 +1,6 @@
 @interface PRUWBManagerAgent
 - (PRUWBDeviceCapabilities)deviceCapabilities;
-- (PRUWBManagerAgent)initWithClientReference:(shared_ptr<PRRangingManagerClient>)a3;
+- (PRUWBManagerAgent)initWithClientReference:(shared_ptr<PRRangingManagerClient>)reference;
 - (RoseServiceStateUpdate)currentServiceState;
 - (id).cxx_construct;
 - (id)getQueue;
@@ -98,12 +98,12 @@
   return (v18 | v19 | v10);
 }
 
-- (PRUWBManagerAgent)initWithClientReference:(shared_ptr<PRRangingManagerClient>)a3
+- (PRUWBManagerAgent)initWithClientReference:(shared_ptr<PRRangingManagerClient>)reference
 {
-  ptr = a3.__ptr_;
+  ptr = reference.__ptr_;
   v10.receiver = self;
   v10.super_class = PRUWBManagerAgent;
-  v4 = [(PRUWBManagerAgent *)&v10 init:a3.__ptr_];
+  v4 = [(PRUWBManagerAgent *)&v10 init:reference.__ptr_];
   v5 = v4;
   if (v4)
   {

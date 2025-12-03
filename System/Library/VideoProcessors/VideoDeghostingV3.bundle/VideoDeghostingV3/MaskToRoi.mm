@@ -1,17 +1,17 @@
 @interface MaskToRoi
-- (MaskToRoi)initWithMetalToolBox:(id)a3;
-- (id)convertInternalBBoxes:(int64_t)a3;
-- (id)convertInternalBBoxesToROI:(int64_t)a3;
-- (id)getBBoxesUsingGraphTraversalFrom:(__CVBuffer *)a3 pixValThreshold:(float)a4 bboxSizeThreshold:(float)a5 scaleFactor:(int)a6 roi:(BOOL)a7 returnAsDetectedROI:;
-- (void)convertPackedMaskToRegular:(__CVBuffer *)a3 output:(__CVBuffer *)a4;
+- (MaskToRoi)initWithMetalToolBox:(id)box;
+- (id)convertInternalBBoxes:(int64_t)boxes;
+- (id)convertInternalBBoxesToROI:(int64_t)i;
+- (id)getBBoxesUsingGraphTraversalFrom:(__CVBuffer *)from pixValThreshold:(float)threshold bboxSizeThreshold:(float)sizeThreshold scaleFactor:(int)factor roi:(BOOL)roi returnAsDetectedROI:;
+- (void)convertPackedMaskToRegular:(__CVBuffer *)regular output:(__CVBuffer *)output;
 - (void)dealloc;
 @end
 
 @implementation MaskToRoi
 
-- (MaskToRoi)initWithMetalToolBox:(id)a3
+- (MaskToRoi)initWithMetalToolBox:(id)box
 {
-  v4 = a3;
+  boxCopy = box;
   v12.receiver = self;
   v12.super_class = MaskToRoi;
   v5 = [(MaskToRoi *)&v12 init];
@@ -23,9 +23,9 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  if (v4)
+  if (boxCopy)
   {
-    v6 = v4;
+    v6 = boxCopy;
   }
 
   else
@@ -82,15 +82,15 @@ LABEL_8:
   [(MaskToRoi *)&v4 dealloc];
 }
 
-- (id)getBBoxesUsingGraphTraversalFrom:(__CVBuffer *)a3 pixValThreshold:(float)a4 bboxSizeThreshold:(float)a5 scaleFactor:(int)a6 roi:(BOOL)a7 returnAsDetectedROI:
+- (id)getBBoxesUsingGraphTraversalFrom:(__CVBuffer *)from pixValThreshold:(float)threshold bboxSizeThreshold:(float)sizeThreshold scaleFactor:(int)factor roi:(BOOL)roi returnAsDetectedROI:
 {
   v54 = v7;
-  v14 = [[PixelMemory alloc] initWithCvPixelBuffer:a3 skipClamp:0 readOnly:0];
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  v17 = [(PixelMemory *)v14 stride];
-  v18 = [(PixelMemory *)v14 bytePerPixel];
-  v19 = [(PixelMemory *)v14 pMemory];
+  v14 = [[PixelMemory alloc] initWithCvPixelBuffer:from skipClamp:0 readOnly:0];
+  Width = CVPixelBufferGetWidth(from);
+  Height = CVPixelBufferGetHeight(from);
+  stride = [(PixelMemory *)v14 stride];
+  bytePerPixel = [(PixelMemory *)v14 bytePerPixel];
+  pMemory = [(PixelMemory *)v14 pMemory];
   if (v54.i32[0] <= v54.i32[2])
   {
     v21 = 0;
@@ -100,23 +100,23 @@ LABEL_8:
     __asm { FMOV            V3.2S, #-1.0 }
 
     v28 = vadd_f32(*v22.i8, _D3);
-    v29 = vadd_f32(vmul_n_f32(*v22.i8, a6), _D3);
+    v29 = vadd_f32(vmul_n_f32(*v22.i8, factor), _D3);
     v30 = v54.i32[0];
     v31 = vextq_s8(v54, v54, 8uLL).u64[0];
     do
     {
       if (v54.i32[1] <= v54.i32[3])
       {
-        v32 = &v19[v30 * v18];
+        v32 = &pMemory[v30 * bytePerPixel];
         v33 = v30 - 1;
         v34 = v30++;
         v35 = v33;
         v36 = v54.i32[1];
         do
         {
-          v20.i8[0] = v32[v36 * v17];
+          v20.i8[0] = v32[v36 * stride];
           *v20.i32 = v20.u32[0];
-          if (*v20.i32 <= a4)
+          if (*v20.i32 <= threshold)
           {
             ++v36;
           }
@@ -126,7 +126,7 @@ LABEL_8:
             v37 = 0;
             v38 = v36;
             **self->_connectedPixelsQueue = __PAIR64__(v36, v34);
-            v32[v36 * v17] = 0;
+            v32[v36 * stride] = 0;
             ++v36;
             v39.i32[0] = v35;
             v39.i32[1] = v38 - 1;
@@ -147,12 +147,12 @@ LABEL_8:
                 v47.i16[0] = vmaxv_u16(v47);
                 if ((v47.i8[0] & 1) == 0)
                 {
-                  v48 = &v19[v45.i32[0] * v18];
-                  v47.i8[0] = v48[v45.i32[1] * v17];
-                  if (v47.u32[0] > a4)
+                  v48 = &pMemory[v45.i32[0] * bytePerPixel];
+                  v47.i8[0] = v48[v45.i32[1] * stride];
+                  if (v47.u32[0] > threshold)
                   {
                     *(*self->_connectedPixelsQueue + 8 * v41++) = v45;
-                    v48[v45.i32[1] * v17] = 0;
+                    v48[v45.i32[1] * stride] = 0;
                   }
                 }
 
@@ -168,7 +168,7 @@ LABEL_8:
             *v20.i8 = vcvt_s32_f32(vmul_f32(v29, vdiv_f32(vcvt_f32_s32(vcvt_s32_f32(vadd_f32(vcvt_f32_s32(vmax_s32(*v54.i8, v39)), 0x3F0000003F000000))), v28)));
             v49 = vsub_s32(vcvt_s32_f32(vmul_f32(v29, vdiv_f32(vcvt_f32_s32(vcvt_s32_f32(vadd_f32(vcvt_f32_s32(vmin_s32(v31, v40)), 0x3F0000003F000000))), v28))), *v20.i8);
             v50 = vcvt_f32_s32(v49);
-            v51 = v50.f32[0] <= a5 || v50.f32[1] <= a5;
+            v51 = v50.f32[0] <= sizeThreshold || v50.f32[1] <= sizeThreshold;
             if (!v51 && v21 <= 1023)
             {
               v20.u64[1] = v49;
@@ -195,7 +195,7 @@ LABEL_8:
     v21 = 0;
   }
 
-  if (a7)
+  if (roi)
   {
     [(MaskToRoi *)self convertInternalBBoxes:v21];
   }
@@ -209,10 +209,10 @@ LABEL_8:
   return v52;
 }
 
-- (id)convertInternalBBoxesToROI:(int64_t)a3
+- (id)convertInternalBBoxesToROI:(int64_t)i
 {
   v5 = +[NSMutableArray array];
-  if (a3 >= 1)
+  if (i >= 1)
   {
     v6 = 0;
     do
@@ -223,16 +223,16 @@ LABEL_8:
       ++v6;
     }
 
-    while (a3 != v6);
+    while (i != v6);
   }
 
   return v5;
 }
 
-- (id)convertInternalBBoxes:(int64_t)a3
+- (id)convertInternalBBoxes:(int64_t)boxes
 {
   v5 = +[NSMutableArray array];
-  if (a3 >= 1)
+  if (boxes >= 1)
   {
     v6 = 0;
     do
@@ -243,25 +243,25 @@ LABEL_8:
       ++v6;
     }
 
-    while (a3 != v6);
+    while (boxes != v6);
   }
 
   return v5;
 }
 
-- (void)convertPackedMaskToRegular:(__CVBuffer *)a3 output:(__CVBuffer *)a4
+- (void)convertPackedMaskToRegular:(__CVBuffer *)regular output:(__CVBuffer *)output
 {
-  v22 = [[PixelMemory alloc] initWithCvPixelBuffer:a3 skipClamp:0 readOnly:1];
-  v5 = [[PixelMemory alloc] initWithCvPixelBuffer:a4];
-  v6 = [(PixelMemory *)v5 pMemory];
-  v7 = [(PixelMemory *)v22 pMemory];
-  v8 = [(PixelMemory *)v5 width];
-  v9 = [(PixelMemory *)v5 width];
+  v22 = [[PixelMemory alloc] initWithCvPixelBuffer:regular skipClamp:0 readOnly:1];
+  v5 = [[PixelMemory alloc] initWithCvPixelBuffer:output];
+  pMemory = [(PixelMemory *)v5 pMemory];
+  pMemory2 = [(PixelMemory *)v22 pMemory];
+  width = [(PixelMemory *)v5 width];
+  width2 = [(PixelMemory *)v5 width];
   if ([(PixelMemory *)v5 height]>= 1)
   {
     v10 = 0;
-    v11 = v8 >> 3;
-    v21 = v9 & 7;
+    v11 = width >> 3;
+    v21 = width2 & 7;
     do
     {
       v12 = [(PixelMemory *)v5 stride]* v10;
@@ -276,10 +276,10 @@ LABEL_8:
         v14 = 0;
         do
         {
-          v15 = [(PixelMemory *)v22 stride];
+          stride = [(PixelMemory *)v22 stride];
           v16 = v14 + 8;
-          v17 = vdupq_n_s32(v7[v13 + v10 * v15]);
-          *&v6[v12 + v14] = vmovn_s16(vmvnq_s8(vuzp1q_s16(vceqzq_s32(vandq_s8(v17, xmmword_437E0)), vceqzq_s32(vandq_s8(v17, xmmword_437F0)))));
+          v17 = vdupq_n_s32(pMemory2[v13 + v10 * stride]);
+          *&pMemory[v12 + v14] = vmovn_s16(vmvnq_s8(vuzp1q_s16(vceqzq_s32(vandq_s8(v17, xmmword_437E0)), vceqzq_s32(vandq_s8(v17, xmmword_437F0)))));
           ++v13;
           v14 += 8;
         }
@@ -291,10 +291,10 @@ LABEL_8:
       if (v21)
       {
         v19 = 0;
-        v20 = &v6[v18 + v12];
+        v20 = &pMemory[v18 + v12];
         do
         {
-          v20[v19] = v7[v11] >> v19 << 31 >> 31;
+          v20[v19] = pMemory2[v11] >> v19 << 31 >> 31;
           ++v19;
         }
 

@@ -1,19 +1,19 @@
 @interface AVTPaddlePathGenerator
-+ (id)concentricCornerPathWithBaseRect:(CGRect)a3 radius:(double)a4 topToBottom:(BOOL)a5 rightToLeft:(BOOL)a6;
-+ (id)paddlePathWithBaseRect:(CGRect)a3 contentRect:(CGRect)a4 radius:(double)a5 topToBottom:(BOOL)a6 rightToLeft:(BOOL)a7;
++ (id)concentricCornerPathWithBaseRect:(CGRect)rect radius:(double)radius topToBottom:(BOOL)bottom rightToLeft:(BOOL)left;
++ (id)paddlePathWithBaseRect:(CGRect)rect contentRect:(CGRect)contentRect radius:(double)radius topToBottom:(BOOL)bottom rightToLeft:(BOOL)left;
 @end
 
 @implementation AVTPaddlePathGenerator
 
-+ (id)concentricCornerPathWithBaseRect:(CGRect)a3 radius:(double)a4 topToBottom:(BOOL)a5 rightToLeft:(BOOL)a6
++ (id)concentricCornerPathWithBaseRect:(CGRect)rect radius:(double)radius topToBottom:(BOOL)bottom rightToLeft:(BOOL)left
 {
-  v6 = a6;
-  v7 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MinX = CGRectGetMinX(a3);
+  leftCopy = left;
+  bottomCopy = bottom;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  MinX = CGRectGetMinX(rect);
   v25.origin.x = x;
   v25.origin.y = y;
   v25.size.width = width;
@@ -29,22 +29,22 @@
   v27.size.width = width;
   v27.size.height = height;
   MaxY = CGRectGetMaxY(v27);
-  if (v7)
+  if (bottomCopy)
   {
     v17 = MaxY;
-    if (!v6)
+    if (!leftCopy)
     {
-      v19 = MaxY - a4;
-      v18 = MaxX + a4;
+      v19 = MaxY - radius;
+      v18 = MaxX + radius;
       v23 = 3.14159265;
       v20 = 1.57079633;
       MinX = MaxX;
-      MinY = MaxY - a4;
+      MinY = MaxY - radius;
       goto LABEL_9;
     }
 
-    v18 = MinX - a4;
-    v19 = MaxY - a4;
+    v18 = MinX - radius;
+    v19 = MaxY - radius;
     v20 = 0.0;
     v23 = 1.57079633;
     MinY = MaxY;
@@ -52,20 +52,20 @@
 
   else
   {
-    if (v6)
+    if (leftCopy)
     {
-      v19 = MinY + a4;
-      v18 = MinX - a4;
+      v19 = MinY + radius;
+      v18 = MinX - radius;
       v23 = 0.0;
       v20 = 4.71238898;
       v17 = MinY;
-      MinY = MinY + a4;
+      MinY = MinY + radius;
       MaxX = MinX;
       goto LABEL_9;
     }
 
-    v18 = MaxX + a4;
-    v19 = MinY + a4;
+    v18 = MaxX + radius;
+    v19 = MinY + radius;
     v23 = 4.71238898;
     v20 = 3.14159265;
     MinX = MaxX;
@@ -74,35 +74,35 @@
 
   MaxX = v18;
 LABEL_9:
-  v21 = [MEMORY[0x1E69DC728] bezierPath];
-  [v21 moveToPoint:{MaxX, MinY}];
-  [v21 addArcWithCenter:0 radius:v18 startAngle:v19 endAngle:a4 clockwise:{v23, v20}];
-  [v21 addLineToPoint:{MinX, v17}];
-  [v21 closePath];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+  [bezierPath moveToPoint:{MaxX, MinY}];
+  [bezierPath addArcWithCenter:0 radius:v18 startAngle:v19 endAngle:radius clockwise:{v23, v20}];
+  [bezierPath addLineToPoint:{MinX, v17}];
+  [bezierPath closePath];
 
-  return v21;
+  return bezierPath;
 }
 
-+ (id)paddlePathWithBaseRect:(CGRect)a3 contentRect:(CGRect)a4 radius:(double)a5 topToBottom:(BOOL)a6 rightToLeft:(BOOL)a7
++ (id)paddlePathWithBaseRect:(CGRect)rect contentRect:(CGRect)contentRect radius:(double)radius topToBottom:(BOOL)bottom rightToLeft:(BOOL)left
 {
-  v7 = a7;
-  v8 = a6;
-  rect = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3.size.width;
-  v13 = a3.origin.y;
-  v14 = a3.origin.x;
-  if (a6)
+  leftCopy = left;
+  bottomCopy = bottom;
+  rect = contentRect.size.height;
+  width = contentRect.size.width;
+  y = contentRect.origin.y;
+  x = contentRect.origin.x;
+  v12 = rect.size.width;
+  v13 = rect.origin.y;
+  v14 = rect.origin.x;
+  if (bottom)
   {
-    MinY = CGRectGetMinY(a4);
+    MinY = CGRectGetMinY(contentRect);
     v16 = 3;
   }
 
   else
   {
-    MaxY = CGRectGetMaxY(a3);
+    MaxY = CGRectGetMaxY(rect);
     v28.origin.x = x;
     v28.origin.y = y;
     v28.size.width = width;
@@ -117,18 +117,18 @@ LABEL_9:
   }
 
   v18 = 13;
-  if (!v7)
+  if (!leftCopy)
   {
     v18 = 14;
   }
 
   v19 = 11;
-  if (v7)
+  if (leftCopy)
   {
     v19 = 7;
   }
 
-  if (v8)
+  if (bottomCopy)
   {
     v20 = v18;
   }
@@ -138,17 +138,17 @@ LABEL_9:
     v20 = v19;
   }
 
-  v21 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:v16 byRoundingCorners:v14 cornerRadii:{v13, v12, MinY, a5, a5}];
+  v21 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:v16 byRoundingCorners:v14 cornerRadii:{v13, v12, MinY, radius, radius}];
   [v21 closePath];
-  v22 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:v20 byRoundingCorners:x cornerRadii:{y, width, rect, a5, a5}];
+  v22 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:v20 byRoundingCorners:x cornerRadii:{y, width, rect, radius, radius}];
   [v22 closePath];
-  v23 = [AVTPaddlePathGenerator concentricCornerPathWithBaseRect:v8 radius:v7 topToBottom:v14 rightToLeft:v13, v12, MinY, a5];
-  v24 = [MEMORY[0x1E69DC728] bezierPath];
-  [v24 appendPath:v21];
-  [v24 appendPath:v22];
-  [v24 appendPath:v23];
+  radius = [AVTPaddlePathGenerator concentricCornerPathWithBaseRect:bottomCopy radius:leftCopy topToBottom:v14 rightToLeft:v13, v12, MinY, radius];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+  [bezierPath appendPath:v21];
+  [bezierPath appendPath:v22];
+  [bezierPath appendPath:radius];
 
-  return v24;
+  return bezierPath;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneIndexIndexCommit
-- (BOOL)isEqual:(id)a3;
-- (int)compareToWithId:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (int)compareToWithId:(id)id;
 - (unint64_t)hash;
 @end
 
 @implementation OrgApacheLuceneIndexIndexCommit
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -15,7 +15,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -25,32 +25,32 @@
     JreThrowClassCastException();
   }
 
-  v5 = [a3 getDirectory];
-  if (v5 != [(OrgApacheLuceneIndexIndexCommit *)self getDirectory])
+  getDirectory = [equal getDirectory];
+  if (getDirectory != [(OrgApacheLuceneIndexIndexCommit *)self getDirectory])
   {
     return 0;
   }
 
-  v7 = [a3 getGeneration];
-  return v7 == [(OrgApacheLuceneIndexIndexCommit *)self getGeneration];
+  getGeneration = [equal getGeneration];
+  return getGeneration == [(OrgApacheLuceneIndexIndexCommit *)self getGeneration];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(OrgApacheLuceneIndexIndexCommit *)self getDirectory];
-  if (!v3)
+  getDirectory = [(OrgApacheLuceneIndexIndexCommit *)self getDirectory];
+  if (!getDirectory)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [v3 hash];
+  v4 = [getDirectory hash];
   return ([JavaLangLong_valueOfWithLong_([(OrgApacheLuceneIndexIndexCommit *)self getGeneration]) hash]+ v4);
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     [(OrgApacheLuceneIndexIndexCommit *)self getDirectory];
     JreThrowNullPointerException();
@@ -61,17 +61,17 @@
     JreThrowClassCastException();
   }
 
-  v5 = [(OrgApacheLuceneIndexIndexCommit *)self getDirectory];
-  if (v5 != [a3 getDirectory])
+  getDirectory = [(OrgApacheLuceneIndexIndexCommit *)self getDirectory];
+  if (getDirectory != [id getDirectory])
   {
     v9 = new_JavaLangUnsupportedOperationException_initWithNSString_(@"cannot compare IndexCommits from different Directory instances");
     objc_exception_throw(v9);
   }
 
-  v6 = [(OrgApacheLuceneIndexIndexCommit *)self getGeneration];
-  v7 = [a3 getGeneration];
+  getGeneration = [(OrgApacheLuceneIndexIndexCommit *)self getGeneration];
+  getGeneration2 = [id getGeneration];
 
-  return JavaLangLong_compareWithLong_withLong_(v6, v7);
+  return JavaLangLong_compareWithLong_withLong_(getGeneration, getGeneration2);
 }
 
 @end

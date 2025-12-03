@@ -1,7 +1,7 @@
 @interface MNLPRRuleMatcher
 - (id)debug_jsonDescriptionOfLastPlate;
-- (id)generateMaskedPlateForWaypoints:(id)a3 date:(id)a4 timeZone:(id)a5 error:(id *)a6;
-- (id)initForVehicle:(id)a3 withRules:(id)a4;
+- (id)generateMaskedPlateForWaypoints:(id)waypoints date:(id)date timeZone:(id)zone error:(id *)error;
+- (id)initForVehicle:(id)vehicle withRules:(id)rules;
 @end
 
 @implementation MNLPRRuleMatcher
@@ -30,8 +30,8 @@
     v34[1] = 3221225472;
     v34[2] = __52__MNLPRRuleMatcher_debug_jsonDescriptionOfLastPlate__block_invoke;
     v34[3] = &unk_1E842B040;
-    v9 = v7;
-    v35 = v9;
+    null3 = v7;
+    v35 = null3;
     [(_MNLPRPlate *)v8 enumerateCharsUsingBlock:v34];
     v30 = 0;
     v31 = &v30;
@@ -52,8 +52,8 @@
     v11 = objc_alloc_init(MEMORY[0x1E696AC80]);
     [v11 setTimeZone:self->_lastTimeZone];
     v12 = [v11 stringFromDate:self->_lastDate];
-    v13 = [(NSTimeZone *)self->_lastTimeZone name];
-    v37[0] = v9;
+    name = [(NSTimeZone *)self->_lastTimeZone name];
+    v37[0] = null3;
     v36[0] = @"values";
     v36[1] = @"permutations";
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v27[3]];
@@ -62,29 +62,29 @@
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v31[3]];
     v37[2] = v15;
     v36[3] = @"date";
-    v16 = v12;
+    null = v12;
     if (!v12)
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v37[3] = v16;
+    v37[3] = null;
     v36[4] = @"timeZone";
-    v17 = v13;
-    if (!v13)
+    null2 = name;
+    if (!name)
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
+      null2 = [MEMORY[0x1E695DFB0] null];
     }
 
     usedRegions = self->_usedRegions;
     usedRegionETAs = self->_usedRegionETAs;
-    v37[4] = v17;
+    v37[4] = null2;
     v37[5] = usedRegions;
     v36[5] = @"usedRegions";
     v36[6] = @"usedRegionETAs";
     v37[6] = usedRegionETAs;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:7];
-    if (!v13)
+    if (!name)
     {
     }
 
@@ -94,24 +94,24 @@
 
     _Block_object_dispose(&v26, 8);
     _Block_object_dispose(&v30, 8);
-    v21 = v35;
+    null4 = v35;
   }
 
   else
   {
     v38[0] = @"values";
-    v9 = [MEMORY[0x1E695DFB0] null];
-    v39[0] = v9;
+    null3 = [MEMORY[0x1E695DFB0] null];
+    v39[0] = null3;
     v39[1] = &unk_1F4EE2368;
     v38[1] = @"permutations";
     v38[2] = @"unmaskableValues";
     v39[2] = &unk_1F4EE2380;
     v38[3] = @"date";
-    v21 = [MEMORY[0x1E695DFB0] null];
-    v39[3] = v21;
+    null4 = [MEMORY[0x1E695DFB0] null];
+    v39[3] = null4;
     v38[4] = @"timeZone";
-    v22 = [MEMORY[0x1E695DFB0] null];
-    v39[4] = v22;
+    null5 = [MEMORY[0x1E695DFB0] null];
+    v39[4] = null5;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:5];
   }
 
@@ -278,38 +278,38 @@ unint64_t __52__MNLPRRuleMatcher_debug_jsonDescriptionOfLastPlate__block_invoke_
   return result;
 }
 
-- (id)generateMaskedPlateForWaypoints:(id)a3 date:(id)a4 timeZone:(id)a5 error:(id *)a6
+- (id)generateMaskedPlateForWaypoints:(id)waypoints date:(id)date timeZone:(id)zone error:(id *)error
 {
   v601[16] = *MEMORY[0x1E69E9840];
-  v443 = a3;
-  v403 = a4;
-  v402 = a5;
+  waypointsCopy = waypoints;
+  dateCopy = date;
+  zoneCopy = zone;
   v9 = MNGetMNLPRRuleMatcherLog();
   self->_signpost = os_signpost_id_generate(v9);
 
-  v429 = self;
+  selfCopy = self;
   lastPlate = self->_lastPlate;
   self = (self + 32);
   self->super.isa = 0;
 
   location = self;
-  objc_storeStrong(&self->_vehicle, a4);
-  objc_storeStrong(&v429->_lastTimeZone, a5);
-  usedRegions = v429->_usedRegions;
-  v429->_usedRegions = MEMORY[0x1E695E0F8];
+  objc_storeStrong(&self->_vehicle, date);
+  objc_storeStrong(&selfCopy->_lastTimeZone, zone);
+  usedRegions = selfCopy->_usedRegions;
+  selfCopy->_usedRegions = MEMORY[0x1E695E0F8];
 
   v562 = 0u;
   v561 = 0u;
   v560 = 0u;
   v559 = 0u;
-  p_usedRegions = &v429->_usedRegions;
-  v12 = v429->_ruleSets;
+  p_usedRegions = &selfCopy->_usedRegions;
+  v12 = selfCopy->_ruleSets;
   v13 = [(NSArray *)v12 countByEnumeratingWithState:&v559 objects:v601 count:16];
   if (!v13)
   {
 LABEL_9:
 
-    _mnLPRWrappedError(a6, -3, 0, @"Empty rules %@", v18, v19, v20, v21, v429->_ruleSets);
+    _mnLPRWrappedError(error, -3, 0, @"Empty rules %@", v18, v19, v20, v21, selfCopy->_ruleSets);
     [MEMORY[0x1E69A1598] captureUserAction:2191 target:0 value:@"EmptyRules"];
 LABEL_35:
     v52 = 0;
@@ -326,8 +326,8 @@ LABEL_3:
       objc_enumerationMutation(v12);
     }
 
-    v16 = [*(*(&v559 + 1) + 8 * v15) licensePlateRegions];
-    v17 = [v16 count] == 0;
+    licensePlateRegions = [*(*(&v559 + 1) + 8 * v15) licensePlateRegions];
+    v17 = [licensePlateRegions count] == 0;
 
     if (!v17)
     {
@@ -346,23 +346,23 @@ LABEL_3:
     }
   }
 
-  if (![v443 count])
+  if (![waypointsCopy count])
   {
-    _mnLPRWrappedError(a6, -6, 0, @"No waypoints specified %@", v22, v23, v24, v25, v443);
+    _mnLPRWrappedError(error, -6, 0, @"No waypoints specified %@", v22, v23, v24, v25, waypointsCopy);
     [MEMORY[0x1E69A1598] captureUserAction:2191 target:0 value:@"EmptyRegions"];
     goto LABEL_35;
   }
 
-  if (!v429->_vehicle)
+  if (!selfCopy->_vehicle)
   {
-    _mnLPRWrappedError(a6, -4, 0, @"Empty vehicle %@", v22, v23, v24, v25, 0);
+    _mnLPRWrappedError(error, -4, 0, @"Empty vehicle %@", v22, v23, v24, v25, 0);
     [MEMORY[0x1E69A1598] captureUserAction:2191 target:0 value:@"EmptyVehicle"];
     goto LABEL_35;
   }
 
   v26 = MNGetMNLPRRuleMatcherLog();
   v27 = v26;
-  signpost = v429->_signpost;
+  signpost = selfCopy->_signpost;
   if (signpost - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v26))
   {
     LOWORD(v594.receiver) = 0;
@@ -371,30 +371,30 @@ LABEL_3:
 
   v29 = MNGetMNLPRRuleMatcherLog();
   v30 = v29;
-  v31 = v429->_signpost;
+  v31 = selfCopy->_signpost;
   if (v31 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v29))
   {
-    v32 = [(GEOLPRVehicle *)v429->_vehicle licensePlate];
-    v33 = [v32 length];
+    licensePlate = [(GEOLPRVehicle *)selfCopy->_vehicle licensePlate];
+    v33 = [licensePlate length];
     LODWORD(v594.receiver) = 67109120;
     HIDWORD(v594.receiver) = v33;
     _os_signpost_emit_with_name_impl(&dword_1D311E000, v30, OS_SIGNPOST_INTERVAL_BEGIN, v31, "PreparePlate", "length=%d", &v594, 8u);
   }
 
-  v34 = [(GEOLPRVehicle *)v429->_vehicle licensePlate];
-  v383 = [v34 mnlpr_componentsSeparatedByGlyph];
+  licensePlate2 = [(GEOLPRVehicle *)selfCopy->_vehicle licensePlate];
+  mnlpr_componentsSeparatedByGlyph = [licensePlate2 mnlpr_componentsSeparatedByGlyph];
 
-  if (v383)
+  if (mnlpr_componentsSeparatedByGlyph)
   {
     v35 = MEMORY[0x1E695DF70];
-    v36 = [(GEOLPRVehicle *)v429->_vehicle licensePlate];
-    v449 = [v35 arrayWithCapacity:{objc_msgSend(v36, "length")}];
+    licensePlate3 = [(GEOLPRVehicle *)selfCopy->_vehicle licensePlate];
+    v449 = [v35 arrayWithCapacity:{objc_msgSend(licensePlate3, "length")}];
 
     v558 = 0u;
     v557 = 0u;
     v556 = 0u;
     v555 = 0u;
-    v37 = v383;
+    v37 = mnlpr_componentsSeparatedByGlyph;
     v38 = [v37 countByEnumeratingWithState:&v555 objects:v600 count:16];
     if (v38)
     {
@@ -423,9 +423,9 @@ LABEL_3:
               valueMappings = v42->_valueMappings;
               v42->_valueMappings = 0;
 
-              v46 = [MEMORY[0x1E695DF90] dictionary];
+              dictionary = [MEMORY[0x1E695DF90] dictionary];
               fillTypes = v42->_fillTypes;
-              v42->_fillTypes = v46;
+              v42->_fillTypes = dictionary;
             }
           }
 
@@ -440,12 +440,12 @@ LABEL_3:
 
     if (![v449 count])
     {
-      v58 = [(GEOLPRVehicle *)v429->_vehicle licensePlate];
-      _mnLPRWrappedError(a6, -5, 0, @"Failed to generate plate abstraction for license %@", v59, v60, v61, v62, v58);
+      licensePlate4 = [(GEOLPRVehicle *)selfCopy->_vehicle licensePlate];
+      _mnLPRWrappedError(error, -5, 0, @"Failed to generate plate abstraction for license %@", v59, v60, v61, v62, licensePlate4);
 
       v63 = MNGetMNLPRRuleMatcherLog();
       v64 = v63;
-      v65 = v429->_signpost;
+      v65 = selfCopy->_signpost;
       if (v65 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v63))
       {
         LOWORD(v594.receiver) = 0;
@@ -454,7 +454,7 @@ LABEL_3:
 
       v66 = MNGetMNLPRRuleMatcherLog();
       v67 = v66;
-      v68 = v429->_signpost;
+      v68 = selfCopy->_signpost;
       if (v68 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v66))
       {
         LOWORD(v594.receiver) = 0;
@@ -485,7 +485,7 @@ LABEL_365:
     objc_storeStrong(&location->super.isa, obj);
     v69 = MNGetMNLPRRuleMatcherLog();
     v70 = v69;
-    v71 = v429->_signpost;
+    v71 = selfCopy->_signpost;
     if (v71 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v69))
     {
       LOWORD(v594.receiver) = 0;
@@ -494,7 +494,7 @@ LABEL_365:
 
     v72 = MNGetMNLPRRuleMatcherLog();
     v73 = v72;
-    v74 = v429->_signpost;
+    v74 = selfCopy->_signpost;
     if (v74 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v72))
     {
       LOWORD(v594.receiver) = 0;
@@ -503,12 +503,12 @@ LABEL_365:
 
     GEOConfigGetDouble();
     v76 = v75;
-    v77 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v554 = 0u;
     v553 = 0u;
     v552 = 0u;
     v551 = 0u;
-    v78 = v429->_ruleSets;
+    v78 = selfCopy->_ruleSets;
     v79 = [(NSArray *)v78 countByEnumeratingWithState:&v551 objects:v599 count:16];
     if (v79)
     {
@@ -522,8 +522,8 @@ LABEL_365:
             objc_enumerationMutation(v78);
           }
 
-          v82 = [*(*(&v551 + 1) + 8 * j) plateRegionsContainingLatLngs:v443 inRadius:v76];
-          [v77 addObjectsFromArray:v82];
+          v82 = [*(*(&v551 + 1) + 8 * j) plateRegionsContainingLatLngs:waypointsCopy inRadius:v76];
+          [array addObjectsFromArray:v82];
         }
 
         v79 = [(NSArray *)v78 countByEnumeratingWithState:&v551 objects:v599 count:16];
@@ -534,17 +534,17 @@ LABEL_365:
 
     v83 = MNGetMNLPRRuleMatcherLog();
     v84 = v83;
-    v85 = v429->_signpost;
+    v85 = selfCopy->_signpost;
     if (v85 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v83))
     {
-      v86 = [v77 count];
+      v86 = [array count];
       LODWORD(v594.receiver) = 67109120;
       HIDWORD(v594.receiver) = v86;
       _os_signpost_emit_with_name_impl(&dword_1D311E000, v84, OS_SIGNPOST_INTERVAL_END, v85, "FindPlateRegions", "matched=%d", &v594, 8u);
     }
 
-    v87 = [v443 firstObject];
-    [v87 coordinate];
+    firstObject = [waypointsCopy firstObject];
+    [firstObject coordinate];
     v89 = v88;
     v91 = v90;
 
@@ -554,18 +554,18 @@ LABEL_365:
     aBlock[2] = __72__MNLPRRuleMatcher_generateMaskedPlateForWaypoints_date_timeZone_error___block_invoke;
     aBlock[3] = &unk_1E842AF50;
     v548 = v92;
-    v376 = v403;
+    v376 = dateCopy;
     v545 = v376;
-    v546 = v429;
-    v387 = v443;
+    v546 = selfCopy;
+    v387 = waypointsCopy;
     v547 = v387;
     v549 = v89;
     v550 = v91;
     v389 = _Block_copy(aBlock);
-    v382 = [MEMORY[0x1E695DF90] dictionary];
-    v391 = [MEMORY[0x1E695DF90] dictionary];
-    objc_storeStrong(p_usedRegions, v382);
-    objc_storeStrong(&v429->_usedRegionETAs, v391);
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(p_usedRegions, dictionary2);
+    objc_storeStrong(&selfCopy->_usedRegionETAs, dictionary3);
     v594.receiver = 0;
     v594.super_class = &v594;
     v595 = 0x3032000000;
@@ -573,13 +573,13 @@ LABEL_365:
     v597 = __Block_byref_object_dispose__4187;
     v598 = 0;
     v378 = [MEMORY[0x1E695DFA8] set];
-    v379 = [MEMORY[0x1E695DF70] array];
-    v436 = [MEMORY[0x1E695DF70] array];
-    v377 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     v93 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:512 valueOptions:0];
     v94 = MNGetMNLPRRuleMatcherLog();
     v95 = v94;
-    v96 = v429->_signpost;
+    v96 = selfCopy->_signpost;
     if (v96 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v94))
     {
       *buf = 0;
@@ -590,7 +590,7 @@ LABEL_365:
     v542 = 0u;
     v541 = 0u;
     v540 = 0u;
-    v384 = v77;
+    v384 = array;
     v97 = [v384 countByEnumeratingWithState:&v540 objects:v593 count:16];
     if (v97)
     {
@@ -609,18 +609,18 @@ LABEL_365:
           }
 
           v411 = *(*(&v540 + 1) + 8 * v420);
-          v99 = [v411 plateInfosMatchingVehicle:v429->_vehicle];
+          v99 = [v411 plateInfosMatchingVehicle:selfCopy->_vehicle];
           if ([v99 count])
           {
             v400 = v99;
-            v100 = [v99 firstObject];
-            v423 = [v100 licensePlateStructure];
+            firstObject2 = [v99 firstObject];
+            licensePlateStructure = [firstObject2 licensePlateStructure];
 
-            v433 = [v423 supportedNumericCharacterSet];
-            v430 = [v423 supportedAlphabeticCharacterSet];
+            supportedNumericCharacterSet = [licensePlateStructure supportedNumericCharacterSet];
+            supportedAlphabeticCharacterSet = [licensePlateStructure supportedAlphabeticCharacterSet];
             v101 = [v411 restrictionRegionsContainingLatLngs:v387 inRadius:v76];
             v399 = [v101 count] != 0;
-            v408 = [MEMORY[0x1E695DF70] array];
+            array5 = [MEMORY[0x1E695DF70] array];
             v539 = 0u;
             v538 = 0u;
             v537 = 0u;
@@ -642,14 +642,14 @@ LABEL_365:
                   v426 = *(*(&v536 + 1) + 8 * k);
                   v102 = MNGetMNLPRRuleMatcherLog();
                   v103 = v102;
-                  v104 = v429->_signpost;
+                  v104 = selfCopy->_signpost;
                   if (v104 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v102))
                   {
                     *buf = 0;
                     _os_signpost_emit_with_name_impl(&dword_1D311E000, v103, OS_SIGNPOST_INTERVAL_BEGIN, v104, "ExamineRegion", "", buf, 2u);
                   }
 
-                  v105 = v429->_vehicle;
+                  v105 = selfCopy->_vehicle;
                   v106 = (v594.super_class + 40);
                   v535 = *(v594.super_class + 5);
                   v417 = [v426 plateTypeIndexesMatchingVehicle:v105 error:&v535];
@@ -657,14 +657,14 @@ LABEL_365:
                   v107 = *(v594.super_class + 5);
                   if (v107)
                   {
-                    if (a6)
+                    if (error)
                     {
-                      *a6 = v107;
+                      *error = v107;
                     }
 
                     v212 = MNGetMNLPRRuleMatcherLog();
                     v108 = v212;
-                    v213 = v429->_signpost;
+                    v213 = selfCopy->_signpost;
                     if (v213 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v212))
                     {
                       *buf = 0;
@@ -678,15 +678,15 @@ LABEL_200:
                   }
 
                   v108 = v389[2](v389, v426);
-                  v109 = [v426 identifier];
-                  [v391 setObject:v108 forKeyedSubscript:v109];
+                  identifier = [v426 identifier];
+                  [dictionary3 setObject:v108 forKeyedSubscript:identifier];
 
                   v534 = 0u;
                   v533 = 0u;
                   v532 = 0u;
                   v531 = 0u;
-                  v404 = [v426 convertRules];
-                  v390 = [v404 countByEnumeratingWithState:&v531 objects:v591 count:16];
+                  convertRules = [v426 convertRules];
+                  v390 = [convertRules countByEnumeratingWithState:&v531 objects:v591 count:16];
                   if (v390)
                   {
                     v394 = *v532;
@@ -696,13 +696,13 @@ LABEL_200:
                       {
                         if (*v532 != v394)
                         {
-                          objc_enumerationMutation(v404);
+                          objc_enumerationMutation(convertRules);
                         }
 
                         v110 = *(*(&v531 + 1) + 8 * m);
                         v111 = MNGetMNLPRRuleMatcherLog();
                         v112 = v111;
-                        v113 = v429->_signpost;
+                        v113 = selfCopy->_signpost;
                         if (v113 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v111))
                         {
                           *buf = 0;
@@ -730,8 +730,8 @@ LABEL_200:
                                 }
 
                                 v118 = *(*(&v527 + 1) + 8 * n);
-                                v119 = [v110 validDateInterval];
-                                LOBYTE(v118) = [v119 containsDate:v118];
+                                validDateInterval = [v110 validDateInterval];
+                                LOBYTE(v118) = [validDateInterval containsDate:v118];
 
                                 if (v118)
                                 {
@@ -752,7 +752,7 @@ LABEL_200:
 
                           v120 = MNGetMNLPRRuleMatcherLog();
                           v121 = v120;
-                          v122 = v429->_signpost;
+                          v122 = selfCopy->_signpost;
                           if (v122 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v120))
                           {
                             *buf = 0;
@@ -763,19 +763,19 @@ LABEL_200:
                         else
                         {
 LABEL_100:
-                          v123 = [v426 definedPlateTypes];
-                          v413 = [v110 pickupRulesForPlateTypes:v123 atIndexes:v417];
+                          definedPlateTypes = [v426 definedPlateTypes];
+                          v413 = [v110 pickupRulesForPlateTypes:definedPlateTypes atIndexes:v417];
 
-                          v124 = [v426 definedPlateTypes];
-                          v125 = [v110 mapRulesForPlateTypes:v124 atIndexes:v417];
+                          definedPlateTypes2 = [v426 definedPlateTypes];
+                          v125 = [v110 mapRulesForPlateTypes:definedPlateTypes2 atIndexes:v417];
 
-                          v126 = [v426 definedPlateTypes];
-                          v392 = [v110 fillRulesForPlateTypes:v126 atIndexes:v417];
+                          definedPlateTypes3 = [v426 definedPlateTypes];
+                          v392 = [v110 fillRulesForPlateTypes:definedPlateTypes3 atIndexes:v417];
 
                           locationa = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[NSObject count](v413, "count")}];
                           v127 = MNGetMNLPRRuleMatcherLog();
                           v128 = v127;
-                          v129 = v429->_signpost;
+                          v129 = selfCopy->_signpost;
                           if (v129 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v127))
                           {
                             *buf = 0;
@@ -801,13 +801,13 @@ LABEL_100:
                                 }
 
                                 v131 = *(*(&v523 + 1) + 8 * ii);
-                                [v131 setMrLicensePlateStructure:v423];
+                                [v131 setMrLicensePlateStructure:licensePlateStructure];
                                 v522 = 0u;
                                 v521 = 0u;
                                 v520 = 0u;
                                 v519 = 0u;
-                                v132 = [v131 targetChars];
-                                v133 = [v132 countByEnumeratingWithState:&v519 objects:v588 count:16];
+                                targetChars = [v131 targetChars];
+                                v133 = [targetChars countByEnumeratingWithState:&v519 objects:v588 count:16];
                                 if (v133)
                                 {
                                   v134 = *v520;
@@ -817,17 +817,17 @@ LABEL_100:
                                     {
                                       if (*v520 != v134)
                                       {
-                                        objc_enumerationMutation(v132);
+                                        objc_enumerationMutation(targetChars);
                                       }
 
                                       v136 = *(*(&v519 + 1) + 8 * jj);
-                                      v137 = [(_MNLPRPlate *)obj charIndexForTarget:v136 alphabetics:v430 numerics:v433];
+                                      v137 = [(_MNLPRPlate *)obj charIndexForTarget:v136 alphabetics:supportedAlphabeticCharacterSet numerics:supportedNumericCharacterSet];
                                       if (v137 == 0x7FFFFFFFFFFFFFFFLL)
                                       {
-                                        _mnLPRWrappedError(a6, -108, 0, @"unable to locate plate char for map rule target: %@", v138, v139, v140, v141, v136);
+                                        _mnLPRWrappedError(error, -108, 0, @"unable to locate plate char for map rule target: %@", v138, v139, v140, v141, v136);
                                         v205 = MNGetMNLPRRuleMatcherLog();
                                         v206 = v205;
-                                        v207 = v429->_signpost;
+                                        v207 = selfCopy->_signpost;
                                         if (v207 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v205))
                                         {
                                           *buf = 0;
@@ -848,15 +848,15 @@ LABEL_199:
 
                                       if (v144)
                                       {
-                                        v145 = [MEMORY[0x1E695DF70] array];
-                                        [locationa setObject:v145 forKeyedSubscript:v142];
+                                        array6 = [MEMORY[0x1E695DF70] array];
+                                        [locationa setObject:array6 forKeyedSubscript:v142];
                                       }
 
                                       v146 = [locationa objectForKeyedSubscript:v142];
                                       [v146 addObject:v131];
                                     }
 
-                                    v133 = [v132 countByEnumeratingWithState:&v519 objects:v588 count:16];
+                                    v133 = [targetChars countByEnumeratingWithState:&v519 objects:v588 count:16];
                                     if (v133)
                                     {
                                       continue;
@@ -875,7 +875,7 @@ LABEL_199:
 
                           v147 = MNGetMNLPRRuleMatcherLog();
                           v148 = v147;
-                          v149 = v429->_signpost;
+                          v149 = selfCopy->_signpost;
                           if (v149 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v147))
                           {
                             *buf = 0;
@@ -884,7 +884,7 @@ LABEL_199:
 
                           v150 = MNGetMNLPRRuleMatcherLog();
                           v151 = v150;
-                          v152 = v429->_signpost;
+                          v152 = selfCopy->_signpost;
                           if (v152 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v150))
                           {
                             *buf = 0;
@@ -896,7 +896,7 @@ LABEL_199:
                           v516 = 0u;
                           v515 = 0u;
                           v413 = v413;
-                          v153 = v423;
+                          v153 = licensePlateStructure;
                           v380 = [v413 countByEnumeratingWithState:&v515 objects:v587 count:16];
                           if (v380)
                           {
@@ -916,12 +916,12 @@ LABEL_199:
                                 v513 = 0u;
                                 v512 = 0u;
                                 v511 = 0u;
-                                v155 = [v154 pickupChars];
-                                v156 = [v155 countByEnumeratingWithState:&v511 objects:v586 count:16];
+                                pickupChars = [v154 pickupChars];
+                                v156 = [pickupChars countByEnumeratingWithState:&v511 objects:v586 count:16];
                                 if (v156)
                                 {
                                   v438 = *v512;
-                                  v132 = v155;
+                                  targetChars = pickupChars;
                                   while (2)
                                   {
                                     v157 = v156;
@@ -929,17 +929,17 @@ LABEL_199:
                                     {
                                       if (*v512 != v438)
                                       {
-                                        objc_enumerationMutation(v155);
+                                        objc_enumerationMutation(pickupChars);
                                       }
 
                                       v159 = *(*(&v511 + 1) + 8 * mm);
-                                      v160 = [(_MNLPRPlate *)obj charIndexForTarget:v159 alphabetics:v430 numerics:v433];
+                                      v160 = [(_MNLPRPlate *)obj charIndexForTarget:v159 alphabetics:supportedAlphabeticCharacterSet numerics:supportedNumericCharacterSet];
                                       if (v160 == 0x7FFFFFFFFFFFFFFFLL)
                                       {
-                                        _mnLPRWrappedError(a6, -108, 0, @"unable to locate plate char for pickup rule target: %@", v161, v162, v163, v164, v159);
+                                        _mnLPRWrappedError(error, -108, 0, @"unable to locate plate char for pickup rule target: %@", v161, v162, v163, v164, v159);
                                         v209 = MNGetMNLPRRuleMatcherLog();
                                         v210 = v209;
-                                        v211 = v429->_signpost;
+                                        v211 = selfCopy->_signpost;
                                         if (v211 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v209))
                                         {
                                           *buf = 0;
@@ -958,23 +958,23 @@ LABEL_199:
                                       if (v167)
                                       {
                                         v168 = objc_alloc_init(MEMORY[0x1E69A1E30]);
-                                        [v168 setMrLicensePlateStructure:v423];
+                                        [v168 setMrLicensePlateStructure:licensePlateStructure];
                                         v169 = [v159 copy];
                                         [v168 addTargetChar:v169];
 
                                         v170 = objc_alloc_init(MEMORY[0x1E69A1E40]);
-                                        v171 = [MEMORY[0x1E695DF70] array];
-                                        [v170 setMappedValues:v171];
+                                        array7 = [MEMORY[0x1E695DF70] array];
+                                        [v170 setMappedValues:array7];
 
                                         [v168 addValueMapping:v170];
                                         v172 = [MEMORY[0x1E695DF70] arrayWithObject:v168];
                                         [locationa setObject:v172 forKeyedSubscript:v165];
                                       }
 
-                                      v155 = v132;
+                                      pickupChars = targetChars;
                                     }
 
-                                    v156 = [v132 countByEnumeratingWithState:&v511 objects:v586 count:16];
+                                    v156 = [targetChars countByEnumeratingWithState:&v511 objects:v586 count:16];
                                     if (v156)
                                     {
                                       continue;
@@ -984,7 +984,7 @@ LABEL_199:
                                   }
                                 }
 
-                                v153 = v423;
+                                v153 = licensePlateStructure;
                               }
 
                               v380 = [v413 countByEnumeratingWithState:&v515 objects:v587 count:16];
@@ -995,7 +995,7 @@ LABEL_199:
 
                           v173 = MNGetMNLPRRuleMatcherLog();
                           v174 = v173;
-                          v175 = v429->_signpost;
+                          v175 = selfCopy->_signpost;
                           if (v175 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v173))
                           {
                             *buf = 0;
@@ -1020,7 +1020,7 @@ LABEL_199:
                                   objc_enumerationMutation(v439);
                                 }
 
-                                [*(*(&v507 + 1) + 8 * nn) setFrLicensePlateStructure:v423];
+                                [*(*(&v507 + 1) + 8 * nn) setFrLicensePlateStructure:licensePlateStructure];
                               }
 
                               v176 = [v439 countByEnumeratingWithState:&v507 objects:v585 count:16];
@@ -1032,37 +1032,37 @@ LABEL_199:
                           v179 = v413;
                           if (-[NSObject count](v413, "count") || [locationa count] || objc_msgSend(v439, "count"))
                           {
-                            v180 = [v426 identifier];
-                            v181 = v180;
+                            identifier2 = [v426 identifier];
+                            v181 = identifier2;
                             v182 = @"<unknown>";
-                            if (v180)
+                            if (identifier2)
                             {
-                              v182 = v180;
+                              v182 = identifier2;
                             }
 
                             v183 = v182;
 
                             if ([v426 hasName])
                             {
-                              v373 = [v426 name];
+                              name = [v426 name];
                               v184 = [(__CFString *)v183 stringByAppendingFormat:@":%@"];
 
                               v183 = v184;
                             }
 
                             [v378 addObject:v183];
-                            [v408 addObject:v183];
+                            [array5 addObject:v183];
 
                             v179 = v413;
                           }
 
-                          [v379 addObjectsFromArray:v179];
+                          [array2 addObjectsFromArray:v179];
                           v506 = 0u;
                           v505 = 0u;
                           v504 = 0u;
                           v503 = 0u;
-                          v185 = [locationa allValues];
-                          v186 = [v185 countByEnumeratingWithState:&v503 objects:v584 count:16];
+                          allValues = [locationa allValues];
+                          v186 = [allValues countByEnumeratingWithState:&v503 objects:v584 count:16];
                           if (v186)
                           {
                             v187 = *v504;
@@ -1072,11 +1072,11 @@ LABEL_199:
                               {
                                 if (*v504 != v187)
                                 {
-                                  objc_enumerationMutation(v185);
+                                  objc_enumerationMutation(allValues);
                                 }
 
                                 v189 = *(*(&v503 + 1) + 8 * i1);
-                                [v436 addObjectsFromArray:v189];
+                                [array3 addObjectsFromArray:v189];
                                 v502 = 0u;
                                 v501 = 0u;
                                 v500 = 0u;
@@ -1105,16 +1105,16 @@ LABEL_199:
                                 }
                               }
 
-                              v186 = [v185 countByEnumeratingWithState:&v503 objects:v584 count:16];
+                              v186 = [allValues countByEnumeratingWithState:&v503 objects:v584 count:16];
                             }
 
                             while (v186);
                           }
 
-                          [v377 addObjectsFromArray:v439];
+                          [array4 addObjectsFromArray:v439];
                           v194 = MNGetMNLPRRuleMatcherLog();
                           v195 = v194;
-                          v196 = v429->_signpost;
+                          v196 = selfCopy->_signpost;
                           if (v196 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v194))
                           {
                             v197 = [v413 count];
@@ -1134,21 +1134,21 @@ LABEL_199:
                         }
                       }
 
-                      v390 = [v404 countByEnumeratingWithState:&v531 objects:v591 count:16];
+                      v390 = [convertRules countByEnumeratingWithState:&v531 objects:v591 count:16];
                     }
 
                     while (v390);
                   }
 
-                  if ([v408 count])
+                  if ([array5 count])
                   {
-                    v200 = [v411 identifier];
-                    [v382 setObject:v408 forKeyedSubscript:v200];
+                    identifier3 = [v411 identifier];
+                    [dictionary2 setObject:array5 forKeyedSubscript:identifier3];
                   }
 
                   v201 = MNGetMNLPRRuleMatcherLog();
                   v202 = v201;
-                  v203 = v429->_signpost;
+                  v203 = selfCopy->_signpost;
                   if (v203 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v201))
                   {
                     *buf = 0;
@@ -1207,12 +1207,12 @@ LABEL_201:
 
     v215 = MNGetMNLPRRuleMatcherLog();
     v216 = v215;
-    v217 = v429->_signpost;
+    v217 = selfCopy->_signpost;
     if (v217 - 1 < 0xFFFFFFFFFFFFFFFELL && os_signpost_enabled(v215))
     {
-      v218 = [v379 count];
-      v219 = [v436 count];
-      v220 = [v377 count];
+      v218 = [array2 count];
+      v219 = [array3 count];
+      v220 = [array4 count];
       *buf = 67109632;
       *&buf[4] = v218;
       LOWORD(v578) = 1024;
@@ -1240,21 +1240,21 @@ LABEL_201:
     v492[3] = &unk_1E842AF78;
     v495 = buf;
     v496 = v497;
-    v493 = v402;
-    v494 = v429;
+    v493 = zoneCopy;
+    v494 = selfCopy;
     v221 = _Block_copy(v492);
     v222 = MNGetMNLPRRuleMatcherLog();
     v223 = v222;
-    v224 = v429->_signpost;
+    v224 = selfCopy->_signpost;
     if (v224 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v222))
     {
-      v225 = [v436 count];
+      v225 = [array3 count];
       *v567 = 67109120;
       *&v567[4] = v225;
       _os_signpost_emit_with_name_impl(&dword_1D311E000, v223, OS_SIGNPOST_INTERVAL_BEGIN, v224, "FilterMapRules", "count=%d", v567, 8u);
     }
 
-    v226 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v436, "count")}];
+    v226 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(array3, "count")}];
     v487[0] = MEMORY[0x1E69E9820];
     v487[1] = 3221225472;
     v487[2] = __72__MNLPRRuleMatcher_generateMaskedPlateForWaypoints_date_timeZone_error___block_invoke_199;
@@ -1265,10 +1265,10 @@ LABEL_201:
     v491 = v414;
     v416 = v226;
     v490 = v416;
-    [v436 enumerateObjectsUsingBlock:v487];
+    [array3 enumerateObjectsUsingBlock:v487];
     v227 = MNGetMNLPRRuleMatcherLog();
     v228 = v227;
-    v229 = v429->_signpost;
+    v229 = selfCopy->_signpost;
     if (v229 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v227))
     {
       v230 = [v416 count];
@@ -1277,33 +1277,33 @@ LABEL_201:
       _os_signpost_emit_with_name_impl(&dword_1D311E000, v228, OS_SIGNPOST_INTERVAL_END, v229, "FilterMapRules", "count=%d", v567, 8u);
     }
 
-    if (![v379 count] || !objc_msgSend(v416, "count") && !objc_msgSend(v377, "count"))
+    if (![array2 count] || !objc_msgSend(v416, "count") && !objc_msgSend(array4, "count"))
     {
       if (v401)
       {
         if (v98)
         {
-          _mnLPRWrappedError(a6, -11, 0, @"No pickup or mapping rules available for provided vehicle", v231, v232, v233, v234, v373);
+          _mnLPRWrappedError(error, -11, 0, @"No pickup or mapping rules available for provided vehicle", v231, v232, v233, v234, name);
           v331 = @"NoRulesForVehicle";
         }
 
         else
         {
-          _mnLPRWrappedError(a6, -12, 0, @"No pickup or mapping rules available for provided time interval", v231, v232, v233, v234, v373);
+          _mnLPRWrappedError(error, -12, 0, @"No pickup or mapping rules available for provided time interval", v231, v232, v233, v234, name);
           v331 = @"EmptyRulesForTimeRange";
         }
       }
 
       else
       {
-        _mnLPRWrappedError(a6, -10, 0, @"No pickup or mapping rules available for provided regions", v231, v232, v233, v234, v373);
+        _mnLPRWrappedError(error, -10, 0, @"No pickup or mapping rules available for provided regions", v231, v232, v233, v234, name);
         v331 = @"NoRulesForRegion";
       }
 
       [MEMORY[0x1E69A1598] captureUserAction:2191 target:0 value:v331];
       v332 = MNGetMNLPRRuleMatcherLog();
       v333 = v332;
-      v334 = v429->_signpost;
+      v334 = selfCopy->_signpost;
       if (v334 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v332))
       {
         *v567 = 0;
@@ -1324,7 +1324,7 @@ LABEL_364:
 
     v235 = MNGetMNLPRRuleMatcherLog();
     v236 = v235;
-    v237 = v429->_signpost;
+    v237 = selfCopy->_signpost;
     if (v237 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v235))
     {
       *v567 = 0;
@@ -1335,7 +1335,7 @@ LABEL_364:
     v486 = 0u;
     v483 = 0u;
     v484 = 0u;
-    v440 = v379;
+    v440 = array2;
     v238 = [v440 countByEnumeratingWithState:&v483 objects:v576 count:16];
     if (v238)
     {
@@ -1350,18 +1350,18 @@ LABEL_364:
           }
 
           v240 = *(*(&v483 + 1) + 8 * i3);
-          v241 = [v240 prLicensePlateStructure];
-          v242 = [v241 supportedNumericCharacterSet];
+          prLicensePlateStructure = [v240 prLicensePlateStructure];
+          supportedNumericCharacterSet2 = [prLicensePlateStructure supportedNumericCharacterSet];
 
-          v243 = [v240 prLicensePlateStructure];
-          v244 = [v243 supportedAlphabeticCharacterSet];
+          prLicensePlateStructure2 = [v240 prLicensePlateStructure];
+          supportedAlphabeticCharacterSet2 = [prLicensePlateStructure2 supportedAlphabeticCharacterSet];
 
           v481 = 0u;
           v482 = 0u;
           v479 = 0u;
           v480 = 0u;
-          v245 = [v240 pickupChars];
-          v246 = [v245 countByEnumeratingWithState:&v479 objects:v575 count:16];
+          pickupChars2 = [v240 pickupChars];
+          v246 = [pickupChars2 countByEnumeratingWithState:&v479 objects:v575 count:16];
           if (v246)
           {
             v247 = *v480;
@@ -1371,17 +1371,17 @@ LABEL_364:
               {
                 if (*v480 != v247)
                 {
-                  objc_enumerationMutation(v245);
+                  objc_enumerationMutation(pickupChars2);
                 }
 
-                v249 = [(_MNLPRPlate *)obj charMatching:v244 alphabetics:v242 numerics:?];
+                v249 = [(_MNLPRPlate *)obj charMatching:supportedAlphabeticCharacterSet2 alphabetics:supportedNumericCharacterSet2 numerics:?];
                 if (v249)
                 {
                   v249[24] = 1;
                 }
               }
 
-              v246 = [v245 countByEnumeratingWithState:&v479 objects:v575 count:16];
+              v246 = [pickupChars2 countByEnumeratingWithState:&v479 objects:v575 count:16];
             }
 
             while (v246);
@@ -1396,7 +1396,7 @@ LABEL_364:
 
     v250 = MNGetMNLPRRuleMatcherLog();
     v251 = v250;
-    v252 = v429->_signpost;
+    v252 = selfCopy->_signpost;
     if (v252 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v250))
     {
       *v567 = 0;
@@ -1405,7 +1405,7 @@ LABEL_364:
 
     v253 = MNGetMNLPRRuleMatcherLog();
     v254 = v253;
-    v255 = v429->_signpost;
+    v255 = selfCopy->_signpost;
     if (v255 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v253))
     {
       *v567 = 0;
@@ -1435,18 +1435,18 @@ LABEL_364:
 
           v418 = v258;
           v424 = *(*(&v475 + 1) + 8 * v258);
-          v259 = [v424 mrLicensePlateStructure];
-          v434 = [v259 supportedNumericCharacterSet];
+          mrLicensePlateStructure = [v424 mrLicensePlateStructure];
+          supportedNumericCharacterSet3 = [mrLicensePlateStructure supportedNumericCharacterSet];
 
-          v260 = [v424 mrLicensePlateStructure];
-          v431 = [v260 supportedAlphabeticCharacterSet];
+          mrLicensePlateStructure2 = [v424 mrLicensePlateStructure];
+          supportedAlphabeticCharacterSet3 = [mrLicensePlateStructure2 supportedAlphabeticCharacterSet];
 
           v473 = 0u;
           v474 = 0u;
           v471 = 0u;
           v472 = 0u;
-          v421 = [v424 targetChars];
-          v441 = [v421 countByEnumeratingWithState:&v471 objects:v573 count:16];
+          targetChars2 = [v424 targetChars];
+          v441 = [targetChars2 countByEnumeratingWithState:&v471 objects:v573 count:16];
           if (v441)
           {
             v427 = *v472;
@@ -1456,18 +1456,18 @@ LABEL_364:
               {
                 if (*v472 != v427)
                 {
-                  objc_enumerationMutation(v421);
+                  objc_enumerationMutation(targetChars2);
                 }
 
-                v261 = [(_MNLPRPlate *)obj charMatching:v431 alphabetics:v434 numerics:?];
+                v261 = [(_MNLPRPlate *)obj charMatching:supportedAlphabeticCharacterSet3 alphabetics:supportedNumericCharacterSet3 numerics:?];
                 if (v261)
                 {
                   v469 = 0u;
                   v470 = 0u;
                   v467 = 0u;
                   v468 = 0u;
-                  v262 = [v424 valueMappings];
-                  v263 = [v262 countByEnumeratingWithState:&v467 objects:v572 count:16];
+                  valueMappings = [v424 valueMappings];
+                  v263 = [valueMappings countByEnumeratingWithState:&v467 objects:v572 count:16];
                   if (v263)
                   {
                     v264 = *v468;
@@ -1477,15 +1477,15 @@ LABEL_364:
                       {
                         if (*v468 != v264)
                         {
-                          objc_enumerationMutation(v262);
+                          objc_enumerationMutation(valueMappings);
                         }
 
                         v266 = *(*(&v467 + 1) + 8 * i5);
                         if ([v266 valuesCount])
                         {
-                          v267 = [v266 values];
+                          values = [v266 values];
                           v268 = v261[4];
-                          v269 = [v267 containsObject:v268];
+                          v269 = [values containsObject:v268];
 
                           if (!v269)
                           {
@@ -1518,7 +1518,7 @@ LABEL_364:
                         }
                       }
 
-                      v263 = [v262 countByEnumeratingWithState:&v467 objects:v572 count:16];
+                      v263 = [valueMappings countByEnumeratingWithState:&v467 objects:v572 count:16];
                     }
 
                     while (v263);
@@ -1526,7 +1526,7 @@ LABEL_364:
                 }
               }
 
-              v441 = [v421 countByEnumeratingWithState:&v471 objects:v573 count:16];
+              v441 = [targetChars2 countByEnumeratingWithState:&v471 objects:v573 count:16];
             }
 
             while (v441);
@@ -1545,7 +1545,7 @@ LABEL_364:
 
     v274 = MNGetMNLPRRuleMatcherLog();
     v275 = v274;
-    v276 = v429->_signpost;
+    v276 = selfCopy->_signpost;
     if (v276 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v274))
     {
       *v567 = 0;
@@ -1554,7 +1554,7 @@ LABEL_364:
 
     v277 = MNGetMNLPRRuleMatcherLog();
     v278 = v277;
-    v279 = v429->_signpost;
+    v279 = selfCopy->_signpost;
     if (v279 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v277))
     {
       *v567 = 0;
@@ -1565,7 +1565,7 @@ LABEL_364:
     v466 = 0u;
     v463 = 0u;
     v464 = 0u;
-    v419 = v377;
+    v419 = array4;
     v425 = [v419 countByEnumeratingWithState:&v463 objects:v571 count:16];
     if (v425)
     {
@@ -1581,11 +1581,11 @@ LABEL_364:
           }
 
           v280 = *(*(&v463 + 1) + 8 * v435);
-          v281 = [v280 frLicensePlateStructure];
-          v432 = [v281 supportedNumericCharacterSet];
+          frLicensePlateStructure = [v280 frLicensePlateStructure];
+          supportedNumericCharacterSet4 = [frLicensePlateStructure supportedNumericCharacterSet];
 
-          v282 = [v280 frLicensePlateStructure];
-          v428 = [v282 supportedAlphabeticCharacterSet];
+          frLicensePlateStructure2 = [v280 frLicensePlateStructure];
+          supportedAlphabeticCharacterSet4 = [frLicensePlateStructure2 supportedAlphabeticCharacterSet];
 
           if (obj)
           {
@@ -1599,8 +1599,8 @@ LABEL_364:
 
           if ([v280 hasFromChar])
           {
-            v284 = [v280 fromChar];
-            v285 = [(_MNLPRPlate *)obj charIndexForTarget:v284 alphabetics:v428 numerics:v432];
+            fromChar = [v280 fromChar];
+            v285 = [(_MNLPRPlate *)obj charIndexForTarget:fromChar alphabetics:supportedAlphabeticCharacterSet4 numerics:supportedNumericCharacterSet4];
 
             if (v285 == 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -1616,8 +1616,8 @@ LABEL_364:
           v286 = (v283 - 1);
           if ([v280 hasToChar])
           {
-            v287 = [v280 toChar];
-            v288 = [(_MNLPRPlate *)obj charIndexForTarget:v287 alphabetics:v428 numerics:v432];
+            toChar = [v280 toChar];
+            v288 = [(_MNLPRPlate *)obj charIndexForTarget:toChar alphabetics:supportedAlphabeticCharacterSet4 numerics:supportedNumericCharacterSet4];
 
             if (v288 != 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -1655,26 +1655,26 @@ LABEL_329:
 LABEL_312:
             locationd = 1;
 LABEL_313:
-            v291 = [v280 fillType];
-            switch(v291)
+            fillType = [v280 fillType];
+            switch(fillType)
             {
               case 1:
-                v292 = [v280 frLicensePlateStructure];
-                v295 = [v292 supportedPlateAlphabetLetters];
-                v296 = [v280 frLicensePlateStructure];
-                v297 = [v296 supportedPlateNumerics];
-                v294 = [v295 stringByAppendingString:v297];
+                frLicensePlateStructure3 = [v280 frLicensePlateStructure];
+                supportedPlateAlphabetLetters = [frLicensePlateStructure3 supportedPlateAlphabetLetters];
+                frLicensePlateStructure4 = [v280 frLicensePlateStructure];
+                supportedPlateNumerics = [frLicensePlateStructure4 supportedPlateNumerics];
+                v294 = [supportedPlateAlphabetLetters stringByAppendingString:supportedPlateNumerics];
 
                 break;
               case 2:
-                v292 = [v280 frLicensePlateStructure];
-                v293 = [v292 supportedPlateAlphabetLetters];
+                frLicensePlateStructure3 = [v280 frLicensePlateStructure];
+                supportedPlateAlphabetLetters2 = [frLicensePlateStructure3 supportedPlateAlphabetLetters];
 LABEL_318:
-                v294 = v293;
+                v294 = supportedPlateAlphabetLetters2;
                 break;
               case 3:
-                v292 = [v280 frLicensePlateStructure];
-                v293 = [v292 supportedPlateNumerics];
+                frLicensePlateStructure3 = [v280 frLicensePlateStructure];
+                supportedPlateAlphabetLetters2 = [frLicensePlateStructure3 supportedPlateNumerics];
                 goto LABEL_318;
               default:
                 v294 = 0;
@@ -1696,16 +1696,16 @@ LABEL_322:
                 if (v301)
                 {
                   v302 = MEMORY[0x1E695DFA0];
-                  v303 = [v301 mnlpr_componentsSeparatedByGlyph];
-                  v304 = [v302 orderedSetWithArray:v303];
+                  mnlpr_componentsSeparatedByGlyph2 = [v301 mnlpr_componentsSeparatedByGlyph];
+                  v304 = [v302 orderedSetWithArray:mnlpr_componentsSeparatedByGlyph2];
 
                   v305 = MEMORY[0x1E695DFB8];
-                  v306 = [v294 mnlpr_componentsSeparatedByGlyph];
-                  v307 = [v305 orderedSetWithArray:v306];
+                  mnlpr_componentsSeparatedByGlyph3 = [v294 mnlpr_componentsSeparatedByGlyph];
+                  v307 = [v305 orderedSetWithArray:mnlpr_componentsSeparatedByGlyph3];
 
                   [v304 intersectOrderedSet:v307];
-                  v308 = [v304 array];
-                  v309 = [v308 componentsJoinedByString:&stru_1F4EB6B70];
+                  array8 = [v304 array];
+                  v309 = [array8 componentsJoinedByString:&stru_1F4EB6B70];
 
                   v294 = v309;
                 }
@@ -1745,7 +1745,7 @@ LABEL_304:
 
     v314 = MNGetMNLPRRuleMatcherLog();
     v315 = v314;
-    v316 = v429->_signpost;
+    v316 = selfCopy->_signpost;
     if (v316 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v314))
     {
       *v567 = 0;
@@ -1774,7 +1774,7 @@ LABEL_304:
     v319 = [v317 arrayWithCapacity:v318];
     v320 = MNGetMNLPRRuleMatcherLog();
     v321 = v320;
-    v322 = v429->_signpost;
+    v322 = selfCopy->_signpost;
     if (v322 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v320))
     {
       *v563 = 0;
@@ -1793,7 +1793,7 @@ LABEL_304:
     [(_MNLPRPlate *)obj enumerateCharsUsingBlock:v454];
     v324 = MNGetMNLPRRuleMatcherLog();
     v325 = v324;
-    v326 = v429->_signpost;
+    v326 = selfCopy->_signpost;
     if (v326 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v324))
     {
       *v563 = 0;
@@ -1803,14 +1803,14 @@ LABEL_304:
     v327 = *(v594.super_class + 5);
     if (v327)
     {
-      if (a6)
+      if (error)
       {
-        *a6 = v327;
+        *error = v327;
       }
 
       v328 = MNGetMNLPRRuleMatcherLog();
       v329 = v328;
-      v330 = v429->_signpost;
+      v330 = selfCopy->_signpost;
       if (v330 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v328))
       {
         *v563 = 0;
@@ -1838,8 +1838,8 @@ LABEL_304:
       {
         v353 = MEMORY[0x1E69A1598];
         v354 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v339];
-        v355 = [v378 allObjects];
-        [v353 captureHardStopWithScore:v354 digits:v323 cities:v355];
+        allObjects = [v378 allObjects];
+        [v353 captureHardStopWithScore:v354 digits:v323 cities:allObjects];
 
         if (obj)
         {
@@ -1853,11 +1853,11 @@ LABEL_304:
 
         v374 = [v323 componentsJoinedByString:{@", "}];
         v375 = v460[3];
-        _mnLPRWrappedError(a6, -105, 0, @"Plate has %d chars and rules only allow us to mask chars {%@} for %llu permutation", v357, v358, v359, v360, v356);
+        _mnLPRWrappedError(error, -105, 0, @"Plate has %d chars and rules only allow us to mask chars {%@} for %llu permutation", v357, v358, v359, v360, v356);
 
         v361 = MNGetMNLPRRuleMatcherLog();
         v362 = v361;
-        v363 = v429->_signpost;
+        v363 = selfCopy->_signpost;
         if (v363 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v361))
         {
           *v563 = 0;
@@ -1871,7 +1871,7 @@ LABEL_304:
 
       v340 = MNGetMNLPRRuleMatcherLog();
       v341 = v340;
-      v342 = v429->_signpost;
+      v342 = selfCopy->_signpost;
       if (v342 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v340))
       {
         *v563 = 0;
@@ -1879,8 +1879,8 @@ LABEL_304:
       }
 
       v343 = MEMORY[0x1E696AD60];
-      v344 = [(GEOLPRVehicle *)v429->_vehicle licensePlate];
-      v345 = [v343 stringWithCapacity:{objc_msgSend(v344, "length")}];
+      licensePlate5 = [(GEOLPRVehicle *)selfCopy->_vehicle licensePlate];
+      v345 = [v343 stringWithCapacity:{objc_msgSend(licensePlate5, "length")}];
 
       v451[0] = MEMORY[0x1E69E9820];
       v451[1] = 3221225472;
@@ -1892,7 +1892,7 @@ LABEL_304:
       [(_MNLPRPlate *)obj enumerateCharsUsingBlock:v451];
       v346 = MNGetMNLPRRuleMatcherLog();
       v347 = v346;
-      v348 = v429->_signpost;
+      v348 = selfCopy->_signpost;
       if (v348 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v346))
       {
         *v563 = 0;
@@ -1902,14 +1902,14 @@ LABEL_304:
       v349 = *(v594.super_class + 5);
       if (v349)
       {
-        if (a6)
+        if (error)
         {
-          *a6 = v349;
+          *error = v349;
         }
 
         v350 = MNGetMNLPRRuleMatcherLog();
         v351 = v350;
-        v352 = v429->_signpost;
+        v352 = selfCopy->_signpost;
         if (v352 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v350))
         {
           *v563 = 0;
@@ -1923,7 +1923,7 @@ LABEL_304:
       {
         v364 = MNGetMNLPRRuleMatcherLog();
         v365 = v364;
-        v366 = v429->_signpost;
+        v366 = selfCopy->_signpost;
         if (v366 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v364))
         {
           *v563 = 0;
@@ -1933,9 +1933,9 @@ LABEL_304:
         v367 = MNGetMNLPRRuleMatcherLog();
         if (os_log_type_enabled(v367, OS_LOG_TYPE_DEBUG))
         {
-          v368 = [(GEOLPRVehicle *)v429->_vehicle licensePlate];
+          licensePlate6 = [(GEOLPRVehicle *)selfCopy->_vehicle licensePlate];
           *v563 = 138478083;
-          v564 = v368;
+          v564 = licensePlate6;
           v565 = 2113;
           v566 = v329;
           _os_log_impl(&dword_1D311E000, v367, OS_LOG_TYPE_DEBUG, "Masked plate from %{private}@ -> %{private}@", v563, 0x16u);
@@ -1953,7 +1953,7 @@ LABEL_304:
         v371 = MNGetMNLPRRuleMatcherLog();
         if (os_log_type_enabled(v371, OS_LOG_TYPE_DEBUG))
         {
-          usedRegionETAs = v429->_usedRegionETAs;
+          usedRegionETAs = selfCopy->_usedRegionETAs;
           *v563 = 138477827;
           v564 = usedRegionETAs;
           _os_log_impl(&dword_1D311E000, v371, OS_LOG_TYPE_DEBUG, "Used region ETAs: %{private}@", v563, 0xCu);
@@ -1969,8 +1969,8 @@ LABEL_405:
     goto LABEL_363;
   }
 
-  v53 = [(GEOLPRVehicle *)v429->_vehicle licensePlate];
-  _mnLPRWrappedError(a6, -101, 0, @"Empty/unsplittable plate %@", v54, v55, v56, v57, v53);
+  licensePlate7 = [(GEOLPRVehicle *)selfCopy->_vehicle licensePlate];
+  _mnLPRWrappedError(error, -101, 0, @"Empty/unsplittable plate %@", v54, v55, v56, v57, licensePlate7);
 
   [MEMORY[0x1E69A1598] captureUserAction:2191 target:0 value:@"UnableToSplitString"];
   v52 = 0;
@@ -2432,21 +2432,21 @@ LABEL_36:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initForVehicle:(id)a3 withRules:(id)a4
+- (id)initForVehicle:(id)vehicle withRules:(id)rules
 {
-  v6 = a3;
-  v7 = a4;
+  vehicleCopy = vehicle;
+  rulesCopy = rules;
   v14.receiver = self;
   v14.super_class = MNLPRRuleMatcher;
   v8 = [(MNLPRRuleMatcher *)&v14 self];
 
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [vehicleCopy copy];
     v10 = v8[1];
     v8[1] = v9;
 
-    v11 = [v7 copy];
+    v11 = [rulesCopy copy];
     v12 = v8[2];
     v8[2] = v11;
   }

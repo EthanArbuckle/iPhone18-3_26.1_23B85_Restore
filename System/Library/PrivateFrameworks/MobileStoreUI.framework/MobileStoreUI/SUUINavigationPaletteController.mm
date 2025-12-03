@@ -1,23 +1,23 @@
 @interface SUUINavigationPaletteController
-- (SUUINavigationPaletteController)initWithPaletteViewElement:(id)a3;
+- (SUUINavigationPaletteController)initWithPaletteViewElement:(id)element;
 - (id)view;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
 - (void)reloadSectionViews;
 - (void)willAppearInNavigationBar;
 @end
 
 @implementation SUUINavigationPaletteController
 
-- (SUUINavigationPaletteController)initWithPaletteViewElement:(id)a3
+- (SUUINavigationPaletteController)initWithPaletteViewElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SUUINavigationPaletteController;
   v6 = [(SUUINavigationPaletteController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewElement, a3);
+    objc_storeStrong(&v6->_viewElement, element);
   }
 
   return v7;
@@ -25,14 +25,14 @@
 
 - (void)reloadSectionViews
 {
-  v3 = [(SUUINavigationBarSectionController *)self context];
-  [v3 maximumNavigationBarWidth];
+  context = [(SUUINavigationBarSectionController *)self context];
+  [context maximumNavigationBarWidth];
   v5 = v4;
 
   paletteView = self->_paletteView;
   viewElement = self->_viewElement;
-  v8 = [(SUUINavigationBarSectionController *)self viewLayoutContext];
-  [(SUUINavigationPaletteView *)paletteView reloadWithViewElement:viewElement width:v8 context:v5];
+  viewLayoutContext = [(SUUINavigationBarSectionController *)self viewLayoutContext];
+  [(SUUINavigationPaletteView *)paletteView reloadWithViewElement:viewElement width:viewLayoutContext context:v5];
 
   v9.receiver = self;
   v9.super_class = SUUINavigationPaletteController;
@@ -44,17 +44,17 @@
   paletteView = self->_paletteView;
   if (!paletteView)
   {
-    v4 = [(SUUINavigationBarSectionController *)self context];
-    v5 = [v4 clientContext];
-    v6 = SUUIUserInterfaceIdiom(v5);
+    context = [(SUUINavigationBarSectionController *)self context];
+    clientContext = [context clientContext];
+    v6 = SUUIUserInterfaceIdiom(clientContext);
 
-    [v4 maximumNavigationBarWidth];
+    [context maximumNavigationBarWidth];
     v8 = v7;
     v9 = *MEMORY[0x277CBF3A0];
     v10 = *(MEMORY[0x277CBF3A0] + 8);
     viewElement = self->_viewElement;
-    v12 = [(SUUINavigationBarSectionController *)self viewLayoutContext];
-    [SUUINavigationPaletteView sizeThatFitsWidth:viewElement viewElement:v12 context:v8];
+    viewLayoutContext = [(SUUINavigationBarSectionController *)self viewLayoutContext];
+    [SUUINavigationPaletteView sizeThatFitsWidth:viewElement viewElement:viewLayoutContext context:v8];
     v14 = v13;
     v16 = v15;
 
@@ -80,8 +80,8 @@
 
     [(SUUINavigationPaletteView *)self->_paletteView setAutoresizingMask:2];
     v21 = self->_paletteView;
-    v22 = [MEMORY[0x277D75348] clearColor];
-    [(SUUIViewReuseView *)v21 setBackgroundColor:v22];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SUUIViewReuseView *)v21 setBackgroundColor:clearColor];
 
     [(SUUINavigationPaletteView *)self->_paletteView setContentInset:0.0, 15.0, 0.0, 15.0];
     if (v6 == 1)
@@ -91,8 +91,8 @@
 
     v23 = self->_paletteView;
     v24 = self->_viewElement;
-    v25 = [(SUUINavigationBarSectionController *)self viewLayoutContext];
-    [(SUUINavigationPaletteView *)v23 reloadWithViewElement:v24 width:v25 context:v8];
+    viewLayoutContext2 = [(SUUINavigationBarSectionController *)self viewLayoutContext];
+    [(SUUINavigationPaletteView *)v23 reloadWithViewElement:v24 width:viewLayoutContext2 context:v8];
 
     paletteView = self->_paletteView;
   }
@@ -102,25 +102,25 @@
 
 - (void)willAppearInNavigationBar
 {
-  v3 = [(SUUINavigationBarSectionController *)self viewLayoutContext];
-  v4 = [(SUUINavigationBarSectionController *)self context];
-  [v4 maximumNavigationBarWidth];
+  viewLayoutContext = [(SUUINavigationBarSectionController *)self viewLayoutContext];
+  context = [(SUUINavigationBarSectionController *)self context];
+  [context maximumNavigationBarWidth];
   v6 = v5;
 
-  [SUUINavigationPaletteView requestLayoutForViewElement:self->_viewElement width:v3 context:v6];
-  [SUUINavigationPaletteView prefetchResourcesForViewElement:self->_viewElement reason:0 context:v3];
+  [SUUINavigationPaletteView requestLayoutForViewElement:self->_viewElement width:viewLayoutContext context:v6];
+  [SUUINavigationPaletteView prefetchResourcesForViewElement:self->_viewElement reason:0 context:viewLayoutContext];
   v7.receiver = self;
   v7.super_class = SUUINavigationPaletteController;
   [(SUUINavigationBarSectionController *)&v7 willAppearInNavigationBar];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
   paletteView = self->_paletteView;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(SUUINavigationBarSectionController *)self viewLayoutContext];
-  [(SUUINavigationPaletteView *)paletteView setImage:v7 forArtworkRequest:v8 context:v9];
+  imageCopy = image;
+  requestCopy = request;
+  viewLayoutContext = [(SUUINavigationBarSectionController *)self viewLayoutContext];
+  [(SUUINavigationPaletteView *)paletteView setImage:imageCopy forArtworkRequest:requestCopy context:viewLayoutContext];
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface AAUIAccountContactBulletPointSubPane
-- (AAUIAccountContactBulletPointSubPane)initWithImage:(id)a3 title:(id)a4 message:(id)a5;
-- (id)_imageViewWithImage:(id)a3;
-- (id)_labelWithString:(id)a3 title:(BOOL)a4;
+- (AAUIAccountContactBulletPointSubPane)initWithImage:(id)image title:(id)title message:(id)message;
+- (id)_imageViewWithImage:(id)image;
+- (id)_labelWithString:(id)string title:(BOOL)title;
 - (id)_verticalStackView;
 @end
 
 @implementation AAUIAccountContactBulletPointSubPane
 
-- (AAUIAccountContactBulletPointSubPane)initWithImage:(id)a3 title:(id)a4 message:(id)a5
+- (AAUIAccountContactBulletPointSubPane)initWithImage:(id)image title:(id)title message:(id)message
 {
   v68[7] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  titleCopy = title;
+  messageCopy = message;
   v67.receiver = self;
   v67.super_class = AAUIAccountContactBulletPointSubPane;
   v11 = [(AAUIAccountContactBulletPointSubPane *)&v67 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -20,144 +20,144 @@
   if (v11)
   {
     [(AAUIAccountContactBulletPointSubPane *)v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [(AAUIAccountContactBulletPointSubPane *)v12 _imageViewWithImage:v8];
-    v66 = v8;
+    v13 = [(AAUIAccountContactBulletPointSubPane *)v12 _imageViewWithImage:imageCopy];
+    v66 = imageCopy;
     bulletImageView = v12->_bulletImageView;
     v12->_bulletImageView = v13;
 
     [(AAUIAccountContactBulletPointSubPane *)v12 addSubview:v12->_bulletImageView];
-    v15 = [(AAUIAccountContactBulletPointSubPane *)v12 _verticalStackView];
+    _verticalStackView = [(AAUIAccountContactBulletPointSubPane *)v12 _verticalStackView];
     messageStackView = v12->_messageStackView;
-    v12->_messageStackView = v15;
+    v12->_messageStackView = _verticalStackView;
 
     [(AAUIAccountContactBulletPointSubPane *)v12 addSubview:v12->_messageStackView];
-    v17 = [(AAUIAccountContactBulletPointSubPane *)v12 _labelWithString:v9 title:1];
+    v17 = [(AAUIAccountContactBulletPointSubPane *)v12 _labelWithString:titleCopy title:1];
     titleLabel = v12->_titleLabel;
     v12->_titleLabel = v17;
 
-    v19 = [(AAUIAccountContactBulletPointSubPane *)v12 _labelWithString:v10 title:0];
-    v65 = v9;
+    v19 = [(AAUIAccountContactBulletPointSubPane *)v12 _labelWithString:messageCopy title:0];
+    v65 = titleCopy;
     messageLabel = v12->_messageLabel;
     v12->_messageLabel = v19;
 
     [(UIStackView *)v12->_messageStackView addArrangedSubview:v12->_titleLabel];
     [(UIStackView *)v12->_messageStackView addArrangedSubview:v12->_messageLabel];
     v58 = MEMORY[0x1E696ACD8];
-    v63 = [(UIImageView *)v12->_bulletImageView topAnchor];
-    v61 = [(UILabel *)v12->_titleLabel firstBaselineAnchor];
-    v62 = [(UILabel *)v12->_titleLabel font];
-    [v62 ascender];
-    v60 = [v63 constraintEqualToAnchor:v61 constant:-(v21 + -2.0)];
+    topAnchor = [(UIImageView *)v12->_bulletImageView topAnchor];
+    firstBaselineAnchor = [(UILabel *)v12->_titleLabel firstBaselineAnchor];
+    font = [(UILabel *)v12->_titleLabel font];
+    [font ascender];
+    v60 = [topAnchor constraintEqualToAnchor:firstBaselineAnchor constant:-(v21 + -2.0)];
     v68[0] = v60;
-    v22 = [(UIImageView *)v12->_bulletImageView leadingAnchor];
-    v59 = v22;
-    v23 = [(AAUIAccountContactBulletPointSubPane *)v12 leadingAnchor];
-    v57 = v23;
-    v64 = v10;
-    v24 = [MEMORY[0x1E69DC938] currentDevice];
-    v25 = [v24 userInterfaceIdiom];
+    leadingAnchor = [(UIImageView *)v12->_bulletImageView leadingAnchor];
+    v59 = leadingAnchor;
+    leadingAnchor2 = [(AAUIAccountContactBulletPointSubPane *)v12 leadingAnchor];
+    v57 = leadingAnchor2;
+    v64 = messageCopy;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v26 = 66.0;
-    if ((v25 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
       v26 = 0.0;
     }
 
-    v56 = [v22 constraintEqualToAnchor:v23 constant:v26];
+    v56 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v26];
     v68[1] = v56;
-    v27 = [(UIImageView *)v12->_bulletImageView widthAnchor];
-    v55 = v27;
-    v28 = [MEMORY[0x1E69DC938] currentDevice];
-    v29 = [v28 userInterfaceIdiom];
+    widthAnchor = [(UIImageView *)v12->_bulletImageView widthAnchor];
+    v55 = widthAnchor;
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
     v30 = 40.0;
-    if ((v29 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v30 = 44.0;
     }
 
-    v54 = [v27 constraintEqualToConstant:v30];
+    v54 = [widthAnchor constraintEqualToConstant:v30];
     v68[2] = v54;
-    v31 = [(UIStackView *)v12->_messageStackView leadingAnchor];
-    v53 = v31;
-    v32 = [(UIImageView *)v12->_bulletImageView trailingAnchor];
-    v52 = v32;
-    v33 = [MEMORY[0x1E69DC938] currentDevice];
-    v34 = [v33 userInterfaceIdiom];
+    leadingAnchor3 = [(UIStackView *)v12->_messageStackView leadingAnchor];
+    v53 = leadingAnchor3;
+    trailingAnchor = [(UIImageView *)v12->_bulletImageView trailingAnchor];
+    v52 = trailingAnchor;
+    currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
     v35 = 26.0;
-    if ((v34 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v35 = 16.0;
     }
 
-    v51 = [v31 constraintEqualToAnchor:v32 constant:v35];
+    v51 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:v35];
     v68[3] = v51;
-    v36 = [(UIStackView *)v12->_messageStackView trailingAnchor];
-    v50 = v36;
-    v37 = [(AAUIAccountContactBulletPointSubPane *)v12 trailingAnchor];
-    v38 = [MEMORY[0x1E69DC938] currentDevice];
-    v39 = [v38 userInterfaceIdiom];
+    trailingAnchor2 = [(UIStackView *)v12->_messageStackView trailingAnchor];
+    v50 = trailingAnchor2;
+    trailingAnchor3 = [(AAUIAccountContactBulletPointSubPane *)v12 trailingAnchor];
+    currentDevice4 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
     v40 = -50.0;
-    if ((v39 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
       v40 = -16.0;
     }
 
-    v41 = [v36 constraintEqualToAnchor:v37 constant:v40];
+    v41 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:v40];
     v68[4] = v41;
-    v42 = [(UIStackView *)v12->_messageStackView topAnchor];
-    v43 = [(AAUIAccountContactBulletPointSubPane *)v12 topAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
+    topAnchor2 = [(UIStackView *)v12->_messageStackView topAnchor];
+    topAnchor3 = [(AAUIAccountContactBulletPointSubPane *)v12 topAnchor];
+    v44 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v68[5] = v44;
-    v45 = [(UIStackView *)v12->_messageStackView bottomAnchor];
-    v46 = [(AAUIAccountContactBulletPointSubPane *)v12 bottomAnchor];
-    v47 = [v45 constraintLessThanOrEqualToAnchor:v46];
+    bottomAnchor = [(UIStackView *)v12->_messageStackView bottomAnchor];
+    bottomAnchor2 = [(AAUIAccountContactBulletPointSubPane *)v12 bottomAnchor];
+    v47 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     v68[6] = v47;
     v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:7];
     [v58 activateConstraints:v48];
 
-    v10 = v64;
-    v8 = v66;
+    messageCopy = v64;
+    imageCopy = v66;
 
-    v9 = v65;
+    titleCopy = v65;
   }
 
   return v12;
 }
 
-- (id)_labelWithString:(id)a3 title:(BOOL)a4
+- (id)_labelWithString:(id)string title:(BOOL)title
 {
-  v4 = a4;
+  titleCopy = title;
   v5 = MEMORY[0x1E69DCC10];
-  v6 = a3;
+  stringCopy = string;
   v7 = objc_alloc_init(v5);
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   v8 = MEMORY[0x1E69DB980];
-  if (!v4)
+  if (!titleCopy)
   {
     v8 = MEMORY[0x1E69DB978];
   }
 
   v9 = *v8;
-  v10 = [MEMORY[0x1E69DCA40] defaultMetrics];
+  defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
   v11 = [MEMORY[0x1E69DB878] systemFontOfSize:15.0 weight:v9];
-  v12 = [v10 scaledFontForFont:v11];
+  v12 = [defaultMetrics scaledFontForFont:v11];
   [v7 setFont:v12];
 
   [v7 setTextAlignment:4];
   [v7 setNumberOfLines:0];
   [v7 setAdjustsFontSizeToFitWidth:0];
   [v7 setAdjustsFontForContentSizeCategory:1];
-  v13 = [MEMORY[0x1E69DC888] clearColor];
-  [v7 setBackgroundColor:v13];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v7 setBackgroundColor:clearColor];
 
-  [v7 setText:v6];
-  if (!v4)
+  [v7 setText:stringCopy];
+  if (!titleCopy)
   {
-    v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v7 setTextColor:v14];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [v7 setTextColor:secondaryLabelColor];
   }
 
   return v7;
@@ -170,17 +170,17 @@
   [v2 setAlignment:1];
   [v2 setAxis:1];
   [v2 setDistribution:0];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [v2 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v2 setBackgroundColor:clearColor];
 
   return v2;
 }
 
-- (id)_imageViewWithImage:(id)a3
+- (id)_imageViewWithImage:(id)image
 {
   v3 = MEMORY[0x1E69DCAE0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithImage:v4];
+  imageCopy = image;
+  v5 = [[v3 alloc] initWithImage:imageCopy];
 
   [v5 setContentMode:1];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];

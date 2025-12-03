@@ -1,7 +1,7 @@
 @interface CBApplication
 + (id)_newApplicationInitializationContext;
 + (void)initializeAppSupportService;
-- (BOOL)__handleHIDEvent:(__IOHIDEvent *)a3;
+- (BOOL)__handleHIDEvent:(__IOHIDEvent *)event;
 - (BOOL)_hasHomeButton;
 - (BOOL)_isLockButtonTimerValid;
 - (CBApplication)init;
@@ -9,7 +9,7 @@
 - (void)_createInitialAppScene;
 - (void)_diagsLaunchedAction;
 - (void)_disableUSBRestrictedMode;
-- (void)_handleHIDEvent:(__IOHIDEvent *)a3;
+- (void)_handleHIDEvent:(__IOHIDEvent *)event;
 - (void)_handleThermalWarningScreenPresentation;
 - (void)_hideWiFiSettingsAction;
 - (void)_homeButtonDown;
@@ -24,9 +24,9 @@
 - (void)_showPowerDownView;
 - (void)_showWiFiSettingsAction;
 - (void)_startLockButtonTimer;
-- (void)batteryStatusDidChange:(id)a3;
-- (void)handlePressEvent:(id)a3;
-- (void)setLockButtonTimer:(id)a3;
+- (void)batteryStatusDidChange:(id)change;
+- (void)handlePressEvent:(id)event;
+- (void)setLockButtonTimer:(id)timer;
 @end
 
 @implementation CBApplication
@@ -114,9 +114,9 @@
 - (void)_disableUSBRestrictedMode
 {
   v2 = +[CBEnvironmentManager sharedInstance];
-  v3 = [v2 currentEnvironment];
+  currentEnvironment = [v2 currentEnvironment];
 
-  if (v3 == 1)
+  if (currentEnvironment == 1)
   {
     v9 = 3;
     v10 = 0;
@@ -210,17 +210,17 @@ LABEL_7:
   [v2 deleteBootIntentSourceData];
 }
 
-- (void)_handleHIDEvent:(__IOHIDEvent *)a3
+- (void)_handleHIDEvent:(__IOHIDEvent *)event
 {
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = a3;
+    eventCopy = event;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handle HID Event: %@", buf, 0xCu);
   }
 
-  if (![(CBApplication *)self __handleHIDEvent:a3])
+  if (![(CBApplication *)self __handleHIDEvent:event])
   {
     v6 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -231,25 +231,25 @@ LABEL_7:
 
     v7.receiver = self;
     v7.super_class = CBApplication;
-    [(CBApplication *)&v7 _handleHIDEvent:a3];
+    [(CBApplication *)&v7 _handleHIDEvent:event];
   }
 }
 
-- (void)handlePressEvent:(id)a3
+- (void)handlePressEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = eventCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handle Physical Button Event: %@", &v10, 0xCu);
   }
 
-  v6 = [v4 _hidEvent];
+  _hidEvent = [eventCopy _hidEvent];
   v7 = CheckerBoardLogHandleForCategory();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (!v6)
+  if (!_hidEvent)
   {
     if (v8)
     {
@@ -269,7 +269,7 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Physical HID button event exists", &v10, 2u);
   }
 
-  if (![(CBApplication *)self __handleHIDEvent:v6])
+  if (![(CBApplication *)self __handleHIDEvent:_hidEvent])
   {
     v7 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -287,17 +287,17 @@ LABEL_11:
 LABEL_13:
 }
 
-- (BOOL)__handleHIDEvent:(__IOHIDEvent *)a3
+- (BOOL)__handleHIDEvent:(__IOHIDEvent *)event
 {
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    *v18 = a3;
+    *v18 = event;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handling HID Event: %@", &v17, 0xCu);
   }
 
-  if (!a3)
+  if (!event)
   {
     v13 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -451,30 +451,30 @@ LABEL_17:
     v5 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(CBApplication *)self homeButtonPressedWithDisplayDim];
+      homeButtonPressedWithDisplayDim = [(CBApplication *)self homeButtonPressedWithDisplayDim];
       *buf = 67109120;
-      v15 = v6;
+      v15 = homeButtonPressedWithDisplayDim;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Preventing Home button action sheet from being presented since the screen is on (%d)", buf, 8u);
     }
   }
 
   else
   {
-    v7 = [(CBApplication *)self allowWiFiSettingsAction];
+    allowWiFiSettingsAction = [(CBApplication *)self allowWiFiSettingsAction];
     if ([(CBApplication *)self _hasHomeButton])
     {
-      v8 = v7;
+      v8 = allowWiFiSettingsAction;
     }
 
     else
     {
-      v8 = v7 | 2;
+      v8 = allowWiFiSettingsAction | 2;
     }
 
     v9 = +[CBUserSettings sharedInstance];
-    v10 = [v9 shouldShowInfoPane];
+    shouldShowInfoPane = [v9 shouldShowInfoPane];
 
-    if (v10)
+    if (shouldShowInfoPane)
     {
       v11 = v8 | 4;
     }
@@ -514,9 +514,9 @@ LABEL_17:
   }
 
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v6 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -525,8 +525,8 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "🎉 Let there be vibration! 🎉", v8, 2u);
     }
 
-    v7 = [(CBApplication *)self notificationFeedbackGenerator];
-    [v7 _privateNotificationOccurred:1004];
+    notificationFeedbackGenerator = [(CBApplication *)self notificationFeedbackGenerator];
+    [notificationFeedbackGenerator _privateNotificationOccurred:1004];
   }
 }
 
@@ -559,11 +559,11 @@ LABEL_17:
   }
 
   v6 = +[CBAlertManager sharedInstance];
-  v7 = [v6 powerDownVisible];
+  powerDownVisible = [v6 powerDownVisible];
 
   v8 = CheckerBoardLogHandleForCategory();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (powerDownVisible)
   {
     if (v9)
     {
@@ -587,9 +587,9 @@ LABEL_17:
 - (void)_startLockButtonTimer
 {
   [(CBApplication *)self setLockButtonLongPressed:0];
-  v3 = [(CBApplication *)self _hasHomeButton];
+  _hasHomeButton = [(CBApplication *)self _hasHomeButton];
   v4 = 0.4;
-  if (v3)
+  if (_hasHomeButton)
   {
     v4 = 3.0;
   }
@@ -628,8 +628,8 @@ LABEL_17:
 
 - (BOOL)_isLockButtonTimerValid
 {
-  v2 = [(CBApplication *)self lockButtonTimer];
-  v3 = v2 != 0;
+  lockButtonTimer = [(CBApplication *)self lockButtonTimer];
+  v3 = lockButtonTimer != 0;
 
   return v3;
 }
@@ -646,10 +646,10 @@ LABEL_17:
   [(CBApplication *)self setLockButtonTimer:0];
 }
 
-- (void)setLockButtonTimer:(id)a3
+- (void)setLockButtonTimer:(id)timer
 {
-  v5 = a3;
-  if (self->_lockButtonTimer != v5)
+  timerCopy = timer;
+  if (self->_lockButtonTimer != timerCopy)
   {
     v6 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -659,7 +659,7 @@ LABEL_17:
     }
 
     [(NSTimer *)self->_lockButtonTimer invalidate];
-    objc_storeStrong(&self->_lockButtonTimer, a3);
+    objc_storeStrong(&self->_lockButtonTimer, timer);
   }
 }
 
@@ -672,9 +672,9 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Sleep/Wake Button up", v13, 2u);
   }
 
-  v4 = [(CBApplication *)self _isLockButtonTimerValid];
+  _isLockButtonTimerValid = [(CBApplication *)self _isLockButtonTimerValid];
   [(CBApplication *)self _cancelLockButtonTimer];
-  if (!v4 || [(CBApplication *)self lockButtonPressedWithDisplayDim])
+  if (!_isLockButtonTimerValid || [(CBApplication *)self lockButtonPressedWithDisplayDim])
   {
     goto LABEL_8;
   }
@@ -686,24 +686,24 @@ LABEL_17:
     goto LABEL_8;
   }
 
-  v6 = [(CBApplication *)self lockButtonLongPressed];
+  lockButtonLongPressed = [(CBApplication *)self lockButtonLongPressed];
 
-  if (v6)
+  if (lockButtonLongPressed)
   {
 LABEL_8:
     v7 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(CBApplication *)self lockButtonPressedWithDisplayDim];
+      lockButtonPressedWithDisplayDim = [(CBApplication *)self lockButtonPressedWithDisplayDim];
       v9 = +[CBAlertManager sharedInstance];
-      v10 = [v9 powerDownVisible];
-      v11 = [(CBApplication *)self lockButtonLongPressed];
+      powerDownVisible = [v9 powerDownVisible];
+      lockButtonLongPressed2 = [(CBApplication *)self lockButtonLongPressed];
       v13[0] = 67109632;
-      v13[1] = v8;
+      v13[1] = lockButtonPressedWithDisplayDim;
       v14 = 1024;
-      v15 = v10;
+      v15 = powerDownVisible;
       v16 = 1024;
-      v17 = v11;
+      v17 = lockButtonLongPressed2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Not turning the display off since the screen is on (%d), Power Down UI is visible (%d), and lock button was long pressed (%d)", v13, 0x14u);
     }
 
@@ -775,13 +775,13 @@ LABEL_8:
 
   v7 = [UISMutableDisplayContext alloc];
   v8 = +[FBDisplayManager sharedInstance];
-  v9 = [v8 mainConfiguration];
-  v10 = [v7 initWithDisplayConfiguration:v9];
+  mainConfiguration = [v8 mainConfiguration];
+  v10 = [v7 initWithDisplayConfiguration:mainConfiguration];
 
   v11 = sub_1000352D8();
   v12 = +[FBDisplayManager sharedInstance];
-  v13 = [v12 mainConfiguration];
-  [v10 setDisplayConfiguration:v13];
+  mainConfiguration2 = [v12 mainConfiguration];
+  [v10 setDisplayConfiguration:mainConfiguration2];
 
   v14 = sub_1000364DC(v11);
   [v10 setDisplayEdgeInfo:v14];
@@ -799,8 +799,8 @@ LABEL_8:
 
   v18 = [[UISMutableApplicationInitializationContext alloc] initWithDisplayContext:v10 deviceContext:v2 persistedSceneIdentifiers:0 supportAppSceneRequests:1];
   v19 = +[NSBundle mainBundle];
-  v20 = [v19 bundleIdentifier];
-  v21 = [FBSSceneIdentity identityForIdentifier:v20];
+  bundleIdentifier = [v19 bundleIdentifier];
+  v21 = [FBSSceneIdentity identityForIdentifier:bundleIdentifier];
 
   v22 = +[FBSceneManager sharedInstance];
   v23 = [v22 newSceneIdentityTokenForIdentity:v21];
@@ -813,8 +813,8 @@ LABEL_8:
 {
   v2 = +[FBSMutableSceneDefinition definition];
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [FBSSceneIdentity identityForIdentifier:v4];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v5 = [FBSSceneIdentity identityForIdentifier:bundleIdentifier];
   [v2 setIdentity:v5];
 
   v6 = +[FBSSceneClientIdentity localIdentity];
@@ -823,8 +823,8 @@ LABEL_8:
   v7 = +[UIApplicationSceneSpecification specification];
   [v2 setSpecification:v7];
 
-  v8 = [v2 specification];
-  v9 = [FBSMutableSceneParameters parametersForSpecification:v8];
+  specification = [v2 specification];
+  v9 = [FBSMutableSceneParameters parametersForSpecification:specification];
 
   [v9 updateSettingsWithBlock:&stru_10007E4A0];
   v13[0] = _NSConcreteStackBlock;
@@ -838,16 +838,16 @@ LABEL_8:
   v12 = [v11 createSceneWithDefinition:v2 initialParameters:v10];
 }
 
-- (void)batteryStatusDidChange:(id)a3
+- (void)batteryStatusDidChange:(id)change
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"AtCriticalLevel"];
-  v5 = [v4 BOOLValue];
+  changeCopy = change;
+  v4 = [changeCopy objectForKey:@"AtCriticalLevel"];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [v3 objectForKey:@"ExternalConnected"];
+  v6 = [changeCopy objectForKey:@"ExternalConnected"];
 
   [v6 BOOLValue];
-  if (v5)
+  if (bOOLValue)
   {
     v7 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))

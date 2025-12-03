@@ -1,51 +1,51 @@
 @interface SBMainDisplaySceneLayoutStatusBarViewInvertColorsAccessibility
 - (void)_accessibilityLoadInvertColors;
-- (void)_layoutStatusBarForOrientation:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)_layoutStatusBarForOrientation:(int64_t)orientation;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SBMainDisplaySceneLayoutStatusBarViewInvertColorsAccessibility
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = SBMainDisplaySceneLayoutStatusBarViewInvertColorsAccessibility;
-  [(SBMainDisplaySceneLayoutStatusBarViewInvertColorsAccessibility *)&v4 traitCollectionDidChange:a3];
+  [(SBMainDisplaySceneLayoutStatusBarViewInvertColorsAccessibility *)&v4 traitCollectionDidChange:change];
   [(SBMainDisplaySceneLayoutStatusBarViewInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 
-- (void)_layoutStatusBarForOrientation:(int64_t)a3
+- (void)_layoutStatusBarForOrientation:(int64_t)orientation
 {
   v4.receiver = self;
   v4.super_class = SBMainDisplaySceneLayoutStatusBarViewInvertColorsAccessibility;
-  [(SBMainDisplaySceneLayoutStatusBarViewInvertColorsAccessibility *)&v4 _layoutStatusBarForOrientation:a3];
+  [(SBMainDisplaySceneLayoutStatusBarViewInvertColorsAccessibility *)&v4 _layoutStatusBarForOrientation:orientation];
   [(SBMainDisplaySceneLayoutStatusBarViewInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 
 - (void)_accessibilityLoadInvertColors
 {
-  v9 = self;
-  v2 = [(SBMainDisplaySceneLayoutStatusBarViewInvertColorsAccessibility *)v9 window];
-  v3 = [v2 traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  selfCopy = self;
+  window = [(SBMainDisplaySceneLayoutStatusBarViewInvertColorsAccessibility *)selfCopy window];
+  traitCollection = [window traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v5 = v9;
-  if (v4 != &dword_0 + 2)
+  v5 = selfCopy;
+  if (userInterfaceStyle != &dword_0 + 2)
   {
-    v6 = [(SBMainDisplaySceneLayoutStatusBarViewInvertColorsAccessibility *)v9 safeUIViewForKey:@"_statusBar"];
-    v7 = [v6 _accessibilityAppliesInvertColors];
-    v8 = [v6 layer];
-    if (v7)
+    v6 = [(SBMainDisplaySceneLayoutStatusBarViewInvertColorsAccessibility *)selfCopy safeUIViewForKey:@"_statusBar"];
+    _accessibilityAppliesInvertColors = [v6 _accessibilityAppliesInvertColors];
+    layer = [v6 layer];
+    if (_accessibilityAppliesInvertColors)
     {
-      [AXInvertColorsAppHelper applyInvertFilterToLayer:v8];
+      [AXInvertColorsAppHelper applyInvertFilterToLayer:layer];
     }
 
     else
     {
-      [AXInvertColorsAppHelper unapplyInvertFilterToLayer:v8];
+      [AXInvertColorsAppHelper unapplyInvertFilterToLayer:layer];
     }
 
-    v5 = v9;
+    v5 = selfCopy;
   }
 }
 

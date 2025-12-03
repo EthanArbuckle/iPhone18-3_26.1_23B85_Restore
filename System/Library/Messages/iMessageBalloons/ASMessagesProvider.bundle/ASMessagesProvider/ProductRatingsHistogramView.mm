@@ -1,13 +1,13 @@
 @interface ProductRatingsHistogramView
 - (NSArray)accessibilityProgressBarViews;
 - (NSArray)accessibilityStarViews;
-- (_TtC18ASMessagesProvider27ProductRatingsHistogramView)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider27ProductRatingsHistogramView)initWithFrame:(CGRect)a3;
+- (_TtC18ASMessagesProvider27ProductRatingsHistogramView)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider27ProductRatingsHistogramView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ProductRatingsHistogramView
 
-- (_TtC18ASMessagesProvider27ProductRatingsHistogramView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider27ProductRatingsHistogramView)initWithCoder:(id)coder
 {
   result = sub_76A840();
   __break(1u);
@@ -27,7 +27,7 @@
 - (NSArray)accessibilityProgressBarViews
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider27ProductRatingsHistogramView_barViews);
-  v3 = self;
+  selfCopy = self;
   sub_141B28(v2);
 
   sub_BE70(0, &qword_93E550);
@@ -36,7 +36,7 @@
   return v4.super.isa;
 }
 
-- (_TtC18ASMessagesProvider27ProductRatingsHistogramView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider27ProductRatingsHistogramView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,20 +1,20 @@
 @interface ICBufferCache
-- (ICBufferCache)initWithFile:(id)a3;
-- (char)consumeBufferAtOffset:(unint64_t)a3 sized:(unint64_t *)a4;
-- (char)resetBufferAtSlot:(unint64_t)a3;
+- (ICBufferCache)initWithFile:(id)file;
+- (char)consumeBufferAtOffset:(unint64_t)offset sized:(unint64_t *)sized;
+- (char)resetBufferAtSlot:(unint64_t)slot;
 - (void)dealloc;
-- (void)dequeueBufferAtOffset:(unint64_t)a3 sized:(unint64_t *)a4 buf:(char *)a5;
+- (void)dequeueBufferAtOffset:(unint64_t)offset sized:(unint64_t *)sized buf:(char *)buf;
 - (void)readQueue;
-- (void)resetBufferAtOffset:(unint64_t)a3;
+- (void)resetBufferAtOffset:(unint64_t)offset;
 - (void)startReading;
 - (void)stopReading;
 @end
 
 @implementation ICBufferCache
 
-- (ICBufferCache)initWithFile:(id)a3
+- (ICBufferCache)initWithFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v26.receiver = self;
   v26.super_class = ICBufferCache;
   v5 = [(ICBufferCache *)&v26 init];
@@ -40,7 +40,7 @@
 
       if (++v8 == 5)
       {
-        v5->_msFile = v4;
+        v5->_msFile = fileCopy;
         v5->_reading = 0;
         v12 = dispatch_semaphore_create(0);
         addSemaphore = v5->_addSemaphore;
@@ -61,15 +61,15 @@
 
     v19 = *__error();
     __ICOSLogCreate();
-    v20 = [(ICBufferCache *)v5 msFile];
-    v21 = [v20 name];
+    msFile = [(ICBufferCache *)v5 msFile];
+    name = [msFile name];
 
-    if ([v21 length] >= 0x15)
+    if ([name length] >= 0x15)
     {
-      v22 = [v21 substringWithRange:{0, 18}];
+      v22 = [name substringWithRange:{0, 18}];
       v23 = [v22 stringByAppendingString:@".."];
 
-      v21 = v23;
+      name = v23;
     }
 
     v24 = [NSString stringWithFormat:@"mmap failed for slot: %d cause: %s", v8, strerror(v19)];
@@ -112,10 +112,10 @@ LABEL_6:
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * v7) intValue];
-        if (v8 <= 4)
+        intValue = [*(*(&v10 + 1) + 8 * v7) intValue];
+        if (intValue <= 4)
         {
-          munmap(self->_bufferCache[v8], 0x200000uLL);
+          munmap(self->_bufferCache[intValue], 0x200000uLL);
         }
 
         v7 = v7 + 1;
@@ -272,16 +272,16 @@ LABEL_14:
   }
 }
 
-- (void)dequeueBufferAtOffset:(unint64_t)a3 sized:(unint64_t *)a4 buf:(char *)a5
+- (void)dequeueBufferAtOffset:(unint64_t)offset sized:(unint64_t *)sized buf:(char *)buf
 {
   v9 = dispatch_semaphore_create(0);
-  v10 = [(ICBufferCache *)self bufDict];
-  v11 = [v10 count];
+  bufDict = [(ICBufferCache *)self bufDict];
+  v11 = [bufDict count];
 
   if (!v11)
   {
-    v12 = [(ICBufferCache *)self addSemaphore];
-    dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
+    addSemaphore = [(ICBufferCache *)self addSemaphore];
+    dispatch_semaphore_wait(addSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   }
 
   opQueue = self->_opQueue;
@@ -289,9 +289,9 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __49__ICBufferCache_dequeueBufferAtOffset_sized_buf___block_invoke;
   block[3] = &unk_100024828;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
+  offsetCopy = offset;
+  sizedCopy = sized;
+  bufCopy = buf;
   block[4] = self;
   v16 = v9;
   v14 = v9;
@@ -379,7 +379,7 @@ void __49__ICBufferCache_dequeueBufferAtOffset_sized_buf___block_invoke(uint64_t
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)resetBufferAtOffset:(unint64_t)a3
+- (void)resetBufferAtOffset:(unint64_t)offset
 {
   opQueue = self->_opQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -387,7 +387,7 @@ void __49__ICBufferCache_dequeueBufferAtOffset_sized_buf___block_invoke(uint64_t
   v4[2] = __37__ICBufferCache_resetBufferAtOffset___block_invoke;
   v4[3] = &unk_100024850;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = offset;
   dispatch_async(opQueue, v4);
 }
 
@@ -433,14 +433,14 @@ void __37__ICBufferCache_resetBufferAtOffset___block_invoke(uint64_t a1)
   }
 }
 
-- (char)resetBufferAtSlot:(unint64_t)a3
+- (char)resetBufferAtSlot:(unint64_t)slot
 {
   result = mmap(0, 0x200000uLL, 3, 4097, -1, 0);
-  self->_bufferCache[a3] = result;
+  self->_bufferCache[slot] = result;
   return result;
 }
 
-- (char)consumeBufferAtOffset:(unint64_t)a3 sized:(unint64_t *)a4
+- (char)consumeBufferAtOffset:(unint64_t)offset sized:(unint64_t *)sized
 {
   if (self->_consumedOffset != -1)
   {
@@ -448,13 +448,13 @@ void __37__ICBufferCache_resetBufferAtOffset___block_invoke(uint64_t a1)
   }
 
   v7 = dispatch_semaphore_create(0);
-  v8 = [(ICBufferCache *)self bufDict];
-  v9 = [v8 count];
+  bufDict = [(ICBufferCache *)self bufDict];
+  v9 = [bufDict count];
 
   if (!v9)
   {
-    v10 = [(ICBufferCache *)self addSemaphore];
-    dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
+    addSemaphore = [(ICBufferCache *)self addSemaphore];
+    dispatch_semaphore_wait(addSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   }
 
   v20 = 0;
@@ -466,8 +466,8 @@ void __37__ICBufferCache_resetBufferAtOffset___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __45__ICBufferCache_consumeBufferAtOffset_sized___block_invoke;
   block[3] = &unk_100024878;
-  v18 = a3;
-  v19 = a4;
+  offsetCopy = offset;
+  sizedCopy = sized;
   v16 = v7;
   v17 = &v20;
   block[4] = self;

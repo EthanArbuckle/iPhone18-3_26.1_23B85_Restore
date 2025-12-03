@@ -1,6 +1,6 @@
 @interface FigCapturePreviewSinkPipelineConfiguration
-- (__n128)setClientAuditToken:(uint64_t)a1;
-- (__n128)setLensSmudgeDetectionConfiguration:(uint64_t)a1;
+- (__n128)setClientAuditToken:(uint64_t)token;
+- (__n128)setLensSmudgeDetectionConfiguration:(uint64_t)configuration;
 - (uint64_t)setCinematicVideoEnabled:(uint64_t)result;
 - (uint64_t)setClientIsCameraOrDerivative:(uint64_t)result;
 - (uint64_t)setCoreMediaFaceTrackingEnabled:(uint64_t)result;
@@ -29,7 +29,7 @@
 - (uint64_t)setZoomPIPSingleStreamModeEnabled:(uint64_t)result;
 - (uint64_t)setZoomPIPSlaveStreamingFrameRate:(uint64_t)result;
 - (void)dealloc;
-- (void)setMetadataObjectConnectionConfiguration:(void *)a1;
+- (void)setMetadataObjectConnectionConfiguration:(void *)configuration;
 @end
 
 @implementation FigCapturePreviewSinkPipelineConfiguration
@@ -41,11 +41,11 @@
   [(FigCapturePreviewSinkPipelineConfiguration *)&v3 dealloc];
 }
 
-- (void)setMetadataObjectConnectionConfiguration:(void *)a1
+- (void)setMetadataObjectConnectionConfiguration:(void *)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 64);
+    objc_setProperty_nonatomic(configuration, newValue, newValue, 64);
   }
 }
 
@@ -100,14 +100,14 @@
   return result;
 }
 
-- (__n128)setClientAuditToken:(uint64_t)a1
+- (__n128)setClientAuditToken:(uint64_t)token
 {
-  if (a1)
+  if (token)
   {
     result = *a2;
     v3 = *(a2 + 16);
-    *(a1 + 96) = *a2;
-    *(a1 + 112) = v3;
+    *(token + 96) = *a2;
+    *(token + 112) = v3;
   }
 
   return result;
@@ -303,13 +303,13 @@
   return result;
 }
 
-- (__n128)setLensSmudgeDetectionConfiguration:(uint64_t)a1
+- (__n128)setLensSmudgeDetectionConfiguration:(uint64_t)configuration
 {
-  if (a1)
+  if (configuration)
   {
     result = *a2;
-    *(a1 + 200) = *(a2 + 12);
-    *(a1 + 188) = result;
+    *(configuration + 200) = *(a2 + 12);
+    *(configuration + 188) = result;
   }
 
   return result;

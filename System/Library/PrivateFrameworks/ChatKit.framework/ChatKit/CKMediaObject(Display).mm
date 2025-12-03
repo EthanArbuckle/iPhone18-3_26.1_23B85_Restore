@@ -6,10 +6,10 @@
 
 - (IMSenderContext)senderContext
 {
-  v2 = [(CKMediaObject *)self messageContext];
-  v3 = [v2 serviceName];
-  v4 = [v2 isSenderUnknown];
-  v5 = [MEMORY[0x1E69A8228] contextWithKnownSender:v4 serviceName:v3];
+  messageContext = [(CKMediaObject *)self messageContext];
+  serviceName = [messageContext serviceName];
+  isSenderUnknown = [messageContext isSenderUnknown];
+  v5 = [MEMORY[0x1E69A8228] contextWithKnownSender:isSenderUnknown serviceName:serviceName];
 
   return v5;
 }

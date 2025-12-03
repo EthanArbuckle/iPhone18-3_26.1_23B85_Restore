@@ -1,14 +1,14 @@
 @interface MCUIBundleController
 + (id)_sharedInstance;
 + (id)mcuiTitle;
-- (BOOL)_swizzlingFromSpecifier:(id)a3;
+- (BOOL)_swizzlingFromSpecifier:(id)specifier;
 - (BOOL)_updateTopLevelSpecifier;
-- (MCUIBundleController)initWithParentListController:(id)a3 properties:(id)a4;
+- (MCUIBundleController)initWithParentListController:(id)controller properties:(id)properties;
 - (PSListController)parentController;
 - (PSSpecifier)specifier;
-- (id)_detailsFromSpecifier:(id)a3;
-- (id)_initWithDataManager:(id)a3;
-- (id)specifiersWithSpecifier:(id)a3;
+- (id)_detailsFromSpecifier:(id)specifier;
+- (id)_initWithDataManager:(id)manager;
+- (id)specifiersWithSpecifier:(id)specifier;
 - (void)_mcuiUpdated;
 - (void)_reloadTopLevelSpecifier;
 - (void)dealloc;
@@ -17,9 +17,9 @@
 
 @implementation MCUIBundleController
 
-- (id)_initWithDataManager:(id)a3
+- (id)_initWithDataManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = MCUIBundleController;
   v6 = [(MCUIBundleController *)&v11 init];
@@ -29,9 +29,9 @@
     queue = v6->_queue;
     v6->_queue = v7;
 
-    objc_storeStrong(&v6->_dataManager, a3);
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v6 selector:sel__mcuiUpdated name:@"kMCUIUpdatedNotification" object:0];
+    objc_storeStrong(&v6->_dataManager, manager);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__mcuiUpdated name:@"kMCUIUpdatedNotification" object:0];
   }
 
   return v6;
@@ -58,20 +58,20 @@ void __39__MCUIBundleController__sharedInstance__block_invoke()
   _sharedInstance_sharedInstance = v1;
 }
 
-- (MCUIBundleController)initWithParentListController:(id)a3 properties:(id)a4
+- (MCUIBundleController)initWithParentListController:(id)controller properties:(id)properties
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = +[MCUIBundleController _sharedInstance];
-  v7 = [v6 queue];
+  queue = [v6 queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __64__MCUIBundleController_initWithParentListController_properties___block_invoke;
   v13[3] = &unk_279861C40;
   v8 = v6;
   v14 = v8;
-  v15 = v5;
-  v9 = v5;
-  dispatch_async_and_wait(v7, v13);
+  v15 = controllerCopy;
+  v9 = controllerCopy;
+  dispatch_async_and_wait(queue, v13);
 
   v10 = v15;
   v11 = v8;
@@ -91,20 +91,20 @@ id __64__MCUIBundleController_initWithParentListController_properties___block_in
 - (void)unload
 {
   NSLog(&cfstr_McuiBundleCont.isa, a2);
-  v3 = [(MCUIBundleController *)self queue];
+  queue = [(MCUIBundleController *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__MCUIBundleController_unload__block_invoke;
   block[3] = &unk_279861968;
   block[4] = self;
-  dispatch_async_and_wait(v3, block);
+  dispatch_async_and_wait(queue, block);
 }
 
 - (void)dealloc
 {
   NSLog(&cfstr_McuiBundleCont_0.isa, a2);
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
@@ -153,10 +153,10 @@ id __64__MCUIBundleController_initWithParentListController_properties___block_in
 
 - (PSSpecifier)specifier
 {
-  v3 = [(MCUIBundleController *)self dataManager];
-  v4 = [v3 isDeviceManagementHidden];
+  dataManager = [(MCUIBundleController *)self dataManager];
+  isDeviceManagementHidden = [dataManager isDeviceManagementHidden];
 
-  if (v4)
+  if (isDeviceManagementHidden)
   {
     v5 = 0;
   }
@@ -180,22 +180,22 @@ id __64__MCUIBundleController_initWithParentListController_properties___block_in
   return v5;
 }
 
-- (id)_detailsFromSpecifier:(id)a3
+- (id)_detailsFromSpecifier:(id)specifier
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKey:@"kMCUISpecifierDetails"];
+  userInfo = [specifier userInfo];
+  v4 = [userInfo objectForKey:@"kMCUISpecifierDetails"];
 
   return v4;
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MCUIBundleController *)self dataManager];
-  v6 = [v5 isDeviceManagementHidden];
+  specifierCopy = specifier;
+  dataManager = [(MCUIBundleController *)self dataManager];
+  isDeviceManagementHidden = [dataManager isDeviceManagementHidden];
 
-  if (v6)
+  if (isDeviceManagementHidden)
   {
     NSLog(&cfstr_McuiBundleCont_1.isa);
 LABEL_3:
@@ -203,20 +203,20 @@ LABEL_3:
     goto LABEL_7;
   }
 
-  if (![(MCUIBundleController *)self _updateTopLevelSpecifier]&& ![(MCUIBundleController *)self _swizzlingFromSpecifier:v4])
+  if (![(MCUIBundleController *)self _updateTopLevelSpecifier]&& ![(MCUIBundleController *)self _swizzlingFromSpecifier:specifierCopy])
   {
     NSLog(&cfstr_McuiBundleCont_3.isa);
     goto LABEL_3;
   }
 
-  v8 = [(MCUIBundleController *)self specifier];
-  v9 = [v8 name];
-  v10 = [(MCUIBundleController *)self specifier];
-  v11 = [v10 userInfo];
-  NSLog(&cfstr_McuiBundleCont_2.isa, v9, v11);
+  specifier = [(MCUIBundleController *)self specifier];
+  name = [specifier name];
+  specifier2 = [(MCUIBundleController *)self specifier];
+  userInfo = [specifier2 userInfo];
+  NSLog(&cfstr_McuiBundleCont_2.isa, name, userInfo);
 
-  v12 = [(MCUIBundleController *)self specifier];
-  v15[0] = v12;
+  specifier3 = [(MCUIBundleController *)self specifier];
+  v15[0] = specifier3;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
 
 LABEL_7:
@@ -225,9 +225,9 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)_swizzlingFromSpecifier:(id)a3
+- (BOOL)_swizzlingFromSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"URLDictionary"];
+  v3 = [specifier propertyForKey:@"URLDictionary"];
   NSLog(&cfstr_McuiBundleCont_4.isa, v3);
   if (v3)
   {
@@ -235,10 +235,10 @@ LABEL_7:
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 pathComponents];
-      if ([v6 count])
+      pathComponents = [v4 pathComponents];
+      if ([pathComponents count])
       {
-        v7 = [v6 objectAtIndex:0];
+        v7 = [pathComponents objectAtIndex:0];
         v8 = [v7 isEqualToString:*MEMORY[0x277D24D68]];
       }
 
@@ -270,13 +270,13 @@ LABEL_7:
   if (v3)
   {
     v4 = +[MCUIWatchManager shared];
-    v5 = [v4 profileCount];
+    profileCount = [v4 profileCount];
 
     v6 = MEMORY[0x277CCABB8];
-    v7 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
+    v7 = [MEMORY[0x277CCABB0] numberWithInteger:profileCount];
     v8 = [v6 localizedStringFromNumber:v7 numberStyle:0];
 
-    v9 = v5 > 0;
+    v9 = profileCount > 0;
   }
 
   else
@@ -285,7 +285,7 @@ LABEL_7:
     v9 = 1;
   }
 
-  v10 = [(MCUIBundleController *)self queue];
+  queue = [(MCUIBundleController *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __48__MCUIBundleController__updateTopLevelSpecifier__block_invoke;
@@ -293,7 +293,7 @@ LABEL_7:
   v13[4] = self;
   v14 = v8;
   v11 = v8;
-  dispatch_async_and_wait(v10, v13);
+  dispatch_async_and_wait(queue, v13);
 
   return v9;
 }

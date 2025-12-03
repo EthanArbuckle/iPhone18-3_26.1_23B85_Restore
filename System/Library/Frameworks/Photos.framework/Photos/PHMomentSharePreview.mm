@@ -1,6 +1,6 @@
 @interface PHMomentSharePreview
 - (CGRect)cropRect;
-- (PHMomentSharePreview)initWithThumbnailImageData:(id)a3 previewData:(id)a4;
+- (PHMomentSharePreview)initWithThumbnailImageData:(id)data previewData:(id)previewData;
 - (id)description;
 @end
 
@@ -23,60 +23,60 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [(NSData *)self->_thumbnailImageData length];
-  v5 = [(NSArray *)self->_previewImageData firstObject];
-  v6 = [v5 length];
-  v7 = [(PHMomentSharePreview *)self keyAssetIdentifier];
+  firstObject = [(NSArray *)self->_previewImageData firstObject];
+  v6 = [firstObject length];
+  keyAssetIdentifier = [(PHMomentSharePreview *)self keyAssetIdentifier];
   v8 = NSStringFromRect(self->_cropRect);
-  v9 = [v3 stringWithFormat:@"Thumbnail:%lu bytes Preview:%lu bytes Key Asset:%@ Crop rect:%@", v4, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"Thumbnail:%lu bytes Preview:%lu bytes Key Asset:%@ Crop rect:%@", v4, v6, keyAssetIdentifier, v8];
 
   return v9;
 }
 
-- (PHMomentSharePreview)initWithThumbnailImageData:(id)a3 previewData:(id)a4
+- (PHMomentSharePreview)initWithThumbnailImageData:(id)data previewData:(id)previewData
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  previewDataCopy = previewData;
   v28.receiver = self;
   v28.super_class = PHMomentSharePreview;
   v9 = [(PHMomentSharePreview *)&v28 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_thumbnailImageData, a3);
-    v11 = [objc_alloc(MEMORY[0x1E6994B28]) initWithData:v8];
+    objc_storeStrong(&v9->_thumbnailImageData, data);
+    v11 = [objc_alloc(MEMORY[0x1E6994B28]) initWithData:previewDataCopy];
     previewData = v10->_previewData;
     v10->_previewData = v11;
 
-    v13 = [(CPLMomentSharePreviewData *)v10->_previewData previewImageDatas];
+    previewImageDatas = [(CPLMomentSharePreviewData *)v10->_previewData previewImageDatas];
     previewImageData = v10->_previewImageData;
-    v10->_previewImageData = v13;
+    v10->_previewImageData = previewImageDatas;
 
-    v15 = [(CPLMomentSharePreviewData *)v10->_previewData keyAssetIdentifier];
-    if (v15)
+    keyAssetIdentifier = [(CPLMomentSharePreviewData *)v10->_previewData keyAssetIdentifier];
+    if (keyAssetIdentifier)
     {
       v16 = +[PHPhotoLibrary sharedMomentSharePhotoLibrary];
-      v17 = [v16 librarySpecificFetchOptions];
+      librarySpecificFetchOptions = [v16 librarySpecificFetchOptions];
 
-      v29[0] = v15;
+      v29[0] = keyAssetIdentifier;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
-      v19 = [PHAsset fetchAssetsWithCloudIdentifiers:v18 options:v17];
-      v20 = [v19 firstObject];
+      v19 = [PHAsset fetchAssetsWithCloudIdentifiers:v18 options:librarySpecificFetchOptions];
+      firstObject = [v19 firstObject];
       keyAsset = v10->_keyAsset;
-      v10->_keyAsset = v20;
+      v10->_keyAsset = firstObject;
     }
 
-    v22 = [(CPLMomentSharePreviewData *)v10->_previewData cropRectString];
-    v23 = v22;
-    if (v22)
+    cropRectString = [(CPLMomentSharePreviewData *)v10->_previewData cropRectString];
+    v23 = cropRectString;
+    if (cropRectString)
     {
-      v10->_cropRect = NSRectFromString(v22);
+      v10->_cropRect = NSRectFromString(cropRectString);
     }
 
-    v24 = [(CPLMomentSharePreviewData *)v10->_previewData curatedAssetIdentifiers];
-    if ([v24 count])
+    curatedAssetIdentifiers = [(CPLMomentSharePreviewData *)v10->_previewData curatedAssetIdentifiers];
+    if ([curatedAssetIdentifiers count])
     {
-      v25 = [v24 copy];
+      v25 = [curatedAssetIdentifiers copy];
       curatedAssetIdentifiers = v10->_curatedAssetIdentifiers;
       v10->_curatedAssetIdentifiers = v25;
     }

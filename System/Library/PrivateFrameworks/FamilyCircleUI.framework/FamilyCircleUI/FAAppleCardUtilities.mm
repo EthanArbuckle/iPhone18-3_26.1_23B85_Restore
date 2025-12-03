@@ -1,15 +1,15 @@
 @interface FAAppleCardUtilities
 - (PKAppleCardUtilities)appleCardUtilities;
-- (int64_t)getAccountState:(int64_t)a3;
-- (unint64_t)getAccessLevel:(unint64_t)a3;
-- (void)appleCardAccessLevelForAltDSID:(id)a3 completion:(id)a4;
-- (void)appleCardAccountStateWithCompletion:(id)a3;
-- (void)appleCardIsSharedWithWithAltDSID:(id)a3 completion:(id)a4;
-- (void)appleCardTransactionLimitForAltDSID:(id)a3 completion:(id)a4;
-- (void)hasAppleCardWithCompletion:(id)a3;
-- (void)hasSentPendingAppleCardInvitationToUserWithAltDSID:(id)a3 completion:(id)a4;
-- (void)presentAppleCardSharingDetailsForAltDSID:(id)a3 viewController:(id)a4 completion:(id)a5;
-- (void)presentAppleCardUserInvitationFlowWithViewController:(id)a3 completion:(id)a4;
+- (int64_t)getAccountState:(int64_t)state;
+- (unint64_t)getAccessLevel:(unint64_t)level;
+- (void)appleCardAccessLevelForAltDSID:(id)d completion:(id)completion;
+- (void)appleCardAccountStateWithCompletion:(id)completion;
+- (void)appleCardIsSharedWithWithAltDSID:(id)d completion:(id)completion;
+- (void)appleCardTransactionLimitForAltDSID:(id)d completion:(id)completion;
+- (void)hasAppleCardWithCompletion:(id)completion;
+- (void)hasSentPendingAppleCardInvitationToUserWithAltDSID:(id)d completion:(id)completion;
+- (void)presentAppleCardSharingDetailsForAltDSID:(id)d viewController:(id)controller completion:(id)completion;
+- (void)presentAppleCardUserInvitationFlowWithViewController:(id)controller completion:(id)completion;
 @end
 
 @implementation FAAppleCardUtilities
@@ -47,19 +47,19 @@
   return appleCardUtilities;
 }
 
-- (void)appleCardAccessLevelForAltDSID:(id)a3 completion:(id)a4
+- (void)appleCardAccessLevelForAltDSID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FAAppleCardUtilities *)self appleCardUtilities];
+  completionCopy = completion;
+  dCopy = d;
+  appleCardUtilities = [(FAAppleCardUtilities *)self appleCardUtilities];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __66__FAAppleCardUtilities_appleCardAccessLevelForAltDSID_completion___block_invoke;
   v10[3] = &unk_2782F3DC8;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v8 appleCardAccessLevelForAltDSID:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [appleCardUtilities appleCardAccessLevelForAltDSID:dCopy completion:v10];
 }
 
 uint64_t __66__FAAppleCardUtilities_appleCardAccessLevelForAltDSID_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -70,18 +70,18 @@ uint64_t __66__FAAppleCardUtilities_appleCardAccessLevelForAltDSID_completion___
   return v3();
 }
 
-- (void)appleCardAccountStateWithCompletion:(id)a3
+- (void)appleCardAccountStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FAAppleCardUtilities *)self appleCardUtilities];
+  completionCopy = completion;
+  appleCardUtilities = [(FAAppleCardUtilities *)self appleCardUtilities];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__FAAppleCardUtilities_appleCardAccountStateWithCompletion___block_invoke;
   v7[3] = &unk_2782F3DF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 appleCardAccountStateWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [appleCardUtilities appleCardAccountStateWithCompletion:v7];
 }
 
 uint64_t __60__FAAppleCardUtilities_appleCardAccountStateWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -92,46 +92,46 @@ uint64_t __60__FAAppleCardUtilities_appleCardAccountStateWithCompletion___block_
   return v3();
 }
 
-- (void)appleCardIsSharedWithWithAltDSID:(id)a3 completion:(id)a4
+- (void)appleCardIsSharedWithWithAltDSID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FAAppleCardUtilities *)self appleCardUtilities];
-  [v8 appleCardIsSharedWithWithAltDSID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  appleCardUtilities = [(FAAppleCardUtilities *)self appleCardUtilities];
+  [appleCardUtilities appleCardIsSharedWithWithAltDSID:dCopy completion:completionCopy];
 }
 
-- (void)appleCardTransactionLimitForAltDSID:(id)a3 completion:(id)a4
+- (void)appleCardTransactionLimitForAltDSID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FAAppleCardUtilities *)self appleCardUtilities];
-  [v8 appleCardTransactionLimitForAltDSID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  appleCardUtilities = [(FAAppleCardUtilities *)self appleCardUtilities];
+  [appleCardUtilities appleCardTransactionLimitForAltDSID:dCopy completion:completionCopy];
 }
 
-- (void)hasAppleCardWithCompletion:(id)a3
+- (void)hasAppleCardWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FAAppleCardUtilities *)self appleCardUtilities];
-  [v5 hasAppleCardWithCompletion:v4];
+  completionCopy = completion;
+  appleCardUtilities = [(FAAppleCardUtilities *)self appleCardUtilities];
+  [appleCardUtilities hasAppleCardWithCompletion:completionCopy];
 }
 
-- (void)hasSentPendingAppleCardInvitationToUserWithAltDSID:(id)a3 completion:(id)a4
+- (void)hasSentPendingAppleCardInvitationToUserWithAltDSID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FAAppleCardUtilities *)self appleCardUtilities];
-  [v8 hasSentPendingAppleCardInvitationToUserWithAltDSID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  appleCardUtilities = [(FAAppleCardUtilities *)self appleCardUtilities];
+  [appleCardUtilities hasSentPendingAppleCardInvitationToUserWithAltDSID:dCopy completion:completionCopy];
 }
 
-- (void)presentAppleCardSharingDetailsForAltDSID:(id)a3 viewController:(id)a4 completion:(id)a5
+- (void)presentAppleCardSharingDetailsForAltDSID:(id)d viewController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v25 = v8;
-  v9 = a4;
-  v24 = v9;
-  v10 = a5;
+  dCopy = d;
+  v25 = dCopy;
+  controllerCopy = controller;
+  v24 = controllerCopy;
+  completionCopy = completion;
   v11 = NSSelectorFromString(&cfstr_Presentappleca.isa);
-  v12 = [(FAAppleCardUtilities *)self appleCardUtilities];
+  appleCardUtilities = [(FAAppleCardUtilities *)self appleCardUtilities];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
@@ -140,17 +140,17 @@ uint64_t __60__FAAppleCardUtilities_appleCardAccountStateWithCompletion___block_
     aBlock[1] = 3221225472;
     aBlock[2] = __91__FAAppleCardUtilities_presentAppleCardSharingDetailsForAltDSID_viewController_completion___block_invoke;
     aBlock[3] = &unk_2782F3E18;
-    v22 = v10;
+    v22 = completionCopy;
     v23 = _Block_copy(aBlock);
     v20 = 1;
     v14 = MEMORY[0x277CBEAE8];
-    v15 = [(FAAppleCardUtilities *)self appleCardUtilities];
-    v16 = [v15 methodSignatureForSelector:v11];
+    appleCardUtilities2 = [(FAAppleCardUtilities *)self appleCardUtilities];
+    v16 = [appleCardUtilities2 methodSignatureForSelector:v11];
     v17 = [v14 invocationWithMethodSignature:v16];
 
     [v17 setSelector:v11];
-    v18 = [(FAAppleCardUtilities *)self appleCardUtilities];
-    [v17 setTarget:v18];
+    appleCardUtilities3 = [(FAAppleCardUtilities *)self appleCardUtilities];
+    [v17 setTarget:appleCardUtilities3];
 
     [v17 setArgument:&v25 atIndex:2];
     [v17 setArgument:&v24 atIndex:3];
@@ -161,42 +161,42 @@ uint64_t __60__FAAppleCardUtilities_appleCardAccountStateWithCompletion___block_
 
   else
   {
-    v19 = [(FAAppleCardUtilities *)self appleCardUtilities];
-    [v19 presentAppleCardSharingDetailsForAltDSID:v8 viewController:v9 completion:v10];
+    appleCardUtilities4 = [(FAAppleCardUtilities *)self appleCardUtilities];
+    [appleCardUtilities4 presentAppleCardSharingDetailsForAltDSID:dCopy viewController:controllerCopy completion:completionCopy];
   }
 }
 
-- (void)presentAppleCardUserInvitationFlowWithViewController:(id)a3 completion:(id)a4
+- (void)presentAppleCardUserInvitationFlowWithViewController:(id)controller completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FAAppleCardUtilities *)self appleCardUtilities];
-  [v8 presentAppleCardUserInvitationFlowWithViewController:v7 completion:v6];
+  completionCopy = completion;
+  controllerCopy = controller;
+  appleCardUtilities = [(FAAppleCardUtilities *)self appleCardUtilities];
+  [appleCardUtilities presentAppleCardUserInvitationFlowWithViewController:controllerCopy completion:completionCopy];
 }
 
-- (unint64_t)getAccessLevel:(unint64_t)a3
+- (unint64_t)getAccessLevel:(unint64_t)level
 {
-  if (a3 == 2)
+  if (level == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return level == 1;
   }
 }
 
-- (int64_t)getAccountState:(int64_t)a3
+- (int64_t)getAccountState:(int64_t)state
 {
-  if ((a3 - 1) >= 4)
+  if ((state - 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return state;
   }
 }
 

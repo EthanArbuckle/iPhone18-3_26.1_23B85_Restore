@@ -1,12 +1,12 @@
 @interface OrderLinkedAppViewIOS.Coordinator
 - (_TtCV12FinanceKitUIP33_D9156154FF55601103FCE36B8FFE03E821OrderLinkedAppViewIOS11Coordinator)init;
-- (void)appViewContentSizeChanged:(id)a3;
-- (void)linkedApplicationDidChangeState:(id)a3;
+- (void)appViewContentSizeChanged:(id)changed;
+- (void)linkedApplicationDidChangeState:(id)state;
 @end
 
 @implementation OrderLinkedAppViewIOS.Coordinator
 
-- (void)linkedApplicationDidChangeState:(id)a3
+- (void)linkedApplicationDidChangeState:(id)state
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -16,12 +16,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_2385D645C(a3);
+  stateCopy = state;
+  selfCopy = self;
+  sub_2385D645C(state);
 }
 
-- (void)appViewContentSizeChanged:(id)a3
+- (void)appViewContentSizeChanged:(id)changed
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -31,9 +31,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_2385D6C10(v5);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_2385D6C10(changedCopy);
 }
 
 - (_TtCV12FinanceKitUIP33_D9156154FF55601103FCE36B8FFE03E821OrderLinkedAppViewIOS11Coordinator)init

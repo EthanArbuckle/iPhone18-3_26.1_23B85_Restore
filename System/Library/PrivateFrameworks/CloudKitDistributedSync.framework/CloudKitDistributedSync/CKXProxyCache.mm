@@ -1,10 +1,10 @@
 @interface CKXProxyCache
 - (CKXProxyCache)init;
 - (id)debugDescription;
-- (id)proxyForClass:(Class)a3 withScope:(int64_t)a4;
-- (void)_putBackProxyWithoutCheckingScope:(id)a3;
+- (id)proxyForClass:(Class)class withScope:(int64_t)scope;
+- (void)_putBackProxyWithoutCheckingScope:(id)scope;
 - (void)dealloc;
-- (void)putBackAllProxiesWithScope:(int64_t)a3;
+- (void)putBackAllProxiesWithScope:(int64_t)scope;
 @end
 
 @implementation CKXProxyCache
@@ -58,16 +58,16 @@
   return v8;
 }
 
-- (id)proxyForClass:(Class)a3 withScope:(int64_t)a4
+- (id)proxyForClass:(Class)class withScope:(int64_t)scope
 {
-  v10 = objc_msgSend_cachedProxies(self, a2, a3, a4, v4, v5, v6);
-  v16 = objc_msgSend_objectForKey_(v10, v11, a3, v12, v13, v14, v15);
+  v10 = objc_msgSend_cachedProxies(self, a2, class, scope, v4, v5, v6);
+  v16 = objc_msgSend_objectForKey_(v10, v11, class, v12, v13, v14, v15);
 
   if (objc_msgSend_count(v16, v17, v18, v19, v20, v21, v22))
   {
     inited = objc_msgSend_lastObject(v16, v23, v24, v25, v26, v27, v28);
     objc_msgSend_removeLastObject(v16, v30, v31, v32, v33, v34, v35);
-    if (!a4)
+    if (!scope)
     {
       goto LABEL_4;
     }
@@ -75,14 +75,14 @@
     goto LABEL_3;
   }
 
-  v54 = [a3 alloc];
+  v54 = [class alloc];
   inited = objc_msgSend_initInternal(v54, v55, v56, v57, v58, v59, v60);
   v67 = objc_msgSend_totalProxiesCreated(self, v61, v62, v63, v64, v65, v66);
   objc_msgSend_setTotalProxiesCreated_(self, v68, v67 + 1, v69, v70, v71, v72);
-  if (a4)
+  if (scope)
   {
 LABEL_3:
-    objc_msgSend_setScope_(inited, v36, a4, v37, v38, v39, v40);
+    objc_msgSend_setScope_(inited, v36, scope, v37, v38, v39, v40);
     v47 = objc_msgSend_scopedProxies(self, v41, v42, v43, v44, v45, v46);
     objc_msgSend_addObject_(v47, v48, inited, v49, v50, v51, v52);
   }
@@ -92,9 +92,9 @@ LABEL_4:
   return inited;
 }
 
-- (void)_putBackProxyWithoutCheckingScope:(id)a3
+- (void)_putBackProxyWithoutCheckingScope:(id)scope
 {
-  v69 = a3;
+  scopeCopy = scope;
   v10 = objc_msgSend_cachedProxies(self, v4, v5, v6, v7, v8, v9);
   v11 = objc_opt_class();
   v17 = objc_msgSend_objectForKey_(v10, v12, v11, v13, v14, v15, v16);
@@ -108,18 +108,18 @@ LABEL_4:
   }
 
   v31 = objc_autoreleasePoolPush();
-  objc_msgSend_reset(v69, v32, v33, v34, v35, v36, v37);
+  objc_msgSend_reset(scopeCopy, v32, v33, v34, v35, v36, v37);
   objc_autoreleasePoolPop(v31);
   v44 = objc_msgSend_cachedProxies(self, v38, v39, v40, v41, v42, v43);
   v45 = objc_opt_class();
   v51 = objc_msgSend_objectForKey_(v44, v46, v45, v47, v48, v49, v50);
-  objc_msgSend_addObject_(v51, v52, v69, v53, v54, v55, v56);
+  objc_msgSend_addObject_(v51, v52, scopeCopy, v53, v54, v55, v56);
 
   v63 = objc_msgSend_totalProxiesReclaimed(self, v57, v58, v59, v60, v61, v62);
   objc_msgSend_setTotalProxiesReclaimed_(self, v64, v63 + 1, v65, v66, v67, v68);
 }
 
-- (void)putBackAllProxiesWithScope:(int64_t)a3
+- (void)putBackAllProxiesWithScope:(int64_t)scope
 {
   v5 = objc_opt_new();
   v12 = objc_msgSend_scopedProxies(self, v6, v7, v8, v9, v10, v11);
@@ -127,7 +127,7 @@ LABEL_4:
   v59[1] = 3221225472;
   v59[2] = sub_24397701C;
   v59[3] = &unk_278DDB208;
-  v61 = a3;
+  scopeCopy = scope;
   v59[4] = self;
   v13 = v5;
   v60 = v13;

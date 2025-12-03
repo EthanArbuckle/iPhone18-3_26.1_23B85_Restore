@@ -6,20 +6,20 @@
 
 - (BOOL)_gkDesiredUserInterfaceIdiom
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1 && (*MEMORY[0x277D0C258] != 1 || (*MEMORY[0x277D0C8F0] & 1) != 0))
+  if (userInterfaceIdiom == 1 && (*MEMORY[0x277D0C258] != 1 || (*MEMORY[0x277D0C8F0] & 1) != 0))
   {
-    v4 = [a1 navigationController];
-    v5 = [v4 popoverPresentationController];
-    if (!v5)
+    navigationController = [self navigationController];
+    popoverPresentationController = [navigationController popoverPresentationController];
+    if (!popoverPresentationController)
     {
-      v5 = [a1 popoverPresentationController];
-      if (!v5)
+      popoverPresentationController = [self popoverPresentationController];
+      if (!popoverPresentationController)
       {
-        v8 = [a1 _popoverController];
-        v6 = v8 == 0;
+        _popoverController = [self _popoverController];
+        v6 = _popoverController == 0;
 
         return v6;
       }

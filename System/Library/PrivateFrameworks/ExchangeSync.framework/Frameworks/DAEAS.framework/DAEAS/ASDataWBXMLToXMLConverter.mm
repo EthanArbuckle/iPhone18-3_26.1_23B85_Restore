@@ -2,28 +2,28 @@
 - (BOOL)runSynchronously;
 - (int64_t)readFromInput;
 - (void)dealloc;
-- (void)outputString:(id)a3;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)outputString:(id)string;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation ASDataWBXMLToXMLConverter
 
-- (void)outputString:(id)a3
+- (void)outputString:(id)string
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
-  v7 = strlen(v6);
+  stringCopy = string;
+  uTF8String = [string UTF8String];
+  v7 = strlen(uTF8String);
   output = self->_output;
 
-  [(NSMutableData *)output appendBytes:v6 length:v7];
+  [(NSMutableData *)output appendBytes:uTF8String length:v7];
 }
 
 - (BOOL)runSynchronously
 {
   [(NSInputStream *)self->_input setDelegate:self];
   input = self->_input;
-  v4 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [(NSInputStream *)input scheduleInRunLoop:v4 forMode:@"ASWBXMLToXMLConverterRunLoopMode"];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [(NSInputStream *)input scheduleInRunLoop:currentRunLoop forMode:@"ASWBXMLToXMLConverterRunLoopMode"];
 
   [(NSInputStream *)self->_input open];
   [(ASWBXMLToXMLConverter *)self setDone:0];
@@ -31,9 +31,9 @@
   {
     do
     {
-      v5 = [MEMORY[0x277CBEB88] currentRunLoop];
-      v6 = [MEMORY[0x277CBEAA8] distantFuture];
-      [v5 runMode:@"ASWBXMLToXMLConverterRunLoopMode" beforeDate:v6];
+      currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+      [currentRunLoop2 runMode:@"ASWBXMLToXMLConverterRunLoopMode" beforeDate:distantFuture];
     }
 
     while (![(ASWBXMLToXMLConverter *)self done]);
@@ -45,16 +45,16 @@
 - (int64_t)readFromInput
 {
   input = self->_input;
-  v4 = [(ASWBXMLToXMLConverter *)self writableBufferPtr];
-  v5 = [(ASWBXMLToXMLConverter *)self writableBufferSize];
+  writableBufferPtr = [(ASWBXMLToXMLConverter *)self writableBufferPtr];
+  writableBufferSize = [(ASWBXMLToXMLConverter *)self writableBufferSize];
 
-  return [(NSInputStream *)input read:v4 maxLength:v5];
+  return [(NSInputStream *)input read:writableBufferPtr maxLength:writableBufferSize];
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
-  switch(a4)
+  streamCopy = stream;
+  switch(event)
   {
     case 0x10uLL:
       goto LABEL_6;

@@ -1,10 +1,10 @@
 @interface SDMigrationMonitor
 + (id)sharedInstance;
 - (SDMigrationMonitor)init;
-- (void)_didFindExtensions:(id)a3;
+- (void)_didFindExtensions:(id)extensions;
 - (void)_finishMigration;
 - (void)dealloc;
-- (void)monitorDataMigrationWithCompletionBlock:(id)a3;
+- (void)monitorDataMigrationWithCompletionBlock:(id)block;
 - (void)unlock;
 @end
 
@@ -42,8 +42,8 @@ uint64_t __36__SDMigrationMonitor_sharedInstance__block_invoke()
     v4 = dispatch_queue_create("com.apple.searchd.migrationMonitor", v3);
     [(SDMigrationMonitor *)v2 setQueue:v4];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__didFindExtensions_ name:*MEMORY[0x277CC3540] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__didFindExtensions_ name:*MEMORY[0x277CC3540] object:0];
   }
 
   return v2;
@@ -51,15 +51,15 @@ uint64_t __36__SDMigrationMonitor_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CC3540] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CC3540] object:0];
 
   v4.receiver = self;
   v4.super_class = SDMigrationMonitor;
   [(SDMigrationMonitor *)&v4 dealloc];
 }
 
-- (void)_didFindExtensions:(id)a3
+- (void)_didFindExtensions:(id)extensions
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -174,17 +174,17 @@ uint64_t __28__SDMigrationMonitor_unlock__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)monitorDataMigrationWithCompletionBlock:(id)a3
+- (void)monitorDataMigrationWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__SDMigrationMonitor_monitorDataMigrationWithCompletionBlock___block_invoke;
   v7[3] = &unk_278934F30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(queue, v7);
 }
 

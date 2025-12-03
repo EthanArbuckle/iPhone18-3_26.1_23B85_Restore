@@ -1,7 +1,7 @@
 @interface ProgressCache
 - (LibraryCatalogObserver)observer;
 - (ProgressCache)init;
-- (void)executeQuery:(id)a3 excludingBundleIDs:(id)a4 completionHandler:(id)a5;
+- (void)executeQuery:(id)query excludingBundleIDs:(id)ds completionHandler:(id)handler;
 @end
 
 @implementation ProgressCache
@@ -46,23 +46,23 @@
   return v15;
 }
 
-- (void)executeQuery:(id)a3 excludingBundleIDs:(id)a4 completionHandler:(id)a5
+- (void)executeQuery:(id)query excludingBundleIDs:(id)ds completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queryCopy = query;
+  dsCopy = ds;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100367AE8;
   v15[3] = &unk_10051C7A8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = queryCopy;
+  v17 = dsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = dsCopy;
+  v14 = queryCopy;
   dispatch_async(dispatchQueue, v15);
 }
 

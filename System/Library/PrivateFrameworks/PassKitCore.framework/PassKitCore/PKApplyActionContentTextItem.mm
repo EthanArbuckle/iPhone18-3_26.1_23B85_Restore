@@ -1,34 +1,34 @@
 @interface PKApplyActionContentTextItem
 - (NSCopying)identifier;
-- (PKApplyActionContentTextItem)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKApplyActionContentTextItem)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)odiAttributesDictionary;
 @end
 
 @implementation PKApplyActionContentTextItem
 
-- (PKApplyActionContentTextItem)initWithDictionary:(id)a3
+- (PKApplyActionContentTextItem)initWithDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = PKApplyActionContentTextItem;
   v5 = [(PKApplyActionContentTextItem *)&v29 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"analyticsIdentifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"analyticsIdentifier"];
     analyticsIdentifier = v5->_analyticsIdentifier;
     v5->_analyticsIdentifier = v6;
 
-    v8 = [v4 PKStringForKey:@"title"];
+    v8 = [dictionaryCopy PKStringForKey:@"title"];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 PKStringForKey:@"subtitle"];
+    v10 = [dictionaryCopy PKStringForKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v10;
 
-    v12 = [v4 PKArrayContaining:objc_opt_class() forKey:@"odiDetails"];
+    v12 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"odiDetails"];
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v25 = 0u;
     v26 = 0u;
@@ -101,8 +101,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) odiAttributesDictionary];
-        [v3 addEntriesFromDictionary:v9];
+        odiAttributesDictionary = [*(*(&v11 + 1) + 8 * i) odiAttributesDictionary];
+        [v3 addEntriesFromDictionary:odiAttributesDictionary];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -141,22 +141,22 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKApplyActionContentTextItem allocWithZone:](PKApplyActionContentTextItem init];
-  v6 = [(NSString *)self->_analyticsIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_analyticsIdentifier copyWithZone:zone];
   analyticsIdentifier = v5->_analyticsIdentifier;
   v5->_analyticsIdentifier = v6;
 
-  v8 = [(NSString *)self->_title copyWithZone:a3];
+  v8 = [(NSString *)self->_title copyWithZone:zone];
   title = v5->_title;
   v5->_title = v8;
 
-  v10 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v10 = [(NSString *)self->_subtitle copyWithZone:zone];
   subtitle = v5->_subtitle;
   v5->_subtitle = v10;
 
-  v12 = [(NSArray *)self->_odiDetails copyWithZone:a3];
+  v12 = [(NSArray *)self->_odiDetails copyWithZone:zone];
   odiDetails = v5->_odiDetails;
   v5->_odiDetails = v12;
 

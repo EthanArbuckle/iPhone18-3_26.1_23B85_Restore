@@ -1,15 +1,15 @@
 @interface DTSysmonTapServiceDelegate
-+ (void)registerCapabilities:(id)a3;
-- (DTSysmonTapServiceDelegate)initWithMessageSender:(id)a3;
-- (id)createConfigWithPlist:(id)a3;
-- (id)willStartWithConfig:(id)a3;
++ (void)registerCapabilities:(id)capabilities;
+- (DTSysmonTapServiceDelegate)initWithMessageSender:(id)sender;
+- (id)createConfigWithPlist:(id)plist;
+- (id)willStartWithConfig:(id)config;
 @end
 
 @implementation DTSysmonTapServiceDelegate
 
-+ (void)registerCapabilities:(id)a3
++ (void)registerCapabilities:(id)capabilities
 {
-  v7 = a3;
+  capabilitiesCopy = capabilities;
   v4 = MEMORY[0x2822399C0];
   v5 = objc_opt_new();
   v6 = v5;
@@ -23,28 +23,28 @@
     [v6 setObject:&unk_285A36BB8 forKeyedSubscript:@"com.apple.instruments.server.services.sysmontap.system"];
   }
 
-  [DTTapService registerCapabilities:v6 forDelegateClass:a1 forConnection:v7];
+  [DTTapService registerCapabilities:v6 forDelegateClass:self forConnection:capabilitiesCopy];
 }
 
-- (DTSysmonTapServiceDelegate)initWithMessageSender:(id)a3
+- (DTSysmonTapServiceDelegate)initWithMessageSender:(id)sender
 {
-  v5 = a3;
+  senderCopy = sender;
   v9.receiver = self;
   v9.super_class = DTSysmonTapServiceDelegate;
   v6 = [(DTSysmonTapServiceDelegate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_messageSender, a3);
+    objc_storeStrong(&v6->_messageSender, sender);
   }
 
   return v7;
 }
 
-- (id)createConfigWithPlist:(id)a3
+- (id)createConfigWithPlist:(id)plist
 {
-  v4 = a3;
-  v5 = [(DTTapConfig *)[DTSysmonTapConfig alloc] initWithPlist:v4];
+  plistCopy = plist;
+  v5 = [(DTTapConfig *)[DTSysmonTapConfig alloc] initWithPlist:plistCopy];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -56,7 +56,7 @@
   return v5;
 }
 
-- (id)willStartWithConfig:(id)a3
+- (id)willStartWithConfig:(id)config
 {
   v3 = objc_opt_new();
   [v3 setKind:0];

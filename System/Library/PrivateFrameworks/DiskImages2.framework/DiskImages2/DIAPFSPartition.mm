@@ -1,17 +1,17 @@
 @interface DIAPFSPartition
-- (BOOL)findVolumeBSDNameWithError:(id *)a3;
-- (BOOL)formatWithVolumeName:(id)a3 error:(id *)a4;
-- (BOOL)resizeFileSystemWithNumBlocks:(unint64_t)a3 error:(id *)a4;
-- (id)newMountVolumeWithDiskArb:(id)a3 error:(id *)a4;
-- (unint64_t)getFileSystemMinimalBlocks:(id *)a3;
+- (BOOL)findVolumeBSDNameWithError:(id *)error;
+- (BOOL)formatWithVolumeName:(id)name error:(id *)error;
+- (BOOL)resizeFileSystemWithNumBlocks:(unint64_t)blocks error:(id *)error;
+- (id)newMountVolumeWithDiskArb:(id)arb error:(id *)error;
+- (unint64_t)getFileSystemMinimalBlocks:(id *)blocks;
 @end
 
 @implementation DIAPFSPartition
 
-- (BOOL)findVolumeBSDNameWithError:(id *)a3
+- (BOOL)findVolumeBSDNameWithError:(id *)error
 {
-  v5 = [(DIDataPartition *)self ioMedia];
-  v6 = [v5 newIteratorWithOptions:1 error:a3];
+  ioMedia = [(DIDataPartition *)self ioMedia];
+  v6 = [ioMedia newIteratorWithOptions:1 error:error];
 
   if (v6)
   {
@@ -28,15 +28,15 @@
 
       if (IOObjectConformsTo([(DIIOObject *)v7 ioObj], "AppleAPFSVolume"))
       {
-        v9 = [(DIIOMedia *)v7 BSDName];
-        [(DIDataPartition *)self setVolumeBSDName:v9];
+        bSDName = [(DIIOMedia *)v7 BSDName];
+        [(DIDataPartition *)self setVolumeBSDName:bSDName];
 
         v10 = 1;
         goto LABEL_8;
       }
     }
 
-    v10 = [DIError failWithEnumValue:153 verboseInfo:@"Cannot find the APFS volume" error:a3];
+    v10 = [DIError failWithEnumValue:153 verboseInfo:@"Cannot find the APFS volume" error:error];
   }
 
   else
@@ -49,37 +49,37 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)formatWithVolumeName:(id)a3 error:(id *)a4
+- (BOOL)formatWithVolumeName:(id)name error:(id *)error
 {
   v29[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nameCopy = name;
   v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"/System/Library/Filesystems/apfs.fs"];
   v8 = [MEMORY[0x277CCA8D8] bundleWithURL:v7];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 infoDictionary];
-    v11 = [v10 objectForKeyedSubscript:@"FSPersonalities"];
+    infoDictionary = [v8 infoDictionary];
+    v11 = [infoDictionary objectForKeyedSubscript:@"FSPersonalities"];
     v12 = [v11 objectForKeyedSubscript:@"APFS"];
     v13 = [v12 objectForKeyedSubscript:@"FSFormatExecutable"];
 
-    v14 = [MEMORY[0x277CBEB18] array];
-    if (v6)
+    array = [MEMORY[0x277CBEB18] array];
+    if (nameCopy)
     {
       v29[0] = @"-v";
-      v29[1] = v6;
+      v29[1] = nameCopy;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
-      [v14 addObjectsFromArray:v15];
+      [array addObjectsFromArray:v15];
     }
 
-    v16 = [(DIDataPartition *)self ioMedia];
-    v17 = [v16 BSDName];
-    [v14 addObject:v17];
+    ioMedia = [(DIDataPartition *)self ioMedia];
+    bSDName = [ioMedia BSDName];
+    [array addObject:bSDName];
 
     v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"/sbin/%@", v13];
-    LODWORD(a4) = [DIHelpers executeWithPath:v18 arguments:v14 error:a4];
+    LODWORD(error) = [DIHelpers executeWithPath:v18 arguments:array error:error];
 
-    if (a4)
+    if (error)
     {
       usleep(0x7A120u);
       v19 = *__error();
@@ -119,18 +119,18 @@ LABEL_8:
 
   else
   {
-    LOBYTE(a4) = [DIError failWithEnumValue:150 verboseInfo:@"Cannot open filesystems bundle" error:a4];
+    LOBYTE(error) = [DIError failWithEnumValue:150 verboseInfo:@"Cannot open filesystems bundle" error:error];
   }
 
   v23 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
-- (id)newMountVolumeWithDiskArb:(id)a3 error:(id *)a4
+- (id)newMountVolumeWithDiskArb:(id)arb error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [DIDataPartition newMountURLWithError:a4];
+  arbCopy = arb;
+  v7 = [DIDataPartition newMountURLWithError:error];
   if (!v7)
   {
     goto LABEL_10;
@@ -141,14 +141,14 @@ LABEL_8:
   {
     v9 = getDIOSLog();
     os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-    v10 = [(DIDataPartition *)self volumeBSDName];
+    volumeBSDName = [(DIDataPartition *)self volumeBSDName];
     [v7 path];
     *buf = 68158466;
     v21 = 51;
     v22 = 2080;
     v23 = "[DIAPFSPartition newMountVolumeWithDiskArb:error:]";
     v24 = 2112;
-    v25 = v10;
+    v25 = volumeBSDName;
     v27 = v26 = 2112;
     v11 = _os_log_send_and_compose_impl();
 
@@ -164,64 +164,64 @@ LABEL_8:
     v12 = getDIOSLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(DIDataPartition *)self volumeBSDName];
-      v14 = [v7 path];
+      volumeBSDName2 = [(DIDataPartition *)self volumeBSDName];
+      path = [v7 path];
       *buf = 68158466;
       v21 = 51;
       v22 = 2080;
       v23 = "[DIAPFSPartition newMountVolumeWithDiskArb:error:]";
       v24 = 2112;
-      v25 = v13;
+      v25 = volumeBSDName2;
       v26 = 2112;
-      v27 = v14;
+      v27 = path;
       _os_log_impl(&dword_248DE0000, v12, OS_LOG_TYPE_DEFAULT, "%.*s: Mounting %@ on %@", buf, 0x26u);
     }
   }
 
   *__error() = v8;
-  v15 = [(DIDataPartition *)self volumeBSDName];
-  v16 = [v6 mountWithDeviceName:v15 args:&unk_285C0F470 filesystem:@"apfs" mountURL:v7 error:a4];
+  volumeBSDName3 = [(DIDataPartition *)self volumeBSDName];
+  v16 = [arbCopy mountWithDeviceName:volumeBSDName3 args:&unk_285C0F470 filesystem:@"apfs" mountURL:v7 error:error];
 
   if (v16)
   {
-    v17 = [v7 path];
+    path2 = [v7 path];
   }
 
   else
   {
 LABEL_10:
-    v17 = 0;
+    path2 = 0;
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v17;
+  return path2;
 }
 
-- (unint64_t)getFileSystemMinimalBlocks:(id *)a3
+- (unint64_t)getFileSystemMinimalBlocks:(id *)blocks
 {
-  v4 = [(DIDataPartition *)self ioMedia];
-  v5 = [v4 BSDName];
-  [v5 UTF8String];
+  ioMedia = [(DIDataPartition *)self ioMedia];
+  bSDName = [ioMedia BSDName];
+  [bSDName UTF8String];
   MinimalSize = APFSContainerGetMinimalSize();
 
   if (MinimalSize)
   {
-    LODWORD(result) = [DIError failWithOSStatus:MinimalSize verboseInfo:@"Failed to get minimum APFS container size" error:a3];
+    LODWORD(result) = [DIError failWithOSStatus:MinimalSize verboseInfo:@"Failed to get minimum APFS container size" error:blocks];
   }
 
   else
   {
-    LODWORD(result) = [DIError failWithEnumValue:154 verboseInfo:@"Minimum container size must be non-zero" error:a3];
+    LODWORD(result) = [DIError failWithEnumValue:154 verboseInfo:@"Minimum container size must be non-zero" error:blocks];
   }
 
   return result;
 }
 
-- (BOOL)resizeFileSystemWithNumBlocks:(unint64_t)a3 error:(id *)a4
+- (BOOL)resizeFileSystemWithNumBlocks:(unint64_t)blocks error:(id *)error
 {
-  v6 = [(DIDataPartition *)self ioMedia];
-  v7 = [v6 BSDName];
-  [v7 UTF8String];
+  ioMedia = [(DIDataPartition *)self ioMedia];
+  bSDName = [ioMedia BSDName];
+  [bSDName UTF8String];
   [(DIDataPartition *)self blockSize];
   v8 = APFSContainerResize();
 
@@ -230,7 +230,7 @@ LABEL_10:
     return 1;
   }
 
-  return [DIError failWithOSStatus:v8 verboseInfo:@"Failed resizing the APFS container" error:a4];
+  return [DIError failWithOSStatus:v8 verboseInfo:@"Failed resizing the APFS container" error:error];
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface SearchUIRunShortcutHandler
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4;
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment;
 - (id)actionProvider;
 - (unint64_t)destination;
-- (void)actionSearchResultExecution:(id)a3 didDismissRemoteAlertWithReason:(int64_t)a4 actionCompleted:(BOOL)a5 withResult:(int64_t)a6 shouldClearAction:(BOOL)a7;
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5;
+- (void)actionSearchResultExecution:(id)execution didDismissRemoteAlertWithReason:(int64_t)reason actionCompleted:(BOOL)completed withResult:(int64_t)result shouldClearAction:(BOOL)action;
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment;
 - (void)removeRowModel;
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6;
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled;
 @end
 
 @implementation SearchUIRunShortcutHandler
 
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment
 {
-  v4 = [a3 identifyingResult];
-  v5 = [SearchUIUtilities resultIsSiriAction:v4];
+  identifyingResult = [model identifyingResult];
+  v5 = [SearchUIUtilities resultIsSiriAction:identifyingResult];
 
   if (v5)
   {
@@ -28,57 +28,57 @@
   return v6;
 }
 
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment
 {
-  v6 = a3;
-  v7 = [(SearchUICommandHandler *)self rowModel];
-  v8 = [v7 identifyingResult];
+  commandCopy = command;
+  rowModel = [(SearchUICommandHandler *)self rowModel];
+  identifyingResult = [rowModel identifyingResult];
 
-  if ([SearchUIUtilities resultBlockedForScreenTime:v8])
+  if ([SearchUIUtilities resultBlockedForScreenTime:identifyingResult])
   {
     goto LABEL_10;
   }
 
-  v9 = [v8 identifier];
-  if (!v9)
+  identifier = [identifyingResult identifier];
+  if (!identifier)
   {
     goto LABEL_9;
   }
 
-  v10 = v9;
-  v11 = [v8 sectionBundleIdentifier];
+  v10 = identifier;
+  sectionBundleIdentifier = [identifyingResult sectionBundleIdentifier];
   v12 = [SearchUIUtilities bundleIdentifierForApp:15];
-  if (([v11 isEqualToString:v12] & 1) == 0)
+  if (([sectionBundleIdentifier isEqualToString:v12] & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
-  v13 = [MEMORY[0x1E69D9240] isMacOS];
+  isMacOS = [MEMORY[0x1E69D9240] isMacOS];
 
-  if (v13)
+  if (isMacOS)
   {
 LABEL_9:
-    v16 = [MEMORY[0x1E69E0938] standardClient];
-    v17 = [v6 voiceShortcutIdentifier];
+    standardClient = [MEMORY[0x1E69E0938] standardClient];
+    voiceShortcutIdentifier = [commandCopy voiceShortcutIdentifier];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __70__SearchUIRunShortcutHandler_performCommand_triggerEvent_environment___block_invoke;
     v18[3] = &unk_1E85B2838;
-    v19 = v6;
-    v20 = self;
-    [v16 getVoiceShortcutWithIdentifier:v17 completion:v18];
+    v19 = commandCopy;
+    selfCopy = self;
+    [standardClient getVoiceShortcutWithIdentifier:voiceShortcutIdentifier completion:v18];
 
     goto LABEL_10;
   }
 
   v14 = objc_opt_new();
-  [v14 setSearchResult:v8];
+  [v14 setSearchResult:identifyingResult];
   [v14 setDelegate:self];
   if (objc_opt_respondsToSelector())
   {
-    v15 = [(SearchUIRunShortcutHandler *)self runViewSource];
-    [v14 setRunViewSource:v15];
+    runViewSource = [(SearchUIRunShortcutHandler *)self runViewSource];
+    [v14 setRunViewSource:runViewSource];
   }
 
   [v14 executeShortcut];
@@ -119,10 +119,10 @@ void __70__SearchUIRunShortcutHandler_performCommand_triggerEvent_environment___
 
 - (unint64_t)destination
 {
-  v2 = [(SearchUICommandHandler *)self rowModel];
-  v3 = [v2 punchouts];
-  v4 = [v3 firstObject];
-  if ([v4 isRunnableInBackground])
+  rowModel = [(SearchUICommandHandler *)self rowModel];
+  punchouts = [rowModel punchouts];
+  firstObject = [punchouts firstObject];
+  if ([firstObject isRunnableInBackground])
   {
     v5 = 3;
   }
@@ -135,26 +135,26 @@ void __70__SearchUIRunShortcutHandler_performCommand_triggerEvent_environment___
   return v5;
 }
 
-- (void)actionSearchResultExecution:(id)a3 didDismissRemoteAlertWithReason:(int64_t)a4 actionCompleted:(BOOL)a5 withResult:(int64_t)a6 shouldClearAction:(BOOL)a7
+- (void)actionSearchResultExecution:(id)execution didDismissRemoteAlertWithReason:(int64_t)reason actionCompleted:(BOOL)completed withResult:(int64_t)result shouldClearAction:(BOOL)action
 {
-  v11 = a3;
+  executionCopy = execution;
   if (objc_opt_respondsToSelector())
   {
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    v13 = [v11 runViewSource];
-    [v12 postNotificationName:@"SearchUICommandHandlerShortcutDidEndNotification" object:v13];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    runViewSource = [executionCopy runViewSource];
+    [defaultCenter postNotificationName:@"SearchUICommandHandlerShortcutDidEndNotification" object:runViewSource];
   }
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __135__SearchUIRunShortcutHandler_actionSearchResultExecution_didDismissRemoteAlertWithReason_actionCompleted_withResult_shouldClearAction___block_invoke;
   v15[3] = &unk_1E85B2860;
-  v19 = a7;
+  actionCopy = action;
   v15[4] = self;
-  v16 = v11;
-  v17 = a6;
-  v18 = a4;
-  v14 = v11;
+  v16 = executionCopy;
+  resultCopy = result;
+  reasonCopy = reason;
+  v14 = executionCopy;
   [SearchUIUtilities dispatchMainIfNecessary:v15];
 }
 
@@ -227,16 +227,16 @@ void __135__SearchUIRunShortcutHandler_actionSearchResultExecution_didDismissRem
 
 - (id)actionProvider
 {
-  v3 = [(SearchUICommandHandler *)self environment];
-  v4 = [(SearchUICommandHandler *)self rowModel];
+  environment = [(SearchUICommandHandler *)self environment];
+  rowModel = [(SearchUICommandHandler *)self rowModel];
   v5 = MEMORY[0x1E698B080];
-  v6 = [v4 identifyingResult];
+  identifyingResult = [rowModel identifyingResult];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __44__SearchUIRunShortcutHandler_actionProvider__block_invoke;
   v13[3] = &unk_1E85B24C8;
   v13[4] = self;
-  v7 = [v5 actionProviderForSearchResult:v6 dismissSearchResultHandler:v13];
+  v7 = [v5 actionProviderForSearchResult:identifyingResult dismissSearchResultHandler:v13];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -249,32 +249,32 @@ void __135__SearchUIRunShortcutHandler_actionSearchResultExecution_didDismissRem
   return v9;
 }
 
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  clientCopy = client;
+  outputCopy = output;
+  errorCopy = error;
+  if (errorCopy)
   {
     v11 = SearchUITapLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [SearchUIRunShortcutHandler workflowRunnerClient:v10 didFinishRunningWorkflowWithOutput:v11 error:? cancelled:?];
+      [SearchUIRunShortcutHandler workflowRunnerClient:errorCopy didFinishRunningWorkflowWithOutput:v11 error:? cancelled:?];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    v13 = [v8 runViewSource];
-    [v12 postNotificationName:@"SearchUICommandHandlerShortcutDidEndNotification" object:v13];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    runViewSource = [clientCopy runViewSource];
+    [defaultCenter postNotificationName:@"SearchUICommandHandlerShortcutDidEndNotification" object:runViewSource];
   }
 }
 
 - (void)removeRowModel
 {
-  v3 = [(SearchUICommandHandler *)self environment];
-  v4 = [v3 feedbackDelegate];
+  environment = [(SearchUICommandHandler *)self environment];
+  feedbackDelegate = [environment feedbackDelegate];
 
   if (objc_opt_respondsToSelector())
   {
@@ -283,8 +283,8 @@ void __135__SearchUIRunShortcutHandler_actionSearchResultExecution_didDismissRem
     v6[1] = 3221225472;
     v6[2] = __44__SearchUIRunShortcutHandler_removeRowModel__block_invoke;
     v6[3] = &unk_1E85B2540;
-    v7 = v4;
-    v8 = self;
+    v7 = feedbackDelegate;
+    selfCopy = self;
     dispatch_after(v5, MEMORY[0x1E69E96A0], v6);
   }
 }

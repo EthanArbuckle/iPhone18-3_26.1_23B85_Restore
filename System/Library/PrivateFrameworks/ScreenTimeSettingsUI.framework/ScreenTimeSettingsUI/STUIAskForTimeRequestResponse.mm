@@ -1,57 +1,57 @@
 @interface STUIAskForTimeRequestResponse
-- (STUIAskForTimeRequestResponse)initWithRequestResponse:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (STUIAskForTimeRequestResponse)initWithRequestResponse:(id)response;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation STUIAskForTimeRequestResponse
 
-- (STUIAskForTimeRequestResponse)initWithRequestResponse:(id)a3
+- (STUIAskForTimeRequestResponse)initWithRequestResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v18.receiver = self;
   v18.super_class = STUIAskForTimeRequestResponse;
   v5 = [(STUIAskForTimeRequestResponse *)&v18 init];
   v6 = v5;
-  if (v4 && v5)
+  if (responseCopy && v5)
   {
-    v7 = [v4 usageType];
-    if (v7 == 2)
+    usageType = [responseCopy usageType];
+    if (usageType == 2)
     {
       v6->_usageType = 1;
-      v8 = [v4 requestedCategoryIdentifier];
+      requestedCategoryIdentifier = [responseCopy requestedCategoryIdentifier];
     }
 
-    else if (v7 == 1)
+    else if (usageType == 1)
     {
       v6->_usageType = 2;
-      v8 = [v4 requestedWebDomain];
+      requestedCategoryIdentifier = [responseCopy requestedWebDomain];
     }
 
     else
     {
-      if (v7)
+      if (usageType)
       {
 LABEL_10:
-        v10 = [v4 identifier];
-        v11 = [v10 UUIDString];
-        v12 = [v11 copy];
+        identifier = [responseCopy identifier];
+        uUIDString = [identifier UUIDString];
+        v12 = [uUIDString copy];
         identifier = v6->_identifier;
         v6->_identifier = v12;
 
-        v14 = [v4 requestingUser];
-        v15 = [v14 dsid];
+        requestingUser = [responseCopy requestingUser];
+        dsid = [requestingUser dsid];
         requestingUserDSID = v6->_requestingUserDSID;
-        v6->_requestingUserDSID = v15;
+        v6->_requestingUserDSID = dsid;
 
         goto LABEL_11;
       }
 
       v6->_usageType = 0;
-      v8 = [v4 requestedApplicationBundleIdentifier];
+      requestedCategoryIdentifier = [responseCopy requestedApplicationBundleIdentifier];
     }
 
     budgetedIdentifier = v6->_budgetedIdentifier;
-    v6->_budgetedIdentifier = v8;
+    v6->_budgetedIdentifier = requestedCategoryIdentifier;
 
     goto LABEL_10;
   }
@@ -61,9 +61,9 @@ LABEL_11:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 8) = self->_usageType;
   v5 = [(NSString *)self->_identifier copy];
   v6 = *(v4 + 16);

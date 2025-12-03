@@ -1,20 +1,20 @@
 @interface ContentInteractionTestRunner
-- (BOOL)startPageAction:(id)a3;
-- (ContentInteractionTestRunner)initWithTestName:(id)a3 browserController:(id)a4;
+- (BOOL)startPageAction:(id)action;
+- (ContentInteractionTestRunner)initWithTestName:(id)name browserController:(id)controller;
 - (id)pageWebView;
 - (void)endTrackingFrameRate;
-- (void)startSubtest:(id)a3;
+- (void)startSubtest:(id)subtest;
 - (void)startTrackingFrameRate;
-- (void)stopSubtest:(id)a3;
+- (void)stopSubtest:(id)subtest;
 @end
 
 @implementation ContentInteractionTestRunner
 
-- (ContentInteractionTestRunner)initWithTestName:(id)a3 browserController:(id)a4
+- (ContentInteractionTestRunner)initWithTestName:(id)name browserController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = ContentInteractionTestRunner;
-  v4 = [(PageLoadTestRunner *)&v7 initWithTestName:a3 browserController:a4];
+  v4 = [(PageLoadTestRunner *)&v7 initWithTestName:name browserController:controller];
   v5 = v4;
   if (v4)
   {
@@ -26,17 +26,17 @@
 
 - (id)pageWebView
 {
-  v2 = [(PageLoadTestRunner *)self browserController];
-  v3 = [v2 tabController];
-  v4 = [v3 activeTabDocument];
-  v5 = [v4 webView];
+  browserController = [(PageLoadTestRunner *)self browserController];
+  tabController = [browserController tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  webView = [activeTabDocument webView];
 
-  return v5;
+  return webView;
 }
 
-- (BOOL)startPageAction:(id)a3
+- (BOOL)startPageAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if (![(ContentInteractionTestRunner *)self iterations])
   {
     [(ContentInteractionTestRunner *)self setIterations:5];
@@ -44,7 +44,7 @@
 
   v7.receiver = self;
   v7.super_class = ContentInteractionTestRunner;
-  v5 = [(PageLoadTestRunner *)&v7 startPageAction:v4];
+  v5 = [(PageLoadTestRunner *)&v7 startPageAction:actionCopy];
 
   return v5;
 }
@@ -52,31 +52,31 @@
 - (void)startTrackingFrameRate
 {
   v2 = *MEMORY[0x277D76620];
-  v3 = [(PageLoadTestRunner *)self testName];
-  [v2 startedTest:v3];
+  testName = [(PageLoadTestRunner *)self testName];
+  [v2 startedTest:testName];
 }
 
 - (void)endTrackingFrameRate
 {
   v2 = *MEMORY[0x277D76620];
-  v3 = [(PageLoadTestRunner *)self testName];
-  [v2 finishedTest:v3];
+  testName = [(PageLoadTestRunner *)self testName];
+  [v2 finishedTest:testName];
 }
 
-- (void)startSubtest:(id)a3
+- (void)startSubtest:(id)subtest
 {
   v4 = *MEMORY[0x277D76620];
-  v5 = a3;
-  v6 = [(PageLoadTestRunner *)self testName];
-  [v4 startedSubTest:v5 forTest:v6];
+  subtestCopy = subtest;
+  testName = [(PageLoadTestRunner *)self testName];
+  [v4 startedSubTest:subtestCopy forTest:testName];
 }
 
-- (void)stopSubtest:(id)a3
+- (void)stopSubtest:(id)subtest
 {
   v4 = *MEMORY[0x277D76620];
-  v5 = a3;
-  v6 = [(PageLoadTestRunner *)self testName];
-  [v4 finishedSubTest:v5 forTest:v6];
+  subtestCopy = subtest;
+  testName = [(PageLoadTestRunner *)self testName];
+  [v4 finishedSubTest:subtestCopy forTest:testName];
 }
 
 @end

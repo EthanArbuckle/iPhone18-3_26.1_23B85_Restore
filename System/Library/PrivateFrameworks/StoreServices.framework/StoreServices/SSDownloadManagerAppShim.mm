@@ -1,51 +1,51 @@
 @interface SSDownloadManagerAppShim
-- (SSDownloadManagerAppShim)initWithManagerOptions:(id)a3;
-- (id)__app_convertOptions:(id)a3;
-- (id)__app_downloadsForJobs:(id)a3;
-- (id)__app_extractJobIDsFromSoftwareDownloads:(id)a3;
+- (SSDownloadManagerAppShim)initWithManagerOptions:(id)options;
+- (id)__app_convertOptions:(id)options;
+- (id)__app_downloadsForJobs:(id)jobs;
+- (id)__app_extractJobIDsFromSoftwareDownloads:(id)downloads;
 - (id)__app_getAllDownloads;
-- (id)__app_newActivityWithDownload:(id)a3;
-- (id)__app_newAssetWithDownloadAsset:(id)a3 assetType:(id)a4;
-- (id)__app_newManifestWithType:(int64_t)a3;
-- (id)_copyDownloadsForMessage:(int64_t)a3 downloadIDs:(id)a4;
-- (void)__app_cancelDownloads:(id)a3 completionBlock:(id)a4;
-- (void)__app_dispatchBlock:(id)a3 withError:(id)a4;
-- (void)__app_filterDownloads:(id)a3 withResult:(id)a4;
-- (void)__app_finishDownloads:(id)a3;
-- (void)__app_insertDownloads:(id)a3 before:(id)a4 after:(id)a5 completionBlock:(id)a6;
-- (void)__app_installManifest:(id)a3 completionBlock:(id)a4;
-- (void)__app_pauseDownloads:(id)a3 completionBlock:(id)a4;
-- (void)__app_resumeDownloads:(id)a3 completionBlock:(id)a4;
-- (void)__app_sendDownloadsChanged:(id)a3 filterSoftware:(BOOL)a4;
-- (void)__app_setPropertiesForActivity:(id)a3 withDownload:(id)a4;
-- (void)_insertDownloads:(id)a3 before:(id)a4 after:(id)a5 completionBlock:(id)a6;
-- (void)_pauseDownloads:(id)a3 forced:(BOOL)a4 completionBlock:(id)a5;
-- (void)_sendDownloadsChanged:(id)a3;
-- (void)cancelAllDownloadsWithCompletionBlock:(id)a3;
-- (void)cancelDownloads:(id)a3 completionBlock:(id)a4;
-- (void)finishDownloads:(id)a3;
-- (void)jobManager:(id)a3 changedJobs:(id)a4;
-- (void)jobManager:(id)a3 updatedProgressOfJobs:(id)a4;
-- (void)jobManager:(id)a3 updatedStateOfJobs:(id)a4;
-- (void)moveDownload:(id)a3 afterDownload:(id)a4 completionBlock:(id)a5;
-- (void)moveDownload:(id)a3 beforeDownload:(id)a4 completionBlock:(id)a5;
-- (void)restartDownloads:(id)a3 completionBlock:(id)a4;
-- (void)resumeDownloads:(id)a3 completionBlock:(id)a4;
-- (void)setDownloads:(id)a3 forKinds:(id)a4 completionBlock:(id)a5;
+- (id)__app_newActivityWithDownload:(id)download;
+- (id)__app_newAssetWithDownloadAsset:(id)asset assetType:(id)type;
+- (id)__app_newManifestWithType:(int64_t)type;
+- (id)_copyDownloadsForMessage:(int64_t)message downloadIDs:(id)ds;
+- (void)__app_cancelDownloads:(id)downloads completionBlock:(id)block;
+- (void)__app_dispatchBlock:(id)block withError:(id)error;
+- (void)__app_filterDownloads:(id)downloads withResult:(id)result;
+- (void)__app_finishDownloads:(id)downloads;
+- (void)__app_insertDownloads:(id)downloads before:(id)before after:(id)after completionBlock:(id)block;
+- (void)__app_installManifest:(id)manifest completionBlock:(id)block;
+- (void)__app_pauseDownloads:(id)downloads completionBlock:(id)block;
+- (void)__app_resumeDownloads:(id)downloads completionBlock:(id)block;
+- (void)__app_sendDownloadsChanged:(id)changed filterSoftware:(BOOL)software;
+- (void)__app_setPropertiesForActivity:(id)activity withDownload:(id)download;
+- (void)_insertDownloads:(id)downloads before:(id)before after:(id)after completionBlock:(id)block;
+- (void)_pauseDownloads:(id)downloads forced:(BOOL)forced completionBlock:(id)block;
+- (void)_sendDownloadsChanged:(id)changed;
+- (void)cancelAllDownloadsWithCompletionBlock:(id)block;
+- (void)cancelDownloads:(id)downloads completionBlock:(id)block;
+- (void)finishDownloads:(id)downloads;
+- (void)jobManager:(id)manager changedJobs:(id)jobs;
+- (void)jobManager:(id)manager updatedProgressOfJobs:(id)jobs;
+- (void)jobManager:(id)manager updatedStateOfJobs:(id)jobs;
+- (void)moveDownload:(id)download afterDownload:(id)afterDownload completionBlock:(id)block;
+- (void)moveDownload:(id)download beforeDownload:(id)beforeDownload completionBlock:(id)block;
+- (void)restartDownloads:(id)downloads completionBlock:(id)block;
+- (void)resumeDownloads:(id)downloads completionBlock:(id)block;
+- (void)setDownloads:(id)downloads forKinds:(id)kinds completionBlock:(id)block;
 @end
 
 @implementation SSDownloadManagerAppShim
 
-- (SSDownloadManagerAppShim)initWithManagerOptions:(id)a3
+- (SSDownloadManagerAppShim)initWithManagerOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = SSDownloadManagerAppShim;
-  v5 = [(SSDownloadManager *)&v12 initWithManagerOptions:v4];
+  v5 = [(SSDownloadManager *)&v12 initWithManagerOptions:optionsCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(SSDownloadManagerAppShim *)v5 __app_convertOptions:v4];
+    v7 = [(SSDownloadManagerAppShim *)v5 __app_convertOptions:optionsCopy];
     v8 = SSVAppstoreDaemonFramework();
     v9 = [objc_alloc(SSVWeakLinkedClassForString(&cfstr_Asdjobmanager.isa v8))];
     jobManager = v6->_jobManager;
@@ -57,9 +57,9 @@
   return v6;
 }
 
-- (void)jobManager:(id)a3 changedJobs:(id)a4
+- (void)jobManager:(id)manager changedJobs:(id)jobs
 {
-  v5 = [(SSDownloadManagerAppShim *)self __app_downloadsForJobs:a4];
+  v5 = [(SSDownloadManagerAppShim *)self __app_downloadsForJobs:jobs];
   if ([v5 count])
   {
     accessQueue = self->super._accessQueue;
@@ -80,9 +80,9 @@ void __51__SSDownloadManagerAppShim_jobManager_changedJobs___block_invoke(uint64
   [v1 __app_sendDownloadsChanged:v2 filterSoftware:0];
 }
 
-- (void)jobManager:(id)a3 updatedProgressOfJobs:(id)a4
+- (void)jobManager:(id)manager updatedProgressOfJobs:(id)jobs
 {
-  v5 = [(SSDownloadManagerAppShim *)self __app_downloadsForJobs:a4];
+  v5 = [(SSDownloadManagerAppShim *)self __app_downloadsForJobs:jobs];
   if ([v5 count])
   {
     accessQueue = self->super._accessQueue;
@@ -103,9 +103,9 @@ void __61__SSDownloadManagerAppShim_jobManager_updatedProgressOfJobs___block_inv
   [v1 __app_sendDownloadsChanged:v2 filterSoftware:0];
 }
 
-- (void)jobManager:(id)a3 updatedStateOfJobs:(id)a4
+- (void)jobManager:(id)manager updatedStateOfJobs:(id)jobs
 {
-  v5 = [(SSDownloadManagerAppShim *)self __app_downloadsForJobs:a4];
+  v5 = [(SSDownloadManagerAppShim *)self __app_downloadsForJobs:jobs];
   if ([v5 count])
   {
     accessQueue = self->super._accessQueue;
@@ -126,24 +126,24 @@ void __58__SSDownloadManagerAppShim_jobManager_updatedStateOfJobs___block_invoke
   [v1 __app_sendDownloadsChanged:v2 filterSoftware:0];
 }
 
-- (void)cancelAllDownloadsWithCompletionBlock:(id)a3
+- (void)cancelAllDownloadsWithCompletionBlock:(id)block
 {
   v3.receiver = self;
   v3.super_class = SSDownloadManagerAppShim;
-  [(SSDownloadManager *)&v3 cancelAllDownloadsWithCompletionBlock:a3];
+  [(SSDownloadManager *)&v3 cancelAllDownloadsWithCompletionBlock:block];
 }
 
-- (void)cancelDownloads:(id)a3 completionBlock:(id)a4
+- (void)cancelDownloads:(id)downloads completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__SSDownloadManagerAppShim_cancelDownloads_completionBlock___block_invoke;
   v8[3] = &unk_1E84B32E0;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(SSDownloadManagerAppShim *)self __app_filterDownloads:a3 withResult:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [(SSDownloadManagerAppShim *)self __app_filterDownloads:downloads withResult:v8];
 }
 
 void __60__SSDownloadManagerAppShim_cancelDownloads_completionBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -194,18 +194,18 @@ void __60__SSDownloadManagerAppShim_cancelDownloads_completionBlock___block_invo
   }
 }
 
-- (void)finishDownloads:(id)a3
+- (void)finishDownloads:(id)downloads
 {
   v6.receiver = self;
   v6.super_class = SSDownloadManagerAppShim;
-  v4 = a3;
-  [(SSDownloadManager *)&v6 _willFinishDownloads:v4];
+  downloadsCopy = downloads;
+  [(SSDownloadManager *)&v6 _willFinishDownloads:downloadsCopy];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __44__SSDownloadManagerAppShim_finishDownloads___block_invoke;
   v5[3] = &unk_1E84B3CE8;
   v5[4] = self;
-  [(SSDownloadManagerAppShim *)self __app_filterDownloads:v4 withResult:v5];
+  [(SSDownloadManagerAppShim *)self __app_filterDownloads:downloadsCopy withResult:v5];
 }
 
 void __44__SSDownloadManagerAppShim_finishDownloads___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -222,55 +222,55 @@ void __44__SSDownloadManagerAppShim_finishDownloads___block_invoke(uint64_t a1, 
   [*(a1 + 32) __app_finishDownloads:v5];
 }
 
-- (void)moveDownload:(id)a3 afterDownload:(id)a4 completionBlock:(id)a5
+- (void)moveDownload:(id)download afterDownload:(id)afterDownload completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 valueForProperty:@"1"];
+  downloadCopy = download;
+  afterDownloadCopy = afterDownload;
+  blockCopy = block;
+  v11 = [downloadCopy valueForProperty:@"1"];
   v12 = [v11 isEqualToString:@"software"];
 
-  v13 = [v9 valueForProperty:@"1"];
+  v13 = [afterDownloadCopy valueForProperty:@"1"];
   v14 = [v13 isEqualToString:@"software"];
 
   if ((v12 & 1) == 0 && (v14 & 1) == 0)
   {
     v15.receiver = self;
     v15.super_class = SSDownloadManagerAppShim;
-    [(SSDownloadManager *)&v15 moveDownload:v8 afterDownload:v9 completionBlock:v10];
+    [(SSDownloadManager *)&v15 moveDownload:downloadCopy afterDownload:afterDownloadCopy completionBlock:blockCopy];
   }
 }
 
-- (void)moveDownload:(id)a3 beforeDownload:(id)a4 completionBlock:(id)a5
+- (void)moveDownload:(id)download beforeDownload:(id)beforeDownload completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 valueForProperty:@"1"];
+  downloadCopy = download;
+  beforeDownloadCopy = beforeDownload;
+  blockCopy = block;
+  v11 = [downloadCopy valueForProperty:@"1"];
   v12 = [v11 isEqualToString:@"software"];
 
-  v13 = [v9 valueForProperty:@"1"];
+  v13 = [beforeDownloadCopy valueForProperty:@"1"];
   v14 = [v13 isEqualToString:@"software"];
 
   if ((v12 & 1) == 0 && (v14 & 1) == 0)
   {
     v15.receiver = self;
     v15.super_class = SSDownloadManagerAppShim;
-    [(SSDownloadManager *)&v15 moveDownload:v8 beforeDownload:v9 completionBlock:v10];
+    [(SSDownloadManager *)&v15 moveDownload:downloadCopy beforeDownload:beforeDownloadCopy completionBlock:blockCopy];
   }
 }
 
-- (void)resumeDownloads:(id)a3 completionBlock:(id)a4
+- (void)resumeDownloads:(id)downloads completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__SSDownloadManagerAppShim_resumeDownloads_completionBlock___block_invoke;
   v8[3] = &unk_1E84B32E0;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(SSDownloadManagerAppShim *)self __app_filterDownloads:a3 withResult:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [(SSDownloadManagerAppShim *)self __app_filterDownloads:downloads withResult:v8];
 }
 
 void __60__SSDownloadManagerAppShim_resumeDownloads_completionBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -321,17 +321,17 @@ void __60__SSDownloadManagerAppShim_resumeDownloads_completionBlock___block_invo
   }
 }
 
-- (void)restartDownloads:(id)a3 completionBlock:(id)a4
+- (void)restartDownloads:(id)downloads completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __61__SSDownloadManagerAppShim_restartDownloads_completionBlock___block_invoke;
   v8[3] = &unk_1E84B32E0;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(SSDownloadManagerAppShim *)self __app_filterDownloads:a3 withResult:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [(SSDownloadManagerAppShim *)self __app_filterDownloads:downloads withResult:v8];
 }
 
 void __61__SSDownloadManagerAppShim_restartDownloads_completionBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -364,22 +364,22 @@ void __61__SSDownloadManagerAppShim_restartDownloads_completionBlock___block_inv
   [WeakRetained __app_dispatchBlock:*(a1 + 32) withError:v3];
 }
 
-- (void)setDownloads:(id)a3 forKinds:(id)a4 completionBlock:(id)a5
+- (void)setDownloads:(id)downloads forKinds:(id)kinds completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  downloadsCopy = downloads;
+  kindsCopy = kinds;
+  blockCopy = block;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __66__SSDownloadManagerAppShim_setDownloads_forKinds_completionBlock___block_invoke;
   v14[3] = &unk_1E84B3D10;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = downloadsCopy;
+  v16 = kindsCopy;
+  v17 = blockCopy;
+  v11 = kindsCopy;
+  v12 = downloadsCopy;
+  v13 = blockCopy;
   [(SSDownloadManagerAppShim *)self __app_filterDownloads:v12 withResult:v14];
 }
 
@@ -430,15 +430,15 @@ void __66__SSDownloadManagerAppShim_setDownloads_forKinds_completionBlock___bloc
   }
 }
 
-- (id)_copyDownloadsForMessage:(int64_t)a3 downloadIDs:(id)a4
+- (id)_copyDownloadsForMessage:(int64_t)message downloadIDs:(id)ds
 {
   v9.receiver = self;
   v9.super_class = SSDownloadManagerAppShim;
-  v5 = [(SSDownloadManager *)&v9 _copyDownloadsForMessage:a3 downloadIDs:a4];
+  v5 = [(SSDownloadManager *)&v9 _copyDownloadsForMessage:message downloadIDs:ds];
   v6 = [v5 indexesOfObjectsPassingTest:&__block_literal_global_46];
   [v5 removeObjectsAtIndexes:v6];
-  v7 = [(SSDownloadManagerAppShim *)self __app_getAllDownloads];
-  [v5 addObjectsFromArray:v7];
+  __app_getAllDownloads = [(SSDownloadManagerAppShim *)self __app_getAllDownloads];
+  [v5 addObjectsFromArray:__app_getAllDownloads];
 
   return v5;
 }
@@ -451,23 +451,23 @@ uint64_t __65__SSDownloadManagerAppShim__copyDownloadsForMessage_downloadIDs___b
   return v3;
 }
 
-- (void)_insertDownloads:(id)a3 before:(id)a4 after:(id)a5 completionBlock:(id)a6
+- (void)_insertDownloads:(id)downloads before:(id)before after:(id)after completionBlock:(id)block
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  beforeCopy = before;
+  afterCopy = after;
+  blockCopy = block;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __74__SSDownloadManagerAppShim__insertDownloads_before_after_completionBlock___block_invoke;
   v16[3] = &unk_1E84B3D80;
   v16[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v19 = v12;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
-  [(SSDownloadManagerAppShim *)self __app_filterDownloads:a3 withResult:v16];
+  v17 = beforeCopy;
+  v18 = afterCopy;
+  v19 = blockCopy;
+  v13 = blockCopy;
+  v14 = afterCopy;
+  v15 = beforeCopy;
+  [(SSDownloadManagerAppShim *)self __app_filterDownloads:downloads withResult:v16];
 }
 
 void __74__SSDownloadManagerAppShim__insertDownloads_before_after_completionBlock___block_invoke(id *a1, void *a2, void *a3)
@@ -519,18 +519,18 @@ void __74__SSDownloadManagerAppShim__insertDownloads_before_after_completionBloc
   }
 }
 
-- (void)_pauseDownloads:(id)a3 forced:(BOOL)a4 completionBlock:(id)a5
+- (void)_pauseDownloads:(id)downloads forced:(BOOL)forced completionBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__SSDownloadManagerAppShim__pauseDownloads_forced_completionBlock___block_invoke;
   v10[3] = &unk_1E84B3308;
   v10[4] = self;
-  v11 = v8;
-  v12 = a4;
-  v9 = v8;
-  [(SSDownloadManagerAppShim *)self __app_filterDownloads:a3 withResult:v10];
+  v11 = blockCopy;
+  forcedCopy = forced;
+  v9 = blockCopy;
+  [(SSDownloadManagerAppShim *)self __app_filterDownloads:downloads withResult:v10];
 }
 
 void __67__SSDownloadManagerAppShim__pauseDownloads_forced_completionBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -582,61 +582,61 @@ void __67__SSDownloadManagerAppShim__pauseDownloads_forced_completionBlock___blo
   }
 }
 
-- (void)_sendDownloadsChanged:(id)a3
+- (void)_sendDownloadsChanged:(id)changed
 {
   accessQueue = self->super._accessQueue;
-  v5 = a3;
+  changedCopy = changed;
   dispatch_assert_queue_V2(accessQueue);
-  [(SSDownloadManagerAppShim *)self __app_sendDownloadsChanged:v5 filterSoftware:1];
+  [(SSDownloadManagerAppShim *)self __app_sendDownloadsChanged:changedCopy filterSoftware:1];
 }
 
-- (void)__app_cancelDownloads:(id)a3 completionBlock:(id)a4
+- (void)__app_cancelDownloads:(id)downloads completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  downloadsCopy = downloads;
+  blockCopy = block;
+  if ([downloadsCopy count])
   {
-    v8 = [(SSDownloadManagerAppShim *)self __app_extractJobIDsFromSoftwareDownloads:v6];
+    v8 = [(SSDownloadManagerAppShim *)self __app_extractJobIDsFromSoftwareDownloads:downloadsCopy];
     jobManager = self->_jobManager;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __66__SSDownloadManagerAppShim___app_cancelDownloads_completionBlock___block_invoke;
     v10[3] = &unk_1E84B3DA8;
     v10[4] = self;
-    v11 = v7;
+    v11 = blockCopy;
     [(ASDJobManager *)jobManager cancelJobsWithIDs:v8 completionBlock:v10];
   }
 
   else
   {
-    [(SSDownloadManagerAppShim *)self __app_dispatchBlock:v7 withError:0];
+    [(SSDownloadManagerAppShim *)self __app_dispatchBlock:blockCopy withError:0];
   }
 }
 
-- (id)__app_convertOptions:(id)a3
+- (id)__app_convertOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = SSVAppstoreDaemonFramework();
   SSVWeakLinkedClassForString(&cfstr_Asdjobmanagero.isa, v4);
   v5 = objc_opt_new();
-  [v5 setShouldFilterExternalOriginatedDownloads:{objc_msgSend(v3, "shouldFilterExternalOriginatedDownloads")}];
-  v6 = [v3 persistenceIdentifier];
+  [v5 setShouldFilterExternalOriginatedDownloads:{objc_msgSend(optionsCopy, "shouldFilterExternalOriginatedDownloads")}];
+  persistenceIdentifier = [optionsCopy persistenceIdentifier];
 
-  [v5 setPersistenceIdentifier:v6];
+  [v5 setPersistenceIdentifier:persistenceIdentifier];
 
   return v5;
 }
 
-- (id)__app_downloadsForJobs:(id)a3
+- (id)__app_downloadsForJobs:(id)jobs
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  jobsCopy = jobs;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(jobsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = jobsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -671,33 +671,33 @@ void __67__SSDownloadManagerAppShim__pauseDownloads_forced_completionBlock___blo
   return v13;
 }
 
-- (void)__app_dispatchBlock:(id)a3 withError:(id)a4
+- (void)__app_dispatchBlock:(id)block withError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  blockCopy = block;
+  errorCopy = error;
+  if (blockCopy)
   {
     v7 = dispatch_get_global_queue(21, 0);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __58__SSDownloadManagerAppShim___app_dispatchBlock_withError___block_invoke;
     v8[3] = &unk_1E84AC338;
-    v10 = v5;
-    v9 = v6;
+    v10 = blockCopy;
+    v9 = errorCopy;
     dispatch_async(v7, v8);
   }
 }
 
-- (id)__app_extractJobIDsFromSoftwareDownloads:(id)a3
+- (id)__app_extractJobIDsFromSoftwareDownloads:(id)downloads
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  downloadsCopy = downloads;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = downloadsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -727,18 +727,18 @@ void __67__SSDownloadManagerAppShim__pauseDownloads_forced_completionBlock___blo
   return v11;
 }
 
-- (void)__app_filterDownloads:(id)a3 withResult:(id)a4
+- (void)__app_filterDownloads:(id)downloads withResult:(id)result
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v18 = a4;
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
-  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  downloadsCopy = downloads;
+  resultCopy = result;
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
+  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v5;
+  v8 = downloadsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -776,21 +776,21 @@ void __67__SSDownloadManagerAppShim__pauseDownloads_forced_completionBlock___blo
 
   v16 = [v6 copy];
   v17 = [v7 copy];
-  v18[2](v18, v16, v17);
+  resultCopy[2](resultCopy, v16, v17);
 }
 
-- (void)__app_finishDownloads:(id)a3
+- (void)__app_finishDownloads:(id)downloads
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  downloadsCopy = downloads;
+  if ([downloadsCopy count])
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = downloadsCopy;
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
@@ -862,11 +862,11 @@ intptr_t __49__SSDownloadManagerAppShim___app_getAllDownloads__block_invoke(uint
   return dispatch_semaphore_signal(v6);
 }
 
-- (void)__app_insertDownloads:(id)a3 before:(id)a4 after:(id)a5 completionBlock:(id)a6
+- (void)__app_insertDownloads:(id)downloads before:(id)before after:(id)after completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a6;
-  if ([v8 count])
+  downloadsCopy = downloads;
+  blockCopy = block;
+  if ([downloadsCopy count])
   {
     v10 = [(SSDownloadManagerAppShim *)self __app_newManifestWithType:0];
     v11 = [(SSDownloadManagerAppShim *)self __app_newManifestWithType:2];
@@ -879,21 +879,21 @@ intptr_t __49__SSDownloadManagerAppShim___app_getAllDownloads__block_invoke(uint
     v15 = v12;
     v13 = v10;
     v16 = v13;
-    [v8 enumerateObjectsUsingBlock:v14];
+    [downloadsCopy enumerateObjectsUsingBlock:v14];
     if ([v13 count])
     {
-      [(SSDownloadManagerAppShim *)self __app_installManifest:v13 completionBlock:v9];
+      [(SSDownloadManagerAppShim *)self __app_installManifest:v13 completionBlock:blockCopy];
     }
 
     if ([v12 count])
     {
-      [(SSDownloadManagerAppShim *)self __app_installManifest:v12 completionBlock:v9];
+      [(SSDownloadManagerAppShim *)self __app_installManifest:v12 completionBlock:blockCopy];
     }
   }
 
   else
   {
-    [(SSDownloadManagerAppShim *)self __app_dispatchBlock:v9 withError:0];
+    [(SSDownloadManagerAppShim *)self __app_dispatchBlock:blockCopy withError:0];
   }
 }
 
@@ -922,10 +922,10 @@ void __79__SSDownloadManagerAppShim___app_insertDownloads_before_after_completio
   [v11 addActivity:v14 withIdentifier:v13];
 }
 
-- (void)__app_installManifest:(id)a3 completionBlock:(id)a4
+- (void)__app_installManifest:(id)manifest completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  manifestCopy = manifest;
   v8 = SSVAppstoreDaemonFramework();
   v9 = [objc_alloc(SSVWeakLinkedClassForString(&cfstr_Asdinstallmani.isa v8))];
 
@@ -936,28 +936,28 @@ void __79__SSDownloadManagerAppShim___app_insertDownloads_before_after_completio
   v13[2] = __66__SSDownloadManagerAppShim___app_installManifest_completionBlock___block_invoke;
   v13[3] = &unk_1E84B3E20;
   v13[4] = self;
-  v14 = v6;
-  v12 = v6;
+  v14 = blockCopy;
+  v12 = blockCopy;
   [v11 startWithCompletionBlock:v13];
 }
 
-- (id)__app_newAssetWithDownloadAsset:(id)a3 assetType:(id)a4
+- (id)__app_newAssetWithDownloadAsset:(id)asset assetType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 _localValues];
+  assetCopy = asset;
+  typeCopy = type;
+  _localValues = [assetCopy _localValues];
   v8 = SSVAppstoreDaemonFramework();
   v9 = objc_alloc_init(SSVWeakLinkedClassForString(&cfstr_Asdjobasset.isa, v8));
-  v10 = [v7 objectForKeyedSubscript:@"e"];
+  v10 = [_localValues objectForKeyedSubscript:@"e"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v12 = v10;
-  if ((isKindOfClass & 1) != 0 || ([v9 assetType], v13 = objc_claimAutoreleasedReturnValue(), v13, v12 = v6, !v13))
+  if ((isKindOfClass & 1) != 0 || ([v9 assetType], v13 = objc_claimAutoreleasedReturnValue(), v13, v12 = typeCopy, !v13))
   {
     [v9 setAssetType:v12];
   }
 
-  v14 = [v7 objectForKeyedSubscript:@"c"];
+  v14 = [_localValues objectForKeyedSubscript:@"c"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -965,7 +965,7 @@ void __79__SSDownloadManagerAppShim___app_insertDownloads_before_after_completio
     [v9 setAssetURL:v14];
   }
 
-  v15 = [v7 objectForKeyedSubscript:@"3"];
+  v15 = [_localValues objectForKeyedSubscript:@"3"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -973,7 +973,7 @@ void __79__SSDownloadManagerAppShim___app_insertDownloads_before_after_completio
     [v9 setBytesTotal:v15];
   }
 
-  v16 = [v7 objectForKeyedSubscript:@"m"];
+  v16 = [_localValues objectForKeyedSubscript:@"m"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -981,7 +981,7 @@ void __79__SSDownloadManagerAppShim___app_insertDownloads_before_after_completio
     [v9 setExpectedDiskspace:v16];
   }
 
-  v17 = [v7 objectForKeyedSubscript:@"0"];
+  v17 = [_localValues objectForKeyedSubscript:@"0"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -989,7 +989,7 @@ void __79__SSDownloadManagerAppShim___app_insertDownloads_before_after_completio
     [v9 setHashArrayData:v17];
   }
 
-  v18 = [v7 objectForKeyedSubscript:@"o"];
+  v18 = [_localValues objectForKeyedSubscript:@"o"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -997,7 +997,7 @@ void __79__SSDownloadManagerAppShim___app_insertDownloads_before_after_completio
     [v9 setHashType:v18];
   }
 
-  v19 = [v7 objectForKeyedSubscript:@"1"];
+  v19 = [_localValues objectForKeyedSubscript:@"1"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1005,7 +1005,7 @@ void __79__SSDownloadManagerAppShim___app_insertDownloads_before_after_completio
     [v9 setNumberOfBytesToHash:v19];
   }
 
-  v20 = [v7 objectForKeyedSubscript:@"B"];
+  v20 = [_localValues objectForKeyedSubscript:@"B"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1013,7 +1013,7 @@ void __79__SSDownloadManagerAppShim___app_insertDownloads_before_after_completio
     [v9 setSinfs:v20];
   }
 
-  v21 = [v7 objectForKeyedSubscript:@"q"];
+  v21 = [_localValues objectForKeyedSubscript:@"q"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1021,7 +1021,7 @@ void __79__SSDownloadManagerAppShim___app_insertDownloads_before_after_completio
     [v9 setDPInfo:v21];
   }
 
-  v22 = [v7 objectForKeyedSubscript:@"x"];
+  v22 = [_localValues objectForKeyedSubscript:@"x"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1029,68 +1029,68 @@ void __79__SSDownloadManagerAppShim___app_insertDownloads_before_after_completio
     [v9 setInitialODRSize:v22];
   }
 
-  v23 = [v7 objectForKeyedSubscript:@"l"];
+  v23 = [_localValues objectForKeyedSubscript:@"l"];
 
   if (objc_opt_respondsToSelector())
   {
     [v9 setIsLocallyCacheable:{objc_msgSend(v23, "BOOLValue")}];
   }
 
-  v24 = [v7 objectForKeyedSubscript:@"9"];
+  v24 = [_localValues objectForKeyedSubscript:@"9"];
 
   if (objc_opt_respondsToSelector())
   {
     [v9 setIsExternal:{objc_msgSend(v24, "BOOLValue")}];
   }
 
-  v25 = [v7 objectForKeyedSubscript:@"k"];
+  v25 = [_localValues objectForKeyedSubscript:@"k"];
 
   if (objc_opt_respondsToSelector())
   {
     [v9 setIsZipStreamable:{objc_msgSend(v25, "BOOLValue")}];
   }
 
-  v26 = [v5 _localProperties];
-  v27 = v26;
-  if (v26)
+  _localProperties = [assetCopy _localProperties];
+  v27 = _localProperties;
+  if (_localProperties)
   {
-    v28 = [v26 URL];
-    v29 = [v28 absoluteString];
+    v28 = [_localProperties URL];
+    absoluteString = [v28 absoluteString];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v9 setAssetURL:v29];
+      [v9 setAssetURL:absoluteString];
     }
   }
 
   else
   {
-    v29 = v25;
+    absoluteString = v25;
   }
 
   return v9;
 }
 
-- (id)__app_newActivityWithDownload:(id)a3
+- (id)__app_newActivityWithDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   v5 = SSVAppstoreDaemonFramework();
   v6 = objc_alloc_init(SSVWeakLinkedClassForString(&cfstr_Asdjobactivity.isa, v5));
-  [(SSDownloadManagerAppShim *)self __app_setPropertiesForActivity:v6 withDownload:v4];
+  [(SSDownloadManagerAppShim *)self __app_setPropertiesForActivity:v6 withDownload:downloadCopy];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [v4 _localAssets];
+  _localAssets = [downloadCopy _localAssets];
 
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __58__SSDownloadManagerAppShim___app_newActivityWithDownload___block_invoke;
   v14 = &unk_1E84B3E48;
-  v15 = self;
+  selfCopy = self;
   v16 = v7;
   v9 = v7;
-  [v8 enumerateKeysAndObjectsUsingBlock:&v11];
+  [_localAssets enumerateKeysAndObjectsUsingBlock:&v11];
 
-  [v6 setAssets:{v9, v11, v12, v13, v14, v15}];
+  [v6 setAssets:{v9, v11, v12, v13, v14, selfCopy}];
 
   return v6;
 }
@@ -1136,7 +1136,7 @@ void __58__SSDownloadManagerAppShim___app_newActivityWithDownload___block_invoke
   }
 }
 
-- (id)__app_newManifestWithType:(int64_t)a3
+- (id)__app_newManifestWithType:(int64_t)type
 {
   v4 = SSVAppstoreDaemonFramework();
   v5 = [objc_alloc(SSVWeakLinkedClassForString(&cfstr_Asdjobmanifest.isa v4))];
@@ -1144,372 +1144,372 @@ void __58__SSDownloadManagerAppShim___app_newActivityWithDownload___block_invoke
   return v5;
 }
 
-- (void)__app_pauseDownloads:(id)a3 completionBlock:(id)a4
+- (void)__app_pauseDownloads:(id)downloads completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  downloadsCopy = downloads;
+  blockCopy = block;
+  if ([downloadsCopy count])
   {
-    v8 = [(SSDownloadManagerAppShim *)self __app_extractJobIDsFromSoftwareDownloads:v6];
+    v8 = [(SSDownloadManagerAppShim *)self __app_extractJobIDsFromSoftwareDownloads:downloadsCopy];
     jobManager = self->_jobManager;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __65__SSDownloadManagerAppShim___app_pauseDownloads_completionBlock___block_invoke;
     v10[3] = &unk_1E84B3DA8;
     v10[4] = self;
-    v11 = v7;
+    v11 = blockCopy;
     [(ASDJobManager *)jobManager pauseJobsWithIDs:v8 completionBlock:v10];
   }
 
   else
   {
-    [(SSDownloadManagerAppShim *)self __app_dispatchBlock:v7 withError:0];
+    [(SSDownloadManagerAppShim *)self __app_dispatchBlock:blockCopy withError:0];
   }
 }
 
-- (void)__app_resumeDownloads:(id)a3 completionBlock:(id)a4
+- (void)__app_resumeDownloads:(id)downloads completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  downloadsCopy = downloads;
+  blockCopy = block;
+  if ([downloadsCopy count])
   {
-    v8 = [(SSDownloadManagerAppShim *)self __app_extractJobIDsFromSoftwareDownloads:v6];
+    v8 = [(SSDownloadManagerAppShim *)self __app_extractJobIDsFromSoftwareDownloads:downloadsCopy];
     jobManager = self->_jobManager;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __66__SSDownloadManagerAppShim___app_resumeDownloads_completionBlock___block_invoke;
     v10[3] = &unk_1E84B3DA8;
     v10[4] = self;
-    v11 = v7;
+    v11 = blockCopy;
     [(ASDJobManager *)jobManager resumeJobsWithIDs:v8 completionBlock:v10];
   }
 
   else
   {
-    [(SSDownloadManagerAppShim *)self __app_dispatchBlock:v7 withError:0];
+    [(SSDownloadManagerAppShim *)self __app_dispatchBlock:blockCopy withError:0];
   }
 }
 
-- (void)__app_setPropertiesForActivity:(id)a3 withDownload:(id)a4
+- (void)__app_setPropertiesForActivity:(id)activity withDownload:(id)download
 {
-  v45 = a3;
-  v5 = a4;
-  v6 = [v5 _localValues];
-  v7 = [v6 objectForKeyedSubscript:@"3"];
+  activityCopy = activity;
+  downloadCopy = download;
+  _localValues = [downloadCopy _localValues];
+  v7 = [_localValues objectForKeyedSubscript:@"3"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setArtistID:v7];
+    [activityCopy setArtistID:v7];
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"d"];
-
-  objc_opt_class();
-  if (objc_opt_isKindOfClass())
-  {
-    [v45 setArtistName:v8];
-  }
-
-  v9 = [v6 objectForKeyedSubscript:@"27"];
+  v8 = [_localValues objectForKeyedSubscript:@"d"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setBetaExternalVersionIdentifier:v9];
+    [activityCopy setArtistName:v8];
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"c"];
+  v9 = [_localValues objectForKeyedSubscript:@"27"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setBundleID:v10];
+    [activityCopy setBetaExternalVersionIdentifier:v9];
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"20"];
+  v10 = [_localValues objectForKeyedSubscript:@"c"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setBundleVersion:v11];
+    [activityCopy setBundleID:v10];
   }
 
-  v12 = [v6 objectForKeyedSubscript:@"04"];
+  v11 = [_localValues objectForKeyedSubscript:@"20"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setBuyParams:v12];
+    [activityCopy setBundleVersion:v11];
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"P"];
+  v12 = [_localValues objectForKeyedSubscript:@"04"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setCancelDownloadURL:v13];
+    [activityCopy setBuyParams:v12];
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"10"];
+  v13 = [_localValues objectForKeyedSubscript:@"P"];
+
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    [activityCopy setCancelDownloadURL:v13];
+  }
+
+  v14 = [_localValues objectForKeyedSubscript:@"10"];
 
   if (objc_opt_respondsToSelector())
   {
-    [v45 setCancelIfDuplicate:{objc_msgSend(v14, "BOOLValue")}];
+    [activityCopy setCancelIfDuplicate:{objc_msgSend(v14, "BOOLValue")}];
   }
 
-  v15 = [v6 objectForKeyedSubscript:@"17"];
+  v15 = [_localValues objectForKeyedSubscript:@"17"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setClientID:v15];
+    [activityCopy setClientID:v15];
   }
 
-  v16 = [v6 objectForKeyedSubscript:@"f"];
+  v16 = [_localValues objectForKeyedSubscript:@"f"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setCollectionName:v16];
+    [activityCopy setCollectionName:v16];
   }
 
-  v17 = [v6 objectForKeyedSubscript:@"EE"];
+  v17 = [_localValues objectForKeyedSubscript:@"EE"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setEnableExtensions:v17];
+    [activityCopy setEnableExtensions:v17];
   }
 
-  v18 = [v6 objectForKeyedSubscript:@"i"];
+  v18 = [_localValues objectForKeyedSubscript:@"i"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setGenre:v18];
+    [activityCopy setGenre:v18];
   }
 
-  v19 = [v6 objectForKeyedSubscript:@"6"];
+  v19 = [_localValues objectForKeyedSubscript:@"6"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setGenreID:v19];
+    [activityCopy setGenreID:v19];
   }
 
-  v20 = [v6 objectForKeyedSubscript:@"HM"];
+  v20 = [_localValues objectForKeyedSubscript:@"HM"];
 
   if (objc_opt_respondsToSelector())
   {
-    [v45 setHasMessagesExtension:{objc_msgSend(v20, "BOOLValue")}];
+    [activityCopy setHasMessagesExtension:{objc_msgSend(v20, "BOOLValue")}];
   }
 
-  v21 = [v6 objectForKeyedSubscript:@"12"];
+  v21 = [_localValues objectForKeyedSubscript:@"12"];
 
   if (objc_opt_respondsToSelector())
   {
-    [v45 setExplicitContent:{objc_msgSend(v21, "BOOLValue")}];
+    [activityCopy setExplicitContent:{objc_msgSend(v21, "BOOLValue")}];
   }
 
-  v22 = [v6 objectForKeyedSubscript:@"D"];
+  v22 = [_localValues objectForKeyedSubscript:@"D"];
 
   if (objc_opt_respondsToSelector())
   {
-    [v45 setIsAutomatic:{objc_msgSend(v22, "integerValue") != 0}];
-    [v45 setIsUpdate:{objc_msgSend(v22, "integerValue") == 2}];
+    [activityCopy setIsAutomatic:{objc_msgSend(v22, "integerValue") != 0}];
+    [activityCopy setIsUpdate:{objc_msgSend(v22, "integerValue") == 2}];
   }
 
-  v23 = [v6 objectForKeyedSubscript:@"vp"];
+  v23 = [_localValues objectForKeyedSubscript:@"vp"];
 
   if (objc_opt_respondsToSelector())
   {
-    [v45 setIsDeviceBasedVPP:{objc_msgSend(v23, "BOOLValue")}];
+    [activityCopy setIsDeviceBasedVPP:{objc_msgSend(v23, "BOOLValue")}];
   }
 
-  v24 = [v6 objectForKeyedSubscript:@"03"];
+  v24 = [_localValues objectForKeyedSubscript:@"03"];
 
   if (objc_opt_respondsToSelector())
   {
-    [v45 setIsInQueue:{objc_msgSend(v24, "BOOLValue")}];
+    [activityCopy setIsInQueue:{objc_msgSend(v24, "BOOLValue")}];
   }
 
-  v25 = [v6 objectForKeyedSubscript:@"21"];
+  v25 = [_localValues objectForKeyedSubscript:@"21"];
 
   if (objc_opt_respondsToSelector())
   {
-    [v45 setIsPurchasedRedownload:{objc_msgSend(v25, "BOOLValue")}];
+    [activityCopy setIsPurchasedRedownload:{objc_msgSend(v25, "BOOLValue")}];
   }
 
-  v26 = [v6 objectForKeyedSubscript:@"V"];
+  v26 = [_localValues objectForKeyedSubscript:@"V"];
 
   if (objc_opt_respondsToSelector())
   {
-    [v45 setIsRestore:{objc_msgSend(v26, "BOOLValue")}];
+    [activityCopy setIsRestore:{objc_msgSend(v26, "BOOLValue")}];
   }
 
-  v27 = [v6 objectForKeyedSubscript:@"7"];
+  v27 = [_localValues objectForKeyedSubscript:@"7"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setItemID:v27];
+    [activityCopy setItemID:v27];
   }
 
-  v28 = [v6 objectForKeyedSubscript:@"1"];
+  v28 = [_localValues objectForKeyedSubscript:@"1"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setKind:v28];
+    [activityCopy setKind:v28];
   }
 
-  v29 = [v6 objectForKeyedSubscript:@"LP"];
+  v29 = [_localValues objectForKeyedSubscript:@"LP"];
 
   if (objc_opt_respondsToSelector())
   {
-    [v45 setLaunchProhibited:{objc_msgSend(v29, "BOOLValue")}];
+    [activityCopy setLaunchProhibited:{objc_msgSend(v29, "BOOLValue")}];
   }
 
-  v30 = [v6 objectForKeyedSubscript:@"MA"];
+  v30 = [_localValues objectForKeyedSubscript:@"MA"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setMessagesArtworkURL:v30];
+    [activityCopy setMessagesArtworkURL:v30];
   }
 
-  v31 = [v6 objectForKeyedSubscript:@"8"];
+  v31 = [_localValues objectForKeyedSubscript:@"8"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setPurchaseDate:v31];
+    [activityCopy setPurchaseDate:v31];
   }
 
-  v32 = [v6 objectForKeyedSubscript:@"q"];
+  v32 = [_localValues objectForKeyedSubscript:@"q"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setReleaseDate:v32];
+    [activityCopy setReleaseDate:v32];
   }
 
-  v33 = [v6 objectForKeyedSubscript:@"U"];
+  v33 = [_localValues objectForKeyedSubscript:@"U"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setStoreAccountID:v33];
+    [activityCopy setStoreAccountID:v33];
   }
 
-  v34 = [v6 objectForKeyedSubscript:@"Z"];
+  v34 = [_localValues objectForKeyedSubscript:@"Z"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setStoreAccountName:v34];
+    [activityCopy setStoreAccountName:v34];
   }
 
-  v35 = [v6 objectForKeyedSubscript:@"F"];
+  v35 = [_localValues objectForKeyedSubscript:@"F"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setStoreDownloadKey:v35];
+    [activityCopy setStoreDownloadKey:v35];
   }
 
-  v36 = [v6 objectForKeyedSubscript:@"9"];
+  v36 = [_localValues objectForKeyedSubscript:@"9"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setStoreTransactionID:v36];
+    [activityCopy setStoreTransactionID:v36];
   }
 
-  v37 = [v6 objectForKeyedSubscript:@"b"];
+  v37 = [_localValues objectForKeyedSubscript:@"b"];
 
   if (objc_opt_respondsToSelector())
   {
-    [v45 setSoftwareIconNeedsShine:{objc_msgSend(v37, "BOOLValue") ^ 1}];
+    [activityCopy setSoftwareIconNeedsShine:{objc_msgSend(v37, "BOOLValue") ^ 1}];
   }
 
-  v38 = [v6 objectForKeyedSubscript:@"G"];
+  v38 = [_localValues objectForKeyedSubscript:@"G"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setThumbnailURL:v38];
+    [activityCopy setThumbnailURL:v38];
   }
 
-  v39 = [v6 objectForKeyedSubscript:@"2"];
+  v39 = [_localValues objectForKeyedSubscript:@"2"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setTitle:v39];
+    [activityCopy setTitle:v39];
   }
 
-  v40 = [v6 objectForKeyedSubscript:@"T"];
+  v40 = [_localValues objectForKeyedSubscript:@"T"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setStorefront:v40];
+    [activityCopy setStorefront:v40];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v41 = [v40 stringValue];
-    [v45 setStorefront:v41];
+    stringValue = [v40 stringValue];
+    [activityCopy setStorefront:stringValue];
   }
 
-  v42 = [v6 objectForKeyedSubscript:@"R"];
+  v42 = [_localValues objectForKeyedSubscript:@"R"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setSoftwareVersionExternalIdentifier:v42];
+    [activityCopy setSoftwareVersionExternalIdentifier:v42];
   }
 
-  v43 = [v6 objectForKeyedSubscript:@"22"];
+  v43 = [_localValues objectForKeyedSubscript:@"22"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setStoreCohort:v43];
+    [activityCopy setStoreCohort:v43];
   }
 
-  v44 = [v6 objectForKeyedSubscript:@"26"];
+  v44 = [_localValues objectForKeyedSubscript:@"26"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v45 setVariantID:v44];
+    [activityCopy setVariantID:v44];
   }
 }
 
-- (void)__app_sendDownloadsChanged:(id)a3 filterSoftware:(BOOL)a4
+- (void)__app_sendDownloadsChanged:(id)changed filterSoftware:(BOOL)software
 {
-  v4 = a4;
+  softwareCopy = software;
   accessQueue = self->super._accessQueue;
-  v7 = a3;
+  changedCopy = changed;
   dispatch_assert_queue_V2(accessQueue);
   [(SSDownloadManager *)self _resetAllDownloads];
-  if (v4)
+  if (softwareCopy)
   {
-    v8 = [v7 objectsPassingTest:&__block_literal_global_66];
+    v8 = [changedCopy objectsPassingTest:&__block_literal_global_66];
 
     v10.receiver = self;
     v10.super_class = SSDownloadManagerAppShim;
     [(SSDownloadManager *)&v10 _sendDownloadsChanged:v8];
-    v7 = v8;
+    changedCopy = v8;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SSDownloadManagerAppShim;
-    [(SSDownloadManager *)&v9 _sendDownloadsChanged:v7];
+    [(SSDownloadManager *)&v9 _sendDownloadsChanged:changedCopy];
   }
 }
 

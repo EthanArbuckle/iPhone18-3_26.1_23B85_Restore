@@ -1,38 +1,38 @@
 @interface STKStickerHelper
-+ (id)ckAttributionInfoFromSticker:(id)a3;
++ (id)ckAttributionInfoFromSticker:(id)sticker;
 @end
 
 @implementation STKStickerHelper
 
-+ (id)ckAttributionInfoFromSticker:(id)a3
++ (id)ckAttributionInfoFromSticker:(id)sticker
 {
-  v3 = a3;
+  stickerCopy = sticker;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 attributionInfo];
+    attributionInfo = [stickerCopy attributionInfo];
     v5 = [NSMutableDictionary dictionaryWithCapacity:3];
-    v6 = [v4 adamID];
+    adamID = [attributionInfo adamID];
 
-    if (v6)
+    if (adamID)
     {
-      v7 = [v4 adamID];
-      [v5 setObject:v7 forKeyedSubscript:@"adam-id"];
+      adamID2 = [attributionInfo adamID];
+      [v5 setObject:adamID2 forKeyedSubscript:@"adam-id"];
     }
 
-    v8 = [v4 bundleIdentifier];
+    bundleIdentifier = [attributionInfo bundleIdentifier];
 
-    if (v8)
+    if (bundleIdentifier)
     {
-      v9 = [v4 bundleIdentifier];
-      [v5 setObject:v9 forKeyedSubscript:@"bundle-id"];
+      bundleIdentifier2 = [attributionInfo bundleIdentifier];
+      [v5 setObject:bundleIdentifier2 forKeyedSubscript:@"bundle-id"];
     }
 
-    v10 = [v4 name];
+    name = [attributionInfo name];
 
-    if (v10)
+    if (name)
     {
-      v11 = [v4 name];
-      [v5 setObject:v11 forKeyedSubscript:@"name"];
+      name2 = [attributionInfo name];
+      [v5 setObject:name2 forKeyedSubscript:@"name"];
     }
   }
 

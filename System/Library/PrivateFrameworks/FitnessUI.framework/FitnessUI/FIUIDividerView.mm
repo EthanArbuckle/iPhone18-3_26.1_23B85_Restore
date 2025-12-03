@@ -1,18 +1,18 @@
 @interface FIUIDividerView
 - (CGSize)intrinsicContentSize;
 - (CGSize)sizeThatFits:(CGSize)result;
-- (FIUIDividerView)initWithFrame:(CGRect)a3;
+- (FIUIDividerView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)edgeInsets;
 - (void)layoutSubviews;
 @end
 
 @implementation FIUIDividerView
 
-- (FIUIDividerView)initWithFrame:(CGRect)a3
+- (FIUIDividerView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = FIUIDividerView;
-  v3 = [(FIUIDividerView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FIUIDividerView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
@@ -48,8 +48,8 @@
   v4 = v3;
   [(FIUIDividerView *)self edgeInsets];
   v6 = v4 + v5;
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v7 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   [(FIUIDividerView *)self sizeThatFits:v8 - v6, 1.79769313e308];
   v10 = v9;
   v12 = v11;
@@ -71,8 +71,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(FIUIDividerView *)self imageView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  imageView = [(FIUIDividerView *)self imageView];
+  [imageView setFrame:{v4, v6, v8, v10}];
 }
 
 - (UIEdgeInsets)edgeInsets

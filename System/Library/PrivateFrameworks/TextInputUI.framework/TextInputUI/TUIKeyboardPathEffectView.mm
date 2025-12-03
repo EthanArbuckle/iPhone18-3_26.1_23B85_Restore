@@ -1,13 +1,13 @@
 @interface TUIKeyboardPathEffectView
 - ($01BB1521EC52D44A8E7628F5261DCEC8)_currentThemeSettings;
-- (TUIKeyboardPathEffectView)initWithFrame:(CGRect)a3;
+- (TUIKeyboardPathEffectView)initWithFrame:(CGRect)frame;
 - (id)_currentPath;
 - (id)_pushNewPath;
 - (id)pathsToRender;
 - (int64_t)keyboardAppearance;
-- (void)_addDrawingPoint:(CGPoint)a3 force:(double)a4 sentinel:(BOOL)a5;
+- (void)_addDrawingPoint:(CGPoint)point force:(double)force sentinel:(BOOL)sentinel;
 - (void)_clearPointInterpolators;
-- (void)addPoint:(CGPoint)a3 force:(double)a4 timestamp:(double)a5;
+- (void)addPoint:(CGPoint)point force:(double)force timestamp:(double)timestamp;
 - (void)buildOut;
 - (void)createMTKViewIfNecessary;
 - (void)didMoveToWindow;
@@ -39,8 +39,8 @@
   v6 = v5;
   if ([MEMORY[0x1E69DCBB8] isKeyboardProcess])
   {
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v9 = v8;
 
     v10 = fmax(v9, 1.0);
@@ -168,11 +168,11 @@ LABEL_31:
 
 - (int64_t)keyboardAppearance
 {
-  v2 = [MEMORY[0x1E69DCBE0] activeInstance];
-  v3 = [v2 textInputTraits];
-  v4 = [v3 keyboardAppearance];
+  activeInstance = [MEMORY[0x1E69DCBE0] activeInstance];
+  textInputTraits = [activeInstance textInputTraits];
+  keyboardAppearance = [textInputTraits keyboardAppearance];
 
-  return v4;
+  return keyboardAppearance;
 }
 
 - (void)reset
@@ -188,75 +188,75 @@ LABEL_31:
 {
   self->_done = 1;
   [(TUIKeyboardPathEffectView *)self _clearPointInterpolators];
-  v3 = [(TUIKeyboardPathEffectView *)self _pushNewPath];
+  _pushNewPath = [(TUIKeyboardPathEffectView *)self _pushNewPath];
 }
 
 - (void)_clearPointInterpolators
 {
-  v2 = [(TUIKeyboardPathEffectView *)self pointInterpolator];
-  [v2 clear];
+  pointInterpolator = [(TUIKeyboardPathEffectView *)self pointInterpolator];
+  [pointInterpolator clear];
 }
 
-- (void)addPoint:(CGPoint)a3 force:(double)a4 timestamp:(double)a5
+- (void)addPoint:(CGPoint)point force:(double)force timestamp:(double)timestamp
 {
-  y = a3.y;
-  x = a3.x;
-  [(TUIKeyboardPathEffectView *)self createMTKViewIfNecessary:a3.x];
-  v8 = [(TUIKeyboardPathEffectView *)self pointInterpolator];
-  [v8 addPoint:{x, y, 1.0}];
+  y = point.y;
+  x = point.x;
+  [(TUIKeyboardPathEffectView *)self createMTKViewIfNecessary:point.x];
+  pointInterpolator = [(TUIKeyboardPathEffectView *)self pointInterpolator];
+  [pointInterpolator addPoint:{x, y, 1.0}];
 }
 
-- (void)_addDrawingPoint:(CGPoint)a3 force:(double)a4 sentinel:(BOOL)a5
+- (void)_addDrawingPoint:(CGPoint)point force:(double)force sentinel:(BOOL)sentinel
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
+  sentinelCopy = sentinel;
+  y = point.y;
+  x = point.x;
   Current = CFAbsoluteTimeGetCurrent();
   if (self->_startTime == 0.0)
   {
     self->_startTime = Current;
   }
 
-  v11 = [(TUIKeyboardPathEffectView *)self _currentPath];
-  if (!v11)
+  _currentPath = [(TUIKeyboardPathEffectView *)self _currentPath];
+  if (!_currentPath)
   {
-    v11 = [(TUIKeyboardPathEffectView *)self _pushNewPath];
+    _currentPath = [(TUIKeyboardPathEffectView *)self _pushNewPath];
   }
 
-  v21 = v11;
-  v12 = [v11 nonSentinelPoints];
-  v13 = [v12 lastObject];
+  v21 = _currentPath;
+  nonSentinelPoints = [_currentPath nonSentinelPoints];
+  lastObject = [nonSentinelPoints lastObject];
 
   v14 = objc_alloc_init(_TUIPathPoint);
   [(_TUIPathPoint *)v14 setPoint:x, y];
-  [(_TUIPathPoint *)v14 setForce:a4];
+  [(_TUIPathPoint *)v14 setForce:force];
   [(_TUIPathPoint *)v14 setRelativeTime:Current - self->_startTime];
   [(_TUIPathPoint *)v14 setAbsoluteTime:Current];
-  [(_TUIPathPoint *)v14 setSentinelPoint:v5];
+  [(_TUIPathPoint *)v14 setSentinelPoint:sentinelCopy];
   [(_TUIPathPoint *)v14 setLength:0.0];
-  if (v13 && !v5)
+  if (lastObject && !sentinelCopy)
   {
-    [v13 point];
+    [lastObject point];
     v17 = hypot(x - v15, y - v16);
-    [v13 length];
+    [lastObject length];
     [(_TUIPathPoint *)v14 setLength:v17 + v18];
   }
 
-  if (!v5)
+  if (!sentinelCopy)
   {
-    v19 = [v21 nonSentinelPoints];
-    [v19 addObject:v14];
+    nonSentinelPoints2 = [v21 nonSentinelPoints];
+    [nonSentinelPoints2 addObject:v14];
   }
 
-  v20 = [(TUIKeyboardPathEffectView *)self renderer];
-  [v20 setPaused:0];
+  renderer = [(TUIKeyboardPathEffectView *)self renderer];
+  [renderer setPaused:0];
 }
 
 - (void)updatePaths
 {
   v37 = *MEMORY[0x1E69E9840];
-  v2 = [(TUIKeyboardPathEffectView *)self paths];
-  v3 = [v2 count];
+  paths = [(TUIKeyboardPathEffectView *)self paths];
+  v3 = [paths count];
 
   if (v3 && (v3 != 1 || (-[TUIKeyboardPathEffectView _currentPath](self, "_currentPath"), v4 = objc_claimAutoreleasedReturnValue(), [v4 nonSentinelPoints], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v4, v6)))
   {
@@ -281,24 +281,24 @@ LABEL_31:
           }
 
           v11 = *(*(&v32 + 1) + 8 * i);
-          v12 = [v11 nonSentinelPoints];
-          v13 = [v12 count];
+          nonSentinelPoints = [v11 nonSentinelPoints];
+          v13 = [nonSentinelPoints count];
 
           if (v13)
           {
-            v14 = [v11 effectiveStartIndexBasedOnLength];
+            effectiveStartIndexBasedOnLength = [v11 effectiveStartIndexBasedOnLength];
             Current = CFAbsoluteTimeGetCurrent();
-            v16 = [MEMORY[0x1E696AD50] indexSet];
-            v17 = [v11 nonSentinelPoints];
-            v18 = [v17 count];
+            indexSet = [MEMORY[0x1E696AD50] indexSet];
+            nonSentinelPoints2 = [v11 nonSentinelPoints];
+            v18 = [nonSentinelPoints2 count];
 
-            v19 = v14;
-            if (v14 < v18)
+            v19 = effectiveStartIndexBasedOnLength;
+            if (effectiveStartIndexBasedOnLength < v18)
             {
               while (1)
               {
-                v20 = [v11 nonSentinelPoints];
-                v21 = [v20 objectAtIndex:v19];
+                nonSentinelPoints3 = [v11 nonSentinelPoints];
+                v21 = [nonSentinelPoints3 objectAtIndex:v19];
 
                 if (!v21)
                 {
@@ -312,7 +312,7 @@ LABEL_31:
                   goto LABEL_15;
                 }
 
-                [v16 addIndex:v19];
+                [indexSet addIndex:v19];
 LABEL_16:
 
                 if (v18 == ++v19)
@@ -328,16 +328,16 @@ LABEL_15:
             }
 
 LABEL_17:
-            [v16 addIndexesInRange:{0, v14}];
-            v24 = [v11 nonSentinelPoints];
-            [v24 removeObjectsAtIndexes:v16];
+            [indexSet addIndexesInRange:{0, effectiveStartIndexBasedOnLength}];
+            nonSentinelPoints4 = [v11 nonSentinelPoints];
+            [nonSentinelPoints4 removeObjectsAtIndexes:indexSet];
           }
 
           else
           {
-            v25 = [(TUIKeyboardPathEffectView *)self _currentPath];
+            _currentPath = [(TUIKeyboardPathEffectView *)self _currentPath];
 
-            if (v11 != v25)
+            if (v11 != _currentPath)
             {
               [v28 addObject:v11];
             }
@@ -350,9 +350,9 @@ LABEL_17:
       while (v8);
     }
 
-    v26 = [(TUIKeyboardPathEffectView *)self paths];
-    v27 = [v28 allObjects];
-    [v26 removeObjectsInArray:v27];
+    paths2 = [(TUIKeyboardPathEffectView *)self paths];
+    allObjects = [v28 allObjects];
+    [paths2 removeObjectsInArray:allObjects];
 
     [(TUIKeyboardPathEffectView *)self setNeedsDisplay];
   }
@@ -366,34 +366,34 @@ LABEL_17:
 
 - (id)_currentPath
 {
-  v2 = [(TUIKeyboardPathEffectView *)self paths];
-  v3 = [v2 lastObject];
+  paths = [(TUIKeyboardPathEffectView *)self paths];
+  lastObject = [paths lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (id)_pushNewPath
 {
   v3 = objc_alloc_init(_TUIPointQueue);
-  v4 = [(TUIKeyboardPathEffectView *)self paths];
-  [v4 addObject:v3];
+  paths = [(TUIKeyboardPathEffectView *)self paths];
+  [paths addObject:v3];
 
   return v3;
 }
 
 - (void)didMoveToWindow
 {
-  v2 = [(TUIKeyboardPathEffectView *)self renderer];
-  [v2 setPaused:1];
+  renderer = [(TUIKeyboardPathEffectView *)self renderer];
+  [renderer setPaused:1];
 }
 
 - (void)createMTKViewIfNecessary
 {
   if (![(TUIKeyboardPathEffectView *)self createdMTKView])
   {
-    v3 = [(TUIKeyboardPathEffectView *)self _currentPath];
-    v4 = [v3 nonSentinelPoints];
-    v5 = [v4 count];
+    _currentPath = [(TUIKeyboardPathEffectView *)self _currentPath];
+    nonSentinelPoints = [_currentPath nonSentinelPoints];
+    v5 = [nonSentinelPoints count];
 
     if (v5)
     {
@@ -447,20 +447,20 @@ void __53__TUIKeyboardPathEffectView_createMTKViewIfNecessary__block_invoke_2(ui
   [v12 setDatasource:v11];
 }
 
-- (TUIKeyboardPathEffectView)initWithFrame:(CGRect)a3
+- (TUIKeyboardPathEffectView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = TUIKeyboardPathEffectView;
-  v3 = [(TUIKeyboardPathEffectView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUIKeyboardPathEffectView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(TUIKeyboardPathEffectView *)v3 setUserInteractionEnabled:0];
-    v5 = [(TUIKeyboardPathEffectView *)v4 layer];
-    [v5 setAllowsHitTesting:0];
+    layer = [(TUIKeyboardPathEffectView *)v4 layer];
+    [layer setAllowsHitTesting:0];
 
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [(TUIKeyboardPathEffectView *)v4 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(TUIKeyboardPathEffectView *)v4 setBackgroundColor:clearColor];
 
     [(TUIKeyboardPathEffectView *)v4 setIncreasedContrastEnabled:UIAccessibilityDarkerSystemColorsEnabled()];
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -478,8 +478,8 @@ void __53__TUIKeyboardPathEffectView_createMTKViewIfNecessary__block_invoke_2(ui
     v10 = objc_alloc_init(MEMORY[0x1E696AD50]);
     [(TUIKeyboardPathEffectView *)v4 setPointDecayQueue:v10];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v4 selector:sel_accessibilityValueChanged_ name:*MEMORY[0x1E69DD8B8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_accessibilityValueChanged_ name:*MEMORY[0x1E69DD8B8] object:0];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);

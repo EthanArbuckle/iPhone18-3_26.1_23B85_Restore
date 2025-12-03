@@ -1,60 +1,60 @@
 @interface MPCAssistantPlaybackQueue
-- (MPCAssistantPlaybackQueue)initWithContextID:(id)a3;
+- (MPCAssistantPlaybackQueue)initWithContextID:(id)d;
 - (_MRSystemAppPlaybackQueue)createRemotePlaybackQueue;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)getPlaybackQueueWithDestination:(id)a3 completion:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)getPlaybackQueueWithDestination:(id)destination completion:(id)completion;
 @end
 
 @implementation MPCAssistantPlaybackQueue
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(MPCAssistantPlaybackQueue *)self contextID];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  contextID = [(MPCAssistantPlaybackQueue *)self contextID];
   v6 = *(v4 + 16);
-  *(v4 + 16) = v5;
+  *(v4 + 16) = contextID;
 
   *(v4 + 8) = [(MPCAssistantPlaybackQueue *)self shouldOverrideManuallyCuratedQueue];
   *(v4 + 9) = [(MPCAssistantPlaybackQueue *)self shouldImmediatelyStartPlayback];
-  v7 = [(MPCAssistantPlaybackQueue *)self siriRecommendationID];
+  siriRecommendationID = [(MPCAssistantPlaybackQueue *)self siriRecommendationID];
   v8 = *(v4 + 24);
-  *(v4 + 24) = v7;
+  *(v4 + 24) = siriRecommendationID;
 
-  v9 = [(MPCAssistantPlaybackQueue *)self siriAssetInfo];
+  siriAssetInfo = [(MPCAssistantPlaybackQueue *)self siriAssetInfo];
   v10 = *(v4 + 32);
-  *(v4 + 32) = v9;
+  *(v4 + 32) = siriAssetInfo;
 
-  v11 = [(MPCAssistantPlaybackQueue *)self featureName];
+  featureName = [(MPCAssistantPlaybackQueue *)self featureName];
   v12 = *(v4 + 40);
-  *(v4 + 40) = v11;
+  *(v4 + 40) = featureName;
 
-  v13 = [(MPCAssistantPlaybackQueue *)self queueGroupingID];
+  queueGroupingID = [(MPCAssistantPlaybackQueue *)self queueGroupingID];
   v14 = *(v4 + 48);
-  *(v4 + 48) = v13;
+  *(v4 + 48) = queueGroupingID;
 
-  v15 = [(MPCAssistantPlaybackQueue *)self siriWHAMetricsInfo];
+  siriWHAMetricsInfo = [(MPCAssistantPlaybackQueue *)self siriWHAMetricsInfo];
   v16 = *(v4 + 56);
-  *(v4 + 56) = v15;
+  *(v4 + 56) = siriWHAMetricsInfo;
 
-  v17 = [(MPCAssistantPlaybackQueue *)self userIdentity];
+  userIdentity = [(MPCAssistantPlaybackQueue *)self userIdentity];
   v18 = *(v4 + 64);
-  *(v4 + 64) = v17;
+  *(v4 + 64) = userIdentity;
 
-  v19 = [(MPCAssistantPlaybackQueue *)self homeKitUserIdentifier];
+  homeKitUserIdentifier = [(MPCAssistantPlaybackQueue *)self homeKitUserIdentifier];
   v20 = *(v4 + 72);
-  *(v4 + 72) = v19;
+  *(v4 + 72) = homeKitUserIdentifier;
 
   return v4;
 }
 
 - (_MRSystemAppPlaybackQueue)createRemotePlaybackQueue
 {
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  v4 = [v3 threadDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"getPlaybackQueue-async"];
-  v6 = [v5 BOOLValue];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v5 = [threadDictionary objectForKeyedSubscript:@"getPlaybackQueue-async"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     return 0;
   }
@@ -94,31 +94,31 @@ void __54__MPCAssistantPlaybackQueue_createRemotePlaybackQueue__block_invoke(uin
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)getPlaybackQueueWithDestination:(id)a3 completion:(id)a4
+- (void)getPlaybackQueueWithDestination:(id)destination completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(MPCAssistantPlaybackQueue *)self createRemotePlaybackQueue];
-  v7 = [MEMORY[0x1E696AF00] currentThread];
-  v8 = [v7 threadDictionary];
-  [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"getPlaybackQueue-async"];
+  completionCopy = completion;
+  createRemotePlaybackQueue = [(MPCAssistantPlaybackQueue *)self createRemotePlaybackQueue];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  [threadDictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"getPlaybackQueue-async"];
 
-  v11 = [MEMORY[0x1E6970900] queueWithMediaRemotePlaybackQueue:v6];
-  v9 = [MEMORY[0x1E696AF00] currentThread];
-  v10 = [v9 threadDictionary];
-  [v10 setObject:0 forKeyedSubscript:@"getPlaybackQueue-async"];
+  v11 = [MEMORY[0x1E6970900] queueWithMediaRemotePlaybackQueue:createRemotePlaybackQueue];
+  currentThread2 = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary2 = [currentThread2 threadDictionary];
+  [threadDictionary2 setObject:0 forKeyedSubscript:@"getPlaybackQueue-async"];
 
-  v5[2](v5, v11, 0);
+  completionCopy[2](completionCopy, v11, 0);
 }
 
-- (MPCAssistantPlaybackQueue)initWithContextID:(id)a3
+- (MPCAssistantPlaybackQueue)initWithContextID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = MPCAssistantPlaybackQueue;
   v5 = [(MPCAssistantPlaybackQueue *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     contextID = v5->_contextID;
     v5->_contextID = v6;
   }

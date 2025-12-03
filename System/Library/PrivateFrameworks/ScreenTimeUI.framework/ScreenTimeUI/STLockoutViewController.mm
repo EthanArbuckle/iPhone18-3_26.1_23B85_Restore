@@ -1,28 +1,28 @@
 @interface STLockoutViewController
-+ (id)_applicationNameForBundleIdentifier:(id)a3;
-+ (id)_applicationNameForWebsiteURL:(id)a3;
-+ (id)_bundleIdentifierForWebsiteURL:(id)a3;
-+ (id)_messageForCategoryIdentifier:(id)a3;
-+ (id)lockoutViewControllerWithBundleIdentifier:(id)a3;
-+ (id)lockoutViewControllerWithBundleIdentifier:(id)a3 contactsHandles:(id)a4 contactNameByHandle:(id)a5;
-+ (id)lockoutViewControllerWithBundleIdentifier:(id)a3 contactsHandles:(id)a4 contactNameByHandle:(id)a5 type:(int64_t)a6;
-+ (id)lockoutViewControllerWithCategoryIdentifier:(id)a3;
-+ (id)lockoutViewControllerWithConversationContext:(id)a3 bundleIdentifier:(id)a4 contactStore:(id)a5 applicationName:(id)a6 contactNameByHandle:(id)a7;
-+ (id)lockoutViewControllerWithConversationContext:(id)a3 bundleIdentifier:(id)a4 contactStore:(id)a5 applicationName:(id)a6 contactNameByHandle:(id)a7 type:(int64_t)a8;
-+ (id)lockoutViewControllerWithWebsiteURL:(id)a3;
-+ (id)messageForApplicationName:(id)a3 style:(int64_t)a4;
-+ (id)messageForBundleIdentifier:(id)a3 style:(int64_t)a4;
-+ (id)messageForWebsiteURL:(id)a3;
++ (id)_applicationNameForBundleIdentifier:(id)identifier;
++ (id)_applicationNameForWebsiteURL:(id)l;
++ (id)_bundleIdentifierForWebsiteURL:(id)l;
++ (id)_messageForCategoryIdentifier:(id)identifier;
++ (id)lockoutViewControllerWithBundleIdentifier:(id)identifier;
++ (id)lockoutViewControllerWithBundleIdentifier:(id)identifier contactsHandles:(id)handles contactNameByHandle:(id)handle;
++ (id)lockoutViewControllerWithBundleIdentifier:(id)identifier contactsHandles:(id)handles contactNameByHandle:(id)handle type:(int64_t)type;
++ (id)lockoutViewControllerWithCategoryIdentifier:(id)identifier;
++ (id)lockoutViewControllerWithConversationContext:(id)context bundleIdentifier:(id)identifier contactStore:(id)store applicationName:(id)name contactNameByHandle:(id)handle;
++ (id)lockoutViewControllerWithConversationContext:(id)context bundleIdentifier:(id)identifier contactStore:(id)store applicationName:(id)name contactNameByHandle:(id)handle type:(int64_t)type;
++ (id)lockoutViewControllerWithWebsiteURL:(id)l;
++ (id)messageForApplicationName:(id)name style:(int64_t)style;
++ (id)messageForBundleIdentifier:(id)identifier style:(int64_t)style;
++ (id)messageForWebsiteURL:(id)l;
 - (BOOL)_actionDismiss;
 - (BOOL)_actionUnlockedAskOrApproveActionSheet;
 - (BOOL)_actionUnlockedEnterScreenTimePasscodeActionSheet;
 - (BOOL)_authenticatedApproveActionSheet;
-- (BOOL)_performUnlockedActionWithCompletionHandler:(id)a3;
+- (BOOL)_performUnlockedActionWithCompletionHandler:(id)handler;
 - (STCommunicationLimitsLockoutViewControllerDelegate)communicationLimitsDelegate;
-- (STLockoutViewController)initWithBundleIdentifier:(id)a3;
-- (STLockoutViewController)initWithBundleIdentifier:(id)a3 contactsHandles:(id)a4;
-- (STLockoutViewController)initWithBundleIdentifier:(id)a3 conversationContext:(id)a4 contactStore:(id)a5;
-- (STLockoutViewController)initWithWebsiteURL:(id)a3;
+- (STLockoutViewController)initWithBundleIdentifier:(id)identifier;
+- (STLockoutViewController)initWithBundleIdentifier:(id)identifier contactsHandles:(id)handles;
+- (STLockoutViewController)initWithBundleIdentifier:(id)identifier conversationContext:(id)context contactStore:(id)store;
+- (STLockoutViewController)initWithWebsiteURL:(id)l;
 - (STLockoutViewControllerDelegate)viewControllerDelegate;
 - (UIButton)mainButton;
 - (UIButton)okButton;
@@ -35,16 +35,16 @@
 - (UIStackView)buttonStackView;
 - (UIVisualEffectView)view;
 - (UIVisualEffectView)viewIfLoaded;
-- (id)_updateMessageLabelAndReturnHandleWithPhoneNumberFormat:(id)a3 emailAddressFormat:(id)a4 contactNameFormat:(id)a5;
-- (void)_actionAddContact:(id)a3;
-- (void)_actionAskOrApproveActionSheet:(id)a3;
-- (void)_actionEnterScreenTimePasscodeActionSheet:(id)a3;
-- (void)_actionIgnoreLimitActionSheet:(id)a3;
-- (void)_actionOK:(id)a3;
+- (id)_updateMessageLabelAndReturnHandleWithPhoneNumberFormat:(id)format emailAddressFormat:(id)addressFormat contactNameFormat:(id)nameFormat;
+- (void)_actionAddContact:(id)contact;
+- (void)_actionAskOrApproveActionSheet:(id)sheet;
+- (void)_actionEnterScreenTimePasscodeActionSheet:(id)sheet;
+- (void)_actionIgnoreLimitActionSheet:(id)sheet;
+- (void)_actionOK:(id)k;
 - (void)_actionUnlockedAddContact;
 - (void)_actionUnlockedAskOrApproveActionSheet;
-- (void)_authenticatedApproveForAdditionalTime:(double)a3;
-- (void)_changeMainButtonToAddContact:(id)a3;
+- (void)_authenticatedApproveForAdditionalTime:(double)time;
+- (void)_changeMainButtonToAddContact:(id)contact;
 - (void)_changeMainButtonToAskForMore;
 - (void)_changeMainButtonToEnterScreenTimePasscode;
 - (void)_changeMainButtonToIgnoreLimit;
@@ -57,254 +57,254 @@
 - (void)_changeStateToDismissing;
 - (void)_changeStateToPending;
 - (void)_changeStateToWarn;
-- (void)_doInitialAnimationExitingGroup:(id)a3;
-- (void)_doInitialAnimationOfHourglassExitingGroup:(id)a3;
-- (void)_embedCommunicationLimitsBlockingViewControllerWithType:(int64_t)a3;
-- (void)_fadeInBackdropWithCompletion:(id)a3;
+- (void)_doInitialAnimationExitingGroup:(id)group;
+- (void)_doInitialAnimationOfHourglassExitingGroup:(id)group;
+- (void)_embedCommunicationLimitsBlockingViewControllerWithType:(int64_t)type;
+- (void)_fadeInBackdropWithCompletion:(id)completion;
 - (void)_fadeInHourglass;
 - (void)_fadeInTextAndButtons;
-- (void)_fadeOutBackdropWithCompletion:(id)a3;
+- (void)_fadeOutBackdropWithCompletion:(id)completion;
 - (void)_fadeOutHourglass;
 - (void)_fadeOutTextAndButtons;
-- (void)_handleRestrictionsPINNotification:(id)a3;
+- (void)_handleRestrictionsPINNotification:(id)notification;
 - (void)_hideBackdrop;
 - (void)_hideHourglass;
-- (void)_presentAlertController:(id)a3;
+- (void)_presentAlertController:(id)controller;
 - (void)_restoreBackdrop;
 - (void)_restoreHourglass;
 - (void)_restoreTextAndButtons;
-- (void)_restrictionsPINControllerDidFinish:(BOOL)a3;
-- (void)_setTextAndButtonsAlpha:(double)a3;
+- (void)_restrictionsPINControllerDidFinish:(BOOL)finish;
+- (void)_setTextAndButtonsAlpha:(double)alpha;
 - (void)_setupCommon;
 - (void)_showApprovalAnimationIfNeeded;
 - (void)_showDismissingAnimationIfNeeded;
 - (void)_showInitialAnimationIfNeeded;
-- (void)_showRestrictionsPINControllerWithMainCompletion:(id)a3;
+- (void)_showRestrictionsPINControllerWithMainCompletion:(id)completion;
 - (void)_startListeningForRestrictionsPINEntryNotification;
 - (void)_stopListeningForRestrictionsPINEntryNotification;
 - (void)_undoApprovalAnimationIfNeeded;
-- (void)_unlockWithSuccessMainCompletion:(id)a3;
+- (void)_unlockWithSuccessMainCompletion:(id)completion;
 - (void)_updateImageVisibility;
 - (void)_updateMainButtonVisibility;
-- (void)_updateMainButtonWithTitle:(id)a3 action:(SEL)a4;
+- (void)_updateMainButtonWithTitle:(id)title action:(SEL)action;
 - (void)_updateOKButtonVisibility;
 - (void)_updateWithNaturalBlockingUIStyling;
 - (void)addToContactsButtonPressed;
 - (void)communicationLimitsApproveInPersonButtonPressed;
 - (void)communicationLimitsPreviewMessageButtonPressed;
-- (void)contentSizeCategoryDidChangeNotification:(id)a3;
+- (void)contentSizeCategoryDidChangeNotification:(id)notification;
 - (void)dealloc;
 - (void)removeCommunicationLimitsBlockingViewBackground;
-- (void)setBundleIdentifier:(id)a3;
-- (void)setCommunicationLimitsDelegate:(id)a3;
-- (void)setDidFinishDismissing:(BOOL)a3;
-- (void)setForSnapshot:(BOOL)a3;
-- (void)setMainButtonAlwaysHidden:(BOOL)a3;
-- (void)setShouldHideStoryboardViews:(BOOL)a3;
-- (void)setView:(id)a3;
-- (void)stateDidChange:(unint64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setBundleIdentifier:(id)identifier;
+- (void)setCommunicationLimitsDelegate:(id)delegate;
+- (void)setDidFinishDismissing:(BOOL)dismissing;
+- (void)setForSnapshot:(BOOL)snapshot;
+- (void)setMainButtonAlwaysHidden:(BOOL)hidden;
+- (void)setShouldHideStoryboardViews:(BOOL)views;
+- (void)setView:(id)view;
+- (void)stateDidChange:(unint64_t)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation STLockoutViewController
 
-+ (id)lockoutViewControllerWithCategoryIdentifier:(id)a3
++ (id)lockoutViewControllerWithCategoryIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D75AC8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[STScreenTimeUIBundle bundle];
   v6 = [v3 storyboardWithName:@"BlockingUI-iOS" bundle:v5];
 
-  v7 = [v6 instantiateInitialViewController];
-  [v7 _setupCommon];
-  v8 = [[STLockoutPolicyController alloc] initWithCategoryIdentifier:v4 delegate:v7];
+  instantiateInitialViewController = [v6 instantiateInitialViewController];
+  [instantiateInitialViewController _setupCommon];
+  v8 = [[STLockoutPolicyController alloc] initWithCategoryIdentifier:identifierCopy delegate:instantiateInitialViewController];
 
-  [v7 setPolicyController:v8];
-  v7[124] = 4;
+  [instantiateInitialViewController setPolicyController:v8];
+  instantiateInitialViewController[124] = 4;
 
-  return v7;
+  return instantiateInitialViewController;
 }
 
-+ (id)lockoutViewControllerWithBundleIdentifier:(id)a3
++ (id)lockoutViewControllerWithBundleIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D75AC8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[STScreenTimeUIBundle bundle];
   v6 = [v3 storyboardWithName:@"BlockingUI-iOS" bundle:v5];
 
-  v7 = [v6 instantiateInitialViewController];
-  v8 = [[STLockoutPolicyController alloc] initWithBundleIdentifier:v4 delegate:v7];
-  [v7 setPolicyController:v8];
+  instantiateInitialViewController = [v6 instantiateInitialViewController];
+  v8 = [[STLockoutPolicyController alloc] initWithBundleIdentifier:identifierCopy delegate:instantiateInitialViewController];
+  [instantiateInitialViewController setPolicyController:v8];
 
-  v7[124] = 0;
-  [v7 setBundleIdentifier:v4];
+  instantiateInitialViewController[124] = 0;
+  [instantiateInitialViewController setBundleIdentifier:identifierCopy];
 
   v9 = objc_opt_new();
-  v10 = v7[128];
-  v7[128] = v9;
+  v10 = instantiateInitialViewController[128];
+  instantiateInitialViewController[128] = v9;
 
-  return v7;
+  return instantiateInitialViewController;
 }
 
-+ (id)lockoutViewControllerWithWebsiteURL:(id)a3
++ (id)lockoutViewControllerWithWebsiteURL:(id)l
 {
   v3 = MEMORY[0x277D75AC8];
-  v4 = a3;
+  lCopy = l;
   v5 = +[STScreenTimeUIBundle bundle];
   v6 = [v3 storyboardWithName:@"BlockingUI-iOS" bundle:v5];
 
-  v7 = [v6 instantiateInitialViewController];
-  [v7 _setupCommon];
-  v8 = [[STLockoutPolicyController alloc] initWithWebsiteURL:v4 delegate:v7];
+  instantiateInitialViewController = [v6 instantiateInitialViewController];
+  [instantiateInitialViewController _setupCommon];
+  v8 = [[STLockoutPolicyController alloc] initWithWebsiteURL:lCopy delegate:instantiateInitialViewController];
 
-  [v7 setPolicyController:v8];
-  v7[124] = 1;
+  [instantiateInitialViewController setPolicyController:v8];
+  instantiateInitialViewController[124] = 1;
 
-  return v7;
+  return instantiateInitialViewController;
 }
 
-+ (id)lockoutViewControllerWithConversationContext:(id)a3 bundleIdentifier:(id)a4 contactStore:(id)a5 applicationName:(id)a6 contactNameByHandle:(id)a7
++ (id)lockoutViewControllerWithConversationContext:(id)context bundleIdentifier:(id)identifier contactStore:(id)store applicationName:(id)name contactNameByHandle:(id)handle
 {
   v11 = MEMORY[0x277D75AC8];
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  handleCopy = handle;
+  nameCopy = name;
+  storeCopy = store;
+  identifierCopy = identifier;
+  contextCopy = context;
   v17 = +[STScreenTimeUIBundle bundle];
   v18 = [v11 storyboardWithName:@"BlockingUI-iOS" bundle:v17];
 
-  v19 = [v18 instantiateInitialViewController];
-  [v19 _setupCommon];
-  v20 = [[STLockoutPolicyController alloc] initWithBundleIdentifier:v15 conversationContext:v16 contactStore:v14 delegate:v19];
+  instantiateInitialViewController = [v18 instantiateInitialViewController];
+  [instantiateInitialViewController _setupCommon];
+  v20 = [[STLockoutPolicyController alloc] initWithBundleIdentifier:identifierCopy conversationContext:contextCopy contactStore:storeCopy delegate:instantiateInitialViewController];
 
-  [v19 setPolicyController:v20];
-  v19[124] = 3;
-  v21 = [v13 copy];
+  [instantiateInitialViewController setPolicyController:v20];
+  instantiateInitialViewController[124] = 3;
+  v21 = [nameCopy copy];
 
-  v22 = v19[139];
-  v19[139] = v21;
+  v22 = instantiateInitialViewController[139];
+  instantiateInitialViewController[139] = v21;
 
-  v23 = [v12 copy];
-  v24 = v19[140];
-  v19[140] = v23;
+  v23 = [handleCopy copy];
+  v24 = instantiateInitialViewController[140];
+  instantiateInitialViewController[140] = v23;
 
   v25 = objc_opt_new();
-  v26 = v19[128];
-  v19[128] = v25;
+  v26 = instantiateInitialViewController[128];
+  instantiateInitialViewController[128] = v25;
 
-  [v19 _embedCommunicationLimitsBlockingViewControllerWithType:0];
+  [instantiateInitialViewController _embedCommunicationLimitsBlockingViewControllerWithType:0];
 
-  return v19;
+  return instantiateInitialViewController;
 }
 
-+ (id)lockoutViewControllerWithBundleIdentifier:(id)a3 contactsHandles:(id)a4 contactNameByHandle:(id)a5
++ (id)lockoutViewControllerWithBundleIdentifier:(id)identifier contactsHandles:(id)handles contactNameByHandle:(id)handle
 {
   v7 = MEMORY[0x277D75AC8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handleCopy = handle;
+  handlesCopy = handles;
+  identifierCopy = identifier;
   v11 = +[STScreenTimeUIBundle bundle];
   v12 = [v7 storyboardWithName:@"BlockingUI-iOS" bundle:v11];
 
-  v13 = [v12 instantiateInitialViewController];
-  [v13 _setupCommon];
-  v14 = [[STLockoutPolicyController alloc] initWithBundleIdentifier:v10 contactsHandles:v9 delegate:v13];
+  instantiateInitialViewController = [v12 instantiateInitialViewController];
+  [instantiateInitialViewController _setupCommon];
+  v14 = [[STLockoutPolicyController alloc] initWithBundleIdentifier:identifierCopy contactsHandles:handlesCopy delegate:instantiateInitialViewController];
 
-  [v13 setPolicyController:v14];
-  v13[124] = 3;
-  v15 = [v8 copy];
+  [instantiateInitialViewController setPolicyController:v14];
+  instantiateInitialViewController[124] = 3;
+  v15 = [handleCopy copy];
 
-  v16 = v13[140];
-  v13[140] = v15;
+  v16 = instantiateInitialViewController[140];
+  instantiateInitialViewController[140] = v15;
 
   v17 = objc_opt_new();
-  v18 = v13[128];
-  v13[128] = v17;
+  v18 = instantiateInitialViewController[128];
+  instantiateInitialViewController[128] = v17;
 
-  [v13 _embedCommunicationLimitsBlockingViewControllerWithType:0];
+  [instantiateInitialViewController _embedCommunicationLimitsBlockingViewControllerWithType:0];
 
-  return v13;
+  return instantiateInitialViewController;
 }
 
-+ (id)lockoutViewControllerWithConversationContext:(id)a3 bundleIdentifier:(id)a4 contactStore:(id)a5 applicationName:(id)a6 contactNameByHandle:(id)a7 type:(int64_t)a8
++ (id)lockoutViewControllerWithConversationContext:(id)context bundleIdentifier:(id)identifier contactStore:(id)store applicationName:(id)name contactNameByHandle:(id)handle type:(int64_t)type
 {
   v13 = MEMORY[0x277D75AC8];
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  handleCopy = handle;
+  nameCopy = name;
+  storeCopy = store;
+  identifierCopy = identifier;
+  contextCopy = context;
   v19 = +[STScreenTimeUIBundle bundle];
   v20 = [v13 storyboardWithName:@"BlockingUI-iOS" bundle:v19];
 
-  v21 = [v20 instantiateInitialViewController];
-  [v21 _setupCommon];
-  v22 = [[STLockoutPolicyController alloc] initWithBundleIdentifier:v17 conversationContext:v18 contactStore:v16 delegate:v21];
+  instantiateInitialViewController = [v20 instantiateInitialViewController];
+  [instantiateInitialViewController _setupCommon];
+  v22 = [[STLockoutPolicyController alloc] initWithBundleIdentifier:identifierCopy conversationContext:contextCopy contactStore:storeCopy delegate:instantiateInitialViewController];
 
-  [v21 setPolicyController:v22];
-  v21[124] = 3;
-  v23 = [v15 copy];
+  [instantiateInitialViewController setPolicyController:v22];
+  instantiateInitialViewController[124] = 3;
+  v23 = [nameCopy copy];
 
-  v24 = v21[139];
-  v21[139] = v23;
+  v24 = instantiateInitialViewController[139];
+  instantiateInitialViewController[139] = v23;
 
-  v25 = [v14 copy];
-  v26 = v21[140];
-  v21[140] = v25;
+  v25 = [handleCopy copy];
+  v26 = instantiateInitialViewController[140];
+  instantiateInitialViewController[140] = v25;
 
   v27 = objc_opt_new();
-  v28 = v21[128];
-  v21[128] = v27;
+  v28 = instantiateInitialViewController[128];
+  instantiateInitialViewController[128] = v27;
 
-  [v21 _embedCommunicationLimitsBlockingViewControllerWithType:a8];
+  [instantiateInitialViewController _embedCommunicationLimitsBlockingViewControllerWithType:type];
 
-  return v21;
+  return instantiateInitialViewController;
 }
 
-+ (id)lockoutViewControllerWithBundleIdentifier:(id)a3 contactsHandles:(id)a4 contactNameByHandle:(id)a5 type:(int64_t)a6
++ (id)lockoutViewControllerWithBundleIdentifier:(id)identifier contactsHandles:(id)handles contactNameByHandle:(id)handle type:(int64_t)type
 {
   v9 = MEMORY[0x277D75AC8];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  handleCopy = handle;
+  handlesCopy = handles;
+  identifierCopy = identifier;
   v13 = +[STScreenTimeUIBundle bundle];
   v14 = [v9 storyboardWithName:@"BlockingUI-iOS" bundle:v13];
 
-  v15 = [v14 instantiateInitialViewController];
-  [v15 _setupCommon];
-  v16 = [[STLockoutPolicyController alloc] initWithBundleIdentifier:v12 contactsHandles:v11 delegate:v15];
+  instantiateInitialViewController = [v14 instantiateInitialViewController];
+  [instantiateInitialViewController _setupCommon];
+  v16 = [[STLockoutPolicyController alloc] initWithBundleIdentifier:identifierCopy contactsHandles:handlesCopy delegate:instantiateInitialViewController];
 
-  [v15 setPolicyController:v16];
-  v15[124] = 3;
-  v17 = [v10 copy];
+  [instantiateInitialViewController setPolicyController:v16];
+  instantiateInitialViewController[124] = 3;
+  v17 = [handleCopy copy];
 
-  v18 = v15[140];
-  v15[140] = v17;
+  v18 = instantiateInitialViewController[140];
+  instantiateInitialViewController[140] = v17;
 
   v19 = objc_opt_new();
-  v20 = v15[128];
-  v15[128] = v19;
+  v20 = instantiateInitialViewController[128];
+  instantiateInitialViewController[128] = v19;
 
-  [v15 _embedCommunicationLimitsBlockingViewControllerWithType:a6];
+  [instantiateInitialViewController _embedCommunicationLimitsBlockingViewControllerWithType:type];
 
-  return v15;
+  return instantiateInitialViewController;
 }
 
-- (void)setShouldHideStoryboardViews:(BOOL)a3
+- (void)setShouldHideStoryboardViews:(BOOL)views
 {
-  if (self->_shouldHideStoryboardViews != a3)
+  if (self->_shouldHideStoryboardViews != views)
   {
-    v4 = a3;
-    self->_shouldHideStoryboardViews = a3;
-    v6 = [(STLockoutViewController *)self titleLabel];
-    [v6 setHidden:v4];
+    viewsCopy = views;
+    self->_shouldHideStoryboardViews = views;
+    titleLabel = [(STLockoutViewController *)self titleLabel];
+    [titleLabel setHidden:viewsCopy];
 
-    v7 = [(STLockoutViewController *)self messageLabel];
-    [v7 setHidden:v4];
+    messageLabel = [(STLockoutViewController *)self messageLabel];
+    [messageLabel setHidden:viewsCopy];
 
     [(STLockoutViewController *)self _updateMainButtonVisibility];
     [(STLockoutViewController *)self _updateOKButtonVisibility];
@@ -313,49 +313,49 @@
   }
 }
 
-- (void)_embedCommunicationLimitsBlockingViewControllerWithType:(int64_t)a3
+- (void)_embedCommunicationLimitsBlockingViewControllerWithType:(int64_t)type
 {
   v33[4] = *MEMORY[0x277D85DE8];
   if (_os_feature_enabled_impl())
   {
-    v5 = [(STLockoutViewController *)self policyController];
-    v6 = [v5 blockedContactsHandles];
-    v32 = [v6 allObjects];
+    policyController = [(STLockoutViewController *)self policyController];
+    blockedContactsHandles = [policyController blockedContactsHandles];
+    allObjects = [blockedContactsHandles allObjects];
 
-    v31 = [(STLockoutViewController *)self contactNameByHandle];
-    v30 = [_TtC12ScreenTimeUI50STCommunicationLimitsBlockingViewControllerFactory createCommunicationLimitsBlockingViewModelWithBlockingViewType:a3 contactNameByHandle:v31 delegate:self handles:v32];
+    contactNameByHandle = [(STLockoutViewController *)self contactNameByHandle];
+    v30 = [_TtC12ScreenTimeUI50STCommunicationLimitsBlockingViewControllerFactory createCommunicationLimitsBlockingViewModelWithBlockingViewType:type contactNameByHandle:contactNameByHandle delegate:self handles:allObjects];
     [(STLockoutViewController *)self setCommunicationLimitsBlockingViewModel:v30];
     v7 = [_TtC12ScreenTimeUI50STCommunicationLimitsBlockingViewControllerFactory communicationLimitsBlockingViewControllerWithViewModel:v30];
     [(STLockoutViewController *)self addChildViewController:v7];
-    v8 = [(STLockoutViewController *)self view];
-    v9 = [v8 contentView];
+    view = [(STLockoutViewController *)self view];
+    contentView = [view contentView];
 
-    v10 = [v7 view];
-    [v9 addSubview:v10];
+    view2 = [v7 view];
+    [contentView addSubview:view2];
 
-    v11 = [v7 view];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view3 = [v7 view];
+    [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v22 = MEMORY[0x277CCAAD0];
-    v29 = [v7 view];
-    v28 = [v29 topAnchor];
-    v27 = [v9 topAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    view4 = [v7 view];
+    topAnchor = [view4 topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v33[0] = v26;
-    v25 = [v7 view];
-    v24 = [v25 bottomAnchor];
-    v23 = [v9 bottomAnchor];
-    v21 = [v24 constraintEqualToAnchor:v23];
+    view5 = [v7 view];
+    bottomAnchor = [view5 bottomAnchor];
+    bottomAnchor2 = [contentView bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v33[1] = v21;
-    v20 = [v7 view];
-    v19 = [v20 leadingAnchor];
-    v12 = [v9 leadingAnchor];
-    v13 = [v19 constraintEqualToAnchor:v12];
+    view6 = [v7 view];
+    leadingAnchor = [view6 leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v33[2] = v13;
-    v14 = [v7 view];
-    v15 = [v14 trailingAnchor];
-    v16 = [v9 trailingAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    view7 = [v7 view];
+    trailingAnchor = [view7 trailingAnchor];
+    trailingAnchor2 = [contentView trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v33[3] = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:4];
     [v22 activateConstraints:v18];
@@ -365,14 +365,14 @@
   }
 }
 
-- (void)setCommunicationLimitsDelegate:(id)a3
+- (void)setCommunicationLimitsDelegate:(id)delegate
 {
-  v8 = a3;
-  objc_storeWeak(&self->_communicationLimitsDelegate, v8);
-  v4 = [(STLockoutViewController *)self communicationLimitsBlockingViewModel];
-  v5 = [v4 blockingViewType];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_communicationLimitsDelegate, delegateCopy);
+  communicationLimitsBlockingViewModel = [(STLockoutViewController *)self communicationLimitsBlockingViewModel];
+  blockingViewType = [communicationLimitsBlockingViewModel blockingViewType];
 
-  if (!v5)
+  if (!blockingViewType)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -389,8 +389,8 @@
       v6 = 2;
     }
 
-    v7 = [(STLockoutViewController *)self communicationLimitsBlockingViewModel];
-    [v7 setBlockingViewType:v6];
+    communicationLimitsBlockingViewModel2 = [(STLockoutViewController *)self communicationLimitsBlockingViewModel];
+    [communicationLimitsBlockingViewModel2 setBlockingViewType:v6];
   }
 
 LABEL_7:
@@ -530,62 +530,62 @@ void __74__STLockoutViewController_communicationLimitsApproveInPersonButtonPress
 
 - (void)addToContactsButtonPressed
 {
-  v3 = [(STLockoutViewController *)self mainButton];
-  [(STLockoutViewController *)self _actionAddContact:v3];
+  mainButton = [(STLockoutViewController *)self mainButton];
+  [(STLockoutViewController *)self _actionAddContact:mainButton];
 }
 
-- (STLockoutViewController)initWithBundleIdentifier:(id)a3
+- (STLockoutViewController)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() lockoutViewControllerWithBundleIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [objc_opt_class() lockoutViewControllerWithBundleIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (STLockoutViewController)initWithWebsiteURL:(id)a3
+- (STLockoutViewController)initWithWebsiteURL:(id)l
 {
-  v4 = a3;
-  v5 = [objc_opt_class() lockoutViewControllerWithWebsiteURL:v4];
+  lCopy = l;
+  v5 = [objc_opt_class() lockoutViewControllerWithWebsiteURL:lCopy];
 
   return v5;
 }
 
-- (STLockoutViewController)initWithBundleIdentifier:(id)a3 contactsHandles:(id)a4
+- (STLockoutViewController)initWithBundleIdentifier:(id)identifier contactsHandles:(id)handles
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() lockoutViewControllerWithBundleIdentifier:v7 contactsHandles:v6];
+  handlesCopy = handles;
+  identifierCopy = identifier;
+  v8 = [objc_opt_class() lockoutViewControllerWithBundleIdentifier:identifierCopy contactsHandles:handlesCopy];
 
   return v8;
 }
 
-- (STLockoutViewController)initWithBundleIdentifier:(id)a3 conversationContext:(id)a4 contactStore:(id)a5
+- (STLockoutViewController)initWithBundleIdentifier:(id)identifier conversationContext:(id)context contactStore:(id)store
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() lockoutViewControllerWithBundleIdentifier:v10 conversationContext:v9 contactStore:v8];
+  storeCopy = store;
+  contextCopy = context;
+  identifierCopy = identifier;
+  v11 = [objc_opt_class() lockoutViewControllerWithBundleIdentifier:identifierCopy conversationContext:contextCopy contactStore:storeCopy];
 
   return v11;
 }
 
 - (UIResponder)nextResponder
 {
-  v3 = [(STLockoutViewController *)self customNextResponder];
-  v4 = v3;
-  if (v3)
+  customNextResponder = [(STLockoutViewController *)self customNextResponder];
+  v4 = customNextResponder;
+  if (customNextResponder)
   {
-    v5 = v3;
+    nextResponder = customNextResponder;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = STLockoutViewController;
-    v5 = [(STLockoutViewController *)&v8 nextResponder];
+    nextResponder = [(STLockoutViewController *)&v8 nextResponder];
   }
 
-  v6 = v5;
+  v6 = nextResponder;
 
   return v6;
 }
@@ -600,8 +600,8 @@ void __74__STLockoutViewController_communicationLimitsApproveInPersonButtonPress
   v4 = [v3 fontDescriptorWithSymbolicTraits:2];
 
   v5 = [MEMORY[0x277D74300] fontWithDescriptor:v4 size:0.0];
-  v6 = [(STLockoutViewController *)self titleLabel];
-  [v6 setFont:v5];
+  titleLabel = [(STLockoutViewController *)self titleLabel];
+  [titleLabel setFont:v5];
 
   [(STLockoutViewController *)self _updateWithNaturalBlockingUIStyling];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -614,43 +614,43 @@ void __74__STLockoutViewController_communicationLimitsApproveInPersonButtonPress
 - (void)_updateWithNaturalBlockingUIStyling
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v3 = [(STLockoutViewController *)self titleLabel];
-  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applyPrimaryLabelStyle:v3];
+  titleLabel = [(STLockoutViewController *)self titleLabel];
+  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applyPrimaryLabelStyle:titleLabel];
 
-  v4 = [(STLockoutViewController *)self messageLabel];
-  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applySecondaryLabelStyle:v4];
+  messageLabel = [(STLockoutViewController *)self messageLabel];
+  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applySecondaryLabelStyle:messageLabel];
 
-  v5 = [(STLockoutViewController *)self okButton];
-  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applyPrimaryButtonStyle:v5];
+  okButton = [(STLockoutViewController *)self okButton];
+  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applyPrimaryButtonStyle:okButton];
 
-  v6 = [(STLockoutViewController *)self mainButton];
-  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applySecondaryButtonStyle:v6];
+  mainButton = [(STLockoutViewController *)self mainButton];
+  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applySecondaryButtonStyle:mainButton];
 
-  v7 = [(STLockoutViewController *)self buttonStackView];
-  [v7 setSpacing:10.0];
-  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applyButtonGroupStyle:v7];
+  buttonStackView = [(STLockoutViewController *)self buttonStackView];
+  [buttonStackView setSpacing:10.0];
+  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applyButtonGroupStyle:buttonStackView];
   v17 = MEMORY[0x277CCAAD0];
-  v8 = [v7 leadingAnchor];
-  v9 = [(STLockoutViewController *)self view];
-  v10 = [v9 leadingAnchor];
-  v11 = [v8 constraintEqualToSystemSpacingAfterAnchor:v10 multiplier:4.0];
+  leadingAnchor = [buttonStackView leadingAnchor];
+  view = [(STLockoutViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:leadingAnchor2 multiplier:4.0];
   v18[0] = v11;
-  v12 = [(STLockoutViewController *)self view];
-  v13 = [v12 trailingAnchor];
-  v14 = [v7 trailingAnchor];
-  v15 = [v13 constraintEqualToSystemSpacingAfterAnchor:v14 multiplier:4.0];
+  view2 = [(STLockoutViewController *)self view];
+  trailingAnchor = [view2 trailingAnchor];
+  trailingAnchor2 = [buttonStackView trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:4.0];
   v18[1] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
   [v17 activateConstraints:v16];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = +[STBlockingUILog log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [STLockoutViewController viewWillAppear:v3];
+    [STLockoutViewController viewWillAppear:appearCopy];
   }
 
   if (self->_isHourglassStateInitialized)
@@ -665,7 +665,7 @@ void __74__STLockoutViewController_communicationLimitsApproveInPersonButtonPress
   else
   {
     self->_isHourglassStateInitialized = 1;
-    if ([(STLockoutViewController *)self isForSnapshot]|| !v3)
+    if ([(STLockoutViewController *)self isForSnapshot]|| !appearCopy)
     {
       [(STLockoutViewController *)self _restoreBackdrop];
       [(STLockoutViewController *)self _restoreHourglass];
@@ -688,19 +688,19 @@ void __74__STLockoutViewController_communicationLimitsApproveInPersonButtonPress
 
   v7.receiver = self;
   v7.super_class = STLockoutViewController;
-  [(STLockoutViewController *)&v7 viewWillAppear:v3];
+  [(STLockoutViewController *)&v7 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = +[STBlockingUILog log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [STLockoutViewController viewDidAppear:v3];
+    [STLockoutViewController viewDidAppear:appearCopy];
   }
 
-  if ([(STLockoutViewController *)self isForSnapshot]|| !v3)
+  if ([(STLockoutViewController *)self isForSnapshot]|| !appearCopy)
   {
     v6 = +[STBlockingUILog log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -722,12 +722,12 @@ void __74__STLockoutViewController_communicationLimitsApproveInPersonButtonPress
 
   v7.receiver = self;
   v7.super_class = STLockoutViewController;
-  [(STLockoutViewController *)&v7 viewDidAppear:v3];
+  [(STLockoutViewController *)&v7 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if ([(STLockoutViewController *)self isForSnapshot])
   {
     WeakRetained = objc_loadWeakRetained(&self->_presentedAlertController);
@@ -744,21 +744,21 @@ void __74__STLockoutViewController_communicationLimitsApproveInPersonButtonPress
 
   v6.receiver = self;
   v6.super_class = STLockoutViewController;
-  [(STLockoutViewController *)&v6 viewWillDisappear:v3];
+  [(STLockoutViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
 - (UIVisualEffectView)view
 {
   v4.receiver = self;
   v4.super_class = STLockoutViewController;
-  v2 = [(STLockoutViewController *)&v4 view];
+  view = [(STLockoutViewController *)&v4 view];
 
-  return v2;
+  return view;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -767,16 +767,16 @@ void __74__STLockoutViewController_communicationLimitsApproveInPersonButtonPress
 
   v6.receiver = self;
   v6.super_class = STLockoutViewController;
-  [(STLockoutViewController *)&v6 setView:v5];
+  [(STLockoutViewController *)&v6 setView:viewCopy];
 }
 
 - (UIVisualEffectView)viewIfLoaded
 {
   v4.receiver = self;
   v4.super_class = STLockoutViewController;
-  v2 = [(STLockoutViewController *)&v4 viewIfLoaded];
+  viewIfLoaded = [(STLockoutViewController *)&v4 viewIfLoaded];
 
-  return v2;
+  return viewIfLoaded;
 }
 
 - (void)dealloc
@@ -805,13 +805,13 @@ void __74__STLockoutViewController_communicationLimitsApproveInPersonButtonPress
   self->_dismissingAnimationGroup = v7;
 
   self->_okButtonAction = 0;
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 addObserver:self selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x277D76810] object:0];
 }
 
-- (void)setForSnapshot:(BOOL)a3
+- (void)setForSnapshot:(BOOL)snapshot
 {
-  if (self->_forSnapshot != a3)
+  if (self->_forSnapshot != snapshot)
   {
     if (([(STLockoutViewController *)self isViewLoaded]& 1) != 0)
     {
@@ -824,16 +824,16 @@ void __74__STLockoutViewController_communicationLimitsApproveInPersonButtonPress
 
     else
     {
-      self->_forSnapshot = a3;
+      self->_forSnapshot = snapshot;
     }
   }
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
     ++self->_reuseIdentifier;
@@ -844,19 +844,19 @@ void __74__STLockoutViewController_communicationLimitsApproveInPersonButtonPress
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_reuseIdentifier];
-        v7 = [(STLockoutPolicyController *)self->_policyController bundleIdentifier];
+        bundleIdentifier = [(STLockoutPolicyController *)self->_policyController bundleIdentifier];
         v9 = 138413058;
-        v10 = self;
+        selfCopy = self;
         v11 = 2112;
         v12 = v6;
         v13 = 2112;
-        v14 = v7;
+        v14 = bundleIdentifier;
         v15 = 2112;
-        v16 = v4;
+        v16 = identifierCopy;
         _os_log_impl(&dword_21DD93000, v5, OS_LOG_TYPE_DEFAULT, "Changing bundleIdentifier of %@ (id:%@) from %@ to %@", &v9, 0x2Au);
       }
 
-      [(STLockoutPolicyController *)self->_policyController setBundleIdentifier:v4];
+      [(STLockoutPolicyController *)self->_policyController setBundleIdentifier:identifierCopy];
     }
   }
 
@@ -870,47 +870,47 @@ void __74__STLockoutViewController_communicationLimitsApproveInPersonButtonPress
   }
 }
 
-- (void)setDidFinishDismissing:(BOOL)a3
+- (void)setDidFinishDismissing:(BOOL)dismissing
 {
-  v3 = a3;
+  dismissingCopy = dismissing;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if (self->_didFinishDismissing != v3)
+  if (self->_didFinishDismissing != dismissingCopy)
   {
     v8 = NSStringFromSelector(sel_didFinishDismissing);
     [(STLockoutViewController *)self willChangeValueForKey:v8];
-    self->_didFinishDismissing = v3;
+    self->_didFinishDismissing = dismissingCopy;
     [(STLockoutViewController *)self didChangeValueForKey:v8];
-    v5 = [(STLockoutViewController *)self viewControllerDelegate];
+    viewControllerDelegate = [(STLockoutViewController *)self viewControllerDelegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(STLockoutViewController *)self viewControllerDelegate];
-      [v7 lockoutViewControllerDidFinishDismissing:self];
+      viewControllerDelegate2 = [(STLockoutViewController *)self viewControllerDelegate];
+      [viewControllerDelegate2 lockoutViewControllerDidFinishDismissing:self];
     }
   }
 }
 
 - (void)removeCommunicationLimitsBlockingViewBackground
 {
-  v3 = [MEMORY[0x277D75348] clearColor];
-  v4 = [(STLockoutViewController *)self communicationLimitsBlockingViewController];
-  v5 = [v4 view];
-  [v5 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  communicationLimitsBlockingViewController = [(STLockoutViewController *)self communicationLimitsBlockingViewController];
+  view = [communicationLimitsBlockingViewController view];
+  [view setBackgroundColor:clearColor];
 
   [(STLockoutViewController *)self setShouldHideStoryboardViews:1];
-  v7 = [MEMORY[0x277D75D58] emptyEffect];
-  v6 = [(STLockoutViewController *)self view];
-  [v6 setEffect:v7];
+  emptyEffect = [MEMORY[0x277D75D58] emptyEffect];
+  view2 = [(STLockoutViewController *)self view];
+  [view2 setEffect:emptyEffect];
 }
 
-+ (id)_applicationNameForBundleIdentifier:(id)a3
++ (id)_applicationNameForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v10 = 0;
-  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v10];
+  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:&v10];
   v5 = v10;
-  v6 = [v4 localizedName];
+  localizedName = [v4 localizedName];
   if (!v4)
   {
     v7 = +[STBlockingUILog log];
@@ -926,18 +926,18 @@ void __74__STLockoutViewController_communicationLimitsApproveInPersonButtonPress
     +[STLockoutViewController _applicationNameForBundleIdentifier:];
   }
 
-  return v6;
+  return localizedName;
 }
 
-+ (id)_bundleIdentifierForWebsiteURL:(id)a3
++ (id)_bundleIdentifierForWebsiteURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 host];
-  v5 = [v4 length];
+  lCopy = l;
+  host = [lCopy host];
+  v5 = [host length];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CF9650] sharedCategories];
+    mEMORY[0x277CF9650] = [MEMORY[0x277CF9650] sharedCategories];
     v15 = 0;
     v16 = &v15;
     v17 = 0x3032000000;
@@ -950,10 +950,10 @@ void __74__STLockoutViewController_communicationLimitsApproveInPersonButtonPress
     v11[2] = __58__STLockoutViewController__bundleIdentifierForWebsiteURL___block_invoke;
     v11[3] = &unk_278339168;
     v14 = &v15;
-    v12 = v3;
+    v12 = lCopy;
     v8 = v7;
     v13 = v8;
-    [v6 categoryForDomainURL:v12 completionHandler:v11];
+    [mEMORY[0x277CF9650] categoryForDomainURL:v12 completionHandler:v11];
     dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
     v9 = v16[5];
 
@@ -997,10 +997,10 @@ void __58__STLockoutViewController__bundleIdentifierForWebsiteURL___block_invoke
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-+ (id)_applicationNameForWebsiteURL:(id)a3
++ (id)_applicationNameForWebsiteURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 _bundleIdentifierForWebsiteURL:v4];
+  lCopy = l;
+  v5 = [self _bundleIdentifierForWebsiteURL:lCopy];
   v6 = +[STBlockingUILog log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -1009,7 +1009,7 @@ void __58__STLockoutViewController__bundleIdentifierForWebsiteURL___block_invoke
 
   if ([v5 length])
   {
-    v7 = [a1 _applicationNameForBundleIdentifier:v5];
+    v7 = [self _applicationNameForBundleIdentifier:v5];
   }
 
   else
@@ -1020,37 +1020,37 @@ void __58__STLockoutViewController__bundleIdentifierForWebsiteURL___block_invoke
   return v7;
 }
 
-+ (id)messageForApplicationName:(id)a3 style:(int64_t)a4
++ (id)messageForApplicationName:(id)name style:(int64_t)style
 {
-  v7 = a3;
+  nameCopy = name;
   v8 = +[STScreenTimeUIBundle bundle];
-  if (a4 <= 1)
+  if (style <= 1)
   {
-    if (a4)
+    if (style)
     {
-      if (a4 != 1)
+      if (style != 1)
       {
         goto LABEL_20;
       }
 
-      if ([v7 length])
+      if ([nameCopy length])
       {
         v9 = @"ReachedWebsiteLimitMessageFormat";
 LABEL_14:
         v10 = [v8 localizedStringForKey:v9 value:&stru_282F1E250 table:0];
-        a1 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v10, v7];
+        self = [MEMORY[0x277CCACA8] localizedStringWithFormat:v10, nameCopy];
 
         goto LABEL_20;
       }
 
       v12 = @"ReachedWebsiteLimitMessage";
 LABEL_19:
-      a1 = [v8 localizedStringForKey:v12 value:&stru_282F1E250 table:0];
+      self = [v8 localizedStringForKey:v12 value:&stru_282F1E250 table:0];
       goto LABEL_20;
     }
 
 LABEL_10:
-    if ([v7 length])
+    if ([nameCopy length])
     {
       v9 = @"ReachedApplicationLimitMessageFormat";
       goto LABEL_14;
@@ -1060,10 +1060,10 @@ LABEL_10:
     goto LABEL_19;
   }
 
-  switch(a4)
+  switch(style)
   {
     case 2:
-      if ([v7 length])
+      if ([nameCopy length])
       {
         v9 = @"ReachedWidgetLimitMessageFormat";
         goto LABEL_14;
@@ -1072,10 +1072,10 @@ LABEL_10:
       v12 = @"ReachedWidgetLimitMessage";
       goto LABEL_19;
     case 4:
-      v11 = [MEMORY[0x277CCA890] currentHandler];
-      [v11 handleFailureInMethod:a2 object:a1 file:@"STLockoutViewController-iOS.m" lineNumber:692 description:@"Category style is not supported"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"STLockoutViewController-iOS.m" lineNumber:692 description:@"Category style is not supported"];
 
-      a1 = &stru_282F1E250;
+      self = &stru_282F1E250;
       break;
     case 3:
       goto LABEL_10;
@@ -1083,14 +1083,14 @@ LABEL_10:
 
 LABEL_20:
 
-  return a1;
+  return self;
 }
 
-+ (id)_messageForCategoryIdentifier:(id)a3
++ (id)_messageForCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[STScreenTimeUIBundle bundle];
-  v5 = [MEMORY[0x277CF9658] localizedNameForIdentifier:v3];
+  v5 = [MEMORY[0x277CF9658] localizedNameForIdentifier:identifierCopy];
 
   if ([v5 length])
   {
@@ -1106,41 +1106,41 @@ LABEL_20:
   return v7;
 }
 
-+ (id)messageForBundleIdentifier:(id)a3 style:(int64_t)a4
++ (id)messageForBundleIdentifier:(id)identifier style:(int64_t)style
 {
-  v6 = [a1 _applicationNameForBundleIdentifier:a3];
-  v7 = [a1 messageForApplicationName:v6 style:a4];
+  v6 = [self _applicationNameForBundleIdentifier:identifier];
+  v7 = [self messageForApplicationName:v6 style:style];
 
   return v7;
 }
 
-+ (id)messageForWebsiteURL:(id)a3
++ (id)messageForWebsiteURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 _applicationNameForWebsiteURL:v4];
+  lCopy = l;
+  v5 = [self _applicationNameForWebsiteURL:lCopy];
   if (![v5 length])
   {
-    v6 = [v4 host];
-    v7 = [v6 _lp_userVisibleHost];
+    host = [lCopy host];
+    _lp_userVisibleHost = [host _lp_userVisibleHost];
 
-    v5 = v7;
+    v5 = _lp_userVisibleHost;
   }
 
-  v8 = [a1 messageForApplicationName:v5 style:1];
+  v8 = [self messageForApplicationName:v5 style:1];
 
   return v8;
 }
 
-- (void)_actionOK:(id)a3
+- (void)_actionOK:(id)k
 {
-  v4 = [(STLockoutViewController *)self okButtonAction];
-  if (v4 == 1)
+  okButtonAction = [(STLockoutViewController *)self okButtonAction];
+  if (okButtonAction == 1)
   {
 
     [(STLockoutViewController *)self setDidFinishDismissing:1];
   }
 
-  else if (!v4)
+  else if (!okButtonAction)
   {
     v5 = +[STBlockingUILog log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1149,8 +1149,8 @@ LABEL_20:
       _os_log_impl(&dword_21DD93000, v5, OS_LOG_TYPE_DEFAULT, "Triggering return to Springboard...", v7, 2u);
     }
 
-    v6 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
-    [v6 openApplication:@"com.apple.springboard" withOptions:0 completion:&__block_literal_global_4];
+    serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+    [serviceWithDefaultShellEndpoint openApplication:@"com.apple.springboard" withOptions:0 completion:&__block_literal_global_4];
   }
 }
 
@@ -1186,12 +1186,12 @@ void __37__STLockoutViewController__actionOK___block_invoke(uint64_t a1, uint64_
   return 0;
 }
 
-- (void)_actionIgnoreLimitActionSheet:(id)a3
+- (void)_actionIgnoreLimitActionSheet:(id)sheet
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v4 = MEMORY[0x277D75110];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v6 = [currentDevice userInterfaceIdiom] == 1;
 
   v7 = [v4 alertControllerWithTitle:0 message:0 preferredStyle:v6];
   v8 = +[STScreenTimeUIBundle bundle];
@@ -1330,7 +1330,7 @@ void __57__STLockoutViewController__actionIgnoreLimitActionSheet___block_invoke_
   }
 }
 
-- (void)_actionAskOrApproveActionSheet:(id)a3
+- (void)_actionAskOrApproveActionSheet:(id)sheet
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -1343,10 +1343,10 @@ void __57__STLockoutViewController__actionIgnoreLimitActionSheet___block_invoke_
 - (BOOL)_actionUnlockedAskOrApproveActionSheet
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v5 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:v4 == 1];
+  v5 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:userInterfaceIdiom == 1];
   v6 = +[STScreenTimeUIBundle bundle];
   if ([(STLockoutPolicyController *)self->_policyController shouldAllowOneMoreMinute])
   {
@@ -1384,10 +1384,10 @@ void __57__STLockoutViewController__actionIgnoreLimitActionSheet___block_invoke_
     [v5 addAction:v12];
   }
 
-  v13 = [v5 actions];
-  v14 = [v13 count];
+  actions = [v5 actions];
+  v14 = [actions count];
 
-  if (v4 == 1 && v14 == 1)
+  if (userInterfaceIdiom == 1 && v14 == 1)
   {
     v15 = [v6 localizedStringForKey:@"AskForMoreTimeButtonTitle" value:&stru_282F1E250 table:0];
     [v5 setTitle:v15];
@@ -1499,7 +1499,7 @@ void __65__STLockoutViewController__actionUnlockedAskOrApproveActionSheet__block
   }
 }
 
-- (void)_actionEnterScreenTimePasscodeActionSheet:(id)a3
+- (void)_actionEnterScreenTimePasscodeActionSheet:(id)sheet
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v4[0] = MEMORY[0x277D85DD0];
@@ -1533,9 +1533,9 @@ uint64_t __76__STLockoutViewController__actionUnlockedEnterScreenTimePasscodeAct
   return result;
 }
 
-- (BOOL)_performUnlockedActionWithCompletionHandler:(id)a3
+- (BOOL)_performUnlockedActionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   if ([(STLockoutPolicyController *)self->_policyController _isRestrictionsPasscodeSet])
   {
@@ -1543,7 +1543,7 @@ uint64_t __76__STLockoutViewController__actionUnlockedEnterScreenTimePasscodeAct
     v7[1] = 3221225472;
     v7[2] = __71__STLockoutViewController__performUnlockedActionWithCompletionHandler___block_invoke;
     v7[3] = &unk_278339140;
-    v8 = v4;
+    v8 = handlerCopy;
     [(STLockoutViewController *)self _showRestrictionsPINControllerWithMainCompletion:v7];
     v5 = v8;
   }
@@ -1560,7 +1560,7 @@ uint64_t __76__STLockoutViewController__actionUnlockedEnterScreenTimePasscodeAct
   return 1;
 }
 
-- (void)_actionAddContact:(id)a3
+- (void)_actionAddContact:(id)contact
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v4[0] = MEMORY[0x277D85DD0];
@@ -1575,28 +1575,28 @@ uint64_t __76__STLockoutViewController__actionUnlockedEnterScreenTimePasscodeAct
 {
   v26[1] = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(STLockoutViewController *)self blockedContactsHandle];
-  v4 = [(STLockoutViewController *)self addBlockedContactHandler];
-  v5 = [(STLockoutViewController *)self addContactHandler];
-  v6 = v5;
-  if (v4)
+  blockedContactsHandle = [(STLockoutViewController *)self blockedContactsHandle];
+  addBlockedContactHandler = [(STLockoutViewController *)self addBlockedContactHandler];
+  addContactHandler = [(STLockoutViewController *)self addContactHandler];
+  v6 = addContactHandler;
+  if (addBlockedContactHandler)
   {
-    v7 = [(STLockoutViewController *)self mainButton];
-    (v4)[2](v4, v7, v3);
+    mainButton = [(STLockoutViewController *)self mainButton];
+    (addBlockedContactHandler)[2](addBlockedContactHandler, mainButton, blockedContactsHandle);
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  if (v5)
+  if (addContactHandler)
   {
-    v7 = [(STLockoutViewController *)self mainButton];
-    (v6)[2](v6, v7);
+    mainButton = [(STLockoutViewController *)self mainButton];
+    (v6)[2](v6, mainButton);
     goto LABEL_5;
   }
 
   v8 = objc_opt_new();
-  if ([v3 destinationIdIsPhoneNumber])
+  if ([blockedContactsHandle destinationIdIsPhoneNumber])
   {
     v9 = TUNetworkCountryCode();
     v10 = v9;
@@ -1621,10 +1621,10 @@ LABEL_5:
 
   else
   {
-    if ([v3 destinationIdIsEmailAddress])
+    if ([blockedContactsHandle destinationIdIsEmailAddress])
     {
       v16 = objc_alloc(MEMORY[0x277CBDB20]);
-      v12 = [v16 initWithLabel:*MEMORY[0x277CBD8D8] value:v3];
+      v12 = [v16 initWithLabel:*MEMORY[0x277CBD8D8] value:blockedContactsHandle];
       v25 = v12;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
       [v8 setEmailAddresses:v17];
@@ -1636,34 +1636,34 @@ LABEL_5:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v23 = 138543362;
-        v24 = v3;
+        v24 = blockedContactsHandle;
         _os_log_impl(&dword_21DD93000, v12, OS_LOG_TYPE_DEFAULT, "Failed to identify handle type for: %{public}@, presenting view controller with an empty contact", &v23, 0xCu);
       }
     }
 
-    v11 = v3;
+    v11 = blockedContactsHandle;
   }
 
   v18 = [MEMORY[0x277CBDC48] viewControllerForNewContact:v8];
   [v18 setDelegate:self];
-  v19 = [(STLockoutViewController *)self policyController];
-  v20 = [v19 contactStore];
-  [v18 setContactStore:v20];
+  policyController = [(STLockoutViewController *)self policyController];
+  contactStore = [policyController contactStore];
+  [v18 setContactStore:contactStore];
 
-  v21 = [v19 iCloudContainer];
-  [v18 setParentContainer:v21];
+  iCloudContainer = [policyController iCloudContainer];
+  [v18 setParentContainer:iCloudContainer];
 
   v22 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v18];
   [(STLockoutViewController *)self presentViewController:v22 animated:1 completion:0];
 
-  v3 = v11;
+  blockedContactsHandle = v11;
 LABEL_6:
 }
 
-- (void)_unlockWithSuccessMainCompletion:(id)a3
+- (void)_unlockWithSuccessMainCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   sbsLockScreenService = self->_sbsLockScreenService;
   if (sbsLockScreenService)
   {
@@ -1671,13 +1671,13 @@ LABEL_6:
     v7[1] = 3221225472;
     v7[2] = __60__STLockoutViewController__unlockWithSuccessMainCompletion___block_invoke;
     v7[3] = &unk_278338A30;
-    v8 = v4;
+    v8 = completionCopy;
     [(SBSLockScreenService *)sbsLockScreenService requestPasscodeUnlockUIWithOptions:0 withCompletion:v7];
   }
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1698,8 +1698,8 @@ void __60__STLockoutViewController__unlockWithSuccessMainCompletion___block_invo
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v3 = MEMORY[0x277D75110];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v5 = [currentDevice userInterfaceIdiom] == 1;
 
   v6 = [v3 alertControllerWithTitle:0 message:0 preferredStyle:v5];
   v7 = +[STScreenTimeUIBundle bundle];
@@ -1836,7 +1836,7 @@ void __59__STLockoutViewController__authenticatedApproveActionSheet__block_invok
   }
 }
 
-- (void)_authenticatedApproveForAdditionalTime:(double)a3
+- (void)_authenticatedApproveForAdditionalTime:(double)time
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   [(STLockoutViewController *)self _showApprovalAnimationIfNeeded];
@@ -1858,13 +1858,13 @@ void __59__STLockoutViewController__authenticatedApproveActionSheet__block_invok
   v6 = MEMORY[0x277D85CD0];
   dispatch_after(v5, MEMORY[0x277D85CD0], block);
 
-  v7 = [(STLockoutViewController *)self policyController];
+  policyController = [(STLockoutViewController *)self policyController];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__STLockoutViewController__authenticatedApproveForAdditionalTime___block_invoke_195;
   v8[3] = &unk_278339248;
   objc_copyWeak(&v9, buf);
-  [v7 handleAction:3 withCompletionHandler:v8];
+  [policyController handleAction:3 withCompletionHandler:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v11);
@@ -1908,11 +1908,11 @@ void __66__STLockoutViewController__authenticatedApproveForAdditionalTime___bloc
   [WeakRetained _undoApprovalAnimationIfNeeded];
 }
 
-- (void)_presentAlertController:(id)a3
+- (void)_presentAlertController:(id)controller
 {
-  v4 = a3;
-  objc_storeWeak(&self->_presentedAlertController, v4);
-  [(STLockoutViewController *)self presentViewController:v4 animated:1 completion:0];
+  controllerCopy = controller;
+  objc_storeWeak(&self->_presentedAlertController, controllerCopy);
+  [(STLockoutViewController *)self presentViewController:controllerCopy animated:1 completion:0];
 }
 
 - (void)_changeMessageToInitial
@@ -1921,17 +1921,17 @@ void __66__STLockoutViewController__authenticatedApproveForAdditionalTime___bloc
   style = self->_style;
   if (style == 4)
   {
-    v4 = [(STLockoutPolicyController *)self->_policyController categoryIdentifier];
+    categoryIdentifier = [(STLockoutPolicyController *)self->_policyController categoryIdentifier];
 
-    if (v4)
+    if (categoryIdentifier)
     {
       v5 = objc_opt_class();
-      v14 = [(STLockoutPolicyController *)self->_policyController categoryIdentifier];
+      categoryIdentifier2 = [(STLockoutPolicyController *)self->_policyController categoryIdentifier];
       v6 = [v5 _messageForCategoryIdentifier:?];
 LABEL_10:
-      v11 = v6;
-      v12 = [(STLockoutViewController *)self messageLabel];
-      [v12 setText:v11];
+      bundleIdentifier = v6;
+      messageLabel = [(STLockoutViewController *)self messageLabel];
+      [messageLabel setText:bundleIdentifier];
       goto LABEL_11;
     }
 
@@ -1940,30 +1940,30 @@ LABEL_10:
 
   if (style == 1)
   {
-    v7 = [(STLockoutPolicyController *)self->_policyController websiteURL];
+    websiteURL = [(STLockoutPolicyController *)self->_policyController websiteURL];
 
-    if (v7)
+    if (websiteURL)
     {
       v8 = objc_opt_class();
-      v14 = [(STLockoutPolicyController *)self->_policyController websiteURL];
+      categoryIdentifier2 = [(STLockoutPolicyController *)self->_policyController websiteURL];
       v6 = [v8 messageForWebsiteURL:?];
       goto LABEL_10;
     }
   }
 
-  v14 = [(STLockoutViewController *)self applicationName];
+  categoryIdentifier2 = [(STLockoutViewController *)self applicationName];
   v9 = objc_opt_class();
   v10 = v9;
-  if (v14)
+  if (categoryIdentifier2)
   {
-    v6 = [v9 messageForApplicationName:v14 style:self->_style];
+    v6 = [v9 messageForApplicationName:categoryIdentifier2 style:self->_style];
     goto LABEL_10;
   }
 
-  v11 = [(STLockoutPolicyController *)self->_policyController bundleIdentifier];
-  v12 = [v10 messageForBundleIdentifier:v11 style:self->_style];
-  v13 = [(STLockoutViewController *)self messageLabel];
-  [v13 setText:v12];
+  bundleIdentifier = [(STLockoutPolicyController *)self->_policyController bundleIdentifier];
+  messageLabel = [v10 messageForBundleIdentifier:bundleIdentifier style:self->_style];
+  messageLabel2 = [(STLockoutViewController *)self messageLabel];
+  [messageLabel2 setText:messageLabel];
 
 LABEL_11:
 }
@@ -1978,8 +1978,8 @@ LABEL_11:
 
   else
   {
-    v8 = [(STLockoutViewController *)self bundleIdentifier];
-    if ([v8 length])
+    bundleIdentifier = [(STLockoutViewController *)self bundleIdentifier];
+    if ([bundleIdentifier length])
     {
       style = self->_style;
       if (style)
@@ -2003,22 +2003,22 @@ LABEL_11:
     }
   }
 
-  v5 = [(STLockoutViewController *)self okButton];
-  [v5 setHidden:v4];
+  okButton = [(STLockoutViewController *)self okButton];
+  [okButton setHidden:v4];
 
   if (v3)
   {
   }
 }
 
-- (void)setMainButtonAlwaysHidden:(BOOL)a3
+- (void)setMainButtonAlwaysHidden:(BOOL)hidden
 {
-  self->_mainButtonAlwaysHidden = a3;
-  v4 = [(STLockoutViewController *)self mainButton];
-  v5 = [v4 configuration];
-  v6 = [v5 title];
+  self->_mainButtonAlwaysHidden = hidden;
+  mainButton = [(STLockoutViewController *)self mainButton];
+  configuration = [mainButton configuration];
+  title = [configuration title];
 
-  if ([v6 length])
+  if ([title length])
   {
     [(STLockoutViewController *)self _updateMainButtonVisibility];
   }
@@ -2026,35 +2026,35 @@ LABEL_11:
 
 - (void)_updateMainButtonVisibility
 {
-  v5 = [(STLockoutViewController *)self policyController];
-  if (-[STLockoutViewController shouldHideStoryboardViews](self, "shouldHideStoryboardViews") || -[STLockoutViewController mainButtonAlwaysHidden](self, "mainButtonAlwaysHidden") || ([v5 needsToSetRestrictionsPasscode] & 1) != 0)
+  policyController = [(STLockoutViewController *)self policyController];
+  if (-[STLockoutViewController shouldHideStoryboardViews](self, "shouldHideStoryboardViews") || -[STLockoutViewController mainButtonAlwaysHidden](self, "mainButtonAlwaysHidden") || ([policyController needsToSetRestrictionsPasscode] & 1) != 0)
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = self->_style == 3 && [v5 state] == 8;
+    v3 = self->_style == 3 && [policyController state] == 8;
   }
 
-  v4 = [(STLockoutViewController *)self mainButton];
-  [v4 setHidden:v3];
+  mainButton = [(STLockoutViewController *)self mainButton];
+  [mainButton setHidden:v3];
 }
 
-- (void)_updateMainButtonWithTitle:(id)a3 action:(SEL)a4
+- (void)_updateMainButtonWithTitle:(id)title action:(SEL)action
 {
-  v6 = a3;
-  v9 = [(STLockoutViewController *)self mainButton];
-  v7 = [MEMORY[0x277D75230] plainButtonConfiguration];
-  [v7 setTitle:v6];
+  titleCopy = title;
+  mainButton = [(STLockoutViewController *)self mainButton];
+  plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
+  [plainButtonConfiguration setTitle:titleCopy];
 
-  v8 = [MEMORY[0x277D75348] systemBlueColor];
-  [v7 setBaseForegroundColor:v8];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  [plainButtonConfiguration setBaseForegroundColor:systemBlueColor];
 
-  [v9 setPreferredBehavioralStyle:1];
-  [v9 setConfiguration:v7];
-  [v9 removeTarget:self action:0 forControlEvents:0x2000];
-  [v9 addTarget:self action:a4 forControlEvents:0x2000];
+  [mainButton setPreferredBehavioralStyle:1];
+  [mainButton setConfiguration:plainButtonConfiguration];
+  [mainButton removeTarget:self action:0 forControlEvents:0x2000];
+  [mainButton addTarget:self action:action forControlEvents:0x2000];
   [(STLockoutViewController *)self _updateMainButtonVisibility];
 }
 
@@ -2079,16 +2079,16 @@ LABEL_11:
   [(STLockoutViewController *)self _updateMainButtonWithTitle:v3 action:sel__actionEnterScreenTimePasscodeActionSheet_];
 }
 
-- (void)_changeMainButtonToAddContact:(id)a3
+- (void)_changeMainButtonToAddContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v9 = +[STScreenTimeUIBundle bundle];
   v5 = [v9 localizedStringForKey:@"AddContactButtonFormat" value:&stru_282F1E250 table:0];
   v6 = objc_alloc(MEMORY[0x277CCACA8]);
-  v7 = [MEMORY[0x277CBEAF8] currentLocale];
-  v8 = [v6 initWithFormat:v5 locale:v7, v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  contactCopy = [v6 initWithFormat:v5 locale:currentLocale, contactCopy];
 
-  [(STLockoutViewController *)self _updateMainButtonWithTitle:v8 action:sel__actionAddContact_];
+  [(STLockoutViewController *)self _updateMainButtonWithTitle:contactCopy action:sel__actionAddContact_];
 }
 
 - (void)_changeStateToWarn
@@ -2105,8 +2105,8 @@ LABEL_11:
   [(STLockoutViewController *)self _updateImageVisibility];
   v4 = +[STScreenTimeUIBundle bundle];
   v5 = [v4 localizedStringForKey:@"TimeLimitTitle" value:&stru_282F1E250 table:0];
-  v6 = [(STLockoutViewController *)self titleLabel];
-  [v6 setText:v5];
+  titleLabel = [(STLockoutViewController *)self titleLabel];
+  [titleLabel setText:v5];
 
   [(STLockoutViewController *)self _changeMessageToInitial];
   [(STLockoutViewController *)self _changeMainButtonToIgnoreLimit];
@@ -2127,8 +2127,8 @@ LABEL_11:
   [(STLockoutViewController *)self _updateImageVisibility];
   v4 = +[STScreenTimeUIBundle bundle];
   v5 = [v4 localizedStringForKey:@"TimeLimitTitle" value:&stru_282F1E250 table:0];
-  v6 = [(STLockoutViewController *)self titleLabel];
-  [v6 setText:v5];
+  titleLabel = [(STLockoutViewController *)self titleLabel];
+  [titleLabel setText:v5];
 
   [(STLockoutViewController *)self _changeMessageToInitial];
   [(STLockoutViewController *)self _changeMainButtonToAskForMore];
@@ -2149,12 +2149,12 @@ LABEL_11:
   [(STLockoutViewController *)self _undoApprovalAnimationIfNeeded];
   v4 = +[STScreenTimeUIBundle bundle];
   v5 = [v4 localizedStringForKey:@"RequestSentTitle" value:&stru_282F1E250 table:0];
-  v6 = [(STLockoutViewController *)self titleLabel];
-  [v6 setText:v5];
+  titleLabel = [(STLockoutViewController *)self titleLabel];
+  [titleLabel setText:v5];
 
   v7 = [v4 localizedStringForKey:@"RequestSentMessage" value:&stru_282F1E250 table:0];
-  v8 = [(STLockoutViewController *)self messageLabel];
-  [v8 setText:v7];
+  messageLabel = [(STLockoutViewController *)self messageLabel];
+  [messageLabel setText:v7];
 
   [(STLockoutViewController *)self _changeMainButtonToEnterScreenTimePasscode];
   [(STLockoutViewController *)self _restoreTextAndButtons];
@@ -2188,8 +2188,8 @@ LABEL_11:
   [(STLockoutViewController *)self _undoApprovalAnimationIfNeeded];
   v4 = +[STScreenTimeUIBundle bundle];
   v5 = [v4 localizedStringForKey:@"TimeLimitTitle" value:&stru_282F1E250 table:0];
-  v6 = [(STLockoutViewController *)self titleLabel];
-  [v6 setText:v5];
+  titleLabel = [(STLockoutViewController *)self titleLabel];
+  [titleLabel setText:v5];
 
   [(STLockoutViewController *)self _changeMessageToInitial];
   [(STLockoutViewController *)self _changeMainButtonToEnterScreenTimePasscode];
@@ -2210,8 +2210,8 @@ LABEL_11:
   [(STLockoutViewController *)self _updateImageVisibility];
   v4 = +[STScreenTimeUIBundle bundle];
   v5 = [v4 localizedStringForKey:@"RestrictedContactTitle" value:&stru_282F1E250 table:0];
-  v6 = [(STLockoutViewController *)self titleLabel];
-  [v6 setText:v5];
+  titleLabel = [(STLockoutViewController *)self titleLabel];
+  [titleLabel setText:v5];
 
   v7 = [(STLockoutViewController *)self _updateMessageLabelAndReturnHandleWithPhoneNumberFormat:@"BlockedPhoneNumberMessageFormat" emailAddressFormat:@"BlockedEmailAddressMessageFormat" contactNameFormat:@"BlockedContactNameMessageFormat"];
   [(STLockoutViewController *)self _changeMainButtonToAddContact:v7];
@@ -2232,12 +2232,12 @@ LABEL_11:
   [(STLockoutViewController *)self _updateImageVisibility];
   v4 = +[STScreenTimeUIBundle bundle];
   v5 = [v4 localizedStringForKey:@"RestrictedContactTitle" value:&stru_282F1E250 table:0];
-  v6 = [(STLockoutViewController *)self titleLabel];
-  [v6 setText:v5];
+  titleLabel = [(STLockoutViewController *)self titleLabel];
+  [titleLabel setText:v5];
 
   v7 = [(STLockoutViewController *)self _updateMessageLabelAndReturnHandleWithPhoneNumberFormat:@"BlockedPhoneNumberDowntimeMessageFormat" emailAddressFormat:@"BlockedEmailAddressDowntimeMessageFormat" contactNameFormat:@"BlockedContactNameDowntimeMessageFormat"];
-  v8 = [(STLockoutViewController *)self policyController];
-  LODWORD(v5) = [v8 _shouldRequestMoreTime];
+  policyController = [(STLockoutViewController *)self policyController];
+  LODWORD(v5) = [policyController _shouldRequestMoreTime];
 
   if (v5)
   {
@@ -2252,35 +2252,35 @@ LABEL_11:
   [(STLockoutViewController *)self _restoreTextAndButtons];
 }
 
-- (id)_updateMessageLabelAndReturnHandleWithPhoneNumberFormat:(id)a3 emailAddressFormat:(id)a4 contactNameFormat:(id)a5
+- (id)_updateMessageLabelAndReturnHandleWithPhoneNumberFormat:(id)format emailAddressFormat:(id)addressFormat contactNameFormat:(id)nameFormat
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(STLockoutViewController *)self policyController];
-  v12 = [v11 blockedContactsHandles];
+  formatCopy = format;
+  addressFormatCopy = addressFormat;
+  nameFormatCopy = nameFormat;
+  policyController = [(STLockoutViewController *)self policyController];
+  blockedContactsHandles = [policyController blockedContactsHandles];
 
-  v13 = [v12 anyObject];
-  [(STLockoutViewController *)self setBlockedContactsHandle:v13];
-  v14 = [(STLockoutViewController *)self contactNameByHandle];
-  v15 = [v14 objectForKeyedSubscript:v13];
+  anyObject = [blockedContactsHandles anyObject];
+  [(STLockoutViewController *)self setBlockedContactsHandle:anyObject];
+  contactNameByHandle = [(STLockoutViewController *)self contactNameByHandle];
+  v15 = [contactNameByHandle objectForKeyedSubscript:anyObject];
 
-  v29 = v8;
+  v29 = formatCopy;
   if (v15)
   {
-    v16 = v9;
+    v16 = addressFormatCopy;
     v17 = +[STScreenTimeUIBundle bundle];
-    v18 = [v17 localizedStringForKey:v10 value:&stru_282F1E250 table:0];
+    v18 = [v17 localizedStringForKey:nameFormatCopy value:&stru_282F1E250 table:0];
 
     v19 = v15;
-    v20 = v13;
+    v20 = anyObject;
   }
 
-  else if ([v13 destinationIdIsPhoneNumber])
+  else if ([anyObject destinationIdIsPhoneNumber])
   {
-    v16 = v9;
+    v16 = addressFormatCopy;
     v21 = +[STScreenTimeUIBundle bundle];
-    v18 = [v21 localizedStringForKey:v8 value:&stru_282F1E250 table:0];
+    v18 = [v21 localizedStringForKey:formatCopy value:&stru_282F1E250 table:0];
 
     v20 = TUNetworkCountryCode();
     v22 = v20;
@@ -2298,27 +2298,27 @@ LABEL_11:
 
   else
   {
-    v23 = [v13 destinationIdIsEmailAddress];
+    destinationIdIsEmailAddress = [anyObject destinationIdIsEmailAddress];
     v24 = +[STScreenTimeUIBundle bundle];
     v20 = v24;
-    v16 = v9;
-    if (v23)
+    v16 = addressFormatCopy;
+    if (destinationIdIsEmailAddress)
     {
-      v25 = v9;
+      v25 = addressFormatCopy;
     }
 
     else
     {
-      v25 = v10;
+      v25 = nameFormatCopy;
     }
 
     v18 = [v24 localizedStringForKey:v25 value:&stru_282F1E250 table:0];
-    v19 = v13;
+    v19 = anyObject;
   }
 
-  v26 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v18 validFormatSpecifiers:@"%lu %@" error:0, objc_msgSend(v12, "count") - 1, v19];
-  v27 = [(STLockoutViewController *)self messageLabel];
-  [v27 setText:v26];
+  v26 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v18 validFormatSpecifiers:@"%lu %@" error:0, objc_msgSend(blockedContactsHandles, "count") - 1, v19];
+  messageLabel = [(STLockoutViewController *)self messageLabel];
+  [messageLabel setText:v26];
 
   return v19;
 }
@@ -2377,42 +2377,42 @@ void __51__STLockoutViewController__changeStateToDismissing__block_invoke(uint64
 
 - (void)_updateImageVisibility
 {
-  v3 = [(STLockoutViewController *)self hourglassView];
-  v4 = [v3 isHidden];
+  hourglassView = [(STLockoutViewController *)self hourglassView];
+  isHidden = [hourglassView isHidden];
 
-  v5 = [(STLockoutViewController *)self communicationLimitView];
-  v6 = [v5 isHidden];
+  communicationLimitView = [(STLockoutViewController *)self communicationLimitView];
+  isHidden2 = [communicationLimitView isHidden];
 
   if ([(STLockoutViewController *)self shouldHideStoryboardViews])
   {
     v7 = 1;
-    v6 = 1;
+    isHidden2 = 1;
   }
 
   else
   {
-    v8 = [(STLockoutViewController *)self policyController];
-    v9 = [v8 state];
+    policyController = [(STLockoutViewController *)self policyController];
+    state = [policyController state];
 
-    v10 = v9 - 2;
-    if ((0x63u >> (v9 - 2)))
+    v10 = state - 2;
+    if ((0x63u >> (state - 2)))
     {
-      v11 = 0x3Cu >> (v9 - 2);
+      v11 = 0x3Cu >> (state - 2);
     }
 
     else
     {
-      LOBYTE(v11) = v4;
+      LOBYTE(v11) = isHidden;
     }
 
-    if ((0x63u >> (v9 - 2)))
+    if ((0x63u >> (state - 2)))
     {
-      v12 = 0x43u >> (v9 - 2);
+      v12 = 0x43u >> (state - 2);
     }
 
     else
     {
-      LOBYTE(v12) = v6;
+      LOBYTE(v12) = isHidden2;
     }
 
     if (v10 <= 6)
@@ -2422,20 +2422,20 @@ void __51__STLockoutViewController__changeStateToDismissing__block_invoke(uint64
 
     else
     {
-      v7 = v4;
+      v7 = isHidden;
     }
 
     if (v10 <= 6)
     {
-      v6 = v12;
+      isHidden2 = v12;
     }
   }
 
-  v13 = [(STLockoutViewController *)self hourglassView];
-  [v13 setHidden:v7 & 1];
+  hourglassView2 = [(STLockoutViewController *)self hourglassView];
+  [hourglassView2 setHidden:v7 & 1];
 
-  v14 = [(STLockoutViewController *)self communicationLimitView];
-  [v14 setHidden:v6 & 1];
+  communicationLimitView2 = [(STLockoutViewController *)self communicationLimitView];
+  [communicationLimitView2 setHidden:isHidden2 & 1];
 }
 
 - (void)_showInitialAnimationIfNeeded
@@ -2478,13 +2478,13 @@ void __56__STLockoutViewController__showInitialAnimationIfNeeded__block_invoke(u
   [WeakRetained _doInitialAnimationExitingGroup:*(a1 + 32)];
 }
 
-- (void)_doInitialAnimationExitingGroup:(id)a3
+- (void)_doInitialAnimationExitingGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   objc_initWeak(&location, self);
-  v5 = [(STLockoutViewController *)self view];
-  [v5 alpha];
+  view = [(STLockoutViewController *)self view];
+  [view alpha];
   v7 = v6;
 
   if (v7 == 0.0)
@@ -2495,7 +2495,7 @@ void __56__STLockoutViewController__showInitialAnimationIfNeeded__block_invoke(u
     v8[2] = __59__STLockoutViewController__doInitialAnimationExitingGroup___block_invoke;
     v8[3] = &unk_278339270;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
+    v9 = groupCopy;
     [(STLockoutViewController *)self _fadeInBackdropWithCompletion:v8];
 
     objc_destroyWeak(&v10);
@@ -2504,7 +2504,7 @@ void __56__STLockoutViewController__showInitialAnimationIfNeeded__block_invoke(u
   else
   {
     [(STLockoutViewController *)self _restoreHourglass];
-    [(STLockoutViewController *)self _doInitialAnimationOfHourglassExitingGroup:v4];
+    [(STLockoutViewController *)self _doInitialAnimationOfHourglassExitingGroup:groupCopy];
   }
 
   objc_destroyWeak(&location);
@@ -2522,9 +2522,9 @@ void __59__STLockoutViewController__doInitialAnimationExitingGroup___block_invok
   [WeakRetained _doInitialAnimationOfHourglassExitingGroup:*(a1 + 32)];
 }
 
-- (void)_doInitialAnimationOfHourglassExitingGroup:(id)a3
+- (void)_doInitialAnimationOfHourglassExitingGroup:(id)group
 {
-  group = a3;
+  group = group;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   [(STLockoutViewController *)self _fadeInTextAndButtons];
   dispatch_group_leave(group);
@@ -2606,8 +2606,8 @@ void __57__STLockoutViewController__showApprovalAnimationIfNeeded__block_invoke(
 
   else
   {
-    v4 = [(STLockoutViewController *)self view];
-    [v4 alpha];
+    view = [(STLockoutViewController *)self view];
+    [view alpha];
     v6 = v5;
 
     if (v6 == 1.0)
@@ -2625,7 +2625,7 @@ void __57__STLockoutViewController__showApprovalAnimationIfNeeded__block_invoke(
       v11 = v8;
       objc_copyWeak(v18, &location);
       v18[1] = reuseIdentifier;
-      v16 = self;
+      selfCopy = self;
       v17 = v9;
       v12 = v9;
       v13 = MEMORY[0x277D85CD0];
@@ -2679,9 +2679,9 @@ void __59__STLockoutViewController__showDismissingAnimationIfNeeded__block_invok
   }
 }
 
-- (void)_fadeOutBackdropWithCompletion:(id)a3
+- (void)_fadeOutBackdropWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277D75D18];
   v6[0] = MEMORY[0x277D85DD0];
@@ -2689,7 +2689,7 @@ void __59__STLockoutViewController__showDismissingAnimationIfNeeded__block_invok
   v6[2] = __58__STLockoutViewController__fadeOutBackdropWithCompletion___block_invoke;
   v6[3] = &unk_278339220;
   objc_copyWeak(&v7, &location);
-  [v5 animateWithDuration:v6 animations:v4 completion:0.25];
+  [v5 animateWithDuration:v6 animations:completionCopy completion:0.25];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
@@ -2700,9 +2700,9 @@ void __58__STLockoutViewController__fadeOutBackdropWithCompletion___block_invoke
   [WeakRetained _hideBackdrop];
 }
 
-- (void)_fadeInBackdropWithCompletion:(id)a3
+- (void)_fadeInBackdropWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277D75D18];
   v6[0] = MEMORY[0x277D85DD0];
@@ -2710,7 +2710,7 @@ void __58__STLockoutViewController__fadeOutBackdropWithCompletion___block_invoke
   v6[2] = __57__STLockoutViewController__fadeInBackdropWithCompletion___block_invoke;
   v6[3] = &unk_278339220;
   objc_copyWeak(&v7, &location);
-  [v5 animateWithDuration:v6 animations:v4 completion:0.2];
+  [v5 animateWithDuration:v6 animations:completionCopy completion:0.2];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
@@ -2803,26 +2803,26 @@ void __48__STLockoutViewController__fadeInTextAndButtons__block_invoke(uint64_t 
 
 - (void)_hideBackdrop
 {
-  v2 = [(STLockoutViewController *)self view];
-  [v2 setAlpha:0.0];
+  view = [(STLockoutViewController *)self view];
+  [view setAlpha:0.0];
 }
 
 - (void)_restoreBackdrop
 {
-  v2 = [(STLockoutViewController *)self view];
-  [v2 setAlpha:1.0];
+  view = [(STLockoutViewController *)self view];
+  [view setAlpha:1.0];
 }
 
 - (void)_hideHourglass
 {
-  v2 = [(STLockoutViewController *)self hourglassView];
-  [v2 setAlpha:0.0];
+  hourglassView = [(STLockoutViewController *)self hourglassView];
+  [hourglassView setAlpha:0.0];
 }
 
 - (void)_restoreHourglass
 {
-  v2 = [(STLockoutViewController *)self hourglassView];
-  [v2 setAlpha:1.0];
+  hourglassView = [(STLockoutViewController *)self hourglassView];
+  [hourglassView setAlpha:1.0];
 }
 
 - (void)_restoreTextAndButtons
@@ -2832,40 +2832,40 @@ void __48__STLockoutViewController__fadeInTextAndButtons__block_invoke(uint64_t 
   [(STLockoutViewController *)self _updateOKButtonVisibility];
 }
 
-- (void)_setTextAndButtonsAlpha:(double)a3
+- (void)_setTextAndButtonsAlpha:(double)alpha
 {
-  v5 = [(STLockoutViewController *)self titleLabel];
-  [v5 setAlpha:a3];
+  titleLabel = [(STLockoutViewController *)self titleLabel];
+  [titleLabel setAlpha:alpha];
 
-  v6 = [(STLockoutViewController *)self messageLabel];
-  [v6 setAlpha:a3];
+  messageLabel = [(STLockoutViewController *)self messageLabel];
+  [messageLabel setAlpha:alpha];
 
-  v7 = [(STLockoutViewController *)self mainButton];
-  [v7 setAlpha:a3];
+  mainButton = [(STLockoutViewController *)self mainButton];
+  [mainButton setAlpha:alpha];
 
-  v8 = [(STLockoutViewController *)self okButton];
-  [v8 setAlpha:a3];
+  okButton = [(STLockoutViewController *)self okButton];
+  [okButton setAlpha:alpha];
 }
 
-- (void)stateDidChange:(unint64_t)a3
+- (void)stateDidChange:(unint64_t)change
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = +[STBlockingUILog log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 134217984;
-    v20 = a3;
+    changeCopy = change;
     _os_log_impl(&dword_21DD93000, v5, OS_LOG_TYPE_DEFAULT, "stateDidChange STLockoutState : %ld", &v19, 0xCu);
   }
 
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   if ([(STLockoutViewController *)self isViewLoaded])
   {
-    if (a3 > 5)
+    if (change > 5)
     {
-      if (a3 > 7)
+      if (change > 7)
       {
-        if (a3 == 8)
+        if (change == 8)
         {
           v13 = +[STBlockingUILog log];
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -2874,12 +2874,12 @@ void __48__STLockoutViewController__fadeInTextAndButtons__block_invoke(uint64_t 
             _os_log_impl(&dword_21DD93000, v13, OS_LOG_TYPE_DEFAULT, "change to policy Contact Blocked During Downtime", &v19, 2u);
           }
 
-          v14 = [(STLockoutViewController *)self communicationLimitsBlockingViewModel];
-          v15 = [v14 blockingViewType];
+          communicationLimitsBlockingViewModel = [(STLockoutViewController *)self communicationLimitsBlockingViewModel];
+          blockingViewType = [communicationLimitsBlockingViewModel blockingViewType];
 
-          v16 = [(STLockoutViewController *)self communicationLimitsBlockingViewModel];
-          v17 = v16;
-          if (v15 == 3)
+          communicationLimitsBlockingViewModel2 = [(STLockoutViewController *)self communicationLimitsBlockingViewModel];
+          v17 = communicationLimitsBlockingViewModel2;
+          if (blockingViewType == 3)
           {
             v18 = 5;
           }
@@ -2889,12 +2889,12 @@ void __48__STLockoutViewController__fadeInTextAndButtons__block_invoke(uint64_t 
             v18 = 4;
           }
 
-          [v16 setBlockingViewType:v18];
+          [communicationLimitsBlockingViewModel2 setBlockingViewType:v18];
 
           [(STLockoutViewController *)self _changeStateToContactBlockedDuringDowntime];
         }
 
-        else if (a3 == 9)
+        else if (change == 9)
         {
           v9 = +[STBlockingUILog log];
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2907,7 +2907,7 @@ void __48__STLockoutViewController__fadeInTextAndButtons__block_invoke(uint64_t 
         }
       }
 
-      else if (a3 == 6)
+      else if (change == 6)
       {
         v11 = +[STBlockingUILog log];
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2932,9 +2932,9 @@ void __48__STLockoutViewController__fadeInTextAndButtons__block_invoke(uint64_t 
       }
     }
 
-    else if (a3 > 3)
+    else if (change > 3)
     {
-      if (a3 == 4)
+      if (change == 4)
       {
         v12 = +[STBlockingUILog log];
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -2959,7 +2959,7 @@ void __48__STLockoutViewController__fadeInTextAndButtons__block_invoke(uint64_t 
       }
     }
 
-    else if (a3 == 2)
+    else if (change == 2)
     {
       v10 = +[STBlockingUILog log];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2971,7 +2971,7 @@ void __48__STLockoutViewController__fadeInTextAndButtons__block_invoke(uint64_t 
       [(STLockoutViewController *)self _changeStateToWarn];
     }
 
-    else if (a3 == 3)
+    else if (change == 3)
     {
       v6 = +[STBlockingUILog log];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2985,9 +2985,9 @@ void __48__STLockoutViewController__fadeInTextAndButtons__block_invoke(uint64_t 
   }
 }
 
-- (void)_showRestrictionsPINControllerWithMainCompletion:(id)a3
+- (void)_showRestrictionsPINControllerWithMainCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[STBlockingUILog log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2995,7 +2995,7 @@ void __48__STLockoutViewController__fadeInTextAndButtons__block_invoke(uint64_t 
     _os_log_impl(&dword_21DD93000, v5, OS_LOG_TYPE_DEFAULT, "presenting restrictions PIN controller", buf, 2u);
   }
 
-  v6 = [v4 copy];
+  v6 = [completionCopy copy];
   restrictionsPINControllerCompletion = self->_restrictionsPINControllerCompletion;
   self->_restrictionsPINControllerCompletion = v6;
 
@@ -3033,8 +3033,8 @@ uint64_t __76__STLockoutViewController__showRestrictionsPINControllerWithMainCom
     [STLockoutViewController _startListeningForRestrictionsPINEntryNotification];
   }
 
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v4 addObserver:self selector:sel__handleRestrictionsPINNotification_ name:@"com.apple.screentime.restrictions.did-finish" object:0 suspensionBehavior:4];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleRestrictionsPINNotification_ name:@"com.apple.screentime.restrictions.did-finish" object:0 suspensionBehavior:4];
 }
 
 - (void)_stopListeningForRestrictionsPINEntryNotification
@@ -3045,28 +3045,28 @@ uint64_t __76__STLockoutViewController__showRestrictionsPINControllerWithMainCom
     [STLockoutViewController _stopListeningForRestrictionsPINEntryNotification];
   }
 
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v4 removeObserver:self name:@"com.apple.screentime.restrictions.did-finish" object:0];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.screentime.restrictions.did-finish" object:0];
 }
 
-- (void)_handleRestrictionsPINNotification:(id)a3
+- (void)_handleRestrictionsPINNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   [(STLockoutViewController *)self _stopListeningForRestrictionsPINEntryNotification];
-  v5 = [v4 userInfo];
+  userInfo = [notificationCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:@"success"];
-  v7 = [v6 BOOLValue];
+  v6 = [userInfo objectForKeyedSubscript:@"success"];
+  bOOLValue = [v6 BOOLValue];
 
-  [(STLockoutViewController *)self _restrictionsPINControllerDidFinish:v7];
+  [(STLockoutViewController *)self _restrictionsPINControllerDidFinish:bOOLValue];
 }
 
-- (void)_restrictionsPINControllerDidFinish:(BOOL)a3
+- (void)_restrictionsPINControllerDidFinish:(BOOL)finish
 {
-  v3 = a3;
+  finishCopy = finish;
   v5 = +[STBlockingUILog log];
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (finishCopy)
   {
     if (v6)
     {
@@ -3089,7 +3089,7 @@ LABEL_6:
   v8[2] = __63__STLockoutViewController__restrictionsPINControllerDidFinish___block_invoke;
   v8[3] = &unk_278339310;
   v8[4] = self;
-  v9 = v3;
+  v9 = finishCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
@@ -3105,10 +3105,10 @@ void __63__STLockoutViewController__restrictionsPINControllerDidFinish___block_i
   }
 }
 
-- (void)contentSizeCategoryDidChangeNotification:(id)a3
+- (void)contentSizeCategoryDidChangeNotification:(id)notification
 {
-  v3 = [(STLockoutViewController *)self viewIfLoaded];
-  [v3 setNeedsLayout];
+  viewIfLoaded = [(STLockoutViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
 - (STCommunicationLimitsLockoutViewControllerDelegate)communicationLimitsDelegate

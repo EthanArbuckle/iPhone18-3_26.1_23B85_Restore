@@ -1,12 +1,12 @@
 @interface PLFilteredAlbum
-+ (id)descriptionForAlbumFilter:(int)a3 parameters:(id)a4;
-+ (id)filteredAlbum:(id)a3 filter:(int)a4 parameters:(id)a5;
-+ (id)filteredAlbum:(id)a3 intersectFilter:(int)a4;
-+ (id)filteredAlbum:(id)a3 predicate:(id)a4;
-+ (id)filteredIndexesInAlbum:(id)a3 predicate:(id)a4;
-+ (id)predicateForAlbumFilter:(int)a3 parameters:(id)a4 photoLibrary:(id)a5;
++ (id)descriptionForAlbumFilter:(int)filter parameters:(id)parameters;
++ (id)filteredAlbum:(id)album filter:(int)filter parameters:(id)parameters;
++ (id)filteredAlbum:(id)album intersectFilter:(int)filter;
++ (id)filteredAlbum:(id)album predicate:(id)predicate;
++ (id)filteredIndexesInAlbum:(id)album predicate:(id)predicate;
++ (id)predicateForAlbumFilter:(int)filter parameters:(id)parameters photoLibrary:(id)library;
 - (BOOL)canContributeToCloudSharedAlbum;
-- (BOOL)canPerformEditOperation:(unint64_t)a3;
+- (BOOL)canPerformEditOperation:(unint64_t)operation;
 - (BOOL)canShowAvalancheStacks;
 - (BOOL)canShowComments;
 - (BOOL)cloudNotificationsEnabled;
@@ -27,9 +27,9 @@
 - (BOOL)isRecentlyAddedAlbum;
 - (BOOL)isStandInAlbum;
 - (BOOL)isUserLibraryAlbum;
-- (BOOL)mappedDataSourceChanged:(id)a3 remoteNotificationData:(id)a4;
+- (BOOL)mappedDataSourceChanged:(id)changed remoteNotificationData:(id)data;
 - (BOOL)shouldDeleteWhenEmpty;
-- (BOOL)shouldIncludeObjectAtIndex:(unint64_t)a3;
+- (BOOL)shouldIncludeObjectAtIndex:(unint64_t)index;
 - (NSArray)localizedLocationNames;
 - (NSDate)cloudCreationDate;
 - (NSDate)cloudFirstRecentBatchDate;
@@ -66,15 +66,15 @@
 - (NSString)title;
 - (NSString)uuid;
 - (NSURL)groupURL;
-- (PLFilteredAlbum)initWithBackingAlbum:(id)a3 filter:(int)a4 parameters:(id)a5;
-- (PLFilteredAlbum)initWithBackingAlbum:(id)a3 predicate:(id)a4;
+- (PLFilteredAlbum)initWithBackingAlbum:(id)album filter:(int)filter parameters:(id)parameters;
+- (PLFilteredAlbum)initWithBackingAlbum:(id)album predicate:(id)predicate;
 - (id)_cloudSharedBackingAlbum;
 - (id)_editableBackingAlbum;
-- (id)cloudOwnerDisplayNameIncludingEmail:(BOOL)a3 allowsEmail:(BOOL)a4;
+- (id)cloudOwnerDisplayNameIncludingEmail:(BOOL)email allowsEmail:(BOOL)allowsEmail;
 - (id)currentStateForChange;
-- (id)filteredAssetsAtIndexes:(id)a3;
-- (id)localizedSharedByLabelAllowsEmail:(BOOL)a3;
-- (id)objectInFilteredAssetsAtIndex:(unint64_t)a3;
+- (id)filteredAssetsAtIndexes:(id)indexes;
+- (id)localizedSharedByLabelAllowsEmail:(BOOL)email;
+- (id)objectInFilteredAssetsAtIndex:(unint64_t)index;
 - (id)sortingComparator;
 - (int)cloudRelationshipStateLocalValue;
 - (int)cloudRelationshipStateValue;
@@ -84,147 +84,147 @@
 - (unint64_t)approximateCount;
 - (unint64_t)assetsCount;
 - (unint64_t)countOfFilteredAssets;
-- (unint64_t)indexInFilteredAssetsOfObject:(id)a3;
+- (unint64_t)indexInFilteredAssetsOfObject:(id)object;
 - (unint64_t)photosCount;
 - (unint64_t)unseenAssetsCountIntegerValue;
 - (unint64_t)videosCount;
-- (void)_commonInitWithBackingAlbum:(id)a3 predicate:(id)a4;
-- (void)backingContextDidChange:(id)a3;
-- (void)batchFetchAssets:(id)a3;
+- (void)_commonInitWithBackingAlbum:(id)album predicate:(id)predicate;
+- (void)backingContextDidChange:(id)change;
+- (void)batchFetchAssets:(id)assets;
 - (void)dealloc;
-- (void)getUnseenStartMarkerIndex:(unint64_t *)a3 count:(unint64_t *)a4 showsProgress:(BOOL *)a5;
-- (void)insertFilteredAssets:(id)a3 atIndexes:(id)a4;
-- (void)insertObject:(id)a3 inFilteredAssetsAtIndex:(unint64_t)a4;
-- (void)removeFilteredAssetsAtIndexes:(id)a3;
-- (void)removeObjectFromFilteredAssetsAtIndex:(unint64_t)a3;
-- (void)replaceFilteredAssetsAtIndexes:(id)a3 withFilteredValues:(id)a4;
-- (void)replaceObjectInFilteredAssetsAtIndex:(unint64_t)a3 withObject:(id)a4;
-- (void)setBackingAlbum:(id)a3;
-- (void)setCloudCreationDate:(id)a3;
-- (void)setCloudGUID:(id)a3;
-- (void)setCloudLastContributionDate:(id)a3;
-- (void)setCloudLastInterestingChangeDate:(id)a3;
-- (void)setCloudMetadata:(id)a3;
-- (void)setCloudMultipleContributorsEnabled:(id)a3;
-- (void)setCloudMultipleContributorsEnabledLocal:(id)a3;
-- (void)setCloudNotificationsEnabled:(BOOL)a3;
-- (void)setCloudOwnerEmail:(id)a3;
-- (void)setCloudOwnerFirstName:(id)a3;
-- (void)setCloudOwnerFullName:(id)a3;
-- (void)setCloudOwnerHashedPersonID:(id)a3;
-- (void)setCloudOwnerIsWhitelisted:(BOOL)a3;
-- (void)setCloudOwnerLastName:(id)a3;
-- (void)setCloudPersonID:(id)a3;
-- (void)setCloudPublicURLEnabled:(id)a3;
-- (void)setCloudPublicURLEnabledLocal:(id)a3;
-- (void)setCloudSubscriptionDate:(id)a3;
-- (void)setHasUnseenContentBoolValue:(BOOL)a3;
-- (void)setImportSessionID:(id)a3;
-- (void)setInvitationRecords:(id)a3;
-- (void)setPublicURL:(id)a3;
-- (void)setUnseenAssetsCount:(id)a3;
-- (void)setUnseenAssetsCountIntegerValue:(unint64_t)a3;
-- (void)updateCloudLastContributionDateWithDate:(id)a3;
-- (void)updateCloudLastInterestingChangeDateWithDate:(id)a3;
-- (void)userDeleteSubscriberRecord:(id)a3;
+- (void)getUnseenStartMarkerIndex:(unint64_t *)index count:(unint64_t *)count showsProgress:(BOOL *)progress;
+- (void)insertFilteredAssets:(id)assets atIndexes:(id)indexes;
+- (void)insertObject:(id)object inFilteredAssetsAtIndex:(unint64_t)index;
+- (void)removeFilteredAssetsAtIndexes:(id)indexes;
+- (void)removeObjectFromFilteredAssetsAtIndex:(unint64_t)index;
+- (void)replaceFilteredAssetsAtIndexes:(id)indexes withFilteredValues:(id)values;
+- (void)replaceObjectInFilteredAssetsAtIndex:(unint64_t)index withObject:(id)object;
+- (void)setBackingAlbum:(id)album;
+- (void)setCloudCreationDate:(id)date;
+- (void)setCloudGUID:(id)d;
+- (void)setCloudLastContributionDate:(id)date;
+- (void)setCloudLastInterestingChangeDate:(id)date;
+- (void)setCloudMetadata:(id)metadata;
+- (void)setCloudMultipleContributorsEnabled:(id)enabled;
+- (void)setCloudMultipleContributorsEnabledLocal:(id)local;
+- (void)setCloudNotificationsEnabled:(BOOL)enabled;
+- (void)setCloudOwnerEmail:(id)email;
+- (void)setCloudOwnerFirstName:(id)name;
+- (void)setCloudOwnerFullName:(id)name;
+- (void)setCloudOwnerHashedPersonID:(id)d;
+- (void)setCloudOwnerIsWhitelisted:(BOOL)whitelisted;
+- (void)setCloudOwnerLastName:(id)name;
+- (void)setCloudPersonID:(id)d;
+- (void)setCloudPublicURLEnabled:(id)enabled;
+- (void)setCloudPublicURLEnabledLocal:(id)local;
+- (void)setCloudSubscriptionDate:(id)date;
+- (void)setHasUnseenContentBoolValue:(BOOL)value;
+- (void)setImportSessionID:(id)d;
+- (void)setInvitationRecords:(id)records;
+- (void)setPublicURL:(id)l;
+- (void)setUnseenAssetsCount:(id)count;
+- (void)setUnseenAssetsCountIntegerValue:(unint64_t)value;
+- (void)updateCloudLastContributionDateWithDate:(id)date;
+- (void)updateCloudLastInterestingChangeDateWithDate:(id)date;
+- (void)userDeleteSubscriberRecord:(id)record;
 @end
 
 @implementation PLFilteredAlbum
 
-- (void)replaceFilteredAssetsAtIndexes:(id)a3 withFilteredValues:(id)a4
+- (void)replaceFilteredAssetsAtIndexes:(id)indexes withFilteredValues:(id)values
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(PLFilteredAlbum *)self _editableBackingAlbum];
-  v8 = [v10 userEditableAssets];
-  v9 = [(PLIndexMapper *)self->_indexMapper backingIndexesForIndexes:v7];
+  valuesCopy = values;
+  indexesCopy = indexes;
+  _editableBackingAlbum = [(PLFilteredAlbum *)self _editableBackingAlbum];
+  userEditableAssets = [_editableBackingAlbum userEditableAssets];
+  v9 = [(PLIndexMapper *)self->_indexMapper backingIndexesForIndexes:indexesCopy];
 
-  [v8 replaceObjectsAtIndexes:v9 withObjects:v6];
+  [userEditableAssets replaceObjectsAtIndexes:v9 withObjects:valuesCopy];
 }
 
-- (void)replaceObjectInFilteredAssetsAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectInFilteredAssetsAtIndex:(unint64_t)index withObject:(id)object
 {
-  v6 = a4;
-  v8 = [(PLFilteredAlbum *)self _editableBackingAlbum];
-  v7 = [v8 userEditableAssets];
-  [v7 replaceObjectAtIndex:-[PLIndexMapper backingIndexForIndex:](self->_indexMapper withObject:{"backingIndexForIndex:", a3), v6}];
+  objectCopy = object;
+  _editableBackingAlbum = [(PLFilteredAlbum *)self _editableBackingAlbum];
+  userEditableAssets = [_editableBackingAlbum userEditableAssets];
+  [userEditableAssets replaceObjectAtIndex:-[PLIndexMapper backingIndexForIndex:](self->_indexMapper withObject:{"backingIndexForIndex:", index), objectCopy}];
 }
 
-- (void)removeFilteredAssetsAtIndexes:(id)a3
+- (void)removeFilteredAssetsAtIndexes:(id)indexes
 {
-  v6 = [(PLIndexMapper *)self->_indexMapper backingIndexesForIndexes:a3];
-  v4 = [(PLFilteredAlbum *)self _editableBackingAlbum];
-  v5 = [v4 userEditableAssets];
-  [v5 removeObjectsAtIndexes:v6];
+  v6 = [(PLIndexMapper *)self->_indexMapper backingIndexesForIndexes:indexes];
+  _editableBackingAlbum = [(PLFilteredAlbum *)self _editableBackingAlbum];
+  userEditableAssets = [_editableBackingAlbum userEditableAssets];
+  [userEditableAssets removeObjectsAtIndexes:v6];
 }
 
-- (void)insertFilteredAssets:(id)a3 atIndexes:(id)a4
+- (void)insertFilteredAssets:(id)assets atIndexes:(id)indexes
 {
   indexMapper = self->_indexMapper;
-  v7 = a3;
-  v10 = [(PLIndexMapper *)indexMapper backingIndexesForIndexes:a4];
-  v8 = [(PLFilteredAlbum *)self _editableBackingAlbum];
-  v9 = [v8 userEditableAssets];
-  [v9 insertObjects:v7 atIndexes:v10];
+  assetsCopy = assets;
+  v10 = [(PLIndexMapper *)indexMapper backingIndexesForIndexes:indexes];
+  _editableBackingAlbum = [(PLFilteredAlbum *)self _editableBackingAlbum];
+  userEditableAssets = [_editableBackingAlbum userEditableAssets];
+  [userEditableAssets insertObjects:assetsCopy atIndexes:v10];
 }
 
-- (void)removeObjectFromFilteredAssetsAtIndex:(unint64_t)a3
+- (void)removeObjectFromFilteredAssetsAtIndex:(unint64_t)index
 {
-  v6 = [(PLFilteredAlbum *)self _editableBackingAlbum];
-  v5 = [v6 userEditableAssets];
-  [v5 removeObjectAtIndex:{-[PLIndexMapper backingIndexForIndex:](self->_indexMapper, "backingIndexForIndex:", a3)}];
+  _editableBackingAlbum = [(PLFilteredAlbum *)self _editableBackingAlbum];
+  userEditableAssets = [_editableBackingAlbum userEditableAssets];
+  [userEditableAssets removeObjectAtIndex:{-[PLIndexMapper backingIndexForIndex:](self->_indexMapper, "backingIndexForIndex:", index)}];
 }
 
-- (void)insertObject:(id)a3 inFilteredAssetsAtIndex:(unint64_t)a4
+- (void)insertObject:(id)object inFilteredAssetsAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v8 = [(PLFilteredAlbum *)self _editableBackingAlbum];
-  v7 = [v8 userEditableAssets];
-  [v7 insertObject:v6 atIndex:{-[PLIndexMapper backingIndexForIndex:](self->_indexMapper, "backingIndexForIndex:", a4)}];
+  objectCopy = object;
+  _editableBackingAlbum = [(PLFilteredAlbum *)self _editableBackingAlbum];
+  userEditableAssets = [_editableBackingAlbum userEditableAssets];
+  [userEditableAssets insertObject:objectCopy atIndex:{-[PLIndexMapper backingIndexForIndex:](self->_indexMapper, "backingIndexForIndex:", index)}];
 }
 
 - (id)_editableBackingAlbum
 {
   if (self->_backingAlbumSupportsEdits)
   {
-    v4 = [(PLFilteredAlbum *)self backingAlbum];
+    backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
   }
 
   else
   {
-    v4 = 0;
+    backingAlbum = 0;
   }
 
-  return v4;
+  return backingAlbum;
 }
 
-- (id)filteredAssetsAtIndexes:(id)a3
+- (id)filteredAssetsAtIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self backingAlbum];
-  v6 = [v5 assets];
-  v7 = [(PLIndexMapper *)self->_indexMapper backingIndexesForIndexes:v4];
+  indexesCopy = indexes;
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  assets = [backingAlbum assets];
+  v7 = [(PLIndexMapper *)self->_indexMapper backingIndexesForIndexes:indexesCopy];
 
-  v8 = [v6 objectsAtIndexes:v7];
+  v8 = [assets objectsAtIndexes:v7];
 
   return v8;
 }
 
-- (id)objectInFilteredAssetsAtIndex:(unint64_t)a3
+- (id)objectInFilteredAssetsAtIndex:(unint64_t)index
 {
-  v5 = [(PLFilteredAlbum *)self backingAlbum];
-  v6 = [v5 assets];
-  v7 = [v6 objectAtIndex:{-[PLIndexMapper backingIndexForIndex:](self->_indexMapper, "backingIndexForIndex:", a3)}];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  assets = [backingAlbum assets];
+  v7 = [assets objectAtIndex:{-[PLIndexMapper backingIndexForIndex:](self->_indexMapper, "backingIndexForIndex:", index)}];
 
   return v7;
 }
 
-- (unint64_t)indexInFilteredAssetsOfObject:(id)a3
+- (unint64_t)indexInFilteredAssetsOfObject:(id)object
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self backingAlbum];
-  v6 = [v5 assets];
-  v7 = [v6 indexOfObject:v4];
+  objectCopy = object;
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  assets = [backingAlbum assets];
+  v7 = [assets indexOfObject:objectCopy];
 
   v8 = [(PLIndexMapper *)self->_indexMapper indexForBackingIndex:v7];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -243,17 +243,17 @@
 
 - (unint64_t)countOfFilteredAssets
 {
-  v2 = [(PLFilteredAlbum *)self filteredIndexes];
-  v3 = [v2 count];
+  filteredIndexes = [(PLFilteredAlbum *)self filteredIndexes];
+  v3 = [filteredIndexes count];
 
   return v3;
 }
 
-- (BOOL)mappedDataSourceChanged:(id)a3 remoteNotificationData:(id)a4
+- (BOOL)mappedDataSourceChanged:(id)changed remoteNotificationData:(id)data
 {
-  v5 = a3;
+  changedCopy = changed;
   [(PLFilteredAlbum *)self set_assets:0];
-  v6 = [(PLIndexMapper *)self->_indexMapper applyContainerChangeNotification:v5 changeTypes:15 toFilteredIndexes:self->_filteredIndexes];
+  v6 = [(PLIndexMapper *)self->_indexMapper applyContainerChangeNotification:changedCopy changeTypes:15 toFilteredIndexes:self->_filteredIndexes];
 
   if (!v6)
   {
@@ -264,16 +264,16 @@
   return 1;
 }
 
-- (BOOL)shouldIncludeObjectAtIndex:(unint64_t)a3
+- (BOOL)shouldIncludeObjectAtIndex:(unint64_t)index
 {
-  v5 = [(PLFilteredAlbum *)self backingAlbum];
-  v6 = [v5 assets];
-  v7 = [v6 objectAtIndex:a3];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  assets = [backingAlbum assets];
+  v7 = [assets objectAtIndex:index];
 
-  v8 = [(PLFilteredAlbum *)self predicate];
-  LOBYTE(v5) = [v8 evaluateWithObject:v7];
+  predicate = [(PLFilteredAlbum *)self predicate];
+  LOBYTE(backingAlbum) = [predicate evaluateWithObject:v7];
 
-  return v5;
+  return backingAlbum;
 }
 
 - (id)currentStateForChange
@@ -290,9 +290,9 @@
   {
     v4 = objc_autoreleasePoolPush();
     v5 = objc_opt_class();
-    v6 = [(PLFilteredAlbum *)self backingAlbum];
-    v7 = [(PLFilteredAlbum *)self predicate];
-    v8 = [v5 filteredIndexesInAlbum:v6 predicate:v7];
+    backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+    predicate = [(PLFilteredAlbum *)self predicate];
+    v8 = [v5 filteredIndexesInAlbum:backingAlbum predicate:predicate];
 
     v9 = self->_filteredIndexes;
     self->_filteredIndexes = v8;
@@ -306,107 +306,107 @@
   return v10;
 }
 
-- (PLFilteredAlbum)initWithBackingAlbum:(id)a3 filter:(int)a4 parameters:(id)a5
+- (PLFilteredAlbum)initWithBackingAlbum:(id)album filter:(int)filter parameters:(id)parameters
 {
-  v6 = *&a4;
-  v8 = a3;
-  v9 = a5;
+  v6 = *&filter;
+  albumCopy = album;
+  parametersCopy = parameters;
   v15.receiver = self;
   v15.super_class = PLFilteredAlbum;
   v10 = [(PLFilteredAlbum *)&v15 init];
   if (v10)
   {
     v11 = objc_opt_class();
-    v12 = [v8 photoLibrary];
-    v13 = [v11 predicateForAlbumFilter:v6 parameters:v9 photoLibrary:v12];
+    photoLibrary = [albumCopy photoLibrary];
+    v13 = [v11 predicateForAlbumFilter:v6 parameters:parametersCopy photoLibrary:photoLibrary];
 
-    [(PLFilteredAlbum *)v10 _commonInitWithBackingAlbum:v8 predicate:v13];
+    [(PLFilteredAlbum *)v10 _commonInitWithBackingAlbum:albumCopy predicate:v13];
     [(PLFilteredAlbum *)v10 setFilter:v6];
-    objc_storeStrong(&v10->_filterParameters, a5);
+    objc_storeStrong(&v10->_filterParameters, parameters);
   }
 
   return v10;
 }
 
-- (PLFilteredAlbum)initWithBackingAlbum:(id)a3 predicate:(id)a4
+- (PLFilteredAlbum)initWithBackingAlbum:(id)album predicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  albumCopy = album;
+  predicateCopy = predicate;
   v11.receiver = self;
   v11.super_class = PLFilteredAlbum;
   v8 = [(PLFilteredAlbum *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(PLFilteredAlbum *)v8 _commonInitWithBackingAlbum:v6 predicate:v7];
+    [(PLFilteredAlbum *)v8 _commonInitWithBackingAlbum:albumCopy predicate:predicateCopy];
   }
 
   return v9;
 }
 
-- (void)_commonInitWithBackingAlbum:(id)a3 predicate:(id)a4
+- (void)_commonInitWithBackingAlbum:(id)album predicate:(id)predicate
 {
-  v19 = a3;
-  v6 = a4;
+  albumCopy = album;
+  predicateCopy = predicate;
   v7 = objc_autoreleasePoolPush();
-  [(PLFilteredAlbum *)self setBackingAlbum:v19];
-  v8 = [(PLFilteredAlbum *)self backingAlbum];
+  [(PLFilteredAlbum *)self setBackingAlbum:albumCopy];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [(PLFilteredAlbum *)self backingAlbum];
-    [v10 registerDerivedAlbum:self];
+    backingAlbum2 = [(PLFilteredAlbum *)self backingAlbum];
+    [backingAlbum2 registerDerivedAlbum:self];
   }
 
   v11 = [[PLIndexMapper alloc] initWithDataSource:self];
   indexMapper = self->_indexMapper;
   self->_indexMapper = v11;
 
-  v13 = [(PLFilteredAlbum *)self backingAlbum];
+  backingAlbum3 = [(PLFilteredAlbum *)self backingAlbum];
   objc_opt_class();
   v14 = objc_opt_isKindOfClass();
 
   if (v14)
   {
-    v15 = [(PLFilteredAlbum *)self backingAlbum];
+    backingAlbum4 = [(PLFilteredAlbum *)self backingAlbum];
     [(PLFilteredAlbum *)self setIsObservingContextChanges:1];
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v17 = *MEMORY[0x1E695D360];
-    v18 = [v15 managedObjectContext];
-    [v16 addObserver:self selector:sel_backingContextDidChange_ name:v17 object:v18];
+    managedObjectContext = [backingAlbum4 managedObjectContext];
+    [defaultCenter addObserver:self selector:sel_backingContextDidChange_ name:v17 object:managedObjectContext];
   }
 
-  [(PLFilteredAlbum *)self setPredicate:v6];
+  [(PLFilteredAlbum *)self setPredicate:predicateCopy];
   objc_autoreleasePoolPop(v7);
 }
 
 - (int)pendingItemsType
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 pendingItemsType];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  pendingItemsType = [backingAlbum pendingItemsType];
 
-  return v3;
+  return pendingItemsType;
 }
 
 - (int)pendingItemsCount
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 pendingItemsCount];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  pendingItemsCount = [backingAlbum pendingItemsCount];
 
-  return v3;
+  return pendingItemsCount;
 }
 
-- (void)backingContextDidChange:(id)a3
+- (void)backingContextDidChange:(id)change
 {
-  v10 = a3;
+  changeCopy = change;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v10 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E695D2F8]];
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E695D2F8]];
 
-  v7 = [(PLFilteredAlbum *)self backingAlbum];
-  v8 = [v6 containsObject:v7];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  v8 = [v6 containsObject:backingAlbum];
 
   if (v8)
   {
@@ -423,26 +423,26 @@
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)userDeleteSubscriberRecord:(id)a3
+- (void)userDeleteSubscriberRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 userDeleteSubscriberRecord:v4];
+  recordCopy = record;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum userDeleteSubscriberRecord:recordCopy];
 }
 
-- (void)getUnseenStartMarkerIndex:(unint64_t *)a3 count:(unint64_t *)a4 showsProgress:(BOOL *)a5
+- (void)getUnseenStartMarkerIndex:(unint64_t *)index count:(unint64_t *)count showsProgress:(BOOL *)progress
 {
   v16 = 0;
   v17 = 0x7FFFFFFFFFFFFFFFLL;
-  v9 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v9 getUnseenStartMarkerIndex:&v17 count:&v16 showsProgress:a5];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum getUnseenStartMarkerIndex:&v17 count:&v16 showsProgress:progress];
 
-  v10 = [(PLFilteredAlbum *)self assetsCount];
+  assetsCount = [(PLFilteredAlbum *)self assetsCount];
   v11 = v17;
-  if (a3)
+  if (index)
   {
-    v12 = v10 - 1;
-    if (v17 < v10 - 1)
+    v12 = assetsCount - 1;
+    if (v17 < assetsCount - 1)
     {
       v12 = v17;
     }
@@ -468,13 +468,13 @@
       v11 = v12;
     }
 
-    *a3 = v13;
+    *index = v13;
   }
 
-  if (a4)
+  if (count)
   {
-    v14 = v10 - v11;
-    if (v16 < v10 - v11)
+    v14 = assetsCount - v11;
+    if (v16 < assetsCount - v11)
     {
       v14 = v16;
     }
@@ -489,652 +489,652 @@
       v15 = v14;
     }
 
-    *a4 = v15;
+    *count = v15;
   }
 }
 
-- (void)updateCloudLastContributionDateWithDate:(id)a3
+- (void)updateCloudLastContributionDateWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 updateCloudLastContributionDateWithDate:v4];
+  dateCopy = date;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum updateCloudLastContributionDateWithDate:dateCopy];
 }
 
-- (void)updateCloudLastInterestingChangeDateWithDate:(id)a3
+- (void)updateCloudLastInterestingChangeDateWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 updateCloudLastInterestingChangeDateWithDate:v4];
+  dateCopy = date;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum updateCloudLastInterestingChangeDateWithDate:dateCopy];
 }
 
-- (id)cloudOwnerDisplayNameIncludingEmail:(BOOL)a3 allowsEmail:(BOOL)a4
+- (id)cloudOwnerDisplayNameIncludingEmail:(BOOL)email allowsEmail:(BOOL)allowsEmail
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v7 = [v6 cloudOwnerDisplayNameIncludingEmail:v5 allowsEmail:v4];
+  allowsEmailCopy = allowsEmail;
+  emailCopy = email;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  v7 = [_cloudSharedBackingAlbum cloudOwnerDisplayNameIncludingEmail:emailCopy allowsEmail:allowsEmailCopy];
 
   return v7;
 }
 
 - (NSOrderedSet)cloudAlbumSubscriberRecords
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudAlbumSubscriberRecords];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudAlbumSubscriberRecords = [_cloudSharedBackingAlbum cloudAlbumSubscriberRecords];
 
-  return v3;
+  return cloudAlbumSubscriberRecords;
 }
 
-- (void)setCloudNotificationsEnabled:(BOOL)a3
+- (void)setCloudNotificationsEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v4 setCloudNotificationsEnabled:v3];
+  enabledCopy = enabled;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudNotificationsEnabled:enabledCopy];
 }
 
 - (BOOL)cloudNotificationsEnabled
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudNotificationsEnabled];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudNotificationsEnabled = [_cloudSharedBackingAlbum cloudNotificationsEnabled];
 
-  return v3;
+  return cloudNotificationsEnabled;
 }
 
 - (NSDate)cloudFirstRecentBatchDate
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudFirstRecentBatchDate];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudFirstRecentBatchDate = [_cloudSharedBackingAlbum cloudFirstRecentBatchDate];
 
-  return v3;
+  return cloudFirstRecentBatchDate;
 }
 
 - (NSString)localizedSharedWithLabel
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 localizedSharedWithLabel];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  localizedSharedWithLabel = [_cloudSharedBackingAlbum localizedSharedWithLabel];
 
-  return v3;
+  return localizedSharedWithLabel;
 }
 
-- (id)localizedSharedByLabelAllowsEmail:(BOOL)a3
+- (id)localizedSharedByLabelAllowsEmail:(BOOL)email
 {
-  v3 = a3;
-  v4 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v5 = [v4 localizedSharedByLabelAllowsEmail:v3];
+  emailCopy = email;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  v5 = [_cloudSharedBackingAlbum localizedSharedByLabelAllowsEmail:emailCopy];
 
   return v5;
 }
 
 - (int)cloudRelationshipStateLocalValue
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudRelationshipStateLocalValue];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudRelationshipStateLocalValue = [_cloudSharedBackingAlbum cloudRelationshipStateLocalValue];
 
-  return v3;
+  return cloudRelationshipStateLocalValue;
 }
 
 - (int)cloudRelationshipStateValue
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudRelationshipStateValue];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudRelationshipStateValue = [_cloudSharedBackingAlbum cloudRelationshipStateValue];
 
-  return v3;
+  return cloudRelationshipStateValue;
 }
 
-- (void)setCloudLastContributionDate:(id)a3
+- (void)setCloudLastContributionDate:(id)date
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setCloudLastContributionDate:v4];
+  dateCopy = date;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudLastContributionDate:dateCopy];
 }
 
 - (NSDate)cloudLastContributionDate
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudLastContributionDate];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudLastContributionDate = [_cloudSharedBackingAlbum cloudLastContributionDate];
 
-  return v3;
+  return cloudLastContributionDate;
 }
 
-- (void)setCloudCreationDate:(id)a3
+- (void)setCloudCreationDate:(id)date
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setCloudCreationDate:v4];
+  dateCopy = date;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudCreationDate:dateCopy];
 }
 
 - (NSDate)cloudCreationDate
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudCreationDate];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudCreationDate = [_cloudSharedBackingAlbum cloudCreationDate];
 
-  return v3;
+  return cloudCreationDate;
 }
 
-- (void)setCloudLastInterestingChangeDate:(id)a3
+- (void)setCloudLastInterestingChangeDate:(id)date
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setCloudLastInterestingChangeDate:v4];
+  dateCopy = date;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudLastInterestingChangeDate:dateCopy];
 }
 
 - (NSDate)cloudLastInterestingChangeDate
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudLastInterestingChangeDate];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudLastInterestingChangeDate = [_cloudSharedBackingAlbum cloudLastInterestingChangeDate];
 
-  return v3;
+  return cloudLastInterestingChangeDate;
 }
 
-- (void)setCloudMultipleContributorsEnabledLocal:(id)a3
+- (void)setCloudMultipleContributorsEnabledLocal:(id)local
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setCloudMultipleContributorsEnabledLocal:v4];
+  localCopy = local;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudMultipleContributorsEnabledLocal:localCopy];
 }
 
 - (NSNumber)cloudMultipleContributorsEnabledLocal
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudMultipleContributorsEnabledLocal];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudMultipleContributorsEnabledLocal = [_cloudSharedBackingAlbum cloudMultipleContributorsEnabledLocal];
 
-  return v3;
+  return cloudMultipleContributorsEnabledLocal;
 }
 
-- (void)setCloudMultipleContributorsEnabled:(id)a3
+- (void)setCloudMultipleContributorsEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setCloudMultipleContributorsEnabled:v4];
+  enabledCopy = enabled;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudMultipleContributorsEnabled:enabledCopy];
 }
 
 - (NSNumber)cloudMultipleContributorsEnabled
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudMultipleContributorsEnabled];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudMultipleContributorsEnabled = [_cloudSharedBackingAlbum cloudMultipleContributorsEnabled];
 
-  return v3;
+  return cloudMultipleContributorsEnabled;
 }
 
-- (void)setCloudPublicURLEnabledLocal:(id)a3
+- (void)setCloudPublicURLEnabledLocal:(id)local
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setCloudPublicURLEnabledLocal:v4];
+  localCopy = local;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudPublicURLEnabledLocal:localCopy];
 }
 
 - (NSNumber)cloudPublicURLEnabledLocal
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudPublicURLEnabledLocal];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudPublicURLEnabledLocal = [_cloudSharedBackingAlbum cloudPublicURLEnabledLocal];
 
-  return v3;
+  return cloudPublicURLEnabledLocal;
 }
 
-- (void)setCloudPublicURLEnabled:(id)a3
+- (void)setCloudPublicURLEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setCloudPublicURLEnabled:v4];
+  enabledCopy = enabled;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudPublicURLEnabled:enabledCopy];
 }
 
 - (NSNumber)cloudPublicURLEnabled
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudPublicURLEnabled];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudPublicURLEnabled = [_cloudSharedBackingAlbum cloudPublicURLEnabled];
 
-  return v3;
+  return cloudPublicURLEnabled;
 }
 
-- (void)setUnseenAssetsCountIntegerValue:(unint64_t)a3
+- (void)setUnseenAssetsCountIntegerValue:(unint64_t)value
 {
-  v4 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v4 setUnseenAssetsCountIntegerValue:a3];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setUnseenAssetsCountIntegerValue:value];
 }
 
 - (unint64_t)unseenAssetsCountIntegerValue
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 unseenAssetsCountIntegerValue];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  unseenAssetsCountIntegerValue = [_cloudSharedBackingAlbum unseenAssetsCountIntegerValue];
 
-  return v3;
+  return unseenAssetsCountIntegerValue;
 }
 
-- (void)setUnseenAssetsCount:(id)a3
+- (void)setUnseenAssetsCount:(id)count
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setUnseenAssetsCount:v4];
+  countCopy = count;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setUnseenAssetsCount:countCopy];
 }
 
 - (NSNumber)unseenAssetsCount
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 unseenAssetsCount];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  unseenAssetsCount = [_cloudSharedBackingAlbum unseenAssetsCount];
 
-  return v3;
+  return unseenAssetsCount;
 }
 
-- (void)setInvitationRecords:(id)a3
+- (void)setInvitationRecords:(id)records
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setInvitationRecords:v4];
+  recordsCopy = records;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setInvitationRecords:recordsCopy];
 }
 
 - (NSOrderedSet)invitationRecords
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 invitationRecords];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  invitationRecords = [_cloudSharedBackingAlbum invitationRecords];
 
-  return v3;
+  return invitationRecords;
 }
 
-- (void)setCloudPersonID:(id)a3
+- (void)setCloudPersonID:(id)d
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setCloudPersonID:v4];
+  dCopy = d;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudPersonID:dCopy];
 }
 
 - (NSString)cloudPersonID
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudPersonID];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudPersonID = [_cloudSharedBackingAlbum cloudPersonID];
 
-  return v3;
+  return cloudPersonID;
 }
 
-- (void)setPublicURL:(id)a3
+- (void)setPublicURL:(id)l
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setPublicURL:v4];
+  lCopy = l;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setPublicURL:lCopy];
 }
 
 - (NSString)publicURL
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 publicURL];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  publicURL = [_cloudSharedBackingAlbum publicURL];
 
-  return v3;
+  return publicURL;
 }
 
-- (void)setCloudSubscriptionDate:(id)a3
+- (void)setCloudSubscriptionDate:(id)date
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setCloudSubscriptionDate:v4];
+  dateCopy = date;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudSubscriptionDate:dateCopy];
 }
 
 - (NSDate)cloudSubscriptionDate
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudSubscriptionDate];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudSubscriptionDate = [_cloudSharedBackingAlbum cloudSubscriptionDate];
 
-  return v3;
+  return cloudSubscriptionDate;
 }
 
-- (void)setCloudOwnerIsWhitelisted:(BOOL)a3
+- (void)setCloudOwnerIsWhitelisted:(BOOL)whitelisted
 {
-  v3 = a3;
-  v4 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v4 setCloudOwnerIsWhitelisted:v3];
+  whitelistedCopy = whitelisted;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudOwnerIsWhitelisted:whitelistedCopy];
 }
 
 - (BOOL)cloudOwnerIsWhitelisted
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudOwnerIsWhitelisted];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudOwnerIsWhitelisted = [_cloudSharedBackingAlbum cloudOwnerIsWhitelisted];
 
-  return v3;
+  return cloudOwnerIsWhitelisted;
 }
 
-- (void)setCloudOwnerHashedPersonID:(id)a3
+- (void)setCloudOwnerHashedPersonID:(id)d
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setCloudOwnerHashedPersonID:v4];
+  dCopy = d;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudOwnerHashedPersonID:dCopy];
 }
 
 - (NSString)cloudOwnerHashedPersonID
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudOwnerHashedPersonID];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudOwnerHashedPersonID = [_cloudSharedBackingAlbum cloudOwnerHashedPersonID];
 
-  return v3;
+  return cloudOwnerHashedPersonID;
 }
 
-- (void)setCloudOwnerEmail:(id)a3
+- (void)setCloudOwnerEmail:(id)email
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setCloudOwnerEmail:v4];
+  emailCopy = email;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudOwnerEmail:emailCopy];
 }
 
 - (NSString)cloudOwnerEmail
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudOwnerEmail];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudOwnerEmail = [_cloudSharedBackingAlbum cloudOwnerEmail];
 
-  return v3;
+  return cloudOwnerEmail;
 }
 
-- (void)setCloudOwnerFullName:(id)a3
+- (void)setCloudOwnerFullName:(id)name
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setCloudOwnerFullName:v4];
+  nameCopy = name;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudOwnerFullName:nameCopy];
 }
 
 - (NSString)cloudOwnerFullName
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudOwnerFullName];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudOwnerFullName = [_cloudSharedBackingAlbum cloudOwnerFullName];
 
-  return v3;
+  return cloudOwnerFullName;
 }
 
-- (void)setCloudOwnerLastName:(id)a3
+- (void)setCloudOwnerLastName:(id)name
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setCloudOwnerLastName:v4];
+  nameCopy = name;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudOwnerLastName:nameCopy];
 }
 
 - (NSString)cloudOwnerLastName
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudOwnerLastName];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudOwnerLastName = [_cloudSharedBackingAlbum cloudOwnerLastName];
 
-  return v3;
+  return cloudOwnerLastName;
 }
 
-- (void)setCloudOwnerFirstName:(id)a3
+- (void)setCloudOwnerFirstName:(id)name
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setCloudOwnerFirstName:v4];
+  nameCopy = name;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudOwnerFirstName:nameCopy];
 }
 
 - (NSString)cloudOwnerFirstName
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudOwnerFirstName];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudOwnerFirstName = [_cloudSharedBackingAlbum cloudOwnerFirstName];
 
-  return v3;
+  return cloudOwnerFirstName;
 }
 
-- (void)setCloudMetadata:(id)a3
+- (void)setCloudMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setCloudMetadata:v4];
+  metadataCopy = metadata;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudMetadata:metadataCopy];
 }
 
 - (NSDictionary)cloudMetadata
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudMetadata];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudMetadata = [_cloudSharedBackingAlbum cloudMetadata];
 
-  return v3;
+  return cloudMetadata;
 }
 
-- (void)setCloudGUID:(id)a3
+- (void)setCloudGUID:(id)d
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  [v5 setCloudGUID:v4];
+  dCopy = d;
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  [_cloudSharedBackingAlbum setCloudGUID:dCopy];
 }
 
 - (NSString)cloudGUID
 {
-  v2 = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
-  v3 = [v2 cloudGUID];
+  _cloudSharedBackingAlbum = [(PLFilteredAlbum *)self _cloudSharedBackingAlbum];
+  cloudGUID = [_cloudSharedBackingAlbum cloudGUID];
 
-  return v3;
+  return cloudGUID;
 }
 
 - (id)_cloudSharedBackingAlbum
 {
   if (self->_backingAlbumSupportsCloudShared)
   {
-    v4 = [(PLFilteredAlbum *)self backingAlbum];
+    backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
   }
 
   else
   {
-    v4 = 0;
+    backingAlbum = 0;
   }
 
-  return v4;
+  return backingAlbum;
 }
 
-- (void)batchFetchAssets:(id)a3
+- (void)batchFetchAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self backingAlbum];
-  [v5 batchFetchAssets:v4];
+  assetsCopy = assets;
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  [backingAlbum batchFetchAssets:assetsCopy];
 }
 
 - (id)sortingComparator
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 sortingComparator];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  sortingComparator = [backingAlbum sortingComparator];
 
-  return v3;
+  return sortingComparator;
 }
 
 - (NSURL)groupURL
 {
   v3 = MEMORY[0x1E695DFF8];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(PLFilteredAlbum *)self backingAlbum];
-  v6 = [v5 uuid];
-  v7 = [v4 stringWithFormat:@"%@://%@/?%@=%@&%@=%d", @"assets-library", @"group", @"id", v6, @"filter", -[PLFilteredAlbum filter](self, "filter")];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  uuid = [backingAlbum uuid];
+  v7 = [v4 stringWithFormat:@"%@://%@/?%@=%@&%@=%d", @"assets-library", @"group", @"id", uuid, @"filter", -[PLFilteredAlbum filter](self, "filter")];
   v8 = [v3 URLWithString:v7];
 
   return v8;
 }
 
-- (void)setImportSessionID:(id)a3
+- (void)setImportSessionID:(id)d
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbum *)self backingAlbum];
-  [v5 setImportSessionID:v4];
+  dCopy = d;
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  [backingAlbum setImportSessionID:dCopy];
 }
 
 - (NSString)importSessionID
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 importSessionID];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  importSessionID = [backingAlbum importSessionID];
 
-  return v3;
+  return importSessionID;
 }
 
 - (BOOL)shouldDeleteWhenEmpty
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 shouldDeleteWhenEmpty];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  shouldDeleteWhenEmpty = [backingAlbum shouldDeleteWhenEmpty];
 
-  return v3;
+  return shouldDeleteWhenEmpty;
 }
 
-- (BOOL)canPerformEditOperation:(unint64_t)a3
+- (BOOL)canPerformEditOperation:(unint64_t)operation
 {
-  v4 = [(PLFilteredAlbum *)self backingAlbum];
-  LOBYTE(a3) = [v4 canPerformEditOperation:a3];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  LOBYTE(operation) = [backingAlbum canPerformEditOperation:operation];
 
-  return a3;
+  return operation;
 }
 
 - (NSArray)localizedLocationNames
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 localizedLocationNames];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  localizedLocationNames = [backingAlbum localizedLocationNames];
 
-  return v3;
+  return localizedLocationNames;
 }
 
 - (BOOL)canShowAvalancheStacks
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 canShowAvalancheStacks];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  canShowAvalancheStacks = [backingAlbum canShowAvalancheStacks];
 
-  return v3;
+  return canShowAvalancheStacks;
 }
 
 - (BOOL)canShowComments
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 canShowComments];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  canShowComments = [backingAlbum canShowComments];
 
-  return v3;
+  return canShowComments;
 }
 
 - (BOOL)canContributeToCloudSharedAlbum
 {
-  v3 = [(PLFilteredAlbum *)self backingAlbum];
-  if ([v3 isOwnedCloudSharedAlbum])
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  if ([backingAlbum isOwnedCloudSharedAlbum])
   {
-    v4 = 1;
+    isMultipleContributorCloudSharedAlbum = 1;
   }
 
   else
   {
-    v5 = [(PLFilteredAlbum *)self backingAlbum];
-    v4 = [v5 isMultipleContributorCloudSharedAlbum];
+    backingAlbum2 = [(PLFilteredAlbum *)self backingAlbum];
+    isMultipleContributorCloudSharedAlbum = [backingAlbum2 isMultipleContributorCloudSharedAlbum];
   }
 
-  return v4;
+  return isMultipleContributorCloudSharedAlbum;
 }
 
 - (BOOL)isProjectAlbum
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 isProjectAlbum];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  isProjectAlbum = [backingAlbum isProjectAlbum];
 
-  return v3;
+  return isProjectAlbum;
 }
 
 - (BOOL)isUserLibraryAlbum
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 isUserLibraryAlbum];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  isUserLibraryAlbum = [backingAlbum isUserLibraryAlbum];
 
-  return v3;
+  return isUserLibraryAlbum;
 }
 
 - (BOOL)isRecentlyAddedAlbum
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 isRecentlyAddedAlbum];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  isRecentlyAddedAlbum = [backingAlbum isRecentlyAddedAlbum];
 
-  return v3;
+  return isRecentlyAddedAlbum;
 }
 
 - (BOOL)isMultipleContributorCloudSharedAlbum
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 isMultipleContributorCloudSharedAlbum];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  isMultipleContributorCloudSharedAlbum = [backingAlbum isMultipleContributorCloudSharedAlbum];
 
-  return v3;
+  return isMultipleContributorCloudSharedAlbum;
 }
 
 - (BOOL)isFamilyCloudSharedAlbum
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 isFamilyCloudSharedAlbum];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  isFamilyCloudSharedAlbum = [backingAlbum isFamilyCloudSharedAlbum];
 
-  return v3;
+  return isFamilyCloudSharedAlbum;
 }
 
 - (BOOL)isOwnedCloudSharedAlbum
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 isOwnedCloudSharedAlbum];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  isOwnedCloudSharedAlbum = [backingAlbum isOwnedCloudSharedAlbum];
 
-  return v3;
+  return isOwnedCloudSharedAlbum;
 }
 
 - (BOOL)isInTrash
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 isInTrash];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  isInTrash = [backingAlbum isInTrash];
 
-  return v3;
+  return isInTrash;
 }
 
 - (BOOL)isFolder
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 isFolder];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  isFolder = [backingAlbum isFolder];
 
-  return v3;
+  return isFolder;
 }
 
 - (BOOL)isStandInAlbum
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 isStandInAlbum];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  isStandInAlbum = [backingAlbum isStandInAlbum];
 
-  return v3;
+  return isStandInAlbum;
 }
 
 - (BOOL)isPendingPhotoStreamAlbum
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 isPendingPhotoStreamAlbum];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  isPendingPhotoStreamAlbum = [backingAlbum isPendingPhotoStreamAlbum];
 
-  return v3;
+  return isPendingPhotoStreamAlbum;
 }
 
 - (BOOL)isCloudSharedAlbum
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 isCloudSharedAlbum];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  isCloudSharedAlbum = [backingAlbum isCloudSharedAlbum];
 
-  return v3;
+  return isCloudSharedAlbum;
 }
 
 - (BOOL)isPhotoStreamAlbum
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 isPhotoStreamAlbum];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  isPhotoStreamAlbum = [backingAlbum isPhotoStreamAlbum];
 
-  return v3;
+  return isPhotoStreamAlbum;
 }
 
 - (BOOL)isPanoramasAlbum
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 isPanoramasAlbum];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  isPanoramasAlbum = [backingAlbum isPanoramasAlbum];
 
-  return v3;
+  return isPanoramasAlbum;
 }
 
 - (BOOL)isCameraAlbum
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 isCameraAlbum];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  isCameraAlbum = [backingAlbum isCameraAlbum];
 
-  return v3;
+  return isCameraAlbum;
 }
 
 - (BOOL)isLibrary
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 isLibrary];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  isLibrary = [backingAlbum isLibrary];
 
-  return v3;
+  return isLibrary;
 }
 
 - (NSObject)posterImage
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 posterImage];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  posterImage = [backingAlbum posterImage];
 
-  return v3;
+  return posterImage;
 }
 
 - (NSString)name
@@ -1147,28 +1147,28 @@
 
 - (NSString)localizedTitle
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 localizedTitle];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  localizedTitle = [backingAlbum localizedTitle];
 
-  return v3;
+  return localizedTitle;
 }
 
 - (unint64_t)videosCount
 {
-  v3 = [(PLFilteredAlbum *)self filter];
-  if (v3 == 2)
+  filter = [(PLFilteredAlbum *)self filter];
+  if (filter == 2)
   {
 
     return [(PLFilteredAlbum *)self approximateCount];
   }
 
-  else if ((v3 & 2) != 0 || (v3 & 5) == 0)
+  else if ((filter & 2) != 0 || (filter & 5) == 0)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [(PLFilteredAlbum *)self assets];
-    v7 = [v6 array];
+    assets = [(PLFilteredAlbum *)self assets];
+    array = [assets array];
     v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind == %d", 1];
-    v9 = [v7 filteredArrayUsingPredicate:v8];
+    v9 = [array filteredArrayUsingPredicate:v8];
 
     v10 = [v9 count];
     objc_autoreleasePoolPop(v5);
@@ -1183,20 +1183,20 @@
 
 - (unint64_t)photosCount
 {
-  v3 = [(PLFilteredAlbum *)self filter];
-  if (v3 == 1)
+  filter = [(PLFilteredAlbum *)self filter];
+  if (filter == 1)
   {
 
     return [(PLFilteredAlbum *)self approximateCount];
   }
 
-  else if ((v3 & 1) != 0 || (v3 & 6) == 0)
+  else if ((filter & 1) != 0 || (filter & 6) == 0)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [(PLFilteredAlbum *)self assets];
-    v7 = [v6 array];
+    assets = [(PLFilteredAlbum *)self assets];
+    array = [assets array];
     v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind == %d", 0];
-    v9 = [v7 filteredArrayUsingPredicate:v8];
+    v9 = [array filteredArrayUsingPredicate:v8];
 
     v10 = [v9 count];
     objc_autoreleasePoolPop(v5);
@@ -1209,42 +1209,42 @@
   }
 }
 
-- (void)setHasUnseenContentBoolValue:(BOOL)a3
+- (void)setHasUnseenContentBoolValue:(BOOL)value
 {
-  v3 = a3;
-  v4 = [(PLFilteredAlbum *)self backingAlbum];
-  [v4 setHasUnseenContentBoolValue:v3];
+  valueCopy = value;
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  [backingAlbum setHasUnseenContentBoolValue:valueCopy];
 }
 
 - (BOOL)hasUnseenContentBoolValue
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 hasUnseenContentBoolValue];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  hasUnseenContentBoolValue = [backingAlbum hasUnseenContentBoolValue];
 
-  return v3;
+  return hasUnseenContentBoolValue;
 }
 
 - (unint64_t)assetsCount
 {
-  v2 = [(PLFilteredAlbum *)self filteredIndexes];
-  v3 = [v2 count];
+  filteredIndexes = [(PLFilteredAlbum *)self filteredIndexes];
+  v3 = [filteredIndexes count];
 
   return v3;
 }
 
 - (unint64_t)approximateCount
 {
-  v2 = [(PLFilteredAlbum *)self filteredIndexes];
-  v3 = [v2 count];
+  filteredIndexes = [(PLFilteredAlbum *)self filteredIndexes];
+  v3 = [filteredIndexes count];
 
   return v3;
 }
 
 - (NSMutableOrderedSet)userEditableAssets
 {
-  v3 = [(PLFilteredAlbum *)self _assets];
+  _assets = [(PLFilteredAlbum *)self _assets];
 
-  if (!v3)
+  if (!_assets)
   {
     v4 = [(PLFilteredAlbum *)self mutableOrderedSetValueForKey:@"filteredAssets"];
     [(PLFilteredAlbum *)self set_assets:v4];
@@ -1255,42 +1255,42 @@
 
 - (NSMutableOrderedSet)mutableAssets
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PLFilteredAlbum.m" lineNumber:179 description:{@"This album does not support mutations via mutableAssets: %@", self}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLFilteredAlbum.m" lineNumber:179 description:{@"This album does not support mutations via mutableAssets: %@", self}];
 
   return 0;
 }
 
 - (int)kindValue
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 kindValue];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  kindValue = [backingAlbum kindValue];
 
-  return v3;
+  return kindValue;
 }
 
 - (NSNumber)kind
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 kind];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  kind = [backingAlbum kind];
 
-  return v3;
+  return kind;
 }
 
 - (NSString)title
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 title];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  title = [backingAlbum title];
 
-  return v3;
+  return title;
 }
 
 - (NSString)uuid
 {
-  v2 = [(PLFilteredAlbum *)self backingAlbum];
-  v3 = [v2 uuid];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
+  uuid = [backingAlbum uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (NSMutableOrderedSet)_assets
@@ -1300,16 +1300,16 @@
   return WeakRetained;
 }
 
-- (void)setBackingAlbum:(id)a3
+- (void)setBackingAlbum:(id)album
 {
-  v5 = a3;
-  if (self->_backingAlbum != v5)
+  albumCopy = album;
+  if (self->_backingAlbum != albumCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_backingAlbum, a3);
+    v7 = albumCopy;
+    objc_storeStrong(&self->_backingAlbum, album);
     self->_backingAlbumSupportsEdits = [(PLAlbumProtocol *)self->_backingAlbum conformsToProtocol:&unk_1F0FE8B68];
     v6 = [(PLAlbumProtocol *)self->_backingAlbum conformsToProtocol:&unk_1F0FFFF38];
-    v5 = v7;
+    albumCopy = v7;
     self->_backingAlbumSupportsCloudShared = v6;
   }
 }
@@ -1318,19 +1318,19 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PLFilteredAlbum *)self backingAlbum];
+  backingAlbum = [(PLFilteredAlbum *)self backingAlbum];
   v6 = objc_opt_class();
-  v7 = [(PLFilteredAlbum *)self backingAlbum];
+  backingAlbum2 = [(PLFilteredAlbum *)self backingAlbum];
   v8 = [objc_opt_class() descriptionForAlbumFilter:-[PLFilteredAlbum filter](self parameters:{"filter"), self->_filterParameters}];
-  v9 = [v3 stringWithFormat:@"<%@ %p> album: <%@ %p> filter: %@", v4, self, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"<%@ %p> album: <%@ %p> filter: %@", v4, self, v6, backingAlbum2, v8];
 
   return v9;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(PLFilteredAlbum *)self setBackingAlbum:0];
   [(PLFilteredAlbum *)self set_assets:0];
@@ -1342,18 +1342,18 @@
   [(PLFilteredAlbum *)&v5 dealloc];
 }
 
-+ (id)filteredIndexesInAlbum:(id)a3 predicate:(id)a4
++ (id)filteredIndexesInAlbum:(id)album predicate:(id)predicate
 {
-  v7 = a3;
-  v8 = a4;
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (v9 = objc_autoreleasePoolPush(), [v7 filteredIndexesForPredicate:v8], v10 = objc_claimAutoreleasedReturnValue(), objc_autoreleasePoolPop(v9), !v10))
+  albumCopy = album;
+  predicateCopy = predicate;
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (v9 = objc_autoreleasePoolPush(), [albumCopy filteredIndexesForPredicate:predicateCopy], v10 = objc_claimAutoreleasedReturnValue(), objc_autoreleasePoolPop(v9), !v10))
   {
-    v11 = [v7 assets];
-    v12 = [v11 array];
+    assets = [albumCopy assets];
+    array = [assets array];
 
-    v13 = [v12 filteredArrayUsingPredicate:v8];
-    v14 = [MEMORY[0x1E696AD50] indexSet];
-    v15 = [v12 count];
+    v13 = [array filteredArrayUsingPredicate:predicateCopy];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
+    v15 = [array count];
     v27[0] = 0;
     v27[1] = v27;
     v27[2] = 0x2020000000;
@@ -1364,11 +1364,11 @@
     v20[3] = &unk_1E7568858;
     v23 = v27;
     v24 = v15;
-    v16 = v12;
+    v16 = array;
     v21 = v16;
     v25 = a2;
-    v26 = a1;
-    v17 = v14;
+    selfCopy = self;
+    v17 = indexSet;
     v22 = v17;
     [v13 enumerateObjectsUsingBlock:v20];
     v18 = v22;
@@ -1396,19 +1396,19 @@ uint64_t __52__PLFilteredAlbum_filteredIndexesInAlbum_predicate___block_invoke(u
   return [v5 addIndex:v4];
 }
 
-+ (id)descriptionForAlbumFilter:(int)a3 parameters:(id)a4
++ (id)descriptionForAlbumFilter:(int)filter parameters:(id)parameters
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = v6;
-  if (v4)
+  filterCopy = filter;
+  parametersCopy = parameters;
+  array = [MEMORY[0x1E695DF70] array];
+  v7 = array;
+  if (filterCopy)
   {
-    [v6 addObject:@"Photos"];
-    if ((v4 & 2) == 0)
+    [array addObject:@"Photos"];
+    if ((filterCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v4 & 4) == 0)
+      if ((filterCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -1417,16 +1417,16 @@ LABEL_3:
     }
   }
 
-  else if ((v4 & 2) == 0)
+  else if ((filterCopy & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v7 addObject:@"Videos"];
-  if ((v4 & 4) == 0)
+  if ((filterCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v4 & 0x10) == 0)
+    if ((filterCopy & 0x10) == 0)
     {
       goto LABEL_5;
     }
@@ -1436,10 +1436,10 @@ LABEL_4:
 
 LABEL_17:
   [v7 addObject:@"Audio"];
-  if ((v4 & 0x10) == 0)
+  if ((filterCopy & 0x10) == 0)
   {
 LABEL_5:
-    if ((v4 & 0x40) == 0)
+    if ((filterCopy & 0x40) == 0)
     {
       goto LABEL_6;
     }
@@ -1449,10 +1449,10 @@ LABEL_5:
 
 LABEL_18:
   [v7 addObject:@"Unknown"];
-  if ((v4 & 0x40) == 0)
+  if ((filterCopy & 0x40) == 0)
   {
 LABEL_6:
-    if ((v4 & 0x100) == 0)
+    if ((filterCopy & 0x100) == 0)
     {
       goto LABEL_7;
     }
@@ -1462,10 +1462,10 @@ LABEL_6:
 
 LABEL_19:
   [v7 addObject:@"HideNonRecentCloudAssets"];
-  if ((v4 & 0x100) == 0)
+  if ((filterCopy & 0x100) == 0)
   {
 LABEL_7:
-    if ((v4 & 0x200) == 0)
+    if ((filterCopy & 0x200) == 0)
     {
       goto LABEL_8;
     }
@@ -1475,10 +1475,10 @@ LABEL_7:
 
 LABEL_20:
   [v7 addObject:@"HideAssetsWithoutLegacyRequiredResourcesLocallyAvailable"];
-  if ((v4 & 0x200) == 0)
+  if ((filterCopy & 0x200) == 0)
   {
 LABEL_8:
-    if ((v4 & 8) == 0)
+    if ((filterCopy & 8) == 0)
     {
       goto LABEL_9;
     }
@@ -1488,10 +1488,10 @@ LABEL_8:
 
 LABEL_21:
   [v7 addObject:@"PLAlbumFilterHideTrashed"];
-  if ((v4 & 8) == 0)
+  if ((filterCopy & 8) == 0)
   {
 LABEL_9:
-    if ((v4 & 0x800) == 0)
+    if ((filterCopy & 0x800) == 0)
     {
       goto LABEL_10;
     }
@@ -1501,10 +1501,10 @@ LABEL_9:
 
 LABEL_22:
   [v7 addObject:@"PLAlbumFilterShowPhotoBooth"];
-  if ((v4 & 0x800) == 0)
+  if ((filterCopy & 0x800) == 0)
   {
 LABEL_10:
-    if ((v4 & 0x1000) == 0)
+    if ((filterCopy & 0x1000) == 0)
     {
       goto LABEL_12;
     }
@@ -1514,7 +1514,7 @@ LABEL_10:
 
 LABEL_23:
   [v7 addObject:@"PLAlbumFilterHidePhotoStream"];
-  if ((v4 & 0x1000) != 0)
+  if ((filterCopy & 0x1000) != 0)
   {
 LABEL_11:
     [v7 addObject:@"PLAlbumFilterHideMomentShared"];
@@ -1525,11 +1525,11 @@ LABEL_12:
   {
     v8 = [v7 componentsJoinedByString:@"+"];
     v9 = v8;
-    if (v5)
+    if (parametersCopy)
     {
-      v10 = [(__CFString *)v8 stringByAppendingFormat:@" params: %@", v5];
+      parametersCopy = [(__CFString *)v8 stringByAppendingFormat:@" params: %@", parametersCopy];
 
-      v9 = v10;
+      v9 = parametersCopy;
     }
   }
 
@@ -1541,22 +1541,22 @@ LABEL_12:
   return v9;
 }
 
-+ (id)predicateForAlbumFilter:(int)a3 parameters:(id)a4 photoLibrary:(id)a5
++ (id)predicateForAlbumFilter:(int)filter parameters:(id)parameters photoLibrary:(id)library
 {
-  v6 = a3;
+  filterCopy = filter;
   v40[2] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  parametersCopy = parameters;
+  libraryCopy = library;
   v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:10];
-  if (v6)
+  if (filterCopy)
   {
     v26 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind == %d", 0];
     [v11 addObject:v26];
 
-    if ((v6 & 2) == 0)
+    if ((filterCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v6 & 4) == 0)
+      if ((filterCopy & 4) == 0)
       {
         goto LABEL_5;
       }
@@ -1565,7 +1565,7 @@ LABEL_3:
     }
   }
 
-  else if ((v6 & 2) == 0)
+  else if ((filterCopy & 2) == 0)
   {
     goto LABEL_3;
   }
@@ -1573,7 +1573,7 @@ LABEL_3:
   v27 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind == %d", 1];
   [v11 addObject:v27];
 
-  if ((v6 & 4) != 0)
+  if ((filterCopy & 4) != 0)
   {
 LABEL_4:
     v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind == %d", 2];
@@ -1581,42 +1581,42 @@ LABEL_4:
   }
 
 LABEL_5:
-  if ((v6 & 8) != 0)
+  if ((filterCopy & 8) != 0)
   {
     v13 = [MEMORY[0x1E69BF328] predicateForIncludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForPhotoBoothAsset"), 1}];
     [v11 addObject:v13];
   }
 
-  if ((v6 & 0x10) != 0)
+  if ((filterCopy & 0x10) != 0)
   {
     v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind == %d", 3];
     [v11 addObject:v14];
   }
 
-  v15 = [MEMORY[0x1E695DF70] array];
-  if ((v6 & 0x40) != 0 && [v9 count])
+  array = [MEMORY[0x1E695DF70] array];
+  if ((filterCopy & 0x40) != 0 && [parametersCopy count])
   {
-    v16 = [v9 objectAtIndex:0];
+    v16 = [parametersCopy objectAtIndex:0];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v39 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v39 handleFailureInMethod:a2 object:a1 file:@"PLFilteredAlbum.m" lineNumber:785 description:{@"Parameter for PLAlbumFilterHideNonRecentCloudAssets must be a date but it's %@", v16}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLFilteredAlbum.m" lineNumber:785 description:{@"Parameter for PLAlbumFilterHideNonRecentCloudAssets must be a date but it's %@", v16}];
     }
 
     v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"cloudHasUnseenComments = YES || cloudBatchPublishDate >= %@", v16];
-    [v15 addObject:v17];
+    [array addObject:v17];
   }
 
-  if ((v6 & 0x100) != 0)
+  if ((filterCopy & 0x100) != 0)
   {
-    v28 = [PLManagedAsset fetchPredicateForLegacyRequiredResourcesLocallyAvailable:0 photoLibrary:v10];
-    [v15 addObject:v28];
+    v28 = [PLManagedAsset fetchPredicateForLegacyRequiredResourcesLocallyAvailable:0 photoLibrary:libraryCopy];
+    [array addObject:v28];
 
-    if ((v6 & 0x200) == 0)
+    if ((filterCopy & 0x200) == 0)
     {
 LABEL_16:
-      if ((v6 & 0x400) == 0)
+      if ((filterCopy & 0x400) == 0)
       {
         goto LABEL_17;
       }
@@ -1625,18 +1625,18 @@ LABEL_16:
     }
   }
 
-  else if ((v6 & 0x200) == 0)
+  else if ((filterCopy & 0x200) == 0)
   {
     goto LABEL_16;
   }
 
   v29 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(trashedState) == %d", 0];
-  [v15 addObject:v29];
+  [array addObject:v29];
 
-  if ((v6 & 0x400) == 0)
+  if ((filterCopy & 0x400) == 0)
   {
 LABEL_17:
-    if ((v6 & 0x2000) == 0)
+    if ((filterCopy & 0x2000) == 0)
     {
       goto LABEL_18;
     }
@@ -1646,12 +1646,12 @@ LABEL_17:
 
 LABEL_31:
   v30 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(hidden) == 0"];
-  [v15 addObject:v30];
+  [array addObject:v30];
 
-  if ((v6 & 0x2000) == 0)
+  if ((filterCopy & 0x2000) == 0)
   {
 LABEL_18:
-    if ((v6 & 0x800) == 0)
+    if ((filterCopy & 0x800) == 0)
     {
       goto LABEL_19;
     }
@@ -1661,12 +1661,12 @@ LABEL_18:
 
 LABEL_32:
   v31 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForPlaceholderAsset"), 1}];
-  [v15 addObject:v31];
+  [array addObject:v31];
 
-  if ((v6 & 0x800) == 0)
+  if ((filterCopy & 0x800) == 0)
   {
 LABEL_19:
-    if ((v6 & 0x1000) == 0)
+    if ((filterCopy & 0x1000) == 0)
     {
       goto LABEL_21;
     }
@@ -1676,17 +1676,17 @@ LABEL_19:
 
 LABEL_33:
   v32 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForPhotoStreamAsset"), 1}];
-  [v15 addObject:v32];
+  [array addObject:v32];
 
-  if ((v6 & 0x1000) != 0)
+  if ((filterCopy & 0x1000) != 0)
   {
 LABEL_20:
     v18 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForMomentSharedAsset"), 1}];
-    [v15 addObject:v18];
+    [array addObject:v18];
   }
 
 LABEL_21:
-  if ((v6 & 0x80) != 0)
+  if ((filterCopy & 0x80) != 0)
   {
     v19 = MEMORY[0x1E696AB28];
     v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", @"kind", 1];
@@ -1695,11 +1695,11 @@ LABEL_21:
     v40[1] = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
     v23 = [v19 orPredicateWithSubpredicates:v22];
-    [v15 addObject:v23];
+    [array addObject:v23];
   }
 
   v24 = [v11 count];
-  v25 = [v15 count];
+  v25 = [array count];
   if (v24)
   {
     if (v24 == 1)
@@ -1716,7 +1716,7 @@ LABEL_21:
 
   if (v25)
   {
-    v33 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v15];
+    v33 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
     v34 = v33;
     if (v24)
     {
@@ -1736,70 +1736,70 @@ LABEL_21:
   return v24;
 }
 
-+ (id)filteredAlbum:(id)a3 intersectFilter:(int)a4
++ (id)filteredAlbum:(id)album intersectFilter:(int)filter
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&filter;
+  albumCopy = album;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = albumCopy;
     v4 = [v7 filter] & v4;
-    v8 = [v7 filterParameters];
+    filterParameters = [v7 filterParameters];
   }
 
   else
   {
-    v8 = 0;
+    filterParameters = 0;
   }
 
-  v9 = [a1 filteredAlbum:v6 filter:v4 parameters:v8];
+  v9 = [self filteredAlbum:albumCopy filter:v4 parameters:filterParameters];
 
   return v9;
 }
 
-+ (id)filteredAlbum:(id)a3 predicate:(id)a4
++ (id)filteredAlbum:(id)album predicate:(id)predicate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithBackingAlbum:v7 predicate:v6];
+  predicateCopy = predicate;
+  albumCopy = album;
+  v8 = [[self alloc] initWithBackingAlbum:albumCopy predicate:predicateCopy];
 
   return v8;
 }
 
-+ (id)filteredAlbum:(id)a3 filter:(int)a4 parameters:(id)a5
++ (id)filteredAlbum:(id)album filter:(int)filter parameters:(id)parameters
 {
-  v6 = *&a4;
-  v8 = a3;
-  v9 = a5;
+  v6 = *&filter;
+  albumCopy = album;
+  parametersCopy = parameters;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v8;
-    if ([v8 filter] == v6)
+    albumCopy = albumCopy;
+    if ([albumCopy filter] == v6)
     {
-      v10 = [v8 filterParameters];
-      if (!v10 || (v11 = v10, [v8 filterParameters], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToArray:", v9), v12, v11, (v13 & 1) != 0))
+      filterParameters = [albumCopy filterParameters];
+      if (!filterParameters || (v11 = filterParameters, [albumCopy filterParameters], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToArray:", parametersCopy), v12, v11, (v13 & 1) != 0))
       {
-        v14 = v8;
+        v14 = albumCopy;
         goto LABEL_12;
       }
     }
 
-    v15 = [v8 backingAlbum];
+    backingAlbum = [albumCopy backingAlbum];
 
-    v8 = v15;
+    albumCopy = backingAlbum;
   }
 
-  if (v6 && v8)
+  if (v6 && albumCopy)
   {
-    v16 = [[a1 alloc] initWithBackingAlbum:v8 filter:v6 parameters:v9];
+    v16 = [[self alloc] initWithBackingAlbum:albumCopy filter:v6 parameters:parametersCopy];
   }
 
   else
   {
-    v16 = v8;
-    v8 = v16;
+    v16 = albumCopy;
+    albumCopy = v16;
   }
 
   v14 = v16;

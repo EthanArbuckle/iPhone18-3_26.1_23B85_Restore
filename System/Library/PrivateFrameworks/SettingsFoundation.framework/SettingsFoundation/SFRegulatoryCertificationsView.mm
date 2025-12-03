@@ -1,16 +1,16 @@
 @interface SFRegulatoryCertificationsView
 - (SFRegulatoryCertificationsView)init;
-- (SFRegulatoryCertificationsView)initWithFrame:(CGRect)a3;
+- (SFRegulatoryCertificationsView)initWithFrame:(CGRect)frame;
 - (void)render;
 @end
 
 @implementation SFRegulatoryCertificationsView
 
-- (SFRegulatoryCertificationsView)initWithFrame:(CGRect)a3
+- (SFRegulatoryCertificationsView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SFRegulatoryCertificationsView;
-  v3 = [(SFRegulatoryCertificationsView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFRegulatoryCertificationsView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -88,50 +88,50 @@
     [v3 addArrangedSubview:v13];
   }
 
-  v14 = [MEMORY[0x277D75418] currentDevice];
-  if ([v14 sf_isInternalInstall])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice sf_isInternalInstall])
   {
 
 LABEL_15:
-    v17 = [MEMORY[0x277D75418] currentDevice];
-    v18 = [v17 sf_serialNumberQRImage];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    sf_serialNumberQRImage = [currentDevice2 sf_serialNumberQRImage];
 
-    v19 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v18];
-    [v18 size];
+    v19 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:sf_serialNumberQRImage];
+    [sf_serialNumberQRImage size];
     v21 = v20;
-    v22 = [v3 arrangedSubviews];
-    v23 = [v22 lastObject];
-    [v3 setCustomSpacing:v23 afterView:v21];
+    arrangedSubviews = [v3 arrangedSubviews];
+    lastObject = [arrangedSubviews lastObject];
+    [v3 setCustomSpacing:lastObject afterView:v21];
 
     [v3 addArrangedSubview:v19];
     goto LABEL_16;
   }
 
-  v15 = [MEMORY[0x277D75418] currentDevice];
-  v16 = [v15 sf_isCarrierInstall];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  sf_isCarrierInstall = [currentDevice3 sf_isCarrierInstall];
 
-  if (v16)
+  if (sf_isCarrierInstall)
   {
     goto LABEL_15;
   }
 
 LABEL_16:
   v34 = MEMORY[0x277CCAAD0];
-  v38 = [(SFRegulatoryCertificationsView *)self leadingAnchor];
-  v37 = [v3 leadingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  leadingAnchor = [(SFRegulatoryCertificationsView *)self leadingAnchor];
+  leadingAnchor2 = [v3 leadingAnchor];
+  v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v40[0] = v36;
-  v35 = [(SFRegulatoryCertificationsView *)self trailingAnchor];
-  v24 = [v3 trailingAnchor];
-  v25 = [v35 constraintEqualToAnchor:v24];
+  trailingAnchor = [(SFRegulatoryCertificationsView *)self trailingAnchor];
+  trailingAnchor2 = [v3 trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v40[1] = v25;
-  v26 = [(SFRegulatoryCertificationsView *)self topAnchor];
-  v27 = [v3 topAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  topAnchor = [(SFRegulatoryCertificationsView *)self topAnchor];
+  topAnchor2 = [v3 topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v40[2] = v28;
-  v29 = [(SFRegulatoryCertificationsView *)self bottomAnchor];
-  v30 = [v3 bottomAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  bottomAnchor = [(SFRegulatoryCertificationsView *)self bottomAnchor];
+  bottomAnchor2 = [v3 bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v40[3] = v31;
   v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:4];
   [v34 activateConstraints:v32];

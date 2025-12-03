@@ -1,22 +1,22 @@
 @interface HKMinMaxSeries
-- (BOOL)blockCoordinate:(id)a3 greaterThan:(id)a4;
-- (BOOL)blockCoordinate:(id)a3 lessThan:(id)a4;
+- (BOOL)blockCoordinate:(id)coordinate greaterThan:(id)than;
+- (BOOL)blockCoordinate:(id)coordinate lessThan:(id)than;
 - (HKMinMaxSeries)init;
 - (HKStrokeStyle)selectedStrokeStyle;
 - (HKStrokeStyle)unselectedStrokeStyle;
 - (UIImage)selectedPointMarkerImage;
 - (UIImage)unselectedPointMarkerImage;
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
-- (void)_drawPointMarkersWithBlockCoordinates:(id)a3 pointTransform:(CGAffineTransform *)a4 context:(CGContext *)a5;
-- (void)_drawStrokeWithBlockCoordinates:(id)a3 pointTransform:(CGAffineTransform *)a4 context:(CGContext *)a5 axisRect:(CGRect)a6;
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9;
-- (void)setSelectedPointMarkerImage:(id)a3;
-- (void)setSelectedStrokeStyle:(id)a3;
-- (void)setUnselectedPointMarkerImage:(id)a3;
-- (void)setUnselectedStrokeStyle:(id)a3;
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
+- (void)_drawPointMarkersWithBlockCoordinates:(id)coordinates pointTransform:(CGAffineTransform *)transform context:(CGContext *)context;
+- (void)_drawStrokeWithBlockCoordinates:(id)coordinates pointTransform:(CGAffineTransform *)transform context:(CGContext *)context axisRect:(CGRect)rect;
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate;
+- (void)setSelectedPointMarkerImage:(id)image;
+- (void)setSelectedStrokeStyle:(id)style;
+- (void)setUnselectedPointMarkerImage:(id)image;
+- (void)setUnselectedStrokeStyle:(id)style;
 @end
 
 @implementation HKMinMaxSeries
@@ -51,148 +51,148 @@
 
 - (HKStrokeStyle)unselectedStrokeStyle
 {
-  v3 = [(HKMinMaxSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKMinMaxSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_unselectedStrokeStyleStorage;
-  v5 = [(HKMinMaxSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKMinMaxSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setUnselectedStrokeStyle:(id)a3
+- (void)setUnselectedStrokeStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(HKMinMaxSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  styleCopy = style;
+  seriesMutableStateLock = [(HKMinMaxSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   unselectedStrokeStyleStorage = self->_unselectedStrokeStyleStorage;
-  self->_unselectedStrokeStyleStorage = v4;
+  self->_unselectedStrokeStyleStorage = styleCopy;
 
-  v7 = [(HKMinMaxSeries *)self seriesMutableStateLock];
-  [v7 unlock];
+  seriesMutableStateLock2 = [(HKMinMaxSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (HKStrokeStyle)selectedStrokeStyle
 {
-  v3 = [(HKMinMaxSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKMinMaxSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_selectedStrokeStyleStorage;
-  v5 = [(HKMinMaxSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKMinMaxSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setSelectedStrokeStyle:(id)a3
+- (void)setSelectedStrokeStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(HKMinMaxSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  styleCopy = style;
+  seriesMutableStateLock = [(HKMinMaxSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   selectedStrokeStyleStorage = self->_selectedStrokeStyleStorage;
-  self->_selectedStrokeStyleStorage = v4;
+  self->_selectedStrokeStyleStorage = styleCopy;
 
-  v7 = [(HKMinMaxSeries *)self seriesMutableStateLock];
-  [v7 unlock];
+  seriesMutableStateLock2 = [(HKMinMaxSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (UIImage)unselectedPointMarkerImage
 {
-  v3 = [(HKMinMaxSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKMinMaxSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_unselectedPointMarkerImageStorage;
-  v5 = [(HKMinMaxSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKMinMaxSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setUnselectedPointMarkerImage:(id)a3
+- (void)setUnselectedPointMarkerImage:(id)image
 {
-  v4 = a3;
-  v5 = [(HKMinMaxSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  imageCopy = image;
+  seriesMutableStateLock = [(HKMinMaxSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   unselectedPointMarkerImageStorage = self->_unselectedPointMarkerImageStorage;
-  self->_unselectedPointMarkerImageStorage = v4;
+  self->_unselectedPointMarkerImageStorage = imageCopy;
 
-  v7 = [(HKMinMaxSeries *)self seriesMutableStateLock];
-  [v7 unlock];
+  seriesMutableStateLock2 = [(HKMinMaxSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (UIImage)selectedPointMarkerImage
 {
-  v3 = [(HKMinMaxSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKMinMaxSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_selectedPointMarkerImageStorage;
-  v5 = [(HKMinMaxSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKMinMaxSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setSelectedPointMarkerImage:(id)a3
+- (void)setSelectedPointMarkerImage:(id)image
 {
-  v4 = a3;
-  v5 = [(HKMinMaxSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  imageCopy = image;
+  seriesMutableStateLock = [(HKMinMaxSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   selectedPointMarkerImageStorage = self->_selectedPointMarkerImageStorage;
-  self->_selectedPointMarkerImageStorage = v4;
+  self->_selectedPointMarkerImageStorage = imageCopy;
 
-  v7 = [(HKMinMaxSeries *)self seriesMutableStateLock];
-  [v7 unlock];
+  seriesMutableStateLock2 = [(HKMinMaxSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v16 = a3;
-  v17 = [(HKMinMaxSeries *)self unselectedStrokeStyle];
-  if (v17)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  coordinatesCopy = coordinates;
+  unselectedStrokeStyle = [(HKMinMaxSeries *)self unselectedStrokeStyle];
+  if (unselectedStrokeStyle)
   {
   }
 
   else
   {
-    v18 = [(HKMinMaxSeries *)self selectedStrokeStyle];
+    selectedStrokeStyle = [(HKMinMaxSeries *)self selectedStrokeStyle];
 
-    if (!v18)
+    if (!selectedStrokeStyle)
     {
       goto LABEL_5;
     }
   }
 
-  v19 = *&a6->c;
-  v23 = *&a6->a;
+  v19 = *&transform->c;
+  v23 = *&transform->a;
   v24 = v19;
-  v25 = *&a6->tx;
-  [(HKMinMaxSeries *)self _drawStrokeWithBlockCoordinates:v16 pointTransform:&v23 context:a7 axisRect:x, y, width, height];
+  v25 = *&transform->tx;
+  [(HKMinMaxSeries *)self _drawStrokeWithBlockCoordinates:coordinatesCopy pointTransform:&v23 context:context axisRect:x, y, width, height];
 LABEL_5:
-  v20 = [(HKMinMaxSeries *)self unselectedPointMarkerImage];
-  if (v20)
+  unselectedPointMarkerImage = [(HKMinMaxSeries *)self unselectedPointMarkerImage];
+  if (unselectedPointMarkerImage)
   {
 
 LABEL_8:
-    v22 = *&a6->c;
-    v23 = *&a6->a;
+    v22 = *&transform->c;
+    v23 = *&transform->a;
     v24 = v22;
-    v25 = *&a6->tx;
-    [(HKMinMaxSeries *)self _drawPointMarkersWithBlockCoordinates:v16 pointTransform:&v23 context:a7];
+    v25 = *&transform->tx;
+    [(HKMinMaxSeries *)self _drawPointMarkersWithBlockCoordinates:coordinatesCopy pointTransform:&v23 context:context];
     goto LABEL_9;
   }
 
-  v21 = [(HKMinMaxSeries *)self selectedPointMarkerImage];
+  selectedPointMarkerImage = [(HKMinMaxSeries *)self selectedPointMarkerImage];
 
-  if (v21)
+  if (selectedPointMarkerImage)
   {
     goto LABEL_8;
   }
@@ -200,20 +200,20 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_drawStrokeWithBlockCoordinates:(id)a3 pointTransform:(CGAffineTransform *)a4 context:(CGContext *)a5 axisRect:(CGRect)a6
+- (void)_drawStrokeWithBlockCoordinates:(id)coordinates pointTransform:(CGAffineTransform *)transform context:(CGContext *)context axisRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a3;
-  CGContextSaveGState(a5);
-  v14 = [(HKMinMaxSeries *)self unselectedStrokeStyle];
-  [v14 lineWidth];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  coordinatesCopy = coordinates;
+  CGContextSaveGState(context);
+  unselectedStrokeStyle = [(HKMinMaxSeries *)self unselectedStrokeStyle];
+  [unselectedStrokeStyle lineWidth];
   v16 = v15;
 
-  v17 = [(HKMinMaxSeries *)self selectedStrokeStyle];
-  [v17 lineWidth];
+  selectedStrokeStyle = [(HKMinMaxSeries *)self selectedStrokeStyle];
+  [selectedStrokeStyle lineWidth];
   v19 = v18;
 
   if (v19 < v16)
@@ -253,35 +253,35 @@ LABEL_9:
   v41 = v45;
   v25 = v23;
   v34 = v25;
-  v26 = *&a4->c;
-  v31[0] = *&a4->a;
+  v26 = *&transform->c;
+  v31[0] = *&transform->a;
   v31[1] = v26;
-  v31[2] = *&a4->tx;
-  [v13 enumerateCoordinatesWithTransform:v31 roundToViewScale:1 block:v32];
+  v31[2] = *&transform->tx;
+  [coordinatesCopy enumerateCoordinatesWithTransform:v31 roundToViewScale:1 block:v32];
 
-  v27 = [(HKMinMaxSeries *)self unselectedStrokeStyle];
+  unselectedStrokeStyle2 = [(HKMinMaxSeries *)self unselectedStrokeStyle];
 
-  if (v27)
+  if (unselectedStrokeStyle2)
   {
-    v28 = [(HKMinMaxSeries *)self unselectedStrokeStyle];
-    [v28 applyToContext:a5];
+    unselectedStrokeStyle3 = [(HKMinMaxSeries *)self unselectedStrokeStyle];
+    [unselectedStrokeStyle3 applyToContext:context];
 
-    CGContextAddPath(a5, [v24 CGPath]);
-    CGContextStrokePath(a5);
+    CGContextAddPath(context, [v24 CGPath]);
+    CGContextStrokePath(context);
   }
 
-  v29 = [(HKMinMaxSeries *)self selectedStrokeStyle];
+  selectedStrokeStyle2 = [(HKMinMaxSeries *)self selectedStrokeStyle];
 
-  if (v29)
+  if (selectedStrokeStyle2)
   {
-    v30 = [(HKMinMaxSeries *)self selectedStrokeStyle];
-    [v30 applyToContext:a5];
+    selectedStrokeStyle3 = [(HKMinMaxSeries *)self selectedStrokeStyle];
+    [selectedStrokeStyle3 applyToContext:context];
 
-    CGContextAddPath(a5, [v25 CGPath]);
-    CGContextStrokePath(a5);
+    CGContextAddPath(context, [v25 CGPath]);
+    CGContextStrokePath(context);
   }
 
-  CGContextRestoreGState(a5);
+  CGContextRestoreGState(context);
 }
 
 void __82__HKMinMaxSeries__drawStrokeWithBlockCoordinates_pointTransform_context_axisRect___block_invoke(uint64_t a1, void *a2, _OWORD *a3)
@@ -319,27 +319,27 @@ void __82__HKMinMaxSeries__drawStrokeWithBlockCoordinates_pointTransform_context
   }
 }
 
-- (void)_drawPointMarkersWithBlockCoordinates:(id)a3 pointTransform:(CGAffineTransform *)a4 context:(CGContext *)a5
+- (void)_drawPointMarkersWithBlockCoordinates:(id)coordinates pointTransform:(CGAffineTransform *)transform context:(CGContext *)context
 {
-  v8 = a3;
-  CGContextSaveGState(a5);
-  v9 = [(HKMinMaxSeries *)self unselectedPointMarkerImage];
-  v10 = HKChartSeriesPointMarkerBaseRect(v9);
+  coordinatesCopy = coordinates;
+  CGContextSaveGState(context);
+  unselectedPointMarkerImage = [(HKMinMaxSeries *)self unselectedPointMarkerImage];
+  v10 = HKChartSeriesPointMarkerBaseRect(unselectedPointMarkerImage);
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [(HKMinMaxSeries *)self unselectedPointMarkerImage];
-  v18 = [v17 CGImage];
+  unselectedPointMarkerImage2 = [(HKMinMaxSeries *)self unselectedPointMarkerImage];
+  cGImage = [unselectedPointMarkerImage2 CGImage];
 
-  v19 = [(HKMinMaxSeries *)self selectedPointMarkerImage];
-  v20 = HKChartSeriesPointMarkerBaseRect(v19);
+  selectedPointMarkerImage = [(HKMinMaxSeries *)self selectedPointMarkerImage];
+  v20 = HKChartSeriesPointMarkerBaseRect(selectedPointMarkerImage);
   v22 = v21;
   v24 = v23;
   v26 = v25;
 
-  v27 = [(HKMinMaxSeries *)self selectedPointMarkerImage];
-  v28 = [v27 CGImage];
+  selectedPointMarkerImage2 = [(HKMinMaxSeries *)self selectedPointMarkerImage];
+  cGImage2 = [selectedPointMarkerImage2 CGImage];
 
   v44 = 0u;
   v45 = 0u;
@@ -350,7 +350,7 @@ void __82__HKMinMaxSeries__drawStrokeWithBlockCoordinates_pointTransform_context
   v31[1] = 3221225472;
   v31[2] = __79__HKMinMaxSeries__drawPointMarkersWithBlockCoordinates_pointTransform_context___block_invoke;
   v31[3] = &__block_descriptor_184_e94_v64__0__HKMinMaxCoordinate_8____HKGraphSeriesDataBlockPath_qqq_q_16__HKMinMaxCoordinate_48_B56l;
-  v31[4] = v18;
+  v31[4] = cGImage;
   *&v31[5] = v10;
   v31[6] = v12;
   v31[7] = v14;
@@ -359,19 +359,19 @@ void __82__HKMinMaxSeries__drawStrokeWithBlockCoordinates_pointTransform_context
   v33 = v43;
   v34 = v44;
   v35 = v45;
-  v36 = v28;
+  v36 = cGImage2;
   v37 = v20;
   v38 = v22;
   v39 = v24;
   v40 = v26;
-  v41 = a5;
-  v29 = *&a4->c;
-  v30[0] = *&a4->a;
+  contextCopy = context;
+  v29 = *&transform->c;
+  v30[0] = *&transform->a;
   v30[1] = v29;
-  v30[2] = *&a4->tx;
-  [v8 enumerateCoordinatesWithTransform:v30 roundToViewScale:1 block:v31];
+  v30[2] = *&transform->tx;
+  [coordinatesCopy enumerateCoordinatesWithTransform:v30 roundToViewScale:1 block:v31];
 
-  CGContextRestoreGState(a5);
+  CGContextRestoreGState(context);
 }
 
 void __79__HKMinMaxSeries__drawPointMarkersWithBlockCoordinates_pointTransform_context___block_invoke(uint64_t a1, void *a2, __int128 *a3)
@@ -426,18 +426,18 @@ void __79__HKMinMaxSeries__drawPointMarkersWithBlockCoordinates_pointTransform_c
   }
 }
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [a3 chartPoints];
-  if (!v11)
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  chartPoints = [block chartPoints];
+  if (!chartPoints)
   {
     [HKMinMaxSeries coordinatesForBlock:blockPath:xAxis:yAxis:];
   }
 
-  v12 = [v9 transform];
-  v13 = [v10 transform];
+  transform = [axisCopy transform];
+  transform2 = [yAxisCopy transform];
 
   v14 = objc_opt_new();
   v22[0] = MEMORY[0x1E69E9820];
@@ -445,14 +445,14 @@ void __79__HKMinMaxSeries__drawPointMarkersWithBlockCoordinates_pointTransform_c
   v22[2] = __60__HKMinMaxSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_invoke;
   v22[3] = &unk_1E81B6998;
   v23 = v14;
-  v24 = v12;
-  v25 = v13;
-  v15 = v13;
-  v16 = v12;
+  v24 = transform;
+  v25 = transform2;
+  v15 = transform2;
+  v16 = transform;
   v17 = v14;
-  [v11 enumerateObjectsUsingBlock:v22];
-  v20 = *&a4->index;
-  resolution = a4->resolution;
+  [chartPoints enumerateObjectsUsingBlock:v22];
+  v20 = *&path->index;
+  resolution = path->resolution;
   v18 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:v17 blockPath:&v20];
 
   return v18;
@@ -471,68 +471,68 @@ void __60__HKMinMaxSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_invo
   }
 }
 
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKMinMaxSeries distanceFromPoint:blockCoordinate:chartRect:];
   }
 
-  [v7 distanceToPoint:{x, y}];
+  [coordinateCopy distanceToPoint:{x, y}];
   v9 = v8;
 
   return v9;
 }
 
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  x = a3.x;
-  v6 = a4;
+  x = point.x;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKMinMaxSeries xAxisDistanceFromPoint:blockCoordinate:chartRect:];
   }
 
-  [v6 startXValue];
+  [coordinateCopy startXValue];
   v8 = vabdd_f64(v7, x);
 
   return v8;
 }
 
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKMinMaxSeries yAxisDifferenceToPoint:blockCoordinate:chartRect:];
   }
 
-  [v7 yAxisDifferenceToPoint:{x, y}];
+  [coordinateCopy yAxisDifferenceToPoint:{x, y}];
   v9 = v8;
 
   return v9;
 }
 
-- (BOOL)blockCoordinate:(id)a3 lessThan:(id)a4
+- (BOOL)blockCoordinate:(id)coordinate lessThan:(id)than
 {
-  v5 = a3;
-  v6 = a4;
+  coordinateCopy = coordinate;
+  thanCopy = than;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKMinMaxSeries blockCoordinate:lessThan:];
   }
 
-  v7 = v6;
-  [v5 min];
+  v7 = thanCopy;
+  [coordinateCopy min];
   v9 = v8;
   [v7 min];
   v11 = v10;
@@ -540,18 +540,18 @@ void __60__HKMinMaxSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_invo
   return v9 < v11;
 }
 
-- (BOOL)blockCoordinate:(id)a3 greaterThan:(id)a4
+- (BOOL)blockCoordinate:(id)coordinate greaterThan:(id)than
 {
-  v5 = a3;
-  v6 = a4;
+  coordinateCopy = coordinate;
+  thanCopy = than;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKMinMaxSeries blockCoordinate:greaterThan:];
   }
 
-  v7 = v6;
-  [v5 max];
+  v7 = thanCopy;
+  [coordinateCopy max];
   v9 = v8;
   [v7 max];
   v11 = v10;

@@ -1,14 +1,14 @@
 @interface INRideOption
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (INRideOption)initWithCoder:(NSCoder *)decoder;
 - (INRideOption)initWithName:(NSString *)name estimatedPickupDate:(NSDate *)estimatedPickupDate;
 - (id)_dictionaryRepresentation;
 - (id)_intents_cacheableObjects;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)_intents_updateContainerWithCache:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_intents_updateContainerWithCache:(id)cache;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAvailablePartySizeOptions:(NSArray *)availablePartySizeOptions;
 - (void)setFareLineItems:(NSArray *)fareLineItems;
 - (void)setIdentifier:(NSString *)identifier;
@@ -20,14 +20,14 @@
 {
   v37[11] = *MEMORY[0x1E69E9840];
   name = self->_name;
-  v3 = name;
+  null = name;
   v36[0] = @"name";
   if (!name)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37[0] = v3;
+  v37[0] = null;
   v36[1] = @"estimatedPickupDate";
   estimatedPickupDate = self->_estimatedPickupDate;
   v33 = estimatedPickupDate;
@@ -66,66 +66,66 @@
   v37[4] = disclaimerMessage;
   v36[5] = @"availablePartySizeOptions";
   availablePartySizeOptions = self->_availablePartySizeOptions;
-  v9 = availablePartySizeOptions;
+  null2 = availablePartySizeOptions;
   if (!availablePartySizeOptions)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v9;
-  v37[5] = v9;
+  v25 = null2;
+  v37[5] = null2;
   v36[6] = @"availablePartySizeOptionsSelectionPrompt";
   availablePartySizeOptionsSelectionPrompt = self->_availablePartySizeOptionsSelectionPrompt;
-  v11 = availablePartySizeOptionsSelectionPrompt;
+  null3 = availablePartySizeOptionsSelectionPrompt;
   if (!availablePartySizeOptionsSelectionPrompt)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v11;
-  v37[6] = v11;
+  v24 = null3;
+  v37[6] = null3;
   v36[7] = @"specialPricing";
   specialPricing = self->_specialPricing;
-  v13 = specialPricing;
+  null4 = specialPricing;
   if (!specialPricing)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v26 = disclaimerMessage;
   v27 = usesMeteredFare;
   v28 = priceRange;
-  v34 = v3;
-  v23 = v13;
-  v37[7] = v13;
+  v34 = null;
+  v23 = null4;
+  v37[7] = null4;
   v36[8] = @"specialPricingBadgeImage";
   specialPricingBadgeImage = self->_specialPricingBadgeImage;
-  v15 = specialPricingBadgeImage;
+  null5 = specialPricingBadgeImage;
   if (!specialPricingBadgeImage)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v16 = estimatedPickupDate;
-  v37[8] = v15;
+  v37[8] = null5;
   v36[9] = @"fareLineItems";
   fareLineItems = self->_fareLineItems;
-  v18 = fareLineItems;
+  null6 = fareLineItems;
   if (!fareLineItems)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37[9] = v18;
+  v37[9] = null6;
   v36[10] = @"userActivityForBookingInApplication";
   userActivityForBookingInApplication = self->_userActivityForBookingInApplication;
-  v20 = userActivityForBookingInApplication;
+  null7 = userActivityForBookingInApplication;
   if (!userActivityForBookingInApplication)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37[10] = v20;
+  v37[10] = null7;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:11];
   if (userActivityForBookingInApplication)
   {
@@ -214,36 +214,36 @@ LABEL_29:
   return v29;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INRideOption;
   v6 = [(INRideOption *)&v11 description];
-  v7 = [(INRideOption *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INRideOption *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_estimatedPickupDate forKey:@"estimatedPickupDate"];
-  [v5 encodeObject:self->_priceRange forKey:@"priceRange"];
-  [v5 encodeObject:self->_disclaimerMessage forKey:@"disclaimerMessage"];
-  [v5 encodeObject:self->_availablePartySizeOptions forKey:@"availablePartySizeOptions"];
-  [v5 encodeObject:self->_availablePartySizeOptionsSelectionPrompt forKey:@"availablePartySizeOptionsSelectionPrompt"];
-  [v5 encodeObject:self->_specialPricing forKey:@"specialPricing"];
-  [v5 encodeObject:self->_specialPricingBadgeImage forKey:@"specialPricingBadgeImage"];
-  [v5 encodeObject:self->_fareLineItems forKey:@"fareLineItems"];
-  [v5 encodeObject:self->_usesMeteredFare forKey:@"usesMeteredFare"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_estimatedPickupDate forKey:@"estimatedPickupDate"];
+  [coderCopy encodeObject:self->_priceRange forKey:@"priceRange"];
+  [coderCopy encodeObject:self->_disclaimerMessage forKey:@"disclaimerMessage"];
+  [coderCopy encodeObject:self->_availablePartySizeOptions forKey:@"availablePartySizeOptions"];
+  [coderCopy encodeObject:self->_availablePartySizeOptionsSelectionPrompt forKey:@"availablePartySizeOptionsSelectionPrompt"];
+  [coderCopy encodeObject:self->_specialPricing forKey:@"specialPricing"];
+  [coderCopy encodeObject:self->_specialPricingBadgeImage forKey:@"specialPricingBadgeImage"];
+  [coderCopy encodeObject:self->_fareLineItems forKey:@"fareLineItems"];
+  [coderCopy encodeObject:self->_usesMeteredFare forKey:@"usesMeteredFare"];
   v6 = INUserActivitySerializeToData(self->_userActivityForBookingInApplication);
-  [v5 encodeObject:v6 forKey:@"userActivityForBookingInApplication"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:v6 forKey:@"userActivityForBookingInApplication"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
 }
 
 - (INRideOption)initWithCoder:(NSCoder *)decoder
@@ -319,9 +319,9 @@ LABEL_29:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithName:estimatedPickupDate:", self->_name, self->_estimatedPickupDate}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithName:estimatedPickupDate:", self->_name, self->_estimatedPickupDate}];
   [v4 setPriceRange:self->_priceRange];
   [v4 setDisclaimerMessage:self->_disclaimerMessage];
   [v4 setAvailablePartySizeOptions:self->_availablePartySizeOptions];
@@ -335,13 +335,13 @@ LABEL_29:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     name = self->_name;
     if (name != v5[4] && ![(NSString *)name isEqual:?])
     {
@@ -480,29 +480,29 @@ LABEL_28:
   MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (void)_intents_updateContainerWithCache:(id)a3
+- (void)_intents_updateContainerWithCache:(id)cache
 {
-  v13 = a3;
-  v4 = [(INRideOption *)self specialPricingBadgeImage];
-  if (v4)
+  cacheCopy = cache;
+  specialPricingBadgeImage = [(INRideOption *)self specialPricingBadgeImage];
+  if (specialPricingBadgeImage)
   {
-    v5 = v4;
-    v6 = [(INRideOption *)self specialPricingBadgeImage];
-    v7 = [v6 _identifier];
-    v8 = [v13 cacheableObjectForIdentifier:v7];
+    v5 = specialPricingBadgeImage;
+    specialPricingBadgeImage2 = [(INRideOption *)self specialPricingBadgeImage];
+    _identifier = [specialPricingBadgeImage2 _identifier];
+    v8 = [cacheCopy cacheableObjectForIdentifier:_identifier];
 
     if (v8)
     {
-      v9 = [(INRideOption *)self specialPricingBadgeImage];
-      v10 = [v9 _identifier];
-      v11 = [v13 cacheableObjectForIdentifier:v10];
+      specialPricingBadgeImage3 = [(INRideOption *)self specialPricingBadgeImage];
+      _identifier2 = [specialPricingBadgeImage3 _identifier];
+      v11 = [cacheCopy cacheableObjectForIdentifier:_identifier2];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [(INRideOption *)self specialPricingBadgeImage];
+        specialPricingBadgeImage4 = [(INRideOption *)self specialPricingBadgeImage];
         [v11 _imageSize];
-        [v12 _setImageSize:?];
+        [specialPricingBadgeImage4 _setImageSize:?];
       }
     }
   }
@@ -511,20 +511,20 @@ LABEL_28:
 - (id)_intents_cacheableObjects
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(INRideOption *)self specialPricingBadgeImage];
+  specialPricingBadgeImage = [(INRideOption *)self specialPricingBadgeImage];
 
-  if (v4)
+  if (specialPricingBadgeImage)
   {
-    v5 = [(INRideOption *)self specialPricingBadgeImage];
-    [v3 addObject:v5];
+    specialPricingBadgeImage2 = [(INRideOption *)self specialPricingBadgeImage];
+    [v3 addObject:specialPricingBadgeImage2];
   }
 
-  v6 = [(INRideOption *)self userActivityForBookingInApplication];
+  userActivityForBookingInApplication = [(INRideOption *)self userActivityForBookingInApplication];
 
-  if (v6)
+  if (userActivityForBookingInApplication)
   {
-    v7 = [(INRideOption *)self userActivityForBookingInApplication];
-    [v3 addObject:v7];
+    userActivityForBookingInApplication2 = [(INRideOption *)self userActivityForBookingInApplication];
+    [v3 addObject:userActivityForBookingInApplication2];
   }
 
   if ([v3 count])

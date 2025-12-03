@@ -1,50 +1,50 @@
 @interface PSTextFieldSpecifier
-+ (id)preferenceSpecifierNamed:(id)a3 target:(id)a4 set:(SEL)a5 get:(SEL)a6 detail:(Class)a7 cell:(int64_t)a8 edit:(Class)a9;
-+ (id)specifierWithSpecifier:(id)a3;
-- (BOOL)isEqualToSpecifier:(id)a3;
++ (id)preferenceSpecifierNamed:(id)named target:(id)target set:(SEL)set get:(SEL)get detail:(Class)detail cell:(int64_t)cell edit:(Class)edit;
++ (id)specifierWithSpecifier:(id)specifier;
+- (BOOL)isEqualToSpecifier:(id)specifier;
 @end
 
 @implementation PSTextFieldSpecifier
 
-+ (id)preferenceSpecifierNamed:(id)a3 target:(id)a4 set:(SEL)a5 get:(SEL)a6 detail:(Class)a7 cell:(int64_t)a8 edit:(Class)a9
++ (id)preferenceSpecifierNamed:(id)named target:(id)target set:(SEL)set get:(SEL)get detail:(Class)detail cell:(int64_t)cell edit:(Class)edit
 {
-  v14 = a4;
-  v15 = a3;
+  targetCopy = target;
+  namedCopy = named;
   v16 = objc_alloc_init(PSTextFieldSpecifier);
-  [(PSSpecifier *)v16 setName:v15];
+  [(PSSpecifier *)v16 setName:namedCopy];
 
-  objc_storeWeak(&v16->super.target, v14);
-  v16->super.getter = a6;
-  v16->super.setter = a5;
-  v16->super.detailControllerClass = a7;
-  v16->super.cellType = a8;
-  v16->super.editPaneClass = a9;
+  objc_storeWeak(&v16->super.target, targetCopy);
+  v16->super.getter = get;
+  v16->super.setter = set;
+  v16->super.detailControllerClass = detail;
+  v16->super.cellType = cell;
+  v16->super.editPaneClass = edit;
 
   return v16;
 }
 
-+ (id)specifierWithSpecifier:(id)a3
++ (id)specifierWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v8.receiver = a1;
+  specifierCopy = specifier;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___PSTextFieldSpecifier;
-  v5 = objc_msgSendSuper2(&v8, sel_specifierWithSpecifier_, v4);
+  v5 = objc_msgSendSuper2(&v8, sel_specifierWithSpecifier_, specifierCopy);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 placeholder];
-    [v5 setPlaceholder:v6];
+    placeholder = [specifierCopy placeholder];
+    [v5 setPlaceholder:placeholder];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToSpecifier:(id)a3
+- (BOOL)isEqualToSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v9.receiver = self;
   v9.super_class = PSTextFieldSpecifier;
-  if ([(PSSpecifier *)&v9 isEqualToSpecifier:v4])
+  if ([(PSSpecifier *)&v9 isEqualToSpecifier:specifierCopy])
   {
     if (self->_placeholder)
     {
@@ -56,8 +56,8 @@
       placeholder = &stru_1EFE45030;
     }
 
-    v6 = [v4 placeholder];
-    v7 = [(__CFString *)placeholder isEqualToString:v6];
+    placeholder = [specifierCopy placeholder];
+    v7 = [(__CFString *)placeholder isEqualToString:placeholder];
   }
 
   else

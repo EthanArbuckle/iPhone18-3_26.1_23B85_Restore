@@ -1,192 +1,192 @@
 @interface IXSClientConnection
 - ($115C4C562B26FF47E01F9F4EA65B5887)clientAuditToken;
 - (BOOL)clientProcessExists;
-- (BOOL)interestedInCoordinatorUUID:(id)a3;
-- (BOOL)interestedInPromiseUUID:(id)a3;
-- (IXSClientConnection)initWithConnection:(id)a3;
+- (BOOL)interestedInCoordinatorUUID:(id)d;
+- (BOOL)interestedInPromiseUUID:(id)d;
+- (IXSClientConnection)initWithConnection:(id)connection;
 - (NSString)description;
 - (NSXPCConnection)xpcConnection;
-- (void)_client_coordinatorDidCompleteSuccessfullyWithUUID:(id)a3 forRecordPromise:(id)a4;
-- (void)_client_coordinatorDidInstallPlaceholderWithUUID:(id)a3 forRecordPromise:(id)a4;
-- (void)_client_coordinatorDidRegisterForObservationWithUUID:(id)a3;
-- (void)_client_coordinatorShouldBeginPostProcessingWithUUID:(id)a3 forRecordPromise:(id)a4;
-- (void)_client_coordinatorShouldBeginRestoringUserDataWithUUID:(id)a3;
-- (void)_client_coordinatorShouldPauseWithUUID:(id)a3;
-- (void)_client_coordinatorShouldPrioritizeWithUUID:(id)a3;
-- (void)_client_coordinatorShouldResumeWithUUID:(id)a3;
-- (void)_client_coordinatorWithUUID:(id)a3 configuredPromiseDidBeginFulfillment:(unint64_t)a4;
-- (void)_client_coordinatorWithUUID:(id)a3 didCancelWithReason:(id)a4 client:(unint64_t)a5;
-- (void)_client_coordinatorWithUUID:(id)a3 didUpdateProgress:(double)a4 forPhase:(unint64_t)a5 overallProgress:(double)a6;
-- (void)_client_promiseDidCompleteSuccessfullyWithUUID:(id)a3;
-- (void)_client_promiseWithUUID:(id)a3 didCancelWithReason:(id)a4 client:(unint64_t)a5;
-- (void)_fetchDataPromiseForUUID:(id)a3 method:(const char *)a4 andRunWithPromise:(id)a5 error:(id)a6;
-- (void)_fetchIXSCoordinatedAppInstallForUUID:(id)a3 method:(const char *)a4 andRunWithCoordinator:(id)a5 error:(id)a6;
-- (void)_fetchOwnedDataPromiseForUUID:(id)a3 method:(const char *)a4 andRunWithPromise:(id)a5 error:(id)a6;
-- (void)_fetchPlaceholderForUUID:(id)a3 method:(const char *)a4 andRunWithPromise:(id)a5 error:(id)a6;
-- (void)_fetchPromisedOutOfBandStreamingZipTransferForUUID:(id)a3 method:(const char *)a4 andRunWithPromise:(id)a5 error:(id)a6;
-- (void)_fetchPromisedStreamingZipTransferForUUID:(id)a3 method:(const char *)a4 andRunWithPromise:(id)a5 error:(id)a6;
-- (void)_fetchPromisedTransferToPathForUUID:(id)a3 method:(const char *)a4 andRunWithPromise:(id)a5 error:(id)a6;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 appAssetPromiseHasBegunFulfillment:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 cancelForReason:(id)a4 client:(unint64_t)a5 completion:(id)a6;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 convertToGloballyScopedWithCompletion:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 conveyPriorityReplacingExisting:(BOOL)a4 withCompletion:(id)a5;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 fireObserversWithCompletion:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getAppAssetPromise:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getAppAssetPromiseDRI:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getCoordinationState:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getCoordinatorScopeWithCompletion:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getDataImportPromises:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getDeviceSecurityPromise:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getErrorInfo:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getEssentialAssetPromises:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getHasDeviceSecurityPromise:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getInitialODRAssetPromises:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getInstallOptions:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getIsComplete:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getIsPausedWithCompletion:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getNeedsPostProcessing:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getPlaceholderDispositionWithCompletion:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getPlaceholderPromise:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getPostProcessingShouldBegin:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getPreparationPromise:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getProgressHintWithCompletion:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getUserDataPromise:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getUserDataRestoreShouldBegin:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 hasAppAssetPromise:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 hasDataImportPromises:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 hasEssentialAssetPromises:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 hasInitialODRAssetPromises:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 hasInstallOptions:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 hasPlaceholderPromise:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 hasUserDataPromise:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 importanceWithCompletion:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 prioritizeWithCompletion:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 removabilityWithCompletion:(id)a4;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setAppAssetPromiseDRI:(unint64_t)a4 completion:(id)a5;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setAppAssetPromiseUUID:(id)a4 completion:(id)a5;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setDataImportPromiseUUIDs:(id)a4 completion:(id)a5;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setDeviceSecurityPromiseUUID:(id)a4 completion:(id)a5;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setEssentialAssetPromiseUUIDs:(id)a4 completion:(id)a5;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setImportance:(unint64_t)a4 completion:(id)a5;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setInitialODRAssetPromiseUUIDs:(id)a4 completion:(id)a5;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setInstallOptionsPromiseUUID:(id)a4 completion:(id)a5;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setIsPaused:(BOOL)a4 completion:(id)a5;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setNeedsPostProcessing:(BOOL)a4 completion:(id)a5;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setPlaceholderDisposition:(unint64_t)a4 completion:(id)a5;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setPlaceholderPromiseUUID:(id)a4 completion:(id)a5;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setPreparationPromiseUUID:(id)a4 completion:(id)a5;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setProgressHint:(id)a4 completion:(id)a5;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setRemovability:(unint64_t)a4 byClient:(unint64_t)a5 completion:(id)a6;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setTargetGizmoPairingID:(id)a4 completion:(id)a5;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setUserDataPromiseUUID:(id)a4 completion:(id)a5;
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 targetGizmoPairingIDWithCompletion:(id)a4;
-- (void)_remote_IXSDataPromise:(id)a3 cancelForReason:(id)a4 client:(unint64_t)a5 completion:(id)a6;
-- (void)_remote_IXSDataPromise:(id)a3 getErrorInfo:(id)a4;
-- (void)_remote_IXSDataPromise:(id)a3 getIsComplete:(id)a4;
-- (void)_remote_IXSDataPromise:(id)a3 getPercentComplete:(id)a4;
-- (void)_remote_IXSDataPromise:(id)a3 preflightWithCompletion:(id)a4;
-- (void)_remote_IXSDataPromise:(id)a3 resetWithCompletion:(id)a4;
-- (void)_remote_IXSDataPromise:(id)a3 setIsComplete:(BOOL)a4 completion:(id)a5;
-- (void)_remote_IXSDataPromise:(id)a3 setPercentComplete:(double)a4;
-- (void)_remote_IXSOwnedDataPromise:(id)a3 getStagedPath:(id)a4;
-- (void)_remote_IXSOwnedDataPromise:(id)a3 getTargetLastPathComponent:(id)a4;
-- (void)_remote_IXSOwnedDataPromise:(id)a3 setStagedPath:(id)a4;
-- (void)_remote_IXSOwnedDataPromise:(id)a3 setTargetLastPathComponent:(id)a4 withCompletion:(id)a5;
-- (void)_remote_IXSPlaceholder:(id)a3 getAppExtensionPlaceholderPromises:(id)a4;
-- (void)_remote_IXSPlaceholder:(id)a3 getAttributesWithCompletion:(id)a4;
-- (void)_remote_IXSPlaceholder:(id)a3 getEntitlementsPromise:(id)a4;
-- (void)_remote_IXSPlaceholder:(id)a3 getIconPromise:(id)a4;
-- (void)_remote_IXSPlaceholder:(id)a3 getIconResourcesPromiseAndInfoPlistContentPromise:(id)a4;
-- (void)_remote_IXSPlaceholder:(id)a3 getInfoPlistLoctablePromise:(id)a4;
-- (void)_remote_IXSPlaceholder:(id)a3 getLaunchProhibitedWithCompletion:(id)a4;
-- (void)_remote_IXSPlaceholder:(id)a3 getLocalizationDictionary:(id)a4;
-- (void)_remote_IXSPlaceholder:(id)a3 getMetadataWithCompletion:(id)a4;
-- (void)_remote_IXSPlaceholder:(id)a3 getSinfDataWithCompletion:(id)a4;
-- (void)_remote_IXSPlaceholder:(id)a3 hasAppExtensionPlaceholderPromises:(id)a4;
-- (void)_remote_IXSPlaceholder:(id)a3 hasEntitlementsPromise:(id)a4;
-- (void)_remote_IXSPlaceholder:(id)a3 hasIconPromise:(id)a4;
-- (void)_remote_IXSPlaceholder:(id)a3 hasIconResourcesPromise:(id)a4;
-- (void)_remote_IXSPlaceholder:(id)a3 hasInfoPlistLoctablePromise:(id)a4;
-- (void)_remote_IXSPlaceholder:(id)a3 setAppExtensionPlaceholderPromiseUUIDs:(id)a4 completion:(id)a5;
-- (void)_remote_IXSPlaceholder:(id)a3 setAttributes:(id)a4 completion:(id)a5;
-- (void)_remote_IXSPlaceholder:(id)a3 setConfigurationCompleteWithCompletion:(id)a4;
-- (void)_remote_IXSPlaceholder:(id)a3 setEntitlementsPromiseUUID:(id)a4 completion:(id)a5;
-- (void)_remote_IXSPlaceholder:(id)a3 setIconPromiseUUID:(id)a4 completion:(id)a5;
-- (void)_remote_IXSPlaceholder:(id)a3 setIconResourcesPromiseUUID:(id)a4 withInfoPlistIconContentPromiseUUID:(id)a5 completion:(id)a6;
-- (void)_remote_IXSPlaceholder:(id)a3 setInfoPlistLoctablePromiseUUID:(id)a4 completion:(id)a5;
-- (void)_remote_IXSPlaceholder:(id)a3 setLaunchProhibited:(BOOL)a4 completion:(id)a5;
-- (void)_remote_IXSPlaceholder:(id)a3 setLocalizationPromiseUUID:(id)a4 completion:(id)a5;
-- (void)_remote_IXSPlaceholder:(id)a3 setMetadataPromiseUUID:(id)a4 completion:(id)a5;
-- (void)_remote_IXSPlaceholder:(id)a3 setSinfPromiseUUID:(id)a4 completion:(id)a5;
-- (void)_remote_IXSPromisedOutOfBandStreamingZipTransfer:(id)a3 setArchiveBytesConsumed:(unint64_t)a4;
-- (void)_remote_IXSPromisedStreamingZipTransfer:(id)a3 setArchiveBytesConsumed:(unint64_t)a4;
-- (void)_remote_IXSPromisedTransferToPath:(id)a3 setShouldCopy:(BOOL)a4;
-- (void)_remote_IXSPromisedTransferToPath:(id)a3 setTransferPath:(id)a4;
-- (void)_remote_IXSPromisedTransferToPath:(id)a3 setTryDeltaCopy:(BOOL)a4;
-- (void)_remote_addBundleIDs:(id)a3 toMappingsForPersona:(id)a4 completion:(id)a5;
-- (void)_remote_addObserversForCoordinatorsWithUUIDs:(id)a3 fireObserverMethods:(BOOL)a4;
-- (void)_remote_associateMultiPersonaAppsWithBundleIDs:(id)a3 withPersona:(id)a4 completion:(id)a5;
-- (void)_remote_cancelCoordinatorForAppWithIdentity:(id)a3 reason:(id)a4 client:(unint64_t)a5 completion:(id)a6;
-- (void)_remote_cancelCoordinatorsForAppsWithIdentities:(id)a3 reason:(id)a4 client:(unint64_t)a5 completion:(id)a6;
-- (void)_remote_checkIfDataPromiseExistsForUUID:(id)a3 completion:(id)a4;
-- (void)_remote_createAppReferenceDataPromiseWithSeed:(id)a3 ifMatchingPredicate:(id)a4 completion:(id)a5;
-- (void)_remote_createInMemoryDataPromiseWithSeed:(id)a3 data:(id)a4 completion:(id)a5;
-- (void)_remote_createInMemoryDictionaryPromiseWithSeed:(id)a3 dictionary:(id)a4 completion:(id)a5;
-- (void)_remote_createOutOfBandStreamingZipTransferDataPromiseWithSeed:(id)a3 completion:(id)a4;
-- (void)_remote_createOutOfBandTransferPromiseWithSeed:(id)a3 completion:(id)a4;
-- (void)_remote_createPlaceholderDataPromiseWithSeed:(id)a3 completion:(id)a4;
-- (void)_remote_createStreamingZipTransferDataPromiseWithSeed:(id)a3 completion:(id)a4;
-- (void)_remote_createTransferToPathDataPromiseWithSeed:(id)a3 completion:(id)a4;
-- (void)_remote_defaultAppMetadataForAppIdentity:(id)a3 completion:(id)a4;
-- (void)_remote_defaultAppMetadataListWithCompletion:(id)a3;
-- (void)_remote_displayUserPresentableErrorForApp:(id)a3 code:(int64_t)a4;
-- (void)_remote_displayUserPresentableErrorForAppWithLocalizedName:(id)a3 code:(int64_t)a4;
-- (void)_remote_displayUserPresentableErrorForApps:(id)a3 code:(int64_t)a4;
-- (void)_remote_fakeClientDeathWithCompletion:(id)a3;
-- (void)_remote_fetchRegisteredDataPromiseInfoForCreator:(unint64_t)a3 completion:(id)a4;
-- (void)_remote_fetchSeedsForCoordinatorsWithIntent:(unint64_t)a3 completion:(id)a4;
-- (void)_remote_killDaemonForTestingWithCompletion:(id)a3;
-- (void)_remote_pingDaemonWithCompletion:(id)a3;
-- (void)_remote_postNSCurrentLocaleDidChangeNotification:(id)a3;
-- (void)_remote_prioritizeCoordinatorForAppWithIdentity:(id)a3 completion:(id)a4;
-- (void)_remote_purgeRegisteredCoordinatorsAndPromisesForCreator:(unint64_t)a3 completion:(id)a4;
-- (void)_remote_refreshContainersWithOptions:(id)a3 forAppWithIdentity:(id)a4 completion:(id)a5;
-- (void)_remote_registerContentForOSModuleAtURL:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)_remote_registerContentsForDiskImageAtURL:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)_remote_registerObserverMachServiceName:(id)a3 forClientIdentifiers:(id)a4 respondingToSelectors:(unint64_t)a5;
-- (void)_remote_registerTransientObserver:(id)a3 forClientIdentifiers:(id)a4 respondingToSelectors:(unint64_t)a5;
-- (void)_remote_removabilityDataWithCompletion:(id)a3;
-- (void)_remote_removabilityForAppWithIdentity:(id)a3 byClient:(unint64_t)a4 completion:(id)a5;
-- (void)_remote_removabilityForAppWithIdentity:(id)a3 completion:(id)a4;
-- (void)_remote_removeBundleIDs:(id)a3 fromMappingsForPersona:(id)a4 completion:(id)a5;
-- (void)_remote_revertAppWithIdentity:(id)a3 completion:(id)a4;
-- (void)_remote_setKnownOSModuleURLs:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)_remote_setRemovability:(unint64_t)a3 forAppWithIdentity:(id)a4 byClient:(unint64_t)a5 completion:(id)a6;
-- (void)_remote_setTestModeForIdentifierPrefix:(id)a3 testMode:(unint64_t)a4 testSpecificValidationData:(id)a5 completion:(id)a6;
-- (void)_remote_setTestingEnabled:(BOOL)a3 completion:(id)a4;
-- (void)_remote_stagingLocationForInstallLocation:(id)a3 completion:(id)a4;
-- (void)_remote_uninstallAppWithIdentity:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)_remote_unregisterContentForOSModuleAtURL:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)_remote_unregisterContentsForDiskImageAtURL:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)_remote_updateSINFForAppWithIdentity:(id)a3 sinfData:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)_remote_updateiTunesMetadata:(id)a3 forAppWithIdentity:(id)a4 completion:(id)a5;
-- (void)addInterestedCoordinatorUUID:(id)a3;
-- (void)addInterestedCoordinatorUUIDs:(id)a3;
-- (void)addInterestedPromiseUUID:(id)a3;
-- (void)addInterestedPromiseUUIDs:(id)a3;
+- (void)_client_coordinatorDidCompleteSuccessfullyWithUUID:(id)d forRecordPromise:(id)promise;
+- (void)_client_coordinatorDidInstallPlaceholderWithUUID:(id)d forRecordPromise:(id)promise;
+- (void)_client_coordinatorDidRegisterForObservationWithUUID:(id)d;
+- (void)_client_coordinatorShouldBeginPostProcessingWithUUID:(id)d forRecordPromise:(id)promise;
+- (void)_client_coordinatorShouldBeginRestoringUserDataWithUUID:(id)d;
+- (void)_client_coordinatorShouldPauseWithUUID:(id)d;
+- (void)_client_coordinatorShouldPrioritizeWithUUID:(id)d;
+- (void)_client_coordinatorShouldResumeWithUUID:(id)d;
+- (void)_client_coordinatorWithUUID:(id)d configuredPromiseDidBeginFulfillment:(unint64_t)fulfillment;
+- (void)_client_coordinatorWithUUID:(id)d didCancelWithReason:(id)reason client:(unint64_t)client;
+- (void)_client_coordinatorWithUUID:(id)d didUpdateProgress:(double)progress forPhase:(unint64_t)phase overallProgress:(double)overallProgress;
+- (void)_client_promiseDidCompleteSuccessfullyWithUUID:(id)d;
+- (void)_client_promiseWithUUID:(id)d didCancelWithReason:(id)reason client:(unint64_t)client;
+- (void)_fetchDataPromiseForUUID:(id)d method:(const char *)method andRunWithPromise:(id)promise error:(id)error;
+- (void)_fetchIXSCoordinatedAppInstallForUUID:(id)d method:(const char *)method andRunWithCoordinator:(id)coordinator error:(id)error;
+- (void)_fetchOwnedDataPromiseForUUID:(id)d method:(const char *)method andRunWithPromise:(id)promise error:(id)error;
+- (void)_fetchPlaceholderForUUID:(id)d method:(const char *)method andRunWithPromise:(id)promise error:(id)error;
+- (void)_fetchPromisedOutOfBandStreamingZipTransferForUUID:(id)d method:(const char *)method andRunWithPromise:(id)promise error:(id)error;
+- (void)_fetchPromisedStreamingZipTransferForUUID:(id)d method:(const char *)method andRunWithPromise:(id)promise error:(id)error;
+- (void)_fetchPromisedTransferToPathForUUID:(id)d method:(const char *)method andRunWithPromise:(id)promise error:(id)error;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install appAssetPromiseHasBegunFulfillment:(id)fulfillment;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install cancelForReason:(id)reason client:(unint64_t)client completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install convertToGloballyScopedWithCompletion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install conveyPriorityReplacingExisting:(BOOL)existing withCompletion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install fireObserversWithCompletion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getAppAssetPromise:(id)promise;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getAppAssetPromiseDRI:(id)i;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getCoordinationState:(id)state;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getCoordinatorScopeWithCompletion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getDataImportPromises:(id)promises;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getDeviceSecurityPromise:(id)promise;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getErrorInfo:(id)info;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getEssentialAssetPromises:(id)promises;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getHasDeviceSecurityPromise:(id)promise;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getInitialODRAssetPromises:(id)promises;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getInstallOptions:(id)options;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getIsComplete:(id)complete;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getIsPausedWithCompletion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getNeedsPostProcessing:(id)processing;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getPlaceholderDispositionWithCompletion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getPlaceholderPromise:(id)promise;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getPostProcessingShouldBegin:(id)begin;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getPreparationPromise:(id)promise;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getProgressHintWithCompletion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getUserDataPromise:(id)promise;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getUserDataRestoreShouldBegin:(id)begin;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install hasAppAssetPromise:(id)promise;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install hasDataImportPromises:(id)promises;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install hasEssentialAssetPromises:(id)promises;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install hasInitialODRAssetPromises:(id)promises;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install hasInstallOptions:(id)options;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install hasPlaceholderPromise:(id)promise;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install hasUserDataPromise:(id)promise;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install importanceWithCompletion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install prioritizeWithCompletion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install removabilityWithCompletion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setAppAssetPromiseDRI:(unint64_t)i completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setAppAssetPromiseUUID:(id)d completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setDataImportPromiseUUIDs:(id)ds completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setDeviceSecurityPromiseUUID:(id)d completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setEssentialAssetPromiseUUIDs:(id)ds completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setImportance:(unint64_t)importance completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setInitialODRAssetPromiseUUIDs:(id)ds completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setInstallOptionsPromiseUUID:(id)d completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setIsPaused:(BOOL)paused completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setNeedsPostProcessing:(BOOL)processing completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setPlaceholderDisposition:(unint64_t)disposition completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setPlaceholderPromiseUUID:(id)d completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setPreparationPromiseUUID:(id)d completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setProgressHint:(id)hint completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setRemovability:(unint64_t)removability byClient:(unint64_t)client completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setTargetGizmoPairingID:(id)d completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setUserDataPromiseUUID:(id)d completion:(id)completion;
+- (void)_remote_IXSCoordinatedAppInstall:(id)install targetGizmoPairingIDWithCompletion:(id)completion;
+- (void)_remote_IXSDataPromise:(id)promise cancelForReason:(id)reason client:(unint64_t)client completion:(id)completion;
+- (void)_remote_IXSDataPromise:(id)promise getErrorInfo:(id)info;
+- (void)_remote_IXSDataPromise:(id)promise getIsComplete:(id)complete;
+- (void)_remote_IXSDataPromise:(id)promise getPercentComplete:(id)complete;
+- (void)_remote_IXSDataPromise:(id)promise preflightWithCompletion:(id)completion;
+- (void)_remote_IXSDataPromise:(id)promise resetWithCompletion:(id)completion;
+- (void)_remote_IXSDataPromise:(id)promise setIsComplete:(BOOL)complete completion:(id)completion;
+- (void)_remote_IXSDataPromise:(id)promise setPercentComplete:(double)complete;
+- (void)_remote_IXSOwnedDataPromise:(id)promise getStagedPath:(id)path;
+- (void)_remote_IXSOwnedDataPromise:(id)promise getTargetLastPathComponent:(id)component;
+- (void)_remote_IXSOwnedDataPromise:(id)promise setStagedPath:(id)path;
+- (void)_remote_IXSOwnedDataPromise:(id)promise setTargetLastPathComponent:(id)component withCompletion:(id)completion;
+- (void)_remote_IXSPlaceholder:(id)placeholder getAppExtensionPlaceholderPromises:(id)promises;
+- (void)_remote_IXSPlaceholder:(id)placeholder getAttributesWithCompletion:(id)completion;
+- (void)_remote_IXSPlaceholder:(id)placeholder getEntitlementsPromise:(id)promise;
+- (void)_remote_IXSPlaceholder:(id)placeholder getIconPromise:(id)promise;
+- (void)_remote_IXSPlaceholder:(id)placeholder getIconResourcesPromiseAndInfoPlistContentPromise:(id)promise;
+- (void)_remote_IXSPlaceholder:(id)placeholder getInfoPlistLoctablePromise:(id)promise;
+- (void)_remote_IXSPlaceholder:(id)placeholder getLaunchProhibitedWithCompletion:(id)completion;
+- (void)_remote_IXSPlaceholder:(id)placeholder getLocalizationDictionary:(id)dictionary;
+- (void)_remote_IXSPlaceholder:(id)placeholder getMetadataWithCompletion:(id)completion;
+- (void)_remote_IXSPlaceholder:(id)placeholder getSinfDataWithCompletion:(id)completion;
+- (void)_remote_IXSPlaceholder:(id)placeholder hasAppExtensionPlaceholderPromises:(id)promises;
+- (void)_remote_IXSPlaceholder:(id)placeholder hasEntitlementsPromise:(id)promise;
+- (void)_remote_IXSPlaceholder:(id)placeholder hasIconPromise:(id)promise;
+- (void)_remote_IXSPlaceholder:(id)placeholder hasIconResourcesPromise:(id)promise;
+- (void)_remote_IXSPlaceholder:(id)placeholder hasInfoPlistLoctablePromise:(id)promise;
+- (void)_remote_IXSPlaceholder:(id)placeholder setAppExtensionPlaceholderPromiseUUIDs:(id)ds completion:(id)completion;
+- (void)_remote_IXSPlaceholder:(id)placeholder setAttributes:(id)attributes completion:(id)completion;
+- (void)_remote_IXSPlaceholder:(id)placeholder setConfigurationCompleteWithCompletion:(id)completion;
+- (void)_remote_IXSPlaceholder:(id)placeholder setEntitlementsPromiseUUID:(id)d completion:(id)completion;
+- (void)_remote_IXSPlaceholder:(id)placeholder setIconPromiseUUID:(id)d completion:(id)completion;
+- (void)_remote_IXSPlaceholder:(id)placeholder setIconResourcesPromiseUUID:(id)d withInfoPlistIconContentPromiseUUID:(id)iD completion:(id)completion;
+- (void)_remote_IXSPlaceholder:(id)placeholder setInfoPlistLoctablePromiseUUID:(id)d completion:(id)completion;
+- (void)_remote_IXSPlaceholder:(id)placeholder setLaunchProhibited:(BOOL)prohibited completion:(id)completion;
+- (void)_remote_IXSPlaceholder:(id)placeholder setLocalizationPromiseUUID:(id)d completion:(id)completion;
+- (void)_remote_IXSPlaceholder:(id)placeholder setMetadataPromiseUUID:(id)d completion:(id)completion;
+- (void)_remote_IXSPlaceholder:(id)placeholder setSinfPromiseUUID:(id)d completion:(id)completion;
+- (void)_remote_IXSPromisedOutOfBandStreamingZipTransfer:(id)transfer setArchiveBytesConsumed:(unint64_t)consumed;
+- (void)_remote_IXSPromisedStreamingZipTransfer:(id)transfer setArchiveBytesConsumed:(unint64_t)consumed;
+- (void)_remote_IXSPromisedTransferToPath:(id)path setShouldCopy:(BOOL)copy;
+- (void)_remote_IXSPromisedTransferToPath:(id)path setTransferPath:(id)transferPath;
+- (void)_remote_IXSPromisedTransferToPath:(id)path setTryDeltaCopy:(BOOL)copy;
+- (void)_remote_addBundleIDs:(id)ds toMappingsForPersona:(id)persona completion:(id)completion;
+- (void)_remote_addObserversForCoordinatorsWithUUIDs:(id)ds fireObserverMethods:(BOOL)methods;
+- (void)_remote_associateMultiPersonaAppsWithBundleIDs:(id)ds withPersona:(id)persona completion:(id)completion;
+- (void)_remote_cancelCoordinatorForAppWithIdentity:(id)identity reason:(id)reason client:(unint64_t)client completion:(id)completion;
+- (void)_remote_cancelCoordinatorsForAppsWithIdentities:(id)identities reason:(id)reason client:(unint64_t)client completion:(id)completion;
+- (void)_remote_checkIfDataPromiseExistsForUUID:(id)d completion:(id)completion;
+- (void)_remote_createAppReferenceDataPromiseWithSeed:(id)seed ifMatchingPredicate:(id)predicate completion:(id)completion;
+- (void)_remote_createInMemoryDataPromiseWithSeed:(id)seed data:(id)data completion:(id)completion;
+- (void)_remote_createInMemoryDictionaryPromiseWithSeed:(id)seed dictionary:(id)dictionary completion:(id)completion;
+- (void)_remote_createOutOfBandStreamingZipTransferDataPromiseWithSeed:(id)seed completion:(id)completion;
+- (void)_remote_createOutOfBandTransferPromiseWithSeed:(id)seed completion:(id)completion;
+- (void)_remote_createPlaceholderDataPromiseWithSeed:(id)seed completion:(id)completion;
+- (void)_remote_createStreamingZipTransferDataPromiseWithSeed:(id)seed completion:(id)completion;
+- (void)_remote_createTransferToPathDataPromiseWithSeed:(id)seed completion:(id)completion;
+- (void)_remote_defaultAppMetadataForAppIdentity:(id)identity completion:(id)completion;
+- (void)_remote_defaultAppMetadataListWithCompletion:(id)completion;
+- (void)_remote_displayUserPresentableErrorForApp:(id)app code:(int64_t)code;
+- (void)_remote_displayUserPresentableErrorForAppWithLocalizedName:(id)name code:(int64_t)code;
+- (void)_remote_displayUserPresentableErrorForApps:(id)apps code:(int64_t)code;
+- (void)_remote_fakeClientDeathWithCompletion:(id)completion;
+- (void)_remote_fetchRegisteredDataPromiseInfoForCreator:(unint64_t)creator completion:(id)completion;
+- (void)_remote_fetchSeedsForCoordinatorsWithIntent:(unint64_t)intent completion:(id)completion;
+- (void)_remote_killDaemonForTestingWithCompletion:(id)completion;
+- (void)_remote_pingDaemonWithCompletion:(id)completion;
+- (void)_remote_postNSCurrentLocaleDidChangeNotification:(id)notification;
+- (void)_remote_prioritizeCoordinatorForAppWithIdentity:(id)identity completion:(id)completion;
+- (void)_remote_purgeRegisteredCoordinatorsAndPromisesForCreator:(unint64_t)creator completion:(id)completion;
+- (void)_remote_refreshContainersWithOptions:(id)options forAppWithIdentity:(id)identity completion:(id)completion;
+- (void)_remote_registerContentForOSModuleAtURL:(id)l options:(id)options completion:(id)completion;
+- (void)_remote_registerContentsForDiskImageAtURL:(id)l options:(id)options completion:(id)completion;
+- (void)_remote_registerObserverMachServiceName:(id)name forClientIdentifiers:(id)identifiers respondingToSelectors:(unint64_t)selectors;
+- (void)_remote_registerTransientObserver:(id)observer forClientIdentifiers:(id)identifiers respondingToSelectors:(unint64_t)selectors;
+- (void)_remote_removabilityDataWithCompletion:(id)completion;
+- (void)_remote_removabilityForAppWithIdentity:(id)identity byClient:(unint64_t)client completion:(id)completion;
+- (void)_remote_removabilityForAppWithIdentity:(id)identity completion:(id)completion;
+- (void)_remote_removeBundleIDs:(id)ds fromMappingsForPersona:(id)persona completion:(id)completion;
+- (void)_remote_revertAppWithIdentity:(id)identity completion:(id)completion;
+- (void)_remote_setKnownOSModuleURLs:(id)ls options:(id)options completion:(id)completion;
+- (void)_remote_setRemovability:(unint64_t)removability forAppWithIdentity:(id)identity byClient:(unint64_t)client completion:(id)completion;
+- (void)_remote_setTestModeForIdentifierPrefix:(id)prefix testMode:(unint64_t)mode testSpecificValidationData:(id)data completion:(id)completion;
+- (void)_remote_setTestingEnabled:(BOOL)enabled completion:(id)completion;
+- (void)_remote_stagingLocationForInstallLocation:(id)location completion:(id)completion;
+- (void)_remote_uninstallAppWithIdentity:(id)identity options:(id)options completion:(id)completion;
+- (void)_remote_unregisterContentForOSModuleAtURL:(id)l options:(id)options completion:(id)completion;
+- (void)_remote_unregisterContentsForDiskImageAtURL:(id)l options:(id)options completion:(id)completion;
+- (void)_remote_updateSINFForAppWithIdentity:(id)identity sinfData:(id)data options:(id)options completion:(id)completion;
+- (void)_remote_updateiTunesMetadata:(id)metadata forAppWithIdentity:(id)identity completion:(id)completion;
+- (void)addInterestedCoordinatorUUID:(id)d;
+- (void)addInterestedCoordinatorUUIDs:(id)ds;
+- (void)addInterestedPromiseUUID:(id)d;
+- (void)addInterestedPromiseUUIDs:(id)ds;
 - (void)cancelOrphanedPromisesAndRemovePromiseReferences;
 - (void)connectionInvalidated;
-- (void)removeInterestedCoordinatorUUID:(id)a3;
-- (void)removeInterestedCoordinatorUUIDs:(id)a3;
-- (void)removeInterestedPromiseUUID:(id)a3;
-- (void)removeInterestedPromiseUUIDs:(id)a3;
+- (void)removeInterestedCoordinatorUUID:(id)d;
+- (void)removeInterestedCoordinatorUUIDs:(id)ds;
+- (void)removeInterestedPromiseUUID:(id)d;
+- (void)removeInterestedPromiseUUIDs:(id)ds;
 @end
 
 @implementation IXSClientConnection
 
-- (IXSClientConnection)initWithConnection:(id)a3
+- (IXSClientConnection)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v21.receiver = self;
   v21.super_class = IXSClientConnection;
   v5 = [(IXSClientConnection *)&v21 init];
@@ -205,7 +205,7 @@
     interestedPromiseUUIDs = v5->_interestedPromiseUUIDs;
     v5->_interestedPromiseUUIDs = v11;
 
-    v13 = sub_10000D6A0(v4);
+    v13 = sub_10000D6A0(connectionCopy);
     clientName = v5->_clientName;
     v5->_clientName = v13;
 
@@ -214,10 +214,10 @@
     connectionUUID = v5->_connectionUUID;
     v5->_connectionUUID = v15;
 
-    [(IXSClientConnection *)v5 setXpcConnection:v4];
-    if (v4)
+    [(IXSClientConnection *)v5 setXpcConnection:connectionCopy];
+    if (connectionCopy)
     {
-      [v4 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -257,7 +257,7 @@
       v6 = 136315394;
       v7 = "[IXSClientConnection connectionInvalidated]";
       v8 = 2112;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s: %@: Connection Invalidated", &v6, 0x16u);
     }
 
@@ -275,91 +275,91 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(IXSClientConnection *)self clientName];
-  v6 = [(IXSClientConnection *)self connectionUUID];
-  v7 = [NSString stringWithFormat:@"<%@<%p> client:%@ uuid:%@>", v4, self, v5, v6];
+  clientName = [(IXSClientConnection *)self clientName];
+  connectionUUID = [(IXSClientConnection *)self connectionUUID];
+  v7 = [NSString stringWithFormat:@"<%@<%p> client:%@ uuid:%@>", v4, self, clientName, connectionUUID];
 
   return v7;
 }
 
-- (void)addInterestedCoordinatorUUIDs:(id)a3
+- (void)addInterestedCoordinatorUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(IXSClientConnection *)self internalQueue];
+  dsCopy = ds;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100074E14;
   v7[3] = &unk_100100ED8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dsCopy;
+  v6 = dsCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
-- (void)addInterestedCoordinatorUUID:(id)a3
+- (void)addInterestedCoordinatorUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(IXSClientConnection *)self internalQueue];
+  dCopy = d;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100074FB4;
   v7[3] = &unk_100100ED8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
-- (void)removeInterestedCoordinatorUUIDs:(id)a3
+- (void)removeInterestedCoordinatorUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(IXSClientConnection *)self internalQueue];
+  dsCopy = ds;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100075154;
   v7[3] = &unk_100100ED8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dsCopy;
+  v6 = dsCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
-- (void)removeInterestedCoordinatorUUID:(id)a3
+- (void)removeInterestedCoordinatorUUID:(id)d
 {
-  v4 = [NSSet setWithObject:a3];
+  v4 = [NSSet setWithObject:d];
   [(IXSClientConnection *)self removeInterestedCoordinatorUUIDs:v4];
 }
 
-- (BOOL)interestedInCoordinatorUUID:(id)a3
+- (BOOL)interestedInCoordinatorUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(IXSClientConnection *)self internalQueue];
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000756AC;
   block[3] = &unk_1001012B0;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(internalQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(dCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return dCopy;
 }
 
 - (void)cancelOrphanedPromisesAndRemovePromiseReferences
 {
   v3 = +[IXSDataPromiseManager sharedInstance];
-  v4 = [(IXSClientConnection *)self clientName];
-  v6 = sub_1000405FC("[IXSClientConnection cancelOrphanedPromisesAndRemovePromiseReferences]", 259, @"IXErrorDomain", 0x12uLL, 0, 0, @"Promise was not attached to a coordinator and is no longer referenced by client %@", v5, v4);
+  clientName = [(IXSClientConnection *)self clientName];
+  v6 = sub_1000405FC("[IXSClientConnection cancelOrphanedPromisesAndRemovePromiseReferences]", 259, @"IXErrorDomain", 0x12uLL, 0, 0, @"Promise was not attached to a coordinator and is no longer referenced by client %@", v5, clientName);
 
-  v7 = [(IXSClientConnection *)self internalQueue];
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100075838;
@@ -369,88 +369,88 @@
   v12 = v6;
   v8 = v6;
   v9 = v3;
-  dispatch_sync(v7, block);
+  dispatch_sync(internalQueue, block);
 }
 
-- (void)addInterestedPromiseUUID:(id)a3
+- (void)addInterestedPromiseUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(IXSClientConnection *)self internalQueue];
+  dCopy = d;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100075A00;
   v7[3] = &unk_100100ED8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
-- (void)addInterestedPromiseUUIDs:(id)a3
+- (void)addInterestedPromiseUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(IXSClientConnection *)self internalQueue];
+  dsCopy = ds;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100075BA0;
   v7[3] = &unk_100100ED8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dsCopy;
+  v6 = dsCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
-- (void)removeInterestedPromiseUUIDs:(id)a3
+- (void)removeInterestedPromiseUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(IXSClientConnection *)self internalQueue];
+  dsCopy = ds;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100075D40;
   v7[3] = &unk_100100ED8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dsCopy;
+  v6 = dsCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
-- (void)removeInterestedPromiseUUID:(id)a3
+- (void)removeInterestedPromiseUUID:(id)d
 {
-  v4 = [NSSet setWithObject:a3];
+  v4 = [NSSet setWithObject:d];
   [(IXSClientConnection *)self removeInterestedPromiseUUIDs:v4];
 }
 
-- (BOOL)interestedInPromiseUUID:(id)a3
+- (BOOL)interestedInPromiseUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(IXSClientConnection *)self internalQueue];
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007610C;
   block[3] = &unk_1001012B0;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(internalQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(dCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return dCopy;
 }
 
-- (void)_remote_createPlaceholderDataPromiseWithSeed:(id)a3 completion:(id)a4
+- (void)_remote_createPlaceholderDataPromiseWithSeed:(id)seed completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  seedCopy = seed;
+  completionCopy = completion;
   v8 = [IXSPlaceholder alloc];
-  v9 = [(IXSClientConnection *)self xpcConnection];
+  xpcConnection = [(IXSClientConnection *)self xpcConnection];
   v37 = 0;
-  v10 = [(IXSPlaceholder *)v8 initWithSeed:v6 fromConnection:v9 error:&v37];
+  v10 = [(IXSPlaceholder *)v8 initWithSeed:seedCopy fromConnection:xpcConnection error:&v37];
   v11 = v37;
 
   if (v10)
@@ -458,8 +458,8 @@
     v12 = +[IXSDataPromiseManager sharedInstance];
     [v12 registerPromise:v10];
 
-    v13 = [(IXSDataPromise *)v10 uniqueIdentifier];
-    [(IXSClientConnection *)self addInterestedPromiseUUID:v13];
+    uniqueIdentifier = [(IXSDataPromise *)v10 uniqueIdentifier];
+    [(IXSClientConnection *)self addInterestedPromiseUUID:uniqueIdentifier];
 
     v31 = 0;
     v32 = &v31;
@@ -473,7 +473,7 @@
     v28 = sub_1000764A0;
     v29 = sub_1000764B0;
     v30 = 0;
-    v14 = [(IXSDataPromise *)v10 accessQueue];
+    accessQueue = [(IXSDataPromise *)v10 accessQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000764B8;
@@ -481,9 +481,9 @@
     v22 = v10;
     v23 = &v25;
     v24 = &v31;
-    dispatch_sync(v14, block);
+    dispatch_sync(accessQueue, block);
 
-    v7[2](v7, v32[5], v26[5]);
+    completionCopy[2](completionCopy, v32[5], v26[5]);
     _Block_object_dispose(&v25, 8);
 
     _Block_object_dispose(&v31, 8);
@@ -494,33 +494,33 @@
     v15 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      sub_1000A3DA0(v6);
+      sub_1000A3DA0(seedCopy);
     }
 
-    v16 = [v6 name];
-    v17 = [v6 bundleName];
-    v20 = IXStringForClientID([v6 creatorIdentifier]);
-    v19 = sub_1000405FC("[IXSClientConnection _remote_createPlaceholderDataPromiseWithSeed:completion:]", 341, @"IXErrorDomain", 2uLL, v11, 0, @"Failed to create placeholder data promise with name: %@ bundleName: %@ client: %@", v18, v16);
+    name = [seedCopy name];
+    bundleName = [seedCopy bundleName];
+    v20 = IXStringForClientID([seedCopy creatorIdentifier]);
+    v19 = sub_1000405FC("[IXSClientConnection _remote_createPlaceholderDataPromiseWithSeed:completion:]", 341, @"IXErrorDomain", 2uLL, v11, 0, @"Failed to create placeholder data promise with name: %@ bundleName: %@ client: %@", v18, name);
 
-    v7[2](v7, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
     v11 = v19;
   }
 }
 
-- (void)_remote_createTransferToPathDataPromiseWithSeed:(id)a3 completion:(id)a4
+- (void)_remote_createTransferToPathDataPromiseWithSeed:(id)seed completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  seedCopy = seed;
+  completionCopy = completion;
   v36 = 0;
-  v8 = [[IXSPromisedTransferToPath alloc] initWithSeed:v6 error:&v36];
+  v8 = [[IXSPromisedTransferToPath alloc] initWithSeed:seedCopy error:&v36];
   v9 = v36;
   if (v8)
   {
     v10 = +[IXSDataPromiseManager sharedInstance];
     [v10 registerPromise:v8];
 
-    v11 = [(IXSDataPromise *)v8 uniqueIdentifier];
-    [(IXSClientConnection *)self addInterestedPromiseUUID:v11];
+    uniqueIdentifier = [(IXSDataPromise *)v8 uniqueIdentifier];
+    [(IXSClientConnection *)self addInterestedPromiseUUID:uniqueIdentifier];
 
     v30 = 0;
     v31 = &v30;
@@ -534,7 +534,7 @@
     v27 = sub_1000764A0;
     v28 = sub_1000764B0;
     v29 = 0;
-    v12 = [(IXSDataPromise *)v8 accessQueue];
+    accessQueue = [(IXSDataPromise *)v8 accessQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10007685C;
@@ -542,9 +542,9 @@
     v21 = v8;
     v22 = &v24;
     v23 = &v30;
-    dispatch_sync(v12, block);
+    dispatch_sync(accessQueue, block);
 
-    v7[2](v7, v31[5], v25[5]);
+    completionCopy[2](completionCopy, v31[5], v25[5]);
     _Block_object_dispose(&v24, 8);
 
     _Block_object_dispose(&v30, 8);
@@ -555,34 +555,34 @@
     v13 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      sub_1000A3E88(v6);
+      sub_1000A3E88(seedCopy);
     }
 
-    v14 = [v6 name];
-    v15 = [v6 transferPath];
-    v16 = [v15 path];
-    v19 = IXStringForClientID([v6 creatorIdentifier]);
-    v18 = sub_1000405FC("[IXSClientConnection _remote_createTransferToPathDataPromiseWithSeed:completion:]", 367, @"IXErrorDomain", 2uLL, v9, 0, @"Failed to create promised transfer to path data promise with name: %@ path: %@ client: %@", v17, v14);
+    name = [seedCopy name];
+    transferPath = [seedCopy transferPath];
+    path = [transferPath path];
+    v19 = IXStringForClientID([seedCopy creatorIdentifier]);
+    v18 = sub_1000405FC("[IXSClientConnection _remote_createTransferToPathDataPromiseWithSeed:completion:]", 367, @"IXErrorDomain", 2uLL, v9, 0, @"Failed to create promised transfer to path data promise with name: %@ path: %@ client: %@", v17, name);
 
-    v7[2](v7, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
     v9 = v18;
   }
 }
 
-- (void)_remote_createStreamingZipTransferDataPromiseWithSeed:(id)a3 completion:(id)a4
+- (void)_remote_createStreamingZipTransferDataPromiseWithSeed:(id)seed completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  seedCopy = seed;
+  completionCopy = completion;
   v34 = 0;
-  v8 = [[IXSPromisedStreamingZipTransfer alloc] initWithSeed:v6 error:&v34];
+  v8 = [[IXSPromisedStreamingZipTransfer alloc] initWithSeed:seedCopy error:&v34];
   v9 = v34;
   if (v8)
   {
     v10 = +[IXSDataPromiseManager sharedInstance];
     [v10 registerPromise:v8];
 
-    v11 = [(IXSDataPromise *)v8 uniqueIdentifier];
-    [(IXSClientConnection *)self addInterestedPromiseUUID:v11];
+    uniqueIdentifier = [(IXSDataPromise *)v8 uniqueIdentifier];
+    [(IXSClientConnection *)self addInterestedPromiseUUID:uniqueIdentifier];
 
     v28 = 0;
     v29 = &v28;
@@ -596,7 +596,7 @@
     v25 = sub_1000764A0;
     v26 = sub_1000764B0;
     v27 = 0;
-    v12 = [(IXSDataPromise *)v8 accessQueue];
+    accessQueue = [(IXSDataPromise *)v8 accessQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100076BD0;
@@ -604,9 +604,9 @@
     v19 = v8;
     v20 = &v22;
     v21 = &v28;
-    dispatch_sync(v12, block);
+    dispatch_sync(accessQueue, block);
 
-    v7[2](v7, v29[5], v23[5]);
+    completionCopy[2](completionCopy, v29[5], v23[5]);
     _Block_object_dispose(&v22, 8);
 
     _Block_object_dispose(&v28, 8);
@@ -620,30 +620,30 @@
       sub_1000A3F80();
     }
 
-    v14 = [v6 name];
-    v17 = IXStringForClientID([v6 creatorIdentifier]);
-    v16 = sub_1000405FC("[IXSClientConnection _remote_createStreamingZipTransferDataPromiseWithSeed:completion:]", 393, @"IXErrorDomain", 2uLL, v9, 0, @"Failed to create streaming zip transfer data promise with name: %@ client: %@", v15, v14);
+    name = [seedCopy name];
+    v17 = IXStringForClientID([seedCopy creatorIdentifier]);
+    v16 = sub_1000405FC("[IXSClientConnection _remote_createStreamingZipTransferDataPromiseWithSeed:completion:]", 393, @"IXErrorDomain", 2uLL, v9, 0, @"Failed to create streaming zip transfer data promise with name: %@ client: %@", v15, name);
 
-    v7[2](v7, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
     v9 = v16;
   }
 }
 
-- (void)_remote_createInMemoryDataPromiseWithSeed:(id)a3 data:(id)a4 completion:(id)a5
+- (void)_remote_createInMemoryDataPromiseWithSeed:(id)seed data:(id)data completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  seedCopy = seed;
+  dataCopy = data;
+  completionCopy = completion;
   v30 = 0;
-  v11 = [[IXSPromisedInMemoryData alloc] initWithSeed:v8 data:v9 error:&v30];
+  v11 = [[IXSPromisedInMemoryData alloc] initWithSeed:seedCopy data:dataCopy error:&v30];
   v12 = v30;
   if (v11)
   {
     v13 = +[IXSDataPromiseManager sharedInstance];
     [v13 registerPromise:v11];
 
-    v14 = [(IXSDataPromise *)v11 uniqueIdentifier];
-    [(IXSClientConnection *)self addInterestedPromiseUUID:v14];
+    uniqueIdentifier = [(IXSDataPromise *)v11 uniqueIdentifier];
+    [(IXSClientConnection *)self addInterestedPromiseUUID:uniqueIdentifier];
 
     v24 = 0;
     v25 = &v24;
@@ -651,16 +651,16 @@
     v27 = sub_1000764A0;
     v28 = sub_1000764B0;
     v29 = 0;
-    v15 = [(IXSDataPromise *)v11 accessQueue];
+    accessQueue = [(IXSDataPromise *)v11 accessQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100076F00;
     block[3] = &unk_100101268;
     v23 = &v24;
     v22 = v11;
-    dispatch_sync(v15, block);
+    dispatch_sync(accessQueue, block);
 
-    v10[2](v10, v25[5], 0);
+    completionCopy[2](completionCopy, v25[5], 0);
     _Block_object_dispose(&v24, 8);
   }
 
@@ -672,30 +672,30 @@
       sub_1000A4034();
     }
 
-    v17 = [v8 name];
-    v20 = IXStringForClientID([v8 creatorIdentifier]);
-    v19 = sub_1000405FC("[IXSClientConnection _remote_createInMemoryDataPromiseWithSeed:data:completion:]", 420, @"IXErrorDomain", 2uLL, v12, 0, @"Failed to create in memory data promise with name: %@ client: %@", v18, v17);
+    name = [seedCopy name];
+    v20 = IXStringForClientID([seedCopy creatorIdentifier]);
+    v19 = sub_1000405FC("[IXSClientConnection _remote_createInMemoryDataPromiseWithSeed:data:completion:]", 420, @"IXErrorDomain", 2uLL, v12, 0, @"Failed to create in memory data promise with name: %@ client: %@", v18, name);
 
-    v10[2](v10, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
     v12 = v19;
   }
 }
 
-- (void)_remote_createInMemoryDictionaryPromiseWithSeed:(id)a3 dictionary:(id)a4 completion:(id)a5
+- (void)_remote_createInMemoryDictionaryPromiseWithSeed:(id)seed dictionary:(id)dictionary completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  seedCopy = seed;
+  dictionaryCopy = dictionary;
+  completionCopy = completion;
   v30 = 0;
-  v11 = [[IXSPromisedInMemoryDictionary alloc] initWithSeed:v8 dictionary:v9 error:&v30];
+  v11 = [[IXSPromisedInMemoryDictionary alloc] initWithSeed:seedCopy dictionary:dictionaryCopy error:&v30];
   v12 = v30;
   if (v11)
   {
     v13 = +[IXSDataPromiseManager sharedInstance];
     [v13 registerPromise:v11];
 
-    v14 = [(IXSDataPromise *)v11 uniqueIdentifier];
-    [(IXSClientConnection *)self addInterestedPromiseUUID:v14];
+    uniqueIdentifier = [(IXSDataPromise *)v11 uniqueIdentifier];
+    [(IXSClientConnection *)self addInterestedPromiseUUID:uniqueIdentifier];
 
     v24 = 0;
     v25 = &v24;
@@ -703,16 +703,16 @@
     v27 = sub_1000764A0;
     v28 = sub_1000764B0;
     v29 = 0;
-    v15 = [(IXSDataPromise *)v11 accessQueue];
+    accessQueue = [(IXSDataPromise *)v11 accessQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000771FC;
     block[3] = &unk_100101268;
     v23 = &v24;
     v22 = v11;
-    dispatch_sync(v15, block);
+    dispatch_sync(accessQueue, block);
 
-    v10[2](v10, v25[5], 0);
+    completionCopy[2](completionCopy, v25[5], 0);
     _Block_object_dispose(&v24, 8);
   }
 
@@ -724,29 +724,29 @@
       sub_1000A40E8();
     }
 
-    v17 = [v8 name];
-    v20 = IXStringForClientID([v8 creatorIdentifier]);
-    v19 = sub_1000405FC("[IXSClientConnection _remote_createInMemoryDictionaryPromiseWithSeed:dictionary:completion:]", 442, @"IXErrorDomain", 2uLL, v12, 0, @"Failed to create in memory dictionary promise with name: %@ client: %@", v18, v17);
+    name = [seedCopy name];
+    v20 = IXStringForClientID([seedCopy creatorIdentifier]);
+    v19 = sub_1000405FC("[IXSClientConnection _remote_createInMemoryDictionaryPromiseWithSeed:dictionary:completion:]", 442, @"IXErrorDomain", 2uLL, v12, 0, @"Failed to create in memory dictionary promise with name: %@ client: %@", v18, name);
 
-    v10[2](v10, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
     v12 = v19;
   }
 }
 
-- (void)_remote_createOutOfBandTransferPromiseWithSeed:(id)a3 completion:(id)a4
+- (void)_remote_createOutOfBandTransferPromiseWithSeed:(id)seed completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  seedCopy = seed;
+  completionCopy = completion;
   v27 = 0;
-  v8 = [(IXSDataPromise *)[IXSPromisedOutOfBandTransfer alloc] initWithSeed:v6 error:&v27];
+  v8 = [(IXSDataPromise *)[IXSPromisedOutOfBandTransfer alloc] initWithSeed:seedCopy error:&v27];
   v9 = v27;
   if (v8)
   {
     v10 = +[IXSDataPromiseManager sharedInstance];
     [v10 registerPromise:v8];
 
-    v11 = [(IXSDataPromise *)v8 uniqueIdentifier];
-    [(IXSClientConnection *)self addInterestedPromiseUUID:v11];
+    uniqueIdentifier = [(IXSDataPromise *)v8 uniqueIdentifier];
+    [(IXSClientConnection *)self addInterestedPromiseUUID:uniqueIdentifier];
 
     v21 = 0;
     v22 = &v21;
@@ -754,16 +754,16 @@
     v24 = sub_1000764A0;
     v25 = sub_1000764B0;
     v26 = 0;
-    v12 = [(IXSDataPromise *)v8 accessQueue];
+    accessQueue = [(IXSDataPromise *)v8 accessQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000774E4;
     block[3] = &unk_100101268;
     v20 = &v21;
     v19 = v8;
-    dispatch_sync(v12, block);
+    dispatch_sync(accessQueue, block);
 
-    v7[2](v7, v22[5], 0);
+    completionCopy[2](completionCopy, v22[5], 0);
     _Block_object_dispose(&v21, 8);
   }
 
@@ -775,29 +775,29 @@
       sub_1000A419C();
     }
 
-    v14 = [v6 name];
-    v17 = IXStringForClientID([v6 creatorIdentifier]);
-    v16 = sub_1000405FC("[IXSClientConnection _remote_createOutOfBandTransferPromiseWithSeed:completion:]", 464, @"IXErrorDomain", 2uLL, v9, 0, @"Failed to create out of band transfer promise with name: %@ client: %@", v15, v14);
+    name = [seedCopy name];
+    v17 = IXStringForClientID([seedCopy creatorIdentifier]);
+    v16 = sub_1000405FC("[IXSClientConnection _remote_createOutOfBandTransferPromiseWithSeed:completion:]", 464, @"IXErrorDomain", 2uLL, v9, 0, @"Failed to create out of band transfer promise with name: %@ client: %@", v15, name);
 
-    v7[2](v7, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
     v9 = v16;
   }
 }
 
-- (void)_remote_createOutOfBandStreamingZipTransferDataPromiseWithSeed:(id)a3 completion:(id)a4
+- (void)_remote_createOutOfBandStreamingZipTransferDataPromiseWithSeed:(id)seed completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  seedCopy = seed;
+  completionCopy = completion;
   v27 = 0;
-  v8 = [[IXSPromisedOutOfBandStreamingZipTransfer alloc] initWithSeed:v6 error:&v27];
+  v8 = [[IXSPromisedOutOfBandStreamingZipTransfer alloc] initWithSeed:seedCopy error:&v27];
   v9 = v27;
   if (v8)
   {
     v10 = +[IXSDataPromiseManager sharedInstance];
     [v10 registerPromise:v8];
 
-    v11 = [(IXSDataPromise *)v8 uniqueIdentifier];
-    [(IXSClientConnection *)self addInterestedPromiseUUID:v11];
+    uniqueIdentifier = [(IXSDataPromise *)v8 uniqueIdentifier];
+    [(IXSClientConnection *)self addInterestedPromiseUUID:uniqueIdentifier];
 
     v21 = 0;
     v22 = &v21;
@@ -805,16 +805,16 @@
     v24 = sub_1000764A0;
     v25 = sub_1000764B0;
     v26 = 0;
-    v12 = [(IXSDataPromise *)v8 accessQueue];
+    accessQueue = [(IXSDataPromise *)v8 accessQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000777CC;
     block[3] = &unk_100101268;
     v20 = &v21;
     v19 = v8;
-    dispatch_sync(v12, block);
+    dispatch_sync(accessQueue, block);
 
-    v7[2](v7, v22[5], 0);
+    completionCopy[2](completionCopy, v22[5], 0);
     _Block_object_dispose(&v21, 8);
   }
 
@@ -826,29 +826,29 @@
       sub_1000A4250();
     }
 
-    v14 = [v6 name];
-    v17 = IXStringForClientID([v6 creatorIdentifier]);
-    v16 = sub_1000405FC("[IXSClientConnection _remote_createOutOfBandStreamingZipTransferDataPromiseWithSeed:completion:]", 486, @"IXErrorDomain", 2uLL, v9, 0, @"Failed to create out of band streaming zip transfer promise with name: %@ client: %@", v15, v14);
+    name = [seedCopy name];
+    v17 = IXStringForClientID([seedCopy creatorIdentifier]);
+    v16 = sub_1000405FC("[IXSClientConnection _remote_createOutOfBandStreamingZipTransferDataPromiseWithSeed:completion:]", 486, @"IXErrorDomain", 2uLL, v9, 0, @"Failed to create out of band streaming zip transfer promise with name: %@ client: %@", v15, name);
 
-    v7[2](v7, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
     v9 = v16;
   }
 }
 
-- (void)_remote_createAppReferenceDataPromiseWithSeed:(id)a3 ifMatchingPredicate:(id)a4 completion:(id)a5
+- (void)_remote_createAppReferenceDataPromiseWithSeed:(id)seed ifMatchingPredicate:(id)predicate completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 identity];
+  seedCopy = seed;
+  predicateCopy = predicate;
+  completionCopy = completion;
+  identity = [seedCopy identity];
   v28 = 0;
-  v12 = [v11 resolvePersonaWithError:&v28];
+  v12 = [identity resolvePersonaWithError:&v28];
   v13 = v28;
 
   if (v12)
   {
     v27 = v13;
-    v14 = [[IXSPromisedAppReference alloc] initWithSeed:v8 ifMatchingPredicate:v9 error:&v27];
+    v14 = [[IXSPromisedAppReference alloc] initWithSeed:seedCopy ifMatchingPredicate:predicateCopy error:&v27];
     v15 = v27;
 
     if (v14)
@@ -856,17 +856,17 @@
       v16 = +[IXSDataPromiseManager sharedInstance];
       [v16 registerPromise:v14];
 
-      v17 = [(IXSDataPromise *)v14 uniqueIdentifier];
-      [(IXSClientConnection *)self addInterestedPromiseUUID:v17];
+      uniqueIdentifier = [(IXSDataPromise *)v14 uniqueIdentifier];
+      [(IXSClientConnection *)self addInterestedPromiseUUID:uniqueIdentifier];
 
-      v18 = [(IXSDataPromise *)v14 accessQueue];
+      accessQueue = [(IXSDataPromise *)v14 accessQueue];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_100077AA8;
       v24[3] = &unk_1001028F8;
-      v26 = v10;
+      v26 = completionCopy;
       v25 = v14;
-      sub_100071134(v18, v24);
+      sub_100071134(accessQueue, v24);
     }
 
     else
@@ -877,11 +877,11 @@
         sub_1000A4304();
       }
 
-      v20 = [v8 name];
-      v23 = IXStringForClientID([v8 creatorIdentifier]);
-      v22 = sub_1000405FC("[IXSClientConnection _remote_createAppReferenceDataPromiseWithSeed:ifMatchingPredicate:completion:]", 515, @"IXErrorDomain", 2uLL, v15, 0, @"Failed to create promised app reference with name: %@ client: %@", v21, v20);
+      name = [seedCopy name];
+      v23 = IXStringForClientID([seedCopy creatorIdentifier]);
+      v22 = sub_1000405FC("[IXSClientConnection _remote_createAppReferenceDataPromiseWithSeed:ifMatchingPredicate:completion:]", 515, @"IXErrorDomain", 2uLL, v15, 0, @"Failed to create promised app reference with name: %@ client: %@", v21, name);
 
-      (*(v10 + 2))(v10, 0, v22);
+      (*(completionCopy + 2))(completionCopy, 0, v22);
       v15 = v22;
     }
 
@@ -890,20 +890,20 @@
 
   else
   {
-    (*(v10 + 2))(v10, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
   }
 }
 
-- (void)_remote_fetchSeedsForCoordinatorsWithIntent:(unint64_t)a3 completion:(id)a4
+- (void)_remote_fetchSeedsForCoordinatorsWithIntent:(unint64_t)intent completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = objc_opt_new();
   v8 = +[IXSCoordinatorManager sharedInstance];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100078C90;
   v14[3] = &unk_100103290;
-  v16 = a3;
+  intentCopy = intent;
   v9 = v7;
   v15 = v9;
   [v8 enumerateCoordinatorsApplicableToConnection:self usingBlock:v14];
@@ -911,35 +911,35 @@
   v10 = sub_1000031B0(off_100121958);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(IXSClientConnection *)self clientName];
+    clientName = [(IXSClientConnection *)self clientName];
     v12 = [v9 count];
-    if (a3 >= 8)
+    if (intent >= 8)
     {
-      v13 = [NSString stringWithFormat:@"Unknown intent value %lu", a3];
+      intent = [NSString stringWithFormat:@"Unknown intent value %lu", intent];
     }
 
     else
     {
-      v13 = off_100103838[a3];
+      intent = off_100103838[intent];
     }
 
     *buf = 136315906;
     v18 = "[IXSClientConnection _remote_fetchSeedsForCoordinatorsWithIntent:completion:]";
     v19 = 2112;
-    v20 = v11;
+    v20 = clientName;
     v21 = 2048;
     v22 = v12;
     v23 = 2112;
-    v24 = v13;
+    v24 = intent;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Client %@ fetched %lu coordinators for enumeration with intent %@", buf, 0x2Au);
   }
 
-  v6[2](v6, v9, 0);
+  completionCopy[2](completionCopy, v9, 0);
 }
 
-- (void)_remote_fetchRegisteredDataPromiseInfoForCreator:(unint64_t)a3 completion:(id)a4
+- (void)_remote_fetchRegisteredDataPromiseInfoForCreator:(unint64_t)creator completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = objc_opt_new();
   v7 = +[IXSDataPromiseManager sharedInstance];
   v10 = _NSConcreteStackBlock;
@@ -947,60 +947,60 @@
   v12 = sub_100078DF8;
   v13 = &unk_1001032B8;
   v14 = v6;
-  v15 = a3;
+  creatorCopy = creator;
   v8 = v6;
   [v7 enumeratePromises:&v10];
 
   v9 = [v8 copy];
-  v5[2](v5, v9, 0);
+  completionCopy[2](completionCopy, v9, 0);
 }
 
-- (void)_remote_checkIfDataPromiseExistsForUUID:(id)a3 completion:(id)a4
+- (void)_remote_checkIfDataPromiseExistsForUUID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v7 = +[IXSDataPromiseManager sharedInstance];
-  v8 = [v7 promiseForUUID:v6];
+  v8 = [v7 promiseForUUID:dCopy];
 
-  v5[2](v5, v8 != 0, 0);
+  completionCopy[2](completionCopy, v8 != 0, 0);
 }
 
-- (void)_remote_cancelCoordinatorForAppWithIdentity:(id)a3 reason:(id)a4 client:(unint64_t)a5 completion:(id)a6
+- (void)_remote_cancelCoordinatorForAppWithIdentity:(id)identity reason:(id)reason client:(unint64_t)client completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identityCopy = identity;
+  reasonCopy = reason;
+  completionCopy = completion;
   v33 = 0;
-  v13 = [v10 resolvePersonaWithError:&v33];
+  v13 = [identityCopy resolvePersonaWithError:&v33];
   v14 = v33;
   if (v13)
   {
     v15 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = IXStringForClientID(a5);
-      v17 = [(IXSClientConnection *)self clientName];
+      v16 = IXStringForClientID(client);
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136316162;
       v35 = "[IXSClientConnection _remote_cancelCoordinatorForAppWithIdentity:reason:client:completion:]";
       v36 = 2112;
-      v37 = v10;
+      v37 = identityCopy;
       v38 = 2112;
       v39 = v16;
       v40 = 2112;
-      v41 = v17;
+      v41 = clientName;
       v42 = 2112;
-      v43 = v11;
+      v43 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s: Cancellation for %@ (client %@) requested by %@ for reason %@", buf, 0x34u);
     }
 
     v18 = +[IXSCoordinatorManager sharedInstance];
-    v19 = [v18 coordinatorForIdentity:v10];
+    v19 = [v18 coordinatorForIdentity:identityCopy];
 
     if (v19)
     {
       buf[0] = 0;
       v32 = 0;
-      v20 = [v19 cancelForReason:v11 client:a5 needsLSDatabaseSync:buf error:&v32];
+      v20 = [v19 cancelForReason:reasonCopy client:client needsLSDatabaseSync:buf error:&v32];
       v21 = v32;
       v22 = v21;
       v23 = 0;
@@ -1009,7 +1009,7 @@
         v23 = v21;
       }
 
-      v12[2](v12, buf[0], v23);
+      completionCopy[2](completionCopy, buf[0], v23);
 
 LABEL_13:
 LABEL_14:
@@ -1017,7 +1017,7 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    if (a5 == 8)
+    if (client == 8)
     {
 LABEL_10:
       v24 = sub_1000031B0(off_100121958);
@@ -1026,7 +1026,7 @@ LABEL_10:
         *buf = 136315394;
         v35 = "[IXSClientConnection _remote_cancelCoordinatorForAppWithIdentity:reason:client:completion:]";
         v36 = 2112;
-        v37 = v10;
+        v37 = identityCopy;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%s: No coordinator existed for %@, but SpringBoard is canceling so transforming into an uninstall", buf, 0x16u);
       }
 
@@ -1038,18 +1038,18 @@ LABEL_10:
       v30[1] = 3221225472;
       v30[2] = sub_100079318;
       v30[3] = &unk_1001032E0;
-      v31 = v12;
-      [(IXSClientConnection *)self _remote_uninstallAppWithIdentity:v10 options:v23 completion:v30];
+      v31 = completionCopy;
+      [(IXSClientConnection *)self _remote_uninstallAppWithIdentity:identityCopy options:v23 completion:v30];
 
       goto LABEL_13;
     }
 
-    v25 = [v11 domain];
-    if ([v25 isEqualToString:@"IXUserPresentableErrorDomain"])
+    domain = [reasonCopy domain];
+    if ([domain isEqualToString:@"IXUserPresentableErrorDomain"])
     {
-      v26 = [v11 code];
+      code = [reasonCopy code];
 
-      if (v26 == 3)
+      if (code == 3)
       {
         goto LABEL_10;
       }
@@ -1065,27 +1065,27 @@ LABEL_10:
       sub_1000A46B4();
     }
 
-    v29 = sub_1000405FC("[IXSClientConnection _remote_cancelCoordinatorForAppWithIdentity:reason:client:completion:]", 744, @"IXErrorDomain", 6uLL, 0, 0, @"Coordinator did not exist for bundle ID %@", v28, v10);
-    v12[2](v12, 0, v29);
+    v29 = sub_1000405FC("[IXSClientConnection _remote_cancelCoordinatorForAppWithIdentity:reason:client:completion:]", 744, @"IXErrorDomain", 6uLL, 0, 0, @"Coordinator did not exist for bundle ID %@", v28, identityCopy);
+    completionCopy[2](completionCopy, 0, v29);
 
     goto LABEL_14;
   }
 
-  v12[2](v12, 0, v14);
+  completionCopy[2](completionCopy, 0, v14);
 LABEL_15:
 }
 
-- (void)_remote_cancelCoordinatorsForAppsWithIdentities:(id)a3 reason:(id)a4 client:(unint64_t)a5 completion:(id)a6
+- (void)_remote_cancelCoordinatorsForAppsWithIdentities:(id)identities reason:(id)reason client:(unint64_t)client completion:(id)completion
 {
-  v8 = a3;
-  v32 = a4;
-  v33 = a6;
+  identitiesCopy = identities;
+  reasonCopy = reason;
+  completionCopy = completion;
   v9 = sub_1000031B0(off_100121958);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 count];
-    v11 = IXStringForClientID(a5);
-    v12 = [(IXSClientConnection *)self clientName];
+    v10 = [identitiesCopy count];
+    v11 = IXStringForClientID(client);
+    clientName = [(IXSClientConnection *)self clientName];
     *buf = 136316162;
     *&buf[4] = "[IXSClientConnection _remote_cancelCoordinatorsForAppsWithIdentities:reason:client:completion:]";
     *&buf[12] = 1024;
@@ -1093,9 +1093,9 @@ LABEL_15:
     *&buf[18] = 2112;
     *&buf[20] = v11;
     *&buf[28] = 2112;
-    *&buf[30] = v12;
+    *&buf[30] = clientName;
     *&buf[38] = 2112;
-    v68 = v32;
+    v68 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: Bulk cancellation of %d coordinators (client %@) requested by %@ for reason %@", buf, 0x30u);
   }
 
@@ -1109,7 +1109,7 @@ LABEL_15:
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v8;
+  obj = identitiesCopy;
   v13 = [obj countByEnumeratingWithState:&v61 objects:v66 count:16];
   if (v13)
   {
@@ -1130,7 +1130,7 @@ LABEL_15:
         objc_storeStrong((v17 + 40), v60);
         if ((v18 & 1) == 0)
         {
-          (*(v33 + 2))(v33, 0, *(*&buf[8] + 40));
+          (*(completionCopy + 2))(completionCopy, 0, *(*&buf[8] + 40));
 
           goto LABEL_26;
         }
@@ -1156,12 +1156,12 @@ LABEL_15:
   v56[1] = v56;
   v56[2] = 0x2020000000;
   v57 = 0;
-  v19 = v32;
-  v20 = [v19 domain];
-  if ([v20 isEqualToString:@"IXUserPresentableErrorDomain"])
+  v19 = reasonCopy;
+  domain = [v19 domain];
+  if ([domain isEqualToString:@"IXUserPresentableErrorDomain"])
   {
-    v21 = [v19 userInfo];
-    v22 = [v21 objectForKeyedSubscript:@"AlertUser"];
+    userInfo = [v19 userInfo];
+    v22 = [userInfo objectForKeyedSubscript:@"AlertUser"];
     v23 = sub_10008F068(v22, 0);
 
     if (!v23)
@@ -1171,12 +1171,12 @@ LABEL_15:
       goto LABEL_18;
     }
 
-    v24 = [v19 userInfo];
-    v20 = [v24 mutableCopy];
+    userInfo2 = [v19 userInfo];
+    domain = [userInfo2 mutableCopy];
 
-    [v20 removeObjectForKey:@"AlertUser"];
-    v25 = [v19 domain];
-    v36 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v25, [v19 code], v20);
+    [domain removeObjectForKey:@"AlertUser"];
+    domain2 = [v19 domain];
+    v36 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain2, [v19 code], domain);
 
     v31 = 1;
   }
@@ -1216,7 +1216,7 @@ LABEL_18:
         v50 = buf;
         v51 = v56;
         v49 = v26;
-        [(IXSClientConnection *)self _remote_cancelCoordinatorForAppWithIdentity:v30 reason:v36 client:a5 completion:v48];
+        [(IXSClientConnection *)self _remote_cancelCoordinatorForAppWithIdentity:v30 reason:v36 client:client completion:v48];
       }
 
       v27 = [v35 countByEnumeratingWithState:&v52 objects:v65 count:16];
@@ -1233,9 +1233,9 @@ LABEL_18:
   v40 = v19;
   v41 = v35;
   v43 = v58;
-  v46 = a5;
+  clientCopy = client;
   v44 = v56;
-  v42 = v33;
+  v42 = completionCopy;
   v45 = buf;
   dispatch_group_notify(v26, &_dispatch_main_q, block);
 
@@ -1246,30 +1246,30 @@ LABEL_26:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_remote_prioritizeCoordinatorForAppWithIdentity:(id)a3 completion:(id)a4
+- (void)_remote_prioritizeCoordinatorForAppWithIdentity:(id)identity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  completionCopy = completion;
   v73 = 0;
-  v8 = [v6 resolvePersonaWithError:&v73];
+  v8 = [identityCopy resolvePersonaWithError:&v73];
   v9 = v73;
   if (v8)
   {
     v10 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v75 = "[IXSClientConnection _remote_prioritizeCoordinatorForAppWithIdentity:completion:]";
       v76 = 2112;
-      v77 = v6;
+      v77 = identityCopy;
       v78 = 2112;
-      v79 = v11;
+      v79 = clientName;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Prioritizing coordinator for %@ as requested by %@", buf, 0x20u);
     }
 
     v12 = +[IXSCoordinatorManager sharedInstance];
-    v13 = [v12 coordinatorForIdentity:v6];
+    v13 = [v12 coordinatorForIdentity:identityCopy];
 
     if (v13)
     {
@@ -1277,29 +1277,29 @@ LABEL_26:
       v71[1] = 3221225472;
       v71[2] = sub_10007A728;
       v71[3] = &unk_100103330;
-      v72 = v7;
+      v72 = completionCopy;
       [v13 prioritizeWithCompletion:v71];
-      v14 = v72;
+      bundleID = v72;
 LABEL_75:
 
       goto LABEL_76;
     }
 
     v66 = sub_10007127C();
-    v14 = [v6 bundleID];
+    bundleID = [identityCopy bundleID];
     v70 = v9;
-    v15 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v14 allowPlaceholder:0 error:&v70];
+    v15 = [[LSApplicationRecord alloc] initWithBundleIdentifier:bundleID allowPlaceholder:0 error:&v70];
     v16 = v70;
 
     if (v15)
     {
       if ([v15 hasParallelPlaceholder])
       {
-        v17 = [(IXSClientConnection *)self clientName];
-        v18 = [NSString stringWithFormat:@"Uninstalling orphaned parallel placeholder for %@ when %@ sent us a prioritize message", v6, v17];
+        clientName2 = [(IXSClientConnection *)self clientName];
+        identityCopy = [NSString stringWithFormat:@"Uninstalling orphaned parallel placeholder for %@ when %@ sent us a prioritize message", identityCopy, clientName2];
 
         v19 = +[IXSAppUninstaller sharedUninstaller];
-        [v19 uninstallParallelPlaceholderForIdentity:v6 reason:v18];
+        [v19 uninstallParallelPlaceholderForIdentity:identityCopy reason:identityCopy];
 
         v20 = 1;
 LABEL_73:
@@ -1313,7 +1313,7 @@ LABEL_73:
         *buf = 136315394;
         v75 = "[IXSClientConnection _remote_prioritizeCoordinatorForAppWithIdentity:completion:]";
         v76 = 2112;
-        v77 = v6;
+        v77 = identityCopy;
         _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "%s: Discovered that app %@ is fully installed when trying to prioritize; this doesn't make sense.", buf, 0x16u);
       }
 
@@ -1321,14 +1321,14 @@ LABEL_73:
       {
         v20 = 0;
 LABEL_74:
-        (*(v7 + 2))(v7, v20, v16);
+        (*(completionCopy + 2))(completionCopy, v20, v16);
 
         v9 = v16;
         goto LABEL_75;
       }
 
-      v18 = [NSString stringWithFormat:@"Attempted to prioritize app %@ but it was fully installed!", v6];
-      sub_100013A40(v18, 0);
+      identityCopy = [NSString stringWithFormat:@"Attempted to prioritize app %@ but it was fully installed!", identityCopy];
+      sub_100013A40(identityCopy, 0);
 LABEL_72:
       v20 = 0;
       goto LABEL_73;
@@ -1340,17 +1340,17 @@ LABEL_72:
       *buf = 136315650;
       v75 = "[IXSClientConnection _remote_prioritizeCoordinatorForAppWithIdentity:completion:]";
       v76 = 2112;
-      v77 = v14;
+      v77 = bundleID;
       v78 = 2112;
       v79 = v16;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%s: Failed to fetch LSApplicationRecord for application with identifier %@: %@", buf, 0x20u);
     }
 
     v69 = 0;
-    v18 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v14 allowPlaceholder:1 error:&v69];
+    identityCopy = [[LSApplicationRecord alloc] initWithBundleIdentifier:bundleID allowPlaceholder:1 error:&v69];
     v22 = v69;
     v23 = v22;
-    if (!v18)
+    if (!identityCopy)
     {
       v47 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
@@ -1358,7 +1358,7 @@ LABEL_72:
         sub_1000A481C();
       }
 
-      v16 = sub_1000405FC("[IXSClientConnection _remote_prioritizeCoordinatorForAppWithIdentity:completion:]", 898, @"IXErrorDomain", 1uLL, v23, 0, @"Failed to get a placeholder app record for %@ it does not appear to be installed.", v48, v6);;
+      v16 = sub_1000405FC("[IXSClientConnection _remote_prioritizeCoordinatorForAppWithIdentity:completion:]", 898, @"IXErrorDomain", 1uLL, v23, 0, @"Failed to get a placeholder app record for %@ it does not appear to be installed.", v48, identityCopy);;
 
       if (!v66)
       {
@@ -1367,8 +1367,8 @@ LABEL_72:
         goto LABEL_73;
       }
 
-      v49 = [NSString stringWithFormat:@"Got prioritize for app %@ but it's not installed nor is it a placeholder!", v6];
-      sub_100013A40(v49, 0);
+      identityCopy2 = [NSString stringWithFormat:@"Got prioritize for app %@ but it's not installed nor is it a placeholder!", identityCopy];
+      sub_100013A40(identityCopy2, 0);
       v15 = 0;
       goto LABEL_71;
     }
@@ -1388,49 +1388,49 @@ LABEL_72:
       v15 = 0;
       if (!v66)
       {
-        v49 = 0;
+        identityCopy2 = 0;
 LABEL_71:
 
         goto LABEL_72;
       }
 
-      v51 = [NSString stringWithFormat:@"Failed to get bundle metadata for %@", v6];
-      sub_100013A40(v51, v16);
-      v49 = 0;
+      identityCopy3 = [NSString stringWithFormat:@"Failed to get bundle metadata for %@", identityCopy];
+      sub_100013A40(identityCopy3, v16);
+      identityCopy2 = 0;
 LABEL_70:
 
       goto LABEL_71;
     }
 
     v63 = v16;
-    v25 = [v24 placeholderFailureReason];
+    placeholderFailureReason = [v24 placeholderFailureReason];
     v67 = v24;
-    v61 = [v24 placeholderFailureUnderlyingErrorSource];
-    v26 = [v18 iTunesMetadata];
-    v27 = [v26 distributorInfo];
+    placeholderFailureUnderlyingErrorSource = [v24 placeholderFailureUnderlyingErrorSource];
+    iTunesMetadata = [identityCopy iTunesMetadata];
+    distributorInfo = [iTunesMetadata distributorInfo];
 
-    v65 = v27;
-    v28 = [v27 distributorIsThirdParty];
-    v59 = sub_10003B2E0(v14, 13);
-    v57 = sub_10003B2E0(v14, 2);
-    v29 = [v18 isAppStoreVendable];
-    v30 = v18;
-    v31 = v29;
+    v65 = distributorInfo;
+    distributorIsThirdParty = [distributorInfo distributorIsThirdParty];
+    v59 = sub_10003B2E0(bundleID, 13);
+    v57 = sub_10003B2E0(bundleID, 2);
+    isAppStoreVendable = [identityCopy isAppStoreVendable];
+    v30 = identityCopy;
+    v31 = isAppStoreVendable;
     v64 = v30;
-    v32 = [v30 iTunesMetadata];
-    v33 = [v32 managementDeclarationIdentifier];
+    iTunesMetadata2 = [v30 iTunesMetadata];
+    managementDeclarationIdentifier = [iTunesMetadata2 managementDeclarationIdentifier];
 
-    if (v33)
+    if (managementDeclarationIdentifier)
     {
       v34 = 1;
     }
 
     else
     {
-      v34 = v28;
+      v34 = distributorIsThirdParty;
     }
 
-    v35 = v61;
+    v35 = placeholderFailureUnderlyingErrorSource;
     if (v31)
     {
       v35 = 1;
@@ -1446,39 +1446,39 @@ LABEL_70:
       v36 = v35;
     }
 
-    IsHardError = IXUserPresentableErrorCodeIsHardError(v25, v36);
+    IsHardError = IXUserPresentableErrorCodeIsHardError(placeholderFailureReason, v36);
     v38 = IsHardError;
-    v62 = v25;
-    if (v25 && (IsHardError & 1) != 0)
+    v62 = placeholderFailureReason;
+    if (placeholderFailureReason && (IsHardError & 1) != 0)
     {
 LABEL_24:
       v60 = v36;
-      v58 = [v67 placeholderFailureUnderlyingError];
+      placeholderFailureUnderlyingError = [v67 placeholderFailureUnderlyingError];
       v39 = 8;
       if (v31)
       {
         v39 = 0;
       }
 
-      if (!v25)
+      if (!placeholderFailureReason)
       {
-        v25 = v39;
+        placeholderFailureReason = v39;
       }
 
       v40 = sub_1000031B0(off_100121958);
       v41 = os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT);
       if (v38)
       {
-        v42 = v58;
+        v42 = placeholderFailureUnderlyingError;
         v16 = v63;
         if (v41)
         {
           *buf = 136315650;
           v75 = "[IXSClientConnection _remote_prioritizeCoordinatorForAppWithIdentity:completion:]";
           v76 = 2112;
-          v77 = v6;
+          v77 = identityCopy;
           v78 = 2048;
-          v79 = v25;
+          v79 = placeholderFailureReason;
           v43 = "%s: No coordinator found for %@ and error is a hard error (%ld) so showing alert";
           v44 = v40;
           v45 = 32;
@@ -1489,20 +1489,20 @@ LABEL_58:
 LABEL_59:
 
         v54 = +[IXSErrorPresenter sharedPresenter];
-        [v54 presentErrorForIdentity:v6 code:v25 underlyingError:v42 errorSource:v60];
+        [v54 presentErrorForIdentity:identityCopy code:placeholderFailureReason underlyingError:v42 errorSource:v60];
         v15 = 0;
-        v18 = v64;
+        identityCopy = v64;
 LABEL_69:
 
-        v49 = v67;
-        v51 = v65;
+        identityCopy2 = v67;
+        identityCopy3 = v65;
         goto LABEL_70;
       }
 
       v16 = v63;
       if (v31)
       {
-        v42 = v58;
+        v42 = placeholderFailureUnderlyingError;
         if (!v41)
         {
           goto LABEL_59;
@@ -1511,13 +1511,13 @@ LABEL_69:
         *buf = 136315394;
         v75 = "[IXSClientConnection _remote_prioritizeCoordinatorForAppWithIdentity:completion:]";
         v76 = 2112;
-        v77 = v6;
+        v77 = identityCopy;
         v43 = "%s: No coordinator found for %@ and prioritize is otherwise unhandled; showing alert";
       }
 
       else
       {
-        v42 = v58;
+        v42 = placeholderFailureUnderlyingError;
         if (!v41)
         {
           goto LABEL_59;
@@ -1526,7 +1526,7 @@ LABEL_69:
         *buf = 136315394;
         v75 = "[IXSClientConnection _remote_prioritizeCoordinatorForAppWithIdentity:completion:]";
         v76 = 2112;
-        v77 = v6;
+        v77 = identityCopy;
         v43 = "%s: No coordinator found for %@ and app is not vendable by App Store so showing alert";
       }
 
@@ -1539,7 +1539,7 @@ LABEL_69:
     {
       v52 = 13;
       v16 = v63;
-      v18 = v64;
+      identityCopy = v64;
     }
 
     else
@@ -1548,15 +1548,15 @@ LABEL_69:
       {
         v53 = sub_1000031B0(off_100121958);
         v16 = v63;
-        v18 = v64;
+        identityCopy = v64;
         if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 136315650;
           v75 = "[IXSClientConnection _remote_prioritizeCoordinatorForAppWithIdentity:completion:]";
           v76 = 2112;
-          v77 = v6;
+          v77 = identityCopy;
           v78 = 2048;
-          v79 = v25;
+          v79 = placeholderFailureReason;
           _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "%s: No coordinator found for %@ and app is vendable by MDM (error %ld); sending message to prioritize by identity.", buf, 0x20u);
         }
 
@@ -1570,7 +1570,7 @@ LABEL_69:
           goto LABEL_24;
         }
 
-        if (v28)
+        if (distributorIsThirdParty)
         {
           v52 = 28;
         }
@@ -1587,7 +1587,7 @@ LABEL_69:
           *buf = 136315906;
           v75 = "[IXSClientConnection _remote_prioritizeCoordinatorForAppWithIdentity:completion:]";
           v76 = 2112;
-          v77 = v6;
+          v77 = identityCopy;
           v78 = 2048;
           v79 = v62;
           v80 = 2112;
@@ -1596,28 +1596,28 @@ LABEL_69:
         }
 
         v16 = v63;
-        v18 = v64;
+        identityCopy = v64;
       }
     }
 
     v42 = +[IXSAppInstallObserverManager sharedInstance];
     v54 = [NSNumber numberWithUnsignedInteger:v52];
     v56 = [NSSet setWithObjects:v54, 0];
-    [v42 shouldPrioritizeAppWithIdentity:v6 forClientIDs:v56];
+    [v42 shouldPrioritizeAppWithIdentity:identityCopy forClientIDs:v56];
 
     v15 = 0;
     goto LABEL_69;
   }
 
-  (*(v7 + 2))(v7, 0, v9);
+  (*(completionCopy + 2))(completionCopy, 0, v9);
 LABEL_76:
 }
 
-- (void)_remote_purgeRegisteredCoordinatorsAndPromisesForCreator:(unint64_t)a3 completion:(id)a4
+- (void)_remote_purgeRegisteredCoordinatorsAndPromisesForCreator:(unint64_t)creator completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(IXSClientConnection *)self xpcConnection];
-  v8 = sub_10000D71C(v7, @"com.apple.private.InstallCoordination.unitTestRunner");
+  completionCopy = completion;
+  xpcConnection = [(IXSClientConnection *)self xpcConnection];
+  v8 = sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.unitTestRunner");
 
   v9 = sub_1000031B0(off_100121958);
   v10 = v9;
@@ -1625,27 +1625,27 @@ LABEL_76:
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = IXStringForClientID(a3);
-      v12 = [(IXSClientConnection *)self clientName];
+      v11 = IXStringForClientID(creator);
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v20 = "[IXSClientConnection _remote_purgeRegisteredCoordinatorsAndPromisesForCreator:completion:]";
       v21 = 2112;
       v22 = v11;
       v23 = 2112;
-      v24 = v12;
+      v24 = clientName;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Purging all registered coordinators and promises for creator %@ as requested by %@", buf, 0x20u);
     }
 
     v13 = +[IXSCoordinatorManager sharedInstance];
-    [v13 clearAllCoordinatorsForCreator:a3];
+    [v13 clearAllCoordinatorsForCreator:creator];
 
     v14 = +[IXSDataPromiseManager sharedInstance];
-    [v14 clearAllPromisesForCreator:a3];
+    [v14 clearAllPromisesForCreator:creator];
 
     v15 = +[IXSPendingOperationsTracker sharedInstance];
     [v15 clearAllPendingOperations];
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -1655,19 +1655,19 @@ LABEL_76:
       sub_1000A489C(self);
     }
 
-    v16 = [(IXSClientConnection *)self clientName];
-    v18 = sub_1000405FC("[IXSClientConnection _remote_purgeRegisteredCoordinatorsAndPromisesForCreator:completion:]", 996, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing test runner entitlement.", v17, v16);
+    clientName2 = [(IXSClientConnection *)self clientName];
+    v18 = sub_1000405FC("[IXSClientConnection _remote_purgeRegisteredCoordinatorsAndPromisesForCreator:completion:]", 996, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing test runner entitlement.", v17, clientName2);
 
-    v6[2](v6, v18);
-    v6 = v18;
+    completionCopy[2](completionCopy, v18);
+    completionCopy = v18;
   }
 }
 
-- (void)_remote_killDaemonForTestingWithCompletion:(id)a3
+- (void)_remote_killDaemonForTestingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IXSClientConnection *)self xpcConnection];
-  v6 = sub_10000D71C(v5, @"com.apple.private.InstallCoordination.unitTestRunner");
+  completionCopy = completion;
+  xpcConnection = [(IXSClientConnection *)self xpcConnection];
+  v6 = sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.unitTestRunner");
 
   v7 = sub_1000031B0(off_100121958);
   v8 = v7;
@@ -1675,11 +1675,11 @@ LABEL_76:
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315394;
       v14 = "[IXSClientConnection _remote_killDaemonForTestingWithCompletion:]";
       v15 = 2112;
-      v16 = v12;
+      v16 = clientName;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Exiting because testing client %@ told us to", buf, 0x16u);
     }
 
@@ -1691,17 +1691,17 @@ LABEL_76:
     sub_1000A4934(self);
   }
 
-  v9 = [(IXSClientConnection *)self clientName];
-  v11 = sub_1000405FC("[IXSClientConnection _remote_killDaemonForTestingWithCompletion:]", 1016, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing test runner entitlement.", v10, v9);
+  clientName2 = [(IXSClientConnection *)self clientName];
+  v11 = sub_1000405FC("[IXSClientConnection _remote_killDaemonForTestingWithCompletion:]", 1016, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing test runner entitlement.", v10, clientName2);
 
-  v4[2](v4, v11);
+  completionCopy[2](completionCopy, v11);
 }
 
-- (void)_remote_pingDaemonWithCompletion:(id)a3
+- (void)_remote_pingDaemonWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IXSClientConnection *)self xpcConnection];
-  v6 = sub_10000D71C(v5, @"com.apple.private.InstallCoordination.unitTestRunner");
+  completionCopy = completion;
+  xpcConnection = [(IXSClientConnection *)self xpcConnection];
+  v6 = sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.unitTestRunner");
 
   v7 = sub_1000031B0(off_100121958);
   v8 = v7;
@@ -1715,7 +1715,7 @@ LABEL_76:
     }
 
     v9 = getpid();
-    v4[2](v4, v9, 0);
+    completionCopy[2](completionCopy, v9, 0);
   }
 
   else
@@ -1725,19 +1725,19 @@ LABEL_76:
       sub_1000A49CC(self);
     }
 
-    v10 = [(IXSClientConnection *)self clientName];
-    v12 = sub_1000405FC("[IXSClientConnection _remote_pingDaemonWithCompletion:]", 1033, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing test runner entitlement.", v11, v10);
+    clientName = [(IXSClientConnection *)self clientName];
+    v12 = sub_1000405FC("[IXSClientConnection _remote_pingDaemonWithCompletion:]", 1033, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing test runner entitlement.", v11, clientName);
 
-    v4[2](v4, 0xFFFFFFFFLL, v12);
-    v4 = v12;
+    completionCopy[2](completionCopy, 0xFFFFFFFFLL, v12);
+    completionCopy = v12;
   }
 }
 
-- (void)_remote_fakeClientDeathWithCompletion:(id)a3
+- (void)_remote_fakeClientDeathWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IXSClientConnection *)self xpcConnection];
-  v6 = sub_10000D71C(v5, @"com.apple.private.InstallCoordination.unitTestRunner");
+  completionCopy = completion;
+  xpcConnection = [(IXSClientConnection *)self xpcConnection];
+  v6 = sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.unitTestRunner");
 
   v7 = sub_1000031B0(off_100121958);
   v8 = v7;
@@ -1745,17 +1745,17 @@ LABEL_76:
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315394;
       v14 = "[IXSClientConnection _remote_fakeClientDeathWithCompletion:]";
       v15 = 2112;
-      v16 = v9;
+      v16 = clientName;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Faking death of client %@", buf, 0x16u);
     }
 
     [(IXSClientConnection *)self setFakeClientProcessDeath:1];
     [(IXSClientConnection *)self cancelOrphanedPromisesAndRemovePromiseReferences];
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -1765,19 +1765,19 @@ LABEL_76:
       sub_1000A4A64(self);
     }
 
-    v10 = [(IXSClientConnection *)self clientName];
-    v12 = sub_1000405FC("[IXSClientConnection _remote_fakeClientDeathWithCompletion:]", 1049, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing test runner entitlement.", v11, v10);
+    clientName2 = [(IXSClientConnection *)self clientName];
+    v12 = sub_1000405FC("[IXSClientConnection _remote_fakeClientDeathWithCompletion:]", 1049, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing test runner entitlement.", v11, clientName2);
 
-    v4[2](v4, v12);
-    v4 = v12;
+    completionCopy[2](completionCopy, v12);
+    completionCopy = v12;
   }
 }
 
-- (void)_remote_postNSCurrentLocaleDidChangeNotification:(id)a3
+- (void)_remote_postNSCurrentLocaleDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(IXSClientConnection *)self xpcConnection];
-  v6 = sub_10000D71C(v5, @"com.apple.private.InstallCoordination.unitTestRunner");
+  notificationCopy = notification;
+  xpcConnection = [(IXSClientConnection *)self xpcConnection];
+  v6 = sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.unitTestRunner");
 
   v7 = sub_1000031B0(off_100121958);
   v8 = v7;
@@ -1785,18 +1785,18 @@ LABEL_76:
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315394;
       v15 = "[IXSClientConnection _remote_postNSCurrentLocaleDidChangeNotification:]";
       v16 = 2112;
-      v17 = v9;
+      v17 = clientName;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Posting NSCurrentLocaleDidChangeNotification because testing client %@ told us to", buf, 0x16u);
     }
 
     v10 = +[NSNotificationCenter defaultCenter];
     [v10 postNotificationName:NSCurrentLocaleDidChangeNotification object:0];
 
-    v4[2](v4, 0);
+    notificationCopy[2](notificationCopy, 0);
   }
 
   else
@@ -1806,20 +1806,20 @@ LABEL_76:
       sub_1000A4AFC(self);
     }
 
-    v11 = [(IXSClientConnection *)self clientName];
-    v13 = sub_1000405FC("[IXSClientConnection _remote_postNSCurrentLocaleDidChangeNotification:]", 1075, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing test runner entitlement.", v12, v11);
+    clientName2 = [(IXSClientConnection *)self clientName];
+    v13 = sub_1000405FC("[IXSClientConnection _remote_postNSCurrentLocaleDidChangeNotification:]", 1075, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing test runner entitlement.", v12, clientName2);
 
-    v4[2](v4, v13);
-    v4 = v13;
+    notificationCopy[2](notificationCopy, v13);
+    notificationCopy = v13;
   }
 }
 
-- (void)_remote_setTestingEnabled:(BOOL)a3 completion:(id)a4
+- (void)_remote_setTestingEnabled:(BOOL)enabled completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(IXSClientConnection *)self xpcConnection];
-  v8 = sub_10000D71C(v7, @"com.apple.private.InstallCoordination.unitTestRunner");
+  enabledCopy = enabled;
+  completionCopy = completion;
+  xpcConnection = [(IXSClientConnection *)self xpcConnection];
+  v8 = sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.unitTestRunner");
 
   v9 = sub_1000031B0(off_100121958);
   v10 = v9;
@@ -1827,7 +1827,7 @@ LABEL_76:
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      if (v4)
+      if (enabledCopy)
       {
         v11 = 89;
       }
@@ -1837,17 +1837,17 @@ LABEL_76:
         v11 = 78;
       }
 
-      v12 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v17 = "[IXSClientConnection _remote_setTestingEnabled:completion:]";
       v18 = 1024;
       v19 = v11;
       v20 = 2112;
-      v21 = v12;
+      v21 = clientName;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Setting testing enabled to %c by client %@", buf, 0x1Cu);
     }
 
-    if (v4)
+    if (enabledCopy)
     {
       sub_10003B480();
     }
@@ -1857,7 +1857,7 @@ LABEL_76:
       sub_10003B494();
     }
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -1867,21 +1867,21 @@ LABEL_76:
       sub_1000A4B94(self);
     }
 
-    v13 = [(IXSClientConnection *)self clientName];
-    v15 = sub_1000405FC("[IXSClientConnection _remote_setTestingEnabled:completion:]", 1093, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing test runner entitlement.", v14, v13);
+    clientName2 = [(IXSClientConnection *)self clientName];
+    v15 = sub_1000405FC("[IXSClientConnection _remote_setTestingEnabled:completion:]", 1093, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing test runner entitlement.", v14, clientName2);
 
-    v6[2](v6, v15);
-    v6 = v15;
+    completionCopy[2](completionCopy, v15);
+    completionCopy = v15;
   }
 }
 
-- (void)_remote_setTestModeForIdentifierPrefix:(id)a3 testMode:(unint64_t)a4 testSpecificValidationData:(id)a5 completion:(id)a6
+- (void)_remote_setTestModeForIdentifierPrefix:(id)prefix testMode:(unint64_t)mode testSpecificValidationData:(id)data completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(IXSClientConnection *)self xpcConnection];
-  v14 = sub_10000D71C(v13, @"com.apple.private.InstallCoordination.unitTestRunner");
+  prefixCopy = prefix;
+  dataCopy = data;
+  completionCopy = completion;
+  xpcConnection = [(IXSClientConnection *)self xpcConnection];
+  v14 = sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.unitTestRunner");
 
   v15 = sub_1000031B0(off_100121958);
   v16 = v15;
@@ -1889,20 +1889,20 @@ LABEL_76:
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315906;
       v22 = "[IXSClientConnection _remote_setTestModeForIdentifierPrefix:testMode:testSpecificValidationData:completion:]";
       v23 = 2048;
-      v24 = a4;
+      modeCopy = mode;
       v25 = 2112;
-      v26 = v10;
+      v26 = prefixCopy;
       v27 = 2112;
-      v28 = v17;
+      v28 = clientName;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s: Setting test mode %lu for bundle prefix %@ by client %@", buf, 0x2Au);
     }
 
-    sub_10003B2E8(v10, a4, v11);
-    v12[2](v12, 0);
+    sub_10003B2E8(prefixCopy, mode, dataCopy);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -1912,20 +1912,20 @@ LABEL_76:
       sub_1000A4C2C(self);
     }
 
-    v18 = [(IXSClientConnection *)self clientName];
-    v20 = sub_1000405FC("[IXSClientConnection _remote_setTestModeForIdentifierPrefix:testMode:testSpecificValidationData:completion:]", 1115, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing test runner entitlement.", v19, v18);
+    clientName2 = [(IXSClientConnection *)self clientName];
+    v20 = sub_1000405FC("[IXSClientConnection _remote_setTestModeForIdentifierPrefix:testMode:testSpecificValidationData:completion:]", 1115, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing test runner entitlement.", v19, clientName2);
 
-    v12[2](v12, v20);
-    v12 = v20;
+    completionCopy[2](completionCopy, v20);
+    completionCopy = v20;
   }
 }
 
-- (void)_remote_registerContentsForDiskImageAtURL:(id)a3 options:(id)a4 completion:(id)a5
+- (void)_remote_registerContentsForDiskImageAtURL:(id)l options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(IXSClientConnection *)self xpcConnection];
-  v11 = sub_10000D71C(v10, @"com.apple.private.InstallCoordination.diskImageContentRegistration");
+  lCopy = l;
+  completionCopy = completion;
+  xpcConnection = [(IXSClientConnection *)self xpcConnection];
+  v11 = sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.diskImageContentRegistration");
 
   if ((v11 & 1) == 0)
   {
@@ -1935,53 +1935,53 @@ LABEL_76:
       sub_1000A4CC4(self);
     }
 
-    v14 = [(IXSClientConnection *)self clientName];
-    sub_1000405FC("[IXSClientConnection _remote_registerContentsForDiskImageAtURL:options:completion:]", 1155, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing disk image (client registration/unregistration) operation entitlement.", v17, v14);
+    clientName = [(IXSClientConnection *)self clientName];
+    sub_1000405FC("[IXSClientConnection _remote_registerContentsForDiskImageAtURL:options:completion:]", 1155, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing disk image (client registration/unregistration) operation entitlement.", v17, clientName);
     goto LABEL_9;
   }
 
   v12 = sub_1000031B0(off_100121958);
   v13 = v12;
-  if (a4)
+  if (options)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       sub_1000A4D5C(self);
     }
 
-    v14 = [(IXSClientConnection *)self clientName];
-    sub_1000405FC("[IXSClientConnection _remote_registerContentsForDiskImageAtURL:options:completion:]", 1161, @"IXErrorDomain", 0x35uLL, 0, 0, @"Client %@ has passed non-nil options.", v15, v14);
+    clientName = [(IXSClientConnection *)self clientName];
+    sub_1000405FC("[IXSClientConnection _remote_registerContentsForDiskImageAtURL:options:completion:]", 1161, @"IXErrorDomain", 0x35uLL, 0, 0, @"Client %@ has passed non-nil options.", v15, clientName);
     v18 = LABEL_9:;
 
-    v9[2](v9, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
     goto LABEL_10;
   }
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v8 path];
-    v20 = [(IXSClientConnection *)self clientName];
+    path = [lCopy path];
+    clientName2 = [(IXSClientConnection *)self clientName];
     *buf = 136315650;
     v23 = "[IXSClientConnection _remote_registerContentsForDiskImageAtURL:options:completion:]";
     v24 = 2112;
-    v25 = v19;
+    v25 = path;
     v26 = 2112;
-    v27 = v20;
+    v27 = clientName2;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s: Registering contents for disk image mounted at %@ by client %@", buf, 0x20u);
   }
 
   v21 = MobileInstallationRegisterContentsForDiskImageAtURL();
   v18 = 0;
-  v9[2](v9, v21, v18);
+  completionCopy[2](completionCopy, v21, v18);
 LABEL_10:
 }
 
-- (void)_remote_unregisterContentsForDiskImageAtURL:(id)a3 options:(id)a4 completion:(id)a5
+- (void)_remote_unregisterContentsForDiskImageAtURL:(id)l options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(IXSClientConnection *)self xpcConnection];
-  v11 = sub_10000D71C(v10, @"com.apple.private.InstallCoordination.diskImageContentRegistration");
+  lCopy = l;
+  completionCopy = completion;
+  xpcConnection = [(IXSClientConnection *)self xpcConnection];
+  v11 = sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.diskImageContentRegistration");
 
   if ((v11 & 1) == 0)
   {
@@ -1991,12 +1991,12 @@ LABEL_10:
       sub_1000A4DF4(self);
     }
 
-    v13 = [(IXSClientConnection *)self clientName];
-    sub_1000405FC("[IXSClientConnection _remote_unregisterContentsForDiskImageAtURL:options:completion:]", 1179, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing disk image (contents registration/unregistration) operation entitlement.", v16, v13);
+    clientName = [(IXSClientConnection *)self clientName];
+    sub_1000405FC("[IXSClientConnection _remote_unregisterContentsForDiskImageAtURL:options:completion:]", 1179, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing disk image (contents registration/unregistration) operation entitlement.", v16, clientName);
     goto LABEL_9;
   }
 
-  if (a4)
+  if (options)
   {
     v12 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2004,16 +2004,16 @@ LABEL_10:
       sub_1000A4E8C(self);
     }
 
-    v13 = [(IXSClientConnection *)self clientName];
-    sub_1000405FC("[IXSClientConnection _remote_unregisterContentsForDiskImageAtURL:options:completion:]", 1185, @"IXErrorDomain", 0x35uLL, 0, 0, @"Client %@ has passed non-nil options.", v14, v13);
+    clientName = [(IXSClientConnection *)self clientName];
+    sub_1000405FC("[IXSClientConnection _remote_unregisterContentsForDiskImageAtURL:options:completion:]", 1185, @"IXErrorDomain", 0x35uLL, 0, 0, @"Client %@ has passed non-nil options.", v14, clientName);
     v17 = LABEL_9:;
 
-    v9[2](v9, 0, v17);
+    completionCopy[2](completionCopy, 0, v17);
     goto LABEL_10;
   }
 
-  v18 = [v8 path];
-  v19 = realpath_DARWIN_EXTSN([v18 fileSystemRepresentation], 0);
+  path = [lCopy path];
+  v19 = realpath_DARWIN_EXTSN([path fileSystemRepresentation], 0);
   if (v19)
   {
     v20 = [NSString stringWithFileSystemRepresentation:v19];
@@ -2025,7 +2025,7 @@ LABEL_10:
     v22 = __error();
     v52 = *v22;
     strerror(*v22);
-    v21 = sub_1000405FC("_SanitizedRealPath", 1135, NSPOSIXErrorDomain, v52, 0, 0, @"Failed to retrieve realpath for %@ : %d (%s)", v23, v18);
+    v21 = sub_1000405FC("_SanitizedRealPath", 1135, NSPOSIXErrorDomain, v52, 0, 0, @"Failed to retrieve realpath for %@ : %d (%s)", v23, path);
     v20 = 0;
   }
 
@@ -2047,29 +2047,29 @@ LABEL_10:
     v44 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
     {
-      v51 = [(IXSClientConnection *)self clientName];
+      clientName2 = [(IXSClientConnection *)self clientName];
       *buf = 136315906;
       v66 = "[IXSClientConnection _remote_unregisterContentsForDiskImageAtURL:options:completion:]";
       v67 = 2112;
-      v68 = v51;
+      v68 = clientName2;
       v69 = 2112;
-      v70 = v18;
+      v70 = path;
       v71 = 2112;
       v72 = v57;
       _os_log_error_impl(&_mh_execute_header, v44, OS_LOG_TYPE_ERROR, "%s: Client %@ has passed an invalid disk image path %@ : %@", buf, 0x2Au);
     }
 
-    v45 = [(IXSClientConnection *)self clientName];
-    v17 = sub_1000405FC("[IXSClientConnection _remote_unregisterContentsForDiskImageAtURL:options:completion:]", 1196, @"IXErrorDomain", 0x35uLL, v57, 0, @"Client %@ has passed an invalid disk image path %@", v46, v45);
+    clientName3 = [(IXSClientConnection *)self clientName];
+    v17 = sub_1000405FC("[IXSClientConnection _remote_unregisterContentsForDiskImageAtURL:options:completion:]", 1196, @"IXErrorDomain", 0x35uLL, v57, 0, @"Client %@ has passed an invalid disk image path %@", v46, clientName3);
 
-    v9[2](v9, 0, v17);
+    completionCopy[2](completionCopy, 0, v17);
     goto LABEL_47;
   }
 
-  v53 = self;
-  v54 = v18;
-  v55 = v9;
-  v56 = v8;
+  selfCopy = self;
+  v54 = path;
+  v55 = completionCopy;
+  v56 = lCopy;
   v26 = [LSApplicationRecord enumeratorWithOptions:0];
   v27 = objc_opt_new();
   v60 = 0u;
@@ -2095,19 +2095,19 @@ LABEL_10:
       }
 
       v33 = *(*(&v60 + 1) + 8 * i);
-      v34 = [v33 URL];
-      v35 = [v34 path];
-      if ([v35 hasPrefix:v20])
+      bundleIdentifier = [v33 URL];
+      path2 = [bundleIdentifier path];
+      if ([path2 hasPrefix:v20])
       {
-        v36 = [v33 isPlaceholder];
+        isPlaceholder = [v33 isPlaceholder];
 
-        if (v36)
+        if (isPlaceholder)
         {
           continue;
         }
 
-        v34 = [v33 bundleIdentifier];
-        [v27 addObject:v34];
+        bundleIdentifier = [v33 bundleIdentifier];
+        [v27 addObject:bundleIdentifier];
       }
 
       else
@@ -2152,13 +2152,13 @@ LABEL_38:
     v47 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
-      v48 = [(IXSClientConnection *)v53 clientName];
+      clientName4 = [(IXSClientConnection *)selfCopy clientName];
       *buf = 136315650;
       v66 = "[IXSClientConnection _remote_unregisterContentsForDiskImageAtURL:options:completion:]";
       v67 = 2112;
       v68 = v20;
       v69 = 2112;
-      v70 = v48;
+      v70 = clientName4;
       _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "%s: Unregistering contents on disk image mounted at %@ by client %@", buf, 0x20u);
     }
 
@@ -2180,24 +2180,24 @@ LABEL_38:
 
   v43 = 0;
 LABEL_46:
-  v9 = v55;
+  completionCopy = v55;
   [v40 invalidate];
-  v9[2](v9, v43, v17);
+  completionCopy[2](completionCopy, v43, v17);
 
-  v8 = v56;
-  v18 = v54;
+  lCopy = v56;
+  path = v54;
 LABEL_47:
 
 LABEL_10:
 }
 
-- (void)_remote_registerContentForOSModuleAtURL:(id)a3 options:(id)a4 completion:(id)a5
+- (void)_remote_registerContentForOSModuleAtURL:(id)l options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(IXSClientConnection *)self clientName];
-  v11 = [(IXSClientConnection *)self xpcConnection];
-  v12 = sub_10000D71C(v11, @"com.apple.private.InstallCoordination.OSModuleOperations");
+  lCopy = l;
+  completionCopy = completion;
+  clientName = [(IXSClientConnection *)self clientName];
+  xpcConnection = [(IXSClientConnection *)self xpcConnection];
+  v12 = sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.OSModuleOperations");
 
   if ((v12 & 1) == 0)
   {
@@ -2207,50 +2207,50 @@ LABEL_10:
       sub_1000A4FA4();
     }
 
-    sub_1000405FC("[IXSClientConnection _remote_registerContentForOSModuleAtURL:options:completion:]", 1246, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing OSModule operation entitlement.", v17, v10);
+    sub_1000405FC("[IXSClientConnection _remote_registerContentForOSModuleAtURL:options:completion:]", 1246, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing OSModule operation entitlement.", v17, clientName);
     goto LABEL_9;
   }
 
   v13 = sub_1000031B0(off_100121958);
   v14 = v13;
-  if (a4)
+  if (options)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       sub_1000A5018();
     }
 
-    sub_1000405FC("[IXSClientConnection _remote_registerContentForOSModuleAtURL:options:completion:]", 1252, @"IXErrorDomain", 0x35uLL, 0, 0, @"Client %@ has passed non-nil options.", v15, v10);
+    sub_1000405FC("[IXSClientConnection _remote_registerContentForOSModuleAtURL:options:completion:]", 1252, @"IXErrorDomain", 0x35uLL, 0, 0, @"Client %@ has passed non-nil options.", v15, clientName);
     v18 = LABEL_9:;
-    v9[2](v9, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
     goto LABEL_10;
   }
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v8 path];
+    path = [lCopy path];
     *buf = 136315650;
     v22 = "[IXSClientConnection _remote_registerContentForOSModuleAtURL:options:completion:]";
     v23 = 2112;
-    v24 = v19;
+    v24 = path;
     v25 = 2112;
-    v26 = v10;
+    v26 = clientName;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s: Registering contents for OSModule at %@ by client %@", buf, 0x20u);
   }
 
   v20 = MobileInstallationRegisterContentsOnOSModuleAtURL();
   v18 = 0;
-  v9[2](v9, v20, v18);
+  completionCopy[2](completionCopy, v20, v18);
 LABEL_10:
 }
 
-- (void)_remote_unregisterContentForOSModuleAtURL:(id)a3 options:(id)a4 completion:(id)a5
+- (void)_remote_unregisterContentForOSModuleAtURL:(id)l options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(IXSClientConnection *)self clientName];
-  v11 = [(IXSClientConnection *)self xpcConnection];
-  v12 = sub_10000D71C(v11, @"com.apple.private.InstallCoordination.OSModuleOperations");
+  lCopy = l;
+  completionCopy = completion;
+  clientName = [(IXSClientConnection *)self clientName];
+  xpcConnection = [(IXSClientConnection *)self xpcConnection];
+  v12 = sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.OSModuleOperations");
 
   if ((v12 & 1) == 0)
   {
@@ -2260,50 +2260,50 @@ LABEL_10:
       sub_1000A508C();
     }
 
-    sub_1000405FC("[IXSClientConnection _remote_unregisterContentForOSModuleAtURL:options:completion:]", 1279, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing OS Module operation entitlement.", v17, v10);
+    sub_1000405FC("[IXSClientConnection _remote_unregisterContentForOSModuleAtURL:options:completion:]", 1279, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing OS Module operation entitlement.", v17, clientName);
     goto LABEL_9;
   }
 
   v13 = sub_1000031B0(off_100121958);
   v14 = v13;
-  if (a4)
+  if (options)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       sub_1000A5100();
     }
 
-    sub_1000405FC("[IXSClientConnection _remote_unregisterContentForOSModuleAtURL:options:completion:]", 1285, @"IXErrorDomain", 0x35uLL, 0, 0, @"Client %@ has passed non-nil options.", v15, v10);
+    sub_1000405FC("[IXSClientConnection _remote_unregisterContentForOSModuleAtURL:options:completion:]", 1285, @"IXErrorDomain", 0x35uLL, 0, 0, @"Client %@ has passed non-nil options.", v15, clientName);
     v18 = LABEL_9:;
-    v9[2](v9, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
     goto LABEL_10;
   }
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v8 path];
+    path = [lCopy path];
     *buf = 136315650;
     v22 = "[IXSClientConnection _remote_unregisterContentForOSModuleAtURL:options:completion:]";
     v23 = 2112;
-    v24 = v19;
+    v24 = path;
     v25 = 2112;
-    v26 = v10;
+    v26 = clientName;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s: Unregistering contents of OSModule at %@ by client %@", buf, 0x20u);
   }
 
   v20 = MobileInstallationUnregisterContentsOnOSModuleAtURL();
   v18 = 0;
-  v9[2](v9, v20, v18);
+  completionCopy[2](completionCopy, v20, v18);
 LABEL_10:
 }
 
-- (void)_remote_setKnownOSModuleURLs:(id)a3 options:(id)a4 completion:(id)a5
+- (void)_remote_setKnownOSModuleURLs:(id)ls options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(IXSClientConnection *)self clientName];
-  v11 = [(IXSClientConnection *)self xpcConnection];
-  v12 = sub_10000D71C(v11, @"com.apple.private.InstallCoordination.OSModuleOperations");
+  lsCopy = ls;
+  completionCopy = completion;
+  clientName = [(IXSClientConnection *)self clientName];
+  xpcConnection = [(IXSClientConnection *)self xpcConnection];
+  v12 = sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.OSModuleOperations");
 
   if ((v12 & 1) == 0)
   {
@@ -2313,22 +2313,22 @@ LABEL_10:
       sub_1000A5174();
     }
 
-    sub_1000405FC("[IXSClientConnection _remote_setKnownOSModuleURLs:options:completion:]", 1312, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing OSModule operation entitlement.", v17, v10);
+    sub_1000405FC("[IXSClientConnection _remote_setKnownOSModuleURLs:options:completion:]", 1312, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing OSModule operation entitlement.", v17, clientName);
     goto LABEL_9;
   }
 
   v13 = sub_1000031B0(off_100121958);
   v14 = v13;
-  if (a4)
+  if (options)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       sub_1000A51E8();
     }
 
-    sub_1000405FC("[IXSClientConnection _remote_setKnownOSModuleURLs:options:completion:]", 1318, @"IXErrorDomain", 0x35uLL, 0, 0, @"Client %@ has passed non-nil options.", v15, v10);
+    sub_1000405FC("[IXSClientConnection _remote_setKnownOSModuleURLs:options:completion:]", 1318, @"IXErrorDomain", 0x35uLL, 0, 0, @"Client %@ has passed non-nil options.", v15, clientName);
     v18 = LABEL_9:;
-    v9[2](v9, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
     goto LABEL_10;
   }
 
@@ -2337,30 +2337,30 @@ LABEL_10:
     *buf = 136315650;
     v21 = "[IXSClientConnection _remote_setKnownOSModuleURLs:options:completion:]";
     v22 = 2112;
-    v23 = v8;
+    v23 = lsCopy;
     v24 = 2112;
-    v25 = v10;
+    v25 = clientName;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s: Reconciling known OSModule URLs %@ set by client %@", buf, 0x20u);
   }
 
   v19 = MobileInstallationReconcileContentsOnKnownOSModules();
   v18 = 0;
-  v9[2](v9, v19, v18);
+  completionCopy[2](completionCopy, v19, v18);
 LABEL_10:
 }
 
-- (void)_remote_associateMultiPersonaAppsWithBundleIDs:(id)a3 withPersona:(id)a4 completion:(id)a5
+- (void)_remote_associateMultiPersonaAppsWithBundleIDs:(id)ds withPersona:(id)persona completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  personaCopy = persona;
+  completionCopy = completion;
   v30 = 0;
   v11 = sub_10007C830(&v30);
   v12 = v30;
   if (v11)
   {
-    v13 = [(IXSClientConnection *)self xpcConnection];
-    v14 = sub_10000D71C(v13, @"com.apple.private.InstallCoordination.personaBasedMultiUser");
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    v14 = sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.personaBasedMultiUser");
 
     v15 = sub_1000031B0(off_100121958);
     v16 = v15;
@@ -2368,24 +2368,24 @@ LABEL_10:
     {
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(IXSClientConnection *)self clientName];
-        v18 = [v8 allObjects];
-        v19 = [v18 componentsJoinedByString:{@", "}];
+        clientName = [(IXSClientConnection *)self clientName];
+        allObjects = [dsCopy allObjects];
+        v19 = [allObjects componentsJoinedByString:{@", "}];
         *buf = 136315906;
         v32 = "[IXSClientConnection _remote_associateMultiPersonaAppsWithBundleIDs:withPersona:completion:]";
         v33 = 2112;
-        v34 = v17;
+        v34 = clientName;
         v35 = 2112;
-        v36 = v9;
+        v36 = personaCopy;
         v37 = 2112;
         v38 = v19;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s: Client %@ associating persona %@ with bundle IDs: %@", buf, 0x2Au);
       }
 
       v20 = [IXTerminationAssertion alloc];
-      v21 = [NSString stringWithFormat:@"Assertion for associating persona %@ : %@", v9, v8];
+      dsCopy = [NSString stringWithFormat:@"Assertion for associating persona %@ : %@", personaCopy, dsCopy];
       v29 = v12;
-      v22 = [(IXTerminationAssertion *)v20 initForBundleIDs:v8 description:v21 terminationResistance:50 error:&v29];
+      v22 = [(IXTerminationAssertion *)v20 initForBundleIDs:dsCopy description:dsCopy terminationResistance:50 error:&v29];
       v23 = v29;
 
       if (v22)
@@ -2412,7 +2412,7 @@ LABEL_10:
       }
 
       [v22 invalidate];
-      v10[2](v10, v24, v23);
+      completionCopy[2](completionCopy, v24, v23);
     }
 
     else
@@ -2422,10 +2422,10 @@ LABEL_10:
         sub_1000A525C(self);
       }
 
-      v26 = [(IXSClientConnection *)self clientName];
-      v23 = sub_1000405FC("[IXSClientConnection _remote_associateMultiPersonaAppsWithBundleIDs:withPersona:completion:]", 1380, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing persona based multi user (associating bundleIDs with persona) operation entitlement.", v27, v26);
+      clientName2 = [(IXSClientConnection *)self clientName];
+      v23 = sub_1000405FC("[IXSClientConnection _remote_associateMultiPersonaAppsWithBundleIDs:withPersona:completion:]", 1380, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing persona based multi user (associating bundleIDs with persona) operation entitlement.", v27, clientName2);
 
-      v10[2](v10, 0, v23);
+      completionCopy[2](completionCopy, 0, v23);
     }
 
     v12 = v23;
@@ -2433,22 +2433,22 @@ LABEL_10:
 
   else
   {
-    v10[2](v10, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 }
 
-- (void)_remote_addBundleIDs:(id)a3 toMappingsForPersona:(id)a4 completion:(id)a5
+- (void)_remote_addBundleIDs:(id)ds toMappingsForPersona:(id)persona completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  personaCopy = persona;
+  completionCopy = completion;
   v30 = 0;
   v11 = sub_10007C830(&v30);
   v12 = v30;
   if (v11)
   {
-    v13 = [(IXSClientConnection *)self xpcConnection];
-    v14 = sub_10000D71C(v13, @"com.apple.private.InstallCoordination.personaBasedMultiUser");
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    v14 = sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.personaBasedMultiUser");
 
     v15 = sub_1000031B0(off_100121958);
     v16 = v15;
@@ -2456,24 +2456,24 @@ LABEL_10:
     {
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(IXSClientConnection *)self clientName];
-        v18 = [v8 allObjects];
-        v19 = [v18 componentsJoinedByString:{@", "}];
+        clientName = [(IXSClientConnection *)self clientName];
+        allObjects = [dsCopy allObjects];
+        v19 = [allObjects componentsJoinedByString:{@", "}];
         *buf = 136315906;
         v32 = "[IXSClientConnection _remote_addBundleIDs:toMappingsForPersona:completion:]";
         v33 = 2112;
-        v34 = v17;
+        v34 = clientName;
         v35 = 2112;
         v36 = v19;
         v37 = 2112;
-        v38 = v9;
+        v38 = personaCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s: Client %@ adding bundleID %@ to persona: %@", buf, 0x2Au);
       }
 
       v20 = [IXTerminationAssertion alloc];
-      v21 = [NSString stringWithFormat:@"Assertion for associating persona %@ : %@", v9, v8];
+      dsCopy = [NSString stringWithFormat:@"Assertion for associating persona %@ : %@", personaCopy, dsCopy];
       v29 = v12;
-      v22 = [(IXTerminationAssertion *)v20 initForBundleIDs:v8 description:v21 terminationResistance:50 error:&v29];
+      v22 = [(IXTerminationAssertion *)v20 initForBundleIDs:dsCopy description:dsCopy terminationResistance:50 error:&v29];
       v23 = v29;
 
       if (v22)
@@ -2500,7 +2500,7 @@ LABEL_10:
       }
 
       [v22 invalidate];
-      v10[2](v10, v24, v23);
+      completionCopy[2](completionCopy, v24, v23);
     }
 
     else
@@ -2510,10 +2510,10 @@ LABEL_10:
         sub_1000A53FC(self);
       }
 
-      v26 = [(IXSClientConnection *)self clientName];
-      v23 = sub_1000405FC("[IXSClientConnection _remote_addBundleIDs:toMappingsForPersona:completion:]", 1414, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing persona based multi user (associating bundleIDs with persona) operation entitlement.", v27, v26);
+      clientName2 = [(IXSClientConnection *)self clientName];
+      v23 = sub_1000405FC("[IXSClientConnection _remote_addBundleIDs:toMappingsForPersona:completion:]", 1414, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing persona based multi user (associating bundleIDs with persona) operation entitlement.", v27, clientName2);
 
-      v10[2](v10, 0, v23);
+      completionCopy[2](completionCopy, 0, v23);
     }
 
     v12 = v23;
@@ -2521,22 +2521,22 @@ LABEL_10:
 
   else
   {
-    v10[2](v10, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 }
 
-- (void)_remote_removeBundleIDs:(id)a3 fromMappingsForPersona:(id)a4 completion:(id)a5
+- (void)_remote_removeBundleIDs:(id)ds fromMappingsForPersona:(id)persona completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  personaCopy = persona;
+  completionCopy = completion;
   v30 = 0;
   v11 = sub_10007C830(&v30);
   v12 = v30;
   if (v11)
   {
-    v13 = [(IXSClientConnection *)self xpcConnection];
-    v14 = sub_10000D71C(v13, @"com.apple.private.InstallCoordination.personaBasedMultiUser");
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    v14 = sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.personaBasedMultiUser");
 
     v15 = sub_1000031B0(off_100121958);
     v16 = v15;
@@ -2544,24 +2544,24 @@ LABEL_10:
     {
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(IXSClientConnection *)self clientName];
-        v18 = [v8 allObjects];
-        v19 = [v18 componentsJoinedByString:{@", "}];
+        clientName = [(IXSClientConnection *)self clientName];
+        allObjects = [dsCopy allObjects];
+        v19 = [allObjects componentsJoinedByString:{@", "}];
         *buf = 136315906;
         v32 = "[IXSClientConnection _remote_removeBundleIDs:fromMappingsForPersona:completion:]";
         v33 = 2112;
-        v34 = v17;
+        v34 = clientName;
         v35 = 2112;
         v36 = v19;
         v37 = 2112;
-        v38 = v9;
+        v38 = personaCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s: Client %@ removing bundle IDs: %@ from persona %@", buf, 0x2Au);
       }
 
       v20 = [IXTerminationAssertion alloc];
-      v21 = [NSString stringWithFormat:@"Assertion for disassociating persona %@ : %@", v9, v8];
+      dsCopy = [NSString stringWithFormat:@"Assertion for disassociating persona %@ : %@", personaCopy, dsCopy];
       v29 = v12;
-      v22 = [(IXTerminationAssertion *)v20 initForBundleIDs:v8 description:v21 terminationResistance:50 error:&v29];
+      v22 = [(IXTerminationAssertion *)v20 initForBundleIDs:dsCopy description:dsCopy terminationResistance:50 error:&v29];
       v23 = v29;
 
       if (v22)
@@ -2588,7 +2588,7 @@ LABEL_10:
       }
 
       [v22 invalidate];
-      v10[2](v10, v24, v23);
+      completionCopy[2](completionCopy, v24, v23);
     }
 
     else
@@ -2598,10 +2598,10 @@ LABEL_10:
         sub_1000A5494(self);
       }
 
-      v26 = [(IXSClientConnection *)self clientName];
-      v23 = sub_1000405FC("[IXSClientConnection _remote_removeBundleIDs:fromMappingsForPersona:completion:]", 1448, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing persona based multi user (associating bundleIDs with persona) operation entitlement.", v27, v26);
+      clientName2 = [(IXSClientConnection *)self clientName];
+      v23 = sub_1000405FC("[IXSClientConnection _remote_removeBundleIDs:fromMappingsForPersona:completion:]", 1448, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing persona based multi user (associating bundleIDs with persona) operation entitlement.", v27, clientName2);
 
-      v10[2](v10, 0, v23);
+      completionCopy[2](completionCopy, 0, v23);
     }
 
     v12 = v23;
@@ -2609,118 +2609,118 @@ LABEL_10:
 
   else
   {
-    v10[2](v10, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 }
 
-- (void)_remote_removabilityForAppWithIdentity:(id)a3 completion:(id)a4
+- (void)_remote_removabilityForAppWithIdentity:(id)identity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  completionCopy = completion;
   v17 = 0;
-  v8 = [v6 resolvePersonaWithError:&v17];
+  v8 = [identityCopy resolvePersonaWithError:&v17];
   v9 = v17;
   if (v8)
   {
-    v10 = [v6 bundleID];
+    bundleID = [identityCopy bundleID];
     v11 = +[IXSAppRemovabilityManager sharedInstance];
-    v12 = [v11 removabilityMetadataForAppWithIdentity:v6];
+    v12 = [v11 removabilityMetadataForAppWithIdentity:identityCopy];
 
-    v13 = [v12 removability];
+    removability = [v12 removability];
     v14 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = IXStringForAppRemovability(v13);
-      v16 = [(IXSClientConnection *)self clientName];
+      v15 = IXStringForAppRemovability(removability);
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315906;
       v19 = "[IXSClientConnection _remote_removabilityForAppWithIdentity:completion:]";
       v20 = 2112;
       v21 = v15;
       v22 = 2112;
-      v23 = v10;
+      v23 = bundleID;
       v24 = 2112;
-      v25 = v16;
+      v25 = clientName;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s: Returning removability %@ for %@ to client %@", buf, 0x2Au);
     }
 
-    v7[2](v7, v13, 0);
+    completionCopy[2](completionCopy, removability, 0);
   }
 
   else
   {
-    (v7)[2](v7, 0, v9);
+    (completionCopy)[2](completionCopy, 0, v9);
   }
 }
 
-- (void)_remote_removabilityForAppWithIdentity:(id)a3 byClient:(unint64_t)a4 completion:(id)a5
+- (void)_remote_removabilityForAppWithIdentity:(id)identity byClient:(unint64_t)client completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  identityCopy = identity;
+  completionCopy = completion;
   v18 = 0;
-  v10 = [v8 resolvePersonaWithError:&v18];
+  v10 = [identityCopy resolvePersonaWithError:&v18];
   v11 = v18;
   if (v10)
   {
     v12 = +[IXSAppRemovabilityManager sharedInstance];
-    v13 = [v12 removabilityForAppWithIdentity:v8 client:a4];
+    v13 = [v12 removabilityForAppWithIdentity:identityCopy client:client];
 
     v14 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = IXStringForAppRemovability(v13);
-      v16 = IXStringForAppRemovabilityClient(a4);
-      v17 = [(IXSClientConnection *)self clientName];
+      v16 = IXStringForAppRemovabilityClient(client);
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136316162;
       v20 = "[IXSClientConnection _remote_removabilityForAppWithIdentity:byClient:completion:]";
       v21 = 2112;
       v22 = v15;
       v23 = 2112;
-      v24 = v8;
+      v24 = identityCopy;
       v25 = 2112;
       v26 = v16;
       v27 = 2112;
-      v28 = v17;
+      v28 = clientName;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s: Returning removability %@ set for %@ by client %@ to caller %@", buf, 0x34u);
     }
 
-    v9[2](v9, v13, 0);
+    completionCopy[2](completionCopy, v13, 0);
   }
 
   else
   {
-    (v9)[2](v9, 0, v11);
+    (completionCopy)[2](completionCopy, 0, v11);
   }
 }
 
-- (void)_remote_setRemovability:(unint64_t)a3 forAppWithIdentity:(id)a4 byClient:(unint64_t)a5 completion:(id)a6
+- (void)_remote_setRemovability:(unint64_t)removability forAppWithIdentity:(id)identity byClient:(unint64_t)client completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
+  identityCopy = identity;
+  completionCopy = completion;
   v31 = 0;
-  v12 = [v10 resolvePersonaWithError:&v31];
+  v12 = [identityCopy resolvePersonaWithError:&v31];
   v13 = v31;
   if (v12)
   {
-    v29 = [v10 bundleID];
-    v14 = [(IXSClientConnection *)self xpcConnection];
-    v15 = sub_10000D71C(v14, @"com.apple.springboard.application-removability.proxy");
+    bundleID = [identityCopy bundleID];
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    v15 = sub_10000D71C(xpcConnection, @"com.apple.springboard.application-removability.proxy");
     v16 = sub_1000031B0(off_100121958);
     v17 = v16;
     if (v15)
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = IXStringForAppRemovability(a3);
-        v19 = [(IXSClientConnection *)self clientName];
-        v20 = IXStringForAppRemovabilityClient(a5);
+        v18 = IXStringForAppRemovability(removability);
+        clientName = [(IXSClientConnection *)self clientName];
+        v20 = IXStringForAppRemovabilityClient(client);
         *buf = 136316162;
         v33 = "[IXSClientConnection _remote_setRemovability:forAppWithIdentity:byClient:completion:]";
         v34 = 2112;
-        v35 = v29;
+        v35 = bundleID;
         v36 = 2112;
         v37 = v18;
         v38 = 2112;
-        v39 = v19;
+        v39 = clientName;
         v40 = 2112;
         v41 = v20;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s: Setting removability for %@ to %@ for client %@ with type %@", buf, 0x34u);
@@ -2728,7 +2728,7 @@ LABEL_10:
 
       v21 = +[IXSAppRemovabilityManager sharedInstance];
       v30 = v13;
-      v22 = [v21 setRemovability:a3 forAppWithIdentity:v10 byClient:a5 error:&v30];
+      v22 = [v21 setRemovability:removability forAppWithIdentity:identityCopy byClient:client error:&v30];
       v23 = v30;
 
       if (v22)
@@ -2747,7 +2747,7 @@ LABEL_10:
             sub_1000A55D0();
           }
 
-          v24 = sub_1000405FC("[IXSClientConnection _remote_setRemovability:forAppWithIdentity:byClient:completion:]", 1538, @"IXErrorDomain", 0xEuLL, 0, 0, @"[IXSAppRemovabilityManager setRemovability:] for %@ returned NO but did not set an error.", v28, v29);
+          v24 = sub_1000405FC("[IXSClientConnection _remote_setRemovability:forAppWithIdentity:byClient:completion:]", 1538, @"IXErrorDomain", 0xEuLL, 0, 0, @"[IXSAppRemovabilityManager setRemovability:] for %@ returned NO but did not set an error.", v28, bundleID);
           v23 = v24;
         }
       }
@@ -2760,28 +2760,28 @@ LABEL_10:
         sub_1000A552C(self);
       }
 
-      v25 = [(IXSClientConnection *)self clientName];
-      v24 = sub_1000405FC("[IXSClientConnection _remote_setRemovability:forAppWithIdentity:byClient:completion:]", 1524, @"IXErrorDomain", 4uLL, 0, 0, @"Client %@ is missing %@ entitlement, rejecting attempt to set app removability.", v26, v25);
+      clientName2 = [(IXSClientConnection *)self clientName];
+      v24 = sub_1000405FC("[IXSClientConnection _remote_setRemovability:forAppWithIdentity:byClient:completion:]", 1524, @"IXErrorDomain", 4uLL, 0, 0, @"Client %@ is missing %@ entitlement, rejecting attempt to set app removability.", v26, clientName2);
 
       v23 = v24;
     }
 
-    v11[2](v11, v24);
+    completionCopy[2](completionCopy, v24);
 
     v13 = v23;
   }
 
   else
   {
-    v11[2](v11, v13);
+    completionCopy[2](completionCopy, v13);
   }
 }
 
-- (void)_remote_removabilityDataWithCompletion:(id)a3
+- (void)_remote_removabilityDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IXSClientConnection *)self xpcConnection];
-  v6 = sub_10000D71C(v5, @"com.apple.springboard.application-removability.proxy");
+  completionCopy = completion;
+  xpcConnection = [(IXSClientConnection *)self xpcConnection];
+  v6 = sub_10000D71C(xpcConnection, @"com.apple.springboard.application-removability.proxy");
   v7 = sub_1000031B0(off_100121958);
   v8 = v7;
   if (v6)
@@ -2806,7 +2806,7 @@ LABEL_10:
       v12 = v21;
       [v10 enumerateKeysAndObjectsUsingBlock:v20];
       v13 = [v12 copy];
-      v4[2](v4, v13, v11, 0);
+      completionCopy[2](completionCopy, v13, v11, 0);
 
       v14 = 0;
     }
@@ -2820,7 +2820,7 @@ LABEL_10:
       }
 
       v14 = sub_1000405FC("[IXSClientConnection _remote_removabilityDataWithCompletion:]", 1565, @"IXErrorDomain", 1uLL, 0, 0, @"Unexpectedly received nil value for app removability data", v18, v19);
-      (v4)[2](v4, 0, 0, v14);
+      (completionCopy)[2](completionCopy, 0, 0, v14);
     }
   }
 
@@ -2831,45 +2831,45 @@ LABEL_10:
       sub_1000A5644(self);
     }
 
-    v15 = [(IXSClientConnection *)self clientName];
-    v14 = sub_1000405FC("[IXSClientConnection _remote_removabilityDataWithCompletion:]", 1553, @"IXErrorDomain", 4uLL, 0, 0, @"Client %@ is missing %@ entitlement, rejecting attempt to read app removability data.", v16, v15);
+    clientName = [(IXSClientConnection *)self clientName];
+    v14 = sub_1000405FC("[IXSClientConnection _remote_removabilityDataWithCompletion:]", 1553, @"IXErrorDomain", 4uLL, 0, 0, @"Client %@ is missing %@ entitlement, rejecting attempt to read app removability data.", v16, clientName);
 
-    (v4)[2](v4, 0, 0, v14);
+    (completionCopy)[2](completionCopy, 0, 0, v14);
   }
 }
 
-- (void)_remote_defaultAppMetadataForAppIdentity:(id)a3 completion:(id)a4
+- (void)_remote_defaultAppMetadataForAppIdentity:(id)identity completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  identityCopy = identity;
   v7 = +[IXSDefaultAppDeletionManager sharedInstance];
   v10 = 0;
-  v8 = [v7 defaultAppMetadataForAppIdentity:v6 error:&v10];
+  v8 = [v7 defaultAppMetadataForAppIdentity:identityCopy error:&v10];
 
   v9 = v10;
-  v5[2](v5, v8, v9);
+  completionCopy[2](completionCopy, v8, v9);
 }
 
-- (void)_remote_defaultAppMetadataListWithCompletion:(id)a3
+- (void)_remote_defaultAppMetadataListWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[IXSDefaultAppDeletionManager sharedInstance];
   v7 = 0;
   v5 = [v4 defaultAppMetadataListWithError:&v7];
   v6 = v7;
 
-  v3[2](v3, v5, v6);
+  completionCopy[2](completionCopy, v5, v6);
 }
 
-- (void)_remote_uninstallAppWithIdentity:(id)a3 options:(id)a4 completion:(id)a5
+- (void)_remote_uninstallAppWithIdentity:(id)identity options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IXSClientConnection *)self xpcConnection];
-  if ((sub_10000D71C(v11, @"com.apple.private.InstallCoordination.uninstall") & 1) == 0)
+  identityCopy = identity;
+  optionsCopy = options;
+  completionCopy = completion;
+  xpcConnection = [(IXSClientConnection *)self xpcConnection];
+  if ((sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.uninstall") & 1) == 0)
   {
-    v12 = sub_10000D834(v11, @"UninstallForLaunchServices");
+    v12 = sub_10000D834(xpcConnection, @"UninstallForLaunchServices");
 
     v13 = sub_1000031B0(off_100121958);
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_ERROR);
@@ -2880,12 +2880,12 @@ LABEL_10:
         sub_1000A5810(self);
       }
 
-      v15 = [(IXSClientConnection *)self clientName];
-      sub_1000405FC("[IXSClientConnection _remote_uninstallAppWithIdentity:options:completion:]", 1608, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing entitlement %@ : TRUE (BOOLean) to uninstall applications", v16, v15);
+      clientName = [(IXSClientConnection *)self clientName];
+      sub_1000405FC("[IXSClientConnection _remote_uninstallAppWithIdentity:options:completion:]", 1608, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing entitlement %@ : TRUE (BOOLean) to uninstall applications", v16, clientName);
       v20 = LABEL_46:;
 
 LABEL_47:
-      v10[2](v10, 0, v20);
+      completionCopy[2](completionCopy, 0, v20);
       goto LABEL_48;
     }
 
@@ -2895,7 +2895,7 @@ LABEL_47:
     }
   }
 
-  if ([v9 ignoreRemovability] && (sub_10000D71C(v11, @"com.apple.private.InstallCoordination.ignoreRemovability") & 1) == 0)
+  if ([optionsCopy ignoreRemovability] && (sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.ignoreRemovability") & 1) == 0)
   {
     v24 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -2903,12 +2903,12 @@ LABEL_47:
       sub_1000A5978(self);
     }
 
-    v15 = [(IXSClientConnection *)self clientName];
-    sub_1000405FC("[IXSClientConnection _remote_uninstallAppWithIdentity:options:completion:]", 1616, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing ignore removability operation entitlement.", v25, v15);
+    clientName = [(IXSClientConnection *)self clientName];
+    sub_1000405FC("[IXSClientConnection _remote_uninstallAppWithIdentity:options:completion:]", 1616, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing ignore removability operation entitlement.", v25, clientName);
     goto LABEL_46;
   }
 
-  if ([v9 ignoreRestrictions] && (sub_10000D71C(v11, @"com.apple.private.InstallCoordination.ignoreRestrictions") & 1) == 0)
+  if ([optionsCopy ignoreRestrictions] && (sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.ignoreRestrictions") & 1) == 0)
   {
     v26 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -2916,12 +2916,12 @@ LABEL_47:
       sub_1000A5A10(self);
     }
 
-    v15 = [(IXSClientConnection *)self clientName];
-    sub_1000405FC("[IXSClientConnection _remote_uninstallAppWithIdentity:options:completion:]", 1624, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing ignore restrictions operation entitlement.", v27, v15);
+    clientName = [(IXSClientConnection *)self clientName];
+    sub_1000405FC("[IXSClientConnection _remote_uninstallAppWithIdentity:options:completion:]", 1624, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing ignore restrictions operation entitlement.", v27, clientName);
     goto LABEL_46;
   }
 
-  if ([v9 ignoreAppProtection] && (sub_10000D71C(v11, @"com.apple.private.InstallCoordination.ignoreAppProtection") & 1) == 0)
+  if ([optionsCopy ignoreAppProtection] && (sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.ignoreAppProtection") & 1) == 0)
   {
     v28 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -2929,35 +2929,35 @@ LABEL_47:
       sub_1000A5AA8(self);
     }
 
-    v15 = [(IXSClientConnection *)self clientName];
-    sub_1000405FC("[IXSClientConnection _remote_uninstallAppWithIdentity:options:completion:]", 1632, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing ignore app protection operation entitlement.", v29, v15);
+    clientName = [(IXSClientConnection *)self clientName];
+    sub_1000405FC("[IXSClientConnection _remote_uninstallAppWithIdentity:options:completion:]", 1632, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing ignore app protection operation entitlement.", v29, clientName);
     goto LABEL_46;
   }
 
   v17 = sub_1000031B0(off_100121958);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(IXSClientConnection *)self clientName];
+    clientName2 = [(IXSClientConnection *)self clientName];
     *buf = 136315906;
     v34 = "[IXSClientConnection _remote_uninstallAppWithIdentity:options:completion:]";
     v35 = 2112;
-    v36 = v8;
+    v36 = identityCopy;
     v37 = 2112;
-    v38 = v18;
+    v38 = clientName2;
     v39 = 2112;
-    v40 = v9;
+    v40 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s: Uninstall of %@ requested by client %@ with uninstall options %@", buf, 0x2Au);
   }
 
   v32 = 0;
-  v19 = [v8 resolvePersonaWithError:&v32];
+  v19 = [identityCopy resolvePersonaWithError:&v32];
   v20 = v32;
   if ((v19 & 1) == 0)
   {
     goto LABEL_47;
   }
 
-  if ([v9 requestUserConfirmation])
+  if ([optionsCopy requestUserConfirmation])
   {
     v21 = 3;
   }
@@ -2967,99 +2967,99 @@ LABEL_47:
     v21 = 0;
   }
 
-  if ([v9 waitForDeletion])
+  if ([optionsCopy waitForDeletion])
   {
     v21 |= 4uLL;
   }
 
-  if ([v9 showArchiveOption])
+  if ([optionsCopy showArchiveOption])
   {
     v21 |= 8uLL;
   }
 
-  if ([v9 systemAppNotAllowed])
+  if ([optionsCopy systemAppNotAllowed])
   {
     v21 |= 0x10uLL;
   }
 
-  if ([v9 showDemotionOption])
+  if ([optionsCopy showDemotionOption])
   {
     v21 |= 0x20uLL;
   }
 
-  if ([v9 ignoreRemovability])
+  if ([optionsCopy ignoreRemovability])
   {
     v21 |= 0x40uLL;
   }
 
-  if ([v9 ignoreRestrictions])
+  if ([optionsCopy ignoreRestrictions])
   {
     v21 |= 0x80uLL;
   }
 
-  if ([v9 ignoreAppProtection])
+  if ([optionsCopy ignoreAppProtection])
   {
     v21 |= 0x100uLL;
   }
 
   v22 = +[IXSAppUninstaller sharedUninstaller];
-  v23 = [(IXSClientConnection *)self clientName];
+  clientName3 = [(IXSClientConnection *)self clientName];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_10007E078;
   v30[3] = &unk_1001032E0;
-  v31 = v10;
-  [v22 uninstallAppWithIdentity:v8 clientName:v23 options:v21 completion:v30];
+  v31 = completionCopy;
+  [v22 uninstallAppWithIdentity:identityCopy clientName:clientName3 options:v21 completion:v30];
 
 LABEL_48:
 }
 
-- (void)_remote_revertAppWithIdentity:(id)a3 completion:(id)a4
+- (void)_remote_revertAppWithIdentity:(id)identity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  completionCopy = completion;
   v13 = 0;
-  v8 = [v6 resolvePersonaWithError:&v13];
+  v8 = [identityCopy resolvePersonaWithError:&v13];
   v9 = v13;
   if (v8)
   {
     v10 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v15 = "[IXSClientConnection _remote_revertAppWithIdentity:completion:]";
       v16 = 2112;
-      v17 = v6;
+      v17 = identityCopy;
       v18 = 2112;
-      v19 = v11;
+      v19 = clientName;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Revert of %@ requested by client %@", buf, 0x20u);
     }
 
-    v12 = [(IXSClientConnection *)self clientName];
-    [IXSRevertManager revertAppWithIdentity:v6 forClientWithName:v12 completion:v7];
+    clientName2 = [(IXSClientConnection *)self clientName];
+    [IXSRevertManager revertAppWithIdentity:identityCopy forClientWithName:clientName2 completion:completionCopy];
   }
 
   else
   {
-    v7[2](v7, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
   }
 }
 
-- (void)_remote_refreshContainersWithOptions:(id)a3 forAppWithIdentity:(id)a4 completion:(id)a5
+- (void)_remote_refreshContainersWithOptions:(id)options forAppWithIdentity:(id)identity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  identityCopy = identity;
+  completionCopy = completion;
   v24 = 0;
-  v11 = [v9 resolvePersonaWithError:&v24];
+  v11 = [identityCopy resolvePersonaWithError:&v24];
   v12 = v24;
   if (v11)
   {
-    v13 = [(IXSClientConnection *)self xpcConnection];
-    if ((sub_10000D71C(v13, @"com.apple.private.InstallCoordination.refreshContainerTypes") & 1) == 0)
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    if ((sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.refreshContainerTypes") & 1) == 0)
     {
-      v14 = sub_10000D834(v13, @"UninstallForLaunchServices");
+      v14 = sub_10000D834(xpcConnection, @"UninstallForLaunchServices");
 
       v15 = sub_1000031B0(off_100121958);
       v16 = os_log_type_enabled(v15, OS_LOG_TYPE_ERROR);
@@ -3070,10 +3070,10 @@ LABEL_48:
           sub_1000A5B40(self);
         }
 
-        v17 = [(IXSClientConnection *)self clientName];
-        v19 = sub_1000405FC("[IXSClientConnection _remote_refreshContainersWithOptions:forAppWithIdentity:completion:]", 1708, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing entitlement %@ = TRUE (BOOLean) to refresh containers", v18, v17);
+        clientName = [(IXSClientConnection *)self clientName];
+        v19 = sub_1000405FC("[IXSClientConnection _remote_refreshContainersWithOptions:forAppWithIdentity:completion:]", 1708, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing entitlement %@ = TRUE (BOOLean) to refresh containers", v18, clientName);
 
-        v10[2](v10, v19);
+        completionCopy[2](completionCopy, v19);
         v12 = v19;
 LABEL_14:
 
@@ -3089,102 +3089,102 @@ LABEL_14:
     v20 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v8 containerTypes];
-      v22 = [(IXSClientConnection *)self clientName];
+      containerTypes = [optionsCopy containerTypes];
+      clientName2 = [(IXSClientConnection *)self clientName];
       *buf = 136315906;
       v26 = "[IXSClientConnection _remote_refreshContainersWithOptions:forAppWithIdentity:completion:]";
       v27 = 2048;
-      v28 = v21;
+      v28 = containerTypes;
       v29 = 2112;
-      v30 = v9;
+      v30 = identityCopy;
       v31 = 2112;
-      v32 = v22;
+      v32 = clientName2;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%s: Refreshing container types 0x%lx of %@ requested by client %@", buf, 0x2Au);
     }
 
     v23 = +[IXSContainerRefreshManager sharedInstance];
-    [v23 refreshContainerTypesWithOptions:v8 forAppWithIdentity:v9 completion:v10];
+    [v23 refreshContainerTypesWithOptions:optionsCopy forAppWithIdentity:identityCopy completion:completionCopy];
 
     goto LABEL_14;
   }
 
-  v10[2](v10, v12);
+  completionCopy[2](completionCopy, v12);
 LABEL_15:
 }
 
-- (void)_remote_registerObserverMachServiceName:(id)a3 forClientIdentifiers:(id)a4 respondingToSelectors:(unint64_t)a5
+- (void)_remote_registerObserverMachServiceName:(id)name forClientIdentifiers:(id)identifiers respondingToSelectors:(unint64_t)selectors
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  identifiersCopy = identifiers;
   v10 = sub_1000031B0(off_100121958);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(IXSClientConnection *)self clientName];
+    clientName = [(IXSClientConnection *)self clientName];
     v13 = 136316162;
     v14 = "[IXSClientConnection _remote_registerObserverMachServiceName:forClientIdentifiers:respondingToSelectors:]";
     v15 = 2112;
-    v16 = v11;
+    v16 = clientName;
     v17 = 2112;
-    v18 = v8;
+    v18 = nameCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = identifiersCopy;
     v21 = 2048;
-    v22 = a5;
+    selectorsCopy = selectors;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Client %@ registered mach service name %@ for client identifiers %@ responding to selectors %lu", &v13, 0x34u);
   }
 
   v12 = +[IXSAppInstallObserverManager sharedInstance];
-  [v12 registerMachServiceName:v8 forClientIDs:v9 respondingToSelectors:a5];
+  [v12 registerMachServiceName:nameCopy forClientIDs:identifiersCopy respondingToSelectors:selectors];
 }
 
-- (void)_remote_registerTransientObserver:(id)a3 forClientIdentifiers:(id)a4 respondingToSelectors:(unint64_t)a5
+- (void)_remote_registerTransientObserver:(id)observer forClientIdentifiers:(id)identifiers respondingToSelectors:(unint64_t)selectors
 {
-  v8 = a3;
-  v9 = a4;
+  observerCopy = observer;
+  identifiersCopy = identifiers;
   v10 = sub_1000031B0(off_100121958);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(IXSClientConnection *)self clientName];
+    clientName = [(IXSClientConnection *)self clientName];
     v13 = 136316162;
     v14 = "[IXSClientConnection _remote_registerTransientObserver:forClientIdentifiers:respondingToSelectors:]";
     v15 = 2112;
-    v16 = v11;
+    v16 = clientName;
     v17 = 2112;
-    v18 = v8;
+    v18 = observerCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = identifiersCopy;
     v21 = 2048;
-    v22 = a5;
+    selectorsCopy = selectors;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Client %@ registered transient observer %@ for client identifiers %@ responding to selectors %lu", &v13, 0x34u);
   }
 
   v12 = +[IXSAppInstallObserverManager sharedInstance];
-  [v12 registerListenerEndpoint:v8 forClientIDs:v9 respondingToSelectors:a5];
+  [v12 registerListenerEndpoint:observerCopy forClientIDs:identifiersCopy respondingToSelectors:selectors];
 }
 
-- (void)_remote_displayUserPresentableErrorForApp:(id)a3 code:(int64_t)a4
+- (void)_remote_displayUserPresentableErrorForApp:(id)app code:(int64_t)code
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  appCopy = app;
+  v7 = appCopy;
+  if (!appCopy)
   {
     v9 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       v11 = 136315650;
       v12 = "[IXSClientConnection _remote_displayUserPresentableErrorForApp:code:]";
       v13 = 2080;
       v14 = "[IXSClientConnection _remote_displayUserPresentableErrorForApp:code:]";
       v15 = 2112;
-      v16 = v10;
+      v16 = clientName;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: Got nil identity in call to %s from client %@", &v11, 0x20u);
     }
 
     goto LABEL_8;
   }
 
-  if (([v6 resolvePersonaWithError:0] & 1) == 0)
+  if (([appCopy resolvePersonaWithError:0] & 1) == 0)
   {
     v9 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -3202,19 +3202,19 @@ LABEL_8:
   }
 
   v8 = +[IXSErrorPresenter sharedPresenter];
-  [v8 presentErrorForIdentity:v7 code:a4 underlyingError:0 errorSource:0];
+  [v8 presentErrorForIdentity:v7 code:code underlyingError:0 errorSource:0];
 
 LABEL_9:
 }
 
-- (void)_remote_displayUserPresentableErrorForApps:(id)a3 code:(int64_t)a4
+- (void)_remote_displayUserPresentableErrorForApps:(id)apps code:(int64_t)code
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v21 count:16];
+  appsCopy = apps;
+  v6 = [appsCopy countByEnumeratingWithState:&v13 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3225,7 +3225,7 @@ LABEL_9:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(appsCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -3241,12 +3241,12 @@ LABEL_9:
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s: Failed to resolve persona for %@", buf, 0x16u);
           }
 
-          v11 = v5;
+          v11 = appsCopy;
           goto LABEL_13;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v21 count:16];
+      v7 = [appsCopy countByEnumeratingWithState:&v13 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -3257,30 +3257,30 @@ LABEL_9:
   }
 
   v11 = +[IXSErrorPresenter sharedPresenter];
-  [v11 presentErrorForIdentities:v5 code:a4 underlyingError:0 errorSource:0];
+  [v11 presentErrorForIdentities:appsCopy code:code underlyingError:0 errorSource:0];
 LABEL_13:
 }
 
-- (void)_remote_displayUserPresentableErrorForAppWithLocalizedName:(id)a3 code:(int64_t)a4
+- (void)_remote_displayUserPresentableErrorForAppWithLocalizedName:(id)name code:(int64_t)code
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = +[IXSErrorPresenter sharedPresenter];
-  [v6 presentErrorForAppWithLocalizedName:v5 code:a4 underlyingError:0 errorSource:0];
+  [v6 presentErrorForAppWithLocalizedName:nameCopy code:code underlyingError:0 errorSource:0];
 }
 
-- (void)_remote_addObserversForCoordinatorsWithUUIDs:(id)a3 fireObserverMethods:(BOOL)a4
+- (void)_remote_addObserversForCoordinatorsWithUUIDs:(id)ds fireObserverMethods:(BOOL)methods
 {
-  v4 = a4;
-  v6 = a3;
-  [(IXSClientConnection *)self addInterestedCoordinatorUUIDs:v6];
-  if (v4)
+  methodsCopy = methods;
+  dsCopy = ds;
+  [(IXSClientConnection *)self addInterestedCoordinatorUUIDs:dsCopy];
+  if (methodsCopy)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v19 = v6;
-    v7 = v6;
+    v19 = dsCopy;
+    v7 = dsCopy;
     v8 = [v7 countByEnumeratingWithState:&v20 objects:v30 count:16];
     if (v8)
     {
@@ -3335,31 +3335,31 @@ LABEL_13:
       while (v9);
     }
 
-    v6 = v19;
+    dsCopy = v19;
   }
 }
 
-- (void)_remote_updateSINFForAppWithIdentity:(id)a3 sinfData:(id)a4 options:(id)a5 completion:(id)a6
+- (void)_remote_updateSINFForAppWithIdentity:(id)identity sinfData:(id)data options:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identityCopy = identity;
+  dataCopy = data;
+  optionsCopy = options;
+  completionCopy = completion;
   v25 = 0;
-  v14 = [v10 resolvePersonaWithError:&v25];
+  v14 = [identityCopy resolvePersonaWithError:&v25];
   v15 = v25;
   if (v14)
   {
     v16 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v27 = "[IXSClientConnection _remote_updateSINFForAppWithIdentity:sinfData:options:completion:]";
       v28 = 2112;
-      v29 = v17;
+      v29 = clientName;
       v30 = 2112;
-      v31 = v10;
+      v31 = identityCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s: %@ wants to update the SINF of %@", buf, 0x20u);
     }
 
@@ -3368,46 +3368,46 @@ LABEL_13:
     v19[1] = 3221225472;
     v19[2] = sub_10007F018;
     v20 = v19[3] = &unk_100103188;
-    v21 = v10;
-    v22 = v12;
-    v23 = v11;
-    v24 = v13;
+    v21 = identityCopy;
+    v22 = optionsCopy;
+    v23 = dataCopy;
+    v24 = completionCopy;
     v18 = v20;
     [v18 performCreationBlockingOperation:v19];
   }
 
   else
   {
-    (*(v13 + 2))(v13, v15);
+    (*(completionCopy + 2))(completionCopy, v15);
   }
 }
 
-- (void)_remote_updateiTunesMetadata:(id)a3 forAppWithIdentity:(id)a4 completion:(id)a5
+- (void)_remote_updateiTunesMetadata:(id)metadata forAppWithIdentity:(id)identity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  identityCopy = identity;
+  completionCopy = completion;
   v25 = 0;
-  v11 = [v9 resolvePersonaWithError:&v25];
+  v11 = [identityCopy resolvePersonaWithError:&v25];
   v12 = v25;
   if (v11)
   {
     v13 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v27 = "[IXSClientConnection _remote_updateiTunesMetadata:forAppWithIdentity:completion:]";
       v28 = 2112;
-      v29 = v14;
+      v29 = clientName;
       v30 = 2112;
-      v31 = v9;
+      v31 = identityCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s: %@ wants to update the iTunesMetadata of %@", buf, 0x20u);
     }
 
-    v15 = [(IXSClientConnection *)self xpcConnection];
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
     v24 = v12;
-    v16 = sub_10000DB10(v8, v15, @"updated metadata", &v24);
+    v16 = sub_10000DB10(metadataCopy, xpcConnection, @"updated metadata", &v24);
     v17 = v24;
 
     if (v16)
@@ -3417,17 +3417,17 @@ LABEL_13:
       v19[1] = 3221225472;
       v19[2] = sub_10007F458;
       v20 = v19[3] = &unk_1001010C8;
-      v21 = v9;
+      v21 = identityCopy;
       v16 = v16;
       v22 = v16;
-      v23 = v10;
+      v23 = completionCopy;
       v18 = v20;
       [v18 performCreationBlockingOperation:v19];
     }
 
     else
     {
-      (*(v10 + 2))(v10, v17);
+      (*(completionCopy + 2))(completionCopy, v17);
     }
 
     v12 = v17;
@@ -3435,18 +3435,18 @@ LABEL_13:
 
   else
   {
-    (*(v10 + 2))(v10, v12);
+    (*(completionCopy + 2))(completionCopy, v12);
     v16 = 0;
   }
 }
 
-- (void)_remote_stagingLocationForInstallLocation:(id)a3 completion:(id)a4
+- (void)_remote_stagingLocationForInstallLocation:(id)location completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  locationCopy = location;
   v7 = +[MIHelperServiceFrameworkClient sharedInstance];
   v21 = 0;
-  v8 = [v7 stagingLocationForInstallLocation:v6 withinStagingSubsytem:3 usingUniqueName:0 error:&v21];
+  v8 = [v7 stagingLocationForInstallLocation:locationCopy withinStagingSubsytem:3 usingUniqueName:0 error:&v21];
 
   v9 = v21;
   if (v8)
@@ -3476,8 +3476,8 @@ LABEL_13:
           sub_1000A5EA8();
         }
 
-        v16 = [v10 path];
-        v18 = sub_1000405FC("[IXSClientConnection _remote_stagingLocationForInstallLocation:completion:]", 1956, @"IXErrorDomain", 1uLL, v9, 0, @"Failed to provide access to %@", v17, v16);
+        path = [v10 path];
+        v18 = sub_1000405FC("[IXSClientConnection _remote_stagingLocationForInstallLocation:completion:]", 1956, @"IXErrorDomain", 1uLL, v9, 0, @"Failed to provide access to %@", v17, path);
 
         v13 = 0;
         v14 = 0;
@@ -3500,20 +3500,20 @@ LABEL_13:
     v14 = 0;
   }
 
-  v5[2](v5, v14, v13, v9);
+  completionCopy[2](completionCopy, v14, v13, v9);
 }
 
-- (void)_fetchIXSCoordinatedAppInstallForUUID:(id)a3 method:(const char *)a4 andRunWithCoordinator:(id)a5 error:(id)a6
+- (void)_fetchIXSCoordinatedAppInstallForUUID:(id)d method:(const char *)method andRunWithCoordinator:(id)coordinator error:(id)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  coordinatorCopy = coordinator;
+  errorCopy = error;
   v13 = +[IXSCoordinatorManager sharedInstance];
-  v14 = [v13 coordinatorForUUID:v10];
+  v14 = [v13 coordinatorForUUID:dCopy];
 
   if (v14)
   {
-    v11[2](v11, v14);
+    coordinatorCopy[2](coordinatorCopy, v14);
   }
 
   else
@@ -3521,46 +3521,46 @@ LABEL_13:
     v15 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v18 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136316162;
       v21 = "[IXSClientConnection _fetchIXSCoordinatedAppInstallForUUID:method:andRunWithCoordinator:error:]";
       v22 = 2112;
-      v23 = v10;
+      v23 = dCopy;
       v24 = 2080;
-      v25 = a4;
+      methodCopy = method;
       v26 = 2112;
-      v27 = v18;
+      v27 = clientName;
       v28 = 2112;
       v29 = 0;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s: Coordinator did not exist for UUID %@ when called for %s by client %@ : %@", buf, 0x34u);
     }
 
-    v19 = [(IXSClientConnection *)self clientName];
-    v17 = sub_1000405FC("[IXSClientConnection _fetchIXSCoordinatedAppInstallForUUID:method:andRunWithCoordinator:error:]", 1977, @"IXErrorDomain", 6uLL, 0, 0, @"Coordinator did not exist for UUID %@ when called for %s by client %@", v16, v10);
+    clientName2 = [(IXSClientConnection *)self clientName];
+    v17 = sub_1000405FC("[IXSClientConnection _fetchIXSCoordinatedAppInstallForUUID:method:andRunWithCoordinator:error:]", 1977, @"IXErrorDomain", 6uLL, 0, 0, @"Coordinator did not exist for UUID %@ when called for %s by client %@", v16, dCopy);
 
-    v12[2](v12, v17);
+    errorCopy[2](errorCopy, v17);
   }
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 appAssetPromiseHasBegunFulfillment:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install appAssetPromiseHasBegunFulfillment:(id)fulfillment
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  fulfillmentCopy = fulfillment;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007FBB0;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10007FC3C;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = fulfillmentCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10007FC48;
@@ -3570,58 +3570,58 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:appAssetPromiseHasBegunFulfillment:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 cancelForReason:(id)a4 client:(unint64_t)a5 completion:(id)a6
+- (void)_remote_IXSCoordinatedAppInstall:(id)install cancelForReason:(id)reason client:(unint64_t)client completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  reasonCopy = reason;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007FE20;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v24 = v10;
-  v14 = v10;
-  dispatch_sync(v13, block);
+  v24 = installCopy;
+  v14 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10007FEAC;
   v19[3] = &unk_1001033C0;
-  v20 = v11;
-  v22 = a5;
-  v21 = v12;
+  v20 = reasonCopy;
+  clientCopy = client;
+  v21 = completionCopy;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10007FEBC;
   v17[3] = &unk_100103330;
   v18 = v21;
   v15 = v21;
-  v16 = v11;
+  v16 = reasonCopy;
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v14 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:cancelForReason:client:completion:]" andRunWithCoordinator:v19 error:v17];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 fireObserversWithCompletion:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install fireObserversWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100080064;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000800F0;
   v13[3] = &unk_1001033E8;
   v13[4] = self;
-  v14 = v7;
+  v14 = completionCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000800FC;
@@ -3631,26 +3631,26 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:fireObserversWithCompletion:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getAppAssetPromise:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getAppAssetPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  promiseCopy = promise;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10008029C;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100080328;
   v13[3] = &unk_1001033E8;
   v13[4] = self;
-  v14 = v7;
+  v14 = promiseCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100080458;
@@ -3660,25 +3660,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getAppAssetPromise:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getAppAssetPromiseDRI:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getAppAssetPromiseDRI:(id)i
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  iCopy = i;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000805FC;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100080688;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = iCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100080694;
@@ -3688,25 +3688,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getAppAssetPromiseDRI:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getCoordinationState:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getCoordinationState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  stateCopy = state;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100080838;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000808C4;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = stateCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000808D0;
@@ -3716,25 +3716,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getCoordinationState:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getErrorInfo:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getErrorInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  infoCopy = info;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100080A74;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100080B00;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = infoCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100080B0C;
@@ -3744,26 +3744,26 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getErrorInfo:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getInitialODRAssetPromises:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getInitialODRAssetPromises:(id)promises
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  promisesCopy = promises;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100080CB4;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100080D40;
   v13[3] = &unk_1001033E8;
   v13[4] = self;
-  v14 = v7;
+  v14 = promisesCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100080F14;
@@ -3773,25 +3773,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getInitialODRAssetPromises:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getIsComplete:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getIsComplete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  completeCopy = complete;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000810B8;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100081144;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = completeCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100081150;
@@ -3801,25 +3801,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getIsComplete:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getIsPausedWithCompletion:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getIsPausedWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000812F4;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100081380;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = completionCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10008138C;
@@ -3829,26 +3829,26 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getIsPausedWithCompletion:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getPlaceholderPromise:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getPlaceholderPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  promiseCopy = promise;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100081534;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000815C0;
   v13[3] = &unk_1001033E8;
   v13[4] = self;
-  v14 = v7;
+  v14 = promiseCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000816F0;
@@ -3858,26 +3858,26 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getPlaceholderPromise:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getPreparationPromise:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getPreparationPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  promiseCopy = promise;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100081898;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100081924;
   v13[3] = &unk_1001033E8;
   v13[4] = self;
-  v14 = v7;
+  v14 = promiseCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100081A54;
@@ -3887,26 +3887,26 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getPreparationPromise:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getUserDataPromise:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getUserDataPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  promiseCopy = promise;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100081BFC;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100081C88;
   v13[3] = &unk_1001033E8;
   v13[4] = self;
-  v14 = v7;
+  v14 = promiseCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100081DB8;
@@ -3916,26 +3916,26 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getUserDataPromise:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getDeviceSecurityPromise:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getDeviceSecurityPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  promiseCopy = promise;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100081F60;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100081FEC;
   v13[3] = &unk_1001033E8;
   v13[4] = self;
-  v14 = v7;
+  v14 = promiseCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10008211C;
@@ -3945,25 +3945,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getDeviceSecurityPromise:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getHasDeviceSecurityPromise:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getHasDeviceSecurityPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  promiseCopy = promise;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000822C0;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10008234C;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = promiseCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100082358;
@@ -3973,26 +3973,26 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getHasDeviceSecurityPromise:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setNeedsPostProcessing:(BOOL)a4 completion:(id)a5
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setNeedsPostProcessing:(BOOL)processing completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100082504;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v19 = v8;
-  v11 = v8;
-  dispatch_sync(v10, block);
+  v19 = installCopy;
+  v11 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100082590;
   v15[3] = &unk_100103460;
-  v17 = a4;
-  v16 = v9;
+  processingCopy = processing;
+  v16 = completionCopy;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000825A0;
@@ -4002,25 +4002,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v11 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:setNeedsPostProcessing:completion:]" andRunWithCoordinator:v15 error:v13];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getNeedsPostProcessing:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getNeedsPostProcessing:(id)processing
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  processingCopy = processing;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10008273C;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000827C8;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = processingCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000827D4;
@@ -4030,25 +4030,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getNeedsPostProcessing:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getPostProcessingShouldBegin:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getPostProcessingShouldBegin:(id)begin
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  beginCopy = begin;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100082978;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100082A04;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = beginCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100082A10;
@@ -4058,57 +4058,57 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getPostProcessingShouldBegin:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setEssentialAssetPromiseUUIDs:(id)a4 completion:(id)a5
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setEssentialAssetPromiseUUIDs:(id)ds completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  dsCopy = ds;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100082BD8;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v21 = v8;
-  v12 = v8;
-  dispatch_sync(v11, block);
+  v21 = installCopy;
+  v12 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100082C64;
   v17[3] = &unk_1001033E8;
-  v18 = v9;
-  v19 = v10;
+  v18 = dsCopy;
+  v19 = completionCopy;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100082C70;
   v15[3] = &unk_100103330;
   v16 = v19;
   v13 = v19;
-  v14 = v9;
+  v14 = dsCopy;
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v12 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:setEssentialAssetPromiseUUIDs:completion:]" andRunWithCoordinator:v17 error:v15];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getEssentialAssetPromises:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getEssentialAssetPromises:(id)promises
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  promisesCopy = promises;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100082E10;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100082E9C;
   v13[3] = &unk_1001033E8;
   v13[4] = self;
-  v14 = v7;
+  v14 = promisesCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100083070;
@@ -4118,25 +4118,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getEssentialAssetPromises:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 hasEssentialAssetPromises:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install hasEssentialAssetPromises:(id)promises
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  promisesCopy = promises;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100083214;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000832A0;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = promisesCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000832AC;
@@ -4146,57 +4146,57 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:hasEssentialAssetPromises:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setDataImportPromiseUUIDs:(id)a4 completion:(id)a5
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setDataImportPromiseUUIDs:(id)ds completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  dsCopy = ds;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100083474;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v21 = v8;
-  v12 = v8;
-  dispatch_sync(v11, block);
+  v21 = installCopy;
+  v12 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100083500;
   v17[3] = &unk_1001033E8;
-  v18 = v9;
-  v19 = v10;
+  v18 = dsCopy;
+  v19 = completionCopy;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10008350C;
   v15[3] = &unk_100103330;
   v16 = v19;
   v13 = v19;
-  v14 = v9;
+  v14 = dsCopy;
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v12 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:setDataImportPromiseUUIDs:completion:]" andRunWithCoordinator:v17 error:v15];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getDataImportPromises:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getDataImportPromises:(id)promises
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  promisesCopy = promises;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000836AC;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100083738;
   v13[3] = &unk_1001033E8;
   v13[4] = self;
-  v14 = v7;
+  v14 = promisesCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10008390C;
@@ -4206,25 +4206,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getDataImportPromises:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 hasDataImportPromises:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install hasDataImportPromises:(id)promises
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  promisesCopy = promises;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100083AB0;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100083B3C;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = promisesCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100083B48;
@@ -4234,25 +4234,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:hasDataImportPromises:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getUserDataRestoreShouldBegin:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getUserDataRestoreShouldBegin:(id)begin
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  beginCopy = begin;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100083CEC;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100083D78;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = beginCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100083D84;
@@ -4262,25 +4262,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getUserDataRestoreShouldBegin:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 hasAppAssetPromise:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install hasAppAssetPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  promiseCopy = promise;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100083F28;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100083FB4;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = promiseCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100083FC0;
@@ -4290,25 +4290,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:hasAppAssetPromise:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 hasInitialODRAssetPromises:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install hasInitialODRAssetPromises:(id)promises
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  promisesCopy = promises;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100084164;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000841F0;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = promisesCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000841FC;
@@ -4318,25 +4318,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:hasInitialODRAssetPromises:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 hasInstallOptions:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install hasInstallOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  optionsCopy = options;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000843A0;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10008442C;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = optionsCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100084438;
@@ -4346,25 +4346,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:hasInstallOptions:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getInstallOptions:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getInstallOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  optionsCopy = options;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000845DC;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100084668;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = optionsCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100084674;
@@ -4374,25 +4374,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getInstallOptions:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 hasPlaceholderPromise:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install hasPlaceholderPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  promiseCopy = promise;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100084818;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000848A4;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = promiseCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000848B0;
@@ -4402,25 +4402,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:hasPlaceholderPromise:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 hasUserDataPromise:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install hasUserDataPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  promiseCopy = promise;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100084A54;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100084AE0;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = promiseCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100084AEC;
@@ -4430,26 +4430,26 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:hasUserDataPromise:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setImportance:(unint64_t)a4 completion:(id)a5
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setImportance:(unint64_t)importance completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100084C98;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v19 = v8;
-  v11 = v8;
-  dispatch_sync(v10, block);
+  v19 = installCopy;
+  v11 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100084D24;
   v15[3] = &unk_100103488;
-  v17 = a4;
-  v16 = v9;
+  importanceCopy = importance;
+  v16 = completionCopy;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100084D30;
@@ -4459,25 +4459,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v11 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:setImportance:completion:]" andRunWithCoordinator:v15 error:v13];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 importanceWithCompletion:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install importanceWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100084ECC;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100084F58;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = completionCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100084F64;
@@ -4487,27 +4487,27 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:importanceWithCompletion:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 conveyPriorityReplacingExisting:(BOOL)a4 withCompletion:(id)a5
+- (void)_remote_IXSCoordinatedAppInstall:(id)install conveyPriorityReplacingExisting:(BOOL)existing withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100085114;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v19 = v8;
-  v11 = v8;
-  dispatch_sync(v10, block);
+  v19 = installCopy;
+  v11 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000851A0;
   v15[3] = &unk_1001034B0;
-  v17 = a4;
+  existingCopy = existing;
   v15[4] = self;
-  v16 = v9;
+  v16 = completionCopy;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10008521C;
@@ -4517,25 +4517,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v11 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:conveyPriorityReplacingExisting:withCompletion:]" andRunWithCoordinator:v15 error:v13];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 prioritizeWithCompletion:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install prioritizeWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000853B8;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100085444;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = completionCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100085450;
@@ -4545,56 +4545,56 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:prioritizeWithCompletion:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setTargetGizmoPairingID:(id)a4 completion:(id)a5
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setTargetGizmoPairingID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  dCopy = d;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100085610;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v21 = v8;
-  v12 = v8;
-  dispatch_sync(v11, block);
+  v21 = installCopy;
+  v12 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10008569C;
   v17[3] = &unk_1001033E8;
-  v18 = v9;
-  v19 = v10;
+  v18 = dCopy;
+  v19 = completionCopy;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000856A8;
   v15[3] = &unk_100103330;
   v16 = v19;
   v13 = v19;
-  v14 = v9;
+  v14 = dCopy;
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v12 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:setTargetGizmoPairingID:completion:]" andRunWithCoordinator:v17 error:v15];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 targetGizmoPairingIDWithCompletion:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install targetGizmoPairingIDWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100085844;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000858D0;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = completionCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000858DC;
@@ -4604,26 +4604,26 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:targetGizmoPairingIDWithCompletion:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setAppAssetPromiseDRI:(unint64_t)a4 completion:(id)a5
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setAppAssetPromiseDRI:(unint64_t)i completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100085A88;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v19 = v8;
-  v11 = v8;
-  dispatch_sync(v10, block);
+  v19 = installCopy;
+  v11 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100085B14;
   v15[3] = &unk_100103488;
-  v17 = a4;
-  v16 = v9;
+  iCopy = i;
+  v16 = completionCopy;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100085B20;
@@ -4633,121 +4633,121 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v11 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:setAppAssetPromiseDRI:completion:]" andRunWithCoordinator:v15 error:v13];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setAppAssetPromiseUUID:(id)a4 completion:(id)a5
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setAppAssetPromiseUUID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  dCopy = d;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100085CE0;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v22 = v8;
-  v12 = v8;
-  dispatch_sync(v11, block);
+  v22 = installCopy;
+  v12 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100085D6C;
   v17[3] = &unk_1001034D8;
-  v18 = v9;
-  v19 = self;
-  v20 = v10;
+  v18 = dCopy;
+  selfCopy = self;
+  v20 = completionCopy;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100085DE4;
   v15[3] = &unk_100103330;
   v16 = v20;
   v13 = v20;
-  v14 = v9;
+  v14 = dCopy;
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v12 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:setAppAssetPromiseUUID:completion:]" andRunWithCoordinator:v17 error:v15];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setInitialODRAssetPromiseUUIDs:(id)a4 completion:(id)a5
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setInitialODRAssetPromiseUUIDs:(id)ds completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  dsCopy = ds;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100085FA4;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v21 = v8;
-  v12 = v8;
-  dispatch_sync(v11, block);
+  v21 = installCopy;
+  v12 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100086030;
   v17[3] = &unk_1001033E8;
-  v18 = v9;
-  v19 = v10;
+  v18 = dsCopy;
+  v19 = completionCopy;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10008603C;
   v15[3] = &unk_100103330;
   v16 = v19;
   v13 = v19;
-  v14 = v9;
+  v14 = dsCopy;
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v12 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:setInitialODRAssetPromiseUUIDs:completion:]" andRunWithCoordinator:v17 error:v15];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setInstallOptionsPromiseUUID:(id)a4 completion:(id)a5
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setInstallOptionsPromiseUUID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  dCopy = d;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000861FC;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v22 = v8;
-  v12 = v8;
-  dispatch_sync(v11, block);
+  v22 = installCopy;
+  v12 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100086288;
   v17[3] = &unk_1001034D8;
-  v18 = v9;
-  v19 = self;
-  v20 = v10;
+  v18 = dCopy;
+  selfCopy = self;
+  v20 = completionCopy;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100086300;
   v15[3] = &unk_100103330;
   v16 = v20;
   v13 = v20;
-  v14 = v9;
+  v14 = dCopy;
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v12 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:setInstallOptionsPromiseUUID:completion:]" andRunWithCoordinator:v17 error:v15];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setIsPaused:(BOOL)a4 completion:(id)a5
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setIsPaused:(BOOL)paused completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000864A4;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v19 = v8;
-  v11 = v8;
-  dispatch_sync(v10, block);
+  v19 = installCopy;
+  v11 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100086530;
   v15[3] = &unk_100103460;
-  v17 = a4;
-  v16 = v9;
+  pausedCopy = paused;
+  v16 = completionCopy;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100086540;
@@ -4757,149 +4757,149 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v11 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:setIsPaused:completion:]" andRunWithCoordinator:v15 error:v13];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setPlaceholderPromiseUUID:(id)a4 completion:(id)a5
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setPlaceholderPromiseUUID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  dCopy = d;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100086700;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v21 = v8;
-  v12 = v8;
-  dispatch_sync(v11, block);
+  v21 = installCopy;
+  v12 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10008678C;
   v17[3] = &unk_1001033E8;
-  v18 = v9;
-  v19 = v10;
+  v18 = dCopy;
+  v19 = completionCopy;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100086798;
   v15[3] = &unk_100103330;
   v16 = v19;
   v13 = v19;
-  v14 = v9;
+  v14 = dCopy;
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v12 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:setPlaceholderPromiseUUID:completion:]" andRunWithCoordinator:v17 error:v15];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setPreparationPromiseUUID:(id)a4 completion:(id)a5
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setPreparationPromiseUUID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  dCopy = d;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100086958;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v21 = v8;
-  v12 = v8;
-  dispatch_sync(v11, block);
+  v21 = installCopy;
+  v12 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000869E4;
   v17[3] = &unk_1001033E8;
-  v18 = v9;
-  v19 = v10;
+  v18 = dCopy;
+  v19 = completionCopy;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000869F0;
   v15[3] = &unk_100103330;
   v16 = v19;
   v13 = v19;
-  v14 = v9;
+  v14 = dCopy;
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v12 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:setPreparationPromiseUUID:completion:]" andRunWithCoordinator:v17 error:v15];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setUserDataPromiseUUID:(id)a4 completion:(id)a5
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setUserDataPromiseUUID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  dCopy = d;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100086BB0;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v21 = v8;
-  v12 = v8;
-  dispatch_sync(v11, block);
+  v21 = installCopy;
+  v12 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100086C3C;
   v17[3] = &unk_1001033E8;
-  v18 = v9;
-  v19 = v10;
+  v18 = dCopy;
+  v19 = completionCopy;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100086C48;
   v15[3] = &unk_100103330;
   v16 = v19;
   v13 = v19;
-  v14 = v9;
+  v14 = dCopy;
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v12 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:setUserDataPromiseUUID:completion:]" andRunWithCoordinator:v17 error:v15];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setDeviceSecurityPromiseUUID:(id)a4 completion:(id)a5
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setDeviceSecurityPromiseUUID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  dCopy = d;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100086E08;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v21 = v8;
-  v12 = v8;
-  dispatch_sync(v11, block);
+  v21 = installCopy;
+  v12 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100086E94;
   v17[3] = &unk_1001033E8;
-  v18 = v9;
-  v19 = v10;
+  v18 = dCopy;
+  v19 = completionCopy;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100086EA0;
   v15[3] = &unk_100103330;
   v16 = v19;
   v13 = v19;
-  v14 = v9;
+  v14 = dCopy;
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v12 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:setDeviceSecurityPromiseUUID:completion:]" andRunWithCoordinator:v17 error:v15];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getCoordinatorScopeWithCompletion:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getCoordinatorScopeWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10008703C;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000870C8;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = completionCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000870D4;
@@ -4909,25 +4909,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getCoordinatorScopeWithCompletion:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 convertToGloballyScopedWithCompletion:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install convertToGloballyScopedWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100087278;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100087304;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = completionCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100087310;
@@ -4937,29 +4937,29 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:convertToGloballyScopedWithCompletion:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setPlaceholderDisposition:(unint64_t)a4 completion:(id)a5
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setPlaceholderDisposition:(unint64_t)disposition completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(IXSClientConnection *)self xpcConnection];
-  if (sub_10000D71C(v10, @"com.apple.private.InstallCoordination.overridePlaceholderDisposition"))
+  installCopy = install;
+  completionCopy = completion;
+  xpcConnection = [(IXSClientConnection *)self xpcConnection];
+  if (sub_10000D71C(xpcConnection, @"com.apple.private.InstallCoordination.overridePlaceholderDisposition"))
   {
-    v11 = [(IXSClientConnection *)self internalQueue];
+    internalQueue = [(IXSClientConnection *)self internalQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100087588;
     block[3] = &unk_100100ED8;
     block[4] = self;
-    v12 = v8;
+    v12 = installCopy;
     v23 = v12;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
 
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100087614;
     v19[3] = &unk_100103488;
-    v21 = a4;
-    v20 = v9;
+    dispositionCopy = disposition;
+    v20 = completionCopy;
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100087620;
@@ -4976,32 +4976,32 @@ LABEL_13:
       sub_1000A7BCC(self);
     }
 
-    v14 = [(IXSClientConnection *)self clientName];
-    v16 = sub_1000405FC("[IXSClientConnection _remote_IXSCoordinatedAppInstall:setPlaceholderDisposition:completion:]", 2311, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing entitlement to set placeholder disposition.", v15, v14);
+    clientName = [(IXSClientConnection *)self clientName];
+    v16 = sub_1000405FC("[IXSClientConnection _remote_IXSCoordinatedAppInstall:setPlaceholderDisposition:completion:]", 2311, @"IXErrorDomain", 0x19uLL, 0, 0, @"Client %@ is missing entitlement to set placeholder disposition.", v15, clientName);
 
-    (*(v9 + 2))(v9, v16);
+    (*(completionCopy + 2))(completionCopy, v16);
   }
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getPlaceholderDispositionWithCompletion:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getPlaceholderDispositionWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000877BC;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100087848;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = completionCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100087854;
@@ -5011,56 +5011,56 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getPlaceholderDispositionWithCompletion:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setProgressHint:(id)a4 completion:(id)a5
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setProgressHint:(id)hint completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  hintCopy = hint;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100087A1C;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v21 = v8;
-  v12 = v8;
-  dispatch_sync(v11, block);
+  v21 = installCopy;
+  v12 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100087AA8;
   v17[3] = &unk_1001033E8;
-  v18 = v9;
-  v19 = v10;
+  v18 = hintCopy;
+  v19 = completionCopy;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100087AB4;
   v15[3] = &unk_100103330;
   v16 = v19;
   v13 = v19;
-  v14 = v9;
+  v14 = hintCopy;
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v12 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:setProgressHint:completion:]" andRunWithCoordinator:v17 error:v15];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 getProgressHintWithCompletion:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install getProgressHintWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100087C50;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100087CDC;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = completionCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100087CE8;
@@ -5070,27 +5070,27 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:getProgressHintWithCompletion:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 setRemovability:(unint64_t)a4 byClient:(unint64_t)a5 completion:(id)a6
+- (void)_remote_IXSCoordinatedAppInstall:(id)install setRemovability:(unint64_t)removability byClient:(unint64_t)client completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100087EA0;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v22 = v10;
-  v13 = v10;
-  dispatch_sync(v12, block);
+  v22 = installCopy;
+  v13 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100087F2C;
   v17[3] = &unk_100103500;
-  v19 = a4;
-  v20 = a5;
-  v18 = v11;
+  removabilityCopy = removability;
+  clientCopy = client;
+  v18 = completionCopy;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100087F3C;
@@ -5100,25 +5100,25 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v13 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:setRemovability:byClient:completion:]" andRunWithCoordinator:v17 error:v15];
 }
 
-- (void)_remote_IXSCoordinatedAppInstall:(id)a3 removabilityWithCompletion:(id)a4
+- (void)_remote_IXSCoordinatedAppInstall:(id)install removabilityWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSClientConnection *)self internalQueue];
+  installCopy = install;
+  completionCopy = completion;
+  internalQueue = [(IXSClientConnection *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000880D8;
   block[3] = &unk_100100ED8;
   block[4] = self;
-  v16 = v6;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v16 = installCopy;
+  v9 = installCopy;
+  dispatch_sync(internalQueue, block);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100088164;
   v13[3] = &unk_100103398;
-  v14 = v7;
+  v14 = completionCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100088170;
@@ -5128,17 +5128,17 @@ LABEL_13:
   [(IXSClientConnection *)self _fetchIXSCoordinatedAppInstallForUUID:v9 method:"[IXSClientConnection _remote_IXSCoordinatedAppInstall:removabilityWithCompletion:]" andRunWithCoordinator:v13 error:v11];
 }
 
-- (void)_fetchDataPromiseForUUID:(id)a3 method:(const char *)a4 andRunWithPromise:(id)a5 error:(id)a6
+- (void)_fetchDataPromiseForUUID:(id)d method:(const char *)method andRunWithPromise:(id)promise error:(id)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  promiseCopy = promise;
+  errorCopy = error;
   v13 = +[IXSDataPromiseManager sharedInstance];
-  v14 = [v13 promiseForUUID:v10 ofType:objc_opt_class()];
+  v14 = [v13 promiseForUUID:dCopy ofType:objc_opt_class()];
 
   if (v14)
   {
-    v11[2](v11, v14);
+    promiseCopy[2](promiseCopy, v14);
   }
 
   else
@@ -5146,164 +5146,164 @@ LABEL_13:
     v15 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v18 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136316162;
       v21 = "[IXSClientConnection _fetchDataPromiseForUUID:method:andRunWithPromise:error:]";
       v22 = 2112;
-      v23 = v10;
+      v23 = dCopy;
       v24 = 2080;
-      v25 = a4;
+      methodCopy = method;
       v26 = 2112;
-      v27 = v18;
+      v27 = clientName;
       v28 = 2112;
       v29 = 0;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s: DataPromise did not exist for UUID %@ when called for %s by client %@ : %@", buf, 0x34u);
     }
 
-    v19 = [(IXSClientConnection *)self clientName];
-    v17 = sub_1000405FC("[IXSClientConnection _fetchDataPromiseForUUID:method:andRunWithPromise:error:]", 2428, @"IXErrorDomain", 3uLL, 0, 0, @"DataPromise did not exist for UUID %@ when called for %s by client %@", v16, v10);
+    clientName2 = [(IXSClientConnection *)self clientName];
+    v17 = sub_1000405FC("[IXSClientConnection _fetchDataPromiseForUUID:method:andRunWithPromise:error:]", 2428, @"IXErrorDomain", 3uLL, 0, 0, @"DataPromise did not exist for UUID %@ when called for %s by client %@", v16, dCopy);
 
-    v12[2](v12, v17);
+    errorCopy[2](errorCopy, v17);
   }
 }
 
-- (void)_remote_IXSDataPromise:(id)a3 getPercentComplete:(id)a4
+- (void)_remote_IXSDataPromise:(id)promise getPercentComplete:(id)complete
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000884A0;
   v9[3] = &unk_100103528;
-  v10 = a4;
+  completeCopy = complete;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000884AC;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchDataPromiseForUUID:a3 method:"[IXSClientConnection _remote_IXSDataPromise:getPercentComplete:]" andRunWithPromise:v9 error:v7];
+  v8 = completeCopy;
+  v6 = completeCopy;
+  [(IXSClientConnection *)self _fetchDataPromiseForUUID:promise method:"[IXSClientConnection _remote_IXSDataPromise:getPercentComplete:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_remote_IXSDataPromise:(id)a3 setPercentComplete:(double)a4
+- (void)_remote_IXSDataPromise:(id)promise setPercentComplete:(double)complete
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10008853C;
   v4[3] = &unk_100103548;
-  *&v4[4] = a4;
-  [(IXSClientConnection *)self _fetchDataPromiseForUUID:a3 method:"[IXSClientConnection _remote_IXSDataPromise:setPercentComplete:]" andRunWithPromise:v4 error:&stru_100103568];
+  *&v4[4] = complete;
+  [(IXSClientConnection *)self _fetchDataPromiseForUUID:promise method:"[IXSClientConnection _remote_IXSDataPromise:setPercentComplete:]" andRunWithPromise:v4 error:&stru_100103568];
 }
 
-- (void)_remote_IXSDataPromise:(id)a3 getIsComplete:(id)a4
+- (void)_remote_IXSDataPromise:(id)promise getIsComplete:(id)complete
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100088650;
   v9[3] = &unk_100103528;
-  v10 = a4;
+  completeCopy = complete;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008865C;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchDataPromiseForUUID:a3 method:"[IXSClientConnection _remote_IXSDataPromise:getIsComplete:]" andRunWithPromise:v9 error:v7];
+  v8 = completeCopy;
+  v6 = completeCopy;
+  [(IXSClientConnection *)self _fetchDataPromiseForUUID:promise method:"[IXSClientConnection _remote_IXSDataPromise:getIsComplete:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_remote_IXSDataPromise:(id)a3 setIsComplete:(BOOL)a4 completion:(id)a5
+- (void)_remote_IXSDataPromise:(id)promise setIsComplete:(BOOL)complete completion:(id)completion
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100088780;
   v10[3] = &unk_100103590;
-  v12 = a4;
-  v11 = a5;
+  completeCopy = complete;
+  completionCopy = completion;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10008879C;
   v8[3] = &unk_100103330;
-  v9 = v11;
-  v7 = v11;
-  [(IXSClientConnection *)self _fetchDataPromiseForUUID:a3 method:"[IXSClientConnection _remote_IXSDataPromise:setIsComplete:completion:]" andRunWithPromise:v10 error:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(IXSClientConnection *)self _fetchDataPromiseForUUID:promise method:"[IXSClientConnection _remote_IXSDataPromise:setIsComplete:completion:]" andRunWithPromise:v10 error:v8];
 }
 
-- (void)_remote_IXSDataPromise:(id)a3 cancelForReason:(id)a4 client:(unint64_t)a5 completion:(id)a6
+- (void)_remote_IXSDataPromise:(id)promise cancelForReason:(id)reason client:(unint64_t)client completion:(id)completion
 {
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000888E4;
   v14[3] = &unk_1001035B8;
-  v15 = a4;
-  v17 = a5;
-  v16 = a6;
+  reasonCopy = reason;
+  clientCopy = client;
+  completionCopy = completion;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000888F4;
   v12[3] = &unk_100103330;
-  v13 = v16;
-  v10 = v16;
-  v11 = v15;
-  [(IXSClientConnection *)self _fetchDataPromiseForUUID:a3 method:"[IXSClientConnection _remote_IXSDataPromise:cancelForReason:client:completion:]" andRunWithPromise:v14 error:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  v11 = reasonCopy;
+  [(IXSClientConnection *)self _fetchDataPromiseForUUID:promise method:"[IXSClientConnection _remote_IXSDataPromise:cancelForReason:client:completion:]" andRunWithPromise:v14 error:v12];
 }
 
-- (void)_remote_IXSDataPromise:(id)a3 resetWithCompletion:(id)a4
+- (void)_remote_IXSDataPromise:(id)promise resetWithCompletion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100088A08;
   v9[3] = &unk_100103528;
-  v10 = a4;
+  completionCopy = completion;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100088A14;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchDataPromiseForUUID:a3 method:"[IXSClientConnection _remote_IXSDataPromise:resetWithCompletion:]" andRunWithPromise:v9 error:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [(IXSClientConnection *)self _fetchDataPromiseForUUID:promise method:"[IXSClientConnection _remote_IXSDataPromise:resetWithCompletion:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_remote_IXSDataPromise:(id)a3 getErrorInfo:(id)a4
+- (void)_remote_IXSDataPromise:(id)promise getErrorInfo:(id)info
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100088B28;
   v9[3] = &unk_100103528;
-  v10 = a4;
+  infoCopy = info;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100088B34;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchDataPromiseForUUID:a3 method:"[IXSClientConnection _remote_IXSDataPromise:getErrorInfo:]" andRunWithPromise:v9 error:v7];
+  v8 = infoCopy;
+  v6 = infoCopy;
+  [(IXSClientConnection *)self _fetchDataPromiseForUUID:promise method:"[IXSClientConnection _remote_IXSDataPromise:getErrorInfo:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_remote_IXSDataPromise:(id)a3 preflightWithCompletion:(id)a4
+- (void)_remote_IXSDataPromise:(id)promise preflightWithCompletion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100088C50;
   v9[3] = &unk_100103528;
-  v10 = a4;
+  completionCopy = completion;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100088C5C;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchDataPromiseForUUID:a3 method:"[IXSClientConnection _remote_IXSDataPromise:preflightWithCompletion:]" andRunWithPromise:v9 error:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [(IXSClientConnection *)self _fetchDataPromiseForUUID:promise method:"[IXSClientConnection _remote_IXSDataPromise:preflightWithCompletion:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_fetchOwnedDataPromiseForUUID:(id)a3 method:(const char *)a4 andRunWithPromise:(id)a5 error:(id)a6
+- (void)_fetchOwnedDataPromiseForUUID:(id)d method:(const char *)method andRunWithPromise:(id)promise error:(id)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  promiseCopy = promise;
+  errorCopy = error;
   v13 = +[IXSDataPromiseManager sharedInstance];
-  v14 = [v13 promiseForUUID:v10 ofType:objc_opt_class()];
+  v14 = [v13 promiseForUUID:dCopy ofType:objc_opt_class()];
 
   if (v14)
   {
-    v11[2](v11, v14);
+    promiseCopy[2](promiseCopy, v14);
   }
 
   else
@@ -5311,99 +5311,99 @@ LABEL_13:
     v15 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v18 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136316162;
       v21 = "[IXSClientConnection _fetchOwnedDataPromiseForUUID:method:andRunWithPromise:error:]";
       v22 = 2112;
-      v23 = v10;
+      v23 = dCopy;
       v24 = 2080;
-      v25 = a4;
+      methodCopy = method;
       v26 = 2112;
-      v27 = v18;
+      v27 = clientName;
       v28 = 2112;
       v29 = 0;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s: OwnedDataPromise did not exist for UUID %@ when called for %s by client %@ : %@", buf, 0x34u);
     }
 
-    v19 = [(IXSClientConnection *)self clientName];
-    v17 = sub_1000405FC("[IXSClientConnection _fetchOwnedDataPromiseForUUID:method:andRunWithPromise:error:]", 2472, @"IXErrorDomain", 3uLL, 0, 0, @"OwnedDataPromise did not exist for UUID %@ when called for %s by client %@", v16, v10);
+    clientName2 = [(IXSClientConnection *)self clientName];
+    v17 = sub_1000405FC("[IXSClientConnection _fetchOwnedDataPromiseForUUID:method:andRunWithPromise:error:]", 2472, @"IXErrorDomain", 3uLL, 0, 0, @"OwnedDataPromise did not exist for UUID %@ when called for %s by client %@", v16, dCopy);
 
-    v12[2](v12, v17);
+    errorCopy[2](errorCopy, v17);
   }
 }
 
-- (void)_remote_IXSOwnedDataPromise:(id)a3 setStagedPath:(id)a4
+- (void)_remote_IXSOwnedDataPromise:(id)promise setStagedPath:(id)path
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100088F38;
   v7[3] = &unk_1001035E0;
-  v8 = a4;
-  v6 = v8;
-  [(IXSClientConnection *)self _fetchOwnedDataPromiseForUUID:a3 method:"[IXSClientConnection _remote_IXSOwnedDataPromise:setStagedPath:]" andRunWithPromise:v7 error:&stru_100103600];
+  pathCopy = path;
+  v6 = pathCopy;
+  [(IXSClientConnection *)self _fetchOwnedDataPromiseForUUID:promise method:"[IXSClientConnection _remote_IXSOwnedDataPromise:setStagedPath:]" andRunWithPromise:v7 error:&stru_100103600];
 }
 
-- (void)_remote_IXSOwnedDataPromise:(id)a3 getStagedPath:(id)a4
+- (void)_remote_IXSOwnedDataPromise:(id)promise getStagedPath:(id)path
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10008904C;
   v9[3] = &unk_100103628;
-  v10 = a4;
+  pathCopy = path;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100089058;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchOwnedDataPromiseForUUID:a3 method:"[IXSClientConnection _remote_IXSOwnedDataPromise:getStagedPath:]" andRunWithPromise:v9 error:v7];
+  v8 = pathCopy;
+  v6 = pathCopy;
+  [(IXSClientConnection *)self _fetchOwnedDataPromiseForUUID:promise method:"[IXSClientConnection _remote_IXSOwnedDataPromise:getStagedPath:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_remote_IXSOwnedDataPromise:(id)a3 setTargetLastPathComponent:(id)a4 withCompletion:(id)a5
+- (void)_remote_IXSOwnedDataPromise:(id)promise setTargetLastPathComponent:(id)component withCompletion:(id)completion
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100089198;
   v12[3] = &unk_100103650;
-  v13 = a4;
-  v14 = a5;
+  componentCopy = component;
+  completionCopy = completion;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000891A4;
   v10[3] = &unk_100103330;
-  v11 = v14;
-  v8 = v14;
-  v9 = v13;
-  [(IXSClientConnection *)self _fetchOwnedDataPromiseForUUID:a3 method:"[IXSClientConnection _remote_IXSOwnedDataPromise:setTargetLastPathComponent:withCompletion:]" andRunWithPromise:v12 error:v10];
+  v11 = completionCopy;
+  v8 = completionCopy;
+  v9 = componentCopy;
+  [(IXSClientConnection *)self _fetchOwnedDataPromiseForUUID:promise method:"[IXSClientConnection _remote_IXSOwnedDataPromise:setTargetLastPathComponent:withCompletion:]" andRunWithPromise:v12 error:v10];
 }
 
-- (void)_remote_IXSOwnedDataPromise:(id)a3 getTargetLastPathComponent:(id)a4
+- (void)_remote_IXSOwnedDataPromise:(id)promise getTargetLastPathComponent:(id)component
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000892B8;
   v9[3] = &unk_100103628;
-  v10 = a4;
+  componentCopy = component;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000892C4;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchOwnedDataPromiseForUUID:a3 method:"[IXSClientConnection _remote_IXSOwnedDataPromise:getTargetLastPathComponent:]" andRunWithPromise:v9 error:v7];
+  v8 = componentCopy;
+  v6 = componentCopy;
+  [(IXSClientConnection *)self _fetchOwnedDataPromiseForUUID:promise method:"[IXSClientConnection _remote_IXSOwnedDataPromise:getTargetLastPathComponent:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_fetchPlaceholderForUUID:(id)a3 method:(const char *)a4 andRunWithPromise:(id)a5 error:(id)a6
+- (void)_fetchPlaceholderForUUID:(id)d method:(const char *)method andRunWithPromise:(id)promise error:(id)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  promiseCopy = promise;
+  errorCopy = error;
   v13 = +[IXSDataPromiseManager sharedInstance];
-  v14 = [v13 promiseForUUID:v10 ofType:objc_opt_class()];
+  v14 = [v13 promiseForUUID:dCopy ofType:objc_opt_class()];
 
   if (v14)
   {
-    v11[2](v11, v14);
+    promiseCopy[2](promiseCopy, v14);
   }
 
   else
@@ -5411,480 +5411,480 @@ LABEL_13:
     v15 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v18 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136316162;
       v21 = "[IXSClientConnection _fetchPlaceholderForUUID:method:andRunWithPromise:error:]";
       v22 = 2112;
-      v23 = v10;
+      v23 = dCopy;
       v24 = 2080;
-      v25 = a4;
+      methodCopy = method;
       v26 = 2112;
-      v27 = v18;
+      v27 = clientName;
       v28 = 2112;
       v29 = 0;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s: Placeholder did not exist for UUID %@ when called for %s by client %@ : %@", buf, 0x34u);
     }
 
-    v19 = [(IXSClientConnection *)self clientName];
-    v17 = sub_1000405FC("[IXSClientConnection _fetchPlaceholderForUUID:method:andRunWithPromise:error:]", 2496, @"IXErrorDomain", 3uLL, 0, 0, @"Placeholder did not exist for UUID %@ when called for %s by client %@", v16, v10);
+    clientName2 = [(IXSClientConnection *)self clientName];
+    v17 = sub_1000405FC("[IXSClientConnection _fetchPlaceholderForUUID:method:andRunWithPromise:error:]", 2496, @"IXErrorDomain", 3uLL, 0, 0, @"Placeholder did not exist for UUID %@ when called for %s by client %@", v16, dCopy);
 
-    v12[2](v12, v17);
+    errorCopy[2](errorCopy, v17);
   }
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 setMetadataPromiseUUID:(id)a4 completion:(id)a5
+- (void)_remote_IXSPlaceholder:(id)placeholder setMetadataPromiseUUID:(id)d completion:(id)completion
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100089618;
   v12[3] = &unk_100103678;
-  v13 = a4;
-  v14 = self;
-  v15 = a5;
+  dCopy = d;
+  selfCopy = self;
+  completionCopy = completion;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100089690;
   v10[3] = &unk_100103330;
-  v11 = v15;
-  v8 = v15;
-  v9 = v13;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:setMetadataPromiseUUID:completion:]" andRunWithPromise:v12 error:v10];
+  v11 = completionCopy;
+  v8 = completionCopy;
+  v9 = dCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:setMetadataPromiseUUID:completion:]" andRunWithPromise:v12 error:v10];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 getMetadataWithCompletion:(id)a4
+- (void)_remote_IXSPlaceholder:(id)placeholder getMetadataWithCompletion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000897A4;
   v9[3] = &unk_1001036A0;
-  v10 = a4;
+  completionCopy = completion;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000897B0;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:getMetadataWithCompletion:]" andRunWithPromise:v9 error:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:getMetadataWithCompletion:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 setSinfPromiseUUID:(id)a4 completion:(id)a5
+- (void)_remote_IXSPlaceholder:(id)placeholder setSinfPromiseUUID:(id)d completion:(id)completion
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000898F0;
   v12[3] = &unk_1001036C8;
-  v13 = a4;
-  v14 = a5;
+  dCopy = d;
+  completionCopy = completion;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000898FC;
   v10[3] = &unk_100103330;
-  v11 = v14;
-  v8 = v14;
-  v9 = v13;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:setSinfPromiseUUID:completion:]" andRunWithPromise:v12 error:v10];
+  v11 = completionCopy;
+  v8 = completionCopy;
+  v9 = dCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:setSinfPromiseUUID:completion:]" andRunWithPromise:v12 error:v10];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 getSinfDataWithCompletion:(id)a4
+- (void)_remote_IXSPlaceholder:(id)placeholder getSinfDataWithCompletion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100089A10;
   v9[3] = &unk_1001036A0;
-  v10 = a4;
+  completionCopy = completion;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100089A1C;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:getSinfDataWithCompletion:]" andRunWithPromise:v9 error:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:getSinfDataWithCompletion:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 setLaunchProhibited:(BOOL)a4 completion:(id)a5
+- (void)_remote_IXSPlaceholder:(id)placeholder setLaunchProhibited:(BOOL)prohibited completion:(id)completion
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100089B40;
   v10[3] = &unk_1001036F0;
-  v12 = a4;
-  v11 = a5;
+  prohibitedCopy = prohibited;
+  completionCopy = completion;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100089B50;
   v8[3] = &unk_100103330;
-  v9 = v11;
-  v7 = v11;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:setLaunchProhibited:completion:]" andRunWithPromise:v10 error:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:setLaunchProhibited:completion:]" andRunWithPromise:v10 error:v8];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 getLaunchProhibitedWithCompletion:(id)a4
+- (void)_remote_IXSPlaceholder:(id)placeholder getLaunchProhibitedWithCompletion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100089C64;
   v9[3] = &unk_1001036A0;
-  v10 = a4;
+  completionCopy = completion;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100089C70;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:getLaunchProhibitedWithCompletion:]" andRunWithPromise:v9 error:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:getLaunchProhibitedWithCompletion:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 setAttributes:(id)a4 completion:(id)a5
+- (void)_remote_IXSPlaceholder:(id)placeholder setAttributes:(id)attributes completion:(id)completion
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100089DB0;
   v12[3] = &unk_1001036C8;
-  v13 = a4;
-  v14 = a5;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100089DBC;
   v10[3] = &unk_100103330;
-  v11 = v14;
-  v8 = v14;
-  v9 = v13;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:setAttributes:completion:]" andRunWithPromise:v12 error:v10];
+  v11 = completionCopy;
+  v8 = completionCopy;
+  v9 = attributesCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:setAttributes:completion:]" andRunWithPromise:v12 error:v10];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 getAttributesWithCompletion:(id)a4
+- (void)_remote_IXSPlaceholder:(id)placeholder getAttributesWithCompletion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100089ED0;
   v9[3] = &unk_1001036A0;
-  v10 = a4;
+  completionCopy = completion;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100089EDC;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:getAttributesWithCompletion:]" andRunWithPromise:v9 error:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:getAttributesWithCompletion:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 setIconPromiseUUID:(id)a4 completion:(id)a5
+- (void)_remote_IXSPlaceholder:(id)placeholder setIconPromiseUUID:(id)d completion:(id)completion
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10008A01C;
   v12[3] = &unk_1001036C8;
-  v13 = a4;
-  v14 = a5;
+  dCopy = d;
+  completionCopy = completion;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10008A028;
   v10[3] = &unk_100103330;
-  v11 = v14;
-  v8 = v14;
-  v9 = v13;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:setIconPromiseUUID:completion:]" andRunWithPromise:v12 error:v10];
+  v11 = completionCopy;
+  v8 = completionCopy;
+  v9 = dCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:setIconPromiseUUID:completion:]" andRunWithPromise:v12 error:v10];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 hasIconPromise:(id)a4
+- (void)_remote_IXSPlaceholder:(id)placeholder hasIconPromise:(id)promise
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10008A13C;
   v9[3] = &unk_1001036A0;
-  v10 = a4;
+  promiseCopy = promise;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008A148;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:hasIconPromise:]" andRunWithPromise:v9 error:v7];
+  v8 = promiseCopy;
+  v6 = promiseCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:hasIconPromise:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 getIconPromise:(id)a4
+- (void)_remote_IXSPlaceholder:(id)placeholder getIconPromise:(id)promise
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10008A268;
   v8[3] = &unk_1001036C8;
-  v9 = self;
-  v10 = a4;
+  selfCopy = self;
+  promiseCopy = promise;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10008A398;
   v6[3] = &unk_100103330;
-  v7 = v10;
-  v5 = v10;
-  [(IXSClientConnection *)v9 _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:getIconPromise:]" andRunWithPromise:v8 error:v6];
+  v7 = promiseCopy;
+  v5 = promiseCopy;
+  [(IXSClientConnection *)selfCopy _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:getIconPromise:]" andRunWithPromise:v8 error:v6];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 setIconResourcesPromiseUUID:(id)a4 withInfoPlistIconContentPromiseUUID:(id)a5 completion:(id)a6
+- (void)_remote_IXSPlaceholder:(id)placeholder setIconResourcesPromiseUUID:(id)d withInfoPlistIconContentPromiseUUID:(id)iD completion:(id)completion
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10008A500;
   v15[3] = &unk_100103678;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10008A510;
   v13[3] = &unk_100103330;
-  v14 = v18;
-  v10 = v18;
-  v11 = v17;
-  v12 = v16;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:setIconResourcesPromiseUUID:withInfoPlistIconContentPromiseUUID:completion:]" andRunWithPromise:v15 error:v13];
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = iDCopy;
+  v12 = dCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:setIconResourcesPromiseUUID:withInfoPlistIconContentPromiseUUID:completion:]" andRunWithPromise:v15 error:v13];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 hasIconResourcesPromise:(id)a4
+- (void)_remote_IXSPlaceholder:(id)placeholder hasIconResourcesPromise:(id)promise
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10008A624;
   v9[3] = &unk_1001036A0;
-  v10 = a4;
+  promiseCopy = promise;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008A630;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:hasIconResourcesPromise:]" andRunWithPromise:v9 error:v7];
+  v8 = promiseCopy;
+  v6 = promiseCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:hasIconResourcesPromise:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 getIconResourcesPromiseAndInfoPlistContentPromise:(id)a4
+- (void)_remote_IXSPlaceholder:(id)placeholder getIconResourcesPromiseAndInfoPlistContentPromise:(id)promise
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10008A74C;
   v9[3] = &unk_1001036A0;
-  v10 = a4;
+  promiseCopy = promise;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008A758;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:getIconResourcesPromiseAndInfoPlistContentPromise:]" andRunWithPromise:v9 error:v7];
+  v8 = promiseCopy;
+  v6 = promiseCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:getIconResourcesPromiseAndInfoPlistContentPromise:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 setLocalizationPromiseUUID:(id)a4 completion:(id)a5
+- (void)_remote_IXSPlaceholder:(id)placeholder setLocalizationPromiseUUID:(id)d completion:(id)completion
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10008A89C;
   v12[3] = &unk_1001036C8;
-  v13 = a4;
-  v14 = a5;
+  dCopy = d;
+  completionCopy = completion;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10008A8A8;
   v10[3] = &unk_100103330;
-  v11 = v14;
-  v8 = v14;
-  v9 = v13;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:setLocalizationPromiseUUID:completion:]" andRunWithPromise:v12 error:v10];
+  v11 = completionCopy;
+  v8 = completionCopy;
+  v9 = dCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:setLocalizationPromiseUUID:completion:]" andRunWithPromise:v12 error:v10];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 getLocalizationDictionary:(id)a4
+- (void)_remote_IXSPlaceholder:(id)placeholder getLocalizationDictionary:(id)dictionary
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10008A9BC;
   v9[3] = &unk_1001036A0;
-  v10 = a4;
+  dictionaryCopy = dictionary;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008A9C8;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:getLocalizationDictionary:]" andRunWithPromise:v9 error:v7];
+  v8 = dictionaryCopy;
+  v6 = dictionaryCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:getLocalizationDictionary:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 setEntitlementsPromiseUUID:(id)a4 completion:(id)a5
+- (void)_remote_IXSPlaceholder:(id)placeholder setEntitlementsPromiseUUID:(id)d completion:(id)completion
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10008AB08;
   v12[3] = &unk_1001036C8;
-  v13 = a4;
-  v14 = a5;
+  dCopy = d;
+  completionCopy = completion;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10008AB14;
   v10[3] = &unk_100103330;
-  v11 = v14;
-  v8 = v14;
-  v9 = v13;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:setEntitlementsPromiseUUID:completion:]" andRunWithPromise:v12 error:v10];
+  v11 = completionCopy;
+  v8 = completionCopy;
+  v9 = dCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:setEntitlementsPromiseUUID:completion:]" andRunWithPromise:v12 error:v10];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 hasEntitlementsPromise:(id)a4
+- (void)_remote_IXSPlaceholder:(id)placeholder hasEntitlementsPromise:(id)promise
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10008AC28;
   v9[3] = &unk_1001036A0;
-  v10 = a4;
+  promiseCopy = promise;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008AC34;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:hasEntitlementsPromise:]" andRunWithPromise:v9 error:v7];
+  v8 = promiseCopy;
+  v6 = promiseCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:hasEntitlementsPromise:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 getEntitlementsPromise:(id)a4
+- (void)_remote_IXSPlaceholder:(id)placeholder getEntitlementsPromise:(id)promise
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10008AD54;
   v8[3] = &unk_1001036C8;
-  v9 = self;
-  v10 = a4;
+  selfCopy = self;
+  promiseCopy = promise;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10008AE84;
   v6[3] = &unk_100103330;
-  v7 = v10;
-  v5 = v10;
-  [(IXSClientConnection *)v9 _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:getEntitlementsPromise:]" andRunWithPromise:v8 error:v6];
+  v7 = promiseCopy;
+  v5 = promiseCopy;
+  [(IXSClientConnection *)selfCopy _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:getEntitlementsPromise:]" andRunWithPromise:v8 error:v6];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 setInfoPlistLoctablePromiseUUID:(id)a4 completion:(id)a5
+- (void)_remote_IXSPlaceholder:(id)placeholder setInfoPlistLoctablePromiseUUID:(id)d completion:(id)completion
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10008AFC4;
   v12[3] = &unk_1001036C8;
-  v13 = a4;
-  v14 = a5;
+  dCopy = d;
+  completionCopy = completion;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10008AFD0;
   v10[3] = &unk_100103330;
-  v11 = v14;
-  v8 = v14;
-  v9 = v13;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:setInfoPlistLoctablePromiseUUID:completion:]" andRunWithPromise:v12 error:v10];
+  v11 = completionCopy;
+  v8 = completionCopy;
+  v9 = dCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:setInfoPlistLoctablePromiseUUID:completion:]" andRunWithPromise:v12 error:v10];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 hasInfoPlistLoctablePromise:(id)a4
+- (void)_remote_IXSPlaceholder:(id)placeholder hasInfoPlistLoctablePromise:(id)promise
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10008B0E4;
   v9[3] = &unk_1001036A0;
-  v10 = a4;
+  promiseCopy = promise;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008B0F0;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:hasInfoPlistLoctablePromise:]" andRunWithPromise:v9 error:v7];
+  v8 = promiseCopy;
+  v6 = promiseCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:hasInfoPlistLoctablePromise:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 getInfoPlistLoctablePromise:(id)a4
+- (void)_remote_IXSPlaceholder:(id)placeholder getInfoPlistLoctablePromise:(id)promise
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10008B210;
   v8[3] = &unk_1001036C8;
-  v9 = self;
-  v10 = a4;
+  selfCopy = self;
+  promiseCopy = promise;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10008B340;
   v6[3] = &unk_100103330;
-  v7 = v10;
-  v5 = v10;
-  [(IXSClientConnection *)v9 _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:getInfoPlistLoctablePromise:]" andRunWithPromise:v8 error:v6];
+  v7 = promiseCopy;
+  v5 = promiseCopy;
+  [(IXSClientConnection *)selfCopy _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:getInfoPlistLoctablePromise:]" andRunWithPromise:v8 error:v6];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 setAppExtensionPlaceholderPromiseUUIDs:(id)a4 completion:(id)a5
+- (void)_remote_IXSPlaceholder:(id)placeholder setAppExtensionPlaceholderPromiseUUIDs:(id)ds completion:(id)completion
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10008B480;
   v12[3] = &unk_1001036C8;
-  v13 = a4;
-  v14 = a5;
+  dsCopy = ds;
+  completionCopy = completion;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10008B48C;
   v10[3] = &unk_100103330;
-  v11 = v14;
-  v8 = v14;
-  v9 = v13;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:setAppExtensionPlaceholderPromiseUUIDs:completion:]" andRunWithPromise:v12 error:v10];
+  v11 = completionCopy;
+  v8 = completionCopy;
+  v9 = dsCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:setAppExtensionPlaceholderPromiseUUIDs:completion:]" andRunWithPromise:v12 error:v10];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 hasAppExtensionPlaceholderPromises:(id)a4
+- (void)_remote_IXSPlaceholder:(id)placeholder hasAppExtensionPlaceholderPromises:(id)promises
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10008B5A0;
   v9[3] = &unk_1001036A0;
-  v10 = a4;
+  promisesCopy = promises;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008B5AC;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:hasAppExtensionPlaceholderPromises:]" andRunWithPromise:v9 error:v7];
+  v8 = promisesCopy;
+  v6 = promisesCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:hasAppExtensionPlaceholderPromises:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 getAppExtensionPlaceholderPromises:(id)a4
+- (void)_remote_IXSPlaceholder:(id)placeholder getAppExtensionPlaceholderPromises:(id)promises
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10008B6CC;
   v8[3] = &unk_1001036C8;
-  v9 = self;
-  v10 = a4;
+  selfCopy = self;
+  promisesCopy = promises;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10008B8A0;
   v6[3] = &unk_100103330;
-  v7 = v10;
-  v5 = v10;
-  [(IXSClientConnection *)v9 _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:getAppExtensionPlaceholderPromises:]" andRunWithPromise:v8 error:v6];
+  v7 = promisesCopy;
+  v5 = promisesCopy;
+  [(IXSClientConnection *)selfCopy _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:getAppExtensionPlaceholderPromises:]" andRunWithPromise:v8 error:v6];
 }
 
-- (void)_remote_IXSPlaceholder:(id)a3 setConfigurationCompleteWithCompletion:(id)a4
+- (void)_remote_IXSPlaceholder:(id)placeholder setConfigurationCompleteWithCompletion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10008B9BC;
   v9[3] = &unk_1001036A0;
-  v10 = a4;
+  completionCopy = completion;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008B9C8;
   v7[3] = &unk_100103330;
-  v8 = v10;
-  v6 = v10;
-  [(IXSClientConnection *)self _fetchPlaceholderForUUID:a3 method:"[IXSClientConnection _remote_IXSPlaceholder:setConfigurationCompleteWithCompletion:]" andRunWithPromise:v9 error:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [(IXSClientConnection *)self _fetchPlaceholderForUUID:placeholder method:"[IXSClientConnection _remote_IXSPlaceholder:setConfigurationCompleteWithCompletion:]" andRunWithPromise:v9 error:v7];
 }
 
-- (void)_fetchPromisedTransferToPathForUUID:(id)a3 method:(const char *)a4 andRunWithPromise:(id)a5 error:(id)a6
+- (void)_fetchPromisedTransferToPathForUUID:(id)d method:(const char *)method andRunWithPromise:(id)promise error:(id)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  promiseCopy = promise;
+  errorCopy = error;
   v13 = +[IXSDataPromiseManager sharedInstance];
-  v14 = [v13 promiseForUUID:v10 ofType:objc_opt_class()];
+  v14 = [v13 promiseForUUID:dCopy ofType:objc_opt_class()];
 
   if (v14)
   {
-    v11[2](v11, v14);
+    promiseCopy[2](promiseCopy, v14);
   }
 
   else
@@ -5892,69 +5892,69 @@ LABEL_13:
     v15 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v18 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136316162;
       v21 = "[IXSClientConnection _fetchPromisedTransferToPathForUUID:method:andRunWithPromise:error:]";
       v22 = 2112;
-      v23 = v10;
+      v23 = dCopy;
       v24 = 2080;
-      v25 = a4;
+      methodCopy = method;
       v26 = 2112;
-      v27 = v18;
+      v27 = clientName;
       v28 = 2112;
       v29 = 0;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s: PromisedTransferToPath did not exist for UUID %@ when called for %s by client %@ : %@", buf, 0x34u);
     }
 
-    v19 = [(IXSClientConnection *)self clientName];
-    v17 = sub_1000405FC("[IXSClientConnection _fetchPromisedTransferToPathForUUID:method:andRunWithPromise:error:]", 2655, @"IXErrorDomain", 3uLL, 0, 0, @"PromisedTransferToPath did not exist for UUID %@ when called for %s by client %@", v16, v10);
+    clientName2 = [(IXSClientConnection *)self clientName];
+    v17 = sub_1000405FC("[IXSClientConnection _fetchPromisedTransferToPathForUUID:method:andRunWithPromise:error:]", 2655, @"IXErrorDomain", 3uLL, 0, 0, @"PromisedTransferToPath did not exist for UUID %@ when called for %s by client %@", v16, dCopy);
 
-    v12[2](v12, v17);
+    errorCopy[2](errorCopy, v17);
   }
 }
 
-- (void)_remote_IXSPromisedTransferToPath:(id)a3 setTransferPath:(id)a4
+- (void)_remote_IXSPromisedTransferToPath:(id)path setTransferPath:(id)transferPath
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008BCA0;
   v7[3] = &unk_100103718;
-  v8 = a4;
-  v6 = v8;
-  [(IXSClientConnection *)self _fetchPromisedTransferToPathForUUID:a3 method:"[IXSClientConnection _remote_IXSPromisedTransferToPath:setTransferPath:]" andRunWithPromise:v7 error:&stru_100103738];
+  transferPathCopy = transferPath;
+  v6 = transferPathCopy;
+  [(IXSClientConnection *)self _fetchPromisedTransferToPathForUUID:path method:"[IXSClientConnection _remote_IXSPromisedTransferToPath:setTransferPath:]" andRunWithPromise:v7 error:&stru_100103738];
 }
 
-- (void)_remote_IXSPromisedTransferToPath:(id)a3 setShouldCopy:(BOOL)a4
+- (void)_remote_IXSPromisedTransferToPath:(id)path setShouldCopy:(BOOL)copy
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10008BD2C;
   v4[3] = &unk_100103758;
-  v5 = a4;
-  [(IXSClientConnection *)self _fetchPromisedTransferToPathForUUID:a3 method:"[IXSClientConnection _remote_IXSPromisedTransferToPath:setShouldCopy:]" andRunWithPromise:v4 error:&stru_100103778];
+  copyCopy = copy;
+  [(IXSClientConnection *)self _fetchPromisedTransferToPathForUUID:path method:"[IXSClientConnection _remote_IXSPromisedTransferToPath:setShouldCopy:]" andRunWithPromise:v4 error:&stru_100103778];
 }
 
-- (void)_remote_IXSPromisedTransferToPath:(id)a3 setTryDeltaCopy:(BOOL)a4
+- (void)_remote_IXSPromisedTransferToPath:(id)path setTryDeltaCopy:(BOOL)copy
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10008BDB8;
   v4[3] = &unk_100103758;
-  v5 = a4;
-  [(IXSClientConnection *)self _fetchPromisedTransferToPathForUUID:a3 method:"[IXSClientConnection _remote_IXSPromisedTransferToPath:setTryDeltaCopy:]" andRunWithPromise:v4 error:&stru_100103798];
+  copyCopy = copy;
+  [(IXSClientConnection *)self _fetchPromisedTransferToPathForUUID:path method:"[IXSClientConnection _remote_IXSPromisedTransferToPath:setTryDeltaCopy:]" andRunWithPromise:v4 error:&stru_100103798];
 }
 
-- (void)_fetchPromisedStreamingZipTransferForUUID:(id)a3 method:(const char *)a4 andRunWithPromise:(id)a5 error:(id)a6
+- (void)_fetchPromisedStreamingZipTransferForUUID:(id)d method:(const char *)method andRunWithPromise:(id)promise error:(id)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  promiseCopy = promise;
+  errorCopy = error;
   v13 = +[IXSDataPromiseManager sharedInstance];
-  v14 = [v13 promiseForUUID:v10 ofType:objc_opt_class()];
+  v14 = [v13 promiseForUUID:dCopy ofType:objc_opt_class()];
 
   if (v14)
   {
-    v11[2](v11, v14);
+    promiseCopy[2](promiseCopy, v14);
   }
 
   else
@@ -5962,48 +5962,48 @@ LABEL_13:
     v15 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v18 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136316162;
       v21 = "[IXSClientConnection _fetchPromisedStreamingZipTransferForUUID:method:andRunWithPromise:error:]";
       v22 = 2112;
-      v23 = v10;
+      v23 = dCopy;
       v24 = 2080;
-      v25 = a4;
+      methodCopy = method;
       v26 = 2112;
-      v27 = v18;
+      v27 = clientName;
       v28 = 2112;
       v29 = 0;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s: PromisedStreamingZipTransfer did not exist for UUID %@ when called for %s by client %@ : %@", buf, 0x34u);
     }
 
-    v19 = [(IXSClientConnection *)self clientName];
-    v17 = sub_1000405FC("[IXSClientConnection _fetchPromisedStreamingZipTransferForUUID:method:andRunWithPromise:error:]", 2675, @"IXErrorDomain", 3uLL, 0, 0, @"PromisedStreamingZipTransfer did not exist for UUID %@ when called for %s by client %@", v16, v10);
+    clientName2 = [(IXSClientConnection *)self clientName];
+    v17 = sub_1000405FC("[IXSClientConnection _fetchPromisedStreamingZipTransferForUUID:method:andRunWithPromise:error:]", 2675, @"IXErrorDomain", 3uLL, 0, 0, @"PromisedStreamingZipTransfer did not exist for UUID %@ when called for %s by client %@", v16, dCopy);
 
-    v12[2](v12, v17);
+    errorCopy[2](errorCopy, v17);
   }
 }
 
-- (void)_remote_IXSPromisedStreamingZipTransfer:(id)a3 setArchiveBytesConsumed:(unint64_t)a4
+- (void)_remote_IXSPromisedStreamingZipTransfer:(id)transfer setArchiveBytesConsumed:(unint64_t)consumed
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10008C058;
   v4[3] = &unk_1001037B8;
-  v4[4] = a4;
-  [(IXSClientConnection *)self _fetchPromisedStreamingZipTransferForUUID:a3 method:"[IXSClientConnection _remote_IXSPromisedStreamingZipTransfer:setArchiveBytesConsumed:]" andRunWithPromise:v4 error:&stru_1001037D8];
+  v4[4] = consumed;
+  [(IXSClientConnection *)self _fetchPromisedStreamingZipTransferForUUID:transfer method:"[IXSClientConnection _remote_IXSPromisedStreamingZipTransfer:setArchiveBytesConsumed:]" andRunWithPromise:v4 error:&stru_1001037D8];
 }
 
-- (void)_fetchPromisedOutOfBandStreamingZipTransferForUUID:(id)a3 method:(const char *)a4 andRunWithPromise:(id)a5 error:(id)a6
+- (void)_fetchPromisedOutOfBandStreamingZipTransferForUUID:(id)d method:(const char *)method andRunWithPromise:(id)promise error:(id)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  promiseCopy = promise;
+  errorCopy = error;
   v13 = +[IXSDataPromiseManager sharedInstance];
-  v14 = [v13 promiseForUUID:v10 ofType:objc_opt_class()];
+  v14 = [v13 promiseForUUID:dCopy ofType:objc_opt_class()];
 
   if (v14)
   {
-    v11[2](v11, v14);
+    promiseCopy[2](promiseCopy, v14);
   }
 
   else
@@ -6011,44 +6011,44 @@ LABEL_13:
     v15 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v18 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136316162;
       v21 = "[IXSClientConnection _fetchPromisedOutOfBandStreamingZipTransferForUUID:method:andRunWithPromise:error:]";
       v22 = 2112;
-      v23 = v10;
+      v23 = dCopy;
       v24 = 2080;
-      v25 = a4;
+      methodCopy = method;
       v26 = 2112;
-      v27 = v18;
+      v27 = clientName;
       v28 = 2112;
       v29 = 0;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s: PromisedOutOfBandStreamingZipTransfer did not exist for UUID %@ when called for %s by client %@ : %@", buf, 0x34u);
     }
 
-    v19 = [(IXSClientConnection *)self clientName];
-    v17 = sub_1000405FC("[IXSClientConnection _fetchPromisedOutOfBandStreamingZipTransferForUUID:method:andRunWithPromise:error:]", 2684, @"IXErrorDomain", 3uLL, 0, 0, @"PromisedOutOfBandStreamingZipTransfer did not exist for UUID %@ when called for %s by client %@", v16, v10);
+    clientName2 = [(IXSClientConnection *)self clientName];
+    v17 = sub_1000405FC("[IXSClientConnection _fetchPromisedOutOfBandStreamingZipTransferForUUID:method:andRunWithPromise:error:]", 2684, @"IXErrorDomain", 3uLL, 0, 0, @"PromisedOutOfBandStreamingZipTransfer did not exist for UUID %@ when called for %s by client %@", v16, dCopy);
 
-    v12[2](v12, v17);
+    errorCopy[2](errorCopy, v17);
   }
 }
 
-- (void)_remote_IXSPromisedOutOfBandStreamingZipTransfer:(id)a3 setArchiveBytesConsumed:(unint64_t)a4
+- (void)_remote_IXSPromisedOutOfBandStreamingZipTransfer:(id)transfer setArchiveBytesConsumed:(unint64_t)consumed
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10008C2F8;
   v4[3] = &unk_1001037F8;
-  v4[4] = a4;
-  [(IXSClientConnection *)self _fetchPromisedOutOfBandStreamingZipTransferForUUID:a3 method:"[IXSClientConnection _remote_IXSPromisedOutOfBandStreamingZipTransfer:setArchiveBytesConsumed:]" andRunWithPromise:v4 error:&stru_100103818];
+  v4[4] = consumed;
+  [(IXSClientConnection *)self _fetchPromisedOutOfBandStreamingZipTransferForUUID:transfer method:"[IXSClientConnection _remote_IXSPromisedOutOfBandStreamingZipTransfer:setArchiveBytesConsumed:]" andRunWithPromise:v4 error:&stru_100103818];
 }
 
-- (void)_client_coordinatorDidRegisterForObservationWithUUID:(id)a3
+- (void)_client_coordinatorDidRegisterForObservationWithUUID:(id)d
 {
-  v4 = a3;
-  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:v4])
+  dCopy = d;
+  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:dCopy])
   {
-    v5 = [(IXSClientConnection *)self xpcConnection];
-    if (v5)
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    if (xpcConnection)
     {
       v6 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -6056,7 +6056,7 @@ LABEL_13:
         *buf = 136315394;
         v10 = "[IXSClientConnection _client_coordinatorDidRegisterForObservationWithUUID:]";
         v11 = 2112;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s: Dispatching _client_coordinatorDidRegisterForObservationWithUUID:uuid to %@", buf, 0x16u);
       }
 
@@ -6065,37 +6065,37 @@ LABEL_13:
       v8[2] = sub_10008C4F8;
       v8[3] = &unk_100101808;
       v8[4] = self;
-      v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
-      [(IXSClientConnection *)v7 _client_coordinatorDidRegisterForObservationWithUUID:v4];
+      clientName = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
+      [(IXSClientConnection *)clientName _client_coordinatorDidRegisterForObservationWithUUID:dCopy];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v5 = sub_1000031B0(off_100121958);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    xpcConnection = sub_1000031B0(off_100121958);
+    if (os_log_type_enabled(xpcConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v10 = "[IXSClientConnection _client_coordinatorDidRegisterForObservationWithUUID:]";
       v11 = 2112;
-      v12 = v7;
+      selfCopy = clientName;
       v13 = 2112;
-      v14 = v4;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
+      v14 = dCopy;
+      _os_log_impl(&_mh_execute_header, xpcConnection, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
 LABEL_8:
     }
   }
 }
 
-- (void)_client_coordinatorShouldPrioritizeWithUUID:(id)a3
+- (void)_client_coordinatorShouldPrioritizeWithUUID:(id)d
 {
-  v4 = a3;
-  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:v4])
+  dCopy = d;
+  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:dCopy])
   {
-    v5 = [(IXSClientConnection *)self xpcConnection];
-    if (v5)
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    if (xpcConnection)
     {
       v6 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -6103,7 +6103,7 @@ LABEL_8:
         *buf = 136315394;
         v10 = "[IXSClientConnection _client_coordinatorShouldPrioritizeWithUUID:]";
         v11 = 2112;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s: Dispatching _client_coordinatorShouldPrioritizeWithUUID:uuid to %@", buf, 0x16u);
       }
 
@@ -6112,37 +6112,37 @@ LABEL_8:
       v8[2] = sub_10008C7DC;
       v8[3] = &unk_100101808;
       v8[4] = self;
-      v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
-      [(IXSClientConnection *)v7 _client_coordinatorShouldPrioritizeWithUUID:v4];
+      clientName = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
+      [(IXSClientConnection *)clientName _client_coordinatorShouldPrioritizeWithUUID:dCopy];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v5 = sub_1000031B0(off_100121958);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    xpcConnection = sub_1000031B0(off_100121958);
+    if (os_log_type_enabled(xpcConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v10 = "[IXSClientConnection _client_coordinatorShouldPrioritizeWithUUID:]";
       v11 = 2112;
-      v12 = v7;
+      selfCopy = clientName;
       v13 = 2112;
-      v14 = v4;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
+      v14 = dCopy;
+      _os_log_impl(&_mh_execute_header, xpcConnection, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
 LABEL_8:
     }
   }
 }
 
-- (void)_client_coordinatorShouldResumeWithUUID:(id)a3
+- (void)_client_coordinatorShouldResumeWithUUID:(id)d
 {
-  v4 = a3;
-  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:v4])
+  dCopy = d;
+  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:dCopy])
   {
-    v5 = [(IXSClientConnection *)self xpcConnection];
-    if (v5)
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    if (xpcConnection)
     {
       v6 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -6150,7 +6150,7 @@ LABEL_8:
         *buf = 136315394;
         v10 = "[IXSClientConnection _client_coordinatorShouldResumeWithUUID:]";
         v11 = 2112;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s: Dispatching _client_coordinatorShouldResumeWithUUID:uuid to %@", buf, 0x16u);
       }
 
@@ -6159,37 +6159,37 @@ LABEL_8:
       v8[2] = sub_10008CAC0;
       v8[3] = &unk_100101808;
       v8[4] = self;
-      v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
-      [(IXSClientConnection *)v7 _client_coordinatorShouldResumeWithUUID:v4];
+      clientName = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
+      [(IXSClientConnection *)clientName _client_coordinatorShouldResumeWithUUID:dCopy];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v5 = sub_1000031B0(off_100121958);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    xpcConnection = sub_1000031B0(off_100121958);
+    if (os_log_type_enabled(xpcConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v10 = "[IXSClientConnection _client_coordinatorShouldResumeWithUUID:]";
       v11 = 2112;
-      v12 = v7;
+      selfCopy = clientName;
       v13 = 2112;
-      v14 = v4;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
+      v14 = dCopy;
+      _os_log_impl(&_mh_execute_header, xpcConnection, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
 LABEL_8:
     }
   }
 }
 
-- (void)_client_coordinatorShouldPauseWithUUID:(id)a3
+- (void)_client_coordinatorShouldPauseWithUUID:(id)d
 {
-  v4 = a3;
-  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:v4])
+  dCopy = d;
+  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:dCopy])
   {
-    v5 = [(IXSClientConnection *)self xpcConnection];
-    if (v5)
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    if (xpcConnection)
     {
       v6 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -6197,7 +6197,7 @@ LABEL_8:
         *buf = 136315394;
         v10 = "[IXSClientConnection _client_coordinatorShouldPauseWithUUID:]";
         v11 = 2112;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s: Dispatching _client_coordinatorShouldPauseWithUUID:uuid to %@", buf, 0x16u);
       }
 
@@ -6206,37 +6206,37 @@ LABEL_8:
       v8[2] = sub_10008CDA4;
       v8[3] = &unk_100101808;
       v8[4] = self;
-      v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
-      [(IXSClientConnection *)v7 _client_coordinatorShouldPauseWithUUID:v4];
+      clientName = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
+      [(IXSClientConnection *)clientName _client_coordinatorShouldPauseWithUUID:dCopy];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v5 = sub_1000031B0(off_100121958);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    xpcConnection = sub_1000031B0(off_100121958);
+    if (os_log_type_enabled(xpcConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v10 = "[IXSClientConnection _client_coordinatorShouldPauseWithUUID:]";
       v11 = 2112;
-      v12 = v7;
+      selfCopy = clientName;
       v13 = 2112;
-      v14 = v4;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
+      v14 = dCopy;
+      _os_log_impl(&_mh_execute_header, xpcConnection, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
 LABEL_8:
     }
   }
 }
 
-- (void)_client_coordinatorWithUUID:(id)a3 configuredPromiseDidBeginFulfillment:(unint64_t)a4
+- (void)_client_coordinatorWithUUID:(id)d configuredPromiseDidBeginFulfillment:(unint64_t)fulfillment
 {
-  v6 = a3;
-  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:v6])
+  dCopy = d;
+  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:dCopy])
   {
-    v7 = [(IXSClientConnection *)self xpcConnection];
-    if (v7)
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    if (xpcConnection)
     {
       v8 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -6244,7 +6244,7 @@ LABEL_8:
         *buf = 136315394;
         v12 = "[IXSClientConnection _client_coordinatorWithUUID:configuredPromiseDidBeginFulfillment:]";
         v13 = 2112;
-        v14 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Dispatching _client_coordinatorWithUUID:uuid configuredPromiseDidBeginFulfillment:ident to %@", buf, 0x16u);
       }
 
@@ -6253,37 +6253,37 @@ LABEL_8:
       v10[2] = sub_10008D098;
       v10[3] = &unk_100101808;
       v10[4] = self;
-      v9 = [v7 remoteObjectProxyWithErrorHandler:v10];
-      [(IXSClientConnection *)v9 _client_coordinatorWithUUID:v6 configuredPromiseDidBeginFulfillment:a4];
+      clientName = [xpcConnection remoteObjectProxyWithErrorHandler:v10];
+      [(IXSClientConnection *)clientName _client_coordinatorWithUUID:dCopy configuredPromiseDidBeginFulfillment:fulfillment];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v7 = sub_1000031B0(off_100121958);
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    xpcConnection = sub_1000031B0(off_100121958);
+    if (os_log_type_enabled(xpcConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v12 = "[IXSClientConnection _client_coordinatorWithUUID:configuredPromiseDidBeginFulfillment:]";
       v13 = 2112;
-      v14 = v9;
+      selfCopy = clientName;
       v15 = 2112;
-      v16 = v6;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
+      v16 = dCopy;
+      _os_log_impl(&_mh_execute_header, xpcConnection, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
 LABEL_8:
     }
   }
 }
 
-- (void)_client_coordinatorShouldBeginRestoringUserDataWithUUID:(id)a3
+- (void)_client_coordinatorShouldBeginRestoringUserDataWithUUID:(id)d
 {
-  v4 = a3;
-  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:v4])
+  dCopy = d;
+  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:dCopy])
   {
-    v5 = [(IXSClientConnection *)self xpcConnection];
-    if (v5)
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    if (xpcConnection)
     {
       v6 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -6291,7 +6291,7 @@ LABEL_8:
         *buf = 136315394;
         v10 = "[IXSClientConnection _client_coordinatorShouldBeginRestoringUserDataWithUUID:]";
         v11 = 2112;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s: Dispatching _client_coordinatorShouldBeginRestoringUserDataWithUUID:uuid to %@", buf, 0x16u);
       }
 
@@ -6300,38 +6300,38 @@ LABEL_8:
       v8[2] = sub_10008D37C;
       v8[3] = &unk_100101808;
       v8[4] = self;
-      v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
-      [(IXSClientConnection *)v7 _client_coordinatorShouldBeginRestoringUserDataWithUUID:v4];
+      clientName = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
+      [(IXSClientConnection *)clientName _client_coordinatorShouldBeginRestoringUserDataWithUUID:dCopy];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v5 = sub_1000031B0(off_100121958);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    xpcConnection = sub_1000031B0(off_100121958);
+    if (os_log_type_enabled(xpcConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v10 = "[IXSClientConnection _client_coordinatorShouldBeginRestoringUserDataWithUUID:]";
       v11 = 2112;
-      v12 = v7;
+      selfCopy = clientName;
       v13 = 2112;
-      v14 = v4;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
+      v14 = dCopy;
+      _os_log_impl(&_mh_execute_header, xpcConnection, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
 LABEL_8:
     }
   }
 }
 
-- (void)_client_coordinatorShouldBeginPostProcessingWithUUID:(id)a3 forRecordPromise:(id)a4
+- (void)_client_coordinatorShouldBeginPostProcessingWithUUID:(id)d forRecordPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:v6])
+  dCopy = d;
+  promiseCopy = promise;
+  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:dCopy])
   {
-    v8 = [(IXSClientConnection *)self xpcConnection];
-    if (v8)
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    if (xpcConnection)
     {
       v9 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -6339,7 +6339,7 @@ LABEL_8:
         *buf = 136315394;
         v13 = "[IXSClientConnection _client_coordinatorShouldBeginPostProcessingWithUUID:forRecordPromise:]";
         v14 = 2112;
-        v15 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: Dispatching _client_coordinatorShouldBeginPostProcessingWithUUID:uuid forRecordPromise:recordPromise to %@", buf, 0x16u);
       }
 
@@ -6348,38 +6348,38 @@ LABEL_8:
       v11[2] = sub_10008D67C;
       v11[3] = &unk_100101808;
       v11[4] = self;
-      v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
-      [(IXSClientConnection *)v10 _client_coordinatorShouldBeginPostProcessingWithUUID:v6 forRecordPromise:v7];
+      clientName = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
+      [(IXSClientConnection *)clientName _client_coordinatorShouldBeginPostProcessingWithUUID:dCopy forRecordPromise:promiseCopy];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v8 = sub_1000031B0(off_100121958);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    xpcConnection = sub_1000031B0(off_100121958);
+    if (os_log_type_enabled(xpcConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v13 = "[IXSClientConnection _client_coordinatorShouldBeginPostProcessingWithUUID:forRecordPromise:]";
       v14 = 2112;
-      v15 = v10;
+      selfCopy = clientName;
       v16 = 2112;
-      v17 = v6;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
+      v17 = dCopy;
+      _os_log_impl(&_mh_execute_header, xpcConnection, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
 LABEL_8:
     }
   }
 }
 
-- (void)_client_coordinatorDidInstallPlaceholderWithUUID:(id)a3 forRecordPromise:(id)a4
+- (void)_client_coordinatorDidInstallPlaceholderWithUUID:(id)d forRecordPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:v6])
+  dCopy = d;
+  promiseCopy = promise;
+  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:dCopy])
   {
-    v8 = [(IXSClientConnection *)self xpcConnection];
-    if (v8)
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    if (xpcConnection)
     {
       v9 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -6387,7 +6387,7 @@ LABEL_8:
         *buf = 136315394;
         v13 = "[IXSClientConnection _client_coordinatorDidInstallPlaceholderWithUUID:forRecordPromise:]";
         v14 = 2112;
-        v15 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: Dispatching _client_coordinatorDidInstallPlaceholderWithUUID:uuid forRecordPromise:recordPromise to %@", buf, 0x16u);
       }
 
@@ -6396,38 +6396,38 @@ LABEL_8:
       v11[2] = sub_10008D97C;
       v11[3] = &unk_100101808;
       v11[4] = self;
-      v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
-      [(IXSClientConnection *)v10 _client_coordinatorDidInstallPlaceholderWithUUID:v6 forRecordPromise:v7];
+      clientName = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
+      [(IXSClientConnection *)clientName _client_coordinatorDidInstallPlaceholderWithUUID:dCopy forRecordPromise:promiseCopy];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v8 = sub_1000031B0(off_100121958);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    xpcConnection = sub_1000031B0(off_100121958);
+    if (os_log_type_enabled(xpcConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v13 = "[IXSClientConnection _client_coordinatorDidInstallPlaceholderWithUUID:forRecordPromise:]";
       v14 = 2112;
-      v15 = v10;
+      selfCopy = clientName;
       v16 = 2112;
-      v17 = v6;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
+      v17 = dCopy;
+      _os_log_impl(&_mh_execute_header, xpcConnection, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
 LABEL_8:
     }
   }
 }
 
-- (void)_client_coordinatorDidCompleteSuccessfullyWithUUID:(id)a3 forRecordPromise:(id)a4
+- (void)_client_coordinatorDidCompleteSuccessfullyWithUUID:(id)d forRecordPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:v6])
+  dCopy = d;
+  promiseCopy = promise;
+  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:dCopy])
   {
-    v8 = [(IXSClientConnection *)self xpcConnection];
-    if (v8)
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    if (xpcConnection)
     {
       v9 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -6435,7 +6435,7 @@ LABEL_8:
         *buf = 136315394;
         v13 = "[IXSClientConnection _client_coordinatorDidCompleteSuccessfullyWithUUID:forRecordPromise:]";
         v14 = 2112;
-        v15 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: Dispatching _client_coordinatorDidCompleteSuccessfullyWithUUID:uuid forRecordPromise:recordPromise to %@", buf, 0x16u);
       }
 
@@ -6444,38 +6444,38 @@ LABEL_8:
       v11[2] = sub_10008DC7C;
       v11[3] = &unk_100101808;
       v11[4] = self;
-      v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
-      [(IXSClientConnection *)v10 _client_coordinatorDidCompleteSuccessfullyWithUUID:v6 forRecordPromise:v7];
+      clientName = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
+      [(IXSClientConnection *)clientName _client_coordinatorDidCompleteSuccessfullyWithUUID:dCopy forRecordPromise:promiseCopy];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v8 = sub_1000031B0(off_100121958);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    xpcConnection = sub_1000031B0(off_100121958);
+    if (os_log_type_enabled(xpcConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v13 = "[IXSClientConnection _client_coordinatorDidCompleteSuccessfullyWithUUID:forRecordPromise:]";
       v14 = 2112;
-      v15 = v10;
+      selfCopy = clientName;
       v16 = 2112;
-      v17 = v6;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
+      v17 = dCopy;
+      _os_log_impl(&_mh_execute_header, xpcConnection, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
 LABEL_8:
     }
   }
 }
 
-- (void)_client_coordinatorWithUUID:(id)a3 didCancelWithReason:(id)a4 client:(unint64_t)a5
+- (void)_client_coordinatorWithUUID:(id)d didCancelWithReason:(id)reason client:(unint64_t)client
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:v8])
+  dCopy = d;
+  reasonCopy = reason;
+  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:dCopy])
   {
-    v10 = [(IXSClientConnection *)self xpcConnection];
-    if (v10)
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    if (xpcConnection)
     {
       v11 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -6483,7 +6483,7 @@ LABEL_8:
         *buf = 136315394;
         v15 = "[IXSClientConnection _client_coordinatorWithUUID:didCancelWithReason:client:]";
         v16 = 2112;
-        v17 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s: Dispatching _client_coordinatorWithUUID:uuid didCancelWithReason:cancelReason client:client to %@", buf, 0x16u);
       }
 
@@ -6492,37 +6492,37 @@ LABEL_8:
       v13[2] = sub_10008DF84;
       v13[3] = &unk_100101808;
       v13[4] = self;
-      v12 = [v10 remoteObjectProxyWithErrorHandler:v13];
-      [(IXSClientConnection *)v12 _client_coordinatorWithUUID:v8 didCancelWithReason:v9 client:a5];
+      clientName = [xpcConnection remoteObjectProxyWithErrorHandler:v13];
+      [(IXSClientConnection *)clientName _client_coordinatorWithUUID:dCopy didCancelWithReason:reasonCopy client:client];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v10 = sub_1000031B0(off_100121958);
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    xpcConnection = sub_1000031B0(off_100121958);
+    if (os_log_type_enabled(xpcConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v15 = "[IXSClientConnection _client_coordinatorWithUUID:didCancelWithReason:client:]";
       v16 = 2112;
-      v17 = v12;
+      selfCopy = clientName;
       v18 = 2112;
-      v19 = v8;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
+      v19 = dCopy;
+      _os_log_impl(&_mh_execute_header, xpcConnection, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
 LABEL_8:
     }
   }
 }
 
-- (void)_client_coordinatorWithUUID:(id)a3 didUpdateProgress:(double)a4 forPhase:(unint64_t)a5 overallProgress:(double)a6
+- (void)_client_coordinatorWithUUID:(id)d didUpdateProgress:(double)progress forPhase:(unint64_t)phase overallProgress:(double)overallProgress
 {
-  v10 = a3;
-  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:v10])
+  dCopy = d;
+  if ([(IXSClientConnection *)self interestedInCoordinatorUUID:dCopy])
   {
-    v11 = [(IXSClientConnection *)self xpcConnection];
-    if (v11)
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    if (xpcConnection)
     {
       v12 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -6530,7 +6530,7 @@ LABEL_8:
         *buf = 136315394;
         v16 = "[IXSClientConnection _client_coordinatorWithUUID:didUpdateProgress:forPhase:overallProgress:]";
         v17 = 2112;
-        v18 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s: Dispatching _client_coordinatorWithUUID:uuid didUpdateProgress:percentComplete forPhase:phase overallProgress:overallProgress to %@", buf, 0x16u);
       }
 
@@ -6539,37 +6539,37 @@ LABEL_8:
       v14[2] = sub_10008E290;
       v14[3] = &unk_100101808;
       v14[4] = self;
-      v13 = [v11 remoteObjectProxyWithErrorHandler:v14];
-      [(IXSClientConnection *)v13 _client_coordinatorWithUUID:v10 didUpdateProgress:a5 forPhase:a4 overallProgress:a6];
+      clientName = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+      [(IXSClientConnection *)clientName _client_coordinatorWithUUID:dCopy didUpdateProgress:phase forPhase:progress overallProgress:overallProgress];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v11 = sub_1000031B0(off_100121958);
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    xpcConnection = sub_1000031B0(off_100121958);
+    if (os_log_type_enabled(xpcConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v16 = "[IXSClientConnection _client_coordinatorWithUUID:didUpdateProgress:forPhase:overallProgress:]";
       v17 = 2112;
-      v18 = v13;
+      selfCopy = clientName;
       v19 = 2112;
-      v20 = v10;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
+      v20 = dCopy;
+      _os_log_impl(&_mh_execute_header, xpcConnection, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in coordinator UUID %@", buf, 0x20u);
 LABEL_8:
     }
   }
 }
 
-- (void)_client_promiseDidCompleteSuccessfullyWithUUID:(id)a3
+- (void)_client_promiseDidCompleteSuccessfullyWithUUID:(id)d
 {
-  v4 = a3;
-  if ([(IXSClientConnection *)self interestedInPromiseUUID:v4])
+  dCopy = d;
+  if ([(IXSClientConnection *)self interestedInPromiseUUID:dCopy])
   {
-    v5 = [(IXSClientConnection *)self xpcConnection];
-    if (v5)
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    if (xpcConnection)
     {
       v6 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -6577,7 +6577,7 @@ LABEL_8:
         *buf = 136315394;
         v10 = "[IXSClientConnection _client_promiseDidCompleteSuccessfullyWithUUID:]";
         v11 = 2112;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s: Dispatching _client_promiseDidCompleteSuccessfullyWithUUID:uuid to %@", buf, 0x16u);
       }
 
@@ -6586,38 +6586,38 @@ LABEL_8:
       v8[2] = sub_10008E574;
       v8[3] = &unk_100101808;
       v8[4] = self;
-      v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
-      [(IXSClientConnection *)v7 _client_promiseDidCompleteSuccessfullyWithUUID:v4];
+      clientName = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
+      [(IXSClientConnection *)clientName _client_promiseDidCompleteSuccessfullyWithUUID:dCopy];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v5 = sub_1000031B0(off_100121958);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    xpcConnection = sub_1000031B0(off_100121958);
+    if (os_log_type_enabled(xpcConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v10 = "[IXSClientConnection _client_promiseDidCompleteSuccessfullyWithUUID:]";
       v11 = 2112;
-      v12 = v7;
+      selfCopy = clientName;
       v13 = 2112;
-      v14 = v4;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in promise UUID %@", buf, 0x20u);
+      v14 = dCopy;
+      _os_log_impl(&_mh_execute_header, xpcConnection, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in promise UUID %@", buf, 0x20u);
 LABEL_8:
     }
   }
 }
 
-- (void)_client_promiseWithUUID:(id)a3 didCancelWithReason:(id)a4 client:(unint64_t)a5
+- (void)_client_promiseWithUUID:(id)d didCancelWithReason:(id)reason client:(unint64_t)client
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(IXSClientConnection *)self interestedInPromiseUUID:v8])
+  dCopy = d;
+  reasonCopy = reason;
+  if ([(IXSClientConnection *)self interestedInPromiseUUID:dCopy])
   {
-    v10 = [(IXSClientConnection *)self xpcConnection];
-    if (v10)
+    xpcConnection = [(IXSClientConnection *)self xpcConnection];
+    if (xpcConnection)
     {
       v11 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -6625,7 +6625,7 @@ LABEL_8:
         *buf = 136315394;
         v15 = "[IXSClientConnection _client_promiseWithUUID:didCancelWithReason:client:]";
         v16 = 2112;
-        v17 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s: Dispatching _client_promiseWithUUID:uuid didCancelWithReason:cancelReason client:client to %@", buf, 0x16u);
       }
 
@@ -6634,25 +6634,25 @@ LABEL_8:
       v13[2] = sub_10008E87C;
       v13[3] = &unk_100101808;
       v13[4] = self;
-      v12 = [v10 remoteObjectProxyWithErrorHandler:v13];
-      [(IXSClientConnection *)v12 _client_promiseWithUUID:v8 didCancelWithReason:v9 client:a5];
+      clientName = [xpcConnection remoteObjectProxyWithErrorHandler:v13];
+      [(IXSClientConnection *)clientName _client_promiseWithUUID:dCopy didCancelWithReason:reasonCopy client:client];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v10 = sub_1000031B0(off_100121958);
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    xpcConnection = sub_1000031B0(off_100121958);
+    if (os_log_type_enabled(xpcConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(IXSClientConnection *)self clientName];
+      clientName = [(IXSClientConnection *)self clientName];
       *buf = 136315650;
       v15 = "[IXSClientConnection _client_promiseWithUUID:didCancelWithReason:client:]";
       v16 = 2112;
-      v17 = v12;
+      selfCopy = clientName;
       v18 = 2112;
-      v19 = v8;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in promise UUID %@", buf, 0x20u);
+      v19 = dCopy;
+      _os_log_impl(&_mh_execute_header, xpcConnection, OS_LOG_TYPE_DEFAULT, "%s: Client %@ was not interested in promise UUID %@", buf, 0x20u);
 LABEL_8:
     }
   }

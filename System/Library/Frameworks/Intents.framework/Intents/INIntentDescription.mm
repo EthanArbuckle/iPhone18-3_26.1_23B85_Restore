@@ -1,9 +1,9 @@
 @interface INIntentDescription
-- (BOOL)isEqual:(id)a3;
-- (INIntentDescription)initWithName:(id)a3 responseName:(id)a4 facadeClass:(Class)a5 dataClass:(Class)a6 type:(id)a7 isPrivate:(BOOL)a8 handleSelector:(SEL)a9 confirmSelector:(SEL)a10 slotsByName:(id)a11;
+- (BOOL)isEqual:(id)equal;
+- (INIntentDescription)initWithName:(id)name responseName:(id)responseName facadeClass:(Class)class dataClass:(Class)dataClass type:(id)type isPrivate:(BOOL)private handleSelector:(SEL)selector confirmSelector:(SEL)self0 slotsByName:(id)self1;
 - (SEL)confirmSelector;
 - (SEL)handleSelector;
-- (id)slotByName:(id)a3;
+- (id)slotByName:(id)name;
 - (id)slotDescriptions;
 - (unint64_t)hash;
 @end
@@ -77,13 +77,13 @@ uint64_t __39__INIntentDescription_slotDescriptions__block_invoke(uint64_t a1, v
 
 - (id)slotDescriptions
 {
-  v3 = [(NSDictionary *)self->_slotsByName allValues];
+  allValues = [(NSDictionary *)self->_slotsByName allValues];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__INIntentDescription_slotDescriptions__block_invoke;
   v6[3] = &unk_1E7280A88;
   v6[4] = self;
-  v4 = [v3 sortedArrayUsingComparator:v6];
+  v4 = [allValues sortedArrayUsingComparator:v6];
 
   return v4;
 }
@@ -114,13 +114,13 @@ uint64_t __39__INIntentDescription_slotDescriptions__block_invoke(uint64_t a1, v
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     name = self->_name;
     if (name != v5[4] && ![(NSString *)name isEqualToString:?])
     {
@@ -239,12 +239,12 @@ LABEL_8:
   return v16 ^ v20;
 }
 
-- (id)slotByName:(id)a3
+- (id)slotByName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v5 = [(NSDictionary *)self->_slotsByName objectForKeyedSubscript:v4];
+    v5 = [(NSDictionary *)self->_slotsByName objectForKeyedSubscript:nameCopy];
     if (v5)
     {
       v6 = v5;
@@ -252,7 +252,7 @@ LABEL_8:
 
     else
     {
-      v7 = [(NSDictionary *)self->_alternativeSlotNames objectForKeyedSubscript:v4];
+      v7 = [(NSDictionary *)self->_alternativeSlotNames objectForKeyedSubscript:nameCopy];
       if (v7 && ([(NSDictionary *)self->_slotsByName objectForKeyedSubscript:v7], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v6 = v8;
@@ -273,71 +273,71 @@ LABEL_8:
   return v6;
 }
 
-- (INIntentDescription)initWithName:(id)a3 responseName:(id)a4 facadeClass:(Class)a5 dataClass:(Class)a6 type:(id)a7 isPrivate:(BOOL)a8 handleSelector:(SEL)a9 confirmSelector:(SEL)a10 slotsByName:(id)a11
+- (INIntentDescription)initWithName:(id)name responseName:(id)responseName facadeClass:(Class)class dataClass:(Class)dataClass type:(id)type isPrivate:(BOOL)private handleSelector:(SEL)selector confirmSelector:(SEL)self0 slotsByName:(id)self1
 {
   v55 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  v19 = a7;
-  v20 = a11;
+  nameCopy = name;
+  responseNameCopy = responseName;
+  typeCopy = type;
+  byNameCopy = byName;
   v49.receiver = self;
   v49.super_class = INIntentDescription;
   v21 = [(INIntentDescription *)&v49 init];
   if (v21)
   {
-    v22 = [v17 copy];
+    v22 = [nameCopy copy];
     name = v21->_name;
     v21->_name = v22;
 
-    v24 = [v18 copy];
+    v24 = [responseNameCopy copy];
     responseName = v21->_responseName;
     v21->_responseName = v24;
 
-    v21->_facadeClass = a5;
-    v21->_dataClass = a6;
-    v26 = [v19 copy];
+    v21->_facadeClass = class;
+    v21->_dataClass = dataClass;
+    v26 = [typeCopy copy];
     type = v21->_type;
     v21->_type = v26;
 
-    v21->_isPrivate = a8;
-    if (a9)
+    v21->_isPrivate = private;
+    if (selector)
     {
-      v28 = a9;
+      selectorCopy = selector;
     }
 
     else
     {
-      v28 = 0;
+      selectorCopy = 0;
     }
 
-    v21->_handleSelector = v28;
-    v47 = v18;
-    v48 = v17;
-    v46 = v19;
-    if (a10)
+    v21->_handleSelector = selectorCopy;
+    v47 = responseNameCopy;
+    v48 = nameCopy;
+    v46 = typeCopy;
+    if (confirmSelector)
     {
-      v29 = a10;
+      confirmSelectorCopy = confirmSelector;
     }
 
     else
     {
-      v29 = 0;
+      confirmSelectorCopy = 0;
     }
 
-    v21->_confirmSelector = v29;
-    v30 = [v20 copy];
+    v21->_confirmSelector = confirmSelectorCopy;
+    v30 = [byNameCopy copy];
     slotsByName = v21->_slotsByName;
     v21->_slotsByName = v30;
 
-    v45 = v20;
-    v32 = v20;
+    v45 = byNameCopy;
+    v32 = byNameCopy;
     v33 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v32, "count")}];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v34 = [v32 allKeys];
-    v35 = [v34 countByEnumeratingWithState:&v50 objects:v54 count:16];
+    allKeys = [v32 allKeys];
+    v35 = [allKeys countByEnumeratingWithState:&v50 objects:v54 count:16];
     if (v35)
     {
       v36 = v35;
@@ -348,16 +348,16 @@ LABEL_8:
         {
           if (*v51 != v37)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(allKeys);
           }
 
           v39 = *(*(&v50 + 1) + 8 * i);
           v40 = [v32 objectForKeyedSubscript:{v39, v45}];
-          v41 = [v40 facadePropertyName];
-          [(NSDictionary *)v33 setObject:v39 forKey:v41];
+          facadePropertyName = [v40 facadePropertyName];
+          [(NSDictionary *)v33 setObject:v39 forKey:facadePropertyName];
         }
 
-        v36 = [v34 countByEnumeratingWithState:&v50 objects:v54 count:16];
+        v36 = [allKeys countByEnumeratingWithState:&v50 objects:v54 count:16];
       }
 
       while (v36);
@@ -366,10 +366,10 @@ LABEL_8:
     alternativeSlotNames = v21->_alternativeSlotNames;
     v21->_alternativeSlotNames = v33;
 
-    v18 = v47;
-    v17 = v48;
-    v20 = v45;
-    v19 = v46;
+    responseNameCopy = v47;
+    nameCopy = v48;
+    byNameCopy = v45;
+    typeCopy = v46;
   }
 
   v43 = *MEMORY[0x1E69E9840];

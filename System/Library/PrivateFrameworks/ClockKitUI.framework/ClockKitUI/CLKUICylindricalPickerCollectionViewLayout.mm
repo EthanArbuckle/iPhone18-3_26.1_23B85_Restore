@@ -1,10 +1,10 @@
 @interface CLKUICylindricalPickerCollectionViewLayout
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
 - (CGSize)collectionViewContentSize;
-- (double)distaceFromCenterForLayoutAttributes:(id)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (double)distaceFromCenterForLayoutAttributes:(id)attributes;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)prepareLayout;
 @end
 
@@ -19,18 +19,18 @@
 
 - (CGSize)collectionViewContentSize
 {
-  v3 = [(CLKUICylindricalPickerCollectionViewLayout *)self attributes];
-  v4 = [v3 lastObject];
+  attributes = [(CLKUICylindricalPickerCollectionViewLayout *)self attributes];
+  lastObject = [attributes lastObject];
 
-  if (v4)
+  if (lastObject)
   {
-    v5 = [(CLKUICylindricalPickerCollectionViewLayout *)self collectionView];
-    [v5 frame];
+    collectionView = [(CLKUICylindricalPickerCollectionViewLayout *)self collectionView];
+    [collectionView frame];
     v7 = v6;
-    [v4 frame];
+    [lastObject frame];
     MaxY = CGRectGetMaxY(v15);
-    v9 = [(CLKUICylindricalPickerCollectionViewLayout *)self collectionView];
-    [v9 contentInset];
+    collectionView2 = [(CLKUICylindricalPickerCollectionViewLayout *)self collectionView];
+    [collectionView2 contentInset];
     v11 = MaxY + v10;
   }
 
@@ -47,48 +47,48 @@
   return result;
 }
 
-- (double)distaceFromCenterForLayoutAttributes:(id)a3
+- (double)distaceFromCenterForLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(CLKUICylindricalPickerCollectionViewLayout *)self collectionView];
-  [v5 contentOffset];
+  attributesCopy = attributes;
+  collectionView = [(CLKUICylindricalPickerCollectionViewLayout *)self collectionView];
+  [collectionView contentOffset];
   v7 = v6;
 
-  v8 = [(CLKUICylindricalPickerCollectionViewLayout *)self collectionView];
-  [v8 bounds];
+  collectionView2 = [(CLKUICylindricalPickerCollectionViewLayout *)self collectionView];
+  [collectionView2 bounds];
   v10 = v9 * -0.5;
 
-  [v4 center];
+  [attributesCopy center];
   v12 = v11;
 
   return v12 - v7 + v10;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  [(CLKUICylindricalPickerCollectionViewLayout *)self targetContentOffsetForProposedContentOffset:a3.x withScrollingVelocity:a3.y, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
+  [(CLKUICylindricalPickerCollectionViewLayout *)self targetContentOffsetForProposedContentOffset:offset.x withScrollingVelocity:offset.y, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v32 = *MEMORY[0x1E69E9840];
-  v7 = [(CLKUICylindricalPickerCollectionViewLayout *)self collectionView:a3.x];
+  v7 = [(CLKUICylindricalPickerCollectionViewLayout *)self collectionView:offset.x];
   [v7 bounds];
   v9 = v8 * 0.5;
 
-  v10 = [(CLKUICylindricalPickerCollectionViewLayout *)self collectionView];
-  v11 = [v10 indexPathsForVisibleItems];
+  collectionView = [(CLKUICylindricalPickerCollectionViewLayout *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = v11;
+  v12 = indexPathsForVisibleItems;
   v13 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v13)
   {
@@ -138,20 +138,20 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v25 = *MEMORY[0x1E69E9840];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [(CLKUICylindricalPickerCollectionViewLayout *)self attributes];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  attributes = [(CLKUICylindricalPickerCollectionViewLayout *)self attributes];
+  v10 = [attributes countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -162,7 +162,7 @@
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(attributes);
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
@@ -181,7 +181,7 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [attributes countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v11);
@@ -190,11 +190,11 @@
   return v8;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CLKUICylindricalPickerCollectionViewLayout *)self attributesByIndexPath];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  pathCopy = path;
+  attributesByIndexPath = [(CLKUICylindricalPickerCollectionViewLayout *)self attributesByIndexPath];
+  v6 = [attributesByIndexPath objectForKeyedSubscript:pathCopy];
 
   return v6;
 }

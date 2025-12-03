@@ -1,6 +1,6 @@
 @interface MPStoreModelAlbumBuilder
 + (id)allSupportedProperties;
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5;
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity;
 @end
 
 @implementation MPStoreModelAlbumBuilder
@@ -59,18 +59,18 @@
   return v9;
 }
 
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  objectCopy = object;
+  identityCopy = identity;
   p_requestedAlbumProperties = &self->_requestedAlbumProperties;
   if ((*&self->_requestedAlbumProperties & 1) == 0)
   {
-    v103 = v9;
-    v12 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-    v13 = [v12 properties];
-    v14 = [v13 containsObject:@"MPModelPropertyAlbumTitle"];
+    v103 = objectCopy;
+    requestedPropertySet = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+    properties = [requestedPropertySet properties];
+    v14 = [properties containsObject:@"MPModelPropertyAlbumTitle"];
     v15 = 4;
     if (!v14)
     {
@@ -78,7 +78,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFFFFFBLL | v15;
-    v16 = [v13 containsObject:@"MPModelPropertyAlbumTrackCount"];
+    v16 = [properties containsObject:@"MPModelPropertyAlbumTrackCount"];
     v17 = 8;
     if (!v16)
     {
@@ -86,7 +86,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFFFFF7 | v17;
-    v18 = [v13 containsObject:@"MPModelPropertyAlbumMaximumItemTrackNumber"];
+    v18 = [properties containsObject:@"MPModelPropertyAlbumMaximumItemTrackNumber"];
     v19 = 16;
     if (!v18)
     {
@@ -94,7 +94,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFFFFEFLL | v19;
-    v20 = [v13 containsObject:@"MPModelPropertyAlbumDiscCount"];
+    v20 = [properties containsObject:@"MPModelPropertyAlbumDiscCount"];
     v21 = 32;
     if (!v20)
     {
@@ -102,7 +102,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFFFFDFLL | v21;
-    v22 = [v13 containsObject:@"MPModelPropertyAlbumHasCleanContent"];
+    v22 = [properties containsObject:@"MPModelPropertyAlbumHasCleanContent"];
     v23 = 64;
     if (!v22)
     {
@@ -110,7 +110,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFFFFBFLL | v23;
-    v24 = [v13 containsObject:@"MPModelPropertyAlbumHasExplicitContent"];
+    v24 = [properties containsObject:@"MPModelPropertyAlbumHasExplicitContent"];
     v25 = 128;
     if (!v24)
     {
@@ -118,7 +118,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFFFF7FLL | v25;
-    v26 = [v13 containsObject:@"MPModelPropertyAlbumLibraryAdded"];
+    v26 = [properties containsObject:@"MPModelPropertyAlbumLibraryAdded"];
     v27 = 256;
     if (!v26)
     {
@@ -126,7 +126,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFFFEFFLL | v27;
-    v28 = [v13 containsObject:@"MPModelPropertyAlbumKeepLocalEnableState"];
+    v28 = [properties containsObject:@"MPModelPropertyAlbumKeepLocalEnableState"];
     v29 = 512;
     if (!v28)
     {
@@ -134,7 +134,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFFFDFFLL | v29;
-    v30 = [v13 containsObject:@"MPModelPropertyAlbumKeepLocalManagedStatus"];
+    v30 = [properties containsObject:@"MPModelPropertyAlbumKeepLocalManagedStatus"];
     v31 = 1024;
     if (!v30)
     {
@@ -142,7 +142,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFFFBFFLL | v31;
-    v32 = [v13 containsObject:@"MPModelPropertyAlbumKeepLocalManagedStatusReason"];
+    v32 = [properties containsObject:@"MPModelPropertyAlbumKeepLocalManagedStatusReason"];
     v33 = 2048;
     if (!v32)
     {
@@ -150,7 +150,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFFF7FFLL | v33;
-    v34 = [v13 containsObject:@"MPModelPropertyAlbumKeepLocalConstraints"];
+    v34 = [properties containsObject:@"MPModelPropertyAlbumKeepLocalConstraints"];
     v35 = 4096;
     if (!v34)
     {
@@ -158,7 +158,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFFEFFFLL | v35;
-    v36 = [v13 containsObject:@"MPModelPropertyAlbumLibraryAddEligible"];
+    v36 = [properties containsObject:@"MPModelPropertyAlbumLibraryAddEligible"];
     v37 = 0x2000;
     if (!v36)
     {
@@ -166,7 +166,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFFDFFFLL | v37;
-    v38 = [v13 containsObject:@"MPModelPropertyAlbumIsCompilation"];
+    v38 = [properties containsObject:@"MPModelPropertyAlbumIsCompilation"];
     v39 = 0x4000;
     if (!v38)
     {
@@ -174,7 +174,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFFBFFFLL | v39;
-    v40 = [v13 containsObject:@"MPModelPropertyAlbumIsClassical"];
+    v40 = [properties containsObject:@"MPModelPropertyAlbumIsClassical"];
     v41 = 0x8000;
     if (!v40)
     {
@@ -182,7 +182,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFF7FFFLL | v41;
-    v42 = [v13 containsObject:@"MPModelPropertyAlbumReleaseDateComponents"];
+    v42 = [properties containsObject:@"MPModelPropertyAlbumReleaseDateComponents"];
     v43 = 0x10000;
     if (!v42)
     {
@@ -190,7 +190,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFEFFFFLL | v43;
-    v44 = [v13 containsObject:@"MPModelPropertyAlbumArtwork"];
+    v44 = [properties containsObject:@"MPModelPropertyAlbumArtwork"];
     v45 = 0x20000;
     if (!v44)
     {
@@ -198,7 +198,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFDFFFFLL | v45;
-    v46 = [v13 containsObject:@"MPModelPropertyAlbumStaticTallEditorialArtwork"];
+    v46 = [properties containsObject:@"MPModelPropertyAlbumStaticTallEditorialArtwork"];
     v47 = 0x40000;
     if (!v46)
     {
@@ -206,7 +206,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFBFFFFLL | v47;
-    v48 = [v13 containsObject:@"MPModelPropertyAlbumSuperHeroTallEditorialArtwork"];
+    v48 = [properties containsObject:@"MPModelPropertyAlbumSuperHeroTallEditorialArtwork"];
     v49 = 0x80000;
     if (!v48)
     {
@@ -214,7 +214,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFF7FFFFLL | v49;
-    v50 = [v13 containsObject:@"MPModelPropertyAlbumYear"];
+    v50 = [properties containsObject:@"MPModelPropertyAlbumYear"];
     v51 = 0x100000;
     if (!v50)
     {
@@ -222,7 +222,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFEFFFFFLL | v51;
-    if ([v13 containsObject:@"MPModelPropertyAlbumCopyrightText"])
+    if ([properties containsObject:@"MPModelPropertyAlbumCopyrightText"])
     {
       v52 = 2;
     }
@@ -233,7 +233,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFFFFFFDLL | v52;
-    v53 = [v13 containsObject:@"MPModelPropertyAlbumPreorder"];
+    v53 = [properties containsObject:@"MPModelPropertyAlbumPreorder"];
     v54 = 0x200000;
     if (!v53)
     {
@@ -241,7 +241,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFDFFFFFLL | v54;
-    v55 = [v13 containsObject:@"MPModelPropertyAlbumEditorNotes"];
+    v55 = [properties containsObject:@"MPModelPropertyAlbumEditorNotes"];
     v56 = 0x400000;
     if (!v55)
     {
@@ -249,7 +249,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFFBFFFFFLL | v56;
-    v57 = [v13 containsObject:@"MPModelPropertyAlbumShortEditorNotes"];
+    v57 = [properties containsObject:@"MPModelPropertyAlbumShortEditorNotes"];
     v58 = 0x800000;
     if (!v57)
     {
@@ -257,7 +257,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFF7FFFFFLL | v58;
-    v59 = [v13 containsObject:@"MPModelPropertyAlbumVolumeNormalization"];
+    v59 = [properties containsObject:@"MPModelPropertyAlbumVolumeNormalization"];
     v60 = 0x1000000;
     if (!v59)
     {
@@ -265,7 +265,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFEFFFFFFLL | v60;
-    v61 = [v13 containsObject:@"MPModelPropertyAlbumSongPopularity"];
+    v61 = [properties containsObject:@"MPModelPropertyAlbumSongPopularity"];
     v62 = 0x2000000;
     if (!v61)
     {
@@ -273,7 +273,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFDFFFFFFLL | v62;
-    v63 = [v13 containsObject:@"MPModelPropertyAlbumTraits"];
+    v63 = [properties containsObject:@"MPModelPropertyAlbumTraits"];
     v64 = 0x8000000;
     if (!v63)
     {
@@ -281,7 +281,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFF7FFFFFFLL | v64;
-    v65 = [v13 containsObject:@"MPModelPropertyAlbumVersionHash"];
+    v65 = [properties containsObject:@"MPModelPropertyAlbumVersionHash"];
     v66 = 0x10000000;
     if (!v65)
     {
@@ -289,7 +289,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFEFFFFFFFLL | v66;
-    v67 = [v13 containsObject:@"MPModelPropertyAlbumClassicalExperienceAvailable"];
+    v67 = [properties containsObject:@"MPModelPropertyAlbumClassicalExperienceAvailable"];
     v68 = 0x20000000;
     if (!v67)
     {
@@ -297,7 +297,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFDFFFFFFFLL | v68;
-    v69 = [v13 containsObject:@"MPModelPropertyAlbumIsFavorite"];
+    v69 = [properties containsObject:@"MPModelPropertyAlbumIsFavorite"];
     v70 = 0x40000000;
     if (!v69)
     {
@@ -305,7 +305,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFBFFFFFFFLL | v70;
-    v71 = [v13 containsObject:@"MPModelPropertyAlbumIsDisliked"];
+    v71 = [properties containsObject:@"MPModelPropertyAlbumIsDisliked"];
     v72 = 0x80000000;
     if (!v71)
     {
@@ -313,7 +313,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFF7FFFFFFFLL | v72;
-    v73 = [v13 containsObject:@"MPModelPropertyAlbumDateFavorited"];
+    v73 = [properties containsObject:@"MPModelPropertyAlbumDateFavorited"];
     v74 = 0x100000000;
     if (!v73)
     {
@@ -321,7 +321,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFEFFFFFFFFLL | v74;
-    v75 = [v13 containsObject:@"MPModelPropertyAlbumIsStoreRedownloadable"];
+    v75 = [properties containsObject:@"MPModelPropertyAlbumIsStoreRedownloadable"];
     v76 = 0x200000000;
     if (!v75)
     {
@@ -329,7 +329,7 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFDFFFFFFFFLL | v76;
-    v77 = [v13 containsObject:@"MPModelPropertyAlbumIsPinned"];
+    v77 = [properties containsObject:@"MPModelPropertyAlbumIsPinned"];
     v78 = 0x400000000;
     if (!v77)
     {
@@ -337,14 +337,14 @@
     }
 
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFBFFFFFFFFLL | v78;
-    v79 = [v12 relationships];
-    v80 = [v79 objectForKey:@"MPModelRelationshipAlbumArtist"];
+    relationships = [requestedPropertySet relationships];
+    v80 = [relationships objectForKey:@"MPModelRelationshipAlbumArtist"];
     v81 = v80;
     if (v80)
     {
-      v82 = [v80 properties];
+      properties2 = [v80 properties];
       *&self->_requestedAlbumProperties.artist |= 1u;
-      if ([v82 containsObject:@"MPModelPropertyPersonName"])
+      if ([properties2 containsObject:@"MPModelPropertyPersonName"])
       {
         v83 = 2;
       }
@@ -357,13 +357,13 @@
       *&self->_requestedAlbumProperties.artist = *&self->_requestedAlbumProperties.artist & 0xFD | v83;
     }
 
-    v84 = [v79 objectForKey:@"MPModelRelationshipAlbumGenre"];
+    v84 = [relationships objectForKey:@"MPModelRelationshipAlbumGenre"];
     v85 = v84;
     if (v84)
     {
-      v86 = [v84 properties];
+      properties3 = [v84 properties];
       *&self->_requestedAlbumProperties.genre |= 1u;
-      if ([v86 containsObject:@"MPModelPropertyGenreName"])
+      if ([properties3 containsObject:@"MPModelPropertyGenreName"])
       {
         v87 = 2;
       }
@@ -376,20 +376,20 @@
       *&self->_requestedAlbumProperties.genre = *&self->_requestedAlbumProperties.genre & 0xFD | v87;
     }
 
-    v88 = [v79 objectForKey:@"MPModelRelationshipAlbumRepresentativeSong"];
+    v88 = [relationships objectForKey:@"MPModelRelationshipAlbumRepresentativeSong"];
     *p_requestedAlbumProperties = *p_requestedAlbumProperties & 0xFFFFFFFFFBFFFFFFLL | ((v88 != 0) << 26);
 
     *p_requestedAlbumProperties |= 1uLL;
-    v9 = v103;
+    objectCopy = v103;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __92__MPStoreModelAlbumBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke;
   aBlock[3] = &unk_1E767EE00;
-  v89 = v8;
+  v89 = metadataCopy;
   v108 = v89;
-  v90 = v10;
+  v90 = identityCopy;
   v109 = v90;
   v91 = _Block_copy(aBlock);
   v104[0] = MEMORY[0x1E69E9820];
@@ -399,13 +399,13 @@
   v104[4] = self;
   v92 = v89;
   v105 = v92;
-  v93 = v9;
+  v93 = objectCopy;
   v106 = v93;
   v94 = _Block_copy(v104);
   if (v93)
   {
-    v95 = [v93 identifiers];
-    v96 = [v95 copyWithSource:@"StorePlatform" block:v91];
+    identifiers = [v93 identifiers];
+    v96 = [identifiers copyWithSource:@"StorePlatform" block:v91];
     v97 = [v93 copyWithIdentifiers:v96 block:v94];
   }
 
@@ -413,8 +413,8 @@
   {
     v98 = [MPModelAlbum alloc];
     v99 = [MPIdentifierSet alloc];
-    v95 = +[MPModelAlbumKind identityKind];
-    v96 = [(MPIdentifierSet *)v99 initWithSource:@"StorePlatform" modelKind:v95 block:v91];
+    identifiers = +[MPModelAlbumKind identityKind];
+    v96 = [(MPIdentifierSet *)v99 initWithSource:@"StorePlatform" modelKind:identifiers block:v91];
     v97 = [(MPModelObject *)v98 initWithIdentifiers:v96 block:v94];
   }
 

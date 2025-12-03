@@ -1,25 +1,25 @@
 @interface SBSystemApertureSecureElementCaptureBoundsView
-- (SBSystemApertureSecureElementCaptureBoundsView)initWithFrame:(CGRect)a3;
+- (SBSystemApertureSecureElementCaptureBoundsView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setDebugOutlineColor:(id)a3;
-- (void)setDebugString:(id)a3;
+- (void)setDebugOutlineColor:(id)color;
+- (void)setDebugString:(id)string;
 @end
 
 @implementation SBSystemApertureSecureElementCaptureBoundsView
 
-- (SBSystemApertureSecureElementCaptureBoundsView)initWithFrame:(CGRect)a3
+- (SBSystemApertureSecureElementCaptureBoundsView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = SBSystemApertureSecureElementCaptureBoundsView;
-  v3 = [(SBSystemApertureSecureElementCaptureBoundsView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBSystemApertureSecureElementCaptureBoundsView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
     debugLabel = v3->_debugLabel;
     v3->_debugLabel = v4;
 
-    v6 = [(UILabel *)v3->_debugLabel layer];
-    [v6 setDisableUpdateMask:18];
+    layer = [(UILabel *)v3->_debugLabel layer];
+    [layer setDisableUpdateMask:18];
 
     v7 = v3->_debugLabel;
     v8 = [MEMORY[0x277D74300] systemFontOfSize:9.0];
@@ -30,13 +30,13 @@
     debugRectView = v3->_debugRectView;
     v3->_debugRectView = v9;
 
-    v11 = [(UIView *)v3->_debugRectView layer];
-    v12 = [(SBSystemApertureSecureElementCaptureBoundsView *)v3 traitCollection];
-    [v12 displayScale];
-    [v11 setBorderWidth:1.0 / v13];
+    layer2 = [(UIView *)v3->_debugRectView layer];
+    traitCollection = [(SBSystemApertureSecureElementCaptureBoundsView *)v3 traitCollection];
+    [traitCollection displayScale];
+    [layer2 setBorderWidth:1.0 / v13];
 
-    v14 = [(UIView *)v3->_debugRectView layer];
-    [v14 setDisableUpdateMask:18];
+    layer3 = [(UIView *)v3->_debugRectView layer];
+    [layer3 setDisableUpdateMask:18];
 
     v15 = objc_alloc_init(_SBSABackdropView);
     boundsDefiningView = v3->_boundsDefiningView;
@@ -45,8 +45,8 @@
     [(SBSystemApertureSecureElementCaptureBoundsView *)v3 addSubview:v3->_boundsDefiningView];
     [(SBSystemApertureSecureElementCaptureBoundsView *)v3 addSubview:v3->_debugLabel];
     [(SBSystemApertureSecureElementCaptureBoundsView *)v3 addSubview:v3->_debugRectView];
-    v17 = [MEMORY[0x277D75348] redColor];
-    [(SBSystemApertureSecureElementCaptureBoundsView *)v3 setDebugOutlineColor:v17];
+    redColor = [MEMORY[0x277D75348] redColor];
+    [(SBSystemApertureSecureElementCaptureBoundsView *)v3 setDebugOutlineColor:redColor];
 
     [(SBSystemApertureSecureElementCaptureBoundsView *)v3 setNeedsLayout];
   }
@@ -54,28 +54,28 @@
   return v3;
 }
 
-- (void)setDebugOutlineColor:(id)a3
+- (void)setDebugOutlineColor:(id)color
 {
-  v6 = a3;
-  v4 = [(UIView *)self->_debugRectView layer];
-  if (v6)
+  colorCopy = color;
+  layer = [(UIView *)self->_debugRectView layer];
+  if (colorCopy)
   {
-    v5 = [v6 CGColor];
+    cGColor = [colorCopy CGColor];
   }
 
   else
   {
-    v5 = 0;
+    cGColor = 0;
   }
 
-  [v4 setBorderColor:v5];
+  [layer setBorderColor:cGColor];
 
-  [(UILabel *)self->_debugLabel setTextColor:v6];
+  [(UILabel *)self->_debugLabel setTextColor:colorCopy];
 }
 
-- (void)setDebugString:(id)a3
+- (void)setDebugString:(id)string
 {
-  [(UILabel *)self->_debugLabel setText:a3];
+  [(UILabel *)self->_debugLabel setText:string];
 
   [(SBSystemApertureSecureElementCaptureBoundsView *)self setNeedsLayout];
 }
@@ -91,8 +91,8 @@
   v8 = v7;
   v10 = v9;
   [(_SBSABackdropView *)self->_boundsDefiningView setFrame:?];
-  v11 = [(SBSystemApertureSecureElementCaptureBoundsView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(SBSystemApertureSecureElementCaptureBoundsView *)self traitCollection];
+  [traitCollection displayScale];
   v13 = v12;
 
   v21.origin.x = v4;

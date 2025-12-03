@@ -1,24 +1,24 @@
 @interface AMSUIWebJSDataProvider
 - (AMSUIWebClientContext)context;
 - (AMSUIWebJSAppQueryManager)appQueryManager;
-- (AMSUIWebJSDataProvider)initWithContext:(id)a3;
+- (AMSUIWebJSDataProvider)initWithContext:(id)context;
 - (AMSUIWebJSTelephonyProtocol)telephony;
 - (AMSUIWebView)webView;
 - (BOOL)_canInteractWithJS;
 - (BOOL)startOTPListener;
 - (BOOL)stopOTPListener;
-- (id)_syncPropertiesScriptWithProperties:(id)a3;
+- (id)_syncPropertiesScriptWithProperties:(id)properties;
 - (id)createWebView;
-- (id)loadPageModelWithInfo:(id)a3;
+- (id)loadPageModelWithInfo:(id)info;
 - (id)loadPageRenderData;
-- (id)postEvent:(id)a3 options:(id)a4;
-- (id)runJSRequest:(id)a3;
-- (id)runSafariCallback:(id)a3;
+- (id)postEvent:(id)event options:(id)options;
+- (id)runJSRequest:(id)request;
+- (id)runSafariCallback:(id)callback;
 - (id)syncProperties;
 - (void)_observeNotifications;
-- (void)_postMediaQueryResultsChangeEventWithApps:(id)a3;
-- (void)_postSubscriptionChangedWithType:(int64_t)a3;
-- (void)_safariDataUpdate:(id)a3;
+- (void)_postMediaQueryResultsChangeEventWithApps:(id)apps;
+- (void)_postSubscriptionChangedWithType:(int64_t)type;
+- (void)_safariDataUpdate:(id)update;
 - (void)dealloc;
 @end
 
@@ -26,57 +26,57 @@
 
 - (AMSUIWebJSAppQueryManager)appQueryManager
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  appQueryManager = v2->_appQueryManager;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  appQueryManager = selfCopy->_appQueryManager;
   if (!appQueryManager)
   {
-    v4 = [[AMSUIWebJSAppQueryManager alloc] initWithDelegate:v2];
-    v5 = v2->_appQueryManager;
-    v2->_appQueryManager = v4;
+    v4 = [[AMSUIWebJSAppQueryManager alloc] initWithDelegate:selfCopy];
+    v5 = selfCopy->_appQueryManager;
+    selfCopy->_appQueryManager = v4;
 
-    appQueryManager = v2->_appQueryManager;
+    appQueryManager = selfCopy->_appQueryManager;
   }
 
   v6 = appQueryManager;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (AMSUIWebJSTelephonyProtocol)telephony
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  telephony = v2->_telephony;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  telephony = selfCopy->_telephony;
   if (!telephony)
   {
-    v4 = [[AMSUIWebJSTelephony alloc] initWithDelegate:v2];
-    v5 = v2->_telephony;
-    v2->_telephony = v4;
+    v4 = [[AMSUIWebJSTelephony alloc] initWithDelegate:selfCopy];
+    v5 = selfCopy->_telephony;
+    selfCopy->_telephony = v4;
 
-    telephony = v2->_telephony;
+    telephony = selfCopy->_telephony;
   }
 
   v6 = telephony;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (AMSUIWebJSDataProvider)initWithContext:(id)a3
+- (AMSUIWebJSDataProvider)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = AMSUIWebJSDataProvider;
   v5 = [(AMSUIWebJSDataProvider *)&v9 init];
   if (v5)
   {
-    v6 = [[AMSUIWebJSProperties alloc] initWithContext:v4 delegate:v5];
+    v6 = [[AMSUIWebJSProperties alloc] initWithContext:contextCopy delegate:v5];
     properties = v5->_properties;
     v5->_properties = v6;
 
-    objc_storeWeak(&v5->_context, v4);
+    objc_storeWeak(&v5->_context, contextCopy);
     [(AMSUIWebJSDataProvider *)v5 _observeNotifications];
   }
 
@@ -95,31 +95,31 @@
 - (id)createWebView
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSUIWebJSDataProvider *)self webView];
+  webView = [(AMSUIWebJSDataProvider *)self webView];
 
-  if (v3)
+  if (webView)
   {
-    v4 = [(AMSUIWebJSDataProvider *)self webView];
+    webView2 = [(AMSUIWebJSDataProvider *)self webView];
   }
 
   else
   {
-    v5 = [(AMSUIWebJSDataProvider *)self properties];
-    v6 = [v5 generateProperties];
+    properties = [(AMSUIWebJSDataProvider *)self properties];
+    generateProperties = [properties generateProperties];
     v23 = 0;
-    v7 = [v6 resultWithTimeout:&v23 error:0.5];
+    v7 = [generateProperties resultWithTimeout:&v23 error:0.5];
     v8 = v23;
 
     if (v8)
     {
-      v9 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-      if (!v9)
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+      if (!mEMORY[0x1E698C968])
       {
-        v9 = [MEMORY[0x1E698C968] sharedConfig];
+        mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
       }
 
-      v10 = [v9 OSLogObject];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v11 = objc_opt_class();
         v12 = AMSLogKey();
@@ -130,7 +130,7 @@
         v28 = v12;
         v29 = 2112;
         v30 = v13;
-        _os_log_impl(&dword_1BB036000, v10, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error while generating properties for web view: %@", buf, 0x20u);
+        _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error while generating properties for web view: %@", buf, 0x20u);
       }
     }
 
@@ -145,50 +145,50 @@
     v17 = v16;
 
     v18 = [AMSUIWebView alloc];
-    v19 = [(AMSUIWebJSDataProvider *)self context];
+    context = [(AMSUIWebJSDataProvider *)self context];
     v24 = v17;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
 
-    v4 = [(AMSUIWebView *)v18 initWithContext:v19 additionalScripts:v20];
-    [(AMSUIWebJSDataProvider *)self setWebView:v4];
+    webView2 = [(AMSUIWebView *)v18 initWithContext:context additionalScripts:v20];
+    [(AMSUIWebJSDataProvider *)self setWebView:webView2];
   }
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return webView2;
 }
 
-- (id)loadPageModelWithInfo:(id)a3
+- (id)loadPageModelWithInfo:(id)info
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSUIWebJSDataProvider *)self _canInteractWithJS];
+  infoCopy = info;
+  _canInteractWithJS = [(AMSUIWebJSDataProvider *)self _canInteractWithJS];
   v6 = MEMORY[0x1E698CAD0];
-  if (v5)
+  if (_canInteractWithJS)
   {
     v7 = objc_alloc_init(MEMORY[0x1E698CAD0]);
-    v8 = [(AMSUIWebJSDataProvider *)self context];
-    v9 = [v8 logKey];
-    v10 = AMSUIWebSetSubLogKey(v9, 0);
+    context = [(AMSUIWebJSDataProvider *)self context];
+    logKey = [context logKey];
+    v10 = AMSUIWebSetSubLogKey(logKey, 0);
 
-    v11 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v11)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v11 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
       v23 = objc_opt_class();
       v24 = 2114;
       v25 = v10;
-      _os_log_impl(&dword_1BB036000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Loading page model", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Loading page model", buf, 0x16u);
     }
 
     v13 = [[AMSUIWebJSRequest alloc] initWithServiceName:@"PageData" logKey:v10];
-    [(AMSUIWebJSRequest *)v13 setOptions:v4];
+    [(AMSUIWebJSRequest *)v13 setOptions:infoCopy];
     v14 = [(AMSUIWebJSDataProvider *)self runJSRequest:v13];
     objc_initWeak(buf, self);
     v19[0] = MEMORY[0x1E69E9820];
@@ -289,9 +289,9 @@ void __48__AMSUIWebJSDataProvider_loadPageModelWithInfo___block_invoke(uint64_t 
 - (id)loadPageRenderData
 {
   v3 = objc_alloc_init(MEMORY[0x1E698CAD0]);
-  v4 = [(AMSUIWebJSDataProvider *)self context];
-  v5 = [v4 logKey];
-  v6 = AMSUIWebSetSubLogKey(v5, 0);
+  context = [(AMSUIWebJSDataProvider *)self context];
+  logKey = [context logKey];
+  v6 = AMSUIWebSetSubLogKey(logKey, 0);
 
   v7 = [[AMSUIWebJSRequest alloc] initWithServiceName:@"PageRender" logKey:v6];
   v8 = [(AMSUIWebJSDataProvider *)self runJSRequest:v7];
@@ -351,107 +351,107 @@ id __44__AMSUIWebJSDataProvider_loadPageRenderData__block_invoke(uint64_t a1, vo
   return v14;
 }
 
-- (id)postEvent:(id)a3 options:(id)a4
+- (id)postEvent:(id)event options:(id)options
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  optionsCopy = options;
   if ([(AMSUIWebJSDataProvider *)self _canInteractWithJS])
   {
-    v8 = [(AMSUIWebJSDataProvider *)self context];
-    v9 = [v8 logKey];
-    v10 = AMSUIWebSetSubLogKey(v9, 0);
+    context = [(AMSUIWebJSDataProvider *)self context];
+    logKey = [context logKey];
+    v10 = AMSUIWebSetSubLogKey(logKey, 0);
 
-    v11 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v11)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v11 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v13 = objc_opt_class();
-      v14 = [v7 ams_JSONStringWithError:0];
+      v14 = [optionsCopy ams_JSONStringWithError:0];
       *buf = 138544130;
       v27 = v13;
       v28 = 2114;
       v29 = v10;
       v30 = 2114;
-      v31 = v6;
+      v31 = eventCopy;
       v32 = 2112;
       v33 = v14;
-      _os_log_impl(&dword_1BB036000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting event: %{public}@ options: %@", buf, 0x2Au);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting event: %{public}@ options: %@", buf, 0x2Au);
     }
 
     v15 = [[AMSUIWebJSRequest alloc] initWithServiceName:@"_PostEvent" logKey:v10];
     v23 = @"name";
     v24 = @"options";
     v16 = MEMORY[0x1E695E0F8];
-    if (v7)
+    if (optionsCopy)
     {
-      v16 = v7;
+      v16 = optionsCopy;
     }
 
-    v25[0] = v6;
+    v25[0] = eventCopy;
     v25[1] = v16;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v23 count:2];
     [(AMSUIWebJSRequest *)v15 setOptions:v17, v23, v24];
 
     v18 = [(AMSUIWebJSDataProvider *)self runJSRequest:v15];
-    v19 = [v18 binaryPromiseAdapter];
+    binaryPromiseAdapter = [v18 binaryPromiseAdapter];
   }
 
   else
   {
     v20 = MEMORY[0x1E698C7F0];
     v10 = AMSError();
-    v19 = [v20 promiseWithError:v10];
+    binaryPromiseAdapter = [v20 promiseWithError:v10];
   }
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v19;
+  return binaryPromiseAdapter;
 }
 
-- (id)runJSRequest:(id)a3
+- (id)runJSRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(AMSUIWebJSDataProvider *)self webView];
+  requestCopy = request;
+  webView = [(AMSUIWebJSDataProvider *)self webView];
 
-  if (v5)
+  if (webView)
   {
-    v6 = [(AMSUIWebJSDataProvider *)self webView];
-    [v6 sendJSRequest:v4];
+    webView2 = [(AMSUIWebJSDataProvider *)self webView];
+    [webView2 sendJSRequest:requestCopy];
   }
 
   else
   {
     v7 = MEMORY[0x1E698CAD0];
-    v6 = AMSError();
-    [v7 promiseWithError:v6];
+    webView2 = AMSError();
+    [v7 promiseWithError:webView2];
   }
   v8 = ;
 
   return v8;
 }
 
-- (id)runSafariCallback:(id)a3
+- (id)runSafariCallback:(id)callback
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSUIWebJSDataProvider *)self context];
-  v6 = [v5 logKey];
-  v7 = AMSUIWebSetSubLogKey(v6, 0);
+  callbackCopy = callback;
+  context = [(AMSUIWebJSDataProvider *)self context];
+  logKey = [context logKey];
+  v7 = AMSUIWebSetSubLogKey(logKey, 0);
 
-  v8 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v8)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v8 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = AMSLogKey();
@@ -459,11 +459,11 @@ id __44__AMSUIWebJSDataProvider_loadPageRenderData__block_invoke(uint64_t a1, vo
     v18 = v10;
     v19 = 2114;
     v20 = v11;
-    _os_log_impl(&dword_1BB036000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running safari callback", &v17, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running safari callback", &v17, 0x16u);
   }
 
   v12 = [[AMSUIWebJSRequest alloc] initWithServiceName:@"SafariCallback" logKey:v7];
-  [(AMSUIWebJSRequest *)v12 setOptions:v4];
+  [(AMSUIWebJSRequest *)v12 setOptions:callbackCopy];
 
   v13 = [(AMSUIWebJSDataProvider *)self runJSRequest:v12];
   v14 = [v13 thenWithBlock:&__block_literal_global_28];
@@ -497,34 +497,34 @@ id __44__AMSUIWebJSDataProvider_runSafariCallback___block_invoke(uint64_t a1, vo
 {
   v20 = *MEMORY[0x1E69E9840];
   [(AMSUIWebJSDataProvider *)self stopOTPListener];
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
-  [(AMSUIWebJSDataProvider *)self setOtpIdentifier:v4];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [(AMSUIWebJSDataProvider *)self setOtpIdentifier:uUIDString];
 
-  v5 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v5)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v5 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
-    v9 = [(AMSUIWebJSDataProvider *)self otpIdentifier];
+    otpIdentifier = [(AMSUIWebJSDataProvider *)self otpIdentifier];
     *buf = 138543874;
     v15 = v7;
     v16 = 2114;
     v17 = v8;
     v18 = 2114;
-    v19 = v9;
-    _os_log_impl(&dword_1BB036000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting OTP listener with ID: %{public}@", buf, 0x20u);
+    v19 = otpIdentifier;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting OTP listener with ID: %{public}@", buf, 0x20u);
   }
 
   objc_initWeak(buf, self);
   objc_copyWeak(&v13, buf);
-  v10 = [(AMSUIWebJSDataProvider *)self otpIdentifier];
+  otpIdentifier2 = [(AMSUIWebJSDataProvider *)self otpIdentifier];
   HSAAuthenticationRegisterIncomingAuthenticationTokenBlockWithIdentifier();
 
   objc_destroyWeak(&v13);
@@ -590,32 +590,32 @@ void __42__AMSUIWebJSDataProvider_startOTPListener__block_invoke(uint64_t a1, __
 - (BOOL)stopOTPListener
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSUIWebJSDataProvider *)self otpIdentifier];
+  otpIdentifier = [(AMSUIWebJSDataProvider *)self otpIdentifier];
 
-  if (v3)
+  if (otpIdentifier)
   {
-    v4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v4)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v4 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v5 = [v4 OSLogObject];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v6 = objc_opt_class();
       v7 = AMSLogKey();
-      v8 = [(AMSUIWebJSDataProvider *)self otpIdentifier];
+      otpIdentifier2 = [(AMSUIWebJSDataProvider *)self otpIdentifier];
       v12 = 138543874;
       v13 = v6;
       v14 = 2114;
       v15 = v7;
       v16 = 2114;
-      v17 = v8;
-      _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Stopping OTP listener with ID: %{public}@", &v12, 0x20u);
+      v17 = otpIdentifier2;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Stopping OTP listener with ID: %{public}@", &v12, 0x20u);
     }
 
-    v9 = [(AMSUIWebJSDataProvider *)self otpIdentifier];
+    otpIdentifier3 = [(AMSUIWebJSDataProvider *)self otpIdentifier];
     HSAAuthenticationUnregisterIncomingAuthenticationTokenBlockWithIdentifier();
 
     [(AMSUIWebJSDataProvider *)self setOtpIdentifier:0];
@@ -628,29 +628,29 @@ void __42__AMSUIWebJSDataProvider_startOTPListener__block_invoke(uint64_t a1, __
 - (id)syncProperties
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSUIWebJSDataProvider *)self context];
-  v4 = [v3 logKey];
-  v5 = AMSUIWebSetSubLogKey(v4, 0);
+  context = [(AMSUIWebJSDataProvider *)self context];
+  logKey = [context logKey];
+  v5 = AMSUIWebSetSubLogKey(logKey, 0);
 
-  v6 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v6)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v6 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543618;
     v22 = objc_opt_class();
     v23 = 2114;
     v24 = v5;
-    _os_log_impl(&dword_1BB036000, v7, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Syncing properties", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Syncing properties", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v8 = [(AMSUIWebJSDataProvider *)self properties];
-  v9 = [v8 generateProperties];
+  properties = [(AMSUIWebJSDataProvider *)self properties];
+  generateProperties = [properties generateProperties];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __40__AMSUIWebJSDataProvider_syncProperties__block_invoke;
@@ -658,15 +658,15 @@ void __42__AMSUIWebJSDataProvider_startOTPListener__block_invoke(uint64_t a1, __
   objc_copyWeak(&v20, buf);
   v10 = v5;
   v19 = v10;
-  v11 = [v9 thenWithBlock:&v15];
-  v12 = [v11 binaryPromiseAdapter];
+  v11 = [generateProperties thenWithBlock:&v15];
+  binaryPromiseAdapter = [v11 binaryPromiseAdapter];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(buf);
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return binaryPromiseAdapter;
 }
 
 id __40__AMSUIWebJSDataProvider_syncProperties__block_invoke(uint64_t a1, void *a2)
@@ -789,10 +789,10 @@ void __40__AMSUIWebJSDataProvider_syncProperties__block_invoke_3(uint64_t a1, ui
 
 - (BOOL)_canInteractWithJS
 {
-  v2 = [(AMSUIWebJSDataProvider *)self webView];
-  v3 = [v2 contentLoaded];
+  webView = [(AMSUIWebJSDataProvider *)self webView];
+  contentLoaded = [webView contentLoaded];
 
-  return v3;
+  return contentLoaded;
 }
 
 - (void)_observeNotifications
@@ -815,30 +815,30 @@ void __40__AMSUIWebJSDataProvider_syncProperties__block_invoke_3(uint64_t a1, ui
 
   v4 = v3;
   _Block_object_dispose(&v63, 8);
-  v5 = [v3 sharedInstance];
+  sharedInstance = [v3 sharedInstance];
   objc_initWeak(&location, self);
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v7 = *MEMORY[0x1E69DDBC8];
   v55[0] = MEMORY[0x1E69E9820];
   v55[1] = 3221225472;
   v55[2] = __47__AMSUIWebJSDataProvider__observeNotifications__block_invoke;
   v55[3] = &unk_1E7F266A0;
   objc_copyWeak(&v56, &location);
-  v8 = [v6 addObserverForName:v7 object:0 queue:0 usingBlock:v55];
+  v8 = [defaultCenter addObserverForName:v7 object:0 queue:0 usingBlock:v55];
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v10 = *MEMORY[0x1E69DDAB0];
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __47__AMSUIWebJSDataProvider__observeNotifications__block_invoke_2;
   v53[3] = &unk_1E7F266A0;
   objc_copyWeak(&v54, &location);
-  v11 = [v9 addObserverForName:v10 object:0 queue:0 usingBlock:v53];
+  v11 = [defaultCenter2 addObserverForName:v10 object:0 queue:0 usingBlock:v53];
 
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v12 addObserver:self selector:sel__safariDataUpdate_ name:@"SSScriptSafariViewControllerDataUpdateNotification" object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__safariDataUpdate_ name:@"SSScriptSafariViewControllerDataUpdateNotification" object:0];
 
-  v13 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
   v63 = 0;
   v64 = &v63;
   v65 = 0x2020000000;
@@ -865,9 +865,9 @@ void __40__AMSUIWebJSDataProvider_syncProperties__block_invoke_3(uint64_t a1, ui
   }
 
   v17 = *v14;
-  [v13 addObserver:self selector:sel__subscriptionStatusChangeActivity_ name:v17 object:v5];
+  [defaultCenter4 addObserver:self selector:sel__subscriptionStatusChangeActivity_ name:v17 object:sharedInstance];
 
-  v18 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
   v63 = 0;
   v64 = &v63;
   v65 = 0x2020000000;
@@ -894,9 +894,9 @@ void __40__AMSUIWebJSDataProvider_syncProperties__block_invoke_3(uint64_t a1, ui
   }
 
   v22 = *v19;
-  [v18 addObserver:self selector:sel__subscriptionStatusChangeAppStore_ name:v22 object:v5];
+  [defaultCenter5 addObserver:self selector:sel__subscriptionStatusChangeAppStore_ name:v22 object:sharedInstance];
 
-  v23 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
   v63 = 0;
   v64 = &v63;
   v65 = 0x2020000000;
@@ -923,9 +923,9 @@ void __40__AMSUIWebJSDataProvider_syncProperties__block_invoke_3(uint64_t a1, ui
   }
 
   v27 = *v24;
-  [v23 addObserver:self selector:sel__subscriptionStatusChangeNews_ name:v27 object:v5];
+  [defaultCenter6 addObserver:self selector:sel__subscriptionStatusChangeNews_ name:v27 object:sharedInstance];
 
-  v28 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
   v63 = 0;
   v64 = &v63;
   v65 = 0x2020000000;
@@ -952,9 +952,9 @@ void __40__AMSUIWebJSDataProvider_syncProperties__block_invoke_3(uint64_t a1, ui
   }
 
   v32 = *v29;
-  [v28 addObserver:self selector:sel__subscriptionStatusChangeMusic_ name:v32 object:v5];
+  [defaultCenter7 addObserver:self selector:sel__subscriptionStatusChangeMusic_ name:v32 object:sharedInstance];
 
-  v33 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter8 = [MEMORY[0x1E696AD88] defaultCenter];
   v63 = 0;
   v64 = &v63;
   v65 = 0x2020000000;
@@ -981,9 +981,9 @@ void __40__AMSUIWebJSDataProvider_syncProperties__block_invoke_3(uint64_t a1, ui
   }
 
   v37 = *v34;
-  [v33 addObserver:self selector:sel__subscriptionStatusChangeTV_ name:v37 object:v5];
+  [defaultCenter8 addObserver:self selector:sel__subscriptionStatusChangeTV_ name:v37 object:sharedInstance];
 
-  v38 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter9 = [MEMORY[0x1E696AD88] defaultCenter];
   v63 = 0;
   v64 = &v63;
   v65 = 0x2020000000;
@@ -1010,9 +1010,9 @@ void __40__AMSUIWebJSDataProvider_syncProperties__block_invoke_3(uint64_t a1, ui
   }
 
   v42 = *v39;
-  [v38 addObserver:self selector:sel__subscriptionStatusChangeiCloud_ name:v42 object:v5];
+  [defaultCenter9 addObserver:self selector:sel__subscriptionStatusChangeiCloud_ name:v42 object:sharedInstance];
 
-  v43 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter10 = [MEMORY[0x1E696AD88] defaultCenter];
   v63 = 0;
   v64 = &v63;
   v65 = 0x2020000000;
@@ -1039,9 +1039,9 @@ void __40__AMSUIWebJSDataProvider_syncProperties__block_invoke_3(uint64_t a1, ui
   }
 
   v47 = *v44;
-  [v43 addObserver:self selector:sel__subscriptionStatusChangeHWBundle_ name:v47 object:v5];
+  [defaultCenter10 addObserver:self selector:sel__subscriptionStatusChangeHWBundle_ name:v47 object:sharedInstance];
 
-  v48 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter11 = [MEMORY[0x1E696AD88] defaultCenter];
   v63 = 0;
   v64 = &v63;
   v65 = 0x2020000000;
@@ -1069,10 +1069,10 @@ LABEL_29:
   }
 
   v50 = *v49;
-  [v48 addObserver:self selector:sel__subscriptionStatusChangeMusic_ name:v50 object:v5];
+  [defaultCenter11 addObserver:self selector:sel__subscriptionStatusChangeMusic_ name:v50 object:sharedInstance];
 
-  v51 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v51 addObserver:self selector:sel__purchaseDidSucceed_ name:@"AMSPurchaseFinishedNotification" object:0];
+  defaultCenter12 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter12 addObserver:self selector:sel__purchaseDidSucceed_ name:@"AMSPurchaseFinishedNotification" object:0];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1112,24 +1112,24 @@ void __47__AMSUIWebJSDataProvider__observeNotifications__block_invoke_3(uint64_t
   CFNotificationCenterAddObserver(v3, v4, _handleDataUpdateNotification, @"AMSUIWebSafariDataUpdateDarwin", 0, CFNotificationSuspensionBehaviorDrop);
 }
 
-- (void)_postMediaQueryResultsChangeEventWithApps:(id)a3
+- (void)_postMediaQueryResultsChangeEventWithApps:(id)apps
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9 = @"apps";
-  v10[0] = a3;
+  v10[0] = apps;
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  appsCopy = apps;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = [(AMSUIWebJSDataProvider *)self postEvent:@"MediaQueryResultsChange" options:v6];
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_postSubscriptionChangedWithType:(int64_t)a3
+- (void)_postSubscriptionChangedWithType:(int64_t)type
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = @"mediaType";
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v9[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [(AMSUIWebJSDataProvider *)self postEvent:@"SubscriptionChanged" options:v5];
@@ -1137,14 +1137,14 @@ void __47__AMSUIWebJSDataProvider__observeNotifications__block_invoke_3(uint64_t
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_safariDataUpdate:(id)a3
+- (void)_safariDataUpdate:(id)update
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [a3 object];
+  object = [update object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = object;
   }
 
   else
@@ -1154,14 +1154,14 @@ void __47__AMSUIWebJSDataProvider__observeNotifications__block_invoke_3(uint64_t
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v6)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v6 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 = objc_opt_class();
       v9 = AMSLogKey();
@@ -1169,23 +1169,23 @@ void __47__AMSUIWebJSDataProvider__observeNotifications__block_invoke_3(uint64_t
       v17 = v8;
       v18 = 2114;
       v19 = v9;
-      _os_log_impl(&dword_1BB036000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Received ScriptDataUpdate notification", &v16, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Received ScriptDataUpdate notification", &v16, 0x16u);
     }
 
-    v10 = [AMSUIWebOpenSafariAction resultFromURL:v5 error:0];
-    v11 = [(AMSUIWebJSDataProvider *)self postEvent:@"SafariDataUpdate" options:v10];
+    mEMORY[0x1E698C968]2 = [AMSUIWebOpenSafariAction resultFromURL:v5 error:0];
+    v11 = [(AMSUIWebJSDataProvider *)self postEvent:@"SafariDataUpdate" options:mEMORY[0x1E698C968]2];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v10)
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v10 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v12 = [v10 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
       v14 = AMSLogKey();
@@ -1193,27 +1193,27 @@ void __47__AMSUIWebJSDataProvider__observeNotifications__block_invoke_3(uint64_t
       v17 = v13;
       v18 = 2114;
       v19 = v14;
-      _os_log_impl(&dword_1BB036000, v12, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Safari data update called without a URL", &v16, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Safari data update called without a URL", &v16, 0x16u);
     }
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_syncPropertiesScriptWithProperties:(id)a3
+- (id)_syncPropertiesScriptWithProperties:(id)properties
 {
-  v3 = a3;
-  if ([v3 length])
+  propertiesCopy = properties;
+  if ([propertiesCopy length])
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AMS.updateProperties('%@')", v3];
+    propertiesCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"AMS.updateProperties('%@')", propertiesCopy];
   }
 
   else
   {
-    v4 = 0;
+    propertiesCopy = 0;
   }
 
-  return v4;
+  return propertiesCopy;
 }
 
 - (AMSUIWebView)webView

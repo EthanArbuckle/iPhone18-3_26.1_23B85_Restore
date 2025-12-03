@@ -1,60 +1,60 @@
 @interface UISwipeOccurrence
 + (Class)pullViewClass;
-- ($A7B7FA971CD029BAA4A09478E9E1AEDA)prepareWithSwipeDirection:(SEL)a3 configuration:(unint64_t)a4;
+- ($A7B7FA971CD029BAA4A09478E9E1AEDA)prepareWithSwipeDirection:(SEL)direction configuration:(unint64_t)configuration;
 - ($B18736ADBBD355D2E16F2B3CA0B0347D)currentSwipeInfo;
-- (BOOL)_isSwipeDirectionExposingLeadingEdgePullView:(unint64_t)a3;
+- (BOOL)_isSwipeDirectionExposingLeadingEdgePullView:(unint64_t)view;
 - (BOOL)isDynamicPullView;
-- (BOOL)shouldDismissWithTouchLocation:(CGPoint)a3;
-- (CGRect)_frameForPullView:(id)a3 inSwipedItem:(id)a4 withContainer:(id)a5;
+- (BOOL)shouldDismissWithTouchLocation:(CGPoint)location;
+- (CGRect)_frameForPullView:(id)view inSwipedItem:(id)item withContainer:(id)container;
 - (CGRect)swipedViewRestingFrame;
 - (NSString)description;
 - (UIEdgeInsets)extraInsets;
 - (UIEdgeInsets)pullViewInsets;
-- (UISwipeOccurrence)initWithController:(id)a3 indexPath:(id)a4 defaultStyle:(unint64_t)a5;
-- (double)_extraOffsetForOffset:(double)a3 withDirection:(unint64_t)a4;
-- (double)confirmationDistanceForPrimaryActionInSwipeActionPullView:(id)a3;
+- (UISwipeOccurrence)initWithController:(id)controller indexPath:(id)path defaultStyle:(unint64_t)style;
+- (double)_extraOffsetForOffset:(double)offset withDirection:(unint64_t)direction;
+- (double)confirmationDistanceForPrimaryActionInSwipeActionPullView:(id)view;
 - (id)_actionView;
-- (id)_pullViewForLeadingEdge:(BOOL)a3;
-- (id)_pullViewForSwipeDirection:(unint64_t)a3;
+- (id)_pullViewForLeadingEdge:(BOOL)edge;
+- (id)_pullViewForSwipeDirection:(unint64_t)direction;
 - (id)lockActionViewForAnimation;
-- (unint64_t)_styleForConfiguration:(id)a3;
-- (unint64_t)_swipeDirectionForPullView:(id)a3;
-- (void)_executeLifecycleForPerformedAction:(id)a3 sourceView:(id)a4 completionHandler:(id)a5;
+- (unint64_t)_styleForConfiguration:(id)configuration;
+- (unint64_t)_swipeDirectionForPullView:(id)view;
+- (void)_executeLifecycleForPerformedAction:(id)action sourceView:(id)view completionHandler:(id)handler;
 - (void)_forceTeardown;
 - (void)_freezeSwipedViewInsets;
-- (void)_moveItemWithSwipeInfo:(id *)a3 tracking:(BOOL)a4 alongsideAnimations:(id)a5 completion:(id)a6;
-- (void)_performSwipeAction:(id)a3 inPullView:(id)a4 swipeInfo:(id *)a5;
-- (void)_removeAndResetPullViewImmediately:(id)a3;
-- (void)_removePullViewImmediately:(id)a3;
-- (void)_resetItemWithSwipeInfo:(id *)a3 animated:(BOOL)a4 deletion:(BOOL)a5 completion:(id)a6;
-- (void)_transitionToState:(int64_t)a3;
+- (void)_moveItemWithSwipeInfo:(id *)info tracking:(BOOL)tracking alongsideAnimations:(id)animations completion:(id)completion;
+- (void)_performSwipeAction:(id)action inPullView:(id)view swipeInfo:(id *)info;
+- (void)_removeAndResetPullViewImmediately:(id)immediately;
+- (void)_removePullViewImmediately:(id)immediately;
+- (void)_resetItemWithSwipeInfo:(id *)info animated:(BOOL)animated deletion:(BOOL)deletion completion:(id)completion;
+- (void)_transitionToState:(int64_t)state;
 - (void)_unfreezeSwipedViewInsets;
-- (void)_updateLayoutUsingCurrentSwipeInfo:(BOOL)a3;
-- (void)_updatePullView:(id)a3;
-- (void)_updateSwipedStateOnSwipedView:(BOOL)a3;
-- (void)beginSwipeTracking:(BOOL)a3;
+- (void)_updateLayoutUsingCurrentSwipeInfo:(BOOL)info;
+- (void)_updatePullView:(id)view;
+- (void)_updateSwipedStateOnSwipedView:(BOOL)view;
+- (void)beginSwipeTracking:(BOOL)tracking;
 - (void)endSwipe;
-- (void)performPrimaryActionWithSwipeInfo:(id *)a3;
-- (void)resetAnimated:(BOOL)a3 completion:(id)a4;
-- (void)setCurrentSwipeInfo:(id *)a3;
-- (void)setOffset:(double)a3;
-- (void)setupManipulatorWithController:(id)a3;
-- (void)unlockActionViewForAnimation:(id)a3;
+- (void)performPrimaryActionWithSwipeInfo:(id *)info;
+- (void)resetAnimated:(BOOL)animated completion:(id)completion;
+- (void)setCurrentSwipeInfo:(id *)info;
+- (void)setOffset:(double)offset;
+- (void)setupManipulatorWithController:(id)controller;
+- (void)unlockActionViewForAnimation:(id)animation;
 - (void)updateLayout;
-- (void)updateOffsetWithSwipeInfo:(id *)a3 isTracking:(BOOL)a4 completion:(id)a5;
+- (void)updateOffsetWithSwipeInfo:(id *)info isTracking:(BOOL)tracking completion:(id)completion;
 - (void)updateSwipedView;
 @end
 
 @implementation UISwipeOccurrence
 
-- (UISwipeOccurrence)initWithController:(id)a3 indexPath:(id)a4 defaultStyle:(unint64_t)a5
+- (UISwipeOccurrence)initWithController:(id)controller indexPath:(id)path defaultStyle:(unint64_t)style
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  controllerCopy = controller;
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UISwipeOccurrence.m" lineNumber:111 description:@"Index path must not be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISwipeOccurrence.m" lineNumber:111 description:@"Index path must not be nil"];
   }
 
   v16.receiver = self;
@@ -63,10 +63,10 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_controller, v9);
-    [(UISwipeOccurrence *)v12 setIndexPath:v10];
-    v12->_defaultStyle = a5;
-    if ([v9 _prefersRTL])
+    objc_storeWeak(&v11->_controller, controllerCopy);
+    [(UISwipeOccurrence *)v12 setIndexPath:pathCopy];
+    v12->_defaultStyle = style;
+    if ([controllerCopy _prefersRTL])
     {
       v13 = 16;
     }
@@ -77,20 +77,20 @@
     }
 
     *&v12->_flags = *&v12->_flags & 0xEF | v13;
-    [(UISwipeOccurrence *)v12 setupManipulatorWithController:v9];
+    [(UISwipeOccurrence *)v12 setupManipulatorWithController:controllerCopy];
     [(UISwipeOccurrence *)v12 updateSwipedView];
   }
 
   return v12;
 }
 
-- (void)setupManipulatorWithController:(id)a3
+- (void)setupManipulatorWithController:(id)controller
 {
-  v9 = a3;
-  v4 = [v9 _internalSwipeActionHost];
+  controllerCopy = controller;
+  _internalSwipeActionHost = [controllerCopy _internalSwipeActionHost];
   v5 = objc_opt_respondsToSelector();
 
-  if ((v5 & 1) == 0 || ([v9 _internalSwipeActionHost], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "swipeViewManipulatorForSwipeActionController:", v9), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+  if ((v5 & 1) == 0 || ([controllerCopy _internalSwipeActionHost], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "swipeViewManipulatorForSwipeActionController:", controllerCopy), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
   {
     v7 = objc_alloc_init(_UIDefaultSwipeViewManipulator);
   }
@@ -99,15 +99,15 @@
   self->_manipulator = v7;
 }
 
-- (unint64_t)_styleForConfiguration:(id)a3
+- (unint64_t)_styleForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (configurationCopy)
   {
-    v6 = [v4 _swipeActionsStyle];
-    p_defaultStyle = (&unk_18A682720 + 8 * v6 - 8);
-    if ((v6 - 1) >= 3)
+    _swipeActionsStyle = [configurationCopy _swipeActionsStyle];
+    p_defaultStyle = (&unk_18A682720 + 8 * _swipeActionsStyle - 8);
+    if ((_swipeActionsStyle - 1) >= 3)
     {
       p_defaultStyle = &self->_defaultStyle;
     }
@@ -123,13 +123,13 @@
   return v8;
 }
 
-- ($A7B7FA971CD029BAA4A09478E9E1AEDA)prepareWithSwipeDirection:(SEL)a3 configuration:(unint64_t)a4
+- ($A7B7FA971CD029BAA4A09478E9E1AEDA)prepareWithSwipeDirection:(SEL)direction configuration:(unint64_t)configuration
 {
   v42 = *MEMORY[0x1E69E9840];
   v9 = a5;
-  if (a4)
+  if (configuration)
   {
-    self->_direction = a4 == 2;
+    self->_direction = configuration == 2;
     self->_style = [(UISwipeOccurrence *)self _styleForConfiguration:v9];
     if (v9)
     {
@@ -142,48 +142,48 @@
     }
 
     self->_roundedStyleCornerRadius = v10;
-    v15 = [(UISwipeOccurrence *)self _pullViewForSwipeDirection:a4];
+    v15 = [(UISwipeOccurrence *)self _pullViewForSwipeDirection:configuration];
     *&retstr->var0 = 0u;
     *&retstr->var3 = 0u;
     [(UISwipeOccurrence *)self _removeAndResetPullViewImmediately:self->_leadingPullView];
     [(UISwipeOccurrence *)self _removeAndResetPullViewImmediately:self->_trailingPullView];
     self->_configuredDirection = 0;
-    v16 = [v9 actions];
-    if ([v16 count])
+    actions = [v9 actions];
+    if ([actions count])
     {
       [v15 setAutosizesButtons:{objc_msgSend(v9, "_autosizesButtons")}];
-      [v15 configureWithSwipeActions:v16];
+      [v15 configureWithSwipeActions:actions];
       if (self->_swipedView)
       {
-        v37 = a3;
+        directionCopy = direction;
         WeakRetained = objc_loadWeakRetained(&self->_controller);
-        v18 = [WeakRetained _internalSwipeActionHost];
+        _internalSwipeActionHost = [WeakRetained _internalSwipeActionHost];
         v19 = objc_opt_respondsToSelector();
 
         if ((v19 & 1) == 0)
         {
-          v25 = [(_UISwipedView *)self->_swipedView superview];
-          [v25 addSubview:v15];
+          superview = [(_UISwipedView *)self->_swipedView superview];
+          [superview addSubview:v15];
           goto LABEL_18;
         }
 
         v20 = objc_loadWeakRetained(&self->_controller);
-        v21 = [v20 _internalSwipeActionHost];
+        _internalSwipeActionHost2 = [v20 _internalSwipeActionHost];
         v22 = objc_loadWeakRetained(&self->_controller);
-        v23 = [v21 swipeActionController:v22 insertActionsView:v15 forItemAtIndexPath:self->_indexPath];
+        v23 = [_internalSwipeActionHost2 swipeActionController:v22 insertActionsView:v15 forItemAtIndexPath:self->_indexPath];
 
         if (v23)
         {
-          v24 = [v15 superview];
+          superview2 = [v15 superview];
 
-          if (v24)
+          if (superview2)
           {
 LABEL_19:
-            v29 = [v15 primarySwipeAction];
+            primarySwipeAction = [v15 primarySwipeAction];
             if ([v9 performsFirstActionWithFullSwipe])
             {
-              v30 = [v29 _menu];
-              v31 = v30 == 0;
+              _menu = [primarySwipeAction _menu];
+              v31 = _menu == 0;
             }
 
             else
@@ -193,16 +193,16 @@ LABEL_19:
 
             *(&retstr->var2 + 5) = 0;
             *(&retstr->var2 + 1) = 0;
-            v32 = [v29 isDestructive];
+            isDestructive = [primarySwipeAction isDestructive];
             [v15 openThreshold];
             v34 = v33;
             [v15 confirmationThreshold];
-            retstr->var0 = a4;
-            retstr->var1 = v32;
+            retstr->var0 = configuration;
+            retstr->var1 = isDestructive;
             retstr->var2 = v31;
             retstr->var3 = v34;
             retstr->var4 = v35;
-            self->_configuredDirection = a4;
+            self->_configuredDirection = configuration;
             self->_styleFromConfiguration = [v9 _swipeActionsStyle];
             [(UISwipeOccurrence *)self _updatePullView:v15];
             if (_UISolariumSwipeActionsEnabled())
@@ -231,11 +231,11 @@ LABEL_19:
             goto LABEL_29;
           }
 
-          v25 = [MEMORY[0x1E696AAA8] currentHandler];
+          superview = [MEMORY[0x1E696AAA8] currentHandler];
           v26 = NSStringFromSelector(sel_swipeActionController_insertActionsView_forItemAtIndexPath_);
           v27 = objc_loadWeakRetained(&self->_controller);
-          v28 = [v27 swipeActionHost];
-          [v25 handleFailureInMethod:v37 object:self file:@"UISwipeOccurrence.m" lineNumber:187 description:{@"Actions view not added to view hierarchy after calling -%@ on %@", v26, v28}];
+          swipeActionHost = [v27 swipeActionHost];
+          [superview handleFailureInMethod:directionCopy object:self file:@"UISwipeOccurrence.m" lineNumber:187 description:{@"Actions view not added to view hierarchy after calling -%@ on %@", v26, swipeActionHost}];
 
 LABEL_18:
           goto LABEL_19;
@@ -256,7 +256,7 @@ LABEL_29:
       goto LABEL_8;
     }
 
-    v13 = NSStringFromSelector(a3);
+    v13 = NSStringFromSelector(direction);
     v14 = NSStringFromUISwipeDirection(0);
     *buf = 138412546;
     v39 = v13;
@@ -273,7 +273,7 @@ LABEL_8:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     v12 = v11;
-    v13 = NSStringFromSelector(a3);
+    v13 = NSStringFromSelector(direction);
     v14 = NSStringFromUISwipeDirection(0);
     *buf = 138412546;
     v39 = v13;
@@ -291,7 +291,7 @@ LABEL_30:
   return result;
 }
 
-- (void)setOffset:(double)a3
+- (void)setOffset:(double)offset
 {
   if (self->_state == 2)
   {
@@ -300,8 +300,8 @@ LABEL_30:
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UISwipeOccurrence.m" lineNumber:259 description:@"Manually modifyng the offset is only allowed while in .tracking state."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISwipeOccurrence.m" lineNumber:259 description:@"Manually modifyng the offset is only allowed while in .tracking state."];
 
     v5 = self->_state == 2;
   }
@@ -311,15 +311,15 @@ LABEL_30:
   *&v11[3] = *(&self->_currentSwipeInfo.animated + 1);
   springStiffness = self->_currentSwipeInfo.springStiffness;
   v10 = 0;
-  v12 = a3;
+  offsetCopy = offset;
   v13 = 0;
   v14 = springStiffness;
   [(UISwipeOccurrence *)self updateOffsetWithSwipeInfo:&v9 isTracking:v5 completion:0];
 }
 
-- (void)beginSwipeTracking:(BOOL)a3
+- (void)beginSwipeTracking:(BOOL)tracking
 {
-  v3 = a3;
+  trackingCopy = tracking;
   if (self->_swipedView)
   {
     if (objc_opt_respondsToSelector())
@@ -332,7 +332,7 @@ LABEL_30:
 
   [(UISwipeActionPullViewCommonProtocol *)self->_leadingPullView freeze];
   [(UISwipeActionPullViewCommonProtocol *)self->_trailingPullView freeze];
-  if (v3)
+  if (trackingCopy)
   {
 
     [(UISwipeOccurrence *)self _transitionToState:2];
@@ -372,18 +372,18 @@ LABEL_30:
   }
 }
 
-- (void)updateOffsetWithSwipeInfo:(id *)a3 isTracking:(BOOL)a4 completion:(id)a5
+- (void)updateOffsetWithSwipeInfo:(id *)info isTracking:(BOOL)tracking completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  if (a3->var3 != 0.0 || v5)
+  trackingCopy = tracking;
+  completionCopy = completion;
+  if (info->var3 != 0.0 || trackingCopy)
   {
-    v13 = *&a3->var2;
-    v14 = *&a3->var0;
+    v13 = *&info->var2;
+    v14 = *&info->var0;
     v15 = v13;
-    v16 = *&a3->var4;
-    [(UISwipeOccurrence *)self _moveItemWithSwipeInfo:&v14 tracking:v5 alongsideAnimations:0 completion:v8];
-    if (v5)
+    v16 = *&info->var4;
+    [(UISwipeOccurrence *)self _moveItemWithSwipeInfo:&v14 tracking:trackingCopy alongsideAnimations:0 completion:completionCopy];
+    if (trackingCopy)
     {
       v12 = 2;
       goto LABEL_7;
@@ -392,16 +392,16 @@ LABEL_30:
 
   else
   {
-    var2 = a3->var2;
-    v10 = *&a3->var2;
-    v11 = *&a3->var4;
-    v14 = *&a3->var0;
+    var2 = info->var2;
+    v10 = *&info->var2;
+    v11 = *&info->var4;
+    v14 = *&info->var0;
     v15 = v10;
     v16 = v11;
-    [(UISwipeOccurrence *)self _resetItemWithSwipeInfo:&v14 animated:var2 deletion:0 completion:v8];
+    [(UISwipeOccurrence *)self _resetItemWithSwipeInfo:&v14 animated:var2 deletion:0 completion:completionCopy];
   }
 
-  v12 = a3->var3 != 0.0;
+  v12 = info->var3 != 0.0;
 LABEL_7:
   [(UISwipeOccurrence *)self _transitionToState:v12];
 }
@@ -428,20 +428,20 @@ LABEL_7:
   return result;
 }
 
-- (void)_moveItemWithSwipeInfo:(id *)a3 tracking:(BOOL)a4 alongsideAnimations:(id)a5 completion:(id)a6
+- (void)_moveItemWithSwipeInfo:(id *)info tracking:(BOOL)tracking alongsideAnimations:(id)animations completion:(id)completion
 {
-  v7 = a4;
-  v10 = a5;
-  v11 = a6;
-  self->_offset = a3->var3;
+  trackingCopy = tracking;
+  animationsCopy = animations;
+  completionCopy = completion;
+  self->_offset = info->var3;
   if (self->_swipedView)
   {
-    v12 = *&a3->var0;
-    v13 = *&a3->var2;
-    *&self->_currentSwipeInfo.initialSpringVelocity = *&a3->var4;
+    v12 = *&info->var0;
+    v13 = *&info->var2;
+    *&self->_currentSwipeInfo.initialSpringVelocity = *&info->var4;
     *&self->_currentSwipeInfo.animated = v13;
     *&self->_currentSwipeInfo.direction = v12;
-    if (a3->var2 || _UISolariumSwipeActionsEnabled() && a3->var3 != 0.0)
+    if (info->var2 || _UISolariumSwipeActionsEnabled() && info->var3 != 0.0)
     {
       v14 = [_UISwipeAnimationFactory animatorForMoveWithOccurrence:self];
     }
@@ -456,23 +456,23 @@ LABEL_7:
       manipulator = self->_manipulator;
       swipedView = self->_swipedView;
       indexPath = self->_indexPath;
-      v18 = *&a3->var2;
-      v25[0] = *&a3->var0;
+      v18 = *&info->var2;
+      v25[0] = *&info->var0;
       v25[1] = v18;
-      v25[2] = *&a3->var4;
+      v25[2] = *&info->var4;
       [(_UISwipeViewManipulator *)manipulator moveSwipedView:swipedView atIndexPath:indexPath withSwipeInfo:v25 animator:v14];
     }
 
-    if (a3->var0)
+    if (info->var0)
     {
       v19 = [(UISwipeOccurrence *)self _pullViewForSwipeDirection:?];
-      [v19 setState:a3->var1];
-      var3 = a3->var3;
-      [(UISwipeOccurrence *)self _extraOffsetForOffset:a3->var0 withDirection:var3];
+      [v19 setState:info->var1];
+      var3 = info->var3;
+      [(UISwipeOccurrence *)self _extraOffsetForOffset:info->var0 withDirection:var3];
       v22 = v21;
       if (![(UISwipeOccurrence *)self isDynamicPullView])
       {
-        [v19 moveToOffset:v14 extraOffset:var3 animator:v22 usingSpringWithStiffness:a3->var5 initialVelocity:a3->var4];
+        [v19 moveToOffset:v14 extraOffset:var3 animator:v22 usingSpringWithStiffness:info->var5 initialVelocity:info->var4];
       }
 
       if (v14)
@@ -488,24 +488,24 @@ LABEL_7:
       if (v14)
       {
 LABEL_13:
-        if (v10)
+        if (animationsCopy)
         {
-          [v14 addAnimations:v10];
+          [v14 addAnimations:animationsCopy];
         }
 
-        if (v11)
+        if (completionCopy)
         {
           v23[0] = MEMORY[0x1E69E9820];
           v23[1] = 3221225472;
           v23[2] = __84__UISwipeOccurrence__moveItemWithSwipeInfo_tracking_alongsideAnimations_completion___block_invoke;
           v23[3] = &unk_1E70FFB68;
-          v24 = v11;
+          v24 = completionCopy;
           [v14 addCompletion:v23];
         }
 
-        if ([(UISwipeOccurrence *)self isDynamicPullView]&& a3->var0)
+        if ([(UISwipeOccurrence *)self isDynamicPullView]&& info->var0)
         {
-          [v19 moveToOffset:v14 animator:v7 interactive:var3];
+          [v19 moveToOffset:v14 animator:trackingCopy interactive:var3];
         }
 
         else
@@ -519,19 +519,19 @@ LABEL_29:
       }
     }
 
-    if ([(UISwipeOccurrence *)self isDynamicPullView]&& a3->var0)
+    if ([(UISwipeOccurrence *)self isDynamicPullView]&& info->var0)
     {
-      [v19 moveToOffset:0 animator:v7 interactive:var3];
+      [v19 moveToOffset:0 animator:trackingCopy interactive:var3];
     }
 
-    if (v10)
+    if (animationsCopy)
     {
-      v10[2](v10);
+      animationsCopy[2](animationsCopy);
     }
 
-    if (v11)
+    if (completionCopy)
     {
-      (*(v11 + 2))(v11, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
 
     goto LABEL_29;
@@ -540,11 +540,11 @@ LABEL_29:
 LABEL_30:
 }
 
-- (void)resetAnimated:(BOOL)a3 completion:(id)a4
+- (void)resetAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4)
+  animatedCopy = animated;
+  completionCopy = completion;
+  if (animatedCopy)
   {
     v10 = UISwipeInfoNoneAnimated;
     v11 = unk_18A6826F8;
@@ -560,8 +560,8 @@ LABEL_30:
 
   if ([(UISwipeOccurrence *)self state]== 4)
   {
-    v7 = [(UISwipeOccurrence *)self currentAction];
-    v8 = [v7 style] == 1;
+    currentAction = [(UISwipeOccurrence *)self currentAction];
+    v8 = [currentAction style] == 1;
   }
 
   else
@@ -572,18 +572,18 @@ LABEL_30:
   v9[0] = v10;
   v9[1] = v11;
   v9[2] = v12;
-  [(UISwipeOccurrence *)self _resetItemWithSwipeInfo:v9 animated:v4 deletion:v8 completion:v6];
+  [(UISwipeOccurrence *)self _resetItemWithSwipeInfo:v9 animated:animatedCopy deletion:v8 completion:completionCopy];
 }
 
-- (void)_resetItemWithSwipeInfo:(id *)a3 animated:(BOOL)a4 deletion:(BOOL)a5 completion:(id)a6
+- (void)_resetItemWithSwipeInfo:(id *)info animated:(BOOL)animated deletion:(BOOL)deletion completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = a6;
+  deletionCopy = deletion;
+  animatedCopy = animated;
+  completionCopy = completion;
   [(UISwipeOccurrence *)self setActive:0];
   if (self->_configuredDirection)
   {
-    if (v7)
+    if (animatedCopy)
     {
       if ((self->_state & 0xFFFFFFFFFFFFFFFELL) == 4)
       {
@@ -628,17 +628,17 @@ LABEL_30:
     v30 = v17;
     v18 = v16;
     v31 = v18;
-    v33 = v6;
-    v32 = v10;
+    v33 = deletionCopy;
+    v32 = completionCopy;
     v19 = _Block_copy(v29);
     v27 = 0u;
     v28 = 0u;
     WeakRetained = objc_loadWeakRetained(&self->_controller);
-    v21 = [WeakRetained swipeHandler];
-    v22 = v21;
-    if (v21)
+    swipeHandler = [WeakRetained swipeHandler];
+    v22 = swipeHandler;
+    if (swipeHandler)
     {
-      [v21 currentSwipeConfig];
+      [swipeHandler currentSwipeConfig];
     }
 
     else
@@ -647,38 +647,38 @@ LABEL_30:
       v28 = 0u;
     }
 
-    if (!a3->var0)
+    if (!info->var0)
     {
-      a3->var2 = v25;
-      a3->var0 = v27;
+      info->var2 = v25;
+      info->var0 = v27;
       if (v25)
       {
-        *&a3->var4 = xmmword_18A64B720;
+        *&info->var4 = xmmword_18A64B720;
       }
 
-      a3->var3 = 0.0;
+      info->var3 = 0.0;
     }
 
     self->_configuredDirection = 0;
     *&self->_flags |= 2u;
     v23 = objc_loadWeakRetained(&self->_controller);
-    [v23 swipeOccurrence:self willFinishWithDeletion:v6];
+    [v23 swipeOccurrence:self willFinishWithDeletion:deletionCopy];
 
-    if (v6)
+    if (deletionCopy)
     {
       [(UISwipeOccurrence *)self endSwipe];
     }
 
-    v24 = *&a3->var2;
-    v26[0] = *&a3->var0;
+    v24 = *&info->var2;
+    v26[0] = *&info->var0;
     v26[1] = v24;
-    v26[2] = *&a3->var4;
+    v26[2] = *&info->var4;
     [(UISwipeOccurrence *)self _moveItemWithSwipeInfo:v26 tracking:0 alongsideAnimations:v14 completion:v19];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
@@ -726,16 +726,16 @@ uint64_t __74__UISwipeOccurrence__resetItemWithSwipeInfo_animated_deletion_compl
   }
 }
 
-- (void)_updateLayoutUsingCurrentSwipeInfo:(BOOL)a3
+- (void)_updateLayoutUsingCurrentSwipeInfo:(BOOL)info
 {
-  v3 = a3;
+  infoCopy = info;
   if (![(UISwipeOccurrence *)self active])
   {
     return;
   }
 
-  v5 = [(UISwipeOccurrence *)self state];
-  if (v5 <= 5 && ((1 << v5) & 0x25) != 0 || (v24[0] = 0, *(v24 + 3) = 0, v23 = xmmword_18A6826D8, v3))
+  state = [(UISwipeOccurrence *)self state];
+  if (state <= 5 && ((1 << state) & 0x25) != 0 || (v24[0] = 0, *(v24 + 3) = 0, v23 = xmmword_18A6826D8, infoCopy))
   {
     direction = self->_currentSwipeInfo.direction;
     targetSwipeState = self->_currentSwipeInfo.targetSwipeState;
@@ -753,11 +753,11 @@ uint64_t __74__UISwipeOccurrence__resetItemWithSwipeInfo_animated_deletion_compl
   {
     memset(v22, 0, 32);
     WeakRetained = objc_loadWeakRetained(&self->_controller);
-    v16 = [WeakRetained swipeHandler];
-    v17 = v16;
-    if (v16)
+    swipeHandler = [WeakRetained swipeHandler];
+    v17 = swipeHandler;
+    if (swipeHandler)
     {
-      [v16 currentSwipeConfig];
+      [swipeHandler currentSwipeConfig];
     }
 
     else
@@ -794,11 +794,11 @@ uint64_t __74__UISwipeOccurrence__resetItemWithSwipeInfo_animated_deletion_compl
     {
       memset(v22, 0, 32);
       v12 = objc_loadWeakRetained(&self->_controller);
-      v13 = [v12 swipeHandler];
-      v14 = v13;
-      if (v13)
+      swipeHandler2 = [v12 swipeHandler];
+      v14 = swipeHandler2;
+      if (swipeHandler2)
       {
-        [v13 currentSwipeConfig];
+        [swipeHandler2 currentSwipeConfig];
       }
 
       else
@@ -809,10 +809,10 @@ uint64_t __74__UISwipeOccurrence__resetItemWithSwipeInfo_animated_deletion_compl
       [v9 openThreshold];
       *&v22[1] = v18;
       v19 = objc_loadWeakRetained(&self->_controller);
-      v20 = [v19 swipeHandler];
+      swipeHandler3 = [v19 swipeHandler];
       v21[0] = v22[0];
       v21[1] = v22[1];
-      [v20 updateCurrentSwipeConfig:v21];
+      [swipeHandler3 updateCurrentSwipeConfig:v21];
 
       direction = *&v22[0];
       xOffset = *&v22[1];
@@ -847,14 +847,14 @@ uint64_t __74__UISwipeOccurrence__resetItemWithSwipeInfo_animated_deletion_compl
   }
 }
 
-- (void)_updateSwipedStateOnSwipedView:(BOOL)a3
+- (void)_updateSwipedStateOnSwipedView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
     swipedView = self->_swipedView;
 
-    [(_UISwipedView *)swipedView _setSwiped:v3];
+    [(_UISwipedView *)swipedView _setSwiped:viewCopy];
   }
 }
 
@@ -875,35 +875,35 @@ uint64_t __74__UISwipeOccurrence__resetItemWithSwipeInfo_animated_deletion_compl
   [(_UISwipedView *)swipedView _updateInferredLayoutMargins];
 }
 
-- (void)performPrimaryActionWithSwipeInfo:(id *)a3
+- (void)performPrimaryActionWithSwipeInfo:(id *)info
 {
-  v5 = [(UISwipeOccurrence *)self _pullViewForSwipeDirection:a3->var0];
-  v6 = [v5 primarySwipeAction];
-  v7 = *&a3->var2;
-  v8[0] = *&a3->var0;
+  v5 = [(UISwipeOccurrence *)self _pullViewForSwipeDirection:info->var0];
+  primarySwipeAction = [v5 primarySwipeAction];
+  v7 = *&info->var2;
+  v8[0] = *&info->var0;
   v8[1] = v7;
-  v8[2] = *&a3->var4;
-  [(UISwipeOccurrence *)self _performSwipeAction:v6 inPullView:v5 swipeInfo:v8];
+  v8[2] = *&info->var4;
+  [(UISwipeOccurrence *)self _performSwipeAction:primarySwipeAction inPullView:v5 swipeInfo:v8];
 }
 
-- (BOOL)shouldDismissWithTouchLocation:(CGPoint)a3
+- (BOOL)shouldDismissWithTouchLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  v7 = [WeakRetained containerView];
-  v8 = [v7 hitTest:0 withEvent:{x, y}];
+  containerView = [WeakRetained containerView];
+  v8 = [containerView hitTest:0 withEvent:{x, y}];
 
   p_leadingPullView = &self->_leadingPullView;
-  v10 = [(UISwipeActionPullViewCommonProtocol *)self->_leadingPullView window];
+  window = [(UISwipeActionPullViewCommonProtocol *)self->_leadingPullView window];
 
-  if (!v10)
+  if (!window)
   {
     trailingPullView = self->_trailingPullView;
     p_trailingPullView = &self->_trailingPullView;
-    v13 = [(UISwipeActionPullViewCommonProtocol *)trailingPullView window];
+    window2 = [(UISwipeActionPullViewCommonProtocol *)trailingPullView window];
 
-    if (!v13)
+    if (!window2)
     {
       LOBYTE(v14) = 1;
       goto LABEL_5;
@@ -918,60 +918,60 @@ LABEL_5:
   return v14;
 }
 
-- (void)_transitionToState:(int64_t)a3
+- (void)_transitionToState:(int64_t)state
 {
   flags = self->_flags;
   *&self->_flags = flags | 1;
   state = self->_state;
   if ((state & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    v10 = v9;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v10 = currentHandler;
     v11 = @".triggered";
     if (state == 5)
     {
       v11 = @".cancelled";
     }
 
-    if ((a3 - 1) > 4)
+    if ((state - 1) > 4)
     {
       v12 = @".closed";
     }
 
     else
     {
-      v12 = off_1E7122B78[a3 - 1];
+      v12 = off_1E7122B78[state - 1];
     }
 
-    [v9 handleFailureInMethod:a2 object:self file:@"UISwipeOccurrence.m" lineNumber:717 description:{@"Transitioning from %@ to %@ is not a valid transition.", v11, v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISwipeOccurrence.m" lineNumber:717 description:{@"Transitioning from %@ to %@ is not a valid transition.", v11, v12}];
   }
 
-  self->_state = a3;
+  self->_state = state;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   [WeakRetained swipeOccurrence:self didChangeStateFrom:state];
 
   *&self->_flags = *&self->_flags & 0xFE | flags & 1;
 }
 
-- (void)_executeLifecycleForPerformedAction:(id)a3 sourceView:(id)a4 completionHandler:(id)a5
+- (void)_executeLifecycleForPerformedAction:(id)action sourceView:(id)view completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = self;
-  WeakRetained = objc_loadWeakRetained(&v13->_controller);
-  v15 = [(UISwipeOccurrence *)v13 indexPath];
-  objc_storeStrong(&v13->_currentAction, a3);
-  v16 = [WeakRetained swipeActionHost];
+  actionCopy = action;
+  viewCopy = view;
+  handlerCopy = handler;
+  selfCopy = self;
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_controller);
+  indexPath = [(UISwipeOccurrence *)selfCopy indexPath];
+  objc_storeStrong(&selfCopy->_currentAction, action);
+  swipeActionHost = [WeakRetained swipeActionHost];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [WeakRetained swipeActionHost];
-    [v18 swipeActionController:WeakRetained willPerformAction:v10 atIndexPath:v15];
+    swipeActionHost2 = [WeakRetained swipeActionHost];
+    [swipeActionHost2 swipeActionController:WeakRetained willPerformAction:actionCopy atIndexPath:indexPath];
   }
 
-  [(UISwipeOccurrence *)v13 _transitionToState:3];
+  [(UISwipeOccurrence *)selfCopy _transitionToState:3];
   v49 = 0;
   v50 = &v49;
   v51 = 0x2020000000;
@@ -980,11 +980,11 @@ LABEL_5:
   v46 = &v45;
   v47 = 0x2020000000;
   v48 = 0;
-  v19 = v13->_actionExecutionCounter + 1;
-  v13->_actionExecutionCounter = v19;
+  v19 = selfCopy->_actionExecutionCounter + 1;
+  selfCopy->_actionExecutionCounter = v19;
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("SwipeActions", &_MergedGlobals_1298);
   v21 = *(CategoryCachedImpl + 8);
-  v22 = os_signpost_id_make_with_pointer(*(CategoryCachedImpl + 8), v13);
+  v22 = os_signpost_id_make_with_pointer(*(CategoryCachedImpl + 8), selfCopy);
   if (v22 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v23 = v22;
@@ -1000,22 +1000,22 @@ LABEL_5:
   v35[2] = __86__UISwipeOccurrence__executeLifecycleForPerformedAction_sourceView_completionHandler___block_invoke;
   v35[3] = &unk_1E7122B30;
   v40 = &v49;
-  v35[4] = v13;
+  v35[4] = selfCopy;
   v42 = a2;
   v43 = v19;
-  v24 = v12;
+  v24 = handlerCopy;
   v39 = v24;
-  v25 = v10;
+  v25 = actionCopy;
   v36 = v25;
   v26 = WeakRetained;
   v37 = v26;
-  v27 = v15;
+  v27 = indexPath;
   v38 = v27;
   v41 = &v45;
-  [v25 executeHandlerWithView:v11 completionHandler:v35];
+  [v25 executeHandlerWithView:viewCopy completionHandler:v35];
   v28 = __UILogGetCategoryCachedImpl("SwipeActions", &qword_1ED4A0F40);
   v29 = *(v28 + 8);
-  v30 = os_signpost_id_make_with_pointer(*(v28 + 8), v13);
+  v30 = os_signpost_id_make_with_pointer(*(v28 + 8), selfCopy);
   if (v30 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v31 = v30;
@@ -1026,19 +1026,19 @@ LABEL_5:
     }
   }
 
-  v32 = [v26 swipeActionHost];
+  swipeActionHost3 = [v26 swipeActionHost];
   v33 = objc_opt_respondsToSelector();
 
   if (v33)
   {
-    v34 = [v26 swipeActionHost];
-    [v34 swipeActionController:v26 didPerformAction:v25 atIndexPath:v27];
+    swipeActionHost4 = [v26 swipeActionHost];
+    [swipeActionHost4 swipeActionController:v26 didPerformAction:v25 atIndexPath:v27];
   }
 
   *(v46 + 24) = 1;
-  if (*(v50 + 24) == 1 && (v13->_state & 0xFFFFFFFFFFFFFFFELL) != 4)
+  if (*(v50 + 24) == 1 && (selfCopy->_state & 0xFFFFFFFFFFFFFFFELL) != 4)
   {
-    [(UISwipeOccurrence *)v13 _transitionToState:5];
+    [(UISwipeOccurrence *)selfCopy _transitionToState:5];
   }
 
   _Block_object_dispose(&v45, 8);
@@ -1111,22 +1111,22 @@ LABEL_16:
   }
 }
 
-- (void)_performSwipeAction:(id)a3 inPullView:(id)a4 swipeInfo:(id *)a5
+- (void)_performSwipeAction:(id)action inPullView:(id)view swipeInfo:(id *)info
 {
-  v8 = a3;
-  v9 = a4;
+  actionCopy = action;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  v11 = [(UISwipeOccurrence *)self indexPath];
-  v12 = [WeakRetained _swipedViewForItemAtIndexPath:v11];
+  indexPath = [(UISwipeOccurrence *)self indexPath];
+  v12 = [WeakRetained _swipedViewForItemAtIndexPath:indexPath];
 
   if (v12 && ([(UISwipeOccurrence *)self state]& 0xFFFFFFFFFFFFFFFELL) != 4)
   {
-    [v8 executePreHandlerWithView:v9];
-    v13 = [(UISwipeOccurrence *)self isDynamicPullView];
+    [actionCopy executePreHandlerWithView:viewCopy];
+    isDynamicPullView = [(UISwipeOccurrence *)self isDynamicPullView];
     offset = self->_offset;
-    if (v13)
+    if (isDynamicPullView)
     {
-      [v9 _performAction:v8 offset:offset];
+      [viewCopy _performAction:actionCopy offset:offset];
     }
 
     else
@@ -1142,25 +1142,25 @@ LABEL_16:
       }
 
       [(UISwipeOccurrence *)self _extraOffsetForOffset:v15 withDirection:offset];
-      [v9 _performAction:v8 offset:self->_offset extraOffset:v16];
+      [viewCopy _performAction:actionCopy offset:self->_offset extraOffset:v16];
     }
 
     memset(v37, 0, 7);
-    var0 = a5->var0;
-    if (a5->var0)
+    var0 = info->var0;
+    if (info->var0)
     {
-      var1 = a5->var1;
-      var2 = a5->var2;
-      v37[0] = *(&a5->var2 + 1);
-      *(v37 + 3) = *(&a5->var2 + 1);
-      var3 = a5->var3;
-      var4 = a5->var4;
-      var5 = a5->var5;
+      var1 = info->var1;
+      var2 = info->var2;
+      v37[0] = *(&info->var2 + 1);
+      *(v37 + 3) = *(&info->var2 + 1);
+      var3 = info->var3;
+      var4 = info->var4;
+      var5 = info->var5;
     }
 
     else
     {
-      var0 = [(UISwipeOccurrence *)self _swipeDirectionForPullView:v9];
+      var0 = [(UISwipeOccurrence *)self _swipeDirectionForPullView:viewCopy];
       var5 = 1.0;
       var3 = 0.0;
       var2 = 1;
@@ -1168,15 +1168,15 @@ LABEL_16:
       var4 = 0.0;
     }
 
-    v23 = [v9 sourceViewForAction:v8];
+    v23 = [viewCopy sourceViewForAction:actionCopy];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __62__UISwipeOccurrence__performSwipeAction_inPullView_swipeInfo___block_invoke;
     v24[3] = &unk_1E7122B58;
     v25 = WeakRetained;
-    v26 = v8;
-    v27 = self;
-    v28 = v9;
+    v26 = actionCopy;
+    selfCopy = self;
+    v28 = viewCopy;
     v29 = v12;
     v30 = var0;
     v31 = var1;
@@ -1328,19 +1328,19 @@ void __62__UISwipeOccurrence__performSwipeAction_inPullView_swipeInfo___block_in
   return [(objc_class *)v2 isEqual:v3];
 }
 
-- (double)_extraOffsetForOffset:(double)a3 withDirection:(unint64_t)a4
+- (double)_extraOffsetForOffset:(double)offset withDirection:(unint64_t)direction
 {
   result = 0.0;
-  if (a4 == 2)
+  if (direction == 2)
   {
-    if (a3 > 0.0)
+    if (offset > 0.0)
     {
       [(UISwipeOccurrence *)self extraInsets];
       return v7;
     }
   }
 
-  else if (a4 == 1 && a3 < 0.0)
+  else if (direction == 1 && offset < 0.0)
   {
     [(UISwipeOccurrence *)self extraInsets];
     return v6;
@@ -1349,18 +1349,18 @@ void __62__UISwipeOccurrence__performSwipeAction_inPullView_swipeInfo___block_in
   return result;
 }
 
-- (BOOL)_isSwipeDirectionExposingLeadingEdgePullView:(unint64_t)a3
+- (BOOL)_isSwipeDirectionExposingLeadingEdgePullView:(unint64_t)view
 {
   v12 = *MEMORY[0x1E69E9840];
   if (os_variant_has_internal_diagnostics())
   {
-    if (a3 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+    if (view - 3 <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v7 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
       {
         v10 = 134217984;
-        v11 = a3;
+        viewCopy2 = view;
         _os_log_fault_impl(&dword_188A29000, v7, OS_LOG_TYPE_FAULT, "Attempted to request the pull view for an unsupported swipe direction (%ld)", &v10, 0xCu);
       }
 
@@ -1368,69 +1368,69 @@ void __62__UISwipeOccurrence__performSwipeAction_inPullView_swipeInfo___block_in
     }
   }
 
-  else if (a3 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+  else if (view - 3 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v8 = *(__UILogGetCategoryCachedImpl("Assert", &_isSwipeDirectionExposingLeadingEdgePullView____s_category) + 8);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v10 = 134217984;
-      v11 = a3;
+      viewCopy2 = view;
       _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_ERROR, "Attempted to request the pull view for an unsupported swipe direction (%ld)", &v10, 0xCu);
     }
 
 LABEL_13:
     v5 = (*&self->_flags >> 4) & 1;
-    return a3 == 1 && v5;
+    return view == 1 && v5;
   }
 
   v5 = (*&self->_flags >> 4) & 1;
-  if (a3 == 2 && !v5)
+  if (view == 2 && !v5)
   {
     return 1;
   }
 
-  return a3 == 1 && v5;
+  return view == 1 && v5;
 }
 
-- (id)_pullViewForSwipeDirection:(unint64_t)a3
+- (id)_pullViewForSwipeDirection:(unint64_t)direction
 {
-  v3 = [(UISwipeOccurrence *)self _pullViewForLeadingEdge:[(UISwipeOccurrence *)self _isSwipeDirectionExposingLeadingEdgePullView:a3]];
+  v3 = [(UISwipeOccurrence *)self _pullViewForLeadingEdge:[(UISwipeOccurrence *)self _isSwipeDirectionExposingLeadingEdgePullView:direction]];
 
   return v3;
 }
 
-- (unint64_t)_swipeDirectionForPullView:(id)a3
+- (unint64_t)_swipeDirectionForPullView:(id)view
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   trailingPullView = self->_trailingPullView;
   if (has_internal_diagnostics)
   {
-    if (trailingPullView != v4 && self->_leadingPullView != v4)
+    if (trailingPullView != viewCopy && self->_leadingPullView != viewCopy)
     {
       v9 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
         v11 = 138412290;
-        v12 = v4;
+        v12 = viewCopy;
         _os_log_fault_impl(&dword_188A29000, v9, OS_LOG_TYPE_FAULT, "Attempted to request the swipe direction for an unknown pull view: %@", &v11, 0xCu);
       }
     }
   }
 
-  else if (trailingPullView != v4 && self->_leadingPullView != v4)
+  else if (trailingPullView != viewCopy && self->_leadingPullView != viewCopy)
   {
     v10 = *(__UILogGetCategoryCachedImpl("Assert", &_swipeDirectionForPullView____s_category) + 8);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = viewCopy;
       _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_ERROR, "Attempted to request the swipe direction for an unknown pull view: %@", &v11, 0xCu);
     }
   }
 
-  if ((self->_leadingPullView == v4) != ((*&self->_flags & 0x10) == 0))
+  if ((self->_leadingPullView == viewCopy) != ((*&self->_flags & 0x10) == 0))
   {
     v7 = 1;
   }
@@ -1443,10 +1443,10 @@ LABEL_13:
   return v7;
 }
 
-- (id)_pullViewForLeadingEdge:(BOOL)a3
+- (id)_pullViewForLeadingEdge:(BOOL)edge
 {
-  v3 = a3;
-  if (a3)
+  edgeCopy = edge;
+  if (edge)
   {
     p_leadingPullView = &self->_leadingPullView;
     leadingPullView = self->_leadingPullView;
@@ -1459,16 +1459,16 @@ LABEL_13:
 
 LABEL_8:
       WeakRetained = objc_loadWeakRetained(&self->_controller);
-      v9 = [WeakRetained swipeActionHost];
+      swipeActionHost = [WeakRetained swipeActionHost];
       v10 = objc_opt_respondsToSelector();
 
       v11 = objc_loadWeakRetained(&self->_controller);
       v12 = v11;
       if (v10)
       {
-        v13 = [v11 swipeActionHost];
+        swipeActionHost2 = [v11 swipeActionHost];
         v14 = objc_loadWeakRetained(&self->_controller);
-        [v13 swipeActionController:v14 extraInsetsForItemAtIndexPath:self->_indexPath];
+        [swipeActionHost2 swipeActionController:v14 extraInsetsForItemAtIndexPath:self->_indexPath];
         self->_extraInsets.top = v15;
         self->_extraInsets.left = v16;
         self->_extraInsets.bottom = v17;
@@ -1477,8 +1477,8 @@ LABEL_8:
 
       else
       {
-        v13 = [v11 containerView];
-        [v13 safeAreaInsets];
+        swipeActionHost2 = [v11 containerView];
+        [swipeActionHost2 safeAreaInsets];
         self->_extraInsets.top = v19;
         self->_extraInsets.left = v20;
         self->_extraInsets.bottom = v21;
@@ -1486,15 +1486,15 @@ LABEL_8:
       }
 
       v23 = objc_loadWeakRetained(&self->_controller);
-      v24 = [v23 swipeActionHost];
+      swipeActionHost3 = [v23 swipeActionHost];
       v25 = objc_opt_respondsToSelector();
 
       if (v25)
       {
         v26 = objc_loadWeakRetained(&self->_controller);
-        v27 = [v26 swipeActionHost];
+        swipeActionHost4 = [v26 swipeActionHost];
         v28 = objc_loadWeakRetained(&self->_controller);
-        [v27 swipeActionController:v28 pullViewInsetsForItemAtIndexPath:self->_indexPath];
+        [swipeActionHost4 swipeActionController:v28 pullViewInsetsForItemAtIndexPath:self->_indexPath];
         self->_pullViewInsets.top = v29;
         self->_pullViewInsets.left = v30;
         self->_pullViewInsets.bottom = v31;
@@ -1508,7 +1508,7 @@ LABEL_8:
       }
 
 LABEL_14:
-      if (((*&self->_flags & 0x10) == 0) != v3)
+      if (((*&self->_flags & 0x10) == 0) != edgeCopy)
       {
         v33 = 8;
       }
@@ -1519,15 +1519,15 @@ LABEL_14:
       }
 
       v34 = objc_loadWeakRetained(&self->_controller);
-      v35 = [v34 swipeActionHost];
+      swipeActionHost5 = [v34 swipeActionHost];
       v36 = objc_opt_respondsToSelector();
 
       if (v36)
       {
         v37 = objc_loadWeakRetained(&self->_controller);
-        v38 = [v37 swipeActionHost];
+        swipeActionHost6 = [v37 swipeActionHost];
         v39 = objc_loadWeakRetained(&self->_controller);
-        v40 = [v38 swipeActionController:v39 backgroundColorForItemAtIndexPath:self->_indexPath];
+        v40 = [swipeActionHost6 swipeActionController:v39 backgroundColorForItemAtIndexPath:self->_indexPath];
       }
 
       else
@@ -1539,42 +1539,42 @@ LABEL_14:
       Height = CGRectGetHeight(v51);
       if ([(UISwipeOccurrence *)self isDynamicPullView])
       {
-        v7 = [[UISwipeActionDynamicPullView alloc] initWithFrame:v33 cellEdge:0.0, 0.0, 0.0, Height];
+        height = [[UISwipeActionDynamicPullView alloc] initWithFrame:v33 cellEdge:0.0, 0.0, 0.0, Height];
         swipedView = self->_swipedView;
         v43 = objc_loadWeakRetained(&self->_controller);
-        v44 = [v43 containerView];
-        [(UISwipeOccurrence *)self _frameForPullView:v7 inSwipedItem:swipedView withContainer:v44];
+        containerView = [v43 containerView];
+        [(UISwipeOccurrence *)self _frameForPullView:height inSwipedItem:swipedView withContainer:containerView];
         v45 = CGRectGetHeight(v52);
 
-        [(UISwipeActionDynamicPullView *)v7 setFrame:0.0, 0.0, 0.0, v45];
+        [(UISwipeActionDynamicPullView *)height setFrame:0.0, 0.0, 0.0, v45];
       }
 
       else
       {
-        v7 = [[UISwipeActionPullView alloc] initWithFrame:v33 cellEdge:self->_style style:0.0, 0.0, 0.0, Height];
-        [(UISwipeActionDynamicPullView *)v7 _setRoundedStyleCornerRadius:self->_roundedStyleCornerRadius];
+        height = [[UISwipeActionPullView alloc] initWithFrame:v33 cellEdge:self->_style style:0.0, 0.0, 0.0, Height];
+        [(UISwipeActionDynamicPullView *)height _setRoundedStyleCornerRadius:self->_roundedStyleCornerRadius];
       }
 
-      [(UISwipeActionDynamicPullView *)v7 setBackgroundPullColor:v40];
-      [(UISwipeActionDynamicPullView *)v7 setDelegate:self];
+      [(UISwipeActionDynamicPullView *)height setBackgroundPullColor:v40];
+      [(UISwipeActionDynamicPullView *)height setDelegate:self];
       if ((*&self->_flags & 0x10) != 0)
       {
-        if (v3)
+        if (edgeCopy)
         {
           goto LABEL_25;
         }
       }
 
-      else if (!v3)
+      else if (!edgeCopy)
       {
 LABEL_25:
         right = self->_extraInsets.right;
         left = 0.0;
 LABEL_28:
-        [(UISwipeActionDynamicPullView *)v7 setContentInsets:0.0, left, 0.0, right];
-        [(UISwipeActionDynamicPullView *)v7 setExtraInsets:self->_extraInsets.top, self->_extraInsets.left, self->_extraInsets.bottom, self->_extraInsets.right];
-        [(UISwipeActionDynamicPullView *)v7 setPullViewInsets:self->_pullViewInsets.top, self->_pullViewInsets.left, self->_pullViewInsets.bottom, self->_pullViewInsets.right];
-        if (v3)
+        [(UISwipeActionDynamicPullView *)height setContentInsets:0.0, left, 0.0, right];
+        [(UISwipeActionDynamicPullView *)height setExtraInsets:self->_extraInsets.top, self->_extraInsets.left, self->_extraInsets.bottom, self->_extraInsets.right];
+        [(UISwipeActionDynamicPullView *)height setPullViewInsets:self->_pullViewInsets.top, self->_pullViewInsets.left, self->_pullViewInsets.bottom, self->_pullViewInsets.right];
+        if (edgeCopy)
         {
           p_trailingPullView = p_leadingPullView;
         }
@@ -1584,7 +1584,7 @@ LABEL_28:
           p_trailingPullView = &self->_trailingPullView;
         }
 
-        objc_storeStrong(p_trailingPullView, v7);
+        objc_storeStrong(p_trailingPullView, height);
 
         goto LABEL_32;
       }
@@ -1610,33 +1610,33 @@ LABEL_28:
     }
   }
 
-  v7 = leadingPullView;
+  height = leadingPullView;
 LABEL_32:
 
-  return v7;
+  return height;
 }
 
-- (void)_updatePullView:(id)a3
+- (void)_updatePullView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  viewCopy = view;
+  v5 = viewCopy;
+  if (viewCopy)
   {
-    v6 = [v4 superview];
+    superview = [viewCopy superview];
 
-    if (v6)
+    if (superview)
     {
       swipedView = self->_swipedView;
       WeakRetained = objc_loadWeakRetained(&self->_controller);
-      v9 = [WeakRetained containerView];
-      [(UISwipeOccurrence *)self _frameForPullView:v5 inSwipedItem:swipedView withContainer:v9];
+      containerView = [WeakRetained containerView];
+      [(UISwipeOccurrence *)self _frameForPullView:v5 inSwipedItem:swipedView withContainer:containerView];
       v11 = v10;
       v13 = v12;
       v15 = v14;
       v17 = v16;
 
-      v18 = [v5 superview];
-      [v18 convertRect:self->_swipedView fromView:{v11, v13, v15, v17}];
+      superview2 = [v5 superview];
+      [superview2 convertRect:self->_swipedView fromView:{v11, v13, v15, v17}];
       v20 = v19;
       v22 = v21;
       v24 = v23;
@@ -1648,8 +1648,8 @@ LABEL_32:
         if (self->_style == 1)
         {
           v27 = objc_loadWeakRetained(&self->_controller);
-          v28 = [v27 containerView];
-          [v28 frame];
+          containerView2 = [v27 containerView];
+          [containerView2 frame];
           Width = CGRectGetWidth(v53);
           [(_UISwipedView *)self->_swipedView frame];
           v30 = Width - CGRectGetWidth(v54);
@@ -1675,9 +1675,9 @@ LABEL_32:
 
         else
         {
-          v38 = [v5 superview];
+          superview3 = [v5 superview];
           [(_UISwipedView *)self->_swipedView bounds];
-          [v38 convertRect:self->_swipedView fromView:?];
+          [superview3 convertRect:self->_swipedView fromView:?];
           v40 = v39;
           v42 = v41;
           v44 = v43;
@@ -1685,8 +1685,8 @@ LABEL_32:
 
           if (self->_configuredDirection == 1)
           {
-            v47 = [v5 superview];
-            [v47 bounds];
+            superview4 = [v5 superview];
+            [superview4 bounds];
             v48 = CGRectGetWidth(v55);
             v56.origin.x = v40;
             v56.origin.y = v42;
@@ -1734,35 +1734,35 @@ LABEL_32:
   }
 }
 
-- (CGRect)_frameForPullView:(id)a3 inSwipedItem:(id)a4 withContainer:(id)a5
+- (CGRect)_frameForPullView:(id)view inSwipedItem:(id)item withContainer:(id)container
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v9 frame];
+  viewCopy = view;
+  itemCopy = item;
+  containerCopy = container;
+  [itemCopy frame];
   Height = CGRectGetHeight(v51);
   v12 = Height;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 separatorStyle])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [itemCopy separatorStyle])
   {
-    [v9 _separatorHeight];
+    [itemCopy _separatorHeight];
     v12 = Height - v13;
   }
 
   if ([(UISwipeOccurrence *)self isDynamicPullView]|| (v14 = 0.0, self->_style == 1))
   {
-    [v10 visibleBounds];
+    [containerCopy visibleBounds];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    [v10 contentInset];
-    [v9 convertRect:v10 fromView:{v16 + v26, v18 + v23, v20 - (v26 + v24), v22 - (v23 + v25)}];
+    [containerCopy contentInset];
+    [itemCopy convertRect:containerCopy fromView:{v16 + v26, v18 + v23, v20 - (v26 + v24), v22 - (v23 + v25)}];
     v28 = v27;
     v30 = v29;
     v32 = v31;
     v34 = v33;
-    [v9 bounds];
+    [itemCopy bounds];
     v56.origin.x = v35;
     v56.origin.y = v36;
     v56.size.width = v37;
@@ -1788,15 +1788,15 @@ LABEL_32:
     v54.size.width = width;
     v54.size.height = v42;
     CGRectGetMidY(v54);
-    UIRoundToViewScale(v9);
+    UIRoundToViewScale(itemCopy);
     v14 = v44;
   }
 
   v45 = 0.0;
-  if ([v8 cellEdge] == 8)
+  if ([viewCopy cellEdge] == 8)
   {
-    [v9 frame];
-    UIRoundToViewScale(v9);
+    [itemCopy frame];
+    UIRoundToViewScale(itemCopy);
     v45 = v46;
   }
 
@@ -1811,48 +1811,48 @@ LABEL_32:
   return result;
 }
 
-- (void)_removePullViewImmediately:(id)a3
+- (void)_removePullViewImmediately:(id)immediately
 {
-  v17 = a3;
-  v5 = [v17 superview];
+  immediatelyCopy = immediately;
+  superview = [immediatelyCopy superview];
 
-  if (v5)
+  if (superview)
   {
     WeakRetained = objc_loadWeakRetained(&self->_controller);
-    v7 = [WeakRetained _internalSwipeActionHost];
+    _internalSwipeActionHost = [WeakRetained _internalSwipeActionHost];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
       v9 = objc_loadWeakRetained(&self->_controller);
-      v10 = [v9 _internalSwipeActionHost];
+      _internalSwipeActionHost2 = [v9 _internalSwipeActionHost];
       v11 = objc_loadWeakRetained(&self->_controller);
-      [v10 swipeActionController:v11 cleanupActionsView:v17 forItemAtIndexPath:self->_indexPath];
+      [_internalSwipeActionHost2 swipeActionController:v11 cleanupActionsView:immediatelyCopy forItemAtIndexPath:self->_indexPath];
 
-      v12 = [v17 window];
+      window = [immediatelyCopy window];
 
-      if (v12)
+      if (window)
       {
-        v13 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v14 = NSStringFromSelector(sel_swipeActionController_cleanupActionsView_forItemAtIndexPath_);
         v15 = objc_loadWeakRetained(&self->_controller);
-        v16 = [v15 swipeActionHost];
-        [v13 handleFailureInMethod:a2 object:self file:@"UISwipeOccurrence.m" lineNumber:1191 description:{@"Actions view not removed from view hierarchy after calling -%@ on %@", v14, v16}];
+        swipeActionHost = [v15 swipeActionHost];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UISwipeOccurrence.m" lineNumber:1191 description:{@"Actions view not removed from view hierarchy after calling -%@ on %@", v14, swipeActionHost}];
       }
     }
 
     else
     {
-      [v17 removeFromSuperview];
+      [immediatelyCopy removeFromSuperview];
     }
   }
 }
 
-- (void)_removeAndResetPullViewImmediately:(id)a3
+- (void)_removeAndResetPullViewImmediately:(id)immediately
 {
-  v4 = a3;
-  [(UISwipeOccurrence *)self _removePullViewImmediately:v4];
-  [v4 resetView];
+  immediatelyCopy = immediately;
+  [(UISwipeOccurrence *)self _removePullViewImmediately:immediatelyCopy];
+  [immediatelyCopy resetView];
 }
 
 - (id)_actionView
@@ -1864,38 +1864,38 @@ LABEL_32:
 
 - (id)lockActionViewForAnimation
 {
-  v2 = [(UISwipeOccurrence *)self _actionView];
-  [v2 setAutoresizesSubviews:0];
-  [v2 setClipsToBounds:1];
+  _actionView = [(UISwipeOccurrence *)self _actionView];
+  [_actionView setAutoresizesSubviews:0];
+  [_actionView setClipsToBounds:1];
 
-  return v2;
+  return _actionView;
 }
 
-- (void)unlockActionViewForAnimation:(id)a3
+- (void)unlockActionViewForAnimation:(id)animation
 {
-  v6 = a3;
+  animationCopy = animation;
   +[UISwipeOccurrence pullViewClass];
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"UISwipeOccurrence.m" lineNumber:1234 description:{@"Invalid parameter not satisfying: %@", @"[pullView isKindOfClass:[UISwipeOccurrence pullViewClass]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISwipeOccurrence.m" lineNumber:1234 description:{@"Invalid parameter not satisfying: %@", @"[pullView isKindOfClass:[UISwipeOccurrence pullViewClass]]"}];
   }
 
-  [v6 setAutoresizesSubviews:1];
-  [v6 setClipsToBounds:{objc_msgSend(v6, "buttonsUnderlapSwipedView")}];
+  [animationCopy setAutoresizesSubviews:1];
+  [animationCopy setClipsToBounds:{objc_msgSend(animationCopy, "buttonsUnderlapSwipedView")}];
 }
 
-- (double)confirmationDistanceForPrimaryActionInSwipeActionPullView:(id)a3
+- (double)confirmationDistanceForPrimaryActionInSwipeActionPullView:(id)view
 {
-  v4 = a3;
-  v5 = [(UISwipeOccurrence *)self _swipeDirectionForPullView:v4];
+  viewCopy = view;
+  v5 = [(UISwipeOccurrence *)self _swipeDirectionForPullView:viewCopy];
   [(_UISwipedView *)self->_swipedView frame];
   v7 = v6;
   [(UISwipeOccurrence *)self pullViewInsets];
   v9 = v7 - v8;
   [(UISwipeOccurrence *)self pullViewInsets];
   v11 = v9 - v10;
-  if ([v4 primaryActionIsDestructive])
+  if ([viewCopy primaryActionIsDestructive])
   {
     [(UISwipeOccurrence *)self extraInsets];
     v14 = v11 - v13 + -29.0;
@@ -1915,7 +1915,7 @@ LABEL_32:
     v15 = v11 * 0.525;
     if ([(UISwipeOccurrence *)self isDynamicPullView])
     {
-      [v4 openThreshold];
+      [viewCopy openThreshold];
       v17 = v16 + 20.0;
       if (v15 < v17)
       {
@@ -1966,11 +1966,11 @@ LABEL_32:
   return self;
 }
 
-- (void)setCurrentSwipeInfo:(id *)a3
+- (void)setCurrentSwipeInfo:(id *)info
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var2;
-  *&self->_currentSwipeInfo.initialSpringVelocity = *&a3->var4;
+  v3 = *&info->var0;
+  v4 = *&info->var2;
+  *&self->_currentSwipeInfo.initialSpringVelocity = *&info->var4;
   *&self->_currentSwipeInfo.animated = v4;
   *&self->_currentSwipeInfo.direction = v3;
 }

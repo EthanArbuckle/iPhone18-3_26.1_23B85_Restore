@@ -1,14 +1,14 @@
 @interface AuthViewController
-- (AuthViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AuthViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation AuthViewController
 
-- (AuthViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AuthViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = AuthViewController;
-  v4 = [(AuthViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(AuthViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {

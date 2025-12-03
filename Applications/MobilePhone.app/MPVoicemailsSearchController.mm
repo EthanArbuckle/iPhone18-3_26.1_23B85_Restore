@@ -2,19 +2,19 @@
 - (BOOL)sectionNeedsIndexing;
 - (MPVoicemailsSearchController)init;
 - (NSString)sectionTitle;
-- (id)tableView:(id)a3 cellForRowAt:(id)a4;
-- (int64_t)configureWith:(id)a3 presentationResultForIndex:(id)a4;
+- (id)tableView:(id)view cellForRowAt:(id)at;
+- (int64_t)configureWith:(id)with presentationResultForIndex:(id)index;
 - (int64_t)numberOfRowsInConsolidatedView;
 - (int64_t)sectionIndex;
 - (unsigned)sectionType;
 - (void)cancelPreviousSearchRequests;
-- (void)highlightMatchedTextIn:(id)a3;
-- (void)registerCellWith:(id)a3;
-- (void)searchWith:(NSString *)a3 searchTokens:(NSArray *)a4 completion:(id)a5;
-- (void)setSectionIndex:(int64_t)a3;
-- (void)setSectionType:(unsigned int)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableViewController:(id)a3 didChangeVoicemails:(id)a4;
+- (void)highlightMatchedTextIn:(id)in;
+- (void)registerCellWith:(id)with;
+- (void)searchWith:(NSString *)with searchTokens:(NSArray *)tokens completion:(id)completion;
+- (void)setSectionIndex:(int64_t)index;
+- (void)setSectionType:(unsigned int)type;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableViewController:(id)controller didChangeVoicemails:(id)voicemails;
 @end
 
 @implementation MPVoicemailsSearchController
@@ -34,11 +34,11 @@
   return *(self + v3);
 }
 
-- (void)setSectionIndex:(int64_t)a3
+- (void)setSectionIndex:(int64_t)index
 {
   v5 = OBJC_IVAR___MPVoicemailsSearchController_sectionIndex;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = index;
 }
 
 - (unsigned)sectionType
@@ -48,22 +48,22 @@
   return *(self + v3);
 }
 
-- (void)setSectionType:(unsigned int)a3
+- (void)setSectionType:(unsigned int)type
 {
   v5 = OBJC_IVAR___MPVoicemailsSearchController_sectionType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
-- (void)searchWith:(NSString *)a3 searchTokens:(NSArray *)a4 completion:(id)a5
+- (void)searchWith:(NSString *)with searchTokens:(NSArray *)tokens completion:(id)completion
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v9 - 8);
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = with;
+  v13[3] = tokens;
   v13[4] = v12;
   v13[5] = self;
   v14 = type metadata accessor for TaskPriority();
@@ -78,27 +78,27 @@
   v16[3] = 0;
   v16[4] = &_sIeghH_IeAgH_TRTATu;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  withCopy = with;
+  tokensCopy = tokens;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v11, &_sIeAgH_ytIeAgHr_TRTATu, v16);
 }
 
 - (void)cancelPreviousSearchRequests
 {
-  v2 = self;
+  selfCopy = self;
   VoicemailsSearchController.cancelPreviousSearchRequests()();
 }
 
 - (int64_t)numberOfRowsInConsolidatedView
 {
   v2 = *(self + OBJC_IVAR___MPVoicemailsSearchController_featureFlags);
-  v3 = self;
+  selfCopy = self;
   if ([v2 voicemailSearchEnabled])
   {
     v4 = OBJC_IVAR___MPVoicemailsSearchController_results;
     swift_beginAccess();
-    v5 = *(*(v3 + v4) + 16);
+    v5 = *(*(selfCopy + v4) + 16);
 
     if (v5 >= 3)
     {
@@ -118,58 +118,58 @@
   }
 }
 
-- (void)registerCellWith:(id)a3
+- (void)registerCellWith:(id)with
 {
   type metadata accessor for VoicemailSearchViewCell();
   ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
-  v6 = a3;
+  withCopy = with;
   v5 = String._bridgeToObjectiveC()();
-  [v6 registerClass:ObjCClassFromMetadata forCellReuseIdentifier:v5];
+  [withCopy registerClass:ObjCClassFromMetadata forCellReuseIdentifier:v5];
 }
 
-- (id)tableView:(id)a3 cellForRowAt:(id)a4
+- (id)tableView:(id)view cellForRowAt:(id)at
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = VoicemailSearchTableViewController.tableView(_:cellForRowAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = VoicemailSearchTableViewController.tableView(_:cellForRowAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  VoicemailsSearchController.tableView(_:didSelectRowAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  VoicemailsSearchController.tableView(_:didSelectRowAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)highlightMatchedTextIn:(id)a3
+- (void)highlightMatchedTextIn:(id)in
 {
-  v4 = a3;
-  v5 = self;
-  VoicemailsSearchController.highlightMatchedText(in:)(v4);
+  inCopy = in;
+  selfCopy = self;
+  VoicemailsSearchController.highlightMatchedText(in:)(inCopy);
 }
 
-- (void)tableViewController:(id)a3 didChangeVoicemails:(id)a4
+- (void)tableViewController:(id)controller didChangeVoicemails:(id)voicemails
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&_s11MobilePhone7Message_pMd);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   specialized VoicemailsSearchController.tableViewController(_:didChangeVoicemails:)(v6);
 }
 
@@ -189,16 +189,16 @@
   return v2 & 1;
 }
 
-- (int64_t)configureWith:(id)a3 presentationResultForIndex:(id)a4
+- (int64_t)configureWith:(id)with presentationResultForIndex:(id)index
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = VoicemailSearchTableViewController.configure(cardController:presentationResultForIndex:)(v10);
+  withCopy = with;
+  selfCopy = self;
+  v12 = VoicemailSearchTableViewController.configure(cardController:presentationResultForIndex:)(withCopy);
 
   (*(v7 + 8))(v9, v6);
   return v12;

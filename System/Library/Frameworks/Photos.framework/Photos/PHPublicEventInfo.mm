@@ -1,9 +1,9 @@
 @interface PHPublicEventInfo
-- (BOOL)isEqual:(id)a3;
-- (PHPublicEventInfo)initWithCoder:(id)a3;
-- (PHPublicEventInfo)initWithEventID:(id)a3 eventTitle:(id)a4 eventCategory:(int)a5;
+- (BOOL)isEqual:(id)equal;
+- (PHPublicEventInfo)initWithCoder:(id)coder;
+- (PHPublicEventInfo)initWithEventID:(id)d eventTitle:(id)title eventCategory:(int)category;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PHPublicEventInfo
@@ -15,10 +15,10 @@
   return self->_eventCategory - (v4 - v3 + 32 * v3) + 32 * (v4 - v3 + 32 * v3);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -28,12 +28,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PHPublicEventInfo *)v5 eventID];
-      if ([v6 isEqualToString:self->_eventID])
+      v5 = equalCopy;
+      eventID = [(PHPublicEventInfo *)v5 eventID];
+      if ([eventID isEqualToString:self->_eventID])
       {
-        v7 = [(PHPublicEventInfo *)v5 eventTitle];
-        if ([v7 isEqualToString:self->_eventTitle])
+        eventTitle = [(PHPublicEventInfo *)v5 eventTitle];
+        if ([eventTitle isEqualToString:self->_eventTitle])
         {
           v8 = [(PHPublicEventInfo *)v5 eventCategory]== self->_eventCategory;
         }
@@ -59,22 +59,22 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   eventID = self->_eventID;
-  v5 = a3;
-  [v5 encodeObject:eventID forKey:@"eventID"];
-  [v5 encodeObject:self->_eventTitle forKey:@"eventTitle"];
+  coderCopy = coder;
+  [coderCopy encodeObject:eventID forKey:@"eventID"];
+  [coderCopy encodeObject:self->_eventTitle forKey:@"eventTitle"];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:self->_eventCategory];
-  [v5 encodeObject:v6 forKey:@"category"];
+  [coderCopy encodeObject:v6 forKey:@"category"];
 }
 
-- (PHPublicEventInfo)initWithCoder:(id)a3
+- (PHPublicEventInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventTitle"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"category"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventTitle"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"category"];
 
   v8 = [v7 intValue] - 1;
   if (v8 > 7)
@@ -92,19 +92,19 @@
   return v10;
 }
 
-- (PHPublicEventInfo)initWithEventID:(id)a3 eventTitle:(id)a4 eventCategory:(int)a5
+- (PHPublicEventInfo)initWithEventID:(id)d eventTitle:(id)title eventCategory:(int)category
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  titleCopy = title;
   v14.receiver = self;
   v14.super_class = PHPublicEventInfo;
   v11 = [(PHPublicEventInfo *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_eventID, a3);
-    objc_storeStrong(&v12->_eventTitle, a4);
-    v12->_eventCategory = a5;
+    objc_storeStrong(&v11->_eventID, d);
+    objc_storeStrong(&v12->_eventTitle, title);
+    v12->_eventCategory = category;
   }
 
   return v12;

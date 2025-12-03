@@ -1,5 +1,5 @@
 @interface VTFrameProcessorFrame
-- (VTFrameProcessorFrame)initWithBuffer:(__CVBuffer *)a3 presentationTimeStamp:(id *)a4;
+- (VTFrameProcessorFrame)initWithBuffer:(__CVBuffer *)buffer presentationTimeStamp:(id *)stamp;
 - (id)veFrame;
 - (void)dealloc;
 @end
@@ -36,9 +36,9 @@
   [(VTFrameProcessorFrame *)&v4 dealloc];
 }
 
-- (VTFrameProcessorFrame)initWithBuffer:(__CVBuffer *)a3 presentationTimeStamp:(id *)a4
+- (VTFrameProcessorFrame)initWithBuffer:(__CVBuffer *)buffer presentationTimeStamp:(id *)stamp
 {
-  if (!a3)
+  if (!buffer)
   {
     return 0;
   }
@@ -49,11 +49,11 @@
   v7 = [(VTFrameProcessorFrame *)&v10 init];
   if (v7)
   {
-    if (CVPixelBufferGetIOSurface(a3))
+    if (CVPixelBufferGetIOSurface(buffer))
     {
-      *(v7 + 2) = CFRetain(a3);
-      var3 = a4->var3;
-      *(v7 + 24) = *&a4->var0;
+      *(v7 + 2) = CFRetain(buffer);
+      var3 = stamp->var3;
+      *(v7 + 24) = *&stamp->var0;
       *(v7 + 5) = var3;
       return v7;
     }

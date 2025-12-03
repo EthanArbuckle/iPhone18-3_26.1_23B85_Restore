@@ -1,13 +1,13 @@
 @interface _UICollectionViewListCell
-- (id)_configurationForListAccessoryType:(int64_t)a3;
-- (id)_customViewForAccessoryConfiguration:(id)a3;
-- (id)accessoryViewForAxis:(int64_t)a3;
-- (int64_t)accessoryTypeForAxis:(int64_t)a3;
+- (id)_configurationForListAccessoryType:(int64_t)type;
+- (id)_customViewForAccessoryConfiguration:(id)configuration;
+- (id)accessoryViewForAxis:(int64_t)axis;
+- (int64_t)accessoryTypeForAxis:(int64_t)axis;
 - (unint64_t)_maskedCornersForSystemBackgroundView;
-- (void)_setAccessoryConfigurations:(id)a3 forAxis:(int64_t)a4;
-- (void)_setBackgroundViewConfigurationGrouping:(int64_t)a3;
-- (void)setAccessoryType:(int64_t)a3 forAxis:(int64_t)a4;
-- (void)setAccessoryView:(id)a3 forAxis:(int64_t)a4;
+- (void)_setAccessoryConfigurations:(id)configurations forAxis:(int64_t)axis;
+- (void)_setBackgroundViewConfigurationGrouping:(int64_t)grouping;
+- (void)setAccessoryType:(int64_t)type forAxis:(int64_t)axis;
+- (void)setAccessoryView:(id)view forAxis:(int64_t)axis;
 @end
 
 @implementation _UICollectionViewListCell
@@ -27,78 +27,78 @@
   return [(UICollectionViewCell *)&v6 _maskedCornersForSystemBackgroundView];
 }
 
-- (void)_setBackgroundViewConfigurationGrouping:(int64_t)a3
+- (void)_setBackgroundViewConfigurationGrouping:(int64_t)grouping
 {
-  if (self->__backgroundViewConfigurationGrouping != a3)
+  if (self->__backgroundViewConfigurationGrouping != grouping)
   {
-    self->__backgroundViewConfigurationGrouping = a3;
-    v5 = [(UICollectionViewCell *)self backgroundConfiguration];
-    v6 = v5;
-    if (v5)
+    self->__backgroundViewConfigurationGrouping = grouping;
+    backgroundConfiguration = [(UICollectionViewCell *)self backgroundConfiguration];
+    v6 = backgroundConfiguration;
+    if (backgroundConfiguration)
     {
-      v7 = v5;
+      _backgroundViewConfiguration = backgroundConfiguration;
     }
 
     else
     {
-      v7 = [(UICollectionViewCell *)self _backgroundViewConfiguration];
+      _backgroundViewConfiguration = [(UICollectionViewCell *)self _backgroundViewConfiguration];
     }
 
-    v9 = v7;
+    v9 = _backgroundViewConfiguration;
 
     [(UICollectionViewCell *)self _applyBackgroundViewConfiguration:v9 withState:0];
     if ([(UICollectionViewCell *)self isHighlighted]|| [(UICollectionViewCell *)self isSelected])
     {
-      v8 = [(UICollectionReusableView *)self _collectionView];
-      [v8 _cellBackgroundChangedForSelectionOrHighlight:self];
+      _collectionView = [(UICollectionReusableView *)self _collectionView];
+      [_collectionView _cellBackgroundChangedForSelectionOrHighlight:self];
     }
   }
 }
 
-- (int64_t)accessoryTypeForAxis:(int64_t)a3
+- (int64_t)accessoryTypeForAxis:(int64_t)axis
 {
-  v3 = 0;
-  if (a3 > 1)
+  firstObject = 0;
+  if (axis > 1)
   {
-    if (a3 == 2)
+    if (axis == 2)
     {
-      v5 = [(UICollectionViewListCell *)self leadingEditingAccessoryConfigurations];
+      leadingEditingAccessoryConfigurations = [(UICollectionViewListCell *)self leadingEditingAccessoryConfigurations];
     }
 
     else
     {
       v4 = 0;
-      if (a3 != 3)
+      if (axis != 3)
       {
         goto LABEL_14;
       }
 
-      v5 = [(UICollectionViewListCell *)self trailingEditingAccessoryConfigurations];
+      leadingEditingAccessoryConfigurations = [(UICollectionViewListCell *)self trailingEditingAccessoryConfigurations];
     }
   }
 
-  else if (a3)
+  else if (axis)
   {
     v4 = 0;
-    if (a3 != 1)
+    if (axis != 1)
     {
       goto LABEL_14;
     }
 
-    v5 = [(UICollectionViewListCell *)self trailingAccessoryConfigurations];
+    leadingEditingAccessoryConfigurations = [(UICollectionViewListCell *)self trailingAccessoryConfigurations];
   }
 
   else
   {
-    v5 = [(UICollectionViewListCell *)self leadingAccessoryConfigurations];
+    leadingEditingAccessoryConfigurations = [(UICollectionViewListCell *)self leadingAccessoryConfigurations];
   }
 
-  v6 = v5;
-  v3 = [v5 firstObject];
+  v6 = leadingEditingAccessoryConfigurations;
+  firstObject = [leadingEditingAccessoryConfigurations firstObject];
 
-  if (v3 && [v3 _isSystemType])
+  if (firstObject && [firstObject _isSystemType])
   {
-    v4 = [v3 _systemType] + 1;
+    v4 = [firstObject _systemType] + 1;
   }
 
   else
@@ -111,116 +111,116 @@ LABEL_14:
   return v4;
 }
 
-- (void)setAccessoryType:(int64_t)a3 forAxis:(int64_t)a4
+- (void)setAccessoryType:(int64_t)type forAxis:(int64_t)axis
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v7 = [(_UICollectionViewListCell *)self accessoryTypeForAxis:a4];
-  if (a3)
+  v7 = [(_UICollectionViewListCell *)self accessoryTypeForAxis:axis];
+  if (type)
   {
-    v8 = [(_UICollectionViewListCell *)self _configurationForListAccessoryType:a3];
+    v8 = [(_UICollectionViewListCell *)self _configurationForListAccessoryType:type];
     v11[0] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    [(_UICollectionViewListCell *)self _setAccessoryConfigurations:v9 forAxis:a4];
+    [(_UICollectionViewListCell *)self _setAccessoryConfigurations:v9 forAxis:axis];
   }
 
   else if (v7)
   {
     v10 = MEMORY[0x1E695E0F0];
 
-    [(_UICollectionViewListCell *)self _setAccessoryConfigurations:v10 forAxis:a4];
+    [(_UICollectionViewListCell *)self _setAccessoryConfigurations:v10 forAxis:axis];
   }
 }
 
-- (id)accessoryViewForAxis:(int64_t)a3
+- (id)accessoryViewForAxis:(int64_t)axis
 {
   v4 = 0;
-  if (a3 > 1)
+  if (axis > 1)
   {
-    if (a3 == 2)
+    if (axis == 2)
     {
-      v5 = [(UICollectionViewListCell *)self leadingEditingAccessoryConfigurations];
+      leadingEditingAccessoryConfigurations = [(UICollectionViewListCell *)self leadingEditingAccessoryConfigurations];
     }
 
     else
     {
-      if (a3 != 3)
+      if (axis != 3)
       {
         goto LABEL_11;
       }
 
-      v5 = [(UICollectionViewListCell *)self trailingEditingAccessoryConfigurations];
+      leadingEditingAccessoryConfigurations = [(UICollectionViewListCell *)self trailingEditingAccessoryConfigurations];
     }
   }
 
-  else if (a3)
+  else if (axis)
   {
-    if (a3 != 1)
+    if (axis != 1)
     {
       goto LABEL_11;
     }
 
-    v5 = [(UICollectionViewListCell *)self trailingAccessoryConfigurations];
+    leadingEditingAccessoryConfigurations = [(UICollectionViewListCell *)self trailingAccessoryConfigurations];
   }
 
   else
   {
-    v5 = [(UICollectionViewListCell *)self leadingAccessoryConfigurations];
+    leadingEditingAccessoryConfigurations = [(UICollectionViewListCell *)self leadingAccessoryConfigurations];
   }
 
-  v6 = v5;
-  v7 = [v5 firstObject];
-  v4 = [(_UICollectionViewListCell *)self _customViewForAccessoryConfiguration:v7];
+  v6 = leadingEditingAccessoryConfigurations;
+  firstObject = [leadingEditingAccessoryConfigurations firstObject];
+  v4 = [(_UICollectionViewListCell *)self _customViewForAccessoryConfiguration:firstObject];
 
 LABEL_11:
 
   return v4;
 }
 
-- (void)setAccessoryView:(id)a3 forAxis:(int64_t)a4
+- (void)setAccessoryView:(id)view forAxis:(int64_t)axis
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(_UICollectionViewListCell *)self accessoryViewForAxis:a4];
+  viewCopy = view;
+  v7 = [(_UICollectionViewListCell *)self accessoryViewForAxis:axis];
 
-  if (v6)
+  if (viewCopy)
   {
-    v8 = [[_UICellAccessoryConfigurationCustomView alloc] initWithCustomView:v6];
+    v8 = [[_UICellAccessoryConfigurationCustomView alloc] initWithCustomView:viewCopy];
     [(_UICellAccessoryConfigurationCustomView *)v8 setMaintainsFixedSize:1];
     v10[0] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    [(_UICollectionViewListCell *)self _setAccessoryConfigurations:v9 forAxis:a4];
+    [(_UICollectionViewListCell *)self _setAccessoryConfigurations:v9 forAxis:axis];
   }
 
   else if (v7)
   {
-    [(_UICollectionViewListCell *)self _setAccessoryConfigurations:MEMORY[0x1E695E0F0] forAxis:a4];
+    [(_UICollectionViewListCell *)self _setAccessoryConfigurations:MEMORY[0x1E695E0F0] forAxis:axis];
   }
 }
 
-- (id)_customViewForAccessoryConfiguration:(id)a3
+- (id)_customViewForAccessoryConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 _isSystemType] & 1) == 0)
+  configurationCopy = configuration;
+  v4 = configurationCopy;
+  if (configurationCopy && ([configurationCopy _isSystemType] & 1) == 0)
   {
     v6 = objc_opt_class();
     _accessoryConfigurationAsClass(v4, v6);
-    v5 = [objc_claimAutoreleasedReturnValue() customView];
+    customView = [objc_claimAutoreleasedReturnValue() customView];
   }
 
   else
   {
-    v5 = 0;
+    customView = 0;
   }
 
-  return v5;
+  return customView;
 }
 
-- (id)_configurationForListAccessoryType:(int64_t)a3
+- (id)_configurationForListAccessoryType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
-    switch(a3)
+    switch(type)
     {
       case 4:
         v6 = _UICellAccessoryConfigurationInsert;
@@ -234,26 +234,26 @@ LABEL_11:
     }
 
 LABEL_12:
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UICollectionViewListCell.m" lineNumber:2790 description:{@"Invalid _UICollectionViewListCellAccessoryType value: %ld", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewListCell.m" lineNumber:2790 description:{@"Invalid _UICollectionViewListCellAccessoryType value: %ld", type}];
 
     v8 = 0;
     goto LABEL_16;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v6 = _UICellAccessoryConfigurationDisclosureIndicator;
     goto LABEL_15;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v6 = _UICellAccessoryConfigurationCheckmark;
     goto LABEL_15;
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
     goto LABEL_12;
   }
@@ -266,47 +266,47 @@ LABEL_16:
   return v8;
 }
 
-- (void)_setAccessoryConfigurations:(id)a3 forAxis:(int64_t)a4
+- (void)_setAccessoryConfigurations:(id)configurations forAxis:(int64_t)axis
 {
-  v6 = a3;
-  if (a4 > 1)
+  configurationsCopy = configurations;
+  if (axis > 1)
   {
-    if (a4 == 2)
+    if (axis == 2)
     {
-      v7 = v6;
-      [(UICollectionViewListCell *)self setLeadingEditingAccessoryConfigurations:v6];
+      v7 = configurationsCopy;
+      [(UICollectionViewListCell *)self setLeadingEditingAccessoryConfigurations:configurationsCopy];
     }
 
     else
     {
-      if (a4 != 3)
+      if (axis != 3)
       {
         goto LABEL_11;
       }
 
-      v7 = v6;
-      [(UICollectionViewListCell *)self setTrailingEditingAccessoryConfigurations:v6];
+      v7 = configurationsCopy;
+      [(UICollectionViewListCell *)self setTrailingEditingAccessoryConfigurations:configurationsCopy];
     }
   }
 
-  else if (a4)
+  else if (axis)
   {
-    if (a4 != 1)
+    if (axis != 1)
     {
       goto LABEL_11;
     }
 
-    v7 = v6;
-    [(UICollectionViewListCell *)self setTrailingAccessoryConfigurations:v6];
+    v7 = configurationsCopy;
+    [(UICollectionViewListCell *)self setTrailingAccessoryConfigurations:configurationsCopy];
   }
 
   else
   {
-    v7 = v6;
-    [(UICollectionViewListCell *)self setLeadingAccessoryConfigurations:v6];
+    v7 = configurationsCopy;
+    [(UICollectionViewListCell *)self setLeadingAccessoryConfigurations:configurationsCopy];
   }
 
-  v6 = v7;
+  configurationsCopy = v7;
 LABEL_11:
 }
 

@@ -1,28 +1,28 @@
 @interface SUInstallationConstraintMonitorPhoneCalls
-- (id)initOnQueue:(id)a3 withDownload:(id)a4;
+- (id)initOnQueue:(id)queue withDownload:(id)download;
 - (unint64_t)unsatisfiedConstraints;
 - (void)_callStatusChanged;
-- (void)_queue_noteOnExistingPhoneCallDidChange:(BOOL)a3;
+- (void)_queue_noteOnExistingPhoneCallDidChange:(BOOL)change;
 - (void)dealloc;
 @end
 
 @implementation SUInstallationConstraintMonitorPhoneCalls
 
-- (id)initOnQueue:(id)a3 withDownload:(id)a4
+- (id)initOnQueue:(id)queue withDownload:(id)download
 {
   v6 = MEMORY[0x277D6EDF8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 callCenterWithQueue:v8];
-  v10 = -[SUInstallationConstraintMonitorPhoneCalls initOnQueue:withDownload:callCenter:inSpringBoard:onExistingPhoneCall:](self, "initOnQueue:withDownload:callCenter:inSpringBoard:onExistingPhoneCall:", v8, v7, v9, 0, [v9 currentAudioAndVideoCallCount] != 0);
+  downloadCopy = download;
+  queueCopy = queue;
+  v9 = [v6 callCenterWithQueue:queueCopy];
+  v10 = -[SUInstallationConstraintMonitorPhoneCalls initOnQueue:withDownload:callCenter:inSpringBoard:onExistingPhoneCall:](self, "initOnQueue:withDownload:callCenter:inSpringBoard:onExistingPhoneCall:", queueCopy, downloadCopy, v9, 0, [v9 currentAudioAndVideoCallCount] != 0);
 
   return v10;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SUInstallationConstraintMonitorPhoneCalls;
@@ -79,20 +79,20 @@ uint64_t __63__SUInstallationConstraintMonitorPhoneCalls__callStatusChanged__blo
   return [v3 _queue_noteOnExistingPhoneCallDidChange:v2];
 }
 
-- (void)_queue_noteOnExistingPhoneCallDidChange:(BOOL)a3
+- (void)_queue_noteOnExistingPhoneCallDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   queue = self->super._queue;
   BSDispatchQueueAssert();
-  if (self->_queue_satisfied != !v3)
+  if (self->_queue_satisfied != !changeCopy)
   {
-    self->_queue_satisfied = !v3;
+    self->_queue_satisfied = !changeCopy;
     v6 = SULogInstallConstraints();
     self->_queue_satisfied;
     SULogInfoForSubsystem(v6, @"%@ - phone call constraint changed (satisfied? %@)", v7, v8, v9, v10, v11, v12, self);
 
-    v13 = [(SUInstallationConstraintMonitorBase *)self delegate];
-    [v13 installationConstraintMonitor:self constraintsDidChange:{-[SUInstallationConstraintMonitorBase representedConstraints](self, "representedConstraints")}];
+    delegate = [(SUInstallationConstraintMonitorBase *)self delegate];
+    [delegate installationConstraintMonitor:self constraintsDidChange:{-[SUInstallationConstraintMonitorBase representedConstraints](self, "representedConstraints")}];
   }
 }
 

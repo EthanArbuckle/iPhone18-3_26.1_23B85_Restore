@@ -3,8 +3,8 @@
 - (NSString)qss_version_server;
 - (NSString)qss_version_serverkit;
 - (NSString)qss_version_siritts;
-- (Offset<siri::speech::schema_fb::QSSVersionInfo>)addObjectToBuffer:(void *)a3;
-- (QSSQSSVersionInfo)initWithFlatbuffData:(id)a3 root:(const QSSVersionInfo *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::QSSVersionInfo>)addObjectToBuffer:(void *)buffer;
+- (QSSQSSVersionInfo)initWithFlatbuffData:(id)data root:(const QSSVersionInfo *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 @end
 
@@ -39,62 +39,62 @@ flatbuffers::DetachedBuffer *__33__QSSQSSVersionInfo_flatbuffData__block_invoke(
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::QSSVersionInfo>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::QSSVersionInfo>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSQSSVersionInfo *)self qss_version_server];
-  v6 = v5;
-  if (!v5)
+  qss_version_server = [(QSSQSSVersionInfo *)self qss_version_server];
+  v6 = qss_version_server;
+  if (!qss_version_server)
   {
-    v5 = &stru_2879AE8E0;
+    qss_version_server = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)qss_version_server UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(QSSQSSVersionInfo *)self qss_version_brane];
-  v11 = v10;
-  if (!v10)
+  qss_version_brane = [(QSSQSSVersionInfo *)self qss_version_brane];
+  v11 = qss_version_brane;
+  if (!qss_version_brane)
   {
-    v10 = &stru_2879AE8E0;
+    qss_version_brane = &stru_2879AE8E0;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  v14 = flatbuffers::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)qss_version_brane UTF8String];
+  v13 = strlen(uTF8String2);
+  v14 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  v15 = [(QSSQSSVersionInfo *)self qss_version_serverkit];
-  v16 = v15;
-  if (!v15)
+  qss_version_serverkit = [(QSSQSSVersionInfo *)self qss_version_serverkit];
+  v16 = qss_version_serverkit;
+  if (!qss_version_serverkit)
   {
-    v15 = &stru_2879AE8E0;
+    qss_version_serverkit = &stru_2879AE8E0;
   }
 
-  v17 = [(__CFString *)v15 UTF8String];
-  v18 = strlen(v17);
-  v19 = flatbuffers::FlatBufferBuilder::CreateString(a3, v17, v18);
+  uTF8String3 = [(__CFString *)qss_version_serverkit UTF8String];
+  v18 = strlen(uTF8String3);
+  v19 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v18);
 
-  v20 = [(QSSQSSVersionInfo *)self qss_version_siritts];
-  v21 = v20;
-  if (!v20)
+  qss_version_siritts = [(QSSQSSVersionInfo *)self qss_version_siritts];
+  v21 = qss_version_siritts;
+  if (!qss_version_siritts)
   {
-    v20 = &stru_2879AE8E0;
+    qss_version_siritts = &stru_2879AE8E0;
   }
 
-  v22 = [(__CFString *)v20 UTF8String];
-  v23 = strlen(v22);
-  LODWORD(v22) = flatbuffers::FlatBufferBuilder::CreateString(a3, v22, v23);
+  uTF8String4 = [(__CFString *)qss_version_siritts UTF8String];
+  v23 = strlen(uTF8String4);
+  LODWORD(uTF8String4) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String4, v23);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v24 = *(a3 + 10);
-  v25 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, v14);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, v19);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 10, v22);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v24 = *(buffer + 10);
+  v25 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, v14);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, v19);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 10, uTF8String4);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v25 + v24);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v25 + v24);
 }
 
 - (NSString)qss_version_siritts
@@ -189,42 +189,42 @@ flatbuffers::DetachedBuffer *__33__QSSQSSVersionInfo_flatbuffData__block_invoke(
   return v6;
 }
 
-- (QSSQSSVersionInfo)initWithFlatbuffData:(id)a3 root:(const QSSVersionInfo *)a4 verify:(BOOL)a5
+- (QSSQSSVersionInfo)initWithFlatbuffData:(id)data root:(const QSSVersionInfo *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSQSSVersionInfo;
   v10 = [(QSSQSSVersionInfo *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -246,9 +246,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

@@ -1,105 +1,105 @@
 @interface CKKSGroupOperation
-+ (id)named:(id)a3 withBlock:(id)a4;
-+ (id)named:(id)a3 withBlockTakingSelf:(id)a4;
-+ (id)operationWithBlock:(id)a3;
++ (id)named:(id)named withBlock:(id)block;
++ (id)named:(id)named withBlockTakingSelf:(id)self;
++ (id)operationWithBlock:(id)block;
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
 - (BOOL)isPending;
 - (CKKSGroupOperation)init;
 - (id)description;
-- (void)addDependency:(id)a3;
+- (void)addDependency:(id)dependency;
 - (void)cancel;
 - (void)completeOperation;
 - (void)dealloc;
-- (void)dependOnBeforeGroupFinished:(id)a3;
-- (void)runBeforeGroupFinished:(id)a3;
-- (void)setName:(id)a3;
+- (void)dependOnBeforeGroupFinished:(id)finished;
+- (void)runBeforeGroupFinished:(id)finished;
+- (void)setName:(id)name;
 - (void)start;
 @end
 
 @implementation CKKSGroupOperation
 
-- (void)dependOnBeforeGroupFinished:(id)a3
+- (void)dependOnBeforeGroupFinished:(id)finished
 {
-  v4 = a3;
-  if (v4)
+  finishedCopy = finished;
+  if (finishedCopy)
   {
     if ([(CKKSGroupOperation *)self isCancelled])
     {
-      v5 = sub_100019104(@"ckksgroup", 0);
-      if (os_log_type_enabled(&v5->super.super.super.super, OS_LOG_TYPE_DEFAULT))
+      selfCopy = sub_100019104(@"ckksgroup", 0);
+      if (os_log_type_enabled(&selfCopy->super.super.super.super, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, &v5->super.super.super.super, OS_LOG_TYPE_DEFAULT, "Can't add operation dependency to cancelled group", buf, 2u);
+        _os_log_impl(&_mh_execute_header, &selfCopy->super.super.super.super, OS_LOG_TYPE_DEFAULT, "Can't add operation dependency to cancelled group", buf, 2u);
       }
 
       goto LABEL_8;
     }
 
-    v6 = [(CKKSGroupOperation *)self finishOperation];
-    [v6 addDependency:v4];
+    finishOperation = [(CKKSGroupOperation *)self finishOperation];
+    [finishOperation addDependency:finishedCopy];
 
-    v7 = [(CKKSGroupOperation *)self finishOperation];
-    v8 = [v7 isFinished];
+    finishOperation2 = [(CKKSGroupOperation *)self finishOperation];
+    isFinished = [finishOperation2 isFinished];
 
-    if (v8)
+    if (isFinished)
     {
-      v11 = [NSString stringWithFormat:@"Attempt to add operation(%@) to completed group(%@)", v4, self];
+      v11 = [NSString stringWithFormat:@"Attempt to add operation(%@) to completed group(%@)", finishedCopy, self];
       v12 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v11 userInfo:0];
       v13 = v12;
 
       objc_exception_throw(v12);
     }
 
-    v9 = [(CKKSGroupOperation *)self startOperation];
-    [v4 addDependency:v9];
+    startOperation = [(CKKSGroupOperation *)self startOperation];
+    [finishedCopy addDependency:startOperation];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = self;
-      objc_sync_enter(v5);
-      v10 = [(CKKSGroupOperation *)v5 internalSuccesses];
-      [v10 addObject:v4];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      internalSuccesses = [(CKKSGroupOperation *)selfCopy internalSuccesses];
+      [internalSuccesses addObject:finishedCopy];
 
-      objc_sync_exit(v5);
+      objc_sync_exit(selfCopy);
 LABEL_8:
     }
   }
 }
 
-- (void)runBeforeGroupFinished:(id)a3
+- (void)runBeforeGroupFinished:(id)finished
 {
-  v4 = a3;
-  v5 = [(CKKSGroupOperation *)self startOperation];
-  [v4 addDependency:v5];
+  finishedCopy = finished;
+  startOperation = [(CKKSGroupOperation *)self startOperation];
+  [finishedCopy addDependency:startOperation];
 
-  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v4];
-  v6 = [(CKKSGroupOperation *)self operationQueue];
-  [v6 addOperation:v4];
+  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:finishedCopy];
+  operationQueue = [(CKKSGroupOperation *)self operationQueue];
+  [operationQueue addOperation:finishedCopy];
 }
 
-- (void)addDependency:(id)a3
+- (void)addDependency:(id)dependency
 {
   v6.receiver = self;
   v6.super_class = CKKSGroupOperation;
-  v4 = a3;
-  [(CKKSGroupOperation *)&v6 addDependency:v4];
+  dependencyCopy = dependency;
+  [(CKKSGroupOperation *)&v6 addDependency:dependencyCopy];
   v5 = [(CKKSGroupOperation *)self startOperation:v6.receiver];
-  [v5 addDependency:v4];
+  [v5 addDependency:dependencyCopy];
 }
 
 - (void)completeOperation
 {
   [(CKKSGroupOperation *)self willChangeValueForKey:@"isFinished"];
   [(CKKSGroupOperation *)self willChangeValueForKey:@"isExecuting"];
-  v3 = [(CKKSGroupOperation *)self queue];
+  queue = [(CKKSGroupOperation *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C3E20;
   block[3] = &unk_100346018;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 
   [(CKKSGroupOperation *)self didChangeValueForKey:@"isExecuting"];
   [(CKKSGroupOperation *)self didChangeValueForKey:@"isFinished"];
@@ -108,15 +108,15 @@ LABEL_8:
 - (void)cancel
 {
   v3 = [NSBlockOperation blockOperationWithBlock:&stru_100336970];
-  v4 = [(CKKSGroupOperation *)self startOperation];
-  [v4 addDependency:v3];
+  startOperation = [(CKKSGroupOperation *)self startOperation];
+  [startOperation addDependency:v3];
 
   v39.receiver = self;
   v39.super_class = CKKSGroupOperation;
   [(CKKSGroupOperation *)&v39 cancel];
-  v5 = [(CKKSGroupOperation *)self operationQueue];
-  v6 = [v5 operations];
-  v7 = [v6 copy];
+  operationQueue = [(CKKSGroupOperation *)self operationQueue];
+  operations = [operationQueue operations];
+  v7 = [operations copy];
 
   v37 = 0u;
   v38 = 0u;
@@ -138,8 +138,8 @@ LABEL_8:
         }
 
         v13 = *(*(&v35 + 1) + 8 * i);
-        v14 = [(CKKSGroupOperation *)self finishOperation];
-        v15 = [v13 isEqual:v14];
+        finishOperation = [(CKKSGroupOperation *)self finishOperation];
+        v15 = [v13 isEqual:finishOperation];
 
         if ((v15 & 1) == 0)
         {
@@ -153,9 +153,9 @@ LABEL_8:
     while (v10);
   }
 
-  v16 = [(CKKSGroupOperation *)self finishOperation];
-  v17 = [v16 dependencies];
-  v18 = [v17 copy];
+  finishOperation2 = [(CKKSGroupOperation *)self finishOperation];
+  dependencies = [finishOperation2 dependencies];
+  v18 = [dependencies copy];
 
   v33 = 0u;
   v34 = 0u;
@@ -179,13 +179,13 @@ LABEL_8:
         v24 = *(*(&v31 + 1) + 8 * j);
         if (([v8 containsObject:{v24, v31}] & 1) == 0)
         {
-          v25 = [(CKKSGroupOperation *)self startOperation];
-          v26 = [v24 isEqual:v25];
+          startOperation2 = [(CKKSGroupOperation *)self startOperation];
+          v26 = [v24 isEqual:startOperation2];
 
           if ((v26 & 1) == 0)
           {
-            v27 = [(CKKSGroupOperation *)self finishOperation];
-            [v27 removeDependency:v24];
+            finishOperation3 = [(CKKSGroupOperation *)self finishOperation];
+            [finishOperation3 removeDependency:v24];
           }
         }
       }
@@ -196,16 +196,16 @@ LABEL_8:
     while (v21);
   }
 
-  v28 = [(CKKSGroupOperation *)self startOperation];
-  v29 = [v28 isPending];
+  startOperation3 = [(CKKSGroupOperation *)self startOperation];
+  isPending = [startOperation3 isPending];
 
-  if (v29)
+  if (isPending)
   {
     [(CKKSGroupOperation *)self setFillInError:0];
   }
 
-  v30 = [(CKKSGroupOperation *)self operationQueue];
-  [v30 addOperation:v3];
+  operationQueue2 = [(CKKSGroupOperation *)self operationQueue];
+  [operationQueue2 addOperation:v3];
 }
 
 - (void)start
@@ -215,8 +215,8 @@ LABEL_8:
   {
     v3 = @"isFinished";
     [(CKKSGroupOperation *)self willChangeValueForKey:@"isFinished"];
-    v4 = [(CKKSGroupOperation *)self queue];
-    v5 = v4;
+    queue = [(CKKSGroupOperation *)self queue];
+    v5 = queue;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000C430C;
@@ -227,14 +227,14 @@ LABEL_8:
 
   else
   {
-    v7 = [(CKKSGroupOperation *)self operationQueue];
-    v8 = [(CKKSGroupOperation *)self startOperation];
-    [v7 addOperation:v8];
+    operationQueue = [(CKKSGroupOperation *)self operationQueue];
+    startOperation = [(CKKSGroupOperation *)self startOperation];
+    [operationQueue addOperation:startOperation];
 
     v3 = @"isExecuting";
     [(CKKSGroupOperation *)self willChangeValueForKey:@"isExecuting"];
-    v4 = [(CKKSGroupOperation *)self queue];
-    v5 = v4;
+    queue = [(CKKSGroupOperation *)self queue];
+    v5 = queue;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000C4324;
@@ -243,56 +243,56 @@ LABEL_8:
     v6 = v9;
   }
 
-  dispatch_sync(v4, v6);
+  dispatch_sync(queue, v6);
 
   [(CKKSGroupOperation *)self didChangeValueForKey:v3];
 }
 
 - (BOOL)isFinished
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CKKSGroupOperation *)self queue];
+  queue = [(CKKSGroupOperation *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000C4414;
   v5[3] = &unk_100344E90;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isExecuting
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CKKSGroupOperation *)self queue];
+  queue = [(CKKSGroupOperation *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000C4508;
   v5[3] = &unk_100344E90;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (id)description
 {
-  v3 = [(CKKSResultOperation *)self operationStateString];
+  operationStateString = [(CKKSResultOperation *)self operationStateString];
   off_10039D628();
   v5 = v4;
   v6 = *v4 + 1;
@@ -301,49 +301,49 @@ LABEL_8:
   {
     if ([(CKKSGroupOperation *)self isFinished])
     {
-      v9 = [(CKKSResultOperation *)self error];
+      error = [(CKKSResultOperation *)self error];
 
-      v10 = [(CKKSGroupOperation *)self selfname];
-      v11 = [(CKKSResultOperation *)self finishDate];
-      v12 = v11;
-      if (v9)
+      selfname = [(CKKSGroupOperation *)self selfname];
+      finishDate = [(CKKSResultOperation *)self finishDate];
+      v12 = finishDate;
+      if (error)
       {
-        v13 = [(CKKSResultOperation *)self error];
-        v8 = [NSString stringWithFormat:@"<%@: %@ %@ - %@>", v10, v3, v12, v13];
+        error2 = [(CKKSResultOperation *)self error];
+        v8 = [NSString stringWithFormat:@"<%@: %@ %@ - %@>", selfname, operationStateString, v12, error2];
       }
 
       else
       {
-        v8 = [NSString stringWithFormat:@"<%@: %@ %@>", v10, v3, v11];
+        v8 = [NSString stringWithFormat:@"<%@: %@ %@>", selfname, operationStateString, finishDate];
       }
 
       goto LABEL_30;
     }
 
-    v14 = [(CKKSGroupOperation *)self operationQueue];
-    v15 = [v14 operationCount];
-    v16 = [(CKKSGroupOperation *)self finishOperation];
-    v17 = [v16 dependencies];
-    v18 = &v15[[v17 count]];
+    operationQueue = [(CKKSGroupOperation *)self operationQueue];
+    operationCount = [operationQueue operationCount];
+    finishOperation = [(CKKSGroupOperation *)self finishOperation];
+    dependencies = [finishOperation dependencies];
+    v18 = &operationCount[[dependencies count]];
 
     if (v18 <= 0x14)
     {
-      v37 = v3;
-      v19 = [(CKKSGroupOperation *)self operationQueue];
-      v20 = [v19 operations];
-      v21 = [v20 mutableCopy];
+      v37 = operationStateString;
+      operationQueue2 = [(CKKSGroupOperation *)self operationQueue];
+      operations = [operationQueue2 operations];
+      v21 = [operations mutableCopy];
 
-      v22 = [(CKKSGroupOperation *)self finishOperation];
-      [v21 removeObject:v22];
+      finishOperation2 = [(CKKSGroupOperation *)self finishOperation];
+      [v21 removeObject:finishOperation2];
 
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v23 = [(CKKSGroupOperation *)self finishOperation];
-      v24 = [v23 dependencies];
+      finishOperation3 = [(CKKSGroupOperation *)self finishOperation];
+      dependencies2 = [finishOperation3 dependencies];
 
-      v25 = [v24 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v25 = [dependencies2 countByEnumeratingWithState:&v38 objects:v42 count:16];
       if (v25)
       {
         v26 = v25;
@@ -354,20 +354,20 @@ LABEL_8:
           {
             if (*v39 != v27)
             {
-              objc_enumerationMutation(v24);
+              objc_enumerationMutation(dependencies2);
             }
 
             v29 = *(*(&v38 + 1) + 8 * i);
             if ([v21 count] > 0x14)
             {
 
-              v7 = @"Potentially more than 20 operations";
+              selfname3 = @"Potentially more than 20 operations";
               goto LABEL_24;
             }
 
-            v30 = [(CKKSGroupOperation *)self startOperation];
-            v31 = v30;
-            if (v29 == v30)
+            startOperation = [(CKKSGroupOperation *)self startOperation];
+            v31 = startOperation;
+            if (v29 == startOperation)
             {
             }
 
@@ -382,7 +382,7 @@ LABEL_8:
             }
           }
 
-          v26 = [v24 countByEnumeratingWithState:&v38 objects:v42 count:16];
+          v26 = [dependencies2 countByEnumeratingWithState:&v38 objects:v42 count:16];
           if (v26)
           {
             continue;
@@ -392,38 +392,38 @@ LABEL_8:
         }
       }
 
-      v7 = [v21 componentsJoinedByString:{@", "}];
+      selfname3 = [v21 componentsJoinedByString:{@", "}];
 LABEL_24:
 
-      v3 = v37;
+      operationStateString = v37;
     }
 
     else
     {
-      v7 = @"Potentially more than 20 operations";
+      selfname3 = @"Potentially more than 20 operations";
     }
 
-    v33 = [(CKKSResultOperation *)self error];
+    error3 = [(CKKSResultOperation *)self error];
 
-    v34 = [(CKKSGroupOperation *)self selfname];
-    if (v33)
+    selfname2 = [(CKKSGroupOperation *)self selfname];
+    if (error3)
     {
-      v35 = [(CKKSResultOperation *)self error];
-      [NSString stringWithFormat:@"<%@: %@ [%@] error:%@>", v34, v3, v7, v35];
+      error4 = [(CKKSResultOperation *)self error];
+      [NSString stringWithFormat:@"<%@: %@ [%@] error:%@>", selfname2, operationStateString, selfname3, error4];
     }
 
     else
     {
-      v35 = [(CKKSGroupOperation *)self pendingDependenciesString:@" dep:"];
-      [NSString stringWithFormat:@"<%@: %@ [%@]%@>", v34, v3, v7, v35];
+      error4 = [(CKKSGroupOperation *)self pendingDependenciesString:@" dep:"];
+      [NSString stringWithFormat:@"<%@: %@ [%@]%@>", selfname2, operationStateString, selfname3, error4];
     }
     v8 = ;
   }
 
   else
   {
-    v7 = [(CKKSGroupOperation *)self selfname];
-    v8 = [NSString stringWithFormat:@"<%@: %@ recursion>", v7, v3];
+    selfname3 = [(CKKSGroupOperation *)self selfname];
+    v8 = [NSString stringWithFormat:@"<%@: %@ recursion>", selfname3, operationStateString];
   }
 
 LABEL_30:
@@ -432,30 +432,30 @@ LABEL_30:
   return v8;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [NSString stringWithFormat:@"group-queue:%@", v4];
-  v6 = [(CKKSGroupOperation *)self operationQueue];
-  [v6 setName:v5];
+  nameCopy = name;
+  nameCopy = [NSString stringWithFormat:@"group-queue:%@", nameCopy];
+  operationQueue = [(CKKSGroupOperation *)self operationQueue];
+  [operationQueue setName:nameCopy];
 
-  v7 = [NSString stringWithFormat:@"group-start:%@", v4];
-  v8 = [(CKKSGroupOperation *)self startOperation];
-  [v8 setName:v7];
+  nameCopy2 = [NSString stringWithFormat:@"group-start:%@", nameCopy];
+  startOperation = [(CKKSGroupOperation *)self startOperation];
+  [startOperation setName:nameCopy2];
 
-  v9 = [NSString stringWithFormat:@"group-finish:%@", v4];
-  v10 = [(CKKSGroupOperation *)self finishOperation];
-  [v10 setName:v9];
+  nameCopy3 = [NSString stringWithFormat:@"group-finish:%@", nameCopy];
+  finishOperation = [(CKKSGroupOperation *)self finishOperation];
+  [finishOperation setName:nameCopy3];
 
   v11.receiver = self;
   v11.super_class = CKKSGroupOperation;
-  [(CKKSGroupOperation *)&v11 setName:v4];
+  [(CKKSGroupOperation *)&v11 setName:nameCopy];
 }
 
 - (BOOL)isPending
 {
-  v3 = [(CKKSGroupOperation *)self startOperation];
-  if ([v3 isPending])
+  startOperation = [(CKKSGroupOperation *)self startOperation];
+  if ([startOperation isPending])
   {
     v4 = [(CKKSGroupOperation *)self isCancelled]^ 1;
   }
@@ -472,11 +472,11 @@ LABEL_30:
 {
   if ([(CKKSGroupOperation *)self isPending])
   {
-    v3 = [(CKKSGroupOperation *)self operationQueue];
-    [v3 cancelAllOperations];
+    operationQueue = [(CKKSGroupOperation *)self operationQueue];
+    [operationQueue cancelAllOperations];
 
-    v4 = [(CKKSGroupOperation *)self startOperation];
-    [v4 cancel];
+    startOperation = [(CKKSGroupOperation *)self startOperation];
+    [startOperation cancel];
 
     v6.receiver = self;
     v6.super_class = CKKSGroupOperation;
@@ -519,8 +519,8 @@ LABEL_30:
     startOperation = v2->_startOperation;
     v2->_startOperation = v10;
 
-    v12 = [(CKKSGroupOperation *)v2 startOperation];
-    [v12 removeDependenciesUponCompletion];
+    startOperation = [(CKKSGroupOperation *)v2 startOperation];
+    [startOperation removeDependenciesUponCompletion];
 
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
@@ -531,22 +531,22 @@ LABEL_30:
     finishOperation = v2->_finishOperation;
     v2->_finishOperation = v13;
 
-    v15 = [(CKKSGroupOperation *)v2 finishOperation];
-    [v15 removeDependenciesUponCompletion];
+    finishOperation = [(CKKSGroupOperation *)v2 finishOperation];
+    [finishOperation removeDependenciesUponCompletion];
 
-    v16 = [(CKKSGroupOperation *)v2 finishOperation];
-    v17 = [(CKKSGroupOperation *)v2 startOperation];
-    [v16 addDependency:v17];
+    finishOperation2 = [(CKKSGroupOperation *)v2 finishOperation];
+    startOperation2 = [(CKKSGroupOperation *)v2 startOperation];
+    [finishOperation2 addDependency:startOperation2];
 
-    v18 = [(CKKSGroupOperation *)v2 operationQueue];
-    v19 = [(CKKSGroupOperation *)v2 finishOperation];
-    [v18 addOperation:v19];
+    operationQueue = [(CKKSGroupOperation *)v2 operationQueue];
+    finishOperation3 = [(CKKSGroupOperation *)v2 finishOperation];
+    [operationQueue addOperation:finishOperation3];
 
-    v20 = [(CKKSGroupOperation *)v2 startOperation];
-    [v20 setName:@"group-start"];
+    startOperation3 = [(CKKSGroupOperation *)v2 startOperation];
+    [startOperation3 setName:@"group-start"];
 
-    v21 = [(CKKSGroupOperation *)v2 finishOperation];
-    [v21 setName:@"group-finish"];
+    finishOperation4 = [(CKKSGroupOperation *)v2 finishOperation];
+    [finishOperation4 setName:@"group-finish"];
 
     v2->executing = 0;
     v2->finished = 0;
@@ -558,43 +558,43 @@ LABEL_30:
   return v2;
 }
 
-+ (id)named:(id)a3 withBlockTakingSelf:(id)a4
++ (id)named:(id)named withBlockTakingSelf:(id)self
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  namedCopy = named;
+  selfCopy = self;
+  v8 = objc_alloc_init(self);
   objc_initWeak(&location, v8);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000C51B8;
   v12[3] = &unk_1003445C0;
   objc_copyWeak(&v14, &location);
-  v9 = v7;
+  v9 = selfCopy;
   v13 = v9;
   v10 = [NSBlockOperation blockOperationWithBlock:v12];
   [v8 runBeforeGroupFinished:v10];
 
-  [v8 setName:v6];
+  [v8 setName:namedCopy];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 
   return v8;
 }
 
-+ (id)named:(id)a3 withBlock:(id)a4
++ (id)named:(id)named withBlock:(id)block
 {
-  v6 = a3;
-  v7 = [a1 operationWithBlock:a4];
-  [v7 setName:v6];
+  namedCopy = named;
+  v7 = [self operationWithBlock:block];
+  [v7 setName:namedCopy];
 
   return v7;
 }
 
-+ (id)operationWithBlock:(id)a3
++ (id)operationWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [NSBlockOperation blockOperationWithBlock:v4];
+  blockCopy = block;
+  v5 = objc_alloc_init(self);
+  v6 = [NSBlockOperation blockOperationWithBlock:blockCopy];
 
   [v5 runBeforeGroupFinished:v6];
 

@@ -1,13 +1,13 @@
 @interface MNTrafficIncidentAlert
-+ (id)_validTrafficIncidentAlertsForBannerTexts:(id)a3 mainRouteInfo:(id)a4 alternateRouteInfo:(id)a5;
-+ (id)validTrafficIncidentAlertsForETAUpdate:(id)a3 alternateRouteInfo:(id)a4;
-+ (id)validTrafficIncidentAlertsForNewRoute:(id)a3 alternateRouteInfo:(id)a4;
-+ (void)_addDebugArguments:(id)a3;
++ (id)_validTrafficIncidentAlertsForBannerTexts:(id)texts mainRouteInfo:(id)info alternateRouteInfo:(id)routeInfo;
++ (id)validTrafficIncidentAlertsForETAUpdate:(id)update alternateRouteInfo:(id)info;
++ (id)validTrafficIncidentAlertsForNewRoute:(id)route alternateRouteInfo:(id)info;
++ (void)_addDebugArguments:(id)arguments;
 - (GEONavigabilityInfo)originalRouteNavigability;
 - (GEOPBTransitArtwork)artwork;
 - (MNNavigationAlertButtonInfo)acceptButtonInfo;
 - (MNNavigationAlertButtonInfo)defaultButtonInfo;
-- (MNTrafficIncidentAlert)initWithCoder:(id)a3;
+- (MNTrafficIncidentAlert)initWithCoder:(id)coder;
 - (NSArray)alertDescriptions;
 - (NSArray)alertTitles;
 - (NSArray)spokenTexts;
@@ -17,70 +17,70 @@
 - (double)oldEstimatedTime;
 - (double)oldHistoricTime;
 - (id)_dynamicStringValues;
-- (id)_initWithGeoTrafficBannerText:(id)a3 mainRouteInfo:(id)a4 alternateRouteInfo:(id)a5;
+- (id)_initWithGeoTrafficBannerText:(id)text mainRouteInfo:(id)info alternateRouteInfo:(id)routeInfo;
 - (id)description;
 - (unint64_t)secondsSaved;
 - (void)_initRouteCoordinates;
-- (void)_populateButtonInfo:(id)a3;
-- (void)_populateIncidentDetails:(id)a3;
-- (void)_populateServerFields:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateAlertIDWithAlert:(id)a3;
-- (void)updateLocation:(id)a3;
+- (void)_populateButtonInfo:(id)info;
+- (void)_populateIncidentDetails:(id)details;
+- (void)_populateServerFields:(id)fields;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateAlertIDWithAlert:(id)alert;
+- (void)updateLocation:(id)location;
 @end
 
 @implementation MNTrafficIncidentAlert
 
-- (void)_populateIncidentDetails:(id)a3
+- (void)_populateIncidentDetails:(id)details
 {
   if ([(GEOTrafficBannerText *)self->_geoTrafficBannerText hasIncidentIndex])
   {
-    v4 = [(GEOTrafficBannerText *)self->_geoTrafficBannerText incidentIndex];
-    v5 = [(MNActiveRouteInfo *)self->_mainRouteInfo traffic];
-    v9 = [v5 routeIncidents];
+    incidentIndex = [(GEOTrafficBannerText *)self->_geoTrafficBannerText incidentIndex];
+    traffic = [(MNActiveRouteInfo *)self->_mainRouteInfo traffic];
+    routeIncidents = [traffic routeIncidents];
 
-    if ([v9 count] > v4)
+    if ([routeIncidents count] > incidentIndex)
     {
-      v6 = [v9 objectAtIndexedSubscript:v4];
-      v7 = [v6 incident];
+      v6 = [routeIncidents objectAtIndexedSubscript:incidentIndex];
+      incident = [v6 incident];
       incident = self->_incident;
-      self->_incident = v7;
+      self->_incident = incident;
     }
   }
 }
 
-- (void)_populateButtonInfo:(id)a3
+- (void)_populateButtonInfo:(id)info
 {
-  v20 = self;
-  v22 = a3;
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [v22 buttons];
-  v5 = [v4 count];
+  selfCopy = self;
+  infoCopy = info;
+  array = [MEMORY[0x1E695DF70] array];
+  buttons = [infoCopy buttons];
+  v5 = [buttons count];
 
   if (v5)
   {
     v6 = 0;
     do
     {
-      v7 = [v22 buttons];
-      v8 = [v7 objectAtIndex:v6];
+      buttons2 = [infoCopy buttons];
+      v8 = [buttons2 objectAtIndex:v6];
 
       if ([v8 hasAction] && objc_msgSend(v8, "hasText"))
       {
-        v9 = [v8 action];
-        if (v9 == 2)
+        action = [v8 action];
+        if (action == 2)
         {
           v10 = 2;
         }
 
         else
         {
-          v10 = v9 == 1;
+          v10 = action == 1;
         }
 
-        if ([v22 hasDefaultButtonIndex])
+        if ([infoCopy hasDefaultButtonIndex])
         {
-          v11 = v6 == [v22 defaultButtonIndex];
+          v11 = v6 == [infoCopy defaultButtonIndex];
         }
 
         else
@@ -89,47 +89,47 @@
         }
 
         v12 = objc_alloc(MEMORY[0x1E69A1CA8]);
-        v13 = [v8 text];
-        v14 = [v12 initWithGeoFormattedString:v13];
+        text = [v8 text];
+        v14 = [v12 initWithGeoFormattedString:text];
 
         v15 = -[MNNavigationAlertButtonInfo initWithAction:title:buttonDisplay:isDefaultButton:]([MNNavigationAlertButtonInfo alloc], "initWithAction:title:buttonDisplay:isDefaultButton:", v10, v14, [v8 buttonDisplay], v11);
-        [v3 addObject:v15];
+        [array addObject:v15];
       }
 
       ++v6;
-      v16 = [v22 buttons];
-      v17 = [v16 count];
+      buttons3 = [infoCopy buttons];
+      v17 = [buttons3 count];
     }
 
     while (v6 < v17);
   }
 
-  v18 = [v3 copy];
+  v18 = [array copy];
   v19 = *(v21 + 200);
   *(v21 + 200) = v18;
 }
 
-- (void)_populateServerFields:(id)a3
+- (void)_populateServerFields:(id)fields
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fieldsCopy = fields;
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [v4 bannerDescription];
-  v7 = [v5 _navigation_stringForServerFormattedString:v6];
+  bannerDescription = [fieldsCopy bannerDescription];
+  v7 = [v5 _navigation_stringForServerFormattedString:bannerDescription];
   bannerDescription = self->_bannerDescription;
   self->_bannerDescription = v7;
 
-  v9 = [v4 bannerId];
+  bannerId = [fieldsCopy bannerId];
   bannerID = self->_bannerID;
-  self->_bannerID = v9;
+  self->_bannerID = bannerId;
 
-  v11 = [v4 eventInfo];
+  eventInfo = [fieldsCopy eventInfo];
   eventInfo = self->_eventInfo;
-  self->_eventInfo = v11;
+  self->_eventInfo = eventInfo;
 
-  v13 = [v4 analyticsMessageValue];
+  analyticsMessageValue = [fieldsCopy analyticsMessageValue];
   analyticsMessage = self->_analyticsMessage;
-  self->_analyticsMessage = v13;
+  self->_analyticsMessage = analyticsMessageValue;
 
   if (!self->_bannerID)
   {
@@ -137,7 +137,7 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v17 = 138477827;
-      v18 = v4;
+      v18 = fieldsCopy;
       _os_log_impl(&dword_1D311E000, v15, OS_LOG_TYPE_ERROR, "Received a traffic banner text which is missing a banner ID: %{private}@", &v17, 0xCu);
     }
   }
@@ -145,136 +145,136 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   alertID = self->_alertID;
-  v5 = a3;
-  [v5 encodeObject:alertID forKey:@"_alertID"];
-  [v5 encodeObject:self->_etaResponseID forKey:@"_etaResponseID"];
-  [v5 encodeInteger:self->_alertType forKey:@"_alertType"];
-  [v5 encodeObject:self->_geoTrafficBannerText forKey:@"_geoTrafficBannerText"];
-  [v5 encodeObject:self->_mainRouteInfo forKey:@"_mainRouteInfo"];
-  [v5 encodeObject:self->_alternateRouteInfo forKey:@"_alternateRouteInfo"];
-  [v5 encodeInteger:self->_startValidCoordinateRange.index forKey:@"_startValidCoordinateRange.index"];
-  [v5 encodeDouble:@"_startValidCoordinateRange.offset" forKey:self->_startValidCoordinateRange.offset];
-  [v5 encodeInteger:self->_endValidCoordinateRange.index forKey:@"_endValidCoordinateRange.index"];
-  [v5 encodeDouble:@"_endValidCoordinateRange.offset" forKey:self->_endValidCoordinateRange.offset];
-  [v5 encodeInteger:self->_incidentCoordinate.index forKey:@"_incidentCoordinate.index"];
-  [v5 encodeDouble:@"_incidentCoordinate.offset" forKey:self->_incidentCoordinate.offset];
-  [v5 encodeObject:self->_cameraInput forKey:@"_cameraInput"];
-  [v5 encodeInteger:self->_alternateEndValidCoordinateRange.index forKey:@"_alternateEndValidCoordinateRange.index"];
-  [v5 encodeDouble:@"_alternateEndValidCoordinateRange.offset" forKey:self->_alternateEndValidCoordinateRange.offset];
-  [v5 encodeObject:self->_triggerRange forKey:@"_triggerRange"];
-  [v5 encodeObject:self->_progressBarTriggerRange forKey:@"_progressBarTriggerRange"];
-  [v5 encodeInteger:self->_priority forKey:@"_priority"];
-  [v5 encodeDouble:@"_minDisplayTime" forKey:self->_minDisplayTime];
-  [v5 encodeDouble:@"_overlapDelayTime" forKey:self->_overlapDelayTime];
-  [v5 encodeBool:self->_persistAcrossUpdates forKey:@"_persistAcrossUpdates"];
-  [v5 encodeObject:self->_alertDate forKey:@"_alertDate"];
-  [v5 encodeDouble:@"_distanceToIncident" forKey:self->_distanceToIncident];
-  [v5 encodeBool:self->_isAutomaticReroute forKey:@"_isAutomaticReroute"];
-  [v5 encodeBool:self->_shouldShowTimer forKey:@"_shouldShowTimer"];
-  [v5 encodeDouble:@"_alertDisplayDuration" forKey:self->_alertDisplayDuration];
-  [v5 encodeObject:self->_buttonInfos forKey:@"_buttonInfos"];
-  [v5 encodeObject:self->_analyticsMessage forKey:@"_analyticsMessage"];
-  [v5 encodeDouble:@"_distanceToDestination" forKey:self->_distanceToDestination];
-  [v5 encodeObject:self->_bannerID forKey:@"_bannerID"];
-  [v5 encodeObject:self->_incident forKey:@"_incident"];
-  [v5 encodeBool:self->_includeDismissButton forKey:@"_includeDismissButton"];
+  coderCopy = coder;
+  [coderCopy encodeObject:alertID forKey:@"_alertID"];
+  [coderCopy encodeObject:self->_etaResponseID forKey:@"_etaResponseID"];
+  [coderCopy encodeInteger:self->_alertType forKey:@"_alertType"];
+  [coderCopy encodeObject:self->_geoTrafficBannerText forKey:@"_geoTrafficBannerText"];
+  [coderCopy encodeObject:self->_mainRouteInfo forKey:@"_mainRouteInfo"];
+  [coderCopy encodeObject:self->_alternateRouteInfo forKey:@"_alternateRouteInfo"];
+  [coderCopy encodeInteger:self->_startValidCoordinateRange.index forKey:@"_startValidCoordinateRange.index"];
+  [coderCopy encodeDouble:@"_startValidCoordinateRange.offset" forKey:self->_startValidCoordinateRange.offset];
+  [coderCopy encodeInteger:self->_endValidCoordinateRange.index forKey:@"_endValidCoordinateRange.index"];
+  [coderCopy encodeDouble:@"_endValidCoordinateRange.offset" forKey:self->_endValidCoordinateRange.offset];
+  [coderCopy encodeInteger:self->_incidentCoordinate.index forKey:@"_incidentCoordinate.index"];
+  [coderCopy encodeDouble:@"_incidentCoordinate.offset" forKey:self->_incidentCoordinate.offset];
+  [coderCopy encodeObject:self->_cameraInput forKey:@"_cameraInput"];
+  [coderCopy encodeInteger:self->_alternateEndValidCoordinateRange.index forKey:@"_alternateEndValidCoordinateRange.index"];
+  [coderCopy encodeDouble:@"_alternateEndValidCoordinateRange.offset" forKey:self->_alternateEndValidCoordinateRange.offset];
+  [coderCopy encodeObject:self->_triggerRange forKey:@"_triggerRange"];
+  [coderCopy encodeObject:self->_progressBarTriggerRange forKey:@"_progressBarTriggerRange"];
+  [coderCopy encodeInteger:self->_priority forKey:@"_priority"];
+  [coderCopy encodeDouble:@"_minDisplayTime" forKey:self->_minDisplayTime];
+  [coderCopy encodeDouble:@"_overlapDelayTime" forKey:self->_overlapDelayTime];
+  [coderCopy encodeBool:self->_persistAcrossUpdates forKey:@"_persistAcrossUpdates"];
+  [coderCopy encodeObject:self->_alertDate forKey:@"_alertDate"];
+  [coderCopy encodeDouble:@"_distanceToIncident" forKey:self->_distanceToIncident];
+  [coderCopy encodeBool:self->_isAutomaticReroute forKey:@"_isAutomaticReroute"];
+  [coderCopy encodeBool:self->_shouldShowTimer forKey:@"_shouldShowTimer"];
+  [coderCopy encodeDouble:@"_alertDisplayDuration" forKey:self->_alertDisplayDuration];
+  [coderCopy encodeObject:self->_buttonInfos forKey:@"_buttonInfos"];
+  [coderCopy encodeObject:self->_analyticsMessage forKey:@"_analyticsMessage"];
+  [coderCopy encodeDouble:@"_distanceToDestination" forKey:self->_distanceToDestination];
+  [coderCopy encodeObject:self->_bannerID forKey:@"_bannerID"];
+  [coderCopy encodeObject:self->_incident forKey:@"_incident"];
+  [coderCopy encodeBool:self->_includeDismissButton forKey:@"_includeDismissButton"];
 }
 
-- (MNTrafficIncidentAlert)initWithCoder:(id)a3
+- (MNTrafficIncidentAlert)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v43.receiver = self;
   v43.super_class = MNTrafficIncidentAlert;
   v5 = [(MNTrafficIncidentAlert *)&v43 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_alertID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_alertID"];
     alertID = v5->_alertID;
     v5->_alertID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_etaResponseID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_etaResponseID"];
     etaResponseID = v5->_etaResponseID;
     v5->_etaResponseID = v8;
 
-    v5->_alertType = [v4 decodeIntegerForKey:@"_alertType"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_geoTrafficBannerText"];
+    v5->_alertType = [coderCopy decodeIntegerForKey:@"_alertType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_geoTrafficBannerText"];
     geoTrafficBannerText = v5->_geoTrafficBannerText;
     v5->_geoTrafficBannerText = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_mainRouteInfo"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_mainRouteInfo"];
     mainRouteInfo = v5->_mainRouteInfo;
     v5->_mainRouteInfo = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_alternateRouteInfo"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_alternateRouteInfo"];
     alternateRouteInfo = v5->_alternateRouteInfo;
     v5->_alternateRouteInfo = v14;
 
-    v5->_startValidCoordinateRange.index = [v4 decodeIntegerForKey:@"_startValidCoordinateRange.index"];
-    [v4 decodeDoubleForKey:@"_startValidCoordinateRange.offset"];
+    v5->_startValidCoordinateRange.index = [coderCopy decodeIntegerForKey:@"_startValidCoordinateRange.index"];
+    [coderCopy decodeDoubleForKey:@"_startValidCoordinateRange.offset"];
     *&v16 = v16;
     v5->_startValidCoordinateRange.offset = *&v16;
-    v5->_endValidCoordinateRange.index = [v4 decodeIntegerForKey:@"_endValidCoordinateRange.index"];
-    [v4 decodeDoubleForKey:@"_endValidCoordinateRange.offset"];
+    v5->_endValidCoordinateRange.index = [coderCopy decodeIntegerForKey:@"_endValidCoordinateRange.index"];
+    [coderCopy decodeDoubleForKey:@"_endValidCoordinateRange.offset"];
     *&v17 = v17;
     v5->_endValidCoordinateRange.offset = *&v17;
-    v5->_incidentCoordinate.index = [v4 decodeIntegerForKey:@"_incidentCoordinate.index"];
-    [v4 decodeDoubleForKey:@"_incidentCoordinate.offset"];
+    v5->_incidentCoordinate.index = [coderCopy decodeIntegerForKey:@"_incidentCoordinate.index"];
+    [coderCopy decodeDoubleForKey:@"_incidentCoordinate.offset"];
     *&v18 = v18;
     v5->_incidentCoordinate.offset = *&v18;
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_cameraInput"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_cameraInput"];
     cameraInput = v5->_cameraInput;
     v5->_cameraInput = v19;
 
-    v5->_alternateEndValidCoordinateRange.index = [v4 decodeIntegerForKey:@"_alternateEndValidCoordinateRange.index"];
-    [v4 decodeDoubleForKey:@"_alternateEndValidCoordinateRange.offset"];
+    v5->_alternateEndValidCoordinateRange.index = [coderCopy decodeIntegerForKey:@"_alternateEndValidCoordinateRange.index"];
+    [coderCopy decodeDoubleForKey:@"_alternateEndValidCoordinateRange.offset"];
     *&v21 = v21;
     v5->_alternateEndValidCoordinateRange.offset = *&v21;
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_triggerRange"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_triggerRange"];
     triggerRange = v5->_triggerRange;
     v5->_triggerRange = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_progressBarTriggerRange"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_progressBarTriggerRange"];
     progressBarTriggerRange = v5->_progressBarTriggerRange;
     v5->_progressBarTriggerRange = v24;
 
-    v5->_priority = [v4 decodeIntegerForKey:@"_priority"];
-    [v4 decodeDoubleForKey:@"_minDisplayTime"];
+    v5->_priority = [coderCopy decodeIntegerForKey:@"_priority"];
+    [coderCopy decodeDoubleForKey:@"_minDisplayTime"];
     v5->_minDisplayTime = v26;
-    [v4 decodeDoubleForKey:@"_overlapDelayTime"];
+    [coderCopy decodeDoubleForKey:@"_overlapDelayTime"];
     v5->_overlapDelayTime = v27;
-    v5->_persistAcrossUpdates = [v4 decodeBoolForKey:@"_persistAcrossUpdates"];
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_alertDate"];
+    v5->_persistAcrossUpdates = [coderCopy decodeBoolForKey:@"_persistAcrossUpdates"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_alertDate"];
     alertDate = v5->_alertDate;
     v5->_alertDate = v28;
 
-    [v4 decodeDoubleForKey:@"_distanceToIncident"];
+    [coderCopy decodeDoubleForKey:@"_distanceToIncident"];
     v5->_distanceToIncident = v30;
-    v5->_isAutomaticReroute = [v4 decodeBoolForKey:@"_isAutomaticReroute"];
-    v5->_shouldShowTimer = [v4 decodeBoolForKey:@"_shouldShowTimer"];
-    [v4 decodeDoubleForKey:@"_alertDisplayDuration"];
+    v5->_isAutomaticReroute = [coderCopy decodeBoolForKey:@"_isAutomaticReroute"];
+    v5->_shouldShowTimer = [coderCopy decodeBoolForKey:@"_shouldShowTimer"];
+    [coderCopy decodeDoubleForKey:@"_alertDisplayDuration"];
     v5->_alertDisplayDuration = v31;
-    v32 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_buttonInfos"];
+    v32 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_buttonInfos"];
     buttonInfos = v5->_buttonInfos;
     v5->_buttonInfos = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_analyticsMessage"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_analyticsMessage"];
     analyticsMessage = v5->_analyticsMessage;
     v5->_analyticsMessage = v34;
 
-    [v4 decodeDoubleForKey:@"_distanceToDestination"];
+    [coderCopy decodeDoubleForKey:@"_distanceToDestination"];
     v5->_distanceToDestination = v36;
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bannerID"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bannerID"];
     bannerID = v5->_bannerID;
     v5->_bannerID = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_incident"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_incident"];
     incident = v5->_incident;
     v5->_incident = v39;
 
-    v5->_includeDismissButton = [v4 decodeBoolForKey:@"_includeDismissButton"];
+    v5->_includeDismissButton = [coderCopy decodeBoolForKey:@"_includeDismissButton"];
     v41 = v5;
   }
 
@@ -283,13 +283,13 @@
 
 - (id)description
 {
-  v3 = [(MNTrafficIncidentAlert *)self originalRoute];
-  [v3 pointAtRouteCoordinate:*&self->_startValidCoordinateRange];
+  originalRoute = [(MNTrafficIncidentAlert *)self originalRoute];
+  [originalRoute pointAtRouteCoordinate:*&self->_startValidCoordinateRange];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(MNTrafficIncidentAlert *)self originalRoute];
-  [v8 pointAtRouteCoordinate:*&self->_endValidCoordinateRange];
+  originalRoute2 = [(MNTrafficIncidentAlert *)self originalRoute];
+  [originalRoute2 pointAtRouteCoordinate:*&self->_endValidCoordinateRange];
   v10 = v9;
   v12 = v11;
 
@@ -345,19 +345,19 @@
     [v22 appendFormat:@" | Incident: [%@]", v30];
   }
 
-  v31 = [(MNTrafficIncidentAlert *)self artwork];
+  artwork = [(MNTrafficIncidentAlert *)self artwork];
 
-  if (v31)
+  if (artwork)
   {
-    v32 = [(MNTrafficIncidentAlert *)self artwork];
-    [v22 appendFormat:@" | artwork: [%@]", v32];
+    artwork2 = [(MNTrafficIncidentAlert *)self artwork];
+    [v22 appendFormat:@" | artwork: [%@]", artwork2];
   }
 
   geoTrafficBannerText = self->_geoTrafficBannerText;
   if (geoTrafficBannerText)
   {
-    v34 = [(GEOTrafficBannerText *)geoTrafficBannerText jsonRepresentation];
-    [v22 appendFormat:@" | trafficBannerText: [%@]", v34];
+    jsonRepresentation = [(GEOTrafficBannerText *)geoTrafficBannerText jsonRepresentation];
+    [v22 appendFormat:@" | trafficBannerText: [%@]", jsonRepresentation];
   }
 
   return v22;
@@ -376,10 +376,10 @@
 
   if ([(MNTrafficIncidentAlert *)self isReroute])
   {
-    v7 = [(MNTrafficIncidentAlert *)self secondsSaved];
-    if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+    secondsSaved = [(MNTrafficIncidentAlert *)self secondsSaved];
+    if (secondsSaved != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
+      v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:secondsSaved];
       [v3 setObject:v8 forKeyedSubscript:@"{duration}"];
     }
   }
@@ -401,24 +401,24 @@
 
 - (void)_initRouteCoordinates
 {
-  v3 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
-  v4 = [v3 legs];
-  v5 = [v4 firstObject];
+  route = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
+  legs = [route legs];
+  firstObject = [legs firstObject];
 
-  v6 = [(MNActiveRouteInfo *)self->_mainRouteInfo etaRoute];
+  etaRoute = [(MNActiveRouteInfo *)self->_mainRouteInfo etaRoute];
 
-  if (v6)
+  if (etaRoute)
   {
-    v7 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
-    v8 = [v7 legs];
-    v9 = [v8 count];
-    v10 = [(MNActiveRouteInfo *)self->_mainRouteInfo etaRoute];
-    v11 = [v10 legs];
-    v12 = v9 - [v11 count];
+    route2 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
+    legs2 = [route2 legs];
+    v9 = [legs2 count];
+    etaRoute2 = [(MNActiveRouteInfo *)self->_mainRouteInfo etaRoute];
+    legs3 = [etaRoute2 legs];
+    v12 = v9 - [legs3 count];
 
-    v13 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
-    v14 = [v13 legs];
-    v15 = [v14 count];
+    route3 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
+    legs4 = [route3 legs];
+    v15 = [legs4 count];
 
     if (v12 >= v15)
     {
@@ -432,16 +432,16 @@
 
     else
     {
-      v16 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
-      v17 = [v16 legs];
-      v18 = [v17 objectAtIndexedSubscript:v12];
+      route4 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
+      legs5 = [route4 legs];
+      v18 = [legs5 objectAtIndexedSubscript:v12];
 
-      v5 = v18;
+      firstObject = v18;
     }
   }
 
-  v20 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
-  [v20 distance];
+  route5 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
+  [route5 distance];
   self->_distanceToDestination = v21;
 
   if ([(GEOTrafficBannerText *)self->_geoTrafficBannerText hasTriggerRange])
@@ -450,16 +450,16 @@
     v68 = 3221225472;
     v69 = __47__MNTrafficIncidentAlert__initRouteCoordinates__block_invoke;
     v70 = &unk_1E8430270;
-    v71 = self;
-    v72 = v5;
+    selfCopy = self;
+    v72 = firstObject;
     v22 = _Block_copy(&v67);
     v23 = [(GEOTrafficBannerText *)self->_geoTrafficBannerText triggerRange:v67];
     v24 = v22[2](v22, v23);
     triggerRange = self->_triggerRange;
     self->_triggerRange = v24;
 
-    v26 = [(GEOTrafficBannerText *)self->_geoTrafficBannerText progressBarRange];
-    v27 = v22[2](v22, v26);
+    progressBarRange = [(GEOTrafficBannerText *)self->_geoTrafficBannerText progressBarRange];
+    v27 = v22[2](v22, progressBarRange);
     progressBarTriggerRange = self->_progressBarTriggerRange;
     self->_progressBarTriggerRange = v27;
 
@@ -467,15 +467,15 @@
     self->_minDisplayTime = [(GEOTrafficBannerText *)self->_geoTrafficBannerText minDisplayTime];
     self->_overlapDelayTime = [(GEOTrafficBannerText *)self->_geoTrafficBannerText overlapDelayTime];
     self->_persistAcrossUpdates = [(GEOTrafficBannerText *)self->_geoTrafficBannerText preserveBannerInUpdates];
-    v29 = [(GEOTrafficBannerText *)self->_geoTrafficBannerText cameraInput];
+    cameraInput = [(GEOTrafficBannerText *)self->_geoTrafficBannerText cameraInput];
     cameraInput = self->_cameraInput;
-    self->_cameraInput = v29;
+    self->_cameraInput = cameraInput;
 
     if (GEOConfigGetBOOL())
     {
-      v31 = [(GEOTrafficBannerText *)self->_geoTrafficBannerText bannerId];
+      bannerId = [(GEOTrafficBannerText *)self->_geoTrafficBannerText bannerId];
       v32 = [@"MNIncidentAlert_FakeDodgeball" description];
-      v33 = [v31 hasPrefix:v32];
+      v33 = [bannerId hasPrefix:v32];
 
       if ((v33 & 1) == 0)
       {
@@ -483,12 +483,12 @@
       }
     }
 
-    v34 = [(MNTrafficIncidentTriggerRange *)self->_triggerRange hideTriggerPoint];
-    if (!v34)
+    hideTriggerPoint = [(MNTrafficIncidentTriggerRange *)self->_triggerRange hideTriggerPoint];
+    if (!hideTriggerPoint)
     {
       if (self->_progressBarTriggerRange || ![(MNTrafficIncidentAlert *)self isReroute])
       {
-        v34 = 0;
+        hideTriggerPoint = 0;
       }
 
       else
@@ -498,18 +498,18 @@
           goto LABEL_35;
         }
 
-        v34 = objc_alloc_init(MNRouteDivergenceFinder);
-        v35 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
-        v36 = [(MNActiveRouteInfo *)self->_alternateRouteInfo route];
-        v37 = [(MNRouteDivergenceFinder *)v34 findFirstDivergenceBetweenRoute:v35 andRoute:v36];
-        v38 = [v37 firstObject];
+        hideTriggerPoint = objc_alloc_init(MNRouteDivergenceFinder);
+        route6 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
+        route7 = [(MNActiveRouteInfo *)self->_alternateRouteInfo route];
+        v37 = [(MNRouteDivergenceFinder *)hideTriggerPoint findFirstDivergenceBetweenRoute:route6 andRoute:route7];
+        firstObject2 = [v37 firstObject];
 
-        v39 = [v38 routeCoordinate];
+        routeCoordinate = [firstObject2 routeCoordinate];
         v40 = [MNTrafficIncidentTriggerRange alloc];
-        v41 = [(MNTrafficIncidentTriggerRange *)self->_triggerRange showTriggerPoint];
-        v42 = [[MNTrafficIncidentTriggerPoint alloc] initWithReferenceCoordinate:v39 allowsShifting:0];
+        showTriggerPoint = [(MNTrafficIncidentTriggerRange *)self->_triggerRange showTriggerPoint];
+        v42 = [[MNTrafficIncidentTriggerPoint alloc] initWithReferenceCoordinate:routeCoordinate allowsShifting:0];
         [(MNTrafficIncidentTriggerRange *)self->_triggerRange displayTime];
-        v43 = [(MNTrafficIncidentTriggerRange *)v40 initWithTriggerPointShow:v41 hide:v42 displayTime:?];
+        v43 = [(MNTrafficIncidentTriggerRange *)v40 initWithTriggerPointShow:showTriggerPoint hide:v42 displayTime:?];
         v44 = self->_triggerRange;
         self->_triggerRange = v43;
       }
@@ -519,10 +519,10 @@ LABEL_35:
     v62 = self->_progressBarTriggerRange;
     if (v62)
     {
-      v63 = [(MNTrafficIncidentTriggerRange *)v62 showTriggerPoint];
-      [v63 referenceCoordinate];
-      v64 = [(MNTrafficIncidentTriggerRange *)self->_triggerRange showTriggerPoint];
-      [v64 referenceCoordinate];
+      showTriggerPoint2 = [(MNTrafficIncidentTriggerRange *)v62 showTriggerPoint];
+      [showTriggerPoint2 referenceCoordinate];
+      showTriggerPoint3 = [(MNTrafficIncidentTriggerRange *)self->_triggerRange showTriggerPoint];
+      [showTriggerPoint3 referenceCoordinate];
       self->_shouldShowTimer = GEOPolylineCoordinateEqual();
 
       if (!self->_shouldShowTimer)
@@ -548,17 +548,17 @@ LABEL_40:
   self->_startValidCoordinateRange = 0;
   if ([(GEOTrafficBannerText *)self->_geoTrafficBannerText hasShowAtDistance])
   {
-    v45 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
-    self->_startValidCoordinateRange = [v45 routeCoordinateForDistance:objc_msgSend(v5 beforeRouteCoordinate:{"endRouteCoordinate"), -[GEOTrafficBannerText showAtDistance](self->_geoTrafficBannerText, "showAtDistance")}];
+    route8 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
+    self->_startValidCoordinateRange = [route8 routeCoordinateForDistance:objc_msgSend(firstObject beforeRouteCoordinate:{"endRouteCoordinate"), -[GEOTrafficBannerText showAtDistance](self->_geoTrafficBannerText, "showAtDistance")}];
   }
 
-  v46 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
-  self->_endValidCoordinateRange = [v46 endRouteCoordinate];
+  route9 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
+  self->_endValidCoordinateRange = [route9 endRouteCoordinate];
 
   if ([(GEOTrafficBannerText *)self->_geoTrafficBannerText hasHideAtDistance])
   {
-    v47 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
-    self->_endValidCoordinateRange = -[MNRouteDivergenceFinder routeCoordinateForDistance:beforeRouteCoordinate:](v47, "routeCoordinateForDistance:beforeRouteCoordinate:", [v5 endRouteCoordinate], -[GEOTrafficBannerText hideAtDistance](self->_geoTrafficBannerText, "hideAtDistance"));
+    route10 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
+    self->_endValidCoordinateRange = -[MNRouteDivergenceFinder routeCoordinateForDistance:beforeRouteCoordinate:](route10, "routeCoordinateForDistance:beforeRouteCoordinate:", [firstObject endRouteCoordinate], -[GEOTrafficBannerText hideAtDistance](self->_geoTrafficBannerText, "hideAtDistance"));
 LABEL_25:
 
     goto LABEL_26;
@@ -566,16 +566,16 @@ LABEL_25:
 
   if ([(MNTrafficIncidentAlert *)self isReroute]&& self->_alternateRouteInfo)
   {
-    v47 = objc_alloc_init(MNRouteDivergenceFinder);
-    v48 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
-    v49 = [(MNActiveRouteInfo *)self->_alternateRouteInfo route];
-    v50 = [(MNRouteDivergenceFinder *)v47 findFirstDivergenceBetweenRoute:v48 andRoute:v49];
-    v51 = [v50 firstObject];
+    route10 = objc_alloc_init(MNRouteDivergenceFinder);
+    route11 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
+    route12 = [(MNActiveRouteInfo *)self->_alternateRouteInfo route];
+    v50 = [(MNRouteDivergenceFinder *)route10 findFirstDivergenceBetweenRoute:route11 andRoute:route12];
+    firstObject3 = [v50 firstObject];
 
-    v52 = [v51 routeCoordinate];
+    routeCoordinate2 = [firstObject3 routeCoordinate];
     if (GEOPolylineCoordinateIsValid())
     {
-      self->_endValidCoordinateRange = v52;
+      self->_endValidCoordinateRange = routeCoordinate2;
     }
 
     goto LABEL_25;
@@ -585,8 +585,8 @@ LABEL_26:
   alternateRouteInfo = self->_alternateRouteInfo;
   if (alternateRouteInfo)
   {
-    v54 = [(MNActiveRouteInfo *)alternateRouteInfo route];
-    v55 = [v54 pointCount] - 1;
+    route13 = [(MNActiveRouteInfo *)alternateRouteInfo route];
+    v55 = [route13 pointCount] - 1;
   }
 
   else
@@ -598,13 +598,13 @@ LABEL_26:
   self->_alternateEndValidCoordinateRange.offset = 0.0;
   if ([(MNTrafficIncidentAlert *)self isAutomaticReroute]&& self->_alternateRouteInfo)
   {
-    v56 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
-    [v56 pointAtRouteCoordinate:*&self->_endValidCoordinateRange];
+    route14 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
+    [route14 pointAtRouteCoordinate:*&self->_endValidCoordinateRange];
     v58 = v57;
     v60 = v59;
 
-    v61 = [(MNActiveRouteInfo *)self->_alternateRouteInfo route];
-    self->_alternateEndValidCoordinateRange = [v61 closestPointOnRoute:{v58, v60}];
+    route15 = [(MNActiveRouteInfo *)self->_alternateRouteInfo route];
+    self->_alternateEndValidCoordinateRange = [route15 closestPointOnRoute:{v58, v60}];
   }
 
   self->_shouldShowTimer = [(GEOTrafficBannerText *)self->_geoTrafficBannerText shouldShowTimer];
@@ -613,8 +613,8 @@ LABEL_41:
   self->_incidentCoordinate = *MEMORY[0x1E69A1918];
   if ([(GEOTrafficBannerText *)self->_geoTrafficBannerText hasIncidentDistance])
   {
-    v66 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
-    self->_incidentCoordinate = [v66 routeCoordinateForDistance:objc_msgSend(v5 beforeRouteCoordinate:{"endRouteCoordinate"), -[GEOTrafficBannerText incidentDistance](self->_geoTrafficBannerText, "incidentDistance")}];
+    route16 = [(MNActiveRouteInfo *)self->_mainRouteInfo route];
+    self->_incidentCoordinate = [route16 routeCoordinateForDistance:objc_msgSend(firstObject beforeRouteCoordinate:{"endRouteCoordinate"), -[GEOTrafficBannerText incidentDistance](self->_geoTrafficBannerText, "incidentDistance")}];
   }
 }
 
@@ -666,43 +666,43 @@ LABEL_9:
   return v14;
 }
 
-- (id)_initWithGeoTrafficBannerText:(id)a3 mainRouteInfo:(id)a4 alternateRouteInfo:(id)a5
+- (id)_initWithGeoTrafficBannerText:(id)text mainRouteInfo:(id)info alternateRouteInfo:(id)routeInfo
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  textCopy = text;
+  infoCopy = info;
+  routeInfoCopy = routeInfo;
   v25.receiver = self;
   v25.super_class = MNTrafficIncidentAlert;
   v12 = [(MNTrafficIncidentAlert *)&v25 init];
   if (v12)
   {
-    v13 = [MEMORY[0x1E696AFB0] _geo_dataForUUID];
+    _geo_dataForUUID = [MEMORY[0x1E696AFB0] _geo_dataForUUID];
     alertID = v12->_alertID;
-    v12->_alertID = v13;
+    v12->_alertID = _geo_dataForUUID;
 
-    v15 = [v10 etaRoute];
-    v16 = [v15 etauResponseID];
-    v17 = [v16 _geo_data];
+    etaRoute = [infoCopy etaRoute];
+    etauResponseID = [etaRoute etauResponseID];
+    _geo_data = [etauResponseID _geo_data];
     etaResponseID = v12->_etaResponseID;
-    v12->_etaResponseID = v17;
+    v12->_etaResponseID = _geo_data;
 
-    v12->_alertType = -[MNTrafficIncidentAlert _alertTypeForGeoBannerStyle:](v12, "_alertTypeForGeoBannerStyle:", [v9 bannerStyle]);
-    objc_storeStrong(&v12->_geoTrafficBannerText, a3);
-    objc_storeStrong(&v12->_mainRouteInfo, a4);
-    objc_storeStrong(&v12->_alternateRouteInfo, a5);
-    v19 = [MEMORY[0x1E695DF00] date];
+    v12->_alertType = -[MNTrafficIncidentAlert _alertTypeForGeoBannerStyle:](v12, "_alertTypeForGeoBannerStyle:", [textCopy bannerStyle]);
+    objc_storeStrong(&v12->_geoTrafficBannerText, text);
+    objc_storeStrong(&v12->_mainRouteInfo, info);
+    objc_storeStrong(&v12->_alternateRouteInfo, routeInfo);
+    date = [MEMORY[0x1E695DF00] date];
     alertDate = v12->_alertDate;
-    v12->_alertDate = v19;
+    v12->_alertDate = date;
 
     v21 = *MEMORY[0x1E69A19D8];
     v22 = *(MEMORY[0x1E69A19D8] + 8);
     v12->_isAutomaticReroute = GEOConfigGetBOOL();
     [(MNTrafficIncidentAlert *)v12 _initRouteCoordinates];
     v12->_distanceToIncident = -1.0;
-    v12->_includeDismissButton = [v9 includeDismissButton];
-    [(MNTrafficIncidentAlert *)v12 _populateServerFields:v9];
-    [(MNTrafficIncidentAlert *)v12 _populateButtonInfo:v9];
-    [(MNTrafficIncidentAlert *)v12 _populateIncidentDetails:v9];
+    v12->_includeDismissButton = [textCopy includeDismissButton];
+    [(MNTrafficIncidentAlert *)v12 _populateServerFields:textCopy];
+    [(MNTrafficIncidentAlert *)v12 _populateButtonInfo:textCopy];
+    [(MNTrafficIncidentAlert *)v12 _populateIncidentDetails:textCopy];
     v23 = v12;
   }
 
@@ -711,19 +711,19 @@ LABEL_9:
 
 - (GEOPBTransitArtwork)artwork
 {
-  v3 = [(GEOTrafficBannerText *)self->_geoTrafficBannerText artworkOverride];
-  v4 = v3;
-  if (v3)
+  artworkOverride = [(GEOTrafficBannerText *)self->_geoTrafficBannerText artworkOverride];
+  v4 = artworkOverride;
+  if (artworkOverride)
   {
-    v5 = v3;
+    artwork = artworkOverride;
   }
 
   else
   {
-    v5 = [(GEORouteIncident *)self->_incident artwork];
+    artwork = [(GEORouteIncident *)self->_incident artwork];
   }
 
-  v6 = v5;
+  v6 = artwork;
 
   return v6;
 }
@@ -833,38 +833,38 @@ LABEL_11:
   }
 }
 
-- (void)updateAlertIDWithAlert:(id)a3
+- (void)updateAlertIDWithAlert:(id)alert
 {
-  v4 = [a3 alertID];
+  alertID = [alert alertID];
   alertID = self->_alertID;
-  self->_alertID = v4;
+  self->_alertID = alertID;
 }
 
-- (void)updateLocation:(id)a3
+- (void)updateLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   if (self->_incidentCoordinate.offset >= 0.0)
   {
-    v15 = v4;
-    v5 = [v4 routeMatch];
-    v6 = [v5 isGoodMatch];
+    v15 = locationCopy;
+    routeMatch = [locationCopy routeMatch];
+    isGoodMatch = [routeMatch isGoodMatch];
 
-    v4 = v15;
-    if (v6)
+    locationCopy = v15;
+    if (isGoodMatch)
     {
-      v7 = [v15 routeMatch];
-      v8 = [v7 routeCoordinate];
+      routeMatch2 = [v15 routeMatch];
+      routeCoordinate = [routeMatch2 routeCoordinate];
 
-      v9 = [(MNTrafficIncidentAlert *)self originalRoute];
-      [v9 distanceToEndFromRouteCoordinate:v8];
+      originalRoute = [(MNTrafficIncidentAlert *)self originalRoute];
+      [originalRoute distanceToEndFromRouteCoordinate:routeCoordinate];
       self->_distanceToDestination = v10;
 
       incidentCoordinate = self->_incidentCoordinate;
       if (GEOPolylineCoordinateIsABeforeB())
       {
-        v12 = [(MNTrafficIncidentAlert *)self originalRoute];
-        v13 = [v15 routeMatch];
-        [v12 distanceFromPoint:objc_msgSend(v13 toPoint:{"routeCoordinate"), *&self->_incidentCoordinate}];
+        originalRoute2 = [(MNTrafficIncidentAlert *)self originalRoute];
+        routeMatch3 = [v15 routeMatch];
+        [originalRoute2 distanceFromPoint:objc_msgSend(routeMatch3 toPoint:{"routeCoordinate"), *&self->_incidentCoordinate}];
         self->_distanceToIncident = v14;
       }
 
@@ -873,7 +873,7 @@ LABEL_11:
         self->_distanceToIncident = 0.0;
       }
 
-      v4 = v15;
+      locationCopy = v15;
     }
   }
 
@@ -918,10 +918,10 @@ LABEL_5:
 
 - (GEONavigabilityInfo)originalRouteNavigability
 {
-  v2 = [(MNActiveRouteInfo *)self->_mainRouteInfo etaRoute];
-  v3 = [v2 navigabilityInfo];
+  etaRoute = [(MNActiveRouteInfo *)self->_mainRouteInfo etaRoute];
+  navigabilityInfo = [etaRoute navigabilityInfo];
 
-  return v3;
+  return navigabilityInfo;
 }
 
 - (NSArray)spokenTexts
@@ -930,9 +930,9 @@ LABEL_5:
   if ([(GEOTrafficBannerText *)self->_geoTrafficBannerText hasSpokenPrompt])
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [(GEOTrafficBannerText *)self->_geoTrafficBannerText spokenPrompt];
-    v5 = [(MNTrafficIncidentAlert *)self _dynamicStringValues];
-    v6 = [v3 _navigation_stringForServerFormattedString:v4 abbreviatedUnits:0 detail:1 spoken:1 overrideVariables:v5];
+    spokenPrompt = [(GEOTrafficBannerText *)self->_geoTrafficBannerText spokenPrompt];
+    _dynamicStringValues = [(MNTrafficIncidentAlert *)self _dynamicStringValues];
+    v6 = [v3 _navigation_stringForServerFormattedString:spokenPrompt abbreviatedUnits:0 detail:1 spoken:1 overrideVariables:_dynamicStringValues];
 
     v10[0] = v6;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
@@ -951,14 +951,14 @@ LABEL_5:
 - (NSArray)alertDescriptions
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(GEOTrafficBannerText *)self->_geoTrafficBannerText bannerSmallTexts];
-  v4 = [v3 firstObject];
+  bannerSmallTexts = [(GEOTrafficBannerText *)self->_geoTrafficBannerText bannerSmallTexts];
+  firstObject = [bannerSmallTexts firstObject];
 
-  if (v4)
+  if (firstObject)
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(MNTrafficIncidentAlert *)self _dynamicStringValues];
-    v7 = [v5 _navigation_stringForServerFormattedString:v4 abbreviatedUnits:1 detail:0 spoken:0 overrideVariables:v6];
+    _dynamicStringValues = [(MNTrafficIncidentAlert *)self _dynamicStringValues];
+    v7 = [v5 _navigation_stringForServerFormattedString:firstObject abbreviatedUnits:1 detail:0 spoken:0 overrideVariables:_dynamicStringValues];
 
     v11[0] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
@@ -977,14 +977,14 @@ LABEL_5:
 - (NSArray)alertTitles
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(GEOTrafficBannerText *)self->_geoTrafficBannerText bannerLargeTexts];
-  v4 = [v3 firstObject];
+  bannerLargeTexts = [(GEOTrafficBannerText *)self->_geoTrafficBannerText bannerLargeTexts];
+  firstObject = [bannerLargeTexts firstObject];
 
-  if (v4)
+  if (firstObject)
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(MNTrafficIncidentAlert *)self _dynamicStringValues];
-    v7 = [v5 _navigation_stringForServerFormattedString:v4 abbreviatedUnits:1 detail:0 spoken:0 overrideVariables:v6];
+    _dynamicStringValues = [(MNTrafficIncidentAlert *)self _dynamicStringValues];
+    v7 = [v5 _navigation_stringForServerFormattedString:firstObject abbreviatedUnits:1 detail:0 spoken:0 overrideVariables:_dynamicStringValues];
 
     v11[0] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
@@ -1000,21 +1000,21 @@ LABEL_5:
   return v8;
 }
 
-+ (id)_validTrafficIncidentAlertsForBannerTexts:(id)a3 mainRouteInfo:(id)a4 alternateRouteInfo:(id)a5
++ (id)_validTrafficIncidentAlertsForBannerTexts:(id)texts mainRouteInfo:(id)info alternateRouteInfo:(id)routeInfo
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v36 = a4;
-  v8 = a5;
+  textsCopy = texts;
+  infoCopy = info;
+  routeInfoCopy = routeInfo;
   v9 = objc_opt_new();
-  if (v7)
+  if (textsCopy)
   {
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v34 = v7;
-    obj = v7;
+    v34 = textsCopy;
+    obj = textsCopy;
     v10 = [obj countByEnumeratingWithState:&v37 objects:v47 count:16];
     if (!v10)
     {
@@ -1037,32 +1037,32 @@ LABEL_5:
         v15 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [v14 bannerStyle];
-          if (v16 >= 9)
+          bannerStyle = [v14 bannerStyle];
+          if (bannerStyle >= 9)
           {
-            v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v16];
+            v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", bannerStyle];
           }
 
           else
           {
-            v17 = off_1E84304A0[v16];
+            v17 = off_1E84304A0[bannerStyle];
           }
 
-          v18 = [v14 bannerId];
+          bannerId = [v14 bannerId];
           *buf = 138412546;
           v42 = v17;
           v43 = 2112;
-          v44 = v18;
+          v44 = bannerId;
           _os_log_impl(&dword_1D311E000, v15, OS_LOG_TYPE_DEFAULT, "Received Dodgeball alert from server response: %@, %@", buf, 0x16u);
         }
 
-        v19 = [v14 bannerStyle];
-        if (v19 <= 7)
+        bannerStyle2 = [v14 bannerStyle];
+        if (bannerStyle2 <= 7)
         {
-          v20 = 1 << v19;
-          if (((1 << v19) & 0x92) != 0)
+          v20 = 1 << bannerStyle2;
+          if (((1 << bannerStyle2) & 0x92) != 0)
           {
-            if (v8)
+            if (routeInfoCopy)
             {
               goto LABEL_35;
             }
@@ -1070,15 +1070,15 @@ LABEL_5:
             v24 = GEOFindOrCreateLog();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
             {
-              v25 = [v14 bannerStyle];
-              if (v25 >= 9)
+              bannerStyle3 = [v14 bannerStyle];
+              if (bannerStyle3 >= 9)
               {
-                v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v25];
+                v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", bannerStyle3];
               }
 
               else
               {
-                v26 = off_1E84304A0[v25];
+                v26 = off_1E84304A0[bannerStyle3];
               }
 
               *buf = 138412290;
@@ -1086,16 +1086,16 @@ LABEL_5:
               _os_log_impl(&dword_1D311E000, v24, OS_LOG_TYPE_ERROR, "Dodgeball response (%@) requires alternate route, but none was found.", buf, 0xCu);
             }
 
-            v8 = 0;
+            routeInfoCopy = 0;
             goto LABEL_36;
           }
 
           if ((v20 & 0x24) != 0)
           {
 
-            v8 = 0;
+            routeInfoCopy = 0;
 LABEL_35:
-            v24 = [[MNTrafficIncidentAlert alloc] _initWithGeoTrafficBannerText:v14 mainRouteInfo:v36 alternateRouteInfo:v8];
+            v24 = [[MNTrafficIncidentAlert alloc] _initWithGeoTrafficBannerText:v14 mainRouteInfo:infoCopy alternateRouteInfo:routeInfoCopy];
             [v9 addObject:v24];
             goto LABEL_36;
           }
@@ -1106,7 +1106,7 @@ LABEL_35:
           }
         }
 
-        if (!v19)
+        if (!bannerStyle2)
         {
           v21 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -1127,7 +1127,7 @@ LABEL_35:
             _os_log_impl(&dword_1D311E000, v22, OS_LOG_TYPE_ERROR, "Dodgeball response has no banner style. This is a server error. Attempting to continue.", buf, 2u);
           }
 
-          if (v8)
+          if (routeInfoCopy)
           {
             v23 = 1;
           }
@@ -1156,15 +1156,15 @@ LABEL_35:
         v24 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          v28 = [v14 bannerStyle];
-          if (v28 >= 9)
+          bannerStyle4 = [v14 bannerStyle];
+          if (bannerStyle4 >= 9)
           {
-            v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v28];
+            v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", bannerStyle4];
           }
 
           else
           {
-            v29 = off_1E84304A0[v28];
+            v29 = off_1E84304A0[bannerStyle4];
           }
 
           *buf = 138412290;
@@ -1185,7 +1185,7 @@ LABEL_36:
 LABEL_44:
 
         v31 = v9;
-        v7 = v34;
+        textsCopy = v34;
         goto LABEL_46;
       }
     }
@@ -1199,24 +1199,24 @@ LABEL_46:
   return v31;
 }
 
-+ (id)validTrafficIncidentAlertsForETAUpdate:(id)a3 alternateRouteInfo:(id)a4
++ (id)validTrafficIncidentAlertsForETAUpdate:(id)update alternateRouteInfo:(id)info
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 etaRoute];
-  v8 = [v7 geoTrafficBannerTexts];
-  v9 = [MNTrafficIncidentAlert _validTrafficIncidentAlertsForBannerTexts:v8 mainRouteInfo:v6 alternateRouteInfo:v5];
+  infoCopy = info;
+  updateCopy = update;
+  etaRoute = [updateCopy etaRoute];
+  geoTrafficBannerTexts = [etaRoute geoTrafficBannerTexts];
+  v9 = [MNTrafficIncidentAlert _validTrafficIncidentAlertsForBannerTexts:geoTrafficBannerTexts mainRouteInfo:updateCopy alternateRouteInfo:infoCopy];
 
   return v9;
 }
 
-+ (id)validTrafficIncidentAlertsForNewRoute:(id)a3 alternateRouteInfo:(id)a4
++ (id)validTrafficIncidentAlertsForNewRoute:(id)route alternateRouteInfo:(id)info
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 route];
-  v8 = [v7 geoTrafficBannerTexts];
-  v9 = [MNTrafficIncidentAlert _validTrafficIncidentAlertsForBannerTexts:v8 mainRouteInfo:v6 alternateRouteInfo:v5];
+  infoCopy = info;
+  routeCopy = route;
+  route = [routeCopy route];
+  geoTrafficBannerTexts = [route geoTrafficBannerTexts];
+  v9 = [MNTrafficIncidentAlert _validTrafficIncidentAlertsForBannerTexts:geoTrafficBannerTexts mainRouteInfo:routeCopy alternateRouteInfo:infoCopy];
 
   return v9;
 }
@@ -1228,10 +1228,10 @@ LABEL_46:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(MNActiveRouteInfo *)self->_mainRouteInfo traffic];
-  v4 = [v3 routeIncidents];
+  traffic = [(MNActiveRouteInfo *)self->_mainRouteInfo traffic];
+  routeIncidents = [traffic routeIncidents];
 
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v5 = [routeIncidents countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1243,28 +1243,28 @@ LABEL_46:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(routeIncidents);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
         if (!v7)
         {
           v11 = MEMORY[0x1E695DF70];
-          v12 = [(MNActiveRouteInfo *)self->_mainRouteInfo traffic];
-          v13 = [v12 routeIncidents];
-          v7 = [v11 arrayWithCapacity:{objc_msgSend(v13, "count")}];
+          traffic2 = [(MNActiveRouteInfo *)self->_mainRouteInfo traffic];
+          routeIncidents2 = [traffic2 routeIncidents];
+          v7 = [v11 arrayWithCapacity:{objc_msgSend(routeIncidents2, "count")}];
         }
 
-        v14 = [v10 incident];
+        incident = [v10 incident];
 
-        if (v14)
+        if (incident)
         {
-          v15 = [v10 incident];
-          [v7 addObject:v15];
+          incident2 = [v10 incident];
+          [v7 addObject:incident2];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [routeIncidents countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -1282,8 +1282,8 @@ LABEL_46:
 
 - (double)oldHistoricTime
 {
-  v2 = [(MNActiveRouteInfo *)self->_mainRouteInfo etaRoute];
-  [v2 historicTravelDuration];
+  etaRoute = [(MNActiveRouteInfo *)self->_mainRouteInfo etaRoute];
+  [etaRoute historicTravelDuration];
   v4 = v3;
 
   return v4;
@@ -1291,8 +1291,8 @@ LABEL_46:
 
 - (double)oldEstimatedTime
 {
-  v2 = [(MNActiveRouteInfo *)self->_mainRouteInfo etaRoute];
-  [v2 travelDuration];
+  etaRoute = [(MNActiveRouteInfo *)self->_mainRouteInfo etaRoute];
+  [etaRoute travelDuration];
   v4 = v3;
 
   return v4;
@@ -1300,26 +1300,26 @@ LABEL_46:
 
 - (double)newEstimatedTime
 {
-  v2 = [(MNActiveRouteInfo *)self->_alternateRouteInfo route];
-  v3 = [v2 expectedTime];
+  route = [(MNActiveRouteInfo *)self->_alternateRouteInfo route];
+  expectedTime = [route expectedTime];
 
-  return v3;
+  return expectedTime;
 }
 
-+ (void)_addDebugArguments:(id)a3
++ (void)_addDebugArguments:(id)arguments
 {
   v3 = MEMORY[0x1E69A1DC0];
-  v4 = a3;
+  argumentsCopy = arguments;
   v6 = objc_alloc_init(v3);
   [v6 setToken:@"{distance}"];
   [v6 setFormat:1];
   [v6 setValInt1:5000];
-  [v4 addFormatArgument:v6];
+  [argumentsCopy addFormatArgument:v6];
   v5 = objc_alloc_init(MEMORY[0x1E69A1DC0]);
   [v5 setToken:@"{time}"];
   [v5 setFormat:2];
   [v5 setValInt1:5000];
-  [v4 addFormatArgument:v5];
+  [argumentsCopy addFormatArgument:v5];
 }
 
 @end

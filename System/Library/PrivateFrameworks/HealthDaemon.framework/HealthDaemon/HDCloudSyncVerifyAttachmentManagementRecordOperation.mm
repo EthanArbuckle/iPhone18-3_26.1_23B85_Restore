@@ -8,23 +8,23 @@
 - (void)main
 {
   v84[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 cachedCloudState];
-  v5 = [(HDCloudSyncOperation *)self configuration];
-  v6 = [v5 repository];
-  v7 = [v6 primaryCKContainer];
-  v8 = [v7 containerIdentifier];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cachedCloudState = [configuration cachedCloudState];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration2 repository];
+  primaryCKContainer = [repository primaryCKContainer];
+  containerIdentifier = [primaryCKContainer containerIdentifier];
   v77 = 0;
-  v9 = [v4 attachmentZoneForContainerID:v8 error:&v77];
+  v9 = [cachedCloudState attachmentZoneForContainerID:containerIdentifier error:&v77];
   v10 = v77;
 
   if (v9 || !v10)
   {
     if (!v9)
     {
-      v11 = [(HDCloudSyncOperation *)self configuration];
-      v12 = [v11 repository];
-      v13 = [v12 profileType] == 1;
+      configuration3 = [(HDCloudSyncOperation *)self configuration];
+      repository2 = [configuration3 repository];
+      v13 = [repository2 profileType] == 1;
 
       if (!v13)
       {
@@ -60,12 +60,12 @@ LABEL_41:
 
     if (v72[5])
     {
-      v17 = [(HDCloudSyncOperation *)self configuration];
-      v18 = [v17 repository];
-      v19 = [v18 profile];
-      v20 = [v19 legacyRepositoryProfile];
+      configuration4 = [(HDCloudSyncOperation *)self configuration];
+      repository3 = [configuration4 repository];
+      profile = [repository3 profile];
+      legacyRepositoryProfile = [profile legacyRepositoryProfile];
       v67 = 0;
-      v62 = HDCloudSyncAttachmentManagementUUID(v20, &v67);
+      v62 = HDCloudSyncAttachmentManagementUUID(legacyRepositoryProfile, &v67);
       v21 = v67;
 
       if (v21)
@@ -89,13 +89,13 @@ LABEL_41:
         v36 = v72[5];
         if (!v62)
         {
-          v40 = [v36 UUID];
-          v41 = [(HDCloudSyncOperation *)self configuration];
-          v42 = [v41 repository];
-          v43 = [v42 profile];
-          v44 = [v43 legacyRepositoryProfile];
+          uUID = [v36 UUID];
+          configuration5 = [(HDCloudSyncOperation *)self configuration];
+          repository4 = [configuration5 repository];
+          profile2 = [repository4 profile];
+          legacyRepositoryProfile2 = [profile2 legacyRepositoryProfile];
           v66 = 0;
-          v45 = HDSetCloudSyncAttachmentManagementUUID(v40, v44, &v66);
+          v45 = HDSetCloudSyncAttachmentManagementUUID(uUID, legacyRepositoryProfile2, &v66);
           v21 = v66;
 
           if ((v45 & 1) == 0)
@@ -104,11 +104,11 @@ LABEL_41:
             v46 = *MEMORY[0x277CCC328];
             if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
             {
-              v58 = [v72[5] UUID];
+              uUID2 = [v72[5] UUID];
               *buf = 138543874;
               *&buf[4] = self;
               *&buf[12] = 2114;
-              *&buf[14] = v58;
+              *&buf[14] = uUID2;
               *&buf[22] = 2114;
               v81 = v21;
               _os_log_error_impl(&dword_228986000, v46, OS_LOG_TYPE_ERROR, "[attachments] %{public}@: Failed to set previously nil local management UUID %{public}@, %{public}@", buf, 0x20u);
@@ -120,8 +120,8 @@ LABEL_41:
           goto LABEL_40;
         }
 
-        v37 = [v36 UUID];
-        v38 = [v62 isEqual:v37];
+        uUID3 = [v36 UUID];
+        v38 = [v62 isEqual:uUID3];
 
         if (v38)
         {
@@ -136,14 +136,14 @@ LABEL_41:
           v48 = v65;
           if (v47)
           {
-            v49 = [v72[5] UUID];
+            uUID4 = [v72[5] UUID];
             v50 = v48;
-            v51 = [(HDCloudSyncOperation *)self configuration];
-            v52 = [v51 repository];
-            v53 = [v52 profile];
-            v54 = [v53 legacyRepositoryProfile];
+            configuration6 = [(HDCloudSyncOperation *)self configuration];
+            repository5 = [configuration6 repository];
+            profile3 = [repository5 profile];
+            legacyRepositoryProfile3 = [profile3 legacyRepositoryProfile];
             v64 = 0;
-            v61 = HDSetCloudSyncAttachmentManagementUUID(v49, v54, &v64);
+            v61 = HDSetCloudSyncAttachmentManagementUUID(uUID4, legacyRepositoryProfile3, &v64);
             v21 = v64;
 
             if ((v61 & 1) == 0)
@@ -152,11 +152,11 @@ LABEL_41:
               v55 = *MEMORY[0x277CCC328];
               if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
               {
-                v59 = [v72[5] UUID];
+                uUID5 = [v72[5] UUID];
                 *buf = 138543874;
                 *&buf[4] = self;
                 *&buf[12] = 2114;
-                *&buf[14] = v59;
+                *&buf[14] = uUID5;
                 *&buf[22] = 2114;
                 v81 = v21;
                 _os_log_error_impl(&dword_228986000, v55, OS_LOG_TYPE_ERROR, "[attachments] %{public}@: Failed to set previously nil local management UUID %{public}@, %{public}@", buf, 0x20u);
@@ -210,28 +210,28 @@ LABEL_41:
       }
 
       v24 = [HDCloudSyncAttachmentManagementRecord alloc];
-      v25 = [v9 zoneIdentifier];
-      v26 = [v25 zoneIdentifier];
-      v27 = [(HDCloudSyncAttachmentManagementRecord *)v24 initInZoneID:v26];
+      zoneIdentifier = [v9 zoneIdentifier];
+      v25ZoneIdentifier = [zoneIdentifier zoneIdentifier];
+      v27 = [(HDCloudSyncAttachmentManagementRecord *)v24 initInZoneID:v25ZoneIdentifier];
 
       v62 = v27;
       if (self)
       {
         v28 = [HDCloudSyncModifyRecordsOperation alloc];
-        v60 = [(HDCloudSyncOperation *)self configuration];
-        v29 = [(HDCloudSyncOperation *)self configuration];
-        v30 = [v29 repository];
-        v31 = [v30 primaryCKContainer];
-        v32 = [v62 record];
-        v84[0] = v32;
+        configuration7 = [(HDCloudSyncOperation *)self configuration];
+        configuration8 = [(HDCloudSyncOperation *)self configuration];
+        repository6 = [configuration8 repository];
+        primaryCKContainer2 = [repository6 primaryCKContainer];
+        record = [v62 record];
+        v84[0] = record;
         v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v84 count:1];
-        v34 = [(HDCloudSyncModifyRecordsOperation *)v28 initWithConfiguration:v60 container:v31 recordsToSave:v33 recordIDsToDelete:0];
+        v34 = [(HDCloudSyncModifyRecordsOperation *)v28 initWithConfiguration:configuration7 container:primaryCKContainer2 recordsToSave:v33 recordIDsToDelete:0];
 
         *buf = MEMORY[0x277D85DD0];
         *&buf[8] = 3221225472;
         *&buf[16] = __101__HDCloudSyncVerifyAttachmentManagementRecordOperation__modifyCloudKitAndFinishWithManagementRecord___block_invoke;
         v81 = &unk_278625A30;
-        v82 = self;
+        selfCopy = self;
         v35 = v62;
         v83 = v35;
         [(HDCloudSyncOperation *)v34 setOnError:buf];
@@ -262,15 +262,15 @@ LABEL_42:
   {
     v3 = result;
     v4 = +[HDMutableDatabaseTransactionContext contextForWritingProtectedData];
-    v5 = [v3 configuration];
-    v6 = [v5 accessibilityAssertion];
-    v7 = [v4 contextWithAccessibilityAssertion:v6];
+    configuration = [v3 configuration];
+    accessibilityAssertion = [configuration accessibilityAssertion];
+    v7 = [v4 contextWithAccessibilityAssertion:accessibilityAssertion];
 
-    v8 = [v3 configuration];
-    v9 = [v8 repository];
-    v10 = [v9 profile];
-    v11 = [v10 database];
-    v12 = [v11 performTransactionWithContext:v7 error:a2 block:&__block_literal_global_165 inaccessibilityHandler:0];
+    configuration2 = [v3 configuration];
+    repository = [configuration2 repository];
+    profile = [repository profile];
+    database = [profile database];
+    v12 = [database performTransactionWithContext:v7 error:a2 block:&__block_literal_global_165 inaccessibilityHandler:0];
 
     return v12;
   }

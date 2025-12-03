@@ -1,26 +1,26 @@
 @interface HFUserNotificationServiceSettings
-+ (id)combinedConditionForBulletinBoardNotifications:(id)a3;
-- (HFUserNotificationServiceSettings)initWithBulletinBoardNotifications:(id)a3;
-- (HFUserNotificationServiceSettings)initWithNotificationsEnabled:(BOOL)a3 condition:(id)a4 smartCameraNotificationCondition:(id)a5;
-- (id)applySettingsToBulletinBoardNotifications:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
++ (id)combinedConditionForBulletinBoardNotifications:(id)notifications;
+- (HFUserNotificationServiceSettings)initWithBulletinBoardNotifications:(id)notifications;
+- (HFUserNotificationServiceSettings)initWithNotificationsEnabled:(BOOL)enabled condition:(id)condition smartCameraNotificationCondition:(id)notificationCondition;
+- (id)applySettingsToBulletinBoardNotifications:(id)notifications;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HFUserNotificationServiceSettings
 
-- (HFUserNotificationServiceSettings)initWithBulletinBoardNotifications:(id)a3
+- (HFUserNotificationServiceSettings)initWithBulletinBoardNotifications:(id)notifications
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  notificationsCopy = notifications;
+  if ([notificationsCopy count])
   {
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v36 = v4;
-    obj = v4;
+    v36 = notificationsCopy;
+    obj = notificationsCopy;
     v41 = [obj countByEnumeratingWithState:&v42 objects:v47 count:16];
     v5 = 0;
     v6 = 0;
@@ -41,7 +41,7 @@
           }
 
           v9 = *(*(&v42 + 1) + 8 * v8);
-          v10 = [v9 isEnabled];
+          isEnabled = [v9 isEnabled];
           objc_opt_class();
           v11 = v9;
           if (objc_opt_isKindOfClass())
@@ -58,21 +58,21 @@
 
           if (v13)
           {
-            v14 = [v13 cameraUserSettings];
-            if ([v14 accessModeForPresenceType:3] == 2)
+            cameraUserSettings = [v13 cameraUserSettings];
+            if ([cameraUserSettings accessModeForPresenceType:3] == 2)
             {
               v15 = 1;
             }
 
             else
             {
-              v19 = [v13 cameraUserSettings];
-              v15 = [v19 accessModeForPresenceType:4] == 2;
+              cameraUserSettings2 = [v13 cameraUserSettings];
+              v15 = [cameraUserSettings2 accessModeForPresenceType:4] == 2;
             }
 
-            v20 = [v13 condition];
+            condition = [v13 condition];
 
-            if (v20)
+            if (condition)
             {
               v21 = 1;
             }
@@ -90,9 +90,9 @@
             else
             {
               v22 = +[HFCameraSignificantEventConfiguration defaultSmartMotionConfiguration];
-              v23 = [v22 predicateRepresentation];
+              predicateRepresentation = [v22 predicateRepresentation];
 
-              [(HFUserNotificationServiceSettings *)self setSmartCameraNotificationCondition:v23];
+              [(HFUserNotificationServiceSettings *)self setSmartCameraNotificationCondition:predicateRepresentation];
               v46 = v13;
               v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v46 count:1];
               v25 = [(HFUserNotificationServiceSettings *)self applySettingsToBulletinBoardNotifications:v24];
@@ -100,16 +100,16 @@
               self->_smartDetectionNotificationsEnabled = 1;
             }
 
-            v26 = [v11 condition];
+            condition2 = [v11 condition];
 
-            v5 = v26;
+            v5 = condition2;
           }
 
           else
           {
-            v16 = [v11 service];
-            v17 = [v16 serviceType];
-            v18 = [v17 isEqualToString:v38];
+            service = [v11 service];
+            serviceType = [service serviceType];
+            v18 = [serviceType isEqualToString:v38];
 
             if (v18)
             {
@@ -118,9 +118,9 @@
 
             else
             {
-              v27 = [v11 service];
-              v28 = [v27 serviceType];
-              v29 = [v28 isEqualToString:v37];
+              service2 = [v11 service];
+              serviceType2 = [service2 serviceType];
+              v29 = [serviceType2 isEqualToString:v37];
 
               if (v29)
               {
@@ -129,7 +129,7 @@
             }
           }
 
-          v6 |= v10;
+          v6 |= isEnabled;
 
           ++v8;
         }
@@ -146,17 +146,17 @@
     v32 = [objc_opt_class() combinedConditionForBulletinBoardNotifications:v31];
     self = [(HFUserNotificationServiceSettings *)self initWithNotificationsEnabled:v6 & 1 condition:v32 smartCameraNotificationCondition:v5];
 
-    v33 = self;
-    v4 = v36;
+    selfCopy = self;
+    notificationsCopy = v36;
   }
 
   else
   {
-    v33 = 0;
+    selfCopy = 0;
   }
 
   v34 = *MEMORY[0x277D85DE8];
-  return v33;
+  return selfCopy;
 }
 
 BOOL __72__HFUserNotificationServiceSettings_initWithBulletinBoardNotifications___block_invoke(uint64_t a1, void *a2)
@@ -179,32 +179,32 @@ BOOL __72__HFUserNotificationServiceSettings_initWithBulletinBoardNotifications_
   return v5 == 0;
 }
 
-- (HFUserNotificationServiceSettings)initWithNotificationsEnabled:(BOOL)a3 condition:(id)a4 smartCameraNotificationCondition:(id)a5
+- (HFUserNotificationServiceSettings)initWithNotificationsEnabled:(BOOL)enabled condition:(id)condition smartCameraNotificationCondition:(id)notificationCondition
 {
-  v9 = a4;
-  v10 = a5;
+  conditionCopy = condition;
+  notificationConditionCopy = notificationCondition;
   v14.receiver = self;
   v14.super_class = HFUserNotificationServiceSettings;
   v11 = [(HFUserNotificationServiceSettings *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_notificationsEnabled = a3;
-    objc_storeStrong(&v11->_notificationCondition, a4);
-    objc_storeStrong(&v12->_smartCameraNotificationCondition, a5);
+    v11->_notificationsEnabled = enabled;
+    objc_storeStrong(&v11->_notificationCondition, condition);
+    objc_storeStrong(&v12->_smartCameraNotificationCondition, notificationCondition);
   }
 
   return v12;
 }
 
-- (id)applySettingsToBulletinBoardNotifications:(id)a3
+- (id)applySettingsToBulletinBoardNotifications:(id)notifications
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__HFUserNotificationServiceSettings_applySettingsToBulletinBoardNotifications___block_invoke;
   v7[3] = &unk_277DFE750;
   v7[4] = self;
-  v3 = [a3 na_map:v7];
+  v3 = [notifications na_map:v7];
   v4 = [MEMORY[0x277D2C900] combineAllFutures:v3];
   v5 = [v4 flatMap:&__block_literal_global_8_7];
 
@@ -279,41 +279,41 @@ id __79__HFUserNotificationServiceSettings_applySettingsToBulletinBoardNotificat
   return v19;
 }
 
-+ (id)combinedConditionForBulletinBoardNotifications:(id)a3
++ (id)combinedConditionForBulletinBoardNotifications:(id)notifications
 {
-  v3 = a3;
-  v4 = [v3 na_filter:&__block_literal_global_10_8];
+  notificationsCopy = notifications;
+  v4 = [notificationsCopy na_filter:&__block_literal_global_10_8];
   if ([v4 count] > 1)
   {
-    v7 = [v4 firstObject];
-    v8 = [v7 condition];
+    firstObject = [v4 firstObject];
+    condition = [firstObject condition];
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __84__HFUserNotificationServiceSettings_combinedConditionForBulletinBoardNotifications___block_invoke_2;
     v12[3] = &unk_277DFE778;
-    v5 = v8;
-    v13 = v5;
+    firstObject2 = condition;
+    v13 = firstObject2;
     if ([v4 na_all:v12])
     {
-      v6 = v5;
+      condition2 = firstObject2;
     }
 
     else
     {
       v9 = MEMORY[0x277CCA920];
-      v10 = [v3 na_map:&__block_literal_global_14_8];
-      v6 = [v9 orPredicateWithSubpredicates:v10];
+      v10 = [notificationsCopy na_map:&__block_literal_global_14_8];
+      condition2 = [v9 orPredicateWithSubpredicates:v10];
     }
   }
 
   else
   {
-    v5 = [v3 firstObject];
-    v6 = [v5 condition];
+    firstObject2 = [notificationsCopy firstObject];
+    condition2 = [firstObject2 condition];
   }
 
-  return v6;
+  return condition2;
 }
 
 BOOL __84__HFUserNotificationServiceSettings_combinedConditionForBulletinBoardNotifications___block_invoke(uint64_t a1, void *a2)
@@ -348,13 +348,13 @@ uint64_t __84__HFUserNotificationServiceSettings_combinedConditionForBulletinBoa
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HFUserNotificationServiceSettings alloc];
-  v5 = [(HFUserNotificationServiceSettings *)self areNotificationsEnabled];
-  v6 = [(HFUserNotificationServiceSettings *)self notificationCondition];
-  v7 = [(HFUserNotificationServiceSettings *)self smartCameraNotificationCondition];
-  v8 = [(HFUserNotificationServiceSettings *)v4 initWithNotificationsEnabled:v5 condition:v6 smartCameraNotificationCondition:v7];
+  areNotificationsEnabled = [(HFUserNotificationServiceSettings *)self areNotificationsEnabled];
+  notificationCondition = [(HFUserNotificationServiceSettings *)self notificationCondition];
+  smartCameraNotificationCondition = [(HFUserNotificationServiceSettings *)self smartCameraNotificationCondition];
+  v8 = [(HFUserNotificationServiceSettings *)v4 initWithNotificationsEnabled:areNotificationsEnabled condition:notificationCondition smartCameraNotificationCondition:smartCameraNotificationCondition];
 
   [(HFUserNotificationServiceSettings *)v8 setDoorbellNotificationsEnabled:[(HFUserNotificationServiceSettings *)self areDoorbellNotificationsEnabled]];
   [(HFUserNotificationServiceSettings *)v8 setSmartDetectionNotificationsEnabled:[(HFUserNotificationServiceSettings *)self areSmartDetectionNotificationsEnabled]];
@@ -362,13 +362,13 @@ uint64_t __84__HFUserNotificationServiceSettings_combinedConditionForBulletinBoa
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HFMutableUserNotificationServiceSettings alloc];
-  v5 = [(HFUserNotificationServiceSettings *)self areNotificationsEnabled];
-  v6 = [(HFUserNotificationServiceSettings *)self notificationCondition];
-  v7 = [(HFUserNotificationServiceSettings *)self smartCameraNotificationCondition];
-  v8 = [(HFUserNotificationServiceSettings *)v4 initWithNotificationsEnabled:v5 condition:v6 smartCameraNotificationCondition:v7];
+  areNotificationsEnabled = [(HFUserNotificationServiceSettings *)self areNotificationsEnabled];
+  notificationCondition = [(HFUserNotificationServiceSettings *)self notificationCondition];
+  smartCameraNotificationCondition = [(HFUserNotificationServiceSettings *)self smartCameraNotificationCondition];
+  v8 = [(HFUserNotificationServiceSettings *)v4 initWithNotificationsEnabled:areNotificationsEnabled condition:notificationCondition smartCameraNotificationCondition:smartCameraNotificationCondition];
 
   [(HFUserNotificationServiceSettings *)v8 setDoorbellNotificationsEnabled:[(HFUserNotificationServiceSettings *)self areDoorbellNotificationsEnabled]];
   [(HFUserNotificationServiceSettings *)v8 setSmartDetectionNotificationsEnabled:[(HFUserNotificationServiceSettings *)self areSmartDetectionNotificationsEnabled]];

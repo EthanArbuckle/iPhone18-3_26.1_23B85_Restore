@@ -1,26 +1,26 @@
 @interface MPMediaControlsStandaloneViewController
-- (void)dismissAfter:(double)a3;
-- (void)presentAnimated:(BOOL)a3 completion:(id)a4;
+- (void)dismissAfter:(double)after;
+- (void)presentAnimated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation MPMediaControlsStandaloneViewController
 
-- (void)dismissAfter:(double)a3
+- (void)dismissAfter:(double)after
 {
-  v3 = [(MPMediaControlsViewController *)self mediaControls];
-  [v3 dismiss];
+  mediaControls = [(MPMediaControlsViewController *)self mediaControls];
+  [mediaControls dismiss];
 }
 
-- (void)presentAnimated:(BOOL)a3 completion:(id)a4
+- (void)presentAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(MPMediaControlsViewController *)self _createMediaControlsIfNeeded];
   [(MPMediaControlsViewController *)self _present];
-  v5 = v6;
-  if (v6)
+  v5 = completionCopy;
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6);
-    v5 = v6;
+    (*(completionCopy + 2))(completionCopy);
+    v5 = completionCopy;
   }
 }
 

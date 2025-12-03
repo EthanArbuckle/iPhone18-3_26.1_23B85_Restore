@@ -1,47 +1,47 @@
 @interface LSBundleRegistrationStatePrecondition
 - (BOOL)isMet;
-- (LSBundleRegistrationStatePrecondition)initWithCoder:(id)a3;
-- (id)initForBundleWithIdentifier:(id)a3 placeholderInstalled:(id)a4 fullApplicationInstalled:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (LSBundleRegistrationStatePrecondition)initWithCoder:(id)coder;
+- (id)initForBundleWithIdentifier:(id)identifier placeholderInstalled:(id)installed fullApplicationInstalled:(id)applicationInstalled;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LSBundleRegistrationStatePrecondition
 
-- (id)initForBundleWithIdentifier:(id)a3 placeholderInstalled:(id)a4 fullApplicationInstalled:(id)a5
+- (id)initForBundleWithIdentifier:(id)identifier placeholderInstalled:(id)installed fullApplicationInstalled:(id)applicationInstalled
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  installedCopy = installed;
+  applicationInstalledCopy = applicationInstalled;
   v15.receiver = self;
   v15.super_class = LSBundleRegistrationStatePrecondition;
   v11 = [(LSBundleRegistrationStatePrecondition *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     bundleID = v11->_bundleID;
     v11->_bundleID = v12;
 
-    objc_storeStrong(&v11->_placeholderInstalled, a4);
-    objc_storeStrong(&v11->_fullAppInstalled, a5);
+    objc_storeStrong(&v11->_placeholderInstalled, installed);
+    objc_storeStrong(&v11->_fullAppInstalled, applicationInstalled);
   }
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_bundleID forKey:@"bundleID"];
-  [v4 encodeObject:self->_placeholderInstalled forKey:@"placeholderInstalled"];
-  [v4 encodeObject:self->_fullAppInstalled forKey:@"fullAppInstalled"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_bundleID forKey:@"bundleID"];
+  [coderCopy encodeObject:self->_placeholderInstalled forKey:@"placeholderInstalled"];
+  [coderCopy encodeObject:self->_fullAppInstalled forKey:@"fullAppInstalled"];
 }
 
-- (LSBundleRegistrationStatePrecondition)initWithCoder:(id)a3
+- (LSBundleRegistrationStatePrecondition)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placeholderInstalled"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fullAppInstalled"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placeholderInstalled"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fullAppInstalled"];
   v8 = [(LSBundleRegistrationStatePrecondition *)self initForBundleWithIdentifier:v5 placeholderInstalled:v6 fullApplicationInstalled:v7];
 
   return v8;

@@ -1,17 +1,17 @@
 @interface PPQuickTypeSettings
-+ (BOOL)servantShouldRespondToQuery:(id)a3;
++ (BOOL)servantShouldRespondToQuery:(id)query;
 @end
 
 @implementation PPQuickTypeSettings
 
-+ (BOOL)servantShouldRespondToQuery:(id)a3
++ (BOOL)servantShouldRespondToQuery:(id)query
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  queryCopy = query;
+  if (!queryCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"PPQuickTypeSettings.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"servant"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPQuickTypeSettings.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"servant"}];
   }
 
   v6 = objc_opt_class();

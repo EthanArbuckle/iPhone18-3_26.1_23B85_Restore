@@ -1,55 +1,55 @@
 @interface PRAngleMeasurement
-+ (PRAngleMeasurement)measurementWithAngle:(double)a3 uncertainty:(double)a4;
-- (BOOL)isEqual:(id)a3;
-- (PRAngleMeasurement)initWithAngle:(double)a3 uncertainty:(double)a4;
-- (PRAngleMeasurement)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (PRAngleMeasurement)measurementWithAngle:(double)angle uncertainty:(double)uncertainty;
+- (BOOL)isEqual:(id)equal;
+- (PRAngleMeasurement)initWithAngle:(double)angle uncertainty:(double)uncertainty;
+- (PRAngleMeasurement)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRAngleMeasurement
 
-- (PRAngleMeasurement)initWithAngle:(double)a3 uncertainty:(double)a4
+- (PRAngleMeasurement)initWithAngle:(double)angle uncertainty:(double)uncertainty
 {
   v7.receiver = self;
   v7.super_class = PRAngleMeasurement;
   result = [(PRAngleMeasurement *)&v7 init];
   if (result)
   {
-    result->_measurement = a3;
-    result->_uncertainty = a4;
+    result->_measurement = angle;
+    result->_uncertainty = uncertainty;
   }
 
   return result;
 }
 
-+ (PRAngleMeasurement)measurementWithAngle:(double)a3 uncertainty:(double)a4
++ (PRAngleMeasurement)measurementWithAngle:(double)angle uncertainty:(double)uncertainty
 {
-  v4 = [[PRAngleMeasurement alloc] initWithAngle:a3 uncertainty:a4];
+  v4 = [[PRAngleMeasurement alloc] initWithAngle:angle uncertainty:uncertainty];
 
   return v4;
 }
 
-- (PRAngleMeasurement)initWithCoder:(id)a3
+- (PRAngleMeasurement)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"AngleMeasurement"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"AngleMeasurement"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"AngleUncertainty"];
+  [coderCopy decodeDoubleForKey:@"AngleUncertainty"];
   v8 = v7;
 
   return [(PRAngleMeasurement *)self initWithAngle:v6 uncertainty:v8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   measurement = self->_measurement;
-  v5 = a3;
-  [v5 encodeDouble:@"AngleMeasurement" forKey:measurement];
-  [v5 encodeDouble:@"AngleUncertainty" forKey:self->_uncertainty];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"AngleMeasurement" forKey:measurement];
+  [coderCopy encodeDouble:@"AngleUncertainty" forKey:self->_uncertainty];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PRAngleMeasurement alloc];
   measurement = self->_measurement;
@@ -58,13 +58,13 @@
   return [(PRAngleMeasurement *)v4 initWithAngle:measurement uncertainty:uncertainty];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(PRAngleMeasurement *)self measurement];
     v7 = v6;
     [v5 measurement];

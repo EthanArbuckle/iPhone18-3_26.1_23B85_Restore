@@ -1,15 +1,15 @@
 @interface PREditorNumberingSystemViewController
 - (CGSize)cellSize;
 - (NSLocale)displayLocale;
-- (PREditorNumberingSystemViewController)initWithSelectedNumberingSystem:(id)a3 selectedFont:(id)a4;
+- (PREditorNumberingSystemViewController)initWithSelectedNumberingSystem:(id)system selectedFont:(id)font;
 - (PREditorNumberingSystemViewControllerDelegate)delegate;
 - (double)estimatedHeight;
-- (id)baseContentStringForLocale:(id)a3;
-- (id)contentStringForFont:(id)a3 locale:(id)a4;
+- (id)baseContentStringForLocale:(id)locale;
+- (id)contentStringForFont:(id)font locale:(id)locale;
 - (id)displayFont;
-- (id)localeWithNumberingSystem:(id)a3;
-- (void)didSelectNumberingSystem:(id)a3;
-- (void)setFont:(id)a3;
+- (id)localeWithNumberingSystem:(id)system;
+- (void)didSelectNumberingSystem:(id)system;
+- (void)setFont:(id)font;
 - (void)updateLayoutForCurrentSize;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -17,39 +17,39 @@
 
 @implementation PREditorNumberingSystemViewController
 
-- (PREditorNumberingSystemViewController)initWithSelectedNumberingSystem:(id)a3 selectedFont:(id)a4
+- (PREditorNumberingSystemViewController)initWithSelectedNumberingSystem:(id)system selectedFont:(id)font
 {
-  v6 = a3;
-  v7 = a4;
+  systemCopy = system;
+  fontCopy = font;
   v8 = [(PREditorNumberingSystemViewController *)self init];
   if (v8)
   {
-    if (v6)
+    if (systemCopy)
     {
-      v9 = [v6 copy];
+      selfCopy = [systemCopy copy];
     }
 
     else
     {
       self = PRSystemNumberingSystem();
-      v9 = [(PREditorNumberingSystemViewController *)self copy];
+      selfCopy = [(PREditorNumberingSystemViewController *)self copy];
     }
 
-    objc_storeStrong(&v8->_selectedNumberingSystem, v9);
-    if (!v6)
+    objc_storeStrong(&v8->_selectedNumberingSystem, selfCopy);
+    if (!systemCopy)
     {
 
-      v9 = self;
+      selfCopy = self;
     }
 
-    v10 = v7;
-    if (!v7)
+    v10 = fontCopy;
+    if (!fontCopy)
     {
       v10 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0];
     }
 
     objc_storeStrong(&v8->_font, v10);
-    if (!v7)
+    if (!fontCopy)
     {
     }
   }
@@ -65,7 +65,7 @@
   [(PREditorNumberingSystemViewController *)&v88 viewDidLoad];
   v78 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v3 = PRAllNumberingSystems();
-  v77 = [(PREditorNumberingSystemViewController *)self selectedNumberingSystem];
+  selectedNumberingSystem = [(PREditorNumberingSystemViewController *)self selectedNumberingSystem];
   objc_initWeak(&location, self);
   v85 = 0u;
   v86 = 0u;
@@ -85,19 +85,19 @@
           objc_enumerationMutation(obj);
         }
 
-        v6 = [*(*(&v83 + 1) + 8 * i) intValue];
-        v7 = PRNumberingSystemStringForType(v6);
+        intValue = [*(*(&v83 + 1) + 8 * i) intValue];
+        v7 = PRNumberingSystemStringForType(intValue);
         v8 = [(PREditorNumberingSystemViewController *)self localeWithNumberingSystem:v7];
-        v9 = PRNumberingSystemDisplayNameForType(v6);
-        v10 = [(PREditorNumberingSystemViewController *)self font];
-        v11 = [(PREditorNumberingSystemViewController *)self contentStringForFont:v10 locale:v8];
+        v9 = PRNumberingSystemDisplayNameForType(intValue);
+        font = [(PREditorNumberingSystemViewController *)self font];
+        v11 = [(PREditorNumberingSystemViewController *)self contentStringForFont:font locale:v8];
 
         v12 = objc_alloc_init(PREditingPickerLabeledCellView);
-        v13 = [(PREditingPickerLabeledCellView *)v12 contentLabel];
-        [v13 setAttributedText:v11];
+        contentLabel = [(PREditingPickerLabeledCellView *)v12 contentLabel];
+        [contentLabel setAttributedText:v11];
 
-        v14 = [(PREditingPickerLabeledCellView *)v12 nameLabel];
-        [v14 setText:v9];
+        nameLabel = [(PREditingPickerLabeledCellView *)v12 nameLabel];
+        [nameLabel setText:v9];
 
         v15 = MEMORY[0x1E69DC628];
         v79[0] = MEMORY[0x1E69E9820];
@@ -111,7 +111,7 @@
         v81 = v17;
         v18 = [v15 actionWithHandler:v79];
         [(PREditingPickerLabeledCellView *)v17 addAction:v18 forControlEvents:0x2000];
-        if ([v16 isEqualToString:v77])
+        if ([v16 isEqualToString:selectedNumberingSystem])
         {
           [(PREditingPickerLabeledCellView *)v17 setSelected:1];
           [(PREditorNumberingSystemViewController *)self setSelectedCellView:v17];
@@ -154,13 +154,13 @@
     v23 = v22 / 3 + 1;
   }
 
-  v24 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (v23)
   {
     v25 = 0;
     for (j = 0; j != v23; ++j)
     {
-      v27 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v28 = v25;
       v29 = 3;
       do
@@ -171,20 +171,20 @@
         }
 
         v30 = [v78 objectAtIndexedSubscript:v28];
-        [v27 addObject:v30];
+        [array2 addObject:v30];
 
         ++v28;
         --v29;
       }
 
       while (v29);
-      v31 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:v27];
+      v31 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:array2];
       [v31 setAxis:0];
       [v31 setDistribution:1];
       [v31 setAlignment:1];
       [v31 setSpacing:0.0];
       [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v24 addObject:v31];
+      [array addObject:v31];
 
       v25 += 3;
     }
@@ -195,64 +195,64 @@
   [v32 setAlwaysBounceHorizontal:0];
   [v32 setShowsVerticalScrollIndicator:0];
   [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v33 = [(PREditorNumberingSystemViewController *)self view];
-  [v33 addSubview:v32];
+  view = [(PREditorNumberingSystemViewController *)self view];
+  [view addSubview:v32];
 
   v53 = MEMORY[0x1E696ACD8];
-  v71 = [v32 leadingAnchor];
-  v75 = [(PREditorNumberingSystemViewController *)self view];
-  v69 = [v75 leadingAnchor];
-  v67 = [v71 constraintEqualToAnchor:v69 constant:23.0];
+  leadingAnchor = [v32 leadingAnchor];
+  view2 = [(PREditorNumberingSystemViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v67 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:23.0];
   v90[0] = v67;
-  v61 = [v32 trailingAnchor];
-  v65 = [(PREditorNumberingSystemViewController *)self view];
-  v63 = [v65 trailingAnchor];
-  v59 = [v61 constraintEqualToAnchor:v63 constant:-23.0];
+  trailingAnchor = [v32 trailingAnchor];
+  view3 = [(PREditorNumberingSystemViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v59 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-23.0];
   v90[1] = v59;
-  v55 = [v32 bottomAnchor];
-  v57 = [(PREditorNumberingSystemViewController *)self view];
-  v34 = [v57 bottomAnchor];
-  v35 = [v55 constraintEqualToAnchor:v34];
+  bottomAnchor = [v32 bottomAnchor];
+  view4 = [(PREditorNumberingSystemViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v35 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v90[2] = v35;
-  v36 = [v32 topAnchor];
-  v37 = [(PREditorNumberingSystemViewController *)self view];
-  v38 = [v37 topAnchor];
-  v39 = [v36 constraintEqualToAnchor:v38];
+  topAnchor = [v32 topAnchor];
+  view5 = [(PREditorNumberingSystemViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v90[3] = v39;
   v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v90 count:4];
   [v53 activateConstraints:v40];
 
-  v41 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:v24];
+  v41 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:array];
   [v41 setAxis:1];
   [v41 setAlignment:0];
   [v41 setSpacing:24.0];
   [v41 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v32 addSubview:v41];
   v48 = MEMORY[0x1E696ACD8];
-  v72 = [v41 leadingAnchor];
-  v76 = [v32 contentLayoutGuide];
-  v70 = [v76 leadingAnchor];
-  v68 = [v72 constraintEqualToAnchor:v70];
+  leadingAnchor3 = [v41 leadingAnchor];
+  contentLayoutGuide = [v32 contentLayoutGuide];
+  leadingAnchor4 = [contentLayoutGuide leadingAnchor];
+  v68 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v89[0] = v68;
-  v64 = [v41 trailingAnchor];
-  v66 = [v32 contentLayoutGuide];
-  v62 = [v66 trailingAnchor];
-  v60 = [v64 constraintEqualToAnchor:v62];
+  trailingAnchor3 = [v41 trailingAnchor];
+  contentLayoutGuide2 = [v32 contentLayoutGuide];
+  trailingAnchor4 = [contentLayoutGuide2 trailingAnchor];
+  v60 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v89[1] = v60;
-  v56 = [v41 bottomAnchor];
-  v58 = [v32 contentLayoutGuide];
-  v54 = [v58 bottomAnchor];
-  v52 = [v56 constraintEqualToAnchor:v54];
+  bottomAnchor3 = [v41 bottomAnchor];
+  contentLayoutGuide3 = [v32 contentLayoutGuide];
+  bottomAnchor4 = [contentLayoutGuide3 bottomAnchor];
+  v52 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v89[2] = v52;
-  v49 = [v41 topAnchor];
-  v51 = [v32 contentLayoutGuide];
-  v50 = [v51 topAnchor];
-  v42 = [v49 constraintEqualToAnchor:v50];
+  topAnchor3 = [v41 topAnchor];
+  contentLayoutGuide4 = [v32 contentLayoutGuide];
+  topAnchor4 = [contentLayoutGuide4 topAnchor];
+  v42 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v89[3] = v42;
-  v43 = [v41 widthAnchor];
-  v44 = [v32 frameLayoutGuide];
-  v45 = [v44 widthAnchor];
-  v46 = [v43 constraintEqualToAnchor:v45];
+  widthAnchor = [v41 widthAnchor];
+  frameLayoutGuide = [v32 frameLayoutGuide];
+  widthAnchor2 = [frameLayoutGuide widthAnchor];
+  v46 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v89[4] = v46;
   v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:v89 count:5];
   [v48 activateConstraints:v47];
@@ -278,8 +278,8 @@ void __52__PREditorNumberingSystemViewController_viewDidLoad__block_invoke(uint6
   v8.receiver = self;
   v8.super_class = PREditorNumberingSystemViewController;
   [(PREditorNumberingSystemViewController *)&v8 viewDidLayoutSubviews];
-  v3 = [(PREditorNumberingSystemViewController *)self view];
-  [v3 bounds];
+  view = [(PREditorNumberingSystemViewController *)self view];
+  [view bounds];
   v5 = v4;
 
   if (v5 > 375.0)
@@ -299,8 +299,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v7 userInterfaceIdiom] != 1;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v6 = [currentDevice userInterfaceIdiom] != 1;
 
   if (v6 == [(PREditorNumberingSystemViewController *)self isUsingSmallerSizing])
   {
@@ -315,16 +315,16 @@ LABEL_6:
 - (void)updateLayoutForCurrentSize
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = [(PREditorNumberingSystemViewController *)self isUsingSmallerSizing];
+  isUsingSmallerSizing = [(PREditorNumberingSystemViewController *)self isUsingSmallerSizing];
   v4 = MEMORY[0x1E696ACD8];
-  v5 = [(PREditorNumberingSystemViewController *)self widthCellConstraints];
-  [v4 deactivateConstraints:v5];
+  widthCellConstraints = [(PREditorNumberingSystemViewController *)self widthCellConstraints];
+  [v4 deactivateConstraints:widthCellConstraints];
 
   v6 = MEMORY[0x1E696ACD8];
-  v7 = [(PREditorNumberingSystemViewController *)self heightCellConstraints];
-  [v6 deactivateConstraints:v7];
+  heightCellConstraints = [(PREditorNumberingSystemViewController *)self heightCellConstraints];
+  [v6 deactivateConstraints:heightCellConstraints];
 
-  if (v3)
+  if (isUsingSmallerSizing)
   {
     v8 = 86.0;
   }
@@ -334,7 +334,7 @@ LABEL_6:
     v8 = 89.0;
   }
 
-  if (v3)
+  if (isUsingSmallerSizing)
   {
     v9 = 88.0;
   }
@@ -344,8 +344,8 @@ LABEL_6:
     v9 = 90.0;
   }
 
-  v45 = [MEMORY[0x1E695DF70] array];
-  v44 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v43 = PRAllNumberingSystemStrings();
   v47 = 0u;
   v48 = 0u;
@@ -368,19 +368,19 @@ LABEL_6:
 
         v12 = *(*(&v47 + 1) + 8 * i);
         v13 = [v43 objectAtIndexedSubscript:v10];
-        v14 = [v12 contentLabel];
+        contentLabel = [v12 contentLabel];
         v15 = [(PREditorNumberingSystemViewController *)self localeWithNumberingSystem:v13];
-        v16 = [(PREditorNumberingSystemViewController *)self font];
-        v17 = [(PREditorNumberingSystemViewController *)self contentStringForFont:v16 locale:v15];
+        font = [(PREditorNumberingSystemViewController *)self font];
+        v17 = [(PREditorNumberingSystemViewController *)self contentStringForFont:font locale:v15];
 
-        [v14 setAttributedText:v17];
-        v18 = [v12 widthAnchor];
-        v19 = [v18 constraintEqualToConstant:v8];
-        [v45 addObject:v19];
+        [contentLabel setAttributedText:v17];
+        widthAnchor = [v12 widthAnchor];
+        v19 = [widthAnchor constraintEqualToConstant:v8];
+        [array addObject:v19];
 
-        v20 = [v12 heightAnchor];
-        v21 = [v20 constraintEqualToConstant:v9];
-        [v44 addObject:v21];
+        heightAnchor = [v12 heightAnchor];
+        v21 = [heightAnchor constraintEqualToConstant:v9];
+        [array2 addObject:v21];
 
         ++v10;
       }
@@ -391,30 +391,30 @@ LABEL_6:
     while (v46);
   }
 
-  v22 = [v45 copy];
+  v22 = [array copy];
   widthCellConstraints = self->_widthCellConstraints;
   self->_widthCellConstraints = v22;
 
-  v24 = [v44 copy];
+  v24 = [array2 copy];
   heightCellConstraints = self->_heightCellConstraints;
   self->_heightCellConstraints = v24;
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v45];
-  [MEMORY[0x1E696ACD8] activateConstraints:v44];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
+  [MEMORY[0x1E696ACD8] activateConstraints:array2];
   if ([(PREditorNumberingSystemViewController *)self isViewLoaded])
   {
-    v26 = [(PREditorNumberingSystemViewController *)self view];
-    [v26 bounds];
+    view = [(PREditorNumberingSystemViewController *)self view];
+    [view bounds];
     v28 = v27;
 
     if (self->_configuredViewWidth != v28)
     {
       v29 = v28 + v8 * -3.0;
-      v30 = [(PREditorNumberingSystemViewController *)self stackViewLeadingConstraint];
-      [v30 constant];
+      stackViewLeadingConstraint = [(PREditorNumberingSystemViewController *)self stackViewLeadingConstraint];
+      [stackViewLeadingConstraint constant];
       v32 = v31;
-      v33 = [(PREditorNumberingSystemViewController *)self stackViewTrailingConstraint];
-      [v33 constant];
+      stackViewTrailingConstraint = [(PREditorNumberingSystemViewController *)self stackViewTrailingConstraint];
+      [stackViewTrailingConstraint constant];
       v35 = v32 - v34;
 
       if (v29 >= v35)
@@ -427,8 +427,8 @@ LABEL_6:
         v36 = v29 * 0.5;
       }
 
-      v37 = [(PREditorNumberingSystemViewController *)self stackViewLeadingConstraint];
-      v38 = v37;
+      stackViewLeadingConstraint2 = [(PREditorNumberingSystemViewController *)self stackViewLeadingConstraint];
+      v38 = stackViewLeadingConstraint2;
       if (v36 >= 0.0)
       {
         v39 = v36;
@@ -439,36 +439,36 @@ LABEL_6:
         v39 = 0.0;
       }
 
-      [v37 setConstant:v39];
+      [stackViewLeadingConstraint2 setConstant:v39];
 
-      v40 = [(PREditorNumberingSystemViewController *)self stackViewTrailingConstraint];
-      [v40 setConstant:{fmin(-v36, 0.0)}];
+      stackViewTrailingConstraint2 = [(PREditorNumberingSystemViewController *)self stackViewTrailingConstraint];
+      [stackViewTrailingConstraint2 setConstant:{fmin(-v36, 0.0)}];
 
       self->_configuredViewWidth = v28;
     }
   }
 }
 
-- (id)baseContentStringForLocale:(id)a3
+- (id)baseContentStringForLocale:(id)locale
 {
   v3 = MEMORY[0x1E696ADA0];
-  v4 = a3;
+  localeCopy = locale;
   v5 = objc_alloc_init(v3);
   [v5 setNumberStyle:1];
-  [v5 setLocale:v4];
+  [v5 setLocale:localeCopy];
 
   v6 = [v5 stringFromNumber:&unk_1F1C6B7E8];
 
   return v6;
 }
 
-- (id)contentStringForFont:(id)a3 locale:(id)a4
+- (id)contentStringForFont:(id)font locale:(id)locale
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PREditorNumberingSystemViewController *)self baseContentStringForLocale:v6];
-  v9 = PRNumberingSystemDisplayFontForFont(v7);
+  localeCopy = locale;
+  fontCopy = font;
+  v8 = [(PREditorNumberingSystemViewController *)self baseContentStringForLocale:localeCopy];
+  v9 = PRNumberingSystemDisplayFontForFont(fontCopy);
 
   v10 = MEMORY[0x1E695DF90];
   v20 = *MEMORY[0x1E69DB648];
@@ -477,9 +477,9 @@ LABEL_6:
   v12 = [v10 dictionaryWithDictionary:v11];
 
   v13 = MEMORY[0x1E695DF58];
-  v14 = [v6 localeIdentifier];
+  localeIdentifier = [localeCopy localeIdentifier];
 
-  v15 = [v13 componentsFromLocaleIdentifier:v14];
+  v15 = [v13 componentsFromLocaleIdentifier:localeIdentifier];
   v16 = [v15 objectForKeyedSubscript:@"numbers"];
 
   if (PRTimeNumberingSystemRequiresLanguageTagging(v16))
@@ -493,15 +493,15 @@ LABEL_6:
   return v18;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_font != v5)
+  fontCopy = font;
+  if (self->_font != fontCopy)
   {
-    v21 = v5;
-    objc_storeStrong(&self->_font, a3);
-    v25 = [(PREditorNumberingSystemViewController *)self displayFont];
+    v21 = fontCopy;
+    objc_storeStrong(&self->_font, font);
+    displayFont = [(PREditorNumberingSystemViewController *)self displayFont];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -524,15 +524,15 @@ LABEL_6:
           }
 
           v10 = *(*(&v26 + 1) + 8 * i);
-          v11 = [v10 contentLabel];
-          v12 = [v11 attributedText];
+          contentLabel = [v10 contentLabel];
+          attributedText = [contentLabel attributedText];
           v13 = MEMORY[0x1E695DF90];
           v30 = v23;
-          v31 = v25;
+          v31 = displayFont;
           v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
           v15 = [v13 dictionaryWithDictionary:v14];
 
-          v16 = [v12 attributesAtIndex:0 effectiveRange:0];
+          v16 = [attributedText attributesAtIndex:0 effectiveRange:0];
           v17 = [v16 objectForKeyedSubscript:v8];
 
           if (v17 && [v17 length])
@@ -541,10 +541,10 @@ LABEL_6:
           }
 
           v18 = objc_alloc(MEMORY[0x1E696AAB0]);
-          v19 = [v12 string];
-          v20 = [v18 initWithString:v19 attributes:v15];
+          string = [attributedText string];
+          v20 = [v18 initWithString:string attributes:v15];
 
-          [v11 setAttributedText:v20];
+          [contentLabel setAttributedText:v20];
           [v10 invalidateIntrinsicContentSize];
         }
 
@@ -554,7 +554,7 @@ LABEL_6:
       while (v7);
     }
 
-    v5 = v21;
+    fontCopy = v21;
   }
 }
 
@@ -563,9 +563,9 @@ LABEL_6:
   v3 = PRAllNumberingSystems();
   if ((-[PREditorNumberingSystemViewController isViewLoaded](self, "isViewLoaded") & 1) == 0 && [v3 count])
   {
-    v4 = [(PREditorNumberingSystemViewController *)self isUsingSmallerSizing];
+    isUsingSmallerSizing = [(PREditorNumberingSystemViewController *)self isUsingSmallerSizing];
     v5 = 64.0;
-    if (v4)
+    if (isUsingSmallerSizing)
     {
       v5 = 62.0;
     }
@@ -591,11 +591,11 @@ LABEL_6:
 
 - (id)displayFont
 {
-  v2 = [(PREditorNumberingSystemViewController *)self font];
-  v3 = v2;
-  if (v2)
+  font = [(PREditorNumberingSystemViewController *)self font];
+  v3 = font;
+  if (font)
   {
-    [v2 fontWithSize:56.0];
+    [font fontWithSize:56.0];
   }
 
   else
@@ -609,34 +609,34 @@ LABEL_6:
 
 - (NSLocale)displayLocale
 {
-  v3 = [(PREditorNumberingSystemViewController *)self selectedNumberingSystem];
-  v4 = [(PREditorNumberingSystemViewController *)self localeWithNumberingSystem:v3];
+  selectedNumberingSystem = [(PREditorNumberingSystemViewController *)self selectedNumberingSystem];
+  v4 = [(PREditorNumberingSystemViewController *)self localeWithNumberingSystem:selectedNumberingSystem];
 
   return v4;
 }
 
-- (id)localeWithNumberingSystem:(id)a3
+- (id)localeWithNumberingSystem:(id)system
 {
   v3 = MEMORY[0x1E695DF58];
-  v4 = a3;
-  v5 = [v3 currentLocale];
-  v6 = [v5 localeIdentifier];
+  systemCopy = system;
+  currentLocale = [v3 currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v7 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:v6];
+  v7 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:localeIdentifier];
   v8 = [v7 mutableCopy];
 
-  [v8 setObject:v4 forKey:@"numbers"];
+  [v8 setObject:systemCopy forKey:@"numbers"];
   v9 = [MEMORY[0x1E695DF58] localeIdentifierFromComponents:v8];
   v10 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v9];
 
   return v10;
 }
 
-- (void)didSelectNumberingSystem:(id)a3
+- (void)didSelectNumberingSystem:(id)system
 {
-  v4 = a3;
-  v5 = [(PREditorNumberingSystemViewController *)self delegate];
-  [v5 numberingSystemViewController:self didSelectNumberingSystem:v4];
+  systemCopy = system;
+  delegate = [(PREditorNumberingSystemViewController *)self delegate];
+  [delegate numberingSystemViewController:self didSelectNumberingSystem:systemCopy];
 }
 
 - (PREditorNumberingSystemViewControllerDelegate)delegate

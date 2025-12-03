@@ -1,17 +1,17 @@
 @interface HKIngredientSearchResult
-- (HKIngredientSearchResult)initWithIngredientId:(id)a3 ingredientName:(id)a4 strengthQuantity:(id)a5 strengthUnit:(id)a6;
+- (HKIngredientSearchResult)initWithIngredientId:(id)id ingredientName:(id)name strengthQuantity:(id)quantity strengthUnit:(id)unit;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation HKIngredientSearchResult
 
-- (HKIngredientSearchResult)initWithIngredientId:(id)a3 ingredientName:(id)a4 strengthQuantity:(id)a5 strengthUnit:(id)a6
+- (HKIngredientSearchResult)initWithIngredientId:(id)id ingredientName:(id)name strengthQuantity:(id)quantity strengthUnit:(id)unit
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v12)
+  idCopy = id;
+  nameCopy = name;
+  quantityCopy = quantity;
+  unitCopy = unit;
+  if (!idCopy)
   {
     [HKIngredientSearchResult initWithIngredientId:a2 ingredientName:self strengthQuantity:? strengthUnit:?];
   }
@@ -22,10 +22,10 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_ingredientId, a3);
-    objc_storeStrong(&v17->_ingredientName, a4);
-    objc_storeStrong(&v17->_strengthQuantity, a5);
-    objc_storeStrong(&v17->_strengthUnit, a6);
+    objc_storeStrong(&v16->_ingredientId, id);
+    objc_storeStrong(&v17->_ingredientName, name);
+    objc_storeStrong(&v17->_strengthQuantity, quantity);
+    objc_storeStrong(&v17->_strengthUnit, unit);
   }
 
   return v17;
@@ -35,11 +35,11 @@
 {
   v19[4] = *MEMORY[0x277D85DE8];
   v18[0] = @"ingredientId";
-  v3 = [(HKIngredientSearchResult *)self ingredientId];
-  v4 = v3;
-  if (v3)
+  ingredientId = [(HKIngredientSearchResult *)self ingredientId];
+  v4 = ingredientId;
+  if (ingredientId)
   {
-    v5 = v3;
+    v5 = ingredientId;
   }
 
   else
@@ -49,11 +49,11 @@
 
   v19[0] = v5;
   v18[1] = @"ingredientName";
-  v6 = [(HKIngredientSearchResult *)self ingredientName];
-  v7 = v6;
-  if (v6)
+  ingredientName = [(HKIngredientSearchResult *)self ingredientName];
+  v7 = ingredientName;
+  if (ingredientName)
   {
-    v8 = v6;
+    v8 = ingredientName;
   }
 
   else
@@ -63,11 +63,11 @@
 
   v19[1] = v8;
   v18[2] = @"strengthQuantity";
-  v9 = [(HKIngredientSearchResult *)self strengthQuantity];
-  v10 = v9;
-  if (v9)
+  strengthQuantity = [(HKIngredientSearchResult *)self strengthQuantity];
+  v10 = strengthQuantity;
+  if (strengthQuantity)
   {
-    v11 = v9;
+    v11 = strengthQuantity;
   }
 
   else
@@ -77,11 +77,11 @@
 
   v19[2] = v11;
   v18[3] = @"strengthUnit";
-  v12 = [(HKIngredientSearchResult *)self strengthUnit];
-  v13 = v12;
-  if (v12)
+  strengthUnit = [(HKIngredientSearchResult *)self strengthUnit];
+  v13 = strengthUnit;
+  if (strengthUnit)
   {
-    v14 = v12;
+    v14 = strengthUnit;
   }
 
   else

@@ -1,20 +1,20 @@
 @interface UITextFieldAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityHandwritingAttributeAcceptsContractedBraille;
-- (BOOL)_accessibilityOverridesPotentiallyAttributedAPISelector:(SEL)a3;
-- (BOOL)fieldEditor:(id)a3 shouldInsertText:(id)a4 replacingRanges:(id)a5;
+- (BOOL)_accessibilityOverridesPotentiallyAttributedAPISelector:(SEL)selector;
+- (BOOL)fieldEditor:(id)editor shouldInsertText:(id)text replacingRanges:(id)ranges;
 - (BOOL)isAccessibilityElement;
-- (BOOL)keyboardInput:(id)a3 shouldInsertText:(id)a4 isMarkedText:(BOOL)a5;
+- (BOOL)keyboardInput:(id)input shouldInsertText:(id)text isMarkedText:(BOOL)markedText;
 - (CGPoint)accessibilityActivationPoint;
 - (_NSRange)_accessibilitySelectedTextRange;
 - (id)_accessibilityGetValue;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilityLeftButtons;
 - (id)_accessibilityNativeFocusPreferredElement;
-- (id)_accessibilityPlaceholderValue:(void *)a1;
+- (id)_accessibilityPlaceholderValue:(void *)value;
 - (id)_accessibilityRightButtons;
 - (id)_accessibilityTextFieldText;
-- (id)_accessibilityTextSelectionRectWithLargestVisualRangeFromCandidates:(void *)a1;
+- (id)_accessibilityTextSelectionRectWithLargestVisualRangeFromCandidates:(void *)candidates;
 - (id)accessibilityAttributedValue;
 - (id)accessibilityCustomRotors;
 - (id)accessibilityDragSourceDescriptors;
@@ -24,21 +24,21 @@
 - (uint64_t)_axShowsTrailingView;
 - (unint64_t)_accessibilityAutomationType;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
-- (void)_accessibilitySetValue:(id)a3;
-- (void)_clearButtonClicked:(id)a3;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
+- (void)_accessibilitySetValue:(id)value;
+- (void)_clearButtonClicked:(id)clicked;
 @end
 
 @implementation UITextFieldAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v10 = location;
   v9 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v7 = "@";
   v8 = @"UITextField";
   v4 = "B";
@@ -67,8 +67,8 @@
 
 - (unint64_t)_accessibilityAutomationType
 {
-  v2 = [(UITextFieldAccessibility *)self accessibilityTraits];
-  if ((v2 & *MEMORY[0x29EDC7568]) != 0)
+  accessibilityTraits = [(UITextFieldAccessibility *)self accessibilityTraits];
+  if ((accessibilityTraits & *MEMORY[0x29EDC7568]) != 0)
   {
     return 50;
   }
@@ -79,13 +79,13 @@
   }
 }
 
-- (id)_accessibilityTextSelectionRectWithLargestVisualRangeFromCandidates:(void *)a1
+- (id)_accessibilityTextSelectionRectWithLargestVisualRangeFromCandidates:(void *)candidates
 {
   v44 = *MEMORY[0x29EDCA608];
-  v41 = a1;
+  candidatesCopy = candidates;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v41)
+  if (candidatesCopy)
   {
     v37 = 0;
     objc_opt_class();
@@ -118,14 +118,14 @@
         v27 = v3;
         v28 = v4;
         v29 = v5;
-        v18 = [v38 superview];
+        superview = [v38 superview];
         [v17 convertRect:v26 toView:{v27, v28, v29}];
         r1.origin.x = v6;
         r1.origin.y = v7;
         r1.size.width = v8;
         r1.size.height = v9;
-        MEMORY[0x29EDC9740](v18);
-        [v41 frame];
+        MEMORY[0x29EDC9740](superview);
+        [candidatesCopy frame];
         r2.origin.x = v10;
         r2.origin.y = v11;
         r2.size.width = v12;
@@ -173,7 +173,7 @@
 - (id)accessibilityDragSourceDescriptors
 {
   v20[1] = *MEMORY[0x29EDCA608];
-  v18 = self;
+  selfCopy = self;
   v17[1] = a2;
   v17[0] = [(UITextFieldAccessibility *)self accessibilityUserDefinedDragSourceDescriptors];
   if (v17[0])
@@ -190,11 +190,11 @@
     v12 = MEMORY[0x29EDC9748](v13);
     objc_storeStrong(&v13, 0);
     v15 = v12;
-    v11 = [v12 selectedTextRange];
-    if (v11 && ([v11 isEmpty] & 1) == 0)
+    selectedTextRange = [v12 selectedTextRange];
+    if (selectedTextRange && ([selectedTextRange isEmpty] & 1) == 0)
     {
-      v10 = [v15 selectionRectsForRange:v11];
-      v9 = [(UITextFieldAccessibility *)v18 _accessibilityTextSelectionRectWithLargestVisualRangeFromCandidates:v10];
+      v10 = [v15 selectionRectsForRange:selectedTextRange];
+      v9 = [(UITextFieldAccessibility *)selfCopy _accessibilityTextSelectionRectWithLargestVisualRangeFromCandidates:v10];
       if (v9)
       {
         v6 = objc_alloc(MEMORY[0x29EDC7900]);
@@ -224,7 +224,7 @@
       v16 = 1;
     }
 
-    objc_storeStrong(&v11, 0);
+    objc_storeStrong(&selectedTextRange, 0);
     objc_storeStrong(&v15, 0);
   }
 
@@ -237,7 +237,7 @@
 - (id)accessibilityDropPointDescriptors
 {
   v52[1] = *MEMORY[0x29EDCA608];
-  v48 = self;
+  selfCopy = self;
   v47[1] = a2;
   v47[0] = [(UITextFieldAccessibility *)self accessibilityUserDefinedDropPointDescriptors];
   if (v47[0])
@@ -255,19 +255,19 @@
   v45 = v42;
   if ([v42 isEnabled])
   {
-    v41 = [v45 selectedTextRange];
-    if (v41)
+    selectedTextRange = [v45 selectedTextRange];
+    if (selectedTextRange)
     {
-      if ([v41 isEmpty])
+      if ([selectedTextRange isEmpty])
       {
         v24 = v45;
-        v25 = [v41 start];
+        start = [selectedTextRange start];
         [v24 caretRectForPosition:?];
         v37 = v2;
         v38 = v3;
         v39 = v4;
         v40 = v5;
-        MEMORY[0x29EDC9740](v25);
+        MEMORY[0x29EDC9740](start);
         UIRectGetCenter();
         v35 = v6;
         v36 = v7;
@@ -280,12 +280,12 @@
         MEMORY[0x29EDC9740](v28);
         v46 = 1;
 LABEL_13:
-        objc_storeStrong(&v41, 0);
+        objc_storeStrong(&selectedTextRange, 0);
         goto LABEL_14;
       }
 
-      v34 = [v45 selectionRectsForRange:v41];
-      v33 = [(UITextFieldAccessibility *)v48 _accessibilityTextSelectionRectWithLargestVisualRangeFromCandidates:v34];
+      v34 = [v45 selectionRectsForRange:selectedTextRange];
+      v33 = [(UITextFieldAccessibility *)selfCopy _accessibilityTextSelectionRectWithLargestVisualRangeFromCandidates:v34];
       if (v33)
       {
         v21 = objc_alloc(MEMORY[0x29EDC7900]);
@@ -318,11 +318,11 @@ LABEL_13:
     v31 = v10;
     v32 = v11;
     v16 = v45;
-    v17 = [v45 superview];
+    superview = [v45 superview];
     [v16 convertPoint:v31 fromView:v32];
     v29 = v12;
     v30 = v13;
-    MEMORY[0x29EDC9740](v17);
+    MEMORY[0x29EDC9740](superview);
     v18 = objc_alloc(MEMORY[0x29EDC7900]);
     v20 = accessibilityLocalizedString(@"drop.into.text");
     v19 = [v18 initWithName:v29 point:v30 inView:?];
@@ -347,14 +347,14 @@ LABEL_15:
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v37 = self;
+  selfCopy = self;
   v36[1] = a2;
   v24 = [(UITextFieldAccessibility *)self safeValueForKey:@"isEditing"];
-  v25 = [v24 BOOLValue];
+  bOOLValue = [v24 BOOLValue];
   *&v2 = MEMORY[0x29EDC9740](v24).n128_u64[0];
-  if (v25)
+  if (bOOLValue)
   {
-    v36[0] = [(UITextFieldAccessibility *)v37 safeValueForKey:@"interactionAssistant", v2];
+    v36[0] = [(UITextFieldAccessibility *)selfCopy safeValueForKey:@"interactionAssistant", v2];
     v35 = [v36[0] safeUIViewForKey:@"_selectionView"];
     v21 = [v36[0] safeValueForKey:@"view"];
     v34 = [v21 safeUIViewForKey:@"textInputView"];
@@ -390,7 +390,7 @@ LABEL_15:
 
   else
   {
-    v26.receiver = v37;
+    v26.receiver = selfCopy;
     v26.super_class = UITextFieldAccessibility;
     [(UITextFieldAccessibility *)&v26 accessibilityActivationPoint];
     v38 = v17;
@@ -406,16 +406,16 @@ LABEL_15:
 
 - (uint64_t)_axShowsLeadingView
 {
-  if (a1)
+  if (self)
   {
-    if ([a1 _shouldReverseLayoutDirection])
+    if ([self _shouldReverseLayoutDirection])
     {
-      v2 = [a1 safeBoolForKey:@"_showsRightView"];
+      v2 = [self safeBoolForKey:@"_showsRightView"];
     }
 
     else
     {
-      v2 = [a1 safeBoolForKey:@"_showsLeftView"];
+      v2 = [self safeBoolForKey:@"_showsLeftView"];
     }
 
     v4 = v2 & 1;
@@ -431,16 +431,16 @@ LABEL_15:
 
 - (uint64_t)_axShowsTrailingView
 {
-  if (a1)
+  if (self)
   {
-    if ([a1 _shouldReverseLayoutDirection])
+    if ([self _shouldReverseLayoutDirection])
     {
-      v2 = [a1 safeBoolForKey:@"_showsLeftView"];
+      v2 = [self safeBoolForKey:@"_showsLeftView"];
     }
 
     else
     {
-      v2 = [a1 safeBoolForKey:@"_showsRightView"];
+      v2 = [self safeBoolForKey:@"_showsRightView"];
     }
 
     v4 = v2 & 1;
@@ -456,41 +456,41 @@ LABEL_15:
 
 - (id)_accessibilityLeftButtons
 {
-  v14 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v13 = [MEMORY[0x29EDB8DE8] array];
-    if (([(UITextFieldAccessibility *)v14 _axShowsLeadingView]& 1) != 0)
+    array = [MEMORY[0x29EDB8DE8] array];
+    if (([(UITextFieldAccessibility *)selfCopy _axShowsLeadingView]& 1) != 0)
     {
-      v12 = [v14 leftView];
-      if ([v12 isAccessibilityElement])
+      leftView = [selfCopy leftView];
+      if ([leftView isAccessibilityElement])
       {
-        [v13 addObject:v12];
+        [array addObject:leftView];
       }
 
-      else if (([v12 accessibilityElementsHidden] & 1) == 0)
+      else if (([leftView accessibilityElementsHidden] & 1) == 0)
       {
-        v3 = [MEMORY[0x29EDC7328] options];
-        v11 = [v12 _accessibilityLeafDescendantsWithOptions:?];
-        MEMORY[0x29EDC9740](v3);
+        options = [MEMORY[0x29EDC7328] options];
+        v11 = [leftView _accessibilityLeafDescendantsWithOptions:?];
+        MEMORY[0x29EDC9740](options);
         v4 = v11;
         v5 = MEMORY[0x29EDCA5F8];
         v6 = -1073741824;
         v7 = 0;
         v8 = __53__UITextFieldAccessibility__accessibilityLeftButtons__block_invoke;
         v9 = &unk_29F30D218;
-        v10 = MEMORY[0x29EDC9748](v14);
+        v10 = MEMORY[0x29EDC9748](selfCopy);
         [v4 enumerateObjectsUsingBlock:&v5];
-        [v13 axSafelyAddObjectsFromArray:v11];
+        [array axSafelyAddObjectsFromArray:v11];
         objc_storeStrong(&v10, 0);
         objc_storeStrong(&v11, 0);
       }
 
-      objc_storeStrong(&v12, 0);
+      objc_storeStrong(&leftView, 0);
     }
 
-    v15 = MEMORY[0x29EDC9748](v13);
-    objc_storeStrong(&v13, 0);
+    v15 = MEMORY[0x29EDC9748](array);
+    objc_storeStrong(&array, 0);
   }
 
   else
@@ -514,22 +514,22 @@ void __53__UITextFieldAccessibility__accessibilityLeftButtons__block_invoke(void
 
 - (id)_accessibilityRightButtons
 {
-  v22 = self;
+  selfCopy = self;
   v21[1] = a2;
   v21[0] = [MEMORY[0x29EDB8DE8] array];
-  v20 = [(UITextFieldAccessibility *)v22 safeValueForKey:@"_clearButton"];
+  v20 = [(UITextFieldAccessibility *)selfCopy safeValueForKey:@"_clearButton"];
   v18 = 0;
   v7 = 0;
   if (v20)
   {
-    v19 = [v20 superview];
+    superview = [v20 superview];
     v18 = 1;
-    v7 = v19 != 0;
+    v7 = superview != 0;
   }
 
   if (v18)
   {
-    MEMORY[0x29EDC9740](v19);
+    MEMORY[0x29EDC9740](superview);
   }
 
   if (v7)
@@ -539,11 +539,11 @@ void __53__UITextFieldAccessibility__accessibilityLeftButtons__block_invoke(void
   }
 
   v15 = 0;
-  if (([(UITextFieldAccessibility *)v22 _axShowsTrailingView]& 1) != 0)
+  if (([(UITextFieldAccessibility *)selfCopy _axShowsTrailingView]& 1) != 0)
   {
-    v16 = [(UITextFieldAccessibility *)v22 rightView];
+    rightView = [(UITextFieldAccessibility *)selfCopy rightView];
     v15 = 1;
-    v2 = MEMORY[0x29EDC9748](v16);
+    v2 = MEMORY[0x29EDC9748](rightView);
   }
 
   else
@@ -554,7 +554,7 @@ void __53__UITextFieldAccessibility__accessibilityLeftButtons__block_invoke(void
   v17 = v2;
   if (v15)
   {
-    MEMORY[0x29EDC9740](v16);
+    MEMORY[0x29EDC9740](rightView);
   }
 
   if (v20 != v17)
@@ -566,16 +566,16 @@ void __53__UITextFieldAccessibility__accessibilityLeftButtons__block_invoke(void
 
     else if (([v17 accessibilityElementsHidden] & 1) == 0)
     {
-      v5 = [MEMORY[0x29EDC7328] options];
+      options = [MEMORY[0x29EDC7328] options];
       v14 = [v17 _accessibilityLeafDescendantsWithOptions:?];
-      MEMORY[0x29EDC9740](v5);
+      MEMORY[0x29EDC9740](options);
       v6 = v14;
       v8 = MEMORY[0x29EDCA5F8];
       v9 = -1073741824;
       v10 = 0;
       v11 = __54__UITextFieldAccessibility__accessibilityRightButtons__block_invoke;
       v12 = &unk_29F30D218;
-      v13 = MEMORY[0x29EDC9748](v22);
+      v13 = MEMORY[0x29EDC9748](selfCopy);
       [v6 enumerateObjectsUsingBlock:&v8];
       [v21[0] axSafelyAddObjectsFromArray:v14];
       objc_storeStrong(&v13, 0);
@@ -600,14 +600,14 @@ void __54__UITextFieldAccessibility__accessibilityRightButtons__block_invoke(voi
   objc_storeStrong(location, 0);
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  v21 = a3;
-  v20 = self;
+  testCopy = test;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v18 = [(UITextFieldAccessibility *)v20 _accessibilityBoolValueForKey:@"AXInHitTestOverride"];
+  objc_storeStrong(location, event);
+  v18 = [(UITextFieldAccessibility *)selfCopy _accessibilityBoolValueForKey:@"AXInHitTestOverride"];
   v10 = 0;
   v6 = 0;
   if ((v18 & 1) == 0)
@@ -617,7 +617,7 @@ void __54__UITextFieldAccessibility__accessibilityRightButtons__block_invoke(voi
     v14 = 0;
     v15 = __60__UITextFieldAccessibility__accessibilityHitTest_withEvent___block_invoke;
     v16 = &unk_29F30CEB0;
-    v17 = MEMORY[0x29EDC9748](v20);
+    v17 = MEMORY[0x29EDC9748](selfCopy);
     v11 = &v17;
     v10 = 1;
     v6 = (__60__UITextFieldAccessibility__accessibilityHitTest_withEvent___block_invoke)();
@@ -625,9 +625,9 @@ void __54__UITextFieldAccessibility__accessibilityRightButtons__block_invoke(voi
 
   if (v6)
   {
-    [(UITextFieldAccessibility *)v20 _accessibilitySetBoolValue:1 forKey:?];
-    v9 = [(UITextFieldAccessibility *)v20 accessibilityHitTest:location[0] withEvent:v21.x, v21.y];
-    [(UITextFieldAccessibility *)v20 _accessibilitySetBoolValue:0 forKey:@"AXInHitTestOverride"];
+    [(UITextFieldAccessibility *)selfCopy _accessibilitySetBoolValue:1 forKey:?];
+    v9 = [(UITextFieldAccessibility *)selfCopy accessibilityHitTest:location[0] withEvent:testCopy.x, testCopy.y];
+    [(UITextFieldAccessibility *)selfCopy _accessibilitySetBoolValue:0 forKey:@"AXInHitTestOverride"];
     v22 = MEMORY[0x29EDC9748](v9);
     v8 = 1;
     objc_storeStrong(&v9, 0);
@@ -645,16 +645,16 @@ void __54__UITextFieldAccessibility__accessibilityRightButtons__block_invoke(voi
 
   if (!v8)
   {
-    if ([(UITextFieldAccessibility *)v20 _axTextFieldIsHidden])
+    if ([(UITextFieldAccessibility *)selfCopy _axTextFieldIsHidden])
     {
       v22 = 0;
     }
 
     else
     {
-      v7.receiver = v20;
+      v7.receiver = selfCopy;
       v7.super_class = UITextFieldAccessibility;
-      v22 = [(UITextFieldAccessibility *)&v7 _accessibilityHitTest:location[0] withEvent:v21.x, v21.y];
+      v22 = [(UITextFieldAccessibility *)&v7 _accessibilityHitTest:location[0] withEvent:testCopy.x, testCopy.y];
     }
 
     v8 = 1;
@@ -754,18 +754,18 @@ void __60__UITextFieldAccessibility__accessibilityHitTest_withEvent___block_invo
   }
 }
 
-- (void)_accessibilitySetValue:(id)a3
+- (void)_accessibilitySetValue:(id)value
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   v3 = MEMORY[0x29EDCA5F8];
   v4 = -1073741824;
   v5 = 0;
   v6 = __51__UITextFieldAccessibility__accessibilitySetValue___block_invoke;
   v7 = &unk_29F30C888;
-  v8 = MEMORY[0x29EDC9748](v11);
+  v8 = MEMORY[0x29EDC9748](selfCopy);
   v9 = MEMORY[0x29EDC9748](location[0]);
   AXPerformSafeBlock();
   objc_storeStrong(&v9, 0);
@@ -792,17 +792,17 @@ uint64_t __51__UITextFieldAccessibility__accessibilitySetValue___block_invoke(ui
   return result;
 }
 
-- (void)_clearButtonClicked:(id)a3
+- (void)_clearButtonClicked:(id)clicked
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, clicked);
+  v3.receiver = selfCopy;
   v3.super_class = UITextFieldAccessibility;
   [(UITextFieldAccessibility *)&v3 _clearButtonClicked:location[0]];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
-  [(UITextFieldAccessibility *)v5 _accessibilityPostValueChangedNotificationWithChangeType:*MEMORY[0x29EDBDCC8]];
+  [(UITextFieldAccessibility *)selfCopy _accessibilityPostValueChangedNotificationWithChangeType:*MEMORY[0x29EDBDCC8]];
   objc_storeStrong(location, 0);
 }
 
@@ -825,35 +825,35 @@ uint64_t __51__UITextFieldAccessibility__accessibilitySetValue___block_invoke(ui
   return v4 & 1;
 }
 
-- (id)_accessibilityPlaceholderValue:(void *)a1
+- (id)_accessibilityPlaceholderValue:(void *)value
 {
-  v23 = a1;
+  valueCopy = value;
   v22 = a2;
-  if (a1)
+  if (value)
   {
     v21 = 0;
     v19 = 0;
     objc_opt_class();
-    v15 = [v23 safeValueForKey:@"_placeholderView"];
+    v15 = [valueCopy safeValueForKey:@"_placeholderView"];
     v18 = __UIAccessibilityCastAsClass();
     MEMORY[0x29EDC9740](v15);
     v17 = MEMORY[0x29EDC9748](v18);
     objc_storeStrong(&v18, 0);
     v20 = v17;
-    v14 = [v17 superview];
-    if (!v14 || ([v20 isHidden] & 1) != 0 || (objc_msgSend(v20, "alpha"), v13 = 1, v2 <= 0.01))
+    superview = [v17 superview];
+    if (!superview || ([v20 isHidden] & 1) != 0 || (objc_msgSend(v20, "alpha"), v13 = 1, v2 <= 0.01))
     {
       v13 = v22;
     }
 
-    MEMORY[0x29EDC9740](v14);
+    MEMORY[0x29EDC9740](superview);
     if (v13)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = [v20 attributedText];
-        if ([v16 length])
+        attributedText = [v20 attributedText];
+        if ([attributedText length])
         {
           v3 = UIAccessibilityConvertAttachmentsInAttributedStringToAX();
           v4 = v21;
@@ -861,14 +861,14 @@ uint64_t __51__UITextFieldAccessibility__accessibilitySetValue___block_invoke(ui
           MEMORY[0x29EDC9740](v4);
         }
 
-        objc_storeStrong(&v16, 0);
+        objc_storeStrong(&attributedText, 0);
       }
 
       if (![v21 length])
       {
-        v5 = [v20 accessibilityLabel];
+        accessibilityLabel = [v20 accessibilityLabel];
         v6 = v21;
-        v21 = v5;
+        v21 = accessibilityLabel;
         MEMORY[0x29EDC9740](v6);
       }
 
@@ -897,7 +897,7 @@ uint64_t __51__UITextFieldAccessibility__accessibilitySetValue___block_invoke(ui
 
 - (id)_accessibilityTextFieldText
 {
-  v25 = self;
+  selfCopy = self;
   v24[1] = a2;
   v24[0] = [(UITextFieldAccessibility *)self safeValueForKey:@"_attributedText"];
   if (v24[0])
@@ -914,19 +914,19 @@ uint64_t __51__UITextFieldAccessibility__accessibilitySetValue___block_invoke(ui
 
   else
   {
-    v24[0] = [(UITextFieldAccessibility *)v25 safeValueForKey:@"_text"];
+    v24[0] = [(UITextFieldAccessibility *)selfCopy safeValueForKey:@"_text"];
     v2 = MEMORY[0x29EDC9740](0).n128_u64[0];
   }
 
-  v5 = [(UITextFieldAccessibility *)v25 accessibilityTraits];
-  if ((v5 & *MEMORY[0x29EDC7568]) == *MEMORY[0x29EDC7568])
+  accessibilityTraits = [(UITextFieldAccessibility *)selfCopy accessibilityTraits];
+  if ((accessibilityTraits & *MEMORY[0x29EDC7568]) == *MEMORY[0x29EDC7568])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v24[0] string];
+      string = [v24[0] string];
       v8 = v24[0];
-      v24[0] = v7;
+      v24[0] = string;
       MEMORY[0x29EDC9740](v8);
     }
 
@@ -942,18 +942,18 @@ uint64_t __51__UITextFieldAccessibility__accessibilitySetValue___block_invoke(ui
     *&v6 = MEMORY[0x29EDC9740](v21).n128_u64[0];
   }
 
-  v20 = [MEMORY[0x29EDC7B08] activeInstance];
-  v18 = [v20 textInputTraits];
-  v19 = [v18 keyboardType];
-  MEMORY[0x29EDC9740](v18);
-  if (v19 == 5)
+  activeInstance = [MEMORY[0x29EDC7B08] activeInstance];
+  textInputTraits = [activeInstance textInputTraits];
+  keyboardType = [textInputTraits keyboardType];
+  MEMORY[0x29EDC9740](textInputTraits);
+  if (keyboardType == 5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v24[0] string];
+      string2 = [v24[0] string];
       v12 = v24[0];
-      v24[0] = v11;
+      v24[0] = string2;
       MEMORY[0x29EDC9740](v12);
     }
 
@@ -965,17 +965,17 @@ uint64_t __51__UITextFieldAccessibility__accessibilitySetValue___block_invoke(ui
   }
 
   v17 = MEMORY[0x29EDC9748](v24[0]);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&activeInstance, 0);
   objc_storeStrong(v24, 0);
 
   return v17;
 }
 
-- (BOOL)_accessibilityOverridesPotentiallyAttributedAPISelector:(SEL)a3
+- (BOOL)_accessibilityOverridesPotentiallyAttributedAPISelector:(SEL)selector
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  name = a3;
+  name = selector;
   v12 = &_accessibilityOverridesPotentiallyAttributedAPISelector__onceToken_0;
   location = 0;
   objc_storeStrong(&location, &__block_literal_global_442);
@@ -997,7 +997,7 @@ uint64_t __51__UITextFieldAccessibility__accessibilitySetValue___block_invoke(ui
     return InstanceMethod != _accessibilityOverridesPotentiallyAttributedAPISelector__accessibilityAttributedValueBaseMethod;
   }
 
-  v5.receiver = v9;
+  v5.receiver = selfCopy;
   v5.super_class = UITextFieldAccessibility;
   return [(UITextFieldAccessibility *)&v5 _accessibilityOverridesPotentiallyAttributedAPISelector:name];
 }
@@ -1014,18 +1014,18 @@ Method __84__UITextFieldAccessibility__accessibilityOverridesPotentiallyAttribut
 
 - (id)_accessibilityGetValue
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITextFieldAccessibility *)self accessibilityUserDefinedValue];
   if (!location[0])
   {
-    location[0] = [(UITextFieldAccessibility *)v7 _accessibilityTextFieldText];
+    location[0] = [(UITextFieldAccessibility *)selfCopy _accessibilityTextFieldText];
     MEMORY[0x29EDC9740](0);
   }
 
   if (![location[0] length])
   {
-    v5 = [(UITextFieldAccessibility *)v7 _accessibilityPlaceholderValue:?];
+    v5 = [(UITextFieldAccessibility *)selfCopy _accessibilityPlaceholderValue:?];
     if (v5)
     {
       objc_storeStrong(location, v5);
@@ -1034,7 +1034,7 @@ Method __84__UITextFieldAccessibility__accessibilityOverridesPotentiallyAttribut
     objc_storeStrong(&v5, 0);
   }
 
-  if (([(UITextFieldAccessibility *)v7 _accessibilityBoolValueForKey:*MEMORY[0x29EDBD8F8]]& 1) != 0)
+  if (([(UITextFieldAccessibility *)selfCopy _accessibilityBoolValueForKey:*MEMORY[0x29EDBD8F8]]& 1) != 0)
   {
     if ([location[0] isAXAttributedString])
     {
@@ -1063,28 +1063,28 @@ Method __84__UITextFieldAccessibility__accessibilityOverridesPotentiallyAttribut
   location[0] = [(UITextFieldAccessibility *)self _accessibilityGetValue];
   if ([location[0] isAXAttributedString])
   {
-    v5 = [location[0] cfAttributedString];
+    cfAttributedString = [location[0] cfAttributedString];
   }
 
   else if (location[0])
   {
-    v5 = [objc_alloc(MEMORY[0x29EDB9F30]) initWithString:location[0]];
+    cfAttributedString = [objc_alloc(MEMORY[0x29EDB9F30]) initWithString:location[0]];
   }
 
   else
   {
-    v5 = 0;
+    cfAttributedString = 0;
   }
 
   objc_storeStrong(location, 0);
-  v2 = v5;
+  v2 = cfAttributedString;
 
   return v2;
 }
 
 - (id)accessibilityLabel
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v7[0] = [(UITextFieldAccessibility *)self accessibilityUserDefinedLabel];
   if (v7[0])
@@ -1095,12 +1095,12 @@ Method __84__UITextFieldAccessibility__accessibilityOverridesPotentiallyAttribut
 
   else
   {
-    v4 = [(UITextFieldAccessibility *)v8 safeValueForKey:@"textLabel"];
-    v5 = [v4 accessibilityLabel];
+    v4 = [(UITextFieldAccessibility *)selfCopy safeValueForKey:@"textLabel"];
+    accessibilityLabel = [v4 accessibilityLabel];
     MEMORY[0x29EDC9740](v4);
-    v9 = MEMORY[0x29EDC9748](v5);
+    v9 = MEMORY[0x29EDC9748](accessibilityLabel);
     v6 = 1;
-    objc_storeStrong(&v5, 0);
+    objc_storeStrong(&accessibilityLabel, 0);
   }
 
   objc_storeStrong(v7, 0);
@@ -1111,17 +1111,17 @@ Method __84__UITextFieldAccessibility__accessibilityOverridesPotentiallyAttribut
 
 - (unint64_t)accessibilityTraits
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   v14 = *MEMORY[0x29EDC7598];
   v6 = [(UITextFieldAccessibility *)self safeValueForKey:@"isEditing"];
   v12 = 0;
-  v7 = 1;
+  bOOLValue = 1;
   if (([v6 BOOLValue] & 1) == 0)
   {
-    v13 = [(UITextFieldAccessibility *)v16 safeValueForKey:@"isFirstResponder"];
+    v13 = [(UITextFieldAccessibility *)selfCopy safeValueForKey:@"isFirstResponder"];
     v12 = 1;
-    v7 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
   }
 
   if (v12)
@@ -1130,15 +1130,15 @@ Method __84__UITextFieldAccessibility__accessibilityOverridesPotentiallyAttribut
   }
 
   *&v2 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-  if (v7 & 1) != 0 && (AXDoesRequestingClientDeserveAutomation() || _AXSMossdeepEnabled() || ([*MEMORY[0x29EDC8008] _accessibilityHardwareKeyboardActive] & 1) != 0 || (objc_msgSend(*MEMORY[0x29EDC8008], "_accessibilitySoftwareKeyboardActive")))
+  if (bOOLValue & 1) != 0 && (AXDoesRequestingClientDeserveAutomation() || _AXSMossdeepEnabled() || ([*MEMORY[0x29EDC8008] _accessibilityHardwareKeyboardActive] & 1) != 0 || (objc_msgSend(*MEMORY[0x29EDC8008], "_accessibilitySoftwareKeyboardActive")))
   {
     v14 |= *MEMORY[0x29EDC7528];
   }
 
-  v11 = [(UITextFieldAccessibility *)v16 accessibilityUserDefinedTraits];
-  if (v11)
+  accessibilityUserDefinedTraits = [(UITextFieldAccessibility *)selfCopy accessibilityUserDefinedTraits];
+  if (accessibilityUserDefinedTraits)
   {
-    v14 |= [v11 unsignedLongLongValue];
+    v14 |= [accessibilityUserDefinedTraits unsignedLongLongValue];
   }
 
   v10 = 0;
@@ -1146,11 +1146,11 @@ Method __84__UITextFieldAccessibility__accessibilityOverridesPotentiallyAttribut
   v9 = __UIAccessibilityCastAsClass();
   v8 = MEMORY[0x29EDC9748](v9);
   objc_storeStrong(&v9, 0);
-  v3 = [(UIView *)v8 _accessibilityTextAreaTraits];
-  v14 |= v3;
+  _accessibilityTextAreaTraits = [(UIView *)v8 _accessibilityTextAreaTraits];
+  v14 |= _accessibilityTextAreaTraits;
   MEMORY[0x29EDC9740](v8);
   v5 = v14;
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&accessibilityUserDefinedTraits, 0);
   return v5;
 }
 
@@ -1164,25 +1164,25 @@ Method __84__UITextFieldAccessibility__accessibilityOverridesPotentiallyAttribut
 
 - (id)accessibilityCustomRotors
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v13[0] = [MEMORY[0x29EDB8DE8] array];
   v8 = v13[0];
-  v12.receiver = v14;
+  v12.receiver = selfCopy;
   v12.super_class = UITextFieldAccessibility;
-  v9 = [(UITextFieldAccessibility *)&v12 accessibilityCustomRotors];
+  accessibilityCustomRotors = [(UITextFieldAccessibility *)&v12 accessibilityCustomRotors];
   [v8 axSafelyAddObjectsFromArray:?];
-  *&v2 = MEMORY[0x29EDC9740](v9).n128_u64[0];
+  *&v2 = MEMORY[0x29EDC9740](accessibilityCustomRotors).n128_u64[0];
   v10 = v13[0];
-  v11 = [(UITextFieldAccessibility *)v14 _accessibilityInternalTextLinkCustomRotors];
+  _accessibilityInternalTextLinkCustomRotors = [(UITextFieldAccessibility *)selfCopy _accessibilityInternalTextLinkCustomRotors];
   [v10 axSafelyAddObjectsFromArray:?];
-  *&v3 = MEMORY[0x29EDC9740](v11).n128_u64[0];
-  if (([(UITextFieldAccessibility *)v14 isEditing]& 1) != 0 && AXUIKeyboardTypeSupportsMisspelledRotor([(UITextFieldAccessibility *)v14 keyboardType]))
+  *&v3 = MEMORY[0x29EDC9740](_accessibilityInternalTextLinkCustomRotors).n128_u64[0];
+  if (([(UITextFieldAccessibility *)selfCopy isEditing]& 1) != 0 && AXUIKeyboardTypeSupportsMisspelledRotor([(UITextFieldAccessibility *)selfCopy keyboardType]))
   {
     v6 = v13[0];
-    v7 = [(UITextFieldAccessibility *)v14 _accessibilityMisspelledRotor];
+    _accessibilityMisspelledRotor = [(UITextFieldAccessibility *)selfCopy _accessibilityMisspelledRotor];
     [v6 axSafelyAddObject:?];
-    MEMORY[0x29EDC9740](v7);
+    MEMORY[0x29EDC9740](_accessibilityMisspelledRotor);
   }
 
   v5 = MEMORY[0x29EDC9748](v13[0]);
@@ -1191,10 +1191,10 @@ Method __84__UITextFieldAccessibility__accessibilityOverridesPotentiallyAttribut
   return v5;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  v7 = a3;
-  v6 = self;
+  rangeCopy = range;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITextFieldAccessibility *)self safeValueForKey:@"text"];
   v4 = [location[0] length];
@@ -1205,23 +1205,23 @@ Method __84__UITextFieldAccessibility__accessibilityOverridesPotentiallyAttribut
     v3 = 1;
   }
 
-  v10 = v7;
-  if (v7.location + v7.length > v4 && !v7.length)
+  v10 = rangeCopy;
+  if (rangeCopy.location + rangeCopy.length > v4 && !rangeCopy.length)
   {
-    v7.location = v4;
+    rangeCopy.location = v4;
   }
 
-  if (v7.length || (v8 = v7.location, v9 = 0, v7.location > v4))
+  if (rangeCopy.length || (v8 = rangeCopy.location, v9 = 0, rangeCopy.location > v4))
   {
-    if (v7.length)
+    if (rangeCopy.length)
     {
-      [v6 _accessibilitySetTextSelection:v7.length];
+      [selfCopy _accessibilitySetTextSelection:rangeCopy.length];
     }
   }
 
   else
   {
-    [(UITextFieldAccessibility *)v6 setSelectionRange:v7.location, v7.length];
+    [(UITextFieldAccessibility *)selfCopy setSelectionRange:rangeCopy.location, rangeCopy.length];
   }
 
   if (v3)
@@ -1244,46 +1244,46 @@ Method __84__UITextFieldAccessibility__accessibilityOverridesPotentiallyAttribut
   v10[0] = v7;
   [v7 keyboardType];
   IsNumberPad = UIKeyboardTypeIsNumberPad();
-  v5 = [v10[0] textInputTraits];
-  v4 = [v5 textContentType];
+  textInputTraits = [v10[0] textInputTraits];
+  textContentType = [textInputTraits textContentType];
   v3 = 1;
   if ((IsNumberPad & 1) == 0)
   {
     v3 = 1;
-    if (v4 != *MEMORY[0x29EDC8248])
+    if (textContentType != *MEMORY[0x29EDC8248])
     {
-      v3 = v4 == *MEMORY[0x29EDC8240];
+      v3 = textContentType == *MEMORY[0x29EDC8240];
     }
   }
 
-  objc_storeStrong(&v4, 0);
-  objc_storeStrong(&v5, 0);
+  objc_storeStrong(&textContentType, 0);
+  objc_storeStrong(&textInputTraits, 0);
   objc_storeStrong(v10, 0);
   return !v3;
 }
 
-- (BOOL)keyboardInput:(id)a3 shouldInsertText:(id)a4 isMarkedText:(BOOL)a5
+- (BOOL)keyboardInput:(id)input shouldInsertText:(id)text isMarkedText:(BOOL)markedText
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, input);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v14 = a5;
-  v13 = [(UITextFieldAccessibility *)v17 safeValueForKey:?];
-  v11.receiver = v17;
+  objc_storeStrong(&v15, text);
+  markedTextCopy = markedText;
+  v13 = [(UITextFieldAccessibility *)selfCopy safeValueForKey:?];
+  v11.receiver = selfCopy;
   v11.super_class = UITextFieldAccessibility;
-  v12 = [(UITextFieldAccessibility *)&v11 keyboardInput:location[0] shouldInsertText:v15 isMarkedText:a5];
-  argument = [(UITextFieldAccessibility *)v17 safeValueForKey:@"text"];
-  if (([(UITextFieldAccessibility *)v17 accessibilityElementsHidden]& 1) != 0)
+  v12 = [(UITextFieldAccessibility *)&v11 keyboardInput:location[0] shouldInsertText:v15 isMarkedText:markedText];
+  argument = [(UITextFieldAccessibility *)selfCopy safeValueForKey:@"text"];
+  if (([(UITextFieldAccessibility *)selfCopy accessibilityElementsHidden]& 1) != 0)
   {
     v18 = v12 & 1;
   }
 
   else
   {
-    if ((v12 & 1) == 0 && ([(UITextFieldAccessibility *)v17 safeBoolForKey:@"isEditing"]& 1) != 0)
+    if ((v12 & 1) == 0 && ([(UITextFieldAccessibility *)selfCopy safeBoolForKey:@"isEditing"]& 1) != 0)
     {
       if ([v13 isEqualToString:argument])
       {
@@ -1295,16 +1295,16 @@ Method __84__UITextFieldAccessibility__accessibilityOverridesPotentiallyAttribut
 
       else
       {
-        v5 = [(UITextFieldAccessibility *)v17 accessibilityTraits];
-        if ((v5 & *MEMORY[0x29EDC7568]) == 0)
+        accessibilityTraits = [(UITextFieldAccessibility *)selfCopy accessibilityTraits];
+        if ((accessibilityTraits & *MEMORY[0x29EDC7568]) == 0)
         {
           v9 = 0;
-          if (([(UITextFieldAccessibility *)v17 accessibilityValueChangesAreReplacements]& 1) != 0)
+          if (([(UITextFieldAccessibility *)selfCopy accessibilityValueChangesAreReplacements]& 1) != 0)
           {
             v9 = *MEMORY[0x29EDBDCE0];
           }
 
-          [(UITextFieldAccessibility *)v17 _accessibilityPostValueChangedNotificationWithChangeType:v9];
+          [(UITextFieldAccessibility *)selfCopy _accessibilityPostValueChangedNotificationWithChangeType:v9];
           UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], argument);
         }
       }
@@ -1320,17 +1320,17 @@ Method __84__UITextFieldAccessibility__accessibilityOverridesPotentiallyAttribut
   return v18 & 1;
 }
 
-- (BOOL)fieldEditor:(id)a3 shouldInsertText:(id)a4 replacingRanges:(id)a5
+- (BOOL)fieldEditor:(id)editor shouldInsertText:(id)text replacingRanges:(id)ranges
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, editor);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, text);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  v9.receiver = v14;
+  objc_storeStrong(&v11, ranges);
+  v9.receiver = selfCopy;
   v9.super_class = UITextFieldAccessibility;
   v10 = [(UITextFieldAccessibility *)&v9 fieldEditor:location[0] shouldInsertText:v12 replacingRanges:v11];
   if ((v10 & 1) == 0)
@@ -1349,13 +1349,13 @@ Method __84__UITextFieldAccessibility__accessibilityOverridesPotentiallyAttribut
 {
   v7[2] = self;
   v7[1] = a2;
-  v5 = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
+  defaultVoiceOverOptions = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
   v7[0] = [(UITextFieldAccessibility *)self _accessibilityLeafDescendantsWithOptions:?];
-  *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-  v6 = [v7[0] firstObject];
+  *&v2 = MEMORY[0x29EDC9740](defaultVoiceOverOptions).n128_u64[0];
+  firstObject = [v7[0] firstObject];
   objc_storeStrong(v7, 0);
 
-  return v6;
+  return firstObject;
 }
 
 @end

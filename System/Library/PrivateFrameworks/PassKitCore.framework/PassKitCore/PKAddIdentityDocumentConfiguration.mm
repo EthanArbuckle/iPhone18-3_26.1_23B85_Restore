@@ -1,46 +1,46 @@
 @interface PKAddIdentityDocumentConfiguration
-+ (void)configurationForMetadata:(id)a3 completion:(id)a4;
++ (void)configurationForMetadata:(id)metadata completion:(id)completion;
 - (BOOL)hasRequiredDataForProvisioning;
 - (NSArray)metadataProviders;
-- (PKAddIdentityDocumentConfiguration)initWithCoder:(id)a3;
-- (PKAddIdentityDocumentConfiguration)initWithMetadata:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_extendableDescription:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKAddIdentityDocumentConfiguration)initWithCoder:(id)coder;
+- (PKAddIdentityDocumentConfiguration)initWithMetadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_extendableDescription:(id)description;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAddIdentityDocumentConfiguration
 
-- (PKAddIdentityDocumentConfiguration)initWithMetadata:(id)a3
+- (PKAddIdentityDocumentConfiguration)initWithMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   v9.receiver = self;
   v9.super_class = PKAddIdentityDocumentConfiguration;
   v6 = [(PKAddSecureElementPassConfiguration *)&v9 initWithType:4];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metadata, a3);
+    objc_storeStrong(&v6->_metadata, metadata);
   }
 
   return v7;
 }
 
-+ (void)configurationForMetadata:(id)a3 completion:(id)a4
++ (void)configurationForMetadata:(id)metadata completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PKAddIdentityDocumentConfiguration alloc] initWithMetadata:v6];
+  completionCopy = completion;
+  metadataCopy = metadata;
+  v7 = [[PKAddIdentityDocumentConfiguration alloc] initWithMetadata:metadataCopy];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __74__PKAddIdentityDocumentConfiguration_configurationForMetadata_completion___block_invoke;
   aBlock[3] = &unk_1E79C4A68;
-  v20 = v5;
+  v20 = completionCopy;
   v8 = v7;
   v19 = v8;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = _Block_copy(aBlock);
   v11 = PKLogFacilityTypeGetObject(0x1CuLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -142,9 +142,9 @@ void __74__PKAddIdentityDocumentConfiguration_configurationForMetadata_completio
     return 0;
   }
 
-  v4 = [(PKIdentityDocumentMetadata *)metadata provisioningTarget];
-  v5 = [v4 nonce];
-  v8 = (v5 && (v6 = v5, v7 = [v4 targetDevice], v6, v7) || !self->_requiresNonceValidityChecks) && -[PKIdentityDocumentMetadata _hasRequiredDataForProvisioning](self->_metadata, "_hasRequiredDataForProvisioning");
+  provisioningTarget = [(PKIdentityDocumentMetadata *)metadata provisioningTarget];
+  nonce = [provisioningTarget nonce];
+  v8 = (nonce && (v6 = nonce, v7 = [provisioningTarget targetDevice], v6, v7) || !self->_requiresNonceValidityChecks) && -[PKIdentityDocumentMetadata _hasRequiredDataForProvisioning](self->_metadata, "_hasRequiredDataForProvisioning");
 
   return v8;
 }
@@ -166,21 +166,21 @@ void __74__PKAddIdentityDocumentConfiguration_configurationForMetadata_completio
   return v2;
 }
 
-- (void)_extendableDescription:(id)a3
+- (void)_extendableDescription:(id)description
 {
   v5.receiver = self;
   v5.super_class = PKAddIdentityDocumentConfiguration;
-  v4 = a3;
-  [(PKAddSecureElementPassConfiguration *)&v5 _extendableDescription:v4];
-  [v4 appendFormat:@"metadata: '%@'; ", self->_metadata];
-  [v4 appendFormat:@"requiresNVC: '%d'; ", self->_requiresNonceValidityChecks];
+  descriptionCopy = description;
+  [(PKAddSecureElementPassConfiguration *)&v5 _extendableDescription:descriptionCopy];
+  [descriptionCopy appendFormat:@"metadata: '%@'; ", self->_metadata];
+  [descriptionCopy appendFormat:@"requiresNVC: '%d'; ", self->_requiresNonceValidityChecks];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = PKAddIdentityDocumentConfiguration;
-  v4 = [(PKAddSecureElementPassConfiguration *)&v8 copyWithZone:a3];
+  v4 = [(PKAddSecureElementPassConfiguration *)&v8 copyWithZone:zone];
   v5 = [(PKIdentityDocumentMetadata *)self->_metadata copy];
   v6 = v4[7];
   v4[7] = v5;
@@ -189,22 +189,22 @@ void __74__PKAddIdentityDocumentConfiguration_configurationForMetadata_completio
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKAddIdentityDocumentConfiguration;
-  v4 = a3;
-  [(PKAddSecureElementPassConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_metadata forKey:{@"metadata", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_requiresNonceValidityChecks forKey:@"requiresNonceValidityChecks"];
+  coderCopy = coder;
+  [(PKAddSecureElementPassConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_metadata forKey:{@"metadata", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_requiresNonceValidityChecks forKey:@"requiresNonceValidityChecks"];
 }
 
-- (PKAddIdentityDocumentConfiguration)initWithCoder:(id)a3
+- (PKAddIdentityDocumentConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKAddIdentityDocumentConfiguration;
-  v5 = [(PKAddSecureElementPassConfiguration *)&v14 initWithCoder:v4];
+  v5 = [(PKAddSecureElementPassConfiguration *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -212,11 +212,11 @@ void __74__PKAddIdentityDocumentConfiguration_configurationForMetadata_completio
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"metadata"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"metadata"];
     metadata = v5->_metadata;
     v5->_metadata = v11;
 
-    v5->_requiresNonceValidityChecks = [v4 decodeBoolForKey:@"requiresNonceValidityChecks"];
+    v5->_requiresNonceValidityChecks = [coderCopy decodeBoolForKey:@"requiresNonceValidityChecks"];
   }
 
   return v5;

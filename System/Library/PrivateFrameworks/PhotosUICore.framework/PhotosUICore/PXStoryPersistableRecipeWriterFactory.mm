@@ -1,19 +1,19 @@
 @interface PXStoryPersistableRecipeWriterFactory
-+ (BOOL)canPersistForConfiguration:(id)a3;
-+ (BOOL)canWriteRecipeToAssetCollection:(id)a3;
-+ (id)defaultPersistableRecipeWriterForConfiguration:(id)a3;
++ (BOOL)canPersistForConfiguration:(id)configuration;
++ (BOOL)canWriteRecipeToAssetCollection:(id)collection;
++ (id)defaultPersistableRecipeWriterForConfiguration:(id)configuration;
 @end
 
 @implementation PXStoryPersistableRecipeWriterFactory
 
-+ (id)defaultPersistableRecipeWriterForConfiguration:(id)a3
++ (id)defaultPersistableRecipeWriterForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 assetCollection];
+  configurationCopy = configuration;
+  assetCollection = [configurationCopy assetCollection];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [PXStoryPersistableRecipeWriterFactory canPersistForConfiguration:v3])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [PXStoryPersistableRecipeWriterFactory canPersistForConfiguration:configurationCopy])
   {
-    v5 = [[PXStoryPHMemoryPersistableRecipeWriter alloc] initWithMemory:v4];
+    v5 = [[PXStoryPHMemoryPersistableRecipeWriter alloc] initWithMemory:assetCollection];
   }
 
   else
@@ -21,27 +21,27 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v4 photoLibrary];
+      photoLibrary = [assetCollection photoLibrary];
       v13 = objc_alloc(MEMORY[0x1E69788E0]);
-      v14 = [v3 referencePersons];
-      v15 = [v13 initWithObjects:v14 photoLibrary:v12 fetchType:0 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+      referencePersons = [configurationCopy referencePersons];
+      v15 = [v13 initWithObjects:referencePersons photoLibrary:photoLibrary fetchType:0 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
 
-      v5 = [[PXStoryPHAssetCollectionPersistableRecipeWriter alloc] initWithAssetCollection:v4 referencePersons:v15];
+      v5 = [[PXStoryPHAssetCollectionPersistableRecipeWriter alloc] initWithAssetCollection:assetCollection referencePersons:v15];
     }
 
     else
     {
-      v12 = PXStoryErrorCreateWithCodeDebugFormat(4, @"Can't persist recipe with asset collection %@", v6, v7, v8, v9, v10, v11, v4);
-      v5 = [[PXStoryNullPersistableRecipeWriter alloc] initWithError:v12];
+      photoLibrary = PXStoryErrorCreateWithCodeDebugFormat(4, @"Can't persist recipe with asset collection %@", v6, v7, v8, v9, v10, v11, assetCollection);
+      v5 = [[PXStoryNullPersistableRecipeWriter alloc] initWithError:photoLibrary];
     }
   }
 
   return v5;
 }
 
-+ (BOOL)canWriteRecipeToAssetCollection:(id)a3
++ (BOOL)canWriteRecipeToAssetCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -49,13 +49,13 @@
     goto LABEL_6;
   }
 
-  v6 = v5;
+  v6 = collectionCopy;
   if (!v6)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXStoryPersistableRecipeWriter.m" lineNumber:38 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollection", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPersistableRecipeWriter.m" lineNumber:38 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollection", v12}];
 LABEL_9:
 
     goto LABEL_4;
@@ -64,29 +64,29 @@ LABEL_9:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v12 = NSStringFromClass(v13);
-    v14 = [v6 px_descriptionForAssertionMessage];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXStoryPersistableRecipeWriter.m" lineNumber:38 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollection", v12, v14}];
+    px_descriptionForAssertionMessage = [v6 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPersistableRecipeWriter.m" lineNumber:38 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollection", v12, px_descriptionForAssertionMessage}];
 
     goto LABEL_9;
   }
 
 LABEL_4:
-  v7 = [v6 pendingState];
-  v8 = (v7 < 4) & (0xBu >> (v7 & 0xF));
+  pendingState = [v6 pendingState];
+  v8 = (pendingState < 4) & (0xBu >> (pendingState & 0xF));
 
 LABEL_6:
   return v8;
 }
 
-+ (BOOL)canPersistForConfiguration:(id)a3
++ (BOOL)canPersistForConfiguration:(id)configuration
 {
-  v4 = [a3 assetCollection];
-  if (v4)
+  assetCollection = [configuration assetCollection];
+  if (assetCollection)
   {
-    v5 = [a1 canWriteRecipeToAssetCollection:v4];
+    v5 = [self canWriteRecipeToAssetCollection:assetCollection];
   }
 
   else

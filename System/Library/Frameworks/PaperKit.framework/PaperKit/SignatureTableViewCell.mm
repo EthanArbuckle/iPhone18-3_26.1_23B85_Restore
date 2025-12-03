@@ -15,9 +15,9 @@
   if (v3)
   {
     v4 = v3;
-    v5 = [v2 isEditing];
+    isEditing = [v2 isEditing];
     v6 = 30.0;
-    if (v5)
+    if (isEditing)
     {
       v6 = 15.0;
     }
@@ -30,7 +30,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SignatureTableViewCell.layoutSubviews()();
 }
 

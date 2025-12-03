@@ -1,11 +1,11 @@
 @interface AAUIContactsProvider
 - (AAUIContactsProvider)init;
-- (void)_fetchImageDataForLocalContact:(id)a3 ofSize:(double)a4 withCompletion:(id)a5;
-- (void)_fetchImagesForContacts:(id)a3 ofSize:(double)a4 completion:(id)a5;
-- (void)_fetchServerImageDataFor:(id)a3 WithCompletion:(id)a4;
-- (void)fetchSuggestedBeneficiariesWithImagesOfSize:(double)a3 andCompletion:(id)a4;
-- (void)fetchSuggestedCustodiansForUpsellWithImagesOfSize:(double)a3 telemetryFlowID:(id)a4 andCompletion:(id)a5;
-- (void)fetchSuggestedCustodiansWithImagesOfSize:(double)a3 andCompletion:(id)a4;
+- (void)_fetchImageDataForLocalContact:(id)contact ofSize:(double)size withCompletion:(id)completion;
+- (void)_fetchImagesForContacts:(id)contacts ofSize:(double)size completion:(id)completion;
+- (void)_fetchServerImageDataFor:(id)for WithCompletion:(id)completion;
+- (void)fetchSuggestedBeneficiariesWithImagesOfSize:(double)size andCompletion:(id)completion;
+- (void)fetchSuggestedCustodiansForUpsellWithImagesOfSize:(double)size telemetryFlowID:(id)d andCompletion:(id)completion;
+- (void)fetchSuggestedCustodiansWithImagesOfSize:(double)size andCompletion:(id)completion;
 @end
 
 @implementation AAUIContactsProvider
@@ -25,63 +25,63 @@
   return v2;
 }
 
-- (void)fetchSuggestedCustodiansWithImagesOfSize:(double)a3 andCompletion:(id)a4
+- (void)fetchSuggestedCustodiansWithImagesOfSize:(double)size andCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __79__AAUIContactsProvider_fetchSuggestedCustodiansWithImagesOfSize_andCompletion___block_invoke;
   v9[3] = &unk_1E820D658;
-  v11 = a3;
+  sizeCopy = size;
   v9[4] = self;
-  v10 = v6;
+  v10 = completionCopy;
   v8.receiver = self;
   v8.super_class = AAUIContactsProvider;
-  v7 = v6;
+  v7 = completionCopy;
   [(AAContactsProvider *)&v8 fetchSuggestedCustodians:v9];
 }
 
-- (void)fetchSuggestedCustodiansForUpsellWithImagesOfSize:(double)a3 telemetryFlowID:(id)a4 andCompletion:(id)a5
+- (void)fetchSuggestedCustodiansForUpsellWithImagesOfSize:(double)size telemetryFlowID:(id)d andCompletion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __104__AAUIContactsProvider_fetchSuggestedCustodiansForUpsellWithImagesOfSize_telemetryFlowID_andCompletion___block_invoke;
   v10[3] = &unk_1E820D658;
-  v12 = a3;
+  sizeCopy = size;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
-  [(AAContactsProvider *)self fetchSuggestedCustodiansForUpsellWithTelemetryFlowID:a4 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(AAContactsProvider *)self fetchSuggestedCustodiansForUpsellWithTelemetryFlowID:d completion:v10];
 }
 
-- (void)fetchSuggestedBeneficiariesWithImagesOfSize:(double)a3 andCompletion:(id)a4
+- (void)fetchSuggestedBeneficiariesWithImagesOfSize:(double)size andCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __82__AAUIContactsProvider_fetchSuggestedBeneficiariesWithImagesOfSize_andCompletion___block_invoke;
   v9[3] = &unk_1E820D658;
-  v11 = a3;
+  sizeCopy = size;
   v9[4] = self;
-  v10 = v6;
+  v10 = completionCopy;
   v8.receiver = self;
   v8.super_class = AAUIContactsProvider;
-  v7 = v6;
+  v7 = completionCopy;
   [(AAContactsProvider *)&v8 fetchSuggestedBeneficiaries:v9];
 }
 
-- (void)_fetchImagesForContacts:(id)a3 ofSize:(double)a4 completion:(id)a5
+- (void)_fetchImagesForContacts:(id)contacts ofSize:(double)size completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v20 = a5;
+  contactsCopy = contacts;
+  completionCopy = completion;
   v9 = dispatch_group_create();
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = v8;
+  v10 = contactsCopy;
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v11)
   {
@@ -97,9 +97,9 @@
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
-        v16 = [v15 imageData];
+        imageData = [v15 imageData];
 
-        if (!v16)
+        if (!imageData)
         {
           dispatch_group_enter(v9);
           v24[0] = MEMORY[0x1E69E9820];
@@ -108,7 +108,7 @@
           v24[3] = &unk_1E820D680;
           v24[4] = v15;
           v25 = v9;
-          [(AAUIContactsProvider *)self _fetchImageDataForLocalContact:v15 ofSize:v24 withCompletion:a4];
+          [(AAUIContactsProvider *)self _fetchImageDataForLocalContact:v15 ofSize:v24 withCompletion:size];
         }
       }
 
@@ -124,9 +124,9 @@
   block[2] = __66__AAUIContactsProvider__fetchImagesForContacts_ofSize_completion___block_invoke_2;
   block[3] = &unk_1E820B7A8;
   v22 = v10;
-  v23 = v20;
+  v23 = completionCopy;
   v18 = v10;
-  v19 = v20;
+  v19 = completionCopy;
   dispatch_group_notify(v9, v17, block);
 }
 
@@ -138,45 +138,45 @@ void __66__AAUIContactsProvider__fetchImagesForContacts_ofSize_completion___bloc
   dispatch_group_leave(v3);
 }
 
-- (void)_fetchImageDataForLocalContact:(id)a3 ofSize:(double)a4 withCompletion:(id)a5
+- (void)_fetchImageDataForLocalContact:(id)contact ofSize:(double)size withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  contactCopy = contact;
+  completionCopy = completion;
   contactsManager = self->_contactsManager;
-  v11 = [v8 handle];
-  v12 = [(AAContactsManager *)contactsManager contactForHandle:v11];
+  handle = [contactCopy handle];
+  v12 = [(AAContactsManager *)contactsManager contactForHandle:handle];
 
-  v13 = [v12 imageData];
+  imageData = [v12 imageData];
 
-  if (v13)
+  if (imageData)
   {
-    v14 = [v12 imageData];
+    imageData2 = [v12 imageData];
   }
 
   else
   {
-    v15 = [v12 thumbnailImageData];
+    thumbnailImageData = [v12 thumbnailImageData];
 
-    if (!v15)
+    if (!thumbnailImageData)
     {
-      v17 = [v8 familyDSID];
+      familyDSID = [contactCopy familyDSID];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __77__AAUIContactsProvider__fetchImageDataForLocalContact_ofSize_withCompletion___block_invoke;
       v18[3] = &unk_1E820D6A8;
-      v19 = v8;
-      v21 = a4;
-      v20 = v9;
-      [(AAUIContactsProvider *)self _fetchServerImageDataFor:v17 WithCompletion:v18];
+      v19 = contactCopy;
+      sizeCopy = size;
+      v20 = completionCopy;
+      [(AAUIContactsProvider *)self _fetchServerImageDataFor:familyDSID WithCompletion:v18];
 
       goto LABEL_6;
     }
 
-    v14 = [v12 thumbnailImageData];
+    imageData2 = [v12 thumbnailImageData];
   }
 
-  v16 = v14;
-  (*(v9 + 2))(v9, v14);
+  v16 = imageData2;
+  (*(completionCopy + 2))(completionCopy, imageData2);
 
 LABEL_6:
 }
@@ -209,14 +209,14 @@ void __77__AAUIContactsProvider__fetchImageDataForLocalContact_ofSize_withComple
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_fetchServerImageDataFor:(id)a3 WithCompletion:(id)a4
+- (void)_fetchServerImageDataFor:(id)for WithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  forCopy = for;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (forCopy)
   {
-    v8 = [objc_alloc(MEMORY[0x1E699C078]) initWithFamilyMemberDSID:v5 size:1 localFallback:1];
+    v8 = [objc_alloc(MEMORY[0x1E699C078]) initWithFamilyMemberDSID:forCopy size:1 localFallback:1];
     [v8 setUseMonogramAsLastResort:0];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -228,7 +228,7 @@ void __77__AAUIContactsProvider__fetchImageDataForLocalContact_ofSize_withComple
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

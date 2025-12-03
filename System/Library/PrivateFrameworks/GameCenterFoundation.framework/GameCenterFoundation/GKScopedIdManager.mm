@@ -1,14 +1,14 @@
 @interface GKScopedIdManager
-+ (void)gameCenterEnabledGameInstalled:(id)a3 withCompletionHandler:(id)a4;
++ (void)gameCenterEnabledGameInstalled:(id)installed withCompletionHandler:(id)handler;
 @end
 
 @implementation GKScopedIdManager
 
-+ (void)gameCenterEnabledGameInstalled:(id)a3 withCompletionHandler:(id)a4
++ (void)gameCenterEnabledGameInstalled:(id)installed withCompletionHandler:(id)handler
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  installedCopy = installed;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -17,14 +17,14 @@
   v8 = os_log_GKCache;
   if (os_log_type_enabled(os_log_GKCache, OS_LOG_TYPE_DEBUG))
   {
-    [GKScopedIdManager gameCenterEnabledGameInstalled:v5 withCompletionHandler:v8];
+    [GKScopedIdManager gameCenterEnabledGameInstalled:installedCopy withCompletionHandler:v8];
   }
 
   v9 = +[GKDaemonProxy daemonProxy];
-  v10 = [v9 gameService];
-  v13[0] = v5;
+  gameService = [v9 gameService];
+  v13[0] = installedCopy;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-  [v10 storeGameForBundleIDs:v11 completion:v6];
+  [gameService storeGameForBundleIDs:v11 completion:handlerCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }

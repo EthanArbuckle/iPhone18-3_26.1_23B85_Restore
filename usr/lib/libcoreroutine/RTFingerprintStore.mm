@@ -1,121 +1,121 @@
 @interface RTFingerprintStore
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (void)_appendWiFiAccessPointsToLastFingerprint:(id)a3 handler:(id)a4;
-- (void)_fetchFingerprintsBetweenStartDate:(id)a3 endDate:(id)a4 filteredBySettledState:(unint64_t)a5 handler:(id)a6;
-- (void)_fetchWifiAccessPointsForFingerprint:(id)a3 fetchLimit:(unint64_t)a4 handler:(id)a5;
-- (void)appendWiFiAccessPointsToLastFingerprint:(id)a3 handler:(id)a4;
-- (void)clearWithHandler:(id)a3;
-- (void)fetchFingerprintsBetweenStartDate:(id)a3 endDate:(id)a4 filteredBySettledState:(unint64_t)a5 handler:(id)a6;
-- (void)fetchWifiAccessPointsForFingerprint:(id)a3 fetchLimit:(unint64_t)a4 handler:(id)a5;
-- (void)purgePredating:(id)a3 handler:(id)a4;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (void)_appendWiFiAccessPointsToLastFingerprint:(id)fingerprint handler:(id)handler;
+- (void)_fetchFingerprintsBetweenStartDate:(id)date endDate:(id)endDate filteredBySettledState:(unint64_t)state handler:(id)handler;
+- (void)_fetchWifiAccessPointsForFingerprint:(id)fingerprint fetchLimit:(unint64_t)limit handler:(id)handler;
+- (void)appendWiFiAccessPointsToLastFingerprint:(id)fingerprint handler:(id)handler;
+- (void)clearWithHandler:(id)handler;
+- (void)fetchFingerprintsBetweenStartDate:(id)date endDate:(id)endDate filteredBySettledState:(unint64_t)state handler:(id)handler;
+- (void)fetchWifiAccessPointsForFingerprint:(id)fingerprint fetchLimit:(unint64_t)limit handler:(id)handler;
+- (void)purgePredating:(id)predating handler:(id)handler;
 @end
 
 @implementation RTFingerprintStore
 
-- (void)appendWiFiAccessPointsToLastFingerprint:(id)a3 handler:(id)a4
+- (void)appendWiFiAccessPointsToLastFingerprint:(id)fingerprint handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  fingerprintCopy = fingerprint;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__RTFingerprintStore_appendWiFiAccessPointsToLastFingerprint_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = fingerprintCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = fingerprintCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)fetchFingerprintsBetweenStartDate:(id)a3 endDate:(id)a4 filteredBySettledState:(unint64_t)a5 handler:(id)a6
+- (void)fetchFingerprintsBetweenStartDate:(id)date endDate:(id)endDate filteredBySettledState:(unint64_t)state handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __95__RTFingerprintStore_fetchFingerprintsBetweenStartDate_endDate_filteredBySettledState_handler___block_invoke;
   block[3] = &unk_2788C5110;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a5;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = dateCopy;
+  v20 = handlerCopy;
+  stateCopy = state;
+  v19 = endDateCopy;
+  v14 = handlerCopy;
+  v15 = endDateCopy;
+  v16 = dateCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)fetchWifiAccessPointsForFingerprint:(id)a3 fetchLimit:(unint64_t)a4 handler:(id)a5
+- (void)fetchWifiAccessPointsForFingerprint:(id)fingerprint fetchLimit:(unint64_t)limit handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(RTNotifier *)self queue];
+  fingerprintCopy = fingerprint;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__RTFingerprintStore_fetchWifiAccessPointsForFingerprint_fetchLimit_handler___block_invoke;
   v13[3] = &unk_2788C4C20;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = fingerprintCopy;
+  v15 = handlerCopy;
+  limitCopy = limit;
+  v11 = handlerCopy;
+  v12 = fingerprintCopy;
+  dispatch_async(queue, v13);
 }
 
-- (void)clearWithHandler:(id)a3
+- (void)clearWithHandler:(id)handler
 {
   v6[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = objc_opt_class();
   v6[1] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:2];
-  [(RTStore *)self removeAll:v5 handler:v4];
+  [(RTStore *)self removeAll:v5 handler:handlerCopy];
 }
 
-- (void)purgePredating:(id)a3 handler:(id)a4
+- (void)purgePredating:(id)predating handler:(id)handler
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v11 = @"start";
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  predatingCopy = predating;
   v10 = objc_opt_class();
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
   v12[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  [(RTStore *)self purgePredating:v7 predicateMappings:v9 handler:v6];
+  [(RTStore *)self purgePredating:predatingCopy predicateMappings:v9 handler:handlerCopy];
 }
 
-- (void)_appendWiFiAccessPointsToLastFingerprint:(id)a3 handler:(id)a4
+- (void)_appendWiFiAccessPointsToLastFingerprint:(id)fingerprint handler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  fingerprintCopy = fingerprint;
+  handlerCopy = handler;
+  if (fingerprintCopy)
   {
-    if ([v7 count])
+    if ([fingerprintCopy count])
     {
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __71__RTFingerprintStore__appendWiFiAccessPointsToLastFingerprint_handler___block_invoke;
       aBlock[3] = &unk_2788C5138;
-      v9 = v8;
+      v9 = handlerCopy;
       v18 = v9;
-      v17 = v7;
+      v17 = fingerprintCopy;
       v19 = a2;
       v10 = _Block_copy(aBlock);
       [(RTStore *)self _performBlock:v10 contextType:2 errorHandler:v9];
     }
 
-    else if (v8)
+    else if (handlerCopy)
     {
-      (*(v8 + 2))(v8, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
@@ -138,9 +138,9 @@
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     v15 = [v12 errorWithDomain:v13 code:7 userInfo:v14];
 
-    if (v8)
+    if (handlerCopy)
     {
-      (*(v8 + 2))(v8, v15);
+      (*(handlerCopy + 2))(handlerCopy, v15);
     }
   }
 }
@@ -264,17 +264,17 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)_fetchFingerprintsBetweenStartDate:(id)a3 endDate:(id)a4 filteredBySettledState:(unint64_t)a5 handler:(id)a6
+- (void)_fetchFingerprintsBetweenStartDate:(id)date endDate:(id)endDate filteredBySettledState:(unint64_t)state handler:(id)handler
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v12)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v10)
+    if (dateCopy)
     {
-      if (v11)
+      if (endDateCopy)
       {
         goto LABEL_13;
       }
@@ -292,10 +292,10 @@ LABEL_24:
         _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: startDate (in %s:%d)", buf, 0x12u);
       }
 
-      if (v11)
+      if (endDateCopy)
       {
 LABEL_13:
-        if (a5 >= 3)
+        if (state >= 3)
         {
           v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -308,22 +308,22 @@ LABEL_13:
           }
         }
 
-        if (v10)
+        if (dateCopy)
         {
-          if (v11)
+          if (endDateCopy)
           {
-            if ([v10 isOnOrBefore:v11])
+            if ([dateCopy isOnOrBefore:endDateCopy])
             {
-              if (a5 < 3)
+              if (state < 3)
               {
                 aBlock[0] = MEMORY[0x277D85DD0];
                 aBlock[1] = 3221225472;
                 aBlock[2] = __96__RTFingerprintStore__fetchFingerprintsBetweenStartDate_endDate_filteredBySettledState_handler___block_invoke;
                 aBlock[3] = &unk_2788C4910;
-                v28 = v10;
-                v29 = v11;
-                v31 = a5;
-                v17 = v12;
+                v28 = dateCopy;
+                v29 = endDateCopy;
+                stateCopy = state;
+                v17 = handlerCopy;
                 v30 = v17;
                 v18 = _Block_copy(aBlock);
                 v25[0] = MEMORY[0x277D85DD0];
@@ -384,7 +384,7 @@ LABEL_13:
         v24 = [v21 dictionaryWithObjects:v22 forKeys:v23 count:1];
         v13 = [v19 errorWithDomain:v20 code:7 userInfo:v24];
 
-        (*(v12 + 2))(v12, 0, v13);
+        (*(handlerCopy + 2))(handlerCopy, 0, v13);
         goto LABEL_27;
       }
     }
@@ -442,22 +442,22 @@ void __96__RTFingerprintStore__fetchFingerprintsBetweenStartDate_endDate_filtere
   }
 }
 
-- (void)_fetchWifiAccessPointsForFingerprint:(id)a3 fetchLimit:(unint64_t)a4 handler:(id)a5
+- (void)_fetchWifiAccessPointsForFingerprint:(id)fingerprint fetchLimit:(unint64_t)limit handler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  fingerprintCopy = fingerprint;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v8)
+    if (fingerprintCopy)
     {
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __78__RTFingerprintStore__fetchWifiAccessPointsForFingerprint_fetchLimit_handler___block_invoke;
       aBlock[3] = &unk_2788C4FB0;
-      v20 = v8;
-      v22 = a4;
-      v10 = v9;
+      v20 = fingerprintCopy;
+      limitCopy = limit;
+      v10 = handlerCopy;
       v21 = v10;
       v11 = _Block_copy(aBlock);
       v17[0] = MEMORY[0x277D85DD0];
@@ -489,7 +489,7 @@ void __96__RTFingerprintStore__fetchFingerprintsBetweenStartDate_endDate_filtere
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
       v12 = [v14 errorWithDomain:v15 code:7 userInfo:v16];
 
-      (*(v9 + 2))(v9, 0, v12);
+      (*(handlerCopy + 2))(handlerCopy, 0, v12);
     }
   }
 
@@ -543,7 +543,7 @@ void __78__RTFingerprintStore__fetchWifiAccessPointsForFingerprint_fetchLimit_ha
   }
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCA9B8];
@@ -553,10 +553,10 @@ void __78__RTFingerprintStore__fetchWifiAccessPointsForFingerprint_fetchLimit_ha
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v9 = [v6 errorWithDomain:v7 code:7 userInfo:v8];
 
-  if (a5)
+  if (error)
   {
     v10 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   return 0;

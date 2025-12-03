@@ -1,11 +1,11 @@
 @interface LAEnvironmentMechanism
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isUsable;
-- (LAEnvironmentMechanism)initWithCoreMechanism:(id)a3;
+- (LAEnvironmentMechanism)initWithCoreMechanism:(id)mechanism;
 - (NSString)iconSystemName;
 - (NSString)localizedName;
 - (id)availabilityError;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -14,17 +14,17 @@
 - (BOOL)isUsable
 {
   v2 = MEMORY[0x1E69AD268];
-  v3 = [(LAEnvironmentMechanism *)self coreMechanism];
-  v4 = [v3 availabilityError];
-  LOBYTE(v2) = [v2 error:v4 hasCode:*MEMORY[0x1E69AD118]];
+  coreMechanism = [(LAEnvironmentMechanism *)self coreMechanism];
+  availabilityError = [coreMechanism availabilityError];
+  LOBYTE(v2) = [v2 error:availabilityError hasCode:*MEMORY[0x1E69AD118]];
 
   return v2;
 }
 
-- (LAEnvironmentMechanism)initWithCoreMechanism:(id)a3
+- (LAEnvironmentMechanism)initWithCoreMechanism:(id)mechanism
 {
-  v5 = a3;
-  if (v5)
+  mechanismCopy = mechanism;
+  if (mechanismCopy)
   {
     v10.receiver = self;
     v10.super_class = LAEnvironmentMechanism;
@@ -32,42 +32,42 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_coreMechanism, a3);
+      objc_storeStrong(&v6->_coreMechanism, mechanism);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(LAEnvironmentMechanism *)self coreMechanism];
-  v6 = [v4 initWithCoreMechanism:v5];
+  coreMechanism = [(LAEnvironmentMechanism *)self coreMechanism];
+  v6 = [v4 initWithCoreMechanism:coreMechanism];
 
   return v6;
 }
 
 - (id)description
 {
-  v2 = [(LAEnvironmentMechanism *)self coreMechanism];
-  v3 = [v2 description];
+  coreMechanism = [(LAEnvironmentMechanism *)self coreMechanism];
+  v3 = [coreMechanism description];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -77,9 +77,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(LAEnvironmentMechanism *)self coreMechanism];
-      v6 = [(LAEnvironmentMechanism *)v4 coreMechanism];
-      v7 = [v5 isEqual:v6];
+      coreMechanism = [(LAEnvironmentMechanism *)self coreMechanism];
+      coreMechanism2 = [(LAEnvironmentMechanism *)equalCopy coreMechanism];
+      v7 = [coreMechanism isEqual:coreMechanism2];
     }
 
     else
@@ -93,26 +93,26 @@
 
 - (NSString)localizedName
 {
-  v2 = [(LAEnvironmentMechanism *)self coreMechanism];
-  v3 = [v2 localizedName];
+  coreMechanism = [(LAEnvironmentMechanism *)self coreMechanism];
+  localizedName = [coreMechanism localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (NSString)iconSystemName
 {
-  v2 = [(LAEnvironmentMechanism *)self coreMechanism];
-  v3 = [v2 iconSystemName];
+  coreMechanism = [(LAEnvironmentMechanism *)self coreMechanism];
+  iconSystemName = [coreMechanism iconSystemName];
 
-  return v3;
+  return iconSystemName;
 }
 
 - (id)availabilityError
 {
-  v2 = [(LAEnvironmentMechanism *)self coreMechanism];
-  v3 = [v2 availabilityError];
+  coreMechanism = [(LAEnvironmentMechanism *)self coreMechanism];
+  availabilityError = [coreMechanism availabilityError];
 
-  return v3;
+  return availabilityError;
 }
 
 @end

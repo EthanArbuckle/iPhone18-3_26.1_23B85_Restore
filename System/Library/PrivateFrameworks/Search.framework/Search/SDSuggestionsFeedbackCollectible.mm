@@ -1,19 +1,19 @@
 @interface SDSuggestionsFeedbackCollectible
-- (BOOL)serializeToJSON:(void *)a3 valuesOnly:(BOOL)a4;
-- (SDSuggestionsFeedbackCollectible)initWithSuggestionsData:(id)a3;
+- (BOOL)serializeToJSON:(void *)n valuesOnly:(BOOL)only;
+- (SDSuggestionsFeedbackCollectible)initWithSuggestionsData:(id)data;
 @end
 
 @implementation SDSuggestionsFeedbackCollectible
 
-- (SDSuggestionsFeedbackCollectible)initWithSuggestionsData:(id)a3
+- (SDSuggestionsFeedbackCollectible)initWithSuggestionsData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = SDSuggestionsFeedbackCollectible;
   v5 = [(SDSuggestionsFeedbackCollectible *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dataCopy copy];
     data = v5->_data;
     v5->_data = v6;
   }
@@ -21,23 +21,23 @@
   return v5;
 }
 
-- (BOOL)serializeToJSON:(void *)a3 valuesOnly:(BOOL)a4
+- (BOOL)serializeToJSON:(void *)n valuesOnly:(BOOL)only
 {
   v6 = [(NSData *)self->_data length];
   if (v6)
   {
     v7 = v6;
-    v8 = [(NSData *)self->_data bytes];
-    v9 = v8;
-    if (!a4)
+    bytes = [(NSData *)self->_data bytes];
+    v9 = bytes;
+    if (!only)
     {
       goto LABEL_24;
     }
 
-    v10 = &v8[v7];
+    v10 = &bytes[v7];
     v11 = v7 - 1;
     v12 = MEMORY[0x1E69E9830];
-    v13 = v8;
+    v13 = bytes;
     do
     {
       v14 = *v13;

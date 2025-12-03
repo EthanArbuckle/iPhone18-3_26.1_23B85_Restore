@@ -2,31 +2,31 @@
 + (void)initialize;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)firstTime;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)lastTime;
-- (BWObjectRingBuffer)initWithCapacity:(int)a3;
-- (Float64)_checkAscendingInsertAt:(uint64_t)a3 object:(CMTime *)a4 forTime:;
+- (BWObjectRingBuffer)initWithCapacity:(int)capacity;
+- (Float64)_checkAscendingInsertAt:(uint64_t)at object:(CMTime *)object forTime:;
 - (id)description;
 - (id)firstObject;
 - (id)lastObject;
-- (int)_findClosestOffsetToTimestamp:(id *)a3;
-- (uint64_t)_permuteBufferForNewObjectAtTime:(uint64_t)a1;
-- (void)_enumerateObjectsStartingAtOffset:(int)a3 usingBlock:(id)a4;
-- (void)_reverseEnumerateObjectsStartingAtOffset:(int)a3 usingBlock:(id)a4;
-- (void)appendObject:(id)a3 forTime:(id *)a4;
+- (int)_findClosestOffsetToTimestamp:(id *)timestamp;
+- (uint64_t)_permuteBufferForNewObjectAtTime:(uint64_t)time;
+- (void)_enumerateObjectsStartingAtOffset:(int)offset usingBlock:(id)block;
+- (void)_reverseEnumerateObjectsStartingAtOffset:(int)offset usingBlock:(id)block;
+- (void)appendObject:(id)object forTime:(id *)time;
 - (void)clear;
 - (void)dealloc;
-- (void)enumerateObjectsStartingAt:(id *)a3 usingBlock:(id)a4;
-- (void)extractTimeRangeFrom:(id *)a3 until:(id *)a4 into:(id)a5 times:(id)a6;
-- (void)flushEntriesEarlierThan:(id *)a3;
-- (void)reverseEnumerateObjectsStartingAt:(id *)a3 usingBlock:(id)a4;
-- (void)setCapacity:(int)a3;
-- (void)setEnforceAscending:(BOOL)a3;
+- (void)enumerateObjectsStartingAt:(id *)at usingBlock:(id)block;
+- (void)extractTimeRangeFrom:(id *)from until:(id *)until into:(id)into times:(id)times;
+- (void)flushEntriesEarlierThan:(id *)than;
+- (void)reverseEnumerateObjectsStartingAt:(id *)at usingBlock:(id)block;
+- (void)setCapacity:(int)capacity;
+- (void)setEnforceAscending:(BOOL)ascending;
 @end
 
 @implementation BWObjectRingBuffer
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -35,9 +35,9 @@
   }
 }
 
-- (BWObjectRingBuffer)initWithCapacity:(int)a3
+- (BWObjectRingBuffer)initWithCapacity:(int)capacity
 {
-  v3 = *&a3;
+  v3 = *&capacity;
   v7.receiver = self;
   v7.super_class = BWObjectRingBuffer;
   v4 = [(BWObjectRingBuffer *)&v7 init];
@@ -60,13 +60,13 @@
   [(BWObjectRingBuffer *)&v3 dealloc];
 }
 
-- (void)setCapacity:(int)a3
+- (void)setCapacity:(int)capacity
 {
-  if (a3 < 1)
+  if (capacity < 1)
   {
-    if (a3 < 0)
+    if (capacity < 0)
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"setting negative capacity %d", *&a3}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"setting negative capacity %d", *&capacity}];
     }
 
     v6 = 0;
@@ -75,13 +75,13 @@
 
   else
   {
-    v5 = malloc_type_malloc(8 * a3, 0x80040B8603338uLL);
-    v6 = malloc_type_malloc(24 * a3, 0x1000040504FFAC1uLL);
+    v5 = malloc_type_malloc(8 * capacity, 0x80040B8603338uLL);
+    v6 = malloc_type_malloc(24 * capacity, 0x1000040504FFAC1uLL);
   }
 
   count = self->_count;
-  v8 = __OFSUB__(count, a3);
-  v9 = count - a3;
+  v8 = __OFSUB__(count, capacity);
+  v9 = count - capacity;
   if ((v9 < 0) ^ v8 | (v9 == 0))
   {
     v9 = 0;
@@ -99,14 +99,14 @@
   free(self->_times);
   self->_objects = v5;
   self->_times = v6;
-  v10 = self->_count;
-  if (v10 >= a3)
+  capacityCopy = self->_count;
+  if (capacityCopy >= capacity)
   {
-    v10 = a3;
+    capacityCopy = capacity;
   }
 
-  self->_capacity = a3;
-  self->_count = v10;
+  self->_capacity = capacity;
+  self->_count = capacityCopy;
   self->_oldest = 0;
 }
 
@@ -128,9 +128,9 @@ uint64_t __34__BWObjectRingBuffer_setCapacity___block_invoke(uint64_t result, ui
   return result;
 }
 
-- (void)setEnforceAscending:(BOOL)a3
+- (void)setEnforceAscending:(BOOL)ascending
 {
-  if (a3 && !self->_ascending)
+  if (ascending && !self->_ascending)
   {
     if (self->_count >= 1)
     {
@@ -183,7 +183,7 @@ uint64_t __34__BWObjectRingBuffer_setCapacity___block_invoke(uint64_t result, ui
     self->_ascending = 1;
   }
 
-  self->_enforceAscending = a3;
+  self->_enforceAscending = ascending;
 }
 
 uint64_t __42__BWObjectRingBuffer_setEnforceAscending___block_invoke(uint64_t a1, unsigned int *a2, unsigned int *a3)
@@ -234,7 +234,7 @@ uint64_t __42__BWObjectRingBuffer_setEnforceAscending___block_invoke(uint64_t a1
   }
 }
 
-- (void)appendObject:(id)a3 forTime:(id *)a4
+- (void)appendObject:(id)object forTime:(id *)time
 {
   capacity = self->_capacity;
   if (!capacity)
@@ -260,7 +260,7 @@ uint64_t __42__BWObjectRingBuffer_setEnforceAscending___block_invoke(uint64_t a1
         v11 = *&v10->var0;
         time1.epoch = v10->var3;
         *&time1.value = v11;
-        v15 = *a4;
+        v15 = *time;
         if (CMTimeCompare(&time1, &v15) >= 1)
         {
           v12 = self->_oldest;
@@ -274,8 +274,8 @@ uint64_t __42__BWObjectRingBuffer_setEnforceAscending___block_invoke(uint64_t a1
         }
       }
 
-      time1 = *a4;
-      [(BWObjectRingBuffer *)self _checkAscendingInsertAt:a3 object:&time1 forTime:?];
+      time1 = *time;
+      [(BWObjectRingBuffer *)self _checkAscendingInsertAt:object object:&time1 forTime:?];
     }
   }
 
@@ -284,8 +284,8 @@ uint64_t __42__BWObjectRingBuffer_setEnforceAscending___block_invoke(uint64_t a1
     oldest = (oldest + count) % capacity;
     if (count >= 1 && self->_ascending)
     {
-      time1 = *a4;
-      [(BWObjectRingBuffer *)self _checkAscendingInsertAt:a3 object:&time1 forTime:?];
+      time1 = *time;
+      [(BWObjectRingBuffer *)self _checkAscendingInsertAt:object object:&time1 forTime:?];
       count = self->_count;
     }
 
@@ -294,24 +294,24 @@ uint64_t __42__BWObjectRingBuffer_setEnforceAscending___block_invoke(uint64_t a1
 
   if (self->_enforceAscending && !self->_ascending && self->_count >= 2)
   {
-    time1 = *a4;
+    time1 = *time;
     oldest = [(BWObjectRingBuffer *)self _permuteBufferForNewObjectAtTime:?];
     self->_ascending = 1;
   }
 
-  self->_objects[oldest] = a3;
+  self->_objects[oldest] = object;
   v13 = &self->_times[oldest];
-  var3 = a4->var3;
-  *&v13->var0 = *&a4->var0;
+  var3 = time->var3;
+  *&v13->var0 = *&time->var0;
   v13->var3 = var3;
 }
 
-- (int)_findClosestOffsetToTimestamp:(id *)a3
+- (int)_findClosestOffsetToTimestamp:(id *)timestamp
 {
   if (!self->_count)
   {
     v5 = *MEMORY[0x1E695DA20];
-    time = *a3;
+    time = *timestamp;
     [MEMORY[0x1E695DF30] raise:v5 format:{@"searching for %.4f, empty ring buffer", CMTimeGetSeconds(&time)}];
   }
 
@@ -330,7 +330,7 @@ uint64_t __42__BWObjectRingBuffer_setEnforceAscending___block_invoke(uint64_t a1
         v12 = *&v11->var0;
         time.epoch = v11->var3;
         *&time.value = v12;
-        time2 = *a3;
+        time2 = *timestamp;
         v13 = CMTimeCompare(&time, &time2);
         switch(v13)
         {
@@ -368,7 +368,7 @@ LABEL_28:
     v27 = (oldest + v9) % capacity;
     memset(&time, 0, sizeof(time));
     v28 = &self->_times[(oldest + v7) % capacity];
-    lhs = *a3;
+    lhs = *timestamp;
     v29 = *&v28->var0;
     rhs.epoch = v28->var3;
     *&rhs.value = v29;
@@ -376,7 +376,7 @@ LABEL_28:
     CMTimeAbsoluteValue(&time, &time2);
     memset(&time2, 0, sizeof(time2));
     v30 = &self->_times[v27];
-    rhs = *a3;
+    rhs = *timestamp;
     v31 = *&v30->var0;
     v34.epoch = v30->var3;
     *&v34.value = v31;
@@ -403,7 +403,7 @@ LABEL_28:
     v16 = *&v15->var0;
     lhs.epoch = v15->var3;
     *&lhs.value = v16;
-    rhs = *a3;
+    rhs = *timestamp;
     CMTimeSubtract(&time2, &lhs, &rhs);
     CMTimeAbsoluteValue(&time, &time2);
     v17 = self->_capacity;
@@ -429,7 +429,7 @@ LABEL_28:
         v23 = *&v22->var0;
         rhs.epoch = v22->var3;
         *&rhs.value = v23;
-        v34 = *a3;
+        v34 = *timestamp;
         CMTimeSubtract(&lhs, &rhs, &v34);
         CMTimeAbsoluteValue(&time2, &lhs);
         lhs = time2;
@@ -533,17 +533,17 @@ LABEL_32:
   return self;
 }
 
-- (void)enumerateObjectsStartingAt:(id *)a3 usingBlock:(id)a4
+- (void)enumerateObjectsStartingAt:(id *)at usingBlock:(id)block
 {
   if (self->_count)
   {
-    time1 = *a3;
+    time1 = *at;
     v6 = [(BWObjectRingBuffer *)self _findClosestOffsetToTimestamp:&time1];
     v7 = &self->_times[(self->_oldest + v6) % self->_capacity];
     v8 = *&v7->var0;
     time1.epoch = v7->var3;
     *&time1.value = v8;
-    v9 = *a3;
+    v9 = *at;
     if ((v6 + (CMTimeCompare(&time1, &v9) >> 31)) < self->_count)
     {
       [BWObjectRingBuffer _enumerateObjectsStartingAtOffset:"_enumerateObjectsStartingAtOffset:usingBlock:" usingBlock:?];
@@ -551,18 +551,18 @@ LABEL_32:
   }
 }
 
-- (void)_enumerateObjectsStartingAtOffset:(int)a3 usingBlock:(id)a4
+- (void)_enumerateObjectsStartingAtOffset:(int)offset usingBlock:(id)block
 {
-  v5 = *&a3;
+  v5 = *&offset;
   count = self->_count;
-  if (a3 < 0 || count <= a3)
+  if (offset < 0 || count <= offset)
   {
-    if (count == a3)
+    if (count == offset)
     {
       return;
     }
 
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"Invalid start %d for ring buffer of count %d", *&a3, count}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"Invalid start %d for ring buffer of count %d", *&offset, count}];
     LODWORD(count) = self->_count;
   }
 
@@ -575,11 +575,11 @@ LABEL_32:
   {
     v12 = self->_objects[v10];
     v13 = &self->_times[v10];
-    v14 = *(a4 + 2);
+    v14 = *(block + 2);
     v15 = *&v13->var0;
     var3 = v13->var3;
     v18 = v15;
-    v14(a4, v12, &v18, v5, &v20);
+    v14(block, v12, &v18, v5, &v20);
     if (v20)
     {
       break;
@@ -599,31 +599,31 @@ LABEL_32:
   while (v16 - v17 != v11);
 }
 
-- (void)reverseEnumerateObjectsStartingAt:(id *)a3 usingBlock:(id)a4
+- (void)reverseEnumerateObjectsStartingAt:(id *)at usingBlock:(id)block
 {
   if (self->_count)
   {
-    time1 = *a3;
+    time1 = *at;
     v7 = [(BWObjectRingBuffer *)self _findClosestOffsetToTimestamp:&time1];
     v8 = &self->_times[(self->_oldest + v7) % self->_capacity];
     v9 = *&v8->var0;
     time1.epoch = v8->var3;
     *&time1.value = v9;
-    v11 = *a3;
+    v11 = *at;
     v10 = CMTimeCompare(&time1, &v11) > 0;
     if (v7 - v10 >= 0)
     {
-      [(BWObjectRingBuffer *)self _reverseEnumerateObjectsStartingAtOffset:(v7 - v10) usingBlock:a4];
+      [(BWObjectRingBuffer *)self _reverseEnumerateObjectsStartingAtOffset:(v7 - v10) usingBlock:block];
     }
   }
 }
 
-- (void)_reverseEnumerateObjectsStartingAtOffset:(int)a3 usingBlock:(id)a4
+- (void)_reverseEnumerateObjectsStartingAtOffset:(int)offset usingBlock:(id)block
 {
-  v5 = *&a3;
-  if (a3 < 0)
+  v5 = *&offset;
+  if (offset < 0)
   {
-    if (a3 == -1)
+    if (offset == -1)
     {
       return;
     }
@@ -634,13 +634,13 @@ LABEL_32:
   else
   {
     count = self->_count;
-    if (count > a3)
+    if (count > offset)
     {
       goto LABEL_7;
     }
   }
 
-  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"Invalid start %d for ring buffer of count %d", *&a3, count}];
+  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"Invalid start %d for ring buffer of count %d", *&offset, count}];
 LABEL_7:
   v18 = 0;
   oldest = self->_oldest;
@@ -659,11 +659,11 @@ LABEL_7:
   {
     v11 = self->_objects[v9];
     v12 = &self->_times[v9];
-    v13 = *(a4 + 2);
+    v13 = *(block + 2);
     v14 = *&v12->var0;
     var3 = v12->var3;
     v16 = v14;
-    v13(a4, v11, &v16, v5, &v18);
+    v13(block, v11, &v16, v5, &v18);
     if (v18)
     {
       break;
@@ -680,16 +680,16 @@ LABEL_7:
   while (v9-- != capacity);
 }
 
-- (void)extractTimeRangeFrom:(id *)a3 until:(id *)a4 into:(id)a5 times:(id)a6
+- (void)extractTimeRangeFrom:(id *)from until:(id *)until into:(id)into times:(id)times
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__BWObjectRingBuffer_extractTimeRangeFrom_until_into_times___block_invoke;
   v7[3] = &unk_1E7999CF0;
-  v8 = *a4;
-  v7[4] = a5;
-  v7[5] = a6;
-  v6 = *a3;
+  v8 = *until;
+  v7[4] = into;
+  v7[5] = times;
+  v6 = *from;
   [(BWObjectRingBuffer *)self enumerateObjectsStartingAt:&v6 usingBlock:v7];
 }
 
@@ -729,7 +729,7 @@ uint64_t __60__BWObjectRingBuffer_extractTimeRangeFrom_until_into_times___block_
   self->_ascending = 1;
 }
 
-- (void)flushEntriesEarlierThan:(id *)a3
+- (void)flushEntriesEarlierThan:(id *)than
 {
   count = self->_count;
   if (count)
@@ -742,7 +742,7 @@ uint64_t __60__BWObjectRingBuffer_extractTimeRangeFrom_until_into_times___block_
       v9 = *&v8->var0;
       time1.epoch = v8->var3;
       *&time1.value = v9;
-      v13 = *a3;
+      v13 = *than;
       if ((CMTimeCompare(&time1, &v13) & 0x80000000) == 0)
       {
         break;
@@ -797,23 +797,23 @@ uint64_t __33__BWObjectRingBuffer_description__block_invoke(uint64_t a1, uint64_
   return [v4 appendFormat:@"#%d: %.4f %p\n", a4, CMTimeGetSeconds(&time), a2];
 }
 
-- (Float64)_checkAscendingInsertAt:(uint64_t)a3 object:(CMTime *)a4 forTime:
+- (Float64)_checkAscendingInsertAt:(uint64_t)at object:(CMTime *)object forTime:
 {
-  if (a1)
+  if (self)
   {
-    v6 = (a2 + *(a1 + 24) - 1) % *(a1 + 24);
-    v7 = *(a1 + 16) + 24 * v6;
+    v6 = (a2 + *(self + 24) - 1) % *(self + 24);
+    v7 = *(self + 16) + 24 * v6;
     v8 = *v7;
     time1.epoch = *(v7 + 16);
     *&time1.value = v8;
-    time2 = *a4;
+    time2 = *object;
     if (CMTimeCompare(&time1, &time2) >= 1)
     {
-      *(a1 + 36) = 0;
-      if (*(a1 + 37) == 1)
+      *(self + 36) = 0;
+      if (*(self + 37) == 1)
       {
-        v10 = *(a1 + 16) + 24 * v6;
-        time2 = *a4;
+        v10 = *(self + 16) + 24 * v6;
+        time2 = *object;
         v11 = *v10;
         v12.epoch = *(v10 + 16);
         *&v12.value = v11;
@@ -826,23 +826,23 @@ uint64_t __33__BWObjectRingBuffer_description__block_invoke(uint64_t a1, uint64_
   return result;
 }
 
-- (uint64_t)_permuteBufferForNewObjectAtTime:(uint64_t)a1
+- (uint64_t)_permuteBufferForNewObjectAtTime:(uint64_t)time
 {
-  if (!a1)
+  if (!time)
   {
     return 0;
   }
 
-  v4 = *(a1 + 24);
-  LODWORD(v5) = (*(a1 + 32) + *(a1 + 28) - 1) % v4;
+  v4 = *(time + 24);
+  LODWORD(v5) = (*(time + 32) + *(time + 28) - 1) % v4;
   if (v5)
   {
-    v6 = (*(a1 + 32) + *(a1 + 28) - 1) % v4;
+    v6 = (*(time + 32) + *(time + 28) - 1) % v4;
   }
 
   else
   {
-    v6 = *(a1 + 24);
+    v6 = *(time + 24);
   }
 
   v7 = (v6 - 1);
@@ -850,8 +850,8 @@ uint64_t __33__BWObjectRingBuffer_description__block_invoke(uint64_t a1, uint64_
   {
     v8 = v5;
     v5 = v7;
-    *(*(a1 + 8) + 8 * v8) = *(*(a1 + 8) + 8 * v7);
-    v9 = *(a1 + 16);
+    *(*(time + 8) + 8 * v8) = *(*(time + 8) + 8 * v7);
+    v9 = *(time + 16);
     v10 = v9 + 24 * v8;
     v11 = (v9 + 24 * v7);
     v12 = *v11;
@@ -860,14 +860,14 @@ uint64_t __33__BWObjectRingBuffer_description__block_invoke(uint64_t a1, uint64_
     v13 = v7;
     if (!v7)
     {
-      v13 = *(a1 + 24);
+      v13 = *(time + 24);
     }
 
-    v14 = *(a1 + 32);
+    v14 = *(time + 32);
     v15 = v7;
     if (v7 < v14)
     {
-      v15 = *(a1 + 24) + v7;
+      v15 = *(time + 24) + v7;
     }
 
     if (v15 <= v14)
@@ -876,7 +876,7 @@ uint64_t __33__BWObjectRingBuffer_description__block_invoke(uint64_t a1, uint64_
     }
 
     v7 = (v13 - 1);
-    v16 = *(a1 + 16) + 24 * v7;
+    v16 = *(time + 16) + 24 * v7;
     v17 = *v16;
     time1.epoch = *(v16 + 16);
     *&time1.value = v17;

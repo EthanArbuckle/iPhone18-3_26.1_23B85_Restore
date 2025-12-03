@@ -1,13 +1,13 @@
 @interface KCSharingLocalItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (KCSharingInternetPasswordCredential)internetPassword;
 - (KCSharingLocalFingerprint)internetPasswordFingerprint;
 - (KCSharingLocalFingerprint)privateKeyFingerprint;
 - (KCSharingPrivateKeyCredential)privateKey;
 - (NSDate)modificationDate;
 - (NSString)description;
-- (id)initPasskeyWithPrivateKeyDatabaseItem:(SecDbItem *)a3 error:(id *)a4;
-- (id)initPasswordWithInternetPasswordDatabaseItem:(SecDbItem *)a3 error:(id *)a4;
+- (id)initPasskeyWithPrivateKeyDatabaseItem:(SecDbItem *)item error:(id *)error;
+- (id)initPasswordWithInternetPasswordDatabaseItem:(SecDbItem *)item error:(id *)error;
 - (unint64_t)hash;
 @end
 
@@ -18,7 +18,7 @@
   type = self->_type;
   if (type == 2)
   {
-    v4 = [(KCSharingLocalItem *)self internetPassword];
+    internetPassword = [(KCSharingLocalItem *)self internetPassword];
   }
 
   else
@@ -28,15 +28,15 @@
       goto LABEL_6;
     }
 
-    v4 = [(KCSharingLocalItem *)self privateKey];
+    internetPassword = [(KCSharingLocalItem *)self privateKey];
   }
 
-  v5 = v4;
-  v2 = [v4 modificationDate];
+  v5 = internetPassword;
+  modificationDate = [internetPassword modificationDate];
 
 LABEL_6:
 
-  return v2;
+  return modificationDate;
 }
 
 - (KCSharingLocalFingerprint)internetPasswordFingerprint
@@ -93,24 +93,24 @@ LABEL_6:
 
 - (NSString)description
 {
-  v4 = [(KCSharingLocalItem *)self type];
-  if (v4 == 2)
+  type = [(KCSharingLocalItem *)self type];
+  if (type == 2)
   {
-    v5 = [(KCSharingLocalItem *)self internetPassword];
-    v6 = [(KCSharingLocalItem *)self internetPasswordFingerprint];
-    [NSString stringWithFormat:@"KCSharingLocalItem(password:%@ passwordFingerprint:%@)", v5, v6];
+    internetPassword = [(KCSharingLocalItem *)self internetPassword];
+    internetPasswordFingerprint = [(KCSharingLocalItem *)self internetPasswordFingerprint];
+    [NSString stringWithFormat:@"KCSharingLocalItem(password:%@ passwordFingerprint:%@)", internetPassword, internetPasswordFingerprint];
   }
 
   else
   {
-    if (v4 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
 
-    v5 = [(KCSharingLocalItem *)self privateKey];
-    v6 = [(KCSharingLocalItem *)self privateKeyFingerprint];
-    [NSString stringWithFormat:@"KCSharingLocalItem(privateKey:%@ privateKeyFingerprint:%@)", v5, v6];
+    internetPassword = [(KCSharingLocalItem *)self privateKey];
+    internetPasswordFingerprint = [(KCSharingLocalItem *)self privateKeyFingerprint];
+    [NSString stringWithFormat:@"KCSharingLocalItem(privateKey:%@ privateKeyFingerprint:%@)", internetPassword, internetPasswordFingerprint];
   }
   v2 = ;
 
@@ -119,31 +119,31 @@ LABEL_6:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    if ([(KCSharingLocalItem *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(KCSharingLocalItem *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       type = self->_type;
       if (type == [(KCSharingLocalItem *)v5 type])
       {
         v7 = self->_type;
         if (v7 == 2)
         {
-          v8 = [(KCSharingLocalItem *)self internetPassword];
-          v9 = [(KCSharingLocalItem *)v5 internetPassword];
-          if ([v8 isEqual:v9])
+          internetPassword = [(KCSharingLocalItem *)self internetPassword];
+          internetPassword2 = [(KCSharingLocalItem *)v5 internetPassword];
+          if ([internetPassword isEqual:internetPassword2])
           {
-            v10 = [(KCSharingLocalItem *)self internetPasswordFingerprint];
-            v11 = [(KCSharingLocalItem *)v5 internetPasswordFingerprint];
+            internetPasswordFingerprint = [(KCSharingLocalItem *)self internetPasswordFingerprint];
+            internetPasswordFingerprint2 = [(KCSharingLocalItem *)v5 internetPasswordFingerprint];
             goto LABEL_13;
           }
 
@@ -154,15 +154,15 @@ LABEL_14:
 
         if (v7 == 1)
         {
-          v8 = [(KCSharingLocalItem *)self privateKey];
-          v9 = [(KCSharingLocalItem *)v5 privateKey];
-          if ([v8 isEqual:v9])
+          internetPassword = [(KCSharingLocalItem *)self privateKey];
+          internetPassword2 = [(KCSharingLocalItem *)v5 privateKey];
+          if ([internetPassword isEqual:internetPassword2])
           {
-            v10 = [(KCSharingLocalItem *)self privateKeyFingerprint];
-            v11 = [(KCSharingLocalItem *)v5 privateKeyFingerprint];
+            internetPasswordFingerprint = [(KCSharingLocalItem *)self privateKeyFingerprint];
+            internetPasswordFingerprint2 = [(KCSharingLocalItem *)v5 privateKeyFingerprint];
 LABEL_13:
-            v13 = v11;
-            v12 = [v10 isEqual:v11];
+            v13 = internetPasswordFingerprint2;
+            v12 = [internetPasswordFingerprint isEqual:internetPasswordFingerprint2];
 
 LABEL_15:
             goto LABEL_16;
@@ -212,7 +212,7 @@ LABEL_17:
   return [*(&self->super.isa + v4) hash] + 32 * v7 + v5 - v7;
 }
 
-- (id)initPasswordWithInternetPasswordDatabaseItem:(SecDbItem *)a3 error:(id *)a4
+- (id)initPasswordWithInternetPasswordDatabaseItem:(SecDbItem *)item error:(id *)error
 {
   v14.receiver = self;
   v14.super_class = KCSharingLocalItem;
@@ -224,7 +224,7 @@ LABEL_17:
   }
 
   v6->_type = 2;
-  v8 = [[KCSharingInternetPasswordCredential alloc] initWithDatabaseItem:a3 error:a4];
+  v8 = [[KCSharingInternetPasswordCredential alloc] initWithDatabaseItem:item error:error];
   internetPassword = v7->_internetPassword;
   v7->_internetPassword = v8;
 
@@ -233,7 +233,7 @@ LABEL_17:
     goto LABEL_5;
   }
 
-  v10 = [[KCSharingLocalFingerprint alloc] initWithDatabaseItem:a3 error:a4];
+  v10 = [[KCSharingLocalFingerprint alloc] initWithDatabaseItem:item error:error];
   internetPasswordFingerprint = v7->_internetPasswordFingerprint;
   v7->_internetPasswordFingerprint = v10;
 
@@ -252,7 +252,7 @@ LABEL_5:
   return v12;
 }
 
-- (id)initPasskeyWithPrivateKeyDatabaseItem:(SecDbItem *)a3 error:(id *)a4
+- (id)initPasskeyWithPrivateKeyDatabaseItem:(SecDbItem *)item error:(id *)error
 {
   v14.receiver = self;
   v14.super_class = KCSharingLocalItem;
@@ -264,7 +264,7 @@ LABEL_5:
   }
 
   v6->_type = 1;
-  v8 = [[KCSharingPrivateKeyCredential alloc] initWithDatabaseItem:a3 error:a4];
+  v8 = [[KCSharingPrivateKeyCredential alloc] initWithDatabaseItem:item error:error];
   privateKey = v7->_privateKey;
   v7->_privateKey = v8;
 
@@ -273,7 +273,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v10 = [[KCSharingLocalFingerprint alloc] initWithDatabaseItem:a3 error:a4];
+  v10 = [[KCSharingLocalFingerprint alloc] initWithDatabaseItem:item error:error];
   privateKeyFingerprint = v7->_privateKeyFingerprint;
   v7->_privateKeyFingerprint = v10;
 

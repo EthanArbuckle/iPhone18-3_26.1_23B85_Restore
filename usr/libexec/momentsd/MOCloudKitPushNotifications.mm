@@ -1,28 +1,28 @@
 @interface MOCloudKitPushNotifications
-- (MOCloudKitPushNotifications)initWithNamedDelegatePort:(id)a3 apsTopics:(id)a4 subscriptionID:(id)a5 onNotification:(id)a6 deviceType:(id)a7;
+- (MOCloudKitPushNotifications)initWithNamedDelegatePort:(id)port apsTopics:(id)topics subscriptionID:(id)d onNotification:(id)notification deviceType:(id)type;
 - (id)_apsEnvironmentString;
 - (void)_performActualStop;
-- (void)_performStateCheckWithHandler:(id)a3;
+- (void)_performStateCheckWithHandler:(id)handler;
 - (void)_requestValidation;
 - (void)_scheduleDelayedStateCheck;
 - (void)_scheduleDelayedValidation;
-- (void)_subscribeWithSubscriptionID:(id)a3 completion:(id)a4;
-- (void)checkAndUpdateStateWithHandler:(id)a3;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)_subscribeWithSubscriptionID:(id)d completion:(id)completion;
+- (void)checkAndUpdateStateWithHandler:(id)handler;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation MOCloudKitPushNotifications
 
-- (MOCloudKitPushNotifications)initWithNamedDelegatePort:(id)a3 apsTopics:(id)a4 subscriptionID:(id)a5 onNotification:(id)a6 deviceType:(id)a7
+- (MOCloudKitPushNotifications)initWithNamedDelegatePort:(id)port apsTopics:(id)topics subscriptionID:(id)d onNotification:(id)notification deviceType:(id)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  portCopy = port;
+  topicsCopy = topics;
+  dCopy = d;
+  notificationCopy = notification;
+  typeCopy = type;
   v41.receiver = self;
   v41.super_class = MOCloudKitPushNotifications;
   v18 = [(MOCloudKitPushNotifications *)&v41 init];
@@ -32,14 +32,14 @@
     v20 = *(v18 + 1);
     *(v18 + 1) = v19;
 
-    objc_storeStrong(v18 + 2, a3);
-    objc_storeStrong(v18 + 3, a4);
-    objc_storeStrong(v18 + 4, a5);
-    v21 = objc_retainBlock(v16);
+    objc_storeStrong(v18 + 2, port);
+    objc_storeStrong(v18 + 3, topics);
+    objc_storeStrong(v18 + 4, d);
+    v21 = objc_retainBlock(notificationCopy);
     v22 = *(v18 + 5);
     *(v18 + 5) = v21;
 
-    objc_storeStrong(v18 + 6, a7);
+    objc_storeStrong(v18 + 6, type);
     v23 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v24 = dispatch_queue_create("MOPushNotificationQueue", v23);
     v25 = *(v18 + 7);
@@ -509,21 +509,21 @@ void __57__MOCloudKitPushNotifications__scheduleDelayedValidation__block_invoke_
   dispatch_barrier_async(v2, block);
 }
 
-- (void)_subscribeWithSubscriptionID:(id)a3 completion:(id)a4
+- (void)_subscribeWithSubscriptionID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_actorQueue);
   container = self->_container;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __71__MOCloudKitPushNotifications__subscribeWithSubscriptionID_completion___block_invoke;
   v11[3] = &unk_100337AD0;
-  v12 = v6;
-  v13 = v7;
+  v12 = dCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dCopy;
+  v10 = completionCopy;
   [(CKContainer *)container fetchUserRecordIDWithCompletionHandler:v11];
 }
 
@@ -758,7 +758,7 @@ uint64_t __71__MOCloudKitPushNotifications__subscribeWithSubscriptionID_completi
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
   v4 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -768,14 +768,14 @@ uint64_t __71__MOCloudKitPushNotifications__subscribeWithSubscriptionID_completi
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [MOCloudKitPushNotifications connection:v7 didReceiveIncomingMessage:v8];
+    [MOCloudKitPushNotifications connection:messageCopy didReceiveIncomingMessage:v8];
   }
 
   objc_initWeak(&location, self);
@@ -785,10 +785,10 @@ uint64_t __71__MOCloudKitPushNotifications__subscribeWithSubscriptionID_completi
   v12[2] = __68__MOCloudKitPushNotifications_connection_didReceiveIncomingMessage___block_invoke;
   v12[3] = &unk_100337AF8;
   objc_copyWeak(&v15, &location);
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = connectionCopy;
+  v14 = messageCopy;
+  v10 = messageCopy;
+  v11 = connectionCopy;
   dispatch_async(notificationQueue, v12);
 
   objc_destroyWeak(&v15);
@@ -899,17 +899,17 @@ void __52__MOCloudKitPushNotifications__apsEnvironmentString__block_invoke(uint6
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)checkAndUpdateStateWithHandler:(id)a3
+- (void)checkAndUpdateStateWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   actorQueue = self->_actorQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __62__MOCloudKitPushNotifications_checkAndUpdateStateWithHandler___block_invoke;
   v7[3] = &unk_100337B48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_barrier_async(actorQueue, v7);
 }
 
@@ -953,9 +953,9 @@ id __62__MOCloudKitPushNotifications_checkAndUpdateStateWithHandler___block_invo
   }
 }
 
-- (void)_performStateCheckWithHandler:(id)a3
+- (void)_performStateCheckWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_actorQueue);
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
@@ -963,7 +963,7 @@ id __62__MOCloudKitPushNotifications_checkAndUpdateStateWithHandler___block_invo
   v5[2] = __61__MOCloudKitPushNotifications__performStateCheckWithHandler___block_invoke;
   v5[3] = &unk_100337B98;
   objc_copyWeak(&v6, &location);
-  v4[2](v4, v5);
+  handlerCopy[2](handlerCopy, v5);
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }

@@ -5,24 +5,24 @@
 - (void)_invalidateAssetAspectRatio;
 - (void)_updateAssetAspectRatio;
 - (void)didPerformChanges;
-- (void)performChanges:(id)a3;
-- (void)setAllowsTextSelection:(BOOL)a3;
-- (void)setAsset:(id)a3;
-- (void)setAssetAspectRatio:(double)a3;
-- (void)setAudioIdentifiersToHighlight:(id)a3;
-- (void)setContentMode:(int64_t)a3;
-- (void)setContextualVideoThumbnailID:(id)a3;
-- (void)setCurrentImage:(id)a3;
-- (void)setHumanActionIdentifiersToHighlight:(id)a3;
-- (void)setIsDisplayingFullQualityContent:(BOOL)a3;
-- (void)setLoadingError:(id)a3;
-- (void)setLoadingProgress:(float)a3;
-- (void)setPersonLocalIdentifiersToHighlight:(id)a3;
-- (void)setPlaybackStyle:(int64_t)a3;
-- (void)setSceneIdentifiersToHighlight:(id)a3;
-- (void)setStillImageContentsRect:(CGRect)a3;
-- (void)setStringsToHighlight:(id)a3;
-- (void)setTimeRangesToHighlight:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)setAllowsTextSelection:(BOOL)selection;
+- (void)setAsset:(id)asset;
+- (void)setAssetAspectRatio:(double)ratio;
+- (void)setAudioIdentifiersToHighlight:(id)highlight;
+- (void)setContentMode:(int64_t)mode;
+- (void)setContextualVideoThumbnailID:(id)d;
+- (void)setCurrentImage:(id)image;
+- (void)setHumanActionIdentifiersToHighlight:(id)highlight;
+- (void)setIsDisplayingFullQualityContent:(BOOL)content;
+- (void)setLoadingError:(id)error;
+- (void)setLoadingProgress:(float)progress;
+- (void)setPersonLocalIdentifiersToHighlight:(id)highlight;
+- (void)setPlaybackStyle:(int64_t)style;
+- (void)setSceneIdentifiersToHighlight:(id)highlight;
+- (void)setStillImageContentsRect:(CGRect)rect;
+- (void)setStringsToHighlight:(id)highlight;
+- (void)setTimeRangesToHighlight:(id)highlight;
 @end
 
 @implementation PXDisplayAssetViewModel
@@ -55,16 +55,16 @@
 
 - (void)_updateAssetAspectRatio
 {
-  v2 = [(PXDisplayAssetViewModel *)self asset];
-  [v2 pixelWidth];
-  [v2 pixelHeight];
+  asset = [(PXDisplayAssetViewModel *)self asset];
+  [asset pixelWidth];
+  [asset pixelHeight];
   PXSizeGetAspectRatioWithDefault();
 }
 
 - (void)_invalidateAssetAspectRatio
 {
-  v2 = [(PXDisplayAssetViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAssetAspectRatio];
+  updater = [(PXDisplayAssetViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAssetAspectRatio];
 }
 
 - (void)didPerformChanges
@@ -72,32 +72,32 @@
   v4.receiver = self;
   v4.super_class = PXDisplayAssetViewModel;
   [(PXDisplayAssetViewModel *)&v4 didPerformChanges];
-  v3 = [(PXDisplayAssetViewModel *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXDisplayAssetViewModel *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v5 = a3;
+  changesCopy = changes;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewModel.m" lineNumber:195 description:{@"%s must be called on the main thread", "-[PXDisplayAssetViewModel performChanges:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewModel.m" lineNumber:195 description:{@"%s must be called on the main thread", "-[PXDisplayAssetViewModel performChanges:]"}];
   }
 
   v7.receiver = self;
   v7.super_class = PXDisplayAssetViewModel;
-  [(PXDisplayAssetViewModel *)&v7 performChanges:v5];
+  [(PXDisplayAssetViewModel *)&v7 performChanges:changesCopy];
 }
 
-- (void)setLoadingError:(id)a3
+- (void)setLoadingError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_loadingError != v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (self->_loadingError != errorCopy)
   {
-    v9 = v4;
-    v6 = [(NSError *)v4 isEqual:?];
+    v9 = errorCopy;
+    v6 = [(NSError *)errorCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -111,15 +111,15 @@
   }
 }
 
-- (void)setTimeRangesToHighlight:(id)a3
+- (void)setTimeRangesToHighlight:(id)highlight
 {
-  v4 = a3;
+  highlightCopy = highlight;
   timeRangesToHighlight = self->_timeRangesToHighlight;
-  if (timeRangesToHighlight != v4)
+  if (timeRangesToHighlight != highlightCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)timeRangesToHighlight isEqual:v4];
-    v4 = v9;
+    v9 = highlightCopy;
+    v6 = [(NSArray *)timeRangesToHighlight isEqual:highlightCopy];
+    highlightCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSArray *)v9 copy];
@@ -127,17 +127,17 @@
       self->_timeRangesToHighlight = v7;
 
       [(PXDisplayAssetViewModel *)self signalChange:0x10000];
-      v4 = v9;
+      highlightCopy = v9;
     }
   }
 }
 
-- (void)setContextualVideoThumbnailID:(id)a3
+- (void)setContextualVideoThumbnailID:(id)d
 {
-  v8 = a3;
+  dCopy = d;
   v5 = self->_contextualVideoThumbnailID;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == dCopy)
   {
   }
 
@@ -147,29 +147,29 @@
 
     if (!v7)
     {
-      objc_storeStrong(&self->_contextualVideoThumbnailID, a3);
+      objc_storeStrong(&self->_contextualVideoThumbnailID, d);
       [(PXDisplayAssetViewModel *)self signalChange:0x40000];
     }
   }
 }
 
-- (void)setLoadingProgress:(float)a3
+- (void)setLoadingProgress:(float)progress
 {
-  if (self->_loadingProgress != a3)
+  if (self->_loadingProgress != progress)
   {
-    self->_loadingProgress = a3;
+    self->_loadingProgress = progress;
     [(PXDisplayAssetViewModel *)self signalChange:512];
   }
 }
 
-- (void)setStringsToHighlight:(id)a3
+- (void)setStringsToHighlight:(id)highlight
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_stringsToHighlight != v4)
+  highlightCopy = highlight;
+  v5 = highlightCopy;
+  if (self->_stringsToHighlight != highlightCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = highlightCopy;
+    v6 = [(NSArray *)highlightCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -183,59 +183,59 @@
   }
 }
 
-- (void)setAllowsTextSelection:(BOOL)a3
+- (void)setAllowsTextSelection:(BOOL)selection
 {
-  if (self->_allowsTextSelection != a3)
+  if (self->_allowsTextSelection != selection)
   {
-    self->_allowsTextSelection = a3;
+    self->_allowsTextSelection = selection;
     [(PXDisplayAssetViewModel *)self signalChange:128];
   }
 }
 
-- (void)setIsDisplayingFullQualityContent:(BOOL)a3
+- (void)setIsDisplayingFullQualityContent:(BOOL)content
 {
-  if (self->_isDisplayingFullQualityContent != a3)
+  if (self->_isDisplayingFullQualityContent != content)
   {
-    self->_isDisplayingFullQualityContent = a3;
+    self->_isDisplayingFullQualityContent = content;
     [(PXDisplayAssetViewModel *)self signalChange:64];
   }
 }
 
-- (void)setCurrentImage:(id)a3
+- (void)setCurrentImage:(id)image
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_currentImage != v5)
+  imageCopy = image;
+  v6 = imageCopy;
+  if (self->_currentImage != imageCopy)
   {
-    v8 = v5;
-    v7 = [(UIImage *)v5 isEqual:?];
+    v8 = imageCopy;
+    v7 = [(UIImage *)imageCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_currentImage, a3);
+      objc_storeStrong(&self->_currentImage, image);
       [(PXDisplayAssetViewModel *)self signalChange:32];
       v6 = v8;
     }
   }
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
-  if (self->_contentMode != a3)
+  if (self->_contentMode != mode)
   {
-    self->_contentMode = a3;
+    self->_contentMode = mode;
     [(PXDisplayAssetViewModel *)self signalChange:8];
   }
 }
 
-- (void)setStillImageContentsRect:(CGRect)a3
+- (void)setStillImageContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_stillImageContentsRect = &self->_stillImageContentsRect;
-  if (!CGRectEqualToRect(a3, self->_stillImageContentsRect))
+  if (!CGRectEqualToRect(rect, self->_stillImageContentsRect))
   {
     p_stillImageContentsRect->origin.x = x;
     p_stillImageContentsRect->origin.y = y;
@@ -246,32 +246,32 @@
   }
 }
 
-- (void)setAssetAspectRatio:(double)a3
+- (void)setAssetAspectRatio:(double)ratio
 {
-  if (self->_assetAspectRatio != a3)
+  if (self->_assetAspectRatio != ratio)
   {
-    self->_assetAspectRatio = a3;
+    self->_assetAspectRatio = ratio;
     [(PXDisplayAssetViewModel *)self signalChange:4];
   }
 }
 
-- (void)setPlaybackStyle:(int64_t)a3
+- (void)setPlaybackStyle:(int64_t)style
 {
-  if (self->_playbackStyle != a3)
+  if (self->_playbackStyle != style)
   {
-    self->_playbackStyle = a3;
+    self->_playbackStyle = style;
     [(PXDisplayAssetViewModel *)self signalChange:2];
   }
 }
 
-- (void)setPersonLocalIdentifiersToHighlight:(id)a3
+- (void)setPersonLocalIdentifiersToHighlight:(id)highlight
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_personLocalIdentifiersToHighlight != v4)
+  highlightCopy = highlight;
+  v5 = highlightCopy;
+  if (self->_personLocalIdentifiersToHighlight != highlightCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = highlightCopy;
+    v6 = [(NSArray *)highlightCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -285,14 +285,14 @@
   }
 }
 
-- (void)setHumanActionIdentifiersToHighlight:(id)a3
+- (void)setHumanActionIdentifiersToHighlight:(id)highlight
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_humanActionIdentifiersToHighlight != v4)
+  highlightCopy = highlight;
+  v5 = highlightCopy;
+  if (self->_humanActionIdentifiersToHighlight != highlightCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = highlightCopy;
+    v6 = [(NSArray *)highlightCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -306,14 +306,14 @@
   }
 }
 
-- (void)setAudioIdentifiersToHighlight:(id)a3
+- (void)setAudioIdentifiersToHighlight:(id)highlight
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_audioIdentifiersToHighlight != v4)
+  highlightCopy = highlight;
+  v5 = highlightCopy;
+  if (self->_audioIdentifiersToHighlight != highlightCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = highlightCopy;
+    v6 = [(NSArray *)highlightCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -327,14 +327,14 @@
   }
 }
 
-- (void)setSceneIdentifiersToHighlight:(id)a3
+- (void)setSceneIdentifiersToHighlight:(id)highlight
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_sceneIdentifiersToHighlight != v4)
+  highlightCopy = highlight;
+  v5 = highlightCopy;
+  if (self->_sceneIdentifiersToHighlight != highlightCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = highlightCopy;
+    v6 = [(NSArray *)highlightCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -348,13 +348,13 @@
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
-  if (self->_asset != v5)
+  assetCopy = asset;
+  if (self->_asset != assetCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_asset, a3);
+    v6 = assetCopy;
+    objc_storeStrong(&self->_asset, asset);
     [(PXDisplayAssetViewModel *)self signalChange:1];
     [(PXDisplayAssetViewModel *)self setPlaybackStyle:[(PXDisplayAsset *)self->_asset playbackStyle]];
     [(PXDisplayAssetViewModel *)self _invalidateAssetAspectRatio];
@@ -363,7 +363,7 @@
     [(PXDisplayAssetViewModel *)self setIsDisplayingFullQualityContent:0];
     [(PXDisplayAssetViewModel *)self setLoadingProgress:0.0];
     [(PXDisplayAssetViewModel *)self setLoadingError:0];
-    v5 = v6;
+    assetCopy = v6;
   }
 }
 

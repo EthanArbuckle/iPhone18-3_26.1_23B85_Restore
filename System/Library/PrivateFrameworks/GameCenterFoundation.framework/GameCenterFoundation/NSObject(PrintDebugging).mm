@@ -8,7 +8,7 @@
 - (id)_gkDescription
 {
   v1 = MEMORY[0x277CCACA8];
-  v2 = [a1 description];
+  v2 = [self description];
   v3 = [v1 stringWithFormat:@"%@\n", v2];
 
   return v3;
@@ -16,12 +16,12 @@
 
 - (id)_gkDescriptionWithChildren:()PrintDebugging
 {
-  v5 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v6 = _gkTabStringForTabLevel(a3);
-  v7 = [a1 _gkDescription];
-  [v5 appendFormat:@"%@%@", v6, v7];
+  _gkDescription = [self _gkDescription];
+  [string appendFormat:@"%@%@", v6, _gkDescription];
 
-  return v5;
+  return string;
 }
 
 @end

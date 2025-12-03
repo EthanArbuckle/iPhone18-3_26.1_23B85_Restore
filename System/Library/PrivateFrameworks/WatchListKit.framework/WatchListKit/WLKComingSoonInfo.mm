@@ -1,22 +1,22 @@
 @interface WLKComingSoonInfo
-+ (id)comingSoonItemsWithDictionaries:(id)a3;
-- (WLKComingSoonInfo)initWithDictionary:(id)a3;
-- (WLKComingSoonInfo)initWithDictionary:(id)a3 brandID:(id)a4;
++ (id)comingSoonItemsWithDictionaries:(id)dictionaries;
+- (WLKComingSoonInfo)initWithDictionary:(id)dictionary;
+- (WLKComingSoonInfo)initWithDictionary:(id)dictionary brandID:(id)d;
 - (void)_initializeDatesStrings;
 @end
 
 @implementation WLKComingSoonInfo
 
-+ (id)comingSoonItemsWithDictionaries:(id)a3
++ (id)comingSoonItemsWithDictionaries:(id)dictionaries
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionariesCopy = dictionaries;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -66,34 +66,34 @@
   return v13;
 }
 
-- (WLKComingSoonInfo)initWithDictionary:(id)a3 brandID:(id)a4
+- (WLKComingSoonInfo)initWithDictionary:(id)dictionary brandID:(id)d
 {
-  v6 = a4;
-  v7 = [a3 mutableCopy];
-  [v7 setObject:v6 forKeyedSubscript:@"channelId"];
+  dCopy = d;
+  v7 = [dictionary mutableCopy];
+  [v7 setObject:dCopy forKeyedSubscript:@"channelId"];
 
   v8 = [(WLKComingSoonInfo *)self initWithDictionary:v7];
   return v8;
 }
 
-- (WLKComingSoonInfo)initWithDictionary:(id)a3
+- (WLKComingSoonInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"isComingSoon"];
+  dictionaryCopy = dictionary;
+  selfCopy = [dictionaryCopy objectForKey:@"isComingSoon"];
 
-  if (v5)
+  if (selfCopy)
   {
     v16.receiver = self;
     v16.super_class = WLKComingSoonInfo;
     v6 = [(WLKComingSoonInfo *)&v16 init];
     if (v6)
     {
-      v6->_comingSoon = [v4 wlk_BOOLForKey:@"isComingSoon" defaultValue:0];
-      v7 = [v4 wlk_stringForKey:@"comingSoonDate"];
+      v6->_comingSoon = [dictionaryCopy wlk_BOOLForKey:@"isComingSoon" defaultValue:0];
+      v7 = [dictionaryCopy wlk_stringForKey:@"comingSoonDate"];
       dateFormat = v6->_dateFormat;
       v6->_dateFormat = v7;
 
-      v9 = [v4 wlk_stringForKey:@"channelId"];
+      v9 = [dictionaryCopy wlk_stringForKey:@"channelId"];
       v10 = [v9 copy];
       brandID = v6->_brandID;
       v6->_brandID = v10;
@@ -113,10 +113,10 @@
     }
 
     self = v6;
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)_initializeDatesStrings
@@ -144,17 +144,17 @@
   {
     self->_precision = 1;
     v10 = [v28 objectAtIndex:0];
-    v11 = [v10 integerValue];
+    integerValue = [v10 integerValue];
 
     v12 = objc_alloc(MEMORY[0x277CBEA80]);
     v8 = [v12 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-    v13 = [MEMORY[0x277CBEAA8] date];
-    v14 = [v8 components:4 fromDate:v13];
+    date = [MEMORY[0x277CBEAA8] date];
+    v14 = [v8 components:4 fromDate:date];
 
-    v15 = [v14 year];
+    year = [v14 year];
     v16 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.WatchListKit"];
     v17 = v16;
-    if (v11 == v15)
+    if (integerValue == year)
     {
       v18 = @"COMING_SOON_IN_FULL_MONTH";
     }
@@ -164,7 +164,7 @@
       v18 = @"COMING_SOON_FULL_MONTH_YEAR";
     }
 
-    if (v11 == v15)
+    if (integerValue == year)
     {
       v9 = @"MMMM";
     }
@@ -176,7 +176,7 @@
 
     v5 = [v16 localizedStringForKey:v18 value:&stru_288206BC0 table:@"WatchListKit"];
 
-    [v3 setYear:v11];
+    [v3 setYear:integerValue];
     v19 = [v28 objectAtIndex:1];
     [v3 setMonth:{objc_msgSend(v19, "integerValue")}];
   }
@@ -197,12 +197,12 @@
     v9 = @"y";
   }
 
-  v21 = [MEMORY[0x277CBEA80] currentCalendar];
-  v22 = [v21 dateFromComponents:v3];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v22 = [currentCalendar dateFromComponents:v3];
   v23 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v23 setTimeStyle:0];
-  v24 = [MEMORY[0x277CBEAF8] currentLocale];
-  [v23 setLocale:v24];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [v23 setLocale:currentLocale];
 
   [v23 setLocalizedDateFormatFromTemplate:v9];
   v25 = [v23 stringFromDate:v22];

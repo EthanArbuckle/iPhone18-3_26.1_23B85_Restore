@@ -1,8 +1,8 @@
 @interface VKCTextDataDetectorElement
-+ (id)dataDetectorElementFromCROutputRegion:(id)a3 parentDocument:(id)a4;
++ (id)dataDetectorElementFromCROutputRegion:(id)region parentDocument:(id)document;
 - (CRDataDetectorsOutputRegion)ddOutputRegion;
-- (VKCTextDataDetectorElement)initWithCROutputRegion:(id)a3 parentDocument:(id)a4;
-- (VKCTextDataDetectorElement)initWithScannerResult:(id)a3;
+- (VKCTextDataDetectorElement)initWithCROutputRegion:(id)region parentDocument:(id)document;
+- (VKCTextDataDetectorElement)initWithScannerResult:(id)result;
 - (_NSRange)characterRange;
 - (id)boundingQuads;
 - (id)children;
@@ -12,31 +12,31 @@
 
 @implementation VKCTextDataDetectorElement
 
-+ (id)dataDetectorElementFromCROutputRegion:(id)a3 parentDocument:(id)a4
++ (id)dataDetectorElementFromCROutputRegion:(id)region parentDocument:(id)document
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[VKCTextDataDetectorElement alloc] initWithCROutputRegion:v6 parentDocument:v5];
+  documentCopy = document;
+  regionCopy = region;
+  v7 = [[VKCTextDataDetectorElement alloc] initWithCROutputRegion:regionCopy parentDocument:documentCopy];
 
   return v7;
 }
 
-- (VKCTextDataDetectorElement)initWithCROutputRegion:(id)a3 parentDocument:(id)a4
+- (VKCTextDataDetectorElement)initWithCROutputRegion:(id)region parentDocument:(id)document
 {
-  v6 = a3;
-  v7 = a4;
+  regionCopy = region;
+  documentCopy = document;
   v14.receiver = self;
   v14.super_class = VKCTextDataDetectorElement;
   v8 = [(VKCBaseDataDetectorElement *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    [(VKCBaseElement *)v8 setParentCRDocument:v7];
-    [(VKCBaseElement *)v9 setCrOutputRegion:v6];
-    v10 = [(VKCTextDataDetectorElement *)v9 ddOutputRegion];
-    v11 = [v10 ddResult];
+    [(VKCBaseElement *)v8 setParentCRDocument:documentCopy];
+    [(VKCBaseElement *)v9 setCrOutputRegion:regionCopy];
+    ddOutputRegion = [(VKCTextDataDetectorElement *)v9 ddOutputRegion];
+    ddResult = [ddOutputRegion ddResult];
     scannerResult = v9->_scannerResult;
-    v9->_scannerResult = v11;
+    v9->_scannerResult = ddResult;
 
     v9->_dataDetectorTypes = [(VKCBaseDataDetectorElement *)VKCTextDataDetectorElement dataDetectorTypesForScannerResult:v9->_scannerResult];
   }
@@ -44,16 +44,16 @@
   return v9;
 }
 
-- (VKCTextDataDetectorElement)initWithScannerResult:(id)a3
+- (VKCTextDataDetectorElement)initWithScannerResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = VKCTextDataDetectorElement;
   v6 = [(VKCBaseDataDetectorElement *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scannerResult, a3);
+    objc_storeStrong(&v6->_scannerResult, result);
     v7->_dataDetectorTypes = [(VKCBaseDataDetectorElement *)VKCTextDataDetectorElement dataDetectorTypesForScannerResult:v7->_scannerResult];
   }
 
@@ -63,27 +63,27 @@
 - (CRDataDetectorsOutputRegion)ddOutputRegion
 {
   v3 = objc_opt_class();
-  v4 = [(VKCBaseElement *)self crOutputRegion];
-  v5 = VKCheckedDynamicCast(v3, v4);
+  crOutputRegion = [(VKCBaseElement *)self crOutputRegion];
+  v5 = VKCheckedDynamicCast(v3, crOutputRegion);
 
   return v5;
 }
 
 - (unint64_t)dataType
 {
-  v2 = [(VKCTextDataDetectorElement *)self ddOutputRegion];
-  v3 = [v2 dataType];
+  ddOutputRegion = [(VKCTextDataDetectorElement *)self ddOutputRegion];
+  dataType = [ddOutputRegion dataType];
 
-  return v3;
+  return dataType;
 }
 
 - (_NSRange)characterRange
 {
-  v2 = [(VKCTextDataDetectorElement *)self scannerResult];
-  v3 = [v2 urlificationRange];
+  scannerResult = [(VKCTextDataDetectorElement *)self scannerResult];
+  urlificationRange = [scannerResult urlificationRange];
   v5 = v4;
 
-  v6 = v3;
+  v6 = urlificationRange;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -96,9 +96,9 @@
   if (!boundingQuads)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = [(VKCBaseElement *)self parentCRDocument];
-    v6 = [(VKCTextDataDetectorElement *)self characterRange];
-    v8 = [v5 outputRegionWithContentsOfCharacterRange:{v6, v7}];
+    parentCRDocument = [(VKCBaseElement *)self parentCRDocument];
+    characterRange = [(VKCTextDataDetectorElement *)self characterRange];
+    v8 = [parentCRDocument outputRegionWithContentsOfCharacterRange:{characterRange, v7}];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -134,10 +134,10 @@ void __43__VKCTextDataDetectorElement_boundingQuads__block_invoke(uint64_t a1, v
 
 - (id)debugMenu
 {
-  v3 = [(VKCBaseElement *)self parentCRDocument];
-  v4 = [v3 text];
-  v5 = [(VKCTextDataDetectorElement *)self characterRange];
-  v7 = [v4 substringWithRange:{v5, v6}];
+  parentCRDocument = [(VKCBaseElement *)self parentCRDocument];
+  text = [parentCRDocument text];
+  characterRange = [(VKCTextDataDetectorElement *)self characterRange];
+  v7 = [text substringWithRange:{characterRange, v6}];
 
   v38 = 0;
   v39 = &v38;
@@ -186,8 +186,8 @@ void __43__VKCTextDataDetectorElement_boundingQuads__block_invoke(uint64_t a1, v
   v36 = v18;
   [v17 enumerateObjectsUsingBlock:v35];
   v19 = MEMORY[0x1E696AEC0];
-  v20 = [(VKCTextDataDetectorElement *)self characterRange];
-  v22 = VKMUIStringForRange(v20, v21);
+  characterRange2 = [(VKCTextDataDetectorElement *)self characterRange];
+  v22 = VKMUIStringForRange(characterRange2, v21);
   v23 = [v19 stringWithFormat:@"%@", v22];
   v24 = v39[5];
   v39[5] = v23;
@@ -195,7 +195,7 @@ void __43__VKCTextDataDetectorElement_boundingQuads__block_invoke(uint64_t a1, v
   v25 = [MEMORY[0x1E69DC628] vk_itemWithTitle:@"Range" subtitle:v39[5]];
   [v18 addObject:v25];
 
-  v26 = [(VKCTextDataDetectorElement *)self boundingQuads];
+  boundingQuads = [(VKCTextDataDetectorElement *)self boundingQuads];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __39__VKCTextDataDetectorElement_debugMenu__block_invoke_2;
@@ -203,11 +203,11 @@ void __43__VKCTextDataDetectorElement_boundingQuads__block_invoke(uint64_t a1, v
   v34 = &v38;
   v27 = v18;
   v33 = v27;
-  [v26 enumerateObjectsUsingBlock:v32];
+  [boundingQuads enumerateObjectsUsingBlock:v32];
 
   v28 = MEMORY[0x1E69DCC60];
-  v29 = [v17 firstObject];
-  v30 = [v28 vk_menuWithItems:v27 title:v29 subtitle:v9];
+  firstObject = [v17 firstObject];
+  v30 = [v28 vk_menuWithItems:v27 title:firstObject subtitle:v9];
 
   _Block_object_dispose(&v38, 8);
 

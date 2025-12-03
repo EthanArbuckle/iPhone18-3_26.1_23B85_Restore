@@ -1,50 +1,50 @@
 @interface TRIVersion
-+ (id)parseVersionFromString:(id)a3 withPrefix:(id)a4;
-+ (id)versionWithMajorVersion:(id)a3 minorVersion:(id)a4 patchVersion:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToVersion:(id)a3;
-- (TRIVersion)initWithMajorVersion:(id)a3 minorVersion:(id)a4 patchVersion:(id)a5;
-- (id)copyWithReplacementMajorVersion:(id)a3;
-- (id)copyWithReplacementMinorVersion:(id)a3;
-- (id)copyWithReplacementPatchVersion:(id)a3;
++ (id)parseVersionFromString:(id)string withPrefix:(id)prefix;
++ (id)versionWithMajorVersion:(id)version minorVersion:(id)minorVersion patchVersion:(id)patchVersion;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToVersion:(id)version;
+- (TRIVersion)initWithMajorVersion:(id)version minorVersion:(id)minorVersion patchVersion:(id)patchVersion;
+- (id)copyWithReplacementMajorVersion:(id)version;
+- (id)copyWithReplacementMinorVersion:(id)version;
+- (id)copyWithReplacementPatchVersion:(id)version;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
 @implementation TRIVersion
 
-+ (id)parseVersionFromString:(id)a3 withPrefix:(id)a4
++ (id)parseVersionFromString:(id)string withPrefix:(id)prefix
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  stringCopy = string;
+  prefixCopy = prefix;
+  if (!stringCopy)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"TRIVersion+Factory.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"string"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIVersion+Factory.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"string"}];
   }
 
-  v9 = v7;
+  v9 = stringCopy;
   v10 = v9;
-  if (v8)
+  if (prefixCopy)
   {
     v10 = v9;
-    if ([v8 length])
+    if ([prefixCopy length])
     {
-      if (([v9 hasPrefix:v8] & 1) == 0)
+      if (([v9 hasPrefix:prefixCopy] & 1) == 0)
       {
         v18 = [[TRIVersion alloc] initWithMajorVersion:&unk_28436F9C8 minorVersion:&unk_28436F9C8 patchVersion:&unk_28436F9C8];
         v10 = v9;
         goto LABEL_18;
       }
 
-      v10 = [v9 substringFromIndex:{objc_msgSend(v8, "length")}];
+      v10 = [v9 substringFromIndex:{objc_msgSend(prefixCopy, "length")}];
 
       if (!v10)
       {
-        v24 = [MEMORY[0x277CCA890] currentHandler];
-        [v24 handleFailureInMethod:a2 object:a1 file:@"TRIVersion+Factory.m" lineNumber:27 description:@"expected version string to be not nil"];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIVersion+Factory.m" lineNumber:27 description:@"expected version string to be not nil"];
 
         v10 = 0;
       }
@@ -117,47 +117,47 @@ uint64_t __57__TRIVersion_Factory__parseVersionFromString_withPrefix___block_inv
   return v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(TRIVersion *)self majorVersion];
-  v6 = [v4 majorVersion];
-  v7 = [v5 compare:v6];
+  compareCopy = compare;
+  majorVersion = [(TRIVersion *)self majorVersion];
+  majorVersion2 = [compareCopy majorVersion];
+  v7 = [majorVersion compare:majorVersion2];
 
   if (!v7)
   {
-    v8 = [(TRIVersion *)self minorVersion];
-    v9 = [v4 minorVersion];
-    v7 = [v8 compare:v9];
+    minorVersion = [(TRIVersion *)self minorVersion];
+    minorVersion2 = [compareCopy minorVersion];
+    v7 = [minorVersion compare:minorVersion2];
 
     if (!v7)
     {
-      v10 = [(TRIVersion *)self patchVersion];
-      v11 = [v4 patchVersion];
-      v7 = [v10 compare:v11];
+      patchVersion = [(TRIVersion *)self patchVersion];
+      patchVersion2 = [compareCopy patchVersion];
+      v7 = [patchVersion compare:patchVersion2];
     }
   }
 
   return v7;
 }
 
-- (TRIVersion)initWithMajorVersion:(id)a3 minorVersion:(id)a4 patchVersion:(id)a5
+- (TRIVersion)initWithMajorVersion:(id)version minorVersion:(id)minorVersion patchVersion:(id)patchVersion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  versionCopy = version;
+  minorVersionCopy = minorVersion;
+  patchVersionCopy = patchVersion;
+  if (versionCopy)
   {
-    if (v11)
+    if (minorVersionCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:308 description:{@"Invalid parameter not satisfying: %@", @"minorVersion != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:308 description:{@"Invalid parameter not satisfying: %@", @"minorVersion != nil"}];
 
-    if (v12)
+    if (patchVersionCopy)
     {
       goto LABEL_4;
     }
@@ -165,23 +165,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"majorVersion != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"majorVersion != nil"}];
 
-  if (!v11)
+  if (!minorVersionCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (patchVersionCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:309 description:{@"Invalid parameter not satisfying: %@", @"patchVersion != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:309 description:{@"Invalid parameter not satisfying: %@", @"patchVersion != nil"}];
 
 LABEL_4:
   v19.receiver = self;
@@ -190,60 +190,60 @@ LABEL_4:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_majorVersion, a3);
-    objc_storeStrong(&v14->_minorVersion, a4);
-    objc_storeStrong(&v14->_patchVersion, a5);
+    objc_storeStrong(&v13->_majorVersion, version);
+    objc_storeStrong(&v14->_minorVersion, minorVersion);
+    objc_storeStrong(&v14->_patchVersion, patchVersion);
   }
 
   return v14;
 }
 
-+ (id)versionWithMajorVersion:(id)a3 minorVersion:(id)a4 patchVersion:(id)a5
++ (id)versionWithMajorVersion:(id)version minorVersion:(id)minorVersion patchVersion:(id)patchVersion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithMajorVersion:v10 minorVersion:v9 patchVersion:v8];
+  patchVersionCopy = patchVersion;
+  minorVersionCopy = minorVersion;
+  versionCopy = version;
+  v11 = [[self alloc] initWithMajorVersion:versionCopy minorVersion:minorVersionCopy patchVersion:patchVersionCopy];
 
   return v11;
 }
 
-- (id)copyWithReplacementMajorVersion:(id)a3
+- (id)copyWithReplacementMajorVersion:(id)version
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithMajorVersion:v4 minorVersion:self->_minorVersion patchVersion:self->_patchVersion];
+  versionCopy = version;
+  v5 = [objc_alloc(objc_opt_class()) initWithMajorVersion:versionCopy minorVersion:self->_minorVersion patchVersion:self->_patchVersion];
 
   return v5;
 }
 
-- (id)copyWithReplacementMinorVersion:(id)a3
+- (id)copyWithReplacementMinorVersion:(id)version
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithMajorVersion:self->_majorVersion minorVersion:v4 patchVersion:self->_patchVersion];
+  versionCopy = version;
+  v5 = [objc_alloc(objc_opt_class()) initWithMajorVersion:self->_majorVersion minorVersion:versionCopy patchVersion:self->_patchVersion];
 
   return v5;
 }
 
-- (id)copyWithReplacementPatchVersion:(id)a3
+- (id)copyWithReplacementPatchVersion:(id)version
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithMajorVersion:self->_majorVersion minorVersion:self->_minorVersion patchVersion:v4];
+  versionCopy = version;
+  v5 = [objc_alloc(objc_opt_class()) initWithMajorVersion:self->_majorVersion minorVersion:self->_minorVersion patchVersion:versionCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToVersion:(id)a3
+- (BOOL)isEqualToVersion:(id)version
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  versionCopy = version;
+  v5 = versionCopy;
+  if (!versionCopy)
   {
     goto LABEL_11;
   }
 
   v6 = self->_majorVersion == 0;
-  v7 = [v4 majorVersion];
-  v8 = v7 != 0;
+  majorVersion = [versionCopy majorVersion];
+  v8 = majorVersion != 0;
 
   if (v6 == v8)
   {
@@ -253,8 +253,8 @@ LABEL_4:
   majorVersion = self->_majorVersion;
   if (majorVersion)
   {
-    v10 = [v5 majorVersion];
-    v11 = [(NSNumber *)majorVersion isEqual:v10];
+    majorVersion2 = [v5 majorVersion];
+    v11 = [(NSNumber *)majorVersion isEqual:majorVersion2];
 
     if (!v11)
     {
@@ -263,8 +263,8 @@ LABEL_4:
   }
 
   v12 = self->_minorVersion == 0;
-  v13 = [v5 minorVersion];
-  v14 = v13 != 0;
+  minorVersion = [v5 minorVersion];
+  v14 = minorVersion != 0;
 
   if (v12 == v14)
   {
@@ -274,8 +274,8 @@ LABEL_4:
   minorVersion = self->_minorVersion;
   if (minorVersion)
   {
-    v16 = [v5 minorVersion];
-    v17 = [(NSNumber *)minorVersion isEqual:v16];
+    minorVersion2 = [v5 minorVersion];
+    v17 = [(NSNumber *)minorVersion isEqual:minorVersion2];
 
     if (!v17)
     {
@@ -284,8 +284,8 @@ LABEL_4:
   }
 
   v18 = self->_patchVersion == 0;
-  v19 = [v5 patchVersion];
-  v20 = v19 != 0;
+  patchVersion = [v5 patchVersion];
+  v20 = patchVersion != 0;
 
   if (v18 == v20)
   {
@@ -298,8 +298,8 @@ LABEL_11:
     patchVersion = self->_patchVersion;
     if (patchVersion)
     {
-      v22 = [v5 patchVersion];
-      v23 = [(NSNumber *)patchVersion isEqual:v22];
+      patchVersion2 = [v5 patchVersion];
+      v23 = [(NSNumber *)patchVersion isEqual:patchVersion2];
     }
 
     else
@@ -311,18 +311,18 @@ LABEL_11:
   return v23 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIVersion *)self isEqualToVersion:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIVersion *)self isEqualToVersion:v5];
   }
 
   return v6;

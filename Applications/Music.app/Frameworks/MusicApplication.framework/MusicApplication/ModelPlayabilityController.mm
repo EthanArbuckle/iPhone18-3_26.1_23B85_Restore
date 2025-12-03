@@ -1,9 +1,9 @@
 @interface ModelPlayabilityController
 + (_TtC16MusicApplication26ModelPlayabilityController)shared;
-+ (id)requiredPropertiesForModelClass:(Class)a3;
-- (int64_t)calculatePlayabilityStatusWithModel:(id)a3;
++ (id)requiredPropertiesForModelClass:(Class)class;
+- (int64_t)calculatePlayabilityStatusWithModel:(id)model;
 - (void)dealloc;
-- (void)environmentMonitorDidChangeNetworkType:(id)a3;
+- (void)environmentMonitorDidChangeNetworkType:(id)type;
 @end
 
 @implementation ModelPlayabilityController
@@ -23,16 +23,16 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 sharedMonitor];
-  [v5 unregisterObserver:v4];
+  selfCopy = self;
+  sharedMonitor = [v3 sharedMonitor];
+  [sharedMonitor unregisterObserver:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for ModelPlayabilityController();
   [(ModelPlayabilityController *)&v6 dealloc];
 }
 
-+ (id)requiredPropertiesForModelClass:(Class)a3
++ (id)requiredPropertiesForModelClass:(Class)class
 {
   swift_getObjCClassMetadata();
   v3 = sub_10F414();
@@ -40,16 +40,16 @@
   return v3;
 }
 
-- (int64_t)calculatePlayabilityStatusWithModel:(id)a3
+- (int64_t)calculatePlayabilityStatusWithModel:(id)model
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_10AC20(a3);
+  modelCopy = model;
+  selfCopy = self;
+  v7 = sub_10AC20(model);
 
   return v7;
 }
 
-- (void)environmentMonitorDidChangeNetworkType:(id)a3
+- (void)environmentMonitorDidChangeNetworkType:(id)type
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_DE9D30);
   __chkstk_darwin(v4 - 8);
@@ -57,12 +57,12 @@
   v7 = sub_AB9990();
   (*(*(v7 - 8) + 56))(v6, 1, 1, v7);
   sub_AB9940();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_AB9930();
   v10 = swift_allocObject();
   v10[2] = v9;
   v10[3] = &protocol witness table for MainActor;
-  v10[4] = v8;
+  v10[4] = selfCopy;
   sub_DBDC8(0, 0, v6, &unk_AFE878, v10);
 }
 

@@ -1,15 +1,15 @@
 @interface HFStandardReadPolicy
 - (HFStandardReadPolicy)init;
-- (HFStandardReadPolicy)initWithPolicies:(id)a3;
+- (HFStandardReadPolicy)initWithPolicies:(id)policies;
 @end
 
 @implementation HFStandardReadPolicy
 
-- (HFStandardReadPolicy)initWithPolicies:(id)a3
+- (HFStandardReadPolicy)initWithPolicies:(id)policies
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_init);
-  [v5 handleFailureInMethod:a2 object:self file:@"HFCharacteristicReadPolicy.m" lineNumber:179 description:{@"%s is unavailable; use %@ instead", "-[HFStandardReadPolicy initWithPolicies:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicReadPolicy.m" lineNumber:179 description:{@"%s is unavailable; use %@ instead", "-[HFStandardReadPolicy initWithPolicies:]", v6}];
 
   return 0;
 }

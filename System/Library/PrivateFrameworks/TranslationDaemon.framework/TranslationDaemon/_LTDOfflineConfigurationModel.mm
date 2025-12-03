@@ -1,24 +1,24 @@
 @interface _LTDOfflineConfigurationModel
-+ (BOOL)isPassthroughLocalePairIdentifier:(id)a3;
++ (BOOL)isPassthroughLocalePairIdentifier:(id)identifier;
 + (id)passthroughConfiguration;
 - (NSArray)languageIdentifiers;
-- (_LTDOfflineConfigurationModel)initWithDictionary:(id)a3;
-- (id)_offlinePairConfigurationWithIdentifier:(id)a3 capability:(int64_t)a4;
-- (id)offlinePairConfigurationWithIdentifier:(id)a3;
+- (_LTDOfflineConfigurationModel)initWithDictionary:(id)dictionary;
+- (id)_offlinePairConfigurationWithIdentifier:(id)identifier capability:(int64_t)capability;
+- (id)offlinePairConfigurationWithIdentifier:(id)identifier;
 @end
 
 @implementation _LTDOfflineConfigurationModel
 
-- (_LTDOfflineConfigurationModel)initWithDictionary:(id)a3
+- (_LTDOfflineConfigurationModel)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = _LTDOfflineConfigurationModel;
   v6 = [(_LTDOfflineConfigurationModel *)&v28 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_root, a3);
+    objc_storeStrong(&v6->_root, dictionary);
     v8 = [(NSDictionary *)v7->_root objectForKeyedSubscript:@"LanguagePairs"];
     v9 = objc_opt_class();
     v10 = v8;
@@ -31,8 +31,8 @@
     languagePairConfigs = v7->_languagePairConfigs;
     v7->_languagePairConfigs = v12;
 
-    v14 = [(NSDictionary *)v7->_languagePairConfigs allValues];
-    v15 = [v14 firstObject];
+    allValues = [(NSDictionary *)v7->_languagePairConfigs allValues];
+    firstObject = [allValues firstObject];
     objc_opt_class();
     v7->_hasCapabilityIdentifiers = objc_opt_isKindOfClass() & 1;
 
@@ -119,21 +119,21 @@
   return v4;
 }
 
-+ (BOOL)isPassthroughLocalePairIdentifier:(id)a3
++ (BOOL)isPassthroughLocalePairIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 length];
+  identifierCopy = identifier;
+  v4 = [identifierCopy length];
   if (v4 >= 9)
   {
     v5 = v4 >> 1;
-    if ([v3 characterAtIndex:v4 >> 1] == 45)
+    if ([identifierCopy characterAtIndex:v4 >> 1] == 45)
     {
       v6 = 0;
       v7 = 0;
       while (1)
       {
-        v8 = [v3 characterAtIndex:v6];
-        if (v8 != [v3 characterAtIndex:v5 + v6 + 1])
+        v8 = [identifierCopy characterAtIndex:v6];
+        if (v8 != [identifierCopy characterAtIndex:v5 + v6 + 1])
         {
           break;
         }
@@ -156,13 +156,13 @@ LABEL_8:
 - (NSArray)languageIdentifiers
 {
   v26 = *MEMORY[0x277D85DE8];
-  v2 = [(_LTDOfflineConfigurationModel *)self languagePairs];
-  v3 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v2, "count")}];
+  languagePairs = [(_LTDOfflineConfigurationModel *)self languagePairs];
+  v3 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(languagePairs, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = v2;
+  v4 = languagePairs;
   v5 = [v4 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v5)
   {
@@ -207,40 +207,40 @@ LABEL_8:
     while (v7);
   }
 
-  v15 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return allObjects;
 }
 
-- (id)offlinePairConfigurationWithIdentifier:(id)a3
+- (id)offlinePairConfigurationWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_LTDOfflineConfigurationModel *)self _offlinePairConfigurationWithIdentifier:v4 capability:+[_LTDANEService capability]];
+  identifierCopy = identifier;
+  v5 = [(_LTDOfflineConfigurationModel *)self _offlinePairConfigurationWithIdentifier:identifierCopy capability:+[_LTDANEService capability]];
 
   return v5;
 }
 
-- (id)_offlinePairConfigurationWithIdentifier:(id)a3 capability:(int64_t)a4
+- (id)_offlinePairConfigurationWithIdentifier:(id)identifier capability:(int64_t)capability
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([objc_opt_class() isPassthroughLocalePairIdentifier:v6])
+  identifierCopy = identifier;
+  if ([objc_opt_class() isPassthroughLocalePairIdentifier:identifierCopy])
   {
-    v7 = [objc_opt_class() passthroughConfiguration];
+    passthroughConfiguration = [objc_opt_class() passthroughConfiguration];
   }
 
   else
   {
     hasCapabilityIdentifiers = self->_hasCapabilityIdentifiers;
-    v9 = [(NSDictionary *)self->_languagePairConfigs objectForKeyedSubscript:v6];
+    v9 = [(NSDictionary *)self->_languagePairConfigs objectForKeyedSubscript:identifierCopy];
     if (hasCapabilityIdentifiers)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [(NSDictionary *)self->_languagePairConfigs objectForKeyedSubscript:v6];
+        v10 = [(NSDictionary *)self->_languagePairConfigs objectForKeyedSubscript:identifierCopy];
       }
 
       else
@@ -250,20 +250,20 @@ LABEL_8:
 
       v12 = v10;
 
-      v13 = [v12 firstObject];
+      firstObject = [v12 firstObject];
       v14 = 0x277CBE000uLL;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = [v12 firstObject];
+        firstObject2 = [v12 firstObject];
       }
 
       else
       {
-        v15 = objc_opt_new();
+        firstObject2 = objc_opt_new();
       }
 
-      v16 = v15;
+      v16 = firstObject2;
 
       if ([v12 count])
       {
@@ -287,7 +287,7 @@ LABEL_8:
             v22 = objc_opt_new();
           }
 
-          if ([v22 integerValue] > a4)
+          if ([v22 integerValue] > capability)
           {
             break;
           }
@@ -324,7 +324,7 @@ LABEL_8:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [(NSDictionary *)self->_languagePairConfigs objectForKeyedSubscript:v6];
+        v11 = [(NSDictionary *)self->_languagePairConfigs objectForKeyedSubscript:identifierCopy];
       }
 
       else
@@ -340,7 +340,7 @@ LABEL_26:
 
     if ([v16 count])
     {
-      v7 = [[_LTDOfflineConfigurationModel alloc] initWithDictionary:v16];
+      passthroughConfiguration = [[_LTDOfflineConfigurationModel alloc] initWithDictionary:v16];
     }
 
     else
@@ -349,17 +349,17 @@ LABEL_26:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v32 = v6;
+        v32 = identifierCopy;
         _os_log_impl(&dword_232E53000, v28, OS_LOG_TYPE_INFO, "No offline configuration available for language identifier: %{public}@", buf, 0xCu);
       }
 
-      v7 = 0;
+      passthroughConfiguration = 0;
     }
   }
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return passthroughConfiguration;
 }
 
 @end

@@ -2,10 +2,10 @@
 + (id)_features;
 - (BOOL)_suppportsPortarit;
 - (BOOL)_suppportsSentimentAnalysis;
-- (id)_valuesForProvider:(id)a3 context:(id)a4 features:(id)a5;
-- (void)modelManagerDidUpdateModel:(id)a3;
+- (id)_valuesForProvider:(id)provider context:(id)context features:(id)features;
+- (void)modelManagerDidUpdateModel:(id)model;
 - (void)pause;
-- (void)predictorDidUpdate:(id)a3;
+- (void)predictorDidUpdate:(id)update;
 - (void)resume;
 @end
 
@@ -29,18 +29,18 @@
   return v6;
 }
 
-- (id)_valuesForProvider:(id)a3 context:(id)a4 features:(id)a5
+- (id)_valuesForProvider:(id)provider context:(id)context features:(id)features
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v34 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  providerCopy = provider;
+  contextCopy = context;
+  featuresCopy = features;
+  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(featuresCopy, "count")}];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v8;
+  obj = featuresCopy;
   v10 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (!v10)
   {
@@ -67,8 +67,8 @@
       if (v17)
       {
         v18 = +[(RESingleton *)REPortraitPredictor];
-        v19 = [v7 keywords];
-        [v18 userAffinityToContent:v19];
+        keywords = [providerCopy keywords];
+        [v18 userAffinityToContent:keywords];
         v21 = [REFeatureValue featureValueWithDouble:v20];
 
         goto LABEL_18;
@@ -77,8 +77,8 @@
       if (!v12)
       {
         sentimentAnalyzer = self->_sentimentAnalyzer;
-        v23 = [v7 keywords];
-        v12 = [(REMLSentimentAnalyzer *)sentimentAnalyzer sentimentForTokens:v23];
+        keywords2 = [providerCopy keywords];
+        v12 = [(REMLSentimentAnalyzer *)sentimentAnalyzer sentimentForTokens:keywords2];
       }
 
       v24 = +[REFeature sentimentAnalysisFeature];
@@ -130,18 +130,18 @@ LABEL_22:
 
 - (BOOL)_suppportsPortarit
 {
-  v2 = [(RERelevanceProviderManager *)self effectiveFeatures];
+  effectiveFeatures = [(RERelevanceProviderManager *)self effectiveFeatures];
   v3 = +[REFeature portraitFeature];
-  v4 = [v2 containsObject:v3];
+  v4 = [effectiveFeatures containsObject:v3];
 
   return v4;
 }
 
 - (BOOL)_suppportsSentimentAnalysis
 {
-  v2 = [(RERelevanceProviderManager *)self effectiveFeatures];
+  effectiveFeatures = [(RERelevanceProviderManager *)self effectiveFeatures];
   v3 = +[REFeature sentimentAnalysisFeature];
-  v4 = [v2 containsObject:v3];
+  v4 = [effectiveFeatures containsObject:v3];
 
   return v4;
 }
@@ -156,19 +156,19 @@ LABEL_22:
 
   if ([(REContentRelevanceProviderManager *)self _suppportsSentimentAnalysis])
   {
-    v4 = [(RERelevanceProviderManager *)self environment];
-    v5 = [v4 relevanceEngine];
-    v14 = [v5 modelManager];
+    environment = [(RERelevanceProviderManager *)self environment];
+    relevanceEngine = [environment relevanceEngine];
+    modelManager = [relevanceEngine modelManager];
 
-    v12 = v14;
-    if (!v14)
+    v12 = modelManager;
+    if (!modelManager)
     {
       RERaiseInternalException(*MEMORY[0x277CBE658], @"Model Manager should not be nil!", v6, v7, v8, v9, v10, v11, v13);
       v12 = 0;
     }
 
     [v12 addObserver:self];
-    [(REContentRelevanceProviderManager *)self modelManagerDidUpdateModel:v14];
+    [(REContentRelevanceProviderManager *)self modelManagerDidUpdateModel:modelManager];
   }
 }
 
@@ -182,28 +182,28 @@ LABEL_22:
 
   if ([(REContentRelevanceProviderManager *)self _suppportsSentimentAnalysis])
   {
-    v4 = [(RERelevanceProviderManager *)self environment];
-    v5 = [v4 relevanceEngine];
-    v7 = [v5 modelManager];
+    environment = [(RERelevanceProviderManager *)self environment];
+    relevanceEngine = [environment relevanceEngine];
+    modelManager = [relevanceEngine modelManager];
 
-    [v7 removeObserver:self];
+    [modelManager removeObserver:self];
     sentimentAnalyzer = self->_sentimentAnalyzer;
     self->_sentimentAnalyzer = 0;
   }
 }
 
-- (void)modelManagerDidUpdateModel:(id)a3
+- (void)modelManagerDidUpdateModel:(id)model
 {
-  v4 = a3;
-  v5 = [(RERelevanceProviderManager *)self _manager_queue];
+  modelCopy = model;
+  _manager_queue = [(RERelevanceProviderManager *)self _manager_queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__REContentRelevanceProviderManager_modelManagerDidUpdateModel___block_invoke;
   v7[3] = &unk_2785F9AE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = modelCopy;
+  v6 = modelCopy;
+  dispatch_async(_manager_queue, v7);
 }
 
 void __64__REContentRelevanceProviderManager_modelManagerDidUpdateModel___block_invoke(uint64_t a1)
@@ -218,7 +218,7 @@ void __64__REContentRelevanceProviderManager_modelManagerDidUpdateModel___block_
   [v5 _scheduleUpdate:v6];
 }
 
-- (void)predictorDidUpdate:(id)a3
+- (void)predictorDidUpdate:(id)update
 {
   v4 = +[RERelevanceProviderManagerUpdate immediateUpdateForAllProviders];
   [(RERelevanceProviderManager *)self _scheduleUpdate:v4];

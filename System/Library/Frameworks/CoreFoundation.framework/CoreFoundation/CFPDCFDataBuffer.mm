@@ -1,12 +1,12 @@
 @interface CFPDCFDataBuffer
-- (CFPDCFDataBuffer)initWithCFData:(__CFData *)a3;
+- (CFPDCFDataBuffer)initWithCFData:(__CFData *)data;
 - (id)copyXPCData;
 - (void)dealloc;
 @end
 
 @implementation CFPDCFDataBuffer
 
-- (CFPDCFDataBuffer)initWithCFData:(__CFData *)a3
+- (CFPDCFDataBuffer)initWithCFData:(__CFData *)data
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -14,7 +14,7 @@
   v4 = [(CFPDCFDataBuffer *)&v7 init];
   if (v4)
   {
-    v4->data = CFRetain(a3);
+    v4->data = CFRetain(data);
   }
 
   v5 = *MEMORY[0x1E69E9840];

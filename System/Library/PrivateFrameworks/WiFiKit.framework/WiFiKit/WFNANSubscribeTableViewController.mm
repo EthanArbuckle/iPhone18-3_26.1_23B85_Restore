@@ -1,40 +1,40 @@
 @interface WFNANSubscribeTableViewController
-- (WFNANSubscribeTableViewController)initWithContext:(id)a3;
+- (WFNANSubscribeTableViewController)initWithContext:(id)context;
 - (void)_configureDataSource;
 - (void)_handleAddSubscriber;
-- (void)_handleDiscoveryResultsChangedNotification:(id)a3;
-- (void)_handleSubscribersChangedNotification:(id)a3;
+- (void)_handleDiscoveryResultsChangedNotification:(id)notification;
+- (void)_handleSubscribersChangedNotification:(id)notification;
 - (void)clearInputFields;
 - (void)dismissKeyboard;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation WFNANSubscribeTableViewController
 
-- (WFNANSubscribeTableViewController)initWithContext:(id)a3
+- (WFNANSubscribeTableViewController)initWithContext:(id)context
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277D7B980] defaultAppearanceProxy];
+  contextCopy = context;
+  defaultAppearanceProxy = [MEMORY[0x277D7B980] defaultAppearanceProxy];
   v15.receiver = self;
   v15.super_class = WFNANSubscribeTableViewController;
-  v7 = -[WFNANSubscribeTableViewController initWithStyle:](&v15, sel_initWithStyle_, [v6 tableViewStyle]);
+  v7 = -[WFNANSubscribeTableViewController initWithStyle:](&v15, sel_initWithStyle_, [defaultAppearanceProxy tableViewStyle]);
 
   if (v7)
   {
     v8 = MEMORY[0x277CBEB70];
-    v9 = [(WFNANSubscribeTableViewController *)v7 _defaultSections];
-    v10 = [v8 orderedSetWithArray:v9];
+    _defaultSections = [(WFNANSubscribeTableViewController *)v7 _defaultSections];
+    v10 = [v8 orderedSetWithArray:_defaultSections];
     sections = v7->_sections;
     v7->_sections = v10;
 
-    objc_storeStrong(&v7->_context, a3);
+    objc_storeStrong(&v7->_context, context);
     [(WFNANSubscribeTableViewController *)v7 clearInputFields];
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v7 selector:sel__handleSubscribersChangedNotification_ name:@"WFNANSubscribersChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__handleSubscribersChangedNotification_ name:@"WFNANSubscribersChangedNotification" object:0];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v7 selector:sel__handleDiscoveryResultsChangedNotification_ name:@"WFNANDiscoveryResultsChangedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__handleDiscoveryResultsChangedNotification_ name:@"WFNANDiscoveryResultsChangedNotification" object:0];
 
     [(WFInsetTableViewController *)v7 setReloadDataOnUpdateSectionContentInset:0];
   }
@@ -55,59 +55,59 @@
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v5 nibWithNibName:@"WFTextFieldCell" bundle:v6];
 
-  v8 = [(WFNANSubscribeTableViewController *)self tableView];
-  [v8 registerNib:v7 forCellReuseIdentifier:@"kWFTextFieldCellIdentifier"];
+  tableView = [(WFNANSubscribeTableViewController *)self tableView];
+  [tableView registerNib:v7 forCellReuseIdentifier:@"kWFTextFieldCellIdentifier"];
 
   [(WFNANSubscribeTableViewController *)self _configureDataSource];
 }
 
 - (void)dismissKeyboard
 {
-  v2 = [(WFNANSubscribeTableViewController *)self view];
-  [v2 endEditing:1];
+  view = [(WFNANSubscribeTableViewController *)self view];
+  [view endEditing:1];
 }
 
 - (void)_configureDataSource
 {
   v30[1] = *MEMORY[0x277D85DE8];
   v3 = [WFNANSubscribeTableViewDataSource alloc];
-  v4 = [(WFNANSubscribeTableViewController *)self tableView];
-  v5 = [(WFNANSubscribeTableViewController *)self context];
-  v6 = [(WFNANSubscribeTableViewController *)self sections];
+  tableView = [(WFNANSubscribeTableViewController *)self tableView];
+  context = [(WFNANSubscribeTableViewController *)self context];
+  sections = [(WFNANSubscribeTableViewController *)self sections];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __57__WFNANSubscribeTableViewController__configureDataSource__block_invoke;
   v27[3] = &unk_279EBCCC0;
   v27[4] = self;
-  v7 = [(WFNANSubscribeTableViewDataSource *)v3 initWithTableView:v4 context:v5 sections:v6 cellProvider:v27];
+  v7 = [(WFNANSubscribeTableViewDataSource *)v3 initWithTableView:tableView context:context sections:sections cellProvider:v27];
   [(WFNANSubscribeTableViewController *)self setDataSource:v7];
 
   v8 = objc_alloc_init(MEMORY[0x277CFB890]);
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [(WFNANSubscribeTableViewController *)self sections];
-  v11 = [v10 count];
+  array = [MEMORY[0x277CBEB18] array];
+  sections2 = [(WFNANSubscribeTableViewController *)self sections];
+  v11 = [sections2 count];
 
   if (v11)
   {
     v12 = 0;
     do
     {
-      v13 = [(WFNANSubscribeTableViewController *)self sections];
-      v14 = [v13 objectAtIndexedSubscript:v12];
-      v15 = [v14 unsignedIntegerValue];
+      sections3 = [(WFNANSubscribeTableViewController *)self sections];
+      v14 = [sections3 objectAtIndexedSubscript:v12];
+      unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-      v16 = [(WFNANSubscribeTableViewController *)self _identifierForSection:v15];
-      [v9 addObject:v16];
+      v16 = [(WFNANSubscribeTableViewController *)self _identifierForSection:unsignedIntegerValue];
+      [array addObject:v16];
 
       ++v12;
-      v17 = [(WFNANSubscribeTableViewController *)self sections];
-      v18 = [v17 count];
+      sections4 = [(WFNANSubscribeTableViewController *)self sections];
+      v18 = [sections4 count];
     }
 
     while (v18 > v12);
   }
 
-  [v8 appendSectionsWithIdentifiers:v9];
+  [v8 appendSectionsWithIdentifiers:array];
   v30[0] = @"WFNANSubscribeServiceNameIdentifier";
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
   v20 = [(WFNANSubscribeTableViewController *)self _identifierForSection:0];
@@ -132,8 +132,8 @@
   v24 = [(WFNANSubscribeTableViewController *)self _identifierForSection:1];
   [v8 appendItemsWithIdentifiers:v23 intoSectionWithIdentifier:v24];
 
-  v25 = [(WFNANSubscribeTableViewController *)self dataSource];
-  [v25 applySnapshot:v8 animatingDifferences:1];
+  dataSource = [(WFNANSubscribeTableViewController *)self dataSource];
+  [dataSource applySnapshot:v8 animatingDifferences:1];
 
   v26 = *MEMORY[0x277D85DE8];
 }
@@ -255,19 +255,19 @@ void __57__WFNANSubscribeTableViewController__configureDataSource__block_invoke_
   [WeakRetained setServiceName:v3];
 }
 
-- (void)_handleSubscribersChangedNotification:(id)a3
+- (void)_handleSubscribersChangedNotification:(id)notification
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFNANSubscribeTableViewController *)self dataSource];
-  v6 = [v5 snapshot];
+  notificationCopy = notification;
+  dataSource = [(WFNANSubscribeTableViewController *)self dataSource];
+  snapshot = [dataSource snapshot];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"WFNANTableViewContextChangedSubscriberKey"];
+  userInfo = [notificationCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"WFNANTableViewContextChangedSubscriberKey"];
 
-  v9 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v10 = [v9 objectForKeyedSubscript:@"WFNANTableViewContextChangedOperationTypeKey"];
+  v10 = [userInfo2 objectForKeyedSubscript:@"WFNANTableViewContextChangedOperationTypeKey"];
 
   if (v10)
   {
@@ -281,12 +281,12 @@ void __57__WFNANSubscribeTableViewController__configureDataSource__block_invoke_
 
   if (!v11)
   {
-    v12 = [v10 unsignedIntegerValue];
-    if (v12 == 1)
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
+    if (unsignedIntegerValue == 1)
     {
       v23 = v8;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v23 count:1];
-      [v6 deleteItemsWithIdentifiers:v16];
+      [snapshot deleteItemsWithIdentifiers:v16];
 
       if ([(WFNANTableViewContext *)self->_context getSubscribersCount])
       {
@@ -294,10 +294,10 @@ LABEL_12:
         [(WFNANSubscribeTableViewController *)self clearInputFields];
         v21 = @"WFNANSubscribeServiceNameIdentifier";
         v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
-        [v6 reconfigureItemsWithIdentifiers:v18];
+        [snapshot reconfigureItemsWithIdentifiers:v18];
 
-        v19 = [(WFNANSubscribeTableViewController *)self dataSource];
-        [v19 applySnapshot:v6 animatingDifferences:1];
+        dataSource2 = [(WFNANSubscribeTableViewController *)self dataSource];
+        [dataSource2 applySnapshot:snapshot animatingDifferences:1];
 
         goto LABEL_13;
       }
@@ -305,12 +305,12 @@ LABEL_12:
       v22 = @"WFNANSubscribeNoSubscribersIdentifier";
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
       v17 = [(WFNANSubscribeTableViewController *)self _identifierForSection:1];
-      [v6 appendItemsWithIdentifiers:v15 intoSectionWithIdentifier:v17];
+      [snapshot appendItemsWithIdentifiers:v15 intoSectionWithIdentifier:v17];
     }
 
     else
     {
-      if (v12)
+      if (unsignedIntegerValue)
       {
         goto LABEL_12;
       }
@@ -318,7 +318,7 @@ LABEL_12:
       v25[0] = v8;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
       v14 = [(WFNANSubscribeTableViewController *)self _identifierForSection:1];
-      [v6 appendItemsWithIdentifiers:v13 intoSectionWithIdentifier:v14];
+      [snapshot appendItemsWithIdentifiers:v13 intoSectionWithIdentifier:v14];
 
       if ([(WFNANTableViewContext *)self->_context getSubscribersCount]!= 1)
       {
@@ -327,7 +327,7 @@ LABEL_12:
 
       v24 = @"WFNANSubscribeNoSubscribersIdentifier";
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
-      [v6 deleteItemsWithIdentifiers:v15];
+      [snapshot deleteItemsWithIdentifiers:v15];
     }
 
     goto LABEL_12;
@@ -338,25 +338,25 @@ LABEL_13:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDiscoveryResultsChangedNotification:(id)a3
+- (void)_handleDiscoveryResultsChangedNotification:(id)notification
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFNANSubscribeTableViewController *)self dataSource];
-  v6 = [v5 snapshot];
+  notificationCopy = notification;
+  dataSource = [(WFNANSubscribeTableViewController *)self dataSource];
+  snapshot = [dataSource snapshot];
 
-  v7 = [v4 userInfo];
+  userInfo = [notificationCopy userInfo];
 
-  v8 = [v7 objectForKeyedSubscript:@"WFNANTableViewContextChangedSubscriberKey"];
+  v8 = [userInfo objectForKeyedSubscript:@"WFNANTableViewContextChangedSubscriberKey"];
 
   if (v8)
   {
     v12[0] = v8;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-    [v6 reconfigureItemsWithIdentifiers:v9];
+    [snapshot reconfigureItemsWithIdentifiers:v9];
 
-    v10 = [(WFNANSubscribeTableViewController *)self dataSource];
-    [v10 applySnapshot:v6 animatingDifferences:1];
+    dataSource2 = [(WFNANSubscribeTableViewController *)self dataSource];
+    [dataSource2 applySnapshot:snapshot animatingDifferences:1];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -372,31 +372,31 @@ LABEL_13:
 - (void)_handleAddSubscriber
 {
   v3 = objc_alloc(MEMORY[0x277D7BAF8]);
-  v4 = [(WFNANSubscribeTableViewController *)self serviceName];
-  v7 = [v3 initWithServiceName:v4];
+  serviceName = [(WFNANSubscribeTableViewController *)self serviceName];
+  v7 = [v3 initWithServiceName:serviceName];
 
   [v7 setAuthenticationType:0];
   v5 = [objc_alloc(MEMORY[0x277D7BB00]) initWithConfiguration:v7];
   [v5 setDelegate:self->_context];
   [(WFNANSubscribeTableViewController *)self clearInputFields];
-  v6 = [(WFNANSubscribeTableViewController *)self context];
-  [v6 addSubscriber:v5];
+  context = [(WFNANSubscribeTableViewController *)self context];
+  [context addSubscriber:v5];
 
   [(WFNANSubscribeTableViewController *)self dismissKeyboard];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v12 = a4;
-  v5 = [(WFNANSubscribeTableViewController *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v12, "section")}];
-  v7 = [v6 unsignedIntegerValue];
+  pathCopy = path;
+  sections = [(WFNANSubscribeTableViewController *)self sections];
+  v6 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  if (v7 == 1 && [(WFNANTableViewContext *)self->_context getSubscribersCount]>= 1)
+  if (unsignedIntegerValue == 1 && [(WFNANTableViewContext *)self->_context getSubscribersCount]>= 1)
   {
     v8 = [WFNANDiscoveryResultsTableViewController alloc];
     context = self->_context;
-    v10 = -[WFNANTableViewContext getSubscriberAtIndex:](context, "getSubscriberAtIndex:", [v12 row]);
+    v10 = -[WFNANTableViewContext getSubscriberAtIndex:](context, "getSubscriberAtIndex:", [pathCopy row]);
     v11 = [(WFNANDiscoveryResultsTableViewController *)v8 initWithContext:context forSubscriber:v10];
 
     [(WFNANSubscribeTableViewController *)self wf_pushViewController:v11 animated:1];

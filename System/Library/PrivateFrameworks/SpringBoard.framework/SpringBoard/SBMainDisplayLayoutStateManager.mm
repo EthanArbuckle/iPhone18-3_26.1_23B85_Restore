@@ -1,23 +1,23 @@
 @interface SBMainDisplayLayoutStateManager
-+ (id)_initialLayoutStateWithDisplayOrdinal:(int64_t)a3 isDisplayExternal:(BOOL)a4;
-- (BOOL)_doesSceneIDSpecifyPrimaryScene:(id)a3 forApplicationIdentifier:(id)a4 sceneSessionRole:(id)a5;
-- (BOOL)_hasAppLayoutBeenUserKilledWithinThresholdToCreateNewScene:(id)a3;
++ (id)_initialLayoutStateWithDisplayOrdinal:(int64_t)ordinal isDisplayExternal:(BOOL)external;
+- (BOOL)_doesSceneIDSpecifyPrimaryScene:(id)scene forApplicationIdentifier:(id)identifier sceneSessionRole:(id)role;
+- (BOOL)_hasAppLayoutBeenUserKilledWithinThresholdToCreateNewScene:(id)scene;
 - (SBRecentAppLayouts)_recentAppLayouts;
-- (id)_applicationSceneEntityFromApplicationBundleIdentifier:(id)a3 uniqueIdentifier:(id)a4 displayIdentity:(id)a5;
+- (id)_applicationSceneEntityFromApplicationBundleIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier displayIdentity:(id)identity;
 - (id)_displayItemLayoutAttributesProvider;
-- (id)_layoutStateForApplicationTransitionContext:(id)a3;
-- (id)_layoutStateForDisplayIdentity:(id)a3;
-- (id)_mostRecentAppLayoutForBundleIdentifier:(id)a3 ignoringUniqueIdentifiers:(id)a4 inMedusaOnStageManagerCapableDevice:(BOOL)a5 multitaskingSupported:(BOOL)a6;
-- (id)_mostRecentAppLayoutMatchingAnyUniqueIdentifier:(id)a3 inMedusaOnStageManagerCapableDevice:(BOOL)a4 multitaskingSupported:(BOOL)a5;
-- (id)_sceneIDIfAppLayoutContainsPrimarySceneIDForBundleIdentifier:(id)a3 layoutState:(id)a4 bundleIdentifier:(id)a5 sceneSessionRole:(id)a6;
-- (id)_sceneManagerForDisplayIdentity:(id)a3;
-- (id)_switcherControllerForDisplayIdentity:(id)a3;
-- (id)_zOrderComparatorFor:(id)a3;
-- (id)defaultSceneIdentifierForBundleIdentifier:(id)a3 targetContentIdentifier:(id)a4 allowCanMatches:(BOOL)a5 preferNewScene:(BOOL)a6 visibleSceneIdentifiers:(id)a7 excludingSceneIdentifiers:(id)a8 sceneSessionRole:(id)a9 preferredDisplay:(id)a10;
-- (id)layoutStateForApplicationTransitionContext:(id)a3;
-- (id)primarySceneIdentifierForBundleIdentifier:(id)a3 sceneSessionRole:(id)a4 displayIdentity:(id)a5;
-- (unint64_t)_autoLayoutOptionsForNewAppLayout:(id)a3 previousAppLayout:(id)a4 request:(id)a5;
-- (void)_updateSceneRelevancyManager:(id)a3 forAppLayout:(id)a4 applicationTransitionContext:(id)a5 elementIdentifiersToLayoutAttributes:(id)a6 interfaceOrientation:(int64_t)a7 layoutAttributesProvider:(id)a8 layoutElements:(id)a9;
+- (id)_layoutStateForApplicationTransitionContext:(id)context;
+- (id)_layoutStateForDisplayIdentity:(id)identity;
+- (id)_mostRecentAppLayoutForBundleIdentifier:(id)identifier ignoringUniqueIdentifiers:(id)identifiers inMedusaOnStageManagerCapableDevice:(BOOL)device multitaskingSupported:(BOOL)supported;
+- (id)_mostRecentAppLayoutMatchingAnyUniqueIdentifier:(id)identifier inMedusaOnStageManagerCapableDevice:(BOOL)device multitaskingSupported:(BOOL)supported;
+- (id)_sceneIDIfAppLayoutContainsPrimarySceneIDForBundleIdentifier:(id)identifier layoutState:(id)state bundleIdentifier:(id)bundleIdentifier sceneSessionRole:(id)role;
+- (id)_sceneManagerForDisplayIdentity:(id)identity;
+- (id)_switcherControllerForDisplayIdentity:(id)identity;
+- (id)_zOrderComparatorFor:(id)for;
+- (id)defaultSceneIdentifierForBundleIdentifier:(id)identifier targetContentIdentifier:(id)contentIdentifier allowCanMatches:(BOOL)matches preferNewScene:(BOOL)scene visibleSceneIdentifiers:(id)identifiers excludingSceneIdentifiers:(id)sceneIdentifiers sceneSessionRole:(id)role preferredDisplay:(id)self0;
+- (id)layoutStateForApplicationTransitionContext:(id)context;
+- (id)primarySceneIdentifierForBundleIdentifier:(id)identifier sceneSessionRole:(id)role displayIdentity:(id)identity;
+- (unint64_t)_autoLayoutOptionsForNewAppLayout:(id)layout previousAppLayout:(id)appLayout request:(id)request;
+- (void)_updateSceneRelevancyManager:(id)manager forAppLayout:(id)layout applicationTransitionContext:(id)context elementIdentifiersToLayoutAttributes:(id)attributes interfaceOrientation:(int64_t)orientation layoutAttributesProvider:(id)provider layoutElements:(id)elements;
 @end
 
 @implementation SBMainDisplayLayoutStateManager
@@ -25,64 +25,64 @@
 - (SBRecentAppLayouts)_recentAppLayouts
 {
   v2 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-  v3 = [v2 _recentAppLayoutsController];
+  _recentAppLayoutsController = [v2 _recentAppLayoutsController];
 
-  return v3;
+  return _recentAppLayoutsController;
 }
 
-+ (id)_initialLayoutStateWithDisplayOrdinal:(int64_t)a3 isDisplayExternal:(BOOL)a4
++ (id)_initialLayoutStateWithDisplayOrdinal:(int64_t)ordinal isDisplayExternal:(BOOL)external
 {
-  v6 = objc_alloc([a1 _layoutStateClass]);
-  LOBYTE(v11) = a4;
+  v6 = objc_alloc([self _layoutStateClass]);
+  LOBYTE(v11) = external;
   LOBYTE(v10) = 0;
   LOBYTE(v9) = 0;
-  v7 = [v6 _initWithLayoutElements:0 interfaceOrientation:0 interfaceOrientationByLayoutElement:0 spaceConfiguration:0 elementIdentifiersToLayoutAttributes:MEMORY[0x277CBEC10] floatingConfiguration:0 unlockedEnvironmentMode:1 floatingSwitcherVisible:v9 centerConfiguration:0 centerEntityModal:v10 peekConfiguration:0 bundleIDShowingAppExpose:0 windowPickerRole:0 displayOrdinal:a3 isDisplayExternal:v11];
+  v7 = [v6 _initWithLayoutElements:0 interfaceOrientation:0 interfaceOrientationByLayoutElement:0 spaceConfiguration:0 elementIdentifiersToLayoutAttributes:MEMORY[0x277CBEC10] floatingConfiguration:0 unlockedEnvironmentMode:1 floatingSwitcherVisible:v9 centerConfiguration:0 centerEntityModal:v10 peekConfiguration:0 bundleIDShowingAppExpose:0 windowPickerRole:0 displayOrdinal:ordinal isDisplayExternal:v11];
 
   return v7;
 }
 
-- (id)layoutStateForApplicationTransitionContext:(id)a3
+- (id)layoutStateForApplicationTransitionContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = SBMainDisplayLayoutStateManager;
-  v3 = [(SBLayoutStateManager *)&v5 layoutStateForApplicationTransitionContext:a3];
+  v3 = [(SBLayoutStateManager *)&v5 layoutStateForApplicationTransitionContext:context];
 
   return v3;
 }
 
-- (id)defaultSceneIdentifierForBundleIdentifier:(id)a3 targetContentIdentifier:(id)a4 allowCanMatches:(BOOL)a5 preferNewScene:(BOOL)a6 visibleSceneIdentifiers:(id)a7 excludingSceneIdentifiers:(id)a8 sceneSessionRole:(id)a9 preferredDisplay:(id)a10
+- (id)defaultSceneIdentifierForBundleIdentifier:(id)identifier targetContentIdentifier:(id)contentIdentifier allowCanMatches:(BOOL)matches preferNewScene:(BOOL)scene visibleSceneIdentifiers:(id)identifiers excludingSceneIdentifiers:(id)sceneIdentifiers sceneSessionRole:(id)role preferredDisplay:(id)self0
 {
-  v122 = a6;
-  v12 = a5;
+  sceneCopy = scene;
+  matchesCopy = matches;
   v105 = a2;
   v157 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v134 = a7;
-  v133 = a8;
-  v140 = a9;
-  v104 = a10;
-  v136 = self;
-  v103 = [(SBMainDisplayLayoutStateManager *)self _recentAppLayouts];
-  v142 = v15;
-  v17 = [v103 recentsForBundleIdentifier:v15 includingHiddenAppLayouts:0];
+  identifierCopy = identifier;
+  contentIdentifierCopy = contentIdentifier;
+  identifiersCopy = identifiers;
+  sceneIdentifiersCopy = sceneIdentifiers;
+  roleCopy = role;
+  displayCopy = display;
+  selfCopy = self;
+  _recentAppLayouts = [(SBMainDisplayLayoutStateManager *)self _recentAppLayouts];
+  v142 = identifierCopy;
+  v17 = [_recentAppLayouts recentsForBundleIdentifier:identifierCopy includingHiddenAppLayouts:0];
   v18 = [v17 count];
-  v128 = v16;
+  v128 = contentIdentifierCopy;
   v131 = v18;
-  if (v16 || !v18)
+  if (contentIdentifierCopy || !v18)
   {
-    v19 = [v103 recentsForBundleIdentifier:v142 includingHiddenAppLayouts:1];
+    v19 = [_recentAppLayouts recentsForBundleIdentifier:v142 includingHiddenAppLayouts:1];
 
     v17 = v19;
   }
 
-  if (v104)
+  if (displayCopy)
   {
     v148[0] = MEMORY[0x277D85DD0];
     v148[1] = 3221225472;
     v148[2] = __216__SBMainDisplayLayoutStateManager_defaultSceneIdentifierForBundleIdentifier_targetContentIdentifier_allowCanMatches_preferNewScene_visibleSceneIdentifiers_excludingSceneIdentifiers_sceneSessionRole_preferredDisplay___block_invoke;
     v148[3] = &unk_2783A8CB8;
-    v149 = v104;
+    v149 = displayCopy;
     v20 = [v17 bs_filter:v148];
 
     v17 = v20;
@@ -98,7 +98,7 @@
   {
     v113 = 0;
     v22 = 0;
-    v110 = !v12;
+    v110 = !matchesCopy;
     v112 = *v145;
     v107 = 4;
     v108 = 1;
@@ -125,7 +125,7 @@
         v24 = *(*(&v144 + 1) + 8 * v23);
         if (!v128 || ([MEMORY[0x277D75418] currentDevice], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "userInterfaceIdiom"), v25, (v26 & 0xFFFFFFFFFFFFFFFBLL) != 1))
         {
-          if ([v24 isHidden] && -[SBMainDisplayLayoutStateManager _hasAppLayoutBeenUserKilledWithinThresholdToCreateNewScene:](v136, "_hasAppLayoutBeenUserKilledWithinThresholdToCreateNewScene:", v24))
+          if ([v24 isHidden] && -[SBMainDisplayLayoutStateManager _hasAppLayoutBeenUserKilledWithinThresholdToCreateNewScene:](selfCopy, "_hasAppLayoutBeenUserKilledWithinThresholdToCreateNewScene:", v24))
           {
             goto LABEL_104;
           }
@@ -139,10 +139,10 @@
         v31 = [v30 switcherControllerForAppLayout:v24];
 
         v119 = v31;
-        v32 = [v31 windowManagementContext];
-        if (![v32 baseStyle])
+        windowManagementContext = [v31 windowManagementContext];
+        if (![windowManagementContext baseStyle])
         {
-          v116 = v32;
+          v116 = windowManagementContext;
           v120 = v22;
           *v29 = v108;
           v34 = 1;
@@ -157,35 +157,35 @@ LABEL_34:
             v49 = v48;
             if (v48)
             {
-              v50 = [v48 uniqueIdentifier];
-              v51 = [v133 containsObject:v50];
-              v52 = [v134 containsObject:v50];
+              uniqueIdentifier = [v48 uniqueIdentifier];
+              v51 = [sceneIdentifiersCopy containsObject:uniqueIdentifier];
+              v52 = [identifiersCopy containsObject:uniqueIdentifier];
               v141 = v29;
               v139 = v52;
               if (v46)
               {
-                v138 = [v24 isHidden];
+                isHidden = [v24 isHidden];
               }
 
               else
               {
-                v138 = 0;
+                isHidden = 0;
               }
 
-              v53 = [(SBMainDisplayLayoutStateManager *)v136 _applicationController];
-              v54 = [v53 applicationWithBundleIdentifier:v142];
+              _applicationController = [(SBMainDisplayLayoutStateManager *)selfCopy _applicationController];
+              v54 = [_applicationController applicationWithBundleIdentifier:v142];
 
-              v55 = [v54 _dataStore];
-              v56 = [v49 uniqueIdentifier];
-              v57 = [v55 sceneStoreForIdentifier:v56 creatingIfNecessary:0];
+              _dataStore = [v54 _dataStore];
+              uniqueIdentifier2 = [v49 uniqueIdentifier];
+              v57 = [_dataStore sceneStoreForIdentifier:uniqueIdentifier2 creatingIfNecessary:0];
 
               v58 = [v57 objectForKey:v132];
               v59 = v58;
-              if (!v140 || !v58 || [v58 isEqual:v140])
+              if (!roleCopy || !v58 || [v58 isEqual:roleCopy])
               {
                 v135 = v51;
-                v60 = [v49 bundleIdentifier];
-                v61 = [v142 isEqualToString:v60];
+                bundleIdentifier = [v49 bundleIdentifier];
+                v61 = [v142 isEqualToString:bundleIdentifier];
 
                 if (!v61)
                 {
@@ -263,7 +263,7 @@ LABEL_49:
                         if (os_log_type_enabled(v84, OS_LOG_TYPE_DEFAULT))
                         {
                           v150 = v115;
-                          v151 = v50;
+                          v151 = uniqueIdentifier;
                           v152 = 2114;
                           v153 = v125;
                           v154 = 2114;
@@ -297,7 +297,7 @@ LABEL_94:
                       goto LABEL_95;
                     }
 
-                    if (((v135 | v139 | v110 | v138) & 1) == 0)
+                    if (((v135 | v139 | v110 | isHidden) & 1) == 0)
                     {
                       v87 = v120;
                       if (v120)
@@ -307,7 +307,7 @@ LABEL_94:
 
                       else
                       {
-                        v88 = v50;
+                        v88 = uniqueIdentifier;
                       }
 
                       v89 = v88;
@@ -322,7 +322,7 @@ LABEL_94:
                     }
 
                     v150 = v115;
-                    v151 = v50;
+                    v151 = uniqueIdentifier;
                     v152 = 2114;
                     v153 = v125;
                     v154 = 2114;
@@ -346,7 +346,7 @@ LABEL_87:
 
                       else
                       {
-                        v91 = v50;
+                        v91 = uniqueIdentifier;
                       }
 
                       v113 = v91;
@@ -364,7 +364,7 @@ LABEL_87:
 
                     else
                     {
-                      v91 = v50;
+                      v91 = uniqueIdentifier;
                     }
 
                     v129 = v91;
@@ -379,7 +379,7 @@ LABEL_84:
                   }
 
                   v150 = v115;
-                  v151 = v50;
+                  v151 = uniqueIdentifier;
                   v152 = 2114;
                   v153 = v125;
                   v154 = 2114;
@@ -389,16 +389,16 @@ LABEL_84:
                   goto LABEL_87;
                 }
 
-                v63 = [MEMORY[0x277D75418] currentDevice];
-                v64 = [v63 userInterfaceIdiom];
+                currentDevice = [MEMORY[0x277D75418] currentDevice];
+                userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-                if (v64 == 1 && v128)
+                if (userInterfaceIdiom == 1 && v128)
                 {
                   goto LABEL_49;
                 }
 
 LABEL_51:
-                if (((v135 | v139 | v122 | v138) & 1) == 0)
+                if (((v135 | v139 | sceneCopy | isHidden) & 1) == 0)
                 {
                   v70 = v129;
                   if (v129)
@@ -408,7 +408,7 @@ LABEL_51:
 
                   else
                   {
-                    v71 = v50;
+                    v71 = uniqueIdentifier;
                   }
 
                   v72 = v71;
@@ -434,9 +434,9 @@ LABEL_95:
           }
         }
 
-        if ([v32 isMedusaEnabled])
+        if ([windowManagementContext isMedusaEnabled])
         {
-          v116 = v32;
+          v116 = windowManagementContext;
           v120 = v22;
           v33 = v108;
           *v29 = v107;
@@ -446,35 +446,35 @@ LABEL_95:
           goto LABEL_34;
         }
 
-        if ([v32 isChamoisOrFlexibleWindowing])
+        if ([windowManagementContext isChamoisOrFlexibleWindowing])
         {
           v120 = v22;
-          v116 = v32;
-          if (v122)
+          v116 = windowManagementContext;
+          if (sceneCopy)
           {
-            v122 = 1;
+            sceneCopy = 1;
           }
 
           else
           {
             v36 = [MEMORY[0x277CBEBC0] URLWithString:v128];
-            v122 = [v36 isFileURL];
+            sceneCopy = [v36 isFileURL];
           }
 
           v37 = v119;
-          v38 = [v119 displayItemLayoutAttributesProvider];
-          v39 = [v37 interfaceOrientation];
-          if ((v39 - 1) < 2)
+          displayItemLayoutAttributesProvider = [v119 displayItemLayoutAttributesProvider];
+          interfaceOrientation = [v37 interfaceOrientation];
+          if ((interfaceOrientation - 1) < 2)
           {
             v40 = 1;
           }
 
           else
           {
-            v40 = 2 * ((v39 - 3) < 2);
+            v40 = 2 * ((interfaceOrientation - 3) < 2);
           }
 
-          v41 = [v38 lastInteractedDisplayItemsInAppLayout:v24 orientation:v40];
+          v41 = [displayItemLayoutAttributesProvider lastInteractedDisplayItemsInAppLayout:v24 orientation:v40];
 
           v42 = [v41 count];
           v34 = v42;
@@ -505,13 +505,13 @@ LABEL_95:
           v129 = 0;
 LABEL_100:
           v22 = v120;
-          v32 = v116;
+          windowManagementContext = v116;
         }
 
         else
         {
-          v35 = [MEMORY[0x277CCA890] currentHandler];
-          [v35 handleFailureInMethod:v105 object:v136 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:148 description:@"Unexpected window management context"];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:v105 object:selfCopy file:@"SBMainDisplayLayoutStateManager.m" lineNumber:148 description:@"Unexpected window management context"];
 
           v129 = 0;
         }
@@ -542,7 +542,7 @@ LABEL_106:
 
   if (_os_feature_enabled_impl())
   {
-    if (v122)
+    if (sceneCopy)
     {
       v94 = SBLogSceneResolution();
       if (os_log_type_enabled(v94, OS_LOG_TYPE_DEFAULT))
@@ -624,40 +624,40 @@ uint64_t __216__SBMainDisplayLayoutStateManager_defaultSceneIdentifierForBundleI
   return v4;
 }
 
-- (id)primarySceneIdentifierForBundleIdentifier:(id)a3 sceneSessionRole:(id)a4 displayIdentity:(id)a5
+- (id)primarySceneIdentifierForBundleIdentifier:(id)identifier sceneSessionRole:(id)role displayIdentity:(id)identity
 {
   v64 = *MEMORY[0x277D85DE8];
-  v52 = a3;
-  v51 = a4;
-  v8 = a5;
-  v9 = [(SBMainDisplayLayoutStateManager *)self _layoutStateForDisplayIdentity:v8];
-  v53 = self;
-  v10 = [(SBMainDisplayLayoutStateManager *)self _switcherControllerForDisplayIdentity:v8];
-  v11 = [v10 windowManagementContext];
-  LODWORD(a5) = [v11 isFlexibleWindowingEnabled];
-  v12 = SBPeekConfigurationIsValid([v9 peekConfiguration]) & (a5 ^ 1);
+  identifierCopy = identifier;
+  roleCopy = role;
+  identityCopy = identity;
+  v9 = [(SBMainDisplayLayoutStateManager *)self _layoutStateForDisplayIdentity:identityCopy];
+  selfCopy = self;
+  v10 = [(SBMainDisplayLayoutStateManager *)self _switcherControllerForDisplayIdentity:identityCopy];
+  windowManagementContext = [v10 windowManagementContext];
+  LODWORD(identity) = [windowManagementContext isFlexibleWindowingEnabled];
+  v12 = SBPeekConfigurationIsValid([v9 peekConfiguration]) & (identity ^ 1);
   v48 = v9;
   [v9 appLayout];
   v49 = v13 = 0;
   if (v49 && (v12 & 1) == 0)
   {
-    v13 = [(SBMainDisplayLayoutStateManager *)v53 _sceneIDIfAppLayoutContainsPrimarySceneIDForBundleIdentifier:v49 layoutState:v9 bundleIdentifier:v52 sceneSessionRole:v51];
+    v13 = [(SBMainDisplayLayoutStateManager *)selfCopy _sceneIDIfAppLayoutContainsPrimarySceneIDForBundleIdentifier:v49 layoutState:v9 bundleIdentifier:identifierCopy sceneSessionRole:roleCopy];
   }
 
-  v14 = [v9 floatingAppLayout];
-  v15 = v14;
+  floatingAppLayout = [v9 floatingAppLayout];
+  v15 = floatingAppLayout;
   if (!v13)
   {
-    v18 = v14 ? v12 : 1;
-    if ((v18 & 1) != 0 || ([(SBMainDisplayLayoutStateManager *)v53 _sceneIDIfAppLayoutContainsPrimarySceneIDForBundleIdentifier:v14 layoutState:v9 bundleIdentifier:v52 sceneSessionRole:v51], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
+    v18 = floatingAppLayout ? v12 : 1;
+    if ((v18 & 1) != 0 || ([(SBMainDisplayLayoutStateManager *)selfCopy _sceneIDIfAppLayoutContainsPrimarySceneIDForBundleIdentifier:floatingAppLayout layoutState:v9 bundleIdentifier:identifierCopy sceneSessionRole:roleCopy], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v19 = [(SBMainDisplayLayoutStateManager *)v53 _recentAppLayouts];
-      v20 = [v19 recentsForBundleIdentifier:v52 includingHiddenAppLayouts:0];
-      v46 = v11;
+      _recentAppLayouts = [(SBMainDisplayLayoutStateManager *)selfCopy _recentAppLayouts];
+      v20 = [_recentAppLayouts recentsForBundleIdentifier:identifierCopy includingHiddenAppLayouts:0];
+      v46 = windowManagementContext;
       v47 = v10;
       if (![v20 count])
       {
-        v21 = [v19 recentsForBundleIdentifier:v52 includingHiddenAppLayouts:1];
+        v21 = [_recentAppLayouts recentsForBundleIdentifier:identifierCopy includingHiddenAppLayouts:1];
 
         v20 = v21;
       }
@@ -672,7 +672,7 @@ uint64_t __216__SBMainDisplayLayoutStateManager_defaultSceneIdentifierForBundleI
       if (v23)
       {
         v24 = v23;
-        v25 = v8;
+        v25 = identityCopy;
         v26 = *v59;
         while (2)
         {
@@ -686,7 +686,7 @@ uint64_t __216__SBMainDisplayLayoutStateManager_defaultSceneIdentifierForBundleI
             v28 = *(*(&v58 + 1) + 8 * i);
             if ([v28 isHidden])
             {
-              v29 = [(SBMainDisplayLayoutStateManager *)v53 _hasAppLayoutBeenUserKilledWithinThresholdToCreateNewScene:v28];
+              v29 = [(SBMainDisplayLayoutStateManager *)selfCopy _hasAppLayoutBeenUserKilledWithinThresholdToCreateNewScene:v28];
             }
 
             else
@@ -706,7 +706,7 @@ uint64_t __216__SBMainDisplayLayoutStateManager_defaultSceneIdentifierForBundleI
 
             if (((v29 | v12 & v30) & 1) == 0)
             {
-              v31 = [(SBMainDisplayLayoutStateManager *)v53 _sceneIDIfAppLayoutContainsPrimarySceneIDForBundleIdentifier:v28 layoutState:v48 bundleIdentifier:v52 sceneSessionRole:v51];
+              v31 = [(SBMainDisplayLayoutStateManager *)selfCopy _sceneIDIfAppLayoutContainsPrimarySceneIDForBundleIdentifier:v28 layoutState:v48 bundleIdentifier:identifierCopy sceneSessionRole:roleCopy];
               if (v31)
               {
                 v13 = v31;
@@ -726,7 +726,7 @@ uint64_t __216__SBMainDisplayLayoutStateManager_defaultSceneIdentifierForBundleI
 
         v13 = 0;
 LABEL_30:
-        v8 = v25;
+        identityCopy = v25;
         v15 = v50;
       }
 
@@ -735,7 +735,7 @@ LABEL_30:
         v13 = 0;
       }
 
-      v11 = v46;
+      windowManagementContext = v46;
       v10 = v47;
       if (!((v13 != 0) | v12 & 1))
       {
@@ -743,12 +743,12 @@ LABEL_30:
         v57 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v45 = v8;
-        v32 = [(SBMainDisplayLayoutStateManager *)v53 _sceneManagerForDisplayIdentity:v8];
-        v33 = [v32 externalApplicationSceneHandles];
+        v45 = identityCopy;
+        v32 = [(SBMainDisplayLayoutStateManager *)selfCopy _sceneManagerForDisplayIdentity:identityCopy];
+        externalApplicationSceneHandles = [v32 externalApplicationSceneHandles];
 
-        v34 = v33;
-        v35 = [v33 countByEnumeratingWithState:&v54 objects:v62 count:16];
+        v34 = externalApplicationSceneHandles;
+        v35 = [externalApplicationSceneHandles countByEnumeratingWithState:&v54 objects:v62 count:16];
         if (!v35)
         {
           v13 = 0;
@@ -758,7 +758,7 @@ LABEL_30:
         v36 = v35;
         v13 = 0;
         v37 = *v55;
-        v38 = v52;
+        v38 = identifierCopy;
         while (1)
         {
           for (j = 0; j != v36; ++j)
@@ -769,30 +769,30 @@ LABEL_30:
             }
 
             v40 = *(*(&v54 + 1) + 8 * j);
-            v41 = [v40 application];
-            v42 = [v41 bundleIdentifier];
-            if (([v42 isEqual:v38] & 1) == 0)
+            application = [v40 application];
+            bundleIdentifier = [application bundleIdentifier];
+            if (([bundleIdentifier isEqual:v38] & 1) == 0)
             {
 
               goto LABEL_42;
             }
 
-            v43 = [v40 sceneIdentifier];
-            v44 = [(SBMainDisplayLayoutStateManager *)v53 _doesSceneIDSpecifyPrimaryScene:v43 forApplicationIdentifier:v38 sceneSessionRole:v51];
+            sceneIdentifier = [v40 sceneIdentifier];
+            v44 = [(SBMainDisplayLayoutStateManager *)selfCopy _doesSceneIDSpecifyPrimaryScene:sceneIdentifier forApplicationIdentifier:v38 sceneSessionRole:roleCopy];
 
             if (v44)
             {
               [v40 sceneIdentifier];
-              v13 = v41 = v13;
+              v13 = application = v13;
               v15 = v50;
-              v38 = v52;
+              v38 = identifierCopy;
 LABEL_42:
 
               continue;
             }
 
             v15 = v50;
-            v38 = v52;
+            v38 = identifierCopy;
           }
 
           v36 = [v34 countByEnumeratingWithState:&v54 objects:v62 count:16];
@@ -800,8 +800,8 @@ LABEL_42:
           {
 LABEL_48:
 
-            v8 = v45;
-            v11 = v46;
+            identityCopy = v45;
+            windowManagementContext = v46;
             v10 = v47;
             break;
           }
@@ -815,24 +815,24 @@ LABEL_48:
   return v13;
 }
 
-- (BOOL)_doesSceneIDSpecifyPrimaryScene:(id)a3 forApplicationIdentifier:(id)a4 sceneSessionRole:(id)a5
+- (BOOL)_doesSceneIDSpecifyPrimaryScene:(id)scene forApplicationIdentifier:(id)identifier sceneSessionRole:(id)role
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SBMainDisplayLayoutStateManager *)self _applicationController];
-  v12 = [v11 applicationWithBundleIdentifier:v9];
+  sceneCopy = scene;
+  identifierCopy = identifier;
+  roleCopy = role;
+  _applicationController = [(SBMainDisplayLayoutStateManager *)self _applicationController];
+  v12 = [_applicationController applicationWithBundleIdentifier:identifierCopy];
 
-  v13 = [v12 _dataStore];
-  v14 = [v13 sceneStoreForIdentifier:v8 creatingIfNecessary:0];
+  _dataStore = [v12 _dataStore];
+  v14 = [_dataStore sceneStoreForIdentifier:sceneCopy creatingIfNecessary:0];
 
   v15 = [v14 objectForKey:@"activationConditions"];
   v16 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v15 error:0];
   if (!v16)
   {
     v21 = 1;
-    if (!v10)
+    if (!roleCopy)
     {
       goto LABEL_23;
     }
@@ -840,9 +840,9 @@ LABEL_48:
     goto LABEL_18;
   }
 
-  v30 = v8;
+  v30 = sceneCopy;
   v17 = +[SBFocusAppConfigurationContextMonitor sharedInstance];
-  v18 = [v17 targetContentIdentifierPrefixForBundleIdentifier:v9];
+  v18 = [v17 targetContentIdentifierPrefixForBundleIdentifier:identifierCopy];
 
   v29 = v12;
   if (v18)
@@ -852,7 +852,7 @@ LABEL_48:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v33 = v9;
+      v33 = identifierCopy;
       v34 = 2114;
       v35 = v19;
       _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_DEFAULT, "Found TCI Prefix for primary scene evaluation %{public}@:%{public}@", buf, 0x16u);
@@ -874,7 +874,7 @@ LABEL_48:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v33 = v9;
+      v33 = identifierCopy;
       v34 = 2114;
       v35 = v30;
       v36 = 2114;
@@ -888,13 +888,13 @@ LABEL_48:
     v25 = SBLogSceneResolution();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      [SBMainDisplayLayoutStateManager _doesSceneIDSpecifyPrimaryScene:v9 forApplicationIdentifier:v23 sceneSessionRole:v25];
+      [SBMainDisplayLayoutStateManager _doesSceneIDSpecifyPrimaryScene:identifierCopy forApplicationIdentifier:v23 sceneSessionRole:v25];
     }
   }
 
   v12 = v29;
-  v8 = v30;
-  if (v10)
+  sceneCopy = v30;
+  if (roleCopy)
   {
 LABEL_18:
     if (v21)
@@ -903,7 +903,7 @@ LABEL_18:
       v27 = v26;
       if (v26)
       {
-        LOBYTE(v21) = [v26 isEqualToString:v10];
+        LOBYTE(v21) = [v26 isEqualToString:roleCopy];
       }
 
       else
@@ -918,39 +918,39 @@ LABEL_23:
   return v21;
 }
 
-- (id)_sceneIDIfAppLayoutContainsPrimarySceneIDForBundleIdentifier:(id)a3 layoutState:(id)a4 bundleIdentifier:(id)a5 sceneSessionRole:(id)a6
+- (id)_sceneIDIfAppLayoutContainsPrimarySceneIDForBundleIdentifier:(id)identifier layoutState:(id)state bundleIdentifier:(id)bundleIdentifier sceneSessionRole:(id)role
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(SBMainDisplayLayoutStateManager *)self _displayItemLayoutAttributesProvider];
-  v15 = [v12 interfaceOrientation];
+  bundleIdentifierCopy = bundleIdentifier;
+  roleCopy = role;
+  stateCopy = state;
+  identifierCopy = identifier;
+  _displayItemLayoutAttributesProvider = [(SBMainDisplayLayoutStateManager *)self _displayItemLayoutAttributesProvider];
+  interfaceOrientation = [stateCopy interfaceOrientation];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __142__SBMainDisplayLayoutStateManager__sceneIDIfAppLayoutContainsPrimarySceneIDForBundleIdentifier_layoutState_bundleIdentifier_sceneSessionRole___block_invoke;
   v22[3] = &unk_2783B9418;
-  if ((v15 - 1) < 2)
+  if ((interfaceOrientation - 1) < 2)
   {
     v16 = 1;
   }
 
   else
   {
-    v16 = 2 * ((v15 - 3) < 2);
+    v16 = 2 * ((interfaceOrientation - 3) < 2);
   }
 
-  v23 = v10;
-  v24 = self;
-  v25 = v11;
-  v17 = v11;
-  v18 = v10;
-  v19 = [v14 lastInteractedDisplayItemInAppLayout:v13 orientation:v16 passingTest:v22];
+  v23 = bundleIdentifierCopy;
+  selfCopy = self;
+  v25 = roleCopy;
+  v17 = roleCopy;
+  v18 = bundleIdentifierCopy;
+  v19 = [_displayItemLayoutAttributesProvider lastInteractedDisplayItemInAppLayout:identifierCopy orientation:v16 passingTest:v22];
 
-  v20 = [v19 uniqueIdentifier];
+  uniqueIdentifier = [v19 uniqueIdentifier];
 
-  return v20;
+  return uniqueIdentifier;
 }
 
 uint64_t __142__SBMainDisplayLayoutStateManager__sceneIDIfAppLayoutContainsPrimarySceneIDForBundleIdentifier_layoutState_bundleIdentifier_sceneSessionRole___block_invoke(void *a1, void *a2)
@@ -973,25 +973,25 @@ uint64_t __142__SBMainDisplayLayoutStateManager__sceneIDIfAppLayoutContainsPrima
   return v8;
 }
 
-- (id)_mostRecentAppLayoutMatchingAnyUniqueIdentifier:(id)a3 inMedusaOnStageManagerCapableDevice:(BOOL)a4 multitaskingSupported:(BOOL)a5
+- (id)_mostRecentAppLayoutMatchingAnyUniqueIdentifier:(id)identifier inMedusaOnStageManagerCapableDevice:(BOOL)device multitaskingSupported:(BOOL)supported
 {
-  v5 = a5;
-  v44 = a4;
+  supportedCopy = supported;
+  deviceCopy = device;
   v67 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  identifierCopy = identifier;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v42 = self;
-  v8 = [(SBMainDisplayLayoutStateManager *)self _recentAppLayouts];
-  v9 = [v8 recentsIncludingHiddenAppLayouts:1];
+  selfCopy = self;
+  _recentAppLayouts = [(SBMainDisplayLayoutStateManager *)self _recentAppLayouts];
+  v9 = [_recentAppLayouts recentsIncludingHiddenAppLayouts:1];
 
   v10 = [v9 countByEnumeratingWithState:&v59 objects:v66 count:16];
   if (v10)
   {
     v11 = v10;
-    v38 = v5;
+    v38 = supportedCopy;
     v12 = *v60;
     v46 = v9;
     v40 = *v60;
@@ -1009,8 +1009,8 @@ uint64_t __142__SBMainDisplayLayoutStateManager__sceneIDIfAppLayoutContainsPrima
         v56 = 0u;
         v57 = 0u;
         v58 = 0u;
-        v15 = [v14 allItems];
-        v16 = [v15 countByEnumeratingWithState:&v55 objects:v65 count:16];
+        allItems = [v14 allItems];
+        v16 = [allItems countByEnumeratingWithState:&v55 objects:v65 count:16];
         if (v16)
         {
           v17 = v16;
@@ -1021,20 +1021,20 @@ uint64_t __142__SBMainDisplayLayoutStateManager__sceneIDIfAppLayoutContainsPrima
             {
               if (*v56 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(allItems);
               }
 
-              v20 = [*(*(&v55 + 1) + 8 * j) uniqueIdentifier];
-              v21 = [v7 containsObject:v20];
+              uniqueIdentifier = [*(*(&v55 + 1) + 8 * j) uniqueIdentifier];
+              v21 = [identifierCopy containsObject:uniqueIdentifier];
 
               if (v21)
               {
 
                 v22 = v14;
-                if (v44)
+                if (deviceCopy)
                 {
-                  v23 = [(SBMainDisplayLayoutStateManager *)v42 _applicationController];
-                  v24 = [v22 appLayoutsBySplittingMedusaIncompatibleItemsWithApplicationController:v23 multitaskingSupported:v38];
+                  _applicationController = [(SBMainDisplayLayoutStateManager *)selfCopy _applicationController];
+                  v24 = [v22 appLayoutsBySplittingMedusaIncompatibleItemsWithApplicationController:_applicationController multitaskingSupported:v38];
 
                   if (v24)
                   {
@@ -1064,8 +1064,8 @@ uint64_t __142__SBMainDisplayLayoutStateManager__sceneIDIfAppLayoutContainsPrima
                           v49 = 0u;
                           v50 = 0u;
                           v43 = v28;
-                          v29 = [v28 allItems];
-                          v30 = [v29 countByEnumeratingWithState:&v47 objects:v63 count:16];
+                          allItems2 = [v28 allItems];
+                          v30 = [allItems2 countByEnumeratingWithState:&v47 objects:v63 count:16];
                           if (v30)
                           {
                             v31 = v30;
@@ -1076,11 +1076,11 @@ uint64_t __142__SBMainDisplayLayoutStateManager__sceneIDIfAppLayoutContainsPrima
                               {
                                 if (*v48 != v32)
                                 {
-                                  objc_enumerationMutation(v29);
+                                  objc_enumerationMutation(allItems2);
                                 }
 
-                                v34 = [*(*(&v47 + 1) + 8 * m) uniqueIdentifier];
-                                v35 = [v7 containsObject:v34];
+                                uniqueIdentifier2 = [*(*(&v47 + 1) + 8 * m) uniqueIdentifier];
+                                v35 = [identifierCopy containsObject:uniqueIdentifier2];
 
                                 if (v35)
                                 {
@@ -1093,7 +1093,7 @@ uint64_t __142__SBMainDisplayLayoutStateManager__sceneIDIfAppLayoutContainsPrima
                                 }
                               }
 
-                              v31 = [v29 countByEnumeratingWithState:&v47 objects:v63 count:16];
+                              v31 = [allItems2 countByEnumeratingWithState:&v47 objects:v63 count:16];
                               if (v31)
                               {
                                 continue;
@@ -1132,7 +1132,7 @@ LABEL_38:
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v55 objects:v65 count:16];
+            v17 = [allItems countByEnumeratingWithState:&v55 objects:v65 count:16];
             if (v17)
             {
               continue;
@@ -1163,25 +1163,25 @@ LABEL_41:
   return v22;
 }
 
-- (id)_mostRecentAppLayoutForBundleIdentifier:(id)a3 ignoringUniqueIdentifiers:(id)a4 inMedusaOnStageManagerCapableDevice:(BOOL)a5 multitaskingSupported:(BOOL)a6
+- (id)_mostRecentAppLayoutForBundleIdentifier:(id)identifier ignoringUniqueIdentifiers:(id)identifiers inMedusaOnStageManagerCapableDevice:(BOOL)device multitaskingSupported:(BOOL)supported
 {
-  v6 = a6;
-  v52 = a5;
+  supportedCopy = supported;
+  deviceCopy = device;
   v77 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v11 = [(SBMainDisplayLayoutStateManager *)self _recentAppLayouts];
-  v12 = [v11 recentsIncludingHiddenAppLayouts:0];
+  _recentAppLayouts = [(SBMainDisplayLayoutStateManager *)self _recentAppLayouts];
+  v12 = [_recentAppLayouts recentsIncludingHiddenAppLayouts:0];
 
   v50 = [v12 countByEnumeratingWithState:&v69 objects:v76 count:16];
   if (v50)
   {
-    v44 = self;
-    v46 = v6;
+    selfCopy = self;
+    v46 = supportedCopy;
     v13 = *v70;
     v56 = v12;
     v48 = *v70;
@@ -1200,8 +1200,8 @@ LABEL_41:
         v67 = 0u;
         v68 = 0u;
         v54 = v15;
-        v16 = [v15 allItems];
-        v17 = [v16 countByEnumeratingWithState:&v65 objects:v75 count:16];
+        allItems = [v15 allItems];
+        v17 = [allItems countByEnumeratingWithState:&v65 objects:v75 count:16];
         if (v17)
         {
           v18 = v17;
@@ -1212,25 +1212,25 @@ LABEL_41:
             {
               if (*v66 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(allItems);
               }
 
               v21 = *(*(&v65 + 1) + 8 * j);
-              v22 = [v21 bundleIdentifier];
-              if ([v9 isEqualToString:v22])
+              bundleIdentifier = [v21 bundleIdentifier];
+              if ([identifierCopy isEqualToString:bundleIdentifier])
               {
-                v23 = [v21 uniqueIdentifier];
-                v24 = [v10 containsObject:v23];
+                uniqueIdentifier = [v21 uniqueIdentifier];
+                v24 = [identifiersCopy containsObject:uniqueIdentifier];
 
                 if (!v24)
                 {
 
                   v26 = v54;
                   v25 = v26;
-                  if (v52)
+                  if (deviceCopy)
                   {
-                    v27 = [(SBMainDisplayLayoutStateManager *)v44 _applicationController];
-                    v28 = [v25 appLayoutsBySplittingMedusaIncompatibleItemsWithApplicationController:v27 multitaskingSupported:v46];
+                    _applicationController = [(SBMainDisplayLayoutStateManager *)selfCopy _applicationController];
+                    v28 = [v25 appLayoutsBySplittingMedusaIncompatibleItemsWithApplicationController:_applicationController multitaskingSupported:v46];
 
                     v12 = v56;
                     if (v28)
@@ -1264,8 +1264,8 @@ LABEL_41:
                             v60 = 0u;
                             v49 = v31;
                             v51 = v32;
-                            v33 = [v32 allItems];
-                            v34 = [v33 countByEnumeratingWithState:&v57 objects:v73 count:16];
+                            allItems2 = [v32 allItems];
+                            v34 = [allItems2 countByEnumeratingWithState:&v57 objects:v73 count:16];
                             if (v34)
                             {
                               v35 = v34;
@@ -1276,15 +1276,15 @@ LABEL_41:
                                 {
                                   if (*v58 != v36)
                                   {
-                                    objc_enumerationMutation(v33);
+                                    objc_enumerationMutation(allItems2);
                                   }
 
                                   v38 = *(*(&v57 + 1) + 8 * k);
-                                  v39 = [v38 bundleIdentifier];
-                                  if ([v9 isEqualToString:v39])
+                                  bundleIdentifier2 = [v38 bundleIdentifier];
+                                  if ([identifierCopy isEqualToString:bundleIdentifier2])
                                   {
-                                    v40 = [v38 uniqueIdentifier];
-                                    v41 = [v10 containsObject:v40];
+                                    uniqueIdentifier2 = [v38 uniqueIdentifier];
+                                    v41 = [identifiersCopy containsObject:uniqueIdentifier2];
 
                                     if ((v41 & 1) == 0)
                                     {
@@ -1303,7 +1303,7 @@ LABEL_41:
                                   }
                                 }
 
-                                v35 = [v33 countByEnumeratingWithState:&v57 objects:v73 count:16];
+                                v35 = [allItems2 countByEnumeratingWithState:&v57 objects:v73 count:16];
                               }
 
                               while (v35);
@@ -1341,7 +1341,7 @@ LABEL_43:
               }
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v65 objects:v75 count:16];
+            v18 = [allItems countByEnumeratingWithState:&v65 objects:v75 count:16];
             if (v18)
             {
               continue;
@@ -1372,15 +1372,15 @@ LABEL_45:
   return v25;
 }
 
-- (id)_zOrderComparatorFor:(id)a3
+- (id)_zOrderComparatorFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__SBMainDisplayLayoutStateManager__zOrderComparatorFor___block_invoke;
   v7[3] = &unk_2783B9CF8;
-  v8 = v3;
-  v4 = v3;
+  v8 = forCopy;
+  v4 = forCopy;
   v5 = MEMORY[0x223D6F7F0](v7);
 
   return v5;
@@ -1431,20 +1431,20 @@ uint64_t __56__SBMainDisplayLayoutStateManager__zOrderComparatorFor___block_invo
   return v16;
 }
 
-- (unint64_t)_autoLayoutOptionsForNewAppLayout:(id)a3 previousAppLayout:(id)a4 request:(id)a5
+- (unint64_t)_autoLayoutOptionsForNewAppLayout:(id)layout previousAppLayout:(id)appLayout request:(id)request
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 source] != 3 && objc_msgSend(v9, "source") != 63)
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
+  requestCopy = request;
+  if ([requestCopy source] != 3 && objc_msgSend(requestCopy, "source") != 63)
   {
     goto LABEL_6;
   }
 
-  v10 = [v7 allItems];
-  v11 = [v10 count];
-  v12 = [v8 allItems];
-  if (v11 <= [v12 count])
+  allItems = [layoutCopy allItems];
+  v11 = [allItems count];
+  allItems2 = [appLayoutCopy allItems];
+  if (v11 <= [allItems2 count])
   {
 
 LABEL_6:
@@ -1452,7 +1452,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v13 = [v7 containsAnyItemFromAppLayout:v8];
+  v13 = [layoutCopy containsAnyItemFromAppLayout:appLayoutCopy];
 
   v14 = v13 & 1;
 LABEL_7:
@@ -1460,32 +1460,32 @@ LABEL_7:
   return v14;
 }
 
-- (void)_updateSceneRelevancyManager:(id)a3 forAppLayout:(id)a4 applicationTransitionContext:(id)a5 elementIdentifiersToLayoutAttributes:(id)a6 interfaceOrientation:(int64_t)a7 layoutAttributesProvider:(id)a8 layoutElements:(id)a9
+- (void)_updateSceneRelevancyManager:(id)manager forAppLayout:(id)layout applicationTransitionContext:(id)context elementIdentifiersToLayoutAttributes:(id)attributes interfaceOrientation:(int64_t)orientation layoutAttributesProvider:(id)provider layoutElements:(id)elements
 {
   v58 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v49 = a8;
-  v18 = a9;
-  v42 = v17;
-  v19 = [(SBMainDisplayLayoutStateManager *)self _zOrderComparatorFor:v17];
-  v41 = v18;
-  v20 = [v18 bs_array];
+  managerCopy = manager;
+  layoutCopy = layout;
+  contextCopy = context;
+  attributesCopy = attributes;
+  providerCopy = provider;
+  elementsCopy = elements;
+  v42 = attributesCopy;
+  v19 = [(SBMainDisplayLayoutStateManager *)self _zOrderComparatorFor:attributesCopy];
+  v41 = elementsCopy;
+  bs_array = [elementsCopy bs_array];
   v40 = v19;
-  v21 = [v20 sortedArrayUsingComparator:v19];
+  v21 = [bs_array sortedArrayUsingComparator:v19];
 
   v22 = [v21 count];
   v48 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:5 valueOptions:0 capacity:v22];
   v52 = [MEMORY[0x277CBEB18] arrayWithCapacity:v22];
-  v45 = v16;
-  v23 = [v16 displayIdentity];
-  v24 = [(SBMainDisplayLayoutStateManager *)self _switcherControllerForDisplayIdentity:v23];
+  v45 = contextCopy;
+  displayIdentity = [contextCopy displayIdentity];
+  v24 = [(SBMainDisplayLayoutStateManager *)self _switcherControllerForDisplayIdentity:displayIdentity];
 
   v47 = v24;
-  v50 = v15;
-  v46 = [v24 _autoLayoutSpaceForAppLayout:v15];
+  v50 = layoutCopy;
+  v46 = [v24 _autoLayoutSpaceForAppLayout:layoutCopy];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
@@ -1497,14 +1497,14 @@ LABEL_7:
     v26 = v25;
     v27 = 0;
     v28 = *v54;
-    if ((a7 - 1) < 2)
+    if ((orientation - 1) < 2)
     {
       v29 = 1;
     }
 
     else
     {
-      v29 = 2 * ((a7 - 3) < 2);
+      v29 = 2 * ((orientation - 3) < 2);
     }
 
     v44 = v29;
@@ -1519,21 +1519,21 @@ LABEL_7:
         }
 
         v32 = [v30 entityForLayoutRole:{objc_msgSend(*(*(&v53 + 1) + 8 * i), "layoutRole")}];
-        v33 = [v32 deviceApplicationSceneEntity];
-        if (v33)
+        deviceApplicationSceneEntity = [v32 deviceApplicationSceneEntity];
+        if (deviceApplicationSceneEntity)
         {
-          [v52 addObject:v33];
-          v34 = [v33 displayItemRepresentation];
-          if (v34)
+          [v52 addObject:deviceApplicationSceneEntity];
+          displayItemRepresentation = [deviceApplicationSceneEntity displayItemRepresentation];
+          if (displayItemRepresentation)
           {
-            v35 = [v49 layoutAttributesForDisplayItem:v34 inAppLayout:v50 displayOrdinal:objc_msgSend(v50 orientation:{"preferredDisplayOrdinal"), v44}];
-            v36 = [v46 flexibleAutoLayoutItemForDisplayItem:v34];
-            v37 = [v36 sceneRelevancyHint];
+            v35 = [providerCopy layoutAttributesForDisplayItem:displayItemRepresentation inAppLayout:v50 displayOrdinal:objc_msgSend(v50 orientation:{"preferredDisplayOrdinal"), v44}];
+            v36 = [v46 flexibleAutoLayoutItemForDisplayItem:displayItemRepresentation];
+            sceneRelevancyHint = [v36 sceneRelevancyHint];
 
-            v38 = [MEMORY[0x277CCABB0] numberWithInteger:v37];
-            [v48 setObject:v38 forKey:v33];
+            v38 = [MEMORY[0x277CCABB0] numberWithInteger:sceneRelevancyHint];
+            [v48 setObject:v38 forKey:deviceApplicationSceneEntity];
 
-            if ([v47 _isDisplayItemFullScreen:v34 preferredAttributes:v35])
+            if ([v47 _isDisplayItemFullScreen:displayItemRepresentation preferredAttributes:v35])
             {
               v39 = v27 == 0;
             }
@@ -1545,7 +1545,7 @@ LABEL_7:
 
             if (v39)
             {
-              v27 = v33;
+              v27 = deviceApplicationSceneEntity;
             }
 
             v30 = v45;
@@ -1565,68 +1565,68 @@ LABEL_7:
     v30 = v45;
   }
 
-  [v43 configureWithZOrderedDeviceApplicationSceneEntities:v52 deviceApplicationSceneEntitiesToOcclusionStates:v48 firstMaximizedDeviceApplicationSceneEntity:v27 isStageInPeek:{SBPeekConfigurationIsValid(objc_msgSend(v30, "requestedPeekConfiguration"))}];
+  [managerCopy configureWithZOrderedDeviceApplicationSceneEntities:v52 deviceApplicationSceneEntitiesToOcclusionStates:v48 firstMaximizedDeviceApplicationSceneEntity:v27 isStageInPeek:{SBPeekConfigurationIsValid(objc_msgSend(v30, "requestedPeekConfiguration"))}];
 }
 
-- (id)_layoutStateForApplicationTransitionContext:(id)a3
+- (id)_layoutStateForApplicationTransitionContext:(id)context
 {
   v3 = MEMORY[0x28223BE20](self);
   v1017 = v4;
   v1043 = v3;
   v1254 = *MEMORY[0x277D85DE8];
   v1029 = v5;
-  v964 = [v1029 request];
-  v975 = [v964 source];
+  request = [v1029 request];
+  source = [request source];
   rect_16 = [v1029 previousLayoutState];
-  v951 = [v964 displayIdentity];
-  rect_24 = [v1043 _switcherControllerForDisplayIdentity:v951];
-  v952 = [v1029 isBackground];
-  v6 = [v1029 isContingencyPlan];
-  v1034 = [rect_24 displayItemLayoutAttributesProvider];
-  v1002 = [rect_24 windowManagementContext];
-  v949 = [v1002 isChamoisOrFlexibleWindowing];
-  v1011 = [v1002 isFlexibleWindowingEnabled];
-  v946 = [v1002 isAutomaticStageCreationEnabled];
-  v7 = [rect_24 backgroundNethermostWindows];
+  displayIdentity = [request displayIdentity];
+  rect_24 = [v1043 _switcherControllerForDisplayIdentity:displayIdentity];
+  isBackground = [v1029 isBackground];
+  isContingencyPlan = [v1029 isContingencyPlan];
+  displayItemLayoutAttributesProvider = [rect_24 displayItemLayoutAttributesProvider];
+  windowManagementContext = [rect_24 windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
+  isAutomaticStageCreationEnabled = [windowManagementContext isAutomaticStageCreationEnabled];
+  backgroundNethermostWindows = [rect_24 backgroundNethermostWindows];
   v943 = SBLayoutSupportsManyForegroundWindows();
-  v1046 = [v1002 restoresPreviouslyOpenWindows];
+  restoresPreviouslyOpenWindows = [windowManagementContext restoresPreviouslyOpenWindows];
   v950 = [MEMORY[0x277CBEB98] set];
-  v942 = v7 & (v952 ^ 1);
+  v942 = backgroundNethermostWindows & (isBackground ^ 1);
   if (v942)
   {
-    v8 = [v1029 entities];
-    [v8 enumerateObjectsUsingBlock:&__block_literal_global_27];
+    entities = [v1029 entities];
+    [entities enumerateObjectsUsingBlock:&__block_literal_global_27];
 
-    v9 = [v1029 previousEntities];
-    [v9 enumerateObjectsUsingBlock:&__block_literal_global_29_1];
+    previousEntities = [v1029 previousEntities];
+    [previousEntities enumerateObjectsUsingBlock:&__block_literal_global_29_1];
   }
 
-  v1045 = [MEMORY[0x277CBEB38] dictionary];
-  v1044 = [MEMORY[0x277CBEB38] dictionary];
-  v1003 = [rect_24 _desktopSpaceItems];
-  if (v952)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  _desktopSpaceItems = [rect_24 _desktopSpaceItems];
+  if (isBackground)
   {
     v10 = [v1029 applicationSceneEntityForLayoutRole:4];
     v1047 = rect_16;
     if (v10)
     {
-      v11 = [v10 activationSettings];
-      if ([v11 _settingsAreValidToMoveContentToNewScene])
+      activationSettings = [v10 activationSettings];
+      if ([activationSettings _settingsAreValidToMoveContentToNewScene])
       {
         v1030 = [SBMainDisplayLayoutState alloc];
-        v1035 = [v1047 elements];
-        v1024 = [v1047 spaceConfiguration];
-        v12 = [v1047 elementIdentifiersToLayoutAttributes];
-        v1018 = [v1047 floatingConfiguration];
-        v13 = [v1047 unlockedEnvironmentMode];
-        v14 = [v1047 isFloatingSwitcherVisible];
-        v15 = [v1047 peekConfiguration];
-        v16 = [v1047 bundleIDShowingAppExpose];
-        v17 = [v1047 windowPickerRole];
-        v18 = [v1047 displayOrdinal];
+        elements = [v1047 elements];
+        spaceConfiguration = [v1047 spaceConfiguration];
+        elementIdentifiersToLayoutAttributes = [v1047 elementIdentifiersToLayoutAttributes];
+        floatingConfiguration = [v1047 floatingConfiguration];
+        unlockedEnvironmentMode = [v1047 unlockedEnvironmentMode];
+        isFloatingSwitcherVisible = [v1047 isFloatingSwitcherVisible];
+        peekConfiguration = [v1047 peekConfiguration];
+        bundleIDShowingAppExpose = [v1047 bundleIDShowingAppExpose];
+        windowPickerRole = [v1047 windowPickerRole];
+        displayOrdinal = [v1047 displayOrdinal];
         LOBYTE(v900) = [v1047 isDisplayExternal];
         LOBYTE(v897) = 1;
-        v19 = [(SBMainDisplayLayoutState *)v1030 _initWithLayoutElements:v1035 spaceConfiguration:v1024 elementIdentifiersToLayoutAttributes:v12 floatingConfiguration:v1018 unlockedEnvironmentMode:v13 floatingSwitcherVisible:v14 centerConfiguration:1 centerEntityModal:v897 peekConfiguration:v15 bundleIDShowingAppExpose:v16 windowPickerRole:v17 displayOrdinal:v18 isDisplayExternal:v900];
+        v19 = [(SBMainDisplayLayoutState *)v1030 _initWithLayoutElements:elements spaceConfiguration:spaceConfiguration elementIdentifiersToLayoutAttributes:elementIdentifiersToLayoutAttributes floatingConfiguration:floatingConfiguration unlockedEnvironmentMode:unlockedEnvironmentMode floatingSwitcherVisible:isFloatingSwitcherVisible centerConfiguration:1 centerEntityModal:v897 peekConfiguration:peekConfiguration bundleIDShowingAppExpose:bundleIDShowingAppExpose windowPickerRole:windowPickerRole displayOrdinal:displayOrdinal isDisplayExternal:v900];
 
         v1047 = v19;
       }
@@ -1635,15 +1635,15 @@ LABEL_7:
     goto LABEL_1108;
   }
 
-  if (!((v975 != 14) | v6 & 1))
+  if (!((source != 14) | isContingencyPlan & 1))
   {
     v1047 = [[SBMainDisplayLayoutState alloc] _initWithLayoutState:rect_16];
     v1070 = 0u;
     v1071 = 0u;
     v1072 = 0u;
     v1073 = 0u;
-    v22 = [v1029 previousEntities];
-    v23 = [v22 countByEnumeratingWithState:&v1070 objects:v1233 count:16];
+    previousEntities2 = [v1029 previousEntities];
+    v23 = [previousEntities2 countByEnumeratingWithState:&v1070 objects:v1233 count:16];
     if (v23)
     {
       v24 = *v1071;
@@ -1653,13 +1653,13 @@ LABEL_7:
         {
           if (*v1071 != v24)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(previousEntities2);
           }
 
           [v1029 setEntity:*(*(&v1070 + 1) + 8 * i) forLayoutRole:{objc_msgSend(*(*(&v1070 + 1) + 8 * i), "layoutRole")}];
         }
 
-        v23 = [v22 countByEnumeratingWithState:&v1070 objects:v1233 count:16];
+        v23 = [previousEntities2 countByEnumeratingWithState:&v1070 objects:v1233 count:16];
       }
 
       while (v23);
@@ -1668,12 +1668,12 @@ LABEL_7:
     goto LABEL_1108;
   }
 
-  v905 = [v964 displayIdentity];
-  v20 = [rect_24 windowScene];
-  v21 = [v20 supportsMultitasking];
+  displayIdentity2 = [request displayIdentity];
+  windowScene = [rect_24 windowScene];
+  supportsMultitasking = [windowScene supportsMultitasking];
 
-  v997 = [v1002 baseStyle];
-  if ([v1002 isMedusaEnabled])
+  baseStyle = [windowManagementContext baseStyle];
+  if ([windowManagementContext isMedusaEnabled])
   {
     v994 = SBFIsChamoisWindowingUIAvailable();
   }
@@ -1683,42 +1683,42 @@ LABEL_7:
     v994 = 0;
   }
 
-  v26 = [v1029 activatingEntity];
+  activatingEntity = [v1029 activatingEntity];
   v27 = [v1029 entityForLayoutRole:?];
   v28 = [v1029 entityForLayoutRole:?];
   v29 = [v1029 entityForLayoutRole:?];
   v30 = [v1029 entityForLayoutRole:?];
-  if (!v26 && v27 && !v28 && !v29)
+  if (!activatingEntity && v27 && !v28 && !v29)
   {
-    v26 = v27;
+    activatingEntity = v27;
 
     v27 = 0;
   }
 
-  v936 = v26;
+  v936 = activatingEntity;
   v31 = v27;
   v32 = v28;
   v33 = v29;
   v34 = v30;
   rect = [v1029 requestedSpaceConfiguration];
-  v947 = [v1029 requestedCenterConfiguration];
-  v926 = [v1029 requestedFloatingConfiguration];
-  v1012 = [v1029 requestedPeekConfiguration];
-  v1036 = [v1029 requestedUnlockedEnvironmentMode];
+  requestedCenterConfiguration = [v1029 requestedCenterConfiguration];
+  requestedFloatingConfiguration = [v1029 requestedFloatingConfiguration];
+  requestedPeekConfiguration = [v1029 requestedPeekConfiguration];
+  requestedUnlockedEnvironmentMode = [v1029 requestedUnlockedEnvironmentMode];
   [v1029 requestedFloatingSwitcherVisible];
   [v1029 requestedCenterEntityModal];
   rect_8 = [v1029 requestedAppExposeBundleID];
-  v924 = [v1029 requestedWindowPickerRole];
+  requestedWindowPickerRole = [v1029 requestedWindowPickerRole];
   v910 = [v1029 previousEntityForLayoutRole:1];
   v907 = [v1029 previousEntityForLayoutRole:2];
   v908 = [v1029 previousEntityForLayoutRole:3];
   v906 = [v1029 previousEntityForLayoutRole:4];
-  v965 = [rect_16 interfaceOrientation];
-  v953 = [rect_16 spaceConfiguration];
-  v961 = [rect_16 floatingConfiguration];
-  v944 = [rect_16 centerConfiguration];
-  v937 = [rect_16 peekConfiguration];
-  v934 = [rect_16 unlockedEnvironmentMode];
+  interfaceOrientation = [rect_16 interfaceOrientation];
+  spaceConfiguration2 = [rect_16 spaceConfiguration];
+  floatingConfiguration2 = [rect_16 floatingConfiguration];
+  centerConfiguration = [rect_16 centerConfiguration];
+  peekConfiguration2 = [rect_16 peekConfiguration];
+  unlockedEnvironmentMode2 = [rect_16 unlockedEnvironmentMode];
   v1223[0] = MEMORY[0x277D85DD0];
   v1223[1] = 3221225472;
   v1223[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_4;
@@ -1734,11 +1734,11 @@ LABEL_7:
   v918 = v34;
   v1228 = v918;
   v919 = MEMORY[0x223D6F7F0](v1223);
-  v35 = [v992 entitiesWithRemovalContexts];
-  v931 = [v35 bs_compactMap:&__block_literal_global_35_1];
+  entitiesWithRemovalContexts = [v992 entitiesWithRemovalContexts];
+  v931 = [entitiesWithRemovalContexts bs_compactMap:&__block_literal_global_35_1];
 
-  v927 = [v992 itemsCrossingToOtherDisplay];
-  v915 = [v992 minimizingDisplayItem];
+  itemsCrossingToOtherDisplay = [v992 itemsCrossingToOtherDisplay];
+  minimizingDisplayItem = [v992 minimizingDisplayItem];
   [rect_24 _slideOverDisplayItem];
   v1217 = 0;
   v1218 = &v1217;
@@ -1746,10 +1746,10 @@ LABEL_7:
   v1220 = __Block_byref_object_copy__77;
   v902 = v1221 = __Block_byref_object_dispose__77;
   v1222 = v902;
-  if ([v964 isCrossingDisplays])
+  if ([request isCrossingDisplays])
   {
-    v36 = [v992 entities];
-    v37 = [v36 objectsPassingTest:&__block_literal_global_39_2];
+    entities2 = [v992 entities];
+    v37 = [entities2 objectsPassingTest:&__block_literal_global_39_2];
 
     v1216 = 0u;
     v1215 = 0u;
@@ -1772,21 +1772,21 @@ LABEL_7:
           v42 = [SBDisplayItem displayItemForWorkspaceEntity:*(*(&v1213 + 1) + 8 * j)];
           if (v42)
           {
-            v43 = [rect_16 appLayout];
-            v44 = [v43 containsItem:v42];
+            appLayout = [rect_16 appLayout];
+            v44 = [appLayout containsItem:v42];
 
             if ((v44 & 1) == 0)
             {
-              v45 = [v42 uniqueIdentifier];
-              v46 = [v992 requestedEntityIdentifierToLayoutAttributes];
-              v47 = [v46 objectForKey:v45];
+              uniqueIdentifier = [v42 uniqueIdentifier];
+              requestedEntityIdentifierToLayoutAttributes = [v992 requestedEntityIdentifierToLayoutAttributes];
+              v47 = [requestedEntityIdentifierToLayoutAttributes objectForKey:uniqueIdentifier];
 
               memset(&v1252, 0, 40);
-              v48 = [rect_24 switcherCoordinator];
-              v49 = v48;
-              if (v48)
+              switcherCoordinator = [rect_24 switcherCoordinator];
+              v49 = switcherCoordinator;
+              if (switcherCoordinator)
               {
-                [v48 slideOverConfigurationOnAnySwitcherForDisplayItem:v42];
+                [switcherCoordinator slideOverConfigurationOnAnySwitcherForDisplayItem:v42];
               }
 
               else
@@ -1807,7 +1807,7 @@ LABEL_7:
                   v1229.tx = v1252.tx;
                   v50 = [SBDisplayItemLayoutAttributes attributesByModifyingSlideOverConfiguration:v47];
 
-                  v51 = [v992 entityForIdentifier:v45];
+                  v51 = [v992 entityForIdentifier:uniqueIdentifier];
                   [v992 setRequestedLayoutAttributes:v50 forEntity:v51];
 
                   objc_storeStrong(v1218 + 5, v42);
@@ -1837,7 +1837,7 @@ LABEL_7:
 LABEL_46:
   }
 
-  if (v1218[5] && ([v931 count] && (objc_msgSend(v931, "containsObject:", v1218[5]) & 1) != 0 || objc_msgSend(v927, "count") && objc_msgSend(v927, "containsObject:", v1218[5])))
+  if (v1218[5] && ([v931 count] && (objc_msgSend(v931, "containsObject:", v1218[5]) & 1) != 0 || objc_msgSend(itemsCrossingToOtherDisplay, "count") && objc_msgSend(itemsCrossingToOtherDisplay, "containsObject:", v1218[5])))
   {
     v52 = v1218[5];
     v1218[5] = 0;
@@ -1849,12 +1849,12 @@ LABEL_46:
     [v941 addObjectsFromArray:v931];
   }
 
-  if ([v927 count])
+  if ([itemsCrossingToOtherDisplay count])
   {
-    [v941 unionSet:v927];
+    [v941 unionSet:itemsCrossingToOtherDisplay];
   }
 
-  [v941 bs_safeAddObject:v915];
+  [v941 bs_safeAddObject:minimizingDisplayItem];
   if ([v941 count])
   {
     v1212 = 0u;
@@ -1882,11 +1882,11 @@ LABEL_72:
         }
 
         v58 = *(*(&v1209 + 1) + 8 * k);
-        if (v58 && [v1003 containsObject:*(*(&v1209 + 1) + 8 * k)])
+        if (v58 && [_desktopSpaceItems containsObject:*(*(&v1209 + 1) + 8 * k)])
         {
           if (!v55)
           {
-            v55 = [v1003 mutableCopy];
+            v55 = [_desktopSpaceItems mutableCopy];
           }
 
           [v55 removeObject:v58];
@@ -1902,7 +1902,7 @@ LABEL_72:
     {
       v53 = v55;
 
-      v1003 = v53;
+      _desktopSpaceItems = v53;
       goto LABEL_72;
     }
   }
@@ -1910,22 +1910,22 @@ LABEL_72:
 LABEL_73:
   if (v1218[5])
   {
-    v59 = [v1043 _displayItemLayoutAttributesProvider];
+    _displayItemLayoutAttributesProvider = [v1043 _displayItemLayoutAttributesProvider];
     v60 = v1218[5];
-    v61 = [rect_16 appLayout];
-    v62 = [rect_16 displayOrdinal];
-    v63 = [rect_16 interfaceOrientation];
-    if ((v63 - 1) < 2)
+    appLayout2 = [rect_16 appLayout];
+    displayOrdinal2 = [rect_16 displayOrdinal];
+    interfaceOrientation2 = [rect_16 interfaceOrientation];
+    if ((interfaceOrientation2 - 1) < 2)
     {
       v64 = 1;
     }
 
     else
     {
-      v64 = 2 * ((v63 - 3) < 2);
+      v64 = 2 * ((interfaceOrientation2 - 3) < 2);
     }
 
-    v65 = [v59 layoutAttributesForDisplayItem:v60 inAppLayout:v61 displayOrdinal:v62 orientation:v64];
+    v65 = [_displayItemLayoutAttributesProvider layoutAttributesForDisplayItem:v60 inAppLayout:appLayout2 displayOrdinal:displayOrdinal2 orientation:v64];
     [(SBDisplayItemLayoutAttributes *)v65 slideOverConfiguration];
     v66 = v1208[33];
 
@@ -1936,9 +1936,9 @@ LABEL_73:
 
     else
     {
-      v67 = [v992 requestedEntityIdentifierToLayoutAttributes];
-      v68 = [v1218[5] uniqueIdentifier];
-      v69 = [v67 objectForKey:v68];
+      requestedEntityIdentifierToLayoutAttributes2 = [v992 requestedEntityIdentifierToLayoutAttributes];
+      uniqueIdentifier2 = [v1218[5] uniqueIdentifier];
+      v69 = [requestedEntityIdentifierToLayoutAttributes2 objectForKey:uniqueIdentifier2];
 
       if (v69)
       {
@@ -1958,7 +1958,7 @@ LABEL_73:
     v938 = 0;
   }
 
-  if (!v21)
+  if (!supportsMultitasking)
   {
 
     v71 = v920;
@@ -1970,8 +1970,8 @@ LABEL_73:
         v71 = +[(SBWorkspaceEntity *)SBPreviousWorkspaceEntity];
         if (!v71)
         {
-          v888 = [MEMORY[0x277CCA890] currentHandler];
-          [v888 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1856 description:@"Primary workspace entity may not be nil at this point!"];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1856 description:@"Primary workspace entity may not be nil at this point!"];
 
           v71 = 0;
         }
@@ -2022,7 +2022,7 @@ LABEL_107:
     v956 = 0;
     v957 = 0;
     v932 = 0;
-    v926 = 0;
+    requestedFloatingConfiguration = 0;
     v922 = v936;
 
 LABEL_769:
@@ -2031,19 +2031,19 @@ LABEL_769:
     goto LABEL_770;
   }
 
-  v70 = v1036;
+  v70 = requestedUnlockedEnvironmentMode;
   if (v920 || v921 || v923 || v918)
   {
     v75 = [MEMORY[0x277CBEB58] set];
     if (v920)
     {
-      v76 = [v920 uniqueIdentifier];
+      uniqueIdentifier3 = [v920 uniqueIdentifier];
 
       v954 = v920;
-      if (v76)
+      if (uniqueIdentifier3)
       {
-        v77 = [v920 uniqueIdentifier];
-        [v75 addObject:v77];
+        uniqueIdentifier4 = [v920 uniqueIdentifier];
+        [v75 addObject:uniqueIdentifier4];
 
         v954 = v920;
       }
@@ -2056,13 +2056,13 @@ LABEL_769:
 
     if (v921)
     {
-      v79 = [v921 uniqueIdentifier];
+      uniqueIdentifier5 = [v921 uniqueIdentifier];
 
       v957 = v921;
-      if (v79)
+      if (uniqueIdentifier5)
       {
-        v80 = [v921 uniqueIdentifier];
-        [v75 addObject:v80];
+        uniqueIdentifier6 = [v921 uniqueIdentifier];
+        [v75 addObject:uniqueIdentifier6];
 
         v957 = v921;
       }
@@ -2075,13 +2075,13 @@ LABEL_769:
 
     if (v923)
     {
-      v81 = [v923 uniqueIdentifier];
+      uniqueIdentifier7 = [v923 uniqueIdentifier];
 
       v956 = v923;
-      if (v81)
+      if (uniqueIdentifier7)
       {
-        v82 = [v923 uniqueIdentifier];
-        [v75 addObject:v82];
+        uniqueIdentifier8 = [v923 uniqueIdentifier];
+        [v75 addObject:uniqueIdentifier8];
 
         v956 = v923;
       }
@@ -2094,13 +2094,13 @@ LABEL_769:
 
     if (v918)
     {
-      v83 = [v918 uniqueIdentifier];
+      uniqueIdentifier9 = [v918 uniqueIdentifier];
 
       v958 = v918;
-      if (v83)
+      if (uniqueIdentifier9)
       {
-        v84 = [v918 uniqueIdentifier];
-        [v75 addObject:v84];
+        uniqueIdentifier10 = [v918 uniqueIdentifier];
+        [v75 addObject:uniqueIdentifier10];
 
         v958 = v918;
       }
@@ -2113,19 +2113,19 @@ LABEL_769:
 
     if ([v75 count] >= 2 && !rect)
     {
-      v85 = [v1043 _mostRecentAppLayoutMatchingAnyUniqueIdentifier:v75 inMedusaOnStageManagerCapableDevice:v994 multitaskingSupported:v997 != 0];
+      v85 = [v1043 _mostRecentAppLayoutMatchingAnyUniqueIdentifier:v75 inMedusaOnStageManagerCapableDevice:v994 multitaskingSupported:baseStyle != 0];
       v86 = v85;
       if (v85)
       {
-        v87 = [v85 configuration];
-        if ((v87 - 2) >= 3)
+        configuration = [v85 configuration];
+        if ((configuration - 2) >= 3)
         {
           v88 = 0;
         }
 
         else
         {
-          v88 = v87;
+          v88 = configuration;
         }
 
         rect = v88;
@@ -2187,28 +2187,28 @@ LABEL_769:
     if (!SBWorkspaceEntitiesAreAnalagous(v936, v906) || ([v936 isEmptyWorkspaceEntity] & 1) != 0)
     {
       v1004 = [MEMORY[0x277CBEB58] set];
-      v89 = [v936 uniqueIdentifier];
+      uniqueIdentifier11 = [v936 uniqueIdentifier];
 
-      if (v89)
+      if (uniqueIdentifier11)
       {
-        v90 = [v936 uniqueIdentifier];
-        [v1004 addObject:v90];
+        uniqueIdentifier12 = [v936 uniqueIdentifier];
+        [v1004 addObject:uniqueIdentifier12];
       }
 
-      v91 = [v1043 _mostRecentAppLayoutMatchingAnyUniqueIdentifier:v1004 inMedusaOnStageManagerCapableDevice:v994 multitaskingSupported:v997 != 0];
+      v91 = [v1043 _mostRecentAppLayoutMatchingAnyUniqueIdentifier:v1004 inMedusaOnStageManagerCapableDevice:v994 multitaskingSupported:baseStyle != 0];
       v92 = v91;
       if (((v1218[5] != 0) & v938) == 1 && [v91 containsItem:?])
       {
-        v93 = [v936 uniqueIdentifier];
-        v94 = [v1218[5] uniqueIdentifier];
-        v95 = [v93 isEqualToString:v94];
+        uniqueIdentifier13 = [v936 uniqueIdentifier];
+        uniqueIdentifier14 = [v1218[5] uniqueIdentifier];
+        v95 = [uniqueIdentifier13 isEqualToString:uniqueIdentifier14];
 
         if (v95)
         {
-          v96 = [rect_16 appLayout];
-          v97 = [v96 appLayoutByInsertingItem:v1218[5]];
+          appLayout3 = [rect_16 appLayout];
+          v97 = [appLayout3 appLayoutByInsertingItem:v1218[5]];
 
-          v92 = v96;
+          v92 = appLayout3;
         }
 
         else
@@ -2231,36 +2231,36 @@ LABEL_769:
 LABEL_410:
 
 LABEL_146:
-        v70 = v1036;
+        v70 = requestedUnlockedEnvironmentMode;
         goto LABEL_147;
       }
 
-      if (SBPeekConfigurationIsValid(v937) && [v1002 isFlexibleWindowingEnabled] && objc_msgSend(v1002, "isAutomaticStageCreationEnabled"))
+      if (SBPeekConfigurationIsValid(peekConfiguration2) && [windowManagementContext isFlexibleWindowingEnabled] && objc_msgSend(windowManagementContext, "isAutomaticStageCreationEnabled"))
       {
-        v194 = [rect_16 appLayout];
-        if ([v194 isOrContainsAppLayout:v97])
+        appLayout4 = [rect_16 appLayout];
+        if ([appLayout4 isOrContainsAppLayout:v97])
         {
         }
 
         else
         {
-          v201 = [v936 isDeviceApplicationSceneEntity];
+          isDeviceApplicationSceneEntity = [v936 isDeviceApplicationSceneEntity];
 
-          if (v201)
+          if (isDeviceApplicationSceneEntity)
           {
-            v202 = [v936 uniqueIdentifier];
-            v203 = [v97 allItems];
+            uniqueIdentifier15 = [v936 uniqueIdentifier];
+            allItems = [v97 allItems];
             v1205[0] = MEMORY[0x277D85DD0];
             v1205[1] = 3221225472;
             v1205[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_2_43;
             v1205[3] = &unk_2783A8C90;
-            v933 = v202;
+            v933 = uniqueIdentifier15;
             v1206 = v933;
-            v204 = [v203 bs_firstObjectPassingTest:v1205];
+            v204 = [allItems bs_firstObjectPassingTest:v1205];
 
-            v205 = [v204 bundleIdentifier];
-            v206 = [v204 uniqueIdentifier];
-            v207 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:v205 uniqueIdentifier:v206 displayIdentity:v905];
+            bundleIdentifier = [v204 bundleIdentifier];
+            uniqueIdentifier16 = [v204 uniqueIdentifier];
+            v207 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:bundleIdentifier uniqueIdentifier:uniqueIdentifier16 displayIdentity:displayIdentity2];
             v1249 = v207;
             v208 = [MEMORY[0x277CBEA60] arrayWithObjects:&v1249 count:1];
             [v992 setEntities:v208 withPolicy:1 centerEntity:0 floatingEntity:0];
@@ -2285,15 +2285,15 @@ LABEL_409:
         v933 = v209;
         if (!v209)
         {
-          v889 = [MEMORY[0x277CCA890] currentHandler];
-          [v889 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:951 description:@"App layout should always have primary display item!"];
+          currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler2 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:951 description:@"App layout should always have primary display item!"];
 
           v209 = 0;
         }
 
-        v210 = [v936 uniqueIdentifier];
-        v211 = [v209 uniqueIdentifier];
-        v212 = [v210 isEqualToString:v211];
+        uniqueIdentifier17 = [v936 uniqueIdentifier];
+        uniqueIdentifier18 = [v209 uniqueIdentifier];
+        v212 = [uniqueIdentifier17 isEqualToString:uniqueIdentifier18];
 
         if (v212)
         {
@@ -2302,14 +2302,14 @@ LABEL_409:
 
         else
         {
-          v213 = [v933 bundleIdentifier];
-          v214 = [v933 uniqueIdentifier];
-          v954 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:v213 uniqueIdentifier:v214 displayIdentity:v905];
+          bundleIdentifier2 = [v933 bundleIdentifier];
+          uniqueIdentifier19 = [v933 uniqueIdentifier];
+          v954 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:bundleIdentifier2 uniqueIdentifier:uniqueIdentifier19 displayIdentity:displayIdentity2];
 
           if (!v954)
           {
-            v890 = [MEMORY[0x277CCA890] currentHandler];
-            [v890 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:957 description:@"Failed to create primary workspace entity from app layout's primary display item!"];
+            currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler3 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:957 description:@"Failed to create primary workspace entity from app layout's primary display item!"];
 
             v954 = 0;
           }
@@ -2318,9 +2318,9 @@ LABEL_409:
         v971 = [v97 itemForLayoutRole:2];
         if (v971)
         {
-          v215 = [v936 uniqueIdentifier];
-          v216 = [v971 uniqueIdentifier];
-          v217 = [v215 isEqualToString:v216];
+          uniqueIdentifier20 = [v936 uniqueIdentifier];
+          uniqueIdentifier21 = [v971 uniqueIdentifier];
+          v217 = [uniqueIdentifier20 isEqualToString:uniqueIdentifier21];
 
           if (v217)
           {
@@ -2329,23 +2329,23 @@ LABEL_409:
 
           else
           {
-            v223 = [v971 bundleIdentifier];
-            v224 = [v971 uniqueIdentifier];
-            v957 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:v223 uniqueIdentifier:v224 displayIdentity:v905];
+            bundleIdentifier3 = [v971 bundleIdentifier];
+            uniqueIdentifier22 = [v971 uniqueIdentifier];
+            v957 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:bundleIdentifier3 uniqueIdentifier:uniqueIdentifier22 displayIdentity:displayIdentity2];
 
             if (!v957)
             {
-              v891 = [MEMORY[0x277CCA890] currentHandler];
-              [v891 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:966 description:@"Failed to create side workspace entity from app layout's side display item!"];
+              currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler4 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:966 description:@"Failed to create side workspace entity from app layout's side display item!"];
 
               v957 = 0;
             }
           }
 
-          v225 = [v97 configuration];
-          if (v225 > 2)
+          configuration2 = [v97 configuration];
+          if (configuration2 > 2)
           {
-            if (v225 != 3 && v225 != 4)
+            if (configuration2 != 3 && configuration2 != 4)
             {
               goto LABEL_377;
             }
@@ -2353,30 +2353,30 @@ LABEL_409:
 
           else
           {
-            if (v225 < 2)
+            if (configuration2 < 2)
             {
-              v226 = [MEMORY[0x277CCA890] currentHandler];
-              [v226 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:971 description:@"Unexpected app layout configuration!"];
+              currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler5 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:971 description:@"Unexpected app layout configuration!"];
 
               goto LABEL_377;
             }
 
-            if (v225 != 2)
+            if (configuration2 != 2)
             {
               goto LABEL_377;
             }
           }
 
-          rect = v225;
+          rect = configuration2;
           goto LABEL_377;
         }
 
         v957 = +[(SBWorkspaceEntity *)SBEmptyWorkspaceEntity];
 LABEL_377:
-        if (v949)
+        if (isChamoisOrFlexibleWindowing)
         {
-          v960 = [v97 itemsWithoutCenterOrFloatingItems];
-          v233 = [v960 count];
+          itemsWithoutCenterOrFloatingItems = [v97 itemsWithoutCenterOrFloatingItems];
+          v233 = [itemsWithoutCenterOrFloatingItems count];
           if (v233 <= 2)
           {
             v234 = 0;
@@ -2384,7 +2384,7 @@ LABEL_377:
 
           else
           {
-            v234 = [v960 subarrayWithRange:{2, v233 - 2}];
+            v234 = [itemsWithoutCenterOrFloatingItems subarrayWithRange:{2, v233 - 2}];
           }
 
           v235 = [v234 count];
@@ -2397,9 +2397,9 @@ LABEL_377:
             do
             {
               v240 = [v234 objectAtIndex:v237];
-              v241 = [v936 uniqueIdentifier];
-              v242 = [v240 uniqueIdentifier];
-              v243 = [v241 isEqualToString:v242];
+              uniqueIdentifier23 = [v936 uniqueIdentifier];
+              uniqueIdentifier24 = [v240 uniqueIdentifier];
+              v243 = [uniqueIdentifier23 isEqualToString:uniqueIdentifier24];
 
               if (v243)
               {
@@ -2408,21 +2408,21 @@ LABEL_377:
 
               else
               {
-                v245 = [v240 bundleIdentifier];
-                v246 = [v240 uniqueIdentifier];
-                v244 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:v245 uniqueIdentifier:v246 displayIdentity:v905];
+                bundleIdentifier4 = [v240 bundleIdentifier];
+                uniqueIdentifier25 = [v240 uniqueIdentifier];
+                v244 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:bundleIdentifier4 uniqueIdentifier:uniqueIdentifier25 displayIdentity:displayIdentity2];
 
                 if (!v244)
                 {
-                  v249 = [MEMORY[0x277CCA890] currentHandler];
+                  currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
                   v250 = SBLayoutRoleDescription(v238);
-                  [v249 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1009 description:{@"Failed to create additional side workspace entity from app layout's role: %@!", v250}];
+                  [currentHandler6 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1009 description:{@"Failed to create additional side workspace entity from app layout's role: %@!", v250}];
 
                   v244 = 0;
                 }
               }
 
-              if ((v1011 & 1) == 0 || ([v1002 isAutomaticStageCreationEnabled] & 1) != 0 || (objc_msgSend(v244, "uniqueIdentifier"), v247 = objc_claimAutoreleasedReturnValue(), objc_msgSend(rect_16, "elementWithIdentifier:", v247), v248 = objc_claimAutoreleasedReturnValue(), v248, v247, v248))
+              if ((isFlexibleWindowingEnabled & 1) == 0 || ([windowManagementContext isAutomaticStageCreationEnabled] & 1) != 0 || (objc_msgSend(v244, "uniqueIdentifier"), v247 = objc_claimAutoreleasedReturnValue(), objc_msgSend(rect_16, "elementWithIdentifier:", v247), v248 = objc_claimAutoreleasedReturnValue(), v248, v247, v248))
               {
                 [v992 setEntity:v244 forLayoutRole:v238];
               }
@@ -2435,10 +2435,10 @@ LABEL_377:
             while (v239);
           }
 
-          v251 = [rect_16 appLayout];
-          v252 = [v251 itemsWithoutCenterOrFloatingItems];
+          appLayout5 = [rect_16 appLayout];
+          itemsWithoutCenterOrFloatingItems2 = [appLayout5 itemsWithoutCenterOrFloatingItems];
 
-          v253 = [v252 count];
+          v253 = [itemsWithoutCenterOrFloatingItems2 count];
           v254 = (v253 - 2) & ~((v253 - 2) >> 31);
           v255 = v236;
           v462 = v236 < v254;
@@ -2464,9 +2464,9 @@ LABEL_377:
         v260 = [v97 itemForLayoutRole:4];
         if (v260)
         {
-          v261 = [v936 uniqueIdentifier];
-          v262 = [v260 uniqueIdentifier];
-          v263 = [v261 isEqualToString:v262];
+          uniqueIdentifier26 = [v936 uniqueIdentifier];
+          uniqueIdentifier27 = [v260 uniqueIdentifier];
+          v263 = [uniqueIdentifier26 isEqualToString:uniqueIdentifier27];
 
           if (v263)
           {
@@ -2475,9 +2475,9 @@ LABEL_377:
 
           else
           {
-            v265 = [v260 bundleIdentifier];
-            v266 = [v260 uniqueIdentifier];
-            v267 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:v265 uniqueIdentifier:v266 displayIdentity:v905];
+            bundleIdentifier5 = [v260 bundleIdentifier];
+            uniqueIdentifier28 = [v260 uniqueIdentifier];
+            v267 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:bundleIdentifier5 uniqueIdentifier:uniqueIdentifier28 displayIdentity:displayIdentity2];
 
             v264 = v267;
           }
@@ -2485,13 +2485,13 @@ LABEL_377:
           v958 = v264;
           if (!v264)
           {
-            v892 = [MEMORY[0x277CCA890] currentHandler];
-            [v892 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1042 description:@"Failed to create center workspace entity from app layout's center display item!"];
+            currentHandler7 = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler7 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1042 description:@"Failed to create center workspace entity from app layout's center display item!"];
           }
 
-          if (!v947)
+          if (!requestedCenterConfiguration)
           {
-            v947 = SBMainDisplayLayoutStateCenterConfigurationFromAppLayoutCenterConfiguration([v97 centerConfiguration]);
+            requestedCenterConfiguration = SBMainDisplayLayoutStateCenterConfigurationFromAppLayoutCenterConfiguration([v97 centerConfiguration]);
           }
         }
 
@@ -2505,21 +2505,21 @@ LABEL_377:
         goto LABEL_408;
       }
 
-      if (v949)
+      if (isChamoisOrFlexibleWindowing)
       {
         v218 = [v97 itemForLayoutRole:1];
         v219 = v218;
         if (!v218)
         {
-          v893 = [MEMORY[0x277CCA890] currentHandler];
-          [v893 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:923 description:@"App layout should always have primary display item!"];
+          currentHandler8 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler8 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:923 description:@"App layout should always have primary display item!"];
 
           v218 = 0;
         }
 
-        v220 = [v936 uniqueIdentifier];
-        v221 = [v218 uniqueIdentifier];
-        v222 = [v220 isEqualToString:v221];
+        uniqueIdentifier29 = [v936 uniqueIdentifier];
+        uniqueIdentifier30 = [v218 uniqueIdentifier];
+        v222 = [uniqueIdentifier29 isEqualToString:uniqueIdentifier30];
 
         if (v222)
         {
@@ -2528,9 +2528,9 @@ LABEL_377:
 
         else
         {
-          v268 = [v219 bundleIdentifier];
-          v269 = [v219 uniqueIdentifier];
-          v954 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:v268 uniqueIdentifier:v269 displayIdentity:v905];
+          bundleIdentifier6 = [v219 bundleIdentifier];
+          uniqueIdentifier31 = [v219 uniqueIdentifier];
+          v954 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:bundleIdentifier6 uniqueIdentifier:uniqueIdentifier31 displayIdentity:displayIdentity2];
         }
 
         v232 = v219;
@@ -2544,15 +2544,15 @@ LABEL_377:
       v228 = v227;
       if (!v227)
       {
-        v894 = [MEMORY[0x277CCA890] currentHandler];
-        [v894 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:937 description:@"App layout should always have primary display item!"];
+        currentHandler9 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler9 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:937 description:@"App layout should always have primary display item!"];
 
         v227 = 0;
       }
 
-      v229 = [v936 uniqueIdentifier];
-      v230 = [v227 uniqueIdentifier];
-      v231 = [v229 isEqualToString:v230];
+      uniqueIdentifier32 = [v936 uniqueIdentifier];
+      uniqueIdentifier33 = [v227 uniqueIdentifier];
+      v231 = [uniqueIdentifier32 isEqualToString:uniqueIdentifier33];
 
       if (v231)
       {
@@ -2561,9 +2561,9 @@ LABEL_377:
 
       else
       {
-        v270 = [v228 bundleIdentifier];
-        v271 = [v228 uniqueIdentifier];
-        v956 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:v270 uniqueIdentifier:v271 displayIdentity:v905];
+        bundleIdentifier7 = [v228 bundleIdentifier];
+        uniqueIdentifier34 = [v228 uniqueIdentifier];
+        v956 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:bundleIdentifier7 uniqueIdentifier:uniqueIdentifier34 displayIdentity:displayIdentity2];
 
         v232 = v228;
         if (v956)
@@ -2571,8 +2571,8 @@ LABEL_377:
           goto LABEL_414;
         }
 
-        v895 = [MEMORY[0x277CCA890] currentHandler];
-        [v895 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:943 description:@"Failed to create primary workspace entity from app layout's primary display item!"];
+        currentHandler10 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler10 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:943 description:@"Failed to create primary workspace entity from app layout's primary display item!"];
 
         v956 = 0;
       }
@@ -2592,7 +2592,7 @@ LABEL_414:
   }
 
 LABEL_147:
-  if (!v949)
+  if (!isChamoisOrFlexibleWindowing)
   {
     v932 = 1;
     v922 = v936;
@@ -2622,9 +2622,9 @@ LABEL_147:
           }
         }
 
-        v102 = [v101 isEmptyWorkspaceEntity];
+        isEmptyWorkspaceEntity = [v101 isEmptyWorkspaceEntity];
 
-        if (v102)
+        if (isEmptyWorkspaceEntity)
         {
           goto LABEL_176;
         }
@@ -2651,10 +2651,10 @@ LABEL_176:
   v928 = +[(SBWorkspaceEntity *)SBEmptyWorkspaceEntity];
 
 LABEL_150:
-  v70 = v1036;
+  v70 = requestedUnlockedEnvironmentMode;
 LABEL_154:
-  v1005 = [rect_24 windowManagementContext];
-  if (![v1005 isFlexibleWindowingEnabled] || (objc_msgSend(v1005, "isAutomaticStageCreationEnabled") & 1) != 0)
+  windowManagementContext2 = [rect_24 windowManagementContext];
+  if (![windowManagementContext2 isFlexibleWindowingEnabled] || (objc_msgSend(windowManagementContext2, "isAutomaticStageCreationEnabled") & 1) != 0)
   {
     v99 = v957;
     v970 = v954;
@@ -2662,13 +2662,13 @@ LABEL_154:
     goto LABEL_222;
   }
 
-  v103 = [v992 previousEntities];
-  v104 = [v103 bs_compactMap:&__block_literal_global_65_0];
+  previousEntities3 = [v992 previousEntities];
+  v104 = [previousEntities3 bs_compactMap:&__block_literal_global_65_0];
 
   if ([v936 isApplicationSceneEntity])
   {
-    v105 = [v936 uniqueIdentifier];
-    v106 = [v104 containsObject:v105];
+    uniqueIdentifier35 = [v936 uniqueIdentifier];
+    v106 = [v104 containsObject:uniqueIdentifier35];
 
     if ((v106 & 1) == 0)
     {
@@ -2688,8 +2688,8 @@ LABEL_154:
       v1203 = 0u;
       v1202 = 0u;
       v1201 = 0u;
-      v115 = [v992 previousEntities];
-      v116 = [v115 countByEnumeratingWithState:&v1201 objects:v1248 count:16];
+      previousEntities4 = [v992 previousEntities];
+      v116 = [previousEntities4 countByEnumeratingWithState:&v1201 objects:v1248 count:16];
       if (v116)
       {
         v117 = *v1202;
@@ -2699,14 +2699,14 @@ LABEL_154:
           {
             if (*v1202 != v117)
             {
-              objc_enumerationMutation(v115);
+              objc_enumerationMutation(previousEntities4);
             }
 
             v119 = *(*(&v1201 + 1) + 8 * n);
             if (([v119 isHomeScreenEntity] & 1) == 0 && (objc_msgSend(v119, "isPreviousWorkspaceEntity") & 1) == 0 && (objc_msgSend(v119, "isEmptyWorkspaceEntity") & 1) == 0)
             {
-              v120 = [v992 entities];
-              v121 = [v120 containsObject:v119];
+              entities3 = [v992 entities];
+              v121 = [entities3 containsObject:v119];
 
               if ((v121 & 1) == 0)
               {
@@ -2721,9 +2721,9 @@ LABEL_154:
                       goto LABEL_202;
                     }
 
-                    v125 = [v123 isEmptyWorkspaceEntity];
+                    isEmptyWorkspaceEntity2 = [v123 isEmptyWorkspaceEntity];
 
-                    if (v125)
+                    if (isEmptyWorkspaceEntity2)
                     {
                       goto LABEL_202;
                     }
@@ -2740,7 +2740,7 @@ LABEL_202:
             }
           }
 
-          v116 = [v115 countByEnumeratingWithState:&v1201 objects:v1248 count:16];
+          v116 = [previousEntities4 countByEnumeratingWithState:&v1201 objects:v1248 count:16];
         }
 
         while (v116);
@@ -2780,14 +2780,14 @@ LABEL_202:
 
       v133 = +[(SBWorkspaceEntity *)SBEmptyWorkspaceEntity];
 
-      v134 = [v970 isEmptyWorkspaceEntity];
+      isEmptyWorkspaceEntity3 = [v970 isEmptyWorkspaceEntity];
       v135 = 3;
-      if (v134)
+      if (isEmptyWorkspaceEntity3)
       {
         v135 = 1;
       }
 
-      v1036 = v135;
+      requestedUnlockedEnvironmentMode = v135;
       v928 = v132;
       v956 = v133;
       goto LABEL_221;
@@ -2806,18 +2806,18 @@ LABEL_202:
     {
       if ([v954 isDeviceApplicationSceneEntity])
       {
-        v107 = [v954 uniqueIdentifier];
-        v108 = [v104 containsObject:v107];
+        uniqueIdentifier36 = [v954 uniqueIdentifier];
+        v108 = [v104 containsObject:uniqueIdentifier36];
 
         if ((v108 & 1) == 0)
         {
-          v109 = [v954 displayItemRepresentation];
-          if (v109)
+          displayItemRepresentation = [v954 displayItemRepresentation];
+          if (displayItemRepresentation)
           {
-            v110 = [v1043 _recentAppLayouts];
-            v111 = [v109 bundleIdentifier];
-            v112 = [v110 recentDisplayItemsForBundleIdentifier:v111 includingHiddenAppLayouts:0];
-            v113 = [v112 containsObject:v109];
+            _recentAppLayouts = [v1043 _recentAppLayouts];
+            bundleIdentifier8 = [displayItemRepresentation bundleIdentifier];
+            v112 = [_recentAppLayouts recentDisplayItemsForBundleIdentifier:bundleIdentifier8 includingHiddenAppLayouts:0];
+            v113 = [v112 containsObject:displayItemRepresentation];
 
             if ((v113 & 1) == 0)
             {
@@ -2840,9 +2840,9 @@ LABEL_202:
   v922 = v936;
 LABEL_221:
 
-  v70 = v1036;
+  v70 = requestedUnlockedEnvironmentMode;
 LABEL_222:
-  if (v1046 && [rect_16 unlockedEnvironmentMode] == 3 && v1012 != 1 && (v975 - 52) <= 0xFFFFFFFFFFFFFFFDLL)
+  if (restoresPreviouslyOpenWindows && [rect_16 unlockedEnvironmentMode] == 3 && requestedPeekConfiguration != 1 && (source - 52) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v136 = v99;
     if (v70 == 1)
@@ -2852,8 +2852,8 @@ LABEL_222:
 
     if (!v70)
     {
-      v137 = [v992 entities];
-      if (![v137 count])
+      entities4 = [v992 entities];
+      if (![entities4 count])
       {
         v70 = 0;
 LABEL_249:
@@ -2862,8 +2862,8 @@ LABEL_249:
         goto LABEL_250;
       }
 
-      v138 = [v992 entities];
-      v139 = [v138 bs_containsObjectPassingTest:&__block_literal_global_69_0];
+      entities5 = [v992 entities];
+      v139 = [entities5 bs_containsObjectPassingTest:&__block_literal_global_69_0];
 
       if (v139)
       {
@@ -2872,33 +2872,33 @@ LABEL_230:
         {
           if (v938)
           {
-            v140 = v1003;
+            v140 = _desktopSpaceItems;
           }
 
           else
           {
-            v140 = [v1003 setByAddingObject:?];
+            v140 = [_desktopSpaceItems setByAddingObject:?];
           }
 
-          v146 = [rect_16 appLayout];
-          v147 = [v146 allItems];
+          appLayout6 = [rect_16 appLayout];
+          allItems2 = [appLayout6 allItems];
           v1199[0] = MEMORY[0x277D85DD0];
           v1199[1] = 3221225472;
           v1199[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_5_70;
           v1199[3] = &unk_2783A8C90;
-          v142 = v140;
-          v1200 = v142;
-          v143 = [v147 bs_filter:v1199];
+          allItems3 = v140;
+          v1200 = allItems3;
+          v143 = [allItems2 bs_filter:v1199];
 
-          v148 = [v142 count];
+          v148 = [allItems3 count];
           if (v148 != [v143 count])
           {
-            v149 = [v142 mutableCopy];
-            v150 = [v143 bs_set];
-            [v149 minusSet:v150];
+            v149 = [allItems3 mutableCopy];
+            bs_set = [v143 bs_set];
+            [v149 minusSet:bs_set];
 
-            v151 = [v149 bs_array];
-            v152 = [v143 arrayByAddingObjectsFromArray:v151];
+            bs_array = [v149 bs_array];
+            v152 = [v143 arrayByAddingObjectsFromArray:bs_array];
 
             v143 = v152;
           }
@@ -2908,37 +2908,37 @@ LABEL_230:
           v1197[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_6;
           v1197[3] = &unk_2783B9DC8;
           v1197[4] = v1043;
-          v1198 = v905;
-          v137 = [v143 bs_compactMap:v1197];
+          v1198 = displayIdentity2;
+          entities4 = [v143 bs_compactMap:v1197];
           v144 = &v1200;
           v145 = &v1198;
         }
 
         else
         {
-          v141 = [rect_16 appLayout];
-          v142 = [v141 allItems];
+          appLayout7 = [rect_16 appLayout];
+          allItems3 = [appLayout7 allItems];
 
           v1195[0] = MEMORY[0x277D85DD0];
           v1195[1] = 3221225472;
           v1195[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_7;
           v1195[3] = &unk_2783A8C90;
-          v1196 = v1003;
-          v143 = [v142 bs_filter:v1195];
+          v1196 = _desktopSpaceItems;
+          v143 = [allItems3 bs_filter:v1195];
           v1193[0] = MEMORY[0x277D85DD0];
           v1193[1] = 3221225472;
           v1193[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_8;
           v1193[3] = &unk_2783B9DC8;
           v1193[4] = v1043;
-          v1194 = v905;
-          v137 = [v143 bs_compactMap:v1193];
+          v1194 = displayIdentity2;
+          entities4 = [v143 bs_compactMap:v1193];
           v144 = &v1196;
           v145 = &v1194;
         }
 
-        if ([v137 count])
+        if ([entities4 count])
         {
-          [v992 setEntities:v137 withPolicy:0 centerEntity:0 floatingEntity:0];
+          [v992 setEntities:entities4 withPolicy:0 centerEntity:0 floatingEntity:0];
           v153 = [v992 entityForLayoutRole:1];
           v154 = v153;
           if (v153)
@@ -2968,7 +2968,7 @@ LABEL_230:
             v136 = v159;
           }
 
-          v1012 = 2;
+          requestedPeekConfiguration = 2;
           v70 = 1;
           v136 = v159;
           v970 = v155;
@@ -2989,12 +2989,12 @@ LABEL_230:
 
 LABEL_250:
   v1048 = v99;
-  if (SBPeekConfigurationIsValid(v1012) && !SBPeekConfigurationIsValid(v937))
+  if (SBPeekConfigurationIsValid(requestedPeekConfiguration) && !SBPeekConfigurationIsValid(peekConfiguration2))
   {
-    v161 = [v1005 isFlexibleWindowingEnabled];
+    isFlexibleWindowingEnabled2 = [windowManagementContext2 isFlexibleWindowingEnabled];
     if (v70)
     {
-      v162 = v161;
+      v162 = isFlexibleWindowingEnabled2;
     }
 
     else
@@ -3009,8 +3009,8 @@ LABEL_250:
 
     else
     {
-      v172 = [v1043 _recentAppLayouts];
-      v173 = [v172 recentsIncludingHiddenAppLayouts:0];
+      _recentAppLayouts2 = [v1043 _recentAppLayouts];
+      v173 = [_recentAppLayouts2 recentsIncludingHiddenAppLayouts:0];
       v174 = [v173 count] < 2;
 
       v175 = 1;
@@ -3027,27 +3027,27 @@ LABEL_250:
 
   v932 = 1;
   v1037 = v70;
-  if (v1012 == 1 || v70 == 2)
+  if (requestedPeekConfiguration == 1 || v70 == 2)
   {
     goto LABEL_259;
   }
 
-  if (v1012)
+  if (requestedPeekConfiguration)
   {
     goto LABEL_255;
   }
 
-  if (SBPeekConfigurationIsValid(v937))
+  if (SBPeekConfigurationIsValid(peekConfiguration2))
   {
-    v163 = [v992 entities];
-    v959 = [v163 objectsPassingTest:&__block_literal_global_73];
+    entities6 = [v992 entities];
+    v959 = [entities6 objectsPassingTest:&__block_literal_global_73];
 
-    v164 = [v992 previousEntities];
+    previousEntities5 = [v992 previousEntities];
     if (BSEqualSets())
     {
-      v165 = [v992 previousEntities];
-      v166 = [v992 activatingEntity];
-      v167 = [v165 containsObject:v166];
+      previousEntities6 = [v992 previousEntities];
+      activatingEntity2 = [v992 activatingEntity];
+      v167 = [previousEntities6 containsObject:activatingEntity2];
 
       if ((v167 & 1) == 0)
       {
@@ -3055,8 +3055,8 @@ LABEL_250:
         v1191 = 0u;
         v1190 = 0u;
         v1189 = 0u;
-        v168 = [v992 previousEntities];
-        v169 = [v168 countByEnumeratingWithState:&v1189 objects:v1247 count:16];
+        previousEntities7 = [v992 previousEntities];
+        v169 = [previousEntities7 countByEnumeratingWithState:&v1189 objects:v1247 count:16];
         if (v169)
         {
           v170 = *v1190;
@@ -3066,20 +3066,20 @@ LABEL_250:
             {
               if (*v1190 != v170)
               {
-                objc_enumerationMutation(v168);
+                objc_enumerationMutation(previousEntities7);
               }
 
               [v992 setEntity:*(*(&v1189 + 1) + 8 * jj) forLayoutRole:{objc_msgSend(*(*(&v1189 + 1) + 8 * jj), "layoutRole")}];
             }
 
-            v169 = [v168 countByEnumeratingWithState:&v1189 objects:v1247 count:16];
+            v169 = [previousEntities7 countByEnumeratingWithState:&v1189 objects:v1247 count:16];
           }
 
           while (v169);
         }
 
 LABEL_300:
-        v1012 = v937;
+        requestedPeekConfiguration = peekConfiguration2;
 LABEL_442:
 
         v282 = [v992 entityForLayoutRole:1];
@@ -3116,9 +3116,9 @@ LABEL_442:
 
         v291 = +[(SBWorkspaceEntity *)SBEmptyWorkspaceEntity];
 
-        v292 = [v284 isEmptyWorkspaceEntity];
+        isEmptyWorkspaceEntity4 = [v284 isEmptyWorkspaceEntity];
         v293 = v1037;
-        if (v292)
+        if (isEmptyWorkspaceEntity4)
         {
           v293 = 1;
         }
@@ -3144,8 +3144,8 @@ LABEL_442:
       v1187 = 0u;
       v1186 = 0u;
       v1185 = 0u;
-      v168 = [v992 previousEntities];
-      v181 = [v168 countByEnumeratingWithState:&v1185 objects:v1246 count:16];
+      previousEntities7 = [v992 previousEntities];
+      v181 = [previousEntities7 countByEnumeratingWithState:&v1185 objects:v1246 count:16];
       if (v181)
       {
         v182 = *v1186;
@@ -3155,13 +3155,13 @@ LABEL_442:
           {
             if (*v1186 != v182)
             {
-              objc_enumerationMutation(v168);
+              objc_enumerationMutation(previousEntities7);
             }
 
             [v992 setEntity:*(*(&v1185 + 1) + 8 * kk) forLayoutRole:{objc_msgSend(*(*(&v1185 + 1) + 8 * kk), "layoutRole")}];
           }
 
-          v181 = [v168 countByEnumeratingWithState:&v1185 objects:v1246 count:16];
+          v181 = [previousEntities7 countByEnumeratingWithState:&v1185 objects:v1246 count:16];
         }
 
         while (v181);
@@ -3172,7 +3172,7 @@ LABEL_442:
 
     if ([v922 isHomeScreenEntity])
     {
-      if (v934 == 1)
+      if (unlockedEnvironmentMode2 == 1)
       {
         if (([rect_24 _homeScreenIsOnFirstPage] & 1) == 0)
         {
@@ -3180,8 +3180,8 @@ LABEL_442:
           v1179 = 0u;
           v1178 = 0u;
           v1177 = 0u;
-          v184 = [v992 previousEntities];
-          v272 = [v184 countByEnumeratingWithState:&v1177 objects:v1244 count:16];
+          previousEntities8 = [v992 previousEntities];
+          v272 = [previousEntities8 countByEnumeratingWithState:&v1177 objects:v1244 count:16];
           if (v272)
           {
             v273 = *v1178;
@@ -3191,13 +3191,13 @@ LABEL_442:
               {
                 if (*v1178 != v273)
                 {
-                  objc_enumerationMutation(v184);
+                  objc_enumerationMutation(previousEntities8);
                 }
 
                 [v992 setEntity:*(*(&v1177 + 1) + 8 * mm) forLayoutRole:{objc_msgSend(*(*(&v1177 + 1) + 8 * mm), "layoutRole")}];
               }
 
-              v272 = [v184 countByEnumeratingWithState:&v1177 objects:v1244 count:16];
+              v272 = [previousEntities8 countByEnumeratingWithState:&v1177 objects:v1244 count:16];
             }
 
             while (v272);
@@ -3207,14 +3207,14 @@ LABEL_442:
         }
       }
 
-      else if (v934 == 2)
+      else if (unlockedEnvironmentMode2 == 2)
       {
         v1184 = 0u;
         v1183 = 0u;
         v1182 = 0u;
         v1181 = 0u;
-        v184 = [v992 previousEntities];
-        v185 = [v184 countByEnumeratingWithState:&v1181 objects:v1245 count:16];
+        previousEntities8 = [v992 previousEntities];
+        v185 = [previousEntities8 countByEnumeratingWithState:&v1181 objects:v1245 count:16];
         if (v185)
         {
           v186 = *v1182;
@@ -3224,13 +3224,13 @@ LABEL_442:
             {
               if (*v1182 != v186)
               {
-                objc_enumerationMutation(v184);
+                objc_enumerationMutation(previousEntities8);
               }
 
               [v992 setEntity:*(*(&v1181 + 1) + 8 * nn) forLayoutRole:{objc_msgSend(*(*(&v1181 + 1) + 8 * nn), "layoutRole")}];
             }
 
-            v185 = [v184 countByEnumeratingWithState:&v1181 objects:v1245 count:16];
+            v185 = [previousEntities8 countByEnumeratingWithState:&v1181 objects:v1245 count:16];
           }
 
           while (v185);
@@ -3240,27 +3240,27 @@ LABEL_422:
 
         [v992 setActivatingEntity:0];
         v1037 = 1;
-        v168 = v922;
-        v200 = v937;
+        previousEntities7 = v922;
+        v200 = peekConfiguration2;
         goto LABEL_423;
       }
 
       v1037 = 1;
-      v168 = v922;
+      previousEntities7 = v922;
       v200 = 1;
 LABEL_423:
-      v1012 = v200;
+      requestedPeekConfiguration = v200;
       v922 = 0;
       goto LABEL_442;
     }
 
-    v188 = [rect_16 appLayout];
-    v189 = [v188 allItems];
-    if ([v189 count] == 1)
+    appLayout8 = [rect_16 appLayout];
+    allItems4 = [appLayout8 allItems];
+    if ([allItems4 count] == 1)
     {
-      v190 = [rect_16 appLayout];
-      v191 = [v190 allItems];
-      v192 = [v191 firstObject];
+      appLayout9 = [rect_16 appLayout];
+      allItems5 = [appLayout9 allItems];
+      firstObject = [allItems5 firstObject];
       v193 = BSEqualObjects();
 
       if (v193)
@@ -3290,13 +3290,13 @@ LABEL_423:
         goto LABEL_426;
       }
 
-      v195 = [v970 displayItemRepresentation];
-      if (v195)
+      displayItemRepresentation2 = [v970 displayItemRepresentation];
+      if (displayItemRepresentation2)
       {
-        v196 = [v1043 _recentAppLayouts];
-        v197 = [v195 bundleIdentifier];
-        v198 = [v196 recentDisplayItemsForBundleIdentifier:v197 includingHiddenAppLayouts:0];
-        v199 = [v198 containsObject:v195];
+        _recentAppLayouts3 = [v1043 _recentAppLayouts];
+        bundleIdentifier9 = [displayItemRepresentation2 bundleIdentifier];
+        v198 = [_recentAppLayouts3 recentDisplayItemsForBundleIdentifier:bundleIdentifier9 includingHiddenAppLayouts:0];
+        v199 = [v198 containsObject:displayItemRepresentation2];
 
         if ((v199 & 1) == 0)
         {
@@ -3308,7 +3308,7 @@ LABEL_423:
     else
     {
       [v992 setEntity:v922 forLayoutRole:1];
-      v195 = v922;
+      displayItemRepresentation2 = v922;
       v922 = 0;
     }
 
@@ -3317,12 +3317,12 @@ LABEL_426:
     v1175 = 0u;
     v1174 = 0u;
     v1173 = 0u;
-    v168 = [v992 previousEntities];
-    v275 = [v168 countByEnumeratingWithState:&v1173 objects:v1243 count:16];
+    previousEntities7 = [v992 previousEntities];
+    v275 = [previousEntities7 countByEnumeratingWithState:&v1173 objects:v1243 count:16];
     if (v275)
     {
       v276 = *v1174;
-      v1012 = 1;
+      requestedPeekConfiguration = 1;
       v1037 = 3;
       do
       {
@@ -3330,14 +3330,14 @@ LABEL_426:
         {
           if (*v1174 != v276)
           {
-            objc_enumerationMutation(v168);
+            objc_enumerationMutation(previousEntities7);
           }
 
           v278 = *(*(&v1173 + 1) + 8 * i1);
           if (([v278 isHomeScreenEntity] & 1) == 0 && (objc_msgSend(v278, "isPreviousWorkspaceEntity") & 1) == 0 && (objc_msgSend(v278, "isEmptyWorkspaceEntity") & 1) == 0)
           {
-            v279 = [v992 entities];
-            v280 = [v279 containsObject:v278];
+            entities7 = [v992 entities];
+            v280 = [entities7 containsObject:v278];
 
             if ((v280 & 1) == 0)
             {
@@ -3362,7 +3362,7 @@ LABEL_426:
           }
         }
 
-        v275 = [v168 countByEnumeratingWithState:&v1173 objects:v1243 count:16];
+        v275 = [previousEntities7 countByEnumeratingWithState:&v1173 objects:v1243 count:16];
       }
 
       while (v275);
@@ -3370,23 +3370,23 @@ LABEL_426:
 
     else
     {
-      v1012 = 1;
+      requestedPeekConfiguration = 1;
       v1037 = 3;
     }
 
     goto LABEL_442;
   }
 
-  if (!SBPeekConfigurationIsValid(v937))
+  if (!SBPeekConfigurationIsValid(peekConfiguration2))
   {
-    if (([v970 isHomeScreenEntity] & 1) != 0 || ((v176 = objc_msgSend(v970, "isEmptyWorkspaceEntity"), v934 != 1) ? (v177 = v176) : (v177 = 0), v177 == 1))
+    if (([v970 isHomeScreenEntity] & 1) != 0 || ((v176 = objc_msgSend(v970, "isEmptyWorkspaceEntity"), unlockedEnvironmentMode2 != 1) ? (v177 = v176) : (v177 = 0), v177 == 1))
     {
-      if ([v1005 restoresPreviouslyOpenWindows])
+      if ([windowManagementContext2 restoresPreviouslyOpenWindows])
       {
         if (v1218[5])
         {
-          v178 = [rect_16 appLayout];
-          v179 = [v178 containsItem:v1218[5]];
+          appLayout10 = [rect_16 appLayout];
+          v179 = [appLayout10 containsItem:v1218[5]];
 
           v180 = v179 & (v938 ^ 1);
         }
@@ -3397,7 +3397,7 @@ LABEL_426:
         }
 
         v932 = 1;
-        if (!(([v1003 count] != 0) | v180 & 1) || (v934 & 0xFFFFFFFFFFFFFFFELL) != 2)
+        if (!(([_desktopSpaceItems count] != 0) | v180 & 1) || (unlockedEnvironmentMode2 & 0xFFFFFFFFFFFFFFFELL) != 2)
         {
           goto LABEL_259;
         }
@@ -3410,7 +3410,7 @@ LABEL_426:
   }
 
 LABEL_255:
-  if (!SBPeekConfigurationIsValid(v1012) || !SBPeekConfigurationIsValid(v937))
+  if (!SBPeekConfigurationIsValid(requestedPeekConfiguration) || !SBPeekConfigurationIsValid(peekConfiguration2))
   {
     v160 = 1;
 LABEL_258:
@@ -3420,14 +3420,14 @@ LABEL_258:
 
 LABEL_451:
 
-  if (v1012)
+  if (requestedPeekConfiguration)
   {
-    v932 = v1012;
+    v932 = requestedPeekConfiguration;
     goto LABEL_453;
   }
 
-  v1005 = [MEMORY[0x277CCA890] currentHandler];
-  [v1005 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1345 description:@"Peek configuration should not be undefined at this point"];
+  windowManagementContext2 = [MEMORY[0x277CCA890] currentHandler];
+  [windowManagementContext2 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1345 description:@"Peek configuration should not be undefined at this point"];
   v932 = 0;
 LABEL_259:
 
@@ -3441,26 +3441,26 @@ LABEL_454:
   v955 = v98;
   if (!v98)
   {
-    v868 = [MEMORY[0x277CCA890] currentHandler];
-    [v868 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1349 description:@"Primary workspace entity may not be nil at this point!"];
+    currentHandler11 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler11 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1349 description:@"Primary workspace entity may not be nil at this point!"];
   }
 
   if (!v957)
   {
-    v869 = [MEMORY[0x277CCA890] currentHandler];
-    [v869 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1350 description:@"Side workspace entity may not be nil at this point!"];
+    currentHandler12 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler12 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1350 description:@"Side workspace entity may not be nil at this point!"];
   }
 
   if (!v956)
   {
-    v870 = [MEMORY[0x277CCA890] currentHandler];
-    [v870 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1351 description:@"Floating workspace entity may not be nil at this point!"];
+    currentHandler13 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler13 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1351 description:@"Floating workspace entity may not be nil at this point!"];
   }
 
   if (!v958)
   {
-    v871 = [MEMORY[0x277CCA890] currentHandler];
-    [v871 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1352 description:@"Center workspace entity may not be nil at this point!"];
+    currentHandler14 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler14 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1352 description:@"Center workspace entity may not be nil at this point!"];
   }
 
   if ([v955 isPreviousWorkspaceEntity])
@@ -3535,7 +3535,7 @@ LABEL_454:
     [v306 enumerateRolesUsingBlock:v1167];
   }
 
-  if ((v1011 & 1) == 0 || (v946 & 1) != 0 || ![v1003 count])
+  if ((isFlexibleWindowingEnabled & 1) == 0 || (isAutomaticStageCreationEnabled & 1) != 0 || ![_desktopSpaceItems count])
   {
     v969 = 0;
     goto LABEL_489;
@@ -3553,12 +3553,12 @@ LABEL_454:
   v1165 = v307;
   v1166 = &v1252;
   v1049 = MEMORY[0x223D6F7F0](v1164);
-  v308 = [v307 restoresDesktopSpacesImmediately];
-  if ([rect_24 _restoreDesktopSpaceAfterClosingFullScreenSpace] && objc_msgSend(v1003, "count"))
+  restoresDesktopSpacesImmediately = [v307 restoresDesktopSpacesImmediately];
+  if ([rect_24 _restoreDesktopSpaceAfterClosingFullScreenSpace] && objc_msgSend(_desktopSpaceItems, "count"))
   {
     if ([v955 isHomeScreenEntity])
     {
-      if (v934 != 3)
+      if (unlockedEnvironmentMode2 != 3)
       {
         goto LABEL_550;
       }
@@ -3566,10 +3566,10 @@ LABEL_454:
 
     else
     {
-      v339 = [v955 isEmptyWorkspaceEntity];
-      if (v934 == 3)
+      isEmptyWorkspaceEntity5 = [v955 isEmptyWorkspaceEntity];
+      if (unlockedEnvironmentMode2 == 3)
       {
-        v340 = v339;
+        v340 = isEmptyWorkspaceEntity5;
       }
 
       else
@@ -3583,20 +3583,20 @@ LABEL_454:
       }
     }
 
-    v341 = [rect_16 appLayout];
-    if (([v341 containsAnyItemFromSet:v1003] & 1) == 0)
+    appLayout11 = [rect_16 appLayout];
+    if (([appLayout11 containsAnyItemFromSet:_desktopSpaceItems] & 1) == 0)
     {
-      v783 = [v307 previousEntities];
+      previousEntities9 = [v307 previousEntities];
       v1162[0] = MEMORY[0x277D85DD0];
       v1162[1] = 3221225472;
       v1162[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_13;
       v1162[3] = &unk_2783B65A8;
       v1163 = v307;
-      v784 = [v783 bs_containsObjectPassingTest:v1162];
+      v784 = [previousEntities9 bs_containsObjectPassingTest:v1162];
 
-      if (v915)
+      if (minimizingDisplayItem)
       {
-        v785 = [v341 containsItem:?];
+        v785 = [appLayout11 containsItem:?];
       }
 
       else
@@ -3613,7 +3613,7 @@ LABEL_454:
 
       v932 = v798;
 
-      if ((v797 | v308))
+      if ((v797 | restoresDesktopSpacesImmediately))
       {
         goto LABEL_584;
       }
@@ -3623,14 +3623,14 @@ LABEL_454:
   }
 
 LABEL_550:
-  if (v308)
+  if (restoresDesktopSpacesImmediately)
   {
 LABEL_584:
     v1152 = 0u;
     v1151 = 0u;
     v1150 = 0u;
     v1149 = 0u;
-    v363 = v1003;
+    v363 = _desktopSpaceItems;
     v364 = [v363 countByEnumeratingWithState:&v1149 objects:v1240 count:16];
     if (v364)
     {
@@ -3646,15 +3646,15 @@ LABEL_584:
           }
 
           v367 = *(*(&v1149 + 1) + 8 * i2);
-          v368 = [v367 bundleIdentifier];
-          v369 = [v367 uniqueIdentifier];
-          v370 = [rect_24 displayIdentity];
-          v371 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:v368 uniqueIdentifier:v369 displayIdentity:v370];
+          bundleIdentifier10 = [v367 bundleIdentifier];
+          uniqueIdentifier37 = [v367 uniqueIdentifier];
+          displayIdentity3 = [rect_24 displayIdentity];
+          v371 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:bundleIdentifier10 uniqueIdentifier:uniqueIdentifier37 displayIdentity:displayIdentity3];
 
           if (v371)
           {
-            v372 = [v307 entities];
-            v373 = [v372 containsObject:v371];
+            entities8 = [v307 entities];
+            v373 = [entities8 containsObject:v371];
 
             if ((v373 & 1) == 0)
             {
@@ -3686,9 +3686,9 @@ LABEL_584:
   }
 
 LABEL_551:
-  v1013 = [rect_16 layoutAttributesMap];
-  v342 = [rect_16 appLayout];
-  v916 = [v342 allItems];
+  layoutAttributesMap = [rect_16 layoutAttributesMap];
+  appLayout12 = [rect_16 appLayout];
+  allItems6 = [appLayout12 allItems];
 
   v1161 = 0u;
   v1160 = 0u;
@@ -3714,8 +3714,8 @@ LABEL_551:
 
         v929 = v346;
         v347 = *(*(&v1158 + 1) + 8 * v346);
-        v348 = [v347 deviceApplicationSceneEntity];
-        if (v348)
+        deviceApplicationSceneEntity = [v347 deviceApplicationSceneEntity];
+        if (deviceApplicationSceneEntity)
         {
           v349 = [v307 requestedLayoutAttributesForEntity:v347];
           v1157[0] = MEMORY[0x277D85DD0];
@@ -3723,16 +3723,16 @@ LABEL_551:
           v1157[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_14;
           v1157[3] = &unk_2783A8C90;
           v1157[4] = v347;
-          if ([v916 bs_containsObjectPassingTest:v1157])
+          if ([allItems6 bs_containsObjectPassingTest:v1157])
           {
             v1156 = 0u;
             v1155 = 0u;
             v1154 = 0u;
             v1153 = 0u;
-            v350 = v916;
+            v350 = allItems6;
             v351 = [v350 countByEnumeratingWithState:&v1153 objects:v1241 count:16];
             v1006 = v349;
-            v972 = v348;
+            v972 = deviceApplicationSceneEntity;
             if (v351)
             {
               v352 = *v1154;
@@ -3746,20 +3746,20 @@ LABEL_551:
                   }
 
                   v354 = *(*(&v1153 + 1) + 8 * i3);
-                  v355 = [v347 uniqueIdentifier];
-                  v356 = [v354 uniqueIdentifier];
-                  v357 = [v355 isEqual:v356];
+                  uniqueIdentifier38 = [v347 uniqueIdentifier];
+                  uniqueIdentifier39 = [v354 uniqueIdentifier];
+                  v357 = [uniqueIdentifier38 isEqual:uniqueIdentifier39];
 
                   if (v357)
                   {
-                    v358 = [v1013 objectForKey:v354];
+                    v358 = [layoutAttributesMap objectForKey:v354];
                     if ([rect_24 _isDisplayItemFullScreen:v354 preferredAttributes:v358])
                     {
                       v359 = [SBDisplayItem displayItemForWorkspaceEntity:v972];
                       if (v1006 && ([rect_24 _isDisplayItemFullScreen:v359 preferredAttributes:v1006] & 1) == 0)
                       {
 
-                        v348 = v972;
+                        deviceApplicationSceneEntity = v972;
                         goto LABEL_583;
                       }
                     }
@@ -3776,12 +3776,12 @@ LABEL_551:
               }
             }
 
-            v348 = v972;
+            deviceApplicationSceneEntity = v972;
           }
 
           else
           {
-            v360 = [SBDisplayItem displayItemForWorkspaceEntity:v348];
+            v360 = [SBDisplayItem displayItemForWorkspaceEntity:deviceApplicationSceneEntity];
             v361 = v360;
             if (v349)
             {
@@ -3816,7 +3816,7 @@ LABEL_583:
     }
   }
 
-  if (!SBPeekConfigurationIsValid(v937) && ([v955 isHomeScreenEntity] & 1) == 0 && !((v934 != 1) | SBPeekConfigurationIsValid(v932)))
+  if (!SBPeekConfigurationIsValid(peekConfiguration2) && ([v955 isHomeScreenEntity] & 1) == 0 && !((unlockedEnvironmentMode2 != 1) | SBPeekConfigurationIsValid(v932)))
   {
     [v307 setSettlesMultiAppFullScreenSpacesImmediately:1];
     goto LABEL_584;
@@ -3860,10 +3860,10 @@ LABEL_599:
 
     v384 = +[(SBWorkspaceEntity *)SBEmptyWorkspaceEntity];
 
-    v385 = [v377 isEmptyWorkspaceEntity];
+    isEmptyWorkspaceEntity6 = [v377 isEmptyWorkspaceEntity];
     if (v932 == 1)
     {
-      v386 = v385;
+      v386 = isEmptyWorkspaceEntity6;
     }
 
     else
@@ -3895,10 +3895,10 @@ LABEL_599:
   v70 = v1038;
 LABEL_489:
   v309 = v1218[5];
-  v1036 = v70;
+  requestedUnlockedEnvironmentMode = v70;
   if (v309)
   {
-    v310 = [v309 uniqueIdentifier];
+    uniqueIdentifier40 = [v309 uniqueIdentifier];
     v311 = v70;
     if (!v70)
     {
@@ -3915,14 +3915,14 @@ LABEL_489:
 
     if ([rect_16 unlockedEnvironmentMode] == 3 && v311 == 3)
     {
-      v312 = [v992 entityForIdentifier:v310];
-      if (v312)
+      appLayout13 = [v992 entityForIdentifier:uniqueIdentifier40];
+      if (appLayout13)
       {
         goto LABEL_619;
       }
 
-      v312 = [rect_16 elementWithIdentifier:v310];
-      if ((v312 == 0) | v938 & 1)
+      appLayout13 = [rect_16 elementWithIdentifier:uniqueIdentifier40];
+      if ((appLayout13 == 0) | v938 & 1)
       {
         goto LABEL_619;
       }
@@ -3953,9 +3953,9 @@ LABEL_489:
               goto LABEL_615;
             }
 
-            v319 = [v317 isEmptyWorkspaceEntity];
+            isEmptyWorkspaceEntity7 = [v317 isEmptyWorkspaceEntity];
 
-            if (v319)
+            if (isEmptyWorkspaceEntity7)
             {
               goto LABEL_615;
             }
@@ -3964,10 +3964,10 @@ LABEL_489:
 
         i4 = 0;
 LABEL_615:
-        v312 = [v992 previousEntityForIdentifier:v310];
+        appLayout13 = [v992 previousEntityForIdentifier:uniqueIdentifier40];
         if (i4)
         {
-          [v992 setEntity:v312 forLayoutRole:i4];
+          [v992 setEntity:appLayout13 forLayoutRole:i4];
           goto LABEL_617;
         }
 
@@ -3979,7 +3979,7 @@ LABEL_615:
 
     if ([rect_16 unlockedEnvironmentMode] == 2 && v311 == 3)
     {
-      v320 = [v992 entityForIdentifier:v310];
+      v320 = [v992 entityForIdentifier:uniqueIdentifier40];
       v321 = v320 != 0;
 
       if (((v321 | v938) & 1) == 0)
@@ -4006,9 +4006,9 @@ LABEL_615:
               goto LABEL_542;
             }
 
-            v326 = [v324 isEmptyWorkspaceEntity];
+            isEmptyWorkspaceEntity8 = [v324 isEmptyWorkspaceEntity];
 
-            if (v326)
+            if (isEmptyWorkspaceEntity8)
             {
               goto LABEL_542;
             }
@@ -4019,11 +4019,11 @@ LABEL_615:
 LABEL_542:
         if (i4)
         {
-          v337 = [v1218[5] bundleIdentifier];
-          v338 = [rect_24 displayIdentity];
-          v312 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:v337 uniqueIdentifier:v310 displayIdentity:v338];
+          bundleIdentifier11 = [v1218[5] bundleIdentifier];
+          displayIdentity4 = [rect_24 displayIdentity];
+          appLayout13 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:bundleIdentifier11 uniqueIdentifier:uniqueIdentifier40 displayIdentity:displayIdentity4];
 
-          [v992 setEntity:v312 forLayoutRole:i4];
+          [v992 setEntity:appLayout13 forLayoutRole:i4];
           goto LABEL_617;
         }
       }
@@ -4035,8 +4035,8 @@ LABEL_542:
     v328 = !v327;
     if (((v328 | v938) & 1) == 0)
     {
-      v312 = [rect_16 appLayout];
-      if (![v312 containsItem:v1218[5]])
+      appLayout13 = [rect_16 appLayout];
+      if (![appLayout13 containsItem:v1218[5]])
       {
         goto LABEL_619;
       }
@@ -4045,7 +4045,7 @@ LABEL_542:
 
       if (IsValid)
       {
-        v330 = [v992 entityForIdentifier:v310];
+        v330 = [v992 entityForIdentifier:uniqueIdentifier40];
         v331 = v330 == 0;
 
         if (v331)
@@ -4077,13 +4077,13 @@ LABEL_542:
               {
 
 LABEL_1246:
-                v312 = [v992 previousEntityForIdentifier:v310];
+                appLayout13 = [v992 previousEntityForIdentifier:uniqueIdentifier40];
                 if (i4)
                 {
-                  [v992 setEntity:v312 forLayoutRole:i4];
+                  [v992 setEntity:appLayout13 forLayoutRole:i4];
                   if (i4 == 1)
                   {
-                    v859 = v312;
+                    v859 = appLayout13;
 
                     v955 = v859;
                   }
@@ -4091,7 +4091,7 @@ LABEL_1246:
 LABEL_617:
                   if (i4 == 2)
                   {
-                    v388 = v312;
+                    v388 = appLayout13;
 
                     v957 = v388;
                   }
@@ -4102,9 +4102,9 @@ LABEL_619:
                 break;
               }
 
-              v336 = [v335 isHomeScreenEntity];
+              isHomeScreenEntity = [v335 isHomeScreenEntity];
 
-              if (v336)
+              if (isHomeScreenEntity)
               {
                 goto LABEL_1246;
               }
@@ -4116,111 +4116,111 @@ LABEL_619:
 
 LABEL_620:
 
-    v70 = v1036;
+    v70 = requestedUnlockedEnvironmentMode;
   }
 
   if (!v955)
   {
-    v872 = [MEMORY[0x277CCA890] currentHandler];
-    [v872 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1605 description:@"Primary workspace entity may not be nil at this point!"];
+    currentHandler15 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler15 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1605 description:@"Primary workspace entity may not be nil at this point!"];
 
-    v70 = v1036;
+    v70 = requestedUnlockedEnvironmentMode;
   }
 
   if (!v957)
   {
-    v873 = [MEMORY[0x277CCA890] currentHandler];
-    [v873 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1606 description:@"Side workspace entity may not be nil at this point!"];
+    currentHandler16 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler16 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1606 description:@"Side workspace entity may not be nil at this point!"];
 
-    v70 = v1036;
+    v70 = requestedUnlockedEnvironmentMode;
   }
 
   if (!v956)
   {
-    v874 = [MEMORY[0x277CCA890] currentHandler];
-    [v874 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1607 description:@"Floating workspace entity may not be nil at this point!"];
+    currentHandler17 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler17 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1607 description:@"Floating workspace entity may not be nil at this point!"];
 
-    v70 = v1036;
+    v70 = requestedUnlockedEnvironmentMode;
   }
 
   if (!v958)
   {
-    v875 = [MEMORY[0x277CCA890] currentHandler];
-    [v875 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1608 description:@"Center workspace entity may not be nil at this point!"];
+    currentHandler18 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler18 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1608 description:@"Center workspace entity may not be nil at this point!"];
 
-    v70 = v1036;
+    v70 = requestedUnlockedEnvironmentMode;
   }
 
   if ([v955 isPreviousWorkspaceEntity])
   {
-    v876 = [MEMORY[0x277CCA890] currentHandler];
-    [v876 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1610 description:@"Primary workspace entity may not be previous entity at this point!"];
+    currentHandler19 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler19 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1610 description:@"Primary workspace entity may not be previous entity at this point!"];
 
-    v70 = v1036;
+    v70 = requestedUnlockedEnvironmentMode;
   }
 
   if ([v957 isPreviousWorkspaceEntity])
   {
-    v877 = [MEMORY[0x277CCA890] currentHandler];
-    [v877 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1611 description:@"Side workspace entity may not be previous entity at this point!"];
+    currentHandler20 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler20 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1611 description:@"Side workspace entity may not be previous entity at this point!"];
 
-    v70 = v1036;
+    v70 = requestedUnlockedEnvironmentMode;
   }
 
   if ([v956 isPreviousWorkspaceEntity])
   {
-    v878 = [MEMORY[0x277CCA890] currentHandler];
-    [v878 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1612 description:@"Floating workspace entity may not be previous entity at this point!"];
+    currentHandler21 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler21 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1612 description:@"Floating workspace entity may not be previous entity at this point!"];
 
-    v70 = v1036;
+    v70 = requestedUnlockedEnvironmentMode;
   }
 
   if ([v958 isPreviousWorkspaceEntity])
   {
-    v879 = [MEMORY[0x277CCA890] currentHandler];
-    [v879 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1613 description:@"Center workspace entity may not be previous entity at this point!"];
+    currentHandler22 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler22 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1613 description:@"Center workspace entity may not be previous entity at this point!"];
 
-    v70 = v1036;
+    v70 = requestedUnlockedEnvironmentMode;
   }
 
   if ([v958 isApplicationSceneEntity] && objc_msgSend(v955, "isEmptyWorkspaceEntity") && objc_msgSend(v957, "isEmptyWorkspaceEntity"))
   {
-    v389 = [v958 applicationSceneEntity];
-    v390 = [v389 application];
-    v391 = [v390 bundleIdentifier];
+    applicationSceneEntity = [v958 applicationSceneEntity];
+    application = [applicationSceneEntity application];
+    bundleIdentifier12 = [application bundleIdentifier];
 
     v392 = MEMORY[0x277CBEB98];
-    v393 = [v958 uniqueIdentifier];
-    v394 = [v392 setWithObject:v393];
-    v395 = [v1043 _mostRecentAppLayoutForBundleIdentifier:v391 ignoringUniqueIdentifiers:v394 inMedusaOnStageManagerCapableDevice:v994 multitaskingSupported:v997 != 0];
+    uniqueIdentifier41 = [v958 uniqueIdentifier];
+    v394 = [v392 setWithObject:uniqueIdentifier41];
+    v395 = [v1043 _mostRecentAppLayoutForBundleIdentifier:bundleIdentifier12 ignoringUniqueIdentifiers:v394 inMedusaOnStageManagerCapableDevice:v994 multitaskingSupported:baseStyle != 0];
 
     if (v395)
     {
       v396 = [v395 itemForLayoutRole:1];
-      v397 = [v396 bundleIdentifier];
-      v398 = [v396 uniqueIdentifier];
-      v399 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:v397 uniqueIdentifier:v398 displayIdentity:v905];
+      bundleIdentifier13 = [v396 bundleIdentifier];
+      uniqueIdentifier42 = [v396 uniqueIdentifier];
+      v399 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:bundleIdentifier13 uniqueIdentifier:uniqueIdentifier42 displayIdentity:displayIdentity2];
 
       v955 = v399;
     }
 
     else
     {
-      v400 = [v1043 _sceneManagerForDisplayIdentity:v905];
-      v396 = [v400 newSceneIdentifierForBundleIdentifier:v391];
+      v400 = [v1043 _sceneManagerForDisplayIdentity:displayIdentity2];
+      v396 = [v400 newSceneIdentifierForBundleIdentifier:bundleIdentifier12];
 
-      [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:v391 uniqueIdentifier:v396 displayIdentity:v905];
-      v955 = v397 = v955;
+      [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:bundleIdentifier12 uniqueIdentifier:v396 displayIdentity:displayIdentity2];
+      v955 = bundleIdentifier13 = v955;
     }
 
     v401 = [v395 itemForLayoutRole:2];
-    v402 = [v401 bundleIdentifier];
-    v403 = [v401 uniqueIdentifier];
-    v404 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:v402 uniqueIdentifier:v403 displayIdentity:v905];
+    bundleIdentifier14 = [v401 bundleIdentifier];
+    uniqueIdentifier43 = [v401 uniqueIdentifier];
+    v404 = [v1043 _applicationSceneEntityFromApplicationBundleIdentifier:bundleIdentifier14 uniqueIdentifier:uniqueIdentifier43 displayIdentity:displayIdentity2];
 
     SBMainDisplayLayoutStateSpaceConfigurationFromAppLayoutConfiguration([v395 configuration]);
     v957 = v404;
-    v70 = v1036;
+    v70 = requestedUnlockedEnvironmentMode;
   }
 
   if (([v955 isEmptyWorkspaceEntity] & 1) != 0 || objc_msgSend(v955, "isHomeScreenEntity"))
@@ -4233,7 +4233,7 @@ LABEL_620:
 
       v957 = v405;
       v958 = v406;
-      v70 = v1036;
+      v70 = requestedUnlockedEnvironmentMode;
     }
 
     if (v70 != 2 && !SBPeekConfigurationIsValid(v932))
@@ -4300,15 +4300,15 @@ LABEL_620:
     v958 = v415;
   }
 
-  v416 = [v957 isEmptyWorkspaceEntity];
-  if (v997)
+  isEmptyWorkspaceEntity9 = [v957 isEmptyWorkspaceEntity];
+  if (baseStyle)
   {
     v417 = 1;
   }
 
   else
   {
-    v417 = v416;
+    v417 = isEmptyWorkspaceEntity9;
   }
 
   if ((v417 & 1) == 0)
@@ -4318,15 +4318,15 @@ LABEL_620:
     v957 = v418;
   }
 
-  v419 = [v956 isEmptyWorkspaceEntity];
-  if (v997)
+  isEmptyWorkspaceEntity10 = [v956 isEmptyWorkspaceEntity];
+  if (baseStyle)
   {
     v420 = 1;
   }
 
   else
   {
-    v420 = v419;
+    v420 = isEmptyWorkspaceEntity10;
   }
 
   if ((v420 & 1) == 0)
@@ -4338,50 +4338,50 @@ LABEL_620:
 
   if (!v955)
   {
-    v880 = [MEMORY[0x277CCA890] currentHandler];
-    [v880 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1699 description:@"Primary workspace entity may not be nil at this point!"];
+    currentHandler23 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler23 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1699 description:@"Primary workspace entity may not be nil at this point!"];
   }
 
   if (!v957)
   {
-    v881 = [MEMORY[0x277CCA890] currentHandler];
-    [v881 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1700 description:@"Side workspace entity may not be nil at this point!"];
+    currentHandler24 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler24 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1700 description:@"Side workspace entity may not be nil at this point!"];
   }
 
   if (!v956)
   {
-    v882 = [MEMORY[0x277CCA890] currentHandler];
-    [v882 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1701 description:@"Floating workspace entity may not be nil at this point!"];
+    currentHandler25 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler25 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1701 description:@"Floating workspace entity may not be nil at this point!"];
   }
 
   if (!v958)
   {
-    v883 = [MEMORY[0x277CCA890] currentHandler];
-    [v883 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1702 description:@"Center workspace entity may not be nil at this point!"];
+    currentHandler26 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler26 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1702 description:@"Center workspace entity may not be nil at this point!"];
   }
 
   if ([v955 isPreviousWorkspaceEntity])
   {
-    v884 = [MEMORY[0x277CCA890] currentHandler];
-    [v884 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1704 description:@"Primary workspace entity may not be previous entity at this point!"];
+    currentHandler27 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler27 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1704 description:@"Primary workspace entity may not be previous entity at this point!"];
   }
 
   if ([v957 isPreviousWorkspaceEntity])
   {
-    v885 = [MEMORY[0x277CCA890] currentHandler];
-    [v885 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1705 description:@"Side workspace entity may not be previous entity at this point!"];
+    currentHandler28 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler28 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1705 description:@"Side workspace entity may not be previous entity at this point!"];
   }
 
   if ([v956 isPreviousWorkspaceEntity])
   {
-    v886 = [MEMORY[0x277CCA890] currentHandler];
-    [v886 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1706 description:@"Floating workspace entity may not be previous entity at this point!"];
+    currentHandler29 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler29 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1706 description:@"Floating workspace entity may not be previous entity at this point!"];
   }
 
   if ([v958 isPreviousWorkspaceEntity])
   {
-    v887 = [MEMORY[0x277CCA890] currentHandler];
-    [v887 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1707 description:@"Center workspace entity may not be previous entity at this point!"];
+    currentHandler30 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler30 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:1707 description:@"Center workspace entity may not be previous entity at this point!"];
   }
 
   if ([v955 isEmptyWorkspaceEntity])
@@ -4422,7 +4422,7 @@ LABEL_620:
 
     else
     {
-      v422 = v953;
+      v422 = spaceConfiguration2;
     }
 
     IsSplitView = SBSpaceConfigurationIsSplitView(v422);
@@ -4446,7 +4446,7 @@ LABEL_620:
 
       else
       {
-        v670 = v953;
+        v670 = spaceConfiguration2;
       }
 
       if (SBSpaceConfigurationIsValid(v670))
@@ -4472,12 +4472,12 @@ LABEL_721:
 
   v904 = 0;
 LABEL_725:
-  v425 = v961;
+  v425 = floatingConfiguration2;
   if (v956)
   {
-    if (SBFloatingConfigurationIsValid(v926))
+    if (SBFloatingConfigurationIsValid(requestedFloatingConfiguration))
     {
-      v425 = v926;
+      v425 = requestedFloatingConfiguration;
     }
 
     if (v956 == v922 || v956 == v923)
@@ -4504,25 +4504,25 @@ LABEL_725:
       v430 = v425;
     }
 
-    v926 = v430;
+    requestedFloatingConfiguration = v430;
     if (SBPeekConfigurationIsValid(v932) && ([v955 isHomeScreenEntity] & 1) == 0)
     {
-      IsLeft = SBFloatingConfigurationIsLeft(v926);
+      IsLeft = SBFloatingConfigurationIsLeft(requestedFloatingConfiguration);
       goto LABEL_749;
     }
   }
 
   else
   {
-    if (SBFloatingConfigurationIsStashed(v961) && SBFloatingConfigurationIsValid(v961))
+    if (SBFloatingConfigurationIsStashed(floatingConfiguration2) && SBFloatingConfigurationIsValid(floatingConfiguration2))
     {
-      v926 = v961;
+      requestedFloatingConfiguration = floatingConfiguration2;
       goto LABEL_752;
     }
 
-    if ([v922 isHomeScreenEntity] && SBFloatingConfigurationIsValid(v961))
+    if ([v922 isHomeScreenEntity] && SBFloatingConfigurationIsValid(floatingConfiguration2))
     {
-      IsLeft = SBFloatingConfigurationIsLeft(v961);
+      IsLeft = SBFloatingConfigurationIsLeft(floatingConfiguration2);
 LABEL_749:
       v431 = 3;
       if (!IsLeft)
@@ -4530,12 +4530,12 @@ LABEL_749:
         v431 = 4;
       }
 
-      v926 = v431;
+      requestedFloatingConfiguration = v431;
     }
   }
 
 LABEL_752:
-  if (([v956 isEmptyWorkspaceEntity] & 1) == 0 && SBFloatingConfigurationIsStashed(v926))
+  if (([v956 isEmptyWorkspaceEntity] & 1) == 0 && SBFloatingConfigurationIsStashed(requestedFloatingConfiguration))
   {
 
     v956 = 0;
@@ -4543,23 +4543,23 @@ LABEL_752:
 
   if (v958)
   {
-    if (SBCenterConfigurationIsValid(v947))
+    if (SBCenterConfigurationIsValid(requestedCenterConfiguration))
     {
-      v432 = v947;
+      v432 = requestedCenterConfiguration;
     }
 
     else
     {
-      v432 = v944;
+      v432 = centerConfiguration;
     }
 
     v912 = v432;
     if (!SBCenterConfigurationIsValid(v432))
     {
-      v433 = [v992 request];
-      v434 = [v433 centerConfiguration];
+      request2 = [v992 request];
+      centerConfiguration2 = [request2 centerConfiguration];
       v435 = 1;
-      if (v434 == 2)
+      if (centerConfiguration2 == 2)
       {
         v435 = 2;
       }
@@ -4573,7 +4573,7 @@ LABEL_752:
     v912 = 0;
   }
 
-  v436 = [v958 isEmptyWorkspaceEntity];
+  isEmptyWorkspaceEntity11 = [v958 isEmptyWorkspaceEntity];
   if (v912)
   {
     v437 = 1;
@@ -4581,7 +4581,7 @@ LABEL_752:
 
   else
   {
-    v437 = v436;
+    v437 = isEmptyWorkspaceEntity11;
   }
 
   if ((v437 & 1) == 0)
@@ -4591,8 +4591,8 @@ LABEL_752:
   }
 
 LABEL_770:
-  v930 = v1036;
-  if (!v1036)
+  v930 = requestedUnlockedEnvironmentMode;
+  if (!requestedUnlockedEnvironmentMode)
   {
     if (([v955 isHomeScreenEntity] & 1) != 0 || SBPeekConfigurationIsValid(v932))
     {
@@ -4620,44 +4620,44 @@ LABEL_770:
 
   v914 = rect_8;
   v439 = SBPeekConfigurationIsValid([rect_16 peekConfiguration]);
-  v440 = [rect_16 unlockedEnvironmentMode];
-  v945 = v914;
+  unlockedEnvironmentMode3 = [rect_16 unlockedEnvironmentMode];
+  bundleIDShowingAppExpose4 = v914;
   if (!v914)
   {
-    v441 = v440;
-    v442 = v949;
-    if (v440 != 2)
+    v441 = unlockedEnvironmentMode3;
+    v442 = isChamoisOrFlexibleWindowing;
+    if (unlockedEnvironmentMode3 != 2)
     {
       v442 = 0;
     }
 
     if (((v442 | v439) & 1) != 0 || ![v922 isApplicationSceneEntity])
     {
-      v945 = 0;
+      bundleIDShowingAppExpose4 = 0;
     }
 
     else
     {
       v443 = v922;
-      v1014 = [v443 application];
-      v1050 = [v1014 bundleIdentifier];
+      application2 = [v443 application];
+      bundleIdentifier15 = [application2 bundleIdentifier];
       v988 = v441;
       v1007 = v443;
-      v444 = [v443 activationSettings];
-      v445 = [v444 objectForActivationSetting:46];
+      activationSettings2 = [v443 activationSettings];
+      v445 = [activationSettings2 objectForActivationSetting:46];
 
-      LODWORD(v444) = [v443 BOOLForActivationSetting:41];
-      if (!((v445 == 0) | (v444 | [v1014 isWebApplication]) & 1) && (objc_msgSend(MEMORY[0x277D75418], "currentDevice"), v446 = objc_claimAutoreleasedReturnValue(), v447 = objc_msgSend(v446, "userInterfaceIdiom"), v446, (v447 & 0xFFFFFFFFFFFFFFFBLL) == 1) && (objc_msgSend(v1014, "info"), v448 = objc_claimAutoreleasedReturnValue(), v449 = objc_msgSend(v448, "supportsMultiwindow"), v448, v449))
+      LODWORD(activationSettings2) = [v443 BOOLForActivationSetting:41];
+      if (!((v445 == 0) | (activationSettings2 | [application2 isWebApplication]) & 1) && (objc_msgSend(MEMORY[0x277D75418], "currentDevice"), v446 = objc_claimAutoreleasedReturnValue(), v447 = objc_msgSend(v446, "userInterfaceIdiom"), v446, (v447 & 0xFFFFFFFFFFFFFFFBLL) == 1) && (objc_msgSend(application2, "info"), v448 = objc_claimAutoreleasedReturnValue(), v449 = objc_msgSend(v448, "supportsMultiwindow"), v448, v449))
       {
-        if (v949)
+        if (isChamoisOrFlexibleWindowing)
         {
           v1146 = 0u;
           v1145 = 0u;
           v1144 = 0u;
           v1143 = 0u;
-          v450 = [rect_16 elements];
-          v451 = 0;
-          v452 = [v450 countByEnumeratingWithState:&v1143 objects:v1239 count:16];
+          elements2 = [rect_16 elements];
+          previousEntities10 = 0;
+          v452 = [elements2 countByEnumeratingWithState:&v1143 objects:v1239 count:16];
           if (v452)
           {
             v453 = 0;
@@ -4668,19 +4668,19 @@ LABEL_770:
               {
                 if (*v1144 != v454)
                 {
-                  objc_enumerationMutation(v450);
+                  objc_enumerationMutation(elements2);
                 }
 
                 v456 = *(*(&v1143 + 1) + 8 * i5);
                 v457 = [rect_16 layoutAttributesForElement:v456];
-                v458 = [v456 workspaceEntity];
-                v459 = [v458 applicationSceneEntity];
+                workspaceEntity = [v456 workspaceEntity];
+                applicationSceneEntity2 = [workspaceEntity applicationSceneEntity];
 
-                v460 = [(SBHomeScreenConfigurationServer *)v457 queue];
-                v461 = v460;
-                if (v459)
+                queue = [(SBHomeScreenConfigurationServer *)v457 queue];
+                v461 = queue;
+                if (applicationSceneEntity2)
                 {
-                  v462 = v460 <= v453;
+                  v462 = queue <= v453;
                 }
 
                 else
@@ -4690,22 +4690,22 @@ LABEL_770:
 
                 if (!v462)
                 {
-                  v463 = v459;
+                  v463 = applicationSceneEntity2;
 
                   v453 = v461;
-                  v451 = v463;
+                  previousEntities10 = v463;
                 }
               }
 
-              v452 = [v450 countByEnumeratingWithState:&v1143 objects:v1239 count:16];
+              v452 = [elements2 countByEnumeratingWithState:&v1143 objects:v1239 count:16];
             }
 
             while (v452);
           }
 
-          v464 = [v451 application];
-          v465 = [v464 bundleIdentifier];
-          v466 = [v465 isEqualToString:v1050];
+          application3 = [previousEntities10 application];
+          bundleIdentifier16 = [application3 bundleIdentifier];
+          v466 = [bundleIdentifier16 isEqualToString:bundleIdentifier15];
 
           v467 = v466 ^ 1;
         }
@@ -4716,8 +4716,8 @@ LABEL_770:
           v1141 = 0u;
           v1140 = 0u;
           v1139 = 0u;
-          v451 = [v992 previousEntities];
-          v786 = [v451 countByEnumeratingWithState:&v1139 objects:v1238 count:16];
+          previousEntities10 = [v992 previousEntities];
+          v786 = [previousEntities10 countByEnumeratingWithState:&v1139 objects:v1238 count:16];
           if (v786)
           {
             v787 = *v1140;
@@ -4727,7 +4727,7 @@ LABEL_770:
               {
                 if (*v1140 != v787)
                 {
-                  objc_enumerationMutation(v451);
+                  objc_enumerationMutation(previousEntities10);
                 }
 
                 v789 = *(*(&v1139 + 1) + 8 * i6);
@@ -4755,9 +4755,9 @@ LABEL_770:
 
                 if (v793)
                 {
-                  v794 = [v793 application];
-                  v795 = [v794 bundleIdentifier];
-                  v796 = [v795 isEqualToString:v1050];
+                  application4 = [v793 application];
+                  bundleIdentifier17 = [application4 bundleIdentifier];
+                  v796 = [bundleIdentifier17 isEqualToString:bundleIdentifier15];
 
                   if (v796)
                   {
@@ -4768,7 +4768,7 @@ LABEL_770:
                 }
               }
 
-              v786 = [v451 countByEnumeratingWithState:&v1139 objects:v1238 count:16];
+              v786 = [previousEntities10 countByEnumeratingWithState:&v1139 objects:v1238 count:16];
               v467 = 1;
               if (v786)
               {
@@ -4787,9 +4787,9 @@ LABEL_770:
 
 LABEL_1210:
 
-        v799 = [rect_16 bundleIDShowingAppExpose];
-        v800 = v799;
-        if (v988 != 2 || v799 == 0)
+        bundleIDShowingAppExpose2 = [rect_16 bundleIDShowingAppExpose];
+        v800 = bundleIDShowingAppExpose2;
+        if (v988 != 2 || bundleIDShowingAppExpose2 == 0)
         {
           v802 = v467;
         }
@@ -4801,33 +4801,33 @@ LABEL_1210:
 
         if (v802 & 1) != 0 || (BSEqualStrings())
         {
-          v945 = 0;
+          bundleIDShowingAppExpose4 = 0;
         }
 
         else
         {
-          v945 = v1050;
+          bundleIDShowingAppExpose4 = bundleIdentifier15;
         }
       }
 
       else
       {
-        v945 = 0;
+        bundleIDShowingAppExpose4 = 0;
       }
     }
   }
 
   v468 = 0;
-  if (v949)
+  if (isChamoisOrFlexibleWindowing)
   {
     v469 = 0;
   }
 
   else
   {
-    v470 = [v922 applicationSceneEntity];
-    v471 = [v1043 _recentAppLayouts];
-    v472 = [v471 _transitionContextRepresentsAmbiguousLaunch:v992 forApplicationSceneEntity:v470];
+    applicationSceneEntity3 = [v922 applicationSceneEntity];
+    _recentAppLayouts4 = [v1043 _recentAppLayouts];
+    v472 = [_recentAppLayouts4 _transitionContextRepresentsAmbiguousLaunch:v992 forApplicationSceneEntity:applicationSceneEntity3];
 
     if (v472)
     {
@@ -4842,7 +4842,7 @@ LABEL_1210:
         v474 = v473;
       }
 
-      v475 = v924;
+      v475 = requestedWindowPickerRole;
       if (v474)
       {
         v476 = 2;
@@ -4861,36 +4861,36 @@ LABEL_1210:
           v475 = v476;
         }
 
-        v924 = v475;
+        requestedWindowPickerRole = v475;
       }
 
       else
       {
-        v477 = [v470 application];
-        v478 = [v477 bundleIdentifier];
+        application5 = [applicationSceneEntity3 application];
+        bundleIdentifier18 = [application5 bundleIdentifier];
 
-        v945 = v478;
+        bundleIDShowingAppExpose4 = bundleIdentifier18;
       }
     }
 
-    v469 = v924;
+    v469 = requestedWindowPickerRole;
   }
 
-  if (v945)
+  if (bundleIDShowingAppExpose4)
   {
-    v479 = [v1043 _applicationController];
-    v480 = [v479 applicationWithBundleIdentifier:v945];
+    _applicationController = [v1043 _applicationController];
+    v480 = [_applicationController applicationWithBundleIdentifier:bundleIDShowingAppExpose4];
 
-    if ((v949 & 1) == 0 && ([v480 supportsMultitaskingShelf] & 1) == 0)
+    if ((isChamoisOrFlexibleWindowing & 1) == 0 && ([v480 supportsMultitaskingShelf] & 1) == 0)
     {
 
-      v945 = 0;
+      bundleIDShowingAppExpose4 = 0;
     }
   }
 
   else
   {
-    v945 = 0;
+    bundleIDShowingAppExpose4 = 0;
   }
 
   if (v469)
@@ -4907,10 +4907,10 @@ LABEL_1210:
     }
 
     v483 = v469;
-    v484 = [v482 applicationSceneEntity];
-    v485 = [v484 application];
+    applicationSceneEntity4 = [v482 applicationSceneEntity];
+    application6 = [applicationSceneEntity4 application];
 
-    if (!v485 || ([v485 supportsMultitaskingShelf] & 1) == 0)
+    if (!application6 || ([application6 supportsMultitaskingShelf] & 1) == 0)
     {
       v483 = 0;
     }
@@ -4919,14 +4919,14 @@ LABEL_1210:
   }
 
   v925 = v468;
-  v486 = v1036;
-  if (v945)
+  v486 = requestedUnlockedEnvironmentMode;
+  if (bundleIDShowingAppExpose4)
   {
 LABEL_837:
     v487 = v486 - 1;
     if ([rect_16 unlockedEnvironmentMode] == 3)
     {
-      if (v1011 & 1 | (v487 < 2))
+      if (isFlexibleWindowingEnabled & 1 | (v487 < 2))
       {
 LABEL_853:
         v493 = 2;
@@ -4936,8 +4936,8 @@ LABEL_853:
 
     else
     {
-      v492 = [v922 isApplicationSceneEntity];
-      if (v487 < 2 || ((v492 ^ 1 | v1011) & 1) != 0)
+      isApplicationSceneEntity = [v922 isApplicationSceneEntity];
+      if (v487 < 2 || ((isApplicationSceneEntity ^ 1 | isFlexibleWindowingEnabled) & 1) != 0)
       {
         goto LABEL_853;
       }
@@ -4948,7 +4948,7 @@ LABEL_854:
     v930 = v493;
     IsYes = 0;
     v494 = v932;
-    if (v1011)
+    if (isFlexibleWindowingEnabled)
     {
       v494 = 1;
     }
@@ -4957,72 +4957,72 @@ LABEL_854:
     goto LABEL_858;
   }
 
-  v488 = [rect_16 bundleIDShowingAppExpose];
-  if (v488 && ((v489 = [rect_16 unlockedEnvironmentMode], v930 == 2) ? (v490 = v489 == 2) : (v490 = 0), !v490 ? (v491 = 0) : (v491 = 1), v488, v491))
+  bundleIDShowingAppExpose3 = [rect_16 bundleIDShowingAppExpose];
+  if (bundleIDShowingAppExpose3 && ((v489 = [rect_16 unlockedEnvironmentMode], v930 == 2) ? (v490 = v489 == 2) : (v490 = 0), !v490 ? (v491 = 0) : (v491 = 1), bundleIDShowingAppExpose3, v491))
   {
-    v945 = [rect_16 bundleIDShowingAppExpose];
-    v486 = v1036;
-    if (v945)
+    bundleIDShowingAppExpose4 = [rect_16 bundleIDShowingAppExpose];
+    v486 = requestedUnlockedEnvironmentMode;
+    if (bundleIDShowingAppExpose4)
     {
       goto LABEL_837;
     }
 
-    v945 = 0;
+    bundleIDShowingAppExpose4 = 0;
     v930 = 2;
   }
 
   else
   {
-    v945 = 0;
+    bundleIDShowingAppExpose4 = 0;
   }
 
 LABEL_858:
   if ([v955 isPreviousWorkspaceEntity])
   {
-    v860 = [MEMORY[0x277CCA890] currentHandler];
-    [v860 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:2060 description:@"Primary workspace entity may not be previous entity at this point!"];
+    currentHandler31 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler31 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:2060 description:@"Primary workspace entity may not be previous entity at this point!"];
   }
 
   if ([v957 isPreviousWorkspaceEntity])
   {
-    v861 = [MEMORY[0x277CCA890] currentHandler];
-    [v861 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:2061 description:@"Side workspace entity may not be previous entity at this point!"];
+    currentHandler32 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler32 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:2061 description:@"Side workspace entity may not be previous entity at this point!"];
   }
 
   if ([v956 isPreviousWorkspaceEntity])
   {
-    v862 = [MEMORY[0x277CCA890] currentHandler];
-    [v862 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:2062 description:@"Floating workspace entity may not be previous entity at this point!"];
+    currentHandler33 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler33 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:2062 description:@"Floating workspace entity may not be previous entity at this point!"];
   }
 
   if ([v958 isPreviousWorkspaceEntity])
   {
-    v863 = [MEMORY[0x277CCA890] currentHandler];
-    [v863 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:2063 description:@"Center workspace entity may not be previous entity at this point!"];
+    currentHandler34 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler34 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:2063 description:@"Center workspace entity may not be previous entity at this point!"];
   }
 
   if ([v955 isEmptyWorkspaceEntity])
   {
-    v864 = [MEMORY[0x277CCA890] currentHandler];
-    [v864 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:2065 description:@"Primary workspace entity may not be empty entity at this point!"];
+    currentHandler35 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler35 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:2065 description:@"Primary workspace entity may not be empty entity at this point!"];
   }
 
   if ([v957 isEmptyWorkspaceEntity])
   {
-    v865 = [MEMORY[0x277CCA890] currentHandler];
-    [v865 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:2066 description:@"Side workspace entity may not be empty entity at this point!"];
+    currentHandler36 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler36 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:2066 description:@"Side workspace entity may not be empty entity at this point!"];
   }
 
   if ([v956 isEmptyWorkspaceEntity])
   {
-    v866 = [MEMORY[0x277CCA890] currentHandler];
-    [v866 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:2067 description:@"Floating workspace entity may not be empty entity at this point!"];
+    currentHandler37 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler37 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:2067 description:@"Floating workspace entity may not be empty entity at this point!"];
   }
 
   if ([v958 isEmptyWorkspaceEntity])
   {
-    v867 = [MEMORY[0x277CCA890] currentHandler];
-    [v867 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:2068 description:@"Center workspace entity may not be empty entity at this point!"];
+    currentHandler38 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler38 handleFailureInMethod:v1017 object:v1043 file:@"SBMainDisplayLayoutStateManager.m" lineNumber:2068 description:@"Center workspace entity may not be empty entity at this point!"];
   }
 
   [v992 setActivatingEntity:0];
@@ -5101,9 +5101,9 @@ LABEL_858:
   v501 = v500;
   v502 = objc_opt_class();
   v503 = SBSafeCast(v502, rect_16);
-  v1008 = [v503 elementIdentifiersToLayoutAttributes];
+  elementIdentifiersToLayoutAttributes2 = [v503 elementIdentifiersToLayoutAttributes];
 
-  v1039 = [v992 requestedEntityIdentifierToLayoutAttributes];
+  requestedEntityIdentifierToLayoutAttributes3 = [v992 requestedEntityIdentifierToLayoutAttributes];
   v1025 = objc_opt_new();
   v1128 = 0u;
   v1127 = 0u;
@@ -5114,14 +5114,14 @@ LABEL_858:
   if (v504)
   {
     v1019 = *v1126;
-    if ((v965 - 1) < 2)
+    if ((interfaceOrientation - 1) < 2)
     {
       v505 = 1;
     }
 
     else
     {
-      v505 = 2 * ((v965 - 3) < 2);
+      v505 = 2 * ((interfaceOrientation - 3) < 2);
     }
 
     v962 = v505;
@@ -5136,63 +5136,63 @@ LABEL_858:
         }
 
         v507 = *(*(&v1125 + 1) + 8 * i7);
-        v508 = [v507 uniqueIdentifier];
-        v509 = [v1039 objectForKey:v508];
+        uniqueIdentifier44 = [v507 uniqueIdentifier];
+        v509 = [requestedEntityIdentifierToLayoutAttributes3 objectForKey:uniqueIdentifier44];
         if (v509)
         {
           goto LABEL_940;
         }
 
-        v510 = [v1008 objectForKey:v508];
+        v510 = [elementIdentifiersToLayoutAttributes2 objectForKey:uniqueIdentifier44];
         v511 = v510;
-        if (!((v510 == 0) | v1011 & (v975 == 64)))
+        if (!((v510 == 0) | isFlexibleWindowingEnabled & (source == 64)))
         {
           v509 = v510;
           v519 = MEMORY[0x277CBEB98];
-          v520 = [v507 uniqueIdentifier];
-          v521 = [v519 setWithObject:v520];
-          v522 = [v1043 _mostRecentAppLayoutMatchingAnyUniqueIdentifier:v521 inMedusaOnStageManagerCapableDevice:v994 multitaskingSupported:v997 != 0];
+          uniqueIdentifier45 = [v507 uniqueIdentifier];
+          v521 = [v519 setWithObject:uniqueIdentifier45];
+          v522 = [v1043 _mostRecentAppLayoutMatchingAnyUniqueIdentifier:v521 inMedusaOnStageManagerCapableDevice:v994 multitaskingSupported:baseStyle != 0];
 
-          v523 = [v522 allItems];
+          allItems7 = [v522 allItems];
           v1124[0] = MEMORY[0x277D85DD0];
           v1124[1] = 3221225472;
           v1124[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_17;
           v1124[3] = &unk_2783A8C90;
           v1124[4] = v507;
-          v524 = [v523 bs_firstObjectPassingTest:v1124];
+          v524 = [allItems7 bs_firstObjectPassingTest:v1124];
 
           if (v524)
           {
-            [v1045 setObject:v507 forKey:v524];
-            [v1044 setObject:v509 forKey:v524];
+            [dictionary setObject:v507 forKey:v524];
+            [dictionary2 setObject:v509 forKey:v524];
           }
 
           goto LABEL_940;
         }
 
         v512 = MEMORY[0x277CBEB98];
-        v513 = [v507 uniqueIdentifier];
-        v514 = [v512 setWithObject:v513];
-        v515 = [v1043 _mostRecentAppLayoutMatchingAnyUniqueIdentifier:v514 inMedusaOnStageManagerCapableDevice:v994 multitaskingSupported:v997 != 0];
+        uniqueIdentifier46 = [v507 uniqueIdentifier];
+        v514 = [v512 setWithObject:uniqueIdentifier46];
+        v515 = [v1043 _mostRecentAppLayoutMatchingAnyUniqueIdentifier:v514 inMedusaOnStageManagerCapableDevice:v994 multitaskingSupported:baseStyle != 0];
 
         if (v515)
         {
-          v516 = [v515 allItems];
+          allItems8 = [v515 allItems];
           v1123[0] = MEMORY[0x277D85DD0];
           v1123[1] = 3221225472;
           v1123[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_18;
           v1123[3] = &unk_2783A8C90;
           v1123[4] = v507;
-          v517 = [v516 bs_firstObjectPassingTest:v1123];
+          v517 = [allItems8 bs_firstObjectPassingTest:v1123];
 
-          if (v975 != 11 && v975 != 50)
+          if (source != 11 && source != 50)
           {
-            v518 = [v1034 layoutAttributesForDisplayItem:v517 inAppLayout:v515 displayOrdinal:objc_msgSend(rect_16 orientation:{"displayOrdinal"), v962}];
+            v518 = [displayItemLayoutAttributesProvider layoutAttributesForDisplayItem:v517 inAppLayout:v515 displayOrdinal:objc_msgSend(rect_16 orientation:{"displayOrdinal"), v962}];
 
             if (v517 && v518)
             {
-              [v1045 setObject:v507 forKey:v517];
-              [v1044 setObject:v518 forKey:v517];
+              [dictionary setObject:v507 forKey:v517];
+              [dictionary2 setObject:v518 forKey:v517];
 LABEL_931:
               v511 = v518;
 
@@ -5213,51 +5213,51 @@ LABEL_931:
             }
 
             v540 = [v515 itemForLayoutRole:v539];
-            v541 = [v515 preferredDisplayOrdinal];
-            v542 = [rect_16 interfaceOrientation];
-            if ((v542 - 1) < 2)
+            preferredDisplayOrdinal = [v515 preferredDisplayOrdinal];
+            interfaceOrientation3 = [rect_16 interfaceOrientation];
+            if ((interfaceOrientation3 - 1) < 2)
             {
               v543 = 1;
             }
 
             else
             {
-              v543 = 2 * ((v542 - 3) < 2);
+              v543 = 2 * ((interfaceOrientation3 - 3) < 2);
             }
 
-            v518 = [v1034 layoutAttributesForDisplayItem:v540 inAppLayout:v515 displayOrdinal:v541 orientation:v543];
+            v518 = [displayItemLayoutAttributesProvider layoutAttributesForDisplayItem:v540 inAppLayout:v515 displayOrdinal:preferredDisplayOrdinal orientation:v543];
           }
 
           goto LABEL_931;
         }
 
-        v525 = [v507 workspaceEntity];
-        v526 = [v525 applicationSceneEntity];
-        v527 = [v526 application];
-        v528 = [v527 bundleIdentifier];
+        workspaceEntity2 = [v507 workspaceEntity];
+        applicationSceneEntity5 = [workspaceEntity2 applicationSceneEntity];
+        application7 = [applicationSceneEntity5 application];
+        bundleIdentifier19 = [application7 bundleIdentifier];
 
-        if (v528)
+        if (bundleIdentifier19)
         {
-          v529 = [v1043 _recentAppLayouts];
+          _recentAppLayouts5 = [v1043 _recentAppLayouts];
           v1121[0] = MEMORY[0x277D85DD0];
           v1121[1] = 3221225472;
           v1121[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_19;
           v1121[3] = &unk_2783A8CB8;
-          v530 = v528;
+          v530 = bundleIdentifier19;
           v1122 = v530;
-          rect_8a = [v529 mostRecentAppLayoutIncludingHiddenAppLayouts:1 passingTest:v1121];
+          rect_8a = [_recentAppLayouts5 mostRecentAppLayoutIncludingHiddenAppLayouts:1 passingTest:v1121];
 
           if (rect_8a)
           {
-            v531 = [0 interfaceOrientation];
-            if ((v531 - 1) < 2)
+            interfaceOrientation4 = [0 interfaceOrientation];
+            if ((interfaceOrientation4 - 1) < 2)
             {
               v532 = 1;
             }
 
             else
             {
-              v532 = 2 * ((v531 - 3) < 2);
+              v532 = 2 * ((interfaceOrientation4 - 3) < 2);
             }
 
             v1119[0] = MEMORY[0x277D85DD0];
@@ -5265,22 +5265,22 @@ LABEL_931:
             v1119[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_20;
             v1119[3] = &unk_2783A8C90;
             v1120 = v530;
-            v533 = [v1034 lastInteractedDisplayItemInAppLayout:rect_8a orientation:v532 passingTest:v1119];
+            v533 = [displayItemLayoutAttributesProvider lastInteractedDisplayItemInAppLayout:rect_8a orientation:v532 passingTest:v1119];
             if (v533)
             {
-              v534 = [rect_8a preferredDisplayOrdinal];
-              v535 = [0 interfaceOrientation];
-              if ((v535 - 1) < 2)
+              preferredDisplayOrdinal2 = [rect_8a preferredDisplayOrdinal];
+              interfaceOrientation5 = [0 interfaceOrientation];
+              if ((interfaceOrientation5 - 1) < 2)
               {
                 v536 = 1;
               }
 
               else
               {
-                v536 = 2 * ((v535 - 3) < 2);
+                v536 = 2 * ((interfaceOrientation5 - 3) < 2);
               }
 
-              v537 = [v1034 layoutAttributesForDisplayItem:v533 inAppLayout:rect_8a displayOrdinal:v534 orientation:v536];
+              v537 = [displayItemLayoutAttributesProvider layoutAttributesForDisplayItem:v533 inAppLayout:rect_8a displayOrdinal:preferredDisplayOrdinal2 orientation:v536];
               [(SBDisplayItemLayoutAttributes *)v537 attributedSize];
               v538 = [SBDisplayItemLayoutAttributes attributesByModifyingAttributedSize:?];
               [(SBHomeScreenConfigurationServer *)v537 connections];
@@ -5323,10 +5323,10 @@ LABEL_939:
         }
 
 LABEL_940:
-        if ((v1011 & 1) != 0 && ([v1002 isAutomaticStageCreationEnabled] & 1) == 0)
+        if ((isFlexibleWindowingEnabled & 1) != 0 && ([windowManagementContext isAutomaticStageCreationEnabled] & 1) == 0)
         {
-          v561 = [(SBCameraHardwareButton *)v509 allCameraShutterButtonPIDs];
-          if (SBDisplayItemLayoutAttributesVersionIsCurrent(v561))
+          allCameraShutterButtonPIDs = [(SBCameraHardwareButton *)v509 allCameraShutterButtonPIDs];
+          if (SBDisplayItemLayoutAttributesVersionIsCurrent(allCameraShutterButtonPIDs))
           {
             v547 = v509;
             goto LABEL_944;
@@ -5334,15 +5334,15 @@ LABEL_940:
 
           v562 = objc_alloc_init(SBDisplayItemLayoutAttributes);
 
-          v563 = [v1039 objectForKey:v508];
+          v563 = [requestedEntityIdentifierToLayoutAttributes3 objectForKey:uniqueIdentifier44];
           v509 = v563;
           if (v563)
           {
             [(SBHomeScreenConfigurationServer *)v563 queue];
             v547 = [SBDisplayItemLayoutAttributes attributesByModifyingLastInteractionTime:v562];
 
-            v564 = [v507 workspaceEntity];
-            [v992 setRequestedLayoutAttributes:v547 forEntity:v564];
+            workspaceEntity3 = [v507 workspaceEntity];
+            [v992 setRequestedLayoutAttributes:v547 forEntity:workspaceEntity3];
           }
 
           else
@@ -5359,19 +5359,19 @@ LABEL_940:
 LABEL_944:
         if (SBDisplayItemSizeIsUnspecified(v547) && ((SBFIsChamoisWindowingUIAvailable() & 1) != 0 || SBFIsFlexibleWindowingUIAvailable()))
         {
-          v548 = [v507 workspaceEntity];
-          v549 = [v548 deviceApplicationSceneEntity];
-          v550 = [v549 sceneHandle];
+          workspaceEntity4 = [v507 workspaceEntity];
+          deviceApplicationSceneEntity2 = [workspaceEntity4 deviceApplicationSceneEntity];
+          sceneHandle = [deviceApplicationSceneEntity2 sceneHandle];
 
-          if (v550 && ([v550 supportsCenterWindow] & 1) == 0)
+          if (sceneHandle && ([sceneHandle supportsCenterWindow] & 1) == 0)
           {
-            v551 = [v550 application];
-            v552 = v551;
-            if (v551)
+            application8 = [sceneHandle application];
+            v552 = application8;
+            if (application8)
             {
-              v553 = [v551 bundleIdentifier];
+              bundleIdentifier20 = [application8 bundleIdentifier];
               v554 = [MEMORY[0x277CBEB98] set];
-              v555 = [v1043 _mostRecentAppLayoutForBundleIdentifier:v553 ignoringUniqueIdentifiers:v554 inMedusaOnStageManagerCapableDevice:v994 multitaskingSupported:v997 != 0];
+              v555 = [v1043 _mostRecentAppLayoutForBundleIdentifier:bundleIdentifier20 ignoringUniqueIdentifiers:v554 inMedusaOnStageManagerCapableDevice:v994 multitaskingSupported:baseStyle != 0];
 
               if (!v555)
               {
@@ -5397,15 +5397,15 @@ LABEL_944:
                 [(SBDisplayItemLayoutAttributes *)v557 slideOverConfiguration];
                 SBInactiveDisplayItemSlideOverConfigurationFromSlideOverConfiguration(&v1229, &v1114);
                 [(SBDisplayItemLayoutAttributes *)v557 normalizedCenter];
-                v558 = [(SBDisplayItemLayoutAttributes *)v557 isPositionSystemManaged];
-                v559 = [(SBDisplayItemLayoutAttributes *)v557 isCascaded];
+                isPositionSystemManaged = [(SBDisplayItemLayoutAttributes *)v557 isPositionSystemManaged];
+                isCascaded = [(SBDisplayItemLayoutAttributes *)v557 isCascaded];
                 if (SBDisplayItemSizingPolicyIsValid(rect_8d) && (v1229 = v1252, *&v1230 = v1253, SBDisplayItemAttributedSizeIsValid(&v1229)))
                 {
-                  v948 = [(SBHomeScreenConfigurationServer *)v557 authenticator];
-                  if (v948)
+                  authenticator = [(SBHomeScreenConfigurationServer *)v557 authenticator];
+                  if (authenticator)
                   {
                     v939 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-                    [v939 _setInterfaceOrientationFromUserResizingIfSupported:v948 forSceneHandle:v550];
+                    [v939 _setInterfaceOrientationFromUserResizingIfSupported:authenticator forSceneHandle:sceneHandle];
                   }
 
                   v940 = [SBDisplayItemLayoutAttributes alloc];
@@ -5418,7 +5418,7 @@ LABEL_944:
                   v1107 = v1114;
                   v1108 = v1115;
                   v1109 = v1116;
-                  LOBYTE(v898) = v558;
+                  LOBYTE(v898) = isPositionSystemManaged;
                   v896 = 0;
                   v897 = &v1229;
                   v560 = [SBDisplayItemLayoutAttributes initWithContentOrientation:v940 lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:?];
@@ -5429,33 +5429,33 @@ LABEL_965:
 
                 else
                 {
-                  v565 = [(SBDisplayItemLayoutAttributes *)v547 attributesByModifyingCascaded:v559];
+                  v565 = [(SBDisplayItemLayoutAttributes *)v547 attributesByModifyingCascaded:isCascaded];
                 }
               }
             }
           }
         }
 
-        if ((v1011 & (v930 == 3)) != 0 && [v1031 count] == 1)
+        if ((isFlexibleWindowingEnabled & (v930 == 3)) != 0 && [v1031 count] == 1)
         {
-          v566 = [v1008 objectForKey:v508];
-          if (!v566)
+          _windowingConfiguration = [elementIdentifiersToLayoutAttributes2 objectForKey:uniqueIdentifier44];
+          if (!_windowingConfiguration)
           {
-            v571 = [(SBDisplayItemLayoutAttributes *)v547 normalizedCenter];
-            if (SBDisplayItemCenterIsUnspecified(v571, v572))
+            normalizedCenter = [(SBDisplayItemLayoutAttributes *)v547 normalizedCenter];
+            if (SBDisplayItemCenterIsUnspecified(normalizedCenter, v572))
             {
               goto LABEL_974;
             }
 
-            v566 = [rect_24 _windowingConfiguration];
+            _windowingConfiguration = [rect_24 _windowingConfiguration];
             [rect_24 containerBoundsForInterfaceOrientation:{objc_msgSend(rect_16, "interfaceOrientation")}];
             v574 = v573;
             v576 = v575;
             v578 = v577;
             v580 = v579;
             [(SBDisplayItemLayoutAttributes *)v547 centerInBounds:v573, v575, v577];
-            [v566 defaultWindowSize];
-            [v566 screenEdgePadding];
+            [_windowingConfiguration defaultWindowSize];
+            [_windowingConfiguration screenEdgePadding];
             [SBDisplayItemLayoutAttributes sizeInBounds:v547 defaultSize:? screenEdgePadding:?];
             SBRectWithSize();
             UIRectCenteredAboutPoint();
@@ -5474,10 +5474,10 @@ LABEL_965:
             if (!CGRectContainsRect(v1256, v1267))
             {
               UIRectGetCenter();
-              v591 = [(SBDisplayItemLayoutAttributes *)v589 normalizedPointForPoint:v590 inBounds:v574, v576, v578, v580];
-              v593 = [(SBDisplayItemLayoutAttributes *)v547 attributesByModifyingNormalizedCenter:v591, v592];
+              v580 = [(SBDisplayItemLayoutAttributes *)v589 normalizedPointForPoint:v590 inBounds:v574, v576, v578, v580];
+              v592 = [(SBDisplayItemLayoutAttributes *)v547 attributesByModifyingNormalizedCenter:v580, v592];
 
-              v547 = v593;
+              v547 = v592;
             }
           }
         }
@@ -5516,7 +5516,7 @@ LABEL_974:
         v570 = v567;
 
 LABEL_982:
-        [v1025 setObject:v570 forKey:{v508, v896, v897, v898}];
+        [v1025 setObject:v570 forKey:{uniqueIdentifier44, v896, v897, v898}];
       }
 
       v504 = [v1031 countByEnumeratingWithState:&v1125 objects:v1237 count:16];
@@ -5525,20 +5525,20 @@ LABEL_982:
     while (v504);
   }
 
-  if ((v1011 & 1) == 0)
+  if ((isFlexibleWindowingEnabled & 1) == 0)
   {
     v614 = 0;
     goto LABEL_1107;
   }
 
-  v594 = [v1031 allObjects];
+  allObjects = [v1031 allObjects];
   v1105[0] = MEMORY[0x277D85DD0];
   v1105[1] = 3221225472;
   v1105[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_21;
   v1105[3] = &unk_2783B9CF8;
   v998 = v1025;
   v1106 = v998;
-  v1052 = [v594 sortedArrayUsingComparator:v1105];
+  v1052 = [allObjects sortedArrayUsingComparator:v1105];
 
   v595 = [v969 count];
   if (!v969 || [v1031 count] <= v595)
@@ -5546,17 +5546,17 @@ LABEL_982:
     goto LABEL_1010;
   }
 
-  v596 = [v1052 firstObject];
-  v597 = [v596 uniqueIdentifier];
-  v598 = [v998 objectForKey:v597];
-  v599 = [(SBHomeScreenConfigurationServer *)v598 queue];
+  firstObject2 = [v1052 firstObject];
+  uniqueIdentifier47 = [firstObject2 uniqueIdentifier];
+  v598 = [v998 objectForKey:uniqueIdentifier47];
+  queue2 = [(SBHomeScreenConfigurationServer *)v598 queue];
 
   v1104 = 0u;
   v1103 = 0u;
   v1102 = 0u;
   v1101 = 0u;
-  v600 = [v1052 reverseObjectEnumerator];
-  v601 = [v600 countByEnumeratingWithState:&v1101 objects:v1236 count:16];
+  reverseObjectEnumerator = [v1052 reverseObjectEnumerator];
+  v601 = [reverseObjectEnumerator countByEnumeratingWithState:&v1101 objects:v1236 count:16];
   if (!v601)
   {
 LABEL_1009:
@@ -5573,21 +5573,21 @@ LABEL_1009:
     {
       if (*v1102 != v604)
       {
-        objc_enumerationMutation(v600);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v606 = *(*(&v1101 + 1) + 8 * i8);
-      v607 = [v606 workspaceEntity];
-      v608 = [v607 deviceApplicationSceneEntity];
+      workspaceEntity5 = [v606 workspaceEntity];
+      deviceApplicationSceneEntity3 = [workspaceEntity5 deviceApplicationSceneEntity];
 
-      if (v608 && ([v969 containsObject:v608] & 1) == 0)
+      if (deviceApplicationSceneEntity3 && ([v969 containsObject:deviceApplicationSceneEntity3] & 1) == 0)
       {
-        v609 = [v606 uniqueIdentifier];
-        v610 = [v998 objectForKey:v609];
-        ++v599;
+        uniqueIdentifier48 = [v606 uniqueIdentifier];
+        v610 = [v998 objectForKey:uniqueIdentifier48];
+        ++queue2;
         v611 = [SBDisplayItemLayoutAttributes attributesByModifyingLastInteractionTime:v610];
 
-        [v998 setObject:v611 forKey:v609];
+        [v998 setObject:v611 forKey:uniqueIdentifier48];
         ++v603;
 LABEL_1002:
         v602 = 1;
@@ -5610,7 +5610,7 @@ LABEL_1002:
 LABEL_1003:
     }
 
-    v601 = [v600 countByEnumeratingWithState:&v1101 objects:v1236 count:16];
+    v601 = [reverseObjectEnumerator countByEnumeratingWithState:&v1101 objects:v1236 count:16];
     if (v601)
     {
       continue;
@@ -5621,23 +5621,23 @@ LABEL_1003:
 
   if (v602)
   {
-    v612 = [v1031 allObjects];
+    allObjects2 = [v1031 allObjects];
     v1099[0] = MEMORY[0x277D85DD0];
     v1099[1] = 3221225472;
     v1099[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_22;
     v1099[3] = &unk_2783B9CF8;
     v1100 = v998;
-    v613 = [v612 sortedArrayUsingComparator:v1099];
+    v613 = [allObjects2 sortedArrayUsingComparator:v1099];
 
-    v600 = v1100;
+    reverseObjectEnumerator = v1100;
     v1052 = v613;
     goto LABEL_1009;
   }
 
 LABEL_1010:
-  v1026 = [rect_24 maximumNumberOfScenesOnStage];
+  maximumNumberOfScenesOnStage = [rect_24 maximumNumberOfScenesOnStage];
   v1015 = objc_opt_new();
-  v989 = [v992 settlesMultiAppFullScreenSpacesImmediately];
+  settlesMultiAppFullScreenSpacesImmediately = [v992 settlesMultiAppFullScreenSpacesImmediately];
   v1020 = [v1052 count];
   if (v1020 < 1)
   {
@@ -5657,22 +5657,22 @@ LABEL_1010:
       goto LABEL_1029;
     }
 
-    if (v946)
+    if (isAutomaticStageCreationEnabled)
     {
       goto LABEL_1026;
     }
 
-    v619 = [v618 uniqueIdentifier];
-    v620 = [v998 objectForKey:v619];
+    uniqueIdentifier49 = [v618 uniqueIdentifier];
+    v620 = [v998 objectForKey:uniqueIdentifier49];
 
-    v621 = [v618 workspaceEntity];
-    v622 = [v621 deviceApplicationSceneEntity];
+    workspaceEntity6 = [v618 workspaceEntity];
+    deviceApplicationSceneEntity4 = [workspaceEntity6 deviceApplicationSceneEntity];
 
-    if (!v622)
+    if (!deviceApplicationSceneEntity4)
     {
 
 LABEL_1026:
-      if (v616 < v1026)
+      if (v616 < maximumNumberOfScenesOnStage)
       {
         [v1015 addObject:v618];
       }
@@ -5710,7 +5710,7 @@ LABEL_1025:
   }
 
   [v1015 addObject:v618];
-  if (v989)
+  if (settlesMultiAppFullScreenSpacesImmediately)
   {
     goto LABEL_1184;
   }
@@ -5723,10 +5723,10 @@ LABEL_1021:
   }
 
   recta = [v1052 objectAtIndex:v615 + 1];
-  v626 = [recta workspaceEntity];
-  v973 = [v626 deviceApplicationSceneEntity];
+  workspaceEntity7 = [recta workspaceEntity];
+  deviceApplicationSceneEntity5 = [workspaceEntity7 deviceApplicationSceneEntity];
 
-  if (!v973 || ([recta uniqueIdentifier], v627 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v998, "objectForKey:", v627), v628 = objc_claimAutoreleasedReturnValue(), v627, +[SBDisplayItem displayItemForLayoutElement:](SBDisplayItem, "displayItemForLayoutElement:", recta), v629 = objc_claimAutoreleasedReturnValue(), v630 = objc_msgSend(rect_24, "_isDisplayItemFullScreen:preferredAttributes:", v629, v628), v629, v628, (v630 & 1) == 0))
+  if (!deviceApplicationSceneEntity5 || ([recta uniqueIdentifier], v627 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v998, "objectForKey:", v627), v628 = objc_claimAutoreleasedReturnValue(), v627, +[SBDisplayItem displayItemForLayoutElement:](SBDisplayItem, "displayItemForLayoutElement:", recta), v629 = objc_claimAutoreleasedReturnValue(), v630 = objc_msgSend(rect_24, "_isDisplayItemFullScreen:preferredAttributes:", v629, v628), v629, v628, (v630 & 1) == 0))
   {
 
     goto LABEL_1021;
@@ -5757,12 +5757,12 @@ LABEL_1030:
       }
     }
 
-    v634 = [v992 entities];
+    entities9 = [v992 entities];
     v1096[0] = MEMORY[0x277D85DD0];
     v1096[1] = 3221225472;
     v1096[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_24;
     v1096[3] = &unk_2783B9EE0;
-    v635 = v634;
+    v635 = entities9;
     v1097 = v635;
     v636 = MEMORY[0x223D6F7F0](v1096);
     v1094[0] = MEMORY[0x277D85DD0];
@@ -5772,7 +5772,7 @@ LABEL_1030:
     v637 = v636;
     v1095 = v637;
     v638 = [v1015 bs_map:v1094];
-    v639 = [v638 allObjects];
+    allObjects3 = [v638 allObjects];
     v1092[0] = MEMORY[0x277D85DD0];
     v1092[1] = 3221225472;
     v1092[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_27;
@@ -5780,7 +5780,7 @@ LABEL_1030:
     v640 = v637;
     v1093 = v640;
     v641 = [v1015 bs_compactMap:v1092];
-    v642 = [v641 anyObject];
+    anyObject = [v641 anyObject];
     v1090[0] = MEMORY[0x277D85DD0];
     v1090[1] = 3221225472;
     v1090[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_28;
@@ -5788,15 +5788,15 @@ LABEL_1030:
     v643 = v640;
     v1091 = v643;
     v644 = [v1015 bs_compactMap:v1090];
-    v645 = [v644 anyObject];
-    [v992 setEntities:v639 withPolicy:0 centerEntity:v642 floatingEntity:v645];
+    anyObject2 = [v644 anyObject];
+    [v992 setEntities:allObjects3 withPolicy:0 centerEntity:anyObject floatingEntity:anyObject2];
 
     v1089 = 0u;
     v1088 = 0u;
     v1087 = 0u;
     v1086 = 0u;
-    v646 = [v992 entities];
-    v647 = [v646 copy];
+    entities10 = [v992 entities];
+    v647 = [entities10 copy];
 
     v648 = [v647 countByEnumeratingWithState:&v1086 objects:v1235 count:16];
     if (v648)
@@ -5824,13 +5824,13 @@ LABEL_1030:
       while (v648);
     }
 
-    v652 = [v992 entities];
+    entities11 = [v992 entities];
     v1084[0] = MEMORY[0x277D85DD0];
     v1084[1] = 3221225472;
     v1084[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_29;
     v1084[3] = &unk_2783B9F30;
     v1085 = &__block_literal_global_216;
-    v653 = [v652 bs_map:v1084];
+    v653 = [entities11 bs_map:v1084];
 
     v1082[0] = MEMORY[0x277D85DD0];
     v1082[1] = 3221225472;
@@ -5842,28 +5842,28 @@ LABEL_1030:
     v1025 = [v654 mutableCopy];
 
     v655 = [v1043 _zOrderComparatorFor:v1025];
-    v656 = [v1031 bs_array];
-    v999 = [v656 sortedArrayUsingComparator:v655];
+    bs_array2 = [v1031 bs_array];
+    v999 = [bs_array2 sortedArrayUsingComparator:v655];
 
     v1020 = [v999 count];
   }
 
   if (v930 == 3)
   {
-    v657 = [v1008 count];
+    v657 = [elementIdentifiersToLayoutAttributes2 count];
     if (v657 < [v1025 count])
     {
-      v658 = [v1008 allKeys];
-      v659 = [v658 bs_set];
+      allKeys = [elementIdentifiersToLayoutAttributes2 allKeys];
+      bs_set2 = [allKeys bs_set];
 
-      v660 = [v1025 allKeys];
+      allKeys2 = [v1025 allKeys];
       v1080[0] = MEMORY[0x277D85DD0];
       v1080[1] = 3221225472;
       v1080[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_32;
       v1080[3] = &unk_2783A8B78;
-      v661 = v659;
+      v661 = bs_set2;
       v1081 = v661;
-      v662 = [v660 bs_containsObjectPassingTest:v1080];
+      v662 = [allKeys2 bs_containsObjectPassingTest:v1080];
 
       if (v662)
       {
@@ -5871,35 +5871,35 @@ LABEL_1030:
         v1078[1] = 3221225472;
         v1078[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_33;
         v1078[3] = &unk_2783B9F80;
-        v1079 = v1008;
+        v1079 = elementIdentifiersToLayoutAttributes2;
         v663 = [v999 bs_compactMap:v1078];
-        v664 = [v663 bs_set];
+        bs_set3 = [v663 bs_set];
 
-        v950 = v664;
+        v950 = bs_set3;
       }
     }
   }
 
-  v665 = [v999 firstObject];
-  v666 = v665;
-  if (!v665)
+  firstObject3 = [v999 firstObject];
+  v666 = firstObject3;
+  if (!firstObject3)
   {
     v614 = 0;
     goto LABEL_1106;
   }
 
-  v667 = [v665 uniqueIdentifier];
-  v996 = [v1025 objectForKey:v667];
-  v1053 = v667;
+  uniqueIdentifier50 = [firstObject3 uniqueIdentifier];
+  v996 = [v1025 objectForKey:uniqueIdentifier50];
+  v1053 = uniqueIdentifier50;
   if (![(SBDisplayItemLayoutAttributes *)v996 isPositionSystemManaged])
   {
     v614 = 0;
     goto LABEL_1105;
   }
 
-  v668 = [(SBDisplayItemLayoutAttributes *)v996 isCascaded];
-  v993 = [rect_16 elements];
-  if ([v993 count])
+  isCascaded2 = [(SBDisplayItemLayoutAttributes *)v996 isCascaded];
+  elements3 = [rect_16 elements];
+  if ([elements3 count])
   {
     v669 = 0;
   }
@@ -5910,7 +5910,7 @@ LABEL_1030:
   }
 
   v991 = [v1031 bs_compactMap:&__block_literal_global_125_0];
-  v990 = [v993 bs_compactMap:&__block_literal_global_127];
+  v990 = [elements3 bs_compactMap:&__block_literal_global_127];
   if ([v991 isSubsetOfSet:?])
   {
     v671 = 0;
@@ -5921,13 +5921,13 @@ LABEL_1030:
   {
     v673 = [v1031 bs_map:&__block_literal_global_129];
     rectb = v669;
-    rect_8b = v668;
+    rect_8b = isCascaded2;
     v1077 = 0u;
     v1076 = 0u;
     v1074 = 0u;
     v1075 = 0u;
-    v674 = [v1043 _recentAppLayouts];
-    v675 = [v674 recentsIncludingHiddenAppLayouts:0];
+    _recentAppLayouts6 = [v1043 _recentAppLayouts];
+    v675 = [_recentAppLayouts6 recentsIncludingHiddenAppLayouts:0];
 
     v676 = 0;
     v677 = [v675 countByEnumeratingWithState:&v1074 objects:v1234 count:16];
@@ -5951,9 +5951,9 @@ LABEL_1030:
 
           else if ([*(*(&v1074 + 1) + 8 * i10) containsItemWithUniqueIdentifier:v1053])
           {
-            v681 = [v680 preferredDisplayIdentity];
-            v682 = [rect_24 displayIdentity];
-            v683 = [v681 isEqual:v682];
+            preferredDisplayIdentity = [v680 preferredDisplayIdentity];
+            displayIdentity5 = [rect_24 displayIdentity];
+            v683 = [preferredDisplayIdentity isEqual:displayIdentity5];
 
             v676 = v683 ^ 1;
           }
@@ -5963,9 +5963,9 @@ LABEL_1030:
             v676 = 0;
           }
 
-          v684 = [v680 allItems];
-          v685 = [v684 bs_set];
-          v686 = [v673 isEqual:v685];
+          allItems9 = [v680 allItems];
+          bs_set4 = [allItems9 bs_set];
+          v686 = [v673 isEqual:bs_set4];
 
           if (v686)
           {
@@ -5988,11 +5988,11 @@ LABEL_1030:
 LABEL_1083:
 
     v672 = v676 ^ 1;
-    v668 = rect_8b;
+    isCascaded2 = rect_8b;
     v669 = rectb;
   }
 
-  if ((v668 & (v671 | v669)) == 1)
+  if ((isCascaded2 & (v671 | v669)) == 1)
   {
     v687 = [(SBDisplayItemLayoutAttributes *)v996 attributesByModifyingCascaded:?];
 
@@ -6027,10 +6027,10 @@ LABEL_1101:
   while (2)
   {
     v690 = [v999 objectAtIndex:v689];
-    v691 = [v690 workspaceEntity];
-    v692 = [v691 isDeviceApplicationSceneEntity];
+    workspaceEntity8 = [v690 workspaceEntity];
+    isDeviceApplicationSceneEntity2 = [workspaceEntity8 isDeviceApplicationSceneEntity];
 
-    if (!v692)
+    if (!isDeviceApplicationSceneEntity2)
     {
 LABEL_1100:
 
@@ -6046,8 +6046,8 @@ LABEL_1100:
   }
 
   v693 = [SBDisplayItem displayItemForLayoutElement:v690];
-  v694 = [v690 uniqueIdentifier];
-  v695 = [v1025 objectForKey:v694];
+  uniqueIdentifier51 = [v690 uniqueIdentifier];
+  v695 = [v1025 objectForKey:uniqueIdentifier51];
 
   if (([rect_24 _isDisplayItemFullScreen:v693 preferredAttributes:v695] & 1) == 0)
   {
@@ -6069,33 +6069,33 @@ LABEL_1222:
   if (v697 && v696)
   {
     rect_8c = objc_alloc_init(SBDisplayItemLayoutAttributesCalculator);
-    v1023 = [rect_24 windowScene];
+    windowScene2 = [rect_24 windowScene];
     v803 = [SBMainDisplayLayoutState alloc];
-    v804 = [rect_16 displayOrdinal];
+    displayOrdinal3 = [rect_16 displayOrdinal];
     LOBYTE(v900) = [rect_16 isDisplayExternal];
     LOBYTE(v897) = v903;
-    v614 = [(SBMainDisplayLayoutState *)v803 _initWithLayoutElements:v1031 spaceConfiguration:v904 elementIdentifiersToLayoutAttributes:v1025 floatingConfiguration:v926 unlockedEnvironmentMode:v930 floatingSwitcherVisible:IsYes centerConfiguration:v912 centerEntityModal:v897 peekConfiguration:v932 bundleIDShowingAppExpose:v945 windowPickerRole:v925 displayOrdinal:v804 isDisplayExternal:v900];
-    v805 = [v614 interfaceOrientation];
-    v806 = [v614 appLayout];
-    v807 = [v614 layoutAttributesMap];
-    v808 = [rect_16 appLayout];
-    v809 = -[SBDisplayItemLayoutAttributesCalculator appLayoutByPerformingAutoLayoutForAppLayout:previousAppLayout:usingLayoutAttributes:options:containerOrientation:windowScene:source:itemsNeedingPositionSnapping:itemsNeedingSizeSnapping:](rect_8c, "appLayoutByPerformingAutoLayoutForAppLayout:previousAppLayout:usingLayoutAttributes:options:containerOrientation:windowScene:source:itemsNeedingPositionSnapping:itemsNeedingSizeSnapping:", v806, v808, v807, [v1043 _autoLayoutOptionsForNewAppLayout:v806 previousAppLayout:v808 request:v964], v805, v1023, objc_msgSend(v964, "source"), v950, 0);
-    v963 = v808;
+    v614 = [(SBMainDisplayLayoutState *)v803 _initWithLayoutElements:v1031 spaceConfiguration:v904 elementIdentifiersToLayoutAttributes:v1025 floatingConfiguration:requestedFloatingConfiguration unlockedEnvironmentMode:v930 floatingSwitcherVisible:IsYes centerConfiguration:v912 centerEntityModal:v897 peekConfiguration:v932 bundleIDShowingAppExpose:bundleIDShowingAppExpose4 windowPickerRole:v925 displayOrdinal:displayOrdinal3 isDisplayExternal:v900];
+    interfaceOrientation6 = [v614 interfaceOrientation];
+    appLayout14 = [v614 appLayout];
+    layoutAttributesMap2 = [v614 layoutAttributesMap];
+    appLayout15 = [rect_16 appLayout];
+    v809 = -[SBDisplayItemLayoutAttributesCalculator appLayoutByPerformingAutoLayoutForAppLayout:previousAppLayout:usingLayoutAttributes:options:containerOrientation:windowScene:source:itemsNeedingPositionSnapping:itemsNeedingSizeSnapping:](rect_8c, "appLayoutByPerformingAutoLayoutForAppLayout:previousAppLayout:usingLayoutAttributes:options:containerOrientation:windowScene:source:itemsNeedingPositionSnapping:itemsNeedingSizeSnapping:", appLayout14, appLayout15, layoutAttributesMap2, [v1043 _autoLayoutOptionsForNewAppLayout:appLayout14 previousAppLayout:appLayout15 request:request], interfaceOrientation6, windowScene2, objc_msgSend(request, "source"), v950, 0);
+    v963 = appLayout15;
 
-    -[SBDisplayItemLayoutAttributesCalculator frameForLayoutRole:inAppLayout:containerOrientation:windowScene:](rect_8c, "frameForLayoutRole:inAppLayout:containerOrientation:windowScene:", [v809 layoutRoleForItem:v688], v809, v805, v1023);
+    -[SBDisplayItemLayoutAttributesCalculator frameForLayoutRole:inAppLayout:containerOrientation:windowScene:](rect_8c, "frameForLayoutRole:inAppLayout:containerOrientation:windowScene:", [v809 layoutRoleForItem:v688], v809, interfaceOrientation6, windowScene2);
     v811 = v810;
     v813 = v812;
-    -[SBDisplayItemLayoutAttributesCalculator frameForLayoutRole:inAppLayout:containerOrientation:windowScene:](rect_8c, "frameForLayoutRole:inAppLayout:containerOrientation:windowScene:", [v809 layoutRoleForItem:v696], v809, v805, v1023);
+    -[SBDisplayItemLayoutAttributesCalculator frameForLayoutRole:inAppLayout:containerOrientation:windowScene:](rect_8c, "frameForLayoutRole:inAppLayout:containerOrientation:windowScene:", [v809 layoutRoleForItem:v696], v809, interfaceOrientation6, windowScene2);
     v815 = v814;
     v817 = v816;
-    [rect_24 containerBoundsForInterfaceOrientation:v805];
+    [rect_24 containerBoundsForInterfaceOrientation:interfaceOrientation6];
     v974 = v818;
     v966 = v819;
     v967 = v820;
     v968 = v821;
-    v822 = [rect_24 _windowingConfiguration];
-    v823 = [rect_24 _prefersDockHidden];
-    [v822 floatingDockHeightWithTopAndBottomPadding];
+    _windowingConfiguration2 = [rect_24 _windowingConfiguration];
+    _prefersDockHidden = [rect_24 _prefersDockHidden];
+    [_windowingConfiguration2 floatingDockHeightWithTopAndBottomPadding];
     v825 = v824;
     rectc = v815;
     v826 = [rect_24 _autoLayoutSpaceForAppLayout:v809];
@@ -6103,7 +6103,7 @@ LABEL_1222:
     v828 = v827;
     v830 = v829;
 
-    [v822 statusBarHeight];
+    [_windowingConfiguration2 statusBarHeight];
     v832 = v831;
     v833 = v828 + v830;
     if (v828 + v830 > v967 - v825)
@@ -6113,7 +6113,7 @@ LABEL_1222:
 
     else
     {
-      v834 = v823;
+      v834 = _prefersDockHidden;
     }
 
     if (v834)
@@ -6128,7 +6128,7 @@ LABEL_1222:
 
     v836 = v974;
     v837 = v968;
-    if ([v1002 isAutomaticStageCreationEnabled])
+    if ([windowManagementContext isAutomaticStageCreationEnabled])
     {
       v836 = v974;
       v837 = v968;
@@ -6138,7 +6138,7 @@ LABEL_1222:
         v837 = v968;
         if ([rect_24 _areContinuousExposeStripsUnoccluded])
         {
-          [v822 stripWidth];
+          [_windowingConfiguration2 stripWidth];
           v836 = v974 + v838;
           v837 = v968 - v838;
         }
@@ -6236,17 +6236,17 @@ LABEL_1222:
     v1270.size.width = width;
     v1270.size.height = height;
     v853 = CGRectContainsRect(v1266, v1270);
-    v854 = 0.5;
+    v967 = 0.5;
     v855 = 0.5;
     if (v853)
     {
       UIRectGetCenter();
-      v854 = [(SBDisplayItemLayoutAttributes *)v856 normalizedPointForPoint:v857 inBounds:v974, v966, v968, v967];
+      v967 = [(SBDisplayItemLayoutAttributes *)v856 normalizedPointForPoint:v857 inBounds:v974, v966, v968, v967];
     }
 
-    v858 = [(SBDisplayItemLayoutAttributes *)v996 attributesByModifyingNormalizedCenter:v854, v855];
+    v855 = [(SBDisplayItemLayoutAttributes *)v996 attributesByModifyingNormalizedCenter:v967, v855];
 
-    v996 = [(SBDisplayItemLayoutAttributes *)v858 attributesByModifyingCascaded:?];
+    v996 = [(SBDisplayItemLayoutAttributes *)v855 attributesByModifyingCascaded:?];
 
     [v1025 setObject:v996 forKey:v1053];
   }
@@ -6261,10 +6261,10 @@ LABEL_1106:
 
 LABEL_1107:
   v698 = [SBMainDisplayLayoutState alloc];
-  v699 = [rect_16 displayOrdinal];
+  displayOrdinal4 = [rect_16 displayOrdinal];
   LOBYTE(v900) = [rect_16 isDisplayExternal];
   LOBYTE(v897) = v903;
-  v1047 = [(SBMainDisplayLayoutState *)v698 _initWithLayoutElements:v1031 spaceConfiguration:v904 elementIdentifiersToLayoutAttributes:v1025 floatingConfiguration:v926 unlockedEnvironmentMode:v930 floatingSwitcherVisible:IsYes centerConfiguration:v912 centerEntityModal:v897 peekConfiguration:v932 bundleIDShowingAppExpose:v945 windowPickerRole:v925 displayOrdinal:v699 isDisplayExternal:v900];
+  v1047 = [(SBMainDisplayLayoutState *)v698 _initWithLayoutElements:v1031 spaceConfiguration:v904 elementIdentifiersToLayoutAttributes:v1025 floatingConfiguration:requestedFloatingConfiguration unlockedEnvironmentMode:v930 floatingSwitcherVisible:IsYes centerConfiguration:v912 centerEntityModal:v897 peekConfiguration:v932 bundleIDShowingAppExpose:bundleIDShowingAppExpose4 windowPickerRole:v925 displayOrdinal:displayOrdinal4 isDisplayExternal:v900];
 
   _Block_object_dispose(&v1217, 8);
 LABEL_1108:
@@ -6279,21 +6279,21 @@ LABEL_1108:
   }
 
   v1069 = 0;
-  [rect_24 switcherOrientation:&v1112 elementsOrientations:&v1069 forTransitionRequest:v964 previousLayoutState:rect_16 layoutState:v1047];
+  [rect_24 switcherOrientation:&v1112 elementsOrientations:&v1069 forTransitionRequest:request previousLayoutState:rect_16 layoutState:v1047];
   v1016 = v1069;
   [v1047 setInterfaceOrientation:*&v1112.a];
   [v1047 setInterfaceOrientationByLayoutElementIdentifier:v1016];
   v702 = [rect_24 layoutElementSizingPoliciesForLayoutState:v1047];
   [v1047 _updateSizingPoliciesForLayoutElements:v702];
 
-  if (v975 == 14)
+  if (source == 14)
   {
-    v703 = [v1047 interfaceOrientation];
-    v704 = v703 == [rect_16 interfaceOrientation] ? 1 : v952;
+    interfaceOrientation7 = [v1047 interfaceOrientation];
+    v704 = interfaceOrientation7 == [rect_16 interfaceOrientation] ? 1 : isBackground;
     if ((v704 & 1) == 0)
     {
-      v705 = [rect_16 appLayout];
-      v706 = [v1047 displayOrdinal];
+      appLayout16 = [rect_16 appLayout];
+      displayOrdinal5 = [v1047 displayOrdinal];
       if ((*&v1112.a - 1) < 2)
       {
         v707 = 1;
@@ -6304,7 +6304,7 @@ LABEL_1108:
         v707 = 2 * ((*&v1112.a - 3) < 2);
       }
 
-      v708 = [v1034 layoutAttributesMapForAppLayout:v705 displayOrdinal:v706 orientation:v707];
+      v708 = [displayItemLayoutAttributesProvider layoutAttributesMapForAppLayout:appLayout16 displayOrdinal:displayOrdinal5 orientation:v707];
 
       v709 = [v708 mutableCopy];
       v1066[0] = MEMORY[0x277D85DD0];
@@ -6319,15 +6319,15 @@ LABEL_1108:
       v711 = v710;
 
       v1027 = [SBMainDisplayLayoutState alloc];
-      v1040 = [v1047 elements];
-      v1021 = [v1047 interfaceOrientation];
-      v1009 = [v1047 spaceConfiguration];
+      elements4 = [v1047 elements];
+      interfaceOrientation8 = [v1047 interfaceOrientation];
+      spaceConfiguration3 = [v1047 spaceConfiguration];
       v712 = v711;
-      v713 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary3 = [MEMORY[0x277CBEB38] dictionary];
       v1230 = 0u;
       memset(&v1229, 0, sizeof(v1229));
-      v714 = [v712 allKeys];
-      v715 = [v714 countByEnumeratingWithState:&v1229 objects:&v1252 count:16];
+      allKeys3 = [v712 allKeys];
+      v715 = [allKeys3 countByEnumeratingWithState:&v1229 objects:&v1252 count:16];
       if (v715)
       {
         v716 = **&v1229.c;
@@ -6337,35 +6337,35 @@ LABEL_1108:
           {
             if (**&v1229.c != v716)
             {
-              objc_enumerationMutation(v714);
+              objc_enumerationMutation(allKeys3);
             }
 
             v718 = *(*&v1229.b + 8 * i11);
             v719 = [v712 objectForKey:v718];
-            v720 = [v718 uniqueIdentifier];
-            [v713 setObject:v719 forKey:v720];
+            uniqueIdentifier52 = [v718 uniqueIdentifier];
+            [dictionary3 setObject:v719 forKey:uniqueIdentifier52];
           }
 
-          v715 = [v714 countByEnumeratingWithState:&v1229 objects:&v1252 count:16];
+          v715 = [allKeys3 countByEnumeratingWithState:&v1229 objects:&v1252 count:16];
         }
 
         while (v715);
       }
 
-      v721 = [v713 copy];
-      v1000 = [v1047 floatingConfiguration];
-      v722 = [v1047 unlockedEnvironmentMode];
-      v723 = [v1047 isFloatingSwitcherVisible];
-      v724 = [v1047 centerConfiguration];
-      v725 = [v1047 isCenterEntityModal];
-      v726 = [v1047 peekConfiguration];
-      v727 = [v1047 bundleIDShowingAppExpose];
-      v728 = [v1047 windowPickerRole];
-      v729 = [v1047 displayOrdinal];
+      v721 = [dictionary3 copy];
+      floatingConfiguration3 = [v1047 floatingConfiguration];
+      unlockedEnvironmentMode4 = [v1047 unlockedEnvironmentMode];
+      isFloatingSwitcherVisible2 = [v1047 isFloatingSwitcherVisible];
+      centerConfiguration3 = [v1047 centerConfiguration];
+      isCenterEntityModal = [v1047 isCenterEntityModal];
+      peekConfiguration3 = [v1047 peekConfiguration];
+      bundleIDShowingAppExpose5 = [v1047 bundleIDShowingAppExpose];
+      windowPickerRole2 = [v1047 windowPickerRole];
+      displayOrdinal6 = [v1047 displayOrdinal];
       LOBYTE(v901) = [v1047 isDisplayExternal];
-      LOBYTE(v899) = v725;
-      LOBYTE(v897) = v723;
-      v730 = [(SBMainDisplayLayoutState *)v1027 _initWithLayoutElements:v1040 interfaceOrientation:v1021 interfaceOrientationByLayoutElement:v1032 spaceConfiguration:v1009 elementIdentifiersToLayoutAttributes:v721 floatingConfiguration:v1000 unlockedEnvironmentMode:v722 floatingSwitcherVisible:v897 centerConfiguration:v724 centerEntityModal:v899 peekConfiguration:v726 bundleIDShowingAppExpose:v727 windowPickerRole:v728 displayOrdinal:v729 isDisplayExternal:v901];
+      LOBYTE(v899) = isCenterEntityModal;
+      LOBYTE(v897) = isFloatingSwitcherVisible2;
+      v730 = [(SBMainDisplayLayoutState *)v1027 _initWithLayoutElements:elements4 interfaceOrientation:interfaceOrientation8 interfaceOrientationByLayoutElement:v1032 spaceConfiguration:spaceConfiguration3 elementIdentifiersToLayoutAttributes:v721 floatingConfiguration:floatingConfiguration3 unlockedEnvironmentMode:unlockedEnvironmentMode4 floatingSwitcherVisible:v897 centerConfiguration:centerConfiguration3 centerEntityModal:v899 peekConfiguration:peekConfiguration3 bundleIDShowingAppExpose:bundleIDShowingAppExpose5 windowPickerRole:windowPickerRole2 displayOrdinal:displayOrdinal6 isDisplayExternal:v901];
 
       v1047 = v730;
     }
@@ -6375,8 +6375,8 @@ LABEL_1108:
   v1065 = 0u;
   v1062 = 0u;
   v1063 = 0u;
-  v1041 = [v1045 allKeys];
-  v731 = [v1041 countByEnumeratingWithState:&v1062 objects:v1232 count:16];
+  allKeys4 = [dictionary allKeys];
+  v731 = [allKeys4 countByEnumeratingWithState:&v1062 objects:v1232 count:16];
   if (v731)
   {
     v732 = *v1063;
@@ -6386,15 +6386,15 @@ LABEL_1108:
       {
         if (*v1063 != v732)
         {
-          objc_enumerationMutation(v1041);
+          objc_enumerationMutation(allKeys4);
         }
 
         v734 = *(*(&v1062 + 1) + 8 * i12);
-        v735 = [v1045 objectForKey:v734];
-        v736 = [v1044 objectForKey:v734];
-        v737 = [v1047 elementIdentifiersToLayoutAttributes];
-        v738 = [v735 uniqueIdentifier];
-        v739 = [v737 objectForKey:v738];
+        v735 = [dictionary objectForKey:v734];
+        v736 = [dictionary2 objectForKey:v734];
+        elementIdentifiersToLayoutAttributes3 = [v1047 elementIdentifiersToLayoutAttributes];
+        uniqueIdentifier53 = [v735 uniqueIdentifier];
+        v739 = [elementIdentifiersToLayoutAttributes3 objectForKey:uniqueIdentifier53];
         v740 = [v736 isEqual:v739];
 
         if (*&v1112.a)
@@ -6409,8 +6409,8 @@ LABEL_1108:
 
         if (v741 == 1)
         {
-          v742 = [v1047 appLayout];
-          v743 = [v1047 displayOrdinal];
+          appLayout17 = [v1047 appLayout];
+          displayOrdinal7 = [v1047 displayOrdinal];
           if ((*&v1112.a - 1) < 2)
           {
             v744 = 1;
@@ -6421,23 +6421,23 @@ LABEL_1108:
             v744 = 2 * ((*&v1112.a - 3) < 2);
           }
 
-          v745 = [v1034 layoutAttributesForDisplayItem:v734 inAppLayout:v742 displayOrdinal:v743 orientation:v744];
+          v745 = [displayItemLayoutAttributesProvider layoutAttributesForDisplayItem:v734 inAppLayout:appLayout17 displayOrdinal:displayOrdinal7 orientation:v744];
 
           [v1047 _setLayoutAttributes:v745 forLayoutElement:v735];
         }
       }
 
-      v731 = [v1041 countByEnumeratingWithState:&v1062 objects:v1232 count:16];
+      v731 = [allKeys4 countByEnumeratingWithState:&v1062 objects:v1232 count:16];
     }
 
     while (v731);
   }
 
-  v746 = [v1047 appLayout];
-  v1022 = [rect_24 windowScene];
-  if (v1022)
+  appLayout18 = [v1047 appLayout];
+  windowScene3 = [rect_24 windowScene];
+  if (windowScene3)
   {
-    v747 = v746 == 0;
+    v747 = appLayout18 == 0;
   }
 
   else
@@ -6446,50 +6446,50 @@ LABEL_1108:
   }
 
   v748 = !v747;
-  if ((v748 & v949) == 1)
+  if ((v748 & isChamoisOrFlexibleWindowing) == 1)
   {
     v1001 = objc_alloc_init(SBDisplayItemLayoutAttributesCalculator);
-    v1010 = [rect_16 appLayout];
-    v749 = [v1043 _autoLayoutOptionsForNewAppLayout:v746 previousAppLayout:v1010 request:v964];
-    if ((v943 | v942 & v1011) & (v952 ^ 1))
+    appLayout19 = [rect_16 appLayout];
+    v749 = [v1043 _autoLayoutOptionsForNewAppLayout:appLayout18 previousAppLayout:appLayout19 request:request];
+    if ((v943 | v942 & isFlexibleWindowingEnabled) & (isBackground ^ 1))
     {
-      v750 = [v1047 layoutAttributesMap];
-      v751 = -[SBDisplayItemLayoutAttributesCalculator appLayoutByPerformingAutoLayoutForAppLayout:previousAppLayout:usingLayoutAttributes:options:containerOrientation:windowScene:source:itemsNeedingPositionSnapping:itemsNeedingSizeSnapping:](v1001, "appLayoutByPerformingAutoLayoutForAppLayout:previousAppLayout:usingLayoutAttributes:options:containerOrientation:windowScene:source:itemsNeedingPositionSnapping:itemsNeedingSizeSnapping:", v746, v1010, v750, v749, [v1047 interfaceOrientation], v1022, objc_msgSend(v964, "source"), v950, 0);
+      layoutAttributesMap3 = [v1047 layoutAttributesMap];
+      v751 = -[SBDisplayItemLayoutAttributesCalculator appLayoutByPerformingAutoLayoutForAppLayout:previousAppLayout:usingLayoutAttributes:options:containerOrientation:windowScene:source:itemsNeedingPositionSnapping:itemsNeedingSizeSnapping:](v1001, "appLayoutByPerformingAutoLayoutForAppLayout:previousAppLayout:usingLayoutAttributes:options:containerOrientation:windowScene:source:itemsNeedingPositionSnapping:itemsNeedingSizeSnapping:", appLayout18, appLayout19, layoutAttributesMap3, v749, [v1047 interfaceOrientation], windowScene3, objc_msgSend(request, "source"), v950, 0);
 
-      v752 = [rect_24 sceneRelevancyManager];
-      v753 = [v1047 elementIdentifiersToLayoutAttributes];
+      sceneRelevancyManager = [rect_24 sceneRelevancyManager];
+      elementIdentifiersToLayoutAttributes4 = [v1047 elementIdentifiersToLayoutAttributes];
       a = v1112.a;
-      v755 = [v1047 elements];
-      [v1043 _updateSceneRelevancyManager:v752 forAppLayout:v751 applicationTransitionContext:v1029 elementIdentifiersToLayoutAttributes:v753 interfaceOrientation:*&a layoutAttributesProvider:v1034 layoutElements:v755];
+      elements5 = [v1047 elements];
+      [v1043 _updateSceneRelevancyManager:sceneRelevancyManager forAppLayout:v751 applicationTransitionContext:v1029 elementIdentifiersToLayoutAttributes:elementIdentifiersToLayoutAttributes4 interfaceOrientation:*&a layoutAttributesProvider:displayItemLayoutAttributesProvider layoutElements:elements5];
 
-      if ((v942 & v1011) != 0)
+      if ((v942 & isFlexibleWindowingEnabled) != 0)
       {
-        v756 = [v752 zOrderedDeviceApplicationSceneEntities];
+        zOrderedDeviceApplicationSceneEntities = [sceneRelevancyManager zOrderedDeviceApplicationSceneEntities];
         v1058[0] = MEMORY[0x277D85DD0];
         v1058[1] = 3221225472;
         v1058[2] = __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionContext___block_invoke_2_133;
         v1058[3] = &unk_2783B9FD0;
-        v1059 = v752;
-        v1060 = v1003;
+        v1059 = sceneRelevancyManager;
+        v1060 = _desktopSpaceItems;
         v1061 = v1047;
-        [v756 enumerateObjectsUsingBlock:v1058];
+        [zOrderedDeviceApplicationSceneEntities enumerateObjectsUsingBlock:v1058];
       }
     }
 
     else
     {
-      v751 = v746;
+      v751 = appLayout18;
     }
 
-    v757 = [v1047 layoutAttributesMap];
-    v746 = -[SBDisplayItemLayoutAttributesCalculator appLayoutByPerformingAutoLayoutForAppLayout:previousAppLayout:usingLayoutAttributes:options:containerOrientation:windowScene:source:itemsNeedingPositionSnapping:itemsNeedingSizeSnapping:](v1001, "appLayoutByPerformingAutoLayoutForAppLayout:previousAppLayout:usingLayoutAttributes:options:containerOrientation:windowScene:source:itemsNeedingPositionSnapping:itemsNeedingSizeSnapping:", v751, v1010, v757, v749, [v1047 interfaceOrientation], v1022, objc_msgSend(v964, "source"), v950, 0);
+    layoutAttributesMap4 = [v1047 layoutAttributesMap];
+    appLayout18 = -[SBDisplayItemLayoutAttributesCalculator appLayoutByPerformingAutoLayoutForAppLayout:previousAppLayout:usingLayoutAttributes:options:containerOrientation:windowScene:source:itemsNeedingPositionSnapping:itemsNeedingSizeSnapping:](v1001, "appLayoutByPerformingAutoLayoutForAppLayout:previousAppLayout:usingLayoutAttributes:options:containerOrientation:windowScene:source:itemsNeedingPositionSnapping:itemsNeedingSizeSnapping:", v751, appLayout19, layoutAttributesMap4, v749, [v1047 interfaceOrientation], windowScene3, objc_msgSend(request, "source"), v950, 0);
 
     v1056 = 0u;
     v1057 = 0u;
     v1054 = 0u;
     v1055 = 0u;
-    v1028 = [v746 allItems];
-    v1042 = [v1028 countByEnumeratingWithState:&v1054 objects:v1231 count:16];
+    allItems10 = [appLayout18 allItems];
+    v1042 = [allItems10 countByEnumeratingWithState:&v1054 objects:v1231 count:16];
     if (v1042)
     {
       v1033 = *v1055;
@@ -6499,56 +6499,56 @@ LABEL_1108:
         {
           if (*v1055 != v1033)
           {
-            objc_enumerationMutation(v1028);
+            objc_enumerationMutation(allItems10);
           }
 
           v759 = *(*(&v1054 + 1) + 8 * i13);
-          v760 = [v1043 _displayItemLayoutAttributesProvider];
-          v761 = [v1047 displayOrdinal];
-          v762 = [v1047 interfaceOrientation];
-          if ((v762 - 1) < 2)
+          _displayItemLayoutAttributesProvider2 = [v1043 _displayItemLayoutAttributesProvider];
+          displayOrdinal8 = [v1047 displayOrdinal];
+          interfaceOrientation9 = [v1047 interfaceOrientation];
+          if ((interfaceOrientation9 - 1) < 2)
           {
             v763 = 1;
           }
 
           else
           {
-            v763 = 2 * ((v762 - 3) < 2);
+            v763 = 2 * ((interfaceOrientation9 - 3) < 2);
           }
 
-          v764 = [v760 layoutAttributesForDisplayItem:v759 inAppLayout:v746 displayOrdinal:v761 orientation:v763];
+          v764 = [_displayItemLayoutAttributesProvider2 layoutAttributesForDisplayItem:v759 inAppLayout:appLayout18 displayOrdinal:displayOrdinal8 orientation:v763];
 
-          v765 = [v1047 elementWithRole:{objc_msgSend(v746, "layoutRoleForItem:", v759)}];
+          v765 = [v1047 elementWithRole:{objc_msgSend(appLayout18, "layoutRoleForItem:", v759)}];
           [v1047 _setLayoutAttributes:v764 forLayoutElement:v765];
-          v766 = [v765 workspaceEntity];
-          v767 = [v766 deviceApplicationSceneEntity];
-          v768 = [v767 sceneHandle];
+          workspaceEntity9 = [v765 workspaceEntity];
+          deviceApplicationSceneEntity6 = [workspaceEntity9 deviceApplicationSceneEntity];
+          sceneHandle2 = [deviceApplicationSceneEntity6 sceneHandle];
 
-          if (v768 && ([v768 supportsCenterWindow] & 1) == 0)
+          if (sceneHandle2 && ([sceneHandle2 supportsCenterWindow] & 1) == 0)
           {
-            v769 = [v768 application];
-            if (v769)
+            application9 = [sceneHandle2 application];
+            if (application9)
             {
-              v770 = [v769 lastWindowLayoutAttributesForDisplayOrdinal:{objc_msgSend(v1047, "displayOrdinal")}];
+              v770 = [application9 lastWindowLayoutAttributesForDisplayOrdinal:{objc_msgSend(v1047, "displayOrdinal")}];
               v771 = v770;
               if (!v770 || (v772 = [(SBHomeScreenConfigurationServer *)v770 connections], v772 != [(SBHomeScreenConfigurationServer *)v764 connections]) || ([(SBDisplayItemLayoutAttributes *)v771 attributedSize], [(SBDisplayItemLayoutAttributes *)v764 attributedSize], !SBEqualDisplayItemAttributedSizes(&v1252, &v1229)) || (v773 = [(SBDisplayItemLayoutAttributes *)v771 normalizedCenter], v775 = v774, v773 != [(SBDisplayItemLayoutAttributes *)v764 normalizedCenter]) || v775 != v776 || (v777 = [(SBDisplayItemLayoutAttributes *)v771 isPositionSystemManaged], v777 != [(SBDisplayItemLayoutAttributes *)v764 isPositionSystemManaged]) || ([(SBDisplayItemLayoutAttributes *)v771 slideOverConfiguration], [(SBDisplayItemLayoutAttributes *)v764 slideOverConfiguration], !SBEqualDisplayItemSlideOverConfigurations(&v1252, &v1229)))
               {
                 v778 = v764;
-                v779 = [v768 _interfaceOrientationFromUserResizing];
-                if (!v779 || v779 != [(SBHomeScreenConfigurationServer *)v778 authenticator])
+                _interfaceOrientationFromUserResizing = [sceneHandle2 _interfaceOrientationFromUserResizing];
+                if (!_interfaceOrientationFromUserResizing || _interfaceOrientationFromUserResizing != [(SBHomeScreenConfigurationServer *)v778 authenticator])
                 {
                   v780 = [SBDisplayItemLayoutAttributes attributesByModifyingContentOrientation:v778];
 
                   v778 = v780;
                 }
 
-                [v769 setLastWindowLayoutAttributes:v778 forDisplayOrdinal:{objc_msgSend(v1047, "displayOrdinal")}];
+                [application9 setLastWindowLayoutAttributes:v778 forDisplayOrdinal:{objc_msgSend(v1047, "displayOrdinal")}];
               }
             }
           }
         }
 
-        v1042 = [v1028 countByEnumeratingWithState:&v1054 objects:v1231 count:16];
+        v1042 = [allItems10 countByEnumeratingWithState:&v1054 objects:v1231 count:16];
       }
 
       while (v1042);
@@ -7220,68 +7220,68 @@ void __79__SBMainDisplayLayoutStateManager__layoutStateForApplicationTransitionC
 
 - (id)_displayItemLayoutAttributesProvider
 {
-  v2 = [(SBMainDisplayLayoutStateManager *)self _recentAppLayouts];
-  v3 = [v2 layoutAttributesProvider];
+  _recentAppLayouts = [(SBMainDisplayLayoutStateManager *)self _recentAppLayouts];
+  layoutAttributesProvider = [_recentAppLayouts layoutAttributesProvider];
 
-  return v3;
+  return layoutAttributesProvider;
 }
 
-- (id)_layoutStateForDisplayIdentity:(id)a3
+- (id)_layoutStateForDisplayIdentity:(id)identity
 {
   v3 = SBApp;
-  v4 = a3;
-  v5 = [v3 windowSceneManager];
-  v6 = [v5 windowSceneForDisplayIdentity:v4];
+  identityCopy = identity;
+  windowSceneManager = [v3 windowSceneManager];
+  v6 = [windowSceneManager windowSceneForDisplayIdentity:identityCopy];
 
-  v7 = [v6 layoutStateProvider];
-  v8 = [v7 layoutState];
+  layoutStateProvider = [v6 layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
 
-  return v8;
+  return layoutState;
 }
 
-- (id)_sceneManagerForDisplayIdentity:(id)a3
+- (id)_sceneManagerForDisplayIdentity:(id)identity
 {
-  v3 = a3;
+  identityCopy = identity;
   v4 = +[SBSceneManagerCoordinator sharedInstance];
-  v5 = [v4 sceneManagerForDisplayIdentity:v3];
+  v5 = [v4 sceneManagerForDisplayIdentity:identityCopy];
 
   return v5;
 }
 
-- (id)_switcherControllerForDisplayIdentity:(id)a3
+- (id)_switcherControllerForDisplayIdentity:(id)identity
 {
   v3 = SBApp;
-  v4 = a3;
-  v5 = [v3 windowSceneManager];
-  v6 = [v5 windowSceneForDisplayIdentity:v4];
+  identityCopy = identity;
+  windowSceneManager = [v3 windowSceneManager];
+  v6 = [windowSceneManager windowSceneForDisplayIdentity:identityCopy];
 
-  v7 = [v6 switcherController];
+  switcherController = [v6 switcherController];
 
-  return v7;
+  return switcherController;
 }
 
-- (BOOL)_hasAppLayoutBeenUserKilledWithinThresholdToCreateNewScene:(id)a3
+- (BOOL)_hasAppLayoutBeenUserKilledWithinThresholdToCreateNewScene:(id)scene
 {
-  v3 = a3;
+  sceneCopy = scene;
   v4 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-  v5 = [v4 _hasAppLayoutBeenUserKilledWithinThresholdToCreateNewScene:v3];
+  v5 = [v4 _hasAppLayoutBeenUserKilledWithinThresholdToCreateNewScene:sceneCopy];
 
   return v5;
 }
 
-- (id)_applicationSceneEntityFromApplicationBundleIdentifier:(id)a3 uniqueIdentifier:(id)a4 displayIdentity:(id)a5
+- (id)_applicationSceneEntityFromApplicationBundleIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier displayIdentity:(id)identity
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(SBMainDisplayLayoutStateManager *)self _applicationController];
-  v12 = [v11 applicationWithBundleIdentifier:v10];
+  uniqueIdentifierCopy = uniqueIdentifier;
+  identityCopy = identity;
+  identifierCopy = identifier;
+  _applicationController = [(SBMainDisplayLayoutStateManager *)self _applicationController];
+  v12 = [_applicationController applicationWithBundleIdentifier:identifierCopy];
 
   if (v12)
   {
     v13 = [SBDeviceApplicationSceneEntity alloc];
-    v14 = [(SBMainDisplayLayoutStateManager *)self _sceneManagerForDisplayIdentity:v9];
-    v15 = [(SBDeviceApplicationSceneEntity *)v13 initWithApplication:v12 uniqueIdentifier:v8 sceneHandleProvider:v14 displayIdentity:v9];
+    v14 = [(SBMainDisplayLayoutStateManager *)self _sceneManagerForDisplayIdentity:identityCopy];
+    v15 = [(SBDeviceApplicationSceneEntity *)v13 initWithApplication:v12 uniqueIdentifier:uniqueIdentifierCopy sceneHandleProvider:v14 displayIdentity:identityCopy];
   }
 
   else

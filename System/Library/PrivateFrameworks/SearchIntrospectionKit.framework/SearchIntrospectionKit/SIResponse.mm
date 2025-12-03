@@ -1,15 +1,15 @@
 @interface SIResponse
 - (_TtC22SearchIntrospectionKit10SIResponse)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SIResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_264E71AA0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_264E71AA0(coderCopy);
 }
 
 - (_TtC22SearchIntrospectionKit10SIResponse)init

@@ -1,26 +1,26 @@
 @interface CRPluginsController
-- (BOOL)isApplicationInstalledWithMaxRetries:(int)a3 bundleName:(id)a4;
+- (BOOL)isApplicationInstalledWithMaxRetries:(int)retries bundleName:(id)name;
 - (BOOL)rebuildApplicationDataBase;
 @end
 
 @implementation CRPluginsController
 
-- (BOOL)isApplicationInstalledWithMaxRetries:(int)a3 bundleName:(id)a4
+- (BOOL)isApplicationInstalledWithMaxRetries:(int)retries bundleName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = v5;
-  if (v5 && [v5 length])
+  nameCopy = name;
+  v6 = nameCopy;
+  if (nameCopy && [nameCopy length])
   {
     v7 = 0;
-    if (a3 <= 1)
+    if (retries <= 1)
     {
-      v8 = 1;
+      retriesCopy = 1;
     }
 
     else
     {
-      v8 = a3;
+      retriesCopy = retries;
     }
 
     while (1)
@@ -34,17 +34,17 @@
       }
 
       sleep(0xAu);
-      v10 = [MEMORY[0x277CC1E80] defaultWorkspace];
-      if ([v10 applicationIsInstalled:v6])
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+      if ([defaultWorkspace applicationIsInstalled:v6])
       {
         break;
       }
 
       ++v7;
 
-      if (v8 == v7)
+      if (retriesCopy == v7)
       {
-        v7 = v8;
+        v7 = retriesCopy;
 LABEL_16:
         v12 = handleForCategory();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -57,7 +57,7 @@ LABEL_16:
       }
     }
 
-    if (v7 >= a3)
+    if (v7 >= retries)
     {
       goto LABEL_16;
     }
@@ -84,8 +84,8 @@ LABEL_19:
 
 - (BOOL)rebuildApplicationDataBase
 {
-  v2 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v3 = [v2 _LSPrivateRebuildApplicationDatabasesForSystemApps:1 internal:0 user:0];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  v3 = [defaultWorkspace _LSPrivateRebuildApplicationDatabasesForSystemApps:1 internal:0 user:0];
 
   v4 = handleForCategory();
   v5 = v4;

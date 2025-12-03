@@ -1,18 +1,18 @@
 @interface CNContactOrbActionsController
 + (id)descriptorForRequiredKeys;
-- (BOOL)shouldUseActionsManagerForContacts:(id)a3;
-- (CNContactOrbActionsController)initWithContact:(id)a3;
-- (CNContactOrbActionsController)initWithContacts:(id)a3;
-- (CNContactOrbActionsController)initWithContacts:(id)a3 actionCategories:(id)a4 bypassActionValidation:(BOOL)a5;
+- (BOOL)shouldUseActionsManagerForContacts:(id)contacts;
+- (CNContactOrbActionsController)initWithContact:(id)contact;
+- (CNContactOrbActionsController)initWithContacts:(id)contacts;
+- (CNContactOrbActionsController)initWithContacts:(id)contacts actionCategories:(id)categories bypassActionValidation:(BOOL)validation;
 - (CNContactOrbActionsControllerDelegate)delegate;
-- (id)actionsManager:(id)a3 presentingViewControllerForAction:(id)a4;
-- (id)menuItemsForContactsWithActions:(id)a3;
-- (void)contactActionsController:(id)a3 didSelectAction:(id)a4;
-- (void)contactActionsController:(id)a3 didUpdateWithMenu:(id)a4;
+- (id)actionsManager:(id)manager presentingViewControllerForAction:(id)action;
+- (id)menuItemsForContactsWithActions:(id)actions;
+- (void)contactActionsController:(id)controller didSelectAction:(id)action;
+- (void)contactActionsController:(id)controller didUpdateWithMenu:(id)menu;
 - (void)reloadMenuItems;
-- (void)setupActionsControllerForContact:(id)a3;
-- (void)setupActionsForContacts:(id)a3;
-- (void)setupActionsManagerForContacts:(id)a3;
+- (void)setupActionsControllerForContact:(id)contact;
+- (void)setupActionsForContacts:(id)contacts;
+- (void)setupActionsManagerForContacts:(id)contacts;
 @end
 
 @implementation CNContactOrbActionsController
@@ -24,9 +24,9 @@
   v3 = +[CNContactActionsController descriptorForRequiredKeys];
   v4 = +[CNQuickActionsManager descriptorForRequiredKeys];
   v11[1] = v4;
-  v5 = [MEMORY[0x1E695CD80] sharedFullNameFormatterWithFallBacks];
-  v6 = [v5 descriptorForRequiredKeys];
-  v11[2] = v6;
+  mEMORY[0x1E695CD80] = [MEMORY[0x1E695CD80] sharedFullNameFormatterWithFallBacks];
+  descriptorForRequiredKeys = [mEMORY[0x1E695CD80] descriptorForRequiredKeys];
+  v11[2] = descriptorForRequiredKeys;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:3];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[CNContactOrbActionsController descriptorForRequiredKeys]"];
   v9 = [v2 descriptorWithKeyDescriptors:v7 description:v8];
@@ -41,25 +41,25 @@
   return WeakRetained;
 }
 
-- (void)contactActionsController:(id)a3 didUpdateWithMenu:(id)a4
+- (void)contactActionsController:(id)controller didUpdateWithMenu:(id)menu
 {
-  v5 = a4;
-  [(CNContactOrbActionsController *)self setMenuItems:v5];
-  v6 = [(CNContactOrbActionsController *)self delegate];
-  [v6 contactOrbActionsController:self didUpdateWithMenu:v5];
+  menuCopy = menu;
+  [(CNContactOrbActionsController *)self setMenuItems:menuCopy];
+  delegate = [(CNContactOrbActionsController *)self delegate];
+  [delegate contactOrbActionsController:self didUpdateWithMenu:menuCopy];
 }
 
-- (void)contactActionsController:(id)a3 didSelectAction:(id)a4
+- (void)contactActionsController:(id)controller didSelectAction:(id)action
 {
-  v4 = a4;
+  actionCopy = action;
   v5 = objc_alloc_init(MEMORY[0x1E6996BD0]);
-  v6 = [v4 performActionWithContext:v5];
+  v6 = [actionCopy performActionWithContext:v5];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __74__CNContactOrbActionsController_contactActionsController_didSelectAction___block_invoke;
   v11[3] = &unk_1E74E5980;
-  v7 = v4;
+  v7 = actionCopy;
   v12 = v7;
   [v6 addSuccessBlock:v11];
   v9[0] = MEMORY[0x1E69E9820];
@@ -73,30 +73,30 @@
 
 - (void)reloadMenuItems
 {
-  v3 = [(CNContactOrbActionsController *)self contacts];
-  v4 = [(CNContactOrbActionsController *)self shouldUseActionsManagerForContacts:v3];
+  contacts = [(CNContactOrbActionsController *)self contacts];
+  v4 = [(CNContactOrbActionsController *)self shouldUseActionsManagerForContacts:contacts];
 
   if (v4)
   {
-    v7 = [(CNContactOrbActionsController *)self actionsManager];
-    v5 = [v7 actions];
-    v6 = [(CNContactOrbActionsController *)self menuItemsForContactsWithActions:v5];
+    actionsManager = [(CNContactOrbActionsController *)self actionsManager];
+    actions = [actionsManager actions];
+    v6 = [(CNContactOrbActionsController *)self menuItemsForContactsWithActions:actions];
     [(CNContactOrbActionsController *)self setMenuItems:v6];
   }
 
   else
   {
-    v7 = [(CNContactOrbActionsController *)self actionsController];
-    [v7 retrieveModels];
+    actionsManager = [(CNContactOrbActionsController *)self actionsController];
+    [actionsManager retrieveModels];
   }
 }
 
-- (void)setupActionsControllerForContact:(id)a3
+- (void)setupActionsControllerForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = [CNContactActionsController alloc];
   v6 = +[CNContactActionsController supportedActionTypes];
-  v7 = [(CNContactActionsController *)v5 initWithContact:v4 actionTypes:v6];
+  v7 = [(CNContactActionsController *)v5 initWithContact:contactCopy actionTypes:v6];
 
   [(CNContactActionsController *)v7 setDisplayMenuIconAtTopLevel:1];
   [(CNContactActionsController *)v7 setShouldUseOutlinedActionGlyphStyle:1];
@@ -108,15 +108,15 @@
   [(CNContactActionsController *)self->_actionsController retrieveModels];
 }
 
-- (id)actionsManager:(id)a3 presentingViewControllerForAction:(id)a4
+- (id)actionsManager:(id)manager presentingViewControllerForAction:(id)action
 {
-  v5 = [(CNContactOrbActionsController *)self delegate:a3];
+  v5 = [(CNContactOrbActionsController *)self delegate:manager];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CNContactOrbActionsController *)self delegate];
-    v8 = [v7 presentingViewControllerForActionsController:self];
+    delegate = [(CNContactOrbActionsController *)self delegate];
+    v8 = [delegate presentingViewControllerForActionsController:self];
   }
 
   else
@@ -127,21 +127,21 @@
   return v8;
 }
 
-- (id)menuItemsForContactsWithActions:(id)a3
+- (id)menuItemsForContactsWithActions:(id)actions
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  actionsCopy = actions;
+  array = [MEMORY[0x1E695DF70] array];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v4;
+  obj = actionsCopy;
   v38 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v38)
   {
     v6 = *v41;
-    v35 = v5;
+    v35 = array;
     v36 = *v41;
     do
     {
@@ -153,25 +153,25 @@
         }
 
         v8 = *(*(&v40 + 1) + 8 * i);
-        v9 = [(CNContactOrbActionsController *)self contacts];
-        v10 = [v9 count];
+        contacts = [(CNContactOrbActionsController *)self contacts];
+        v10 = [contacts count];
 
         if (v10 < 2)
         {
           v15 = [v8 titleForContext:0];
-          v16 = [v8 outlinedImage];
-          v17 = v16;
-          if (v16)
+          outlinedImage = [v8 outlinedImage];
+          v17 = outlinedImage;
+          if (outlinedImage)
           {
-            v18 = v16;
+            image = outlinedImage;
           }
 
           else
           {
-            v18 = [v8 image];
+            image = [v8 image];
           }
 
-          v30 = v18;
+          v30 = image;
 
           v31 = [v8 subtitleForContext:0];
         }
@@ -195,15 +195,15 @@
           objc_opt_class();
           if (v13)
           {
-            v14 = [v13 mainAction];
+            mainAction = [v13 mainAction];
           }
 
           else
           {
-            v14 = v11;
+            mainAction = v11;
           }
 
-          v19 = v14;
+          v19 = mainAction;
           if (objc_opt_isKindOfClass())
           {
             v20 = v19;
@@ -222,30 +222,30 @@
             goto LABEL_27;
           }
 
-          v22 = self;
-          v23 = [v21 propertyAction];
-          v24 = [v23 propertyItem];
-          v25 = [v24 contact];
+          selfCopy = self;
+          propertyAction = [v21 propertyAction];
+          propertyItem = [propertyAction propertyItem];
+          contact = [propertyItem contact];
 
-          v26 = [MEMORY[0x1E695CD80] sharedFullNameFormatterWithFallBacks];
-          v15 = [v26 stringFromContact:v25];
-          v27 = [v21 outlinedImage];
-          v28 = v27;
-          if (v27)
+          mEMORY[0x1E695CD80] = [MEMORY[0x1E695CD80] sharedFullNameFormatterWithFallBacks];
+          v15 = [mEMORY[0x1E695CD80] stringFromContact:contact];
+          outlinedImage2 = [v21 outlinedImage];
+          v28 = outlinedImage2;
+          if (outlinedImage2)
           {
-            v29 = v27;
+            image2 = outlinedImage2;
           }
 
           else
           {
-            v29 = [v21 image];
+            image2 = [v21 image];
           }
 
-          v30 = v29;
+          v30 = image2;
 
           v31 = 0;
-          self = v22;
-          v5 = v35;
+          self = selfCopy;
+          array = v35;
           v6 = v36;
         }
 
@@ -256,7 +256,7 @@
         v39[4] = v8;
         v32 = [MEMORY[0x1E69DC628] actionWithTitle:v15 image:v30 identifier:0 handler:v39];
         [v32 setSubtitle:v31];
-        [v5 addObject:v32];
+        [array addObject:v32];
 
         v13 = v15;
 LABEL_27:
@@ -268,23 +268,23 @@ LABEL_27:
     while (v38);
   }
 
-  v33 = [v5 copy];
+  v33 = [array copy];
 
   return v33;
 }
 
-- (void)setupActionsManagerForContacts:(id)a3
+- (void)setupActionsManagerForContacts:(id)contacts
 {
-  v11 = [CNQuickActionsManager actionsManagerForContacts:a3];
-  v5 = [(CNContactOrbActionsController *)self actionCategories];
-  [v11 setCategories:v5];
+  v11 = [CNQuickActionsManager actionsManagerForContacts:contacts];
+  actionCategories = [(CNContactOrbActionsController *)self actionCategories];
+  [v11 setCategories:actionCategories];
 
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
-  if (!v7)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+  if (!userInterfaceIdiom)
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
     if (CGRectGetHeight(v13) > 667.0)
     {
       [v11 setDesiredNumberOfActions:6];
@@ -294,16 +294,16 @@ LABEL_11:
     }
   }
 
-  v8 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v8 userInterfaceIdiom])
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice2 userInterfaceIdiom])
   {
     [v11 setDesiredNumberOfActions:5];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v9 _referenceBounds];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 _referenceBounds];
     if (CGRectGetHeight(v14) <= 568.0)
     {
       v10 = 5;
@@ -317,7 +317,7 @@ LABEL_11:
     [v11 setDesiredNumberOfActions:v10];
   }
 
-  if (!v7)
+  if (!userInterfaceIdiom)
   {
     goto LABEL_11;
   }
@@ -329,16 +329,16 @@ LABEL_12:
   [(CNContactOrbActionsController *)self setActionsManager:v11];
 }
 
-- (BOOL)shouldUseActionsManagerForContacts:(id)a3
+- (BOOL)shouldUseActionsManagerForContacts:(id)contacts
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  contactsCopy = contacts;
+  if ([contactsCopy count] == 1)
   {
     objc_opt_class();
-    v4 = [v3 firstObject];
+    firstObject = [contactsCopy firstObject];
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = firstObject;
     }
 
     else
@@ -352,50 +352,50 @@ LABEL_12:
     {
       if ([v6 isUnknown])
       {
-        v7 = 1;
+        isSuggestedMe = 1;
       }
 
       else
       {
-        v7 = [v6 isSuggestedMe];
+        isSuggestedMe = [v6 isSuggestedMe];
       }
     }
 
     else
     {
-      v7 = 0;
+      isSuggestedMe = 0;
     }
   }
 
   else
   {
-    v7 = 1;
+    isSuggestedMe = 1;
   }
 
-  return v7;
+  return isSuggestedMe;
 }
 
-- (void)setupActionsForContacts:(id)a3
+- (void)setupActionsForContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
   {
-    if ([(CNContactOrbActionsController *)self shouldUseActionsManagerForContacts:v4])
+    if ([(CNContactOrbActionsController *)self shouldUseActionsManagerForContacts:contactsCopy])
     {
-      [(CNContactOrbActionsController *)self setupActionsManagerForContacts:v4];
-      v5 = [(CNContactOrbActionsController *)self actionsManager];
+      [(CNContactOrbActionsController *)self setupActionsManagerForContacts:contactsCopy];
+      actionsManager = [(CNContactOrbActionsController *)self actionsManager];
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
       v6[2] = __57__CNContactOrbActionsController_setupActionsForContacts___block_invoke;
       v6[3] = &unk_1E74E6A88;
       v6[4] = self;
-      [v5 updateActionsWithBlock:v6];
+      [actionsManager updateActionsWithBlock:v6];
     }
 
     else
     {
-      v5 = [v4 firstObject];
-      [(CNContactOrbActionsController *)self setupActionsControllerForContact:v5];
+      actionsManager = [contactsCopy firstObject];
+      [(CNContactOrbActionsController *)self setupActionsControllerForContact:actionsManager];
     }
   }
 }
@@ -409,34 +409,34 @@ void __57__CNContactOrbActionsController_setupActionsForContacts___block_invoke(
   [*(a1 + 32) setMenuItems:v4];
 }
 
-- (CNContactOrbActionsController)initWithContacts:(id)a3 actionCategories:(id)a4 bypassActionValidation:(BOOL)a5
+- (CNContactOrbActionsController)initWithContacts:(id)contacts actionCategories:(id)categories bypassActionValidation:(BOOL)validation
 {
-  v9 = a3;
-  v10 = a4;
+  contactsCopy = contacts;
+  categoriesCopy = categories;
   v15.receiver = self;
   v15.super_class = CNContactOrbActionsController;
   v11 = [(CNContactOrbActionsController *)&v15 init];
   v12 = v11;
   v13 = 0;
-  if (v9 && v11)
+  if (contactsCopy && v11)
   {
-    objc_storeStrong(&v11->_actionCategories, a4);
-    v12->_bypassActionValidation = a5;
-    objc_storeStrong(&v12->_contacts, a3);
-    [(CNContactOrbActionsController *)v12 setupActionsForContacts:v9];
+    objc_storeStrong(&v11->_actionCategories, categories);
+    v12->_bypassActionValidation = validation;
+    objc_storeStrong(&v12->_contacts, contacts);
+    [(CNContactOrbActionsController *)v12 setupActionsForContacts:contactsCopy];
     v13 = v12;
   }
 
   return v13;
 }
 
-- (CNContactOrbActionsController)initWithContacts:(id)a3
+- (CNContactOrbActionsController)initWithContacts:(id)contacts
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  contactsCopy = contacts;
+  v5 = contactsCopy;
+  if (contactsCopy)
   {
-    if ([v4 count] < 2)
+    if ([contactsCopy count] < 2)
     {
       v6 = 0;
     }
@@ -448,36 +448,36 @@ void __57__CNContactOrbActionsController_setupActionsForContacts___block_invoke(
 
     self = [(CNContactOrbActionsController *)self initWithContacts:v5 actionCategories:v6 bypassActionValidation:0];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (CNContactOrbActionsController)initWithContact:(id)a3
+- (CNContactOrbActionsController)initWithContact:(id)contact
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  contactCopy = contact;
+  if (contactCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8[0] = v4;
+    v8[0] = contactCopy;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
     self = [(CNContactOrbActionsController *)self initWithContacts:v5];
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

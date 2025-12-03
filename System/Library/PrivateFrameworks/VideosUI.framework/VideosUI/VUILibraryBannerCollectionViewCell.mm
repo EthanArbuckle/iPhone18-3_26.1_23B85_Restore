@@ -1,35 +1,35 @@
 @interface VUILibraryBannerCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (VUILibraryBannerCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (VUILibraryBannerCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation VUILibraryBannerCollectionViewCell
 
-- (VUILibraryBannerCollectionViewCell)initWithFrame:(CGRect)a3
+- (VUILibraryBannerCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = VUILibraryBannerCollectionViewCell;
-  v3 = [(VUILibraryBannerCollectionViewCell *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUILibraryBannerCollectionViewCell *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v4 setFontSize:13.0];
     [(VUITextLayout *)v4 setFontWeight:7];
     [(VUITextLayout *)v4 setAlignment:1];
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
-    [(VUITextLayout *)v4 setColor:v5];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(VUITextLayout *)v4 setColor:whiteColor];
 
     [(VUITextLayout *)v4 setMargin:6.0, 0.0, 7.0, 0.0];
     v6 = [VUILabel labelWithString:&stru_1F5DB25C0 textLayout:v4 existingLabel:0];
     titleLabel = v3->_titleLabel;
     v3->_titleLabel = v6;
 
-    v8 = [(VUILibraryBannerCollectionViewCell *)v3 contentView];
-    [v8 addSubview:v3->_titleLabel];
+    contentView = [(VUILibraryBannerCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_titleLabel];
 
-    v9 = [MEMORY[0x1E69DC888] systemGrayColor];
-    [(VUILibraryBannerCollectionViewCell *)v3 setBackgroundColor:v9];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    [(VUILibraryBannerCollectionViewCell *)v3 setBackgroundColor:systemGrayColor];
 
     [(VUILibraryBannerCollectionViewCell *)v3 setUserInteractionEnabled:0];
   }
@@ -37,18 +37,18 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   [MEMORY[0x1E69DD2E8] vui_padding];
   [(VUILabel *)self->_titleLabel sizeThatFits:width - v5 - v6, 1.79769313e308];
   v8 = v7;
-  v9 = [(VUILabel *)self->_titleLabel textLayout];
-  [v9 margin];
+  textLayout = [(VUILabel *)self->_titleLabel textLayout];
+  [textLayout margin];
   v11 = v8 + v10;
 
-  v12 = [(VUILabel *)self->_titleLabel textLayout];
-  [v12 margin];
+  textLayout2 = [(VUILabel *)self->_titleLabel textLayout];
+  [textLayout2 margin];
   v14 = v11 + v13;
 
   v15 = width;
@@ -71,8 +71,8 @@
   [(VUILabel *)self->_titleLabel sizeThatFits:v7, 1.79769313e308];
   v9 = v8;
   titleLabel = self->_titleLabel;
-  v11 = [(VUILabel *)titleLabel textLayout];
-  [v11 margin];
+  textLayout = [(VUILabel *)titleLabel textLayout];
+  [textLayout margin];
   [(VUILabel *)titleLabel setFrame:v5, v12, v7, v9];
 }
 

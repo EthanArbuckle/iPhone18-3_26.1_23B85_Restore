@@ -6,95 +6,95 @@
 - (NLTVConnectionManager)tvConnectionManager;
 - (id)_createRootViewController;
 - (id)_fitnessDataCollectionEnabledPreference;
-- (id)_parseGoalRecommendation:(id)a3;
-- (id)provideSummaryViewControllerForDataSource:(id)a3;
+- (id)_parseGoalRecommendation:(id)recommendation;
+- (id)provideSummaryViewControllerForDataSource:(id)source;
 - (id)summaryDeeplinkViewController;
-- (int64_t)_parseFitnessCoachingNotificationType:(id)a3;
+- (int64_t)_parseFitnessCoachingNotificationType:(id)type;
 - (void)_clearWeeklyGoalDisplayContext;
 - (void)_clearWindowSceneAndOptions;
 - (void)_configureWorkoutHandler;
 - (void)_createOrbActions;
-- (void)_dismissMirrorViewControllerAndClearReferenceWithCompletion:(id)a3;
+- (void)_dismissMirrorViewControllerAndClearReferenceWithCompletion:(id)completion;
 - (void)_handleActivityShareShortcut;
-- (void)_handleActivitySharingURL:(id)a3;
+- (void)_handleActivitySharingURL:(id)l;
 - (void)_handleFriendsShortcut;
 - (void)_handleHistoryShortcut;
 - (void)_handleManuallyLoggedWorkoutNavigationNotification;
 - (void)_handleSettingsShortcut;
-- (void)_handleShortcutItem:(id)a3 didJustLaunch:(BOOL)a4;
-- (void)_handleStartWorkoutConfigurationURL:(id)a3;
+- (void)_handleShortcutItem:(id)item didJustLaunch:(BOOL)launch;
+- (void)_handleStartWorkoutConfigurationURL:(id)l;
 - (void)_handleTodayShortcut;
 - (void)_handleTrendsShortcut;
-- (void)_handleWorkoutConfigurationURL:(id)a3;
+- (void)_handleWorkoutConfigurationURL:(id)l;
 - (void)_ppt_showSharingTab;
 - (void)_presentExerciseAndStandGoalsSetupOnboarding;
 - (void)_presentMoveGoalSetupOnboarding;
-- (void)_presentOnboardingNavigationController:(id)a3;
-- (void)_presentWelcomeViewsSetupOnboarding:(BOOL)a3;
+- (void)_presentOnboardingNavigationController:(id)controller;
+- (void)_presentWelcomeViewsSetupOnboarding:(BOOL)onboarding;
 - (void)_presentWhatsNewViewSetupOnboarding;
 - (void)_refreshBadgeCounts;
-- (void)_resetToViewController:(id)a3 animated:(BOOL)a4;
+- (void)_resetToViewController:(id)controller animated:(BOOL)animated;
 - (void)_setActivityTabBarImage;
-- (void)_setBadgeCount:(unint64_t)a3 forTabBarItem:(id)a4;
-- (void)_setFitnessDataCollectionEnabled:(BOOL)a3;
-- (void)_setSelectedViewController:(id)a3;
+- (void)_setBadgeCount:(unint64_t)count forTabBarItem:(id)item;
+- (void)_setFitnessDataCollectionEnabled:(BOOL)enabled;
+- (void)_setSelectedViewController:(id)controller;
 - (void)_setupActivityAppAndLoadData;
 - (void)_setupDeeplinks;
 - (void)_setupOnboarding;
 - (void)_setupTabBarViewControllersAndOrbActions;
-- (void)_seymourAvailabilityStatusDidChange:(id)a3;
+- (void)_seymourAvailabilityStatusDidChange:(id)change;
 - (void)_showCoachingDataCollectionMessageIfNeeded;
-- (void)_trendsAvailabilityStatusDidChange:(id)a3;
+- (void)_trendsAvailabilityStatusDidChange:(id)change;
 - (void)_updateSeymourNavigationController;
-- (void)aggregator:(id)a3 didUpdateActivitySharingBadgeCount:(int64_t)a4;
-- (void)aggregator:(id)a3 didUpdateEngagmentBadgeCount:(int64_t)a4;
+- (void)aggregator:(id)aggregator didUpdateActivitySharingBadgeCount:(int64_t)count;
+- (void)aggregator:(id)aggregator didUpdateEngagmentBadgeCount:(int64_t)count;
 - (void)cleanupGuestAuthentication;
 - (void)dealloc;
-- (void)dismissMirrorViewControllerWithCompletion:(id)a3;
+- (void)dismissMirrorViewControllerWithCompletion:(id)completion;
 - (void)endDiscovery;
-- (void)handleAppIntentDeeplinkWithURL:(id)a3;
-- (void)handleAppIntentWithUserActivity:(id)a3;
-- (void)handleFitnessCoachingNotificationResponse:(id)a3;
-- (void)memoryWarningReceived:(id)a3;
-- (void)onboardingCoordinatorPhaseDidChangeTo:(int64_t)a3;
-- (void)openURLContext:(id)a3;
-- (void)presentBrowsingConsentAlertWithCompletion:(id)a3;
-- (void)presentModelOnSummaryTabWithViewController:(id)a3;
-- (void)promptForPasscodeWithLength:(int64_t)a3 completion:(id)a4;
+- (void)handleAppIntentDeeplinkWithURL:(id)l;
+- (void)handleAppIntentWithUserActivity:(id)activity;
+- (void)handleFitnessCoachingNotificationResponse:(id)response;
+- (void)memoryWarningReceived:(id)received;
+- (void)onboardingCoordinatorPhaseDidChangeTo:(int64_t)to;
+- (void)openURLContext:(id)context;
+- (void)presentBrowsingConsentAlertWithCompletion:(id)completion;
+- (void)presentModelOnSummaryTabWithViewController:(id)controller;
+- (void)promptForPasscodeWithLength:(int64_t)length completion:(id)completion;
 - (void)ringCelebrationDidBegin;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)trophyCaseDidBeginCelebration:(id)a3;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)trophyCaseDidBeginCelebration:(id)celebration;
 - (void)updateTVDiscovery;
-- (void)updateWorkoutState:(int64_t)a3 shouldShowTimeout:(BOOL)a4;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
-- (void)userNotificationCenter:(id)a3 openSettingsForNotification:(id)a4;
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5;
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
+- (void)updateWorkoutState:(int64_t)state shouldShowTimeout:(BOOL)timeout;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)userNotificationCenter:(id)center openSettingsForNotification:(id)notification;
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler;
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler;
 @end
 
 @implementation PhoneSceneDelegate
 
 - (BOOL)presentingActiveWorkout
 {
-  v3 = [(PhoneSceneDelegate *)self workoutController];
-  v4 = [v3 activeWorkout];
-  if (v4)
+  workoutController = [(PhoneSceneDelegate *)self workoutController];
+  activeWorkout = [workoutController activeWorkout];
+  if (activeWorkout)
   {
-    v5 = 1;
+    isMirroringSessionActive = 1;
   }
 
   else
   {
-    v5 = [(PhoneSceneDelegate *)self isMirroringSessionActive];
+    isMirroringSessionActive = [(PhoneSceneDelegate *)self isMirroringSessionActive];
   }
 
-  return v5;
+  return isMirroringSessionActive;
 }
 
 - (BOOL)isMirroringSessionActive
@@ -135,11 +135,11 @@
   achievementLocalizationProvider = self->_achievementLocalizationProvider;
   self->_achievementLocalizationProvider = v10;
 
-  v12 = [(FIUIFormattingManager *)self->_fitnessUIFormattingManager unitManager];
-  v13 = v12;
-  if (v12)
+  unitManager = [(FIUIFormattingManager *)self->_fitnessUIFormattingManager unitManager];
+  v13 = unitManager;
+  if (unitManager)
   {
-    if ([v12 conformsToProtocol:&OBJC_PROTOCOL___ACHUnitManager])
+    if ([unitManager conformsToProtocol:&OBJC_PROTOCOL___ACHUnitManager])
     {
       [(ACHAchievementLocalizationProvider *)self->_achievementLocalizationProvider setAchUnitManager:v13];
     }
@@ -170,9 +170,9 @@
   friendListManager = self->_friendListManager;
   self->_friendListManager = v19;
 
-  v21 = [(CHHistoryDataProvider *)self->_historyDataProvider workoutDataProvider];
+  workoutDataProvider = [(CHHistoryDataProvider *)self->_historyDataProvider workoutDataProvider];
   workoutsDataProvider = self->_workoutsDataProvider;
-  self->_workoutsDataProvider = v21;
+  self->_workoutsDataProvider = workoutDataProvider;
 
   v23 = objc_alloc_init(_TtC10FitnessApp17ActivityDateCache);
   activityDateCache = self->_activityDateCache;
@@ -224,24 +224,24 @@
   v47 = +[_TtC10FitnessApp25TrendsAvailabilityManager trendsAvailabilityDidChangeNotification];
   [v46 addObserver:self selector:"_trendsAvailabilityStatusDidChange:" name:v47 object:self->_trendsAvailabilityManager];
 
-  v48 = [(PhoneSceneDelegate *)self _createRootViewController];
-  [(PhoneSceneDelegate *)self setRootViewController:v48];
+  _createRootViewController = [(PhoneSceneDelegate *)self _createRootViewController];
+  [(PhoneSceneDelegate *)self setRootViewController:_createRootViewController];
 
-  v49 = [(PhoneSceneDelegate *)self window];
-  v50 = [(PhoneSceneDelegate *)self rootViewController];
-  [v49 setRootViewController:v50];
+  window = [(PhoneSceneDelegate *)self window];
+  rootViewController = [(PhoneSceneDelegate *)self rootViewController];
+  [window setRootViewController:rootViewController];
 
-  v51 = [(PhoneSceneDelegate *)self window];
-  [v51 makeKeyAndVisible];
+  window2 = [(PhoneSceneDelegate *)self window];
+  [window2 makeKeyAndVisible];
 
   v52 = +[NSNotificationCenter defaultCenter];
   [v52 addObserver:self selector:"updateTVDiscovery" name:UIApplicationDidBecomeActiveNotification object:0];
 
   if (self->_loadingView)
   {
-    v53 = [(CHTabBarController *)self->_tabBarController view];
+    view = [(CHTabBarController *)self->_tabBarController view];
     CGAffineTransformMakeScale(&buf, 0.9, 0.9);
-    [v53 setTransform:&buf];
+    [view setTransform:&buf];
 
     v56[0] = _NSConcreteStackBlock;
     v56[1] = 3221225472;
@@ -272,28 +272,28 @@
   v3 = +[ActivitySummaryCache sharedInstance];
   [v3 loadDataIfNeeded];
 
-  v4 = [(PhoneSceneDelegate *)self workoutsDataProvider];
-  [v4 startFetching];
+  workoutsDataProvider = [(PhoneSceneDelegate *)self workoutsDataProvider];
+  [workoutsDataProvider startFetching];
 
-  v5 = [(PhoneSceneDelegate *)self workoutsDataProvider];
-  self->_hasCurrentWorkouts = [v5 hasWorkouts];
+  workoutsDataProvider2 = [(PhoneSceneDelegate *)self workoutsDataProvider];
+  self->_hasCurrentWorkouts = [workoutsDataProvider2 hasWorkouts];
 
   [(PhoneSceneDelegate *)self _configureWorkoutHandler];
   v6 = [CHActivityHistoryNavigationController alloc];
-  v7 = [(PhoneSceneDelegate *)self activityDateCache];
-  v8 = [(PhoneSceneDelegate *)self pauseRingsCoordinator];
-  v9 = [(CHActivityHistoryNavigationController *)v6 initWithDateCache:v7 pauseRingsCoordinator:v8];
+  activityDateCache = [(PhoneSceneDelegate *)self activityDateCache];
+  pauseRingsCoordinator = [(PhoneSceneDelegate *)self pauseRingsCoordinator];
+  v9 = [(CHActivityHistoryNavigationController *)v6 initWithDateCache:activityDateCache pauseRingsCoordinator:pauseRingsCoordinator];
   [(PhoneSceneDelegate *)self setActivityTileNavController:v9];
 
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:@"SUMMARY" value:&stru_1008680E8 table:@"Localizable"];
-  v12 = [(PhoneSceneDelegate *)self activityTileNavController];
-  v13 = [v12 tabBarItem];
-  [v13 setTitle:v11];
+  activityTileNavController = [(PhoneSceneDelegate *)self activityTileNavController];
+  tabBarItem = [activityTileNavController tabBarItem];
+  [tabBarItem setTitle:v11];
 
-  v14 = [(PhoneSceneDelegate *)self activityTileNavController];
-  v15 = [v14 tabBarItem];
-  [v15 setAccessibilityIdentifier:FIUITabBarSummaryAccessibilityIdentifier];
+  activityTileNavController2 = [(PhoneSceneDelegate *)self activityTileNavController];
+  tabBarItem2 = [activityTileNavController2 tabBarItem];
+  [tabBarItem2 setAccessibilityIdentifier:FIUITabBarSummaryAccessibilityIdentifier];
 
   [(PhoneSceneDelegate *)self _setActivityTabBarImage];
   objc_initWeak(&location, self);
@@ -309,36 +309,36 @@
   [(PhoneSceneDelegate *)self setFriendManager:v17];
 
   v18 = [_TtC10FitnessApp23FriendsSetupCoordinator alloc];
-  v19 = [(PhoneSceneDelegate *)self friendManager];
-  v20 = [(PhoneSceneDelegate *)self friendListManager];
-  v21 = [(FriendsSetupCoordinator *)v18 initWithFriendManager:v19 friendListSectionManager:v20];
+  friendManager = [(PhoneSceneDelegate *)self friendManager];
+  friendListManager = [(PhoneSceneDelegate *)self friendListManager];
+  v21 = [(FriendsSetupCoordinator *)v18 initWithFriendManager:friendManager friendListSectionManager:friendListManager];
   [(PhoneSceneDelegate *)self setFriendsSetupCoordinator:v21];
 
   v22 = [CHWorkoutBrowsingViewController alloc];
   healthStore = self->_healthStore;
-  v24 = [(PhoneSceneDelegate *)self fitnessUIFormattingManager];
-  v25 = [(PhoneSceneDelegate *)self workoutController];
-  v26 = [(PhoneSceneDelegate *)self activityPausedRingsObserver];
-  v27 = [(PhoneSceneDelegate *)self workoutOccurrenceStore];
-  v28 = [(PhoneSceneDelegate *)self fitnessIntelligenceConnection];
-  v29 = [(PhoneSceneDelegate *)self workoutVoiceAvailabilityProvider];
-  v30 = [(PhoneSceneDelegate *)self fitnessAppContext];
-  v31 = [(CHWorkoutBrowsingViewController *)v22 initWithHealthStore:healthStore formattingManager:v24 workoutController:v25 activityPausedRingsObserverBridge:v26 occurrenceStore:v27 fitnessIntelligenceConnection:v28 workoutVoiceAvailabilityProvider:v29 fitnessAppContext:v30];
+  fitnessUIFormattingManager = [(PhoneSceneDelegate *)self fitnessUIFormattingManager];
+  workoutController = [(PhoneSceneDelegate *)self workoutController];
+  activityPausedRingsObserver = [(PhoneSceneDelegate *)self activityPausedRingsObserver];
+  workoutOccurrenceStore = [(PhoneSceneDelegate *)self workoutOccurrenceStore];
+  fitnessIntelligenceConnection = [(PhoneSceneDelegate *)self fitnessIntelligenceConnection];
+  workoutVoiceAvailabilityProvider = [(PhoneSceneDelegate *)self workoutVoiceAvailabilityProvider];
+  fitnessAppContext = [(PhoneSceneDelegate *)self fitnessAppContext];
+  v31 = [(CHWorkoutBrowsingViewController *)v22 initWithHealthStore:healthStore formattingManager:fitnessUIFormattingManager workoutController:workoutController activityPausedRingsObserverBridge:activityPausedRingsObserver occurrenceStore:workoutOccurrenceStore fitnessIntelligenceConnection:fitnessIntelligenceConnection workoutVoiceAvailabilityProvider:workoutVoiceAvailabilityProvider fitnessAppContext:fitnessAppContext];
   [(PhoneSceneDelegate *)self setWorkoutBrowsingViewController:v31];
 
-  v32 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
-  v33 = [(PhoneSceneDelegate *)self workoutController];
-  v34 = [(FIUIFormattingManager *)self->_fitnessUIFormattingManager unitManager];
-  v35 = [v34 unitManager];
-  v36 = [(PhoneSceneDelegate *)self fitnessIntelligenceConnection];
-  v37 = [(PhoneSceneDelegate *)self workoutVoiceAvailabilityProvider];
-  v38 = [(PhoneSceneDelegate *)self fitnessAppContext];
+  workoutBrowsingViewController = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
+  workoutController2 = [(PhoneSceneDelegate *)self workoutController];
+  unitManager = [(FIUIFormattingManager *)self->_fitnessUIFormattingManager unitManager];
+  v34UnitManager = [unitManager unitManager];
+  fitnessIntelligenceConnection2 = [(PhoneSceneDelegate *)self fitnessIntelligenceConnection];
+  workoutVoiceAvailabilityProvider2 = [(PhoneSceneDelegate *)self workoutVoiceAvailabilityProvider];
+  fitnessAppContext2 = [(PhoneSceneDelegate *)self fitnessAppContext];
   v130[0] = _NSConcreteStackBlock;
   v130[1] = 3221225472;
   v130[2] = sub_10012371C;
   v130[3] = &unk_10083CE98;
   objc_copyWeak(&v131, &location);
-  v39 = [CHWorkoutUIControllerFactory makeWithRootViewController:v32 workoutController:v33 unitManager:v35 fitnessIntelligenceConnection:v36 workoutVoiceAvailabilityProvider:v37 fitnessAppContext:v38 summaryViewControllerCompletion:v130];
+  v39 = [CHWorkoutUIControllerFactory makeWithRootViewController:workoutBrowsingViewController workoutController:workoutController2 unitManager:v34UnitManager fitnessIntelligenceConnection:fitnessIntelligenceConnection2 workoutVoiceAvailabilityProvider:workoutVoiceAvailabilityProvider2 fitnessAppContext:fitnessAppContext2 summaryViewControllerCompletion:v130];
   [(PhoneSceneDelegate *)self setWorkoutUIController:v39];
 
   if (sub_100011DC8())
@@ -363,67 +363,67 @@
     fitnessAppContext = self->_fitnessAppContext;
     wheelchairUseCache = self->_wheelchairUseCache;
     trendsAvailabilityManager = self->_trendsAvailabilityManager;
-    v48 = [(CHWorkoutVoiceAvailabilityProvider *)self->_workoutVoiceAvailabilityProvider bridgedValue];
-    v128 = [(ActivityDashboardContext *)v127 initWithActivityDataProvider:activityDataProvider activityDateCache:activityDateCache achievementsDataProvider:achievementsDataProvider balanceDataProvider:balanceDataProvider pauseRingsCoordinator:pauseRingsCoordinator historyDataProvider:historyDataProvider workoutFormattingManager:workoutFormattingManager workoutDataProvider:workoutsDataProvider friendListManager:friendListManager friendsSetupCoordinator:friendsSetupCoordinator chFriendManager:friendManager achievementLocalizationProvider:achievementLocalizationProvider badgeImageFactory:badgeImageFactory healthStore:v43 fiuiFormattingManager:fitnessUIFormattingManager fitnessAppContext:fitnessAppContext wheelchairUseCache:wheelchairUseCache trendsAvailabilityManager:trendsAvailabilityManager workoutVoiceAvailabilityProvider:v48];
+    bridgedValue = [(CHWorkoutVoiceAvailabilityProvider *)self->_workoutVoiceAvailabilityProvider bridgedValue];
+    v128 = [(ActivityDashboardContext *)v127 initWithActivityDataProvider:activityDataProvider activityDateCache:activityDateCache achievementsDataProvider:achievementsDataProvider balanceDataProvider:balanceDataProvider pauseRingsCoordinator:pauseRingsCoordinator historyDataProvider:historyDataProvider workoutFormattingManager:workoutFormattingManager workoutDataProvider:workoutsDataProvider friendListManager:friendListManager friendsSetupCoordinator:friendsSetupCoordinator chFriendManager:friendManager achievementLocalizationProvider:achievementLocalizationProvider badgeImageFactory:badgeImageFactory healthStore:v43 fiuiFormattingManager:fitnessUIFormattingManager fitnessAppContext:fitnessAppContext wheelchairUseCache:wheelchairUseCache trendsAvailabilityManager:trendsAvailabilityManager workoutVoiceAvailabilityProvider:bridgedValue];
 
-    v49 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
-    v50 = [v49 viewModel];
-    [(ActivityDashboardContext *)v128 setStandardActivityItemsViewModel:v50];
+    workoutBrowsingViewController2 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
+    viewModel = [workoutBrowsingViewController2 viewModel];
+    [(ActivityDashboardContext *)v128 setStandardActivityItemsViewModel:viewModel];
 
     v51 = [[_TtC10FitnessApp31ActivityDashboardViewController alloc] initWithCollectionViewLayout:v124 context:v128 healthStore:self->_healthStore];
     [(PhoneSceneDelegate *)self setActivityDashboardViewController:v51];
 
-    v52 = [(PhoneSceneDelegate *)self activityDashboardViewController];
-    [v52 setTrophyCaseViewControllerDelegate:self];
+    activityDashboardViewController = [(PhoneSceneDelegate *)self activityDashboardViewController];
+    [activityDashboardViewController setTrophyCaseViewControllerDelegate:self];
 
-    v53 = [(PhoneSceneDelegate *)self activityDashboardViewController];
-    [v53 setHistoryPagingViewControllerDelegate:self];
+    activityDashboardViewController2 = [(PhoneSceneDelegate *)self activityDashboardViewController];
+    [activityDashboardViewController2 setHistoryPagingViewControllerDelegate:self];
 
-    v54 = [(PhoneSceneDelegate *)self activityDashboardViewController];
-    v55 = [v54 navigationItem];
-    [v55 setLargeTitleDisplayMode:3];
+    activityDashboardViewController3 = [(PhoneSceneDelegate *)self activityDashboardViewController];
+    navigationItem = [activityDashboardViewController3 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:3];
 
-    v56 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
-    v57 = [(PhoneSceneDelegate *)self activityDashboardViewController];
-    [v57 setQuickStartWorkoutActionHandler:v56];
+    workoutBrowsingViewController3 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
+    activityDashboardViewController4 = [(PhoneSceneDelegate *)self activityDashboardViewController];
+    [activityDashboardViewController4 setQuickStartWorkoutActionHandler:workoutBrowsingViewController3];
 
-    v58 = [(PhoneSceneDelegate *)self activityTileNavController];
-    v59 = [(PhoneSceneDelegate *)self activityDashboardViewController];
-    v136 = v59;
+    activityTileNavController3 = [(PhoneSceneDelegate *)self activityTileNavController];
+    activityDashboardViewController5 = [(PhoneSceneDelegate *)self activityDashboardViewController];
+    v136 = activityDashboardViewController5;
     v60 = [NSArray arrayWithObjects:&v136 count:1];
-    [v58 setViewControllers:v60];
+    [activityTileNavController3 setViewControllers:v60];
 
-    v125 = [(ActivityDashboardContext *)v128 chAwardsDataProvider];
+    chAwardsDataProvider = [(ActivityDashboardContext *)v128 chAwardsDataProvider];
   }
 
   else
   {
     v61 = [_TtC10FitnessApp26ActivityTileViewController alloc];
-    v129 = [(PhoneSceneDelegate *)self healthStore];
-    v126 = [(PhoneSceneDelegate *)self fitnessAppContext];
-    v123 = [(PhoneSceneDelegate *)self activityDataProvider];
-    v120 = [(PhoneSceneDelegate *)self pauseRingsCoordinator];
-    v117 = [(PhoneSceneDelegate *)self historyDataProvider];
-    v115 = [(PhoneSceneDelegate *)self achievementsDataProvider];
-    v113 = [(PhoneSceneDelegate *)self achievementLocalizationProvider];
-    v62 = [(PhoneSceneDelegate *)self model];
-    v63 = [(PhoneSceneDelegate *)self badgeImageFactory];
-    v64 = [(PhoneSceneDelegate *)self friendListManager];
-    v65 = [(PhoneSceneDelegate *)self fitnessUIFormattingManager];
-    v66 = [(PhoneSceneDelegate *)self workoutFormattingManager];
-    v67 = [(PhoneSceneDelegate *)self activityDateCache];
-    v68 = [(PhoneSceneDelegate *)self trendsAvailabilityManager];
-    v69 = [(PhoneSceneDelegate *)self wheelchairUseCache];
-    v70 = [(ActivityTileViewController *)v61 initWithHealthStore:v129 fitnessAppContext:v126 activityDataProvider:v123 pauseRingsCoordinator:v120 historyDataProvider:v117 achievementsDataProvider:v115 achievementLocalizationProvider:v113 fiuiModel:v62 badgeImageFactory:v63 friendListManager:v64 fiuiFormattingManager:v65 workoutFormattingManager:v66 activityDateCache:v67 trendsAvailabilityManager:v68 wheelchairUseCache:v69];
+    healthStore = [(PhoneSceneDelegate *)self healthStore];
+    fitnessAppContext3 = [(PhoneSceneDelegate *)self fitnessAppContext];
+    activityDataProvider = [(PhoneSceneDelegate *)self activityDataProvider];
+    pauseRingsCoordinator2 = [(PhoneSceneDelegate *)self pauseRingsCoordinator];
+    historyDataProvider = [(PhoneSceneDelegate *)self historyDataProvider];
+    achievementsDataProvider = [(PhoneSceneDelegate *)self achievementsDataProvider];
+    achievementLocalizationProvider = [(PhoneSceneDelegate *)self achievementLocalizationProvider];
+    model = [(PhoneSceneDelegate *)self model];
+    badgeImageFactory = [(PhoneSceneDelegate *)self badgeImageFactory];
+    friendListManager2 = [(PhoneSceneDelegate *)self friendListManager];
+    fitnessUIFormattingManager2 = [(PhoneSceneDelegate *)self fitnessUIFormattingManager];
+    workoutFormattingManager = [(PhoneSceneDelegate *)self workoutFormattingManager];
+    activityDateCache2 = [(PhoneSceneDelegate *)self activityDateCache];
+    trendsAvailabilityManager = [(PhoneSceneDelegate *)self trendsAvailabilityManager];
+    wheelchairUseCache = [(PhoneSceneDelegate *)self wheelchairUseCache];
+    v70 = [(ActivityTileViewController *)v61 initWithHealthStore:healthStore fitnessAppContext:fitnessAppContext3 activityDataProvider:activityDataProvider pauseRingsCoordinator:pauseRingsCoordinator2 historyDataProvider:historyDataProvider achievementsDataProvider:achievementsDataProvider achievementLocalizationProvider:achievementLocalizationProvider fiuiModel:model badgeImageFactory:badgeImageFactory friendListManager:friendListManager2 fiuiFormattingManager:fitnessUIFormattingManager2 workoutFormattingManager:workoutFormattingManager activityDateCache:activityDateCache2 trendsAvailabilityManager:trendsAvailabilityManager wheelchairUseCache:wheelchairUseCache];
     [(PhoneSceneDelegate *)self setActivityTileViewController:v70];
 
-    v71 = [(PhoneSceneDelegate *)self activityTileNavController];
-    v72 = [(PhoneSceneDelegate *)self activityTileViewController];
-    v135 = v72;
+    activityTileNavController4 = [(PhoneSceneDelegate *)self activityTileNavController];
+    activityTileViewController = [(PhoneSceneDelegate *)self activityTileViewController];
+    v135 = activityTileViewController;
     v73 = [NSArray arrayWithObjects:&v135 count:1];
-    [v71 setViewControllers:v73];
+    [activityTileNavController4 setViewControllers:v73];
 
-    v125 = [(ActivityTileViewController *)self->_activityTileViewController awardsDataProviderWrapper];
+    chAwardsDataProvider = [(ActivityTileViewController *)self->_activityTileViewController awardsDataProviderWrapper];
     v128 = 0;
   }
 
@@ -437,46 +437,46 @@
   v79 = self->_friendsSetupCoordinator;
   v80 = self->_friendManager;
   v81 = self->_healthStore;
-  v82 = [(CHFitnessAppContext *)v76 seymourCatalogItemDataProvider];
-  v83 = [CHActivitySharingViewControllerFactory makeWithAchievementBadgeImageFactory:v121 achievementLocalizationProvider:v118 achievementsDataProvider:v74 activitySharingClient:activitySharingClient awardsDataProvider:v125 fitnessAppContext:v76 fiuiFormattingManager:v77 friendListSectionManager:v78 friendsSetupCoordinator:v79 friendManager:v80 healthStore:v81 seymourCatalogItemDataProvider:v82 wheelchairUseCache:self->_wheelchairUseCache workoutDataProvider:self->_workoutsDataProvider workoutFormattingManager:self->_workoutFormattingManager pauseRingsCoordinator:self->_pauseRingsCoordinator];
+  seymourCatalogItemDataProvider = [(CHFitnessAppContext *)v76 seymourCatalogItemDataProvider];
+  v83 = [CHActivitySharingViewControllerFactory makeWithAchievementBadgeImageFactory:v121 achievementLocalizationProvider:v118 achievementsDataProvider:v74 activitySharingClient:activitySharingClient awardsDataProvider:chAwardsDataProvider fitnessAppContext:v76 fiuiFormattingManager:v77 friendListSectionManager:v78 friendsSetupCoordinator:v79 friendManager:v80 healthStore:v81 seymourCatalogItemDataProvider:seymourCatalogItemDataProvider wheelchairUseCache:self->_wheelchairUseCache workoutDataProvider:self->_workoutsDataProvider workoutFormattingManager:self->_workoutFormattingManager pauseRingsCoordinator:self->_pauseRingsCoordinator];
   [(PhoneSceneDelegate *)self setActivitySharingViewController:v83];
 
   v84 = [UIImage _systemImageNamed:@"person.2.fill"];
-  v85 = [(PhoneSceneDelegate *)self activitySharingViewController];
-  v86 = [v85 tabBarItem];
-  [v86 setImage:v84];
+  activitySharingViewController = [(PhoneSceneDelegate *)self activitySharingViewController];
+  tabBarItem3 = [activitySharingViewController tabBarItem];
+  [tabBarItem3 setImage:v84];
 
   v87 = +[NSBundle mainBundle];
   v88 = [v87 localizedStringForKey:@"SHARING" value:&stru_1008680E8 table:@"Localizable"];
-  v89 = [(PhoneSceneDelegate *)self activitySharingViewController];
-  v90 = [v89 tabBarItem];
-  [v90 setTitle:v88];
+  activitySharingViewController2 = [(PhoneSceneDelegate *)self activitySharingViewController];
+  tabBarItem4 = [activitySharingViewController2 tabBarItem];
+  [tabBarItem4 setTitle:v88];
 
-  v91 = [(PhoneSceneDelegate *)self activitySharingViewController];
-  v92 = [v91 tabBarItem];
-  [v92 setAccessibilityIdentifier:FIUITabBarSharingAccessibilityIdentifier];
+  activitySharingViewController3 = [(PhoneSceneDelegate *)self activitySharingViewController];
+  tabBarItem5 = [activitySharingViewController3 tabBarItem];
+  [tabBarItem5 setAccessibilityIdentifier:FIUITabBarSharingAccessibilityIdentifier];
 
   v93 = objc_alloc_init(CHTabBarController);
   [(PhoneSceneDelegate *)self setTabBarController:v93];
 
   [(PhoneSceneDelegate *)self _setupTabBarViewControllersAndOrbActions];
   v94 = +[ARUIMetricColors keyColors];
-  v95 = [v94 nonGradientTextColor];
+  nonGradientTextColor = [v94 nonGradientTextColor];
 
-  v96 = [(PhoneSceneDelegate *)self window];
-  [v96 setTintColor:v95];
+  window = [(PhoneSceneDelegate *)self window];
+  [window setTintColor:nonGradientTextColor];
 
   v97 = [CHNavigationTracker alloc];
-  v98 = [(PhoneSceneDelegate *)self tabBarController];
-  v99 = [(PhoneSceneDelegate *)self fitnessAppContext];
-  v100 = [(PhoneSceneDelegate *)self workoutController];
-  v101 = [(CHNavigationTracker *)v97 initWithTabBarController:v98 fitnessAppContext:v99 workoutController:v100];
+  tabBarController = [(PhoneSceneDelegate *)self tabBarController];
+  fitnessAppContext4 = [(PhoneSceneDelegate *)self fitnessAppContext];
+  workoutController3 = [(PhoneSceneDelegate *)self workoutController];
+  v101 = [(CHNavigationTracker *)v97 initWithTabBarController:tabBarController fitnessAppContext:fitnessAppContext4 workoutController:workoutController3];
   [(PhoneSceneDelegate *)self setNavigationTracker:v101];
 
   v102 = [CHRootViewController alloc];
-  v103 = [(PhoneSceneDelegate *)self tabBarController];
-  v104 = [(PhoneSceneDelegate *)self healthStore];
-  v105 = [(CHRootViewController *)v102 initWithTabBarController:v103 healthStore:v104];
+  tabBarController2 = [(PhoneSceneDelegate *)self tabBarController];
+  healthStore2 = [(PhoneSceneDelegate *)self healthStore];
+  v105 = [(CHRootViewController *)v102 initWithTabBarController:tabBarController2 healthStore:healthStore2];
 
   objc_destroyWeak(&v131);
   objc_destroyWeak(&v133);
@@ -503,13 +503,13 @@
 
 - (void)_setupTabBarViewControllersAndOrbActions
 {
-  v3 = [(PhoneSceneDelegate *)self activityTileNavController];
-  v33 = v3;
+  activityTileNavController = [(PhoneSceneDelegate *)self activityTileNavController];
+  v33 = activityTileNavController;
   v4 = [NSArray arrayWithObjects:&v33 count:1];
 
-  v5 = [(PhoneSceneDelegate *)self seymourNavController];
+  seymourNavController = [(PhoneSceneDelegate *)self seymourNavController];
 
-  if (v5)
+  if (seymourNavController)
   {
     _HKInitializeLogging();
     v6 = HKLogActivity;
@@ -519,22 +519,22 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[seymour] Adding navigation controller to tab bar", v32, 2u);
     }
 
-    v7 = [(PhoneSceneDelegate *)self seymourNavController];
-    v8 = [v4 arrayByAddingObject:v7];
+    seymourNavController2 = [(PhoneSceneDelegate *)self seymourNavController];
+    v8 = [v4 arrayByAddingObject:seymourNavController2];
 
     v9 = FIUITabBarFitnessPlusAccessibilityIdentifier;
-    v10 = [(PhoneSceneDelegate *)self seymourNavController];
-    v11 = [v10 tabBarItem];
-    [v11 setAccessibilityIdentifier:v9];
+    seymourNavController3 = [(PhoneSceneDelegate *)self seymourNavController];
+    tabBarItem = [seymourNavController3 tabBarItem];
+    [tabBarItem setAccessibilityIdentifier:v9];
 
     v4 = v8;
   }
 
   if ((_os_feature_enabled_impl() & 1) != 0 || (os_variant_has_internal_content() & 1) == 0)
   {
-    v12 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
+    workoutBrowsingViewController = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
 
-    if (v12)
+    if (workoutBrowsingViewController)
     {
       _HKInitializeLogging();
       v13 = HKLogWorkouts;
@@ -544,47 +544,47 @@
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[workout] Adding workout navigation controller to tab bar", v32, 2u);
       }
 
-      v14 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
-      v15 = [v4 arrayByAddingObject:v14];
+      workoutBrowsingViewController2 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
+      v15 = [v4 arrayByAddingObject:workoutBrowsingViewController2];
 
       v16 = +[NSBundle mainBundle];
       v17 = [v16 localizedStringForKey:@"WORKOUT" value:&stru_1008680E8 table:@"Localizable"];
-      v18 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
-      v19 = [v18 tabBarItem];
-      [v19 setTitle:v17];
+      workoutBrowsingViewController3 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
+      tabBarItem2 = [workoutBrowsingViewController3 tabBarItem];
+      [tabBarItem2 setTitle:v17];
 
       v20 = [UIImage _systemImageNamed:@"figure.run.circle.fill"];
-      v21 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
-      v22 = [v21 tabBarItem];
-      [v22 setImage:v20];
+      workoutBrowsingViewController4 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
+      tabBarItem3 = [workoutBrowsingViewController4 tabBarItem];
+      [tabBarItem3 setImage:v20];
 
       v23 = FIUITabBarWorkoutAccessibilityIdentifier;
-      v24 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
-      v25 = [v24 tabBarItem];
-      [v25 setAccessibilityIdentifier:v23];
+      workoutBrowsingViewController5 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
+      tabBarItem4 = [workoutBrowsingViewController5 tabBarItem];
+      [tabBarItem4 setAccessibilityIdentifier:v23];
 
       v26 = [[NSUserActivity alloc] initWithActivityType:@"Fitness Workout"];
       [v26 setEligibleForHandoff:0];
       [v26 setUserInfo:&off_10086E520];
-      v27 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
-      [v27 setUserActivity:v26];
+      workoutBrowsingViewController6 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
+      [workoutBrowsingViewController6 setUserActivity:v26];
 
       v4 = v15;
     }
   }
 
-  v28 = [(PhoneSceneDelegate *)self activitySharingViewController];
+  activitySharingViewController = [(PhoneSceneDelegate *)self activitySharingViewController];
 
-  if (v28)
+  if (activitySharingViewController)
   {
-    v29 = [(PhoneSceneDelegate *)self activitySharingViewController];
-    v30 = [v4 arrayByAddingObject:v29];
+    activitySharingViewController2 = [(PhoneSceneDelegate *)self activitySharingViewController];
+    v30 = [v4 arrayByAddingObject:activitySharingViewController2];
 
     v4 = v30;
   }
 
-  v31 = [(PhoneSceneDelegate *)self tabBarController];
-  [v31 setViewControllers:v4];
+  tabBarController = [(PhoneSceneDelegate *)self tabBarController];
+  [tabBarController setViewControllers:v4];
 
   [(PhoneSceneDelegate *)self _createOrbActions];
   [(PhoneSceneDelegate *)self _setupDeeplinks];
@@ -593,20 +593,20 @@
 - (void)_createOrbActions
 {
   v28 = objc_alloc_init(NSMutableArray);
-  v3 = [(PhoneSceneDelegate *)self trendsAvailabilityManager];
-  if ([v3 trendsAvailability] != 1)
+  trendsAvailabilityManager = [(PhoneSceneDelegate *)self trendsAvailabilityManager];
+  if ([trendsAvailabilityManager trendsAvailability] != 1)
   {
-    v4 = [(PhoneSceneDelegate *)self trendsAvailabilityManager];
-    v5 = [v4 trendsAvailability];
+    trendsAvailabilityManager2 = [(PhoneSceneDelegate *)self trendsAvailabilityManager];
+    trendsAvailability = [trendsAvailabilityManager2 trendsAvailability];
 
-    if (!v5)
+    if (!trendsAvailability)
     {
       goto LABEL_5;
     }
 
     v6 = [UIApplicationShortcutItem alloc];
-    v3 = +[NSBundle mainBundle];
-    v7 = [v3 localizedStringForKey:@"ORB_TRENDS_ACTION" value:&stru_1008680E8 table:@"Localizable"];
+    trendsAvailabilityManager = +[NSBundle mainBundle];
+    v7 = [trendsAvailabilityManager localizedStringForKey:@"ORB_TRENDS_ACTION" value:&stru_1008680E8 table:@"Localizable"];
     v8 = [UIApplicationShortcutIcon iconWithSystemImageName:@"chevron.up.circle"];
     v9 = [v6 initWithType:@"com.apple.Fitness.opentrendsshortcut" localizedTitle:v7 localizedSubtitle:0 icon:v8 userInfo:0];
     [v28 addObject:v9];
@@ -792,17 +792,17 @@ LABEL_5:
   v36[3] = &unk_10083CEC0;
   v36[4] = self;
   [(CHNavigator *)v23 registerURLHandlerWithSlug:@"summary/:id:" completion:v36];
-  v24 = [(PhoneSceneDelegate *)self trendsAvailabilityManager];
-  if ([v24 trendsAvailability] == 1)
+  trendsAvailabilityManager = [(PhoneSceneDelegate *)self trendsAvailabilityManager];
+  if ([trendsAvailabilityManager trendsAvailability] == 1)
   {
   }
 
   else
   {
-    v25 = [(PhoneSceneDelegate *)self trendsAvailabilityManager];
-    v26 = [v25 trendsAvailability];
+    trendsAvailabilityManager2 = [(PhoneSceneDelegate *)self trendsAvailabilityManager];
+    trendsAvailability = [trendsAvailabilityManager2 trendsAvailability];
 
-    if (v26)
+    if (trendsAvailability)
     {
       v27 = self->_deeplinkNavigator;
       v35[0] = _NSConcreteStackBlock;
@@ -845,24 +845,24 @@ LABEL_5:
 - (void)_setActivityTabBarImage
 {
   v3 = +[_HKBehavior sharedBehavior];
-  v4 = [v3 isStandalonePhoneFitnessMode];
+  isStandalonePhoneFitnessMode = [v3 isStandalonePhoneFitnessMode];
   v5 = &off_10083D328;
-  if (!v4)
+  if (!isStandalonePhoneFitnessMode)
   {
     v5 = &off_10083D320;
   }
 
   v8 = [UIImage _systemImageNamed:*v5];
 
-  v6 = [(PhoneSceneDelegate *)self activityTileNavController];
-  v7 = [v6 tabBarItem];
-  [v7 setImage:v8];
+  activityTileNavController = [(PhoneSceneDelegate *)self activityTileNavController];
+  tabBarItem = [activityTileNavController tabBarItem];
+  [tabBarItem setImage:v8];
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v7 = a3;
-  v8 = a5;
+  sceneCopy = scene;
+  optionsCopy = options;
   if ([(PhoneSceneDelegate *)self presentingActiveWorkout])
   {
     _HKInitializeLogging();
@@ -879,47 +879,47 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v7;
-      [(PhoneSceneDelegate *)self setConnectionOptions:v8];
+      v10 = sceneCopy;
+      [(PhoneSceneDelegate *)self setConnectionOptions:optionsCopy];
       [(PhoneSceneDelegate *)self setWindowScene:v10];
       v74 = v10;
       v11 = [[UIWindow alloc] initWithWindowScene:v10];
       [(PhoneSceneDelegate *)self setWindow:v11];
 
-      v12 = [(PhoneSceneDelegate *)self window];
+      window = [(PhoneSceneDelegate *)self window];
       v13 = +[UIColor blackColor];
-      [v12 setBackgroundColor:v13];
+      [window setBackgroundColor:v13];
 
-      v14 = [(PhoneSceneDelegate *)self window];
-      [v14 _accessibilitySetInterfaceStyleIntent:2];
+      window2 = [(PhoneSceneDelegate *)self window];
+      [window2 _accessibilitySetInterfaceStyleIntent:2];
 
       v15 = +[UIApplication sharedApplication];
-      v16 = [v15 delegate];
-      v17 = [v16 healthStore];
-      [(PhoneSceneDelegate *)self setHealthStore:v17];
+      delegate = [v15 delegate];
+      healthStore = [delegate healthStore];
+      [(PhoneSceneDelegate *)self setHealthStore:healthStore];
 
       v18 = +[UIApplication sharedApplication];
-      v19 = [v18 delegate];
-      v20 = [v19 historyDataProvider];
-      [(PhoneSceneDelegate *)self setHistoryDataProvider:v20];
+      delegate2 = [v18 delegate];
+      historyDataProvider = [delegate2 historyDataProvider];
+      [(PhoneSceneDelegate *)self setHistoryDataProvider:historyDataProvider];
 
       v21 = [[_HKWheelchairUseCharacteristicCache alloc] initWithHealthStore:self->_healthStore];
       [(PhoneSceneDelegate *)self setWheelchairUseCache:v21];
 
       v22 = +[UIApplication sharedApplication];
-      v23 = [v22 delegate];
-      v24 = [v23 fitnessUIFormattingManager];
-      [(PhoneSceneDelegate *)self setFitnessUIFormattingManager:v24];
+      delegate3 = [v22 delegate];
+      fitnessUIFormattingManager = [delegate3 fitnessUIFormattingManager];
+      [(PhoneSceneDelegate *)self setFitnessUIFormattingManager:fitnessUIFormattingManager];
 
       v25 = +[UIApplication sharedApplication];
-      v26 = [v25 delegate];
-      v27 = [v26 workoutFormattingManager];
-      [(PhoneSceneDelegate *)self setWorkoutFormattingManager:v27];
+      delegate4 = [v25 delegate];
+      workoutFormattingManager = [delegate4 workoutFormattingManager];
+      [(PhoneSceneDelegate *)self setWorkoutFormattingManager:workoutFormattingManager];
 
       v28 = +[UIApplication sharedApplication];
-      v29 = [v28 delegate];
-      v30 = [v29 pauseRingsCoordinator];
-      [(PhoneSceneDelegate *)self setPauseRingsCoordinator:v30];
+      delegate5 = [v28 delegate];
+      pauseRingsCoordinator = [delegate5 pauseRingsCoordinator];
+      [(PhoneSceneDelegate *)self setPauseRingsCoordinator:pauseRingsCoordinator];
 
       v31 = [[FIUIPregnancyStateProvider alloc] initWithHealthStore:self->_healthStore];
       [(PhoneSceneDelegate *)self setPregnancyStateProvider:v31];
@@ -935,12 +935,12 @@ LABEL_5:
       [v35 checkInWithCompletion:0];
 
       v36 = [CHOnboardingCoordinator alloc];
-      v37 = [(PhoneSceneDelegate *)self healthStore];
-      v38 = [(CHOnboardingCoordinator *)v36 initWithHealthStore:v37];
+      healthStore2 = [(PhoneSceneDelegate *)self healthStore];
+      v38 = [(CHOnboardingCoordinator *)v36 initWithHealthStore:healthStore2];
       [(PhoneSceneDelegate *)self setOnboardingCoordinator:v38];
 
-      v39 = [(PhoneSceneDelegate *)self onboardingCoordinator];
-      [v39 setDelegate:self];
+      onboardingCoordinator = [(PhoneSceneDelegate *)self onboardingCoordinator];
+      [onboardingCoordinator setDelegate:self];
 
       v75 = objc_alloc_init(NLSessionBackgroundPermissionsChecker);
       v40 = objc_alloc_init(CHActivityPausedRingsObserver);
@@ -953,8 +953,8 @@ LABEL_5:
       [(PhoneSceneDelegate *)self setFitnessIntelligenceConnection:v42];
 
       v43 = [CHWorkoutVoiceAvailabilityProvider alloc];
-      v44 = [(PhoneSceneDelegate *)self fitnessIntelligenceConnection];
-      v45 = [(CHWorkoutVoiceAvailabilityProvider *)v43 initWithConnection:v44];
+      fitnessIntelligenceConnection = [(PhoneSceneDelegate *)self fitnessIntelligenceConnection];
+      v45 = [(CHWorkoutVoiceAvailabilityProvider *)v43 initWithConnection:fitnessIntelligenceConnection];
       [(PhoneSceneDelegate *)self setWorkoutVoiceAvailabilityProvider:v45];
 
       v46 = self->_healthStore;
@@ -971,12 +971,12 @@ LABEL_5:
         v46 = v49;
       }
 
-      v50 = [(PhoneSceneDelegate *)self fitnessUIFormattingManager];
-      v51 = [(PhoneSceneDelegate *)self activityPausedRingsObserver];
-      v52 = [(PhoneSceneDelegate *)self workoutOccurrenceStore];
+      fitnessUIFormattingManager2 = [(PhoneSceneDelegate *)self fitnessUIFormattingManager];
+      activityPausedRingsObserver = [(PhoneSceneDelegate *)self activityPausedRingsObserver];
+      workoutOccurrenceStore = [(PhoneSceneDelegate *)self workoutOccurrenceStore];
       v53 = +[CHLocationProvider shared];
-      v54 = [(PhoneSceneDelegate *)self workoutVoiceAvailabilityProvider];
-      v55 = [NLWorkoutControllerFactoryBridge makeWithHealthStore:v46 formattingManager:v50 activityPausedRingsObserver:v51 backgroundPermissionsChecker:v75 occurrenceStore:v52 locationProvider:v53 workoutVoiceAvailabilityProvider:v54];
+      workoutVoiceAvailabilityProvider = [(PhoneSceneDelegate *)self workoutVoiceAvailabilityProvider];
+      v55 = [NLWorkoutControllerFactoryBridge makeWithHealthStore:v46 formattingManager:fitnessUIFormattingManager2 activityPausedRingsObserver:activityPausedRingsObserver backgroundPermissionsChecker:v75 occurrenceStore:workoutOccurrenceStore locationProvider:v53 workoutVoiceAvailabilityProvider:workoutVoiceAvailabilityProvider];
       [(PhoneSceneDelegate *)self setWorkoutController:v55];
 
       v56 = +[NSNotificationCenter defaultCenter];
@@ -1002,12 +1002,12 @@ LABEL_5:
       if ([(PhoneSceneDelegate *)self activityHasBeenSetup])
       {
         [(PhoneSceneDelegate *)self _setupActivityAppAndLoadData];
-        v60 = [v8 shortcutItem];
+        shortcutItem = [optionsCopy shortcutItem];
 
-        if (v60)
+        if (shortcutItem)
         {
-          v61 = [v8 shortcutItem];
-          [(PhoneSceneDelegate *)self _handleShortcutItem:v61 didJustLaunch:1];
+          shortcutItem2 = [optionsCopy shortcutItem];
+          [(PhoneSceneDelegate *)self _handleShortcutItem:shortcutItem2 didJustLaunch:1];
         }
 
         else
@@ -1016,8 +1016,8 @@ LABEL_5:
           v79 = 0u;
           v76 = 0u;
           v77 = 0u;
-          v62 = [v8 URLContexts];
-          v63 = [v62 countByEnumeratingWithState:&v76 objects:v81 count:16];
+          uRLContexts = [optionsCopy URLContexts];
+          v63 = [uRLContexts countByEnumeratingWithState:&v76 objects:v81 count:16];
           if (v63)
           {
             v64 = v63;
@@ -1029,7 +1029,7 @@ LABEL_5:
               {
                 if (*v77 != v65)
                 {
-                  objc_enumerationMutation(v62);
+                  objc_enumerationMutation(uRLContexts);
                 }
 
                 [(PhoneSceneDelegate *)self openURLContext:*(*(&v76 + 1) + 8 * v66)];
@@ -1037,22 +1037,22 @@ LABEL_5:
               }
 
               while (v64 != v66);
-              v64 = [v62 countByEnumeratingWithState:&v76 objects:v81 count:16];
+              v64 = [uRLContexts countByEnumeratingWithState:&v76 objects:v81 count:16];
             }
 
             while (v64);
           }
 
-          v67 = [v8 notificationResponse];
-          v68 = [v67 notification];
-          v69 = [v68 request];
-          v70 = [v69 content];
-          v71 = [v70 userInfo];
+          notificationResponse = [optionsCopy notificationResponse];
+          notification = [notificationResponse notification];
+          request = [notification request];
+          content = [request content];
+          userInfo = [content userInfo];
 
-          if (([(PhoneSceneDelegate *)self _parseFitnessCoachingNotificationType:v71]& 0xFFFFFFFFFFFFFFFELL) == 2)
+          if (([(PhoneSceneDelegate *)self _parseFitnessCoachingNotificationType:userInfo]& 0xFFFFFFFFFFFFFFFELL) == 2)
           {
-            v72 = [(PhoneSceneDelegate *)self rootViewController];
-            [v72 hide];
+            rootViewController = [(PhoneSceneDelegate *)self rootViewController];
+            [rootViewController hide];
           }
 
           notify_register_dispatch(kHKFirstDayOfFitnessWeekDidChangeNotification, &self->_fitnessWeekRedefinedChangeToken, &_dispatch_main_q, &stru_10083CDD8);
@@ -1093,10 +1093,10 @@ LABEL_5:
   return tvConnectionManager;
 }
 
-- (void)memoryWarningReceived:(id)a3
+- (void)memoryWarningReceived:(id)received
 {
-  v3 = [(PhoneSceneDelegate *)self badgeImageFactory];
-  [v3 clearAllCachedImages];
+  badgeImageFactory = [(PhoneSceneDelegate *)self badgeImageFactory];
+  [badgeImageFactory clearAllCachedImages];
 }
 
 - (void)_setupOnboarding
@@ -1141,7 +1141,7 @@ LABEL_7:
   [v5 getNotificationSettingsWithCompletionHandler:v6];
 }
 
-- (void)_presentWelcomeViewsSetupOnboarding:(BOOL)a3
+- (void)_presentWelcomeViewsSetupOnboarding:(BOOL)onboarding
 {
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(CHOnboardingNavigationController);
@@ -1153,13 +1153,13 @@ LABEL_7:
   objc_copyWeak(&v31, &location);
   objc_copyWeak(&v32, &from);
   v6 = objc_retainBlock(v30);
-  v7 = [(SeymourAvailabilityManager *)self->_seymourAvailabilityManager available];
+  available = [(SeymourAvailabilityManager *)self->_seymourAvailabilityManager available];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100122420;
   v25[3] = &unk_10083CE28;
-  v28 = a3;
-  v29 = v7;
+  onboardingCopy = onboarding;
+  v29 = available;
   v8 = v6;
   v26 = v8;
   objc_copyWeak(&v27, &from);
@@ -1179,7 +1179,7 @@ LABEL_7:
   v22 = v13;
   v14 = v9;
   v23 = v14;
-  v15 = [(CHWelcomeViewController *)v11 initWithFitnessPlusAvailable:v7 buttonHandler:&v17];
+  v15 = [(CHWelcomeViewController *)v11 initWithFitnessPlusAvailable:available buttonHandler:&v17];
   v35 = v15;
   v16 = [NSArray arrayWithObjects:&v35 count:1, v17, v18, v19, v20];
   [(CHOnboardingNavigationController *)v12 setViewControllers:v16 animated:0];
@@ -1195,42 +1195,42 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)_presentOnboardingNavigationController:(id)a3
+- (void)_presentOnboardingNavigationController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = objc_alloc_init(CHOnboardingNavigationController);
   [(PhoneSceneDelegate *)self setSetupNavigationController:v5];
 
-  v6 = [(PhoneSceneDelegate *)self window];
-  v7 = [(PhoneSceneDelegate *)self setupNavigationController];
-  [v6 setRootViewController:v7];
+  window = [(PhoneSceneDelegate *)self window];
+  setupNavigationController = [(PhoneSceneDelegate *)self setupNavigationController];
+  [window setRootViewController:setupNavigationController];
 
-  v8 = [(PhoneSceneDelegate *)self window];
+  window2 = [(PhoneSceneDelegate *)self window];
   v9 = +[ARUIMetricColors keyColors];
-  v10 = [v9 nonGradientTextColor];
-  [v8 setTintColor:v10];
+  nonGradientTextColor = [v9 nonGradientTextColor];
+  [window2 setTintColor:nonGradientTextColor];
 
-  v11 = [(PhoneSceneDelegate *)self window];
-  [v11 makeKeyAndVisible];
+  window3 = [(PhoneSceneDelegate *)self window];
+  [window3 makeKeyAndVisible];
 
   v12 = [CHLoadingView alloc];
-  v13 = [(PhoneSceneDelegate *)self window];
-  [v13 frame];
+  window4 = [(PhoneSceneDelegate *)self window];
+  [window4 frame];
   v14 = [(CHLoadingView *)v12 initWithFrame:?];
   [(PhoneSceneDelegate *)self setLoadingView:v14];
 
-  v15 = [(PhoneSceneDelegate *)self window];
-  v16 = [(PhoneSceneDelegate *)self loadingView];
-  [v15 addSubview:v16];
+  window5 = [(PhoneSceneDelegate *)self window];
+  loadingView = [(PhoneSceneDelegate *)self loadingView];
+  [window5 addSubview:loadingView];
 
-  v17 = [(PhoneSceneDelegate *)self loadingView];
-  v18 = [v17 indicatorView];
-  [v18 startAnimating];
+  loadingView2 = [(PhoneSceneDelegate *)self loadingView];
+  indicatorView = [loadingView2 indicatorView];
+  [indicatorView startAnimating];
 
-  [v4 setNavigationBarHidden:1 animated:0];
-  [v4 setModalPresentationStyle:0];
-  v19 = [(PhoneSceneDelegate *)self setupNavigationController];
-  [v19 presentViewController:v4 animated:0 completion:0];
+  [controllerCopy setNavigationBarHidden:1 animated:0];
+  [controllerCopy setModalPresentationStyle:0];
+  setupNavigationController2 = [(PhoneSceneDelegate *)self setupNavigationController];
+  [setupNavigationController2 presentViewController:controllerCopy animated:0 completion:0];
 }
 
 - (void)_presentMoveGoalSetupOnboarding
@@ -1249,8 +1249,8 @@ LABEL_7:
 
 - (void)_presentWhatsNewViewSetupOnboarding
 {
-  v3 = [(SeymourAvailabilityManager *)self->_seymourAvailabilityManager available];
-  v4 = [(CHWorkoutVoiceAvailabilityProvider *)self->_workoutVoiceAvailabilityProvider isFeatureSupported];
+  available = [(SeymourAvailabilityManager *)self->_seymourAvailabilityManager available];
+  isFeatureSupported = [(CHWorkoutVoiceAvailabilityProvider *)self->_workoutVoiceAvailabilityProvider isFeatureSupported];
   objc_initWeak(&location, self);
   v5 = [CHWhatsNewViewController alloc];
   v9 = _NSConcreteStackBlock;
@@ -1258,7 +1258,7 @@ LABEL_7:
   v11 = sub_100122A24;
   v12 = &unk_10083A710;
   objc_copyWeak(&v13, &location);
-  v6 = [(CHWhatsNewViewController *)v5 initWithFitnessPlusAvailable:v3 workoutBuddySupported:v4 buttonHandler:&v9];
+  v6 = [(CHWhatsNewViewController *)v5 initWithFitnessPlusAvailable:available workoutBuddySupported:isFeatureSupported buttonHandler:&v9];
   v7 = [CHOnboardingNavigationController alloc];
   v8 = [(CHOnboardingNavigationController *)v7 initWithRootViewController:v6, v9, v10, v11, v12];
   [(PhoneSceneDelegate *)self _presentOnboardingNavigationController:v8];
@@ -1267,9 +1267,9 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
-  v5 = a4;
+  contextsCopy = contexts;
   if ([(PhoneSceneDelegate *)self presentingActiveWorkout])
   {
     _HKInitializeLogging();
@@ -1287,7 +1287,7 @@ LABEL_7:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = v5;
+    v7 = contextsCopy;
     v8 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v8)
     {
@@ -1315,11 +1315,11 @@ LABEL_7:
   }
 }
 
-- (void)openURLContext:(id)a3
+- (void)openURLContext:(id)context
 {
-  v4 = [a3 URL];
-  v5 = [v4 scheme];
-  v6 = [v5 isEqualToString:@"activitytoday"];
+  v4 = [context URL];
+  scheme = [v4 scheme];
+  v6 = [scheme isEqualToString:@"activitytoday"];
 
   if (v6)
   {
@@ -1328,8 +1328,8 @@ LABEL_7:
 
   else
   {
-    v7 = [v4 scheme];
-    v8 = [v7 isEqualToString:kASActivitySharingScheme];
+    scheme2 = [v4 scheme];
+    v8 = [scheme2 isEqualToString:kASActivitySharingScheme];
 
     if (v8)
     {
@@ -1338,8 +1338,8 @@ LABEL_7:
 
     else
     {
-      v9 = [v4 scheme];
-      v10 = [v9 isEqualToString:@"fitness-badging"];
+      scheme3 = [v4 scheme];
+      v10 = [scheme3 isEqualToString:@"fitness-badging"];
 
       if (v10)
       {
@@ -1356,8 +1356,8 @@ LABEL_7:
 
       else
       {
-        v12 = [v4 scheme];
-        v13 = [v12 isEqualToString:@"fitnessapp-settings"];
+        scheme4 = [v4 scheme];
+        v13 = [scheme4 isEqualToString:@"fitnessapp-settings"];
 
         if (v13)
         {
@@ -1366,11 +1366,11 @@ LABEL_7:
 
         else
         {
-          v14 = [v4 scheme];
-          if ([v14 isEqualToString:@"file"])
+          scheme5 = [v4 scheme];
+          if ([scheme5 isEqualToString:@"file"])
           {
-            v15 = [v4 pathExtension];
-            v16 = [v15 isEqualToString:@"workout"];
+            pathExtension = [v4 pathExtension];
+            v16 = [pathExtension isEqualToString:@"workout"];
 
             if (v16)
             {
@@ -1383,11 +1383,11 @@ LABEL_7:
           {
           }
 
-          v17 = [v4 scheme];
-          if ([v17 isEqualToString:@"fitnessapp"])
+          scheme6 = [v4 scheme];
+          if ([scheme6 isEqualToString:@"fitnessapp"])
           {
-            v18 = [v4 host];
-            v19 = [v18 isEqualToString:@"workoutConfiguration"];
+            host = [v4 host];
+            v19 = [host isEqualToString:@"workoutConfiguration"];
 
             if (v19)
             {
@@ -1400,9 +1400,9 @@ LABEL_7:
           {
           }
 
-          v20 = [v4 scheme];
+          scheme7 = [v4 scheme];
           v21 = +[CHNavigator scheme];
-          v22 = [v20 isEqualToString:v21];
+          v22 = [scheme7 isEqualToString:v21];
 
           if (v22)
           {
@@ -1417,18 +1417,18 @@ LABEL_7:
 LABEL_21:
 }
 
-- (void)handleAppIntentDeeplinkWithURL:(id)a3
+- (void)handleAppIntentDeeplinkWithURL:(id)l
 {
-  v8 = a3;
-  v4 = [v8 scheme];
-  if ([v4 isEqualToString:@"file"])
+  lCopy = l;
+  scheme = [lCopy scheme];
+  if ([scheme isEqualToString:@"file"])
   {
-    v5 = [v8 pathExtension];
-    v6 = [v5 isEqualToString:@"workout"];
+    pathExtension = [lCopy pathExtension];
+    v6 = [pathExtension isEqualToString:@"workout"];
 
     if (v6)
     {
-      [(PhoneSceneDelegate *)self _handleWorkoutConfigurationURL:v8];
+      [(PhoneSceneDelegate *)self _handleWorkoutConfigurationURL:lCopy];
       goto LABEL_6;
     }
   }
@@ -1438,24 +1438,24 @@ LABEL_21:
   }
 
   v7 = [[CHNavigatorContext alloc] initWithHasActiveWorkout:[(PhoneSceneDelegate *)self presentingActiveWorkout]];
-  [(CHNavigator *)self->_deeplinkNavigator navigateToURL:v8 context:v7];
+  [(CHNavigator *)self->_deeplinkNavigator navigateToURL:lCopy context:v7];
 
 LABEL_6:
 }
 
-- (void)handleAppIntentWithUserActivity:(id)a3
+- (void)handleAppIntentWithUserActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityType];
-  if ([v5 isEqualToString:@"com.apple.Fitness.startWorkout"])
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  if ([activityType isEqualToString:@"com.apple.Fitness.startWorkout"])
   {
     if ((_os_feature_enabled_impl() & 1) != 0 || (os_variant_has_internal_content() & 1) == 0)
     {
-      v6 = [v4 userInfo];
-      v7 = [v6 valueForKey:@"siri.workout"];
+      userInfo = [activityCopy userInfo];
+      v7 = [userInfo valueForKey:@"siri.workout"];
 
-      v8 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
-      [v8 handleWorkoutConfigurationData:v7];
+      workoutBrowsingViewController = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
+      [workoutBrowsingViewController handleWorkoutConfigurationData:v7];
     }
   }
 
@@ -1472,17 +1472,17 @@ LABEL_6:
 
   else
   {
-    v10 = [(PhoneSceneDelegate *)self fitnessAppContext];
-    [v10 continueUserActivity:v4];
+    fitnessAppContext = [(PhoneSceneDelegate *)self fitnessAppContext];
+    [fitnessAppContext continueUserActivity:activityCopy];
   }
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = [(CHTabBarController *)self->_tabBarController selectedViewController];
+  selectedViewController = [(CHTabBarController *)self->_tabBarController selectedViewController];
   seymourNavController = self->_seymourNavController;
 
-  if (v4 == seymourNavController)
+  if (selectedViewController == seymourNavController)
   {
     [(CHFitnessAppContext *)self->_fitnessAppContext seymourTabSelectedWithSelection:0];
   }
@@ -1499,16 +1499,16 @@ LABEL_6:
   }
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = [(PhoneSceneDelegate *)self activityDataProvider];
-  [v4 updateWidgets];
+  activityDataProvider = [(PhoneSceneDelegate *)self activityDataProvider];
+  [activityDataProvider updateWidgets];
 
-  v5 = [(CHTabBarController *)self->_tabBarController selectedViewController];
+  selectedViewController = [(CHTabBarController *)self->_tabBarController selectedViewController];
   seymourNavController = self->_seymourNavController;
 
   fitnessAppContext = self->_fitnessAppContext;
-  if (v5 == seymourNavController)
+  if (selectedViewController == seymourNavController)
   {
     [(CHFitnessAppContext *)fitnessAppContext seymourAppWillResignActive];
   }
@@ -1521,23 +1521,23 @@ LABEL_6:
   [(PhoneSceneDelegate *)self updateTVDiscovery];
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = [(PhoneSceneDelegate *)self activityDashboardViewController];
-  v5 = [v4 summaryCoordinator];
-  [v5 logCardConfigurationAnalytics];
+  activityDashboardViewController = [(PhoneSceneDelegate *)self activityDashboardViewController];
+  summaryCoordinator = [activityDashboardViewController summaryCoordinator];
+  [summaryCoordinator logCardConfigurationAnalytics];
 
-  v6 = [(PhoneSceneDelegate *)self workoutOccurrenceStore];
-  [v6 handleAppWillEnterForeground];
+  workoutOccurrenceStore = [(PhoneSceneDelegate *)self workoutOccurrenceStore];
+  [workoutOccurrenceStore handleAppWillEnterForeground];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = [(CHTabBarController *)self->_tabBarController selectedViewController];
+  selectedViewController = [(CHTabBarController *)self->_tabBarController selectedViewController];
   seymourNavController = self->_seymourNavController;
 
   fitnessAppContext = self->_fitnessAppContext;
-  if (v4 == seymourNavController)
+  if (selectedViewController == seymourNavController)
   {
     [(CHFitnessAppContext *)fitnessAppContext seymourAppWillTerminate];
   }
@@ -1563,26 +1563,26 @@ LABEL_6:
   v4 = +[UIApplication sharedApplication];
   v5 = [v4 applicationState] == 0;
 
-  v6 = [(PhoneSceneDelegate *)self tvConnectionManager];
-  [v6 setIsDiscoveryAllowed:v5];
+  tvConnectionManager = [(PhoneSceneDelegate *)self tvConnectionManager];
+  [tvConnectionManager setIsDiscoveryAllowed:v5];
 
-  v7 = [(PhoneSceneDelegate *)self tvConnectionManager];
-  [v7 updateDiscoveryStateIfNeeded];
+  tvConnectionManager2 = [(PhoneSceneDelegate *)self tvConnectionManager];
+  [tvConnectionManager2 updateDiscoveryStateIfNeeded];
 }
 
 - (void)endDiscovery
 {
-  v3 = [(PhoneSceneDelegate *)self tvConnectionManager];
-  [v3 setIsDiscoveryAllowed:0];
+  tvConnectionManager = [(PhoneSceneDelegate *)self tvConnectionManager];
+  [tvConnectionManager setIsDiscoveryAllowed:0];
 
-  v4 = [(PhoneSceneDelegate *)self tvConnectionManager];
-  [v4 endDiscovery];
+  tvConnectionManager2 = [(PhoneSceneDelegate *)self tvConnectionManager];
+  [tvConnectionManager2 endDiscovery];
 }
 
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  itemCopy = item;
+  handlerCopy = handler;
   if ([(PhoneSceneDelegate *)self presentingActiveWorkout])
   {
     _HKInitializeLogging();
@@ -1593,44 +1593,44 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Intercepting shortcut because an active workout is presented", buf, 2u);
     }
 
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    [(PhoneSceneDelegate *)self _handleShortcutItem:v7 didJustLaunch:0];
+    [(PhoneSceneDelegate *)self _handleShortcutItem:itemCopy didJustLaunch:0];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100123684;
     block[3] = &unk_10083C528;
-    v11 = v8;
+    v11 = handlerCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
 
-- (void)_resetToViewController:(id)a3 animated:(BOOL)a4
+- (void)_resetToViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PhoneSceneDelegate *)self activityTileNavController];
-  [v7 dismissViewControllerAnimated:v4 completion:0];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  activityTileNavController = [(PhoneSceneDelegate *)self activityTileNavController];
+  [activityTileNavController dismissViewControllerAnimated:animatedCopy completion:0];
 
-  v8 = [(PhoneSceneDelegate *)self tabBarController];
-  [v8 setSelectedViewController:v6];
+  tabBarController = [(PhoneSceneDelegate *)self tabBarController];
+  [tabBarController setSelectedViewController:controllerCopy];
 
-  v9 = [(PhoneSceneDelegate *)self activityTileNavController];
-  [v9 detachPalette];
+  activityTileNavController2 = [(PhoneSceneDelegate *)self activityTileNavController];
+  [activityTileNavController2 detachPalette];
 
-  v11 = [(PhoneSceneDelegate *)self activityTileNavController];
-  v10 = [v11 popToRootViewControllerAnimated:v4];
+  activityTileNavController3 = [(PhoneSceneDelegate *)self activityTileNavController];
+  v10 = [activityTileNavController3 popToRootViewControllerAnimated:animatedCopy];
 }
 
 - (void)_updateSeymourNavigationController
 {
-  v3 = [(PhoneSceneDelegate *)self seymourAvailabilityManager];
-  v4 = [v3 available];
+  seymourAvailabilityManager = [(PhoneSceneDelegate *)self seymourAvailabilityManager];
+  available = [seymourAvailabilityManager available];
 
-  if (v4)
+  if (available)
   {
     _HKInitializeLogging();
     v5 = HKLogActivity;
@@ -1640,17 +1640,17 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[seymour] Updating navigation controller", buf, 2u);
     }
 
-    v6 = [(PhoneSceneDelegate *)self fitnessAppContext];
-    v7 = [v6 seymourNavigationController];
-    [(PhoneSceneDelegate *)self setSeymourNavController:v7];
+    fitnessAppContext = [(PhoneSceneDelegate *)self fitnessAppContext];
+    seymourNavigationController = [fitnessAppContext seymourNavigationController];
+    [(PhoneSceneDelegate *)self setSeymourNavController:seymourNavigationController];
 
-    v8 = [(PhoneSceneDelegate *)self connectionOptions];
-    if (v8)
+    connectionOptions = [(PhoneSceneDelegate *)self connectionOptions];
+    if (connectionOptions)
     {
-      v9 = v8;
-      v10 = [(PhoneSceneDelegate *)self windowScene];
+      v9 = connectionOptions;
+      windowScene = [(PhoneSceneDelegate *)self windowScene];
 
-      if (v10)
+      if (windowScene)
       {
         _HKInitializeLogging();
         v11 = HKLogActivity;
@@ -1660,10 +1660,10 @@ LABEL_6:
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[seymour] Handling Window Scene", v26, 2u);
         }
 
-        v12 = [(PhoneSceneDelegate *)self fitnessAppContext];
-        v13 = [(PhoneSceneDelegate *)self windowScene];
-        v14 = [(PhoneSceneDelegate *)self connectionOptions];
-        [v12 handleWindowScene:v13 with:v14];
+        fitnessAppContext2 = [(PhoneSceneDelegate *)self fitnessAppContext];
+        windowScene2 = [(PhoneSceneDelegate *)self windowScene];
+        connectionOptions2 = [(PhoneSceneDelegate *)self connectionOptions];
+        [fitnessAppContext2 handleWindowScene:windowScene2 with:connectionOptions2];
 
         [(PhoneSceneDelegate *)self _clearWindowSceneAndOptions];
       }
@@ -1672,13 +1672,13 @@ LABEL_6:
 
   else
   {
-    v15 = [(PhoneSceneDelegate *)self seymourAvailabilityManager];
-    if (([v15 unavailable] & 1) != 0 && (-[PhoneSceneDelegate connectionOptions](self, "connectionOptions"), (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+    seymourAvailabilityManager2 = [(PhoneSceneDelegate *)self seymourAvailabilityManager];
+    if (([seymourAvailabilityManager2 unavailable] & 1) != 0 && (-[PhoneSceneDelegate connectionOptions](self, "connectionOptions"), (v16 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v17 = v16;
-      v18 = [(PhoneSceneDelegate *)self windowScene];
+      windowScene3 = [(PhoneSceneDelegate *)self windowScene];
 
-      if (v18)
+      if (windowScene3)
       {
         _HKInitializeLogging();
         v19 = HKLogActivity;
@@ -1688,10 +1688,10 @@ LABEL_6:
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[seymour] Handling Window Scene while unavailable", v25, 2u);
         }
 
-        v20 = [(PhoneSceneDelegate *)self fitnessAppContext];
-        v21 = [(PhoneSceneDelegate *)self windowScene];
-        v22 = [(PhoneSceneDelegate *)self connectionOptions];
-        [v20 handleWindowScene:v21 with:v22];
+        fitnessAppContext3 = [(PhoneSceneDelegate *)self fitnessAppContext];
+        windowScene4 = [(PhoneSceneDelegate *)self windowScene];
+        connectionOptions3 = [(PhoneSceneDelegate *)self connectionOptions];
+        [fitnessAppContext3 handleWindowScene:windowScene4 with:connectionOptions3];
 
         [(PhoneSceneDelegate *)self _clearWindowSceneAndOptions];
       }
@@ -1729,15 +1729,15 @@ LABEL_6:
   return v3;
 }
 
-- (void)_trendsAvailabilityStatusDidChange:(id)a3
+- (void)_trendsAvailabilityStatusDidChange:(id)change
 {
-  v6 = [(PhoneSceneDelegate *)self trendsAvailabilityManager];
-  if ([v6 trendsAvailability])
+  trendsAvailabilityManager = [(PhoneSceneDelegate *)self trendsAvailabilityManager];
+  if ([trendsAvailabilityManager trendsAvailability])
   {
-    v4 = [(PhoneSceneDelegate *)self trendsAvailabilityManager];
-    v5 = [v4 trendsAvailability];
+    trendsAvailabilityManager2 = [(PhoneSceneDelegate *)self trendsAvailabilityManager];
+    trendsAvailability = [trendsAvailabilityManager2 trendsAvailability];
 
-    if (v5 != 1)
+    if (trendsAvailability != 1)
     {
 
       [(PhoneSceneDelegate *)self _createOrbActions];
@@ -1749,7 +1749,7 @@ LABEL_6:
   }
 }
 
-- (void)_seymourAvailabilityStatusDidChange:(id)a3
+- (void)_seymourAvailabilityStatusDidChange:(id)change
 {
   _HKInitializeLogging();
   v4 = HKLogActivity;
@@ -1761,9 +1761,9 @@ LABEL_6:
 
   if ([(CHOnboardingCoordinator *)self->_onboardingCoordinator currentPhase]== 5)
   {
-    v5 = [(PhoneSceneDelegate *)self activityDashboardViewController];
+    activityDashboardViewController = [(PhoneSceneDelegate *)self activityDashboardViewController];
 
-    if (v5)
+    if (activityDashboardViewController)
     {
       [(PhoneSceneDelegate *)self _updateSeymourNavigationController];
       [(PhoneSceneDelegate *)self _setupTabBarViewControllersAndOrbActions];
@@ -1793,34 +1793,34 @@ LABEL_6:
 
 - (void)_refreshBadgeCounts
 {
-  v2 = [(PhoneSceneDelegate *)self appBadgeAggregator];
-  [v2 triggerFetch];
+  appBadgeAggregator = [(PhoneSceneDelegate *)self appBadgeAggregator];
+  [appBadgeAggregator triggerFetch];
 }
 
-- (void)_setBadgeCount:(unint64_t)a3 forTabBarItem:(id)a4
+- (void)_setBadgeCount:(unint64_t)count forTabBarItem:(id)item
 {
-  if (a3)
+  if (count)
   {
-    v5 = a4;
-    v6 = [NSNumber numberWithUnsignedInteger:a3];
+    itemCopy = item;
+    v6 = [NSNumber numberWithUnsignedInteger:count];
     v7 = [FIUIFormattingManager stringWithNumber:v6 decimalPrecision:1];
-    [v5 setBadgeValue:v7];
+    [itemCopy setBadgeValue:v7];
 
     v8 = +[ARUIMetricColors keyColors];
-    v9 = [v8 nonGradientTextColor];
-    [v5 setBadgeColor:v9];
+    nonGradientTextColor = [v8 nonGradientTextColor];
+    [itemCopy setBadgeColor:nonGradientTextColor];
 
     v12 = NSForegroundColorAttributeName;
-    v10 = +[UIColor blackColor];
-    v13 = v10;
+    itemCopy2 = +[UIColor blackColor];
+    v13 = itemCopy2;
     v11 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-    [v5 setBadgeTextAttributes:v11 forState:0];
+    [itemCopy setBadgeTextAttributes:v11 forState:0];
   }
 
   else
   {
-    v10 = a4;
-    [v10 setBadgeValue:0];
+    itemCopy2 = item;
+    [itemCopy2 setBadgeValue:0];
   }
 }
 
@@ -1828,19 +1828,19 @@ LABEL_6:
 {
   if (+[_HKBehavior isAppleInternalInstall](_HKBehavior, "isAppleInternalInstall") && (+[UIApplication isRunningInStoreDemoMode]& 1) == 0)
   {
-    v3 = [(PhoneSceneDelegate *)self _fitnessDataCollectionEnabledPreference];
+    _fitnessDataCollectionEnabledPreference = [(PhoneSceneDelegate *)self _fitnessDataCollectionEnabledPreference];
     _HKInitializeLogging();
     v4 = HKLogActivity;
     if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEBUG))
     {
-      sub_10069CC58(v3, v4);
-      if (v3)
+      sub_10069CC58(_fitnessDataCollectionEnabledPreference, v4);
+      if (_fitnessDataCollectionEnabledPreference)
       {
         goto LABEL_6;
       }
     }
 
-    else if (v3)
+    else if (_fitnessDataCollectionEnabledPreference)
     {
 LABEL_6:
 
@@ -1862,17 +1862,17 @@ LABEL_6:
     v9[4] = self;
     v7 = [UIAlertAction actionWithTitle:@"Send" style:0 handler:v9];
     [v5 addAction:v7];
-    v8 = [(PhoneSceneDelegate *)self activityTileNavController];
-    [v8 presentViewController:v5 animated:1 completion:0];
+    activityTileNavController = [(PhoneSceneDelegate *)self activityTileNavController];
+    [activityTileNavController presentViewController:v5 animated:1 completion:0];
 
     goto LABEL_6;
   }
 }
 
-- (void)_setFitnessDataCollectionEnabled:(BOOL)a3
+- (void)_setFitnessDataCollectionEnabled:(BOOL)enabled
 {
   v3 = FIAppleInternalDataCollectionEnabledKey;
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:enabled];
   v5 = FINanoLifestylePreferencesDomain;
   CFPreferencesSetAppValue(v3, v4, FINanoLifestylePreferencesDomain);
   CFPreferencesAppSynchronize(v5);
@@ -1893,9 +1893,9 @@ LABEL_6:
   return v2;
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v5 = a4;
+  activityCopy = activity;
   if ([(PhoneSceneDelegate *)self presentingActiveWorkout])
   {
     _HKInitializeLogging();
@@ -1909,15 +1909,15 @@ LABEL_6:
 
   else
   {
-    v7 = [v5 activityType];
-    if ([v7 isEqualToString:FIUIActivityContinuityKey])
+    activityType = [activityCopy activityType];
+    if ([activityType isEqualToString:FIUIActivityContinuityKey])
     {
-      v8 = [(PhoneSceneDelegate *)self tabBarController];
-      [v8 setSelectedIndex:0];
+      tabBarController = [(PhoneSceneDelegate *)self tabBarController];
+      [tabBarController setSelectedIndex:0];
     }
 
-    v9 = [(PhoneSceneDelegate *)self fitnessAppContext];
-    [v9 continueUserActivity:v5];
+    fitnessAppContext = [(PhoneSceneDelegate *)self fitnessAppContext];
+    [fitnessAppContext continueUserActivity:activityCopy];
   }
 }
 
@@ -1940,11 +1940,11 @@ LABEL_6:
   [(PhoneSceneDelegate *)&v5 dealloc];
 }
 
-- (void)_handleShortcutItem:(id)a3 didJustLaunch:(BOOL)a4
+- (void)_handleShortcutItem:(id)item didJustLaunch:(BOOL)launch
 {
-  v13 = a3;
-  v5 = [v13 type];
-  v6 = [v5 isEqualToString:@"com.apple.Fitness.opentrendsshortcut"];
+  itemCopy = item;
+  type = [itemCopy type];
+  v6 = [type isEqualToString:@"com.apple.Fitness.opentrendsshortcut"];
 
   if (v6)
   {
@@ -1953,8 +1953,8 @@ LABEL_6:
 
   else
   {
-    v7 = [v13 type];
-    v8 = [v7 isEqualToString:@"com.apple.Fitness.openhistorylistshortcut"];
+    type2 = [itemCopy type];
+    v8 = [type2 isEqualToString:@"com.apple.Fitness.openhistorylistshortcut"];
 
     if (v8)
     {
@@ -1963,8 +1963,8 @@ LABEL_6:
 
     else
     {
-      v9 = [v13 type];
-      v10 = [v9 isEqualToString:@"com.apple.Fitness.opensocialshortcut"];
+      type3 = [itemCopy type];
+      v10 = [type3 isEqualToString:@"com.apple.Fitness.opensocialshortcut"];
 
       if (v10)
       {
@@ -1973,8 +1973,8 @@ LABEL_6:
 
       else
       {
-        v11 = [v13 type];
-        v12 = [v11 isEqualToString:@"com.apple.Fitness.sharetodayactivityshortcut"];
+        type4 = [itemCopy type];
+        v12 = [type4 isEqualToString:@"com.apple.Fitness.sharetodayactivityshortcut"];
 
         if (v12)
         {
@@ -1995,11 +1995,11 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Handling trends shortcut", v6, 2u);
   }
 
-  v4 = [(PhoneSceneDelegate *)self activityTileNavController];
-  [(PhoneSceneDelegate *)self _resetToViewController:v4];
+  activityTileNavController = [(PhoneSceneDelegate *)self activityTileNavController];
+  [(PhoneSceneDelegate *)self _resetToViewController:activityTileNavController];
 
-  v5 = [(PhoneSceneDelegate *)self summaryDeeplinkViewController];
-  [v5 showAllTrendsAnimated:1];
+  summaryDeeplinkViewController = [(PhoneSceneDelegate *)self summaryDeeplinkViewController];
+  [summaryDeeplinkViewController showAllTrendsAnimated:1];
 }
 
 - (void)_handleHistoryShortcut
@@ -2012,11 +2012,11 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Handling history shortcut", v6, 2u);
   }
 
-  v4 = [(PhoneSceneDelegate *)self activityTileNavController];
-  [(PhoneSceneDelegate *)self _resetToViewController:v4];
+  activityTileNavController = [(PhoneSceneDelegate *)self activityTileNavController];
+  [(PhoneSceneDelegate *)self _resetToViewController:activityTileNavController];
 
-  v5 = [(PhoneSceneDelegate *)self summaryDeeplinkViewController];
-  [v5 navigateToHistoryAnimated:1];
+  summaryDeeplinkViewController = [(PhoneSceneDelegate *)self summaryDeeplinkViewController];
+  [summaryDeeplinkViewController navigateToHistoryAnimated:1];
 }
 
 - (void)_handleSettingsShortcut
@@ -2031,11 +2031,11 @@ LABEL_6:
 
   if ([(PhoneSceneDelegate *)self activityHasBeenSetup])
   {
-    v4 = [(PhoneSceneDelegate *)self activityTileNavController];
-    [(PhoneSceneDelegate *)self _resetToViewController:v4];
+    activityTileNavController = [(PhoneSceneDelegate *)self activityTileNavController];
+    [(PhoneSceneDelegate *)self _resetToViewController:activityTileNavController];
 
-    v5 = [(PhoneSceneDelegate *)self summaryDeeplinkViewController];
-    [v5 presentAppSettingsShowingPane:2];
+    summaryDeeplinkViewController = [(PhoneSceneDelegate *)self summaryDeeplinkViewController];
+    [summaryDeeplinkViewController presentAppSettingsShowingPane:2];
   }
 
   else
@@ -2060,11 +2060,11 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Handling friends shortcut", v7, 2u);
   }
 
-  v4 = [(PhoneSceneDelegate *)self activitySharingViewController];
-  [(PhoneSceneDelegate *)self _resetToViewController:v4];
+  activitySharingViewController = [(PhoneSceneDelegate *)self activitySharingViewController];
+  [(PhoneSceneDelegate *)self _resetToViewController:activitySharingViewController];
 
-  v5 = [(PhoneSceneDelegate *)self activitySharingViewController];
-  v6 = [v5 popToRootViewControllerAnimated:0];
+  activitySharingViewController2 = [(PhoneSceneDelegate *)self activitySharingViewController];
+  v6 = [activitySharingViewController2 popToRootViewControllerAnimated:0];
 }
 
 - (void)_handleActivityShareShortcut
@@ -2077,11 +2077,11 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Handling activity share shortcut", v7, 2u);
   }
 
-  v4 = [(PhoneSceneDelegate *)self activityTileNavController];
-  [(PhoneSceneDelegate *)self _resetToViewController:v4];
+  activityTileNavController = [(PhoneSceneDelegate *)self activityTileNavController];
+  [(PhoneSceneDelegate *)self _resetToViewController:activityTileNavController];
 
-  v5 = [(PhoneSceneDelegate *)self summaryDeeplinkViewController];
-  v6 = [v5 showTodayAndShareImmediately:1 animated:0 forGoalCompleteNotification:0 goalRecommendation:0];
+  summaryDeeplinkViewController = [(PhoneSceneDelegate *)self summaryDeeplinkViewController];
+  v6 = [summaryDeeplinkViewController showTodayAndShareImmediately:1 animated:0 forGoalCompleteNotification:0 goalRecommendation:0];
 }
 
 - (void)_handleTodayShortcut
@@ -2094,22 +2094,22 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Opening Today view", v7, 2u);
   }
 
-  v4 = [(PhoneSceneDelegate *)self activityTileNavController];
-  [(PhoneSceneDelegate *)self _resetToViewController:v4];
+  activityTileNavController = [(PhoneSceneDelegate *)self activityTileNavController];
+  [(PhoneSceneDelegate *)self _resetToViewController:activityTileNavController];
 
-  v5 = [(PhoneSceneDelegate *)self summaryDeeplinkViewController];
-  v6 = [v5 showTodayAndShareImmediately:0 animated:1 forGoalCompleteNotification:0 goalRecommendation:0];
+  summaryDeeplinkViewController = [(PhoneSceneDelegate *)self summaryDeeplinkViewController];
+  v6 = [summaryDeeplinkViewController showTodayAndShareImmediately:0 animated:1 forGoalCompleteNotification:0 goalRecommendation:0];
 }
 
-- (void)_handleActivitySharingURL:(id)a3
+- (void)_handleActivitySharingURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   _HKInitializeLogging();
   v5 = HKLogActivity;
   if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = lCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Handling activity sharing URL: %@", &v9, 0xCu);
   }
 
@@ -2126,28 +2126,28 @@ LABEL_6:
 
   else
   {
-    v7 = [(PhoneSceneDelegate *)self activitySharingViewController];
-    [(PhoneSceneDelegate *)self _resetToViewController:v7];
+    activitySharingViewController = [(PhoneSceneDelegate *)self activitySharingViewController];
+    [(PhoneSceneDelegate *)self _resetToViewController:activitySharingViewController];
 
-    v8 = [(PhoneSceneDelegate *)self activitySharingViewController];
-    [v8 handleActivitySharingURL:v4];
+    activitySharingViewController2 = [(PhoneSceneDelegate *)self activitySharingViewController];
+    [activitySharingViewController2 handleActivitySharingURL:lCopy];
   }
 }
 
-- (void)_handleWorkoutConfigurationURL:(id)a3
+- (void)_handleWorkoutConfigurationURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   _HKInitializeLogging();
   v5 = HKLogActivity;
   if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = lCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Handling workout sharing URL: %@", buf, 0xCu);
   }
 
-  v6 = [v4 startAccessingSecurityScopedResource];
-  if ((v6 & 1) == 0)
+  startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
+  if ((startAccessingSecurityScopedResource & 1) == 0)
   {
     _HKInitializeLogging();
     if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_ERROR))
@@ -2157,7 +2157,7 @@ LABEL_6:
   }
 
   v12 = 0;
-  v7 = [NSData dataWithContentsOfURL:v4 options:0 error:&v12];
+  v7 = [NSData dataWithContentsOfURL:lCopy options:0 error:&v12];
   v8 = v12;
   _HKInitializeLogging();
   v9 = HKLogActivity;
@@ -2165,7 +2165,7 @@ LABEL_6:
   {
     if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_ERROR))
     {
-      sub_10069CD04(v4, v8, v9);
+      sub_10069CD04(lCopy, v8, v9);
     }
   }
 
@@ -2174,67 +2174,67 @@ LABEL_6:
     if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = lCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Handling start workout configuration URL: %@", buf, 0xCu);
     }
 
-    v10 = [(PhoneSceneDelegate *)self activityTileNavController];
-    [(PhoneSceneDelegate *)self _resetToViewController:v10];
+    activityTileNavController = [(PhoneSceneDelegate *)self activityTileNavController];
+    [(PhoneSceneDelegate *)self _resetToViewController:activityTileNavController];
 
-    v11 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
-    [v11 handleWorkoutConfigurationData:v7];
+    workoutBrowsingViewController = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
+    [workoutBrowsingViewController handleWorkoutConfigurationData:v7];
   }
 
-  if (v6)
+  if (startAccessingSecurityScopedResource)
   {
-    [v4 stopAccessingSecurityScopedResource];
+    [lCopy stopAccessingSecurityScopedResource];
   }
 }
 
-- (void)_handleStartWorkoutConfigurationURL:(id)a3
+- (void)_handleStartWorkoutConfigurationURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   _HKInitializeLogging();
   v5 = HKLogActivity;
   if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = lCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Handling start workout configuration URL: %@", &v9, 0xCu);
   }
 
-  v6 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
-  [(PhoneSceneDelegate *)self _resetToViewController:v6];
+  workoutBrowsingViewController = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
+  [(PhoneSceneDelegate *)self _resetToViewController:workoutBrowsingViewController];
 
-  v7 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
-  [v7 popToRoot];
+  workoutBrowsingViewController2 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
+  [workoutBrowsingViewController2 popToRoot];
 
-  v8 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
-  [v8 handleWorkoutConfigurationURL:v4];
+  workoutBrowsingViewController3 = [(PhoneSceneDelegate *)self workoutBrowsingViewController];
+  [workoutBrowsingViewController3 handleWorkoutConfigurationURL:lCopy];
 }
 
-- (void)aggregator:(id)a3 didUpdateActivitySharingBadgeCount:(int64_t)a4
+- (void)aggregator:(id)aggregator didUpdateActivitySharingBadgeCount:(int64_t)count
 {
-  v7 = [(PhoneSceneDelegate *)self activitySharingViewController];
-  v6 = [v7 tabBarItem];
-  [(PhoneSceneDelegate *)self _setBadgeCount:a4 forTabBarItem:v6];
+  activitySharingViewController = [(PhoneSceneDelegate *)self activitySharingViewController];
+  tabBarItem = [activitySharingViewController tabBarItem];
+  [(PhoneSceneDelegate *)self _setBadgeCount:count forTabBarItem:tabBarItem];
 }
 
-- (void)aggregator:(id)a3 didUpdateEngagmentBadgeCount:(int64_t)a4
+- (void)aggregator:(id)aggregator didUpdateEngagmentBadgeCount:(int64_t)count
 {
-  v7 = [(PhoneSceneDelegate *)self seymourNavController];
-  v6 = [v7 tabBarItem];
-  [(PhoneSceneDelegate *)self _setBadgeCount:a4 forTabBarItem:v6];
+  seymourNavController = [(PhoneSceneDelegate *)self seymourNavController];
+  tabBarItem = [seymourNavController tabBarItem];
+  [(PhoneSceneDelegate *)self _setBadgeCount:count forTabBarItem:tabBarItem];
 }
 
 - (BOOL)navigateToSeymourTab
 {
-  v3 = [(PhoneSceneDelegate *)self seymourNavController];
+  seymourNavController = [(PhoneSceneDelegate *)self seymourNavController];
 
-  if (v3)
+  if (seymourNavController)
   {
-    v4 = [(PhoneSceneDelegate *)self seymourNavController];
-    [(PhoneSceneDelegate *)self _setSelectedViewController:v4];
+    seymourNavController2 = [(PhoneSceneDelegate *)self seymourNavController];
+    [(PhoneSceneDelegate *)self _setSelectedViewController:seymourNavController2];
   }
 
   else
@@ -2246,26 +2246,26 @@ LABEL_6:
     }
   }
 
-  return v3 != 0;
+  return seymourNavController != 0;
 }
 
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 request];
-  v10 = [v9 identifier];
+  notificationCopy = notification;
+  handlerCopy = handler;
+  request = [notificationCopy request];
+  identifier = [request identifier];
 
-  v11 = [v7 request];
-  v12 = [v11 content];
+  request2 = [notificationCopy request];
+  content = [request2 content];
 
-  v13 = [v12 categoryIdentifier];
-  if (([v10 isEqualToString:@"com.apple.fitcored.guestpairing"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"com.apple.Fitness.WorkoutPlanCreationNotification") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"com.apple.Fitness.PersonalizedWorkoutPlanCreationNotification") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", FCCFitnessPlusPlanNotificationCategoryIdentifier) & 1) != 0 || (objc_msgSend(v13, "isEqualToString:", kASBulletinsActivityDataCategoryIdentifier) & 1) != 0 || objc_msgSend(v13, "isEqualToString:", FCCNotificationCategoryIdentifier) && (objc_msgSend(v12, "userInfo"), v18 = objc_claimAutoreleasedReturnValue(), v19 = -[PhoneSceneDelegate _parseFitnessCoachingNotificationType:](self, "_parseFitnessCoachingNotificationType:", v18), v18, v19 == 2))
+  categoryIdentifier = [content categoryIdentifier];
+  if (([identifier isEqualToString:@"com.apple.fitcored.guestpairing"] & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", @"com.apple.Fitness.WorkoutPlanCreationNotification") & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", @"com.apple.Fitness.PersonalizedWorkoutPlanCreationNotification") & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", FCCFitnessPlusPlanNotificationCategoryIdentifier) & 1) != 0 || (objc_msgSend(categoryIdentifier, "isEqualToString:", kASBulletinsActivityDataCategoryIdentifier) & 1) != 0 || objc_msgSend(categoryIdentifier, "isEqualToString:", FCCNotificationCategoryIdentifier) && (objc_msgSend(content, "userInfo"), v18 = objc_claimAutoreleasedReturnValue(), v19 = -[PhoneSceneDelegate _parseFitnessCoachingNotificationType:](self, "_parseFitnessCoachingNotificationType:", v18), v18, v19 == 2))
   {
-    v14 = [(PhoneSceneDelegate *)self fitnessAppContext];
-    v15 = [v14 isSessionViewControllerPresented];
+    fitnessAppContext = [(PhoneSceneDelegate *)self fitnessAppContext];
+    isSessionViewControllerPresented = [fitnessAppContext isSessionViewControllerPresented];
 
-    if (v15)
+    if (isSessionViewControllerPresented)
     {
       _HKInitializeLogging();
       v16 = HKLogActivity;
@@ -2283,7 +2283,7 @@ LABEL_6:
       v17 = 27;
     }
 
-    v8[2](v8, v17);
+    handlerCopy[2](handlerCopy, v17);
   }
 
   else
@@ -2293,28 +2293,28 @@ LABEL_6:
     if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138412290;
-      v22 = v7;
+      v22 = notificationCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Incoming notification not allowed to post over foregrounded app: %@", &v21, 0xCu);
     }
   }
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   _HKInitializeLogging();
   v9 = HKLogActivity;
   if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v93 = v7;
+    v93 = responseCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Fitness received notification response %{public}@", buf, 0xCu);
   }
 
   if (![(PhoneSceneDelegate *)self presentingActiveWorkout])
   {
-    if ([AMSUserNotification shouldHandleNotificationResponse:v7])
+    if ([AMSUserNotification shouldHandleNotificationResponse:responseCopy])
     {
       seymourNotificationResponseCoordinator = self->_seymourNotificationResponseCoordinator;
       v88[0] = _NSConcreteStackBlock;
@@ -2322,16 +2322,16 @@ LABEL_6:
       v88[2] = sub_100127294;
       v88[3] = &unk_10083C7F8;
       v88[4] = self;
-      v89 = v8;
-      [(SeymourNotificationResponseCoordinator *)seymourNotificationResponseCoordinator handleNotificationResponse:v7 completion:v88];
+      v89 = handlerCopy;
+      [(SeymourNotificationResponseCoordinator *)seymourNotificationResponseCoordinator handleNotificationResponse:responseCopy completion:v88];
 
       goto LABEL_58;
     }
 
-    v13 = [(PhoneSceneDelegate *)self fitnessAppContext];
-    v14 = [v13 isSessionViewControllerPresented];
+    fitnessAppContext = [(PhoneSceneDelegate *)self fitnessAppContext];
+    isSessionViewControllerPresented = [fitnessAppContext isSessionViewControllerPresented];
 
-    if (v14)
+    if (isSessionViewControllerPresented)
     {
       _HKInitializeLogging();
       v10 = HKLogActivity;
@@ -2345,44 +2345,44 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v15 = [v7 notification];
-    v16 = [v15 request];
-    v17 = [v16 content];
-    v18 = [v17 categoryIdentifier];
+    notification = [responseCopy notification];
+    request = [notification request];
+    content = [request content];
+    categoryIdentifier = [content categoryIdentifier];
 
-    v19 = [v7 notification];
-    v20 = [v19 request];
-    v21 = [v20 identifier];
+    notification2 = [responseCopy notification];
+    request2 = [notification2 request];
+    identifier = [request2 identifier];
 
-    if ([v18 isEqualToString:kASBulletinsInviteCategoryIdentifier] & 1) != 0 || (objc_msgSend(v18, "isEqualToString:", kASBulletinsActivityDataCategoryIdentifier))
+    if ([categoryIdentifier isEqualToString:kASBulletinsInviteCategoryIdentifier] & 1) != 0 || (objc_msgSend(categoryIdentifier, "isEqualToString:", kASBulletinsActivityDataCategoryIdentifier))
     {
       v22 = 1;
     }
 
     else
     {
-      v22 = [v18 isEqualToString:kASBulletinsGenericCategoryIdentifier];
+      v22 = [categoryIdentifier isEqualToString:kASBulletinsGenericCategoryIdentifier];
     }
 
-    v82 = [v18 isEqualToString:FCCNotificationCategoryIdentifier];
-    v23 = [CHMoveModeNotificationResponseCoordinator shouldHandleNotificationCategoryIdentifier:v18];
-    v80 = [v18 isEqualToString:@"com.apple.Fitness.GuestPairingNotification"];
-    v78 = [v21 isEqualToString:@"com.apple.Fitness.WorkoutPlanCreationNotification"];
-    v84 = v21;
-    v77 = [v21 isEqualToString:@"com.apple.Fitness.PersonalizedWorkoutPlanCreationNotification"];
-    v76 = [v18 isEqualToString:FCCFitnessPlusPlanNotificationCategoryIdentifier];
-    v85 = v18;
-    v24 = [v18 isEqualToString:FCCPauseRingsReminderNotificationCategoryIdentifier];
+    v82 = [categoryIdentifier isEqualToString:FCCNotificationCategoryIdentifier];
+    v23 = [CHMoveModeNotificationResponseCoordinator shouldHandleNotificationCategoryIdentifier:categoryIdentifier];
+    v80 = [categoryIdentifier isEqualToString:@"com.apple.Fitness.GuestPairingNotification"];
+    v78 = [identifier isEqualToString:@"com.apple.Fitness.WorkoutPlanCreationNotification"];
+    v84 = identifier;
+    v77 = [identifier isEqualToString:@"com.apple.Fitness.PersonalizedWorkoutPlanCreationNotification"];
+    v76 = [categoryIdentifier isEqualToString:FCCFitnessPlusPlanNotificationCategoryIdentifier];
+    v85 = categoryIdentifier;
+    v24 = [categoryIdentifier isEqualToString:FCCPauseRingsReminderNotificationCategoryIdentifier];
     if (v24)
     {
-      v25 = [v7 actionIdentifier];
-      v83 = [v25 isEqualToString:@"PAUSE_YOUR_RINGS"];
+      actionIdentifier = [responseCopy actionIdentifier];
+      v83 = [actionIdentifier isEqualToString:@"PAUSE_YOUR_RINGS"];
 
-      v26 = [v7 actionIdentifier];
-      v81 = [v26 isEqualToString:@"EDIT_PAUSE_RINGS"];
+      actionIdentifier2 = [responseCopy actionIdentifier];
+      v81 = [actionIdentifier2 isEqualToString:@"EDIT_PAUSE_RINGS"];
 
-      v27 = [v7 actionIdentifier];
-      v79 = [v27 isEqualToString:@"VIEW_PAUSE_RINGS"];
+      actionIdentifier3 = [responseCopy actionIdentifier];
+      v79 = [actionIdentifier3 isEqualToString:@"VIEW_PAUSE_RINGS"];
     }
 
     else
@@ -2392,12 +2392,12 @@ LABEL_6:
       v81 = 0;
     }
 
-    v28 = [v7 actionIdentifier];
-    if ([v28 isEqualToString:UNNotificationDefaultActionIdentifier])
+    actionIdentifier4 = [responseCopy actionIdentifier];
+    if ([actionIdentifier4 isEqualToString:UNNotificationDefaultActionIdentifier])
     {
-      v29 = [v7 notification];
-      v30 = [v29 request];
-      v31 = (v30 == 0) | v23;
+      notification3 = [responseCopy notification];
+      request3 = [notification3 request];
+      v31 = (request3 == 0) | v23;
 
       if ((v31 & 1) == 0)
       {
@@ -2413,9 +2413,9 @@ LABEL_6:
             _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Handling notification response for default action - activity sharing", buf, 2u);
           }
 
-          v35 = [(PhoneSceneDelegate *)self activitySharingViewController];
-          v36 = [(PhoneSceneDelegate *)self activitySharingViewController];
-          v37 = [v36 popToRootViewControllerAnimated:0];
+          activitySharingViewController = [(PhoneSceneDelegate *)self activitySharingViewController];
+          activitySharingViewController2 = [(PhoneSceneDelegate *)self activitySharingViewController];
+          v37 = [activitySharingViewController2 popToRootViewControllerAnimated:0];
 
           goto LABEL_56;
         }
@@ -2429,7 +2429,7 @@ LABEL_6:
             _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Handling notification response for default action - fitness coaching", buf, 2u);
           }
 
-          [(PhoneSceneDelegate *)self handleFitnessCoachingNotificationResponse:v7];
+          [(PhoneSceneDelegate *)self handleFitnessCoachingNotificationResponse:responseCopy];
         }
 
         else
@@ -2444,7 +2444,7 @@ LABEL_6:
 
             [(NLTVConnectionManager *)self->_tvConnectionManager updateDiscoveryStateIfNeeded];
             [(NLTVConnectionManager *)self->_tvConnectionManager connectAutomatically];
-            v35 = 0;
+            activitySharingViewController = 0;
             goto LABEL_56;
           }
 
@@ -2457,7 +2457,7 @@ LABEL_6:
             }
 
             [(CHFitnessAppContext *)self->_fitnessAppContext navigateToWorkoutPlanCreation];
-            v54 = [(PhoneSceneDelegate *)self seymourNavController];
+            seymourNavController = [(PhoneSceneDelegate *)self seymourNavController];
             goto LABEL_44;
           }
 
@@ -2470,13 +2470,13 @@ LABEL_6:
             }
 
             fitnessAppContext = self->_fitnessAppContext;
-            v63 = [v7 notification];
-            v64 = [v63 request];
-            v65 = [v64 content];
-            v66 = [v65 userInfo];
-            [(CHFitnessAppContext *)fitnessAppContext navigateToPersonalizedWorkoutPlanCreationWithUserInfo:v66];
+            notification4 = [responseCopy notification];
+            request4 = [notification4 request];
+            content2 = [request4 content];
+            userInfo = [content2 userInfo];
+            [(CHFitnessAppContext *)fitnessAppContext navigateToPersonalizedWorkoutPlanCreationWithUserInfo:userInfo];
 
-            v35 = [(PhoneSceneDelegate *)self seymourNavController];
+            activitySharingViewController = [(PhoneSceneDelegate *)self seymourNavController];
             v34 = v85;
             goto LABEL_56;
           }
@@ -2489,16 +2489,16 @@ LABEL_6:
               _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Handling notification response for plan detail action - fitness+", buf, 2u);
             }
 
-            v67 = [v7 notification];
-            v68 = [v67 request];
-            v69 = [v68 content];
-            v70 = [v69 userInfo];
+            notification5 = [responseCopy notification];
+            request5 = [notification5 request];
+            content3 = [request5 content];
+            userInfo2 = [content3 userInfo];
 
-            v71 = [v70 objectForKeyedSubscript:FCCNotificationUserInfoShowingTomorrowPlan];
-            LODWORD(v68) = [v71 BOOLValue];
+            v71 = [userInfo2 objectForKeyedSubscript:FCCNotificationUserInfoShowingTomorrowPlan];
+            LODWORD(request5) = [v71 BOOLValue];
 
-            [(CHFitnessAppContext *)self->_fitnessAppContext navigateToWorkoutPlanDetailWithDayOffset:v68];
-            v35 = [(PhoneSceneDelegate *)self seymourNavController];
+            [(CHFitnessAppContext *)self->_fitnessAppContext navigateToWorkoutPlanDetailWithDayOffset:request5];
+            activitySharingViewController = [(PhoneSceneDelegate *)self seymourNavController];
 
             goto LABEL_56;
           }
@@ -2509,22 +2509,22 @@ LABEL_6:
             _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Handling notification response for default action - trends", buf, 2u);
           }
 
-          v72 = [(PhoneSceneDelegate *)self activityTileNavController];
-          [v72 detachPalette];
+          activityTileNavController = [(PhoneSceneDelegate *)self activityTileNavController];
+          [activityTileNavController detachPalette];
 
-          v73 = [(PhoneSceneDelegate *)self activityTileNavController];
-          v74 = [v73 popToRootViewControllerAnimated:0];
+          activityTileNavController2 = [(PhoneSceneDelegate *)self activityTileNavController];
+          v74 = [activityTileNavController2 popToRootViewControllerAnimated:0];
 
-          v75 = [(PhoneSceneDelegate *)self activityDashboardViewController];
-          [v75 showAllTrendsAnimated:0];
+          activityDashboardViewController = [(PhoneSceneDelegate *)self activityDashboardViewController];
+          [activityDashboardViewController showAllTrendsAnimated:0];
         }
 
-        v54 = [(PhoneSceneDelegate *)self activityTileNavController];
+        seymourNavController = [(PhoneSceneDelegate *)self activityTileNavController];
 LABEL_44:
-        v35 = v54;
+        activitySharingViewController = seymourNavController;
 LABEL_56:
-        [(PhoneSceneDelegate *)self _setSelectedViewController:v35];
-        v8[2](v8);
+        [(PhoneSceneDelegate *)self _setSelectedViewController:activitySharingViewController];
+        handlerCopy[2](handlerCopy);
 
         goto LABEL_57;
       }
@@ -2544,32 +2544,32 @@ LABEL_56:
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Handling notification response for activity sharing", buf, 2u);
       }
 
-      v39 = [v7 actionIdentifier];
-      v40 = [v7 notification];
-      v41 = [v40 request];
-      v42 = [v41 content];
-      v43 = [v42 userInfo];
+      actionIdentifier5 = [responseCopy actionIdentifier];
+      notification6 = [responseCopy notification];
+      request6 = [notification6 request];
+      content4 = [request6 content];
+      userInfo3 = [content4 userInfo];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v44 = [v7 userText];
+        userText = [responseCopy userText];
         v90 = kASNotificationReplyKey;
-        v91 = v44;
+        v91 = userText;
         v45 = [NSDictionary dictionaryWithObjects:&v91 forKeys:&v90 count:1];
-        v46 = [v43 hk_dictionaryByAddingEntriesFromDictionary:v45];
+        v46 = [userInfo3 hk_dictionaryByAddingEntriesFromDictionary:v45];
 
-        v43 = v46;
+        userInfo3 = v46;
       }
 
       v34 = v85;
-      v47 = [[ASUserNotificationResponse alloc] initWithActionIdentifier:v39 userInfo:v43];
+      v47 = [[ASUserNotificationResponse alloc] initWithActionIdentifier:actionIdentifier5 userInfo:userInfo3];
       activitySharingClient = self->_activitySharingClient;
       v86[0] = _NSConcreteStackBlock;
       v86[1] = 3221225472;
       v86[2] = sub_100127338;
       v86[3] = &unk_10083CA98;
-      v87 = v8;
+      v87 = handlerCopy;
       [(ASActivitySharingClient *)activitySharingClient handleNotificationResponse:v47 completion:v86];
 
       goto LABEL_57;
@@ -2577,16 +2577,16 @@ LABEL_56:
 
     if (v23)
     {
-      v49 = [(PhoneSceneDelegate *)self activityTileNavController];
-      v50 = [(PhoneSceneDelegate *)self healthStore];
-      v51 = [(PhoneSceneDelegate *)self fitnessUIFormattingManager];
-      [CHMoveModeNotificationResponseCoordinator handleNotificationResponse:v7 presentingNavigationController:v49 healthStore:v50 formattingManager:v51];
+      activityTileNavController3 = [(PhoneSceneDelegate *)self activityTileNavController];
+      healthStore = [(PhoneSceneDelegate *)self healthStore];
+      fitnessUIFormattingManager = [(PhoneSceneDelegate *)self fitnessUIFormattingManager];
+      [CHMoveModeNotificationResponseCoordinator handleNotificationResponse:responseCopy presentingNavigationController:activityTileNavController3 healthStore:healthStore formattingManager:fitnessUIFormattingManager];
     }
 
     if (!v24)
     {
 LABEL_51:
-      v8[2](v8);
+      handlerCopy[2](handlerCopy);
       v34 = v85;
 LABEL_57:
 
@@ -2640,14 +2640,14 @@ LABEL_48:
 
     v55 = 1;
 LABEL_50:
-    v56 = [(PhoneSceneDelegate *)self activityTileNavController];
-    [v56 dismissViewControllerAnimated:0 completion:0];
+    activityTileNavController4 = [(PhoneSceneDelegate *)self activityTileNavController];
+    [activityTileNavController4 dismissViewControllerAnimated:0 completion:0];
 
-    v57 = [(PhoneSceneDelegate *)self activityTileNavController];
-    v58 = [v57 popToRootViewControllerAnimated:0];
+    activityTileNavController5 = [(PhoneSceneDelegate *)self activityTileNavController];
+    v58 = [activityTileNavController5 popToRootViewControllerAnimated:0];
 
-    v59 = [(PhoneSceneDelegate *)self activityDashboardViewController];
-    v60 = [v59 showTodayAndShareImmediately:0 animated:0 forGoalCompleteNotification:0 goalRecommendation:0 withPauseRingsEditing:v55];
+    activityDashboardViewController2 = [(PhoneSceneDelegate *)self activityDashboardViewController];
+    v60 = [activityDashboardViewController2 showTodayAndShareImmediately:0 animated:0 forGoalCompleteNotification:0 goalRecommendation:0 withPauseRingsEditing:v55];
 
     goto LABEL_51;
   }
@@ -2663,18 +2663,18 @@ LABEL_6:
   }
 
 LABEL_7:
-  v8[2](v8);
+  handlerCopy[2](handlerCopy);
 LABEL_58:
 }
 
-- (void)handleFitnessCoachingNotificationResponse:(id)a3
+- (void)handleFitnessCoachingNotificationResponse:(id)response
 {
-  v4 = [a3 notification];
-  v5 = [v4 request];
-  v6 = [v5 content];
-  v7 = [v6 userInfo];
+  notification = [response notification];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v8 = [(PhoneSceneDelegate *)self _parseFitnessCoachingNotificationType:v7];
+  v8 = [(PhoneSceneDelegate *)self _parseFitnessCoachingNotificationType:userInfo];
   v9 = v8;
   if (v8 > 2)
   {
@@ -2692,15 +2692,15 @@ LABEL_58:
             _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Presenting for goal update", v47, 2u);
           }
 
-          v11 = [(PhoneSceneDelegate *)self _parseGoalRecommendation:v7];
-          v12 = [(PhoneSceneDelegate *)self activityTileNavController];
-          [v12 dismissViewControllerAnimated:0 completion:0];
+          v11 = [(PhoneSceneDelegate *)self _parseGoalRecommendation:userInfo];
+          activityTileNavController = [(PhoneSceneDelegate *)self activityTileNavController];
+          [activityTileNavController dismissViewControllerAnimated:0 completion:0];
 
-          v13 = [(PhoneSceneDelegate *)self activityTileNavController];
-          v14 = [v13 popToRootViewControllerAnimated:0];
+          activityTileNavController2 = [(PhoneSceneDelegate *)self activityTileNavController];
+          v14 = [activityTileNavController2 popToRootViewControllerAnimated:0];
 
-          v15 = [(PhoneSceneDelegate *)self activityDashboardViewController];
-          v16 = [v15 showTodayAndShareImmediately:0 animated:0 forGoalCompleteNotification:0 goalRecommendation:v11];
+          activityDashboardViewController = [(PhoneSceneDelegate *)self activityDashboardViewController];
+          v16 = [activityDashboardViewController showTodayAndShareImmediately:0 animated:0 forGoalCompleteNotification:0 goalRecommendation:v11];
 
           [(PhoneSceneDelegate *)self _clearWeeklyGoalDisplayContext];
         }
@@ -2716,22 +2716,22 @@ LABEL_58:
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Presenting achievement without celebration for notification", v49, 2u);
       }
 
-      v37 = [(PhoneSceneDelegate *)self rootViewController];
-      [v37 hide];
+      rootViewController = [(PhoneSceneDelegate *)self rootViewController];
+      [rootViewController hide];
 
       v19 = ACHDecodeAchievementFromUserInfoDictionary();
-      v38 = [(PhoneSceneDelegate *)self activityTileNavController];
-      [v38 dismissViewControllerAnimated:0 completion:0];
+      activityTileNavController3 = [(PhoneSceneDelegate *)self activityTileNavController];
+      [activityTileNavController3 dismissViewControllerAnimated:0 completion:0];
 
-      v39 = [(PhoneSceneDelegate *)self activityTileNavController];
-      v40 = [v39 popToRootViewControllerAnimated:0];
+      activityTileNavController4 = [(PhoneSceneDelegate *)self activityTileNavController];
+      v40 = [activityTileNavController4 popToRootViewControllerAnimated:0];
 
-      v23 = [(PhoneSceneDelegate *)self activityDashboardViewController];
-      v24 = v23;
+      activityDashboardViewController2 = [(PhoneSceneDelegate *)self activityDashboardViewController];
+      v24 = activityDashboardViewController2;
       v25 = v19;
       v26 = 0;
 LABEL_21:
-      v41 = [v23 navigateToTrophyCaseAnimated:0 initialAchievement:v25 shouldShowCelebration:v26 forModalPresentation:1];
+      v41 = [activityDashboardViewController2 navigateToTrophyCaseAnimated:0 initialAchievement:v25 shouldShowCelebration:v26 forModalPresentation:1];
 
       goto LABEL_26;
     }
@@ -2744,20 +2744,20 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Presenting goal completion celebration", v48, 2u);
     }
 
-    v29 = [(PhoneSceneDelegate *)self rootViewController];
-    [v29 hide];
+    rootViewController2 = [(PhoneSceneDelegate *)self rootViewController];
+    [rootViewController2 hide];
 
-    v30 = [(PhoneSceneDelegate *)self activityTileNavController];
-    [v30 dismissViewControllerAnimated:0 completion:0];
+    activityTileNavController5 = [(PhoneSceneDelegate *)self activityTileNavController];
+    [activityTileNavController5 dismissViewControllerAnimated:0 completion:0];
 
-    v31 = [(PhoneSceneDelegate *)self activityTileNavController];
-    v32 = [v31 popToRootViewControllerAnimated:0];
+    activityTileNavController6 = [(PhoneSceneDelegate *)self activityTileNavController];
+    v32 = [activityTileNavController6 popToRootViewControllerAnimated:0];
 
-    v33 = [(PhoneSceneDelegate *)self activityDashboardViewController];
-    v34 = v33;
+    activityDashboardViewController3 = [(PhoneSceneDelegate *)self activityDashboardViewController];
+    v34 = activityDashboardViewController3;
     v35 = 1;
 LABEL_25:
-    v46 = [v33 showTodayAndShareImmediately:0 animated:0 forGoalCompleteNotification:v35 goalRecommendation:0];
+    v46 = [activityDashboardViewController3 showTodayAndShareImmediately:0 animated:0 forGoalCompleteNotification:v35 goalRecommendation:0];
 
     goto LABEL_26;
   }
@@ -2772,14 +2772,14 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Presenting day view for notification", v51, 2u);
     }
 
-    v43 = [(PhoneSceneDelegate *)self activityTileNavController];
-    [v43 dismissViewControllerAnimated:0 completion:0];
+    activityTileNavController7 = [(PhoneSceneDelegate *)self activityTileNavController];
+    [activityTileNavController7 dismissViewControllerAnimated:0 completion:0];
 
-    v44 = [(PhoneSceneDelegate *)self activityTileNavController];
-    v45 = [v44 popToRootViewControllerAnimated:0];
+    activityTileNavController8 = [(PhoneSceneDelegate *)self activityTileNavController];
+    v45 = [activityTileNavController8 popToRootViewControllerAnimated:0];
 
-    v33 = [(PhoneSceneDelegate *)self activityDashboardViewController];
-    v34 = v33;
+    activityDashboardViewController3 = [(PhoneSceneDelegate *)self activityDashboardViewController];
+    v34 = activityDashboardViewController3;
     v35 = 0;
     goto LABEL_25;
   }
@@ -2794,18 +2794,18 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Presenting achievement with celebration for notification", buf, 2u);
     }
 
-    v18 = [(PhoneSceneDelegate *)self rootViewController];
-    [v18 hide];
+    rootViewController3 = [(PhoneSceneDelegate *)self rootViewController];
+    [rootViewController3 hide];
 
     v19 = ACHDecodeAchievementFromUserInfoDictionary();
-    v20 = [(PhoneSceneDelegate *)self activityTileNavController];
-    [v20 dismissViewControllerAnimated:0 completion:0];
+    activityTileNavController9 = [(PhoneSceneDelegate *)self activityTileNavController];
+    [activityTileNavController9 dismissViewControllerAnimated:0 completion:0];
 
-    v21 = [(PhoneSceneDelegate *)self activityTileNavController];
-    v22 = [v21 popToRootViewControllerAnimated:0];
+    activityTileNavController10 = [(PhoneSceneDelegate *)self activityTileNavController];
+    v22 = [activityTileNavController10 popToRootViewControllerAnimated:0];
 
-    v23 = [(PhoneSceneDelegate *)self activityDashboardViewController];
-    v24 = v23;
+    activityDashboardViewController2 = [(PhoneSceneDelegate *)self activityDashboardViewController];
+    v24 = activityDashboardViewController2;
     v25 = v19;
     v26 = 1;
     goto LABEL_21;
@@ -2822,18 +2822,18 @@ LABEL_13:
 LABEL_26:
 }
 
-- (int64_t)_parseFitnessCoachingNotificationType:(id)a3
+- (int64_t)_parseFitnessCoachingNotificationType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
     return 0;
   }
 
-  v3 = [a3 objectForKeyedSubscript:FCCNotificationTypeUserInfoKey];
+  v3 = [type objectForKeyedSubscript:FCCNotificationTypeUserInfoKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
@@ -2844,17 +2844,17 @@ LABEL_26:
       sub_10069CE6C();
     }
 
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (id)_parseGoalRecommendation:(id)a3
+- (id)_parseGoalRecommendation:(id)recommendation
 {
-  if (a3)
+  if (recommendation)
   {
-    v3 = [a3 objectForKeyedSubscript:FCCNotificationTypeUserInfoGoalRecommendationKey];
+    v3 = [recommendation objectForKeyedSubscript:FCCNotificationTypeUserInfoGoalRecommendationKey];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2887,23 +2887,23 @@ LABEL_26:
   [v2 clearContext];
 }
 
-- (void)_setSelectedViewController:(id)a3
+- (void)_setSelectedViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = dispatch_time(0, 50000000);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100127B3C;
   v7[3] = &unk_10083A970;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = controllerCopy;
+  v6 = controllerCopy;
   dispatch_after(v5, &_dispatch_main_q, v7);
 }
 
-- (void)userNotificationCenter:(id)a3 openSettingsForNotification:(id)a4
+- (void)userNotificationCenter:(id)center openSettingsForNotification:(id)notification
 {
-  if ([(PhoneSceneDelegate *)self presentingActiveWorkout:a3])
+  if ([(PhoneSceneDelegate *)self presentingActiveWorkout:center])
   {
     _HKInitializeLogging();
     v5 = HKLogActivity;
@@ -2916,49 +2916,49 @@ LABEL_26:
 
   else
   {
-    v6 = [(PhoneSceneDelegate *)self activityTileNavController];
-    [(PhoneSceneDelegate *)self _resetToViewController:v6];
+    activityTileNavController = [(PhoneSceneDelegate *)self activityTileNavController];
+    [(PhoneSceneDelegate *)self _resetToViewController:activityTileNavController];
 
-    v7 = [(PhoneSceneDelegate *)self activityDashboardViewController];
-    [v7 presentAppSettingsShowingPane:1];
+    activityDashboardViewController = [(PhoneSceneDelegate *)self activityDashboardViewController];
+    [activityDashboardViewController presentAppSettingsShowingPane:1];
   }
 }
 
 - (void)_ppt_showSharingTab
 {
-  v3 = [(PhoneSceneDelegate *)self activitySharingViewController];
-  [(PhoneSceneDelegate *)self _resetToViewController:v3];
+  activitySharingViewController = [(PhoneSceneDelegate *)self activitySharingViewController];
+  [(PhoneSceneDelegate *)self _resetToViewController:activitySharingViewController];
 }
 
-- (void)presentModelOnSummaryTabWithViewController:(id)a3
+- (void)presentModelOnSummaryTabWithViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PhoneSceneDelegate *)self activityTileNavController];
-  v6 = [v5 presentedViewController];
+  controllerCopy = controller;
+  activityTileNavController = [(PhoneSceneDelegate *)self activityTileNavController];
+  presentedViewController = [activityTileNavController presentedViewController];
 
-  if (v6)
+  if (presentedViewController)
   {
     _HKInitializeLogging();
     v7 = HKLogActivity;
     if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v6;
+      v10 = presentedViewController;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Summary tab is already presenting modal view %@, can't present discovery sheet", &v9, 0xCu);
     }
   }
 
   else
   {
-    v8 = [(PhoneSceneDelegate *)self activityTileNavController];
-    [v8 presentViewController:v4 animated:1 completion:0];
+    activityTileNavController2 = [(PhoneSceneDelegate *)self activityTileNavController];
+    [activityTileNavController2 presentViewController:controllerCopy animated:1 completion:0];
   }
 }
 
-- (void)presentBrowsingConsentAlertWithCompletion:(id)a3
+- (void)presentBrowsingConsentAlertWithCompletion:(id)completion
 {
-  v4 = a3;
-  [(PhoneSceneDelegate *)self setBrowsingConsentAlertCompletion:v4];
+  completionCopy = completion;
+  [(PhoneSceneDelegate *)self setBrowsingConsentAlertCompletion:completionCopy];
   objc_initWeak(&location, self);
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"CONNECT_BUTTON" value:&stru_1008680E8 table:@"Localizable-seymour"];
@@ -2985,15 +2985,15 @@ LABEL_26:
   objc_copyWeak(&v21, &location);
   v15 = [UIAlertAction actionWithTitle:v14 style:1 handler:v20];
 
-  v16 = [(PhoneSceneDelegate *)self browsingConsentAlertController];
-  [v16 addAction:v12];
+  browsingConsentAlertController = [(PhoneSceneDelegate *)self browsingConsentAlertController];
+  [browsingConsentAlertController addAction:v12];
 
-  v17 = [(PhoneSceneDelegate *)self browsingConsentAlertController];
-  [v17 addAction:v15];
+  browsingConsentAlertController2 = [(PhoneSceneDelegate *)self browsingConsentAlertController];
+  [browsingConsentAlertController2 addAction:v15];
 
-  v18 = [(PhoneSceneDelegate *)self tabBarController];
-  v19 = [(PhoneSceneDelegate *)self browsingConsentAlertController];
-  [v18 presentViewController:v19 animated:1 completion:0];
+  tabBarController = [(PhoneSceneDelegate *)self tabBarController];
+  browsingConsentAlertController3 = [(PhoneSceneDelegate *)self browsingConsentAlertController];
+  [tabBarController presentViewController:browsingConsentAlertController3 animated:1 completion:0];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&v23);
@@ -3002,56 +3002,56 @@ LABEL_26:
 
 - (void)cleanupGuestAuthentication
 {
-  v3 = [(PhoneSceneDelegate *)self browsingConsentAlertCompletion];
+  browsingConsentAlertCompletion = [(PhoneSceneDelegate *)self browsingConsentAlertCompletion];
 
-  if (v3)
+  if (browsingConsentAlertCompletion)
   {
-    v4 = [(PhoneSceneDelegate *)self browsingConsentAlertCompletion];
-    v4[2](v4, 0);
+    browsingConsentAlertCompletion2 = [(PhoneSceneDelegate *)self browsingConsentAlertCompletion];
+    browsingConsentAlertCompletion2[2](browsingConsentAlertCompletion2, 0);
 
     [(PhoneSceneDelegate *)self setBrowsingConsentAlertCompletion:0];
-    v5 = [(PhoneSceneDelegate *)self tabBarController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    tabBarController = [(PhoneSceneDelegate *)self tabBarController];
+    [tabBarController dismissViewControllerAnimated:1 completion:0];
   }
 
-  v6 = [(PhoneSceneDelegate *)self passwordEnteredHandler];
+  passwordEnteredHandler = [(PhoneSceneDelegate *)self passwordEnteredHandler];
 
-  if (v6)
+  if (passwordEnteredHandler)
   {
-    v8 = [(PhoneSceneDelegate *)self passwordController];
-    v7 = [v8 passwordEntryCancelledHandler];
-    v7[2]();
+    passwordController = [(PhoneSceneDelegate *)self passwordController];
+    passwordEntryCancelledHandler = [passwordController passwordEntryCancelledHandler];
+    passwordEntryCancelledHandler[2]();
   }
 }
 
-- (void)promptForPasscodeWithLength:(int64_t)a3 completion:(id)a4
+- (void)promptForPasscodeWithLength:(int64_t)length completion:(id)completion
 {
-  v6 = a4;
-  [(PhoneSceneDelegate *)self setPasswordEnteredHandler:v6];
+  completionCopy = completion;
+  [(PhoneSceneDelegate *)self setPasswordEnteredHandler:completionCopy];
   objc_initWeak(&location, self);
   v7 = [SMUPasswordController alloc];
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"TV_CODE_TITLE" value:&stru_1008680E8 table:@"Localizable-seymour"];
-  v10 = [v7 initWithTitle:v9 passwordLength:a3 supportedOrientations:2];
+  v10 = [v7 initWithTitle:v9 passwordLength:length supportedOrientations:2];
   [(PhoneSceneDelegate *)self setPasswordController:v10];
 
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10012866C;
   v18[3] = &unk_10083CF10;
-  v19[1] = a3;
+  v19[1] = length;
   objc_copyWeak(v19, &location);
-  v11 = [(PhoneSceneDelegate *)self passwordController];
-  [v11 setPasswordEnteredHandler:v18];
+  passwordController = [(PhoneSceneDelegate *)self passwordController];
+  [passwordController setPasswordEnteredHandler:v18];
 
   objc_copyWeak(&v17, &location);
   v12 = [(PhoneSceneDelegate *)self passwordController:_NSConcreteStackBlock];
   [v12 setPasswordEntryCancelledHandler:&v16];
 
-  v13 = [(PhoneSceneDelegate *)self tabBarController];
-  v14 = [(PhoneSceneDelegate *)self passwordController];
-  v15 = [v14 viewController];
-  [v13 presentViewController:v15 animated:1 completion:0];
+  tabBarController = [(PhoneSceneDelegate *)self tabBarController];
+  passwordController2 = [(PhoneSceneDelegate *)self passwordController];
+  viewController = [passwordController2 viewController];
+  [tabBarController presentViewController:viewController animated:1 completion:0];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(v19);
@@ -3068,11 +3068,11 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[HistoryPagingViewControllerDelegate] unhiding rootViewController because celebration video did begin", v5, 2u);
   }
 
-  v4 = [(PhoneSceneDelegate *)self rootViewController];
-  [v4 unhide];
+  rootViewController = [(PhoneSceneDelegate *)self rootViewController];
+  [rootViewController unhide];
 }
 
-- (void)trophyCaseDidBeginCelebration:(id)a3
+- (void)trophyCaseDidBeginCelebration:(id)celebration
 {
   _HKInitializeLogging();
   v4 = HKLogActivity;
@@ -3082,35 +3082,35 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[TrophyCaseViewControllerDelegate] unhiding rootViewController because celebration video did begin", v6, 2u);
   }
 
-  v5 = [(PhoneSceneDelegate *)self rootViewController];
-  [v5 unhide];
+  rootViewController = [(PhoneSceneDelegate *)self rootViewController];
+  [rootViewController unhide];
 }
 
-- (void)onboardingCoordinatorPhaseDidChangeTo:(int64_t)a3
+- (void)onboardingCoordinatorPhaseDidChangeTo:(int64_t)to
 {
   _HKInitializeLogging();
   v5 = HKLogActivity;
   if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(PhoneSceneDelegate *)self activityDashboardViewController];
+    activityDashboardViewController = [(PhoneSceneDelegate *)self activityDashboardViewController];
     presentingOnboarding = self->_presentingOnboarding;
     *buf = 134218496;
-    v14 = a3;
+    toCopy = to;
     v15 = 1024;
-    v16 = v7 != 0;
+    v16 = activityDashboardViewController != 0;
     v17 = 1024;
     v18 = presentingOnboarding;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[Setup] onboarding coordinator phase did change: %ld, activity app is set up: %d, is presenting onboarding: %d", buf, 0x18u);
   }
 
-  if (a3 == 5)
+  if (to == 5)
   {
-    v9 = [(PhoneSceneDelegate *)self activityDashboardViewController];
-    v10 = [v9 viewIfLoaded];
-    v11 = [v10 window];
+    activityDashboardViewController2 = [(PhoneSceneDelegate *)self activityDashboardViewController];
+    viewIfLoaded = [activityDashboardViewController2 viewIfLoaded];
+    window = [viewIfLoaded window];
 
-    if (!v11)
+    if (!window)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -3127,18 +3127,18 @@ LABEL_26:
   }
 }
 
-- (void)updateWorkoutState:(int64_t)a3 shouldShowTimeout:(BOOL)a4
+- (void)updateWorkoutState:(int64_t)state shouldShowTimeout:(BOOL)timeout
 {
-  v4 = a4;
+  timeoutCopy = timeout;
   _HKInitializeLogging();
   v7 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [WODataLinkWorkoutStateHelper descriptionFor:a3];
+    v9 = [WODataLinkWorkoutStateHelper descriptionFor:state];
     v10 = v9;
     v11 = @"NO";
-    if (v4)
+    if (timeoutCopy)
     {
       v11 = @"YES";
     }
@@ -3150,9 +3150,9 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[dataLink] updateWorkoutState: %@, shouldShowTimeout: %@", buf, 0x16u);
   }
 
-  if (a3)
+  if (state)
   {
-    if (v4)
+    if (timeoutCopy)
     {
       _HKInitializeLogging();
       v12 = HKLogWorkouts;
@@ -3170,7 +3170,7 @@ LABEL_26:
       v31[2] = sub_100129394;
       v31[3] = &unk_10083A8D8;
       v31[4] = self;
-      v32 = v4;
+      v32 = timeoutCopy;
       [(WOMirrorViewController *)v14 showTimeoutDialogWithDismissCompletion:v31];
     }
 
@@ -3186,13 +3186,13 @@ LABEL_26:
         }
 
         v18 = v17;
-        v19 = [WODataLinkWorkoutStateHelper descriptionFor:a3];
-        v20 = [(WOMirrorViewController *)self->_mirrorViewController willPresentSummaryOnEndWorkout];
+        v19 = [WODataLinkWorkoutStateHelper descriptionFor:state];
+        willPresentSummaryOnEndWorkout = [(WOMirrorViewController *)self->_mirrorViewController willPresentSummaryOnEndWorkout];
         v21 = @"YES";
         *buf = 138412802;
         v35 = v19;
         v36 = 2112;
-        if (!v20)
+        if (!willPresentSummaryOnEndWorkout)
         {
           v21 = @"NO";
         }
@@ -3213,9 +3213,9 @@ LABEL_26:
         {
           v24 = self->_mirrorViewController;
           v25 = v23;
-          v26 = [(WOMirrorViewController *)v24 willPresentSummaryOnEndWorkout];
+          willPresentSummaryOnEndWorkout2 = [(WOMirrorViewController *)v24 willPresentSummaryOnEndWorkout];
           v27 = @"NO";
-          if (v26)
+          if (willPresentSummaryOnEndWorkout2)
           {
             v27 = @"YES";
           }
@@ -3261,15 +3261,15 @@ LABEL_26:
   }
 }
 
-- (void)dismissMirrorViewControllerWithCompletion:(id)a3
+- (void)dismissMirrorViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   mirrorViewController = self->_mirrorViewController;
   if (mirrorViewController)
   {
-    v6 = [(WOMirrorViewController *)mirrorViewController presentedViewController];
+    presentedViewController = [(WOMirrorViewController *)mirrorViewController presentedViewController];
 
-    if (v6)
+    if (presentedViewController)
     {
       _HKInitializeLogging();
       v7 = HKLogWorkouts;
@@ -3277,38 +3277,38 @@ LABEL_26:
       {
         v8 = self->_mirrorViewController;
         v9 = v7;
-        v10 = [(WOMirrorViewController *)v8 presentedViewController];
+        presentedViewController2 = [(WOMirrorViewController *)v8 presentedViewController];
         *buf = 138412290;
-        v15 = v10;
+        v15 = presentedViewController2;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[dataLink] dismiss: Bringing down mirrorViewController.presentedViewController dismiss: %@", buf, 0xCu);
       }
 
-      v11 = [(WOMirrorViewController *)self->_mirrorViewController presentedViewController];
+      presentedViewController3 = [(WOMirrorViewController *)self->_mirrorViewController presentedViewController];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_100129834;
       v12[3] = &unk_10083C7F8;
       v12[4] = self;
-      v13 = v4;
-      [v11 dismissViewControllerAnimated:1 completion:v12];
+      v13 = completionCopy;
+      [presentedViewController3 dismissViewControllerAnimated:1 completion:v12];
     }
 
     else
     {
-      [(PhoneSceneDelegate *)self _dismissMirrorViewControllerAndClearReferenceWithCompletion:v4];
+      [(PhoneSceneDelegate *)self _dismissMirrorViewControllerAndClearReferenceWithCompletion:completionCopy];
     }
   }
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)_dismissMirrorViewControllerAndClearReferenceWithCompletion:(id)a3
+- (void)_dismissMirrorViewControllerAndClearReferenceWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_mirrorViewController)
   {
     _HKInitializeLogging();
@@ -3333,14 +3333,14 @@ LABEL_26:
 
   else
   {
-    (*(v4 + 2))(v4);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 
 - (void)_handleManuallyLoggedWorkoutNavigationNotification
 {
-  v3 = [(PhoneSceneDelegate *)self activityTileNavController];
-  [(PhoneSceneDelegate *)self _resetToViewController:v3 animated:1];
+  activityTileNavController = [(PhoneSceneDelegate *)self activityTileNavController];
+  [(PhoneSceneDelegate *)self _resetToViewController:activityTileNavController animated:1];
 
   v4 = dispatch_time(0, 300000000);
   block[0] = _NSConcreteStackBlock;
@@ -3351,12 +3351,12 @@ LABEL_26:
   dispatch_after(v4, &_dispatch_main_q, block);
 }
 
-- (id)provideSummaryViewControllerForDataSource:(id)a3
+- (id)provideSummaryViewControllerForDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [v4 hkWorkout];
-  v6 = [v5 fiui_finalWorkoutUUID];
-  v7 = [v6 isEqual:self->_cachedWorkoutDetailViewUUID];
+  sourceCopy = source;
+  hkWorkout = [sourceCopy hkWorkout];
+  fiui_finalWorkoutUUID = [hkWorkout fiui_finalWorkoutUUID];
+  v7 = [fiui_finalWorkoutUUID isEqual:self->_cachedWorkoutDetailViewUUID];
 
   if (v7)
   {
@@ -3367,16 +3367,16 @@ LABEL_26:
   {
     v9 = [[CHWorkoutDataProvider alloc] initWithHealthStore:self->_healthStore];
     v10 = objc_alloc_init(AAUIAchievementResourceProvider);
-    v11 = [(ActivityTileViewController *)self->_activityTileViewController awardsDataProviderWrapper];
+    awardsDataProviderWrapper = [(ActivityTileViewController *)self->_activityTileViewController awardsDataProviderWrapper];
     v12 = [CHWorkoutDetailViewController alloc];
-    v13 = [v4 hkWorkout];
+    hkWorkout2 = [sourceCopy hkWorkout];
     LOWORD(v18) = 257;
-    v14 = [(CHWorkoutDetailViewController *)v12 initWithWorkout:v13 workoutActivity:0 healthStore:self->_healthStore model:self->_model fitnessAppContext:self->_fitnessAppContext workoutFormattingManager:self->_workoutFormattingManager workoutDataProvider:v9 badgeImageFactory:self->_badgeImageFactory friendListManager:self->_friendListManager achievementLocalizationProvider:self->_achievementLocalizationProvider pauseRingsCoordinator:self->_pauseRingsCoordinator achievementResourceProvider:v10 formattingManager:self->_fitnessUIFormattingManager awardsDataProvider:v11 shouldExposeDeepLinkToTrainingLoadFromEffort:v18 isWorkoutSummaryFetchRequired:v4 supplementaryDataSource:?];
+    v14 = [(CHWorkoutDetailViewController *)v12 initWithWorkout:hkWorkout2 workoutActivity:0 healthStore:self->_healthStore model:self->_model fitnessAppContext:self->_fitnessAppContext workoutFormattingManager:self->_workoutFormattingManager workoutDataProvider:v9 badgeImageFactory:self->_badgeImageFactory friendListManager:self->_friendListManager achievementLocalizationProvider:self->_achievementLocalizationProvider pauseRingsCoordinator:self->_pauseRingsCoordinator achievementResourceProvider:v10 formattingManager:self->_fitnessUIFormattingManager awardsDataProvider:awardsDataProviderWrapper shouldExposeDeepLinkToTrainingLoadFromEffort:v18 isWorkoutSummaryFetchRequired:sourceCopy supplementaryDataSource:?];
 
     [(PhoneSceneDelegate *)self setCurrentWorkoutDetailViewController:v14];
-    v15 = [v4 hkWorkout];
-    v16 = [v15 fiui_finalWorkoutUUID];
-    [(PhoneSceneDelegate *)self setCachedWorkoutDetailViewUUID:v16];
+    hkWorkout3 = [sourceCopy hkWorkout];
+    fiui_finalWorkoutUUID2 = [hkWorkout3 fiui_finalWorkoutUUID];
+    [(PhoneSceneDelegate *)self setCachedWorkoutDetailViewUUID:fiui_finalWorkoutUUID2];
 
     WeakRetained = [[UINavigationController alloc] initWithRootViewController:v14];
   }

@@ -1,15 +1,15 @@
 @interface MPModelTVEpisodeKind
 + (id)identityKind;
-+ (id)kindWithVariants:(unint64_t)a3 options:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (MPModelTVEpisodeKind)initWithCoder:(id)a3;
++ (id)kindWithVariants:(unint64_t)variants options:(unint64_t)options;
+- (BOOL)isEqual:(id)equal;
+- (MPModelTVEpisodeKind)initWithCoder:(id)coder;
 - (id)humanDescription;
-- (id)msv_initWithJSONValue:(id)a3;
+- (id)msv_initWithJSONValue:(id)value;
 - (id)msv_jsonValue;
-- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)a3;
+- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)property;
 - (shared_ptr<mlcore::Predicate>)representedSearchScopePredicate;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPModelTVEpisodeKind
@@ -23,7 +23,7 @@
 
 - (id)humanDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
   v5 = v4;
   variants = self->_variants;
@@ -39,31 +39,31 @@
   }
 
   v7 = [v5 componentsJoinedByString:@" or "];
-  [v3 appendString:v7];
+  [string appendString:v7];
 
   if (self->_options)
   {
-    [v3 insertString:@"shuffleable " atIndex:0];
+    [string insertString:@"shuffleable " atIndex:0];
   }
 
-  return v3;
+  return string;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPModelTVEpisodeKind;
-  v4 = a3;
-  [(MPModelKind *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_variants forKey:{@"variants", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_options forKey:@"options"];
+  coderCopy = coder;
+  [(MPModelKind *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_variants forKey:{@"variants", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_options forKey:@"options"];
 }
 
-- (MPModelTVEpisodeKind)initWithCoder:(id)a3
+- (MPModelTVEpisodeKind)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"variants"];
-  v6 = [v4 decodeIntegerForKey:@"options"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"variants"];
+  v6 = [coderCopy decodeIntegerForKey:@"options"];
 
   v7 = [MPModelTVEpisodeKind kindWithVariants:v5 options:v6];
 
@@ -74,8 +74,8 @@
 {
   v9.receiver = self;
   v9.super_class = MPModelTVEpisodeKind;
-  v3 = [(MPModelKind *)&v9 msv_jsonValue];
-  v4 = [v3 mutableCopy];
+  msv_jsonValue = [(MPModelKind *)&v9 msv_jsonValue];
+  v4 = [msv_jsonValue mutableCopy];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_variants];
   [v4 setObject:v5 forKeyedSubscript:@"variants"];
@@ -88,26 +88,26 @@
   return v7;
 }
 
-- (id)msv_initWithJSONValue:(id)a3
+- (id)msv_initWithJSONValue:(id)value
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"variants"];
-  v5 = [v4 integerValue];
+  valueCopy = value;
+  v4 = [valueCopy objectForKeyedSubscript:@"variants"];
+  integerValue = [v4 integerValue];
 
-  v6 = [v3 objectForKeyedSubscript:@"options"];
+  v6 = [valueCopy objectForKeyedSubscript:@"options"];
 
-  v7 = [v6 integerValue];
+  integerValue2 = [v6 integerValue];
   v8 = objc_opt_class();
 
-  return [v8 kindWithVariants:v5 options:v7];
+  return [v8 kindWithVariants:integerValue options:integerValue2];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = MPModelTVEpisodeKind;
-  v5 = [(MPModelKind *)&v7 isEqual:v4]&& self->_variants == v4[2] && self->_options == v4[3];
+  v5 = [(MPModelKind *)&v7 isEqual:equalCopy]&& self->_variants == equalCopy[2] && self->_options == equalCopy[3];
 
   return v5;
 }
@@ -119,17 +119,17 @@
   return self->_variants ^ [(MPModelKind *)&v3 hash]^ self->_options;
 }
 
-+ (id)kindWithVariants:(unint64_t)a3 options:(unint64_t)a4
++ (id)kindWithVariants:(unint64_t)variants options:(unint64_t)options
 {
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"TVEpisode:v%lu:o%lu", a3, a4];
+  options = [MEMORY[0x1E696AEC0] stringWithFormat:@"TVEpisode:v%lu:o%lu", variants, options];
   v8 = objc_opt_class();
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__MPModelTVEpisodeKind_kindWithVariants_options___block_invoke;
   v11[3] = &__block_descriptor_48_e30_v16__0__MPModelTVEpisodeKind_8l;
-  v11[4] = a3;
-  v11[5] = a4;
-  v9 = [a1 kindWithModelClass:v8 cacheKey:v7 block:v11];
+  v11[4] = variants;
+  v11[5] = options;
+  v9 = [self kindWithModelClass:v8 cacheKey:options block:v11];
 
   return v9;
 }
@@ -141,7 +141,7 @@ uint64_t __49__MPModelTVEpisodeKind_kindWithVariants_options___block_invoke(uint
   return result;
 }
 
-- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)a3
+- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)property
 {
   v9 = *MEMORY[0x1E69E9840];
   memset(v7, 0, sizeof(v7));
@@ -153,9 +153,9 @@ uint64_t __49__MPModelTVEpisodeKind_kindWithVariants_options___block_invoke(uint
   }
 
   Property = mlcore::ItemPropertyMediaType(v4);
-  if (a3)
+  if (property)
   {
-    Property = MPMediaLibraryGetProperty(a3, Property);
+    Property = MPMediaLibraryGetProperty(property, Property);
   }
 
   *&v6 = Property;

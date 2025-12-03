@@ -1,23 +1,23 @@
 @interface WGCircleCheckView
 - (BOOL)_isFrozen;
 - (BOOL)isChecked;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (WGCircleCheckView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (WGCircleCheckView)initWithFrame:(CGRect)frame;
 - (id)_configureCircleViewIfNecessary;
 - (void)_configureCheckViewIfNecessary;
-- (void)_setChecked:(BOOL)a3 completion:(id)a4;
-- (void)_setFrozen:(BOOL)a3;
+- (void)_setChecked:(BOOL)checked completion:(id)completion;
+- (void)_setFrozen:(BOOL)frozen;
 - (void)layoutSubviews;
-- (void)setChecked:(BOOL)a3;
+- (void)setChecked:(BOOL)checked;
 @end
 
 @implementation WGCircleCheckView
 
-- (WGCircleCheckView)initWithFrame:(CGRect)a3
+- (WGCircleCheckView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = WGCircleCheckView;
-  v3 = [(WGCircleCheckView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WGCircleCheckView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -39,11 +39,11 @@
   return [(WGCheckView *)checkView isChecked];
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  v3 = a3;
+  checkedCopy = checked;
   objc_initWeak(&location, self);
-  if (v3 && ([MEMORY[0x277D75D18] _isInAnimationBlock] & 1) == 0)
+  if (checkedCopy && ([MEMORY[0x277D75D18] _isInAnimationBlock] & 1) == 0)
   {
     [(WGCircleCheckView *)self _setFrozen:1];
   }
@@ -54,9 +54,9 @@
     v5[1] = 3221225472;
     v5[2] = __32__WGCircleCheckView_setChecked___block_invoke;
     v5[3] = &unk_279ED1758;
-    v7 = v3;
+    v7 = checkedCopy;
     objc_copyWeak(&v6, &location);
-    [(WGCircleCheckView *)self _setChecked:v3 completion:v5];
+    [(WGCircleCheckView *)self _setChecked:checkedCopy completion:v5];
     objc_destroyWeak(&v6);
   }
 
@@ -72,7 +72,7 @@ void __32__WGCircleCheckView_setChecked___block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 20.0;
   v4 = 20.0;
@@ -83,12 +83,12 @@ void __32__WGCircleCheckView_setChecked___block_invoke(uint64_t a1, int a2)
 
 - (void)layoutSubviews
 {
-  v3 = [(WGCircleCheckView *)self layer];
-  v4 = [v3 contents];
+  layer = [(WGCircleCheckView *)self layer];
+  contents = [layer contents];
 
-  if (!v4)
+  if (!contents)
   {
-    v5 = [(WGCircleCheckView *)self _configureCircleViewIfNecessary];
+    _configureCircleViewIfNecessary = [(WGCircleCheckView *)self _configureCircleViewIfNecessary];
     [(WGCircleCheckView *)self _configureCheckViewIfNecessary];
     [(WGCircleCheckView *)self bounds];
     v7 = v6;
@@ -167,13 +167,13 @@ CGContext *__52__WGCircleCheckView__configureCircleViewIfNecessary__block_invoke
   }
 }
 
-- (void)_setChecked:(BOOL)a3 completion:(id)a4
+- (void)_setChecked:(BOOL)checked completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  if ([(WGCircleCheckView *)self isChecked]!= v4)
+  checkedCopy = checked;
+  completionCopy = completion;
+  if ([(WGCircleCheckView *)self isChecked]!= checkedCopy)
   {
-    if (v4)
+    if (checkedCopy)
     {
       if ([MEMORY[0x277D75D18] _isInAnimationBlock])
       {
@@ -214,13 +214,13 @@ CGContext *__52__WGCircleCheckView__configureCircleViewIfNecessary__block_invoke
         v13 = v11;
         v17 = v13;
         [v12 _animateUsingSpringWithDuration:0 delay:v18 options:v16 mass:v9 stiffness:v9 + 0.01 damping:3.0 initialVelocity:1560.0 animations:600.0 completion:0.0];
-        if (v6)
+        if (completionCopy)
         {
           v14[0] = MEMORY[0x277D85DD0];
           v14[1] = 3221225472;
           v14[2] = __44__WGCircleCheckView__setChecked_completion___block_invoke_6;
           v14[3] = &unk_279ED0C88;
-          v15 = v6;
+          v15 = completionCopy;
           dispatch_group_notify(v13, MEMORY[0x277D85CD0], v14);
         }
 
@@ -230,7 +230,7 @@ CGContext *__52__WGCircleCheckView__configureCircleViewIfNecessary__block_invoke
       [(WGCircleCheckView *)self layoutIfNeeded];
       [(UIImageView *)self->_circleView setHidden:0];
       [(WGCheckView *)self->_checkView setChecked:1];
-      if (!v6)
+      if (!completionCopy)
       {
         goto LABEL_13;
       }
@@ -239,19 +239,19 @@ CGContext *__52__WGCircleCheckView__configureCircleViewIfNecessary__block_invoke
     else
     {
       [(WGCircleCheckView *)self _setFrozen:0];
-      if (!v6)
+      if (!completionCopy)
       {
         goto LABEL_13;
       }
     }
 
-    (*(v6 + 2))(v6, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
     goto LABEL_13;
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_13:
@@ -278,19 +278,19 @@ uint64_t __44__WGCircleCheckView__setChecked_completion___block_invoke_2(uint64_
 
 - (BOOL)_isFrozen
 {
-  v2 = [(WGCircleCheckView *)self layer];
-  v3 = [v2 contents];
-  v4 = v3 != 0;
+  layer = [(WGCircleCheckView *)self layer];
+  contents = [layer contents];
+  v4 = contents != 0;
 
   return v4;
 }
 
-- (void)_setFrozen:(BOOL)a3
+- (void)_setFrozen:(BOOL)frozen
 {
-  v3 = a3;
-  if ([(WGCircleCheckView *)self _isFrozen]!= a3)
+  frozenCopy = frozen;
+  if ([(WGCircleCheckView *)self _isFrozen]!= frozen)
   {
-    if (v3)
+    if (frozenCopy)
     {
       objc_initWeak(&location, self);
       v5 = +[WGMappedImageCache sharedCache];
@@ -307,8 +307,8 @@ uint64_t __44__WGCircleCheckView__setChecked_completion___block_invoke_2(uint64_
 
       if (v10)
       {
-        v11 = [(WGCircleCheckView *)self layer];
-        [v11 setContents:{objc_msgSend(v10, "CGImage")}];
+        layer = [(WGCircleCheckView *)self layer];
+        [layer setContents:{objc_msgSend(v10, "CGImage")}];
 
         [(UIImageView *)self->_circleView removeFromSuperview];
         circleView = self->_circleView;
@@ -325,8 +325,8 @@ uint64_t __44__WGCircleCheckView__setChecked_completion___block_invoke_2(uint64_
 
     else
     {
-      v14 = [(WGCircleCheckView *)self layer];
-      [v14 setContents:0];
+      layer2 = [(WGCircleCheckView *)self layer];
+      [layer2 setContents:0];
 
       [(WGCircleCheckView *)self setNeedsLayout];
     }

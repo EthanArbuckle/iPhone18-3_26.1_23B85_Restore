@@ -1,44 +1,44 @@
 @interface AMSBagValue
 - (id)_errorForAirplaneMode;
-- (id)jsa_valueWithError:(id *)a3;
-- (void)jsa_valueWithCompletion:(id)a3;
+- (id)jsa_valueWithError:(id *)error;
+- (void)jsa_valueWithCompletion:(id)completion;
 @end
 
 @implementation AMSBagValue
 
-- (void)jsa_valueWithCompletion:(id)a3
+- (void)jsa_valueWithCompletion:(id)completion
 {
-  v9 = a3;
+  completionCopy = completion;
   if (-[AMSBagValue isLoaded](self, "isLoaded") || (+[JSANetwork sharedInstance](JSANetwork, "sharedInstance"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isReachable], v4, (v5 & 1) != 0))
   {
-    [(AMSBagValue *)self valueWithCompletion:v9];
+    [(AMSBagValue *)self valueWithCompletion:completionCopy];
   }
 
   else
   {
-    v6 = [(AMSBagValue *)self _errorForAirplaneMode];
-    v7 = objc_retainBlock(v9);
+    _errorForAirplaneMode = [(AMSBagValue *)self _errorForAirplaneMode];
+    v7 = objc_retainBlock(completionCopy);
     v8 = v7;
     if (v7)
     {
-      (*(v7 + 2))(v7, 0, 0, v6);
+      (*(v7 + 2))(v7, 0, 0, _errorForAirplaneMode);
     }
   }
 }
 
-- (id)jsa_valueWithError:(id *)a3
+- (id)jsa_valueWithError:(id *)error
 {
   if (-[AMSBagValue isLoaded](self, "isLoaded") || (+[JSANetwork sharedInstance](JSANetwork, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isReachable], v5, (v6 & 1) != 0))
   {
-    v7 = [(AMSBagValue *)self valueWithError:a3];
+    v7 = [(AMSBagValue *)self valueWithError:error];
   }
 
-  else if (a3)
+  else if (error)
   {
-    v9 = [(AMSBagValue *)self _errorForAirplaneMode];
-    v10 = v9;
+    _errorForAirplaneMode = [(AMSBagValue *)self _errorForAirplaneMode];
+    v10 = _errorForAirplaneMode;
     v7 = 0;
-    *a3 = v9;
+    *error = _errorForAirplaneMode;
   }
 
   else

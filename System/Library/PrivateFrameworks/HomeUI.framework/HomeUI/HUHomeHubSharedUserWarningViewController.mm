@@ -1,30 +1,30 @@
 @interface HUHomeHubSharedUserWarningViewController
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUHomeHubSharedUserWarningViewController)initWithHomesToUsersMap:(id)a3;
+- (HUHomeHubSharedUserWarningViewController)initWithHomesToUsersMap:(id)map;
 - (id)_commitOrContinueButtonTitle;
-- (void)_cancelFlow:(id)a3;
+- (void)_cancelFlow:(id)flow;
 - (void)_commitOrContinue;
-- (void)_continueTapped:(id)a3;
+- (void)_continueTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
 @implementation HUHomeHubSharedUserWarningViewController
 
-- (HUHomeHubSharedUserWarningViewController)initWithHomesToUsersMap:(id)a3
+- (HUHomeHubSharedUserWarningViewController)initWithHomesToUsersMap:(id)map
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mapCopy = map;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v4;
+    *&buf[4] = mapCopy;
     *&buf[12] = 2048;
-    *&buf[14] = [v4 count];
+    *&buf[14] = [mapCopy count];
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "[HUHomeHubSharedUserWarningViewController:initWithHomesToUsersMap:] homesToUsersMap = %@ (%lu)", buf, 0x16u);
   }
 
-  v6 = [v4 count];
+  v6 = [mapCopy count];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -33,16 +33,16 @@
   v22 = &stru_2823E0EE8;
   if (v6 <= 1)
   {
-    v7 = [v4 keyEnumerator];
+    keyEnumerator = [mapCopy keyEnumerator];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __68__HUHomeHubSharedUserWarningViewController_initWithHomesToUsersMap___block_invoke;
     v18[3] = &unk_277DC23B8;
     v18[4] = buf;
-    [v7 na_each:v18];
+    [keyEnumerator na_each:v18];
   }
 
-  v8 = [[HUHomeHubSharedUserWarningItemManager alloc] initWithDelegate:self homesToUsersMap:v4];
+  v8 = [[HUHomeHubSharedUserWarningItemManager alloc] initWithDelegate:self homesToUsersMap:mapCopy];
   v9 = [(HUItemTableViewController *)[HUHomeHubSharedUserWarningTableViewController alloc] initWithItemManager:v8 tableViewStyle:1];
   v10 = _HULocalizedStringWithDefaultValue(@"HUSoftwareUpdateSharedUsersWarningTitle", @"HUSoftwareUpdateSharedUsersWarningTitle", 1);
   if (v6 >= 2)
@@ -110,45 +110,45 @@ void __68__HUHomeHubSharedUserWarningViewController_initWithHomesToUsersMap___bl
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "[HUHomeHubSharedUserWarningViewController:viewDidLoad]", v22, 2u);
   }
 
-  v4 = [(HUHomeHubSharedUserWarningViewController *)self headerView];
-  v5 = [v4 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v5 withIDDictionary:&unk_2824931C0];
+  headerView = [(HUHomeHubSharedUserWarningViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_2824931C0];
 
-  v6 = [(HUHomeHubSharedUserWarningViewController *)self buttonTray];
-  v7 = [(HUHomeHubSharedUserWarningViewController *)self captionString];
-  [v6 addCaptionText:v7];
+  buttonTray = [(HUHomeHubSharedUserWarningViewController *)self buttonTray];
+  captionString = [(HUHomeHubSharedUserWarningViewController *)self captionString];
+  [buttonTray addCaptionText:captionString];
 
-  v8 = [MEMORY[0x277D37618] boldButton];
-  [(HUHomeHubSharedUserWarningViewController *)self setCommitButton:v8];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [(HUHomeHubSharedUserWarningViewController *)self setCommitButton:boldButton];
 
-  v9 = [(HUHomeHubSharedUserWarningViewController *)self commitButton];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  commitButton = [(HUHomeHubSharedUserWarningViewController *)self commitButton];
+  [commitButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(HUHomeHubSharedUserWarningViewController *)self commitButton];
-  v11 = [(HUHomeHubSharedUserWarningViewController *)self _commitOrContinueButtonTitle];
-  [v10 setTitle:v11 forState:0];
+  commitButton2 = [(HUHomeHubSharedUserWarningViewController *)self commitButton];
+  _commitOrContinueButtonTitle = [(HUHomeHubSharedUserWarningViewController *)self _commitOrContinueButtonTitle];
+  [commitButton2 setTitle:_commitOrContinueButtonTitle forState:0];
 
-  v12 = [(HUHomeHubSharedUserWarningViewController *)self commitButton];
-  [v12 setAccessibilityIdentifier:@"Home.OnboardingView.HomeHubMigration.HUHomeHubSharedUserWarningViewController.CommitOrContinueButton"];
+  commitButton3 = [(HUHomeHubSharedUserWarningViewController *)self commitButton];
+  [commitButton3 setAccessibilityIdentifier:@"Home.OnboardingView.HomeHubMigration.HUHomeHubSharedUserWarningViewController.CommitOrContinueButton"];
 
-  v13 = [(HUHomeHubSharedUserWarningViewController *)self commitButton];
-  [v13 addTarget:self action:sel__continueTapped_ forControlEvents:64];
+  commitButton4 = [(HUHomeHubSharedUserWarningViewController *)self commitButton];
+  [commitButton4 addTarget:self action:sel__continueTapped_ forControlEvents:64];
 
-  v14 = [(HUHomeHubSharedUserWarningViewController *)self buttonTray];
-  v15 = [(HUHomeHubSharedUserWarningViewController *)self commitButton];
-  [v14 addButton:v15];
+  buttonTray2 = [(HUHomeHubSharedUserWarningViewController *)self buttonTray];
+  commitButton5 = [(HUHomeHubSharedUserWarningViewController *)self commitButton];
+  [buttonTray2 addButton:commitButton5];
 
   v16 = objc_alloc(MEMORY[0x277D751E0]);
   v17 = _HULocalizedStringWithDefaultValue(@"HUCancelTitle", @"HUCancelTitle", 1);
   v18 = [v16 initWithTitle:v17 style:0 target:self action:sel__cancelFlow_];
   [(HUHomeHubSharedUserWarningViewController *)self setCancelButton:v18];
 
-  v19 = [(HUHomeHubSharedUserWarningViewController *)self cancelButton];
-  [v19 setAccessibilityIdentifier:@"Home.OnboardingView.HomeHubMigration.HUHomeHubSharedUserWarningViewController.CancelButton"];
+  cancelButton = [(HUHomeHubSharedUserWarningViewController *)self cancelButton];
+  [cancelButton setAccessibilityIdentifier:@"Home.OnboardingView.HomeHubMigration.HUHomeHubSharedUserWarningViewController.CancelButton"];
 
-  v20 = [(OBBaseWelcomeController *)self navigationItem];
-  v21 = [(HUHomeHubSharedUserWarningViewController *)self cancelButton];
-  [v20 setRightBarButtonItem:v21];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  cancelButton2 = [(HUHomeHubSharedUserWarningViewController *)self cancelButton];
+  [navigationItem setRightBarButtonItem:cancelButton2];
 
   [(HUHomeHubSharedUserWarningViewController *)self setModalInPresentation:1];
 }
@@ -171,7 +171,7 @@ void __68__HUHomeHubSharedUserWarningViewController_initWithHomesToUsersMap___bl
   return v5;
 }
 
-- (void)_continueTapped:(id)a3
+- (void)_continueTapped:(id)tapped
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -183,7 +183,7 @@ void __68__HUHomeHubSharedUserWarningViewController_initWithHomesToUsersMap___bl
   [(HUHomeHubSharedUserWarningViewController *)self _commitOrContinue];
 }
 
-- (void)_cancelFlow:(id)a3
+- (void)_cancelFlow:(id)flow
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
@@ -193,11 +193,11 @@ void __68__HUHomeHubSharedUserWarningViewController_initWithHomesToUsersMap___bl
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "[HUHomeHubSharedUserWarningViewController:_cancelFlow] User tapped cancel button", v7, 2u);
   }
 
-  v5 = [(HUHomeHubSharedUserWarningViewController *)self delegate];
+  delegate = [(HUHomeHubSharedUserWarningViewController *)self delegate];
   v8 = @"HUHomeHub2OnboardingKey_UserInput";
   v9[0] = &unk_282491FA0;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  [v5 viewController:self didFinishWithConfigurationResults:v6];
+  [delegate viewController:self didFinishWithConfigurationResults:v6];
 }
 
 - (void)_commitOrContinue
@@ -213,12 +213,12 @@ void __68__HUHomeHubSharedUserWarningViewController_initWithHomesToUsersMap___bl
     v3 = 2;
   }
 
-  v4 = [(HUHomeHubSharedUserWarningViewController *)self delegate];
+  delegate = [(HUHomeHubSharedUserWarningViewController *)self delegate];
   v7 = @"HUHomeHub2OnboardingKey_UserInput";
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v3];
   v8[0] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  [v4 viewController:self didFinishWithConfigurationResults:v6];
+  [delegate viewController:self didFinishWithConfigurationResults:v6];
 }
 
 - (HUConfigurationViewControllerDelegate)delegate

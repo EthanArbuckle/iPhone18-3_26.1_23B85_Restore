@@ -1,6 +1,6 @@
 @interface PMLGaussianSampler
-- (PMLGaussianSampler)initWithMagnitude:(float)a3;
-- (PMLGaussianSampler)initWithMagnitude:(float)a3 seed:(unint64_t)a4;
+- (PMLGaussianSampler)initWithMagnitude:(float)magnitude;
+- (PMLGaussianSampler)initWithMagnitude:(float)magnitude seed:(unint64_t)seed;
 - (float)sample;
 @end
 
@@ -32,7 +32,7 @@
   return v8 * sqrt(log(v12 + v8 * v8) * -2.0 / v13) * magnitude;
 }
 
-- (PMLGaussianSampler)initWithMagnitude:(float)a3
+- (PMLGaussianSampler)initWithMagnitude:(float)magnitude
 {
   v7.receiver = self;
   v7.super_class = PMLGaussianSampler;
@@ -41,13 +41,13 @@
   if (v4)
   {
     arc4random_buf(&v4->_rng, 0x10uLL);
-    v5->_magnitude = a3;
+    v5->_magnitude = magnitude;
   }
 
   return v5;
 }
 
-- (PMLGaussianSampler)initWithMagnitude:(float)a3 seed:(unint64_t)a4
+- (PMLGaussianSampler)initWithMagnitude:(float)magnitude seed:(unint64_t)seed
 {
   v7.receiver = self;
   v7.super_class = PMLGaussianSampler;
@@ -55,7 +55,7 @@
   if (v5)
   {
     _PASRngSeed64();
-    v5->_magnitude = a3;
+    v5->_magnitude = magnitude;
   }
 
   return v5;

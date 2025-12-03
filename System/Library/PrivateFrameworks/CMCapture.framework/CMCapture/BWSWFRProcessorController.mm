@@ -1,30 +1,30 @@
 @interface BWSWFRProcessorController
-+ (uint64_t)_nrfVersionForSWFRVersion:(uint64_t)a1;
-- (BWSWFRProcessorController)initWithConfiguration:(id)a3;
-- (CMAttachmentBearerRef)_newOutputSampleBufferFromSampleBuffer:(__CVBuffer *)a3 pixelBuffer:(void *)a4 metadata:(unsigned int)a5 processingFlags:(CFTypeRef *)a6 formatDescriptionInOut:;
-- (id)processorNewInferences:(id)a3;
-- (id)requestForInput:(id)a3 delegate:(id)a4 errOut:(int *)a5;
++ (uint64_t)_nrfVersionForSWFRVersion:(uint64_t)version;
+- (BWSWFRProcessorController)initWithConfiguration:(id)configuration;
+- (CMAttachmentBearerRef)_newOutputSampleBufferFromSampleBuffer:(__CVBuffer *)buffer pixelBuffer:(void *)pixelBuffer metadata:(unsigned int)metadata processingFlags:(CFTypeRef *)flags formatDescriptionInOut:;
+- (id)processorNewInferences:(id)inferences;
+- (id)requestForInput:(id)input delegate:(id)delegate errOut:(int *)out;
 - (int)prepare;
 - (int)process;
-- (uint64_t)_addFrame:(uint64_t)a3 type:;
+- (uint64_t)_addFrame:(uint64_t)frame type:;
 - (uint64_t)_loadSetupAndPrepareProcessor;
 - (void)dealloc;
-- (void)input:(id)a3 addAmbientFrame:(opaqueCMSampleBuffer *)a4;
-- (void)input:(id)a3 addFlashFrame:(opaqueCMSampleBuffer *)a4;
+- (void)input:(id)input addAmbientFrame:(opaqueCMSampleBuffer *)frame;
+- (void)input:(id)input addFlashFrame:(opaqueCMSampleBuffer *)frame;
 - (void)reset;
 @end
 
 @implementation BWSWFRProcessorController
 
-- (BWSWFRProcessorController)initWithConfiguration:(id)a3
+- (BWSWFRProcessorController)initWithConfiguration:(id)configuration
 {
   v8.receiver = self;
   v8.super_class = BWSWFRProcessorController;
-  v4 = [(BWStillImageProcessorController *)&v8 initWithName:@"SoftwareFlashRendering" type:15 configuration:a3];
+  v4 = [(BWStillImageProcessorController *)&v8 initWithName:@"SoftwareFlashRendering" type:15 configuration:configuration];
   if (v4)
   {
-    v4->_version = [a3 version];
-    v4->_outputPixelFormat = FigCaptureCompressedPixelFormatForPixelFormat(1751527984, 4, [a3 lossyCompressionLevel]);
+    v4->_version = [configuration version];
+    v4->_outputPixelFormat = FigCaptureCompressedPixelFormatForPixelFormat(1751527984, 4, [configuration lossyCompressionLevel]);
     v6 = objc_autoreleasePoolPush();
     SetupAndPrepare = [(BWSWFRProcessorController *)v4 _loadSetupAndPrepareProcessor];
     objc_autoreleasePoolPop(v6);
@@ -59,9 +59,9 @@
   [(BWStillImageProcessorController *)&v5 dealloc];
 }
 
-- (void)input:(id)a3 addFlashFrame:(opaqueCMSampleBuffer *)a4
+- (void)input:(id)input addFlashFrame:(opaqueCMSampleBuffer *)frame
 {
-  [(BWSWFRProcessorController *)self _addFrame:a4 type:1];
+  [(BWSWFRProcessorController *)self _addFrame:frame type:1];
 
   [(BWStillImageProcessorController *)self currentRequestChanged];
 }
@@ -80,9 +80,9 @@
   }
 }
 
-- (id)requestForInput:(id)a3 delegate:(id)a4 errOut:(int *)a5
+- (id)requestForInput:(id)input delegate:(id)delegate errOut:(int *)out
 {
-  v6 = [(BWStillImageProcessorControllerRequest *)[BWSWFRProcessorControllerRequest alloc] initWithInput:a3 delegate:a4];
+  v6 = [(BWStillImageProcessorControllerRequest *)[BWSWFRProcessorControllerRequest alloc] initWithInput:input delegate:delegate];
   if (v6)
   {
     v7 = 0;
@@ -93,9 +93,9 @@
     v7 = -12786;
   }
 
-  if (a5)
+  if (out)
   {
-    *a5 = v7;
+    *out = v7;
   }
 
   return v6;
@@ -103,8 +103,8 @@
 
 - (int)process
 {
-  v3 = [(BWStillImageProcessorController *)self currentRequest];
-  v4 = [(CMISoftwareFlashRenderingProcessor *)self->_processor process];
+  currentRequest = [(BWStillImageProcessorController *)self currentRequest];
+  process = [(CMISoftwareFlashRenderingProcessor *)self->_processor process];
   if (dword_1EB58E320)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -112,22 +112,22 @@
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if (v4 || (v6 = [(BWSWFRProcessorController *)self _newOutputSampleBufferFromSampleBuffer:[(CMISoftwareFlashRenderingProcessor *)self->_processor outputImagePixelBuffer] pixelBuffer:[(CMISoftwareFlashRenderingProcessor *)self->_processor outputImageMetadata] metadata:0 processingFlags:&self->_outputFormatDescription formatDescriptionInOut:?]) == 0)
+  if (process || (v6 = [(BWSWFRProcessorController *)self _newOutputSampleBufferFromSampleBuffer:[(CMISoftwareFlashRenderingProcessor *)self->_processor outputImagePixelBuffer] pixelBuffer:[(CMISoftwareFlashRenderingProcessor *)self->_processor outputImageMetadata] metadata:0 processingFlags:&self->_outputFormatDescription formatDescriptionInOut:?]) == 0)
   {
-    [(BWColorConstancyProcessorController *)v3 process];
+    [(BWColorConstancyProcessorController *)currentRequest process];
   }
 
   else
   {
     v7 = v6;
-    [(BWStillImageProcessorControllerDelegate *)[(BWStillImageProcessorControllerRequest *)v3 delegate] processorController:self didFinishProcessingSampleBuffer:v6 type:1 processorInput:[(BWStillImageProcessorControllerRequest *)v3 input] err:0];
+    [(BWStillImageProcessorControllerDelegate *)[(BWStillImageProcessorControllerRequest *)currentRequest delegate] processorController:self didFinishProcessingSampleBuffer:v6 type:1 processorInput:[(BWStillImageProcessorControllerRequest *)currentRequest input] err:0];
     CFRelease(v7);
   }
 
   return 0;
 }
 
-- (id)processorNewInferences:(id)a3
+- (id)processorNewInferences:(id)inferences
 {
   v4 = objc_alloc_init(NSClassFromString([MEMORY[0x1E696AEC0] stringWithFormat:@"CMISoftwareFlashRenderingInferencesV%d", self->_version]));
   [v4 setStatus:0];
@@ -162,7 +162,7 @@
   return v4;
 }
 
-+ (uint64_t)_nrfVersionForSWFRVersion:(uint64_t)a1
++ (uint64_t)_nrfVersionForSWFRVersion:(uint64_t)version
 {
   objc_opt_self();
   if ((a2 - 1) > 1)
@@ -217,13 +217,13 @@
         os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
         fig_log_call_emit_and_clean_up_after_send_and_compose();
         v7 = *(v1 + 64);
-        v8 = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters nrfVersion];
+        nrfVersion = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters nrfVersion];
         v18[0] = 67109632;
         v18[1] = v7;
         v19 = 1024;
         v20 = v2;
         v21 = 1024;
-        v22 = v8;
+        v22 = nrfVersion;
         v9 = OUTLINED_FUNCTION_6_0();
         OUTLINED_FUNCTION_11();
         OUTLINED_FUNCTION_10();
@@ -237,9 +237,9 @@
   return result;
 }
 
-- (uint64_t)_addFrame:(uint64_t)a3 type:
+- (uint64_t)_addFrame:(uint64_t)frame type:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -255,7 +255,7 @@
       v12 = v11;
       v13 = CMSampleBufferGetImageBuffer(AttachedMedia);
       v14 = CMGetAttachment(AttachedMedia, *off_1E798A3B0, 0);
-      v15 = objc_alloc_init(NSClassFromString([MEMORY[0x1E696AEC0] stringWithFormat:@"CMISoftwareFlashRenderingFrameParamsV%d", *(a1 + 64)]));
+      v15 = objc_alloc_init(NSClassFromString([MEMORY[0x1E696AEC0] stringWithFormat:@"CMISoftwareFlashRenderingFrameParamsV%d", *(self + 64)]));
       [v15 setLscGains:v13];
       [v15 setLscParams:v14];
       if (v12)
@@ -269,7 +269,7 @@
       v15 = 0;
     }
 
-    v16 = [*(a1 + 72) addFrame:v7 metadata:v9 frameType:a3 frameParams:v15];
+    v16 = [*(self + 72) addFrame:v7 metadata:v9 frameType:frame frameParams:v15];
   }
 
   else
@@ -281,24 +281,24 @@
   return v16;
 }
 
-- (void)input:(id)a3 addAmbientFrame:(opaqueCMSampleBuffer *)a4
+- (void)input:(id)input addAmbientFrame:(opaqueCMSampleBuffer *)frame
 {
-  [(BWSWFRProcessorController *)self _addFrame:a4 type:0];
+  [(BWSWFRProcessorController *)self _addFrame:frame type:0];
 
   [(BWStillImageProcessorController *)self currentRequestChanged];
 }
 
 - (int)prepare
 {
-  v3 = [(BWStillImageProcessorController *)self currentRequest];
-  [(BWStillImageProcessorControllerRequest *)v3 delegate];
-  [(BWStillImageProcessorControllerRequest *)v3 input];
+  currentRequest = [(BWStillImageProcessorController *)self currentRequest];
+  [(BWStillImageProcessorControllerRequest *)currentRequest delegate];
+  [(BWStillImageProcessorControllerRequest *)currentRequest input];
   v4 = [OUTLINED_FUNCTION_64_0() processorController:? newOutputPixelBufferForProcessorInput:? type:?];
   if (v4)
   {
     [(CMISoftwareFlashRenderingProcessor *)self->_processor setOutputImagePixelBuffer:v4];
     -[CMISoftwareFlashRenderingProcessor setOutputImageMetadata:](self->_processor, "setOutputImageMetadata:", [MEMORY[0x1E695DF90] dictionary]);
-    if ([(BWStillImageProcessingSettings *)[(BWStillImageSettings *)[(BWStillImageProcessorControllerInput *)[(BWStillImageProcessorControllerRequest *)v3 input] stillImageSettings] processingSettings] provideDemosaicedRaw])
+    if ([(BWStillImageProcessingSettings *)[(BWStillImageSettings *)[(BWStillImageProcessorControllerInput *)[(BWStillImageProcessorControllerRequest *)currentRequest input] stillImageSettings] processingSettings] provideDemosaicedRaw])
     {
       -[CMISoftwareFlashRenderingProcessor setLinearOutputImageMetadata:](self->_processor, "setLinearOutputImageMetadata:", [MEMORY[0x1E695DF90] dictionary]);
     }
@@ -316,16 +316,16 @@
   return v5;
 }
 
-- (CMAttachmentBearerRef)_newOutputSampleBufferFromSampleBuffer:(__CVBuffer *)a3 pixelBuffer:(void *)a4 metadata:(unsigned int)a5 processingFlags:(CFTypeRef *)a6 formatDescriptionInOut:
+- (CMAttachmentBearerRef)_newOutputSampleBufferFromSampleBuffer:(__CVBuffer *)buffer pixelBuffer:(void *)pixelBuffer metadata:(unsigned int)metadata processingFlags:(CFTypeRef *)flags formatDescriptionInOut:
 {
   if (result)
   {
     v6 = 0;
     target = 0;
     v7 = 1;
-    if (a2 && a3)
+    if (a2 && buffer)
     {
-      if (BWCMSampleBufferCreateCopyWithNewPixelBuffer(a2, a3, a6, &target))
+      if (BWCMSampleBufferCreateCopyWithNewPixelBuffer(a2, buffer, flags, &target))
       {
         v6 = 0;
       }
@@ -334,16 +334,16 @@
       {
         v10 = *off_1E798A3C8;
         v6 = [CMGetAttachment(target *off_1E798A3C8];
-        if ([a4 count])
+        if ([pixelBuffer count])
         {
-          [v6 addEntriesFromDictionary:a4];
+          [v6 addEntriesFromDictionary:pixelBuffer];
         }
 
         CMSetAttachment(target, v10, v6, 1u);
-        if (a5)
+        if (metadata)
         {
           v11 = [CMGetAttachment(target @"StillImageProcessingFlags"];
-          CMSetAttachment(target, @"StillImageProcessingFlags", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v11 | a5], 1u);
+          CMSetAttachment(target, @"StillImageProcessingFlags", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v11 | metadata], 1u);
         }
 
         v7 = 0;

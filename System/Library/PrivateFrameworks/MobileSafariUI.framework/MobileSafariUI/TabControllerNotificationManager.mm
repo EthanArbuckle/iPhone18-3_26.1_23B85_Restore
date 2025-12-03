@@ -1,20 +1,20 @@
 @interface TabControllerNotificationManager
 - (TabControllerNotificationManager)init;
-- (TabControllerNotificationManager)initWithTabController:(id)a3;
+- (TabControllerNotificationManager)initWithTabController:(id)controller;
 - (TabControllerNotificationManagerDelegate)delegate;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)didChangeCurrentTabDocuments;
-- (void)didCloseTabDocuments:(id)a3 includingActiveTab:(BOOL)a4;
+- (void)didCloseTabDocuments:(id)documents includingActiveTab:(BOOL)tab;
 - (void)didEndUpdates;
-- (void)didInsertTabDocument:(id)a3 inBackground:(BOOL)a4;
-- (void)didMoveTabDocument:(id)a3 overTabDocument:(id)a4;
-- (void)didReplaceTabDocument:(id)a3 withTabDocument:(id)a4 replacedActiveTab:(BOOL)a5;
-- (void)didSwitchFromTabDocument:(id)a3 toTabDocument:(id)a4;
-- (void)didSwitchFromTabGroup:(id)a3;
+- (void)didInsertTabDocument:(id)document inBackground:(BOOL)background;
+- (void)didMoveTabDocument:(id)document overTabDocument:(id)tabDocument;
+- (void)didReplaceTabDocument:(id)document withTabDocument:(id)tabDocument replacedActiveTab:(BOOL)tab;
+- (void)didSwitchFromTabDocument:(id)document toTabDocument:(id)tabDocument;
+- (void)didSwitchFromTabGroup:(id)group;
 - (void)tabDocumentCountDidChange;
 - (void)willBeginUpdates;
-- (void)willSwitchFrom:(id)a3 to:(id)a4;
+- (void)willSwitchFrom:(id)from to:(id)to;
 @end
 
 @implementation TabControllerNotificationManager
@@ -26,9 +26,9 @@
   return Strong;
 }
 
-- (TabControllerNotificationManager)initWithTabController:(id)a3
+- (TabControllerNotificationManager)initWithTabController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = sub_215A1B790();
 
   return v4;
@@ -36,28 +36,28 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_215A1A2A4();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = TabControllerNotificationManager;
   [(TabControllerNotificationManager *)&v3 dealloc];
 }
 
-- (void)willSwitchFrom:(id)a3 to:(id)a4
+- (void)willSwitchFrom:(id)from to:(id)to
 {
   v7 = *(self + OBJC_IVAR___TabControllerNotificationManager_observers);
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
+  fromCopy = from;
+  toCopy = to;
+  selfCopy = self;
   v10 = v7;
-  sub_215A1BE58(v10, v11, a3, v9, &selRef_tabController_willSwitchFromTabDocument_toTabDocument_);
+  sub_215A1BE58(v10, selfCopy, from, toCopy, &selRef_tabController_willSwitchFromTabDocument_toTabDocument_);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_215A1A594(a3);
+  selfCopy = self;
+  sub_215A1A594(observer);
   swift_unknownObjectRelease();
 }
 
@@ -65,81 +65,81 @@
 {
   v3 = swift_allocObject();
   swift_unknownObjectWeakInit();
-  v4 = self;
-  sub_215A1B868(0, 0xD00000000000001BLL, 0x8000000215AC28C0, v4, v3);
+  selfCopy = self;
+  sub_215A1B868(0, 0xD00000000000001BLL, 0x8000000215AC28C0, selfCopy, v3);
 }
 
-- (void)didSwitchFromTabDocument:(id)a3 toTabDocument:(id)a4
+- (void)didSwitchFromTabDocument:(id)document toTabDocument:(id)tabDocument
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_215A1A794(a3, v8);
+  documentCopy = document;
+  tabDocumentCopy = tabDocument;
+  selfCopy = self;
+  sub_215A1A794(document, tabDocumentCopy);
 }
 
-- (void)didReplaceTabDocument:(id)a3 withTabDocument:(id)a4 replacedActiveTab:(BOOL)a5
+- (void)didReplaceTabDocument:(id)document withTabDocument:(id)tabDocument replacedActiveTab:(BOOL)tab
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_215A1A9B0(v8, v9, a5);
+  documentCopy = document;
+  tabDocumentCopy = tabDocument;
+  selfCopy = self;
+  sub_215A1A9B0(documentCopy, tabDocumentCopy, tab);
 }
 
-- (void)didCloseTabDocuments:(id)a3 includingActiveTab:(BOOL)a4
+- (void)didCloseTabDocuments:(id)documents includingActiveTab:(BOOL)tab
 {
   sub_2159F7DA8(0, &qword_27CA7E5C8);
   v6 = sub_215A705E0();
   v7 = swift_allocObject();
   swift_unknownObjectWeakInit();
-  v8 = self;
-  sub_215A1CEBC(a4, 0xD00000000000001FLL, 0x8000000215AC2850, v8, v7, v6);
+  selfCopy = self;
+  sub_215A1CEBC(tab, 0xD00000000000001FLL, 0x8000000215AC2850, selfCopy, v7, v6);
 }
 
-- (void)didInsertTabDocument:(id)a3 inBackground:(BOOL)a4
+- (void)didInsertTabDocument:(id)document inBackground:(BOOL)background
 {
   v7 = swift_allocObject();
   swift_unknownObjectWeakInit();
-  v8 = a3;
-  v9 = self;
-  sub_215A1D510(!a4, 0xD00000000000001ALL, 0x8000000215AC2830, v9, v7, v8);
+  documentCopy = document;
+  selfCopy = self;
+  sub_215A1D510(!background, 0xD00000000000001ALL, 0x8000000215AC2830, selfCopy, v7, documentCopy);
 }
 
-- (void)didMoveTabDocument:(id)a3 overTabDocument:(id)a4
+- (void)didMoveTabDocument:(id)document overTabDocument:(id)tabDocument
 {
   v7 = swift_allocObject();
   swift_unknownObjectWeakInit();
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_215A1DB74(0, 0xD00000000000001BLL, 0x8000000215AC2810, v10, v7, v8, v9);
+  documentCopy = document;
+  tabDocumentCopy = tabDocument;
+  selfCopy = self;
+  sub_215A1DB74(0, 0xD00000000000001BLL, 0x8000000215AC2810, selfCopy, v7, documentCopy, tabDocumentCopy);
 }
 
 - (void)didChangeCurrentTabDocuments
 {
   v3 = swift_allocObject();
   swift_unknownObjectWeakInit();
-  v4 = self;
-  sub_215A1E208(0, 0xD00000000000001ELL, 0x8000000215AC27F0, v4, v3);
+  selfCopy = self;
+  sub_215A1E208(0, 0xD00000000000001ELL, 0x8000000215AC27F0, selfCopy, v3);
 }
 
-- (void)didSwitchFromTabGroup:(id)a3
+- (void)didSwitchFromTabGroup:(id)group
 {
   v5 = swift_allocObject();
   swift_unknownObjectWeakInit();
-  v6 = a3;
-  v7 = self;
-  sub_215A1E964(1, 0xD000000000000010, 0x8000000215AC27D0, v7, v5, v6);
+  groupCopy = group;
+  selfCopy = self;
+  sub_215A1E964(1, 0xD000000000000010, 0x8000000215AC27D0, selfCopy, v5, groupCopy);
 }
 
 - (void)willBeginUpdates
 {
-  v2 = self;
+  selfCopy = self;
   sub_215A1B254();
 }
 
 - (void)didEndUpdates
 {
-  v2 = self;
+  selfCopy = self;
   sub_215A1B3BC();
 }
 

@@ -1,51 +1,51 @@
 @interface TSTPivotRowColumnOrder
-+ (void)initialGroupOrderForGroupBy:(id)a3 baseLevel:(unsigned __int8)a4 outAllUids:(void *)a5 outBaseUids:(void *)a6 outSummaryUids:(void *)a7;
++ (void)initialGroupOrderForGroupBy:(id)by baseLevel:(unsigned __int8)level outAllUids:(void *)uids outBaseUids:(void *)baseUids outSummaryUids:(void *)summaryUids;
 - (BOOL)hasValidInfo;
 - (BOOL)hasValidUidMap;
-- (TSKUIDStructVectorTemplate<TSKUIDStruct>)groupUidsGivenUids:(SEL)a3 selectedLevels:(const void *)a4 forDimension:(const void *)a5;
-- (TSKUIDStructVectorTemplate<TSKUIDStruct>)orderedUidsForDimension:(SEL)a3;
-- (TSKUIDStructVectorTemplate<TSKUIDStruct>)orderedUidsFromUids:(SEL)a3 forDimension:(const void *)a4;
-- (TSTPivotRowColumnOrder)initWithContext:(id)a3;
-- (TSTPivotRowColumnOrder)initWithContext:(id)a3 tableInfo:(id)a4 rowUids:(const void *)a5 columnUids:(const void *)a6;
-- (TSTPivotRowColumnOrder)initWithTableInfo:(id)a3;
-- (TSTPivotRowColumnOrder)initWithTableInfo:(id)a3 rowUids:(const void *)a4 columnUids:(const void *)a5;
+- (TSKUIDStructVectorTemplate<TSKUIDStruct>)groupUidsGivenUids:(SEL)uids selectedLevels:(const void *)levels forDimension:(const void *)dimension;
+- (TSKUIDStructVectorTemplate<TSKUIDStruct>)orderedUidsForDimension:(SEL)dimension;
+- (TSKUIDStructVectorTemplate<TSKUIDStruct>)orderedUidsFromUids:(SEL)uids forDimension:(const void *)dimension;
+- (TSTPivotRowColumnOrder)initWithContext:(id)context;
+- (TSTPivotRowColumnOrder)initWithContext:(id)context tableInfo:(id)info rowUids:(const void *)uids columnUids:(const void *)columnUids;
+- (TSTPivotRowColumnOrder)initWithTableInfo:(id)info;
+- (TSTPivotRowColumnOrder)initWithTableInfo:(id)info rowUids:(const void *)uids columnUids:(const void *)columnUids;
 - (TSTTableInfo)tableInfo;
-- (const)orderForDimension:(int64_t)a3;
-- (const)setOrderUsingViewOrderForDimension:(int64_t)a3;
-- (id)_groupBy:(BOOL)a3;
-- (id)copyWithContext:(id)a3 tableInfo:(id)a4;
-- (id)sortedArrayFromArray:(id)a3 forDimension:(int64_t)a4;
-- (id)targetGroupFromIndex:(unsigned int)a3 minSourceLevel:(unsigned __int8)a4 templateUID:(TSKUIDStruct *)a5 forDimension:(int64_t)a6;
-- (unint64_t)_numberOfLevels:(BOOL)a3;
-- (unsigned)_maxLevel:(BOOL)a3;
-- (unsigned)minimumCategoryLevelInRange:(_NSRange)a3 forDimension:(int64_t)a4;
-- (void)insertUids:(const void *)a3 beforeUid:(const TSKUIDStruct *)a4 forDimension:(int64_t)a5;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)removeUids:(const void *)a3 forDimension:(int64_t)a4;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setOrder:(const void *)a3 forDimension:(int64_t)a4;
-- (void)setTemporaryOrder:(const void *)a3 forDimension:(int64_t)a4;
+- (const)orderForDimension:(int64_t)dimension;
+- (const)setOrderUsingViewOrderForDimension:(int64_t)dimension;
+- (id)_groupBy:(BOOL)by;
+- (id)copyWithContext:(id)context tableInfo:(id)info;
+- (id)sortedArrayFromArray:(id)array forDimension:(int64_t)dimension;
+- (id)targetGroupFromIndex:(unsigned int)index minSourceLevel:(unsigned __int8)level templateUID:(TSKUIDStruct *)d forDimension:(int64_t)dimension;
+- (unint64_t)_numberOfLevels:(BOOL)levels;
+- (unsigned)_maxLevel:(BOOL)level;
+- (unsigned)minimumCategoryLevelInRange:(_NSRange)range forDimension:(int64_t)dimension;
+- (void)insertUids:(const void *)uids beforeUid:(const TSKUIDStruct *)uid forDimension:(int64_t)dimension;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)removeUids:(const void *)uids forDimension:(int64_t)dimension;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setOrder:(const void *)order forDimension:(int64_t)dimension;
+- (void)setTemporaryOrder:(const void *)order forDimension:(int64_t)dimension;
 @end
 
 @implementation TSTPivotRowColumnOrder
 
-- (TSTPivotRowColumnOrder)initWithContext:(id)a3 tableInfo:(id)a4 rowUids:(const void *)a5 columnUids:(const void *)a6
+- (TSTPivotRowColumnOrder)initWithContext:(id)context tableInfo:(id)info rowUids:(const void *)uids columnUids:(const void *)columnUids
 {
-  v10 = a3;
-  v11 = a4;
+  contextCopy = context;
+  infoCopy = info;
   v19.receiver = self;
   v19.super_class = TSTPivotRowColumnOrder;
-  v12 = [(TSTPivotRowColumnOrder *)&v19 initWithContext:v10];
+  v12 = [(TSTPivotRowColumnOrder *)&v19 initWithContext:contextCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_tableInfo, v11);
-    if (v11)
+    objc_storeWeak(&v12->_tableInfo, infoCopy);
+    if (infoCopy)
     {
       v14 = [TSTColumnRowUIDMap alloc];
-      v16 = objc_msgSend_initWithContext_columnUIDs_rowUIDs_(v14, v15, v10, a6, a5);
+      v16 = objc_msgSend_initWithContext_columnUIDs_rowUIDs_(v14, v15, contextCopy, columnUids, uids);
       uidMap = v13->_uidMap;
       v13->_uidMap = v16;
     }
@@ -57,26 +57,26 @@
   return v13;
 }
 
-- (TSTPivotRowColumnOrder)initWithTableInfo:(id)a3 rowUids:(const void *)a4 columnUids:(const void *)a5
+- (TSTPivotRowColumnOrder)initWithTableInfo:(id)info rowUids:(const void *)uids columnUids:(const void *)columnUids
 {
-  v8 = a3;
-  v13 = objc_msgSend_context(v8, v9, v10, v11, v12);
-  v15 = objc_msgSend_initWithContext_tableInfo_rowUids_columnUids_(self, v14, v13, v8, a4, a5);
+  infoCopy = info;
+  v13 = objc_msgSend_context(infoCopy, v9, v10, v11, v12);
+  v15 = objc_msgSend_initWithContext_tableInfo_rowUids_columnUids_(self, v14, v13, infoCopy, uids, columnUids);
 
   return v15;
 }
 
-- (TSTPivotRowColumnOrder)initWithTableInfo:(id)a3
+- (TSTPivotRowColumnOrder)initWithTableInfo:(id)info
 {
-  v4 = a3;
-  v9 = objc_msgSend_context(v4, v5, v6, v7, v8);
+  infoCopy = info;
+  v9 = objc_msgSend_context(infoCopy, v5, v6, v7, v8);
   v16 = 0;
   v17 = 0;
   v18 = 0;
   __p = 0;
   v14 = 0;
   v15 = 0;
-  v11 = objc_msgSend_initWithContext_tableInfo_rowUids_columnUids_(self, v10, v9, v4, &v16, &__p);
+  v11 = objc_msgSend_initWithContext_tableInfo_rowUids_columnUids_(self, v10, v9, infoCopy, &v16, &__p);
   if (__p)
   {
     v14 = __p;
@@ -92,7 +92,7 @@
   return v11;
 }
 
-- (TSTPivotRowColumnOrder)initWithContext:(id)a3
+- (TSTPivotRowColumnOrder)initWithContext:(id)context
 {
   v8 = 0;
   v9 = 0;
@@ -100,7 +100,7 @@
   __p = 0;
   v6 = 0;
   v7 = 0;
-  v3 = objc_msgSend_initWithContext_tableInfo_rowUids_columnUids_(self, a2, a3, 0, &v8, &__p);
+  v3 = objc_msgSend_initWithContext_tableInfo_rowUids_columnUids_(self, a2, context, 0, &v8, &__p);
   if (__p)
   {
     v6 = __p;
@@ -116,26 +116,26 @@
   return v3;
 }
 
-- (id)copyWithContext:(id)a3 tableInfo:(id)a4
+- (id)copyWithContext:(id)context tableInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  infoCopy = info;
   v8 = [TSTPivotRowColumnOrder alloc];
-  v12 = objc_msgSend_initWithContext_(v8, v9, v6, v10, v11);
-  objc_storeWeak((v12 + 72), v7);
-  v16 = objc_msgSend_copyWithContext_(self->_uidMap, v13, v6, v14, v15);
+  v12 = objc_msgSend_initWithContext_(v8, v9, contextCopy, v10, v11);
+  objc_storeWeak((v12 + 72), infoCopy);
+  v16 = objc_msgSend_copyWithContext_(self->_uidMap, v13, contextCopy, v14, v15);
   v17 = *(v12 + 80);
   *(v12 + 80) = v16;
 
   return v12;
 }
 
-- (id)_groupBy:(BOOL)a3
+- (id)_groupBy:(BOOL)by
 {
-  v3 = a3;
+  byCopy = by;
   WeakRetained = objc_loadWeakRetained(&self->_tableInfo);
   v9 = WeakRetained;
-  if (v3)
+  if (byCopy)
   {
     objc_msgSend_groupByForRows(WeakRetained, v5, v6, v7, v8);
   }
@@ -149,12 +149,12 @@
   return v10;
 }
 
-- (unint64_t)_numberOfLevels:(BOOL)a3
+- (unint64_t)_numberOfLevels:(BOOL)levels
 {
-  v3 = a3;
+  levelsCopy = levels;
   WeakRetained = objc_loadWeakRetained(&self->_tableInfo);
   v9 = WeakRetained;
-  if (v3)
+  if (levelsCopy)
   {
     v10 = objc_msgSend_numberOfRowLevels(WeakRetained, v5, v6, v7, v8);
   }
@@ -169,12 +169,12 @@
   return v11;
 }
 
-- (unsigned)_maxLevel:(BOOL)a3
+- (unsigned)_maxLevel:(BOOL)level
 {
-  v3 = a3;
+  levelCopy = level;
   WeakRetained = objc_loadWeakRetained(&self->_tableInfo);
   v9 = WeakRetained;
-  if (v3)
+  if (levelCopy)
   {
     v10 = objc_msgSend_maxRowLevel(WeakRetained, v5, v6, v7, v8);
   }
@@ -189,18 +189,18 @@
   return v11;
 }
 
-+ (void)initialGroupOrderForGroupBy:(id)a3 baseLevel:(unsigned __int8)a4 outAllUids:(void *)a5 outBaseUids:(void *)a6 outSummaryUids:(void *)a7
++ (void)initialGroupOrderForGroupBy:(id)by baseLevel:(unsigned __int8)level outAllUids:(void *)uids outBaseUids:(void *)baseUids outSummaryUids:(void *)summaryUids
 {
-  v11 = a3;
-  v16 = objc_msgSend_tableModel(v11, v12, v13, v14, v15);
+  byCopy = by;
+  v16 = objc_msgSend_tableModel(byCopy, v12, v13, v14, v15);
   v21 = objc_msgSend_columnRowUIDMap(v16, v17, v18, v19, v20);
   v22 = [TSTColumnRowUIDMap alloc];
   v27 = objc_msgSend_context(v16, v23, v24, v25, v26);
   v31 = objc_msgSend_initWithContext_(v22, v28, v27, v29, v30);
 
-  sub_2213FB64C(v32, v11, 1, a4);
+  sub_2213FB64C(v32, byCopy, 1, level);
   sub_22149C92C(v32, v35, v36, 0, v37, v31, v21, 1u);
-  sub_22149C6EC(v32, a5, a6, a7, 0, 0, v37, 0, 1u);
+  sub_22149C6EC(v32, uids, baseUids, summaryUids, 0, 0, v37, 0, 1u);
 
   v32[0] = &unk_2834A7E10;
   sub_2210BDEC0(&v34);
@@ -208,17 +208,17 @@
   sub_2213FB81C(&v38);
 }
 
-- (TSKUIDStructVectorTemplate<TSKUIDStruct>)orderedUidsFromUids:(SEL)a3 forDimension:(const void *)a4
+- (TSKUIDStructVectorTemplate<TSKUIDStruct>)orderedUidsFromUids:(SEL)uids forDimension:(const void *)dimension
 {
-  v9 = *(a4 + 1);
-  v10 = *a4;
-  v11 = (v9 - *a4) >> 4;
+  v9 = *(dimension + 1);
+  v10 = *dimension;
+  v11 = (v9 - *dimension) >> 4;
   if (v11 > 1)
   {
     result = objc_msgSend_orderedUidsForDimension_(self, v10, a5, v11, v5);
-    v15 = a4;
-    v13 = *a4;
-    v14 = v15[1];
+    dimensionCopy = dimension;
+    v13 = *dimension;
+    v14 = dimensionCopy[1];
     if (v14 != v13)
     {
       memset(v21, 0, sizeof(v21));
@@ -260,7 +260,7 @@
   return result;
 }
 
-- (TSKUIDStructVectorTemplate<TSKUIDStruct>)orderedUidsForDimension:(SEL)a3
+- (TSKUIDStructVectorTemplate<TSKUIDStruct>)orderedUidsForDimension:(SEL)dimension
 {
   WeakRetained = objc_loadWeakRetained(&self->_tableInfo);
   v12 = objc_msgSend_baseTableModel(WeakRetained, v8, v9, v10, v11);
@@ -361,7 +361,7 @@ LABEL_9:
   return result;
 }
 
-- (id)targetGroupFromIndex:(unsigned int)a3 minSourceLevel:(unsigned __int8)a4 templateUID:(TSKUIDStruct *)a5 forDimension:(int64_t)a6
+- (id)targetGroupFromIndex:(unsigned int)index minSourceLevel:(unsigned __int8)level templateUID:(TSKUIDStruct *)d forDimension:(int64_t)dimension
 {
   TSUSetCrashReporterInfo();
   v6 = MEMORY[0x277D81150];
@@ -373,10 +373,10 @@ LABEL_9:
   abort();
 }
 
-- (unsigned)minimumCategoryLevelInRange:(_NSRange)a3 forDimension:(int64_t)a4
+- (unsigned)minimumCategoryLevelInRange:(_NSRange)range forDimension:(int64_t)dimension
 {
-  v4 = a4 == 0;
-  if (a4)
+  v4 = dimension == 0;
+  if (dimension)
   {
     TSUSetCrashReporterInfo();
     v26 = MEMORY[0x277D81150];
@@ -388,7 +388,7 @@ LABEL_9:
     abort();
   }
 
-  v6 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAA78], a2, a3.location, a3.length, 0);
+  v6 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAA78], a2, range.location, range.length, 0);
   WeakRetained = objc_loadWeakRetained(&self->_tableInfo);
   v12 = objc_msgSend_indexesForSummaryRows(WeakRetained, v8, v9, v10, v11);
   v16 = objc_msgSend_tsu_indexSetByIntersectingWithIndexes_(v6, v13, v12, v14, v15);
@@ -415,24 +415,24 @@ LABEL_9:
   return v24;
 }
 
-- (id)sortedArrayFromArray:(id)a3 forDimension:(int64_t)a4
+- (id)sortedArrayFromArray:(id)array forDimension:(int64_t)dimension
 {
   v68 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  arrayCopy = array;
   v7 = MEMORY[0x277CBEB18];
-  v12 = objc_msgSend_count(v6, v8, v9, v10, v11);
+  v12 = objc_msgSend_count(arrayCopy, v8, v9, v10, v11);
   v16 = objc_msgSend_arrayWithCapacity_(v7, v13, v12, v14, v15);
-  if (objc_msgSend_count(v6, v17, v18, v19, v20))
+  if (objc_msgSend_count(arrayCopy, v17, v18, v19, v20))
   {
-    if (objc_msgSend_count(v6, v21, v22, v23, v24) == 1)
+    if (objc_msgSend_count(arrayCopy, v21, v22, v23, v24) == 1)
     {
-      objc_msgSend_addObjectsFromArray_(v16, v25, v6, v26, v27);
+      objc_msgSend_addObjectsFromArray_(v16, v25, arrayCopy, v26, v27);
     }
 
     else
     {
-      v54 = self;
-      v55 = a4;
+      selfCopy = self;
+      dimensionCopy = dimension;
       __p = 0;
       v64 = 0;
       v65 = 0;
@@ -442,7 +442,7 @@ LABEL_9:
       v58 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v28 = v6;
+      v28 = arrayCopy;
       v34 = objc_msgSend_countByEnumeratingWithState_objects_count_(v28, v29, &v57, v67, 16);
       if (v34)
       {
@@ -478,7 +478,7 @@ LABEL_9:
         while (v34);
       }
 
-      objc_msgSend_orderedUidsFromUids_forDimension_(v54, v41, &__p, v55, v42);
+      objc_msgSend_orderedUidsFromUids_forDimension_(selfCopy, v41, &__p, dimensionCopy, v42);
       v44 = *(&v56 + 1);
       v43 = v56;
       if (v56 != *(&v56 + 1))
@@ -534,12 +534,12 @@ LABEL_9:
   return v6;
 }
 
-- (const)orderForDimension:(int64_t)a3
+- (const)orderForDimension:(int64_t)dimension
 {
   uidMap = self->_uidMap;
-  if (a3)
+  if (dimension)
   {
-    return objc_msgSend_columnUIDs(uidMap, a2, a3, v3, v4);
+    return objc_msgSend_columnUIDs(uidMap, a2, dimension, v3, v4);
   }
 
   else
@@ -548,46 +548,46 @@ LABEL_9:
   }
 }
 
-- (void)setOrder:(const void *)a3 forDimension:(int64_t)a4
+- (void)setOrder:(const void *)order forDimension:(int64_t)dimension
 {
   uidMap = self->_uidMap;
-  if (a4)
+  if (dimension)
   {
-    objc_msgSend_replaceColumnsWithUids_(uidMap, a2, a3, a4, v4);
+    objc_msgSend_replaceColumnsWithUids_(uidMap, a2, order, dimension, v4);
     v7 = &OBJC_IVAR___TSTPivotRowColumnOrder__isColumnOrderTemporary;
   }
 
   else
   {
-    objc_msgSend_replaceRowsWithUids_(uidMap, a2, a3, 0, v4);
+    objc_msgSend_replaceRowsWithUids_(uidMap, a2, order, 0, v4);
     v7 = &OBJC_IVAR___TSTPivotRowColumnOrder__isRowOrderTemporary;
   }
 
   *(&self->super.super.isa + *v7) = 0;
 }
 
-- (void)setTemporaryOrder:(const void *)a3 forDimension:(int64_t)a4
+- (void)setTemporaryOrder:(const void *)order forDimension:(int64_t)dimension
 {
   uidMap = self->_uidMap;
-  if (a4)
+  if (dimension)
   {
-    objc_msgSend_replaceColumnsWithUids_(uidMap, a2, a3, a4, v4);
+    objc_msgSend_replaceColumnsWithUids_(uidMap, a2, order, dimension, v4);
     v7 = &OBJC_IVAR___TSTPivotRowColumnOrder__isColumnOrderTemporary;
   }
 
   else
   {
-    objc_msgSend_replaceRowsWithUids_(uidMap, a2, a3, 0, v4);
+    objc_msgSend_replaceRowsWithUids_(uidMap, a2, order, 0, v4);
     v7 = &OBJC_IVAR___TSTPivotRowColumnOrder__isRowOrderTemporary;
   }
 
   *(&self->super.super.isa + *v7) = 1;
 }
 
-- (const)setOrderUsingViewOrderForDimension:(int64_t)a3
+- (const)setOrderUsingViewOrderForDimension:(int64_t)dimension
 {
   v46 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend__groupBy_(self, a2, a3 == 0, v3, v4);
+  v7 = objc_msgSend__groupBy_(self, a2, dimension == 0, v3, v4);
   v8 = -1;
   v45[0] = 0;
   v44[0] = -1;
@@ -601,7 +601,7 @@ LABEL_9:
 
   WeakRetained = objc_loadWeakRetained(&self->_tableInfo);
   v16 = WeakRetained;
-  if (a3)
+  if (dimension)
   {
     v17 = objc_msgSend_columnUIDs(WeakRetained, v12, v13, v14, v15);
   }
@@ -695,8 +695,8 @@ LABEL_22:
     ++v20;
   }
 
-  objc_msgSend_setOrder_forDimension_(self, v18, &__p, a3, v19);
-  v35 = objc_msgSend_orderForDimension_(self, v32, a3, v33, v34);
+  objc_msgSend_setOrder_forDimension_(self, v18, &__p, dimension, v19);
+  v35 = objc_msgSend_orderForDimension_(self, v32, dimension, v33, v34);
   if (__p)
   {
     v38 = __p;
@@ -712,105 +712,105 @@ LABEL_22:
   return v35;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v10 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v10, v4, off_2812E4498[306], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E4498[306], v5, v6);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, v10, v9);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, unarchiverCopy, v9);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  v7 = v6;
-  if (*(a3 + 16))
+  unarchiverCopy = unarchiver;
+  v7 = unarchiverCopy;
+  if (*(archive + 16))
   {
-    v8 = *(a3 + 3);
+    v8 = *(archive + 3);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = sub_2213FAFB4;
     v12[3] = &unk_27845E0B8;
     v12[4] = self;
-    v9 = v6;
+    v9 = unarchiverCopy;
     v10 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v9, v11, v8, v10, 0, v12);
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
-  objc_msgSend_setMessageVersion_(v4, v5, 0xB000200000006, v6, v7);
-  v13 = v4;
+  archiverCopy = archiver;
+  objc_msgSend_setMessageVersion_(archiverCopy, v5, 0xB000200000006, v6, v7);
+  v13 = archiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v10 = objc_msgSend_messageWithNewFunction_descriptor_(v13, v8, sub_2213FB954, off_2812E4498[306], v9);
 
   objc_msgSend_saveToArchive_archiver_(self, v11, v10, v13, v12);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   uidMap = self->_uidMap;
-  *(a3 + 4) |= 1u;
-  v10 = *(a3 + 3);
-  v12 = v6;
+  *(archive + 4) |= 1u;
+  v10 = *(archive + 3);
+  v12 = archiverCopy;
   if (!v10)
   {
-    v11 = *(a3 + 1);
+    v11 = *(archive + 1);
     if (v11)
     {
       v11 = *(v11 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v10 = MEMORY[0x223DA0390](v11);
-    *(a3 + 3) = v10;
-    v6 = v12;
+    *(archive + 3) = v10;
+    archiverCopy = v12;
   }
 
-  objc_msgSend_setStrongReference_message_(v6, v7, uidMap, v10, v8);
+  objc_msgSend_setStrongReference_message_(archiverCopy, v7, uidMap, v10, v8);
 }
 
-- (void)insertUids:(const void *)a3 beforeUid:(const TSKUIDStruct *)a4 forDimension:(int64_t)a5
+- (void)insertUids:(const void *)uids beforeUid:(const TSKUIDStruct *)uid forDimension:(int64_t)dimension
 {
-  objc_msgSend_willModify(self, a2, a3, a4, a5);
-  lower = a4->_lower;
-  upper = a4->_upper;
-  if (a5)
+  objc_msgSend_willModify(self, a2, uids, uid, dimension);
+  lower = uid->_lower;
+  upper = uid->_upper;
+  if (dimension)
   {
-    if (*a4 == 0 || (upper = objc_msgSend_columnIndexForColumnUID_(self->_uidMap, v9, lower, upper, v10), upper == 0x7FFF))
+    if (*uid == 0 || (upper = objc_msgSend_columnIndexForColumnUID_(self->_uidMap, v9, lower, upper, v10), upper == 0x7FFF))
     {
       upper = objc_msgSend_numberOfColumns(self->_uidMap, v9, lower, upper, v10);
     }
 
     uidMap = self->_uidMap;
 
-    objc_msgSend_insertColumnsWithUIDs_atIndex_(uidMap, v9, a3, upper, v10);
+    objc_msgSend_insertColumnsWithUIDs_atIndex_(uidMap, v9, uids, upper, v10);
   }
 
   else
   {
-    if (*a4 == 0 || (upper = objc_msgSend_rowIndexForRowUID_(self->_uidMap, v9, lower, upper, v10), upper == 0x7FFFFFFF))
+    if (*uid == 0 || (upper = objc_msgSend_rowIndexForRowUID_(self->_uidMap, v9, lower, upper, v10), upper == 0x7FFFFFFF))
     {
       upper = objc_msgSend_numberOfRows(self->_uidMap, v9, lower, upper, v10);
     }
 
     v14 = self->_uidMap;
 
-    objc_msgSend_insertRowsWithUIDs_atIndex_(v14, v9, a3, upper, v10);
+    objc_msgSend_insertRowsWithUIDs_atIndex_(v14, v9, uids, upper, v10);
   }
 }
 
-- (void)removeUids:(const void *)a3 forDimension:(int64_t)a4
+- (void)removeUids:(const void *)uids forDimension:(int64_t)dimension
 {
-  objc_msgSend_willModify(self, a2, a3, a4, v4);
+  objc_msgSend_willModify(self, a2, uids, dimension, v4);
   uidMap = self->_uidMap;
-  if (a4)
+  if (dimension)
   {
-    v26 = objc_msgSend_columnIndexesForUIDs_(uidMap, v8, a3, v9, v10);
-    if (objc_msgSend_count(v26, v12, v13, v14, v15) == (*(a3 + 1) - *a3) >> 4)
+    v26 = objc_msgSend_columnIndexesForUIDs_(uidMap, v8, uids, v9, v10);
+    if (objc_msgSend_count(v26, v12, v13, v14, v15) == (*(uids + 1) - *uids) >> 4)
     {
       objc_msgSend_removeColumnsAtIndexes_(self->_uidMap, v16, v26, v17, v18);
     }
@@ -818,32 +818,32 @@ LABEL_22:
 
   else
   {
-    v26 = objc_msgSend_rowIndexesForUIDs_(uidMap, v8, a3, v9, v10);
-    if (objc_msgSend_count(v26, v19, v20, v21, v22) == (*(a3 + 1) - *a3) >> 4)
+    v26 = objc_msgSend_rowIndexesForUIDs_(uidMap, v8, uids, v9, v10);
+    if (objc_msgSend_count(v26, v19, v20, v21, v22) == (*(uids + 1) - *uids) >> 4)
     {
       objc_msgSend_removeRowsAtIndexes_(self->_uidMap, v23, v26, v24, v25);
     }
   }
 }
 
-- (TSKUIDStructVectorTemplate<TSKUIDStruct>)groupUidsGivenUids:(SEL)a3 selectedLevels:(const void *)a4 forDimension:(const void *)a5
+- (TSKUIDStructVectorTemplate<TSKUIDStruct>)groupUidsGivenUids:(SEL)uids selectedLevels:(const void *)levels forDimension:(const void *)dimension
 {
-  v9 = self;
+  selfCopy = self;
   v11 = a6 == 0;
   retstr->__begin_ = 0;
   retstr->__end_ = 0;
   retstr->__cap_ = 0;
-  v12 = objc_msgSend__groupBy_(self, a3, v11, a5, a6);
-  LOBYTE(v11) = objc_msgSend__numberOfLevels_(v9, v13, v11, v14, v15);
-  LODWORD(v9) = objc_msgSend__maxLevel_(v9, v16, a6 == 0, v17, v18);
+  v12 = objc_msgSend__groupBy_(self, uids, v11, dimension, a6);
+  LOBYTE(v11) = objc_msgSend__numberOfLevels_(selfCopy, v13, v11, v14, v15);
+  LODWORD(selfCopy) = objc_msgSend__maxLevel_(selfCopy, v16, a6 == 0, v17, v18);
   sub_2213FB64C(v31, v12, a6 == 0, v11);
   v19 = [TSCEUIDSet alloc];
-  v23 = objc_msgSend_initWithUUIDVector_(v19, v20, a4, v21, v22);
+  v23 = objc_msgSend_initWithUUIDVector_(v19, v20, levels, v21, v22);
   sub_22149CC78(v31, v23);
   sub_22149CD08(v31);
-  for (i = v9; i; --i)
+  for (i = selfCopy; i; --i)
   {
-    v24 = sub_22122DECC(a5, &i);
+    v24 = sub_22122DECC(dimension, &i);
     v25 = v24;
     if (!v24 || *(v24 + 5) < 1)
     {

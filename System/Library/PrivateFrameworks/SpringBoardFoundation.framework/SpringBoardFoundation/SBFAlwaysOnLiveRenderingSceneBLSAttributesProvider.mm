@@ -1,6 +1,6 @@
 @interface SBFAlwaysOnLiveRenderingSceneBLSAttributesProvider
-- (SBFAlwaysOnLiveRenderingSceneBLSAttributesProvider)initWithFBSScene:(id)a3;
-- (SBFAlwaysOnLiveRenderingSceneBLSAttributesProvider)initWithUIScene:(id)a3;
+- (SBFAlwaysOnLiveRenderingSceneBLSAttributesProvider)initWithFBSScene:(id)scene;
+- (SBFAlwaysOnLiveRenderingSceneBLSAttributesProvider)initWithUIScene:(id)scene;
 - (id)_init;
 @end
 
@@ -13,18 +13,18 @@
   return [(SBFAlwaysOnLiveRenderingSceneBLSAttributesProvider *)&v3 init];
 }
 
-- (SBFAlwaysOnLiveRenderingSceneBLSAttributesProvider)initWithFBSScene:(id)a3
+- (SBFAlwaysOnLiveRenderingSceneBLSAttributesProvider)initWithFBSScene:(id)scene
 {
-  v4 = a3;
-  v5 = [[SBFSAlwaysOnLiveRenderingAssertionFBSScene alloc] initWithScene:v4];
+  sceneCopy = scene;
+  v5 = [[SBFSAlwaysOnLiveRenderingAssertionFBSScene alloc] initWithScene:sceneCopy];
 
   return &v5->super;
 }
 
-- (SBFAlwaysOnLiveRenderingSceneBLSAttributesProvider)initWithUIScene:(id)a3
+- (SBFAlwaysOnLiveRenderingSceneBLSAttributesProvider)initWithUIScene:(id)scene
 {
-  v4 = a3;
-  v5 = [[SBFSAlwaysOnLiveRenderingAssertionUIScene alloc] initWithScene:v4];
+  sceneCopy = scene;
+  v5 = [[SBFSAlwaysOnLiveRenderingAssertionUIScene alloc] initWithScene:sceneCopy];
 
   return &v5->super;
 }

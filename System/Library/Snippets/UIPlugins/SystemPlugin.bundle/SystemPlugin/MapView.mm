@@ -6,7 +6,7 @@
 
 - (CGSize)preferredContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A544();
   v4 = v3;
   v6 = v5;

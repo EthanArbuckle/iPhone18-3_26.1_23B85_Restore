@@ -1,29 +1,29 @@
 @interface UIDocumentSharingController
 - (NSString)_appName;
-- (UIDocumentSharingController)initWithFileURL:(id)a3 error:(id *)a4;
+- (UIDocumentSharingController)initWithFileURL:(id)l error:(id *)error;
 - (UIViewController)_originalPresentingViewController;
 - (_UIDocumentSharingControllerDelegate_Private)_privateDelegate;
-- (id)_customPresentationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)_customPresentationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 - (id)_sharingViewPresentationController;
 - (id)delegate;
-- (void)_addResizingChildViewController:(id)a3;
-- (void)_cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:(double)a3 y:(double)a4 width:(double)a5 height:(double)a6;
+- (void)_addResizingChildViewController:(id)controller;
+- (void)_cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:(double)x y:(double)y width:(double)width height:(double)height;
 - (void)_cloudSharingControllerDidActivateShowActivityController;
-- (void)_cloudSharingControllerDidChooseTransport:(id)a3;
-- (void)_cloudSharingControllerDidUpdateRootFolderURL:(id)a3;
+- (void)_cloudSharingControllerDidChooseTransport:(id)transport;
+- (void)_cloudSharingControllerDidUpdateRootFolderURL:(id)l;
 - (void)_didDismiss;
-- (void)_dismissForActivityRepresentation:(id)a3;
-- (void)_dismissViewControllerWithError:(id)a3;
-- (void)_performAuxiliaryActionWithCompletion:(id)a3;
-- (void)_performHeaderActionWithCompletion:(id)a3;
-- (void)_presentationControllerDidDismiss:(id)a3;
-- (void)_representFullscreenAfterActivityDismissal:(id)a3;
-- (void)_setAuxiliaryActionTitle:(id)a3;
-- (void)_setChildViewController:(id)a3;
-- (void)_setLegacyAppearance:(BOOL)a3;
-- (void)_setMailSubject:(id)a3 template:(id)a4;
-- (void)_setThumbnail:(id)a3;
-- (void)_shareDidChange:(id)a3;
+- (void)_dismissForActivityRepresentation:(id)representation;
+- (void)_dismissViewControllerWithError:(id)error;
+- (void)_performAuxiliaryActionWithCompletion:(id)completion;
+- (void)_performHeaderActionWithCompletion:(id)completion;
+- (void)_presentationControllerDidDismiss:(id)dismiss;
+- (void)_representFullscreenAfterActivityDismissal:(id)dismissal;
+- (void)_setAuxiliaryActionTitle:(id)title;
+- (void)_setChildViewController:(id)controller;
+- (void)_setLegacyAppearance:(BOOL)appearance;
+- (void)_setMailSubject:(id)subject template:(id)template;
+- (void)_setThumbnail:(id)thumbnail;
+- (void)_shareDidChange:(id)change;
 - (void)_shareWasMadePrivate;
 - (void)_updatePresentationStyleForLegacyAppearance;
 - (void)dealloc;
@@ -31,16 +31,16 @@
 
 @implementation UIDocumentSharingController
 
-- (UIDocumentSharingController)initWithFileURL:(id)a3 error:(id *)a4
+- (UIDocumentSharingController)initWithFileURL:(id)l error:(id *)error
 {
   v65[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 absoluteString];
-  if ([v8 length])
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  if ([absoluteString length])
   {
-    v9 = [v7 isFileURL];
+    isFileURL = [lCopy isFileURL];
 
-    if (v9)
+    if (isFileURL)
     {
       v55.receiver = self;
       v55.super_class = UIDocumentSharingController;
@@ -50,12 +50,12 @@
         self = 0;
 LABEL_31:
         self = self;
-        v26 = self;
+        selfCopy3 = self;
         goto LABEL_18;
       }
 
       v10->_legacyAppearance = dyld_program_sdk_at_least() ^ 1;
-      objc_storeStrong(&v10->_url, a3);
+      objc_storeStrong(&v10->_url, l);
       v61 = 0;
       v62 = &v61;
       v63 = 0x2050000000;
@@ -74,19 +74,19 @@ LABEL_31:
 
       v12 = v11;
       _Block_object_dispose(&v61, 8);
-      v13 = [v11 defaultManager];
+      defaultManager = [v11 defaultManager];
       v54 = 0;
-      v14 = [v13 itemForURL:v7 error:&v54];
+      v14 = [defaultManager itemForURL:lCopy error:&v54];
       v15 = v54;
 
       if (v14)
       {
-        v16 = [v14 isShared];
-        if (!IsGelatoEnabled() || v16 & 1 | ((dyld_program_sdk_at_least() & 1) == 0) || v10->_legacyAppearance)
+        isShared = [v14 isShared];
+        if (!IsGelatoEnabled() || isShared & 1 | ((dyld_program_sdk_at_least() & 1) == 0) || v10->_legacyAppearance)
         {
           v17 = MEMORY[0x1E696ABD0];
           v18 = CloudSharingUIExtensionBundleID();
-          v19 = [v17 extensionWithIdentifier:v18 error:a4];
+          v19 = [v17 extensionWithIdentifier:v18 error:error];
 
           if (v19)
           {
@@ -110,7 +110,7 @@ LABEL_31:
             v21 = v20;
             _Block_object_dispose(&v61, 8);
             v46 = 0;
-            v22 = [v20 wrapperWithURL:v7 readonly:0 error:&v46];
+            v22 = [v20 wrapperWithURL:lCopy readonly:0 error:&v46];
             v23 = v46;
             v24 = v23;
             if (v22)
@@ -120,23 +120,23 @@ LABEL_31:
               v43[2] = __53__UIDocumentSharingController_initWithFileURL_error___block_invoke_3;
               v43[3] = &unk_1E712CC98;
               self = v10;
-              v44 = self;
+              selfCopy2 = self;
               v45 = v22;
               v25 = [_UIResilientRemoteViewContainerViewController instantiateWithExtension:v19 completion:v43];
               [(UIDocumentSharingController *)self _setChildViewController:v25];
               [(UIDocumentSharingController *)self _updatePresentationStyleForLegacyAppearance];
 
-              v10 = v44;
+              v10 = selfCopy2;
             }
 
             else
             {
-              NSLog(&cfstr_FailedToCreate_11.isa, v7, v23);
-              if (a4)
+              NSLog(&cfstr_FailedToCreate_11.isa, lCopy, v23);
+              if (error)
               {
                 v29 = v24;
                 self = 0;
-                *a4 = v24;
+                *error = v24;
               }
 
               else
@@ -163,15 +163,15 @@ LABEL_31:
         v53 = 0;
         v30 = *MEMORY[0x1E695DAA0];
         v52 = 0;
-        v31 = [v7 getResourceValue:&v53 forKey:v30 error:&v52];
+        v31 = [lCopy getResourceValue:&v53 forKey:v30 error:&v52];
         v32 = v53;
         v33 = v52;
         v34 = v33;
         if (v31)
         {
           v35 = objc_alloc(MEMORY[0x1E696ACA0]);
-          v36 = [v32 identifier];
-          v42 = [v35 initWithItem:v7 typeIdentifier:v36];
+          identifier = [v32 identifier];
+          v42 = [v35 initWithItem:lCopy typeIdentifier:identifier];
 
           v37 = [UIActivityItemsConfiguration alloc];
           v65[0] = v42;
@@ -184,7 +184,7 @@ LABEL_31:
           v49[2] = __53__UIDocumentSharingController_initWithFileURL_error___block_invoke;
           v49[3] = &unk_1E712CC70;
           objc_copyWeak(&v51, &location);
-          v50 = v7;
+          v50 = lCopy;
           [(UIActivityItemsConfiguration *)v39 setMetadataProvider:v49];
           v40 = [objc_alloc(MEMORY[0x1E69CD9F8]) initWithActivityItemsConfiguration:v39];
           [v40 setAllowsEmbedding:1];
@@ -208,13 +208,13 @@ LABEL_31:
 
         else
         {
-          if (a4)
+          if (error)
           {
             v41 = v33;
-            *a4 = v34;
+            *error = v34;
           }
 
-          NSLog(&cfstr_UnableToGetUti.isa, v7, v34);
+          NSLog(&cfstr_UnableToGetUti.isa, lCopy, v34);
           self = 0;
         }
 
@@ -223,17 +223,17 @@ LABEL_31:
 
       else
       {
-        if (a4)
+        if (error)
         {
           v28 = v15;
-          *a4 = v15;
+          *error = v15;
         }
 
-        NSLog(&cfstr_UnableToGetFpi.isa, v7, v15);
+        NSLog(&cfstr_UnableToGetFpi.isa, lCopy, v15);
         self = 0;
       }
 
-      v26 = self;
+      selfCopy3 = self;
       goto LABEL_18;
     }
   }
@@ -244,10 +244,10 @@ LABEL_31:
 
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"must pass a valid file URL to -[%@ initWithFileURL:]", objc_opt_class()}];
 LABEL_17:
-  v26 = 0;
+  selfCopy3 = 0;
 LABEL_18:
 
-  return v26;
+  return selfCopy3;
 }
 
 id __53__UIDocumentSharingController_initWithFileURL_error___block_invoke(uint64_t a1, void *a2)
@@ -419,27 +419,27 @@ uint64_t __53__UIDocumentSharingController_initWithFileURL_error___block_invoke_
 
 - (void)dealloc
 {
-  v3 = [(UIDocumentSharingController *)self _remoteViewController];
-  [v3 setPublicController:0];
+  _remoteViewController = [(UIDocumentSharingController *)self _remoteViewController];
+  [_remoteViewController setPublicController:0];
 
   v4.receiver = self;
   v4.super_class = UIDocumentSharingController;
   [(UIViewController *)&v4 dealloc];
 }
 
-- (void)_presentationControllerDidDismiss:(id)a3
+- (void)_presentationControllerDidDismiss:(id)dismiss
 {
   v4.receiver = self;
   v4.super_class = UIDocumentSharingController;
-  [(UIViewController *)&v4 _presentationControllerDidDismiss:a3];
+  [(UIViewController *)&v4 _presentationControllerDidDismiss:dismiss];
   [(UIDocumentSharingController *)self _didDismiss];
 }
 
-- (void)_setLegacyAppearance:(BOOL)a3
+- (void)_setLegacyAppearance:(BOOL)appearance
 {
-  if (self->_legacyAppearance != a3)
+  if (self->_legacyAppearance != appearance)
   {
-    self->_legacyAppearance = a3;
+    self->_legacyAppearance = appearance;
     [(UIDocumentSharingController *)self _updatePresentationStyleForLegacyAppearance];
   }
 }
@@ -464,24 +464,24 @@ uint64_t __53__UIDocumentSharingController_initWithFileURL_error___block_invoke_
   appName = self->_appName;
   if (appName)
   {
-    v3 = appName;
+    _localizedApplicationName = appName;
   }
 
   else
   {
-    v3 = [UIApp _localizedApplicationName];
+    _localizedApplicationName = [UIApp _localizedApplicationName];
   }
 
-  return v3;
+  return _localizedApplicationName;
 }
 
-- (void)_setChildViewController:(id)a3
+- (void)_setChildViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (self->_childViewController)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIDocumentSharingController.m" lineNumber:316 description:{@"%s: remote view controller can only be set once", "-[UIDocumentSharingController _setChildViewController:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentSharingController.m" lineNumber:316 description:{@"%s: remote view controller can only be set once", "-[UIDocumentSharingController _setChildViewController:]"}];
 
     childViewController = self->_childViewController;
   }
@@ -491,21 +491,21 @@ uint64_t __53__UIDocumentSharingController_initWithFileURL_error___block_invoke_
     childViewController = 0;
   }
 
-  self->_childViewController = v5;
-  v8 = v5;
+  self->_childViewController = controllerCopy;
+  v8 = controllerCopy;
 
   [(UIDocumentSharingController *)self _addResizingChildViewController:v8];
 }
 
-- (void)_addResizingChildViewController:(id)a3
+- (void)_addResizingChildViewController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
-  v30 = v4;
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  v30 = controllerCopy;
   if (self && (*&self->super._viewControllerFlags & 3u) - 1 <= 1)
   {
     v6 = 1;
-    [v4 beginAppearanceTransition:1 animated:0];
+    [controllerCopy beginAppearanceTransition:1 animated:0];
     v5 = v30;
   }
 
@@ -515,40 +515,40 @@ uint64_t __53__UIDocumentSharingController_initWithFileURL_error___block_invoke_
   }
 
   [(UIViewController *)self addChildViewController:v5];
-  v7 = [v30 view];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [v30 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(UIViewController *)self view];
-  v9 = [v30 view];
-  [v8 addSubview:v9];
+  view2 = [(UIViewController *)self view];
+  view3 = [v30 view];
+  [view2 addSubview:view3];
 
-  v10 = [(UIViewController *)self view];
+  view4 = [(UIViewController *)self view];
   v11 = MEMORY[0x1E69977A0];
-  v12 = [(UIViewController *)self view];
-  v13 = [v30 view];
-  v14 = [v11 constraintWithItem:v12 attribute:7 relatedBy:0 toItem:v13 attribute:7 multiplier:1.0 constant:0.0];
-  [v10 addConstraint:v14];
+  view5 = [(UIViewController *)self view];
+  view6 = [v30 view];
+  v14 = [v11 constraintWithItem:view5 attribute:7 relatedBy:0 toItem:view6 attribute:7 multiplier:1.0 constant:0.0];
+  [view4 addConstraint:v14];
 
-  v15 = [(UIViewController *)self view];
+  view7 = [(UIViewController *)self view];
   v16 = MEMORY[0x1E69977A0];
-  v17 = [(UIViewController *)self view];
-  v18 = [v30 view];
-  v19 = [v16 constraintWithItem:v17 attribute:8 relatedBy:0 toItem:v18 attribute:8 multiplier:1.0 constant:0.0];
-  [v15 addConstraint:v19];
+  view8 = [(UIViewController *)self view];
+  view9 = [v30 view];
+  v19 = [v16 constraintWithItem:view8 attribute:8 relatedBy:0 toItem:view9 attribute:8 multiplier:1.0 constant:0.0];
+  [view7 addConstraint:v19];
 
-  v20 = [(UIViewController *)self view];
+  view10 = [(UIViewController *)self view];
   v21 = MEMORY[0x1E69977A0];
-  v22 = [(UIViewController *)self view];
-  v23 = [v30 view];
-  v24 = [v21 constraintWithItem:v22 attribute:1 relatedBy:0 toItem:v23 attribute:1 multiplier:1.0 constant:0.0];
-  [v20 addConstraint:v24];
+  view11 = [(UIViewController *)self view];
+  view12 = [v30 view];
+  v24 = [v21 constraintWithItem:view11 attribute:1 relatedBy:0 toItem:view12 attribute:1 multiplier:1.0 constant:0.0];
+  [view10 addConstraint:v24];
 
-  v25 = [(UIViewController *)self view];
+  view13 = [(UIViewController *)self view];
   v26 = MEMORY[0x1E69977A0];
-  v27 = [(UIViewController *)self view];
-  v28 = [v30 view];
-  v29 = [v26 constraintWithItem:v27 attribute:3 relatedBy:0 toItem:v28 attribute:3 multiplier:1.0 constant:0.0];
-  [v25 addConstraint:v29];
+  view14 = [(UIViewController *)self view];
+  view15 = [v30 view];
+  v29 = [v26 constraintWithItem:view14 attribute:3 relatedBy:0 toItem:view15 attribute:3 multiplier:1.0 constant:0.0];
+  [view13 addConstraint:v29];
 
   [v30 didMoveToParentViewController:self];
   if (v6)
@@ -557,102 +557,102 @@ uint64_t __53__UIDocumentSharingController_initWithFileURL_error___block_invoke_
   }
 }
 
-- (void)_performAuxiliaryActionWithCompletion:(id)a3
+- (void)_performAuxiliaryActionWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(UIDocumentSharingController *)self _privateDelegate];
+  completionCopy = completion;
+  _privateDelegate = [(UIDocumentSharingController *)self _privateDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 _documentSharingControllerPerformAuxiliaryAction:self completion:v5];
+    [_privateDelegate _documentSharingControllerPerformAuxiliaryAction:self completion:completionCopy];
   }
 
   else if (self->_legacyAppearance && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 shareInvitationViewControllerPerformAuxiliaryAction:self completion:v5];
+    [_privateDelegate shareInvitationViewControllerPerformAuxiliaryAction:self completion:completionCopy];
   }
 
   else
   {
-    v5[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)_performHeaderActionWithCompletion:(id)a3
+- (void)_performHeaderActionWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(UIDocumentSharingController *)self _privateDelegate];
+  completionCopy = completion;
+  _privateDelegate = [(UIDocumentSharingController *)self _privateDelegate];
   if (self->_legacyAppearance && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 shareInvitationViewControllerPerformHeaderAction:self completion:v5];
+    [_privateDelegate shareInvitationViewControllerPerformHeaderAction:self completion:completionCopy];
   }
 
   else
   {
-    v5[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)_shareDidChange:(id)a3
+- (void)_shareDidChange:(id)change
 {
-  v4 = [(UIDocumentSharingController *)self _privateDelegate];
+  _privateDelegate = [(UIDocumentSharingController *)self _privateDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 _documentSharingControllerDidModifyShare:self];
+    [_privateDelegate _documentSharingControllerDidModifyShare:self];
   }
 
   else if (self->_legacyAppearance && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 shareInvitationViewControllerDidModifyShare:self];
+    [_privateDelegate shareInvitationViewControllerDidModifyShare:self];
   }
 }
 
 - (void)_shareWasMadePrivate
 {
-  v3 = [(UIDocumentSharingController *)self _privateDelegate];
+  _privateDelegate = [(UIDocumentSharingController *)self _privateDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 _documentSharingControllerDidStopSharing:self];
+    [_privateDelegate _documentSharingControllerDidStopSharing:self];
   }
 
   else if (self->_legacyAppearance && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v3 shareInvitationViewControllerDidStopSharing:self];
+    [_privateDelegate shareInvitationViewControllerDidStopSharing:self];
   }
 }
 
-- (void)_setMailSubject:(id)a3 template:(id)a4
+- (void)_setMailSubject:(id)subject template:(id)template
 {
-  v6 = a4;
-  [(UIDocumentSharingController *)self _setMailSubject:a3];
-  [(UIDocumentSharingController *)self _setMailTemplate:v6];
+  templateCopy = template;
+  [(UIDocumentSharingController *)self _setMailSubject:subject];
+  [(UIDocumentSharingController *)self _setMailTemplate:templateCopy];
 }
 
-- (void)_setAuxiliaryActionTitle:(id)a3
+- (void)_setAuxiliaryActionTitle:(id)title
 {
-  if (self->_auxiliaryActionTitle != a3)
+  if (self->_auxiliaryActionTitle != title)
   {
-    v4 = [a3 copy];
+    v4 = [title copy];
     auxiliaryActionTitle = self->_auxiliaryActionTitle;
     self->_auxiliaryActionTitle = v4;
 
-    v7 = [(UIDocumentSharingController *)self _remoteViewController];
-    v6 = [v7 serviceViewControllerProxy];
-    [v6 _setAuxiliaryActionTitle:self->_auxiliaryActionTitle];
+    _remoteViewController = [(UIDocumentSharingController *)self _remoteViewController];
+    serviceViewControllerProxy = [_remoteViewController serviceViewControllerProxy];
+    [serviceViewControllerProxy _setAuxiliaryActionTitle:self->_auxiliaryActionTitle];
   }
 }
 
-- (void)_setThumbnail:(id)a3
+- (void)_setThumbnail:(id)thumbnail
 {
-  v5 = a3;
-  if (self->_thumbnail != v5)
+  thumbnailCopy = thumbnail;
+  if (self->_thumbnail != thumbnailCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_thumbnail, a3);
-    v6 = [(UIDocumentSharingController *)self _remoteViewController];
-    v7 = [v6 serviceViewControllerProxy];
-    [v7 _setThumbnail:self->_thumbnail];
+    v8 = thumbnailCopy;
+    objc_storeStrong(&self->_thumbnail, thumbnail);
+    _remoteViewController = [(UIDocumentSharingController *)self _remoteViewController];
+    serviceViewControllerProxy = [_remoteViewController serviceViewControllerProxy];
+    [serviceViewControllerProxy _setThumbnail:self->_thumbnail];
 
-    v5 = v8;
+    thumbnailCopy = v8;
   }
 }
 
@@ -669,7 +669,7 @@ uint64_t __53__UIDocumentSharingController_initWithFileURL_error___block_invoke_
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
       {
         v10 = 138412290;
-        v11 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_188A29000, v8, OS_LOG_TYPE_FAULT, "Cyclic reference to %@ wasn't cleared out. This means that the view service didn't call us back.", &v10, 0xCu);
       }
     }
@@ -681,7 +681,7 @@ uint64_t __53__UIDocumentSharingController_initWithFileURL_error___block_invoke_
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_ERROR, "Cyclic reference to %@ wasn't cleared out. This means that the view service didn't call us back.", &v10, 0xCu);
     }
   }
@@ -689,58 +689,58 @@ uint64_t __53__UIDocumentSharingController_initWithFileURL_error___block_invoke_
   v5 = self->_strongReferenceToOurself;
   self->_strongReferenceToOurself = 0;
 
-  v6 = [(UIDocumentSharingController *)self _childViewController];
-  [v6 invalidate];
+  _childViewController = [(UIDocumentSharingController *)self _childViewController];
+  [_childViewController invalidate];
 
-  v7 = [(UIDocumentSharingController *)self _privateDelegate];
+  _privateDelegate = [(UIDocumentSharingController *)self _privateDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 _documentSharingControllerDidDismiss:self];
+    [_privateDelegate _documentSharingControllerDidDismiss:self];
   }
 }
 
-- (void)_dismissViewControllerWithError:(id)a3
+- (void)_dismissViewControllerWithError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (![(UIViewController *)self isBeingDismissed])
   {
     if (os_variant_has_internal_diagnostics())
     {
-      if (v4)
+      if (errorCopy)
       {
         v7 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
         {
           *buf = 138412290;
-          v11 = v4;
+          v11 = errorCopy;
           _os_log_fault_impl(&dword_188A29000, v7, OS_LOG_TYPE_FAULT, "%@ should never get error from service", buf, 0xCu);
         }
       }
     }
 
-    else if (v4)
+    else if (errorCopy)
     {
       v8 = *(__UILogGetCategoryCachedImpl("Assert", &_dismissViewControllerWithError____s_category) + 8);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v11 = v4;
+        v11 = errorCopy;
         _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_ERROR, "%@ should never get error from service", buf, 0xCu);
       }
     }
 
-    v5 = [(UIViewController *)self presentingViewController];
+    presentingViewController = [(UIViewController *)self presentingViewController];
 
-    if (v5)
+    if (presentingViewController)
     {
-      v6 = [(UIViewController *)self presentingViewController];
+      presentingViewController2 = [(UIViewController *)self presentingViewController];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __63__UIDocumentSharingController__dismissViewControllerWithError___block_invoke;
       v9[3] = &unk_1E70F3590;
       v9[4] = self;
-      [v6 dismissViewControllerAnimated:1 completion:v9];
+      [presentingViewController2 dismissViewControllerAnimated:1 completion:v9];
     }
 
     else
@@ -750,9 +750,9 @@ uint64_t __53__UIDocumentSharingController_initWithFileURL_error___block_invoke_
   }
 }
 
-- (void)_cloudSharingControllerDidUpdateRootFolderURL:(id)a3
+- (void)_cloudSharingControllerDidUpdateRootFolderURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     [(UIDocumentSharingController *)self setRootFolderURL:?];
   }
@@ -760,19 +760,19 @@ uint64_t __53__UIDocumentSharingController_initWithFileURL_error___block_invoke_
 
 - (void)_cloudSharingControllerDidActivateShowActivityController
 {
-  v5 = [(UIViewController *)self view];
-  [v5 bounds];
+  view = [(UIViewController *)self view];
+  [view bounds];
   MidX = CGRectGetMidX(v7);
-  v4 = [(UIViewController *)self view];
-  [v4 bounds];
+  view2 = [(UIViewController *)self view];
+  [view2 bounds];
   [(UIDocumentSharingController *)self _cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:MidX y:CGRectGetMidY(v8) width:0.0 height:0.0];
 }
 
-- (void)_cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:(double)a3 y:(double)a4 width:(double)a5 height:(double)a6
+- (void)_cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:(double)x y:(double)y width:(double)width height:(double)height
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v12 = [(UIDocumentSharingController *)self rootFolderURL];
-  if (v12)
+  rootFolderURL = [(UIDocumentSharingController *)self rootFolderURL];
+  if (rootFolderURL)
   {
     goto LABEL_2;
   }
@@ -781,16 +781,16 @@ uint64_t __53__UIDocumentSharingController_initWithFileURL_error___block_invoke_
 
   if (!v13)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UIDocumentSharingController.m" lineNumber:513 description:{@"%s: Expect a URL while presenting share sheet", "-[UIDocumentSharingController _cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:y:width:height:]"}];
+    rootFolderURL = [MEMORY[0x1E696AAA8] currentHandler];
+    [rootFolderURL handleFailureInMethod:a2 object:self file:@"UIDocumentSharingController.m" lineNumber:513 description:{@"%s: Expect a URL while presenting share sheet", "-[UIDocumentSharingController _cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:y:width:height:]"}];
 LABEL_2:
   }
 
-  v14 = [(UIDocumentSharingController *)self rootFolderURL];
-  v15 = v14;
-  if (v14)
+  rootFolderURL2 = [(UIDocumentSharingController *)self rootFolderURL];
+  v15 = rootFolderURL2;
+  if (rootFolderURL2)
   {
-    v16 = v14;
+    v16 = rootFolderURL2;
   }
 
   else
@@ -810,15 +810,15 @@ LABEL_2:
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
   [v20 setExcludedActivityTypes:v21];
 
-  v22 = [(UIViewController *)self view];
-  v23 = [v20 popoverPresentationController];
-  [v23 setSourceView:v22];
+  view = [(UIViewController *)self view];
+  popoverPresentationController = [v20 popoverPresentationController];
+  [popoverPresentationController setSourceView:view];
 
-  v24 = [v20 popoverPresentationController];
-  [v24 setSourceRect:{a3, a4, a5, a6}];
+  popoverPresentationController2 = [v20 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{x, y, width, height}];
 
-  v25 = [(UIDocumentSharingController *)self rootFolderURL];
-  if (v25)
+  rootFolderURL3 = [(UIDocumentSharingController *)self rootFolderURL];
+  if (rootFolderURL3)
   {
     v26 = objc_opt_respondsToSelector();
 
@@ -851,25 +851,25 @@ void __107__UIDocumentSharingController__cloudSharingControllerDidActivateAddPeo
   }
 }
 
-- (void)_cloudSharingControllerDidChooseTransport:(id)a3
+- (void)_cloudSharingControllerDidChooseTransport:(id)transport
 {
-  v5 = a3;
-  v4 = [(UIDocumentSharingController *)self _privateDelegate];
+  transportCopy = transport;
+  _privateDelegate = [(UIDocumentSharingController *)self _privateDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 _cloudSharingControllerDidChooseTransport:self transport:v5];
+    [_privateDelegate _cloudSharingControllerDidChooseTransport:self transport:transportCopy];
   }
 }
 
-- (id)_customPresentationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)_customPresentationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UIPopoverPresentationController *)[_UISharingViewPresentationController alloc] initWithPresentedViewController:v8 presentingViewController:v9];
+  controllerCopy = controller;
+  presentingControllerCopy = presentingController;
+  sourceControllerCopy = sourceController;
+  v11 = [(UIPopoverPresentationController *)[_UISharingViewPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:presentingControllerCopy];
   objc_initWeak(&location, self);
-  v12 = [v10 view];
-  [(UIPresentationController *)v11 setSourceView:v12];
+  view = [sourceControllerCopy view];
+  [(UIPresentationController *)v11 setSourceView:view];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -891,11 +891,11 @@ void __121__UIDocumentSharingController__customPresentationControllerForPresente
 
 - (id)_sharingViewPresentationController
 {
-  v2 = [(UIViewController *)self presentationController];
+  presentationController = [(UIViewController *)self presentationController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = presentationController;
   }
 
   else
@@ -906,24 +906,24 @@ void __121__UIDocumentSharingController__customPresentationControllerForPresente
   return v3;
 }
 
-- (void)_dismissForActivityRepresentation:(id)a3
+- (void)_dismissForActivityRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [(UIViewController *)self presentingViewController];
-  [(UIDocumentSharingController *)self _setOriginalPresentingViewController:v5];
+  representationCopy = representation;
+  presentingViewController = [(UIViewController *)self presentingViewController];
+  [(UIDocumentSharingController *)self _setOriginalPresentingViewController:presentingViewController];
 
-  v6 = [(UIDocumentSharingController *)self _sharingViewPresentationController];
-  [v6 setSuppressDismissalHandlerUnlessDimmingViewTapped:1];
+  _sharingViewPresentationController = [(UIDocumentSharingController *)self _sharingViewPresentationController];
+  [_sharingViewPresentationController setSuppressDismissalHandlerUnlessDimmingViewTapped:1];
 
-  v7 = [(UIViewController *)self presentingViewController];
+  presentingViewController2 = [(UIViewController *)self presentingViewController];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__UIDocumentSharingController__dismissForActivityRepresentation___block_invoke;
   v9[3] = &unk_1E70F37C0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 dismissViewControllerAnimated:0 completion:v9];
+  v10 = representationCopy;
+  v8 = representationCopy;
+  [presentingViewController2 dismissViewControllerAnimated:0 completion:v9];
 }
 
 uint64_t __65__UIDocumentSharingController__dismissForActivityRepresentation___block_invoke(uint64_t a1)
@@ -934,15 +934,15 @@ uint64_t __65__UIDocumentSharingController__dismissForActivityRepresentation___b
   return v2();
 }
 
-- (void)_representFullscreenAfterActivityDismissal:(id)a3
+- (void)_representFullscreenAfterActivityDismissal:(id)dismissal
 {
-  v4 = a3;
+  dismissalCopy = dismissal;
   [(UIViewController *)self setModalPresentationStyle:5];
-  v5 = [(UIDocumentSharingController *)self _sharingViewPresentationController];
-  [v5 setSuppressDismissalHandlerUnlessDimmingViewTapped:0];
+  _sharingViewPresentationController = [(UIDocumentSharingController *)self _sharingViewPresentationController];
+  [_sharingViewPresentationController setSuppressDismissalHandlerUnlessDimmingViewTapped:0];
 
-  v6 = [(UIDocumentSharingController *)self _originalPresentingViewController];
-  [v6 presentViewController:self animated:0 completion:v4];
+  _originalPresentingViewController = [(UIDocumentSharingController *)self _originalPresentingViewController];
+  [_originalPresentingViewController presentViewController:self animated:0 completion:dismissalCopy];
 
   strongReferenceToOurself = self->_strongReferenceToOurself;
   self->_strongReferenceToOurself = 0;

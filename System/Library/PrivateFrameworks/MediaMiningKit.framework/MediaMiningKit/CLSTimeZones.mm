@@ -1,20 +1,20 @@
 @interface CLSTimeZones
 + (id)sharedInstance;
 - (NSArray)timeZonesDB;
-- (id)_importDataBaseFromFile:(id)a3;
-- (id)closestZoneInfoWithLocation:(id)a3 source:(id)a4;
-- (id)filteredTimeZonesWithCountyCode:(id)a3;
-- (id)timeZoneWithDictionary:(id)a3;
-- (id)timeZoneWithLocation:(id)a3;
-- (id)timeZoneWithLocation:(id)a3 countryCode:(id)a4;
+- (id)_importDataBaseFromFile:(id)file;
+- (id)closestZoneInfoWithLocation:(id)location source:(id)source;
+- (id)filteredTimeZonesWithCountyCode:(id)code;
+- (id)timeZoneWithDictionary:(id)dictionary;
+- (id)timeZoneWithLocation:(id)location;
+- (id)timeZoneWithLocation:(id)location countryCode:(id)code;
 - (void)invalidateCaches;
 @end
 
 @implementation CLSTimeZones
 
-- (id)timeZoneWithDictionary:(id)a3
+- (id)timeZoneWithDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"zone"];
+  v3 = [dictionary objectForKeyedSubscript:@"zone"];
   if (v3)
   {
     v4 = [MEMORY[0x277CBEBB0] timeZoneWithName:v3];
@@ -28,25 +28,25 @@
   return v4;
 }
 
-- (id)filteredTimeZonesWithCountyCode:(id)a3
+- (id)filteredTimeZonesWithCountyCode:(id)code
 {
-  v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"country_code LIKE %@", a3];
-  v5 = [(CLSTimeZones *)self timeZonesDB];
-  v6 = [v5 filteredArrayUsingPredicate:v4];
+  code = [MEMORY[0x277CCAC30] predicateWithFormat:@"country_code LIKE %@", code];
+  timeZonesDB = [(CLSTimeZones *)self timeZonesDB];
+  v6 = [timeZonesDB filteredArrayUsingPredicate:code];
 
   return v6;
 }
 
-- (id)closestZoneInfoWithLocation:(id)a3 source:(id)a4
+- (id)closestZoneInfoWithLocation:(id)location source:(id)source
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  locationCopy = location;
+  sourceCopy = source;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v7 = [sourceCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -59,12 +59,12 @@
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sourceCopy);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
         v14 = [v13 objectForKeyedSubscript:@"clLocation"];
-        [v5 distanceFromLocation:v14];
+        [locationCopy distanceFromLocation:v14];
         if (v15 < v11)
         {
           v16 = v15;
@@ -75,7 +75,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [sourceCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
@@ -89,12 +89,12 @@
   return v9;
 }
 
-- (id)_importDataBaseFromFile:(id)a3
+- (id)_importDataBaseFromFile:(id)file
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  fileCopy = file;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v5 = [v4 pathForResource:v3 ofType:0];
+  v5 = [v4 pathForResource:fileCopy ofType:0];
 
   v25 = v5;
   [MEMORY[0x277CBEA90] dataWithContentsOfFile:v5];
@@ -150,20 +150,20 @@
 
 - (NSArray)timeZonesDB
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  timeZonesDB = v2->_timeZonesDB;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  timeZonesDB = selfCopy->_timeZonesDB;
   if (!timeZonesDB)
   {
-    v4 = [(CLSTimeZones *)v2 _importDataBaseFromFile:@"timezonesDB.json"];
-    v5 = v2->_timeZonesDB;
-    v2->_timeZonesDB = v4;
+    v4 = [(CLSTimeZones *)selfCopy _importDataBaseFromFile:@"timezonesDB.json"];
+    v5 = selfCopy->_timeZonesDB;
+    selfCopy->_timeZonesDB = v4;
 
-    timeZonesDB = v2->_timeZonesDB;
+    timeZonesDB = selfCopy->_timeZonesDB;
   }
 
   v6 = timeZonesDB;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -178,13 +178,13 @@
   objc_sync_exit(obj);
 }
 
-- (id)timeZoneWithLocation:(id)a3 countryCode:(id)a4
+- (id)timeZoneWithLocation:(id)location countryCode:(id)code
 {
-  v6 = a3;
-  if (a4)
+  locationCopy = location;
+  if (code)
   {
-    v7 = [(CLSTimeZones *)self filteredTimeZonesWithCountyCode:a4];
-    v8 = [(CLSTimeZones *)self closestZoneInfoWithLocation:v6 source:v7];
+    v7 = [(CLSTimeZones *)self filteredTimeZonesWithCountyCode:code];
+    v8 = [(CLSTimeZones *)self closestZoneInfoWithLocation:locationCopy source:v7];
     v9 = [(CLSTimeZones *)self timeZoneWithDictionary:v8];
     v10 = v9;
     if (v9)
@@ -194,7 +194,7 @@
 
     else
     {
-      v11 = [(CLSTimeZones *)self timeZoneWithLocation:v6];
+      v11 = [(CLSTimeZones *)self timeZoneWithLocation:locationCopy];
     }
 
     v12 = v11;
@@ -202,24 +202,24 @@
 
   else
   {
-    v12 = [(CLSTimeZones *)self timeZoneWithLocation:v6];
+    v12 = [(CLSTimeZones *)self timeZoneWithLocation:locationCopy];
   }
 
   return v12;
 }
 
-- (id)timeZoneWithLocation:(id)a3
+- (id)timeZoneWithLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(CLSTimeZones *)self timeZonesDB];
-  v6 = [(CLSTimeZones *)self closestZoneInfoWithLocation:v4 source:v5];
+  locationCopy = location;
+  timeZonesDB = [(CLSTimeZones *)self timeZonesDB];
+  v6 = [(CLSTimeZones *)self closestZoneInfoWithLocation:locationCopy source:timeZonesDB];
 
-  if (!v6 || ([(CLSTimeZones *)self timeZoneWithDictionary:v6], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v6 || ([(CLSTimeZones *)self timeZoneWithDictionary:v6], (systemTimeZone = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v7 = [MEMORY[0x277CBEBB0] systemTimeZone];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
   }
 
-  return v7;
+  return systemTimeZone;
 }
 
 + (id)sharedInstance

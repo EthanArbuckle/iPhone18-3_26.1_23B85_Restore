@@ -1,45 +1,45 @@
 @interface RouteStepListViewController
 - (BOOL)_shouldShowDebugViewController;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (Class)cellClassForItemType:(unint64_t)a3;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (Class)cellClassForItemType:(unint64_t)type;
 - (DirectionsElevationGraphHeaderView)graphHeaderView;
 - (NavigationDebugViewsController)debugViewController;
 - (RouteStepListDataSource)dataSource;
 - (RouteStepListDelegate)delegate;
-- (RouteStepListViewController)initWithOptions:(unint64_t)a3 metrics:(id)a4;
+- (RouteStepListViewController)initWithOptions:(unint64_t)options metrics:(id)metrics;
 - (UICollectionView)collectionView;
 - (UIScrollView)scrollView;
 - (double)maximumHeaderHeight;
 - (double)minimumHeaderHeight;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_scrollToStepAtIndex:(unint64_t)a3 animated:(BOOL)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_scrollToStepAtIndex:(unint64_t)index animated:(BOOL)animated;
 - (void)_updateCollectionViewHeader;
 - (void)_updateRouteFromNavigationService;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)customizeItem:(id)a3 forDataSource:(id)a4;
-- (void)didTapReportAProblemButtonOnRoutePlanningFooterView:(id)a3;
-- (void)didTapShareButtonOnRoutePlanningFooterView:(id)a3;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6;
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5;
-- (void)reloadDataSource:(id)a3;
-- (void)reloadIndexPaths:(id)a3;
-- (void)reloadStepIndices:(id)a3 forDataSource:(id)a4;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setDebugViewControllerEnabled:(BOOL)a3;
-- (void)setDisplayRouteFromNavigationService:(BOOL)a3;
-- (void)setHeaderView:(id)a3;
-- (void)setRoute:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)customizeItem:(id)item forDataSource:(id)source;
+- (void)didTapReportAProblemButtonOnRoutePlanningFooterView:(id)view;
+- (void)didTapShareButtonOnRoutePlanningFooterView:(id)view;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info;
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex;
+- (void)reloadDataSource:(id)source;
+- (void)reloadIndexPaths:(id)paths;
+- (void)reloadStepIndices:(id)indices forDataSource:(id)source;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setDebugViewControllerEnabled:(BOOL)enabled;
+- (void)setDisplayRouteFromNavigationService:(BOOL)service;
+- (void)setHeaderView:(id)view;
+- (void)setRoute:(id)route;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)virtualGarageDidUpdate:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)virtualGarageDidUpdate:(id)update;
 @end
 
 @implementation RouteStepListViewController
@@ -60,32 +60,32 @@
     if ([v3 isCarAppSceneHostingNavigation])
     {
       v4 = +[MNNavigationService sharedService];
-      v5 = [v4 isNavigatingFromTrace];
+      isNavigatingFromTrace = [v4 isNavigatingFromTrace];
     }
 
     else
     {
-      v5 = 0;
+      isNavigatingFromTrace = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    isNavigatingFromTrace = 0;
   }
 
-  return v5;
+  return isNavigatingFromTrace;
 }
 
-- (void)virtualGarageDidUpdate:(id)a3
+- (void)virtualGarageDidUpdate:(id)update
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100E0C934;
   v4[3] = &unk_101661A90;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  updateCopy = update;
+  v3 = updateCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
@@ -105,14 +105,14 @@
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6
+- (void)navigationService:(id)service didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info
 {
-  v17 = a3;
-  v8 = a5;
-  v9 = [v17 route];
-  [v9 distance];
+  serviceCopy = service;
+  distanceCopy = distance;
+  route = [serviceCopy route];
+  [route distance];
   v11 = v10;
-  [v8 distanceRemainingToEndOfLeg];
+  [distanceCopy distanceRemainingToEndOfLeg];
   if (v11 < v12)
   {
     [(DirectionsElevationGraphHeaderView *)self->_graphHeaderView setNavigationProgress:0.0];
@@ -120,15 +120,15 @@
 
   else
   {
-    v13 = [v17 route];
-    [v13 distance];
+    route2 = [serviceCopy route];
+    [route2 distance];
     v15 = v14;
-    [v8 distanceRemainingToEndOfLeg];
+    [distanceCopy distanceRemainingToEndOfLeg];
     [(DirectionsElevationGraphHeaderView *)self->_graphHeaderView setNavigationProgress:v15 - v16];
   }
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   if (MNNavigationServiceStateChangedToNavigating())
   {
@@ -137,12 +137,12 @@
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex
 {
-  v7 = [(RouteStepListViewController *)self dataSource:a3];
-  [v7 setActiveStepIndex:a4];
+  v7 = [(RouteStepListViewController *)self dataSource:service];
+  [v7 setActiveStepIndex:index];
 
-  [(RouteStepListViewController *)self _scrollToStepAtIndex:a4 animated:1];
+  [(RouteStepListViewController *)self _scrollToStepAtIndex:index animated:1];
 
   [(RouteStepListViewController *)self _updateCollectionViewHeader];
 }
@@ -153,11 +153,11 @@
   v4 = v3;
   [(RouteStepListViewController *)self maximumHeaderHeight];
   v6 = v5;
-  v7 = [(RouteStepListViewController *)self collectionView];
-  [v7 contentOffset];
+  collectionView = [(RouteStepListViewController *)self collectionView];
+  [collectionView contentOffset];
   v9 = v8;
-  v10 = [(RouteStepListViewController *)self collectionView];
-  [v10 adjustedContentInset];
+  collectionView2 = [(RouteStepListViewController *)self collectionView];
+  [collectionView2 adjustedContentInset];
   v12 = v11 + v9;
 
   v13 = 0.0;
@@ -193,14 +193,14 @@
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(RouteStepListViewController *)self collectionView];
-  [v23 setContentInset:{v6 - v4 + v13 + v16, v18, v20, v22}];
+  collectionView3 = [(RouteStepListViewController *)self collectionView];
+  [collectionView3 setContentInset:{v6 - v4 + v13 + v16, v18, v20, v22}];
 
   left = UIEdgeInsetsZero.left;
   bottom = UIEdgeInsetsZero.bottom;
   right = UIEdgeInsetsZero.right;
-  v27 = [(RouteStepListViewController *)self collectionView];
-  [v27 setScrollIndicatorInsets:{UIEdgeInsetsZero.top, left, bottom, right}];
+  collectionView4 = [(RouteStepListViewController *)self collectionView];
+  [collectionView4 setScrollIndicatorInsets:{UIEdgeInsetsZero.top, left, bottom, right}];
 
   [(NSLayoutConstraint *)self->_headerViewHeightConstraint setConstant:fmax(v14, v4)];
   headerViewHeightConstraint = self->_headerViewHeightConstraint;
@@ -208,11 +208,11 @@
   [(NSLayoutConstraint *)headerViewHeightConstraint setActive:1];
 }
 
-- (void)_scrollToStepAtIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)_scrollToStepAtIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(RouteStepListViewController *)self dataSource];
-  v8 = [v7 itemIndexForStepIndex:a3];
+  animatedCopy = animated;
+  dataSource = [(RouteStepListViewController *)self dataSource];
+  v8 = [dataSource itemIndexForStepIndex:index];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -225,39 +225,39 @@
   }
 
   v11 = [NSIndexPath indexPathForRow:v9 inSection:0];
-  v10 = [(RouteStepListViewController *)self collectionView];
-  [v10 scrollToItemAtIndexPath:v11 atScrollPosition:1 animated:v4];
+  collectionView = [(RouteStepListViewController *)self collectionView];
+  [collectionView scrollToItemAtIndexPath:v11 atScrollPosition:1 animated:animatedCopy];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v7 = a3;
-  v4 = [(RouteStepListViewController *)self delegate];
+  scrollCopy = scroll;
+  delegate = [(RouteStepListViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(RouteStepListViewController *)self delegate];
-    [v6 scrollViewDidScroll:v7];
+    delegate2 = [(RouteStepListViewController *)self delegate];
+    [delegate2 scrollViewDidScroll:scrollCopy];
   }
 
   [(RouteStepListViewController *)self _updateCollectionViewHeader];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = a4;
-  v21 = a3;
-  v6 = [(RouteStepListViewController *)self delegate];
+  decelerateCopy = decelerate;
+  draggingCopy = dragging;
+  delegate = [(RouteStepListViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(RouteStepListViewController *)self delegate];
-    [v8 scrollViewDidEndDragging:v21 willDecelerate:v4];
+    delegate2 = [(RouteStepListViewController *)self delegate];
+    [delegate2 scrollViewDidEndDragging:draggingCopy willDecelerate:decelerateCopy];
   }
 
-  [v21 contentOffset];
+  [draggingCopy contentOffset];
   v10 = v9;
   [(RouteStepListViewController *)self scrollViewOffsetStart];
   if (v10 != v11)
@@ -273,19 +273,19 @@
       v13 = 8;
     }
 
-    v14 = [(RouteStepListViewController *)self route];
-    v15 = [v14 transportType];
+    route = [(RouteStepListViewController *)self route];
+    transportType = [route transportType];
 
-    if (v15 - 1 >= 6)
+    if (transportType - 1 >= 6)
     {
-      v17 = [(RouteStepListViewController *)self displayRouteFromNavigationService];
+      displayRouteFromNavigationService = [(RouteStepListViewController *)self displayRouteFromNavigationService];
       v16 = 0;
     }
 
     else
     {
-      v16 = qword_101216278[v15 - 1] - 1;
-      v17 = [(RouteStepListViewController *)self displayRouteFromNavigationService];
+      v16 = qword_101216278[transportType - 1] - 1;
+      displayRouteFromNavigationService = [(RouteStepListViewController *)self displayRouteFromNavigationService];
       if (v16 > 4)
       {
         v18 = 0;
@@ -298,7 +298,7 @@ LABEL_14:
     }
 
     v19 = dword_101215D8C;
-    if (v17)
+    if (displayRouteFromNavigationService)
     {
       v19 = &unk_101215D78;
     }
@@ -310,43 +310,43 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v12 = a3;
-  v9 = [(RouteStepListViewController *)self delegate];
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  delegate = [(RouteStepListViewController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(RouteStepListViewController *)self delegate];
-    [v11 scrollViewWillEndDragging:v12 withVelocity:a5 targetContentOffset:{x, y}];
+    delegate2 = [(RouteStepListViewController *)self delegate];
+    [delegate2 scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:{x, y}];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v8 = a3;
-  v4 = [(RouteStepListViewController *)self delegate];
+  draggingCopy = dragging;
+  delegate = [(RouteStepListViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(RouteStepListViewController *)self delegate];
-    [v6 scrollViewWillBeginDragging:v8];
+    delegate2 = [(RouteStepListViewController *)self delegate];
+    [delegate2 scrollViewWillBeginDragging:draggingCopy];
   }
 
-  [v8 contentOffset];
+  [draggingCopy contentOffset];
   [(RouteStepListViewController *)self setScrollViewOffsetStart:v7];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v23 = a4;
-  v5 = [(RouteStepListViewController *)self dataSource];
-  v6 = [v5 items];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v23, "row")}];
+  pathCopy = path;
+  dataSource = [(RouteStepListViewController *)self dataSource];
+  items = [dataSource items];
+  v7 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -357,24 +357,24 @@ LABEL_15:
       goto LABEL_18;
     }
 
-    if ([v23 row])
+    if ([pathCopy row])
     {
-      v11 = [v23 row] + 1;
-      v12 = [(RouteStepListViewController *)self dataSource];
-      v13 = [v12 items];
-      v14 = [v13 count];
+      v11 = [pathCopy row] + 1;
+      dataSource2 = [(RouteStepListViewController *)self dataSource];
+      items2 = [dataSource2 items];
+      v14 = [items2 count];
 
       if (v11 < v14)
       {
-        v15 = [v23 row];
+        v15 = [pathCopy row];
         if (v15 >= 1)
         {
           v16 = v15;
           while (1)
           {
-            v17 = [(RouteStepListViewController *)self dataSource];
-            v18 = [v17 items];
-            v9 = [v18 objectAtIndexedSubscript:v16];
+            dataSource3 = [(RouteStepListViewController *)self dataSource];
+            items3 = [dataSource3 items];
+            delegate2 = [items3 objectAtIndexedSubscript:v16];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -388,12 +388,12 @@ LABEL_15:
             }
           }
 
-          if (v9)
+          if (delegate2)
           {
 LABEL_16:
-            v10 = [(RouteStepListViewController *)self delegate];
-            v22 = [v9 step];
-            [v10 directionsStepsList:self didTapRowForRouteStep:v22];
+            delegate = [(RouteStepListViewController *)self delegate];
+            step = [delegate2 step];
+            [delegate directionsStepsList:self didTapRowForRouteStep:step];
 
             goto LABEL_17;
           }
@@ -401,19 +401,19 @@ LABEL_16:
       }
 
 LABEL_14:
-      v20 = [(RouteStepListViewController *)self dataSource];
-      v21 = [v20 lastStepManeuverItem];
+      dataSource4 = [(RouteStepListViewController *)self dataSource];
+      lastStepManeuverItem = [dataSource4 lastStepManeuverItem];
     }
 
     else
     {
-      v20 = [(RouteStepListViewController *)self dataSource];
-      v21 = [v20 firstStepManeuverItem];
+      dataSource4 = [(RouteStepListViewController *)self dataSource];
+      lastStepManeuverItem = [dataSource4 firstStepManeuverItem];
     }
 
-    v9 = v21;
+    delegate2 = lastStepManeuverItem;
 
-    if (!v9)
+    if (!delegate2)
     {
       goto LABEL_18;
     }
@@ -422,23 +422,23 @@ LABEL_14:
   }
 
   v8 = v7;
-  v9 = [(RouteStepListViewController *)self delegate];
-  v10 = [v8 step];
+  delegate2 = [(RouteStepListViewController *)self delegate];
+  delegate = [v8 step];
 
-  [v9 directionsStepsList:self didTapRowForRouteStep:v10];
+  [delegate2 directionsStepsList:self didTapRowForRouteStep:delegate];
 LABEL_17:
 
 LABEL_18:
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(RouteStepListViewController *)self dataSource];
-  v7 = [v6 items];
-  v8 = [v5 row];
+  pathCopy = path;
+  dataSource = [(RouteStepListViewController *)self dataSource];
+  items = [dataSource items];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndexedSubscript:v8];
+  v9 = [items objectAtIndexedSubscript:v8];
 
   if ([(RouteStepListViewController *)self allowsSelection])
   {
@@ -463,16 +463,16 @@ LABEL_18:
   return isKindOfClass & 1;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RouteStepListViewController *)self dataSource];
-  v9 = [v8 items];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(RouteStepListViewController *)self dataSource];
+  items = [dataSource items];
+  v10 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   v11 = NSStringFromClass([v10 cellClass]);
-  v12 = [v7 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v6];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
   [v12 setItem:v10];
   [v12 setShouldUseTextToBottomConstraint:1];
@@ -480,53 +480,53 @@ LABEL_18:
   return v12;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(RouteStepListViewController *)self dataSource:a3];
-  v5 = [v4 items];
-  v6 = [v5 count];
+  v4 = [(RouteStepListViewController *)self dataSource:view];
+  items = [v4 items];
+  v6 = [items count];
 
   return v6;
 }
 
-- (void)didTapReportAProblemButtonOnRoutePlanningFooterView:(id)a3
+- (void)didTapReportAProblemButtonOnRoutePlanningFooterView:(id)view
 {
-  v4 = [(RouteStepListViewController *)self delegate];
+  delegate = [(RouteStepListViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(RouteStepListViewController *)self delegate];
-    [v6 directionsStepsListDidTapRAPButton:self];
+    delegate2 = [(RouteStepListViewController *)self delegate];
+    [delegate2 directionsStepsListDidTapRAPButton:self];
   }
 }
 
-- (void)didTapShareButtonOnRoutePlanningFooterView:(id)a3
+- (void)didTapShareButtonOnRoutePlanningFooterView:(id)view
 {
-  v4 = [(RouteStepListViewController *)self delegate];
+  delegate = [(RouteStepListViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(RouteStepListViewController *)self delegate];
-    [v6 directionsStepsListDidTapShareButton:self];
+    delegate2 = [(RouteStepListViewController *)self delegate];
+    [delegate2 directionsStepsListDidTapShareButton:self];
   }
 }
 
-- (void)customizeItem:(id)a3 forDataSource:(id)a4
+- (void)customizeItem:(id)item forDataSource:(id)source
 {
-  v5 = a3;
-  [v5 setShowsHairline:1];
+  itemCopy = item;
+  [itemCopy setShowsHairline:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 setDelegate:self];
+    [itemCopy setDelegate:self];
   }
 }
 
-- (Class)cellClassForItemType:(unint64_t)a3
+- (Class)cellClassForItemType:(unint64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
     self = objc_opt_class();
   }
@@ -534,32 +534,32 @@ LABEL_18:
   return self;
 }
 
-- (void)reloadStepIndices:(id)a3 forDataSource:(id)a4
+- (void)reloadStepIndices:(id)indices forDataSource:(id)source
 {
-  v5 = a3;
+  indicesCopy = indices;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100E0D8E0;
   v8[3] = &unk_101656938;
   v9 = objc_opt_new();
   v6 = v9;
-  [v5 enumerateIndexesUsingBlock:v8];
+  [indicesCopy enumerateIndexesUsingBlock:v8];
 
-  v7 = [(RouteStepListViewController *)self collectionView];
-  [v7 reloadItemsAtIndexPaths:v6];
+  collectionView = [(RouteStepListViewController *)self collectionView];
+  [collectionView reloadItemsAtIndexPaths:v6];
 }
 
-- (void)reloadIndexPaths:(id)a3
+- (void)reloadIndexPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [(RouteStepListViewController *)self collectionView];
-  [v5 reloadItemsAtIndexPaths:v4];
+  pathsCopy = paths;
+  collectionView = [(RouteStepListViewController *)self collectionView];
+  [collectionView reloadItemsAtIndexPaths:pathsCopy];
 }
 
-- (void)reloadDataSource:(id)a3
+- (void)reloadDataSource:(id)source
 {
-  v4 = [(RouteStepListViewController *)self collectionView];
-  [v4 reloadData];
+  collectionView = [(RouteStepListViewController *)self collectionView];
+  [collectionView reloadData];
 
   [(RouteStepListViewController *)self _scrollToStepAtIndex:0 animated:0];
 }
@@ -593,19 +593,19 @@ LABEL_18:
   return graphHeaderView;
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   headerView = self->_headerView;
-  if (headerView != v5)
+  if (headerView != viewCopy)
   {
     [(UIView *)headerView removeFromSuperview];
     [(NSLayoutConstraint *)self->_headerViewHeightConstraint setActive:0];
     headerViewHeightConstraint = self->_headerViewHeightConstraint;
     self->_headerViewHeightConstraint = 0;
 
-    objc_storeStrong(&self->_headerView, a3);
-    if (v5)
+    objc_storeStrong(&self->_headerView, view);
+    if (viewCopy)
     {
       [(RouteStepListViewController *)self maximumHeaderHeight];
       v9 = v8;
@@ -619,28 +619,28 @@ LABEL_18:
         v10 = 0.0;
       }
 
-      v11 = [(RouteStepListViewController *)self view];
-      [v11 addSubview:v5];
+      view = [(RouteStepListViewController *)self view];
+      [view addSubview:viewCopy];
 
-      v12 = [(UIView *)v5 heightAnchor];
-      v13 = [v12 constraintEqualToConstant:v9];
+      heightAnchor = [(UIView *)viewCopy heightAnchor];
+      v13 = [heightAnchor constraintEqualToConstant:v9];
       v14 = self->_headerViewHeightConstraint;
       self->_headerViewHeightConstraint = v13;
 
-      v27 = [(UIView *)v5 leadingAnchor];
-      v28 = [(RouteStepListViewController *)self view];
-      v26 = [v28 leadingAnchor];
-      v25 = [v27 constraintEqualToAnchor:v26];
+      leadingAnchor = [(UIView *)viewCopy leadingAnchor];
+      view2 = [(RouteStepListViewController *)self view];
+      leadingAnchor2 = [view2 leadingAnchor];
+      v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v29[0] = v25;
-      v24 = [(UIView *)v5 trailingAnchor];
-      v15 = [(RouteStepListViewController *)self view];
-      v16 = [v15 trailingAnchor];
-      v17 = [v24 constraintEqualToAnchor:v16];
+      trailingAnchor = [(UIView *)viewCopy trailingAnchor];
+      view3 = [(RouteStepListViewController *)self view];
+      trailingAnchor2 = [view3 trailingAnchor];
+      v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v29[1] = v17;
-      v18 = [(UIView *)v5 topAnchor];
-      v19 = [(RouteStepListViewController *)self view];
-      v20 = [v19 topAnchor];
-      v21 = [v18 constraintEqualToAnchor:v20 constant:v10];
+      topAnchor = [(UIView *)viewCopy topAnchor];
+      view4 = [(RouteStepListViewController *)self view];
+      topAnchor2 = [view4 topAnchor];
+      v21 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v10];
       v22 = self->_headerViewHeightConstraint;
       v29[2] = v21;
       v29[3] = v22;
@@ -654,23 +654,23 @@ LABEL_18:
 
 - (double)minimumHeaderHeight
 {
-  v3 = [(RouteStepListViewController *)self headerView];
-  if (!v3)
+  headerView = [(RouteStepListViewController *)self headerView];
+  if (!headerView)
   {
     return 0.0;
   }
 
-  v4 = v3;
-  v5 = [(RouteStepListViewController *)self headerView];
+  v4 = headerView;
+  headerView2 = [(RouteStepListViewController *)self headerView];
   graphHeaderView = self->_graphHeaderView;
 
-  if (v5 != graphHeaderView)
+  if (headerView2 != graphHeaderView)
   {
     return 0.0;
   }
 
-  v8 = [(RouteStepListViewController *)self graphHeaderView];
-  [v8 minimumHeight];
+  graphHeaderView = [(RouteStepListViewController *)self graphHeaderView];
+  [graphHeaderView minimumHeight];
   v10 = v9;
 
   return v10;
@@ -678,46 +678,46 @@ LABEL_18:
 
 - (double)maximumHeaderHeight
 {
-  v3 = [(RouteStepListViewController *)self headerView];
-  if (!v3)
+  headerView = [(RouteStepListViewController *)self headerView];
+  if (!headerView)
   {
     return 0.0;
   }
 
-  v4 = v3;
-  v5 = [(RouteStepListViewController *)self headerView];
+  v4 = headerView;
+  headerView2 = [(RouteStepListViewController *)self headerView];
   graphHeaderView = self->_graphHeaderView;
 
-  if (v5 != graphHeaderView)
+  if (headerView2 != graphHeaderView)
   {
     return 0.0;
   }
 
-  v8 = [(RouteStepListViewController *)self graphHeaderView];
-  [v8 maximumHeight];
+  graphHeaderView = [(RouteStepListViewController *)self graphHeaderView];
+  [graphHeaderView maximumHeight];
   v10 = v9;
 
   return v10;
 }
 
-- (void)setDisplayRouteFromNavigationService:(BOOL)a3
+- (void)setDisplayRouteFromNavigationService:(BOOL)service
 {
-  if (self->_displayRouteFromNavigationService != a3)
+  if (self->_displayRouteFromNavigationService != service)
   {
-    v4 = a3;
-    self->_displayRouteFromNavigationService = a3;
+    serviceCopy = service;
+    self->_displayRouteFromNavigationService = service;
     [(DirectionsElevationGraphHeaderView *)self->_graphHeaderView setStyleForNavigation:?];
     v6 = +[MNNavigationService sharedService];
     v7 = v6;
-    if (v4)
+    if (serviceCopy)
     {
       [v6 registerObserver:self];
 
       [(RouteStepListViewController *)self _updateRouteFromNavigationService];
-      v10 = +[MNNavigationService sharedService];
-      v8 = [v10 stepIndex];
-      v9 = [(RouteStepListViewController *)self dataSource];
-      [v9 setActiveStepIndex:v8];
+      dataSource2 = +[MNNavigationService sharedService];
+      stepIndex = [dataSource2 stepIndex];
+      dataSource = [(RouteStepListViewController *)self dataSource];
+      [dataSource setActiveStepIndex:stepIndex];
     }
 
     else
@@ -725,58 +725,58 @@ LABEL_18:
       [v6 unregisterObserver:self];
 
       [(RouteStepListViewController *)self setRoute:0];
-      v10 = [(RouteStepListViewController *)self dataSource];
-      [v10 setActiveStepIndex:0];
+      dataSource2 = [(RouteStepListViewController *)self dataSource];
+      [dataSource2 setActiveStepIndex:0];
     }
   }
 }
 
-- (void)setDebugViewControllerEnabled:(BOOL)a3
+- (void)setDebugViewControllerEnabled:(BOOL)enabled
 {
-  if (self->_debugViewControllerEnabled != a3)
+  if (self->_debugViewControllerEnabled != enabled)
   {
-    self->_debugViewControllerEnabled = a3;
-    if (a3)
+    self->_debugViewControllerEnabled = enabled;
+    if (enabled)
     {
-      v4 = [(RouteStepListViewController *)self debugViewController];
-      v5 = [v4 debugControlsView];
+      debugViewController = [(RouteStepListViewController *)self debugViewController];
+      debugControlsView = [debugViewController debugControlsView];
 
-      [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v6 = [(RouteStepListViewController *)self view];
-      [v6 addSubview:v5];
+      [debugControlsView setTranslatesAutoresizingMaskIntoConstraints:0];
+      view = [(RouteStepListViewController *)self view];
+      [view addSubview:debugControlsView];
 
-      v7 = [(RouteStepListViewController *)self view];
-      v8 = [v7 safeAreaLayoutGuide];
+      view2 = [(RouteStepListViewController *)self view];
+      safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
 
-      v9 = [(RouteStepListViewController *)self collectionView];
-      [v9 layoutMargins];
+      collectionView = [(RouteStepListViewController *)self collectionView];
+      [collectionView layoutMargins];
       v11 = v10;
       v13 = v12;
       v15 = v14;
 
-      [v5 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+      [debugControlsView systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
       v17 = v16;
-      v34 = [v5 leadingAnchor];
-      v33 = [v8 leadingAnchor];
-      v32 = [v34 constraintEqualToAnchor:v33 constant:v11];
+      leadingAnchor = [debugControlsView leadingAnchor];
+      leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+      v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v11];
       v35[0] = v32;
-      v30 = [v5 trailingAnchor];
-      v31 = v8;
-      v18 = [v8 trailingAnchor];
-      v19 = [v30 constraintEqualToAnchor:v18 constant:-v15];
+      trailingAnchor = [debugControlsView trailingAnchor];
+      v31 = safeAreaLayoutGuide;
+      trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+      v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v15];
       v35[1] = v19;
-      v20 = [v5 heightAnchor];
-      v21 = [v20 constraintEqualToConstant:v17];
+      heightAnchor = [debugControlsView heightAnchor];
+      v21 = [heightAnchor constraintEqualToConstant:v17];
       v35[2] = v21;
-      v22 = [v5 bottomAnchor];
-      v23 = [v8 bottomAnchor];
-      v24 = [v22 constraintEqualToAnchor:v23 constant:-v13];
+      bottomAnchor = [debugControlsView bottomAnchor];
+      bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+      v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v13];
       v35[3] = v24;
       v25 = [NSArray arrayWithObjects:v35 count:4];
       [NSLayoutConstraint activateConstraints:v25];
 
-      v26 = [(RouteStepListViewController *)self debugViewController];
-      [v26 didManuallyAddDebugViews];
+      debugViewController2 = [(RouteStepListViewController *)self debugViewController];
+      [debugViewController2 didManuallyAddDebugViews];
 
       [(NSLayoutConstraint *)self->_collectionViewBottomConstraint setConstant:-v17];
     }
@@ -786,8 +786,8 @@ LABEL_18:
       debugViewController = self->_debugViewController;
       if (debugViewController)
       {
-        v28 = [(NavigationDebugViewsController *)debugViewController debugControlsView];
-        [v28 removeFromSuperview];
+        debugControlsView2 = [(NavigationDebugViewsController *)debugViewController debugControlsView];
+        [debugControlsView2 removeFromSuperview];
 
         [(NavigationDebugViewsController *)self->_debugViewController didManuallyRemoveDebugViews];
         collectionViewBottomConstraint = self->_collectionViewBottomConstraint;
@@ -822,8 +822,8 @@ LABEL_18:
   if (!dataSource)
   {
     v4 = [RouteStepListDataSource alloc];
-    v5 = [(RouteStepListViewController *)self traitCollection];
-    v6 = [(RouteStepListDataSource *)v4 initWithTraitCollection:v5 options:self->_options metrics:self->_metrics context:2];
+    traitCollection = [(RouteStepListViewController *)self traitCollection];
+    v6 = [(RouteStepListDataSource *)v4 initWithTraitCollection:traitCollection options:self->_options metrics:self->_metrics context:2];
     v7 = self->_dataSource;
     self->_dataSource = v6;
 
@@ -885,20 +885,20 @@ LABEL_18:
   return collectionView;
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  v5 = a3;
-  if (self->_route != v5)
+  routeCopy = route;
+  if (self->_route != routeCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_route, a3);
+    v11 = routeCopy;
+    objc_storeStrong(&self->_route, route);
     if ((self->_options & 0x10) != 0 && (-[RouteStepListViewController route](self, "route"), v6 = objc_claimAutoreleasedReturnValue(), [v6 elevationProfile], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
     {
-      v8 = [(RouteStepListViewController *)self graphHeaderView];
-      [v8 setRoute:v11];
+      graphHeaderView = [(RouteStepListViewController *)self graphHeaderView];
+      [graphHeaderView setRoute:v11];
 
-      v9 = [(RouteStepListViewController *)self graphHeaderView];
-      [(RouteStepListViewController *)self setHeaderView:v9];
+      graphHeaderView2 = [(RouteStepListViewController *)self graphHeaderView];
+      [(RouteStepListViewController *)self setHeaderView:graphHeaderView2];
     }
 
     else
@@ -906,20 +906,20 @@ LABEL_18:
       [(RouteStepListViewController *)self setHeaderView:0];
     }
 
-    v10 = [(RouteStepListViewController *)self dataSource];
-    [v10 setRoute:v11];
+    dataSource = [(RouteStepListViewController *)self dataSource];
+    [dataSource setRoute:v11];
 
-    v5 = v11;
+    routeCopy = v11;
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = RouteStepListViewController;
-  [(RouteStepListViewController *)&v5 traitCollectionDidChange:a3];
-  v4 = [(RouteStepListViewController *)self traitCollection];
-  [(RouteStepListDataSource *)self->_dataSource setTraitCollection:v4];
+  [(RouteStepListViewController *)&v5 traitCollectionDidChange:change];
+  traitCollection = [(RouteStepListViewController *)self traitCollection];
+  [(RouteStepListDataSource *)self->_dataSource setTraitCollection:traitCollection];
 }
 
 - (void)viewDidLayoutSubviews
@@ -930,8 +930,8 @@ LABEL_18:
   computedWidth = self->_computedWidth;
   if (!computedWidth || (-[NSNumber cgFloatValue](computedWidth, "cgFloatValue"), v5 = v4, -[RouteStepListViewController view](self, "view"), v6 = objc_claimAutoreleasedReturnValue(), [v6 frame], v8 = vabdd_f64(v5, v7), v6, v8 > 2.22044605e-16))
   {
-    v9 = [(RouteStepListViewController *)self view];
-    [v9 frame];
+    view = [(RouteStepListViewController *)self view];
+    [view frame];
     v11 = [NSNumber numberWithDouble:v10];
     v12 = self->_computedWidth;
     self->_computedWidth = v11;
@@ -945,20 +945,20 @@ LABEL_18:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = RouteStepListViewController;
-  [(RouteStepListViewController *)&v5 viewDidAppear:a3];
-  v4 = [(RouteStepListViewController *)self dataSource];
-  -[RouteStepListViewController _scrollToStepAtIndex:animated:](self, "_scrollToStepAtIndex:animated:", [v4 activeStepIndex], 0);
+  [(RouteStepListViewController *)&v5 viewDidAppear:appear];
+  dataSource = [(RouteStepListViewController *)self dataSource];
+  -[RouteStepListViewController _scrollToStepAtIndex:animated:](self, "_scrollToStepAtIndex:animated:", [dataSource activeStepIndex], 0);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = RouteStepListViewController;
-  [(RouteStepListViewController *)&v4 viewWillAppear:a3];
+  [(RouteStepListViewController *)&v4 viewWillAppear:appear];
   [(RouteStepListViewController *)self setDebugViewControllerEnabled:[(RouteStepListViewController *)self _shouldShowDebugViewController]];
 }
 
@@ -968,40 +968,40 @@ LABEL_18:
   v30.super_class = RouteStepListViewController;
   [(RouteStepListViewController *)&v30 viewDidLoad];
   [(RouteStepListViewController *)self setAccessibilityIdentifier:@"RouteStepList"];
-  v3 = [(RouteStepListViewController *)self collectionView];
-  [v3 setAccessibilityIdentifier:@"RouteStepListCollectionView"];
+  collectionView = [(RouteStepListViewController *)self collectionView];
+  [collectionView setAccessibilityIdentifier:@"RouteStepListCollectionView"];
 
-  v4 = [(RouteStepListViewController *)self view];
-  v5 = [(RouteStepListViewController *)self collectionView];
-  [v4 addSubview:v5];
+  view = [(RouteStepListViewController *)self view];
+  collectionView2 = [(RouteStepListViewController *)self collectionView];
+  [view addSubview:collectionView2];
 
-  v6 = [(RouteStepListViewController *)self collectionView];
-  v7 = [v6 topAnchor];
-  v8 = [(RouteStepListViewController *)self view];
-  v9 = [v8 topAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  collectionView3 = [(RouteStepListViewController *)self collectionView];
+  topAnchor = [collectionView3 topAnchor];
+  view2 = [(RouteStepListViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   collectionViewTopConstraint = self->_collectionViewTopConstraint;
   self->_collectionViewTopConstraint = v10;
 
-  v12 = [(RouteStepListViewController *)self collectionView];
-  v13 = [v12 bottomAnchor];
-  v14 = [(RouteStepListViewController *)self view];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  collectionView4 = [(RouteStepListViewController *)self collectionView];
+  bottomAnchor = [collectionView4 bottomAnchor];
+  view3 = [(RouteStepListViewController *)self view];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   collectionViewBottomConstraint = self->_collectionViewBottomConstraint;
   self->_collectionViewBottomConstraint = v16;
 
-  v29 = [(RouteStepListViewController *)self collectionView];
-  v27 = [v29 leadingAnchor];
-  v28 = [(RouteStepListViewController *)self view];
-  v18 = [v28 leadingAnchor];
-  v19 = [v27 constraintEqualToAnchor:v18];
+  collectionView5 = [(RouteStepListViewController *)self collectionView];
+  leadingAnchor = [collectionView5 leadingAnchor];
+  view4 = [(RouteStepListViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v31[0] = v19;
-  v20 = [(RouteStepListViewController *)self collectionView];
-  v21 = [v20 trailingAnchor];
-  v22 = [(RouteStepListViewController *)self view];
-  v23 = [v22 trailingAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  collectionView6 = [(RouteStepListViewController *)self collectionView];
+  trailingAnchor = [collectionView6 trailingAnchor];
+  view5 = [(RouteStepListViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v25 = self->_collectionViewTopConstraint;
   v31[1] = v24;
   v31[2] = v25;
@@ -1012,17 +1012,17 @@ LABEL_18:
   [(RouteStepListViewController *)self _updateCollectionViewHeader];
 }
 
-- (RouteStepListViewController)initWithOptions:(unint64_t)a3 metrics:(id)a4
+- (RouteStepListViewController)initWithOptions:(unint64_t)options metrics:(id)metrics
 {
-  v7 = a4;
+  metricsCopy = metrics;
   v16.receiver = self;
   v16.super_class = RouteStepListViewController;
   v8 = [(RouteStepListViewController *)&v16 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    v8->_options = a3;
-    objc_storeStrong(&v8->_metrics, a4);
+    v8->_options = options;
+    objc_storeStrong(&v8->_metrics, metrics);
     objc_initWeak(&location, v9);
     v10 = +[VGVirtualGarageService sharedService];
     [v10 registerObserver:v9];

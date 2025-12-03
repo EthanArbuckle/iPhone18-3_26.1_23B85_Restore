@@ -1,14 +1,14 @@
 @interface SUScriptFamilySetupDelegate
-- (void)familySetupViewController:(id)a3 didCompleteWithSuccess:(BOOL)a4;
+- (void)familySetupViewController:(id)controller didCompleteWithSuccess:(BOOL)success;
 @end
 
 @implementation SUScriptFamilySetupDelegate
 
-- (void)familySetupViewController:(id)a3 didCompleteWithSuccess:(BOOL)a4
+- (void)familySetupViewController:(id)controller didCompleteWithSuccess:(BOOL)success
 {
-  [a3 setDelegate:{0, a4}];
+  [controller setDelegate:{0, success}];
 
-  [a3 dismissViewControllerAnimated:1 completion:0];
+  [controller dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

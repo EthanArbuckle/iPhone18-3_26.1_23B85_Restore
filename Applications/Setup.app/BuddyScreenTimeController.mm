@@ -1,28 +1,28 @@
 @interface BuddyScreenTimeController
-+ (void)clearScreenTimeSetting:(id)a3;
-+ (void)setScreenTimeEnabled:(BOOL)a3 presented:(BOOL)a4 buddyPreferences:(id)a5;
++ (void)clearScreenTimeSetting:(id)setting;
++ (void)setScreenTimeEnabled:(BOOL)enabled presented:(BOOL)presented buddyPreferences:(id)preferences;
 - (BFFFlowItemDelegate)delegate;
 - (BOOL)controllerNeedsToRun;
 - (void)controllerWasPopped;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)setScreenTimeEnabled:(BOOL)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)setScreenTimeEnabled:(BOOL)enabled;
 - (void)setupSkipped;
 @end
 
 @implementation BuddyScreenTimeController
 
-+ (void)setScreenTimeEnabled:(BOOL)a3 presented:(BOOL)a4 buddyPreferences:(id)a5
++ (void)setScreenTimeEnabled:(BOOL)enabled presented:(BOOL)presented buddyPreferences:(id)preferences
 {
-  v16 = a1;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
-  v13 = a4;
+  enabledCopy = enabled;
+  presentedCopy = presented;
   location = 0;
-  objc_storeStrong(&location, a5);
+  objc_storeStrong(&location, preferences);
   v11 = objc_alloc_init(STManagementState);
   v10 = 0;
   obj = 0;
-  v5 = [v11 setScreenTimeEnabled:v14 error:&obj];
+  v5 = [v11 setScreenTimeEnabled:enabledCopy error:&obj];
   objc_storeStrong(&v10, obj);
   if ((v5 & 1) == 0)
   {
@@ -37,7 +37,7 @@
   }
 
   v6 = location;
-  v7 = [NSNumber numberWithBool:v13];
+  v7 = [NSNumber numberWithBool:presentedCopy];
   [v6 setObject:v7 forKey:@"ScreenTimePresented"];
 
   objc_storeStrong(&v10, 0);
@@ -45,28 +45,28 @@
   objc_storeStrong(&location, 0);
 }
 
-+ (void)clearScreenTimeSetting:(id)a3
++ (void)clearScreenTimeSetting:(id)setting
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, setting);
   [objc_opt_class() setScreenTimeEnabled:0 presented:0 buddyPreferences:location[0]];
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)controllerNeedsToRun
 {
-  v2 = [(BuddyScreenTimeController *)self buddyPreferences];
-  v3 = [(BYPreferencesController *)v2 BOOLForKey:@"ScreenTimePresented"];
+  buddyPreferences = [(BuddyScreenTimeController *)self buddyPreferences];
+  v3 = [(BYPreferencesController *)buddyPreferences BOOLForKey:@"ScreenTimePresented"];
 
   v6 = 0;
   v4 = 0;
   if ((v3 & 1) == 0)
   {
-    v7 = [(BuddyScreenTimeController *)self capabilities];
+    capabilities = [(BuddyScreenTimeController *)self capabilities];
     v6 = 1;
-    v4 = ([(BYCapabilities *)v7 isScreenTimeRestricted]& 1) == 0;
+    v4 = ([(BYCapabilities *)capabilities isScreenTimeRestricted]& 1) == 0;
   }
 
   v9 = v4;
@@ -77,16 +77,16 @@
   return v9;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = [BuddyAccountAge alloc];
   v4 = +[ACAccountStore defaultStore];
-  v5 = [v4 aa_primaryAppleAccount];
-  v22 = [(BuddyAccountAge *)v3 initWithAccount:v5];
+  aa_primaryAppleAccount = [v4 aa_primaryAppleAccount];
+  v22 = [(BuddyAccountAge *)v3 initWithAccount:aa_primaryAppleAccount];
 
   if ([v22 isChild])
   {
@@ -108,10 +108,10 @@
   else
   {
     v8 = objc_alloc_init(STManagementState);
-    [(BuddyScreenTimeController *)v24 setManagementState:v8];
+    [(BuddyScreenTimeController *)selfCopy setManagementState:v8];
 
-    objc_initWeak(&from, v24);
-    v9 = [(BuddyScreenTimeController *)v24 managementState];
+    objc_initWeak(&from, selfCopy);
+    managementState = [(BuddyScreenTimeController *)selfCopy managementState];
     v10 = _NSConcreteStackBlock;
     v11 = -1073741824;
     v12 = 0;
@@ -119,7 +119,7 @@
     v14 = &unk_10032D970;
     objc_copyWeak(v16, &from);
     v15 = location[0];
-    [(STManagementState *)v9 screenTimeStateWithCompletionHandler:&v10];
+    [(STManagementState *)managementState screenTimeStateWithCompletionHandler:&v10];
 
     objc_storeStrong(&v15, 0);
     objc_destroyWeak(v16);
@@ -131,32 +131,32 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setScreenTimeEnabled:(BOOL)a3
+- (void)setScreenTimeEnabled:(BOOL)enabled
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
-  v3 = [(BuddyScreenTimeController *)self screenTimeViewController];
+  enabledCopy = enabled;
+  screenTimeViewController = [(BuddyScreenTimeController *)self screenTimeViewController];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:v3 identifier:v5];
+  [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:screenTimeViewController identifier:v5];
 
-  v6 = [(BuddyScreenTimeController *)v20 screenTimeViewController];
-  v7 = [(STSetupAssistantViewController *)v6 view];
-  v8 = [v7 window];
-  [v8 setUserInteractionEnabled:0];
+  screenTimeViewController2 = [(BuddyScreenTimeController *)selfCopy screenTimeViewController];
+  view = [(STSetupAssistantViewController *)screenTimeViewController2 view];
+  window = [view window];
+  [window setUserInteractionEnabled:0];
 
-  objc_initWeak(&location, v20);
-  v9 = [(BuddyScreenTimeController *)v20 managementState];
-  LOBYTE(v8) = v18;
+  objc_initWeak(&location, selfCopy);
+  managementState = [(BuddyScreenTimeController *)selfCopy managementState];
+  LOBYTE(window) = enabledCopy;
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
   v12 = 0;
   v13 = sub_1001496C0;
   v14 = &unk_10032D9C0;
   objc_copyWeak(&v15, &location);
-  v16 = v18;
-  [(STManagementState *)v9 setScreenTimeEnabled:v8 & 1 completionHandler:&v10];
+  v16 = enabledCopy;
+  [(STManagementState *)managementState setScreenTimeEnabled:window & 1 completionHandler:&v10];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -164,25 +164,25 @@
 
 - (void)controllerWasPopped
 {
-  v2 = [(BuddyScreenTimeController *)self buddyPreferences];
-  [(BYPreferencesController *)v2 setObject:&__kCFBooleanFalse forKey:@"ScreenTimePresented"];
+  buddyPreferences = [(BuddyScreenTimeController *)self buddyPreferences];
+  [(BYPreferencesController *)buddyPreferences setObject:&__kCFBooleanFalse forKey:@"ScreenTimePresented"];
 
-  v3 = [(BuddyScreenTimeController *)self paneFeatureAnalyticsManager];
-  [(BYPaneFeatureAnalyticsManager *)v3 clearActionForFeature:0];
+  paneFeatureAnalyticsManager = [(BuddyScreenTimeController *)self paneFeatureAnalyticsManager];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager clearActionForFeature:0];
 }
 
 - (void)setupSkipped
 {
-  v2 = [(BuddyScreenTimeController *)self runState];
-  v3 = [(BYRunState *)v2 hasCompletedInitialRun];
+  runState = [(BuddyScreenTimeController *)self runState];
+  hasCompletedInitialRun = [(BYRunState *)runState hasCompletedInitialRun];
 
-  if (v3)
+  if (hasCompletedInitialRun)
   {
-    v4 = [(BuddyScreenTimeController *)self buddyPreferences];
-    [(BYPreferencesController *)v4 setObject:&__kCFBooleanTrue forKey:@"ScreenTimePresented"];
+    buddyPreferences = [(BuddyScreenTimeController *)self buddyPreferences];
+    [(BYPreferencesController *)buddyPreferences setObject:&__kCFBooleanTrue forKey:@"ScreenTimePresented"];
 
-    v5 = [(BuddyScreenTimeController *)self delegate];
-    [(BFFFlowItemDelegate *)v5 flowItemDone:self];
+    delegate = [(BuddyScreenTimeController *)self delegate];
+    [(BFFFlowItemDelegate *)delegate flowItemDone:self];
   }
 
   else

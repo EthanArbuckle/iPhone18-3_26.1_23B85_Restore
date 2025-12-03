@@ -1,19 +1,19 @@
 @interface AKLoupePointOfInterestHelper
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5;
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6;
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller;
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment;
 @end
 
 @implementation AKLoupePointOfInterestHelper
 
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment
 {
   v9 = MEMORY[0x277CBEB18];
-  v10 = a6;
-  v11 = a5;
+  alignmentCopy = alignment;
+  annotationCopy = annotation;
   v54 = [v9 arrayWithCapacity:2];
   v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
-  [v11 rectangle];
-  [AKGeometryHelper convertModelToScreenOrientationForRect:v10 withPageController:?];
+  [annotationCopy rectangle];
+  [AKGeometryHelper convertModelToScreenOrientationForRect:alignmentCopy withPageController:?];
   x = v56.origin.x;
   y = v56.origin.y;
   width = v56.size.width;
@@ -24,7 +24,7 @@
   v57.size.width = width;
   v57.size.height = height;
   v18 = CGRectGetHeight(v57);
-  [v11 magnification];
+  [annotationCopy magnification];
   v20 = v19;
 
   v21 = (v20 + -1.5) / 3.5;
@@ -57,11 +57,11 @@
   v59.origin.y = y;
   v59.size.width = width;
   v59.size.height = height;
-  [AKGeometryHelper convertScreenToModelOrientationForPoint:v10 relativeToRect:MidX + v28.__sinval * v26 withPageController:CGRectGetMidY(v59) + v28.__cosval * v25, x, y, width, height];
+  [AKGeometryHelper convertScreenToModelOrientationForPoint:alignmentCopy relativeToRect:MidX + v28.__sinval * v26 withPageController:CGRectGetMidY(v59) + v28.__cosval * v25, x, y, width, height];
   v30 = v29;
   v32 = v31;
-  v33 = [v10 geometryHelper];
-  [v33 screenPixelAlignedPointForPoint:{v30, v32}];
+  geometryHelper = [alignmentCopy geometryHelper];
+  [geometryHelper screenPixelAlignedPointForPoint:{v30, v32}];
   v35 = v34;
   v37 = v36;
 
@@ -80,12 +80,12 @@
   v61.origin.y = y;
   v61.size.width = width;
   v61.size.height = height;
-  [AKGeometryHelper convertScreenToModelOrientationForPoint:v10 relativeToRect:v40 withPageController:CGRectGetMidY(v61) + v25 * -0.707106781, x, y, width, height];
+  [AKGeometryHelper convertScreenToModelOrientationForPoint:alignmentCopy relativeToRect:v40 withPageController:CGRectGetMidY(v61) + v25 * -0.707106781, x, y, width, height];
   v42 = v41;
   v44 = v43;
-  v45 = [v10 geometryHelper];
+  geometryHelper2 = [alignmentCopy geometryHelper];
 
-  [v45 screenPixelAlignedPointForPoint:{v42, v44}];
+  [geometryHelper2 screenPixelAlignedPointForPoint:{v42, v44}];
   v47 = v46;
   v49 = v48;
 
@@ -96,20 +96,20 @@
   [v12 addObject:v51];
 
   v52 = v54;
-  *a3 = v54;
+  *interest = v54;
   v53 = v12;
-  *a4 = v12;
+  *style = v12;
 }
 
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller
 {
   v5 = 18;
-  if (a3 != 1)
+  if (index != 1)
   {
     v5 = 0;
   }
 
-  if (a3)
+  if (index)
   {
     return v5;
   }

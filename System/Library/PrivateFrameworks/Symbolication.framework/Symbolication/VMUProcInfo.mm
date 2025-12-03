@@ -1,18 +1,18 @@
 @interface VMUProcInfo
 + (id)getProcessIds;
-+ (int)processParentId:(int)a3;
++ (int)processParentId:(int)id;
 - (BOOL)isCFM;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNative;
 - (BOOL)isRunning;
 - (BOOL)isSemiCriticalProcess;
 - (BOOL)isZombie;
 - (BOOL)shouldAnalyzeWithCorpse;
 - (BOOL)terminate;
-- (VMUProcInfo)initWithPid:(int)a3;
-- (VMUProcInfo)initWithTask:(unsigned int)a3;
-- (VMUProcInfo)initWithVMUTask:(id)a3;
-- (id)_infoFromCommandLine:(int)a3;
+- (VMUProcInfo)initWithPid:(int)pid;
+- (VMUProcInfo)initWithTask:(unsigned int)task;
+- (VMUProcInfo)initWithVMUTask:(id)task;
+- (id)_infoFromCommandLine:(int)line;
 - (id)arguments;
 - (id)envVars;
 - (id)firstArgument;
@@ -22,12 +22,12 @@
 - (id)realAppName;
 - (id)requestedAppName;
 - (id)userAppName;
-- (id)valueForEnvVar:(id)a3;
+- (id)valueForEnvVar:(id)var;
 - (int)cpuType;
 - (int)ppid;
-- (int64_t)compare:(id)a3;
-- (int64_t)compareByName:(id)a3;
-- (int64_t)compareByUserAppName:(id)a3;
+- (int64_t)compare:(id)compare;
+- (int64_t)compareByName:(id)name;
+- (int64_t)compareByUserAppName:(id)name;
 - (timeval)startTime;
 - (unint64_t)hash;
 - (unsigned)platform;
@@ -48,18 +48,18 @@
       goto LABEL_7;
     }
 
-    v4 = [(VMUProcInfo *)self userAppName];
-    v5 = [v4 lastPathComponent];
+    userAppName = [(VMUProcInfo *)self userAppName];
+    lastPathComponent = [userAppName lastPathComponent];
     v6 = self->_name;
-    self->_name = v5;
+    self->_name = lastPathComponent;
 
     v7 = self->_name;
     if (!v7 || ![(NSString *)v7 length])
     {
       name = [(VMUProcInfo *)self procTableName];
-      v8 = [name lastPathComponent];
+      lastPathComponent2 = [name lastPathComponent];
       v9 = self->_name;
-      self->_name = v8;
+      self->_name = lastPathComponent2;
 
 LABEL_7:
     }
@@ -72,16 +72,16 @@ LABEL_7:
 
 - (id)userAppName
 {
-  v3 = [(VMUProcInfo *)self realAppName];
-  v4 = v3;
-  if (v3)
+  realAppName = [(VMUProcInfo *)self realAppName];
+  v4 = realAppName;
+  if (realAppName)
   {
-    [v3 rangeOfString:@"LaunchCFMApp"];
+    [realAppName rangeOfString:@"LaunchCFMApp"];
     if (v5)
     {
-      v6 = [(VMUProcInfo *)self firstArgument];
+      firstArgument = [(VMUProcInfo *)self firstArgument];
 
-      v4 = v6;
+      v4 = firstArgument;
     }
   }
 
@@ -99,9 +99,9 @@ LABEL_7:
     v5 = self->_realAppName;
     if (!v5 || ![(NSString *)v5 length])
     {
-      v6 = [(VMUProcInfo *)self procTableName];
+      procTableName = [(VMUProcInfo *)self procTableName];
       v7 = self->_realAppName;
-      self->_realAppName = v6;
+      self->_realAppName = procTableName;
     }
   }
 
@@ -140,8 +140,8 @@ LABEL_7:
   }
 
   v5 = shouldAnalyzeWithCorpse_s_criticalSystemProcesses;
-  v6 = [(VMUProcInfo *)self name];
-  LOBYTE(v5) = [v5 containsObject:v6];
+  name = [(VMUProcInfo *)self name];
+  LOBYTE(v5) = [v5 containsObject:name];
 
   return v5;
 }
@@ -157,9 +157,9 @@ LABEL_7:
   vmuTask = self->_vmuTask;
   if (vmuTask && [(VMUTask *)vmuTask isCore])
   {
-    v4 = [(VMUTask *)self->_vmuTask memoryCache];
-    v5 = [(VMUTaskMemoryCache *)v4 coreFileProcName];
-    v6 = [v5 copy];
+    memoryCache = [(VMUTask *)self->_vmuTask memoryCache];
+    coreFileProcName = [(VMUTaskMemoryCache *)memoryCache coreFileProcName];
+    v6 = [coreFileProcName copy];
     procTableName = self->_procTableName;
     self->_procTableName = v6;
 
@@ -212,13 +212,13 @@ LABEL_12:
   return v12;
 }
 
-- (VMUProcInfo)initWithPid:(int)a3
+- (VMUProcInfo)initWithPid:(int)pid
 {
   v4 = [(VMUProcInfo *)self init];
   v5 = v4;
   if (v4)
   {
-    v4->_pid = a3;
+    v4->_pid = pid;
     v4->_task = 0;
     vmuTask = v4->_vmuTask;
     v4->_vmuTask = 0;
@@ -227,7 +227,7 @@ LABEL_12:
   return v5;
 }
 
-- (VMUProcInfo)initWithTask:(unsigned int)a3
+- (VMUProcInfo)initWithTask:(unsigned int)task
 {
   x = 0;
   v4 = [(VMUProcInfo *)self init];
@@ -237,10 +237,10 @@ LABEL_12:
     vmuTask = v4->_vmuTask;
     v4->_vmuTask = 0;
 
-    if (!mach_port_mod_refs(*MEMORY[0x1E69E9A60], a3, 0, 1))
+    if (!mach_port_mod_refs(*MEMORY[0x1E69E9A60], task, 0, 1))
     {
-      v5->_task = a3;
-      if (!pid_for_task(a3, &x))
+      v5->_task = task;
+      if (!pid_for_task(task, &x))
       {
         v5->_pid = x;
       }
@@ -250,14 +250,14 @@ LABEL_12:
   return v5;
 }
 
-- (VMUProcInfo)initWithVMUTask:(id)a3
+- (VMUProcInfo)initWithVMUTask:(id)task
 {
-  v5 = a3;
+  taskCopy = task;
   v6 = [(VMUProcInfo *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_vmuTask, a3);
+    objc_storeStrong(&v6->_vmuTask, task);
     v7->_pid = [(VMUTask *)v7->_vmuTask pid];
     v7->_task = [(VMUTask *)v7->_vmuTask taskPort];
   }
@@ -271,7 +271,7 @@ LABEL_12:
   v11 = 0;
   size = 0;
   *v10 = 0xE00000001;
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (sysctl(v10, 3u, 0, &size, 0, 0) < 0)
   {
     perror("Failure calling sysctl to get process list buffer size");
@@ -287,7 +287,7 @@ LABEL_12:
       do
       {
         v6 = [MEMORY[0x1E696AD98] numberWithInteger:*v5];
-        [v2 insertObject:v6 atIndex:0];
+        [array insertObject:v6 atIndex:0];
 
         v5 += 162;
         --v4;
@@ -301,16 +301,16 @@ LABEL_12:
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return array;
 }
 
-+ (int)processParentId:(int)a3
++ (int)processParentId:(int)id
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = 648;
   v6 = 1;
   v7 = 0x10000000ELL;
-  v8 = a3;
+  idCopy = id;
   sysctl(&v6, 4u, v9, &v5, 0, 0);
   if (v5 == 648)
   {
@@ -342,15 +342,15 @@ LABEL_12:
     if (vmuTask && [(VMUTask *)vmuTask isCore])
     {
       *v14 = 0;
-      v8 = [(VMUTask *)self->_vmuTask memoryCache];
-      if ([VMUTaskMemoryCache getCoreFileProcStarttimeSec:v8])
+      memoryCache = [(VMUTask *)self->_vmuTask memoryCache];
+      if ([VMUTaskMemoryCache getCoreFileProcStarttimeSec:memoryCache])
       {
       }
 
       else
       {
-        v10 = [(VMUTask *)self->_vmuTask memoryCache];
-        v11 = [VMUTaskMemoryCache getCoreFileProcStarttimeUSec:v10];
+        memoryCache2 = [(VMUTask *)self->_vmuTask memoryCache];
+        v11 = [VMUTaskMemoryCache getCoreFileProcStarttimeUSec:memoryCache2];
 
         if (!v11)
         {
@@ -411,11 +411,11 @@ LABEL_5:
   return result;
 }
 
-- (id)_infoFromCommandLine:(int)a3
+- (id)_infoFromCommandLine:(int)line
 {
   v37 = *MEMORY[0x1E69E9840];
   size = 0;
-  if ((a3 - 3) > 1)
+  if ((line - 3) > 1)
   {
     v5 = &stru_1F461F9C8;
   }
@@ -430,15 +430,15 @@ LABEL_5:
   {
     *v35 = 0;
     v33 = 0;
-    v7 = [(VMUTask *)self->_vmuTask memoryCache];
-    if ([VMUTaskMemoryCache getCoreFileUserstack:v7])
+    memoryCache = [(VMUTask *)self->_vmuTask memoryCache];
+    if ([VMUTaskMemoryCache getCoreFileUserstack:memoryCache])
     {
     }
 
     else
     {
-      v9 = [(VMUTask *)self->_vmuTask memoryCache];
-      v10 = [VMUTaskMemoryCache getCoreFileArgsLen:v9];
+      memoryCache2 = [(VMUTask *)self->_vmuTask memoryCache];
+      v10 = [VMUTaskMemoryCache getCoreFileArgsLen:memoryCache2];
 
       if (!v10)
       {
@@ -448,8 +448,8 @@ LABEL_5:
 
     v31 = 0;
     v32 = 0;
-    v11 = [(VMUTask *)self->_vmuTask memoryCache];
-    v12 = [v11 mapAddress:*v35 - v33 size:v33 returnedAddress:&v32 returnedSize:&v31];
+    memoryCache3 = [(VMUTask *)self->_vmuTask memoryCache];
+    v12 = [memoryCache3 mapAddress:*v35 - v33 size:v33 returnedAddress:&v32 returnedSize:&v31];
 
     if (v12)
     {
@@ -490,7 +490,7 @@ LABEL_10:
   }
 
   *(v8 + size - 1) = 0;
-  if (!a3)
+  if (!line)
   {
     v20 = MEMORY[0x1E696AEC0];
     v21 = v8 + 1;
@@ -528,7 +528,7 @@ LABEL_29:
     }
   }
 
-  if (a3 == 1)
+  if (line == 1)
   {
     v20 = MEMORY[0x1E696AEC0];
     v21 = (v8 + v19);
@@ -591,12 +591,12 @@ LABEL_29:
         }
       }
 
-      if (a3 == 2)
+      if (line == 2)
       {
         break;
       }
 
-      if (a3 == 3 && v29)
+      if (line == 3 && v29)
       {
         [(__CFString *)v5 addObject:v29];
       }
@@ -613,9 +613,9 @@ LABEL_29:
   }
 
 LABEL_45:
-  if ((a3 & 0xFFFFFFFE) != 2 && v19 < v18)
+  if ((line & 0xFFFFFFFE) != 2 && v19 < v18)
   {
-    if (a3 == 4)
+    if (line == 4)
     {
       do
       {
@@ -670,9 +670,9 @@ LABEL_14:
     v5 = self->_requestedAppName;
     if (!v5 || ![(NSString *)v5 length])
     {
-      v6 = [(VMUProcInfo *)self procTableName];
+      procTableName = [(VMUProcInfo *)self procTableName];
       v7 = self->_requestedAppName;
-      self->_requestedAppName = v6;
+      self->_requestedAppName = procTableName;
     }
   }
 
@@ -737,22 +737,22 @@ LABEL_14:
   return envVars;
 }
 
-- (id)valueForEnvVar:(id)a3
+- (id)valueForEnvVar:(id)var
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  varCopy = var;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 length];
+  v6 = [varCopy length];
   if (v6)
   {
     v7 = v6;
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@=", v4];
+    varCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@=", varCopy];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = [(VMUProcInfo *)self envVars];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    envVars = [(VMUProcInfo *)self envVars];
+    v10 = [envVars countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = v10;
@@ -764,11 +764,11 @@ LABEL_14:
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(envVars);
           }
 
           v15 = *(*(&v19 + 1) + 8 * i);
-          if ([v15 hasPrefix:v8])
+          if ([v15 hasPrefix:varCopy])
           {
             v16 = [v15 substringFromIndex:v7 + 1];
 
@@ -776,7 +776,7 @@ LABEL_14:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v11 = [envVars countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v11);
@@ -809,8 +809,8 @@ LABEL_14:
     vmuTask = self->_vmuTask;
     if (vmuTask && [(VMUTask *)vmuTask isCore])
     {
-      v5 = [(VMUTask *)self->_vmuTask memoryCache];
-      [VMUTaskMemoryCache getCoreFilePPid:v5];
+      memoryCache = [(VMUTask *)self->_vmuTask memoryCache];
+      [VMUTaskMemoryCache getCoreFilePPid:memoryCache];
 
       result = -1;
     }
@@ -831,35 +831,35 @@ LABEL_14:
   name = self->_name;
   self->_name = 0;
 
-  v4 = [(VMUProcInfo *)self name];
+  name = [(VMUProcInfo *)self name];
   envVars = self->_envVars;
   self->_envVars = 0;
 
-  v6 = [(VMUProcInfo *)self envVars];
+  envVars = [(VMUProcInfo *)self envVars];
   procTableName = self->_procTableName;
   self->_procTableName = 0;
 
-  v8 = [(VMUProcInfo *)self procTableName];
+  procTableName = [(VMUProcInfo *)self procTableName];
   realAppName = self->_realAppName;
   self->_realAppName = 0;
 
-  v10 = [(VMUProcInfo *)self realAppName];
+  realAppName = [(VMUProcInfo *)self realAppName];
   requestedAppName = self->_requestedAppName;
   self->_requestedAppName = 0;
 
-  v12 = [(VMUProcInfo *)self requestedAppName];
+  requestedAppName = [(VMUProcInfo *)self requestedAppName];
   firstArg = self->_firstArg;
   self->_firstArg = 0;
 
-  v14 = [(VMUProcInfo *)self firstArgument];
+  firstArgument = [(VMUProcInfo *)self firstArgument];
 
   [(VMUProcInfo *)self isZombie];
 }
 
 - (BOOL)isCFM
 {
-  v2 = [(VMUProcInfo *)self realAppName];
-  v3 = [v2 rangeOfString:@"LaunchCFMApp"] != 0x7FFFFFFFFFFFFFFFLL;
+  realAppName = [(VMUProcInfo *)self realAppName];
+  v3 = [realAppName rangeOfString:@"LaunchCFMApp"] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v3;
 }
@@ -871,8 +871,8 @@ LABEL_14:
   vmuTask = self->_vmuTask;
   if (vmuTask && [(VMUTask *)vmuTask isCore])
   {
-    v4 = [(VMUTask *)self->_vmuTask memoryCache];
-    v5 = [v4 getCoreFileCPUType:&v11];
+    memoryCache = [(VMUTask *)self->_vmuTask memoryCache];
+    v5 = [memoryCache getCoreFileCPUType:&v11];
 
     if (v5)
     {
@@ -915,10 +915,10 @@ LABEL_14:
   vmuTask = self->_vmuTask;
   if (vmuTask && [(VMUTask *)vmuTask isCore])
   {
-    v4 = [(VMUTask *)self->_vmuTask memoryCache];
-    v5 = [v4 taskIsTranslated];
+    memoryCache = [(VMUTask *)self->_vmuTask memoryCache];
+    taskIsTranslated = [memoryCache taskIsTranslated];
 
-    return v5;
+    return taskIsTranslated;
   }
 
   else
@@ -934,8 +934,8 @@ LABEL_14:
   vmuTask = self->_vmuTask;
   if (vmuTask && [(VMUTask *)vmuTask isCore])
   {
-    v4 = [(VMUTask *)self->_vmuTask memoryCache];
-    v5 = [v4 getPlatform:&v8];
+    memoryCache = [(VMUTask *)self->_vmuTask memoryCache];
+    v5 = [memoryCache getPlatform:&v8];
 
     if (v5)
     {
@@ -958,9 +958,9 @@ LABEL_14:
 
 - (id)platformName
 {
-  v2 = [(VMUProcInfo *)self platform];
+  platform = [(VMUProcInfo *)self platform];
 
-  return VMUPlatformNameForPlatform(v2);
+  return VMUPlatformNameForPlatform(platform);
 }
 
 - (BOOL)isRunning
@@ -983,15 +983,15 @@ LABEL_14:
     [VMUProcInfo isSemiCriticalProcess];
   }
 
-  v3 = [(VMUProcInfo *)self name];
-  if ([isSemiCriticalProcess_s_semiCriticalSystemProcesses containsObject:v3])
+  name = [(VMUProcInfo *)self name];
+  if ([isSemiCriticalProcess_s_semiCriticalSystemProcesses containsObject:name])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasSuffix:@"boardd"];
+    v4 = [name hasSuffix:@"boardd"];
   }
 
   return v4;
@@ -1085,23 +1085,23 @@ void __38__VMUProcInfo_shouldAnalyzeWithCorpse__block_invoke()
   return !v6 || v7 == 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [v4 pid] == self->_pid;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [equalCopy pid] == self->_pid;
 
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   pid = self->_pid;
-  if (pid >= [v4 pid])
+  if (pid >= [compareCopy pid])
   {
     v7 = self->_pid;
-    v6 = v7 != [v4 pid];
+    v6 = v7 != [compareCopy pid];
   }
 
   else
@@ -1112,23 +1112,23 @@ void __38__VMUProcInfo_shouldAnalyzeWithCorpse__block_invoke()
   return v6;
 }
 
-- (int64_t)compareByName:(id)a3
+- (int64_t)compareByName:(id)name
 {
-  v4 = a3;
-  v5 = [(VMUProcInfo *)self name];
-  v6 = [v4 name];
+  nameCopy = name;
+  name = [(VMUProcInfo *)self name];
+  name2 = [nameCopy name];
 
-  v7 = [v5 caseInsensitiveCompare:v6];
+  v7 = [name caseInsensitiveCompare:name2];
   return v7;
 }
 
-- (int64_t)compareByUserAppName:(id)a3
+- (int64_t)compareByUserAppName:(id)name
 {
-  v4 = a3;
-  v5 = [(VMUProcInfo *)self userAppName];
-  v6 = [v4 userAppName];
+  nameCopy = name;
+  userAppName = [(VMUProcInfo *)self userAppName];
+  userAppName2 = [nameCopy userAppName];
 
-  v7 = [v5 caseInsensitiveCompare:v6];
+  v7 = [userAppName caseInsensitiveCompare:userAppName2];
   return v7;
 }
 

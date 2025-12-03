@@ -1,7 +1,7 @@
 @interface CPLFaceAnalysisReference
 - (NSArray)faces;
-- (void)addFace:(id)a3;
-- (void)setFaces:(id)a3;
+- (void)addFace:(id)face;
+- (void)setFaces:(id)faces;
 @end
 
 @implementation CPLFaceAnalysisReference
@@ -9,31 +9,31 @@
 - (NSArray)faces
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(CPLFaceAnalysis *)self faceInstances];
-  v5 = [v4 count];
+  faceInstances = [(CPLFaceAnalysis *)self faceInstances];
+  v5 = [faceInstances count];
 
   if (v5)
   {
-    v6 = [(CPLFaceAnalysis *)self faceInstances];
-    [v3 addObjectsFromArray:v6];
+    faceInstances2 = [(CPLFaceAnalysis *)self faceInstances];
+    [v3 addObjectsFromArray:faceInstances2];
   }
 
-  v7 = [(CPLFaceAnalysis *)self petFaceInstances];
-  v8 = [v7 count];
+  petFaceInstances = [(CPLFaceAnalysis *)self petFaceInstances];
+  v8 = [petFaceInstances count];
 
   if (v8)
   {
-    v9 = [(CPLFaceAnalysis *)self petFaceInstances];
-    [v3 addObjectsFromArray:v9];
+    petFaceInstances2 = [(CPLFaceAnalysis *)self petFaceInstances];
+    [v3 addObjectsFromArray:petFaceInstances2];
   }
 
-  v10 = [(CPLFaceAnalysis *)self torsoFaceInstances];
-  v11 = [v10 count];
+  torsoFaceInstances = [(CPLFaceAnalysis *)self torsoFaceInstances];
+  v11 = [torsoFaceInstances count];
 
   if (v11)
   {
-    v12 = [(CPLFaceAnalysis *)self torsoFaceInstances];
-    [v3 addObjectsFromArray:v12];
+    torsoFaceInstances2 = [(CPLFaceAnalysis *)self torsoFaceInstances];
+    [v3 addObjectsFromArray:torsoFaceInstances2];
   }
 
   v13 = [v3 copy];
@@ -41,15 +41,15 @@
   return v13;
 }
 
-- (void)addFace:(id)a3
+- (void)addFace:(id)face
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  faceCopy = face;
+  v5 = faceCopy;
+  if (faceCopy)
   {
-    if ([v4 isPetDetectionType])
+    if ([faceCopy isPetDetectionType])
     {
-      v6 = [(CPLFaceAnalysis *)self petFaceInstances];
+      petFaceInstances = [(CPLFaceAnalysis *)self petFaceInstances];
     }
 
     else
@@ -63,13 +63,13 @@
       {
         [(CPLFaceAnalysis *)self faceInstances];
       }
-      v6 = ;
+      petFaceInstances = ;
     }
 
-    v7 = v6;
-    if (v6)
+    v7 = petFaceInstances;
+    if (petFaceInstances)
     {
-      [v6 insertObject:v5 atIndex:{objc_msgSend(v6, "indexOfObject:inSortedRange:options:usingComparator:", v5, 0, objc_msgSend(v6, "count"), 1024, &__block_literal_global_50_7367)}];
+      [petFaceInstances insertObject:v5 atIndex:{objc_msgSend(petFaceInstances, "indexOfObject:inSortedRange:options:usingComparator:", v5, 0, objc_msgSend(petFaceInstances, "count"), 1024, &__block_literal_global_50_7367)}];
     }
 
     else if ([v5 isPetDetectionType])
@@ -89,9 +89,9 @@
   }
 }
 
-- (void)setFaces:(id)a3
+- (void)setFaces:(id)faces
 {
-  v4 = [a3 mutableCopy];
+  v4 = [faces mutableCopy];
   [v4 sortUsingSelector:sel_compare_];
   v5 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_7375];
   v6 = [v4 filteredArrayUsingPredicate:v5];

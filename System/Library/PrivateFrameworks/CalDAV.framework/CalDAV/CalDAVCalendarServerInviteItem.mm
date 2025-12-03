@@ -1,16 +1,16 @@
 @interface CalDAVCalendarServerInviteItem
-- (CalDAVCalendarServerInviteItem)initWithNameSpace:(id)a3 andName:(id)a4;
+- (CalDAVCalendarServerInviteItem)initWithNameSpace:(id)space andName:(id)name;
 - (id)copyParseRules;
-- (void)addUser:(id)a3;
+- (void)addUser:(id)user;
 @end
 
 @implementation CalDAVCalendarServerInviteItem
 
-- (CalDAVCalendarServerInviteItem)initWithNameSpace:(id)a3 andName:(id)a4
+- (CalDAVCalendarServerInviteItem)initWithNameSpace:(id)space andName:(id)name
 {
   v8.receiver = self;
   v8.super_class = CalDAVCalendarServerInviteItem;
-  v4 = [(CoreDAVItem *)&v8 initWithNameSpace:a3 andName:a4];
+  v4 = [(CoreDAVItem *)&v8 initWithNameSpace:space andName:name];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -32,11 +32,11 @@
   return v6;
 }
 
-- (void)addUser:(id)a3
+- (void)addUser:(id)user
 {
-  v4 = a3;
-  v5 = [(CalDAVCalendarServerInviteItem *)self users];
-  [v5 addObject:v4];
+  userCopy = user;
+  users = [(CalDAVCalendarServerInviteItem *)self users];
+  [users addObject:userCopy];
 }
 
 @end

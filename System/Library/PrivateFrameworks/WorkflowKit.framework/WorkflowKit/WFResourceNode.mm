@@ -1,13 +1,13 @@
 @interface WFResourceNode
-+ (id)nodesWithDefinitions:(id)a3;
++ (id)nodesWithDefinitions:(id)definitions;
 - (NSString)description;
-- (WFResourceNode)initWithDefinition:(id)a3;
-- (WFResourceNode)initWithResource:(id)a3 subnodes:(id)a4;
+- (WFResourceNode)initWithDefinition:(id)definition;
+- (WFResourceNode)initWithResource:(id)resource subnodes:(id)subnodes;
 - (WFResourceNodeDelegate)delegate;
-- (id)resourceObjectsConformingToProtocol:(id)a3;
-- (id)resourceObjectsOfClass:(Class)a3;
-- (id)resourceObjectsOfClasses:(id)a3;
-- (void)addResourceObjectsOfClassesOrProtocols:(id)a3 toSet:(id)a4;
+- (id)resourceObjectsConformingToProtocol:(id)protocol;
+- (id)resourceObjectsOfClass:(Class)class;
+- (id)resourceObjectsOfClasses:(id)classes;
+- (void)addResourceObjectsOfClassesOrProtocols:(id)protocols toSet:(id)set;
 - (void)dealloc;
 - (void)refreshAvailability;
 - (void)resourceUpdated;
@@ -27,23 +27,23 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFResourceNode *)self resource];
-  v7 = [(WFResourceNode *)self subnodes];
-  v8 = [v3 stringWithFormat:@"<%@: %p, resource: %@, subnodes count: %lu>", v5, self, v6, objc_msgSend(v7, "count")];
+  resource = [(WFResourceNode *)self resource];
+  subnodes = [(WFResourceNode *)self subnodes];
+  v8 = [v3 stringWithFormat:@"<%@: %p, resource: %@, subnodes count: %lu>", v5, self, resource, objc_msgSend(subnodes, "count")];
 
   return v8;
 }
 
-- (void)addResourceObjectsOfClassesOrProtocols:(id)a3 toSet:(id)a4
+- (void)addResourceObjectsOfClassesOrProtocols:(id)protocols toSet:(id)set
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  protocolsCopy = protocols;
+  setCopy = set;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v8 = [protocolsCopy countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v8)
   {
     v9 = v8;
@@ -54,16 +54,16 @@
       {
         if (*v30 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(protocolsCopy);
         }
 
         v12 = *(*(&v29 + 1) + 8 * i);
         isClass = object_isClass(v12);
-        v14 = [(WFResourceNode *)self resource];
-        v15 = v14;
+        resource = [(WFResourceNode *)self resource];
+        v15 = resource;
         if (!isClass)
         {
-          v17 = [v14 conformsToProtocol:v12];
+          v17 = [resource conformsToProtocol:v12];
 
           if (!v17)
           {
@@ -71,8 +71,8 @@
           }
 
 LABEL_10:
-          v18 = [(WFResourceNode *)self resource];
-          [v7 addObject:v18];
+          resource2 = [(WFResourceNode *)self resource];
+          [setCopy addObject:resource2];
 
           continue;
         }
@@ -85,7 +85,7 @@ LABEL_10:
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v9 = [protocolsCopy countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v9);
@@ -95,8 +95,8 @@ LABEL_10:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v19 = [(WFResourceNode *)self subnodes];
-  v20 = [v19 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  subnodes = [(WFResourceNode *)self subnodes];
+  v20 = [subnodes countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v20)
   {
     v21 = v20;
@@ -107,13 +107,13 @@ LABEL_10:
       {
         if (*v26 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(subnodes);
         }
 
-        [*(*(&v25 + 1) + 8 * j) addResourceObjectsOfClassesOrProtocols:v6 toSet:v7];
+        [*(*(&v25 + 1) + 8 * j) addResourceObjectsOfClassesOrProtocols:protocolsCopy toSet:setCopy];
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v21 = [subnodes countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v21);
@@ -122,32 +122,32 @@ LABEL_10:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (id)resourceObjectsOfClasses:(id)a3
+- (id)resourceObjectsOfClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   v5 = objc_opt_new();
-  if ([v4 anyObject])
+  if ([classesCopy anyObject])
   {
-    [(WFResourceNode *)self addResourceObjectsOfClassesOrProtocols:v4 toSet:v5];
+    [(WFResourceNode *)self addResourceObjectsOfClassesOrProtocols:classesCopy toSet:v5];
   }
 
   return v5;
 }
 
-- (id)resourceObjectsConformingToProtocol:(id)a3
+- (id)resourceObjectsConformingToProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x1E695DFD8] setWithObject:v4];
+  v6 = [MEMORY[0x1E695DFD8] setWithObject:protocolCopy];
 
   [(WFResourceNode *)self addResourceObjectsOfClassesOrProtocols:v6 toSet:v5];
 
   return v5;
 }
 
-- (id)resourceObjectsOfClass:(Class)a3
+- (id)resourceObjectsOfClass:(Class)class
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:class];
   v5 = [(WFResourceNode *)self resourceObjectsOfClasses:v4];
 
   return v5;
@@ -155,17 +155,17 @@ LABEL_10:
 
 - (void)refreshAvailability
 {
-  v3 = [(WFResourceNode *)self subnodes];
-  [v3 makeObjectsPerformSelector:sel_refreshAvailability];
+  subnodes = [(WFResourceNode *)self subnodes];
+  [subnodes makeObjectsPerformSelector:sel_refreshAvailability];
 
-  v4 = [(WFResourceNode *)self resource];
-  [v4 refreshAvailabilityWithNotification];
+  resource = [(WFResourceNode *)self resource];
+  [resource refreshAvailabilityWithNotification];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"WFResourceAvailabilityChangedNotification" object:self->_resource];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"WFResourceAvailabilityChangedNotification" object:self->_resource];
 
   v4.receiver = self;
   v4.super_class = WFResourceNode;
@@ -174,31 +174,31 @@ LABEL_10:
 
 - (void)resourceUpdated
 {
-  v3 = [(WFResourceNode *)self delegate];
+  delegate = [(WFResourceNode *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFResourceNode *)self delegate];
-    [v5 resourceNodeAvailabilityChanged:self];
+    delegate2 = [(WFResourceNode *)self delegate];
+    [delegate2 resourceNodeAvailabilityChanged:self];
   }
 }
 
-- (WFResourceNode)initWithResource:(id)a3 subnodes:(id)a4
+- (WFResourceNode)initWithResource:(id)resource subnodes:(id)subnodes
 {
-  v7 = a3;
-  v8 = a4;
+  resourceCopy = resource;
+  subnodesCopy = subnodes;
   v16.receiver = self;
   v16.super_class = WFResourceNode;
   v9 = [(WFResourceNode *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_resource, a3);
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v10 selector:sel_resourceUpdated name:@"WFResourceAvailabilityChangedNotification" object:v10->_resource];
+    objc_storeStrong(&v9->_resource, resource);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_resourceUpdated name:@"WFResourceAvailabilityChangedNotification" object:v10->_resource];
 
-    v12 = [v8 copy];
+    v12 = [subnodesCopy copy];
     subnodes = v10->_subnodes;
     v10->_subnodes = v12;
 
@@ -209,51 +209,51 @@ LABEL_10:
   return v10;
 }
 
-- (WFResourceNode)initWithDefinition:(id)a3
+- (WFResourceNode)initWithDefinition:(id)definition
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"WFResourceClass"];
+  definitionCopy = definition;
+  v5 = [definitionCopy objectForKey:@"WFResourceClass"];
   v6 = NSClassFromString(v5);
 
   if ([(objc_class *)v6 isSubclassOfClass:objc_opt_class()])
   {
     if ([(objc_class *)v6 isSingleton])
     {
-      v7 = [(objc_class *)v6 sharedInstance];
+      sharedInstance = [(objc_class *)v6 sharedInstance];
     }
 
     else
     {
-      v7 = [[v6 alloc] initWithDefinition:v4];
+      sharedInstance = [[v6 alloc] initWithDefinition:definitionCopy];
     }
 
-    v9 = v7;
+    v9 = sharedInstance;
     v10 = objc_opt_class();
-    v11 = [v4 objectForKey:@"RequiredResources"];
+    v11 = [definitionCopy objectForKey:@"RequiredResources"];
     v12 = [v10 nodesWithDefinitions:v11];
 
     self = [(WFResourceNode *)self initWithResource:v9 subnodes:v12];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-+ (id)nodesWithDefinitions:(id)a3
++ (id)nodesWithDefinitions:(id)definitions
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  definitionsCopy = definitions;
   v4 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = definitionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v6)
   {

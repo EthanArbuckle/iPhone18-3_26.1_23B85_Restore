@@ -2,22 +2,22 @@
 + (void)load;
 - (id)CNFSSerialize;
 - (id)abs_identifier;
-- (id)cappedString:(id)a3 length:(int64_t)a4;
+- (id)cappedString:(id)string length:(int64_t)length;
 @end
 
 @implementation CNContact
 
-- (id)cappedString:(id)a3 length:(int64_t)a4
+- (id)cappedString:(id)string length:(int64_t)length
 {
-  v5 = a3;
-  if ([v5 length] <= a4)
+  stringCopy = string;
+  if ([stringCopy length] <= length)
   {
-    v6 = v5;
+    v6 = stringCopy;
   }
 
   else
   {
-    v6 = [v5 substringToIndex:a4];
+    v6 = [stringCopy substringToIndex:length];
   }
 
   v7 = v6;
@@ -32,151 +32,151 @@
   [v3 appendBytes:v219 length:2];
   LOWORD(v219[0]) = 1;
   [v3 appendBytes:v219 length:2];
-  v4 = [(CNContact *)self identifier];
-  sub_100016954(1, v4, v3);
+  identifier = [(CNContact *)self identifier];
+  sub_100016954(1, identifier, v3);
 
-  v5 = [(CNContact *)self namePrefix];
-  sub_100016954(2, v5, v3);
+  namePrefix = [(CNContact *)self namePrefix];
+  sub_100016954(2, namePrefix, v3);
 
-  v6 = [(CNContact *)self givenName];
-  sub_100016954(3, v6, v3);
+  givenName = [(CNContact *)self givenName];
+  sub_100016954(3, givenName, v3);
 
-  v7 = [(CNContact *)self middleName];
-  sub_100016954(4, v7, v3);
+  middleName = [(CNContact *)self middleName];
+  sub_100016954(4, middleName, v3);
 
-  v8 = [(CNContact *)self familyName];
-  sub_100016954(5, v8, v3);
+  familyName = [(CNContact *)self familyName];
+  sub_100016954(5, familyName, v3);
 
-  v9 = [(CNContact *)self previousFamilyName];
-  sub_100016954(6, v9, v3);
+  previousFamilyName = [(CNContact *)self previousFamilyName];
+  sub_100016954(6, previousFamilyName, v3);
 
-  v10 = [(CNContact *)self nameSuffix];
-  sub_100016954(7, v10, v3);
+  nameSuffix = [(CNContact *)self nameSuffix];
+  sub_100016954(7, nameSuffix, v3);
 
-  v11 = [(CNContact *)self nickname];
-  sub_100016954(8, v11, v3);
+  nickname = [(CNContact *)self nickname];
+  sub_100016954(8, nickname, v3);
 
-  v12 = [(CNContact *)self organizationName];
-  sub_100016954(9, v12, v3);
+  organizationName = [(CNContact *)self organizationName];
+  sub_100016954(9, organizationName, v3);
 
-  v13 = [(CNContact *)self departmentName];
-  sub_100016954(10, v13, v3);
+  departmentName = [(CNContact *)self departmentName];
+  sub_100016954(10, departmentName, v3);
 
-  v14 = [(CNContact *)self jobTitle];
-  sub_100016954(11, v14, v3);
+  jobTitle = [(CNContact *)self jobTitle];
+  sub_100016954(11, jobTitle, v3);
 
-  v15 = [(CNContact *)self note];
-  v16 = [(CNContact *)self cappedString:v15 length:0x2000];
+  note = [(CNContact *)self note];
+  v16 = [(CNContact *)self cappedString:note length:0x2000];
   sub_100016954(12, v16, v3);
 
-  v17 = [(CNContact *)self birthday];
-  if (v17)
+  birthday = [(CNContact *)self birthday];
+  if (birthday)
   {
     LOWORD(v219[0]) = 15;
     v18 = v3;
-    v19 = v17;
+    v19 = birthday;
     [v18 appendBytes:v219 length:2];
     sub_100016AFC(v19, v18);
   }
 
-  v20 = [(CNContact *)self nonGregorianBirthday];
+  nonGregorianBirthday = [(CNContact *)self nonGregorianBirthday];
   v21 = v3;
   v22 = v21;
-  if (v20)
+  if (nonGregorianBirthday)
   {
     LOWORD(v219[0]) = 26;
     [v21 appendBytes:v219 length:2];
     v219[0] = 12;
-    v23 = v20;
+    v23 = nonGregorianBirthday;
     v24 = v22;
     [v24 appendBytes:v219 length:4];
     sub_100016AFC(v23, v24);
     [v23 calendar];
     v26 = v25 = self;
 
-    v27 = [v26 calendarIdentifier];
-    v28 = sub_100016CEC(v27);
+    calendarIdentifier = [v26 calendarIdentifier];
+    v28 = sub_100016CEC(calendarIdentifier);
 
     self = v25;
     LOBYTE(v206) = v28;
     [v24 appendBytes:&v206 length:1];
   }
 
-  v29 = [(CNContact *)self contactType];
+  contactType = [(CNContact *)self contactType];
   LOWORD(v219[0]) = 17;
   v30 = v22;
   [v30 appendBytes:v219 length:2];
-  LOBYTE(v219[0]) = v29;
+  LOBYTE(v219[0]) = contactType;
   [v30 appendBytes:v219 length:1];
 
-  v31 = [(CNContact *)self phoneticOrganizationName];
-  sub_100016954(18, v31, v30);
+  phoneticOrganizationName = [(CNContact *)self phoneticOrganizationName];
+  sub_100016954(18, phoneticOrganizationName, v30);
 
-  v32 = [(CNContact *)self phoneticFamilyName];
-  sub_100016954(19, v32, v30);
+  phoneticFamilyName = [(CNContact *)self phoneticFamilyName];
+  sub_100016954(19, phoneticFamilyName, v30);
 
-  v33 = [(CNContact *)self phoneticGivenName];
-  sub_100016954(20, v33, v30);
+  phoneticGivenName = [(CNContact *)self phoneticGivenName];
+  sub_100016954(20, phoneticGivenName, v30);
 
-  v34 = [(CNContact *)self phoneticMiddleName];
-  sub_100016954(21, v34, v30);
+  phoneticMiddleName = [(CNContact *)self phoneticMiddleName];
+  sub_100016954(21, phoneticMiddleName, v30);
 
-  v35 = [(CNContact *)self pronunciationGivenName];
-  sub_100016954(28, v35, v30);
+  pronunciationGivenName = [(CNContact *)self pronunciationGivenName];
+  sub_100016954(28, pronunciationGivenName, v30);
 
-  v36 = [(CNContact *)self pronunciationFamilyName];
-  sub_100016954(27, v36, v30);
+  pronunciationFamilyName = [(CNContact *)self pronunciationFamilyName];
+  sub_100016954(27, pronunciationFamilyName, v30);
 
-  v37 = [(CNContact *)self phonemeData];
-  sub_100016954(29, v37, v30);
+  phonemeData = [(CNContact *)self phonemeData];
+  sub_100016954(29, phonemeData, v30);
 
-  v38 = [(CNContact *)self preferredApplePersonaIdentifier];
-  sub_100016954(24, v38, v30);
+  preferredApplePersonaIdentifier = [(CNContact *)self preferredApplePersonaIdentifier];
+  sub_100016954(24, preferredApplePersonaIdentifier, v30);
 
-  v39 = [(CNContact *)self preferredLikenessSource];
-  sub_100016954(25, v39, v30);
+  preferredLikenessSource = [(CNContact *)self preferredLikenessSource];
+  sub_100016954(25, preferredLikenessSource, v30);
 
-  v40 = [(CNContact *)self preferredChannel];
-  sub_100016954(30, v40, v30);
+  preferredChannel = [(CNContact *)self preferredChannel];
+  sub_100016954(30, preferredChannel, v30);
 
-  v41 = [(CNContact *)self downtimeWhitelist];
-  sub_100016954(31, v41, v30);
+  downtimeWhitelist = [(CNContact *)self downtimeWhitelist];
+  sub_100016954(31, downtimeWhitelist, v30);
 
-  v42 = [(CNContact *)self callAlert];
+  callAlert = [(CNContact *)self callAlert];
 
-  if (v42)
+  if (callAlert)
   {
     LOWORD(v219[0]) = 22;
     [v30 appendBytes:v219 length:2];
-    v43 = [(CNContact *)self callAlert];
-    v44 = [v43 sound];
-    sub_1000169D0(v44, v30);
+    callAlert2 = [(CNContact *)self callAlert];
+    sound = [callAlert2 sound];
+    sub_1000169D0(sound, v30);
 
-    v45 = [(CNContact *)self callAlert];
-    v46 = [v45 vibration];
-    sub_1000169D0(v46, v30);
+    callAlert3 = [(CNContact *)self callAlert];
+    vibration = [callAlert3 vibration];
+    sub_1000169D0(vibration, v30);
 
-    v47 = [(CNContact *)self callAlert];
-    LOBYTE(v219[0]) = [v47 ignoreMute];
+    callAlert4 = [(CNContact *)self callAlert];
+    LOBYTE(v219[0]) = [callAlert4 ignoreMute];
     [v30 appendBytes:v219 length:1];
   }
 
-  v48 = [(CNContact *)self textAlert];
+  textAlert = [(CNContact *)self textAlert];
 
-  if (v48)
+  if (textAlert)
   {
     LOWORD(v219[0]) = 23;
     [v30 appendBytes:v219 length:2];
-    v49 = [(CNContact *)self textAlert];
-    v50 = [v49 sound];
-    sub_1000169D0(v50, v30);
+    textAlert2 = [(CNContact *)self textAlert];
+    sound2 = [textAlert2 sound];
+    sub_1000169D0(sound2, v30);
 
-    v51 = [(CNContact *)self textAlert];
-    v52 = [v51 vibration];
-    sub_1000169D0(v52, v30);
+    textAlert3 = [(CNContact *)self textAlert];
+    vibration2 = [textAlert3 vibration];
+    sub_1000169D0(vibration2, v30);
 
-    v53 = [(CNContact *)self textAlert];
-    LOBYTE(v219[0]) = [v53 ignoreMute];
+    textAlert4 = [(CNContact *)self textAlert];
+    LOBYTE(v219[0]) = [textAlert4 ignoreMute];
     [v30 appendBytes:v219 length:1];
   }
 
@@ -184,8 +184,8 @@
   v205 = 0u;
   v202 = 0u;
   v203 = 0u;
-  v54 = [(CNContact *)self phoneNumbers];
-  v55 = [v54 countByEnumeratingWithState:&v202 objects:v218 count:16];
+  phoneNumbers = [(CNContact *)self phoneNumbers];
+  v55 = [phoneNumbers countByEnumeratingWithState:&v202 objects:v218 count:16];
   if (v55)
   {
     v56 = v55;
@@ -196,21 +196,21 @@
       {
         if (*v203 != v57)
         {
-          objc_enumerationMutation(v54);
+          objc_enumerationMutation(phoneNumbers);
         }
 
         v59 = *(*(&v202 + 1) + 8 * i);
         LOWORD(v219[0]) = -32767;
         [v30 appendBytes:v219 length:2];
-        v60 = [v59 label];
-        sub_100016A88(v60, v30);
+        label = [v59 label];
+        sub_100016A88(label, v30);
 
-        v61 = [v59 value];
-        v62 = [v61 stringValue];
-        sub_1000169D0(v62, v30);
+        value = [v59 value];
+        stringValue = [value stringValue];
+        sub_1000169D0(stringValue, v30);
       }
 
-      v56 = [v54 countByEnumeratingWithState:&v202 objects:v218 count:16];
+      v56 = [phoneNumbers countByEnumeratingWithState:&v202 objects:v218 count:16];
     }
 
     while (v56);
@@ -220,8 +220,8 @@
   v201 = 0u;
   v198 = 0u;
   v199 = 0u;
-  v63 = [v168 emailAddresses];
-  v64 = [v63 countByEnumeratingWithState:&v198 objects:v217 count:16];
+  emailAddresses = [v168 emailAddresses];
+  v64 = [emailAddresses countByEnumeratingWithState:&v198 objects:v217 count:16];
   if (v64)
   {
     v65 = v64;
@@ -232,20 +232,20 @@
       {
         if (*v199 != v66)
         {
-          objc_enumerationMutation(v63);
+          objc_enumerationMutation(emailAddresses);
         }
 
         v68 = *(*(&v198 + 1) + 8 * j);
         LOWORD(v219[0]) = -32766;
         [v30 appendBytes:v219 length:2];
-        v69 = [v68 label];
-        sub_100016A88(v69, v30);
+        label2 = [v68 label];
+        sub_100016A88(label2, v30);
 
-        v70 = [v68 value];
-        sub_1000169D0(v70, v30);
+        value2 = [v68 value];
+        sub_1000169D0(value2, v30);
       }
 
-      v65 = [v63 countByEnumeratingWithState:&v198 objects:v217 count:16];
+      v65 = [emailAddresses countByEnumeratingWithState:&v198 objects:v217 count:16];
     }
 
     while (v65);
@@ -255,8 +255,8 @@
   v197 = 0u;
   v194 = 0u;
   v195 = 0u;
-  v71 = [v168 postalAddresses];
-  v72 = [v71 countByEnumeratingWithState:&v194 objects:v216 count:16];
+  postalAddresses = [v168 postalAddresses];
+  v72 = [postalAddresses countByEnumeratingWithState:&v194 objects:v216 count:16];
   if (v72)
   {
     v73 = v72;
@@ -267,89 +267,89 @@
       {
         if (*v195 != v74)
         {
-          objc_enumerationMutation(v71);
+          objc_enumerationMutation(postalAddresses);
         }
 
         v76 = *(*(&v194 + 1) + 8 * k);
         LOWORD(v219[0]) = -32765;
         [v30 appendBytes:v219 length:2];
-        v77 = [v76 label];
-        sub_100016A88(v77, v30);
+        label3 = [v76 label];
+        sub_100016A88(label3, v30);
 
-        v78 = [v76 value];
+        value3 = [v76 value];
         v79 = v30;
-        if (v78)
+        if (value3)
         {
-          v80 = [v78 street];
+          street = [value3 street];
 
-          if (v80)
+          if (street)
           {
             sub_100016A88(CNPostalAddressStreetKey, v79);
-            v81 = [v78 street];
-            sub_1000169D0(v81, v79);
+            street2 = [value3 street];
+            sub_1000169D0(street2, v79);
           }
 
-          v82 = [v78 city];
+          city = [value3 city];
 
-          if (v82)
+          if (city)
           {
             sub_100016A88(CNPostalAddressCityKey, v79);
-            v83 = [v78 city];
-            sub_1000169D0(v83, v79);
+            city2 = [value3 city];
+            sub_1000169D0(city2, v79);
           }
 
-          v84 = [v78 state];
+          state = [value3 state];
 
-          if (v84)
+          if (state)
           {
             sub_100016A88(CNPostalAddressStateKey, v79);
-            v85 = [v78 state];
-            sub_1000169D0(v85, v79);
+            state2 = [value3 state];
+            sub_1000169D0(state2, v79);
           }
 
-          v86 = [v78 postalCode];
+          postalCode = [value3 postalCode];
 
-          if (v86)
+          if (postalCode)
           {
             sub_100016A88(CNPostalAddressPostalCodeKey, v79);
-            v87 = [v78 postalCode];
-            sub_1000169D0(v87, v79);
+            postalCode2 = [value3 postalCode];
+            sub_1000169D0(postalCode2, v79);
           }
 
-          v88 = [v78 country];
+          country = [value3 country];
 
-          if (v88)
+          if (country)
           {
             sub_100016A88(CNPostalAddressCountryKey, v79);
-            v89 = [v78 country];
-            sub_1000169D0(v89, v79);
+            country2 = [value3 country];
+            sub_1000169D0(country2, v79);
           }
 
-          v90 = [v78 ISOCountryCode];
+          iSOCountryCode = [value3 ISOCountryCode];
 
-          if (v90)
+          if (iSOCountryCode)
           {
             sub_100016A88(CNPostalAddressISOCountryCodeKey, v79);
-            v91 = [v78 ISOCountryCode];
-            sub_1000169D0(v91, v79);
+            iSOCountryCode2 = [value3 ISOCountryCode];
+            sub_1000169D0(iSOCountryCode2, v79);
           }
 
-          v92 = [v78 subLocality];
+          subLocality = [value3 subLocality];
 
-          if (v92)
+          if (subLocality)
           {
             sub_100016A88(CNPostalAddressSubLocalityKey, v79);
-            v93 = [v78 subLocality];
-            sub_1000169D0(v93, v79);
+            subLocality2 = [value3 subLocality];
+            sub_1000169D0(subLocality2, v79);
           }
 
-          v94 = [v78 subAdministrativeArea];
+          subAdministrativeArea = [value3 subAdministrativeArea];
 
-          if (v94)
+          if (subAdministrativeArea)
           {
             sub_100016A88(CNPostalAddressSubAdministrativeAreaKey, v79);
-            v95 = [v78 subAdministrativeArea];
-            sub_1000169D0(v95, v79);
+            subAdministrativeArea2 = [value3 subAdministrativeArea];
+            sub_1000169D0(subAdministrativeArea2, v79);
           }
 
           LOBYTE(v219[0]) = -2;
@@ -357,7 +357,7 @@
         }
       }
 
-      v73 = [v71 countByEnumeratingWithState:&v194 objects:v216 count:16];
+      v73 = [postalAddresses countByEnumeratingWithState:&v194 objects:v216 count:16];
     }
 
     while (v73);
@@ -367,8 +367,8 @@
   v193 = 0u;
   v190 = 0u;
   v191 = 0u;
-  v96 = [v168 urlAddresses];
-  v97 = [v96 countByEnumeratingWithState:&v190 objects:v215 count:16];
+  urlAddresses = [v168 urlAddresses];
+  v97 = [urlAddresses countByEnumeratingWithState:&v190 objects:v215 count:16];
   if (v97)
   {
     v98 = v97;
@@ -379,20 +379,20 @@
       {
         if (*v191 != v99)
         {
-          objc_enumerationMutation(v96);
+          objc_enumerationMutation(urlAddresses);
         }
 
         v101 = *(*(&v190 + 1) + 8 * m);
         LOWORD(v219[0]) = -32764;
         [v30 appendBytes:v219 length:2];
-        v102 = [v101 label];
-        sub_100016A88(v102, v30);
+        label4 = [v101 label];
+        sub_100016A88(label4, v30);
 
-        v103 = [v101 value];
-        sub_1000169D0(v103, v30);
+        value4 = [v101 value];
+        sub_1000169D0(value4, v30);
       }
 
-      v98 = [v96 countByEnumeratingWithState:&v190 objects:v215 count:16];
+      v98 = [urlAddresses countByEnumeratingWithState:&v190 objects:v215 count:16];
     }
 
     while (v98);
@@ -402,8 +402,8 @@
   v189 = 0u;
   v186 = 0u;
   v187 = 0u;
-  v104 = [v168 contactRelations];
-  v105 = [v104 countByEnumeratingWithState:&v186 objects:v214 count:16];
+  contactRelations = [v168 contactRelations];
+  v105 = [contactRelations countByEnumeratingWithState:&v186 objects:v214 count:16];
   if (v105)
   {
     v106 = v105;
@@ -414,24 +414,24 @@
       {
         if (*v187 != v107)
         {
-          objc_enumerationMutation(v104);
+          objc_enumerationMutation(contactRelations);
         }
 
         v109 = *(*(&v186 + 1) + 8 * n);
         LOWORD(v219[0]) = -32763;
         [v30 appendBytes:v219 length:2];
-        v110 = [v109 label];
-        sub_100016A88(v110, v30);
+        label5 = [v109 label];
+        sub_100016A88(label5, v30);
 
-        v111 = [v109 identifier];
-        sub_1000169D0(v111, v30);
+        identifier2 = [v109 identifier];
+        sub_1000169D0(identifier2, v30);
 
-        v112 = [v109 value];
-        v113 = [v112 name];
-        sub_1000169D0(v113, v30);
+        value5 = [v109 value];
+        name = [value5 name];
+        sub_1000169D0(name, v30);
       }
 
-      v106 = [v104 countByEnumeratingWithState:&v186 objects:v214 count:16];
+      v106 = [contactRelations countByEnumeratingWithState:&v186 objects:v214 count:16];
     }
 
     while (v106);
@@ -464,60 +464,60 @@
         v118 = *(*(&v182 + 1) + 8 * v117);
         LOWORD(v219[0]) = -32762;
         [v30 appendBytes:v219 length:2];
-        v119 = [v118 label];
-        sub_100016A88(v119, v30);
+        label6 = [v118 label];
+        sub_100016A88(label6, v30);
 
-        v120 = [v118 value];
+        value6 = [v118 value];
         v121 = v30;
-        if (v120)
+        if (value6)
         {
-          v122 = [v120 urlString];
+          urlString = [value6 urlString];
 
-          if (v122)
+          if (urlString)
           {
             sub_100016A88(CNSocialProfileURLStringKey, v121);
-            v123 = [v120 urlString];
-            sub_1000169D0(v123, v121);
+            urlString2 = [value6 urlString];
+            sub_1000169D0(urlString2, v121);
           }
 
-          v124 = [v120 username];
+          username = [value6 username];
 
-          if (v124)
+          if (username)
           {
             sub_100016A88(CNSocialProfileUsernameKey, v121);
-            v125 = [v120 username];
-            sub_1000169D0(v125, v121);
+            username2 = [value6 username];
+            sub_1000169D0(username2, v121);
           }
 
-          v126 = [v120 userIdentifier];
+          userIdentifier = [value6 userIdentifier];
 
-          if (v126)
+          if (userIdentifier)
           {
             sub_100016A88(CNSocialProfileUserIdentifierKey, v121);
-            v127 = [v120 userIdentifier];
-            sub_1000169D0(v127, v121);
+            userIdentifier2 = [value6 userIdentifier];
+            sub_1000169D0(userIdentifier2, v121);
           }
 
-          v128 = [v120 service];
+          service = [value6 service];
 
-          if (v128)
+          if (service)
           {
             sub_100016A88(CNSocialProfileServiceKey, v121);
-            v129 = [v120 service];
-            sub_100016A88(v129, v121);
+            service2 = [value6 service];
+            sub_100016A88(service2, v121);
           }
 
-          v130 = [v120 teamIdentifier];
+          teamIdentifier = [value6 teamIdentifier];
 
-          if (v130)
+          if (teamIdentifier)
           {
             sub_100016A88(v171, v121);
-            v131 = [v120 teamIdentifier];
-            sub_1000169D0(v131, v121);
+            teamIdentifier2 = [value6 teamIdentifier];
+            sub_1000169D0(teamIdentifier2, v121);
           }
 
-          v132 = [v120 bundleIdentifiers];
-          v133 = [v132 count];
+          bundleIdentifiers = [value6 bundleIdentifiers];
+          v133 = [bundleIdentifiers count];
 
           if (v133)
           {
@@ -528,8 +528,8 @@
             v207 = 0u;
             v208 = 0u;
             v209 = 0u;
-            v136 = [v120 bundleIdentifiers];
-            v137 = [v136 countByEnumeratingWithState:&v206 objects:v219 count:16];
+            bundleIdentifiers2 = [value6 bundleIdentifiers];
+            v137 = [bundleIdentifiers2 countByEnumeratingWithState:&v206 objects:v219 count:16];
             if (v137)
             {
               v138 = v137;
@@ -540,13 +540,13 @@
                 {
                   if (*v207 != v139)
                   {
-                    objc_enumerationMutation(v136);
+                    objc_enumerationMutation(bundleIdentifiers2);
                   }
 
                   sub_1000169D0(*(*(&v206 + 1) + 8 * ii), v135);
                 }
 
-                v138 = [v136 countByEnumeratingWithState:&v206 objects:v219 count:16];
+                v138 = [bundleIdentifiers2 countByEnumeratingWithState:&v206 objects:v219 count:16];
               }
 
               while (v138);
@@ -572,13 +572,13 @@
             v115 = v172;
           }
 
-          v143 = [v120 displayname];
+          displayname = [value6 displayname];
 
-          if (v143)
+          if (displayname)
           {
             sub_100016A88(v169, v121);
-            v144 = [v120 displayname];
-            sub_1000169D0(v144, v121);
+            displayname2 = [value6 displayname];
+            sub_1000169D0(displayname2, v121);
           }
 
           LOBYTE(v210) = -2;
@@ -599,8 +599,8 @@
   v181 = 0u;
   v178 = 0u;
   v179 = 0u;
-  v145 = [v168 instantMessageAddresses];
-  v146 = [v145 countByEnumeratingWithState:&v178 objects:v212 count:16];
+  instantMessageAddresses = [v168 instantMessageAddresses];
+  v146 = [instantMessageAddresses countByEnumeratingWithState:&v178 objects:v212 count:16];
   if (v146)
   {
     v147 = v146;
@@ -611,35 +611,35 @@
       {
         if (*v179 != v148)
         {
-          objc_enumerationMutation(v145);
+          objc_enumerationMutation(instantMessageAddresses);
         }
 
         v150 = *(*(&v178 + 1) + 8 * jj);
         LOWORD(v219[0]) = -32761;
         [v30 appendBytes:v219 length:2];
-        v151 = [v150 label];
-        sub_100016A88(v151, v30);
+        label7 = [v150 label];
+        sub_100016A88(label7, v30);
 
-        v152 = [v150 value];
+        value7 = [v150 value];
         v153 = v30;
-        if (v152)
+        if (value7)
         {
-          v154 = [v152 username];
+          username3 = [value7 username];
 
-          if (v154)
+          if (username3)
           {
             sub_100016A88(CNInstantMessageAddressUsernameKey, v153);
-            v155 = [v152 username];
-            sub_1000169D0(v155, v153);
+            username4 = [value7 username];
+            sub_1000169D0(username4, v153);
           }
 
-          v156 = [v152 service];
+          service3 = [value7 service];
 
-          if (v156)
+          if (service3)
           {
             sub_100016A88(CNInstantMessageAddressServiceKey, v153);
-            v157 = [v152 service];
-            sub_100016A88(v157, v153);
+            service4 = [value7 service];
+            sub_100016A88(service4, v153);
           }
 
           LOBYTE(v219[0]) = -2;
@@ -647,7 +647,7 @@
         }
       }
 
-      v147 = [v145 countByEnumeratingWithState:&v178 objects:v212 count:16];
+      v147 = [instantMessageAddresses countByEnumeratingWithState:&v178 objects:v212 count:16];
     }
 
     while (v147);
@@ -657,8 +657,8 @@
   v177 = 0u;
   v174 = 0u;
   v175 = 0u;
-  v158 = [v168 dates];
-  v159 = [v158 countByEnumeratingWithState:&v174 objects:v211 count:16];
+  dates = [v168 dates];
+  v159 = [dates countByEnumeratingWithState:&v174 objects:v211 count:16];
   if (v159)
   {
     v160 = v159;
@@ -669,20 +669,20 @@
       {
         if (*v175 != v161)
         {
-          objc_enumerationMutation(v158);
+          objc_enumerationMutation(dates);
         }
 
         v163 = *(*(&v174 + 1) + 8 * kk);
         LOWORD(v219[0]) = -32760;
         [v30 appendBytes:v219 length:2];
-        v164 = [v163 label];
-        sub_100016A88(v164, v30);
+        label8 = [v163 label];
+        sub_100016A88(label8, v30);
 
-        v165 = [v163 value];
-        sub_100016AFC(v165, v30);
+        value8 = [v163 value];
+        sub_100016AFC(value8, v30);
       }
 
-      v160 = [v158 countByEnumeratingWithState:&v174 objects:v211 count:16];
+      v160 = [dates countByEnumeratingWithState:&v174 objects:v211 count:16];
     }
 
     while (v160);
@@ -698,7 +698,7 @@
   block[1] = 3221225472;
   block[2] = sub_100030274;
   block[3] = &unk_10005D940;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100071CA8 != -1)
   {
     dispatch_once(&qword_100071CA8, block);
@@ -707,13 +707,13 @@
 
 - (id)abs_identifier
 {
-  v4 = [(CNContact *)self abs_identifier];
-  if (!v4)
+  abs_identifier = [(CNContact *)self abs_identifier];
+  if (!abs_identifier)
   {
     sub_10003B950(a2, self);
   }
 
-  return v4;
+  return abs_identifier;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface MSSendMailIntentFormatter
-- (id)_stringForAddresses:(id)a3;
-- (id)stringForObjectValue:(id)a3;
+- (id)_stringForAddresses:(id)addresses;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation MSSendMailIntentFormatter
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -15,7 +15,7 @@
     goto LABEL_11;
   }
 
-  v5 = v4;
+  v5 = valueCopy;
   v6 = [v5 to];
   v7 = [v6 count];
 
@@ -60,23 +60,23 @@ LABEL_11:
   return v10;
 }
 
-- (id)_stringForAddresses:(id)a3
+- (id)_stringForAddresses:(id)addresses
 {
-  v3 = a3;
-  if ([v3 count])
+  addressesCopy = addresses;
+  if ([addressesCopy count])
   {
-    v4 = [v3 firstObject];
+    firstObject = [addressesCopy firstObject];
     v5 = MEMORY[0x277CCACA8];
     v6 = _EFLocalizedString();
-    v7 = [v4 displayName];
-    v8 = [v5 deferredLocalizedIntentsStringWithFormat:v6, v7];
+    displayName = [firstObject displayName];
+    v8 = [v5 deferredLocalizedIntentsStringWithFormat:v6, displayName];
   }
 
   else
   {
     v9 = MEMORY[0x277CCACA8];
-    v4 = _EFLocalizedString();
-    v8 = [v9 deferredLocalizedIntentsStringWithFormat:v4];
+    firstObject = _EFLocalizedString();
+    v8 = [v9 deferredLocalizedIntentsStringWithFormat:firstObject];
   }
 
   return v8;

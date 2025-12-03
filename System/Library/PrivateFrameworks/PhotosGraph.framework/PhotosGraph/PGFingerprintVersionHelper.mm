@@ -1,17 +1,17 @@
 @interface PGFingerprintVersionHelper
-+ (id)_assetPrintFeatureExtractorForAssetPrintType:(int64_t)a3 transformers:(id)a4 error:(id *)a5;
++ (id)_assetPrintFeatureExtractorForAssetPrintType:(int64_t)type transformers:(id)transformers error:(id *)error;
 + (id)_clipprintFeatureExtractorInstance;
-+ (id)_featureExtractor:(id)a3 withTransformers:(id)a4 parentFeatureExtractorName:(id)a5;
-+ (id)_featureExtractors:(id)a3 withTransformers:(id)a4;
-+ (id)_featureExtractors:(id)a3 withTransformers:(id)a4 parentFeatureExtractorName:(id)a5;
-+ (id)_generateErrorWithErrorCode:(int64_t)a3 errorMessage:(id)a4 underlyingError:(id)a5;
-+ (id)_multiModalFeatureExtractorForMutliModalType:(int64_t)a3 assetFeatureExtractor:(id)a4 personaVectorFeatureExtractor:(id)a5 graph:(id)a6 transformers:(id)a7 error:(id *)a8;
-+ (id)_personaVectorFeatureExtractorForPersonaVectorType:(int64_t)a3 fetchOptionPropertySet:(id)a4 graph:(id)a5 transformers:(id)a6 error:(id *)a7;
++ (id)_featureExtractor:(id)extractor withTransformers:(id)transformers parentFeatureExtractorName:(id)name;
++ (id)_featureExtractors:(id)extractors withTransformers:(id)transformers;
++ (id)_featureExtractors:(id)extractors withTransformers:(id)transformers parentFeatureExtractorName:(id)name;
++ (id)_generateErrorWithErrorCode:(int64_t)code errorMessage:(id)message underlyingError:(id)error;
++ (id)_multiModalFeatureExtractorForMutliModalType:(int64_t)type assetFeatureExtractor:(id)extractor personaVectorFeatureExtractor:(id)featureExtractor graph:(id)graph transformers:(id)transformers error:(id *)error;
++ (id)_personaVectorFeatureExtractorForPersonaVectorType:(int64_t)type fetchOptionPropertySet:(id)set graph:(id)graph transformers:(id)transformers error:(id *)error;
 + (id)_sceneprintFeatureExtractorInstance;
-+ (id)featureExtractorForFingerprintVersion:(int64_t)a3 withGraph:(id)a4 withTransformers:(id)a5 error:(id *)a6;
-+ (id)fetchOptionPropertySetForFingerprintVersion:(int64_t)a3;
-+ (id)nameForFingerprintVersion:(int64_t)a3;
-+ (int64_t)fingerprintVersionForName:(id)a3;
++ (id)featureExtractorForFingerprintVersion:(int64_t)version withGraph:(id)graph withTransformers:(id)transformers error:(id *)error;
++ (id)fetchOptionPropertySetForFingerprintVersion:(int64_t)version;
++ (id)nameForFingerprintVersion:(int64_t)version;
++ (int64_t)fingerprintVersionForName:(id)name;
 + (void)resetPreCalculatedFeatures;
 @end
 
@@ -31,63 +31,63 @@
   return v2;
 }
 
-+ (id)_generateErrorWithErrorCode:(int64_t)a3 errorMessage:(id)a4 underlyingError:(id)a5
++ (id)_generateErrorWithErrorCode:(int64_t)code errorMessage:(id)message underlyingError:(id)error
 {
-  v7 = a5;
+  errorCopy = error;
   v8 = MEMORY[0x277CBEB38];
-  v9 = a4;
+  messageCopy = message;
   v10 = objc_alloc_init(v8);
-  [v10 setObject:v9 forKey:*MEMORY[0x277CCA450]];
+  [v10 setObject:messageCopy forKey:*MEMORY[0x277CCA450]];
 
-  if (v7)
+  if (errorCopy)
   {
-    [v10 setObject:v7 forKey:*MEMORY[0x277CCA7E8]];
+    [v10 setObject:errorCopy forKey:*MEMORY[0x277CCA7E8]];
   }
 
-  v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.PhotosGraph.PGFingerprintVersion" code:a3 userInfo:v10];
+  v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.PhotosGraph.PGFingerprintVersion" code:code userInfo:v10];
 
   return v11;
 }
 
-+ (id)_featureExtractor:(id)a3 withTransformers:(id)a4 parentFeatureExtractorName:(id)a5
++ (id)_featureExtractor:(id)extractor withTransformers:(id)transformers parentFeatureExtractorName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 name];
-  if (v9)
+  extractorCopy = extractor;
+  transformersCopy = transformers;
+  nameCopy = name;
+  name = [extractorCopy name];
+  if (nameCopy)
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v9, v10];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", nameCopy, name];
 
-    v10 = v11;
+    name = v11;
   }
 
-  if (v8 && ([v8 featureTransformersForFeatureExtractorName:v10], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v13, (isKindOfClass & 1) == 0))
+  if (transformersCopy && ([transformersCopy featureTransformersForFeatureExtractorName:name], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v13, (isKindOfClass & 1) == 0))
   {
-    v17 = [v8 featureTransformersForFeatureExtractorName:v10];
-    v15 = [[PGSequentialFeatureExtractor alloc] initWithFeatureExtractor:v7 featureTransformers:v17];
+    v17 = [transformersCopy featureTransformersForFeatureExtractorName:name];
+    v15 = [[PGSequentialFeatureExtractor alloc] initWithFeatureExtractor:extractorCopy featureTransformers:v17];
   }
 
   else
   {
-    v15 = v7;
+    v15 = extractorCopy;
   }
 
   return v15;
 }
 
-+ (id)_featureExtractors:(id)a3 withTransformers:(id)a4 parentFeatureExtractorName:(id)a5
++ (id)_featureExtractors:(id)extractors withTransformers:(id)transformers parentFeatureExtractorName:(id)name
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  extractorsCopy = extractors;
+  transformersCopy = transformers;
+  nameCopy = name;
+  v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(extractorsCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = v8;
+  v12 = extractorsCopy;
   v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
@@ -102,7 +102,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [a1 _featureExtractor:*(*(&v20 + 1) + 8 * i) withTransformers:v9 parentFeatureExtractorName:{v10, v20}];
+        v17 = [self _featureExtractor:*(*(&v20 + 1) + 8 * i) withTransformers:transformersCopy parentFeatureExtractorName:{nameCopy, v20}];
         [v11 addObject:v17];
       }
 
@@ -117,18 +117,18 @@
   return v11;
 }
 
-+ (id)_featureExtractors:(id)a3 withTransformers:(id)a4
++ (id)_featureExtractors:(id)extractors withTransformers:(id)transformers
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  extractorsCopy = extractors;
+  v7 = extractorsCopy;
+  if (transformers)
   {
-    v8 = [a1 _featureExtractors:v6 withTransformers:a4 parentFeatureExtractorName:0];
+    v8 = [self _featureExtractors:extractorsCopy withTransformers:transformers parentFeatureExtractorName:0];
   }
 
   else
   {
-    v8 = v6;
+    v8 = extractorsCopy;
   }
 
   v9 = v8;
@@ -136,61 +136,61 @@
   return v9;
 }
 
-+ (id)_personaVectorFeatureExtractorForPersonaVectorType:(int64_t)a3 fetchOptionPropertySet:(id)a4 graph:(id)a5 transformers:(id)a6 error:(id *)a7
++ (id)_personaVectorFeatureExtractorForPersonaVectorType:(int64_t)type fetchOptionPropertySet:(id)set graph:(id)graph transformers:(id)transformers error:(id *)error
 {
   v190[18] = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (a3 > 1)
+  setCopy = set;
+  graphCopy = graph;
+  transformersCopy = transformers;
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v182 = a1;
-      if (v13)
+      selfCopy = self;
+      if (graphCopy)
       {
-        v177 = [[PGMeaningFeatureExtractor alloc] initWithVersion:1 error:a7];
+        v177 = [[PGMeaningFeatureExtractor alloc] initWithVersion:1 error:error];
         v190[0] = v177;
-        v173 = [[PGInvariantFamilyFeatureExtractor alloc] initWithError:a7];
+        v173 = [[PGInvariantFamilyFeatureExtractor alloc] initWithError:error];
         v190[1] = v173;
-        v169 = [[PGInvariantCoworkerFeatureExtractor alloc] initWithError:a7];
+        v169 = [[PGInvariantCoworkerFeatureExtractor alloc] initWithError:error];
         v190[2] = v169;
-        v165 = [[PGInvariantPartnerFeatureExtractor alloc] initWithError:a7];
+        v165 = [[PGInvariantPartnerFeatureExtractor alloc] initWithError:error];
         v190[3] = v165;
-        v161 = [[PGPublicEventCategoryFeatureExtractor alloc] initWithVersion:1 error:a7];
+        v161 = [[PGPublicEventCategoryFeatureExtractor alloc] initWithVersion:1 error:error];
         v190[4] = v161;
-        v157 = [[PGBusinessCategoryFeatureExtractor alloc] initWithVersion:1 error:a7];
+        v157 = [[PGBusinessCategoryFeatureExtractor alloc] initWithVersion:1 error:error];
         v190[5] = v157;
-        v153 = [[PGInvariantPetFeatureExtractor alloc] initWithVersion:1 error:a7];
+        v153 = [[PGInvariantPetFeatureExtractor alloc] initWithVersion:1 error:error];
         v190[6] = v153;
-        v149 = [[PGBabyFeatureExtractor alloc] initWithError:a7];
+        v149 = [[PGBabyFeatureExtractor alloc] initWithError:error];
         v190[7] = v149;
-        v145 = [[PGSceneFeatureExtractor alloc] initWithVersion:1 error:a7];
+        v145 = [[PGSceneFeatureExtractor alloc] initWithVersion:1 error:error];
         v190[8] = v145;
-        v42 = [[PGMyHomeFeatureExtractor alloc] initWithError:a7];
+        v42 = [[PGMyHomeFeatureExtractor alloc] initWithError:error];
         v190[9] = v42;
-        v180 = v12;
-        v43 = [[PGMyWorkFeatureExtractor alloc] initWithError:a7];
+        v180 = setCopy;
+        v43 = [[PGMyWorkFeatureExtractor alloc] initWithError:error];
         v190[10] = v43;
-        v184 = v14;
-        v44 = [[PGMobilityFeatureExtractor alloc] initWithError:a7];
+        v184 = transformersCopy;
+        v44 = [[PGMobilityFeatureExtractor alloc] initWithError:error];
         v190[11] = v44;
-        v45 = [[PGPartOfDayFeatureExtractor alloc] initWithError:a7];
+        v45 = [[PGPartOfDayFeatureExtractor alloc] initWithError:error];
         v190[12] = v45;
-        v46 = [[PGSeasonFeatureExtractor alloc] initWithError:a7];
+        v46 = [[PGSeasonFeatureExtractor alloc] initWithError:error];
         v190[13] = v46;
-        v47 = [[PGWeekendFeatureExtractor alloc] initWithError:a7];
+        v47 = [[PGWeekendFeatureExtractor alloc] initWithError:error];
         v190[14] = v47;
-        v48 = [[PGWeekdayFeatureExtractor alloc] initWithError:a7];
+        v48 = [[PGWeekdayFeatureExtractor alloc] initWithError:error];
         v190[15] = v48;
-        v186 = v13;
-        v49 = [[PGPOIFeatureExtractor alloc] initWithVersion:1 error:a7];
+        v186 = graphCopy;
+        v49 = [[PGPOIFeatureExtractor alloc] initWithVersion:1 error:error];
         v190[16] = v49;
-        v50 = [[PGROIFeatureExtractor alloc] initWithError:a7];
+        v50 = [[PGROIFeatureExtractor alloc] initWithError:error];
         v190[17] = v50;
         v51 = [MEMORY[0x277CBEA60] arrayWithObjects:v190 count:18];
 
-        v99 = [v182 _featureExtractors:v51 withTransformers:v184 parentFeatureExtractorName:@"PersonaVector"];
+        v99 = [selfCopy _featureExtractors:v51 withTransformers:v184 parentFeatureExtractorName:@"PersonaVector"];
 
         v178 = objc_alloc_init(PGFeatureExtractorCartesianLocation);
         v189[0] = v178;
@@ -298,84 +298,84 @@
         v189[50] = v62;
         v83 = [MEMORY[0x277CBEA60] arrayWithObjects:v189 count:51];
 
-        v12 = v180;
-        v14 = v184;
+        setCopy = v180;
+        transformersCopy = v184;
 
-        v63 = [v182 _featureExtractors:v83 withTransformers:v184 parentFeatureExtractorName:@"PersonaVector"];
+        v63 = [selfCopy _featureExtractors:v83 withTransformers:v184 parentFeatureExtractorName:@"PersonaVector"];
 
         v64 = [objc_alloc(MEMORY[0x277D22C30]) initWithName:@"PersonaVectorMultiModal-V1.0" featureExtractors:v63];
         v65 = [[PGFeatureExtractorPhotoLibraryAverage alloc] initWithAssetFeatureExtractor:v64 assetFetchOptionPropertySet:v180];
-        a6 = [[PGFeatureExtractorAssetPhotoLibrary alloc] initWithPhotoLibraryFeatureExtractor:v65];
+        transformers = [[PGFeatureExtractorAssetPhotoLibrary alloc] initWithPhotoLibraryFeatureExtractor:v65];
 
-        v13 = v186;
+        graphCopy = v186;
         v40 = v99;
         goto LABEL_12;
       }
 
-      if (a7)
+      if (error)
       {
-        v66 = a1;
+        selfCopy5 = self;
         goto LABEL_17;
       }
     }
 
     else
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_19;
       }
 
-      if (v13)
+      if (graphCopy)
       {
-        v175 = [[PGMeaningFeatureExtractor alloc] initWithVersion:1 error:a7];
+        v175 = [[PGMeaningFeatureExtractor alloc] initWithVersion:1 error:error];
         v188[0] = v175;
-        v171 = [[PGPeopleFeatureExtractor alloc] initWithGraph:v13 error:a7];
+        v171 = [[PGPeopleFeatureExtractor alloc] initWithGraph:graphCopy error:error];
         v188[1] = v171;
-        v167 = [[PGInvariantFamilyFeatureExtractor alloc] initWithError:a7];
+        v167 = [[PGInvariantFamilyFeatureExtractor alloc] initWithError:error];
         v188[2] = v167;
-        v163 = [[PGInvariantCoworkerFeatureExtractor alloc] initWithError:a7];
+        v163 = [[PGInvariantCoworkerFeatureExtractor alloc] initWithError:error];
         v188[3] = v163;
-        v159 = [[PGInvariantPartnerFeatureExtractor alloc] initWithError:a7];
+        v159 = [[PGInvariantPartnerFeatureExtractor alloc] initWithError:error];
         v188[4] = v159;
-        v155 = [[PGPublicEventCategoryFeatureExtractor alloc] initWithVersion:1 error:a7];
+        v155 = [[PGPublicEventCategoryFeatureExtractor alloc] initWithVersion:1 error:error];
         v188[5] = v155;
-        v151 = [[PGBusinessCategoryFeatureExtractor alloc] initWithVersion:1 error:a7];
+        v151 = [[PGBusinessCategoryFeatureExtractor alloc] initWithVersion:1 error:error];
         v188[6] = v151;
-        v147 = [[PGInvariantPetFeatureExtractor alloc] initWithVersion:1 error:a7];
+        v147 = [[PGInvariantPetFeatureExtractor alloc] initWithVersion:1 error:error];
         v188[7] = v147;
-        v143 = [[PGBabyFeatureExtractor alloc] initWithError:a7];
+        v143 = [[PGBabyFeatureExtractor alloc] initWithError:error];
         v188[8] = v143;
-        v140 = [[PGSceneFeatureExtractor alloc] initWithVersion:1 error:a7];
+        v140 = [[PGSceneFeatureExtractor alloc] initWithVersion:1 error:error];
         v188[9] = v140;
-        v137 = [[PGFrequentLocationFeatureExtractor alloc] initWithGraph:v13 error:a7];
+        v137 = [[PGFrequentLocationFeatureExtractor alloc] initWithGraph:graphCopy error:error];
         v188[10] = v137;
-        v183 = v14;
-        v134 = [[PGMyHomeFeatureExtractor alloc] initWithError:a7];
+        v183 = transformersCopy;
+        v134 = [[PGMyHomeFeatureExtractor alloc] initWithError:error];
         v188[11] = v134;
-        v16 = [[PGMyWorkFeatureExtractor alloc] initWithError:a7];
+        v16 = [[PGMyWorkFeatureExtractor alloc] initWithError:error];
         v188[12] = v16;
-        v17 = [[PGMobilityFeatureExtractor alloc] initWithError:a7];
+        v17 = [[PGMobilityFeatureExtractor alloc] initWithError:error];
         v188[13] = v17;
-        v18 = [[PGPartOfDayFeatureExtractor alloc] initWithError:a7];
+        v18 = [[PGPartOfDayFeatureExtractor alloc] initWithError:error];
         v188[14] = v18;
-        v19 = [[PGSeasonFeatureExtractor alloc] initWithError:a7];
+        v19 = [[PGSeasonFeatureExtractor alloc] initWithError:error];
         v188[15] = v19;
-        v179 = v12;
-        v20 = [[PGWeekendFeatureExtractor alloc] initWithError:a7];
+        v179 = setCopy;
+        v20 = [[PGWeekendFeatureExtractor alloc] initWithError:error];
         v188[16] = v20;
-        v21 = a1;
-        v181 = a1;
-        v22 = [[PGWeekdayFeatureExtractor alloc] initWithError:a7];
+        selfCopy3 = self;
+        selfCopy4 = self;
+        v22 = [[PGWeekdayFeatureExtractor alloc] initWithError:error];
         v188[17] = v22;
-        v185 = v13;
-        v23 = [[PGPOIFeatureExtractor alloc] initWithVersion:1 error:a7];
+        v185 = graphCopy;
+        v23 = [[PGPOIFeatureExtractor alloc] initWithVersion:1 error:error];
         v188[18] = v23;
-        v24 = [[PGROIFeatureExtractor alloc] initWithError:a7];
+        v24 = [[PGROIFeatureExtractor alloc] initWithError:error];
         v188[19] = v24;
         v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v188 count:20];
 
-        v96 = [v21 _featureExtractors:v25 withTransformers:v183 parentFeatureExtractorName:@"PersonaVector"];
+        v96 = [selfCopy3 _featureExtractors:v25 withTransformers:v183 parentFeatureExtractorName:@"PersonaVector"];
 
         v176 = objc_alloc_init(PGFeatureExtractorCartesianLocation);
         v187[0] = v176;
@@ -485,126 +485,126 @@
         v187[51] = v36;
         v80 = [MEMORY[0x277CBEA60] arrayWithObjects:v187 count:52];
 
-        v14 = v183;
-        v12 = v179;
+        transformersCopy = v183;
+        setCopy = v179;
 
-        v37 = [v181 _featureExtractors:v80 withTransformers:v183 parentFeatureExtractorName:@"PersonaVector"];
+        v37 = [selfCopy4 _featureExtractors:v80 withTransformers:v183 parentFeatureExtractorName:@"PersonaVector"];
 
         v38 = [objc_alloc(MEMORY[0x277D22C30]) initWithName:@"PersonaVectorLibrarySpecificMultiModal-V1.0" featureExtractors:v37];
         v39 = [[PGFeatureExtractorPhotoLibraryAverage alloc] initWithAssetFeatureExtractor:v38 assetFetchOptionPropertySet:v179];
-        a6 = [[PGFeatureExtractorAssetPhotoLibrary alloc] initWithPhotoLibraryFeatureExtractor:v39];
+        transformers = [[PGFeatureExtractorAssetPhotoLibrary alloc] initWithPhotoLibraryFeatureExtractor:v39];
 
-        v13 = v185;
+        graphCopy = v185;
         v40 = v96;
 LABEL_12:
 
         goto LABEL_19;
       }
 
-      if (a7)
+      if (error)
       {
-        v66 = a1;
+        selfCopy5 = self;
 LABEL_17:
-        [v66 _generateErrorWithErrorCode:0 errorMessage:@"Requested fingerprint version requires a valid PGGraph object." underlyingError:0];
-        *a7 = a6 = 0;
+        [selfCopy5 _generateErrorWithErrorCode:0 errorMessage:@"Requested fingerprint version requires a valid PGGraph object." underlyingError:0];
+        *error = transformers = 0;
         goto LABEL_19;
       }
     }
 
-    a6 = 0;
+    transformers = 0;
     goto LABEL_19;
   }
 
-  if (a3)
+  if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v15 = objc_alloc_init(PGFeatureExtractorPCAPrint);
-      a6 = [a1 _featureExtractor:v15 withTransformers:v14];
+      transformers = [self _featureExtractor:v15 withTransformers:transformersCopy];
     }
   }
 
   else
   {
     v41 = objc_alloc(MEMORY[0x277D22C30]);
-    a6 = [v41 initWithName:&stru_2843F5C58 featureExtractors:MEMORY[0x277CBEBF8]];
+    transformers = [v41 initWithName:&stru_2843F5C58 featureExtractors:MEMORY[0x277CBEBF8]];
   }
 
 LABEL_19:
 
   v67 = *MEMORY[0x277D85DE8];
 
-  return a6;
+  return transformers;
 }
 
-+ (id)_multiModalFeatureExtractorForMutliModalType:(int64_t)a3 assetFeatureExtractor:(id)a4 personaVectorFeatureExtractor:(id)a5 graph:(id)a6 transformers:(id)a7 error:(id *)a8
++ (id)_multiModalFeatureExtractorForMutliModalType:(int64_t)type assetFeatureExtractor:(id)extractor personaVectorFeatureExtractor:(id)featureExtractor graph:(id)graph transformers:(id)transformers error:(id *)error
 {
   v381[2] = *MEMORY[0x277D85DE8];
-  v368 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (a3 <= 2)
+  extractorCopy = extractor;
+  featureExtractorCopy = featureExtractor;
+  graphCopy = graph;
+  transformersCopy = transformers;
+  if (type <= 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 0:
         v70 = objc_alloc(MEMORY[0x277D22C30]);
-        v381[0] = v368;
-        v381[1] = v14;
+        v381[0] = extractorCopy;
+        v381[1] = featureExtractorCopy;
         v71 = [MEMORY[0x277CBEA60] arrayWithObjects:v381 count:2];
-        a7 = [v70 initWithName:&stru_2843F5C58 featureExtractors:v71];
+        transformers = [v70 initWithName:&stru_2843F5C58 featureExtractors:v71];
 
         goto LABEL_28;
       case 1:
-        v367 = a1;
-        if (!v15)
+        selfCopy6 = self;
+        if (!graphCopy)
         {
           goto LABEL_25;
         }
 
-        v349 = [[PGMeaningFeatureExtractor alloc] initWithVersion:1 error:a8];
+        v349 = [[PGMeaningFeatureExtractor alloc] initWithVersion:1 error:error];
         v380[0] = v349;
-        v342 = [[PGInvariantFamilyFeatureExtractor alloc] initWithError:a8];
+        v342 = [[PGInvariantFamilyFeatureExtractor alloc] initWithError:error];
         v380[1] = v342;
-        v334 = [[PGInvariantCoworkerFeatureExtractor alloc] initWithError:a8];
+        v334 = [[PGInvariantCoworkerFeatureExtractor alloc] initWithError:error];
         v380[2] = v334;
-        v326 = [[PGInvariantPartnerFeatureExtractor alloc] initWithError:a8];
+        v326 = [[PGInvariantPartnerFeatureExtractor alloc] initWithError:error];
         v380[3] = v326;
-        v318 = [[PGPublicEventCategoryFeatureExtractor alloc] initWithVersion:1 error:a8];
+        v318 = [[PGPublicEventCategoryFeatureExtractor alloc] initWithVersion:1 error:error];
         v380[4] = v318;
-        v311 = [[PGBusinessCategoryFeatureExtractor alloc] initWithVersion:1 error:a8];
+        v311 = [[PGBusinessCategoryFeatureExtractor alloc] initWithVersion:1 error:error];
         v380[5] = v311;
-        v304 = [[PGInvariantPetFeatureExtractor alloc] initWithVersion:1 error:a8];
+        v304 = [[PGInvariantPetFeatureExtractor alloc] initWithVersion:1 error:error];
         v380[6] = v304;
-        v297 = [[PGBabyFeatureExtractor alloc] initWithError:a8];
+        v297 = [[PGBabyFeatureExtractor alloc] initWithError:error];
         v380[7] = v297;
-        v290 = [[PGSceneFeatureExtractor alloc] initWithVersion:1 error:a8];
+        v290 = [[PGSceneFeatureExtractor alloc] initWithVersion:1 error:error];
         v380[8] = v290;
-        v112 = [[PGMyHomeFeatureExtractor alloc] initWithError:a8];
+        v112 = [[PGMyHomeFeatureExtractor alloc] initWithError:error];
         v380[9] = v112;
-        v113 = [[PGMyWorkFeatureExtractor alloc] initWithError:a8];
+        v113 = [[PGMyWorkFeatureExtractor alloc] initWithError:error];
         v380[10] = v113;
-        v114 = [[PGMobilityFeatureExtractor alloc] initWithError:a8];
+        v114 = [[PGMobilityFeatureExtractor alloc] initWithError:error];
         v380[11] = v114;
-        v360 = v14;
-        v115 = [[PGPartOfDayFeatureExtractor alloc] initWithError:a8];
+        v360 = featureExtractorCopy;
+        v115 = [[PGPartOfDayFeatureExtractor alloc] initWithError:error];
         v380[12] = v115;
-        v116 = [[PGSeasonFeatureExtractor alloc] initWithError:a8];
+        v116 = [[PGSeasonFeatureExtractor alloc] initWithError:error];
         v380[13] = v116;
-        v117 = [[PGWeekendFeatureExtractor alloc] initWithError:a8];
+        v117 = [[PGWeekendFeatureExtractor alloc] initWithError:error];
         v380[14] = v117;
-        v354 = v15;
-        v118 = [[PGWeekdayFeatureExtractor alloc] initWithError:a8];
+        v354 = graphCopy;
+        v118 = [[PGWeekdayFeatureExtractor alloc] initWithError:error];
         v380[15] = v118;
-        v366 = v16;
-        v119 = [[PGPOIFeatureExtractor alloc] initWithVersion:1 error:a8];
+        v366 = transformersCopy;
+        v119 = [[PGPOIFeatureExtractor alloc] initWithVersion:1 error:error];
         v380[16] = v119;
-        v120 = [[PGROIFeatureExtractor alloc] initWithError:a8];
+        v120 = [[PGROIFeatureExtractor alloc] initWithError:error];
         v380[17] = v120;
         v121 = [MEMORY[0x277CBEA60] arrayWithObjects:v380 count:18];
 
-        v346 = [v367 _featureExtractors:v121 withTransformers:v366];
+        v346 = [selfCopy6 _featureExtractors:v121 withTransformers:v366];
 
         v122 = objc_alloc_init(PGFeatureExtractorFaceSize);
         v379[0] = v122;
@@ -618,9 +618,9 @@ LABEL_19:
         v379[4] = v126;
         v127 = [MEMORY[0x277CBEA60] arrayWithObjects:v379 count:5];
 
-        v186 = [v367 _featureExtractors:v127 withTransformers:v366];
+        v186 = [selfCopy6 _featureExtractors:v127 withTransformers:v366];
 
-        v378[0] = v368;
+        v378[0] = extractorCopy;
         v343 = objc_alloc_init(PGFeatureExtractorCartesianLocation);
         v378[1] = v343;
         v335 = [[PGFeatureExtractorFrequentPeople alloc] initWithNumberOfFrequentPeopleToExtract:25];
@@ -738,68 +738,68 @@ LABEL_19:
         v378[55] = v140;
         v164 = [MEMORY[0x277CBEA60] arrayWithObjects:v378 count:56];
 
-        v14 = v360;
-        v16 = v366;
+        featureExtractorCopy = v360;
+        transformersCopy = v366;
 
-        v15 = v354;
-        v58 = [v367 _featureExtractors:v164 withTransformers:v366];
+        graphCopy = v354;
+        v58 = [selfCopy6 _featureExtractors:v164 withTransformers:v366];
 
         v59 = objc_alloc(MEMORY[0x277D22C30]);
         v60 = @"MultiModal-V1.0";
         break;
       case 2:
-        v367 = a1;
-        if (!v15)
+        selfCopy6 = self;
+        if (!graphCopy)
         {
           goto LABEL_25;
         }
 
-        v345 = [[PGMeaningFeatureExtractor alloc] initWithVersion:1 error:a8];
+        v345 = [[PGMeaningFeatureExtractor alloc] initWithVersion:1 error:error];
         v377[0] = v345;
-        v337 = [[PGPeopleFeatureExtractor alloc] initWithGraph:v15 error:a8];
+        v337 = [[PGPeopleFeatureExtractor alloc] initWithGraph:graphCopy error:error];
         v377[1] = v337;
-        v329 = [[PGInvariantFamilyFeatureExtractor alloc] initWithError:a8];
+        v329 = [[PGInvariantFamilyFeatureExtractor alloc] initWithError:error];
         v377[2] = v329;
-        v321 = [[PGInvariantCoworkerFeatureExtractor alloc] initWithError:a8];
+        v321 = [[PGInvariantCoworkerFeatureExtractor alloc] initWithError:error];
         v377[3] = v321;
-        v313 = [[PGInvariantPartnerFeatureExtractor alloc] initWithError:a8];
+        v313 = [[PGInvariantPartnerFeatureExtractor alloc] initWithError:error];
         v377[4] = v313;
-        v306 = [[PGPublicEventCategoryFeatureExtractor alloc] initWithVersion:1 error:a8];
+        v306 = [[PGPublicEventCategoryFeatureExtractor alloc] initWithVersion:1 error:error];
         v377[5] = v306;
-        v299 = [[PGBusinessCategoryFeatureExtractor alloc] initWithVersion:1 error:a8];
+        v299 = [[PGBusinessCategoryFeatureExtractor alloc] initWithVersion:1 error:error];
         v377[6] = v299;
-        v292 = [[PGInvariantPetFeatureExtractor alloc] initWithVersion:1 error:a8];
+        v292 = [[PGInvariantPetFeatureExtractor alloc] initWithVersion:1 error:error];
         v377[7] = v292;
-        v285 = [[PGBabyFeatureExtractor alloc] initWithError:a8];
+        v285 = [[PGBabyFeatureExtractor alloc] initWithError:error];
         v377[8] = v285;
-        v279 = [[PGSceneFeatureExtractor alloc] initWithVersion:1 error:a8];
+        v279 = [[PGSceneFeatureExtractor alloc] initWithVersion:1 error:error];
         v377[9] = v279;
-        v273 = [[PGFrequentLocationFeatureExtractor alloc] initWithGraph:v15 error:a8];
+        v273 = [[PGFrequentLocationFeatureExtractor alloc] initWithGraph:graphCopy error:error];
         v377[10] = v273;
-        v29 = [[PGMyHomeFeatureExtractor alloc] initWithError:a8];
+        v29 = [[PGMyHomeFeatureExtractor alloc] initWithError:error];
         v377[11] = v29;
-        v30 = [[PGMyWorkFeatureExtractor alloc] initWithError:a8];
+        v30 = [[PGMyWorkFeatureExtractor alloc] initWithError:error];
         v377[12] = v30;
-        v31 = [[PGMobilityFeatureExtractor alloc] initWithError:a8];
+        v31 = [[PGMobilityFeatureExtractor alloc] initWithError:error];
         v377[13] = v31;
-        v356 = v14;
-        v32 = [[PGPartOfDayFeatureExtractor alloc] initWithError:a8];
+        v356 = featureExtractorCopy;
+        v32 = [[PGPartOfDayFeatureExtractor alloc] initWithError:error];
         v377[14] = v32;
-        v351 = v15;
-        v33 = [[PGSeasonFeatureExtractor alloc] initWithError:a8];
+        v351 = graphCopy;
+        v33 = [[PGSeasonFeatureExtractor alloc] initWithError:error];
         v377[15] = v33;
-        v34 = [[PGWeekendFeatureExtractor alloc] initWithError:a8];
+        v34 = [[PGWeekendFeatureExtractor alloc] initWithError:error];
         v377[16] = v34;
-        v35 = [[PGWeekdayFeatureExtractor alloc] initWithError:a8];
+        v35 = [[PGWeekdayFeatureExtractor alloc] initWithError:error];
         v377[17] = v35;
-        v362 = v16;
-        v36 = [[PGPOIFeatureExtractor alloc] initWithVersion:1 error:a8];
+        v362 = transformersCopy;
+        v36 = [[PGPOIFeatureExtractor alloc] initWithVersion:1 error:error];
         v377[18] = v36;
-        v37 = [[PGROIFeatureExtractor alloc] initWithError:a8];
+        v37 = [[PGROIFeatureExtractor alloc] initWithError:error];
         v377[19] = v37;
         v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v377 count:20];
 
-        v346 = [v367 _featureExtractors:v38 withTransformers:v362];
+        v346 = [selfCopy6 _featureExtractors:v38 withTransformers:v362];
 
         v39 = objc_alloc_init(PGFeatureExtractorFaceSize);
         v376[0] = v39;
@@ -813,9 +813,9 @@ LABEL_19:
         v376[4] = v43;
         v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v376 count:5];
 
-        v186 = [v367 _featureExtractors:v44 withTransformers:v362];
+        v186 = [selfCopy6 _featureExtractors:v44 withTransformers:v362];
 
-        v375[0] = v368;
+        v375[0] = extractorCopy;
         v338 = objc_alloc_init(PGFeatureExtractorCartesianLocation);
         v375[1] = v338;
         v330 = [[PGFeatureExtractorFrequentPeople alloc] initWithNumberOfFrequentPeopleToExtract:25];
@@ -933,11 +933,11 @@ LABEL_19:
         v375[55] = v57;
         v162 = [MEMORY[0x277CBEA60] arrayWithObjects:v375 count:56];
 
-        v14 = v356;
-        v16 = v362;
+        featureExtractorCopy = v356;
+        transformersCopy = v362;
 
-        v15 = v351;
-        v58 = [v367 _featureExtractors:v162 withTransformers:v362];
+        graphCopy = v351;
+        v58 = [selfCopy6 _featureExtractors:v162 withTransformers:v362];
 
         v59 = objc_alloc(MEMORY[0x277D22C30]);
         v60 = @"LibrarySpecific-MultiModal-V1.0";
@@ -946,45 +946,45 @@ LABEL_19:
         goto LABEL_28;
     }
 
-    a7 = [v59 initWithName:v60 featureExtractors:v58];
+    transformers = [v59 initWithName:v60 featureExtractors:v58];
 
     v102 = v186;
     goto LABEL_24;
   }
 
-  if (a3 > 4)
+  if (type > 4)
   {
-    if (a3 == 5)
+    if (type == 5)
     {
-      v367 = a1;
-      if (v15)
+      selfCopy6 = self;
+      if (graphCopy)
       {
-        v103 = [[PGMeaningFeatureExtractor alloc] initWithVersion:2 error:a8];
+        v103 = [[PGMeaningFeatureExtractor alloc] initWithVersion:2 error:error];
         v370[0] = v103;
-        v104 = [[PGMyHomeFeatureExtractor alloc] initWithError:a8];
+        v104 = [[PGMyHomeFeatureExtractor alloc] initWithError:error];
         v370[1] = v104;
-        v365 = v16;
-        v105 = [[PGMyWorkFeatureExtractor alloc] initWithError:a8];
+        v365 = transformersCopy;
+        v105 = [[PGMyWorkFeatureExtractor alloc] initWithError:error];
         v370[2] = v105;
-        v359 = v14;
-        v106 = [[PGSocialGroupFeatureExtractor alloc] initWithError:a8];
+        v359 = featureExtractorCopy;
+        v106 = [[PGSocialGroupFeatureExtractor alloc] initWithError:error];
         v370[3] = v106;
-        v107 = [[PGROIFeatureExtractor alloc] initWithError:a8];
+        v107 = [[PGROIFeatureExtractor alloc] initWithError:error];
         v370[4] = v107;
-        v108 = [[PGInfrequentCountryFeatureExtractor alloc] initWithVersion:1 graph:v15 error:a8];
+        v108 = [[PGInfrequentCountryFeatureExtractor alloc] initWithVersion:1 graph:graphCopy error:error];
         v370[5] = v108;
-        v109 = [[PGInfrequentCityFeatureExtractor alloc] initWithVersion:1 graph:v15 error:a8];
+        v109 = [[PGInfrequentCityFeatureExtractor alloc] initWithVersion:1 graph:graphCopy error:error];
         v370[6] = v109;
-        v110 = v15;
+        v110 = graphCopy;
         v111 = objc_alloc_init(PGFeatureExtractorMomentNodeSpecialPOI);
         v370[7] = v111;
         v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v370 count:8];
 
-        v15 = v110;
-        v14 = v359;
+        graphCopy = v110;
+        featureExtractorCopy = v359;
 
-        v16 = v365;
-        v26 = [v367 _featureExtractors:v25 withTransformers:v365];
+        transformersCopy = v365;
+        v26 = [selfCopy6 _featureExtractors:v25 withTransformers:v365];
         v27 = objc_alloc(MEMORY[0x277D22C30]);
         v28 = @"MultiModal-MomentNode-Music-V2.0";
         goto LABEL_20;
@@ -993,74 +993,74 @@ LABEL_19:
 
     else
     {
-      if (a3 != 6)
+      if (type != 6)
       {
         goto LABEL_28;
       }
 
-      v367 = a1;
-      if (v15)
+      selfCopy6 = self;
+      if (graphCopy)
       {
-        v363 = [[PGMeaningMemoryNodeFeatureExtractor alloc] initWithVersion:2 error:a8];
+        v363 = [[PGMeaningMemoryNodeFeatureExtractor alloc] initWithVersion:2 error:error];
         v369[0] = v363;
-        v352 = [[PGInvariantFamilyMemoryNodeFeatureExtractor alloc] initWithError:a8];
+        v352 = [[PGInvariantFamilyMemoryNodeFeatureExtractor alloc] initWithError:error];
         v369[1] = v352;
-        v347 = [[PGInvariantCoworkerMemoryNodeFeatureExtractor alloc] initWithError:a8];
+        v347 = [[PGInvariantCoworkerMemoryNodeFeatureExtractor alloc] initWithError:error];
         v369[2] = v347;
-        v339 = [[PGInvariantPartnerMemoryNodeFeatureExtractor alloc] initWithError:a8];
+        v339 = [[PGInvariantPartnerMemoryNodeFeatureExtractor alloc] initWithError:error];
         v369[3] = v339;
-        v331 = [[PGInvariantPartnerBiologicalSexMaleMemoryNodeFeatureExtractor alloc] initWithError:a8];
+        v331 = [[PGInvariantPartnerBiologicalSexMaleMemoryNodeFeatureExtractor alloc] initWithError:error];
         v369[4] = v331;
-        v323 = [[PGInvariantPartnerBiologicalSexFemaleMemoryNodeFeatureExtractor alloc] initWithError:a8];
+        v323 = [[PGInvariantPartnerBiologicalSexFemaleMemoryNodeFeatureExtractor alloc] initWithError:error];
         v369[5] = v323;
-        v315 = [[PGInvariantPetMemoryNodeFeatureExtractor alloc] initWithVersion:2 error:a8];
+        v315 = [[PGInvariantPetMemoryNodeFeatureExtractor alloc] initWithVersion:2 error:error];
         v369[6] = v315;
-        v308 = [[PGBabyMemoryNodeFeatureExtractor alloc] initWithError:a8];
+        v308 = [[PGBabyMemoryNodeFeatureExtractor alloc] initWithError:error];
         v369[7] = v308;
-        v301 = [[PGInvariantMotherMemoryNodeFeatureExtractor alloc] initWithError:a8];
+        v301 = [[PGInvariantMotherMemoryNodeFeatureExtractor alloc] initWithError:error];
         v369[8] = v301;
-        v294 = [[PGInvariantFatherMemoryNodeFeatureExtractor alloc] initWithError:a8];
+        v294 = [[PGInvariantFatherMemoryNodeFeatureExtractor alloc] initWithError:error];
         v369[9] = v294;
-        v287 = [[PGInvariantDaughterMemoryNodeFeatureExtractor alloc] initWithError:a8];
+        v287 = [[PGInvariantDaughterMemoryNodeFeatureExtractor alloc] initWithError:error];
         v369[10] = v287;
-        v281 = [[PGInvariantSonMemoryNodeFeatureExtractor alloc] initWithError:a8];
+        v281 = [[PGInvariantSonMemoryNodeFeatureExtractor alloc] initWithError:error];
         v369[11] = v281;
-        v275 = [[PGInvariantSisterMemoryNodeFeatureExtractor alloc] initWithError:a8];
+        v275 = [[PGInvariantSisterMemoryNodeFeatureExtractor alloc] initWithError:error];
         v369[12] = v275;
-        v269 = [[PGInvariantBrotherMemoryNodeFeatureExtractor alloc] initWithError:a8];
+        v269 = [[PGInvariantBrotherMemoryNodeFeatureExtractor alloc] initWithError:error];
         v369[13] = v269;
-        v264 = [[PGInvariantMyFriendMemoryNodeFeatureExtractor alloc] initWithError:a8];
+        v264 = [[PGInvariantMyFriendMemoryNodeFeatureExtractor alloc] initWithError:error];
         v369[14] = v264;
-        v259 = [[PGChildMemoryNodeFeatureExtractor alloc] initWithError:a8];
+        v259 = [[PGChildMemoryNodeFeatureExtractor alloc] initWithError:error];
         v369[15] = v259;
-        v254 = [[PGSocialGroupMemoryNodeFeatureExtractor alloc] initWithError:a8];
+        v254 = [[PGSocialGroupMemoryNodeFeatureExtractor alloc] initWithError:error];
         v369[16] = v254;
-        v249 = [[PGOverTheYearsMemoryNodeFeatureExtractor alloc] initWithVersion:1 error:a8];
+        v249 = [[PGOverTheYearsMemoryNodeFeatureExtractor alloc] initWithVersion:1 error:error];
         v369[17] = v249;
-        v61 = [[PGCelebratedHolidayMemoryNodeFeatureExtractor alloc] initWithVersion:1 error:a8];
+        v61 = [[PGCelebratedHolidayMemoryNodeFeatureExtractor alloc] initWithVersion:1 error:error];
         v369[18] = v61;
-        v357 = v14;
-        v62 = [[PGSceneMemoryNodeFeatureExtractor alloc] initWithVersion:4 error:a8];
+        v357 = featureExtractorCopy;
+        v62 = [[PGSceneMemoryNodeFeatureExtractor alloc] initWithVersion:4 error:error];
         v369[19] = v62;
-        v63 = [[PGROIMemoryNodeFeatureExtractor alloc] initWithError:a8];
+        v63 = [[PGROIMemoryNodeFeatureExtractor alloc] initWithError:error];
         v369[20] = v63;
-        v64 = [[PGCityMemoryNodeFeatureExtractor alloc] initWithVersion:1 error:a8];
+        v64 = [[PGCityMemoryNodeFeatureExtractor alloc] initWithVersion:1 error:error];
         v369[21] = v64;
-        v65 = v15;
-        v66 = [[PGCountryMemoryNodeFeatureExtractor alloc] initWithVersion:1 graph:v15 error:a8];
+        v65 = graphCopy;
+        v66 = [[PGCountryMemoryNodeFeatureExtractor alloc] initWithVersion:1 graph:graphCopy error:error];
         v369[22] = v66;
-        v67 = [[PGAOIMemoryNodeFeatureExtractor alloc] initWithError:a8];
+        v67 = [[PGAOIMemoryNodeFeatureExtractor alloc] initWithError:error];
         v369[23] = v67;
-        v68 = v16;
-        v69 = [[PGAudioMemoryNodeFeatureExtractor alloc] initWithVersion:1 error:a8];
+        v68 = transformersCopy;
+        v69 = [[PGAudioMemoryNodeFeatureExtractor alloc] initWithVersion:1 error:error];
         v369[24] = v69;
         v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v369 count:25];
 
-        v16 = v68;
-        v15 = v65;
+        transformersCopy = v68;
+        graphCopy = v65;
 
-        v14 = v357;
-        v26 = [v367 _featureExtractors:v25 withTransformers:v68];
+        featureExtractorCopy = v357;
+        v26 = [selfCopy6 _featureExtractors:v25 withTransformers:v68];
         v27 = objc_alloc(MEMORY[0x277D22C30]);
         v28 = @"MultiModal-MemoryNode-Music-V1.0";
         goto LABEL_20;
@@ -1070,49 +1070,49 @@ LABEL_19:
     goto LABEL_25;
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
-    v367 = a1;
-    if (v15)
+    selfCopy6 = self;
+    if (graphCopy)
     {
-      v361 = [[PGMeaningFeatureExtractor alloc] initWithVersion:2 error:a8];
+      v361 = [[PGMeaningFeatureExtractor alloc] initWithVersion:2 error:error];
       v371[0] = v361;
-      v355 = [[PGPersonActivityMeaningFeatureExtractor alloc] initWithVersion:1 error:a8];
+      v355 = [[PGPersonActivityMeaningFeatureExtractor alloc] initWithVersion:1 error:error];
       v371[1] = v355;
-      v350 = [[PGInvariantFamilyFeatureExtractor alloc] initWithError:a8];
+      v350 = [[PGInvariantFamilyFeatureExtractor alloc] initWithError:error];
       v371[2] = v350;
-      v344 = [[PGSocialGroupFeatureExtractor alloc] initWithError:a8];
+      v344 = [[PGSocialGroupFeatureExtractor alloc] initWithError:error];
       v371[3] = v344;
-      v336 = [[PGInvariantPetFeatureExtractor alloc] initWithVersion:2 error:a8];
+      v336 = [[PGInvariantPetFeatureExtractor alloc] initWithVersion:2 error:error];
       v371[4] = v336;
-      v328 = [[PGSceneFeatureExtractor alloc] initWithVersion:4 error:a8];
+      v328 = [[PGSceneFeatureExtractor alloc] initWithVersion:4 error:error];
       v371[5] = v328;
-      v320 = [[PGMyHomeFeatureExtractor alloc] initWithError:a8];
+      v320 = [[PGMyHomeFeatureExtractor alloc] initWithError:error];
       v371[6] = v320;
-      v17 = [[PGMyWorkFeatureExtractor alloc] initWithError:a8];
+      v17 = [[PGMyWorkFeatureExtractor alloc] initWithError:error];
       v371[7] = v17;
-      v18 = [[PGROIFeatureExtractor alloc] initWithError:a8];
+      v18 = [[PGROIFeatureExtractor alloc] initWithError:error];
       v371[8] = v18;
-      v19 = [[PGInfrequentCountryFeatureExtractor alloc] initWithVersion:1 graph:v15 error:a8];
+      v19 = [[PGInfrequentCountryFeatureExtractor alloc] initWithVersion:1 graph:graphCopy error:error];
       v371[9] = v19;
-      v20 = [[PGInfrequentCityFeatureExtractor alloc] initWithVersion:1 graph:v15 error:a8];
+      v20 = [[PGInfrequentCityFeatureExtractor alloc] initWithVersion:1 graph:graphCopy error:error];
       v371[10] = v20;
-      v21 = v16;
-      v22 = [[PGCelebratedHolidayFeatureExtractor alloc] initWithVersion:1 error:a8];
+      v21 = transformersCopy;
+      v22 = [[PGCelebratedHolidayFeatureExtractor alloc] initWithVersion:1 error:error];
       v371[11] = v22;
-      v23 = v14;
+      v23 = featureExtractorCopy;
       v24 = objc_alloc_init(PGFeatureExtractorMomentNodeSpecialPOI);
       v371[12] = v24;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v371 count:13];
 
-      v14 = v23;
-      v16 = v21;
+      featureExtractorCopy = v23;
+      transformersCopy = v21;
 
-      v26 = [v367 _featureExtractors:v25 withTransformers:v21];
+      v26 = [selfCopy6 _featureExtractors:v25 withTransformers:v21];
       v27 = objc_alloc(MEMORY[0x277D22C30]);
       v28 = @"MultiModal-MomentNode-Music-V1.0";
 LABEL_20:
-      a7 = [v27 initWithName:v28 featureExtractors:v26];
+      transformers = [v27 initWithName:v28 featureExtractors:v26];
 
       goto LABEL_28;
     }
@@ -1120,71 +1120,71 @@ LABEL_20:
     goto LABEL_25;
   }
 
-  v367 = a1;
-  if (v15)
+  selfCopy6 = self;
+  if (graphCopy)
   {
-    v348 = [[PGMeaningFeatureExtractor alloc] initWithVersion:2 error:a8];
+    v348 = [[PGMeaningFeatureExtractor alloc] initWithVersion:2 error:error];
     v374[0] = v348;
-    v340 = [[PGPersonActivityMeaningFeatureExtractor alloc] initWithVersion:1 error:a8];
+    v340 = [[PGPersonActivityMeaningFeatureExtractor alloc] initWithVersion:1 error:error];
     v374[1] = v340;
-    v332 = [[PGInvariantFamilyFeatureExtractor alloc] initWithError:a8];
+    v332 = [[PGInvariantFamilyFeatureExtractor alloc] initWithError:error];
     v374[2] = v332;
-    v324 = [[PGInvariantCoworkerFeatureExtractor alloc] initWithError:a8];
+    v324 = [[PGInvariantCoworkerFeatureExtractor alloc] initWithError:error];
     v374[3] = v324;
-    v316 = [[PGInvariantPartnerFeatureExtractor alloc] initWithError:a8];
+    v316 = [[PGInvariantPartnerFeatureExtractor alloc] initWithError:error];
     v374[4] = v316;
-    v309 = [[PGInvariantBrotherFeatureExtractor alloc] initWithError:a8];
+    v309 = [[PGInvariantBrotherFeatureExtractor alloc] initWithError:error];
     v374[5] = v309;
-    v302 = [[PGInvariantSisterFeatureExtractor alloc] initWithError:a8];
+    v302 = [[PGInvariantSisterFeatureExtractor alloc] initWithError:error];
     v374[6] = v302;
-    v295 = [[PGInvariantMotherFeatureExtractor alloc] initWithError:a8];
+    v295 = [[PGInvariantMotherFeatureExtractor alloc] initWithError:error];
     v374[7] = v295;
-    v288 = [[PGInvariantFatherFeatureExtractor alloc] initWithError:a8];
+    v288 = [[PGInvariantFatherFeatureExtractor alloc] initWithError:error];
     v374[8] = v288;
-    v282 = [[PGInvariantSonFeatureExtractor alloc] initWithError:a8];
+    v282 = [[PGInvariantSonFeatureExtractor alloc] initWithError:error];
     v374[9] = v282;
-    v276 = [[PGInvariantDaughterFeatureExtractor alloc] initWithError:a8];
+    v276 = [[PGInvariantDaughterFeatureExtractor alloc] initWithError:error];
     v374[10] = v276;
-    v270 = [[PGPublicEventCategoryFeatureExtractor alloc] initWithVersion:2 error:a8];
+    v270 = [[PGPublicEventCategoryFeatureExtractor alloc] initWithVersion:2 error:error];
     v374[11] = v270;
-    v265 = [[PGBusinessCategoryFeatureExtractor alloc] initWithVersion:2 error:a8];
+    v265 = [[PGBusinessCategoryFeatureExtractor alloc] initWithVersion:2 error:error];
     v374[12] = v265;
-    v260 = [[PGInvariantPetFeatureExtractor alloc] initWithVersion:2 error:a8];
+    v260 = [[PGInvariantPetFeatureExtractor alloc] initWithVersion:2 error:error];
     v374[13] = v260;
-    v255 = [[PGBabyFeatureExtractor alloc] initWithError:a8];
+    v255 = [[PGBabyFeatureExtractor alloc] initWithError:error];
     v374[14] = v255;
-    v250 = [[PGSceneFeatureExtractor alloc] initWithVersion:2 error:a8];
+    v250 = [[PGSceneFeatureExtractor alloc] initWithVersion:2 error:error];
     v374[15] = v250;
-    v245 = [[PGMyHomeFeatureExtractor alloc] initWithError:a8];
+    v245 = [[PGMyHomeFeatureExtractor alloc] initWithError:error];
     v374[16] = v245;
-    v241 = [[PGMyWorkFeatureExtractor alloc] initWithError:a8];
+    v241 = [[PGMyWorkFeatureExtractor alloc] initWithError:error];
     v374[17] = v241;
-    v237 = [[PGMobilityFeatureExtractor alloc] initWithError:a8];
+    v237 = [[PGMobilityFeatureExtractor alloc] initWithError:error];
     v374[18] = v237;
-    v72 = [[PGPartOfDayFeatureExtractor alloc] initWithError:a8];
+    v72 = [[PGPartOfDayFeatureExtractor alloc] initWithError:error];
     v374[19] = v72;
-    v73 = [[PGSeasonFeatureExtractor alloc] initWithError:a8];
+    v73 = [[PGSeasonFeatureExtractor alloc] initWithError:error];
     v374[20] = v73;
-    v74 = [[PGWeekendFeatureExtractor alloc] initWithError:a8];
+    v74 = [[PGWeekendFeatureExtractor alloc] initWithError:error];
     v374[21] = v74;
-    v358 = v14;
-    v75 = [[PGWeekdayFeatureExtractor alloc] initWithError:a8];
+    v358 = featureExtractorCopy;
+    v75 = [[PGWeekdayFeatureExtractor alloc] initWithError:error];
     v374[22] = v75;
-    v76 = [[PGPOIFeatureExtractor alloc] initWithVersion:2 error:a8];
+    v76 = [[PGPOIFeatureExtractor alloc] initWithVersion:2 error:error];
     v374[23] = v76;
-    v77 = [[PGROIFeatureExtractor alloc] initWithError:a8];
+    v77 = [[PGROIFeatureExtractor alloc] initWithError:error];
     v374[24] = v77;
-    v78 = [[PGInfrequentCountryFeatureExtractor alloc] initWithVersion:1 graph:v15 error:a8];
+    v78 = [[PGInfrequentCountryFeatureExtractor alloc] initWithVersion:1 graph:graphCopy error:error];
     v374[25] = v78;
-    v364 = v16;
-    v79 = [[PGCityFeatureExtractor alloc] initWithVersion:1 error:a8];
+    v364 = transformersCopy;
+    v79 = [[PGCityFeatureExtractor alloc] initWithVersion:1 error:error];
     v374[26] = v79;
-    v353 = v15;
-    v80 = [[PGCelebratedHolidayFeatureExtractor alloc] initWithVersion:1 error:a8];
+    v353 = graphCopy;
+    v80 = [[PGCelebratedHolidayFeatureExtractor alloc] initWithVersion:1 error:error];
     v374[27] = v80;
     v81 = [MEMORY[0x277CBEA60] arrayWithObjects:v374 count:28];
 
-    v346 = [v367 _featureExtractors:v81 withTransformers:v364];
+    v346 = [selfCopy6 _featureExtractors:v81 withTransformers:v364];
 
     v82 = objc_alloc_init(PGFeatureExtractorFaceSize);
     v373[0] = v82;
@@ -1198,9 +1198,9 @@ LABEL_20:
     v373[4] = v86;
     v87 = [MEMORY[0x277CBEA60] arrayWithObjects:v373 count:5];
 
-    v184 = [v367 _featureExtractors:v87 withTransformers:v364];
+    v184 = [selfCopy6 _featureExtractors:v87 withTransformers:v364];
 
-    v372[0] = v368;
+    v372[0] = extractorCopy;
     v341 = objc_alloc_init(PGFeatureExtractorCartesianLocation);
     v372[1] = v341;
     v333 = [[PGFeatureExtractorFrequentPeople alloc] initWithNumberOfFrequentPeopleToExtract:25];
@@ -1320,13 +1320,13 @@ LABEL_20:
     v372[56] = v358;
     v160 = [MEMORY[0x277CBEA60] arrayWithObjects:v372 count:57];
 
-    v15 = v353;
-    v14 = v358;
+    graphCopy = v353;
+    featureExtractorCopy = v358;
 
-    v16 = v364;
-    v101 = [v367 _featureExtractors:v160 withTransformers:v364];
+    transformersCopy = v364;
+    v101 = [selfCopy6 _featureExtractors:v160 withTransformers:v364];
 
-    a7 = [objc_alloc(MEMORY[0x277D22C30]) initWithName:@"MultiModal-V2.0" featureExtractors:v101];
+    transformers = [objc_alloc(MEMORY[0x277D22C30]) initWithName:@"MultiModal-V2.0" featureExtractors:v101];
     v102 = v184;
 LABEL_24:
 
@@ -1334,64 +1334,64 @@ LABEL_24:
   }
 
 LABEL_25:
-  if (a8)
+  if (error)
   {
-    [v367 _generateErrorWithErrorCode:0 errorMessage:@"Requested fingerprint version requires a valid PGGraph object." underlyingError:0];
-    *a8 = a7 = 0;
+    [selfCopy6 _generateErrorWithErrorCode:0 errorMessage:@"Requested fingerprint version requires a valid PGGraph object." underlyingError:0];
+    *error = transformers = 0;
   }
 
   else
   {
-    a7 = 0;
+    transformers = 0;
   }
 
 LABEL_28:
 
   v141 = *MEMORY[0x277D85DE8];
 
-  return a7;
+  return transformers;
 }
 
-+ (id)_assetPrintFeatureExtractorForAssetPrintType:(int64_t)a3 transformers:(id)a4 error:(id *)a5
++ (id)_assetPrintFeatureExtractorForAssetPrintType:(int64_t)type transformers:(id)transformers error:(id *)error
 {
-  v8 = a4;
-  if (a3 > 1)
+  transformersCopy = transformers;
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v9 = objc_alloc_init(PGFeatureExtractorPCAPrint);
+      _clipprintFeatureExtractorInstance = objc_alloc_init(PGFeatureExtractorPCAPrint);
     }
 
     else
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_11;
       }
 
-      v9 = [a1 _clipprintFeatureExtractorInstance];
+      _clipprintFeatureExtractorInstance = [self _clipprintFeatureExtractorInstance];
     }
   }
 
   else
   {
-    if (!a3)
+    if (!type)
     {
       v10 = objc_alloc(MEMORY[0x277D22C30]);
       v5 = [v10 initWithName:&stru_2843F5C58 featureExtractors:MEMORY[0x277CBEBF8]];
       goto LABEL_11;
     }
 
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_11;
     }
 
-    v9 = [a1 _sceneprintFeatureExtractorInstance];
+    _clipprintFeatureExtractorInstance = [self _sceneprintFeatureExtractorInstance];
   }
 
-  v11 = v9;
-  v5 = [a1 _featureExtractor:v9 withTransformers:v8];
+  v11 = _clipprintFeatureExtractorInstance;
+  v5 = [self _featureExtractor:_clipprintFeatureExtractorInstance withTransformers:transformersCopy];
 
 LABEL_11:
 
@@ -1405,11 +1405,11 @@ LABEL_11:
   +[PGFeatureExtractorPhotoLibrarySize resetPreCalculatedPhotoLibrarySize];
 }
 
-+ (id)fetchOptionPropertySetForFingerprintVersion:(int64_t)a3
++ (id)fetchOptionPropertySetForFingerprintVersion:(int64_t)version
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3 + 55;
-  if ((a3 - 201) <= 0x1C)
+  v3 = version + 55;
+  if ((version - 201) <= 0x1C)
   {
     if (((1 << v3) & 0x11003FFC) != 0)
     {
@@ -1422,12 +1422,12 @@ LABEL_11:
     }
   }
 
-  if (a3 > 0x19)
+  if (version > 0x19)
   {
     goto LABEL_3;
   }
 
-  if (((1 << a3) & 0x200F7F8) != 0)
+  if (((1 << version) & 0x200F7F8) != 0)
   {
 LABEL_11:
     v6 = *MEMORY[0x277CD9A80];
@@ -1447,15 +1447,15 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (((1 << a3) & 6) != 0)
+  if (((1 << version) & 6) != 0)
   {
     goto LABEL_17;
   }
 
 LABEL_3:
   v4 = 0;
-  v5 = a3 - 101;
-  if ((a3 - 101) > 0x18)
+  v5 = version - 101;
+  if ((version - 101) > 0x18)
   {
     goto LABEL_13;
   }
@@ -1481,16 +1481,16 @@ LABEL_13:
   return v4;
 }
 
-+ (id)featureExtractorForFingerprintVersion:(int64_t)a3 withGraph:(id)a4 withTransformers:(id)a5 error:(id *)a6
++ (id)featureExtractorForFingerprintVersion:(int64_t)version withGraph:(id)graph withTransformers:(id)transformers error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  graphCopy = graph;
+  transformersCopy = transformers;
   v12 = 0;
   if (!(!v14 & v13))
   {
     v16 = 0;
     v17 = 0;
-    switch(a3)
+    switch(version)
     {
       case 201:
         goto LABEL_9;
@@ -1560,13 +1560,13 @@ LABEL_13:
 
   v16 = 0;
   v17 = 0;
-  switch(a3)
+  switch(version)
   {
     case 0:
-      if (a6)
+      if (error)
       {
-        [a1 _generateErrorWithErrorCode:2 errorMessage:@"Cannot produce feature extractor for PGFingerprintVersionUnknown." underlyingError:0];
-        *a6 = v15 = 0;
+        [self _generateErrorWithErrorCode:2 errorMessage:@"Cannot produce feature extractor for PGFingerprintVersionUnknown." underlyingError:0];
+        *error = v15 = 0;
       }
 
       else
@@ -1673,7 +1673,7 @@ LABEL_16:
     default:
       v16 = 0;
       v17 = 0;
-      switch(a3)
+      switch(version)
       {
         case 'e':
           goto LABEL_9;
@@ -1711,28 +1711,28 @@ LABEL_16:
   }
 
 LABEL_30:
-  v18 = [a1 _assetPrintFeatureExtractorForAssetPrintType:v17 transformers:v11 error:a6];
+  v18 = [self _assetPrintFeatureExtractorForAssetPrintType:v17 transformers:transformersCopy error:error];
   if (v18)
   {
-    v19 = [a1 fetchOptionPropertySetForFingerprintVersion:a3];
-    v20 = [a1 _personaVectorFeatureExtractorForPersonaVectorType:v12 fetchOptionPropertySet:v19 graph:v10 transformers:v11 error:a6];
+    v19 = [self fetchOptionPropertySetForFingerprintVersion:version];
+    v20 = [self _personaVectorFeatureExtractorForPersonaVectorType:v12 fetchOptionPropertySet:v19 graph:graphCopy transformers:transformersCopy error:error];
     if (v20)
     {
-      v15 = [a1 _multiModalFeatureExtractorForMutliModalType:v16 assetFeatureExtractor:v18 personaVectorFeatureExtractor:v20 graph:v10 transformers:v11 error:a6];
+      v15 = [self _multiModalFeatureExtractorForMutliModalType:v16 assetFeatureExtractor:v18 personaVectorFeatureExtractor:v20 graph:graphCopy transformers:transformersCopy error:error];
       if (v15)
       {
-        if ([a1 isMomentNodeFingerprintVersion:a3])
+        if ([self isMomentNodeFingerprintVersion:version])
         {
-          v21 = [a1 _featureExtractor:v15 withTransformers:v11];
+          v21 = [self _featureExtractor:v15 withTransformers:transformersCopy];
 
           v15 = v21;
         }
 
-        if (([a1 isMomentFingerprintVersion:a3] & 1) != 0 || objc_msgSend(a1, "isMemoryFingerprintVersion:", a3))
+        if (([self isMomentFingerprintVersion:version] & 1) != 0 || objc_msgSend(self, "isMemoryFingerprintVersion:", version))
         {
-          v22 = [a1 nameForFingerprintVersion:a3];
+          v22 = [self nameForFingerprintVersion:version];
           v23 = [[PGFeatureExtractorAssetCollectionAverage alloc] initWithAssetFeatureExtractor:v15 assetFetchOptionPropertySet:v19 name:v22];
-          v24 = [a1 _featureExtractor:v23 withTransformers:v11];
+          v24 = [self _featureExtractor:v23 withTransformers:transformersCopy];
 
           v15 = v24;
         }
@@ -1755,247 +1755,247 @@ LABEL_42:
   return v15;
 }
 
-+ (int64_t)fingerprintVersionForName:(id)a3
++ (int64_t)fingerprintVersionForName:(id)name
 {
-  v3 = a3;
-  if (v3)
+  nameCopy = name;
+  if (nameCopy)
   {
-    if ([@"sceneprint-pca-256_DEPRECATED" isEqualToString:v3])
+    if ([@"sceneprint-pca-256_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 1;
     }
 
-    else if ([@"sceneprint-2048_DEPRECATED" isEqualToString:v3])
+    else if ([@"sceneprint-2048_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 2;
     }
 
-    else if ([@"Asset-Scene2048-MultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"Asset-Scene2048-MultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 3;
     }
 
-    else if ([@"Asset-Scene2048-LibrarySpecific-MultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"Asset-Scene2048-LibrarySpecific-MultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 4;
     }
 
-    else if ([@"Asset-ScenePCA256-MultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"Asset-ScenePCA256-MultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 5;
     }
 
-    else if ([@"Asset-ScenePCA256-LibrarySpecific-MultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"Asset-ScenePCA256-LibrarySpecific-MultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 6;
     }
 
-    else if ([@"moment-average-sceneprint-pca-256_DEPRECATED" isEqualToString:v3])
+    else if ([@"moment-average-sceneprint-pca-256_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 101;
     }
 
-    else if ([@"moment-average-sceneprint-2048_DEPRECATED" isEqualToString:v3])
+    else if ([@"moment-average-sceneprint-2048_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 102;
     }
 
-    else if ([@"MomentAverage-Scene2048-MultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MomentAverage-Scene2048-MultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 103;
     }
 
-    else if ([@"MomentAverage-Scene2048-LibrarySpecific-MultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MomentAverage-Scene2048-LibrarySpecific-MultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 104;
     }
 
-    else if ([@"MomentAverage-ScenePCA256-MultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MomentAverage-ScenePCA256-MultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 105;
     }
 
-    else if ([@"MomentAverage-ScenePCA256-LibrarySpecific-MultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MomentAverage-ScenePCA256-LibrarySpecific-MultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 106;
     }
 
-    else if ([@"memory-average-sceneprint-pca-256_DEPRECATED" isEqualToString:v3])
+    else if ([@"memory-average-sceneprint-pca-256_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 201;
     }
 
-    else if ([@"memory-average-sceneprint-2048_DEPRECATED" isEqualToString:v3])
+    else if ([@"memory-average-sceneprint-2048_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 202;
     }
 
-    else if ([@"MemoryAverage-Scene2048-MultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MemoryAverage-Scene2048-MultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 203;
     }
 
-    else if ([@"MemoryAverage-Scene2048-MultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MemoryAverage-Scene2048-MultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 204;
     }
 
-    else if ([@"MemoryAverage-ScenePCA256-MultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MemoryAverage-ScenePCA256-MultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 205;
     }
 
-    else if ([@"MemoryAverage-ScenePCA256-MultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MemoryAverage-ScenePCA256-MultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 206;
     }
 
-    else if ([@"Asset-Scene2048-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:v3])
+    else if ([@"Asset-Scene2048-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 7;
     }
 
-    else if ([@"Asset-Scene2048-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"Asset-Scene2048-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 8;
     }
 
-    else if ([@"Asset-Scene2048-LibrarySpecific-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:v3])
+    else if ([@"Asset-Scene2048-LibrarySpecific-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 9;
     }
 
-    else if ([@"Asset-Scene2048-LibrarySpecific-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"Asset-Scene2048-LibrarySpecific-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 10;
     }
 
-    else if ([@"Asset-ScenePCA256-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:v3])
+    else if ([@"Asset-ScenePCA256-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 12;
     }
 
-    else if ([@"Asset-ScenePCA256-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"Asset-ScenePCA256-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 13;
     }
 
-    else if ([@"Asset-ScenePCA256-LibrarySpecific-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:v3])
+    else if ([@"Asset-ScenePCA256-LibrarySpecific-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 14;
     }
 
-    else if ([@"Asset-ScenePCA256-LibrarySpecific-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"Asset-ScenePCA256-LibrarySpecific-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 15;
     }
 
-    else if ([@"MomentAverage-Scene2048-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:v3])
+    else if ([@"MomentAverage-Scene2048-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 107;
     }
 
-    else if ([@"MomentAverage-Scene2048-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MomentAverage-Scene2048-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 108;
     }
 
-    else if ([@"MomentAverage-Scene2048-LibrarySpecific-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:v3])
+    else if ([@"MomentAverage-Scene2048-LibrarySpecific-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 109;
     }
 
-    else if ([@"MomentAverage-Scene2048-LibrarySpecific-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MomentAverage-Scene2048-LibrarySpecific-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 110;
     }
 
-    else if ([@"MomentAverage-ScenePCA256-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:v3])
+    else if ([@"MomentAverage-ScenePCA256-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 111;
     }
 
-    else if ([@"MomentAverage-ScenePCA256-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MomentAverage-ScenePCA256-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 112;
     }
 
-    else if ([@"MomentAverage-ScenePCA256-LibrarySpecific-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:v3])
+    else if ([@"MomentAverage-ScenePCA256-LibrarySpecific-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 113;
     }
 
-    else if ([@"MomentAverage-ScenePCA256-LibrarySpecific-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MomentAverage-ScenePCA256-LibrarySpecific-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 114;
     }
 
-    else if ([@"MemoryAverage-Scene2048-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:v3])
+    else if ([@"MemoryAverage-Scene2048-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 207;
     }
 
-    else if ([@"MemoryAverage-Scene2048-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MemoryAverage-Scene2048-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 208;
     }
 
-    else if ([@"MemoryAverage-Scene2048-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:v3])
+    else if ([@"MemoryAverage-Scene2048-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 209;
     }
 
-    else if ([@"MemoryAverage-Scene2048-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MemoryAverage-Scene2048-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 210;
     }
 
-    else if ([@"MemoryAverage-ScenePCA256-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:v3])
+    else if ([@"MemoryAverage-ScenePCA256-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 211;
     }
 
-    else if ([@"MemoryAverage-ScenePCA256-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MemoryAverage-ScenePCA256-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 212;
     }
 
-    else if ([@"MemoryAverage-ScenePCA256-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:v3])
+    else if ([@"MemoryAverage-ScenePCA256-MultiModal-V1.0-PersonaVectorPCA256_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 213;
     }
 
-    else if ([@"MemoryAverage-ScenePCA256-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MemoryAverage-ScenePCA256-MultiModal-V1.0-PersonaVectorMultiModal-V1.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 214;
     }
 
-    else if ([@"Asset-ScenePCA256-MultiModal-V2.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"Asset-ScenePCA256-MultiModal-V2.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 25;
     }
 
-    else if ([@"MomentAverage-ScenePCA256-MultiModal-V2.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MomentAverage-ScenePCA256-MultiModal-V2.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 125;
     }
 
-    else if ([@"MemoryAverage-ScenePCA256-MultiModal-V2.0_DEPRECATED" isEqualToString:v3])
+    else if ([@"MemoryAverage-ScenePCA256-MultiModal-V2.0_DEPRECATED" isEqualToString:nameCopy])
     {
       v4 = 225;
     }
 
-    else if ([@"MomentNode-MultiModalMusic-V1.0" isEqualToString:v3])
+    else if ([@"MomentNode-MultiModalMusic-V1.0" isEqualToString:nameCopy])
     {
       v4 = 226;
     }
 
-    else if ([@"MomentNode-MultiModalMusic-V2.0" isEqualToString:v3])
+    else if ([@"MomentNode-MultiModalMusic-V2.0" isEqualToString:nameCopy])
     {
       v4 = 227;
     }
 
-    else if ([@"sceneprint-clip-768" isEqualToString:v3])
+    else if ([@"sceneprint-clip-768" isEqualToString:nameCopy])
     {
       v4 = 229;
     }
@@ -2014,12 +2014,12 @@ LABEL_42:
   return v4;
 }
 
-+ (id)nameForFingerprintVersion:(int64_t)a3
++ (id)nameForFingerprintVersion:(int64_t)version
 {
   result = 0;
   if (!v4 & v3)
   {
-    switch(a3)
+    switch(version)
     {
       case 1:
         result = @"sceneprint-pca-256_DEPRECATED";
@@ -2078,7 +2078,7 @@ LABEL_42:
         result = @"Asset-ScenePCA256-MultiModal-V2.0_DEPRECATED";
         break;
       default:
-        switch(a3)
+        switch(version)
         {
           case 'e':
             result = @"moment-average-sceneprint-pca-256_DEPRECATED";
@@ -2135,7 +2135,7 @@ LABEL_42:
 
   else
   {
-    switch(a3)
+    switch(version)
     {
       case 201:
         result = @"memory-average-sceneprint-pca-256_DEPRECATED";

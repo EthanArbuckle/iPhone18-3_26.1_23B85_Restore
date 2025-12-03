@@ -12,7 +12,7 @@
 
 - (__CFString)tsu_keyPathByRemovingLastKey
 {
-  v2 = [a1 rangeOfString:@"." options:6];
+  v2 = [self rangeOfString:@"." options:6];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = &stru_286EE1130;
@@ -20,7 +20,7 @@
 
   else
   {
-    v3 = [a1 substringToIndex:v2];
+    v3 = [self substringToIndex:v2];
   }
 
   return v3;
@@ -28,7 +28,7 @@
 
 - (__CFString)tsu_keyPathByRemovingFirstKey
 {
-  v2 = [a1 rangeOfString:@"." options:2];
+  v2 = [self rangeOfString:@"." options:2];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = &stru_286EE1130;
@@ -36,7 +36,7 @@
 
   else
   {
-    v3 = [a1 substringFromIndex:v2 + 1];
+    v3 = [self substringFromIndex:v2 + 1];
   }
 
   return v3;
@@ -45,26 +45,26 @@
 - (id)tsu_keyPathByPrependingKey:()TSDKVCKeyPathAdditions
 {
   v4 = a3;
-  if ([a1 length])
+  if ([self length])
   {
     v5 = [v4 length];
     v6 = MEMORY[0x277CCACA8];
     if (v5)
     {
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v4, a1];
+      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v4, self];
       goto LABEL_7;
     }
 
-    v8 = a1;
+    selfCopy = self;
   }
 
   else
   {
     v6 = MEMORY[0x277CCACA8];
-    v8 = v4;
+    selfCopy = v4;
   }
 
-  v7 = [v6 stringWithString:v8];
+  v7 = [v6 stringWithString:selfCopy];
 LABEL_7:
   v9 = v7;
 
@@ -74,26 +74,26 @@ LABEL_7:
 - (id)tsu_keyPathByAppendingKey:()TSDKVCKeyPathAdditions
 {
   v4 = a3;
-  if ([a1 length])
+  if ([self length])
   {
     v5 = [v4 length];
     v6 = MEMORY[0x277CCACA8];
     if (v5)
     {
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", a1, v4];
+      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", self, v4];
       goto LABEL_7;
     }
 
-    v8 = a1;
+    selfCopy = self;
   }
 
   else
   {
     v6 = MEMORY[0x277CCACA8];
-    v8 = v4;
+    selfCopy = v4;
   }
 
-  v7 = [v6 stringWithString:v8];
+  v7 = [v6 stringWithString:selfCopy];
 LABEL_7:
   v9 = v7;
 
@@ -102,41 +102,41 @@ LABEL_7:
 
 - (id)tsu_firstKey
 {
-  v1 = a1;
-  v2 = [v1 rangeOfString:@"." options:2];
+  selfCopy = self;
+  v2 = [selfCopy rangeOfString:@"." options:2];
   if (v2 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [v1 substringToIndex:v2];
+    v3 = [selfCopy substringToIndex:v2];
 
-    v1 = v3;
+    selfCopy = v3;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)tsu_lastKey
 {
-  v1 = a1;
-  v2 = [v1 rangeOfString:@"." options:6];
+  selfCopy = self;
+  v2 = [selfCopy rangeOfString:@"." options:6];
   if (v2 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [v1 substringFromIndex:v2 + 1];
+    v3 = [selfCopy substringFromIndex:v2 + 1];
 
-    v1 = v3;
+    selfCopy = v3;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)tsu_numberOfKeysInKeyPath
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = 0;
   v4 = 0;
   v5 = v2;
   do
   {
-    v6 = [a1 rangeOfString:@"." options:2 range:{v3, v5}];
+    v6 = [self rangeOfString:@"." options:2 range:{v3, v5}];
     ++v4;
     v3 = v6 + v7;
     v5 = v2 - (v6 + v7);

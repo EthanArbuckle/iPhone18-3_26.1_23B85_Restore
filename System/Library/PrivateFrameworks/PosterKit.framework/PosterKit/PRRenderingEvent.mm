@@ -1,14 +1,14 @@
 @interface PRRenderingEvent
 + (id)_supportedMetadataClasses;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 - (CGPoint)location;
-- (PRRenderingEvent)initWithAction:(id)a3;
-- (PRRenderingEvent)initWithBSXPCCoder:(id)a3;
-- (PRRenderingEvent)initWithCoder:(id)a3;
-- (PRRenderingEvent)initWithType:(id)a3 location:(CGPoint)a4 metadata:(id)a5;
+- (PRRenderingEvent)initWithAction:(id)action;
+- (PRRenderingEvent)initWithBSXPCCoder:(id)coder;
+- (PRRenderingEvent)initWithCoder:(id)coder;
+- (PRRenderingEvent)initWithType:(id)type location:(CGPoint)location metadata:(id)metadata;
 - (id)newAction;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRRenderingEvent
@@ -43,21 +43,21 @@ void __45__PRRenderingEvent__supportedMetadataClasses__block_invoke()
   _supportedMetadataClasses_supportedMetadataClasses = v2;
 }
 
-- (PRRenderingEvent)initWithType:(id)a3 location:(CGPoint)a4 metadata:(id)a5
+- (PRRenderingEvent)initWithType:(id)type location:(CGPoint)location metadata:(id)metadata
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v34[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  typeCopy = type;
+  metadataCopy = metadata;
   v32.receiver = self;
   v32.super_class = PRRenderingEvent;
   v12 = [(PRRenderingEvent *)&v32 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_type, a3);
-    v14 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v11 copyItems:1];
+    objc_storeStrong(&v12->_type, type);
+    v14 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:metadataCopy copyItems:1];
     v15 = v14;
     if (v14)
     {
@@ -71,7 +71,7 @@ void __45__PRRenderingEvent__supportedMetadataClasses__block_invoke()
 
     objc_storeStrong(&v13->_metadata, v16);
 
-    v17 = [objc_opt_class() _supportedMetadataClasses];
+    _supportedMetadataClasses = [objc_opt_class() _supportedMetadataClasses];
     v18 = PFValidateDictionaryForClasses();
     v19 = 0;
     v20 = 0;
@@ -91,9 +91,9 @@ void __45__PRRenderingEvent__supportedMetadataClasses__block_invoke()
       }
 
       metadata = v13->_metadata;
-      v23 = [v17 bs_array];
-      v24 = [v17 bs_array];
-      v25 = [(NSDictionary *)metadata pf_sanitizeWithAllowedKeyClasses:v23 allowedValueClasses:v24];
+      bs_array = [_supportedMetadataClasses bs_array];
+      bs_array2 = [_supportedMetadataClasses bs_array];
+      v25 = [(NSDictionary *)metadata pf_sanitizeWithAllowedKeyClasses:bs_array allowedValueClasses:bs_array2];
       v26 = v13->_metadata;
       v13->_metadata = v25;
     }
@@ -105,9 +105,9 @@ void __45__PRRenderingEvent__supportedMetadataClasses__block_invoke()
   return v13;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() != a1)
+  if (objc_opt_class() != self)
   {
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695D930];
@@ -116,18 +116,18 @@ void __45__PRRenderingEvent__supportedMetadataClasses__block_invoke()
     [v5 raise:v6 format:{@"Subclassing %@ is not allowed.", v8}];
   }
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___PRRenderingEvent;
-  return objc_msgSendSuper2(&v10, sel_allocWithZone_, a3);
+  return objc_msgSendSuper2(&v10, sel_allocWithZone_, zone);
 }
 
-- (PRRenderingEvent)initWithAction:(id)a3
+- (PRRenderingEvent)initWithAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 eventType];
-  v6 = [v4 metadata];
+  actionCopy = action;
+  eventType = [actionCopy eventType];
+  metadata = [actionCopy metadata];
 
-  v7 = [(PRRenderingEvent *)self initWithType:v5 metadata:v6];
+  v7 = [(PRRenderingEvent *)self initWithType:eventType metadata:metadata];
   return v7;
 }
 
@@ -138,36 +138,36 @@ void __45__PRRenderingEvent__supportedMetadataClasses__block_invoke()
   return [(PRRenderingEventAction *)v3 initWithEvent:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_type forKey:@"_type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_type forKey:@"_type"];
   v4 = BSValueWithPoint();
-  [v6 encodeObject:v4 forKey:@"_location"];
+  [coderCopy encodeObject:v4 forKey:@"_location"];
 
   v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self->_metadata requiringSecureCoding:1 error:0];
   if (v5)
   {
-    [v6 encodeObject:v5 forKey:@"_metadata"];
+    [coderCopy encodeObject:v5 forKey:@"_metadata"];
   }
 }
 
-- (PRRenderingEvent)initWithCoder:(id)a3
+- (PRRenderingEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _supportedMetadataClasses];
+  coderCopy = coder;
+  _supportedMetadataClasses = [objc_opt_class() _supportedMetadataClasses];
   v6 = objc_opt_self();
-  v7 = [v4 decodeObjectOfClass:v6 forKey:@"_type"];
+  v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"_type"];
 
   v8 = objc_opt_self();
-  v9 = [v4 decodeObjectOfClass:v8 forKey:@"_location"];
+  v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"_location"];
   v10 = MEMORY[0x1AC573DD0]();
   v12 = v11;
 
   v13 = objc_opt_self();
-  v14 = [v4 decodeObjectOfClass:v13 forKey:@"_metadata"];
+  v14 = [coderCopy decodeObjectOfClass:v13 forKey:@"_metadata"];
 
-  v15 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v5 fromData:v14 error:0];
+  v15 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:_supportedMetadataClasses fromData:v14 error:0];
   v16 = v15;
   v17 = MEMORY[0x1E695E0F8];
   if (v15)
@@ -181,22 +181,22 @@ void __45__PRRenderingEvent__supportedMetadataClasses__block_invoke()
   return v19;
 }
 
-- (PRRenderingEvent)initWithBSXPCCoder:(id)a3
+- (PRRenderingEvent)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _supportedMetadataClasses];
+  coderCopy = coder;
+  _supportedMetadataClasses = [objc_opt_class() _supportedMetadataClasses];
   v6 = objc_opt_self();
-  v7 = [v4 decodeObjectOfClass:v6 forKey:@"_type"];
+  v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"_type"];
 
-  [v4 decodeCGPointForKey:@"_location"];
+  [coderCopy decodeCGPointForKey:@"_location"];
   v9 = v8;
   v11 = v10;
   v12 = objc_opt_self();
-  v13 = [v4 decodeObjectOfClass:v12 forKey:@"_metadata"];
+  v13 = [coderCopy decodeObjectOfClass:v12 forKey:@"_metadata"];
 
   v14 = [v13 length];
   v15 = MEMORY[0x1E695E0F8];
-  if (v14 && ((v22 = 0, [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v5 fromData:v13 error:&v22], v16 = objc_claimAutoreleasedReturnValue(), v17 = v22, v16) ? (v18 = v16) : (v18 = v15), v15 = v18, v16, v17))
+  if (v14 && ((v22 = 0, [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:_supportedMetadataClasses fromData:v13 error:&v22], v16 = objc_claimAutoreleasedReturnValue(), v17 = v22, v16) ? (v18 = v16) : (v18 = v15), v15 = v18, v16, v17))
   {
     v19 = PRLogModel();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -204,23 +204,23 @@ void __45__PRRenderingEvent__supportedMetadataClasses__block_invoke()
       [(PRRenderingEvent *)v17 initWithBSXPCCoder:v19];
     }
 
-    v20 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PRRenderingEvent *)self initWithType:v7 location:v15 metadata:v9, v11];
-    v20 = self;
+    selfCopy = self;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_type forKey:@"_type"];
-  [v4 encodeCGPoint:@"_location" forKey:{self->_location.x, self->_location.y}];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_type forKey:@"_type"];
+  [coderCopy encodeCGPoint:@"_location" forKey:{self->_location.x, self->_location.y}];
   metadata = self->_metadata;
   v9 = 0;
   v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:metadata requiringSecureCoding:1 error:&v9];
@@ -236,7 +236,7 @@ void __45__PRRenderingEvent__supportedMetadataClasses__block_invoke()
 
   if (v6)
   {
-    [v4 encodeObject:v6 forKey:@"_metadata"];
+    [coderCopy encodeObject:v6 forKey:@"_metadata"];
   }
 }
 

@@ -1,23 +1,23 @@
 @interface ICSystemPaperExtensionHostViewController
-- (ICSystemPaperExtensionHostViewController)initWithConfiguration:(id)a3;
+- (ICSystemPaperExtensionHostViewController)initWithConfiguration:(id)configuration;
 - (ICSystemPaperPresentationDelegate)presentationDelegate;
 - (_UIRemoteViewController)_containedRemoteViewController;
-- (void)_finishAndNotifyDelegateWithError:(id)a3;
+- (void)_finishAndNotifyDelegateWithError:(id)error;
 - (void)_invokeAndReleaseStartHostingBlock;
-- (void)addChildViewController:(id)a3;
-- (void)dismissViewControllerCancelled:(BOOL)a3;
-- (void)hostViewControllerDidActivate:(id)a3;
-- (void)openURL:(id)a3 completion:(id)a4;
+- (void)addChildViewController:(id)controller;
+- (void)dismissViewControllerCancelled:(BOOL)cancelled;
+- (void)hostViewControllerDidActivate:(id)activate;
+- (void)openURL:(id)l completion:(id)completion;
 - (void)teardown;
 @end
 
 @implementation ICSystemPaperExtensionHostViewController
 
-- (ICSystemPaperExtensionHostViewController)initWithConfiguration:(id)a3
+- (ICSystemPaperExtensionHostViewController)initWithConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = ICSystemPaperExtensionHostViewController;
-  v3 = [(_EXHostViewController *)&v6 initWithConfiguration:a3];
+  v3 = [(_EXHostViewController *)&v6 initWithConfiguration:configuration];
   v4 = v3;
   if (v3)
   {
@@ -29,18 +29,18 @@
 
 - (_UIRemoteViewController)_containedRemoteViewController
 {
-  v2 = [(ICSystemPaperExtensionHostViewController *)self childViewControllers];
-  v3 = [v2 firstObject];
+  childViewControllers = [(ICSystemPaperExtensionHostViewController *)self childViewControllers];
+  firstObject = [childViewControllers firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (void)addChildViewController:(id)a3
+- (void)addChildViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = ICSystemPaperExtensionHostViewController;
-  v4 = a3;
-  [(ICSystemPaperExtensionHostViewController *)&v6 addChildViewController:v4];
+  controllerCopy = controller;
+  [(ICSystemPaperExtensionHostViewController *)&v6 addChildViewController:controllerCopy];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -52,46 +52,46 @@
 
 - (void)_invokeAndReleaseStartHostingBlock
 {
-  v3 = [(ICSystemPaperExtensionHostViewController *)self startHostingBlock];
+  startHostingBlock = [(ICSystemPaperExtensionHostViewController *)self startHostingBlock];
 
-  if (v3)
+  if (startHostingBlock)
   {
-    v4 = [(ICSystemPaperExtensionHostViewController *)self startHostingBlock];
-    v4[2]();
+    startHostingBlock2 = [(ICSystemPaperExtensionHostViewController *)self startHostingBlock];
+    startHostingBlock2[2]();
 
     [(ICSystemPaperExtensionHostViewController *)self setStartHostingBlock:0];
   }
 }
 
-- (void)_finishAndNotifyDelegateWithError:(id)a3
+- (void)_finishAndNotifyDelegateWithError:(id)error
 {
-  v7 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   [(ICSystemPaperExtensionHostViewController *)self _invokeAndReleaseStartHostingBlock];
   if (![(ICSystemPaperExtensionHostViewController *)self didFinish])
   {
     [(ICSystemPaperExtensionHostViewController *)self setDidFinish:1];
-    v4 = [(ICSystemPaperExtensionHostViewController *)self presentationDelegate];
+    presentationDelegate = [(ICSystemPaperExtensionHostViewController *)self presentationDelegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(ICSystemPaperExtensionHostViewController *)self presentationDelegate];
-      [v6 systemPaperDidFinishWithError:v7];
+      presentationDelegate2 = [(ICSystemPaperExtensionHostViewController *)self presentationDelegate];
+      [presentationDelegate2 systemPaperDidFinishWithError:errorCopy];
     }
 
     else
     {
-      v6 = [(ICSystemPaperExtensionHostViewController *)self presentingViewController];
-      [v6 dismissViewControllerAnimated:1 completion:0];
+      presentationDelegate2 = [(ICSystemPaperExtensionHostViewController *)self presentingViewController];
+      [presentationDelegate2 dismissViewControllerAnimated:1 completion:0];
     }
   }
 }
 
 - (void)teardown
 {
-  v3 = [(ICSystemPaperExtensionHostViewController *)self connection];
-  [v3 invalidate];
+  connection = [(ICSystemPaperExtensionHostViewController *)self connection];
+  [connection invalidate];
 
   [(ICSystemPaperExtensionHostViewController *)self setConnection:0];
   [(_EXHostViewController *)self setConfiguration:0];
@@ -99,20 +99,20 @@
   [(ICSystemPaperExtensionHostViewController *)self setPresentationDelegate:0];
 }
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   v21 = 0;
   v5 = [(_EXHostViewController *)self makeXPCConnectionWithError:&v21];
   v6 = v21;
   if (v5)
   {
-    v7 = [MEMORY[0x277CCAE90] ic_hostInterface];
-    [v5 setExportedInterface:v7];
+    ic_hostInterface = [MEMORY[0x277CCAE90] ic_hostInterface];
+    [v5 setExportedInterface:ic_hostInterface];
 
     [v5 setExportedObject:self];
-    v8 = [MEMORY[0x277CCAE90] ic_extensionInterface];
-    [v5 setRemoteObjectInterface:v8];
+    ic_extensionInterface = [MEMORY[0x277CCAE90] ic_extensionInterface];
+    [v5 setRemoteObjectInterface:ic_extensionInterface];
 
     objc_initWeak(&location, self);
     [v5 setInterruptionHandler:&__block_literal_global_1];
@@ -123,23 +123,23 @@
     objc_copyWeak(&v19, &location);
     [v5 setInvalidationHandler:v18];
     [v5 resume];
-    v9 = [(ICSystemPaperExtensionHostViewController *)self userActivityData];
+    userActivityData = [(ICSystemPaperExtensionHostViewController *)self userActivityData];
     v10 = ICSystemPaperExtensionLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       [ICSystemPaperExtensionHostViewController hostViewControllerDidActivate:];
     }
 
-    v11 = [v5 remoteObjectProxy];
+    remoteObjectProxy = [v5 remoteObjectProxy];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __74__ICSystemPaperExtensionHostViewController_hostViewControllerDidActivate___block_invoke_18;
     v15[3] = &unk_279D33E00;
-    v12 = v9;
+    v12 = userActivityData;
     v16 = v12;
     v13 = v5;
     v17 = v13;
-    [v11 checkInWithReply:v15];
+    [remoteObjectProxy checkInWithReply:v15];
 
     [(ICSystemPaperExtensionHostViewController *)self setConnection:v13];
     objc_destroyWeak(&v19);
@@ -211,7 +211,7 @@ void __74__ICSystemPaperExtensionHostViewController_hostViewControllerDidActivat
   }
 }
 
-- (void)dismissViewControllerCancelled:(BOOL)a3
+- (void)dismissViewControllerCancelled:(BOOL)cancelled
 {
   v5 = ICSystemPaperExtensionLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -223,7 +223,7 @@ void __74__ICSystemPaperExtensionHostViewController_hostViewControllerDidActivat
   v6[1] = 3221225472;
   v6[2] = __75__ICSystemPaperExtensionHostViewController_dismissViewControllerCancelled___block_invoke;
   v6[3] = &unk_279D33E28;
-  v7 = a3;
+  cancelledCopy = cancelled;
   v6[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
@@ -244,10 +244,10 @@ void __75__ICSystemPaperExtensionHostViewController_dismissViewControllerCancell
   [*(a1 + 32) _finishAndNotifyDelegateWithError:v2];
 }
 
-- (void)openURL:(id)a3 completion:(id)a4
+- (void)openURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = ICSystemPaperExtensionLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -259,10 +259,10 @@ void __75__ICSystemPaperExtensionHostViewController_dismissViewControllerCancell
   v17[2] = __63__ICSystemPaperExtensionHostViewController_openURL_completion___block_invoke;
   v17[3] = &unk_279D33E50;
   v17[4] = self;
-  v9 = v6;
+  v9 = lCopy;
   v18 = v9;
-  v19 = v7;
-  v10 = v7;
+  v19 = completionCopy;
+  v10 = completionCopy;
   v11 = MEMORY[0x26D6A24D0](v17);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

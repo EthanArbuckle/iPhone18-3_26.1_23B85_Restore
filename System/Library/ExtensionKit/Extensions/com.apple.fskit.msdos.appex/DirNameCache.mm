@@ -1,16 +1,16 @@
 @interface DirNameCache
-- (DirNameCache)initWithDirEntrySize:(unsigned int)a3;
-- (id)insertDirEntryNamed:(char *)a3 ofLength:(unint64_t)a4 offsetInDir:(unint64_t)a5;
-- (id)insertDirEntryNamedUtf16:(unistr255 *)a3 offsetInDir:(unint64_t)a4;
-- (void)lookupDirEntryNamed:(char *)a3 ofLength:(unint64_t)a4 replyHandler:(id)a5;
-- (void)lookupDirEntryNamedUtf16:(unistr255 *)a3 replyHandler:(id)a4;
-- (void)removeDirEntryNamed:(char *)a3 ofLength:(unint64_t)a4 offsetInDir:(unint64_t)a5;
-- (void)removeDirEntryNamedUtf16:(unistr255 *)a3 offsetInDir:(unint64_t)a4;
+- (DirNameCache)initWithDirEntrySize:(unsigned int)size;
+- (id)insertDirEntryNamed:(char *)named ofLength:(unint64_t)length offsetInDir:(unint64_t)dir;
+- (id)insertDirEntryNamedUtf16:(unistr255 *)utf16 offsetInDir:(unint64_t)dir;
+- (void)lookupDirEntryNamed:(char *)named ofLength:(unint64_t)length replyHandler:(id)handler;
+- (void)lookupDirEntryNamedUtf16:(unistr255 *)utf16 replyHandler:(id)handler;
+- (void)removeDirEntryNamed:(char *)named ofLength:(unint64_t)length offsetInDir:(unint64_t)dir;
+- (void)removeDirEntryNamedUtf16:(unistr255 *)utf16 offsetInDir:(unint64_t)dir;
 @end
 
 @implementation DirNameCache
 
-- (DirNameCache)initWithDirEntrySize:(unsigned int)a3
+- (DirNameCache)initWithDirEntrySize:(unsigned int)size
 {
   v8.receiver = self;
   v8.super_class = DirNameCache;
@@ -21,55 +21,55 @@
     nameCacheBuckets = v4->_nameCacheBuckets;
     v4->_nameCacheBuckets = v5;
 
-    v4->_dirEntrySize = a3;
+    v4->_dirEntrySize = size;
   }
 
   return v4;
 }
 
-- (id)insertDirEntryNamed:(char *)a3 ofLength:(unint64_t)a4 offsetInDir:(unint64_t)a5
+- (id)insertDirEntryNamed:(char *)named ofLength:(unint64_t)length offsetInDir:(unint64_t)dir
 {
   memset(v9, 0, sizeof(v9));
-  if (CONV_UTF8ToUnistr255(a3, a4, v9, 32))
+  if (CONV_UTF8ToUnistr255(named, length, v9, 32))
   {
     fs_errorForPOSIXError();
   }
 
   else
   {
-    [(DirNameCache *)self insertDirEntryNamedUtf16:v9 offsetInDir:a5];
+    [(DirNameCache *)self insertDirEntryNamedUtf16:v9 offsetInDir:dir];
   }
   v7 = ;
 
   return v7;
 }
 
-- (void)removeDirEntryNamed:(char *)a3 ofLength:(unint64_t)a4 offsetInDir:(unint64_t)a5
+- (void)removeDirEntryNamed:(char *)named ofLength:(unint64_t)length offsetInDir:(unint64_t)dir
 {
   memset(v7, 0, sizeof(v7));
-  if (!CONV_UTF8ToUnistr255(a3, a4, v7, 32))
+  if (!CONV_UTF8ToUnistr255(named, length, v7, 32))
   {
-    [(DirNameCache *)self removeDirEntryNamedUtf16:v7 offsetInDir:a5];
+    [(DirNameCache *)self removeDirEntryNamedUtf16:v7 offsetInDir:dir];
   }
 }
 
-- (void)lookupDirEntryNamed:(char *)a3 ofLength:(unint64_t)a4 replyHandler:(id)a5
+- (void)lookupDirEntryNamed:(char *)named ofLength:(unint64_t)length replyHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   memset(v10, 0, sizeof(v10));
-  if (CONV_UTF8ToUnistr255(a3, a4, v10, 32))
+  if (CONV_UTF8ToUnistr255(named, length, v10, 32))
   {
     v9 = fs_errorForPOSIXError();
-    v8[2](v8, v9, 0);
+    handlerCopy[2](handlerCopy, v9, 0);
   }
 
   else
   {
-    [(DirNameCache *)self lookupDirEntryNamedUtf16:v10 replyHandler:v8];
+    [(DirNameCache *)self lookupDirEntryNamedUtf16:v10 replyHandler:handlerCopy];
   }
 }
 
-- (id)insertDirEntryNamedUtf16:(unistr255 *)a3 offsetInDir:(unint64_t)a4
+- (id)insertDirEntryNamedUtf16:(unistr255 *)utf16 offsetInDir:(unint64_t)dir
 {
   p_numHashValues = &self->_numHashValues;
   if (self->_numHashValues == 50000)
@@ -85,9 +85,9 @@
 
   else
   {
-    v9 = a4 / self->_dirEntrySize;
-    CONV_Unistr255ToLowerCase(a3);
-    v10 = [(DirNameCache *)self hash:a3];
+    v9 = dir / self->_dirEntrySize;
+    CONV_Unistr255ToLowerCase(utf16);
+    v10 = [(DirNameCache *)self hash:utf16];
     snprintf(__str, 5uLL, "%u", v10 & 0x3F);
     v5 = [[NSString alloc] initWithUTF8String:__str];
     v11 = [(NSMutableDictionary *)self->_nameCacheBuckets objectForKey:v5];
@@ -145,19 +145,19 @@ LABEL_20:
   return v14;
 }
 
-- (void)removeDirEntryNamedUtf16:(unistr255 *)a3 offsetInDir:(unint64_t)a4
+- (void)removeDirEntryNamedUtf16:(unistr255 *)utf16 offsetInDir:(unint64_t)dir
 {
   if (self->_numHashValues)
   {
     dirEntrySize = self->_dirEntrySize;
-    CONV_Unistr255ToLowerCase(a3);
-    snprintf(__str, 5uLL, "%u", [(DirNameCache *)self hash:a3]& 0x3F);
+    CONV_Unistr255ToLowerCase(utf16);
+    snprintf(__str, 5uLL, "%u", [(DirNameCache *)self hash:utf16]& 0x3F);
     v8 = [[NSString alloc] initWithUTF8String:__str];
     v9 = [(NSMutableDictionary *)self->_nameCacheBuckets objectForKey:v8];
     v10 = v9;
     if (v9)
     {
-      if ([v9 removeEntryAtIndex:a4 / dirEntrySize])
+      if ([v9 removeEntryAtIndex:dir / dirEntrySize])
       {
         --self->_numHashValues;
       }
@@ -173,13 +173,13 @@ LABEL_20:
   }
 }
 
-- (void)lookupDirEntryNamedUtf16:(unistr255 *)a3 replyHandler:(id)a4
+- (void)lookupDirEntryNamedUtf16:(unistr255 *)utf16 replyHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (self->_numHashValues && self->_numHashBuckets)
   {
-    CONV_Unistr255ToLowerCase(a3);
-    v7 = [(DirNameCache *)self hash:a3];
+    CONV_Unistr255ToLowerCase(utf16);
+    v7 = [(DirNameCache *)self hash:utf16];
     snprintf(__str, 5uLL, "%u", v7 & 0x3F);
     v8 = [[NSString alloc] initWithUTF8String:__str];
     v9 = [(NSMutableDictionary *)self->_nameCacheBuckets objectForKey:v8];
@@ -204,21 +204,21 @@ LABEL_20:
         }
       }
 
-      v6[2](v6, 0, self->_dirEntrySize * *(v13 + v11 + 4));
+      handlerCopy[2](handlerCopy, 0, self->_dirEntrySize * *(v13 + v11 + 4));
     }
 
     else
     {
 LABEL_8:
       v14 = fs_errorForPOSIXError();
-      (v6)[2](v6, v14, 0);
+      (handlerCopy)[2](handlerCopy, v14, 0);
     }
   }
 
   else
   {
     v15 = fs_errorForPOSIXError();
-    (v6)[2](v6, v15, 0);
+    (handlerCopy)[2](handlerCopy, v15, 0);
   }
 }
 

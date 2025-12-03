@@ -1,20 +1,20 @@
 @interface PresetRestrictionsProvider
 - (_TtC20ScreenTimeSettingsUI26PresetRestrictionsProvider)init;
-- (void)fetchPresetRestrictionsForAge:(int64_t)a3 storefront:(NSString *)a4 completionHandler:(id)a5;
-- (void)fetchPresetRestrictionsFromCacheForAge:(int64_t)a3 storefront:(NSString *)a4 completionHandler:(id)a5;
+- (void)fetchPresetRestrictionsForAge:(int64_t)age storefront:(NSString *)storefront completionHandler:(id)handler;
+- (void)fetchPresetRestrictionsFromCacheForAge:(int64_t)age storefront:(NSString *)storefront completionHandler:(id)handler;
 @end
 
 @implementation PresetRestrictionsProvider
 
-- (void)fetchPresetRestrictionsForAge:(int64_t)a3 storefront:(NSString *)a4 completionHandler:(id)a5
+- (void)fetchPresetRestrictionsForAge:(int64_t)age storefront:(NSString *)storefront completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FFAA380);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = age;
+  v13[3] = storefront;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_264CC477C();
@@ -29,20 +29,20 @@
   v16[3] = 0;
   v16[4] = &unk_264CD4F30;
   v16[5] = v15;
-  v17 = a4;
-  v18 = self;
+  storefrontCopy = storefront;
+  selfCopy = self;
   sub_264CB853C(0, 0, v11, &unk_264CD4F38, v16);
 }
 
-- (void)fetchPresetRestrictionsFromCacheForAge:(int64_t)a3 storefront:(NSString *)a4 completionHandler:(id)a5
+- (void)fetchPresetRestrictionsFromCacheForAge:(int64_t)age storefront:(NSString *)storefront completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FFAA380);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = age;
+  v13[3] = storefront;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_264CC477C();
@@ -57,8 +57,8 @@
   v16[3] = 0;
   v16[4] = &unk_264CD4550;
   v16[5] = v15;
-  v17 = a4;
-  v18 = self;
+  storefrontCopy = storefront;
+  selfCopy = self;
   sub_264CB853C(0, 0, v11, &unk_264CD4558, v16);
 }
 

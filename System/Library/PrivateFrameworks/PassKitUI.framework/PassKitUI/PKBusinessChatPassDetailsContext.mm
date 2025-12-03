@@ -1,21 +1,21 @@
 @interface PKBusinessChatPassDetailsContext
-- (PKBusinessChatPassDetailsContext)initWithPass:(id)a3;
+- (PKBusinessChatPassDetailsContext)initWithPass:(id)pass;
 - (id)groupParameters;
 - (id)intentParameters;
 @end
 
 @implementation PKBusinessChatPassDetailsContext
 
-- (PKBusinessChatPassDetailsContext)initWithPass:(id)a3
+- (PKBusinessChatPassDetailsContext)initWithPass:(id)pass
 {
-  v5 = a3;
+  passCopy = pass;
   v9.receiver = self;
   v9.super_class = PKBusinessChatPassDetailsContext;
   v6 = [(PKBusinessChatPassDetailsContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pass, a3);
+    objc_storeStrong(&v6->_pass, pass);
   }
 
   return v7;
@@ -25,12 +25,12 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v3 setObject:@"wallet_pass_message" forKeyedSubscript:@"targetDialog"];
-  v4 = [(PKPass *)self->_pass uniqueID];
-  [v3 setObject:v4 forKeyedSubscript:@"passUniqueId"];
+  uniqueID = [(PKPass *)self->_pass uniqueID];
+  [v3 setObject:uniqueID forKeyedSubscript:@"passUniqueId"];
 
-  v5 = [(PKPass *)self->_pass paymentPass];
-  v6 = [v5 associatedAccountServiceAccountIdentifier];
-  [v3 setObject:v6 forKeyedSubscript:@"accountID"];
+  paymentPass = [(PKPass *)self->_pass paymentPass];
+  associatedAccountServiceAccountIdentifier = [paymentPass associatedAccountServiceAccountIdentifier];
+  [v3 setObject:associatedAccountServiceAccountIdentifier forKeyedSubscript:@"accountID"];
 
   v7 = [v3 copy];
 

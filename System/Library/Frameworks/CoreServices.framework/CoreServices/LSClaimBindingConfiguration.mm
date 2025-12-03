@@ -1,45 +1,45 @@
 @interface LSClaimBindingConfiguration
-+ (id)oneTapOpenClaimBindingConfigurationForBindable:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BindingEvaluator)_baseBindingEvaluatorForBindableWithAuditToken:(SEL)a3;
-- (BindingEvaluator)bindingEvaluatorForAuditToken:(SEL)a3;
-- (LSClaimBindingConfiguration)initWithBindable:(id)a3;
-- (LSClaimBindingConfiguration)initWithCoder:(id)a3;
-- (LSClaimBindingConfiguration)initWithDocumentProxy:(id)a3;
-- (LSClaimBindingConfiguration)initWithDocumentProxy:(id)a3 bindingStyle:(unsigned __int8)a4;
-- (LSClaimBindingConfiguration)initWithTypeIdentifier:(id)a3;
-- (LSClaimBindingConfiguration)initWithURL:(id)a3;
++ (id)oneTapOpenClaimBindingConfigurationForBindable:(id)bindable;
+- (BOOL)isEqual:(id)equal;
+- (BindingEvaluator)_baseBindingEvaluatorForBindableWithAuditToken:(SEL)token;
+- (BindingEvaluator)bindingEvaluatorForAuditToken:(SEL)token;
+- (LSClaimBindingConfiguration)initWithBindable:(id)bindable;
+- (LSClaimBindingConfiguration)initWithCoder:(id)coder;
+- (LSClaimBindingConfiguration)initWithDocumentProxy:(id)proxy;
+- (LSClaimBindingConfiguration)initWithDocumentProxy:(id)proxy bindingStyle:(unsigned __int8)style;
+- (LSClaimBindingConfiguration)initWithTypeIdentifier:(id)identifier;
+- (LSClaimBindingConfiguration)initWithURL:(id)l;
 - (NSString)maximumHandlerRank;
 - (NSString)minimumHandlerRank;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHonorPreferenceForNoHandler:(BOOL)a3;
-- (void)setIgnoreStrongBindingPreferences:(BOOL)a3;
-- (void)setIgnoreWeakBindingPreferences:(BOOL)a3;
-- (void)setMaximumHandlerRank:(id)a3;
-- (void)setMinimumHandlerRank:(id)a3;
-- (void)setRequireOpenInPlace:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHonorPreferenceForNoHandler:(BOOL)handler;
+- (void)setIgnoreStrongBindingPreferences:(BOOL)preferences;
+- (void)setIgnoreWeakBindingPreferences:(BOOL)preferences;
+- (void)setMaximumHandlerRank:(id)rank;
+- (void)setMinimumHandlerRank:(id)rank;
+- (void)setRequireOpenInPlace:(BOOL)place;
 @end
 
 @implementation LSClaimBindingConfiguration
 
-- (LSClaimBindingConfiguration)initWithCoder:(id)a3
+- (LSClaimBindingConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = LSClaimBindingConfiguration;
   v5 = [(LSClaimBindingConfiguration *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bindable"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bindable"];
     bindable = v5->_bindable;
     v5->_bindable = v6;
 
-    v5->_bundleClassMask = [v4 decodeIntegerForKey:@"bundleClassMask"];
-    v5->_bindingStyle = [v4 decodeIntegerForKey:@"bindingStyle"];
-    v5->_minimumNumericHandlerRank = [v4 decodeInt32ForKey:@"minimumNumericHandlerRank"];
-    v5->_maximumNumericHandlerRank = [v4 decodeInt32ForKey:@"maximumNumericHandlerRank"];
-    v5->_addClaimRecordIfMissing = [v4 decodeBoolForKey:@"addClaimRecordIfMissing"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"flagsData"];
+    v5->_bundleClassMask = [coderCopy decodeIntegerForKey:@"bundleClassMask"];
+    v5->_bindingStyle = [coderCopy decodeIntegerForKey:@"bindingStyle"];
+    v5->_minimumNumericHandlerRank = [coderCopy decodeInt32ForKey:@"minimumNumericHandlerRank"];
+    v5->_maximumNumericHandlerRank = [coderCopy decodeInt32ForKey:@"maximumNumericHandlerRank"];
+    v5->_addClaimRecordIfMissing = [coderCopy decodeBoolForKey:@"addClaimRecordIfMissing"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"flagsData"];
     if ([v8 length] == 1)
     {
       [v8 getBytes:&v5->_addClaimRecordIfMissing + 1 length:1];
@@ -48,7 +48,7 @@
     else
     {
       v9 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A250], 4864, 0, "[LSClaimBindingConfiguration initWithCoder:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSClaimBindingConfiguration.mm", 545);
-      [v4 failWithError:v9];
+      [coderCopy failWithError:v9];
 
       v5 = 0;
     }
@@ -57,29 +57,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_bindable forKey:@"bindable"];
-  [v5 encodeInteger:self->_bundleClassMask forKey:@"bundleClassMask"];
-  [v5 encodeInteger:self->_bindingStyle forKey:@"bindingStyle"];
-  [v5 encodeInt32:self->_minimumNumericHandlerRank forKey:@"minimumNumericHandlerRank"];
-  [v5 encodeInt32:self->_maximumNumericHandlerRank forKey:@"maximumNumericHandlerRank"];
-  [v5 encodeBool:self->_addClaimRecordIfMissing forKey:@"addClaimRecordIfMissing"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_bindable forKey:@"bindable"];
+  [coderCopy encodeInteger:self->_bundleClassMask forKey:@"bundleClassMask"];
+  [coderCopy encodeInteger:self->_bindingStyle forKey:@"bindingStyle"];
+  [coderCopy encodeInt32:self->_minimumNumericHandlerRank forKey:@"minimumNumericHandlerRank"];
+  [coderCopy encodeInt32:self->_maximumNumericHandlerRank forKey:@"maximumNumericHandlerRank"];
+  [coderCopy encodeBool:self->_addClaimRecordIfMissing forKey:@"addClaimRecordIfMissing"];
   v4 = [MEMORY[0x1E695DEF0] dataWithBytes:&self->_addClaimRecordIfMissing + 1 length:1];
-  [v5 encodeObject:v4 forKey:@"flagsData"];
+  [coderCopy encodeObject:v4 forKey:@"flagsData"];
 }
 
-- (LSClaimBindingConfiguration)initWithBindable:(id)a3
+- (LSClaimBindingConfiguration)initWithBindable:(id)bindable
 {
-  v5 = a3;
+  bindableCopy = bindable;
   v9.receiver = self;
   v9.super_class = LSClaimBindingConfiguration;
   v6 = [(LSClaimBindingConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bindable, a3);
+    objc_storeStrong(&v6->_bindable, bindable);
     v7->_bundleClassMask = 4;
     v7->_bindingStyle = 0;
     *&v7->_minimumNumericHandlerRank = 196609;
@@ -88,13 +88,13 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(LSClaimBindingBindable *)self->_bindable isEqual:v5[1]]&& self->_bundleClassMask == v5[2] && self->_bindingStyle == *(v5 + 24) && self->_minimumNumericHandlerRank == *(v5 + 13) && self->_maximumNumericHandlerRank == *(v5 + 14) && self->_addClaimRecordIfMissing == *(v5 + 30);
   }
 
@@ -106,12 +106,12 @@
   return v6;
 }
 
-- (LSClaimBindingConfiguration)initWithTypeIdentifier:(id)a3
+- (LSClaimBindingConfiguration)initWithTypeIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [[_LSClaimBindingTypeIdentifierBindable alloc] initWithTypeIdentifier:v4];
+    v5 = [[_LSClaimBindingTypeIdentifierBindable alloc] initWithTypeIdentifier:identifierCopy];
   }
 
   else
@@ -125,31 +125,31 @@
   return v7;
 }
 
-- (LSClaimBindingConfiguration)initWithURL:(id)a3
+- (LSClaimBindingConfiguration)initWithURL:(id)l
 {
-  v5 = a3;
-  if (!v5)
+  lCopy = l;
+  if (!lCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"LSClaimBindingConfiguration.mm" lineNumber:621 description:{@"nil URL provided to %s", "-[LSClaimBindingConfiguration initWithURL:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSClaimBindingConfiguration.mm" lineNumber:621 description:{@"nil URL provided to %s", "-[LSClaimBindingConfiguration initWithURL:]"}];
   }
 
-  v6 = [[_LSClaimBindingURLBindable alloc] initWithURL:v5];
+  v6 = [[_LSClaimBindingURLBindable alloc] initWithURL:lCopy];
   v7 = [(LSClaimBindingConfiguration *)self initWithBindable:v6];
 
   return v7;
 }
 
-- (LSClaimBindingConfiguration)initWithDocumentProxy:(id)a3
+- (LSClaimBindingConfiguration)initWithDocumentProxy:(id)proxy
 {
-  v5 = a3;
-  if (!v5)
+  proxyCopy = proxy;
+  if (!proxyCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"LSClaimBindingConfiguration.mm" lineNumber:627 description:{@"nil proxy provided to %s", "-[LSClaimBindingConfiguration initWithDocumentProxy:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSClaimBindingConfiguration.mm" lineNumber:627 description:{@"nil proxy provided to %s", "-[LSClaimBindingConfiguration initWithDocumentProxy:]"}];
   }
 
-  v6 = [[_LSClaimBindingDocumentProxyBindable alloc] initWithProxy:v5];
+  v6 = [[_LSClaimBindingDocumentProxyBindable alloc] initWithProxy:proxyCopy];
   v7 = [(LSClaimBindingConfiguration *)self initWithBindable:v6];
 
   return v7;
@@ -162,16 +162,16 @@
   return v2;
 }
 
-- (void)setMinimumHandlerRank:(id)a3
+- (void)setMinimumHandlerRank:(id)rank
 {
-  v4 = a3;
-  if (!v4)
+  rankCopy = rank;
+  if (!rankCopy)
   {
-    v4 = @"None";
+    rankCopy = @"None";
   }
 
-  v5 = v4;
-  self->_minimumNumericHandlerRank = _LSNumericHandlerRankFromHandlerRankString(v4);
+  v5 = rankCopy;
+  self->_minimumNumericHandlerRank = _LSNumericHandlerRankFromHandlerRankString(rankCopy);
 }
 
 - (NSString)maximumHandlerRank
@@ -181,21 +181,21 @@
   return v2;
 }
 
-- (void)setMaximumHandlerRank:(id)a3
+- (void)setMaximumHandlerRank:(id)rank
 {
-  v4 = a3;
-  if (!v4)
+  rankCopy = rank;
+  if (!rankCopy)
   {
-    v4 = @"Owner";
+    rankCopy = @"Owner";
   }
 
-  v5 = v4;
-  self->_maximumNumericHandlerRank = _LSNumericHandlerRankFromHandlerRankString(v4);
+  v5 = rankCopy;
+  self->_maximumNumericHandlerRank = _LSNumericHandlerRankFromHandlerRankString(rankCopy);
 }
 
-- (void)setIgnoreStrongBindingPreferences:(BOOL)a3
+- (void)setIgnoreStrongBindingPreferences:(BOOL)preferences
 {
-  if (a3)
+  if (preferences)
   {
     v3 = 2;
   }
@@ -208,9 +208,9 @@
   *(&self->_addClaimRecordIfMissing + 1) = *(&self->_addClaimRecordIfMissing + 1) & 0xFD | v3;
 }
 
-- (void)setIgnoreWeakBindingPreferences:(BOOL)a3
+- (void)setIgnoreWeakBindingPreferences:(BOOL)preferences
 {
-  if (a3)
+  if (preferences)
   {
     v3 = 4;
   }
@@ -223,9 +223,9 @@
   *(&self->_addClaimRecordIfMissing + 1) = *(&self->_addClaimRecordIfMissing + 1) & 0xFB | v3;
 }
 
-- (void)setRequireOpenInPlace:(BOOL)a3
+- (void)setRequireOpenInPlace:(BOOL)place
 {
-  if (a3)
+  if (place)
   {
     v3 = 8;
   }
@@ -238,9 +238,9 @@
   *(&self->_addClaimRecordIfMissing + 1) = *(&self->_addClaimRecordIfMissing + 1) & 0xF7 | v3;
 }
 
-- (void)setHonorPreferenceForNoHandler:(BOOL)a3
+- (void)setHonorPreferenceForNoHandler:(BOOL)handler
 {
-  if (a3)
+  if (handler)
   {
     v3 = 16;
   }
@@ -253,22 +253,22 @@
   *(&self->_addClaimRecordIfMissing + 1) = *(&self->_addClaimRecordIfMissing + 1) & 0xEF | v3;
 }
 
-- (LSClaimBindingConfiguration)initWithDocumentProxy:(id)a3 bindingStyle:(unsigned __int8)a4
+- (LSClaimBindingConfiguration)initWithDocumentProxy:(id)proxy bindingStyle:(unsigned __int8)style
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(LSClaimBindingConfiguration *)self initWithDocumentProxy:v6];
+  styleCopy = style;
+  proxyCopy = proxy;
+  v7 = [(LSClaimBindingConfiguration *)self initWithDocumentProxy:proxyCopy];
   v8 = v7;
   if (v7)
   {
-    v7->_bindingStyle = v4;
-    if (v4 == 2)
+    v7->_bindingStyle = styleCopy;
+    if (styleCopy == 2)
     {
       [(LSClaimBindingConfiguration *)v7 setAllowNoneHandlerRank:1];
       [(LSClaimBindingConfiguration *)v8 setAllowWildcardClaims:1];
     }
 
-    else if (v4 == 3)
+    else if (styleCopy == 3)
     {
       bindable = v7->_bindable;
       v14 = 0;
@@ -297,7 +297,7 @@
   return v8;
 }
 
-- (BindingEvaluator)_baseBindingEvaluatorForBindableWithAuditToken:(SEL)a3
+- (BindingEvaluator)_baseBindingEvaluatorForBindableWithAuditToken:(SEL)token
 {
   result = self->_bindable;
   if (result)
@@ -319,7 +319,7 @@
   return result;
 }
 
-- (BindingEvaluator)bindingEvaluatorForAuditToken:(SEL)a3
+- (BindingEvaluator)bindingEvaluatorForAuditToken:(SEL)token
 {
   [(LSClaimBindingConfiguration *)self _baseBindingEvaluatorForBindableWithAuditToken:a4];
   memset(v31, 0, sizeof(v31));
@@ -356,12 +356,12 @@
   }
 
   Options = LaunchServices::BindingEvaluator::getOptions(retstr);
-  v12 = [(LSClaimBindingConfiguration *)self allowWildcardClaims];
-  v13 = [(LSClaimBindingConfiguration *)self allowNoneHandlerRank];
-  v14 = [(LSClaimBindingConfiguration *)self ignoreStrongBindingPreferences];
-  v15 = [(LSClaimBindingConfiguration *)self ignoreWeakBindingPreferences];
-  v16 = [(LSClaimBindingConfiguration *)self honorPreferenceForNoHandler];
-  if (v12)
+  allowWildcardClaims = [(LSClaimBindingConfiguration *)self allowWildcardClaims];
+  allowNoneHandlerRank = [(LSClaimBindingConfiguration *)self allowNoneHandlerRank];
+  ignoreStrongBindingPreferences = [(LSClaimBindingConfiguration *)self ignoreStrongBindingPreferences];
+  ignoreWeakBindingPreferences = [(LSClaimBindingConfiguration *)self ignoreWeakBindingPreferences];
+  honorPreferenceForNoHandler = [(LSClaimBindingConfiguration *)self honorPreferenceForNoHandler];
+  if (allowWildcardClaims)
   {
     v17 = 8224;
   }
@@ -372,22 +372,22 @@
   }
 
   v18 = v17 | Options;
-  if (v13)
+  if (allowNoneHandlerRank)
   {
     v18 |= 0x1000u;
   }
 
-  if (v14)
+  if (ignoreStrongBindingPreferences)
   {
     v18 |= 2u;
   }
 
-  if (v15)
+  if (ignoreWeakBindingPreferences)
   {
     v18 |= 4u;
   }
 
-  if (v16)
+  if (honorPreferenceForNoHandler)
   {
     v19 = v18 | 0x400000;
   }
@@ -398,17 +398,17 @@
   }
 
   LaunchServices::BindingEvaluator::setOptions(retstr, v19);
-  v20 = [(LSClaimBindingConfiguration *)self bundleClassMask];
+  bundleClassMask = [(LSClaimBindingConfiguration *)self bundleClassMask];
   __p = 0;
   v25 = 0;
   v26 = 0;
-  if ((v20 & 4) != 0)
+  if ((bundleClassMask & 4) != 0)
   {
     v23 = 2;
     std::vector<unsigned int>::push_back[abi:nn200100](&__p, &v23);
   }
 
-  if ((v20 & 0x800) != 0)
+  if ((bundleClassMask & 0x800) != 0)
   {
     v23 = 11;
     std::vector<unsigned int>::push_back[abi:nn200100](&__p, &v23);
@@ -458,12 +458,12 @@ BOOL __79__LSClaimBindingConfiguration_BindingEvaluator__bindingEvaluatorForAudi
   return v4 >= *(a1 + 32) && v4 <= *(a1 + 34);
 }
 
-+ (id)oneTapOpenClaimBindingConfigurationForBindable:(id)a3
++ (id)oneTapOpenClaimBindingConfigurationForBindable:(id)bindable
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithBindable:v4];
+  bindableCopy = bindable;
+  v5 = [[self alloc] initWithBindable:bindableCopy];
   v12 = 0;
-  v6 = [v4 typeRecordWithError:&v12];
+  v6 = [bindableCopy typeRecordWithError:&v12];
   v7 = v12;
   if (v6)
   {
@@ -476,7 +476,7 @@ BOOL __79__LSClaimBindingConfiguration_BindingEvaluator__bindingEvaluatorForAudi
 
   else
   {
-    v8 = [v4 URL];
+    v8 = [bindableCopy URL];
     v9 = v8;
     if (!v8 || [v8 isFileURL])
     {

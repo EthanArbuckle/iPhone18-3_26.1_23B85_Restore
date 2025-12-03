@@ -1,21 +1,21 @@
 @interface CHCompanionHealthProfileExtension
-- (CHCompanionHealthProfileExtension)initWithProfile:(id)a3;
+- (CHCompanionHealthProfileExtension)initWithProfile:(id)profile;
 - (HDProfile)profile;
 - (void)dealloc;
 @end
 
 @implementation CHCompanionHealthProfileExtension
 
-- (CHCompanionHealthProfileExtension)initWithProfile:(id)a3
+- (CHCompanionHealthProfileExtension)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v58.receiver = self;
   v58.super_class = CHCompanionHealthProfileExtension;
   v5 = [(CHCompanionHealthProfileExtension *)&v58 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = objc_alloc(MEMORY[0x29EDC0BC0]);
     v10 = objc_msgSend_profile(v6, v8, v9);
     v12 = objc_msgSend_initWithProfile_(v7, v11, v10);

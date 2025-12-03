@@ -1,6 +1,6 @@
 @interface HDCloudSyncConditionalOperation
-- (HDCloudSyncConditionalOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncConditionalOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 operation:(id)a5 shouldRunHandler:(id)a6;
+- (HDCloudSyncConditionalOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncConditionalOperation)initWithConfiguration:(id)configuration cloudState:(id)state operation:(id)operation shouldRunHandler:(id)handler;
 - (id)description;
 - (void)main;
 - (void)skip;
@@ -8,7 +8,7 @@
 
 @implementation HDCloudSyncConditionalOperation
 
-- (HDCloudSyncConditionalOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncConditionalOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -18,18 +18,18 @@
   return 0;
 }
 
-- (HDCloudSyncConditionalOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 operation:(id)a5 shouldRunHandler:(id)a6
+- (HDCloudSyncConditionalOperation)initWithConfiguration:(id)configuration cloudState:(id)state operation:(id)operation shouldRunHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  operationCopy = operation;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = HDCloudSyncConditionalOperation;
-  v12 = [(HDCloudSyncOperation *)&v15 initWithConfiguration:a3 cloudState:a4];
+  v12 = [(HDCloudSyncOperation *)&v15 initWithConfiguration:configuration cloudState:state];
   v13 = v12;
   if (v12)
   {
-    [(HDCloudSyncConditionalOperation *)v12 setShouldRunHandler:v11];
-    [(HDCloudSyncConditionalOperation *)v13 setOperation:v10];
+    [(HDCloudSyncConditionalOperation *)v12 setShouldRunHandler:handlerCopy];
+    [(HDCloudSyncConditionalOperation *)v13 setOperation:operationCopy];
   }
 
   return v13;
@@ -38,21 +38,21 @@
 - (void)main
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [(HDCloudSyncConditionalOperation *)self shouldRunHandler];
+  shouldRunHandler = [(HDCloudSyncConditionalOperation *)self shouldRunHandler];
   [(HDCloudSyncConditionalOperation *)self setShouldRunHandler:0];
-  if (v4 && ((v4)[2](v4, self) & 1) != 0)
+  if (shouldRunHandler && ((shouldRunHandler)[2](shouldRunHandler, self) & 1) != 0)
   {
-    v5 = [(HDCloudSyncConditionalOperation *)self operation];
-    if (!v5)
+    operation = [(HDCloudSyncConditionalOperation *)self operation];
+    if (!operation)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"HDCloudSyncConditionalOperation.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"operation != nil"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncConditionalOperation.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"operation != nil"}];
     }
 
-    v6 = [(HDCloudSyncOperation *)self cloudState];
-    [v5 setCloudState:v6];
+    cloudState = [(HDCloudSyncOperation *)self cloudState];
+    [operation setCloudState:cloudState];
 
-    [(HDCloudSyncOperation *)self delegateToOperation:v5];
+    [(HDCloudSyncOperation *)self delegateToOperation:operation];
   }
 
   else
@@ -62,12 +62,12 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Skipping.", buf, 0xCu);
     }
 
-    v8 = [(HDCloudSyncConditionalOperation *)self operation];
-    [v8 skip];
+    operation2 = [(HDCloudSyncConditionalOperation *)self operation];
+    [operation2 skip];
 
     [(HDCloudSyncConditionalOperation *)self finishWithSuccess:1 error:0];
   }
@@ -80,8 +80,8 @@
   v4.receiver = self;
   v4.super_class = HDCloudSyncConditionalOperation;
   [(HDCloudSyncOperation *)&v4 skip];
-  v3 = [(HDCloudSyncConditionalOperation *)self operation];
-  [v3 skip];
+  operation = [(HDCloudSyncConditionalOperation *)self operation];
+  [operation skip];
 
   [(HDCloudSyncConditionalOperation *)self setShouldRunHandler:0];
 }
@@ -89,8 +89,8 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HDCloudSyncConditionalOperation *)self operation];
-  v4 = [v2 stringWithFormat:@"[? %@]", v3];
+  operation = [(HDCloudSyncConditionalOperation *)self operation];
+  v4 = [v2 stringWithFormat:@"[? %@]", operation];
 
   return v4;
 }

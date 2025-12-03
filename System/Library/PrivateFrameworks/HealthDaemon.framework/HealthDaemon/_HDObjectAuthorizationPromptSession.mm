@@ -1,30 +1,30 @@
 @interface _HDObjectAuthorizationPromptSession
-- (void)endPromptTransactionWithSuccess:(void *)a3 error:;
+- (void)endPromptTransactionWithSuccess:(void *)success error:;
 @end
 
 @implementation _HDObjectAuthorizationPromptSession
 
-- (void)endPromptTransactionWithSuccess:(void *)a3 error:
+- (void)endPromptTransactionWithSuccess:(void *)success error:
 {
   v117 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a1)
+  successCopy = success;
+  if (self)
   {
-    v6 = *(a1 + 40);
+    v6 = *(self + 40);
     if (v6)
     {
       v7 = _Block_copy(v6);
-      v8 = *(a1 + 40);
-      *(a1 + 40) = 0;
+      v8 = *(self + 40);
+      *(self + 40) = 0;
 
       v61 = v7;
       if (a2)
       {
-        WeakRetained = objc_loadWeakRetained((a1 + 8));
-        v10 = [WeakRetained sourceManager];
-        v11 = *(a1 + 48);
+        WeakRetained = objc_loadWeakRetained((self + 8));
+        sourceManager = [WeakRetained sourceManager];
+        v11 = *(self + 48);
         v85[0] = 0;
-        v12 = [v10 localSourceForBundleIdentifier:v11 error:v85];
+        v12 = [sourceManager localSourceForBundleIdentifier:v11 error:v85];
         v13 = v85[0];
 
         v73 = v12 != 0;
@@ -40,7 +40,7 @@
           }
 
           v15 = v13;
-          v5 = v15;
+          successCopy = v15;
         }
       }
 
@@ -54,16 +54,16 @@
       v84 = 0u;
       v81 = 0u;
       v82 = 0u;
-      obj = *(a1 + 16);
+      obj = *(self + 16);
       v16 = [obj countByEnumeratingWithState:&v81 objects:v113 count:16];
       if (v16)
       {
         v17 = v16;
         v18 = *v82;
         v64 = v12;
-        v65 = v5;
+        v65 = successCopy;
         v62 = *v82;
-        v63 = a1;
+        selfCopy = self;
         do
         {
           v19 = 0;
@@ -87,11 +87,11 @@
             }
 
             v22 = v21;
-            v23 = objc_loadWeakRetained((a1 + 8));
+            v23 = objc_loadWeakRetained((self + 8));
             v74 = v12;
             v24 = v22;
             v25 = v23;
-            v26 = v5;
+            v26 = successCopy;
             if (v20)
             {
               v27 = *(v20 + 16);
@@ -127,8 +127,8 @@
                         }
 
                         v36 = *(*(&v101 + 1) + 8 * i);
-                        v37 = [v36 UUID];
-                        [v30 setObject:v36 forKeyedSubscript:v37];
+                        uUID = [v36 UUID];
+                        [v30 setObject:v36 forKeyedSubscript:uUID];
                       }
 
                       v33 = [v31 countByEnumeratingWithState:&v101 objects:buf count:16];
@@ -169,8 +169,8 @@
                           v47 = *(*(&v89 + 1) + 8 * j);
                           if ([v47 status] == 2)
                           {
-                            v48 = [v47 objectUUID];
-                            v49 = [v30 objectForKeyedSubscript:v48];
+                            objectUUID = [v47 objectUUID];
+                            v49 = [v30 objectForKeyedSubscript:objectUUID];
                             [v41 addObject:v49];
                           }
                         }
@@ -212,9 +212,9 @@
                   }
 
                   v12 = v64;
-                  v5 = v65;
+                  successCopy = v65;
                   v18 = v62;
-                  a1 = v63;
+                  self = selfCopy;
                   v17 = v66;
                   v52 = v70;
                   v24 = v71;
@@ -256,7 +256,7 @@
       v80 = 0u;
       v77 = 0u;
       v78 = 0u;
-      v54 = *(a1 + 24);
+      v54 = *(self + 24);
       v55 = [v54 countByEnumeratingWithState:&v77 objects:v112 count:16];
       if (v55)
       {
@@ -272,7 +272,7 @@
             }
 
             v76 = *(*(&v77 + 1) + 8 * k);
-            v75 = v5;
+            v75 = successCopy;
             HKDispatchAsyncOnGlobalConcurrentQueue();
           }
 
@@ -282,7 +282,7 @@
         while (v56);
       }
 
-      v5 = v5;
+      successCopy = successCopy;
       v59 = v61;
       HKDispatchAsyncOnGlobalConcurrentQueue();
     }

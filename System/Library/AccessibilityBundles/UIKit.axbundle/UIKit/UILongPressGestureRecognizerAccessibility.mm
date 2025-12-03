@@ -1,31 +1,31 @@
 @interface UILongPressGestureRecognizerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsSupportedGestureRecognizer;
 @end
 
 @implementation UILongPressGestureRecognizerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UICollectionViewCell" hasInstanceMethod:@"_gestureRecognizerShouldBegin:" withFullSignature:{"B", "@", 0}];
   objc_storeStrong(v4, obj);
 }
 
 - (BOOL)_accessibilityIsSupportedGestureRecognizer
 {
-  v21 = self;
+  selfCopy = self;
   v20[1] = a2;
   v20[0] = MEMORY[0x29EDC9748](self);
-  v4 = [v20[0] delegate];
+  delegate = [v20[0] delegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  *&v2 = MEMORY[0x29EDC9740](v4).n128_u64[0];
+  *&v2 = MEMORY[0x29EDC9740](delegate).n128_u64[0];
   if (isKindOfClass)
   {
     v15 = 0;
@@ -44,19 +44,19 @@
     v8 = v16[3] & 1;
     objc_storeStrong(v14, 0);
     _Block_object_dispose(&v15, 8);
-    v22 = v8 & 1;
+    _accessibilityIsSupportedGestureRecognizer = v8 & 1;
   }
 
   else
   {
-    v6.receiver = v21;
+    v6.receiver = selfCopy;
     v6.super_class = UILongPressGestureRecognizerAccessibility;
-    v22 = [(UILongPressGestureRecognizerAccessibility *)&v6 _accessibilityIsSupportedGestureRecognizer];
+    _accessibilityIsSupportedGestureRecognizer = [(UILongPressGestureRecognizerAccessibility *)&v6 _accessibilityIsSupportedGestureRecognizer];
   }
 
   v7 = 1;
   objc_storeStrong(v20, 0);
-  return v22 & 1;
+  return _accessibilityIsSupportedGestureRecognizer & 1;
 }
 
 double __87__UILongPressGestureRecognizerAccessibility__accessibilityIsSupportedGestureRecognizer__block_invoke(uint64_t a1)

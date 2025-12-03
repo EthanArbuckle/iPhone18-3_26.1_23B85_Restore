@@ -1,19 +1,19 @@
 @interface TransparencyManagedDataStoreController
-- (BOOL)createDataStores:(id)a3 followup:(id)a4 error:(id *)a5;
+- (BOOL)createDataStores:(id)stores followup:(id)followup error:(id *)error;
 - (BOOL)loadedStore;
-- (BOOL)moveAsideDatabase:(id)a3;
-- (BOOL)saveContext:(id)a3 error:(id *)a4;
-- (BOOL)shouldMoveAsideDatabase:(id)a3;
+- (BOOL)moveAsideDatabase:(id)database;
+- (BOOL)saveContext:(id)context error:(id *)error;
+- (BOOL)shouldMoveAsideDatabase:(id)database;
 - (NSManagedObjectContext)backgroundContext;
 - (TransparencyManagedDataStoreController)init;
-- (TransparencyManagedDataStoreController)initWithContainer:(id)a3 logger:(id)a4;
+- (TransparencyManagedDataStoreController)initWithContainer:(id)container logger:(id)logger;
 - (id)bundleURL;
-- (int64_t)currentSequenceId:(id *)a3;
-- (int64_t)waitSetupComplete:(int64_t)a3;
+- (int64_t)currentSequenceId:(id *)id;
+- (int64_t)waitSetupComplete:(int64_t)complete;
 - (void)createPeerOverrides;
 - (void)loadPersistentStores;
-- (void)setStaticKeyStore:(id)a3;
-- (void)setUpdateDelegate:(id)a3;
+- (void)setStaticKeyStore:(id)store;
+- (void)setUpdateDelegate:(id)delegate;
 - (void)setupComplete;
 @end
 
@@ -21,13 +21,13 @@
 
 - (void)loadPersistentStores
 {
-  v3 = [(TransparencyManagedDataStoreController *)self persistentContainer];
+  persistentContainer = [(TransparencyManagedDataStoreController *)self persistentContainer];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10006A980;
   v4[3] = &unk_10031C720;
   v4[4] = self;
-  [v3 loadPersistentStoresWithCompletionHandler:v4];
+  [persistentContainer loadPersistentStoresWithCompletionHandler:v4];
 }
 
 - (TransparencyManagedDataStoreController)init
@@ -38,10 +38,10 @@
   return v4;
 }
 
-- (TransparencyManagedDataStoreController)initWithContainer:(id)a3 logger:(id)a4
+- (TransparencyManagedDataStoreController)initWithContainer:(id)container logger:(id)logger
 {
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  loggerCopy = logger;
   v23.receiver = self;
   v23.super_class = TransparencyManagedDataStoreController;
   v8 = [(TransparencyManagedDataStoreController *)&v23 init];
@@ -52,22 +52,22 @@
     v9 = objc_alloc_init(KTCondition);
     [(TransparencyManagedDataStoreController *)v8 setLoadComplete:v9];
 
-    [(TransparencyManagedDataStoreController *)v8 setLogger:v7];
-    if (v6)
+    [(TransparencyManagedDataStoreController *)v8 setLogger:loggerCopy];
+    if (containerCopy)
     {
-      [(TransparencyManagedDataStoreController *)v8 setPersistentContainer:v6];
+      [(TransparencyManagedDataStoreController *)v8 setPersistentContainer:containerCopy];
       [(TransparencyManagedDataStoreController *)v8 createContexts:0];
       v10 = +[TransparencyFollowup instance];
-      [(TransparencyManagedDataStoreController *)v8 createDataStores:v7 followup:v10 error:0];
+      [(TransparencyManagedDataStoreController *)v8 createDataStores:loggerCopy followup:v10 error:0];
 
-      v11 = [(TransparencyManagedDataStoreController *)v8 loadComplete];
-      [(TransparencyManagedDataStoreController *)v11 fulfill];
+      loadComplete = [(TransparencyManagedDataStoreController *)v8 loadComplete];
+      [(TransparencyManagedDataStoreController *)loadComplete fulfill];
     }
 
     else
     {
-      v11 = [(TransparencyManagedDataStoreController *)v8 bundleURL];
-      if (!v11)
+      loadComplete = [(TransparencyManagedDataStoreController *)v8 bundleURL];
+      if (!loadComplete)
       {
         [(TransparencyManagedDataStoreController *)v8 reportCoreDataEventForEntity:@"Initialization" write:0 code:-209 underlyingError:0];
         goto LABEL_6;
@@ -80,7 +80,7 @@
       {
         [(TransparencyManagedDataStoreController *)v8 reportCoreDataEventForEntity:@"Initialization" write:0 code:-37 underlyingError:v14];
 
-        v11 = 0;
+        loadComplete = 0;
         goto LABEL_6;
       }
 
@@ -88,7 +88,7 @@
       v16 = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:v15];
 
       [v16 setOption:NSFileProtectionNone forKey:NSPersistentStoreFileProtectionKey];
-      v17 = [[NSManagedObjectModel alloc] initWithContentsOfURL:v11];
+      v17 = [[NSManagedObjectModel alloc] initWithContentsOfURL:loadComplete];
       v18 = [[NSPersistentContainer alloc] initWithName:@"TransparencyModel" managedObjectModel:v17];
       persistentContainer = v8->_persistentContainer;
       v8->_persistentContainer = v18;
@@ -104,10 +104,10 @@
     [(TransparencyManagedDataStoreController *)v8 createPeerOverrides];
   }
 
-  v11 = v8;
+  loadComplete = v8;
 LABEL_6:
 
-  return v11;
+  return loadComplete;
 }
 
 - (id)bundleURL
@@ -120,31 +120,31 @@ LABEL_6:
 
 - (BOOL)loadedStore
 {
-  v2 = [(TransparencyManagedDataStoreController *)self persistentContainer];
-  v3 = v2 != 0;
+  persistentContainer = [(TransparencyManagedDataStoreController *)self persistentContainer];
+  v3 = persistentContainer != 0;
 
   return v3;
 }
 
-- (BOOL)shouldMoveAsideDatabase:(id)a3
+- (BOOL)shouldMoveAsideDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   if ([(TransparencyManagedDataStoreController *)self movedDatabase])
   {
     v5 = 0;
   }
 
-  else if ([v4 code] == 134130 || objc_msgSend(v4, "code") == 134020 || objc_msgSend(v4, "code") == 134100 || objc_msgSend(v4, "code") == 259 || objc_msgSend(v4, "code") == 256 || objc_msgSend(v4, "code") == 134110)
+  else if ([databaseCopy code] == 134130 || objc_msgSend(databaseCopy, "code") == 134020 || objc_msgSend(databaseCopy, "code") == 134100 || objc_msgSend(databaseCopy, "code") == 259 || objc_msgSend(databaseCopy, "code") == 256 || objc_msgSend(databaseCopy, "code") == 134110)
   {
     v5 = 1;
   }
 
   else
   {
-    v7 = [v4 domain];
-    if ([v7 isEqualToString:NSSQLiteErrorDomain])
+    domain = [databaseCopy domain];
+    if ([domain isEqualToString:NSSQLiteErrorDomain])
     {
-      v5 = [v4 code] == 11;
+      v5 = [databaseCopy code] == 11;
     }
 
     else
@@ -156,19 +156,19 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)moveAsideDatabase:(id)a3
+- (BOOL)moveAsideDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = [TransparencyFileSupport transparencyFilesPath:0];
   v6 = [v5 URLByAppendingPathComponent:@"TransparencyModel.sqlite"];
-  v7 = [v6 path];
+  path = [v6 path];
 
   v8 = +[NSData kt_random];
-  v9 = [v8 kt_hexString];
+  kt_hexString = [v8 kt_hexString];
 
-  v10 = [v4 code];
-  v41 = v9;
-  v11 = [v7 stringByAppendingFormat:@".%@.%ld", v9, v10];
+  code = [databaseCopy code];
+  v41 = kt_hexString;
+  v11 = [path stringByAppendingFormat:@".%@.%ld", kt_hexString, code];
   if (qword_10038BD80 != -1)
   {
     sub_10024AA74();
@@ -178,20 +178,20 @@ LABEL_6:
   if (os_log_type_enabled(qword_10038BD88, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v47 = v7;
+    v47 = path;
     v48 = 2112;
     v49 = v11;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Move Transparency store at %@ to %@", buf, 0x16u);
   }
 
-  v13 = [NSURL fileURLWithPath:v7];
+  v13 = [NSURL fileURLWithPath:path];
   v14 = [NSURL fileURLWithPath:v11];
   if (os_variant_allows_internal_security_policies())
   {
-    v15 = [(TransparencyManagedDataStoreController *)self persistentContainer];
-    v16 = [v15 persistentStoreCoordinator];
+    persistentContainer = [(TransparencyManagedDataStoreController *)self persistentContainer];
+    persistentStoreCoordinator = [persistentContainer persistentStoreCoordinator];
     v45 = 0;
-    v17 = [v16 replacePersistentStoreAtURL:v14 destinationOptions:0 withPersistentStoreFromURL:v13 sourceOptions:0 storeType:NSSQLiteStoreType error:&v45];
+    v17 = [persistentStoreCoordinator replacePersistentStoreAtURL:v14 destinationOptions:0 withPersistentStoreFromURL:v13 sourceOptions:0 storeType:NSSQLiteStoreType error:&v45];
     v18 = v45;
 
     if ((v17 & 1) == 0)
@@ -221,17 +221,17 @@ LABEL_6:
   }
 
   v40 = v11;
-  v20 = [(TransparencyManagedDataStoreController *)self persistentContainer];
-  v21 = [v20 persistentStoreCoordinator];
-  v22 = [v21 persistentStoreForURL:v13];
+  persistentContainer2 = [(TransparencyManagedDataStoreController *)self persistentContainer];
+  persistentStoreCoordinator2 = [persistentContainer2 persistentStoreCoordinator];
+  v22 = [persistentStoreCoordinator2 persistentStoreForURL:v13];
 
   v23 = v14;
   if (v22)
   {
-    v24 = [(TransparencyManagedDataStoreController *)self persistentContainer];
-    v25 = [v24 persistentStoreCoordinator];
+    persistentContainer3 = [(TransparencyManagedDataStoreController *)self persistentContainer];
+    persistentStoreCoordinator3 = [persistentContainer3 persistentStoreCoordinator];
     v44 = v18;
-    v26 = [v25 removePersistentStore:v22 error:&v44];
+    v26 = [persistentStoreCoordinator3 removePersistentStore:v22 error:&v44];
     v27 = v44;
 
     if ((v26 & 1) == 0)
@@ -256,10 +256,10 @@ LABEL_6:
     v27 = v18;
   }
 
-  v29 = [(TransparencyManagedDataStoreController *)self persistentContainer];
-  v30 = [v29 persistentStoreCoordinator];
+  persistentContainer4 = [(TransparencyManagedDataStoreController *)self persistentContainer];
+  persistentStoreCoordinator4 = [persistentContainer4 persistentStoreCoordinator];
   v43 = v27;
-  v31 = [v30 destroyPersistentStoreAtURL:v13 withType:NSSQLiteStoreType options:0 error:&v43];
+  v31 = [persistentStoreCoordinator4 destroyPersistentStoreAtURL:v13 withType:NSSQLiteStoreType options:0 error:&v43];
   v32 = v43;
 
   if (v31)
@@ -320,30 +320,30 @@ LABEL_6:
   return v33;
 }
 
-- (void)setUpdateDelegate:(id)a3
+- (void)setUpdateDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(TransparencyManagedDataStoreController *)self dataStore];
-  [v5 setUpdateDelegate:v4];
+  delegateCopy = delegate;
+  dataStore = [(TransparencyManagedDataStoreController *)self dataStore];
+  [dataStore setUpdateDelegate:delegateCopy];
 
-  v6 = [(TransparencyManagedDataStoreController *)self xpcQueueDataStore];
-  [v6 setUpdateDelegate:v4];
+  xpcQueueDataStore = [(TransparencyManagedDataStoreController *)self xpcQueueDataStore];
+  [xpcQueueDataStore setUpdateDelegate:delegateCopy];
 
-  v7 = [(TransparencyManagedDataStoreController *)self mainQueueDataStore];
-  [v7 setUpdateDelegate:v4];
+  mainQueueDataStore = [(TransparencyManagedDataStoreController *)self mainQueueDataStore];
+  [mainQueueDataStore setUpdateDelegate:delegateCopy];
 }
 
-- (void)setStaticKeyStore:(id)a3
+- (void)setStaticKeyStore:(id)store
 {
-  v4 = a3;
-  v5 = [(TransparencyManagedDataStoreController *)self dataStore];
-  [v5 setStaticKeyStore:v4];
+  storeCopy = store;
+  dataStore = [(TransparencyManagedDataStoreController *)self dataStore];
+  [dataStore setStaticKeyStore:storeCopy];
 
-  v6 = [(TransparencyManagedDataStoreController *)self xpcQueueDataStore];
-  [v6 setStaticKeyStore:v4];
+  xpcQueueDataStore = [(TransparencyManagedDataStoreController *)self xpcQueueDataStore];
+  [xpcQueueDataStore setStaticKeyStore:storeCopy];
 
-  v7 = [(TransparencyManagedDataStoreController *)self mainQueueDataStore];
-  [v7 setStaticKeyStore:v4];
+  mainQueueDataStore = [(TransparencyManagedDataStoreController *)self mainQueueDataStore];
+  [mainQueueDataStore setStaticKeyStore:storeCopy];
 }
 
 - (void)createPeerOverrides
@@ -351,32 +351,32 @@ LABEL_6:
   v3 = objc_alloc_init(TransparencyPeerOverrides);
   [(TransparencyManagedDataStoreController *)self setPeerOverrides:v3];
 
-  v4 = [(TransparencyManagedDataStoreController *)self peerOverrides];
-  v5 = [(TransparencyManagedDataStoreController *)self dataStore];
-  [v5 setPeerOverridesStore:v4];
+  peerOverrides = [(TransparencyManagedDataStoreController *)self peerOverrides];
+  dataStore = [(TransparencyManagedDataStoreController *)self dataStore];
+  [dataStore setPeerOverridesStore:peerOverrides];
 
-  v6 = [(TransparencyManagedDataStoreController *)self peerOverrides];
-  v7 = [(TransparencyManagedDataStoreController *)self xpcQueueDataStore];
-  [v7 setPeerOverridesStore:v6];
+  peerOverrides2 = [(TransparencyManagedDataStoreController *)self peerOverrides];
+  xpcQueueDataStore = [(TransparencyManagedDataStoreController *)self xpcQueueDataStore];
+  [xpcQueueDataStore setPeerOverridesStore:peerOverrides2];
 
-  v9 = [(TransparencyManagedDataStoreController *)self peerOverrides];
-  v8 = [(TransparencyManagedDataStoreController *)self mainQueueDataStore];
-  [v8 setPeerOverridesStore:v9];
+  peerOverrides3 = [(TransparencyManagedDataStoreController *)self peerOverrides];
+  mainQueueDataStore = [(TransparencyManagedDataStoreController *)self mainQueueDataStore];
+  [mainQueueDataStore setPeerOverridesStore:peerOverrides3];
 }
 
-- (BOOL)createDataStores:(id)a3 followup:(id)a4 error:(id *)a5
+- (BOOL)createDataStores:(id)stores followup:(id)followup error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[TransparencyManagedDataStore alloc] initWithController:self followup:v9 logger:v8];
+  storesCopy = stores;
+  followupCopy = followup;
+  v10 = [[TransparencyManagedDataStore alloc] initWithController:self followup:followupCopy logger:storesCopy];
   [(TransparencyManagedDataStoreController *)self setDataStore:v10];
 
-  v11 = [(TransparencyManagedDataStoreController *)self dataStore];
-  v12 = [(TransparencyManagedDataStore *)v11 populateMissingLogHeadHashes:a5];
+  dataStore = [(TransparencyManagedDataStoreController *)self dataStore];
+  v12 = [(TransparencyManagedDataStore *)dataStore populateMissingLogHeadHashes:error];
   if (v12)
   {
-    v13 = [(TransparencyManagedDataStoreController *)self dataStore];
-    v14 = [v13 populateExistingRequestsToLookupTable:a5];
+    dataStore2 = [(TransparencyManagedDataStoreController *)self dataStore];
+    v14 = [dataStore2 populateExistingRequestsToLookupTable:error];
 
     if (!v14)
     {
@@ -384,18 +384,18 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v15 = [[TransparencyManagedDataStore alloc] initWithController:self followup:v9 logger:v8];
+    v15 = [[TransparencyManagedDataStore alloc] initWithController:self followup:followupCopy logger:storesCopy];
     [(TransparencyManagedDataStoreController *)self setXpcQueueDataStore:v15];
 
-    v11 = [[TransparencyManagedDataStore alloc] initWithController:self followup:v9 logger:v8];
-    [(TransparencyManagedDataStoreController *)self setMainQueueDataStore:v11];
+    dataStore = [[TransparencyManagedDataStore alloc] initWithController:self followup:followupCopy logger:storesCopy];
+    [(TransparencyManagedDataStoreController *)self setMainQueueDataStore:dataStore];
   }
 
 LABEL_6:
   return v12;
 }
 
-- (int64_t)currentSequenceId:(id *)a3
+- (int64_t)currentSequenceId:(id *)id
 {
   v20 = 0;
   v21 = &v20;
@@ -415,14 +415,14 @@ LABEL_6:
   v12 = &v14;
   v13 = &v20;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   [v5 performBlockAndWait:v9];
-  if (a3)
+  if (id)
   {
     v6 = v15[5];
     if (v6)
     {
-      *a3 = v6;
+      *id = v6;
     }
   }
 
@@ -435,23 +435,23 @@ LABEL_6:
 
 - (void)setupComplete
 {
-  v2 = [(TransparencyManagedDataStoreController *)self loadComplete];
-  [v2 fulfill];
+  loadComplete = [(TransparencyManagedDataStoreController *)self loadComplete];
+  [loadComplete fulfill];
 }
 
-- (int64_t)waitSetupComplete:(int64_t)a3
+- (int64_t)waitSetupComplete:(int64_t)complete
 {
-  v4 = [(TransparencyManagedDataStoreController *)self loadComplete];
-  v5 = [v4 wait:a3];
+  loadComplete = [(TransparencyManagedDataStoreController *)self loadComplete];
+  v5 = [loadComplete wait:complete];
 
   return v5;
 }
 
-- (BOOL)saveContext:(id)a3 error:(id *)a4
+- (BOOL)saveContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v17[0] = 0;
-  v7 = [v6 save:v17];
+  v7 = [contextCopy save:v17];
   v8 = v17[0];
   v9 = v8;
   if (v8)
@@ -473,10 +473,10 @@ LABEL_6:
   {
     v11 = [SecXPCHelper cleanseErrorForXPC:v8];
 
-    if (a4 && v11)
+    if (error && v11)
     {
       v12 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
     [(TransparencyManagedDataStoreController *)self reportCoreDataEventForEntity:@"Persistence" write:1 code:-129 underlyingError:v11];
@@ -513,16 +513,16 @@ LABEL_6:
 
 - (NSManagedObjectContext)backgroundContext
 {
-  v3 = [(TransparencyManagedDataStoreController *)self persistentContainer];
-  v4 = [v3 persistentStoreCoordinator];
+  persistentContainer = [(TransparencyManagedDataStoreController *)self persistentContainer];
+  persistentStoreCoordinator = [persistentContainer persistentStoreCoordinator];
 
-  if (v4)
+  if (persistentStoreCoordinator)
   {
     v5 = [[NSManagedObjectContext alloc] initWithConcurrencyType:1];
     [v5 setUndoManager:0];
-    v6 = [(TransparencyManagedDataStoreController *)self persistentContainer];
-    v7 = [v6 persistentStoreCoordinator];
-    [v5 setPersistentStoreCoordinator:v7];
+    persistentContainer2 = [(TransparencyManagedDataStoreController *)self persistentContainer];
+    persistentStoreCoordinator2 = [persistentContainer2 persistentStoreCoordinator];
+    [v5 setPersistentStoreCoordinator:persistentStoreCoordinator2];
 
     v8 = objc_alloc_init(TransparencyMergePolicy);
     [v5 setMergePolicy:v8];

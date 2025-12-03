@@ -1,15 +1,15 @@
 @interface AXInvertColors_iTunesStoreUI
-+ (void)performValidations:(id)a3;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_iTunesStoreUI
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUNavigationController" isKindOfClass:@"UINavigationController"];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"viewWillLayoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"UITabBarController" hasInstanceMethod:@"tabBar" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUNavigationController" isKindOfClass:@"UINavigationController"];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"viewWillLayoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"UITabBarController" hasInstanceMethod:@"tabBar" withFullSignature:{"@", 0}];
 }
 
 @end

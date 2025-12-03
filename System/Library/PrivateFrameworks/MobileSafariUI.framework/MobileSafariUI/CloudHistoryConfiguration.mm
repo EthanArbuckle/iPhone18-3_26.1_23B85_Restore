@@ -203,15 +203,15 @@ uint64_t __75__CloudHistoryConfiguration__cloudConfigurationAssetsSortedByVersio
 
 - (void)_reloadConfigurationDataIfNecessary
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v3 doubleForKey:@"LastCloudHistoryConfigurationUpdateTime"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"LastCloudHistoryConfigurationUpdateTime"];
   v5 = v4;
 
   Current = CFAbsoluteTimeGetCurrent();
   if (Current - v5 >= 604800.0)
   {
-    v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v7 setDouble:@"LastCloudHistoryConfigurationUpdateTime" forKey:Current];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults2 setDouble:@"LastCloudHistoryConfigurationUpdateTime" forKey:Current];
 
     v8 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];

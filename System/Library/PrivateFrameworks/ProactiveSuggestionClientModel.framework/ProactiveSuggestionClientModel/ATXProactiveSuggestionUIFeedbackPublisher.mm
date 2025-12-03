@@ -1,36 +1,36 @@
 @interface ATXProactiveSuggestionUIFeedbackPublisher
-- (ATXProactiveSuggestionUIFeedbackPublisher)initWithClientModelPublisher:(id)a3 blendingModelPublisher:(id)a4 uiPublisher:(id)a5 contextPublisher:(id)a6 validUICacheConsumerSubType:(unsigned __int8)a7 validClientModelIds:(id)a8 hyperParameters:(id)a9;
-- (id)_filteredBlendingCacheUpdatePublisher:(id)a3;
-- (id)_filteredCacheUpdateClientModelPublisher:(id)a3;
-- (id)_timestampFromEvent:(id)a3;
+- (ATXProactiveSuggestionUIFeedbackPublisher)initWithClientModelPublisher:(id)publisher blendingModelPublisher:(id)modelPublisher uiPublisher:(id)uiPublisher contextPublisher:(id)contextPublisher validUICacheConsumerSubType:(unsigned __int8)type validClientModelIds:(id)ids hyperParameters:(id)parameters;
+- (id)_filteredBlendingCacheUpdatePublisher:(id)publisher;
+- (id)_filteredCacheUpdateClientModelPublisher:(id)publisher;
+- (id)_timestampFromEvent:(id)event;
 - (id)mergedBlendingClientContextPublisher;
 - (id)uiFeedbackPublisher;
-- (id)uiFeedbackSessionPublisherWithCorrelateHandler:(id)a3;
+- (id)uiFeedbackSessionPublisherWithCorrelateHandler:(id)handler;
 @end
 
 @implementation ATXProactiveSuggestionUIFeedbackPublisher
 
-- (ATXProactiveSuggestionUIFeedbackPublisher)initWithClientModelPublisher:(id)a3 blendingModelPublisher:(id)a4 uiPublisher:(id)a5 contextPublisher:(id)a6 validUICacheConsumerSubType:(unsigned __int8)a7 validClientModelIds:(id)a8 hyperParameters:(id)a9
+- (ATXProactiveSuggestionUIFeedbackPublisher)initWithClientModelPublisher:(id)publisher blendingModelPublisher:(id)modelPublisher uiPublisher:(id)uiPublisher contextPublisher:(id)contextPublisher validUICacheConsumerSubType:(unsigned __int8)type validClientModelIds:(id)ids hyperParameters:(id)parameters
 {
-  v24 = a3;
-  v23 = a4;
-  v22 = a5;
-  v15 = a6;
-  v16 = a8;
-  v17 = a9;
+  publisherCopy = publisher;
+  modelPublisherCopy = modelPublisher;
+  uiPublisherCopy = uiPublisher;
+  contextPublisherCopy = contextPublisher;
+  idsCopy = ids;
+  parametersCopy = parameters;
   v25.receiver = self;
   v25.super_class = ATXProactiveSuggestionUIFeedbackPublisher;
   v18 = [(ATXProactiveSuggestionUIFeedbackPublisher *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_clientModelPublisher, a3);
-    objc_storeStrong(&v19->_blendingModelPublisher, a4);
-    objc_storeStrong(&v19->_uiPublisher, a5);
-    objc_storeStrong(&v19->_contextPublisher, a6);
-    v19->_validUICacheConsumerSubType = a7;
-    objc_storeStrong(&v19->_validClientModelIds, a8);
-    objc_storeStrong(&v19->_hyperParameters, a9);
+    objc_storeStrong(&v18->_clientModelPublisher, publisher);
+    objc_storeStrong(&v19->_blendingModelPublisher, modelPublisher);
+    objc_storeStrong(&v19->_uiPublisher, uiPublisher);
+    objc_storeStrong(&v19->_contextPublisher, contextPublisher);
+    v19->_validUICacheConsumerSubType = type;
+    objc_storeStrong(&v19->_validClientModelIds, ids);
+    objc_storeStrong(&v19->_hyperParameters, parameters);
   }
 
   return v19;
@@ -39,14 +39,14 @@
 - (id)uiFeedbackPublisher
 {
   v3 = +[ATXUIFeedbackBiomeCorrelateHandler uiFeedbackCorrelateHandler];
-  v4 = [(ATXProactiveSuggestionUIFeedbackPublisher *)self mergedBlendingClientContextPublisher];
+  mergedBlendingClientContextPublisher = [(ATXProactiveSuggestionUIFeedbackPublisher *)self mergedBlendingClientContextPublisher];
   v5 = [(ATXProactiveSuggestionUIFeedbackPublisher *)self uiFeedbackSessionPublisherWithCorrelateHandler:v3];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__ATXProactiveSuggestionUIFeedbackPublisher_uiFeedbackPublisher__block_invoke;
   v9[3] = &unk_1E86A4648;
   v9[4] = self;
-  v6 = [v4 correlateWithCurrent:v5 comparator:v9 correlateHandler:v3];
+  v6 = [mergedBlendingClientContextPublisher correlateWithCurrent:v5 comparator:v9 correlateHandler:v3];
   v7 = [v6 flatMapWithTransform:&__block_literal_global_13];
 
   return v7;
@@ -95,9 +95,9 @@ uint64_t __81__ATXProactiveSuggestionUIFeedbackPublisher_mergedBlendingClientCon
   return v11;
 }
 
-- (id)uiFeedbackSessionPublisherWithCorrelateHandler:(id)a3
+- (id)uiFeedbackSessionPublisherWithCorrelateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc(MEMORY[0x1E698B020]);
   v6 = objc_opt_new();
   v7 = [v5 initWithFirst:0 second:v6];
@@ -107,11 +107,11 @@ uint64_t __81__ATXProactiveSuggestionUIFeedbackPublisher_mergedBlendingClientCon
   v15 = 3221225472;
   v16 = __92__ATXProactiveSuggestionUIFeedbackPublisher_uiFeedbackSessionPublisherWithCorrelateHandler___block_invoke;
   v17 = &unk_1E86A4690;
-  v18 = self;
-  v19 = v4;
-  v9 = v4;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v9 = handlerCopy;
   v10 = [(BMBookmarkablePublisher *)uiPublisher scanWithInitial:v7 nextPartialResult:&v14];
-  v11 = [v10 filterWithIsIncluded:{&__block_literal_global_23_0, v14, v15, v16, v17, v18}];
+  v11 = [v10 filterWithIsIncluded:{&__block_literal_global_23_0, v14, v15, v16, v17, selfCopy}];
   v12 = [v11 mapWithTransform:&__block_literal_global_26_1];
 
   return v12;
@@ -284,14 +284,14 @@ uint64_t __92__ATXProactiveSuggestionUIFeedbackPublisher_uiFeedbackSessionPublis
   return v5;
 }
 
-- (id)_filteredBlendingCacheUpdatePublisher:(id)a3
+- (id)_filteredBlendingCacheUpdatePublisher:(id)publisher
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __83__ATXProactiveSuggestionUIFeedbackPublisher__filteredBlendingCacheUpdatePublisher___block_invoke;
   v5[3] = &unk_1E86A46F8;
   v5[4] = self;
-  v3 = [a3 filterWithIsIncluded:v5];
+  v3 = [publisher filterWithIsIncluded:v5];
 
   return v3;
 }
@@ -304,14 +304,14 @@ BOOL __83__ATXProactiveSuggestionUIFeedbackPublisher__filteredBlendingCacheUpdat
   return v4;
 }
 
-- (id)_filteredCacheUpdateClientModelPublisher:(id)a3
+- (id)_filteredCacheUpdateClientModelPublisher:(id)publisher
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __86__ATXProactiveSuggestionUIFeedbackPublisher__filteredCacheUpdateClientModelPublisher___block_invoke;
   v5[3] = &unk_1E86A46F8;
   v5[4] = self;
-  v3 = [a3 filterWithIsIncluded:v5];
+  v3 = [publisher filterWithIsIncluded:v5];
 
   return v3;
 }
@@ -353,14 +353,14 @@ LABEL_10:
   return v8;
 }
 
-- (id)_timestampFromEvent:(id)a3
+- (id)_timestampFromEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = MEMORY[0x1E696AD98];
-    [v4 timestamp];
+    [eventCopy timestamp];
     v6 = [v5 numberWithDouble:?];
   }
 
@@ -370,9 +370,9 @@ LABEL_10:
     if (objc_opt_isKindOfClass())
     {
       v7 = MEMORY[0x1E696AD98];
-      v8 = v4;
-      v9 = [v8 sessionEndDate];
-      [v9 timeIntervalSinceReferenceDate];
+      v8 = eventCopy;
+      sessionEndDate = [v8 sessionEndDate];
+      [sessionEndDate timeIntervalSinceReferenceDate];
       v6 = [v7 numberWithDouble:?];
     }
 
@@ -381,7 +381,7 @@ LABEL_10:
       v10 = __atxlog_handle_blending_ecosystem();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [(ATXProactiveSuggestionUIFeedbackPublisher *)self _timestampFromEvent:v4, v10];
+        [(ATXProactiveSuggestionUIFeedbackPublisher *)self _timestampFromEvent:eventCopy, v10];
       }
 
       v6 = &unk_1F5A41260;

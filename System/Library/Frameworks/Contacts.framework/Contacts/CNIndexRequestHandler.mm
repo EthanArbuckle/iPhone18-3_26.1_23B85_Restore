@@ -1,41 +1,41 @@
 @interface CNIndexRequestHandler
 - (BOOL)deleteAllSearchableItems;
-- (BOOL)deleteSearchableItemsWithIdentifiers:(id *)a1;
+- (BOOL)deleteSearchableItemsWithIdentifiers:(id *)identifiers;
 - (BOOL)endIndexBatchWithClientState;
 - (BOOL)fetchLastClientState;
-- (BOOL)indexSearchableItems:(id *)a1;
-- (CNIndexRequestHandler)initWithContactStore:(id)a3;
-- (CNIndexRequestHandler)initWithContactStore:(id)a3 searchableIndex:(id)a4 logger:(id)a5 batchSize:(unint64_t)a6;
+- (BOOL)indexSearchableItems:(id *)items;
+- (CNIndexRequestHandler)initWithContactStore:(id)store;
+- (CNIndexRequestHandler)initWithContactStore:(id)store searchableIndex:(id)index logger:(id)logger batchSize:(unint64_t)size;
 - (id)_futureForDeleteAllSearchableItems;
-- (id)_futureForDeleteSearchableItemsWithIdentifiers:(id *)a1;
-- (id)_futureForEndIndexBatchWithClientState:(id *)a1;
-- (id)_futureForIndexSearchableItems:(id *)a1;
+- (id)_futureForDeleteSearchableItemsWithIdentifiers:(id *)identifiers;
+- (id)_futureForEndIndexBatchWithClientState:(id *)state;
+- (id)_futureForIndexSearchableItems:(id *)items;
 - (id)fetchChangeHistoryEnumerator;
-- (id)fetchChangeHistoryEnumeratorWithError:(uint64_t)a1;
-- (id)fetchSearchableItemsIndexedByContactIdentifierWithError:(uint64_t)a1;
-- (id)searchableItemsForContactIdentifiers:(id)a1;
-- (id)verifyIndexLoggingSummary:(BOOL)a3 error:(id *)a4;
-- (uint64_t)_batchIndexUpdatingItems:(void *)a3 deletingItemsWithIdentifiers:(void *)a4 fullSyncOffset:(void *)a5 fullSyncDone:(void *)a6 snapshotAnchor:;
-- (uint64_t)batchIndexUpdatingItems:(uint64_t)a3 fullSyncOffset:(uint64_t)a4 fullSyncDone:;
-- (uint64_t)batchIndexUpdatingItems:(void *)a3 deletingItemsWithIdentifiers:(void *)a4 snapshotAnchor:;
+- (id)fetchChangeHistoryEnumeratorWithError:(uint64_t)error;
+- (id)fetchSearchableItemsIndexedByContactIdentifierWithError:(uint64_t)error;
+- (id)searchableItemsForContactIdentifiers:(id)identifiers;
+- (id)verifyIndexLoggingSummary:(BOOL)summary error:(id *)error;
+- (uint64_t)_batchIndexUpdatingItems:(void *)items deletingItemsWithIdentifiers:(void *)identifiers fullSyncOffset:(void *)offset fullSyncDone:(void *)done snapshotAnchor:;
+- (uint64_t)batchIndexUpdatingItems:(uint64_t)items fullSyncOffset:(uint64_t)offset fullSyncDone:;
+- (uint64_t)batchIndexUpdatingItems:(void *)items deletingItemsWithIdentifiers:(void *)identifiers snapshotAnchor:;
 - (uint64_t)beginIndexBatch;
-- (uint64_t)deltaSyncContacts:(uint64_t)a1;
+- (uint64_t)deltaSyncContacts:(uint64_t)contacts;
 - (uint64_t)fetchAndCheckLastClientState;
 - (uint64_t)fullSyncContacts;
-- (uint64_t)isChangeHistoryTruncatedForError:(uint64_t)a1;
-- (uint64_t)prepareForFullSync:(uint64_t)a1;
+- (uint64_t)isChangeHistoryTruncatedForError:(uint64_t)error;
+- (uint64_t)prepareForFullSync:(uint64_t)sync;
 - (void)_futureForFetchLastClientState;
-- (void)_performIndexingWithForcedReindexing:(uint64_t)a1;
+- (void)_performIndexingWithForcedReindexing:(uint64_t)reindexing;
 - (void)performIndexing;
 - (void)reindexAllSearchableItems;
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3;
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers;
 @end
 
 @implementation CNIndexRequestHandler
 
-- (CNIndexRequestHandler)initWithContactStore:(id)a3
+- (CNIndexRequestHandler)initWithContactStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -57,30 +57,30 @@
   v7 = [v5 alloc];
   v8 = [v7 initWithName:@"contacts" protectionClass:*MEMORY[0x1E696A388] bundleIdentifier:@"com.apple.MobileAddressBook"];
   v9 = +[CNContactsEnvironment currentEnvironment];
-  v10 = [v9 loggerProvider];
-  v11 = [v10 spotlightIndexingLogger];
+  loggerProvider = [v9 loggerProvider];
+  spotlightIndexingLogger = [loggerProvider spotlightIndexingLogger];
 
-  v12 = [(CNIndexRequestHandler *)self initWithContactStore:v4 searchableIndex:v8 logger:v11 batchSize:100];
+  v12 = [(CNIndexRequestHandler *)self initWithContactStore:storeCopy searchableIndex:v8 logger:spotlightIndexingLogger batchSize:100];
   return v12;
 }
 
-- (CNIndexRequestHandler)initWithContactStore:(id)a3 searchableIndex:(id)a4 logger:(id)a5 batchSize:(unint64_t)a6
+- (CNIndexRequestHandler)initWithContactStore:(id)store searchableIndex:(id)index logger:(id)logger batchSize:(unint64_t)size
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  storeCopy = store;
+  indexCopy = index;
+  loggerCopy = logger;
   v19.receiver = self;
   v19.super_class = CNIndexRequestHandler;
   v14 = [(CNIndexRequestHandler *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_contactStore, a3);
-    objc_storeStrong(&v15->_index, a4);
-    objc_storeStrong(&v15->_logger, a5);
+    objc_storeStrong(&v14->_contactStore, store);
+    objc_storeStrong(&v15->_index, index);
+    objc_storeStrong(&v15->_logger, logger);
     v15->_isFullSyncNeeded = 0;
     clientState = v15->_clientState;
-    v15->_batchSize = a6;
+    v15->_batchSize = size;
     v15->_clientState = 0;
 
     v17 = v15;
@@ -145,9 +145,9 @@ void __63__CNIndexRequestHandler_reindexSearchableItemsWithIdentifiers___block_i
 
 - (uint64_t)fullSyncContacts
 {
-  v1 = a1;
+  selfCopy = self;
   v32[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = [CNContactFetchRequest alloc];
     v3 = +[CNContact descriptorForRequiredKeysForSearchableItem];
@@ -169,37 +169,37 @@ void __63__CNIndexRequestHandler_reindexSearchableItemsWithIdentifiers___block_i
     v20 = 0x3032000000;
     v21 = __Block_byref_object_copy_;
     v22 = __Block_byref_object_dispose_;
-    v23 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 0;
-    v6 = *(v1 + 16);
+    v6 = *(selfCopy + 16);
     v12[8] = &v14;
     v13 = 0;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __41__CNIndexRequestHandler_fullSyncContacts__block_invoke;
     v12[3] = &unk_1E7411F38;
-    v12[4] = v1;
+    v12[4] = selfCopy;
     v12[5] = &v24;
     v12[6] = &v18;
     v12[7] = &v28;
     v7 = [v6 enumerateContactsWithFetchRequest:v5 error:&v13 usingBlock:v12];
     v8 = v13;
 
-    if (v7 && (v29[3] & 1) == 0 && -[CNIndexRequestHandler batchIndexUpdatingItems:fullSyncOffset:fullSyncDone:](v1, v19[5], v25[3], 1) && (v9 = [v19[5] count], v15[3] += v9, (v29[3] & 1) == 0))
+    if (v7 && (v29[3] & 1) == 0 && -[CNIndexRequestHandler batchIndexUpdatingItems:fullSyncOffset:fullSyncDone:](selfCopy, v19[5], v25[3], 1) && (v9 = [v19[5] count], v15[3] += v9, (v29[3] & 1) == 0))
     {
-      v10 = *(v1 + 32);
+      v10 = *(selfCopy + 32);
       [v10 finishedIndexingForFullSyncWithCount:v15[3]];
-      v1 = 1;
+      selfCopy = 1;
     }
 
     else
     {
-      v10 = *(v1 + 32);
+      v10 = *(selfCopy + 32);
       [v10 didNotFinishIndexingForFullSyncWithError:v8];
-      v1 = 0;
+      selfCopy = 0;
     }
 
     _Block_object_dispose(&v14, 8);
@@ -209,13 +209,13 @@ void __63__CNIndexRequestHandler_reindexSearchableItemsWithIdentifiers___block_i
     _Block_object_dispose(&v28, 8);
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (uint64_t)deltaSyncContacts:(uint64_t)a1
+- (uint64_t)deltaSyncContacts:(uint64_t)contacts
 {
   v3 = a2;
-  if (a1)
+  if (contacts)
   {
     v40 = 0;
     v41 = &v40;
@@ -234,33 +234,33 @@ void __63__CNIndexRequestHandler_reindexSearchableItemsWithIdentifiers___block_i
     v28 = 0x3032000000;
     v29 = __Block_byref_object_copy_;
     v30 = __Block_byref_object_dispose_;
-    v31 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0;
     v21 = &v20;
     v22 = 0x3032000000;
     v23 = __Block_byref_object_copy_;
     v24 = __Block_byref_object_dispose_;
-    v25 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v4 = [CNChangeHistoryAnchor alloc];
-    v5 = [v3 currentHistoryToken];
+    currentHistoryToken = [v3 currentHistoryToken];
     v19 = 0;
-    v6 = [(CNChangeHistoryAnchor *)v4 initWithHistoryToken:v5 error:&v19];
+    v6 = [(CNChangeHistoryAnchor *)v4 initWithHistoryToken:currentHistoryToken error:&v19];
     v7 = v19;
 
     if (!v7)
     {
-      v10 = [v3 value];
+      value = [v3 value];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __43__CNIndexRequestHandler_deltaSyncContacts___block_invoke;
       v18[3] = &unk_1E7411F60;
-      v18[4] = a1;
+      v18[4] = contacts;
       v18[5] = &v26;
       v18[6] = &v20;
       v18[7] = &v40;
       v18[8] = &v36;
       v18[9] = &v32;
-      [CNIndexChangeHistoryEvents enumerateEvents:v10 usingBlock:v18];
+      [CNIndexChangeHistoryEvents enumerateEvents:value usingBlock:v18];
 
       if ((v41[3] & 1) == 0)
       {
@@ -269,9 +269,9 @@ void __63__CNIndexRequestHandler_reindexSearchableItemsWithIdentifiers___block_i
         v12 = [v21[5] count];
         v13 = v33[3] + v12;
         v33[3] = v13;
-        if (v37[3] | v13 || (v14 = *(a1 + 48), [v14 snapshotAnchor], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqual:", v6), v15, v14, v16))
+        if (v37[3] | v13 || (v14 = *(contacts + 48), [v14 snapshotAnchor], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqual:", v6), v15, v14, v16))
         {
-          if (![(CNIndexRequestHandler *)a1 batchIndexUpdatingItems:v21[5] deletingItemsWithIdentifiers:v6 snapshotAnchor:?])
+          if (![(CNIndexRequestHandler *)contacts batchIndexUpdatingItems:v21[5] deletingItemsWithIdentifiers:v6 snapshotAnchor:?])
           {
             goto LABEL_3;
           }
@@ -279,24 +279,24 @@ void __63__CNIndexRequestHandler_reindexSearchableItemsWithIdentifiers___block_i
 
         else
         {
-          v17 = *(a1 + 32);
+          v17 = *(contacts + 32);
           [v17 noContactChangesToIndex];
         }
       }
 
       if (*(v41 + 24) != 1)
       {
-        v8 = *(a1 + 32);
+        v8 = *(contacts + 32);
         [v8 finishedIndexingForDeltaSyncWithUpdateCount:v37[3] deleteCount:v33[3]];
-        a1 = 1;
+        contacts = 1;
         goto LABEL_4;
       }
     }
 
 LABEL_3:
-    v8 = *(a1 + 32);
+    v8 = *(contacts + 32);
     [v8 didNotFinishIndexingForDeltaSyncWithError:v7];
-    a1 = 0;
+    contacts = 0;
 LABEL_4:
 
     _Block_object_dispose(&v20, 8);
@@ -307,7 +307,7 @@ LABEL_4:
     _Block_object_dispose(&v40, 8);
   }
 
-  return a1;
+  return contacts;
 }
 
 void __43__CNIndexRequestHandler_deltaSyncContacts___block_invoke(void *a1, uint64_t a2, void *a3, void *a4)
@@ -485,20 +485,20 @@ void __55__CNIndexRequestHandler__futureForFetchLastClientState__block_invoke(ui
   }
 }
 
-- (id)_futureForEndIndexBatchWithClientState:(id *)a1
+- (id)_futureForEndIndexBatchWithClientState:(id *)state
 {
   v3 = a2;
-  if (a1)
+  if (state)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69967D0]);
-    v5 = a1[3];
-    v6 = [v4 errorOnlyCompletionHandlerAdapter];
-    [v5 endIndexBatchWithClientState:v3 completionHandler:v6];
+    v5 = state[3];
+    errorOnlyCompletionHandlerAdapter = [v4 errorOnlyCompletionHandlerAdapter];
+    [v5 endIndexBatchWithClientState:v3 completionHandler:errorOnlyCompletionHandlerAdapter];
 
-    a1 = [v4 future];
+    state = [v4 future];
   }
 
-  return a1;
+  return state;
 }
 
 - (void)performIndexing
@@ -511,44 +511,44 @@ void __55__CNIndexRequestHandler__futureForFetchLastClientState__block_invoke(ui
   [v3 indexingContacts:v4];
 }
 
-- (void)_performIndexingWithForcedReindexing:(uint64_t)a1
+- (void)_performIndexingWithForcedReindexing:(uint64_t)reindexing
 {
-  if (a1)
+  if (reindexing)
   {
     if (a2)
     {
-      *(a1 + 8) = 1;
+      *(reindexing + 8) = 1;
       v3 = objc_alloc_init(CNIndexClientState);
-      v4 = *(a1 + 48);
-      *(a1 + 48) = v3;
+      v4 = *(reindexing + 48);
+      *(reindexing + 48) = v3;
     }
 
     else
     {
-      [(CNIndexRequestHandler *)a1 fetchAndCheckLastClientState];
+      [(CNIndexRequestHandler *)reindexing fetchAndCheckLastClientState];
     }
 
-    v7 = [(CNIndexRequestHandler *)a1 fetchChangeHistoryEnumerator];
-    if (*(a1 + 8) != 1 || ([(CNIndexRequestHandler *)a1 prepareForFullSync:v7]& 1) != 0)
+    fetchChangeHistoryEnumerator = [(CNIndexRequestHandler *)reindexing fetchChangeHistoryEnumerator];
+    if (*(reindexing + 8) != 1 || ([(CNIndexRequestHandler *)reindexing prepareForFullSync:fetchChangeHistoryEnumerator]& 1) != 0)
     {
-      v5 = *(a1 + 48);
-      v6 = *(a1 + 32);
+      v5 = *(reindexing + 48);
+      v6 = *(reindexing + 32);
       [v6 willStartIndexingWithClientState:v5];
 
-      if (*(a1 + 8) == 1)
+      if (*(reindexing + 8) == 1)
       {
-        [(CNIndexRequestHandler *)a1 fullSyncContacts];
+        [(CNIndexRequestHandler *)reindexing fullSyncContacts];
       }
 
       else
       {
-        [(CNIndexRequestHandler *)a1 deltaSyncContacts:v7];
+        [(CNIndexRequestHandler *)reindexing deltaSyncContacts:fetchChangeHistoryEnumerator];
       }
     }
 
     else
     {
-      [*(a1 + 32) deferringReindexAsFailedToPrepareForReindexing];
+      [*(reindexing + 32) deferringReindexAsFailedToPrepareForReindexing];
     }
   }
 }
@@ -563,9 +563,9 @@ void __55__CNIndexRequestHandler__futureForFetchLastClientState__block_invoke(ui
   [v3 reindexingAllSearchableItems:v4];
 }
 
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   if (self)
   {
     logger = self->_logger;
@@ -581,16 +581,16 @@ void __55__CNIndexRequestHandler__futureForFetchLastClientState__block_invoke(ui
   v8[2] = __63__CNIndexRequestHandler_reindexSearchableItemsWithIdentifiers___block_invoke;
   v8[3] = &unk_1E7411F10;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   v7 = v6;
   [(CNSpotlightIndexingLogger *)logger reindexingSearchableItemsWithIdentifiers:v8];
 }
 
-- (id)searchableItemsForContactIdentifiers:(id)a1
+- (id)searchableItemsForContactIdentifiers:(id)identifiers
 {
-  v3 = a1;
+  identifiersCopy = identifiers;
   v23[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (identifiers)
   {
     v4 = a2;
     v5 = objc_alloc(OUTLINED_FUNCTION_9());
@@ -606,7 +606,7 @@ void __55__CNIndexRequestHandler__futureForFetchLastClientState__block_invoke(ui
     v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v2, "count")}];
     v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v2];
 
-    v12 = *(v3 + 2);
+    v12 = *(identifiersCopy + 2);
     v22 = 0;
     OUTLINED_FUNCTION_2();
     v18[1] = 3221225472;
@@ -616,33 +616,33 @@ void __55__CNIndexRequestHandler__futureForFetchLastClientState__block_invoke(ui
     v19 = v13;
     v14 = v11;
     v20 = v14;
-    v21 = v3;
+    v21 = identifiersCopy;
     v15 = v12;
     [v15 enumerateContactsWithFetchRequest:v8 error:&v22 usingBlock:v18];
     v16 = v22;
 
     if ([v14 count])
     {
-      [*(v3 + 4) failedToFetchSearchableForContactIdentifiers:v14 error:v16];
+      [*(identifiersCopy + 4) failedToFetchSearchableForContactIdentifiers:v14 error:v16];
     }
 
-    v3 = v13;
+    identifiersCopy = v13;
   }
 
-  return v3;
+  return identifiersCopy;
 }
 
-- (BOOL)indexSearchableItems:(id *)a1
+- (BOOL)indexSearchableItems:(id *)items
 {
   v3 = a2;
-  if (a1)
+  if (items)
   {
-    v4 = [(CNIndexRequestHandler *)a1 _futureForIndexSearchableItems:v3];
+    v4 = [(CNIndexRequestHandler *)items _futureForIndexSearchableItems:v3];
     OUTLINED_FUNCTION_1_1();
     v15 = 3221225472;
     v16 = __46__CNIndexRequestHandler_indexSearchableItems___block_invoke;
     v17 = &unk_1E74120E8;
-    v18 = a1;
+    itemsCopy = items;
     v5 = v3;
     v19 = v5;
     v6 = [v4 recover:v14];
@@ -653,7 +653,7 @@ void __55__CNIndexRequestHandler__futureForFetchLastClientState__block_invoke(ui
 
     if (!v7)
     {
-      v10 = a1[4];
+      v10 = items[4];
       v11 = [v5 valueForKey:@"uniqueIdentifier"];
       [v10 failedToJournalSearchableItemsForIndexingWithSpotlight:v8 identifiers:v11 willRetry:0];
     }
@@ -716,15 +716,15 @@ LABEL_9:
 
 - (id)fetchChangeHistoryEnumerator
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
-    v2 = [(CNIndexRequestHandler *)a1 fetchChangeHistoryEnumeratorWithError:?];
+    v2 = [(CNIndexRequestHandler *)self fetchChangeHistoryEnumeratorWithError:?];
     v3 = v5;
-    if (!v2 && [(CNIndexRequestHandler *)a1 isChangeHistoryTruncatedForError:v3])
+    if (!v2 && [(CNIndexRequestHandler *)self isChangeHistoryTruncatedForError:v3])
     {
-      [*(a1 + 32) willReindexAsChangeHistoryIsTruncated];
-      *(a1 + 8) = 1;
+      [*(self + 32) willReindexAsChangeHistoryIsTruncated];
+      *(self + 8) = 1;
     }
   }
 
@@ -736,28 +736,28 @@ LABEL_9:
   return v2;
 }
 
-- (uint64_t)prepareForFullSync:(uint64_t)a1
+- (uint64_t)prepareForFullSync:(uint64_t)sync
 {
-  v2 = a1;
-  if (a1)
+  syncCopy = sync;
+  if (sync)
   {
-    v3 = *(a1 + 48);
+    v3 = *(sync + 48);
     v4 = a2;
     [v3 setIndexVersion:5];
-    [*(v2 + 48) setIsFullSyncDone:0];
-    v5 = [v4 currentHistoryToken];
+    [*(syncCopy + 48) setIsFullSyncDone:0];
+    currentHistoryToken = [v4 currentHistoryToken];
 
-    if (v5)
+    if (currentHistoryToken)
     {
-      v6 = v5;
+      currentHistoryToken2 = currentHistoryToken;
     }
 
     else
     {
-      v6 = [*(v2 + 16) currentHistoryToken];
+      currentHistoryToken2 = [*(syncCopy + 16) currentHistoryToken];
     }
 
-    v7 = v6;
+    v7 = currentHistoryToken2;
 
     v21 = 0;
     v8 = [[CNChangeHistoryAnchor alloc] initWithHistoryToken:v7 error:&v21];
@@ -767,62 +767,62 @@ LABEL_9:
       goto LABEL_6;
     }
 
-    v10 = *(v2 + 48);
+    v10 = *(syncCopy + 48);
     if ([v10 fullSyncOffset] <= 0)
     {
     }
 
     else
     {
-      v11 = [*(v2 + 48) snapshotAnchor];
-      v12 = [v11 compare:v8];
+      snapshotAnchor = [*(syncCopy + 48) snapshotAnchor];
+      v12 = [snapshotAnchor compare:v8];
 
       if (v12)
       {
-        v13 = *(v2 + 32);
-        v14 = *(v2 + 48);
+        v13 = *(syncCopy + 32);
+        v14 = *(syncCopy + 48);
         v15 = v13;
-        v16 = [v14 snapshotAnchor];
-        [v15 willReindexAsSnapshotAnchorChangedFrom:v16 to:v8];
+        snapshotAnchor2 = [v14 snapshotAnchor];
+        [v15 willReindexAsSnapshotAnchorChangedFrom:snapshotAnchor2 to:v8];
 
-        [*(v2 + 48) setFullSyncOffset:0];
+        [*(syncCopy + 48) setFullSyncOffset:0];
       }
     }
 
-    [*(v2 + 48) setSnapshotAnchor:v8];
-    if ([*(v2 + 48) fullSyncOffset])
+    [*(syncCopy + 48) setSnapshotAnchor:v8];
+    if ([*(syncCopy + 48) fullSyncOffset])
     {
-      v17 = *(v2 + 32);
-      v18 = *(v2 + 48);
+      v17 = *(syncCopy + 32);
+      v18 = *(syncCopy + 48);
       v19 = v17;
       [v19 willResumeIndexingAfterOffset:{objc_msgSend(v18, "fullSyncOffset")}];
     }
 
-    else if (![(CNIndexRequestHandler *)v2 deleteAllSearchableItems])
+    else if (![(CNIndexRequestHandler *)syncCopy deleteAllSearchableItems])
     {
 LABEL_6:
-      v2 = 0;
+      syncCopy = 0;
 LABEL_14:
 
-      return v2;
+      return syncCopy;
     }
 
-    v2 = 1;
+    syncCopy = 1;
     goto LABEL_14;
   }
 
-  return v2;
+  return syncCopy;
 }
 
-- (id)fetchChangeHistoryEnumeratorWithError:(uint64_t)a1
+- (id)fetchChangeHistoryEnumeratorWithError:(uint64_t)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (error)
   {
     v4 = objc_alloc_init(CNChangeHistoryFetchRequest);
-    v5 = [*(a1 + 48) snapshotAnchor];
-    v6 = [v5 historyToken];
-    [(CNChangeHistoryFetchRequest *)v4 setStartingToken:v6];
+    snapshotAnchor = [*(error + 48) snapshotAnchor];
+    historyToken = [snapshotAnchor historyToken];
+    [(CNChangeHistoryFetchRequest *)v4 setStartingToken:historyToken];
 
     v7 = +[CNContact descriptorForRequiredKeysForSearchableItem];
     v11[0] = v7;
@@ -831,7 +831,7 @@ LABEL_14:
 
     [(CNChangeHistoryFetchRequest *)v4 setShouldUnifyResults:1];
     [(CNChangeHistoryFetchRequest *)v4 setShouldDeferFullSync:1];
-    v9 = [*(a1 + 16) enumeratorForChangeHistoryFetchRequest:v4 error:a2];
+    v9 = [*(error + 16) enumeratorForChangeHistoryFetchRequest:v4 error:a2];
   }
 
   else
@@ -842,27 +842,27 @@ LABEL_14:
   return v9;
 }
 
-- (uint64_t)isChangeHistoryTruncatedForError:(uint64_t)a1
+- (uint64_t)isChangeHistoryTruncatedForError:(uint64_t)error
 {
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!error)
   {
     goto LABEL_3;
   }
 
-  v5 = [v3 domain];
+  domain = [v3 domain];
 
-  if (v5 != @"CNErrorDomain")
+  if (domain != @"CNErrorDomain")
   {
     goto LABEL_3;
   }
 
-  v7 = [v4 code];
+  code = [v4 code];
   v6 = 1;
-  if ((v7 - 603) >= 2 && v7 != 1006)
+  if ((code - 603) >= 2 && code != 1006)
   {
-    [*(a1 + 32) unexpectedChangeHistoryError:v4];
+    [*(error + 32) unexpectedChangeHistoryError:v4];
 LABEL_3:
     v6 = 0;
   }
@@ -872,17 +872,17 @@ LABEL_3:
 
 - (BOOL)fetchLastClientState
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = [(CNIndexRequestHandler *)a1 _futureForFetchLastClientState];
+  _futureForFetchLastClientState = [(CNIndexRequestHandler *)self _futureForFetchLastClientState];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_12();
   v17 = __45__CNIndexRequestHandler_fetchLastClientState__block_invoke;
   v18 = &unk_1E7412098;
-  v19 = a1;
+  selfCopy = self;
   v4 = [v3 recover:v16];
 
   v5 = *MEMORY[0x1E6996590];
@@ -894,18 +894,18 @@ LABEL_3:
   v9 = v8 != 0;
   if (v8)
   {
-    v10 = *(a1 + 32);
+    v10 = *(self + 32);
     v11 = [CNIndexClientState clientStateWithData:v8 logger:v10];
-    v12 = *(a1 + 48);
-    *(a1 + 48) = v11;
+    v12 = *(self + 48);
+    *(self + 48) = v11;
   }
 
   else
   {
-    [*(a1 + 32) failedToFetchClientStateFromSpotlight:v7 willRetry:0];
+    [*(self + 32) failedToFetchClientStateFromSpotlight:v7 willRetry:0];
     v13 = objc_alloc_init(CNIndexClientState);
-    v10 = *(a1 + 48);
-    *(a1 + 48) = v13;
+    v10 = *(self + 48);
+    *(self + 48) = v13;
   }
 
   return v9;
@@ -913,17 +913,17 @@ LABEL_3:
 
 - (BOOL)deleteAllSearchableItems
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = [(CNIndexRequestHandler *)a1 _futureForDeleteAllSearchableItems];
+  _futureForDeleteAllSearchableItems = [(CNIndexRequestHandler *)self _futureForDeleteAllSearchableItems];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_12();
   v11 = __49__CNIndexRequestHandler_deleteAllSearchableItems__block_invoke;
   v12 = &unk_1E7412098;
-  v13 = a1;
+  selfCopy = self;
   v4 = [v3 recover:v10];
 
   v9 = 0;
@@ -933,7 +933,7 @@ LABEL_3:
 
   if (!v5)
   {
-    [a1[4] failedToDeleteAllSearchableItemsWithSpotlight:v6 willRetry:0];
+    [self[4] failedToDeleteAllSearchableItemsWithSpotlight:v6 willRetry:0];
   }
 
   return v7;
@@ -1011,17 +1011,17 @@ LABEL_13:
 LABEL_14:
 }
 
-- (uint64_t)batchIndexUpdatingItems:(uint64_t)a3 fullSyncOffset:(uint64_t)a4 fullSyncDone:
+- (uint64_t)batchIndexUpdatingItems:(uint64_t)items fullSyncOffset:(uint64_t)offset fullSyncDone:
 {
   if (result)
   {
     OUTLINED_FUNCTION_6();
     v9 = v8;
     v10 = a2;
-    [v9 willBatchIndexForFullSyncWithCount:objc_msgSend(v10 lastOffset:"count") doneFullSync:{a3, a4}];
+    [v9 willBatchIndexForFullSyncWithCount:objc_msgSend(v10 lastOffset:"count") doneFullSync:{items, offset}];
 
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v12 = [MEMORY[0x1E696AD98] numberWithBool:a4];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:items];
+    v12 = [MEMORY[0x1E696AD98] numberWithBool:offset];
     v13 = [(CNIndexRequestHandler *)v4 _batchIndexUpdatingItems:v10 deletingItemsWithIdentifiers:0 fullSyncOffset:v11 fullSyncDone:v12 snapshotAnchor:0];
 
     return v13;
@@ -1030,88 +1030,88 @@ LABEL_14:
   return result;
 }
 
-- (uint64_t)batchIndexUpdatingItems:(void *)a3 deletingItemsWithIdentifiers:(void *)a4 snapshotAnchor:
+- (uint64_t)batchIndexUpdatingItems:(void *)items deletingItemsWithIdentifiers:(void *)identifiers snapshotAnchor:
 {
   if (result)
   {
     OUTLINED_FUNCTION_6();
     v9 = v8;
-    v10 = a4;
-    v11 = a3;
+    identifiersCopy = identifiers;
+    itemsCopy = items;
     v12 = a2;
-    [v9 willBatchIndexForDeltaSyncWithUpdateCount:objc_msgSend(v12 deleteCount:{"count"), objc_msgSend(v11, "count")}];
+    [v9 willBatchIndexForDeltaSyncWithUpdateCount:objc_msgSend(v12 deleteCount:{"count"), objc_msgSend(itemsCopy, "count")}];
 
-    v13 = [(CNIndexRequestHandler *)v4 _batchIndexUpdatingItems:v12 deletingItemsWithIdentifiers:v11 fullSyncOffset:0 fullSyncDone:0 snapshotAnchor:v10];
+    v13 = [(CNIndexRequestHandler *)v4 _batchIndexUpdatingItems:v12 deletingItemsWithIdentifiers:itemsCopy fullSyncOffset:0 fullSyncDone:0 snapshotAnchor:identifiersCopy];
     return v13;
   }
 
   return result;
 }
 
-- (uint64_t)_batchIndexUpdatingItems:(void *)a3 deletingItemsWithIdentifiers:(void *)a4 fullSyncOffset:(void *)a5 fullSyncDone:(void *)a6 snapshotAnchor:
+- (uint64_t)_batchIndexUpdatingItems:(void *)items deletingItemsWithIdentifiers:(void *)identifiers fullSyncOffset:(void *)offset fullSyncDone:(void *)done snapshotAnchor:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (a1)
+  itemsCopy = items;
+  identifiersCopy = identifiers;
+  offsetCopy = offset;
+  doneCopy = done;
+  if (self)
   {
-    if ([(CNIndexRequestHandler *)a1 beginIndexBatch])
+    if ([(CNIndexRequestHandler *)self beginIndexBatch])
     {
-      if ([v11 count] && !-[CNIndexRequestHandler indexSearchableItems:](a1, v11) || objc_msgSend(v12, "count") && !-[CNIndexRequestHandler deleteSearchableItemsWithIdentifiers:](a1, v12))
+      if ([v11 count] && !-[CNIndexRequestHandler indexSearchableItems:](self, v11) || objc_msgSend(itemsCopy, "count") && !-[CNIndexRequestHandler deleteSearchableItemsWithIdentifiers:](self, itemsCopy))
       {
-        [(CNIndexRequestHandler *)a1 endIndexBatchWithClientState];
+        [(CNIndexRequestHandler *)self endIndexBatchWithClientState];
       }
 
       else
       {
-        if (v13)
+        if (identifiersCopy)
         {
-          [*(a1 + 48) setFullSyncOffset:{objc_msgSend(v13, "integerValue")}];
+          [*(self + 48) setFullSyncOffset:{objc_msgSend(identifiersCopy, "integerValue")}];
         }
 
-        if (v14 && [v14 BOOLValue])
+        if (offsetCopy && [offsetCopy BOOLValue])
         {
-          *(a1 + 8) = 0;
-          [*(a1 + 48) setIsFullSyncDone:1];
+          *(self + 8) = 0;
+          [*(self + 48) setIsFullSyncDone:1];
         }
 
-        if (v15)
+        if (doneCopy)
         {
-          [*(a1 + 48) setSnapshotAnchor:v15];
+          [*(self + 48) setSnapshotAnchor:doneCopy];
         }
 
-        if ([(CNIndexRequestHandler *)a1 endIndexBatchWithClientState])
+        if ([(CNIndexRequestHandler *)self endIndexBatchWithClientState])
         {
           v17 = [v11 _cn_map:&__block_literal_global];
-          [*(a1 + 32) finishedBatchIndexWithUpdateIdentifiers:v17 deleteIdentifiers:v12];
+          [*(self + 32) finishedBatchIndexWithUpdateIdentifiers:v17 deleteIdentifiers:itemsCopy];
 
-          a1 = 1;
+          self = 1;
           goto LABEL_4;
         }
       }
     }
 
-    a1 = 0;
+    self = 0;
   }
 
 LABEL_4:
 
-  return a1;
+  return self;
 }
 
-- (BOOL)deleteSearchableItemsWithIdentifiers:(id *)a1
+- (BOOL)deleteSearchableItemsWithIdentifiers:(id *)identifiers
 {
   v3 = a2;
-  if (a1)
+  if (identifiers)
   {
-    v4 = [(CNIndexRequestHandler *)a1 _futureForDeleteSearchableItemsWithIdentifiers:v3];
+    v4 = [(CNIndexRequestHandler *)identifiers _futureForDeleteSearchableItemsWithIdentifiers:v3];
     OUTLINED_FUNCTION_1_1();
     v13 = 3221225472;
     v14 = __62__CNIndexRequestHandler_deleteSearchableItemsWithIdentifiers___block_invoke;
     v15 = &unk_1E74120E8;
-    v16 = a1;
+    identifiersCopy = identifiers;
     v5 = v3;
     v17 = v5;
     v6 = [v4 recover:v12];
@@ -1122,7 +1122,7 @@ LABEL_4:
 
     if (!v7)
     {
-      [a1[4] failedToJournalItemIdentifiersForDeletionWithSpotlight:v8 identifiers:v5 willRetry:0];
+      [identifiers[4] failedToJournalItemIdentifiersForDeletionWithSpotlight:v8 identifiers:v5 willRetry:0];
     }
   }
 
@@ -1136,21 +1136,21 @@ LABEL_4:
 
 - (BOOL)endIndexBatchWithClientState
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = a1[6];
-  v3 = [v2 data];
+  v2 = self[6];
+  data = [v2 data];
 
-  v4 = [(CNIndexRequestHandler *)a1 _futureForEndIndexBatchWithClientState:v3];
+  v4 = [(CNIndexRequestHandler *)self _futureForEndIndexBatchWithClientState:data];
   OUTLINED_FUNCTION_1_1();
   v13 = 3221225472;
   v14 = __53__CNIndexRequestHandler_endIndexBatchWithClientState__block_invoke;
   v15 = &unk_1E74120E8;
-  v16 = a1;
-  v5 = v3;
+  selfCopy = self;
+  v5 = data;
   v17 = v5;
   v6 = [v4 recover:v12];
 
@@ -1160,16 +1160,16 @@ LABEL_4:
 
   if (!v7)
   {
-    [a1[4] failedToEndIndexBatchWithSpotlight:v8 willRetry:0];
+    [self[4] failedToEndIndexBatchWithSpotlight:v8 willRetry:0];
   }
 
   return v9;
 }
 
-- (id)fetchSearchableItemsIndexedByContactIdentifierWithError:(uint64_t)a1
+- (id)fetchSearchableItemsIndexedByContactIdentifierWithError:(uint64_t)error
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (error)
   {
     v3 = *MEMORY[0x1E696A388];
     v4 = getMDItemUniqueIdentifier();
@@ -1199,9 +1199,9 @@ LABEL_4:
   return v10;
 }
 
-- (id)verifyIndexLoggingSummary:(BOOL)a3 error:(id *)a4
+- (id)verifyIndexLoggingSummary:(BOOL)summary error:(id *)error
 {
-  v5 = a3;
+  summaryCopy = summary;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1232,10 +1232,10 @@ LABEL_4:
   v15[4] = self;
   v15[5] = &v17;
   v15[6] = &v23;
-  v16 = !v5;
+  v16 = !summaryCopy;
   [v9 verifyingIndex:v15];
 
-  if (v5)
+  if (summaryCopy)
   {
     if (self)
     {
@@ -1251,12 +1251,12 @@ LABEL_4:
     [(CNSpotlightIndexingLogger *)v11 verifiedIndexWithSummmary:v24[5]];
   }
 
-  if (a4)
+  if (error)
   {
     v12 = v18[5];
     if (v12)
     {
-      *a4 = [v12 copy];
+      *error = [v12 copy];
     }
   }
 
@@ -1451,11 +1451,11 @@ LABEL_10:
 
 - (void)_futureForFetchLastClientState
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E69967D0]);
-    v3 = v1[3];
+    v3 = selfCopy[3];
     OUTLINED_FUNCTION_0();
     OUTLINED_FUNCTION_12();
     v8 = __55__CNIndexRequestHandler__futureForFetchLastClientState__block_invoke;
@@ -1463,10 +1463,10 @@ LABEL_10:
     v10 = v4;
     v5 = v4;
     [v3 fetchLastClientStateWithCompletionHandler:v7];
-    v1 = [v5 future];
+    selfCopy = [v5 future];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void *__45__CNIndexRequestHandler_fetchLastClientState__block_invoke()
@@ -1508,22 +1508,22 @@ id *__53__CNIndexRequestHandler_endIndexBatchWithClientState__block_invoke()
   return [(CNIndexRequestHandler *)v4 _futureForEndIndexBatchWithClientState:v5];
 }
 
-- (id)_futureForIndexSearchableItems:(id *)a1
+- (id)_futureForIndexSearchableItems:(id *)items
 {
-  v4 = a1;
-  if (a1)
+  itemsCopy = items;
+  if (items)
   {
     v5 = a2;
     v6 = objc_alloc_init(OUTLINED_FUNCTION_9());
-    v7 = v4[3];
+    v7 = itemsCopy[3];
     [v6 errorOnlyCompletionHandlerAdapter];
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_10() indexSearchableItems:? completionHandler:?];
 
-    v4 = [v6 future];
+    itemsCopy = [v6 future];
   }
 
-  return v4;
+  return itemsCopy;
 }
 
 id *__46__CNIndexRequestHandler_indexSearchableItems___block_invoke(uint64_t a1, void *a2)
@@ -1546,22 +1546,22 @@ id *__46__CNIndexRequestHandler_indexSearchableItems___block_invoke(uint64_t a1,
   return [(CNIndexRequestHandler *)v9 _futureForIndexSearchableItems:v10];
 }
 
-- (id)_futureForDeleteSearchableItemsWithIdentifiers:(id *)a1
+- (id)_futureForDeleteSearchableItemsWithIdentifiers:(id *)identifiers
 {
-  v4 = a1;
-  if (a1)
+  identifiersCopy = identifiers;
+  if (identifiers)
   {
     v5 = a2;
     v6 = objc_alloc_init(OUTLINED_FUNCTION_9());
-    v7 = v4[3];
+    v7 = identifiersCopy[3];
     [v6 errorOnlyCompletionHandlerAdapter];
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_10() deleteSearchableItemsWithIdentifiers:? completionHandler:?];
 
-    v4 = [v6 future];
+    identifiersCopy = [v6 future];
   }
 
-  return v4;
+  return identifiersCopy;
 }
 
 id *__62__CNIndexRequestHandler_deleteSearchableItemsWithIdentifiers___block_invoke()
@@ -1586,18 +1586,18 @@ id *__62__CNIndexRequestHandler_deleteSearchableItemsWithIdentifiers___block_inv
 
 - (id)_futureForDeleteAllSearchableItems
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E69967D0]);
-    v3 = v1[3];
-    v4 = [v2 errorOnlyCompletionHandlerAdapter];
-    [v3 deleteAllSearchableItemsWithCompletionHandler:v4];
+    v3 = selfCopy[3];
+    errorOnlyCompletionHandlerAdapter = [v2 errorOnlyCompletionHandlerAdapter];
+    [v3 deleteAllSearchableItemsWithCompletionHandler:errorOnlyCompletionHandlerAdapter];
 
-    v1 = [v2 future];
+    selfCopy = [v2 future];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 id *__49__CNIndexRequestHandler_deleteAllSearchableItems__block_invoke()

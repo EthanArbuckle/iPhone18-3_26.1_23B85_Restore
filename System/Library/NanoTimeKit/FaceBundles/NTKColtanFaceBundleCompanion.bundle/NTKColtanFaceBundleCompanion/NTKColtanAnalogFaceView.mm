@@ -1,57 +1,57 @@
 @interface NTKColtanAnalogFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
-- (NTKColtanAnalogFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_circularMaskDiameterForShape:(unint64_t)a3 withBounds:(CGRect)a4;
-- (double)_complicationAlphaForEditMode:(int64_t)a3;
-- (double)_dialAlphaForEditMode:(int64_t)a3;
-- (double)_tickOpacityForDensity:(unint64_t)a3;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
+- (NTKColtanAnalogFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_circularMaskDiameterForShape:(unint64_t)shape withBounds:(CGRect)bounds;
+- (double)_complicationAlphaForEditMode:(int64_t)mode;
+- (double)_dialAlphaForEditMode:(int64_t)mode;
+- (double)_tickOpacityForDensity:(unint64_t)density;
 - (double)_verticalPaddingForStatusBar;
-- (id)_snapshotWithPigment:(id)a3 density:(unint64_t)a4 analogDialShape:(unint64_t)a5 size:(CGSize)a6 scale:(double)a7;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
+- (id)_snapshotWithPigment:(id)pigment density:(unint64_t)density analogDialShape:(unint64_t)shape size:(CGSize)size scale:(double)scale;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)createFaceColorPalette;
 - (int64_t)_editMode;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyComplicationAlphaTransitionFraction:(double)a3 fromAlpha:(double)a4 toAlpha:(double)a5;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyComplicationAlphaTransitionFraction:(double)fraction fromAlpha:(double)alpha toAlpha:(double)toAlpha;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyShowsCanonicalContent;
-- (void)_applyTransitionFraction:(double)a3 fromDensity:(unint64_t)a4 toDensity:(unint64_t)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_applyTransitionFraction:(double)a3 fromShape:(unint64_t)a4 toShape:(unint64_t)a5;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_applyTransitionFraction:(double)fraction fromDensity:(unint64_t)density toDensity:(unint64_t)toDensity;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromShape:(unint64_t)shape toShape:(unint64_t)toShape;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_loadActiveViews;
 - (void)_loadCommonViews;
 - (void)_loadLayoutRules;
 - (void)_loadSnapshotContentViews;
-- (void)_setDensity:(unint64_t)a3;
-- (void)_setMasking:(BOOL)a3;
-- (void)_setShape:(unint64_t)a3;
-- (void)_setTickOpacity:(double)a3;
-- (void)_setupCircularMaskForShapeTransitionWithFraction:(double)a3;
+- (void)_setDensity:(unint64_t)density;
+- (void)_setMasking:(BOOL)masking;
+- (void)_setShape:(unint64_t)shape;
+- (void)_setTickOpacity:(double)opacity;
+- (void)_setupCircularMaskForShapeTransitionWithFraction:(double)fraction;
 - (void)_unloadActiveViews;
 - (void)_unloadCommonViews;
 - (void)_unloadSnapshotContentViews;
 - (void)_updateFramerate;
 - (void)_updateMasking;
 - (void)_updateShape;
-- (void)setDataMode:(int64_t)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)updateColorsWithPalette:(id)a3;
+- (void)setDataMode:(int64_t)mode;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)updateColorsWithPalette:(id)palette;
 @end
 
 @implementation NTKColtanAnalogFaceView
 
-- (NTKColtanAnalogFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKColtanAnalogFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = NTKColtanAnalogFaceView;
-  v9 = [(NTKColtanAnalogFaceView *)&v13 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKColtanAnalogFaceView *)&v13 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
-    v10 = [[NTKWhistlerAnalogFaceViewComplicationFactory alloc] initForDevice:v8];
+    v10 = [[NTKWhistlerAnalogFaceViewComplicationFactory alloc] initForDevice:deviceCopy];
     faceViewComplicationFactory = v9->_faceViewComplicationFactory;
     v9->_faceViewComplicationFactory = v10;
 
@@ -89,11 +89,11 @@
   [(NTKColtanAnalogFaceView *)self _updateFramerate];
 }
 
-- (void)setDataMode:(int64_t)a3
+- (void)setDataMode:(int64_t)mode
 {
   v4.receiver = self;
   v4.super_class = NTKColtanAnalogFaceView;
-  [(NTKColtanAnalogFaceView *)&v4 setDataMode:a3];
+  [(NTKColtanAnalogFaceView *)&v4 setDataMode:mode];
   [(NTKColtanAnalogFaceView *)self _updateFramerate];
 }
 
@@ -104,15 +104,15 @@
   [(NTKColtanAnalogFaceView *)&v15 _applyShowsCanonicalContent];
   if ([(NTKColtanAnalogFaceView *)self showsCanonicalContent])
   {
-    v3 = [(NTKColtanDisplayQuad *)self->_displayActiveQuad quadView];
+    quadView = [(NTKColtanDisplayQuad *)self->_displayActiveQuad quadView];
     [(NTKColtanAnalogFaceView *)self bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(NTKColtanAnalogFaceView *)self device];
-    [v12 screenScale];
-    v14 = [v3 snapshotInRect:v5 scale:v7 time:{v9, v11, v13, 0.0}];
+    device = [(NTKColtanAnalogFaceView *)self device];
+    [device screenScale];
+    v14 = [quadView snapshotInRect:v5 scale:v7 time:{v9, v11, v13, 0.0}];
   }
 }
 
@@ -125,10 +125,10 @@
 
   else
   {
-    v4 = [(NTKColtanAnalogFaceView *)self dataMode];
-    v5 = [(NTKColtanAnalogFaceView *)self isFrozen];
-    v7 = v4 != 3 && (v4 & 0xFFFFFFFFFFFFFFFBLL) != 1;
-    v3 = (v5 & 1) != 0 || v7;
+    dataMode = [(NTKColtanAnalogFaceView *)self dataMode];
+    isFrozen = [(NTKColtanAnalogFaceView *)self isFrozen];
+    v7 = dataMode != 3 && (dataMode & 0xFFFFFFFFFFFFFFFBLL) != 1;
+    v3 = (isFrozen & 1) != 0 || v7;
   }
 
   displayQuadView = self->_displayQuadView;
@@ -152,19 +152,19 @@
   }
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = NTKColtanAnalogFaceView;
-  v6 = a3;
-  [(NTKColtanAnalogFaceView *)&v7 setOverrideDate:v6 duration:a4];
-  [(NTKColtanDisplayQuad *)self->_displayActiveQuad setOverrideDate:v6 duration:a4, v7.receiver, v7.super_class];
+  dateCopy = date;
+  [(NTKColtanAnalogFaceView *)&v7 setOverrideDate:dateCopy duration:duration];
+  [(NTKColtanDisplayQuad *)self->_displayActiveQuad setOverrideDate:dateCopy duration:duration, v7.receiver, v7.super_class];
 }
 
 - (void)_loadLayoutRules
 {
-  v3 = [(NTKColtanAnalogFaceView *)self device];
-  sub_63A8(v3, v3);
+  device = [(NTKColtanAnalogFaceView *)self device];
+  sub_63A8(device, device);
   v5 = v4;
 
   faceViewComplicationFactory = self->_faceViewComplicationFactory;
@@ -172,32 +172,32 @@
   [(NTKWhistlerAnalogFaceViewComplicationFactory *)faceViewComplicationFactory loadLayoutRulesForFaceView:self dialDiameter:v5];
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
-  [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_faceViewComplicationFactory configureComplicationView:v6 forSlot:a4 faceView:self];
+  viewCopy = view;
+  [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_faceViewComplicationFactory configureComplicationView:viewCopy forSlot:slot faceView:self];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 updateMonochromeColor];
+    [viewCopy updateMonochromeColor];
   }
 }
 
 - (double)_verticalPaddingForStatusBar
 {
-  v2 = [(NTKColtanAnalogFaceView *)self device];
-  v3 = sub_63A8(v2, v2);
+  device = [(NTKColtanAnalogFaceView *)self device];
+  v3 = sub_63A8(device, device);
 
   return v3;
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v6.receiver = self;
   v6.super_class = NTKColtanAnalogFaceView;
   [(NTKColtanAnalogFaceView *)&v6 _configureForEditMode:?];
   v5 = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     v5 = 1.0;
   }
@@ -206,33 +206,33 @@
   [(NTKColtanAnalogFaceView *)self _updateFramerate];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v13.receiver = self;
   v13.super_class = NTKColtanAnalogFaceView;
   [NTKColtanAnalogFaceView _configureForTransitionFraction:"_configureForTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
-  [(NTKColtanAnalogFaceView *)self _dialAlphaForEditMode:a4];
-  [(NTKColtanAnalogFaceView *)self _dialAlphaForEditMode:a5];
+  [(NTKColtanAnalogFaceView *)self _dialAlphaForEditMode:mode];
+  [(NTKColtanAnalogFaceView *)self _dialAlphaForEditMode:editMode];
   displayQuadView = self->_displayQuadView;
   CLKInterpolateBetweenFloatsClipped();
   [(CLKUIQuadView *)displayQuadView setAlpha:?];
-  [(NTKColtanAnalogFaceView *)self _complicationAlphaForEditMode:a4];
+  [(NTKColtanAnalogFaceView *)self _complicationAlphaForEditMode:mode];
   v11 = v10;
-  [(NTKColtanAnalogFaceView *)self _complicationAlphaForEditMode:a5];
-  [(NTKColtanAnalogFaceView *)self _applyComplicationAlphaTransitionFraction:a3 fromAlpha:v11 toAlpha:v12];
+  [(NTKColtanAnalogFaceView *)self _complicationAlphaForEditMode:editMode];
+  [(NTKColtanAnalogFaceView *)self _applyComplicationAlphaTransitionFraction:fraction fromAlpha:v11 toAlpha:v12];
 }
 
-- (void)_applyComplicationAlphaTransitionFraction:(double)a3 fromAlpha:(double)a4 toAlpha:(double)a5
+- (void)_applyComplicationAlphaTransitionFraction:(double)fraction fromAlpha:(double)alpha toAlpha:(double)toAlpha
 {
-  v5 = [(NTKColtanAnalogFaceView *)self complicationContainerView];
+  complicationContainerView = [(NTKColtanAnalogFaceView *)self complicationContainerView];
   CLKInterpolateBetweenFloatsClipped();
-  [v5 setAlpha:?];
+  [complicationContainerView setAlpha:?];
 }
 
-- (double)_dialAlphaForEditMode:(int64_t)a3
+- (double)_dialAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -240,9 +240,9 @@
   return result;
 }
 
-- (double)_complicationAlphaForEditMode:(int64_t)a3
+- (double)_complicationAlphaForEditMode:(int64_t)mode
 {
-  if (a3 > 1)
+  if (mode > 1)
   {
     return NTKEditModeDimmedAlpha;
   }
@@ -256,53 +256,53 @@
   return result;
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v10 = a3;
-  v8 = a5;
-  switch(a4)
+  optionCopy = option;
+  slotCopy = slot;
+  switch(mode)
   {
     case 10:
-      v9 = [(NTKColtanAnalogFaceView *)self palette];
-      [(NTKColtanAnalogFaceView *)self updateColorsWithPalette:v9];
+      palette = [(NTKColtanAnalogFaceView *)self palette];
+      [(NTKColtanAnalogFaceView *)self updateColorsWithPalette:palette];
 
       break;
     case 11:
-      -[NTKColtanAnalogFaceView _setDensity:](self, "_setDensity:", [v10 density]);
+      -[NTKColtanAnalogFaceView _setDensity:](self, "_setDensity:", [optionCopy density]);
       break;
     case 12:
-      -[NTKColtanAnalogFaceView _setShape:](self, "_setShape:", [v10 dialShape]);
+      -[NTKColtanAnalogFaceView _setShape:](self, "_setShape:", [optionCopy dialShape]);
       break;
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v15 = a4;
-  v12 = a5;
-  v13 = a7;
-  switch(a6)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  switch(mode)
   {
     case 10:
-      v14 = [(NTKColtanAnalogFaceView *)self interpolatedColorPalette];
-      [(NTKColtanAnalogFaceView *)self updateColorsWithPalette:v14];
+      interpolatedColorPalette = [(NTKColtanAnalogFaceView *)self interpolatedColorPalette];
+      [(NTKColtanAnalogFaceView *)self updateColorsWithPalette:interpolatedColorPalette];
 
       break;
     case 11:
-      -[NTKColtanAnalogFaceView _applyTransitionFraction:fromDensity:toDensity:](self, "_applyTransitionFraction:fromDensity:toDensity:", [v15 density], objc_msgSend(v12, "density"), a3);
+      -[NTKColtanAnalogFaceView _applyTransitionFraction:fromDensity:toDensity:](self, "_applyTransitionFraction:fromDensity:toDensity:", [optionCopy density], objc_msgSend(toOptionCopy, "density"), fraction);
       break;
     case 12:
-      -[NTKColtanAnalogFaceView _applyTransitionFraction:fromShape:toShape:](self, "_applyTransitionFraction:fromShape:toShape:", [v15 dialShape], objc_msgSend(v12, "dialShape"), a3);
+      -[NTKColtanAnalogFaceView _applyTransitionFraction:fromShape:toShape:](self, "_applyTransitionFraction:fromShape:toShape:", [optionCopy dialShape], objc_msgSend(toOptionCopy, "dialShape"), fraction);
       break;
   }
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v13.receiver = self;
   v13.super_class = NTKColtanAnalogFaceView;
-  [(NTKColtanAnalogFaceView *)&v13 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if ([(NTKColtanAnalogFaceView *)self _shouldApplyBreathingForEditMode:a4])
+  [(NTKColtanAnalogFaceView *)&v13 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if ([(NTKColtanAnalogFaceView *)self _shouldApplyBreathingForEditMode:mode])
   {
     NTKLargeElementScaleForBreathingFraction();
     memset(&v12, 0, sizeof(v12));
@@ -313,29 +313,29 @@
     cornerView = self->_cornerView;
     v11 = v12;
     [(UIView *)cornerView setTransform:&v11];
-    v10 = [(NTKColtanAnalogFaceView *)self timeView];
+    timeView = [(NTKColtanAnalogFaceView *)self timeView];
     v11 = v12;
-    [v10 setTransform:&v11];
+    [timeView setTransform:&v11];
   }
 }
 
 - (void)_updateShape
 {
-  v3 = [(NTKColtanAnalogFaceView *)self delegate];
-  [v3 faceViewDidChangeWantsStatusBarIconShadow];
+  delegate = [(NTKColtanAnalogFaceView *)self delegate];
+  [delegate faceViewDidChangeWantsStatusBarIconShadow];
 
   shape = self->_shape;
   if (([(NTKColtanAnalogFaceView *)self editing]& 1) == 0)
   {
-    v5 = [(NTKColtanAnalogFaceView *)self complicationContainerView];
-    v6 = v5;
+    complicationContainerView = [(NTKColtanAnalogFaceView *)self complicationContainerView];
+    v6 = complicationContainerView;
     v7 = 0.0;
     if (!shape)
     {
       v7 = 1.0;
     }
 
-    [v5 setAlpha:v7];
+    [complicationContainerView setAlpha:v7];
   }
 
   if (shape)
@@ -356,18 +356,18 @@
   [(NTKColtanAnalogFaceView *)self _setupCircularMaskForShapeTransitionWithFraction:v8];
 }
 
-- (void)_setShape:(unint64_t)a3
+- (void)_setShape:(unint64_t)shape
 {
-  if (self->_shape != a3)
+  if (self->_shape != shape)
   {
-    self->_shape = a3;
+    self->_shape = shape;
     [(NTKColtanAnalogFaceView *)self _updateShape];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromShape:(unint64_t)a4 toShape:(unint64_t)a5
+- (void)_applyTransitionFraction:(double)fraction fromShape:(unint64_t)shape toShape:(unint64_t)toShape
 {
-  if (a4)
+  if (shape)
   {
     v9 = 0.0;
   }
@@ -377,18 +377,18 @@
     v9 = 1.0;
   }
 
-  v10 = 1.0 - a3;
-  if (a4)
+  fractionCopy = 1.0 - fraction;
+  if (shape)
   {
-    v10 = a3;
+    fractionCopy = fraction;
   }
 
-  if (a4 == a5)
+  if (shape == toShape)
   {
-    v10 = v9;
+    fractionCopy = v9;
   }
 
-  [(NTKColtanAnalogFaceView *)self _setupCircularMaskForShapeTransitionWithFraction:v10];
+  [(NTKColtanAnalogFaceView *)self _setupCircularMaskForShapeTransitionWithFraction:fractionCopy];
   if ([(NTKColtanAnalogFaceView *)self editing])
   {
     v11 = 12;
@@ -400,7 +400,7 @@
   }
 
   [(NTKColtanAnalogFaceView *)self _complicationAlphaForEditMode:v11];
-  if (a4 == 1)
+  if (shape == 1)
   {
     v13 = 0.0;
   }
@@ -410,7 +410,7 @@
     v13 = v12;
   }
 
-  if (a5 == 1)
+  if (toShape == 1)
   {
     v14 = 0.0;
   }
@@ -420,7 +420,7 @@
     v14 = v12;
   }
 
-  [(NTKColtanAnalogFaceView *)self _applyComplicationAlphaTransitionFraction:a3 fromAlpha:v13 toAlpha:v14];
+  [(NTKColtanAnalogFaceView *)self _applyComplicationAlphaTransitionFraction:fraction fromAlpha:v13 toAlpha:v14];
 }
 
 - (void)_updateMasking
@@ -433,22 +433,22 @@
   [(CLKUIQuadView *)displayQuadView setOpaque:(v3 & 1) == 0];
 }
 
-- (void)_setMasking:(BOOL)a3
+- (void)_setMasking:(BOOL)masking
 {
   v3 = *(self + 56);
-  if ((v3 & 1) != a3)
+  if ((v3 & 1) != masking)
   {
-    *(self + 56) = v3 & 0xFE | a3;
+    *(self + 56) = v3 & 0xFE | masking;
     [(NTKColtanAnalogFaceView *)self _updateMasking];
   }
 }
 
-- (double)_circularMaskDiameterForShape:(unint64_t)a3 withBounds:(CGRect)a4
+- (double)_circularMaskDiameterForShape:(unint64_t)shape withBounds:(CGRect)bounds
 {
-  width = a4.size.width;
-  v6 = [(NTKColtanAnalogFaceView *)self device:a4.origin.x];
+  width = bounds.size.width;
+  v6 = [(NTKColtanAnalogFaceView *)self device:bounds.origin.x];
   sub_63A8(v6, v6);
-  if (a3 == 1)
+  if (shape == 1)
   {
     v8 = v7 + v7;
   }
@@ -464,17 +464,17 @@
   return v10;
 }
 
-- (void)_setupCircularMaskForShapeTransitionWithFraction:(double)a3
+- (void)_setupCircularMaskForShapeTransitionWithFraction:(double)fraction
 {
-  v11 = [(NTKColtanAnalogFaceView *)self device];
-  [v11 screenBounds];
+  device = [(NTKColtanAnalogFaceView *)self device];
+  [device screenBounds];
   [(NTKColtanAnalogFaceView *)self _circularMaskDiameterForShape:0 withBounds:?];
   v6 = v5;
   if (([(NTKColtanAnalogFaceView *)self editing]& 1) == 0)
   {
-    if (a3 >= 1.0)
+    if (fraction >= 1.0)
     {
-      [v11 screenScale];
+      [device screenScale];
       v8 = v6 * 0.5 * v7;
       v9 = v8;
       *&v8 = v9;
@@ -483,7 +483,7 @@
       [(NTKColtanDisplayQuad *)self->_displayInactiveQuad setMaskRadius:v10];
     }
 
-    [(NTKColtanAnalogFaceView *)self _setMasking:a3 >= 1.0];
+    [(NTKColtanAnalogFaceView *)self _setMasking:fraction >= 1.0];
   }
 }
 
@@ -494,20 +494,20 @@
   return v2;
 }
 
-- (void)updateColorsWithPalette:(id)a3
+- (void)updateColorsWithPalette:(id)palette
 {
-  v4 = a3;
-  v5 = [v4 primaryComplicationColor];
-  [(NTKColtanAnalogFaceView *)self setComplicationColor:v5];
+  paletteCopy = palette;
+  primaryComplicationColor = [paletteCopy primaryComplicationColor];
+  [(NTKColtanAnalogFaceView *)self setComplicationColor:primaryComplicationColor];
 
-  v6 = [v4 primaryComplicationColor];
-  [(NTKColtanAnalogFaceView *)self setAlternateComplicationColor:v6];
+  primaryComplicationColor2 = [paletteCopy primaryComplicationColor];
+  [(NTKColtanAnalogFaceView *)self setAlternateComplicationColor:primaryComplicationColor2];
 
-  v7 = [v4 secondaryComplicationColor];
-  [(NTKColtanAnalogFaceView *)self setInterpolatedComplicationColor:v7];
+  secondaryComplicationColor = [paletteCopy secondaryComplicationColor];
+  [(NTKColtanAnalogFaceView *)self setInterpolatedComplicationColor:secondaryComplicationColor];
 
-  [(NTKColtanDisplayQuad *)self->_displayActiveQuad setPalette:v4];
-  [(NTKColtanDisplayQuad *)self->_displayInactiveQuad setPalette:v4];
+  [(NTKColtanDisplayQuad *)self->_displayActiveQuad setPalette:paletteCopy];
+  [(NTKColtanDisplayQuad *)self->_displayInactiveQuad setPalette:paletteCopy];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -517,26 +517,26 @@
   [(NTKColtanAnalogFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v8];
 }
 
-- (void)_setDensity:(unint64_t)a3
+- (void)_setDensity:(unint64_t)density
 {
-  [(NTKColtanAnalogFaceView *)self _tickOpacityForDensity:a3];
+  [(NTKColtanAnalogFaceView *)self _tickOpacityForDensity:density];
 
   [(NTKColtanAnalogFaceView *)self _setTickOpacity:?];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromDensity:(unint64_t)a4 toDensity:(unint64_t)a5
+- (void)_applyTransitionFraction:(double)fraction fromDensity:(unint64_t)density toDensity:(unint64_t)toDensity
 {
-  [(NTKColtanAnalogFaceView *)self _tickOpacityForDensity:a4];
-  [(NTKColtanAnalogFaceView *)self _tickOpacityForDensity:a5];
+  [(NTKColtanAnalogFaceView *)self _tickOpacityForDensity:density];
+  [(NTKColtanAnalogFaceView *)self _tickOpacityForDensity:toDensity];
   CLKInterpolateBetweenFloatsClipped();
 
   [(NTKColtanAnalogFaceView *)self _setTickOpacity:?];
 }
 
-- (double)_tickOpacityForDensity:(unint64_t)a3
+- (double)_tickOpacityForDensity:(unint64_t)density
 {
   result = 0.0;
-  if (a3 == 1)
+  if (density == 1)
   {
     return 1.0;
   }
@@ -544,71 +544,71 @@
   return result;
 }
 
-- (void)_setTickOpacity:(double)a3
+- (void)_setTickOpacity:(double)opacity
 {
-  v3 = a3;
-  v5 = a3 > 0.0;
+  opacityCopy = opacity;
+  v5 = opacity > 0.0;
   [(NTKColtanDisplayQuad *)self->_displayActiveQuad setDensity:v5];
   [(NTKColtanDisplayQuad *)self->_displayInactiveQuad setDensity:v5];
-  *&v3 = v3;
-  LODWORD(v6) = LODWORD(v3);
+  *&opacityCopy = opacityCopy;
+  LODWORD(v6) = LODWORD(opacityCopy);
   [(NTKColtanDisplayQuad *)self->_displayActiveQuad setTickOpacity:v6];
-  LODWORD(v7) = LODWORD(v3);
+  LODWORD(v7) = LODWORD(opacityCopy);
   [(NTKColtanDisplayQuad *)self->_displayInactiveQuad setTickOpacity:v7];
-  v19 = [(NTKColtanAnalogFaceView *)self device];
+  device = [(NTKColtanAnalogFaceView *)self device];
   displayQuadView = self->_displayQuadView;
-  [v19 screenBounds];
+  [device screenBounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [v19 screenScale];
+  [device screenScale];
   v18 = [(CLKUIQuadView *)displayQuadView snapshotInRect:v10 scale:v12 time:v14, v16, v17, 0.0];
 }
 
-- (id)_snapshotWithPigment:(id)a3 density:(unint64_t)a4 analogDialShape:(unint64_t)a5 size:(CGSize)a6 scale:(double)a7
+- (id)_snapshotWithPigment:(id)pigment density:(unint64_t)density analogDialShape:(unint64_t)shape size:(CGSize)size scale:(double)scale
 {
-  height = a6.height;
-  width = a6.width;
+  height = size.height;
+  width = size.width;
   y = CGPointZero.y;
-  v14 = a3;
-  v15 = [CLKUIQuadView quadViewWithFrame:@"Colt" identifier:CGPointZero.x, y, width, height];
-  v16 = [[NTKColtanDisplayQuad alloc] initWithRole:0 screenScale:a7];
+  pigmentCopy = pigment;
+  height = [CLKUIQuadView quadViewWithFrame:@"Colt" identifier:CGPointZero.x, y, width, height];
+  v16 = [[NTKColtanDisplayQuad alloc] initWithRole:0 screenScale:scale];
   [(NTKColtanDisplayQuad *)v16 setOpaque:1];
-  [(NTKColtanDisplayQuad *)v16 setDensity:a4];
-  [(NTKColtanAnalogFaceView *)self _tickOpacityForDensity:a4];
+  [(NTKColtanDisplayQuad *)v16 setDensity:density];
+  [(NTKColtanAnalogFaceView *)self _tickOpacityForDensity:density];
   *&v17 = v17;
   [(NTKColtanDisplayQuad *)v16 setTickOpacity:v17];
-  v18 = [(NTKColtanAnalogFaceView *)self createFaceColorPalette];
-  [v18 setPigmentEditOption:v14];
+  createFaceColorPalette = [(NTKColtanAnalogFaceView *)self createFaceColorPalette];
+  [createFaceColorPalette setPigmentEditOption:pigmentCopy];
 
-  [(NTKColtanDisplayQuad *)v16 setPalette:v18];
+  [(NTKColtanDisplayQuad *)v16 setPalette:createFaceColorPalette];
   v19 = NTKIdealizedDate();
   [(NTKColtanDisplayQuad *)v16 setOverrideDate:v19 duration:0.0];
 
-  if (!a5)
+  if (!shape)
   {
     [(NTKColtanAnalogFaceView *)self _circularMaskDiameterForShape:0 withBounds:CGPointZero.x, y, width, height];
-    v21 = v20 * 0.5 * a7;
+    v21 = v20 * 0.5 * scale;
     *&v21 = v21;
     [(NTKColtanDisplayQuad *)v16 setMaskRadius:v21];
     [(NTKColtanDisplayQuad *)v16 setMasking:1];
   }
 
-  [v15 addQuad:v16];
-  v22 = [v15 snapshotInRect:CGPointZero.x scale:y time:{width, height, a7, 0.0}];
+  [height addQuad:v16];
+  v22 = [height snapshotInRect:CGPointZero.x scale:y time:{width, height, scale, 0.0}];
   v23 = [[UIImageView alloc] initWithFrame:{CGPointZero.x, y, width, height}];
   [v23 setImage:v22];
   v24 = [NTKRoundedCornerOverlayView alloc];
-  v25 = [(NTKColtanAnalogFaceView *)self device];
-  v26 = [v24 initWithFrame:v25 forDeviceCornerRadius:{CGPointZero.x, y, width, height}];
+  device = [(NTKColtanAnalogFaceView *)self device];
+  v26 = [v24 initWithFrame:device forDeviceCornerRadius:{CGPointZero.x, y, width, height}];
 
   [v23 addSubview:v26];
   v31.width = width;
   v31.height = height;
   UIGraphicsBeginImageContextWithOptions(v31, 0, 0.0);
-  v27 = [v23 layer];
-  [v27 renderInContext:UIGraphicsGetCurrentContext()];
+  layer = [v23 layer];
+  [layer renderInContext:UIGraphicsGetCurrentContext()];
 
   v28 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -616,15 +616,15 @@
   return v28;
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
   v4 = &off_10C50;
-  if (a3 != 12)
+  if (options != 12)
   {
     v4 = 0;
   }
 
-  if (a3 == 11)
+  if (options == 11)
   {
     return &off_10C38;
   }
@@ -635,15 +635,15 @@
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
-  if ((a4 - 11) > 1)
+  optionCopy = option;
+  optionsCopy = options;
+  if ((mode - 11) > 1)
   {
     v30.receiver = self;
     v30.super_class = NTKColtanAnalogFaceView;
-    v19 = [(NTKColtanAnalogFaceView *)&v30 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+    v19 = [(NTKColtanAnalogFaceView *)&v30 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
   }
 
   else
@@ -655,11 +655,11 @@
       qword_16B60 = v10;
     }
 
-    v12 = [v9 objectForKeyedSubscript:&off_10A78];
-    v13 = [v9 objectForKeyedSubscript:&off_10A48];
-    v14 = [v9 objectForKeyedSubscript:&off_10A60];
-    v15 = v8;
-    if (a4 == 11)
+    v12 = [optionsCopy objectForKeyedSubscript:&off_10A78];
+    v13 = [optionsCopy objectForKeyedSubscript:&off_10A48];
+    v14 = [optionsCopy objectForKeyedSubscript:&off_10A60];
+    v15 = optionCopy;
+    if (mode == 11)
     {
       v16 = v12;
     }
@@ -669,7 +669,7 @@
       v16 = v13;
     }
 
-    if (a4 == 11)
+    if (mode == 11)
     {
       v17 = v15;
     }
@@ -685,14 +685,14 @@
     if (!v19)
     {
       v29 = [objc_opt_class() pigmentFromOption:v14];
-      v20 = [v17 density];
-      v21 = [v13 dialShape];
+      density = [v17 density];
+      dialShape = [v13 dialShape];
       [(NTKColtanAnalogFaceView *)self frame];
       v23 = v22;
       v25 = v24;
       v26 = +[UIScreen mainScreen];
       [v26 nativeScale];
-      v19 = [(NTKColtanAnalogFaceView *)self _snapshotWithPigment:v29 density:v20 analogDialShape:v21 size:v23 scale:v25, v27];
+      v19 = [(NTKColtanAnalogFaceView *)self _snapshotWithPigment:v29 density:density analogDialShape:dialShape size:v23 scale:v25, v27];
 
       [qword_16B60 setObject:v19 forKey:v18];
     }
@@ -703,11 +703,11 @@
 
 - (void)_loadCommonViews
 {
-  v21 = [(NTKColtanAnalogFaceView *)self timeView];
-  v3 = [v21 secondHandView];
-  [v3 setHidden:1];
+  timeView = [(NTKColtanAnalogFaceView *)self timeView];
+  secondHandView = [timeView secondHandView];
+  [secondHandView setHidden:1];
 
-  [v21 setHidden:1];
+  [timeView setHidden:1];
   [(NTKColtanAnalogFaceView *)self bounds];
   v5 = v4;
   v7 = v6;
@@ -717,22 +717,22 @@
   displayQuadView = self->_displayQuadView;
   self->_displayQuadView = v12;
 
-  v14 = [(NTKColtanAnalogFaceView *)self contentView];
+  contentView = [(NTKColtanAnalogFaceView *)self contentView];
   v15 = [NTKRoundedCornerOverlayView alloc];
-  v16 = [(NTKColtanAnalogFaceView *)self device];
-  v17 = [v15 initWithFrame:v16 forDeviceCornerRadius:{v5, v7, v9, v11}];
+  device = [(NTKColtanAnalogFaceView *)self device];
+  v17 = [v15 initWithFrame:device forDeviceCornerRadius:{v5, v7, v9, v11}];
   cornerView = self->_cornerView;
   self->_cornerView = v17;
 
-  [v14 addSubview:self->_cornerView];
-  [v14 addSubview:self->_displayQuadView];
-  [v14 bringSubviewToFront:self->_displayQuadView];
-  [v14 bringSubviewToFront:self->_cornerView];
-  [v14 setUserInteractionEnabled:0];
-  v19 = [(NTKColtanAnalogFaceView *)self rootContainerView];
-  [v19 bringSubviewToFront:v14];
-  v20 = [(NTKColtanAnalogFaceView *)self complicationContainerView];
-  [v19 bringSubviewToFront:v20];
+  [contentView addSubview:self->_cornerView];
+  [contentView addSubview:self->_displayQuadView];
+  [contentView bringSubviewToFront:self->_displayQuadView];
+  [contentView bringSubviewToFront:self->_cornerView];
+  [contentView setUserInteractionEnabled:0];
+  rootContainerView = [(NTKColtanAnalogFaceView *)self rootContainerView];
+  [rootContainerView bringSubviewToFront:contentView];
+  complicationContainerView = [(NTKColtanAnalogFaceView *)self complicationContainerView];
+  [rootContainerView bringSubviewToFront:complicationContainerView];
 }
 
 - (void)_unloadCommonViews
@@ -749,8 +749,8 @@
 - (void)_loadActiveViews
 {
   v3 = [NTKColtanDisplayQuad alloc];
-  v4 = [(NTKColtanAnalogFaceView *)self device];
-  [v4 screenScale];
+  device = [(NTKColtanAnalogFaceView *)self device];
+  [device screenScale];
   v5 = [(NTKColtanDisplayQuad *)v3 initWithRole:0 screenScale:?];
   displayActiveQuad = self->_displayActiveQuad;
   self->_displayActiveQuad = v5;

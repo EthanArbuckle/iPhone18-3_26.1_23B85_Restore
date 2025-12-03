@@ -2,10 +2,10 @@
 - (GKMetricData)init;
 - (GKSectionMetrics)sectionMetrics;
 - (NSString)layoutKey;
-- (id)_gkDescriptionWithChildren:(int64_t)a3;
+- (id)_gkDescriptionWithChildren:(int64_t)children;
 - (id)localDescription;
-- (void)addAttributes:(id)a3 forLocation:(unint64_t)a4;
-- (void)setMetrics:(id)a3;
+- (void)addAttributes:(id)attributes forLocation:(unint64_t)location;
+- (void)setMetrics:(id)metrics;
 @end
 
 @implementation GKMetricData
@@ -19,11 +19,11 @@
   if (v2)
   {
     v2->_currentMaxVisibleItemCount = -1;
-    v4 = [MEMORY[0x277CBEB18] array];
-    [(GKMetricData *)v3 setHeaderPinnableAttributes:v4];
+    array = [MEMORY[0x277CBEB18] array];
+    [(GKMetricData *)v3 setHeaderPinnableAttributes:array];
 
-    v5 = [MEMORY[0x277CBEB18] array];
-    [(GKMetricData *)v3 setFooterPinnableAttributes:v5];
+    array2 = [MEMORY[0x277CBEB18] array];
+    [(GKMetricData *)v3 setFooterPinnableAttributes:array2];
   }
 
   return v3;
@@ -39,14 +39,14 @@
   if (self->_metrics)
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(GKMetricData *)self layoutKey];
-    v8 = [v6 stringWithFormat:@" layoutKey:'%@'", v7];
+    layoutKey = [(GKMetricData *)self layoutKey];
+    v8 = [v6 stringWithFormat:@" layoutKey:'%@'", layoutKey];
     metrics = self->_metrics;
     currentMaxVisibleItemCount = self->_currentMaxVisibleItemCount;
     if (metrics)
     {
-      v11 = [(GKGridLayoutMetrics *)metrics localDescription];
-      v12 = [v3 stringWithFormat:@"%@%@: maxVis:%ld %@", v5, v8, currentMaxVisibleItemCount, v11];
+      localDescription = [(GKGridLayoutMetrics *)metrics localDescription];
+      v12 = [v3 stringWithFormat:@"%@%@: maxVis:%ld %@", v5, v8, currentMaxVisibleItemCount, localDescription];
     }
 
     else
@@ -63,10 +63,10 @@
   return v12;
 }
 
-- (id)_gkDescriptionWithChildren:(int64_t)a3
+- (id)_gkDescriptionWithChildren:(int64_t)children
 {
   v5 = _gkTabStringForTabLevel();
-  v6 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v18.receiver = self;
   v18.super_class = GKMetricData;
   v7 = [(GKMetricData *)&v18 description];
@@ -74,58 +74,58 @@
   if (self->_metrics)
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [(GKMetricData *)self layoutKey];
-    v11 = [v9 stringWithFormat:@" layoutKey:'%@'", v10];
-    [v6 appendFormat:@"%@%@: maxVis:%ld {", v8, v11, self->_currentMaxVisibleItemCount];
+    layoutKey = [(GKMetricData *)self layoutKey];
+    v11 = [v9 stringWithFormat:@" layoutKey:'%@'", layoutKey];
+    [string appendFormat:@"%@%@: maxVis:%ld {", v8, v11, self->_currentMaxVisibleItemCount];
   }
 
   else
   {
-    [v6 appendFormat:@"%@%@: maxVis:%ld {", v7, &stru_28612D290, self->_currentMaxVisibleItemCount];
+    [string appendFormat:@"%@%@: maxVis:%ld {", v7, &stru_28612D290, self->_currentMaxVisibleItemCount];
   }
 
   metrics = self->_metrics;
   if (metrics)
   {
-    v13 = [(GKGridLayoutMetrics *)metrics _gkDescriptionWithChildren:a3 + 1];
-    v14 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v15 = [v13 stringByTrimmingCharactersInSet:v14];
+    v13 = [(GKGridLayoutMetrics *)metrics _gkDescriptionWithChildren:children + 1];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v15 = [v13 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-    [v6 appendFormat:@"\n%@    sectionMetrics: %@", v5, v15];
+    [string appendFormat:@"\n%@    sectionMetrics: %@", v5, v15];
   }
 
   v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@}\n", v5];
-  [v6 appendString:v16];
+  [string appendString:v16];
 
-  return v6;
+  return string;
 }
 
-- (void)setMetrics:(id)a3
+- (void)setMetrics:(id)metrics
 {
-  v5 = a3;
-  if (self->_metrics != v5)
+  metricsCopy = metrics;
+  if (self->_metrics != metricsCopy)
   {
-    v7 = v5;
+    v7 = metricsCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       if (self->_currentMaxVisibleItemCount != -1)
       {
 LABEL_7:
-        objc_storeStrong(&self->_metrics, a3);
-        v5 = v7;
+        objc_storeStrong(&self->_metrics, metrics);
+        metricsCopy = v7;
         goto LABEL_8;
       }
 
-      v6 = [(GKGridLayoutMetrics *)v7 maximumVisibleItemCount];
+      maximumVisibleItemCount = [(GKGridLayoutMetrics *)v7 maximumVisibleItemCount];
     }
 
     else
     {
-      v6 = -1;
+      maximumVisibleItemCount = -1;
     }
 
-    self->_currentMaxVisibleItemCount = v6;
+    self->_currentMaxVisibleItemCount = maximumVisibleItemCount;
     goto LABEL_7;
   }
 
@@ -140,8 +140,8 @@ LABEL_8:
     v3 = MEMORY[0x277CCACA8];
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKGridLayoutPrivate.m"];
-    v6 = [v5 lastPathComponent];
-    v7 = [v3 stringWithFormat:@"%@ ([_metrics isKindOfClass:[GKSectionMetrics class]])\n[%s (%s:%d)]", v4, "-[GKMetricData sectionMetrics]", objc_msgSend(v6, "UTF8String"), 81];
+    lastPathComponent = [v5 lastPathComponent];
+    v7 = [v3 stringWithFormat:@"%@ ([_metrics isKindOfClass:[GKSectionMetrics class]])\n[%s (%s:%d)]", v4, "-[GKMetricData sectionMetrics]", objc_msgSend(lastPathComponent, "UTF8String"), 81];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v7}];
   }
@@ -156,24 +156,24 @@ LABEL_8:
   metrics = self->_metrics;
   if (metrics)
   {
-    v4 = [(GKGridLayoutMetrics *)metrics layoutKey];
+    layoutKey = [(GKGridLayoutMetrics *)metrics layoutKey];
   }
 
   else
   {
-    v4 = &stru_28612D290;
+    layoutKey = &stru_28612D290;
   }
 
-  return v4;
+  return layoutKey;
 }
 
-- (void)addAttributes:(id)a3 forLocation:(unint64_t)a4
+- (void)addAttributes:(id)attributes forLocation:(unint64_t)location
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  attributesCopy = attributes;
+  v7 = attributesCopy;
+  if (location)
   {
-    if (a4 != 1)
+    if (location != 1)
     {
       goto LABEL_6;
     }
@@ -186,12 +186,12 @@ LABEL_8:
     v8 = 32;
   }
 
-  v9 = v6;
-  v6 = [*(&self->super.isa + v8) addObjectsFromArray:v6];
+  v9 = attributesCopy;
+  attributesCopy = [*(&self->super.isa + v8) addObjectsFromArray:attributesCopy];
   v7 = v9;
 LABEL_6:
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](attributesCopy, v7);
 }
 
 @end

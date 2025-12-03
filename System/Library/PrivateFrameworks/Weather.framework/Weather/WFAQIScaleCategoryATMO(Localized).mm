@@ -14,17 +14,17 @@
 
 - (id)description
 {
-  v1 = [a1 categoryIndex];
+  categoryIndex = [self categoryIndex];
   v2 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v3 = v2;
-  if ((v1 - 1) > 9)
+  if ((categoryIndex - 1) > 9)
   {
     v4 = @"WFAQI_Scale_Category_Unknown";
   }
 
   else
   {
-    v4 = off_279E69180[v1 - 1];
+    v4 = off_279E69180[categoryIndex - 1];
   }
 
   v5 = [v2 localizedStringForKey:v4 value:&stru_2882270E8 table:@"WeatherFrameworkLocalizableStrings"];

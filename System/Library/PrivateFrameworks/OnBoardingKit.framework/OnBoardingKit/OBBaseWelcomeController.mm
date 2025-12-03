@@ -5,16 +5,16 @@
 - (BOOL)_isInFormSheet;
 - (CGSize)preferredContentSize;
 - (NSDirectionalEdgeInsets)directionalLayoutMargins;
-- (NSDirectionalEdgeInsets)insetsForTemplateType:(unint64_t)a3;
+- (NSDirectionalEdgeInsets)insetsForTemplateType:(unint64_t)type;
 - (id)description;
 - (id)navigationItem;
-- (void)_applyChromelessToBar:(int64_t)a3 navigationItem:(id)a4;
+- (void)_applyChromelessToBar:(int64_t)bar navigationItem:(id)item;
 - (void)_presentationStyleValidationCheck;
 - (void)loadView;
 - (void)updateDirectionalLayoutMargins;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation OBBaseWelcomeController
@@ -24,9 +24,9 @@
   v5.receiver = self;
   v5.super_class = OBBaseWelcomeController;
   [(OBBaseWelcomeController *)&v5 loadView];
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v4 = [(OBBaseWelcomeController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view = [(OBBaseWelcomeController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
   [(OBBaseWelcomeController *)self updateDirectionalLayoutMargins];
 }
@@ -39,12 +39,12 @@
   [(OBBaseWelcomeController *)self updateDirectionalLayoutMargins];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v11 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = OBBaseWelcomeController;
-  [(OBBaseWelcomeController *)&v8 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(OBBaseWelcomeController *)&v8 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   v5 = _OBLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -88,8 +88,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(OBBaseWelcomeController *)self view];
-  [v11 setDirectionalLayoutMargins:{v4, v6, v8, v10}];
+  view = [(OBBaseWelcomeController *)self view];
+  [view setDirectionalLayoutMargins:{v4, v6, v8, v10}];
 }
 
 - (NSDirectionalEdgeInsets)directionalLayoutMargins
@@ -112,19 +112,19 @@
   return result;
 }
 
-- (NSDirectionalEdgeInsets)insetsForTemplateType:(unint64_t)a3
+- (NSDirectionalEdgeInsets)insetsForTemplateType:(unint64_t)type
 {
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v5 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
   }
 
   else
   {
-    v6 = [(OBBaseWelcomeController *)self traitCollection];
-    v7 = [v6 horizontalSizeClass];
+    traitCollection = [(OBBaseWelcomeController *)self traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if (v7 == 2)
+    if (horizontalSizeClass == 2)
     {
       v8 = 5.0;
       goto LABEL_33;
@@ -133,13 +133,13 @@
 
   v8 = 5.0;
   *&v9 = 0.0;
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    if (a3 > 2)
+    if (type > 2)
     {
-      if (a3 != 3)
+      if (type != 3)
       {
-        if (a3 != 4)
+        if (type != 4)
         {
           goto LABEL_25;
         }
@@ -153,12 +153,12 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       goto LABEL_18;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       goto LABEL_17;
     }
@@ -166,9 +166,9 @@ LABEL_17:
     goto LABEL_40;
   }
 
-  if (a3 > 7)
+  if (type > 7)
   {
-    switch(a3)
+    switch(type)
     {
       case 8uLL:
         goto LABEL_17;
@@ -212,7 +212,7 @@ LABEL_40:
     goto LABEL_39;
   }
 
-  if (a3 != 6)
+  if (type != 6)
   {
 LABEL_25:
     v10 = !+[OBFeatureFlags isNaturalUIEnabled];
@@ -231,15 +231,15 @@ LABEL_26:
     goto LABEL_38;
   }
 
-  v13 = [(OBBaseWelcomeController *)self view];
-  v14 = [v13 window];
+  view = [(OBBaseWelcomeController *)self view];
+  window = [view window];
 
-  if (v14)
+  if (window)
   {
     v15 = +[OBDevice currentDevice];
-    v16 = [(OBBaseWelcomeController *)self view];
-    v17 = [v16 window];
-    [v17 bounds];
+    view2 = [(OBBaseWelcomeController *)self view];
+    window2 = [view2 window];
+    [window2 bounds];
     v19 = [v15 templateTypeForBoundsWidth:v18];
 
     if (v19 != 6 && ![(OBBaseWelcomeController *)self _isBuddyiPad])
@@ -277,7 +277,7 @@ LABEL_39:
 
 + (CGSize)preferredContentSize
 {
-  [a1 _preferredContentSizeInBuddy:0];
+  [self _preferredContentSizeInBuddy:0];
   result.height = v3;
   result.width = v2;
   return result;
@@ -285,7 +285,7 @@ LABEL_39:
 
 + (CGSize)preferredContentSizeInSetupAssistant
 {
-  [a1 _preferredContentSizeInBuddy:1];
+  [self _preferredContentSizeInBuddy:1];
   result.height = v3;
   result.width = v2;
   return result;
@@ -295,47 +295,47 @@ LABEL_39:
 {
   if (![(OBBaseWelcomeController *)self isViewLoaded])
   {
-    v3 = [(OBBaseWelcomeController *)self navigationBarScrollToEdgeBehavior];
+    navigationBarScrollToEdgeBehavior = [(OBBaseWelcomeController *)self navigationBarScrollToEdgeBehavior];
     v8.receiver = self;
     v8.super_class = OBBaseWelcomeController;
-    v4 = [(OBBaseWelcomeController *)&v8 navigationItem];
-    [(OBBaseWelcomeController *)self _applyChromelessToBar:v3 navigationItem:v4];
+    navigationItem = [(OBBaseWelcomeController *)&v8 navigationItem];
+    [(OBBaseWelcomeController *)self _applyChromelessToBar:navigationBarScrollToEdgeBehavior navigationItem:navigationItem];
   }
 
   v7.receiver = self;
   v7.super_class = OBBaseWelcomeController;
-  v5 = [(OBBaseWelcomeController *)&v7 navigationItem];
+  navigationItem2 = [(OBBaseWelcomeController *)&v7 navigationItem];
 
-  return v5;
+  return navigationItem2;
 }
 
-- (void)_applyChromelessToBar:(int64_t)a3 navigationItem:(id)a4
+- (void)_applyChromelessToBar:(int64_t)bar navigationItem:(id)item
 {
-  v12 = a4;
-  if (([v12 _isManualScrollEdgeAppearanceEnabled] & 1) == 0)
+  itemCopy = item;
+  if (([itemCopy _isManualScrollEdgeAppearanceEnabled] & 1) == 0)
   {
-    if (a3 == 2)
+    if (bar == 2)
     {
-      [v12 _setManualScrollEdgeAppearanceEnabled:1];
+      [itemCopy _setManualScrollEdgeAppearanceEnabled:1];
       v7 = +[OBDevice currentDevice];
       v8 = [v7 type] == 2;
 
       v9 = [objc_alloc(MEMORY[0x1E69DC700]) initWithIdiom:v8];
       [v9 configureWithTransparentBackground];
-      v10 = [MEMORY[0x1E69DC888] clearColor];
-      [v9 setBackgroundColor:v10];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [v9 setBackgroundColor:clearColor];
 
       v11 = [objc_alloc(MEMORY[0x1E69DCCC8]) initWithBarAppearance:v9];
-      [v12 setStandardAppearance:v11];
+      [itemCopy setStandardAppearance:v11];
 
-      [v12 _setBackgroundHidden:1];
+      [itemCopy _setBackgroundHidden:1];
     }
 
-    else if (a3 == 1)
+    else if (bar == 1)
     {
       [(OBBaseWelcomeController *)self autoScrollEdgeTransitionDistance];
       *&v6 = v6;
-      [v12 ob_applyAutomaticScrollToEdgeBehaviorWithDistance:{fmaxf(*&v6, 16.0)}];
+      [itemCopy ob_applyAutomaticScrollToEdgeBehaviorWithDistance:{fmaxf(*&v6, 16.0)}];
     }
   }
 }
@@ -344,7 +344,7 @@ LABEL_39:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_1B4FB6000, a2, OS_LOG_TYPE_FAULT, "The modal presentation style %@ is not supported; you must use UIModalPresentationFullScreen or UIModalPresentationFormSheet", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -354,13 +354,13 @@ LABEL_39:
   [objc_opt_class() _preferredContentSizeInBuddy:{-[OBBaseWelcomeController templateType](self, "templateType") == 2}];
   v4 = v3;
   v6 = v5;
-  v7 = [(OBBaseWelcomeController *)self navigationController];
+  navigationController = [(OBBaseWelcomeController *)self navigationController];
 
-  if (v7)
+  if (navigationController)
   {
-    v8 = [(OBBaseWelcomeController *)self navigationController];
-    v9 = [v8 navigationBar];
-    [v9 frame];
+    navigationController2 = [(OBBaseWelcomeController *)self navigationController];
+    navigationBar = [navigationController2 navigationBar];
+    [navigationBar frame];
     v6 = v6 - CGRectGetHeight(v13);
   }
 
@@ -380,13 +380,13 @@ LABEL_39:
 
 - (BOOL)_isBuddyiPad
 {
-  if (!a1 || ![a1 conformsToProtocol:&unk_1F2D146E0])
+  if (!self || ![self conformsToProtocol:&unk_1F2D146E0])
   {
     return 0;
   }
 
-  v1 = [MEMORY[0x1E69DC938] currentDevice];
-  v2 = [v1 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v2 = [currentDevice userInterfaceIdiom] == 1;
 
   return v2;
 }

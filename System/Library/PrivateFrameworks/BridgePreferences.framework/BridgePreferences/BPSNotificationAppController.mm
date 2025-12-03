@@ -9,27 +9,27 @@
 - (id)applicationGroupSpecifiers;
 - (id)bulletinBoardSettings;
 - (id)bundle;
-- (id)customGroupSpecifierForDescription:(id)a3;
+- (id)customGroupSpecifierForDescription:(id)description;
 - (id)localizedPreviewChoiceTitle;
 - (id)notificationGroupTitles;
-- (id)notificationGroupingValue:(id)a3;
-- (id)sectionInfoForBBSectionInfo:(id)a3;
-- (id)soundsValue:(id)a3;
+- (id)notificationGroupingValue:(id)value;
+- (id)sectionInfoForBBSectionInfo:(id)info;
+- (id)soundsValue:(id)value;
 - (id)specifiers;
-- (id)vibrationValue:(id)a3;
+- (id)vibrationValue:(id)value;
 - (unint64_t)alertingMode;
 - (void)_showSettingsNotifications;
 - (void)removeAlertOptions;
 - (void)removeMirrorOptions;
 - (void)removeNotificationCoalescingOptions;
 - (void)removeSendToNotificationCenterOption;
-- (void)setAlertingMode:(unint64_t)a3;
-- (void)setMirrorSettings:(BOOL)a3;
-- (void)setNotificationGroupingValue:(id)a3 specifier:(id)a4;
-- (void)setShowPreviewValue:(id)a3 forSpecifier:(id)a4;
-- (void)setSoundsValue:(id)a3 forSpecifier:(id)a4;
-- (void)setVibrationValue:(id)a3 forSpecifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setAlertingMode:(unint64_t)mode;
+- (void)setMirrorSettings:(BOOL)settings;
+- (void)setNotificationGroupingValue:(id)value specifier:(id)specifier;
+- (void)setShowPreviewValue:(id)value forSpecifier:(id)specifier;
+- (void)setSoundsValue:(id)value forSpecifier:(id)specifier;
+- (void)setVibrationValue:(id)value forSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateSubsections;
 - (void)writeSectionState;
 @end
@@ -66,7 +66,7 @@
 - (id)bulletinBoardSettings
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(NPSDomainAccessor *)self->_bbAppsSettings synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_bbAppsSettings synchronize];
   v4 = [(NPSDomainAccessor *)self->_bbAppsSettings dictionaryForKey:self->_bundleIdentifier];
   v5 = [v4 mutableCopy];
 
@@ -121,21 +121,21 @@
     goto LABEL_53;
   }
 
-  v5 = [(BPSNotificationAppController *)self applicationBundleIdentifier];
-  v6 = [v5 copy];
+  applicationBundleIdentifier = [(BPSNotificationAppController *)self applicationBundleIdentifier];
+  v6 = [applicationBundleIdentifier copy];
   bundleIdentifier = self->_bundleIdentifier;
   self->_bundleIdentifier = v6;
 
-  v8 = [(BPSNotificationAppController *)self bulletinBoardSettings];
-  v9 = [MEMORY[0x277D37A58] sharedManager];
-  [v9 loadBBSections];
+  bulletinBoardSettings = [(BPSNotificationAppController *)self bulletinBoardSettings];
+  mEMORY[0x277D37A58] = [MEMORY[0x277D37A58] sharedManager];
+  [mEMORY[0x277D37A58] loadBBSections];
 
   bbSectionInfo = self->_bbSectionInfo;
   self->_bbSectionInfo = 0;
 
-  if (v8)
+  if (bulletinBoardSettings)
   {
-    v11 = [v8 mutableCopy];
+    v11 = [bulletinBoardSettings mutableCopy];
     sectionInfo = self->_sectionInfo;
     self->_sectionInfo = v11;
   }
@@ -165,8 +165,8 @@
     [(BPSNotificationAppController *)self updateSubsections];
   }
 
-  v17 = [MEMORY[0x277CBEB18] array];
-  v18 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v19 = [(BPSNotificationAppController *)self loadSpecifiersFromPlistName:@"AbstactApplication" target:self];
   notificationSpecifiers = self->_notificationSpecifiers;
   self->_notificationSpecifiers = v19;
@@ -179,8 +179,8 @@
     }
 
     v21 = [(NSMutableArray *)self->_notificationSpecifiers specifierForID:@"NOTIFICATIONS_OFF_ID"];
-    v22 = [(BPSNotificationAppController *)self alertingMode];
-    if (v22 == 2)
+    alertingMode = [(BPSNotificationAppController *)self alertingMode];
+    if (alertingMode == 2)
     {
       v24 = self->_notificationSpecifiers;
       v25 = @"ALLOW_NOTIFICATIONS_ID";
@@ -188,9 +188,9 @@
 
     else
     {
-      if (v22 != 1)
+      if (alertingMode != 1)
       {
-        if (v22)
+        if (alertingMode)
         {
           v26 = 0;
 LABEL_24:
@@ -203,23 +203,23 @@ LABEL_24:
               v84 = 0;
             }
 
-            v30 = [(BPSNotificationAppController *)self notificationApplicationSpecifiers];
+            notificationApplicationSpecifiers = [(BPSNotificationAppController *)self notificationApplicationSpecifiers];
             notificationApplicationSpecifiers = self->_notificationApplicationSpecifiers;
-            self->_notificationApplicationSpecifiers = v30;
+            self->_notificationApplicationSpecifiers = notificationApplicationSpecifiers;
 
             v86 = v26;
             if (self->_notificationApplicationSpecifiers)
             {
-              v82 = v17;
+              v82 = array;
               v32 = v21;
-              v33 = v18;
+              v33 = array2;
               v34 = v16;
-              v35 = v8;
+              v35 = bulletinBoardSettings;
               if (![(NSMutableArray *)self->_notificationSpecifiers count])
               {
                 v36 = self->_notificationSpecifiers;
-                v37 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-                [(NSMutableArray *)v36 addObject:v37];
+                emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+                [(NSMutableArray *)v36 addObject:emptyGroupSpecifier];
               }
 
               v38 = self->_notificationSpecifiers;
@@ -227,11 +227,11 @@ LABEL_24:
               v40 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v84 + 1, -[NSMutableArray count](v39, "count")}];
               [(NSMutableArray *)v38 insertObjects:v39 atIndexes:v40];
 
-              v8 = v35;
+              bulletinBoardSettings = v35;
               v16 = v34;
-              v18 = v33;
+              array2 = v33;
               v21 = v32;
-              v17 = v82;
+              array = v82;
               v26 = v86;
             }
 
@@ -241,7 +241,7 @@ LABEL_24:
               v80 = v16;
               v42 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
               [v42 localizedStringForKey:@"ALERTS" value:&stru_285406330 table:@"AbstactApplication"];
-              v43 = v83 = v8;
+              v43 = v83 = bulletinBoardSettings;
               v44 = [v41 groupSpecifierWithID:@"ALERT_GROUP_ID" name:v43];
 
               v89[0] = @"tinker-paired";
@@ -269,7 +269,7 @@ LABEL_24:
               v26 = v86;
               [(NSMutableArray *)self->_notificationSpecifiers insertObject:v54 atIndex:v84 + 3];
 
-              v8 = v83;
+              bulletinBoardSettings = v83;
             }
 
             if ([(NSMutableArray *)self->_notificationSpecifiers count])
@@ -311,12 +311,12 @@ LABEL_21:
         if (v23)
         {
           [(NSMutableArray *)self->_notificationSpecifiers specifierForID:@"CUSTOM_RADIO_GROUP_ID"];
-          v27 = v17;
+          v27 = array;
           v29 = v28 = v21;
           [v29 setProperty:v26 forKey:*MEMORY[0x277D40090]];
 
           v21 = v28;
-          v17 = v27;
+          array = v27;
         }
 
         goto LABEL_24;
@@ -337,8 +337,8 @@ LABEL_39:
     [(BPSNotificationAppController *)self removeNotificationCoalescingOptions];
   }
 
-  v62 = [(BPSNotificationAppController *)self applicationGroupSpecifiers];
-  [v18 addObjectsFromArray:v62];
+  applicationGroupSpecifiers = [(BPSNotificationAppController *)self applicationGroupSpecifiers];
+  [array2 addObjectsFromArray:applicationGroupSpecifiers];
 
   if ([(BPSNotificationAppController *)self suppressMirrorOption])
   {
@@ -359,46 +359,46 @@ LABEL_39:
       [(BPSNotificationAppController *)self removeAlertOptions];
       v64 = [(NSMutableArray *)self->_notificationSpecifiers specifierForID:@"MIRROR_MY_COMPANION_ID"];
       [v63 setProperty:v64 forKey:*MEMORY[0x277D40090]];
-      v65 = [(BPSNotificationAppController *)self localizedMirroringDetailFooter];
-      [v63 setProperty:v65 forKey:*MEMORY[0x277D3FF88]];
+      localizedMirroringDetailFooter = [(BPSNotificationAppController *)self localizedMirroringDetailFooter];
+      [v63 setProperty:localizedMirroringDetailFooter forKey:*MEMORY[0x277D3FF88]];
     }
 
     else
     {
-      v66 = [(BPSNotificationAppController *)self mirroredApplicationGroupSpecifiers];
-      [v18 addObjectsFromArray:v66];
+      mirroredApplicationGroupSpecifiers = [(BPSNotificationAppController *)self mirroredApplicationGroupSpecifiers];
+      [array2 addObjectsFromArray:mirroredApplicationGroupSpecifiers];
 
       v64 = [(NSMutableArray *)self->_notificationSpecifiers specifierForID:@"CUSTOM_ID"];
       [v63 setProperty:v64 forKey:*MEMORY[0x277D40090]];
     }
   }
 
-  [v17 addObjectsFromArray:self->_notificationSpecifiers];
-  [v17 addObjectsFromArray:v18];
-  if (-[BPSNotificationAppController settingsMode](self, "settingsMode") == 1 && ![v17 count])
+  [array addObjectsFromArray:self->_notificationSpecifiers];
+  [array addObjectsFromArray:array2];
+  if (-[BPSNotificationAppController settingsMode](self, "settingsMode") == 1 && ![array count])
   {
-    v67 = [(BPSNotificationAppController *)self specifier];
-    v68 = [v67 propertyForKey:*MEMORY[0x277D40170]];
+    specifier = [(BPSNotificationAppController *)self specifier];
+    v68 = [specifier propertyForKey:*MEMORY[0x277D40170]];
 
     v69 = MEMORY[0x277CCACA8];
     v70 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     [v70 localizedStringForKey:@"NOTIFICATIONS_SETTINGS_DESCRIPTION_%@" value:&stru_285406330 table:@"AbstactApplication"];
-    v71 = v18;
+    v71 = array2;
     v73 = v72 = v16;
     v74 = [v69 stringWithFormat:v73, v68];
 
     v16 = v72;
-    v18 = v71;
+    array2 = v71;
 
     v75 = [(BPSNotificationAppController *)self customGroupSpecifierForDescription:v74];
-    [v17 addObject:v75];
+    [array addObject:v75];
   }
 
-  v76 = [(BPSNotificationAppController *)self localizedPaneTitle];
-  [(BPSNotificationAppController *)self setTitle:v76];
+  localizedPaneTitle = [(BPSNotificationAppController *)self localizedPaneTitle];
+  [(BPSNotificationAppController *)self setTitle:localizedPaneTitle];
 
   v77 = *(&self->super.super.super.super.super.super.isa + v3);
-  *(&self->super.super.super.super.super.super.isa + v3) = v17;
+  *(&self->super.super.super.super.super.super.isa + v3) = array;
 
   v4 = *(&self->super.super.super.super.super.super.isa + v3);
 LABEL_53:
@@ -406,44 +406,44 @@ LABEL_53:
   return v4;
 }
 
-- (id)customGroupSpecifierForDescription:(id)a3
+- (id)customGroupSpecifierForDescription:(id)description
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  descriptionCopy = description;
   v6 = [v4 bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"NOTIFICATIONS_SETTINGS" value:&stru_285406330 table:@"AbstactApplication"];
 
-  v8 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  [v8 setProperty:v10 forKey:*MEMORY[0x277D3FF48]];
+  [emptyGroupSpecifier setProperty:v10 forKey:*MEMORY[0x277D3FF48]];
 
-  [v8 setProperty:v5 forKey:*MEMORY[0x277D3FF70]];
-  v11 = [v5 rangeOfString:v7 options:4];
+  [emptyGroupSpecifier setProperty:descriptionCopy forKey:*MEMORY[0x277D3FF70]];
+  v11 = [descriptionCopy rangeOfString:v7 options:4];
   v13 = v12;
 
   v18.location = v11;
   v18.length = v13;
   v14 = NSStringFromRange(v18);
-  [v8 setProperty:v14 forKey:*MEMORY[0x277D3FF58]];
+  [emptyGroupSpecifier setProperty:v14 forKey:*MEMORY[0x277D3FF58]];
 
   v15 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:self];
-  [v8 setProperty:v15 forKey:*MEMORY[0x277D3FF68]];
+  [emptyGroupSpecifier setProperty:v15 forKey:*MEMORY[0x277D3FF68]];
 
-  [v8 setProperty:@"_showSettingsNotifications" forKey:*MEMORY[0x277D3FF50]];
+  [emptyGroupSpecifier setProperty:@"_showSettingsNotifications" forKey:*MEMORY[0x277D3FF50]];
 
-  return v8;
+  return emptyGroupSpecifier;
 }
 
 - (void)_showSettingsNotifications
 {
-  v2 = [(BPSNotificationAppController *)self bbSectionInfo];
-  v3 = [v2 sectionID];
-  v4 = v3;
+  bbSectionInfo = [(BPSNotificationAppController *)self bbSectionInfo];
+  sectionID = [bbSectionInfo sectionID];
+  v4 = sectionID;
   v5 = &stru_285406330;
-  if (v3)
+  if (sectionID)
   {
-    v5 = v3;
+    v5 = sectionID;
   }
 
   v6 = v5;
@@ -455,53 +455,53 @@ LABEL_53:
   BPSOpenSensitiveURLAsync(v8);
 }
 
-- (id)sectionInfoForBBSectionInfo:(id)a3
+- (id)sectionInfoForBBSectionInfo:(id)info
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  infoCopy = info;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6 = MEMORY[0x277CCABB0];
-  if (v4 && ![v4 alertType])
+  if (infoCopy && ![infoCopy alertType])
   {
-    v7 = [v4 showsInLockScreen];
+    showsInLockScreen = [infoCopy showsInLockScreen];
   }
 
   else
   {
-    v7 = 1;
+    showsInLockScreen = 1;
   }
 
-  v8 = [v6 numberWithInt:v7];
-  [v5 setObject:v8 forKey:@"BPSNanoBulletinShowsAlerts"];
+  v8 = [v6 numberWithInt:showsInLockScreen];
+  [dictionary setObject:v8 forKey:@"BPSNanoBulletinShowsAlerts"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "showsMessagePreview")}];
-  [v5 setObject:v9 forKey:@"BPSNanoBulletinShowsPreview"];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(infoCopy, "showsMessagePreview")}];
+  [dictionary setObject:v9 forKey:@"BPSNanoBulletinShowsPreview"];
 
-  v10 = [v4 sectionID];
-  if (v10 || ([(BPSNotificationAppController *)self applicationBundleIdentifier], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  sectionID = [infoCopy sectionID];
+  if (sectionID || ([(BPSNotificationAppController *)self applicationBundleIdentifier], (sectionID = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v11 = v10;
-    [v5 setObject:v10 forKey:@"BPSNanoBulletinSectionId"];
+    v11 = sectionID;
+    [dictionary setObject:sectionID forKey:@"BPSNanoBulletinSectionId"];
   }
 
-  v12 = [v4 subsectionID];
-  if (v12)
+  subsectionID = [infoCopy subsectionID];
+  if (subsectionID)
   {
-    [v5 setObject:v12 forKey:@"BPSNanoBulletinSubsectionId"];
+    [dictionary setObject:subsectionID forKey:@"BPSNanoBulletinSubsectionId"];
   }
 
-  v13 = [v4 subsections];
-  v14 = [v13 count];
+  subsections = [infoCopy subsections];
+  v14 = [subsections count];
 
   if (v14)
   {
-    v15 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v16 = [v4 subsections];
-    v17 = [v16 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    subsections2 = [infoCopy subsections];
+    v17 = [subsections2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v17)
     {
       v18 = v17;
@@ -512,23 +512,23 @@ LABEL_53:
         {
           if (*v24 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(subsections2);
           }
 
           v21 = [(BPSNotificationAppController *)self sectionInfoForBBSectionInfo:*(*(&v23 + 1) + 8 * i)];
-          [v15 addObject:v21];
+          [array addObject:v21];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v18 = [subsections2 countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v18);
     }
 
-    [v5 setObject:v15 forKey:@"BPSNanoBulletinSubsections"];
+    [dictionary setObject:array forKey:@"BPSNanoBulletinSubsections"];
   }
 
-  return v5;
+  return dictionary;
 }
 
 - (BBSectionInfo)bbSectionInfo
@@ -537,23 +537,23 @@ LABEL_53:
   bbSectionInfo = self->_bbSectionInfo;
   if (!bbSectionInfo)
   {
-    v4 = [MEMORY[0x277D37A58] sharedManager];
-    v5 = [v4 bbSections];
+    mEMORY[0x277D37A58] = [MEMORY[0x277D37A58] sharedManager];
+    bbSections = [mEMORY[0x277D37A58] bbSections];
 
-    if (!v5)
+    if (!bbSections)
     {
-      v6 = [MEMORY[0x277D37A58] sharedManager];
-      [v6 loadBBSections];
+      mEMORY[0x277D37A58]2 = [MEMORY[0x277D37A58] sharedManager];
+      [mEMORY[0x277D37A58]2 loadBBSections];
 
-      v7 = [MEMORY[0x277D37A58] sharedManager];
-      v5 = [v7 bbSections];
+      mEMORY[0x277D37A58]3 = [MEMORY[0x277D37A58] sharedManager];
+      bbSections = [mEMORY[0x277D37A58]3 bbSections];
     }
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = v5;
+    v8 = bbSections;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
@@ -569,8 +569,8 @@ LABEL_53:
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
-          v14 = [v13 sectionID];
-          if ([v14 isEqualToString:self->_bundleIdentifier])
+          sectionID = [v13 sectionID];
+          if ([sectionID isEqualToString:self->_bundleIdentifier])
           {
             objc_storeStrong(&self->_bbSectionInfo, v13);
 
@@ -599,14 +599,14 @@ LABEL_14:
 - (void)updateSubsections
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D37A58] sharedManager];
-  [v3 loadBBSections];
+  mEMORY[0x277D37A58] = [MEMORY[0x277D37A58] sharedManager];
+  [mEMORY[0x277D37A58] loadBBSections];
 
   bbSectionInfo = self->_bbSectionInfo;
   self->_bbSectionInfo = 0;
 
-  v5 = [(BPSNotificationAppController *)self bbSectionInfo];
-  v6 = [(BPSNotificationAppController *)self sectionInfoForBBSectionInfo:v5];
+  bbSectionInfo = [(BPSNotificationAppController *)self bbSectionInfo];
+  v6 = [(BPSNotificationAppController *)self sectionInfoForBBSectionInfo:bbSectionInfo];
 
   v7 = [v6 objectForKeyedSubscript:@"BPSNanoBulletinSubsections"];
 
@@ -627,7 +627,7 @@ LABEL_14:
       if ([v10 count])
       {
         v11 = 0;
-        v22 = self;
+        selfCopy = self;
         do
         {
           v23 = [v10 objectAtIndexedSubscript:v11];
@@ -674,7 +674,7 @@ LABEL_14:
 LABEL_16:
 
           ++v11;
-          self = v22;
+          self = selfCopy;
         }
 
         while (v11 < [v10 count]);
@@ -787,51 +787,51 @@ LABEL_16:
   v3 = v2;
   if (v2)
   {
-    v4 = [NSClassFromString(v2) sharedInstance];
-    if (([v4 areSpecifiersLoaded] & 1) == 0)
+    nSClassFromString(v2) = [NSClassFromString(v2) sharedInstance];
+    if (([nSClassFromString(v2) areSpecifiersLoaded] & 1) == 0)
     {
-      [v4 loadSpecifiers];
+      [nSClassFromString(v2) loadSpecifiers];
     }
 
-    v5 = [v4 specifiers];
+    specifiers = [nSClassFromString(v2) specifiers];
   }
 
   else
   {
-    v5 = 0;
+    specifiers = 0;
   }
 
-  return v5;
+  return specifiers;
 }
 
 - (void)writeSectionState
 {
   sectionInfo = self->_sectionInfo;
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [(NSMutableDictionary *)sectionInfo setObject:v4 forKey:@"BPSNanoBulletinUpdateTimestamp"];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(NSMutableDictionary *)sectionInfo setObject:date forKey:@"BPSNanoBulletinUpdateTimestamp"];
 
   [(NPSDomainAccessor *)self->_bbAppsSettings setObject:self->_sectionInfo forKey:self->_bundleIdentifier];
-  v5 = [(NPSDomainAccessor *)self->_bbAppsSettings synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_bbAppsSettings synchronize];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"BulletinDistributorBBSectionsDidChangeNotification", 0, 0, 0);
 }
 
-- (void)setMirrorSettings:(BOOL)a3
+- (void)setMirrorSettings:(BOOL)settings
 {
-  v3 = a3;
+  settingsCopy = settings;
   mirrorSettings = self->_mirrorSettings;
-  self->_mirrorSettings = a3;
+  self->_mirrorSettings = settings;
   sectionInfo = self->_sectionInfo;
-  v7 = [MEMORY[0x277CCABB0] numberWithInt:!a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInt:!settings];
   [(NSMutableDictionary *)sectionInfo setObject:v7 forKey:@"BPSNanoBulletinShowsCustomSettings"];
 
   [(BPSNotificationAppController *)self writeSectionState];
-  if (mirrorSettings != v3)
+  if (mirrorSettings != settingsCopy)
   {
     if ([(BPSNotificationAppController *)self alertType])
     {
-      if (v3)
+      if (settingsCopy)
       {
         v8 = 0;
       }
@@ -841,93 +841,93 @@ LABEL_16:
         v8 = 3;
       }
 
-      v9 = [MEMORY[0x277D71F78] sharedToneManager];
-      [v9 _setCurrentToneWatchAlertPolicy:v8 forAlertType:{-[BPSNotificationAppController alertType](self, "alertType")}];
+      mEMORY[0x277D71F78] = [MEMORY[0x277D71F78] sharedToneManager];
+      [mEMORY[0x277D71F78] _setCurrentToneWatchAlertPolicy:v8 forAlertType:{-[BPSNotificationAppController alertType](self, "alertType")}];
 
-      v10 = [MEMORY[0x277D71F88] sharedVibrationManager];
-      [v10 _setCurrentVibrationWatchAlertPolicy:v8 forAlertType:{-[BPSNotificationAppController alertType](self, "alertType")}];
+      mEMORY[0x277D71F88] = [MEMORY[0x277D71F88] sharedVibrationManager];
+      [mEMORY[0x277D71F88] _setCurrentVibrationWatchAlertPolicy:v8 forAlertType:{-[BPSNotificationAppController alertType](self, "alertType")}];
     }
 
-    [(BPSNotificationAppController *)self mirrorSettingsChanged:v3];
+    [(BPSNotificationAppController *)self mirrorSettingsChanged:settingsCopy];
 
     [(BPSListController *)self reloadSpecifiers];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BPSNotificationAppController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(BPSNotificationAppController *)self indexForIndexPath:pathCopy];
   v9 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndex:v8];
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:v8];
-  v11 = [v9 identifier];
-  NSLog(&cfstr_DidselectRowSp.isa, v10, v11);
+  identifier = [v9 identifier];
+  NSLog(&cfstr_DidselectRowSp.isa, v10, identifier);
 
-  v12 = [v9 identifier];
-  LODWORD(v11) = [v12 isEqualToString:@"MIRROR_MY_COMPANION_ID"];
+  identifier2 = [v9 identifier];
+  LODWORD(identifier) = [identifier2 isEqualToString:@"MIRROR_MY_COMPANION_ID"];
 
-  if (v11)
+  if (identifier)
   {
-    v13 = self;
+    selfCopy5 = self;
     v14 = 1;
   }
 
   else
   {
-    v15 = [v9 identifier];
-    v16 = [v15 isEqualToString:@"CUSTOM_ID"];
+    identifier3 = [v9 identifier];
+    v16 = [identifier3 isEqualToString:@"CUSTOM_ID"];
 
     if (!v16)
     {
-      v17 = [v9 identifier];
-      v18 = [v17 isEqualToString:@"ALLOW_NOTIFICATIONS_ID"];
+      identifier4 = [v9 identifier];
+      v18 = [identifier4 isEqualToString:@"ALLOW_NOTIFICATIONS_ID"];
 
       if (v18)
       {
-        v19 = self;
+        selfCopy4 = self;
         v20 = 2;
       }
 
       else
       {
-        v21 = [v9 identifier];
-        v22 = [v21 isEqualToString:@"SEND_TO_NOTIFICATION_CENTER_ID"];
+        identifier5 = [v9 identifier];
+        v22 = [identifier5 isEqualToString:@"SEND_TO_NOTIFICATION_CENTER_ID"];
 
         if (v22)
         {
-          v19 = self;
+          selfCopy4 = self;
           v20 = 1;
         }
 
         else
         {
-          v23 = [v9 identifier];
-          v24 = [v23 isEqualToString:@"NOTIFICATIONS_OFF_ID"];
+          identifier6 = [v9 identifier];
+          v24 = [identifier6 isEqualToString:@"NOTIFICATIONS_OFF_ID"];
 
           if (!v24)
           {
             goto LABEL_13;
           }
 
-          v19 = self;
+          selfCopy4 = self;
           v20 = 0;
         }
       }
 
-      [(BPSNotificationAppController *)v19 setAlertingMode:v20];
+      [(BPSNotificationAppController *)selfCopy4 setAlertingMode:v20];
       goto LABEL_13;
     }
 
-    v13 = self;
+    selfCopy5 = self;
     v14 = 0;
   }
 
-  [(BPSNotificationAppController *)v13 setMirrorSettings:v14];
+  [(BPSNotificationAppController *)selfCopy5 setMirrorSettings:v14];
 LABEL_13:
   v25.receiver = self;
   v25.super_class = BPSNotificationAppController;
-  [(BPSNotificationAppController *)&v25 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(BPSNotificationAppController *)&v25 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 - (id)notificationGroupTitles
@@ -946,7 +946,7 @@ LABEL_13:
   return v8;
 }
 
-- (id)notificationGroupingValue:(id)a3
+- (id)notificationGroupingValue:(id)value
 {
   v3 = [(NSMutableDictionary *)self->_sectionInfo objectForKey:@"BPSNanoBulletinNotificationGrouping"];
   v4 = v3;
@@ -965,18 +965,18 @@ LABEL_13:
   return v5;
 }
 
-- (void)setNotificationGroupingValue:(id)a3 specifier:(id)a4
+- (void)setNotificationGroupingValue:(id)value specifier:(id)specifier
 {
-  [(NSMutableDictionary *)self->_sectionInfo setObject:a3 forKey:@"BPSNanoBulletinNotificationGrouping"];
+  [(NSMutableDictionary *)self->_sectionInfo setObject:value forKey:@"BPSNanoBulletinNotificationGrouping"];
 
   [(BPSNotificationAppController *)self writeSectionState];
 }
 
-- (void)setAlertingMode:(unint64_t)a3
+- (void)setAlertingMode:(unint64_t)mode
 {
-  v5 = [(BPSNotificationAppController *)self alertingMode];
+  alertingMode = [(BPSNotificationAppController *)self alertingMode];
   sectionInfo = self->_sectionInfo;
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:a3 == 2];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:mode == 2];
   [(NSMutableDictionary *)sectionInfo setObject:v7 forKey:@"BPSNanoBulletinShowsAlerts"];
 
   v8 = [(NSMutableDictionary *)self->_sectionInfo objectForKey:@"BPSNanoBulletinSubsections"];
@@ -986,16 +986,16 @@ LABEL_13:
   {
     v10 = [(NSMutableDictionary *)self->_sectionInfo objectForKey:@"BPSNanoBulletinSubsections"];
     v11 = [v10 objectAtIndex:0];
-    v12 = [MEMORY[0x277CCABB0] numberWithBool:a3 == 2];
+    v12 = [MEMORY[0x277CCABB0] numberWithBool:mode == 2];
     [v11 setObject:v12 forKey:@"BPSNanoBulletinShowsAlerts"];
   }
 
   v13 = self->_sectionInfo;
-  v14 = [MEMORY[0x277CCABB0] numberWithInt:a3 == 1];
+  v14 = [MEMORY[0x277CCABB0] numberWithInt:mode == 1];
   [(NSMutableDictionary *)v13 setObject:v14 forKey:@"BPSNanoBulletinSendToNotificationCenter"];
 
   [(BPSNotificationAppController *)self writeSectionState];
-  if (v5 != a3)
+  if (alertingMode != mode)
   {
 
     [(BPSListController *)self reloadSpecifiers];
@@ -1010,16 +1010,16 @@ LABEL_13:
   }
 
   v4 = [(NSMutableDictionary *)self->_sectionInfo objectForKey:@"BPSNanoBulletinSendToNotificationCenter"];
-  v3 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setShowPreviewValue:(id)a3 forSpecifier:(id)a4
+- (void)setShowPreviewValue:(id)value forSpecifier:(id)specifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  [(NSMutableDictionary *)self->_sectionInfo setObject:v5 forKey:@"BPSNanoBulletinShowsPreview"];
+  valueCopy = value;
+  [(NSMutableDictionary *)self->_sectionInfo setObject:valueCopy forKey:@"BPSNanoBulletinShowsPreview"];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -1040,7 +1040,7 @@ LABEL_13:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) setObject:v5 forKey:@"BPSNanoBulletinShowsPreview"];
+        [*(*(&v11 + 1) + 8 * v10++) setObject:valueCopy forKey:@"BPSNanoBulletinShowsPreview"];
       }
 
       while (v8 != v10);
@@ -1053,9 +1053,9 @@ LABEL_13:
   [(BPSNotificationAppController *)self writeSectionState];
 }
 
-- (void)setSoundsValue:(id)a3 forSpecifier:(id)a4
+- (void)setSoundsValue:(id)value forSpecifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([value BOOLValue])
   {
     v5 = 1;
   }
@@ -1065,23 +1065,23 @@ LABEL_13:
     v5 = 2;
   }
 
-  v6 = [MEMORY[0x277D71F78] sharedToneManager];
-  [v6 _setCurrentToneWatchAlertPolicy:v5 forAlertType:{-[BPSNotificationAppController alertType](self, "alertType")}];
+  mEMORY[0x277D71F78] = [MEMORY[0x277D71F78] sharedToneManager];
+  [mEMORY[0x277D71F78] _setCurrentToneWatchAlertPolicy:v5 forAlertType:{-[BPSNotificationAppController alertType](self, "alertType")}];
 }
 
-- (id)soundsValue:(id)a3
+- (id)soundsValue:(id)value
 {
-  v4 = [MEMORY[0x277D71F78] sharedToneManager];
-  v5 = [v4 _currentToneWatchAlertPolicyForAlertType:{-[BPSNotificationAppController alertType](self, "alertType")}];
+  mEMORY[0x277D71F78] = [MEMORY[0x277D71F78] sharedToneManager];
+  v5 = [mEMORY[0x277D71F78] _currentToneWatchAlertPolicyForAlertType:{-[BPSNotificationAppController alertType](self, "alertType")}];
 
   v6 = MEMORY[0x277CCABB0];
 
   return [v6 numberWithBool:v5 == 1];
 }
 
-- (void)setVibrationValue:(id)a3 forSpecifier:(id)a4
+- (void)setVibrationValue:(id)value forSpecifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([value BOOLValue])
   {
     v5 = 1;
   }
@@ -1091,14 +1091,14 @@ LABEL_13:
     v5 = 2;
   }
 
-  v6 = [MEMORY[0x277D71F88] sharedVibrationManager];
-  [v6 _setCurrentVibrationWatchAlertPolicy:v5 forAlertType:{-[BPSNotificationAppController alertType](self, "alertType")}];
+  mEMORY[0x277D71F88] = [MEMORY[0x277D71F88] sharedVibrationManager];
+  [mEMORY[0x277D71F88] _setCurrentVibrationWatchAlertPolicy:v5 forAlertType:{-[BPSNotificationAppController alertType](self, "alertType")}];
 }
 
-- (id)vibrationValue:(id)a3
+- (id)vibrationValue:(id)value
 {
-  v4 = [MEMORY[0x277D71F88] sharedVibrationManager];
-  v5 = [v4 _currentVibrationWatchAlertPolicyForAlertType:{-[BPSNotificationAppController alertType](self, "alertType")}];
+  mEMORY[0x277D71F88] = [MEMORY[0x277D71F88] sharedVibrationManager];
+  v5 = [mEMORY[0x277D71F88] _currentVibrationWatchAlertPolicyForAlertType:{-[BPSNotificationAppController alertType](self, "alertType")}];
 
   v6 = MEMORY[0x277CCABB0];
 
@@ -1111,14 +1111,14 @@ LABEL_13:
   if (!self->_mirrorSettings)
   {
     v11 = [(NSMutableDictionary *)self->_sectionInfo objectForKey:@"BPSNanoBulletinShowsAlerts"];
-    v12 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
 
-    return v12;
+    return bOOLValue;
   }
 
-  v2 = [(BPSNotificationAppController *)self bbSectionInfo];
-  v3 = [v2 subsections];
-  v4 = [v3 count];
+  bbSectionInfo = [(BPSNotificationAppController *)self bbSectionInfo];
+  subsections = [bbSectionInfo subsections];
+  v4 = [subsections count];
 
   if (v4)
   {
@@ -1126,8 +1126,8 @@ LABEL_13:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [v2 subsections];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    subsections2 = [bbSectionInfo subsections];
+    v6 = [subsections2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1138,7 +1138,7 @@ LABEL_13:
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subsections2);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
@@ -1149,7 +1149,7 @@ LABEL_13:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [subsections2 countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v7)
         {
           continue;
@@ -1160,26 +1160,26 @@ LABEL_13:
     }
   }
 
-  else if ([v2 allowsNotifications])
+  else if ([bbSectionInfo allowsNotifications])
   {
-    if ([v2 alertType])
+    if ([bbSectionInfo alertType])
     {
 LABEL_18:
-      v14 = 1;
+      showsInLockScreen = 1;
     }
 
     else
     {
-      v14 = [v2 showsInLockScreen];
+      showsInLockScreen = [bbSectionInfo showsInLockScreen];
     }
 
     goto LABEL_20;
   }
 
-  v14 = 0;
+  showsInLockScreen = 0;
 LABEL_20:
 
-  return v14;
+  return showsInLockScreen;
 }
 
 - (BOOL)showPreview
@@ -1187,9 +1187,9 @@ LABEL_20:
   v19 = *MEMORY[0x277D85DE8];
   if (self->_mirrorSettings)
   {
-    v2 = [(BPSNotificationAppController *)self bbSectionInfo];
-    v3 = [v2 subsections];
-    v4 = [v3 count];
+    bbSectionInfo = [(BPSNotificationAppController *)self bbSectionInfo];
+    subsections = [bbSectionInfo subsections];
+    v4 = [subsections count];
 
     if (v4)
     {
@@ -1197,8 +1197,8 @@ LABEL_20:
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v5 = [v2 subsections];
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      subsections2 = [bbSectionInfo subsections];
+      v6 = [subsections2 countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         v7 = v6;
@@ -1209,18 +1209,18 @@ LABEL_20:
           {
             if (*v15 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(subsections2);
             }
 
             if ([*(*(&v14 + 1) + 8 * i) showsMessagePreview])
             {
 
-              v10 = 1;
+              showsMessagePreview = 1;
               goto LABEL_15;
             }
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v7 = [subsections2 countByEnumeratingWithState:&v14 objects:v18 count:16];
           if (v7)
           {
             continue;
@@ -1230,33 +1230,33 @@ LABEL_20:
         }
       }
 
-      v10 = 0;
+      showsMessagePreview = 0;
     }
 
     else
     {
-      v10 = [v2 showsMessagePreview];
+      showsMessagePreview = [bbSectionInfo showsMessagePreview];
     }
 
 LABEL_15:
 
-    return v10;
+    return showsMessagePreview;
   }
 
   else
   {
     v11 = [(NSMutableDictionary *)self->_sectionInfo objectForKey:@"BPSNanoBulletinShowsPreview"];
-    v12 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
 
-    return v12;
+    return bOOLValue;
   }
 }
 
 - (PSSpecifier)previewSwitchSpecifier
 {
   v3 = MEMORY[0x277D3FAD8];
-  v4 = [(BPSNotificationAppController *)self localizedPreviewChoiceTitle];
-  v5 = [v3 preferenceSpecifierNamed:v4 target:self set:sel_setShowPreviewValue_forSpecifier_ get:sel_showPreviewValue_ detail:0 cell:6 edit:0];
+  localizedPreviewChoiceTitle = [(BPSNotificationAppController *)self localizedPreviewChoiceTitle];
+  v5 = [v3 preferenceSpecifierNamed:localizedPreviewChoiceTitle target:self set:sel_setShowPreviewValue_forSpecifier_ get:sel_showPreviewValue_ detail:0 cell:6 edit:0];
 
   return v5;
 }

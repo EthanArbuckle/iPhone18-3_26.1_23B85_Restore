@@ -1,42 +1,42 @@
 @interface MTNumberUtil
-+ (double)deResDouble:(double)a3 magnitude:(int64_t)a4 significantDigits:(int64_t)a5;
-+ (id)deResNumber:(id)a3 magnitude:(id)a4 significantDigits:(id)a5;
++ (double)deResDouble:(double)double magnitude:(int64_t)magnitude significantDigits:(int64_t)digits;
++ (id)deResNumber:(id)number magnitude:(id)magnitude significantDigits:(id)digits;
 @end
 
 @implementation MTNumberUtil
 
-+ (id)deResNumber:(id)a3 magnitude:(id)a4 significantDigits:(id)a5
++ (id)deResNumber:(id)number magnitude:(id)magnitude significantDigits:(id)digits
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  numberCopy = number;
+  magnitudeCopy = magnitude;
+  digitsCopy = digits;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v8 unsignedIntegerValue];
+      unsignedIntegerValue = [magnitudeCopy unsignedIntegerValue];
     }
 
     else
     {
-      v10 = 0x100000;
+      unsignedIntegerValue = 0x100000;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v9 unsignedIntegerValue];
+      unsignedIntegerValue2 = [digitsCopy unsignedIntegerValue];
     }
 
     else
     {
-      v12 = 2;
+      unsignedIntegerValue2 = 2;
     }
 
-    [v7 doubleValue];
-    [MTNumberUtil deResDouble:v10 magnitude:v12 significantDigits:?];
+    [numberCopy doubleValue];
+    [MTNumberUtil deResDouble:unsignedIntegerValue magnitude:unsignedIntegerValue2 significantDigits:?];
     v11 = [MEMORY[0x277CCABB0] numberWithDouble:?];
   }
 
@@ -48,13 +48,13 @@
   return v11;
 }
 
-+ (double)deResDouble:(double)a3 magnitude:(int64_t)a4 significantDigits:(int64_t)a5
++ (double)deResDouble:(double)double magnitude:(int64_t)magnitude significantDigits:(int64_t)digits
 {
   result = NAN;
-  if (a4 >= 1 && (a5 & 0x8000000000000000) == 0)
+  if (magnitude >= 1 && (digits & 0x8000000000000000) == 0)
   {
-    v8 = __exp10(a5);
-    v9 = a3 / a4 / v8;
+    v8 = __exp10(digits);
+    v9 = double / magnitude / v8;
     v10 = floor(v9);
     v11 = ceil(v9);
     if (v9 <= 0.0)

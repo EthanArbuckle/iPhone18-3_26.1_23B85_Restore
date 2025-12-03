@@ -1,25 +1,25 @@
 @interface TIUserModelDataStoreDurableEntry
-- (TIUserModelDataStoreDurableEntry)initWithCreationDate:(id)a3 withLastUpdateDate:(id)a4 withKey:(id)a5 withValue:(id)a6;
+- (TIUserModelDataStoreDurableEntry)initWithCreationDate:(id)date withLastUpdateDate:(id)updateDate withKey:(id)key withValue:(id)value;
 @end
 
 @implementation TIUserModelDataStoreDurableEntry
 
-- (TIUserModelDataStoreDurableEntry)initWithCreationDate:(id)a3 withLastUpdateDate:(id)a4 withKey:(id)a5 withValue:(id)a6
+- (TIUserModelDataStoreDurableEntry)initWithCreationDate:(id)date withLastUpdateDate:(id)updateDate withKey:(id)key withValue:(id)value
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dateCopy = date;
+  updateDateCopy = updateDate;
+  keyCopy = key;
+  valueCopy = value;
   v18.receiver = self;
   v18.super_class = TIUserModelDataStoreDurableEntry;
   v15 = [(TIUserModelDataStoreDurableEntry *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_creationDate, a3);
-    objc_storeStrong(&v16->_lastUpdateDate, a4);
-    objc_storeStrong(&v16->_key, a5);
-    objc_storeStrong(&v16->_value, a6);
+    objc_storeStrong(&v15->_creationDate, date);
+    objc_storeStrong(&v16->_lastUpdateDate, updateDate);
+    objc_storeStrong(&v16->_key, key);
+    objc_storeStrong(&v16->_value, value);
   }
 
   return v16;

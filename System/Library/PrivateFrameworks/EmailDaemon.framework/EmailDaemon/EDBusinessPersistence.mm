@@ -1,87 +1,87 @@
 @interface EDBusinessPersistence
-+ (BOOL)_hasCommonDomain:(id)a3;
-+ (BOOL)_shouldUseGroupingSimpleAddressForEmailAddress:(id)a3 grouping:(int64_t)a4;
-+ (BOOL)_shouldUseSimpleAddressForHighLevelDomain:(id)a3 displayName:(id)a4 grouping:(int64_t)a5;
-+ (id)_brandIDFromInteger:(int64_t)a3;
++ (BOOL)_hasCommonDomain:(id)domain;
++ (BOOL)_shouldUseGroupingSimpleAddressForEmailAddress:(id)address grouping:(int64_t)grouping;
++ (BOOL)_shouldUseSimpleAddressForHighLevelDomain:(id)domain displayName:(id)name grouping:(int64_t)grouping;
++ (id)_brandIDFromInteger:(int64_t)integer;
 + (id)_commonDomains;
-+ (id)brandIDForResultRow:(id)a3;
++ (id)brandIDForResultRow:(id)row;
 + (id)businessAddressesTableSchema;
 + (id)businessCategoriesTableSchema;
 + (id)businessesTableSchema;
 + (id)log;
-+ (id)protectedTablesAndForeignKeysToResolve:(id *)a3;
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4;
-- (BOOL)_combineBusinesses:(id)a3 connection:(id)a4 newBusinessID:(int64_t *)a5;
-- (BOOL)_completedBCSSyncforAddressID:(id)a3 connection:(id)a4;
-- (BOOL)_deleteBusinessAddressEntryForAddressID:(id)a3 connection:(id)a4;
-- (BOOL)_deleteBusinessEntryForBusinessID:(id)a3 connection:(id)a4;
-- (BOOL)_hasCompletedRecentBCSSyncForAddressID:(int64_t)a3 connection:(id)a4;
-- (BOOL)_insertOrUpdateBusiness:(int64_t)a3 forAddress:(int64_t)a4 connection:(id)a5;
-- (BOOL)_insertOrUpdateBusinessCategoriesCategoryColumnForBusinessID:(int64_t)a3 category:(unint64_t)a4 connection:(id)a5;
-- (BOOL)_removeOldBusinessIDs:(id)a3 connection:(id)a4;
-- (BOOL)_removeUserOverrideForAddressIDs:(id)a3 timestamp:(id)a4 originator:(unint64_t)a5 userInitiated:(BOOL)a6 connection:(id)a7;
-- (BOOL)_setUserOverrideForBusinessID:(int64_t)a3 category:(unint64_t)a4 userInitiated:(BOOL)a5 connection:(id)a6 timestamp:(id)a7;
-- (BOOL)_updateBrandNamesForBusinessID:(int64_t)a3 brandNames:(id)a4 connection:(id)a5;
-- (BOOL)_updateBusinessAddressesCategoryColumnForAddressIDs:(id)a3 category:(unint64_t)a4 connection:(id)a5 timestamp:(id)a6;
-- (BOOL)_updateBusinessAddressesTableforBusinessID:(id)a3 newBusinessID:(id)a4 connection:(id)a5;
-- (BOOL)_updateBusinessIDForAddress:(id)a3 addressID:(int64_t)a4 businessMetadata:(id)a5 connection:(id)a6;
-- (BOOL)_updateDisplayNameForBusinessID:(int64_t)a3 displayName:(id)a4 connection:(id)a5;
-- (EDBusinessPersistence)initWithDatabase:(id)a3 hookRegistry:(id)a4;
-- (EDBusinessPersistence)initWithDatabase:(id)a3 hookRegistry:(id)a4 businessServiceProvider:(id)a5;
-- (id)_addressesNeedingUpdateStatementOnlyCounts:(BOOL)a3;
-- (id)_bcsEmailIdentiferForAddress:(id)a3;
-- (id)_brandIDForBusinessID:(int64_t)a3;
-- (id)_businessAddressMapWithCategoryOverrideWithConnection:(id)a3;
-- (id)_businessExternalIDForAddressID:(int64_t)a3 expectedGrouping:(int64_t)a4 connection:(id)a5 error:(id *)a6;
-- (id)_businessExternalIDForEmailAddress:(id)a3 addressID:(int64_t)a4 brandID:(id)a5 grouping:(int64_t)a6 shouldForceUpdate:(BOOL)a7 businessIDsToCombine:(id *)a8;
-- (id)_businessIDsForHighLevelDomain:(id)a3 connection:(id)a4;
-- (id)_categoryOverridesForBusinessIDs:(id)a3 connection:(id)a4;
-- (id)_existingExternalIDForAddressID:(int64_t)a3 error:(id *)a4;
-- (id)_externalIDForDomain:(id)a3 displayName:(id)a4 brandID:(id)a5 simpleAddress:(id)a6 grouping:(int64_t)a7;
-- (id)_externalIDForPersistedDomain:(id)a3 displayName:(id)a4 brandID:(id)a5 grouping:(int64_t)a6;
-- (id)_externalIDWithCommonPrefixForHighLevelDomain:(id)a3 displayName:(id)a4 businessIDsToCombine:(id *)a5;
-- (id)_findExistingBrandIDForBusinessID:(int64_t)a3 connection:(id)a4;
-- (id)_groupingTrieForHighLevelDomain:(id)a3;
-- (id)_highLevelDomainsForBusinessIDs:(id)a3;
-- (id)_lastBCSSyncForAddressID:(int64_t)a3 connection:(id)a4;
-- (id)_localizedStringFromJSONString:(id)a3;
-- (id)_persistedBrandNamesForDictionary:(id)a3;
-- (id)_persistedDisplayNameForExternalID:(id)a3;
-- (id)_persistedDomainForExternalID:(id)a3;
-- (id)addressIDsForBusinessID:(int64_t)a3 connection:(id)a4;
-- (id)addressesForBusinessID:(int64_t)a3;
++ (id)protectedTablesAndForeignKeysToResolve:(id *)resolve;
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve;
+- (BOOL)_combineBusinesses:(id)businesses connection:(id)connection newBusinessID:(int64_t *)d;
+- (BOOL)_completedBCSSyncforAddressID:(id)d connection:(id)connection;
+- (BOOL)_deleteBusinessAddressEntryForAddressID:(id)d connection:(id)connection;
+- (BOOL)_deleteBusinessEntryForBusinessID:(id)d connection:(id)connection;
+- (BOOL)_hasCompletedRecentBCSSyncForAddressID:(int64_t)d connection:(id)connection;
+- (BOOL)_insertOrUpdateBusiness:(int64_t)business forAddress:(int64_t)address connection:(id)connection;
+- (BOOL)_insertOrUpdateBusinessCategoriesCategoryColumnForBusinessID:(int64_t)d category:(unint64_t)category connection:(id)connection;
+- (BOOL)_removeOldBusinessIDs:(id)ds connection:(id)connection;
+- (BOOL)_removeUserOverrideForAddressIDs:(id)ds timestamp:(id)timestamp originator:(unint64_t)originator userInitiated:(BOOL)initiated connection:(id)connection;
+- (BOOL)_setUserOverrideForBusinessID:(int64_t)d category:(unint64_t)category userInitiated:(BOOL)initiated connection:(id)connection timestamp:(id)timestamp;
+- (BOOL)_updateBrandNamesForBusinessID:(int64_t)d brandNames:(id)names connection:(id)connection;
+- (BOOL)_updateBusinessAddressesCategoryColumnForAddressIDs:(id)ds category:(unint64_t)category connection:(id)connection timestamp:(id)timestamp;
+- (BOOL)_updateBusinessAddressesTableforBusinessID:(id)d newBusinessID:(id)iD connection:(id)connection;
+- (BOOL)_updateBusinessIDForAddress:(id)address addressID:(int64_t)d businessMetadata:(id)metadata connection:(id)connection;
+- (BOOL)_updateDisplayNameForBusinessID:(int64_t)d displayName:(id)name connection:(id)connection;
+- (EDBusinessPersistence)initWithDatabase:(id)database hookRegistry:(id)registry;
+- (EDBusinessPersistence)initWithDatabase:(id)database hookRegistry:(id)registry businessServiceProvider:(id)provider;
+- (id)_addressesNeedingUpdateStatementOnlyCounts:(BOOL)counts;
+- (id)_bcsEmailIdentiferForAddress:(id)address;
+- (id)_brandIDForBusinessID:(int64_t)d;
+- (id)_businessAddressMapWithCategoryOverrideWithConnection:(id)connection;
+- (id)_businessExternalIDForAddressID:(int64_t)d expectedGrouping:(int64_t)grouping connection:(id)connection error:(id *)error;
+- (id)_businessExternalIDForEmailAddress:(id)address addressID:(int64_t)d brandID:(id)iD grouping:(int64_t)grouping shouldForceUpdate:(BOOL)update businessIDsToCombine:(id *)combine;
+- (id)_businessIDsForHighLevelDomain:(id)domain connection:(id)connection;
+- (id)_categoryOverridesForBusinessIDs:(id)ds connection:(id)connection;
+- (id)_existingExternalIDForAddressID:(int64_t)d error:(id *)error;
+- (id)_externalIDForDomain:(id)domain displayName:(id)name brandID:(id)d simpleAddress:(id)address grouping:(int64_t)grouping;
+- (id)_externalIDForPersistedDomain:(id)domain displayName:(id)name brandID:(id)d grouping:(int64_t)grouping;
+- (id)_externalIDWithCommonPrefixForHighLevelDomain:(id)domain displayName:(id)name businessIDsToCombine:(id *)combine;
+- (id)_findExistingBrandIDForBusinessID:(int64_t)d connection:(id)connection;
+- (id)_groupingTrieForHighLevelDomain:(id)domain;
+- (id)_highLevelDomainsForBusinessIDs:(id)ds;
+- (id)_lastBCSSyncForAddressID:(int64_t)d connection:(id)connection;
+- (id)_localizedStringFromJSONString:(id)string;
+- (id)_persistedBrandNamesForDictionary:(id)dictionary;
+- (id)_persistedDisplayNameForExternalID:(id)d;
+- (id)_persistedDomainForExternalID:(id)d;
+- (id)addressIDsForBusinessID:(int64_t)d connection:(id)connection;
+- (id)addressesForBusinessID:(int64_t)d;
 - (id)businessAddressMapWithCategoryOverride;
-- (id)businessDisplayNameForBusinessID:(int64_t)a3;
-- (id)businessExternalIDForBusinessID:(int64_t)a3;
-- (id)businessExternalIDForEmailAddress:(id)a3 grouping:(int64_t)a4;
-- (id)categoryTypeForAddressID:(int64_t)a3;
-- (id)categoryTypeForBusinessID:(int64_t)a3;
-- (id)lastModifiedDateForAddressID:(int64_t)a3;
-- (id)updatedCategoryForAddressID:(int64_t)a3 fromCategorizationResult:(id)a4;
-- (int64_t)_businessIDForDomain:(id)a3 displayName:(id)a4 connection:(id)a5;
-- (int64_t)_findExistingBusinessForAddressID:(int64_t)a3 connection:(id)a4;
-- (int64_t)_insertBusinessWithBrandID:(int64_t)a3 localizedBrandNames:(id)a4 connection:(id)a5;
-- (int64_t)_insertBusinessWithDomain:(id)a3 displayName:(id)a4 connection:(id)a5;
-- (int64_t)_persistedBrandIDForExternalID:(id)a3;
-- (int64_t)_persistedBrandIDForString:(id)a3;
-- (int64_t)businessIDForAddressID:(int64_t)a3;
-- (int64_t)businessIDForBusinessExternalID:(id)a3;
-- (int64_t)findOrCreateBusinessIDForAddress:(id)a3 addressID:(int64_t)a4 connection:(id)a5 businessMetadataNeedsRefreshing:(BOOL *)a6;
+- (id)businessDisplayNameForBusinessID:(int64_t)d;
+- (id)businessExternalIDForBusinessID:(int64_t)d;
+- (id)businessExternalIDForEmailAddress:(id)address grouping:(int64_t)grouping;
+- (id)categoryTypeForAddressID:(int64_t)d;
+- (id)categoryTypeForBusinessID:(int64_t)d;
+- (id)lastModifiedDateForAddressID:(int64_t)d;
+- (id)updatedCategoryForAddressID:(int64_t)d fromCategorizationResult:(id)result;
+- (int64_t)_businessIDForDomain:(id)domain displayName:(id)name connection:(id)connection;
+- (int64_t)_findExistingBusinessForAddressID:(int64_t)d connection:(id)connection;
+- (int64_t)_insertBusinessWithBrandID:(int64_t)d localizedBrandNames:(id)names connection:(id)connection;
+- (int64_t)_insertBusinessWithDomain:(id)domain displayName:(id)name connection:(id)connection;
+- (int64_t)_persistedBrandIDForExternalID:(id)d;
+- (int64_t)_persistedBrandIDForString:(id)string;
+- (int64_t)businessIDForAddressID:(int64_t)d;
+- (int64_t)businessIDForBusinessExternalID:(id)d;
+- (int64_t)findOrCreateBusinessIDForAddress:(id)address addressID:(int64_t)d connection:(id)connection businessMetadataNeedsRefreshing:(BOOL *)refreshing;
 - (unint64_t)countOfAddressesNeedingUpdate;
-- (void)_reportIncorrectBusinessForAddressID:(int64_t)a3 businessID:(int64_t)a4 isBusinessConnectGrouping:(BOOL)a5 fromClassName:(id)a6;
-- (void)_verifyBusiness:(int64_t)a3 connection:(id)a4;
-- (void)addressIDsWereDeleted:(id)a3 connection:(id)a4;
-- (void)countOfUserOverridesWithCompletionHandler:(id)a3;
-- (void)fetchBusinessMetadataForAddresses:(id)a3 completionHandler:(id)a4;
-- (void)insertOrUpdateUserOverrideForAddressIDs:(id)a3 category:(unint64_t)a4 timestamp:(id)a5 originator:(unint64_t)a6;
-- (void)insertOrUpdateUserOverrideForBusinessIDs:(id)a3 category:(unint64_t)a4 userInitiated:(BOOL)a5 timestamp:(id)a6;
-- (void)iterateAddressesNeedingUpdateWithCancelationToken:(id)a3 handler:(id)a4;
+- (void)_reportIncorrectBusinessForAddressID:(int64_t)d businessID:(int64_t)iD isBusinessConnectGrouping:(BOOL)grouping fromClassName:(id)name;
+- (void)_verifyBusiness:(int64_t)business connection:(id)connection;
+- (void)addressIDsWereDeleted:(id)deleted connection:(id)connection;
+- (void)countOfUserOverridesWithCompletionHandler:(id)handler;
+- (void)fetchBusinessMetadataForAddresses:(id)addresses completionHandler:(id)handler;
+- (void)insertOrUpdateUserOverrideForAddressIDs:(id)ds category:(unint64_t)category timestamp:(id)timestamp originator:(unint64_t)originator;
+- (void)insertOrUpdateUserOverrideForBusinessIDs:(id)ds category:(unint64_t)category userInitiated:(BOOL)initiated timestamp:(id)timestamp;
+- (void)iterateAddressesNeedingUpdateWithCancelationToken:(id)token handler:(id)handler;
 - (void)persistenceDidReconcileProtectedData;
-- (void)persistenceWillAddProtectedDatabaseIDsFromJournal:(id)a3 andReplaceJournalDatabaseIDsWithProtectedDatabaseIDs:(id)a4 forTable:(id)a5;
+- (void)persistenceWillAddProtectedDatabaseIDsFromJournal:(id)journal andReplaceJournalDatabaseIDsWithProtectedDatabaseIDs:(id)ds forTable:(id)table;
 - (void)removeAllUserOverrides;
-- (void)removeUserOverrideForAddressIDs:(id)a3 timestamp:(id)a4 originator:(unint64_t)a5 userInitiated:(BOOL)a6;
-- (void)removeUserOverridesForBusinessIDs:(id)a3 timestamp:(id)a4 originator:(unint64_t)a5 userInitiated:(BOOL)a6;
-- (void)reportIncorrectBusinessForAddress:(id)a3 isBusinessConnectGrouping:(BOOL)a4 fromClassName:(id)a5;
+- (void)removeUserOverrideForAddressIDs:(id)ds timestamp:(id)timestamp originator:(unint64_t)originator userInitiated:(BOOL)initiated;
+- (void)removeUserOverridesForBusinessIDs:(id)ds timestamp:(id)timestamp originator:(unint64_t)originator userInitiated:(BOOL)initiated;
+- (void)reportIncorrectBusinessForAddress:(id)address isBusinessConnectGrouping:(BOOL)grouping fromClassName:(id)name;
 - (void)test_tearDown;
 @end
 
@@ -93,7 +93,7 @@
   block[1] = 3221225472;
   block[2] = __28__EDBusinessPersistence_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_17 != -1)
   {
     dispatch_once(&log_onceToken_17, block);
@@ -112,27 +112,27 @@ void __28__EDBusinessPersistence_log__block_invoke(uint64_t a1)
   log_log_17 = v1;
 }
 
-- (EDBusinessPersistence)initWithDatabase:(id)a3 hookRegistry:(id)a4 businessServiceProvider:(id)a5
+- (EDBusinessPersistence)initWithDatabase:(id)database hookRegistry:(id)registry businessServiceProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  databaseCopy = database;
+  registryCopy = registry;
+  providerCopy = provider;
   v27.receiver = self;
   v27.super_class = EDBusinessPersistence;
   v12 = [(EDBusinessPersistence *)&v27 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_database, a3);
-    v14 = [(EDPersistenceDatabase *)v13->_database protectedDatabasePersistence];
+    objc_storeStrong(&v12->_database, database);
+    protectedDatabasePersistence = [(EDPersistenceDatabase *)v13->_database protectedDatabasePersistence];
     v15 = +[EDProtectedDatabasePersistence deleteMergeHandler];
-    [v14 registerMergeHandler:v15 forTable:@"business_addresses"];
+    [protectedDatabasePersistence registerMergeHandler:v15 forTable:@"business_addresses"];
 
-    v16 = [(EDPersistenceDatabase *)v13->_database protectedDatabasePersistence];
+    protectedDatabasePersistence2 = [(EDPersistenceDatabase *)v13->_database protectedDatabasePersistence];
     v17 = +[EDProtectedDatabasePersistence replaceMergeHandler];
-    [v16 registerMergeHandler:v17 forTable:@"business_categories"];
+    [protectedDatabasePersistence2 registerMergeHandler:v17 forTable:@"business_categories"];
 
-    objc_storeStrong(&v13->_hookRegistry, a4);
+    objc_storeStrong(&v13->_hookRegistry, registry);
     atomic_store(0, &v13->_didTearDown);
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v19 = dispatch_queue_attr_make_with_qos_class(v18, QOS_CLASS_UTILITY, 0);
@@ -146,19 +146,19 @@ void __28__EDBusinessPersistence_log__block_invoke(uint64_t a1)
     businessConnectResponseQueue = v13->_businessConnectResponseQueue;
     v13->_businessConnectResponseQueue = v24;
 
-    [v10 registerProtectedDataReconciliationHookResponder:v13];
-    objc_storeStrong(&v13->_businessServiceProvider, a5);
+    [registryCopy registerProtectedDataReconciliationHookResponder:v13];
+    objc_storeStrong(&v13->_businessServiceProvider, provider);
   }
 
   return v13;
 }
 
-- (EDBusinessPersistence)initWithDatabase:(id)a3 hookRegistry:(id)a4
+- (EDBusinessPersistence)initWithDatabase:(id)database hookRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  registryCopy = registry;
   v8 = +[EDBusinessConnectMetadataProvider sharedInstance];
-  v9 = [(EDBusinessPersistence *)self initWithDatabase:v6 hookRegistry:v7 businessServiceProvider:v8];
+  v9 = [(EDBusinessPersistence *)self initWithDatabase:databaseCopy hookRegistry:registryCopy businessServiceProvider:v8];
 
   return v9;
 }
@@ -167,8 +167,8 @@ void __28__EDBusinessPersistence_log__block_invoke(uint64_t a1)
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"EDBusinessPersistence.m" lineNumber:102 description:{@"%s can only be called from unit tests", "-[EDBusinessPersistence test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDBusinessPersistence.m" lineNumber:102 description:{@"%s can only be called from unit tests", "-[EDBusinessPersistence test_tearDown]"}];
   }
 
   if ((atomic_exchange(&self->_didTearDown, 1u) & 1) == 0)
@@ -224,34 +224,34 @@ void __28__EDBusinessPersistence_log__block_invoke(uint64_t a1)
   [v33 addUniquenessConstraintForColumns:v5 conflictResolution:1];
 
   v6 = objc_alloc(MEMORY[0x1E699B898]);
-  v7 = [v37 columnExpression];
-  v8 = [v7 isNotNull];
-  v40[0] = v8;
-  v9 = [v36 columnExpression];
-  v10 = [v9 isNotNull];
-  v40[1] = v10;
-  v11 = [v35 columnExpression];
-  v12 = [v11 isNull];
-  v40[2] = v12;
-  v13 = [v34 columnExpression];
-  v14 = [v13 isNull];
-  v40[3] = v14;
+  columnExpression = [v37 columnExpression];
+  isNotNull = [columnExpression isNotNull];
+  v40[0] = isNotNull;
+  columnExpression2 = [v36 columnExpression];
+  isNotNull2 = [columnExpression2 isNotNull];
+  v40[1] = isNotNull2;
+  columnExpression3 = [v35 columnExpression];
+  isNull = [columnExpression3 isNull];
+  v40[2] = isNull;
+  columnExpression4 = [v34 columnExpression];
+  isNull2 = [columnExpression4 isNull];
+  v40[3] = isNull2;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:4];
   v32 = [v6 initWithExpressions:v15];
 
   v16 = objc_alloc(MEMORY[0x1E699B898]);
-  v17 = [v37 columnExpression];
-  v18 = [v17 isNull];
-  v39[0] = v18;
-  v19 = [v36 columnExpression];
-  v20 = [v19 isNull];
-  v39[1] = v20;
-  v21 = [v35 columnExpression];
-  v22 = [v21 isNotNull];
-  v39[2] = v22;
-  v23 = [v34 columnExpression];
-  v24 = [v23 isNotNull];
-  v39[3] = v24;
+  columnExpression5 = [v37 columnExpression];
+  isNull3 = [columnExpression5 isNull];
+  v39[0] = isNull3;
+  columnExpression6 = [v36 columnExpression];
+  isNull4 = [columnExpression6 isNull];
+  v39[1] = isNull4;
+  columnExpression7 = [v35 columnExpression];
+  isNotNull3 = [columnExpression7 isNotNull];
+  v39[2] = isNotNull3;
+  columnExpression8 = [v34 columnExpression];
+  isNotNull4 = [columnExpression8 isNotNull];
+  v39[3] = isNotNull4;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:4];
   v26 = [v16 initWithExpressions:v25];
 
@@ -293,7 +293,7 @@ void __28__EDBusinessPersistence_log__block_invoke(uint64_t a1)
   return v9;
 }
 
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve
 {
   v22[3] = *MEMORY[0x1E69E9840];
   v6 = +[EDBusinessPersistence businessAddressesTableSchema];
@@ -311,11 +311,11 @@ void __28__EDBusinessPersistence_log__block_invoke(uint64_t a1)
   v16 = [v7 columnForName:@"business"];
   v17 = [(EDPersistenceAssociationPlaceholder *)v15 initWithColumn:v16 tableName:@"businesses"];
 
-  *a3 = MEMORY[0x1E695E0F0];
+  *resolve = MEMORY[0x1E695E0F0];
   v22[0] = v11;
   v22[1] = v14;
   v22[2] = v17;
-  *a4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:3];
+  *toResolve = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:3];
   v21[0] = v6;
   v21[1] = v7;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
@@ -325,12 +325,12 @@ void __28__EDBusinessPersistence_log__block_invoke(uint64_t a1)
   return v18;
 }
 
-+ (id)protectedTablesAndForeignKeysToResolve:(id *)a3
++ (id)protectedTablesAndForeignKeysToResolve:(id *)resolve
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (resolve)
   {
-    *a3 = MEMORY[0x1E695E0F0];
+    *resolve = MEMORY[0x1E695E0F0];
   }
 
   v3 = +[EDBusinessPersistence businessesTableSchema];
@@ -342,7 +342,7 @@ void __28__EDBusinessPersistence_log__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)lastModifiedDateForAddressID:(int64_t)a3
+- (id)lastModifiedDateForAddressID:(int64_t)d
 {
   v9 = 0;
   v10 = &v9;
@@ -350,15 +350,15 @@ void __28__EDBusinessPersistence_log__block_invoke(uint64_t a1)
   v12 = __Block_byref_object_copy__3;
   v13 = __Block_byref_object_dispose__3;
   v14 = 0;
-  v4 = [(EDBusinessPersistence *)self database];
+  database = [(EDBusinessPersistence *)self database];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence lastModifiedDateForAddressID:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__EDBusinessPersistence_lastModifiedDateForAddressID___block_invoke;
   v8[3] = &unk_1E8250150;
   v8[4] = &v9;
-  v8[5] = a3;
-  [v4 __performReadWithCaller:v5 usingBlock:v8];
+  v8[5] = d;
+  [database __performReadWithCaller:v5 usingBlock:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -410,17 +410,17 @@ void __54__EDBusinessPersistence_lastModifiedDateForAddressID___block_invoke_2(u
   *(v5 + 40) = v4;
 }
 
-- (void)insertOrUpdateUserOverrideForAddressIDs:(id)a3 category:(unint64_t)a4 timestamp:(id)a5 originator:(unint64_t)a6
+- (void)insertOrUpdateUserOverrideForAddressIDs:(id)ds category:(unint64_t)category timestamp:(id)timestamp originator:(unint64_t)originator
 {
-  v10 = a3;
-  v11 = a5;
-  if ([v10 count])
+  dsCopy = ds;
+  timestampCopy = timestamp;
+  if ([dsCopy count])
   {
-    v12 = [(EDBusinessPersistence *)self hookRegistry];
-    [v12 persistenceWillChangeCategoryForAddressIDs:v10];
+    hookRegistry = [(EDBusinessPersistence *)self hookRegistry];
+    [hookRegistry persistenceWillChangeCategoryForAddressIDs:dsCopy];
 
     v13 = objc_alloc_init(EDPersistenceDatabaseGenerationWindow);
-    v14 = [(EDBusinessPersistence *)self database];
+    database = [(EDBusinessPersistence *)self database];
     v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence insertOrUpdateUserOverrideForAddressIDs:category:timestamp:originator:]"];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -428,12 +428,12 @@ void __54__EDBusinessPersistence_lastModifiedDateForAddressID___block_invoke_2(u
     v17[3] = &unk_1E8250EA0;
     v16 = v13;
     v18 = v16;
-    v19 = self;
-    v20 = v10;
-    v22 = a4;
-    v21 = v11;
-    v23 = a6;
-    [v14 __performWriteWithCaller:v15 usingBlock:v17];
+    selfCopy = self;
+    v20 = dsCopy;
+    categoryCopy = category;
+    v21 = timestampCopy;
+    originatorCopy = originator;
+    [database __performWriteWithCaller:v15 usingBlock:v17];
   }
 }
 
@@ -516,13 +516,13 @@ void __95__EDBusinessPersistence_insertOrUpdateUserOverrideForAddressIDs_categor
   }
 }
 
-- (int64_t)businessIDForAddressID:(int64_t)a3
+- (int64_t)businessIDForAddressID:(int64_t)d
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = *MEMORY[0x1E699A728];
-  v5 = [(EDBusinessPersistence *)self database];
+  database = [(EDBusinessPersistence *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence businessIDForAddressID:]"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -530,8 +530,8 @@ void __95__EDBusinessPersistence_insertOrUpdateUserOverrideForAddressIDs_categor
   v9[3] = &unk_1E8250EC8;
   v9[4] = self;
   v9[5] = &v10;
-  v9[6] = a3;
-  [v5 __performWriteWithCaller:v6 usingBlock:v9];
+  v9[6] = d;
+  [database __performWriteWithCaller:v6 usingBlock:v9];
 
   v7 = v11[3];
   _Block_object_dispose(&v10, 8);
@@ -546,17 +546,17 @@ uint64_t __48__EDBusinessPersistence_businessIDForAddressID___block_invoke(uint6
   return 1;
 }
 
-- (int64_t)findOrCreateBusinessIDForAddress:(id)a3 addressID:(int64_t)a4 connection:(id)a5 businessMetadataNeedsRefreshing:(BOOL *)a6
+- (int64_t)findOrCreateBusinessIDForAddress:(id)address addressID:(int64_t)d connection:(id)connection businessMetadataNeedsRefreshing:(BOOL *)refreshing
 {
   v58 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v51 = v10;
-  v12 = [(EDBusinessPersistence *)self _findExistingBusinessForAddressID:a4 connection:v11];
-  v50 = a6;
+  addressCopy = address;
+  connectionCopy = connection;
+  v51 = addressCopy;
+  v12 = [(EDBusinessPersistence *)self _findExistingBusinessForAddressID:d connection:connectionCopy];
+  refreshingCopy = refreshing;
   if (v12 == *MEMORY[0x1E699A728])
   {
-    v13 = [(EDBusinessPersistence *)self _bcsEmailIdentiferForAddress:v10];
+    v13 = [(EDBusinessPersistence *)self _bcsEmailIdentiferForAddress:addressCopy];
     v14 = v13 != 0;
     if (v13 && (-[EDBusinessPersistence businessServiceProvider](self, "businessServiceProvider"), v15 = objc_claimAutoreleasedReturnValue(), [v15 cachedBusinessMetadataForEmail:v13 error:0], v16 = objc_claimAutoreleasedReturnValue(), v15, v16))
     {
@@ -564,31 +564,31 @@ uint64_t __48__EDBusinessPersistence_businessIDForAddressID___block_invoke(uint6
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v18 = MEMORY[0x1E699B858];
-        v49 = [v16 businessId];
-        v48 = [v18 fullyOrPartiallyRedactedStringForString:v49];
+        businessId = [v16 businessId];
+        v48 = [v18 fullyOrPartiallyRedactedStringForString:businessId];
         v19 = v51;
-        v20 = [v19 emailAddressValue];
-        v21 = v20;
-        if (v20)
+        emailAddressValue = [v19 emailAddressValue];
+        v21 = emailAddressValue;
+        if (emailAddressValue)
         {
-          v22 = [v20 ef_publicDescription];
+          ef_publicDescription = [emailAddressValue ef_publicDescription];
         }
 
         else
         {
           v41 = MEMORY[0x1E699B858];
-          v42 = [v19 stringValue];
+          stringValue = [v19 stringValue];
           v43 = v41;
-          v44 = v42;
-          v22 = [v43 fullyOrPartiallyRedactedStringForString:v42];
+          v44 = stringValue;
+          ef_publicDescription = [v43 fullyOrPartiallyRedactedStringForString:stringValue];
         }
 
         *buf = 134218498;
-        v53 = a4;
+        dCopy2 = d;
         v54 = 2114;
-        v55 = v48;
+        dCopy5 = v48;
         v56 = 2114;
-        v57 = v22;
+        v57 = ef_publicDescription;
         _os_log_impl(&dword_1C61EF000, v17, OS_LOG_TYPE_DEFAULT, "Finding or creating businessID for address %lld (brandID %{public}@): %{public}@", buf, 0x20u);
       }
 
@@ -601,70 +601,70 @@ uint64_t __48__EDBusinessPersistence_businessIDForAddressID___block_invoke(uint6
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v27 = v51;
-        v28 = [v27 emailAddressValue];
-        v29 = v28;
-        if (v28)
+        emailAddressValue2 = [v27 emailAddressValue];
+        v29 = emailAddressValue2;
+        if (emailAddressValue2)
         {
-          v30 = [v28 ef_publicDescription];
+          ef_publicDescription2 = [emailAddressValue2 ef_publicDescription];
         }
 
         else
         {
           v35 = MEMORY[0x1E699B858];
-          v36 = [v27 stringValue];
-          v30 = [v35 fullyOrPartiallyRedactedStringForString:v36];
+          stringValue2 = [v27 stringValue];
+          ef_publicDescription2 = [v35 fullyOrPartiallyRedactedStringForString:stringValue2];
         }
 
         *buf = 134218242;
-        v53 = a4;
+        dCopy2 = d;
         v54 = 2114;
-        v55 = v30;
+        dCopy5 = ef_publicDescription2;
         _os_log_impl(&dword_1C61EF000, v17, OS_LOG_TYPE_DEFAULT, "Finding or creating businessID for address %lld: %{public}@", buf, 0x16u);
       }
 
       v16 = 0;
     }
 
-    v12 = [(EDBusinessPersistence *)self _findOrCreateBusinessIDForAddress:v51 addressID:a4 businessMetadata:v16 shouldForceUpdate:0 connection:v11];
+    v12 = [(EDBusinessPersistence *)self _findOrCreateBusinessIDForAddress:v51 addressID:d businessMetadata:v16 shouldForceUpdate:0 connection:connectionCopy];
     v45 = +[EDBusinessPersistence log];
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v53 = v12;
+      dCopy2 = v12;
       v54 = 2048;
-      v55 = a4;
+      dCopy5 = d;
       _os_log_impl(&dword_1C61EF000, v45, OS_LOG_TYPE_DEFAULT, "Verifying grouping for businessID %lld after mapping addressID %lld to it", buf, 0x16u);
     }
 
-    [(EDBusinessPersistence *)self _verifyBusiness:v12 connection:v11];
+    [(EDBusinessPersistence *)self _verifyBusiness:v12 connection:connectionCopy];
   }
 
-  else if ([(EDBusinessPersistence *)self _hasCompletedRecentBCSSyncForAddressID:a4 connection:v11])
+  else if ([(EDBusinessPersistence *)self _hasCompletedRecentBCSSyncForAddressID:d connection:connectionCopy])
   {
     v16 = +[EDBusinessPersistence log];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = v10;
-      v24 = [v23 emailAddressValue];
-      v25 = v24;
-      if (v24)
+      v23 = addressCopy;
+      emailAddressValue3 = [v23 emailAddressValue];
+      v25 = emailAddressValue3;
+      if (emailAddressValue3)
       {
-        v26 = [v24 ef_publicDescription];
+        ef_publicDescription3 = [emailAddressValue3 ef_publicDescription];
       }
 
       else
       {
         v37 = MEMORY[0x1E699B858];
-        v38 = [v23 stringValue];
-        v26 = [v37 fullyOrPartiallyRedactedStringForString:v38];
+        stringValue3 = [v23 stringValue];
+        ef_publicDescription3 = [v37 fullyOrPartiallyRedactedStringForString:stringValue3];
       }
 
       *buf = 134218498;
-      v53 = v12;
+      dCopy2 = v12;
       v54 = 2048;
-      v55 = a4;
+      dCopy5 = d;
       v56 = 2114;
-      v57 = v26;
+      v57 = ef_publicDescription3;
       _os_log_impl(&dword_1C61EF000, v16, OS_LOG_TYPE_DEFAULT, "Found existing businessID %lld for address %lld: %{public}@", buf, 0x20u);
     }
 
@@ -676,36 +676,36 @@ uint64_t __48__EDBusinessPersistence_businessIDForAddressID___block_invoke(uint6
     v16 = +[EDBusinessPersistence log];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = v10;
-      v32 = [v31 emailAddressValue];
-      v33 = v32;
-      if (v32)
+      v31 = addressCopy;
+      emailAddressValue4 = [v31 emailAddressValue];
+      v33 = emailAddressValue4;
+      if (emailAddressValue4)
       {
-        v34 = [v32 ef_publicDescription];
+        ef_publicDescription4 = [emailAddressValue4 ef_publicDescription];
       }
 
       else
       {
         v39 = MEMORY[0x1E699B858];
-        v40 = [v31 stringValue];
-        v34 = [v39 fullyOrPartiallyRedactedStringForString:v40];
+        stringValue4 = [v31 stringValue];
+        ef_publicDescription4 = [v39 fullyOrPartiallyRedactedStringForString:stringValue4];
       }
 
       *buf = 134218498;
-      v53 = v12;
+      dCopy2 = v12;
       v54 = 2048;
-      v55 = a4;
+      dCopy5 = d;
       v56 = 2114;
-      v57 = v34;
+      v57 = ef_publicDescription4;
       _os_log_impl(&dword_1C61EF000, v16, OS_LOG_TYPE_DEFAULT, "Checking for BCS update for existing businessID %lld for address %lld: %{public}@", buf, 0x20u);
     }
 
     v14 = 1;
   }
 
-  if (v50)
+  if (refreshingCopy)
   {
-    *v50 = v14;
+    *refreshingCopy = v14;
   }
 
   v46 = *MEMORY[0x1E69E9840];
@@ -719,16 +719,16 @@ id __115__EDBusinessPersistence__findOrCreateBusinessIDForAddress_addressID_busi
   return v2;
 }
 
-- (int64_t)_findExistingBusinessForAddressID:(int64_t)a3 connection:(id)a4
+- (int64_t)_findExistingBusinessForAddressID:(int64_t)d connection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = *MEMORY[0x1E699A728];
   v6 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"business" table:@"business_addresses"];
   v7 = [MEMORY[0x1E699B8C8] column:@"address"];
-  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v9 = [v7 equalTo:v8];
   [v6 setWhere:v9];
 
@@ -737,7 +737,7 @@ id __115__EDBusinessPersistence__findOrCreateBusinessIDForAddress_addressID_busi
   v12[2] = __70__EDBusinessPersistence__findExistingBusinessForAddressID_connection___block_invoke;
   v12[3] = &unk_1E8250418;
   v12[4] = &v13;
-  [v5 executeSelectStatement:v6 withBlock:v12 error:0];
+  [connectionCopy executeSelectStatement:v6 withBlock:v12 error:0];
   v10 = v14[3];
 
   _Block_object_dispose(&v13, 8);
@@ -751,7 +751,7 @@ void __70__EDBusinessPersistence__findExistingBusinessForAddressID_connection___
   *(*(*(a1 + 32) + 8) + 24) = [v3 databaseIDValue];
 }
 
-- (id)_brandIDForBusinessID:(int64_t)a3
+- (id)_brandIDForBusinessID:(int64_t)d
 {
   v10 = 0;
   v11 = &v10;
@@ -759,7 +759,7 @@ void __70__EDBusinessPersistence__findExistingBusinessForAddressID_connection___
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v5 = [(EDBusinessPersistence *)self database];
+  database = [(EDBusinessPersistence *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence _brandIDForBusinessID:]"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -767,8 +767,8 @@ void __70__EDBusinessPersistence__findExistingBusinessForAddressID_connection___
   v9[3] = &unk_1E8250EC8;
   v9[4] = self;
   v9[5] = &v10;
-  v9[6] = a3;
-  [v5 __performReadWithCaller:v6 usingBlock:v9];
+  v9[6] = d;
+  [database __performReadWithCaller:v6 usingBlock:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -787,9 +787,9 @@ uint64_t __47__EDBusinessPersistence__brandIDForBusinessID___block_invoke(uint64
   return 1;
 }
 
-- (id)_findExistingBrandIDForBusinessID:(int64_t)a3 connection:(id)a4
+- (id)_findExistingBrandIDForBusinessID:(int64_t)d connection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -798,7 +798,7 @@ uint64_t __47__EDBusinessPersistence__brandIDForBusinessID___block_invoke(uint64
   v18 = 0;
   v6 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"brand_id" table:@"businesses"];
   v7 = [MEMORY[0x1E699B8C8] column:*MEMORY[0x1E699B768]];
-  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v9 = [v7 equalTo:v8];
   [v6 setWhere:v9];
 
@@ -807,7 +807,7 @@ uint64_t __47__EDBusinessPersistence__brandIDForBusinessID___block_invoke(uint64
   v12[2] = __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___block_invoke;
   v12[3] = &unk_1E8250418;
   v12[4] = &v13;
-  [v5 executeSelectStatement:v6 withBlock:v12 error:0];
+  [connectionCopy executeSelectStatement:v6 withBlock:v12 error:0];
   v10 = v14[5];
 
   _Block_object_dispose(&v13, 8);
@@ -824,30 +824,30 @@ void __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___
   *(v4 + 40) = v3;
 }
 
-- (int64_t)_insertBusinessWithBrandID:(int64_t)a3 localizedBrandNames:(id)a4 connection:(id)a5
+- (int64_t)_insertBusinessWithBrandID:(int64_t)d localizedBrandNames:(id)names connection:(id)connection
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  namesCopy = names;
+  connectionCopy = connection;
   v9 = [objc_alloc(MEMORY[0x1E699B910]) initWithTable:@"businesses"];
-  v10 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v10 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   [v9 setObject:v10 forKeyedSubscript:@"brand_id"];
-  [v9 setObject:v7 forKeyedSubscript:@"localized_brand_name"];
+  [v9 setObject:namesCopy forKeyedSubscript:@"localized_brand_name"];
   v26 = 0;
-  v11 = [v8 executeInsertStatement:v9 error:&v26];
+  v11 = [connectionCopy executeInsertStatement:v9 error:&v26];
   v12 = v26;
   if (v11)
   {
-    v13 = [v8 lastInsertedDatabaseID];
+    lastInsertedDatabaseID = [connectionCopy lastInsertedDatabaseID];
     v14 = +[EDBusinessPersistence log];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = MEMORY[0x1E699B858];
-      v16 = [v10 stringValue];
-      v17 = [v15 fullyOrPartiallyRedactedStringForString:v16];
-      v18 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:v7];
+      stringValue = [v10 stringValue];
+      v17 = [v15 fullyOrPartiallyRedactedStringForString:stringValue];
+      v18 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:namesCopy];
       *buf = 134218498;
-      v28 = v13;
+      v28 = lastInsertedDatabaseID;
       v29 = 2114;
       v30 = v17;
       v31 = 2114;
@@ -859,50 +859,50 @@ void __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___
   else
   {
     v14 = +[EDBusinessPersistence log];
-    v13 = *MEMORY[0x1E699A728];
+    lastInsertedDatabaseID = *MEMORY[0x1E699A728];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v21 = MEMORY[0x1E699B858];
-      v25 = [v10 stringValue];
+      stringValue2 = [v10 stringValue];
       v22 = [v21 fullyOrPartiallyRedactedStringForString:?];
-      v23 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:v7];
-      v24 = [v12 ef_publicDescription];
+      v23 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:namesCopy];
+      ef_publicDescription = [v12 ef_publicDescription];
       *buf = 138543874;
       v28 = v22;
       v29 = 2114;
       v30 = v23;
       v31 = 2114;
-      v32 = v24;
+      v32 = ef_publicDescription;
       _os_log_error_impl(&dword_1C61EF000, v14, OS_LOG_TYPE_ERROR, "Failed to insert business with brandID %{public}@ (as int64) and brand names %{public}@, due to error %{public}@", buf, 0x20u);
     }
   }
 
   v19 = *MEMORY[0x1E69E9840];
-  return v13;
+  return lastInsertedDatabaseID;
 }
 
-- (int64_t)_insertBusinessWithDomain:(id)a3 displayName:(id)a4 connection:(id)a5
+- (int64_t)_insertBusinessWithDomain:(id)domain displayName:(id)name connection:(id)connection
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  domainCopy = domain;
+  nameCopy = name;
+  connectionCopy = connection;
   v10 = [objc_alloc(MEMORY[0x1E699B910]) initWithTable:@"businesses"];
-  [v10 setObject:v7 forKeyedSubscript:@"domain"];
-  [v10 setObject:v8 forKeyedSubscript:@"address_comment"];
+  [v10 setObject:domainCopy forKeyedSubscript:@"domain"];
+  [v10 setObject:nameCopy forKeyedSubscript:@"address_comment"];
   v19 = 0;
-  v11 = [v9 executeInsertStatement:v10 error:&v19];
+  v11 = [connectionCopy executeInsertStatement:v10 error:&v19];
   v12 = v19;
   if (v11)
   {
-    v13 = [v9 lastInsertedDatabaseID];
+    lastInsertedDatabaseID = [connectionCopy lastInsertedDatabaseID];
     v14 = +[EDBusinessPersistence log];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:v7 maximumUnredactedLength:1];
-      v16 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:v8];
+      v15 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:domainCopy maximumUnredactedLength:1];
+      v16 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:nameCopy];
       *buf = 134218498;
-      v21 = v13;
+      v21 = lastInsertedDatabaseID;
       v22 = 2114;
       v23 = v15;
       v24 = 2114;
@@ -914,35 +914,35 @@ void __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___
   else
   {
     v14 = +[EDBusinessPersistence log];
-    v13 = *MEMORY[0x1E699A728];
+    lastInsertedDatabaseID = *MEMORY[0x1E699A728];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:v7 maximumUnredactedLength:1];
+      [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:domainCopy maximumUnredactedLength:1];
       objc_claimAutoreleasedReturnValue();
-      [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:v8];
+      [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:nameCopy];
       objc_claimAutoreleasedReturnValue();
       [EDBusinessPersistence _insertBusinessWithDomain:displayName:connection:];
     }
   }
 
   v17 = *MEMORY[0x1E69E9840];
-  return v13;
+  return lastInsertedDatabaseID;
 }
 
-- (BOOL)_updateDisplayNameForBusinessID:(int64_t)a3 displayName:(id)a4 connection:(id)a5
+- (BOOL)_updateDisplayNameForBusinessID:(int64_t)d displayName:(id)name connection:(id)connection
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  nameCopy = name;
+  connectionCopy = connection;
   v9 = [objc_alloc(MEMORY[0x1E699B960]) initWithTable:@"businesses"];
-  [v9 setObject:v7 forKeyedSubscript:@"address_comment"];
+  [v9 setObject:nameCopy forKeyedSubscript:@"address_comment"];
   v10 = [MEMORY[0x1E699B8C8] column:*MEMORY[0x1E699B768]];
-  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v12 = [v10 equalTo:v11];
   [v9 setWhereClause:v12];
 
   v18 = 0;
-  v13 = [v8 executeUpdateStatement:v9 error:&v18];
+  v13 = [connectionCopy executeUpdateStatement:v9 error:&v18];
   v14 = v18;
   if (v13)
   {
@@ -950,7 +950,7 @@ void __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v20 = a3;
+      dCopy = d;
       _os_log_impl(&dword_1C61EF000, v15, OS_LOG_TYPE_DEFAULT, "Successfully updated display name for business with ID %lld", buf, 0xCu);
     }
   }
@@ -968,20 +968,20 @@ void __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___
   return v13;
 }
 
-- (BOOL)_updateBrandNamesForBusinessID:(int64_t)a3 brandNames:(id)a4 connection:(id)a5
+- (BOOL)_updateBrandNamesForBusinessID:(int64_t)d brandNames:(id)names connection:(id)connection
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  namesCopy = names;
+  connectionCopy = connection;
   v9 = [objc_alloc(MEMORY[0x1E699B960]) initWithTable:@"businesses"];
-  [v9 setObject:v7 forKeyedSubscript:@"localized_brand_name"];
+  [v9 setObject:namesCopy forKeyedSubscript:@"localized_brand_name"];
   v10 = [MEMORY[0x1E699B8C8] column:*MEMORY[0x1E699B768]];
-  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v12 = [v10 equalTo:v11];
   [v9 setWhereClause:v12];
 
   v18 = 0;
-  v13 = [v8 executeUpdateStatement:v9 error:&v18];
+  v13 = [connectionCopy executeUpdateStatement:v9 error:&v18];
   v14 = v18;
   if (v13)
   {
@@ -989,7 +989,7 @@ void __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v20 = a3;
+      dCopy = d;
       _os_log_impl(&dword_1C61EF000, v15, OS_LOG_TYPE_DEFAULT, "Successfully updated brand names for business with ID %lld", buf, 0xCu);
     }
   }
@@ -1007,23 +1007,23 @@ void __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___
   return v13;
 }
 
-- (BOOL)_updateBusinessAddressesTableforBusinessID:(id)a3 newBusinessID:(id)a4 connection:(id)a5
+- (BOOL)_updateBusinessAddressesTableforBusinessID:(id)d newBusinessID:(id)iD connection:(id)connection
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  connectionCopy = connection;
   v10 = [objc_alloc(MEMORY[0x1E699B960]) initWithTable:@"business_addresses"];
-  [v10 setObject:v8 forKeyedSubscript:@"business"];
+  [v10 setObject:iDCopy forKeyedSubscript:@"business"];
   v11 = [MEMORY[0x1E699B8C8] column:@"business"];
-  v12 = [v11 equalTo:v7];
+  v12 = [v11 equalTo:dCopy];
   [v10 setWhereClause:v12];
 
   v20 = 0;
-  [v9 executeUpdateStatement:v10 error:&v20];
+  [connectionCopy executeUpdateStatement:v10 error:&v20];
   v13 = v20;
   v19 = v13;
-  v14 = [v9 executeUpdateStatement:v10 error:&v19];
+  v14 = [connectionCopy executeUpdateStatement:v10 error:&v19];
   v15 = v19;
 
   if (v14)
@@ -1032,9 +1032,9 @@ void __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v22 = v7;
+      v22 = dCopy;
       v23 = 2112;
-      v24 = v8;
+      v24 = iDCopy;
       _os_log_impl(&dword_1C61EF000, v16, OS_LOG_TYPE_DEFAULT, "Successfully updated business ID in business_addresses from %@ to %@", buf, 0x16u);
     }
   }
@@ -1052,27 +1052,27 @@ void __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___
   return v14;
 }
 
-- (BOOL)_completedBCSSyncforAddressID:(id)a3 connection:(id)a4
+- (BOOL)_completedBCSSyncforAddressID:(id)d connection:(id)connection
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  connectionCopy = connection;
   v7 = [objc_alloc(MEMORY[0x1E699B960]) initWithTable:@"business_addresses"];
-  v8 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v9 = MEMORY[0x1E696AD98];
-  [v8 timeIntervalSince1970];
+  [date timeIntervalSince1970];
   v10 = [v9 numberWithDouble:?];
   [v7 setObject:v10 forKeyedSubscript:@"last_bcs_sync"];
 
   v11 = [MEMORY[0x1E699B8C8] column:@"address"];
-  v12 = [v11 equalTo:v5];
+  v12 = [v11 equalTo:dCopy];
   [v7 setWhereClause:v12];
 
   v21 = 0;
-  [v6 executeUpdateStatement:v7 error:&v21];
+  [connectionCopy executeUpdateStatement:v7 error:&v21];
   v13 = v21;
   v20 = v13;
-  v14 = [v6 executeUpdateStatement:v7 error:&v20];
+  v14 = [connectionCopy executeUpdateStatement:v7 error:&v20];
   v15 = v20;
 
   if (v14)
@@ -1081,9 +1081,9 @@ void __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v23 = v5;
+      v23 = dCopy;
       v24 = 2112;
-      v25 = v8;
+      v25 = date;
       _os_log_impl(&dword_1C61EF000, v16, OS_LOG_TYPE_DEFAULT, "Successfully updated last BCS sync date for address ID %@ in business_addresses to %@", buf, 0x16u);
     }
   }
@@ -1093,13 +1093,13 @@ void __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___
     v16 = +[EDBusinessPersistence log];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v15 ef_publicDescription];
+      ef_publicDescription = [v15 ef_publicDescription];
       *buf = 138412802;
-      v23 = v5;
+      v23 = dCopy;
       v24 = 2112;
-      v25 = v8;
+      v25 = date;
       v26 = 2114;
-      v27 = v19;
+      v27 = ef_publicDescription;
       _os_log_error_impl(&dword_1C61EF000, v16, OS_LOG_TYPE_ERROR, "Failed to update last BCS sync date for address ID %@ in business_addresses to %@, due to error %{public}@", buf, 0x20u);
     }
   }
@@ -1108,18 +1108,18 @@ void __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___
   return v14;
 }
 
-- (BOOL)_deleteBusinessEntryForBusinessID:(id)a3 connection:(id)a4
+- (BOOL)_deleteBusinessEntryForBusinessID:(id)d connection:(id)connection
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  connectionCopy = connection;
   v7 = objc_alloc(MEMORY[0x1E699B8E8]);
   v8 = [MEMORY[0x1E699B8C8] column:*MEMORY[0x1E699B768]];
-  v9 = [v8 equalTo:v5];
+  v9 = [v8 equalTo:dCopy];
   v10 = [v7 initWithTable:@"businesses" where:v9];
 
   v16 = 0;
-  v11 = [v6 executeDeleteStatement:v10 error:&v16];
+  v11 = [connectionCopy executeDeleteStatement:v10 error:&v16];
   v12 = v16;
   if (v11)
   {
@@ -1127,7 +1127,7 @@ void __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v5;
+      v18 = dCopy;
       _os_log_impl(&dword_1C61EF000, v13, OS_LOG_TYPE_DEFAULT, "Successfully deleted old business ID: %@", buf, 0xCu);
     }
   }
@@ -1145,18 +1145,18 @@ void __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___
   return v11;
 }
 
-- (BOOL)_deleteBusinessAddressEntryForAddressID:(id)a3 connection:(id)a4
+- (BOOL)_deleteBusinessAddressEntryForAddressID:(id)d connection:(id)connection
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  connectionCopy = connection;
   v7 = objc_alloc(MEMORY[0x1E699B8E8]);
   v8 = [MEMORY[0x1E699B8C8] column:@"address"];
-  v9 = [v8 equalTo:v5];
+  v9 = [v8 equalTo:dCopy];
   v10 = [v7 initWithTable:@"business_addresses" where:v9];
 
   v16 = 0;
-  v11 = [v6 executeDeleteStatement:v10 error:&v16];
+  v11 = [connectionCopy executeDeleteStatement:v10 error:&v16];
   v12 = v16;
   if (v11)
   {
@@ -1164,7 +1164,7 @@ void __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v5;
+      v18 = dCopy;
       _os_log_impl(&dword_1C61EF000, v13, OS_LOG_TYPE_DEFAULT, "Successfully deleted unused address ID: %@", buf, 0xCu);
     }
   }
@@ -1182,26 +1182,26 @@ void __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___
   return v11;
 }
 
-- (int64_t)_businessIDForDomain:(id)a3 displayName:(id)a4 connection:(id)a5
+- (int64_t)_businessIDForDomain:(id)domain displayName:(id)name connection:(id)connection
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  domainCopy = domain;
+  nameCopy = name;
+  connectionCopy = connection;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = *MEMORY[0x1E699A728];
   v10 = objc_alloc(MEMORY[0x1E699B948]);
-  v11 = [MEMORY[0x1E699B8C8] allColumns];
-  v12 = [v10 initWithResult:v11 table:@"businesses"];
+  allColumns = [MEMORY[0x1E699B8C8] allColumns];
+  v12 = [v10 initWithResult:allColumns table:@"businesses"];
 
   v13 = MEMORY[0x1E699B898];
   v14 = [MEMORY[0x1E699B8C8] column:@"domain"];
-  v15 = [v14 equalTo:v7];
+  v15 = [v14 equalTo:domainCopy];
   v28[0] = v15;
   v16 = [MEMORY[0x1E699B8C8] column:@"address_comment"];
-  v17 = [v16 equalTo:v8];
+  v17 = [v16 equalTo:nameCopy];
   v28[1] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
   v19 = [v13 combined:v18];
@@ -1212,7 +1212,7 @@ void __70__EDBusinessPersistence__findExistingBrandIDForBusinessID_connection___
   v23[2] = __69__EDBusinessPersistence__businessIDForDomain_displayName_connection___block_invoke;
   v23[3] = &unk_1E8250418;
   v23[4] = &v24;
-  [v9 executeSelectStatement:v12 withBlock:v23 error:0];
+  [connectionCopy executeSelectStatement:v12 withBlock:v23 error:0];
   v20 = v25[3];
 
   _Block_object_dispose(&v24, 8);
@@ -1227,19 +1227,19 @@ void __69__EDBusinessPersistence__businessIDForDomain_displayName_connection___b
   *(*(*(a1 + 32) + 8) + 24) = [v3 databaseIDValue];
 }
 
-- (id)_businessIDsForHighLevelDomain:(id)a3 connection:(id)a4
+- (id)_businessIDsForHighLevelDomain:(id)domain connection:(id)connection
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  domainCopy = domain;
+  connectionCopy = connection;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = objc_alloc(MEMORY[0x1E699B948]);
-  v9 = [MEMORY[0x1E699B8C8] allColumns];
-  v10 = [v8 initWithResult:v9 table:@"businesses"];
+  allColumns = [MEMORY[0x1E699B8C8] allColumns];
+  v10 = [v8 initWithResult:allColumns table:@"businesses"];
 
   v11 = MEMORY[0x1E699B898];
   v12 = [MEMORY[0x1E699B8C8] column:@"domain"];
-  v13 = [v12 equalTo:v5];
+  v13 = [v12 equalTo:domainCopy];
   v23[0] = v13;
   v14 = [MEMORY[0x1E699B8C8] column:@"address_comment"];
   v15 = [v14 notEqualTo:&stru_1F45B4608];
@@ -1254,7 +1254,7 @@ void __69__EDBusinessPersistence__businessIDForDomain_displayName_connection___b
   v21[3] = &unk_1E8250300;
   v18 = v7;
   v22 = v18;
-  [v6 executeSelectStatement:v10 withBlock:v21 error:0];
+  [connectionCopy executeSelectStatement:v10 withBlock:v21 error:0];
 
   v19 = *MEMORY[0x1E69E9840];
 
@@ -1275,10 +1275,10 @@ void __67__EDBusinessPersistence__businessIDsForHighLevelDomain_connection___blo
   [*(a1 + 32) addObject:v9];
 }
 
-- (id)_categoryOverridesForBusinessIDs:(id)a3 connection:(id)a4
+- (id)_categoryOverridesForBusinessIDs:(id)ds connection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  connectionCopy = connection;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -1286,11 +1286,11 @@ void __67__EDBusinessPersistence__businessIDsForHighLevelDomain_connection___blo
   v19 = __Block_byref_object_dispose__3;
   v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = objc_alloc(MEMORY[0x1E699B948]);
-  v8 = [MEMORY[0x1E699B8C8] allColumns];
-  v9 = [v7 initWithResult:v8 table:@"business_categories"];
+  allColumns = [MEMORY[0x1E699B8C8] allColumns];
+  v9 = [v7 initWithResult:allColumns table:@"business_categories"];
 
   v10 = [MEMORY[0x1E699B8C8] column:@"business"];
-  v11 = [v10 in:v5];
+  v11 = [v10 in:dsCopy];
   [v9 setWhere:v11];
 
   v14[0] = MEMORY[0x1E69E9820];
@@ -1298,7 +1298,7 @@ void __67__EDBusinessPersistence__businessIDsForHighLevelDomain_connection___blo
   v14[2] = __69__EDBusinessPersistence__categoryOverridesForBusinessIDs_connection___block_invoke;
   v14[3] = &unk_1E8250418;
   v14[4] = &v15;
-  [v6 executeSelectStatement:v9 withBlock:v14 error:0];
+  [connectionCopy executeSelectStatement:v9 withBlock:v14 error:0];
   v12 = v16[5];
 
   _Block_object_dispose(&v15, 8);
@@ -1314,19 +1314,19 @@ void __69__EDBusinessPersistence__categoryOverridesForBusinessIDs_connection___b
   [v2 addObject:v3];
 }
 
-- (BOOL)_setUserOverrideForBusinessID:(int64_t)a3 category:(unint64_t)a4 userInitiated:(BOOL)a5 connection:(id)a6 timestamp:(id)a7
+- (BOOL)_setUserOverrideForBusinessID:(int64_t)d category:(unint64_t)category userInitiated:(BOOL)initiated connection:(id)connection timestamp:(id)timestamp
 {
   v35 = *MEMORY[0x1E69E9840];
-  v12 = a6;
-  v13 = a7;
-  [(EDBusinessPersistence *)self _insertOrUpdateBusinessCategoriesCategoryColumnForBusinessID:a3 category:a4 connection:v12];
-  v14 = [(EDBusinessPersistence *)self addressIDsForBusinessID:a3 connection:v12];
-  v15 = [(EDBusinessPersistence *)self hookRegistry];
-  [v15 persistenceWillChangeCategoryForAddressIDs:v14];
+  connectionCopy = connection;
+  timestampCopy = timestamp;
+  [(EDBusinessPersistence *)self _insertOrUpdateBusinessCategoriesCategoryColumnForBusinessID:d category:category connection:connectionCopy];
+  v14 = [(EDBusinessPersistence *)self addressIDsForBusinessID:d connection:connectionCopy];
+  hookRegistry = [(EDBusinessPersistence *)self hookRegistry];
+  [hookRegistry persistenceWillChangeCategoryForAddressIDs:v14];
 
-  v16 = [(EDBusinessPersistence *)self _updateBusinessAddressesCategoryColumnForAddressIDs:v14 category:a4 connection:v12 timestamp:v13];
+  v16 = [(EDBusinessPersistence *)self _updateBusinessAddressesCategoryColumnForAddressIDs:v14 category:category connection:connectionCopy timestamp:timestampCopy];
   v17 = objc_alloc_init(EDPersistenceDatabaseGenerationWindow);
-  -[EDPersistenceDatabaseGenerationWindow insertGeneration:](v17, "insertGeneration:", [v12 transactionGeneration]);
+  -[EDPersistenceDatabaseGenerationWindow insertGeneration:](v17, "insertGeneration:", [connectionCopy transactionGeneration]);
   if (v16)
   {
     v18 = +[EDBusinessPersistence log];
@@ -1359,13 +1359,13 @@ void __69__EDBusinessPersistence__categoryOverridesForBusinessIDs_connection___b
   v25[4] = self;
   v20 = v14;
   v26 = v20;
-  v30 = a5;
+  initiatedCopy = initiated;
   v21 = v17;
   v27 = v21;
-  v29 = a4;
-  v22 = v13;
+  categoryCopy = category;
+  v22 = timestampCopy;
   v28 = v22;
-  [v12 performBlockAfterTransaction:v25];
+  [connectionCopy performBlockAfterTransaction:v25];
 
   v23 = *MEMORY[0x1E69E9840];
   return v16;
@@ -1392,16 +1392,16 @@ void __99__EDBusinessPersistence__setUserOverrideForBusinessID_category_userInit
   }
 }
 
-- (BOOL)_insertOrUpdateBusiness:(int64_t)a3 forAddress:(int64_t)a4 connection:(id)a5
+- (BOOL)_insertOrUpdateBusiness:(int64_t)business forAddress:(int64_t)address connection:(id)connection
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  connectionCopy = connection;
   v8 = objc_alloc(MEMORY[0x1E699B948]);
   v9 = [MEMORY[0x1E699B8C8] column:@"category"];
   v10 = [v8 initWithResult:v9 table:@"business_categories"];
 
   v11 = [MEMORY[0x1E699B8C8] column:@"business"];
-  v12 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v12 = [MEMORY[0x1E696AD98] numberWithLongLong:business];
   v13 = [v11 equalTo:v12];
   [v10 setWhere:v13];
 
@@ -1411,15 +1411,15 @@ void __99__EDBusinessPersistence__setUserOverrideForBusinessID_category_userInit
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
   v16 = [v14 initWithTable:@"business_addresses" conflictTarget:v15];
 
-  v17 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
+  v17 = [MEMORY[0x1E696AD98] numberWithLongLong:address];
   [v16 setObject:v17 forKeyedSubscript:@"address"];
 
-  v18 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v18 = [MEMORY[0x1E696AD98] numberWithLongLong:business];
   [v16 setObject:v18 forKeyedSubscript:@"business"];
 
   [v16 setObject:v10 forKeyedSubscript:@"category"];
   v24 = 0;
-  v19 = [v7 executeUpsertStatement:v16 error:&v24];
+  v19 = [connectionCopy executeUpsertStatement:v16 error:&v24];
   v20 = v24;
   if ((v19 & 1) == 0)
   {
@@ -1434,16 +1434,16 @@ void __99__EDBusinessPersistence__setUserOverrideForBusinessID_category_userInit
   return v19;
 }
 
-- (void)countOfUserOverridesWithCompletionHandler:(id)a3
+- (void)countOfUserOverridesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   database = self->_database;
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence countOfUserOverridesWithCompletionHandler:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67__EDBusinessPersistence_countOfUserOverridesWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E8250F38;
-  v7 = v4;
+  v7 = handlerCopy;
   v9 = v7;
   [(EDPersistenceDatabase *)database __performReadWithCaller:v6 usingBlock:v8];
 }
@@ -1464,15 +1464,15 @@ uint64_t __67__EDBusinessPersistence_countOfUserOverridesWithCompletionHandler__
 
 - (void)removeAllUserOverrides
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   database = self->_database;
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence removeAllUserOverrides]"];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __47__EDBusinessPersistence_removeAllUserOverrides__block_invoke;
   v11 = &unk_1E8250328;
-  v12 = self;
-  v6 = v3;
+  selfCopy = self;
+  v6 = date;
   v13 = v6;
   [(EDPersistenceDatabase *)database __performWriteWithCaller:v5 usingBlock:&v8];
 
@@ -1580,11 +1580,11 @@ LABEL_15:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeUserOverridesForBusinessIDs:(id)a3 timestamp:(id)a4 originator:(unint64_t)a5 userInitiated:(BOOL)a6
+- (void)removeUserOverridesForBusinessIDs:(id)ds timestamp:(id)timestamp originator:(unint64_t)originator userInitiated:(BOOL)initiated
 {
-  v10 = a3;
-  v11 = a4;
-  if ([v10 count])
+  dsCopy = ds;
+  timestampCopy = timestamp;
+  if ([dsCopy count])
   {
     database = self->_database;
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence removeUserOverridesForBusinessIDs:timestamp:originator:userInitiated:]"];
@@ -1592,11 +1592,11 @@ LABEL_15:
     v14[1] = 3221225472;
     v14[2] = __94__EDBusinessPersistence_removeUserOverridesForBusinessIDs_timestamp_originator_userInitiated___block_invoke;
     v14[3] = &unk_1E8250F88;
-    v15 = v10;
-    v16 = self;
-    v17 = v11;
-    v18 = a5;
-    v19 = a6;
+    v15 = dsCopy;
+    selfCopy = self;
+    v17 = timestampCopy;
+    originatorCopy = originator;
+    initiatedCopy = initiated;
     [(EDPersistenceDatabase *)database __performWriteWithCaller:v13 usingBlock:v14];
   }
 }
@@ -1660,62 +1660,62 @@ void __104__EDBusinessPersistence__removeUserOverrideForBusinessID_timestamp_ori
   }
 }
 
-- (void)removeUserOverrideForAddressIDs:(id)a3 timestamp:(id)a4 originator:(unint64_t)a5 userInitiated:(BOOL)a6
+- (void)removeUserOverrideForAddressIDs:(id)ds timestamp:(id)timestamp originator:(unint64_t)originator userInitiated:(BOOL)initiated
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(EDBusinessPersistence *)self database];
+  dsCopy = ds;
+  timestampCopy = timestamp;
+  database = [(EDBusinessPersistence *)self database];
   v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence removeUserOverrideForAddressIDs:timestamp:originator:userInitiated:]"];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __92__EDBusinessPersistence_removeUserOverrideForAddressIDs_timestamp_originator_userInitiated___block_invoke;
   v16[3] = &unk_1E8250F88;
   v16[4] = self;
-  v14 = v10;
+  v14 = dsCopy;
   v17 = v14;
-  v15 = v11;
+  v15 = timestampCopy;
   v18 = v15;
-  v19 = a5;
-  v20 = a6;
-  [v12 __performWriteWithCaller:v13 usingBlock:v16];
+  originatorCopy = originator;
+  initiatedCopy = initiated;
+  [database __performWriteWithCaller:v13 usingBlock:v16];
 }
 
-- (BOOL)_removeUserOverrideForAddressIDs:(id)a3 timestamp:(id)a4 originator:(unint64_t)a5 userInitiated:(BOOL)a6 connection:(id)a7
+- (BOOL)_removeUserOverrideForAddressIDs:(id)ds timestamp:(id)timestamp originator:(unint64_t)originator userInitiated:(BOOL)initiated connection:(id)connection
 {
   v38 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v29 = a4;
-  v13 = a7;
-  if ([v12 count])
+  dsCopy = ds;
+  timestampCopy = timestamp;
+  connectionCopy = connection;
+  if ([dsCopy count])
   {
-    v14 = [(EDBusinessPersistence *)self hookRegistry];
-    [v14 persistenceWillChangeCategoryForAddressIDs:v12];
+    hookRegistry = [(EDBusinessPersistence *)self hookRegistry];
+    [hookRegistry persistenceWillChangeCategoryForAddressIDs:dsCopy];
 
     v15 = [objc_alloc(MEMORY[0x1E699B960]) initWithTable:@"business_addresses"];
-    v16 = [MEMORY[0x1E695DFB0] null];
-    [v15 setObject:v16 forKeyedSubscript:@"category"];
+    null = [MEMORY[0x1E695DFB0] null];
+    [v15 setObject:null forKeyedSubscript:@"category"];
 
     v17 = MEMORY[0x1E696AD98];
-    [v29 timeIntervalSince1970];
+    [timestampCopy timeIntervalSince1970];
     v18 = [v17 numberWithDouble:?];
     [v15 setObject:v18 forKeyedSubscript:@"last_modified"];
 
     v19 = [MEMORY[0x1E699B8C8] column:@"address"];
-    v20 = [v19 in:v12];
+    v20 = [v19 in:dsCopy];
     [v15 setWhereClause:v20];
-    v21 = a5;
+    originatorCopy = originator;
 
     v36 = 0;
-    v22 = [v13 executeUpdateStatement:v15 error:&v36];
+    v22 = [connectionCopy executeUpdateStatement:v15 error:&v36];
     v23 = v36;
     v24 = objc_alloc_init(EDPersistenceDatabaseGenerationWindow);
-    -[EDPersistenceDatabaseGenerationWindow insertGeneration:](v24, "insertGeneration:", [v13 transactionGeneration]);
+    -[EDPersistenceDatabaseGenerationWindow insertGeneration:](v24, "insertGeneration:", [connectionCopy transactionGeneration]);
     if ((v22 & 1) == 0)
     {
       v25 = +[EDBusinessPersistence log];
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        -[EDBusinessPersistence _removeUserOverrideForAddressIDs:timestamp:originator:userInitiated:connection:].cold.1(v23, v37, [v12 count]);
+        -[EDBusinessPersistence _removeUserOverrideForAddressIDs:timestamp:originator:userInitiated:connection:].cold.1(v23, v37, [dsCopy count]);
       }
     }
 
@@ -1724,13 +1724,13 @@ void __104__EDBusinessPersistence__removeUserOverrideForBusinessID_timestamp_ori
     v30[2] = __104__EDBusinessPersistence__removeUserOverrideForAddressIDs_timestamp_originator_userInitiated_connection___block_invoke;
     v30[3] = &unk_1E8250F10;
     v30[4] = self;
-    v31 = v12;
-    v35 = a6;
+    v31 = dsCopy;
+    initiatedCopy = initiated;
     v26 = v24;
     v32 = v26;
-    v33 = v29;
-    v34 = v21;
-    [v13 performBlockAfterTransaction:v30];
+    v33 = timestampCopy;
+    v34 = originatorCopy;
+    [connectionCopy performBlockAfterTransaction:v30];
   }
 
   else
@@ -1761,11 +1761,11 @@ void __104__EDBusinessPersistence__removeUserOverrideForAddressIDs_timestamp_ori
   }
 }
 
-- (void)insertOrUpdateUserOverrideForBusinessIDs:(id)a3 category:(unint64_t)a4 userInitiated:(BOOL)a5 timestamp:(id)a6
+- (void)insertOrUpdateUserOverrideForBusinessIDs:(id)ds category:(unint64_t)category userInitiated:(BOOL)initiated timestamp:(id)timestamp
 {
-  v10 = a3;
-  v11 = a6;
-  if ([v10 count])
+  dsCopy = ds;
+  timestampCopy = timestamp;
+  if ([dsCopy count])
   {
     database = self->_database;
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence insertOrUpdateUserOverrideForBusinessIDs:category:userInitiated:timestamp:]"];
@@ -1773,11 +1773,11 @@ void __104__EDBusinessPersistence__removeUserOverrideForAddressIDs_timestamp_ori
     v14[1] = 3221225472;
     v14[2] = __99__EDBusinessPersistence_insertOrUpdateUserOverrideForBusinessIDs_category_userInitiated_timestamp___block_invoke;
     v14[3] = &unk_1E8250F88;
-    v15 = v10;
-    v16 = self;
-    v18 = a4;
-    v19 = a5;
-    v17 = v11;
+    v15 = dsCopy;
+    selfCopy = self;
+    categoryCopy = category;
+    initiatedCopy = initiated;
+    v17 = timestampCopy;
     [(EDPersistenceDatabase *)database __performWriteWithCaller:v13 usingBlock:v14];
   }
 }
@@ -1832,7 +1832,7 @@ LABEL_11:
   return v8;
 }
 
-- (id)categoryTypeForBusinessID:(int64_t)a3
+- (id)categoryTypeForBusinessID:(int64_t)d
 {
   v9 = 0;
   v10 = &v9;
@@ -1840,15 +1840,15 @@ LABEL_11:
   v12 = __Block_byref_object_copy__3;
   v13 = __Block_byref_object_dispose__3;
   v14 = 0;
-  v4 = [(EDBusinessPersistence *)self database];
+  database = [(EDBusinessPersistence *)self database];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence categoryTypeForBusinessID:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__EDBusinessPersistence_categoryTypeForBusinessID___block_invoke;
   v8[3] = &unk_1E8250150;
   v8[4] = &v9;
-  v8[5] = a3;
-  [v4 __performReadWithCaller:v5 usingBlock:v8];
+  v8[5] = d;
+  [database __performReadWithCaller:v5 usingBlock:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -1900,7 +1900,7 @@ void __51__EDBusinessPersistence_categoryTypeForBusinessID___block_invoke_2(uint
   *(v5 + 40) = v4;
 }
 
-- (id)categoryTypeForAddressID:(int64_t)a3
+- (id)categoryTypeForAddressID:(int64_t)d
 {
   v9 = 0;
   v10 = &v9;
@@ -1908,15 +1908,15 @@ void __51__EDBusinessPersistence_categoryTypeForBusinessID___block_invoke_2(uint
   v12 = __Block_byref_object_copy__3;
   v13 = __Block_byref_object_dispose__3;
   v14 = 0;
-  v4 = [(EDBusinessPersistence *)self database];
+  database = [(EDBusinessPersistence *)self database];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence categoryTypeForAddressID:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__EDBusinessPersistence_categoryTypeForAddressID___block_invoke;
   v8[3] = &unk_1E8250150;
   v8[4] = &v9;
-  v8[5] = a3;
-  [v4 __performReadWithCaller:v5 usingBlock:v8];
+  v8[5] = d;
+  [database __performReadWithCaller:v5 usingBlock:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -1968,20 +1968,20 @@ void __50__EDBusinessPersistence_categoryTypeForAddressID___block_invoke_2(uint6
   *(v5 + 40) = v4;
 }
 
-- (id)updatedCategoryForAddressID:(int64_t)a3 fromCategorizationResult:(id)a4
+- (id)updatedCategoryForAddressID:(int64_t)d fromCategorizationResult:(id)result
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = [a4 category];
-  if (((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl() && EMIsGreymatterSupported()) && ([(EDBusinessPersistence *)self categoryTypeForAddressID:a3], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  category = [result category];
+  if (((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl() && EMIsGreymatterSupported()) && ([(EDBusinessPersistence *)self categoryTypeForAddressID:d], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v8 = [objc_alloc(MEMORY[0x1E699AC48]) initWithType:objc_msgSend(v7 subtype:"unsignedIntegerValue") isHighImpact:objc_msgSend(v6 state:{"subtype"), objc_msgSend(v6, "isHighImpact"), 3}];
+    v8 = [objc_alloc(MEMORY[0x1E699AC48]) initWithType:objc_msgSend(v7 subtype:"unsignedIntegerValue") isHighImpact:objc_msgSend(category state:{"subtype"), objc_msgSend(category, "isHighImpact"), 3}];
   }
 
   else
   {
-    if (v6)
+    if (category)
     {
-      v9 = v6;
+      v9 = category;
     }
 
     else
@@ -1990,7 +1990,7 @@ void __50__EDBusinessPersistence_categoryTypeForAddressID___block_invoke_2(uint6
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v13 = 134217984;
-        v14 = a3;
+        dCopy = d;
         _os_log_impl(&dword_1C61EF000, v10, OS_LOG_TYPE_INFO, "Missing category for addressID %lld. Adding a placeholder category", &v13, 0xCu);
       }
 
@@ -2005,36 +2005,36 @@ void __50__EDBusinessPersistence_categoryTypeForAddressID___block_invoke_2(uint6
   return v8;
 }
 
-- (BOOL)_updateBusinessAddressesCategoryColumnForAddressIDs:(id)a3 category:(unint64_t)a4 connection:(id)a5 timestamp:(id)a6
+- (BOOL)_updateBusinessAddressesCategoryColumnForAddressIDs:(id)ds category:(unint64_t)category connection:(id)connection timestamp:(id)timestamp
 {
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  dsCopy = ds;
+  connectionCopy = connection;
+  timestampCopy = timestamp;
   v12 = [objc_alloc(MEMORY[0x1E699B960]) initWithTable:@"business_addresses"];
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:category];
   [v12 setObject:v13 forKeyedSubscript:@"category"];
 
   v14 = MEMORY[0x1E696AD98];
-  [v11 timeIntervalSince1970];
+  [timestampCopy timeIntervalSince1970];
   v15 = [v14 numberWithDouble:?];
   [v12 setObject:v15 forKeyedSubscript:@"last_modified"];
 
   v16 = [MEMORY[0x1E699B8C8] column:@"address"];
-  v17 = [v16 in:v9];
+  v17 = [v16 in:dsCopy];
   [v12 setWhereClause:v17];
 
   v24 = 0;
-  v18 = [v10 executeUpdateStatement:v12 error:&v24];
+  v18 = [connectionCopy executeUpdateStatement:v12 error:&v24];
   v19 = v24;
   if ((v18 & 1) == 0)
   {
     v20 = +[EDBusinessPersistence log];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v23 = [v9 count];
+      v23 = [dsCopy count];
       *buf = 134218498;
-      v26 = a4;
+      categoryCopy = category;
       v27 = 2048;
       v28 = v23;
       v29 = 2114;
@@ -2047,11 +2047,11 @@ void __50__EDBusinessPersistence_categoryTypeForAddressID___block_invoke_2(uint6
   return v18;
 }
 
-- (BOOL)_insertOrUpdateBusinessCategoriesCategoryColumnForBusinessID:(int64_t)a3 category:(unint64_t)a4 connection:(id)a5
+- (BOOL)_insertOrUpdateBusinessCategoriesCategoryColumnForBusinessID:(int64_t)d category:(unint64_t)category connection:(id)connection
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (!a3 || *MEMORY[0x1E699A728] == a3)
+  connectionCopy = connection;
+  if (!d || *MEMORY[0x1E699A728] == d)
   {
     v11 = +[EDBusinessPersistence log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -2069,14 +2069,14 @@ void __50__EDBusinessPersistence_categoryTypeForAddressID___block_invoke_2(uint6
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
     v11 = [v9 initWithTable:@"business_categories" conflictTarget:v10];
 
-    v12 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
     [v11 setObject:v12 forKeyedSubscript:@"business"];
 
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:category];
     [v11 setObject:v13 forKeyedSubscript:@"category"];
 
     v21 = 0;
-    v14 = [v8 executeUpsertStatement:v11 error:&v21];
+    v14 = [connectionCopy executeUpsertStatement:v11 error:&v21];
     v15 = v21;
     if (v14)
     {
@@ -2085,8 +2085,8 @@ void __50__EDBusinessPersistence_categoryTypeForAddressID___block_invoke_2(uint6
       v20[2] = __106__EDBusinessPersistence__insertOrUpdateBusinessCategoriesCategoryColumnForBusinessID_category_connection___block_invoke;
       v20[3] = &unk_1E8250FB0;
       v20[4] = self;
-      v20[5] = a3;
-      [v8 performBlockAfterTransaction:v20];
+      v20[5] = d;
+      [connectionCopy performBlockAfterTransaction:v20];
     }
 
     else
@@ -2096,7 +2096,7 @@ void __50__EDBusinessPersistence_categoryTypeForAddressID___block_invoke_2(uint6
       {
         v19 = EMStringFromCategoryType();
         *buf = 134218498;
-        v23 = a3;
+        dCopy = d;
         v24 = 2112;
         v25 = v19;
         v26 = 2114;
@@ -2119,9 +2119,9 @@ void __106__EDBusinessPersistence__insertOrUpdateBusinessCategoriesCategoryColum
   }
 }
 
-- (id)addressIDsForBusinessID:(int64_t)a3 connection:(id)a4
+- (id)addressIDsForBusinessID:(int64_t)d connection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -2129,11 +2129,11 @@ void __106__EDBusinessPersistence__insertOrUpdateBusinessCategoriesCategoryColum
   v19 = __Block_byref_object_dispose__3;
   v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_alloc(MEMORY[0x1E699B948]);
-  v7 = [MEMORY[0x1E699B8C8] allColumns];
-  v8 = [v6 initWithResult:v7 table:@"business_addresses"];
+  allColumns = [MEMORY[0x1E699B8C8] allColumns];
+  v8 = [v6 initWithResult:allColumns table:@"business_addresses"];
 
   v9 = [MEMORY[0x1E699B8C8] column:@"business"];
-  v10 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v10 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v11 = [v9 equalTo:v10];
   [v8 setWhere:v11];
 
@@ -2142,7 +2142,7 @@ void __106__EDBusinessPersistence__insertOrUpdateBusinessCategoriesCategoryColum
   v14[2] = __60__EDBusinessPersistence_addressIDsForBusinessID_connection___block_invoke;
   v14[3] = &unk_1E8250418;
   v14[4] = &v15;
-  [v5 executeSelectStatement:v8 withBlock:v14 error:0];
+  [connectionCopy executeSelectStatement:v8 withBlock:v14 error:0];
   v12 = v16[5];
 
   _Block_object_dispose(&v15, 8);
@@ -2161,23 +2161,23 @@ void __60__EDBusinessPersistence_addressIDsForBusinessID_connection___block_invo
   }
 }
 
-- (id)addressesForBusinessID:(int64_t)a3
+- (id)addressesForBusinessID:(int64_t)d
 {
   v5 = objc_opt_new();
-  v6 = [(EDBusinessPersistence *)self database];
+  database = [(EDBusinessPersistence *)self database];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence addressesForBusinessID:]"];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __48__EDBusinessPersistence_addressesForBusinessID___block_invoke;
   v20[3] = &unk_1E82502B0;
   v20[4] = self;
-  v22 = a3;
+  dCopy = d;
   v8 = v5;
   v21 = v8;
-  [v6 __performReadWithCaller:v7 usingBlock:v20];
+  [database __performReadWithCaller:v7 usingBlock:v20];
 
   v9 = objc_opt_new();
-  v10 = [(EDBusinessPersistence *)self database];
+  database2 = [(EDBusinessPersistence *)self database];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence addressesForBusinessID:]"];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -2187,7 +2187,7 @@ void __60__EDBusinessPersistence_addressIDsForBusinessID_connection___block_invo
   v18 = v12;
   v13 = v9;
   v19 = v13;
-  [v10 __performReadWithCaller:v11 usingBlock:v17];
+  [database2 __performReadWithCaller:v11 usingBlock:v17];
 
   v14 = v19;
   v15 = v13;
@@ -2283,9 +2283,9 @@ BOOL __63__EDBusinessPersistence_businessAddressMapWithCategoryOverride__block_i
   return v7;
 }
 
-- (id)_businessAddressMapWithCategoryOverrideWithConnection:(id)a3
+- (id)_businessAddressMapWithCategoryOverrideWithConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -2293,19 +2293,19 @@ BOOL __63__EDBusinessPersistence_businessAddressMapWithCategoryOverride__block_i
   v16 = __Block_byref_object_dispose__3;
   v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v4 = objc_alloc(MEMORY[0x1E699B948]);
-  v5 = [MEMORY[0x1E699B8C8] allColumns];
-  v6 = [v4 initWithResult:v5 table:@"business_addresses"];
+  allColumns = [MEMORY[0x1E699B8C8] allColumns];
+  v6 = [v4 initWithResult:allColumns table:@"business_addresses"];
 
   v7 = [MEMORY[0x1E699B8C8] column:@"category"];
-  v8 = [v7 isNotNull];
-  [v6 setWhere:v8];
+  isNotNull = [v7 isNotNull];
+  [v6 setWhere:isNotNull];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __79__EDBusinessPersistence__businessAddressMapWithCategoryOverrideWithConnection___block_invoke;
   v11[3] = &unk_1E8250418;
   v11[4] = &v12;
-  [v3 executeSelectStatement:v6 withBlock:v11 error:0];
+  [connectionCopy executeSelectStatement:v6 withBlock:v11 error:0];
   v9 = v13[5];
 
   _Block_object_dispose(&v12, 8);
@@ -2345,46 +2345,46 @@ void __79__EDBusinessPersistence__businessAddressMapWithCategoryOverrideWithConn
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)_shouldUseGroupingSimpleAddressForEmailAddress:(id)a3 grouping:(int64_t)a4
++ (BOOL)_shouldUseGroupingSimpleAddressForEmailAddress:(id)address grouping:(int64_t)grouping
 {
-  v5 = a3;
-  v6 = [v5 emailAddressValue];
-  v7 = [v6 displayName];
-  v8 = v7;
+  addressCopy = address;
+  emailAddressValue = [addressCopy emailAddressValue];
+  displayName = [emailAddressValue displayName];
+  v8 = displayName;
   v9 = &stru_1F45B4608;
-  if (v7)
+  if (displayName)
   {
-    v9 = v7;
+    v9 = displayName;
   }
 
   v10 = v9;
 
-  v11 = [v5 emailAddressValue];
-  v12 = [v11 highLevelDomainStrippingTopLevelDomain];
+  emailAddressValue2 = [addressCopy emailAddressValue];
+  highLevelDomainStrippingTopLevelDomain = [emailAddressValue2 highLevelDomainStrippingTopLevelDomain];
 
-  v13 = [EDBusinessPersistence _shouldUseSimpleAddressForHighLevelDomain:v12 displayName:v10 grouping:a4];
+  v13 = [EDBusinessPersistence _shouldUseSimpleAddressForHighLevelDomain:highLevelDomainStrippingTopLevelDomain displayName:v10 grouping:grouping];
   return v13;
 }
 
-+ (BOOL)_hasCommonDomain:(id)a3
++ (BOOL)_hasCommonDomain:(id)domain
 {
-  v3 = [a3 emailAddressValue];
-  v4 = [v3 highLevelDomainStrippingTopLevelDomain];
+  emailAddressValue = [domain emailAddressValue];
+  highLevelDomainStrippingTopLevelDomain = [emailAddressValue highLevelDomainStrippingTopLevelDomain];
 
   v5 = +[EDBusinessPersistence _commonDomains];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:highLevelDomainStrippingTopLevelDomain];
 
   return v6;
 }
 
-+ (BOOL)_shouldUseSimpleAddressForHighLevelDomain:(id)a3 displayName:(id)a4 grouping:(int64_t)a5
++ (BOOL)_shouldUseSimpleAddressForHighLevelDomain:(id)domain displayName:(id)name grouping:(int64_t)grouping
 {
-  v7 = a3;
-  v8 = a4;
-  if (a5 != 3 && [v7 length] && (objc_msgSend(v8, "ef_stringByTrimmingWhitespaceAndNewlineCharacters"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v10))
+  domainCopy = domain;
+  nameCopy = name;
+  if (grouping != 3 && [domainCopy length] && (objc_msgSend(nameCopy, "ef_stringByTrimmingWhitespaceAndNewlineCharacters"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v10))
   {
     v11 = +[EDBusinessPersistence _commonDomains];
-    v12 = [v11 containsObject:v7];
+    v12 = [v11 containsObject:domainCopy];
   }
 
   else
@@ -2414,65 +2414,65 @@ void __39__EDBusinessPersistence__commonDomains__block_invoke()
   _commonDomains_sCommonDomains_0 = v0;
 }
 
-- (BOOL)_combineBusinesses:(id)a3 connection:(id)a4 newBusinessID:(int64_t *)a5
+- (BOOL)_combineBusinesses:(id)businesses connection:(id)connection newBusinessID:(int64_t *)d
 {
-  v8 = a3;
-  v41 = a4;
-  v9 = [v8 firstObject];
-  v10 = [v9 longLongValue];
+  businessesCopy = businesses;
+  connectionCopy = connection;
+  firstObject = [businessesCopy firstObject];
+  longLongValue = [firstObject longLongValue];
   v11 = *MEMORY[0x1E699A728];
-  if (v10)
+  if (longLongValue)
   {
-    v12 = v10;
+    longLongValue2 = longLongValue;
   }
 
   else
   {
-    v12 = *MEMORY[0x1E699A728];
+    longLongValue2 = *MEMORY[0x1E699A728];
   }
 
-  if ([v8 count] > 1)
+  if ([businessesCopy count] > 1)
   {
-    if (v12 == v11)
+    if (longLongValue2 == v11)
     {
-      v14 = [v8 objectAtIndexedSubscript:1];
-      v12 = [v14 longLongValue];
+      v14 = [businessesCopy objectAtIndexedSubscript:1];
+      longLongValue2 = [v14 longLongValue];
 
-      if (v12 == v11)
+      if (longLongValue2 == v11)
       {
-        v37 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v37 handleFailureInMethod:a2 object:self file:@"EDBusinessPersistence.m" lineNumber:1077 description:@"Unable to find valid business ID to combine businesses into"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"EDBusinessPersistence.m" lineNumber:1077 description:@"Unable to find valid business ID to combine businesses into"];
 
-        v12 = v11;
+        longLongValue2 = v11;
       }
     }
 
     v15 = MEMORY[0x1E695DFD8];
-    v16 = [(EDBusinessPersistence *)self _categoryOverridesForBusinessIDs:v8 connection:v41];
+    v16 = [(EDBusinessPersistence *)self _categoryOverridesForBusinessIDs:businessesCopy connection:connectionCopy];
     v17 = [v15 setWithArray:v16];
 
     v39 = v17;
     v18 = [v17 count];
     if ([v17 count] == 1)
     {
-      v19 = [v17 allObjects];
-      v20 = [v19 firstObject];
-      v21 = [v20 unsignedIntegerValue];
-      v22 = [MEMORY[0x1E695DF00] date];
-      [(EDBusinessPersistence *)self _setUserOverrideForBusinessID:v12 category:v21 userInitiated:0 connection:v41 timestamp:v22];
+      allObjects = [v17 allObjects];
+      firstObject2 = [allObjects firstObject];
+      unsignedIntegerValue = [firstObject2 unsignedIntegerValue];
+      date = [MEMORY[0x1E695DF00] date];
+      [(EDBusinessPersistence *)self _setUserOverrideForBusinessID:longLongValue2 category:unsignedIntegerValue userInitiated:0 connection:connectionCopy timestamp:date];
     }
 
-    v38 = a5;
+    dCopy = d;
     for (i = 0; ; ++i)
     {
-      v24 = [v8 count];
+      v24 = [businessesCopy count];
       v13 = i >= v24;
       if (i >= v24)
       {
         break;
       }
 
-      v25 = [v8 objectAtIndexedSubscript:i];
+      v25 = [businessesCopy objectAtIndexedSubscript:i];
       if ([v25 longLongValue] == v11)
       {
         if (i)
@@ -2499,21 +2499,21 @@ void __39__EDBusinessPersistence__commonDomains__block_invoke()
           v29 = [v28 equalTo:v25];
           v30 = [v27 initWithTable:@"business_categories" where:v29];
 
-          v31 = [v41 executeDeleteStatement:v30 error:0];
+          v31 = [connectionCopy executeDeleteStatement:v30 error:0];
         }
 
-        if ([v25 longLongValue] != v12)
+        if ([v25 longLongValue] != longLongValue2)
         {
           if (v31)
           {
-            v32 = [MEMORY[0x1E696AD98] numberWithLongLong:v12];
-            v33 = [(EDBusinessPersistence *)self _updateBusinessAddressesTableforBusinessID:v25 newBusinessID:v32 connection:v41];
+            v32 = [MEMORY[0x1E696AD98] numberWithLongLong:longLongValue2];
+            v33 = [(EDBusinessPersistence *)self _updateBusinessAddressesTableforBusinessID:v25 newBusinessID:v32 connection:connectionCopy];
 
-            LOBYTE(v31) = v33 && [(EDBusinessPersistence *)self _deleteBusinessEntryForBusinessID:v25 connection:v41];
+            LOBYTE(v31) = v33 && [(EDBusinessPersistence *)self _deleteBusinessEntryForBusinessID:v25 connection:connectionCopy];
           }
 
-          v34 = [(EDBusinessPersistence *)self hookRegistry];
-          [v34 persistenceIsMergingBusinessID:objc_msgSend(v25 intoBusinessID:{"longLongValue"), v12}];
+          hookRegistry = [(EDBusinessPersistence *)self hookRegistry];
+          [hookRegistry persistenceIsMergingBusinessID:objc_msgSend(v25 intoBusinessID:{"longLongValue"), longLongValue2}];
         }
 
         if ((v31 & 1) == 0)
@@ -2529,17 +2529,17 @@ void __39__EDBusinessPersistence__commonDomains__block_invoke()
       }
     }
 
-    if (v38)
+    if (dCopy)
     {
-      *v38 = v12;
+      *dCopy = longLongValue2;
     }
   }
 
   else
   {
-    if (a5)
+    if (d)
     {
-      *a5 = v12;
+      *d = longLongValue2;
     }
 
     v13 = 1;
@@ -2548,13 +2548,13 @@ void __39__EDBusinessPersistence__commonDomains__block_invoke()
   return v13;
 }
 
-- (void)addressIDsWereDeleted:(id)a3 connection:(id)a4
+- (void)addressIDsWereDeleted:(id)deleted connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  deletedCopy = deleted;
+  connectionCopy = connection;
   v8 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"business" table:@"business_addresses"];
   v9 = [MEMORY[0x1E699B8C8] column:@"address"];
-  v10 = [v9 in:v6];
+  v10 = [v9 in:deletedCopy];
   [v8 setWhere:v10];
 
   v11 = objc_opt_new();
@@ -2564,13 +2564,13 @@ void __39__EDBusinessPersistence__commonDomains__block_invoke()
   v18[3] = &unk_1E8250300;
   v12 = v11;
   v19 = v12;
-  [v7 executeSelectStatement:v8 withBlock:v18 error:0];
+  [connectionCopy executeSelectStatement:v8 withBlock:v18 error:0];
   v13 = objc_alloc(MEMORY[0x1E699B8E8]);
   v14 = [MEMORY[0x1E699B8C8] column:@"address"];
-  v15 = [v14 in:v6];
+  v15 = [v14 in:deletedCopy];
   v16 = [v13 initWithTable:@"business_addresses" where:v15];
 
-  if (([v7 executeDeleteStatement:v16 error:0] & 1) == 0)
+  if (([connectionCopy executeDeleteStatement:v16 error:0] & 1) == 0)
   {
     v17 = +[EDBusinessPersistence log];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -2579,7 +2579,7 @@ void __39__EDBusinessPersistence__commonDomains__block_invoke()
     }
   }
 
-  [(EDBusinessPersistence *)self _removeOldBusinessIDs:v12 connection:v7];
+  [(EDBusinessPersistence *)self _removeOldBusinessIDs:v12 connection:connectionCopy];
 }
 
 void __58__EDBusinessPersistence_addressIDsWereDeleted_connection___block_invoke(uint64_t a1, void *a2)
@@ -2590,23 +2590,23 @@ void __58__EDBusinessPersistence_addressIDsWereDeleted_connection___block_invoke
   [v2 ef_addOptionalObject:v3];
 }
 
-- (BOOL)_removeOldBusinessIDs:(id)a3 connection:(id)a4
+- (BOOL)_removeOldBusinessIDs:(id)ds connection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  connectionCopy = connection;
   v7 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"business" table:@"business_addresses"];
   [v7 setDistinct:1];
   v8 = [MEMORY[0x1E699B8C8] column:@"business"];
-  v9 = [v8 in:v5];
+  v9 = [v8 in:dsCopy];
   [v7 setWhere:v9];
 
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __58__EDBusinessPersistence__removeOldBusinessIDs_connection___block_invoke;
   v27[3] = &unk_1E8250300;
-  v10 = v5;
+  v10 = dsCopy;
   v28 = v10;
-  [v6 executeSelectStatement:v7 withBlock:v27 error:0];
+  [connectionCopy executeSelectStatement:v7 withBlock:v27 error:0];
   v11 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"business" table:@"business_categories"];
 
   v12 = [MEMORY[0x1E699B8C8] column:@"business"];
@@ -2619,7 +2619,7 @@ void __58__EDBusinessPersistence_addressIDsWereDeleted_connection___block_invoke
   v25 = &unk_1E8250300;
   v14 = v10;
   v26 = v14;
-  [v6 executeSelectStatement:v11 withBlock:&v22 error:0];
+  [connectionCopy executeSelectStatement:v11 withBlock:&v22 error:0];
   if ([v14 count])
   {
     v15 = objc_alloc(MEMORY[0x1E699B8E8]);
@@ -2627,7 +2627,7 @@ void __58__EDBusinessPersistence_addressIDsWereDeleted_connection___block_invoke
     v17 = [v16 in:v14];
     v18 = [v15 initWithTable:@"businesses" where:v17];
 
-    v19 = [v6 executeDeleteStatement:v18 error:0];
+    v19 = [connectionCopy executeDeleteStatement:v18 error:0];
     if ((v19 & 1) == 0)
     {
       v20 = +[EDBusinessPersistence log];
@@ -2662,7 +2662,7 @@ void __58__EDBusinessPersistence__removeOldBusinessIDs_connection___block_invoke
   [v2 removeObject:v3];
 }
 
-- (id)businessExternalIDForBusinessID:(int64_t)a3
+- (id)businessExternalIDForBusinessID:(int64_t)d
 {
   v10 = 0;
   v11 = &v10;
@@ -2670,16 +2670,16 @@ void __58__EDBusinessPersistence__removeOldBusinessIDs_connection___block_invoke
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v5 = [(EDBusinessPersistence *)self database];
+  database = [(EDBusinessPersistence *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence businessExternalIDForBusinessID:]"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__EDBusinessPersistence_businessExternalIDForBusinessID___block_invoke;
   v9[3] = &unk_1E8250EC8;
   v9[5] = &v10;
-  v9[6] = a3;
+  v9[6] = d;
   v9[4] = self;
-  [v5 __performReadWithCaller:v6 usingBlock:v9];
+  [database __performReadWithCaller:v6 usingBlock:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -2741,24 +2741,24 @@ void __57__EDBusinessPersistence_businessExternalIDForBusinessID___block_invoke_
   *(v11 + 40) = v10;
 }
 
-- (int64_t)businessIDForBusinessExternalID:(id)a3
+- (int64_t)businessIDForBusinessExternalID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = *MEMORY[0x1E699A728];
-  v5 = [(EDBusinessPersistence *)self database];
+  database = [(EDBusinessPersistence *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence businessIDForBusinessExternalID:]"];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__EDBusinessPersistence_businessIDForBusinessExternalID___block_invoke;
   v10[3] = &unk_1E8250288;
   v10[4] = self;
-  v7 = v4;
+  v7 = dCopy;
   v11 = v7;
   v12 = &v13;
-  [v5 __performReadWithCaller:v6 usingBlock:v10];
+  [database __performReadWithCaller:v6 usingBlock:v10];
 
   v8 = v14[3];
   _Block_object_dispose(&v13, 8);
@@ -2829,25 +2829,25 @@ void __57__EDBusinessPersistence_businessIDForBusinessExternalID___block_invoke_
   *(*(*(a1 + 32) + 8) + 24) = [v3 databaseIDValue];
 }
 
-- (id)businessExternalIDForEmailAddress:(id)a3 grouping:(int64_t)a4
+- (id)businessExternalIDForEmailAddress:(id)address grouping:(int64_t)grouping
 {
-  v6 = a3;
+  addressCopy = address;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = *MEMORY[0x1E699A728];
-  v7 = [(EDBusinessPersistence *)self database];
+  database = [(EDBusinessPersistence *)self database];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence businessExternalIDForEmailAddress:grouping:]"];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __68__EDBusinessPersistence_businessExternalIDForEmailAddress_grouping___block_invoke;
   v15 = &unk_1E8250FD8;
   v17 = &v18;
-  v9 = v6;
+  v9 = addressCopy;
   v16 = v9;
-  [v7 __performReadWithCaller:v8 usingBlock:&v12];
+  [database __performReadWithCaller:v8 usingBlock:&v12];
 
-  v10 = [(EDBusinessPersistence *)self _businessExternalIDForEmailAddress:v9 addressID:v19[3] brandID:0 grouping:a4 shouldForceUpdate:0 businessIDsToCombine:0, v12, v13, v14, v15];
+  v10 = [(EDBusinessPersistence *)self _businessExternalIDForEmailAddress:v9 addressID:v19[3] brandID:0 grouping:grouping shouldForceUpdate:0 businessIDsToCombine:0, v12, v13, v14, v15];
 
   _Block_object_dispose(&v18, 8);
 
@@ -2874,80 +2874,80 @@ uint64_t __68__EDBusinessPersistence_businessExternalIDForEmailAddress_grouping_
   return 1;
 }
 
-- (id)_businessExternalIDForEmailAddress:(id)a3 addressID:(int64_t)a4 brandID:(id)a5 grouping:(int64_t)a6 shouldForceUpdate:(BOOL)a7 businessIDsToCombine:(id *)a8
+- (id)_businessExternalIDForEmailAddress:(id)address addressID:(int64_t)d brandID:(id)iD grouping:(int64_t)grouping shouldForceUpdate:(BOOL)update businessIDsToCombine:(id *)combine
 {
   v48[4] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
-  if (v15)
+  addressCopy = address;
+  iDCopy = iD;
+  if (iDCopy)
   {
-    v16 = [(EDBusinessPersistence *)self _externalIDForDomain:0 displayName:0 brandID:v15 simpleAddress:0 grouping:0];
+    v16 = [(EDBusinessPersistence *)self _externalIDForDomain:0 displayName:0 brandID:iDCopy simpleAddress:0 grouping:0];
     goto LABEL_36;
   }
 
-  v44 = a8;
-  v17 = v14;
-  v18 = [v17 emailAddressValue];
-  v19 = v18;
-  if (v18)
+  combineCopy = combine;
+  v17 = addressCopy;
+  emailAddressValue = [v17 emailAddressValue];
+  v19 = emailAddressValue;
+  if (emailAddressValue)
   {
-    v20 = v18;
+    stringValue = emailAddressValue;
   }
 
   else
   {
-    v20 = [v17 stringValue];
+    stringValue = [v17 stringValue];
   }
 
-  v21 = v20;
+  v21 = stringValue;
 
-  v22 = [v21 emailAddressValue];
-  v23 = [v22 displayName];
-  v24 = v23;
+  emailAddressValue2 = [v21 emailAddressValue];
+  displayName = [emailAddressValue2 displayName];
+  v24 = displayName;
   v25 = &stru_1F45B4608;
-  if (v23)
+  if (displayName)
   {
-    v25 = v23;
+    v25 = displayName;
   }
 
   v46 = v25;
 
-  v14 = v21;
-  v26 = [v14 emailAddressValue];
-  v27 = [v26 simpleAddress];
-  v28 = v27;
-  if (v27)
+  addressCopy = v21;
+  emailAddressValue3 = [addressCopy emailAddressValue];
+  simpleAddress = [emailAddressValue3 simpleAddress];
+  v28 = simpleAddress;
+  if (simpleAddress)
   {
-    v45 = v27;
+    stringValue2 = simpleAddress;
   }
 
   else
   {
-    v45 = [v14 stringValue];
+    stringValue2 = [addressCopy stringValue];
   }
 
-  v29 = [v14 emailAddressValue];
-  v30 = [v29 highLevelDomainStrippingTopLevelDomain];
+  emailAddressValue4 = [addressCopy emailAddressValue];
+  highLevelDomainStrippingTopLevelDomain = [emailAddressValue4 highLevelDomainStrippingTopLevelDomain];
 
-  if (v30)
+  if (highLevelDomainStrippingTopLevelDomain)
   {
-    v31 = v30;
+    v31 = highLevelDomainStrippingTopLevelDomain;
   }
 
   else
   {
-    v32 = [v14 emailAddressValue];
-    v33 = [v32 domainStrippingTopLevelDomain];
-    v34 = v33;
+    emailAddressValue5 = [addressCopy emailAddressValue];
+    domainStrippingTopLevelDomain = [emailAddressValue5 domainStrippingTopLevelDomain];
+    v34 = domainStrippingTopLevelDomain;
     v35 = v46;
-    if (v45)
+    if (stringValue2)
     {
-      v35 = v45;
+      v35 = stringValue2;
     }
 
-    if (v33)
+    if (domainStrippingTopLevelDomain)
     {
-      v35 = v33;
+      v35 = domainStrippingTopLevelDomain;
     }
 
     v36 = v35;
@@ -2955,25 +2955,25 @@ uint64_t __68__EDBusinessPersistence_businessExternalIDForEmailAddress_grouping_
     v31 = v36;
   }
 
-  if ([EDBusinessPersistence _shouldUseGroupingSimpleAddressForEmailAddress:v14 grouping:a6])
+  if ([EDBusinessPersistence _shouldUseGroupingSimpleAddressForEmailAddress:addressCopy grouping:grouping])
   {
-    v37 = 3;
+    groupingCopy = 3;
   }
 
   else
   {
-    v37 = a6;
+    groupingCopy = grouping;
   }
 
-  if (v37 == 1)
+  if (groupingCopy == 1)
   {
-    if (*MEMORY[0x1E699A728] == a4 || a7)
+    if (*MEMORY[0x1E699A728] == d || update)
     {
       goto LABEL_32;
     }
 
     v48[0] = 0;
-    v16 = [(EDBusinessPersistence *)self _existingExternalIDForAddressID:a4 error:v48];
+    v16 = [(EDBusinessPersistence *)self _existingExternalIDForAddressID:d error:v48];
     v38 = v48[0];
     v39 = v38;
     if (!v16 && v38)
@@ -2981,7 +2981,7 @@ uint64_t __68__EDBusinessPersistence_businessExternalIDForEmailAddress_grouping_
       v40 = +[EDBusinessPersistence log];
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
-        [MEMORY[0x1E699B858] ec_partiallyRedactedStringForAddress:v14];
+        [MEMORY[0x1E699B858] ec_partiallyRedactedStringForAddress:addressCopy];
         objc_claimAutoreleasedReturnValue();
         [v39 ef_publicDescription];
         objc_claimAutoreleasedReturnValue();
@@ -3003,15 +3003,15 @@ LABEL_32:
 
   else
   {
-    v16 = [(EDBusinessPersistence *)self _externalIDForDomain:v31 displayName:v46 brandID:0 simpleAddress:v45 grouping:?];
+    v16 = [(EDBusinessPersistence *)self _externalIDForDomain:v31 displayName:v46 brandID:0 simpleAddress:stringValue2 grouping:?];
   }
 
   v41 = 0;
 LABEL_33:
-  if (v44)
+  if (combineCopy)
   {
     v41 = v41;
-    *v44 = v41;
+    *combineCopy = v41;
   }
 
 LABEL_36:
@@ -3020,7 +3020,7 @@ LABEL_36:
   return v16;
 }
 
-- (id)_existingExternalIDForAddressID:(int64_t)a3 error:(id *)a4
+- (id)_existingExternalIDForAddressID:(int64_t)d error:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -3034,7 +3034,7 @@ LABEL_36:
   v15 = __Block_byref_object_copy__3;
   v16 = __Block_byref_object_dispose__3;
   v17 = 0;
-  v7 = [(EDBusinessPersistence *)self database];
+  database = [(EDBusinessPersistence *)self database];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence _existingExternalIDForAddressID:error:]"];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -3043,12 +3043,12 @@ LABEL_36:
   v11[4] = self;
   v11[5] = &v18;
   v11[6] = &v12;
-  v11[7] = a3;
-  [v7 __performReadWithCaller:v8 usingBlock:v11];
+  v11[7] = d;
+  [database __performReadWithCaller:v8 usingBlock:v11];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v13[5];
+    *error = v13[5];
   }
 
   v9 = v19[5];
@@ -3076,15 +3076,15 @@ BOOL __63__EDBusinessPersistence__existingExternalIDForAddressID_error___block_i
   return v10;
 }
 
-- (id)_businessExternalIDForAddressID:(int64_t)a3 expectedGrouping:(int64_t)a4 connection:(id)a5 error:(id *)a6
+- (id)_businessExternalIDForAddressID:(int64_t)d expectedGrouping:(int64_t)grouping connection:(id)connection error:(id *)error
 {
-  v10 = a5;
+  connectionCopy = connection;
   v11 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"domain" table:@"businesses"];
   [v11 addResultColumn:@"address_comment"];
   [v11 addResultColumn:@"brand_id"];
   v12 = [v11 join:@"business_addresses" sourceColumn:*MEMORY[0x1E699B768] targetColumn:@"business"];
   v13 = [MEMORY[0x1E699B8C8] column:@"address"];
-  v14 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v14 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v15 = [v13 equalTo:v14];
   [v11 setWhere:v15];
 
@@ -3100,8 +3100,8 @@ BOOL __63__EDBusinessPersistence__existingExternalIDForAddressID_error___block_i
   v19[3] = &unk_1E8251028;
   v19[4] = self;
   v19[5] = &v20;
-  v19[6] = a4;
-  if ([v10 executeSelectStatement:v11 withBlock:v19 error:a6])
+  v19[6] = grouping;
+  if ([connectionCopy executeSelectStatement:v11 withBlock:v19 error:error])
   {
     v16 = v21[5];
   }
@@ -3133,26 +3133,26 @@ void __91__EDBusinessPersistence__businessExternalIDForAddressID_expectedGroupin
   *(v9 + 40) = v8;
 }
 
-- (id)_externalIDWithCommonPrefixForHighLevelDomain:(id)a3 displayName:(id)a4 businessIDsToCombine:(id *)a5
+- (id)_externalIDWithCommonPrefixForHighLevelDomain:(id)domain displayName:(id)name businessIDsToCombine:(id *)combine
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  domainCopy = domain;
+  nameCopy = name;
+  if (combine)
   {
-    *a5 = 0;
+    *combine = 0;
   }
 
-  v10 = [(EDBusinessPersistence *)self _groupingTrieForHighLevelDomain:v8];
+  v10 = [(EDBusinessPersistence *)self _groupingTrieForHighLevelDomain:domainCopy];
   v11 = [v10 count];
   if (v11)
   {
     v12 = *MEMORY[0x1E699A728];
     v13 = [MEMORY[0x1E696AD98] numberWithLongLong:*MEMORY[0x1E699A728]];
-    [v10 insertDisplayName:v9 addressID:v13];
+    [v10 insertDisplayName:nameCopy addressID:v13];
 
-    v14 = [v10 findGroups];
-    if ([v14 count] <= v11)
+    findGroups = [v10 findGroups];
+    if ([findGroups count] <= v11)
     {
       v44[0] = 0;
       v44[1] = v44;
@@ -3162,11 +3162,11 @@ void __91__EDBusinessPersistence__businessExternalIDForAddressID_expectedGroupin
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412802;
-        *&buf[4] = v9;
+        *&buf[4] = nameCopy;
         *&buf[12] = 2112;
-        *&buf[14] = v8;
+        *&buf[14] = domainCopy;
         *&buf[22] = 2112;
-        v46 = v14;
+        v46 = findGroups;
         _os_log_debug_impl(&dword_1C61EF000, v21, OS_LOG_TYPE_DEBUG, "Grouping display name: %@, high level domain: %@, Created some groups: %@", buf, 0x20u);
       }
 
@@ -3186,18 +3186,18 @@ void __91__EDBusinessPersistence__businessExternalIDForAddressID_expectedGroupin
       v29 = 3221225472;
       v30 = __104__EDBusinessPersistence__externalIDWithCommonPrefixForHighLevelDomain_displayName_businessIDsToCombine___block_invoke;
       v31 = &unk_1E8251050;
-      v22 = v8;
+      v22 = domainCopy;
       v32 = v22;
-      v23 = v9;
+      v23 = nameCopy;
       v35 = buf;
       v36 = &v38;
       v37 = v44;
       v33 = v23;
-      v34 = self;
-      [v14 enumerateKeysAndObjectsUsingBlock:&v28];
-      if (a5)
+      selfCopy = self;
+      [findGroups enumerateKeysAndObjectsUsingBlock:&v28];
+      if (combine)
       {
-        *a5 = v39[5];
+        *combine = v39[5];
       }
 
       v24 = *(*&buf[8] + 40);
@@ -3224,8 +3224,8 @@ void __91__EDBusinessPersistence__businessExternalIDForAddressID_expectedGroupin
       v15 = +[EDBusinessPersistence log];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:v9];
-        v17 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:v8 maximumUnredactedLength:1];
+        v16 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:nameCopy];
+        v17 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:domainCopy maximumUnredactedLength:1];
         *buf = 138543618;
         *&buf[4] = v16;
         *&buf[12] = 2114;
@@ -3233,7 +3233,7 @@ void __91__EDBusinessPersistence__businessExternalIDForAddressID_expectedGroupin
         _os_log_impl(&dword_1C61EF000, v15, OS_LOG_TYPE_DEFAULT, "New display name (%{public}@) is not a part of an existing group for high level domain (%{public}@), creating a new external ID", buf, 0x16u);
       }
 
-      v18 = [MEMORY[0x1E699AC30] externalIDForHighLevelDomain:v8 displayNameCommonPrefix:v9];
+      v18 = [MEMORY[0x1E699AC30] externalIDForHighLevelDomain:domainCopy displayNameCommonPrefix:nameCopy];
     }
   }
 
@@ -3242,13 +3242,13 @@ void __91__EDBusinessPersistence__businessExternalIDForAddressID_expectedGroupin
     v19 = +[EDBusinessPersistence log];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:v8 maximumUnredactedLength:1];
+      v20 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:domainCopy maximumUnredactedLength:1];
       *buf = 138543362;
       *&buf[4] = v20;
       _os_log_impl(&dword_1C61EF000, v19, OS_LOG_TYPE_DEFAULT, "No current businesses found with this high level domain (%{public}@), creating a new external ID", buf, 0xCu);
     }
 
-    v18 = [MEMORY[0x1E699AC30] externalIDForHighLevelDomain:v8 displayNameCommonPrefix:v9];
+    v18 = [MEMORY[0x1E699AC30] externalIDForHighLevelDomain:domainCopy displayNameCommonPrefix:nameCopy];
   }
 
   v26 = *MEMORY[0x1E69E9840];
@@ -3328,56 +3328,56 @@ LABEL_10:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_externalIDForPersistedDomain:(id)a3 displayName:(id)a4 brandID:(id)a5 grouping:(int64_t)a6
+- (id)_externalIDForPersistedDomain:(id)domain displayName:(id)name brandID:(id)d grouping:(int64_t)grouping
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 emailAddressValue];
-  v14 = [v13 simpleAddress];
+  domainCopy = domain;
+  nameCopy = name;
+  dCopy = d;
+  emailAddressValue = [domainCopy emailAddressValue];
+  simpleAddress = [emailAddressValue simpleAddress];
 
-  v15 = 3;
-  if (!v14)
+  groupingCopy = 3;
+  if (!simpleAddress)
   {
-    v15 = a6;
+    groupingCopy = grouping;
   }
 
-  if (v12)
+  if (dCopy)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = v15;
+    v16 = groupingCopy;
   }
 
-  v17 = [(EDBusinessPersistence *)self _externalIDForDomain:v10 displayName:v11 brandID:v12 simpleAddress:v14 grouping:v16];
+  v17 = [(EDBusinessPersistence *)self _externalIDForDomain:domainCopy displayName:nameCopy brandID:dCopy simpleAddress:simpleAddress grouping:v16];
 
   return v17;
 }
 
-- (id)_persistedDomainForExternalID:(id)a3
+- (id)_persistedDomainForExternalID:(id)d
 {
-  v3 = a3;
-  v4 = [v3 grouping];
-  if ((v4 - 1) < 2)
+  dCopy = d;
+  grouping = [dCopy grouping];
+  if ((grouping - 1) < 2)
   {
     goto LABEL_4;
   }
 
-  if (v4 == 3)
+  if (grouping == 3)
   {
-    v5 = [v3 simpleAddress];
+    simpleAddress = [dCopy simpleAddress];
     goto LABEL_6;
   }
 
-  if (v4 == 4)
+  if (grouping == 4)
   {
 LABEL_4:
-    v5 = [v3 highLevelDomain];
+    simpleAddress = [dCopy highLevelDomain];
 LABEL_6:
-    v6 = v5;
+    v6 = simpleAddress;
     goto LABEL_8;
   }
 
@@ -3387,32 +3387,32 @@ LABEL_8:
   return v6;
 }
 
-- (id)_persistedDisplayNameForExternalID:(id)a3
+- (id)_persistedDisplayNameForExternalID:(id)d
 {
-  v3 = a3;
-  if (([v3 grouping] - 1) >= 2)
+  dCopy = d;
+  if (([dCopy grouping] - 1) >= 2)
   {
-    v4 = &stru_1F45B4608;
+    displayName = &stru_1F45B4608;
   }
 
   else
   {
-    v4 = [v3 displayName];
+    displayName = [dCopy displayName];
   }
 
-  return v4;
+  return displayName;
 }
 
-- (int64_t)_persistedBrandIDForExternalID:(id)a3
+- (int64_t)_persistedBrandIDForExternalID:(id)d
 {
-  v5 = a3;
-  v6 = [v5 grouping];
-  if ((v6 - 1) >= 4)
+  dCopy = d;
+  grouping = [dCopy grouping];
+  if ((grouping - 1) >= 4)
   {
-    if (!v6)
+    if (!grouping)
     {
-      v7 = [v5 brandID];
-      v3 = [(EDBusinessPersistence *)self _persistedBrandIDForString:v7];
+      brandID = [dCopy brandID];
+      v3 = [(EDBusinessPersistence *)self _persistedBrandIDForString:brandID];
     }
   }
 
@@ -3424,10 +3424,10 @@ LABEL_8:
   return v3;
 }
 
-- (int64_t)_persistedBrandIDForString:(id)a3
+- (int64_t)_persistedBrandIDForString:(id)string
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:v3];
+  stringCopy = string;
+  v4 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:stringCopy];
   v9 = 0;
   if (([v4 scanUnsignedLongLong:&v9] & 1) == 0)
   {
@@ -3472,11 +3472,11 @@ LABEL_12:
   return v7;
 }
 
-- (id)_persistedBrandNamesForDictionary:(id)a3
+- (id)_persistedBrandNamesForDictionary:(id)dictionary
 {
   v9[4] = *MEMORY[0x1E69E9840];
   v9[0] = 0;
-  v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a3 options:0 error:v9];
+  v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:v9];
   v4 = v9[0];
   if (v4)
   {
@@ -3501,9 +3501,9 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_brandIDFromInteger:(int64_t)a3
++ (id)_brandIDFromInteger:(int64_t)integer
 {
-  if (*MEMORY[0x1E699A728] == a3)
+  if (*MEMORY[0x1E699A728] == integer)
   {
     v4 = 0;
   }
@@ -3516,29 +3516,29 @@ LABEL_12:
   return v4;
 }
 
-+ (id)brandIDForResultRow:(id)a3
++ (id)brandIDForResultRow:(id)row
 {
-  v3 = a3;
+  rowCopy = row;
   v4 = +[EDBusinessPersistence businessesBrandIDColumnName];
-  v5 = [v3 columnExistsWithName:v4];
+  v5 = [rowCopy columnExistsWithName:v4];
 
   if (v5)
   {
     v6 = +[EDBusinessPersistence businessesBrandIDColumnName];
-    v7 = [v3 objectForKeyedSubscript:v6];
-    v8 = [v7 numberValue];
+    v7 = [rowCopy objectForKeyedSubscript:v6];
+    numberValue = [v7 numberValue];
 
-    if (v8)
+    if (numberValue)
     {
-      v9 = [v8 longLongValue];
+      longLongValue = [numberValue longLongValue];
     }
 
     else
     {
-      v9 = *MEMORY[0x1E699A728];
+      longLongValue = *MEMORY[0x1E699A728];
     }
 
-    v10 = [EDBusinessPersistence _brandIDFromInteger:v9];
+    v10 = [EDBusinessPersistence _brandIDFromInteger:longLongValue];
   }
 
   else
@@ -3549,43 +3549,43 @@ LABEL_12:
   return v10;
 }
 
-- (id)_externalIDForDomain:(id)a3 displayName:(id)a4 brandID:(id)a5 simpleAddress:(id)a6 grouping:(int64_t)a7
+- (id)_externalIDForDomain:(id)domain displayName:(id)name brandID:(id)d simpleAddress:(id)address grouping:(int64_t)grouping
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  domainCopy = domain;
+  nameCopy = name;
+  dCopy = d;
+  addressCopy = address;
   v15 = 0;
-  if (a7 <= 1)
+  if (grouping <= 1)
   {
-    if (a7)
+    if (grouping)
     {
-      if (a7 != 1)
+      if (grouping != 1)
       {
         goto LABEL_13;
       }
 
-      v16 = [MEMORY[0x1E699AC30] externalIDForHighLevelDomain:v11 displayNameCommonPrefix:v12];
+      v16 = [MEMORY[0x1E699AC30] externalIDForHighLevelDomain:domainCopy displayNameCommonPrefix:nameCopy];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E699AC30] externalIDForBrandID:v13];
+      v16 = [MEMORY[0x1E699AC30] externalIDForBrandID:dCopy];
     }
   }
 
   else
   {
-    switch(a7)
+    switch(grouping)
     {
       case 2:
-        v16 = [MEMORY[0x1E699AC30] externalIDForHighLevelDomain:v11 displayName:v12];
+        v16 = [MEMORY[0x1E699AC30] externalIDForHighLevelDomain:domainCopy displayName:nameCopy];
         break;
       case 4:
-        v16 = [MEMORY[0x1E699AC30] externalIDForHighLevelDomain:v11];
+        v16 = [MEMORY[0x1E699AC30] externalIDForHighLevelDomain:domainCopy];
         break;
       case 3:
-        v16 = [MEMORY[0x1E699AC30] externalIDForSimpleAddress:v14];
+        v16 = [MEMORY[0x1E699AC30] externalIDForSimpleAddress:addressCopy];
         break;
       default:
         goto LABEL_13;
@@ -3598,16 +3598,16 @@ LABEL_13:
   return v15;
 }
 
-- (id)_groupingTrieForHighLevelDomain:(id)a3
+- (id)_groupingTrieForHighLevelDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = 0;
-  v5 = [(EDBusinessPersistence *)self database];
+  database = [(EDBusinessPersistence *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence _groupingTrieForHighLevelDomain:]"];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -3615,9 +3615,9 @@ LABEL_13:
   v10[3] = &unk_1E8251078;
   v12 = &v13;
   v10[4] = self;
-  v7 = v4;
+  v7 = domainCopy;
   v11 = v7;
-  [v5 __performReadWithCaller:v6 usingBlock:v10];
+  [database __performReadWithCaller:v6 usingBlock:v10];
 
   if ([v14[5] ef_isEmpty])
   {
@@ -3646,28 +3646,28 @@ uint64_t __57__EDBusinessPersistence__groupingTrieForHighLevelDomain___block_inv
   return 1;
 }
 
-- (void)fetchBusinessMetadataForAddresses:(id)a3 completionHandler:(id)a4
+- (void)fetchBusinessMetadataForAddresses:(id)addresses completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  addressesCopy = addresses;
+  handlerCopy = handler;
   v23 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v22 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
   v44[2] = __77__EDBusinessPersistence_fetchBusinessMetadataForAddresses_completionHandler___block_invoke;
   v44[3] = &unk_1E82510A0;
   v44[4] = self;
-  v9 = v22;
+  v9 = array;
   v45 = v9;
   v10 = v23;
   v46 = v10;
   v11 = v8;
   v47 = v11;
-  [v6 enumerateKeysAndObjectsUsingBlock:{v44, v22}];
+  [addressesCopy enumerateKeysAndObjectsUsingBlock:{v44, array}];
   if ([v11 count])
   {
-    v12 = [(EDBusinessPersistence *)self database];
+    database = [(EDBusinessPersistence *)self database];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence fetchBusinessMetadataForAddresses:completionHandler:]"];
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
@@ -3675,8 +3675,8 @@ uint64_t __57__EDBusinessPersistence__groupingTrieForHighLevelDomain___block_inv
     v41[3] = &unk_1E8250328;
     v14 = v11;
     v42 = v14;
-    v43 = self;
-    [v12 __performWriteWithCaller:v13 usingBlock:v41];
+    selfCopy = self;
+    [database __performWriteWithCaller:v13 usingBlock:v41];
 
     v15 = [v14 count];
   }
@@ -3699,13 +3699,13 @@ uint64_t __57__EDBusinessPersistence__groupingTrieForHighLevelDomain___block_inv
     v37 = 0x3032000000;
     v38 = __Block_byref_object_copy__3;
     v39 = __Block_byref_object_dispose__3;
-    v40 = [MEMORY[0x1E695DF70] array];
-    v17 = [MEMORY[0x1E699B868] promise];
+    array2 = [MEMORY[0x1E695DF70] array];
+    promise = [MEMORY[0x1E699B868] promise];
     v18 = v36[5];
-    v19 = [v17 future];
-    [v18 addObject:v19];
+    future = [promise future];
+    [v18 addObject:future];
 
-    v20 = [(EDBusinessPersistence *)self businessServiceProvider];
+    businessServiceProvider = [(EDBusinessPersistence *)self businessServiceProvider];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __77__EDBusinessPersistence_fetchBusinessMetadataForAddresses_completionHandler___block_invoke_153;
@@ -3717,22 +3717,22 @@ uint64_t __57__EDBusinessPersistence__groupingTrieForHighLevelDomain___block_inv
     v24[1] = 3221225472;
     v24[2] = __77__EDBusinessPersistence_fetchBusinessMetadataForAddresses_completionHandler___block_invoke_157;
     v24[3] = &unk_1E8251168;
-    v21 = v17;
+    v21 = promise;
     v25 = v21;
     v31 = &v35;
     v26 = v9;
-    v27 = self;
-    v30 = v7;
-    v28 = v6;
+    selfCopy2 = self;
+    v30 = handlerCopy;
+    v28 = addressesCopy;
     v29 = v11;
-    [v20 fetchBusinessMetadataForEmails:v26 perItemCallback:v32 completion:v24];
+    [businessServiceProvider fetchBusinessMetadataForEmails:v26 perItemCallback:v32 completion:v24];
 
     _Block_object_dispose(&v35, 8);
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, v15);
+    (*(handlerCopy + 2))(handlerCopy, v15);
   }
 }
 
@@ -4182,15 +4182,15 @@ void __77__EDBusinessPersistence_fetchBusinessMetadataForAddresses_completionHan
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_updateBusinessIDForAddress:(id)a3 addressID:(int64_t)a4 businessMetadata:(id)a5 connection:(id)a6
+- (BOOL)_updateBusinessIDForAddress:(id)address addressID:(int64_t)d businessMetadata:(id)metadata connection:(id)connection
 {
   v57 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v46 = v10;
-  v47 = v11;
-  v13 = [(EDBusinessPersistence *)self _findExistingBusinessForAddressID:a4 connection:v12];
+  addressCopy = address;
+  metadataCopy = metadata;
+  connectionCopy = connection;
+  v46 = addressCopy;
+  v47 = metadataCopy;
+  v13 = [(EDBusinessPersistence *)self _findExistingBusinessForAddressID:d connection:connectionCopy];
   v14 = *MEMORY[0x1E699A728];
   if (v13 == *MEMORY[0x1E699A728])
   {
@@ -4199,10 +4199,10 @@ void __77__EDBusinessPersistence_fetchBusinessMetadataForAddresses_completionHan
 
   else
   {
-    v15 = [(EDBusinessPersistence *)self _findExistingBrandIDForBusinessID:v13 connection:v12];
+    v15 = [(EDBusinessPersistence *)self _findExistingBrandIDForBusinessID:v13 connection:connectionCopy];
   }
 
-  v16 = [v11 businessId];
+  businessId = [metadataCopy businessId];
   v48 = v15;
   v17 = EFStringsAreEqual();
 
@@ -4212,7 +4212,7 @@ void __77__EDBusinessPersistence_fetchBusinessMetadataForAddresses_completionHan
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v52 = a4;
+      dCopy2 = d;
       _os_log_impl(&dword_1C61EF000, v18, OS_LOG_TYPE_DEFAULT, "Skipping update for address %lld, new brand ID matches existing one.", buf, 0xCu);
     }
 
@@ -4220,7 +4220,7 @@ void __77__EDBusinessPersistence_fetchBusinessMetadataForAddresses_completionHan
     goto LABEL_26;
   }
 
-  v20 = [(EDBusinessPersistence *)self _findOrCreateBusinessIDForAddress:v10 addressID:a4 businessMetadata:v11 shouldForceUpdate:1 connection:v12];
+  v20 = [(EDBusinessPersistence *)self _findOrCreateBusinessIDForAddress:addressCopy addressID:d businessMetadata:metadataCopy shouldForceUpdate:1 connection:connectionCopy];
   v19 = v20 != v14;
   if (v20 != v14 && v13 != v20)
   {
@@ -4228,9 +4228,9 @@ void __77__EDBusinessPersistence_fetchBusinessMetadataForAddresses_completionHan
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218496;
-      v52 = a4;
+      dCopy2 = d;
       v53 = 2048;
-      v54 = v13;
+      dCopy3 = v13;
       v55 = 2048;
       v56 = v20;
       _os_log_impl(&dword_1C61EF000, v22, OS_LOG_TYPE_DEFAULT, "Updated businessID for addressID %lld from %lld to %lld", buf, 0x20u);
@@ -4240,24 +4240,24 @@ void __77__EDBusinessPersistence_fetchBusinessMetadataForAddresses_completionHan
     v25 = [MEMORY[0x1E696AD98] numberWithLongLong:v13];
     v43 = [v24 setWithObject:v25];
 
-    [(EDBusinessPersistence *)self _removeOldBusinessIDs:v43 connection:v12];
+    [(EDBusinessPersistence *)self _removeOldBusinessIDs:v43 connection:connectionCopy];
     v26 = MEMORY[0x1E695DFD8];
     v27 = [MEMORY[0x1E696AD98] numberWithLongLong:v13];
     v50[0] = v27;
     v28 = [MEMORY[0x1E696AD98] numberWithLongLong:v20];
     v50[1] = v28;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:2];
-    v30 = [(EDBusinessPersistence *)self _categoryOverridesForBusinessIDs:v29 connection:v12];
+    v30 = [(EDBusinessPersistence *)self _categoryOverridesForBusinessIDs:v29 connection:connectionCopy];
     v45 = [v26 setWithArray:v30];
 
     v31 = [v45 count];
     if ([v45 count] == 1)
     {
-      v32 = [v45 allObjects];
-      v33 = [v32 firstObject];
-      v34 = [v33 unsignedIntegerValue];
-      v35 = [MEMORY[0x1E695DF00] date];
-      v19 = [(EDBusinessPersistence *)self _setUserOverrideForBusinessID:v20 category:v34 userInitiated:0 connection:v12 timestamp:v35];
+      allObjects = [v45 allObjects];
+      firstObject = [allObjects firstObject];
+      unsignedIntegerValue = [firstObject unsignedIntegerValue];
+      date = [MEMORY[0x1E695DF00] date];
+      v19 = [(EDBusinessPersistence *)self _setUserOverrideForBusinessID:v20 category:unsignedIntegerValue userInitiated:0 connection:connectionCopy timestamp:date];
     }
 
     else
@@ -4272,9 +4272,9 @@ void __77__EDBusinessPersistence_fetchBusinessMetadataForAddresses_completionHan
       v37 = [MEMORY[0x1E699B8C8] column:@"business"];
       v38 = [MEMORY[0x1E696AD98] numberWithLongLong:v20];
       v39 = [v37 equalTo:v38];
-      v32 = [v36 initWithTable:@"business_categories" where:v39];
+      allObjects = [v36 initWithTable:@"business_categories" where:v39];
 
-      v19 = [v12 executeDeleteStatement:v32 error:0];
+      v19 = [connectionCopy executeDeleteStatement:allObjects error:0];
     }
 
 LABEL_23:
@@ -4282,21 +4282,21 @@ LABEL_23:
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v52 = v20;
+      dCopy2 = v20;
       v53 = 2048;
-      v54 = a4;
+      dCopy3 = d;
       _os_log_impl(&dword_1C61EF000, v40, OS_LOG_TYPE_DEFAULT, "Verifying grouping for businessID %lld after updating addressID %lld to be mapped to it", buf, 0x16u);
     }
 
-    [(EDBusinessPersistence *)self _verifyBusiness:v20 connection:v12];
+    [(EDBusinessPersistence *)self _verifyBusiness:v20 connection:connectionCopy];
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
     v49[2] = __91__EDBusinessPersistence__updateBusinessIDForAddress_addressID_businessMetadata_connection___block_invoke;
     v49[3] = &unk_1E8251190;
     v49[4] = self;
-    v49[5] = a4;
+    v49[5] = d;
     v49[6] = v13;
-    [v12 performBlockAfterTransaction:v49];
+    [connectionCopy performBlockAfterTransaction:v49];
 
     v18 = v44;
     goto LABEL_26;
@@ -4324,12 +4324,12 @@ void __91__EDBusinessPersistence__updateBusinessIDForAddress_addressID_businessM
   }
 }
 
-- (id)_bcsEmailIdentiferForAddress:(id)a3
+- (id)_bcsEmailIdentiferForAddress:(id)address
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 emailAddressValue];
-  if (v4)
+  addressCopy = address;
+  emailAddressValue = [addressCopy emailAddressValue];
+  if (emailAddressValue)
   {
     v23 = 0;
     v24 = &v23;
@@ -4350,21 +4350,21 @@ void __91__EDBusinessPersistence__updateBusinessIDForAddress_addressID_businessM
     v6 = v5;
     _Block_object_dispose(&v23, 8);
     v7 = [v5 alloc];
-    v8 = v4;
-    v9 = [v8 emailAddressValue];
-    v10 = [v9 simpleAddress];
-    v11 = v10;
-    if (v10)
+    v8 = emailAddressValue;
+    emailAddressValue2 = [v8 emailAddressValue];
+    simpleAddress = [emailAddressValue2 simpleAddress];
+    v11 = simpleAddress;
+    if (simpleAddress)
     {
-      v12 = v10;
+      stringValue = simpleAddress;
     }
 
     else
     {
-      v12 = [v8 stringValue];
+      stringValue = [v8 stringValue];
     }
 
-    v13 = v12;
+    v13 = stringValue;
 
     v18 = [v7 initWithEmail:v13 fullDomain:0 topLevelDomain:0];
   }
@@ -4374,23 +4374,23 @@ void __91__EDBusinessPersistence__updateBusinessIDForAddress_addressID_businessM
     v13 = +[EDBusinessPersistence log];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = v3;
-      v15 = [v14 emailAddressValue];
-      v16 = v15;
-      if (v15)
+      v14 = addressCopy;
+      emailAddressValue3 = [v14 emailAddressValue];
+      v16 = emailAddressValue3;
+      if (emailAddressValue3)
       {
-        v17 = [v15 ef_publicDescription];
+        ef_publicDescription = [emailAddressValue3 ef_publicDescription];
       }
 
       else
       {
         v19 = MEMORY[0x1E699B858];
-        v20 = [v14 stringValue];
-        v17 = [v19 fullyOrPartiallyRedactedStringForString:v20];
+        stringValue2 = [v14 stringValue];
+        ef_publicDescription = [v19 fullyOrPartiallyRedactedStringForString:stringValue2];
       }
 
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v17;
+      *(&buf + 4) = ef_publicDescription;
       _os_log_impl(&dword_1C61EF000, v13, OS_LOG_TYPE_DEFAULT, "Unable to fetch a business identifier for an invalid email address %{public}@", &buf, 0xCu);
     }
 
@@ -4402,22 +4402,22 @@ void __91__EDBusinessPersistence__updateBusinessIDForAddress_addressID_businessM
   return v18;
 }
 
-- (BOOL)_hasCompletedRecentBCSSyncForAddressID:(int64_t)a3 connection:(id)a4
+- (BOOL)_hasCompletedRecentBCSSyncForAddressID:(int64_t)d connection:(id)connection
 {
-  v4 = [(EDBusinessPersistence *)self _lastBCSSyncForAddressID:a3 connection:a4];
+  v4 = [(EDBusinessPersistence *)self _lastBCSSyncForAddressID:d connection:connection];
   v5 = [MEMORY[0x1E695DF00] ef_dateHoursAgo:24];
   v6 = [v4 ef_isLaterThanDate:v5];
 
   return v6;
 }
 
-- (id)_lastBCSSyncForAddressID:(int64_t)a3 connection:(id)a4
+- (id)_lastBCSSyncForAddressID:(int64_t)d connection:(id)connection
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"last_bcs_sync" table:@"business_addresses"];
   v7 = [MEMORY[0x1E699B8C8] column:@"address"];
-  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v9 = [v7 equalTo:v8];
   [v6 setWhere:v9];
 
@@ -4433,7 +4433,7 @@ void __91__EDBusinessPersistence__updateBusinessIDForAddress_addressID_businessM
   v18[2] = __61__EDBusinessPersistence__lastBCSSyncForAddressID_connection___block_invoke;
   v18[3] = &unk_1E8250418;
   v18[4] = &v19;
-  LOBYTE(v8) = [v5 executeSelectStatement:v6 withBlock:v18 error:&v17];
+  LOBYTE(v8) = [connectionCopy executeSelectStatement:v6 withBlock:v18 error:&v17];
   v10 = v17;
   if ((v8 & 1) == 0)
   {
@@ -4449,15 +4449,15 @@ void __91__EDBusinessPersistence__updateBusinessIDForAddress_addressID_businessM
   v12 = v20[5];
   if (v12)
   {
-    v13 = v12;
+    distantPast = v12;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
   }
 
-  v14 = v13;
+  v14 = distantPast;
 
   _Block_object_dispose(&v19, 8);
   v15 = *MEMORY[0x1E69E9840];
@@ -4475,15 +4475,15 @@ void __61__EDBusinessPersistence__lastBCSSyncForAddressID_connection___block_inv
   *(v5 + 40) = v4;
 }
 
-- (id)_addressesNeedingUpdateStatementOnlyCounts:(BOOL)a3
+- (id)_addressesNeedingUpdateStatementOnlyCounts:(BOOL)counts
 {
-  v3 = a3;
+  countsCopy = counts;
   v34[2] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(MEMORY[0x1E699B948]);
   v5 = +[EDMessagePersistence addressesTableName];
   v32 = [v4 initWithTable:v5];
 
-  if (v3)
+  if (countsCopy)
   {
     v6 = [MEMORY[0x1E699B890] count:0];
     [v32 addResult:v6 alias:0];
@@ -4510,12 +4510,12 @@ void __61__EDBusinessPersistence__lastBCSSyncForAddressID_connection___block_inv
   v12 = [v32 join:@"businesses" on:v11];
 
   v13 = [MEMORY[0x1E699B8C8] column:@"last_bcs_sync"];
-  v30 = [v13 isNull];
+  isNull = [v13 isNull];
 
   v14 = MEMORY[0x1E699B898];
   v15 = [MEMORY[0x1E699B8C8] column:@"brand_id"];
-  v16 = [v15 isNotNull];
-  v34[0] = v16;
+  isNotNull = [v15 isNotNull];
+  v34[0] = isNotNull;
   v17 = [MEMORY[0x1E699B8C8] column:@"last_bcs_sync"];
   v18 = MEMORY[0x1E696AD98];
   v19 = [MEMORY[0x1E695DF00] ef_dateHoursAgo:24];
@@ -4527,7 +4527,7 @@ void __61__EDBusinessPersistence__lastBCSSyncForAddressID_connection___block_inv
   v23 = [v14 combined:v22];
 
   v24 = MEMORY[0x1E699B928];
-  v33[0] = v30;
+  v33[0] = isNull;
   v33[1] = v23;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
   v26 = [v24 combined:v25];
@@ -4544,7 +4544,7 @@ void __61__EDBusinessPersistence__lastBCSSyncForAddressID_connection___block_inv
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v3 = [(EDBusinessPersistence *)self database];
+  database = [(EDBusinessPersistence *)self database];
   v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence countOfAddressesNeedingUpdate]"];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -4552,7 +4552,7 @@ void __61__EDBusinessPersistence__lastBCSSyncForAddressID_connection___block_inv
   v7[3] = &unk_1E8250350;
   v7[4] = self;
   v7[5] = &v8;
-  [v3 __performReadWithCaller:v4 usingBlock:v7];
+  [database __performReadWithCaller:v4 usingBlock:v7];
 
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -4568,11 +4568,11 @@ uint64_t __54__EDBusinessPersistence_countOfAddressesNeedingUpdate__block_invoke
   return 1;
 }
 
-- (void)iterateAddressesNeedingUpdateWithCancelationToken:(id)a3 handler:(id)a4
+- (void)iterateAddressesNeedingUpdateWithCancelationToken:(id)token handler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  tokenCopy = token;
+  handlerCopy = handler;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v26 = 0;
   v27 = &v26;
@@ -4580,24 +4580,24 @@ uint64_t __54__EDBusinessPersistence_countOfAddressesNeedingUpdate__block_invoke
   v29 = __Block_byref_object_copy__3;
   v30 = __Block_byref_object_dispose__3;
   v31 = 0;
-  v10 = [(EDBusinessPersistence *)self database];
+  database = [(EDBusinessPersistence *)self database];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence iterateAddressesNeedingUpdateWithCancelationToken:handler:]"];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __83__EDBusinessPersistence_iterateAddressesNeedingUpdateWithCancelationToken_handler___block_invoke;
   v20[3] = &unk_1E82511E0;
   v25 = a2;
-  v12 = v7;
+  v12 = tokenCopy;
   v21 = v12;
-  v22 = self;
+  selfCopy = self;
   v13 = v9;
   v23 = v13;
   v24 = &v26;
-  [v10 __performReadWithCaller:v11 usingBlock:v20];
+  [database __performReadWithCaller:v11 usingBlock:v20];
 
   if (v27[5])
   {
-    (*(v8 + 2))(v8, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   else
@@ -4616,7 +4616,7 @@ uint64_t __54__EDBusinessPersistence_countOfAddressesNeedingUpdate__block_invoke
     v17[2] = __83__EDBusinessPersistence_iterateAddressesNeedingUpdateWithCancelationToken_handler___block_invoke_163;
     v17[3] = &unk_1E8251208;
     v18 = v12;
-    v19 = v8;
+    v19 = handlerCopy;
     [v13 enumerateObjectsUsingBlock:v17];
   }
 
@@ -4755,13 +4755,13 @@ void __83__EDBusinessPersistence_iterateAddressesNeedingUpdateWithCancelationTok
   }
 }
 
-- (void)_verifyBusiness:(int64_t)a3 connection:(id)a4
+- (void)_verifyBusiness:(int64_t)business connection:(id)connection
 {
   v56[5] = *MEMORY[0x1E69E9840];
-  v27 = a4;
+  connectionCopy = connection;
   v28 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"address" table:@"business_addresses"];
   v6 = [MEMORY[0x1E699B8C8] column:@"business"];
-  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:business];
   v8 = [v6 equalTo:v7];
   [v28 setWhere:v8];
 
@@ -4774,8 +4774,8 @@ void __83__EDBusinessPersistence_iterateAddressesNeedingUpdateWithCancelationTok
   v12 = [v11 in:v28];
   [v9 setWhere:v12];
 
-  v24 = [(EDBusinessPersistence *)self businessDisplayNameForBusinessID:a3];
-  v26 = [(EDBusinessPersistence *)self _findExistingBrandIDForBusinessID:a3 connection:v27];
+  v24 = [(EDBusinessPersistence *)self businessDisplayNameForBusinessID:business];
+  v26 = [(EDBusinessPersistence *)self _findExistingBrandIDForBusinessID:business connection:connectionCopy];
   v54[0] = 0;
   v54[1] = v54;
   v54[2] = 0x3032000000;
@@ -4794,7 +4794,7 @@ void __83__EDBusinessPersistence_iterateAddressesNeedingUpdateWithCancelationTok
   aBlock[2] = __52__EDBusinessPersistence__verifyBusiness_connection___block_invoke;
   aBlock[3] = &unk_1E8251230;
   aBlock[5] = v54;
-  aBlock[6] = a3;
+  aBlock[6] = business;
   aBlock[4] = self;
   v47 = v26 != 0;
   v13 = _Block_copy(aBlock);
@@ -4805,24 +4805,24 @@ void __83__EDBusinessPersistence_iterateAddressesNeedingUpdateWithCancelationTok
   v14 = v25;
   v45 = v26 != 0;
   v37 = v14;
-  v38 = self;
+  selfCopy = self;
   v42 = v54;
   v43 = &v48;
   v15 = v23;
   v39 = v15;
   v16 = v24;
   v40 = v16;
-  v44 = a3;
+  businessCopy = business;
   v17 = v13;
   v41 = v17;
   v35 = 0;
-  LOBYTE(v13) = [v27 executeSelectStatement:v9 withBlock:v36 error:&v35];
+  LOBYTE(v13) = [connectionCopy executeSelectStatement:v9 withBlock:v36 error:&v35];
   v18 = v35;
   if (v13)
   {
     if ([v49[5] count])
     {
-      v19 = [(EDBusinessPersistence *)self businessServiceProvider];
+      businessServiceProvider = [(EDBusinessPersistence *)self businessServiceProvider];
       v20 = v49[5];
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
@@ -4831,14 +4831,14 @@ void __83__EDBusinessPersistence_iterateAddressesNeedingUpdateWithCancelationTok
       v30[4] = self;
       v31 = v26;
       v32 = v15;
-      v34 = a3;
+      businessCopy2 = business;
       v33 = v17;
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __52__EDBusinessPersistence__verifyBusiness_connection___block_invoke_171;
       v29[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-      v29[4] = a3;
-      [v19 fetchBusinessMetadataForEmails:v20 perItemCallback:v30 completion:v29];
+      v29[4] = business;
+      [businessServiceProvider fetchBusinessMetadataForEmails:v20 perItemCallback:v30 completion:v29];
     }
   }
 
@@ -5245,23 +5245,23 @@ void __52__EDBusinessPersistence__verifyBusiness_connection___block_invoke_171(u
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportIncorrectBusinessForAddress:(id)a3 isBusinessConnectGrouping:(BOOL)a4 fromClassName:(id)a5
+- (void)reportIncorrectBusinessForAddress:(id)address isBusinessConnectGrouping:(BOOL)grouping fromClassName:(id)name
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(EDBusinessPersistence *)self database];
+  addressCopy = address;
+  nameCopy = name;
+  database = [(EDBusinessPersistence *)self database];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence reportIncorrectBusinessForAddress:isBusinessConnectGrouping:fromClassName:]"];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __99__EDBusinessPersistence_reportIncorrectBusinessForAddress_isBusinessConnectGrouping_fromClassName___block_invoke;
   v14[3] = &unk_1E82512F0;
-  v12 = v8;
+  v12 = addressCopy;
   v15 = v12;
-  v16 = self;
-  v18 = a4;
-  v13 = v9;
+  selfCopy = self;
+  groupingCopy = grouping;
+  v13 = nameCopy;
   v17 = v13;
-  [v10 __performReadWithCaller:v11 usingBlock:v14];
+  [database __performReadWithCaller:v11 usingBlock:v14];
 }
 
 uint64_t __99__EDBusinessPersistence_reportIncorrectBusinessForAddress_isBusinessConnectGrouping_fromClassName___block_invoke(uint64_t a1, void *a2)
@@ -5302,30 +5302,30 @@ LABEL_9:
   return 1;
 }
 
-- (void)_reportIncorrectBusinessForAddressID:(int64_t)a3 businessID:(int64_t)a4 isBusinessConnectGrouping:(BOOL)a5 fromClassName:(id)a6
+- (void)_reportIncorrectBusinessForAddressID:(int64_t)d businessID:(int64_t)iD isBusinessConnectGrouping:(BOOL)grouping fromClassName:(id)name
 {
-  v6 = a5;
+  groupingCopy = grouping;
   v29 = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lld-%lld", a4, a3];
-  v11 = [MEMORY[0x1E695E000] em_userDefaults];
+  nameCopy = name;
+  v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lld-%lld", iD, d];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
   v12 = *MEMORY[0x1E699AB78];
   v13 = MEMORY[0x1E695DFA8];
-  v14 = [v11 valueForKey:v12];
+  v14 = [em_userDefaults valueForKey:v12];
   v15 = [v13 setWithArray:v14];
 
   if ([v15 containsObject:v10])
   {
-    v16 = +[EDBusinessPersistence log];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    allObjects = +[EDBusinessPersistence log];
+    if (os_log_type_enabled(allObjects, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v22 = a3;
+      dCopy = d;
       v23 = 2048;
-      v24 = a4;
+      iDCopy = iD;
       v25 = 2114;
-      v26 = v9;
-      _os_log_impl(&dword_1C61EF000, v16, OS_LOG_TYPE_DEFAULT, "Skipping reporting auto bug capture for incorrect business grouping of addressID %lld to businessID %lld detected in %{public}@ since it was already reported", buf, 0x20u);
+      iDCopy2 = nameCopy;
+      _os_log_impl(&dword_1C61EF000, allObjects, OS_LOG_TYPE_DEFAULT, "Skipping reporting auto bug capture for incorrect business grouping of addressID %lld to businessID %lld detected in %{public}@ since it was already reported", buf, 0x20u);
     }
   }
 
@@ -5336,41 +5336,41 @@ LABEL_9:
     {
       v20 = @"display name";
       *buf = 138544130;
-      if (v6)
+      if (groupingCopy)
       {
         v20 = @"business connect";
       }
 
-      v22 = v20;
+      dCopy = v20;
       v23 = 2114;
-      v24 = v9;
+      iDCopy = nameCopy;
       v25 = 2048;
-      v26 = a4;
+      iDCopy2 = iD;
       v27 = 2048;
-      v28 = a3;
+      dCopy2 = d;
       _os_log_error_impl(&dword_1C61EF000, v17, OS_LOG_TYPE_ERROR, "Reporting auto bug capture for incorrect %{public}@ grouping detected in %{public}@: businessID %lld has addressID %lld mapped to it", buf, 0x2Au);
     }
 
-    v18 = [MEMORY[0x1E699B780] sharedReporter];
-    if (v6)
+    mEMORY[0x1E699B780] = [MEMORY[0x1E699B780] sharedReporter];
+    if (groupingCopy)
     {
-      [v18 reportIssueType:v9 description:@"Incorrect business connect grouping"];
+      [mEMORY[0x1E699B780] reportIssueType:nameCopy description:@"Incorrect business connect grouping"];
     }
 
     else
     {
-      [v18 reportIssueType:v9 description:@"Incorrect display name grouping"];
+      [mEMORY[0x1E699B780] reportIssueType:nameCopy description:@"Incorrect display name grouping"];
     }
 
     [v15 addObject:v10];
-    v16 = [v15 allObjects];
-    [v11 setObject:v16 forKey:v12];
+    allObjects = [v15 allObjects];
+    [em_userDefaults setObject:allObjects forKey:v12];
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)businessDisplayNameForBusinessID:(int64_t)a3
+- (id)businessDisplayNameForBusinessID:(int64_t)d
 {
   v10 = 0;
   v11 = &v10;
@@ -5378,16 +5378,16 @@ LABEL_9:
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v5 = [(EDBusinessPersistence *)self database];
+  database = [(EDBusinessPersistence *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence businessDisplayNameForBusinessID:]"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__EDBusinessPersistence_businessDisplayNameForBusinessID___block_invoke;
   v9[3] = &unk_1E8250EC8;
   v9[5] = &v10;
-  v9[6] = a3;
+  v9[6] = d;
   v9[4] = self;
-  [v5 __performReadWithCaller:v6 usingBlock:v9];
+  [database __performReadWithCaller:v6 usingBlock:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -5448,17 +5448,17 @@ void __58__EDBusinessPersistence_businessDisplayNameForBusinessID___block_invoke
   *(v8 + 40) = v7;
 }
 
-- (id)_localizedStringFromJSONString:(id)a3
+- (id)_localizedStringFromJSONString:(id)string
 {
   v12[4] = *MEMORY[0x1E69E9840];
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [string dataUsingEncoding:4];
   v12[0] = 0;
   v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v3 options:0 error:v12];
   v5 = v12[0];
   if (v5)
   {
-    v6 = +[EDBusinessPersistence log];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    localizedString = +[EDBusinessPersistence log];
+    if (os_log_type_enabled(localizedString, OS_LOG_TYPE_ERROR))
     {
       [v5 ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
@@ -5471,11 +5471,11 @@ void __58__EDBusinessPersistence_businessDisplayNameForBusinessID___block_invoke
   else
   {
     v8 = [objc_alloc(MEMORY[0x1E6964E28]) initWithLocalizedStrings:v4];
-    v6 = [v8 localizedString];
+    localizedString = [v8 localizedString];
 
-    if ([v6 length])
+    if ([localizedString length])
     {
-      v9 = v6;
+      v9 = localizedString;
     }
 
     else
@@ -5491,27 +5491,27 @@ void __58__EDBusinessPersistence_businessDisplayNameForBusinessID___block_invoke
   return v7;
 }
 
-- (void)persistenceWillAddProtectedDatabaseIDsFromJournal:(id)a3 andReplaceJournalDatabaseIDsWithProtectedDatabaseIDs:(id)a4 forTable:(id)a5
+- (void)persistenceWillAddProtectedDatabaseIDsFromJournal:(id)journal andReplaceJournalDatabaseIDsWithProtectedDatabaseIDs:(id)ds forTable:(id)table
 {
-  v13 = a3;
-  v6 = a5;
-  if ((_os_feature_enabled_impl() & 1) != 0 && [v6 isEqualToString:@"businesses"])
+  journalCopy = journal;
+  tableCopy = table;
+  if ((_os_feature_enabled_impl() & 1) != 0 && [tableCopy isEqualToString:@"businesses"])
   {
-    v7 = [MEMORY[0x1E696AF00] currentThread];
-    v8 = [v7 threadDictionary];
-    v9 = [v8 objectForKeyedSubscript:@"EDBusinessPersistence.reconciledBusinessIDs"];
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
+    threadDictionary = [currentThread threadDictionary];
+    v9 = [threadDictionary objectForKeyedSubscript:@"EDBusinessPersistence.reconciledBusinessIDs"];
 
     if (v9)
     {
-      [v9 addIndexes:v13];
+      [v9 addIndexes:journalCopy];
     }
 
     else
     {
-      v10 = [v13 mutableCopy];
-      v11 = [MEMORY[0x1E696AF00] currentThread];
-      v12 = [v11 threadDictionary];
-      [v12 setObject:v10 forKeyedSubscript:@"EDBusinessPersistence.reconciledBusinessIDs"];
+      v10 = [journalCopy mutableCopy];
+      currentThread2 = [MEMORY[0x1E696AF00] currentThread];
+      threadDictionary2 = [currentThread2 threadDictionary];
+      [threadDictionary2 setObject:v10 forKeyedSubscript:@"EDBusinessPersistence.reconciledBusinessIDs"];
     }
   }
 }
@@ -5521,13 +5521,13 @@ void __58__EDBusinessPersistence_businessDisplayNameForBusinessID___block_invoke
   v24 = *MEMORY[0x1E69E9840];
   if (_os_feature_enabled_impl())
   {
-    v3 = [MEMORY[0x1E696AF00] currentThread];
-    v4 = [v3 threadDictionary];
-    v15 = [v4 objectForKeyedSubscript:@"EDBusinessPersistence.reconciledBusinessIDs"];
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
+    threadDictionary = [currentThread threadDictionary];
+    v15 = [threadDictionary objectForKeyedSubscript:@"EDBusinessPersistence.reconciledBusinessIDs"];
 
-    v5 = [MEMORY[0x1E696AF00] currentThread];
-    v6 = [v5 threadDictionary];
-    [v6 setObject:0 forKeyedSubscript:@"EDBusinessPersistence.reconciledBusinessIDs"];
+    currentThread2 = [MEMORY[0x1E696AF00] currentThread];
+    threadDictionary2 = [currentThread2 threadDictionary];
+    [threadDictionary2 setObject:0 forKeyedSubscript:@"EDBusinessPersistence.reconciledBusinessIDs"];
 
     if ([v15 count])
     {
@@ -5551,7 +5551,7 @@ void __58__EDBusinessPersistence_businessDisplayNameForBusinessID___block_invoke
             }
 
             v10 = *(*(&v19 + 1) + 8 * v9);
-            v11 = [(EDBusinessPersistence *)self database];
+            database = [(EDBusinessPersistence *)self database];
             v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence persistenceDidReconcileProtectedData]"];
             v18[0] = MEMORY[0x1E69E9820];
             v18[1] = 3221225472;
@@ -5560,7 +5560,7 @@ void __58__EDBusinessPersistence_businessDisplayNameForBusinessID___block_invoke
             v18[4] = self;
             v18[5] = v10;
             v18[6] = a2;
-            [v11 __performWriteWithCaller:v12 usingBlock:v18];
+            [database __performWriteWithCaller:v12 usingBlock:v18];
 
             ++v9;
           }
@@ -5572,8 +5572,8 @@ void __58__EDBusinessPersistence_businessDisplayNameForBusinessID___block_invoke
         while (v7);
       }
 
-      v13 = [(EDBusinessPersistence *)self hookRegistry];
-      [v13 persistenceDidFinishMergingBusinessesAfterJournalReconciliation];
+      hookRegistry = [(EDBusinessPersistence *)self hookRegistry];
+      [hookRegistry persistenceDidFinishMergingBusinessesAfterJournalReconciliation];
     }
   }
 
@@ -5666,21 +5666,21 @@ void __61__EDBusinessPersistence_persistenceDidReconcileProtectedData__block_inv
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_highLevelDomainsForBusinessIDs:(id)a3
+- (id)_highLevelDomainsForBusinessIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(EDBusinessPersistence *)self database];
+  database = [(EDBusinessPersistence *)self database];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDBusinessPersistence _highLevelDomainsForBusinessIDs:]"];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __57__EDBusinessPersistence__highLevelDomainsForBusinessIDs___block_invoke;
   v13[3] = &unk_1E8250328;
-  v8 = v4;
+  v8 = dsCopy;
   v14 = v8;
   v9 = v5;
   v15 = v9;
-  [v6 __performReadWithCaller:v7 usingBlock:v13];
+  [database __performReadWithCaller:v7 usingBlock:v13];
 
   v10 = v15;
   v11 = v9;

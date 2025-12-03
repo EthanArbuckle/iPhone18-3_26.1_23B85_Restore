@@ -1,12 +1,12 @@
 @interface CMIOExtensionClient
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (BOOL)isEqual:(id)a3;
-- (CMIOExtensionClient)initWithXPCDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CMIOExtensionClient)initWithXPCDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCDictionary;
 - (id)description;
 - (id)redactedDescription;
-- (int64_t)authorizationStatusForMediaType:(unsigned int)a3;
+- (int64_t)authorizationStatusForMediaType:(unsigned int)type;
 - (void)copyXPCDictionary;
 - (void)dealloc;
 @end
@@ -42,9 +42,9 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
     return v6;
@@ -56,27 +56,27 @@
     goto LABEL_23;
   }
 
-  if (a3)
+  if (equal)
   {
-    [a3 auditToken];
+    [equal auditToken];
   }
 
   clientID = self->_clientID;
-  if (clientID == [a3 clientID] || (v6 = -[NSUUID isEqual:](self->_clientID, "isEqual:", objc_msgSend(a3, "clientID"))) != 0)
+  if (clientID == [equal clientID] || (v6 = -[NSUUID isEqual:](self->_clientID, "isEqual:", objc_msgSend(equal, "clientID"))) != 0)
   {
     signingID = self->_signingID;
-    if (signingID == [a3 signingID] || (v6 = -[NSString isEqual:](self->_signingID, "isEqual:", objc_msgSend(a3, "signingID"))) != 0)
+    if (signingID == [equal signingID] || (v6 = -[NSString isEqual:](self->_signingID, "isEqual:", objc_msgSend(equal, "signingID"))) != 0)
     {
       if (*self->_auditToken.val == v15 && *&self->_auditToken.val[2] == 0 && *&self->_auditToken.val[4] == 0 && *&self->_auditToken.val[6] == 0)
       {
         pid = self->_pid;
-        if (pid == [a3 pid])
+        if (pid == [equal pid])
         {
           isToProxy = self->_isToProxy;
-          if (isToProxy == [a3 isToProxy])
+          if (isToProxy == [equal isToProxy])
           {
             isFromProxyExtensionManager = self->_isFromProxyExtensionManager;
-            LOBYTE(v6) = isFromProxyExtensionManager == [a3 isFromProxyExtensionManager];
+            LOBYTE(v6) = isFromProxyExtensionManager == [equal isFromProxyExtensionManager];
             return v6;
           }
         }
@@ -90,9 +90,9 @@ LABEL_23:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CMIOExtensionClient allocWithZone:a3];
+  v4 = [CMIOExtensionClient allocWithZone:zone];
   pid = self->_pid;
   clientID = self->_clientID;
   stAttribution = self->_stAttribution;
@@ -139,13 +139,13 @@ LABEL_23:
   return v3;
 }
 
-- (CMIOExtensionClient)initWithXPCDictionary:(id)a3
+- (CMIOExtensionClient)initWithXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    uint64 = xpc_dictionary_get_uint64(a3, "pid");
+    uint64 = xpc_dictionary_get_uint64(dictionary, "pid");
     cf = 0;
-    if (cmio_XPCMessageCopyCFString(a3, "clientID", &cf))
+    if (cmio_XPCMessageCopyCFString(dictionary, "clientID", &cf))
     {
       v6 = CMIOLog();
       if (v6)
@@ -174,7 +174,7 @@ LABEL_23:
     if (!v9->_signingID)
     {
       *&v12[0] = 0;
-      if (cmio_XPCMessageCopyCFString(a3, "signingID", v12))
+      if (cmio_XPCMessageCopyCFString(dictionary, "signingID", v12))
       {
         v10 = CMIOLog();
         if (v10)
@@ -206,10 +206,10 @@ LABEL_23:
   return v9;
 }
 
-- (int64_t)authorizationStatusForMediaType:(unsigned int)a3
+- (int64_t)authorizationStatusForMediaType:(unsigned int)type
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a3 == 1936684398)
+  if (type == 1936684398)
   {
     result = self->_microphoneAuthorizationStatus;
     if (result)
@@ -298,7 +298,7 @@ LABEL_23:
   }
 
   v16 = 64;
-  if (a3 == 1936684398)
+  if (type == 1936684398)
   {
     v16 = 56;
   }

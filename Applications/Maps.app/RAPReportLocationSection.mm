@@ -1,7 +1,7 @@
 @interface RAPReportLocationSection
 - (NSData)imageDataOfMapAndInstructionsCell;
-- (RAPReportLocationSection)initWithQuestion:(id)a3;
-- (id)cellForRowAtIndex:(int64_t)a3;
+- (RAPReportLocationSection)initWithQuestion:(id)question;
+- (id)cellForRowAtIndex:(int64_t)index;
 - (id)headerTitle;
 - (void)registerReuseIdentifiersForCells;
 @end
@@ -16,31 +16,31 @@
   return v3;
 }
 
-- (id)cellForRowAtIndex:(int64_t)a3
+- (id)cellForRowAtIndex:(int64_t)index
 {
-  if (a3 == 1)
+  if (index == 1)
   {
-    v14 = [(RAPInstructionCorrectionQuestion *)self->_question listItem];
+    listItem = [(RAPInstructionCorrectionQuestion *)self->_question listItem];
 
     provider = self->_provider;
-    v16 = [(RAPTablePartSection *)self tableView];
+    tableView = [(RAPTablePartSection *)self tableView];
     question = self->_question;
-    if (v14)
+    if (listItem)
     {
-      v18 = [(RAPInstructionCorrectionQuestion *)question listItem];
-      v19 = [(RAPInstructionDetailRouteCellProvider *)provider transitDirectionsCellForTableView:v16 item:v18];
+      listItem2 = [(RAPInstructionCorrectionQuestion *)question listItem];
+      v19 = [(RAPInstructionDetailRouteCellProvider *)provider transitDirectionsCellForTableView:tableView item:listItem2];
       instructionCell = self->_instructionCell;
       self->_instructionCell = v19;
 
-      v16 = [(RAPTablePartSection *)self tableView];
-      [v16 bounds];
+      tableView = [(RAPTablePartSection *)self tableView];
+      [tableView bounds];
       [(UITableViewCell *)self->_instructionCell setSeparatorInset:0.0, 0.0, 0.0, CGRectGetWidth(v27)];
     }
 
     else
     {
-      v22 = [(RAPInstructionCorrectionQuestion *)question composedRouteStep];
-      v23 = [(RAPInstructionDetailRouteCellProvider *)provider directionStepCellForTableView:v16 step:v22];
+      composedRouteStep = [(RAPInstructionCorrectionQuestion *)question composedRouteStep];
+      v23 = [(RAPInstructionDetailRouteCellProvider *)provider directionStepCellForTableView:tableView step:composedRouteStep];
       v24 = self->_instructionCell;
       self->_instructionCell = v23;
     }
@@ -49,14 +49,14 @@
     goto LABEL_10;
   }
 
-  if (a3)
+  if (index)
   {
     v21 = 0;
     goto LABEL_12;
   }
 
-  v4 = [(RAPTablePartSection *)self tableView];
-  v5 = [v4 dequeueReusableCellWithIdentifier:@"RAPRouteStepMapViewCell"];
+  tableView2 = [(RAPTablePartSection *)self tableView];
+  v5 = [tableView2 dequeueReusableCellWithIdentifier:@"RAPRouteStepMapViewCell"];
   p_instructionCell = &self->_mapViewCell;
   mapViewCell = self->_mapViewCell;
   self->_mapViewCell = v5;
@@ -66,8 +66,8 @@
   {
     v9 = [RAPRouteStepMapViewCell alloc];
     route = self->_route;
-    v11 = [(RAPInstructionCorrectionQuestion *)self->_question composedRouteStep];
-    v12 = [(RAPRouteStepMapViewCell *)v9 initWithIdentifier:@"RAPRouteStepMapViewCell" route:route routeStep:v11];
+    composedRouteStep2 = [(RAPInstructionCorrectionQuestion *)self->_question composedRouteStep];
+    v12 = [(RAPRouteStepMapViewCell *)v9 initWithIdentifier:@"RAPRouteStepMapViewCell" route:route routeStep:composedRouteStep2];
     v13 = *p_instructionCell;
     *p_instructionCell = v12;
 
@@ -92,13 +92,13 @@ LABEL_12:
   v16.width = v4;
   UIGraphicsBeginImageContextWithOptions(v16, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v9 = [(RAPRouteStepMapViewCell *)self->_mapViewCell layer];
-  [v9 renderInContext:CurrentContext];
+  layer = [(RAPRouteStepMapViewCell *)self->_mapViewCell layer];
+  [layer renderInContext:CurrentContext];
 
   [(RAPRouteStepMapViewCell *)self->_mapViewCell bounds];
   CGContextTranslateCTM(CurrentContext, 0.0, v10);
-  v11 = [(UITableViewCell *)self->_instructionCell layer];
-  [v11 renderInContext:CurrentContext];
+  layer2 = [(UITableViewCell *)self->_instructionCell layer];
+  [layer2 renderInContext:CurrentContext];
 
   v12 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -110,25 +110,25 @@ LABEL_12:
 - (void)registerReuseIdentifiersForCells
 {
   provider = self->_provider;
-  v3 = [(RAPTablePartSection *)self tableView];
-  [(RAPInstructionDetailRouteCellProvider *)provider registerCellsForTableView:v3];
+  tableView = [(RAPTablePartSection *)self tableView];
+  [(RAPInstructionDetailRouteCellProvider *)provider registerCellsForTableView:tableView];
 }
 
-- (RAPReportLocationSection)initWithQuestion:(id)a3
+- (RAPReportLocationSection)initWithQuestion:(id)question
 {
-  v5 = a3;
+  questionCopy = question;
   v22.receiver = self;
   v22.super_class = RAPReportLocationSection;
   v6 = [(RAPTablePartSection *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_question, a3);
-    v8 = [(RAPQuestion *)v7->_question parentQuestion];
+    objc_storeStrong(&v6->_question, question);
+    parentQuestion = [(RAPQuestion *)v7->_question parentQuestion];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = parentQuestion;
     }
 
     else
@@ -140,11 +140,11 @@ LABEL_12:
 
     if (v10)
     {
-      v11 = [v10 parentQuestion];
+      parentQuestion2 = [v10 parentQuestion];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = v11;
+        v12 = parentQuestion2;
       }
 
       else
@@ -154,12 +154,12 @@ LABEL_12:
 
       v13 = v12;
 
-      v14 = [v13 parentQuestion];
+      parentQuestion3 = [v13 parentQuestion];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = v14;
+        v15 = parentQuestion3;
       }
 
       else
@@ -171,9 +171,9 @@ LABEL_12:
 
       if (v16)
       {
-        v17 = [v16 routeFromRecording];
+        routeFromRecording = [v16 routeFromRecording];
         route = v7->_route;
-        v7->_route = v17;
+        v7->_route = routeFromRecording;
 
         v19 = [[RAPInstructionDetailRouteCellProvider alloc] initWithRoute:v7->_route];
         provider = v7->_provider;

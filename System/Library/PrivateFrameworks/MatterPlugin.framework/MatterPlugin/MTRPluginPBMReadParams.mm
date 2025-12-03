@@ -1,62 +1,62 @@
 @interface MTRPluginPBMReadParams
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (MTRPluginPBMReadParams)initWithReadParams:(id)a3;
+- (MTRPluginPBMReadParams)initWithReadParams:(id)params;
 - (MTRReadParams)readParams;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFilterByFabric:(BOOL)a3;
-- (void)setReadParams:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFilterByFabric:(BOOL)fabric;
+- (void)setReadParams:(id)params;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTRPluginPBMReadParams
 
-- (MTRPluginPBMReadParams)initWithReadParams:(id)a3
+- (MTRPluginPBMReadParams)initWithReadParams:(id)params
 {
-  v4 = a3;
-  if (v4 && (self = [(MTRPluginPBMReadParams *)self init]) != 0)
+  paramsCopy = params;
+  if (paramsCopy && (self = [(MTRPluginPBMReadParams *)self init]) != 0)
   {
-    -[MTRPluginPBMReadParams setFilterByFabric:](self, "setFilterByFabric:", [v4 shouldFilterByFabric]);
-    -[MTRPluginPBMReadParams setAssumeUnknownAttributesReportable:](self, "setAssumeUnknownAttributesReportable:", [v4 shouldAssumeUnknownAttributesReportable]);
-    v5 = [v4 minEventNumber];
+    -[MTRPluginPBMReadParams setFilterByFabric:](self, "setFilterByFabric:", [paramsCopy shouldFilterByFabric]);
+    -[MTRPluginPBMReadParams setAssumeUnknownAttributesReportable:](self, "setAssumeUnknownAttributesReportable:", [paramsCopy shouldAssumeUnknownAttributesReportable]);
+    minEventNumber = [paramsCopy minEventNumber];
 
-    if (v5)
+    if (minEventNumber)
     {
       v6 = [MTRPluginPBMVariableValue alloc];
-      v7 = [v4 minEventNumber];
-      v8 = [(MTRPluginPBMVariableValue *)v6 initWithObjectValue:v7];
+      minEventNumber2 = [paramsCopy minEventNumber];
+      v8 = [(MTRPluginPBMVariableValue *)v6 initWithObjectValue:minEventNumber2];
       [(MTRPluginPBMReadParams *)self setMinEventNumber:v8];
     }
 
     self = self;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)setReadParams:(id)a3
+- (void)setReadParams:(id)params
 {
-  v8 = a3;
-  -[MTRPluginPBMReadParams setFilterByFabric:](self, "setFilterByFabric:", [v8 shouldFilterByFabric]);
-  -[MTRPluginPBMReadParams setAssumeUnknownAttributesReportable:](self, "setAssumeUnknownAttributesReportable:", [v8 shouldAssumeUnknownAttributesReportable]);
-  v4 = [v8 minEventNumber];
+  paramsCopy = params;
+  -[MTRPluginPBMReadParams setFilterByFabric:](self, "setFilterByFabric:", [paramsCopy shouldFilterByFabric]);
+  -[MTRPluginPBMReadParams setAssumeUnknownAttributesReportable:](self, "setAssumeUnknownAttributesReportable:", [paramsCopy shouldAssumeUnknownAttributesReportable]);
+  minEventNumber = [paramsCopy minEventNumber];
 
-  if (v4)
+  if (minEventNumber)
   {
     v5 = [MTRPluginPBMVariableValue alloc];
-    v6 = [v8 minEventNumber];
-    v7 = [(MTRPluginPBMVariableValue *)v5 initWithObjectValue:v6];
+    minEventNumber2 = [paramsCopy minEventNumber];
+    v7 = [(MTRPluginPBMVariableValue *)v5 initWithObjectValue:minEventNumber2];
     [(MTRPluginPBMReadParams *)self setMinEventNumber:v7];
   }
 }
@@ -66,18 +66,18 @@
   v3 = objc_alloc_init(MEMORY[0x277CD54D8]);
   [v3 setFilterByFabric:{-[MTRPluginPBMReadParams filterByFabric](self, "filterByFabric")}];
   [v3 setAssumeUnknownAttributesReportable:{-[MTRPluginPBMReadParams assumeUnknownAttributesReportable](self, "assumeUnknownAttributesReportable")}];
-  v4 = [(MTRPluginPBMReadParams *)self minEventNumber];
+  minEventNumber = [(MTRPluginPBMReadParams *)self minEventNumber];
 
-  if (v4)
+  if (minEventNumber)
   {
-    v5 = [(MTRPluginPBMReadParams *)self minEventNumber];
-    v6 = [v5 object];
+    minEventNumber2 = [(MTRPluginPBMReadParams *)self minEventNumber];
+    object = [minEventNumber2 object];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(MTRPluginPBMReadParams *)self minEventNumber];
-      v8 = [v7 object];
-      [v3 setMinEventNumber:v8];
+      minEventNumber3 = [(MTRPluginPBMReadParams *)self minEventNumber];
+      object2 = [minEventNumber3 object];
+      [v3 setMinEventNumber:object2];
     }
 
     else
@@ -91,19 +91,19 @@
 
 - (BOOL)isValid
 {
-  v3 = [(MTRPluginPBMReadParams *)self hasFilterByFabric];
-  if (v3)
+  hasFilterByFabric = [(MTRPluginPBMReadParams *)self hasFilterByFabric];
+  if (hasFilterByFabric)
   {
 
-    LOBYTE(v3) = [(MTRPluginPBMReadParams *)self hasAssumeUnknownAttributesReportable];
+    LOBYTE(hasFilterByFabric) = [(MTRPluginPBMReadParams *)self hasAssumeUnknownAttributesReportable];
   }
 
-  return v3;
+  return hasFilterByFabric;
 }
 
-- (void)setHasFilterByFabric:(BOOL)a3
+- (void)setHasFilterByFabric:(BOOL)fabric
 {
-  if (a3)
+  if (fabric)
   {
     v3 = 2;
   }
@@ -122,20 +122,20 @@
   v8.receiver = self;
   v8.super_class = MTRPluginPBMReadParams;
   v4 = [(MTRPluginPBMReadParams *)&v8 description];
-  v5 = [(MTRPluginPBMReadParams *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MTRPluginPBMReadParams *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_filterByFabric];
-    [v3 setObject:v5 forKey:@"filterByFabric"];
+    [dictionary setObject:v5 forKey:@"filterByFabric"];
 
     has = self->_has;
   }
@@ -143,29 +143,29 @@
   if (has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_assumeUnknownAttributesReportable];
-    [v3 setObject:v6 forKey:@"assumeUnknownAttributesReportable"];
+    [dictionary setObject:v6 forKey:@"assumeUnknownAttributesReportable"];
   }
 
   minEventNumber = self->_minEventNumber;
   if (minEventNumber)
   {
-    v8 = [(MTRPluginPBMVariableValue *)minEventNumber dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"minEventNumber"];
+    dictionaryRepresentation = [(MTRPluginPBMVariableValue *)minEventNumber dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"minEventNumber"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     filterByFabric = self->_filterByFabric;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -173,44 +173,44 @@
   {
     assumeUnknownAttributesReportable = self->_assumeUnknownAttributesReportable;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_minEventNumber)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[17] = self->_filterByFabric;
-    v4[20] |= 2u;
+    toCopy[17] = self->_filterByFabric;
+    toCopy[20] |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[16] = self->_assumeUnknownAttributesReportable;
-    v4[20] |= 1u;
+    toCopy[16] = self->_assumeUnknownAttributesReportable;
+    toCopy[20] |= 1u;
   }
 
   if (self->_minEventNumber)
   {
-    v6 = v4;
-    [v4 setMinEventNumber:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setMinEventNumber:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -226,45 +226,45 @@
     v5[20] |= 1u;
   }
 
-  v8 = [(MTRPluginPBMVariableValue *)self->_minEventNumber copyWithZone:a3];
+  v8 = [(MTRPluginPBMVariableValue *)self->_minEventNumber copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = *(v4 + 20);
+  v5 = *(equalCopy + 20);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0)
+    if ((*(equalCopy + 20) & 2) == 0)
     {
       goto LABEL_17;
     }
 
-    v8 = *(v4 + 17);
+    v8 = *(equalCopy + 17);
     if (self->_filterByFabric)
     {
-      if ((*(v4 + 17) & 1) == 0)
+      if ((*(equalCopy + 17) & 1) == 0)
       {
         goto LABEL_17;
       }
     }
 
-    else if (*(v4 + 17))
+    else if (*(equalCopy + 17))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 20) & 2) != 0)
+  else if ((*(equalCopy + 20) & 2) != 0)
   {
     goto LABEL_17;
   }
@@ -274,12 +274,12 @@
     goto LABEL_5;
   }
 
-  if ((*(v4 + 20) & 1) == 0)
+  if ((*(equalCopy + 20) & 1) == 0)
   {
     goto LABEL_17;
   }
 
-  v5 = *(v4 + 16);
+  v5 = *(equalCopy + 16);
   if (!self->_assumeUnknownAttributesReportable)
   {
 LABEL_5:
@@ -293,14 +293,14 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if ((*(v4 + 16) & 1) == 0)
+  if ((*(equalCopy + 16) & 1) == 0)
   {
     goto LABEL_17;
   }
 
 LABEL_6:
   minEventNumber = self->_minEventNumber;
-  if (minEventNumber | *(v4 + 1))
+  if (minEventNumber | *(equalCopy + 1))
   {
     v7 = [(MTRPluginPBMVariableValue *)minEventNumber isEqual:?];
   }
@@ -341,21 +341,21 @@ LABEL_3:
   return v7 ^ v6 ^ [(MTRPluginPBMVariableValue *)self->_minEventNumber hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = v4[20];
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = fromCopy[20];
   if ((v6 & 2) != 0)
   {
-    self->_filterByFabric = v4[17];
+    self->_filterByFabric = fromCopy[17];
     *&self->_has |= 2u;
-    v6 = v4[20];
+    v6 = fromCopy[20];
   }
 
   if (v6)
   {
-    self->_assumeUnknownAttributesReportable = v4[16];
+    self->_assumeUnknownAttributesReportable = fromCopy[16];
     *&self->_has |= 1u;
   }
 

@@ -4,25 +4,25 @@
 - (_NSRange)range;
 - (_TUIVBoxItemLayoutSummary)summary;
 - (void)computeLayout;
-- (void)setRange:(_NSRange)a3;
+- (void)setRange:(_NSRange)range;
 @end
 
 @implementation _TUIVBoxDynamicSpacerLayout
 
 - (void)computeLayout
 {
-  v5 = [(TUILayout *)self parent];
-  [v5 summaryForRange:{self->_range.location, self->_range.length}];
+  parent = [(TUILayout *)self parent];
+  [parent summaryForRange:{self->_range.location, self->_range.length}];
   self->_summary.width = v3;
   self->_summary.height = v4;
   [(TUILayout *)self setComputedNaturalSize:?];
 }
 
-- (void)setRange:(_NSRange)a3
+- (void)setRange:(_NSRange)range
 {
-  if (a3.location != self->_range.location || a3.length != self->_range.length)
+  if (range.location != self->_range.location || range.length != self->_range.length)
   {
-    self->_range = a3;
+    self->_range = range;
     [(TUILayout *)self invalidateLayout];
 
     [(TUILayout *)self invalidateIntrinsicSize];

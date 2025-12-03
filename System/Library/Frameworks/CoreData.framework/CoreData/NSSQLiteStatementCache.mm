@@ -1,6 +1,6 @@
 @interface NSSQLiteStatementCache
 - (CFMutableDictionaryRef)createCorrelationCacheDictionary;
-- (NSSQLiteStatementCache)initWithEntity:(id)a3;
+- (NSSQLiteStatementCache)initWithEntity:(id)entity;
 - (void)_clearSaveGeneratedCachedStatements;
 - (void)cacheBatchInsertStatement:(void *)result;
 - (void)cacheCorrelationDeleteStatement:(void *)key forRelationship:;
@@ -8,7 +8,7 @@
 - (void)cacheCorrelationMasterReorderStatement:(void *)key forRelationship:;
 - (void)cacheCorrelationReorderStatement:(void *)key forRelationship:;
 - (void)cacheDeletionStatement:(void *)result;
-- (void)cacheFaultingStatement:(uint64_t)a3 andFetchRequest:(void *)a4 forRelationship:;
+- (void)cacheFaultingStatement:(uint64_t)statement andFetchRequest:(void *)request forRelationship:;
 - (void)cacheFaultingStatement:(void *)result;
 - (void)cacheInsertStatement:(void *)result;
 - (void)clearCachedStatements;
@@ -21,32 +21,32 @@
 - (void)_clearSaveGeneratedCachedStatements
 {
   v58 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 16))
+    if (*(self + 16))
     {
-      [(NSSQLiteStatementCache *)a1 cacheInsertStatement:?];
+      [(NSSQLiteStatementCache *)self cacheInsertStatement:?];
     }
 
-    if (*(a1 + 24))
+    if (*(self + 24))
     {
-      [(NSSQLiteStatementCache *)a1 cacheBatchInsertStatement:?];
+      [(NSSQLiteStatementCache *)self cacheBatchInsertStatement:?];
     }
 
-    if (*(a1 + 32))
+    if (*(self + 32))
     {
-      [(NSSQLiteStatementCache *)a1 cacheDeletionStatement:?];
+      [(NSSQLiteStatementCache *)self cacheDeletionStatement:?];
     }
 
-    v2 = *(a1 + 56);
+    v2 = *(self + 56);
     if (v2)
     {
       v51 = 0u;
       v52 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v3 = [v2 allValues];
-      v4 = [v3 countByEnumeratingWithState:&v49 objects:v57 count:16];
+      allValues = [v2 allValues];
+      v4 = [allValues countByEnumeratingWithState:&v49 objects:v57 count:16];
       if (v4)
       {
         v5 = v4;
@@ -58,31 +58,31 @@
           {
             if (*v50 != v6)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(allValues);
             }
 
             [(NSSQLiteStatement *)*(*(&v49 + 1) + 8 * v7++) clearCaches:?];
           }
 
           while (v5 != v7);
-          v5 = [v3 countByEnumeratingWithState:&v49 objects:v57 count:16];
+          v5 = [allValues countByEnumeratingWithState:&v49 objects:v57 count:16];
         }
 
         while (v5);
       }
 
-      CFDictionaryRemoveAllValues(*(a1 + 56));
+      CFDictionaryRemoveAllValues(*(self + 56));
     }
 
-    v8 = *(a1 + 72);
+    v8 = *(self + 72);
     if (v8)
     {
       v47 = 0u;
       v48 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v9 = [v8 allValues];
-      v10 = [v9 countByEnumeratingWithState:&v45 objects:v56 count:16];
+      allValues2 = [v8 allValues];
+      v10 = [allValues2 countByEnumeratingWithState:&v45 objects:v56 count:16];
       if (v10)
       {
         v11 = v10;
@@ -94,31 +94,31 @@
           {
             if (*v46 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allValues2);
             }
 
             [(NSSQLiteStatement *)*(*(&v45 + 1) + 8 * v13++) clearCaches:?];
           }
 
           while (v11 != v13);
-          v11 = [v9 countByEnumeratingWithState:&v45 objects:v56 count:16];
+          v11 = [allValues2 countByEnumeratingWithState:&v45 objects:v56 count:16];
         }
 
         while (v11);
       }
 
-      CFDictionaryRemoveAllValues(*(a1 + 72));
+      CFDictionaryRemoveAllValues(*(self + 72));
     }
 
-    v14 = *(a1 + 80);
+    v14 = *(self + 80);
     if (v14)
     {
       v43 = 0u;
       v44 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v15 = [v14 allValues];
-      v16 = [v15 countByEnumeratingWithState:&v41 objects:v55 count:16];
+      allValues3 = [v14 allValues];
+      v16 = [allValues3 countByEnumeratingWithState:&v41 objects:v55 count:16];
       if (v16)
       {
         v17 = v16;
@@ -130,31 +130,31 @@
           {
             if (*v42 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(allValues3);
             }
 
             [(NSSQLiteStatement *)*(*(&v41 + 1) + 8 * v19++) clearCaches:?];
           }
 
           while (v17 != v19);
-          v17 = [v15 countByEnumeratingWithState:&v41 objects:v55 count:16];
+          v17 = [allValues3 countByEnumeratingWithState:&v41 objects:v55 count:16];
         }
 
         while (v17);
       }
 
-      CFDictionaryRemoveAllValues(*(a1 + 80));
+      CFDictionaryRemoveAllValues(*(self + 80));
     }
 
-    v20 = *(a1 + 88);
+    v20 = *(self + 88);
     if (v20)
     {
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v21 = [v20 allValues];
-      v22 = [v21 countByEnumeratingWithState:&v37 objects:v54 count:16];
+      allValues4 = [v20 allValues];
+      v22 = [allValues4 countByEnumeratingWithState:&v37 objects:v54 count:16];
       if (v22)
       {
         v23 = v22;
@@ -166,31 +166,31 @@
           {
             if (*v38 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(allValues4);
             }
 
             [(NSSQLiteStatement *)*(*(&v37 + 1) + 8 * v25++) clearCaches:?];
           }
 
           while (v23 != v25);
-          v23 = [v21 countByEnumeratingWithState:&v37 objects:v54 count:16];
+          v23 = [allValues4 countByEnumeratingWithState:&v37 objects:v54 count:16];
         }
 
         while (v23);
       }
 
-      CFDictionaryRemoveAllValues(*(a1 + 88));
+      CFDictionaryRemoveAllValues(*(self + 88));
     }
 
-    v26 = *(a1 + 64);
+    v26 = *(self + 64);
     if (v26)
     {
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v27 = [v26 allValues];
-      v28 = [v27 countByEnumeratingWithState:&v33 objects:v53 count:16];
+      allValues5 = [v26 allValues];
+      v28 = [allValues5 countByEnumeratingWithState:&v33 objects:v53 count:16];
       if (v28)
       {
         v29 = v28;
@@ -202,20 +202,20 @@
           {
             if (*v34 != v30)
             {
-              objc_enumerationMutation(v27);
+              objc_enumerationMutation(allValues5);
             }
 
             [(NSSQLiteStatement *)*(*(&v33 + 1) + 8 * v31++) clearCaches:?];
           }
 
           while (v29 != v31);
-          v29 = [v27 countByEnumeratingWithState:&v33 objects:v53 count:16];
+          v29 = [allValues5 countByEnumeratingWithState:&v33 objects:v53 count:16];
         }
 
         while (v29);
       }
 
-      CFDictionaryRemoveAllValues(*(a1 + 64));
+      CFDictionaryRemoveAllValues(*(self + 64));
     }
   }
 
@@ -264,15 +264,15 @@
 - (void)clearCachedStatements
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [(NSSQLiteStatementCache *)a1 _clearSaveGeneratedCachedStatements];
-    if (*(a1 + 40))
+    [(NSSQLiteStatementCache *)self _clearSaveGeneratedCachedStatements];
+    if (*(self + 40))
     {
-      [(NSSQLiteStatementCache *)a1 cacheFaultingStatement:?];
+      [(NSSQLiteStatementCache *)self cacheFaultingStatement:?];
     }
 
-    v2 = *(a1 + 48);
+    v2 = *(self + 48);
     if (v2)
     {
       v12 = 0u;
@@ -294,7 +294,7 @@
               objc_enumerationMutation(v2);
             }
 
-            v7 = [*(a1 + 48) objectForKey:*(*(&v10 + 1) + 8 * v6)];
+            v7 = [*(self + 48) objectForKey:*(*(&v10 + 1) + 8 * v6)];
             v8 = [v7 count];
             if (v8)
             {
@@ -312,21 +312,21 @@
         while (v4);
       }
 
-      [*(a1 + 48) removeAllObjects];
+      [*(self + 48) removeAllObjects];
     }
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (NSSQLiteStatementCache)initWithEntity:(id)a3
+- (NSSQLiteStatementCache)initWithEntity:(id)entity
 {
   v6.receiver = self;
   v6.super_class = NSSQLiteStatementCache;
   v4 = [(NSSQLiteStatementCache *)&v6 init];
   if (v4)
   {
-    v4->_entity = a3;
+    v4->_entity = entity;
   }
 
   return v4;
@@ -426,7 +426,7 @@
 
 - (void)insertOrReplaceStatement:(void *)key forRelationship:(CFDictionaryRef)theDict inDictionary:
 {
-  if (a1)
+  if (self)
   {
     Value = CFDictionaryGetValue(theDict, key);
     if (Value)
@@ -440,74 +440,74 @@
 
 - (void)cacheCorrelationInsertStatement:(void *)key forRelationship:
 {
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 7);
-    if (!v6)
+    createCorrelationCacheDictionary = *(self + 7);
+    if (!createCorrelationCacheDictionary)
     {
-      v6 = [(NSSQLiteStatementCache *)a1 createCorrelationCacheDictionary];
-      *(a1 + 7) = v6;
+      createCorrelationCacheDictionary = [(NSSQLiteStatementCache *)self createCorrelationCacheDictionary];
+      *(self + 7) = createCorrelationCacheDictionary;
     }
 
-    [(NSSQLiteStatementCache *)a1 insertOrReplaceStatement:a2 forRelationship:key inDictionary:v6];
+    [(NSSQLiteStatementCache *)self insertOrReplaceStatement:a2 forRelationship:key inDictionary:createCorrelationCacheDictionary];
   }
 }
 
 - (void)cacheCorrelationMasterReorderStatement:(void *)key forRelationship:
 {
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 9);
-    if (!v6)
+    createCorrelationCacheDictionary = *(self + 9);
+    if (!createCorrelationCacheDictionary)
     {
-      v6 = [(NSSQLiteStatementCache *)a1 createCorrelationCacheDictionary];
-      *(a1 + 9) = v6;
+      createCorrelationCacheDictionary = [(NSSQLiteStatementCache *)self createCorrelationCacheDictionary];
+      *(self + 9) = createCorrelationCacheDictionary;
     }
 
-    [(NSSQLiteStatementCache *)a1 insertOrReplaceStatement:a2 forRelationship:key inDictionary:v6];
+    [(NSSQLiteStatementCache *)self insertOrReplaceStatement:a2 forRelationship:key inDictionary:createCorrelationCacheDictionary];
   }
 }
 
 - (void)cacheCorrelationReorderStatement:(void *)key forRelationship:
 {
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 11);
-    if (!v6)
+    createCorrelationCacheDictionary = *(self + 11);
+    if (!createCorrelationCacheDictionary)
     {
-      v6 = [(NSSQLiteStatementCache *)a1 createCorrelationCacheDictionary];
-      *(a1 + 11) = v6;
+      createCorrelationCacheDictionary = [(NSSQLiteStatementCache *)self createCorrelationCacheDictionary];
+      *(self + 11) = createCorrelationCacheDictionary;
     }
 
-    [(NSSQLiteStatementCache *)a1 insertOrReplaceStatement:a2 forRelationship:key inDictionary:v6];
+    [(NSSQLiteStatementCache *)self insertOrReplaceStatement:a2 forRelationship:key inDictionary:createCorrelationCacheDictionary];
   }
 }
 
 - (void)cacheCorrelationDeleteStatement:(void *)key forRelationship:
 {
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 8);
-    if (!v6)
+    createCorrelationCacheDictionary = *(self + 8);
+    if (!createCorrelationCacheDictionary)
     {
-      v6 = [(NSSQLiteStatementCache *)a1 createCorrelationCacheDictionary];
-      *(a1 + 8) = v6;
+      createCorrelationCacheDictionary = [(NSSQLiteStatementCache *)self createCorrelationCacheDictionary];
+      *(self + 8) = createCorrelationCacheDictionary;
     }
 
-    [(NSSQLiteStatementCache *)a1 insertOrReplaceStatement:a2 forRelationship:key inDictionary:v6];
+    [(NSSQLiteStatementCache *)self insertOrReplaceStatement:a2 forRelationship:key inDictionary:createCorrelationCacheDictionary];
   }
 }
 
-- (void)cacheFaultingStatement:(uint64_t)a3 andFetchRequest:(void *)a4 forRelationship:
+- (void)cacheFaultingStatement:(uint64_t)statement andFetchRequest:(void *)request forRelationship:
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_10;
   }
 
-  v7 = [a4 name];
-  v8 = [*(a1 + 48) objectForKey:v7];
+  name = [request name];
+  v8 = [*(self + 48) objectForKey:name];
   v9 = [v8 count] < 2 ? 0 : objc_msgSend(v8, "objectAtIndex:", 0);
   if (v9 == a2)
   {
@@ -515,18 +515,18 @@
   }
 
   [(NSSQLiteStatement *)v9 clearCaches:?];
-  v10 = *(a1 + 48);
+  v10 = *(self + 48);
   if (a2)
   {
     if (!v10)
     {
-      *(a1 + 48) = objc_alloc_init(MEMORY[0x1E695DF90]);
+      *(self + 48) = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
     v14[0] = a2;
-    v14[1] = a3;
+    v14[1] = statement;
     v11 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:v14 count:2];
-    [*(a1 + 48) setObject:v11 forKey:v7];
+    [*(self + 48) setObject:v11 forKey:name];
 
 LABEL_10:
     v12 = *MEMORY[0x1E69E9840];
@@ -535,7 +535,7 @@ LABEL_10:
 
   v13 = *MEMORY[0x1E69E9840];
 
-  [v10 removeObjectForKey:v7];
+  [v10 removeObjectForKey:name];
 }
 
 @end

@@ -1,55 +1,55 @@
 @interface PKAccountBillPaymentConfirmationViewController
 - (BOOL)_shouldShowSetupAutoPayView;
-- (PKAccountBillPaymentConfirmationViewController)initWithAccount:(id)a3 paymentPass:(id)a4 scheduledPayments:(id)a5;
-- (PKAccountBillPaymentConfirmationViewController)initWithAccount:(id)a3 previousAccountSummary:(id)a4 paymentPass:(id)a5 payments:(id)a6 suggestionList:(id)a7 interestForPaymentTotal:(id)a8 interestForStatementBalance:(id)a9;
+- (PKAccountBillPaymentConfirmationViewController)initWithAccount:(id)account paymentPass:(id)pass scheduledPayments:(id)payments;
+- (PKAccountBillPaymentConfirmationViewController)initWithAccount:(id)account previousAccountSummary:(id)summary paymentPass:(id)pass payments:(id)payments suggestionList:(id)list interestForPaymentTotal:(id)total interestForStatementBalance:(id)balance;
 - (id)_availableCreditText;
 - (id)_trailingInterestMonthMidpoint;
 - (void)_updateBodyContentViewMessage;
-- (void)explanationViewDidSelectContinue:(id)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
 - (void)loadView;
-- (void)preflightWithCompletion:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)preflightWithCompletion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKAccountBillPaymentConfirmationViewController
 
-- (PKAccountBillPaymentConfirmationViewController)initWithAccount:(id)a3 previousAccountSummary:(id)a4 paymentPass:(id)a5 payments:(id)a6 suggestionList:(id)a7 interestForPaymentTotal:(id)a8 interestForStatementBalance:(id)a9
+- (PKAccountBillPaymentConfirmationViewController)initWithAccount:(id)account previousAccountSummary:(id)summary paymentPass:(id)pass payments:(id)payments suggestionList:(id)list interestForPaymentTotal:(id)total interestForStatementBalance:(id)balance
 {
   v55 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v49 = a5;
-  v48 = a6;
-  v47 = a7;
-  v46 = a8;
-  v45 = a9;
+  accountCopy = account;
+  summaryCopy = summary;
+  passCopy = pass;
+  paymentsCopy = payments;
+  listCopy = list;
+  totalCopy = total;
+  balanceCopy = balance;
   v18 = [(PKExplanationViewController *)self init];
   v19 = v18;
   if (v18)
   {
-    v44 = v17;
-    objc_storeStrong(&v18->_account, a3);
-    objc_storeStrong(&v19->_previousAccountSummary, a4);
-    objc_storeStrong(&v19->_paymentPass, a5);
-    objc_storeStrong(&v19->_payments, a6);
-    objc_storeStrong(&v19->_suggestionList, a7);
-    objc_storeStrong(&v19->_interestForPaymentTotal, a8);
-    objc_storeStrong(&v19->_interestForStatementBalance, a9);
-    v20 = [MEMORY[0x1E69B8DB8] paymentService];
+    v44 = summaryCopy;
+    objc_storeStrong(&v18->_account, account);
+    objc_storeStrong(&v19->_previousAccountSummary, summary);
+    objc_storeStrong(&v19->_paymentPass, pass);
+    objc_storeStrong(&v19->_payments, payments);
+    objc_storeStrong(&v19->_suggestionList, list);
+    objc_storeStrong(&v19->_interestForPaymentTotal, total);
+    objc_storeStrong(&v19->_interestForStatementBalance, balance);
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = v19->_paymentService;
-    v19->_paymentService = v20;
+    v19->_paymentService = paymentService;
 
-    v22 = [MEMORY[0x1E696AB90] zero];
+    zero = [MEMORY[0x1E696AB90] zero];
     pendingPaymentsTotal = v19->_pendingPaymentsTotal;
-    v19->_pendingPaymentsTotal = v22;
+    v19->_pendingPaymentsTotal = zero;
 
     v19->_isScheduledPayment = 0;
     v19->_hasRecurringPayments = 0;
-    v24 = [MEMORY[0x1E696AB90] zero];
+    zero2 = [MEMORY[0x1E696AB90] zero];
     paymentsTotal = v19->_paymentsTotal;
-    v19->_paymentsTotal = v24;
+    v19->_paymentsTotal = zero2;
 
     v52 = 0u;
     v53 = 0u;
@@ -70,10 +70,10 @@
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v50 + 1) + 8 * i) currencyAmount];
-          v32 = [v31 amount];
+          currencyAmount = [*(*(&v50 + 1) + 8 * i) currencyAmount];
+          amount = [currencyAmount amount];
 
-          v33 = [(NSDecimalNumber *)v19->_paymentsTotal decimalNumberByAdding:v32];
+          v33 = [(NSDecimalNumber *)v19->_paymentsTotal decimalNumberByAdding:amount];
           v34 = v19->_paymentsTotal;
           v19->_paymentsTotal = v33;
         }
@@ -84,39 +84,39 @@
       while (v28);
     }
 
-    v35 = [(PKAccount *)v19->_account creditDetails];
-    v36 = [v35 productTimeZone];
+    creditDetails = [(PKAccount *)v19->_account creditDetails];
+    productTimeZone = [creditDetails productTimeZone];
 
     v37 = objc_alloc_init(MEMORY[0x1E696AB78]);
     productMonthDayFormatter = v19->_productMonthDayFormatter;
     v19->_productMonthDayFormatter = v37;
 
-    [(NSDateFormatter *)v19->_productMonthDayFormatter setTimeZone:v36];
+    [(NSDateFormatter *)v19->_productMonthDayFormatter setTimeZone:productTimeZone];
     [(NSDateFormatter *)v19->_productMonthDayFormatter setLocalizedDateFormatFromTemplate:@"MMMM d"];
-    v39 = [(PKAccount *)v19->_account creditDetails];
-    v40 = [v39 currencyCode];
+    creditDetails2 = [(PKAccount *)v19->_account creditDetails];
+    currencyCode = [creditDetails2 currencyCode];
     v41 = PKMutableNumberFormatterForCurrencyCode();
     amountFormatter = v19->_amountFormatter;
     v19->_amountFormatter = v41;
 
-    v17 = v44;
+    summaryCopy = v44;
   }
 
   return v19;
 }
 
-- (PKAccountBillPaymentConfirmationViewController)initWithAccount:(id)a3 paymentPass:(id)a4 scheduledPayments:(id)a5
+- (PKAccountBillPaymentConfirmationViewController)initWithAccount:(id)account paymentPass:(id)pass scheduledPayments:(id)payments
 {
-  v8 = a5;
-  v9 = [(PKAccountBillPaymentConfirmationViewController *)self initWithAccount:a3 previousAccountSummary:0 paymentPass:a4 payments:v8 suggestionList:0 interestForPaymentTotal:0 interestForStatementBalance:0];
+  paymentsCopy = payments;
+  v9 = [(PKAccountBillPaymentConfirmationViewController *)self initWithAccount:account previousAccountSummary:0 paymentPass:pass payments:paymentsCopy suggestionList:0 interestForPaymentTotal:0 interestForStatementBalance:0];
   v10 = v9;
   if (v9)
   {
     v9->_isScheduledPayment = 1;
-    v11 = [v8 firstObject];
-    v12 = [v11 paymentDate];
+    firstObject = [paymentsCopy firstObject];
+    paymentDate = [firstObject paymentDate];
     scheduledDate = v10->_scheduledDate;
-    v10->_scheduledDate = v12;
+    v10->_scheduledDate = paymentDate;
   }
 
   return v10;
@@ -140,7 +140,7 @@
   [(PKExplanationViewController *)&v28 viewDidLoad];
   v3 = [(NSNumberFormatter *)self->_amountFormatter stringFromNumber:self->_paymentsTotal];
   [(PKAccount *)self->_account feature];
-  v4 = [(PKExplanationViewController *)self explanationView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
   v27 = v3;
   if (self->_isScheduledPayment)
   {
@@ -148,7 +148,7 @@
     v6 = PKLocalizedFeatureString();
     v25 = v3;
     v7 = PKLocalizedFeatureString();
-    [v4 showCheckmark:0 animated:{0, v25, v5}];
+    [explanationView showCheckmark:0 animated:{0, v25, v5}];
   }
 
   else
@@ -156,11 +156,11 @@
     v26 = v3;
     v6 = PKLocalizedFeatureString();
     v7 = PKLocalizedFeatureString();
-    v8 = [(PKAccountBillPaymentConfirmationViewController *)self _availableCreditText];
-    if ([v8 length])
+    _availableCreditText = [(PKAccountBillPaymentConfirmationViewController *)self _availableCreditText];
+    if ([_availableCreditText length])
     {
       v9 = [v7 stringByAppendingString:@" "];
-      v10 = [v9 stringByAppendingString:v8];
+      v10 = [v9 stringByAppendingString:_availableCreditText];
       v11 = v10;
       if (v10)
       {
@@ -169,7 +169,7 @@
 
       else
       {
-        v12 = v8;
+        v12 = _availableCreditText;
       }
 
       v13 = v12;
@@ -177,43 +177,43 @@
       v7 = v13;
     }
 
-    [v4 setTopLogoPadding:32.0];
-    [v4 setBodyViewPadding:35.0];
-    [v4 setTitleAccessoriesEnabled:0];
-    [v4 setHeroView:self->_checkmarkRingView];
-    [v4 setHeroViewSizeThatFitsOverride:&__block_literal_global_28];
+    [explanationView setTopLogoPadding:32.0];
+    [explanationView setBodyViewPadding:35.0];
+    [explanationView setTitleAccessoriesEnabled:0];
+    [explanationView setHeroView:self->_checkmarkRingView];
+    [explanationView setHeroViewSizeThatFitsOverride:&__block_literal_global_28];
   }
 
-  v14 = [(PKAccountBillPaymentCheckmarkRingView *)self->_checkmarkRingView ringView];
-  [v14 setAmount:self->_paymentsTotal animated:0];
-  [v14 setIsSmall:1];
-  [v14 completeInitialDisplayAnimated:0];
-  v15 = [(PKAccountBillPaymentCheckmarkRingView *)self->_checkmarkRingView checkmarkLayer];
-  v16 = [v14 currentStartColor];
-  [v15 setColor:objc_msgSend(v16 animated:{"CGColor"), 0}];
+  ringView = [(PKAccountBillPaymentCheckmarkRingView *)self->_checkmarkRingView ringView];
+  [ringView setAmount:self->_paymentsTotal animated:0];
+  [ringView setIsSmall:1];
+  [ringView completeInitialDisplayAnimated:0];
+  checkmarkLayer = [(PKAccountBillPaymentCheckmarkRingView *)self->_checkmarkRingView checkmarkLayer];
+  currentStartColor = [ringView currentStartColor];
+  [checkmarkLayer setColor:objc_msgSend(currentStartColor animated:{"CGColor"), 0}];
 
-  [v4 setTitleText:v6];
-  [v4 setBodyText:v7];
-  [v4 setShowPrivacyView:0];
-  v17 = [(PKAccountBillPaymentConfirmationViewController *)self navigationItem];
-  [v17 setLeftBarButtonItem:0];
-  [v17 setHidesBackButton:1];
-  v18 = [v4 dockView];
-  v19 = [v18 primaryButton];
-  v20 = [v19 titleLabel];
+  [explanationView setTitleText:v6];
+  [explanationView setBodyText:v7];
+  [explanationView setShowPrivacyView:0];
+  navigationItem = [(PKAccountBillPaymentConfirmationViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
+  [navigationItem setHidesBackButton:1];
+  dockView = [explanationView dockView];
+  primaryButton = [dockView primaryButton];
+  titleLabel = [primaryButton titleLabel];
   v21 = PKAccountBillPaymentPrimaryButtonTintColor();
-  [v19 setTintColor:v21];
+  [primaryButton setTintColor:v21];
 
   v22 = PKAccountBillPaymentPrimaryButtonTextColor();
-  [v19 updateTitleColorWithColor:v22];
+  [primaryButton updateTitleColorWithColor:v22];
 
-  [v19 setContentEdgeInsets:{0.0, 14.0, 0.0, 14.0}];
+  [primaryButton setContentEdgeInsets:{0.0, 14.0, 0.0, 14.0}];
   v23 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC38], 2, 0);
-  [v20 setFont:v23];
+  [titleLabel setFont:v23];
   v24 = PKLocalizedFeatureString();
-  [v19 setTitle:v24 forState:0];
+  [primaryButton setTitle:v24 forState:0];
 
-  [v20 setAdjustsFontSizeToFitWidth:1];
+  [titleLabel setAdjustsFontSizeToFitWidth:1];
 }
 
 uint64_t __61__PKAccountBillPaymentConfirmationViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2)
@@ -223,53 +223,53 @@ uint64_t __61__PKAccountBillPaymentConfirmationViewController_viewDidLoad__block
   return PKSizeScaleAspectFit();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKAccountBillPaymentConfirmationViewController;
-  [(PKAccountBillPaymentConfirmationViewController *)&v5 viewDidAppear:a3];
+  [(PKAccountBillPaymentConfirmationViewController *)&v5 viewDidAppear:appear];
   if (self->_isScheduledPayment)
   {
-    v4 = [(PKExplanationViewController *)self explanationView];
-    [v4 setShowCheckmark:1];
+    explanationView = [(PKExplanationViewController *)self explanationView];
+    [explanationView setShowCheckmark:1];
   }
 
   else
   {
-    v4 = [(PKAccountBillPaymentCheckmarkRingView *)self->_checkmarkRingView checkmarkLayer];
-    [v4 setRevealed:1 animated:1];
+    explanationView = [(PKAccountBillPaymentCheckmarkRingView *)self->_checkmarkRingView checkmarkLayer];
+    [explanationView setRevealed:1 animated:1];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PKAccountBillPaymentConfirmationViewController;
-  [(PKAccountBillPaymentConfirmationViewController *)&v6 viewWillDisappear:a3];
+  [(PKAccountBillPaymentConfirmationViewController *)&v6 viewWillDisappear:disappear];
   if (!self->_hasPerformedCategoryAnimation && !self->_isScheduledPayment)
   {
     paymentService = self->_paymentService;
-    v5 = [(PKPaymentPass *)self->_paymentPass uniqueID];
-    [(PKPaymentService *)paymentService recomputeCategoryVisualizationMangitudesForPassUniqueID:v5 style:2];
+    uniqueID = [(PKPaymentPass *)self->_paymentPass uniqueID];
+    [(PKPaymentService *)paymentService recomputeCategoryVisualizationMangitudesForPassUniqueID:uniqueID style:2];
 
     self->_hasPerformedCategoryAnimation = 1;
   }
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x1E69B8400] sharedInstance];
-  v6 = [(PKAccount *)self->_account accountIdentifier];
+  mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __74__PKAccountBillPaymentConfirmationViewController_preflightWithCompletion___block_invoke;
   v8[3] = &unk_1E8011130;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = completionCopy;
   v9 = v7;
-  [v5 scheduledPaymentsWithAccountIdentifier:v6 includeFailedRecurringPayments:1 completion:v8];
+  [mEMORY[0x1E69B8400] scheduledPaymentsWithAccountIdentifier:accountIdentifier includeFailedRecurringPayments:1 completion:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -395,74 +395,74 @@ void __74__PKAccountBillPaymentConfirmationViewController_preflightWithCompletio
   }
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   if ([(PKAccountBillPaymentConfirmationViewController *)self _shouldShowSetupAutoPayView])
   {
     v4 = [PKAccountAutomaticPaymentsController alloc];
-    v5 = [MEMORY[0x1E69B8400] sharedInstance];
-    v6 = [MEMORY[0x1E69B8EF8] sharedService];
-    v10 = [(PKAccountAutomaticPaymentsController *)v4 initWithAccountService:v5 paymentWebService:v6 account:self->_account context:0];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    presentingViewController = [(PKAccountAutomaticPaymentsController *)v4 initWithAccountService:mEMORY[0x1E69B8400] paymentWebService:mEMORY[0x1E69B8EF8] account:self->_account context:0];
 
-    v7 = [[PKAccountAutomaticPaymentsViewController alloc] initWithController:v10 showSetupPrompt:1];
-    v8 = [(PKAccountAutomaticPaymentsViewController *)v7 navigationItem];
-    [v8 _setNavigationBarHidden:1];
+    v7 = [[PKAccountAutomaticPaymentsViewController alloc] initWithController:presentingViewController showSetupPrompt:1];
+    navigationItem = [(PKAccountAutomaticPaymentsViewController *)v7 navigationItem];
+    [navigationItem _setNavigationBarHidden:1];
 
-    v9 = [(PKAccountBillPaymentConfirmationViewController *)self navigationController];
-    [v9 pushViewController:v7 animated:1];
+    navigationController = [(PKAccountBillPaymentConfirmationViewController *)self navigationController];
+    [navigationController pushViewController:v7 animated:1];
 
     PKAppleCardSetAutopayPromptPresented();
   }
 
   else
   {
-    v10 = [(PKAccountBillPaymentConfirmationViewController *)self presentingViewController];
-    [(PKAccountAutomaticPaymentsController *)v10 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKAccountBillPaymentConfirmationViewController *)self presentingViewController];
+    [(PKAccountAutomaticPaymentsController *)presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
 - (void)_updateBodyContentViewMessage
 {
-  v40 = [(PKCreditAccountSummary *)self->_previousAccountSummary paymentDueDate];
-  v3 = [(PKAccountBillPaymentConfirmationViewController *)self _shouldDisplayInterestSummary];
-  v4 = v40;
-  if (!v3)
+  paymentDueDate = [(PKCreditAccountSummary *)self->_previousAccountSummary paymentDueDate];
+  _shouldDisplayInterestSummary = [(PKAccountBillPaymentConfirmationViewController *)self _shouldDisplayInterestSummary];
+  v4 = paymentDueDate;
+  if (!_shouldDisplayInterestSummary)
   {
     goto LABEL_30;
   }
 
   previousAccountSummary = self->_previousAccountSummary;
-  if (!previousAccountSummary || v40 == 0)
+  if (!previousAccountSummary || paymentDueDate == 0)
   {
     goto LABEL_30;
   }
 
-  v7 = [(PKCreditAccountSummary *)previousAccountSummary remainingMinimumPayment];
-  v8 = [v7 decimalNumberBySubtracting:self->_pendingPaymentsTotal];
+  remainingMinimumPayment = [(PKCreditAccountSummary *)previousAccountSummary remainingMinimumPayment];
+  v8 = [remainingMinimumPayment decimalNumberBySubtracting:self->_pendingPaymentsTotal];
 
   v9 = [v8 decimalNumberBySubtracting:self->_paymentsTotal];
 
-  v10 = [(PKCreditAccountSummary *)self->_previousAccountSummary remainingStatementBalance];
-  v11 = [v10 decimalNumberBySubtracting:self->_pendingPaymentsTotal];
+  remainingStatementBalance = [(PKCreditAccountSummary *)self->_previousAccountSummary remainingStatementBalance];
+  v11 = [remainingStatementBalance decimalNumberBySubtracting:self->_pendingPaymentsTotal];
 
   v12 = [v11 decimalNumberBySubtracting:self->_paymentsTotal];
 
   [(PKAccount *)self->_account feature];
-  v38 = [(NSDecimalNumber *)self->_interestForPaymentTotal pk_isPositiveNumber];
-  v13 = [(NSDecimalNumber *)self->_interestForStatementBalance pk_isPositiveNumber];
+  pk_isPositiveNumber = [(NSDecimalNumber *)self->_interestForPaymentTotal pk_isPositiveNumber];
+  pk_isPositiveNumber2 = [(NSDecimalNumber *)self->_interestForStatementBalance pk_isPositiveNumber];
   LODWORD(v11) = [v9 pk_isPositiveNumber];
   v39 = v12;
-  v14 = [v12 pk_isPositiveNumber];
+  pk_isPositiveNumber3 = [v12 pk_isPositiveNumber];
   IsSingular = PKHourOfDateIsSingular();
   v16 = PKMediumDayAndLongMonthStringFromDate();
-  v17 = [MEMORY[0x1E696AB78] localizedStringFromDate:v40 dateStyle:0 timeStyle:1];
+  v17 = [MEMORY[0x1E696AB78] localizedStringFromDate:paymentDueDate dateStyle:0 timeStyle:1];
   v18 = v17;
   if (v11)
   {
-    v19 = [(NSNumberFormatter *)self->_amountFormatter stringFromNumber:v9];
+    _trailingInterestMonthMidpoint = [(NSNumberFormatter *)self->_amountFormatter stringFromNumber:v9];
     v35 = v18;
     v36 = v16;
-    v34 = v19;
+    v34 = _trailingInterestMonthMidpoint;
     v20 = PKLocalizedFeatureString();
     v21 = @"exclamationmark.triangle";
 LABEL_8:
@@ -474,9 +474,9 @@ LABEL_23:
   }
 
   v37 = v17;
-  if (v14)
+  if (pk_isPositiveNumber3)
   {
-    if (v13)
+    if (pk_isPositiveNumber2)
     {
       v24 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CONFIRMATION_STATEMENT_BALANCE_REMAINING_BODY_WITH_TRAILING_INTEREST";
       v25 = @"ACCOUNT_SERVICE_BILL_PAYMENT_CONFIRMATION_STATEMENT_BALANCE_REMAINING_BODY_WITH_TRAILING_INTEREST_HOUR_ONE";
@@ -484,9 +484,9 @@ LABEL_23:
 
     else
     {
-      if (!v38)
+      if (!pk_isPositiveNumber)
       {
-        v19 = 0;
+        _trailingInterestMonthMidpoint = 0;
         v23 = v39;
 LABEL_22:
         [(NSNumberFormatter *)self->_amountFormatter stringFromNumber:v23];
@@ -510,17 +510,17 @@ LABEL_22:
     }
 
     v23 = v39;
-    v19 = v24;
+    _trailingInterestMonthMidpoint = v24;
     goto LABEL_22;
   }
 
   v18 = v17;
-  if ((v38 & v13) == 1)
+  if ((pk_isPositiveNumber & pk_isPositiveNumber2) == 1)
   {
-    v19 = [(PKAccountBillPaymentConfirmationViewController *)self _trailingInterestMonthMidpoint];
-    if (v19)
+    _trailingInterestMonthMidpoint = [(PKAccountBillPaymentConfirmationViewController *)self _trailingInterestMonthMidpoint];
+    if (_trailingInterestMonthMidpoint)
     {
-      v26 = [(PKAccount *)self->_account productTimeZone];
+      productTimeZone = [(PKAccount *)self->_account productTimeZone];
       v27 = PKEndOfNextMonthAndTimeZone();
 
       v28 = PKMonthStringFromDate();
@@ -572,22 +572,22 @@ LABEL_24:
     self->_messageContentView = 0;
   }
 
-  v4 = v40;
+  v4 = paymentDueDate;
 LABEL_30:
 }
 
 - (id)_availableCreditText
 {
   v3 = [(NSArray *)self->_payments pk_firstObjectPassingTest:&__block_literal_global_145];
-  v4 = [v3 expectedCreditReleaseDate];
-  v5 = [(PKAccount *)self->_account creditDetails];
-  v6 = [v5 accountSummary];
-  v7 = [v6 availableCredit];
+  expectedCreditReleaseDate = [v3 expectedCreditReleaseDate];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  availableCredit = [accountSummary availableCredit];
 
-  if (v7)
+  if (availableCredit)
   {
-    v8 = [MEMORY[0x1E696AB90] zero];
-    v9 = [v8 compare:v7] == -1 || -[PKAccount state](self->_account, "state") == 1;
+    zero = [MEMORY[0x1E696AB90] zero];
+    v9 = [zero compare:availableCredit] == -1 || -[PKAccount state](self->_account, "state") == 1;
   }
 
   else
@@ -605,7 +605,7 @@ LABEL_30:
     v10 = !v9;
   }
 
-  if (v10 || v4 == 0)
+  if (v10 || expectedCreditReleaseDate == 0)
   {
     v12 = 0;
     goto LABEL_25;
@@ -657,13 +657,13 @@ BOOL __70__PKAccountBillPaymentConfirmationViewController__availableCreditText__
 
 - (id)_trailingInterestMonthMidpoint
 {
-  v3 = [(PKCreditAccountSummary *)self->_previousAccountSummary balanceSummary];
-  v4 = [v3 openingDate];
-  v5 = [v3 closingDate];
-  v6 = v5;
-  if (v4)
+  balanceSummary = [(PKCreditAccountSummary *)self->_previousAccountSummary balanceSummary];
+  openingDate = [balanceSummary openingDate];
+  closingDate = [balanceSummary closingDate];
+  v6 = closingDate;
+  if (openingDate)
   {
-    v7 = v5 == 0;
+    v7 = closingDate == 0;
   }
 
   else
@@ -681,9 +681,9 @@ BOOL __70__PKAccountBillPaymentConfirmationViewController__availableCreditText__
     v8 = PKDatesMidpoint();
     v9 = objc_alloc(MEMORY[0x1E695DEE8]);
     v10 = [v9 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-    v11 = [(PKAccount *)self->_account creditDetails];
-    v12 = [v11 productTimeZone];
-    [v10 setTimeZone:v12];
+    creditDetails = [(PKAccount *)self->_account creditDetails];
+    productTimeZone = [creditDetails productTimeZone];
+    [v10 setTimeZone:productTimeZone];
 
     v13 = objc_alloc_init(MEMORY[0x1E695DF10]);
     [v13 setMonth:-2];
@@ -695,41 +695,41 @@ BOOL __70__PKAccountBillPaymentConfirmationViewController__availableCreditText__
 
 - (BOOL)_shouldShowSetupAutoPayView
 {
-  v3 = PKBroadwayAutopayPrompt2024Enabled();
-  if (v3)
+  supportsScheduleRecurringPayments = PKBroadwayAutopayPrompt2024Enabled();
+  if (supportsScheduleRecurringPayments)
   {
     if (self->_hasRecurringPayments || [(PKAccount *)self->_account feature]!= 2)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(supportsScheduleRecurringPayments) = 0;
     }
 
     else
     {
-      v3 = [(PKAccount *)self->_account supportsScheduleRecurringPayments];
-      if (v3)
+      supportsScheduleRecurringPayments = [(PKAccount *)self->_account supportsScheduleRecurringPayments];
+      if (supportsScheduleRecurringPayments)
       {
-        v3 = [MEMORY[0x1E69B8770] shouldDisplayScheduledPaymentsWithAccount:self->_account andPass:self->_paymentPass];
-        if (v3)
+        supportsScheduleRecurringPayments = [MEMORY[0x1E69B8770] shouldDisplayScheduledPaymentsWithAccount:self->_account andPass:self->_paymentPass];
+        if (supportsScheduleRecurringPayments)
         {
-          v4 = [(PKAccount *)self->_account creditDetails];
-          v5 = [v4 accountSummary];
-          v6 = [v5 balanceStatus];
+          creditDetails = [(PKAccount *)self->_account creditDetails];
+          accountSummary = [creditDetails accountSummary];
+          balanceStatus = [accountSummary balanceStatus];
 
-          if (v6 == 2)
+          if (balanceStatus == 2)
           {
-            LOBYTE(v3) = 1;
+            LOBYTE(supportsScheduleRecurringPayments) = 1;
           }
 
           else
           {
-            LOBYTE(v3) = PKAppleCardAutopayPromptPresented() ^ 1;
+            LOBYTE(supportsScheduleRecurringPayments) = PKAppleCardAutopayPromptPresented() ^ 1;
           }
         }
       }
     }
   }
 
-  return v3;
+  return supportsScheduleRecurringPayments;
 }
 
 @end

@@ -1,43 +1,43 @@
 @interface FHTransactionMerchantGroup
-- (FHTransactionMerchantGroup)initWithCoder:(id)a3;
-- (FHTransactionMerchantGroup)initWithMerchantMuid:(unint64_t)a3 groupIdentifier:(id)a4 transactionIds:(id)a5 creditDebitType:(unint64_t)a6 category:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (FHTransactionMerchantGroup)initWithCoder:(id)coder;
+- (FHTransactionMerchantGroup)initWithMerchantMuid:(unint64_t)muid groupIdentifier:(id)identifier transactionIds:(id)ids creditDebitType:(unint64_t)type category:(id)category;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FHTransactionMerchantGroup
 
-- (FHTransactionMerchantGroup)initWithCoder:(id)a3
+- (FHTransactionMerchantGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = FHTransactionMerchantGroup;
-  v5 = [(FHTransactionGroup *)&v7 initWithCoder:v4];
+  v5 = [(FHTransactionGroup *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_merchantMuid = [v4 decodeIntegerForKey:@"merchantMuid"];
+    v5->_merchantMuid = [coderCopy decodeIntegerForKey:@"merchantMuid"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = FHTransactionMerchantGroup;
-  v4 = a3;
-  [(FHTransactionGroup *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_merchantMuid forKey:{@"merchantMuid", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(FHTransactionGroup *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_merchantMuid forKey:{@"merchantMuid", v5.receiver, v5.super_class}];
 }
 
-- (FHTransactionMerchantGroup)initWithMerchantMuid:(unint64_t)a3 groupIdentifier:(id)a4 transactionIds:(id)a5 creditDebitType:(unint64_t)a6 category:(id)a7
+- (FHTransactionMerchantGroup)initWithMerchantMuid:(unint64_t)muid groupIdentifier:(id)identifier transactionIds:(id)ids creditDebitType:(unint64_t)type category:(id)category
 {
   v11.receiver = self;
   v11.super_class = FHTransactionMerchantGroup;
-  v8 = [(FHTransactionGroup *)&v11 initWithGroupIdentifier:a4 transactionIds:a5 groupingMethod:2 creditDebitType:a6 category:a7];
+  v8 = [(FHTransactionGroup *)&v11 initWithGroupIdentifier:identifier transactionIds:ids groupingMethod:2 creditDebitType:type category:category];
   v9 = v8;
   if (v8)
   {
-    [(FHTransactionMerchantGroup *)v8 setMerchantMuid:a3];
+    [(FHTransactionMerchantGroup *)v8 setMerchantMuid:muid];
   }
 
   return v9;

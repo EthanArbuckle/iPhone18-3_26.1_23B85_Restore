@@ -1,19 +1,19 @@
 @interface PSUI5GSASwitchSpecifier
-- (PSUI5GSASwitchSpecifier)initWithHostController:(id)a3 parentSpecifier:(id)a4 carrierBundleCache:(id)a5;
+- (PSUI5GSASwitchSpecifier)initWithHostController:(id)controller parentSpecifier:(id)specifier carrierBundleCache:(id)cache;
 - (id)groupFooterText;
 - (id)is5GSAEnabled;
 - (void)checkNRStatusAndDisableIfNeeded;
 - (void)refreshSpecifiersInHostController;
-- (void)set5GSASwitch:(id)a3 specifier:(id)a4;
+- (void)set5GSASwitch:(id)switch specifier:(id)specifier;
 @end
 
 @implementation PSUI5GSASwitchSpecifier
 
-- (PSUI5GSASwitchSpecifier)initWithHostController:(id)a3 parentSpecifier:(id)a4 carrierBundleCache:(id)a5
+- (PSUI5GSASwitchSpecifier)initWithHostController:(id)controller parentSpecifier:(id)specifier carrierBundleCache:(id)cache
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  specifierCopy = specifier;
+  cacheCopy = cache;
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:@"5G_SA" value:&stru_287733598 table:@"Aries"];
   v21.receiver = self;
@@ -22,17 +22,17 @@
 
   if (v13)
   {
-    objc_storeWeak(&v13->_listController, v8);
-    objc_storeStrong(&v13->_carrierBundleCache, a5);
-    v14 = [v9 propertyForKey:*MEMORY[0x277D40128]];
+    objc_storeWeak(&v13->_listController, controllerCopy);
+    objc_storeStrong(&v13->_carrierBundleCache, cache);
+    v14 = [specifierCopy propertyForKey:*MEMORY[0x277D40128]];
     subscriptionContext = v13->_subscriptionContext;
     v13->_subscriptionContext = v14;
 
     v16 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:v13->_subscriptionContext];
-    v17 = [v16 instance];
-    v18 = [v17 stringValue];
+    instance = [v16 instance];
+    stringValue = [instance stringValue];
     instance = v13->_instance;
-    v13->_instance = v18;
+    v13->_instance = stringValue;
 
     [(PSUI5GSASwitchSpecifier *)v13 checkNRStatusAndDisableIfNeeded];
   }
@@ -49,11 +49,11 @@
   return v5;
 }
 
-- (void)set5GSASwitch:(id)a3 specifier:(id)a4
+- (void)set5GSASwitch:(id)switch specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [switch BOOLValue];
 
-  [(PSUI5GSASwitchSpecifier *)self set5GSAEnabled:v5];
+  [(PSUI5GSASwitchSpecifier *)self set5GSAEnabled:bOOLValue];
 }
 
 - (id)groupFooterText

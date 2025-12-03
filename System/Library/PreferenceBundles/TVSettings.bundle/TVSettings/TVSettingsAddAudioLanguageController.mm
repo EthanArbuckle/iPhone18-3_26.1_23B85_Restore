@@ -1,22 +1,22 @@
 @interface TVSettingsAddAudioLanguageController
-- (TVSettingsAddAudioLanguageController)initWithTopLevelController:(id)a3;
+- (TVSettingsAddAudioLanguageController)initWithTopLevelController:(id)controller;
 - (id)selectedLanguages;
 - (id)specifiers;
 - (id)unselectedLanguages;
 - (void)_setupNavigationBar;
 - (void)dealloc;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)setSelectedLanguages:(id)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)setSelectedLanguages:(id)languages;
 @end
 
 @implementation TVSettingsAddAudioLanguageController
 
-- (TVSettingsAddAudioLanguageController)initWithTopLevelController:(id)a3
+- (TVSettingsAddAudioLanguageController)initWithTopLevelController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = TVSettingsAddAudioLanguageController;
-  v3 = [(TVSettingsAddLanguageController *)&v7 initWithTopLevelController:a3];
+  v3 = [(TVSettingsAddLanguageController *)&v7 initWithTopLevelController:controller];
   v4 = v3;
   if (v3)
   {
@@ -41,27 +41,27 @@
 
 - (id)selectedLanguages
 {
-  v2 = [(TVSettingsAddLanguageController *)self topLevelController];
-  v3 = [v2 selectedAudioLanguages];
+  topLevelController = [(TVSettingsAddLanguageController *)self topLevelController];
+  selectedAudioLanguages = [topLevelController selectedAudioLanguages];
 
-  return v3;
+  return selectedAudioLanguages;
 }
 
-- (void)setSelectedLanguages:(id)a3
+- (void)setSelectedLanguages:(id)languages
 {
-  v4 = a3;
-  v5 = [(TVSettingsAddLanguageController *)self topLevelController];
-  [v5 setSelectedAudioLanguages:v4];
+  languagesCopy = languages;
+  topLevelController = [(TVSettingsAddLanguageController *)self topLevelController];
+  [topLevelController setSelectedAudioLanguages:languagesCopy];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  barCopy = bar;
+  changeCopy = change;
+  if ([changeCopy length])
   {
-    self->_shouldShowOriginalAudioLanguage = [(NSString *)self->_originalAudioName containsString:v7];
-    self->_shouldShowDeviceAudioLanguage = [(NSString *)self->_deviceAudioName containsString:v7];
+    self->_shouldShowOriginalAudioLanguage = [(NSString *)self->_originalAudioName containsString:changeCopy];
+    self->_shouldShowDeviceAudioLanguage = [(NSString *)self->_deviceAudioName containsString:changeCopy];
   }
 
   else
@@ -72,16 +72,16 @@
 
   v8.receiver = self;
   v8.super_class = TVSettingsAddAudioLanguageController;
-  [(TVSettingsAddLanguageController *)&v8 searchBar:v6 textDidChange:v7];
+  [(TVSettingsAddLanguageController *)&v8 searchBar:barCopy textDidChange:changeCopy];
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
   self->_shouldShowOriginalAudioLanguage = 1;
   self->_shouldShowDeviceAudioLanguage = 1;
   v3.receiver = self;
   v3.super_class = TVSettingsAddAudioLanguageController;
-  [(TVSettingsAddLanguageController *)&v3 searchBarCancelButtonClicked:a3];
+  [(TVSettingsAddLanguageController *)&v3 searchBarCancelButtonClicked:clicked];
 }
 
 - (id)specifiers
@@ -148,8 +148,8 @@
         v17 = [v15 localizedStringForKey:v16 value:&stru_21328 table:@"TVSettings"];
 
         v18 = +[NSLocale preferredLanguages];
-        v19 = [v18 firstObject];
-        v20 = [WLKSettingsLanguageUtilities localizedNameForLanguageCode:v19];
+        firstObject = [v18 firstObject];
+        v20 = [WLKSettingsLanguageUtilities localizedNameForLanguageCode:firstObject];
 
         v21 = [NSString stringWithFormat:v17, v20];
         deviceAudioName = self->_deviceAudioName;
@@ -167,7 +167,7 @@
 
     v38 = v5;
     v40 = +[NSMutableArray array];
-    v41 = self;
+    selfCopy = self;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
@@ -196,7 +196,7 @@
           {
             [v6 addObject:v32];
             v34 = [WLKSettingsLanguageUtilities localizedNameForLanguageCode:v32];
-            v35 = [PSSpecifier preferenceSpecifierNamed:v34 target:v41 set:0 get:0 detail:0 cell:3 edit:0];
+            v35 = [PSSpecifier preferenceSpecifierNamed:v34 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
             [v35 setProperty:v32 forKey:v29];
             [v35 setProperty:objc_opt_class() forKey:v30];
@@ -212,10 +212,10 @@
 
     [v40 sortUsingComparator:&stru_20928];
     [v38 addObjectsFromArray:v40];
-    v36 = *&v41->super.PSListController_opaque[v39];
-    *&v41->super.PSListController_opaque[v39] = v38;
+    v36 = *&selfCopy->super.PSListController_opaque[v39];
+    *&selfCopy->super.PSListController_opaque[v39] = v38;
 
-    v4 = *&v41->super.PSListController_opaque[v39];
+    v4 = *&selfCopy->super.PSListController_opaque[v39];
   }
 
   return v4;
@@ -240,7 +240,7 @@
     v4 = +[WLKSettingsLanguageUtilities staticLanguageCodes];
     v5 = objc_alloc_init(NSMutableArray);
     v6 = +[NSLocale preferredLanguages];
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
 
     v18 = 0u;
     v19 = 0u;
@@ -262,7 +262,7 @@
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
-          if ((-[NSMutableArray containsObject:](self->super._stagedLanguages, "containsObject:", v13, v16) & 1) == 0 && ([v13 isEqualToString:v7] & 1) == 0)
+          if ((-[NSMutableArray containsObject:](self->super._stagedLanguages, "containsObject:", v13, v16) & 1) == 0 && ([v13 isEqualToString:firstObject] & 1) == 0)
           {
             [(NSArray *)v5 addObject:v13];
           }

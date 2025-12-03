@@ -2,10 +2,10 @@
 - (NSString)appId;
 - (id)radioStations;
 - (id)updateHandler;
-- (void)accessoryDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
+- (void)accessoryDidUpdate:(id)update receivedAllValues:(BOOL)values;
 - (void)donationUpdateTriggered;
-- (void)registerUpdateHandler:(id)a3;
-- (void)setUpdateHandler:(id)a3;
+- (void)registerUpdateHandler:(id)handler;
+- (void)setUpdateHandler:(id)handler;
 - (void)teardownPublisherSubscriptions;
 @end
 
@@ -33,9 +33,9 @@
   return v4;
 }
 
-- (void)setUpdateHandler:(id)a3
+- (void)setUpdateHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -48,7 +48,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   RadioListener.updateHandler.setter(v4, v5);
 }
 
@@ -62,13 +62,13 @@
 
 - (void)teardownPublisherSubscriptions
 {
-  v2 = self;
+  selfCopy = self;
   RadioListener.teardownPublisherSubscriptions()();
 }
 
-- (void)registerUpdateHandler:(id)a3
+- (void)registerUpdateHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -83,14 +83,14 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   RadioListener.registerUpdateHandler(_:)(v7, v6);
   outlined consume of (@escaping @callee_guaranteed (@guaranteed String) -> ())?(v7);
 }
 
 - (id)radioStations
 {
-  v2 = self;
+  selfCopy = self;
   RadioListener.radioStations()();
 
   type metadata accessor for OS_dispatch_queue(0, &lazy cache variable for type metadata for KVItem, 0x277D22D20);
@@ -101,15 +101,15 @@
 
 - (void)donationUpdateTriggered
 {
-  v2 = self;
+  selfCopy = self;
   RadioListener.donationUpdateTriggered()();
 }
 
-- (void)accessoryDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)accessoryDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  RadioListener.accessoryDidUpdate(_:receivedAllValues:)(v6, a4);
+  updateCopy = update;
+  selfCopy = self;
+  RadioListener.accessoryDidUpdate(_:receivedAllValues:)(updateCopy, values);
 }
 
 @end

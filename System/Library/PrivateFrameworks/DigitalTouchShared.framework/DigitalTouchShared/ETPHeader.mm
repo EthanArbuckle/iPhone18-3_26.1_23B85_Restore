@@ -1,18 +1,18 @@
 @interface ETPHeader
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)messageTypeAsString:(int)a3;
-- (int)StringAsMessageType:(id)a3;
+- (id)messageTypeAsString:(int)string;
+- (int)StringAsMessageType:(id)type;
 - (int)messageType;
 - (unint64_t)hash;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBaseColor:(BOOL)a3;
-- (void)setHasMessageType:(BOOL)a3;
-- (void)setHasStartDelay:(BOOL)a3;
-- (void)setHasSupportsPlaybackTimeOffsets:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasBaseColor:(BOOL)color;
+- (void)setHasMessageType:(BOOL)type;
+- (void)setHasStartDelay:(BOOL)delay;
+- (void)setHasSupportsPlaybackTimeOffsets:(BOOL)offsets;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ETPHeader
@@ -30,9 +30,9 @@
   }
 }
 
-- (void)setHasMessageType:(BOOL)a3
+- (void)setHasMessageType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -45,60 +45,60 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (id)messageTypeAsString:(int)a3
+- (id)messageTypeAsString:(int)string
 {
-  if ((a3 - 1) >= 8)
+  if ((string - 1) >= 8)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_278F79EF0[a3 - 1];
+    v4 = off_278F79EF0[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsMessageType:(id)a3
+- (int)StringAsMessageType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Tap"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Tap"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"QuickTap"])
+  else if ([typeCopy isEqualToString:@"QuickTap"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Heartbeat"])
+  else if ([typeCopy isEqualToString:@"Heartbeat"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Doodle"])
+  else if ([typeCopy isEqualToString:@"Doodle"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ReadReceipt"])
+  else if ([typeCopy isEqualToString:@"ReadReceipt"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Video"])
+  else if ([typeCopy isEqualToString:@"Video"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Kiss"])
+  else if ([typeCopy isEqualToString:@"Kiss"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Anger"])
+  else if ([typeCopy isEqualToString:@"Anger"])
   {
     v4 = 8;
   }
@@ -111,9 +111,9 @@
   return v4;
 }
 
-- (void)setHasBaseColor:(BOOL)a3
+- (void)setHasBaseColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     v3 = 4;
   }
@@ -126,9 +126,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSupportsPlaybackTimeOffsets:(BOOL)a3
+- (void)setHasSupportsPlaybackTimeOffsets:(BOOL)offsets
 {
-  if (a3)
+  if (offsets)
   {
     v3 = 16;
   }
@@ -141,9 +141,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasStartDelay:(BOOL)a3
+- (void)setHasStartDelay:(BOOL)delay
 {
-  if (a3)
+  if (delay)
   {
     v3 = 2;
   }
@@ -162,15 +162,15 @@
   v8.receiver = self;
   v8.super_class = ETPHeader;
   v4 = [(ETPHeader *)&v8 description];
-  v5 = [(ETPHeader *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ETPHeader *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -185,7 +185,7 @@
       v6 = off_278F79EF0[v5];
     }
 
-    [v3 setObject:v6 forKey:@"messageType"];
+    [dictionary setObject:v6 forKey:@"messageType"];
 
     has = self->_has;
   }
@@ -193,32 +193,32 @@
   if (has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_sendDate];
-    [v3 setObject:v7 forKey:@"sendDate"];
+    [dictionary setObject:v7 forKey:@"sendDate"];
   }
 
   messageData = self->_messageData;
   if (messageData)
   {
-    [v3 setObject:messageData forKey:@"messageData"];
+    [dictionary setObject:messageData forKey:@"messageData"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_baseColor];
-    [v3 setObject:v9 forKey:@"baseColor"];
+    [dictionary setObject:v9 forKey:@"baseColor"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   v11 = self->_has;
   if ((v11 & 0x10) != 0)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_supportsPlaybackTimeOffsets];
-    [v3 setObject:v12 forKey:@"supportsPlaybackTimeOffsets"];
+    [dictionary setObject:v12 forKey:@"supportsPlaybackTimeOffsets"];
 
     v11 = self->_has;
   }
@@ -226,15 +226,15 @@
   if ((v11 & 2) != 0)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithDouble:self->_startDelay];
-    [v3 setObject:v13 forKey:@"startDelay"];
+    [dictionary setObject:v13 forKey:@"startDelay"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -275,9 +275,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -293,7 +293,7 @@
     *(v5 + 56) |= 1u;
   }
 
-  v8 = [(NSData *)self->_messageData copyWithZone:a3];
+  v8 = [(NSData *)self->_messageData copyWithZone:zone];
   v9 = *(v6 + 40);
   *(v6 + 40) = v8;
 
@@ -303,7 +303,7 @@
     *(v6 + 56) |= 4u;
   }
 
-  v10 = [(NSString *)self->_identifier copyWithZone:a3];
+  v10 = [(NSString *)self->_identifier copyWithZone:zone];
   v11 = *(v6 + 32);
   *(v6 + 32) = v10;
 
@@ -324,10 +324,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
@@ -335,32 +335,32 @@
   has = self->_has;
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 56) & 8) == 0 || self->_messageType != *(v4 + 12))
+    if ((*(equalCopy + 56) & 8) == 0 || self->_messageType != *(equalCopy + 12))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 56) & 8) != 0)
+  else if ((*(equalCopy + 56) & 8) != 0)
   {
     goto LABEL_30;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_sendDate != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_sendDate != *(equalCopy + 1))
     {
       goto LABEL_30;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_30;
   }
 
   messageData = self->_messageData;
-  if (messageData | *(v4 + 5))
+  if (messageData | *(equalCopy + 5))
   {
     if (![(NSData *)messageData isEqual:?])
     {
@@ -372,19 +372,19 @@
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_baseColor != *(v4 + 6))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_baseColor != *(equalCopy + 6))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
     goto LABEL_30;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 4))
+  if (identifier | *(equalCopy + 4))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -396,7 +396,7 @@
 
   if ((has & 0x10) == 0)
   {
-    if ((*(v4 + 56) & 0x10) == 0)
+    if ((*(equalCopy + 56) & 0x10) == 0)
     {
       goto LABEL_25;
     }
@@ -406,29 +406,29 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if ((*(v4 + 56) & 0x10) == 0)
+  if ((*(equalCopy + 56) & 0x10) == 0)
   {
     goto LABEL_30;
   }
 
   if (self->_supportsPlaybackTimeOffsets)
   {
-    if ((*(v4 + 52) & 1) == 0)
+    if ((*(equalCopy + 52) & 1) == 0)
     {
       goto LABEL_30;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_30;
   }
 
 LABEL_25:
-  v8 = (*(v4 + 56) & 2) == 0;
+  v8 = (*(equalCopy + 56) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_startDelay != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_startDelay != *(equalCopy + 2))
     {
       goto LABEL_30;
     }
@@ -525,53 +525,53 @@ LABEL_11:
   return v4 ^ v3 ^ v6 ^ v5 ^ v7 ^ v10 ^ v14;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 56);
+  fromCopy = from;
+  v5 = *(fromCopy + 56);
   if ((v5 & 8) != 0)
   {
-    self->_messageType = *(v4 + 12);
+    self->_messageType = *(fromCopy + 12);
     *&self->_has |= 8u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
   }
 
   if (v5)
   {
-    self->_sendDate = *(v4 + 1);
+    self->_sendDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  v7 = v4;
-  if (*(v4 + 5))
+  v7 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(ETPHeader *)self setMessageData:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if ((*(v4 + 56) & 4) != 0)
+  if ((*(fromCopy + 56) & 4) != 0)
   {
-    self->_baseColor = *(v4 + 6);
+    self->_baseColor = *(fromCopy + 6);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ETPHeader *)self setIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 56);
+  v6 = *(fromCopy + 56);
   if ((v6 & 0x10) != 0)
   {
-    self->_supportsPlaybackTimeOffsets = *(v4 + 52);
+    self->_supportsPlaybackTimeOffsets = *(fromCopy + 52);
     *&self->_has |= 0x10u;
-    v6 = *(v4 + 56);
+    v6 = *(fromCopy + 56);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_startDelay = *(v4 + 2);
+    self->_startDelay = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 }

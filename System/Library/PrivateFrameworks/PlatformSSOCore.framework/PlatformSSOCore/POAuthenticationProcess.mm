@@ -1,60 +1,60 @@
 @interface POAuthenticationProcess
-- (BOOL)extractNewUserValuesFromTokens:(id)a3 deviceConfiguration:(id)a4 loginUserName:(id)a5 returningName:(id *)a6 userName:(id *)a7 error:(id *)a8;
-- (BOOL)validateIdToken:(id)a3 context:(id)a4 key:(__SecKey *)a5;
-- (BOOL)validatePartyUInfo:(id)a3 context:(id)a4;
-- (BOOL)validatePartyVInfo:(id)a3 context:(id)a4 publicKey:(__SecKey *)a5;
-- (BOOL)validateWSTrustMexResponseWithContext:(id)a3 response:(id)a4;
+- (BOOL)extractNewUserValuesFromTokens:(id)tokens deviceConfiguration:(id)configuration loginUserName:(id)name returningName:(id *)returningName userName:(id *)userName error:(id *)error;
+- (BOOL)validateIdToken:(id)token context:(id)context key:(__SecKey *)key;
+- (BOOL)validatePartyUInfo:(id)info context:(id)context;
+- (BOOL)validatePartyVInfo:(id)info context:(id)context publicKey:(__SecKey *)key;
+- (BOOL)validateWSTrustMexResponseWithContext:(id)context response:(id)response;
 - (POAuthenticationProcess)init;
-- (__SecKey)findKey:(id)a3 inJWKSData:(id)a4 rootCertificates:(id)a5;
-- (id)createAuthenticationContextUsingLoginConfiguration:(id)a3 deviceConfiguration:(id)a4 userName:(id)a5 resumeData:(id)a6;
-- (id)createEmbeddedAssertionWithContext:(id)a3;
-- (id)createEmbeddedPasswordAssertionWithContext:(id)a3;
-- (id)createKeyExchangeRequestJWTWithContext:(id)a3 otherPartyPublicKey:(id)a4;
-- (id)createKeyExchangeRequestWithContext:(id)a3 jwt:(id)a4;
-- (id)createKeyRequestJWTWithContext:(id)a3;
-- (id)createKeyRequestWithContext:(id)a3 jwt:(id)a4;
-- (id)createLoginJWTWithContext:(id)a3 embeddedAssertion:(id)a4;
-- (id)createLoginRequestWithContext:(id)a3 jwt:(id)a4;
-- (id)createNonceRequestWithContext:(id)a3;
-- (id)createPartyVInfoWithNonce:(id)a3 apvKey:(__SecKey *)a4;
-- (id)createPartyVInfoWithNonce:(id)a3 prefixData:(id)a4 apvPublicKey:(__SecKey *)a5;
-- (id)createPreAuthenticationRequestWithContext:(id)a3;
-- (id)createRefreshJWTWithContext:(id)a3;
-- (id)createTestMessagesForLoginConfiguration:(id)a3 certificate:(__SecCertificate *)a4;
-- (id)createWSTrust13RequestWithContext:(id)a3;
-- (id)createWSTrust2005RequestWithContext:(id)a3;
-- (id)createWSTrustMexRequestWithContext:(id)a3;
-- (id)findAlgorithmForKey:(__SecKey *)a3;
-- (unint64_t)validateWSTrustAuthenticationResponseWithContext:(id)a3 response:(id)a4 returningAssertion:(id *)a5;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)URLSession:(id)a3 taskIsWaitingForConnectivity:(id)a4;
-- (void)_performDynamicWSTrustPasswordLoginWithContext:(id)a3 completion:(id)a4;
-- (void)_performEmbeddedAssertionLoginUsingContext:(id)a3 completion:(id)a4;
-- (void)_performEncryptedPasswordLoginUsingContext:(id)a3 completion:(id)a4;
-- (void)_performNonceRequestWithContext:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)_performPasswordLoginUsingContext:(id)a3 completion:(id)a4;
-- (void)_performWSTrustPasswordLoginWithContext:(id)a3 completion:(id)a4;
-- (void)addCryptoHeadersToJWTBody:(id)a3 context:(id)a4;
-- (void)completeAccessTokenLoginUsingContext:(id)a3 completion:(id)a4;
-- (void)extractGroupsAndSubUsingAuthorizationWithLoginConfiguration:(id)a3 tokens:(id)a4 returningGroups:(id *)a5 identifier:(id *)a6 refreshToken:(id *)a7;
-- (void)performAccessTokenSigningUsingContext:(id)a3 completion:(id)a4;
-- (void)performKeyExchangeRequestUsingContext:(id)a3 otherPartyPublicKeyData:(id)a4 completion:(id)a5;
-- (void)performKeyExchangeRequestWithContext:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)performKeyRequestUsingContext:(id)a3 completion:(id)a4;
-- (void)performKeyRequestWithContext:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)performLoginRequestWithContext:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)performLoginWithContext:(id)a3 loginJWT:(id)a4 completion:(id)a5;
-- (void)performNonceRequestWithContext:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)performPasswordLoginUsingContext:(id)a3 completion:(id)a4;
-- (void)performPreAuthenticationRequestWithContext:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)performSEPKeyLoginUsingContext:(id)a3 completion:(id)a4;
-- (void)performSmartCardLoginUsingContext:(id)a3 completion:(id)a4;
-- (void)performTokenRefreshUsingContext:(id)a3 completion:(id)a4;
-- (void)performWSTrustAuthenticationRequestWithContext:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)performWSTrustMexRequestWithContext:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)prepareForAccessTokenLoginUsingContext:(id)a3 completion:(id)a4;
-- (void)retrieveSigningKeyWithContext:(id)a3 keyId:(id)a4 completion:(id)a5;
+- (__SecKey)findKey:(id)key inJWKSData:(id)data rootCertificates:(id)certificates;
+- (id)createAuthenticationContextUsingLoginConfiguration:(id)configuration deviceConfiguration:(id)deviceConfiguration userName:(id)name resumeData:(id)data;
+- (id)createEmbeddedAssertionWithContext:(id)context;
+- (id)createEmbeddedPasswordAssertionWithContext:(id)context;
+- (id)createKeyExchangeRequestJWTWithContext:(id)context otherPartyPublicKey:(id)key;
+- (id)createKeyExchangeRequestWithContext:(id)context jwt:(id)jwt;
+- (id)createKeyRequestJWTWithContext:(id)context;
+- (id)createKeyRequestWithContext:(id)context jwt:(id)jwt;
+- (id)createLoginJWTWithContext:(id)context embeddedAssertion:(id)assertion;
+- (id)createLoginRequestWithContext:(id)context jwt:(id)jwt;
+- (id)createNonceRequestWithContext:(id)context;
+- (id)createPartyVInfoWithNonce:(id)nonce apvKey:(__SecKey *)key;
+- (id)createPartyVInfoWithNonce:(id)nonce prefixData:(id)data apvPublicKey:(__SecKey *)key;
+- (id)createPreAuthenticationRequestWithContext:(id)context;
+- (id)createRefreshJWTWithContext:(id)context;
+- (id)createTestMessagesForLoginConfiguration:(id)configuration certificate:(__SecCertificate *)certificate;
+- (id)createWSTrust13RequestWithContext:(id)context;
+- (id)createWSTrust2005RequestWithContext:(id)context;
+- (id)createWSTrustMexRequestWithContext:(id)context;
+- (id)findAlgorithmForKey:(__SecKey *)key;
+- (unint64_t)validateWSTrustAuthenticationResponseWithContext:(id)context response:(id)response returningAssertion:(id *)assertion;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)URLSession:(id)session taskIsWaitingForConnectivity:(id)connectivity;
+- (void)_performDynamicWSTrustPasswordLoginWithContext:(id)context completion:(id)completion;
+- (void)_performEmbeddedAssertionLoginUsingContext:(id)context completion:(id)completion;
+- (void)_performEncryptedPasswordLoginUsingContext:(id)context completion:(id)completion;
+- (void)_performNonceRequestWithContext:(id)context request:(id)request completion:(id)completion;
+- (void)_performPasswordLoginUsingContext:(id)context completion:(id)completion;
+- (void)_performWSTrustPasswordLoginWithContext:(id)context completion:(id)completion;
+- (void)addCryptoHeadersToJWTBody:(id)body context:(id)context;
+- (void)completeAccessTokenLoginUsingContext:(id)context completion:(id)completion;
+- (void)extractGroupsAndSubUsingAuthorizationWithLoginConfiguration:(id)configuration tokens:(id)tokens returningGroups:(id *)groups identifier:(id *)identifier refreshToken:(id *)token;
+- (void)performAccessTokenSigningUsingContext:(id)context completion:(id)completion;
+- (void)performKeyExchangeRequestUsingContext:(id)context otherPartyPublicKeyData:(id)data completion:(id)completion;
+- (void)performKeyExchangeRequestWithContext:(id)context request:(id)request completion:(id)completion;
+- (void)performKeyRequestUsingContext:(id)context completion:(id)completion;
+- (void)performKeyRequestWithContext:(id)context request:(id)request completion:(id)completion;
+- (void)performLoginRequestWithContext:(id)context request:(id)request completion:(id)completion;
+- (void)performLoginWithContext:(id)context loginJWT:(id)t completion:(id)completion;
+- (void)performNonceRequestWithContext:(id)context request:(id)request completion:(id)completion;
+- (void)performPasswordLoginUsingContext:(id)context completion:(id)completion;
+- (void)performPreAuthenticationRequestWithContext:(id)context request:(id)request completion:(id)completion;
+- (void)performSEPKeyLoginUsingContext:(id)context completion:(id)completion;
+- (void)performSmartCardLoginUsingContext:(id)context completion:(id)completion;
+- (void)performTokenRefreshUsingContext:(id)context completion:(id)completion;
+- (void)performWSTrustAuthenticationRequestWithContext:(id)context request:(id)request completion:(id)completion;
+- (void)performWSTrustMexRequestWithContext:(id)context request:(id)request completion:(id)completion;
+- (void)prepareForAccessTokenLoginUsingContext:(id)context completion:(id)completion;
+- (void)retrieveSigningKeyWithContext:(id)context keyId:(id)id completion:(id)completion;
 @end
 
 @implementation POAuthenticationProcess
@@ -94,11 +94,11 @@
   return v3;
 }
 
-- (void)performPasswordLoginUsingContext:(id)a3 completion:(id)a4
+- (void)performPasswordLoginUsingContext:(id)context completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = PO_LOG_PODiagnostics();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -109,30 +109,30 @@
   v9 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [POAuthenticationProcess performPasswordLoginUsingContext:v6 completion:?];
+    [POAuthenticationProcess performPasswordLoginUsingContext:contextCopy completion:?];
   }
 
   v10 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [POAuthenticationProcess performPasswordLoginUsingContext:v6 completion:?];
+    [POAuthenticationProcess performPasswordLoginUsingContext:contextCopy completion:?];
   }
 
-  [v6 setLoginType:1];
-  v11 = [(POAuthenticationProcess *)self createNonceRequestWithContext:v6];
+  [contextCopy setLoginType:1];
+  v11 = [(POAuthenticationProcess *)self createNonceRequestWithContext:contextCopy];
   if (v11)
   {
     v12 = PO_LOG_PODiagnostics();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v6 requestIdentifier];
+      requestIdentifier = [contextCopy requestIdentifier];
       *buf = 138543362;
-      v26 = v13;
+      v26 = requestIdentifier;
       _os_log_impl(&dword_25E8B1000, v12, OS_LOG_TYPE_DEFAULT, "Sending nonce request: %{public}@", buf, 0xCu);
     }
 
     v14 = PO_LOG_POAuthenticationProcess();
-    v15 = os_signpost_id_make_with_pointer(v14, v6);
+    v15 = os_signpost_id_make_with_pointer(v14, contextCopy);
 
     v16 = PO_LOG_POAuthenticationProcess();
     v17 = v16;
@@ -147,16 +147,16 @@
     v20[2] = __71__POAuthenticationProcess_performPasswordLoginUsingContext_completion___block_invoke_27;
     v20[3] = &unk_279A3DED0;
     v24 = v15;
-    v21 = v6;
-    v22 = self;
-    v23 = v7;
+    v21 = contextCopy;
+    selfCopy = self;
+    v23 = completionCopy;
     [(POAuthenticationProcess *)self performNonceRequestWithContext:v21 request:v11 completion:v20];
   }
 
   else
   {
     v18 = __71__POAuthenticationProcess_performPasswordLoginUsingContext_completion___block_invoke();
-    (*(v7 + 2))(v7, 2, v6, 0);
+    (*(completionCopy + 2))(completionCopy, 2, contextCopy, 0);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -270,27 +270,27 @@ id __71__POAuthenticationProcess_performPasswordLoginUsingContext_completion___b
   return v0;
 }
 
-- (void)performSmartCardLoginUsingContext:(id)a3 completion:(id)a4
+- (void)performSmartCardLoginUsingContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 setLoginType:3];
-  [(POAuthenticationProcess *)self _performEmbeddedAssertionLoginUsingContext:v7 completion:v6];
+  completionCopy = completion;
+  contextCopy = context;
+  [contextCopy setLoginType:3];
+  [(POAuthenticationProcess *)self _performEmbeddedAssertionLoginUsingContext:contextCopy completion:completionCopy];
 }
 
-- (void)performSEPKeyLoginUsingContext:(id)a3 completion:(id)a4
+- (void)performSEPKeyLoginUsingContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 setLoginType:2];
-  [(POAuthenticationProcess *)self _performEmbeddedAssertionLoginUsingContext:v7 completion:v6];
+  completionCopy = completion;
+  contextCopy = context;
+  [contextCopy setLoginType:2];
+  [(POAuthenticationProcess *)self _performEmbeddedAssertionLoginUsingContext:contextCopy completion:completionCopy];
 }
 
-- (void)_performEmbeddedAssertionLoginUsingContext:(id)a3 completion:(id)a4
+- (void)_performEmbeddedAssertionLoginUsingContext:(id)context completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = PO_LOG_PODiagnostics();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -301,29 +301,29 @@ id __71__POAuthenticationProcess_performPasswordLoginUsingContext_completion___b
   v9 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [POAuthenticationProcess performPasswordLoginUsingContext:v6 completion:?];
+    [POAuthenticationProcess performPasswordLoginUsingContext:contextCopy completion:?];
   }
 
   v10 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [POAuthenticationProcess performPasswordLoginUsingContext:v6 completion:?];
+    [POAuthenticationProcess performPasswordLoginUsingContext:contextCopy completion:?];
   }
 
-  v11 = [(POAuthenticationProcess *)self createNonceRequestWithContext:v6];
+  v11 = [(POAuthenticationProcess *)self createNonceRequestWithContext:contextCopy];
   if (v11)
   {
     v12 = PO_LOG_PODiagnostics();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v6 requestIdentifier];
+      requestIdentifier = [contextCopy requestIdentifier];
       *buf = 138543362;
-      v26 = v13;
+      v26 = requestIdentifier;
       _os_log_impl(&dword_25E8B1000, v12, OS_LOG_TYPE_DEFAULT, "Sending nonce request: %{public}@", buf, 0xCu);
     }
 
     v14 = PO_LOG_POAuthenticationProcess();
-    v15 = os_signpost_id_make_with_pointer(v14, v6);
+    v15 = os_signpost_id_make_with_pointer(v14, contextCopy);
 
     v16 = PO_LOG_POAuthenticationProcess();
     v17 = v16;
@@ -338,16 +338,16 @@ id __71__POAuthenticationProcess_performPasswordLoginUsingContext_completion___b
     v20[2] = __81__POAuthenticationProcess__performEmbeddedAssertionLoginUsingContext_completion___block_invoke_39;
     v20[3] = &unk_279A3DEF8;
     v24 = v15;
-    v23 = v7;
-    v21 = v6;
-    v22 = self;
+    v23 = completionCopy;
+    v21 = contextCopy;
+    selfCopy = self;
     [(POAuthenticationProcess *)self performNonceRequestWithContext:v21 request:v11 completion:v20];
   }
 
   else
   {
     v18 = __81__POAuthenticationProcess__performEmbeddedAssertionLoginUsingContext_completion___block_invoke();
-    (*(v7 + 2))(v7, 2, v6, 0);
+    (*(completionCopy + 2))(completionCopy, 2, contextCopy, 0);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -529,9 +529,9 @@ id __81__POAuthenticationProcess__performEmbeddedAssertionLoginUsingContext_comp
   return v0;
 }
 
-- (id)findAlgorithmForKey:(__SecKey *)a3
+- (id)findAlgorithmForKey:(__SecKey *)key
 {
-  v4 = SecKeyCopyAttributes(a3);
+  v4 = SecKeyCopyAttributes(key);
   v5 = [(__CFDictionary *)v4 objectForKeyedSubscript:*MEMORY[0x277CDBFE0]];
   if (![v5 isEqualToString:*MEMORY[0x277CDC000]])
   {
@@ -551,11 +551,11 @@ id __81__POAuthenticationProcess__performEmbeddedAssertionLoginUsingContext_comp
     v12 = [v8 isEqualToString:*MEMORY[0x277CDC050]];
     if (v10)
     {
-      v13 = [v9 intValue];
-      switch(v13)
+      intValue = [v9 intValue];
+      switch(intValue)
       {
         case 521:
-          if (SecKeyIsAlgorithmSupported(a3, kSecKeyOperationTypeSign, *MEMORY[0x277CDC2E0]))
+          if (SecKeyIsAlgorithmSupported(key, kSecKeyOperationTypeSign, *MEMORY[0x277CDC2E0]))
           {
             v7 = @"ES512";
             goto LABEL_22;
@@ -564,7 +564,7 @@ id __81__POAuthenticationProcess__performEmbeddedAssertionLoginUsingContext_comp
           v18 = __47__POAuthenticationProcess_findAlgorithmForKey___block_invoke_90();
           goto LABEL_21;
         case 384:
-          if (SecKeyIsAlgorithmSupported(a3, kSecKeyOperationTypeSign, *MEMORY[0x277CDC2D8]))
+          if (SecKeyIsAlgorithmSupported(key, kSecKeyOperationTypeSign, *MEMORY[0x277CDC2D8]))
           {
             v7 = @"ES384";
             goto LABEL_22;
@@ -573,7 +573,7 @@ id __81__POAuthenticationProcess__performEmbeddedAssertionLoginUsingContext_comp
           v17 = __47__POAuthenticationProcess_findAlgorithmForKey___block_invoke_81();
           goto LABEL_21;
         case 256:
-          if (SecKeyIsAlgorithmSupported(a3, kSecKeyOperationTypeSign, *MEMORY[0x277CDC2D0]))
+          if (SecKeyIsAlgorithmSupported(key, kSecKeyOperationTypeSign, *MEMORY[0x277CDC2D0]))
           {
             v7 = @"ES256";
 LABEL_22:
@@ -588,11 +588,11 @@ LABEL_22:
 
     else if (v11)
     {
-      v14 = [v9 intValue];
-      switch(v14)
+      intValue2 = [v9 intValue];
+      switch(intValue2)
       {
         case 4096:
-          if (SecKeyIsAlgorithmSupported(a3, kSecKeyOperationTypeSign, *MEMORY[0x277CDC398]))
+          if (SecKeyIsAlgorithmSupported(key, kSecKeyOperationTypeSign, *MEMORY[0x277CDC398]))
           {
             v7 = @"RS512";
             goto LABEL_22;
@@ -601,7 +601,7 @@ LABEL_22:
           v21 = __47__POAuthenticationProcess_findAlgorithmForKey___block_invoke_114();
           goto LABEL_21;
         case 3072:
-          if (SecKeyIsAlgorithmSupported(a3, kSecKeyOperationTypeSign, *MEMORY[0x277CDC390]))
+          if (SecKeyIsAlgorithmSupported(key, kSecKeyOperationTypeSign, *MEMORY[0x277CDC390]))
           {
             v7 = @"RS384";
             goto LABEL_22;
@@ -610,7 +610,7 @@ LABEL_22:
           v20 = __47__POAuthenticationProcess_findAlgorithmForKey___block_invoke_105();
           goto LABEL_21;
         case 2048:
-          if (SecKeyIsAlgorithmSupported(a3, kSecKeyOperationTypeSign, *MEMORY[0x277CDC388]))
+          if (SecKeyIsAlgorithmSupported(key, kSecKeyOperationTypeSign, *MEMORY[0x277CDC388]))
           {
             v7 = @"RS256";
             goto LABEL_22;
@@ -736,11 +736,11 @@ id __47__POAuthenticationProcess_findAlgorithmForKey___block_invoke_123()
   return v0;
 }
 
-- (void)performTokenRefreshUsingContext:(id)a3 completion:(id)a4
+- (void)performTokenRefreshUsingContext:(id)context completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = PO_LOG_PODiagnostics();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -751,30 +751,30 @@ id __47__POAuthenticationProcess_findAlgorithmForKey___block_invoke_123()
   v9 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [POAuthenticationProcess performPasswordLoginUsingContext:v6 completion:?];
+    [POAuthenticationProcess performPasswordLoginUsingContext:contextCopy completion:?];
   }
 
   v10 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [POAuthenticationProcess performPasswordLoginUsingContext:v6 completion:?];
+    [POAuthenticationProcess performPasswordLoginUsingContext:contextCopy completion:?];
   }
 
-  [v6 setLoginType:100];
-  v11 = [(POAuthenticationProcess *)self createNonceRequestWithContext:v6];
+  [contextCopy setLoginType:100];
+  v11 = [(POAuthenticationProcess *)self createNonceRequestWithContext:contextCopy];
   if (v11)
   {
     v12 = PO_LOG_PODiagnostics();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v6 requestIdentifier];
+      requestIdentifier = [contextCopy requestIdentifier];
       *buf = 138543362;
-      v26 = v13;
+      v26 = requestIdentifier;
       _os_log_impl(&dword_25E8B1000, v12, OS_LOG_TYPE_DEFAULT, "Sending nonce request: %{public}@", buf, 0xCu);
     }
 
     v14 = PO_LOG_POAuthenticationProcess();
-    v15 = os_signpost_id_make_with_pointer(v14, v6);
+    v15 = os_signpost_id_make_with_pointer(v14, contextCopy);
 
     v16 = PO_LOG_POAuthenticationProcess();
     v17 = v16;
@@ -789,16 +789,16 @@ id __47__POAuthenticationProcess_findAlgorithmForKey___block_invoke_123()
     v20[2] = __70__POAuthenticationProcess_performTokenRefreshUsingContext_completion___block_invoke_131;
     v20[3] = &unk_279A3DED0;
     v24 = v15;
-    v21 = v6;
-    v22 = self;
-    v23 = v7;
+    v21 = contextCopy;
+    selfCopy = self;
+    v23 = completionCopy;
     [(POAuthenticationProcess *)self performNonceRequestWithContext:v21 request:v11 completion:v20];
   }
 
   else
   {
     v18 = __71__POAuthenticationProcess_performPasswordLoginUsingContext_completion___block_invoke();
-    (*(v7 + 2))(v7, 2, v6, 0);
+    (*(completionCopy + 2))(completionCopy, 2, contextCopy, 0);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -879,25 +879,25 @@ id __70__POAuthenticationProcess_performTokenRefreshUsingContext_completion___bl
   return v0;
 }
 
-- (void)_performDynamicWSTrustPasswordLoginWithContext:(id)a3 completion:(id)a4
+- (void)_performDynamicWSTrustPasswordLoginWithContext:(id)context completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(POAuthenticationProcess *)self createPreAuthenticationRequestWithContext:v6];
+  contextCopy = context;
+  completionCopy = completion;
+  v8 = [(POAuthenticationProcess *)self createPreAuthenticationRequestWithContext:contextCopy];
   if (v8)
   {
     v9 = PO_LOG_PODiagnostics();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v6 requestIdentifier];
+      requestIdentifier = [contextCopy requestIdentifier];
       *buf = 138543362;
-      v28 = v10;
+      v28 = requestIdentifier;
       _os_log_impl(&dword_25E8B1000, v9, OS_LOG_TYPE_DEFAULT, "Sending preauthentication request: %{public}@", buf, 0xCu);
     }
 
     v11 = PO_LOG_POAuthenticationProcess();
-    v12 = os_signpost_id_make_with_pointer(v11, v6);
+    v12 = os_signpost_id_make_with_pointer(v11, contextCopy);
 
     v13 = PO_LOG_POAuthenticationProcess();
     v14 = v13;
@@ -912,23 +912,23 @@ id __70__POAuthenticationProcess_performTokenRefreshUsingContext_completion___bl
     v22[2] = __85__POAuthenticationProcess__performDynamicWSTrustPasswordLoginWithContext_completion___block_invoke_148;
     v22[3] = &unk_279A3DED0;
     v26 = v12;
-    v23 = v6;
-    v24 = self;
-    v25 = v7;
+    v23 = contextCopy;
+    selfCopy = self;
+    v25 = completionCopy;
     [(POAuthenticationProcess *)self performPreAuthenticationRequestWithContext:v23 request:v8 completion:v22];
   }
 
   else
   {
     v15 = __85__POAuthenticationProcess__performDynamicWSTrustPasswordLoginWithContext_completion___block_invoke();
-    v16 = [v6 password];
-    v17 = [v16 mutableBytes];
-    v18 = [v6 password];
-    v19 = [v18 length];
-    v20 = [v6 password];
-    memset_s(v17, v19, 0, [v20 length]);
+    password = [contextCopy password];
+    mutableBytes = [password mutableBytes];
+    password2 = [contextCopy password];
+    v19 = [password2 length];
+    password3 = [contextCopy password];
+    memset_s(mutableBytes, v19, 0, [password3 length]);
 
-    (*(v7 + 2))(v7, 2, v6, 0);
+    (*(completionCopy + 2))(completionCopy, 2, contextCopy, 0);
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -1021,25 +1021,25 @@ id __85__POAuthenticationProcess__performDynamicWSTrustPasswordLoginWithContext_
   return v0;
 }
 
-- (void)_performWSTrustPasswordLoginWithContext:(id)a3 completion:(id)a4
+- (void)_performWSTrustPasswordLoginWithContext:(id)context completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(POAuthenticationProcess *)self createWSTrustMexRequestWithContext:v6];
+  contextCopy = context;
+  completionCopy = completion;
+  v8 = [(POAuthenticationProcess *)self createWSTrustMexRequestWithContext:contextCopy];
   if (v8)
   {
     v9 = PO_LOG_PODiagnostics();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v6 requestIdentifier];
+      requestIdentifier = [contextCopy requestIdentifier];
       *buf = 138543362;
-      v28 = v10;
+      v28 = requestIdentifier;
       _os_log_impl(&dword_25E8B1000, v9, OS_LOG_TYPE_DEFAULT, "Sending mex request: %{public}@", buf, 0xCu);
     }
 
     v11 = PO_LOG_POAuthenticationProcess();
-    v12 = os_signpost_id_make_with_pointer(v11, v6);
+    v12 = os_signpost_id_make_with_pointer(v11, contextCopy);
 
     v13 = PO_LOG_POAuthenticationProcess();
     v14 = v13;
@@ -1054,23 +1054,23 @@ id __85__POAuthenticationProcess__performDynamicWSTrustPasswordLoginWithContext_
     v22[2] = __78__POAuthenticationProcess__performWSTrustPasswordLoginWithContext_completion___block_invoke_159;
     v22[3] = &unk_279A3DED0;
     v26 = v12;
-    v23 = v6;
-    v24 = self;
-    v25 = v7;
+    v23 = contextCopy;
+    selfCopy = self;
+    v25 = completionCopy;
     [(POAuthenticationProcess *)self performWSTrustMexRequestWithContext:v23 request:v8 completion:v22];
   }
 
   else
   {
     v15 = __78__POAuthenticationProcess__performWSTrustPasswordLoginWithContext_completion___block_invoke();
-    v16 = [v6 password];
-    v17 = [v16 mutableBytes];
-    v18 = [v6 password];
-    v19 = [v18 length];
-    v20 = [v6 password];
-    memset_s(v17, v19, 0, [v20 length]);
+    password = [contextCopy password];
+    mutableBytes = [password mutableBytes];
+    password2 = [contextCopy password];
+    v19 = [password2 length];
+    password3 = [contextCopy password];
+    memset_s(mutableBytes, v19, 0, [password3 length]);
 
-    (*(v7 + 2))(v7, 2, v6, 0);
+    (*(completionCopy + 2))(completionCopy, 2, contextCopy, 0);
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -1311,117 +1311,117 @@ id __78__POAuthenticationProcess__performWSTrustPasswordLoginWithContext_complet
   return v0;
 }
 
-- (void)_performEncryptedPasswordLoginUsingContext:(id)a3 completion:(id)a4
+- (void)_performEncryptedPasswordLoginUsingContext:(id)context completion:(id)completion
 {
   v71[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 loginConfiguration];
-  v9 = [v8 loginRequestEncryptionPublicKey];
+  contextCopy = context;
+  completionCopy = completion;
+  loginConfiguration = [contextCopy loginConfiguration];
+  loginRequestEncryptionPublicKey = [loginConfiguration loginRequestEncryptionPublicKey];
 
-  if (v9)
+  if (loginRequestEncryptionPublicKey)
   {
-    v10 = [(POAuthenticationProcess *)self createEmbeddedPasswordAssertionWithContext:v6];
+    v10 = [(POAuthenticationProcess *)self createEmbeddedPasswordAssertionWithContext:contextCopy];
     if (v10)
     {
-      v11 = [v6 password];
-      v12 = [v11 mutableBytes];
-      v13 = [v6 password];
-      v14 = [v13 length];
-      v15 = [v6 password];
-      memset_s(v12, v14, 0, [v15 length]);
+      password = [contextCopy password];
+      mutableBytes = [password mutableBytes];
+      password2 = [contextCopy password];
+      v14 = [password2 length];
+      password3 = [contextCopy password];
+      memset_s(mutableBytes, v14, 0, [password3 length]);
 
-      [v6 setPassword:0];
-      v16 = [v6 loginConfiguration];
-      v17 = [v16 loginRequestEncryptionAlgorithm];
-      LODWORD(v13) = [v17 isEqualToNumber:0x2870A9198];
+      [contextCopy setPassword:0];
+      loginConfiguration2 = [contextCopy loginConfiguration];
+      loginRequestEncryptionAlgorithm = [loginConfiguration2 loginRequestEncryptionAlgorithm];
+      LODWORD(password2) = [loginRequestEncryptionAlgorithm isEqualToNumber:0x2870A9198];
 
-      v63 = v7;
-      v59 = self;
-      if (v13)
+      v63 = completionCopy;
+      selfCopy = self;
+      if (password2)
       {
-        v18 = [v6 serverNonce];
-        v19 = [v18 dataUsingEncoding:4];
-        v20 = [v6 loginConfiguration];
-        v21 = [v20 loginRequestEncryptionAPVPrefix];
-        v22 = [v6 loginConfiguration];
-        v23 = -[POAuthenticationProcess createPartyVInfoWithNonce:prefixData:apvPublicKey:](self, "createPartyVInfoWithNonce:prefixData:apvPublicKey:", v19, v21, [v22 loginRequestEncryptionPublicKey]);
+        serverNonce = [contextCopy serverNonce];
+        v19 = [serverNonce dataUsingEncoding:4];
+        loginConfiguration3 = [contextCopy loginConfiguration];
+        loginRequestEncryptionAPVPrefix = [loginConfiguration3 loginRequestEncryptionAPVPrefix];
+        loginConfiguration4 = [contextCopy loginConfiguration];
+        v23 = -[POAuthenticationProcess createPartyVInfoWithNonce:prefixData:apvPublicKey:](self, "createPartyVInfoWithNonce:prefixData:apvPublicKey:", v19, loginRequestEncryptionAPVPrefix, [loginConfiguration4 loginRequestEncryptionPublicKey]);
 
-        v24 = [v10 header];
-        v64 = v23;
-        [v24 setApv:v23];
+        header = [v10 header];
+        serverNonce3 = v23;
+        [header setApv:v23];
       }
 
       else
       {
-        v27 = [v6 loginConfiguration];
-        v28 = [v27 serverNonceClaimName];
-        v29 = [v28 length];
+        loginConfiguration5 = [contextCopy loginConfiguration];
+        serverNonceClaimName = [loginConfiguration5 serverNonceClaimName];
+        v29 = [serverNonceClaimName length];
 
-        v30 = [v10 header];
+        header2 = [v10 header];
         if (v29)
         {
-          v31 = [v6 loginConfiguration];
-          v32 = [v31 serverNonceClaimName];
-          v70 = v32;
-          v33 = [v6 serverNonce];
-          v71[0] = v33;
+          loginConfiguration6 = [contextCopy loginConfiguration];
+          serverNonceClaimName2 = [loginConfiguration6 serverNonceClaimName];
+          v70 = serverNonceClaimName2;
+          serverNonce2 = [contextCopy serverNonce];
+          v71[0] = serverNonce2;
           v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v71 forKeys:&v70 count:1];
-          [v30 addCustomClaims:v34];
+          [header2 addCustomClaims:v34];
         }
 
         else
         {
           v68 = @"request_nonce";
-          v31 = [v6 serverNonce];
-          v69 = v31;
-          v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v69 forKeys:&v68 count:1];
-          [v30 addCustomClaims:v32];
+          loginConfiguration6 = [contextCopy serverNonce];
+          v69 = loginConfiguration6;
+          serverNonceClaimName2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v69 forKeys:&v68 count:1];
+          [header2 addCustomClaims:serverNonceClaimName2];
         }
 
-        v64 = [v6 serverNonce];
+        serverNonce3 = [contextCopy serverNonce];
       }
 
       v35 = v10;
-      v61 = [v6 loginConfiguration];
-      v36 = [v61 loginRequestEncryptionAlgorithm];
-      v37 = [v6 loginConfiguration];
-      v38 = [v37 loginRequestEncryptionPublicKey];
-      v39 = [v6 loginConfiguration];
-      v40 = [v39 loginRequestHpkePsk];
-      v41 = [v6 loginConfiguration];
-      v42 = [v41 loginRequestHpkePsk_id];
+      loginConfiguration7 = [contextCopy loginConfiguration];
+      loginRequestEncryptionAlgorithm2 = [loginConfiguration7 loginRequestEncryptionAlgorithm];
+      loginConfiguration8 = [contextCopy loginConfiguration];
+      loginRequestEncryptionPublicKey2 = [loginConfiguration8 loginRequestEncryptionPublicKey];
+      loginConfiguration9 = [contextCopy loginConfiguration];
+      loginRequestHpkePsk = [loginConfiguration9 loginRequestHpkePsk];
+      loginConfiguration10 = [contextCopy loginConfiguration];
+      loginRequestHpkePsk_id = [loginConfiguration10 loginRequestHpkePsk_id];
       v67 = 0;
-      v43 = [POJWTEncryption encodeAndEncryptJWT:v35 encryptionAlgorithm:v36 publicKey:v38 otherInfo:v64 psk:v40 psk_id:v42 authPrivateKey:0 auth_kid:0 error:&v67];
+      v43 = [POJWTEncryption encodeAndEncryptJWT:v35 encryptionAlgorithm:loginRequestEncryptionAlgorithm2 publicKey:loginRequestEncryptionPublicKey2 otherInfo:serverNonce3 psk:loginRequestHpkePsk psk_id:loginRequestHpkePsk_id authPrivateKey:0 auth_kid:0 error:&v67];
       v60 = v67;
 
-      v44 = [v35 body];
-      v45 = [v44 password];
-      v46 = [v45 mutableBytes];
-      v47 = [v35 body];
-      v48 = [v47 password];
-      v49 = [v48 length];
+      body = [v35 body];
+      password4 = [body password];
+      mutableBytes2 = [password4 mutableBytes];
+      body2 = [v35 body];
+      password5 = [body2 password];
+      v49 = [password5 length];
       v62 = v35;
       v50 = v35;
       v51 = v43;
-      v52 = [v50 body];
-      v53 = [v52 password];
-      memset_s(v46, v49, 0, [v53 length]);
+      body3 = [v50 body];
+      password6 = [body3 password];
+      memset_s(mutableBytes2, v49, 0, [password6 length]);
 
       if (v51)
       {
         v54 = v60;
-        v55 = [(POAuthenticationProcess *)v59 createLoginJWTWithContext:v6 embeddedAssertion:v51];
-        v7 = v63;
+        v55 = [(POAuthenticationProcess *)selfCopy createLoginJWTWithContext:contextCopy embeddedAssertion:v51];
+        completionCopy = v63;
         if (v55)
         {
-          [(POAuthenticationProcess *)v59 performLoginWithContext:v6 loginJWT:v55 completion:v63];
+          [(POAuthenticationProcess *)selfCopy performLoginWithContext:contextCopy loginJWT:v55 completion:v63];
         }
 
         else
         {
           v57 = __78__POAuthenticationProcess__performWSTrustPasswordLoginWithContext_completion___block_invoke_184();
-          v63[2](v63, 2, v6, 0);
+          v63[2](v63, 2, contextCopy, 0);
         }
       }
 
@@ -1434,8 +1434,8 @@ id __78__POAuthenticationProcess__performWSTrustPasswordLoginWithContext_complet
         v54 = v60;
         v66 = v60;
         v56 = __81__POAuthenticationProcess__performEncryptedPasswordLoginUsingContext_completion___block_invoke_204(v65);
-        v7 = v63;
-        v63[2](v63, 2, v6, 0);
+        completionCopy = v63;
+        v63[2](v63, 2, contextCopy, 0);
         v55 = v66;
       }
 
@@ -1445,14 +1445,14 @@ id __78__POAuthenticationProcess__performWSTrustPasswordLoginWithContext_complet
     else
     {
       v26 = __81__POAuthenticationProcess__performEncryptedPasswordLoginUsingContext_completion___block_invoke_193();
-      v7[2](v7, 2, v6, 0);
+      completionCopy[2](completionCopy, 2, contextCopy, 0);
     }
   }
 
   else
   {
     v25 = __81__POAuthenticationProcess__performEncryptedPasswordLoginUsingContext_completion___block_invoke();
-    v7[2](v7, 2, v6, 0);
+    completionCopy[2](completionCopy, 2, contextCopy, 0);
   }
 
   v58 = *MEMORY[0x277D85DE8];
@@ -1494,64 +1494,64 @@ id __81__POAuthenticationProcess__performEncryptedPasswordLoginUsingContext_comp
   return v1;
 }
 
-- (void)_performPasswordLoginUsingContext:(id)a3 completion:(id)a4
+- (void)_performPasswordLoginUsingContext:(id)context completion:(id)completion
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(POAuthenticationProcess *)self createLoginJWTWithContext:v14 embeddedAssertion:0];
-  v8 = [v14 password];
-  v9 = [v8 mutableBytes];
-  v10 = [v14 password];
-  v11 = [v10 length];
-  v12 = [v14 password];
-  memset_s(v9, v11, 0, [v12 length]);
+  contextCopy = context;
+  completionCopy = completion;
+  v7 = [(POAuthenticationProcess *)self createLoginJWTWithContext:contextCopy embeddedAssertion:0];
+  password = [contextCopy password];
+  mutableBytes = [password mutableBytes];
+  password2 = [contextCopy password];
+  v11 = [password2 length];
+  password3 = [contextCopy password];
+  memset_s(mutableBytes, v11, 0, [password3 length]);
 
-  [v14 setPassword:0];
+  [contextCopy setPassword:0];
   if (v7)
   {
-    [(POAuthenticationProcess *)self performLoginWithContext:v14 loginJWT:v7 completion:v6];
+    [(POAuthenticationProcess *)self performLoginWithContext:contextCopy loginJWT:v7 completion:completionCopy];
   }
 
   else
   {
     v13 = __78__POAuthenticationProcess__performWSTrustPasswordLoginWithContext_completion___block_invoke_184();
-    v6[2](v6, 2, v14, 0);
+    completionCopy[2](completionCopy, 2, contextCopy, 0);
   }
 }
 
-- (id)createPreAuthenticationRequestWithContext:(id)a3
+- (id)createPreAuthenticationRequestWithContext:(id)context
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc(MEMORY[0x277CCACE0]);
-  v5 = [v3 loginConfiguration];
-  v6 = [v5 federationUserPreauthenticationURL];
-  v7 = [v4 initWithURL:v6 resolvingAgainstBaseURL:0];
+  loginConfiguration = [contextCopy loginConfiguration];
+  federationUserPreauthenticationURL = [loginConfiguration federationUserPreauthenticationURL];
+  v7 = [v4 initWithURL:federationUserPreauthenticationURL resolvingAgainstBaseURL:0];
 
   v8 = MEMORY[0x277CCAD18];
-  v9 = [v3 userName];
-  v10 = [v8 queryItemWithName:@"user" value:v9];
+  userName = [contextCopy userName];
+  v10 = [v8 queryItemWithName:@"user" value:userName];
   v31[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
 
-  v12 = [v3 loginConfiguration];
-  v13 = [v12 customFederationUserPreauthenticationRequestValues];
+  loginConfiguration2 = [contextCopy loginConfiguration];
+  customFederationUserPreauthenticationRequestValues = [loginConfiguration2 customFederationUserPreauthenticationRequestValues];
 
-  if (v13)
+  if (customFederationUserPreauthenticationRequestValues)
   {
-    v14 = [v3 loginConfiguration];
-    v15 = [v14 customFederationUserPreauthenticationRequestValues];
-    v16 = [v11 arrayByAddingObjectsFromArray:v15];
+    loginConfiguration3 = [contextCopy loginConfiguration];
+    customFederationUserPreauthenticationRequestValues2 = [loginConfiguration3 customFederationUserPreauthenticationRequestValues];
+    v16 = [v11 arrayByAddingObjectsFromArray:customFederationUserPreauthenticationRequestValues2];
 
     v11 = v16;
   }
 
-  v17 = [v7 queryItems];
+  queryItems = [v7 queryItems];
 
-  if (v17)
+  if (queryItems)
   {
-    v18 = [v7 queryItems];
-    v19 = [v18 arrayByAddingObjectsFromArray:v11];
+    queryItems2 = [v7 queryItems];
+    v19 = [queryItems2 arrayByAddingObjectsFromArray:v11];
     [v7 setQueryItems:v19];
   }
 
@@ -1566,8 +1566,8 @@ id __81__POAuthenticationProcess__performEncryptedPasswordLoginUsingContext_comp
 
   [v22 setHTTPMethod:@"GET"];
   [v22 addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-  v23 = [v3 requestIdentifier];
-  [v22 addValue:v23 forHTTPHeaderField:@"client-request-id"];
+  requestIdentifier = [contextCopy requestIdentifier];
+  [v22 addValue:requestIdentifier forHTTPHeaderField:@"client-request-id"];
 
   v24 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -1578,9 +1578,9 @@ id __81__POAuthenticationProcess__performEncryptedPasswordLoginUsingContext_comp
   v25 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
-    v26 = [v3 requestIdentifier];
+    requestIdentifier2 = [contextCopy requestIdentifier];
     v29 = 138543362;
-    v30 = v26;
+    v30 = requestIdentifier2;
     _os_log_impl(&dword_25E8B1000, v25, OS_LOG_TYPE_INFO, "Preauthentication request: %{public}@", &v29, 0xCu);
   }
 
@@ -1589,27 +1589,27 @@ id __81__POAuthenticationProcess__performEncryptedPasswordLoginUsingContext_comp
   return v22;
 }
 
-- (void)performPreAuthenticationRequestWithContext:(id)a3 request:(id)a4 completion:(id)a5
+- (void)performPreAuthenticationRequestWithContext:(id)context request:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 urlSession];
+  contextCopy = context;
+  completionCopy = completion;
+  requestCopy = request;
+  urlSession = [contextCopy urlSession];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __89__POAuthenticationProcess_performPreAuthenticationRequestWithContext_request_completion___block_invoke;
   v21 = &unk_279A3DF70;
-  v23 = v8;
-  v24 = v9;
-  v22 = self;
-  v12 = v8;
-  v13 = v9;
-  v14 = [v11 dataTaskWithRequest:v10 completionHandler:&v18];
+  v23 = contextCopy;
+  v24 = completionCopy;
+  selfCopy = self;
+  v12 = contextCopy;
+  v13 = completionCopy;
+  v14 = [urlSession dataTaskWithRequest:requestCopy completionHandler:&v18];
 
   v15 = MEMORY[0x277CCACA8];
-  v16 = [v12 requestIdentifier];
-  v17 = [v15 stringWithFormat:@"Preauthentication Request: %@", v16, v18, v19, v20, v21, v22];
-  [v14 setTaskDescription:v17];
+  requestIdentifier = [v12 requestIdentifier];
+  selfCopy = [v15 stringWithFormat:@"Preauthentication Request: %@", requestIdentifier, v18, v19, v20, v21, selfCopy];
+  [v14 setTaskDescription:selfCopy];
 
   [v14 resume];
 }
@@ -1854,14 +1854,14 @@ id __89__POAuthenticationProcess_performPreAuthenticationRequestWithContext_requ
   return v2;
 }
 
-- (id)createWSTrustMexRequestWithContext:(id)a3
+- (id)createWSTrustMexRequestWithContext:(id)context
 {
   v3 = MEMORY[0x277CCAB70];
-  v4 = a3;
+  contextCopy = context;
   v5 = [v3 alloc];
-  v6 = [v4 wsTrustFederationMexURL];
+  wsTrustFederationMexURL = [contextCopy wsTrustFederationMexURL];
 
-  v7 = [v5 initWithURL:v6 cachePolicy:4 timeoutInterval:30.0];
+  v7 = [v5 initWithURL:wsTrustFederationMexURL cachePolicy:4 timeoutInterval:30.0];
   [v7 setHTTPMethod:@"GET"];
   v8 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1872,27 +1872,27 @@ id __89__POAuthenticationProcess_performPreAuthenticationRequestWithContext_requ
   return v7;
 }
 
-- (void)performWSTrustMexRequestWithContext:(id)a3 request:(id)a4 completion:(id)a5
+- (void)performWSTrustMexRequestWithContext:(id)context request:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 urlSession];
+  contextCopy = context;
+  completionCopy = completion;
+  requestCopy = request;
+  urlSession = [contextCopy urlSession];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __82__POAuthenticationProcess_performWSTrustMexRequestWithContext_request_completion___block_invoke;
   v21 = &unk_279A3DF70;
-  v23 = v8;
-  v24 = v9;
-  v22 = self;
-  v12 = v8;
-  v13 = v9;
-  v14 = [v11 dataTaskWithRequest:v10 completionHandler:&v18];
+  v23 = contextCopy;
+  v24 = completionCopy;
+  selfCopy = self;
+  v12 = contextCopy;
+  v13 = completionCopy;
+  v14 = [urlSession dataTaskWithRequest:requestCopy completionHandler:&v18];
 
   v15 = MEMORY[0x277CCACA8];
-  v16 = [v12 requestIdentifier];
-  v17 = [v15 stringWithFormat:@"WSTrust Mex Request: %@", v16, v18, v19, v20, v21, v22];
-  [v14 setTaskDescription:v17];
+  requestIdentifier = [v12 requestIdentifier];
+  selfCopy = [v15 stringWithFormat:@"WSTrust Mex Request: %@", requestIdentifier, v18, v19, v20, v21, selfCopy];
+  [v14 setTaskDescription:selfCopy];
 
   [v14 resume];
 }
@@ -2045,20 +2045,20 @@ id __82__POAuthenticationProcess_performWSTrustMexRequestWithContext_request_com
   return v0;
 }
 
-- (BOOL)validateWSTrustMexResponseWithContext:(id)a3 response:(id)a4
+- (BOOL)validateWSTrustMexResponseWithContext:(id)context response:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(POAuthenticationProcess *)self wstrustProcess];
-  v9 = [v8 parseWSTrustMexResponse:v7 version:1];
+  contextCopy = context;
+  responseCopy = response;
+  wstrustProcess = [(POAuthenticationProcess *)self wstrustProcess];
+  v9 = [wstrustProcess parseWSTrustMexResponse:responseCopy version:1];
 
-  if (v9 || (-[POAuthenticationProcess wstrustProcess](self, "wstrustProcess"), v10 = objc_claimAutoreleasedReturnValue(), [v10 parseWSTrustMexResponse:v7 version:2], v9 = objc_claimAutoreleasedReturnValue(), v10, v9))
+  if (v9 || (-[POAuthenticationProcess wstrustProcess](self, "wstrustProcess"), v10 = objc_claimAutoreleasedReturnValue(), [v10 parseWSTrustMexResponse:responseCopy version:2], v9 = objc_claimAutoreleasedReturnValue(), v10, v9))
   {
-    [v6 setWsTrustVersion:{objc_msgSend(v9, "version")}];
+    [contextCopy setWsTrustVersion:{objc_msgSend(v9, "version")}];
     v11 = MEMORY[0x277CBEBC0];
-    v12 = [v9 endpointURLString];
-    v13 = [v11 URLWithString:v12];
-    [v6 setWsTrustFederationURL:v13];
+    endpointURLString = [v9 endpointURLString];
+    v13 = [v11 URLWithString:endpointURLString];
+    [contextCopy setWsTrustFederationURL:v13];
 
     LOBYTE(v9) = 1;
   }
@@ -2083,35 +2083,35 @@ id __74__POAuthenticationProcess_validateWSTrustMexResponseWithContext_response_
   return v0;
 }
 
-- (id)createWSTrust13RequestWithContext:(id)a3
+- (id)createWSTrust13RequestWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(POWSTrustRequest);
-  v6 = [v4 loginConfiguration];
-  v7 = [v6 federationRequestURN];
-  [(POWSTrustRequest *)v5 setEndpointURN:v7];
+  loginConfiguration = [contextCopy loginConfiguration];
+  federationRequestURN = [loginConfiguration federationRequestURN];
+  [(POWSTrustRequest *)v5 setEndpointURN:federationRequestURN];
 
-  v8 = [v4 wsTrustFederationNonce];
-  [(POWSTrustRequest *)v5 setNonce:v8];
+  wsTrustFederationNonce = [contextCopy wsTrustFederationNonce];
+  [(POWSTrustRequest *)v5 setNonce:wsTrustFederationNonce];
 
-  v9 = [v4 wsTrustFederationURL];
-  v10 = [v9 absoluteString];
-  [(POWSTrustRequest *)v5 setTo:v10];
+  wsTrustFederationURL = [contextCopy wsTrustFederationURL];
+  absoluteString = [wsTrustFederationURL absoluteString];
+  [(POWSTrustRequest *)v5 setTo:absoluteString];
 
-  v11 = [v4 userName];
-  [(POWSTrustRequest *)v5 setUserName:v11];
+  userName = [contextCopy userName];
+  [(POWSTrustRequest *)v5 setUserName:userName];
 
-  v12 = [v4 password];
-  [(POWSTrustRequest *)v5 setPassword:v12];
+  password = [contextCopy password];
+  [(POWSTrustRequest *)v5 setPassword:password];
 
-  v13 = [(POAuthenticationProcess *)self wstrustProcess];
-  v14 = [v13 createWSTrust13Request:v5];
+  wstrustProcess = [(POAuthenticationProcess *)self wstrustProcess];
+  v14 = [wstrustProcess createWSTrust13Request:v5];
 
   if (v14)
   {
     v15 = objc_alloc(MEMORY[0x277CCAB70]);
-    v16 = [v4 wsTrustFederationURL];
-    v17 = [v15 initWithURL:v16 cachePolicy:4 timeoutInterval:30.0];
+    wsTrustFederationURL2 = [contextCopy wsTrustFederationURL];
+    v17 = [v15 initWithURL:wsTrustFederationURL2 cachePolicy:4 timeoutInterval:30.0];
 
     [v17 setHTTPMethod:@"POST"];
     [v17 addValue:@"application/soap+xml; charset=utf-8" forHTTPHeaderField:@"Content-type"];
@@ -2140,35 +2140,35 @@ id __61__POAuthenticationProcess_createWSTrust13RequestWithContext___block_invok
   return v0;
 }
 
-- (id)createWSTrust2005RequestWithContext:(id)a3
+- (id)createWSTrust2005RequestWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(POWSTrustRequest);
-  v6 = [v4 loginConfiguration];
-  v7 = [v6 federationRequestURN];
-  [(POWSTrustRequest *)v5 setEndpointURN:v7];
+  loginConfiguration = [contextCopy loginConfiguration];
+  federationRequestURN = [loginConfiguration federationRequestURN];
+  [(POWSTrustRequest *)v5 setEndpointURN:federationRequestURN];
 
-  v8 = [v4 wsTrustFederationNonce];
-  [(POWSTrustRequest *)v5 setNonce:v8];
+  wsTrustFederationNonce = [contextCopy wsTrustFederationNonce];
+  [(POWSTrustRequest *)v5 setNonce:wsTrustFederationNonce];
 
-  v9 = [v4 wsTrustFederationURL];
-  v10 = [v9 absoluteString];
-  [(POWSTrustRequest *)v5 setTo:v10];
+  wsTrustFederationURL = [contextCopy wsTrustFederationURL];
+  absoluteString = [wsTrustFederationURL absoluteString];
+  [(POWSTrustRequest *)v5 setTo:absoluteString];
 
-  v11 = [v4 userName];
-  [(POWSTrustRequest *)v5 setUserName:v11];
+  userName = [contextCopy userName];
+  [(POWSTrustRequest *)v5 setUserName:userName];
 
-  v12 = [v4 password];
-  [(POWSTrustRequest *)v5 setPassword:v12];
+  password = [contextCopy password];
+  [(POWSTrustRequest *)v5 setPassword:password];
 
-  v13 = [(POAuthenticationProcess *)self wstrustProcess];
-  v14 = [v13 createWSTrust2005Request:v5];
+  wstrustProcess = [(POAuthenticationProcess *)self wstrustProcess];
+  v14 = [wstrustProcess createWSTrust2005Request:v5];
 
   if (v14)
   {
     v15 = objc_alloc(MEMORY[0x277CCAB70]);
-    v16 = [v4 wsTrustFederationURL];
-    v17 = [v15 initWithURL:v16 cachePolicy:4 timeoutInterval:30.0];
+    wsTrustFederationURL2 = [contextCopy wsTrustFederationURL];
+    v17 = [v15 initWithURL:wsTrustFederationURL2 cachePolicy:4 timeoutInterval:30.0];
 
     [v17 setHTTPMethod:@"POST"];
     [v17 addValue:@"application/soap+xml; charset=utf-8" forHTTPHeaderField:@"Content-type"];
@@ -2185,27 +2185,27 @@ id __61__POAuthenticationProcess_createWSTrust13RequestWithContext___block_invok
   return v17;
 }
 
-- (void)performWSTrustAuthenticationRequestWithContext:(id)a3 request:(id)a4 completion:(id)a5
+- (void)performWSTrustAuthenticationRequestWithContext:(id)context request:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 urlSession];
+  contextCopy = context;
+  completionCopy = completion;
+  requestCopy = request;
+  urlSession = [contextCopy urlSession];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __93__POAuthenticationProcess_performWSTrustAuthenticationRequestWithContext_request_completion___block_invoke;
   v21 = &unk_279A3DF70;
-  v23 = v8;
-  v24 = v9;
-  v22 = self;
-  v12 = v8;
-  v13 = v9;
-  v14 = [v11 dataTaskWithRequest:v10 completionHandler:&v18];
+  v23 = contextCopy;
+  v24 = completionCopy;
+  selfCopy = self;
+  v12 = contextCopy;
+  v13 = completionCopy;
+  v14 = [urlSession dataTaskWithRequest:requestCopy completionHandler:&v18];
 
   v15 = MEMORY[0x277CCACA8];
-  v16 = [v12 requestIdentifier];
-  v17 = [v15 stringWithFormat:@"WSTrust Login Request: %@", v16, v18, v19, v20, v21, v22];
-  [v14 setTaskDescription:v17];
+  requestIdentifier = [v12 requestIdentifier];
+  selfCopy = [v15 stringWithFormat:@"WSTrust Login Request: %@", requestIdentifier, v18, v19, v20, v21, selfCopy];
+  [v14 setTaskDescription:selfCopy];
 
   [v14 resume];
 }
@@ -2368,13 +2368,13 @@ id __93__POAuthenticationProcess_performWSTrustAuthenticationRequestWithContext_
   return v0;
 }
 
-- (unint64_t)validateWSTrustAuthenticationResponseWithContext:(id)a3 response:(id)a4 returningAssertion:(id *)a5
+- (unint64_t)validateWSTrustAuthenticationResponseWithContext:(id)context response:(id)response returningAssertion:(id *)assertion
 {
-  v8 = a3;
-  *a5 = 0;
-  v9 = a4;
-  v10 = [(POAuthenticationProcess *)self wstrustProcess];
-  v11 = [v10 parseWSTrustResponse:v9 version:{objc_msgSend(v8, "wsTrustVersion")}];
+  contextCopy = context;
+  *assertion = 0;
+  responseCopy = response;
+  wstrustProcess = [(POAuthenticationProcess *)self wstrustProcess];
+  v11 = [wstrustProcess parseWSTrustResponse:responseCopy version:{objc_msgSend(contextCopy, "wsTrustVersion")}];
 
   if (!v11)
   {
@@ -2384,9 +2384,9 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v12 = [v11 nonce];
-  v13 = [v8 wsTrustFederationNonce];
-  v14 = [v12 isEqualToString:v13];
+  nonce = [v11 nonce];
+  wsTrustFederationNonce = [contextCopy wsTrustFederationNonce];
+  v14 = [nonce isEqualToString:wsTrustFederationNonce];
 
   if ((v14 & 1) == 0)
   {
@@ -2396,38 +2396,38 @@ LABEL_15:
 
   if (![v11 isFault])
   {
-    v24 = [v11 nonce];
-    if (v24 && (v25 = v24, [v11 created], v26 = objc_claimAutoreleasedReturnValue(), v26, v25, v26))
+    nonce2 = [v11 nonce];
+    if (nonce2 && (v25 = nonce2, [v11 created], v26 = objc_claimAutoreleasedReturnValue(), v26, v25, v26))
     {
-      v27 = [v11 created];
-      [v27 timeIntervalSinceNow];
+      created = [v11 created];
+      [created timeIntervalSinceNow];
       v29 = v28;
 
       if (v29 <= 120.0)
       {
-        v33 = [v11 expires];
+        expires = [v11 expires];
 
-        if (v33 && ([v11 expires], v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "timeIntervalSinceNow"), v36 = v35, v34, v36 < -120.0))
+        if (expires && ([v11 expires], v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "timeIntervalSinceNow"), v36 = v35, v34, v36 < -120.0))
         {
           v42 = __104__POAuthenticationProcess_validateWSTrustAuthenticationResponseWithContext_response_returningAssertion___block_invoke_365();
         }
 
         else
         {
-          v37 = [v11 tokenType];
-          v38 = [v37 length];
+          tokenType = [v11 tokenType];
+          v38 = [tokenType length];
 
           if (v38)
           {
-            v39 = [v11 tokenType];
-            [v8 setTokenTypeNamespace:v39];
+            tokenType2 = [v11 tokenType];
+            [contextCopy setTokenTypeNamespace:tokenType2];
 
-            v40 = [v11 assertion];
+            assertion = [v11 assertion];
 
-            if (v40)
+            if (assertion)
             {
-              v41 = [v11 assertion];
-              *a5 = [v41 dataUsingEncoding:4];
+              assertion2 = [v11 assertion];
+              *assertion = [assertion2 dataUsingEncoding:4];
 
               v21 = 1;
               goto LABEL_16;
@@ -2458,9 +2458,9 @@ LABEL_15:
   }
 
   v15 = MEMORY[0x277CCACA8];
-  v16 = [v11 faultSubCodeValue];
-  v17 = [v11 faultReason];
-  v18 = [v15 stringWithFormat:@"faultSubCode = %@, faultReason = %@", v16, v17];
+  faultSubCodeValue = [v11 faultSubCodeValue];
+  faultReason = [v11 faultReason];
+  v18 = [v15 stringWithFormat:@"faultSubCode = %@, faultReason = %@", faultSubCodeValue, faultReason];
 
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
@@ -2579,39 +2579,39 @@ id __104__POAuthenticationProcess_validateWSTrustAuthenticationResponseWithConte
   return v0;
 }
 
-- (void)performLoginWithContext:(id)a3 loginJWT:(id)a4 completion:(id)a5
+- (void)performLoginWithContext:(id)context loginJWT:(id)t completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 deviceConfiguration];
-  v12 = [v11 signingAlgorithm];
-  v13 = [v8 deviceConfiguration];
-  v14 = [v13 deviceSigningKey];
-  v15 = [v8 deviceConfiguration];
-  v16 = +[POJWTSigning encodeAndSignJWT:signingAlgorithm:key:certificate:error:](POJWTSigning, "encodeAndSignJWT:signingAlgorithm:key:certificate:error:", v9, v12, v14, [v15 deviceSigningCertificate], 0);
+  contextCopy = context;
+  tCopy = t;
+  completionCopy = completion;
+  deviceConfiguration = [contextCopy deviceConfiguration];
+  signingAlgorithm = [deviceConfiguration signingAlgorithm];
+  deviceConfiguration2 = [contextCopy deviceConfiguration];
+  deviceSigningKey = [deviceConfiguration2 deviceSigningKey];
+  deviceConfiguration3 = [contextCopy deviceConfiguration];
+  v16 = +[POJWTSigning encodeAndSignJWT:signingAlgorithm:key:certificate:error:](POJWTSigning, "encodeAndSignJWT:signingAlgorithm:key:certificate:error:", tCopy, signingAlgorithm, deviceSigningKey, [deviceConfiguration3 deviceSigningCertificate], 0);
 
   if (v16)
   {
-    v17 = [v9 body];
-    [v17 zeroPassword];
+    body = [tCopy body];
+    [body zeroPassword];
 
-    v18 = [(POAuthenticationProcess *)self createLoginRequestWithContext:v8 jwt:v16];
+    v18 = [(POAuthenticationProcess *)self createLoginRequestWithContext:contextCopy jwt:v16];
     if (v18)
     {
 
       v19 = PO_LOG_PODiagnostics();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v8 requestIdentifier];
+        requestIdentifier = [contextCopy requestIdentifier];
         *buf = 138543362;
-        v32 = v20;
+        v32 = requestIdentifier;
         _os_log_impl(&dword_25E8B1000, v19, OS_LOG_TYPE_DEFAULT, "Sending login request: %{public}@", buf, 0xCu);
       }
 
       v21 = PO_LOG_POAuthenticationProcess();
-      v22 = os_signpost_id_make_with_pointer(v21, v8);
+      v22 = os_signpost_id_make_with_pointer(v21, contextCopy);
 
       v23 = PO_LOG_POAuthenticationProcess();
       v24 = v23;
@@ -2627,23 +2627,23 @@ id __104__POAuthenticationProcess_validateWSTrustAuthenticationResponseWithConte
       v28[3] = &unk_279A3DF20;
       v30 = v22;
       v28[4] = self;
-      v29 = v10;
-      [(POAuthenticationProcess *)self performLoginRequestWithContext:v8 request:v18 completion:v28];
+      v29 = completionCopy;
+      [(POAuthenticationProcess *)self performLoginRequestWithContext:contextCopy request:v18 completion:v28];
 
-      v9 = 0;
+      tCopy = 0;
     }
 
     else
     {
       v26 = __71__POAuthenticationProcess_performLoginWithContext_loginJWT_completion___block_invoke_386();
-      (*(v10 + 2))(v10, 2, v8, 0);
+      (*(completionCopy + 2))(completionCopy, 2, contextCopy, 0);
     }
   }
 
   else
   {
     v25 = __71__POAuthenticationProcess_performLoginWithContext_loginJWT_completion___block_invoke();
-    (*(v10 + 2))(v10, 2, v8, 0);
+    (*(completionCopy + 2))(completionCopy, 2, contextCopy, 0);
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -3086,69 +3086,69 @@ id __71__POAuthenticationProcess_performLoginWithContext_loginJWT_completion___b
   return v0;
 }
 
-- (id)createAuthenticationContextUsingLoginConfiguration:(id)a3 deviceConfiguration:(id)a4 userName:(id)a5 resumeData:(id)a6
+- (id)createAuthenticationContextUsingLoginConfiguration:(id)configuration deviceConfiguration:(id)deviceConfiguration userName:(id)name resumeData:(id)data
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  configurationCopy = configuration;
+  deviceConfigurationCopy = deviceConfiguration;
+  dataCopy = data;
+  nameCopy = name;
   v14 = objc_alloc_init(POAuthenticationContext);
-  [(POAuthenticationContext *)v14 setLoginConfiguration:v10];
-  [(POAuthenticationContext *)v14 setDeviceConfiguration:v11];
-  [(POAuthenticationContext *)v14 setUserName:v13];
+  [(POAuthenticationContext *)v14 setLoginConfiguration:configurationCopy];
+  [(POAuthenticationContext *)v14 setDeviceConfiguration:deviceConfigurationCopy];
+  [(POAuthenticationContext *)v14 setUserName:nameCopy];
 
-  v15 = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
-  [v15 set_preventsAppSSO:1];
+  ephemeralSessionConfiguration = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
+  [ephemeralSessionConfiguration set_preventsAppSSO:1];
   if ([(POAuthenticationProcess *)self waitForConnectivity])
   {
-    [v15 setWaitsForConnectivity:1];
+    [ephemeralSessionConfiguration setWaitsForConnectivity:1];
     [(POAuthenticationProcess *)self timeoutIntervalForResource];
     if (v16 == 0.0)
     {
       v16 = 180.0;
     }
 
-    [v15 setTimeoutIntervalForResource:v16];
+    [ephemeralSessionConfiguration setTimeoutIntervalForResource:v16];
   }
 
-  v17 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v15 delegate:self delegateQueue:0];
+  v17 = [MEMORY[0x277CCAD30] sessionWithConfiguration:ephemeralSessionConfiguration delegate:self delegateQueue:0];
   [(POAuthenticationContext *)v14 setUrlSession:v17];
 
   [(POAuthenticationContext *)v14 setScope:@"openid offline_access"];
-  v18 = [v10 additionalScopes];
-  v19 = [v18 length];
+  additionalScopes = [configurationCopy additionalScopes];
+  v19 = [additionalScopes length];
 
   if (v19)
   {
-    v20 = [v10 additionalScopes];
-    v21 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v22 = [v20 stringByTrimmingCharactersInSet:v21];
+    additionalScopes2 = [configurationCopy additionalScopes];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v22 = [additionalScopes2 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     v23 = MEMORY[0x277CCACA8];
-    v24 = [(POAuthenticationContext *)v14 scope];
-    v25 = [v23 stringWithFormat:@"%@ %@", v24, v22];
+    scope = [(POAuthenticationContext *)v14 scope];
+    v25 = [v23 stringWithFormat:@"%@ %@", scope, v22];
     [(POAuthenticationContext *)v14 setScope:v25];
   }
 
-  if (v12)
+  if (dataCopy)
   {
-    [(POAuthenticationContext *)v14 applyResumeData:v12];
+    [(POAuthenticationContext *)v14 applyResumeData:dataCopy];
   }
 
-  if (!v11)
+  if (!deviceConfigurationCopy)
   {
     goto LABEL_13;
   }
 
-  if ([v11 deviceEncryptionKey])
+  if ([deviceConfigurationCopy deviceEncryptionKey])
   {
-    v26 = [v11 encryptionAlgorithm];
-    v27 = [v26 isEqualToNumber:0x2870A9198];
+    encryptionAlgorithm = [deviceConfigurationCopy encryptionAlgorithm];
+    v27 = [encryptionAlgorithm isEqualToNumber:0x2870A9198];
 
     if (v27)
     {
-      v28 = [(POAuthenticationContext *)v14 nonce];
-      v29 = -[POAuthenticationProcess createPartyVInfoWithNonce:apvKey:](self, "createPartyVInfoWithNonce:apvKey:", v28, [v11 deviceEncryptionKey]);
+      nonce = [(POAuthenticationContext *)v14 nonce];
+      v29 = -[POAuthenticationProcess createPartyVInfoWithNonce:apvKey:](self, "createPartyVInfoWithNonce:apvKey:", nonce, [deviceConfigurationCopy deviceEncryptionKey]);
       [(POAuthenticationContext *)v14 setApv:v29];
     }
 
@@ -3163,11 +3163,11 @@ LABEL_15:
   return v30;
 }
 
-- (id)createPartyVInfoWithNonce:(id)a3 apvKey:(__SecKey *)a4
+- (id)createPartyVInfoWithNonce:(id)nonce apvKey:(__SecKey *)key
 {
-  v6 = [a3 dataUsingEncoding:1];
+  v6 = [nonce dataUsingEncoding:1];
   v7 = [@"Apple" dataUsingEncoding:4];
-  v8 = SecKeyCopyPublicKey(a4);
+  v8 = SecKeyCopyPublicKey(key);
   v9 = [(POAuthenticationProcess *)self createPartyVInfoWithNonce:v6 prefixData:v7 apvPublicKey:v8];
   if (v8)
   {
@@ -3177,69 +3177,69 @@ LABEL_15:
   return v9;
 }
 
-- (id)createPartyVInfoWithNonce:(id)a3 prefixData:(id)a4 apvPublicKey:(__SecKey *)a5
+- (id)createPartyVInfoWithNonce:(id)nonce prefixData:(id)data apvPublicKey:(__SecKey *)key
 {
-  v7 = a3;
-  v8 = a4;
-  if (a5 && [v7 length])
+  nonceCopy = nonce;
+  dataCopy = data;
+  if (key && [nonceCopy length])
   {
-    v9 = SecKeyCopyExternalRepresentation(a5, 0);
+    v9 = SecKeyCopyExternalRepresentation(key, 0);
     v10 = objc_alloc_init(MEMORY[0x277CBEB28]);
-    v15 = bswap32([v8 length]);
+    v15 = bswap32([dataCopy length]);
     [v10 appendBytes:&v15 length:4];
-    [v10 appendData:v8];
+    [v10 appendData:dataCopy];
     v14 = bswap32([(__CFData *)v9 length]);
     [v10 appendBytes:&v14 length:4];
     [v10 appendData:v9];
-    v13 = bswap32([v7 length]);
+    v13 = bswap32([nonceCopy length]);
     [v10 appendBytes:&v13 length:4];
-    [v10 appendData:v7];
-    v11 = [v10 psso_base64URLEncodedString];
+    [v10 appendData:nonceCopy];
+    psso_base64URLEncodedString = [v10 psso_base64URLEncodedString];
   }
 
   else
   {
-    v11 = 0;
+    psso_base64URLEncodedString = 0;
   }
 
-  return v11;
+  return psso_base64URLEncodedString;
 }
 
-- (id)createNonceRequestWithContext:(id)a3
+- (id)createNonceRequestWithContext:(id)context
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc(MEMORY[0x277CCAB70]);
-  v5 = [v3 loginConfiguration];
-  v6 = [v5 nonceEndpointURL];
-  v7 = [v4 initWithURL:v6 cachePolicy:4 timeoutInterval:30.0];
+  loginConfiguration = [contextCopy loginConfiguration];
+  nonceEndpointURL = [loginConfiguration nonceEndpointURL];
+  v7 = [v4 initWithURL:nonceEndpointURL cachePolicy:4 timeoutInterval:30.0];
 
   [v7 setHTTPMethod:@"POST"];
   [v7 addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-type"];
   [v7 addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-  v8 = [v3 requestIdentifier];
-  [v7 addValue:v8 forHTTPHeaderField:@"client-request-id"];
+  requestIdentifier = [contextCopy requestIdentifier];
+  [v7 addValue:requestIdentifier forHTTPHeaderField:@"client-request-id"];
 
   v9 = objc_alloc_init(MEMORY[0x277CCACE0]);
   v10 = [MEMORY[0x277CCAD18] queryItemWithName:@"grant_type" value:@"srv_challenge"];
   v26[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
 
-  v12 = [v3 loginConfiguration];
-  v13 = [v12 customNonceRequestValues];
+  loginConfiguration2 = [contextCopy loginConfiguration];
+  customNonceRequestValues = [loginConfiguration2 customNonceRequestValues];
 
-  if (v13)
+  if (customNonceRequestValues)
   {
-    v14 = [v3 loginConfiguration];
-    v15 = [v14 customNonceRequestValues];
-    v16 = [v11 arrayByAddingObjectsFromArray:v15];
+    loginConfiguration3 = [contextCopy loginConfiguration];
+    customNonceRequestValues2 = [loginConfiguration3 customNonceRequestValues];
+    v16 = [v11 arrayByAddingObjectsFromArray:customNonceRequestValues2];
 
     v11 = v16;
   }
 
   [v9 setQueryItems:v11];
-  v17 = [v9 percentEncodedQuery];
-  v18 = [v17 dataUsingEncoding:4];
+  percentEncodedQuery = [v9 percentEncodedQuery];
+  v18 = [percentEncodedQuery dataUsingEncoding:4];
   [v7 setHTTPBody:v18];
 
   v19 = PO_LOG_POAuthenticationProcess();
@@ -3251,9 +3251,9 @@ LABEL_15:
   v20 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
-    v21 = [v3 requestIdentifier];
+    requestIdentifier2 = [contextCopy requestIdentifier];
     v24 = 138543362;
-    v25 = v21;
+    v25 = requestIdentifier2;
     _os_log_impl(&dword_25E8B1000, v20, OS_LOG_TYPE_INFO, "server nonce request: %{public}@", &v24, 0xCu);
   }
 
@@ -3262,22 +3262,22 @@ LABEL_15:
   return v7;
 }
 
-- (void)performNonceRequestWithContext:(id)a3 request:(id)a4 completion:(id)a5
+- (void)performNonceRequestWithContext:(id)context request:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  requestCopy = request;
+  completionCopy = completion;
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __77__POAuthenticationProcess_performNonceRequestWithContext_request_completion___block_invoke;
   v18 = &unk_279A3E038;
-  v19 = v8;
-  v20 = self;
-  v21 = v9;
-  v22 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v19 = contextCopy;
+  selfCopy = self;
+  v21 = requestCopy;
+  v22 = completionCopy;
+  v11 = completionCopy;
+  v12 = requestCopy;
+  v13 = contextCopy;
   v14 = MEMORY[0x25F8C39C0](&v15);
   [(POAuthenticationProcess *)self _performNonceRequestWithContext:v13 request:v12 completion:v14, v15, v16, v17, v18];
 }
@@ -3316,27 +3316,27 @@ void __77__POAuthenticationProcess_performNonceRequestWithContext_request_comple
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performNonceRequestWithContext:(id)a3 request:(id)a4 completion:(id)a5
+- (void)_performNonceRequestWithContext:(id)context request:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 urlSession];
+  contextCopy = context;
+  completionCopy = completion;
+  requestCopy = request;
+  urlSession = [contextCopy urlSession];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __78__POAuthenticationProcess__performNonceRequestWithContext_request_completion___block_invoke;
   v21 = &unk_279A3DF70;
-  v23 = v8;
-  v24 = v9;
-  v22 = self;
-  v12 = v8;
-  v13 = v9;
-  v14 = [v11 dataTaskWithRequest:v10 completionHandler:&v18];
+  v23 = contextCopy;
+  v24 = completionCopy;
+  selfCopy = self;
+  v12 = contextCopy;
+  v13 = completionCopy;
+  v14 = [urlSession dataTaskWithRequest:requestCopy completionHandler:&v18];
 
   v15 = MEMORY[0x277CCACA8];
-  v16 = [v12 requestIdentifier];
-  v17 = [v15 stringWithFormat:@"Server Nonce Request: %@", v16, v18, v19, v20, v21, v22];
-  [v14 setTaskDescription:v17];
+  requestIdentifier = [v12 requestIdentifier];
+  selfCopy = [v15 stringWithFormat:@"Server Nonce Request: %@", requestIdentifier, v18, v19, v20, v21, selfCopy];
+  [v14 setTaskDescription:selfCopy];
 
   [v14 resume];
 }
@@ -3578,67 +3578,67 @@ id __78__POAuthenticationProcess__performNonceRequestWithContext_request_complet
   return v1;
 }
 
-- (id)createEmbeddedAssertionWithContext:(id)a3
+- (id)createEmbeddedAssertionWithContext:(id)context
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 loginConfiguration];
-  v5 = [v4 audience];
+  contextCopy = context;
+  loginConfiguration = [contextCopy loginConfiguration];
+  audience = [loginConfiguration audience];
 
-  if (v5)
+  if (audience)
   {
     v6 = objc_alloc_init(POMutableAssertionJWTBody);
-    v7 = [v3 loginConfiguration];
-    v8 = [v7 customAssertionRequestBodyClaims];
-    [(POMutableAssertionJWTBody *)v6 addCustomClaims:v8];
+    loginConfiguration2 = [contextCopy loginConfiguration];
+    customAssertionRequestBodyClaims = [loginConfiguration2 customAssertionRequestBodyClaims];
+    [(POMutableAssertionJWTBody *)v6 addCustomClaims:customAssertionRequestBodyClaims];
 
-    v9 = [v3 loginConfiguration];
-    v10 = [v9 audience];
-    [(POMutableAssertionJWTBody *)v6 setAud:v10];
+    loginConfiguration3 = [contextCopy loginConfiguration];
+    audience2 = [loginConfiguration3 audience];
+    [(POMutableAssertionJWTBody *)v6 setAud:audience2];
 
-    v11 = [MEMORY[0x277CBEAA8] date];
-    [(POMutableAssertionJWTBody *)v6 setIat:v11];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(POMutableAssertionJWTBody *)v6 setIat:date];
 
     v12 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:300.0];
     [(POMutableAssertionJWTBody *)v6 setExp:v12];
 
-    v13 = [v3 userName];
-    [(POMutableAssertionJWTBody *)v6 setIss:v13];
+    userName = [contextCopy userName];
+    [(POMutableAssertionJWTBody *)v6 setIss:userName];
 
-    v14 = [v3 userName];
-    [(POMutableAssertionJWTBody *)v6 setSub:v14];
+    userName2 = [contextCopy userName];
+    [(POMutableAssertionJWTBody *)v6 setSub:userName2];
 
-    v15 = [v3 nonce];
-    [(POMutableAssertionJWTBody *)v6 setNonce:v15];
+    nonce = [contextCopy nonce];
+    [(POMutableAssertionJWTBody *)v6 setNonce:nonce];
 
-    v16 = [v3 loginConfiguration];
-    v17 = [v16 serverNonceClaimName];
-    v18 = [v17 length];
+    loginConfiguration4 = [contextCopy loginConfiguration];
+    serverNonceClaimName = [loginConfiguration4 serverNonceClaimName];
+    v18 = [serverNonceClaimName length];
 
     if (v18)
     {
-      v19 = [v3 loginConfiguration];
-      v20 = [v19 serverNonceClaimName];
-      v35 = v20;
-      v21 = [v3 serverNonce];
-      v36[0] = v21;
+      loginConfiguration5 = [contextCopy loginConfiguration];
+      serverNonceClaimName2 = [loginConfiguration5 serverNonceClaimName];
+      v35 = serverNonceClaimName2;
+      serverNonce = [contextCopy serverNonce];
+      v36[0] = serverNonce;
       v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
       [(POMutableAssertionJWTBody *)v6 addCustomClaims:v22];
     }
 
     else
     {
-      v19 = [v3 serverNonce];
-      [(POMutableAssertionJWTBody *)v6 setRequest_nonce:v19];
+      loginConfiguration5 = [contextCopy serverNonce];
+      [(POMutableAssertionJWTBody *)v6 setRequest_nonce:loginConfiguration5];
     }
 
-    v25 = [v3 scope];
-    [(POMutableAssertionJWTBody *)v6 setScope:v25];
+    scope = [contextCopy scope];
+    [(POMutableAssertionJWTBody *)v6 setScope:scope];
 
     v26 = objc_alloc_init(POMutableJWTHeader);
-    v27 = [v3 deviceConfiguration];
-    v28 = [v27 sdkVersionString];
-    v29 = [v28 compare:&unk_2870A92D8];
+    deviceConfiguration = [contextCopy deviceConfiguration];
+    sdkVersionString = [deviceConfiguration sdkVersionString];
+    v29 = [sdkVersionString compare:&unk_2870A92D8];
 
     if (v29 == -1)
     {
@@ -3651,9 +3651,9 @@ id __78__POAuthenticationProcess__performNonceRequestWithContext_request_complet
     }
 
     [(POMutableJWTHeader *)v26 setTyp:v30];
-    v31 = [v3 loginConfiguration];
-    v32 = [v31 customAssertionRequestHeaderClaims];
-    [(POMutableJWTHeader *)v26 addCustomClaims:v32];
+    loginConfiguration6 = [contextCopy loginConfiguration];
+    customAssertionRequestHeaderClaims = [loginConfiguration6 customAssertionRequestHeaderClaims];
+    [(POMutableJWTHeader *)v26 addCustomClaims:customAssertionRequestHeaderClaims];
 
     v24 = objc_alloc_init(POMutableAssertionTokenJWT);
     [(POMutableAssertionTokenJWT *)v24 setBody:v6];
@@ -3683,21 +3683,21 @@ id __62__POAuthenticationProcess_createEmbeddedAssertionWithContext___block_invo
   return v0;
 }
 
-- (id)createEmbeddedPasswordAssertionWithContext:(id)a3
+- (id)createEmbeddedPasswordAssertionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 password];
+  contextCopy = context;
+  password = [contextCopy password];
 
-  if (v5)
+  if (password)
   {
-    v6 = [(POAuthenticationProcess *)self createEmbeddedAssertionWithContext:v4];
-    v7 = [v4 password];
-    v8 = [v7 mutableCopy];
-    v9 = [v6 body];
-    [v9 setPassword:v8];
+    v6 = [(POAuthenticationProcess *)self createEmbeddedAssertionWithContext:contextCopy];
+    password2 = [contextCopy password];
+    v8 = [password2 mutableCopy];
+    body = [v6 body];
+    [body setPassword:v8];
 
-    v10 = [v6 header];
-    [v10 setTyp:@"platformsso-encrypted-login-assertion+jwt"];
+    header = [v6 header];
+    [header setTyp:@"platformsso-encrypted-login-assertion+jwt"];
   }
 
   else
@@ -3721,13 +3721,13 @@ id __70__POAuthenticationProcess_createEmbeddedPasswordAssertionWithContext___bl
   return v0;
 }
 
-- (id)createLoginJWTWithContext:(id)a3 embeddedAssertion:(id)a4
+- (id)createLoginJWTWithContext:(id)context embeddedAssertion:(id)assertion
 {
   v120[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 password];
-  v9 = v7 | v8;
+  contextCopy = context;
+  assertionCopy = assertion;
+  password = [contextCopy password];
+  v9 = assertionCopy | password;
 
   if (!v9)
   {
@@ -3735,131 +3735,131 @@ id __70__POAuthenticationProcess_createEmbeddedPasswordAssertionWithContext___bl
     goto LABEL_16;
   }
 
-  v10 = [v6 password];
+  password2 = [contextCopy password];
 
-  if (!v7 || !v10)
+  if (!assertionCopy || !password2)
   {
-    v13 = [v6 loginConfiguration];
-    v14 = [v13 clientID];
-    if (v14)
+    loginConfiguration = [contextCopy loginConfiguration];
+    clientID = [loginConfiguration clientID];
+    if (clientID)
     {
-      v15 = v14;
-      v16 = [v6 scope];
-      if (v16)
+      v15 = clientID;
+      scope = [contextCopy scope];
+      if (scope)
       {
-        v17 = v16;
-        v18 = [v6 nonce];
-        if (v18)
+        v17 = scope;
+        nonce = [contextCopy nonce];
+        if (nonce)
         {
-          v19 = v18;
-          v20 = [v6 serverNonce];
+          v19 = nonce;
+          serverNonce = [contextCopy serverNonce];
 
-          if (v20)
+          if (serverNonce)
           {
             v21 = objc_alloc_init(POMutableLoginJWTBody);
-            v22 = [v6 loginConfiguration];
-            v23 = [v22 customLoginRequestBodyClaims];
-            [(POMutableLoginJWTBody *)v21 addCustomClaims:v23];
+            loginConfiguration2 = [contextCopy loginConfiguration];
+            customLoginRequestBodyClaims = [loginConfiguration2 customLoginRequestBodyClaims];
+            [(POMutableLoginJWTBody *)v21 addCustomClaims:customLoginRequestBodyClaims];
 
-            v24 = [v6 loginConfiguration];
-            v25 = [v24 clientID];
-            [(POMutableLoginJWTBody *)v21 setClient_id:v25];
+            loginConfiguration3 = [contextCopy loginConfiguration];
+            clientID2 = [loginConfiguration3 clientID];
+            [(POMutableLoginJWTBody *)v21 setClient_id:clientID2];
 
-            v26 = [v6 loginConfiguration];
-            v27 = [v26 clientID];
-            [(POMutableLoginJWTBody *)v21 setIss:v27];
+            loginConfiguration4 = [contextCopy loginConfiguration];
+            clientID3 = [loginConfiguration4 clientID];
+            [(POMutableLoginJWTBody *)v21 setIss:clientID3];
 
             v28 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:300.0];
             [(POMutableLoginJWTBody *)v21 setExp:v28];
 
-            v29 = [v6 scope];
-            [(POMutableLoginJWTBody *)v21 setScope:v29];
+            scope2 = [contextCopy scope];
+            [(POMutableLoginJWTBody *)v21 setScope:scope2];
 
-            v30 = [v6 nonce];
-            [(POMutableLoginJWTBody *)v21 setNonce:v30];
+            nonce2 = [contextCopy nonce];
+            [(POMutableLoginJWTBody *)v21 setNonce:nonce2];
 
             v31 = MEMORY[0x277CCACE0];
-            v32 = [v6 loginConfiguration];
-            v33 = [v32 tokenEndpointURL];
-            v34 = [v33 absoluteString];
-            v35 = [v31 componentsWithString:v34];
+            loginConfiguration5 = [contextCopy loginConfiguration];
+            tokenEndpointURL = [loginConfiguration5 tokenEndpointURL];
+            absoluteString = [tokenEndpointURL absoluteString];
+            v35 = [v31 componentsWithString:absoluteString];
 
             [v35 setQuery:0];
             [v35 setQueryItems:0];
             [v35 setFragment:0];
             v106 = v35;
             v36 = [v35 URL];
-            v37 = [v36 absoluteString];
-            [(POMutableLoginJWTBody *)v21 setAud:v37];
+            absoluteString2 = [v36 absoluteString];
+            [(POMutableLoginJWTBody *)v21 setAud:absoluteString2];
 
-            v38 = [v6 loginConfiguration];
-            v39 = [v38 serverNonceClaimName];
-            v40 = [v39 length];
+            loginConfiguration6 = [contextCopy loginConfiguration];
+            serverNonceClaimName = [loginConfiguration6 serverNonceClaimName];
+            serverNonce2 = [serverNonceClaimName length];
 
-            if (v40)
+            if (serverNonce2)
             {
-              v41 = [v6 loginConfiguration];
-              v42 = [v41 serverNonceClaimName];
-              v119 = v42;
-              v40 = [v6 serverNonce];
-              v120[0] = v40;
+              loginConfiguration7 = [contextCopy loginConfiguration];
+              serverNonceClaimName2 = [loginConfiguration7 serverNonceClaimName];
+              v119 = serverNonceClaimName2;
+              serverNonce2 = [contextCopy serverNonce];
+              v120[0] = serverNonce2;
               v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v120 forKeys:&v119 count:1];
               [(POMutableLoginJWTBody *)v21 addCustomClaims:v43];
             }
 
             else
             {
-              v41 = [v6 serverNonce];
-              [(POMutableLoginJWTBody *)v21 setRequest_nonce:v41];
+              loginConfiguration7 = [contextCopy serverNonce];
+              [(POMutableLoginJWTBody *)v21 setRequest_nonce:loginConfiguration7];
             }
 
-            v48 = [v6 userName];
-            [(POMutableLoginJWTBody *)v21 setUsername:v48];
+            userName = [contextCopy userName];
+            [(POMutableLoginJWTBody *)v21 setUsername:userName];
 
-            v49 = [v6 userName];
-            [(POMutableLoginJWTBody *)v21 setSub:v49];
+            userName2 = [contextCopy userName];
+            [(POMutableLoginJWTBody *)v21 setSub:userName2];
 
-            v50 = [v6 password];
+            password3 = [contextCopy password];
 
-            if (v50)
+            if (password3)
             {
-              v51 = [v6 password];
-              v52 = [v51 mutableCopy];
+              password4 = [contextCopy password];
+              v52 = [password4 mutableCopy];
               [(POMutableLoginJWTBody *)v21 setPassword:v52];
 
               [(POMutableLoginJWTBody *)v21 setGrant_type:@"password"];
             }
 
-            if (v7)
+            if (assertionCopy)
             {
-              if ([v6 loginType] == 2 || objc_msgSend(v6, "loginType") == 3 || objc_msgSend(v6, "loginType") == 4)
+              if ([contextCopy loginType] == 2 || objc_msgSend(contextCopy, "loginType") == 3 || objc_msgSend(contextCopy, "loginType") == 4)
               {
-                [(POMutableLoginJWTBody *)v21 setAssertion:v7];
+                [(POMutableLoginJWTBody *)v21 setAssertion:assertionCopy];
                 goto LABEL_28;
               }
 
-              if ([v6 loginType] == 1)
+              if ([contextCopy loginType] == 1)
               {
-                [(POMutableLoginJWTBody *)v21 setAssertion:v7];
-                if ([v6 federated])
+                [(POMutableLoginJWTBody *)v21 setAssertion:assertionCopy];
+                if ([contextCopy federated])
                 {
-                  v95 = [v6 tokenTypeNamespace];
-                  if ([v95 isEqualToString:@"urn:oasis:names:tc:SAML:1.0:assertion"])
+                  tokenTypeNamespace = [contextCopy tokenTypeNamespace];
+                  if ([tokenTypeNamespace isEqualToString:@"urn:oasis:names:tc:SAML:1.0:assertion"])
                   {
                   }
 
                   else
                   {
-                    v96 = [v6 tokenTypeNamespace];
-                    v40 = [v96 isEqualToString:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV1.1"];
+                    tokenTypeNamespace2 = [contextCopy tokenTypeNamespace];
+                    serverNonce2 = [tokenTypeNamespace2 isEqualToString:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV1.1"];
 
-                    if ((v40 & 1) == 0)
+                    if ((serverNonce2 & 1) == 0)
                     {
-                      v97 = [v6 tokenTypeNamespace];
-                      if (![v97 isEqualToString:@"urn:oasis:names:tc:SAML:2.0:assertion"])
+                      tokenTypeNamespace3 = [contextCopy tokenTypeNamespace];
+                      if (![tokenTypeNamespace3 isEqualToString:@"urn:oasis:names:tc:SAML:2.0:assertion"])
                       {
-                        v98 = [v6 tokenTypeNamespace];
-                        [v98 isEqualToString:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0"];
+                        tokenTypeNamespace4 = [contextCopy tokenTypeNamespace];
+                        [tokenTypeNamespace4 isEqualToString:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0"];
                       }
 
                       v53 = @"urn:ietf:params:oauth:grant-type:saml2-bearer";
@@ -3880,83 +3880,83 @@ LABEL_28:
             }
 
 LABEL_30:
-            v54 = [v6 loginType];
-            if (v54 == 1)
+            loginType = [contextCopy loginType];
+            if (loginType == 1)
             {
               v55 = &unk_2870A9300;
             }
 
-            else if (v54 == 3)
+            else if (loginType == 3)
             {
               v55 = &unk_2870A9330;
             }
 
             else
             {
-              if (v54 != 2 || !+[POSecKeyHelper checkIfBiometricConstraintsForSigningForKey:](POSecKeyHelper, "checkIfBiometricConstraintsForSigningForKey:", [v6 embeddedAssertionSigningKey]))
+              if (loginType != 2 || !+[POSecKeyHelper checkIfBiometricConstraintsForSigningForKey:](POSecKeyHelper, "checkIfBiometricConstraintsForSigningForKey:", [contextCopy embeddedAssertionSigningKey]))
               {
 LABEL_38:
-                v56 = [v6 deviceConfiguration];
-                v57 = [v56 userAuthorizationMode];
-                if (v57 == 3)
+                deviceConfiguration = [contextCopy deviceConfiguration];
+                userAuthorizationMode = [deviceConfiguration userAuthorizationMode];
+                if (userAuthorizationMode == 3)
                 {
                   v105 = 0;
                 }
 
                 else
                 {
-                  v40 = [v6 deviceConfiguration];
-                  if ([v40 newUserAuthorizationMode] == 3)
+                  serverNonce2 = [contextCopy deviceConfiguration];
+                  if ([serverNonce2 newUserAuthorizationMode] == 3)
                   {
                     v105 = 0;
                   }
 
                   else
                   {
-                    v77 = [v6 deviceConfiguration];
-                    if (![v77 supportsAuthorization])
+                    deviceConfiguration2 = [contextCopy deviceConfiguration];
+                    if (![deviceConfiguration2 supportsAuthorization])
                     {
                       goto LABEL_57;
                     }
 
-                    v102 = v77;
+                    v102 = deviceConfiguration2;
                     v105 = 1;
                   }
                 }
 
-                v58 = [v6 deviceConfiguration];
-                v59 = [v58 administratorGroups];
-                if ([v59 count])
+                deviceConfiguration3 = [contextCopy deviceConfiguration];
+                administratorGroups = [deviceConfiguration3 administratorGroups];
+                if ([administratorGroups count])
                 {
 
                   v60 = 1;
                   if (!v105)
                   {
 LABEL_45:
-                    if (v57 == 3)
+                    if (userAuthorizationMode == 3)
                     {
 
                       if (!v60)
                       {
 LABEL_58:
-                        v79 = [MEMORY[0x277CBEAA8] date];
-                        [(POMutableLoginJWTBody *)v21 setIat:v79];
+                        date = [MEMORY[0x277CBEAA8] date];
+                        [(POMutableLoginJWTBody *)v21 setIat:date];
 
-                        [(POAuthenticationProcess *)self addCryptoHeadersToJWTBody:v21 context:v6];
-                        v80 = [v6 loginConfiguration];
-                        if ([v80 includePreviousRefreshTokenInLoginRequest])
+                        [(POAuthenticationProcess *)self addCryptoHeadersToJWTBody:v21 context:contextCopy];
+                        loginConfiguration8 = [contextCopy loginConfiguration];
+                        if ([loginConfiguration8 includePreviousRefreshTokenInLoginRequest])
                         {
-                          v81 = [v6 loginConfiguration];
-                          v82 = [v81 previousRefreshTokenClaimName];
-                          v83 = [v82 length];
+                          loginConfiguration9 = [contextCopy loginConfiguration];
+                          previousRefreshTokenClaimName = [loginConfiguration9 previousRefreshTokenClaimName];
+                          v83 = [previousRefreshTokenClaimName length];
 
-                          if (!v83 || ([v6 refreshToken], v84 = objc_claimAutoreleasedReturnValue(), v84, !v84))
+                          if (!v83 || ([contextCopy refreshToken], v84 = objc_claimAutoreleasedReturnValue(), v84, !v84))
                           {
 LABEL_63:
                             v88 = objc_alloc_init(POMutableJWTHeader);
-                            v89 = [v6 deviceConfiguration];
-                            v90 = [v89 sdkVersionString];
-                            v91 = [v90 compare:&unk_2870A92D8];
+                            deviceConfiguration4 = [contextCopy deviceConfiguration];
+                            sdkVersionString = [deviceConfiguration4 sdkVersionString];
+                            v91 = [sdkVersionString compare:&unk_2870A92D8];
 
                             if (v91 == -1)
                             {
@@ -3969,9 +3969,9 @@ LABEL_63:
                             }
 
                             [(POMutableJWTHeader *)v88 setTyp:v92];
-                            v93 = [v6 loginConfiguration];
-                            v94 = [v93 customLoginRequestHeaderClaims];
-                            [(POMutableJWTHeader *)v88 addCustomClaims:v94];
+                            loginConfiguration10 = [contextCopy loginConfiguration];
+                            customLoginRequestHeaderClaims = [loginConfiguration10 customLoginRequestHeaderClaims];
+                            [(POMutableJWTHeader *)v88 addCustomClaims:customLoginRequestHeaderClaims];
 
                             v45 = objc_alloc_init(POMutableLoginTokenJWT);
                             [(POMutableLoginTokenJWT *)v45 setBody:v21];
@@ -3980,11 +3980,11 @@ LABEL_63:
                             goto LABEL_17;
                           }
 
-                          v80 = [v6 loginConfiguration];
-                          v85 = [v80 previousRefreshTokenClaimName];
-                          v107 = v85;
-                          v86 = [v6 refreshToken];
-                          v108 = v86;
+                          loginConfiguration8 = [contextCopy loginConfiguration];
+                          previousRefreshTokenClaimName2 = [loginConfiguration8 previousRefreshTokenClaimName];
+                          v107 = previousRefreshTokenClaimName2;
+                          refreshToken = [contextCopy refreshToken];
+                          v108 = refreshToken;
                           v87 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v108 forKeys:&v107 count:1];
                           [(POMutableLoginJWTBody *)v21 addCustomClaims:v87];
                         }
@@ -4003,31 +4003,31 @@ LABEL_63:
                     }
 
                     v61 = objc_alloc_init(MEMORY[0x277CBEB18]);
-                    v62 = [v6 deviceConfiguration];
-                    v63 = [v62 administratorGroups];
-                    [v61 addObjectsFromArray:v63];
+                    deviceConfiguration5 = [contextCopy deviceConfiguration];
+                    administratorGroups2 = [deviceConfiguration5 administratorGroups];
+                    [v61 addObjectsFromArray:administratorGroups2];
 
-                    v64 = [v6 deviceConfiguration];
-                    v65 = [v64 authorizationGroups];
-                    v66 = [v65 allValues];
-                    [v61 addObjectsFromArray:v66];
+                    deviceConfiguration6 = [contextCopy deviceConfiguration];
+                    authorizationGroups = [deviceConfiguration6 authorizationGroups];
+                    allValues = [authorizationGroups allValues];
+                    [v61 addObjectsFromArray:allValues];
 
-                    v56 = v61;
-                    v67 = [v6 deviceConfiguration];
-                    v68 = [v67 otherGroups];
-                    [v61 addObjectsFromArray:v68];
+                    deviceConfiguration = v61;
+                    deviceConfiguration7 = [contextCopy deviceConfiguration];
+                    otherGroups = [deviceConfiguration7 otherGroups];
+                    [v61 addObjectsFromArray:otherGroups];
 
                     v103 = [MEMORY[0x277CBEB70] orderedSetWithArray:v61];
-                    v69 = [v103 array];
-                    v70 = [v6 loginConfiguration];
-                    v71 = [v70 groupRequestClaimName];
+                    array = [v103 array];
+                    loginConfiguration11 = [contextCopy loginConfiguration];
+                    groupRequestClaimName = [loginConfiguration11 groupRequestClaimName];
 
-                    if (v71)
+                    if (groupRequestClaimName)
                     {
-                      v72 = [v6 loginConfiguration];
-                      v73 = [v72 groupRequestClaimName];
-                      v117 = v73;
-                      v118 = v69;
+                      loginConfiguration12 = [contextCopy loginConfiguration];
+                      groupRequestClaimName2 = [loginConfiguration12 groupRequestClaimName];
+                      v117 = groupRequestClaimName2;
+                      v118 = array;
                       v74 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v118 forKeys:&v117 count:1];
                       [(POMutableLoginJWTBody *)v21 addCustomClaims:v74];
                     }
@@ -4036,21 +4036,21 @@ LABEL_63:
                     {
                       v115 = @"claims";
                       v113 = @"id_token";
-                      v110 = v69;
+                      v110 = array;
                       v111 = @"groups";
                       v109 = @"values";
-                      v72 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v110 forKeys:&v109 count:1];
-                      v112 = v72;
-                      v73 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v112 forKeys:&v111 count:1];
-                      v114 = v73;
+                      loginConfiguration12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v110 forKeys:&v109 count:1];
+                      v112 = loginConfiguration12;
+                      groupRequestClaimName2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v112 forKeys:&v111 count:1];
+                      v114 = groupRequestClaimName2;
                       v74 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v114 forKeys:&v113 count:1];
                       v116 = v74;
                       v78 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v116 forKeys:&v115 count:1];
                       [(POMutableLoginJWTBody *)v21 addCustomClaims:v78];
                     }
 
-                    v77 = v69;
-                    v40 = v103;
+                    deviceConfiguration2 = array;
+                    serverNonce2 = v103;
 LABEL_57:
 
                     goto LABEL_58;
@@ -4059,24 +4059,24 @@ LABEL_57:
 
                 else
                 {
-                  v104 = v40;
-                  v101 = v56;
-                  v75 = [v6 deviceConfiguration];
-                  v76 = [v75 authorizationGroups];
-                  if ([v76 count])
+                  v104 = serverNonce2;
+                  v101 = deviceConfiguration;
+                  deviceConfiguration8 = [contextCopy deviceConfiguration];
+                  authorizationGroups2 = [deviceConfiguration8 authorizationGroups];
+                  if ([authorizationGroups2 count])
                   {
                     v60 = 1;
                   }
 
                   else
                   {
-                    v100 = [v6 deviceConfiguration];
-                    v99 = [v100 otherGroups];
-                    v60 = [v99 count] != 0;
+                    deviceConfiguration9 = [contextCopy deviceConfiguration];
+                    otherGroups2 = [deviceConfiguration9 otherGroups];
+                    v60 = [otherGroups2 count] != 0;
                   }
 
-                  v56 = v101;
-                  v40 = v104;
+                  deviceConfiguration = v101;
+                  serverNonce2 = v104;
                   if ((v105 & 1) == 0)
                   {
                     goto LABEL_45;
@@ -4149,14 +4149,14 @@ id __71__POAuthenticationProcess_createLoginJWTWithContext_embeddedAssertion___b
   return v0;
 }
 
-- (void)addCryptoHeadersToJWTBody:(id)a3 context:(id)a4
+- (void)addCryptoHeadersToJWTBody:(id)body context:(id)context
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 deviceConfiguration];
-  v8 = [v7 encryptionAlgorithm];
-  v9 = [v8 isEqualToNumber:0x2870A9198];
+  contextCopy = context;
+  bodyCopy = body;
+  deviceConfiguration = [contextCopy deviceConfiguration];
+  encryptionAlgorithm = [deviceConfiguration encryptionAlgorithm];
+  v9 = [encryptionAlgorithm isEqualToNumber:0x2870A9198];
 
   if (v9)
   {
@@ -4166,60 +4166,60 @@ id __71__POAuthenticationProcess_createLoginJWTWithContext_embeddedAssertion___b
     v26[0] = @"ECDH-ES";
     v26[1] = @"A256GCM";
     v25[2] = @"apv";
-    v10 = [v5 apv];
+    v10 = [contextCopy apv];
     v26[2] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:3];
     v28[0] = v11;
-    v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
-    [v6 addCustomClaims:v12];
+    psso_sha256Hash = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
+    [bodyCopy addCustomClaims:psso_sha256Hash];
   }
 
   else
   {
-    v13 = [v5 deviceConfiguration];
-    v14 = [v13 encryptionAlgorithm];
-    v10 = [POJWTEncryption algorithmWithEncryptionAlgorithm:v14];
+    deviceConfiguration2 = [contextCopy deviceConfiguration];
+    encryptionAlgorithm2 = [deviceConfiguration2 encryptionAlgorithm];
+    v10 = [POJWTEncryption algorithmWithEncryptionAlgorithm:encryptionAlgorithm2];
 
-    v15 = [v5 deviceConfiguration];
-    v11 = SecKeyCopyExternalRepresentation([v15 deviceEncryptionPublicKey], 0);
+    deviceConfiguration3 = [contextCopy deviceConfiguration];
+    v11 = SecKeyCopyExternalRepresentation([deviceConfiguration3 deviceEncryptionPublicKey], 0);
 
-    v12 = [v11 psso_sha256Hash];
-    v16 = [v12 base64EncodedStringWithOptions:0];
-    v17 = [v10 algValue];
+    psso_sha256Hash = [v11 psso_sha256Hash];
+    v16 = [psso_sha256Hash base64EncodedStringWithOptions:0];
+    algValue = [v10 algValue];
     v22[2] = v16;
     v23 = @"jwe_crypto";
     v21[0] = @"alg";
     v21[1] = @"enc";
-    v22[0] = v17;
+    v22[0] = algValue;
     v22[1] = @"dir";
     v21[2] = @"kid";
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:3];
     v24 = v18;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    [v6 addCustomClaims:v19];
+    [bodyCopy addCustomClaims:v19];
 
-    v6 = v16;
+    bodyCopy = v16;
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createLoginRequestWithContext:(id)a3 jwt:(id)a4
+- (id)createLoginRequestWithContext:(id)context jwt:(id)jwt
 {
   v49[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   v6 = MEMORY[0x277CCAB70];
-  v7 = a4;
+  jwtCopy = jwt;
   v8 = [v6 alloc];
-  v9 = [v5 loginConfiguration];
-  v10 = [v9 tokenEndpointURL];
-  v11 = [v8 initWithURL:v10 cachePolicy:4 timeoutInterval:30.0];
+  loginConfiguration = [contextCopy loginConfiguration];
+  tokenEndpointURL = [loginConfiguration tokenEndpointURL];
+  v11 = [v8 initWithURL:tokenEndpointURL cachePolicy:4 timeoutInterval:30.0];
 
   [v11 setHTTPMethod:@"POST"];
   [v11 addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-type"];
-  v12 = [v5 deviceConfiguration];
-  v13 = [v12 sdkVersionString];
-  v14 = [v13 compare:&unk_2870A92D8];
+  deviceConfiguration = [contextCopy deviceConfiguration];
+  sdkVersionString = [deviceConfiguration sdkVersionString];
+  v14 = [sdkVersionString compare:&unk_2870A92D8];
 
   if (v14 == -1)
   {
@@ -4232,8 +4232,8 @@ id __71__POAuthenticationProcess_createLoginJWTWithContext_embeddedAssertion___b
   }
 
   [v11 addValue:v15 forHTTPHeaderField:@"Accept"];
-  v16 = [v5 requestIdentifier];
-  [v11 addValue:v16 forHTTPHeaderField:@"client-request-id"];
+  requestIdentifier = [contextCopy requestIdentifier];
+  [v11 addValue:requestIdentifier forHTTPHeaderField:@"client-request-id"];
 
   v17 = objc_alloc_init(MEMORY[0x277CCACE0]);
   v18 = [MEMORY[0x277CCAD18] queryItemWithName:@"platform_sso_version" value:@"1.0"];
@@ -4242,62 +4242,62 @@ id __71__POAuthenticationProcess_createLoginJWTWithContext_embeddedAssertion___b
   v49[1] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:2];
 
-  if ([v5 loginType] == 100 && (objc_msgSend(v5, "loginConfiguration"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "customRefreshRequestValues"), v22 = objc_claimAutoreleasedReturnValue(), v22, v21, v22))
+  if ([contextCopy loginType] == 100 && (objc_msgSend(contextCopy, "loginConfiguration"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "customRefreshRequestValues"), v22 = objc_claimAutoreleasedReturnValue(), v22, v21, v22))
   {
-    v23 = [v5 loginConfiguration];
-    v24 = [v23 customRefreshRequestValues];
+    loginConfiguration2 = [contextCopy loginConfiguration];
+    customRefreshRequestValues = [loginConfiguration2 customRefreshRequestValues];
   }
 
   else
   {
-    v25 = [v5 loginConfiguration];
-    v26 = [v25 customLoginRequestValues];
+    loginConfiguration3 = [contextCopy loginConfiguration];
+    customLoginRequestValues = [loginConfiguration3 customLoginRequestValues];
 
-    if (!v26)
+    if (!customLoginRequestValues)
     {
       goto LABEL_10;
     }
 
-    v23 = [v5 loginConfiguration];
-    v24 = [v23 customLoginRequestValues];
+    loginConfiguration2 = [contextCopy loginConfiguration];
+    customRefreshRequestValues = [loginConfiguration2 customLoginRequestValues];
   }
 
-  v27 = v24;
-  v28 = [v20 arrayByAddingObjectsFromArray:v24];
+  v27 = customRefreshRequestValues;
+  v28 = [v20 arrayByAddingObjectsFromArray:customRefreshRequestValues];
 
   v20 = v28;
 LABEL_10:
   [v17 setQueryItems:v20];
-  v29 = [v17 percentEncodedQuery];
-  v30 = [v29 dataUsingEncoding:4];
+  percentEncodedQuery = [v17 percentEncodedQuery];
+  v30 = [percentEncodedQuery dataUsingEncoding:4];
   v31 = [v30 mutableCopy];
 
-  v32 = [v5 deviceConfiguration];
-  v33 = [v32 sdkVersionString];
-  v34 = [v33 compare:&unk_2870A92D8];
+  deviceConfiguration2 = [contextCopy deviceConfiguration];
+  sdkVersionString2 = [deviceConfiguration2 sdkVersionString];
+  v34 = [sdkVersionString2 compare:&unk_2870A92D8];
 
   if (v34 == -1)
   {
-    v35 = @"request";
+    customRequestJWTParameterName2 = @"request";
   }
 
   else
   {
-    v35 = @"assertion";
+    customRequestJWTParameterName2 = @"assertion";
   }
 
-  v36 = [v5 loginConfiguration];
-  v37 = [v36 customRequestJWTParameterName];
-  v38 = [v37 length];
+  loginConfiguration4 = [contextCopy loginConfiguration];
+  customRequestJWTParameterName = [loginConfiguration4 customRequestJWTParameterName];
+  v38 = [customRequestJWTParameterName length];
 
   if (v38)
   {
-    v39 = [v5 loginConfiguration];
-    v35 = [v39 customRequestJWTParameterName];
+    loginConfiguration5 = [contextCopy loginConfiguration];
+    customRequestJWTParameterName2 = [loginConfiguration5 customRequestJWTParameterName];
   }
 
   v40 = SecCFAllocatorZeroize();
-  v41 = CFStringCreateWithFormat(v40, 0, @"&%@=%@", v35, v7);
+  v41 = CFStringCreateWithFormat(v40, 0, @"&%@=%@", customRequestJWTParameterName2, jwtCopy);
 
   if (v41)
   {
@@ -4340,37 +4340,37 @@ id __61__POAuthenticationProcess_createLoginRequestWithContext_jwt___block_invok
   return v0;
 }
 
-- (void)performLoginRequestWithContext:(id)a3 request:(id)a4 completion:(id)a5
+- (void)performLoginRequestWithContext:(id)context request:(id)request completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  contextCopy = context;
+  completionCopy = completion;
+  requestCopy = request;
   v11 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v8 requestIdentifier];
+    requestIdentifier = [contextCopy requestIdentifier];
     *buf = 138543362;
-    v29 = v12;
+    v29 = requestIdentifier;
     _os_log_impl(&dword_25E8B1000, v11, OS_LOG_TYPE_INFO, "Sending login request: %{public}@", buf, 0xCu);
   }
 
-  v13 = [v8 urlSession];
+  urlSession = [contextCopy urlSession];
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __77__POAuthenticationProcess_performLoginRequestWithContext_request_completion___block_invoke;
   v24 = &unk_279A3DF70;
-  v26 = v8;
-  v27 = v9;
-  v25 = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = [v13 dataTaskWithRequest:v10 completionHandler:&v21];
+  v26 = contextCopy;
+  v27 = completionCopy;
+  selfCopy = self;
+  v14 = contextCopy;
+  v15 = completionCopy;
+  v16 = [urlSession dataTaskWithRequest:requestCopy completionHandler:&v21];
 
   v17 = MEMORY[0x277CCACA8];
-  v18 = [v14 requestIdentifier];
-  v19 = [v17 stringWithFormat:@"Login Request: %@", v18, v21, v22, v23, v24, v25];
-  [v16 setTaskDescription:v19];
+  requestIdentifier2 = [v14 requestIdentifier];
+  selfCopy = [v17 stringWithFormat:@"Login Request: %@", requestIdentifier2, v21, v22, v23, v24, selfCopy];
+  [v16 setTaskDescription:selfCopy];
 
   [v16 resume];
   v20 = *MEMORY[0x277D85DE8];
@@ -4632,17 +4632,17 @@ id __77__POAuthenticationProcess_performLoginRequestWithContext_request_completi
   return v2;
 }
 
-- (void)retrieveSigningKeyWithContext:(id)a3 keyId:(id)a4 completion:(id)a5
+- (void)retrieveSigningKeyWithContext:(id)context keyId:(id)id completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 jwksStorageProvider];
-  v12 = [v8 deviceConfiguration];
-  v13 = [v12 extensionIdentifier];
-  v14 = [v11 jwksCacheForExtensionIdentifier:v13];
+  contextCopy = context;
+  idCopy = id;
+  completionCopy = completion;
+  jwksStorageProvider = [contextCopy jwksStorageProvider];
+  deviceConfiguration = [contextCopy deviceConfiguration];
+  extensionIdentifier = [deviceConfiguration extensionIdentifier];
+  v14 = [jwksStorageProvider jwksCacheForExtensionIdentifier:extensionIdentifier];
 
-  if (v14 && ([v8 loginConfiguration], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "jwksTrustedRootCertificates"), v16 = objc_claimAutoreleasedReturnValue(), v17 = -[POAuthenticationProcess findKey:inJWKSData:rootCertificates:](self, "findKey:inJWKSData:rootCertificates:", v9, v14, v16), v16, v15, v17))
+  if (v14 && ([contextCopy loginConfiguration], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "jwksTrustedRootCertificates"), v16 = objc_claimAutoreleasedReturnValue(), v17 = -[POAuthenticationProcess findKey:inJWKSData:rootCertificates:](self, "findKey:inJWKSData:rootCertificates:", idCopy, v14, v16), v16, v15, v17))
   {
     v18 = PO_LOG_POAuthenticationProcess();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -4650,15 +4650,15 @@ id __77__POAuthenticationProcess_performLoginRequestWithContext_request_completi
       [POAuthenticationProcess retrieveSigningKeyWithContext:keyId:completion:];
     }
 
-    v19 = [(POAuthenticationProcess *)self completionQueue];
+    completionQueue = [(POAuthenticationProcess *)self completionQueue];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __74__POAuthenticationProcess_retrieveSigningKeyWithContext_keyId_completion___block_invoke;
     v45[3] = &unk_279A3E010;
-    v46 = v10;
+    v46 = completionCopy;
     v47 = v17;
-    v20 = v10;
-    [v19 addOperationWithBlock:v45];
+    v20 = completionCopy;
+    [completionQueue addOperationWithBlock:v45];
 
     v21 = v46;
   }
@@ -4666,7 +4666,7 @@ id __77__POAuthenticationProcess_performLoginRequestWithContext_request_completi
   else
   {
     v22 = PO_LOG_POAuthenticationProcess();
-    v23 = os_signpost_id_make_with_pointer(v22, v8);
+    v23 = os_signpost_id_make_with_pointer(v22, contextCopy);
 
     v24 = PO_LOG_POAuthenticationProcess();
     v25 = v24;
@@ -4676,26 +4676,26 @@ id __77__POAuthenticationProcess_performLoginRequestWithContext_request_completi
       _os_signpost_emit_with_name_impl(&dword_25E8B1000, v25, OS_SIGNPOST_INTERVAL_BEGIN, v23, "PlatformSSO_JWKSRequest", " enableTelemetry=YES ", buf, 2u);
     }
 
-    v26 = [v8 urlSession];
-    v27 = [v8 loginConfiguration];
-    v28 = [v27 jwksEndpointURL];
+    urlSession = [contextCopy urlSession];
+    loginConfiguration = [contextCopy loginConfiguration];
+    jwksEndpointURL = [loginConfiguration jwksEndpointURL];
     v35 = MEMORY[0x277D85DD0];
     v36 = 3221225472;
     v37 = __74__POAuthenticationProcess_retrieveSigningKeyWithContext_keyId_completion___block_invoke_670;
     v38 = &unk_279A3E0B0;
-    v42 = v10;
+    v42 = completionCopy;
     v43 = v23;
-    v39 = self;
-    v29 = v8;
+    selfCopy = self;
+    v29 = contextCopy;
     v40 = v29;
-    v41 = v9;
-    v30 = v10;
-    v31 = [v26 dataTaskWithURL:v28 completionHandler:&v35];
+    v41 = idCopy;
+    v30 = completionCopy;
+    v31 = [urlSession dataTaskWithURL:jwksEndpointURL completionHandler:&v35];
 
     v32 = MEMORY[0x277CCACA8];
-    v33 = [v29 requestIdentifier];
-    v34 = [v32 stringWithFormat:@"JWKS Request: %@", v33, v35, v36, v37, v38, v39];
-    [v31 setTaskDescription:v34];
+    requestIdentifier = [v29 requestIdentifier];
+    selfCopy = [v32 stringWithFormat:@"JWKS Request: %@", requestIdentifier, v35, v36, v37, v38, selfCopy];
+    [v31 setTaskDescription:selfCopy];
 
     [v31 resume];
     v21 = v42;
@@ -4903,13 +4903,13 @@ void __74__POAuthenticationProcess_retrieveSigningKeyWithContext_keyId_completio
   (*(v4 + 16))(v4, [v1 findKey:v2 inJWKSData:v3 rootCertificates:v5]);
 }
 
-- (__SecKey)findKey:(id)a3 inJWKSData:(id)a4 rootCertificates:(id)a5
+- (__SecKey)findKey:(id)key inJWKSData:(id)data rootCertificates:(id)certificates
 {
   v127 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  keyCopy = key;
+  certificatesCopy = certificates;
   v122 = 0;
-  v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a4 options:16 error:&v122];
+  v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:16 error:&v122];
   v10 = v122;
   v11 = v10;
   if (v9)
@@ -4962,7 +4962,7 @@ void __74__POAuthenticationProcess_retrieveSigningKeyWithContext_keyId_completio
 
       v21 = *(*(&v116 + 1) + 8 * i);
       v22 = [v21 objectForKeyedSubscript:@"kid"];
-      if ([v22 isEqualToString:v7])
+      if ([v22 isEqualToString:keyCopy])
       {
         v23 = v21;
 
@@ -4977,20 +4977,20 @@ void __74__POAuthenticationProcess_retrieveSigningKeyWithContext_keyId_completio
         v11 = v87;
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v25 count])
         {
-          v76 = v7;
-          if (![v8 count])
+          v76 = keyCopy;
+          if (![certificatesCopy count])
           {
 LABEL_33:
             v37 = [v23 objectForKeyedSubscript:@"x5c"];
-            v38 = [v37 firstObject];
+            firstObject = [v37 firstObject];
 
-            v83 = v38;
-            v39 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v38 options:1];
+            v83 = firstObject;
+            v39 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:firstObject options:1];
             if (v39)
             {
               v40 = SecCertificateCreateWithData(0, v39);
               v9 = v86;
-              v7 = v76;
+              keyCopy = v76;
               if (v40)
               {
                 v41 = v40;
@@ -5010,7 +5010,7 @@ LABEL_33:
               v106[1] = 3221225472;
               v106[2] = __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_invoke_711;
               v106[3] = &unk_279A3DC48;
-              v7 = v76;
+              keyCopy = v76;
               v107 = v76;
               v70 = __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_invoke_711(v106);
 
@@ -5024,7 +5024,7 @@ LABEL_55:
           }
 
           v77 = v24;
-          v82 = v8;
+          v82 = certificatesCopy;
           v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
           v110 = 0u;
           v111 = 0u;
@@ -5070,7 +5070,7 @@ LABEL_55:
           }
 
           v36 = v26;
-          v8 = v82;
+          certificatesCopy = v82;
           if ([POSecKeyHelper evaluateTrustForCertificates:v26 rootCertificates:v82])
           {
 
@@ -5084,7 +5084,7 @@ LABEL_55:
           v108[1] = 3221225472;
           v108[2] = __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_invoke_707;
           v108[3] = &unk_279A3DC48;
-          v7 = v76;
+          keyCopy = v76;
           v109 = v76;
           v69 = __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_invoke_707(v108);
 
@@ -5098,13 +5098,13 @@ LABEL_56:
           goto LABEL_57;
         }
 
-        if ([v8 count])
+        if ([certificatesCopy count])
         {
           v104[0] = MEMORY[0x277D85DD0];
           v104[1] = 3221225472;
           v104[2] = __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_invoke_715;
           v104[3] = &unk_279A3DC48;
-          v105 = v7;
+          v105 = keyCopy;
           v43 = __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_invoke_715(v104);
           RSAPublicKey = 0;
           v36 = v105;
@@ -5119,7 +5119,7 @@ LABEL_56:
           v44 = objc_alloc(MEMORY[0x277CBEA90]);
           v45 = [v23 objectForKeyedSubscript:@"x"];
           [v44 psso_initWithBase64URLEncodedString:v45];
-          v47 = v46 = v7;
+          v47 = v46 = keyCopy;
 
           v48 = objc_alloc(MEMORY[0x277CBEA90]);
           v49 = [v23 objectForKeyedSubscript:@"y"];
@@ -5130,7 +5130,7 @@ LABEL_56:
           [v51 appendBytes:&v103 length:1];
           v83 = v47;
           v52 = v47;
-          v7 = v46;
+          keyCopy = v46;
           [v51 appendData:v52];
           [v51 appendData:v50];
           v53 = *MEMORY[0x277CDC040];
@@ -5151,7 +5151,7 @@ LABEL_56:
             v99 = __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_invoke_728;
             v100 = &unk_279A3E0D8;
             v102 = error[0];
-            v101 = v7;
+            v101 = keyCopy;
             v57 = v99(v98);
           }
 
@@ -5167,7 +5167,7 @@ LABEL_56:
           v88[1] = 3221225472;
           v88[2] = __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_invoke_753;
           v88[3] = &unk_279A3DC48;
-          v89 = v7;
+          v89 = keyCopy;
           v71 = __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_invoke_753(v88);
           RSAPublicKey = 0;
           v36 = v89;
@@ -5213,7 +5213,7 @@ LABEL_62:
             v90[2] = __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_invoke_749;
             v90[3] = &unk_279A3E0D8;
             v92 = 0;
-            v91 = v7;
+            v91 = keyCopy;
             v68 = __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_invoke_749(v90);
             v59 = v79;
             v65 = v91;
@@ -5225,7 +5225,7 @@ LABEL_62:
             v96[1] = 3221225472;
             v96[2] = __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_invoke_741;
             v96[3] = &unk_279A3DC48;
-            v97 = v7;
+            v97 = keyCopy;
             v75 = __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_invoke_741(v96);
 
             v36 = v84;
@@ -5239,7 +5239,7 @@ LABEL_62:
           v93[1] = 3221225472;
           v93[2] = __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_invoke_745;
           v93[3] = &unk_279A3DC48;
-          v94 = v7;
+          v94 = keyCopy;
           v74 = __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_invoke_745(v93);
           v65 = v94;
         }
@@ -5265,7 +5265,7 @@ LABEL_36:
   v114[1] = 3221225472;
   v114[2] = __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_invoke_697;
   v114[3] = &unk_279A3DC48;
-  v115 = v7;
+  v115 = keyCopy;
   v42 = __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_invoke_697(v114);
   RSAPublicKey = 0;
   v23 = v115;
@@ -5404,10 +5404,10 @@ id __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_inv
   return v2;
 }
 
-- (BOOL)validateIdToken:(id)a3 context:(id)a4 key:(__SecKey *)a5
+- (BOOL)validateIdToken:(id)token context:(id)context key:(__SecKey *)key
 {
-  v7 = a3;
-  v8 = a4;
+  tokenCopy = token;
+  contextCopy = context;
   v9 = PO_LOG_PODiagnostics();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -5421,39 +5421,39 @@ id __63__POAuthenticationProcess_findKey_inJWKSData_rootCertificates___block_inv
     [POAuthenticationProcess validateIdToken:context:key:];
   }
 
-  v11 = [v7 decodedHeader];
-  v12 = [v11 alg];
+  decodedHeader = [tokenCopy decodedHeader];
+  v12 = [decodedHeader alg];
   v13 = [&unk_2870A9348 containsObject:v12];
 
   if ((v13 & 1) == 0)
   {
-    v78 = v7;
+    v78 = tokenCopy;
     v24 = __55__POAuthenticationProcess_validateIdToken_context_key___block_invoke();
 
     goto LABEL_11;
   }
 
-  v14 = [v7 decodedHeader];
-  v15 = [v14 alg];
-  LODWORD(a5) = [POJWTSigning verifyJWTSignature:v7 algorithm:v15 key:a5];
+  decodedHeader2 = [tokenCopy decodedHeader];
+  v15 = [decodedHeader2 alg];
+  LODWORD(key) = [POJWTSigning verifyJWTSignature:tokenCopy algorithm:v15 key:key];
 
-  if (a5)
+  if (key)
   {
-    v16 = [v7 decodedBody];
-    v17 = [v16 nonce];
-    if (v17)
+    decodedBody = [tokenCopy decodedBody];
+    nonce = [decodedBody nonce];
+    if (nonce)
     {
-      v18 = v17;
-      v19 = [v7 decodedBody];
-      v20 = [v19 nonce];
-      v21 = [v8 nonce];
-      v22 = [v20 isEqualToString:v21];
+      v18 = nonce;
+      decodedBody2 = [tokenCopy decodedBody];
+      nonce2 = [decodedBody2 nonce];
+      nonce3 = [contextCopy nonce];
+      v22 = [nonce2 isEqualToString:nonce3];
 
       if ((v22 & 1) == 0)
       {
         v23 = __55__POAuthenticationProcess_validateIdToken_context_key___block_invoke_763();
 LABEL_11:
-        LOBYTE(a5) = 0;
+        LOBYTE(key) = 0;
         goto LABEL_12;
       }
     }
@@ -5462,11 +5462,11 @@ LABEL_11:
     {
     }
 
-    v26 = [v7 decodedBody];
-    v27 = [v26 iss];
-    v28 = [v8 loginConfiguration];
-    v29 = [v28 issuer];
-    v30 = [v27 isEqualToString:v29];
+    decodedBody3 = [tokenCopy decodedBody];
+    v27 = [decodedBody3 iss];
+    loginConfiguration = [contextCopy loginConfiguration];
+    issuer = [loginConfiguration issuer];
+    v30 = [v27 isEqualToString:issuer];
 
     if ((v30 & 1) == 0)
     {
@@ -5474,17 +5474,17 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    v31 = [v7 decodedBody];
-    v32 = [v31 audArray];
+    decodedBody4 = [tokenCopy decodedBody];
+    audArray = [decodedBody4 audArray];
 
-    v33 = [v7 decodedBody];
-    v34 = v33;
-    if (v32)
+    decodedBody5 = [tokenCopy decodedBody];
+    v34 = decodedBody5;
+    if (audArray)
     {
-      v35 = [v33 audArray];
-      v36 = [v8 loginConfiguration];
-      v37 = [v36 clientID];
-      v38 = [v35 containsObject:v37];
+      audArray2 = [decodedBody5 audArray];
+      loginConfiguration2 = [contextCopy loginConfiguration];
+      clientID = [loginConfiguration2 clientID];
+      v38 = [audArray2 containsObject:clientID];
 
       if ((v38 & 1) == 0)
       {
@@ -5492,8 +5492,8 @@ LABEL_11:
         goto LABEL_11;
       }
 
-      v39 = [v7 decodedBody];
-      v40 = [v39 azp];
+      decodedBody6 = [tokenCopy decodedBody];
+      v40 = [decodedBody6 azp];
 
       if (!v40)
       {
@@ -5504,10 +5504,10 @@ LABEL_11:
 
     else
     {
-      v43 = [v33 aud];
-      v44 = [v8 loginConfiguration];
-      v45 = [v44 clientID];
-      v46 = [v43 isEqualToString:v45];
+      v43 = [decodedBody5 aud];
+      loginConfiguration3 = [contextCopy loginConfiguration];
+      clientID2 = [loginConfiguration3 clientID];
+      v46 = [v43 isEqualToString:clientID2];
 
       if ((v46 & 1) == 0)
       {
@@ -5516,16 +5516,16 @@ LABEL_11:
       }
     }
 
-    v47 = [v7 decodedBody];
-    v48 = [v47 azp];
+    decodedBody7 = [tokenCopy decodedBody];
+    v48 = [decodedBody7 azp];
     if (v48)
     {
       v49 = v48;
-      v50 = [v7 decodedBody];
-      v51 = [v50 azp];
-      v52 = [v8 loginConfiguration];
-      v53 = [v52 clientID];
-      v54 = [v51 isEqualToString:v53];
+      decodedBody8 = [tokenCopy decodedBody];
+      v51 = [decodedBody8 azp];
+      loginConfiguration4 = [contextCopy loginConfiguration];
+      clientID3 = [loginConfiguration4 clientID];
+      v54 = [v51 isEqualToString:clientID3];
 
       if ((v54 & 1) == 0)
       {
@@ -5538,13 +5538,13 @@ LABEL_11:
     {
     }
 
-    v58 = [v7 decodedBody];
-    v59 = [v58 iat];
+    decodedBody9 = [tokenCopy decodedBody];
+    v59 = [decodedBody9 iat];
     [v59 timeIntervalSinceNow];
     v61 = v60;
 
-    v62 = [v7 decodedBody];
-    v63 = [v62 iat];
+    decodedBody10 = [tokenCopy decodedBody];
+    v63 = [decodedBody10 iat];
 
     if (!v63 || v61 > 120.0)
     {
@@ -5552,13 +5552,13 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    v64 = [v7 decodedBody];
-    v65 = [v64 exp];
+    decodedBody11 = [tokenCopy decodedBody];
+    v65 = [decodedBody11 exp];
     [v65 timeIntervalSinceNow];
     v67 = v66;
 
-    v68 = [v7 decodedBody];
-    v69 = [v68 exp];
+    decodedBody12 = [tokenCopy decodedBody];
+    v69 = [decodedBody12 exp];
 
     if (!v69 || v67 < -120.0)
     {
@@ -5566,15 +5566,15 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    v70 = [v7 decodedBody];
-    v71 = [v70 nbf];
+    decodedBody13 = [tokenCopy decodedBody];
+    v71 = [decodedBody13 nbf];
     [v71 timeIntervalSinceNow];
     v73 = v72;
 
-    a5 = [v7 decodedBody];
-    v74 = [(__SecKey *)a5 nbf];
+    key = [tokenCopy decodedBody];
+    v74 = [(__SecKey *)key nbf];
 
-    LOBYTE(a5) = 1;
+    LOBYTE(key) = 1;
     if (v74 && v73 > 120.0)
     {
       v75 = __55__POAuthenticationProcess_validateIdToken_context_key___block_invoke_807();
@@ -5584,7 +5584,7 @@ LABEL_11:
 
 LABEL_12:
 
-  return a5;
+  return key;
 }
 
 id __55__POAuthenticationProcess_validateIdToken_context_key___block_invoke()
@@ -5707,19 +5707,19 @@ id __55__POAuthenticationProcess_validateIdToken_context_key___block_invoke_807(
   return v0;
 }
 
-- (BOOL)validatePartyUInfo:(id)a3 context:(id)a4
+- (BOOL)validatePartyUInfo:(id)info context:(id)context
 {
-  v4 = a3;
-  v5 = [v4 decodedHeader];
-  v6 = [v5 apu];
+  infoCopy = info;
+  decodedHeader = [infoCopy decodedHeader];
+  v6 = [decodedHeader apu];
 
   if (v6)
   {
-    v7 = [v4 decodeEphemeralPublicKey];
-    if (v7)
+    decodeEphemeralPublicKey = [infoCopy decodeEphemeralPublicKey];
+    if (decodeEphemeralPublicKey)
     {
       error = 0;
-      v8 = SecKeyCopyExternalRepresentation(v7, &error);
+      v8 = SecKeyCopyExternalRepresentation(decodeEphemeralPublicKey, &error);
       if (!v8)
       {
         v30[0] = MEMORY[0x277D85DD0];
@@ -5735,8 +5735,8 @@ LABEL_19:
       }
 
       v9 = objc_alloc(MEMORY[0x277CBEA90]);
-      v10 = [v4 decodedHeader];
-      v11 = [v10 apu];
+      decodedHeader2 = [infoCopy decodedHeader];
+      v11 = [decodedHeader2 apu];
       v12 = [v9 psso_initWithBase64URLEncodedString:v11];
 
       if (v12)
@@ -5908,15 +5908,15 @@ id __54__POAuthenticationProcess_validatePartyUInfo_context___block_invoke_850()
   return v0;
 }
 
-- (BOOL)validatePartyVInfo:(id)a3 context:(id)a4 publicKey:(__SecKey *)a5
+- (BOOL)validatePartyVInfo:(id)info context:(id)context publicKey:(__SecKey *)key
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  infoCopy = info;
+  contextCopy = context;
+  if (infoCopy)
   {
     v32 = 0;
     v9 = objc_alloc(MEMORY[0x277CBEA90]);
-    v10 = [v9 psso_initWithBase64URLEncodedString:v7];
+    v10 = [v9 psso_initWithBase64URLEncodedString:infoCopy];
 
     if (!v10)
     {
@@ -5928,7 +5928,7 @@ LABEL_20:
     }
 
     error = 0;
-    v11 = SecKeyCopyExternalRepresentation(a5, &error);
+    v11 = SecKeyCopyExternalRepresentation(key, &error);
     if (!v11)
     {
       v30[0] = MEMORY[0x277D85DD0];
@@ -5943,8 +5943,8 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v12 = [v8 nonce];
-    v13 = [v12 dataUsingEncoding:1];
+    nonce = [contextCopy nonce];
+    v13 = [nonce dataUsingEncoding:1];
 
     if (v13)
     {
@@ -6089,11 +6089,11 @@ id __64__POAuthenticationProcess_validatePartyVInfo_context_publicKey___block_in
   return v0;
 }
 
-- (void)prepareForAccessTokenLoginUsingContext:(id)a3 completion:(id)a4
+- (void)prepareForAccessTokenLoginUsingContext:(id)context completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = PO_LOG_PODiagnostics();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -6104,29 +6104,29 @@ id __64__POAuthenticationProcess_validatePartyVInfo_context_publicKey___block_in
   v9 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [POAuthenticationProcess performPasswordLoginUsingContext:v6 completion:?];
+    [POAuthenticationProcess performPasswordLoginUsingContext:contextCopy completion:?];
   }
 
   v10 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [POAuthenticationProcess performPasswordLoginUsingContext:v6 completion:?];
+    [POAuthenticationProcess performPasswordLoginUsingContext:contextCopy completion:?];
   }
 
-  v11 = [(POAuthenticationProcess *)self createNonceRequestWithContext:v6];
+  v11 = [(POAuthenticationProcess *)self createNonceRequestWithContext:contextCopy];
   if (v11)
   {
     v12 = PO_LOG_PODiagnostics();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v6 requestIdentifier];
+      requestIdentifier = [contextCopy requestIdentifier];
       *buf = 138543362;
-      v25 = v13;
+      v25 = requestIdentifier;
       _os_log_impl(&dword_25E8B1000, v12, OS_LOG_TYPE_DEFAULT, "Sending nonce request: %{public}@", buf, 0xCu);
     }
 
     v14 = PO_LOG_POAuthenticationProcess();
-    v15 = os_signpost_id_make_with_pointer(v14, v6);
+    v15 = os_signpost_id_make_with_pointer(v14, contextCopy);
 
     v16 = PO_LOG_POAuthenticationProcess();
     v17 = v16;
@@ -6141,15 +6141,15 @@ id __64__POAuthenticationProcess_validatePartyVInfo_context_publicKey___block_in
     v20[2] = __77__POAuthenticationProcess_prepareForAccessTokenLoginUsingContext_completion___block_invoke_897;
     v20[3] = &unk_279A3E100;
     v23 = v15;
-    v22 = v7;
-    v21 = v6;
+    v22 = completionCopy;
+    v21 = contextCopy;
     [(POAuthenticationProcess *)self performNonceRequestWithContext:v21 request:v11 completion:v20];
   }
 
   else
   {
     v18 = __77__POAuthenticationProcess_prepareForAccessTokenLoginUsingContext_completion___block_invoke();
-    (*(v7 + 2))(v7, 2, v6);
+    (*(completionCopy + 2))(completionCopy, 2, contextCopy);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -6198,10 +6198,10 @@ uint64_t __77__POAuthenticationProcess_prepareForAccessTokenLoginUsingContext_co
   return (*(a1[5] + 16))();
 }
 
-- (void)performAccessTokenSigningUsingContext:(id)a3 completion:(id)a4
+- (void)performAccessTokenSigningUsingContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = PO_LOG_PODiagnostics();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -6209,31 +6209,31 @@ uint64_t __77__POAuthenticationProcess_prepareForAccessTokenLoginUsingContext_co
     _os_log_impl(&dword_25E8B1000, v8, OS_LOG_TYPE_INFO, "Perform NFC signing", buf, 2u);
   }
 
-  [v6 setLoginType:4];
-  v9 = [(POAuthenticationProcess *)self createEmbeddedAssertionWithContext:v6];
+  [contextCopy setLoginType:4];
+  v9 = [(POAuthenticationProcess *)self createEmbeddedAssertionWithContext:contextCopy];
   if (v9)
   {
-    v10 = -[POAuthenticationProcess findAlgorithmForKey:](self, "findAlgorithmForKey:", [v6 embeddedAssertionSigningKey]);
+    v10 = -[POAuthenticationProcess findAlgorithmForKey:](self, "findAlgorithmForKey:", [contextCopy embeddedAssertionSigningKey]);
     v15 = 0;
-    v11 = +[POJWTSigning encodeAndSignJWT:algorithm:key:certificate:error:](POJWTSigning, "encodeAndSignJWT:algorithm:key:certificate:error:", v9, v10, [v6 embeddedAssertionSigningKey], objc_msgSend(v6, "embeddedAssertionCertificate"), &v15);
+    v11 = +[POJWTSigning encodeAndSignJWT:algorithm:key:certificate:error:](POJWTSigning, "encodeAndSignJWT:algorithm:key:certificate:error:", v9, v10, [contextCopy embeddedAssertionSigningKey], objc_msgSend(contextCopy, "embeddedAssertionCertificate"), &v15);
     if (v11)
     {
-      [v6 setResumedEmbeddedAssertion:v11];
-      v12 = [v6 resumeData];
-      v7[2](v7, 1, v6, v12);
+      [contextCopy setResumedEmbeddedAssertion:v11];
+      resumeData = [contextCopy resumeData];
+      completionCopy[2](completionCopy, 1, contextCopy, resumeData);
     }
 
     else
     {
       v14 = __76__POAuthenticationProcess_performAccessTokenSigningUsingContext_completion___block_invoke_902();
-      v7[2](v7, 3, v6, 0);
+      completionCopy[2](completionCopy, 3, contextCopy, 0);
     }
   }
 
   else
   {
     v13 = __76__POAuthenticationProcess_performAccessTokenSigningUsingContext_completion___block_invoke();
-    v7[2](v7, 2, v6, 0);
+    completionCopy[2](completionCopy, 2, contextCopy, 0);
   }
 }
 
@@ -6261,10 +6261,10 @@ id __76__POAuthenticationProcess_performAccessTokenSigningUsingContext_completio
   return v0;
 }
 
-- (void)completeAccessTokenLoginUsingContext:(id)a3 completion:(id)a4
+- (void)completeAccessTokenLoginUsingContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = PO_LOG_PODiagnostics();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -6272,99 +6272,99 @@ id __76__POAuthenticationProcess_performAccessTokenSigningUsingContext_completio
     _os_log_impl(&dword_25E8B1000, v8, OS_LOG_TYPE_INFO, "Complete NFC login", v12, 2u);
   }
 
-  [v6 setLoginType:4];
-  v9 = [v6 resumedEmbeddedAssertion];
-  v10 = [(POAuthenticationProcess *)self createLoginJWTWithContext:v6 embeddedAssertion:v9];
+  [contextCopy setLoginType:4];
+  resumedEmbeddedAssertion = [contextCopy resumedEmbeddedAssertion];
+  v10 = [(POAuthenticationProcess *)self createLoginJWTWithContext:contextCopy embeddedAssertion:resumedEmbeddedAssertion];
 
   if (v10)
   {
-    [(POAuthenticationProcess *)self performLoginWithContext:v6 loginJWT:v10 completion:v7];
+    [(POAuthenticationProcess *)self performLoginWithContext:contextCopy loginJWT:v10 completion:completionCopy];
   }
 
   else
   {
     v11 = __78__POAuthenticationProcess__performWSTrustPasswordLoginWithContext_completion___block_invoke_184();
-    v7[2](v7, 2, v6, 0);
+    completionCopy[2](completionCopy, 2, contextCopy, 0);
   }
 }
 
-- (id)createRefreshJWTWithContext:(id)a3
+- (id)createRefreshJWTWithContext:(id)context
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 refreshToken];
+  contextCopy = context;
+  refreshToken = [contextCopy refreshToken];
 
-  if (v5)
+  if (refreshToken)
   {
     v6 = objc_alloc_init(POMutableLoginJWTBody);
-    v7 = [v4 loginConfiguration];
-    v8 = [v7 customRefreshRequestBodyClaims];
-    [(POMutableLoginJWTBody *)v6 addCustomClaims:v8];
+    loginConfiguration = [contextCopy loginConfiguration];
+    customRefreshRequestBodyClaims = [loginConfiguration customRefreshRequestBodyClaims];
+    [(POMutableLoginJWTBody *)v6 addCustomClaims:customRefreshRequestBodyClaims];
 
-    v9 = [v4 loginConfiguration];
-    v10 = [v9 clientID];
-    [(POMutableLoginJWTBody *)v6 setClient_id:v10];
+    loginConfiguration2 = [contextCopy loginConfiguration];
+    clientID = [loginConfiguration2 clientID];
+    [(POMutableLoginJWTBody *)v6 setClient_id:clientID];
 
-    v11 = [v4 scope];
-    [(POMutableLoginJWTBody *)v6 setScope:v11];
+    scope = [contextCopy scope];
+    [(POMutableLoginJWTBody *)v6 setScope:scope];
 
-    v12 = [v4 nonce];
-    [(POMutableLoginJWTBody *)v6 setNonce:v12];
+    nonce = [contextCopy nonce];
+    [(POMutableLoginJWTBody *)v6 setNonce:nonce];
 
-    v13 = [v4 loginConfiguration];
-    v14 = [v13 clientID];
-    [(POMutableLoginJWTBody *)v6 setIss:v14];
+    loginConfiguration3 = [contextCopy loginConfiguration];
+    clientID2 = [loginConfiguration3 clientID];
+    [(POMutableLoginJWTBody *)v6 setIss:clientID2];
 
     v15 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:300.0];
     [(POMutableLoginJWTBody *)v6 setExp:v15];
 
     v16 = MEMORY[0x277CCACE0];
-    v17 = [v4 loginConfiguration];
-    v18 = [v17 refreshEndpointURL];
-    v19 = [v18 absoluteString];
-    v20 = [v16 componentsWithString:v19];
+    loginConfiguration4 = [contextCopy loginConfiguration];
+    refreshEndpointURL = [loginConfiguration4 refreshEndpointURL];
+    absoluteString = [refreshEndpointURL absoluteString];
+    v20 = [v16 componentsWithString:absoluteString];
 
     [v20 setQuery:0];
     [v20 setQueryItems:0];
     [v20 setFragment:0];
     v21 = [v20 URL];
-    v22 = [v21 absoluteString];
-    [(POMutableLoginJWTBody *)v6 setAud:v22];
+    absoluteString2 = [v21 absoluteString];
+    [(POMutableLoginJWTBody *)v6 setAud:absoluteString2];
 
-    v23 = [v4 loginConfiguration];
-    v24 = [v23 serverNonceClaimName];
-    v25 = [v24 length];
+    loginConfiguration5 = [contextCopy loginConfiguration];
+    serverNonceClaimName = [loginConfiguration5 serverNonceClaimName];
+    v25 = [serverNonceClaimName length];
 
     if (v25)
     {
-      v26 = [v4 loginConfiguration];
-      v27 = [v26 serverNonceClaimName];
-      v39 = v27;
-      v28 = [v4 serverNonce];
-      v40[0] = v28;
+      loginConfiguration6 = [contextCopy loginConfiguration];
+      serverNonceClaimName2 = [loginConfiguration6 serverNonceClaimName];
+      v39 = serverNonceClaimName2;
+      serverNonce = [contextCopy serverNonce];
+      v40[0] = serverNonce;
       v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
       [(POMutableLoginJWTBody *)v6 addCustomClaims:v29];
     }
 
     else
     {
-      v26 = [v4 serverNonce];
-      [(POMutableLoginJWTBody *)v6 setRequest_nonce:v26];
+      loginConfiguration6 = [contextCopy serverNonce];
+      [(POMutableLoginJWTBody *)v6 setRequest_nonce:loginConfiguration6];
     }
 
-    v32 = [v4 refreshToken];
-    [(POMutableLoginJWTBody *)v6 setRefresh_token:v32];
+    refreshToken2 = [contextCopy refreshToken];
+    [(POMutableLoginJWTBody *)v6 setRefresh_token:refreshToken2];
 
     [(POMutableLoginJWTBody *)v6 setGrant_type:@"refresh_token"];
-    v33 = [MEMORY[0x277CBEAA8] date];
-    [(POMutableLoginJWTBody *)v6 setIat:v33];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(POMutableLoginJWTBody *)v6 setIat:date];
 
-    [(POAuthenticationProcess *)self addCryptoHeadersToJWTBody:v6 context:v4];
+    [(POAuthenticationProcess *)self addCryptoHeadersToJWTBody:v6 context:contextCopy];
     v34 = objc_alloc_init(POMutableJWTHeader);
     [(POMutableJWTHeader *)v34 setTyp:@"platformsso-refresh-request+jwt"];
-    v35 = [v4 loginConfiguration];
-    v36 = [v35 customRefreshRequestHeaderClaims];
-    [(POMutableJWTHeader *)v34 addCustomClaims:v36];
+    loginConfiguration7 = [contextCopy loginConfiguration];
+    customRefreshRequestHeaderClaims = [loginConfiguration7 customRefreshRequestHeaderClaims];
+    [(POMutableJWTHeader *)v34 addCustomClaims:customRefreshRequestHeaderClaims];
 
     v31 = objc_alloc_init(POMutableLoginTokenJWT);
     [(POMutableLoginTokenJWT *)v31 setBody:v6];
@@ -6394,10 +6394,10 @@ id __55__POAuthenticationProcess_createRefreshJWTWithContext___block_invoke()
   return v0;
 }
 
-- (void)performKeyRequestUsingContext:(id)a3 completion:(id)a4
+- (void)performKeyRequestUsingContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = PO_LOG_PODiagnostics();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -6408,16 +6408,16 @@ id __55__POAuthenticationProcess_createRefreshJWTWithContext___block_invoke()
   v9 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [POAuthenticationProcess performPasswordLoginUsingContext:v6 completion:?];
+    [POAuthenticationProcess performPasswordLoginUsingContext:contextCopy completion:?];
   }
 
   v10 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [POAuthenticationProcess performPasswordLoginUsingContext:v6 completion:?];
+    [POAuthenticationProcess performPasswordLoginUsingContext:contextCopy completion:?];
   }
 
-  v11 = [(POAuthenticationProcess *)self createNonceRequestWithContext:v6];
+  v11 = [(POAuthenticationProcess *)self createNonceRequestWithContext:contextCopy];
   if (v11)
   {
     v12 = PO_LOG_POAuthenticationProcess();
@@ -6428,7 +6428,7 @@ id __55__POAuthenticationProcess_createRefreshJWTWithContext___block_invoke()
     }
 
     v13 = PO_LOG_POAuthenticationProcess();
-    v14 = os_signpost_id_make_with_pointer(v13, v6);
+    v14 = os_signpost_id_make_with_pointer(v13, contextCopy);
 
     v15 = PO_LOG_POAuthenticationProcess();
     v16 = v15;
@@ -6443,16 +6443,16 @@ id __55__POAuthenticationProcess_createRefreshJWTWithContext___block_invoke()
     v18[2] = __68__POAuthenticationProcess_performKeyRequestUsingContext_completion___block_invoke_920;
     v18[3] = &unk_279A3DEF8;
     v22 = v14;
-    v21 = v7;
-    v19 = v6;
-    v20 = self;
+    v21 = completionCopy;
+    v19 = contextCopy;
+    selfCopy = self;
     [(POAuthenticationProcess *)self performNonceRequestWithContext:v19 request:v11 completion:v18];
   }
 
   else
   {
     v17 = __77__POAuthenticationProcess_prepareForAccessTokenLoginUsingContext_completion___block_invoke();
-    (*(v7 + 2))(v7, 2, v6, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 2, contextCopy, 0, 0, 0);
   }
 }
 
@@ -7014,11 +7014,11 @@ id __68__POAuthenticationProcess_performKeyRequestUsingContext_completion___bloc
   return v0;
 }
 
-- (void)performKeyExchangeRequestUsingContext:(id)a3 otherPartyPublicKeyData:(id)a4 completion:(id)a5
+- (void)performKeyExchangeRequestUsingContext:(id)context otherPartyPublicKeyData:(id)data completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  dataCopy = data;
+  completionCopy = completion;
   v11 = PO_LOG_PODiagnostics();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -7029,16 +7029,16 @@ id __68__POAuthenticationProcess_performKeyRequestUsingContext_completion___bloc
   v12 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [POAuthenticationProcess performPasswordLoginUsingContext:v8 completion:?];
+    [POAuthenticationProcess performPasswordLoginUsingContext:contextCopy completion:?];
   }
 
   v13 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    [POAuthenticationProcess performPasswordLoginUsingContext:v8 completion:?];
+    [POAuthenticationProcess performPasswordLoginUsingContext:contextCopy completion:?];
   }
 
-  v14 = [(POAuthenticationProcess *)self createNonceRequestWithContext:v8];
+  v14 = [(POAuthenticationProcess *)self createNonceRequestWithContext:contextCopy];
   if (v14)
   {
     v15 = PO_LOG_POAuthenticationProcess();
@@ -7049,7 +7049,7 @@ id __68__POAuthenticationProcess_performKeyRequestUsingContext_completion___bloc
     }
 
     v16 = PO_LOG_POAuthenticationProcess();
-    v17 = os_signpost_id_make_with_pointer(v16, v8);
+    v17 = os_signpost_id_make_with_pointer(v16, contextCopy);
 
     v18 = PO_LOG_POAuthenticationProcess();
     v19 = v18;
@@ -7064,17 +7064,17 @@ id __68__POAuthenticationProcess_performKeyRequestUsingContext_completion___bloc
     v21[2] = __100__POAuthenticationProcess_performKeyExchangeRequestUsingContext_otherPartyPublicKeyData_completion___block_invoke_991;
     v21[3] = &unk_279A3E128;
     v26 = v17;
-    v25 = v10;
-    v22 = v8;
-    v23 = self;
-    v24 = v9;
+    v25 = completionCopy;
+    v22 = contextCopy;
+    selfCopy = self;
+    v24 = dataCopy;
     [(POAuthenticationProcess *)self performNonceRequestWithContext:v22 request:v14 completion:v21];
   }
 
   else
   {
     v20 = __77__POAuthenticationProcess_prepareForAccessTokenLoginUsingContext_completion___block_invoke();
-    (*(v10 + 2))(v10, 2, v8, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 2, contextCopy, 0, 0);
   }
 }
 
@@ -7517,79 +7517,79 @@ id __100__POAuthenticationProcess_performKeyExchangeRequestUsingContext_otherPar
   return v0;
 }
 
-- (id)createKeyRequestJWTWithContext:(id)a3
+- (id)createKeyRequestJWTWithContext:(id)context
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 refreshToken];
+  contextCopy = context;
+  refreshToken = [contextCopy refreshToken];
 
-  if (v5)
+  if (refreshToken)
   {
-    v6 = [v4 nonce];
-    if (v6)
+    nonce = [contextCopy nonce];
+    if (nonce)
     {
-      v7 = v6;
-      v8 = [v4 serverNonce];
+      v7 = nonce;
+      serverNonce = [contextCopy serverNonce];
 
-      if (v8)
+      if (serverNonce)
       {
         v9 = objc_alloc_init(POMutableKeyRequestJWTBody);
-        v10 = [v4 loginConfiguration];
-        v11 = [v10 customKeyRequestBodyClaims];
-        [(POMutableKeyRequestJWTBody *)v9 addCustomClaims:v11];
+        loginConfiguration = [contextCopy loginConfiguration];
+        customKeyRequestBodyClaims = [loginConfiguration customKeyRequestBodyClaims];
+        [(POMutableKeyRequestJWTBody *)v9 addCustomClaims:customKeyRequestBodyClaims];
 
         [(POMutableKeyRequestJWTBody *)v9 setRequest_type:@"key_request"];
         [(POMutableKeyRequestJWTBody *)v9 setVersion:@"1.0"];
-        v12 = [MEMORY[0x277CBEAA8] date];
-        [(POMutableKeyRequestJWTBody *)v9 setIat:v12];
+        date = [MEMORY[0x277CBEAA8] date];
+        [(POMutableKeyRequestJWTBody *)v9 setIat:date];
 
-        v13 = [v4 loginConfiguration];
-        v14 = [v13 clientID];
-        [(POMutableKeyRequestJWTBody *)v9 setIss:v14];
+        loginConfiguration2 = [contextCopy loginConfiguration];
+        clientID = [loginConfiguration2 clientID];
+        [(POMutableKeyRequestJWTBody *)v9 setIss:clientID];
 
         v15 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:300.0];
         [(POMutableKeyRequestJWTBody *)v9 setExp:v15];
 
-        v16 = [v4 nonce];
-        [(POMutableKeyRequestJWTBody *)v9 setNonce:v16];
+        nonce2 = [contextCopy nonce];
+        [(POMutableKeyRequestJWTBody *)v9 setNonce:nonce2];
 
-        v17 = [v4 refreshToken];
-        [(POMutableKeyRequestJWTBody *)v9 setRefresh_token:v17];
+        refreshToken2 = [contextCopy refreshToken];
+        [(POMutableKeyRequestJWTBody *)v9 setRefresh_token:refreshToken2];
 
-        v18 = [v4 userName];
-        [(POMutableKeyRequestJWTBody *)v9 setUsername:v18];
+        userName = [contextCopy userName];
+        [(POMutableKeyRequestJWTBody *)v9 setUsername:userName];
 
-        v19 = [v4 userName];
-        [(POMutableKeyRequestJWTBody *)v9 setSub:v19];
+        userName2 = [contextCopy userName];
+        [(POMutableKeyRequestJWTBody *)v9 setSub:userName2];
 
         [(POMutableKeyRequestJWTBody *)v9 setKey_purpose:@"user_unlock"];
-        v20 = [v4 loginConfiguration];
-        v21 = [v20 serverNonceClaimName];
-        v22 = [v21 length];
+        loginConfiguration3 = [contextCopy loginConfiguration];
+        serverNonceClaimName = [loginConfiguration3 serverNonceClaimName];
+        v22 = [serverNonceClaimName length];
 
         if (v22)
         {
-          v23 = [v4 loginConfiguration];
-          v24 = [v23 serverNonceClaimName];
-          v35 = v24;
-          v25 = [v4 serverNonce];
-          v36[0] = v25;
+          loginConfiguration4 = [contextCopy loginConfiguration];
+          serverNonceClaimName2 = [loginConfiguration4 serverNonceClaimName];
+          v35 = serverNonceClaimName2;
+          serverNonce2 = [contextCopy serverNonce];
+          v36[0] = serverNonce2;
           v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
           [(POMutableKeyRequestJWTBody *)v9 addCustomClaims:v26];
         }
 
         else
         {
-          v23 = [v4 serverNonce];
-          [(POMutableKeyRequestJWTBody *)v9 setRequest_nonce:v23];
+          loginConfiguration4 = [contextCopy serverNonce];
+          [(POMutableKeyRequestJWTBody *)v9 setRequest_nonce:loginConfiguration4];
         }
 
-        [(POAuthenticationProcess *)self addCryptoHeadersToJWTBody:v9 context:v4];
+        [(POAuthenticationProcess *)self addCryptoHeadersToJWTBody:v9 context:contextCopy];
         v30 = objc_alloc_init(POMutableJWTHeader);
         [(POMutableJWTHeader *)v30 setTyp:@"platformsso-key-request+jwt"];
-        v31 = [v4 loginConfiguration];
-        v32 = [v31 customKeyRequestHeaderClaims];
-        [(POMutableJWTHeader *)v30 addCustomClaims:v32];
+        loginConfiguration5 = [contextCopy loginConfiguration];
+        customKeyRequestHeaderClaims = [loginConfiguration5 customKeyRequestHeaderClaims];
+        [(POMutableJWTHeader *)v30 addCustomClaims:customKeyRequestHeaderClaims];
 
         v29 = objc_alloc_init(POMutableKeyRequestJWT);
         [(POMutableKeyRequestJWT *)v29 setBody:v9];
@@ -7639,22 +7639,22 @@ id __58__POAuthenticationProcess_createKeyRequestJWTWithContext___block_invoke_1
   return v0;
 }
 
-- (id)createKeyRequestWithContext:(id)a3 jwt:(id)a4
+- (id)createKeyRequestWithContext:(id)context jwt:(id)jwt
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   v6 = MEMORY[0x277CCAB70];
-  v7 = a4;
+  jwtCopy = jwt;
   v8 = [v6 alloc];
-  v9 = [v5 loginConfiguration];
-  v10 = [v9 keyEndpointURL];
-  v11 = [v8 initWithURL:v10 cachePolicy:4 timeoutInterval:30.0];
+  loginConfiguration = [contextCopy loginConfiguration];
+  keyEndpointURL = [loginConfiguration keyEndpointURL];
+  v11 = [v8 initWithURL:keyEndpointURL cachePolicy:4 timeoutInterval:30.0];
 
   [v11 setHTTPMethod:@"POST"];
   [v11 addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-type"];
   [v11 addValue:@"application/platformsso-key-response+jwt" forHTTPHeaderField:@"Accept"];
-  v12 = [v5 requestIdentifier];
-  [v11 addValue:v12 forHTTPHeaderField:@"client-request-id"];
+  requestIdentifier = [contextCopy requestIdentifier];
+  [v11 addValue:requestIdentifier forHTTPHeaderField:@"client-request-id"];
 
   v13 = objc_alloc_init(MEMORY[0x277CCACE0]);
   v14 = [MEMORY[0x277CCAD18] queryItemWithName:@"platform_sso_version" value:@"2.0"];
@@ -7663,40 +7663,40 @@ id __58__POAuthenticationProcess_createKeyRequestJWTWithContext___block_invoke_1
   v39[1] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:2];
 
-  v17 = [v5 loginConfiguration];
-  v18 = [v17 customKeyRequestValues];
+  loginConfiguration2 = [contextCopy loginConfiguration];
+  customKeyRequestValues = [loginConfiguration2 customKeyRequestValues];
 
-  if (v18)
+  if (customKeyRequestValues)
   {
-    v19 = [v5 loginConfiguration];
-    v20 = [v19 customKeyRequestValues];
-    v21 = [v16 arrayByAddingObjectsFromArray:v20];
+    loginConfiguration3 = [contextCopy loginConfiguration];
+    customKeyRequestValues2 = [loginConfiguration3 customKeyRequestValues];
+    v21 = [v16 arrayByAddingObjectsFromArray:customKeyRequestValues2];
 
     v16 = v21;
   }
 
   [v13 setQueryItems:v16];
-  v22 = [v13 percentEncodedQuery];
-  v23 = [v22 dataUsingEncoding:4];
+  percentEncodedQuery = [v13 percentEncodedQuery];
+  v23 = [percentEncodedQuery dataUsingEncoding:4];
   v24 = [v23 mutableCopy];
 
-  v25 = [v5 loginConfiguration];
-  v26 = [v25 customRequestJWTParameterName];
-  v27 = [v26 length];
+  loginConfiguration4 = [contextCopy loginConfiguration];
+  customRequestJWTParameterName = [loginConfiguration4 customRequestJWTParameterName];
+  v27 = [customRequestJWTParameterName length];
 
   if (v27)
   {
-    v28 = [v5 loginConfiguration];
-    v29 = [v28 customRequestJWTParameterName];
+    loginConfiguration5 = [contextCopy loginConfiguration];
+    customRequestJWTParameterName2 = [loginConfiguration5 customRequestJWTParameterName];
   }
 
   else
   {
-    v29 = @"assertion";
+    customRequestJWTParameterName2 = @"assertion";
   }
 
   v30 = SecCFAllocatorZeroize();
-  v31 = CFStringCreateWithFormat(v30, 0, @"&%@=%@", v29, v7);
+  v31 = CFStringCreateWithFormat(v30, 0, @"&%@=%@", customRequestJWTParameterName2, jwtCopy);
 
   if (v31)
   {
@@ -7727,27 +7727,27 @@ id __58__POAuthenticationProcess_createKeyRequestJWTWithContext___block_invoke_1
   return v34;
 }
 
-- (void)performKeyRequestWithContext:(id)a3 request:(id)a4 completion:(id)a5
+- (void)performKeyRequestWithContext:(id)context request:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 urlSession];
+  contextCopy = context;
+  completionCopy = completion;
+  requestCopy = request;
+  urlSession = [contextCopy urlSession];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __75__POAuthenticationProcess_performKeyRequestWithContext_request_completion___block_invoke;
   v21 = &unk_279A3DF70;
-  v23 = v8;
-  v24 = v9;
-  v22 = self;
-  v12 = v8;
-  v13 = v9;
-  v14 = [v11 dataTaskWithRequest:v10 completionHandler:&v18];
+  v23 = contextCopy;
+  v24 = completionCopy;
+  selfCopy = self;
+  v12 = contextCopy;
+  v13 = completionCopy;
+  v14 = [urlSession dataTaskWithRequest:requestCopy completionHandler:&v18];
 
   v15 = MEMORY[0x277CCACA8];
-  v16 = [v12 requestIdentifier];
-  v17 = [v15 stringWithFormat:@"Key Request: %@", v16, v18, v19, v20, v21, v22];
-  [v14 setTaskDescription:v17];
+  requestIdentifier = [v12 requestIdentifier];
+  selfCopy = [v15 stringWithFormat:@"Key Request: %@", requestIdentifier, v18, v19, v20, v21, selfCopy];
+  [v14 setTaskDescription:selfCopy];
 
   [v14 resume];
 }
@@ -7912,88 +7912,88 @@ id __75__POAuthenticationProcess_performKeyRequestWithContext_request_completion
   return v0;
 }
 
-- (id)createKeyExchangeRequestJWTWithContext:(id)a3 otherPartyPublicKey:(id)a4
+- (id)createKeyExchangeRequestJWTWithContext:(id)context otherPartyPublicKey:(id)key
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 refreshToken];
+  contextCopy = context;
+  keyCopy = key;
+  refreshToken = [contextCopy refreshToken];
 
-  if (v8)
+  if (refreshToken)
   {
-    v9 = [v6 nonce];
-    if (v9)
+    nonce = [contextCopy nonce];
+    if (nonce)
     {
-      v10 = v9;
-      v11 = [v6 serverNonce];
+      v10 = nonce;
+      serverNonce = [contextCopy serverNonce];
 
-      if (v7)
+      if (keyCopy)
       {
-        if (v11)
+        if (serverNonce)
         {
           v12 = objc_alloc_init(POMutableKeyExchangeRequestJWTBody);
-          v13 = [v6 loginConfiguration];
-          v14 = [v13 customKeyExchangeRequestBodyClaims];
-          [(POMutableKeyExchangeRequestJWTBody *)v12 addCustomClaims:v14];
+          loginConfiguration = [contextCopy loginConfiguration];
+          customKeyExchangeRequestBodyClaims = [loginConfiguration customKeyExchangeRequestBodyClaims];
+          [(POMutableKeyExchangeRequestJWTBody *)v12 addCustomClaims:customKeyExchangeRequestBodyClaims];
 
           [(POMutableKeyExchangeRequestJWTBody *)v12 setRequest_type:@"key_exchange"];
           [(POMutableKeyExchangeRequestJWTBody *)v12 setVersion:@"1.0"];
-          v15 = [MEMORY[0x277CBEAA8] date];
-          [(POMutableKeyExchangeRequestJWTBody *)v12 setIat:v15];
+          date = [MEMORY[0x277CBEAA8] date];
+          [(POMutableKeyExchangeRequestJWTBody *)v12 setIat:date];
 
-          v16 = [v6 loginConfiguration];
-          v17 = [v16 clientID];
-          [(POMutableKeyExchangeRequestJWTBody *)v12 setIss:v17];
+          loginConfiguration2 = [contextCopy loginConfiguration];
+          clientID = [loginConfiguration2 clientID];
+          [(POMutableKeyExchangeRequestJWTBody *)v12 setIss:clientID];
 
           v18 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:300.0];
           [(POMutableKeyExchangeRequestJWTBody *)v12 setExp:v18];
 
-          v19 = [v6 nonce];
-          [(POMutableKeyExchangeRequestJWTBody *)v12 setNonce:v19];
+          nonce2 = [contextCopy nonce];
+          [(POMutableKeyExchangeRequestJWTBody *)v12 setNonce:nonce2];
 
-          v20 = [v6 refreshToken];
-          [(POMutableKeyExchangeRequestJWTBody *)v12 setRefresh_token:v20];
+          refreshToken2 = [contextCopy refreshToken];
+          [(POMutableKeyExchangeRequestJWTBody *)v12 setRefresh_token:refreshToken2];
 
-          v21 = [v6 userName];
-          [(POMutableKeyExchangeRequestJWTBody *)v12 setUsername:v21];
+          userName = [contextCopy userName];
+          [(POMutableKeyExchangeRequestJWTBody *)v12 setUsername:userName];
 
-          v22 = [v6 userName];
-          [(POMutableKeyExchangeRequestJWTBody *)v12 setSub:v22];
+          userName2 = [contextCopy userName];
+          [(POMutableKeyExchangeRequestJWTBody *)v12 setSub:userName2];
 
           [(POMutableKeyExchangeRequestJWTBody *)v12 setKey_purpose:@"user_unlock"];
-          v23 = [v6 loginConfiguration];
-          v24 = [v23 serverNonceClaimName];
-          v25 = [v24 length];
+          loginConfiguration3 = [contextCopy loginConfiguration];
+          serverNonceClaimName = [loginConfiguration3 serverNonceClaimName];
+          v25 = [serverNonceClaimName length];
 
           if (v25)
           {
-            v26 = [v6 loginConfiguration];
-            v27 = [v26 serverNonceClaimName];
-            v40 = v27;
-            v28 = [v6 serverNonce];
-            v41[0] = v28;
+            loginConfiguration4 = [contextCopy loginConfiguration];
+            serverNonceClaimName2 = [loginConfiguration4 serverNonceClaimName];
+            v40 = serverNonceClaimName2;
+            serverNonce2 = [contextCopy serverNonce];
+            v41[0] = serverNonce2;
             v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
             [(POMutableKeyExchangeRequestJWTBody *)v12 addCustomClaims:v29];
           }
 
           else
           {
-            v26 = [v6 serverNonce];
-            [(POMutableKeyExchangeRequestJWTBody *)v12 setRequest_nonce:v26];
+            loginConfiguration4 = [contextCopy serverNonce];
+            [(POMutableKeyExchangeRequestJWTBody *)v12 setRequest_nonce:loginConfiguration4];
           }
 
-          v35 = [v7 base64EncodedStringWithOptions:0];
+          v35 = [keyCopy base64EncodedStringWithOptions:0];
           [(POMutableKeyExchangeRequestJWTBody *)v12 setOther_publickey:v35];
 
-          v36 = [v6 encryptionContext];
-          [(POMutableKeyExchangeRequestJWTBody *)v12 setKey_context:v36];
+          encryptionContext = [contextCopy encryptionContext];
+          [(POMutableKeyExchangeRequestJWTBody *)v12 setKey_context:encryptionContext];
 
-          [(POAuthenticationProcess *)self addCryptoHeadersToJWTBody:v12 context:v6];
+          [(POAuthenticationProcess *)self addCryptoHeadersToJWTBody:v12 context:contextCopy];
           v37 = objc_alloc_init(POMutableJWTHeader);
           [(POMutableJWTHeader *)v37 setTyp:@"platformsso-key-request+jwt"];
-          v38 = [v6 loginConfiguration];
-          v39 = [v38 customKeyExchangeRequestHeaderClaims];
-          [(POMutableJWTHeader *)v37 addCustomClaims:v39];
+          loginConfiguration5 = [contextCopy loginConfiguration];
+          customKeyExchangeRequestHeaderClaims = [loginConfiguration5 customKeyExchangeRequestHeaderClaims];
+          [(POMutableJWTHeader *)v37 addCustomClaims:customKeyExchangeRequestHeaderClaims];
 
           v32 = objc_alloc_init(POMutableKeyExchangeRequestJWT);
           [(POMutableKeyExchangeRequestJWT *)v32 setBody:v12];
@@ -8032,22 +8032,22 @@ id __86__POAuthenticationProcess_createKeyExchangeRequestJWTWithContext_otherPar
   return v0;
 }
 
-- (id)createKeyExchangeRequestWithContext:(id)a3 jwt:(id)a4
+- (id)createKeyExchangeRequestWithContext:(id)context jwt:(id)jwt
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   v6 = MEMORY[0x277CCAB70];
-  v7 = a4;
+  jwtCopy = jwt;
   v8 = [v6 alloc];
-  v9 = [v5 loginConfiguration];
-  v10 = [v9 keyEndpointURL];
-  v11 = [v8 initWithURL:v10 cachePolicy:4 timeoutInterval:30.0];
+  loginConfiguration = [contextCopy loginConfiguration];
+  keyEndpointURL = [loginConfiguration keyEndpointURL];
+  v11 = [v8 initWithURL:keyEndpointURL cachePolicy:4 timeoutInterval:30.0];
 
   [v11 setHTTPMethod:@"POST"];
   [v11 addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-type"];
   [v11 addValue:@"application/platformsso-key-response+jwt" forHTTPHeaderField:@"Accept"];
-  v12 = [v5 requestIdentifier];
-  [v11 addValue:v12 forHTTPHeaderField:@"client-request-id"];
+  requestIdentifier = [contextCopy requestIdentifier];
+  [v11 addValue:requestIdentifier forHTTPHeaderField:@"client-request-id"];
 
   v13 = objc_alloc_init(MEMORY[0x277CCACE0]);
   v14 = [MEMORY[0x277CCAD18] queryItemWithName:@"platform_sso_version" value:@"2.0"];
@@ -8056,40 +8056,40 @@ id __86__POAuthenticationProcess_createKeyExchangeRequestJWTWithContext_otherPar
   v39[1] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:2];
 
-  v17 = [v5 loginConfiguration];
-  v18 = [v17 customKeyExchangeRequestValues];
+  loginConfiguration2 = [contextCopy loginConfiguration];
+  customKeyExchangeRequestValues = [loginConfiguration2 customKeyExchangeRequestValues];
 
-  if (v18)
+  if (customKeyExchangeRequestValues)
   {
-    v19 = [v5 loginConfiguration];
-    v20 = [v19 customKeyExchangeRequestValues];
-    v21 = [v16 arrayByAddingObjectsFromArray:v20];
+    loginConfiguration3 = [contextCopy loginConfiguration];
+    customKeyExchangeRequestValues2 = [loginConfiguration3 customKeyExchangeRequestValues];
+    v21 = [v16 arrayByAddingObjectsFromArray:customKeyExchangeRequestValues2];
 
     v16 = v21;
   }
 
   [v13 setQueryItems:v16];
-  v22 = [v13 percentEncodedQuery];
-  v23 = [v22 dataUsingEncoding:4];
+  percentEncodedQuery = [v13 percentEncodedQuery];
+  v23 = [percentEncodedQuery dataUsingEncoding:4];
   v24 = [v23 mutableCopy];
 
-  v25 = [v5 loginConfiguration];
-  v26 = [v25 customRequestJWTParameterName];
-  v27 = [v26 length];
+  loginConfiguration4 = [contextCopy loginConfiguration];
+  customRequestJWTParameterName = [loginConfiguration4 customRequestJWTParameterName];
+  v27 = [customRequestJWTParameterName length];
 
   if (v27)
   {
-    v28 = [v5 loginConfiguration];
-    v29 = [v28 customRequestJWTParameterName];
+    loginConfiguration5 = [contextCopy loginConfiguration];
+    customRequestJWTParameterName2 = [loginConfiguration5 customRequestJWTParameterName];
   }
 
   else
   {
-    v29 = @"assertion";
+    customRequestJWTParameterName2 = @"assertion";
   }
 
   v30 = SecCFAllocatorZeroize();
-  v31 = CFStringCreateWithFormat(v30, 0, @"&%@=%@", v29, v7);
+  v31 = CFStringCreateWithFormat(v30, 0, @"&%@=%@", customRequestJWTParameterName2, jwtCopy);
 
   if (v31)
   {
@@ -8120,27 +8120,27 @@ id __86__POAuthenticationProcess_createKeyExchangeRequestJWTWithContext_otherPar
   return v34;
 }
 
-- (void)performKeyExchangeRequestWithContext:(id)a3 request:(id)a4 completion:(id)a5
+- (void)performKeyExchangeRequestWithContext:(id)context request:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 urlSession];
+  contextCopy = context;
+  completionCopy = completion;
+  requestCopy = request;
+  urlSession = [contextCopy urlSession];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __83__POAuthenticationProcess_performKeyExchangeRequestWithContext_request_completion___block_invoke;
   v21 = &unk_279A3DF70;
-  v23 = v8;
-  v24 = v9;
-  v22 = self;
-  v12 = v8;
-  v13 = v9;
-  v14 = [v11 dataTaskWithRequest:v10 completionHandler:&v18];
+  v23 = contextCopy;
+  v24 = completionCopy;
+  selfCopy = self;
+  v12 = contextCopy;
+  v13 = completionCopy;
+  v14 = [urlSession dataTaskWithRequest:requestCopy completionHandler:&v18];
 
   v15 = MEMORY[0x277CCACA8];
-  v16 = [v12 requestIdentifier];
-  v17 = [v15 stringWithFormat:@"Key Exchange Request: %@", v16, v18, v19, v20, v21, v22];
-  [v14 setTaskDescription:v17];
+  requestIdentifier = [v12 requestIdentifier];
+  selfCopy = [v15 stringWithFormat:@"Key Exchange Request: %@", requestIdentifier, v18, v19, v20, v21, selfCopy];
+  [v14 setTaskDescription:selfCopy];
 
   [v14 resume];
 }
@@ -8305,13 +8305,13 @@ id __83__POAuthenticationProcess_performKeyExchangeRequestWithContext_request_co
   return v0;
 }
 
-- (void)extractGroupsAndSubUsingAuthorizationWithLoginConfiguration:(id)a3 tokens:(id)a4 returningGroups:(id *)a5 identifier:(id *)a6 refreshToken:(id *)a7
+- (void)extractGroupsAndSubUsingAuthorizationWithLoginConfiguration:(id)configuration tokens:(id)tokens returningGroups:(id *)groups identifier:(id *)identifier refreshToken:(id *)token
 {
-  v11 = a3;
-  *a5 = 0;
-  *a6 = 0;
+  configurationCopy = configuration;
+  *groups = 0;
+  *identifier = 0;
   v38 = 0;
-  v12 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a4 options:16 error:&v38];
+  v12 = [MEMORY[0x277CCAAA0] JSONObjectWithData:tokens options:16 error:&v38];
   v13 = v38;
   v14 = v13;
   if (v13)
@@ -8344,30 +8344,30 @@ id __83__POAuthenticationProcess_performKeyExchangeRequestWithContext_request_co
       v22 = [v12 objectForKeyedSubscript:@"id_token"];
       v23 = [(POIDTokenJWT *)v21 initWithString:v22];
 
-      v24 = [v11 groupResponseClaimName];
+      groupResponseClaimName = [configurationCopy groupResponseClaimName];
 
-      v25 = [(POIDTokenJWT *)v23 decodedBody];
-      v26 = v25;
-      if (v24)
+      decodedBody = [(POIDTokenJWT *)v23 decodedBody];
+      v26 = decodedBody;
+      if (groupResponseClaimName)
       {
-        v27 = [v25 allData];
-        v28 = [v11 groupResponseClaimName];
-        *a5 = [v27 objectForKeyedSubscript:v28];
+        allData = [decodedBody allData];
+        groupResponseClaimName2 = [configurationCopy groupResponseClaimName];
+        *groups = [allData objectForKeyedSubscript:groupResponseClaimName2];
 
         v19 = 0x277CCA000;
       }
 
       else
       {
-        *a5 = [v25 groups];
+        *groups = [decodedBody groups];
       }
 
-      v30 = [(POIDTokenJWT *)v23 decodedBody];
-      v31 = [v30 allData];
-      v32 = [v11 uniqueIdentifierClaimName];
-      *a6 = [v31 objectForKeyedSubscript:v32];
+      decodedBody2 = [(POIDTokenJWT *)v23 decodedBody];
+      allData2 = [decodedBody2 allData];
+      uniqueIdentifierClaimName = [configurationCopy uniqueIdentifierClaimName];
+      *identifier = [allData2 objectForKeyedSubscript:uniqueIdentifierClaimName];
 
-      if (a7)
+      if (token)
       {
         v33 = [v12 objectForKeyedSubscript:@"refresh_token"];
         v34 = *(v19 + 3240);
@@ -8376,7 +8376,7 @@ id __83__POAuthenticationProcess_performKeyExchangeRequestWithContext_request_co
 
         if (v35)
         {
-          *a7 = [v12 objectForKeyedSubscript:@"refresh_token"];
+          *token = [v12 objectForKeyedSubscript:@"refresh_token"];
         }
       }
     }
@@ -8413,11 +8413,11 @@ id __134__POAuthenticationProcess_extractGroupsAndSubUsingAuthorizationWithLogin
   return v0;
 }
 
-- (BOOL)extractNewUserValuesFromTokens:(id)a3 deviceConfiguration:(id)a4 loginUserName:(id)a5 returningName:(id *)a6 userName:(id *)a7 error:(id *)a8
+- (BOOL)extractNewUserValuesFromTokens:(id)tokens deviceConfiguration:(id)configuration loginUserName:(id)name returningName:(id *)returningName userName:(id *)userName error:(id *)error
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a3;
+  configurationCopy = configuration;
+  nameCopy = name;
+  tokensCopy = tokens;
   v16 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -8425,7 +8425,7 @@ id __134__POAuthenticationProcess_extractGroupsAndSubUsingAuthorizationWithLogin
   }
 
   v64 = 0;
-  v17 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v15 options:16 error:&v64];
+  v17 = [MEMORY[0x277CCAAA0] JSONObjectWithData:tokensCopy options:16 error:&v64];
 
   v18 = v64;
   v19 = v18;
@@ -8437,10 +8437,10 @@ id __134__POAuthenticationProcess_extractGroupsAndSubUsingAuthorizationWithLogin
     v62[3] = &unk_279A3DC48;
     v63 = v18;
     v20 = __121__POAuthenticationProcess_extractNewUserValuesFromTokens_deviceConfiguration_loginUserName_returningName_userName_error___block_invoke(v62);
-    if (a8)
+    if (error)
     {
       v20 = v20;
-      *a8 = v20;
+      *error = v20;
     }
 
     v21 = 0;
@@ -8449,7 +8449,7 @@ id __134__POAuthenticationProcess_extractGroupsAndSubUsingAuthorizationWithLogin
 
   else
   {
-    v59 = a6;
+    returningNameCopy = returningName;
     v22 = [v17 objectForKeyedSubscript:@"id_token"];
     if (v22 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -8458,56 +8458,56 @@ id __134__POAuthenticationProcess_extractGroupsAndSubUsingAuthorizationWithLogin
       v26 = [v17 objectForKeyedSubscript:@"id_token"];
       v27 = [(POIDTokenJWT *)v25 initWithString:v26];
 
-      v28 = [v13 tokenToUserMapping];
-      v29 = [v28 objectForKeyedSubscript:@"AccountName"];
+      tokenToUserMapping = [configurationCopy tokenToUserMapping];
+      v29 = [tokenToUserMapping objectForKeyedSubscript:@"AccountName"];
 
       v58 = v27;
       v56 = v29;
       if ([v29 isEqualToString:@"com.apple.PlatformSSO.AccountShortName"])
       {
-        v30 = [v14 componentsSeparatedByString:@"@"];
-        v31 = [v30 firstObject];
+        decodedBody = [nameCopy componentsSeparatedByString:@"@"];
+        firstObject = [decodedBody firstObject];
       }
 
       else
       {
-        v30 = [(POIDTokenJWT *)v27 decodedBody];
-        v32 = [v30 allData];
-        v33 = [v32 objectForKeyedSubscript:v29];
+        decodedBody = [(POIDTokenJWT *)v27 decodedBody];
+        allData = [decodedBody allData];
+        v33 = [allData objectForKeyedSubscript:v29];
         v34 = v33;
         if (v33)
         {
-          v31 = v33;
+          firstObject = v33;
         }
 
         else
         {
-          v54 = [(POIDTokenJWT *)v27 decodedBody];
-          v35 = [v54 allData];
-          v31 = [v35 objectForKeyedSubscript:@"preferred_username"];
+          decodedBody2 = [(POIDTokenJWT *)v27 decodedBody];
+          allData2 = [decodedBody2 allData];
+          firstObject = [allData2 objectForKeyedSubscript:@"preferred_username"];
 
           v27 = v58;
         }
       }
 
-      if (!v31)
+      if (!firstObject)
       {
-        v36 = [v14 componentsSeparatedByString:@"@"];
-        v31 = [v36 firstObject];
+        v36 = [nameCopy componentsSeparatedByString:@"@"];
+        firstObject = [v36 firstObject];
       }
 
-      if (a7)
+      if (userName)
       {
-        v37 = v31;
-        *a7 = v31;
+        v37 = firstObject;
+        *userName = firstObject;
       }
 
-      v38 = [v13 tokenToUserMapping];
-      v39 = [v38 objectForKeyedSubscript:@"FullName"];
+      tokenToUserMapping2 = [configurationCopy tokenToUserMapping];
+      v39 = [tokenToUserMapping2 objectForKeyedSubscript:@"FullName"];
 
-      v40 = [(POIDTokenJWT *)v27 decodedBody];
-      v41 = [v40 allData];
-      v42 = [v41 objectForKeyedSubscript:v39];
+      decodedBody3 = [(POIDTokenJWT *)v27 decodedBody];
+      allData3 = [decodedBody3 allData];
+      v42 = [allData3 objectForKeyedSubscript:v39];
       v43 = v42;
       if (v42)
       {
@@ -8517,11 +8517,11 @@ id __134__POAuthenticationProcess_extractGroupsAndSubUsingAuthorizationWithLogin
       else
       {
         [(POIDTokenJWT *)v27 decodedBody];
-        v52 = v55 = v13;
+        v52 = v55 = configurationCopy;
         [v52 allData];
         v45 = v53 = v17;
         v46 = [v45 objectForKeyedSubscript:@"name"];
-        v47 = v14;
+        v47 = nameCopy;
         v48 = v46;
         if (v46)
         {
@@ -8530,21 +8530,21 @@ id __134__POAuthenticationProcess_extractGroupsAndSubUsingAuthorizationWithLogin
 
         else
         {
-          v49 = v31;
+          v49 = firstObject;
         }
 
         v44 = v49;
 
-        v14 = v47;
+        nameCopy = v47;
         v17 = v53;
 
-        v13 = v55;
+        configurationCopy = v55;
       }
 
-      if (v59)
+      if (returningNameCopy)
       {
         v50 = v44;
-        *v59 = v44;
+        *returningNameCopy = v44;
       }
 
       v21 = 1;
@@ -8560,10 +8560,10 @@ id __134__POAuthenticationProcess_extractGroupsAndSubUsingAuthorizationWithLogin
       v60[3] = &unk_279A3DC48;
       v61 = 0;
       v23 = __121__POAuthenticationProcess_extractNewUserValuesFromTokens_deviceConfiguration_loginUserName_returningName_userName_error___block_invoke_1140(v60);
-      if (a8)
+      if (error)
       {
         v23 = v23;
-        *a8 = v23;
+        *error = v23;
       }
 
       v21 = 0;
@@ -8598,13 +8598,13 @@ id __121__POAuthenticationProcess_extractNewUserValuesFromTokens_deviceConfigura
   return v1;
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a5;
-  v8 = [v6 protectionSpace];
-  v9 = [v8 authenticationMethod];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CCA720]];
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  v10 = [authenticationMethod isEqualToString:*MEMORY[0x277CCA720]];
 
   if (v10)
   {
@@ -8614,8 +8614,8 @@ id __121__POAuthenticationProcess_extractNewUserValuesFromTokens_deviceConfigura
       [POAuthenticationProcess URLSession:didReceiveChallenge:completionHandler:];
     }
 
-    v12 = [v6 protectionSpace];
-    v13 = [v12 serverTrust];
+    protectionSpace2 = [challengeCopy protectionSpace];
+    serverTrust = [protectionSpace2 serverTrust];
 
     if (+[POCoreConfigurationUtil platformSSODevModeEnabled](POCoreConfigurationUtil, "platformSSODevModeEnabled") || !+[POPreferences requireRootCAInSystemTrustStore])
     {
@@ -8629,7 +8629,7 @@ id __121__POAuthenticationProcess_extractNewUserValuesFromTokens_deviceConfigura
     else
     {
       error = 0;
-      if (!SecTrustEvaluateWithError(v13, &error))
+      if (!SecTrustEvaluateWithError(serverTrust, &error))
       {
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
@@ -8643,20 +8643,20 @@ id __121__POAuthenticationProcess_extractNewUserValuesFromTokens_deviceConfigura
           __24__POJWT_initWithString___block_invoke_cold_1();
         }
 
-        v7[2](v7, 2, 0);
+        handlerCopy[2](handlerCopy, 2, 0);
         goto LABEL_16;
       }
 
       if (!+[POCoreConfigurationUtil platformSSODevModeEnabled](POCoreConfigurationUtil, "platformSSODevModeEnabled") && +[POPreferences requireRootCAInSystemTrustStore])
       {
-        v14 = SecTrustCopyCertificateChain(v13);
+        v14 = SecTrustCopyCertificateChain(serverTrust);
         if ([v14 lastObject])
         {
           SecTrustStoreForDomain();
           if (SecTrustStoreContains())
           {
-            v15 = [objc_alloc(MEMORY[0x277CCACF0]) initWithTrust:v13];
-            (v7)[2](v7, 0, v15);
+            v15 = [objc_alloc(MEMORY[0x277CCACF0]) initWithTrust:serverTrust];
+            (handlerCopy)[2](handlerCopy, 0, v15);
 LABEL_28:
 
             goto LABEL_16;
@@ -8681,7 +8681,7 @@ LABEL_26:
           }
         }
 
-        v7[2](v7, 2, 0);
+        handlerCopy[2](handlerCopy, 2, 0);
         goto LABEL_28;
       }
 
@@ -8692,14 +8692,14 @@ LABEL_26:
       }
     }
 
-    v14 = [objc_alloc(MEMORY[0x277CCACF0]) initWithTrust:v13];
-    (v7)[2](v7, 0, v14);
+    v14 = [objc_alloc(MEMORY[0x277CCACF0]) initWithTrust:serverTrust];
+    (handlerCopy)[2](handlerCopy, 0, v14);
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v7[2](v7, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 LABEL_17:
 }
 
@@ -8741,33 +8741,33 @@ id __76__POAuthenticationProcess_URLSession_didReceiveChallenge_completionHandle
   return v0;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v8 = a6;
-  v9 = a7;
+  requestCopy = request;
+  handlerCopy = handler;
   v10 = PO_LOG_PODiagnostics();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [POAuthenticationProcess URLSession:v8 task:? willPerformHTTPRedirection:? newRequest:? completionHandler:?];
+    [POAuthenticationProcess URLSession:requestCopy task:? willPerformHTTPRedirection:? newRequest:? completionHandler:?];
   }
 
-  v9[2](v9, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)URLSession:(id)a3 taskIsWaitingForConnectivity:(id)a4
+- (void)URLSession:(id)session taskIsWaitingForConnectivity:(id)connectivity
 {
-  v4 = a4;
+  connectivityCopy = connectivity;
   v5 = PO_LOG_PODiagnostics();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [POAuthenticationProcess URLSession:v4 taskIsWaitingForConnectivity:?];
+    [POAuthenticationProcess URLSession:connectivityCopy taskIsWaitingForConnectivity:?];
   }
 }
 
-- (id)createTestMessagesForLoginConfiguration:(id)a3 certificate:(__SecCertificate *)a4
+- (id)createTestMessagesForLoginConfiguration:(id)configuration certificate:(__SecCertificate *)certificate
 {
   v74[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  configurationCopy = configuration;
   v7 = PO_LOG_POAuthenticationProcess();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -8775,7 +8775,7 @@ id __76__POAuthenticationProcess_URLSession_didReceiveChallenge_completionHandle
     _os_log_impl(&dword_25E8B1000, v7, OS_LOG_TYPE_INFO, "Creating sample messages", buf, 2u);
   }
 
-  if (v6)
+  if (configurationCopy)
   {
     *buf = 0;
     v8 = *MEMORY[0x277CDC040];
@@ -8791,29 +8791,29 @@ id __76__POAuthenticationProcess_URLSession_didReceiveChallenge_completionHandle
     [(PODeviceConfiguration *)v12 setDeviceEncryptionKey:RandomKey];
     [(PODeviceConfiguration *)v12 setExtensionIdentifier:@"com.apple.testMessages"];
     v64 = v12;
-    v13 = [(POAuthenticationProcess *)self createAuthenticationContextUsingLoginConfiguration:v6 deviceConfiguration:v12 userName:@"foo@example.com"];
+    v13 = [(POAuthenticationProcess *)self createAuthenticationContextUsingLoginConfiguration:configurationCopy deviceConfiguration:v12 userName:@"foo@example.com"];
     [v13 setLoginType:1];
     [v13 setRefreshToken:@"This is the previous refresh token"];
     [v13 setDeviceConfiguration:v12];
-    [v13 setLoginConfiguration:v6];
+    [v13 setLoginConfiguration:configurationCopy];
     [v13 setEmbeddedAssertionSigningKey:RandomKey];
     v63 = [(POAuthenticationProcess *)self createNonceRequestWithContext:v13];
-    v71 = [v63 psso_DisplayRequest];
+    psso_DisplayRequest = [v63 psso_DisplayRequest];
     [v13 setServerNonce:@"This is a fake server nonce"];
     v62 = objc_alloc_init(POUserConfiguration);
-    v14 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [v14 UUIDString];
-    [(POUserConfiguration *)v62 setUniqueIdentifier:v15];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [(POUserConfiguration *)v62 setUniqueIdentifier:uUIDString];
 
     v16 = [@"password" dataUsingEncoding:4];
     v61 = [v16 mutableCopy];
 
     [v13 setPassword:v61];
     v60 = [(POAuthenticationProcess *)self createLoginJWTWithContext:v13 embeddedAssertion:0];
-    v17 = [v13 deviceConfiguration];
-    [v17 signingAlgorithm];
-    v18 = v66 = v6;
-    v19 = [POJWTSigning encodeAndSignJWT:v60 signingAlgorithm:v18 key:RandomKey certificate:a4];
+    deviceConfiguration = [v13 deviceConfiguration];
+    [deviceConfiguration signingAlgorithm];
+    v18 = v66 = configurationCopy;
+    v19 = [POJWTSigning encodeAndSignJWT:v60 signingAlgorithm:v18 key:RandomKey certificate:certificate];
 
     v55 = v19;
     v69 = [(POAuthenticationProcess *)self createLoginRequestWithContext:v13 jwt:v19];
@@ -8824,9 +8824,9 @@ id __76__POAuthenticationProcess_URLSession_didReceiveChallenge_completionHandle
     v68 = [POJWTSigning encodeAndSignJWT:v58 algorithm:@"ES256" key:RandomKey certificate:0];
     v67 = [(POAuthenticationProcess *)self createLoginRequestWithContext:v13 jwt:v68];
     v57 = [(POAuthenticationProcess *)self createKeyRequestJWTWithContext:v13];
-    v20 = [v13 deviceConfiguration];
-    v21 = [v20 signingAlgorithm];
-    v53 = [POJWTSigning encodeAndSignJWT:v57 signingAlgorithm:v21 key:RandomKey certificate:a4];
+    deviceConfiguration2 = [v13 deviceConfiguration];
+    signingAlgorithm = [deviceConfiguration2 signingAlgorithm];
+    v53 = [POJWTSigning encodeAndSignJWT:v57 signingAlgorithm:signingAlgorithm key:RandomKey certificate:certificate];
 
     v54 = [(POAuthenticationProcess *)self createKeyRequestWithContext:v13 jwt:v53];
     v22 = [@"This is an encrypted context" dataUsingEncoding:4];
@@ -8836,22 +8836,22 @@ id __76__POAuthenticationProcess_URLSession_didReceiveChallenge_completionHandle
     v24 = [@"secret tokens" dataUsingEncoding:4];
     v56 = [(POAuthenticationProcess *)self createKeyExchangeRequestJWTWithContext:v13 otherPartyPublicKey:v24];
 
-    v25 = [v13 deviceConfiguration];
-    v26 = [v25 signingAlgorithm];
-    v27 = [POJWTSigning encodeAndSignJWT:v56 signingAlgorithm:v26 key:RandomKey certificate:a4];
+    deviceConfiguration3 = [v13 deviceConfiguration];
+    signingAlgorithm2 = [deviceConfiguration3 signingAlgorithm];
+    v27 = [POJWTSigning encodeAndSignJWT:v56 signingAlgorithm:signingAlgorithm2 key:RandomKey certificate:certificate];
 
     v52 = [(POAuthenticationProcess *)self createKeyExchangeRequestWithContext:v13 jwt:v27];
     v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Platform SSO Test Messages\n\n"];
     v29 = [POSecKeyHelper printKey:RandomKey];
     v30 = [v28 stringByAppendingFormat:@"----------\nKey Generated for Signing All Test Messages: \n%@\n\n", v29];
 
-    v31 = [v30 stringByAppendingFormat:@"----------\nNonce Request: \n%@\n\n", v71];
+    v31 = [v30 stringByAppendingFormat:@"----------\nNonce Request: \n%@\n\n", psso_DisplayRequest];
 
     v51 = [[POLoginTokenJWT alloc] initWithString:v19];
     v32 = [v31 stringByAppendingFormat:@"----------\nPassword Login JWT: \n%@\n\n", v51];
 
-    v33 = [v69 psso_DisplayRequest];
-    v34 = [v32 stringByAppendingFormat:@"----------\nPassword Login Request: \n%@\n\n", v33];
+    psso_DisplayRequest2 = [v69 psso_DisplayRequest];
+    v34 = [v32 stringByAppendingFormat:@"----------\nPassword Login Request: \n%@\n\n", psso_DisplayRequest2];
 
     v50 = [[POAssertionTokenJWT alloc] initWithString:v70];
     v35 = [v34 stringByAppendingFormat:@"----------\nEmbedded Assertion: \n%@\n\n", v50];
@@ -8859,22 +8859,22 @@ id __76__POAuthenticationProcess_URLSession_didReceiveChallenge_completionHandle
     v49 = [[POLoginTokenJWT alloc] initWithString:v68];
     v36 = [v35 stringByAppendingFormat:@"----------\nEmbedded Login JWT: \n%@\n\n", v49];
 
-    v37 = [v67 psso_DisplayRequest];
-    v38 = [v36 stringByAppendingFormat:@"----------\nEmbedded Login Request: \n%@\n\n", v37];
+    psso_DisplayRequest3 = [v67 psso_DisplayRequest];
+    v38 = [v36 stringByAppendingFormat:@"----------\nEmbedded Login Request: \n%@\n\n", psso_DisplayRequest3];
 
     v39 = [[POKeyRequestJWT alloc] initWithString:v53];
     v40 = [v38 stringByAppendingFormat:@"----------\nKey Request JWT: \n%@\n\n", v39];
 
-    v41 = [v54 psso_DisplayRequest];
-    v42 = [v40 stringByAppendingFormat:@"----------\nKey Request: \n%@\n\n", v41];
+    psso_DisplayRequest4 = [v54 psso_DisplayRequest];
+    v42 = [v40 stringByAppendingFormat:@"----------\nKey Request: \n%@\n\n", psso_DisplayRequest4];
 
     v43 = [[POKeyExchangeRequestJWT alloc] initWithString:v27];
     v44 = [v42 stringByAppendingFormat:@"----------\nKey Exchange Request JWT: \n%@\n\n", v43];
 
-    v45 = [v52 psso_DisplayRequest];
-    v46 = [v44 stringByAppendingFormat:@"----------\nKey Exchange Request: \n%@\n\n", v45];
+    psso_DisplayRequest5 = [v52 psso_DisplayRequest];
+    v46 = [v44 stringByAppendingFormat:@"----------\nKey Exchange Request: \n%@\n\n", psso_DisplayRequest5];
 
-    v6 = v66;
+    configurationCopy = v66;
   }
 
   else

@@ -1,24 +1,24 @@
 @interface EffectsLayoutController
-- (BOOL)shouldAlwaysPresentExpandedAppsFor:(id)a3;
-- (CGSize)expandedAppViewControllerSizeFor:(id)a3;
-- (void)effectBrowserViewController:(id)a3 dismissExpandedAppViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)effectBrowserViewController:(id)a3 presentExpandedAppViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (BOOL)shouldAlwaysPresentExpandedAppsFor:(id)for;
+- (CGSize)expandedAppViewControllerSizeFor:(id)for;
+- (void)effectBrowserViewController:(id)controller dismissExpandedAppViewController:(id)viewController animated:(BOOL)animated completion:(id)completion;
+- (void)effectBrowserViewController:(id)controller presentExpandedAppViewController:(id)viewController animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation EffectsLayoutController
 
-- (BOOL)shouldAlwaysPresentExpandedAppsFor:(id)a3
+- (BOOL)shouldAlwaysPresentExpandedAppsFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
+  forCopy = for;
+  selfCopy = self;
   v6 = EffectsLayoutController.shouldAlwaysPresentExpandedApps(for:)();
 
   return v6;
 }
 
-- (void)effectBrowserViewController:(id)a3 presentExpandedAppViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)effectBrowserViewController:(id)controller presentExpandedAppViewController:(id)viewController animated:(BOOL)animated completion:(id)completion
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   if (v10)
   {
     v11 = swift_allocObject();
@@ -31,16 +31,16 @@
     v11 = 0;
   }
 
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  EffectsLayoutController.effectBrowserViewController(_:presentExpandedAppViewController:animated:completion:)(v12, a4, a5, v10, v11);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  EffectsLayoutController.effectBrowserViewController(_:presentExpandedAppViewController:animated:completion:)(controllerCopy, viewController, animated, v10, v11);
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v10);
 }
 
-- (void)effectBrowserViewController:(id)a3 dismissExpandedAppViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)effectBrowserViewController:(id)controller dismissExpandedAppViewController:(id)viewController animated:(BOOL)animated completion:(id)completion
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   if (v10)
   {
     v11 = swift_allocObject();
@@ -53,18 +53,18 @@
     v11 = 0;
   }
 
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  EffectsLayoutController.effectBrowserViewController(_:dismissExpandedAppViewController:animated:completion:)(v14, a4, a5, v10, v11);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  EffectsLayoutController.effectBrowserViewController(_:dismissExpandedAppViewController:animated:completion:)(selfCopy, viewController, animated, v10, v11);
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v10);
 }
 
-- (CGSize)expandedAppViewControllerSizeFor:(id)a3
+- (CGSize)expandedAppViewControllerSizeFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = EffectsLayoutController.expandedAppViewControllerSize(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = EffectsLayoutController.expandedAppViewControllerSize(for:)(forCopy);
   v8 = v7;
 
   v9 = v6;

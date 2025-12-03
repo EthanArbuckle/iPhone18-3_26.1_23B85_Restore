@@ -1,13 +1,13 @@
 @interface FCNewsPersonalizationAggregateModificationConfiguration
-- (FCNewsPersonalizationAggregateModificationConfiguration)initWithDictionary:(id)a3;
+- (FCNewsPersonalizationAggregateModificationConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation FCNewsPersonalizationAggregateModificationConfiguration
 
-- (FCNewsPersonalizationAggregateModificationConfiguration)initWithDictionary:(id)a3
+- (FCNewsPersonalizationAggregateModificationConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = FCNewsPersonalizationAggregateModificationConfiguration;
   v5 = [(FCNewsPersonalizationAggregateModificationConfiguration *)&v17 init];
@@ -16,7 +16,7 @@
     goto LABEL_5;
   }
 
-  v6 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"baselineModificationData", 0);
+  v6 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"baselineModificationData", 0);
   v7 = [[FCNewsPersonalizationAggregateModificationData alloc] initWithDictionary:v6];
   if (!v7)
   {
@@ -28,7 +28,7 @@ LABEL_7:
 
   v8 = v7;
   v9 = v7;
-  v10 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"aggregateModificationData", 0);
+  v10 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"aggregateModificationData", 0);
   v11 = [[FCNewsPersonalizationAggregateModificationData alloc] initWithDictionary:v10];
   v12 = v11;
   if (!v11)
@@ -52,11 +52,11 @@ LABEL_8:
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsPersonalizationAggregateModificationConfiguration *)self baselineModificationData];
-  [v3 appendFormat:@"; baselineModificationData: %@", v4];
+  baselineModificationData = [(FCNewsPersonalizationAggregateModificationConfiguration *)self baselineModificationData];
+  [v3 appendFormat:@"; baselineModificationData: %@", baselineModificationData];
 
-  v5 = [(FCNewsPersonalizationAggregateModificationConfiguration *)self aggregateModificationData];
-  [v3 appendFormat:@"; aggregateModificationData: %@", v5];
+  aggregateModificationData = [(FCNewsPersonalizationAggregateModificationConfiguration *)self aggregateModificationData];
+  [v3 appendFormat:@"; aggregateModificationData: %@", aggregateModificationData];
 
   [v3 appendString:@">"];
 

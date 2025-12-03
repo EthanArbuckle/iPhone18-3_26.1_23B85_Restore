@@ -1,8 +1,8 @@
 @interface MSDAppSwitcherManager
 + (id)sharedInstance;
-- (BOOL)createSwitcherModelAtPath:(id)a3;
-- (BOOL)loadStashedSwitcherModelFromPath:(id)a3;
-- (BOOL)stashSwitcherModelToPath:(id)a3 overwrite:(BOOL)a4;
+- (BOOL)createSwitcherModelAtPath:(id)path;
+- (BOOL)loadStashedSwitcherModelFromPath:(id)path;
+- (BOOL)stashSwitcherModelToPath:(id)path overwrite:(BOOL)overwrite;
 - (MSDAppSwitcherManager)init;
 - (void)dealloc;
 - (void)initializeClearAppSwitcherStateForDemoMode;
@@ -41,8 +41,8 @@
 
 - (void)dealloc
 {
-  v3 = [(MSDAppSwitcherManager *)self sbAppSwitcher];
-  [v3 invalidate];
+  sbAppSwitcher = [(MSDAppSwitcherManager *)self sbAppSwitcher];
+  [sbAppSwitcher invalidate];
 
   v4.receiver = self;
   v4.super_class = MSDAppSwitcherManager;
@@ -51,8 +51,8 @@
 
 - (void)initializeClearAppSwitcherStateForDemoMode
 {
-  v3 = [(MSDAppSwitcherManager *)self fileManager];
-  v4 = [v3 fileExistsAtPath:@"/var/mobile/Library/Application Support/ScreenSaverManager/demoModeAppSwitcher.plist"];
+  fileManager = [(MSDAppSwitcherManager *)self fileManager];
+  v4 = [fileManager fileExistsAtPath:@"/var/mobile/Library/Application Support/ScreenSaverManager/demoModeAppSwitcher.plist"];
 
   if (v4)
   {
@@ -74,22 +74,22 @@
   }
 }
 
-- (BOOL)loadStashedSwitcherModelFromPath:(id)a3
+- (BOOL)loadStashedSwitcherModelFromPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MSDAppSwitcherManager *)self fileManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  pathCopy = path;
+  fileManager = [(MSDAppSwitcherManager *)self fileManager];
+  v6 = [fileManager fileExistsAtPath:pathCopy];
 
   if (v6)
   {
-    v7 = [(MSDAppSwitcherManager *)self sbAppSwitcher];
-    [v7 loadStashedSwitcherModelFromPath:v4];
+    sbAppSwitcher = [(MSDAppSwitcherManager *)self sbAppSwitcher];
+    [sbAppSwitcher loadStashedSwitcherModelFromPath:pathCopy];
   }
 
   else
   {
-    v7 = sub_100063A54();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    sbAppSwitcher = sub_100063A54();
+    if (os_log_type_enabled(sbAppSwitcher, OS_LOG_TYPE_ERROR))
     {
       sub_1000CF918();
     }
@@ -98,15 +98,15 @@
   return v6;
 }
 
-- (BOOL)stashSwitcherModelToPath:(id)a3 overwrite:(BOOL)a4
+- (BOOL)stashSwitcherModelToPath:(id)path overwrite:(BOOL)overwrite
 {
-  v6 = a3;
+  pathCopy = path;
   v18 = 0;
-  v7 = [v6 stringByDeletingLastPathComponent];
-  if (!a4)
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
+  if (!overwrite)
   {
-    v8 = [(MSDAppSwitcherManager *)self fileManager];
-    v9 = [v8 fileExistsAtPath:v6];
+    fileManager = [(MSDAppSwitcherManager *)self fileManager];
+    v9 = [fileManager fileExistsAtPath:pathCopy];
 
     if (v9)
     {
@@ -116,7 +116,7 @@
         *buf = 136315394;
         v20 = "[MSDAppSwitcherManager stashSwitcherModelToPath:overwrite:]";
         v21 = 2114;
-        v22 = v6;
+        v22 = pathCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s - AppSwitcher model file already exists at path %{public}@", buf, 0x16u);
       }
 
@@ -127,8 +127,8 @@ LABEL_13:
     }
   }
 
-  v11 = [(MSDAppSwitcherManager *)self fileManager];
-  v12 = [v11 fileExistsAtPath:v7 isDirectory:&v18];
+  fileManager2 = [(MSDAppSwitcherManager *)self fileManager];
+  v12 = [fileManager2 fileExistsAtPath:stringByDeletingLastPathComponent isDirectory:&v18];
   v13 = v18;
 
   if (!v12 || (v13 & 1) == 0)
@@ -142,13 +142,13 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v14 = [(MSDAppSwitcherManager *)self sbAppSwitcher];
-  [v14 stashSwitcherModelToPath:v6];
+  sbAppSwitcher = [(MSDAppSwitcherManager *)self sbAppSwitcher];
+  [sbAppSwitcher stashSwitcherModelToPath:pathCopy];
 
-  v15 = [(MSDAppSwitcherManager *)self fileManager];
-  LOBYTE(v14) = [v15 fileExistsAtPath:v6];
+  fileManager3 = [(MSDAppSwitcherManager *)self fileManager];
+  LOBYTE(sbAppSwitcher) = [fileManager3 fileExistsAtPath:pathCopy];
 
-  if ((v14 & 1) == 0)
+  if ((sbAppSwitcher & 1) == 0)
   {
     v10 = sub_100063A54();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -165,11 +165,11 @@ LABEL_14:
   return v16;
 }
 
-- (BOOL)createSwitcherModelAtPath:(id)a3
+- (BOOL)createSwitcherModelAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSArray array];
-  v5 = [NSURL fileURLWithPath:v3];
+  v5 = [NSURL fileURLWithPath:pathCopy];
   v11 = 0;
   v6 = [v4 writeToURL:v5 error:&v11];
   v7 = v11;
@@ -183,14 +183,14 @@ LABEL_14:
       *buf = 136315394;
       v13 = "[MSDAppSwitcherManager createSwitcherModelAtPath:]";
       v14 = 2114;
-      v15 = v3;
+      v15 = pathCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s - Writing empty app switcher model to path %{public}@", buf, 0x16u);
     }
   }
 
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    sub_1000CFA80(v3, v7, v9);
+    sub_1000CFA80(pathCopy, v7, v9);
   }
 
   return v6;

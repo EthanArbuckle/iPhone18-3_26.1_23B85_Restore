@@ -1,7 +1,7 @@
 @interface DisableAPIThrottlingAssertion
 - (NSString)description;
 - (_TtC16SessionAssertion29DisableAPIThrottlingAssertion)init;
-- (_TtC16SessionAssertion29DisableAPIThrottlingAssertion)initWithExplanation:(id)a3 activityIdentifier:(id)a4 invalidationHandler:(id)a5;
+- (_TtC16SessionAssertion29DisableAPIThrottlingAssertion)initWithExplanation:(id)explanation activityIdentifier:(id)identifier invalidationHandler:(id)handler;
 - (unint64_t)snaInvalidationReason;
 - (unint64_t)snaState;
 - (void)invalidate;
@@ -11,7 +11,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_265784E58();
 
   v3 = sub_26579E494();
@@ -19,9 +19,9 @@
   return v3;
 }
 
-- (_TtC16SessionAssertion29DisableAPIThrottlingAssertion)initWithExplanation:(id)a3 activityIdentifier:(id)a4 invalidationHandler:(id)a5
+- (_TtC16SessionAssertion29DisableAPIThrottlingAssertion)initWithExplanation:(id)explanation activityIdentifier:(id)identifier invalidationHandler:(id)handler
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(handler);
   v6 = sub_26579E4A4();
   v8 = v7;
   v9 = sub_26579E4A4();
@@ -46,7 +46,7 @@
 {
   if (*(self + OBJC_IVAR____TtC16SessionAssertion29DisableAPIThrottlingAssertion_attributeAssertion))
   {
-    v2 = self;
+    selfCopy = self;
 
     sub_2657981C8();
   }
@@ -54,7 +54,7 @@
 
 - (unint64_t)snaInvalidationReason
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2657859A8();
 
   return v3;
@@ -62,7 +62,7 @@
 
 - (unint64_t)snaState
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_265785AA8();
 
   return v3;

@@ -1,11 +1,11 @@
 @interface WFLocator
-+ (void)determineLocationWithWorkflowEnvironment:(int64_t)a3 completion:(id)a4;
-+ (void)determineLocationWithWorkflowEnvironment:(int64_t)a3 desiredAccuracy:(double)a4 timeout:(double)a5 completion:(id)a6;
-- (WFLocator)initWithWorkflowEnvironment:(int64_t)a3;
++ (void)determineLocationWithWorkflowEnvironment:(int64_t)environment completion:(id)completion;
++ (void)determineLocationWithWorkflowEnvironment:(int64_t)environment desiredAccuracy:(double)accuracy timeout:(double)timeout completion:(id)completion;
+- (WFLocator)initWithWorkflowEnvironment:(int64_t)environment;
 - (void)dealloc;
 - (void)finishUpdatingLocation;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 - (void)requestLocation;
 - (void)start;
 - (void)startUpdatingLocation;
@@ -13,13 +13,13 @@
 
 @implementation WFLocator
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 domain];
+  errorCopy = error;
+  domain = [errorCopy domain];
   v7 = getkCLErrorDomain();
-  if (![v6 isEqualToString:v7])
+  if (![domain isEqualToString:v7])
   {
 
 LABEL_7:
@@ -29,7 +29,7 @@ LABEL_7:
       v16 = 136315394;
       v17 = "[WFLocator locationManager:didFailWithError:]";
       v18 = 2112;
-      v19 = v5;
+      v19 = errorCopy;
       v12 = "%s Locator failed with unknown location error (%@) — finishing";
       v13 = v10;
       v14 = 22;
@@ -42,17 +42,17 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v8 = [v5 code];
+  code = [errorCopy code];
 
-  if (v8)
+  if (code)
   {
     goto LABEL_7;
   }
 
-  v9 = [(WFLocator *)self useRequestLocation];
+  useRequestLocation = [(WFLocator *)self useRequestLocation];
   v10 = getWFWFLocatorLogObject();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (useRequestLocation)
   {
     if (v11)
     {
@@ -80,32 +80,32 @@ LABEL_11:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   v8 = getWFWFLocatorLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v31 = 136315394;
     v32 = "[WFLocator locationManager:didUpdateLocations:]";
     v33 = 2112;
-    v34 = v7;
+    v34 = locationsCopy;
     _os_log_impl(&dword_1CA256000, v8, OS_LOG_TYPE_DEFAULT, "%s did update with locations: %@", &v31, 0x16u);
   }
 
-  v9 = [v7 lastObject];
+  lastObject = [locationsCopy lastObject];
   if ([(WFLocator *)self useRequestLocation])
   {
-    [(WFLocator *)self setBestEffortLocation:v9];
+    [(WFLocator *)self setBestEffortLocation:lastObject];
 LABEL_5:
     [(WFLocator *)self finishUpdatingLocation];
     goto LABEL_25;
   }
 
-  v10 = [v9 timestamp];
-  [v10 timeIntervalSinceNow];
+  timestamp = [lastObject timestamp];
+  [timestamp timeIntervalSinceNow];
   v12 = -v11;
 
   [(WFLocator *)self timeout];
@@ -125,7 +125,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  [v9 horizontalAccuracy];
+  [lastObject horizontalAccuracy];
   if (v16 < 0.0)
   {
     v14 = getWFWFLocatorLogObject();
@@ -142,14 +142,14 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v17 = [(WFLocator *)self bestEffortLocation];
-  if (v17)
+  bestEffortLocation = [(WFLocator *)self bestEffortLocation];
+  if (bestEffortLocation)
   {
-    v18 = v17;
-    v19 = [(WFLocator *)self bestEffortLocation];
-    [v19 horizontalAccuracy];
+    v18 = bestEffortLocation;
+    bestEffortLocation2 = [(WFLocator *)self bestEffortLocation];
+    [bestEffortLocation2 horizontalAccuracy];
     v21 = v20;
-    [v9 horizontalAccuracy];
+    [lastObject horizontalAccuracy];
     v23 = v22;
 
     if (v21 <= v23)
@@ -167,10 +167,10 @@ LABEL_24:
     }
   }
 
-  [(WFLocator *)self setBestEffortLocation:v9];
-  [v9 horizontalAccuracy];
+  [(WFLocator *)self setBestEffortLocation:lastObject];
+  [lastObject horizontalAccuracy];
   v25 = v24;
-  [v6 desiredAccuracy];
+  [managerCopy desiredAccuracy];
   v27 = v26;
   v28 = getWFWFLocatorLogObject();
   v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
@@ -203,8 +203,8 @@ LABEL_25:
   v3 = getWFWFLocatorLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(WFLocator *)self completionHandler];
-    v5 = _Block_copy(v4);
+    completionHandler = [(WFLocator *)self completionHandler];
+    v5 = _Block_copy(completionHandler);
     *buf = 136315394;
     v23 = "[WFLocator finishUpdatingLocation]";
     v24 = 2112;
@@ -213,28 +213,28 @@ LABEL_25:
   }
 
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_finishUpdatingLocation object:0];
-  v6 = [(WFLocator *)self locationManager];
-  [v6 stopUpdatingLocation];
+  locationManager = [(WFLocator *)self locationManager];
+  [locationManager stopUpdatingLocation];
 
-  v7 = [(WFLocator *)self locationManager];
-  [v7 setDelegate:0];
+  locationManager2 = [(WFLocator *)self locationManager];
+  [locationManager2 setDelegate:0];
 
   [(WFLocator *)self setLocationManager:0];
-  v8 = [(WFLocator *)self completionHandler];
+  completionHandler2 = [(WFLocator *)self completionHandler];
 
-  if (v8)
+  if (completionHandler2)
   {
-    v9 = [(WFLocator *)self bestEffortLocation];
-    if (v9)
+    bestEffortLocation = [(WFLocator *)self bestEffortLocation];
+    if (bestEffortLocation)
     {
-      v10 = [(WFLocator *)self completionHandler];
-      (v10)[2](v10, v9, 0);
+      completionHandler3 = [(WFLocator *)self completionHandler];
+      (completionHandler3)[2](completionHandler3, bestEffortLocation, 0);
     }
 
     else
     {
-      v11 = [MEMORY[0x1E69E0A90] currentDevice];
-      if ([v11 hasCapability:*MEMORY[0x1E69E1060]])
+      currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+      if ([currentDevice hasCapability:*MEMORY[0x1E69E1060]])
       {
         v12 = @"Make sure your device isn’t in Airplane Mode and try again; turning WLAN on may help.";
       }
@@ -244,19 +244,19 @@ LABEL_25:
         v12 = @"Make sure your device isn’t in Airplane Mode and try again; turning Wi-Fi on may help.";
       }
 
-      v10 = WFLocalizedString(v12);
+      completionHandler3 = WFLocalizedString(v12);
 
-      v13 = [(WFLocator *)self completionHandler];
+      completionHandler4 = [(WFLocator *)self completionHandler];
       v14 = MEMORY[0x1E696ABC0];
       v15 = getkCLErrorDomain();
       v20[0] = *MEMORY[0x1E696A588];
       v16 = WFLocalizedString(@"Shortcuts was unable to find your current location.");
       v20[1] = *MEMORY[0x1E696A578];
       v21[0] = v16;
-      v21[1] = v10;
+      v21[1] = completionHandler3;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
       v18 = [v14 errorWithDomain:v15 code:0 userInfo:{v17, v20[0]}];
-      (v13)[2](v13, 0, v18);
+      (completionHandler4)[2](completionHandler4, 0, v18);
     }
   }
 
@@ -274,8 +274,8 @@ LABEL_25:
     _os_log_impl(&dword_1CA256000, v3, OS_LOG_TYPE_DEFAULT, "%s startUpdatingLocation", &v6, 0xCu);
   }
 
-  v4 = [(WFLocator *)self locationManager];
-  [v4 startUpdatingLocation];
+  locationManager = [(WFLocator *)self locationManager];
+  [locationManager startUpdatingLocation];
 
   [(WFLocator *)self timeout];
   [(WFLocator *)self performSelector:sel_finishUpdatingLocation withObject:0 afterDelay:?];
@@ -293,8 +293,8 @@ LABEL_25:
     _os_log_impl(&dword_1CA256000, v3, OS_LOG_TYPE_DEFAULT, "%s requestLocation", &v6, 0xCu);
   }
 
-  v4 = [(WFLocator *)self locationManager];
-  [v4 requestLocation];
+  locationManager = [(WFLocator *)self locationManager];
+  [locationManager requestLocation];
 
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -332,20 +332,20 @@ LABEL_25:
   [(WFLocator *)&v3 dealloc];
 }
 
-- (WFLocator)initWithWorkflowEnvironment:(int64_t)a3
+- (WFLocator)initWithWorkflowEnvironment:(int64_t)environment
 {
   v13.receiver = self;
   v13.super_class = WFLocator;
   v4 = [(WFLocator *)&v13 init];
   if (v4)
   {
-    v5 = WFCLLocationManagerWithOptions(a3, v4, MEMORY[0x1E69E96A0]);
+    v5 = WFCLLocationManagerWithOptions(environment, v4, MEMORY[0x1E69E96A0]);
     locationManager = v4->_locationManager;
     v4->_locationManager = v5;
 
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = WFCLInUseAssertionWithOptions(a3, v8);
+    v9 = WFCLInUseAssertionWithOptions(environment, v8);
     inUseAssertion = v4->_inUseAssertion;
     v4->_inUseAssertion = v9;
 
@@ -355,18 +355,18 @@ LABEL_25:
   return v4;
 }
 
-+ (void)determineLocationWithWorkflowEnvironment:(int64_t)a3 desiredAccuracy:(double)a4 timeout:(double)a5 completion:(id)a6
++ (void)determineLocationWithWorkflowEnvironment:(int64_t)environment desiredAccuracy:(double)accuracy timeout:(double)timeout completion:(id)completion
 {
-  v9 = a6;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __89__WFLocator_determineLocationWithWorkflowEnvironment_desiredAccuracy_timeout_completion___block_invoke;
   v11[3] = &unk_1E837C5B0;
-  v14 = a4;
-  v15 = a5;
-  v12 = v9;
-  v13 = a3;
-  v10 = v9;
+  accuracyCopy = accuracy;
+  timeoutCopy = timeout;
+  v12 = completionCopy;
+  environmentCopy = environment;
+  v10 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v11);
 }
 
@@ -410,11 +410,11 @@ void __89__WFLocator_determineLocationWithWorkflowEnvironment_desiredAccuracy_ti
   *(v3 + 40) = 0;
 }
 
-+ (void)determineLocationWithWorkflowEnvironment:(int64_t)a3 completion:(id)a4
++ (void)determineLocationWithWorkflowEnvironment:(int64_t)environment completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   getkCLLocationAccuracyNearestTenMeters();
-  [a1 determineLocationWithWorkflowEnvironment:a3 desiredAccuracy:v6 completion:?];
+  [self determineLocationWithWorkflowEnvironment:environment desiredAccuracy:completionCopy completion:?];
 }
 
 @end

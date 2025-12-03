@@ -1,12 +1,12 @@
 @interface OCCDecryptor
 + (id)agileDescriptorNamespace;
 + (id)agilePasswordKeyEncryptorNamespace;
-+ (id)allocTempFileWithBase:(id)a3 outFilename:(id *)a4 tempDirectory:(id *)a5;
++ (id)allocTempFileWithBase:(id)base outFilename:(id *)filename tempDirectory:(id *)directory;
 - (BOOL)decrypt;
 - (BOOL)decryptIntoOutputFile;
 - (BOOL)isReadProtectedUsingDefaultPassphrase;
-- (BOOL)verifyPassphrase:(id)a3;
-- (OCCDecryptor)initWithStreamer:(OCCStreamer *)a3;
+- (BOOL)verifyPassphrase:(id)passphrase;
+- (OCCDecryptor)initWithStreamer:(OCCStreamer *)streamer;
 - (void)dealloc;
 - (void)deleteOutputFile;
 @end
@@ -27,7 +27,7 @@
   [(OCCDecryptor *)&v4 dealloc];
 }
 
-- (OCCDecryptor)initWithStreamer:(OCCStreamer *)a3
+- (OCCDecryptor)initWithStreamer:(OCCStreamer *)streamer
 {
   v10.receiver = self;
   v10.super_class = OCCDecryptor;
@@ -35,8 +35,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->mStreamer = a3;
-    var2 = a3->var2;
+    v4->mStreamer = streamer;
+    var2 = streamer->var2;
     if (var2)
     {
       v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:var2];
@@ -105,23 +105,23 @@
   if (v6)
   {
     [v6 closeFile];
-    v11 = [(OCCDecryptor *)self decryptIntoOutputFile];
+    decryptIntoOutputFile = [(OCCDecryptor *)self decryptIntoOutputFile];
   }
 
   else
   {
-    v11 = 0;
+    decryptIntoOutputFile = 0;
   }
 
   objc_autoreleasePoolPop(v3);
-  return v11;
+  return decryptIntoOutputFile;
 }
 
-- (BOOL)verifyPassphrase:(id)a3
+- (BOOL)verifyPassphrase:(id)passphrase
 {
   var1 = self->mStreamer->var1;
-  v4 = [a3 getDataUsingOfficeCryptographicEncoding];
-  LOBYTE(var1) = OCCCryptoKey::verifyPassphrase(var1, [v4 bytes], objc_msgSend(v4, "length"));
+  getDataUsingOfficeCryptographicEncoding = [passphrase getDataUsingOfficeCryptographicEncoding];
+  LOBYTE(var1) = OCCCryptoKey::verifyPassphrase(var1, [getDataUsingOfficeCryptographicEncoding bytes], objc_msgSend(getDataUsingOfficeCryptographicEncoding, "length"));
 
   return var1;
 }
@@ -140,14 +140,14 @@
   return v3;
 }
 
-+ (id)allocTempFileWithBase:(id)a3 outFilename:(id *)a4 tempDirectory:(id *)a5
++ (id)allocTempFileWithBase:(id)base outFilename:(id *)filename tempDirectory:(id *)directory
 {
-  v7 = a3;
-  v8 = [v7 pathExtension];
+  baseCopy = base;
+  pathExtension = [baseCopy pathExtension];
   v9 = MEMORY[0x277CCACA8];
-  v10 = [v7 lastPathComponent];
-  v11 = [v10 stringByDeletingPathExtension];
-  v12 = [v9 stringWithFormat:@"%@.XXXXXX.%@", v11, v8];
+  lastPathComponent = [baseCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  v12 = [v9 stringWithFormat:@"%@.XXXXXX.%@", stringByDeletingPathExtension, pathExtension];
 
   v29 = 0;
   v13 = [[OITSUTemporaryDirectory alloc] initWithError:&v29];
@@ -155,33 +155,33 @@
   v15 = v14;
   if (v13)
   {
-    v16 = [(OITSUTemporaryDirectory *)v13 path];
-    v17 = [v16 stringByAppendingPathComponent:v12];
+    path = [(OITSUTemporaryDirectory *)v13 path];
+    v17 = [path stringByAppendingPathComponent:v12];
 
-    if (a5)
+    if (directory)
     {
       v18 = v13;
-      *a5 = v13;
+      *directory = v13;
     }
 
-    v19 = [(NSString *)v17 fileSystemRepresentation];
-    v20 = [MEMORY[0x277CCAA00] defaultManager];
-    if (![v20 fileExistsAtPath:v17] || (TCRemoveFileSecurely(v17) & 1) != 0)
+    fileSystemRepresentation = [(NSString *)v17 fileSystemRepresentation];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if (![defaultManager fileExistsAtPath:v17] || (TCRemoveFileSecurely(v17) & 1) != 0)
     {
-      if (v19)
+      if (fileSystemRepresentation)
       {
-        v28 = a4;
-        v21 = strlen(v19);
+        filenameCopy = filename;
+        v21 = strlen(fileSystemRepresentation);
         v22 = malloc_type_malloc(v21 + 1, 0x100004077774924uLL);
         v23 = v22;
         if (v22)
         {
-          strcpy(v22, v19);
-          v24 = mkstemps(v23, [v8 length] + 1);
+          strcpy(v22, fileSystemRepresentation);
+          v24 = mkstemps(v23, [pathExtension length] + 1);
           if (v24 != -1)
           {
-            v25 = [MEMORY[0x277CCAA00] defaultManager];
-            *v28 = [v25 stringWithFileSystemRepresentation:v23 length:strlen(v23)];
+            defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+            *filenameCopy = [defaultManager2 stringWithFileSystemRepresentation:v23 length:strlen(v23)];
 
             free(v23);
             v26 = [objc_alloc(MEMORY[0x277CCA9F8]) initWithFileDescriptor:v24];

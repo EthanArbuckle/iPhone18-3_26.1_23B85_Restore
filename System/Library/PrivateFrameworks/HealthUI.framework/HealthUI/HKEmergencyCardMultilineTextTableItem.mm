@@ -1,19 +1,19 @@
 @interface HKEmergencyCardMultilineTextTableItem
 - (HKEmergencyCardRowHeightChangeDelegate)rowHeightChangeDelegate;
-- (double)_cellFittedHeightWithWidth:(double)a3;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndex:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndex:(int64_t)a4;
+- (double)_cellFittedHeightWithWidth:(double)width;
+- (double)tableView:(id)view estimatedHeightForRowAtIndex:(int64_t)index;
+- (double)tableView:(id)view heightForRowAtIndex:(int64_t)index;
 - (id)_editableCell;
 - (id)_multilineStringValue;
 - (id)_placeholderText;
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4;
-- (void)_updateMultilineStringValueWithValue:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index;
+- (void)_updateMultilineStringValueWithValue:(id)value;
 - (void)commitEditing;
-- (void)medicalIDEditorCell:(id)a3 didChangeHeight:(double)a4 keepRectVisible:(CGRect)a5 inView:(id)a6;
-- (void)medicalIDEditorCellDidBeginEditing:(id)a3 keepRectVisible:(CGRect)a4 inView:(id)a5;
-- (void)medicalIDEditorCellDidChangeSelection:(id)a3 keepRectVisible:(CGRect)a4 inView:(id)a5;
-- (void)medicalIDEditorCellDidChangeValue:(id)a3;
-- (void)setData:(id)a3;
+- (void)medicalIDEditorCell:(id)cell didChangeHeight:(double)height keepRectVisible:(CGRect)visible inView:(id)view;
+- (void)medicalIDEditorCellDidBeginEditing:(id)editing keepRectVisible:(CGRect)visible inView:(id)view;
+- (void)medicalIDEditorCellDidChangeSelection:(id)selection keepRectVisible:(CGRect)visible inView:(id)view;
+- (void)medicalIDEditorCellDidChangeValue:(id)value;
+- (void)setData:(id)data;
 @end
 
 @implementation HKEmergencyCardMultilineTextTableItem
@@ -28,11 +28,11 @@
     self->_editableCell = v4;
 
     [(HKMedicalIDEditorMultilineStringCell *)self->_editableCell setSeparatorInset:0.0, 47.0, 0.0, 0.0];
-    v6 = [(HKEmergencyCardTableItem *)self title];
-    [(HKMedicalIDEditorMultilineStringCell *)self->_editableCell setLabel:v6];
+    title = [(HKEmergencyCardTableItem *)self title];
+    [(HKMedicalIDEditorMultilineStringCell *)self->_editableCell setLabel:title];
 
-    v7 = [(HKEmergencyCardMultilineTextTableItem *)self _placeholderText];
-    [(HKMedicalIDEditorMultilineStringCell *)self->_editableCell setPlaceholder:v7];
+    _placeholderText = [(HKEmergencyCardMultilineTextTableItem *)self _placeholderText];
+    [(HKMedicalIDEditorMultilineStringCell *)self->_editableCell setPlaceholder:_placeholderText];
 
     [(HKMedicalIDEditorCell *)self->_editableCell setEditDelegate:self];
     [(HKMedicalIDEditorMultilineStringCell *)self->_editableCell setHeightChangeDelegate:self];
@@ -47,37 +47,37 @@
   return editableCell;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index
 {
-  v5 = a3;
+  viewCopy = view;
   if ([(HKEmergencyCardTableItem *)self isInEditMode])
   {
-    v6 = [(HKEmergencyCardMultilineTextTableItem *)self _editableCell];
+    _editableCell = [(HKEmergencyCardMultilineTextTableItem *)self _editableCell];
   }
 
   else
   {
     v7 = +[_HKMedicalIDMultilineStringCell defaultReuseIdentifier];
-    v6 = [v5 dequeueReusableCellWithIdentifier:v7];
+    _editableCell = [viewCopy dequeueReusableCellWithIdentifier:v7];
 
-    v8 = [(HKEmergencyCardTableItem *)self title];
-    v9 = [v6 titleLabel];
-    [v9 setText:v8];
+    title = [(HKEmergencyCardTableItem *)self title];
+    titleLabel = [_editableCell titleLabel];
+    [titleLabel setText:title];
 
-    v10 = [(HKEmergencyCardMultilineTextTableItem *)self _multilineStringValue];
-    v11 = [v6 detailLabel];
-    [v11 setText:v10];
+    _multilineStringValue = [(HKEmergencyCardMultilineTextTableItem *)self _multilineStringValue];
+    detailLabel = [_editableCell detailLabel];
+    [detailLabel setText:_multilineStringValue];
   }
 
-  return v6;
+  return _editableCell;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndex:(int64_t)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndex:(int64_t)index
 {
-  v5 = a3;
+  viewCopy = view;
   if ([(HKEmergencyCardTableItem *)self isInEditMode])
   {
-    [v5 frame];
+    [viewCopy frame];
     [(HKEmergencyCardMultilineTextTableItem *)self _cellFittedHeightWithWidth:v6];
     v8 = v7;
   }
@@ -90,12 +90,12 @@
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndex:(int64_t)a4
+- (double)tableView:(id)view heightForRowAtIndex:(int64_t)index
 {
-  v5 = a3;
+  viewCopy = view;
   if ([(HKEmergencyCardTableItem *)self isInEditMode])
   {
-    [v5 frame];
+    [viewCopy frame];
     [(HKEmergencyCardMultilineTextTableItem *)self _cellFittedHeightWithWidth:v6];
     v8 = v7;
   }
@@ -108,38 +108,38 @@
   return v8;
 }
 
-- (double)_cellFittedHeightWithWidth:(double)a3
+- (double)_cellFittedHeightWithWidth:(double)width
 {
-  v5 = [(HKEmergencyCardMultilineTextTableItem *)self _editableCell];
-  [v5 layoutIfNeeded];
+  _editableCell = [(HKEmergencyCardMultilineTextTableItem *)self _editableCell];
+  [_editableCell layoutIfNeeded];
 
-  v6 = [(HKEmergencyCardMultilineTextTableItem *)self _editableCell];
-  [v6 sizeThatFits:{a3, 1.79769313e308}];
+  _editableCell2 = [(HKEmergencyCardMultilineTextTableItem *)self _editableCell];
+  [_editableCell2 sizeThatFits:{width, 1.79769313e308}];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
   v6.receiver = self;
   v6.super_class = HKEmergencyCardMultilineTextTableItem;
-  [(HKEmergencyCardTableItem *)&v6 setData:a3];
+  [(HKEmergencyCardTableItem *)&v6 setData:data];
   if ([(HKEmergencyCardTableItem *)self isInEditMode])
   {
-    v4 = [(HKEmergencyCardMultilineTextTableItem *)self _editableCell];
-    v5 = [(HKEmergencyCardMultilineTextTableItem *)self _multilineStringValue];
-    [v4 setStringValue:v5];
+    _editableCell = [(HKEmergencyCardMultilineTextTableItem *)self _editableCell];
+    _multilineStringValue = [(HKEmergencyCardMultilineTextTableItem *)self _multilineStringValue];
+    [_editableCell setStringValue:_multilineStringValue];
   }
 }
 
-- (void)medicalIDEditorCellDidChangeValue:(id)a3
+- (void)medicalIDEditorCellDidChangeValue:(id)value
 {
-  v4 = [(HKEmergencyCardMultilineTextTableItem *)self _editableCell];
-  v7 = [v4 stringValue];
+  _editableCell = [(HKEmergencyCardMultilineTextTableItem *)self _editableCell];
+  stringValue = [_editableCell stringValue];
 
-  v5 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v6 = [v7 stringByTrimmingCharactersInSet:v5];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v6 = [stringValue stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if (![v6 length])
   {
@@ -150,43 +150,43 @@
   [(HKEmergencyCardMultilineTextTableItem *)self _updateMultilineStringValueWithValue:v6];
 }
 
-- (void)medicalIDEditorCell:(id)a3 didChangeHeight:(double)a4 keepRectVisible:(CGRect)a5 inView:(id)a6
+- (void)medicalIDEditorCell:(id)cell didChangeHeight:(double)height keepRectVisible:(CGRect)visible inView:(id)view
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a6;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_rowHeightChangeDelegate);
-  [WeakRetained tableItem:self heightDidChangeForRowIndex:0 keepRectVisible:v11 inView:{x, y, width, height}];
+  [WeakRetained tableItem:self heightDidChangeForRowIndex:0 keepRectVisible:viewCopy inView:{x, y, width, height}];
 }
 
-- (void)medicalIDEditorCellDidBeginEditing:(id)a3 keepRectVisible:(CGRect)a4 inView:(id)a5
+- (void)medicalIDEditorCellDidBeginEditing:(id)editing keepRectVisible:(CGRect)visible inView:(id)view
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a5;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_rowHeightChangeDelegate);
-  [WeakRetained tableItemDidBeginEditing:self keepRectVisible:v10 inView:{x, y, width, height}];
+  [WeakRetained tableItemDidBeginEditing:self keepRectVisible:viewCopy inView:{x, y, width, height}];
 }
 
-- (void)medicalIDEditorCellDidChangeSelection:(id)a3 keepRectVisible:(CGRect)a4 inView:(id)a5
+- (void)medicalIDEditorCellDidChangeSelection:(id)selection keepRectVisible:(CGRect)visible inView:(id)view
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a5;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_rowHeightChangeDelegate);
-  [WeakRetained tableItemDidChangeSelection:self keepRectVisible:v10 inView:{x, y, width, height}];
+  [WeakRetained tableItemDidChangeSelection:self keepRectVisible:viewCopy inView:{x, y, width, height}];
 }
 
 - (void)commitEditing
 {
-  v2 = [(HKEmergencyCardMultilineTextTableItem *)self _editableCell];
-  [v2 commitEditing];
+  _editableCell = [(HKEmergencyCardMultilineTextTableItem *)self _editableCell];
+  [_editableCell commitEditing];
 }
 
 - (HKEmergencyCardRowHeightChangeDelegate)rowHeightChangeDelegate
@@ -204,7 +204,7 @@
   return 0;
 }
 
-- (void)_updateMultilineStringValueWithValue:(id)a3
+- (void)_updateMultilineStringValueWithValue:(id)value
 {
   objc_opt_class();
   OUTLINED_FUNCTION_0_10();

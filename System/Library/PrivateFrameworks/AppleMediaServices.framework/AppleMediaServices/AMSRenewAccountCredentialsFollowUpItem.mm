@@ -1,6 +1,6 @@
 @interface AMSRenewAccountCredentialsFollowUpItem
 + (id)clear;
-- (AMSRenewAccountCredentialsFollowUpItem)initWithAccount:(id)a3 bag:(id)a4;
+- (AMSRenewAccountCredentialsFollowUpItem)initWithAccount:(id)account bag:(id)bag;
 @end
 
 @implementation AMSRenewAccountCredentialsFollowUpItem
@@ -13,25 +13,25 @@
   return v3;
 }
 
-- (AMSRenewAccountCredentialsFollowUpItem)initWithAccount:(id)a3 bag:(id)a4
+- (AMSRenewAccountCredentialsFollowUpItem)initWithAccount:(id)account bag:(id)bag
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  bagCopy = bag;
   v16.receiver = self;
   v16.super_class = AMSRenewAccountCredentialsFollowUpItem;
-  v7 = [(AMSFollowUpItem *)&v16 initWithIdentifier:@"com.apple.SSFollowUpIdentifier.RenewCredentials" account:a3 priority:0];
+  v7 = [(AMSFollowUpItem *)&v16 initWithIdentifier:@"com.apple.SSFollowUpIdentifier.RenewCredentials" account:account priority:0];
   v8 = v7;
   if (v7)
   {
     [(AMSFollowUpItem *)v7 setDisplayStyle:0];
-    v9 = AMSLocalizedString(@"FOLLOWUP_RENEW_CREDENTIALS_MESSAGE", v6);
+    v9 = AMSLocalizedString(@"FOLLOWUP_RENEW_CREDENTIALS_MESSAGE", bagCopy);
     [(AMSFollowUpItem *)v8 setInformativeText:v9];
 
-    v10 = AMSLocalizedString(@"FOLLOWUP_RENEW_APPLE_ACCOUNT_CREDENTIALS_TITLE", v6);
+    v10 = AMSLocalizedString(@"FOLLOWUP_RENEW_APPLE_ACCOUNT_CREDENTIALS_TITLE", bagCopy);
     [(AMSFollowUpItem *)v8 setTitle:v10];
 
     v11 = [AMSFollowUpAction alloc];
-    v12 = AMSLocalizedString(@"FOLLOWUP_RENEW_CREDENTIALS_PRIMARY", v6);
+    v12 = AMSLocalizedString(@"FOLLOWUP_RENEW_CREDENTIALS_PRIMARY", bagCopy);
     v13 = [(AMSFollowUpAction *)v11 initWithLabel:v12 parentIdentifier:@"com.apple.SSFollowUpIdentifier.RenewCredentials"];
 
     [(AMSFollowUpAction *)v13 setIdentifier:*MEMORY[0x1E698B788]];

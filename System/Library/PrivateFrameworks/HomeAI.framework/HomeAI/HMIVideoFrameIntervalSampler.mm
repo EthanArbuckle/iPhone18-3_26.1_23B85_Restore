@@ -1,19 +1,19 @@
 @interface HMIVideoFrameIntervalSampler
-- (HMIVideoFrameIntervalSampler)initWithInterval:(id *)a3;
-- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (HMIVideoFrameIntervalSampler)initWithInterval:(id *)interval;
+- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 @end
 
 @implementation HMIVideoFrameIntervalSampler
 
-- (HMIVideoFrameIntervalSampler)initWithInterval:(id *)a3
+- (HMIVideoFrameIntervalSampler)initWithInterval:(id *)interval
 {
   v7.receiver = self;
   v7.super_class = HMIVideoFrameIntervalSampler;
   result = [(HMIVideoFrameIntervalSampler *)&v7 init];
   if (result)
   {
-    var3 = a3->var3;
-    *&result->_interval.value = *&a3->var0;
+    var3 = interval->var3;
+    *&result->_interval.value = *&interval->var0;
     result->_interval.epoch = var3;
     v6 = MEMORY[0x277CC0898];
     result->_firstPTS.epoch = *(MEMORY[0x277CC0898] + 16);
@@ -24,10 +24,10 @@
   return result;
 }
 
-- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   memset(&v20, 0, sizeof(v20));
-  CMSampleBufferGetPresentationTimeStamp(&v20, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v20, buffer);
   if ((v20.flags & 1) == 0)
   {
     v10 = MEMORY[0x277CBEAD8];
@@ -56,19 +56,19 @@
   lhs = self->_interval;
   v6 = CMTimeDivide();
   lastSampledIntervalIndex = self->_lastSampledIntervalIndex;
-  v8 = [(HMIVideoFrameSampler *)self delegate];
-  v9 = v8;
+  delegate = [(HMIVideoFrameSampler *)self delegate];
+  v9 = delegate;
   if (v6 <= lastSampledIntervalIndex)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v9 frameSampler:self didDropFrame:a3];
+      [v9 frameSampler:self didDropFrame:buffer];
     }
   }
 
   else
   {
-    [v8 frameSampler:self didSampleFrame:a3];
+    [delegate frameSampler:self didSampleFrame:buffer];
 
     self->_lastSampledIntervalIndex = v6;
   }

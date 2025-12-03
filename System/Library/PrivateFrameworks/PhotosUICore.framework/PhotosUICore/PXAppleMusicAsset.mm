@@ -1,25 +1,25 @@
 @interface PXAppleMusicAsset
-- (BOOL)isAudioEqualToAsset:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isAudioEqualToAsset:(id)asset;
+- (BOOL)isEqual:(id)equal;
 - (NSString)assetTagsDescription;
 - (NSString)colorGradeCategory;
 - (PXAppleMusicAsset)init;
-- (PXAppleMusicAsset)initWithConfiguration:(id)a3;
-- (PXAppleMusicAsset)initWithMediaItem:(id)a3;
+- (PXAppleMusicAsset)initWithConfiguration:(id)configuration;
+- (PXAppleMusicAsset)initWithMediaItem:(id)item;
 - (PXAudioAsset)previewAudioAsset;
 - (PXDisplayAsset)artworkDisplayAsset;
-- (id)artworkURLForTargetPixelSize:(CGSize)a3;
+- (id)artworkURLForTargetPixelSize:(CGSize)size;
 - (int64_t)pace;
-- (void)configureCuesWithVideoEventTimestampsInSeconds:(id)a3 videoEventScores:(id)a4;
-- (void)setDuration:(id *)a3;
+- (void)configureCuesWithVideoEventTimestampsInSeconds:(id)seconds videoEventScores:(id)scores;
+- (void)setDuration:(id *)duration;
 @end
 
 @implementation PXAppleMusicAsset
 
-- (void)setDuration:(id *)a3
+- (void)setDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_duration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_duration.epoch = duration->var3;
   *&self->_duration.value = v3;
 }
 
@@ -30,26 +30,26 @@
   return v2;
 }
 
-- (id)artworkURLForTargetPixelSize:(CGSize)a3
+- (id)artworkURLForTargetPixelSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = [(PXAppleMusicAsset *)self artworkURLFormat];
-  if (v6)
+  artworkURLFormat = [(PXAppleMusicAsset *)self artworkURLFormat];
+  if (artworkURLFormat)
   {
     *&v7 = width;
     *&v7 = floorf(*&v7);
     v8 = [MEMORY[0x1E696AD98] numberWithFloat:v7];
-    v9 = [v8 stringValue];
+    stringValue = [v8 stringValue];
 
     v10 = height;
     *&v11 = floorf(v10);
     v12 = [MEMORY[0x1E696AD98] numberWithFloat:v11];
-    v13 = [v12 stringValue];
+    stringValue2 = [v12 stringValue];
 
-    v14 = [v6 stringByReplacingOccurrencesOfString:@"{w}" withString:v9];
-    v15 = [v14 stringByReplacingOccurrencesOfString:@"{h}" withString:v13];
+    v14 = [artworkURLFormat stringByReplacingOccurrencesOfString:@"{w}" withString:stringValue];
+    v15 = [v14 stringByReplacingOccurrencesOfString:@"{h}" withString:stringValue2];
 
     v16 = [MEMORY[0x1E695DFF8] URLWithString:v15];
   }
@@ -60,7 +60,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       v19 = 138412290;
-      v20 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A3C1C000, v17, OS_LOG_TYPE_DEBUG, "%@ was asked for an artwork URL, but the required URL format string is missing.", &v19, 0xCu);
     }
 
@@ -77,18 +77,18 @@
   return v2;
 }
 
-- (void)configureCuesWithVideoEventTimestampsInSeconds:(id)a3 videoEventScores:(id)a4
+- (void)configureCuesWithVideoEventTimestampsInSeconds:(id)seconds videoEventScores:(id)scores
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 count];
-  if (v9 != [v8 count])
+  secondsCopy = seconds;
+  scoresCopy = scores;
+  v9 = [secondsCopy count];
+  if (v9 != [scoresCopy count])
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXAppleMusicAsset.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"videoEventTimestampsInSeconds.count == videoEventScores.count"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAppleMusicAsset.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"videoEventTimestampsInSeconds.count == videoEventScores.count"}];
   }
 
-  v10 = v8;
+  v10 = scoresCopy;
   v11 = [v10 count];
   v12 = [PXConcreteAudioCueSource alloc];
   v18[0] = MEMORY[0x1E69E9820];
@@ -97,9 +97,9 @@
   v18[3] = &unk_1E772EBA8;
   v20 = v10;
   v21 = v11;
-  v19 = v7;
+  v19 = secondsCopy;
   v13 = v10;
-  v14 = v7;
+  v14 = secondsCopy;
   v15 = [(PXConcreteAudioCueSource *)v12 initWithNumberOfCues:v11 configuration:v18];
   cueSource = self->_cueSource;
   self->_cueSource = v15;
@@ -158,16 +158,16 @@ void __85__PXAppleMusicAsset_configureCuesWithVideoEventTimestampsInSeconds_vide
 - (NSString)assetTagsDescription
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(PXAppleMusicAsset *)self valence];
-  [v4 doubleValue];
+  valence = [(PXAppleMusicAsset *)self valence];
+  [valence doubleValue];
   [v3 appendFormat:@"valence=%.2f", v5];
 
-  v6 = [(PXAppleMusicAsset *)self energy];
-  [v6 doubleValue];
+  energy = [(PXAppleMusicAsset *)self energy];
+  [energy doubleValue];
   [v3 appendFormat:@", arousal=%.2f", v7];
 
-  v8 = [(PXAppleMusicAsset *)self visualTempo];
-  [v8 doubleValue];
+  visualTempo = [(PXAppleMusicAsset *)self visualTempo];
+  [visualTempo doubleValue];
   [v3 appendFormat:@", visualTempo=%.2f", v9];
 
   return v3;
@@ -175,16 +175,16 @@ void __85__PXAppleMusicAsset_configureCuesWithVideoEventTimestampsInSeconds_vide
 
 - (int64_t)pace
 {
-  v3 = [(PXAppleMusicAsset *)self visualTempo];
+  visualTempo = [(PXAppleMusicAsset *)self visualTempo];
 
-  if (!v3)
+  if (!visualTempo)
   {
     return 2;
   }
 
-  v4 = [MEMORY[0x1E69C08A0] standardConfiguration];
-  v5 = [(PXAppleMusicAsset *)self visualTempo];
-  [v5 doubleValue];
+  standardConfiguration = [MEMORY[0x1E69C08A0] standardConfiguration];
+  visualTempo2 = [(PXAppleMusicAsset *)self visualTempo];
+  [visualTempo2 doubleValue];
 
   v6 = PFStoryRecipeSongPaceFromVisualTempo();
   return v6;
@@ -194,19 +194,19 @@ void __85__PXAppleMusicAsset_configureCuesWithVideoEventTimestampsInSeconds_vide
 {
   if (!self->_colorGradeCategory)
   {
-    v5 = [(PXAppleMusicAsset *)self valence];
-    if (v5)
+    valence = [(PXAppleMusicAsset *)self valence];
+    if (valence)
     {
-      v6 = v5;
-      v7 = [(PXAppleMusicAsset *)self energy];
+      v6 = valence;
+      energy = [(PXAppleMusicAsset *)self energy];
 
-      if (v7)
+      if (energy)
       {
-        v8 = [(PXAppleMusicAsset *)self valence];
-        [v8 doubleValue];
+        valence2 = [(PXAppleMusicAsset *)self valence];
+        [valence2 doubleValue];
 
-        v9 = [(PXAppleMusicAsset *)self energy];
-        [v9 doubleValue];
+        energy2 = [(PXAppleMusicAsset *)self energy];
+        [energy2 doubleValue];
 
         v10 = PFStoryColorGradeCategoryFromValenceArousal();
         colorGradeCategory = self->_colorGradeCategory;
@@ -220,10 +220,10 @@ void __85__PXAppleMusicAsset_configureCuesWithVideoEventTimestampsInSeconds_vide
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -233,16 +233,16 @@ void __85__PXAppleMusicAsset_configureCuesWithVideoEventTimestampsInSeconds_vide
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PXAppleMusicAsset *)v4 identifier];
-      v6 = [(PXAppleMusicAsset *)self identifier];
-      if (v5 == v6)
+      identifier = [(PXAppleMusicAsset *)equalCopy identifier];
+      identifier2 = [(PXAppleMusicAsset *)self identifier];
+      if (identifier == identifier2)
       {
         v7 = 1;
       }
 
       else
       {
-        v7 = [v5 isEqual:v6];
+        v7 = [identifier isEqual:identifier2];
       }
     }
 
@@ -255,15 +255,15 @@ void __85__PXAppleMusicAsset_configureCuesWithVideoEventTimestampsInSeconds_vide
   return v7;
 }
 
-- (BOOL)isAudioEqualToAsset:(id)a3
+- (BOOL)isAudioEqualToAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(PXAppleMusicAsset *)self identifier];
-  v6 = [v4 identifier];
-  if (v5 == v6 || [v5 isEqual:v6])
+  assetCopy = asset;
+  identifier = [(PXAppleMusicAsset *)self identifier];
+  identifier2 = [assetCopy identifier];
+  if (identifier == identifier2 || [identifier isEqual:identifier2])
   {
-    v7 = [v4 catalog];
-    v8 = v7 == [(PXAppleMusicAsset *)self catalog];
+    catalog = [assetCopy catalog];
+    v8 = catalog == [(PXAppleMusicAsset *)self catalog];
   }
 
   else
@@ -276,21 +276,21 @@ void __85__PXAppleMusicAsset_configureCuesWithVideoEventTimestampsInSeconds_vide
 
 - (PXAppleMusicAsset)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAppleMusicAsset.m" lineNumber:91 description:{@"%s is not available as initializer", "-[PXAppleMusicAsset init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAppleMusicAsset.m" lineNumber:91 description:{@"%s is not available as initializer", "-[PXAppleMusicAsset init]"}];
 
   abort();
 }
 
-- (PXAppleMusicAsset)initWithMediaItem:(id)a3
+- (PXAppleMusicAsset)initWithMediaItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __39__PXAppleMusicAsset_initWithMediaItem___block_invoke;
   v8[3] = &unk_1E773C240;
-  v9 = v4;
-  v5 = v4;
+  v9 = itemCopy;
+  v5 = itemCopy;
   v6 = [(PXAppleMusicAsset *)self initWithConfiguration:v8];
 
   return v6;
@@ -336,15 +336,15 @@ void __39__PXAppleMusicAsset_initWithMediaItem___block_invoke(uint64_t a1, void 
   [v3 setLoudnessMainValue:0];
 }
 
-- (PXAppleMusicAsset)initWithConfiguration:(id)a3
+- (PXAppleMusicAsset)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v7.receiver = self;
   v7.super_class = PXAppleMusicAsset;
   v5 = [(PXAppleMusicAsset *)&v7 init];
   if (v5)
   {
-    v4[2](v4, v5);
+    configurationCopy[2](configurationCopy, v5);
   }
 
   return v5;

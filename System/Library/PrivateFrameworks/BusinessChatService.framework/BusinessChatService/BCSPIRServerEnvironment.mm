@@ -1,29 +1,29 @@
 @interface BCSPIRServerEnvironment
-- (BCSPIRServerEnvironment)initWithUserDefaults:(id)a3 isInternalInstall:(BOOL)a4 type:(int64_t)a5 serverType:(int64_t)a6;
+- (BCSPIRServerEnvironment)initWithUserDefaults:(id)defaults isInternalInstall:(BOOL)install type:(int64_t)type serverType:(int64_t)serverType;
 - (BOOL)disableCaching;
 - (BOOL)pirUsesCompression;
 - (NSString)pirCompressionType;
 - (NSString)pirUseCase;
 - (NSString)secondaryIdentifier;
-- (id)_stringFromDefaultsForKey:(void *)a3 defaultValue:;
-- (uint64_t)_BOOLFromDefaultsForKey:(uint64_t)a3 defaultValue:;
+- (id)_stringFromDefaultsForKey:(void *)key defaultValue:;
+- (uint64_t)_BOOLFromDefaultsForKey:(uint64_t)key defaultValue:;
 @end
 
 @implementation BCSPIRServerEnvironment
 
-- (BCSPIRServerEnvironment)initWithUserDefaults:(id)a3 isInternalInstall:(BOOL)a4 type:(int64_t)a5 serverType:(int64_t)a6
+- (BCSPIRServerEnvironment)initWithUserDefaults:(id)defaults isInternalInstall:(BOOL)install type:(int64_t)type serverType:(int64_t)serverType
 {
-  v11 = a3;
+  defaultsCopy = defaults;
   v15.receiver = self;
   v15.super_class = BCSPIRServerEnvironment;
   v12 = [(BCSPIRServerEnvironment *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_userDefaults, a3);
-    v13->_isInternalInstall = a4;
-    v13->_type = a5;
-    v13->_serverType = a6;
+    objc_storeStrong(&v12->_userDefaults, defaults);
+    v13->_isInternalInstall = install;
+    v13->_type = type;
+    v13->_serverType = serverType;
   }
 
   return v13;
@@ -36,21 +36,21 @@
     goto LABEL_15;
   }
 
-  v3 = [(BCSPIRServerEnvironment *)self type];
-  switch(v3)
+  type = [(BCSPIRServerEnvironment *)self type];
+  switch(type)
   {
     case 5:
       goto LABEL_10;
     case 4:
-      v6 = [(BCSPIRServerEnvironment *)self serverType];
-      if ((v6 - 1) < 2)
+      serverType = [(BCSPIRServerEnvironment *)self serverType];
+      if ((serverType - 1) < 2)
       {
         v4 = @"BCSBusinessEmailPIRUseCase";
         v5 = kBCSDefaultBusinessEmailPIRUseCase;
         goto LABEL_14;
       }
 
-      if (v6 == 3)
+      if (serverType == 3)
       {
         v4 = @"BCSBusinessEmailLogoPIRUseCase";
         v5 = kBCSDefaultBusinessEmailLogoPIRUseCase;
@@ -58,15 +58,15 @@
       }
 
 LABEL_10:
-      v7 = [(BCSPIRServerEnvironment *)self serverType];
-      if ((v7 - 1) < 2)
+      serverType2 = [(BCSPIRServerEnvironment *)self serverType];
+      if ((serverType2 - 1) < 2)
       {
         v4 = @"BCSWebPresentmentPIRUseCase";
         v5 = kBCSDefaultWebPresentmentPIRUseCase;
         goto LABEL_14;
       }
 
-      if (v7 == 4)
+      if (serverType2 == 4)
       {
         v4 = @"BCSWebPresentmentPermissionsPIRUseCase";
         v5 = kBCSDefaultWebPresentmentPermissionsPIRUseCase;
@@ -83,18 +83,18 @@ LABEL_14:
   }
 
 LABEL_15:
-  v9 = [(BCSPIRServerEnvironment *)self type];
-  switch(v9)
+  type2 = [(BCSPIRServerEnvironment *)self type];
+  switch(type2)
   {
     case 5:
-      v12 = [(BCSPIRServerEnvironment *)self serverType];
-      if ((v12 - 1) < 2)
+      serverType3 = [(BCSPIRServerEnvironment *)self serverType];
+      if ((serverType3 - 1) < 2)
       {
         v10 = kBCSDefaultWebPresentmentPIRUseCase;
         goto LABEL_27;
       }
 
-      if (v12 == 4)
+      if (serverType3 == 4)
       {
         v10 = kBCSDefaultWebPresentmentPermissionsPIRUseCase;
         goto LABEL_27;
@@ -102,14 +102,14 @@ LABEL_15:
 
       break;
     case 4:
-      v11 = [(BCSPIRServerEnvironment *)self serverType];
-      if ((v11 - 1) < 2)
+      serverType4 = [(BCSPIRServerEnvironment *)self serverType];
+      if ((serverType4 - 1) < 2)
       {
         v10 = kBCSDefaultBusinessEmailPIRUseCase;
         goto LABEL_27;
       }
 
-      if (v11 == 3)
+      if (serverType4 == 3)
       {
         v10 = kBCSDefaultBusinessEmailLogoPIRUseCase;
         goto LABEL_27;
@@ -129,25 +129,25 @@ LABEL_29:
   return v8;
 }
 
-- (id)_stringFromDefaultsForKey:(void *)a3 defaultValue:
+- (id)_stringFromDefaultsForKey:(void *)key defaultValue:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  keyCopy = key;
+  if (self)
   {
-    if (v5 && ([a1 userDefaults], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "objectForKey:", v5), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+    if (v5 && ([self userDefaults], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "objectForKey:", v5), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
     {
-      v9 = [a1 userDefaults];
-      a1 = [v9 stringForKey:v5];
+      userDefaults = [self userDefaults];
+      self = [userDefaults stringForKey:v5];
     }
 
     else
     {
-      a1 = v6;
+      self = keyCopy;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (BOOL)pirUsesCompression
@@ -157,23 +157,23 @@ LABEL_29:
     return 1;
   }
 
-  v3 = [(BCSPIRServerEnvironment *)self type];
-  if (v3 == 3)
+  type = [(BCSPIRServerEnvironment *)self type];
+  if (type == 3)
   {
     v5 = kBCSDefaultsBusinessCallerPIRUsesCompression;
     goto LABEL_10;
   }
 
-  if (v3 == 5)
+  if (type == 5)
   {
-    v6 = [(BCSPIRServerEnvironment *)self serverType];
-    if ((v6 - 1) < 2)
+    serverType = [(BCSPIRServerEnvironment *)self serverType];
+    if ((serverType - 1) < 2)
     {
       v5 = kBCSDefaultsWebPresentmentPIRUsesCompression;
       goto LABEL_10;
     }
 
-    if (v6 == 4)
+    if (serverType == 4)
     {
       v5 = kBCSDefaultsWebPresentmentPermissionsPIRUsesCompression;
       goto LABEL_10;
@@ -182,62 +182,62 @@ LABEL_29:
     return 1;
   }
 
-  if (v3 != 4)
+  if (type != 4)
   {
     return 1;
   }
 
-  v4 = [(BCSPIRServerEnvironment *)self serverType];
-  if ((v4 - 1) >= 3)
+  serverType2 = [(BCSPIRServerEnvironment *)self serverType];
+  if ((serverType2 - 1) >= 3)
   {
     return 1;
   }
 
-  v5 = off_278D39E80[v4 - 1];
+  v5 = off_278D39E80[serverType2 - 1];
 LABEL_10:
   v7 = *v5;
 
   return [(BCSPIRServerEnvironment *)self _BOOLFromDefaultsForKey:v7 defaultValue:1];
 }
 
-- (uint64_t)_BOOLFromDefaultsForKey:(uint64_t)a3 defaultValue:
+- (uint64_t)_BOOLFromDefaultsForKey:(uint64_t)key defaultValue:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     if (v5)
     {
-      v7 = [a1 userDefaults];
-      v8 = [v7 objectForKey:v6];
+      userDefaults = [self userDefaults];
+      v8 = [userDefaults objectForKey:v6];
 
       if (v8)
       {
-        v9 = [a1 userDefaults];
-        a3 = [v9 BOOLForKey:v6];
+        userDefaults2 = [self userDefaults];
+        key = [userDefaults2 BOOLForKey:v6];
       }
     }
   }
 
   else
   {
-    a3 = 0;
+    key = 0;
   }
 
-  return a3;
+  return key;
 }
 
 - (NSString)pirCompressionType
 {
-  v3 = [(BCSPIRServerEnvironment *)self isInternalInstall];
-  v4 = [(BCSPIRServerEnvironment *)self type];
-  if (v3)
+  isInternalInstall = [(BCSPIRServerEnvironment *)self isInternalInstall];
+  type = [(BCSPIRServerEnvironment *)self type];
+  if (isInternalInstall)
   {
-    if (v4 != 5)
+    if (type != 5)
     {
-      if (v4 != 4)
+      if (type != 4)
       {
-        if (v4 == 3)
+        if (type == 3)
         {
           v5 = @"BCSBusinessCallerPIRCompressionType";
           v6 = kBCSDefaultBusinessCallerPIRCompressionType;
@@ -249,36 +249,36 @@ LABEL_28:
         goto LABEL_24;
       }
 
-      v8 = [(BCSPIRServerEnvironment *)self serverType];
-      if ((v8 - 1) < 2)
+      serverType = [(BCSPIRServerEnvironment *)self serverType];
+      if ((serverType - 1) < 2)
       {
         v5 = @"BCSBusinessEmailPIRCompressionType";
         v6 = kBCSDefaultBusinessEmailPIRCompressionType;
         goto LABEL_28;
       }
 
-      if (v8 == 3)
+      if (serverType == 3)
       {
         v5 = @"BCSBusinessEmailLogoPIRCompressionType";
         v6 = kBCSDefaultBusinessEmailLogoPIRCompressionType;
         goto LABEL_28;
       }
 
-      if (v8 == 4)
+      if (serverType == 4)
       {
         goto LABEL_24;
       }
     }
 
-    v9 = [(BCSPIRServerEnvironment *)self serverType];
-    if ((v9 - 1) < 2)
+    serverType2 = [(BCSPIRServerEnvironment *)self serverType];
+    if ((serverType2 - 1) < 2)
     {
       v5 = @"BCSWebPresentmentPIRCompressionType";
       v6 = kBCSDefaultWebPresentmentPIRCompressionType;
       goto LABEL_28;
     }
 
-    if (v9 == 4)
+    if (serverType2 == 4)
     {
       v5 = @"BCSWebPresentmentPermissionsPIRCompressionType";
       v6 = kBCSDefaultWebPresentmentPermissionsPIRCompressionType;
@@ -290,13 +290,13 @@ LABEL_24:
     goto LABEL_31;
   }
 
-  if (v4 == 5)
+  if (type == 5)
   {
 LABEL_18:
-    v11 = [(BCSPIRServerEnvironment *)self serverType];
-    if ((v11 - 1) >= 2)
+    serverType3 = [(BCSPIRServerEnvironment *)self serverType];
+    if ((serverType3 - 1) >= 2)
     {
-      if (v11 != 4)
+      if (serverType3 != 4)
       {
         goto LABEL_24;
       }
@@ -312,22 +312,22 @@ LABEL_18:
     goto LABEL_30;
   }
 
-  if (v4 == 4)
+  if (type == 4)
   {
-    v10 = [(BCSPIRServerEnvironment *)self serverType];
-    if ((v10 - 1) < 2)
+    serverType4 = [(BCSPIRServerEnvironment *)self serverType];
+    if ((serverType4 - 1) < 2)
     {
       v7 = kBCSDefaultBusinessEmailPIRCompressionType;
       goto LABEL_30;
     }
 
-    if (v10 == 3)
+    if (serverType4 == 3)
     {
       v7 = kBCSDefaultBusinessEmailLogoPIRCompressionType;
       goto LABEL_30;
     }
 
-    if (v10 == 4)
+    if (serverType4 == 4)
     {
       goto LABEL_24;
     }
@@ -335,7 +335,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (v4 != 3)
+  if (type != 3)
   {
     goto LABEL_24;
   }
@@ -350,11 +350,11 @@ LABEL_31:
 
 - (NSString)secondaryIdentifier
 {
-  v3 = [(BCSPIRServerEnvironment *)self isInternalInstall];
-  v4 = [(BCSPIRServerEnvironment *)self type];
-  if (v3)
+  isInternalInstall = [(BCSPIRServerEnvironment *)self isInternalInstall];
+  type = [(BCSPIRServerEnvironment *)self type];
+  if (isInternalInstall)
   {
-    switch(v4)
+    switch(type)
     {
       case 5:
         v5 = @"BCSWebPresentmentSecondaryIdentifier";
@@ -377,7 +377,7 @@ LABEL_10:
     goto LABEL_17;
   }
 
-  switch(v4)
+  switch(type)
   {
     case 5:
       v7 = kBCSPIRSecondaryIdentifierForWebPresentment;
@@ -405,24 +405,24 @@ LABEL_17:
     return [(BCSPIRServerEnvironment *)self type]== 5 && [(BCSPIRServerEnvironment *)self serverType]== 4;
   }
 
-  v3 = [(BCSPIRServerEnvironment *)self type];
-  if ((v3 - 3) < 2)
+  type = [(BCSPIRServerEnvironment *)self type];
+  if ((type - 3) < 2)
   {
     return 0;
   }
 
-  if (v3 != 5)
+  if (type != 5)
   {
     return [(BCSPIRServerEnvironment *)self type]== 5 && [(BCSPIRServerEnvironment *)self serverType]== 4;
   }
 
-  v4 = [(BCSPIRServerEnvironment *)self serverType];
-  if ((v4 - 1) >= 2)
+  serverType = [(BCSPIRServerEnvironment *)self serverType];
+  if ((serverType - 1) >= 2)
   {
-    if (v4 == 4)
+    if (serverType == 4)
     {
       v5 = @"BCSWebPresentmentPermissionsPIREnableCaching";
-      v6 = self;
+      selfCopy2 = self;
       v7 = 1;
       goto LABEL_8;
     }
@@ -431,11 +431,11 @@ LABEL_17:
   }
 
   v5 = @"BCSWebPresentmentPIREnableCaching";
-  v6 = self;
+  selfCopy2 = self;
   v7 = 0;
 LABEL_8:
 
-  return [(BCSPIRServerEnvironment *)v6 _BOOLFromDefaultsForKey:v5 defaultValue:v7];
+  return [(BCSPIRServerEnvironment *)selfCopy2 _BOOLFromDefaultsForKey:v5 defaultValue:v7];
 }
 
 @end

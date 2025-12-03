@@ -1,28 +1,28 @@
 @interface CCToolKitToolRestrictionContextInSetValueSetLinkQuery
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolRestrictionContextInSetValueSetLinkQuery)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolRestrictionContextInSetValueSetLinkQuery)initWithParameterKey:(id)a3 queryIdentifier:(id)a4 actionIdentifier:(id)a5 error:(id *)a6;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolRestrictionContextInSetValueSetLinkQuery)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolRestrictionContextInSetValueSetLinkQuery)initWithParameterKey:(id)key queryIdentifier:(id)identifier actionIdentifier:(id)actionIdentifier error:(id *)error;
 - (NSString)actionIdentifier;
 - (NSString)parameterKey;
 - (NSString)queryIdentifier;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolRestrictionContextInSetValueSetLinkQuery
 
-- (CCToolKitToolRestrictionContextInSetValueSetLinkQuery)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolRestrictionContextInSetValueSetLinkQuery)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"parameterKey"];
-    v10 = [v6 objectForKeyedSubscript:@"queryIdentifier"];
-    v11 = [v6 objectForKeyedSubscript:@"actionIdentifier"];
-    v12 = [[CCToolKitToolRestrictionContextInSetValueSetLinkQuery alloc] initWithParameterKey:v9 queryIdentifier:v10 actionIdentifier:v11 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"parameterKey"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"queryIdentifier"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"actionIdentifier"];
+    v12 = [[CCToolKitToolRestrictionContextInSetValueSetLinkQuery alloc] initWithParameterKey:v9 queryIdentifier:v10 actionIdentifier:v11 error:error];
   }
 
   else
@@ -39,20 +39,20 @@
   v3 = objc_opt_new();
   if (self->_parameterKey)
   {
-    v4 = [(CCToolKitToolRestrictionContextInSetValueSetLinkQuery *)self parameterKey];
-    [v3 setObject:v4 forKeyedSubscript:@"parameterKey"];
+    parameterKey = [(CCToolKitToolRestrictionContextInSetValueSetLinkQuery *)self parameterKey];
+    [v3 setObject:parameterKey forKeyedSubscript:@"parameterKey"];
   }
 
   if (self->_queryIdentifier)
   {
-    v5 = [(CCToolKitToolRestrictionContextInSetValueSetLinkQuery *)self queryIdentifier];
-    [v3 setObject:v5 forKeyedSubscript:@"queryIdentifier"];
+    queryIdentifier = [(CCToolKitToolRestrictionContextInSetValueSetLinkQuery *)self queryIdentifier];
+    [v3 setObject:queryIdentifier forKeyedSubscript:@"queryIdentifier"];
   }
 
   if (self->_actionIdentifier)
   {
-    v6 = [(CCToolKitToolRestrictionContextInSetValueSetLinkQuery *)self actionIdentifier];
-    [v3 setObject:v6 forKeyedSubscript:@"actionIdentifier"];
+    actionIdentifier = [(CCToolKitToolRestrictionContextInSetValueSetLinkQuery *)self actionIdentifier];
+    [v3 setObject:actionIdentifier forKeyedSubscript:@"actionIdentifier"];
   }
 
   v7 = [v3 copy];
@@ -60,11 +60,11 @@
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v11 = v5;
+  v11 = blockCopy;
   if (self->_parameterKey)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] stringValue:self->_parameterKey];
@@ -108,10 +108,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -269,13 +269,13 @@ LABEL_40:
   return v32;
 }
 
-- (CCToolKitToolRestrictionContextInSetValueSetLinkQuery)initWithParameterKey:(id)a3 queryIdentifier:(id)a4 actionIdentifier:(id)a5 error:(id *)a6
+- (CCToolKitToolRestrictionContextInSetValueSetLinkQuery)initWithParameterKey:(id)key queryIdentifier:(id)identifier actionIdentifier:(id)actionIdentifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  keyCopy = key;
+  identifierCopy = identifier;
+  actionIdentifierCopy = actionIdentifier;
   v13 = objc_opt_new();
-  if (v10)
+  if (keyCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -286,11 +286,11 @@ LABEL_40:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v11)
+    if (!identifierCopy)
     {
 LABEL_4:
       v16 = v15;
-      if (v12)
+      if (actionIdentifierCopy)
       {
         goto LABEL_5;
       }
@@ -304,7 +304,7 @@ LABEL_11:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!identifierCopy)
     {
       goto LABEL_4;
     }
@@ -317,13 +317,13 @@ LABEL_11:
   if (!v19)
   {
     CCSetError();
-    v18 = 0;
+    selfCopy = 0;
     v15 = v16;
     goto LABEL_14;
   }
 
   CCPBDataWriterWriteStringField();
-  if (!v12)
+  if (!actionIdentifierCopy)
   {
     goto LABEL_11;
   }
@@ -337,19 +337,19 @@ LABEL_5:
   {
     CCPBDataWriterWriteStringField();
 LABEL_12:
-    v20 = [v13 immutableData];
-    self = [(CCItemMessage *)self initWithData:v20 error:a6];
+    immutableData = [v13 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-    v18 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
 LABEL_7:
   CCSetError();
-  v18 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v18;
+  return selfCopy;
 }
 
 @end

@@ -1,34 +1,34 @@
 @interface MOBookmarkStore
-- (MOBookmarkStore)initWithPersistenceManager:(id)a3 andConfigurationManager:(id)a4;
-- (MOBookmarkStore)initWithUniverse:(id)a3;
-- (void)fetchBookmarksWithDeviceIDs:(id)a3 CompletionHandler:(id)a4;
-- (void)removeExpiredBookmarkWithCompletionHandler:(id)a3;
-- (void)updateBookmark:(id)a3 completionHandler:(id)a4;
-- (void)updateBookmarks:(id)a3 completionHandler:(id)a4;
+- (MOBookmarkStore)initWithPersistenceManager:(id)manager andConfigurationManager:(id)configurationManager;
+- (MOBookmarkStore)initWithUniverse:(id)universe;
+- (void)fetchBookmarksWithDeviceIDs:(id)ds CompletionHandler:(id)handler;
+- (void)removeExpiredBookmarkWithCompletionHandler:(id)handler;
+- (void)updateBookmark:(id)bookmark completionHandler:(id)handler;
+- (void)updateBookmarks:(id)bookmarks completionHandler:(id)handler;
 @end
 
 @implementation MOBookmarkStore
 
-- (MOBookmarkStore)initWithUniverse:(id)a3
+- (MOBookmarkStore)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v4 getService:v6];
+  v7 = [universeCopy getService:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v4 getService:v9];
+  v10 = [universeCopy getService:v9];
 
   v11 = [(MOBookmarkStore *)self initWithPersistenceManager:v7 andConfigurationManager:v10];
   return v11;
 }
 
-- (MOBookmarkStore)initWithPersistenceManager:(id)a3 andConfigurationManager:(id)a4
+- (MOBookmarkStore)initWithPersistenceManager:(id)manager andConfigurationManager:(id)configurationManager
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  managerCopy = manager;
+  configurationManagerCopy = configurationManager;
+  if (managerCopy)
   {
     v18.receiver = self;
     v18.super_class = MOBookmarkStore;
@@ -40,12 +40,12 @@
       queue = v10->_queue;
       v10->_queue = v12;
 
-      objc_storeStrong(&v10->_persistenceManager, a3);
-      objc_storeStrong(&v10->_configurationManager, a4);
+      objc_storeStrong(&v10->_persistenceManager, manager);
+      objc_storeStrong(&v10->_configurationManager, configurationManager);
     }
 
     self = v10;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -59,16 +59,16 @@
     v16 = +[NSAssertionHandler currentHandler];
     [v16 handleFailureInMethod:a2 object:self file:@"MOBookmarkStore.m" lineNumber:42 description:@"Invalid parameter not satisfying: persistenceManager"];
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)fetchBookmarksWithDeviceIDs:(id)a3 CompletionHandler:(id)a4
+- (void)fetchBookmarksWithDeviceIDs:(id)ds CompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -81,19 +81,19 @@
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
-  v9 = [(MOBookmarkStore *)self persistenceManager];
+  persistenceManager = [(MOBookmarkStore *)self persistenceManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __65__MOBookmarkStore_fetchBookmarksWithDeviceIDs_CompletionHandler___block_invoke;
   v11[3] = &unk_100335C08;
-  v10 = v7;
+  v10 = dsCopy;
   v12 = v10;
   v13 = &v22;
   v14 = &v16;
   v15 = a2;
-  [v9 performBlockAndWait:v11];
+  [persistenceManager performBlockAndWait:v11];
 
-  v8[2](v8, v17[5], v23[5]);
+  handlerCopy[2](handlerCopy, v17[5], v23[5]);
   _Block_object_dispose(&v16, 8);
 
   _Block_object_dispose(&v22, 8);
@@ -204,29 +204,29 @@ void __65__MOBookmarkStore_fetchBookmarksWithDeviceIDs_CompletionHandler___block
   [v3 reset];
 }
 
-- (void)updateBookmark:(id)a3 completionHandler:(id)a4
+- (void)updateBookmark:(id)bookmark completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  bookmarkCopy = bookmark;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v8 = [(MOBookmarkStore *)self persistenceManager];
+  persistenceManager = [(MOBookmarkStore *)self persistenceManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __52__MOBookmarkStore_updateBookmark_completionHandler___block_invoke;
   v10[3] = &unk_100335C30;
-  v9 = v6;
+  v9 = bookmarkCopy;
   v11 = v9;
   v12 = &v13;
-  [v8 performBlockAndWait:v10];
+  [persistenceManager performBlockAndWait:v10];
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v14[5], &__NSDictionary0__struct);
+    handlerCopy[2](handlerCopy, v14[5], &__NSDictionary0__struct);
   }
 
   _Block_object_dispose(&v13, 8);
@@ -318,29 +318,29 @@ void __52__MOBookmarkStore_updateBookmark_completionHandler___block_invoke(uint6
   }
 }
 
-- (void)updateBookmarks:(id)a3 completionHandler:(id)a4
+- (void)updateBookmarks:(id)bookmarks completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  bookmarksCopy = bookmarks;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v8 = [(MOBookmarkStore *)self persistenceManager];
+  persistenceManager = [(MOBookmarkStore *)self persistenceManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __53__MOBookmarkStore_updateBookmarks_completionHandler___block_invoke;
   v10[3] = &unk_100335C30;
-  v9 = v6;
+  v9 = bookmarksCopy;
   v11 = v9;
   v12 = &v13;
-  [v8 performBlockAndWait:v10];
+  [persistenceManager performBlockAndWait:v10];
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v14[5], &__NSDictionary0__struct);
+    handlerCopy[2](handlerCopy, v14[5], &__NSDictionary0__struct);
   }
 
   _Block_object_dispose(&v13, 8);
@@ -463,26 +463,26 @@ void __53__MOBookmarkStore_updateBookmarks_completionHandler___block_invoke(uint
   }
 }
 
-- (void)removeExpiredBookmarkWithCompletionHandler:(id)a3
+- (void)removeExpiredBookmarkWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v6 = [(MOBookmarkStore *)self persistenceManager];
+  persistenceManager = [(MOBookmarkStore *)self persistenceManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __62__MOBookmarkStore_removeExpiredBookmarkWithCompletionHandler___block_invoke;
   v8[3] = &unk_100335C58;
   v8[4] = self;
   v11 = a2;
-  v7 = v5;
+  v7 = handlerCopy;
   v9 = v7;
   v10 = &v12;
-  [v6 performBlockAndWait:v8];
+  [persistenceManager performBlockAndWait:v8];
 
   if (v7)
   {

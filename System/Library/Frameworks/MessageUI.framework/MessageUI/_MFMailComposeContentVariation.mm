@@ -1,21 +1,21 @@
 @interface _MFMailComposeContentVariation
-- (_MFMailComposeContentVariation)initWithCoder:(id)a3;
-- (_MFMailComposeContentVariation)initWithName:(id)a3;
-- (void)addAttachmentIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_MFMailComposeContentVariation)initWithCoder:(id)coder;
+- (_MFMailComposeContentVariation)initWithName:(id)name;
+- (void)addAttachmentIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _MFMailComposeContentVariation
 
-- (_MFMailComposeContentVariation)initWithName:(id)a3
+- (_MFMailComposeContentVariation)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = _MFMailComposeContentVariation;
   v5 = [(_MFMailComposeContentVariation *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
 
@@ -25,14 +25,14 @@
   return v5;
 }
 
-- (void)addAttachmentIdentifier:(id)a3
+- (void)addAttachmentIdentifier:(id)identifier
 {
-  v9 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_MFMailComposeContentVariation.m" lineNumber:31 description:@"The actual type of the identifier is required to be a string for NSSecureCoding conformance."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_MFMailComposeContentVariation.m" lineNumber:31 description:@"The actual type of the identifier is required to be a string for NSSecureCoding conformance."];
   }
 
   attachmentIdentifiers = self->_attachmentIdentifiers;
@@ -45,34 +45,34 @@
     attachmentIdentifiers = self->_attachmentIdentifiers;
   }
 
-  [(NSMutableArray *)attachmentIdentifiers addObject:v9];
+  [(NSMutableArray *)attachmentIdentifiers addObject:identifierCopy];
 }
 
-- (_MFMailComposeContentVariation)initWithCoder:(id)a3
+- (_MFMailComposeContentVariation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = _MFMailComposeContentVariation;
   v5 = [(_MFMailComposeContentVariation *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    if ([v4 containsValueForKey:@"body"])
+    if ([coderCopy containsValueForKey:@"body"])
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"body"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"body"];
       body = v5->_body;
       v5->_body = v8;
 
-      v5->_bodyIsHTML = [v4 decodeBoolForKey:@"bodyIsHTML"];
+      v5->_bodyIsHTML = [coderCopy decodeBoolForKey:@"bodyIsHTML"];
     }
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"attachmentIdentifiers"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"attachmentIdentifiers"];
     attachmentIdentifiers = v5->_attachmentIdentifiers;
     v5->_attachmentIdentifiers = v13;
 
@@ -82,21 +82,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_name forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_name forKey:@"name"];
   body = self->_body;
   if (body)
   {
-    [v6 encodeObject:body forKey:@"body"];
-    [v6 encodeBool:self->_bodyIsHTML forKey:@"bodyIsHTML"];
+    [coderCopy encodeObject:body forKey:@"body"];
+    [coderCopy encodeBool:self->_bodyIsHTML forKey:@"bodyIsHTML"];
   }
 
   attachmentIdentifiers = self->_attachmentIdentifiers;
   if (attachmentIdentifiers)
   {
-    [v6 encodeObject:attachmentIdentifiers forKey:@"attachmentIdentifiers"];
+    [coderCopy encodeObject:attachmentIdentifiers forKey:@"attachmentIdentifiers"];
   }
 }
 

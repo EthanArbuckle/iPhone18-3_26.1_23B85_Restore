@@ -1,43 +1,43 @@
 @interface CPSWebClipStore
-+ (id)_readWebClipDictionaryRepresentationFromDiskWithWebClipIdentifier:(id)a3;
-+ (id)_urlForWebClipWithIdentifier:(id)a3;
++ (id)_readWebClipDictionaryRepresentationFromDiskWithWebClipIdentifier:(id)identifier;
++ (id)_urlForWebClipWithIdentifier:(id)identifier;
 + (id)sharedStore;
-- (BOOL)_redirectPoweredByWebClipsWithApplicationBundleIdentifier:(id)a3 toParentApplicationBundleIdentifier:(id)a4 errors:(id *)a5;
-- (BOOL)_removeWebClipWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)_removeWebClipsWithApplicationBundleIdentifier:(id)a3 errors:(id *)a4;
-- (BOOL)_saveWebClip:(id)a3 error:(id *)a4;
-- (id)_copyOrReplaceExistingFileAtPath:(id)a3 withNewFileAtPath:(id)a4;
-- (id)_createOrUpdateExistingWebClipWithClipMetadata:(id)a3 createdNewWebClip:(BOOL *)a4 error:(id *)a5;
-- (id)_enumerateAndFilterClipsWithBlock:(id)a3;
-- (id)_enumerateAndMapClipsWithBlock:(id)a3;
+- (BOOL)_redirectPoweredByWebClipsWithApplicationBundleIdentifier:(id)identifier toParentApplicationBundleIdentifier:(id)bundleIdentifier errors:(id *)errors;
+- (BOOL)_removeWebClipWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_removeWebClipsWithApplicationBundleIdentifier:(id)identifier errors:(id *)errors;
+- (BOOL)_saveWebClip:(id)clip error:(id *)error;
+- (id)_copyOrReplaceExistingFileAtPath:(id)path withNewFileAtPath:(id)atPath;
+- (id)_createOrUpdateExistingWebClipWithClipMetadata:(id)metadata createdNewWebClip:(BOOL *)clip error:(id *)error;
+- (id)_enumerateAndFilterClipsWithBlock:(id)block;
+- (id)_enumerateAndMapClipsWithBlock:(id)block;
 - (id)_fetchInstalledAppClips;
 - (id)_init;
-- (id)_removeFileFromPath:(id)a3;
-- (id)_webClipsBackedbyAppClipIdentifier:(id)a3;
-- (id)synchronouslyGetAppClipWithIdentifier:(id)a3;
-- (void)_reloadSpringBoardIconForWebClipWithIdentifier:(id)a3;
-- (void)createOrUpdateExistingWebClipWithMetadata:(id)a3 comletionHandler:(id)a4;
-- (void)fetchAppClipsWithCompletionHandler:(id)a3;
-- (void)fetchBookmarkWebClipsWithCompletionHandler:(id)a3;
-- (void)fetchWebClipsURLStringForClientBundleID:(id)a3 completionHandler:(id)a4;
-- (void)fetchWebClipsUUIDStringForClientBundleID:(id)a3 completionHandler:(id)a4;
-- (void)getAppClipWithIdentifier:(id)a3 receiveOnQueue:(id)a4 completionHandler:(id)a5;
-- (void)getAppClipWithURLHash:(id)a3 completionHandler:(id)a4;
-- (void)getWebClipDictionaryWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getWebClipWithURL:(id)a3 completionHandler:(id)a4;
-- (void)getWebClipsBackedbyAppClipIdentifier:(id)a3 completion:(id)a4;
-- (void)purgeDuplicateWebClipsWithCompletionHandler:(id)a3;
-- (void)redirectPoweredByWebClipsWithApplicationBundleIdentifier:(id)a3 toParentApplicationBundleIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)reloadSpringBoardIconForWebClipWithIdentifier:(id)a3;
-- (void)removeAppClipIconForWebClipWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)removeExpiredPoweredByWebClipsWithCompletionHandler:(id)a3;
-- (void)removePoweredByWebClipsLastActivatedBefore:(id)a3 completion:(id)a4;
-- (void)removeWebClipWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)removeWebClipsWithApplicationBundleIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)removeWebClipsWithApplicationBundleIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)saveWebClip:(id)a3 completionHandler:(id)a4;
-- (void)updateAppClipIcon:(id)a3 forWebClipWithIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)updateWebClipTitle:(id)a3 forAppClipBundleIdentifier:(id)a4 completionHandler:(id)a5;
+- (id)_removeFileFromPath:(id)path;
+- (id)_webClipsBackedbyAppClipIdentifier:(id)identifier;
+- (id)synchronouslyGetAppClipWithIdentifier:(id)identifier;
+- (void)_reloadSpringBoardIconForWebClipWithIdentifier:(id)identifier;
+- (void)createOrUpdateExistingWebClipWithMetadata:(id)metadata comletionHandler:(id)handler;
+- (void)fetchAppClipsWithCompletionHandler:(id)handler;
+- (void)fetchBookmarkWebClipsWithCompletionHandler:(id)handler;
+- (void)fetchWebClipsURLStringForClientBundleID:(id)d completionHandler:(id)handler;
+- (void)fetchWebClipsUUIDStringForClientBundleID:(id)d completionHandler:(id)handler;
+- (void)getAppClipWithIdentifier:(id)identifier receiveOnQueue:(id)queue completionHandler:(id)handler;
+- (void)getAppClipWithURLHash:(id)hash completionHandler:(id)handler;
+- (void)getWebClipDictionaryWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getWebClipWithURL:(id)l completionHandler:(id)handler;
+- (void)getWebClipsBackedbyAppClipIdentifier:(id)identifier completion:(id)completion;
+- (void)purgeDuplicateWebClipsWithCompletionHandler:(id)handler;
+- (void)redirectPoweredByWebClipsWithApplicationBundleIdentifier:(id)identifier toParentApplicationBundleIdentifier:(id)bundleIdentifier completionHandler:(id)handler;
+- (void)reloadSpringBoardIconForWebClipWithIdentifier:(id)identifier;
+- (void)removeAppClipIconForWebClipWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeExpiredPoweredByWebClipsWithCompletionHandler:(id)handler;
+- (void)removePoweredByWebClipsLastActivatedBefore:(id)before completion:(id)completion;
+- (void)removeWebClipWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeWebClipsWithApplicationBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeWebClipsWithApplicationBundleIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)saveWebClip:(id)clip completionHandler:(id)handler;
+- (void)updateAppClipIcon:(id)icon forWebClipWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)updateWebClipTitle:(id)title forAppClipBundleIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation CPSWebClipStore
@@ -79,9 +79,9 @@ uint64_t __30__CPSWebClipStore_sharedStore__block_invoke()
   return v2;
 }
 
-+ (id)_urlForWebClipWithIdentifier:(id)a3
++ (id)_urlForWebClipWithIdentifier:(id)identifier
 {
-  v3 = pathForWebClipWithIdentifier(a3);
+  v3 = pathForWebClipWithIdentifier(identifier);
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v3];
@@ -95,9 +95,9 @@ uint64_t __30__CPSWebClipStore_sharedStore__block_invoke()
   return v4;
 }
 
-+ (id)_readWebClipDictionaryRepresentationFromDiskWithWebClipIdentifier:(id)a3
++ (id)_readWebClipDictionaryRepresentationFromDiskWithWebClipIdentifier:(id)identifier
 {
-  v3 = [a1 _urlForWebClipWithIdentifier:a3];
+  v3 = [self _urlForWebClipWithIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
@@ -112,23 +112,23 @@ uint64_t __30__CPSWebClipStore_sharedStore__block_invoke()
   return v5;
 }
 
-- (void)redirectPoweredByWebClipsWithApplicationBundleIdentifier:(id)a3 toParentApplicationBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)redirectPoweredByWebClipsWithApplicationBundleIdentifier:(id)identifier toParentApplicationBundleIdentifier:(id)bundleIdentifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __130__CPSWebClipStore_redirectPoweredByWebClipsWithApplicationBundleIdentifier_toParentApplicationBundleIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_278DCE070;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = identifierCopy;
+  v17 = bundleIdentifierCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = bundleIdentifierCopy;
+  v14 = identifierCopy;
   dispatch_async(queue, v15);
 }
 
@@ -147,18 +147,18 @@ void __130__CPSWebClipStore_redirectPoweredByWebClipsWithApplicationBundleIdenti
   }
 }
 
-- (BOOL)_redirectPoweredByWebClipsWithApplicationBundleIdentifier:(id)a3 toParentApplicationBundleIdentifier:(id)a4 errors:(id *)a5
+- (BOOL)_redirectPoweredByWebClipsWithApplicationBundleIdentifier:(id)identifier toParentApplicationBundleIdentifier:(id)bundleIdentifier errors:(id *)errors
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v21 = [MEMORY[0x277CBEB18] array];
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  array = [MEMORY[0x277CBEB18] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = [(CPSWebClipStore *)self _appClips];
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  _appClips = [(CPSWebClipStore *)self _appClips];
+  v10 = [_appClips countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -169,54 +169,54 @@ void __130__CPSWebClipStore_redirectPoweredByWebClipsWithApplicationBundleIdenti
       {
         if (*v24 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(_appClips);
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
         if ([v14 isPoweredBy])
         {
-          v15 = [v14 applicationBundleIdentifier];
-          v16 = [v15 isEqualToString:v7];
+          applicationBundleIdentifier = [v14 applicationBundleIdentifier];
+          v16 = [applicationBundleIdentifier isEqualToString:identifierCopy];
 
           if (v16)
           {
-            [v14 setApplicationBundleIdentifier:v8];
+            [v14 setApplicationBundleIdentifier:bundleIdentifierCopy];
             v22 = 0;
             [(CPSWebClipStore *)self _saveWebClip:v14 error:&v22];
             v17 = v22;
             if (v17)
             {
-              [v21 addObject:v17];
+              [array addObject:v17];
             }
           }
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v11 = [_appClips countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v11);
   }
 
-  v18 = [v21 count] == 0;
+  v18 = [array count] == 0;
   v19 = *MEMORY[0x277D85DE8];
   return v18;
 }
 
-- (void)removeWebClipsWithApplicationBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)removeWebClipsWithApplicationBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__CPSWebClipStore_removeWebClipsWithApplicationBundleIdentifier_completionHandler___block_invoke;
   block[3] = &unk_278DCDCF8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
@@ -234,18 +234,18 @@ void __83__CPSWebClipStore_removeWebClipsWithApplicationBundleIdentifier_complet
   }
 }
 
-- (BOOL)_removeWebClipsWithApplicationBundleIdentifier:(id)a3 errors:(id *)a4
+- (BOOL)_removeWebClipsWithApplicationBundleIdentifier:(id)identifier errors:(id *)errors
 {
-  v21 = a4;
+  errorsCopy = errors;
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] array];
+  identifierCopy = identifier;
+  array = [MEMORY[0x277CBEB18] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [(CPSWebClipStore *)self _appClips];
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  _appClips = [(CPSWebClipStore *)self _appClips];
+  v8 = [_appClips countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
@@ -256,35 +256,35 @@ void __83__CPSWebClipStore_removeWebClipsWithApplicationBundleIdentifier_complet
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_appClips);
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [v12 applicationBundleIdentifier];
-        v14 = [v13 isEqualToString:v5];
+        applicationBundleIdentifier = [v12 applicationBundleIdentifier];
+        v14 = [applicationBundleIdentifier isEqualToString:identifierCopy];
 
         if (v14)
         {
-          v15 = [v12 identifier];
+          identifier = [v12 identifier];
           v22 = 0;
-          [(CPSWebClipStore *)self _removeWebClipWithIdentifier:v15 error:&v22];
+          [(CPSWebClipStore *)self _removeWebClipWithIdentifier:identifier error:&v22];
           v16 = v22;
           if (v16)
           {
-            [v6 addObject:v16];
+            [array addObject:v16];
           }
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v9 = [_appClips countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v9);
   }
 
-  if ([v6 count])
+  if ([array count])
   {
-    v17 = v6;
+    v17 = array;
   }
 
   else
@@ -292,27 +292,27 @@ void __83__CPSWebClipStore_removeWebClipsWithApplicationBundleIdentifier_complet
     v17 = 0;
   }
 
-  *v21 = v17;
-  v18 = [v6 count] == 0;
+  *errorsCopy = v17;
+  v18 = [array count] == 0;
 
   v19 = *MEMORY[0x277D85DE8];
   return v18;
 }
 
-- (void)removeWebClipsWithApplicationBundleIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)removeWebClipsWithApplicationBundleIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__CPSWebClipStore_removeWebClipsWithApplicationBundleIdentifiers_completionHandler___block_invoke;
   block[3] = &unk_278DCDCF8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifiersCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifiersCopy;
   dispatch_async(queue, block);
 }
 
@@ -383,20 +383,20 @@ void __84__CPSWebClipStore_removeWebClipsWithApplicationBundleIdentifiers_comple
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeWebClipWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)removeWebClipWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__CPSWebClipStore_removeWebClipWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_278DCDCF8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
@@ -414,18 +414,18 @@ void __65__CPSWebClipStore_removeWebClipWithIdentifier_completionHandler___block
   }
 }
 
-- (BOOL)_removeWebClipWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_removeWebClipWithIdentifier:(id)identifier error:(id *)error
 {
   v5 = MEMORY[0x277CCAA00];
-  v6 = a3;
-  v7 = [v5 defaultManager];
-  v8 = pathForWebClipWithIdentifier(v6);
-  [v7 removeItemAtPath:v8 error:a4];
+  identifierCopy = identifier;
+  defaultManager = [v5 defaultManager];
+  v8 = pathForWebClipWithIdentifier(identifierCopy);
+  [defaultManager removeItemAtPath:v8 error:error];
 
   v9 = SBSSpringBoardServerPort();
-  v10 = [v6 UTF8String];
+  uTF8String = [identifierCopy UTF8String];
 
-  v11 = MEMORY[0x245D3D130](v9, v10);
+  v11 = MEMORY[0x245D3D130](v9, uTF8String);
   if (v11)
   {
     v12 = CPS_LOG_CHANNEL_PREFIXClipServices();
@@ -435,23 +435,23 @@ void __65__CPSWebClipStore_removeWebClipWithIdentifier_completionHandler___block
     }
   }
 
-  return !v11 && *a4 == 0;
+  return !v11 && *error == 0;
 }
 
-- (void)saveWebClip:(id)a3 completionHandler:(id)a4
+- (void)saveWebClip:(id)clip completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  clipCopy = clip;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__CPSWebClipStore_saveWebClip_completionHandler___block_invoke;
   block[3] = &unk_278DCDCF8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = clipCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = clipCopy;
   dispatch_async(queue, block);
 }
 
@@ -469,22 +469,22 @@ void __49__CPSWebClipStore_saveWebClip_completionHandler___block_invoke(void *a1
   }
 }
 
-- (BOOL)_saveWebClip:(id)a3 error:(id *)a4
+- (BOOL)_saveWebClip:(id)clip error:(id *)error
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 webClipType] == 1)
+  clipCopy = clip;
+  if ([clipCopy webClipType] == 1)
   {
-    v7 = [v6 identifier];
-    v8 = pathForWebClipWithIdentifier(v7);
-    v9 = iconPathForWebClipWithIdentifier(v7);
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
-    if (([v10 fileExistsAtPath:v8] & 1) == 0 && (objc_msgSend(v10, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v8, 0, 0, a4) & 1) == 0)
+    identifier = [clipCopy identifier];
+    v8 = pathForWebClipWithIdentifier(identifier);
+    v9 = iconPathForWebClipWithIdentifier(identifier);
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if (([defaultManager fileExistsAtPath:v8] & 1) == 0 && (objc_msgSend(defaultManager, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v8, 0, 0, error) & 1) == 0)
     {
       v33 = CPS_LOG_CHANNEL_PREFIXClipServices();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
-        [CPSWebClipStore _saveWebClip:a4 error:v33];
+        [CPSWebClipStore _saveWebClip:error error:v33];
       }
 
       v30 = 0;
@@ -492,12 +492,12 @@ void __49__CPSWebClipStore_saveWebClip_completionHandler___block_invoke(void *a1
     }
 
     v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8 isDirectory:1];
-    if (([v11 setResourceValue:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CBE878] error:a4] & 1) == 0)
+    if (([v11 setResourceValue:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CBE878] error:error] & 1) == 0)
     {
       v32 = CPS_LOG_CHANNEL_PREFIXClipServices();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        [CPSWebClipStore _saveWebClip:a4 error:v32];
+        [CPSWebClipStore _saveWebClip:error error:v32];
       }
 
       v30 = 0;
@@ -506,13 +506,13 @@ void __49__CPSWebClipStore_saveWebClip_completionHandler___block_invoke(void *a1
 
     v44 = v11;
     v12 = [v8 stringByAppendingPathComponent:@"Info.plist"];
-    v13 = [v6 _dictionaryRepresentation];
-    v14 = [v13 writeToFile:v12 atomically:1];
+    _dictionaryRepresentation = [clipCopy _dictionaryRepresentation];
+    v14 = [_dictionaryRepresentation writeToFile:v12 atomically:1];
 
     if (v14)
     {
       v43 = v9;
-      v15 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v40 = *MEMORY[0x277CCA1B0];
       v51 = *MEMORY[0x277CCA1B0];
       v39 = *MEMORY[0x277CCA1B8];
@@ -520,7 +520,7 @@ void __49__CPSWebClipStore_saveWebClip_completionHandler___block_invoke(void *a1
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:&v51 count:1];
       v46 = 0;
       v42 = v12;
-      v17 = [v15 setAttributes:v16 ofItemAtPath:v12 error:&v46];
+      v17 = [defaultManager2 setAttributes:v16 ofItemAtPath:v12 error:&v46];
       v18 = v46;
 
       if ((v17 & 1) == 0)
@@ -529,15 +529,15 @@ void __49__CPSWebClipStore_saveWebClip_completionHandler___block_invoke(void *a1
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
           v20 = v19;
-          v21 = [v18 cps_privacyPreservingDescription];
+          cps_privacyPreservingDescription = [v18 cps_privacyPreservingDescription];
           *buf = 138543362;
-          v50 = v21;
+          v50 = cps_privacyPreservingDescription;
           _os_log_impl(&dword_2436ED000, v20, OS_LOG_TYPE_INFO, "Couldn't change WebClip Info.plist's data protection class: %{public}@", buf, 0xCu);
         }
       }
 
-      v22 = [v6 _temporaryIconPath];
-      if (v22 && (v23 = [(CPSWebClipStore *)self _copyOrReplaceExistingFileAtPath:v43 withNewFileAtPath:v22], v23, !v23))
+      _temporaryIconPath = [clipCopy _temporaryIconPath];
+      if (_temporaryIconPath && (v23 = [(CPSWebClipStore *)self _copyOrReplaceExistingFileAtPath:v43 withNewFileAtPath:_temporaryIconPath], v23, !v23))
       {
         v35 = CPS_LOG_CHANNEL_PREFIXClipServices();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -546,10 +546,10 @@ void __49__CPSWebClipStore_saveWebClip_completionHandler___block_invoke(void *a1
         }
 
         v9 = v43;
-        if (a4)
+        if (error)
         {
           [MEMORY[0x277CCA9B8] cps_errorWithCode:1];
-          *a4 = v30 = 0;
+          *error = v30 = 0;
         }
 
         else
@@ -560,19 +560,19 @@ void __49__CPSWebClipStore_saveWebClip_completionHandler___block_invoke(void *a1
 
       else
       {
-        v24 = [v6 iconImagePath];
+        iconImagePath = [clipCopy iconImagePath];
 
-        if (v24)
+        if (iconImagePath)
         {
           v38 = v18;
           v25 = v43;
-          v26 = [MEMORY[0x277CCAA00] defaultManager];
+          defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
           v47 = v40;
           v48 = v39;
           v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
           v45 = 0;
           v41 = v25;
-          LOBYTE(v25) = [v26 setAttributes:v27 ofItemAtPath:v25 error:&v45];
+          LOBYTE(v25) = [defaultManager3 setAttributes:v27 ofItemAtPath:v25 error:&v45];
           v28 = v45;
 
           if ((v25 & 1) == 0)
@@ -587,7 +587,7 @@ void __49__CPSWebClipStore_saveWebClip_completionHandler___block_invoke(void *a1
           v18 = v38;
         }
 
-        [(CPSWebClipStore *)self _reloadSpringBoardIconForWebClipWithIdentifier:v7, v38];
+        [(CPSWebClipStore *)self _reloadSpringBoardIconForWebClipWithIdentifier:identifier, v38];
         v30 = 1;
         v9 = v43;
       }
@@ -600,17 +600,17 @@ void __49__CPSWebClipStore_saveWebClip_completionHandler___block_invoke(void *a1
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       [CPSWebClipStore _saveWebClip:error:];
-      if (a4)
+      if (error)
       {
         goto LABEL_29;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_29:
       [MEMORY[0x277CCA9B8] cps_errorWithCode:1];
-      *a4 = v30 = 0;
+      *error = v30 = 0;
 LABEL_39:
 
       v11 = v44;
@@ -628,7 +628,7 @@ LABEL_41:
   if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
   {
     [CPSWebClipStore _saveWebClip:error:];
-    if (a4)
+    if (error)
     {
       goto LABEL_20;
     }
@@ -638,37 +638,37 @@ LABEL_31:
     goto LABEL_42;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_31;
   }
 
 LABEL_20:
   [MEMORY[0x277CCA9B8] cps_errorWithCode:13];
-  *a4 = v30 = 0;
+  *error = v30 = 0;
 LABEL_42:
 
   v36 = *MEMORY[0x277D85DE8];
   return v30;
 }
 
-- (void)updateWebClipTitle:(id)a3 forAppClipBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)updateWebClipTitle:(id)title forAppClipBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __83__CPSWebClipStore_updateWebClipTitle_forAppClipBundleIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_278DCE070;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = identifierCopy;
+  v17 = titleCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = titleCopy;
+  v14 = identifierCopy;
   dispatch_async(queue, v15);
 }
 
@@ -735,23 +735,23 @@ void __83__CPSWebClipStore_updateWebClipTitle_forAppClipBundleIdentifier_complet
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAppClipIcon:(id)a3 forWebClipWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)updateAppClipIcon:(id)icon forWebClipWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  iconCopy = icon;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __80__CPSWebClipStore_updateAppClipIcon_forWebClipWithIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_278DCE070;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = iconCopy;
+  selfCopy = self;
+  v18 = identifierCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = identifierCopy;
+  v14 = iconCopy;
   dispatch_async(queue, v15);
 }
 
@@ -775,20 +775,20 @@ uint64_t __80__CPSWebClipStore_updateAppClipIcon_forWebClipWithIdentifier_comple
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)removeAppClipIconForWebClipWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)removeAppClipIconForWebClipWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__CPSWebClipStore_removeAppClipIconForWebClipWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_278DCDCF8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
@@ -806,15 +806,15 @@ void __79__CPSWebClipStore_removeAppClipIconForWebClipWithIdentifier_completionH
   }
 }
 
-- (id)_copyOrReplaceExistingFileAtPath:(id)a3 withNewFileAtPath:(id)a4
+- (id)_copyOrReplaceExistingFileAtPath:(id)path withNewFileAtPath:(id)atPath
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPSWebClipStore *)self _removeFileFromPath:v6];
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  pathCopy = path;
+  atPathCopy = atPath;
+  v8 = [(CPSWebClipStore *)self _removeFileFromPath:pathCopy];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v16 = v8;
-  [v9 copyItemAtPath:v7 toPath:v6 error:&v16];
+  [defaultManager copyItemAtPath:atPathCopy toPath:pathCopy error:&v16];
   v10 = v16;
 
   if (v10)
@@ -823,13 +823,13 @@ void __79__CPSWebClipStore_removeAppClipIconForWebClipWithIdentifier_completionH
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v14 = v11;
-      v15 = [v10 cps_privacyPreservingDescription];
+      cps_privacyPreservingDescription = [v10 cps_privacyPreservingDescription];
       *buf = 138478339;
-      v18 = v7;
+      v18 = atPathCopy;
       v19 = 2113;
-      v20 = v6;
+      v20 = pathCopy;
       v21 = 2114;
-      v22 = v15;
+      v22 = cps_privacyPreservingDescription;
       _os_log_error_impl(&dword_2436ED000, v14, OS_LOG_TYPE_ERROR, "Could not copy icon from path %{private}@ to %{private}@: %{public}@", buf, 0x20u);
     }
   }
@@ -838,15 +838,15 @@ void __79__CPSWebClipStore_removeAppClipIconForWebClipWithIdentifier_completionH
   return v10;
 }
 
-- (id)_removeFileFromPath:(id)a3
+- (id)_removeFileFromPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v4 fileExistsAtPath:v3])
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:pathCopy])
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v9 = 0;
-    [v5 removeItemAtPath:v3 error:&v9];
+    [defaultManager2 removeItemAtPath:pathCopy error:&v9];
     v6 = v9;
 
     if (v6)
@@ -854,7 +854,7 @@ void __79__CPSWebClipStore_removeAppClipIconForWebClipWithIdentifier_completionH
       v7 = CPS_LOG_CHANNEL_PREFIXClipServices();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        [(CPSWebClipStore *)v3 _removeFileFromPath:v7, v6];
+        [(CPSWebClipStore *)pathCopy _removeFileFromPath:v7, v6];
       }
     }
   }
@@ -867,20 +867,20 @@ void __79__CPSWebClipStore_removeAppClipIconForWebClipWithIdentifier_completionH
   return v6;
 }
 
-- (void)getAppClipWithIdentifier:(id)a3 receiveOnQueue:(id)a4 completionHandler:(id)a5
+- (void)getAppClipWithIdentifier:(id)identifier receiveOnQueue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__CPSWebClipStore_getAppClipWithIdentifier_receiveOnQueue_completionHandler___block_invoke;
   block[3] = &unk_278DCE318;
-  v13 = v8;
-  v14 = v9;
+  v13 = identifierCopy;
+  v14 = handlerCopy;
   block[4] = self;
-  v10 = v8;
-  v11 = v9;
-  dispatch_async(a4, block);
+  v10 = identifierCopy;
+  v11 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __77__CPSWebClipStore_getAppClipWithIdentifier_receiveOnQueue_completionHandler___block_invoke(uint64_t a1)
@@ -890,13 +890,13 @@ void __77__CPSWebClipStore_getAppClipWithIdentifier_receiveOnQueue_completionHan
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)synchronouslyGetAppClipWithIdentifier:(id)a3
+- (id)synchronouslyGetAppClipWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _readWebClipDictionaryRepresentationFromDiskWithWebClipIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [objc_opt_class() _readWebClipDictionaryRepresentationFromDiskWithWebClipIdentifier:identifierCopy];
   if (v4)
   {
-    v5 = [[CPSWebClip alloc] _initWithIdentifier:v3 webClipDictionary:v4];
+    v5 = [[CPSWebClip alloc] _initWithIdentifier:identifierCopy webClipDictionary:v4];
     if ([v5 webClipType] == 1)
     {
       v6 = v5;
@@ -918,20 +918,20 @@ void __77__CPSWebClipStore_getAppClipWithIdentifier_receiveOnQueue_completionHan
   return v7;
 }
 
-- (void)getAppClipWithURLHash:(id)a3 completionHandler:(id)a4
+- (void)getAppClipWithURLHash:(id)hash completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  hashCopy = hash;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__CPSWebClipStore_getAppClipWithURLHash_completionHandler___block_invoke;
   block[3] = &unk_278DCDCF8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = hashCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = hashCopy;
   dispatch_async(queue, block);
 }
 
@@ -968,11 +968,11 @@ uint64_t __59__CPSWebClipStore_getAppClipWithURLHash_completionHandler___block_i
   return v6;
 }
 
-- (void)fetchBookmarkWebClipsWithCompletionHandler:(id)a3
+- (void)fetchBookmarkWebClipsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -980,7 +980,7 @@ uint64_t __59__CPSWebClipStore_getAppClipWithURLHash_completionHandler___block_i
     v7[2] = __62__CPSWebClipStore_fetchBookmarkWebClipsWithCompletionHandler___block_invoke;
     v7[3] = &unk_278DCE368;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -992,11 +992,11 @@ void __62__CPSWebClipStore_fetchBookmarkWebClipsWithCompletionHandler___block_in
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)fetchWebClipsUUIDStringForClientBundleID:(id)a3 completionHandler:(id)a4
+- (void)fetchWebClipsUUIDStringForClientBundleID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -1004,8 +1004,8 @@ void __62__CPSWebClipStore_fetchBookmarkWebClipsWithCompletionHandler___block_in
     block[2] = __78__CPSWebClipStore_fetchWebClipsUUIDStringForClientBundleID_completionHandler___block_invoke;
     block[3] = &unk_278DCDCF8;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = dCopy;
+    v11 = handlerCopy;
     dispatch_async(queue, block);
   }
 }
@@ -1068,11 +1068,11 @@ LABEL_11:
   return v6;
 }
 
-- (void)fetchWebClipsURLStringForClientBundleID:(id)a3 completionHandler:(id)a4
+- (void)fetchWebClipsURLStringForClientBundleID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -1080,8 +1080,8 @@ LABEL_11:
     block[2] = __77__CPSWebClipStore_fetchWebClipsURLStringForClientBundleID_completionHandler___block_invoke;
     block[3] = &unk_278DCDCF8;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = dCopy;
+    v11 = handlerCopy;
     dispatch_async(queue, block);
   }
 }
@@ -1144,11 +1144,11 @@ LABEL_11:
   return v6;
 }
 
-- (void)fetchAppClipsWithCompletionHandler:(id)a3
+- (void)fetchAppClipsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -1156,7 +1156,7 @@ LABEL_11:
     v7[2] = __54__CPSWebClipStore_fetchAppClipsWithCompletionHandler___block_invoke;
     v7[3] = &unk_278DCE368;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -1199,15 +1199,15 @@ void __42__CPSWebClipStore__fetchInstalledAppClips__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)_enumerateAndFilterClipsWithBlock:(id)a3
+- (id)_enumerateAndFilterClipsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__CPSWebClipStore__enumerateAndFilterClipsWithBlock___block_invoke;
   v9[3] = &unk_278DCE3D8;
-  v10 = v4;
-  v5 = v4;
+  v10 = blockCopy;
+  v5 = blockCopy;
   v6 = MEMORY[0x245D3D5F0](v9);
   v7 = [(CPSWebClipStore *)self _enumerateAndMapClipsWithBlock:v6];
 
@@ -1230,16 +1230,16 @@ id __53__CPSWebClipStore__enumerateAndFilterClipsWithBlock___block_invoke(uint64
   return v4;
 }
 
-- (id)_enumerateAndMapClipsWithBlock:(id)a3
+- (id)_enumerateAndMapClipsWithBlock:(id)block
 {
   v43 = *MEMORY[0x277D85DE8];
-  v34 = a3;
-  v3 = [MEMORY[0x277CBEB18] array];
+  blockCopy = block;
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_autoreleasePoolPush();
   v5 = webClipsDirectoryPath();
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v41 = 0;
-  v7 = [v6 contentsOfDirectoryAtPath:v5 error:&v41];
+  v7 = [defaultManager contentsOfDirectoryAtPath:v5 error:&v41];
   v8 = v41;
   if (v8)
   {
@@ -1256,14 +1256,14 @@ id __53__CPSWebClipStore__enumerateAndFilterClipsWithBlock___block_invoke(uint64
   if (![v7 count])
   {
 LABEL_5:
-    v10 = v3;
+    v10 = array;
 
     objc_autoreleasePoolPop(v4);
     goto LABEL_24;
   }
 
   context = v4;
-  v31 = v3;
+  v31 = array;
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
@@ -1289,20 +1289,20 @@ LABEL_5:
         v17 = objc_autoreleasePoolPush();
         v18 = [v5 stringByAppendingPathComponent:v16];
         v36 = 0;
-        if ([v6 fileExistsAtPath:v18 isDirectory:&v36] && v36 == 1)
+        if ([defaultManager fileExistsAtPath:v18 isDirectory:&v36] && v36 == 1)
         {
-          v19 = [v16 stringByDeletingPathExtension];
+          stringByDeletingPathExtension = [v16 stringByDeletingPathExtension];
           v20 = [v18 stringByAppendingPathComponent:@"Info.plist"];
-          if (v19)
+          if (stringByDeletingPathExtension)
           {
-            if ([v6 fileExistsAtPath:v20])
+            if ([defaultManager fileExistsAtPath:v20])
             {
-              v21 = [objc_opt_class() _readWebClipDictionaryRepresentationFromDiskWithWebClipIdentifier:v19];
+              v21 = [objc_opt_class() _readWebClipDictionaryRepresentationFromDiskWithWebClipIdentifier:stringByDeletingPathExtension];
               if (v21)
               {
                 v22 = v21;
-                v23 = [[CPSWebClip alloc] _initWithIdentifier:v19 webClipDictionary:v21];
-                v24 = v34[2](v34, v23);
+                v23 = [[CPSWebClip alloc] _initWithIdentifier:stringByDeletingPathExtension webClipDictionary:v21];
+                v24 = blockCopy[2](blockCopy, v23);
                 v25 = v22;
                 v26 = v24;
                 if (v24)
@@ -1330,51 +1330,51 @@ LABEL_5:
   }
 
   objc_autoreleasePoolPop(context);
-  v3 = v31;
+  array = v31;
   v27 = v31;
 LABEL_24:
 
   v28 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
-- (void)reloadSpringBoardIconForWebClipWithIdentifier:(id)a3
+- (void)reloadSpringBoardIconForWebClipWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__CPSWebClipStore_reloadSpringBoardIconForWebClipWithIdentifier___block_invoke;
   v7[3] = &unk_278DCDE58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_reloadSpringBoardIconForWebClipWithIdentifier:(id)a3
+- (void)_reloadSpringBoardIconForWebClipWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     [MEMORY[0x277D66CE8] updateWebClipPropertiesWithIdentifier:?];
   }
 }
 
-- (void)createOrUpdateExistingWebClipWithMetadata:(id)a3 comletionHandler:(id)a4
+- (void)createOrUpdateExistingWebClipWithMetadata:(id)metadata comletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__CPSWebClipStore_createOrUpdateExistingWebClipWithMetadata_comletionHandler___block_invoke;
   block[3] = &unk_278DCDCF8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = metadataCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = metadataCopy;
   dispatch_async(queue, block);
 }
 
@@ -1393,41 +1393,41 @@ void __78__CPSWebClipStore_createOrUpdateExistingWebClipWithMetadata_comletionHa
   }
 }
 
-- (id)_createOrUpdateExistingWebClipWithClipMetadata:(id)a3 createdNewWebClip:(BOOL *)a4 error:(id *)a5
+- (id)_createOrUpdateExistingWebClipWithClipMetadata:(id)metadata createdNewWebClip:(BOOL *)clip error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if ([v7 hasFullAppInstalledOnSystem])
+  metadataCopy = metadata;
+  if ([metadataCopy hasFullAppInstalledOnSystem])
   {
-    [v7 fullAppBundleID];
+    [metadataCopy fullAppBundleID];
   }
 
   else
   {
-    [v7 clipBundleID];
+    [metadataCopy clipBundleID];
   }
   v8 = ;
-  v34 = [v7 clipURL];
-  *a4 = 0;
+  clipURL = [metadataCopy clipURL];
+  *clip = 0;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v9 = [(CPSWebClipStore *)self _appClips];
-  v10 = [v9 countByEnumeratingWithState:&v36 objects:v44 count:16];
+  _appClips = [(CPSWebClipStore *)self _appClips];
+  v10 = [_appClips countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (!v10)
   {
 
 LABEL_28:
-    v13 = [[CPSWebClip alloc] _init];
-    *a4 = 1;
+    _init = [[CPSWebClip alloc] _init];
+    *clip = 1;
     goto LABEL_29;
   }
 
   v12 = v10;
-  v31 = a4;
-  v32 = a5;
-  v13 = 0;
+  clipCopy = clip;
+  errorCopy = error;
+  _init = 0;
   v14 = *v37;
   *&v11 = 138478083;
   v30 = v11;
@@ -1437,60 +1437,60 @@ LABEL_28:
     {
       if (*v37 != v14)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(_appClips);
       }
 
       v16 = *(*(&v36 + 1) + 8 * i);
-      v17 = [v16 applicationBundleIdentifier];
-      v18 = [v17 isEqualToString:v8];
+      applicationBundleIdentifier = [v16 applicationBundleIdentifier];
+      v18 = [applicationBundleIdentifier isEqualToString:v8];
 
       if (v18)
       {
-        if ([v7 isPoweredByThirdParty] & 1) != 0 || (objc_msgSend(v16, "isPoweredBy"))
+        if ([metadataCopy isPoweredByThirdParty] & 1) != 0 || (objc_msgSend(v16, "isPoweredBy"))
         {
-          if (!v13)
+          if (!_init)
           {
-            v19 = [v16 registeredURL];
-            v20 = v19;
-            if (v19 == v34 || ([v19 isEqual:?] & 1) != 0)
+            registeredURL = [v16 registeredURL];
+            v20 = registeredURL;
+            if (registeredURL == clipURL || ([registeredURL isEqual:?] & 1) != 0)
             {
-              v13 = v16;
+              _init = v16;
 
               goto LABEL_25;
             }
 
-            v13 = 0;
+            _init = 0;
           }
         }
 
-        else if (v13)
+        else if (_init)
         {
-          v21 = [v16 identifier];
+          identifier = [v16 identifier];
           v35 = 0;
-          [(CPSWebClipStore *)self _removeWebClipWithIdentifier:v21 error:&v35];
+          [(CPSWebClipStore *)self _removeWebClipWithIdentifier:identifier error:&v35];
           v22 = v35;
 
           v23 = CPS_LOG_CHANNEL_PREFIXClipServices();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
             v24 = v23;
-            v25 = [v22 cps_privacyPreservingDescription];
+            cps_privacyPreservingDescription = [v22 cps_privacyPreservingDescription];
             *buf = v30;
             v41 = v8;
             v42 = 2114;
-            v43 = v25;
+            v43 = cps_privacyPreservingDescription;
             _os_log_error_impl(&dword_2436ED000, v24, OS_LOG_TYPE_ERROR, "Removed duplicate web clip for %{private}@, error: %{public}@", buf, 0x16u);
           }
         }
 
         else
         {
-          v13 = v16;
+          _init = v16;
         }
       }
     }
 
-    v12 = [v9 countByEnumeratingWithState:&v36 objects:v44 count:16];
+    v12 = [_appClips countByEnumeratingWithState:&v36 objects:v44 count:16];
     if (v12)
     {
       continue;
@@ -1501,18 +1501,18 @@ LABEL_28:
 
 LABEL_25:
 
-  a4 = v31;
-  a5 = v32;
-  if (!v13)
+  clip = clipCopy;
+  error = errorCopy;
+  if (!_init)
   {
     goto LABEL_28;
   }
 
 LABEL_29:
-  [v13 _updateWithClipMetadata:v7];
-  if ([(CPSWebClipStore *)self _saveWebClip:v13 error:a5])
+  [_init _updateWithClipMetadata:metadataCopy];
+  if ([(CPSWebClipStore *)self _saveWebClip:_init error:error])
   {
-    v26 = v13;
+    v26 = _init;
   }
 
   else
@@ -1531,20 +1531,20 @@ LABEL_29:
   return v26;
 }
 
-- (void)getWebClipWithURL:(id)a3 completionHandler:(id)a4
+- (void)getWebClipWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__CPSWebClipStore_getWebClipWithURL_completionHandler___block_invoke;
   block[3] = &unk_278DCDCF8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = lCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = lCopy;
   dispatch_async(queue, block);
 }
 
@@ -1578,19 +1578,19 @@ uint64_t __55__CPSWebClipStore_getWebClipWithURL_completionHandler___block_invok
   return v4;
 }
 
-- (void)getWebClipDictionaryWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getWebClipDictionaryWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     queue = self->_queue;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __72__CPSWebClipStore_getWebClipDictionaryWithIdentifier_completionHandler___block_invoke;
     v9[3] = &unk_278DCDD70;
-    v10 = v6;
-    v11 = v7;
+    v10 = identifierCopy;
+    v11 = handlerCopy;
     dispatch_async(queue, v9);
   }
 }
@@ -1644,20 +1644,20 @@ LABEL_7:
   }
 }
 
-- (void)getWebClipsBackedbyAppClipIdentifier:(id)a3 completion:(id)a4
+- (void)getWebClipsBackedbyAppClipIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__CPSWebClipStore_getWebClipsBackedbyAppClipIdentifier_completion___block_invoke;
   block[3] = &unk_278DCE318;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -1668,17 +1668,17 @@ void __67__CPSWebClipStore_getWebClipsBackedbyAppClipIdentifier_completion___blo
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)_webClipsBackedbyAppClipIdentifier:(id)a3
+- (id)_webClipsBackedbyAppClipIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  identifierCopy = identifier;
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(CPSWebClipStore *)self _appClips];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  _appClips = [(CPSWebClipStore *)self _appClips];
+  v7 = [_appClips countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1689,20 +1689,20 @@ void __67__CPSWebClipStore_getWebClipsBackedbyAppClipIdentifier_completion___blo
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_appClips);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 applicationBundleIdentifier];
-        v13 = [v12 isEqualToString:v4];
+        applicationBundleIdentifier = [v11 applicationBundleIdentifier];
+        v13 = [applicationBundleIdentifier isEqualToString:identifierCopy];
 
         if (v13)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [_appClips countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -1710,20 +1710,20 @@ void __67__CPSWebClipStore_getWebClipsBackedbyAppClipIdentifier_completion___blo
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (void)purgeDuplicateWebClipsWithCompletionHandler:(id)a3
+- (void)purgeDuplicateWebClipsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__CPSWebClipStore_purgeDuplicateWebClipsWithCompletionHandler___block_invoke;
   v7[3] = &unk_278DCDD70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1850,20 +1850,20 @@ void __63__CPSWebClipStore_purgeDuplicateWebClipsWithCompletionHandler___block_i
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removePoweredByWebClipsLastActivatedBefore:(id)a3 completion:(id)a4
+- (void)removePoweredByWebClipsLastActivatedBefore:(id)before completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  beforeCopy = before;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__CPSWebClipStore_removePoweredByWebClipsLastActivatedBefore_completion___block_invoke;
   block[3] = &unk_278DCDCF8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = beforeCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = beforeCopy;
   dispatch_async(queue, block);
 }
 
@@ -1970,15 +1970,15 @@ LABEL_17:
   return result;
 }
 
-- (void)removeExpiredPoweredByWebClipsWithCompletionHandler:(id)a3
+- (void)removeExpiredPoweredByWebClipsWithCompletionHandler:(id)handler
 {
   v4 = MEMORY[0x277CBEA80];
-  v5 = a3;
-  v6 = [v4 currentCalendar];
+  handlerCopy = handler;
+  currentCalendar = [v4 currentCalendar];
   v7 = [MEMORY[0x277CBEAA8] now];
-  v8 = [v6 dateByAddingUnit:16 value:-10 toDate:v7 options:0];
+  v8 = [currentCalendar dateByAddingUnit:16 value:-10 toDate:v7 options:0];
 
-  [(CPSWebClipStore *)self removePoweredByWebClipsLastActivatedBefore:v8 completion:v5];
+  [(CPSWebClipStore *)self removePoweredByWebClipsLastActivatedBefore:v8 completion:handlerCopy];
 }
 
 - (void)_removeWebClipWithIdentifier:(int)a1 error:(NSObject *)a2 .cold.1(int a1, NSObject *a2)

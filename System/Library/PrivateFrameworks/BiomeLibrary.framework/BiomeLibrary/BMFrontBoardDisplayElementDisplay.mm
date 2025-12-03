@@ -1,42 +1,42 @@
 @interface BMFrontBoardDisplayElementDisplay
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMFrontBoardDisplayElementDisplay)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMFrontBoardDisplayElementDisplay)initWithType:(int)a3 name:(id)a4 deviceName:(id)a5 hardwareIdentifier:(id)a6 interfaceOrientation:(int)a7 backlightStatus:(int)a8 transitionReasons:(id)a9;
-- (BOOL)isEqual:(id)a3;
+- (BMFrontBoardDisplayElementDisplay)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMFrontBoardDisplayElementDisplay)initWithType:(int)type name:(id)name deviceName:(id)deviceName hardwareIdentifier:(id)identifier interfaceOrientation:(int)orientation backlightStatus:(int)status transitionReasons:(id)reasons;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_transitionReasonsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMFrontBoardDisplayElementDisplay
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMFrontBoardDisplayElementDisplay *)self type];
-    if (v6 == [v5 type])
+    v5 = equalCopy;
+    type = [(BMFrontBoardDisplayElementDisplay *)self type];
+    if (type == [v5 type])
     {
-      v7 = [(BMFrontBoardDisplayElementDisplay *)self name];
-      v8 = [v5 name];
-      v9 = v8;
-      if (v7 == v8)
+      name = [(BMFrontBoardDisplayElementDisplay *)self name];
+      name2 = [v5 name];
+      v9 = name2;
+      if (name == name2)
       {
       }
 
       else
       {
-        v10 = [(BMFrontBoardDisplayElementDisplay *)self name];
-        v11 = [v5 name];
-        v12 = [v10 isEqual:v11];
+        name3 = [(BMFrontBoardDisplayElementDisplay *)self name];
+        name4 = [v5 name];
+        v12 = [name3 isEqual:name4];
 
         if (!v12)
         {
@@ -44,18 +44,18 @@
         }
       }
 
-      v14 = [(BMFrontBoardDisplayElementDisplay *)self deviceName];
-      v15 = [v5 deviceName];
-      v16 = v15;
-      if (v14 == v15)
+      deviceName = [(BMFrontBoardDisplayElementDisplay *)self deviceName];
+      deviceName2 = [v5 deviceName];
+      v16 = deviceName2;
+      if (deviceName == deviceName2)
       {
       }
 
       else
       {
-        v17 = [(BMFrontBoardDisplayElementDisplay *)self deviceName];
-        v18 = [v5 deviceName];
-        v19 = [v17 isEqual:v18];
+        deviceName3 = [(BMFrontBoardDisplayElementDisplay *)self deviceName];
+        deviceName4 = [v5 deviceName];
+        v19 = [deviceName3 isEqual:deviceName4];
 
         if (!v19)
         {
@@ -63,18 +63,18 @@
         }
       }
 
-      v20 = [(BMFrontBoardDisplayElementDisplay *)self hardwareIdentifier];
-      v21 = [v5 hardwareIdentifier];
-      v22 = v21;
-      if (v20 == v21)
+      hardwareIdentifier = [(BMFrontBoardDisplayElementDisplay *)self hardwareIdentifier];
+      hardwareIdentifier2 = [v5 hardwareIdentifier];
+      v22 = hardwareIdentifier2;
+      if (hardwareIdentifier == hardwareIdentifier2)
       {
       }
 
       else
       {
-        v23 = [(BMFrontBoardDisplayElementDisplay *)self hardwareIdentifier];
-        v24 = [v5 hardwareIdentifier];
-        v25 = [v23 isEqual:v24];
+        hardwareIdentifier3 = [(BMFrontBoardDisplayElementDisplay *)self hardwareIdentifier];
+        hardwareIdentifier4 = [v5 hardwareIdentifier];
+        v25 = [hardwareIdentifier3 isEqual:hardwareIdentifier4];
 
         if (!v25)
         {
@@ -82,24 +82,24 @@
         }
       }
 
-      v26 = [(BMFrontBoardDisplayElementDisplay *)self interfaceOrientation];
-      if (v26 == [v5 interfaceOrientation])
+      interfaceOrientation = [(BMFrontBoardDisplayElementDisplay *)self interfaceOrientation];
+      if (interfaceOrientation == [v5 interfaceOrientation])
       {
-        v27 = [(BMFrontBoardDisplayElementDisplay *)self backlightStatus];
-        if (v27 == [v5 backlightStatus])
+        backlightStatus = [(BMFrontBoardDisplayElementDisplay *)self backlightStatus];
+        if (backlightStatus == [v5 backlightStatus])
         {
-          v28 = [(BMFrontBoardDisplayElementDisplay *)self transitionReasons];
-          v29 = [v5 transitionReasons];
-          if (v28 == v29)
+          transitionReasons = [(BMFrontBoardDisplayElementDisplay *)self transitionReasons];
+          transitionReasons2 = [v5 transitionReasons];
+          if (transitionReasons == transitionReasons2)
           {
             v13 = 1;
           }
 
           else
           {
-            v30 = [(BMFrontBoardDisplayElementDisplay *)self transitionReasons];
-            v31 = [v5 transitionReasons];
-            v13 = [v30 isEqual:v31];
+            transitionReasons3 = [(BMFrontBoardDisplayElementDisplay *)self transitionReasons];
+            transitionReasons4 = [v5 transitionReasons];
+            v13 = [transitionReasons3 isEqual:transitionReasons4];
           }
 
           goto LABEL_21;
@@ -124,75 +124,75 @@ LABEL_22:
 {
   v26[7] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMFrontBoardDisplayElementDisplay type](self, "type")}];
-  v4 = [(BMFrontBoardDisplayElementDisplay *)self name];
-  v5 = [(BMFrontBoardDisplayElementDisplay *)self deviceName];
-  v6 = [(BMFrontBoardDisplayElementDisplay *)self hardwareIdentifier];
+  name = [(BMFrontBoardDisplayElementDisplay *)self name];
+  deviceName = [(BMFrontBoardDisplayElementDisplay *)self deviceName];
+  hardwareIdentifier = [(BMFrontBoardDisplayElementDisplay *)self hardwareIdentifier];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMFrontBoardDisplayElementDisplay interfaceOrientation](self, "interfaceOrientation")}];
   v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMFrontBoardDisplayElementDisplay backlightStatus](self, "backlightStatus")}];
-  v9 = [(BMFrontBoardDisplayElementDisplay *)self _transitionReasonsJSONArray];
+  _transitionReasonsJSONArray = [(BMFrontBoardDisplayElementDisplay *)self _transitionReasonsJSONArray];
   v25[0] = @"type";
-  v10 = v3;
+  null = v3;
   if (!v3)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v10;
-  v26[0] = v10;
+  v22 = null;
+  v26[0] = null;
   v25[1] = @"name";
-  v11 = v4;
-  if (!v4)
+  null2 = name;
+  if (!name)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v11;
-  v26[1] = v11;
+  v21 = null2;
+  v26[1] = null2;
   v25[2] = @"deviceName";
-  v12 = v5;
-  if (!v5)
+  null3 = deviceName;
+  if (!deviceName)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v24 = v3;
-  v20 = v12;
-  v26[2] = v12;
+  v20 = null3;
+  v26[2] = null3;
   v25[3] = @"hardwareIdentifier";
-  v13 = v6;
-  if (!v6)
+  null4 = hardwareIdentifier;
+  if (!hardwareIdentifier)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v4;
-  v26[3] = v13;
+  v23 = name;
+  v26[3] = null4;
   v25[4] = @"interfaceOrientation";
-  v14 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v14;
+  v26[4] = null5;
   v25[5] = @"backlightStatus";
-  v15 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[5] = v15;
+  v26[5] = null6;
   v25[6] = @"transitionReasons";
-  v16 = v9;
-  if (!v9)
+  null7 = _transitionReasonsJSONArray;
+  if (!_transitionReasonsJSONArray)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[6] = v16;
+  v26[6] = null7;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:7];
-  if (v9)
+  if (_transitionReasonsJSONArray)
   {
     if (v8)
     {
@@ -223,11 +223,11 @@ LABEL_17:
 LABEL_28:
 
 LABEL_18:
-  if (!v6)
+  if (!hardwareIdentifier)
   {
   }
 
-  if (v5)
+  if (deviceName)
   {
     if (v23)
     {
@@ -271,8 +271,8 @@ LABEL_23:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMFrontBoardDisplayElementDisplay *)self transitionReasons];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  transitionReasons = [(BMFrontBoardDisplayElementDisplay *)self transitionReasons];
+  v5 = [transitionReasons countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -283,13 +283,13 @@ LABEL_23:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(transitionReasons);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [transitionReasons countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -300,25 +300,25 @@ LABEL_23:
   return v3;
 }
 
-- (BMFrontBoardDisplayElementDisplay)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMFrontBoardDisplayElementDisplay)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v124[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"type"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"type"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
 LABEL_9:
-    v9 = [v5 objectForKeyedSubscript:@"name"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v31 = 0;
-          v32 = 0;
+          selfCopy3 = 0;
           goto LABEL_65;
         }
 
@@ -339,8 +339,8 @@ LABEL_9:
         v43 = v36;
         v7 = v35;
         v31 = 0;
-        v32 = 0;
-        *a4 = [v42 initWithDomain:v43 code:2 userInfo:v41];
+        selfCopy3 = 0;
+        *error = [v42 initWithDomain:v43 code:2 userInfo:v41];
         goto LABEL_64;
       }
 
@@ -352,16 +352,16 @@ LABEL_9:
       v98 = 0;
     }
 
-    v10 = [v5 objectForKeyedSubscript:@"deviceName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"deviceName"];
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v40 = 0;
-          v32 = 0;
+          selfCopy3 = 0;
           v31 = v98;
           goto LABEL_64;
         }
@@ -382,8 +382,8 @@ LABEL_9:
         v7 = v49;
         v55 = [v48 initWithDomain:v54 code:2 userInfo:v33];
         v100 = 0;
-        v32 = 0;
-        *a4 = v55;
+        selfCopy3 = 0;
+        *error = v55;
         v31 = v98;
 LABEL_63:
 
@@ -393,18 +393,18 @@ LABEL_64:
         goto LABEL_65;
       }
 
-      v11 = self;
+      selfCopy2 = self;
       v12 = v10;
     }
 
     else
     {
-      v11 = self;
+      selfCopy2 = self;
       v12 = 0;
     }
 
-    v13 = [v5 objectForKeyedSubscript:@"hardwareIdentifier"];
-    v95 = v11;
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"hardwareIdentifier"];
+    v95 = selfCopy2;
     v97 = v10;
     v100 = v12;
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -412,10 +412,10 @@ LABEL_64:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v99 = 0;
-          v32 = 0;
+          selfCopy3 = 0;
           v31 = v98;
           v33 = v13;
           self = v95;
@@ -441,8 +441,8 @@ LABEL_64:
         v33 = v13;
         v96 = v66;
         v99 = 0;
-        v32 = 0;
-        *a4 = [v67 initWithDomain:v68 code:2 userInfo:?];
+        selfCopy3 = 0;
+        *error = [v67 initWithDomain:v68 code:2 userInfo:?];
         v31 = v98;
         self = v95;
         goto LABEL_62;
@@ -450,17 +450,17 @@ LABEL_64:
 
       v93 = v13;
       v99 = v13;
-      self = v11;
+      self = selfCopy2;
     }
 
     else
     {
       v93 = v13;
       v99 = 0;
-      self = v11;
+      self = selfCopy2;
     }
 
-    v14 = [v5 objectForKeyedSubscript:@"interfaceOrientation"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"interfaceOrientation"];
     v94 = v7;
     v96 = v14;
     if (v14 && (v15 = v14, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -476,10 +476,10 @@ LABEL_64:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v16 = 0;
-            v32 = 0;
+            selfCopy3 = 0;
             v31 = v98;
             v33 = v93;
             goto LABEL_62;
@@ -496,8 +496,8 @@ LABEL_64:
           v9 = v76;
           v92 = v78;
           v16 = 0;
-          v32 = 0;
-          *a4 = [v75 initWithDomain:v79 code:2 userInfo:?];
+          selfCopy3 = 0;
+          *error = [v75 initWithDomain:v79 code:2 userInfo:?];
           goto LABEL_88;
         }
 
@@ -510,7 +510,7 @@ LABEL_64:
       v16 = 0;
     }
 
-    v17 = [v5 objectForKeyedSubscript:@"backlightStatus"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"backlightStatus"];
     v90 = v6;
     v91 = v9;
     v92 = v17;
@@ -518,9 +518,9 @@ LABEL_64:
     {
       v89 = 0;
 LABEL_24:
-      v19 = [v5 objectForKeyedSubscript:@"transitionReasons"];
-      v20 = [MEMORY[0x1E695DFB0] null];
-      v21 = [v19 isEqual:v20];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"transitionReasons"];
+      null = [MEMORY[0x1E695DFB0] null];
+      v21 = [v19 isEqual:null];
 
       if (v21)
       {
@@ -541,7 +541,7 @@ LABEL_32:
 
         v24 = v23;
         v25 = *v103;
-        v88 = v5;
+        v88 = dictionaryCopy;
 LABEL_34:
         v26 = v16;
         v27 = v12;
@@ -566,9 +566,9 @@ LABEL_34:
             v31 = v98;
             v33 = v93;
             v16 = v26;
-            v5 = v88;
+            dictionaryCopy = v88;
             v30 = v89;
-            if (a4)
+            if (error)
             {
               v87 = objc_alloc(MEMORY[0x1E696ABC0]);
               v86 = *MEMORY[0x1E698F240];
@@ -580,7 +580,7 @@ LABEL_34:
               v47 = &v106;
 LABEL_57:
               v56 = [v45 dictionaryWithObjects:v46 forKeys:v47 count:1];
-              *a4 = [v87 initWithDomain:v86 code:2 userInfo:v56];
+              *error = [v87 initWithDomain:v86 code:2 userInfo:v56];
             }
 
             goto LABEL_58;
@@ -592,7 +592,7 @@ LABEL_57:
             v24 = [v19 countByEnumeratingWithState:&v102 objects:v110 count:16];
             v12 = v27;
             v16 = v26;
-            v5 = v88;
+            dictionaryCopy = v88;
             if (v24)
             {
               goto LABEL_34;
@@ -603,7 +603,7 @@ LABEL_41:
             v30 = v89;
             v31 = v98;
             self = -[BMFrontBoardDisplayElementDisplay initWithType:name:deviceName:hardwareIdentifier:interfaceOrientation:backlightStatus:transitionReasons:](v95, "initWithType:name:deviceName:hardwareIdentifier:interfaceOrientation:backlightStatus:transitionReasons:", [v94 intValue], v98, v12, v99, objc_msgSend(v16, "intValue"), objc_msgSend(v89, "intValue"), v22);
-            v32 = self;
+            selfCopy3 = self;
 LABEL_42:
             v33 = v93;
 LABEL_59:
@@ -616,9 +616,9 @@ LABEL_59:
         v31 = v98;
         v33 = v93;
         v16 = v26;
-        v5 = v88;
+        dictionaryCopy = v88;
         v30 = v89;
-        if (a4)
+        if (error)
         {
           v87 = objc_alloc(MEMORY[0x1E696ABC0]);
           v86 = *MEMORY[0x1E698F240];
@@ -633,7 +633,7 @@ LABEL_59:
 
 LABEL_58:
 
-        v32 = 0;
+        selfCopy3 = 0;
         self = v95;
         goto LABEL_59;
       }
@@ -649,7 +649,7 @@ LABEL_58:
         goto LABEL_32;
       }
 
-      if (a4)
+      if (error)
       {
         v72 = objc_alloc(MEMORY[0x1E696ABC0]);
         v73 = *MEMORY[0x1E698F240];
@@ -657,16 +657,16 @@ LABEL_58:
         v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"transitionReasons"];
         v112 = v22;
         v74 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v112 forKeys:&v111 count:1];
-        *a4 = [v72 initWithDomain:v73 code:2 userInfo:v74];
+        *error = [v72 initWithDomain:v73 code:2 userInfo:v74];
 
-        v32 = 0;
+        selfCopy3 = 0;
         v31 = v98;
         v33 = v93;
         v30 = v89;
         goto LABEL_59;
       }
 
-      v32 = 0;
+      selfCopy3 = 0;
       v31 = v98;
       v33 = v93;
       v30 = v89;
@@ -690,7 +690,7 @@ LABEL_60:
       goto LABEL_24;
     }
 
-    if (a4)
+    if (error)
     {
       v80 = objc_alloc(MEMORY[0x1E696ABC0]);
       v81 = *MEMORY[0x1E698F240];
@@ -700,14 +700,14 @@ LABEL_60:
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v114 forKeys:&v113 count:1];
       v82 = [v80 initWithDomain:v81 code:2 userInfo:v22];
       v30 = 0;
-      v32 = 0;
-      *a4 = v82;
+      selfCopy3 = 0;
+      *error = v82;
       v31 = v98;
       goto LABEL_42;
     }
 
     v30 = 0;
-    v32 = 0;
+    selfCopy3 = 0;
 LABEL_88:
     v31 = v98;
     v33 = v93;
@@ -736,10 +736,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     v7 = 0;
-    v32 = 0;
+    selfCopy3 = 0;
     goto LABEL_66;
   }
 
@@ -751,28 +751,28 @@ LABEL_8:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v124 forKeys:&v123 count:1];
   v71 = [v69 initWithDomain:v70 code:2 userInfo:v9];
   v7 = 0;
-  v32 = 0;
-  *a4 = v71;
+  selfCopy3 = 0;
+  *error = v71;
 LABEL_65:
 
 LABEL_66:
   v57 = *MEMORY[0x1E69E9840];
-  return v32;
+  return selfCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMFrontBoardDisplayElementDisplay *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   type = self->_type;
   PBDataWriterWriteUint32Field();
   if (self->_name)
@@ -829,9 +829,9 @@ LABEL_66:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v46.receiver = self;
   v46.super_class = BMFrontBoardDisplayElementDisplay;
   v5 = [(BMEventBase *)&v46 init];
@@ -841,12 +841,12 @@ LABEL_66:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_76;
       }
@@ -857,18 +857,18 @@ LABEL_66:
       while (1)
       {
         v47 = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v47 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v47 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v47 & 0x7F) << v8;
@@ -885,9 +885,9 @@ LABEL_66:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_76;
       }
@@ -904,18 +904,18 @@ LABEL_16:
             while (1)
             {
               v47 = 0;
-              v33 = [v4 position] + 1;
-              if (v33 >= [v4 position] && (v34 = objc_msgSend(v4, "position") + 1, v34 <= objc_msgSend(v4, "length")))
+              v33 = [fromCopy position] + 1;
+              if (v33 >= [fromCopy position] && (v34 = objc_msgSend(fromCopy, "position") + 1, v34 <= objc_msgSend(fromCopy, "length")))
               {
-                v35 = [v4 data];
-                [v35 getBytes:&v47 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v47 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v19 |= (v47 & 0x7F) << v31;
@@ -932,7 +932,7 @@ LABEL_16:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v19 > 1)
+            if (([fromCopy hasError] & 1) != 0 || v19 > 1)
             {
 LABEL_64:
               LODWORD(v19) = 0;
@@ -972,18 +972,18 @@ LABEL_61:
           while (1)
           {
             v47 = 0;
-            v28 = [v4 position] + 1;
-            if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+            v28 = [fromCopy position] + 1;
+            if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
             {
-              v30 = [v4 data];
-              [v30 getBytes:&v47 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v47 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v19 |= (v47 & 0x7F) << v26;
@@ -1000,7 +1000,7 @@ LABEL_61:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v19 > 2)
+          if (([fromCopy hasError] & 1) != 0 || v19 > 2)
           {
 LABEL_72:
             LODWORD(v19) = 0;
@@ -1031,8 +1031,8 @@ LABEL_80:
       [v6 addObject:v36];
 
 LABEL_75:
-      v40 = [v4 position];
-      if (v40 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_76;
       }
@@ -1053,18 +1053,18 @@ LABEL_75:
       while (1)
       {
         v47 = 0;
-        v20 = [v4 position] + 1;
-        if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+        v20 = [fromCopy position] + 1;
+        if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
         {
-          v22 = [v4 data];
-          [v22 getBytes:&v47 range:{objc_msgSend(v4, "position"), 1}];
+          data4 = [fromCopy data];
+          [data4 getBytes:&v47 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v19 |= (v47 & 0x7F) << v17;
@@ -1081,7 +1081,7 @@ LABEL_75:
         }
       }
 
-      if (([v4 hasError] & 1) != 0 || v19 > 4)
+      if (([fromCopy hasError] & 1) != 0 || v19 > 4)
       {
 LABEL_68:
         LODWORD(v19) = 0;
@@ -1101,8 +1101,8 @@ LABEL_76:
   transitionReasons = v5->_transitionReasons;
   v5->_transitionReasons = v41;
 
-  v43 = [v4 hasError];
-  if (v43)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_77:
     v44 = 0;
@@ -1121,36 +1121,36 @@ LABEL_78:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = BMFrontBoardDisplayElementDisplayTypeAsString([(BMFrontBoardDisplayElementDisplay *)self type]);
-  v5 = [(BMFrontBoardDisplayElementDisplay *)self name];
-  v6 = [(BMFrontBoardDisplayElementDisplay *)self deviceName];
-  v7 = [(BMFrontBoardDisplayElementDisplay *)self hardwareIdentifier];
+  name = [(BMFrontBoardDisplayElementDisplay *)self name];
+  deviceName = [(BMFrontBoardDisplayElementDisplay *)self deviceName];
+  hardwareIdentifier = [(BMFrontBoardDisplayElementDisplay *)self hardwareIdentifier];
   v8 = BMFrontBoardDisplayElementDisplayInterfaceOrientationAsString([(BMFrontBoardDisplayElementDisplay *)self interfaceOrientation]);
   v9 = BMFrontBoardDisplayElementDisplayBacklightStatusAsString([(BMFrontBoardDisplayElementDisplay *)self backlightStatus]);
-  v10 = [(BMFrontBoardDisplayElementDisplay *)self transitionReasons];
-  v11 = [v3 initWithFormat:@"BMFrontBoardDisplayElementDisplay with type: %@, name: %@, deviceName: %@, hardwareIdentifier: %@, interfaceOrientation: %@, backlightStatus: %@, transitionReasons: %@", v4, v5, v6, v7, v8, v9, v10];
+  transitionReasons = [(BMFrontBoardDisplayElementDisplay *)self transitionReasons];
+  v11 = [v3 initWithFormat:@"BMFrontBoardDisplayElementDisplay with type: %@, name: %@, deviceName: %@, hardwareIdentifier: %@, interfaceOrientation: %@, backlightStatus: %@, transitionReasons: %@", v4, name, deviceName, hardwareIdentifier, v8, v9, transitionReasons];
 
   return v11;
 }
 
-- (BMFrontBoardDisplayElementDisplay)initWithType:(int)a3 name:(id)a4 deviceName:(id)a5 hardwareIdentifier:(id)a6 interfaceOrientation:(int)a7 backlightStatus:(int)a8 transitionReasons:(id)a9
+- (BMFrontBoardDisplayElementDisplay)initWithType:(int)type name:(id)name deviceName:(id)deviceName hardwareIdentifier:(id)identifier interfaceOrientation:(int)orientation backlightStatus:(int)status transitionReasons:(id)reasons
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a9;
+  nameCopy = name;
+  deviceNameCopy = deviceName;
+  identifierCopy = identifier;
+  reasonsCopy = reasons;
   v22.receiver = self;
   v22.super_class = BMFrontBoardDisplayElementDisplay;
   v18 = [(BMEventBase *)&v22 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    v18->_type = a3;
-    objc_storeStrong(&v18->_name, a4);
-    objc_storeStrong(&v18->_deviceName, a5);
-    objc_storeStrong(&v18->_hardwareIdentifier, a6);
-    v18->_interfaceOrientation = a7;
-    v18->_backlightStatus = a8;
-    objc_storeStrong(&v18->_transitionReasons, a9);
+    v18->_type = type;
+    objc_storeStrong(&v18->_name, name);
+    objc_storeStrong(&v18->_deviceName, deviceName);
+    objc_storeStrong(&v18->_hardwareIdentifier, identifier);
+    v18->_interfaceOrientation = orientation;
+    v18->_backlightStatus = status;
+    objc_storeStrong(&v18->_transitionReasons, reasons);
   }
 
   return v18;
@@ -1212,9 +1212,9 @@ id __44__BMFrontBoardDisplayElementDisplay_columns__block_invoke(uint64_t a1, vo
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1222,8 +1222,8 @@ id __44__BMFrontBoardDisplayElementDisplay_columns__block_invoke(uint64_t a1, vo
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMFrontBoardDisplayElementDisplay alloc] initByReadFrom:v7];
     v4 = v8;

@@ -1,15 +1,15 @@
 @interface AFExperimentGroup
-+ (id)newWithBuilder:(id)a3;
-- (AFExperimentGroup)initWithBuilder:(id)a3;
-- (AFExperimentGroup)initWithCoder:(id)a3;
-- (AFExperimentGroup)initWithDictionaryRepresentation:(id)a3;
-- (AFExperimentGroup)initWithIdentifier:(id)a3 allocation:(unint64_t)a4 properties:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFExperimentGroup)initWithBuilder:(id)builder;
+- (AFExperimentGroup)initWithCoder:(id)coder;
+- (AFExperimentGroup)initWithDictionaryRepresentation:(id)representation;
+- (AFExperimentGroup)initWithIdentifier:(id)identifier allocation:(unint64_t)allocation properties:(id)properties;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFExperimentGroup
@@ -38,13 +38,13 @@
   return v8;
 }
 
-- (AFExperimentGroup)initWithDictionaryRepresentation:(id)a3
+- (AFExperimentGroup)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"identifier"];
+    v6 = [representationCopy objectForKey:@"identifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,7 +68,7 @@
       v10 = 0;
     }
 
-    v11 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
     v12 = [v5 objectForKey:@"properties"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -81,35 +81,35 @@
       v13 = 0;
     }
 
-    self = [(AFExperimentGroup *)self initWithIdentifier:v7 allocation:v11 properties:v13];
-    v8 = self;
+    self = [(AFExperimentGroup *)self initWithIdentifier:v7 allocation:unsignedIntegerValue properties:v13];
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v6 = a3;
-  [v6 encodeObject:identifier forKey:@"AFExperimentGroup::identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"AFExperimentGroup::identifier"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_allocation];
-  [v6 encodeObject:v5 forKey:@"AFExperimentGroup::allocation"];
+  [coderCopy encodeObject:v5 forKey:@"AFExperimentGroup::allocation"];
 
-  [v6 encodeObject:self->_properties forKey:@"AFExperimentGroup::properties"];
+  [coderCopy encodeObject:self->_properties forKey:@"AFExperimentGroup::properties"];
 }
 
-- (AFExperimentGroup)initWithCoder:(id)a3
+- (AFExperimentGroup)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentGroup::identifier"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentGroup::allocation"];
-  v19 = [v4 unsignedIntegerValue];
+  coderCopy = coder;
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentGroup::identifier"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentGroup::allocation"];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
   v18 = MEMORY[0x1E695DFD8];
   v5 = objc_opt_class();
@@ -122,16 +122,16 @@
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = [v18 setWithObjects:{v5, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-  v15 = [v3 decodeObjectOfClasses:v14 forKey:@"AFExperimentGroup::properties"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"AFExperimentGroup::properties"];
 
-  v16 = [(AFExperimentGroup *)self initWithIdentifier:v20 allocation:v19 properties:v15];
+  v16 = [(AFExperimentGroup *)self initWithIdentifier:v20 allocation:unsignedIntegerValue properties:v15];
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -141,17 +141,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       allocation = self->_allocation;
       if (allocation == [(AFExperimentGroup *)v5 allocation])
       {
-        v7 = [(AFExperimentGroup *)v5 identifier];
+        identifier = [(AFExperimentGroup *)v5 identifier];
         identifier = self->_identifier;
-        if (identifier == v7 || [(NSString *)identifier isEqual:v7])
+        if (identifier == identifier || [(NSString *)identifier isEqual:identifier])
         {
-          v9 = [(AFExperimentGroup *)v5 properties];
+          properties = [(AFExperimentGroup *)v5 properties];
           properties = self->_properties;
-          v11 = properties == v9 || [(NSDictionary *)properties isEqual:v9];
+          v11 = properties == properties || [(NSDictionary *)properties isEqual:properties];
         }
 
         else
@@ -185,7 +185,7 @@
   return v5 ^ v6;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -196,19 +196,19 @@
   return v6;
 }
 
-- (AFExperimentGroup)initWithIdentifier:(id)a3 allocation:(unint64_t)a4 properties:(id)a5
+- (AFExperimentGroup)initWithIdentifier:(id)identifier allocation:(unint64_t)allocation properties:(id)properties
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __62__AFExperimentGroup_initWithIdentifier_allocation_properties___block_invoke;
   v14[3] = &unk_1E7342508;
-  v16 = v9;
-  v17 = a4;
-  v15 = v8;
-  v10 = v9;
-  v11 = v8;
+  v16 = propertiesCopy;
+  allocationCopy = allocation;
+  v15 = identifierCopy;
+  v10 = propertiesCopy;
+  v11 = identifierCopy;
   v12 = [(AFExperimentGroup *)self initWithBuilder:v14];
 
   return v12;
@@ -223,27 +223,27 @@ void __62__AFExperimentGroup_initWithIdentifier_allocation_properties___block_in
   [v4 setProperties:a1[5]];
 }
 
-- (AFExperimentGroup)initWithBuilder:(id)a3
+- (AFExperimentGroup)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = AFExperimentGroup;
   v5 = [(AFExperimentGroup *)&v15 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFExperimentGroupMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFExperimentGroupMutation *)v7 isDirty])
     {
-      v8 = [(_AFExperimentGroupMutation *)v7 getIdentifier];
-      v9 = [v8 copy];
+      getIdentifier = [(_AFExperimentGroupMutation *)v7 getIdentifier];
+      v9 = [getIdentifier copy];
       identifier = v6->_identifier;
       v6->_identifier = v9;
 
       v6->_allocation = [(_AFExperimentGroupMutation *)v7 getAllocation];
-      v11 = [(_AFExperimentGroupMutation *)v7 getProperties];
-      v12 = [v11 copy];
+      getProperties = [(_AFExperimentGroupMutation *)v7 getProperties];
+      v12 = [getProperties copy];
       properties = v6->_properties;
       v6->_properties = v12;
     }
@@ -252,32 +252,32 @@ void __62__AFExperimentGroup_initWithIdentifier_allocation_properties___block_in
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFExperimentGroupMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFExperimentGroupMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFExperimentGroup);
-      v7 = [(_AFExperimentGroupMutation *)v5 getIdentifier];
-      v8 = [v7 copy];
+      getIdentifier = [(_AFExperimentGroupMutation *)v5 getIdentifier];
+      v8 = [getIdentifier copy];
       identifier = v6->_identifier;
       v6->_identifier = v8;
 
       v6->_allocation = [(_AFExperimentGroupMutation *)v5 getAllocation];
-      v10 = [(_AFExperimentGroupMutation *)v5 getProperties];
-      v11 = [v10 copy];
+      getProperties = [(_AFExperimentGroupMutation *)v5 getProperties];
+      v11 = [getProperties copy];
       properties = v6->_properties;
       v6->_properties = v11;
     }

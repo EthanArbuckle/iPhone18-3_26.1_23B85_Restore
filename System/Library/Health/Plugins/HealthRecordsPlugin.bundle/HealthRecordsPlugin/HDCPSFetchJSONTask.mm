@@ -1,10 +1,10 @@
 @interface HDCPSFetchJSONTask
-- (BOOL)_performRetryIfNeededForStatusCode:(int64_t)a3 retryCount:(int64_t)a4 retryHandler:(id)a5;
+- (BOOL)_performRetryIfNeededForStatusCode:(int64_t)code retryCount:(int64_t)count retryHandler:(id)handler;
 - (HDCPSFetchJSONTask)init;
-- (HDCPSFetchJSONTask)initWithSession:(id)a3 request:(id)a4 maxRetriesAllowed:(int64_t)a5 retryInterval:(double)a6;
-- (id)_errorFromResponse:(id)a3;
-- (void)_startTaskWithCompletion:(id)a3;
-- (void)_startTaskWithRetryCount:(int64_t)a3 completion:(id)a4;
+- (HDCPSFetchJSONTask)initWithSession:(id)session request:(id)request maxRetriesAllowed:(int64_t)allowed retryInterval:(double)interval;
+- (id)_errorFromResponse:(id)response;
+- (void)_startTaskWithCompletion:(id)completion;
+- (void)_startTaskWithRetryCount:(int64_t)count completion:(id)completion;
 - (void)resume;
 - (void)waitUntilFinished;
 @end
@@ -19,10 +19,10 @@
   return 0;
 }
 
-- (HDCPSFetchJSONTask)initWithSession:(id)a3 request:(id)a4 maxRetriesAllowed:(int64_t)a5 retryInterval:(double)a6
+- (HDCPSFetchJSONTask)initWithSession:(id)session request:(id)request maxRetriesAllowed:(int64_t)allowed retryInterval:(double)interval
 {
-  v11 = a3;
-  v12 = a4;
+  sessionCopy = session;
+  requestCopy = request;
   v19.receiver = self;
   v19.super_class = HDCPSFetchJSONTask;
   v13 = [(HDCPSFetchJSONTask *)&v19 init];
@@ -32,13 +32,13 @@
     group = v13->_group;
     v13->_group = v14;
 
-    v16 = [v12 copy];
+    v16 = [requestCopy copy];
     request = v13->_request;
     v13->_request = v16;
 
-    objc_storeStrong(&v13->_session, a3);
-    v13->_maxRetryCount = a5;
-    v13->_retryInterval = a6;
+    objc_storeStrong(&v13->_session, session);
+    v13->_maxRetryCount = allowed;
+    v13->_retryInterval = interval;
   }
 
   return v13;
@@ -78,15 +78,15 @@
   dispatch_group_wait(group, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)_startTaskWithCompletion:(id)a3
+- (void)_startTaskWithCompletion:(id)completion
 {
-  v4 = a3;
-  [(HDCPSFetchJSONTask *)self _startTaskWithRetryCount:[(HDCPSFetchJSONTask *)self maxRetryCount] completion:v4];
+  completionCopy = completion;
+  [(HDCPSFetchJSONTask *)self _startTaskWithRetryCount:[(HDCPSFetchJSONTask *)self maxRetryCount] completion:completionCopy];
 }
 
-- (void)_startTaskWithRetryCount:(int64_t)a3 completion:(id)a4
+- (void)_startTaskWithRetryCount:(int64_t)count completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v8 = [(NSURLRequest *)self->_request mutableCopy];
   v24 = 0;
   v9 = [HDProviderServiceSpecification addAuthorizationHeadersToRequest:v8 error:&v24];
@@ -101,17 +101,17 @@
       sub_A5AC4(v12, self, v8);
     }
 
-    v13 = [(HDCPSFetchJSONTask *)self session];
+    session = [(HDCPSFetchJSONTask *)self session];
     v15 = _NSConcreteStackBlock;
     v16 = 3221225472;
     v17 = sub_6A3A4;
     v18 = &unk_108128;
     v22 = a2;
-    v19 = self;
+    selfCopy = self;
     v20 = v8;
-    v23 = a3;
-    v21 = v7;
-    v14 = [v13 dataTaskWithRequest:v20 completionHandler:&v15];
+    countCopy = count;
+    v21 = completionCopy;
+    v14 = [session dataTaskWithRequest:v20 completionHandler:&v15];
 
     [v14 resume];
   }
@@ -119,26 +119,26 @@
   else
   {
     objc_storeStrong(&self->_error, v10);
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (id)_errorFromResponse:(id)a3
+- (id)_errorFromResponse:(id)response
 {
-  v3 = [a3 statusCode];
-  v4 = v3;
-  if (v3 <= 403)
+  statusCode = [response statusCode];
+  v4 = statusCode;
+  if (statusCode <= 403)
   {
-    if (v3 > 400)
+    if (statusCode > 400)
     {
-      if (v3 == &stru_158.reloff + 1)
+      if (statusCode == &stru_158.reloff + 1)
       {
         v5 = @"unauthorized";
         v6 = 600;
         goto LABEL_22;
       }
 
-      if (v3 == &stru_158.reloff + 3)
+      if (statusCode == &stru_158.reloff + 3)
       {
         v5 = @"access error";
         v6 = 603;
@@ -148,13 +148,13 @@
 
     else
     {
-      if (v3 == stru_B8.segname)
+      if (statusCode == stru_B8.segname)
       {
         v7 = 0;
         goto LABEL_25;
       }
 
-      if (v3 == &stru_158.reloff)
+      if (statusCode == &stru_158.reloff)
       {
         v5 = @"missing required parameter";
         v6 = 606;
@@ -165,16 +165,16 @@
     goto LABEL_21;
   }
 
-  if (v3 <= 499)
+  if (statusCode <= 499)
   {
-    if (v3 == &stru_158.nreloc)
+    if (statusCode == &stru_158.nreloc)
     {
       v5 = @"nothing found";
       v6 = 605;
       goto LABEL_22;
     }
 
-    if (v3 == &stru_158.reserved2 + 2)
+    if (statusCode == &stru_158.reserved2 + 2)
     {
       goto LABEL_16;
     }
@@ -185,7 +185,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (v3 == &stru_1A8.reserved3)
+  if (statusCode == &stru_1A8.reserved3)
   {
 LABEL_16:
     v5 = @"service down";
@@ -193,14 +193,14 @@ LABEL_16:
     goto LABEL_22;
   }
 
-  if (v3 == &stru_1A8.reserved3 + 2)
+  if (statusCode == &stru_1A8.reserved3 + 2)
   {
     v5 = @"bad gateway";
     v6 = 604;
     goto LABEL_22;
   }
 
-  if (v3 != &stru_1A8.reserved3 + 3)
+  if (statusCode != &stru_1A8.reserved3 + 3)
   {
     goto LABEL_21;
   }
@@ -228,15 +228,15 @@ LABEL_25:
   return v7;
 }
 
-- (BOOL)_performRetryIfNeededForStatusCode:(int64_t)a3 retryCount:(int64_t)a4 retryHandler:(id)a5
+- (BOOL)_performRetryIfNeededForStatusCode:(int64_t)code retryCount:(int64_t)count retryHandler:(id)handler
 {
-  v8 = a5;
-  v9 = v8;
-  v10 = a4 < 1;
-  v11 = a4 - 1;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  v10 = count < 1;
+  v11 = count - 1;
   if (!v10)
   {
-    if (a3 == 503)
+    if (code == 503)
     {
       [(HDCPSFetchJSONTask *)self retryInterval];
       v14 = dispatch_time(0, (v13 * 1000000000.0));
@@ -252,9 +252,9 @@ LABEL_25:
       goto LABEL_7;
     }
 
-    if (a3 == 401)
+    if (code == 401)
     {
-      (*(v8 + 2))(v8, v11);
+      (*(handlerCopy + 2))(handlerCopy, v11);
 LABEL_7:
       v12 = 1;
       goto LABEL_8;

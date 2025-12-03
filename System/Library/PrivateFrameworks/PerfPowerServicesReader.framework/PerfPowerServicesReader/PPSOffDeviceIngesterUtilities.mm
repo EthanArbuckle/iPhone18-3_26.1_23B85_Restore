@@ -1,50 +1,50 @@
 @interface PPSOffDeviceIngesterUtilities
-+ (id)allDataSourcesForFilepath:(id)a3 subsystem:(id)a4 category:(id)a5;
-+ (id)dataSourceForFilepath:(id)a3 subsystem:(id)a4 category:(id)a5;
-+ (id)metricDefinitionForFilepath:(id)a3 subsystem:(id)a4 category:(id)a5 metricName:(id)a6;
-+ (id)metricDefinitionsForFilepath:(id)a3 subsystem:(id)a4 category:(id)a5 metricNames:(id)a6;
++ (id)allDataSourcesForFilepath:(id)filepath subsystem:(id)subsystem category:(id)category;
++ (id)dataSourceForFilepath:(id)filepath subsystem:(id)subsystem category:(id)category;
++ (id)metricDefinitionForFilepath:(id)filepath subsystem:(id)subsystem category:(id)category metricName:(id)name;
++ (id)metricDefinitionsForFilepath:(id)filepath subsystem:(id)subsystem category:(id)category metricNames:(id)names;
 @end
 
 @implementation PPSOffDeviceIngesterUtilities
 
-+ (id)dataSourceForFilepath:(id)a3 subsystem:(id)a4 category:(id)a5
++ (id)dataSourceForFilepath:(id)filepath subsystem:(id)subsystem category:(id)category
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  filepathCopy = filepath;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
   v10 = objc_autoreleasePoolPush();
-  v11 = [objc_opt_class() metricDefinitionHistoriesForFilepath:v7 subsystem:v8 category:v9];
-  v12 = [v11 objectEnumerator];
-  v13 = [v12 nextObject];
-  v14 = [v13 lastObject];
+  v11 = [objc_opt_class() metricDefinitionHistoriesForFilepath:filepathCopy subsystem:subsystemCopy category:categoryCopy];
+  objectEnumerator = [v11 objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  lastObject = [nextObject lastObject];
 
-  v15 = [PPSDataIngesterCommonUtilities dataSourceForMetricDefinition:v14];
-  if (!v15)
+  categoryCopy = [PPSDataIngesterCommonUtilities dataSourceForMetricDefinition:lastObject];
+  if (!categoryCopy)
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v8, v9];
+    categoryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", subsystemCopy, categoryCopy];
   }
 
   objc_autoreleasePoolPop(v10);
 
-  return v15;
+  return categoryCopy;
 }
 
-+ (id)allDataSourcesForFilepath:(id)a3 subsystem:(id)a4 category:(id)a5
++ (id)allDataSourcesForFilepath:(id)filepath subsystem:(id)subsystem category:(id)category
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  filepathCopy = filepath;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
   v10 = objc_opt_new();
   v11 = objc_autoreleasePoolPush();
-  v12 = [objc_opt_class() metricDefinitionHistoriesForFilepath:v7 subsystem:v8 category:v9];
-  v13 = [v12 objectEnumerator];
-  v14 = [v13 nextObject];
-  v15 = [v14 lastObject];
+  v12 = [objc_opt_class() metricDefinitionHistoriesForFilepath:filepathCopy subsystem:subsystemCopy category:categoryCopy];
+  objectEnumerator = [v12 objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  lastObject = [nextObject lastObject];
 
-  v16 = [PPSDataIngesterCommonUtilities dataSourceForMetricDefinition:v15];
+  v16 = [PPSDataIngesterCommonUtilities dataSourceForMetricDefinition:lastObject];
   if (v16)
   {
-    v17 = v16;
+    categoryCopy = v16;
     v18 = [PPSDataIngesterCommonUtilities allTableNamesForMetadataHistory:v12 withEntryKey:v16];
     if (v18)
     {
@@ -54,10 +54,10 @@
 
   else
   {
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v8, v9];
+    categoryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", subsystemCopy, categoryCopy];
   }
 
-  [v10 addObject:v17];
+  [v10 addObject:categoryCopy];
   v19 = [v10 sortedArrayUsingComparator:&__block_literal_global_1];
 
   objc_autoreleasePoolPop(v11);
@@ -65,32 +65,32 @@
   return v19;
 }
 
-+ (id)metricDefinitionForFilepath:(id)a3 subsystem:(id)a4 category:(id)a5 metricName:(id)a6
++ (id)metricDefinitionForFilepath:(id)filepath subsystem:(id)subsystem category:(id)category metricName:(id)name
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [objc_opt_class() metricDefinitionHistoryForFilepath:v12 subsystem:v11 category:v10 metricName:v9];
+  nameCopy = name;
+  categoryCopy = category;
+  subsystemCopy = subsystem;
+  filepathCopy = filepath;
+  v13 = [objc_opt_class() metricDefinitionHistoryForFilepath:filepathCopy subsystem:subsystemCopy category:categoryCopy metricName:nameCopy];
 
-  v14 = [v13 lastObject];
+  lastObject = [v13 lastObject];
 
-  return v14;
+  return lastObject;
 }
 
-+ (id)metricDefinitionsForFilepath:(id)a3 subsystem:(id)a4 category:(id)a5 metricNames:(id)a6
++ (id)metricDefinitionsForFilepath:(id)filepath subsystem:(id)subsystem category:(id)category metricNames:(id)names
 {
   v39 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v27 = a4;
-  v9 = a5;
-  v10 = a6;
-  v24 = [MEMORY[0x277CBEB38] dictionary];
+  filepathCopy = filepath;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
+  namesCopy = names;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v11 = v10;
+  v11 = namesCopy;
   v12 = [v11 countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (v12)
   {
@@ -110,7 +110,7 @@
         v17 = objc_autoreleasePoolPush();
         if (([v16 isEqualToString:@"timestamp"] & 1) == 0)
         {
-          v18 = [a1 metricDefinitionForFilepath:v26 subsystem:v27 category:v9 metricName:v16];
+          v18 = [self metricDefinitionForFilepath:filepathCopy subsystem:subsystemCopy category:categoryCopy metricName:v16];
           v19 = PPSReaderLog();
           v20 = v19;
           if (v18)
@@ -118,15 +118,15 @@
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412802;
-              v33 = v27;
+              v33 = subsystemCopy;
               v34 = 2112;
-              v35 = v9;
+              v35 = categoryCopy;
               v36 = 2112;
               v37 = v16;
               _os_log_debug_impl(&dword_25E225000, v20, OS_LOG_TYPE_DEBUG, "Found metric definition for '%@::%@::%@'", buf, 0x20u);
             }
 
-            [v24 setObject:v18 forKeyedSubscript:v16];
+            [dictionary setObject:v18 forKeyedSubscript:v16];
           }
 
           else
@@ -134,9 +134,9 @@
             if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412802;
-              v33 = v27;
+              v33 = subsystemCopy;
               v34 = 2112;
-              v35 = v9;
+              v35 = categoryCopy;
               v36 = 2112;
               v37 = v16;
               _os_log_error_impl(&dword_25E225000, v20, OS_LOG_TYPE_ERROR, "No metric definition found for '%@::%@::%@'", buf, 0x20u);
@@ -155,7 +155,7 @@
     while (v13);
   }
 
-  v21 = [v24 copy];
+  v21 = [dictionary copy];
   v22 = *MEMORY[0x277D85DE8];
 
   return v21;

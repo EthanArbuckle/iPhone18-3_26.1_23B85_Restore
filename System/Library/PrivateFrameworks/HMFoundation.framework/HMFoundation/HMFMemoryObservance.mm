@@ -1,32 +1,32 @@
 @interface HMFMemoryObservance
-- (HMFMemoryObservance)initWithDebounceInterval:(double)a3 events:(id)a4;
+- (HMFMemoryObservance)initWithDebounceInterval:(double)interval events:(id)events;
 @end
 
 @implementation HMFMemoryObservance
 
-- (HMFMemoryObservance)initWithDebounceInterval:(double)a3 events:(id)a4
+- (HMFMemoryObservance)initWithDebounceInterval:(double)interval events:(id)events
 {
-  v6 = a4;
-  if (!v6)
+  eventsCopy = events;
+  if (!eventsCopy)
   {
     _HMFPreconditionFailure(@"events");
   }
 
-  v7 = v6;
+  v7 = eventsCopy;
   v15.receiver = self;
   v15.super_class = HMFMemoryObservance;
   v8 = [(HMFMemoryObservance *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    v8->_debounceInterval = a3;
+    v8->_debounceInterval = interval;
     v10 = [v7 copy];
     events = v9->_events;
     v9->_events = v10;
 
-    v12 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     lastUpdateDate = v9->_lastUpdateDate;
-    v9->_lastUpdateDate = v12;
+    v9->_lastUpdateDate = distantPast;
   }
 
   return v9;

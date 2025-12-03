@@ -1,25 +1,25 @@
 @interface HFCharacteristicEventBuilder
-+ (id)characteristicEventBuildersForEvents:(id)a3 inHome:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithCharacteristic:(id)a3;
-- (id)_initWithEvent:(id)a3;
++ (id)characteristicEventBuildersForEvents:(id)events inHome:(id)home;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithCharacteristic:(id)characteristic;
+- (id)_initWithEvent:(id)event;
 - (id)triggeringValues;
 - (unint64_t)hash;
-- (void)copyValuesFromCharacteristicEventBuilder:(id)a3;
+- (void)copyValuesFromCharacteristicEventBuilder:(id)builder;
 @end
 
 @implementation HFCharacteristicEventBuilder
 
-- (id)_initWithEvent:(id)a3
+- (id)_initWithEvent:(id)event
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && ([v5 conformsToProtocol:&unk_2825320C8] & 1) == 0)
+  eventCopy = event;
+  v6 = eventCopy;
+  if (eventCopy && ([eventCopy conformsToProtocol:&unk_2825320C8] & 1) == 0)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HFCharacteristicEventBuilder.m" lineNumber:29 description:{@"Event must be characteristic event: %@", v6}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicEventBuilder.m" lineNumber:29 description:{@"Event must be characteristic event: %@", v6}];
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -29,53 +29,53 @@
     v7 = [(HFEventBuilder *)&v13 initWithEvent:v6];
     if (v7)
     {
-      v8 = [v6 characteristic];
+      characteristic = [v6 characteristic];
       characteristic = v7->_characteristic;
-      v7->_characteristic = v8;
+      v7->_characteristic = characteristic;
     }
 
     self = v7;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)_initWithCharacteristic:(id)a3
+- (id)_initWithCharacteristic:(id)characteristic
 {
-  v5 = a3;
+  characteristicCopy = characteristic;
   v9.receiver = self;
   v9.super_class = HFCharacteristicEventBuilder;
   v6 = [(HFEventBuilder *)&v9 initWithEvent:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_characteristic, a3);
+    objc_storeStrong(&v6->_characteristic, characteristic);
   }
 
   return v7;
 }
 
-- (void)copyValuesFromCharacteristicEventBuilder:(id)a3
+- (void)copyValuesFromCharacteristicEventBuilder:(id)builder
 {
-  v4 = [a3 characteristic];
+  characteristic = [builder characteristic];
   characteristic = self->_characteristic;
-  self->_characteristic = v4;
+  self->_characteristic = characteristic;
 }
 
 - (id)triggeringValues
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFCharacteristicEventBuilder.m" lineNumber:55 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFCharacteristicEventBuilder triggeringValues]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicEventBuilder.m" lineNumber:55 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFCharacteristicEventBuilder triggeringValues]", objc_opt_class()}];
 
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -100,9 +100,9 @@
     v8 = 0;
     if ([(HFCharacteristicEventBuilder *)&v12 isEqual:v5]&& v7)
     {
-      v9 = [(HFCharacteristicEventBuilder *)self characteristic];
-      v10 = [(HFCharacteristicEventBuilder *)v7 characteristic];
-      v8 = [v9 isEqual:v10];
+      characteristic = [(HFCharacteristicEventBuilder *)self characteristic];
+      characteristic2 = [(HFCharacteristicEventBuilder *)v7 characteristic];
+      v8 = [characteristic isEqual:characteristic2];
     }
   }
 
@@ -111,25 +111,25 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HFCharacteristicEventBuilder *)self characteristic];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 hash];
+  characteristic = [(HFCharacteristicEventBuilder *)self characteristic];
+  uniqueIdentifier = [characteristic uniqueIdentifier];
+  v4 = [uniqueIdentifier hash];
 
   return v4;
 }
 
-+ (id)characteristicEventBuildersForEvents:(id)a3 inHome:(id)a4
++ (id)characteristicEventBuildersForEvents:(id)events inHome:(id)home
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
-  v7 = [v5 na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_9];
+  eventsCopy = events;
+  array = [v4 array];
+  v7 = [eventsCopy na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_9];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __76__HFCharacteristicEventBuilder_characteristicEventBuildersForEvents_inHome___block_invoke_2;
   v10[3] = &unk_277DF3748;
-  v8 = v6;
+  v8 = array;
   v11 = v8;
   [v7 na_each:v10];
 

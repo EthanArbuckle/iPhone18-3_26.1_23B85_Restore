@@ -1,85 +1,85 @@
 @interface PXPhotosViewUIInteraction
-- (BOOL)_handleHoverWithHitTestResult:(id)a3;
-- (BOOL)_handleTapWithHitTestResult:(id)a3 keyModifierFlags:(int64_t)a4;
+- (BOOL)_handleHoverWithHitTestResult:(id)result;
+- (BOOL)_handleTapWithHitTestResult:(id)result keyModifierFlags:(int64_t)flags;
 - (BOOL)_pickNavigatedAssetReference;
-- (BOOL)actionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5;
-- (BOOL)allowsActionsForContextMenuInteraction:(id)a3;
-- (BOOL)allowsPreviewCommittingForContextMenuInteraction:(id)a3;
-- (BOOL)canPerformActionType:(id)a3;
-- (BOOL)canStartContextMenuInteraction:(id)a3;
+- (BOOL)actionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler;
+- (BOOL)allowsActionsForContextMenuInteraction:(id)interaction;
+- (BOOL)allowsPreviewCommittingForContextMenuInteraction:(id)interaction;
+- (BOOL)canPerformActionType:(id)type;
+- (BOOL)canStartContextMenuInteraction:(id)interaction;
 - (BOOL)canToggleSelectMode;
-- (BOOL)commitPreviewForContextMenuInteraction:(id)a3;
-- (BOOL)dragController:(id)a3 shouldResizeCancelledPreviewForAssetReference:(id)a4;
-- (BOOL)dragController:(id)a3 shouldSelectRearrangedAssetReferences:(id)a4;
+- (BOOL)commitPreviewForContextMenuInteraction:(id)interaction;
+- (BOOL)dragController:(id)controller shouldResizeCancelledPreviewForAssetReference:(id)reference;
+- (BOOL)dragController:(id)controller shouldSelectRearrangedAssetReferences:(id)references;
 - (BOOL)ensureSelectMode;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)presentOneUpForAssetReference:(id)a3;
-- (BOOL)swipeSelectionManagerIsInMultiSelectMode:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)presentOneUpForAssetReference:(id)reference;
+- (BOOL)swipeSelectionManagerIsInMultiSelectMode:(id)mode;
 - (NSUndoManager)undoManager;
 - (PXPhotosViewUIInteractionDelegate)uiInteractionDelegate;
-- (PXSimpleIndexPath)_indexPathForAssetAtLocation:(SEL)a3 withPadding:(CGPoint)a4 forSwipeSelectionManager:(UIEdgeInsets)a5;
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathAtLocation:(id)a4;
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathClosestAboveLocation:(id)a4;
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathClosestLeadingLocation:(id)a4;
+- (PXSimpleIndexPath)_indexPathForAssetAtLocation:(SEL)location withPadding:(CGPoint)padding forSwipeSelectionManager:(UIEdgeInsets)manager;
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathAtLocation:(id)location;
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathClosestAboveLocation:(id)location;
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathClosestLeadingLocation:(id)location;
 - (UIScrollView)scrollView;
-- (id)_adjustHiddenAssetReferences:(id)a3;
-- (id)_contextMenuInteraction:(id)a3 accessoriesForMenuWithConfiguration:(id)a4;
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
+- (id)_adjustHiddenAssetReferences:(id)references;
+- (id)_contextMenuInteraction:(id)interaction accessoriesForMenuWithConfiguration:(id)configuration;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
 - (id)_createContextMenuActionManagerForSelection;
-- (id)_makePlaceholderViewForRegionOfInterest:(id)a3 roiRect:(CGRect)a4;
-- (id)adjustOneUpAssetReferenceToScrollToVisible:(id)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
+- (id)_makePlaceholderViewForRegionOfInterest:(id)interest roiRect:(CGRect)rect;
+- (id)adjustOneUpAssetReferenceToScrollToVisible:(id)visible;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
 - (id)createContextMenuActionManagerForNavigatedPreviewAssetReference;
-- (id)dragController:(id)a3 draggableAssetReferenceAtLocation:(CGPoint)a4;
-- (id)dragController:(id)a3 dropTargetAssetReferenceForLocation:(CGPoint)a4;
-- (id)dragController:(id)a3 itemProviderForAssetReference:(id)a4;
-- (id)dragControllerAssetReferenceForBeginningSession:(id)a3;
-- (id)menuImageForActionType:(id)a3;
-- (id)menuTitleForActionType:(id)a3;
-- (id)presentationEnvironmentForActionPerformer:(id)a3;
-- (id)regionOfInterestForAssetReference:(id)a3 image:(CGImage *)a4 fallbackMediaProvider:(id)a5 shouldSnapshot:(BOOL)a6;
-- (id)regionOfInterestForAssetReference:(id)a3 image:(id *)a4;
-- (id)swipeSelectionManager:(id)a3 indexPathSetFromIndexPath:(PXSimpleIndexPath *)a4 toIndexPath:(PXSimpleIndexPath *)a5;
-- (id)targetedPreviewForAssetReference:(id)a3;
-- (void)_handleDoubleTap:(id)a3;
-- (void)_handleHover:(id)a3;
-- (void)_handleHoverWithHitTestResults:(id)a3 hoverGesture:(id)a4;
-- (void)_handlePinch:(id)a3;
-- (void)_handlePress:(id)a3;
-- (void)_handleTap:(id)a3;
-- (void)_handleTouch:(id)a3;
+- (id)dragController:(id)controller draggableAssetReferenceAtLocation:(CGPoint)location;
+- (id)dragController:(id)controller dropTargetAssetReferenceForLocation:(CGPoint)location;
+- (id)dragController:(id)controller itemProviderForAssetReference:(id)reference;
+- (id)dragControllerAssetReferenceForBeginningSession:(id)session;
+- (id)menuImageForActionType:(id)type;
+- (id)menuTitleForActionType:(id)type;
+- (id)presentationEnvironmentForActionPerformer:(id)performer;
+- (id)regionOfInterestForAssetReference:(id)reference image:(CGImage *)image fallbackMediaProvider:(id)provider shouldSnapshot:(BOOL)snapshot;
+- (id)regionOfInterestForAssetReference:(id)reference image:(id *)image;
+- (id)swipeSelectionManager:(id)manager indexPathSetFromIndexPath:(PXSimpleIndexPath *)path toIndexPath:(PXSimpleIndexPath *)indexPath;
+- (id)targetedPreviewForAssetReference:(id)reference;
+- (void)_handleDoubleTap:(id)tap;
+- (void)_handleHover:(id)hover;
+- (void)_handleHoverWithHitTestResults:(id)results hoverGesture:(id)gesture;
+- (void)_handlePinch:(id)pinch;
+- (void)_handlePress:(id)press;
+- (void)_handleTap:(id)tap;
+- (void)_handleTouch:(id)touch;
 - (void)_setupGestures;
 - (void)_tearDownGestures;
 - (void)_updateContextMenuInteraction;
-- (void)_updateScrolledToStates:(id)a3;
-- (void)actionPerformer:(id)a3 didChangeState:(unint64_t)a4;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)dragController:(id)a3 draggedAssetReferencesDidChange:(id)a4;
-- (void)dragController:(id)a3 dropTargetAssetReferenceDidChange:(id)a4;
+- (void)_updateScrolledToStates:(id)states;
+- (void)actionPerformer:(id)performer didChangeState:(unint64_t)state;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)dragController:(id)controller draggedAssetReferencesDidChange:(id)change;
+- (void)dragController:(id)controller dropTargetAssetReferenceDidChange:(id)change;
 - (void)ensureSwipeDismissalInteraction;
-- (void)handleLongPress:(id)a3;
+- (void)handleLongPress:(id)press;
 - (void)invalidateContextMenuInteraction;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performActionWithType:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performActionWithType:(id)type;
 - (void)scrollViewControllerDidChange;
-- (void)scrollViewControllerDidScroll:(id)a3;
-- (void)setContextMenuInteraction:(id)a3;
-- (void)setCurrentTouchAction:(id)a3;
-- (void)setHiddenAssetReferences:(id)a3;
-- (void)setNavigatedAssetReference:(id)a3;
-- (void)setNavigatedAssetSectionDataSourceManager:(id)a3;
-- (void)swipeSelectionManager:(id)a3 extendSelectionInDirection:(unint64_t)a4;
-- (void)swipeSelectionManagerAutomaticallyTransitionToMultiSelectMode:(id)a3;
-- (void)swipeSelectionManagerDidAutoScroll:(id)a3;
+- (void)scrollViewControllerDidScroll:(id)scroll;
+- (void)setContextMenuInteraction:(id)interaction;
+- (void)setCurrentTouchAction:(id)action;
+- (void)setHiddenAssetReferences:(id)references;
+- (void)setNavigatedAssetReference:(id)reference;
+- (void)setNavigatedAssetSectionDataSourceManager:(id)manager;
+- (void)swipeSelectionManager:(id)manager extendSelectionInDirection:(unint64_t)direction;
+- (void)swipeSelectionManagerAutomaticallyTransitionToMultiSelectMode:(id)mode;
+- (void)swipeSelectionManagerDidAutoScroll:(id)scroll;
 - (void)toggleSelectMode;
-- (void)touchingUIGestureRecognizerDidBeginTouching:(id)a3;
+- (void)touchingUIGestureRecognizerDidBeginTouching:(id)touching;
 - (void)viewDidChange;
-- (void)willEndPreviewingForContextMenuInteraction:(id)a3;
+- (void)willEndPreviewingForContextMenuInteraction:(id)interaction;
 @end
 
 @implementation PXPhotosViewUIInteraction
@@ -91,35 +91,35 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v10 = a3;
-  if (NavigatedSectionDataSourceObservationContext != a5)
+  observableCopy = observable;
+  if (NavigatedSectionDataSourceObservationContext != context)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXPhotosViewUIInteraction.m" lineNumber:1384 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosViewUIInteraction.m" lineNumber:1384 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v8 = [(PXPhotosViewInteraction *)self interactionHelper];
-  [v8 navigatedSectionDataSourceManagerDidChangeForInteraction:self];
+  interactionHelper = [(PXPhotosViewInteraction *)self interactionHelper];
+  [interactionHelper navigatedSectionDataSourceManagerDidChangeForInteraction:self];
 }
 
-- (void)_updateScrolledToStates:(id)a3
+- (void)_updateScrolledToStates:(id)states
 {
-  v4 = a3;
-  v5 = [v4 isScrolledAtEdge:1 tolerance:0.0];
-  v6 = [v4 isScrolledAtEdge:3 tolerance:10.0];
+  statesCopy = states;
+  v5 = [statesCopy isScrolledAtEdge:1 tolerance:0.0];
+  v6 = [statesCopy isScrolledAtEdge:3 tolerance:10.0];
 
-  v7 = [(PXPhotosViewInteraction *)self viewModel];
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__PXPhotosViewUIInteraction__updateScrolledToStates___block_invoke;
   v8[3] = &__block_descriptor_34_e53_v16__0__PXPhotosViewModel_PXMutablePhotosViewModel__8l;
   v9 = v5;
   v10 = v6;
-  [v7 performChanges:v8];
+  [viewModel performChanges:v8];
 }
 
 void __53__PXPhotosViewUIInteraction__updateScrolledToStates___block_invoke(uint64_t a1, void *a2)
@@ -130,50 +130,50 @@ void __53__PXPhotosViewUIInteraction__updateScrolledToStates___block_invoke(uint
   [v4 setScrolledToBottom:*(a1 + 33)];
 }
 
-- (void)scrollViewControllerDidScroll:(id)a3
+- (void)scrollViewControllerDidScroll:(id)scroll
 {
-  v8 = a3;
-  v4 = [(PXPhotosViewUIInteraction *)self dragController];
-  v5 = [v4 isDragSessionActive];
+  scrollCopy = scroll;
+  dragController = [(PXPhotosViewUIInteraction *)self dragController];
+  isDragSessionActive = [dragController isDragSessionActive];
 
-  if (v5)
+  if (isDragSessionActive)
   {
-    v6 = [(PXGInteraction *)self layout];
-    [v6 clearLastVisibleAreaAnchoringInformation];
+    layout = [(PXGInteraction *)self layout];
+    [layout clearLastVisibleAreaAnchoringInformation];
   }
 
-  v7 = [(PXPhotosViewUIInteraction *)self hoverGesture];
-  [v7 px_cancel];
+  hoverGesture = [(PXPhotosViewUIInteraction *)self hoverGesture];
+  [hoverGesture px_cancel];
 
-  [(PXPhotosViewUIInteraction *)self _updateScrolledToStates:v8];
+  [(PXPhotosViewUIInteraction *)self _updateScrolledToStates:scrollCopy];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v4 = [(PXPhotosViewInteraction *)self viewModel:a3];
-  v5 = [v4 allowedGesturesKind];
+  v4 = [(PXPhotosViewInteraction *)self viewModel:recognizer];
+  allowedGesturesKind = [v4 allowedGesturesKind];
 
-  return v5 != 1;
+  return allowedGesturesKind != 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXPhotosViewUIInteraction *)self tapGesture];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  tapGesture = [(PXPhotosViewUIInteraction *)self tapGesture];
 
-  if (v8 == v7 && ([(PXPhotosViewUIInteraction *)self doubleTapGesture], v9 = objc_claimAutoreleasedReturnValue(), v9, v9 == v6))
+  if (tapGesture == recognizerCopy && ([(PXPhotosViewUIInteraction *)self doubleTapGesture], v9 = objc_claimAutoreleasedReturnValue(), v9, v9 == gestureRecognizerCopy))
   {
-    v12 = [(PXPhotosViewInteraction *)self viewModel];
-    if ([v12 allowsMacStyleSelection])
+    viewModel = [(PXPhotosViewInteraction *)self viewModel];
+    if ([viewModel allowsMacStyleSelection])
     {
       LOBYTE(v10) = 0;
     }
 
     else
     {
-      v13 = [(PXPhotosViewInteraction *)self viewModel];
-      v10 = [v13 isInSelectMode] ^ 1;
+      viewModel2 = [(PXPhotosViewInteraction *)self viewModel];
+      v10 = [viewModel2 isInSelectMode] ^ 1;
     }
   }
 
@@ -185,16 +185,16 @@ void __53__PXPhotosViewUIInteraction__updateScrolledToStates___block_invoke(uint
   return v10;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXPhotosViewUIInteraction *)self pinchGesture];
-  if (v8 == v6)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  pinchGesture = [(PXPhotosViewUIInteraction *)self pinchGesture];
+  if (pinchGesture == recognizerCopy)
   {
-    v10 = [(PXPhotosViewUIInteraction *)self scrollView];
-    v11 = [v10 panGestureRecognizer];
-    v9 = v11 == v7 || self->_longPressGesture == v7;
+    scrollView = [(PXPhotosViewUIInteraction *)self scrollView];
+    panGestureRecognizer = [scrollView panGestureRecognizer];
+    v9 = panGestureRecognizer == gestureRecognizerCopy || self->_longPressGesture == gestureRecognizerCopy;
   }
 
   else
@@ -202,30 +202,30 @@ void __53__PXPhotosViewUIInteraction__updateScrolledToStates___block_invoke(uint
     v9 = 0;
   }
 
-  v12 = [(PXPhotosViewUIInteraction *)self tapGesture];
-  if (v12 == v6)
+  tapGesture = [(PXPhotosViewUIInteraction *)self tapGesture];
+  if (tapGesture == recognizerCopy)
   {
-    v13 = [(PXPhotosViewUIInteraction *)self touchGesture];
-    if (v13 == v7)
+    touchGesture = [(PXPhotosViewUIInteraction *)self touchGesture];
+    if (touchGesture == gestureRecognizerCopy)
     {
       v9 = 1;
     }
 
     else
     {
-      v14 = [(PXPhotosViewUIInteraction *)self touchingGesture];
-      v15 = v14 == v7;
+      touchingGesture = [(PXPhotosViewUIInteraction *)self touchingGesture];
+      v15 = touchingGesture == gestureRecognizerCopy;
 
       v9 |= v15;
     }
   }
 
-  v16 = [(PXPhotosViewUIInteraction *)self touchingGesture];
+  touchingGesture2 = [(PXPhotosViewUIInteraction *)self touchingGesture];
 
-  if (v16 == v6)
+  if (touchingGesture2 == recognizerCopy)
   {
     v21 = 0;
-    v17 = [(UILongPressGestureRecognizer *)v7 px_isPanGestureRecognizerOfScrollView:&v21];
+    v17 = [(UILongPressGestureRecognizer *)gestureRecognizerCopy px_isPanGestureRecognizerOfScrollView:&v21];
     v18 = v21;
     v19 = v18;
     v9 = !v17 || ([v18 px_isDecelerating] & 1) == 0;
@@ -234,15 +234,15 @@ void __53__PXPhotosViewUIInteraction__updateScrolledToStates___block_invoke(uint
   return v9 & 1;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(PXPhotosViewUIInteraction *)self pinchGesture];
+  beginCopy = begin;
+  pinchGesture = [(PXPhotosViewUIInteraction *)self pinchGesture];
 
-  if (v5 == v4)
+  if (pinchGesture == beginCopy)
   {
-    v7 = [(PXPhotosViewUIInteraction *)self swipeSelectionManager];
-    LOBYTE(v6) = [v7 state] == 0;
+    swipeSelectionManager = [(PXPhotosViewUIInteraction *)self swipeSelectionManager];
+    LOBYTE(v6) = [swipeSelectionManager state] == 0;
   }
 
   else
@@ -250,34 +250,34 @@ void __53__PXPhotosViewUIInteraction__updateScrolledToStates___block_invoke(uint
     LOBYTE(v6) = 1;
   }
 
-  v8 = [(PXPhotosViewUIInteraction *)self doubleTapGesture];
+  doubleTapGesture = [(PXPhotosViewUIInteraction *)self doubleTapGesture];
 
-  if (v8 == v4)
+  if (doubleTapGesture == beginCopy)
   {
-    v9 = [(PXPhotosViewInteraction *)self viewModel];
-    v10 = [v9 isInSelectMode];
+    viewModel = [(PXPhotosViewInteraction *)self viewModel];
+    isInSelectMode = [viewModel isInSelectMode];
 
-    LOBYTE(v6) = (v10 ^ 1) & v6;
+    LOBYTE(v6) = (isInSelectMode ^ 1) & v6;
   }
 
-  v11 = [(PXGInteraction *)self view];
-  [v4 locationInView:v11];
-  v12 = [v11 hitTest:0 withEvent:?];
-  v13 = [(PXPhotosViewInteraction *)self viewModel];
-  v14 = [v13 isEmbedded];
+  view = [(PXGInteraction *)self view];
+  [beginCopy locationInView:view];
+  v12 = [view hitTest:0 withEvent:?];
+  viewModel2 = [(PXPhotosViewInteraction *)self viewModel];
+  isEmbedded = [viewModel2 isEmbedded];
 
-  if (v14)
+  if (isEmbedded)
   {
     if (MEMORY[0x21CEE04B0]() && _os_feature_enabled_impl())
     {
-      if (v12 != v11)
+      if (v12 != view)
       {
-        v15 = [(PXPhotosViewUIInteraction *)self scrollView];
-        if (v12 != v15)
+        scrollView = [(PXPhotosViewUIInteraction *)self scrollView];
+        if (v12 != scrollView)
         {
-          v16 = [v12 superview];
-          v17 = [(PXPhotosViewUIInteraction *)self scrollView];
-          if (v16 == v17)
+          superview = [v12 superview];
+          scrollView2 = [(PXPhotosViewUIInteraction *)self scrollView];
+          if (superview == scrollView2)
           {
             LOBYTE(v6) = 1;
           }
@@ -294,10 +294,10 @@ void __53__PXPhotosViewUIInteraction__updateScrolledToStates___block_invoke(uint
       }
     }
 
-    else if (v12 != v11)
+    else if (v12 != view)
     {
-      v15 = [(PXPhotosViewUIInteraction *)self scrollView];
-      if (v12 != v15)
+      scrollView = [(PXPhotosViewUIInteraction *)self scrollView];
+      if (v12 != scrollView)
       {
         v6 = [v12 isUserInteractionEnabled] ^ 1;
 LABEL_20:
@@ -320,95 +320,95 @@ LABEL_21:
   return v18 & 1;
 }
 
-- (id)presentationEnvironmentForActionPerformer:(id)a3
+- (id)presentationEnvironmentForActionPerformer:(id)performer
 {
-  v4 = a3;
-  v5 = [(PXPhotosViewInteraction *)self contentController];
-  v6 = [v5 delegate];
+  performerCopy = performer;
+  contentController = [(PXPhotosViewInteraction *)self contentController];
+  delegate = [contentController delegate];
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 presentationEnvironmentForActionPerformer:v4];
+    v7 = [delegate presentationEnvironmentForActionPerformer:performerCopy];
   }
 
   else
   {
     v8 = MEMORY[0x277D3CE40];
-    v9 = [(PXPhotosViewInteraction *)self presentingViewController];
-    v7 = [v8 defaultPresenterWithViewController:v9];
+    presentingViewController = [(PXPhotosViewInteraction *)self presentingViewController];
+    v7 = [v8 defaultPresenterWithViewController:presentingViewController];
   }
 
   return v7;
 }
 
-- (BOOL)actionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5
+- (BOOL)actionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = [(PXPhotosViewInteraction *)self presentingViewController];
-  v8 = [v7 presentedViewController];
+  handlerCopy = handler;
+  presentingViewController = [(PXPhotosViewInteraction *)self presentingViewController];
+  presentedViewController = [presentingViewController presentedViewController];
 
-  if (v8)
+  if (presentedViewController)
   {
-    [v7 dismissViewControllerAnimated:1 completion:v6];
+    [presentingViewController dismissViewControllerAnimated:1 completion:handlerCopy];
   }
 
-  return v8 != 0;
+  return presentedViewController != 0;
 }
 
-- (void)actionPerformer:(id)a3 didChangeState:(unint64_t)a4
+- (void)actionPerformer:(id)performer didChangeState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = v6;
-  v15 = v6;
-  if (a4 == 10)
+  performerCopy = performer;
+  v7 = performerCopy;
+  v15 = performerCopy;
+  if (state == 10)
   {
-    v8 = [v6 shouldPreventTargetedDismissalAnimation];
+    shouldPreventTargetedDismissalAnimation = [performerCopy shouldPreventTargetedDismissalAnimation];
     v7 = v15;
-    if (v8)
+    if (shouldPreventTargetedDismissalAnimation)
     {
-      v9 = [(PXPhotosViewInteraction *)self interactionHelper];
-      [v9 preventTargetedContextMenuDismissalAnimationForViewInteraction:self];
+      interactionHelper = [(PXPhotosViewInteraction *)self interactionHelper];
+      [interactionHelper preventTargetedContextMenuDismissalAnimationForViewInteraction:self];
 
       v7 = v15;
     }
   }
 
-  v10 = [v7 actionType];
-  v11 = [v10 isEqualToString:*MEMORY[0x277D3CE58]];
+  actionType = [v7 actionType];
+  v11 = [actionType isEqualToString:*MEMORY[0x277D3CE58]];
 
-  if (a4 == 30 && v11)
+  if (state == 30 && v11)
   {
     [(PXPhotosViewUIInteraction *)self _pickNavigatedAssetReference];
   }
 
-  v12 = [(PXPhotosViewInteraction *)self viewModel];
-  v13 = [v12 allowsMultiSelectMenu];
-  v14 = [v12 isInSelectMode];
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  allowsMultiSelectMenu = [viewModel allowsMultiSelectMenu];
+  isInSelectMode = [viewModel isInSelectMode];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v15 shouldExitSelectModeForState:a4] & v13 & v14) == 1)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v15 shouldExitSelectModeForState:state] & allowsMultiSelectMenu & isInSelectMode) == 1)
   {
     [(PXPhotosViewUIInteraction *)self toggleSelectMode];
   }
 }
 
-- (void)swipeSelectionManagerDidAutoScroll:(id)a3
+- (void)swipeSelectionManagerDidAutoScroll:(id)scroll
 {
-  v3 = [(PXGInteraction *)self layout];
-  [v3 clearLastVisibleAreaAnchoringInformation];
+  layout = [(PXGInteraction *)self layout];
+  [layout clearLastVisibleAreaAnchoringInformation];
 }
 
-- (PXSimpleIndexPath)_indexPathForAssetAtLocation:(SEL)a3 withPadding:(CGPoint)a4 forSwipeSelectionManager:(UIEdgeInsets)a5
+- (PXSimpleIndexPath)_indexPathForAssetAtLocation:(SEL)location withPadding:(CGPoint)padding forSwipeSelectionManager:(UIEdgeInsets)manager
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  y = a4.y;
-  x = a4.x;
-  v14 = [a6 scrollView];
-  v15 = [(PXPhotosViewInteraction *)self assetReferenceAtLocation:v14 withPadding:x inCoordinateSpace:y, top, left, bottom, right];
+  right = manager.right;
+  bottom = manager.bottom;
+  left = manager.left;
+  top = manager.top;
+  y = padding.y;
+  x = padding.x;
+  scrollView = [a6 scrollView];
+  right = [(PXPhotosViewInteraction *)self assetReferenceAtLocation:scrollView withPadding:x inCoordinateSpace:y, top, left, bottom, right];
 
-  if (v15 && (-[PXPhotosViewInteraction viewModel](self, "viewModel"), v17 = objc_claimAutoreleasedReturnValue(), [v17 currentDataSource], v18 = objc_claimAutoreleasedReturnValue(), v17, objc_msgSend(v18, "assetReferenceForAssetReference:", v15), v20 = objc_claimAutoreleasedReturnValue(), v15, v18, v20))
+  if (right && (-[PXPhotosViewInteraction viewModel](self, "viewModel"), v17 = objc_claimAutoreleasedReturnValue(), [v17 currentDataSource], v18 = objc_claimAutoreleasedReturnValue(), v17, objc_msgSend(v18, "assetReferenceForAssetReference:", right), v20 = objc_claimAutoreleasedReturnValue(), right, v18, v20))
   {
     [v20 indexPath];
   }
@@ -423,28 +423,28 @@ LABEL_21:
   return result;
 }
 
-- (void)swipeSelectionManager:(id)a3 extendSelectionInDirection:(unint64_t)a4
+- (void)swipeSelectionManager:(id)manager extendSelectionInDirection:(unint64_t)direction
 {
-  v6 = [(PXPhotosViewInteraction *)self presentingViewController];
-  v7 = [v6 presentedViewController];
+  presentingViewController = [(PXPhotosViewInteraction *)self presentingViewController];
+  presentedViewController = [presentingViewController presentedViewController];
 
-  if (!v7 && [(PXPhotosViewUIInteraction *)self ensureSelectMode])
+  if (!presentedViewController && [(PXPhotosViewUIInteraction *)self ensureSelectMode])
   {
-    v8 = [(PXPhotosViewInteraction *)self contentController];
-    [v8 extendSelectionInDirection:a4];
+    contentController = [(PXPhotosViewInteraction *)self contentController];
+    [contentController extendSelectionInDirection:direction];
 
-    v9 = [(PXPhotosViewUIInteraction *)self uiInteractionDelegate];
-    [v9 uiInteractionDidExtendSelection:self];
+    uiInteractionDelegate = [(PXPhotosViewUIInteraction *)self uiInteractionDelegate];
+    [uiInteractionDelegate uiInteractionDidExtendSelection:self];
   }
 }
 
-- (id)swipeSelectionManager:(id)a3 indexPathSetFromIndexPath:(PXSimpleIndexPath *)a4 toIndexPath:(PXSimpleIndexPath *)a5
+- (id)swipeSelectionManager:(id)manager indexPathSetFromIndexPath:(PXSimpleIndexPath *)path toIndexPath:(PXSimpleIndexPath *)indexPath
 {
-  v9 = [a3 selectionManager];
-  v10 = [v9 dataSourceManager];
-  v11 = [v10 dataSource];
+  selectionManager = [manager selectionManager];
+  dataSourceManager = [selectionManager dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
 
-  if (v11)
+  if (dataSource)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -452,99 +452,99 @@ LABEL_21:
       goto LABEL_3;
     }
 
-    v16 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v19 = objc_opt_class();
     v18 = NSStringFromClass(v19);
-    v20 = [v11 px_descriptionForAssertionMessage];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXPhotosViewUIInteraction.m" lineNumber:1177 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"swipeSelectionManager.selectionManager.dataSourceManager.dataSource", v18, v20}];
+    px_descriptionForAssertionMessage = [dataSource px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosViewUIInteraction.m" lineNumber:1177 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"swipeSelectionManager.selectionManager.dataSourceManager.dataSource", v18, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    [v16 handleFailureInMethod:a2 object:self file:@"PXPhotosViewUIInteraction.m" lineNumber:1177 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"swipeSelectionManager.selectionManager.dataSourceManager.dataSource", v18}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosViewUIInteraction.m" lineNumber:1177 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"swipeSelectionManager.selectionManager.dataSourceManager.dataSource", v18}];
   }
 
 LABEL_3:
-  v12 = *&a4->item;
-  v22[0] = *&a4->dataSourceIdentifier;
+  v12 = *&path->item;
+  v22[0] = *&path->dataSourceIdentifier;
   v22[1] = v12;
-  v13 = *&a5->item;
-  v21[0] = *&a5->dataSourceIdentifier;
+  v13 = *&indexPath->item;
+  v21[0] = *&indexPath->dataSourceIdentifier;
   v21[1] = v13;
-  v14 = [v11 indexPathSetFromIndexPath:v22 toIndexPath:v21];
+  v14 = [dataSource indexPathSetFromIndexPath:v22 toIndexPath:v21];
 
   return v14;
 }
 
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathClosestAboveLocation:(id)a4
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathClosestAboveLocation:(id)location
 {
   y = a5.y;
   x = a5.x;
-  v15 = a4;
-  v9 = [(PXGInteraction *)self layout];
-  [v9 padding];
+  locationCopy = location;
+  layout = [(PXGInteraction *)self layout];
+  [layout padding];
 
   *&retstr->dataSourceIdentifier = 0u;
   *&retstr->item = 0u;
   PXEdgeInsetsMake();
-  [(PXPhotosViewUIInteraction *)self _indexPathForAssetAtLocation:v15 withPadding:x forSwipeSelectionManager:y, v10, v11, v12, v13];
+  [(PXPhotosViewUIInteraction *)self _indexPathForAssetAtLocation:locationCopy withPadding:x forSwipeSelectionManager:y, v10, v11, v12, v13];
 
   return result;
 }
 
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathClosestLeadingLocation:(id)a4
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathClosestLeadingLocation:(id)location
 {
   y = a5.y;
   x = a5.x;
   swipeSelectionManager = self->_swipeSelectionManager;
-  v16 = a4;
-  v10 = [(PXSwipeSelectionManager *)swipeSelectionManager scrollView];
-  [v10 frame];
+  locationCopy = location;
+  scrollView = [(PXSwipeSelectionManager *)swipeSelectionManager scrollView];
+  [scrollView frame];
 
   *&retstr->dataSourceIdentifier = 0u;
   *&retstr->item = 0u;
   PXEdgeInsetsMake();
-  [(PXPhotosViewUIInteraction *)self _indexPathForAssetAtLocation:v16 withPadding:x forSwipeSelectionManager:y, v11, v12, v13, v14];
+  [(PXPhotosViewUIInteraction *)self _indexPathForAssetAtLocation:locationCopy withPadding:x forSwipeSelectionManager:y, v11, v12, v13, v14];
 
   return result;
 }
 
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathAtLocation:(id)a4
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathAtLocation:(id)location
 {
   *&retstr->dataSourceIdentifier = 0u;
   *&retstr->item = 0u;
-  return [(PXPhotosViewUIInteraction *)self _indexPathForAssetAtLocation:a4 withPadding:a5.x forSwipeSelectionManager:a5.y, *MEMORY[0x277D3CF88], *(MEMORY[0x277D3CF88] + 8), *(MEMORY[0x277D3CF88] + 16), *(MEMORY[0x277D3CF88] + 24)];
+  return [(PXPhotosViewUIInteraction *)self _indexPathForAssetAtLocation:location withPadding:a5.x forSwipeSelectionManager:a5.y, *MEMORY[0x277D3CF88], *(MEMORY[0x277D3CF88] + 8), *(MEMORY[0x277D3CF88] + 16), *(MEMORY[0x277D3CF88] + 24)];
 }
 
-- (void)swipeSelectionManagerAutomaticallyTransitionToMultiSelectMode:(id)a3
+- (void)swipeSelectionManagerAutomaticallyTransitionToMultiSelectMode:(id)mode
 {
-  v3 = [(PXPhotosViewInteraction *)self viewModel];
-  if (([v3 isInSelectMode] & 1) == 0 && objc_msgSend(v3, "canEnterSelectMode"))
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  if (([viewModel isInSelectMode] & 1) == 0 && objc_msgSend(viewModel, "canEnterSelectMode"))
   {
-    [v3 performChanges:&__block_literal_global_68];
+    [viewModel performChanges:&__block_literal_global_68];
   }
 }
 
-- (BOOL)swipeSelectionManagerIsInMultiSelectMode:(id)a3
+- (BOOL)swipeSelectionManagerIsInMultiSelectMode:(id)mode
 {
-  v3 = [(PXPhotosViewInteraction *)self viewModel];
-  v4 = [v3 canSwipeSelect];
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  canSwipeSelect = [viewModel canSwipeSelect];
 
-  return v4;
+  return canSwipeSelect;
 }
 
-- (id)dragController:(id)a3 itemProviderForAssetReference:(id)a4
+- (id)dragController:(id)controller itemProviderForAssetReference:(id)reference
 {
-  v5 = a4;
-  v6 = [(PXPhotosViewInteraction *)self viewModel];
-  if ([v6 viewDelegateRespondsTo:2048])
+  referenceCopy = reference;
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  if ([viewModel viewDelegateRespondsTo:2048])
   {
-    v7 = [v6 viewDelegate];
-    v8 = [(PXPhotosViewInteraction *)self presentingViewController];
-    v9 = [v7 photosViewController:v8 dragItemProviderForAssetReference:v5];
+    viewDelegate = [viewModel viewDelegate];
+    presentingViewController = [(PXPhotosViewInteraction *)self presentingViewController];
+    v9 = [viewDelegate photosViewController:presentingViewController dragItemProviderForAssetReference:referenceCopy];
   }
 
   else
@@ -555,81 +555,81 @@ LABEL_3:
   return v9;
 }
 
-- (void)dragController:(id)a3 dropTargetAssetReferenceDidChange:(id)a4
+- (void)dragController:(id)controller dropTargetAssetReferenceDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [(PXPhotosViewInteraction *)self viewModel];
+  changeCopy = change;
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__PXPhotosViewUIInteraction_dragController_dropTargetAssetReferenceDidChange___block_invoke;
   v8[3] = &unk_278298E60;
-  v9 = v5;
-  v7 = v5;
-  [v6 performChanges:v8];
+  v9 = changeCopy;
+  v7 = changeCopy;
+  [viewModel performChanges:v8];
 }
 
-- (void)dragController:(id)a3 draggedAssetReferencesDidChange:(id)a4
+- (void)dragController:(id)controller draggedAssetReferencesDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [(PXPhotosViewInteraction *)self viewModel];
-  v7 = [v6 draggedAssetReferences];
-  v8 = [v7 count];
-  v9 = [v5 count];
+  changeCopy = change;
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  draggedAssetReferences = [viewModel draggedAssetReferences];
+  v8 = [draggedAssetReferences count];
+  v9 = [changeCopy count];
 
   if (v8 > v9)
   {
-    v10 = [(PXGInteraction *)self layout];
-    v11 = [v10 createFenceWithType:2];
+    layout = [(PXGInteraction *)self layout];
+    v11 = [layout createFenceWithType:2];
   }
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __76__PXPhotosViewUIInteraction_dragController_draggedAssetReferencesDidChange___block_invoke;
   v13[3] = &unk_278298E60;
-  v14 = v5;
-  v12 = v5;
-  [v6 performChanges:v13];
+  v14 = changeCopy;
+  v12 = changeCopy;
+  [viewModel performChanges:v13];
 }
 
-- (BOOL)dragController:(id)a3 shouldResizeCancelledPreviewForAssetReference:(id)a4
+- (BOOL)dragController:(id)controller shouldResizeCancelledPreviewForAssetReference:(id)reference
 {
-  v4 = [(PXGInteraction *)self layout:a3];
-  v5 = [v4 hiddenSpriteIndexes];
-  v6 = [v5 count] == 0;
+  v4 = [(PXGInteraction *)self layout:controller];
+  hiddenSpriteIndexes = [v4 hiddenSpriteIndexes];
+  v6 = [hiddenSpriteIndexes count] == 0;
 
   return v6;
 }
 
-- (BOOL)dragController:(id)a3 shouldSelectRearrangedAssetReferences:(id)a4
+- (BOOL)dragController:(id)controller shouldSelectRearrangedAssetReferences:(id)references
 {
-  v4 = [(PXPhotosViewInteraction *)self viewModel:a3];
-  v5 = [v4 isInSelectMode];
+  v4 = [(PXPhotosViewInteraction *)self viewModel:controller];
+  isInSelectMode = [v4 isInSelectMode];
 
-  return v5;
+  return isInSelectMode;
 }
 
-- (id)dragControllerAssetReferenceForBeginningSession:(id)a3
+- (id)dragControllerAssetReferenceForBeginningSession:(id)session
 {
-  v4 = [(PXPhotosViewInteraction *)self interactionHelper];
-  if ([v4 isContextMenuInteractionActiveForViewInteraction:self])
+  interactionHelper = [(PXPhotosViewInteraction *)self interactionHelper];
+  if ([interactionHelper isContextMenuInteractionActiveForViewInteraction:self])
   {
-    v5 = [(PXPhotosViewUIInteraction *)self navigatedAssetReference];
+    navigatedAssetReference = [(PXPhotosViewUIInteraction *)self navigatedAssetReference];
   }
 
   else
   {
-    v5 = 0;
+    navigatedAssetReference = 0;
   }
 
-  return v5;
+  return navigatedAssetReference;
 }
 
-- (id)dragController:(id)a3 dropTargetAssetReferenceForLocation:(CGPoint)a4
+- (id)dragController:(id)controller dropTargetAssetReferenceForLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = [(PXGInteraction *)self view];
-  v7 = [v6 dropTargetObjectReferenceForLocation:{x, y}];
+  y = location.y;
+  x = location.x;
+  view = [(PXGInteraction *)self view];
+  v7 = [view dropTargetObjectReferenceForLocation:{x, y}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -645,26 +645,26 @@ LABEL_3:
   return v8;
 }
 
-- (id)dragController:(id)a3 draggableAssetReferenceAtLocation:(CGPoint)a4
+- (id)dragController:(id)controller draggableAssetReferenceAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [a3 contentView];
-  v8 = [(PXPhotosViewInteraction *)self assetReferenceAtLocation:v7 withPadding:x inCoordinateSpace:y, *MEMORY[0x277D3CF88], *(MEMORY[0x277D3CF88] + 8), *(MEMORY[0x277D3CF88] + 16), *(MEMORY[0x277D3CF88] + 24)];
+  y = location.y;
+  x = location.x;
+  contentView = [controller contentView];
+  v8 = [(PXPhotosViewInteraction *)self assetReferenceAtLocation:contentView withPadding:x inCoordinateSpace:y, *MEMORY[0x277D3CF88], *(MEMORY[0x277D3CF88] + 8), *(MEMORY[0x277D3CF88] + 16), *(MEMORY[0x277D3CF88] + 24)];
 
   return v8;
 }
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXPhotosViewInteraction *)self viewModel];
-  if ([v8 viewDelegateRespondsTo:1024])
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  if ([viewModel viewDelegateRespondsTo:1024])
   {
-    v9 = [v8 viewDelegate];
-    v10 = [(PXPhotosViewInteraction *)self presentingViewController];
-    v11 = [v9 photosViewController:v10 contextMenuInteraction:v6 styleForMenuWithConfiguration:v7];
+    viewDelegate = [viewModel viewDelegate];
+    presentingViewController = [(PXPhotosViewInteraction *)self presentingViewController];
+    v11 = [viewDelegate photosViewController:presentingViewController contextMenuInteraction:interactionCopy styleForMenuWithConfiguration:configurationCopy];
   }
 
   else
@@ -675,30 +675,30 @@ LABEL_3:
   return v11;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PXPhotosViewInteraction *)self viewModel];
-  if ([v10 viewDelegateRespondsTo:512])
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  if ([viewModel viewDelegateRespondsTo:512])
   {
-    v11 = [v10 viewDelegate];
-    v12 = [(PXPhotosViewInteraction *)self presentingViewController];
-    [v11 photosViewController:v12 contextMenuInteraction:v13 willEndForConfiguration:v8 animator:v9];
+    viewDelegate = [viewModel viewDelegate];
+    presentingViewController = [(PXPhotosViewInteraction *)self presentingViewController];
+    [viewDelegate photosViewController:presentingViewController contextMenuInteraction:interactionCopy willEndForConfiguration:configurationCopy animator:animatorCopy];
   }
 }
 
-- (id)_contextMenuInteraction:(id)a3 accessoriesForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction accessoriesForMenuWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = [(PXPhotosViewInteraction *)self viewModel];
-  if ([v6 viewDelegateRespondsTo:256] && (objc_msgSend(v6, "isInSelectMode") & 1) == 0)
+  interactionCopy = interaction;
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  if ([viewModel viewDelegateRespondsTo:256] && (objc_msgSend(viewModel, "isInSelectMode") & 1) == 0)
   {
-    v8 = [v6 viewDelegate];
-    v9 = [(PXPhotosViewInteraction *)self presentingViewController];
-    v10 = [(PXPhotosViewUIInteraction *)self navigatedAssetReference];
-    v7 = [v8 photosViewController:v9 accessoriesForContextMenuInteraction:v5 assetReference:v10];
+    viewDelegate = [viewModel viewDelegate];
+    presentingViewController = [(PXPhotosViewInteraction *)self presentingViewController];
+    navigatedAssetReference = [(PXPhotosViewUIInteraction *)self navigatedAssetReference];
+    v7 = [viewDelegate photosViewController:presentingViewController accessoriesForContextMenuInteraction:interactionCopy assetReference:navigatedAssetReference];
   }
 
   else
@@ -709,24 +709,24 @@ LABEL_3:
   return v7;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(PXPhotosViewInteraction *)self viewModel];
-  if ([v9 viewDelegateRespondsTo:128])
+  interactionCopy = interaction;
+  animatorCopy = animator;
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  if ([viewModel viewDelegateRespondsTo:128])
   {
-    v10 = [(PXPhotosViewInteraction *)self presentingViewController];
-    [v8 setPreferredCommitStyle:1];
+    presentingViewController = [(PXPhotosViewInteraction *)self presentingViewController];
+    [animatorCopy setPreferredCommitStyle:1];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __110__PXPhotosViewUIInteraction_contextMenuInteraction_willPerformPreviewActionForMenuWithConfiguration_animator___block_invoke;
     v12[3] = &unk_278298EE0;
-    v13 = v9;
-    v14 = v10;
-    v15 = v7;
-    v11 = v10;
-    [v8 addCompletion:v12];
+    v13 = viewModel;
+    v14 = presentingViewController;
+    v15 = interactionCopy;
+    v11 = presentingViewController;
+    [animatorCopy addCompletion:v12];
   }
 }
 
@@ -736,26 +736,26 @@ void __110__PXPhotosViewUIInteraction_contextMenuInteraction_willPerformPreviewA
   [v2 photosViewController:*(a1 + 40) commitPreviewViewControllerForContextMenuInteraction:*(a1 + 48)];
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v5 = [(PXPhotosViewUIInteraction *)self navigatedAssetReference:a3];
+  v5 = [(PXPhotosViewUIInteraction *)self navigatedAssetReference:interaction];
   v6 = [(PXPhotosViewUIInteraction *)self targetedPreviewForAssetReference:v5];
 
   return v6;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  if ([(PXPhotosViewUIInteraction *)self canStartContextMenuInteraction:v5])
+  interactionCopy = interaction;
+  if ([(PXPhotosViewUIInteraction *)self canStartContextMenuInteraction:interactionCopy])
   {
-    v6 = [(PXPhotosViewInteraction *)self viewModel];
-    if ([v6 viewDelegateRespondsTo:64])
+    viewModel = [(PXPhotosViewInteraction *)self viewModel];
+    if ([viewModel viewDelegateRespondsTo:64])
     {
-      v7 = [v6 viewDelegate];
-      v8 = [(PXPhotosViewInteraction *)self presentingViewController];
-      v9 = [(PXPhotosViewUIInteraction *)self navigatedAssetReference];
-      v10 = [v7 photosViewController:v8 configurationForContextMenuInteraction:v5 assetReference:v9];
+      viewDelegate = [viewModel viewDelegate];
+      presentingViewController = [(PXPhotosViewInteraction *)self presentingViewController];
+      navigatedAssetReference = [(PXPhotosViewUIInteraction *)self navigatedAssetReference];
+      v10 = [viewDelegate photosViewController:presentingViewController configurationForContextMenuInteraction:interactionCopy assetReference:navigatedAssetReference];
     }
 
     else
@@ -772,26 +772,26 @@ void __110__PXPhotosViewUIInteraction_contextMenuInteraction_willPerformPreviewA
   return v10;
 }
 
-- (id)targetedPreviewForAssetReference:(id)a3
+- (id)targetedPreviewForAssetReference:(id)reference
 {
   v17 = 0;
-  v4 = [(PXPhotosViewUIInteraction *)self regionOfInterestForAssetReference:a3 image:&v17];
+  v4 = [(PXPhotosViewUIInteraction *)self regionOfInterestForAssetReference:reference image:&v17];
   v5 = v17;
-  v6 = [(PXPhotosViewUIInteraction *)self scrollView];
-  v7 = [v6 coordinateSpace];
-  [v4 rectInCoordinateSpace:v7];
+  scrollView = [(PXPhotosViewUIInteraction *)self scrollView];
+  coordinateSpace = [scrollView coordinateSpace];
+  [v4 rectInCoordinateSpace:coordinateSpace];
 
   if (!v5)
   {
-    v9 = [v4 placeholderViewFactory];
+    placeholderViewFactory = [v4 placeholderViewFactory];
 
-    if (!v9)
+    if (!placeholderViewFactory)
     {
       goto LABEL_7;
     }
 
-    v10 = [v4 placeholderViewFactory];
-    v8 = (v10)[2](v10, v4);
+    placeholderViewFactory2 = [v4 placeholderViewFactory];
+    v8 = (placeholderViewFactory2)[2](placeholderViewFactory2, v4);
 
     if (!v8)
     {
@@ -801,10 +801,10 @@ void __110__PXPhotosViewUIInteraction_contextMenuInteraction_willPerformPreviewA
 LABEL_6:
     v11 = objc_alloc(MEMORY[0x277D758E0]);
     PXRectGetCenter();
-    v12 = [v11 initWithContainer:v6 center:?];
+    v12 = [v11 initWithContainer:scrollView center:?];
     v13 = objc_alloc_init(MEMORY[0x277D758D8]);
-    v14 = [MEMORY[0x277D75348] clearColor];
-    [v13 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v13 setBackgroundColor:clearColor];
 
     v15 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:v8 parameters:v13 target:v12];
     goto LABEL_8;
@@ -823,18 +823,18 @@ LABEL_8:
   return v15;
 }
 
-- (void)willEndPreviewingForContextMenuInteraction:(id)a3
+- (void)willEndPreviewingForContextMenuInteraction:(id)interaction
 {
-  v3 = [(PXPhotosViewInteraction *)self contentController];
-  [v3 stopForceIncludingAllAssetsInDataSource];
+  contentController = [(PXPhotosViewInteraction *)self contentController];
+  [contentController stopForceIncludingAllAssetsInDataSource];
 }
 
-- (BOOL)commitPreviewForContextMenuInteraction:(id)a3
+- (BOOL)commitPreviewForContextMenuInteraction:(id)interaction
 {
-  v4 = [(PXPhotosViewInteraction *)self viewModel];
-  v5 = [v4 allowsPickAssetAction];
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  allowsPickAssetAction = [viewModel allowsPickAssetAction];
 
-  if (!v5)
+  if (!allowsPickAssetAction)
   {
     return 0;
   }
@@ -842,58 +842,58 @@ LABEL_8:
   return [(PXPhotosViewUIInteraction *)self _pickNavigatedAssetReference];
 }
 
-- (BOOL)allowsPreviewCommittingForContextMenuInteraction:(id)a3
+- (BOOL)allowsPreviewCommittingForContextMenuInteraction:(id)interaction
 {
-  v4 = [(PXPhotosViewInteraction *)self viewModel];
-  v5 = [v4 allowsOneUpPresentation];
-  v6 = [v4 allowsPickAssetAction];
-  v7 = [(PXPhotosViewUIInteraction *)self navigatedAssetReference];
-  if (v7 && (v8 = v7, -[PXPhotosViewUIInteraction navigatedAssetReference](self, "navigatedAssetReference"), v9 = objc_claimAutoreleasedReturnValue(), [v9 asset], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_respondsToSelector(), v10, v9, v8, (v11 & 1) != 0))
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  allowsOneUpPresentation = [viewModel allowsOneUpPresentation];
+  allowsPickAssetAction = [viewModel allowsPickAssetAction];
+  navigatedAssetReference = [(PXPhotosViewUIInteraction *)self navigatedAssetReference];
+  if (navigatedAssetReference && (v8 = navigatedAssetReference, -[PXPhotosViewUIInteraction navigatedAssetReference](self, "navigatedAssetReference"), v9 = objc_claimAutoreleasedReturnValue(), [v9 asset], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_respondsToSelector(), v10, v9, v8, (v11 & 1) != 0))
   {
-    v12 = [(PXPhotosViewUIInteraction *)self navigatedAssetReference];
-    v13 = [v12 asset];
-    v14 = [v13 isContentAnalyzedAsPreviewable];
+    navigatedAssetReference2 = [(PXPhotosViewUIInteraction *)self navigatedAssetReference];
+    asset = [navigatedAssetReference2 asset];
+    isContentAnalyzedAsPreviewable = [asset isContentAnalyzedAsPreviewable];
   }
 
   else
   {
-    v14 = 1;
+    isContentAnalyzedAsPreviewable = 1;
   }
 
-  return (v5 | v6) & v14 & 1;
+  return (allowsOneUpPresentation | allowsPickAssetAction) & isContentAnalyzedAsPreviewable & 1;
 }
 
-- (BOOL)allowsActionsForContextMenuInteraction:(id)a3
+- (BOOL)allowsActionsForContextMenuInteraction:(id)interaction
 {
-  v3 = [(PXPhotosViewInteraction *)self viewModel];
-  v4 = [v3 isInSelectMode];
-  if ([v3 allowsPickAssetAction])
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  isInSelectMode = [viewModel isInSelectMode];
+  if ([viewModel allowsPickAssetAction])
   {
-    v5 = 1;
+    allowsMultiSelectMenu = 1;
   }
 
   else
   {
-    v7 = [v3 allowsQuickLookAction];
-    v5 = 1;
-    if (v4 && (v7 & 1) == 0 && ([v3 allowsMacStyleSelection] & 1) == 0)
+    allowsQuickLookAction = [viewModel allowsQuickLookAction];
+    allowsMultiSelectMenu = 1;
+    if (isInSelectMode && (allowsQuickLookAction & 1) == 0 && ([viewModel allowsMacStyleSelection] & 1) == 0)
     {
-      v5 = [v3 allowsMultiSelectMenu];
+      allowsMultiSelectMenu = [viewModel allowsMultiSelectMenu];
     }
   }
 
-  return v5;
+  return allowsMultiSelectMenu;
 }
 
-- (BOOL)canStartContextMenuInteraction:(id)a3
+- (BOOL)canStartContextMenuInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(PXPhotosViewInteraction *)self viewModel];
-  if ([v5 viewDelegateRespondsTo:32])
+  interactionCopy = interaction;
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  if ([viewModel viewDelegateRespondsTo:32])
   {
-    v6 = [v5 viewDelegate];
-    v7 = [(PXPhotosViewInteraction *)self presentingViewController];
-    v8 = [v6 allowsContextMenuInteractionForPhotosViewController:v7];
+    viewDelegate = [viewModel viewDelegate];
+    presentingViewController = [(PXPhotosViewInteraction *)self presentingViewController];
+    v8 = [viewDelegate allowsContextMenuInteractionForPhotosViewController:presentingViewController];
   }
 
   else
@@ -901,18 +901,18 @@ LABEL_8:
     v8 = 1;
   }
 
-  v9 = [(PXPhotosViewInteraction *)self zoomablePhotosInteraction];
-  v10 = [v9 viewModel];
+  zoomablePhotosInteraction = [(PXPhotosViewInteraction *)self zoomablePhotosInteraction];
+  viewModel2 = [zoomablePhotosInteraction viewModel];
 
-  v11 = [(PXGInteraction *)self view];
-  [v4 locationInView:v11];
+  view = [(PXGInteraction *)self view];
+  [interactionCopy locationInView:view];
   v13 = v12;
   v15 = v14;
 
-  v16 = [(PXPhotosViewInteraction *)self assetReferenceAtLocation:v11 withPadding:v13 inCoordinateSpace:v15, *MEMORY[0x277D3CF90], *(MEMORY[0x277D3CF90] + 8), *(MEMORY[0x277D3CF90] + 16), *(MEMORY[0x277D3CF90] + 24)];
-  if (v10)
+  v16 = [(PXPhotosViewInteraction *)self assetReferenceAtLocation:view withPadding:v13 inCoordinateSpace:v15, *MEMORY[0x277D3CF90], *(MEMORY[0x277D3CF90] + 8), *(MEMORY[0x277D3CF90] + 16), *(MEMORY[0x277D3CF90] + 24)];
+  if (viewModel2)
   {
-    v17 = 1;
+    isDisplayingIndividualItems = 1;
     if (!v8)
     {
       goto LABEL_13;
@@ -921,25 +921,25 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v18 = [(PXPhotosViewInteraction *)self zoomablePhotosInteraction];
-  v19 = [v18 viewModelProvider];
-  v10 = [v19 provideViewModelForAssetReference:v16];
+  zoomablePhotosInteraction2 = [(PXPhotosViewInteraction *)self zoomablePhotosInteraction];
+  viewModelProvider = [zoomablePhotosInteraction2 viewModelProvider];
+  viewModel2 = [viewModelProvider provideViewModelForAssetReference:v16];
 
-  v17 = [v10 isDisplayingIndividualItems];
-  v20 = [v10 assetsDataSourceManager];
-  v21 = [v20 dataSource];
-  v22 = [v21 assetReferenceForAssetReference:v16];
+  isDisplayingIndividualItems = [viewModel2 isDisplayingIndividualItems];
+  assetsDataSourceManager = [viewModel2 assetsDataSourceManager];
+  dataSource = [assetsDataSourceManager dataSource];
+  v22 = [dataSource assetReferenceForAssetReference:v16];
 
   if (!v22)
   {
-    v17 = 1;
+    isDisplayingIndividualItems = 1;
   }
 
   if (v8)
   {
 LABEL_10:
-    v23 = [(PXPhotosViewInteraction *)self zoomablePhotosInteraction];
-    v24 = (v23 == 0) | v17;
+    zoomablePhotosInteraction3 = [(PXPhotosViewInteraction *)self zoomablePhotosInteraction];
+    v24 = (zoomablePhotosInteraction3 == 0) | isDisplayingIndividualItems;
 
     LOBYTE(v8) = 0;
     if ((v24 & 1) != 0 && v16)
@@ -954,75 +954,75 @@ LABEL_13:
   return v8;
 }
 
-- (void)touchingUIGestureRecognizerDidBeginTouching:(id)a3
+- (void)touchingUIGestureRecognizerDidBeginTouching:(id)touching
 {
-  v4 = a3;
-  v5 = [(PXGInteraction *)self view];
-  [v4 locationInView:v5];
+  touchingCopy = touching;
+  view = [(PXGInteraction *)self view];
+  [touchingCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(PXGInteraction *)self view];
-  v13 = [v10 hitTestResultAtPoint:{v7, v9}];
+  view2 = [(PXGInteraction *)self view];
+  v13 = [view2 hitTestResultAtPoint:{v7, v9}];
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v13 px_photosViewTouchableHitTestResultTouchAction];
-    v12 = v11[2]();
+    px_photosViewTouchableHitTestResultTouchAction = [v13 px_photosViewTouchableHitTestResultTouchAction];
+    v12 = px_photosViewTouchableHitTestResultTouchAction[2]();
     [(PXPhotosViewUIInteraction *)self setCurrentTouchAction:v12];
   }
 }
 
-- (void)setCurrentTouchAction:(id)a3
+- (void)setCurrentTouchAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   currentTouchAction = self->_currentTouchAction;
-  if (currentTouchAction != v4)
+  if (currentTouchAction != actionCopy)
   {
-    v8 = v4;
+    v8 = actionCopy;
     if (currentTouchAction)
     {
       currentTouchAction[2]();
-      v4 = v8;
+      actionCopy = v8;
     }
 
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(actionCopy);
     v7 = self->_currentTouchAction;
     self->_currentTouchAction = v6;
 
-    v4 = v8;
+    actionCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](currentTouchAction, v4);
+  MEMORY[0x2821F96F8](currentTouchAction, actionCopy);
 }
 
-- (void)_handleTouch:(id)a3
+- (void)_handleTouch:(id)touch
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 state];
-  if ((v5 - 3) < 3)
+  touchCopy = touch;
+  state = [touchCopy state];
+  if ((state - 3) < 3)
   {
-    v6 = [(PXPhotosViewInteraction *)self viewModel];
-    v7 = [v6 selectionManager];
-    [v7 performChanges:&__block_literal_global_57_8003];
+    viewModel = [(PXPhotosViewInteraction *)self viewModel];
+    selectionManager = [viewModel selectionManager];
+    [selectionManager performChanges:&__block_literal_global_57_8003];
 
     goto LABEL_24;
   }
 
-  if (v5 != 1)
+  if (state != 1)
   {
     goto LABEL_24;
   }
 
-  v8 = [(PXGInteraction *)self view];
-  v39 = v4;
-  [v4 locationInView:v8];
+  view = [(PXGInteraction *)self view];
+  v39 = touchCopy;
+  [touchCopy locationInView:view];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(PXGInteraction *)self view];
-  v14 = [v13 hitTestResultsAtPoint:{v10, v12}];
+  view2 = [(PXGInteraction *)self view];
+  v14 = [view2 hitTestResultsAtPoint:{v10, v12}];
 
   v49 = 0u;
   v50 = 0u;
@@ -1049,15 +1049,15 @@ LABEL_13:
       }
 
       v21 = *(*(&v47 + 1) + 8 * i);
-      v22 = [v21 identifier];
-      if (v22 == v19)
+      identifier = [v21 identifier];
+      if (identifier == v19)
       {
       }
 
       else
       {
-        v23 = v22;
-        v24 = [(__CFString *)v22 isEqualToString:v19];
+        v23 = identifier;
+        v24 = [(__CFString *)identifier isEqualToString:v19];
 
         if (!v24)
         {
@@ -1065,15 +1065,15 @@ LABEL_13:
         }
       }
 
-      v25 = [(PXPhotosViewInteraction *)self viewModel];
-      v26 = [v21 userData];
+      viewModel2 = [(PXPhotosViewInteraction *)self viewModel];
+      userData = [v21 userData];
       v45 = 0u;
       v46 = 0u;
-      v27 = [v25 currentDataSource];
-      v28 = v27;
-      if (v27)
+      currentDataSource = [viewModel2 currentDataSource];
+      v28 = currentDataSource;
+      if (currentDataSource)
       {
-        [v27 indexPathForAssetReference:v26];
+        [currentDataSource indexPathForAssetReference:userData];
       }
 
       else
@@ -1084,34 +1084,34 @@ LABEL_13:
 
       if (v45 != v18)
       {
-        v29 = [v25 currentDataSource];
-        v41 = v25;
-        v30 = v26;
+        currentDataSource2 = [viewModel2 currentDataSource];
+        v41 = viewModel2;
+        v30 = userData;
         v31 = v16;
         v32 = v19;
         v33 = v17;
         v34 = v18;
-        v35 = self;
-        v36 = [v29 identifier];
+        selfCopy = self;
+        identifier2 = [currentDataSource2 identifier];
 
-        v37 = v45 == v36;
-        self = v35;
+        v37 = v45 == identifier2;
+        self = selfCopy;
         v18 = v34;
         v17 = v33;
         v19 = v32;
         v16 = v31;
-        v26 = v30;
-        v25 = v41;
+        userData = v30;
+        viewModel2 = v41;
         if (v37)
         {
-          v38 = [v41 selectionManager];
+          selectionManager2 = [v41 selectionManager];
           v42[0] = MEMORY[0x277D85DD0];
           v42[1] = 3221225472;
           v42[2] = __42__PXPhotosViewUIInteraction__handleTouch___block_invoke;
           v42[3] = &__block_descriptor_64_e37_v16__0___PXMutableSelectionManager__8l;
           v43 = v45;
           v44 = v46;
-          [v38 performChanges:v42];
+          [selectionManager2 performChanges:v42];
 
           goto LABEL_23;
         }
@@ -1129,7 +1129,7 @@ LABEL_13:
 
 LABEL_23:
 
-  v4 = v39;
+  touchCopy = v39;
 LABEL_24:
 }
 
@@ -1149,27 +1149,27 @@ uint64_t __42__PXPhotosViewUIInteraction__handleTouch___block_invoke_2(uint64_t 
   return [a2 setPressedIndexPath:v4];
 }
 
-- (void)_handlePinch:(id)a3
+- (void)_handlePinch:(id)pinch
 {
-  v18 = a3;
-  if ([v18 state] == 1)
+  pinchCopy = pinch;
+  if ([pinchCopy state] == 1)
   {
-    v4 = [(PXPhotosViewUIInteraction *)self scrollView];
-    v5 = [v4 panGestureRecognizer];
-    [v5 px_cancel];
+    scrollView = [(PXPhotosViewUIInteraction *)self scrollView];
+    panGestureRecognizer = [scrollView panGestureRecognizer];
+    [panGestureRecognizer px_cancel];
   }
 
-  v6 = [(PXPhotosViewInteraction *)self viewModel];
-  v7 = [(PXGInteraction *)self view];
-  if (([v6 isInSelectMode] & 1) != 0 || !objc_msgSend(v6, "canPresentOneUp"))
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  view = [(PXGInteraction *)self view];
+  if (([viewModel isInSelectMode] & 1) != 0 || !objc_msgSend(viewModel, "canPresentOneUp"))
   {
     v10 = 1;
   }
 
   else
   {
-    v8 = [(PXPhotosViewInteraction *)self interactionHelper];
-    v9 = [v8 handlePresentingPinchGestureRecognizer:v18 forViewInteraction:self];
+    interactionHelper = [(PXPhotosViewInteraction *)self interactionHelper];
+    v9 = [interactionHelper handlePresentingPinchGestureRecognizer:pinchCopy forViewInteraction:self];
 
     v10 = 0;
     if (v9)
@@ -1179,97 +1179,97 @@ uint64_t __42__PXPhotosViewUIInteraction__handleTouch___block_invoke_2(uint64_t 
     }
   }
 
-  v12 = [(PXPhotosViewInteraction *)self zoomablePhotosInteraction];
-  v11 = [v12 handlePinch:v18];
+  zoomablePhotosInteraction = [(PXPhotosViewInteraction *)self zoomablePhotosInteraction];
+  v11 = [zoomablePhotosInteraction handlePinch:pinchCopy];
 
 LABEL_9:
-  v13 = [v18 state] != 1 && objc_msgSend(v18, "state") != 2;
+  v13 = [pinchCopy state] != 1 && objc_msgSend(pinchCopy, "state") != 2;
   if (((v11 | v13) & 1) == 0)
   {
-    [v18 velocity];
+    [pinchCopy velocity];
     v15 = v14 <= 0.0 ? 1 : v10;
     if ((v15 & 1) == 0)
     {
-      [v18 locationInView:v7];
-      v16 = [PXPhotosViewInteraction assetReferenceAtLocation:"assetReferenceAtLocation:withPadding:inCoordinateSpace:" withPadding:v7 inCoordinateSpace:?];
+      [pinchCopy locationInView:view];
+      v16 = [PXPhotosViewInteraction assetReferenceAtLocation:"assetReferenceAtLocation:withPadding:inCoordinateSpace:" withPadding:view inCoordinateSpace:?];
       if (v16)
       {
-        v17 = [(PXPhotosViewInteraction *)self interactionHelper];
-        [v17 presentOneUpForAssetReference:v16 style:2];
+        interactionHelper2 = [(PXPhotosViewInteraction *)self interactionHelper];
+        [interactionHelper2 presentOneUpForAssetReference:v16 style:2];
       }
     }
   }
 }
 
-- (void)_handlePress:(id)a3
+- (void)_handlePress:(id)press
 {
-  if ([a3 state] == 3)
+  if ([press state] == 3)
   {
-    v6 = [(PXPhotosViewInteraction *)self viewModel];
-    v4 = [v6 singleSelectedAssetReference];
-    if (v4 && ([v6 isInSelectMode] & 1) == 0 && objc_msgSend(v6, "canPresentOneUp"))
+    viewModel = [(PXPhotosViewInteraction *)self viewModel];
+    singleSelectedAssetReference = [viewModel singleSelectedAssetReference];
+    if (singleSelectedAssetReference && ([viewModel isInSelectMode] & 1) == 0 && objc_msgSend(viewModel, "canPresentOneUp"))
     {
-      v5 = [(PXPhotosViewInteraction *)self interactionHelper];
-      [v5 presentOneUpForAssetReference:v4 style:1];
+      interactionHelper = [(PXPhotosViewInteraction *)self interactionHelper];
+      [interactionHelper presentOneUpForAssetReference:singleSelectedAssetReference style:1];
     }
   }
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  v20 = a3;
-  if ([v20 state] == 1)
+  pressCopy = press;
+  if ([pressCopy state] == 1)
   {
-    v4 = [(PXGInteraction *)self view];
-    [v20 locationInView:v4];
+    view = [(PXGInteraction *)self view];
+    [pressCopy locationInView:view];
     v6 = v5;
     v8 = v7;
-    v9 = [PXPhotosViewInteraction assetReferenceAtLocation:"assetReferenceAtLocation:withPadding:inCoordinateSpace:" withPadding:v4 inCoordinateSpace:?];
-    v10 = [(PXPhotosViewInteraction *)self presentingViewController];
-    v11 = [v10 canPerformAction:sel_paste_ withSender:v20];
+    v9 = [PXPhotosViewInteraction assetReferenceAtLocation:"assetReferenceAtLocation:withPadding:inCoordinateSpace:" withPadding:view inCoordinateSpace:?];
+    presentingViewController = [(PXPhotosViewInteraction *)self presentingViewController];
+    v11 = [presentingViewController canPerformAction:sel_paste_ withSender:pressCopy];
 
     if (v11)
     {
-      v12 = [(PXPhotosViewInteraction *)self viewModel];
-      v13 = [v12 isInSelectMode];
+      viewModel = [(PXPhotosViewInteraction *)self viewModel];
+      isInSelectMode = [viewModel isInSelectMode];
 
-      if ((v13 & 1) == 0)
+      if ((isInSelectMode & 1) == 0)
       {
-        [v4 becomeFirstResponder];
+        [view becomeFirstResponder];
         v14 = *MEMORY[0x277CBF3A8];
         v15 = *(MEMORY[0x277CBF3A8] + 8);
         if (v9)
         {
           v16 = [(PXPhotosViewUIInteraction *)self regionOfInterestForAssetReference:v9];
-          [v16 rectInCoordinateSpace:v4];
+          [v16 rectInCoordinateSpace:view];
           PXRectGetCenter();
           v6 = v17;
           v8 = v18;
         }
 
-        v19 = [MEMORY[0x277D75718] sharedMenuController];
-        [v19 showMenuFromView:v4 rect:{v6, v8, v14, v15}];
+        mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+        [mEMORY[0x277D75718] showMenuFromView:view rect:{v6, v8, v14, v15}];
       }
     }
   }
 }
 
-- (void)_handleDoubleTap:(id)a3
+- (void)_handleDoubleTap:(id)tap
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 state] == 3)
+  tapCopy = tap;
+  if ([tapCopy state] == 3)
   {
-    v5 = [(PXPhotosViewInteraction *)self viewModel];
-    if ([v5 viewDelegateRespondsTo:16])
+    viewModel = [(PXPhotosViewInteraction *)self viewModel];
+    if ([viewModel viewDelegateRespondsTo:16])
     {
-      v6 = [(PXGInteraction *)self view];
-      [v4 locationInView:v6];
+      view = [(PXGInteraction *)self view];
+      [tapCopy locationInView:view];
       v8 = v7;
       v10 = v9;
 
-      v11 = [(PXGInteraction *)self view];
-      v12 = [v11 hitTestResultsAtPoint:{v8, v10}];
+      view2 = [(PXGInteraction *)self view];
+      v12 = [view2 hitTestResultsAtPoint:{v8, v10}];
 
       v28 = 0u;
       v29 = 0u;
@@ -1281,7 +1281,7 @@ LABEL_9:
       {
         v15 = v14;
         v16 = *v27;
-        v25 = v5;
+        v25 = viewModel;
         while (2)
         {
           for (i = 0; i != v15; ++i)
@@ -1292,22 +1292,22 @@ LABEL_9:
             }
 
             v18 = *(*(&v26 + 1) + 8 * i);
-            v19 = [v18 identifier];
-            if (v19 == @"PXPhotosLayoutHitTestIdentifierAsset")
+            identifier = [v18 identifier];
+            if (identifier == @"PXPhotosLayoutHitTestIdentifierAsset")
             {
 
 LABEL_14:
-              v22 = [v18 userData];
-              v5 = v25;
-              v23 = [v25 viewDelegate];
-              v24 = [(PXPhotosViewInteraction *)self presentingViewController];
-              [v23 photosViewController:v24 didDoubleTapAssetReference:v22];
+              userData = [v18 userData];
+              viewModel = v25;
+              viewDelegate = [v25 viewDelegate];
+              presentingViewController = [(PXPhotosViewInteraction *)self presentingViewController];
+              [viewDelegate photosViewController:presentingViewController didDoubleTapAssetReference:userData];
 
               goto LABEL_15;
             }
 
-            v20 = v19;
-            v21 = [(__CFString *)v19 isEqualToString:@"PXPhotosLayoutHitTestIdentifierAsset"];
+            v20 = identifier;
+            v21 = [(__CFString *)identifier isEqualToString:@"PXPhotosLayoutHitTestIdentifierAsset"];
 
             if (v21)
             {
@@ -1316,7 +1316,7 @@ LABEL_14:
           }
 
           v15 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
-          v5 = v25;
+          viewModel = v25;
           if (v15)
           {
             continue;
@@ -1331,51 +1331,51 @@ LABEL_15:
   }
 }
 
-- (BOOL)_handleTapWithHitTestResult:(id)a3 keyModifierFlags:(int64_t)a4
+- (BOOL)_handleTapWithHitTestResult:(id)result keyModifierFlags:(int64_t)flags
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(PXPhotosViewInteraction *)self viewModel];
-  if (a4 & 0x100000) != 0 && ([MEMORY[0x277D75658] isInHardwareKeyboardMode])
+  resultCopy = result;
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  if (flags & 0x100000) != 0 && ([MEMORY[0x277D75658] isInHardwareKeyboardMode])
   {
-    v8 = 0;
+    isInHardwareKeyboardMode = 0;
     v9 = 1;
   }
 
-  else if ((a4 & 0x20000) != 0)
+  else if ((flags & 0x20000) != 0)
   {
-    v8 = [MEMORY[0x277D75658] isInHardwareKeyboardMode];
+    isInHardwareKeyboardMode = [MEMORY[0x277D75658] isInHardwareKeyboardMode];
     v9 = 0;
   }
 
   else
   {
     v9 = 0;
-    v8 = 0;
+    isInHardwareKeyboardMode = 0;
   }
 
-  v10 = [v6 identifier];
-  if (v10 == @"PXPhotosLayoutHitTestIdentifierAsset")
+  identifier = [resultCopy identifier];
+  if (identifier == @"PXPhotosLayoutHitTestIdentifierAsset")
   {
 
 LABEL_16:
-    v26 = [v6 userData];
-    v27 = [(PXPhotosViewInteraction *)self zoomablePhotosInteraction];
-    v28 = [v27 handleTapOnAssetReference:v26];
+    userData = [resultCopy userData];
+    zoomablePhotosInteraction = [(PXPhotosViewInteraction *)self zoomablePhotosInteraction];
+    v28 = [zoomablePhotosInteraction handleTapOnAssetReference:userData];
 
     if (v28)
     {
-      v29 = [(PXGInteraction *)self layout];
-      [v29 clearLastVisibleAreaAnchoringInformation];
+      layout = [(PXGInteraction *)self layout];
+      [layout clearLastVisibleAreaAnchoringInformation];
     }
 
     else
     {
-      if (!v8 || ![(PXPhotosViewUIInteraction *)self ensureSelectMode])
+      if (!isInHardwareKeyboardMode || ![(PXPhotosViewUIInteraction *)self ensureSelectMode])
       {
-        if ([v7 isInSelectMode])
+        if ([viewModel isInSelectMode])
         {
-          if ([v7 allowsMacStyleSelection])
+          if ([viewModel allowsMacStyleSelection])
           {
             if (v9)
             {
@@ -1383,8 +1383,8 @@ LABEL_16:
               v53[1] = 3221225472;
               v53[2] = __74__PXPhotosViewUIInteraction__handleTapWithHitTestResult_keyModifierFlags___block_invoke;
               v53[3] = &unk_278298E60;
-              v54 = v26;
-              [v7 performChanges:v53];
+              v54 = userData;
+              [viewModel performChanges:v53];
               v33 = v54;
             }
 
@@ -1394,8 +1394,8 @@ LABEL_16:
               v51[1] = 3221225472;
               v51[2] = __74__PXPhotosViewUIInteraction__handleTapWithHitTestResult_keyModifierFlags___block_invoke_2;
               v51[3] = &unk_278298E60;
-              v52 = v26;
-              [v7 performChanges:v51];
+              v52 = userData;
+              [viewModel performChanges:v51];
               v33 = v52;
             }
           }
@@ -1406,49 +1406,49 @@ LABEL_16:
             v49[1] = 3221225472;
             v49[2] = __74__PXPhotosViewUIInteraction__handleTapWithHitTestResult_keyModifierFlags___block_invoke_3;
             v49[3] = &unk_278298E60;
-            v50 = v26;
-            [v7 performChanges:v49];
+            v50 = userData;
+            [viewModel performChanges:v49];
             v33 = v50;
           }
         }
 
         else
         {
-          if (!v9 || ([v7 allowsMacStyleSelection] & 1) != 0 || !-[PXPhotosViewUIInteraction ensureSelectMode](self, "ensureSelectMode"))
+          if (!v9 || ([viewModel allowsMacStyleSelection] & 1) != 0 || !-[PXPhotosViewUIInteraction ensureSelectMode](self, "ensureSelectMode"))
           {
-            if (![v7 canPresentOneUp])
+            if (![viewModel canPresentOneUp])
             {
-              v36 = [v7 customAssetSelectionHandler];
+              customAssetSelectionHandler = [viewModel customAssetSelectionHandler];
 
-              if (v36)
+              if (customAssetSelectionHandler)
               {
-                if ([v7 oneUpAssetsViewMode])
+                if ([viewModel oneUpAssetsViewMode])
                 {
-                  [(PXPhotosViewUIInteraction *)self setNavigatedAssetReference:v26];
-                  v37 = [v7 customAssetSelectionHandler];
+                  [(PXPhotosViewUIInteraction *)self setNavigatedAssetReference:userData];
+                  customAssetSelectionHandler2 = [viewModel customAssetSelectionHandler];
                   [(PXPhotosViewUIInteraction *)self navigatedAssetSectionDataSourceManager];
                 }
 
                 else
                 {
-                  v37 = [v7 customAssetSelectionHandler];
-                  [v7 dataSourceManager];
+                  customAssetSelectionHandler2 = [viewModel customAssetSelectionHandler];
+                  [viewModel dataSourceManager];
                 }
-                v42 = ;
-                v43 = (v37)[2](v37, v26, v42);
+                presentingViewController = ;
+                v43 = (customAssetSelectionHandler2)[2](customAssetSelectionHandler2, userData, presentingViewController);
               }
 
               else
               {
-                if (![v7 viewDelegateRespondsTo:1])
+                if (![viewModel viewDelegateRespondsTo:1])
                 {
                   v38 = 0;
                   goto LABEL_50;
                 }
 
-                v37 = [v7 viewDelegate];
-                v42 = [(PXPhotosViewInteraction *)self presentingViewController];
-                v43 = [v37 photosViewController:v42 didPickAssetReference:v26];
+                customAssetSelectionHandler2 = [viewModel viewDelegate];
+                presentingViewController = [(PXPhotosViewInteraction *)self presentingViewController];
+                v43 = [customAssetSelectionHandler2 photosViewController:presentingViewController didPickAssetReference:userData];
               }
 
               v38 = v43;
@@ -1457,8 +1457,8 @@ LABEL_50:
               goto LABEL_51;
             }
 
-            v35 = [(PXPhotosViewInteraction *)self interactionHelper];
-            [v35 presentOneUpForAssetReference:v26 style:0];
+            interactionHelper = [(PXPhotosViewInteraction *)self interactionHelper];
+            [interactionHelper presentOneUpForAssetReference:userData style:0];
 
 LABEL_49:
             v38 = 1;
@@ -1471,13 +1471,13 @@ LABEL_49:
             *buf = 67110144;
             *&buf[4] = 1;
             *&buf[8] = 1024;
-            *&buf[10] = [v7 allowsMacStyleSelection];
+            *&buf[10] = [viewModel allowsMacStyleSelection];
             *&buf[14] = 1024;
-            LODWORD(v57) = [v7 isInSelectMode];
+            LODWORD(v57) = [viewModel isInSelectMode];
             WORD2(v57) = 2048;
-            *(&v57 + 6) = a4;
+            *(&v57 + 6) = flags;
             HIWORD(v57) = 1024;
-            v58 = [MEMORY[0x277D75658] isInHardwareKeyboardMode];
+            isInHardwareKeyboardMode2 = [MEMORY[0x277D75658] isInHardwareKeyboardMode];
             _os_log_impl(&dword_21ABF3000, v34, OS_LOG_TYPE_DEFAULT, "[PXPhotosViewUIInteraction] Handling tap wants toggle selection: %i. Allows mac style selection: %i. Select mode enabled: %i. Key modifier flags: %lu. Connected to hardware keyboard: %i.", buf, 0x24u);
           }
 
@@ -1485,8 +1485,8 @@ LABEL_49:
           v45 = 3221225472;
           v46 = __74__PXPhotosViewUIInteraction__handleTapWithHitTestResult_keyModifierFlags___block_invoke_52;
           v47 = &unk_278298E60;
-          v48 = v26;
-          [v7 performChanges:&v44];
+          v48 = userData;
+          [viewModel performChanges:&v44];
           v33 = v48;
         }
 
@@ -1503,9 +1503,9 @@ LABEL_48:
         *buf = 67109888;
         *&buf[4] = 1;
         *&buf[8] = 1024;
-        *&buf[10] = [v7 isInSelectMode];
+        *&buf[10] = [viewModel isInSelectMode];
         *&buf[14] = 2048;
-        *&v57 = a4;
+        *&v57 = flags;
         WORD4(v57) = 1024;
         *(&v57 + 10) = [MEMORY[0x277D75658] isInHardwareKeyboardMode];
         _os_log_impl(&dword_21ABF3000, v30, OS_LOG_TYPE_DEFAULT, "[PXPhotosViewUIInteraction] Handling tap wants range selection: %i. Select mode enabled: %i. Key modifier flags: %lu. Connected to hardware keyboard: %i.", buf, 0x1Eu);
@@ -1513,11 +1513,11 @@ LABEL_48:
 
       *buf = 0u;
       v57 = 0u;
-      v31 = [v7 currentDataSource];
-      v32 = v31;
-      if (v31)
+      currentDataSource = [viewModel currentDataSource];
+      v32 = currentDataSource;
+      if (currentDataSource)
       {
-        [v31 indexPathForAssetReference:v26];
+        [currentDataSource indexPathForAssetReference:userData];
       }
 
       else
@@ -1526,53 +1526,53 @@ LABEL_48:
         v57 = 0u;
       }
 
-      v29 = [v7 selectionManager];
-      v39 = [(PXPhotosViewInteraction *)self contentController];
+      layout = [viewModel selectionManager];
+      contentController = [(PXPhotosViewInteraction *)self contentController];
       v55[0] = *buf;
       v55[1] = v57;
-      [v29 extendSelectionToItemIndexPath:v55 withDelegate:v39];
+      [layout extendSelectionToItemIndexPath:v55 withDelegate:contentController];
     }
 
     goto LABEL_48;
   }
 
-  v11 = v10;
-  v12 = [(__CFString *)v10 isEqualToString:@"PXPhotosLayoutHitTestIdentifierAsset"];
+  v11 = identifier;
+  v12 = [(__CFString *)identifier isEqualToString:@"PXPhotosLayoutHitTestIdentifierAsset"];
 
   if (v12)
   {
     goto LABEL_16;
   }
 
-  v13 = [v6 identifier];
-  v14 = v13;
-  if (v13 == *MEMORY[0x277D73D40])
+  identifier2 = [resultCopy identifier];
+  v14 = identifier2;
+  if (identifier2 == *MEMORY[0x277D73D40])
   {
   }
 
   else
   {
-    v15 = [v13 isEqualToString:?];
+    v15 = [identifier2 isEqualToString:?];
 
     if ((v15 & 1) == 0)
     {
-      v16 = [v6 identifier];
-      if (v16 == @"PXPhotosLayoutHitTestIdentifierAccessoryCell")
+      identifier3 = [resultCopy identifier];
+      if (identifier3 == @"PXPhotosLayoutHitTestIdentifierAccessoryCell")
       {
       }
 
       else
       {
-        v17 = v16;
-        v18 = [(__CFString *)v16 isEqualToString:@"PXPhotosLayoutHitTestIdentifierAccessoryCell"];
+        v17 = identifier3;
+        v18 = [(__CFString *)identifier3 isEqualToString:@"PXPhotosLayoutHitTestIdentifierAccessoryCell"];
 
         if ((v18 & 1) == 0)
         {
-          v19 = [(PXPhotosViewInteraction *)self contentController];
-          v20 = [v19 overlayController];
-          v21 = [v6 spriteReference];
-          v22 = [v21 objectReference];
-          v23 = [v20 canHandleObjectReference:v22];
+          contentController2 = [(PXPhotosViewInteraction *)self contentController];
+          overlayController = [contentController2 overlayController];
+          spriteReference = [resultCopy spriteReference];
+          objectReference = [spriteReference objectReference];
+          v23 = [overlayController canHandleObjectReference:objectReference];
 
           if (!v23)
           {
@@ -1580,9 +1580,9 @@ LABEL_48:
             goto LABEL_51;
           }
 
-          v24 = [(PXPhotosViewInteraction *)self contentController];
-          v25 = [v24 overlayController];
-          [v25 handleTap:v6];
+          contentController3 = [(PXPhotosViewInteraction *)self contentController];
+          overlayController2 = [contentController3 overlayController];
+          [overlayController2 handleTap:resultCopy];
         }
       }
     }
@@ -1594,19 +1594,19 @@ LABEL_51:
   return v38;
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 state] == 3)
+  tapCopy = tap;
+  if ([tapCopy state] == 3)
   {
-    v5 = [(PXGInteraction *)self view];
-    [v4 locationInView:v5];
+    view = [(PXGInteraction *)self view];
+    [tapCopy locationInView:view];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(PXGInteraction *)self view];
-    v11 = [v10 hitTestResultsAtPoint:{v7, v9}];
+    view2 = [(PXGInteraction *)self view];
+    v11 = [view2 hitTestResultsAtPoint:{v7, v9}];
 
     v25 = 0u;
     v26 = 0u;
@@ -1628,7 +1628,7 @@ LABEL_51:
             objc_enumerationMutation(v12);
           }
 
-          if (-[PXPhotosViewUIInteraction _handleTapWithHitTestResult:keyModifierFlags:](self, "_handleTapWithHitTestResult:keyModifierFlags:", *(*(&v23 + 1) + 8 * v16), [v4 modifierFlags]))
+          if (-[PXPhotosViewUIInteraction _handleTapWithHitTestResult:keyModifierFlags:](self, "_handleTapWithHitTestResult:keyModifierFlags:", *(*(&v23 + 1) + 8 * v16), [tapCopy modifierFlags]))
           {
             v17 = 1;
             goto LABEL_12;
@@ -1651,35 +1651,35 @@ LABEL_51:
     v17 = 0;
 LABEL_12:
 
-    v18 = [(PXPhotosViewInteraction *)self viewModel];
-    v19 = v18;
-    if ((v17 & 1) == 0 && ([v18 handlePrimaryAction:v4] & 1) == 0 && objc_msgSend(v19, "allowsMacStyleSelection"))
+    viewModel = [(PXPhotosViewInteraction *)self viewModel];
+    v19 = viewModel;
+    if ((v17 & 1) == 0 && ([viewModel handlePrimaryAction:tapCopy] & 1) == 0 && objc_msgSend(v19, "allowsMacStyleSelection"))
     {
-      v20 = [v19 selectionManager];
-      [v20 performChanges:&__block_literal_global_50_8010];
+      selectionManager = [v19 selectionManager];
+      [selectionManager performChanges:&__block_literal_global_50_8010];
     }
 
-    if ([v4 state] == 3 && objc_msgSend(v19, "viewDelegateRespondsTo:", 0x40000))
+    if ([tapCopy state] == 3 && objc_msgSend(v19, "viewDelegateRespondsTo:", 0x40000))
     {
-      v21 = [v19 viewDelegate];
-      v22 = [(PXPhotosViewInteraction *)self presentingViewController];
-      [v21 photosViewController:v22 didReceiveUserInteraction:1];
+      viewDelegate = [v19 viewDelegate];
+      presentingViewController = [(PXPhotosViewInteraction *)self presentingViewController];
+      [viewDelegate photosViewController:presentingViewController didReceiveUserInteraction:1];
     }
   }
 }
 
-- (BOOL)_handleHoverWithHitTestResult:(id)a3
+- (BOOL)_handleHoverWithHitTestResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (v5 == @"PXPhotosLayoutHitTestIdentifierAsset")
+  resultCopy = result;
+  identifier = [resultCopy identifier];
+  if (identifier == @"PXPhotosLayoutHitTestIdentifierAsset")
   {
   }
 
   else
   {
-    v6 = v5;
-    v7 = [(__CFString *)v5 isEqualToString:@"PXPhotosLayoutHitTestIdentifierAsset"];
+    v6 = identifier;
+    v7 = [(__CFString *)identifier isEqualToString:@"PXPhotosLayoutHitTestIdentifierAsset"];
 
     if (!v7)
     {
@@ -1688,15 +1688,15 @@ LABEL_12:
     }
   }
 
-  v9 = [(PXPhotosViewInteraction *)self viewModel];
-  v10 = [v4 userData];
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  userData = [resultCopy userData];
   v19 = 0u;
   v20 = 0u;
-  v11 = [v9 currentDataSource];
-  v12 = v11;
-  if (v11)
+  currentDataSource = [viewModel currentDataSource];
+  v12 = currentDataSource;
+  if (currentDataSource)
   {
-    [v11 indexPathForAssetReference:v10];
+    [currentDataSource indexPathForAssetReference:userData];
   }
 
   else
@@ -1706,14 +1706,14 @@ LABEL_12:
   }
 
   objc_initWeak(&location, self);
-  v13 = [v9 selectionManager];
+  selectionManager = [viewModel selectionManager];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __59__PXPhotosViewUIInteraction__handleHoverWithHitTestResult___block_invoke;
   v15[3] = &__block_descriptor_64_e37_v16__0___PXMutableSelectionManager__8l;
   v16 = v19;
   v17 = v20;
-  [v13 performChanges:v15];
+  [selectionManager performChanges:v15];
 
   objc_destroyWeak(&location);
   v8 = 1;
@@ -1730,12 +1730,12 @@ uint64_t __59__PXPhotosViewUIInteraction__handleHoverWithHitTestResult___block_i
   return [a2 setPendingIndexPath:v4];
 }
 
-- (void)_handleHoverWithHitTestResults:(id)a3 hoverGesture:(id)a4
+- (void)_handleHoverWithHitTestResults:(id)results hoverGesture:(id)gesture
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 state] != 1 && objc_msgSend(v7, "state") != 2)
+  resultsCopy = results;
+  gestureCopy = gesture;
+  if ([gestureCopy state] != 1 && objc_msgSend(gestureCopy, "state") != 2)
   {
     goto LABEL_12;
   }
@@ -1744,16 +1744,16 @@ uint64_t __59__PXPhotosViewUIInteraction__handleHoverWithHitTestResult___block_i
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v6;
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  viewModel = resultsCopy;
+  v9 = [viewModel countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (!v9)
   {
 LABEL_11:
 
 LABEL_12:
-    v8 = [(PXPhotosViewInteraction *)self viewModel];
-    v13 = [v8 selectionManager];
-    [v13 performChanges:&__block_literal_global_48_8012];
+    viewModel = [(PXPhotosViewInteraction *)self viewModel];
+    selectionManager = [viewModel selectionManager];
+    [selectionManager performChanges:&__block_literal_global_48_8012];
 
     goto LABEL_13;
   }
@@ -1766,7 +1766,7 @@ LABEL_5:
   {
     if (*v15 != v11)
     {
-      objc_enumerationMutation(v8);
+      objc_enumerationMutation(viewModel);
     }
 
     if ([(PXPhotosViewUIInteraction *)self _handleHoverWithHitTestResult:*(*(&v14 + 1) + 8 * v12), v14])
@@ -1776,7 +1776,7 @@ LABEL_5:
 
     if (v10 == ++v12)
     {
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [viewModel countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v10)
       {
         goto LABEL_5;
@@ -1797,59 +1797,59 @@ uint64_t __73__PXPhotosViewUIInteraction__handleHoverWithHitTestResults_hoverGes
   return [a2 setPendingIndexPath:v4];
 }
 
-- (void)_handleHover:(id)a3
+- (void)_handleHover:(id)hover
 {
-  v4 = a3;
-  v5 = [(PXGInteraction *)self view];
-  [v4 locationInView:v5];
+  hoverCopy = hover;
+  view = [(PXGInteraction *)self view];
+  [hoverCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(PXGInteraction *)self view];
-  v11 = [v10 hitTestResultsAtPoint:{v7, v9}];
+  view2 = [(PXGInteraction *)self view];
+  v11 = [view2 hitTestResultsAtPoint:{v7, v9}];
 
-  [(PXPhotosViewUIInteraction *)self _handleHoverWithHitTestResults:v11 hoverGesture:v4];
+  [(PXPhotosViewUIInteraction *)self _handleHoverWithHitTestResults:v11 hoverGesture:hoverCopy];
 }
 
-- (void)setContextMenuInteraction:(id)a3
+- (void)setContextMenuInteraction:(id)interaction
 {
-  v5 = a3;
+  interactionCopy = interaction;
   contextMenuInteraction = self->_contextMenuInteraction;
-  if (contextMenuInteraction != v5)
+  if (contextMenuInteraction != interactionCopy)
   {
-    v9 = v5;
-    if (!v5 && contextMenuInteraction)
+    v9 = interactionCopy;
+    if (!interactionCopy && contextMenuInteraction)
     {
-      v7 = [(UIContextMenuInteraction *)contextMenuInteraction view];
-      [v7 removeInteraction:self->_contextMenuInteraction];
+      view = [(UIContextMenuInteraction *)contextMenuInteraction view];
+      [view removeInteraction:self->_contextMenuInteraction];
     }
 
-    objc_storeStrong(&self->_contextMenuInteraction, a3);
-    v5 = v9;
+    objc_storeStrong(&self->_contextMenuInteraction, interaction);
+    interactionCopy = v9;
     if (self->_contextMenuInteraction)
     {
-      v8 = [(PXGInteraction *)self view];
-      [v8 addInteraction:self->_contextMenuInteraction];
+      view2 = [(PXGInteraction *)self view];
+      [view2 addInteraction:self->_contextMenuInteraction];
 
-      v5 = v9;
+      interactionCopy = v9;
     }
   }
 
-  MEMORY[0x2821F96F8](contextMenuInteraction, v5);
+  MEMORY[0x2821F96F8](contextMenuInteraction, interactionCopy);
 }
 
-- (id)adjustOneUpAssetReferenceToScrollToVisible:(id)a3
+- (id)adjustOneUpAssetReferenceToScrollToVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(PXPhotosViewUIInteraction *)self uiInteractionDelegate];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  visibleCopy = visible;
+  uiInteractionDelegate = [(PXPhotosViewUIInteraction *)self uiInteractionDelegate];
+  if (uiInteractionDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6 = [v5 uiInteraction:self adjustOneUpAssetReferenceToScrollToVisible:v4];
+    v6 = [uiInteractionDelegate uiInteraction:self adjustOneUpAssetReferenceToScrollToVisible:visibleCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = visibleCopy;
   }
 
   v7 = v6;
@@ -1857,21 +1857,21 @@ uint64_t __73__PXPhotosViewUIInteraction__handleHoverWithHitTestResults_hoverGes
   return v7;
 }
 
-- (BOOL)presentOneUpForAssetReference:(id)a3
+- (BOOL)presentOneUpForAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(PXPhotosViewInteraction *)self interactionHelper];
-  v6 = [v5 presentOneUpForAssetReference:v4 style:0];
+  referenceCopy = reference;
+  interactionHelper = [(PXPhotosViewInteraction *)self interactionHelper];
+  v6 = [interactionHelper presentOneUpForAssetReference:referenceCopy style:0];
 
   return v6;
 }
 
 - (id)_createContextMenuActionManagerForSelection
 {
-  v3 = [(PXPhotosViewInteraction *)self viewModel];
-  v4 = [v3 selectionManager];
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  selectionManager = [viewModel selectionManager];
 
-  v5 = [objc_alloc(MEMORY[0x277D3CCD0]) initWithSelectionManager:v4];
+  v5 = [objc_alloc(MEMORY[0x277D3CCD0]) initWithSelectionManager:selectionManager];
   [v5 setPerformerDelegate:self];
 
   return v5;
@@ -1879,31 +1879,31 @@ uint64_t __73__PXPhotosViewUIInteraction__handleHoverWithHitTestResults_hoverGes
 
 - (id)createContextMenuActionManagerForNavigatedPreviewAssetReference
 {
-  v3 = [(PXPhotosViewUIInteraction *)self navigatedAssetReference];
-  if (v3)
+  navigatedAssetReference = [(PXPhotosViewUIInteraction *)self navigatedAssetReference];
+  if (navigatedAssetReference)
   {
-    v4 = [(PXPhotosViewInteraction *)self viewModel];
-    v5 = [v4 assetActionManager];
+    viewModel = [(PXPhotosViewInteraction *)self viewModel];
+    assetActionManager = [viewModel assetActionManager];
     v6 = objc_alloc(objc_opt_class());
-    v7 = [v4 selectionManager];
-    v8 = [v6 initWithSelectionManager:v7];
+    selectionManager = [viewModel selectionManager];
+    v8 = [v6 initWithSelectionManager:selectionManager];
 
     [v8 setPerformerDelegate:self];
-    v9 = [v4 allowsMultiSelectMenu];
-    v10 = [v8 selectionManager];
-    v11 = [v10 selectionSnapshot];
+    allowsMultiSelectMenu = [viewModel allowsMultiSelectMenu];
+    selectionManager2 = [v8 selectionManager];
+    selectionSnapshot = [selectionManager2 selectionSnapshot];
 
-    v12 = [v11 selectedIndexPaths];
-    [v3 indexPath];
-    v13 = [v12 containsIndexPath:v19];
+    selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+    [navigatedAssetReference indexPath];
+    v13 = [selectedIndexPaths containsIndexPath:v19];
 
-    if (!v13 || (v9 & 1) == 0)
+    if (!v13 || (allowsMultiSelectMenu & 1) == 0)
     {
-      [v8 setObjectReference:v3];
+      [v8 setObjectReference:navigatedAssetReference];
     }
 
-    v14 = [v4 assetActionManager];
-    [v8 setAdditionalPropertiesFromActionManager:v14];
+    assetActionManager2 = [viewModel assetActionManager];
+    [v8 setAdditionalPropertiesFromActionManager:assetActionManager2];
   }
 
   else
@@ -1915,13 +1915,13 @@ uint64_t __73__PXPhotosViewUIInteraction__handleHoverWithHitTestResults_hoverGes
       _os_log_error_impl(&dword_21ABF3000, v15, OS_LOG_TYPE_ERROR, "Unable to retrieve asset reference for one up presentation action manager", v19, 2u);
     }
 
-    v4 = [(PXPhotosViewInteraction *)self viewModel];
+    viewModel = [(PXPhotosViewInteraction *)self viewModel];
     v8 = 0;
   }
 
-  v16 = [v4 assetActionManager];
-  v17 = [v16 allowedActionTypes];
-  [v8 setAllowedActionTypes:v17];
+  assetActionManager3 = [viewModel assetActionManager];
+  allowedActionTypes = [assetActionManager3 allowedActionTypes];
+  [v8 setAllowedActionTypes:allowedActionTypes];
 
   return v8;
 }
@@ -1931,10 +1931,10 @@ uint64_t __73__PXPhotosViewUIInteraction__handleHoverWithHitTestResults_hoverGes
   if (!self->_edgeSwipeGesture)
   {
     v3 = objc_alloc_init(MEMORY[0x277D759A8]);
-    v4 = [(PXGInteraction *)self view];
-    v5 = [v4 effectiveUserInterfaceLayoutDirection];
+    view = [(PXGInteraction *)self view];
+    effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
-    if (v5 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v6 = 8;
     }
@@ -1945,38 +1945,38 @@ uint64_t __73__PXPhotosViewUIInteraction__handleHoverWithHitTestResults_hoverGes
     }
 
     [(UIScreenEdgePanGestureRecognizer *)v3 setEdges:v6];
-    v7 = [(PXGInteraction *)self view];
-    [v7 addGestureRecognizer:v3];
+    view2 = [(PXGInteraction *)self view];
+    [view2 addGestureRecognizer:v3];
 
     edgeSwipeGesture = self->_edgeSwipeGesture;
     self->_edgeSwipeGesture = v3;
     v9 = v3;
 
     v10 = [PXPhotosGridEdgeSwipeInteractiveDismissalTransition alloc];
-    v13 = [(PXPhotosViewInteraction *)self presentingViewController];
-    v11 = [(PXPhotosGridEdgeSwipeInteractiveDismissalTransition *)v10 initWithEdgeSwipeGesture:v9 viewController:v13];
+    presentingViewController = [(PXPhotosViewInteraction *)self presentingViewController];
+    v11 = [(PXPhotosGridEdgeSwipeInteractiveDismissalTransition *)v10 initWithEdgeSwipeGesture:v9 viewController:presentingViewController];
     edgeSwipeDismissalInteraction = self->_edgeSwipeDismissalInteraction;
     self->_edgeSwipeDismissalInteraction = v11;
   }
 }
 
-- (id)_adjustHiddenAssetReferences:(id)a3
+- (id)_adjustHiddenAssetReferences:(id)references
 {
-  v4 = a3;
-  v5 = [(PXPhotosViewUIInteraction *)self uiInteractionDelegate];
+  referencesCopy = references;
+  uiInteractionDelegate = [(PXPhotosViewUIInteraction *)self uiInteractionDelegate];
   v6 = objc_opt_respondsToSelector();
 
-  if ((v6 & 1) == 0 || (-[PXPhotosViewUIInteraction uiInteractionDelegate](self, "uiInteractionDelegate"), v7 = objc_claimAutoreleasedReturnValue(), [v7 uiInteraction:self adjustHiddenAssetReferences:v4], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  if ((v6 & 1) == 0 || (-[PXPhotosViewUIInteraction uiInteractionDelegate](self, "uiInteractionDelegate"), v7 = objc_claimAutoreleasedReturnValue(), [v7 uiInteraction:self adjustHiddenAssetReferences:referencesCopy], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
-    v8 = v4;
+    v8 = referencesCopy;
   }
 
   return v8;
 }
 
-- (void)setHiddenAssetReferences:(id)a3
+- (void)setHiddenAssetReferences:(id)references
 {
-  v4 = [(PXPhotosViewUIInteraction *)self _adjustHiddenAssetReferences:a3];
+  v4 = [(PXPhotosViewUIInteraction *)self _adjustHiddenAssetReferences:references];
   v5 = v4;
   if (v4 != self->_hiddenAssetReferences)
   {
@@ -1989,9 +1989,9 @@ uint64_t __73__PXPhotosViewUIInteraction__handleHoverWithHitTestResults_hoverGes
       hiddenAssetReferences = self->_hiddenAssetReferences;
       self->_hiddenAssetReferences = v6;
 
-      v8 = [(PXGInteraction *)self layout];
-      v9 = [v8 rootLayout];
-      [v9 hideSpritesForObjectReferences:v10];
+      layout = [(PXGInteraction *)self layout];
+      rootLayout = [layout rootLayout];
+      [rootLayout hideSpritesForObjectReferences:v10];
 
       v5 = v10;
     }
@@ -2000,50 +2000,50 @@ uint64_t __73__PXPhotosViewUIInteraction__handleHoverWithHitTestResults_hoverGes
   MEMORY[0x2821F96F8](v4, v5);
 }
 
-- (id)_makePlaceholderViewForRegionOfInterest:(id)a3 roiRect:(CGRect)a4
+- (id)_makePlaceholderViewForRegionOfInterest:(id)interest roiRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = [(PXGInteraction *)self view];
-  v9 = [v8 resizableSnapshotViewFromRect:0 afterScreenUpdates:x withCapInsets:{y, width, height, *MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  view = [(PXGInteraction *)self view];
+  v9 = [view resizableSnapshotViewFromRect:0 afterScreenUpdates:x withCapInsets:{y, width, height, *MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
 
   return v9;
 }
 
-- (id)regionOfInterestForAssetReference:(id)a3 image:(CGImage *)a4 fallbackMediaProvider:(id)a5 shouldSnapshot:(BOOL)a6
+- (id)regionOfInterestForAssetReference:(id)reference image:(CGImage *)image fallbackMediaProvider:(id)provider shouldSnapshot:(BOOL)snapshot
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a5;
-  v12 = [(PXPhotosViewUIInteraction *)self uiInteractionDelegate];
+  snapshotCopy = snapshot;
+  referenceCopy = reference;
+  providerCopy = provider;
+  uiInteractionDelegate = [(PXPhotosViewUIInteraction *)self uiInteractionDelegate];
   v13 = objc_opt_respondsToSelector();
 
-  if ((v13 & 1) == 0 || (-[PXPhotosViewUIInteraction uiInteractionDelegate](self, "uiInteractionDelegate"), v14 = objc_claimAutoreleasedReturnValue(), [v14 uiInteraction:self customRegionOfInterestForAssetReference:v10], v15 = objc_claimAutoreleasedReturnValue(), v14, !v15))
+  if ((v13 & 1) == 0 || (-[PXPhotosViewUIInteraction uiInteractionDelegate](self, "uiInteractionDelegate"), v14 = objc_claimAutoreleasedReturnValue(), [v14 uiInteraction:self customRegionOfInterestForAssetReference:referenceCopy], v15 = objc_claimAutoreleasedReturnValue(), v14, !v15))
   {
     v32 = 0;
-    if (v6)
+    if (snapshotCopy)
     {
-      v16 = a4;
+      imageCopy = image;
     }
 
     else
     {
-      v16 = &v32;
+      imageCopy = &v32;
     }
 
     v31.receiver = self;
     v31.super_class = PXPhotosViewUIInteraction;
-    v15 = [(PXPhotosViewInteraction *)&v31 regionOfInterestForAssetReference:v10 image:v16 fallbackMediaProvider:v11 shouldSnapshot:v6];
-    if (a4 && !v6)
+    v15 = [(PXPhotosViewInteraction *)&v31 regionOfInterestForAssetReference:referenceCopy image:imageCopy fallbackMediaProvider:providerCopy shouldSnapshot:snapshotCopy];
+    if (image && !snapshotCopy)
     {
-      *a4 = v32;
+      *image = v32;
     }
 
     objc_initWeak(&location, self);
-    v17 = [(PXGInteraction *)self view];
-    [v15 rectInCoordinateSpace:v17];
+    view = [(PXGInteraction *)self view];
+    [v15 rectInCoordinateSpace:view];
     v19 = v18;
     v21 = v20;
     v23 = v22;
@@ -2053,7 +2053,7 @@ uint64_t __73__PXPhotosViewUIInteraction__handleHoverWithHitTestResults_hoverGes
     v27[1] = 3221225472;
     v27[2] = __106__PXPhotosViewUIInteraction_regionOfInterestForAssetReference_image_fallbackMediaProvider_shouldSnapshot___block_invoke;
     v27[3] = &unk_278298EA8;
-    v29 = v6;
+    v29 = snapshotCopy;
     objc_copyWeak(v28, &location);
     v28[1] = v19;
     v28[2] = v21;
@@ -2090,10 +2090,10 @@ id __106__PXPhotosViewUIInteraction_regionOfInterestForAssetReference_image_fall
   return v9;
 }
 
-- (id)regionOfInterestForAssetReference:(id)a3 image:(id *)a4
+- (id)regionOfInterestForAssetReference:(id)reference image:(id *)image
 {
   v8 = 0;
-  if (a4)
+  if (image)
   {
     v5 = &v8;
   }
@@ -2103,28 +2103,28 @@ id __106__PXPhotosViewUIInteraction_regionOfInterestForAssetReference_image_fall
     v5 = 0;
   }
 
-  v6 = [(PXPhotosViewUIInteraction *)self regionOfInterestForAssetReference:a3 image:v5 fallbackMediaProvider:0 shouldSnapshot:1];
+  v6 = [(PXPhotosViewUIInteraction *)self regionOfInterestForAssetReference:reference image:v5 fallbackMediaProvider:0 shouldSnapshot:1];
   if (v8)
   {
-    *a4 = [MEMORY[0x277D755B8] imageWithCGImage:?];
+    *image = [MEMORY[0x277D755B8] imageWithCGImage:?];
   }
 
   return v6;
 }
 
-- (id)menuImageForActionType:(id)a3
+- (id)menuImageForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXPhotosViewInteraction *)self viewModel];
-  v6 = [v5 gridActionManager];
-  v7 = [v6 actionPerformerForActionType:v4];
+  typeCopy = type;
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  gridActionManager = [viewModel gridActionManager];
+  v7 = [gridActionManager actionPerformerForActionType:typeCopy];
 
-  v8 = [v7 activitySystemImageName];
-  if (v8)
+  activitySystemImageName = [v7 activitySystemImageName];
+  if (activitySystemImageName)
   {
     v9 = MEMORY[0x277D755B8];
-    v10 = [v7 activitySystemImageName];
-    v11 = [v9 systemImageNamed:v10];
+    activitySystemImageName2 = [v7 activitySystemImageName];
+    v11 = [v9 systemImageNamed:activitySystemImageName2];
   }
 
   else
@@ -2135,57 +2135,57 @@ id __106__PXPhotosViewUIInteraction_regionOfInterestForAssetReference_image_fall
   return v11;
 }
 
-- (id)menuTitleForActionType:(id)a3
+- (id)menuTitleForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXPhotosViewInteraction *)self viewModel];
-  v6 = [v5 gridActionManager];
-  v7 = [v6 actionPerformerForActionType:v4];
+  typeCopy = type;
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  gridActionManager = [viewModel gridActionManager];
+  v7 = [gridActionManager actionPerformerForActionType:typeCopy];
 
   v8 = [v7 localizedTitleForUseCase:1];
 
   return v8;
 }
 
-- (void)performActionWithType:(id)a3
+- (void)performActionWithType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXPhotosViewInteraction *)self viewModel];
-  v6 = [v5 gridActionManager];
-  v7 = [v6 actionPerformerForActionType:v4];
+  typeCopy = type;
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  gridActionManager = [viewModel gridActionManager];
+  v7 = [gridActionManager actionPerformerForActionType:typeCopy];
 
   [v7 performActionWithCompletionHandler:0];
 }
 
-- (BOOL)canPerformActionType:(id)a3
+- (BOOL)canPerformActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXPhotosViewInteraction *)self viewModel];
-  v6 = [v5 gridActionManager];
-  v7 = [v6 canPerformActionType:v4];
+  typeCopy = type;
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  gridActionManager = [viewModel gridActionManager];
+  v7 = [gridActionManager canPerformActionType:typeCopy];
 
   return v7;
 }
 
 - (BOOL)ensureSelectMode
 {
-  v2 = [(PXPhotosViewInteraction *)self viewModel];
-  if ([v2 canEnterSelectMode])
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  if ([viewModel canEnterSelectMode])
   {
-    [v2 performChanges:&__block_literal_global_32];
+    [viewModel performChanges:&__block_literal_global_32];
   }
 
-  v3 = [v2 isInSelectMode];
+  isInSelectMode = [viewModel isInSelectMode];
 
-  return v3;
+  return isInSelectMode;
 }
 
 - (void)toggleSelectMode
 {
   if ([(PXPhotosViewUIInteraction *)self canToggleSelectMode])
   {
-    v3 = [(PXPhotosViewInteraction *)self viewModel];
-    [v3 performChanges:&__block_literal_global_30];
+    viewModel = [(PXPhotosViewInteraction *)self viewModel];
+    [viewModel performChanges:&__block_literal_global_30];
   }
 }
 
@@ -2197,47 +2197,47 @@ void __45__PXPhotosViewUIInteraction_toggleSelectMode__block_invoke(uint64_t a1,
 
 - (BOOL)canToggleSelectMode
 {
-  v2 = [(PXPhotosViewInteraction *)self viewModel];
-  if ([v2 canEnterSelectMode])
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  if ([viewModel canEnterSelectMode])
   {
-    v3 = 1;
+    canExitSelectMode = 1;
   }
 
   else
   {
-    v3 = [v2 canExitSelectMode];
+    canExitSelectMode = [viewModel canExitSelectMode];
   }
 
-  return v3;
+  return canExitSelectMode;
 }
 
 - (BOOL)_pickNavigatedAssetReference
 {
-  v3 = [(PXPhotosViewUIInteraction *)self navigatedAssetReference];
-  if (v3)
+  navigatedAssetReference = [(PXPhotosViewUIInteraction *)self navigatedAssetReference];
+  if (navigatedAssetReference)
   {
-    v4 = [(PXPhotosViewInteraction *)self viewModel];
-    if ([v4 isInSelectMode])
+    viewModel = [(PXPhotosViewInteraction *)self viewModel];
+    if ([viewModel isInSelectMode])
     {
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __57__PXPhotosViewUIInteraction__pickNavigatedAssetReference__block_invoke;
       v9[3] = &unk_278298E60;
-      v10 = v3;
-      [v4 performChanges:v9];
+      v10 = navigatedAssetReference;
+      [viewModel performChanges:v9];
     }
 
     else
     {
-      if (![v4 viewDelegateRespondsTo:1])
+      if (![viewModel viewDelegateRespondsTo:1])
       {
         v5 = 0;
         goto LABEL_9;
       }
 
-      v6 = [v4 viewDelegate];
-      v7 = [(PXPhotosViewInteraction *)self presentingViewController];
-      [v6 photosViewController:v7 didPickAssetReference:v3];
+      viewDelegate = [viewModel viewDelegate];
+      presentingViewController = [(PXPhotosViewInteraction *)self presentingViewController];
+      [viewDelegate photosViewController:presentingViewController didPickAssetReference:navigatedAssetReference];
     }
 
     v5 = 1;
@@ -2256,18 +2256,18 @@ LABEL_10:
 {
   if (!self->_contextMenuInteraction)
   {
-    v4 = [(PXPhotosViewInteraction *)self viewModel];
-    v5 = [v4 allowsContextMenuCustomization];
+    viewModel = [(PXPhotosViewInteraction *)self viewModel];
+    allowsContextMenuCustomization = [viewModel allowsContextMenuCustomization];
 
-    if (v5)
+    if (allowsContextMenuCustomization)
     {
       v7 = [objc_alloc(MEMORY[0x277D753B8]) initWithDelegate:self];
     }
 
     else
     {
-      v6 = [(PXPhotosViewInteraction *)self interactionHelper];
-      v7 = [v6 contextMenuInteractionForViewInteraction:self];
+      interactionHelper = [(PXPhotosViewInteraction *)self interactionHelper];
+      v7 = [interactionHelper contextMenuInteractionForViewInteraction:self];
     }
 
     [(PXPhotosViewUIInteraction *)self setContextMenuInteraction:v7];
@@ -2276,25 +2276,25 @@ LABEL_10:
 
 - (void)_tearDownGestures
 {
-  v3 = [(UITapGestureRecognizer *)self->_tapGesture view];
-  [v3 removeGestureRecognizer:self->_tapGesture];
+  view = [(UITapGestureRecognizer *)self->_tapGesture view];
+  [view removeGestureRecognizer:self->_tapGesture];
 
-  v4 = [(UILongPressGestureRecognizer *)self->_longPressGesture view];
-  [v4 removeGestureRecognizer:self->_longPressGesture];
+  view2 = [(UILongPressGestureRecognizer *)self->_longPressGesture view];
+  [view2 removeGestureRecognizer:self->_longPressGesture];
 
-  v5 = [(UIPinchGestureRecognizer *)self->_pinchGesture view];
-  [v5 removeGestureRecognizer:self->_pinchGesture];
+  view3 = [(UIPinchGestureRecognizer *)self->_pinchGesture view];
+  [view3 removeGestureRecognizer:self->_pinchGesture];
 
-  v6 = [(UILongPressGestureRecognizer *)self->_touchGesture view];
-  [v6 removeGestureRecognizer:self->_touchGesture];
+  view4 = [(UILongPressGestureRecognizer *)self->_touchGesture view];
+  [view4 removeGestureRecognizer:self->_touchGesture];
 
-  v7 = [(PXTouchingUIGestureRecognizer *)self->_touchingGesture view];
-  [v7 removeGestureRecognizer:self->_touchingGesture];
+  view5 = [(PXTouchingUIGestureRecognizer *)self->_touchingGesture view];
+  [view5 removeGestureRecognizer:self->_touchingGesture];
 
   [(PXSwipeSelectionManager *)self->_swipeSelectionManager removeFromView];
   [(PXPhotosDragController *)self->_dragController removeFromView];
-  v8 = [(PXPhotosViewInteraction *)self zoomablePhotosInteraction];
-  [v8 setView:0];
+  zoomablePhotosInteraction = [(PXPhotosViewInteraction *)self zoomablePhotosInteraction];
+  [zoomablePhotosInteraction setView:0];
 
   tapGesture = self->_tapGesture;
   self->_tapGesture = 0;
@@ -2322,17 +2322,17 @@ LABEL_10:
 
 - (void)_setupGestures
 {
-  v3 = [(PXGInteraction *)self view];
+  view = [(PXGInteraction *)self view];
 
-  if (v3)
+  if (view)
   {
-    v31 = [(PXPhotosViewInteraction *)self viewModel];
-    v4 = [(PXGInteraction *)self view];
+    viewModel = [(PXPhotosViewInteraction *)self viewModel];
+    view2 = [(PXGInteraction *)self view];
     v5 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel_handleLongPress_];
     [v5 setDelegate:self];
     objc_storeStrong(&self->_longPressGesture, v5);
-    [v4 addGestureRecognizer:v5];
-    if ([v31 allowsHoverBehavior])
+    [view2 addGestureRecognizer:v5];
+    if ([viewModel allowsHoverBehavior])
     {
       v6 = [objc_alloc(MEMORY[0x277D755A0]) initWithTarget:self action:sel__handleHover_];
       [(UIHoverGestureRecognizer *)v6 setDelegate:self];
@@ -2340,15 +2340,15 @@ LABEL_10:
       self->_hoverGesture = v6;
       v8 = v6;
 
-      [v4 addGestureRecognizer:v8];
+      [view2 addGestureRecognizer:v8];
     }
 
     v9 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__handleTap_];
     [v9 setDelegate:self];
     [v9 setCancelsTouchesInView:0];
     objc_storeStrong(&self->_tapGesture, v9);
-    [v4 addGestureRecognizer:v9];
-    if ([v31 allowsDoubleTapBehavior])
+    [view2 addGestureRecognizer:v9];
+    if ([viewModel allowsDoubleTapBehavior])
     {
       v10 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__handleDoubleTap_];
       [(UITapGestureRecognizer *)v10 setNumberOfTapsRequired:2];
@@ -2358,110 +2358,110 @@ LABEL_10:
       self->_doubleTapGesture = v10;
       v12 = v10;
 
-      [v4 addGestureRecognizer:v12];
+      [view2 addGestureRecognizer:v12];
     }
 
     v13 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__handlePress_];
     [v13 setAllowedPressTypes:&unk_282C48228];
     [v13 setDelegate:self];
     objc_storeStrong(&self->_pressGesture, v13);
-    [v4 addGestureRecognizer:v13];
+    [view2 addGestureRecognizer:v13];
     v14 = [objc_alloc(MEMORY[0x277D75848]) initWithTarget:self action:sel__handlePinch_];
     [v14 _setEndsOnSingleTouch:1];
     [v14 setDelegate:self];
     objc_storeStrong(&self->_pinchGesture, v14);
-    [v4 addGestureRecognizer:v14];
-    if ([v31 allowsSwipeToSelect])
+    [view2 addGestureRecognizer:v14];
+    if ([viewModel allowsSwipeToSelect])
     {
       v15 = [PXSwipeSelectionManager alloc];
-      v16 = [(PXPhotosViewInteraction *)self viewModel];
-      v17 = [v16 selectionManager];
-      v18 = [(PXPhotosViewUIInteraction *)self scrollView];
-      v19 = [(PXSwipeSelectionManager *)v15 initWithSelectionManager:v17 scrollView:v18];
+      viewModel2 = [(PXPhotosViewInteraction *)self viewModel];
+      selectionManager = [viewModel2 selectionManager];
+      scrollView = [(PXPhotosViewUIInteraction *)self scrollView];
+      v19 = [(PXSwipeSelectionManager *)v15 initWithSelectionManager:selectionManager scrollView:scrollView];
 
       [(PXSwipeSelectionManager *)v19 setDelegate:self];
       swipeSelectionManager = self->_swipeSelectionManager;
       self->_swipeSelectionManager = v19;
     }
 
-    if (([v31 allowsDragOut] & 1) != 0 || objc_msgSend(v31, "allowsDragIn"))
+    if (([viewModel allowsDragOut] & 1) != 0 || objc_msgSend(viewModel, "allowsDragIn"))
     {
       v21 = [PXPhotosDragController alloc];
-      v22 = [v31 selectionManager];
-      v23 = [v31 assetCollectionActionManager];
-      v24 = [(PXPhotosDragController *)v21 initWithContentView:v4 selectionManager:v22 assetCollectionActionManager:v23 delegate:self];
+      selectionManager2 = [viewModel selectionManager];
+      assetCollectionActionManager = [viewModel assetCollectionActionManager];
+      v24 = [(PXPhotosDragController *)v21 initWithContentView:view2 selectionManager:selectionManager2 assetCollectionActionManager:assetCollectionActionManager delegate:self];
       dragController = self->_dragController;
       self->_dragController = v24;
 
-      v26 = [v31 allowsDragIn];
-      v27 = [(PXPhotosViewUIInteraction *)self dragController];
-      [v27 setCanDragIn:v26];
+      allowsDragIn = [viewModel allowsDragIn];
+      dragController = [(PXPhotosViewUIInteraction *)self dragController];
+      [dragController setCanDragIn:allowsDragIn];
     }
 
-    v28 = [(PXGInteraction *)self view];
-    v29 = [(PXPhotosViewInteraction *)self zoomablePhotosInteraction];
-    [v29 setView:v28];
+    view3 = [(PXGInteraction *)self view];
+    zoomablePhotosInteraction = [(PXPhotosViewInteraction *)self zoomablePhotosInteraction];
+    [zoomablePhotosInteraction setView:view3];
 
-    v30 = [(PXPhotosViewInteraction *)self interactionHelper];
-    [v30 didSetupGesturesForInteraction:self];
+    interactionHelper = [(PXPhotosViewInteraction *)self interactionHelper];
+    [interactionHelper didSetupGesturesForInteraction:self];
 
     [(PXPhotosViewUIInteraction *)self _updateContextMenuInteraction];
   }
 }
 
-- (void)setNavigatedAssetSectionDataSourceManager:(id)a3
+- (void)setNavigatedAssetSectionDataSourceManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   [(PXAssetsDataSourceManager *)self->_navigatedAssetSectionDataSourceManager unregisterChangeObserver:self context:NavigatedSectionDataSourceObservationContext];
   navigatedAssetSectionDataSourceManager = self->_navigatedAssetSectionDataSourceManager;
-  self->_navigatedAssetSectionDataSourceManager = v4;
-  v6 = v4;
+  self->_navigatedAssetSectionDataSourceManager = managerCopy;
+  v6 = managerCopy;
 
   [(PXAssetsDataSourceManager *)self->_navigatedAssetSectionDataSourceManager registerChangeObserver:self context:NavigatedSectionDataSourceObservationContext];
 }
 
-- (void)setNavigatedAssetReference:(id)a3
+- (void)setNavigatedAssetReference:(id)reference
 {
-  v6 = a3;
-  v7 = v6;
-  if (self->_navigatedAssetReference != v6 && ([(PXAssetReference *)v6 isEqual:?]& 1) == 0)
+  referenceCopy = reference;
+  v7 = referenceCopy;
+  if (self->_navigatedAssetReference != referenceCopy && ([(PXAssetReference *)referenceCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_navigatedAssetReference, a3);
-    v8 = [(PXPhotosViewUIInteraction *)self uiInteractionDelegate];
-    [v8 uiInteraction:self didChangeNavigatedAssetReference:v7];
+    objc_storeStrong(&self->_navigatedAssetReference, reference);
+    uiInteractionDelegate = [(PXPhotosViewUIInteraction *)self uiInteractionDelegate];
+    [uiInteractionDelegate uiInteraction:self didChangeNavigatedAssetReference:v7];
 
     if (v7)
     {
-      v9 = [(PXPhotosViewInteraction *)self viewModel];
-      v10 = [v9 dataSourceManager];
-      v11 = [v9 oneUpAssetsViewMode];
-      if (v11 == 2)
+      viewModel = [(PXPhotosViewInteraction *)self viewModel];
+      dataSourceManager = [viewModel dataSourceManager];
+      oneUpAssetsViewMode = [viewModel oneUpAssetsViewMode];
+      if (oneUpAssetsViewMode == 2)
       {
-        v13 = [v10 createReverselySortedDataSourceManager];
-        if (!v13)
+        createReverselySortedDataSourceManager = [dataSourceManager createReverselySortedDataSourceManager];
+        if (!createReverselySortedDataSourceManager)
         {
-          v17 = [MEMORY[0x277CCA890] currentHandler];
-          [v17 handleFailureInMethod:a2 object:self file:@"PXPhotosViewUIInteraction.m" lineNumber:126 description:@"Unable to create a data source manager for the selected asset section."];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosViewUIInteraction.m" lineNumber:126 description:@"Unable to create a data source manager for the selected asset section."];
         }
 
-        [(PXPhotosViewUIInteraction *)self setNavigatedAssetSectionDataSourceManager:v13];
+        [(PXPhotosViewUIInteraction *)self setNavigatedAssetSectionDataSourceManager:createReverselySortedDataSourceManager];
         v14 = dispatch_get_global_queue(33, 0);
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __56__PXPhotosViewUIInteraction_setNavigatedAssetReference___block_invoke;
         block[3] = &unk_278299118;
-        v19 = v13;
-        v15 = v13;
+        v19 = createReverselySortedDataSourceManager;
+        v15 = createReverselySortedDataSourceManager;
         dispatch_sync(v14, block);
       }
 
-      else if (v11 == 1)
+      else if (oneUpAssetsViewMode == 1)
       {
-        v12 = [v10 createDataSourceManagerForAssetsInSectionOfAsset:v7 usingNewTransientAssetCollection:{objc_msgSend(v9, "gridStyle") == 6}];
+        v12 = [dataSourceManager createDataSourceManagerForAssetsInSectionOfAsset:v7 usingNewTransientAssetCollection:{objc_msgSend(viewModel, "gridStyle") == 6}];
         if (!v12)
         {
-          v16 = [MEMORY[0x277CCA890] currentHandler];
-          [v16 handleFailureInMethod:a2 object:self file:@"PXPhotosViewUIInteraction.m" lineNumber:119 description:@"Unable to create a data source manager for the selected asset section."];
+          currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotosViewUIInteraction.m" lineNumber:119 description:@"Unable to create a data source manager for the selected asset section."];
         }
 
         [(PXPhotosViewUIInteraction *)self setNavigatedAssetSectionDataSourceManager:v12];
@@ -2472,8 +2472,8 @@ LABEL_10:
 
 - (NSUndoManager)undoManager
 {
-  v3 = [(PXPhotosViewInteraction *)self delegate];
-  v4 = [v3 undoManagerForPhotosInteraction:self];
+  delegate = [(PXPhotosViewInteraction *)self delegate];
+  v4 = [delegate undoManagerForPhotosInteraction:self];
 
   return v4;
 }
@@ -2487,10 +2487,10 @@ LABEL_10:
 
 - (UIScrollView)scrollView
 {
-  v2 = [(PXGInteraction *)self scrollViewController];
-  v3 = [v2 scrollView];
+  scrollViewController = [(PXGInteraction *)self scrollViewController];
+  scrollView = [scrollViewController scrollView];
 
-  return v3;
+  return scrollView;
 }
 
 - (void)scrollViewControllerDidChange
@@ -2498,11 +2498,11 @@ LABEL_10:
   v5.receiver = self;
   v5.super_class = PXPhotosViewUIInteraction;
   [(PXGInteraction *)&v5 scrollViewControllerDidChange];
-  v3 = [(PXGInteraction *)self scrollViewController];
-  [v3 registerObserver:self];
+  scrollViewController = [(PXGInteraction *)self scrollViewController];
+  [scrollViewController registerObserver:self];
 
-  v4 = [(PXPhotosViewInteraction *)self interactionHelper];
-  [v4 scrollViewControllerDidChangeForInteraction:self];
+  interactionHelper = [(PXPhotosViewInteraction *)self interactionHelper];
+  [interactionHelper scrollViewControllerDidChangeForInteraction:self];
 }
 
 - (void)viewDidChange

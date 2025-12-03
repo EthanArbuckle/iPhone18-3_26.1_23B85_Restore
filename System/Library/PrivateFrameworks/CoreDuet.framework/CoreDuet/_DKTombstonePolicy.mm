@@ -2,9 +2,9 @@
 + (id)defaultPolicy;
 - (NSArray)propertiesToFetchForTombstones;
 - (NSPredicate)predicateForEventsRequiredToBeTombstoned;
-- (_DKTombstonePolicy)initWithRequirements:(id)a3;
-- (id)tombstonesForEvents:(id)a3 resultingFromRequirementsWithIdentifiers:(id *)a4;
-- (id)tombstonesForPartialEvents:(id)a3 resultingFromRequirementsWithIdentifiers:(id *)a4;
+- (_DKTombstonePolicy)initWithRequirements:(id)requirements;
+- (id)tombstonesForEvents:(id)events resultingFromRequirementsWithIdentifiers:(id *)identifiers;
+- (id)tombstonesForPartialEvents:(id)events resultingFromRequirementsWithIdentifiers:(id *)identifiers;
 - (void)eventPredicateForEventsRequiredToBeTombstoned;
 @end
 
@@ -21,8 +21,8 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v5 = [(_DKTombstonePolicy *)self requirements];
-    v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    requirements = [(_DKTombstonePolicy *)self requirements];
+    v6 = [requirements countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v6)
     {
       v7 = v6;
@@ -33,26 +33,26 @@
         {
           if (*v21 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(requirements);
           }
 
           v10 = *(*(&v20 + 1) + 8 * i);
-          v11 = [v10 propertiesToFetch];
-          if (v11)
+          propertiesToFetch = [v10 propertiesToFetch];
+          if (propertiesToFetch)
           {
-            v12 = v11;
-            v13 = [v10 propertiesToFetch];
-            v14 = [v13 count];
+            v12 = propertiesToFetch;
+            propertiesToFetch2 = [v10 propertiesToFetch];
+            v14 = [propertiesToFetch2 count];
 
             if (v14)
             {
-              v15 = [v10 propertiesToFetch];
-              [v4 addObjectsFromArray:v15];
+              propertiesToFetch3 = [v10 propertiesToFetch];
+              [v4 addObjectsFromArray:propertiesToFetch3];
             }
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v7 = [requirements countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v7);
@@ -91,16 +91,16 @@
   return v9;
 }
 
-- (_DKTombstonePolicy)initWithRequirements:(id)a3
+- (_DKTombstonePolicy)initWithRequirements:(id)requirements
 {
-  v5 = a3;
+  requirementsCopy = requirements;
   v9.receiver = self;
   v9.super_class = _DKTombstonePolicy;
   v6 = [(_DKTombstonePolicy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requirements, a3);
+    objc_storeStrong(&v6->_requirements, requirements);
   }
 
   return v7;
@@ -120,8 +120,8 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [(_DKTombstonePolicy *)self requirements];
-    v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    requirements = [(_DKTombstonePolicy *)self requirements];
+    v8 = [requirements countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
       v9 = v8;
@@ -132,20 +132,20 @@
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(requirements);
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
-          v13 = [v12 predicate];
+          predicate = [v12 predicate];
 
-          if (v13)
+          if (predicate)
           {
-            v14 = [v12 predicate];
-            [v6 addObject:v14];
+            predicate2 = [v12 predicate];
+            [v6 addObject:predicate2];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [requirements countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v9);
@@ -163,11 +163,11 @@
   return predicateForEventsRequiredToBeTombstoned;
 }
 
-- (id)tombstonesForPartialEvents:(id)a3 resultingFromRequirementsWithIdentifiers:(id *)a4
+- (id)tombstonesForPartialEvents:(id)events resultingFromRequirementsWithIdentifiers:(id *)identifiers
 {
   v62 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a4)
+  eventsCopy = events;
+  if (identifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   }
@@ -177,11 +177,11 @@
     v6 = 0;
   }
 
-  v43 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v41 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [(_DKTombstonePolicy *)self predicateForEventsRequiredToBeTombstoned];
-  v39 = v5;
-  v8 = [v5 filteredArrayUsingPredicate:v7];
+  predicateForEventsRequiredToBeTombstoned = [(_DKTombstonePolicy *)self predicateForEventsRequiredToBeTombstoned];
+  v39 = eventsCopy;
+  v8 = [eventsCopy filteredArrayUsingPredicate:predicateForEventsRequiredToBeTombstoned];
 
   v56 = 0u;
   v57 = 0u;
@@ -233,7 +233,7 @@
           v60 = v19;
           v48 = v19;
           v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
-          v24 = [_DKEvent eventWithStream:v20 startDate:v43 endDate:v43 value:v21 metadata:v23];
+          v24 = [_DKEvent eventWithStream:v20 startDate:date endDate:date value:v21 metadata:v23];
 
           if (v24)
           {
@@ -241,8 +241,8 @@
             v53 = 0u;
             v50 = 0u;
             v51 = 0u;
-            v25 = [(_DKTombstonePolicy *)self requirements];
-            v26 = [v25 countByEnumeratingWithState:&v50 objects:v58 count:16];
+            requirements = [(_DKTombstonePolicy *)self requirements];
+            v26 = [requirements countByEnumeratingWithState:&v50 objects:v58 count:16];
             if (v26)
             {
               v27 = v26;
@@ -253,30 +253,30 @@
                 {
                   if (*v51 != v28)
                   {
-                    objc_enumerationMutation(v25);
+                    objc_enumerationMutation(requirements);
                   }
 
                   v30 = *(*(&v50 + 1) + 8 * i);
-                  v31 = [v30 predicate];
-                  v32 = [v31 evaluateWithObject:v13];
+                  predicate = [v30 predicate];
+                  v32 = [predicate evaluateWithObject:v13];
 
                   if (v32)
                   {
                     [v30 assignPropertiesToTombstone:v24 extractedFromPartialEvent:v13];
                     if (v6)
                     {
-                      v33 = [v30 identifier];
+                      identifier = [v30 identifier];
 
-                      if (v33)
+                      if (identifier)
                       {
-                        v34 = [v30 identifier];
-                        [v6 addObject:v34];
+                        identifier2 = [v30 identifier];
+                        [v6 addObject:identifier2];
                       }
                     }
                   }
                 }
 
-                v27 = [v25 countByEnumeratingWithState:&v50 objects:v58 count:16];
+                v27 = [requirements countByEnumeratingWithState:&v50 objects:v58 count:16];
               }
 
               while (v27);
@@ -317,10 +317,10 @@
 - (void)eventPredicateForEventsRequiredToBeTombstoned
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = a1[4];
+    selfCopy = self;
+    v2 = self[4];
     if (!v2)
     {
       v3 = objc_alloc(MEMORY[0x1E695DF70]);
@@ -331,8 +331,8 @@
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v6 = [v1 requirements];
-      v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      requirements = [selfCopy requirements];
+      v7 = [requirements countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v7)
       {
         v8 = v7;
@@ -343,51 +343,51 @@
           {
             if (*v19 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(requirements);
             }
 
             v11 = *(*(&v18 + 1) + 8 * i);
-            v12 = [v11 eventPredicate];
-            if (!v12)
+            eventPredicate = [v11 eventPredicate];
+            if (!eventPredicate)
             {
-              v12 = [v11 predicate];
-              if (!v12)
+              eventPredicate = [v11 predicate];
+              if (!eventPredicate)
               {
                 continue;
               }
             }
 
-            v13 = v12;
-            [v5 addObject:v12];
+            v13 = eventPredicate;
+            [v5 addObject:eventPredicate];
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v8 = [requirements countByEnumeratingWithState:&v18 objects:v22 count:16];
         }
 
         while (v8);
       }
 
       v14 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v5];
-      v15 = v1[4];
-      v1[4] = v14;
+      v15 = selfCopy[4];
+      selfCopy[4] = v14;
 
-      v2 = v1[4];
+      v2 = selfCopy[4];
     }
 
-    a1 = v2;
+    self = v2;
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
-- (id)tombstonesForEvents:(id)a3 resultingFromRequirementsWithIdentifiers:(id *)a4
+- (id)tombstonesForEvents:(id)events resultingFromRequirementsWithIdentifiers:(id *)identifiers
 {
   v60 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v37 = a4;
-  if (a4)
+  eventsCopy = events;
+  identifiersCopy = identifiers;
+  if (identifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   }
@@ -397,11 +397,11 @@
     v6 = 0;
   }
 
-  v43 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v40 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [(_DKTombstonePolicy *)self eventPredicateForEventsRequiredToBeTombstoned];
-  v38 = v5;
-  v8 = [v5 filteredArrayUsingPredicate:v7];
+  eventPredicateForEventsRequiredToBeTombstoned = [(_DKTombstonePolicy *)self eventPredicateForEventsRequiredToBeTombstoned];
+  v38 = eventsCopy;
+  v8 = [eventsCopy filteredArrayUsingPredicate:eventPredicateForEventsRequiredToBeTombstoned];
 
   v54 = 0u;
   v55 = 0u;
@@ -426,21 +426,21 @@
         }
 
         v13 = *(*(&v52 + 1) + 8 * v12);
-        v14 = [v13 UUID];
-        v15 = [v13 stream];
-        v16 = [v15 name];
+        uUID = [v13 UUID];
+        stream = [v13 stream];
+        name = [stream name];
 
-        if (v16 && v14)
+        if (name && uUID)
         {
           v17 = +[_DKSystemEventStreams tombstoneStream];
-          v47 = v14;
-          v18 = [_DKUUIDIdentifier withUUID:v14];
+          v47 = uUID;
+          v18 = [_DKUUIDIdentifier withUUID:uUID];
           v19 = +[_DKTombstoneMetadataKey eventStreamName];
           v57 = v19;
-          v58 = v16;
-          v46 = v16;
+          v58 = name;
+          v46 = name;
           v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
-          v21 = [_DKEvent eventWithStream:v17 startDate:v43 endDate:v43 value:v18 metadata:v20];
+          v21 = [_DKEvent eventWithStream:v17 startDate:date endDate:date value:v18 metadata:v20];
 
           if (v21)
           {
@@ -449,8 +449,8 @@
             v51 = 0u;
             v48 = 0u;
             v49 = 0u;
-            v22 = [(_DKTombstonePolicy *)self requirements];
-            v23 = [v22 countByEnumeratingWithState:&v48 objects:v56 count:16];
+            requirements = [(_DKTombstonePolicy *)self requirements];
+            v23 = [requirements countByEnumeratingWithState:&v48 objects:v56 count:16];
             if (v23)
             {
               v24 = v23;
@@ -461,41 +461,41 @@
                 {
                   if (*v49 != v25)
                   {
-                    objc_enumerationMutation(v22);
+                    objc_enumerationMutation(requirements);
                   }
 
                   v27 = *(*(&v48 + 1) + 8 * i);
-                  v28 = [v27 eventPredicate];
-                  v29 = v28;
-                  if (v28)
+                  eventPredicate = [v27 eventPredicate];
+                  v29 = eventPredicate;
+                  if (eventPredicate)
                   {
-                    v30 = v28;
+                    predicate = eventPredicate;
                   }
 
                   else
                   {
-                    v30 = [v27 predicate];
+                    predicate = [v27 predicate];
                   }
 
-                  v31 = v30;
+                  v31 = predicate;
 
                   if ([v31 evaluateWithObject:v13])
                   {
                     [v27 assignPropertiesToTombstone:v21 extractedFromEvent:v13];
                     if (v6)
                     {
-                      v32 = [v27 identifier];
+                      identifier = [v27 identifier];
 
-                      if (v32)
+                      if (identifier)
                       {
-                        v33 = [v27 identifier];
-                        [v6 addObject:v33];
+                        identifier2 = [v27 identifier];
+                        [v6 addObject:identifier2];
                       }
                     }
                   }
                 }
 
-                v24 = [v22 countByEnumeratingWithState:&v48 objects:v56 count:16];
+                v24 = [requirements countByEnumeratingWithState:&v48 objects:v56 count:16];
               }
 
               while (v24);
@@ -507,8 +507,8 @@
             v12 = v45;
           }
 
-          v16 = v46;
-          v14 = v47;
+          name = v46;
+          uUID = v47;
         }
 
         ++v12;
@@ -521,9 +521,9 @@
     while (v10);
   }
 
-  if (v37)
+  if (identifiersCopy)
   {
-    *v37 = [v6 copy];
+    *identifiersCopy = [v6 copy];
   }
 
   v34 = [v40 copy];

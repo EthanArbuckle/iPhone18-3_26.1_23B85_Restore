@@ -1,15 +1,15 @@
 @interface PKAccountWebServiceDocumentActionResponse
-- (PKAccountWebServiceDocumentActionResponse)initWithData:(id)a3;
+- (PKAccountWebServiceDocumentActionResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceDocumentActionResponse
 
-- (PKAccountWebServiceDocumentActionResponse)initWithData:(id)a3
+- (PKAccountWebServiceDocumentActionResponse)initWithData:(id)data
 {
   v26 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = PKAccountWebServiceDocumentActionResponse;
-  v3 = [(PKWebServiceResponse *)&v21 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v21 initWithData:data];
   v4 = v3;
   if (!v3)
   {
@@ -18,15 +18,15 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 PKStringForKey:@"statementDataFilename"];
+    v6 = [jSONObject PKStringForKey:@"statementDataFilename"];
     v7 = v6;
     if (!v6)
     {
-      v7 = [v5 PKStringForKey:@"dataFilename"];
+      v7 = [jSONObject PKStringForKey:@"dataFilename"];
     }
 
     objc_storeStrong(&v4->_documentDataFilename, v7);
@@ -34,11 +34,11 @@ LABEL_15:
     {
     }
 
-    v8 = [v5 PKStringForKey:@"statementDataHash"];
+    v8 = [jSONObject PKStringForKey:@"statementDataHash"];
     v9 = v8;
     if (!v8)
     {
-      v9 = [v5 PKStringForKey:@"dataHash"];
+      v9 = [jSONObject PKStringForKey:@"dataHash"];
     }
 
     objc_storeStrong(&v4->_documentDataHash, v9);
@@ -46,8 +46,8 @@ LABEL_15:
     {
     }
 
-    v10 = [v5 PKStringForKey:@"statementPDFData"];
-    if (v10 || ([v5 PKStringForKey:@"pdfData"], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+    v10 = [jSONObject PKStringForKey:@"statementPDFData"];
+    if (v10 || ([jSONObject PKStringForKey:@"pdfData"], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v11 = v10;
       v12 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v10 options:0];

@@ -1,20 +1,20 @@
 @interface _UIEditMenuListViewLayout
-- (BOOL)_canDisplayItemAtIndexPath:(id)a3;
-- (BOOL)_canDisplaySeparatorForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (void)setIndexPathForHighlightedItem:(id)a3;
-- (void)setPages:(id)a3;
+- (BOOL)_canDisplayItemAtIndexPath:(id)path;
+- (BOOL)_canDisplaySeparatorForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
+- (void)setIndexPathForHighlightedItem:(id)item;
+- (void)setPages:(id)pages;
 @end
 
 @implementation _UIEditMenuListViewLayout
 
-- (void)setPages:(id)a3
+- (void)setPages:(id)pages
 {
-  v5 = a3;
+  pagesCopy = pages;
   v6 = self->_pages;
-  v7 = v5;
+  v7 = pagesCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -33,19 +33,19 @@
   if ((v8 & 1) == 0)
   {
 LABEL_8:
-    objc_storeStrong(&self->_pages, a3);
+    objc_storeStrong(&self->_pages, pages);
     [(UICollectionViewLayout *)self invalidateLayout];
   }
 
 LABEL_9:
 }
 
-- (void)setIndexPathForHighlightedItem:(id)a3
+- (void)setIndexPathForHighlightedItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v6 = self->_indexPathForHighlightedItem;
-  v7 = v5;
-  v8 = v7;
+  v7 = itemCopy;
+  _invalidationContextForRefreshingVisibleElementAttributes = v7;
   v9 = v6;
   v21 = v7;
   if (v6 == v7)
@@ -66,7 +66,7 @@ LABEL_12:
   if ((v10 & 1) == 0)
   {
 LABEL_7:
-    objc_storeStrong(&self->_indexPathForHighlightedItem, a3);
+    objc_storeStrong(&self->_indexPathForHighlightedItem, item);
     v11 = [MEMORY[0x1E695DFA8] set];
     v9 = v11;
     if (v6)
@@ -74,10 +74,10 @@ LABEL_7:
       [(NSIndexPath *)v11 addObject:v6];
       v12 = MEMORY[0x1E696AC88];
       v13 = v6;
-      v14 = [(NSIndexPath *)v13 item];
-      v15 = [(NSIndexPath *)v13 section];
+      item = [(NSIndexPath *)v13 item];
+      section = [(NSIndexPath *)v13 section];
 
-      v16 = [v12 indexPathForItem:v14 + 1 inSection:v15];
+      v16 = [v12 indexPathForItem:item + 1 inSection:section];
       [(NSIndexPath *)v9 addObject:v16];
     }
 
@@ -91,23 +91,23 @@ LABEL_7:
       [(NSIndexPath *)v9 addObject:v19];
     }
 
-    v8 = [(UICollectionViewLayout *)self _invalidationContextForRefreshingVisibleElementAttributes];
-    v20 = [(NSIndexPath *)v9 allObjects];
-    [v8 invalidateSupplementaryElementsOfKind:@"_UIEditMenuListViewSeparator" atIndexPaths:v20];
+    _invalidationContextForRefreshingVisibleElementAttributes = [(UICollectionViewLayout *)self _invalidationContextForRefreshingVisibleElementAttributes];
+    allObjects = [(NSIndexPath *)v9 allObjects];
+    [_invalidationContextForRefreshingVisibleElementAttributes invalidateSupplementaryElementsOfKind:@"_UIEditMenuListViewSeparator" atIndexPaths:allObjects];
 
-    [(UICollectionViewCompositionalLayout *)self invalidateLayoutWithContext:v8];
+    [(UICollectionViewCompositionalLayout *)self invalidateLayoutWithContext:_invalidationContextForRefreshingVisibleElementAttributes];
     goto LABEL_12;
   }
 
 LABEL_13:
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v21 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = _UIEditMenuListViewLayout;
-  v4 = [(UICollectionViewCompositionalLayout *)&v19 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(UICollectionViewCompositionalLayout *)&v19 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -129,22 +129,22 @@ LABEL_13:
         v9 = *(*(&v15 + 1) + 8 * i);
         if ([v9 representedElementCategory])
         {
-          v10 = [v9 representedElementKind];
-          v11 = [v10 isEqualToString:@"_UIEditMenuListViewSeparator"];
+          representedElementKind = [v9 representedElementKind];
+          v11 = [representedElementKind isEqualToString:@"_UIEditMenuListViewSeparator"];
 
           if (!v11)
           {
             continue;
           }
 
-          v12 = [v9 indexPath];
-          v13 = [(_UIEditMenuListViewLayout *)self _canDisplaySeparatorForItemAtIndexPath:v12];
+          indexPath = [v9 indexPath];
+          v13 = [(_UIEditMenuListViewLayout *)self _canDisplaySeparatorForItemAtIndexPath:indexPath];
         }
 
         else
         {
-          v12 = [v9 indexPath];
-          v13 = [(_UIEditMenuListViewLayout *)self _canDisplayItemAtIndexPath:v12];
+          indexPath = [v9 indexPath];
+          v13 = [(_UIEditMenuListViewLayout *)self _canDisplayItemAtIndexPath:indexPath];
         }
 
         [v9 setHidden:!v13];
@@ -159,58 +159,58 @@ LABEL_13:
   return v4;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v7.receiver = self;
   v7.super_class = _UIEditMenuListViewLayout;
-  v5 = [(UICollectionViewCompositionalLayout *)&v7 layoutAttributesForItemAtIndexPath:v4];
+  v5 = [(UICollectionViewCompositionalLayout *)&v7 layoutAttributesForItemAtIndexPath:pathCopy];
   if (v5)
   {
-    [v5 setHidden:{-[_UIEditMenuListViewLayout _canDisplayItemAtIndexPath:](self, "_canDisplayItemAtIndexPath:", v4) ^ 1}];
+    [v5 setHidden:{-[_UIEditMenuListViewLayout _canDisplayItemAtIndexPath:](self, "_canDisplayItemAtIndexPath:", pathCopy) ^ 1}];
   }
 
   return v5;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = _UIEditMenuListViewLayout;
-  v7 = a3;
-  v8 = [(UICollectionViewCompositionalLayout *)&v11 layoutAttributesForSupplementaryViewOfKind:v7 atIndexPath:v6];
-  v9 = [v7 isEqualToString:{@"_UIEditMenuListViewSeparator", v11.receiver, v11.super_class}];
+  kindCopy = kind;
+  v8 = [(UICollectionViewCompositionalLayout *)&v11 layoutAttributesForSupplementaryViewOfKind:kindCopy atIndexPath:pathCopy];
+  v9 = [kindCopy isEqualToString:{@"_UIEditMenuListViewSeparator", v11.receiver, v11.super_class}];
 
   if (v9)
   {
-    [v8 setHidden:{-[_UIEditMenuListViewLayout _canDisplaySeparatorForItemAtIndexPath:](self, "_canDisplaySeparatorForItemAtIndexPath:", v6) ^ 1}];
+    [v8 setHidden:{-[_UIEditMenuListViewLayout _canDisplaySeparatorForItemAtIndexPath:](self, "_canDisplaySeparatorForItemAtIndexPath:", pathCopy) ^ 1}];
   }
 
   return v8;
 }
 
-- (BOOL)_canDisplaySeparatorForItemAtIndexPath:(id)a3
+- (BOOL)_canDisplaySeparatorForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (![v4 item])
+  pathCopy = path;
+  if (![pathCopy item])
   {
     goto LABEL_6;
   }
 
-  v5 = [(_UIEditMenuListViewLayout *)self indexPathForHighlightedItem];
+  indexPathForHighlightedItem = [(_UIEditMenuListViewLayout *)self indexPathForHighlightedItem];
 
-  if (!v5)
+  if (!indexPathForHighlightedItem)
   {
     goto LABEL_7;
   }
 
-  v6 = [(_UIEditMenuListViewLayout *)self indexPathForHighlightedItem];
-  if (![v4 isEqual:v6])
+  indexPathForHighlightedItem2 = [(_UIEditMenuListViewLayout *)self indexPathForHighlightedItem];
+  if (![pathCopy isEqual:indexPathForHighlightedItem2])
   {
-    v7 = [(_UIEditMenuListViewLayout *)self indexPathForHighlightedItem];
-    v8 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(v7 inSection:{"item") + 1, objc_msgSend(v7, "section")}];
-    v9 = [v4 isEqual:v8];
+    indexPathForHighlightedItem3 = [(_UIEditMenuListViewLayout *)self indexPathForHighlightedItem];
+    v8 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(indexPathForHighlightedItem3 inSection:{"item") + 1, objc_msgSend(indexPathForHighlightedItem3, "section")}];
+    v9 = [pathCopy isEqual:v8];
 
     if (v9)
     {
@@ -218,7 +218,7 @@ LABEL_13:
     }
 
 LABEL_7:
-    v10 = [(_UIEditMenuListViewLayout *)self _canDisplayItemAtIndexPath:v4];
+    v10 = [(_UIEditMenuListViewLayout *)self _canDisplayItemAtIndexPath:pathCopy];
     goto LABEL_8;
   }
 
@@ -229,17 +229,17 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)_canDisplayItemAtIndexPath:(id)a3
+- (BOOL)_canDisplayItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (_UISolariumEnabled())
   {
-    v5 = [(_UIEditMenuListViewLayout *)self pages];
-    v6 = [v5 firstObject];
-    [v6 range];
+    pages = [(_UIEditMenuListViewLayout *)self pages];
+    firstObject = [pages firstObject];
+    [firstObject range];
     v8 = v7;
 
-    v9 = [v4 item] < v8;
+    v9 = [pathCopy item] < v8;
   }
 
   else

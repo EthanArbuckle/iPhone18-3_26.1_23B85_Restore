@@ -1,18 +1,18 @@
 @interface _EFSQLJoinExpression
 - (EFSQLSelectStatement)select;
 - (NSString)ef_SQLExpression;
-- (_EFSQLJoinExpression)initWithSelect:(id)a3 tableName:(id)a4 tableAlias:(id)a5 joinConstraint:(id)a6 isLeftOuter:(BOOL)a7;
-- (id)join:(id)a3 alias:(id)a4 on:(id)a5;
-- (id)join:(id)a3 alias:(id)a4 sourceColumn:(id)a5 targetColumn:(id)a6;
-- (id)join:(id)a3 on:(id)a4;
-- (id)join:(id)a3 sourceColumn:(id)a4 targetColumn:(id)a5;
-- (id)leftOuterJoin:(id)a3 alias:(id)a4 on:(id)a5;
-- (id)leftOuterJoin:(id)a3 alias:(id)a4 sourceColumn:(id)a5 targetColumn:(id)a6;
-- (id)leftOuterJoin:(id)a3 on:(id)a4;
-- (id)leftOuterJoin:(id)a3 sourceColumn:(id)a4 targetColumn:(id)a5;
-- (void)addResultColumn:(id)a3 alias:(id)a4;
-- (void)ef_renderSQLExpressionInto:(id)a3;
-- (void)groupByColumn:(id)a3;
+- (_EFSQLJoinExpression)initWithSelect:(id)select tableName:(id)name tableAlias:(id)alias joinConstraint:(id)constraint isLeftOuter:(BOOL)outer;
+- (id)join:(id)join alias:(id)alias on:(id)on;
+- (id)join:(id)join alias:(id)alias sourceColumn:(id)column targetColumn:(id)targetColumn;
+- (id)join:(id)join on:(id)on;
+- (id)join:(id)join sourceColumn:(id)column targetColumn:(id)targetColumn;
+- (id)leftOuterJoin:(id)join alias:(id)alias on:(id)on;
+- (id)leftOuterJoin:(id)join alias:(id)alias sourceColumn:(id)column targetColumn:(id)targetColumn;
+- (id)leftOuterJoin:(id)join on:(id)on;
+- (id)leftOuterJoin:(id)join sourceColumn:(id)column targetColumn:(id)targetColumn;
+- (void)addResultColumn:(id)column alias:(id)alias;
+- (void)ef_renderSQLExpressionInto:(id)into;
+- (void)groupByColumn:(id)column;
 @end
 
 @implementation _EFSQLJoinExpression
@@ -24,29 +24,29 @@
   return WeakRetained;
 }
 
-- (_EFSQLJoinExpression)initWithSelect:(id)a3 tableName:(id)a4 tableAlias:(id)a5 joinConstraint:(id)a6 isLeftOuter:(BOOL)a7
+- (_EFSQLJoinExpression)initWithSelect:(id)select tableName:(id)name tableAlias:(id)alias joinConstraint:(id)constraint isLeftOuter:(BOOL)outer
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  selectCopy = select;
+  nameCopy = name;
+  aliasCopy = alias;
+  constraintCopy = constraint;
   v23.receiver = self;
   v23.super_class = _EFSQLJoinExpression;
   v16 = [(_EFSQLJoinExpression *)&v23 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_select, v12);
-    v18 = [v13 copy];
+    objc_storeWeak(&v16->_select, selectCopy);
+    v18 = [nameCopy copy];
     tableName = v17->_tableName;
     v17->_tableName = v18;
 
-    v20 = [v14 copy];
+    v20 = [aliasCopy copy];
     tableAlias = v17->_tableAlias;
     v17->_tableAlias = v20;
 
-    objc_storeStrong(&v17->_joinConstraint, a6);
-    v17->_isLeftOuter = a7;
+    objc_storeStrong(&v17->_joinConstraint, constraint);
+    v17->_isLeftOuter = outer;
   }
 
   return v17;
@@ -54,15 +54,15 @@
 
 - (NSString)ef_SQLExpression
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [(_EFSQLJoinExpression *)self ef_renderSQLExpressionInto:v3];
+  string = [MEMORY[0x1E696AD60] string];
+  [(_EFSQLJoinExpression *)self ef_renderSQLExpressionInto:string];
 
-  return v3;
+  return string;
 }
 
-- (void)ef_renderSQLExpressionInto:(id)a3
+- (void)ef_renderSQLExpressionInto:(id)into
 {
-  v4 = a3;
+  intoCopy = into;
   if (self->_isLeftOuter)
   {
     v5 = @" LEFT OUTER JOIN ";
@@ -73,8 +73,8 @@
     v5 = @" JOIN ";
   }
 
-  v6 = v4;
-  [v4 appendString:v5];
+  v6 = intoCopy;
+  [intoCopy appendString:v5];
   [v6 appendString:self->_tableName];
   if (self->_tableAlias)
   {
@@ -85,157 +85,157 @@
   [(EFSQLExpressable *)self->_joinConstraint ef_renderSQLExpressionInto:v6];
 }
 
-- (id)join:(id)a3 on:(id)a4
+- (id)join:(id)join on:(id)on
 {
-  v4 = [(_EFSQLJoinExpression *)self join:a3 alias:0 on:a4];
+  v4 = [(_EFSQLJoinExpression *)self join:join alias:0 on:on];
 
   return v4;
 }
 
-- (id)leftOuterJoin:(id)a3 on:(id)a4
+- (id)leftOuterJoin:(id)join on:(id)on
 {
-  v4 = [(_EFSQLJoinExpression *)self leftOuterJoin:a3 alias:0 on:a4];
+  v4 = [(_EFSQLJoinExpression *)self leftOuterJoin:join alias:0 on:on];
 
   return v4;
 }
 
-- (id)join:(id)a3 alias:(id)a4 on:(id)a5
+- (id)join:(id)join alias:(id)alias on:(id)on
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_EFSQLJoinExpression *)self select];
-  v12 = [v11 join:v8 alias:v9 on:v10];
+  joinCopy = join;
+  aliasCopy = alias;
+  onCopy = on;
+  select = [(_EFSQLJoinExpression *)self select];
+  v12 = [select join:joinCopy alias:aliasCopy on:onCopy];
 
   return v12;
 }
 
-- (id)leftOuterJoin:(id)a3 alias:(id)a4 on:(id)a5
+- (id)leftOuterJoin:(id)join alias:(id)alias on:(id)on
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_EFSQLJoinExpression *)self select];
-  v12 = [v11 leftOuterJoin:v8 alias:v9 on:v10];
+  joinCopy = join;
+  aliasCopy = alias;
+  onCopy = on;
+  select = [(_EFSQLJoinExpression *)self select];
+  v12 = [select leftOuterJoin:joinCopy alias:aliasCopy on:onCopy];
 
   return v12;
 }
 
-- (id)join:(id)a3 sourceColumn:(id)a4 targetColumn:(id)a5
+- (id)join:(id)join sourceColumn:(id)column targetColumn:(id)targetColumn
 {
-  v5 = [(_EFSQLJoinExpression *)self join:a3 alias:0 sourceColumn:a4 targetColumn:a5];
+  v5 = [(_EFSQLJoinExpression *)self join:join alias:0 sourceColumn:column targetColumn:targetColumn];
 
   return v5;
 }
 
-- (id)leftOuterJoin:(id)a3 sourceColumn:(id)a4 targetColumn:(id)a5
+- (id)leftOuterJoin:(id)join sourceColumn:(id)column targetColumn:(id)targetColumn
 {
-  v5 = [(_EFSQLJoinExpression *)self leftOuterJoin:a3 alias:0 sourceColumn:a4 targetColumn:a5];
+  v5 = [(_EFSQLJoinExpression *)self leftOuterJoin:join alias:0 sourceColumn:column targetColumn:targetColumn];
 
   return v5;
 }
 
-- (id)join:(id)a3 alias:(id)a4 sourceColumn:(id)a5 targetColumn:(id)a6
+- (id)join:(id)join alias:(id)alias sourceColumn:(id)column targetColumn:(id)targetColumn
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(_EFSQLJoinExpression *)self tableAlias];
-  v15 = v14;
-  if (!v14)
+  joinCopy = join;
+  aliasCopy = alias;
+  columnCopy = column;
+  targetColumnCopy = targetColumn;
+  tableAlias = [(_EFSQLJoinExpression *)self tableAlias];
+  tableName = tableAlias;
+  if (!tableAlias)
   {
-    v15 = [(_EFSQLJoinExpression *)self tableName];
+    tableName = [(_EFSQLJoinExpression *)self tableName];
   }
 
-  v16 = [EFSQLColumnExpression table:v15 column:v12];
-  if (!v14)
+  v16 = [EFSQLColumnExpression table:tableName column:columnCopy];
+  if (!tableAlias)
   {
   }
 
-  if (v11)
+  if (aliasCopy)
   {
-    v17 = v11;
+    v17 = aliasCopy;
   }
 
   else
   {
-    v17 = v10;
+    v17 = joinCopy;
   }
 
-  v18 = [EFSQLColumnExpression table:v17 column:v13];
+  v18 = [EFSQLColumnExpression table:v17 column:targetColumnCopy];
   v19 = [v16 equalTo:v18];
-  v20 = [(_EFSQLJoinExpression *)self join:v10 alias:v11 on:v19];
+  v20 = [(_EFSQLJoinExpression *)self join:joinCopy alias:aliasCopy on:v19];
 
   return v20;
 }
 
-- (id)leftOuterJoin:(id)a3 alias:(id)a4 sourceColumn:(id)a5 targetColumn:(id)a6
+- (id)leftOuterJoin:(id)join alias:(id)alias sourceColumn:(id)column targetColumn:(id)targetColumn
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(_EFSQLJoinExpression *)self tableAlias];
-  v15 = v14;
-  if (!v14)
+  joinCopy = join;
+  aliasCopy = alias;
+  columnCopy = column;
+  targetColumnCopy = targetColumn;
+  tableAlias = [(_EFSQLJoinExpression *)self tableAlias];
+  tableName = tableAlias;
+  if (!tableAlias)
   {
-    v15 = [(_EFSQLJoinExpression *)self tableName];
+    tableName = [(_EFSQLJoinExpression *)self tableName];
   }
 
-  v16 = [EFSQLColumnExpression table:v15 column:v12];
-  if (!v14)
+  v16 = [EFSQLColumnExpression table:tableName column:columnCopy];
+  if (!tableAlias)
   {
   }
 
-  if (v11)
+  if (aliasCopy)
   {
-    v17 = v11;
+    v17 = aliasCopy;
   }
 
   else
   {
-    v17 = v10;
+    v17 = joinCopy;
   }
 
-  v18 = [EFSQLColumnExpression table:v17 column:v13];
+  v18 = [EFSQLColumnExpression table:v17 column:targetColumnCopy];
   v19 = [v16 equalTo:v18];
-  v20 = [(_EFSQLJoinExpression *)self leftOuterJoin:v10 alias:v11 on:v19];
+  v20 = [(_EFSQLJoinExpression *)self leftOuterJoin:joinCopy alias:aliasCopy on:v19];
 
   return v20;
 }
 
-- (void)addResultColumn:(id)a3 alias:(id)a4
+- (void)addResultColumn:(id)column alias:(id)alias
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(_EFSQLJoinExpression *)self select];
-  v8 = [(_EFSQLJoinExpression *)self tableAlias];
-  v9 = v8;
-  if (!v8)
+  columnCopy = column;
+  aliasCopy = alias;
+  select = [(_EFSQLJoinExpression *)self select];
+  tableAlias = [(_EFSQLJoinExpression *)self tableAlias];
+  tableName = tableAlias;
+  if (!tableAlias)
   {
-    v9 = [(_EFSQLJoinExpression *)self tableName];
+    tableName = [(_EFSQLJoinExpression *)self tableName];
   }
 
-  [v7 addResultColumn:v10 fromTable:v9 alias:v6];
-  if (!v8)
+  [select addResultColumn:columnCopy fromTable:tableName alias:aliasCopy];
+  if (!tableAlias)
   {
   }
 }
 
-- (void)groupByColumn:(id)a3
+- (void)groupByColumn:(id)column
 {
-  v7 = a3;
-  v4 = [(_EFSQLJoinExpression *)self select];
-  v5 = [(_EFSQLJoinExpression *)self tableAlias];
-  v6 = v5;
-  if (!v5)
+  columnCopy = column;
+  select = [(_EFSQLJoinExpression *)self select];
+  tableAlias = [(_EFSQLJoinExpression *)self tableAlias];
+  tableName = tableAlias;
+  if (!tableAlias)
   {
-    v6 = [(_EFSQLJoinExpression *)self tableName];
+    tableName = [(_EFSQLJoinExpression *)self tableName];
   }
 
-  [v4 groupByColumn:v7 fromTable:v6];
-  if (!v5)
+  [select groupByColumn:columnCopy fromTable:tableName];
+  if (!tableAlias)
   {
   }
 }

@@ -1,12 +1,12 @@
 @interface BRDbRowObjectID
-- (BRDbRowObjectID)initWithCoder:(id)a3;
-- (BRDbRowObjectID)initWithRowID:(unint64_t)a3 type:(unsigned __int8)a4;
+- (BRDbRowObjectID)initWithCoder:(id)coder;
+- (BRDbRowObjectID)initWithRowID:(unint64_t)d type:(unsigned __int8)type;
 - (id)asString;
 - (id)description;
 - (id)documentID;
 - (id)folderID;
 - (void)documentID;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)folderID;
 @end
 
@@ -15,8 +15,8 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(BRDbRowObjectID *)self asString];
-  v4 = [v2 stringWithFormat:@"<%@>", v3];
+  asString = [(BRDbRowObjectID *)self asString];
+  v4 = [v2 stringWithFormat:@"<%@>", asString];
 
   return v4;
 }
@@ -43,15 +43,15 @@ LABEL_7:
   return v4;
 }
 
-- (BRDbRowObjectID)initWithRowID:(unint64_t)a3 type:(unsigned __int8)a4
+- (BRDbRowObjectID)initWithRowID:(unint64_t)d type:(unsigned __int8)type
 {
   v7.receiver = self;
   v7.super_class = BRDbRowObjectID;
   result = [(BRDbRowObjectID *)&v7 init];
   if (result)
   {
-    result->_rowId = a3;
-    result->_type = a4;
+    result->_rowId = d;
+    result->_type = type;
   }
 
   return result;
@@ -81,24 +81,24 @@ LABEL_7:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rowId = self->_rowId;
-  v5 = a3;
-  [v5 encodeInt64:rowId forKey:@"r"];
-  [v5 encodeInt64:self->_type forKey:@"t"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:rowId forKey:@"r"];
+  [coderCopy encodeInt64:self->_type forKey:@"t"];
 }
 
-- (BRDbRowObjectID)initWithCoder:(id)a3
+- (BRDbRowObjectID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = BRDbRowObjectID;
   v5 = [(BRDbRowObjectID *)&v7 init];
   if (v5)
   {
-    v5->_rowId = [v4 decodeInt64ForKey:@"r"];
-    v5->_type = [v4 decodeIntegerForKey:@"t"];
+    v5->_rowId = [coderCopy decodeInt64ForKey:@"r"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"t"];
   }
 
   return v5;

@@ -1,16 +1,16 @@
 @interface HACCPMEToggle
-- (HACCPMEToggle)initWithFrame:(CGRect)a3;
+- (HACCPMEToggle)initWithFrame:(CGRect)frame;
 - (id)contentValue;
 - (void)updateValue;
 @end
 
 @implementation HACCPMEToggle
 
-- (HACCPMEToggle)initWithFrame:(CGRect)a3
+- (HACCPMEToggle)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = HACCPMEToggle;
-  v3 = [(HUICCCapsuleButton *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUICCCapsuleButton *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = paLocString();
@@ -22,13 +22,13 @@
     [(HUICCCapsuleButton *)v3 setIconView:v7];
 
     objc_initWeak(&location, v3);
-    v8 = [MEMORY[0x277D3A1D0] sharedInstance];
+    mEMORY[0x277D3A1D0] = [MEMORY[0x277D3A1D0] sharedInstance];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __31__HACCPMEToggle_initWithFrame___block_invoke;
     v10[3] = &unk_2796F6D18;
     objc_copyWeak(&v11, &location);
-    [v8 registerUpdateBlock:v10 forRetrieveSelector:sel_personalMediaEnabled withListener:v3];
+    [mEMORY[0x277D3A1D0] registerUpdateBlock:v10 forRetrieveSelector:sel_personalMediaEnabled withListener:v3];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -48,13 +48,13 @@ void __31__HACCPMEToggle_initWithFrame___block_invoke(uint64_t a1)
   v5.receiver = self;
   v5.super_class = HACCPMEToggle;
   [(HUICCCapsuleButton *)&v5 updateValue];
-  v3 = [MEMORY[0x277D12E00] sharedInstance];
+  mEMORY[0x277D12E00] = [MEMORY[0x277D12E00] sharedInstance];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __28__HACCPMEToggle_updateValue__block_invoke;
   v4[3] = &unk_2796F6DB8;
   v4[4] = self;
-  [v3 getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:v4];
+  [mEMORY[0x277D12E00] getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:v4];
 }
 
 void __28__HACCPMEToggle_updateValue__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -159,8 +159,8 @@ void __28__HACCPMEToggle_updateValue__block_invoke_3(uint64_t a1)
 - (id)contentValue
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [MEMORY[0x277D3A1D0] sharedInstance];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "personalMediaEnabled")}];
+  mEMORY[0x277D3A1D0] = [MEMORY[0x277D3A1D0] sharedInstance];
+  v4 = [v2 numberWithBool:{objc_msgSend(mEMORY[0x277D3A1D0], "personalMediaEnabled")}];
 
   return v4;
 }

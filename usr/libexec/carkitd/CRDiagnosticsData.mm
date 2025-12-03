@@ -1,13 +1,13 @@
 @interface CRDiagnosticsData
 + (id)_carPlayLogsFolderURL;
-+ (id)makeDiagnosticsFolderForTime:(id)a3;
-+ (void)removeDiagnosticsFoldersBeforeTime:(id)a3;
-- (BOOL)addAttachment:(id)a3;
-- (BOOL)addAttachment:(id)a3 asFilename:(id)a4;
-- (BOOL)addTextAttachment:(id)a3 asFilename:(id)a4;
++ (id)makeDiagnosticsFolderForTime:(id)time;
++ (void)removeDiagnosticsFoldersBeforeTime:(id)time;
+- (BOOL)addAttachment:(id)attachment;
+- (BOOL)addAttachment:(id)attachment asFilename:(id)filename;
+- (BOOL)addTextAttachment:(id)attachment asFilename:(id)filename;
 - (CRDiagnosticsData)init;
-- (id)_getCreationDateForAttachmentURL:(id)a3;
-- (void)_markPurgeable:(id)a3;
+- (id)_getCreationDateForAttachmentURL:(id)l;
+- (void)_markPurgeable:(id)purgeable;
 @end
 
 @implementation CRDiagnosticsData
@@ -16,22 +16,22 @@
 {
   v2 = +[NSFileManager defaultManager];
   v3 = [v2 URLsForDirectory:5 inDomains:1];
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  v5 = [v4 URLByAppendingPathComponent:@"Logs/com.apple.CarPlay" isDirectory:1];
+  v5 = [firstObject URLByAppendingPathComponent:@"Logs/com.apple.CarPlay" isDirectory:1];
 
   return v5;
 }
 
-+ (id)makeDiagnosticsFolderForTime:(id)a3
++ (id)makeDiagnosticsFolderForTime:(id)time
 {
-  v4 = a3;
-  v5 = [a1 _carPlayLogsFolderURL];
-  if (v5)
+  timeCopy = time;
+  _carPlayLogsFolderURL = [self _carPlayLogsFolderURL];
+  if (_carPlayLogsFolderURL)
   {
     v6 = CRStringForDate();
     v7 = [NSString stringWithFormat:@"CarPlay-%@", v6];
-    v8 = [v5 URLByAppendingPathComponent:v7];
+    v8 = [_carPlayLogsFolderURL URLByAppendingPathComponent:v7];
 
     v9 = +[NSFileManager defaultManager];
     v16 = 0;
@@ -71,14 +71,14 @@
   return v13;
 }
 
-+ (void)removeDiagnosticsFoldersBeforeTime:(id)a3
++ (void)removeDiagnosticsFoldersBeforeTime:(id)time
 {
-  v4 = a3;
-  v5 = [a1 _carPlayLogsFolderURL];
-  if (v5)
+  timeCopy = time;
+  _carPlayLogsFolderURL = [self _carPlayLogsFolderURL];
+  if (_carPlayLogsFolderURL)
   {
     v6 = +[NSCalendar currentCalendar];
-    v7 = [v6 dateByAddingUnit:16 value:-7 toDate:v4 options:0];
+    v7 = [v6 dateByAddingUnit:16 value:-7 toDate:timeCopy options:0];
 
     v35 = v7;
     if (v7)
@@ -96,7 +96,7 @@
       v50 = NSURLCreationDateKey;
       v11 = [NSArray arrayWithObjects:&v50 count:1];
       v43 = 0;
-      v12 = [v9 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:v11 options:0 error:&v43];
+      v12 = [v9 contentsOfDirectoryAtURL:_carPlayLogsFolderURL includingPropertiesForKeys:v11 options:0 error:&v43];
       v13 = v43;
 
       if (v12)
@@ -114,8 +114,8 @@
 
         v15 = v14;
         v32 = v12;
-        v33 = v5;
-        v34 = v4;
+        v33 = _carPlayLogsFolderURL;
+        v34 = timeCopy;
         v16 = *v40;
         v17 = MAAsset_ptr;
         while (1)
@@ -212,8 +212,8 @@ LABEL_25:
           v15 = [obj countByEnumeratingWithState:&v39 objects:v49 count:16];
           if (!v15)
           {
-            v5 = v33;
-            v4 = v34;
+            _carPlayLogsFolderURL = v33;
+            timeCopy = v34;
             v12 = v32;
             goto LABEL_30;
           }
@@ -245,7 +245,7 @@ LABEL_30:
   date = v2->_date;
   v2->_date = v3;
 
-  v5 = [(CRDiagnosticsData *)v2 date];
+  date = [(CRDiagnosticsData *)v2 date];
   v6 = CRStringForDate();
   timestamp = v2->_timestamp;
   v2->_timestamp = v6;
@@ -254,27 +254,27 @@ LABEL_30:
   attachmentURLs = v2->_attachmentURLs;
   v2->_attachmentURLs = v8;
 
-  v10 = [(CRDiagnosticsData *)v2 date];
-  v11 = [CRDiagnosticsData makeDiagnosticsFolderForTime:v10];
+  date2 = [(CRDiagnosticsData *)v2 date];
+  v11 = [CRDiagnosticsData makeDiagnosticsFolderForTime:date2];
   baseFolderURL = v2->_baseFolderURL;
   v2->_baseFolderURL = v11;
 
-  v13 = [(CRDiagnosticsData *)v2 baseFolderURL];
+  baseFolderURL = [(CRDiagnosticsData *)v2 baseFolderURL];
 
-  if (v13)
+  if (baseFolderURL)
   {
 LABEL_3:
-    v13 = v2;
+    baseFolderURL = v2;
   }
 
-  return v13;
+  return baseFolderURL;
 }
 
-- (void)_markPurgeable:(id)a3
+- (void)_markPurgeable:(id)purgeable
 {
-  v3 = a3;
+  purgeableCopy = purgeable;
   v7 = 0;
-  v4 = [v3 setResourceValue:&__kCFBooleanTrue forKey:NSURLIsPurgeableKey error:&v7];
+  v4 = [purgeableCopy setResourceValue:&__kCFBooleanTrue forKey:NSURLIsPurgeableKey error:&v7];
   v5 = v7;
   if ((v4 & 1) == 0)
   {
@@ -286,21 +286,21 @@ LABEL_3:
   }
 }
 
-- (BOOL)addAttachment:(id)a3
+- (BOOL)addAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [v4 lastPathComponent];
-  LOBYTE(self) = [(CRDiagnosticsData *)self addAttachment:v4 asFilename:v5];
+  attachmentCopy = attachment;
+  lastPathComponent = [attachmentCopy lastPathComponent];
+  LOBYTE(self) = [(CRDiagnosticsData *)self addAttachment:attachmentCopy asFilename:lastPathComponent];
 
   return self;
 }
 
-- (BOOL)addAttachment:(id)a3 asFilename:(id)a4
+- (BOOL)addAttachment:(id)attachment asFilename:(id)filename
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  attachmentCopy = attachment;
+  filenameCopy = filename;
+  v8 = filenameCopy;
+  if (!attachmentCopy)
   {
     v13 = CarGeneralLogging();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -311,7 +311,7 @@ LABEL_3:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!filenameCopy)
   {
     v13 = CarGeneralLogging();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -324,25 +324,25 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  v9 = [(CRDiagnosticsData *)self baseFolderURL];
-  v10 = [v9 URLByAppendingPathComponent:v8];
+  baseFolderURL = [(CRDiagnosticsData *)self baseFolderURL];
+  v10 = [baseFolderURL URLByAppendingPathComponent:v8];
 
   v11 = +[NSFileManager defaultManager];
   v16 = 0;
-  v12 = [v11 moveItemAtURL:v6 toURL:v10 error:&v16];
+  v12 = [v11 moveItemAtURL:attachmentCopy toURL:v10 error:&v16];
   v13 = v16;
 
   if (v12)
   {
     [(CRDiagnosticsData *)self _markPurgeable:v10];
-    v14 = [(CRDiagnosticsData *)self attachmentURLs];
-    [v14 addObject:v10];
+    attachmentURLs = [(CRDiagnosticsData *)self attachmentURLs];
+    [attachmentURLs addObject:v10];
   }
 
   else
   {
-    v14 = CarGeneralLogging();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    attachmentURLs = CarGeneralLogging();
+    if (os_log_type_enabled(attachmentURLs, OS_LOG_TYPE_ERROR))
     {
       sub_10008874C();
     }
@@ -352,14 +352,14 @@ LABEL_13:
   return v12;
 }
 
-- (id)_getCreationDateForAttachmentURL:(id)a3
+- (id)_getCreationDateForAttachmentURL:(id)l
 {
-  v3 = [a3 path];
-  if (v3)
+  path = [l path];
+  if (path)
   {
     v4 = +[NSFileManager defaultManager];
     v10 = 0;
-    v5 = [v4 attributesOfItemAtPath:v3 error:&v10];
+    v5 = [v4 attributesOfItemAtPath:path error:&v10];
     v6 = v10;
 
     if (v6)
@@ -383,30 +383,30 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)addTextAttachment:(id)a3 asFilename:(id)a4
+- (BOOL)addTextAttachment:(id)attachment asFilename:(id)filename
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  attachmentCopy = attachment;
+  filenameCopy = filename;
+  v8 = filenameCopy;
+  if (attachmentCopy && filenameCopy)
   {
-    v9 = [(CRDiagnosticsData *)self baseFolderURL];
-    v10 = [v9 URLByAppendingPathComponent:v8];
+    baseFolderURL = [(CRDiagnosticsData *)self baseFolderURL];
+    v10 = [baseFolderURL URLByAppendingPathComponent:v8];
 
     v15 = 0;
-    v11 = [v6 writeToURL:v10 atomically:1 encoding:4 error:&v15];
+    v11 = [attachmentCopy writeToURL:v10 atomically:1 encoding:4 error:&v15];
     v12 = v15;
     if (v11)
     {
       [(CRDiagnosticsData *)self _markPurgeable:v10];
-      v13 = [(CRDiagnosticsData *)self attachmentURLs];
-      [v13 addObject:v10];
+      attachmentURLs = [(CRDiagnosticsData *)self attachmentURLs];
+      [attachmentURLs addObject:v10];
     }
 
     else
     {
-      v13 = CarGeneralLogging();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      attachmentURLs = CarGeneralLogging();
+      if (os_log_type_enabled(attachmentURLs, OS_LOG_TYPE_ERROR))
       {
         sub_100088894();
       }

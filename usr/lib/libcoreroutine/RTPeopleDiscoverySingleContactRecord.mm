@@ -1,38 +1,38 @@
 @interface RTPeopleDiscoverySingleContactRecord
-- (RTPeopleDiscoverySingleContactRecord)initWithCoder:(id)a3;
-- (RTPeopleDiscoverySingleContactRecord)initWithContactID:(id)a3 withAdvertisement:(id)a4;
+- (RTPeopleDiscoverySingleContactRecord)initWithCoder:(id)coder;
+- (RTPeopleDiscoverySingleContactRecord)initWithContactID:(id)d withAdvertisement:(id)advertisement;
 - (double)getTotalInteractionDuration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionDictionary;
-- (void)closeInteractionSession:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeWithAnotherSingleContactRecord:(id)a3;
-- (void)updateRSSIDistribution:(int64_t)a3;
-- (void)updateSingleContactRecordOnAdvReceived:(id)a3;
+- (void)closeInteractionSession:(id)session;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeWithAnotherSingleContactRecord:(id)record;
+- (void)updateRSSIDistribution:(int64_t)distribution;
+- (void)updateSingleContactRecordOnAdvReceived:(id)received;
 @end
 
 @implementation RTPeopleDiscoverySingleContactRecord
 
-- (RTPeopleDiscoverySingleContactRecord)initWithContactID:(id)a3 withAdvertisement:(id)a4
+- (RTPeopleDiscoverySingleContactRecord)initWithContactID:(id)d withAdvertisement:(id)advertisement
 {
   v23[5] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  advertisementCopy = advertisement;
   v21.receiver = self;
   v21.super_class = RTPeopleDiscoverySingleContactRecord;
   v9 = [(RTPeopleDiscoverySingleContactRecord *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contactID, a3);
-    v11 = [v8 scanDate];
+    objc_storeStrong(&v9->_contactID, d);
+    scanDate = [advertisementCopy scanDate];
     firstObservation = v10->_firstObservation;
-    v10->_firstObservation = v11;
+    v10->_firstObservation = scanDate;
 
-    v13 = [v8 scanDate];
+    scanDate2 = [advertisementCopy scanDate];
     latestAdvertisementDate = v10->_latestAdvertisementDate;
-    v10->_latestAdvertisementDate = v13;
+    v10->_latestAdvertisementDate = scanDate2;
 
     v10->_numAdvReceived = 1;
     v22[0] = &unk_28459CE28;
@@ -50,7 +50,7 @@
     RSSIDistribution = v10->_RSSIDistribution;
     v10->_RSSIDistribution = v16;
 
-    -[RTPeopleDiscoverySingleContactRecord updateRSSIDistribution:](v10, "updateRSSIDistribution:", [v8 rssi]);
+    -[RTPeopleDiscoverySingleContactRecord updateRSSIDistribution:](v10, "updateRSSIDistribution:", [advertisementCopy rssi]);
     v18 = objc_alloc_init(MEMORY[0x277CBEA60]);
     interactionSessions = v10->_interactionSessions;
     v10->_interactionSessions = v18;
@@ -59,21 +59,21 @@
   return v10;
 }
 
-- (void)updateSingleContactRecordOnAdvReceived:(id)a3
+- (void)updateSingleContactRecordOnAdvReceived:(id)received
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  receivedCopy = received;
+  v5 = receivedCopy;
+  if (receivedCopy)
   {
     latestAdvertisementDate = self->_latestAdvertisementDate;
-    v7 = [v4 scanDate];
-    v8 = [(NSDate *)latestAdvertisementDate compare:v7];
+    scanDate = [receivedCopy scanDate];
+    v8 = [(NSDate *)latestAdvertisementDate compare:scanDate];
 
     if (v8 != 1)
     {
-      v9 = [v5 scanDate];
+      scanDate2 = [v5 scanDate];
       v10 = self->_latestAdvertisementDate;
-      self->_latestAdvertisementDate = v9;
+      self->_latestAdvertisementDate = scanDate2;
 
       -[RTPeopleDiscoverySingleContactRecord updateRSSIDistribution:](self, "updateRSSIDistribution:", [v5 rssi]);
     }
@@ -92,11 +92,11 @@
   }
 }
 
-- (void)closeInteractionSession:(id)a3
+- (void)closeInteractionSession:(id)session
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  sessionCopy = session;
+  if (sessionCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -120,8 +120,8 @@
     p_latestAdvertisementDate[3] = v11;
     v13 = v11;
 
-    objc_storeStrong(p_latestAdvertisementDate - 1, a3);
-    objc_storeStrong(p_latestAdvertisementDate, a3);
+    objc_storeStrong(p_latestAdvertisementDate - 1, session);
+    objc_storeStrong(p_latestAdvertisementDate, session);
   }
 
   else
@@ -159,9 +159,9 @@
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 secondObject];
-        v11 = [v9 firstObject];
-        [v10 timeIntervalSinceDate:v11];
+        secondObject = [v9 secondObject];
+        firstObject = [v9 firstObject];
+        [secondObject timeIntervalSinceDate:firstObject];
         v7 = v7 + v12;
       }
 
@@ -180,7 +180,7 @@
   return v7 + v13;
 }
 
-- (void)updateRSSIDistribution:(int64_t)a3
+- (void)updateRSSIDistribution:(int64_t)distribution
 {
   v22 = *MEMORY[0x277D85DE8];
   v15 = 0u;
@@ -203,7 +203,7 @@ LABEL_3:
       }
 
       v10 = *(*(&v15 + 1) + 8 * v9);
-      if ([v10 integerValue] < a3)
+      if ([v10 integerValue] < distribution)
       {
         break;
       }
@@ -228,9 +228,9 @@ LABEL_3:
     }
 
     v12 = [(NSMutableDictionary *)self->_RSSIDistribution objectForKeyedSubscript:v11];
-    v13 = [v12 integerValue];
+    integerValue = [v12 integerValue];
 
-    v14 = [MEMORY[0x277CCABB0] numberWithInteger:v13 + 1];
+    v14 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue + 1];
     [(NSMutableDictionary *)self->_RSSIDistribution setObject:v14 forKeyedSubscript:v11];
   }
 
@@ -243,34 +243,34 @@ LABEL_12:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v20 = a3;
+      distributionCopy = distribution;
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Update RSSI distribution failed, RSSI: %ld", buf, 0xCu);
     }
   }
 }
 
-- (void)mergeWithAnotherSingleContactRecord:(id)a3
+- (void)mergeWithAnotherSingleContactRecord:(id)record
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   contactID = self->_contactID;
-  v6 = [v4 contactID];
+  contactID = [recordCopy contactID];
 
-  if (contactID == v6)
+  if (contactID == contactID)
   {
-    self->_numAdvReceived += [v4 numAdvReceived];
+    self->_numAdvReceived += [recordCopy numAdvReceived];
     firstObservation = self->_firstObservation;
-    v8 = [v4 firstObservation];
-    v9 = [(NSDate *)firstObservation earlierDate:v8];
+    firstObservation = [recordCopy firstObservation];
+    v9 = [(NSDate *)firstObservation earlierDate:firstObservation];
     v10 = self->_firstObservation;
     self->_firstObservation = v9;
 
-    v11 = [v4 latestAdvertisementDate];
+    latestAdvertisementDate = [recordCopy latestAdvertisementDate];
     latestAdvertisementDate = self->_latestAdvertisementDate;
-    if (v11)
+    if (latestAdvertisementDate)
     {
-      v13 = [v4 latestAdvertisementDate];
-      v14 = [(NSDate *)latestAdvertisementDate laterDate:v13];
+      latestAdvertisementDate2 = [recordCopy latestAdvertisementDate];
+      v14 = [(NSDate *)latestAdvertisementDate laterDate:latestAdvertisementDate2];
       v15 = self->_latestAdvertisementDate;
       self->_latestAdvertisementDate = v14;
     }
@@ -278,7 +278,7 @@ LABEL_12:
     else
     {
       v16 = latestAdvertisementDate;
-      v13 = self->_latestAdvertisementDate;
+      latestAdvertisementDate2 = self->_latestAdvertisementDate;
       self->_latestAdvertisementDate = v16;
     }
 
@@ -286,7 +286,7 @@ LABEL_12:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    obj = [v4 RSSIDistribution];
+    obj = [recordCopy RSSIDistribution];
     v17 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v17)
     {
@@ -307,14 +307,14 @@ LABEL_12:
           if (v21)
           {
             v22 = [(NSMutableDictionary *)self->_RSSIDistribution objectForKeyedSubscript:v20];
-            v23 = [v22 integerValue];
-            [v4 RSSIDistribution];
-            v25 = v24 = v4;
+            integerValue = [v22 integerValue];
+            [recordCopy RSSIDistribution];
+            v25 = v24 = recordCopy;
             v26 = [v25 objectForKeyedSubscript:v20];
-            v27 = [v26 integerValue];
+            integerValue2 = [v26 integerValue];
 
-            v4 = v24;
-            v28 = [MEMORY[0x277CCABB0] numberWithInteger:v27 + v23];
+            recordCopy = v24;
+            v28 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue2 + integerValue];
             [(NSMutableDictionary *)self->_RSSIDistribution setObject:v28 forKeyedSubscript:v20];
           }
         }
@@ -335,21 +335,21 @@ LABEL_12:
   v12[0] = contactID;
   v11[0] = @"ContactID";
   v11[1] = @"firstObservation";
-  v5 = [(NSDate *)firstObservation getFormattedDateString];
-  v12[1] = v5;
+  getFormattedDateString = [(NSDate *)firstObservation getFormattedDateString];
+  v12[1] = getFormattedDateString;
   v11[2] = @"lastObservation";
   latestAdvertisementDate = self->_latestAdvertisementDate;
   if (latestAdvertisementDate)
   {
-    v7 = [(NSDate *)self->_latestAdvertisementDate getFormattedDateString];
+    getFormattedDateString2 = [(NSDate *)self->_latestAdvertisementDate getFormattedDateString];
   }
 
   else
   {
-    v7 = @"-";
+    getFormattedDateString2 = @"-";
   }
 
-  v12[2] = v7;
+  v12[2] = getFormattedDateString2;
   v11[3] = @"numOfObservations";
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numAdvReceived];
   v12[3] = v8;
@@ -365,9 +365,9 @@ LABEL_12:
 - (id)description
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [(RTPeopleDiscoverySingleContactRecord *)self descriptionDictionary];
+  descriptionDictionary = [(RTPeopleDiscoverySingleContactRecord *)self descriptionDictionary];
   v11 = 0;
-  v3 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v2 error:&v11];
+  v3 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v11];
   v4 = v11;
   if (v4)
   {
@@ -383,20 +383,20 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "%@ instance failed to create description:%@", buf, 0x16u);
     }
 
-    v6 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v6 = v3;
+    string = v3;
   }
 
-  v7 = v6;
+  v7 = string;
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v5 = [(NSString *)self->_contactID copy];
@@ -406,31 +406,31 @@ LABEL_12:
   return v7;
 }
 
-- (RTPeopleDiscoverySingleContactRecord)initWithCoder:(id)a3
+- (RTPeopleDiscoverySingleContactRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = RTPeopleDiscoverySingleContactRecord;
   v5 = [(RTPeopleDiscoverySingleContactRecord *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ContactID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ContactID"];
     contactID = v5->_contactID;
     v5->_contactID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstObservation"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstObservation"];
     firstObservation = v5->_firstObservation;
     v5->_firstObservation = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastObservation"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastObservation"];
     latestAdvertisementDate = v5->_latestAdvertisementDate;
     v5->_latestAdvertisementDate = v10;
 
-    v5->_numAdvReceived = [v4 decodeIntegerForKey:@"numOfObservations"];
+    v5->_numAdvReceived = [coderCopy decodeIntegerForKey:@"numOfObservations"];
     v12 = MEMORY[0x277CBEB98];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"RSSIDistribution"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"RSSIDistribution"];
     RSSIDistribution = v5->_RSSIDistribution;
     v5->_RSSIDistribution = v15;
   }
@@ -438,15 +438,15 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contactID = self->_contactID;
-  v5 = a3;
-  [v5 encodeObject:contactID forKey:@"ContactID"];
-  [v5 encodeObject:self->_firstObservation forKey:@"firstObservation"];
-  [v5 encodeObject:self->_latestAdvertisementDate forKey:@"lastObservation"];
-  [v5 encodeInteger:self->_numAdvReceived forKey:@"numOfObservations"];
-  [v5 encodeObject:self->_RSSIDistribution forKey:@"RSSIDistribution"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contactID forKey:@"ContactID"];
+  [coderCopy encodeObject:self->_firstObservation forKey:@"firstObservation"];
+  [coderCopy encodeObject:self->_latestAdvertisementDate forKey:@"lastObservation"];
+  [coderCopy encodeInteger:self->_numAdvReceived forKey:@"numOfObservations"];
+  [coderCopy encodeObject:self->_RSSIDistribution forKey:@"RSSIDistribution"];
 }
 
 @end

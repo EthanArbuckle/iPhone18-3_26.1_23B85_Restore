@@ -1,8 +1,8 @@
 @interface EmojiGenerationController_new
 - (STKEmojiGenerationViewControllerDelegate)delegate;
-- (_TtC20StickerPickerService29EmojiGenerationController_new)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20StickerPickerService29EmojiGenerationController_new)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation EmojiGenerationController_new
@@ -16,23 +16,23 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   EmojiGenerationController_new.viewDidLoad()();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  EmojiGenerationController_new.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  EmojiGenerationController_new.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (_TtC20StickerPickerService29EmojiGenerationController_new)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20StickerPickerService29EmojiGenerationController_new)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -44,8 +44,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return EmojiGenerationController_new.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return EmojiGenerationController_new.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

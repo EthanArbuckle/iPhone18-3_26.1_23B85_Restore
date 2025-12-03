@@ -1,7 +1,7 @@
 @interface MADCSUStoreManager
 + (id)sharedCSUStoreManager;
 - (MADCSUStoreManager)init;
-- (id)sharedCSUStoreForPhotoLibrary:(id)a3;
+- (id)sharedCSUStoreForPhotoLibrary:(id)library;
 @end
 
 @implementation MADCSUStoreManager
@@ -17,9 +17,9 @@
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     stores = v2->_stores;
-    v2->_stores = v5;
+    v2->_stores = dictionary;
   }
 
   return v2;
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = __43__MADCSUStoreManager_sharedCSUStoreManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCSUStoreManager_once != -1)
   {
     dispatch_once(&sharedCSUStoreManager_once, block);
@@ -49,18 +49,18 @@ void __43__MADCSUStoreManager_sharedCSUStoreManager__block_invoke()
   sharedCSUStoreManager_instance = v0;
 }
 
-- (id)sharedCSUStoreForPhotoLibrary:(id)a3
+- (id)sharedCSUStoreForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__45;
   v19 = __Block_byref_object_dispose__45;
   v20 = 0;
-  v5 = [v4 photoLibraryURL];
-  v6 = v5;
-  if (v5)
+  photoLibraryURL = [libraryCopy photoLibraryURL];
+  v6 = photoLibraryURL;
+  if (photoLibraryURL)
   {
     queue = self->_queue;
     v10[0] = MEMORY[0x1E69E9820];
@@ -69,8 +69,8 @@ void __43__MADCSUStoreManager_sharedCSUStoreManager__block_invoke()
     v10[3] = &unk_1E834C3A8;
     v13 = &v15;
     v10[4] = self;
-    v11 = v5;
-    v12 = v4;
+    v11 = photoLibraryURL;
+    v12 = libraryCopy;
     dispatch_sync(queue, v10);
     v8 = v16[5];
   }

@@ -1,6 +1,6 @@
 @interface ATXTimelineRelevanceAdoptionGlobalInfo
 - (ATXTimelineRelevanceAdoptionGlobalInfo)init;
-- (id)globalDiverseSchemaRawNumber:(id)a3 kind:(id)a4;
+- (id)globalDiverseSchemaRawNumber:(id)number kind:(id)kind;
 @end
 
 @implementation ATXTimelineRelevanceAdoptionGlobalInfo
@@ -20,15 +20,15 @@
   return v2;
 }
 
-- (id)globalDiverseSchemaRawNumber:(id)a3 kind:(id)a4
+- (id)globalDiverseSchemaRawNumber:(id)number kind:(id)kind
 {
   v4 = 0;
-  if (a3 && a4)
+  if (number && kind)
   {
     globalAdoptionPlist = self->_globalAdoptionPlist;
-    v7 = a4;
-    v8 = [(NSDictionary *)globalAdoptionPlist objectForKeyedSubscript:a3];
-    v9 = [v8 objectForKeyedSubscript:v7];
+    kindCopy = kind;
+    v8 = [(NSDictionary *)globalAdoptionPlist objectForKeyedSubscript:number];
+    v9 = [v8 objectForKeyedSubscript:kindCopy];
 
     if (v9)
     {

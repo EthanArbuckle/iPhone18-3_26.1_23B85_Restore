@@ -1,29 +1,29 @@
 @interface CKDModifyRecordZonesURLRequest
-- (CKDModifyRecordZonesURLRequest)initWithOperation:(id)a3 recordZonesToSave:(id)a4 recordZoneIDsToDelete:(id)a5;
+- (CKDModifyRecordZonesURLRequest)initWithOperation:(id)operation recordZonesToSave:(id)save recordZoneIDsToDelete:(id)delete;
 - (id)generateRequestOperations;
 - (id)makeRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
 - (id)zoneIDsToLock;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDModifyRecordZonesURLRequest
 
-- (CKDModifyRecordZonesURLRequest)initWithOperation:(id)a3 recordZonesToSave:(id)a4 recordZoneIDsToDelete:(id)a5
+- (CKDModifyRecordZonesURLRequest)initWithOperation:(id)operation recordZonesToSave:(id)save recordZoneIDsToDelete:(id)delete
 {
-  v9 = a4;
-  v10 = a5;
+  saveCopy = save;
+  deleteCopy = delete;
   v16.receiver = self;
   v16.super_class = CKDModifyRecordZonesURLRequest;
-  v11 = [(CKDURLRequest *)&v16 initWithOperation:a3];
+  v11 = [(CKDURLRequest *)&v16 initWithOperation:operation];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_recordZonesToSave, a4);
-    objc_storeStrong(&v12->_recordZoneIDsToDelete, a5);
+    objc_storeStrong(&v11->_recordZonesToSave, save);
+    objc_storeStrong(&v12->_recordZoneIDsToDelete, delete);
     v13 = objc_opt_new();
     recordZoneIDByRequestID = v12->_recordZoneIDByRequestID;
     v12->_recordZoneIDByRequestID = v13;
@@ -32,39 +32,39 @@
   return v12;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v25.receiver = self;
   v25.super_class = CKDModifyRecordZonesURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v25 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v25 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v5 = MEMORY[0x277CBEB98];
   v8 = objc_msgSend_recordZonesToSave(self, v6, v7, v25.receiver, v25.super_class);
   v11 = objc_msgSend_ckEquivalencyProperties(v8, v9, v10);
   v13 = objc_msgSend_setWithArray_(v5, v12, v11);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v14, v13, @"modifyIDs");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v14, v13, @"modifyIDs");
   v15 = MEMORY[0x277CBEB98];
   v18 = objc_msgSend_recordZoneIDsToDelete(self, v16, v17);
   v21 = objc_msgSend_ckEquivalencyProperties(v18, v19, v20);
   v23 = objc_msgSend_setWithArray_(v15, v22, v21);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v24, v23, @"deleteIDs");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v24, v23, @"deleteIDs");
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_recordZonesToSave(self, v5, v6);
   v9 = objc_msgSend_CKMap_(v7, v8, &unk_28385E660);
 
-  objc_msgSend_setModifyRecordZoneIDs_(v4, v10, v9);
+  objc_msgSend_setModifyRecordZoneIDs_(propertiesCopy, v10, v9);
   v13 = objc_msgSend_recordZoneIDsToDelete(self, v11, v12);
-  objc_msgSend_setDeleteRecordZoneIDs_(v4, v14, v13);
+  objc_msgSend_setDeleteRecordZoneIDs_(propertiesCopy, v14, v13);
 
   v15.receiver = self;
   v15.super_class = CKDModifyRecordZonesURLRequest;
-  [(CKDURLRequest *)&v15 fillOutRequestProperties:v4];
+  [(CKDURLRequest *)&v15 fillOutRequestProperties:propertiesCopy];
 }
 
 - (id)zoneIDsToLock
@@ -476,29 +476,29 @@ LABEL_52:
   return objc_msgSend_generatedRequestOperations(self, v5, v6);
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v7 = objc_msgSend_recordZoneIDByRequestID(self, v5, v6);
-  v10 = objc_msgSend_response(v4, v8, v9);
+  v10 = objc_msgSend_response(objectCopy, v8, v9);
   v13 = objc_msgSend_operationUUID(v10, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, v13);
 
-  v18 = objc_msgSend_zoneSaveResponse(v4, v16, v17);
+  v18 = objc_msgSend_zoneSaveResponse(objectCopy, v16, v17);
   v21 = objc_msgSend_capabilities(v18, v19, v20);
 
   v24 = objc_msgSend_translator(self, v22, v23);
   v26 = objc_msgSend_capabilitiesFromPZoneCapabilities_(v24, v25, v21);
 
-  v29 = objc_msgSend_zoneSaveResponse(v4, v27, v28);
+  v29 = objc_msgSend_zoneSaveResponse(objectCopy, v27, v28);
   v32 = objc_msgSend_etag(v29, v30, v31);
 
-  v35 = objc_msgSend_zoneSaveResponse(v4, v33, v34);
+  v35 = objc_msgSend_zoneSaveResponse(objectCopy, v33, v34);
   hasExpirationTime = objc_msgSend_hasExpirationTime(v35, v36, v37);
 
   if (hasExpirationTime)
   {
-    v41 = objc_msgSend_zoneSaveResponse(v4, v39, v40);
+    v41 = objc_msgSend_zoneSaveResponse(objectCopy, v39, v40);
     v44 = objc_msgSend_expirationTime(v41, v42, v43);
     objc_msgSend_time(v44, v45, v46);
     v48 = v47;
@@ -511,10 +511,10 @@ LABEL_52:
     v51 = 0;
   }
 
-  v52 = objc_msgSend_zoneSaveResponse(v4, v39, v40);
+  v52 = objc_msgSend_zoneSaveResponse(objectCopy, v39, v40);
   v55 = objc_msgSend_expired(v52, v53, v54);
 
-  if (objc_msgSend_hasZoneDeleteResponse(v4, v56, v57))
+  if (objc_msgSend_hasZoneDeleteResponse(objectCopy, v56, v57))
   {
     objc_msgSend_updateShareIDCacheWithDeletedZoneID_(self, v58, v15);
   }
@@ -524,18 +524,18 @@ LABEL_52:
   if (v60)
   {
     v63 = objc_msgSend_recordZoneModifiedBlock(self, v61, v62);
-    v66 = objc_msgSend_result(v4, v64, v65);
+    v66 = objc_msgSend_result(objectCopy, v64, v65);
     (v63)[2](v63, v15, v66, v26, v51, v55, v32);
   }
 
   return 0;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
-  v24 = a3;
+  failureCopy = failure;
   v6 = objc_msgSend_recordZoneIDByRequestID(self, v4, v5);
-  v9 = objc_msgSend_response(v24, v7, v8);
+  v9 = objc_msgSend_response(failureCopy, v7, v8);
   v12 = objc_msgSend_operationUUID(v9, v10, v11);
   v14 = objc_msgSend_objectForKeyedSubscript_(v6, v13, v12);
 
@@ -544,7 +544,7 @@ LABEL_52:
   if (v17)
   {
     v20 = objc_msgSend_recordZoneModifiedBlock(self, v18, v19);
-    v23 = objc_msgSend_result(v24, v21, v22);
+    v23 = objc_msgSend_result(failureCopy, v21, v22);
     (v20)[2](v20, v14, v23, 0, 0, 0, 0);
   }
 }

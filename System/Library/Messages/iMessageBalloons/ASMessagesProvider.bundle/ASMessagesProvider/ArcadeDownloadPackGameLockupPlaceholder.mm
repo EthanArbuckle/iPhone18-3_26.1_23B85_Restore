@@ -1,15 +1,15 @@
 @interface ArcadeDownloadPackGameLockupPlaceholder
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
 @implementation ArcadeDownloadPackGameLockupPlaceholder
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
-  v5 = [(ArcadeDownloadPackGameLockupPlaceholder *)v4 traitCollection];
+  width = fits.width;
+  selfCopy = self;
+  traitCollection = [(ArcadeDownloadPackGameLockupPlaceholder *)selfCopy traitCollection];
   v6 = sub_DFB08(width);
   v8 = v7;
 
@@ -29,7 +29,7 @@
   sub_DEB00(v4);
   sub_B170(v4, v4[3]);
   sub_75D650();
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   sub_7673E0();
 
   sub_BEB8(v4);

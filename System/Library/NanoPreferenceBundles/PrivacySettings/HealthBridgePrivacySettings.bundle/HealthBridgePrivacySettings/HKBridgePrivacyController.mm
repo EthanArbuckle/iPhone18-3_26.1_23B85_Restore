@@ -4,36 +4,36 @@
 - (BOOL)_hasOxygenSaturationRecordingBeenOnboarded;
 - (BOOL)_isRespiratoryRateEnabled;
 - (BOOL)_isRespiratoryRateRescinded;
-- (BOOL)_isWristTemperatureEnabledWithFeatureStatus:(id)a3;
-- (BOOL)_isWristTemperatureRescindedWithFeatureStatus:(id)a3;
+- (BOOL)_isWristTemperatureEnabledWithFeatureStatus:(id)status;
+- (BOOL)_isWristTemperatureRescindedWithFeatureStatus:(id)status;
 - (BOOL)_shouldShowOxygenSaturationSection;
 - (BOOL)_shouldShowRespiratoryRateSection;
-- (BOOL)_shouldShowWristTemperatureSectionWithFeatureStatus:(id)a3;
+- (BOOL)_shouldShowWristTemperatureSectionWithFeatureStatus:(id)status;
 - (HKBridgePrivacyController)init;
-- (id)_footerTextForGroupID:(id)a3;
-- (id)_wristTemperatureGroupSpecifierWithFeatureStatus:(id)a3;
+- (id)_footerTextForGroupID:(id)d;
+- (id)_wristTemperatureGroupSpecifierWithFeatureStatus:(id)status;
 - (id)_wristTemperatureSpecifiers;
-- (id)_wristTemperatureSwitchSpecifierWithFeatureStatus:(id)a3;
-- (id)fitnessTrackingEnabled:(id)a3;
-- (id)heartRateEnabled:(id)a3;
-- (id)oxygenSaturationEnabled:(id)a3;
-- (id)respiratoryRateEnabled:(id)a3;
-- (id)smartStackAudioEnabled:(id)a3;
+- (id)_wristTemperatureSwitchSpecifierWithFeatureStatus:(id)status;
+- (id)fitnessTrackingEnabled:(id)enabled;
+- (id)heartRateEnabled:(id)enabled;
+- (id)oxygenSaturationEnabled:(id)enabled;
+- (id)respiratoryRateEnabled:(id)enabled;
+- (id)smartStackAudioEnabled:(id)enabled;
 - (id)specifiers;
-- (id)wristTemperatureEnabled:(id)a3;
+- (id)wristTemperatureEnabled:(id)enabled;
 - (void)_didTapRespiratoryRateRescindedLearnMore;
 - (void)_didTapWristTemperatureRescindedLearnMore;
 - (void)_registerObservers;
 - (void)_unregisterObservers;
 - (void)privacyDefaultsDidChange;
-- (void)resetMotionCalibrationConfirmed:(id)a3;
-- (void)setFitnessTrackingEnabled:(id)a3 specifier:(id)a4;
-- (void)setHeartRateEnabled:(id)a3 specifier:(id)a4;
-- (void)setNoiseEnabled:(id)a3 specifier:(id)a4;
-- (void)setOxygenSaturationEnabled:(id)a3 specifier:(id)a4;
-- (void)setRespiratoryRateEnabled:(id)a3 specifier:(id)a4;
-- (void)setSmartStackAudioEnabled:(id)a3 specifier:(id)a4;
-- (void)setWristTemperatureEnabled:(id)a3 specifier:(id)a4;
+- (void)resetMotionCalibrationConfirmed:(id)confirmed;
+- (void)setFitnessTrackingEnabled:(id)enabled specifier:(id)specifier;
+- (void)setHeartRateEnabled:(id)enabled specifier:(id)specifier;
+- (void)setNoiseEnabled:(id)enabled specifier:(id)specifier;
+- (void)setOxygenSaturationEnabled:(id)enabled specifier:(id)specifier;
+- (void)setRespiratoryRateEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSmartStackAudioEnabled:(id)enabled specifier:(id)specifier;
+- (void)setWristTemperatureEnabled:(id)enabled specifier:(id)specifier;
 - (void)showSettingsPrivacyPane;
 @end
 
@@ -111,10 +111,10 @@
   }
 }
 
-- (id)_footerTextForGroupID:(id)a3
+- (id)_footerTextForGroupID:(id)d
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"HEART_RATE_ENABLED_GROUP_ID"])
+  dCopy = d;
+  if ([dCopy isEqualToString:@"HEART_RATE_ENABLED_GROUP_ID"])
   {
     v5 = +[HKHeartRhythmAvailability isElectrocardiogramSupportedOnAnyWatch];
     v6 = @"HEART_RATE_ENABLED_FOOTER";
@@ -138,33 +138,33 @@
     }
     v14 = ;
 
-    v15 = [v9 localizedStringForKey:v14 value:&stru_C4D8 table:@"Privacy"];
+    aboutBloodOxygenFooter = [v9 localizedStringForKey:v14 value:&stru_C4D8 table:@"Privacy"];
 
     goto LABEL_14;
   }
 
-  if ([v4 isEqualToString:@"ENVIRONMENTAL_AUDIO_ENABLED_GROUP_ID"])
+  if ([dCopy isEqualToString:@"ENVIRONMENTAL_AUDIO_ENABLED_GROUP_ID"])
   {
     v11 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = v11;
     v12 = @"ENVIRONMENTAL_AUDIO_ENABLED_FOOTER";
 LABEL_8:
-    v13 = [v11 localizedStringForKey:v12 value:&stru_C4D8 table:@"Privacy"];
+    localizedMicrophonePermissionSwitchFootnote = [v11 localizedStringForKey:v12 value:&stru_C4D8 table:@"Privacy"];
 LABEL_13:
-    v15 = v13;
+    aboutBloodOxygenFooter = localizedMicrophonePermissionSwitchFootnote;
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:@"SMART_STACK_AUDIO_ENABLED_GROUP_ID"])
+  if ([dCopy isEqualToString:@"SMART_STACK_AUDIO_ENABLED_GROUP_ID"])
   {
     v9 = +[NHSSPrivacyDefaults sharedInstance];
-    v13 = [v9 localizedMicrophonePermissionSwitchFootnote];
+    localizedMicrophonePermissionSwitchFootnote = [v9 localizedMicrophonePermissionSwitchFootnote];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"FITNESS_TRACKING_ENABLED_GROUP_ID"])
+  if ([dCopy isEqualToString:@"FITNESS_TRACKING_ENABLED_GROUP_ID"])
   {
     v11 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = v11;
@@ -172,14 +172,14 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"OXYGEN_SATURATION_ENABLED_GROUP_ID"])
+  if ([dCopy isEqualToString:@"OXYGEN_SATURATION_ENABLED_GROUP_ID"])
   {
-    v15 = [(HKRPOxygenSaturationSettings *)self->_oxygenSaturationSettings aboutBloodOxygenFooter];
+    aboutBloodOxygenFooter = [(HKRPOxygenSaturationSettings *)self->_oxygenSaturationSettings aboutBloodOxygenFooter];
   }
 
   else
   {
-    if ([v4 isEqualToString:@"TIME_IN_DAYLIGHT_ENABLED_GROUP_ID"])
+    if ([dCopy isEqualToString:@"TIME_IN_DAYLIGHT_ENABLED_GROUP_ID"])
     {
       v11 = [NSBundle bundleForClass:objc_opt_class()];
       v9 = v11;
@@ -187,12 +187,12 @@ LABEL_14:
       goto LABEL_8;
     }
 
-    v15 = 0;
+    aboutBloodOxygenFooter = 0;
   }
 
 LABEL_15:
 
-  return v15;
+  return aboutBloodOxygenFooter;
 }
 
 - (id)specifiers
@@ -222,8 +222,8 @@ LABEL_15:
           }
 
           v11 = *(*(&v90 + 1) + 8 * i);
-          v12 = [v11 identifier];
-          v13 = [(HKBridgePrivacyController *)self _footerTextForGroupID:v12];
+          identifier = [v11 identifier];
+          v13 = [(HKBridgePrivacyController *)self _footerTextForGroupID:identifier];
           [v11 setProperty:v13 forKey:v9];
         }
 
@@ -236,14 +236,14 @@ LABEL_15:
     v14 = [v5 specifierForID:@"OXYGEN_SATURATION_ENABLED_SWITCH_ID"];
     v15 = [v5 indexOfObject:v14];
 
-    v16 = [(HKBridgePrivacyController *)self _wristTemperatureSpecifiers];
-    v17 = v16;
+    _wristTemperatureSpecifiers = [(HKBridgePrivacyController *)self _wristTemperatureSpecifiers];
+    v17 = _wristTemperatureSpecifiers;
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v5 addObjectsFromArray:v16];
+      [v5 addObjectsFromArray:_wristTemperatureSpecifiers];
     }
 
-    else if ([v16 count])
+    else if ([_wristTemperatureSpecifiers count])
     {
       v18 = 0;
       v19 = v15 + 1;
@@ -293,7 +293,7 @@ LABEL_15:
 
     [v5 insertObject:v21 atIndex:0];
     v36 = +[BPSBridgeAppContext shared];
-    v37 = [v36 activeDevice];
+    activeDevice = [v36 activeDevice];
     LOBYTE(v35) = BPSDeviceHasCapabilityForString();
 
     if (v35)
@@ -314,8 +314,8 @@ LABEL_15:
     {
       v41 = [v5 specifierForID:@"SMART_STACK_AUDIO_ENABLED_SWITCH_ID"];
       v42 = +[NHSSPrivacyDefaults sharedInstance];
-      v43 = [v42 localizedMicrophonePermissionSwitchName];
-      [v41 setName:v43];
+      localizedMicrophonePermissionSwitchName = [v42 localizedMicrophonePermissionSwitchName];
+      [v41 setName:localizedMicrophonePermissionSwitchName];
 
       [v41 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
     }
@@ -329,7 +329,7 @@ LABEL_15:
     }
 
     v46 = +[BPSBridgeAppContext shared];
-    v47 = [v46 activeDevice];
+    activeDevice2 = [v46 activeDevice];
     HasCapabilityForString = BPSDeviceHasCapabilityForString();
 
     if (HasCapabilityForString)
@@ -348,8 +348,8 @@ LABEL_15:
     if ([(HKBridgePrivacyController *)self _shouldShowOxygenSaturationSection])
     {
       v51 = [v5 specifierForID:@"OXYGEN_SATURATION_ENABLED_SWITCH_ID"];
-      v52 = [(HKRPOxygenSaturationSettings *)self->_oxygenSaturationSettings backgroundRecordingsTitle];
-      [v51 setName:v52];
+      backgroundRecordingsTitle = [(HKRPOxygenSaturationSettings *)self->_oxygenSaturationSettings backgroundRecordingsTitle];
+      [v51 setName:backgroundRecordingsTitle];
 
       [v51 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
     }
@@ -365,7 +365,7 @@ LABEL_15:
     }
 
     v55 = +[BPSBridgeAppContext shared];
-    v56 = [v55 activeDevice];
+    activeDevice3 = [v55 activeDevice];
     v57 = BPSDeviceHasCapabilityForString();
 
     if (v57)
@@ -389,13 +389,13 @@ LABEL_15:
     if ([(HKBridgePrivacyController *)self _shouldShowRespiratoryRateSection])
     {
       v83 = v33;
-      v63 = [(HKBridgePrivacyController *)self _isRespiratoryRateRescinded];
-      v64 = [NSNumber numberWithBool:v63 ^ 1];
+      _isRespiratoryRateRescinded = [(HKBridgePrivacyController *)self _isRespiratoryRateRescinded];
+      v64 = [NSNumber numberWithBool:_isRespiratoryRateRescinded ^ 1];
       [v62 setProperty:v64 forKey:PSEnabledKey];
 
       v65 = [NSBundle bundleForClass:objc_opt_class()];
       v66 = v65;
-      if (v63)
+      if (_isRespiratoryRateRescinded)
       {
         [v65 localizedStringForKey:@"RESPIRATORY_RATE_RESCINDED_FOOTER_LEARN_MORE" value:&stru_C4D8 table:@"Privacy"];
         v67 = v81 = v21;
@@ -458,7 +458,7 @@ LABEL_15:
   [v4 openSensitiveURL:v3 withOptions:0];
 }
 
-- (void)resetMotionCalibrationConfirmed:(id)a3
+- (void)resetMotionCalibrationConfirmed:(id)confirmed
 {
   v7 = 0;
   v3 = [CMNatalimeter resetCalibrationDataWithError:&v7];
@@ -480,66 +480,66 @@ LABEL_15:
   }
 }
 
-- (id)fitnessTrackingEnabled:(id)a3
+- (id)fitnessTrackingEnabled:(id)enabled
 {
   v3 = FIIsFitnessTrackingEnabled();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setFitnessTrackingEnabled:(id)a3 specifier:(id)a4
+- (void)setFitnessTrackingEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  _FISetFitnessTrackingEnabled(v4);
+  _FISetFitnessTrackingEnabled(bOOLValue);
 }
 
-- (id)heartRateEnabled:(id)a3
+- (id)heartRateEnabled:(id)enabled
 {
   v3 = FIUIIsHeartRateEnabled();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setHeartRateEnabled:(id)a3 specifier:(id)a4
+- (void)setHeartRateEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  _FIUISetHeartRateEnabled(v4);
+  _FIUISetHeartRateEnabled(bOOLValue);
 }
 
-- (id)respiratoryRateEnabled:(id)a3
+- (id)respiratoryRateEnabled:(id)enabled
 {
-  v3 = [(HKBridgePrivacyController *)self _isRespiratoryRateEnabled];
+  _isRespiratoryRateEnabled = [(HKBridgePrivacyController *)self _isRespiratoryRateEnabled];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:_isRespiratoryRateEnabled];
 }
 
-- (void)setRespiratoryRateEnabled:(id)a3 specifier:(id)a4
+- (void)setRespiratoryRateEnabled:(id)enabled specifier:(id)specifier
 {
   respiratoryRateStatusManager = self->_respiratoryRateStatusManager;
-  v5 = a3;
-  v6 = [(HKFeatureStatusManager *)respiratoryRateStatusManager featureAvailabilityProviding];
-  [v6 setFeatureSettingNumber:v5 forKey:HKFeatureSettingsKeyEnabled completion:&stru_C3B8];
+  enabledCopy = enabled;
+  featureAvailabilityProviding = [(HKFeatureStatusManager *)respiratoryRateStatusManager featureAvailabilityProviding];
+  [featureAvailabilityProviding setFeatureSettingNumber:enabledCopy forKey:HKFeatureSettingsKeyEnabled completion:&stru_C3B8];
 }
 
-- (void)setNoiseEnabled:(id)a3 specifier:(id)a4
+- (void)setNoiseEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[HUNoiseSettings sharedInstance];
-  [v5 setNoiseEnabled:v4];
+  [v5 setNoiseEnabled:bOOLValue];
 
   v6 = +[HUNoiseSettings sharedInstance];
-  v7 = [v6 onboardingCompleted];
+  onboardingCompleted = [v6 onboardingCompleted];
 
-  if (v7)
+  if (onboardingCompleted)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = v4 == 0;
+    v8 = bOOLValue == 0;
   }
 
   if (!v8)
@@ -552,12 +552,12 @@ LABEL_15:
   }
 }
 
-- (void)setSmartStackAudioEnabled:(id)a3 specifier:(id)a4
+- (void)setSmartStackAudioEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[NHSSPrivacyDefaults sharedInstance];
   v7 = v5;
-  if (v4)
+  if (bOOLValue)
   {
     v6 = 1735552628;
   }
@@ -570,7 +570,7 @@ LABEL_15:
   [v5 setMicrophonePermission:v6];
 }
 
-- (id)smartStackAudioEnabled:(id)a3
+- (id)smartStackAudioEnabled:(id)enabled
 {
   v3 = +[NHSSPrivacyDefaults sharedInstance];
   if ([v3 microphonePermission] == 1735552628)
@@ -588,7 +588,7 @@ LABEL_15:
   return v4;
 }
 
-- (id)wristTemperatureEnabled:(id)a3
+- (id)wristTemperatureEnabled:(id)enabled
 {
   v4 = [(HKFeatureStatusManager *)self->_wristTemperatureStatusManager featureStatusWithError:0];
   if (v4)
@@ -604,43 +604,43 @@ LABEL_15:
   return v5;
 }
 
-- (void)setWristTemperatureEnabled:(id)a3 specifier:(id)a4
+- (void)setWristTemperatureEnabled:(id)enabled specifier:(id)specifier
 {
   wristTemperatureStatusManager = self->_wristTemperatureStatusManager;
-  v5 = a3;
-  v6 = [(HKFeatureStatusManager *)wristTemperatureStatusManager featureAvailabilityProviding];
-  [v6 setFeatureSettingNumber:v5 forKey:HKFeatureSettingsKeyEnabled completion:&stru_C3D8];
+  enabledCopy = enabled;
+  featureAvailabilityProviding = [(HKFeatureStatusManager *)wristTemperatureStatusManager featureAvailabilityProviding];
+  [featureAvailabilityProviding setFeatureSettingNumber:enabledCopy forKey:HKFeatureSettingsKeyEnabled completion:&stru_C3D8];
 }
 
-- (id)oxygenSaturationEnabled:(id)a3
+- (id)oxygenSaturationEnabled:(id)enabled
 {
   v4 = ([(HKRPOxygenSaturationSettings *)self->_oxygenSaturationSettings oxygenSaturationDisabled]& 1) == 0 && [(HKBridgePrivacyController *)self _hasOxygenSaturationRecordingBeenOnboarded];
 
   return [NSNumber numberWithInt:v4];
 }
 
-- (void)setOxygenSaturationEnabled:(id)a3 specifier:(id)a4
+- (void)setOxygenSaturationEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  [(HKRPOxygenSaturationSettings *)self->_oxygenSaturationSettings setOxygenSaturationDisabled:v5 ^ 1];
+  bOOLValue = [enabled BOOLValue];
+  [(HKRPOxygenSaturationSettings *)self->_oxygenSaturationSettings setOxygenSaturationDisabled:bOOLValue ^ 1];
   oxygenSaturationSettings = self->_oxygenSaturationSettings;
 
-  [(HKRPOxygenSaturationSettings *)oxygenSaturationSettings setBackgroundRecordingsEnabled:v5];
+  [(HKRPOxygenSaturationSettings *)oxygenSaturationSettings setBackgroundRecordingsEnabled:bOOLValue];
 }
 
 - (BOOL)_shouldShowOxygenSaturationSection
 {
-  v3 = [(HKBridgePrivacyController *)self _doesDeviceSupportOxygenSaturationRecording];
-  if (v3)
+  _doesDeviceSupportOxygenSaturationRecording = [(HKBridgePrivacyController *)self _doesDeviceSupportOxygenSaturationRecording];
+  if (_doesDeviceSupportOxygenSaturationRecording)
   {
-    v3 = [(HKBridgePrivacyController *)self _hasOxygenSaturationRecordingBeenOnboarded];
-    if (v3)
+    _doesDeviceSupportOxygenSaturationRecording = [(HKBridgePrivacyController *)self _hasOxygenSaturationRecordingBeenOnboarded];
+    if (_doesDeviceSupportOxygenSaturationRecording)
     {
-      LOBYTE(v3) = ![(HKBridgePrivacyController *)self _isOxygenSaturationRecordingRemoteDisabled];
+      LOBYTE(_doesDeviceSupportOxygenSaturationRecording) = ![(HKBridgePrivacyController *)self _isOxygenSaturationRecordingRemoteDisabled];
     }
   }
 
-  return v3;
+  return _doesDeviceSupportOxygenSaturationRecording;
 }
 
 - (BOOL)_doesDeviceSupportOxygenSaturationRecording
@@ -651,7 +651,7 @@ LABEL_15:
   }
 
   v3 = +[BPSBridgeAppContext shared];
-  v4 = [v3 activeDevice];
+  activeDevice = [v3 activeDevice];
   HasCapabilityForString = BPSDeviceHasCapabilityForString();
 
   return HasCapabilityForString;
@@ -660,9 +660,9 @@ LABEL_15:
 - (BOOL)_hasOxygenSaturationRecordingBeenOnboarded
 {
   v2 = [(HKFeatureAvailabilityStore *)self->_oxygenSaturationFeatureAvailabilityStore isCurrentOnboardingVersionCompletedWithError:0];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)_shouldShowRespiratoryRateSection
@@ -675,12 +675,12 @@ LABEL_15:
   {
     v5 = [v3 objectForKeyedSubscript:HKFeatureAvailabilityContextUsage];
     v6 = [v5 objectForKeyedSubscript:HKFeatureAvailabilityRequirementIdentifierCapabilityIsSupportedOnActiveRemoteDevice];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
     v8 = [v5 objectForKeyedSubscript:HKFeatureAvailabilityRequirementIdentifierNotAgeGatedForUserDefaultsKey];
-    v9 = [v8 BOOLValue];
+    bOOLValue2 = [v8 BOOLValue];
 
-    v10 = [v3 isOnboardingRecordPresent] & v7 & v9;
+    v10 = [v3 isOnboardingRecordPresent] & bOOLValue & bOOLValue2;
   }
 
   else
@@ -703,12 +703,12 @@ LABEL_15:
   v2 = [(HKFeatureStatusManager *)self->_respiratoryRateStatusManager featureStatusWithError:0];
   v3 = [v2 objectForKeyedSubscript:HKFeatureAvailabilityContextUsage];
   v4 = [v3 objectForKeyedSubscript:HKFeatureAvailabilityRequirementIdentifierCountryIsSupportedOnActiveRemoteDevice];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
   v6 = [v3 objectForKeyedSubscript:HKFeatureAvailabilityRequirementIdentifierFeatureIsNotRemotelyDisabled];
-  v7 = [v6 BOOLValue];
+  bOOLValue2 = [v6 BOOLValue];
 
-  return v5 & v7 ^ 1;
+  return bOOLValue & bOOLValue2 ^ 1;
 }
 
 - (BOOL)_isRespiratoryRateEnabled
@@ -719,14 +719,14 @@ LABEL_15:
   }
 
   v4 = [(HKFeatureStatusManager *)self->_respiratoryRateStatusManager featureStatusWithError:0];
-  v5 = [v4 onboardingRecord];
-  v6 = [v5 featureSettings];
-  v7 = [v6 numberForKey:HKFeatureSettingsKeyEnabled];
+  onboardingRecord = [v4 onboardingRecord];
+  featureSettings = [onboardingRecord featureSettings];
+  v7 = [featureSettings numberForKey:HKFeatureSettingsKeyEnabled];
 
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
   if (v7)
   {
-    v3 = v8;
+    v3 = bOOLValue;
   }
 
   else
@@ -767,11 +767,11 @@ LABEL_15:
   return v6;
 }
 
-- (id)_wristTemperatureGroupSpecifierWithFeatureStatus:(id)a3
+- (id)_wristTemperatureGroupSpecifierWithFeatureStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = [PSSpecifier groupSpecifierWithID:@"WRIST_TEMPERATURE_GROUP_ID"];
-  v6 = [(HKBridgePrivacyController *)self _isWristTemperatureRescindedWithFeatureStatus:v4];
+  v6 = [(HKBridgePrivacyController *)self _isWristTemperatureRescindedWithFeatureStatus:statusCopy];
 
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   v8 = v7;
@@ -812,15 +812,15 @@ LABEL_15:
   return v5;
 }
 
-- (id)_wristTemperatureSwitchSpecifierWithFeatureStatus:(id)a3
+- (id)_wristTemperatureSwitchSpecifierWithFeatureStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"WRIST_TEMPERATURE_LABEL" value:&stru_C4D8 table:@"Privacy-Kali"];
   v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:"setWristTemperatureEnabled:specifier:" get:"wristTemperatureEnabled:" detail:0 cell:6 edit:0];
 
   [v7 setIdentifier:@"WRIST_TEMPERATURE_SWITCH_ID"];
-  LODWORD(self) = [(HKBridgePrivacyController *)self _isWristTemperatureRescindedWithFeatureStatus:v4];
+  LODWORD(self) = [(HKBridgePrivacyController *)self _isWristTemperatureRescindedWithFeatureStatus:statusCopy];
 
   v8 = [NSNumber numberWithBool:self ^ 1];
   [v7 setProperty:v8 forKey:PSEnabledKey];
@@ -828,48 +828,48 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)_shouldShowWristTemperatureSectionWithFeatureStatus:(id)a3
+- (BOOL)_shouldShowWristTemperatureSectionWithFeatureStatus:(id)status
 {
-  v3 = [a3 objectForKeyedSubscript:HKFeatureAvailabilityContextSettingsVisibility];
-  v4 = [v3 areAllRequirementsSatisfied];
+  v3 = [status objectForKeyedSubscript:HKFeatureAvailabilityContextSettingsVisibility];
+  areAllRequirementsSatisfied = [v3 areAllRequirementsSatisfied];
 
-  return v4;
+  return areAllRequirementsSatisfied;
 }
 
-- (BOOL)_isWristTemperatureRescindedWithFeatureStatus:(id)a3
+- (BOOL)_isWristTemperatureRescindedWithFeatureStatus:(id)status
 {
-  v3 = [a3 objectForKeyedSubscript:HKFeatureAvailabilityContextSettingsUserInteractionEnabled];
-  v4 = [v3 areAllRequirementsSatisfied];
+  v3 = [status objectForKeyedSubscript:HKFeatureAvailabilityContextSettingsUserInteractionEnabled];
+  areAllRequirementsSatisfied = [v3 areAllRequirementsSatisfied];
 
-  return v4 ^ 1;
+  return areAllRequirementsSatisfied ^ 1;
 }
 
-- (BOOL)_isWristTemperatureEnabledWithFeatureStatus:(id)a3
+- (BOOL)_isWristTemperatureEnabledWithFeatureStatus:(id)status
 {
-  v4 = a3;
-  if ([(HKBridgePrivacyController *)self _isWristTemperatureRescindedWithFeatureStatus:v4])
+  statusCopy = status;
+  if ([(HKBridgePrivacyController *)self _isWristTemperatureRescindedWithFeatureStatus:statusCopy])
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v6 = [v4 onboardingRecord];
-    v7 = [v6 featureSettings];
-    v8 = [v7 numberForKey:HKFeatureSettingsKeyEnabled];
+    onboardingRecord = [statusCopy onboardingRecord];
+    featureSettings = [onboardingRecord featureSettings];
+    v8 = [featureSettings numberForKey:HKFeatureSettingsKeyEnabled];
 
     if (v8)
     {
-      v5 = [v8 BOOLValue];
+      bOOLValue = [v8 BOOLValue];
     }
 
     else
     {
-      v5 = 1;
+      bOOLValue = 1;
     }
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (void)_didTapWristTemperatureRescindedLearnMore
@@ -884,8 +884,8 @@ LABEL_15:
 
 - (void)privacyDefaultsDidChange
 {
-  v3 = [(HKBridgePrivacyController *)self specifiers];
-  v4 = [v3 specifierForID:@"SMART_STACK_AUDIO_ENABLED_SWITCH_ID"];
+  specifiers = [(HKBridgePrivacyController *)self specifiers];
+  v4 = [specifiers specifierForID:@"SMART_STACK_AUDIO_ENABLED_SWITCH_ID"];
 
   [(HKBridgePrivacyController *)self reloadSpecifier:v4];
 }
@@ -893,7 +893,7 @@ LABEL_15:
 + (BOOL)shouldShowSmartStackPrivacySwitch
 {
   v2 = +[BPSBridgeAppContext shared];
-  v3 = [v2 activeDevice];
+  activeDevice = [v2 activeDevice];
   HasCapabilityForString = BPSDeviceHasCapabilityForString();
 
   return HasCapabilityForString & (_os_feature_enabled_impl() ^ 1);

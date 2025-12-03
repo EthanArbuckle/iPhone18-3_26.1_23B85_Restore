@@ -1,35 +1,35 @@
 @interface HDTypedAssociationSyncEntity
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
-+ (id)_syncPredicateForSession:(uint64_t)a1;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
++ (id)_syncPredicateForSession:(uint64_t)session;
++ (id)decodeSyncObjectWithData:(id)data;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDTypedAssociationSyncEntity
 
-+ (id)_syncPredicateForSession:(uint64_t)a1
++ (id)_syncPredicateForSession:(uint64_t)session
 {
   v2 = a2;
   objc_opt_self();
   v3 = HDAssociationEntityPredicateForAssociationEntityForNotType(0);
-  v4 = [v2 syncPredicate];
-  v5 = [v4 defaultMaximumObjectAge];
+  syncPredicate = [v2 syncPredicate];
+  defaultMaximumObjectAge = [syncPredicate defaultMaximumObjectAge];
 
-  if (v5)
+  if (defaultMaximumObjectAge)
   {
     v6 = MEMORY[0x277CCABB0];
-    v7 = [v2 calendar];
+    calendar = [v2 calendar];
     v8 = *MEMORY[0x277CCCEF0];
-    v9 = [v2 startDate];
-    v10 = [v7 hk_dateBySubtractingDays:v8 fromDate:v9];
-    v11 = [v2 startDate];
-    [v10 timeIntervalSinceDate:v11];
+    startDate = [v2 startDate];
+    v10 = [calendar hk_dateBySubtractingDays:v8 fromDate:startDate];
+    startDate2 = [v2 startDate];
+    [v10 timeIntervalSinceDate:startDate2];
     v13 = [v6 numberWithDouble:-v12];
 
-    v14 = [v2 startDate];
+    startDate3 = [v2 startDate];
     [v13 doubleValue];
-    v16 = [v14 dateByAddingTimeInterval:-v15];
+    v16 = [startDate3 dateByAddingTimeInterval:-v15];
 
     v17 = HDAssociationEntityPredicateForChildEndDate(6, v16);
     v18 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:v3 otherPredicate:v17];
@@ -43,18 +43,18 @@
   return v18;
 }
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  end = a4.end;
-  start = a4.start;
-  v11 = a3;
-  v12 = a5;
-  v30 = a6;
-  v13 = [(HDTypedAssociationSyncEntity *)a1 _syncPredicateForSession:v11];
+  end = range.end;
+  start = range.start;
+  sessionCopy = session;
+  profileCopy = profile;
+  handlerCopy = handler;
+  v13 = [(HDTypedAssociationSyncEntity *)self _syncPredicateForSession:sessionCopy];
   v27 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v16 = [v11 maxEncodedBytesPerCodableChangeForSyncEntityClass:a1];
+  v16 = [sessionCopy maxEncodedBytesPerCodableChangeForSyncEntityClass:self];
   if (v16 >= 0)
   {
     v17 = v16;
@@ -79,20 +79,20 @@
   v52 = __Block_byref_object_copy__82;
   v53 = __Block_byref_object_dispose__82;
   v54 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v18 = [v12 database];
+  database = [profileCopy database];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __107__HDTypedAssociationSyncEntity_generateSyncObjectsForSession_syncAnchorRange_profile_messageHandler_error___block_invoke;
   v36[3] = &unk_27861FB68;
   v19 = v13;
   v37 = v19;
-  v45 = a1;
+  selfCopy = self;
   v46 = start;
   v47 = end;
-  v29 = v11;
+  v29 = sessionCopy;
   v38 = v29;
   v43 = &v55;
-  v20 = v12;
+  v20 = profileCopy;
   v39 = v20;
   v21 = v14;
   v40 = v21;
@@ -102,7 +102,7 @@
   v42 = v23;
   v44 = v59;
   v48 = v17 >> 7;
-  v24 = [(HDHealthEntity *)HDSyncIdentityEntity performReadTransactionWithHealthDatabase:v18 error:a7 block:v36];
+  v24 = [(HDHealthEntity *)HDSyncIdentityEntity performReadTransactionWithHealthDatabase:database error:error block:v36];
 
   if (v24)
   {
@@ -114,7 +114,7 @@
     v34 = v21;
     v35 = &v49;
     [v23 enumerateKeysAndObjectsUsingBlock:v32];
-    v25 = [v30 sendCodableChange:v50[5] resultAnchor:v56[3] sequence:0 done:1 error:a7];
+    v25 = [handlerCopy sendCodableChange:v50[5] resultAnchor:v56[3] sequence:0 done:1 error:error];
   }
 
   else
@@ -273,12 +273,12 @@ void __107__HDTypedAssociationSyncEntity_generateSyncObjectsForSession_syncAncho
   [*(*(*(a1 + 48) + 8) + 40) addObject:v12];
 }
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a3;
-  v12 = [(HDTypedAssociationSyncEntity *)a1 _syncPredicateForSession:v11];
+  profileCopy = profile;
+  sessionCopy = session;
+  v12 = [(HDTypedAssociationSyncEntity *)self _syncPredicateForSession:sessionCopy];
   v13 = [MEMORY[0x277D10B60] isNotNullPredicateWithProperty:@"child_id_objects.uuid"];
   v14 = [MEMORY[0x277D10B60] isNotNullPredicateWithProperty:@"parent_id_objects.uuid"];
   v15 = MEMORY[0x277D10B20];
@@ -289,30 +289,30 @@ void __107__HDTypedAssociationSyncEntity_generateSyncObjectsForSession_syncAncho
 
   v18 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v17 otherPredicate:v12];
 
-  v19 = [v10 database];
+  database = [profileCopy database];
 
-  v20 = [(HDHealthEntity *)HDAssociationEntity nextSyncAnchorWithStartAnchor:a4 predicate:v18 session:v11 healthDatabase:v19 error:a6];
+  v20 = [(HDHealthEntity *)HDAssociationEntity nextSyncAnchorWithStartAnchor:anchor predicate:v18 session:sessionCopy healthDatabase:database error:error];
   v21 = *MEMORY[0x277D85DE8];
   return v20;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[HDCodableTypedObjectAssociation alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[HDCodableTypedObjectAssociation alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [v10 associationManager];
-  LODWORD(a7) = [v13 insertCodableTypedObjectAssociations:v12 syncStore:v11 profile:v10 error:a7];
+  profileCopy = profile;
+  storeCopy = store;
+  objectsCopy = objects;
+  associationManager = [profileCopy associationManager];
+  LODWORD(error) = [associationManager insertCodableTypedObjectAssociations:objectsCopy syncStore:storeCopy profile:profileCopy error:error];
 
-  return a7 ^ 1;
+  return error ^ 1;
 }
 
 @end

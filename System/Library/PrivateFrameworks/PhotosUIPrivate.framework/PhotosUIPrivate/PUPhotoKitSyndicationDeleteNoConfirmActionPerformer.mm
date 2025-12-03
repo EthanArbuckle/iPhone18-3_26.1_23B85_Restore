@@ -6,17 +6,17 @@
 
 - (void)performBackgroundTask
 {
-  v4 = [(PUAssetActionPerformer *)self assets];
+  assets = [(PUAssetActionPerformer *)self assets];
   v5 = objc_alloc(MEMORY[0x1E69C32F0]);
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 initWithSourceIdentifier:v7 assetCount:objc_msgSend(v4 userConfirmation:{"count"), 3}];
+  v8 = [v5 initWithSourceIdentifier:v7 assetCount:objc_msgSend(assets userConfirmation:{"count"), 3}];
 
-  v9 = [MEMORY[0x1E69C3448] actionWithAssets:v4 record:v8];
+  v9 = [MEMORY[0x1E69C3448] actionWithAssets:assets record:v8];
   if (!v9)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:2269 description:{@"Invalid parameter not satisfying: %@", @"deleteAssetsAction != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:2269 description:{@"Invalid parameter not satisfying: %@", @"deleteAssetsAction != nil"}];
   }
 
   v11[0] = MEMORY[0x1E69E9820];

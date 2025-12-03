@@ -1,20 +1,20 @@
 @interface ACMEnvironmentPreferences
-+ (id)environmentPreferencesWithRealm:(id)a3;
++ (id)environmentPreferencesWithRealm:(id)realm;
 + (id)environmentSpecifications;
 + (id)supportedRealms;
-- (ACMEnvironmentPreferences)initWithRealm:(id)a3;
+- (ACMEnvironmentPreferences)initWithRealm:(id)realm;
 - (NSString)realm;
-- (id)createPrincipalPreferencesWithUserName:(id)a3;
-- (id)environmentSpecificationForRealm:(id)a3;
+- (id)createPrincipalPreferencesWithUserName:(id)name;
+- (id)environmentSpecificationForRealm:(id)realm;
 - (id)iForgotURL;
-- (id)principalPreferencesWithUserName:(id)a3;
+- (id)principalPreferencesWithUserName:(id)name;
 - (id)publicKeyCertificateName;
 - (id)publicKeyVersion;
 - (id)realmName;
 - (id)realmShortName;
 - (void)dealloc;
-- (void)setPublicKeyCertificateName:(id)a3;
-- (void)setPublicKeyVersion:(id)a3;
+- (void)setPublicKeyCertificateName:(id)name;
+- (void)setPublicKeyVersion:(id)version;
 @end
 
 @implementation ACMEnvironmentPreferences
@@ -64,19 +64,19 @@
   return [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v10 forKeys:v9 count:3];
 }
 
-+ (id)environmentPreferencesWithRealm:(id)a3
++ (id)environmentPreferencesWithRealm:(id)realm
 {
   if (![ACMEnvironmentPreferences isSupportedRealm:?])
   {
     return 0;
   }
 
-  v5 = [[a1 alloc] initWithRealm:a3];
+  v5 = [[self alloc] initWithRealm:realm];
 
   return v5;
 }
 
-- (ACMEnvironmentPreferences)initWithRealm:(id)a3
+- (ACMEnvironmentPreferences)initWithRealm:(id)realm
 {
   v7.receiver = self;
   v7.super_class = ACMEnvironmentPreferences;
@@ -84,7 +84,7 @@
   v5 = v4;
   if (v4)
   {
-    [(ACMEnvironmentPreferences *)v4 setEnvironmentSpecification:[(ACMEnvironmentPreferences *)v4 environmentSpecificationForRealm:a3]];
+    [(ACMEnvironmentPreferences *)v4 setEnvironmentSpecification:[(ACMEnvironmentPreferences *)v4 environmentSpecificationForRealm:realm]];
   }
 
   return v5;
@@ -99,53 +99,53 @@
   [(ACMPreferences *)&v3 dealloc];
 }
 
-- (id)principalPreferencesWithUserName:(id)a3
+- (id)principalPreferencesWithUserName:(id)name
 {
   objc_sync_enter(self);
-  if (([a3 isEqualToString:{-[ACMPrincipalPreferences userName](-[ACMEnvironmentPreferences principalPreferences](self, "principalPreferences"), "userName")}] & 1) == 0)
+  if (([name isEqualToString:{-[ACMPrincipalPreferences userName](-[ACMEnvironmentPreferences principalPreferences](self, "principalPreferences"), "userName")}] & 1) == 0)
   {
-    [(ACMEnvironmentPreferences *)self setPrincipalPreferences:[(ACMEnvironmentPreferences *)self createPrincipalPreferencesWithUserName:a3]];
+    [(ACMEnvironmentPreferences *)self setPrincipalPreferences:[(ACMEnvironmentPreferences *)self createPrincipalPreferencesWithUserName:name]];
     [(ACMPreferences *)[(ACMEnvironmentPreferences *)self principalPreferences] setPreferencesStore:[(ACMPreferences *)self preferencesStore]];
   }
 
-  v5 = [(ACMEnvironmentPreferences *)self principalPreferences];
+  principalPreferences = [(ACMEnvironmentPreferences *)self principalPreferences];
   objc_sync_exit(self);
-  return v5;
+  return principalPreferences;
 }
 
-- (id)createPrincipalPreferencesWithUserName:(id)a3
+- (id)createPrincipalPreferencesWithUserName:(id)name
 {
-  v3 = [ACFPrincipal principalWithUserName:a3 realm:[(ACMEnvironmentPreferences *)self realm]];
+  v3 = [ACFPrincipal principalWithUserName:name realm:[(ACMEnvironmentPreferences *)self realm]];
 
   return [ACMPrincipalPreferences preferencesForPrincipal:v3];
 }
 
-- (id)environmentSpecificationForRealm:(id)a3
+- (id)environmentSpecificationForRealm:(id)realm
 {
   v4 = +[ACMEnvironmentPreferences environmentSpecifications];
 
-  return [v4 objectForKey:a3];
+  return [v4 objectForKey:realm];
 }
 
 - (NSString)realm
 {
-  v2 = [(ACMEnvironmentPreferences *)self environmentSpecification];
+  environmentSpecification = [(ACMEnvironmentPreferences *)self environmentSpecification];
 
-  return [(NSDictionary *)v2 objectForKeyedSubscript:@"ACMEnvironmentRealmKey"];
+  return [(NSDictionary *)environmentSpecification objectForKeyedSubscript:@"ACMEnvironmentRealmKey"];
 }
 
 - (id)realmName
 {
-  v2 = [(ACMEnvironmentPreferences *)self environmentSpecification];
+  environmentSpecification = [(ACMEnvironmentPreferences *)self environmentSpecification];
 
-  return [(NSDictionary *)v2 objectForKeyedSubscript:@"ACMEnvironmentRealmNameKey"];
+  return [(NSDictionary *)environmentSpecification objectForKeyedSubscript:@"ACMEnvironmentRealmNameKey"];
 }
 
 - (id)realmShortName
 {
-  v2 = [(ACMEnvironmentPreferences *)self environmentSpecification];
+  environmentSpecification = [(ACMEnvironmentPreferences *)self environmentSpecification];
 
-  return [(NSDictionary *)v2 objectForKeyedSubscript:@"ACMEnvironmentRealmShortNameKey"];
+  return [(NSDictionary *)environmentSpecification objectForKeyedSubscript:@"ACMEnvironmentRealmShortNameKey"];
 }
 
 - (id)publicKeyCertificateName
@@ -155,11 +155,11 @@
   return [(ACMPreferences *)self preferencesValueForKey:v3];
 }
 
-- (void)setPublicKeyCertificateName:(id)a3
+- (void)setPublicKeyCertificateName:(id)name
 {
   v5 = [@"PublicKeyCertificateNameKey" stringByAppendingFormat:@"-%@", -[ACMEnvironmentPreferences realm](self, "realm"), 0];
 
-  [(ACMPreferences *)self setPreferencesValue:a3 forKey:v5];
+  [(ACMPreferences *)self setPreferencesValue:name forKey:v5];
 }
 
 - (id)publicKeyVersion
@@ -169,18 +169,18 @@
   return [(ACMPreferences *)self preferencesValueForKey:v3];
 }
 
-- (void)setPublicKeyVersion:(id)a3
+- (void)setPublicKeyVersion:(id)version
 {
   v5 = [@"ACMDSKeyVersionKey" stringByAppendingFormat:@"-%@", -[ACMEnvironmentPreferences realm](self, "realm"), 0];
 
-  [(ACMPreferences *)self setPreferencesValue:a3 forKey:v5];
+  [(ACMPreferences *)self setPreferencesValue:version forKey:v5];
 }
 
 - (id)iForgotURL
 {
-  v2 = [(ACMEnvironmentPreferences *)self environmentSpecification];
+  environmentSpecification = [(ACMEnvironmentPreferences *)self environmentSpecification];
 
-  return [(NSDictionary *)v2 objectForKeyedSubscript:@"ACMEnvironmentIForgotLinkKey"];
+  return [(NSDictionary *)environmentSpecification objectForKeyedSubscript:@"ACMEnvironmentIForgotLinkKey"];
 }
 
 @end

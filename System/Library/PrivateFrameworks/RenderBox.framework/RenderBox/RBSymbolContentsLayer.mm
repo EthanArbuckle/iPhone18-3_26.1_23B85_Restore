@@ -1,12 +1,12 @@
 @interface RBSymbolContentsLayer
-- (void)setNeedsDisplayInRect:(CGRect)a3;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
 @end
 
 @implementation RBSymbolContentsLayer
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  v3 = [(RBSymbolContentsLayer *)self delegate:a3.origin.x];
+  v3 = [(RBSymbolContentsLayer *)self delegate:rect.origin.x];
   if (v3)
   {
 

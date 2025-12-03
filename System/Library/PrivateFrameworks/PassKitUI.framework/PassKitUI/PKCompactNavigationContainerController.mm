@@ -1,51 +1,51 @@
 @interface PKCompactNavigationContainerController
 + (id)dimmingColor;
-- ($B0E03EE70DBE361165F1CEED4B44113B)_infoForViewController:(SEL)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGRect)_targetNavigationControllerFrameForInfo:(id *)a3;
+- ($B0E03EE70DBE361165F1CEED4B44113B)_infoForViewController:(SEL)controller;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGRect)_targetNavigationControllerFrameForInfo:(id *)info;
 - (CGRect)exclusionRect;
-- (CGSize)_navigationControllerSizeForChildViewControllerInfo:(id *)a3 withCurrentInfo:(id *)a4;
-- (CGSize)childViewControllerPreferredContentSizeForSize:(CGSize)a3 isRoot:(BOOL)a4;
-- (CGSize)childViewControllerSizeForNavigationControllerSize:(CGSize)a3;
+- (CGSize)_navigationControllerSizeForChildViewControllerInfo:(id *)info withCurrentInfo:(id *)currentInfo;
+- (CGSize)childViewControllerPreferredContentSizeForSize:(CGSize)size isRoot:(BOOL)root;
+- (CGSize)childViewControllerSizeForNavigationControllerSize:(CGSize)size;
 - (CGSize)modalPresentationSize;
-- (CGSize)navigationControllerSizeForChildViewControllerPreferredContentSize:(CGSize)a3 isRoot:(BOOL)a4;
-- (PKCompactNavigationContainerController)initWithNavigationController:(id)a3;
-- (PKCompactNavigationContainerController)initWithNavigationController:(id)a3 style:(unint64_t)a4;
+- (CGSize)navigationControllerSizeForChildViewControllerPreferredContentSize:(CGSize)size isRoot:(BOOL)root;
+- (PKCompactNavigationContainerController)initWithNavigationController:(id)controller;
+- (PKCompactNavigationContainerController)initWithNavigationController:(id)controller style:(unint64_t)style;
 - (PKCompactNavigationContainerControllerDelegate)delegate;
 - (id)_backgroundColor;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (int64_t)preferredUserInterfaceStyle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_endLayoutGroup;
 - (void)_updateForKeyboardIfNecessary;
-- (void)_updateLayoutForKeyboardAction:(id)a3;
+- (void)_updateLayoutForKeyboardAction:(id)action;
 - (void)_updateStatusBarFrame;
-- (void)_updateTopViewController:(id)a3 animated:(BOOL)a4;
-- (void)_updateTopViewControllerAsync:(id)a3 animated:(BOOL)a4;
-- (void)contentContainer:(id)a3 preferredContentSizeDidChangeForChildContentContainer:(id)a4;
+- (void)_updateTopViewController:(id)controller animated:(BOOL)animated;
+- (void)_updateTopViewControllerAsync:(id)async animated:(BOOL)animated;
+- (void)contentContainer:(id)container preferredContentSizeDidChangeForChildContentContainer:(id)contentContainer;
 - (void)dealloc;
-- (void)insertBackgroundLevelView:(id)a3;
-- (void)keyboardWillChange:(id)a3;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (void)insertBackgroundLevelView:(id)view;
+- (void)keyboardWillChange:(id)change;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
 - (void)loadView;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)observedView:(id)a3 didMoveToWindow:(id)a4;
-- (void)setExclusionRect:(CGRect)a3 withCoordinateSpace:(id)a4;
-- (void)setPresentingNavigationController:(BOOL)a3;
-- (void)tapGestureRecognized:(id)a3;
-- (void)updateChildViewControllerSizeAnimated:(BOOL)a3 forceUpdate:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)observedView:(id)view didMoveToWindow:(id)window;
+- (void)setExclusionRect:(CGRect)rect withCoordinateSpace:(id)space;
+- (void)setPresentingNavigationController:(BOOL)controller;
+- (void)tapGestureRecognized:(id)recognized;
+- (void)updateChildViewControllerSizeAnimated:(BOOL)animated forceUpdate:(BOOL)update;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PKCompactNavigationContainerController
@@ -63,46 +63,46 @@
   return [v2 colorWithWhite:0.0 alpha:v4];
 }
 
-- (PKCompactNavigationContainerController)initWithNavigationController:(id)a3
+- (PKCompactNavigationContainerController)initWithNavigationController:(id)controller
 {
-  v4 = a3;
-  v5 = -[PKCompactNavigationContainerController initWithNavigationController:style:](self, "initWithNavigationController:style:", v4, [v4 style]);
+  controllerCopy = controller;
+  v5 = -[PKCompactNavigationContainerController initWithNavigationController:style:](self, "initWithNavigationController:style:", controllerCopy, [controllerCopy style]);
 
   return v5;
 }
 
-- (PKCompactNavigationContainerController)initWithNavigationController:(id)a3 style:(unint64_t)a4
+- (PKCompactNavigationContainerController)initWithNavigationController:(id)controller style:(unint64_t)style
 {
-  v6 = a3;
+  controllerCopy = controller;
   v19.receiver = self;
   v19.super_class = PKCompactNavigationContainerController;
   v7 = [(PKCompactNavigationContainerController *)&v19 initWithNibName:0 bundle:0];
   v8 = v7;
   if (v7)
   {
-    v7->_style = a4;
-    v9 = [(PKCompactNavigationContainerController *)v7 preferredUserInterfaceStyle];
+    v7->_style = style;
+    preferredUserInterfaceStyle = [(PKCompactNavigationContainerController *)v7 preferredUserInterfaceStyle];
     [(PKCompactNavigationContainerController *)v8 setModalPresentationStyle:4];
     [(PKCompactNavigationContainerController *)v8 setTransitioningDelegate:v8];
     if (v8->_style)
     {
-      v10 = 0;
+      pkui_userInterfaceIdiomSupportsLargeLayouts = 0;
     }
 
     else
     {
-      v10 = [(UIViewController *)v8 pkui_userInterfaceIdiomSupportsLargeLayouts];
+      pkui_userInterfaceIdiomSupportsLargeLayouts = [(UIViewController *)v8 pkui_userInterfaceIdiomSupportsLargeLayouts];
     }
 
-    v8->_centeredCard = v10;
-    v11 = v6;
-    if (!v6)
+    v8->_centeredCard = pkui_userInterfaceIdiomSupportsLargeLayouts;
+    v11 = controllerCopy;
+    if (!controllerCopy)
     {
-      v11 = [[PKCompactNavigationContainedNavigationController alloc] initWithStyle:a4];
+      v11 = [[PKCompactNavigationContainedNavigationController alloc] initWithStyle:style];
     }
 
     objc_storeStrong(&v8->_containedNavigationController, v11);
-    if (!v6)
+    if (!controllerCopy)
     {
     }
 
@@ -118,7 +118,7 @@
     [(PKCompactNavigationContainerController *)v8 addChildViewController:v8->_presentationContextVC];
     [(PKCompactNavigationContainedNavigationWrapperViewController *)v8->_presentationContextVC didMoveToParentViewController:v8];
     [(PKCompactNavigationContainerController *)v8 setNeedsStatusBarAppearanceUpdate];
-    if (v9 != [(PKCompactNavigationContainerController *)v8 preferredUserInterfaceStyle])
+    if (preferredUserInterfaceStyle != [(PKCompactNavigationContainerController *)v8 preferredUserInterfaceStyle])
     {
       [(PKCompactNavigationContainerController *)v8 setNeedsUserInterfaceAppearanceUpdate];
     }
@@ -134,11 +134,11 @@
     v8->_lastKeyboardFrame.size = v15;
     v8->_keyboardFrame.origin = v14;
     v8->_keyboardFrame.size = v15;
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    v17 = v16;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v17 = defaultCenter;
     if (v8->_centeredCard)
     {
-      [v16 addObserver:v8 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE028] object:0];
+      [defaultCenter addObserver:v8 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE028] object:0];
       [v17 addObserver:v8 selector:sel_keyboardWillChange_ name:*MEMORY[0x1E69DE018] object:0];
       [v17 addObserver:v8 selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE020] object:0];
     }
@@ -149,12 +149,12 @@
 
 - (void)dealloc
 {
-  v3 = [(PKCompactNavigationContainerController *)self viewIfLoaded];
-  [v3 removeWindowObserver:self];
+  viewIfLoaded = [(PKCompactNavigationContainerController *)self viewIfLoaded];
+  [viewIfLoaded removeWindowObserver:self];
 
   [(PKCompactNavigationContainedNavigationController *)self->_containedNavigationController removeContentContainerObserver:self];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = PKCompactNavigationContainerController;
@@ -176,8 +176,8 @@
   [(PKCompactNavigationContainerController *)self setView:v6];
   [(PKView *)v6 setAutoresizesSubviews:0];
   [(PKView *)v6 setOpaque:0];
-  v7 = [(PKCompactNavigationContainerController *)self _backgroundColor];
-  [(PKView *)v6 setBackgroundColor:v7];
+  _backgroundColor = [(PKCompactNavigationContainerController *)self _backgroundColor];
+  [(PKView *)v6 setBackgroundColor:_backgroundColor];
 
   [(PKView *)v6 addWindowObserver:self];
   v8 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_tapGestureRecognized_];
@@ -192,17 +192,17 @@
 
   [(UIView *)self->_maskingContainerView setAutoresizesSubviews:0];
   [(PKView *)v6 addSubview:self->_maskingContainerView];
-  v12 = [(PKCompactNavigationContainedNavigationWrapperViewController *)self->_presentationContextVC view];
-  [v12 setAutoresizesSubviews:0];
-  [(UIView *)self->_maskingContainerView addSubview:v12];
-  v13 = [(UIView *)self->_maskingContainerView layer];
+  view = [(PKCompactNavigationContainedNavigationWrapperViewController *)self->_presentationContextVC view];
+  [view setAutoresizesSubviews:0];
+  [(UIView *)self->_maskingContainerView addSubview:view];
+  layer = [(UIView *)self->_maskingContainerView layer];
   v25 = MEMORY[0x1E69E9820];
   v26 = 3221225472;
   v27 = __50__PKCompactNavigationContainerController_loadView__block_invoke;
   v28 = &unk_1E801FCB0;
-  v29 = v13;
-  v30 = self;
-  v14 = v13;
+  v29 = layer;
+  selfCopy = self;
+  v14 = layer;
   v15 = _Block_copy(&v25);
   v17 = v15;
   style = self->_style;
@@ -234,13 +234,13 @@
 
   v22 = [(PKCompactNavigationContainedNavigationController *)self->_containedNavigationController view:v25];
   [v22 setAutoresizingMask:0];
-  [v12 addSubview:v22];
+  [view addSubview:v22];
   [v14 setAnchorPoint:{0.5, v19}];
-  v23 = [v12 layer];
-  [v23 setAnchorPoint:{0.5, v19}];
+  layer2 = [view layer];
+  [layer2 setAnchorPoint:{0.5, v19}];
 
-  v24 = [v22 layer];
-  [v24 setAnchorPoint:{0.5, v19}];
+  layer3 = [v22 layer];
+  [layer3 setAnchorPoint:{0.5, v19}];
 }
 
 uint64_t __50__PKCompactNavigationContainerController_loadView__block_invoke(uint64_t a1, uint64_t a2, double a3)
@@ -269,60 +269,60 @@ uint64_t __50__PKCompactNavigationContainerController_loadView__block_invoke(uin
     _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "compact navigation container loaded with status bar frame %@", buf, 0xCu);
   }
 
-  v5 = [(PKCompactNavigationContainerController *)self view];
-  v6 = [(PKCompactNavigationContainerController *)self _backgroundColor];
-  [v5 setBackgroundColor:v6];
+  view = [(PKCompactNavigationContainerController *)self view];
+  _backgroundColor = [(PKCompactNavigationContainerController *)self _backgroundColor];
+  [view setBackgroundColor:_backgroundColor];
 
   if (!self->_topVC && !self->_pendingTopVC)
   {
-    v7 = [(PKCompactNavigationContainedNavigationController *)self->_containedNavigationController topViewController];
-    if (v7)
+    topViewController = [(PKCompactNavigationContainedNavigationController *)self->_containedNavigationController topViewController];
+    if (topViewController)
     {
-      [(PKCompactNavigationContainerController *)self _updateTopViewController:v7 animated:0];
+      [(PKCompactNavigationContainerController *)self _updateTopViewController:topViewController animated:0];
     }
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = PKCompactNavigationContainerController;
-  [(PKCompactNavigationContainerController *)&v5 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(PKCompactNavigationContainerController *)&v5 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(PKCompactNavigationContainerController *)self _updateStatusBarFrame];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKCompactNavigationContainerController;
-  [(PKCompactNavigationContainerController *)&v4 viewWillAppear:a3];
+  [(PKCompactNavigationContainerController *)&v4 viewWillAppear:appear];
   self->_visibility = 1;
   [(PKCompactNavigationContainerController *)self _updateForKeyboardIfNecessary];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKCompactNavigationContainerController;
-  [(PKCompactNavigationContainerController *)&v4 viewDidAppear:a3];
+  [(PKCompactNavigationContainerController *)&v4 viewDidAppear:appear];
   self->_visibility = 2;
   [(PKCompactNavigationContainerController *)self _updateForKeyboardIfNecessary];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKCompactNavigationContainerController;
-  [(PKCompactNavigationContainerController *)&v4 viewWillDisappear:a3];
+  [(PKCompactNavigationContainerController *)&v4 viewWillDisappear:disappear];
   self->_visibility = 3;
   [(PKCompactNavigationContainerController *)self _updateForKeyboardIfNecessary];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKCompactNavigationContainerController;
-  [(PKCompactNavigationContainerController *)&v4 viewDidDisappear:a3];
+  [(PKCompactNavigationContainerController *)&v4 viewDidDisappear:disappear];
   self->_visibility = 0;
   [(PKCompactNavigationContainerController *)self _updateForKeyboardIfNecessary];
 }
@@ -334,13 +334,13 @@ uint64_t __50__PKCompactNavigationContainerController_loadView__block_invoke(uin
   [(PKCompactNavigationContainerController *)&v72 viewWillLayoutSubviews];
   [(PKCompactNavigationContainerController *)self _beginLayoutGroup];
   ++self->_contentSizeUpdateDeferralCounter;
-  v3 = [(PKCompactNavigationContainerController *)self view];
-  [v3 bounds];
+  view = [(PKCompactNavigationContainerController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   v13 = v12;
   if (self->_visibility - 1 > 1)
   {
@@ -354,12 +354,12 @@ uint64_t __50__PKCompactNavigationContainerController_loadView__block_invoke(uin
     v57 = *MEMORY[0x1E695F050];
     if (!CGRectIsNull(self->_keyboardFrame))
     {
-      v14 = [v3 window];
-      v15 = v14;
-      if (v14)
+      window = [view window];
+      v15 = window;
+      if (window)
       {
-        [v14 convertRect:0 fromWindow:{self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height}];
-        [v3 convertRect:0 fromView:?];
+        [window convertRect:0 fromWindow:{self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height}];
+        [view convertRect:0 fromView:?];
         v17.y = v16;
         v19.height = v18;
         v56 = v19;
@@ -400,7 +400,7 @@ uint64_t __50__PKCompactNavigationContainerController_loadView__block_invoke(uin
     self->_maximumModalPresentationFrame.size = v26;
   }
 
-  v27 = [(PKCompactNavigationContainedNavigationWrapperViewController *)self->_presentationContextVC view];
+  view2 = [(PKCompactNavigationContainedNavigationWrapperViewController *)self->_presentationContextVC view];
   v28 = *&self->_topVCInfo.minimumNavigationHeight;
   v69[0] = self->_topVCInfo.preferredContentSize;
   v69[1] = v28;
@@ -411,8 +411,8 @@ uint64_t __50__PKCompactNavigationContainerController_loadView__block_invoke(uin
   v36 = v35;
   [(UIView *)self->_maskingContainerView setFrame:?];
   [(UIView *)self->_maskingContainerView bounds];
-  [v27 setFrame:?];
-  [v27 convertRect:v3 fromView:{v30, v32, v34, v36}];
+  [view2 setFrame:?];
+  [view2 convertRect:view fromView:{v30, v32, v34, v36}];
   if (self->_topVCIsExpectedClass)
   {
     [(UIViewController *)self->_topVC setTargetNavigationHeight:v36];
@@ -423,9 +423,9 @@ uint64_t __50__PKCompactNavigationContainerController_loadView__block_invoke(uin
 
     else
     {
-      v37 = [(UIViewController *)self->_topVC needsInitialLayout];
-      self->_topVCIsInInitialLayout = v37;
-      if ((v37 & 1) == 0)
+      needsInitialLayout = [(UIViewController *)self->_topVC needsInitialLayout];
+      self->_topVCIsInInitialLayout = needsInitialLayout;
+      if ((needsInitialLayout & 1) == 0)
       {
         goto LABEL_16;
       }
@@ -440,8 +440,8 @@ uint64_t __50__PKCompactNavigationContainerController_loadView__block_invoke(uin
   }
 
 LABEL_16:
-  v38 = [(PKCompactNavigationContainedNavigationController *)self->_containedNavigationController view];
-  [v38 frame];
+  view3 = [(PKCompactNavigationContainedNavigationController *)self->_containedNavigationController view];
+  [view3 frame];
   v40 = v39;
   v42 = v41;
   v44 = v43;
@@ -468,7 +468,7 @@ LABEL_16:
       v58[1] = 3221225472;
       v58[2] = __64__PKCompactNavigationContainerController_viewWillLayoutSubviews__block_invoke_2;
       v58[3] = &unk_1E801FCD8;
-      v59 = v38;
+      v59 = view3;
       v60 = v40;
       v61 = v42;
       v62 = v44;
@@ -480,7 +480,7 @@ LABEL_16:
       [v55 performWithoutAnimation:v58];
     }
 
-    [v38 setFrame:{v48, v50, v52, v54}];
+    [view3 setFrame:{v48, v50, v52, v54}];
   }
 }
 
@@ -513,10 +513,10 @@ uint64_t __64__PKCompactNavigationContainerController_viewWillLayoutSubviews__bl
   [(PKCompactNavigationContainerController *)self _endLayoutGroup];
 }
 
-- (CGRect)_targetNavigationControllerFrameForInfo:(id *)a3
+- (CGRect)_targetNavigationControllerFrameForInfo:(id *)info
 {
-  v4 = *&a3->var1;
-  remainder.origin = a3->var0;
+  v4 = *&info->var1;
+  remainder.origin = info->var0;
   remainder.size = v4;
   v5 = *&self->_topVCInfo.minimumNavigationHeight;
   slice.origin = self->_topVCInfo.preferredContentSize;
@@ -524,11 +524,11 @@ uint64_t __64__PKCompactNavigationContainerController_viewWillLayoutSubviews__bl
   [(PKCompactNavigationContainerController *)self _navigationControllerSizeForChildViewControllerInfo:&remainder withCurrentInfo:&slice];
   v7 = v6;
   v9 = v8;
-  v10 = [(PKCompactNavigationContainerController *)self viewIfLoaded];
-  v11 = v10;
-  if (v10)
+  viewIfLoaded = [(PKCompactNavigationContainerController *)self viewIfLoaded];
+  v11 = viewIfLoaded;
+  if (viewIfLoaded)
   {
-    [v10 bounds];
+    [viewIfLoaded bounds];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -623,17 +623,17 @@ uint64_t __64__PKCompactNavigationContainerController_viewWillLayoutSubviews__bl
   }
 }
 
-- (void)insertBackgroundLevelView:(id)a3
+- (void)insertBackgroundLevelView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    v4 = a3;
-    v5 = [(PKCompactNavigationContainerController *)self view];
-    [v5 insertSubview:v4 belowSubview:self->_maskingContainerView];
+    viewCopy = view;
+    view = [(PKCompactNavigationContainerController *)self view];
+    [view insertSubview:viewCopy belowSubview:self->_maskingContainerView];
   }
 }
 
-- (CGSize)childViewControllerPreferredContentSizeForSize:(CGSize)a3 isRoot:(BOOL)a4
+- (CGSize)childViewControllerPreferredContentSizeForSize:(CGSize)size isRoot:(BOOL)root
 {
   PKSizeRoundToPixel();
   result.height = v5;
@@ -641,35 +641,35 @@ uint64_t __64__PKCompactNavigationContainerController_viewWillLayoutSubviews__bl
   return result;
 }
 
-- (CGSize)navigationControllerSizeForChildViewControllerPreferredContentSize:(CGSize)a3 isRoot:(BOOL)a4
+- (CGSize)navigationControllerSizeForChildViewControllerPreferredContentSize:(CGSize)size isRoot:(BOOL)root
 {
-  v8 = a3;
+  sizeCopy = size;
   v9 = 0;
-  v10 = a4;
+  rootCopy = root;
   v4 = *&self->_topVCInfo.minimumNavigationHeight;
   v7[0] = self->_topVCInfo.preferredContentSize;
   v7[1] = v4;
-  [(PKCompactNavigationContainerController *)self _navigationControllerSizeForChildViewControllerInfo:&v8 withCurrentInfo:v7];
+  [(PKCompactNavigationContainerController *)self _navigationControllerSizeForChildViewControllerInfo:&sizeCopy withCurrentInfo:v7];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (CGSize)childViewControllerSizeForNavigationControllerSize:(CGSize)a3
+- (CGSize)childViewControllerSizeForNavigationControllerSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (([(PKCompactNavigationContainedNavigationController *)self->_containedNavigationController isNavigationBarHidden]& 1) == 0)
   {
-    v6 = [(PKCompactNavigationContainedNavigationController *)self->_containedNavigationController navigationBar];
-    [v6 frame];
+    navigationBar = [(PKCompactNavigationContainedNavigationController *)self->_containedNavigationController navigationBar];
+    [navigationBar frame];
     height = height - v7;
   }
 
   if (!self->_centeredCard)
   {
-    v8 = [(PKCompactNavigationContainerController *)self viewIfLoaded];
-    [v8 safeAreaInsets];
+    viewIfLoaded = [(PKCompactNavigationContainerController *)self viewIfLoaded];
+    [viewIfLoaded safeAreaInsets];
     height = height - v9;
   }
 
@@ -713,15 +713,15 @@ uint64_t __64__PKCompactNavigationContainerController_viewWillLayoutSubviews__bl
   }
 }
 
-- (void)setExclusionRect:(CGRect)a3 withCoordinateSpace:(id)a4
+- (void)setExclusionRect:(CGRect)rect withCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v9 = [(PKCompactNavigationContainerController *)self viewIfLoaded];
-  [v9 layoutIfNeeded];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
+  viewIfLoaded = [(PKCompactNavigationContainerController *)self viewIfLoaded];
+  [viewIfLoaded layoutIfNeeded];
 
   self->_exclusionRect.origin.x = x;
   self->_exclusionRect.origin.y = y;
@@ -734,23 +734,23 @@ uint64_t __64__PKCompactNavigationContainerController_viewWillLayoutSubviews__bl
   if (CGRectIsNull(v14))
   {
     v10 = 0;
-    v11 = 0;
+    fixedCoordinateSpace = 0;
   }
 
-  else if (v12)
+  else if (spaceCopy)
   {
     v10 = 0;
-    v11 = v12;
+    fixedCoordinateSpace = spaceCopy;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v11 = [v9 fixedCoordinateSpace];
+    viewIfLoaded = [MEMORY[0x1E69DCEB0] mainScreen];
+    fixedCoordinateSpace = [viewIfLoaded fixedCoordinateSpace];
     v10 = 1;
   }
 
-  objc_storeStrong(&self->_exclusionCoordinateSpace, v11);
+  objc_storeStrong(&self->_exclusionCoordinateSpace, fixedCoordinateSpace);
   if (v10)
   {
   }
@@ -758,20 +758,20 @@ uint64_t __64__PKCompactNavigationContainerController_viewWillLayoutSubviews__bl
   [(PKCompactNavigationContainerController *)self updateChildViewControllerSizeAnimated:1];
 }
 
-- (void)setPresentingNavigationController:(BOOL)a3
+- (void)setPresentingNavigationController:(BOOL)controller
 {
-  if (self->_presentingNavigationController != a3)
+  if (self->_presentingNavigationController != controller)
   {
-    self->_presentingNavigationController = a3;
-    v5 = [(PKCompactNavigationContainerController *)self viewIfLoaded];
-    if (v5)
+    self->_presentingNavigationController = controller;
+    viewIfLoaded = [(PKCompactNavigationContainerController *)self viewIfLoaded];
+    if (viewIfLoaded)
     {
-      v7 = v5;
-      v6 = [(PKCompactNavigationContainerController *)self _backgroundColor];
-      [v7 setBackgroundColor:v6];
+      v7 = viewIfLoaded;
+      _backgroundColor = [(PKCompactNavigationContainerController *)self _backgroundColor];
+      [v7 setBackgroundColor:_backgroundColor];
 
       [v7 setNeedsLayout];
-      v5 = v7;
+      viewIfLoaded = v7;
     }
   }
 }
@@ -792,28 +792,28 @@ uint64_t __64__PKCompactNavigationContainerController_viewWillLayoutSubviews__bl
   return v2;
 }
 
-- (void)updateChildViewControllerSizeAnimated:(BOOL)a3 forceUpdate:(BOOL)a4
+- (void)updateChildViewControllerSizeAnimated:(BOOL)animated forceUpdate:(BOOL)update
 {
-  v5 = a3;
+  animatedCopy = animated;
   if (self->_contentSizeUpdateDeferralCounter)
   {
     deferredContentSizeUpdate = self->_deferredContentSizeUpdate;
     self->_deferredContentSizeUpdate = 1;
     if (deferredContentSizeUpdate)
     {
-      self->_deferredContentSizeUpdateIsAnimated &= a3;
+      self->_deferredContentSizeUpdateIsAnimated &= animated;
       if (self->_deferredContentSizeUpdateIsForced)
       {
-        a4 = 1;
+        update = 1;
       }
     }
 
     else
     {
-      self->_deferredContentSizeUpdateIsAnimated = a3;
+      self->_deferredContentSizeUpdateIsAnimated = animated;
     }
 
-    self->_deferredContentSizeUpdateIsForced = a4;
+    self->_deferredContentSizeUpdateIsForced = update;
   }
 
   else
@@ -824,27 +824,27 @@ uint64_t __64__PKCompactNavigationContainerController_viewWillLayoutSubviews__bl
     [(PKCompactNavigationContainerController *)self _infoForViewController:self->_topVC];
     v8 = self->_updateChildViewControllerSizeCounter + 1;
     self->_updateChildViewControllerSizeCounter = v8;
-    if (a4 || (self->_topVCInfo.preferredContentSize.width == v15.width ? (v9 = self->_topVCInfo.preferredContentSize.height == v15.height) : (v9 = 0), !v9 || self->_topVCInfo.minimumNavigationHeight != *&v16 || self->_topVCInfo.isRoot != BYTE8(v16)))
+    if (update || (self->_topVCInfo.preferredContentSize.width == v15.width ? (v9 = self->_topVCInfo.preferredContentSize.height == v15.height) : (v9 = 0), !v9 || self->_topVCInfo.minimumNavigationHeight != *&v16 || self->_topVCInfo.isRoot != BYTE8(v16)))
     {
       [(PKCompactNavigationContainerController *)self _beginLayoutGroup];
-      v10 = [(PKCompactNavigationContainerController *)self viewIfLoaded];
-      [v10 layoutIfNeeded];
+      viewIfLoaded = [(PKCompactNavigationContainerController *)self viewIfLoaded];
+      [viewIfLoaded layoutIfNeeded];
       if (v8 == self->_updateChildViewControllerSizeCounter)
       {
         v11 = v16;
         self->_topVCInfo.preferredContentSize = v15;
         *&self->_topVCInfo.minimumNavigationHeight = v11;
-        [v10 setNeedsLayout];
-        if (v10)
+        [viewIfLoaded setNeedsLayout];
+        if (viewIfLoaded)
         {
-          if (v5)
+          if (animatedCopy)
           {
             v12 = MEMORY[0x1E69DD250];
             v13[0] = MEMORY[0x1E69E9820];
             v13[1] = 3221225472;
             v13[2] = __92__PKCompactNavigationContainerController_updateChildViewControllerSizeAnimated_forceUpdate___block_invoke;
             v13[3] = &unk_1E8010970;
-            v14 = v10;
+            v14 = viewIfLoaded;
             [v12 pkui_animateUsingOptions:134 delay:v13 animations:0 completion:0.0];
           }
         }
@@ -855,21 +855,21 @@ uint64_t __64__PKCompactNavigationContainerController_viewWillLayoutSubviews__bl
   }
 }
 
-- (void)_updateTopViewControllerAsync:(id)a3 animated:(BOOL)a4
+- (void)_updateTopViewControllerAsync:(id)async animated:(BOOL)animated
 {
-  v7 = a3;
-  if (v7)
+  asyncCopy = async;
+  if (asyncCopy)
   {
     v8 = self->_pendingTopVCIdentifier + 1;
     self->_pendingTopVCIdentifier = v8;
-    objc_storeStrong(&self->_pendingTopVC, a3);
+    objc_storeStrong(&self->_pendingTopVC, async);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __81__PKCompactNavigationContainerController__updateTopViewControllerAsync_animated___block_invoke;
     block[3] = &unk_1E801FD00;
     block[4] = self;
     block[5] = v8;
-    v10 = a4;
+    animatedCopy = animated;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -885,38 +885,38 @@ uint64_t __81__PKCompactNavigationContainerController__updateTopViewControllerAs
   return result;
 }
 
-- (void)_updateTopViewController:(id)a3 animated:(BOOL)a4
+- (void)_updateTopViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (v7)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     ++self->_pendingTopVCIdentifier;
     pendingTopVC = self->_pendingTopVC;
     self->_pendingTopVC = 0;
-    v11 = v7;
+    v11 = controllerCopy;
 
     topVC = self->_topVC;
-    objc_storeStrong(&self->_topVC, a3);
+    objc_storeStrong(&self->_topVC, controller);
     objc_opt_class();
     self->_topVCIsExpectedClass = objc_opt_isKindOfClass() & 1;
     v10 = topVC == v11 && self->_topVCIsInInitialLayout;
     self->_topVCIsInInitialLayout = v10;
-    [(PKCompactNavigationContainerController *)self updateChildViewControllerSizeAnimated:v4 forceUpdate:topVC != v11];
-    v7 = v11;
+    [(PKCompactNavigationContainerController *)self updateChildViewControllerSizeAnimated:animatedCopy forceUpdate:topVC != v11];
+    controllerCopy = v11;
   }
 }
 
-- ($B0E03EE70DBE361165F1CEED4B44113B)_infoForViewController:(SEL)a3
+- ($B0E03EE70DBE361165F1CEED4B44113B)_infoForViewController:(SEL)controller
 {
   containedNavigationController = self->_containedNavigationController;
   v7 = a4;
-  v8 = [(PKCompactNavigationContainedNavigationController *)containedNavigationController viewControllers];
-  v9 = [v8 firstObject];
+  viewControllers = [(PKCompactNavigationContainedNavigationController *)containedNavigationController viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  if (v9)
+  if (firstObject)
   {
-    v10 = v9 == v7;
+    v10 = firstObject == v7;
   }
 
   else
@@ -961,22 +961,22 @@ uint64_t __81__PKCompactNavigationContainerController__updateTopViewControllerAs
   return result;
 }
 
-- (CGSize)_navigationControllerSizeForChildViewControllerInfo:(id *)a3 withCurrentInfo:(id *)a4
+- (CGSize)_navigationControllerSizeForChildViewControllerInfo:(id *)info withCurrentInfo:(id *)currentInfo
 {
-  v7 = [(PKCompactNavigationContainerController *)self view];
-  [v7 bounds];
+  view = [(PKCompactNavigationContainerController *)self view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [v7 safeAreaInsets];
+  [view safeAreaInsets];
   v15 = v14;
   v17 = v16;
   v18 = 0.0;
   v19 = 0.0;
   if (([(PKCompactNavigationContainedNavigationController *)self->_containedNavigationController isNavigationBarHidden]& 1) == 0)
   {
-    v20 = [(PKCompactNavigationContainedNavigationController *)self->_containedNavigationController navigationBar];
-    [v20 frame];
+    navigationBar = [(PKCompactNavigationContainedNavigationController *)self->_containedNavigationController navigationBar];
+    [navigationBar frame];
     v19 = v21;
   }
 
@@ -993,11 +993,11 @@ uint64_t __81__PKCompactNavigationContainerController__updateTopViewControllerAs
   }
 
   style = self->_style;
-  height = a3->var0.height;
+  height = info->var0.height;
   [(PKCompactNavigationContainerController *)self modalPresentationSize];
   if (height == v26)
   {
-    if (self->_centeredCard || !a3->var2)
+    if (self->_centeredCard || !info->var2)
     {
       goto LABEL_21;
     }
@@ -1015,20 +1015,20 @@ uint64_t __81__PKCompactNavigationContainerController__updateTopViewControllerAs
     height = v17 + v19 + height;
   }
 
-  if (!a3->var2)
+  if (!info->var2)
   {
-    height = fmax(a4->var1, height);
+    height = fmax(currentInfo->var1, height);
   }
 
   if (!self->_centeredCard)
   {
     v18 = fmax(v18, fmax(self->_statusBarFrame.size.height, v15));
-    if (a3->var2)
+    if (info->var2)
     {
 LABEL_18:
       if (!CGRectIsNull(self->_exclusionRect) && self->_exclusionCoordinateSpace)
       {
-        [v7 convertRect:self->_exclusionRect.origin.x fromCoordinateSpace:{self->_exclusionRect.origin.y, self->_exclusionRect.size.width, self->_exclusionRect.size.height}];
+        [view convertRect:self->_exclusionRect.origin.x fromCoordinateSpace:{self->_exclusionRect.origin.y, self->_exclusionRect.size.width, self->_exclusionRect.size.height}];
         v18 = fmax(v18, CGRectGetMaxY(v33) - v9);
       }
     }
@@ -1061,21 +1061,21 @@ LABEL_21:
   return result;
 }
 
-- (void)contentContainer:(id)a3 preferredContentSizeDidChangeForChildContentContainer:(id)a4
+- (void)contentContainer:(id)container preferredContentSizeDidChangeForChildContentContainer:(id)contentContainer
 {
-  v7 = a3;
-  v6 = a4;
-  if (self->_containedNavigationController == v7 && self->_topVC == v6)
+  containerCopy = container;
+  contentContainerCopy = contentContainer;
+  if (self->_containedNavigationController == containerCopy && self->_topVC == contentContainerCopy)
   {
     [(PKCompactNavigationContainerController *)self updateChildViewControllerSizeAnimated:1];
   }
 }
 
-- (void)observedView:(id)a3 didMoveToWindow:(id)a4
+- (void)observedView:(id)view didMoveToWindow:(id)window
 {
   if (self->_didMoveToWindowDirtiesLayout)
   {
-    v5 = [(PKCompactNavigationContainerController *)self view:a3];
+    v5 = [(PKCompactNavigationContainerController *)self view:view];
     [v5 setNeedsLayout];
   }
 
@@ -1086,18 +1086,18 @@ LABEL_21:
 {
   if (!self->_centeredCard)
   {
-    v4 = [(PKCompactNavigationContainerController *)self viewIfLoaded];
-    if (v4)
+    viewIfLoaded = [(PKCompactNavigationContainerController *)self viewIfLoaded];
+    if (viewIfLoaded)
     {
-      v14 = v4;
-      v5 = [v4 window];
-      v6 = [v5 windowScene];
+      v14 = viewIfLoaded;
+      window = [viewIfLoaded window];
+      windowScene = [window windowScene];
 
       p_statusBarFrame = &self->_statusBarFrame;
-      if (v6)
+      if (windowScene)
       {
-        v8 = [v6 statusBarManager];
-        [v8 statusBarFrame];
+        statusBarManager = [windowScene statusBarManager];
+        [statusBarManager statusBarFrame];
         p_statusBarFrame->origin.x = v9;
         p_statusBarFrame->origin.y = v10;
         p_statusBarFrame->size.width = v11;
@@ -1113,35 +1113,35 @@ LABEL_21:
 
       [v14 setNeedsLayout];
 
-      v4 = v14;
+      viewIfLoaded = v14;
     }
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PKCompactNavigationContainerController *)self transitionCoordinator];
-  v11 = v10;
-  if (v10)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  transitionCoordinator = [(PKCompactNavigationContainerController *)self transitionCoordinator];
+  v11 = transitionCoordinator;
+  if (transitionCoordinator)
   {
-    v12 = v10;
+    transitionCoordinator2 = transitionCoordinator;
   }
 
   else
   {
-    v12 = [v9 transitionCoordinator];
+    transitionCoordinator2 = [viewControllerCopy transitionCoordinator];
   }
 
-  v13 = v12;
+  v13 = transitionCoordinator2;
 
   v14 = [v13 viewControllerForKey:*MEMORY[0x1E69DE768]];
   v15 = v14;
   if (v13 && v14)
   {
-    [(PKCompactNavigationContainerController *)self _updateTopViewControllerAsync:v9 animated:v5];
+    [(PKCompactNavigationContainerController *)self _updateTopViewControllerAsync:viewControllerCopy animated:animatedCopy];
     objc_initWeak(&location, self);
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -1157,12 +1157,12 @@ LABEL_21:
 
   else
   {
-    v16 = [(PKCompactNavigationContainedNavigationController *)self->_containedNavigationController interactivePopGestureRecognizer];
-    v17 = [v16 state];
+    interactivePopGestureRecognizer = [(PKCompactNavigationContainedNavigationController *)self->_containedNavigationController interactivePopGestureRecognizer];
+    state = [interactivePopGestureRecognizer state];
 
-    if (v17 <= 5 && ((1 << v17) & 0x31) != 0)
+    if (state <= 5 && ((1 << state) & 0x31) != 0)
     {
-      [(PKCompactNavigationContainerController *)self _updateTopViewControllerAsync:v9 animated:v5];
+      [(PKCompactNavigationContainerController *)self _updateTopViewControllerAsync:viewControllerCopy animated:animatedCopy];
     }
   }
 }
@@ -1177,13 +1177,13 @@ void __95__PKCompactNavigationContainerController_navigationController_willShowV
   }
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  if (a3 == self)
+  if (controller == self)
   {
-    v7 = a4;
-    v8 = a3;
-    v5 = [[PKCompactNavigationContainerControllerPresentationController alloc] initWithPresentedViewController:v8 presentingViewController:v7];
+    viewControllerCopy = viewController;
+    controllerCopy = controller;
+    v5 = [[PKCompactNavigationContainerControllerPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
   }
 
   else
@@ -1194,59 +1194,59 @@ void __95__PKCompactNavigationContainerController_navigationController_willShowV
   return v5;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v5 = [[PKCompactNavigationContainerControllerPresentationAnimator alloc] initWithPresenting:1];
 
   return v5;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v3 = [[PKCompactNavigationContainerControllerPresentationAnimator alloc] initWithPresenting:0];
 
   return v3;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   if (!self->_presentingNavigationController)
   {
     return 0;
   }
 
-  v3 = [(PKCompactNavigationContainedNavigationWrapperViewController *)self->_presentationContextVC presentedViewController];
-  v4 = v3 == 0;
+  presentedViewController = [(PKCompactNavigationContainedNavigationWrapperViewController *)self->_presentationContextVC presentedViewController];
+  v4 = presentedViewController == 0;
 
   return v4;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [(PKCompactNavigationContainerController *)self view];
-  [v5 locationInView:v6];
+  touchCopy = touch;
+  view = [(PKCompactNavigationContainerController *)self view];
+  [touchCopy locationInView:view];
   v8 = v7;
   v10 = v9;
 
-  [(UIView *)v6 bounds];
+  [(UIView *)view bounds];
   v22.x = v8;
   v22.y = v10;
-  if (CGRectContainsPoint(v24, v22) && (-[PKCompactNavigationContainedNavigationController view](self->_containedNavigationController, "view"), v11 = objc_claimAutoreleasedReturnValue(), [v11 bounds], -[UIView convertRect:fromView:](v6, "convertRect:fromView:", v11, v12 + -44.0, v13 + -44.0, v14 + 88.0, v15 + 88.0), v23.x = v8, v23.y = v10, v16 = CGRectContainsPoint(v25, v23), v11, !v16))
+  if (CGRectContainsPoint(v24, v22) && (-[PKCompactNavigationContainedNavigationController view](self->_containedNavigationController, "view"), v11 = objc_claimAutoreleasedReturnValue(), [v11 bounds], -[UIView convertRect:fromView:](view, "convertRect:fromView:", v11, v12 + -44.0, v13 + -44.0, v14 + 88.0, v15 + 88.0), v23.x = v8, v23.y = v10, v16 = CGRectContainsPoint(v25, v23), v11, !v16))
   {
-    v18 = [(UIView *)v6 hitTest:0 withEvent:v8, v10];
+    v18 = [(UIView *)view hitTest:0 withEvent:v8, v10];
     v19 = v18;
     if (v18)
     {
-      if (v18 == v6 || v18 == self->_maskingContainerView)
+      if (v18 == view || v18 == self->_maskingContainerView)
       {
         v17 = 1;
       }
 
       else
       {
-        v20 = [(PKCompactNavigationContainedNavigationWrapperViewController *)self->_presentationContextVC view];
-        v17 = v19 == v20;
+        view2 = [(PKCompactNavigationContainedNavigationWrapperViewController *)self->_presentationContextVC view];
+        v17 = v19 == view2;
       }
     }
 
@@ -1264,7 +1264,7 @@ void __95__PKCompactNavigationContainerController_navigationController_willShowV
   return v17;
 }
 
-- (void)tapGestureRecognized:(id)a3
+- (void)tapGestureRecognized:(id)recognized
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -1277,15 +1277,15 @@ void __95__PKCompactNavigationContainerController_navigationController_willShowV
 {
   if (self->_centeredCard)
   {
-    v3 = [(PKCompactNavigationContainerController *)self viewIfLoaded];
-    [v3 setNeedsLayout];
+    viewIfLoaded = [(PKCompactNavigationContainerController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -1331,14 +1331,14 @@ BOOL __59__PKCompactNavigationContainerController_keyboardWillShow___block_invok
   return !CGRectEqualToRect(*(*(a1 + 32) + 1192), v16);
 }
 
-- (void)keyboardWillChange:(id)a3
+- (void)keyboardWillChange:(id)change
 {
   if (self->_keyboardVisible)
   {
     v10 = v3;
     v11 = v4;
-    v6 = [a3 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x1E69DDFA0]];
+    userInfo = [change userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
     if (v7)
     {
@@ -1373,7 +1373,7 @@ BOOL __61__PKCompactNavigationContainerController_keyboardWillChange___block_inv
   return !CGRectEqualToRect(*(*(a1 + 32) + 1192), v13);
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
   if (self->_keyboardVisible)
   {
@@ -1404,20 +1404,20 @@ BOOL __59__PKCompactNavigationContainerController_keyboardWillHide___block_invok
   return !CGRectEqualToRect(*&v3, v8);
 }
 
-- (void)_updateLayoutForKeyboardAction:(id)a3
+- (void)_updateLayoutForKeyboardAction:(id)action
 {
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
-    v5 = [(PKCompactNavigationContainerController *)self viewIfLoaded];
-    v6 = v5;
+    viewIfLoaded = [(PKCompactNavigationContainerController *)self viewIfLoaded];
+    v6 = viewIfLoaded;
     v7 = self->_visibility - 3;
-    if (v5 && v7 >= 0xFFFFFFFE)
+    if (viewIfLoaded && v7 >= 0xFFFFFFFE)
     {
-      [v5 layoutIfNeeded];
+      [viewIfLoaded layoutIfNeeded];
     }
 
-    v8 = v4[2](v4);
+    v8 = actionCopy[2](actionCopy);
     if (v6 && v8)
     {
       [v6 setNeedsLayout];

@@ -1,28 +1,28 @@
 @interface HUHomeAccessoryTileView
 - (HFServiceLikeItem)item;
-- (HUHomeAccessoryTileView)initWithFrame:(CGRect)a3 categoryType:(id)a4;
-- (HUHomeAccessoryTileView)initWithFrame:(CGRect)a3 item:(id)a4 iconOnlyTile:(BOOL)a5;
+- (HUHomeAccessoryTileView)initWithFrame:(CGRect)frame categoryType:(id)type;
+- (HUHomeAccessoryTileView)initWithFrame:(CGRect)frame item:(id)item iconOnlyTile:(BOOL)tile;
 - (void)layoutSubviews;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUHomeAccessoryTileView
 
-- (HUHomeAccessoryTileView)initWithFrame:(CGRect)a3 item:(id)a4 iconOnlyTile:(BOOL)a5
+- (HUHomeAccessoryTileView)initWithFrame:(CGRect)frame item:(id)item iconOnlyTile:(BOOL)tile
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  tileCopy = tile;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  itemCopy = item;
   v51.receiver = self;
   v51.super_class = HUHomeAccessoryTileView;
-  v12 = [(HUHomeAccessoryTileView *)&v51 initWithFrame:x, y, width, height];
-  v13 = v12;
-  if (v12)
+  height = [(HUHomeAccessoryTileView *)&v51 initWithFrame:x, y, width, height];
+  v13 = height;
+  if (height)
   {
-    v12->_iconOnlyTile = v5;
+    height->_iconOnlyTile = tileCopy;
     v14 = objc_alloc_init(MEMORY[0x277D755E8]);
     homeView = v13->_homeView;
     v13->_homeView = v14;
@@ -32,11 +32,11 @@
     [(HUHomeAccessoryTileView *)v13 addSubview:v13->_homeView];
     objc_initWeak(&location, v13);
     v16 = MEMORY[0x277D755B8];
-    v17 = [MEMORY[0x277D759A0] mainScreen];
-    [v17 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v19 = v18;
-    v20 = [(HUHomeAccessoryTileView *)v13 traitCollection];
-    v21 = [v16 hu_homeAppIconWithSize:objc_msgSend(v20 scale:"userInterfaceStyle") userInterfaceStyle:{256.0, 256.0, v19}];
+    traitCollection = [(HUHomeAccessoryTileView *)v13 traitCollection];
+    v21 = [v16 hu_homeAppIconWithSize:objc_msgSend(traitCollection scale:"userInterfaceStyle") userInterfaceStyle:{256.0, 256.0, v19}];
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __59__HUHomeAccessoryTileView_initWithFrame_item_iconOnlyTile___block_invoke;
@@ -49,7 +49,7 @@
     v13->_tileView = v23;
 
     v25 = &unk_28251B0C8;
-    v26 = v11;
+    v26 = itemCopy;
     if ([v26 conformsToProtocol:v25])
     {
       v27 = v26;
@@ -82,9 +82,9 @@
 
     v31 = [HUGridServiceCellLayoutOptions defaultOptionsForCellSizeSubclass:1];
     [v31 setContentColorStyle:1];
-    [v31 setShowIconOnly:v5];
+    [v31 setShowIconOnly:tileCopy];
     [v31 setShowDescription:0];
-    if (v5)
+    if (tileCopy)
     {
       [v31 setCellCornerRadius:12.0];
     }
@@ -92,26 +92,26 @@
     [(HUGridCell *)v13->_tileView setLayoutOptions:v31];
     [(HUGridServiceCell *)v13->_tileView setShouldShowRoomName:0];
     [(HUGridServiceCell *)v13->_tileView setShouldColorDescription:0];
-    v32 = [MEMORY[0x277D75348] systemBlackColor];
-    [(HUGridServiceCell *)v13->_tileView setDefaultDescriptionColor:v32];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    [(HUGridServiceCell *)v13->_tileView setDefaultDescriptionColor:systemBlackColor];
 
-    v33 = [MEMORY[0x277D75348] blackColor];
-    v34 = [v33 CGColor];
-    v35 = [(HUGridServiceCell *)v13->_tileView layer];
-    [v35 setShadowColor:v34];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    cGColor = [blackColor CGColor];
+    layer = [(HUGridServiceCell *)v13->_tileView layer];
+    [layer setShadowColor:cGColor];
 
-    v36 = [(HUGridServiceCell *)v13->_tileView layer];
-    [v36 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+    layer2 = [(HUGridServiceCell *)v13->_tileView layer];
+    [layer2 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
 
-    v37 = [(HUGridServiceCell *)v13->_tileView layer];
+    layer3 = [(HUGridServiceCell *)v13->_tileView layer];
     LODWORD(v38) = 0.25;
-    [v37 setShadowOpacity:v38];
+    [layer3 setShadowOpacity:v38];
 
-    v39 = [(HUGridServiceCell *)v13->_tileView layer];
-    [v39 setShadowRadius:10.0];
+    layer4 = [(HUGridServiceCell *)v13->_tileView layer];
+    [layer4 setShadowRadius:10.0];
 
-    v40 = [(HUGridServiceCell *)v13->_tileView layer];
-    [v40 setMasksToBounds:0];
+    layer5 = [(HUGridServiceCell *)v13->_tileView layer];
+    [layer5 setMasksToBounds:0];
 
     [(HUHomeAccessoryTileView *)v13 updateUIWithAnimation:0];
     [(HUHomeAccessoryTileView *)v13 addSubview:v13->_tileView];
@@ -241,18 +241,18 @@ LABEL_21:
   return v3;
 }
 
-- (HUHomeAccessoryTileView)initWithFrame:(CGRect)a3 categoryType:(id)a4
+- (HUHomeAccessoryTileView)initWithFrame:(CGRect)frame categoryType:(id)type
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v18[2] = *MEMORY[0x277D85DE8];
   v9 = MEMORY[0x277D14B38];
-  v10 = a4;
+  typeCopy = type;
   v11 = [v9 alloc];
   v17[0] = *MEMORY[0x277D13E88];
-  v12 = [MEMORY[0x277D14AC0] iconDescriptorForAccessoryCategoryOrServiceType:v10];
+  v12 = [MEMORY[0x277D14AC0] iconDescriptorForAccessoryCategoryOrServiceType:typeCopy];
 
   v17[1] = *MEMORY[0x277D14068];
   v18[0] = v12;
@@ -260,17 +260,17 @@ LABEL_21:
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
   v14 = [v11 initWithResults:v13];
 
-  v15 = [(HUHomeAccessoryTileView *)self initWithFrame:v14 item:1 iconOnlyTile:x, y, width, height];
-  return v15;
+  height = [(HUHomeAccessoryTileView *)self initWithFrame:v14 item:1 iconOnlyTile:x, y, width, height];
+  return height;
 }
 
 - (HFServiceLikeItem)item
 {
-  v2 = [(HUHomeAccessoryTileView *)self tileView];
-  v3 = [v2 item];
-  if ([v3 conformsToProtocol:&unk_28251B0C8])
+  tileView = [(HUHomeAccessoryTileView *)self tileView];
+  item = [tileView item];
+  if ([item conformsToProtocol:&unk_28251B0C8])
   {
-    v4 = v3;
+    v4 = item;
   }
 
   else
@@ -283,18 +283,18 @@ LABEL_21:
   return v4;
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
   objc_initWeak(&location, self);
-  v5 = [(HUHomeAccessoryTileView *)self tileView];
-  v6 = [v5 item];
-  v7 = [v6 updateWithOptions:MEMORY[0x277CBEC10]];
+  tileView = [(HUHomeAccessoryTileView *)self tileView];
+  item = [tileView item];
+  v7 = [item updateWithOptions:MEMORY[0x277CBEC10]];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__HUHomeAccessoryTileView_updateUIWithAnimation___block_invoke;
   v9[3] = &unk_277DC1D18;
   objc_copyWeak(&v10, &location);
-  v11 = a3;
+  animationCopy = animation;
   v8 = [v7 addCompletionBlock:v9];
 
   objc_destroyWeak(&v10);
@@ -345,18 +345,18 @@ void __49__HUHomeAccessoryTileView_updateUIWithAnimation___block_invoke(uint64_t
   [(HUHomeAccessoryTileView *)self iconOnlyTile];
   v15 = HURoundToScreenScale(v11);
   v16 = HURoundToScreenScale(v15 / 1.08);
-  v17 = [(HUHomeAccessoryTileView *)self homeView];
-  [v17 setFrame:{v38, v37, v15, v16}];
+  homeView = [(HUHomeAccessoryTileView *)self homeView];
+  [homeView setFrame:{v38, v37, v15, v16}];
 
-  v18 = [(HUHomeAccessoryTileView *)self homeView];
-  [v18 frame];
+  homeView2 = [(HUHomeAccessoryTileView *)self homeView];
+  [homeView2 frame];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [(HUHomeAccessoryTileView *)self iconOnlyTile];
+  iconOnlyTile = [(HUHomeAccessoryTileView *)self iconOnlyTile];
   v28 = 2.7;
-  if (v27)
+  if (iconOnlyTile)
   {
     v28 = 2.48;
   }
@@ -376,8 +376,8 @@ void __49__HUHomeAccessoryTileView_updateUIWithAnimation___block_invoke(uint64_t
   v43.size.height = v29;
   MaxY = CGRectGetMaxY(v43);
   v35 = HURoundToScreenScale(MaxY - v31);
-  v36 = [(HUHomeAccessoryTileView *)self tileView];
-  [v36 setFrame:{v33, v35, v30, v31}];
+  tileView = [(HUHomeAccessoryTileView *)self tileView];
+  [tileView setFrame:{v33, v35, v30, v31}];
 }
 
 @end

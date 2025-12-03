@@ -1,24 +1,24 @@
 @interface SBImageAnalyzerOperation
 - (BOOL)_hasError;
-- (SBImageAnalyzerOperation)initWithRequest:(id)a3 completion:(id)a4;
+- (SBImageAnalyzerOperation)initWithRequest:(id)request completion:(id)completion;
 - (void)_determineProminentColor;
-- (void)_fireCompletionWithError:(id)a3;
+- (void)_fireCompletionWithError:(id)error;
 - (void)_setupAnalysisOperations;
 - (void)cancel;
 @end
 
 @implementation SBImageAnalyzerOperation
 
-- (SBImageAnalyzerOperation)initWithRequest:(id)a3 completion:(id)a4
+- (SBImageAnalyzerOperation)initWithRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v19.receiver = self;
   v19.super_class = SBImageAnalyzerOperation;
   v9 = [(SBImageAnalyzerOperation *)&v19 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [completionCopy copy];
     completionBlock = v9->_completionBlock;
     v9->_completionBlock = v10;
 
@@ -30,7 +30,7 @@
     accumulatedErrors = v9->_accumulatedErrors;
     v9->_accumulatedErrors = v14;
 
-    objc_storeStrong(&v9->_request, a3);
+    objc_storeStrong(&v9->_request, request);
     v16 = [NSProgress progressWithTotalUnitCount:-1];
     progress = v9->_progress;
     v9->_progress = v16;
@@ -46,21 +46,21 @@
   v6.receiver = self;
   v6.super_class = SBImageAnalyzerOperation;
   [(SBImageAnalyzerOperation *)&v6 cancel];
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = NSLocalizedFailureReasonErrorKey;
   v8 = @"cancelled.";
   v4 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   v5 = [NSError errorWithDomain:@"com.apple.PaperBoardUI" code:-1 userInfo:v4];
-  [(SBImageAnalyzerOperation *)v3 _fireCompletionWithError:v5];
+  [(SBImageAnalyzerOperation *)selfCopy _fireCompletionWithError:v5];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_setupAnalysisOperations
 {
-  v3 = [(PUIAnalysisServiceRequest *)self->_request requestIdentifier];
-  v4 = [NSString stringWithFormat:@"SBImageAnalyzerOperation servicing request %@", v3];
+  requestIdentifier = [(PUIAnalysisServiceRequest *)self->_request requestIdentifier];
+  v4 = [NSString stringWithFormat:@"SBImageAnalyzerOperation servicing request %@", requestIdentifier];
 
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
@@ -85,49 +85,49 @@
 
 - (BOOL)_hasError
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_accumulatedErrors count]!= 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_accumulatedErrors count]!= 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_fireCompletionWithError:(id)a3
+- (void)_fireCompletionWithError:(id)error
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(BSAtomicSignal *)v5->_firedCompletionSignal signal])
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(BSAtomicSignal *)selfCopy->_firedCompletionSignal signal])
   {
-    v6 = [(NSMutableArray *)v5->_accumulatedErrors copy];
+    v6 = [(NSMutableArray *)selfCopy->_accumulatedErrors copy];
     v7 = objc_opt_new();
     if (![v6 count])
     {
-      v8 = [(PUIAnalysisServiceRequest *)v5->_request requestedAnalyses];
+      requestedAnalyses = [(PUIAnalysisServiceRequest *)selfCopy->_request requestedAnalyses];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_1000025D0;
       v18[3] = &unk_100008400;
-      v18[4] = v5;
+      v18[4] = selfCopy;
       v19 = v7;
-      [v8 enumerateObjectsUsingBlock:v18];
+      [requestedAnalyses enumerateObjectsUsingBlock:v18];
     }
 
     if ([v7 count])
     {
       v9 = [PUIAnalysisServiceResponse alloc];
-      error = [(PUIAnalysisServiceRequest *)v5->_request requestIdentifier];
+      error = [(PUIAnalysisServiceRequest *)selfCopy->_request requestIdentifier];
       v11 = [v9 initWithRequestIdentifier:error reports:v7];
-      response = v5->_response;
-      v5->_response = v11;
+      response = selfCopy->_response;
+      selfCopy->_response = v11;
     }
 
     else if ([v6 count] == 1)
     {
-      v13 = [v6 firstObject];
-      error = v5->_error;
-      v5->_error = v13;
+      firstObject = [v6 firstObject];
+      error = selfCopy->_error;
+      selfCopy->_error = firstObject;
     }
 
     else
@@ -149,20 +149,20 @@
       }
       error = ;
       v14 = [NSError errorWithDomain:@"com.apple.PaperBoardUI" code:-1 userInfo:error];
-      v15 = v5->_error;
-      v5->_error = v14;
+      v15 = selfCopy->_error;
+      selfCopy->_error = v14;
     }
 
-    completionBlock = v5->_completionBlock;
+    completionBlock = selfCopy->_completionBlock;
     if (completionBlock)
     {
-      completionBlock[2](completionBlock, v5->_response, v5->_error);
-      v17 = v5->_completionBlock;
-      v5->_completionBlock = 0;
+      completionBlock[2](completionBlock, selfCopy->_response, selfCopy->_error);
+      v17 = selfCopy->_completionBlock;
+      selfCopy->_completionBlock = 0;
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_determineProminentColor
@@ -172,8 +172,8 @@
     objc_initWeak(&location, self);
     v3 = dispatch_group_create();
     dispatch_group_enter(v3);
-    v4 = [(PUIAnalysisServiceRequest *)self->_request image];
-    [v4 CGImage];
+    image = [(PUIAnalysisServiceRequest *)self->_request image];
+    [image CGImage];
     objc_copyWeak(&v7, &location);
     v6 = v3;
     PRUISExecuteProminentColorAnalysisOnImage();

@@ -1,13 +1,13 @@
 @interface RegPyrFusionShaders
-- (RegPyrFusionShaders)initWithMetal:(id)a3;
-- (id)createPipelineStateWithMetal:(id)a3 vShaderName:(id)a4 fShaderName:(id)a5 outputColorMetalFormat:(id)a6 constantValues:(id)a7;
+- (RegPyrFusionShaders)initWithMetal:(id)metal;
+- (id)createPipelineStateWithMetal:(id)metal vShaderName:(id)name fShaderName:(id)shaderName outputColorMetalFormat:(id)format constantValues:(id)values;
 @end
 
 @implementation RegPyrFusionShaders
 
-- (RegPyrFusionShaders)initWithMetal:(id)a3
+- (RegPyrFusionShaders)initWithMetal:(id)metal
 {
-  v4 = a3;
+  metalCopy = metal;
   v45.receiver = self;
   v45.super_class = RegPyrFusionShaders;
   v5 = [(RegPyrFusionShaders *)&v45 init];
@@ -20,7 +20,7 @@ LABEL_29:
     goto LABEL_15;
   }
 
-  v8 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v5, v6, v4, @"regpyr_vert", @"regpyr_initial_downscale_frag", &unk_2A1CC4270);
+  v8 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v5, v6, metalCopy, @"regpyr_vert", @"regpyr_initial_downscale_frag", &unk_2A1CC4270);
   initialDownScalePipelineState = v7->_initialDownScalePipelineState;
   v7->_initialDownScalePipelineState = v8;
 
@@ -30,7 +30,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v11 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v10, v4, @"regpyr_vert", @"regpyr_bilinear_downscale_frag", &unk_2A1CC4288);
+  v11 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v10, metalCopy, @"regpyr_vert", @"regpyr_bilinear_downscale_frag", &unk_2A1CC4288);
   bilinearScalePipelineState = v7->_bilinearScalePipelineState;
   v7->_bilinearScalePipelineState = v11;
 
@@ -40,7 +40,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v14 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v13, v4, @"regpyr_vert", @"regpyr_deriv_sobel_frag", &unk_2A1CC42A0);
+  v14 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v13, metalCopy, @"regpyr_vert", @"regpyr_deriv_sobel_frag", &unk_2A1CC42A0);
   derivSobelPipelineState = v7->_derivSobelPipelineState;
   v7->_derivSobelPipelineState = v14;
 
@@ -50,7 +50,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v17 = objc_msgSend_computePipelineStateFor_constants_(v4, v16, @"regpyr_deriv_compute", 0);
+  v17 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v16, @"regpyr_deriv_compute", 0);
   derivPipelineState = v7->_derivPipelineState;
   v7->_derivPipelineState = v17;
 
@@ -60,7 +60,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v20 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v19, v4, @"regpyr_vert", @"regpyr_basic_search_luma_frag", &unk_2A1CC42B8);
+  v20 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v19, metalCopy, @"regpyr_vert", @"regpyr_basic_search_luma_frag", &unk_2A1CC42B8);
   basicSearchLumaPipelineState = v7->_basicSearchLumaPipelineState;
   v7->_basicSearchLumaPipelineState = v20;
 
@@ -70,7 +70,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v23 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v22, v4, @"regpyr_vert", @"regpyr_fusion_luma_x_frag", &unk_2A1CC42D0);
+  v23 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v22, metalCopy, @"regpyr_vert", @"regpyr_fusion_luma_x_frag", &unk_2A1CC42D0);
   fusionXLumaPipelineState = v7->_fusionXLumaPipelineState;
   v7->_fusionXLumaPipelineState = v23;
 
@@ -80,7 +80,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v26 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v25, v4, @"regpyr_vert", @"regpyr_fusion_luma_y_frag", &unk_2A1CC42E8);
+  v26 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v25, metalCopy, @"regpyr_vert", @"regpyr_fusion_luma_y_frag", &unk_2A1CC42E8);
   fusionYLumaPipelineState = v7->_fusionYLumaPipelineState;
   v7->_fusionYLumaPipelineState = v26;
 
@@ -90,7 +90,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v29 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v28, v4, @"regpyr_vert", @"regpyr_smooth_frag", &unk_2A1CC4300);
+  v29 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v28, metalCopy, @"regpyr_vert", @"regpyr_smooth_frag", &unk_2A1CC4300);
   smoothPipelineState = v7->_smoothPipelineState;
   v7->_smoothPipelineState = v29;
 
@@ -100,7 +100,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v32 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v31, v4, @"regpyr_vert", @"regpyr_selection_luma_frag", &unk_2A1CC4318);
+  v32 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v31, metalCopy, @"regpyr_vert", @"regpyr_selection_luma_frag", &unk_2A1CC4318);
   selectionLumaPipelineState = v7->_selectionLumaPipelineState;
   v7->_selectionLumaPipelineState = v32;
 
@@ -110,7 +110,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v35 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v34, v4, @"regpyr_vert", @"regpyr_confidence_stage_one_frag", &unk_2A1CC4330);
+  v35 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v34, metalCopy, @"regpyr_vert", @"regpyr_confidence_stage_one_frag", &unk_2A1CC4330);
   confidenceStageOne = v7->_confidenceStageOne;
   v7->_confidenceStageOne = v35;
 
@@ -120,7 +120,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v38 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v37, v4, @"regpyr_vert", @"regpyr_confidence_erode_frag", &unk_2A1CC4348);
+  v38 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v37, metalCopy, @"regpyr_vert", @"regpyr_confidence_erode_frag", &unk_2A1CC4348);
   confidenceErode = v7->_confidenceErode;
   v7->_confidenceErode = v38;
 
@@ -130,7 +130,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v41 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v40, v4, @"regpyr_vert", @"regpyr_confidence_dilate_frag", &unk_2A1CC4360);
+  v41 = objc_msgSend_createPipelineStateWithMetal_vShaderName_fShaderName_outputColorMetalFormat_(v7, v40, metalCopy, @"regpyr_vert", @"regpyr_confidence_dilate_frag", &unk_2A1CC4360);
   confidenceDilate = v7->_confidenceDilate;
   v7->_confidenceDilate = v41;
 
@@ -146,28 +146,28 @@ LABEL_15:
   return v43;
 }
 
-- (id)createPipelineStateWithMetal:(id)a3 vShaderName:(id)a4 fShaderName:(id)a5 outputColorMetalFormat:(id)a6 constantValues:(id)a7
+- (id)createPipelineStateWithMetal:(id)metal vShaderName:(id)name fShaderName:(id)shaderName outputColorMetalFormat:(id)format constantValues:(id)values
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  metalCopy = metal;
+  nameCopy = name;
+  shaderNameCopy = shaderName;
+  formatCopy = format;
+  valuesCopy = values;
   v16 = MEMORY[0x29EDB8DE8];
-  v20 = objc_msgSend_count(v14, v17, v18, v19);
+  v20 = objc_msgSend_count(formatCopy, v17, v18, v19);
   v23 = objc_msgSend_arrayWithCapacity_(v16, v21, v20, v22);
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v24 = v14;
+  v24 = formatCopy;
   v26 = objc_msgSend_countByEnumeratingWithState_objects_count_(v24, v25, &v50, v49, 16);
   if (v26)
   {
     v27 = v26;
-    v46 = v15;
-    v47 = v13;
-    v48 = v12;
+    v46 = valuesCopy;
+    v47 = shaderNameCopy;
+    v48 = nameCopy;
     v28 = 0;
     v29 = 0;
     v30 = *v51;
@@ -201,12 +201,12 @@ LABEL_15:
 
     while (v27);
 
-    v12 = v48;
-    v15 = v46;
-    v13 = v47;
+    nameCopy = v48;
+    valuesCopy = v46;
+    shaderNameCopy = v47;
   }
 
-  v44 = objc_msgSend_renderPipelineStateForVertexFunction_vertexDescriptor_fragmentFunction_constants_colorAttachmentDescriptorArrray_(v11, v43, v12, 0, v13, v15, v23);
+  v44 = objc_msgSend_renderPipelineStateForVertexFunction_vertexDescriptor_fragmentFunction_constants_colorAttachmentDescriptorArrray_(metalCopy, v43, nameCopy, 0, shaderNameCopy, valuesCopy, v23);
 
   return v44;
 }

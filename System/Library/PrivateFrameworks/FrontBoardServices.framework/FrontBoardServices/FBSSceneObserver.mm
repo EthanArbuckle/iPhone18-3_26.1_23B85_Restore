@@ -1,28 +1,28 @@
 @interface FBSSceneObserver
-- (BOOL)isEqual:(id)a3;
-- (FBSSceneObserver)initWithComponent:(id)a3 extension:(Class)a4;
-- (FBSSceneObserver)initWithObserver:(id)a3;
-- (id)_matchesActions:(id *)a1;
+- (BOOL)isEqual:(id)equal;
+- (FBSSceneObserver)initWithComponent:(id)component extension:(Class)extension;
+- (FBSSceneObserver)initWithObserver:(id)observer;
+- (id)_matchesActions:(id *)actions;
 - (id)observer;
-- (id)scene:(id)a3 handleActions:(id)a4;
-- (id)scene:(id)a3 handlePrivateActions:(id)a4;
-- (uint64_t)_matchesClientDiff:(uint64_t)a1;
-- (uint64_t)_matchesDiff:(uint64_t)a1;
-- (void)actionClasses:(id)a3;
-- (void)actionHandler:(id)a3;
-- (void)actions:(Class)a3;
-- (void)clientSettingNames:(id)a3;
-- (void)clientSettings:(SEL)a3;
-- (void)clientUpdateHandler:(id)a3;
+- (id)scene:(id)scene handleActions:(id)actions;
+- (id)scene:(id)scene handlePrivateActions:(id)actions;
+- (uint64_t)_matchesClientDiff:(uint64_t)diff;
+- (uint64_t)_matchesDiff:(uint64_t)diff;
+- (void)actionClasses:(id)classes;
+- (void)actionHandler:(id)handler;
+- (void)actions:(Class)actions;
+- (void)clientSettingNames:(id)names;
+- (void)clientSettings:(SEL)settings;
+- (void)clientUpdateHandler:(id)handler;
 - (void)invalidate;
-- (void)invalidationHandler:(id)a3;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)scene:(id)a3 didUpdateHostHandle:(id)a4;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
-- (void)sceneWillInvalidate:(id)a3;
-- (void)settingNames:(id)a3;
-- (void)settings:(SEL)a3;
-- (void)updateHandler:(id)a3;
+- (void)invalidationHandler:(id)handler;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)scene:(id)scene didUpdateHostHandle:(id)handle;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
+- (void)sceneWillInvalidate:(id)invalidate;
+- (void)settingNames:(id)names;
+- (void)settings:(SEL)settings;
+- (void)updateHandler:(id)handler;
 @end
 
 @implementation FBSSceneObserver
@@ -56,15 +56,15 @@
   *&self->_respondsToSettings = 0;
 }
 
-- (FBSSceneObserver)initWithObserver:(id)a3
+- (FBSSceneObserver)initWithObserver:(id)observer
 {
-  v5 = a3;
-  if (!v5)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [FBSSceneObserver initWithObserver:a2];
   }
 
-  v6 = v5;
+  v6 = observerCopy;
   v7 = [(FBSSceneObserver *)self init];
   v8 = v7;
   if (v7)
@@ -81,39 +81,39 @@
   return v8;
 }
 
-- (FBSSceneObserver)initWithComponent:(id)a3 extension:(Class)a4
+- (FBSSceneObserver)initWithComponent:(id)component extension:(Class)extension
 {
-  v7 = a3;
-  v8 = [(FBSSceneObserver *)self initWithObserver:v7];
+  componentCopy = component;
+  v8 = [(FBSSceneObserver *)self initWithObserver:componentCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_component, a3);
-    v9->_extension = a4;
+    objc_storeStrong(&v8->_component, component);
+    v9->_extension = extension;
     v9->_respondsToPrivateActions = objc_opt_respondsToSelector() & 1;
   }
 
   return v9;
 }
 
-- (void)scene:(id)a3 didUpdateHostHandle:(id)a4
+- (void)scene:(id)scene didUpdateHostHandle:(id)handle
 {
   if (self->_respondsToHostHandle)
   {
-    v7 = a4;
-    v8 = a3;
-    v9 = [(FBSSceneObserver *)self observer];
-    [v9 scene:v8 didUpdateHostHandle:v7];
+    handleCopy = handle;
+    sceneCopy = scene;
+    observer = [(FBSSceneObserver *)self observer];
+    [observer scene:sceneCopy didUpdateHostHandle:handleCopy];
   }
 }
 
-- (void)sceneWillInvalidate:(id)a3
+- (void)sceneWillInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   invalidationHandler = self->_invalidationHandler;
   if (invalidationHandler)
   {
-    v7 = v4;
+    v7 = invalidateCopy;
     invalidationHandler = invalidationHandler[2]();
   }
 
@@ -124,30 +124,30 @@
       goto LABEL_6;
     }
 
-    v7 = v4;
-    v6 = [(FBSSceneObserver *)self observer];
-    [v6 sceneWillInvalidate:v7];
+    v7 = invalidateCopy;
+    observer = [(FBSSceneObserver *)self observer];
+    [observer sceneWillInvalidate:v7];
   }
 
-  v4 = v7;
+  invalidateCopy = v7;
 LABEL_6:
 
-  MEMORY[0x1EEE66BB8](invalidationHandler, v4);
+  MEMORY[0x1EEE66BB8](invalidationHandler, invalidateCopy);
 }
 
-- (id)scene:(id)a3 handlePrivateActions:(id)a4
+- (id)scene:(id)scene handlePrivateActions:(id)actions
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  actionsCopy = actions;
   component = self->_component;
   if (component && self->_respondsToPrivateActions)
   {
-    v9 = [(FBSSceneComponent *)component handlePrivateActions:v7];
+    v9 = [(FBSSceneComponent *)component handlePrivateActions:actionsCopy];
   }
 
   else
   {
-    v9 = [(FBSSceneObserver *)self scene:v6 handleActions:v7];
+    v9 = [(FBSSceneObserver *)self scene:sceneCopy handleActions:actionsCopy];
   }
 
   v10 = v9;
@@ -155,80 +155,80 @@ LABEL_6:
   return v10;
 }
 
-- (void)settings:(SEL)a3
+- (void)settings:(SEL)settings
 {
   v5 = [MEMORY[0x1E695DFA8] set];
-  if (a3)
+  if (settings)
   {
     v9 = &v10;
     do
     {
-      v6 = NSStringFromSelector(a3);
+      v6 = NSStringFromSelector(settings);
       [v5 addObject:v6];
 
       v7 = v9++;
-      a3 = *v7;
+      settings = *v7;
     }
 
     while (*v7);
   }
 
-  v8 = [v5 allObjects];
-  [(FBSSceneObserver *)self settingNames:v8];
+  allObjects = [v5 allObjects];
+  [(FBSSceneObserver *)self settingNames:allObjects];
 }
 
-- (void)clientSettings:(SEL)a3
+- (void)clientSettings:(SEL)settings
 {
   v5 = [MEMORY[0x1E695DFA8] set];
-  if (a3)
+  if (settings)
   {
     v9 = &v10;
     do
     {
-      v6 = NSStringFromSelector(a3);
+      v6 = NSStringFromSelector(settings);
       [v5 addObject:v6];
 
       v7 = v9++;
-      a3 = *v7;
+      settings = *v7;
     }
 
     while (*v7);
   }
 
-  v8 = [v5 allObjects];
-  [(FBSSceneObserver *)self clientSettingNames:v8];
+  allObjects = [v5 allObjects];
+  [(FBSSceneObserver *)self clientSettingNames:allObjects];
 }
 
-- (void)actions:(Class)a3
+- (void)actions:(Class)actions
 {
   v5 = [MEMORY[0x1E695DFA8] set];
-  if (a3)
+  if (actions)
   {
     v8 = &v9;
     do
     {
-      [v5 addObject:a3];
+      [v5 addObject:actions];
       v6 = v8++;
-      a3 = *v6;
+      actions = *v6;
     }
 
     while (*v6);
   }
 
-  v7 = [v5 allObjects];
-  [(FBSSceneObserver *)self actionClasses:v7];
+  allObjects = [v5 allObjects];
+  [(FBSSceneObserver *)self actionClasses:allObjects];
 }
 
-- (void)settingNames:(id)a3
+- (void)settingNames:(id)names
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  namesCopy = names;
   v6 = [MEMORY[0x1E695DFA8] set];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v5;
+  v7 = namesCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -278,16 +278,16 @@ LABEL_6:
   self->_settings = v18;
 }
 
-- (void)clientSettingNames:(id)a3
+- (void)clientSettingNames:(id)names
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  namesCopy = names;
   v6 = [MEMORY[0x1E695DFA8] set];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v5;
+  v7 = namesCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -337,59 +337,59 @@ LABEL_6:
   self->_clientSettings = v18;
 }
 
-- (void)actionClasses:(id)a3
+- (void)actionClasses:(id)classes
 {
-  v6 = a3;
-  v4 = [v6 count];
+  classesCopy = classes;
+  v4 = [classesCopy count];
   if (v4)
   {
-    v4 = [v6 copy];
+    v4 = [classesCopy copy];
   }
 
   actions = self->_actions;
   self->_actions = v4;
 }
 
-- (void)updateHandler:(id)a3
+- (void)updateHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   settingsHandler = self->_settingsHandler;
   self->_settingsHandler = v4;
 
   MEMORY[0x1EEE66BB8](v4, settingsHandler);
 }
 
-- (void)clientUpdateHandler:(id)a3
+- (void)clientUpdateHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   clintSettingsHandler = self->_clintSettingsHandler;
   self->_clintSettingsHandler = v4;
 
   MEMORY[0x1EEE66BB8](v4, clintSettingsHandler);
 }
 
-- (void)actionHandler:(id)a3
+- (void)actionHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   actionHandler = self->_actionHandler;
   self->_actionHandler = v4;
 
   MEMORY[0x1EEE66BB8](v4, actionHandler);
 }
 
-- (void)invalidationHandler:(id)a3
+- (void)invalidationHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   invalidationHandler = self->_invalidationHandler;
   self->_invalidationHandler = v4;
 
   MEMORY[0x1EEE66BB8](v4, invalidationHandler);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -397,9 +397,9 @@ LABEL_6:
   else
   {
     v5 = objc_opt_class();
-    if (v5 == objc_opt_class() && v4->_observerAddress == self->_observerAddress)
+    if (v5 == objc_opt_class() && equalCopy->_observerAddress == self->_observerAddress)
     {
-      WeakRetained = objc_loadWeakRetained(&v4->_observer);
+      WeakRetained = objc_loadWeakRetained(&equalCopy->_observer);
       v7 = objc_loadWeakRetained(&self->_observer);
       v8 = WeakRetained == v7;
     }
@@ -413,12 +413,12 @@ LABEL_6:
   return v8;
 }
 
-- (uint64_t)_matchesDiff:(uint64_t)a1
+- (uint64_t)_matchesDiff:(uint64_t)diff
 {
   v3 = a2;
-  if (a1 && (*(a1 + 64) || *(a1 + 97) == 1))
+  if (diff && (*(diff + 64) || *(diff + 97) == 1))
   {
-    if (*(a1 + 40))
+    if (*(diff + 40))
     {
       OUTLINED_FUNCTION_3_5();
       v5 = v4;
@@ -471,12 +471,12 @@ LABEL_15:
   return v7;
 }
 
-- (uint64_t)_matchesClientDiff:(uint64_t)a1
+- (uint64_t)_matchesClientDiff:(uint64_t)diff
 {
   v3 = a2;
-  if (a1 && (*(a1 + 72) || *(a1 + 98) == 1))
+  if (diff && (*(diff + 72) || *(diff + 98) == 1))
   {
-    if (*(a1 + 48))
+    if (*(diff + 48))
     {
       OUTLINED_FUNCTION_3_5();
       v5 = v4;
@@ -529,15 +529,15 @@ LABEL_15:
   return v7;
 }
 
-- (id)_matchesActions:(id *)a1
+- (id)_matchesActions:(id *)actions
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (actions)
   {
-    if (a1[10] || *(a1 + 99) == 1)
+    if (actions[10] || *(actions + 99) == 1)
     {
-      if (a1[7])
+      if (actions[7])
       {
         OUTLINED_FUNCTION_3_5();
         OUTLINED_FUNCTION_2_4();
@@ -557,7 +557,7 @@ LABEL_15:
               }
 
               v10 = *(v13 + 8 * i);
-              if ([a1[7] containsObject:objc_opt_class()])
+              if ([actions[7] containsObject:objc_opt_class()])
               {
                 if (!v7)
                 {
@@ -590,89 +590,89 @@ LABEL_15:
           v11 = 0;
         }
 
-        a1 = v11;
+        actions = v11;
       }
 
       else
       {
-        a1 = v3;
+        actions = v3;
       }
     }
 
     else
     {
-      a1 = 0;
+      actions = 0;
     }
   }
 
-  return a1;
+  return actions;
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [v6 settingsDiff];
-  v8 = [(FBSSceneObserver *)self _matchesDiff:v7];
+  sceneCopy = scene;
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  v8 = [(FBSSceneObserver *)self _matchesDiff:settingsDiff];
 
   if (v8)
   {
     settingsHandler = self->_settingsHandler;
     if (settingsHandler)
     {
-      settingsHandler[2](settingsHandler, v16, v6);
+      settingsHandler[2](settingsHandler, sceneCopy, settingsCopy);
     }
 
     else if (self->_respondsToSettings)
     {
-      v10 = [(FBSSceneObserver *)self observer];
-      [v10 scene:v16 didUpdateSettings:v6];
+      observer = [(FBSSceneObserver *)self observer];
+      [observer scene:sceneCopy didUpdateSettings:settingsCopy];
     }
   }
 
-  v11 = [v6 transitionContext];
-  v12 = [v11 actions];
-  if ([v12 count])
+  transitionContext = [settingsCopy transitionContext];
+  actions = [transitionContext actions];
+  if ([actions count])
   {
-    v13 = [v11 actions];
-    v14 = [(FBSSceneObserver *)self scene:v16 handleActions:v13];
+    actions2 = [transitionContext actions];
+    v14 = [(FBSSceneObserver *)self scene:sceneCopy handleActions:actions2];
 
     if ([v14 count])
     {
-      v15 = [v12 mutableCopy];
+      v15 = [actions mutableCopy];
       [v15 minusSet:v14];
-      [v11 setActions:v15];
+      [transitionContext setActions:v15];
     }
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v6 settingsDiff];
-  v8 = [(FBSSceneObserver *)self _matchesClientDiff:v7];
+  sceneCopy = scene;
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  v8 = [(FBSSceneObserver *)self _matchesClientDiff:settingsDiff];
 
   if (v8)
   {
     clintSettingsHandler = self->_clintSettingsHandler;
     if (clintSettingsHandler)
     {
-      clintSettingsHandler[2](clintSettingsHandler, v11, v6);
+      clintSettingsHandler[2](clintSettingsHandler, sceneCopy, settingsCopy);
     }
 
     else if (self->_respondsToClientSettings)
     {
-      v10 = [(FBSSceneObserver *)self observer];
-      [v10 scene:v11 didUpdateClientSettings:v6];
+      observer = [(FBSSceneObserver *)self observer];
+      [observer scene:sceneCopy didUpdateClientSettings:settingsCopy];
     }
   }
 }
 
-- (id)scene:(id)a3 handleActions:(id)a4
+- (id)scene:(id)scene handleActions:(id)actions
 {
-  v6 = a3;
-  v7 = [(FBSSceneObserver *)&self->super.isa _matchesActions:a4];
+  sceneCopy = scene;
+  v7 = [(FBSSceneObserver *)&self->super.isa _matchesActions:actions];
   if (![v7 count])
   {
     goto LABEL_6;
@@ -681,14 +681,14 @@ LABEL_15:
   actionHandler = self->_actionHandler;
   if (actionHandler)
   {
-    v9 = actionHandler[2](actionHandler, v6, v7);
+    v9 = actionHandler[2](actionHandler, sceneCopy, v7);
     goto LABEL_7;
   }
 
   if (self->_respondsToActions)
   {
-    v10 = [(FBSSceneObserver *)self observer];
-    v9 = [v10 scene:v6 handleActions:v7];
+    observer = [(FBSSceneObserver *)self observer];
+    v9 = [observer scene:sceneCopy handleActions:v7];
   }
 
   else

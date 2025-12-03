@@ -1,21 +1,21 @@
 @interface PKView
-- (PKView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)addLayoutObserver:(id)a3;
-- (void)addWindowObserver:(id)a3;
+- (PKView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)addLayoutObserver:(id)observer;
+- (void)addWindowObserver:(id)observer;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)removeLayoutObserver:(id)a3;
-- (void)removeWindowObserver:(id)a3;
+- (void)removeLayoutObserver:(id)observer;
+- (void)removeWindowObserver:(id)observer;
 @end
 
 @implementation PKView
 
-- (PKView)initWithFrame:(CGRect)a3
+- (PKView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = PKView;
-  result = [(PKView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(PKView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_lock._os_unfair_lock_opaque = 0;
@@ -43,12 +43,12 @@
 LABEL_14:
     os_unfair_lock_unlock(&self->_lock);
 LABEL_15:
-    v4 = 0;
+    allObjects = 0;
     goto LABEL_16;
   }
 
-  v4 = [(NSHashTable *)windowObservers allObjects];
-  if (![v4 count])
+  allObjects = [(NSHashTable *)windowObservers allObjects];
+  if (![allObjects count])
   {
     v10 = self->_windowObservers;
     self->_windowObservers = 0;
@@ -57,15 +57,15 @@ LABEL_15:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v4)
+  if (allObjects)
   {
-    v5 = [(PKView *)self window];
+    window = [(PKView *)self window];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = v4;
-    v6 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    allObjects = allObjects;
+    v6 = [allObjects countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -76,13 +76,13 @@ LABEL_15:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
-          [*(*(&v11 + 1) + 8 * i) observedView:self didMoveToWindow:{v5, v11}];
+          [*(*(&v11 + 1) + 8 * i) observedView:self didMoveToWindow:{window, v11}];
         }
 
-        v7 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v7 = [allObjects countByEnumeratingWithState:&v11 objects:v16 count:16];
       }
 
       while (v7);
@@ -92,7 +92,7 @@ LABEL_15:
 LABEL_16:
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   if (self->_hitTestEnabled)
   {
@@ -100,7 +100,7 @@ LABEL_16:
     v10 = v5;
     v8.receiver = self;
     v8.super_class = PKView;
-    v6 = [(PKView *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+    v6 = [(PKView *)&v8 hitTest:event withEvent:test.x, test.y];
   }
 
   else
@@ -129,12 +129,12 @@ LABEL_16:
 LABEL_14:
     os_unfair_lock_unlock(&self->_lock);
 LABEL_15:
-    v4 = 0;
+    allObjects = 0;
     goto LABEL_16;
   }
 
-  v4 = [(NSHashTable *)layoutObservers allObjects];
-  if (![v4 count])
+  allObjects = [(NSHashTable *)layoutObservers allObjects];
+  if (![allObjects count])
   {
     v9 = self->_layoutObservers;
     self->_layoutObservers = 0;
@@ -143,14 +143,14 @@ LABEL_15:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v4)
+  if (allObjects)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = v4;
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+    allObjects = allObjects;
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -161,13 +161,13 @@ LABEL_15:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           [*(*(&v10 + 1) + 8 * i) layoutSubviewsForObservedView:{self, v10}];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v15 count:16];
       }
 
       while (v6);
@@ -177,23 +177,23 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)addWindowObserver:(id)a3
+- (void)addWindowObserver:(id)observer
 {
-  v7 = a3;
-  if (v7)
+  observerCopy = observer;
+  if (observerCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     windowObservers = self->_windowObservers;
     if (!windowObservers)
     {
-      v5 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+      pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
       v6 = self->_windowObservers;
-      self->_windowObservers = v5;
+      self->_windowObservers = pk_weakObjectsHashTableUsingPointerPersonality;
 
       windowObservers = self->_windowObservers;
     }
 
-    [(NSHashTable *)windowObservers addObject:v7];
+    [(NSHashTable *)windowObservers addObject:observerCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -203,13 +203,13 @@ LABEL_16:
   }
 }
 
-- (void)removeWindowObserver:(id)a3
+- (void)removeWindowObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    [(NSHashTable *)self->_windowObservers removeObject:v4];
+    [(NSHashTable *)self->_windowObservers removeObject:observerCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -219,23 +219,23 @@ LABEL_16:
   }
 }
 
-- (void)addLayoutObserver:(id)a3
+- (void)addLayoutObserver:(id)observer
 {
-  v7 = a3;
-  if (v7)
+  observerCopy = observer;
+  if (observerCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     layoutObservers = self->_layoutObservers;
     if (!layoutObservers)
     {
-      v5 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+      pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
       v6 = self->_layoutObservers;
-      self->_layoutObservers = v5;
+      self->_layoutObservers = pk_weakObjectsHashTableUsingPointerPersonality;
 
       layoutObservers = self->_layoutObservers;
     }
 
-    [(NSHashTable *)layoutObservers addObject:v7];
+    [(NSHashTable *)layoutObservers addObject:observerCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -245,13 +245,13 @@ LABEL_16:
   }
 }
 
-- (void)removeLayoutObserver:(id)a3
+- (void)removeLayoutObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    [(NSHashTable *)self->_layoutObservers removeObject:v4];
+    [(NSHashTable *)self->_layoutObservers removeObject:observerCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 

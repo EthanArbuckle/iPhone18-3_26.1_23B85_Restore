@@ -1,25 +1,25 @@
 @interface ScrollPseudoContactListTest
-- (BOOL)prepareForTestWithOptions:(id)a3;
-- (void)startSearchQueryWithCompletionBlock:(id)a3;
+- (BOOL)prepareForTestWithOptions:(id)options;
+- (void)startSearchQueryWithCompletionBlock:(id)block;
 @end
 
 @implementation ScrollPseudoContactListTest
 
-- (BOOL)prepareForTestWithOptions:(id)a3
+- (BOOL)prepareForTestWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = ScrollPseudoContactListTest;
-  v5 = [(ContactsTest *)&v13 prepareForTestWithOptions:v4];
+  v5 = [(ContactsTest *)&v13 prepareForTestWithOptions:optionsCopy];
   if (v5)
   {
     v6 = +[NSMutableDictionary dictionary];
     [(ScrollPseudoContactListTest *)self setExtraResults:v6];
 
-    v7 = [v4 objectForKey:@"animate"];
+    v7 = [optionsCopy objectForKey:@"animate"];
     -[ScrollPseudoContactListTest setAnimate:](self, "setAnimate:", [v7 BOOLValue]);
 
-    v8 = [v4 objectForKey:@"searchQueries"];
+    v8 = [optionsCopy objectForKey:@"searchQueries"];
     v9 = [v8 componentsSeparatedByString:@"%"];
     [(ScrollPseudoContactListTest *)self setAllSearchQueries:v9];
     [(ScrollPseudoContactListTest *)self setCurrentQueryIndex:0];
@@ -35,16 +35,16 @@
   return v5;
 }
 
-- (void)startSearchQueryWithCompletionBlock:(id)a3
+- (void)startSearchQueryWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(ScrollPseudoContactListTest *)self allSearchQueries];
-  v8 = [v5 objectAtIndex:{-[ScrollPseudoContactListTest currentQueryIndex](self, "currentQueryIndex")}];
+  blockCopy = block;
+  allSearchQueries = [(ScrollPseudoContactListTest *)self allSearchQueries];
+  v8 = [allSearchQueries objectAtIndex:{-[ScrollPseudoContactListTest currentQueryIndex](self, "currentQueryIndex")}];
 
   [(ScrollPseudoContactListTest *)self setLastSearchBeginTime:CFAbsoluteTimeGetCurrent()];
-  v6 = [(ContactsTest *)self contactNavigationController];
-  v7 = [v6 contactListViewController];
-  [v7 searchForString:v8 animated:-[ScrollPseudoContactListTest animate](self completionBlock:{"animate"), v4}];
+  contactNavigationController = [(ContactsTest *)self contactNavigationController];
+  contactListViewController = [contactNavigationController contactListViewController];
+  [contactListViewController searchForString:v8 animated:-[ScrollPseudoContactListTest animate](self completionBlock:{"animate"), blockCopy}];
 }
 
 @end

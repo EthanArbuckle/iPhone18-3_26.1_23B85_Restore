@@ -1,28 +1,28 @@
 @interface AddEventViewControllerManager
-- (AddEventViewControllerManager)initWithCalendarModel:(id)a3;
+- (AddEventViewControllerManager)initWithCalendarModel:(id)model;
 - (AddItemViewControllerManagerDelegate)addItemViewControllerManagerDelegate;
 - (EKCalendar)calendarToMakeVisibleOnSave;
 - (NSString)newItemBackButtonTitle;
 - (NSString)newItemTitle;
-- (id)createViewController:(id)a3;
-- (id)pasteboardManagerForEventEditViewController:(id)a3;
+- (id)createViewController:(id)controller;
+- (id)pasteboardManagerForEventEditViewController:(id)controller;
 - (void)attemptDisplayReviewPrompt;
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4;
-- (void)updateStateFromUI:(id)a3;
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action;
+- (void)updateStateFromUI:(id)i;
 @end
 
 @implementation AddEventViewControllerManager
 
-- (AddEventViewControllerManager)initWithCalendarModel:(id)a3
+- (AddEventViewControllerManager)initWithCalendarModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = AddEventViewControllerManager;
   v6 = [(AddEventViewControllerManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
   }
 
   return v7;
@@ -49,38 +49,38 @@
   return v2;
 }
 
-- (id)createViewController:(id)a3
+- (id)createViewController:(id)controller
 {
   viewController = self->_viewController;
   if (!viewController)
   {
-    v5 = a3;
+    controllerCopy = controller;
     v6 = +[EKEventEditViewController editViewControllerImplementation];
     v7 = self->_viewController;
     self->_viewController = v6;
 
-    v8 = [v5 addItemState];
-    v9 = [v8 event];
-    [(EKEventEditViewControllerImpl *)self->_viewController setEvent:v9];
+    addItemState = [controllerCopy addItemState];
+    event = [addItemState event];
+    [(EKEventEditViewControllerImpl *)self->_viewController setEvent:event];
 
-    v10 = [v5 addItemState];
-    v11 = [v10 event];
-    v12 = [v11 eventStore];
-    [(EKEventEditViewControllerImpl *)self->_viewController setEventStore:v12];
+    addItemState2 = [controllerCopy addItemState];
+    event2 = [addItemState2 event];
+    eventStore = [event2 eventStore];
+    [(EKEventEditViewControllerImpl *)self->_viewController setEventStore:eventStore];
 
     [(EKEventEditViewControllerImpl *)self->_viewController setEditViewDelegate:self];
-    -[EKEventEditViewControllerImpl setTimeImplicitlySet:](self->_viewController, "setTimeImplicitlySet:", [v5 creationMethod] == 2);
-    v13 = [v5 suggestionKey];
-    [(EKEventEditViewControllerImpl *)self->_viewController setSuggestionKey:v13];
+    -[EKEventEditViewControllerImpl setTimeImplicitlySet:](self->_viewController, "setTimeImplicitlySet:", [controllerCopy creationMethod] == 2);
+    suggestionKey = [controllerCopy suggestionKey];
+    [(EKEventEditViewControllerImpl *)self->_viewController setSuggestionKey:suggestionKey];
 
-    -[EKEventEditViewControllerImpl setEventCreationMethod:](self->_viewController, "setEventCreationMethod:", [v5 creationMethod]);
-    -[EKEventEditViewControllerImpl setEventCreationViewStart:](self->_viewController, "setEventCreationViewStart:", [v5 creationViewStart]);
-    v14 = [v5 addItemState];
+    -[EKEventEditViewControllerImpl setEventCreationMethod:](self->_viewController, "setEventCreationMethod:", [controllerCopy creationMethod]);
+    -[EKEventEditViewControllerImpl setEventCreationViewStart:](self->_viewController, "setEventCreationViewStart:", [controllerCopy creationViewStart]);
+    addItemState3 = [controllerCopy addItemState];
 
-    v15 = [v14 event];
-    v16 = [v15 startDate];
+    event3 = [addItemState3 event];
+    startDate = [event3 startDate];
     originalStartDate = self->_originalStartDate;
-    self->_originalStartDate = v16;
+    self->_originalStartDate = startDate;
 
     viewController = self->_viewController;
   }
@@ -88,44 +88,44 @@
   return viewController;
 }
 
-- (void)updateStateFromUI:(id)a3
+- (void)updateStateFromUI:(id)i
 {
-  v7 = a3;
+  iCopy = i;
   if (CalDraftUIEnabled())
   {
     [(EKEventEditViewControllerImpl *)self->_viewController updateEKEventForDockedView];
   }
 
-  v4 = [(EKEventEditViewControllerImpl *)self->_viewController event];
-  v5 = [v4 startDate];
-  v6 = [v5 isEqualToDate:self->_originalStartDate];
+  event = [(EKEventEditViewControllerImpl *)self->_viewController event];
+  startDate = [event startDate];
+  v6 = [startDate isEqualToDate:self->_originalStartDate];
 
   if ((v6 & 1) == 0)
   {
-    [v7 setExplicitTime:1];
+    [iCopy setExplicitTime:1];
   }
 }
 
 - (EKCalendar)calendarToMakeVisibleOnSave
 {
-  v2 = [(EKEventEditViewControllerImpl *)self->_viewController event];
-  v3 = [v2 calendar];
+  event = [(EKEventEditViewControllerImpl *)self->_viewController event];
+  calendar = [event calendar];
 
-  return v3;
+  return calendar;
 }
 
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_addItemViewControllerManagerDelegate);
-  [WeakRetained addItemViewControllerManager:self didCompleteWithAction:a4];
+  [WeakRetained addItemViewControllerManager:self didCompleteWithAction:action];
 }
 
-- (id)pasteboardManagerForEventEditViewController:(id)a3
+- (id)pasteboardManagerForEventEditViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_addItemViewControllerManagerDelegate);
-  v4 = [WeakRetained pasteboardManager];
+  pasteboardManager = [WeakRetained pasteboardManager];
 
-  return v4;
+  return pasteboardManager;
 }
 
 - (void)attemptDisplayReviewPrompt

@@ -1,37 +1,37 @@
 @interface SYNotesActivationCommandSBImpl
-+ (void)_activateWithActivity:(id)a3 completion:(id)a4;
-+ (void)activateWithDomainIdentifier:(id)a3 noteIdentifier:(id)a4 completion:(id)a5;
++ (void)_activateWithActivity:(id)activity completion:(id)completion;
++ (void)activateWithDomainIdentifier:(id)identifier noteIdentifier:(id)noteIdentifier completion:(id)completion;
 @end
 
 @implementation SYNotesActivationCommandSBImpl
 
-+ (void)activateWithDomainIdentifier:(id)a3 noteIdentifier:(id)a4 completion:(id)a5
++ (void)activateWithDomainIdentifier:(id)identifier noteIdentifier:(id)noteIdentifier completion:(id)completion
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   v9 = 0;
-  if (a3 && a4)
+  if (identifier && noteIdentifier)
   {
-    v17[0] = a3;
+    v17[0] = identifier;
     v10 = MEMORY[0x277CBEA60];
-    v11 = a4;
-    v12 = a3;
+    noteIdentifierCopy = noteIdentifier;
+    identifierCopy = identifier;
     v13 = [v10 arrayWithObjects:v17 count:1];
-    v16 = v11;
+    v16 = noteIdentifierCopy;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
 
     v9 = SYMakeEditNoteUserActivity(v13, v14);
   }
 
-  [a1 _activateWithActivity:v9 completion:v8];
+  [self _activateWithActivity:v9 completion:completionCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_activateWithActivity:(id)a3 completion:(id)a4
++ (void)_activateWithActivity:(id)activity completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  activityCopy = activity;
+  completionCopy = completion;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2050000000;
@@ -50,7 +50,7 @@
 
   v8 = v7;
   _Block_object_dispose(&v20, 8);
-  v9 = [[v7 alloc] initWithSceneBundleIdentifier:@"com.apple.mobilenotes" userActivity:v5 preferredPresentationMode:0];
+  v9 = [[v7 alloc] initWithSceneBundleIdentifier:@"com.apple.mobilenotes" userActivity:activityCopy preferredPresentationMode:0];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2050000000;
@@ -73,8 +73,8 @@
   v13[1] = 3221225472;
   v13[2] = __67__SYNotesActivationCommandSBImpl__activateWithActivity_completion___block_invoke;
   v13[3] = &unk_27856B4C0;
-  v14 = v6;
-  v12 = v6;
+  v14 = completionCopy;
+  v12 = completionCopy;
   [v10 performPresentationWithConfiguration:v9 completion:v13];
 }
 

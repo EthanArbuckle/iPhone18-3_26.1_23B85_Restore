@@ -8,7 +8,7 @@
 
 + (MPSCNNUpsamplingBilinearNode)nodeWithSource:(MPSNNImageNode *)sourceNode integerScaleFactorX:(NSUInteger)integerScaleFactorX integerScaleFactorY:(NSUInteger)integerScaleFactorY
 {
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   v12 = objc_msgSend_initWithSource_integerScaleFactorX_integerScaleFactorY_alignCorners_(v8, v9, sourceNode, integerScaleFactorX, integerScaleFactorY, 0, v10, v11);
 
   return v12;
@@ -17,7 +17,7 @@
 + (MPSCNNUpsamplingBilinearNode)nodeWithSource:(MPSNNImageNode *)sourceNode integerScaleFactorX:(NSUInteger)integerScaleFactorX integerScaleFactorY:(NSUInteger)integerScaleFactorY alignCorners:(BOOL)alignCorners
 {
   v6 = alignCorners;
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   v14 = objc_msgSend_initWithSource_integerScaleFactorX_integerScaleFactorY_alignCorners_(v10, v11, sourceNode, integerScaleFactorX, integerScaleFactorY, v6, v12, v13);
 
   return v14;

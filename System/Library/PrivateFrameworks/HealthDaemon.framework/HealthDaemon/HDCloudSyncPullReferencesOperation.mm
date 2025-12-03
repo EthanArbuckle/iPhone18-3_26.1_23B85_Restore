@@ -1,17 +1,17 @@
 @interface HDCloudSyncPullReferencesOperation
-- (HDCloudSyncPullReferencesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (uint64_t)_persistPendingReferencesIfNeededWithError:(id *)a1;
+- (HDCloudSyncPullReferencesOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (uint64_t)_persistPendingReferencesIfNeededWithError:(id *)error;
 - (void)_fetchAttachmentRecordAssets;
 - (void)main;
 @end
 
 @implementation HDCloudSyncPullReferencesOperation
 
-- (HDCloudSyncPullReferencesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncPullReferencesOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v12.receiver = self;
   v12.super_class = HDCloudSyncPullReferencesOperation;
-  v4 = [(HDCloudSyncOperation *)&v12 initWithConfiguration:a3 cloudState:a4];
+  v4 = [(HDCloudSyncOperation *)&v12 initWithConfiguration:configuration cloudState:state];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -36,12 +36,12 @@
 {
   v66 = *MEMORY[0x277D85DE8];
   [(HDSynchronousTaskGroup *)self->_taskGroup beginTask];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 repository];
-  v5 = [v4 profile];
-  v6 = [v5 legacyRepositoryProfile];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  profile = [repository profile];
+  legacyRepositoryProfile = [profile legacyRepositoryProfile];
   v57 = 0;
-  v7 = HDCloudSyncAttachmentReferenceEpoch(v6, &v57);
+  v7 = HDCloudSyncAttachmentReferenceEpoch(legacyRepositoryProfile, &v57);
   v8 = v57;
   self->_epoch = v7;
 
@@ -58,14 +58,14 @@
   if (v9)
   {
     v52 = v8;
-    v10 = [(HDCloudSyncOperation *)self configuration];
-    v11 = [v10 cachedCloudState];
-    v12 = [(HDCloudSyncOperation *)self configuration];
-    v13 = [v12 repository];
-    v14 = [v13 primaryCKContainer];
-    v15 = [v14 containerIdentifier];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    cachedCloudState = [configuration2 cachedCloudState];
+    configuration3 = [(HDCloudSyncOperation *)self configuration];
+    repository2 = [configuration3 repository];
+    primaryCKContainer = [repository2 primaryCKContainer];
+    containerIdentifier = [primaryCKContainer containerIdentifier];
     v56 = 0;
-    v16 = [v11 attachmentZoneForContainerID:v15 error:&v56];
+    v16 = [cachedCloudState attachmentZoneForContainerID:containerIdentifier error:&v56];
     v17 = v56;
     attachmentZone = self->_attachmentZone;
     self->_attachmentZone = v16;
@@ -74,11 +74,11 @@
     v20 = v17;
     if (!v19 && v17)
     {
-      v21 = self;
+      selfCopy2 = self;
       v22 = 0;
       v23 = v17;
 LABEL_9:
-      [(HDCloudSyncOperation *)v21 finishWithSuccess:v22 error:v23];
+      [(HDCloudSyncOperation *)selfCopy2 finishWithSuccess:v22 error:v23];
 LABEL_25:
       v8 = v52;
 
@@ -87,34 +87,34 @@ LABEL_25:
 
     if (!v19)
     {
-      v24 = [(HDCloudSyncOperation *)self configuration];
-      v25 = [v24 repository];
-      v26 = [v25 profileType];
+      configuration4 = [(HDCloudSyncOperation *)self configuration];
+      repository3 = [configuration4 repository];
+      profileType = [repository3 profileType];
 
-      if (v26 != 1)
+      if (profileType != 1)
       {
-        v21 = self;
+        selfCopy2 = self;
         v22 = 1;
         v23 = 0;
         goto LABEL_9;
       }
     }
 
-    v27 = [(HDCloudSyncOperation *)self configuration];
-    v28 = [v27 accessibilityAssertion];
-    v29 = [HDDatabaseTransactionContext contextForAccessibilityAssertion:v28];
+    configuration5 = [(HDCloudSyncOperation *)self configuration];
+    accessibilityAssertion = [configuration5 accessibilityAssertion];
+    v29 = [HDDatabaseTransactionContext contextForAccessibilityAssertion:accessibilityAssertion];
 
-    v30 = [(HDCloudSyncOperation *)self configuration];
-    v31 = [v30 repository];
-    v32 = [v31 profile];
-    v33 = [v32 database];
+    configuration6 = [(HDCloudSyncOperation *)self configuration];
+    repository4 = [configuration6 repository];
+    profile2 = [repository4 profile];
+    database = [profile2 database];
     v54[4] = self;
     v55 = 0;
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __42__HDCloudSyncPullReferencesOperation_main__block_invoke;
     v54[3] = &unk_278616D40;
-    v34 = [v33 performWithTransactionContext:v29 error:&v55 block:v54];
+    v34 = [database performWithTransactionContext:v29 error:&v55 block:v54];
     v35 = v55;
 
     if ((v34 & 1) == 0)
@@ -129,21 +129,21 @@ LABEL_24:
     if ([(NSMutableDictionary *)self->_attachmentRecordsToFetch count])
     {
       v36 = objc_alloc_init(HDMutableDatabaseTransactionContext);
-      v37 = [(HDCloudSyncOperation *)self configuration];
-      v38 = [v37 accessibilityAssertion];
-      v39 = [(HDMutableDatabaseTransactionContext *)v36 contextWithAccessibilityAssertion:v38];
+      configuration7 = [(HDCloudSyncOperation *)self configuration];
+      accessibilityAssertion2 = [configuration7 accessibilityAssertion];
+      v39 = [(HDMutableDatabaseTransactionContext *)v36 contextWithAccessibilityAssertion:accessibilityAssertion2];
 
-      v40 = [(HDCloudSyncOperation *)self configuration];
-      v41 = [v40 repository];
-      v42 = [v41 profile];
-      v43 = [v42 database];
+      configuration8 = [(HDCloudSyncOperation *)self configuration];
+      repository5 = [configuration8 repository];
+      profile3 = [repository5 profile];
+      database2 = [profile3 database];
       v58 = 0;
       *v63 = MEMORY[0x277D85DD0];
       *&v63[8] = 3221225472;
       *&v63[16] = __68__HDCloudSyncPullReferencesOperation__persistUnsupportedAttachments__block_invoke;
       v64 = &unk_278616D40;
-      v65 = self;
-      LOBYTE(v36) = [v43 performWithTransactionContext:v39 error:&v58 block:v63];
+      selfCopy3 = self;
+      LOBYTE(v36) = [database2 performWithTransactionContext:v39 error:&v58 block:v63];
       v44 = v58;
 
       if ((v36 & 1) == 0)
@@ -153,7 +153,7 @@ LABEL_24:
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v60 = self;
+          selfCopy4 = self;
           v61 = 2114;
           v62 = v44;
           _os_log_error_impl(&dword_228986000, v45, OS_LOG_TYPE_ERROR, "[attachments] %{public}@: Failed to ingest unsupported attachments with error: %{public}@", buf, 0x16u);
@@ -359,13 +359,13 @@ uint64_t __42__HDCloudSyncPullReferencesOperation_main__block_invoke_298(uint64_
 - (void)_fetchAttachmentRecordAssets
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_14;
   }
 
-  [a1[17] beginTask];
-  if ([a1[13] count])
+  [self[17] beginTask];
+  if ([self[13] count])
   {
     v25[0] = 0;
     v25[1] = v25;
@@ -375,14 +375,14 @@ uint64_t __42__HDCloudSyncPullReferencesOperation_main__block_invoke_298(uint64_
     v24[1] = v24;
     v24[2] = 0x2020000000;
     v24[3] = 0;
-    v2 = [a1[13] allValues];
+    allValues = [self[13] allValues];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __66__HDCloudSyncPullReferencesOperation__fetchAttachmentRecordAssets__block_invoke;
     v23[3] = &unk_278621E88;
     v23[4] = v25;
     v23[5] = v24;
-    v3 = [v2 hk_map:v23];
+    v3 = [allValues hk_map:v23];
 
     if ([v3 count])
     {
@@ -394,10 +394,10 @@ uint64_t __42__HDCloudSyncPullReferencesOperation_main__block_invoke_298(uint64_
 
     else
     {
-      v6 = [a1[13] allValues];
-      v7 = [v6 firstObject];
-      v8 = [v7 recordID];
-      v26[0] = v8;
+      allValues2 = [self[13] allValues];
+      firstObject = [allValues2 firstObject];
+      recordID = [firstObject recordID];
+      v26[0] = recordID;
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
 
       v3 = v9;
@@ -410,17 +410,17 @@ uint64_t __42__HDCloudSyncPullReferencesOperation_main__block_invoke_298(uint64_
     if ([v3 count])
     {
       v10 = [HDCloudSyncFetchRecordsOperation alloc];
-      v11 = [a1 configuration];
-      v12 = [a1 configuration];
-      v13 = [v12 repository];
-      v14 = [v13 primaryCKContainer];
-      v15 = [(HDCloudSyncFetchRecordsOperation *)v10 initWithConfiguration:v11 container:v14 recordIDs:v3];
+      configuration = [self configuration];
+      configuration2 = [self configuration];
+      repository = [configuration2 repository];
+      primaryCKContainer = [repository primaryCKContainer];
+      v15 = [(HDCloudSyncFetchRecordsOperation *)v10 initWithConfiguration:configuration container:primaryCKContainer recordIDs:v3];
 
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __66__HDCloudSyncPullReferencesOperation__fetchAttachmentRecordAssets__block_invoke_2;
       v21[3] = &unk_278621EB0;
-      v21[4] = a1;
+      v21[4] = self;
       v16 = v3;
       v22 = v16;
       [(HDCloudSyncOperation *)v15 setOnError:v21];
@@ -428,14 +428,14 @@ uint64_t __42__HDCloudSyncPullReferencesOperation_main__block_invoke_298(uint64_
       v19[1] = 3221225472;
       v19[2] = __66__HDCloudSyncPullReferencesOperation__fetchAttachmentRecordAssets__block_invoke_308;
       v19[3] = &unk_278621ED8;
-      v19[4] = a1;
+      v19[4] = self;
       v20 = v16;
       [(HDCloudSyncOperation *)v15 setOnSuccess:v19];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __66__HDCloudSyncPullReferencesOperation__fetchAttachmentRecordAssets__block_invoke_310;
       v18[3] = &unk_278621F00;
-      v18[4] = a1;
+      v18[4] = self;
       [(HDCloudSyncFetchRecordsOperation *)v15 setRecordHandler:v18];
       [(HDCloudSyncOperation *)v15 start];
 
@@ -448,25 +448,25 @@ LABEL_14:
     }
 
 LABEL_12:
-    [a1[17] finishTask];
+    [self[17] finishTask];
     goto LABEL_13;
   }
 
-  v4 = a1[17];
+  v4 = self[17];
   v5 = *MEMORY[0x277D85DE8];
 
   [v4 finishTask];
 }
 
-- (uint64_t)_persistPendingReferencesIfNeededWithError:(id *)a1
+- (uint64_t)_persistPendingReferencesIfNeededWithError:(id *)error
 {
-  if (!a1)
+  if (!error)
   {
     return 0;
   }
 
-  v4 = [a1[14] allValues];
-  v5 = [v4 count];
+  allValues = [error[14] allValues];
+  v5 = [allValues count];
 
   if (!v5)
   {
@@ -474,20 +474,20 @@ LABEL_12:
   }
 
   v6 = +[HDMutableDatabaseTransactionContext contextForWritingProtectedData];
-  v7 = [a1 configuration];
-  v8 = [v7 accessibilityAssertion];
-  v9 = [v6 contextWithAccessibilityAssertion:v8];
+  configuration = [error configuration];
+  accessibilityAssertion = [configuration accessibilityAssertion];
+  v9 = [v6 contextWithAccessibilityAssertion:accessibilityAssertion];
 
-  v10 = [a1 configuration];
-  v11 = [v10 repository];
-  v12 = [v11 profile];
-  v13 = [v12 database];
+  configuration2 = [error configuration];
+  repository = [configuration2 repository];
+  profile = [repository profile];
+  database = [profile database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __81__HDCloudSyncPullReferencesOperation__persistPendingReferencesIfNeededWithError___block_invoke;
   v16[3] = &unk_278616D40;
-  v16[4] = a1;
-  v14 = [v13 performWithTransactionContext:v9 error:a2 block:v16];
+  v16[4] = error;
+  v14 = [database performWithTransactionContext:v9 error:a2 block:v16];
 
   return v14;
 }

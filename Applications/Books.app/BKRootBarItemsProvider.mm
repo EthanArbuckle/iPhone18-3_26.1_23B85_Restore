@@ -1,6 +1,6 @@
 @interface BKRootBarItemsProvider
-+ (BOOL)isDefaultCollectionFor:(id)a3;
-+ (BOOL)requiresURLFor:(id)a3;
++ (BOOL)isDefaultCollectionFor:(id)for;
++ (BOOL)requiresURLFor:(id)for;
 + (NSArray)placeholderStandardItems;
 + (NSString)AudiobooksIdentifier;
 + (NSString)BooksIdentifier;
@@ -17,15 +17,15 @@
 + (NSString)MangaIdentifier;
 + (NSString)NewCollectionIdentifier;
 + (NSString)SearchIdentifier;
-+ (id)automationIdentifierFor:(id)a3;
-+ (id)customCollectionIDFromItemIdentifier:(id)a3;
-+ (id)defaultCollectionIDFromItemIdentifier:(id)a3;
-+ (id)itemIdentifierForCollectionID:(id)a3;
-+ (id)itemIdentifierForCustomCollectionID:(id)a3;
-+ (id)itemIdentifierForDefaultCollectionID:(id)a3;
-+ (id)standardItemsFromBagWith:(id)a3 countryCode:(id)a4;
-+ (id)stringForReturnToRootBarItemFor:(id)a3;
-+ (int64_t)tabTypeFor:(id)a3;
++ (id)automationIdentifierFor:(id)for;
++ (id)customCollectionIDFromItemIdentifier:(id)identifier;
++ (id)defaultCollectionIDFromItemIdentifier:(id)identifier;
++ (id)itemIdentifierForCollectionID:(id)d;
++ (id)itemIdentifierForCustomCollectionID:(id)d;
++ (id)itemIdentifierForDefaultCollectionID:(id)d;
++ (id)standardItemsFromBagWith:(id)with countryCode:(id)code;
++ (id)stringForReturnToRootBarItemFor:(id)for;
++ (int64_t)tabTypeFor:(id)for;
 - (BKRootBarItemsProvider)init;
 @end
 
@@ -145,13 +145,13 @@
   return v2.super.isa;
 }
 
-+ (id)standardItemsFromBagWith:(id)a3 countryCode:(id)a4
++ (id)standardItemsFromBagWith:(id)with countryCode:(id)code
 {
   v5 = sub_1007A25E4();
-  if (a4)
+  if (code)
   {
     v6 = sub_1007A2254();
-    a4 = v7;
+    code = v7;
   }
 
   else
@@ -159,7 +159,7 @@
     v6 = 0;
   }
 
-  _s5Books20RootBarItemsProviderC08standardD7FromBag4with11countryCodeSayAA0bC4ItemCGSayypG_SSSgtFZ_0(v5, v6, a4);
+  _s5Books20RootBarItemsProviderC08standardD7FromBag4with11countryCodeSayAA0bC4ItemCGSayypG_SSSgtFZ_0(v5, v6, code);
 
   type metadata accessor for RootBarItem();
   v8.super.isa = sub_1007A25D4().super.isa;
@@ -167,7 +167,7 @@
   return v8.super.isa;
 }
 
-+ (BOOL)isDefaultCollectionFor:(id)a3
++ (BOOL)isDefaultCollectionFor:(id)for
 {
   v3 = sub_1007A2254();
   v5 = v4;
@@ -191,9 +191,9 @@
   return v7 & 1;
 }
 
-+ (id)itemIdentifierForDefaultCollectionID:(id)a3
++ (id)itemIdentifierForDefaultCollectionID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   _s5Books20RootBarItemsProviderC14itemIdentifier22forDefaultCollectionIDSSSgSo09BCDefaultjK0a_tFZ_0();
   v5 = v4;
 
@@ -210,7 +210,7 @@
   return v6;
 }
 
-+ (id)defaultCollectionIDFromItemIdentifier:(id)a3
++ (id)defaultCollectionIDFromItemIdentifier:(id)identifier
 {
   v3 = sub_1007A2254();
   v5 = _s5Books20RootBarItemsProviderC19defaultCollectionID18fromItemIdentifierSo09BCDefaultgH0aSgSS_tFZ_0(v3, v4);
@@ -218,7 +218,7 @@
   return v5;
 }
 
-+ (id)itemIdentifierForCustomCollectionID:(id)a3
++ (id)itemIdentifierForCustomCollectionID:(id)d
 {
   v6._countAndFlagsBits = sub_1007A2254();
   sub_1007A23D4(v6);
@@ -228,7 +228,7 @@
   return v3;
 }
 
-+ (id)customCollectionIDFromItemIdentifier:(id)a3
++ (id)customCollectionIDFromItemIdentifier:(id)identifier
 {
   v3 = sub_1007A2254();
   _s5Books20RootBarItemsProviderC18customCollectionID18fromItemIdentifierSSSgSS_tFZ_0(v3, v4);
@@ -247,7 +247,7 @@
   return v7;
 }
 
-+ (id)itemIdentifierForCollectionID:(id)a3
++ (id)itemIdentifierForCollectionID:(id)d
 {
   v3 = sub_1007A2254();
   v5 = v4;
@@ -267,7 +267,7 @@
   return v9;
 }
 
-+ (BOOL)requiresURLFor:(id)a3
++ (BOOL)requiresURLFor:(id)for
 {
   v3 = sub_1007A2254();
   v5 = v4;
@@ -291,7 +291,7 @@
   return v7 & 1;
 }
 
-+ (id)stringForReturnToRootBarItemFor:(id)a3
++ (id)stringForReturnToRootBarItemFor:(id)for
 {
   v3 = sub_1007A2254();
   v5 = v4;
@@ -330,7 +330,7 @@ LABEL_8:
   return v8;
 }
 
-+ (int64_t)tabTypeFor:(id)a3
++ (int64_t)tabTypeFor:(id)for
 {
   v3 = sub_1007A2254();
   v5 = _s5Books20RootBarItemsProviderC7tabType3for13BookAnalytics010BridgedTabG0OSS_tFZ_0(v3, v4);
@@ -338,7 +338,7 @@ LABEL_8:
   return v5;
 }
 
-+ (id)automationIdentifierFor:(id)a3
++ (id)automationIdentifierFor:(id)for
 {
   v3 = sub_1007A2254();
   v5 = v4;

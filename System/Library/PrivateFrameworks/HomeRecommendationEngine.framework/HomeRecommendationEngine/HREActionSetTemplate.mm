@@ -1,6 +1,6 @@
 @interface HREActionSetTemplate
 - (HREActionSetTemplate)init;
-- (id)createStarterRecommendationInHome:(id)a3;
+- (id)createStarterRecommendationInHome:(id)home;
 @end
 
 @implementation HREActionSetTemplate
@@ -33,12 +33,12 @@ void __28__HREActionSetTemplate_init__block_invoke_2()
   qword_27F5F9730 = &stru_286657A08;
 }
 
-- (id)createStarterRecommendationInHome:(id)a3
+- (id)createStarterRecommendationInHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v15.receiver = self;
   v15.super_class = HREActionSetTemplate;
-  v5 = [(HREActionTemplate *)&v15 createStarterRecommendationInHome:v4];
+  v5 = [(HREActionTemplate *)&v15 createStarterRecommendationInHome:homeCopy];
   objc_opt_class();
   v6 = v5;
   if (objc_opt_isKindOfClass())
@@ -55,23 +55,23 @@ void __28__HREActionSetTemplate_init__block_invoke_2()
 
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x277D14398]) initWithHome:v4];
-    v10 = [v8 mutableActionSetBuilders];
-    [v10 addObject:v9];
+    v9 = [objc_alloc(MEMORY[0x277D14398]) initWithHome:homeCopy];
+    mutableActionSetBuilders = [v8 mutableActionSetBuilders];
+    [mutableActionSetBuilders addObject:v9];
 
-    v11 = [(HREActionSetTemplate *)self actionSetName];
-    [v9 setName:v11];
+    actionSetName = [(HREActionSetTemplate *)self actionSetName];
+    [v9 setName:actionSetName];
 
-    v12 = [(HREActionSetTemplate *)self iconDescriptor];
-    if (v12)
+    iconDescriptor = [(HREActionSetTemplate *)self iconDescriptor];
+    if (iconDescriptor)
     {
-      [v9 setIconDescriptor:v12];
+      [v9 setIconDescriptor:iconDescriptor];
     }
 
     else
     {
-      v13 = [v9 iconDescriptor];
-      [v9 setIconDescriptor:v13];
+      iconDescriptor2 = [v9 iconDescriptor];
+      [v9 setIconDescriptor:iconDescriptor2];
     }
   }
 

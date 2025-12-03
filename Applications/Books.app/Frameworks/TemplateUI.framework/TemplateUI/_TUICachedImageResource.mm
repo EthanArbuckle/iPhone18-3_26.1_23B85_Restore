@@ -1,52 +1,52 @@
 @interface _TUICachedImageResource
-- (BOOL)_q_shouldLoadResourceIfNeededAllowDefer:(BOOL)a3;
+- (BOOL)_q_shouldLoadResourceIfNeededAllowDefer:(BOOL)defer;
 - (BOOL)isImageLoaded;
 - (BOOL)isImageLoading;
 - (CGSize)naturalSize;
 - (TUIImageResourceCacheKey)sizedKey;
 - (TUIImageResourceCacheKey)unsizedKey;
-- (_TUICachedImageResource)initWithCache:(id)a3 unsizedCacheSet:(id)a4 queue:(id)a5 naturalSize:(CGSize)a6 contentsScale:(double)a7;
-- (id)imageContentWithOptions:(unint64_t)a3;
+- (_TUICachedImageResource)initWithCache:(id)cache unsizedCacheSet:(id)set queue:(id)queue naturalSize:(CGSize)size contentsScale:(double)scale;
+- (id)imageContentWithOptions:(unint64_t)options;
 - (id)loadImage;
-- (void)_loadedImage:(id)a3 insets:(UIEdgeInsets)a4 temporary:(BOOL)a5;
-- (void)_q_loadIntrinsicSize:(CGSize)a3;
+- (void)_loadedImage:(id)image insets:(UIEdgeInsets)insets temporary:(BOOL)temporary;
+- (void)_q_loadIntrinsicSize:(CGSize)size;
 - (void)_q_unloadResource;
 - (void)_refresh;
 - (void)addInterest;
 - (void)addNonVolatileInterest;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)deferredLoadImageIfNeeded;
 - (void)loadIntrinsicSize;
 - (void)loadLargestLoadedImageAsTemporary;
 - (void)pauseUnload;
 - (void)removeInterest;
 - (void)removeNonVolatileInterest;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)resumeUnload;
-- (void)updateImage:(id)a3 allowUnload:(BOOL)a4 temporary:(BOOL)a5;
+- (void)updateImage:(id)image allowUnload:(BOOL)unload temporary:(BOOL)temporary;
 @end
 
 @implementation _TUICachedImageResource
 
-- (_TUICachedImageResource)initWithCache:(id)a3 unsizedCacheSet:(id)a4 queue:(id)a5 naturalSize:(CGSize)a6 contentsScale:(double)a7
+- (_TUICachedImageResource)initWithCache:(id)cache unsizedCacheSet:(id)set queue:(id)queue naturalSize:(CGSize)size contentsScale:(double)scale
 {
-  height = a6.height;
-  width = a6.width;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  height = size.height;
+  width = size.width;
+  cacheCopy = cache;
+  setCopy = set;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = _TUICachedImageResource;
   v16 = [(_TUICachedImageResource *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_cache, v13);
-    objc_storeStrong(&v17->_unsizedCacheSet, a4);
-    objc_storeStrong(&v17->_queue, a5);
+    objc_storeWeak(&v16->_cache, cacheCopy);
+    objc_storeStrong(&v17->_unsizedCacheSet, set);
+    objc_storeStrong(&v17->_queue, queue);
     v17->_naturalSize.width = width;
     v17->_naturalSize.height = height;
-    v17->_contentsScale = a7;
+    v17->_contentsScale = scale;
     v18 = [NSHashTable hashTableWithOptions:517];
     observers = v17->_observers;
     v17->_observers = v18;
@@ -195,9 +195,9 @@
   return v4;
 }
 
-- (BOOL)_q_shouldLoadResourceIfNeededAllowDefer:(BOOL)a3
+- (BOOL)_q_shouldLoadResourceIfNeededAllowDefer:(BOOL)defer
 {
-  v3 = a3;
+  deferCopy = defer;
   dispatch_assert_queue_V2(self->_queue);
   state = self->_state;
   if (state & 0xA) == 2 || (*&self->_state)
@@ -205,7 +205,7 @@
     return 0;
   }
 
-  if (self->_image && v3)
+  if (self->_image && deferCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_cache);
     v8 = [WeakRetained shouldDeferLoadForResource:self];
@@ -278,13 +278,13 @@
   dispatch_sync(queue, block);
 }
 
-- (void)_loadedImage:(id)a3 insets:(UIEdgeInsets)a4 temporary:(BOOL)a5
+- (void)_loadedImage:(id)image insets:(UIEdgeInsets)insets temporary:(BOOL)temporary
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v11 = a3;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  imageCopy = image;
   v49 = 0;
   v50 = &v49;
   v51 = 0x3032000000;
@@ -308,11 +308,11 @@
   block[1] = 3221225472;
   block[2] = sub_A2DCC;
   block[3] = &unk_2609A8;
-  v39 = a5;
+  temporaryCopy = temporary;
   block[4] = self;
   v31 = &v45;
   v32 = v44;
-  v13 = v11;
+  v13 = imageCopy;
   v35 = top;
   v36 = left;
   v37 = bottom;
@@ -390,19 +390,19 @@
   _Block_object_dispose(&v49, 8);
 }
 
-- (void)_q_loadIntrinsicSize:(CGSize)a3
+- (void)_q_loadIntrinsicSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   dispatch_assert_queue_V2(self->_queue);
   self->_intrinsicSize.width = width;
   self->_intrinsicSize.height = height;
   *&self->_state |= 4u;
 }
 
-- (void)updateImage:(id)a3 allowUnload:(BOOL)a4 temporary:(BOOL)a5
+- (void)updateImage:(id)image allowUnload:(BOOL)unload temporary:(BOOL)temporary
 {
-  v8 = a3;
+  imageCopy = image;
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
@@ -417,8 +417,8 @@
   v43[1] = v43;
   v43[2] = 0x2020000000;
   v43[3] = 0;
-  v9 = [v8 image];
-  [v8 insets];
+  image = [imageCopy image];
+  [imageCopy insets];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -429,15 +429,15 @@
   block[2] = sub_A34D0;
   block[3] = &unk_2609F8;
   block[4] = self;
-  v19 = v9;
+  v19 = image;
   v37 = v11;
   v38 = v13;
   v39 = v15;
   v40 = v17;
-  v41 = a5;
+  temporaryCopy = temporary;
   v33 = v19;
   v34 = &v44;
-  v42 = a4;
+  unloadCopy = unload;
   v35 = v43;
   v36 = &v48;
   dispatch_sync(queue, block);
@@ -497,7 +497,7 @@
   _Block_object_dispose(&v48, 8);
 }
 
-- (id)imageContentWithOptions:(unint64_t)a3
+- (id)imageContentWithOptions:(unint64_t)options
 {
   v7 = 0;
   v8 = &v7;
@@ -511,7 +511,7 @@
   block[2] = sub_A3734;
   block[3] = &unk_260A20;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = options;
   block[4] = self;
   dispatch_sync(queue, block);
   v4 = v8[5];
@@ -580,11 +580,11 @@
   _Block_object_dispose(&v5, 8);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -592,16 +592,16 @@
     v7[2] = sub_A3B48;
     v7[3] = &unk_25DCA0;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_sync(queue, v7);
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -609,7 +609,7 @@
     v7[2] = sub_A3BFC;
     v7[3] = &unk_25DCA0;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_sync(queue, v7);
   }
 }
@@ -618,9 +618,9 @@
 {
   v5 = [(_TUIImageResourceUnsizedCacheSet *)self->_unsizedCacheSet largestResourceWithContentAndNaturalSize:self->_naturalSize.width contentsScale:self->_naturalSize.height, self->_contentsScale];
   v3 = [v5 imageContentWithOptions:1];
-  v4 = [v3 image];
+  image = [v3 image];
 
-  if (v4)
+  if (image)
   {
     [(_TUICachedImageResource *)self updateImage:v3 allowUnload:0 temporary:1];
   }

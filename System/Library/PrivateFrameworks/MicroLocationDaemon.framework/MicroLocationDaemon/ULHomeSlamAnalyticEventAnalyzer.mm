@@ -1,13 +1,13 @@
 @interface ULHomeSlamAnalyticEventAnalyzer
-+ (float)aggregateTimeBetweenEvent:(signed __int16)a3 andEvent:(signed __int16)a4 startDate:(id)a5 endDate:(id)a6 withDBStore:(ULDatabaseStoreInterface *)a7;
-+ (int64_t)countEventOccurrences:(signed __int16)a3 fromDate:(double)a4 untilDate:(double)a5 fromDBStore:(ULDatabaseStoreInterface *)a6;
-- (BOOL)_checkIfScreenTransitionedToOnBefore:(id)a3 after:(id)a4 withEvents:()vector<ULHomeSlamAnalyticEventDO;
++ (float)aggregateTimeBetweenEvent:(signed __int16)event andEvent:(signed __int16)andEvent startDate:(id)date endDate:(id)endDate withDBStore:(ULDatabaseStoreInterface *)store;
++ (int64_t)countEventOccurrences:(signed __int16)occurrences fromDate:(double)date untilDate:(double)untilDate fromDBStore:(ULDatabaseStoreInterface *)store;
+- (BOOL)_checkIfScreenTransitionedToOnBefore:(id)before after:(id)after withEvents:()vector<ULHomeSlamAnalyticEventDO;
 - (BOOL)_daemonWasRestartedWithEvents:()vector<ULHomeSlamAnalyticEventDO;
-- (BOOL)_wasLastScreenStateOnBefore:(id)a3 withEvents:()vector<ULHomeSlamAnalyticEventDO;
+- (BOOL)_wasLastScreenStateOnBefore:(id)before withEvents:()vector<ULHomeSlamAnalyticEventDO;
 - (ULHomeSlamAnalyticEventAnalyzer)init;
-- (id)_analyzeTriggersAndGetCA:(id)a3 fromDate:(id)a4 untilDate:(id)a5 withDBStore:(ULDatabaseStoreInterface *)a6;
-- (id)runStopDetectionAnalysisAtTimepoint:(uint64_t)a3 withDBStore:(uint64_t)a4;
-- (int64_t)_hoursFromFirstEventToDate:(id)a3 withDBStore:(ULDatabaseStoreInterface *)a4;
+- (id)_analyzeTriggersAndGetCA:(id)a fromDate:(id)date untilDate:(id)untilDate withDBStore:(ULDatabaseStoreInterface *)store;
+- (id)runStopDetectionAnalysisAtTimepoint:(uint64_t)timepoint withDBStore:(uint64_t)store;
+- (int64_t)_hoursFromFirstEventToDate:(id)date withDBStore:(ULDatabaseStoreInterface *)store;
 @end
 
 @implementation ULHomeSlamAnalyticEventAnalyzer
@@ -19,31 +19,31 @@
   return [(ULHomeSlamAnalyticEventAnalyzer *)&v3 init];
 }
 
-- (id)runStopDetectionAnalysisAtTimepoint:(uint64_t)a3 withDBStore:(uint64_t)a4
+- (id)runStopDetectionAnalysisAtTimepoint:(uint64_t)timepoint withDBStore:(uint64_t)store
 {
   v7 = a2 + -86400.0;
-  v8 = [[ULHomeSlamStopDetection alloc] initWithDbStore:a4];
+  v8 = [[ULHomeSlamStopDetection alloc] initWithDbStore:store];
   v9 = [(ULHomeSlamStopDetection *)v8 runStopDetectionAnalysisFromTime:v7 toTime:a2];
 
   v10 = [ULHomeSlamAnalyticEventAnalyzer _timepointToDate:v7];
   v11 = [ULHomeSlamAnalyticEventAnalyzer _timepointToDate:a2];
-  v12 = [a1 _analyzeTriggersAndGetCA:v9 fromDate:v10 untilDate:v11 withDBStore:a4];
+  v12 = [self _analyzeTriggersAndGetCA:v9 fromDate:v10 untilDate:v11 withDBStore:store];
 
   return v12;
 }
 
-- (id)_analyzeTriggersAndGetCA:(id)a3 fromDate:(id)a4 untilDate:(id)a5 withDBStore:(ULDatabaseStoreInterface *)a6
+- (id)_analyzeTriggersAndGetCA:(id)a fromDate:(id)date untilDate:(id)untilDate withDBStore:(ULDatabaseStoreInterface *)store
 {
   v75 = *MEMORY[0x277D85DE8];
-  v47 = a3;
-  v10 = a4;
-  v50 = a5;
-  v48 = a6;
-  v49 = v10;
-  v11 = (*(a6->var0 + 17))(a6);
-  [v10 timeIntervalSinceReferenceDate];
+  aCopy = a;
+  dateCopy = date;
+  untilDateCopy = untilDate;
+  storeCopy = store;
+  v49 = dateCopy;
+  v11 = (*(store->var0 + 17))(store);
+  [dateCopy timeIntervalSinceReferenceDate];
   v13 = v12;
-  [v50 timeIntervalSinceReferenceDate];
+  [untilDateCopy timeIntervalSinceReferenceDate];
   if (v11)
   {
     [v11 fetchAnalyticEventsASCFromTime:v13 toTime:v14];
@@ -60,7 +60,7 @@
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  obj = v47;
+  obj = aCopy;
   v15 = [obj countByEnumeratingWithState:&v65 objects:v74 count:16];
   if (!v15)
   {
@@ -92,12 +92,12 @@
       v22 = *(*(&v65 + 1) + 8 * i);
       if ([v22 trigger] == 0 && (v16 & 1) != 0)
       {
-        v23 = [v22 date];
+        date = [v22 date];
         __p = 0;
         v63 = 0;
         v64 = 0;
         std::vector<ULHomeSlamAnalyticEventDO>::__init_with_size[abi:ne200100]<ULHomeSlamAnalyticEventDO*,ULHomeSlamAnalyticEventDO*>(&__p, v69, v70, (v70 - v69) >> 4);
-        v24 = [(ULHomeSlamAnalyticEventAnalyzer *)self _checkIfScreenTransitionedToOnBefore:v23 after:v55 withEvents:&__p];
+        v24 = [(ULHomeSlamAnalyticEventAnalyzer *)self _checkIfScreenTransitionedToOnBefore:date after:v55 withEvents:&__p];
         if (__p)
         {
           v63 = __p;
@@ -115,12 +115,12 @@
         goto LABEL_18;
       }
 
-      v25 = [v22 date];
+      date2 = [v22 date];
       v59 = 0;
       v60 = 0;
       v61 = 0;
       std::vector<ULHomeSlamAnalyticEventDO>::__init_with_size[abi:ne200100]<ULHomeSlamAnalyticEventDO*,ULHomeSlamAnalyticEventDO*>(&v59, v69, v70, (v70 - v69) >> 4);
-      v26 = [(ULHomeSlamAnalyticEventAnalyzer *)self _wasLastScreenStateOnBefore:v25 withEvents:&v59];
+      v26 = [(ULHomeSlamAnalyticEventAnalyzer *)self _wasLastScreenStateOnBefore:date2 withEvents:&v59];
       if (v59)
       {
         v60 = v59;
@@ -138,10 +138,10 @@ LABEL_18:
         continue;
       }
 
-      v27 = [v22 date];
+      date3 = [v22 date];
 
       v16 = 1;
-      v55 = v27;
+      v55 = date3;
     }
 
     v15 = [obj countByEnumeratingWithState:&v65 objects:v74 count:16];
@@ -172,9 +172,9 @@ LABEL_24:
     v30 = 200;
   }
 
-  [ULHomeSlamAnalyticEventAnalyzer aggregateTimeBetweenEvent:5 andEvent:6 startDate:v49 endDate:v50 withDBStore:v48];
+  [ULHomeSlamAnalyticEventAnalyzer aggregateTimeBetweenEvent:5 andEvent:6 startDate:v49 endDate:untilDateCopy withDBStore:storeCopy];
   v32 = v31;
-  [ULHomeSlamAnalyticEventAnalyzer aggregateTimeBetweenEvent:2 andEvent:3 startDate:v49 endDate:v50 withDBStore:v48];
+  [ULHomeSlamAnalyticEventAnalyzer aggregateTimeBetweenEvent:2 andEvent:3 startDate:v49 endDate:untilDateCopy withDBStore:storeCopy];
   v34 = v33;
   v72[0] = @"stop_triggers_total";
   v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v29];
@@ -204,7 +204,7 @@ LABEL_24:
   v41 = [MEMORY[0x277CCABB0] numberWithBool:v28];
   v73[8] = v41;
   v72[9] = @"hours_since_first_event";
-  v42 = [MEMORY[0x277CCABB0] numberWithInteger:{-[ULHomeSlamAnalyticEventAnalyzer _hoursFromFirstEventToDate:withDBStore:](self, "_hoursFromFirstEventToDate:withDBStore:", v50, v48)}];
+  v42 = [MEMORY[0x277CCABB0] numberWithInteger:{-[ULHomeSlamAnalyticEventAnalyzer _hoursFromFirstEventToDate:withDBStore:](self, "_hoursFromFirstEventToDate:withDBStore:", untilDateCopy, storeCopy)}];
   v73[9] = v42;
   v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v73 forKeys:v72 count:10];
 
@@ -219,10 +219,10 @@ LABEL_24:
   return v43;
 }
 
-- (int64_t)_hoursFromFirstEventToDate:(id)a3 withDBStore:(ULDatabaseStoreInterface *)a4
+- (int64_t)_hoursFromFirstEventToDate:(id)date withDBStore:(ULDatabaseStoreInterface *)store
 {
-  v5 = a3;
-  v6 = (*(a4->var0 + 17))(a4);
+  dateCopy = date;
+  v6 = (*(store->var0 + 17))(store);
   v7 = v6;
   if (v6)
   {
@@ -238,7 +238,7 @@ LABEL_24:
   if (v13 == 1)
   {
     v8 = [ULHomeSlamAnalyticEventAnalyzer _timepointToDate:v12];
-    [v5 timeIntervalSinceDate:v8];
+    [dateCopy timeIntervalSinceDate:v8];
     v10 = vcvtpd_s64_f64(v9 / 60.0 / 60.0);
   }
 
@@ -250,10 +250,10 @@ LABEL_24:
   return v10;
 }
 
-- (BOOL)_checkIfScreenTransitionedToOnBefore:(id)a3 after:(id)a4 withEvents:()vector<ULHomeSlamAnalyticEventDO
+- (BOOL)_checkIfScreenTransitionedToOnBefore:(id)before after:(id)after withEvents:()vector<ULHomeSlamAnalyticEventDO
 {
-  v7 = a3;
-  v8 = a4;
+  beforeCopy = before;
+  afterCopy = after;
   var0 = a5->var0;
   var1 = a5->var1;
   if (a5->var0 != var1)
@@ -261,7 +261,7 @@ LABEL_24:
     do
     {
       v11 = [ULHomeSlamAnalyticEventAnalyzer _timepointToDate:*var0];
-      [v11 timeIntervalSinceDate:v7];
+      [v11 timeIntervalSinceDate:beforeCopy];
       v13 = v12;
 
       if (v13 > 0.0)
@@ -270,7 +270,7 @@ LABEL_24:
       }
 
       v14 = [ULHomeSlamAnalyticEventAnalyzer _timepointToDate:*var0];
-      [v14 timeIntervalSinceDate:v8];
+      [v14 timeIntervalSinceDate:afterCopy];
       if (v15 <= 0.0)
       {
       }
@@ -298,9 +298,9 @@ LABEL_9:
   return v18;
 }
 
-- (BOOL)_wasLastScreenStateOnBefore:(id)a3 withEvents:()vector<ULHomeSlamAnalyticEventDO
+- (BOOL)_wasLastScreenStateOnBefore:(id)before withEvents:()vector<ULHomeSlamAnalyticEventDO
 {
-  v5 = a3;
+  beforeCopy = before;
   var0 = a4->var0;
   var1 = a4->var1;
   if (a4->var0 == var1)
@@ -314,7 +314,7 @@ LABEL_9:
     do
     {
       v9 = [ULHomeSlamAnalyticEventAnalyzer _timepointToDate:*var0];
-      [v9 timeIntervalSinceDate:v5];
+      [v9 timeIntervalSinceDate:beforeCopy];
       v11 = v10;
 
       if (v11 > 0.0)
@@ -333,14 +333,14 @@ LABEL_9:
   return v8 & 1;
 }
 
-+ (float)aggregateTimeBetweenEvent:(signed __int16)a3 andEvent:(signed __int16)a4 startDate:(id)a5 endDate:(id)a6 withDBStore:(ULDatabaseStoreInterface *)a7
++ (float)aggregateTimeBetweenEvent:(signed __int16)event andEvent:(signed __int16)andEvent startDate:(id)date endDate:(id)endDate withDBStore:(ULDatabaseStoreInterface *)store
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = (*(a7->var0 + 17))(a7);
-  [v11 timeIntervalSinceReferenceDate];
+  dateCopy = date;
+  endDateCopy = endDate;
+  v13 = (*(store->var0 + 17))(store);
+  [dateCopy timeIntervalSinceReferenceDate];
   v15 = v14;
-  [v12 timeIntervalSinceReferenceDate];
+  [endDateCopy timeIntervalSinceReferenceDate];
   if (v13)
   {
     [v13 fetchAnalyticEventsASCFromTime:v15 toTime:v16];
@@ -353,20 +353,20 @@ LABEL_9:
     v42 = 0;
   }
 
-  v17 = a4;
-  v18 = a3;
+  andEventCopy = andEvent;
+  eventCopy = event;
 
   v19 = v41;
   if (v41 != v40)
   {
     v20 = 0;
     v21 = 0.0;
-    v22 = v12;
+    v22 = endDateCopy;
     while (1)
     {
       v23 = *(v19 - 4);
       v19 -= 2;
-      if (v23 == v18)
+      if (v23 == eventCopy)
       {
         v24 = [ULHomeSlamAnalyticEventAnalyzer _timepointToDate:*v19];
 
@@ -378,7 +378,7 @@ LABEL_9:
 
       else
       {
-        if (v23 != v17 && v23 != 4)
+        if (v23 != andEventCopy && v23 != 4)
         {
           goto LABEL_15;
         }
@@ -399,17 +399,17 @@ LABEL_15:
 
   v20 = 0;
   v21 = 0.0;
-  v22 = v12;
+  v22 = endDateCopy;
 LABEL_18:
-  v29 = (*(a7->var0 + 17))(a7);
-  v33[0] = v18;
-  v33[1] = v17;
+  v29 = (*(store->var0 + 17))(store);
+  v33[0] = eventCopy;
+  v33[1] = andEventCopy;
   v33[2] = 4;
   v35 = 0;
   v36 = 0;
   __p = 0;
   std::vector<ULHomeSlamAnalyticEventDO::EventTypeEnum>::__init_with_size[abi:ne200100]<ULHomeSlamAnalyticEventDO::EventTypeEnum const*,ULHomeSlamAnalyticEventDO::EventTypeEnum const*>(&__p, v33, &__p, 3);
-  [v11 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   if (v29)
   {
     [v29 fetchLatestAnalyticEventType:&__p beforeTime:?];
@@ -428,9 +428,9 @@ LABEL_18:
     operator delete(__p);
   }
 
-  if (v39 == 1 && v38 == v18)
+  if (v39 == 1 && v38 == eventCopy)
   {
-    [v22 timeIntervalSinceDate:v11];
+    [v22 timeIntervalSinceDate:dateCopy];
     v21 = v21 + v30;
   }
 
@@ -464,13 +464,13 @@ LABEL_18:
   return result;
 }
 
-+ (int64_t)countEventOccurrences:(signed __int16)a3 fromDate:(double)a4 untilDate:(double)a5 fromDBStore:(ULDatabaseStoreInterface *)a6
++ (int64_t)countEventOccurrences:(signed __int16)occurrences fromDate:(double)date untilDate:(double)untilDate fromDBStore:(ULDatabaseStoreInterface *)store
 {
-  v9 = (*(a6->var0 + 17))(a6, a2);
+  v9 = (*(store->var0 + 17))(store, a2);
   v10 = v9;
   if (v9)
   {
-    [v9 fetchAnalyticEventsASCFromTime:a4 toTime:a5];
+    [v9 fetchAnalyticEventsASCFromTime:date toTime:untilDate];
   }
 
   else
@@ -494,7 +494,7 @@ LABEL_18:
   v12 = v14;
   do
   {
-    if (v12[4] == a3)
+    if (v12[4] == occurrences)
     {
       ++v11;
     }

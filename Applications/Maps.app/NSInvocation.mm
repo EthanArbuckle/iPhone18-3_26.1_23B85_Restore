@@ -6,19 +6,19 @@
 
 - (id)_maps_copy
 {
-  v3 = [(NSInvocation *)self methodSignature];
-  v4 = [NSInvocation invocationWithMethodSignature:v3];
+  methodSignature = [(NSInvocation *)self methodSignature];
+  v4 = [NSInvocation invocationWithMethodSignature:methodSignature];
 
   [v4 setSelector:{-[NSInvocation selector](self, "selector")}];
-  v5 = [(NSInvocation *)self target];
-  [v4 setTarget:v5];
+  target = [(NSInvocation *)self target];
+  [v4 setTarget:target];
 
-  v6 = [(NSInvocation *)self methodSignature];
-  v7 = [v6 numberOfArguments];
+  methodSignature2 = [(NSInvocation *)self methodSignature];
+  numberOfArguments = [methodSignature2 numberOfArguments];
 
-  if (v7 >= 3)
+  if (numberOfArguments >= 3)
   {
-    for (i = 2; i != v7; ++i)
+    for (i = 2; i != numberOfArguments; ++i)
     {
       v10 = 0;
       [(NSInvocation *)self getArgument:&v10 atIndex:i];

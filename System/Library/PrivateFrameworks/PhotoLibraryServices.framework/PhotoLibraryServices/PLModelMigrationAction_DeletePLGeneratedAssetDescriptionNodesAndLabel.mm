@@ -1,14 +1,14 @@
 @interface PLModelMigrationAction_DeletePLGeneratedAssetDescriptionNodesAndLabel
-- (int64_t)_deleteLabelWithCode1300InContext:(id)a3 error:(id *)a4;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)_deleteLabelWithCode1300InContext:(id)context error:(id *)error;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_DeletePLGeneratedAssetDescriptionNodesAndLabel
 
-- (int64_t)_deleteLabelWithCode1300InContext:(id)a3 error:(id *)a4
+- (int64_t)_deleteLabelWithCode1300InContext:(id)context error:(id *)error
 {
   v76 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLGraphLabel entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -16,24 +16,24 @@
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == 1300", @"code"];
   [v9 setPredicate:v10];
 
-  v11 = [v6 executeFetchRequest:v9 error:a4];
+  v11 = [contextCopy executeFetchRequest:v9 error:error];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 firstObject];
-    if (v13)
+    firstObject = [v11 firstObject];
+    if (firstObject)
     {
-      [v6 deleteObject:v13];
-      if (([v6 save:a4] & 1) == 0)
+      [contextCopy deleteObject:firstObject];
+      if (([contextCopy save:error] & 1) == 0)
       {
         v14 = PLMigrationGetLog();
         v15 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
 
         if (v15)
         {
-          v16 = [(PLModelMigrationActionCore *)self logger];
+          logger = [(PLModelMigrationActionCore *)self logger];
 
-          if (v16)
+          if (logger)
           {
             v74 = 0u;
             v75 = 0u;
@@ -69,9 +69,9 @@
             v45 = 0u;
             v17 = PLMigrationGetLog();
             os_log_type_enabled(v17, OS_LOG_TYPE_ERROR);
-            if (a4)
+            if (error)
             {
-              v18 = *a4;
+              v18 = *error;
             }
 
             else
@@ -98,9 +98,9 @@
             v36 = PLMigrationGetLog();
             if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
             {
-              if (a4)
+              if (error)
               {
-                v37 = *a4;
+                v37 = *error;
               }
 
               else
@@ -127,9 +127,9 @@
 
       if (v25)
       {
-        v26 = [(PLModelMigrationActionCore *)self logger];
+        logger2 = [(PLModelMigrationActionCore *)self logger];
 
-        if (v26)
+        if (logger2)
         {
           v74 = 0u;
           v75 = 0u;
@@ -201,9 +201,9 @@ LABEL_40:
 
   if (v20)
   {
-    v21 = [(PLModelMigrationActionCore *)self logger];
+    logger3 = [(PLModelMigrationActionCore *)self logger];
 
-    if (v21)
+    if (logger3)
     {
       v74 = 0u;
       v75 = 0u;
@@ -239,9 +239,9 @@ LABEL_40:
       v45 = 0u;
       v22 = PLMigrationGetLog();
       os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
-      if (a4)
+      if (error)
       {
-        v23 = *a4;
+        v23 = *error;
       }
 
       else
@@ -268,9 +268,9 @@ LABEL_40:
       v30 = PLMigrationGetLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        if (a4)
+        if (error)
         {
-          v31 = *a4;
+          v31 = *error;
         }
 
         else
@@ -291,10 +291,10 @@ LABEL_41:
   return v35;
 }
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v104[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v66 = 0;
   v67 = &v66;
   v68 = 0x2020000000;
@@ -313,8 +313,8 @@ LABEL_41:
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v104 count:1];
   [v9 setRelationshipKeyPathsForPrefetching:v10];
 
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"primaryLabelCode", 1300];
-  [v9 setPredicate:v11];
+  1300 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"primaryLabelCode", 1300];
+  [v9 setPredicate:1300];
 
   v54 = 0;
   v55 = &v54;
@@ -329,7 +329,7 @@ LABEL_41:
   v52[1] = 3221225472;
   v52[2] = __117__PLModelMigrationAction_DeletePLGeneratedAssetDescriptionNodesAndLabel_performActionWithManagedObjectContext_error___block_invoke;
   v52[3] = &unk_1E7575B30;
-  v53 = v6;
+  v53 = contextCopy;
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
   v51[2] = __117__PLModelMigrationAction_DeletePLGeneratedAssetDescriptionNodesAndLabel_performActionWithManagedObjectContext_error___block_invoke_2;
@@ -361,8 +361,8 @@ LABEL_41:
       goto LABEL_17;
     }
 
-    v21 = [(PLModelMigrationActionCore *)self logger];
-    v22 = v21 == 0;
+    logger = [(PLModelMigrationActionCore *)self logger];
+    v22 = logger == 0;
 
     if (!v22)
     {
@@ -400,9 +400,9 @@ LABEL_41:
       v73 = 0u;
       v23 = PLMigrationGetLog();
       os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
-      v24 = [v55[5] totalUnitCount];
+      totalUnitCount = [v55[5] totalUnitCount];
       v70 = 134217984;
-      v71 = v24;
+      v71 = totalUnitCount;
       LODWORD(v44) = 12;
       v25 = _os_log_send_and_compose_impl();
 
@@ -423,9 +423,9 @@ LABEL_10:
     v36 = PLMigrationGetLog();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = [v55[5] totalUnitCount];
+      totalUnitCount2 = [v55[5] totalUnitCount];
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = v37;
+      *(&buf + 4) = totalUnitCount2;
       _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_DEFAULT, "Removed %lld PLGeneratedAssetDescription nodes.", &buf, 0xCu);
     }
   }
@@ -441,8 +441,8 @@ LABEL_10:
       goto LABEL_17;
     }
 
-    v30 = [(PLModelMigrationActionCore *)self logger];
-    v31 = v30 == 0;
+    logger2 = [(PLModelMigrationActionCore *)self logger];
+    v31 = logger2 == 0;
 
     if (!v31)
     {
@@ -513,14 +513,14 @@ LABEL_17:
   if (v67[3] != 1)
   {
     v41 = v61[5];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_23;
     }
 
 LABEL_22:
     v41 = v41;
-    *a4 = v41;
+    *error = v41;
     goto LABEL_23;
   }
 
@@ -529,7 +529,7 @@ LABEL_22:
   objc_storeStrong(v39, v45);
   v67[3] = v40;
   v41 = v61[5];
-  if (v40 != 1 && a4)
+  if (v40 != 1 && error)
   {
     goto LABEL_22;
   }

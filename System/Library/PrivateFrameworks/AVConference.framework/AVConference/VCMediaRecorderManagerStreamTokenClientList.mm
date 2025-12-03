@@ -1,12 +1,12 @@
 @interface VCMediaRecorderManagerStreamTokenClientList
-- (VCMediaRecorderManagerStreamTokenClientList)initWithStreamToken:(int64_t)a3 mediaRecorder:(id)a4;
+- (VCMediaRecorderManagerStreamTokenClientList)initWithStreamToken:(int64_t)token mediaRecorder:(id)recorder;
 - (id)newContext;
 - (void)dealloc;
 @end
 
 @implementation VCMediaRecorderManagerStreamTokenClientList
 
-- (VCMediaRecorderManagerStreamTokenClientList)initWithStreamToken:(int64_t)a3 mediaRecorder:(id)a4
+- (VCMediaRecorderManagerStreamTokenClientList)initWithStreamToken:(int64_t)token mediaRecorder:(id)recorder
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -15,8 +15,8 @@
   if (v6)
   {
     v6->_clientContextList = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6->_streamToken = a3;
-    v6->_mediaRecorder = a4;
+    v6->_streamToken = token;
+    v6->_mediaRecorder = recorder;
   }
 
   return v6;

@@ -1,35 +1,35 @@
 @interface HKWorkoutRouteDataSource
-- (HKWorkoutRouteDataSource)initWithWorkoutSession:(id)a3;
+- (HKWorkoutRouteDataSource)initWithWorkoutSession:(id)session;
 - (HKWorkoutRouteDataSourceDelegate)delegate;
-- (void)clientRemote_didUpdateAltitude:(id)a3;
-- (void)clientRemote_didUpdateElevation:(id)a3;
-- (void)clientRemote_didUpdateRoute:(id)a3;
+- (void)clientRemote_didUpdateAltitude:(id)altitude;
+- (void)clientRemote_didUpdateElevation:(id)elevation;
+- (void)clientRemote_didUpdateRoute:(id)route;
 - (void)connectionInterrupted;
 - (void)workoutBuilderDidFinish;
 @end
 
 @implementation HKWorkoutRouteDataSource
 
-- (HKWorkoutRouteDataSource)initWithWorkoutSession:(id)a3
+- (HKWorkoutRouteDataSource)initWithWorkoutSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v21.receiver = self;
   v21.super_class = HKWorkoutRouteDataSource;
   v5 = [(HKWorkoutRouteDataSource *)&v21 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v5->_identifier;
-    v5->_identifier = v6;
+    v5->_identifier = uUID;
 
-    v8 = [v4 identifier];
+    identifier = [sessionCopy identifier];
     sessionIdentifier = v5->_sessionIdentifier;
-    v5->_sessionIdentifier = v8;
+    v5->_sessionIdentifier = identifier;
 
     v10 = [HKTaskServerProxyProvider alloc];
-    v11 = [v4 healthStore];
-    v12 = [objc_opt_class() serverIdentifier];
-    v13 = [(HKTaskServerProxyProvider *)v10 initWithHealthStore:v11 taskIdentifier:v12 exportedObject:v5 taskUUID:v5->_identifier];
+    healthStore = [sessionCopy healthStore];
+    serverIdentifier = [objc_opt_class() serverIdentifier];
+    v13 = [(HKTaskServerProxyProvider *)v10 initWithHealthStore:healthStore taskIdentifier:serverIdentifier exportedObject:v5 taskUUID:v5->_identifier];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v13;
 
@@ -67,30 +67,30 @@ void __51__HKWorkoutRouteDataSource_initWithWorkoutSession___block_invoke_2(uint
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)clientRemote_didUpdateElevation:(id)a3
+- (void)clientRemote_didUpdateElevation:(id)elevation
 {
-  v4 = a3;
+  elevationCopy = elevation;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained workoutRouteDataSourceDidUpdateElevation:v4];
+  [WeakRetained workoutRouteDataSourceDidUpdateElevation:elevationCopy];
 }
 
-- (void)clientRemote_didUpdateRoute:(id)a3
+- (void)clientRemote_didUpdateRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained workoutRouteDataSourceDidUpdateRoute:v4];
+  [WeakRetained workoutRouteDataSourceDidUpdateRoute:routeCopy];
 }
 
-- (void)clientRemote_didUpdateAltitude:(id)a3
+- (void)clientRemote_didUpdateAltitude:(id)altitude
 {
-  v7 = a3;
+  altitudeCopy = altitude;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 workoutRouteDataSource:self didUpdateAltitude:v7];
+    [v6 workoutRouteDataSource:self didUpdateAltitude:altitudeCopy];
   }
 }
 

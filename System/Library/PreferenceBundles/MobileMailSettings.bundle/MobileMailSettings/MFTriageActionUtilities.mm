@@ -1,33 +1,33 @@
 @interface MFTriageActionUtilities
-+ (id)actionKeyForTriageAction:(int64_t)a3;
-+ (int64_t)triageActionForActionKey:(id)a3;
++ (id)actionKeyForTriageAction:(int64_t)action;
++ (int64_t)triageActionForActionKey:(id)key;
 @end
 
 @implementation MFTriageActionUtilities
 
-+ (int64_t)triageActionForActionKey:(id)a3
++ (int64_t)triageActionForActionKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = sub_19388();
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:keyCopy];
 
   if (v5)
   {
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
-+ (id)actionKeyForTriageAction:(int64_t)a3
++ (id)actionKeyForTriageAction:(int64_t)action
 {
   v4 = sub_19388();
-  v5 = [NSNumber numberWithInteger:a3];
+  v5 = [NSNumber numberWithInteger:action];
   v6 = [v4 allKeysForObject:v5];
 
   if ([v6 count] == &dword_0 + 1)

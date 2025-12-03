@@ -1,20 +1,20 @@
 @interface HMDHAPAccessoryPrimaryResidentOperationTask
-+ (void)filterAccessoriesByDevicesFromMap:(id)a3 currentDeviceAccessories:(id)a4 otherDeviceAccessories:(id)a5;
-- (HMDHAPAccessoryPrimaryResidentOperationTask)initWithContext:(id)a3 requests:(id)a4 completion:(id)a5;
-- (id)_fallbackTaskForDevice:(id)a3;
-- (id)_makeLocalTaskWithRequests:(id)a3 completion:(id)a4;
-- (id)_makeRemoteWithFallbackTaskWithRequests:(id)a3 delegateDevice:(id)a4 completion:(id)a5;
-- (void)_fanOutRemoteRequests:(id)a3 residentToAccessoriesMap:(id)a4 responseWaitGroup:(id)a5;
-- (void)_processLocalRequests:(id)a3 responseWaitGroup:(id)a4;
++ (void)filterAccessoriesByDevicesFromMap:(id)map currentDeviceAccessories:(id)accessories otherDeviceAccessories:(id)deviceAccessories;
+- (HMDHAPAccessoryPrimaryResidentOperationTask)initWithContext:(id)context requests:(id)requests completion:(id)completion;
+- (id)_fallbackTaskForDevice:(id)device;
+- (id)_makeLocalTaskWithRequests:(id)requests completion:(id)completion;
+- (id)_makeRemoteWithFallbackTaskWithRequests:(id)requests delegateDevice:(id)device completion:(id)completion;
+- (void)_fanOutRemoteRequests:(id)requests residentToAccessoriesMap:(id)map responseWaitGroup:(id)group;
+- (void)_processLocalRequests:(id)requests responseWaitGroup:(id)group;
 - (void)execute;
 @end
 
 @implementation HMDHAPAccessoryPrimaryResidentOperationTask
 
-- (id)_makeLocalTaskWithRequests:(id)a3 completion:(id)a4
+- (id)_makeLocalTaskWithRequests:(id)requests completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  completionCopy = completion;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -26,11 +26,11 @@
   objc_exception_throw(v13);
 }
 
-- (id)_makeRemoteWithFallbackTaskWithRequests:(id)a3 delegateDevice:(id)a4 completion:(id)a5
+- (id)_makeRemoteWithFallbackTaskWithRequests:(id)requests delegateDevice:(id)device completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestsCopy = requests;
+  deviceCopy = device;
+  completionCopy = completion;
   v11 = MEMORY[0x277CBEAD8];
   v12 = *MEMORY[0x277CBE658];
   v13 = MEMORY[0x277CCACA8];
@@ -42,22 +42,22 @@
   objc_exception_throw(v16);
 }
 
-- (id)_fallbackTaskForDevice:(id)a3
+- (id)_fallbackTaskForDevice:(id)device
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = deviceCopy;
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(HMDHAPAccessoryPrimaryResidentOperationTask *)self remoteFallbackTasks];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  remoteFallbackTasks = [(HMDHAPAccessoryPrimaryResidentOperationTask *)self remoteFallbackTasks];
+  v7 = [remoteFallbackTasks countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = *v21;
@@ -67,7 +67,7 @@
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(remoteFallbackTasks);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
@@ -84,12 +84,12 @@
 
         v12 = v11;
 
-        v13 = [v12 remoteTask];
+        remoteTask = [v12 remoteTask];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = v13;
+          v14 = remoteTask;
         }
 
         else
@@ -99,8 +99,8 @@
 
         v15 = v14;
 
-        v16 = [v15 delegateDevice];
-        v17 = [v16 isEqual:v5];
+        delegateDevice = [v15 delegateDevice];
+        v17 = [delegateDevice isEqual:v5];
 
         if (v17)
         {
@@ -110,7 +110,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v7 = [remoteFallbackTasks countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v7)
       {
         continue;
@@ -127,42 +127,42 @@ LABEL_18:
   return v7;
 }
 
-- (void)_processLocalRequests:(id)a3 responseWaitGroup:(id)a4
+- (void)_processLocalRequests:(id)requests responseWaitGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mutableCopy];
-  v9 = [MEMORY[0x277CBEB18] array];
+  requestsCopy = requests;
+  groupCopy = group;
+  v8 = [requestsCopy mutableCopy];
+  array = [MEMORY[0x277CBEB18] array];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __87__HMDHAPAccessoryPrimaryResidentOperationTask__processLocalRequests_responseWaitGroup___block_invoke;
   v22[3] = &unk_279735090;
   v22[4] = self;
-  migrateRequestsPassingTest(v8, v9, v22);
-  if (([v9 hmf_isEmpty] & 1) == 0)
+  migrateRequestsPassingTest(v8, array, v22);
+  if (([array hmf_isEmpty] & 1) == 0)
   {
     v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:4];
-    v11 = [HMDCharacteristicResponse responsesWithRequests:v9 error:v10];
+    v11 = [HMDCharacteristicResponse responsesWithRequests:array error:v10];
 
-    v12 = [(HMDHAPAccessoryTask *)self completion];
-    (v12)[2](v12, v11);
+    completion = [(HMDHAPAccessoryTask *)self completion];
+    (completion)[2](completion, v11);
   }
 
   if (([v8 hmf_isEmpty] & 1) == 0)
   {
-    dispatch_group_enter(v7);
+    dispatch_group_enter(groupCopy);
     objc_initWeak(&location, self);
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __87__HMDHAPAccessoryPrimaryResidentOperationTask__processLocalRequests_responseWaitGroup___block_invoke_432;
     v18 = &unk_2797353F8;
     objc_copyWeak(&v20, &location);
-    v19 = v7;
+    v19 = groupCopy;
     v13 = [(HMDHAPAccessoryPrimaryResidentOperationTask *)self _makeLocalTaskWithRequests:v8 completion:&v15];
     [(HMDHAPAccessoryPrimaryResidentOperationTask *)self setLocalTask:v13, v15, v16, v17, v18];
 
-    v14 = [(HMDHAPAccessoryPrimaryResidentOperationTask *)self localTask];
-    [v14 execute];
+    localTask = [(HMDHAPAccessoryPrimaryResidentOperationTask *)self localTask];
+    [localTask execute];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(&location);
@@ -320,27 +320,27 @@ void __87__HMDHAPAccessoryPrimaryResidentOperationTask__processLocalRequests_res
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fanOutRemoteRequests:(id)a3 residentToAccessoriesMap:(id)a4 responseWaitGroup:(id)a5
+- (void)_fanOutRemoteRequests:(id)requests residentToAccessoriesMap:(id)map responseWaitGroup:(id)group
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v31 = a4;
-  v9 = a5;
-  v30 = v8;
-  if (([v8 hmf_isEmpty] & 1) == 0)
+  requestsCopy = requests;
+  mapCopy = map;
+  groupCopy3 = group;
+  v30 = requestsCopy;
+  if (([requestsCopy hmf_isEmpty] & 1) == 0)
   {
-    group = v9;
-    v29 = [MEMORY[0x277CBEB18] array];
-    v10 = [(HMDHAPAccessoryTask *)self context];
-    v11 = [v10 user];
-    v12 = accessoryRequestMapFromRequests(v8, v29, v11);
+    group = groupCopy3;
+    array = [MEMORY[0x277CBEB18] array];
+    context = [(HMDHAPAccessoryTask *)self context];
+    user = [context user];
+    v12 = accessoryRequestMapFromRequests(requestsCopy, array, user);
 
-    [(HMDHAPAccessoryTask *)self addCharacteristicResponses:v29 isRemote:0];
+    [(HMDHAPAccessoryTask *)self addCharacteristicResponses:array isRemote:0];
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    obj = v31;
+    obj = mapCopy;
     v34 = [obj countByEnumeratingWithState:&v45 objects:v50 count:16];
     if (v34)
     {
@@ -356,7 +356,7 @@ void __87__HMDHAPAccessoryPrimaryResidentOperationTask__processLocalRequests_res
 
           v14 = *(*(&v45 + 1) + 8 * i);
           v15 = [obj objectForKey:v14];
-          v16 = [MEMORY[0x277CBEB18] array];
+          array2 = [MEMORY[0x277CBEB18] array];
           v43 = 0u;
           v44 = 0u;
           v41 = 0u;
@@ -376,7 +376,7 @@ void __87__HMDHAPAccessoryPrimaryResidentOperationTask__processLocalRequests_res
                 }
 
                 v21 = [v12 objectForKey:*(*(&v41 + 1) + 8 * j)];
-                [v16 addObjectsFromArray:v21];
+                [array2 addObjectsFromArray:v21];
               }
 
               v18 = [v17 countByEnumeratingWithState:&v41 objects:v49 count:16];
@@ -385,32 +385,32 @@ void __87__HMDHAPAccessoryPrimaryResidentOperationTask__processLocalRequests_res
             while (v18);
           }
 
-          if (([v16 hmf_isEmpty] & 1) == 0)
+          if (([array2 hmf_isEmpty] & 1) == 0)
           {
             dispatch_group_enter(group);
             objc_initWeak(&location, self);
-            v22 = [v16 copy];
-            v23 = [v14 device];
+            v22 = [array2 copy];
+            device = [v14 device];
             v36[0] = MEMORY[0x277D85DD0];
             v36[1] = 3221225472;
             v36[2] = __112__HMDHAPAccessoryPrimaryResidentOperationTask__fanOutRemoteRequests_residentToAccessoriesMap_responseWaitGroup___block_invoke;
             v36[3] = &unk_2797353D0;
             objc_copyWeak(&v39, &location);
-            v37 = group;
+            groupCopy2 = group;
             v38 = v14;
-            v24 = [(HMDHAPAccessoryPrimaryResidentOperationTask *)self _makeRemoteWithFallbackTaskWithRequests:v22 delegateDevice:v23 completion:v36];
+            v24 = [(HMDHAPAccessoryPrimaryResidentOperationTask *)self _makeRemoteWithFallbackTaskWithRequests:v22 delegateDevice:device completion:v36];
 
-            v25 = [(HMDHAPAccessoryPrimaryResidentOperationTask *)self remoteFallbackTasks];
-            LODWORD(v23) = v25 == 0;
+            remoteFallbackTasks = [(HMDHAPAccessoryPrimaryResidentOperationTask *)self remoteFallbackTasks];
+            LODWORD(device) = remoteFallbackTasks == 0;
 
-            if (v23)
+            if (device)
             {
-              v26 = [MEMORY[0x277CBEB18] array];
-              [(HMDHAPAccessoryPrimaryResidentOperationTask *)self setRemoteFallbackTasks:v26];
+              array3 = [MEMORY[0x277CBEB18] array];
+              [(HMDHAPAccessoryPrimaryResidentOperationTask *)self setRemoteFallbackTasks:array3];
             }
 
-            v27 = [(HMDHAPAccessoryPrimaryResidentOperationTask *)self remoteFallbackTasks];
-            [v27 addObject:v24];
+            remoteFallbackTasks2 = [(HMDHAPAccessoryPrimaryResidentOperationTask *)self remoteFallbackTasks];
+            [remoteFallbackTasks2 addObject:v24];
 
             [v24 execute];
             objc_destroyWeak(&v39);
@@ -424,7 +424,7 @@ void __87__HMDHAPAccessoryPrimaryResidentOperationTask__processLocalRequests_res
       while (v34);
     }
 
-    v9 = group;
+    groupCopy3 = group;
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -481,18 +481,18 @@ void __112__HMDHAPAccessoryPrimaryResidentOperationTask__fanOutRemoteRequests_re
 
 - (void)execute
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(HMDHAPAccessoryTask *)self setExecutionTime:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(HMDHAPAccessoryTask *)self setExecutionTime:date];
 
   v4 = dispatch_group_create();
-  v5 = [(HMDHAPAccessoryTask *)self requests];
-  v6 = [v5 mutableCopy];
+  requests = [(HMDHAPAccessoryTask *)self requests];
+  v6 = [requests mutableCopy];
 
-  v7 = [MEMORY[0x277CBEB18] array];
-  migrateRequestsPassingTest(v6, v7, &__block_literal_global_428);
+  array = [MEMORY[0x277CBEB18] array];
+  migrateRequestsPassingTest(v6, array, &__block_literal_global_428);
   v8 = [v6 na_map:&__block_literal_global_431_189811];
-  v9 = [(HMDHAPAccessoryTask *)self context];
-  v10 = [v9 residentMapForAccessories:v8];
+  context = [(HMDHAPAccessoryTask *)self context];
+  v10 = [context residentMapForAccessories:v8];
 
   v11 = [MEMORY[0x277CBEB58] set];
   v12 = [MEMORY[0x277CBEB58] set];
@@ -505,16 +505,16 @@ void __112__HMDHAPAccessoryPrimaryResidentOperationTask__fanOutRemoteRequests_re
   v19 = v12;
   v13 = v12;
   v14 = v11;
-  migrateRequestsPassingTest(v6, v7, v17);
+  migrateRequestsPassingTest(v6, array, v17);
   [(HMDHAPAccessoryPrimaryResidentOperationTask *)self _fanOutRemoteRequests:v6 residentToAccessoriesMap:v10 responseWaitGroup:v4];
-  [(HMDHAPAccessoryPrimaryResidentOperationTask *)self _processLocalRequests:v7 responseWaitGroup:v4];
-  v15 = [(HMDHAPAccessoryTask *)self workQueue];
+  [(HMDHAPAccessoryPrimaryResidentOperationTask *)self _processLocalRequests:array responseWaitGroup:v4];
+  workQueue = [(HMDHAPAccessoryTask *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__HMDHAPAccessoryPrimaryResidentOperationTask_execute__block_invoke_4;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_group_notify(v4, v15, block);
+  dispatch_group_notify(v4, workQueue, block);
 }
 
 uint64_t __54__HMDHAPAccessoryPrimaryResidentOperationTask_execute__block_invoke_3(uint64_t a1, void *a2)
@@ -571,24 +571,24 @@ uint64_t __54__HMDHAPAccessoryPrimaryResidentOperationTask_execute__block_invoke
   return v6;
 }
 
-- (HMDHAPAccessoryPrimaryResidentOperationTask)initWithContext:(id)a3 requests:(id)a4 completion:(id)a5
+- (HMDHAPAccessoryPrimaryResidentOperationTask)initWithContext:(id)context requests:(id)requests completion:(id)completion
 {
   v6.receiver = self;
   v6.super_class = HMDHAPAccessoryPrimaryResidentOperationTask;
-  return [(HMDHAPAccessoryTask *)&v6 initWithContext:a3 requests:a4 completion:a5];
+  return [(HMDHAPAccessoryTask *)&v6 initWithContext:context requests:requests completion:completion];
 }
 
-+ (void)filterAccessoriesByDevicesFromMap:(id)a3 currentDeviceAccessories:(id)a4 otherDeviceAccessories:(id)a5
++ (void)filterAccessoriesByDevicesFromMap:(id)map currentDeviceAccessories:(id)accessories otherDeviceAccessories:(id)deviceAccessories
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  mapCopy = map;
+  accessoriesCopy = accessories;
+  deviceAccessoriesCopy = deviceAccessories;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v10 = [mapCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -599,25 +599,25 @@ uint64_t __54__HMDHAPAccessoryPrimaryResidentOperationTask_execute__block_invoke
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(mapCopy);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [v7 objectForKey:v14];
+        v15 = [mapCopy objectForKey:v14];
         if ([v14 isCurrentDevice])
         {
-          v16 = v8;
+          v16 = accessoriesCopy;
         }
 
         else
         {
-          v16 = v9;
+          v16 = deviceAccessoriesCopy;
         }
 
         [v16 addObjectsFromArray:v15];
       }
 
-      v11 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [mapCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);

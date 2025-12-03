@@ -6,11 +6,11 @@
 
 - (NSString)systemShellHostingSpaceIdentifier
 {
-  v2 = [(FBSSceneComponent *)self clientScene];
-  v3 = [v2 settings];
-  v4 = [v3 systemShellHostingSpaceIdentifier];
+  clientScene = [(FBSSceneComponent *)self clientScene];
+  settings = [clientScene settings];
+  systemShellHostingSpaceIdentifier = [settings systemShellHostingSpaceIdentifier];
 
-  return v4;
+  return systemShellHostingSpaceIdentifier;
 }
 
 @end

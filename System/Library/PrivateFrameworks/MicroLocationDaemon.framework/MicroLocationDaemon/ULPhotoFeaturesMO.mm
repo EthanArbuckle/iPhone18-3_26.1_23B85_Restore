@@ -1,22 +1,22 @@
 @interface ULPhotoFeaturesMO
-+ (id)createFromDO:(const void *)a3 withScanningEventMO:(id)a4 inManagedObjectContext:(id)a5;
++ (id)createFromDO:(const void *)o withScanningEventMO:(id)mO inManagedObjectContext:(id)context;
 - (optional<ULPhotoFeaturesDO>)convertToDO;
 @end
 
 @implementation ULPhotoFeaturesMO
 
-+ (id)createFromDO:(const void *)a3 withScanningEventMO:(id)a4 inManagedObjectContext:(id)a5
++ (id)createFromDO:(const void *)o withScanningEventMO:(id)mO inManagedObjectContext:(id)context
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [[ULPhotoFeaturesMO alloc] initWithContext:v8];
-  [(ULPhotoFeaturesMO *)v9 setScanningEvent:v7];
+  mOCopy = mO;
+  contextCopy = context;
+  v9 = [[ULPhotoFeaturesMO alloc] initWithContext:contextCopy];
+  [(ULPhotoFeaturesMO *)v9 setScanningEvent:mOCopy];
   v10 = MEMORY[0x277CBEA90];
-  v11 = [MEMORY[0x277CBEA60] fromFloatVector:a3];
+  v11 = [MEMORY[0x277CBEA60] fromFloatVector:o];
   v12 = [v10 fromNSArray:v11];
   [(ULPhotoFeaturesMO *)v9 setFeatures:v12];
 
-  [(ULPhotoFeaturesMO *)v9 setTimestamp:*(a3 + 3)];
+  [(ULPhotoFeaturesMO *)v9 setTimestamp:*(o + 3)];
 
   return v9;
 }
@@ -24,8 +24,8 @@
 - (optional<ULPhotoFeaturesDO>)convertToDO
 {
   v4 = MEMORY[0x277CBEA60];
-  v5 = [(ULPhotoFeaturesMO *)self features];
-  v6 = [v5 toNSArrayWithElementType:objc_opt_class()];
+  features = [(ULPhotoFeaturesMO *)self features];
+  v6 = [features toNSArrayWithElementType:objc_opt_class()];
   [v4 toFloatVector:v6];
   [(ULPhotoFeaturesMO *)self timestamp];
   v11 = v7;

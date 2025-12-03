@@ -5,51 +5,51 @@
 - (MRUNowPlayingController)nowPlayingController;
 - (NSArray)restrictedRects;
 - (id)_stateDumpObject;
-- (id)_timelinesForDateInterval:(id)a3;
+- (id)_timelinesForDateInterval:(id)interval;
 - (id)backlightSceneEnvironment;
-- (void)_updateWithFrameSpecifier:(id)a3;
+- (void)_updateWithFrameSpecifier:(id)specifier;
 - (void)createHapticViewController;
 - (void)createNowPlayingController;
 - (void)createSuggestionsViewController;
 - (void)createWaveformViewController;
 - (void)dealloc;
-- (void)didSelectArtworkView:(id)a3;
-- (void)didSelectLabelView:(id)a3;
-- (void)invalidateAllTimelinesForReason:(id)a3;
+- (void)didSelectArtworkView:(id)view;
+- (void)didSelectLabelView:(id)view;
+- (void)invalidateAllTimelinesForReason:(id)reason;
 - (void)loadView;
-- (void)mediaSuggestionsViewController:(id)a3 didSelectSuggestion:(id)a4 completion:(id)a5;
-- (void)nowPlayingController:(id)a3 endpointController:(id)a4 didChangeRoute:(id)a5;
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeBundleID:(id)a5;
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeNowPlayingInfo:(id)a5;
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeTimeControls:(id)a5;
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeTransportControls:(id)a5;
-- (void)nowPlayingController:(id)a3 tvRemoteController:(id)a4 didChangeShowTVRemote:(BOOL)a5;
+- (void)mediaSuggestionsViewController:(id)controller didSelectSuggestion:(id)suggestion completion:(id)completion;
+- (void)nowPlayingController:(id)controller endpointController:(id)endpointController didChangeRoute:(id)route;
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeBundleID:(id)d;
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeNowPlayingInfo:(id)info;
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeTimeControls:(id)controls;
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeTransportControls:(id)controls;
+- (void)nowPlayingController:(id)controller tvRemoteController:(id)remoteController didChangeShowTVRemote:(BOOL)remote;
 - (void)registerHapticObserver;
-- (void)setOnScreen:(BOOL)a3;
-- (void)setShowArtworkView:(BOOL)a3 completion:(id)a4;
-- (void)transportControlsView:(id)a3 didSelectRoutingButton:(id)a4;
-- (void)transportControlsView:(id)a3 didSelectTVRemoteButton:(id)a4;
+- (void)setOnScreen:(BOOL)screen;
+- (void)setShowArtworkView:(BOOL)view completion:(id)completion;
+- (void)transportControlsView:(id)view didSelectRoutingButton:(id)button;
+- (void)transportControlsView:(id)view didSelectTVRemoteButton:(id)button;
 - (void)updateArtwork;
 - (void)updateDimmed;
 - (void)updateEverything;
-- (void)updateLayoutDependantPropertiesWithCompletion:(id)a3;
-- (void)updateLayoutWithAnimations:(id)a3 completion:(id)a4;
+- (void)updateLayoutDependantPropertiesWithCompletion:(id)completion;
+- (void)updateLayoutWithAnimations:(id)animations completion:(id)completion;
 - (void)updateNowPlayingInfo;
 - (void)updatePreferredContentSize;
 - (void)updateRestrictedRects;
 - (void)updateRouteLabel;
-- (void)updateRoutingButtonAnimated:(BOOL)a3;
+- (void)updateRoutingButtonAnimated:(BOOL)animated;
 - (void)updateSuggestions;
-- (void)updateTimeControlsForPresentationInterval:(id)a3;
+- (void)updateTimeControlsForPresentationInterval:(id)interval;
 - (void)updateTransportControls;
 - (void)updateVisibility;
 - (void)updateVolumeControls;
 - (void)updateWaveformVisibility;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MRULockscreenViewController
@@ -72,30 +72,30 @@
   v22[3] = &unk_1E7664C58;
   v22[4] = self;
   self->_stateHandle = __42__MRULockscreenViewController_viewDidLoad__block_invoke(v22);
-  v3 = [(MRULockscreenViewController *)self view];
-  [v3 setContentEdgeInsets:{14.0, 14.0, 14.0, 14.0}];
+  view = [(MRULockscreenViewController *)self view];
+  [view setContentEdgeInsets:{14.0, 14.0, 14.0, 14.0}];
 
   self->_showArtworkView = 1;
-  v4 = [(MRULockscreenViewController *)self view];
-  v5 = [v4 artworkView];
-  [v5 addObserver:self];
+  view2 = [(MRULockscreenViewController *)self view];
+  artworkView = [view2 artworkView];
+  [artworkView addObserver:self];
 
-  v6 = [(MRULockscreenViewController *)self view];
-  v7 = [v6 artworkView];
-  [v7 addTarget:self action:sel_didSelectArtworkView_ forControlEvents:64];
+  view3 = [(MRULockscreenViewController *)self view];
+  artworkView2 = [view3 artworkView];
+  [artworkView2 addTarget:self action:sel_didSelectArtworkView_ forControlEvents:64];
 
-  v8 = [(MRULockscreenViewController *)self view];
-  v9 = [v8 headerView];
-  v10 = [v9 labelView];
-  [v10 addTarget:self action:sel_didSelectLabelView_ forControlEvents:64];
+  view4 = [(MRULockscreenViewController *)self view];
+  headerView = [view4 headerView];
+  labelView = [headerView labelView];
+  [labelView addTarget:self action:sel_didSelectLabelView_ forControlEvents:64];
 
-  v11 = [(MRULockscreenViewController *)self view];
-  v12 = [v11 transportControlsView];
-  [v12 setDelegate:self];
+  view5 = [(MRULockscreenViewController *)self view];
+  transportControlsView = [view5 transportControlsView];
+  [transportControlsView setDelegate:self];
 
-  v13 = [(MRULockscreenViewController *)self view];
-  v14 = [v13 volumeControlsView];
-  [v14 setDelegate:self];
+  view6 = [(MRULockscreenViewController *)self view];
+  volumeControlsView = [view6 volumeControlsView];
+  [volumeControlsView setDelegate:self];
 
   v25[0] = objc_opt_class();
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
@@ -109,8 +109,8 @@
   [v19 addObserver:self];
 
   v20 = +[MRUVisualStylingProvider stylingProviderForLockScreenPlatters];
-  v21 = [(MRULockscreenViewController *)self view];
-  [v21 setStylingProvider:v20];
+  view7 = [(MRULockscreenViewController *)self view];
+  [view7 setStylingProvider:v20];
 
   [(MRULockscreenViewController *)self createNowPlayingController];
   [(MRULockscreenViewController *)self createWaveformViewController];
@@ -160,33 +160,33 @@ id __42__MRULockscreenViewController_viewDidLoad__block_invoke_2(uint64_t a1, ui
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MRULockscreenViewController;
-  [(MRULockscreenViewController *)&v4 viewWillAppear:a3];
+  [(MRULockscreenViewController *)&v4 viewWillAppear:appear];
   [(MRULockscreenViewController *)self setOnScreen:1];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = MRULockscreenViewController;
-  [(MRULockscreenViewController *)&v4 viewWillDisappear:a3];
+  [(MRULockscreenViewController *)&v4 viewWillDisappear:disappear];
   [(MRULockscreenViewController *)self setOnScreen:0];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = MRULockscreenViewController;
-  [(MRULockscreenViewController *)&v8 viewWillTransitionToSize:a4 withTransitionCoordinator:?];
-  v7 = [(MRULockscreenViewController *)self delegate];
+  [(MRULockscreenViewController *)&v8 viewWillTransitionToSize:coordinator withTransitionCoordinator:?];
+  delegate = [(MRULockscreenViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 lockscreenViewController:self viewWillTransitionToSize:{width, height}];
+    [delegate lockscreenViewController:self viewWillTransitionToSize:{width, height}];
   }
 }
 
@@ -207,21 +207,21 @@ id __42__MRULockscreenViewController_viewDidLoad__block_invoke_2(uint64_t a1, ui
   [(MRULockscreenViewController *)self updateRestrictedRects];
 }
 
-- (void)setOnScreen:(BOOL)a3
+- (void)setOnScreen:(BOOL)screen
 {
-  if (self->_onScreen != a3)
+  if (self->_onScreen != screen)
   {
-    v4 = a3;
-    self->_onScreen = a3;
-    v6 = [(MRULockscreenViewController *)self nowPlayingController];
-    [v6 updateAutomaticResponseLoading];
+    screenCopy = screen;
+    self->_onScreen = screen;
+    nowPlayingController = [(MRULockscreenViewController *)self nowPlayingController];
+    [nowPlayingController updateAutomaticResponseLoading];
 
-    v7 = [(MRULockscreenViewController *)self nowPlayingController];
-    v8 = [v7 mediaSuggestionsController];
-    [v8 refreshMediaSuggestions];
+    nowPlayingController2 = [(MRULockscreenViewController *)self nowPlayingController];
+    mediaSuggestionsController = [nowPlayingController2 mediaSuggestionsController];
+    [mediaSuggestionsController refreshMediaSuggestions];
 
-    v9 = [(MRULockscreenViewController *)self view];
-    [v9 setOnScreen:v4];
+    view = [(MRULockscreenViewController *)self view];
+    [view setOnScreen:screenCopy];
 
     [(MRULockscreenViewController *)self updateEverything];
   }
@@ -241,66 +241,66 @@ id __42__MRULockscreenViewController_viewDidLoad__block_invoke_2(uint64_t a1, ui
 
 - (MRUArtworkView)artworkView
 {
-  v2 = [(MRULockscreenViewController *)self view];
-  v3 = [v2 artworkView];
+  view = [(MRULockscreenViewController *)self view];
+  artworkView = [view artworkView];
 
-  return v3;
+  return artworkView;
 }
 
 - (BOOL)isShowingMediaSuggestions
 {
-  v2 = [(MRULockscreenViewController *)self view];
-  v3 = [v2 showSuggestionsView];
+  view = [(MRULockscreenViewController *)self view];
+  showSuggestionsView = [view showSuggestionsView];
 
-  return v3;
+  return showSuggestionsView;
 }
 
-- (void)setShowArtworkView:(BOOL)a3 completion:(id)a4
+- (void)setShowArtworkView:(BOOL)view completion:(id)completion
 {
-  if (self->_showArtworkView != a3)
+  if (self->_showArtworkView != view)
   {
-    self->_showArtworkView = a3;
-    v6 = a4;
+    self->_showArtworkView = view;
+    completionCopy = completion;
     [(MRULockscreenViewController *)self updateArtwork];
-    [(MRULockscreenViewController *)self updateLayoutDependantPropertiesWithCompletion:v6];
+    [(MRULockscreenViewController *)self updateLayoutDependantPropertiesWithCompletion:completionCopy];
   }
 }
 
 - (NSArray)restrictedRects
 {
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:4];
-  v4 = [(MRULockscreenViewController *)self view];
-  if ([v4 showSuggestionsView])
+  view = [(MRULockscreenViewController *)self view];
+  if ([view showSuggestionsView])
   {
-    v5 = [(MRULockscreenViewController *)self view];
-    v6 = [v5 suggestionsView];
+    view2 = [(MRULockscreenViewController *)self view];
+    suggestionsView = [view2 suggestionsView];
 
-    if (!v6)
+    if (!suggestionsView)
     {
       goto LABEL_5;
     }
 
-    v7 = [(MRULockscreenViewController *)self view];
-    v8 = [v7 suggestionsView];
-    [v8 frame];
+    view3 = [(MRULockscreenViewController *)self view];
+    suggestionsView2 = [view3 suggestionsView];
+    [suggestionsView2 frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
 
-    v4 = [MEMORY[0x1E696B098] valueWithRect:{v10, v12, v14, v16}];
-    [v3 addObject:v4];
+    view = [MEMORY[0x1E696B098] valueWithRect:{v10, v12, v14, v16}];
+    [v3 addObject:view];
   }
 
 LABEL_5:
-  v17 = [(MRULockscreenViewController *)self view];
-  v18 = [v17 showArtworkView];
+  view4 = [(MRULockscreenViewController *)self view];
+  showArtworkView = [view4 showArtworkView];
 
-  if (v18)
+  if (showArtworkView)
   {
-    v19 = [(MRULockscreenViewController *)self view];
-    v20 = [v19 artworkView];
-    [v20 frame];
+    view5 = [(MRULockscreenViewController *)self view];
+    artworkView = [view5 artworkView];
+    [artworkView frame];
     v22 = v21;
     v24 = v23;
     v26 = v25;
@@ -310,9 +310,9 @@ LABEL_5:
     [v3 addObject:v29];
   }
 
-  v30 = [(MRULockscreenViewController *)self view];
-  v31 = [v30 headerView];
-  [v31 frame];
+  view6 = [(MRULockscreenViewController *)self view];
+  headerView = [view6 headerView];
+  [headerView frame];
   v33 = v32;
   v35 = v34;
   v37 = v36;
@@ -321,30 +321,30 @@ LABEL_5:
   v40 = [MEMORY[0x1E696B098] valueWithRect:{v33, v35, v37, v39}];
   [v3 addObject:v40];
 
-  v41 = [(MRULockscreenViewController *)self view];
-  v42 = [v41 timeControlsView];
-  [v42 frame];
+  view7 = [(MRULockscreenViewController *)self view];
+  timeControlsView = [view7 timeControlsView];
+  [timeControlsView frame];
 
   UIRectInset();
   v43 = [MEMORY[0x1E696B098] valueWithRect:?];
   [v3 addObject:v43];
 
-  v44 = [(MRULockscreenViewController *)self view];
-  v45 = [v44 transportControlsView];
-  [v45 frame];
+  view8 = [(MRULockscreenViewController *)self view];
+  transportControlsView = [view8 transportControlsView];
+  [transportControlsView frame];
 
   UIRectInset();
   v46 = [MEMORY[0x1E696B098] valueWithRect:?];
   [v3 addObject:v46];
 
-  v47 = [(MRULockscreenViewController *)self view];
-  LODWORD(v45) = [v47 showVolumeControlsView];
+  view9 = [(MRULockscreenViewController *)self view];
+  LODWORD(transportControlsView) = [view9 showVolumeControlsView];
 
-  if (v45)
+  if (transportControlsView)
   {
-    v48 = [(MRULockscreenViewController *)self view];
-    v49 = [v48 volumeControlsView];
-    [v49 frame];
+    view10 = [(MRULockscreenViewController *)self view];
+    volumeControlsView = [view10 volumeControlsView];
+    [volumeControlsView frame];
 
     UIRectInset();
     v50 = [MEMORY[0x1E696B098] valueWithRect:?];
@@ -356,35 +356,35 @@ LABEL_5:
   return v51;
 }
 
-- (void)didSelectArtworkView:(id)a3
+- (void)didSelectArtworkView:(id)view
 {
-  v4 = a3;
-  v5 = [(MRULockscreenViewController *)self delegate];
-  v6 = [v5 lockscreenViewController:self didSelectArtworkView:v4];
+  viewCopy = view;
+  delegate = [(MRULockscreenViewController *)self delegate];
+  v6 = [delegate lockscreenViewController:self didSelectArtworkView:viewCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
-    [v7 launchNowPlayingApp];
+    endpointController = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
+    [endpointController launchNowPlayingApp];
   }
 }
 
-- (void)didSelectLabelView:(id)a3
+- (void)didSelectLabelView:(id)view
 {
-  v3 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
-  [v3 launchNowPlayingApp];
+  endpointController = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
+  [endpointController launchNowPlayingApp];
 }
 
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeBundleID:(id)a5
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeBundleID:(id)d
 {
-  [(MRULockscreenViewController *)self updateRoutingButton:a3];
+  [(MRULockscreenViewController *)self updateRoutingButton:controller];
 
   [(MRULockscreenViewController *)self updateNowPlayingInfo];
 }
 
-- (void)nowPlayingController:(id)a3 endpointController:(id)a4 didChangeRoute:(id)a5
+- (void)nowPlayingController:(id)controller endpointController:(id)endpointController didChangeRoute:(id)route
 {
-  [(MRULockscreenViewController *)self updateRouteLabel:a3];
+  [(MRULockscreenViewController *)self updateRouteLabel:controller];
   [(MRULockscreenViewController *)self updateVolumeControls];
   [(MRULockscreenViewController *)self updateWaveformVisibility];
   [(MRULockscreenViewController *)self updateRoutingButtonAnimated:1];
@@ -392,70 +392,70 @@ LABEL_5:
   [(MRULockscreenViewController *)self invalidateAllTimelinesForReason:@"route changed"];
 }
 
-- (void)nowPlayingController:(id)a3 tvRemoteController:(id)a4 didChangeShowTVRemote:(BOOL)a5
+- (void)nowPlayingController:(id)controller tvRemoteController:(id)remoteController didChangeShowTVRemote:(BOOL)remote
 {
-  v6 = [a4 showTVRemote];
-  v8 = [(MRULockscreenViewController *)self view];
-  v7 = [v8 transportControlsView];
-  [v7 setShowTVRemoteButton:v6];
+  showTVRemote = [remoteController showTVRemote];
+  view = [(MRULockscreenViewController *)self view];
+  transportControlsView = [view transportControlsView];
+  [transportControlsView setShowTVRemoteButton:showTVRemote];
 }
 
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeNowPlayingInfo:(id)a5
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeNowPlayingInfo:(id)info
 {
-  [(MRULockscreenViewController *)self updateNowPlayingInfo:a3];
+  [(MRULockscreenViewController *)self updateNowPlayingInfo:controller];
 
   [(MRULockscreenViewController *)self invalidateAllTimelinesForReason:@"now playing info changed"];
 }
 
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeTimeControls:(id)a5
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeTimeControls:(id)controls
 {
-  [(MRULockscreenViewController *)self updateTimeControls:a3];
+  [(MRULockscreenViewController *)self updateTimeControls:controller];
 
   [(MRULockscreenViewController *)self invalidateAllTimelinesForReason:@"time controls changed"];
 }
 
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeTransportControls:(id)a5
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeTransportControls:(id)controls
 {
-  [(MRULockscreenViewController *)self updateTransportControls:a3];
+  [(MRULockscreenViewController *)self updateTransportControls:controller];
 
   [(MRULockscreenViewController *)self invalidateAllTimelinesForReason:@"transport controls changed"];
 }
 
-- (void)mediaSuggestionsViewController:(id)a3 didSelectSuggestion:(id)a4 completion:(id)a5
+- (void)mediaSuggestionsViewController:(id)controller didSelectSuggestion:(id)suggestion completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   nowPlayingController = self->_nowPlayingController;
-  v9 = a4;
-  v10 = [(MRUNowPlayingController *)nowPlayingController mediaSuggestionsController];
+  suggestionCopy = suggestion;
+  mediaSuggestionsController = [(MRUNowPlayingController *)nowPlayingController mediaSuggestionsController];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __93__MRULockscreenViewController_mediaSuggestionsViewController_didSelectSuggestion_completion___block_invoke;
   v12[3] = &unk_1E76661F8;
-  v13 = v7;
-  v11 = v7;
-  [v10 playSuggestion:v9 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [mediaSuggestionsController playSuggestion:suggestionCopy completion:v12];
 }
 
-- (void)transportControlsView:(id)a3 didSelectTVRemoteButton:(id)a4
+- (void)transportControlsView:(id)view didSelectTVRemoteButton:(id)button
 {
-  v4 = [(MRUNowPlayingController *)self->_nowPlayingController tvRemoteController:a3];
+  v4 = [(MRUNowPlayingController *)self->_nowPlayingController tvRemoteController:view];
   [v4 presentTVRemoteUsingApp:0];
 }
 
-- (void)transportControlsView:(id)a3 didSelectRoutingButton:(id)a4
+- (void)transportControlsView:(id)view didSelectRoutingButton:(id)button
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  buttonCopy = button;
   v8 = objc_alloc_init(MEMORY[0x1E69705B8]);
   if (!+[MRUFeatureFlagProvider isCayenneEnabled])
   {
-    v9 = [MEMORY[0x1E696AAE8] mainBundle];
-    v10 = [v9 bundleIdentifier];
-    [v8 setPresentingAppBundleID:v10];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [v8 setPresentingAppBundleID:bundleIdentifier];
 
-    v11 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
-    v12 = [v11 routeUID];
-    [v8 setRouteUID:v12];
+    endpointController = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
+    routeUID = [endpointController routeUID];
+    [v8 setRouteUID:routeUID];
   }
 
   [v8 setSurface:2];
@@ -490,24 +490,24 @@ void __76__MRULockscreenViewController_transportControlsView_didSelectRoutingBut
 
 - (void)registerHapticObserver
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_handleHapticEnabledStatusChangedNotification_ name:*MEMORY[0x1E696F718] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleHapticEnabledStatusChangedNotification_ name:*MEMORY[0x1E696F718] object:0];
 }
 
-- (id)_timelinesForDateInterval:(id)a3
+- (id)_timelinesForDateInterval:(id)interval
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = [(MRULockscreenViewController *)self traitCollection];
-  if ([v4 mr_shouldDim])
+  traitCollection = [(MRULockscreenViewController *)self traitCollection];
+  if ([traitCollection mr_shouldDim])
   {
-    v5 = [(MRUNowPlayingController *)self->_nowPlayingController metadataController];
-    v6 = [v5 nowPlayingInfo];
-    v7 = [v6 isPlaying];
+    metadataController = [(MRUNowPlayingController *)self->_nowPlayingController metadataController];
+    nowPlayingInfo = [metadataController nowPlayingInfo];
+    isPlaying = [nowPlayingInfo isPlaying];
 
-    if (v7)
+    if (isPlaying)
     {
-      v8 = [MEMORY[0x1E69B0B28] currentSettings];
-      [v8 flipBookUpdateInterval];
+      currentSettings = [MEMORY[0x1E69B0B28] currentSettings];
+      [currentSettings flipBookUpdateInterval];
       v10 = (60.0 / v9);
 
       v11 = [MEMORY[0x1E698E508] timelineWithPerMinuteUpdateFrequency:v10 identifier:@"aod-on" configure:0];
@@ -528,36 +528,36 @@ LABEL_6:
   return v13;
 }
 
-- (void)_updateWithFrameSpecifier:(id)a3
+- (void)_updateWithFrameSpecifier:(id)specifier
 {
-  v4 = [a3 presentationInterval];
-  [(MRULockscreenViewController *)self updateTimeControlsForPresentationInterval:v4];
+  presentationInterval = [specifier presentationInterval];
+  [(MRULockscreenViewController *)self updateTimeControlsForPresentationInterval:presentationInterval];
 }
 
 - (id)backlightSceneEnvironment
 {
-  v2 = [(MRULockscreenViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
-  v5 = [v4 _backlightSceneEnvironment];
+  view = [(MRULockscreenViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _backlightSceneEnvironment = [windowScene _backlightSceneEnvironment];
 
-  return v5;
+  return _backlightSceneEnvironment;
 }
 
-- (void)invalidateAllTimelinesForReason:(id)a3
+- (void)invalidateAllTimelinesForReason:(id)reason
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MRULockscreenViewController *)self traitCollection];
-  v6 = [v5 mr_shouldDim];
+  reasonCopy = reason;
+  traitCollection = [(MRULockscreenViewController *)self traitCollection];
+  mr_shouldDim = [traitCollection mr_shouldDim];
 
-  if (v6)
+  if (mr_shouldDim)
   {
     v7 = MCLogCategoryDefault();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v4;
+      v11 = reasonCopy;
       _os_log_impl(&dword_1A20FC000, v7, OS_LOG_TYPE_DEFAULT, "[AOD] Enqueueing timeline invalidation because %@", buf, 0xCu);
     }
 
@@ -604,12 +604,12 @@ void __63__MRULockscreenViewController_invalidateAllTimelinesForReason___block_i
   nowPlayingController = self->_nowPlayingController;
   self->_nowPlayingController = v3;
 
-  v5 = [(MRUNowPlayingController *)self->_nowPlayingController tvRemoteController];
-  [v5 setContext:2];
+  tvRemoteController = [(MRUNowPlayingController *)self->_nowPlayingController tvRemoteController];
+  [tvRemoteController setContext:2];
 
   v6 = *MEMORY[0x1E69B0978];
-  v7 = [(MRUNowPlayingController *)self->_nowPlayingController mediaSuggestionsController];
-  [v7 setContext:v6];
+  mediaSuggestionsController = [(MRUNowPlayingController *)self->_nowPlayingController mediaSuggestionsController];
+  [mediaSuggestionsController setContext:v6];
 
   [(MRUNowPlayingController *)self->_nowPlayingController addObserver:self];
 }
@@ -626,10 +626,10 @@ void __63__MRULockscreenViewController_invalidateAllTimelinesForReason___block_i
 
   [(MRUWaveformController *)self->_waveformController setNowPlayingController:self->_nowPlayingController];
   [(MRULockscreenViewController *)self addChildViewController:self->_waveformViewController];
-  v7 = [(MRUWaveformViewController *)self->_waveformViewController view];
-  v8 = [(MRULockscreenViewController *)self view];
-  v9 = [v8 headerView];
-  [v9 setWaveformView:v7];
+  view = [(MRUWaveformViewController *)self->_waveformViewController view];
+  view2 = [(MRULockscreenViewController *)self view];
+  headerView = [view2 headerView];
+  [headerView setWaveformView:view];
 
   v10 = self->_waveformViewController;
 
@@ -643,10 +643,10 @@ void __63__MRULockscreenViewController_invalidateAllTimelinesForReason___block_i
   self->_hapticViewController = v3;
 
   [(MRULockscreenViewController *)self addChildViewController:self->_hapticViewController];
-  v5 = [(MRUHapticViewController *)self->_hapticViewController view];
-  v6 = [(MRULockscreenViewController *)self view];
-  v7 = [v6 headerView];
-  [v7 setHapticView:v5];
+  view = [(MRUHapticViewController *)self->_hapticViewController view];
+  view2 = [(MRULockscreenViewController *)self view];
+  headerView = [view2 headerView];
+  [headerView setHapticView:view];
 
   waveformViewController = self->_waveformViewController;
 
@@ -655,24 +655,24 @@ void __63__MRULockscreenViewController_invalidateAllTimelinesForReason___block_i
 
 - (void)createSuggestionsViewController
 {
-  v3 = [(MRUNowPlayingController *)self->_nowPlayingController mediaSuggestionsController];
-  v10 = [v3 mediaSuggestions];
+  mediaSuggestionsController = [(MRUNowPlayingController *)self->_nowPlayingController mediaSuggestionsController];
+  mediaSuggestions = [mediaSuggestionsController mediaSuggestions];
 
-  v4 = [[MRUMediaSuggestionsViewController alloc] initWithMediaSuggestions:v10];
+  v4 = [[MRUMediaSuggestionsViewController alloc] initWithMediaSuggestions:mediaSuggestions];
   suggestionsViewController = self->_suggestionsViewController;
   self->_suggestionsViewController = v4;
 
   [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController setDelegate:self];
   [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController setLayout:1];
-  v6 = [(MRULockscreenViewController *)self view];
-  v7 = [v6 stylingProvider];
-  [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController setStylingProvider:v7];
+  view = [(MRULockscreenViewController *)self view];
+  stylingProvider = [view stylingProvider];
+  [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController setStylingProvider:stylingProvider];
 
   [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController setContentEdgeInsets:14.0, 14.0, 14.0, 14.0];
   [(MRULockscreenViewController *)self addChildViewController:self->_suggestionsViewController];
-  v8 = [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController view];
-  v9 = [(MRULockscreenViewController *)self view];
-  [v9 setSuggestionsView:v8];
+  view2 = [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController view];
+  view3 = [(MRULockscreenViewController *)self view];
+  [view3 setSuggestionsView:view2];
 
   [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController didMoveToParentViewController:self];
 }
@@ -698,70 +698,70 @@ void __63__MRULockscreenViewController_invalidateAllTimelinesForReason___block_i
 {
   if ([(MRULockscreenViewController *)self showArtworkView])
   {
-    v3 = [(MRUNowPlayingController *)self->_nowPlayingController metadataController];
-    v6 = [v3 artwork];
+    metadataController = [(MRUNowPlayingController *)self->_nowPlayingController metadataController];
+    artwork = [metadataController artwork];
 
-    v4 = [(MRULockscreenViewController *)self view];
-    v5 = [v4 artworkView];
+    view = [(MRULockscreenViewController *)self view];
+    artworkView = [view artworkView];
 
-    [v5 setArtwork:v6];
+    [artworkView setArtwork:artwork];
   }
 }
 
 - (void)updateRouteLabel
 {
-  v3 = [(MRULockscreenViewController *)self view];
-  v4 = [v3 headerView];
-  v7 = [v4 labelView];
+  view = [(MRULockscreenViewController *)self view];
+  headerView = [view headerView];
+  labelView = [headerView labelView];
 
-  v5 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
-  v6 = [v5 route];
+  endpointController = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
+  route = [endpointController route];
 
-  [v7 setRoute:v6];
+  [labelView setRoute:route];
   [(MRULockscreenViewController *)self updateLayoutDependantProperties];
 }
 
 - (void)updateNowPlayingInfo
 {
-  v3 = [(MRUNowPlayingController *)self->_nowPlayingController metadataController];
-  v4 = [v3 nowPlayingInfo];
+  metadataController = [(MRUNowPlayingController *)self->_nowPlayingController metadataController];
+  nowPlayingInfo = [metadataController nowPlayingInfo];
 
-  v5 = [(MRULockscreenViewController *)self view];
-  v6 = [v5 headerView];
-  v7 = [v6 labelView];
+  view = [(MRULockscreenViewController *)self view];
+  headerView = [view headerView];
+  labelView = [headerView labelView];
 
-  v8 = [v4 stringForComponents:1];
-  v9 = [v4 stringForComponents:122];
+  v8 = [nowPlayingInfo stringForComponents:1];
+  v9 = [nowPlayingInfo stringForComponents:122];
   if (v8 | v9)
   {
-    [v7 setTitle:v8];
+    [labelView setTitle:v8];
     v10 = v9;
   }
 
   else
   {
-    v11 = [(MRUNowPlayingController *)self->_nowPlayingController metadataController];
-    v12 = [v11 bundleName];
-    [v7 setTitle:v12];
+    metadataController2 = [(MRUNowPlayingController *)self->_nowPlayingController metadataController];
+    bundleName = [metadataController2 bundleName];
+    [labelView setTitle:bundleName];
 
     v10 = 0;
   }
 
-  [v7 setSubtitle:v10];
-  v13 = [v4 placeholder];
-  [v7 setPlaceholder:v13];
+  [labelView setSubtitle:v10];
+  placeholder = [nowPlayingInfo placeholder];
+  [labelView setPlaceholder:placeholder];
 
-  v14 = [v4 showPlaceholder];
-  if (v14 != [v7 showPlaceholder])
+  showPlaceholder = [nowPlayingInfo showPlaceholder];
+  if (showPlaceholder != [labelView showPlaceholder])
   {
     v15 = MEMORY[0x1E69DD250];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __51__MRULockscreenViewController_updateNowPlayingInfo__block_invoke;
     v17[3] = &unk_1E7663DF8;
-    v20 = v14;
-    v18 = v7;
-    v19 = self;
+    v20 = showPlaceholder;
+    v18 = labelView;
+    selfCopy = self;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __51__MRULockscreenViewController_updateNowPlayingInfo__block_invoke_2;
@@ -778,102 +778,102 @@ void __51__MRULockscreenViewController_updateNowPlayingInfo__block_invoke(uint64
   [v2 layoutIfNeeded];
 }
 
-- (void)updateTimeControlsForPresentationInterval:(id)a3
+- (void)updateTimeControlsForPresentationInterval:(id)interval
 {
   nowPlayingController = self->_nowPlayingController;
-  v5 = a3;
-  v6 = [(MRUNowPlayingController *)nowPlayingController metadataController];
-  v9 = [v6 timeControls];
+  intervalCopy = interval;
+  metadataController = [(MRUNowPlayingController *)nowPlayingController metadataController];
+  timeControls = [metadataController timeControls];
 
-  v7 = [(MRULockscreenViewController *)self view];
-  v8 = [v7 timeControlsView];
+  view = [(MRULockscreenViewController *)self view];
+  timeControlsView = [view timeControlsView];
 
-  [v8 setTimeControls:v9 forPresentationInterval:v5];
+  [timeControlsView setTimeControls:timeControls forPresentationInterval:intervalCopy];
 }
 
 - (void)updateTransportControls
 {
-  v3 = [(MRUNowPlayingController *)self->_nowPlayingController metadataController];
-  v7 = [v3 transportControls];
+  metadataController = [(MRUNowPlayingController *)self->_nowPlayingController metadataController];
+  transportControls = [metadataController transportControls];
 
-  v4 = [(MRULockscreenViewController *)self view];
-  v5 = [v4 transportControlsView];
+  view = [(MRULockscreenViewController *)self view];
+  transportControlsView = [view transportControlsView];
 
-  [v5 setTransportControls:v7];
-  v6 = [(MRUNowPlayingController *)self->_nowPlayingController tvRemoteController];
-  [v5 setShowTVRemoteButton:{objc_msgSend(v6, "showTVRemote")}];
+  [transportControlsView setTransportControls:transportControls];
+  tvRemoteController = [(MRUNowPlayingController *)self->_nowPlayingController tvRemoteController];
+  [transportControlsView setShowTVRemoteButton:{objc_msgSend(tvRemoteController, "showTVRemote")}];
 }
 
 - (void)updateVolumeControls
 {
   v40[3] = *MEMORY[0x1E69E9840];
-  v3 = [(MRULockscreenViewController *)self view];
-  v4 = [v3 volumeControlsView];
+  view = [(MRULockscreenViewController *)self view];
+  volumeControlsView = [view volumeControlsView];
 
-  v5 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
-  v6 = [v5 route];
+  endpointController = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
+  route = [endpointController route];
 
-  v7 = [v4 volumeController];
-  v8 = [v7 dataSource];
+  volumeController = [volumeControlsView volumeController];
+  dataSource = [volumeController dataSource];
 
-  v9 = [v4 volumeController];
+  volumeController2 = [volumeControlsView volumeController];
 
-  if (v9)
+  if (volumeController2)
   {
-    v10 = [v8 groupRoute];
-    v11 = [v10 isEqual:v6];
+    groupRoute = [dataSource groupRoute];
+    v11 = [groupRoute isEqual:route];
 
     if (v11)
     {
       goto LABEL_6;
     }
 
-    v12 = [objc_alloc(MEMORY[0x1E6970A20]) initWithGroupRoute:v6 outputDeviceRoute:0];
+    v12 = [objc_alloc(MEMORY[0x1E6970A20]) initWithGroupRoute:route outputDeviceRoute:0];
 
-    [v4 setDataSource:v12];
+    [volumeControlsView setDataSource:v12];
   }
 
   else
   {
-    v12 = [objc_alloc(MEMORY[0x1E6970A20]) initWithGroupRoute:v6 outputDeviceRoute:0];
+    v12 = [objc_alloc(MEMORY[0x1E6970A20]) initWithGroupRoute:route outputDeviceRoute:0];
 
     v13 = [(MPVolumeController *)[MRUVolumeController alloc] initWithDataSource:v12];
-    [v4 setVolumeController:v13];
+    [volumeControlsView setVolumeController:v13];
   }
 
-  v8 = v12;
+  dataSource = v12;
 LABEL_6:
-  v14 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
-  if ([v14 isDeviceSystemRoute])
+  endpointController2 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
+  if ([endpointController2 isDeviceSystemRoute])
   {
-    v15 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
-    if ([v15 isAirPlaying])
+    endpointController3 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
+    if ([endpointController3 isAirPlaying])
     {
-      v16 = 1;
+      alwaysShowVolumeControls = 1;
     }
 
     else
     {
-      v17 = [MEMORY[0x1E69B0B28] currentSettings];
-      v16 = [v17 alwaysShowVolumeControls];
+      currentSettings = [MEMORY[0x1E69B0B28] currentSettings];
+      alwaysShowVolumeControls = [currentSettings alwaysShowVolumeControls];
     }
   }
 
   else
   {
-    v16 = 1;
+    alwaysShowVolumeControls = 1;
   }
 
-  v18 = self->_onScreen & v16;
+  v18 = self->_onScreen & alwaysShowVolumeControls;
   v19 = +[MRUCallMonitor sharedMonitor];
-  v20 = [v19 isOnCall];
+  isOnCall = [v19 isOnCall];
 
-  v21 = [v8 volumeControlCapabilities];
-  v22 = [(MRULockscreenViewController *)self view];
-  v23 = [v22 volumeControlsView];
-  [v23 setOnScreen:v18 & 1];
+  volumeControlCapabilities = [dataSource volumeControlCapabilities];
+  view2 = [(MRULockscreenViewController *)self view];
+  volumeControlsView2 = [view2 volumeControlsView];
+  [volumeControlsView2 setOnScreen:v18 & 1];
 
-  if ((v18 & 1) != 0 && (v20 & 1) == 0 && ([v6 isDeviceRoute] & 1) == 0 && (v21 & 3) != 0)
+  if ((v18 & 1) != 0 && (isOnCall & 1) == 0 && ([route isDeviceRoute] & 1) == 0 && (volumeControlCapabilities & 3) != 0)
   {
     v24 = MCLogCategoryVolume();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -889,14 +889,14 @@ LABEL_6:
       v39 = 1024;
       LODWORD(v40[0]) = 1;
       WORD2(v40[0]) = 2114;
-      *(v40 + 6) = v6;
+      *(v40 + 6) = route;
       _os_log_impl(&dword_1A20FC000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ taking hardware assertion: on screen: %{BOOL}u | show: %{BOOL}u | call: %{BOOL}u | control: %{BOOL}u | route: %{public}@", &v31, 0x2Eu);
     }
 
     v25 = +[MRUHardwareVolumeController sharedInstance];
     v26 = objc_opt_class();
     v27 = NSStringFromClass(v26);
-    v28 = [v25 requestControlsForVolumeDataSource:v8 reason:v27];
+    v28 = [v25 requestControlsForVolumeDataSource:dataSource reason:v27];
     hardwareVolumeControlAssertion = self->_hardwareVolumeControlAssertion;
     self->_hardwareVolumeControlAssertion = v28;
 
@@ -914,11 +914,11 @@ LABEL_23:
       v33 = 1024;
       v34 = v18 & 1;
       v35 = 1024;
-      v36 = v16;
+      v36 = alwaysShowVolumeControls;
       v37 = 1024;
-      v38 = v20;
+      v38 = isOnCall;
       v39 = 2114;
-      v40[0] = v6;
+      v40[0] = route;
       _os_log_impl(&dword_1A20FC000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ removing hardware assertion: on screen: %{BOOL}u | show: %{BOOL}u | call: %{BOOL}u | route: %{public}@", &v31, 0x28u);
     }
 
@@ -930,26 +930,26 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)updateRoutingButtonAnimated:(BOOL)a3
+- (void)updateRoutingButtonAnimated:(BOOL)animated
 {
-  v5 = [(MRULockscreenViewController *)self view];
-  v6 = [v5 transportControlsView];
+  view = [(MRULockscreenViewController *)self view];
+  transportControlsView = [view transportControlsView];
 
-  v7 = [v6 routingButton];
-  v8 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
-  v9 = [v8 route];
-  v10 = [v9 canModifyGroupMembership];
+  routingButton = [transportControlsView routingButton];
+  endpointController = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
+  route = [endpointController route];
+  canModifyGroupMembership = [route canModifyGroupMembership];
 
-  [v6 setShowRoutingButton:v10];
+  [transportControlsView setShowRoutingButton:canModifyGroupMembership];
   nowPlayingController = self->_nowPlayingController;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59__MRULockscreenViewController_updateRoutingButtonAnimated___block_invoke;
   v13[3] = &unk_1E76656F0;
-  v14 = v7;
-  v15 = self;
-  v16 = a3;
-  v12 = v7;
+  v14 = routingButton;
+  selfCopy = self;
+  animatedCopy = animated;
+  v12 = routingButton;
   [(MRUNowPlayingController *)nowPlayingController routingDeviceImage:v13];
 }
 
@@ -972,114 +972,114 @@ void __59__MRULockscreenViewController_updateRoutingButtonAnimated___block_invok
 
 - (void)updateWaveformVisibility
 {
-  v3 = [(MRULockscreenViewController *)self view];
-  v9 = [v3 headerView];
+  view = [(MRULockscreenViewController *)self view];
+  headerView = [view headerView];
 
-  v4 = [(MRUWaveformController *)self->_waveformController routeSupportsWaveform];
-  v5 = [MEMORY[0x1E696F728] sharedManager];
-  if ([v5 musicHapticsEnabled])
+  routeSupportsWaveform = [(MRUWaveformController *)self->_waveformController routeSupportsWaveform];
+  mEMORY[0x1E696F728] = [MEMORY[0x1E696F728] sharedManager];
+  if ([mEMORY[0x1E696F728] musicHapticsEnabled])
   {
-    v6 = [(MRUNowPlayingController *)self->_nowPlayingController metadataController];
-    v7 = [v6 appSupportsHaptics];
+    metadataController = [(MRUNowPlayingController *)self->_nowPlayingController metadataController];
+    appSupportsHaptics = [metadataController appSupportsHaptics];
   }
 
   else
   {
-    v7 = 0;
+    appSupportsHaptics = 0;
   }
 
-  if (v4)
+  if (routeSupportsWaveform)
   {
-    [(MRUWaveformViewController *)self->_waveformViewController setOnScreen:self->_onScreen & ~v7 & 1];
-    v8 = self->_onScreen & v7;
+    [(MRUWaveformViewController *)self->_waveformViewController setOnScreen:self->_onScreen & ~appSupportsHaptics & 1];
+    v8 = self->_onScreen & appSupportsHaptics;
   }
 
   else
   {
     [(MRUWaveformViewController *)self->_waveformViewController setOnScreen:0];
-    v7 = 0;
+    appSupportsHaptics = 0;
     v8 = 0;
   }
 
   [(MRUHapticViewController *)self->_hapticViewController setOnScreen:v8 & 1];
-  [v9 setShowWaveform:v4];
-  [v9 setShowHaptic:v7];
+  [headerView setShowWaveform:routeSupportsWaveform];
+  [headerView setShowHaptic:appSupportsHaptics];
 }
 
 - (void)updateVisibility
 {
   onScreen = self->_onScreen;
-  v3 = [(MRULockscreenViewController *)self view];
-  [v3 setOnScreen:onScreen];
+  view = [(MRULockscreenViewController *)self view];
+  [view setOnScreen:onScreen];
 }
 
 - (void)updateSuggestions
 {
-  v3 = [(MRUNowPlayingController *)self->_nowPlayingController mediaSuggestionsController];
-  v4 = [v3 mediaSuggestions];
-  [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController setMediaSuggestions:v4];
+  mediaSuggestionsController = [(MRUNowPlayingController *)self->_nowPlayingController mediaSuggestionsController];
+  mediaSuggestions = [mediaSuggestionsController mediaSuggestions];
+  [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController setMediaSuggestions:mediaSuggestions];
 
   [(MRULockscreenViewController *)self updateLayoutDependantProperties];
 }
 
-- (void)updateLayoutDependantPropertiesWithCompletion:(id)a3
+- (void)updateLayoutDependantPropertiesWithCompletion:(id)completion
 {
-  v26 = a3;
+  completionCopy = completion;
   showArtworkView = self->_showArtworkView;
-  v4 = [(MRULockscreenViewController *)self view];
-  v5 = [v4 showArtworkView];
+  view = [(MRULockscreenViewController *)self view];
+  showArtworkView = [view showArtworkView];
   v6 = self->_showArtworkView;
 
-  v7 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
-  if ([v7 isDeviceSystemRoute])
+  endpointController = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
+  if ([endpointController isDeviceSystemRoute])
   {
-    v8 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
-    v9 = [v8 isAirPlaying];
+    endpointController2 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
+    isAirPlaying = [endpointController2 isAirPlaying];
   }
 
   else
   {
-    v9 = 1;
+    isAirPlaying = 1;
   }
 
-  v10 = [(MRULockscreenViewController *)self view];
-  v11 = [v10 headerView];
-  v12 = [v11 labelView];
-  v13 = v9 ^ [v12 showRoute];
+  view2 = [(MRULockscreenViewController *)self view];
+  headerView = [view2 headerView];
+  labelView = [headerView labelView];
+  v13 = isAirPlaying ^ [labelView showRoute];
 
-  v14 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
-  if ([v14 isDeviceSystemRoute])
+  endpointController3 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
+  if ([endpointController3 isDeviceSystemRoute])
   {
-    v15 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
-    if ([v15 isAirPlaying])
+    endpointController4 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
+    if ([endpointController4 isAirPlaying])
     {
-      v16 = 1;
+      alwaysShowVolumeControls = 1;
     }
 
     else
     {
-      v17 = [MEMORY[0x1E69B0B28] currentSettings];
-      v16 = [v17 alwaysShowVolumeControls];
+      currentSettings = [MEMORY[0x1E69B0B28] currentSettings];
+      alwaysShowVolumeControls = [currentSettings alwaysShowVolumeControls];
     }
   }
 
   else
   {
-    v16 = 1;
+    alwaysShowVolumeControls = 1;
   }
 
-  v18 = v6 != v5;
+  v18 = v6 != showArtworkView;
 
-  v19 = [(MRULockscreenViewController *)self view];
-  v20 = [v19 showVolumeControlsView];
+  view3 = [(MRULockscreenViewController *)self view];
+  showVolumeControlsView = [view3 showVolumeControlsView];
 
-  v21 = [(MRUNowPlayingController *)self->_nowPlayingController mediaSuggestionsController];
-  v22 = [v21 mediaSuggestions];
+  mediaSuggestionsController = [(MRUNowPlayingController *)self->_nowPlayingController mediaSuggestionsController];
+  mediaSuggestions = [mediaSuggestionsController mediaSuggestions];
 
-  v23 = [(MRULockscreenViewController *)self view];
-  v24 = (v22 != 0) ^ [v23 showSuggestionsView];
+  view4 = [(MRULockscreenViewController *)self view];
+  v24 = (mediaSuggestions != 0) ^ [view4 showSuggestionsView];
 
-  if (((v18 | v13) & 1) != 0 || ((v16 ^ v20) & 1) != 0 || v24)
+  if (((v18 | v13) & 1) != 0 || ((alwaysShowVolumeControls ^ showVolumeControlsView) & 1) != 0 || v24)
   {
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
@@ -1087,17 +1087,17 @@ void __59__MRULockscreenViewController_updateRoutingButtonAnimated___block_invok
     v30[3] = &unk_1E7666220;
     v30[4] = self;
     v31 = showArtworkView;
-    v32 = v9;
-    v33 = v16;
-    v34 = v22 != 0;
+    v32 = isAirPlaying;
+    v33 = alwaysShowVolumeControls;
+    v34 = mediaSuggestions != 0;
     v35 = v24;
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __77__MRULockscreenViewController_updateLayoutDependantPropertiesWithCompletion___block_invoke_2;
     v27[3] = &unk_1E7666248;
     v27[4] = self;
-    v29 = v22 != 0;
-    v28 = v26;
+    v29 = mediaSuggestions != 0;
+    v28 = completionCopy;
     [(MRULockscreenViewController *)self updateLayoutWithAnimations:v30 completion:v27];
   }
 }
@@ -1173,43 +1173,43 @@ uint64_t __77__MRULockscreenViewController_updateLayoutDependantPropertiesWithCo
   return result;
 }
 
-- (void)updateLayoutWithAnimations:(id)a3 completion:(id)a4
+- (void)updateLayoutWithAnimations:(id)animations completion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(MRULockscreenViewController *)self view];
-  [v7 bounds];
+  animationsCopy = animations;
+  completionCopy = completion;
+  view = [(MRULockscreenViewController *)self view];
+  [view bounds];
   if (v8 == 0.0)
   {
   }
 
   else
   {
-    v9 = [(MRULockscreenViewController *)self view];
-    [v9 bounds];
+    view2 = [(MRULockscreenViewController *)self view];
+    [view2 bounds];
     v11 = v10;
 
     if (v11 != 0.0)
     {
-      [MEMORY[0x1E69DD250] mru_animateUsingType:0 animations:v12 completion:v6];
+      [MEMORY[0x1E69DD250] mru_animateUsingType:0 animations:animationsCopy completion:completionCopy];
       goto LABEL_6;
     }
   }
 
-  [MEMORY[0x1E69DD250] performWithoutAnimation:v12];
-  v6[2](v6, 1);
+  [MEMORY[0x1E69DD250] performWithoutAnimation:animationsCopy];
+  completionCopy[2](completionCopy, 1);
 LABEL_6:
 }
 
 - (void)updatePreferredContentSize
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   Width = CGRectGetWidth(v27);
 
-  v5 = [(MRULockscreenViewController *)self view];
-  [v5 sizeThatFits:{Width, 1.79769313e308}];
+  view = [(MRULockscreenViewController *)self view];
+  [view sizeThatFits:{Width, 1.79769313e308}];
   v7 = v6;
   v9 = v8;
 
@@ -1220,8 +1220,8 @@ LABEL_6:
     v25.width = v7;
     v25.height = v9;
     v12 = NSStringFromCGSize(v25);
-    v13 = [(MRULockscreenViewController *)self view];
-    [v13 frame];
+    view2 = [(MRULockscreenViewController *)self view];
+    [view2 frame];
     v26.width = v14;
     v26.height = v15;
     v16 = NSStringFromCGSize(v26);
@@ -1234,20 +1234,20 @@ LABEL_6:
     _os_log_impl(&dword_1A20FC000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ preferred content size: %{public}@ | current: %{public}@", &v18, 0x20u);
   }
 
-  v17 = [(MRULockscreenViewController *)self delegate];
+  delegate = [(MRULockscreenViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v17 lockscreenViewController:self didUpdatePreferredContentSize:{v7, v9}];
+    [delegate lockscreenViewController:self didUpdatePreferredContentSize:{v7, v9}];
   }
 }
 
 - (void)updateRestrictedRects
 {
-  v4 = [(MRULockscreenViewController *)self delegate];
+  delegate = [(MRULockscreenViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(MRULockscreenViewController *)self restrictedRects];
-    [v4 lockscreenViewController:self didUpdateRestrictedRects:v3];
+    restrictedRects = [(MRULockscreenViewController *)self restrictedRects];
+    [delegate lockscreenViewController:self didUpdateRestrictedRects:restrictedRects];
   }
 }
 
@@ -1269,11 +1269,11 @@ LABEL_6:
 
   v18[0] = v5;
   v17[1] = @"endpointController";
-  v6 = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
-  v7 = v6;
-  if (v6)
+  endpointController = [(MRUNowPlayingController *)self->_nowPlayingController endpointController];
+  v7 = endpointController;
+  if (endpointController)
   {
-    v8 = v6;
+    v8 = endpointController;
   }
 
   else
@@ -1299,12 +1299,12 @@ LABEL_6:
 
   v18[3] = mediaControls;
   v17[4] = @"window";
-  v11 = [(MRULockscreenViewController *)self view];
-  v12 = [v11 window];
-  v13 = v12;
-  if (v12)
+  view = [(MRULockscreenViewController *)self view];
+  window = [view window];
+  v13 = window;
+  if (window)
   {
-    v14 = v12;
+    v14 = window;
   }
 
   else

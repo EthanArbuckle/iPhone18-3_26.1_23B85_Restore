@@ -12,9 +12,9 @@
   v10 = a5;
   if (v8)
   {
-    v11 = [a1 host];
-    v12 = [v11 lowercaseString];
-    v13 = [v8 containsObject:v12];
+    host = [self host];
+    lowercaseString = [host lowercaseString];
+    v13 = [v8 containsObject:lowercaseString];
 
     if (v13)
     {
@@ -23,9 +23,9 @@
         goto LABEL_9;
       }
 
-      v14 = [a1 absoluteString];
+      absoluteString = [self absoluteString];
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=", v9];
-      if ([v14 rangeOfString:v15] == 0x7FFFFFFFFFFFFFFFLL)
+      if ([absoluteString rangeOfString:v15] == 0x7FFFFFFFFFFFFFFFLL)
       {
 
 LABEL_9:
@@ -33,9 +33,9 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v16 = [a1 absoluteString];
+      absoluteString2 = [self absoluteString];
       v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@", v9, v10];
-      v18 = [v16 rangeOfString:v17];
+      v18 = [absoluteString2 rangeOfString:v17];
 
       if (v18 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -52,9 +52,9 @@ LABEL_10:
 
 - (id)dd_handleFromFacetimeSchemeFilteringForEmail:()dd_private
 {
-  v5 = [a1 scheme];
-  v6 = [v5 lowercaseString];
-  v7 = [&unk_282C2BEA8 containsObject:v6];
+  scheme = [self scheme];
+  lowercaseString = [scheme lowercaseString];
+  v7 = [&unk_282C2BEA8 containsObject:lowercaseString];
 
   if (!v7)
   {
@@ -62,19 +62,19 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  v8 = [a1 resourceSpecifier];
-  if (![v8 hasPrefix:@"//"])
+  resourceSpecifier = [self resourceSpecifier];
+  if (![resourceSpecifier hasPrefix:@"//"])
   {
 LABEL_5:
-    v10 = [v8 componentsSeparatedByString:@"?"];
-    v11 = [v10 firstObject];
-    v12 = [v11 stringByRemovingPercentEncoding];
+    v10 = [resourceSpecifier componentsSeparatedByString:@"?"];
+    firstObject = [v10 firstObject];
+    stringByRemovingPercentEncoding = [firstObject stringByRemovingPercentEncoding];
 
-    if (v12)
+    if (stringByRemovingPercentEncoding)
     {
-      if ([v12 containsString:@"@"])
+      if ([stringByRemovingPercentEncoding containsString:@"@"])
       {
-        if ((dd_handleIsChatBot(v12) ^ 1) != a3)
+        if ((dd_handleIsChatBot(stringByRemovingPercentEncoding) ^ 1) != a3)
         {
           goto LABEL_8;
         }
@@ -85,7 +85,7 @@ LABEL_5:
         goto LABEL_8;
       }
 
-      v13 = v12;
+      v13 = stringByRemovingPercentEncoding;
       goto LABEL_13;
     }
 
@@ -96,11 +96,11 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v8 length] >= 3)
+  if ([resourceSpecifier length] >= 3)
   {
-    v9 = [v8 substringFromIndex:2];
+    v9 = [resourceSpecifier substringFromIndex:2];
 
-    v8 = v9;
+    resourceSpecifier = v9;
     goto LABEL_5;
   }
 

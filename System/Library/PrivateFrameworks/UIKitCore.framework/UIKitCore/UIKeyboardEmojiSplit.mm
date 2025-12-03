@@ -1,17 +1,17 @@
 @interface UIKeyboardEmojiSplit
-- (UIKeyboardEmojiSplit)initWithFrame:(CGRect)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (UIKeyboardEmojiSplit)initWithFrame:(CGRect)frame;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation UIKeyboardEmojiSplit
 
-- (UIKeyboardEmojiSplit)initWithFrame:(CGRect)a3
+- (UIKeyboardEmojiSplit)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = UIKeyboardEmojiSplit;
-  v3 = [(UIView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -35,33 +35,33 @@
   return v3;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [UIKeyboardEmojiCategory enabledCategoryIndexes:a3];
+  v4 = [UIKeyboardEmojiCategory enabledCategoryIndexes:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = [UIKeyboardPreferencesController sharedPreferencesController:a3];
-  v5 = [v4 preferencesActions];
-  [v5 rivenSizeFactor:200.0];
+  v4 = [UIKeyboardPreferencesController sharedPreferencesController:view];
+  preferencesActions = [v4 preferencesActions];
+  [preferencesActions rivenSizeFactor:200.0];
   v6 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v7 = [v6 preferencesActions];
-  [v7 rivenSizeFactor:34.0];
+  preferencesActions2 = [v6 preferencesActions];
+  [preferencesActions2 rivenSizeFactor:34.0];
   v9 = v8;
 
   return v9;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  [v5 setOpaque:0];
+  cellCopy = cell;
+  [cellCopy setOpaque:0];
   v6 = +[UIColor clearColor];
-  [v5 setBackgroundColor:v6];
+  [cellCopy setBackgroundColor:v6];
 }
 
 @end

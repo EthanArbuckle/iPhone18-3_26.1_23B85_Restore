@@ -1,19 +1,19 @@
 @interface ODIVerticalProcess2
-- (void)mapPoint:(id)a3 bounds:(CGRect)a4;
-- (void)mapStyleFromTransition:(id)a3 shape:(id)a4;
+- (void)mapPoint:(id)point bounds:(CGRect)bounds;
+- (void)mapStyleFromTransition:(id)transition shape:(id)shape;
 @end
 
 @implementation ODIVerticalProcess2
 
-- (void)mapPoint:(id)a3 bounds:(CGRect)a4
+- (void)mapPoint:(id)point bounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(ODIState *)self->super.mState pointIndex];
-  if (v10 >= [(ODIState *)self->super.mState pointCount]- 1)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  pointCopy = point;
+  pointIndex = [(ODIState *)self->super.mState pointIndex];
+  if (pointIndex >= [(ODIState *)self->super.mState pointCount]- 1)
   {
     v11 = @"parentTextBox";
   }
@@ -27,18 +27,18 @@
   [(ODIState *)self->super.mState setPresentationName:v12 forPointType:2];
   v13.receiver = self;
   v13.super_class = ODIVerticalProcess2;
-  [(ODILinear *)&v13 mapPoint:v9 bounds:x, y, width, height];
+  [(ODILinear *)&v13 mapPoint:pointCopy bounds:x, y, width, height];
 }
 
-- (void)mapStyleFromTransition:(id)a3 shape:(id)a4
+- (void)mapStyleFromTransition:(id)transition shape:(id)shape
 {
-  v9 = a4;
-  v5 = [(ODIState *)self->super.mState diagram];
-  v6 = [v5 documentPoint];
-  v7 = [v6 children];
-  v8 = [v7 objectAtIndex:{-[ODIState pointIndex](self->super.mState, "pointIndex")}];
+  shapeCopy = shape;
+  diagram = [(ODIState *)self->super.mState diagram];
+  documentPoint = [diagram documentPoint];
+  children = [documentPoint children];
+  v8 = [children objectAtIndex:{-[ODIState pointIndex](self->super.mState, "pointIndex")}];
 
-  [ODIDrawable mapStyleFromPoint:v8 shape:v9 state:self->super.mState];
+  [ODIDrawable mapStyleFromPoint:v8 shape:shapeCopy state:self->super.mState];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface UARPRTKitFTAB
-- (BOOL)expandFileTable:(id *)a3;
-- (BOOL)writeToURL:(id)a3;
+- (BOOL)expandFileTable:(id *)table;
+- (BOOL)writeToURL:(id)l;
 - (UARPRTKitFTAB)init;
-- (UARPRTKitFTAB)initWithData:(id)a3;
-- (UARPRTKitFTAB)initWithFilePath:(id)a3;
-- (UARPRTKitFTAB)initWithURL:(id)a3;
+- (UARPRTKitFTAB)initWithData:(id)data;
+- (UARPRTKitFTAB)initWithFilePath:(id)path;
+- (UARPRTKitFTAB)initWithURL:(id)l;
 - (id)description;
-- (id)getDataBlock:(unint64_t)a3 offset:(unint64_t)a4;
-- (id)getDataRangeFromURL:(_NSRange)a3;
-- (id)processSubfileInfo:(UARPFTABFileInfo *)a3;
-- (id)subfileWithTag:(id)a3;
-- (void)setBootNonce:(id)a3;
-- (void)setManifest:(id)a3;
+- (id)getDataBlock:(unint64_t)block offset:(unint64_t)offset;
+- (id)getDataRangeFromURL:(_NSRange)l;
+- (id)processSubfileInfo:(UARPFTABFileInfo *)info;
+- (id)subfileWithTag:(id)tag;
+- (void)setBootNonce:(id)nonce;
+- (void)setManifest:(id)manifest;
 @end
 
 @implementation UARPRTKitFTAB
@@ -35,13 +35,13 @@
   return v2;
 }
 
-- (UARPRTKitFTAB)initWithData:(id)a3
+- (UARPRTKitFTAB)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(UARPRTKitFTAB *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dataCopy copy];
     data = v5->_data;
     v5->_data = v6;
 
@@ -51,34 +51,34 @@
   return v5;
 }
 
-- (UARPRTKitFTAB)initWithFilePath:(id)a3
+- (UARPRTKitFTAB)initWithFilePath:(id)path
 {
-  v4 = [NSURL fileURLWithPath:a3];
+  v4 = [NSURL fileURLWithPath:path];
   v5 = [(UARPRTKitFTAB *)self initWithURL:v4];
 
   return v5;
 }
 
-- (UARPRTKitFTAB)initWithURL:(id)a3
+- (UARPRTKitFTAB)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(UARPRTKitFTAB *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
 
     v8 = +[NSFileManager defaultManager];
-    v9 = [(NSURL *)v5->_url path];
-    v10 = [v8 attributesOfItemAtPath:v9 error:0];
+    path = [(NSURL *)v5->_url path];
+    v10 = [v8 attributesOfItemAtPath:path error:0];
     v5->_ftabLength = [v10 fileSize];
   }
 
   return v5;
 }
 
-- (BOOL)expandFileTable:(id *)a3
+- (BOOL)expandFileTable:(id *)table
 {
   v4 = [(UARPRTKitFTAB *)self getDataBlock:48 offset:0];
   if ([v4 length] != 48)
@@ -101,9 +101,9 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v7 = [(UARPRTKitFTAB *)self getManifest];
+  getManifest = [(UARPRTKitFTAB *)self getManifest];
   manifestData = self->_manifestData;
-  self->_manifestData = v7;
+  self->_manifestData = getManifest;
 
   if (self->_ftabHeader.fileCount)
   {
@@ -134,11 +134,11 @@ LABEL_19:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         v17 = v16;
-        v18 = [v14 subFileTag];
+        subFileTag = [v14 subFileTag];
         *buf = v23;
         v26 = "[UARPRTKitFTAB expandFileTable:]";
         v27 = 2112;
-        v28 = v18;
+        v28 = subFileTag;
         v29 = 2112;
         v30 = v15;
         _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%s: hash of subfile %@ is %@", buf, 0x20u);
@@ -163,18 +163,18 @@ LABEL_20:
   return v21;
 }
 
-- (id)processSubfileInfo:(UARPFTABFileInfo *)a3
+- (id)processSubfileInfo:(UARPFTABFileInfo *)info
 {
-  v5 = [[NSString alloc] initWithBytes:a3 length:4 encoding:4];
+  v5 = [[NSString alloc] initWithBytes:info length:4 encoding:4];
   if (self->_data)
   {
-    v6 = [(UARPRTKitFTAB *)self getDataBlock:a3->var2 offset:a3->var1];
+    v6 = [(UARPRTKitFTAB *)self getDataBlock:info->var2 offset:info->var1];
     v7 = [[UARPRTKitFTABSubfile alloc] initWithData:v6 subFileTag:v5];
   }
 
   else if (self->_url)
   {
-    v7 = [[UARPRTKitFTABSubfile alloc] initWithURL:self->_url offset:a3->var1 length:a3->var2 subFileTag:v5];
+    v7 = [[UARPRTKitFTABSubfile alloc] initWithURL:self->_url offset:info->var1 length:info->var2 subFileTag:v5];
   }
 
   else
@@ -185,9 +185,9 @@ LABEL_20:
   return v7;
 }
 
-- (id)subfileWithTag:(id)a3
+- (id)subfileWithTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -207,8 +207,8 @@ LABEL_20:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 subFileTag];
-        v11 = [v10 isEqualToString:v4];
+        subFileTag = [v9 subFileTag];
+        v11 = [subFileTag isEqualToString:tagCopy];
 
         if (v11)
         {
@@ -232,21 +232,21 @@ LABEL_11:
   return v6;
 }
 
-- (void)setManifest:(id)a3
+- (void)setManifest:(id)manifest
 {
-  v4 = [a3 copy];
+  v4 = [manifest copy];
   manifestData = self->_manifestData;
   self->_manifestData = v4;
 
   _objc_release_x1();
 }
 
-- (void)setBootNonce:(id)a3
+- (void)setBootNonce:(id)nonce
 {
-  v4 = a3;
-  if ([v4 length] == 8)
+  nonceCopy = nonce;
+  if ([nonceCopy length] == 8)
   {
-    [v4 getBytes:self->_ftabHeader.bootNonce length:8];
+    [nonceCopy getBytes:self->_ftabHeader.bootNonce length:8];
   }
 }
 
@@ -317,9 +317,9 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)writeToURL:(id)a3
+- (BOOL)writeToURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = *&self->_ftabHeader.manifestOffset;
   v51 = *&self->_ftabHeader.generation;
   v52 = v5;
@@ -327,13 +327,13 @@ LABEL_11:
   v6 = 16 * DWORD2(v53) + 48;
   *&v52 = __PAIR64__([(NSData *)self->_manifestData length], v6);
   v7 = [(NSData *)self->_manifestData length];
-  v8 = [(UARPRTKitFTAB *)self cleanFileHandleForWriting:v4 error:0];
+  v8 = [(UARPRTKitFTAB *)self cleanFileHandleForWriting:lCopy error:0];
   v9 = [NSData dataWithBytes:&v51 length:48];
   v10 = v9;
   if (v9)
   {
     v36 = v9;
-    v37 = v4;
+    v37 = lCopy;
     [v8 writeData:v9];
     v47 = 0u;
     v48 = 0u;
@@ -358,21 +358,21 @@ LABEL_11:
           v16 = *(*(&v45 + 1) + 8 * i);
           v43 = 0;
           v44 = 0;
-          v17 = [v16 subFileTag];
-          v18 = [v17 length];
+          subFileTag = [v16 subFileTag];
+          v18 = [subFileTag length];
 
           if (v18 != 4)
           {
             goto LABEL_30;
           }
 
-          v19 = [v16 subFileTag];
-          v20 = [v19 UTF8String];
+          subFileTag2 = [v16 subFileTag];
+          uTF8String = [subFileTag2 UTF8String];
 
-          LODWORD(v43) = *v20;
+          LODWORD(v43) = *uTF8String;
           HIDWORD(v43) = v13;
           LODWORD(v44) = [v16 subFileLength];
-          v21 = [v16 subFileLength];
+          subFileLength = [v16 subFileLength];
           v22 = [NSData dataWithBytes:&v43 length:16];
           if (!v22)
           {
@@ -382,7 +382,7 @@ LABEL_30:
           }
 
           v23 = v22;
-          v13 += v21;
+          v13 += subFileLength;
           [v8 writeData:v22];
         }
 
@@ -472,7 +472,7 @@ LABEL_25:
 LABEL_31:
 
     v10 = v36;
-    v4 = v37;
+    lCopy = v37;
   }
 
   else
@@ -483,7 +483,7 @@ LABEL_31:
   return v34;
 }
 
-- (id)getDataBlock:(unint64_t)a3 offset:(unint64_t)a4
+- (id)getDataBlock:(unint64_t)block offset:(unint64_t)offset
 {
   ftabLength = self->_ftabLength;
   if (!ftabLength)
@@ -497,41 +497,41 @@ LABEL_31:
     goto LABEL_12;
   }
 
-  if (ftabLength <= a4)
+  if (ftabLength <= offset)
   {
     v11 = self->_log;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_1000822E0(a4, ftabLength, v11);
+      sub_1000822E0(offset, ftabLength, v11);
     }
 
 LABEL_12:
-    v9 = 0;
+    blockCopy = 0;
     goto LABEL_13;
   }
 
-  v7 = a3;
-  if (a4 + a3 > ftabLength)
+  blockCopy = block;
+  if (offset + block > ftabLength)
   {
-    v7 = ftabLength - a4;
+    blockCopy = ftabLength - offset;
     v8 = self->_log;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v13 = 136315906;
       v14 = "[UARPRTKitFTAB getDataBlock:offset:]";
       v15 = 1024;
-      v16 = v7;
+      v16 = blockCopy;
       v17 = 1024;
-      v18 = a4;
+      offsetCopy = offset;
       v19 = 2112;
-      v20 = self;
+      selfCopy = self;
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s: Can only provide %d bytes from offset %d of ftab %@", &v13, 0x22u);
     }
   }
 
   if (self->_data)
   {
-    v9 = [(UARPRTKitFTAB *)self getDataRangeFromData:a4, v7];
+    blockCopy = [(UARPRTKitFTAB *)self getDataRangeFromData:offset, blockCopy];
     goto LABEL_13;
   }
 
@@ -540,16 +540,16 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v9 = [(UARPRTKitFTAB *)self getDataRangeFromURL:a4, v7];
+  blockCopy = [(UARPRTKitFTAB *)self getDataRangeFromURL:offset, blockCopy];
 LABEL_13:
 
-  return v9;
+  return blockCopy;
 }
 
-- (id)getDataRangeFromURL:(_NSRange)a3
+- (id)getDataRangeFromURL:(_NSRange)l
 {
-  length = a3.length;
-  location = a3.location;
+  length = l.length;
+  location = l.location;
   p_url = &self->_url;
   url = self->_url;
   v33 = 0;
@@ -592,7 +592,7 @@ LABEL_13:
         {
           v26 = *p_url;
           v27 = v19;
-          v28 = [(NSURL *)v26 absoluteString];
+          absoluteString = [(NSURL *)v26 absoluteString];
           v29 = [v13 description];
           *buf = 136316162;
           v35 = "[UARPRTKitFTAB getDataRangeFromURL:]";
@@ -601,7 +601,7 @@ LABEL_13:
           v38 = 2048;
           v39 = length;
           v40 = 2112;
-          v41 = v28;
+          v41 = absoluteString;
           v42 = 2112;
           v43 = v29;
           _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "%s: cannot read range (offset %lu, length %lu) from %@, error %@", buf, 0x34u);
@@ -619,7 +619,7 @@ LABEL_13:
         ftabLength = self->_ftabLength;
         v22 = self->_url;
         v23 = v18;
-        v24 = [(NSURL *)v22 absoluteString];
+        absoluteString2 = [(NSURL *)v22 absoluteString];
         v25 = [v11 description];
         *buf = 136316162;
         v35 = "[UARPRTKitFTAB getDataRangeFromURL:]";
@@ -628,7 +628,7 @@ LABEL_13:
         v38 = 2048;
         v39 = ftabLength;
         v40 = 2112;
-        v41 = v24;
+        v41 = absoluteString2;
         v42 = 2112;
         v43 = v25;
         _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%s: cannot seek to offset %lu (file length %lu) from %@, error %@", buf, 0x34u);

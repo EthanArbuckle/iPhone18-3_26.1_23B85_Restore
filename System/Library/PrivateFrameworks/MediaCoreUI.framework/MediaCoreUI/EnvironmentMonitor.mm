@@ -7,11 +7,11 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 sharedMonitor];
-  [v5 unregisterObserver_];
+  selfCopy = self;
+  sharedMonitor = [v3 sharedMonitor];
+  [sharedMonitor unregisterObserver_];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for EnvironmentMonitor();
   [(EnvironmentMonitor *)&v6 dealloc];
 }

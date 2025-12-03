@@ -1,7 +1,7 @@
 @interface HMDAccessoryFirmwareUpdatePolicy
 + (id)logCategory;
 - (BOOL)evaluate;
-- (HMDAccessoryFirmwareUpdatePolicy)initWithAccessory:(id)a3 workQueue:(id)a4;
+- (HMDAccessoryFirmwareUpdatePolicy)initWithAccessory:(id)accessory workQueue:(id)queue;
 - (HMDHAPAccessory)accessory;
 - (id)logIdentifier;
 - (void)evaluateAndNotify;
@@ -20,7 +20,7 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -37,27 +37,27 @@
 
 - (void)evaluateAndNotify
 {
-  v3 = [(HMDAccessoryFirmwareUpdatePolicy *)self evaluate];
-  if (v3 != [(HMDAccessoryFirmwareUpdatePolicy *)self status])
+  evaluate = [(HMDAccessoryFirmwareUpdatePolicy *)self evaluate];
+  if (evaluate != [(HMDAccessoryFirmwareUpdatePolicy *)self status])
   {
-    [(HMDAccessoryFirmwareUpdatePolicy *)self setStatus:v3];
+    [(HMDAccessoryFirmwareUpdatePolicy *)self setStatus:evaluate];
 
-    [(HMDAccessoryFirmwareUpdatePolicy *)self notify:v3];
+    [(HMDAccessoryFirmwareUpdatePolicy *)self notify:evaluate];
   }
 }
 
-- (HMDAccessoryFirmwareUpdatePolicy)initWithAccessory:(id)a3 workQueue:(id)a4
+- (HMDAccessoryFirmwareUpdatePolicy)initWithAccessory:(id)accessory workQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = HMDAccessoryFirmwareUpdatePolicy;
   v8 = [(HMDAccessoryFirmwareUpdatePolicy *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_accessory, v6);
-    objc_storeStrong(&v9->_workQueue, a4);
+    objc_storeWeak(&v8->_accessory, accessoryCopy);
+    objc_storeStrong(&v9->_workQueue, queue);
   }
 
   return v9;
@@ -65,10 +65,10 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
-  v3 = [v2 logIdentifier];
+  accessory = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
+  logIdentifier = [accessory logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
 + (id)logCategory

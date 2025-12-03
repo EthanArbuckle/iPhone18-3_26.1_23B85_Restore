@@ -1,36 +1,36 @@
 @interface PKPaymentCloudStoreZoneCreationManager
-- (PKPaymentCloudStoreZoneCreationManager)initWithWebService:(id)a3;
-- (void)triggerCloudStoreZoneCreationIfNeededForEligibilityResponse:(id)a3 completion:(id)a4;
+- (PKPaymentCloudStoreZoneCreationManager)initWithWebService:(id)service;
+- (void)triggerCloudStoreZoneCreationIfNeededForEligibilityResponse:(id)response completion:(id)completion;
 @end
 
 @implementation PKPaymentCloudStoreZoneCreationManager
 
-- (PKPaymentCloudStoreZoneCreationManager)initWithWebService:(id)a3
+- (PKPaymentCloudStoreZoneCreationManager)initWithWebService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = PKPaymentCloudStoreZoneCreationManager;
   v6 = [(PKPaymentCloudStoreZoneCreationManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_webService, a3);
+    objc_storeStrong(&v6->_webService, service);
   }
 
   return v7;
 }
 
-- (void)triggerCloudStoreZoneCreationIfNeededForEligibilityResponse:(id)a3 completion:(id)a4
+- (void)triggerCloudStoreZoneCreationIfNeededForEligibilityResponse:(id)response completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  responseCopy = response;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [v6 supplementaryData];
-    v9 = [v8 lightweightAccount];
+    supplementaryData = [responseCopy supplementaryData];
+    lightweightAccount = [supplementaryData lightweightAccount];
 
-    if (v9)
+    if (lightweightAccount)
     {
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -46,21 +46,21 @@
       handler[1] = 3221225472;
       handler[2] = __113__PKPaymentCloudStoreZoneCreationManager_triggerCloudStoreZoneCreationIfNeededForEligibilityResponse_completion___block_invoke;
       handler[3] = &unk_1E79DFB70;
-      v13 = v9;
+      v13 = lightweightAccount;
       v21 = v13;
       p_buf = &buf;
-      v14 = v7;
+      v14 = completionCopy;
       v22 = v14;
       dispatch_source_set_event_handler(v12, handler);
       dispatch_resume(*(*(&buf + 1) + 40));
-      v15 = [(PKPaymentWebService *)self->_webService targetDevice];
+      targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __113__PKPaymentCloudStoreZoneCreationManager_triggerCloudStoreZoneCreationIfNeededForEligibilityResponse_completion___block_invoke_14;
       v17[3] = &unk_1E79E2F60;
       v19 = &buf;
       v18 = v14;
-      [v15 triggerCloudStoreZoneCreationForAccount:v13 withCompletion:v17];
+      [targetDevice triggerCloudStoreZoneCreationForAccount:v13 withCompletion:v17];
 
       _Block_object_dispose(&buf, 8);
     }
@@ -71,11 +71,11 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v6;
+        *(&buf + 4) = responseCopy;
         _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "No account found, skipping cloud store zone creation for eligibility response %@", &buf, 0xCu);
       }
 
-      (*(v7 + 2))(v7, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
   }
 }

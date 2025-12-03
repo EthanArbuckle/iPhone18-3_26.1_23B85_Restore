@@ -1,16 +1,16 @@
 @interface CertInfoCertificateListTableViewCell
-- (CertInfoCertificateListTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CertInfoCertificateListTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)updateWithTrustDescription:(id)a3 certificateIndex:(unint64_t)a4;
+- (void)updateWithTrustDescription:(id)description certificateIndex:(unint64_t)index;
 @end
 
 @implementation CertInfoCertificateListTableViewCell
 
-- (CertInfoCertificateListTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CertInfoCertificateListTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v15.receiver = self;
   v15.super_class = CertInfoCertificateListTableViewCell;
-  v4 = [(CertInfoCertificateListTableViewCell *)&v15 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(CertInfoCertificateListTableViewCell *)&v15 initWithStyle:3 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -25,8 +25,8 @@
       dispatch_once(&initWithStyle_reuseIdentifier__onceToken, block);
     }
 
-    v7 = [v6 imageView];
-    [v7 setImage:initWithStyle_reuseIdentifier__sBlobImage];
+    imageView = [v6 imageView];
+    [imageView setImage:initWithStyle_reuseIdentifier__sBlobImage];
 
     v8 = [CertInfoCertificateListCellContentView alloc];
     v9 = [(CertInfoCertificateListCellContentView *)v8 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -34,8 +34,8 @@
     v6[128] = v9;
 
     [v6[128] setUserInteractionEnabled:0];
-    v11 = [v6 contentView];
-    [v11 addSubview:v6[128]];
+    contentView = [v6 contentView];
+    [contentView addSubview:v6[128]];
   }
 
   return v5;
@@ -50,19 +50,19 @@ void __70__CertInfoCertificateListTableViewCell_initWithStyle_reuseIdentifier___
   initWithStyle_reuseIdentifier__sBlobImage = v2;
 }
 
-- (void)updateWithTrustDescription:(id)a3 certificateIndex:(unint64_t)a4
+- (void)updateWithTrustDescription:(id)description certificateIndex:(unint64_t)index
 {
   certificateContentView = self->_certificateContentView;
-  v7 = a3;
-  v8 = [v7 certificateSubjectSummaryAtIndex:a4];
+  descriptionCopy = description;
+  v8 = [descriptionCopy certificateSubjectSummaryAtIndex:index];
   [(CertInfoCertificateListCellContentView *)certificateContentView setTitle:v8];
 
   v9 = self->_certificateContentView;
-  v10 = [v7 certificateIssuerSummaryAtIndex:a4];
+  v10 = [descriptionCopy certificateIssuerSummaryAtIndex:index];
   [(CertInfoCertificateListCellContentView *)v9 setSubtitle:v10];
 
   v11 = self->_certificateContentView;
-  v12 = [v7 certificateExpirationDateAtIndex:a4];
+  v12 = [descriptionCopy certificateExpirationDateAtIndex:index];
 
   [(CertInfoCertificateListCellContentView *)v11 setExpiration:v12];
 }
@@ -72,22 +72,22 @@ void __70__CertInfoCertificateListTableViewCell_initWithStyle_reuseIdentifier___
   v23.receiver = self;
   v23.super_class = CertInfoCertificateListTableViewCell;
   [(CertInfoCertificateListTableViewCell *)&v23 layoutSubviews];
-  v3 = [(CertInfoCertificateListTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(CertInfoCertificateListTableViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CertInfoCertificateListTableViewCell *)self imageView];
-  [v12 frame];
+  imageView = [(CertInfoCertificateListTableViewCell *)self imageView];
+  [imageView frame];
   v14 = v13;
   v16 = v15;
 
   v17 = (v11 - v16) * 0.5;
   v18 = roundf(v17);
-  v19 = [(CertInfoCertificateListTableViewCell *)self imageView];
-  [v19 setFrame:{8.0, v18, v14, v16}];
+  imageView2 = [(CertInfoCertificateListTableViewCell *)self imageView];
+  [imageView2 setFrame:{8.0, v18, v14, v16}];
 
   [(CertInfoCertificateListCellContentView *)self->_certificateContentView frame];
   v24.origin.x = 8.0;

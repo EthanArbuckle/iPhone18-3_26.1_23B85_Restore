@@ -1,33 +1,33 @@
 @interface PXPhotosDataSourceStressTest
 - (PXPhotosDataSourceStressTest)init;
-- (id)_categoryForAsset:(id)a3;
+- (id)_categoryForAsset:(id)asset;
 - (void)_prepare;
-- (void)_setDataSource:(id)a3;
-- (void)_setDataSourceIndex:(unint64_t)a3;
+- (void)_setDataSource:(id)source;
+- (void)_setDataSourceIndex:(unint64_t)index;
 - (void)_updateDataSource;
-- (void)setRunning:(BOOL)a3;
+- (void)setRunning:(BOOL)running;
 @end
 
 @implementation PXPhotosDataSourceStressTest
 
-- (void)_setDataSourceIndex:(unint64_t)a3
+- (void)_setDataSourceIndex:(unint64_t)index
 {
-  if (self->_dataSourceIndex != a3)
+  if (self->_dataSourceIndex != index)
   {
-    self->_dataSourceIndex = a3;
+    self->_dataSourceIndex = index;
     [(PXPhotosDataSourceStressTest *)self signalChange:4];
   }
 }
 
-- (void)_setDataSource:(id)a3
+- (void)_setDataSource:(id)source
 {
-  v5 = a3;
-  if (self->_dataSource != v5)
+  sourceCopy = source;
+  if (self->_dataSource != sourceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_dataSource, a3);
+    v6 = sourceCopy;
+    objc_storeStrong(&self->_dataSource, source);
     [(PXPhotosDataSourceStressTest *)self signalChange:2];
-    v5 = v6;
+    sourceCopy = v6;
   }
 }
 
@@ -38,7 +38,7 @@
   {
     sampleIndex = self->_sampleIndex;
     v4 = [(NSArray *)self->_categories count];
-    v23 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if (self->_sampleLength)
     {
       v5 = 0;
@@ -49,7 +49,7 @@
         v8 = [(NSArray *)self->_categories objectAtIndexedSubscript:sampleIndex % v4];
         v9 = [(NSDictionary *)self->_assetsByCategory objectForKeyedSubscript:v8];
         v10 = [v9 objectAtIndexedSubscript:{v5 % objc_msgSend(v9, "count")}];
-        [v23 addObject:v10];
+        [array addObject:v10];
         v6 *= v4;
 
         ++v5;
@@ -64,7 +64,7 @@
       v6 = 1;
     }
 
-    v11 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssets:v23 title:0];
+    v11 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssets:array title:0];
     v12 = MEMORY[0x1E6978760];
     v29[0] = v11;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
@@ -123,13 +123,13 @@ void __49__PXPhotosDataSourceStressTest__updateDataSource__block_invoke_2(uint64
   [WeakRetained _updateDataSource];
 }
 
-- (id)_categoryForAsset:(id)a3
+- (id)_categoryForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 pixelWidth];
-  v5 = [v3 pixelHeight];
+  assetCopy = asset;
+  pixelWidth = [assetCopy pixelWidth];
+  pixelHeight = [assetCopy pixelHeight];
 
-  if (v4 / v5 <= 2.0)
+  if (pixelWidth / pixelHeight <= 2.0)
   {
     PXFloatEqualToFloatWithTolerance();
   }
@@ -149,29 +149,29 @@ void __49__PXPhotosDataSourceStressTest__updateDataSource__block_invoke_2(uint64
     categories = self->_categories;
     self->_categories = v3;
 
-    v5 = [(PXPhotosDataSourceStressTest *)self maximumAssetCount];
-    v6 = [MEMORY[0x1E695DF90] dictionary];
-    v7 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-    v8 = [v7 librarySpecificFetchOptions];
+    maximumAssetCount = [(PXPhotosDataSourceStressTest *)self maximumAssetCount];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    librarySpecificFetchOptions = [px_deprecated_appPhotoLibrary librarySpecificFetchOptions];
 
     v9 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:1];
     v20 = v9;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
-    [v8 setSortDescriptors:v10];
+    [librarySpecificFetchOptions setSortDescriptors:v10];
 
     v19[0] = 0;
     v19[1] = v19;
     v19[2] = 0x2020000000;
     v19[3] = 0;
-    v11 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:v8];
+    v11 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:librarySpecificFetchOptions];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __40__PXPhotosDataSourceStressTest__prepare__block_invoke;
     v15[3] = &unk_1E772FB00;
     v15[4] = self;
-    v12 = v6;
+    v12 = dictionary;
     v17 = v19;
-    v18 = v5;
+    v18 = maximumAssetCount;
     v16 = v12;
     [v11 enumerateObjectsUsingBlock:v15];
 
@@ -215,9 +215,9 @@ void __40__PXPhotosDataSourceStressTest__prepare__block_invoke(uint64_t a1, void
   }
 }
 
-- (void)setRunning:(BOOL)a3
+- (void)setRunning:(BOOL)running
 {
-  if (self->_running != a3)
+  if (self->_running != running)
   {
     v7 = v3;
     v8 = v4;
@@ -226,7 +226,7 @@ void __40__PXPhotosDataSourceStressTest__prepare__block_invoke(uint64_t a1, void
     v5[2] = __43__PXPhotosDataSourceStressTest_setRunning___block_invoke;
     v5[3] = &unk_1E774C670;
     v5[4] = self;
-    v6 = a3;
+    runningCopy = running;
     [(PXPhotosDataSourceStressTest *)self performChanges:v5];
   }
 }

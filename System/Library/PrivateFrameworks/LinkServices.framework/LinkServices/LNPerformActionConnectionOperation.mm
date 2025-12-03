@@ -1,7 +1,7 @@
 @interface LNPerformActionConnectionOperation
-- (LNPerformActionConnectionOperation)initWithConnectionInterface:(id)a3 action:(id)a4 executor:(id)a5 executorActivity:(id)a6 queue:(id)a7 completionHandler:(id)a8;
+- (LNPerformActionConnectionOperation)initWithConnectionInterface:(id)interface action:(id)action executor:(id)executor executorActivity:(id)activity queue:(id)queue completionHandler:(id)handler;
 - (double)timeout;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
@@ -9,35 +9,35 @@
 
 - (double)timeout
 {
-  v2 = [(LNPerformActionConnectionOperation *)self executor];
-  v3 = [v2 options];
-  [v3 connectionOperationTimeout];
+  executor = [(LNPerformActionConnectionOperation *)self executor];
+  options = [executor options];
+  [options connectionOperationTimeout];
   v5 = v4;
 
   return v5;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(LNPerformActionConnectionOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(LNPerformActionConnectionOperation *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(LNPerformActionConnectionOperation *)self result];
-    v7 = [(LNConnectionOperation *)self validatingResult:v6 error:v4];
+    result = [(LNPerformActionConnectionOperation *)self result];
+    v7 = [(LNConnectionOperation *)self validatingResult:result error:errorCopy];
 
-    v8 = [(LNPerformActionConnectionOperation *)self completionHandler];
-    v9 = [(LNPerformActionConnectionOperation *)self result];
-    (v8)[2](v8, self, v9, v7);
+    completionHandler2 = [(LNPerformActionConnectionOperation *)self completionHandler];
+    result2 = [(LNPerformActionConnectionOperation *)self result];
+    (completionHandler2)[2](completionHandler2, self, result2, v7);
 
     [(LNPerformActionConnectionOperation *)self setCompletionHandler:0];
-    v4 = v7;
+    errorCopy = v7;
   }
 
   v10.receiver = self;
   v10.super_class = LNPerformActionConnectionOperation;
-  [(LNConnectionOperation *)&v10 finishWithError:v4];
+  [(LNConnectionOperation *)&v10 finishWithError:errorCopy];
 }
 
 - (void)start
@@ -49,39 +49,39 @@
   v3 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(LNPerformActionConnectionOperation *)self action];
-    v5 = [v4 identifier];
-    v6 = [(LNConnectionOperation *)self identifier];
-    v7 = [(LNPerformActionConnectionOperation *)self action];
-    v8 = [v7 parameters];
+    action = [(LNPerformActionConnectionOperation *)self action];
+    identifier = [action identifier];
+    identifier2 = [(LNConnectionOperation *)self identifier];
+    action2 = [(LNPerformActionConnectionOperation *)self action];
+    parameters = [action2 parameters];
     *buf = 138543874;
-    v21 = v5;
+    v21 = identifier;
     v22 = 2114;
-    v23 = v6;
+    v23 = identifier2;
     v24 = 2112;
-    v25 = v8;
+    v25 = parameters;
   }
 
-  v9 = [(LNPerformActionConnectionOperation *)self action];
-  v10 = [MEMORY[0x1E69AC880] fileValueType];
+  action3 = [(LNPerformActionConnectionOperation *)self action];
+  fileValueType = [MEMORY[0x1E69AC880] fileValueType];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __43__LNPerformActionConnectionOperation_start__block_invoke;
   v18[3] = &unk_1E74B1E70;
   v18[4] = self;
-  [v9 enumerateParameterValuesOfValueType:v10 block:v18];
+  [action3 enumerateParameterValuesOfValueType:fileValueType block:v18];
 
-  v11 = [(LNInterfaceConnectionOperation *)self connectionInterface];
-  v12 = [(LNPerformActionConnectionOperation *)self action];
-  v13 = [(LNPerformActionConnectionOperation *)self executor];
-  v14 = [v13 options];
-  v15 = [(LNPerformActionConnectionOperation *)self executor];
+  connectionInterface = [(LNInterfaceConnectionOperation *)self connectionInterface];
+  action4 = [(LNPerformActionConnectionOperation *)self action];
+  executor = [(LNPerformActionConnectionOperation *)self executor];
+  options = [executor options];
+  executor2 = [(LNPerformActionConnectionOperation *)self executor];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __43__LNPerformActionConnectionOperation_start__block_invoke_2;
   v17[3] = &unk_1E74B1E98;
   v17[4] = self;
-  [v11 performAction:v12 options:v14 executor:v15 completionHandler:v17];
+  [connectionInterface performAction:action4 options:options executor:executor2 completionHandler:v17];
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -140,19 +140,19 @@ void __43__LNPerformActionConnectionOperation_start__block_invoke_2(uint64_t a1,
   os_activity_scope_leave(&v8);
 }
 
-- (LNPerformActionConnectionOperation)initWithConnectionInterface:(id)a3 action:(id)a4 executor:(id)a5 executorActivity:(id)a6 queue:(id)a7 completionHandler:(id)a8
+- (LNPerformActionConnectionOperation)initWithConnectionInterface:(id)interface action:(id)action executor:(id)executor executorActivity:(id)activity queue:(id)queue completionHandler:(id)handler
 {
-  v15 = a3;
-  obj = a4;
-  v16 = a4;
-  v38 = a5;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if (v15)
+  interfaceCopy = interface;
+  obj = action;
+  actionCopy = action;
+  executorCopy = executor;
+  executorCopy2 = executor;
+  activityCopy = activity;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (interfaceCopy)
   {
-    if (v16)
+    if (actionCopy)
     {
       goto LABEL_3;
     }
@@ -160,22 +160,22 @@ void __43__LNPerformActionConnectionOperation_start__block_invoke_2(uint64_t a1,
 
   else
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"LNPerformActionConnectionOperation.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface", obj, v38}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNPerformActionConnectionOperation.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface", obj, executorCopy}];
 
-    if (v16)
+    if (actionCopy)
     {
 LABEL_3:
-      if (v17)
+      if (executorCopy2)
       {
         goto LABEL_4;
       }
 
 LABEL_15:
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v35 handleFailureInMethod:a2 object:self file:@"LNPerformActionConnectionOperation.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"executor"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNPerformActionConnectionOperation.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"executor"}];
 
-      if (v20)
+      if (handlerCopy)
       {
         goto LABEL_5;
       }
@@ -184,35 +184,35 @@ LABEL_15:
     }
   }
 
-  v34 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v34 handleFailureInMethod:a2 object:self file:@"LNPerformActionConnectionOperation.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNPerformActionConnectionOperation.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"action"}];
 
-  if (!v17)
+  if (!executorCopy2)
   {
     goto LABEL_15;
   }
 
 LABEL_4:
-  if (v20)
+  if (handlerCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_16:
-  v36 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v36 handleFailureInMethod:a2 object:self file:@"LNPerformActionConnectionOperation.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"LNPerformActionConnectionOperation.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_5:
-  if ([v16 openAppWhenRun])
+  if ([actionCopy openAppWhenRun])
   {
     v21 = 2;
   }
 
   else
   {
-    v22 = [v16 systemProtocols];
-    v23 = [MEMORY[0x1E69ACA48] pushToTalkTransmissionProtocol];
-    v24 = [v22 containsObject:v23];
+    systemProtocols = [actionCopy systemProtocols];
+    pushToTalkTransmissionProtocol = [MEMORY[0x1E69ACA48] pushToTalkTransmissionProtocol];
+    v24 = [systemProtocols containsObject:pushToTalkTransmissionProtocol];
 
     if (v24)
     {
@@ -225,23 +225,23 @@ LABEL_5:
     }
   }
 
-  v25 = [v17 identifier];
-  v26 = [v16 systemProtocols];
+  identifier = [executorCopy2 identifier];
+  systemProtocols2 = [actionCopy systemProtocols];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __123__LNPerformActionConnectionOperation_initWithConnectionInterface_action_executor_executorActivity_queue_completionHandler___block_invoke;
   v40[3] = &unk_1E74B1E48;
-  v27 = v18;
+  v27 = activityCopy;
   v41 = v27;
   v39.receiver = self;
   v39.super_class = LNPerformActionConnectionOperation;
-  v28 = [(LNRuntimeAssertionsTakingConnectionOperation *)&v39 initWithIdentifier:v25 connectionInterface:v15 systemProtocols:v26 priority:v21 queue:v19 activity:v40];
+  v28 = [(LNRuntimeAssertionsTakingConnectionOperation *)&v39 initWithIdentifier:identifier connectionInterface:interfaceCopy systemProtocols:systemProtocols2 priority:v21 queue:queueCopy activity:v40];
 
   if (v28)
   {
     objc_storeStrong(&v28->_action, obj);
-    objc_storeStrong(&v28->_executor, v38);
-    v29 = [v20 copy];
+    objc_storeStrong(&v28->_executor, executorCopy);
+    v29 = [handlerCopy copy];
     completionHandler = v28->_completionHandler;
     v28->_completionHandler = v29;
 

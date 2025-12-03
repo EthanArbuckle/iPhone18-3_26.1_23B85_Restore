@@ -1,10 +1,10 @@
 @interface CNPostalAddress
-+ (CNPostalAddress)postalAddressWithAddressBookDictionaryRepresentation:(id)a3;
-+ (CNPostalAddress)postalAddressWithDictionaryRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValid:(id *)a3;
-- (CNPostalAddress)initWithCoder:(id)a3;
-- (CNPostalAddress)initWithPostalAddress:(id)a3;
++ (CNPostalAddress)postalAddressWithAddressBookDictionaryRepresentation:(id)representation;
++ (CNPostalAddress)postalAddressWithDictionaryRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValid:(id *)valid;
+- (CNPostalAddress)initWithCoder:(id)coder;
+- (CNPostalAddress)initWithPostalAddress:(id)address;
 - (NSString)ISOCountryCode;
 - (NSString)city;
 - (NSString)country;
@@ -16,17 +16,17 @@
 - (NSString)subLocality;
 - (id)addressBookDictionaryRepresentation;
 - (id)dictionaryRepresentation;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCity:(id)a3;
-- (void)setCountry:(id)a3;
-- (void)setISOCountryCode:(id)a3;
-- (void)setPostalCode:(id)a3;
-- (void)setState:(id)a3;
-- (void)setStreet:(id)a3;
-- (void)setSubAdministrativeArea:(id)a3;
-- (void)setSubLocality:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCity:(id)city;
+- (void)setCountry:(id)country;
+- (void)setISOCountryCode:(id)code;
+- (void)setPostalCode:(id)code;
+- (void)setState:(id)state;
+- (void)setStreet:(id)street;
+- (void)setSubAdministrativeArea:(id)area;
+- (void)setSubLocality:(id)locality;
 @end
 
 @implementation CNPostalAddress
@@ -138,26 +138,26 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E69966B0];
-  v4 = [(CNPostalAddress *)self street];
-  v5 = [(CNPostalAddress *)self subLocality];
-  v6 = [(CNPostalAddress *)self city];
-  v7 = [(CNPostalAddress *)self subAdministrativeArea];
-  v8 = [(CNPostalAddress *)self state];
-  v9 = [(CNPostalAddress *)self postalCode];
-  v10 = [(CNPostalAddress *)self country];
-  v11 = [(CNPostalAddress *)self ISOCountryCode];
-  v12 = [v3 descriptionForObject:self withNamesAndObjects:{@"street", v4, @"subLocality", v5, @"city", v6, @"subAdministrativeArea", v7, @"state", v8, @"postalCode", v9, @"country", v10, @"countryCode", v11, 0}];
+  street = [(CNPostalAddress *)self street];
+  subLocality = [(CNPostalAddress *)self subLocality];
+  city = [(CNPostalAddress *)self city];
+  subAdministrativeArea = [(CNPostalAddress *)self subAdministrativeArea];
+  state = [(CNPostalAddress *)self state];
+  postalCode = [(CNPostalAddress *)self postalCode];
+  country = [(CNPostalAddress *)self country];
+  iSOCountryCode = [(CNPostalAddress *)self ISOCountryCode];
+  v12 = [v3 descriptionForObject:self withNamesAndObjects:{@"street", street, @"subLocality", subLocality, @"city", city, @"subAdministrativeArea", subAdministrativeArea, @"state", state, @"postalCode", postalCode, @"country", country, @"countryCode", iSOCountryCode, 0}];
 
   return v12;
 }
 
-+ (CNPostalAddress)postalAddressWithAddressBookDictionaryRepresentation:(id)a3
++ (CNPostalAddress)postalAddressWithAddressBookDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
-  if (v3)
+  representationCopy = representation;
+  if (representationCopy)
   {
     v4 = +[CN postalAddressesDescription];
-    v5 = [v4 CNLabeledValueValueFromABMultiValueValue:v3];
+    v5 = [v4 CNLabeledValueValueFromABMultiValueValue:representationCopy];
     v6 = [v5 copy];
   }
 
@@ -178,11 +178,11 @@
   return v5;
 }
 
-+ (CNPostalAddress)postalAddressWithDictionaryRepresentation:(id)a3
++ (CNPostalAddress)postalAddressWithDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   v4 = +[CN postalAddressFromDictionaryTransform];
-  v5 = (v4)[2](v4, v3);
+  v5 = (v4)[2](v4, representationCopy);
 
   return v5;
 }
@@ -195,47 +195,47 @@
   return v4;
 }
 
-- (CNPostalAddress)initWithPostalAddress:(id)a3
+- (CNPostalAddress)initWithPostalAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v26.receiver = self;
   v26.super_class = CNPostalAddress;
   v5 = [(CNPostalAddress *)&v26 init];
   if (v5)
   {
-    v6 = [v4[1] copy];
+    v6 = [addressCopy[1] copy];
     street = v5->_street;
     v5->_street = v6;
 
-    v8 = [v4[2] copy];
+    v8 = [addressCopy[2] copy];
     subLocality = v5->_subLocality;
     v5->_subLocality = v8;
 
-    v10 = [v4[3] copy];
+    v10 = [addressCopy[3] copy];
     city = v5->_city;
     v5->_city = v10;
 
-    v12 = [v4[4] copy];
+    v12 = [addressCopy[4] copy];
     subAdministrativeArea = v5->_subAdministrativeArea;
     v5->_subAdministrativeArea = v12;
 
-    v14 = [v4[5] copy];
+    v14 = [addressCopy[5] copy];
     state = v5->_state;
     v5->_state = v14;
 
-    v16 = [v4[6] copy];
+    v16 = [addressCopy[6] copy];
     postalCode = v5->_postalCode;
     v5->_postalCode = v16;
 
-    v18 = [v4[7] copy];
+    v18 = [addressCopy[7] copy];
     country = v5->_country;
     v5->_country = v18;
 
-    v20 = [v4[8] copy];
+    v20 = [addressCopy[8] copy];
     ISOCountryCode = v5->_ISOCountryCode;
     v5->_ISOCountryCode = v20;
 
-    v22 = [v4[9] copy];
+    v22 = [addressCopy[9] copy];
     formattedAddress = v5->_formattedAddress;
     v5->_formattedAddress = v22;
 
@@ -245,62 +245,62 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CNMutablePostalAddress alloc];
 
   return [(CNPostalAddress *)v4 initWithPostalAddress:self];
 }
 
-- (CNPostalAddress)initWithCoder:(id)a3
+- (CNPostalAddress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = CNPostalAddress;
   v5 = [(CNPostalAddress *)&v35 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_street"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_street"];
     v7 = [v6 copy];
     street = v5->_street;
     v5->_street = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_subLocality"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_subLocality"];
     v10 = [v9 copy];
     subLocality = v5->_subLocality;
     v5->_subLocality = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_city"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_city"];
     v13 = [v12 copy];
     city = v5->_city;
     v5->_city = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_subAdministrativeArea"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_subAdministrativeArea"];
     v16 = [v15 copy];
     subAdministrativeArea = v5->_subAdministrativeArea;
     v5->_subAdministrativeArea = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_state"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_state"];
     v19 = [v18 copy];
     state = v5->_state;
     v5->_state = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_postalCode"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_postalCode"];
     v22 = [v21 copy];
     postalCode = v5->_postalCode;
     v5->_postalCode = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_country"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_country"];
     v25 = [v24 copy];
     country = v5->_country;
     v5->_country = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_ISOCountryCode"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_ISOCountryCode"];
     v28 = [v27 copy];
     ISOCountryCode = v5->_ISOCountryCode;
     v5->_ISOCountryCode = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_formattedAddress"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_formattedAddress"];
     v31 = [v30 copy];
     formattedAddress = v5->_formattedAddress;
     v5->_formattedAddress = v31;
@@ -311,24 +311,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   street = self->_street;
-  v5 = a3;
-  [v5 encodeObject:street forKey:@"_street"];
-  [v5 encodeObject:self->_subLocality forKey:@"_subLocality"];
-  [v5 encodeObject:self->_city forKey:@"_city"];
-  [v5 encodeObject:self->_subAdministrativeArea forKey:@"_subAdministrativeArea"];
-  [v5 encodeObject:self->_state forKey:@"_state"];
-  [v5 encodeObject:self->_postalCode forKey:@"_postalCode"];
-  [v5 encodeObject:self->_country forKey:@"_country"];
-  [v5 encodeObject:self->_ISOCountryCode forKey:@"_ISOCountryCode"];
-  [v5 encodeObject:self->_formattedAddress forKey:@"_formattedAddress"];
+  coderCopy = coder;
+  [coderCopy encodeObject:street forKey:@"_street"];
+  [coderCopy encodeObject:self->_subLocality forKey:@"_subLocality"];
+  [coderCopy encodeObject:self->_city forKey:@"_city"];
+  [coderCopy encodeObject:self->_subAdministrativeArea forKey:@"_subAdministrativeArea"];
+  [coderCopy encodeObject:self->_state forKey:@"_state"];
+  [coderCopy encodeObject:self->_postalCode forKey:@"_postalCode"];
+  [coderCopy encodeObject:self->_country forKey:@"_country"];
+  [coderCopy encodeObject:self->_ISOCountryCode forKey:@"_ISOCountryCode"];
+  [coderCopy encodeObject:self->_formattedAddress forKey:@"_formattedAddress"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v21 = MEMORY[0x1E69966F0];
   v5 = objc_opt_class();
   v36[0] = MEMORY[0x1E69E9820];
@@ -336,7 +336,7 @@
   v36[2] = __27__CNPostalAddress_isEqual___block_invoke;
   v36[3] = &unk_1E7412228;
   v36[4] = self;
-  v37 = v4;
+  v37 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __27__CNPostalAddress_isEqual___block_invoke_2;
@@ -605,7 +605,7 @@ uint64_t __23__CNPostalAddress_hash__block_invoke_8(uint64_t a1)
   return v3;
 }
 
-- (BOOL)isValid:(id *)a3
+- (BOOL)isValid:(id *)valid
 {
   if (isValid__cn_once_token_0_3 != -1)
   {
@@ -625,7 +625,7 @@ uint64_t __23__CNPostalAddress_hash__block_invoke_8(uint64_t a1)
     [CNPostalAddress isValid:];
   }
 
-  v8 = [CN areValidKeyPaths:v5 forObject:self expectedClasses:v7 allowNil:isValid__cn_once_object_2_3 error:a3];
+  v8 = [CN areValidKeyPaths:v5 forObject:self expectedClasses:v7 allowNil:isValid__cn_once_object_2_3 error:valid];
 
   return v8;
 }
@@ -666,11 +666,11 @@ uint64_t __27__CNPostalAddress_isValid___block_invoke_3()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)setStreet:(id)a3
+- (void)setStreet:(id)street
 {
-  if (self->_street != a3)
+  if (self->_street != street)
   {
-    v5 = [a3 copy];
+    v5 = [street copy];
     street = self->_street;
     self->_street = v5;
 
@@ -678,11 +678,11 @@ uint64_t __27__CNPostalAddress_isValid___block_invoke_3()
   }
 }
 
-- (void)setSubLocality:(id)a3
+- (void)setSubLocality:(id)locality
 {
-  if (self->_subLocality != a3)
+  if (self->_subLocality != locality)
   {
-    v5 = [a3 copy];
+    v5 = [locality copy];
     subLocality = self->_subLocality;
     self->_subLocality = v5;
 
@@ -690,11 +690,11 @@ uint64_t __27__CNPostalAddress_isValid___block_invoke_3()
   }
 }
 
-- (void)setCity:(id)a3
+- (void)setCity:(id)city
 {
-  if (self->_city != a3)
+  if (self->_city != city)
   {
-    v5 = [a3 copy];
+    v5 = [city copy];
     city = self->_city;
     self->_city = v5;
 
@@ -702,11 +702,11 @@ uint64_t __27__CNPostalAddress_isValid___block_invoke_3()
   }
 }
 
-- (void)setSubAdministrativeArea:(id)a3
+- (void)setSubAdministrativeArea:(id)area
 {
-  if (self->_subAdministrativeArea != a3)
+  if (self->_subAdministrativeArea != area)
   {
-    v5 = [a3 copy];
+    v5 = [area copy];
     subAdministrativeArea = self->_subAdministrativeArea;
     self->_subAdministrativeArea = v5;
 
@@ -714,11 +714,11 @@ uint64_t __27__CNPostalAddress_isValid___block_invoke_3()
   }
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    v5 = [a3 copy];
+    v5 = [state copy];
     state = self->_state;
     self->_state = v5;
 
@@ -726,11 +726,11 @@ uint64_t __27__CNPostalAddress_isValid___block_invoke_3()
   }
 }
 
-- (void)setPostalCode:(id)a3
+- (void)setPostalCode:(id)code
 {
-  if (self->_postalCode != a3)
+  if (self->_postalCode != code)
   {
-    v5 = [a3 copy];
+    v5 = [code copy];
     postalCode = self->_postalCode;
     self->_postalCode = v5;
 
@@ -738,11 +738,11 @@ uint64_t __27__CNPostalAddress_isValid___block_invoke_3()
   }
 }
 
-- (void)setCountry:(id)a3
+- (void)setCountry:(id)country
 {
-  if (self->_country != a3)
+  if (self->_country != country)
   {
-    v5 = [a3 copy];
+    v5 = [country copy];
     country = self->_country;
     self->_country = v5;
 
@@ -750,11 +750,11 @@ uint64_t __27__CNPostalAddress_isValid___block_invoke_3()
   }
 }
 
-- (void)setISOCountryCode:(id)a3
+- (void)setISOCountryCode:(id)code
 {
-  if (self->_ISOCountryCode != a3)
+  if (self->_ISOCountryCode != code)
   {
-    v5 = [a3 copy];
+    v5 = [code copy];
     ISOCountryCode = self->_ISOCountryCode;
     self->_ISOCountryCode = v5;
 

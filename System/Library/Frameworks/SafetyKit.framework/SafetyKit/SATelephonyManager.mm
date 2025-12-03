@@ -1,37 +1,37 @@
 @interface SATelephonyManager
 - (SATelephonyDelegateProtocol)delegate;
-- (SATelephonyManager)initWithQueue:(id)a3;
-- (void)_callStatusChanged:(id)a3;
-- (void)_canPlaceNewCall:(id)a3;
+- (SATelephonyManager)initWithQueue:(id)queue;
+- (void)_callStatusChanged:(id)changed;
+- (void)_canPlaceNewCall:(id)call;
 - (void)_currentCallEnded;
-- (void)_currentCallEndedWithUpdatedFailureStatus:(BOOL)a3;
-- (void)handleCallChanged:(id)a3 force:(BOOL)a4;
-- (void)placeVoiceCall:(id)a3 completionHandler:(id)a4;
+- (void)_currentCallEndedWithUpdatedFailureStatus:(BOOL)status;
+- (void)handleCallChanged:(id)changed force:(BOOL)force;
+- (void)placeVoiceCall:(id)call completionHandler:(id)handler;
 @end
 
 @implementation SATelephonyManager
 
-- (SATelephonyManager)initWithQueue:(id)a3
+- (SATelephonyManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = SATelephonyManager;
   v6 = [(SATelephonyManager *)&v9 init];
   if (v6)
   {
     dispatch_async(MEMORY[0x277D85CD0], &__block_literal_global);
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v6 selector:sel__callStatusChanged_ name:*MEMORY[0x277D6EFF0] object:0];
-    objc_storeStrong(&v6->_callQueue, a3);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__callStatusChanged_ name:*MEMORY[0x277D6EFF0] object:0];
+    objc_storeStrong(&v6->_callQueue, queue);
   }
 
   return v6;
 }
 
-- (void)placeVoiceCall:(id)a3 completionHandler:(id)a4
+- (void)placeVoiceCall:(id)call completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  callCopy = call;
+  handlerCopy = handler;
   v8 = sa_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -44,9 +44,9 @@
   v11[2] = __55__SATelephonyManager_placeVoiceCall_completionHandler___block_invoke;
   v11[3] = &unk_278B67B70;
   objc_copyWeak(&v14, &location);
-  v9 = v7;
+  v9 = handlerCopy;
   v13 = v9;
-  v10 = v6;
+  v10 = callCopy;
   v12 = v10;
   [(SATelephonyManager *)self _canPlaceNewCall:v11];
 
@@ -226,7 +226,7 @@ void __55__SATelephonyManager_placeVoiceCall_completionHandler___block_invoke_3(
   (*(*(a1 + 40) + 16))(*(a1 + 40), *(a1 + 32) != 0, 0);
 }
 
-- (void)_currentCallEndedWithUpdatedFailureStatus:(BOOL)a3
+- (void)_currentCallEndedWithUpdatedFailureStatus:(BOOL)status
 {
   objc_initWeak(&location, self);
   callQueue = self->_callQueue;
@@ -235,7 +235,7 @@ void __55__SATelephonyManager_placeVoiceCall_completionHandler___block_invoke_3(
   block[2] = __64__SATelephonyManager__currentCallEndedWithUpdatedFailureStatus___block_invoke;
   block[3] = &unk_278B67B98;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  statusCopy = status;
   dispatch_async(callQueue, block);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -284,9 +284,9 @@ void __39__SATelephonyManager__currentCallEnded__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_canPlaceNewCall:(id)a3
+- (void)_canPlaceNewCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   if (+[SAGestalt inAirplaneMode])
   {
     callQueue = self->_callQueue;
@@ -294,8 +294,8 @@ void __39__SATelephonyManager__currentCallEnded__block_invoke(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __39__SATelephonyManager__canPlaceNewCall___block_invoke;
     block[3] = &unk_278B67BE8;
-    v13 = v4;
-    v6 = v4;
+    v13 = callCopy;
+    v6 = callCopy;
     dispatch_async(callQueue, block);
   }
 
@@ -307,8 +307,8 @@ void __39__SATelephonyManager__currentCallEnded__block_invoke(uint64_t a1)
     v8[2] = __39__SATelephonyManager__canPlaceNewCall___block_invoke_13;
     v8[3] = &unk_278B67C10;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
-    v7 = v4;
+    v9 = callCopy;
+    v7 = callCopy;
     dispatch_async(MEMORY[0x277D85CD0], v8);
 
     objc_destroyWeak(&v10);
@@ -435,18 +435,18 @@ LABEL_19:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCallChanged:(id)a3 force:(BOOL)a4
+- (void)handleCallChanged:(id)changed force:(BOOL)force
 {
-  v6 = a3;
+  changedCopy = changed;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__SATelephonyManager_handleCallChanged_force___block_invoke;
   v8[3] = &unk_278B67C38;
   objc_copyWeak(&v10, &location);
-  v9 = v6;
-  v11 = a4;
-  v7 = v6;
+  v9 = changedCopy;
+  forceCopy = force;
+  v7 = changedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 
   objc_destroyWeak(&v10);
@@ -587,21 +587,21 @@ LABEL_29:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_callStatusChanged:(id)a3
+- (void)_callStatusChanged:(id)changed
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
+  object = [changed object];
   v5 = sa_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[SATelephonyManager _callStatusChanged:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = object;
     _os_log_impl(&dword_23AA4D000, v5, OS_LOG_TYPE_DEFAULT, "%s, call: %@", &v7, 0x16u);
   }
 
-  [(SATelephonyManager *)self handleCallChanged:v4 force:0];
+  [(SATelephonyManager *)self handleCallChanged:object force:0];
   v6 = *MEMORY[0x277D85DE8];
 }
 

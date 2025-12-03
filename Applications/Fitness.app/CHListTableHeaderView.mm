@@ -1,11 +1,11 @@
 @interface CHListTableHeaderView
 + (id)_monthYearDateFormatter;
-- (CHListTableHeaderView)initWithFrame:(CGRect)a3;
-- (CHListTableHeaderView)initWithReuseIdentifier:(id)a3;
+- (CHListTableHeaderView)initWithFrame:(CGRect)frame;
+- (CHListTableHeaderView)initWithReuseIdentifier:(id)identifier;
 - (void)_commonInit;
 - (void)constrainViews;
 - (void)prepareForReuse;
-- (void)setDate:(id)a3;
+- (void)setDate:(id)date;
 @end
 
 @implementation CHListTableHeaderView
@@ -22,11 +22,11 @@
   return v3;
 }
 
-- (CHListTableHeaderView)initWithReuseIdentifier:(id)a3
+- (CHListTableHeaderView)initWithReuseIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = CHListTableHeaderView;
-  v3 = [(CHListTableHeaderView *)&v6 initWithReuseIdentifier:a3];
+  v3 = [(CHListTableHeaderView *)&v6 initWithReuseIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
@@ -36,11 +36,11 @@
   return v4;
 }
 
-- (CHListTableHeaderView)initWithFrame:(CGRect)a3
+- (CHListTableHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CHListTableHeaderView;
-  v3 = [(CHListTableHeaderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CHListTableHeaderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -83,9 +83,9 @@
 
   [(UILabel *)self->_dateLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_dateLabel setAdjustsFontSizeToFitWidth:1];
-  v12 = [v17 textProperties];
-  v13 = [v12 font];
-  [(UILabel *)self->_dateLabel setFont:v13];
+  textProperties = [v17 textProperties];
+  font = [textProperties font];
+  [(UILabel *)self->_dateLabel setFont:font];
 
   v14 = +[UIColor labelColor];
   [(UILabel *)self->_dateLabel setTextColor:v14];
@@ -93,8 +93,8 @@
   v15 = +[UIColor clearColor];
   [(UILabel *)self->_dateLabel setBackgroundColor:v15];
 
-  v16 = [(CHListTableHeaderView *)self contentView];
-  [v16 addSubview:self->_dateLabel];
+  contentView = [(CHListTableHeaderView *)self contentView];
+  [contentView addSubview:self->_dateLabel];
 
   [(CHListTableHeaderView *)self constrainViews];
 }
@@ -107,11 +107,11 @@
   [(UILabel *)self->_dateLabel setText:0];
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v4 = a3;
-  v6 = [objc_opt_class() _monthYearDateFormatter];
-  v5 = [v6 stringFromDate:v4];
+  dateCopy = date;
+  _monthYearDateFormatter = [objc_opt_class() _monthYearDateFormatter];
+  v5 = [_monthYearDateFormatter stringFromDate:dateCopy];
 
   [(UILabel *)self->_dateLabel setText:v5];
   [(CHListTableHeaderView *)self setNeedsLayout];
@@ -119,25 +119,25 @@
 
 - (void)constrainViews
 {
-  v3 = [(UILabel *)self->_dateLabel topAnchor];
-  v4 = [(CHListTableHeaderView *)self contentView];
-  v5 = [v4 topAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5 constant:14.0];
+  topAnchor = [(UILabel *)self->_dateLabel topAnchor];
+  contentView = [(CHListTableHeaderView *)self contentView];
+  topAnchor2 = [contentView topAnchor];
+  v6 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:14.0];
 
-  v7 = [(UILabel *)self->_dateLabel leadingAnchor];
-  v8 = [(CHListTableHeaderView *)self contentView];
-  v9 = [v8 leadingAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9 constant:15.0];
+  leadingAnchor = [(UILabel *)self->_dateLabel leadingAnchor];
+  contentView2 = [(CHListTableHeaderView *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:15.0];
 
-  v11 = [(UILabel *)self->_dateLabel trailingAnchor];
-  v12 = [(CHListTableHeaderView *)self contentView];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:-15.0];
+  trailingAnchor = [(UILabel *)self->_dateLabel trailingAnchor];
+  contentView3 = [(CHListTableHeaderView *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-15.0];
 
-  v15 = [(UILabel *)self->_dateLabel topAnchor];
-  v16 = [(CHListTableHeaderView *)self contentView];
-  v17 = [v16 bottomAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:-0.0];
+  topAnchor3 = [(UILabel *)self->_dateLabel topAnchor];
+  contentView4 = [(CHListTableHeaderView *)self contentView];
+  bottomAnchor = [contentView4 bottomAnchor];
+  v18 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:-0.0];
 
   LODWORD(v19) = 1132068864;
   [v18 setPriority:v19];

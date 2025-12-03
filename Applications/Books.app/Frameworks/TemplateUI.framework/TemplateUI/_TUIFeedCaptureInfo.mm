@@ -1,7 +1,7 @@
 @interface _TUIFeedCaptureInfo
-- (_TUIFeedCaptureInfo)initWithURL:(id)a3 packagesURL:(id)a4;
+- (_TUIFeedCaptureInfo)initWithURL:(id)l packagesURL:(id)rL;
 - (void)dealloc;
-- (void)updateSectionsFromJSON:(id)a3;
+- (void)updateSectionsFromJSON:(id)n;
 @end
 
 @implementation _TUIFeedCaptureInfo
@@ -14,10 +14,10 @@
   [(_TUIFeedCaptureInfo *)&v3 dealloc];
 }
 
-- (_TUIFeedCaptureInfo)initWithURL:(id)a3 packagesURL:(id)a4
+- (_TUIFeedCaptureInfo)initWithURL:(id)l packagesURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v136.receiver = self;
   v136.super_class = _TUIFeedCaptureInfo;
   v8 = [(_TUIFeedCaptureInfo *)&v136 init];
@@ -25,16 +25,16 @@
   if (v8)
   {
     url = v8->_url;
-    v8->_url = v6;
-    v11 = v6;
+    v8->_url = lCopy;
+    v11 = lCopy;
 
-    objc_storeStrong(&v9->_packagesURL, a4);
+    objc_storeStrong(&v9->_packagesURL, rL);
     [(NSURL *)v9->_url startAccessingSecurityScopedResource];
     v12 = [NSURLComponents componentsWithURL:v11 resolvingAgainstBaseURL:1];
 
-    v13 = [v12 path];
-    v14 = [v13 stringByStandardizingPath];
-    [v12 setPath:v14];
+    path = [v12 path];
+    stringByStandardizingPath = [path stringByStandardizingPath];
+    [v12 setPath:stringByStandardizingPath];
 
     v15 = [v12 URL];
 
@@ -61,24 +61,24 @@
     [(TUIManager *)v9->_manager setResourceLoader:v23];
 
     v24 = [TUIImageResourceCache alloc];
-    v25 = [(TUIManager *)v9->_manager resourceLoader];
-    v26 = [(TUIManager *)v9->_manager filterRegistry];
+    resourceLoader = [(TUIManager *)v9->_manager resourceLoader];
+    filterRegistry = [(TUIManager *)v9->_manager filterRegistry];
     v27 = +[NSBundle mainBundle];
-    v28 = [(TUIImageResourceCache *)v24 initWithLoader:v25 filters:v26 customImageBundle:v27];
+    v28 = [(TUIImageResourceCache *)v24 initWithLoader:resourceLoader filters:filterRegistry customImageBundle:v27];
     [(TUIManager *)v9->_manager setImageResourceCache:v28];
 
     v29 = [TUITemplateFactory alloc];
-    v30 = [(TUIManager *)v9->_manager elementRegistry];
-    v31 = [(TUITemplateFactory *)v29 initWithRegistry:v30];
+    elementRegistry = [(TUIManager *)v9->_manager elementRegistry];
+    v31 = [(TUITemplateFactory *)v29 initWithRegistry:elementRegistry];
     factory = v9->_factory;
     v9->_factory = v31;
 
     v33 = objc_alloc_init(BCULayerRenderer);
     v34 = [[BCUCoverEffects alloc] initWithRenderer:v33];
-    v35 = [(TUIManager *)v9->_manager filterRegistry];
+    filterRegistry2 = [(TUIManager *)v9->_manager filterRegistry];
     v115 = v34;
-    v36 = [v34 templateImageFilters];
-    [v35 registerImageFilters:v36];
+    templateImageFilters = [v34 templateImageFilters];
+    [filterRegistry2 registerImageFilters:templateImageFilters];
 
     v37 = [(NSURL *)v15 URLByAppendingPathComponent:@"feed.json"];
     v38 = [NSData dataWithContentsOfURL:v37];
@@ -99,31 +99,31 @@
     {
       v47 = [NSURL URLWithString:v46 relativeToURL:v37];
 
-      v7 = v47;
+      rLCopy = v47;
     }
 
     v114 = v37;
-    if (!v7)
+    if (!rLCopy)
     {
       v48 = [(NSURL *)v15 URLByAppendingPathComponent:@"packages" isDirectory:1];
-      v7 = [v48 URLByResolvingSymlinksInPath];
+      rLCopy = [v48 URLByResolvingSymlinksInPath];
     }
 
     v135 = 0;
     v49 = +[NSFileManager defaultManager];
-    v50 = [v7 path];
-    v51 = [v49 fileExistsAtPath:v50 isDirectory:&v135];
+    path2 = [rLCopy path];
+    v51 = [v49 fileExistsAtPath:path2 isDirectory:&v135];
 
     v116 = v33;
     if ((v51 & 1) == 0)
     {
-      v52 = [@"~/Library/FeedViewer/Packages" stringByExpandingTildeInPath];
-      v53 = [NSURL fileURLWithPath:v52];
+      stringByExpandingTildeInPath = [@"~/Library/FeedViewer/Packages" stringByExpandingTildeInPath];
+      v53 = [NSURL fileURLWithPath:stringByExpandingTildeInPath];
 
-      v7 = v53;
+      rLCopy = v53;
     }
 
-    v54 = [v7 copy];
+    v54 = [rLCopy copy];
     packagesURL = v9->_packagesURL;
     v9->_packagesURL = v54;
 
@@ -132,8 +132,8 @@
     v131 = 0u;
     v132 = 0u;
     v56 = +[NSFileManager defaultManager];
-    v117 = v7;
-    v57 = [v56 enumeratorAtURL:v7 includingPropertiesForKeys:0 options:1 errorHandler:0];
+    v117 = rLCopy;
+    v57 = [v56 enumeratorAtURL:rLCopy includingPropertiesForKeys:0 options:1 errorHandler:0];
 
     v58 = [v57 countByEnumeratingWithState:&v131 objects:v139 count:16];
     if (v58)
@@ -209,9 +209,9 @@
           v77 = [_TUIFeedCaptureDynamicStateProvider imageResourceProviderWithURL:*(*(&v123 + 1) + 8 * j)];
           if (v77)
           {
-            v78 = [(TUIManager *)v9->_manager dynamicRegistry];
-            v79 = [v77 kind];
-            [v78 registerStateProvider:v77 forKind:v79];
+            dynamicRegistry = [(TUIManager *)v9->_manager dynamicRegistry];
+            kind = [v77 kind];
+            [dynamicRegistry registerStateProvider:v77 forKind:kind];
           }
         }
 
@@ -247,9 +247,9 @@
           v87 = [_TUIFeedCaptureImageResourceProvider imageResourceProviderWithURL:*(*(&v119 + 1) + 8 * k)];
           if (v87)
           {
-            v88 = [(TUIManager *)v9->_manager resourceRegistry];
-            v89 = [v87 kind];
-            [v88 registerImageProvider:v87 forKind:v89];
+            resourceRegistry = [(TUIManager *)v9->_manager resourceRegistry];
+            kind2 = [v87 kind];
+            [resourceRegistry registerImageProvider:v87 forKind:kind2];
           }
         }
 
@@ -273,14 +273,14 @@
 
     if (v96)
     {
-      v97 = [v96 unsignedIntegerValue];
-      v98 = [(TUIFeedContent *)v69->_content entries];
-      v99 = [v98 count];
+      unsignedIntegerValue = [v96 unsignedIntegerValue];
+      entries = [(TUIFeedContent *)v69->_content entries];
+      v99 = [entries count];
 
-      if (v97 < v99)
+      if (unsignedIntegerValue < v99)
       {
-        v100 = [(TUIFeedContent *)v69->_content entries];
-        v101 = [v100 objectAtIndexedSubscript:{objc_msgSend(v96, "unsignedIntegerValue")}];
+        entries2 = [(TUIFeedContent *)v69->_content entries];
+        v101 = [entries2 objectAtIndexedSubscript:{objc_msgSend(v96, "unsignedIntegerValue")}];
         waitForLoadEntry = v69->_waitForLoadEntry;
         v69->_waitForLoadEntry = v101;
       }
@@ -291,17 +291,17 @@
     v105 = TUIDynamicCast(v103, v104);
     v69->_suspendUpdatesUntilExceedingHeight = [v105 BOOLValue];
 
-    v7 = v117;
-    v6 = v118;
+    rLCopy = v117;
+    lCopy = v118;
   }
 
   return v9;
 }
 
-- (void)updateSectionsFromJSON:(id)a3
+- (void)updateSectionsFromJSON:(id)n
 {
   url = self->_url;
-  v5 = a3;
+  nCopy = n;
   v6 = [(NSURL *)url URLByAppendingPathComponent:@"feed.json"];
   v7 = [NSData dataWithContentsOfURL:v6];
   v8 = [NSJSONSerialization JSONObjectWithData:v7 options:0 error:0];
@@ -317,7 +317,7 @@
   v13[4] = self;
   v14 = v11;
   v12 = v11;
-  [v5 enumerateIndexesUsingBlock:v13];
+  [nCopy enumerateIndexesUsingBlock:v13];
 }
 
 @end

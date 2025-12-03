@@ -1,10 +1,10 @@
 @interface _MFFormEntry
-- (_MFFormEntry)initWithTextAlignment:(int64_t)a3;
+- (_MFFormEntry)initWithTextAlignment:(int64_t)alignment;
 @end
 
 @implementation _MFFormEntry
 
-- (_MFFormEntry)initWithTextAlignment:(int64_t)a3
+- (_MFFormEntry)initWithTextAlignment:(int64_t)alignment
 {
   v15.receiver = self;
   v15.super_class = _MFFormEntry;
@@ -24,7 +24,7 @@
     v9 = +[_MFFormEntry labelFont];
     [(UILabel *)v4->_titleLabel setFont:v9];
 
-    [(UILabel *)v4->_titleLabel setTextAlignment:a3];
+    [(UILabel *)v4->_titleLabel setTextAlignment:alignment];
     v10 = objc_alloc_init(UILabel);
     valueLabel = v4->_valueLabel;
     v4->_valueLabel = v10;

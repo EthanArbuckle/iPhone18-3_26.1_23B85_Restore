@@ -1,82 +1,82 @@
 @interface NUANFLinkedContentProvider
-- (NUANFLinkedContentProvider)initWithContentContext:(id)a3;
-- (id)headlineForIdentifier:(id)a3;
-- (id)issueForIdentifier:(id)a3;
-- (id)loadLinkedArticlesWithIDs:(id)a3 priority:(int64_t)a4 completion:(id)a5;
-- (id)loadLinkedContentForHeadline:(id)a3 withContext:(id)a4 priority:(int64_t)a5 completion:(id)a6;
-- (id)loadLinkedIssuesWithIDs:(id)a3 priority:(int64_t)a4 completion:(id)a5;
-- (id)loadLinkedTagsWithIDs:(id)a3 priority:(int64_t)a4 completion:(id)a5;
-- (id)tagForIdentifier:(id)a3;
+- (NUANFLinkedContentProvider)initWithContentContext:(id)context;
+- (id)headlineForIdentifier:(id)identifier;
+- (id)issueForIdentifier:(id)identifier;
+- (id)loadLinkedArticlesWithIDs:(id)ds priority:(int64_t)priority completion:(id)completion;
+- (id)loadLinkedContentForHeadline:(id)headline withContext:(id)context priority:(int64_t)priority completion:(id)completion;
+- (id)loadLinkedIssuesWithIDs:(id)ds priority:(int64_t)priority completion:(id)completion;
+- (id)loadLinkedTagsWithIDs:(id)ds priority:(int64_t)priority completion:(id)completion;
+- (id)tagForIdentifier:(id)identifier;
 @end
 
 @implementation NUANFLinkedContentProvider
 
-- (NUANFLinkedContentProvider)initWithContentContext:(id)a3
+- (NUANFLinkedContentProvider)initWithContentContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = NUANFLinkedContentProvider;
   v6 = [(NUANFLinkedContentProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentContext, a3);
+    objc_storeStrong(&v6->_contentContext, context);
   }
 
   return v7;
 }
 
-- (id)loadLinkedContentForHeadline:(id)a3 withContext:(id)a4 priority:(int64_t)a5 completion:(id)a6
+- (id)loadLinkedContentForHeadline:(id)headline withContext:(id)context priority:(int64_t)priority completion:(id)completion
 {
   v59 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  block = a6;
-  v11 = [v9 linkedArticleIDs];
-  v12 = [v11 mutableCopy];
+  headlineCopy = headline;
+  contextCopy = context;
+  block = completion;
+  linkedArticleIDs = [headlineCopy linkedArticleIDs];
+  v12 = [linkedArticleIDs mutableCopy];
   v13 = v12;
   if (v12)
   {
-    v14 = v12;
+    array = v12;
   }
 
   else
   {
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  v15 = v14;
+  v15 = array;
 
-  v16 = [v9 identifier];
-  [v15 addObject:v16];
+  identifier = [headlineCopy identifier];
+  [v15 addObject:identifier];
 
-  v17 = [v9 linkedIssueIDs];
-  v18 = [v17 mutableCopy];
+  linkedIssueIDs = [headlineCopy linkedIssueIDs];
+  v18 = [linkedIssueIDs mutableCopy];
   v19 = v18;
-  v46 = v9;
-  v43 = a5;
+  v46 = headlineCopy;
+  priorityCopy = priority;
   if (v18)
   {
-    v20 = v18;
+    array2 = v18;
   }
 
   else
   {
-    v20 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
   }
 
-  v21 = v20;
+  v21 = array2;
 
-  v22 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v45 = v10;
-  v23 = [v10 documentController];
-  v24 = [v23 additions];
+  v45 = contextCopy;
+  documentController = [contextCopy documentController];
+  additions = [documentController additions];
 
-  v25 = [v24 countByEnumeratingWithState:&v54 objects:v58 count:16];
+  v25 = [additions countByEnumeratingWithState:&v54 objects:v58 count:16];
   if (v25)
   {
     v26 = v25;
@@ -87,7 +87,7 @@
       {
         if (*v55 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(additions);
         }
 
         v29 = *(*(&v54 + 1) + 8 * i);
@@ -95,26 +95,26 @@
         if (objc_opt_isKindOfClass())
         {
           v30 = [v29 URL];
-          v31 = [v30 fc_NewsArticleID];
-          [v15 fc_safelyAddObject:v31];
+          fc_NewsArticleID = [v30 fc_NewsArticleID];
+          [v15 fc_safelyAddObject:fc_NewsArticleID];
 
-          v32 = [v30 fc_NewsIssueID];
-          [v21 fc_safelyAddObject:v32];
+          fc_NewsIssueID = [v30 fc_NewsIssueID];
+          [v21 fc_safelyAddObject:fc_NewsIssueID];
 
-          v33 = [v30 fc_feldsparTagID];
-          [v22 fc_safelyAddObject:v33];
+          fc_feldsparTagID = [v30 fc_feldsparTagID];
+          [array3 fc_safelyAddObject:fc_feldsparTagID];
         }
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v54 objects:v58 count:16];
+      v26 = [additions countByEnumeratingWithState:&v54 objects:v58 count:16];
     }
 
     while (v26);
   }
 
-  v34 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   v35 = dispatch_group_create();
-  v36 = v43;
+  v36 = priorityCopy;
   if ([v15 count])
   {
     dispatch_group_enter(v35);
@@ -123,8 +123,8 @@
     v52[2] = __91__NUANFLinkedContentProvider_loadLinkedContentForHeadline_withContext_priority_completion___block_invoke;
     v52[3] = &unk_2799A3498;
     v53 = v35;
-    v37 = [(NUANFLinkedContentProvider *)self loadLinkedArticlesWithIDs:v15 priority:v43 completion:v52];
-    [v34 addObject:v37];
+    v37 = [(NUANFLinkedContentProvider *)self loadLinkedArticlesWithIDs:v15 priority:priorityCopy completion:v52];
+    [array4 addObject:v37];
   }
 
   if ([v21 count])
@@ -136,10 +136,10 @@
     v50[3] = &unk_2799A3498;
     v51 = v35;
     v38 = [(NUANFLinkedContentProvider *)self loadLinkedIssuesWithIDs:v21 priority:v36 completion:v50];
-    [v34 addObject:v38];
+    [array4 addObject:v38];
   }
 
-  if ([v22 count])
+  if ([array3 count])
   {
     dispatch_group_enter(v35);
     v48[0] = MEMORY[0x277D85DD0];
@@ -147,57 +147,57 @@
     v48[2] = __91__NUANFLinkedContentProvider_loadLinkedContentForHeadline_withContext_priority_completion___block_invoke_3;
     v48[3] = &unk_2799A3498;
     v49 = v35;
-    v39 = [(NUANFLinkedContentProvider *)self loadLinkedTagsWithIDs:v22 priority:v36 completion:v48];
-    [v34 addObject:v39];
+    v39 = [(NUANFLinkedContentProvider *)self loadLinkedTagsWithIDs:array3 priority:v36 completion:v48];
+    [array4 addObject:v39];
   }
 
   dispatch_group_notify(v35, MEMORY[0x277D85CD0], block);
-  v40 = [MEMORY[0x277D31088] groupCancelHandlerWithCancelHandlers:v34];
+  v40 = [MEMORY[0x277D31088] groupCancelHandlerWithCancelHandlers:array4];
 
   v41 = *MEMORY[0x277D85DE8];
 
   return v40;
 }
 
-- (id)headlineForIdentifier:(id)a3
+- (id)headlineForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NUANFLinkedContentProvider *)self linkedHeadlines];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  linkedHeadlines = [(NUANFLinkedContentProvider *)self linkedHeadlines];
+  v6 = [linkedHeadlines objectForKey:identifierCopy];
 
   return v6;
 }
 
-- (id)issueForIdentifier:(id)a3
+- (id)issueForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NUANFLinkedContentProvider *)self linkedIssues];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  linkedIssues = [(NUANFLinkedContentProvider *)self linkedIssues];
+  v6 = [linkedIssues objectForKey:identifierCopy];
 
   return v6;
 }
 
-- (id)tagForIdentifier:(id)a3
+- (id)tagForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NUANFLinkedContentProvider *)self linkedTags];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  linkedTags = [(NUANFLinkedContentProvider *)self linkedTags];
+  v6 = [linkedTags objectForKey:identifierCopy];
 
   return v6;
 }
 
-- (id)loadLinkedArticlesWithIDs:(id)a3 priority:(int64_t)a4 completion:(id)a5
+- (id)loadLinkedArticlesWithIDs:(id)ds priority:(int64_t)priority completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 count])
+  dsCopy = ds;
+  completionCopy = completion;
+  if ([dsCopy count])
   {
     v10 = objc_alloc(MEMORY[0x277D30DE8]);
-    v11 = [(NUANFLinkedContentProvider *)self contentContext];
-    v12 = [v10 initWithContext:v11 articleIDs:v8 ignoreCacheForArticleIDs:0];
+    contentContext = [(NUANFLinkedContentProvider *)self contentContext];
+    v12 = [v10 initWithContext:contentContext articleIDs:dsCopy ignoreCacheForArticleIDs:0];
 
     [v12 setQualityOfService:FCInferQualityOfServiceFromRelativePriority()];
-    [v12 setRelativePriority:a4];
+    [v12 setRelativePriority:priority];
     [v12 setFetchCompletionQueue:MEMORY[0x277D85CD0]];
     objc_initWeak(location, self);
     v15 = MEMORY[0x277D85DD0];
@@ -205,10 +205,10 @@
     v17 = __76__NUANFLinkedContentProvider_loadLinkedArticlesWithIDs_priority_completion___block_invoke_2;
     v18 = &unk_2799A4860;
     objc_copyWeak(&v20, location);
-    v19 = v9;
+    v19 = completionCopy;
     [v12 setFetchCompletionBlock:&v15];
-    v13 = [MEMORY[0x277CCABD8] fc_sharedConcurrentQueue];
-    [v13 addOperation:v12];
+    fc_sharedConcurrentQueue = [MEMORY[0x277CCABD8] fc_sharedConcurrentQueue];
+    [fc_sharedConcurrentQueue addOperation:v12];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(location);
@@ -220,7 +220,7 @@
     location[2] = 3221225472;
     location[3] = __76__NUANFLinkedContentProvider_loadLinkedArticlesWithIDs_priority_completion___block_invoke;
     location[4] = &unk_2799A4838;
-    v22 = v9;
+    v22 = completionCopy;
     v22[2]();
 
     v12 = 0;
@@ -303,28 +303,28 @@ void __76__NUANFLinkedContentProvider_loadLinkedArticlesWithIDs_priority_complet
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)loadLinkedIssuesWithIDs:(id)a3 priority:(int64_t)a4 completion:(id)a5
+- (id)loadLinkedIssuesWithIDs:(id)ds priority:(int64_t)priority completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 count])
+  dsCopy = ds;
+  completionCopy = completion;
+  if ([dsCopy count])
   {
     v10 = objc_alloc(MEMORY[0x277D310C0]);
-    v11 = [(NUANFLinkedContentProvider *)self contentContext];
-    v12 = [v10 initWithContext:v11 issueIDs:v8];
+    contentContext = [(NUANFLinkedContentProvider *)self contentContext];
+    v12 = [v10 initWithContext:contentContext issueIDs:dsCopy];
 
     [v12 setQualityOfService:FCInferQualityOfServiceFromRelativePriority()];
-    [v12 setRelativePriority:a4];
+    [v12 setRelativePriority:priority];
     objc_initWeak(location, self);
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __74__NUANFLinkedContentProvider_loadLinkedIssuesWithIDs_priority_completion___block_invoke_2;
     v18 = &unk_2799A4888;
     objc_copyWeak(&v20, location);
-    v19 = v9;
+    v19 = completionCopy;
     [v12 setFetchCompletionHandler:&v15];
-    v13 = [MEMORY[0x277CCABD8] fc_sharedConcurrentQueue];
-    [v13 addOperation:v12];
+    fc_sharedConcurrentQueue = [MEMORY[0x277CCABD8] fc_sharedConcurrentQueue];
+    [fc_sharedConcurrentQueue addOperation:v12];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(location);
@@ -336,7 +336,7 @@ void __76__NUANFLinkedContentProvider_loadLinkedArticlesWithIDs_priority_complet
     location[2] = 3221225472;
     location[3] = __74__NUANFLinkedContentProvider_loadLinkedIssuesWithIDs_priority_completion___block_invoke;
     location[4] = &unk_2799A4838;
-    v22 = v9;
+    v22 = completionCopy;
     v22[2]();
 
     v12 = 0;
@@ -402,28 +402,28 @@ void __74__NUANFLinkedContentProvider_loadLinkedIssuesWithIDs_priority_completio
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)loadLinkedTagsWithIDs:(id)a3 priority:(int64_t)a4 completion:(id)a5
+- (id)loadLinkedTagsWithIDs:(id)ds priority:(int64_t)priority completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 count])
+  dsCopy = ds;
+  completionCopy = completion;
+  if ([dsCopy count])
   {
-    v10 = [(NUANFLinkedContentProvider *)self contentContext];
-    v11 = [v10 tagController];
-    v12 = [v11 fetchOperationForTagsWithIDs:v8];
+    contentContext = [(NUANFLinkedContentProvider *)self contentContext];
+    tagController = [contentContext tagController];
+    v12 = [tagController fetchOperationForTagsWithIDs:dsCopy];
 
     [v12 setQualityOfService:FCInferQualityOfServiceFromRelativePriority()];
-    [v12 setRelativePriority:a4];
+    [v12 setRelativePriority:priority];
     objc_initWeak(location, self);
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __72__NUANFLinkedContentProvider_loadLinkedTagsWithIDs_priority_completion___block_invoke_2;
     v18 = &unk_2799A4860;
     objc_copyWeak(&v20, location);
-    v19 = v9;
+    v19 = completionCopy;
     [v12 setFetchCompletionBlock:&v15];
-    v13 = [MEMORY[0x277CCABD8] fc_sharedConcurrentQueue];
-    [v13 addOperation:v12];
+    fc_sharedConcurrentQueue = [MEMORY[0x277CCABD8] fc_sharedConcurrentQueue];
+    [fc_sharedConcurrentQueue addOperation:v12];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(location);
@@ -435,7 +435,7 @@ void __74__NUANFLinkedContentProvider_loadLinkedIssuesWithIDs_priority_completio
     location[2] = 3221225472;
     location[3] = __72__NUANFLinkedContentProvider_loadLinkedTagsWithIDs_priority_completion___block_invoke;
     location[4] = &unk_2799A4838;
-    v22 = v9;
+    v22 = completionCopy;
     v22[2]();
 
     v12 = 0;

@@ -1,12 +1,12 @@
 @interface DADeviceObserverLocalRemoteRunner
 - (DADeviceObserverLocalRemoteRunner)init;
 - (id)_devices;
-- (id)beginDiscoveringDevicesWithHandler:(id)a3;
+- (id)beginDiscoveringDevicesWithHandler:(id)handler;
 - (void)_updateHandlers;
-- (void)createDeviceNotification:(id)a3;
-- (void)destroyDeviceNotification:(id)a3;
-- (void)discoverAllDevicesWithCompletionHandler:(id)a3;
-- (void)endDiscoveringDevicesWithIdentifier:(id)a3;
+- (void)createDeviceNotification:(id)notification;
+- (void)destroyDeviceNotification:(id)notification;
+- (void)discoverAllDevicesWithCompletionHandler:(id)handler;
+- (void)endDiscoveringDevicesWithIdentifier:(id)identifier;
 @end
 
 @implementation DADeviceObserverLocalRemoteRunner
@@ -36,101 +36,101 @@
   return v2;
 }
 
-- (id)beginDiscoveringDevicesWithHandler:(id)a3
+- (id)beginDiscoveringDevicesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSUUID UUID];
-  v6 = [(DADeviceObserverLocalRemoteRunner *)self handlers];
-  objc_sync_enter(v6);
-  v7 = objc_retainBlock(v4);
-  v8 = [(DADeviceObserverLocalRemoteRunner *)self handlers];
-  [v8 setObject:v7 forKeyedSubscript:v5];
+  handlers = [(DADeviceObserverLocalRemoteRunner *)self handlers];
+  objc_sync_enter(handlers);
+  v7 = objc_retainBlock(handlerCopy);
+  handlers2 = [(DADeviceObserverLocalRemoteRunner *)self handlers];
+  [handlers2 setObject:v7 forKeyedSubscript:v5];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(handlers);
   [(DADeviceObserverLocalRemoteRunner *)self _updateHandlers];
 
   return v5;
 }
 
-- (void)discoverAllDevicesWithCompletionHandler:(id)a3
+- (void)discoverAllDevicesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSSet set];
-  (*(a3 + 2))(v4, v5);
+  (*(handler + 2))(handlerCopy, v5);
 }
 
-- (void)endDiscoveringDevicesWithIdentifier:(id)a3
+- (void)endDiscoveringDevicesWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v4 = [(DADeviceObserverLocalRemoteRunner *)self handlers];
-  objc_sync_enter(v4);
-  v5 = [(DADeviceObserverLocalRemoteRunner *)self handlers];
-  [v5 removeObjectForKey:v6];
+  identifierCopy = identifier;
+  handlers = [(DADeviceObserverLocalRemoteRunner *)self handlers];
+  objc_sync_enter(handlers);
+  handlers2 = [(DADeviceObserverLocalRemoteRunner *)self handlers];
+  [handlers2 removeObjectForKey:identifierCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(handlers);
 }
 
-- (void)createDeviceNotification:(id)a3
+- (void)createDeviceNotification:(id)notification
 {
-  v14 = a3;
-  v4 = [v14 object];
-  if (v4)
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  if (object)
   {
-    v5 = v4;
-    v6 = [v14 object];
-    v7 = [v6 conformsToProtocol:&OBJC_PROTOCOL___DADevice];
+    v5 = object;
+    object2 = [notificationCopy object];
+    v7 = [object2 conformsToProtocol:&OBJC_PROTOCOL___DADevice];
 
     if (v7)
     {
-      v8 = [v14 object];
-      v9 = [DADeviceDecoratorWithUI decorateWithDevice:v8];
-      v10 = [(DADeviceObserverLocalRemoteRunner *)self devices];
-      objc_sync_enter(v10);
-      v11 = [(DADeviceObserverLocalRemoteRunner *)self devices];
-      v12 = [v8 state];
-      v13 = [v12 serialNumber];
-      [v11 setObject:v9 forKeyedSubscript:v13];
+      object3 = [notificationCopy object];
+      v9 = [DADeviceDecoratorWithUI decorateWithDevice:object3];
+      devices = [(DADeviceObserverLocalRemoteRunner *)self devices];
+      objc_sync_enter(devices);
+      devices2 = [(DADeviceObserverLocalRemoteRunner *)self devices];
+      state = [object3 state];
+      serialNumber = [state serialNumber];
+      [devices2 setObject:v9 forKeyedSubscript:serialNumber];
 
-      objc_sync_exit(v10);
+      objc_sync_exit(devices);
       [(DADeviceObserverLocalRemoteRunner *)self _updateHandlers];
     }
   }
 }
 
-- (void)destroyDeviceNotification:(id)a3
+- (void)destroyDeviceNotification:(id)notification
 {
-  v17 = a3;
-  v4 = [v17 object];
-  if (v4)
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  if (object)
   {
-    v5 = v4;
-    v6 = [v17 object];
-    v7 = [v6 conformsToProtocol:&OBJC_PROTOCOL___DADevice];
+    v5 = object;
+    object2 = [notificationCopy object];
+    v7 = [object2 conformsToProtocol:&OBJC_PROTOCOL___DADevice];
 
     if (v7)
     {
-      v8 = [v17 object];
-      v9 = [(DADeviceObserverLocalRemoteRunner *)self devices];
-      objc_sync_enter(v9);
-      v10 = [(DADeviceObserverLocalRemoteRunner *)self devices];
-      v11 = [v8 state];
-      v12 = [v11 serialNumber];
-      v13 = [v10 objectForKeyedSubscript:v12];
+      object3 = [notificationCopy object];
+      devices = [(DADeviceObserverLocalRemoteRunner *)self devices];
+      objc_sync_enter(devices);
+      devices2 = [(DADeviceObserverLocalRemoteRunner *)self devices];
+      state = [object3 state];
+      serialNumber = [state serialNumber];
+      v13 = [devices2 objectForKeyedSubscript:serialNumber];
 
       if (v13)
       {
-        v14 = [(DADeviceObserverLocalRemoteRunner *)self devices];
-        v15 = [v8 state];
-        v16 = [v15 serialNumber];
-        [v14 removeObjectForKey:v16];
+        devices3 = [(DADeviceObserverLocalRemoteRunner *)self devices];
+        state2 = [object3 state];
+        serialNumber2 = [state2 serialNumber];
+        [devices3 removeObjectForKey:serialNumber2];
 
-        objc_sync_exit(v9);
+        objc_sync_exit(devices);
         [(DADeviceObserverLocalRemoteRunner *)self _updateHandlers];
       }
 
       else
       {
-        objc_sync_exit(v9);
+        objc_sync_exit(devices);
       }
     }
   }
@@ -138,22 +138,22 @@
 
 - (id)_devices
 {
-  v2 = [(DADeviceObserverLocalRemoteRunner *)self devices];
-  v3 = [v2 allValues];
-  v4 = [NSSet setWithArray:v3];
+  devices = [(DADeviceObserverLocalRemoteRunner *)self devices];
+  allValues = [devices allValues];
+  v4 = [NSSet setWithArray:allValues];
 
   return v4;
 }
 
 - (void)_updateHandlers
 {
-  v3 = [(DADeviceObserverLocalRemoteRunner *)self _devices];
+  _devices = [(DADeviceObserverLocalRemoteRunner *)self _devices];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(DADeviceObserverLocalRemoteRunner *)self handlers];
-  v5 = [v4 copy];
+  handlers = [(DADeviceObserverLocalRemoteRunner *)self handlers];
+  v5 = [handlers copy];
 
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
@@ -171,12 +171,12 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        v11 = [(DADeviceObserverLocalRemoteRunner *)self handlers];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        handlers2 = [(DADeviceObserverLocalRemoteRunner *)self handlers];
+        v12 = [handlers2 objectForKeyedSubscript:v10];
 
         if (v12)
         {
-          (v12)[2](v12, v3);
+          (v12)[2](v12, _devices);
         }
 
         v9 = v9 + 1;

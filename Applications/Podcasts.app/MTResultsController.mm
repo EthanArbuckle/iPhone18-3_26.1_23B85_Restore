@@ -1,8 +1,8 @@
 @interface MTResultsController
 - (MTResultsControllerDelegate)delegate;
 - (id)description;
-- (id)objectAtIndex:(unint64_t)a3;
-- (unint64_t)indexOfObject:(id)a3;
+- (id)objectAtIndex:(unint64_t)index;
+- (unint64_t)indexOfObject:(id)object;
 - (unint64_t)numberOfObjects;
 @end
 
@@ -10,16 +10,16 @@
 
 - (id)description
 {
-  v3 = [(MTResultsController *)self title];
-  v4 = [(MTResultsController *)self allObjects];
-  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Section: %@ (%lu)", v3, [v4 count]);
+  title = [(MTResultsController *)self title];
+  allObjects = [(MTResultsController *)self allObjects];
+  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Section: %@ (%lu)", title, [allObjects count]);
 
   return v5;
 }
 
-- (unint64_t)indexOfObject:(id)a3
+- (unint64_t)indexOfObject:(id)object
 {
-  v3 = [(MTResultsController *)self indexPathForObject:a3];
+  v3 = [(MTResultsController *)self indexPathForObject:object];
   v4 = v3;
   if (v3)
   {
@@ -34,9 +34,9 @@
   return v5;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v4 = [NSIndexPath indexPathForRow:a3 inSection:0];
+  v4 = [NSIndexPath indexPathForRow:index inSection:0];
   v5 = [(MTResultsController *)self objectAtIndexPath:v4];
 
   return v5;
@@ -44,8 +44,8 @@
 
 - (unint64_t)numberOfObjects
 {
-  v2 = [(MTResultsController *)self allObjects];
-  v3 = [v2 count];
+  allObjects = [(MTResultsController *)self allObjects];
+  v3 = [allObjects count];
 
   return v3;
 }

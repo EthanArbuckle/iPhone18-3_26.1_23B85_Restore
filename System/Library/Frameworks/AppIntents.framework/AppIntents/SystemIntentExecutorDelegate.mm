@@ -1,25 +1,25 @@
 @interface SystemIntentExecutorDelegate
-- (void)executor:(id)a3 didCompleteExecutionWithResult:(id)a4 error:(id)a5;
-- (void)executor:(void *)a3 needsDisambiguationWithRequest:(void *)a4;
+- (void)executor:(id)executor didCompleteExecutionWithResult:(id)result error:(id)error;
+- (void)executor:(void *)executor needsDisambiguationWithRequest:(void *)request;
 @end
 
 @implementation SystemIntentExecutorDelegate
 
-- (void)executor:(void *)a3 needsDisambiguationWithRequest:(void *)a4
+- (void)executor:(void *)executor needsDisambiguationWithRequest:(void *)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a1;
+  executorCopy = executor;
+  requestCopy = request;
+  selfCopy = self;
   sub_18F16B9EC();
 }
 
-- (void)executor:(id)a3 didCompleteExecutionWithResult:(id)a4 error:(id)a5
+- (void)executor:(id)executor didCompleteExecutionWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_18F16B7F4(v11, a4, a5);
+  executorCopy = executor;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
+  sub_18F16B7F4(errorCopy, result, error);
 }
 
 @end

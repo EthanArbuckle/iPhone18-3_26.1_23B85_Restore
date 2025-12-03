@@ -4,8 +4,8 @@
 - (NSString)return_str;
 - (NSString)session_id;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::CorrectionsValidatorResponse>)addObjectToBuffer:(void *)a3;
-- (QSSCorrectionsValidatorResponse)initWithFlatbuffData:(id)a3 root:(const CorrectionsValidatorResponse *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::CorrectionsValidatorResponse>)addObjectToBuffer:(void *)buffer;
+- (QSSCorrectionsValidatorResponse)initWithFlatbuffData:(id)data root:(const CorrectionsValidatorResponse *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 - (int)return_code;
 @end
@@ -41,56 +41,56 @@ flatbuffers::DetachedBuffer *__47__QSSCorrectionsValidatorResponse_flatbuffData_
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::CorrectionsValidatorResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::CorrectionsValidatorResponse>)addObjectToBuffer:(void *)buffer
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = [(QSSCorrectionsValidatorResponse *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(QSSCorrectionsValidatorResponse *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_2879AE8E0;
+    speech_id = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v9 = [(QSSCorrectionsValidatorResponse *)self session_id];
-  v10 = v9;
-  if (!v9)
+  session_id = [(QSSCorrectionsValidatorResponse *)self session_id];
+  v10 = session_id;
+  if (!session_id)
   {
-    v9 = &stru_2879AE8E0;
+    session_id = &stru_2879AE8E0;
   }
 
-  v11 = [(__CFString *)v9 UTF8String];
-  v12 = strlen(v11);
-  v34 = flatbuffers::FlatBufferBuilder::CreateString(a3, v11, v12);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v12 = strlen(uTF8String2);
+  v34 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v12);
 
-  v13 = [(QSSCorrectionsValidatorResponse *)self language];
-  v14 = v13;
-  if (!v13)
+  language = [(QSSCorrectionsValidatorResponse *)self language];
+  v14 = language;
+  if (!language)
   {
-    v13 = &stru_2879AE8E0;
+    language = &stru_2879AE8E0;
   }
 
-  v15 = [(__CFString *)v13 UTF8String];
-  v16 = strlen(v15);
-  v33 = flatbuffers::FlatBufferBuilder::CreateString(a3, v15, v16);
+  uTF8String3 = [(__CFString *)language UTF8String];
+  v16 = strlen(uTF8String3);
+  v33 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v16);
 
-  v32 = [(QSSCorrectionsValidatorResponse *)self return_code];
-  v17 = [(QSSCorrectionsValidatorResponse *)self return_str];
-  v18 = v17;
-  if (!v17)
+  return_code = [(QSSCorrectionsValidatorResponse *)self return_code];
+  return_str = [(QSSCorrectionsValidatorResponse *)self return_str];
+  v18 = return_str;
+  if (!return_str)
   {
-    v17 = &stru_2879AE8E0;
+    return_str = &stru_2879AE8E0;
   }
 
-  v19 = [(__CFString *)v17 UTF8String];
-  v20 = strlen(v19);
-  v31 = flatbuffers::FlatBufferBuilder::CreateString(a3, v19, v20);
+  uTF8String4 = [(__CFString *)return_str UTF8String];
+  v20 = strlen(uTF8String4);
+  v31 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String4, v20);
 
-  v21 = [(QSSCorrectionsValidatorResponse *)self corrections];
-  v22 = [v21 count];
+  corrections = [(QSSCorrectionsValidatorResponse *)self corrections];
+  v22 = [corrections count];
   if (v22)
   {
     if (!(v22 >> 62))
@@ -110,39 +110,39 @@ flatbuffers::DetachedBuffer *__47__QSSCorrectionsValidatorResponse_flatbuffData_
   {
     *v38;
     *v38;
-    [**(&v37 + 1) addObjectToBuffer:a3];
+    [**(&v37 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v23 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v24 = *(a3 + 8);
-  v25 = *(a3 + 12);
-  v26 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, v34);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, v33);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 10, v32);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 12, v31);
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v23 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v24 = *(buffer + 8);
+  v25 = *(buffer + 12);
+  v26 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, v34);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, v33);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 10, return_code);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 12, v31);
   if (v23)
   {
-    v27 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v23);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 14, v27);
+    v27 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v23);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 14, v27);
   }
 
-  v28.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v24 - v25 + v26);
+  v28.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v24 - v25 + v26);
   v29 = *MEMORY[0x277D85DE8];
   return v28;
 }
 
 - (NSArray)corrections
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"corrections"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"corrections"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0xFu)
@@ -159,7 +159,7 @@ flatbuffers::DetachedBuffer *__47__QSSCorrectionsValidatorResponse_flatbuffData_
           do
           {
             v11 = [[QSSCorrectionsAlignment alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -170,10 +170,10 @@ flatbuffers::DetachedBuffer *__47__QSSCorrectionsValidatorResponse_flatbuffData_
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"corrections"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"corrections"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSString)return_str
@@ -283,10 +283,10 @@ flatbuffers::DetachedBuffer *__47__QSSCorrectionsValidatorResponse_flatbuffData_
   return v6;
 }
 
-- (QSSCorrectionsValidatorResponse)initWithFlatbuffData:(id)a3 root:(const CorrectionsValidatorResponse *)a4 verify:(BOOL)a5
+- (QSSCorrectionsValidatorResponse)initWithFlatbuffData:(id)data root:(const CorrectionsValidatorResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v44.receiver = self;
   v44.super_class = QSSCorrectionsValidatorResponse;
   v10 = [(QSSCorrectionsValidatorResponse *)&v44 init];
@@ -296,35 +296,35 @@ flatbuffers::DetachedBuffer *__47__QSSCorrectionsValidatorResponse_flatbuffData_
     goto LABEL_53;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_54;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v12 = [(NSData *)v10->_data bytes];
-    a4 = v12 + *v12;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_52;
   }
 
-  v13 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v14 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v13 || root > v13 + v14)
+  if (root < bytes2 || root > bytes2 + v14)
   {
     goto LABEL_54;
   }
 
-  v17 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v18 = [(NSData *)v10->_data length];
-  v39 = v17;
+  v39 = bytes3;
   v40 = v18;
   v41 = xmmword_26914CD70;
   v42 = 0;
@@ -452,9 +452,9 @@ LABEL_51:
   }
 
 LABEL_52:
-  v35 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   storage = v11->_storage;
-  v11->_storage = v35;
+  v11->_storage = dictionary;
 
 LABEL_53:
   v37 = v11;

@@ -1,29 +1,29 @@
 @interface EDSearchableIndexUpdates
 - (BOOL)hasUpdates;
-- (EDSearchableIndexUpdates)initWithIdentifiers:(id)a3;
-- (EDSearchableIndexUpdates)initWithIndexableItems:(id)a3 removedIdentifiers:(id)a4 removedDomainIdentifiers:(id)a5;
-- (EDSearchableIndexUpdates)initWithIndexedItems:(id)a3 removedIdentifiers:(id)a4 removedDomainIdentifiers:(id)a5;
+- (EDSearchableIndexUpdates)initWithIdentifiers:(id)identifiers;
+- (EDSearchableIndexUpdates)initWithIndexableItems:(id)items removedIdentifiers:(id)identifiers removedDomainIdentifiers:(id)domainIdentifiers;
+- (EDSearchableIndexUpdates)initWithIndexedItems:(id)items removedIdentifiers:(id)identifiers removedDomainIdentifiers:(id)domainIdentifiers;
 @end
 
 @implementation EDSearchableIndexUpdates
 
-- (EDSearchableIndexUpdates)initWithIndexedItems:(id)a3 removedIdentifiers:(id)a4 removedDomainIdentifiers:(id)a5
+- (EDSearchableIndexUpdates)initWithIndexedItems:(id)items removedIdentifiers:(id)identifiers removedDomainIdentifiers:(id)domainIdentifiers
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemsCopy = items;
+  identifiersCopy = identifiers;
+  domainIdentifiersCopy = domainIdentifiers;
   v19.receiver = self;
   v19.super_class = EDSearchableIndexUpdates;
   v12 = [(EDSearchableIndexUpdates *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_indexedItems, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_indexedItems, items);
+    v14 = [identifiersCopy copy];
     removedIdentifiers = v13->_removedIdentifiers;
     v13->_removedIdentifiers = v14;
 
-    v16 = [v11 copy];
+    v16 = [domainIdentifiersCopy copy];
     removedDomainIdentifiers = v13->_removedDomainIdentifiers;
     v13->_removedDomainIdentifiers = v16;
   }
@@ -31,21 +31,21 @@
   return v13;
 }
 
-- (EDSearchableIndexUpdates)initWithIndexableItems:(id)a3 removedIdentifiers:(id)a4 removedDomainIdentifiers:(id)a5
+- (EDSearchableIndexUpdates)initWithIndexableItems:(id)items removedIdentifiers:(id)identifiers removedDomainIdentifiers:(id)domainIdentifiers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[EDIndexedItems alloc] initWithIndexableItems:v8];
-  v12 = [(EDSearchableIndexUpdates *)self initWithIndexedItems:v11 removedIdentifiers:v9 removedDomainIdentifiers:v10];
+  itemsCopy = items;
+  identifiersCopy = identifiers;
+  domainIdentifiersCopy = domainIdentifiers;
+  v11 = [[EDIndexedItems alloc] initWithIndexableItems:itemsCopy];
+  v12 = [(EDSearchableIndexUpdates *)self initWithIndexedItems:v11 removedIdentifiers:identifiersCopy removedDomainIdentifiers:domainIdentifiersCopy];
 
   return v12;
 }
 
-- (EDSearchableIndexUpdates)initWithIdentifiers:(id)a3
+- (EDSearchableIndexUpdates)initWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [[EDIndexedItems alloc] initWithIdentifiers:v4];
+  identifiersCopy = identifiers;
+  v5 = [[EDIndexedItems alloc] initWithIdentifiers:identifiersCopy];
   v6 = [(EDSearchableIndexUpdates *)self initWithIndexedItems:v5 removedIdentifiers:MEMORY[0x1E695E0F0] removedDomainIdentifiers:MEMORY[0x1E695E0F0]];
 
   return v6;
@@ -53,24 +53,24 @@
 
 - (BOOL)hasUpdates
 {
-  v3 = [(EDSearchableIndexUpdates *)self indexedItems];
-  if ([v3 count])
+  indexedItems = [(EDSearchableIndexUpdates *)self indexedItems];
+  if ([indexedItems count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(EDSearchableIndexUpdates *)self removedIdentifiers];
-    if ([v5 count])
+    removedIdentifiers = [(EDSearchableIndexUpdates *)self removedIdentifiers];
+    if ([removedIdentifiers count])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(EDSearchableIndexUpdates *)self removedDomainIdentifiers];
-      v4 = [v6 count] != 0;
+      removedDomainIdentifiers = [(EDSearchableIndexUpdates *)self removedDomainIdentifiers];
+      v4 = [removedDomainIdentifiers count] != 0;
     }
   }
 

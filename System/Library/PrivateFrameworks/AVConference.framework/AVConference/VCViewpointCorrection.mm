@@ -83,7 +83,7 @@ intptr_t __VCViewpointCorrection_CorrectViewpoint_block_invoke(uint64_t a1)
 - (void)init
 {
   *v3 = 136315906;
-  *&v3[4] = a1;
+  *&v3[4] = self;
   *&v3[12] = 2080;
   *&v3[14] = "[VCViewpointCorrection init]";
   OUTLINED_FUNCTION_6_2(&dword_1DB56E000, a2, a3, " [%s] %s:%d Could not create CVAViewpointCorrection Ref: %d", *v3, *&v3[8], "[VCViewpointCorrection init]" >> 16, 112);

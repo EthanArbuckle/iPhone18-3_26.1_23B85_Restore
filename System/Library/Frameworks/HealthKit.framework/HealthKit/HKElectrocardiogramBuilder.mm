@@ -1,32 +1,32 @@
 @interface HKElectrocardiogramBuilder
-- (HKElectrocardiogramBuilder)initWithStartDate:(id)a3 frequency:(id)a4;
+- (HKElectrocardiogramBuilder)initWithStartDate:(id)date frequency:(id)frequency;
 - (id).cxx_construct;
-- (id)finishWithDevice:(id)a3 metadata:(id)a4;
-- (void)addValue:(float)a3 lead:(int64_t)a4;
+- (id)finishWithDevice:(id)device metadata:(id)metadata;
+- (void)addValue:(float)value lead:(int64_t)lead;
 @end
 
 @implementation HKElectrocardiogramBuilder
 
-- (HKElectrocardiogramBuilder)initWithStartDate:(id)a3 frequency:(id)a4
+- (HKElectrocardiogramBuilder)initWithStartDate:(id)date frequency:(id)frequency
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  frequencyCopy = frequency;
   v12.receiver = self;
   v12.super_class = HKElectrocardiogramBuilder;
   v9 = [(HKElectrocardiogramBuilder *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_startDate, a3);
-    objc_storeStrong(&v10->_frequency, a4);
+    objc_storeStrong(&v9->_startDate, date);
+    objc_storeStrong(&v10->_frequency, frequency);
   }
 
   return v10;
 }
 
-- (void)addValue:(float)a3 lead:(int64_t)a4
+- (void)addValue:(float)value lead:(int64_t)lead
 {
-  v28 = a4;
+  leadCopy = lead;
   left = self->_leads.__tree_.__end_node_.__left_;
   p_end_node = &self->_leads.__tree_.__end_node_;
   v6 = left;
@@ -39,27 +39,27 @@
   v9 = p_end_node;
   do
   {
-    if (SLODWORD(v6[4].__left_) >= a4)
+    if (SLODWORD(v6[4].__left_) >= lead)
     {
       v9 = v6;
     }
 
-    v6 = v6[SLODWORD(v6[4].__left_) < a4].__left_;
+    v6 = v6[SLODWORD(v6[4].__left_) < lead].__left_;
   }
 
   while (v6);
-  if (v9 == p_end_node || SLODWORD(v9[4].__left_) > a4)
+  if (v9 == p_end_node || SLODWORD(v9[4].__left_) > lead)
   {
 LABEL_8:
-    v29 = &v28;
-    v10 = std::__tree<std::__value_type<binarysample::ElectrocardiogramLead_Name,binarysample::ElectrocardiogramLead>,std::__map_value_compare<binarysample::ElectrocardiogramLead_Name,std::__value_type<binarysample::ElectrocardiogramLead_Name,binarysample::ElectrocardiogramLead>,std::less<binarysample::ElectrocardiogramLead_Name>,true>,std::allocator<std::__value_type<binarysample::ElectrocardiogramLead_Name,binarysample::ElectrocardiogramLead>>>::__emplace_unique_key_args<binarysample::ElectrocardiogramLead_Name,std::piecewise_construct_t const&,std::tuple<binarysample::ElectrocardiogramLead_Name const&>,std::tuple<>>(&p_end_node[-1], &v28);
-    v11 = v28;
+    v29 = &leadCopy;
+    v10 = std::__tree<std::__value_type<binarysample::ElectrocardiogramLead_Name,binarysample::ElectrocardiogramLead>,std::__map_value_compare<binarysample::ElectrocardiogramLead_Name,std::__value_type<binarysample::ElectrocardiogramLead_Name,binarysample::ElectrocardiogramLead>,std::less<binarysample::ElectrocardiogramLead_Name>,true>,std::allocator<std::__value_type<binarysample::ElectrocardiogramLead_Name,binarysample::ElectrocardiogramLead>>>::__emplace_unique_key_args<binarysample::ElectrocardiogramLead_Name,std::piecewise_construct_t const&,std::tuple<binarysample::ElectrocardiogramLead_Name const&>,std::tuple<>>(&p_end_node[-1], &leadCopy);
+    v11 = leadCopy;
     *(v10 + 100) |= 1u;
     *(v10 + 24) = v11;
   }
 
-  v29 = &v28;
-  v12 = std::__tree<std::__value_type<binarysample::ElectrocardiogramLead_Name,binarysample::ElectrocardiogramLead>,std::__map_value_compare<binarysample::ElectrocardiogramLead_Name,std::__value_type<binarysample::ElectrocardiogramLead_Name,binarysample::ElectrocardiogramLead>,std::less<binarysample::ElectrocardiogramLead_Name>,true>,std::allocator<std::__value_type<binarysample::ElectrocardiogramLead_Name,binarysample::ElectrocardiogramLead>>>::__emplace_unique_key_args<binarysample::ElectrocardiogramLead_Name,std::piecewise_construct_t const&,std::tuple<binarysample::ElectrocardiogramLead_Name const&>,std::tuple<>>(v8, &v28);
+  v29 = &leadCopy;
+  v12 = std::__tree<std::__value_type<binarysample::ElectrocardiogramLead_Name,binarysample::ElectrocardiogramLead>,std::__map_value_compare<binarysample::ElectrocardiogramLead_Name,std::__value_type<binarysample::ElectrocardiogramLead_Name,binarysample::ElectrocardiogramLead>,std::less<binarysample::ElectrocardiogramLead_Name>,true>,std::allocator<std::__value_type<binarysample::ElectrocardiogramLead_Name,binarysample::ElectrocardiogramLead>>>::__emplace_unique_key_args<binarysample::ElectrocardiogramLead_Name,std::piecewise_construct_t const&,std::tuple<binarysample::ElectrocardiogramLead_Name const&>,std::tuple<>>(v8, &leadCopy);
   v13 = v12;
   v15 = v12[10];
   v14 = v12[11];
@@ -95,7 +95,7 @@ LABEL_8:
     v24 = (v15 - v17) >> 2;
     v25 = (4 * v19);
     v26 = (4 * v19 - 4 * v24);
-    *v25 = a3;
+    *v25 = value;
     v16 = v25 + 1;
     memcpy(v26, v17, v18);
     v27 = v13[9];
@@ -110,21 +110,21 @@ LABEL_8:
 
   else
   {
-    *v15 = a3;
+    *v15 = value;
     v16 = v15 + 1;
   }
 
   v13[10] = v16;
 }
 
-- (id)finishWithDevice:(id)a3 metadata:(id)a4
+- (id)finishWithDevice:(id)device metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  metadataCopy = metadata;
   binarysample::Electrocardiogram::Electrocardiogram(v15);
   v8 = +[HKUnit hertzUnit];
-  v9 = [(HKElectrocardiogramBuilder *)self frequency];
-  [v9 doubleValueForUnit:v8];
+  frequency = [(HKElectrocardiogramBuilder *)self frequency];
+  [frequency doubleValueForUnit:v8];
   v17 |= 1u;
   v16 = v10;
 
@@ -133,8 +133,8 @@ LABEL_8:
     PB::PtrVector<binarysample::ElectrocardiogramLead>::emplace_back<binarysample::ElectrocardiogramLead const>();
   }
 
-  v11 = [(HKElectrocardiogramBuilder *)self startDate];
-  v12 = [HKElectrocardiogram _electrocardiogramWithStartDate:v11 device:v6 metadata:v7];
+  startDate = [(HKElectrocardiogramBuilder *)self startDate];
+  v12 = [HKElectrocardiogram _electrocardiogramWithStartDate:startDate device:deviceCopy metadata:metadataCopy];
 
   binarysample::Electrocardiogram::Electrocardiogram(v14, v15);
   [v12 setReading:v14];

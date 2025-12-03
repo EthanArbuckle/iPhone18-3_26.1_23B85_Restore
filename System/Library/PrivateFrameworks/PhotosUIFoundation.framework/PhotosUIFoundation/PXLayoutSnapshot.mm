@@ -1,9 +1,9 @@
 @interface PXLayoutSnapshot
 - (CGRect)contentRect;
-- (PXLayoutSnapshot)initWithContentRect:(CGRect)a3;
-- (_PXLayoutGeometry)geometryForItem:(SEL)a3;
+- (PXLayoutSnapshot)initWithContentRect:(CGRect)rect;
+- (_PXLayoutGeometry)geometryForItem:(SEL)item;
 - (id)description;
-- (void)enumerateGeometriesForItemsInRect:(CGRect)a3 usingBlock:(id)a4;
+- (void)enumerateGeometriesForItemsInRect:(CGRect)rect usingBlock:(id)block;
 @end
 
 @implementation PXLayoutSnapshot
@@ -21,16 +21,16 @@
   return result;
 }
 
-- (void)enumerateGeometriesForItemsInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)enumerateGeometriesForItemsInRect:(CGRect)rect usingBlock:(id)block
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXLayoutSnapshot.m" lineNumber:41 description:@"-enumerateGeometriesForItemsInRect:usingBlock: must be overidden"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXLayoutSnapshot.m" lineNumber:41 description:@"-enumerateGeometriesForItemsInRect:usingBlock: must be overidden"];
 }
 
-- (_PXLayoutGeometry)geometryForItem:(SEL)a3
+- (_PXLayoutGeometry)geometryForItem:(SEL)item
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a3 object:self file:@"PXLayoutSnapshot.m" lineNumber:36 description:@"-geometryForItem: must be overidden"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:item object:self file:@"PXLayoutSnapshot.m" lineNumber:36 description:@"-geometryForItem: must be overidden"];
 
   retstr->var7.height = 0.0;
   *&retstr->var5 = xmmword_1B4075480;
@@ -57,12 +57,12 @@
   return v5;
 }
 
-- (PXLayoutSnapshot)initWithContentRect:(CGRect)a3
+- (PXLayoutSnapshot)initWithContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8.receiver = self;
   v8.super_class = PXLayoutSnapshot;
   result = [(PXLayoutSnapshot *)&v8 init];

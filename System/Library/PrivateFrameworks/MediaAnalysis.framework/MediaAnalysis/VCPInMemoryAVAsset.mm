@@ -1,14 +1,14 @@
 @interface VCPInMemoryAVAsset
-+ (id)assetWithData:(id)a3;
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4;
-- (VCPInMemoryAVAsset)initWithData:(id)a3;
++ (id)assetWithData:(id)data;
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource;
+- (VCPInMemoryAVAsset)initWithData:(id)data;
 @end
 
 @implementation VCPInMemoryAVAsset
 
-- (VCPInMemoryAVAsset)initWithData:(id)a3
+- (VCPInMemoryAVAsset)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = [MEMORY[0x1E695DFF8] URLWithString:@"mediaanalysis://in-memory"];
   v11.receiver = self;
   v11.super_class = VCPInMemoryAVAsset;
@@ -16,33 +16,33 @@
 
   if (v7)
   {
-    objc_storeStrong(&v7->_data, a3);
+    objc_storeStrong(&v7->_data, data);
     v8 = dispatch_queue_create("com.apple.mediaanalysisd.VCPInMemoryAVAsset", 0);
-    v9 = [(VCPInMemoryAVAsset *)v7 resourceLoader];
-    [v9 setDelegate:v7 queue:v8];
+    resourceLoader = [(VCPInMemoryAVAsset *)v7 resourceLoader];
+    [resourceLoader setDelegate:v7 queue:v8];
   }
 
   return v7;
 }
 
-+ (id)assetWithData:(id)a3
++ (id)assetWithData:(id)data
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithData:v3];
+  dataCopy = data;
+  v4 = [objc_alloc(objc_opt_class()) initWithData:dataCopy];
 
   return v4;
 }
 
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 contentInformationRequest];
-  v9 = v8;
-  if (v8)
+  loaderCopy = loader;
+  resourceCopy = resource;
+  contentInformationRequest = [resourceCopy contentInformationRequest];
+  v9 = contentInformationRequest;
+  if (contentInformationRequest)
   {
-    [v8 setContentType:*MEMORY[0x1E69874B8]];
+    [contentInformationRequest setContentType:*MEMORY[0x1E69874B8]];
     [v9 setContentLength:{-[NSData length](self->_data, "length")}];
     [v9 setByteRangeAccessSupported:1];
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
@@ -53,18 +53,18 @@
     }
   }
 
-  v10 = [v7 dataRequest];
-  if (!v10)
+  dataRequest = [resourceCopy dataRequest];
+  if (!dataRequest)
   {
     goto LABEL_14;
   }
 
   v11 = objc_autoreleasePoolPush();
-  if (([v10 requestedOffset] & 0x8000000000000000) == 0 && (objc_msgSend(v10, "requestedLength") & 0x8000000000000000) == 0)
+  if (([dataRequest requestedOffset] & 0x8000000000000000) == 0 && (objc_msgSend(dataRequest, "requestedLength") & 0x8000000000000000) == 0)
   {
-    v12 = [v10 requestedOffset];
-    v13 = [v10 requestedLength];
-    if (v13 + v12 <= [(NSData *)self->_data length])
+    requestedOffset = [dataRequest requestedOffset];
+    requestedLength = [dataRequest requestedLength];
+    if (requestedLength + requestedOffset <= [(NSData *)self->_data length])
     {
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -78,22 +78,22 @@
       aBlock[3] = &unk_1E8350FA0;
       aBlock[4] = &buf;
       v15 = _Block_copy(aBlock);
-      v16 = [(NSData *)self->_data bytes];
-      v17 = [v10 requestedOffset];
-      v18 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:&v16[v17] length:objc_msgSend(v10 deallocator:{"requestedLength"), v15}];
-      [v10 respondWithData:v18];
+      bytes = [(NSData *)self->_data bytes];
+      requestedOffset2 = [dataRequest requestedOffset];
+      v18 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:&bytes[requestedOffset2] length:objc_msgSend(dataRequest deallocator:{"requestedLength"), v15}];
+      [dataRequest respondWithData:v18];
 
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
         *v21 = 138412290;
-        v22 = v10;
+        v22 = dataRequest;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "  Fullfilled data request: %@", v21, 0xCu);
       }
 
       _Block_object_dispose(&buf, 8);
       objc_autoreleasePoolPop(v11);
 LABEL_14:
-      [v7 finishLoading];
+      [resourceCopy finishLoading];
       v14 = 1;
       goto LABEL_15;
     }

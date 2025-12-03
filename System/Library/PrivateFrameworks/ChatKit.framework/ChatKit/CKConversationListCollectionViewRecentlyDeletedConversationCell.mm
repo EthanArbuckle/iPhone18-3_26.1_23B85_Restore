@@ -1,43 +1,43 @@
 @interface CKConversationListCollectionViewRecentlyDeletedConversationCell
-- (BOOL)hasUnreadMessagesForConversation:(id)a3;
-- (BOOL)shouldAlwaysHideUnreadIndicatorForConversation:(id)a3;
-- (id)_attributedStringForRecoverableSummaryLabelWithText:(id)a3;
-- (unint64_t)_daysUntilDeletion:(id)a3;
-- (void)updateSummaryLabel:(id)a3 conversation:(id)a4 fastPreview:(BOOL)a5;
+- (BOOL)hasUnreadMessagesForConversation:(id)conversation;
+- (BOOL)shouldAlwaysHideUnreadIndicatorForConversation:(id)conversation;
+- (id)_attributedStringForRecoverableSummaryLabelWithText:(id)text;
+- (unint64_t)_daysUntilDeletion:(id)deletion;
+- (void)updateSummaryLabel:(id)label conversation:(id)conversation fastPreview:(BOOL)preview;
 @end
 
 @implementation CKConversationListCollectionViewRecentlyDeletedConversationCell
 
-- (void)updateSummaryLabel:(id)a3 conversation:(id)a4 fastPreview:(BOOL)a5
+- (void)updateSummaryLabel:(id)label conversation:(id)conversation fastPreview:(BOOL)preview
 {
-  v23 = a4;
-  v7 = a3;
-  v8 = [v23 chat];
-  v9 = [v8 recoverableMessagesCount];
+  conversationCopy = conversation;
+  labelCopy = label;
+  chat = [conversationCopy chat];
+  recoverableMessagesCount = [chat recoverableMessagesCount];
 
-  v10 = [v23 chat];
-  v11 = [v10 isDeletingIncomingMessages];
+  chat2 = [conversationCopy chat];
+  isDeletingIncomingMessages = [chat2 isDeletingIncomingMessages];
 
-  if (v11)
+  if (isDeletingIncomingMessages)
   {
-    v12 = [v23 chat];
-    v13 = [v12 unreadRecoverableMessagesCount];
+    chat3 = [conversationCopy chat];
+    unreadRecoverableMessagesCount = [chat3 unreadRecoverableMessagesCount];
   }
 
   else
   {
-    v13 = 0;
+    unreadRecoverableMessagesCount = 0;
   }
 
   v14 = MEMORY[0x1E696AEC0];
   v15 = CKFrameworkBundle();
   v16 = [v15 localizedStringForKey:@"RECENTLY_DELETED_CONVERSATIONLIST_CELL_SUMMARY_TEXT" value:&stru_1F04268F8 table:@"ChatKit"];
-  v17 = [v14 localizedStringWithFormat:v16, v9, v13];
+  v17 = [v14 localizedStringWithFormat:v16, recoverableMessagesCount, unreadRecoverableMessagesCount];
 
-  v18 = [MEMORY[0x1E69DC668] sharedApplication];
-  v19 = [v18 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v19 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v20 = @"\u200F";
   }
@@ -50,58 +50,58 @@
   v21 = [(__CFString *)v20 stringByAppendingString:v17];
 
   v22 = [(CKConversationListCollectionViewRecentlyDeletedConversationCell *)self _attributedStringForRecoverableSummaryLabelWithText:v21];
-  [v7 setAttributedText:v22];
+  [labelCopy setAttributedText:v22];
 }
 
-- (id)_attributedStringForRecoverableSummaryLabelWithText:(id)a3
+- (id)_attributedStringForRecoverableSummaryLabelWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 conversationListSummaryFont];
+  conversationListSummaryFont = [v5 conversationListSummaryFont];
 
-  v7 = [(CKConversationListCollectionViewConversationCell *)self summaryLabelTextColor];
-  v8 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v4];
+  summaryLabelTextColor = [(CKConversationListCollectionViewConversationCell *)self summaryLabelTextColor];
+  v8 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:textCopy];
 
   v9 = [v8 length];
-  [v8 addAttribute:*MEMORY[0x1E69DB648] value:v6 range:{0, v9}];
-  [v8 addAttribute:*MEMORY[0x1E69DB650] value:v7 range:{0, v9}];
+  [v8 addAttribute:*MEMORY[0x1E69DB648] value:conversationListSummaryFont range:{0, v9}];
+  [v8 addAttribute:*MEMORY[0x1E69DB650] value:summaryLabelTextColor range:{0, v9}];
 
   return v8;
 }
 
-- (unint64_t)_daysUntilDeletion:(id)a3
+- (unint64_t)_daysUntilDeletion:(id)deletion
 {
-  v3 = [a3 chat];
-  v4 = [v3 earliestRecoverableMessageDeletionDate];
-  v5 = [CKUtilities daysUntilRecentlyDeletedDeletionForDate:v4];
+  chat = [deletion chat];
+  earliestRecoverableMessageDeletionDate = [chat earliestRecoverableMessageDeletionDate];
+  v5 = [CKUtilities daysUntilRecentlyDeletedDeletionForDate:earliestRecoverableMessageDeletionDate];
 
   return v5;
 }
 
-- (BOOL)shouldAlwaysHideUnreadIndicatorForConversation:(id)a3
+- (BOOL)shouldAlwaysHideUnreadIndicatorForConversation:(id)conversation
 {
-  v3 = [a3 chat];
-  v4 = [v3 isDeletingIncomingMessages];
+  chat = [conversation chat];
+  isDeletingIncomingMessages = [chat isDeletingIncomingMessages];
 
-  return v4 ^ 1;
+  return isDeletingIncomingMessages ^ 1;
 }
 
-- (BOOL)hasUnreadMessagesForConversation:(id)a3
+- (BOOL)hasUnreadMessagesForConversation:(id)conversation
 {
-  v3 = a3;
-  v4 = [v3 chat];
-  if ([v4 unreadRecoverableMessagesCount])
+  conversationCopy = conversation;
+  chat = [conversationCopy chat];
+  if ([chat unreadRecoverableMessagesCount])
   {
-    v5 = [v3 chat];
-    v6 = [v5 isDeletingIncomingMessages];
+    chat2 = [conversationCopy chat];
+    isDeletingIncomingMessages = [chat2 isDeletingIncomingMessages];
   }
 
   else
   {
-    v6 = 0;
+    isDeletingIncomingMessages = 0;
   }
 
-  return v6;
+  return isDeletingIncomingMessages;
 }
 
 @end

@@ -12,15 +12,15 @@
 
 + (void)_interpolatedAdditionalFontSizeForMainScreen
 {
-  v0 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v0 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   CGRectGetWidth(v1);
 }
 
 + (id)ck_cui_cameraFontForContentSize:()Camera
 {
   v4 = a3;
-  [a1 _interpolatedAdditionalFontSizeForMainScreen];
+  [self _interpolatedAdditionalFontSizeForMainScreen];
   v6 = v5;
   if (([v4 isEqualToString:*MEMORY[0x1E69DDC68]] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC70]))
   {
@@ -45,7 +45,7 @@ LABEL_6:
   [v4 isEqualToString:*MEMORY[0x1E69DDC50]];
   v8 = 17.0;
 LABEL_7:
-  v9 = [a1 ck_cui_cameraFontOfSize:v8];
+  v9 = [self ck_cui_cameraFontOfSize:v8];
 
   return v9;
 }
@@ -53,7 +53,7 @@ LABEL_7:
 + (id)ck_cui_cameraTimerFontForContentSize:()Camera
 {
   v4 = a3;
-  [a1 _interpolatedAdditionalFontSizeForMainScreen];
+  [self _interpolatedAdditionalFontSizeForMainScreen];
   v6 = v5;
   if (([v4 isEqualToString:*MEMORY[0x1E69DDC68]] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC70]))
   {
@@ -78,7 +78,7 @@ LABEL_6:
   v8 = v6 + 23.0;
   [v4 isEqualToString:*MEMORY[0x1E69DDC50]];
 LABEL_7:
-  v9 = [a1 ck_cui_cameraFontOfSize:v8];
+  v9 = [self ck_cui_cameraFontOfSize:v8];
 
   return v9;
 }
@@ -86,7 +86,7 @@ LABEL_7:
 + (id)ck_cui_cameraModeDialFontForContentSize:()Camera
 {
   v4 = a3;
-  [a1 _interpolatedAdditionalFontSizeForMainScreen];
+  [self _interpolatedAdditionalFontSizeForMainScreen];
   v6 = v5;
   v7 = 13.0;
   if (([v4 isEqualToString:*MEMORY[0x1E69DDC68]] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC70]) & 1) == 0)
@@ -110,7 +110,7 @@ LABEL_7:
     }
   }
 
-  v8 = [a1 ck_cui_cameraFontOfSize:v6 + v7];
+  v8 = [self ck_cui_cameraFontOfSize:v6 + v7];
 
   return v8;
 }
@@ -118,7 +118,7 @@ LABEL_7:
 + (id)ck_cui_cameraModeDialApproximateFontForContentSize:()Camera
 {
   v4 = a3;
-  [a1 _interpolatedAdditionalFontSizeForMainScreen];
+  [self _interpolatedAdditionalFontSizeForMainScreen];
   v6 = v5;
   if (([v4 isEqualToString:*MEMORY[0x1E69DDC68]] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC70]) || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC60]))
   {
@@ -142,7 +142,7 @@ LABEL_7:
   }
 
 LABEL_8:
-  v9 = [a1 ck_cui_cameraFontOfSize:v8];
+  v9 = [self ck_cui_cameraFontOfSize:v8];
 
   return v9;
 }
@@ -172,7 +172,7 @@ LABEL_8:
     }
   }
 
-  v6 = [a1 ck_cui_cameraFontOfSize:v5];
+  v6 = [self ck_cui_cameraFontOfSize:v5];
 
   return v6;
 }

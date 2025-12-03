@@ -1,32 +1,32 @@
 @interface PHRingtoneController
-- (BOOL)_isActivePreferredOutputPort:(id)a3;
-- (BOOL)_shouldAnnounceCalls:(id)a3;
+- (BOOL)_isActivePreferredOutputPort:(id)port;
+- (BOOL)_shouldAnnounceCalls:(id)calls;
 - (PHRingtoneController)init;
 - (unsigned)audioSessionIdentifier;
-- (unsigned)audioSessionIdentifierForSessionDescriptors:(id)a3;
-- (void)_playCallAnnouncement:(id)a3;
+- (unsigned)audioSessionIdentifierForSessionDescriptors:(id)descriptors;
+- (void)_playCallAnnouncement:(id)announcement;
 - (void)dealloc;
-- (void)handleAVSystemController_ServerConnectionDiedNotification:(id)a3;
-- (void)handleAVSystemController_SomeSessionIsPlayingDidChangeNotification:(id)a3;
-- (void)playAnnouncementForCall:(id)a3;
-- (void)playDowntimeStartingAnnouncementForCall:(id)a3;
-- (void)setAudioSessionIdentifier:(unsigned int)a3;
-- (void)startObservingNotificationsForAVSystemController:(id)a3;
+- (void)handleAVSystemController_ServerConnectionDiedNotification:(id)notification;
+- (void)handleAVSystemController_SomeSessionIsPlayingDidChangeNotification:(id)notification;
+- (void)playAnnouncementForCall:(id)call;
+- (void)playDowntimeStartingAnnouncementForCall:(id)call;
+- (void)setAudioSessionIdentifier:(unsigned int)identifier;
+- (void)startObservingNotificationsForAVSystemController:(id)controller;
 - (void)stopAnnouncement;
-- (void)stopObservingNotificationsForAVSystemController:(id)a3;
+- (void)stopObservingNotificationsForAVSystemController:(id)controller;
 @end
 
 @implementation PHRingtoneController
 
 - (void)stopAnnouncement
 {
-  v3 = [(PHRingtoneController *)self queue];
+  queue = [(PHRingtoneController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000B1F4;
   block[3] = &unk_100356988;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (PHRingtoneController)init
@@ -69,13 +69,13 @@
   [(PHRingtoneController *)&v4 dealloc];
 }
 
-- (void)startObservingNotificationsForAVSystemController:(id)a3
+- (void)startObservingNotificationsForAVSystemController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PHRingtoneController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  controllerCopy = controller;
+  queue = [(PHRingtoneController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 attributeForKey:AVSystemController_PlayingSessionsDescriptionAttribute];
+  v6 = [controllerCopy attributeForKey:AVSystemController_PlayingSessionsDescriptionAttribute];
   if (v6)
   {
     [(PHRingtoneController *)self setAudioSessionIdentifier:[(PHRingtoneController *)self audioSessionIdentifierForSessionDescriptors:v6]];
@@ -85,13 +85,13 @@
   v12[1] = AVSystemController_SomeSessionIsPlayingDidChangeNotification;
   v7 = [NSArray arrayWithObjects:v12 count:2];
   v11 = 0;
-  v8 = [v4 setAttribute:v7 forKey:AVSystemController_SubscribeToNotificationsAttribute error:&v11];
+  v8 = [controllerCopy setAttribute:v7 forKey:AVSystemController_SubscribeToNotificationsAttribute error:&v11];
   v9 = v11;
   if (v8)
   {
     v10 = +[NSNotificationCenter defaultCenter];
-    [v10 addObserver:self selector:"handleAVSystemController_ServerConnectionDiedNotification:" name:AVSystemController_ServerConnectionDiedNotification object:v4];
-    [v10 addObserver:self selector:"handleAVSystemController_SomeSessionIsPlayingDidChangeNotification:" name:AVSystemController_SomeSessionIsPlayingDidChangeNotification object:v4];
+    [v10 addObserver:self selector:"handleAVSystemController_ServerConnectionDiedNotification:" name:AVSystemController_ServerConnectionDiedNotification object:controllerCopy];
+    [v10 addObserver:self selector:"handleAVSystemController_SomeSessionIsPlayingDidChangeNotification:" name:AVSystemController_SomeSessionIsPlayingDidChangeNotification object:controllerCopy];
   }
 
   else
@@ -104,24 +104,24 @@
   }
 }
 
-- (void)stopObservingNotificationsForAVSystemController:(id)a3
+- (void)stopObservingNotificationsForAVSystemController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[NSNotificationCenter defaultCenter];
-  [v5 removeObserver:self name:AVSystemController_ServerConnectionDiedNotification object:v4];
-  [v5 removeObserver:self name:AVSystemController_SomeSessionIsPlayingDidChangeNotification object:v4];
+  [v5 removeObserver:self name:AVSystemController_ServerConnectionDiedNotification object:controllerCopy];
+  [v5 removeObserver:self name:AVSystemController_SomeSessionIsPlayingDidChangeNotification object:controllerCopy];
 }
 
-- (BOOL)_isActivePreferredOutputPort:(id)a3
+- (BOOL)_isActivePreferredOutputPort:(id)port
 {
-  v3 = a3;
+  portCopy = port;
   v4 = +[TUAudioSystemController sharedAudioSystemController];
-  v5 = [v3 UID];
+  v5 = [portCopy UID];
 
   v6 = [v4 pickableRouteWithUniqueIdentifier:v5];
 
-  v7 = [v6 isPreferredAndActive];
-  if (v7)
+  isPreferredAndActive = [v6 isPreferredAndActive];
+  if (isPreferredAndActive)
   {
     v8 = sub_100004F84();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -132,34 +132,34 @@
     }
   }
 
-  return v7;
+  return isPreferredAndActive;
 }
 
-- (BOOL)_shouldAnnounceCalls:(id)a3
+- (BOOL)_shouldAnnounceCalls:(id)calls
 {
-  v4 = a3;
-  v5 = [(PHRingtoneController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  callsCopy = calls;
+  queue = [(PHRingtoneController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v4 bypassAnnounceCallsPreference])
+  if ([callsCopy bypassAnnounceCallsPreference])
   {
-    v6 = 1;
+    announceCalls = 1;
   }
 
   else
   {
-    v7 = [(PHRingtoneController *)self userConfiguration];
-    v6 = [v7 announceCalls];
+    userConfiguration = [(PHRingtoneController *)self userConfiguration];
+    announceCalls = [userConfiguration announceCalls];
   }
 
-  v8 = [v4 bypassAnnounceCallsPreference];
+  bypassAnnounceCallsPreference = [callsCopy bypassAnnounceCallsPreference];
   v9 = sub_100004F84();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (bypassAnnounceCallsPreference)
   {
     if (v10)
     {
-      v11 = [NSString tu_stringWithTUConfigurationAnnounceCalls:v6];
+      v11 = [NSString tu_stringWithTUConfigurationAnnounceCalls:announceCalls];
       *buf = 138412290;
       v65 = v11;
       v12 = "Call overwritten to %@";
@@ -170,14 +170,14 @@ LABEL_9:
 
   else if (v10)
   {
-    v11 = [NSString tu_stringWithTUConfigurationAnnounceCalls:v6];
+    v11 = [NSString tu_stringWithTUConfigurationAnnounceCalls:announceCalls];
     *buf = 138412290;
     v65 = v11;
     v12 = "Call announcement preference set to %@";
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!announceCalls)
   {
     goto LABEL_78;
   }
@@ -194,8 +194,8 @@ LABEL_9:
     goto LABEL_78;
   }
 
-  v14 = [(PHRingtoneController *)self audioSessionIdentifier];
-  if (!v14)
+  audioSessionIdentifier = [(PHRingtoneController *)self audioSessionIdentifier];
+  if (!audioSessionIdentifier)
   {
     v15 = sub_100004F84();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -205,23 +205,23 @@ LABEL_9:
     }
   }
 
-  v16 = [AVAudioSession retrieveSessionWithID:v14];
+  v16 = [AVAudioSession retrieveSessionWithID:audioSessionIdentifier];
   if (!v16)
   {
     v48 = sub_100004F84();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
     {
-      sub_100254720(v14, v48);
+      sub_100254720(audioSessionIdentifier, v48);
     }
 
     goto LABEL_78;
   }
 
   v17 = v16;
-  v18 = [(__CFString *)v16 currentRoute];
-  v19 = [v18 outputs];
+  currentRoute = [(__CFString *)v16 currentRoute];
+  outputs = [currentRoute outputs];
 
-  if (![v19 count])
+  if (![outputs count])
   {
     v49 = sub_100004F84();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
@@ -235,13 +235,13 @@ LABEL_9:
   }
 
   v54 = v17;
-  v55 = v6;
-  v56 = v4;
+  v55 = announceCalls;
+  v56 = callsCopy;
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v20 = v19;
+  v20 = outputs;
   v21 = [v20 countByEnumeratingWithState:&v60 objects:v68 count:16];
   if (!v21)
   {
@@ -253,7 +253,7 @@ LABEL_9:
 
   v22 = v21;
   v57 = 0;
-  v58 = self;
+  selfCopy = self;
   v59 = 0;
   v23 = 0;
   v24 = *v61;
@@ -271,21 +271,21 @@ LABEL_9:
       v27 = sub_100004F84();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v26 portName];
-        v29 = [v26 endpointType];
+        portName = [v26 portName];
+        endpointType = [v26 endpointType];
         *buf = 138412546;
-        v65 = v28;
+        v65 = portName;
         v66 = 2048;
-        v67 = v29;
+        v67 = endpointType;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Verifying call announcement eligibility of output port %@ with endpoint type '%tu'.", buf, 0x16u);
       }
 
-      v30 = [v26 endpointType];
-      if (v30 <= 1953790302)
+      endpointType2 = [v26 endpointType];
+      if (endpointType2 <= 1953790302)
       {
-        if (v30 != 1751412846)
+        if (endpointType2 != 1751412846)
         {
-          if (v30 != 1936747378)
+          if (endpointType2 != 1936747378)
           {
             goto LABEL_52;
           }
@@ -314,13 +314,13 @@ LABEL_49:
 
 LABEL_50:
 
-        v59 = [(PHRingtoneController *)v58 _isActivePreferredOutputPort:v26];
+        v59 = [(PHRingtoneController *)selfCopy _isActivePreferredOutputPort:v26];
 LABEL_51:
         v23 = 1;
         goto LABEL_52;
       }
 
-      switch(v30)
+      switch(endpointType2)
       {
         case 1953790303:
           v33 = sub_100004F84();
@@ -332,8 +332,8 @@ LABEL_51:
 
           break;
         case 1969977198:
-          v34 = [v26 portType];
-          v35 = [v34 isEqualToString:AVAudioSessionPortBluetoothHFP];
+          portType = [v26 portType];
+          v35 = [portType isEqualToString:AVAudioSessionPortBluetoothHFP];
 
           if (v35)
           {
@@ -350,8 +350,8 @@ LABEL_51:
             goto LABEL_50;
           }
 
-          v39 = [v26 portType];
-          v40 = [v39 isEqualToString:AVAudioSessionPortHeadphones];
+          portType2 = [v26 portType];
+          v40 = [portType2 isEqualToString:AVAudioSessionPortHeadphones];
 
           if (v40)
           {
@@ -366,8 +366,8 @@ LABEL_51:
             goto LABEL_51;
           }
 
-          v42 = [v26 portType];
-          v43 = [v42 isEqualToString:AVAudioSessionPortBuiltInSpeaker];
+          portType3 = [v26 portType];
+          v43 = [portType3 isEqualToString:AVAudioSessionPortBuiltInSpeaker];
 
           v44 = sub_100004F84();
           v45 = os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT);
@@ -387,9 +387,9 @@ LABEL_40:
 
           if (v45)
           {
-            v46 = [v26 portName];
+            portName2 = [v26 portName];
             *buf = 138412290;
-            v65 = v46;
+            v65 = portName2;
             _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Call announcements via %@ are not supported.", buf, 0xCu);
           }
 
@@ -422,12 +422,12 @@ LABEL_74:
   if (v55 == 1)
   {
     v52 = v23 | v59 | BYTE4(v57) | v57;
-    v4 = v56;
+    callsCopy = v56;
   }
 
   else
   {
-    v4 = v56;
+    callsCopy = v56;
     if (v55 == 3)
     {
       v50 = v23 & (BYTE4(v57) ^ 1);
@@ -453,61 +453,61 @@ LABEL_78:
   return v52 & 1;
 }
 
-- (void)_playCallAnnouncement:(id)a3
+- (void)_playCallAnnouncement:(id)announcement
 {
-  v4 = a3;
-  if ([(PHRingtoneController *)self _shouldAnnounceCalls:v4])
+  announcementCopy = announcement;
+  if ([(PHRingtoneController *)self _shouldAnnounceCalls:announcementCopy])
   {
-    v5 = [(PHRingtoneController *)self callAnnouncement];
+    callAnnouncement = [(PHRingtoneController *)self callAnnouncement];
 
-    if (v5)
+    if (callAnnouncement)
     {
-      v6 = sub_100004F84();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      callAnnouncement4 = sub_100004F84();
+      if (os_log_type_enabled(callAnnouncement4, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(PHRingtoneController *)self callAnnouncement];
+        callAnnouncement2 = [(PHRingtoneController *)self callAnnouncement];
         v10 = 138412546;
-        v11 = v7;
+        v11 = callAnnouncement2;
         v12 = 2112;
-        v13 = v4;
-        _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Announcements are enabled but already playing a call announcement (%@), so will not play call announcement (%@).", &v10, 0x16u);
+        v13 = announcementCopy;
+        _os_log_impl(&_mh_execute_header, callAnnouncement4, OS_LOG_TYPE_DEFAULT, "Announcements are enabled but already playing a call announcement (%@), so will not play call announcement (%@).", &v10, 0x16u);
       }
     }
 
     else
     {
-      [v4 setAudioSessionIdentifier:{-[PHRingtoneController audioSessionIdentifier](self, "audioSessionIdentifier")}];
-      [(PHRingtoneController *)self setCallAnnouncement:v4];
+      [announcementCopy setAudioSessionIdentifier:{-[PHRingtoneController audioSessionIdentifier](self, "audioSessionIdentifier")}];
+      [(PHRingtoneController *)self setCallAnnouncement:announcementCopy];
       v8 = sub_100004F84();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(PHRingtoneController *)self callAnnouncement];
+        callAnnouncement3 = [(PHRingtoneController *)self callAnnouncement];
         v10 = 138412290;
-        v11 = v9;
+        v11 = callAnnouncement3;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Announcements are enabled, playing call announcement (%@).", &v10, 0xCu);
       }
 
-      v6 = [(PHRingtoneController *)self callAnnouncement];
-      [v6 start];
+      callAnnouncement4 = [(PHRingtoneController *)self callAnnouncement];
+      [callAnnouncement4 start];
     }
   }
 
   else
   {
-    v6 = sub_100004F84();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    callAnnouncement4 = sub_100004F84();
+    if (os_log_type_enabled(callAnnouncement4, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Announcements are disabled, will not play call announcement (%@).", &v10, 0xCu);
+      v11 = announcementCopy;
+      _os_log_impl(&_mh_execute_header, callAnnouncement4, OS_LOG_TYPE_DEFAULT, "Announcements are disabled, will not play call announcement (%@).", &v10, 0xCu);
     }
   }
 }
 
-- (void)playAnnouncementForCall:(id)a3
+- (void)playAnnouncementForCall:(id)call
 {
-  v4 = [(ICSCallAnnouncement *)ICSSiriCallAnnouncement announcementWithCall:a3];
-  v5 = [(PHRingtoneController *)self queue];
+  v4 = [(ICSCallAnnouncement *)ICSSiriCallAnnouncement announcementWithCall:call];
+  queue = [(PHRingtoneController *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006F5B0;
@@ -515,39 +515,39 @@ LABEL_78:
   v7[4] = self;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, v7);
+  dispatch_async(queue, v7);
 }
 
-- (void)playDowntimeStartingAnnouncementForCall:(id)a3
+- (void)playDowntimeStartingAnnouncementForCall:(id)call
 {
-  v4 = [(ICSCallAnnouncement *)ICSDowntimeAnnouncement announcementWithCall:a3];
+  v4 = [(ICSCallAnnouncement *)ICSDowntimeAnnouncement announcementWithCall:call];
   [(PHRingtoneController *)self setCallAnnouncement:v4];
-  v5 = [(PHRingtoneController *)self queue];
+  queue = [(PHRingtoneController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006F680;
   block[3] = &unk_100356988;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
 - (unsigned)audioSessionIdentifier
 {
-  v3 = [(PHRingtoneController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(PHRingtoneController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   return self->_audioSessionIdentifier;
 }
 
-- (void)setAudioSessionIdentifier:(unsigned int)a3
+- (void)setAudioSessionIdentifier:(unsigned int)identifier
 {
-  v5 = [(PHRingtoneController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(PHRingtoneController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (self->_audioSessionIdentifier != a3)
+  if (self->_audioSessionIdentifier != identifier)
   {
-    self->_audioSessionIdentifier = a3;
+    self->_audioSessionIdentifier = identifier;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10006F770;
@@ -557,20 +557,20 @@ LABEL_78:
   }
 }
 
-- (void)handleAVSystemController_ServerConnectionDiedNotification:(id)a3
+- (void)handleAVSystemController_ServerConnectionDiedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", buf, 0x16u);
   }
 
-  v6 = [v4 object];
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -580,55 +580,55 @@ LABEL_78:
     v8[2] = sub_10006F930;
     v8[3] = &unk_100357110;
     v8[4] = self;
-    v9 = v6;
+    v9 = object;
     dispatch_async(queue, v8);
   }
 }
 
-- (void)handleAVSystemController_SomeSessionIsPlayingDidChangeNotification:(id)a3
+- (void)handleAVSystemController_SomeSessionIsPlayingDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v4;
+    v14 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", buf, 0x16u);
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:AVSystemController_SomeSessionIsPlayingDidChangeNotificationParameter_Sessions];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:AVSystemController_SomeSessionIsPlayingDidChangeNotificationParameter_Sessions];
 
   if (v7)
   {
-    v8 = [(PHRingtoneController *)self queue];
+    queue = [(PHRingtoneController *)self queue];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10006FB0C;
     v9[3] = &unk_100357110;
     v9[4] = self;
     v10 = v7;
-    dispatch_async(v8, v9);
+    dispatch_async(queue, v9);
   }
 }
 
-- (unsigned)audioSessionIdentifierForSessionDescriptors:(id)a3
+- (unsigned)audioSessionIdentifierForSessionDescriptors:(id)descriptors
 {
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v27 objects:v33 count:16];
+  descriptorsCopy = descriptors;
+  v4 = [descriptorsCopy countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v4)
   {
     v5 = v4;
-    v20 = 0;
+    unsignedIntValue = 0;
     v6 = *v28;
     v22 = TUBundleIdentifierCallServicesDaemon;
-    v21 = v3;
+    v21 = descriptorsCopy;
     v24 = *v28;
     while (1)
     {
@@ -636,7 +636,7 @@ LABEL_78:
       {
         if (*v28 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(descriptorsCopy);
         }
 
         v8 = *(*(&v27 + 1) + 8 * i);
@@ -678,7 +678,7 @@ LABEL_78:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v20 = [v17 unsignedIntValue];
+                unsignedIntValue = [v17 unsignedIntValue];
                 v18 = 0;
               }
 
@@ -697,7 +697,7 @@ LABEL_78:
             }
 
             v13 = v23;
-            v3 = v21;
+            descriptorsCopy = v21;
             goto LABEL_23;
           }
         }
@@ -725,7 +725,7 @@ LABEL_24:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v27 objects:v33 count:16];
+      v5 = [descriptorsCopy countByEnumeratingWithState:&v27 objects:v33 count:16];
       if (!v5)
       {
         goto LABEL_29;
@@ -733,10 +733,10 @@ LABEL_24:
     }
   }
 
-  v20 = 0;
+  unsignedIntValue = 0;
 LABEL_29:
 
-  return v20;
+  return unsignedIntValue;
 }
 
 @end

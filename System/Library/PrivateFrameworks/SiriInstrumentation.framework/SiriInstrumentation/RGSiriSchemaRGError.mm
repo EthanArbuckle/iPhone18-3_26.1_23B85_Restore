@@ -1,25 +1,25 @@
 @interface RGSiriSchemaRGError
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RGSiriSchemaRGError)initWithDictionary:(id)a3;
-- (RGSiriSchemaRGError)initWithJSON:(id)a3;
+- (RGSiriSchemaRGError)initWithDictionary:(id)dictionary;
+- (RGSiriSchemaRGError)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RGSiriSchemaRGError
 
-- (RGSiriSchemaRGError)initWithDictionary:(id)a3
+- (RGSiriSchemaRGError)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = RGSiriSchemaRGError;
   v5 = [(RGSiriSchemaRGError *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"errorDomain"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"errorDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(RGSiriSchemaRGError *)v5 setErrorDomain:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"errorCode"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (RGSiriSchemaRGError)initWithJSON:(id)a3
+- (RGSiriSchemaRGError)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RGSiriSchemaRGError *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RGSiriSchemaRGError *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RGSiriSchemaRGError *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,23 +76,23 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[RGSiriSchemaRGError errorCode](self, "errorCode")}];
-    [v3 setObject:v4 forKeyedSubscript:@"errorCode"];
+    [dictionary setObject:v4 forKeyedSubscript:@"errorCode"];
   }
 
   if (self->_errorDomain)
   {
-    v5 = [(RGSiriSchemaRGError *)self errorDomain];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"errorDomain"];
+    errorDomain = [(RGSiriSchemaRGError *)self errorDomain];
+    v6 = [errorDomain copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"errorDomain"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -111,18 +111,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(RGSiriSchemaRGError *)self errorDomain];
-  v6 = [v4 errorDomain];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  errorDomain = [(RGSiriSchemaRGError *)self errorDomain];
+  errorDomain2 = [equalCopy errorDomain];
+  v7 = errorDomain2;
+  if ((errorDomain != 0) == (errorDomain2 == 0))
   {
 
 LABEL_12:
@@ -130,13 +130,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(RGSiriSchemaRGError *)self errorDomain];
-  if (v8)
+  errorDomain3 = [(RGSiriSchemaRGError *)self errorDomain];
+  if (errorDomain3)
   {
-    v9 = v8;
-    v10 = [(RGSiriSchemaRGError *)self errorDomain];
-    v11 = [v4 errorDomain];
-    v12 = [v10 isEqual:v11];
+    v9 = errorDomain3;
+    errorDomain4 = [(RGSiriSchemaRGError *)self errorDomain];
+    errorDomain5 = [equalCopy errorDomain];
+    v12 = [errorDomain4 isEqual:errorDomain5];
 
     if (!v12)
     {
@@ -148,7 +148,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -156,7 +156,7 @@ LABEL_12:
   if (*&self->_has)
   {
     errorCode = self->_errorCode;
-    if (errorCode != [v4 errorCode])
+    if (errorCode != [equalCopy errorCode])
     {
       goto LABEL_12;
     }
@@ -168,12 +168,12 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(RGSiriSchemaRGError *)self errorDomain];
+  toCopy = to;
+  errorDomain = [(RGSiriSchemaRGError *)self errorDomain];
 
-  if (v4)
+  if (errorDomain)
   {
     PBDataWriterWriteStringField();
   }

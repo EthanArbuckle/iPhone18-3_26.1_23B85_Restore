@@ -1,17 +1,17 @@
 @interface TSCH3DSimpleBlurShadowsRenderer
-- (TSCH3DSimpleBlurShadowsRenderer)initWithBlurParametersArray:(id)a3;
-- (float)blurSlackForQuality:(float)a3;
-- (id)shadowsFBOForContext:(id)a3;
-- (void)blurParametersFromQuality:(float)a3 shadowSize:(int64_t *)a4 numPasses:(int64_t *)a5 kernelScale:(float *)a6;
-- (void)protectShadowForQuality:(float)a3 pipeline:(id)a4 renderBlock:(id)a5;
-- (void)unprotectShadowInSession:(id)a3;
+- (TSCH3DSimpleBlurShadowsRenderer)initWithBlurParametersArray:(id)array;
+- (float)blurSlackForQuality:(float)quality;
+- (id)shadowsFBOForContext:(id)context;
+- (void)blurParametersFromQuality:(float)quality shadowSize:(int64_t *)size numPasses:(int64_t *)passes kernelScale:(float *)scale;
+- (void)protectShadowForQuality:(float)quality pipeline:(id)pipeline renderBlock:(id)block;
+- (void)unprotectShadowInSession:(id)session;
 @end
 
 @implementation TSCH3DSimpleBlurShadowsRenderer
 
-- (TSCH3DSimpleBlurShadowsRenderer)initWithBlurParametersArray:(id)a3
+- (TSCH3DSimpleBlurShadowsRenderer)initWithBlurParametersArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   v20.receiver = self;
   v20.super_class = TSCH3DSimpleBlurShadowsRenderer;
   v6 = [(TSCH3DSimpleBlurShadowsRenderer *)&v20 init];
@@ -27,13 +27,13 @@
     v6->_blurFBOResource = v13;
 
     objc_msgSend_setName_(v6->_blurFBOResource, v15, v16, v17, v18, @"Shadows Blur");
-    objc_storeStrong(&v6->_blurParametersArray, a3);
+    objc_storeStrong(&v6->_blurParametersArray, array);
   }
 
   return v6;
 }
 
-- (void)blurParametersFromQuality:(float)a3 shadowSize:(int64_t *)a4 numPasses:(int64_t *)a5 kernelScale:(float *)a6
+- (void)blurParametersFromQuality:(float)quality shadowSize:(int64_t *)size numPasses:(int64_t *)passes kernelScale:(float *)scale
 {
   v132 = self->_blurParametersArray;
   if (!v132)
@@ -60,7 +60,7 @@
   v49 = 0;
   v50 = 1;
   objc_msgSend_quality(v48, v51, v52, v53, v54);
-  while (*&v56 < a3 && v50 < objc_msgSend_count(v132, v55, v56, v57, v58))
+  while (*&v56 < quality && v50 < objc_msgSend_count(v132, v55, v56, v57, v58))
   {
     v59 = v48;
 
@@ -72,7 +72,7 @@
     objc_msgSend_quality(v64, v65, v66, v67, v68);
   }
 
-  if (v49 && (objc_msgSend_quality(v48, v55, v56, v57, v58), *&v56 > a3))
+  if (v49 && (objc_msgSend_quality(v48, v55, v56, v57, v58), *&v56 > quality))
   {
     objc_msgSend_quality(v49, v55, v56, v57, v58);
     v70 = *&v69;
@@ -96,7 +96,7 @@
     v110 = *&v109;
     v114 = objc_msgSend_shadowSize(v49, v111, v109, v112, v113);
     v119 = objc_msgSend_shadowSize(v48, v115, v116, v117, v118);
-    v120 = (a3 - v70) / (v78 - v70);
+    v120 = (quality - v70) / (v78 - v70);
     v121 = (v94 + (v120 * (v99 - v94)));
     v122 = v105 + (v120 * (v110 - v105));
     v123 = (v114 + (v120 * (v119 - v114)));
@@ -109,31 +109,31 @@
     objc_msgSend_kernelScale(v48, v128, v129, v130, v131);
   }
 
-  if (a5)
+  if (passes)
   {
-    *a5 = v121;
+    *passes = v121;
   }
 
-  if (a6)
+  if (scale)
   {
-    *a6 = v122;
+    *scale = v122;
   }
 
-  if (a4)
+  if (size)
   {
-    *a4 = v123;
+    *size = v123;
   }
 }
 
-- (void)protectShadowForQuality:(float)a3 pipeline:(id)a4 renderBlock:(id)a5
+- (void)protectShadowForQuality:(float)quality pipeline:(id)pipeline renderBlock:(id)block
 {
   v156[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v145 = a5;
+  pipelineCopy = pipeline;
+  blockCopy = block;
   v154 = 0;
   v153 = 0;
   v152 = 0;
-  *&v9 = a3;
+  *&v9 = quality;
   objc_msgSend_blurParametersFromQuality_shadowSize_numPasses_kernelScale_(self, v10, v9, v11, v12, &v152, &v154, &v153);
   v17 = v152;
   if (v152 <= 0)
@@ -152,11 +152,11 @@
   v34 = self->_shadowsSize.var0.var0 == v17 && self->_shadowsSize.var1.var0 == v17;
   self->_shadowsSize.var0.var0 = v17;
   self->_shadowsSize.var1.var0 = v17;
-  v35 = objc_msgSend_context(v8, v13, v14, v15, v16);
+  v35 = objc_msgSend_context(pipelineCopy, v13, v14, v15, v16);
   v41 = objc_msgSend_shadowsFBOForContext_(self, v36, v37, v38, v39, v35);
-  if (v34 && (objc_msgSend_session(v8, v40, v42, v43, v44), v45 = objc_claimAutoreleasedReturnValue(), v50 = objc_msgSend_validForSession_(v41, v46, v47, v48, v49, v45), v45, v50))
+  if (v34 && (objc_msgSend_session(pipelineCopy, v40, v42, v43, v44), v45 = objc_claimAutoreleasedReturnValue(), v50 = objc_msgSend_validForSession_(v41, v46, v47, v48, v49, v45), v45, v50))
   {
-    v51 = objc_msgSend_session(v8, v40, v42, v43, v44);
+    v51 = objc_msgSend_session(pipelineCopy, v40, v42, v43, v44);
     objc_msgSend_protectInSession_unprotectOnFail_(v41, v52, v53, v54, v55, v51, 1);
   }
 
@@ -197,7 +197,7 @@
     {
       v66 = v65;
       v67 = *v64;
-      v68 = objc_msgSend_session(v8, v60, v61, v62, v63);
+      v68 = objc_msgSend_session(pipelineCopy, v60, v61, v62, v63);
       objc_msgSend_protectInSession_unprotectOnFail_(v67, v69, v70, v71, v72, v68, 0);
 
       v65 = 0;
@@ -205,11 +205,11 @@
     }
 
     while ((v66 & 1) != 0);
-    v145[2](v145, v155);
+    blockCopy[2](blockCopy, v155);
     if (v154)
     {
-      v77 = objc_msgSend_processor(v8, v73, v74, v75, v76);
-      v82 = objc_msgSend_session(v8, v78, v79, v80, v81);
+      v77 = objc_msgSend_processor(pipelineCopy, v73, v74, v75, v76);
+      v82 = objc_msgSend_session(pipelineCopy, v78, v79, v80, v81);
       v83 = &v153;
       v84 = vld1_dup_f32(v83);
       v146 = COERCE_DOUBLE(vdiv_f32(v84, vcvt_f32_s32(v151)));
@@ -248,7 +248,7 @@
       objc_msgSend_discardBuffers(v57, v107, v108, v109, v110);
     }
 
-    v126 = objc_msgSend_session(v8, v73, v74, v75, v76);
+    v126 = objc_msgSend_session(pipelineCopy, v73, v74, v75, v76);
     objc_msgSend_protectInSession_unprotectOnFail_(v41, v127, v128, v129, v130, v126, 1);
 
     v135 = &v155;
@@ -257,7 +257,7 @@
     {
       v137 = v136;
       v138 = *v135;
-      v139 = objc_msgSend_session(v8, v131, v132, v133, v134);
+      v139 = objc_msgSend_session(pipelineCopy, v131, v132, v133, v134);
       objc_msgSend_unprotectInSession_clearOnFailProtection_(v138, v140, v141, v142, v143, v139, 0);
 
       v136 = 0;
@@ -271,17 +271,17 @@
   }
 }
 
-- (void)unprotectShadowInSession:(id)a3
+- (void)unprotectShadowInSession:(id)session
 {
-  v41 = a3;
-  v8 = objc_msgSend_context(v41, v4, v5, v6, v7);
+  sessionCopy = session;
+  v8 = objc_msgSend_context(sessionCopy, v4, v5, v6, v7);
   v13 = objc_msgSend_shadowsFBOForContext_(self, v9, v10, v11, v12, v8);
-  if (objc_msgSend_isProtectedInSession_(v13, v14, v15, v16, v17, v41))
+  if (objc_msgSend_isProtectedInSession_(v13, v14, v15, v16, v17, sessionCopy))
   {
-    objc_msgSend_unprotectInSession_clearOnFailProtection_(v13, v18, v19, v20, v21, v41, 1);
+    objc_msgSend_unprotectInSession_clearOnFailProtection_(v13, v18, v19, v20, v21, sessionCopy, 1);
   }
 
-  else if ((objc_msgSend_hasFailed(v41, v18, v19, v20, v21) & 1) == 0)
+  else if ((objc_msgSend_hasFailed(sessionCopy, v18, v19, v20, v21) & 1) == 0)
   {
     v26 = MEMORY[0x277D81150];
     v27 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, v23, v24, v25, "[TSCH3DSimpleBlurShadowsRenderer unprotectShadowInSession:]");
@@ -292,9 +292,9 @@
   }
 }
 
-- (id)shadowsFBOForContext:(id)a3
+- (id)shadowsFBOForContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (self->_shadowsSize.var0.var0 < 1 || self->_shadowsSize.var1.var0 <= 0)
   {
     v9 = MEMORY[0x277D81150];
@@ -310,16 +310,16 @@
   v27 = 1;
   *v28 = 0;
   v29 = 1;
-  v24 = objc_msgSend_framebufferWithSize_attributes_textureAttributes_resource_(v5, v4, v6, v7, v8, &self->_shadowsSize, &v26, &v26, self->_shadowsFBOResource);
+  v24 = objc_msgSend_framebufferWithSize_attributes_textureAttributes_resource_(contextCopy, v4, v6, v7, v8, &self->_shadowsSize, &v26, &v26, self->_shadowsFBOResource);
 
   return v24;
 }
 
-- (float)blurSlackForQuality:(float)a3
+- (float)blurSlackForQuality:(float)quality
 {
   v6 = 0;
   v7 = 0;
-  objc_msgSend_blurParametersFromQuality_shadowSize_numPasses_kernelScale_(self, a2, *&a3, v3, v4, &v6, &v7, 0);
+  objc_msgSend_blurParametersFromQuality_shadowSize_numPasses_kernelScale_(self, a2, *&quality, v3, v4, &v6, &v7, 0);
   return v7 / v6;
 }
 

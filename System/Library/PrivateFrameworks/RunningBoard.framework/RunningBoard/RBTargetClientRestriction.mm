@@ -1,7 +1,7 @@
 @interface RBTargetClientRestriction
-+ (id)domainRestrictionForDictionary:(id)a3 withError:(id *)a4;
-- (BOOL)allowsContext:(id)a3 withError:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)domainRestrictionForDictionary:(id)dictionary withError:(id *)error;
+- (BOOL)allowsContext:(id)context withError:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)_init;
 - (id)description;
 @end
@@ -12,17 +12,17 @@
 {
   v6.receiver = self;
   v6.super_class = RBTargetClientRestriction;
-  v2 = [(RBDomainRestriction *)&v6 _init];
-  v3 = v2;
-  if (v2)
+  _init = [(RBDomainRestriction *)&v6 _init];
+  v3 = _init;
+  if (_init)
   {
-    v4 = v2;
+    v4 = _init;
   }
 
   return v3;
 }
 
-+ (id)domainRestrictionForDictionary:(id)a3 withError:(id *)a4
++ (id)domainRestrictionForDictionary:(id)dictionary withError:(id *)error
 {
   if (domainRestrictionForDictionary_withError__onceToken_353 != -1)
   {
@@ -41,13 +41,13 @@ uint64_t __70__RBTargetClientRestriction_domainRestrictionForDictionary_withErro
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)allowsContext:(id)a3 withError:(id *)a4
+- (BOOL)allowsContext:(id)context withError:(id *)error
 {
-  v5 = a3;
+  contextCopy = context;
   if (_os_feature_enabled_impl())
   {
-    v6 = [v5 targetClientRestriction];
-    v7 = [v6 allowsContext:v5 withError:a4];
+    targetClientRestriction = [contextCopy targetClientRestriction];
+    v7 = [targetClientRestriction allowsContext:contextCopy withError:error];
   }
 
   else
@@ -58,14 +58,14 @@ uint64_t __70__RBTargetClientRestriction_domainRestrictionForDictionary_withErro
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v3 = a3;
+  equalCopy = equal;
   v4 = objc_opt_class();
   v5 = objc_opt_class();
 

@@ -1,28 +1,28 @@
 @interface AXTapticChimesScheduler
 + (id)sharedInstance;
-- (BOOL)_outputTapticChime:(id)a3 atDate:(id)a4 isPreview:(BOOL)a5;
+- (BOOL)_outputTapticChime:(id)chime atDate:(id)date isPreview:(BOOL)preview;
 - (BOOL)canPlayScheduledTapticChime;
 - (BOOL)canPlayTapticChime;
 - (BOOL)canScheduleTapticChimes;
-- (BOOL)isAllowedToChimeAt:(id)a3;
+- (BOOL)isAllowedToChimeAt:(id)at;
 - (BOOL)processIsAllowedToScheduleChimes;
 - (double)_prePlayAudioTimeInterval;
 - (double)_preWakeTimeInterval;
 - (id)_currentDate;
 - (id)_init;
-- (id)nextChimeAssetForStartDate:(id)a3 frequency:(int64_t)a4 soundType:(int64_t)a5 timeIntervalUntilChime:(double *)a6;
-- (unsigned)_createPowerAssertionWithName:(id)a3 timeout:(double)a4;
+- (id)nextChimeAssetForStartDate:(id)date frequency:(int64_t)frequency soundType:(int64_t)type timeIntervalUntilChime:(double *)chime;
+- (unsigned)_createPowerAssertionWithName:(id)name timeout:(double)timeout;
 - (void)_chimeDidFinishPlaying;
-- (void)_chimeWakeTimerFired:(id)a3;
+- (void)_chimeWakeTimerFired:(id)fired;
 - (void)_clearChimeTimer;
 - (void)_previewChimes;
-- (void)_previewChimesForStartDate:(id)a3 chimeDate:(id)a4 frequency:(int64_t)a5 soundType:(int64_t)a6;
+- (void)_previewChimesForStartDate:(id)date chimeDate:(id)chimeDate frequency:(int64_t)frequency soundType:(int64_t)type;
 - (void)_registerForNotifications;
-- (void)_releasePowerAssertionIfPossible:(unsigned int)a3;
+- (void)_releasePowerAssertionIfPossible:(unsigned int)possible;
 - (void)_scheduleChimeTimer;
-- (void)_tapticChimesStateDidChange:(BOOL)a3;
+- (void)_tapticChimesStateDidChange:(BOOL)change;
 - (void)_unregisterForNotifications;
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4;
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully;
 - (void)dealloc;
 @end
 
@@ -213,15 +213,15 @@ void __32__AXTapticChimesScheduler__init__block_invoke_304(uint64_t a1)
   objc_initWeak(&location, self);
   if (AXProcessIsClockFace())
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v4 = *MEMORY[0x277D81E80];
-    v5 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __52__AXTapticChimesScheduler__registerForNotifications__block_invoke;
     v8[3] = &unk_278BDFDC0;
     objc_copyWeak(&v9, &location);
-    v6 = [v3 addObserverForName:v4 object:0 queue:v5 usingBlock:v8];
+    v6 = [defaultCenter addObserverForName:v4 object:0 queue:mainQueue usingBlock:v8];
 
     objc_destroyWeak(&v9);
   }
@@ -260,15 +260,15 @@ void __52__AXTapticChimesScheduler__registerForNotifications__block_invoke(uint6
   [(AXTapticChimesScheduler *)&v3 dealloc];
 }
 
-- (void)_tapticChimesStateDidChange:(BOOL)a3
+- (void)_tapticChimesStateDidChange:(BOOL)change
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CE7E20] sharedInstance];
-  v6 = [v5 voiceOverTapticChimesEnabled];
+  changeCopy = change;
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  voiceOverTapticChimesEnabled = [mEMORY[0x277CE7E20] voiceOverTapticChimesEnabled];
 
   v7 = AXLogTapticTime();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (voiceOverTapticChimesEnabled)
   {
     if (v8)
     {
@@ -277,7 +277,7 @@ void __52__AXTapticChimesScheduler__registerForNotifications__block_invoke(uint6
     }
 
     [(AXTapticChimesScheduler *)self _registerForNotifications];
-    if (v3)
+    if (changeCopy)
     {
       if ([(AXTapticChimesScheduler *)self canPlayScheduledTapticChime])
       {
@@ -345,18 +345,18 @@ void __52__AXTapticChimesScheduler__registerForNotifications__block_invoke(uint6
     return 0;
   }
 
-  v4 = [MEMORY[0x277CE7E20] sharedInstance];
-  if ([v4 voiceOverTapticChimesEnabled])
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  if ([mEMORY[0x277CE7E20] voiceOverTapticChimesEnabled])
   {
-    v5 = [(AXTapticChimesScheduler *)self canPlayTapticChime];
+    canPlayTapticChime = [(AXTapticChimesScheduler *)self canPlayTapticChime];
   }
 
   else
   {
-    v5 = 0;
+    canPlayTapticChime = 0;
   }
 
-  return v5;
+  return canPlayTapticChime;
 }
 
 - (BOOL)canPlayScheduledTapticChime
@@ -473,8 +473,8 @@ LABEL_8:
   }
 
   v6 = v5;
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v7 dateByAddingTimeInterval:v6];
+  date = [MEMORY[0x277CBEAA8] date];
+  v8 = [date dateByAddingTimeInterval:v6];
 
   v9 = AXLogTapticTime();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -493,20 +493,20 @@ LABEL_8:
 
 - (void)_previewChimes
 {
-  v9 = [(AXTapticChimesScheduler *)self _currentDate];
+  _currentDate = [(AXTapticChimesScheduler *)self _currentDate];
   v3 = MEMORY[0x277CBEAA8];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [v3 dateWithTimeInterval:v4 sinceDate:0.5];
-  v6 = [MEMORY[0x277CE7E20] sharedInstance];
-  v7 = [v6 voiceOverTapticChimesFrequencyEncoding];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [v3 dateWithTimeInterval:date sinceDate:0.5];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  voiceOverTapticChimesFrequencyEncoding = [mEMORY[0x277CE7E20] voiceOverTapticChimesFrequencyEncoding];
   v8 = +[AXTimeOutputPreferences sharedInstance];
-  -[AXTapticChimesScheduler _previewChimesForStartDate:chimeDate:frequency:soundType:](self, "_previewChimesForStartDate:chimeDate:frequency:soundType:", v9, v5, v7, [v8 voiceOverTapticChimesSoundType]);
+  -[AXTapticChimesScheduler _previewChimesForStartDate:chimeDate:frequency:soundType:](self, "_previewChimesForStartDate:chimeDate:frequency:soundType:", _currentDate, v5, voiceOverTapticChimesFrequencyEncoding, [v8 voiceOverTapticChimesSoundType]);
 }
 
-- (void)_previewChimesForStartDate:(id)a3 chimeDate:(id)a4 frequency:(int64_t)a5 soundType:(int64_t)a6
+- (void)_previewChimesForStartDate:(id)date chimeDate:(id)chimeDate frequency:(int64_t)frequency soundType:(int64_t)type
 {
-  v10 = a3;
-  v11 = a4;
+  dateCopy = date;
+  chimeDateCopy = chimeDate;
   if ([(AXTapticChimesScheduler *)self canPlayTapticChime])
   {
     [(AXTapticChimesScheduler *)self _clearChimeTimer];
@@ -518,8 +518,8 @@ LABEL_8:
     }
 
     v14 = 0;
-    v13 = [(AXTapticChimesScheduler *)self nextChimeAssetForStartDate:v10 frequency:a5 soundType:a6 timeIntervalUntilChime:&v14];
-    if (![(AXTapticChimesScheduler *)self _outputTapticChime:v13 atDate:v11 isPreview:1])
+    v13 = [(AXTapticChimesScheduler *)self nextChimeAssetForStartDate:dateCopy frequency:frequency soundType:type timeIntervalUntilChime:&v14];
+    if (![(AXTapticChimesScheduler *)self _outputTapticChime:v13 atDate:chimeDateCopy isPreview:1])
     {
       [(AXTapticChimesScheduler *)self _scheduleChimeTimer];
     }
@@ -529,7 +529,7 @@ LABEL_8:
 - (void)_clearChimeTimer
 {
   *v4 = 138412546;
-  *&v4[4] = *a1;
+  *&v4[4] = *self;
   *&v4[12] = 2112;
   *&v4[14] = a2;
   OUTLINED_FUNCTION_2(&dword_23D6AA000, a2, a3, "failed to reset audio category (%@) due to: %@", *v4, *&v4[8], *&v4[16], *MEMORY[0x277D85DE8]);
@@ -549,12 +549,12 @@ LABEL_8:
       _os_log_impl(&dword_23D6AA000, v3, OS_LOG_TYPE_DEFAULT, "Scheduling chime timer", buf, 2u);
     }
 
-    v4 = [(AXTapticChimesScheduler *)self _currentDate];
+    _currentDate = [(AXTapticChimesScheduler *)self _currentDate];
     v24 = 0.0;
-    v5 = [MEMORY[0x277CE7E20] sharedInstance];
-    v6 = [v5 voiceOverTapticChimesFrequencyEncoding];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverTapticChimesFrequencyEncoding = [mEMORY[0x277CE7E20] voiceOverTapticChimesFrequencyEncoding];
     v7 = +[AXTimeOutputPreferences sharedInstance];
-    v8 = -[AXTapticChimesScheduler nextChimeAssetForStartDate:frequency:soundType:timeIntervalUntilChime:](self, "nextChimeAssetForStartDate:frequency:soundType:timeIntervalUntilChime:", v4, v6, [v7 voiceOverTapticChimesSoundType], &v24);
+    v8 = -[AXTapticChimesScheduler nextChimeAssetForStartDate:frequency:soundType:timeIntervalUntilChime:](self, "nextChimeAssetForStartDate:frequency:soundType:timeIntervalUntilChime:", _currentDate, voiceOverTapticChimesFrequencyEncoding, [v7 voiceOverTapticChimesSoundType], &v24);
     currentChimeAsset = self->_currentChimeAsset;
     self->_currentChimeAsset = v8;
 
@@ -588,26 +588,26 @@ LABEL_8:
 
     [(PCSimpleTimer *)self->_chimeTimer setUserVisible:1];
     v21 = self->_chimeTimer;
-    v22 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [(PCSimpleTimer *)v21 scheduleInRunLoop:v22];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [(PCSimpleTimer *)v21 scheduleInRunLoop:mainRunLoop];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_chimeWakeTimerFired:(id)a3
+- (void)_chimeWakeTimerFired:(id)fired
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
+  firedCopy = fired;
+  date = [MEMORY[0x277CBEAA8] date];
   lastActualWakeTime = self->_lastActualWakeTime;
-  self->_lastActualWakeTime = v5;
+  self->_lastActualWakeTime = date;
 
   v7 = AXLogTapticTime();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = *&v4;
+    v18 = *&firedCopy;
     _os_log_impl(&dword_23D6AA000, v7, OS_LOG_TYPE_DEFAULT, "chime wake timer fired: %@", buf, 0xCu);
   }
 
@@ -651,10 +651,10 @@ void __48__AXTapticChimesScheduler__chimeWakeTimerFired___block_invoke(uint64_t 
   [v3 _releasePowerAssertionIfPossible:*(a1 + 40)];
 }
 
-- (unsigned)_createPowerAssertionWithName:(id)a3 timeout:(double)a4
+- (unsigned)_createPowerAssertionWithName:(id)name timeout:(double)timeout
 {
   v20[5] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  nameCopy = name;
   v19[0] = @"AssertType";
   v19[1] = @"AssertName";
   AssertionID = 0;
@@ -664,8 +664,8 @@ void __48__AXTapticChimesScheduler__chimeWakeTimerFired___block_invoke(uint64_t 
   v20[3] = @"TimeoutActionRelease";
   v19[4] = @"TimeoutSeconds";
   v20[0] = @"PreventUserIdleSystemSleep";
-  v20[1] = v5;
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:a4 + 2.0];
+  v20[1] = nameCopy;
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:timeout + 2.0];
   v20[4] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:5];
 
@@ -678,9 +678,9 @@ void __48__AXTapticChimesScheduler__chimeWakeTimerFired___block_invoke(uint64_t 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v14 = v5;
+    v14 = nameCopy;
     v15 = 2048;
-    v16 = a4;
+    timeoutCopy = timeout;
     v17 = 1024;
     v18 = AssertionID;
     _os_log_impl(&dword_23D6AA000, v8, OS_LOG_TYPE_INFO, "created power assertion with name: %@, timeout: %f, ID: %d", buf, 0x1Cu);
@@ -691,31 +691,31 @@ void __48__AXTapticChimesScheduler__chimeWakeTimerFired___block_invoke(uint64_t 
   return v9;
 }
 
-- (void)_releasePowerAssertionIfPossible:(unsigned int)a3
+- (void)_releasePowerAssertionIfPossible:(unsigned int)possible
 {
   v7 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (possible)
   {
     v4 = AXLogTapticTime();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v6[0] = 67109120;
-      v6[1] = a3;
+      v6[1] = possible;
       _os_log_impl(&dword_23D6AA000, v4, OS_LOG_TYPE_INFO, "releasing power assertion with ID: %d", v6, 8u);
     }
 
-    IOPMAssertionRelease(a3);
+    IOPMAssertionRelease(possible);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_outputTapticChime:(id)a3 atDate:(id)a4 isPreview:(BOOL)a5
+- (BOOL)_outputTapticChime:(id)chime atDate:(id)date isPreview:(BOOL)preview
 {
-  v5 = a5;
+  previewCopy = preview;
   v65 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  chimeCopy = chime;
+  dateCopy = date;
   v10 = AXLogTapticTime();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -735,18 +735,18 @@ void __48__AXTapticChimesScheduler__chimeWakeTimerFired___block_invoke(uint64_t 
     goto LABEL_50;
   }
 
-  v11 = [(AXTapticChimesScheduler *)self isAllowedToChimeAt:v9];
+  v11 = [(AXTapticChimesScheduler *)self isAllowedToChimeAt:dateCopy];
   v12 = AXLogTapticTime();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v62 = v8;
+    v62 = chimeCopy;
     v63 = 2112;
     v64 = @"NO";
     _os_log_impl(&dword_23D6AA000, v12, OS_LOG_TYPE_INFO, "chime starting: %@, isRingerMuted=%@", buf, 0x16u);
   }
 
-  if (!v11 && !v5)
+  if (!v11 && !previewCopy)
   {
     goto LABEL_32;
   }
@@ -758,10 +758,10 @@ void __48__AXTapticChimesScheduler__chimeWakeTimerFired___block_invoke(uint64_t 
     _os_log_impl(&dword_23D6AA000, v13, OS_LOG_TYPE_INFO, "ringer NOT muted, setting up audio session", buf, 2u);
   }
 
-  v14 = [MEMORY[0x277CB83F8] sharedInstance];
-  v15 = [v8 volume];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+  volume = [chimeCopy volume];
   v17 = v16;
-  if (MEMORY[0x23EEE7B90](v15))
+  if (MEMORY[0x23EEE7B90](volume))
   {
     v18 = AXLogTapticTime();
     v17 = 1.0;
@@ -774,14 +774,14 @@ void __48__AXTapticChimesScheduler__chimeWakeTimerFired___block_invoke(uint64_t 
 
   else
   {
-    v20 = [v14 category];
+    category = [mEMORY[0x277CB83F8] category];
     previousAudioSessionCategory = self->_previousAudioSessionCategory;
-    self->_previousAudioSessionCategory = v20;
+    self->_previousAudioSessionCategory = category;
 
     [(AXTapticChimesScheduler *)self _normalizeVolumeIfNecessary];
     v22 = *MEMORY[0x277CB8020];
     v60 = 0;
-    v23 = [v14 setCategory:v22 error:&v60];
+    v23 = [mEMORY[0x277CB83F8] setCategory:v22 error:&v60];
     v18 = v60;
     if ((v23 & 1) == 0)
     {
@@ -796,7 +796,7 @@ void __48__AXTapticChimesScheduler__chimeWakeTimerFired___block_invoke(uint64_t 
   }
 
   v59 = 0;
-  v24 = [v14 setActive:1 error:&v59];
+  v24 = [mEMORY[0x277CB83F8] setActive:1 error:&v59];
   v18 = v59;
   if ((v24 & 1) == 0)
   {
@@ -811,8 +811,8 @@ void __48__AXTapticChimesScheduler__chimeWakeTimerFired___block_invoke(uint64_t 
 
   v25 = objc_alloc(MEMORY[0x277CB83D0]);
   v26 = MEMORY[0x277CBEBC0];
-  v27 = [v8 audioFilePath];
-  v28 = [v26 URLWithString:v27];
+  audioFilePath = [chimeCopy audioFilePath];
+  v28 = [v26 URLWithString:audioFilePath];
   v29 = [v25 initWithContentsOfURL:v28 error:0];
   audioPlayer = self->_audioPlayer;
   self->_audioPlayer = v29;
@@ -823,16 +823,16 @@ void __48__AXTapticChimesScheduler__chimeWakeTimerFired___block_invoke(uint64_t 
   v32 = AXLogTapticTime();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
   {
-    [v9 timeIntervalSinceNow];
+    [dateCopy timeIntervalSinceNow];
     *buf = 134217984;
     v62 = v33;
     _os_log_impl(&dword_23D6AA000, v32, OS_LOG_TYPE_INFO, "[START] prewarming audio player: (%f seconds away)", buf, 0xCu);
   }
 
-  v34 = [(AVAudioPlayer *)self->_audioPlayer prepareToPlay];
+  prepareToPlay = [(AVAudioPlayer *)self->_audioPlayer prepareToPlay];
   v35 = AXLogTapticTime();
   v22 = v35;
-  if (!v34)
+  if (!prepareToPlay)
   {
     if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
     {
@@ -844,13 +844,13 @@ void __48__AXTapticChimesScheduler__chimeWakeTimerFired___block_invoke(uint64_t 
 
   if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
   {
-    [v9 timeIntervalSinceNow];
+    [dateCopy timeIntervalSinceNow];
     *buf = 134217984;
     v62 = v36;
     _os_log_impl(&dword_23D6AA000, v22, OS_LOG_TYPE_INFO, "[END] prewarming audio player: (%f seconds away)", buf, 0xCu);
   }
 
-  [v9 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   if (v37 >= 0.0)
   {
     v38 = v37;
@@ -865,7 +865,7 @@ void __48__AXTapticChimesScheduler__chimeWakeTimerFired___block_invoke(uint64_t 
   if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v62 = v9;
+    v62 = dateCopy;
     v63 = 2048;
     v64 = *&v38;
     _os_log_impl(&dword_23D6AA000, v39, OS_LOG_TYPE_INFO, "[START] schedule chime time: %@ (%f seconds away)", buf, 0x16u);
@@ -892,14 +892,14 @@ LABEL_50:
 
   if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
   {
-    [v9 timeIntervalSinceNow];
+    [dateCopy timeIntervalSinceNow];
     *buf = 134217984;
     v62 = v44;
     _os_log_impl(&dword_23D6AA000, v22, OS_LOG_TYPE_INFO, "[END] schedule chime time: (%f seconds away)", buf, 0xCu);
   }
 
 LABEL_32:
-  [v9 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   if (v45 >= 0.0)
   {
     v46 = v45;
@@ -914,13 +914,13 @@ LABEL_32:
   if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v62 = v9;
+    v62 = dateCopy;
     v63 = 2048;
     v64 = *&v46;
     _os_log_impl(&dword_23D6AA000, v47, OS_LOG_TYPE_INFO, "expected haptic time: %@ (%f seconds away)", buf, 0x16u);
   }
 
-  *buf = [v8 createSystemSoundIDForStartTime:v46];
+  *buf = [chimeCopy createSystemSoundIDForStartTime:v46];
   inPropertyData = 1;
   AudioServicesSetProperty(0x61637421u, 4u, buf, 4u, &inPropertyData);
   inCompletionBlock[0] = MEMORY[0x277D85DD0];
@@ -939,7 +939,7 @@ LABEL_32:
   }
 
   kdebug_trace();
-  objc_storeStrong(&self->_lastActualChimeTime, a4);
+  objc_storeStrong(&self->_lastActualChimeTime, date);
   [(AXTapticChimesScheduler *)self _preWakeTimeInterval];
   self->_audioPlaybackPowerAssertionID = [(AXTapticChimesScheduler *)self _createPowerAssertionWithName:@"chime-playback" timeout:v49 + v49];
   v50 = 1;
@@ -980,23 +980,23 @@ uint64_t __63__AXTapticChimesScheduler__outputTapticChime_atDate_isPreview___blo
   return [*(a1 + 32) _chimeDidFinishPlaying];
 }
 
-- (id)nextChimeAssetForStartDate:(id)a3 frequency:(int64_t)a4 soundType:(int64_t)a5 timeIntervalUntilChime:(double *)a6
+- (id)nextChimeAssetForStartDate:(id)date frequency:(int64_t)frequency soundType:(int64_t)type timeIntervalUntilChime:(double *)chime
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if ((a4 - 2) > 2)
+  dateCopy = date;
+  if ((frequency - 2) > 2)
   {
     v10 = 3600.0;
   }
 
   else
   {
-    v10 = dbl_23D6B3D68[a4 - 2];
+    v10 = dbl_23D6B3D68[frequency - 2];
   }
 
-  v11 = [MEMORY[0x277CBEA80] currentCalendar];
-  v12 = [v11 components:60 fromDate:v9];
-  v13 = [v11 dateFromComponents:v12];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v12 = [currentCalendar components:60 fromDate:dateCopy];
+  v13 = [currentCalendar dateFromComponents:v12];
   v14 = AXLogTapticTime();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -1006,14 +1006,14 @@ uint64_t __63__AXTapticChimesScheduler__outputTapticChime_atDate_isPreview___blo
   }
 
   v15 = [v13 dateByAddingTimeInterval:v10];
-  [v15 timeIntervalSinceDate:v9];
+  [v15 timeIntervalSinceDate:dateCopy];
   if (v16 <= 0.0)
   {
     do
     {
       v17 = [v15 dateByAddingTimeInterval:v10];
 
-      [v17 timeIntervalSinceDate:v9];
+      [v17 timeIntervalSinceDate:dateCopy];
       v15 = v17;
     }
 
@@ -1028,7 +1028,7 @@ uint64_t __63__AXTapticChimesScheduler__outputTapticChime_atDate_isPreview___blo
   v19 = AXLogTapticTime();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    [v17 timeIntervalSinceDate:v9];
+    [v17 timeIntervalSinceDate:dateCopy];
     v30 = 134218240;
     v31 = v20;
     v32 = 2048;
@@ -1036,22 +1036,22 @@ uint64_t __63__AXTapticChimesScheduler__outputTapticChime_atDate_isPreview___blo
     _os_log_impl(&dword_23D6AA000, v19, OS_LOG_TYPE_DEFAULT, "start date to chime date interval: %f seconds (next interval: %f seconds)", &v30, 0x16u);
   }
 
-  v21 = [v11 components:96 fromDate:v17];
-  v22 = [v21 hour];
+  v21 = [currentCalendar components:96 fromDate:v17];
+  hour = [v21 hour];
   if ([v21 minute])
   {
-    [AXTapticChimeAsset quarterHourAssetForType:a5 minute:?];
+    [AXTapticChimeAsset quarterHourAssetForType:type minute:?];
   }
 
   else
   {
-    [AXTapticChimeAsset hourAssetForType:a5 hour:v22];
+    [AXTapticChimeAsset hourAssetForType:type hour:hour];
   }
   v23 = ;
-  [v17 timeIntervalSinceDate:v9];
+  [v17 timeIntervalSinceDate:dateCopy];
   v25 = v24;
   [v23 prePlayTimeInterval];
-  *a6 = v25 - v26;
+  *chime = v25 - v26;
   v27 = AXLogTapticTime();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
@@ -1075,15 +1075,15 @@ uint64_t __63__AXTapticChimesScheduler__outputTapticChime_atDate_isPreview___blo
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully
 {
-  v4 = a4;
+  successfullyCopy = successfully;
   v13 = *MEMORY[0x277D85DE8];
   v6 = AXLogTapticTime();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = @"NO";
-    if (v4)
+    if (successfullyCopy)
     {
       v7 = @"YES";
     }
@@ -1093,7 +1093,7 @@ uint64_t __63__AXTapticChimesScheduler__outputTapticChime_atDate_isPreview___blo
     _os_log_impl(&dword_23D6AA000, v6, OS_LOG_TYPE_INFO, "audioPlayerDidFinishPlaying: successfully: %@", &v11, 0xCu);
   }
 
-  if (!v4)
+  if (!successfullyCopy)
   {
     v8 = AXLogTapticTime();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -1112,32 +1112,32 @@ uint64_t __63__AXTapticChimesScheduler__outputTapticChime_atDate_isPreview___blo
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isAllowedToChimeAt:(id)a3
+- (BOOL)isAllowedToChimeAt:(id)at
 {
   v37[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CE7E20] sharedInstance];
-  v5 = [v4 voiceOverTapticChimesScheduleEnabled];
+  atCopy = at;
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  voiceOverTapticChimesScheduleEnabled = [mEMORY[0x277CE7E20] voiceOverTapticChimesScheduleEnabled];
 
-  if (v5)
+  if (voiceOverTapticChimesScheduleEnabled)
   {
     v6 = objc_alloc(MEMORY[0x277CBEA80]);
     v7 = [v6 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
     v8 = [MEMORY[0x277CBEBB0] timeZoneWithAbbreviation:@"GMT"];
     [v7 setTimeZone:v8];
 
-    v9 = [MEMORY[0x277CE7E20] sharedInstance];
-    v10 = [v9 voiceOverTapticChimesScheduleDateStart];
-    v11 = [v7 components:96 fromDate:v10];
+    mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverTapticChimesScheduleDateStart = [mEMORY[0x277CE7E20]2 voiceOverTapticChimesScheduleDateStart];
+    v11 = [v7 components:96 fromDate:voiceOverTapticChimesScheduleDateStart];
 
-    v12 = [MEMORY[0x277CE7E20] sharedInstance];
-    v13 = [v12 voiceOverTapticChimesScheduleDateEnd];
+    mEMORY[0x277CE7E20]3 = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverTapticChimesScheduleDateEnd = [mEMORY[0x277CE7E20]3 voiceOverTapticChimesScheduleDateEnd];
     v34 = v7;
-    v14 = [v7 components:96 fromDate:v13];
+    v14 = [v7 components:96 fromDate:voiceOverTapticChimesScheduleDateEnd];
 
-    v15 = [MEMORY[0x277CBEA80] currentCalendar];
-    v35 = v3;
-    v16 = [v15 components:96 fromDate:v3];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v35 = atCopy;
+    v16 = [currentCalendar components:96 fromDate:atCopy];
 
     v37[0] = v11;
     v37[1] = v14;
@@ -1150,10 +1150,10 @@ uint64_t __63__AXTapticChimesScheduler__outputTapticChime_atDate_isPreview___blo
     v33 = v14;
     v20 = [v18 indexOfObject:v14];
     LODWORD(v14) = 3600 * [v16 hour];
-    v21 = [v16 minute];
-    v22 = [v16 second];
-    v23 = [v11 hour];
-    v24 = v14 + 60 * v21 + v22 - 3600 * v23 - 60 * [v11 minute];
+    minute = [v16 minute];
+    second = [v16 second];
+    hour = [v11 hour];
+    v24 = v14 + 60 * minute + second - 3600 * hour - 60 * [v11 minute];
     if (v24 >= 0)
     {
       v25 = v24;
@@ -1221,7 +1221,7 @@ LABEL_17:
     v29 = 1;
 LABEL_21:
 
-    v3 = v35;
+    atCopy = v35;
     goto LABEL_22;
   }
 

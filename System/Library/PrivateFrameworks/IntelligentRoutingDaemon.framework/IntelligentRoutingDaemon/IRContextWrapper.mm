@@ -1,36 +1,36 @@
 @interface IRContextWrapper
 - (IRContext)context;
-- (IRContextWrapper)initWithName:(id)a3 andDefaultClassification:(int64_t)a4 andCandidates:(id)a5;
-- (IRContextWrapper)initWithName:(id)a3 defaultClassification:(int64_t)a4;
+- (IRContextWrapper)initWithName:(id)name andDefaultClassification:(int64_t)classification andCandidates:(id)candidates;
+- (IRContextWrapper)initWithName:(id)name defaultClassification:(int64_t)classification;
 - (IRPolicyInspection)policyInspection;
 @end
 
 @implementation IRContextWrapper
 
-- (IRContextWrapper)initWithName:(id)a3 defaultClassification:(int64_t)a4
+- (IRContextWrapper)initWithName:(id)name defaultClassification:(int64_t)classification
 {
-  v7 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = IRContextWrapper;
   v8 = [(IRContextWrapper *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v8->_defaultClassification = a4;
+    v8->_defaultClassification = classification;
     v10 = objc_opt_new();
     candidates = v9->_candidates;
     v9->_candidates = v10;
 
-    objc_storeStrong(&v9->_name, a3);
+    objc_storeStrong(&v9->_name, name);
   }
 
   return v9;
 }
 
-- (IRContextWrapper)initWithName:(id)a3 andDefaultClassification:(int64_t)a4 andCandidates:(id)a5
+- (IRContextWrapper)initWithName:(id)name andDefaultClassification:(int64_t)classification andCandidates:(id)candidates
 {
-  v8 = a5;
-  v9 = [(IRContextWrapper *)self initWithName:a3 defaultClassification:a4];
+  candidatesCopy = candidates;
+  v9 = [(IRContextWrapper *)self initWithName:name defaultClassification:classification];
   v10 = v9;
   if (v9)
   {
@@ -39,7 +39,7 @@
     v12[2] = __72__IRContextWrapper_initWithName_andDefaultClassification_andCandidates___block_invoke;
     v12[3] = &unk_2797E1990;
     v13 = v9;
-    [v8 enumerateObjectsUsingBlock:v12];
+    [candidatesCopy enumerateObjectsUsingBlock:v12];
   }
 
   return v10;

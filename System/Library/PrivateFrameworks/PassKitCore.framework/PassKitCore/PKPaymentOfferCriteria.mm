@@ -1,24 +1,24 @@
 @interface PKPaymentOfferCriteria
-+ (id)paymentOfferCritieraWithDictionary:(id)a3;
-- (BOOL)eligibleWithConfiguration:(id)a3 ineligibleReason:(unint64_t *)a4;
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferCriteria)initWithCoder:(id)a3;
-- (PKPaymentOfferCriteria)initWithDictionary:(id)a3;
++ (id)paymentOfferCritieraWithDictionary:(id)dictionary;
+- (BOOL)eligibleWithConfiguration:(id)configuration ineligibleReason:(unint64_t *)reason;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferCriteria)initWithCoder:(id)coder;
+- (PKPaymentOfferCriteria)initWithDictionary:(id)dictionary;
 - (id)associatedPassUniqueID;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)instoreCapabilitiesString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferCriteria
 
-- (PKPaymentOfferCriteria)initWithDictionary:(id)a3
+- (PKPaymentOfferCriteria)initWithDictionary:(id)dictionary
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v41.receiver = self;
   v41.super_class = PKPaymentOfferCriteria;
   v5 = [(PKPaymentOfferCriteria *)&v41 init];
@@ -27,14 +27,14 @@
     goto LABEL_28;
   }
 
-  v6 = [v4 PKStringForKey:@"identifier"];
+  v6 = [dictionaryCopy PKStringForKey:@"identifier"];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [v4 PKStringForKey:@"type"];
+  v8 = [dictionaryCopy PKStringForKey:@"type"];
   v5->_type = PKPaymentOfferCriteriaTypeFromString(v8);
 
-  v9 = [v4 PKStringForKey:@"eligibility"];
+  v9 = [dictionaryCopy PKStringForKey:@"eligibility"];
   v10 = v9;
   if (v9 == @"eligible")
   {
@@ -67,20 +67,20 @@ LABEL_5:
 LABEL_10:
 
   v5->_eligibility = v12;
-  v16 = [v4 PKStringForKey:@"passSerialNumber"];
+  v16 = [dictionaryCopy PKStringForKey:@"passSerialNumber"];
   passSerialNumber = v5->_passSerialNumber;
   v5->_passSerialNumber = v16;
 
-  v18 = [v4 PKStringForKey:@"passTypeIdentifier"];
+  v18 = [dictionaryCopy PKStringForKey:@"passTypeIdentifier"];
   passTypeIdentifier = v5->_passTypeIdentifier;
   v5->_passTypeIdentifier = v18;
 
-  v20 = [v4 PKStringForKey:@"fpanIdentifier"];
+  v20 = [dictionaryCopy PKStringForKey:@"fpanIdentifier"];
   fpanIdentifier = v5->_fpanIdentifier;
   v5->_fpanIdentifier = v20;
 
   v22 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v23 = [v4 PKSetContaining:objc_opt_class() forKey:@"instoreCapabilities"];
+  v23 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"instoreCapabilities"];
   if ([v23 count])
   {
     v39 = 0u;
@@ -121,7 +121,7 @@ LABEL_10:
     }
   }
 
-  else if ([v4 PKBoolForKey:@"supportsInstore"])
+  else if ([dictionaryCopy PKBoolForKey:@"supportsInstore"])
   {
     [v22 addObject:&unk_1F23B4B68];
     [v22 addObject:&unk_1F23B4B80];
@@ -136,7 +136,7 @@ LABEL_10:
   instoreCapabilities = v5->_instoreCapabilities;
   v5->_instoreCapabilities = v31;
 
-  v33 = [v4 PKDictionaryForKey:@"dynamicContent"];
+  v33 = [dictionaryCopy PKDictionaryForKey:@"dynamicContent"];
   if (v33)
   {
     v34 = [[PKPaymentOfferDynamicContent alloc] initWithDictionary:v33];
@@ -148,13 +148,13 @@ LABEL_28:
   return v5;
 }
 
-+ (id)paymentOfferCritieraWithDictionary:(id)a3
++ (id)paymentOfferCritieraWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 PKStringForKey:@"identifier"];
-  if (v4 && (([v3 PKStringForKey:@"type"], v5 = objc_claimAutoreleasedReturnValue(), v6 = PKPaymentOfferCriteriaTypeFromString(v5), v5, v6 == 1) || v6 == 2) && (v7 = objc_opt_class()) != 0)
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy PKStringForKey:@"identifier"];
+  if (v4 && (([dictionaryCopy PKStringForKey:@"type"], v5 = objc_claimAutoreleasedReturnValue(), v6 = PKPaymentOfferCriteriaTypeFromString(v5), v5, v6 == 1) || v6 == 2) && (v7 = objc_opt_class()) != 0)
   {
-    v8 = [[v7 alloc] initWithDictionary:v3];
+    v8 = [[v7 alloc] initWithDictionary:dictionaryCopy];
   }
 
   else
@@ -186,12 +186,12 @@ LABEL_28:
   return passTypeIdentifier;
 }
 
-- (BOOL)eligibleWithConfiguration:(id)a3 ineligibleReason:(unint64_t *)a4
+- (BOOL)eligibleWithConfiguration:(id)configuration ineligibleReason:(unint64_t *)reason
 {
   eligibility = self->_eligibility;
-  if (a4)
+  if (reason)
   {
-    *a4 = 2 * (eligibility != 1);
+    *reason = 2 * (eligibility != 1);
   }
 
   return eligibility == 1;
@@ -200,8 +200,8 @@ LABEL_28:
 - (id)instoreCapabilitiesString
 {
   v2 = [(NSSet *)self->_instoreCapabilities pk_setByApplyingBlock:&__block_literal_global_29];
-  v3 = [v2 allObjects];
-  v4 = [v3 componentsJoinedByString:{@", "}];
+  allObjects = [v2 allObjects];
+  v4 = [allObjects componentsJoinedByString:{@", "}];
 
   return v4;
 }
@@ -271,29 +271,29 @@ __CFString *__51__PKPaymentOfferCriteria_instoreCapabilitiesString__block_invoke
   [v3 setObject:self->_passSerialNumber forKeyedSubscript:@"passSerialNumber"];
   [v3 setObject:self->_passTypeIdentifier forKeyedSubscript:@"passTypeIdentifier"];
   [v3 setObject:self->_fpanIdentifier forKeyedSubscript:@"fpanIdentifier"];
-  v10 = [(NSSet *)self->_instoreCapabilities allObjects];
-  [v3 setObject:v10 forKeyedSubscript:@"instoreCapabilities"];
+  allObjects = [(NSSet *)self->_instoreCapabilities allObjects];
+  [v3 setObject:allObjects forKeyedSubscript:@"instoreCapabilities"];
 
-  v11 = [(PKPaymentOfferDynamicContent *)self->_dynamicContent dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"dynamicContent"];
+  dictionaryRepresentation = [(PKPaymentOfferDynamicContent *)self->_dynamicContent dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"dynamicContent"];
 
   v12 = [v3 copy];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -532,40 +532,40 @@ __CFString *__37__PKPaymentOfferCriteria_description__block_invoke(uint64_t a1, 
   return v4;
 }
 
-- (PKPaymentOfferCriteria)initWithCoder:(id)a3
+- (PKPaymentOfferCriteria)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = PKPaymentOfferCriteria;
   v5 = [(PKPaymentOfferCriteria *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_eligibility = [v4 decodeIntegerForKey:@"eligibility"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_eligibility = [coderCopy decodeIntegerForKey:@"eligibility"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
     passSerialNumber = v5->_passSerialNumber;
     v5->_passSerialNumber = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
     passTypeIdentifier = v5->_passTypeIdentifier;
     v5->_passTypeIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fpanIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fpanIdentifier"];
     fpanIdentifier = v5->_fpanIdentifier;
     v5->_fpanIdentifier = v12;
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"instoreCapabilities"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"instoreCapabilities"];
     instoreCapabilities = v5->_instoreCapabilities;
     v5->_instoreCapabilities = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dynamicContent"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dynamicContent"];
     dynamicContent = v5->_dynamicContent;
     v5->_dynamicContent = v19;
   }
@@ -573,46 +573,46 @@ __CFString *__37__PKPaymentOfferCriteria_description__block_invoke(uint64_t a1, 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeInteger:self->_eligibility forKey:@"eligibility"];
-  [v5 encodeObject:self->_passSerialNumber forKey:@"passSerialNumber"];
-  [v5 encodeObject:self->_passTypeIdentifier forKey:@"passTypeIdentifier"];
-  [v5 encodeObject:self->_fpanIdentifier forKey:@"fpanIdentifier"];
-  [v5 encodeObject:self->_instoreCapabilities forKey:@"instoreCapabilities"];
-  [v5 encodeObject:self->_dynamicContent forKey:@"dynamicContent"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeInteger:self->_eligibility forKey:@"eligibility"];
+  [coderCopy encodeObject:self->_passSerialNumber forKey:@"passSerialNumber"];
+  [coderCopy encodeObject:self->_passTypeIdentifier forKey:@"passTypeIdentifier"];
+  [coderCopy encodeObject:self->_fpanIdentifier forKey:@"fpanIdentifier"];
+  [coderCopy encodeObject:self->_instoreCapabilities forKey:@"instoreCapabilities"];
+  [coderCopy encodeObject:self->_dynamicContent forKey:@"dynamicContent"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   v5[3] = self->_type;
   v5[2] = self->_eligibility;
-  v8 = [(NSString *)self->_passSerialNumber copyWithZone:a3];
+  v8 = [(NSString *)self->_passSerialNumber copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_passTypeIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_passTypeIdentifier copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
-  v12 = [(NSString *)self->_fpanIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_fpanIdentifier copyWithZone:zone];
   v13 = v5[6];
   v5[6] = v12;
 
-  v14 = [(NSSet *)self->_instoreCapabilities copyWithZone:a3];
+  v14 = [(NSSet *)self->_instoreCapabilities copyWithZone:zone];
   v15 = v5[7];
   v5[7] = v14;
 
-  v16 = [(PKPaymentOfferDynamicContent *)self->_dynamicContent copyWithZone:a3];
+  v16 = [(PKPaymentOfferDynamicContent *)self->_dynamicContent copyWithZone:zone];
   v17 = v5[8];
   v5[8] = v16;
 

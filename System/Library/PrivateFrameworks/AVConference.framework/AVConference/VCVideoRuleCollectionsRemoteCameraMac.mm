@@ -1,12 +1,12 @@
 @interface VCVideoRuleCollectionsRemoteCameraMac
 - (BOOL)initSupportedPayloads;
-- (VCVideoRuleCollectionsRemoteCameraMac)initWithHardwareSettings:(id)a3;
+- (VCVideoRuleCollectionsRemoteCameraMac)initWithHardwareSettings:(id)settings;
 - (void)initSupportedPayloads;
 @end
 
 @implementation VCVideoRuleCollectionsRemoteCameraMac
 
-- (VCVideoRuleCollectionsRemoteCameraMac)initWithHardwareSettings:(id)a3
+- (VCVideoRuleCollectionsRemoteCameraMac)initWithHardwareSettings:(id)settings
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_hardwareSettings = a3;
+    v4->_hardwareSettings = settings;
     if (![(VCVideoRuleCollectionsRemoteCameraMac *)v4 initSupportedPayloads]|| ![(VCVideoRuleCollectionsRemoteCamera *)v5 setupHEVCRules])
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -68,7 +68,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v2 = 136315650;
-  v3 = a1;
+  selfCopy = self;
   OUTLINED_FUNCTION_0();
   v4 = 47;
   _os_log_error_impl(&dword_1DB56E000, v1, OS_LOG_TYPE_ERROR, " [%s] %s:%d No supportedPayloads for this hardware", &v2, 0x1Cu);

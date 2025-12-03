@@ -1,24 +1,24 @@
 @interface BLSHDiagnosticsHostPeer
-- (BLSHDiagnosticsHostPeer)initWithFlipbookDiagnosticsProvider:(id)a3 peer:(id)a4;
+- (BLSHDiagnosticsHostPeer)initWithFlipbookDiagnosticsProvider:(id)provider peer:(id)peer;
 - (BOOL)isValid;
 - (NSString)description;
-- (id)_lock_validateHostFrame:(id)a3 source:(id)a4;
+- (id)_lock_validateHostFrame:(id)frame source:(id)source;
 - (id)allFlipbookFrames;
 - (id)frameOnGlassNow;
 - (id)frameOnGlassWhenFlipbookLastCancelled;
-- (id)hostFrameForUUID:(id)a3;
+- (id)hostFrameForUUID:(id)d;
 - (void)allFlipbookFrames;
 - (void)dealloc;
-- (void)genericSurfaceForFrameUUID:(id)a3 reply:(id)a4 name:(id)a5 surfaceFromFrame:(id)a6;
+- (void)genericSurfaceForFrameUUID:(id)d reply:(id)reply name:(id)name surfaceFromFrame:(id)frame;
 - (void)invalidate;
 @end
 
 @implementation BLSHDiagnosticsHostPeer
 
-- (BLSHDiagnosticsHostPeer)initWithFlipbookDiagnosticsProvider:(id)a3 peer:(id)a4
+- (BLSHDiagnosticsHostPeer)initWithFlipbookDiagnosticsProvider:(id)provider peer:(id)peer
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  peerCopy = peer;
   v14.receiver = self;
   v14.super_class = BLSHDiagnosticsHostPeer;
   v9 = [(BLSHDiagnosticsHostPeer *)&v14 init];
@@ -27,16 +27,16 @@
   {
     v9->_lock._os_unfair_lock_opaque = 0;
     v9->_entitlements = 0;
-    v11 = [v8 remoteProcess];
-    if ([v11 hasEntitlement:@"com.apple.backlight.captureFrameOnGlass"])
+    remoteProcess = [peerCopy remoteProcess];
+    if ([remoteProcess hasEntitlement:@"com.apple.backlight.captureFrameOnGlass"])
     {
       v10->_entitlements |= 1uLL;
     }
 
-    objc_storeStrong(&v10->_flipbookDiagnosticsProvider, a3);
+    objc_storeStrong(&v10->_flipbookDiagnosticsProvider, provider);
     v10->_valid = 1;
-    v12 = [v8 remoteProcess];
-    v10->_clientPid = [v12 pid];
+    remoteProcess2 = [peerCopy remoteProcess];
+    v10->_clientPid = [remoteProcess2 pid];
   }
 
   return v10;
@@ -45,7 +45,7 @@
 - (void)dealloc
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = *(a1 + 48);
+  v1 = *(self + 48);
   OUTLINED_FUNCTION_2();
   v6 = 1024;
   v7 = v2;
@@ -57,9 +57,9 @@
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendInt:self->_clientPid withName:@"clientPID"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 - (BOOL)isValid
@@ -84,7 +84,7 @@
 {
   if ([(BLSHDiagnosticsHostPeer *)self isValid])
   {
-    v3 = [(BLSFlipbookDiagnosticsProviding *)self->_flipbookDiagnosticsProvider allFlipbookFrames];
+    allFlipbookFrames = [(BLSFlipbookDiagnosticsProviding *)self->_flipbookDiagnosticsProvider allFlipbookFrames];
     v4 = bls_diagnostics_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
@@ -100,19 +100,19 @@
       [BLSHDiagnosticsHostPeer allFlipbookFrames];
     }
 
-    v3 = 0;
+    allFlipbookFrames = 0;
   }
 
-  v5 = [v3 bs_mapNoNulls:&__block_literal_global_10];
+  v5 = [allFlipbookFrames bs_mapNoNulls:&__block_literal_global_10];
 
   return v5;
 }
 
 - (id)frameOnGlassNow
 {
-  v3 = [(BLSFlipbookDiagnosticsProviding *)self->_flipbookDiagnosticsProvider frameOnGlassNow];
+  frameOnGlassNow = [(BLSFlipbookDiagnosticsProviding *)self->_flipbookDiagnosticsProvider frameOnGlassNow];
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(BLSHDiagnosticsHostPeer *)self _lock_validateHostFrame:v3 source:@"frameOnGlassNow"];
+  v4 = [(BLSHDiagnosticsHostPeer *)self _lock_validateHostFrame:frameOnGlassNow source:@"frameOnGlassNow"];
 
   lock_cachedFrameOnGlassNow = self->_lock_cachedFrameOnGlassNow;
   self->_lock_cachedFrameOnGlassNow = v4;
@@ -126,9 +126,9 @@
 
 - (id)frameOnGlassWhenFlipbookLastCancelled
 {
-  v3 = [(BLSFlipbookDiagnosticsProviding *)self->_flipbookDiagnosticsProvider frameOnGlassWhenFlipbookLastCancelled];
+  frameOnGlassWhenFlipbookLastCancelled = [(BLSFlipbookDiagnosticsProviding *)self->_flipbookDiagnosticsProvider frameOnGlassWhenFlipbookLastCancelled];
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(BLSHDiagnosticsHostPeer *)self _lock_validateHostFrame:v3 source:@"frameOnGlassWhenFlipbookLastCancelled"];
+  v4 = [(BLSHDiagnosticsHostPeer *)self _lock_validateHostFrame:frameOnGlassWhenFlipbookLastCancelled source:@"frameOnGlassWhenFlipbookLastCancelled"];
 
   lock_cachedLastCancelledFrame = self->_lock_cachedLastCancelledFrame;
   self->_lock_cachedLastCancelledFrame = v4;
@@ -140,11 +140,11 @@
   return v7;
 }
 
-- (id)_lock_validateHostFrame:(id)a3 source:(id)a4
+- (id)_lock_validateHostFrame:(id)frame source:(id)source
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  frameCopy = frame;
+  sourceCopy = source;
   if (!self->_valid)
   {
     v12 = bls_diagnostics_log();
@@ -156,16 +156,16 @@
     goto LABEL_9;
   }
 
-  v9 = v7;
+  v9 = frameCopy;
   if (!v9)
   {
     v12 = bls_diagnostics_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v18 = 134218242;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2114;
-      v21 = v8;
+      v21 = sourceCopy;
       _os_log_impl(&dword_21FD11000, v12, OS_LOG_TYPE_INFO, "%p %{public}@ — no host frame", &v18, 0x16u);
     }
 
@@ -175,26 +175,26 @@ LABEL_9:
   }
 
   v10 = v9;
-  v11 = [v9 uuid];
-  if (!v11)
+  uuid = [v9 uuid];
+  if (!uuid)
   {
     [BLSHDiagnosticsHostPeer _lock_validateHostFrame:a2 source:self];
   }
 
-  v12 = v11;
+  v12 = uuid;
   v13 = bls_diagnostics_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [v12 UUIDString];
-    v17 = [v10 bls_shortLoggingString];
+    uUIDString = [v12 UUIDString];
+    bls_shortLoggingString = [v10 bls_shortLoggingString];
     v18 = 134218754;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2114;
-    v21 = v8;
+    v21 = sourceCopy;
     v22 = 2114;
-    v23 = v16;
+    v23 = uUIDString;
     v24 = 2114;
-    v25 = v17;
+    v25 = bls_shortLoggingString;
     _os_log_debug_impl(&dword_21FD11000, v13, OS_LOG_TYPE_DEBUG, "%p %{public}@ uuid:%{public}@ frame:%{public}@", &v18, 0x2Au);
   }
 
@@ -204,25 +204,25 @@ LABEL_10:
   return v10;
 }
 
-- (void)genericSurfaceForFrameUUID:(id)a3 reply:(id)a4 name:(id)a5 surfaceFromFrame:(id)a6
+- (void)genericSurfaceForFrameUUID:(id)d reply:(id)reply name:(id)name surfaceFromFrame:(id)frame
 {
   v69 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
+  dCopy = d;
+  nameCopy = name;
+  frameCopy = frame;
+  replyCopy = reply;
   if (![(BLSHDiagnosticsHostPeer *)self isValid])
   {
     v20 = bls_diagnostics_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v42 = [v10 UUIDString];
+      uUIDString = [dCopy UUIDString];
       *buf = 134218498;
-      v58 = self;
+      selfCopy4 = self;
       v59 = 2114;
-      v60 = v11;
+      v60 = nameCopy;
       v61 = 2114;
-      v62 = v42;
+      v62 = uUIDString;
       _os_log_error_impl(&dword_21FD11000, v20, OS_LOG_TYPE_ERROR, "%p %{public}@, use after invalidation uuid:%{public}@", buf, 0x20u);
     }
 
@@ -230,27 +230,27 @@ LABEL_10:
     v22 = *MEMORY[0x277CF0828];
     v49 = *MEMORY[0x277CCA450];
     v23 = MEMORY[0x277CCACA8];
-    v14 = [v10 UUIDString];
-    v24 = [v23 stringWithFormat:@"%@: use after invalidation uuid:%@", v11, v14];
-    v50 = v24;
-    v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
-    v19 = [v21 errorWithDomain:v22 code:5 userInfo:v25];
+    uUIDString2 = [dCopy UUIDString];
+    uUIDString4 = [v23 stringWithFormat:@"%@: use after invalidation uuid:%@", nameCopy, uUIDString2];
+    v50 = uUIDString4;
+    bls_loggingString2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
+    v19 = [v21 errorWithDomain:v22 code:5 userInfo:bls_loggingString2];
     goto LABEL_20;
   }
 
-  v14 = [(BLSHDiagnosticsHostPeer *)self hostFrameForUUID:v10];
-  if (!v14)
+  uUIDString2 = [(BLSHDiagnosticsHostPeer *)self hostFrameForUUID:dCopy];
+  if (!uUIDString2)
   {
     v26 = bls_diagnostics_log();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v44 = [v10 UUIDString];
+      uUIDString3 = [dCopy UUIDString];
       *buf = 134218498;
-      v58 = self;
+      selfCopy4 = self;
       v59 = 2114;
-      v60 = v11;
+      v60 = nameCopy;
       v61 = 2114;
-      v62 = v44;
+      v62 = uUIDString3;
       _os_log_error_impl(&dword_21FD11000, v26, OS_LOG_TYPE_ERROR, "%p %{public}@ invalid (not found) frame uuid, not match any known frame(s) uuid:%{public}@", buf, 0x20u);
     }
 
@@ -258,30 +258,30 @@ LABEL_10:
     v28 = *MEMORY[0x277CF0828];
     v51 = *MEMORY[0x277CCA450];
     v29 = MEMORY[0x277CCACA8];
-    v24 = [v10 UUIDString];
-    v25 = [v29 stringWithFormat:@"%@: unknown UUID, does not match any known frame(s) uuid:%@", v11, v24];
-    v52 = v25;
+    uUIDString4 = [dCopy UUIDString];
+    bls_loggingString2 = [v29 stringWithFormat:@"%@: unknown UUID, does not match any known frame(s) uuid:%@", nameCopy, uUIDString4];
+    v52 = bls_loggingString2;
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
     v19 = [v27 errorWithDomain:v28 code:31 userInfo:v30];
     goto LABEL_19;
   }
 
-  v15 = v12[2](v12, v14);
+  v15 = frameCopy[2](frameCopy, uUIDString2);
   if (!v15)
   {
     v31 = bls_diagnostics_log();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
-      v32 = [v10 UUIDString];
-      v33 = [v14 bls_loggingString];
+      uUIDString5 = [dCopy UUIDString];
+      bls_loggingString = [uUIDString2 bls_loggingString];
       *buf = 134218754;
-      v58 = self;
+      selfCopy4 = self;
       v59 = 2114;
-      v60 = v11;
+      v60 = nameCopy;
       v61 = 2114;
-      v62 = v32;
+      v62 = uUIDString5;
       v63 = 2114;
-      v64 = v33;
+      v64 = bls_loggingString;
       _os_log_impl(&dword_21FD11000, v31, OS_LOG_TYPE_INFO, "%p %{public}@ nil surface for frame with uuid:%{public}@ frame:%{public}@", buf, 0x2Au);
     }
 
@@ -289,9 +289,9 @@ LABEL_10:
     v34 = *MEMORY[0x277CF0828];
     v53 = *MEMORY[0x277CCA450];
     v35 = MEMORY[0x277CCACA8];
-    v24 = [v10 UUIDString];
-    v25 = [v14 bls_loggingString];
-    v30 = [v35 stringWithFormat:@"%@: no saved surface (either never exited flipbook or has already been purged) uuid:%@ frame:%@", v11, v24, v25];
+    uUIDString4 = [dCopy UUIDString];
+    bls_loggingString2 = [uUIDString2 bls_loggingString];
+    v30 = [v35 stringWithFormat:@"%@: no saved surface (either never exited flipbook or has already been purged) uuid:%@ frame:%@", nameCopy, uUIDString4, bls_loggingString2];
     v54 = v30;
     v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
     v37 = v46;
@@ -305,20 +305,20 @@ LABEL_10:
   v18 = bls_diagnostics_log();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v48 = [v10 UUIDString];
-    v43 = [v14 bls_loggingString];
+    uUIDString6 = [dCopy UUIDString];
+    bls_loggingString3 = [uUIDString2 bls_loggingString];
     *buf = 134219266;
-    v58 = self;
+    selfCopy4 = self;
     v59 = 2114;
-    v60 = v11;
+    v60 = nameCopy;
     v61 = 2114;
     v62 = v16;
     v63 = 2114;
     v64 = XPCObject;
     v65 = 2114;
-    v66 = v48;
+    v66 = uUIDString6;
     v67 = 2114;
-    v68 = v43;
+    v68 = bls_loggingString3;
     _os_log_debug_impl(&dword_21FD11000, v18, OS_LOG_TYPE_DEBUG, "%p %{public}@ surface:%{public}@ surfaceXPC:%{public}@ uuid:%{public}@ frame:%{public}@", buf, 0x3Eu);
   }
 
@@ -328,9 +328,9 @@ LABEL_10:
     v45 = *MEMORY[0x277CF0828];
     v55 = *MEMORY[0x277CCA450];
     v40 = MEMORY[0x277CCACA8];
-    v24 = [v10 UUIDString];
-    v25 = [v14 bls_loggingString];
-    v30 = [v40 stringWithFormat:@"%@: failed to create xpc object for uuid:%@ surface:%@ frame:%@", v11, v24, v16, v25];
+    uUIDString4 = [dCopy UUIDString];
+    bls_loggingString2 = [uUIDString2 bls_loggingString];
+    v30 = [v40 stringWithFormat:@"%@: failed to create xpc object for uuid:%@ surface:%@ frame:%@", nameCopy, uUIDString4, v16, bls_loggingString2];
     v56 = v30;
     v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
     v38 = v45;
@@ -349,19 +349,19 @@ LABEL_20:
   v19 = 0;
 LABEL_21:
 
-  v13[2](v13, XPCObject, v19);
+  replyCopy[2](replyCopy, XPCObject, v19);
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (id)hostFrameForUUID:(id)a3
+- (id)hostFrameForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   p_lock_cachedFrameOnGlassNow = &self->_lock_cachedFrameOnGlassNow;
-  v6 = [(BLSDiagnosticFlipbookFrame *)self->_lock_cachedFrameOnGlassNow uuid];
-  v7 = [v4 isEqual:v6];
+  uuid = [(BLSDiagnosticFlipbookFrame *)self->_lock_cachedFrameOnGlassNow uuid];
+  v7 = [dCopy isEqual:uuid];
 
-  if (v7 & 1) != 0 || (p_lock_cachedFrameOnGlassNow = &self->_lock_cachedLastCancelledFrame, -[BLSDiagnosticFlipbookFrame uuid](self->_lock_cachedLastCancelledFrame, "uuid"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v4 isEqual:v8], v8, (v9))
+  if (v7 & 1) != 0 || (p_lock_cachedFrameOnGlassNow = &self->_lock_cachedLastCancelledFrame, -[BLSDiagnosticFlipbookFrame uuid](self->_lock_cachedLastCancelledFrame, "uuid"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [dCopy isEqual:v8], v8, (v9))
   {
     v10 = *p_lock_cachedFrameOnGlassNow;
     os_unfair_lock_unlock(&self->_lock);
@@ -376,7 +376,7 @@ LABEL_21:
     os_unfair_lock_unlock(&self->_lock);
   }
 
-  v10 = [(BLSFlipbookDiagnosticsProviding *)self->_flipbookDiagnosticsProvider frameWithUUID:v4];
+  v10 = [(BLSFlipbookDiagnosticsProviding *)self->_flipbookDiagnosticsProvider frameWithUUID:dCopy];
 LABEL_7:
 
   return v10;
@@ -387,7 +387,7 @@ LABEL_7:
   v11 = *MEMORY[0x277D85DE8];
   v5 = [a2 bls_boundedDescriptionWithTransformer:&__block_literal_global_3];
   v7 = 134218242;
-  v8 = a1;
+  selfCopy = self;
   v9 = 2114;
   v10 = v5;
   _os_log_debug_impl(&dword_21FD11000, a3, OS_LOG_TYPE_DEBUG, "%p allFlipbookFrames:%{public}@", &v7, 0x16u);

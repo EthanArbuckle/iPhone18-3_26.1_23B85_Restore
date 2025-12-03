@@ -1,43 +1,43 @@
 @interface TILiveConversionCandidate
-- (BOOL)isEqual:(id)a3;
-- (TILiveConversionCandidate)initWithCandidateResultSetCoder:(id)a3;
-- (TILiveConversionCandidate)initWithCoder:(id)a3;
-- (TILiveConversionCandidate)initWithSurface:(id)a3 input:(id)a4 candidate:(id)a5 mecabraCandidatePointerValue:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TILiveConversionCandidate)initWithCandidateResultSetCoder:(id)coder;
+- (TILiveConversionCandidate)initWithCoder:(id)coder;
+- (TILiveConversionCandidate)initWithSurface:(id)surface input:(id)input candidate:(id)candidate mecabraCandidatePointerValue:(id)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)label;
 - (unint64_t)hash;
-- (void)encodeWithCandidateResultSetCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCandidateResultSetCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TILiveConversionCandidate
 
-- (void)encodeWithCandidateResultSetCoder:(id)a3
+- (void)encodeWithCandidateResultSetCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TILiveConversionCandidate;
-  v4 = a3;
-  [(TIMecabraCandidate *)&v5 encodeWithCandidateResultSetCoder:v4];
-  [v4 encodeString:{self->_candidate, v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_inlineCandidate];
-  [v4 encodeBool:self->_partialCandidate];
+  coderCopy = coder;
+  [(TIMecabraCandidate *)&v5 encodeWithCandidateResultSetCoder:coderCopy];
+  [coderCopy encodeString:{self->_candidate, v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_inlineCandidate];
+  [coderCopy encodeBool:self->_partialCandidate];
 }
 
-- (TILiveConversionCandidate)initWithCandidateResultSetCoder:(id)a3
+- (TILiveConversionCandidate)initWithCandidateResultSetCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = TILiveConversionCandidate;
-  v5 = [(TIMecabraCandidate *)&v10 initWithCandidateResultSetCoder:v4];
+  v5 = [(TIMecabraCandidate *)&v10 initWithCandidateResultSetCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeString];
-    v7 = [v6 copy];
+    decodeString = [coderCopy decodeString];
+    v7 = [decodeString copy];
     candidate = v5->_candidate;
     v5->_candidate = v7;
 
-    v5->_inlineCandidate = [v4 decodeBool];
-    v5->_partialCandidate = [v4 decodeBool];
+    v5->_inlineCandidate = [coderCopy decodeBool];
+    v5->_partialCandidate = [coderCopy decodeBool];
   }
 
   return v5;
@@ -51,20 +51,20 @@
   return [(NSString *)self->_candidate hash]+ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v12.receiver = self, v12.super_class = TILiveConversionCandidate, [(TIMecabraCandidate *)&v12 isEqual:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v12.receiver = self, v12.super_class = TILiveConversionCandidate, [(TIMecabraCandidate *)&v12 isEqual:equalCopy]))
   {
-    v5 = v4;
-    v6 = [(TILiveConversionCandidate *)self label];
-    v7 = [v5 label];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    label = [(TILiveConversionCandidate *)self label];
+    label2 = [v5 label];
+    if ([label isEqualToString:label2])
     {
-      v8 = [(TILiveConversionCandidate *)self candidate];
-      v9 = [v5 candidate];
-      v10 = [v8 isEqualToString:v9];
+      candidate = [(TILiveConversionCandidate *)self candidate];
+      candidate2 = [v5 candidate];
+      v10 = [candidate isEqualToString:candidate2];
     }
 
     else
@@ -81,26 +81,26 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = TILiveConversionCandidate;
-  [(TIMecabraCandidate *)&v6 encodeWithCoder:v4];
+  [(TIMecabraCandidate *)&v6 encodeWithCoder:coderCopy];
   candidate = self->_candidate;
   if (candidate)
   {
-    [v4 encodeObject:candidate forKey:@"candidate-liveconversion"];
+    [coderCopy encodeObject:candidate forKey:@"candidate-liveconversion"];
   }
 
   if (self->_inlineCandidate)
   {
-    [v4 encodeBool:1 forKey:@"inlinecandidate-liveconversion"];
+    [coderCopy encodeBool:1 forKey:@"inlinecandidate-liveconversion"];
   }
 
   if (self->_partialCandidate)
   {
-    [v4 encodeBool:1 forKey:@"partialcandidate-liveconversion"];
+    [coderCopy encodeBool:1 forKey:@"partialcandidate-liveconversion"];
   }
 }
 
@@ -108,39 +108,39 @@
 {
   v4.receiver = self;
   v4.super_class = TILiveConversionCandidate;
-  v2 = [(TIMecabraCandidate *)&v4 candidate];
+  candidate = [(TIMecabraCandidate *)&v4 candidate];
 
-  return v2;
+  return candidate;
 }
 
-- (TILiveConversionCandidate)initWithCoder:(id)a3
+- (TILiveConversionCandidate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = TILiveConversionCandidate;
-  v5 = [(TIMecabraCandidate *)&v10 initWithCoder:v4];
+  v5 = [(TIMecabraCandidate *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"candidate-liveconversion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"candidate-liveconversion"];
     v7 = [v6 copy];
     candidate = v5->_candidate;
     v5->_candidate = v7;
 
-    v5->_inlineCandidate = [v4 decodeBoolForKey:@"inlinecandidate-liveconversion"];
-    v5->_partialCandidate = [v4 decodeBoolForKey:@"partialcandidate-liveconversion"];
+    v5->_inlineCandidate = [coderCopy decodeBoolForKey:@"inlinecandidate-liveconversion"];
+    v5->_partialCandidate = [coderCopy decodeBoolForKey:@"partialcandidate-liveconversion"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = TILiveConversionCandidate;
   v5 = [(TIMecabraCandidate *)&v9 copyWithZone:?];
   if (v5)
   {
-    v6 = [(NSString *)self->_candidate copyWithZone:a3];
+    v6 = [(NSString *)self->_candidate copyWithZone:zone];
     v7 = v5[31];
     v5[31] = v6;
 
@@ -151,16 +151,16 @@
   return v5;
 }
 
-- (TILiveConversionCandidate)initWithSurface:(id)a3 input:(id)a4 candidate:(id)a5 mecabraCandidatePointerValue:(id)a6
+- (TILiveConversionCandidate)initWithSurface:(id)surface input:(id)input candidate:(id)candidate mecabraCandidatePointerValue:(id)value
 {
-  v11 = a5;
+  candidateCopy = candidate;
   v15.receiver = self;
   v15.super_class = TILiveConversionCandidate;
-  v12 = [(TIMecabraCandidate *)&v15 initWithSurface:a3 input:a4 mecabraCandidatePointerValue:a6];
+  v12 = [(TIMecabraCandidate *)&v15 initWithSurface:surface input:input mecabraCandidatePointerValue:value];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_candidate, a5);
+    objc_storeStrong(&v12->_candidate, candidate);
   }
 
   return v13;

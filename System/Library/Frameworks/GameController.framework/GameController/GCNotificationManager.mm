@@ -1,8 +1,8 @@
 @interface GCNotificationManager
 + (id)sharedInstance;
 - (GCNotificationManager)init;
-- (void)requestNotification:(id)a3 withReply:(id)a4;
-- (void)requestNotificationImpl:(id)a3 withReply:(id)a4;
+- (void)requestNotification:(id)notification withReply:(id)reply;
+- (void)requestNotificationImpl:(id)impl withReply:(id)reply;
 @end
 
 @implementation GCNotificationManager
@@ -36,16 +36,16 @@ void __39__GCNotificationManager_sharedInstance__block_invoke()
     IsGameControllerDaemon = currentProcessIsGameControllerDaemon();
     if (IsGameControllerDaemon)
     {
-      v4 = [objc_alloc(MEMORY[0x1E6983308]) initWithBundleIdentifier:@"com.apple.GameControllerNotifications"];
+      currentNotificationCenter = [objc_alloc(MEMORY[0x1E6983308]) initWithBundleIdentifier:@"com.apple.GameControllerNotifications"];
     }
 
     else
     {
-      v4 = [MEMORY[0x1E6983308] currentNotificationCenter];
+      currentNotificationCenter = [MEMORY[0x1E6983308] currentNotificationCenter];
     }
 
     userNotificationCenter = v2->_userNotificationCenter;
-    v2->_userNotificationCenter = v4;
+    v2->_userNotificationCenter = currentNotificationCenter;
 
     v2->_isPermissionGranted = IsGameControllerDaemon;
   }
@@ -53,41 +53,41 @@ void __39__GCNotificationManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)requestNotificationImpl:(id)a3 withReply:(id)a4
+- (void)requestNotificationImpl:(id)impl withReply:(id)reply
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  implCopy = impl;
   if (self->_isPermissionGranted)
   {
     v7 = MEMORY[0x1E6983220];
-    v8 = a4;
+    replyCopy = reply;
     v9 = objc_alloc_init(v7);
-    v10 = [v6 title];
-    [v9 setTitle:v10];
+    title = [implCopy title];
+    [v9 setTitle:title];
 
-    v11 = [v6 body];
-    [v9 setBody:v11];
+    body = [implCopy body];
+    [v9 setBody:body];
 
     [v9 setShouldIgnoreDoNotDisturb:1];
-    v12 = [v6 threadID];
-    [v9 setThreadIdentifier:v12];
+    threadID = [implCopy threadID];
+    [v9 setThreadIdentifier:threadID];
 
     v13 = MEMORY[0x1E6983278];
-    v14 = [v6 categoryID];
-    v15 = [v13 categoryWithIdentifier:v14 actions:MEMORY[0x1E695E0F0] intentIdentifiers:MEMORY[0x1E695E0F0] options:0];
+    categoryID = [implCopy categoryID];
+    v15 = [v13 categoryWithIdentifier:categoryID actions:MEMORY[0x1E695E0F0] intentIdentifiers:MEMORY[0x1E695E0F0] options:0];
 
-    v16 = [(UNUserNotificationCenter *)self->_userNotificationCenter notificationCategories];
-    v17 = [v16 setByAddingObject:v15];
+    notificationCategories = [(UNUserNotificationCenter *)self->_userNotificationCenter notificationCategories];
+    v17 = [notificationCategories setByAddingObject:v15];
     [(UNUserNotificationCenter *)self->_userNotificationCenter setNotificationCategories:v17];
 
-    v18 = [v6 categoryID];
-    [v9 setCategoryIdentifier:v18];
+    categoryID2 = [implCopy categoryID];
+    [v9 setCategoryIdentifier:categoryID2];
 
     v19 = MEMORY[0x1E6983298];
-    v20 = [v6 categoryID];
-    v21 = [v19 requestWithIdentifier:v20 content:v9 trigger:0];
+    categoryID3 = [implCopy categoryID];
+    v21 = [v19 requestWithIdentifier:categoryID3 content:v9 trigger:0];
 
-    [(UNUserNotificationCenter *)self->_userNotificationCenter addNotificationRequest:v21 withCompletionHandler:v8];
+    [(UNUserNotificationCenter *)self->_userNotificationCenter addNotificationRequest:v21 withCompletionHandler:replyCopy];
   }
 
   else
@@ -96,22 +96,22 @@ void __39__GCNotificationManager_sharedInstance__block_invoke()
     v28 = *MEMORY[0x1E696A578];
     v29[0] = @"Permission not granted";
     v23 = MEMORY[0x1E695DF20];
-    v24 = a4;
+    replyCopy2 = reply;
     v25 = [v23 dictionaryWithObjects:v29 forKeys:&v28 count:1];
     v26 = [v22 errorWithDomain:@"GCNotificationManager" code:0 userInfo:v25];
-    (*(a4 + 2))(v24, v26);
+    (*(reply + 2))(replyCopy2, v26);
   }
 
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestNotification:(id)a3 withReply:(id)a4
+- (void)requestNotification:(id)notification withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  replyCopy = reply;
   if (self->_isPermissionGranted)
   {
-    [(GCNotificationManager *)self requestNotificationImpl:v6 withReply:v7];
+    [(GCNotificationManager *)self requestNotificationImpl:notificationCopy withReply:replyCopy];
   }
 
   else
@@ -122,9 +122,9 @@ void __39__GCNotificationManager_sharedInstance__block_invoke()
     v9[1] = 3221225472;
     v9[2] = __55__GCNotificationManager_requestNotification_withReply___block_invoke;
     v9[3] = &unk_1E841A8F8;
-    v11 = v7;
+    v11 = replyCopy;
     objc_copyWeak(&v12, &location);
-    v10 = v6;
+    v10 = notificationCopy;
     [(UNUserNotificationCenter *)userNotificationCenter requestAuthorizationWithOptions:7 completionHandler:v9];
 
     objc_destroyWeak(&v12);

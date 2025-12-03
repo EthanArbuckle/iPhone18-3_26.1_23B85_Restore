@@ -3,24 +3,24 @@
 - (BOOL)isDualSIMEnabled;
 - (BOOL)isInactiveSOSEnabled;
 - (BOOL)isRadioModuleDead;
-- (BOOL)isSIMPresentForSlot:(int64_t)a3;
+- (BOOL)isSIMPresentForSlot:(int64_t)slot;
 - (BOOL)isUsingStewieConnection;
 - (BOOL)isUsingStewieConnectionOverInternet;
 - (BOOL)isUsingStewieForSOS;
 - (BOOL)needsUserIdentificationModule;
 - (STTelephonyStateProvider)init;
 - (STTelephonySubscriptionContext)_newSubscriptionContext;
-- (char)_internalQueue_subscriptionContextForSlot:(char *)a1;
-- (char)_subscriptionContextForCTContext:(char *)a1;
-- (id)carrierBundleInfoForSlot:(int64_t)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mobileEquipmentInfoForSlot:(int64_t)a3;
-- (id)subscriptionInfoForSlot:(int64_t)a3;
+- (char)_internalQueue_subscriptionContextForSlot:(char *)slot;
+- (char)_subscriptionContextForCTContext:(char *)context;
+- (id)carrierBundleInfoForSlot:(int64_t)slot;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mobileEquipmentInfoForSlot:(int64_t)slot;
+- (id)subscriptionInfoForSlot:(int64_t)slot;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (uint64_t)_backgroundQueryQueue_shouldSuppressSOSOnlyWithLimitedServiceForCTContext:(void *)a1;
+- (uint64_t)_backgroundQueryQueue_shouldSuppressSOSOnlyWithLimitedServiceForCTContext:(void *)context;
 - (uint64_t)_internalQueue_isCellularRadioCapabilityActive;
 - (uint64_t)_internalQueue_isUsingStewieForSOS;
 - (uint64_t)_internalQueue_needsUserIdentificationModule;
@@ -28,59 +28,59 @@
 - (uint64_t)_purgeSlot2SubscriptionState;
 - (uint64_t)_serverConnection;
 - (uint64_t)_setSuppressesCellIndicators:(uint64_t)result;
-- (uint64_t)_subscriptionSlotForContext:(uint64_t)a1;
-- (void)_cancelFakeCellularRegistrationForContext:(void *)a1;
-- (void)_cancelFakeRegistrationForContext:(void *)a1;
-- (void)_cancelFakeServiceAndRegistrationForContext:(uint64_t)a1;
-- (void)_cancelFakeServiceForContext:(void *)a1;
-- (void)_handleNetworkReselectionNeeded:(void *)a3 forCTContext:;
+- (uint64_t)_subscriptionSlotForContext:(uint64_t)context;
+- (void)_cancelFakeCellularRegistrationForContext:(void *)context;
+- (void)_cancelFakeRegistrationForContext:(void *)context;
+- (void)_cancelFakeServiceAndRegistrationForContext:(uint64_t)context;
+- (void)_cancelFakeServiceForContext:(void *)context;
+- (void)_handleNetworkReselectionNeeded:(void *)needed forCTContext:;
 - (void)_hasCTContextForSlot:(void *)result;
-- (void)_internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:(uint64_t)a1;
-- (void)_logSubscriptionEvent:(uint64_t)a1;
-- (void)_logSubscriptionEvent:(void *)a3 forCTContext:;
-- (void)_logSubscriptionEvent:(void *)a3 forContext:;
-- (void)_queryCallForwardingStateForCTContext:(uint64_t)a1;
-- (void)_reallySetOperatorName:(void *)a3 inSubscriptionContext:;
-- (void)_serverConnectionDidError:(uint64_t)a1;
-- (void)_setCallForwardingIndicator:(void *)a3 inSubscriptionContext:;
-- (void)_setCellRegistrationStatus:(void *)a3 inSubscriptionContext:;
-- (void)_setOperatorName:(void *)a3 inSubscriptionContext:;
-- (void)_setRegistrationStatus:(void *)a3 inSubscriptionContext:;
-- (void)_setSIMStatus:(void *)a3 inSubscriptionContext:;
-- (void)_stopFakeServiceForContext:(_BYTE *)a1;
-- (void)_stopFakingServiceAndRegistrationForContext:(_BYTE *)a1;
-- (void)_updateCallForwardingIndicatorForContext:(void *)a1;
-- (void)_updateDataConnectedSubscriptionContextForCTContext:(uint64_t)a1;
+- (void)_internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:(uint64_t)slot;
+- (void)_logSubscriptionEvent:(uint64_t)event;
+- (void)_logSubscriptionEvent:(void *)event forCTContext:;
+- (void)_logSubscriptionEvent:(void *)event forContext:;
+- (void)_queryCallForwardingStateForCTContext:(uint64_t)context;
+- (void)_reallySetOperatorName:(void *)name inSubscriptionContext:;
+- (void)_serverConnectionDidError:(uint64_t)error;
+- (void)_setCallForwardingIndicator:(void *)indicator inSubscriptionContext:;
+- (void)_setCellRegistrationStatus:(void *)status inSubscriptionContext:;
+- (void)_setOperatorName:(void *)name inSubscriptionContext:;
+- (void)_setRegistrationStatus:(void *)status inSubscriptionContext:;
+- (void)_setSIMStatus:(void *)status inSubscriptionContext:;
+- (void)_stopFakeServiceForContext:(_BYTE *)context;
+- (void)_stopFakingServiceAndRegistrationForContext:(_BYTE *)context;
+- (void)_updateCallForwardingIndicatorForContext:(void *)context;
+- (void)_updateDataConnectedSubscriptionContextForCTContext:(uint64_t)context;
 - (void)_updateDataConnectionType;
-- (void)_updateDataConnectionTypeForContext:(uint64_t)a1;
-- (void)_updateDualSIMCapabilitySendingNotification:(uint64_t)a1;
-- (void)_updateLastKnownNetworkCountryCodeInContext:(void *)a3 withCTContext:;
-- (void)_updateNetworkCountryCode:(void *)a3 inContext:(void *)a4 withCTContext:;
-- (void)_updateRegistrationNowInSubscriptionContext:(void *)a1;
+- (void)_updateDataConnectionTypeForContext:(uint64_t)context;
+- (void)_updateDualSIMCapabilitySendingNotification:(uint64_t)notification;
+- (void)_updateLastKnownNetworkCountryCodeInContext:(void *)context withCTContext:;
+- (void)_updateNetworkCountryCode:(void *)code inContext:(void *)context withCTContext:;
+- (void)_updateRegistrationNowInSubscriptionContext:(void *)context;
 - (void)_updateState;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)airplaneModeChanged;
-- (void)carrierBundleChange:(id)a3;
-- (void)cellChanged:(id)a3 cell:(id)a4;
-- (void)currentDataSimChanged:(id)a3;
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4;
+- (void)carrierBundleChange:(id)change;
+- (void)cellChanged:(id)changed cell:(id)cell;
+- (void)currentDataSimChanged:(id)changed;
+- (void)dataStatus:(id)status dataStatusInfo:(id)info;
 - (void)dealloc;
-- (void)displayStatusChanged:(id)a3 status:(id)a4;
+- (void)displayStatusChanged:(id)changed status:(id)status;
 - (void)dualSimCapabilityDidChange;
 - (void)invalidate;
-- (void)networkSelected:(id)a3 success:(BOOL)a4 mode:(id)a5;
-- (void)operatorBundleChange:(id)a3;
-- (void)operatorNameChanged:(id)a3 name:(id)a4;
-- (void)rejectCauseCodeChanged:(id)a3 causeCode:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)servingNetworkChanged:(id)a3;
-- (void)setCachedRadioModuleDead:(uint64_t)a1;
-- (void)setStewieState:(uint64_t)a1;
-- (void)signalStrengthChanged:(id)a3 info:(id)a4;
-- (void)simStatusDidChange:(id)a3 status:(id)a4;
-- (void)stateChanged:(id)a3;
+- (void)networkSelected:(id)selected success:(BOOL)success mode:(id)mode;
+- (void)operatorBundleChange:(id)change;
+- (void)operatorNameChanged:(id)changed name:(id)name;
+- (void)rejectCauseCodeChanged:(id)changed causeCode:(id)code;
+- (void)removeObserver:(id)observer;
+- (void)servingNetworkChanged:(id)changed;
+- (void)setCachedRadioModuleDead:(uint64_t)dead;
+- (void)setStewieState:(uint64_t)state;
+- (void)signalStrengthChanged:(id)changed info:(id)info;
+- (void)simStatusDidChange:(id)change status:(id)status;
+- (void)stateChanged:(id)changed;
 - (void)subscriptionInfoDidChange;
-- (void)suppServicesEvent:(id)a3 event:(int)a4 settingsType:(int)a5 data:(id)a6;
+- (void)suppServicesEvent:(id)event event:(int)a4 settingsType:(int)type data:(id)data;
 @end
 
 @implementation STTelephonyStateProvider
@@ -92,9 +92,9 @@
   v2 = [(STTelephonyStateProvider *)&v41 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     Serial = BSDispatchQueueCreateSerial();
     internalQueue = v2->_internalQueue;
@@ -201,26 +201,26 @@
 
 - (void)_updateState
 {
-  if (a1)
+  if (self)
   {
     v2 = 0;
     v6 = 0;
-    if (*(a1 + 19) != 1)
+    if (*(self + 19) != 1)
     {
 LABEL_5:
-      [(STTelephonyStateProvider *)a1 setCachedRadioModuleDead:v2];
-      [(STTelephonyStateProvider *)a1 _updateDualSIMCapabilitySendingNotification:?];
-      v4 = *(a1 + 48);
+      [(STTelephonyStateProvider *)self setCachedRadioModuleDead:v2];
+      [(STTelephonyStateProvider *)self _updateDualSIMCapabilitySendingNotification:?];
+      v4 = *(self + 48);
       v5[0] = MEMORY[0x277D85DD0];
       v5[1] = 3221225472;
       v5[2] = __40__STTelephonyStateProvider__updateState__block_invoke;
       v5[3] = &unk_279D35098;
-      v5[4] = a1;
+      v5[4] = self;
       dispatch_async(v4, v5);
       return;
     }
 
-    [(STTelephonyStateProvider *)a1 _serverConnection];
+    [(STTelephonyStateProvider *)self _serverConnection];
     IsDead = _CTServerConnectionGetRadioModuleIsDead();
     if (!HIDWORD(IsDead))
     {
@@ -228,7 +228,7 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    [(STTelephonyStateProvider *)a1 _serverConnectionDidError:?];
+    [(STTelephonyStateProvider *)self _serverConnectionDidError:?];
   }
 }
 
@@ -240,24 +240,24 @@ void __32__STTelephonyStateProvider_init__block_invoke_4(uint64_t a1)
   [(STTelephonyStateProvider *)v2 setStewieState:v3];
 }
 
-- (void)setStewieState:(uint64_t)a1
+- (void)setStewieState:(uint64_t)state
 {
   v28 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1 && *(a1 + 136) != v4)
+  if (state && *(state + 136) != v4)
   {
-    objc_storeStrong((a1 + 136), a2);
-    v5 = [v4 displayStewieInStatusBar];
-    v6 = [v4 displayInactiveSOSInStatusBar];
-    v24 = [v4 isStewieActiveOverBB];
-    v7 = [v4 isStewieActiveOverInternet];
+    objc_storeStrong((state + 136), a2);
+    displayStewieInStatusBar = [v4 displayStewieInStatusBar];
+    displayInactiveSOSInStatusBar = [v4 displayInactiveSOSInStatusBar];
+    isStewieActiveOverBB = [v4 isStewieActiveOverBB];
+    isStewieActiveOverInternet = [v4 isStewieActiveOverInternet];
     v8 = STSystemStatusLogTelephonyState();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [MEMORY[0x277CCABB0] numberWithBool:v5];
-      v10 = [MEMORY[0x277CCABB0] numberWithBool:v6];
-      v11 = [MEMORY[0x277CCABB0] numberWithBool:v24];
-      v12 = [MEMORY[0x277CCABB0] numberWithBool:v7];
+      v9 = [MEMORY[0x277CCABB0] numberWithBool:displayStewieInStatusBar];
+      v10 = [MEMORY[0x277CCABB0] numberWithBool:displayInactiveSOSInStatusBar];
+      v11 = [MEMORY[0x277CCABB0] numberWithBool:isStewieActiveOverBB];
+      v12 = [MEMORY[0x277CCABB0] numberWithBool:isStewieActiveOverInternet];
       *buf = 138544386;
       *&buf[4] = v9;
       *&buf[12] = 2114;
@@ -271,44 +271,44 @@ void __32__STTelephonyStateProvider_init__block_invoke_4(uint64_t a1)
       _os_log_impl(&dword_26C4AD000, v8, OS_LOG_TYPE_DEFAULT, "[STTelephonyStateProvider] Stewie state changed, displayStewieInStatusBar: %{public}@, displayInactiveSOSInStatusBar: %{public}@, usingStewieConnection: %{public}@, usingStewieConnectionOverInternet: %{public}@, %{public}@", buf, 0x34u);
     }
 
-    if (v5)
+    if (displayStewieInStatusBar)
     {
-      [(STTelephonyStateProvider *)a1 _stopFakingServiceAndRegistrationForContext:?];
-      [(STTelephonyStateProvider *)a1 _stopFakingServiceAndRegistrationForContext:?];
+      [(STTelephonyStateProvider *)state _stopFakingServiceAndRegistrationForContext:?];
+      [(STTelephonyStateProvider *)state _stopFakingServiceAndRegistrationForContext:?];
     }
 
-    v13 = *(a1 + 24);
+    v13 = *(state + 24);
     v14 = [v13 copy];
-    v15 = [v14 setRepresentation];
+    setRepresentation = [v14 setRepresentation];
 
-    v16 = *(a1 + 40);
+    v16 = *(state + 40);
     *buf = MEMORY[0x277D85DD0];
     *&buf[8] = 3221225472;
     *&buf[16] = __119__STTelephonyStateProvider__internalQueue_notifyObserversOfStewieStateChangedToUsingStewieForSOS_isInactiveSOSEnabled___block_invoke;
     v26 = &unk_279D35288;
-    *v27 = v15;
-    *&v27[8] = a1;
-    v27[16] = v5;
-    v27[17] = v6;
-    v17 = v15;
+    *v27 = setRepresentation;
+    *&v27[8] = state;
+    v27[16] = displayStewieInStatusBar;
+    v27[17] = displayInactiveSOSInStatusBar;
+    v17 = setRepresentation;
     dispatch_async(v16, buf);
 
-    v18 = *(a1 + 24);
+    v18 = *(state + 24);
     v19 = [v18 copy];
-    v20 = [v19 setRepresentation];
+    setRepresentation2 = [v19 setRepresentation];
 
-    v21 = *(a1 + 40);
+    v21 = *(state + 40);
     *buf = MEMORY[0x277D85DD0];
     *&buf[8] = 3221225472;
     *&buf[16] = __175__STTelephonyStateProvider__internalQueue_notifyObserversOfStewieStateChangedToUsingStewieForSOS_isInactiveSOSEnabled_usingStewieConnection_usingStewieConnectionOverInternet___block_invoke;
     v26 = &unk_279D352B0;
-    *v27 = v20;
-    *&v27[8] = a1;
-    v27[16] = v5;
-    v27[17] = v6;
-    v27[18] = v24;
-    v27[19] = v7;
-    v22 = v20;
+    *v27 = setRepresentation2;
+    *&v27[8] = state;
+    v27[16] = displayStewieInStatusBar;
+    v27[17] = displayInactiveSOSInStatusBar;
+    v27[18] = isStewieActiveOverBB;
+    v27[19] = isStewieActiveOverInternet;
+    v22 = setRepresentation2;
     dispatch_async(v21, buf);
   }
 
@@ -761,9 +761,9 @@ uint64_t __57__STTelephonyStateProvider_needsUserIdentificationModule__block_inv
   return result;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -779,8 +779,8 @@ uint64_t __57__STTelephonyStateProvider_needsUserIdentificationModule__block_inv
   v7[2] = __40__STTelephonyStateProvider_addObserver___block_invoke;
   v7[3] = &unk_279D34B18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -795,9 +795,9 @@ uint64_t __40__STTelephonyStateProvider_addObserver___block_invoke(uint64_t a1)
   return [v1 addObject:*(a1 + 40)];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -813,8 +813,8 @@ uint64_t __40__STTelephonyStateProvider_addObserver___block_invoke(uint64_t a1)
   v7[2] = __43__STTelephonyStateProvider_removeObserver___block_invoke;
   v7[3] = &unk_279D34B18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -829,7 +829,7 @@ uint64_t __43__STTelephonyStateProvider_removeObserver___block_invoke(uint64_t a
   return [v1 removeObject:*(a1 + 40)];
 }
 
-- (id)subscriptionInfoForSlot:(int64_t)a3
+- (id)subscriptionInfoForSlot:(int64_t)slot
 {
   v7 = 0;
   v8 = &v7;
@@ -853,7 +853,7 @@ uint64_t __43__STTelephonyStateProvider_removeObserver___block_invoke(uint64_t a
   block[3] = &unk_279D34CF8;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = slot;
   dispatch_sync(internalQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -871,13 +871,13 @@ void __52__STTelephonyStateProvider_subscriptionInfoForSlot___block_invoke(uint6
   *(v4 + 40) = v3;
 }
 
-- (char)_internalQueue_subscriptionContextForSlot:(char *)a1
+- (char)_internalQueue_subscriptionContextForSlot:(char *)slot
 {
-  if (!a1)
+  if (!slot)
   {
 LABEL_7:
 
-    return a1;
+    return slot;
   }
 
   if (a2 == 1)
@@ -890,16 +890,16 @@ LABEL_7:
   {
     v3 = 72;
 LABEL_6:
-    a1 = *&a1[v3];
+    slot = *&slot[v3];
     goto LABEL_7;
   }
 
-  a1 = 0;
+  slot = 0;
 
-  return a1;
+  return slot;
 }
 
-- (id)carrierBundleInfoForSlot:(int64_t)a3
+- (id)carrierBundleInfoForSlot:(int64_t)slot
 {
   v7 = 0;
   v8 = &v7;
@@ -923,7 +923,7 @@ LABEL_6:
   block[3] = &unk_279D34CF8;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = slot;
   dispatch_sync(internalQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -941,7 +941,7 @@ void __53__STTelephonyStateProvider_carrierBundleInfoForSlot___block_invoke(uint
   *(v4 + 40) = v3;
 }
 
-- (id)mobileEquipmentInfoForSlot:(int64_t)a3
+- (id)mobileEquipmentInfoForSlot:(int64_t)slot
 {
   v7 = 0;
   v8 = &v7;
@@ -965,7 +965,7 @@ void __53__STTelephonyStateProvider_carrierBundleInfoForSlot___block_invoke(uint
   block[3] = &unk_279D34CF8;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = slot;
   dispatch_sync(internalQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -983,7 +983,7 @@ void __55__STTelephonyStateProvider_mobileEquipmentInfoForSlot___block_invoke(ui
   *(v4 + 40) = v3;
 }
 
-- (BOOL)isSIMPresentForSlot:(int64_t)a3
+- (BOOL)isSIMPresentForSlot:(int64_t)slot
 {
   v7 = 0;
   v8 = &v7;
@@ -1005,7 +1005,7 @@ void __55__STTelephonyStateProvider_mobileEquipmentInfoForSlot___block_invoke(ui
   block[3] = &unk_279D34CF8;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = slot;
   dispatch_sync(internalQueue, block);
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -1070,13 +1070,13 @@ void __38__STTelephonyStateProvider_invalidate__block_invoke(uint64_t a1)
 
 - (uint64_t)_serverConnection
 {
-  result = *(a1 + 8);
+  result = *(self + 8);
   if (!result)
   {
     v3 = *MEMORY[0x277CBECE8];
-    v4 = *(a1 + 48);
+    v4 = *(self + 48);
     result = _CTServerConnectionCreateOnTargetQueue();
-    *(a1 + 8) = result;
+    *(self + 8) = result;
     if (!result)
     {
       v5 = STSystemStatusLogTelephonyState();
@@ -1086,7 +1086,7 @@ void __38__STTelephonyStateProvider_invalidate__block_invoke(uint64_t a1)
         _os_log_error_impl(&dword_26C4AD000, v5, OS_LOG_TYPE_ERROR, "Unable to create CTServerConnection. Telephony state may be incorrect.", v6, 2u);
       }
 
-      return *(a1 + 8);
+      return *(self + 8);
     }
   }
 
@@ -1146,21 +1146,21 @@ void __69__STTelephonyStateProvider__registerForServerConnectionNotifications__b
   dispatch_async(v2, block);
 }
 
-- (void)setCachedRadioModuleDead:(uint64_t)a1
+- (void)setCachedRadioModuleDead:(uint64_t)dead
 {
-  if (a1)
+  if (dead)
   {
     v2 = a2;
-    if (*(a1 + 18) != a2)
+    if (*(dead + 18) != a2)
     {
       v4 = MEMORY[0x277CCACA8];
       v5 = NSStringFromBOOL();
       v6 = [v4 stringWithFormat:@"Setting radio module dead: %@", v5];
-      [(STTelephonyStateProvider *)a1 _logSubscriptionEvent:v6];
+      [(STTelephonyStateProvider *)dead _logSubscriptionEvent:v6];
 
-      *(a1 + 18) = v2;
+      *(dead + 18) = v2;
 
-      [(STTelephonyStateProvider *)a1 _internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:?];
+      [(STTelephonyStateProvider *)dead _internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:?];
     }
   }
 }
@@ -1295,28 +1295,28 @@ void __69__STTelephonyStateProvider__registerForServerConnectionNotifications__b
   }
 }
 
-- (void)_serverConnectionDidError:(uint64_t)a1
+- (void)_serverConnectionDidError:(uint64_t)error
 {
   v15 = *MEMORY[0x277D85DE8];
   v4 = STSystemStatusLogTelephonyState();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    v7 = [MEMORY[0x277CCACC8] callStackReturnAddresses];
+    callStackReturnAddresses = [MEMORY[0x277CCACC8] callStackReturnAddresses];
     *buf = 67109634;
     v10 = a2;
     v11 = 1024;
     v12 = HIDWORD(a2);
     v13 = 2114;
-    v14 = v7;
+    v14 = callStackReturnAddresses;
     _os_log_error_impl(&dword_26C4AD000, v4, OS_LOG_TYPE_ERROR, "CTServerConnection returned error: (%i, %i). Destroying connection. (Callstack: %{public}@)", buf, 0x18u);
   }
 
-  v5 = *(a1 + 32);
+  v5 = *(error + 32);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__STTelephonyStateProvider__serverConnectionDidError___block_invoke;
   block[3] = &unk_279D35098;
-  block[4] = a1;
+  block[4] = error;
   dispatch_async(v5, block);
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -1391,85 +1391,85 @@ void __54__STTelephonyStateProvider__serverConnectionDidError___block_invoke_2(u
   }
 }
 
-- (void)_setCallForwardingIndicator:(void *)a3 inSubscriptionContext:
+- (void)_setCallForwardingIndicator:(void *)indicator inSubscriptionContext:
 {
-  v5 = a3;
-  if (a1)
+  indicatorCopy = indicator;
+  if (self)
   {
-    v11 = v5;
-    v6 = [v5 subscriptionInfo];
-    if ([v6 callForwardingIndicator] != a2)
+    v11 = indicatorCopy;
+    subscriptionInfo = [indicatorCopy subscriptionInfo];
+    if ([subscriptionInfo callForwardingIndicator] != a2)
     {
-      [v6 setCallForwardingIndicator:a2];
+      [subscriptionInfo setCallForwardingIndicator:a2];
       v7 = MEMORY[0x277CCACA8];
       v8 = STTelephonyCallForwardingIndicatorDebugName(a2);
       v9 = [v7 stringWithFormat:@"updated callForwardingIndicator to %@", v8];
-      [(STTelephonyStateProvider *)a1 _logSubscriptionEvent:v9 forContext:v11];
+      [(STTelephonyStateProvider *)self _logSubscriptionEvent:v9 forContext:v11];
 
-      v10 = [(STTelephonyStateProvider *)a1 _subscriptionSlotForContext:v11];
-      [(STTelephonyStateProvider *)a1 _internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:v10];
+      v10 = [(STTelephonyStateProvider *)self _subscriptionSlotForContext:v11];
+      [(STTelephonyStateProvider *)self _internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:v10];
     }
 
-    v5 = v11;
+    indicatorCopy = v11;
   }
 }
 
-- (void)_stopFakeServiceForContext:(_BYTE *)a1
+- (void)_stopFakeServiceForContext:(_BYTE *)context
 {
   v3 = a2;
-  if (a1)
+  if (context)
   {
     v5 = v3;
     [STTelephonyStateProvider _cancelFakeServiceForContext:v3];
-    v4 = [v5 cachedCTOperatorName];
-    if ([v4 length])
+    cachedCTOperatorName = [v5 cachedCTOperatorName];
+    if ([cachedCTOperatorName length])
     {
-      [(STTelephonyStateProvider *)a1 _setOperatorName:v4 inSubscriptionContext:v5];
+      [(STTelephonyStateProvider *)context _setOperatorName:cachedCTOperatorName inSubscriptionContext:v5];
     }
 
     else
     {
-      [(STTelephonyStateProvider *)a1 _reallySetOperatorName:v5 inSubscriptionContext:?];
+      [(STTelephonyStateProvider *)context _reallySetOperatorName:v5 inSubscriptionContext:?];
     }
 
     v3 = v5;
   }
 }
 
-- (void)_setRegistrationStatus:(void *)a3 inSubscriptionContext:
+- (void)_setRegistrationStatus:(void *)status inSubscriptionContext:
 {
-  v13 = a3;
-  v5 = [v13 subscriptionInfo];
-  v6 = [v5 registrationStatus];
-  if (v6 != a2)
+  statusCopy = status;
+  subscriptionInfo = [statusCopy subscriptionInfo];
+  registrationStatus = [subscriptionInfo registrationStatus];
+  if (registrationStatus != a2)
   {
-    v7 = v6;
-    [v5 setRegistrationStatus:a2];
+    v7 = registrationStatus;
+    [subscriptionInfo setRegistrationStatus:a2];
     if (a2 != 1)
     {
-      [v13 setPretendingToSearch:0];
+      [statusCopy setPretendingToSearch:0];
     }
 
     v8 = MEMORY[0x277CCACA8];
     v9 = STTelephonyRegistrationStatusDebugName(v7);
     v10 = STTelephonyRegistrationStatusDebugName(a2);
     v11 = [v8 stringWithFormat:@"registration status changed from %@ to %@", v9, v10];
-    [(STTelephonyStateProvider *)a1 _logSubscriptionEvent:v11 forContext:v13];
+    [(STTelephonyStateProvider *)self _logSubscriptionEvent:v11 forContext:statusCopy];
 
     if (a2 == 2)
     {
-      [(STTelephonyStateProvider *)a1 _updateCallForwardingIndicatorForContext:v13];
+      [(STTelephonyStateProvider *)self _updateCallForwardingIndicatorForContext:statusCopy];
     }
 
     else
     {
-      [(STTelephonyStateProvider *)a1 _setCallForwardingIndicator:v13 inSubscriptionContext:?];
+      [(STTelephonyStateProvider *)self _setCallForwardingIndicator:statusCopy inSubscriptionContext:?];
     }
   }
 
-  [STTelephonyStateProvider _cancelFakeRegistrationForContext:v13];
-  v12 = [(STTelephonyStateProvider *)a1 _subscriptionSlotForContext:v13];
-  [(STTelephonyStateProvider *)a1 _internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:v12];
+  [STTelephonyStateProvider _cancelFakeRegistrationForContext:statusCopy];
+  v12 = [(STTelephonyStateProvider *)self _subscriptionSlotForContext:statusCopy];
+  [(STTelephonyStateProvider *)self _internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:v12];
 }
 
 void __51__STTelephonyStateProvider__airplaneModeDidChange___block_invoke(uint64_t a1)
@@ -1481,34 +1481,34 @@ void __51__STTelephonyStateProvider__airplaneModeDidChange___block_invoke(uint64
   }
 }
 
-- (void)_updateRegistrationNowInSubscriptionContext:(void *)a1
+- (void)_updateRegistrationNowInSubscriptionContext:(void *)context
 {
-  if (a1)
+  if (context)
   {
     v5 = a2;
-    v3 = [v5 cachedCTRegistrationDisplayStatus];
-    v4 = STTelephonyRegistrationStatusForStatus(v3);
-    [(STTelephonyStateProvider *)a1 _setRegistrationStatus:v4 inSubscriptionContext:v5];
+    cachedCTRegistrationDisplayStatus = [v5 cachedCTRegistrationDisplayStatus];
+    v4 = STTelephonyRegistrationStatusForStatus(cachedCTRegistrationDisplayStatus);
+    [(STTelephonyStateProvider *)context _setRegistrationStatus:v4 inSubscriptionContext:v5];
 
     [v5 setPretendingToSearch:0];
   }
 }
 
-- (void)_updateCallForwardingIndicatorForContext:(void *)a1
+- (void)_updateCallForwardingIndicatorForContext:(void *)context
 {
   v3 = a2;
-  v4 = [v3 subscriptionInfo];
-  v5 = [v4 SIMStatus];
-  if ([v5 isEqualToString:*MEMORY[0x277CC3ED8]])
+  subscriptionInfo = [v3 subscriptionInfo];
+  sIMStatus = [subscriptionInfo SIMStatus];
+  if ([sIMStatus isEqualToString:*MEMORY[0x277CC3ED8]])
   {
-    v6 = [(STTelephonyStateProvider *)a1 _internalQueue_needsUserIdentificationModule];
+    _internalQueue_needsUserIdentificationModule = [(STTelephonyStateProvider *)context _internalQueue_needsUserIdentificationModule];
 
-    if (v6)
+    if (_internalQueue_needsUserIdentificationModule)
     {
-      v7 = a1;
+      contextCopy2 = context;
       v8 = 2;
 LABEL_9:
-      [(STTelephonyStateProvider *)v7 _setCallForwardingIndicator:v8 inSubscriptionContext:v3];
+      [(STTelephonyStateProvider *)contextCopy2 _setCallForwardingIndicator:v8 inSubscriptionContext:v3];
       goto LABEL_10;
     }
   }
@@ -1517,19 +1517,19 @@ LABEL_9:
   {
   }
 
-  if ([v4 registrationStatus] != 2 || !objc_msgSend(a1, "hasCellularTelephony"))
+  if ([subscriptionInfo registrationStatus] != 2 || !objc_msgSend(context, "hasCellularTelephony"))
   {
-    v7 = a1;
+    contextCopy2 = context;
     v8 = 0;
     goto LABEL_9;
   }
 
-  v9 = a1[7];
+  v9 = context[7];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__STTelephonyStateProvider__updateCallForwardingIndicatorForContext___block_invoke;
   v10[3] = &unk_279D35500;
-  v10[4] = a1;
+  v10[4] = context;
   v11 = v3;
   [v9 getSubscriptionInfo:v10];
 
@@ -1545,25 +1545,25 @@ void __51__STTelephonyStateProvider__airplaneModeDidChange___block_invoke_2(uint
   }
 }
 
-- (void)_updateDataConnectionTypeForContext:(uint64_t)a1
+- (void)_updateDataConnectionTypeForContext:(uint64_t)context
 {
   v28 = *MEMORY[0x277D85DE8];
   v24 = a2;
-  v3 = *(a1 + 20);
-  isCellularRadioCapability = [(STTelephonyStateProvider *)a1 _internalQueue_isCellularRadioCapabilityActive];
-  v5 = *(a1 + 88);
+  v3 = *(context + 20);
+  isCellularRadioCapability = [(STTelephonyStateProvider *)context _internalQueue_isCellularRadioCapabilityActive];
+  v5 = *(context + 88);
   if (v5 < 0)
   {
-    [(STTelephonyStateProvider *)a1 _serverConnection];
+    [(STTelephonyStateProvider *)context _serverConnection];
     v6 = _CTServerConnectionHideRatIndicator();
     if (HIDWORD(v6))
     {
-      [(STTelephonyStateProvider *)a1 _serverConnectionDidError:v6];
-      *(a1 + 88) = -2;
+      [(STTelephonyStateProvider *)context _serverConnectionDidError:v6];
+      *(context + 88) = -2;
       v10 = STSystemStatusLogTelephonyState();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = STTelephonyCachedBooleanDebugName(*(a1 + 88));
+        v11 = STTelephonyCachedBooleanDebugName(*(context + 88));
         *buf = 138543362;
         v27 = v11;
         _os_log_impl(&dword_26C4AD000, v10, OS_LOG_TYPE_DEFAULT, "STTelephonyStateProvider - queried for _suppressesCellDataIndicator with new state=%{public}@", buf, 0xCu);
@@ -1581,20 +1581,20 @@ void __51__STTelephonyStateProvider__airplaneModeDidChange___block_invoke_2(uint
         _os_log_impl(&dword_26C4AD000, v7, OS_LOG_TYPE_DEFAULT, "STTelephonyStateProvider - queried for _suppressesCellDataIndicator with new state=%{public}@", buf, 0xCu);
       }
 
-      v9 = *(a1 + 88);
+      v9 = *(context + 88);
       if (v9 == -1)
       {
-        *(a1 + 88) = 0;
+        *(context + 88) = 0;
       }
 
       else if (v9)
       {
-        *(a1 + 88) = 0;
-        [(STTelephonyStateProvider *)a1 _updateDataConnectionType];
+        *(context + 88) = 0;
+        [(STTelephonyStateProvider *)context _updateDataConnectionType];
       }
     }
 
-    v5 = *(a1 + 88);
+    v5 = *(context + 88);
   }
 
   v12 = 0;
@@ -1607,14 +1607,14 @@ void __51__STTelephonyStateProvider__airplaneModeDidChange___block_invoke_2(uint
       goto LABEL_26;
     }
 
-    v15 = [v24 modemDataConnectionType];
-    v16 = v15;
-    if ((v15 - 7) <= 3)
+    modemDataConnectionType = [v24 modemDataConnectionType];
+    v16 = modemDataConnectionType;
+    if ((modemDataConnectionType - 7) <= 3)
     {
-      v17 = [v24 carrierBundleInfo];
-      v18 = [v17 LTEConnectionShows4G];
+      carrierBundleInfo = [v24 carrierBundleInfo];
+      lTEConnectionShows4G = [carrierBundleInfo LTEConnectionShows4G];
 
-      if (v18)
+      if (lTEConnectionShows4G)
       {
         v16 = 6;
       }
@@ -1622,7 +1622,7 @@ void __51__STTelephonyStateProvider__airplaneModeDidChange___block_invoke_2(uint
       goto LABEL_21;
     }
 
-    if (v15)
+    if (modemDataConnectionType)
     {
 LABEL_21:
       v19 = [v24 isSatelliteSystem] == 0;
@@ -1655,28 +1655,28 @@ LABEL_26:
     v20 = v13;
   }
 
-  v21 = [v14 subscriptionInfo];
-  [v21 setBootstrap:v20];
-  [v21 setDataConnectionType:v12];
-  [(STTelephonyStateProvider *)a1 _logSubscriptionEvent:v25 forContext:?];
-  v22 = [(STTelephonyStateProvider *)a1 _subscriptionSlotForContext:v25];
-  [(STTelephonyStateProvider *)a1 _internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:v22];
+  subscriptionInfo = [v14 subscriptionInfo];
+  [subscriptionInfo setBootstrap:v20];
+  [subscriptionInfo setDataConnectionType:v12];
+  [(STTelephonyStateProvider *)context _logSubscriptionEvent:v25 forContext:?];
+  v22 = [(STTelephonyStateProvider *)context _subscriptionSlotForContext:v25];
+  [(STTelephonyStateProvider *)context _internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:v22];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateDualSIMCapabilitySendingNotification:(uint64_t)a1
+- (void)_updateDualSIMCapabilitySendingNotification:(uint64_t)notification
 {
-  if (a1)
+  if (notification)
   {
-    v4 = *(a1 + 56);
-    v5 = *(a1 + 48);
+    v4 = *(notification + 56);
+    v5 = *(notification + 48);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __72__STTelephonyStateProvider__updateDualSIMCapabilitySendingNotification___block_invoke;
     block[3] = &unk_279D35440;
     v8 = v4;
-    v9 = a1;
+    notificationCopy = notification;
     v10 = a2;
     v6 = v4;
     dispatch_async(v5, block);
@@ -1707,9 +1707,9 @@ LABEL_26:
       [(STTelephonyStateProvider *)result _cancelFakeServiceAndRegistrationForContext:v2];
     }
 
-    v3 = [STTelephonyStateProvider _newSubscriptionContext];
+    _newSubscriptionContext = [STTelephonyStateProvider _newSubscriptionContext];
     v4 = *(v1 + 64);
-    *(v1 + 64) = v3;
+    *(v1 + 64) = _newSubscriptionContext;
 
     return MEMORY[0x2821F96F8]();
   }
@@ -1728,9 +1728,9 @@ LABEL_26:
       [(STTelephonyStateProvider *)result _cancelFakeServiceAndRegistrationForContext:v2];
     }
 
-    v3 = [STTelephonyStateProvider _newSubscriptionContext];
+    _newSubscriptionContext = [STTelephonyStateProvider _newSubscriptionContext];
     v4 = *(v1 + 72);
-    *(v1 + 72) = v3;
+    *(v1 + 72) = _newSubscriptionContext;
 
     return MEMORY[0x2821F96F8]();
   }
@@ -1738,9 +1738,9 @@ LABEL_26:
   return result;
 }
 
-- (void)_cancelFakeServiceAndRegistrationForContext:(uint64_t)a1
+- (void)_cancelFakeServiceAndRegistrationForContext:(uint64_t)context
 {
-  if (a1)
+  if (context)
   {
     v2 = a2;
     [STTelephonyStateProvider _cancelFakeServiceForContext:v2];
@@ -1749,44 +1749,44 @@ LABEL_26:
   }
 }
 
-- (void)_cancelFakeServiceForContext:(void *)a1
+- (void)_cancelFakeServiceForContext:(void *)context
 {
-  v2 = a1;
-  v1 = [v2 fakeServiceCanceled];
-  if (v1)
+  contextCopy = context;
+  fakeServiceCanceled = [contextCopy fakeServiceCanceled];
+  if (fakeServiceCanceled)
   {
-    *v1 = 1;
-    [v2 setFakeServiceCanceled:0];
+    *fakeServiceCanceled = 1;
+    [contextCopy setFakeServiceCanceled:0];
   }
 }
 
-- (void)_cancelFakeRegistrationForContext:(void *)a1
+- (void)_cancelFakeRegistrationForContext:(void *)context
 {
-  v2 = a1;
-  v1 = [v2 fakeRegistrationCanceled];
-  if (v1)
+  contextCopy = context;
+  fakeRegistrationCanceled = [contextCopy fakeRegistrationCanceled];
+  if (fakeRegistrationCanceled)
   {
-    *v1 = 1;
-    [v2 setFakeRegistrationCanceled:0];
+    *fakeRegistrationCanceled = 1;
+    [contextCopy setFakeRegistrationCanceled:0];
   }
 }
 
-- (void)_cancelFakeCellularRegistrationForContext:(void *)a1
+- (void)_cancelFakeCellularRegistrationForContext:(void *)context
 {
-  v2 = a1;
-  v1 = [v2 fakeCellularRegistrationCanceled];
-  if (v1)
+  contextCopy = context;
+  fakeCellularRegistrationCanceled = [contextCopy fakeCellularRegistrationCanceled];
+  if (fakeCellularRegistrationCanceled)
   {
-    *v1 = 1;
-    [v2 setFakeCellularRegistrationCanceled:0];
+    *fakeCellularRegistrationCanceled = 1;
+    [contextCopy setFakeCellularRegistrationCanceled:0];
   }
 }
 
-- (void)_updateLastKnownNetworkCountryCodeInContext:(void *)a3 withCTContext:
+- (void)_updateLastKnownNetworkCountryCodeInContext:(void *)context withCTContext:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  contextCopy = context;
+  if (self)
   {
     v7 = STSystemStatusLogTelephonyState();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1795,14 +1795,14 @@ LABEL_26:
       _os_log_impl(&dword_26C4AD000, v7, OS_LOG_TYPE_DEFAULT, "STTelephonyStateProvider: requesting copyMobileCountryCode", buf, 2u);
     }
 
-    v8 = *(a1 + 56);
+    v8 = *(self + 56);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __86__STTelephonyStateProvider__updateLastKnownNetworkCountryCodeInContext_withCTContext___block_invoke;
     v9[3] = &unk_279D35238;
-    v9[4] = a1;
+    v9[4] = self;
     v10 = v5;
-    v11 = v6;
+    v11 = contextCopy;
     [v8 copyMobileCountryCode:v11 completion:v9];
   }
 }
@@ -1850,22 +1850,22 @@ void __86__STTelephonyStateProvider__updateLastKnownNetworkCountryCodeInContext_
   }
 }
 
-- (void)_updateNetworkCountryCode:(void *)a3 inContext:(void *)a4 withCTContext:
+- (void)_updateNetworkCountryCode:(void *)code inContext:(void *)context withCTContext:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a1)
+  codeCopy = code;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (self)
   {
-    v11 = *(a1 + 32);
+    v11 = *(self + 32);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __78__STTelephonyStateProvider__updateNetworkCountryCode_inContext_withCTContext___block_invoke;
     v12[3] = &unk_279D35260;
-    v12[4] = a1;
-    v13 = v9;
-    v14 = v8;
+    v12[4] = self;
+    v13 = contextCopy;
+    v14 = codeCopy;
     v15 = v7;
     dispatch_async(v11, v12);
   }
@@ -1906,61 +1906,61 @@ void __78__STTelephonyStateProvider__updateNetworkCountryCode_inContext_withCTCo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (char)_subscriptionContextForCTContext:(char *)a1
+- (char)_subscriptionContextForCTContext:(char *)context
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (context)
   {
-    v5 = [v3 slotID];
-    if (v5 == 1)
+    slotID = [v3 slotID];
+    if (slotID == 1)
     {
       v6 = 64;
       goto LABEL_6;
     }
 
-    if (v5 == 2)
+    if (slotID == 2)
     {
       v6 = 72;
 LABEL_6:
-      a1 = *&a1[v6];
+      context = *&context[v6];
       goto LABEL_8;
     }
 
-    a1 = 0;
+    context = 0;
   }
 
 LABEL_8:
 
-  return a1;
+  return context;
 }
 
-- (void)_internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:(uint64_t)a1
+- (void)_internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:(uint64_t)slot
 {
-  if (a1)
+  if (slot)
   {
-    v4 = *(a1 + 24);
+    v4 = *(slot + 24);
     v5 = [v4 copy];
-    v6 = [v5 setRepresentation];
+    setRepresentation = [v5 setRepresentation];
 
-    v7 = *(a1 + 40);
+    v7 = *(slot + 40);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __90__STTelephonyStateProvider__internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot___block_invoke;
     block[3] = &unk_279D34D48;
-    v10 = v6;
-    v11 = a1;
+    v10 = setRepresentation;
+    slotCopy = slot;
     v12 = a2;
-    v8 = v6;
+    v8 = setRepresentation;
     dispatch_async(v7, block);
   }
 }
 
-- (void)_logSubscriptionEvent:(uint64_t)a1
+- (void)_logSubscriptionEvent:(uint64_t)event
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (event)
   {
     v4 = STSystemStatusLogTelephonyState();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1968,7 +1968,7 @@ LABEL_8:
       v6 = 138543618;
       v7 = v3;
       v8 = 2114;
-      v9 = a1;
+      eventCopy = event;
       _os_log_impl(&dword_26C4AD000, v4, OS_LOG_TYPE_DEFAULT, "[STTelephonyStateProvider]: %{public}@ -- manager: %{public}@", &v6, 0x16u);
     }
   }
@@ -1978,10 +1978,10 @@ LABEL_8:
 
 - (void)_updateDataConnectionType
 {
-  [(STTelephonyStateProvider *)a1 _updateDataConnectionTypeForContext:?];
-  v2 = *(a1 + 72);
+  [(STTelephonyStateProvider *)self _updateDataConnectionTypeForContext:?];
+  v2 = *(self + 72);
 
-  [(STTelephonyStateProvider *)a1 _updateDataConnectionTypeForContext:v2];
+  [(STTelephonyStateProvider *)self _updateDataConnectionTypeForContext:v2];
 }
 
 - (uint64_t)_setSuppressesCellIndicators:(uint64_t)result
@@ -2166,20 +2166,20 @@ void __175__STTelephonyStateProvider__internalQueue_notifyObserversOfStewieState
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_logSubscriptionEvent:(void *)a3 forCTContext:
+- (void)_logSubscriptionEvent:(void *)event forCTContext:
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [a3 slotID];
+    slotID = [event slotID];
     v7 = @"Unknown Slot";
-    if (v6 == 2)
+    if (slotID == 2)
     {
       v7 = @"Slot 2";
     }
 
-    if (v6 == 1)
+    if (slotID == 1)
     {
       v7 = @"Slot 1";
     }
@@ -2193,7 +2193,7 @@ void __175__STTelephonyStateProvider__internalQueue_notifyObserversOfStewieState
       v13 = 2114;
       v14 = v5;
       v15 = 2114;
-      v16 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_26C4AD000, v9, OS_LOG_TYPE_DEFAULT, "[STTelephonyStateProvider %{public}@]: %{public}@ -- manager: %{public}@", &v11, 0x20u);
     }
   }
@@ -2201,11 +2201,11 @@ void __175__STTelephonyStateProvider__internalQueue_notifyObserversOfStewieState
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_logSubscriptionEvent:(void *)a3 forContext:
+- (void)_logSubscriptionEvent:(void *)event forContext:
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = [(STTelephonyStateProvider *)a1 _subscriptionSlotForContext:a3];
+  v6 = [(STTelephonyStateProvider *)self _subscriptionSlotForContext:event];
   v7 = @"Unknown Slot";
   if (v6 == 2)
   {
@@ -2226,30 +2226,30 @@ void __175__STTelephonyStateProvider__internalQueue_notifyObserversOfStewieState
     v13 = 2114;
     v14 = v5;
     v15 = 2114;
-    v16 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_26C4AD000, v9, OS_LOG_TYPE_DEFAULT, "[STTelephonyStateProvider %{public}@]: %{public}@ -- manager: %{public}@", &v11, 0x20u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_subscriptionSlotForContext:(uint64_t)a1
+- (uint64_t)_subscriptionSlotForContext:(uint64_t)context
 {
   v3 = a2;
-  if (a1)
+  if (context)
   {
-    if (*(a1 + 64) == v3)
+    if (*(context + 64) == v3)
     {
-      a1 = 1;
+      context = 1;
     }
 
     else
     {
-      a1 = 2 * (*(a1 + 72) == v3);
+      context = 2 * (*(context + 72) == v3);
     }
   }
 
-  return a1;
+  return context;
 }
 
 - (void)subscriptionInfoDidChange
@@ -2673,46 +2673,46 @@ void __53__STTelephonyStateProvider_subscriptionInfoDidChange__block_invoke_4(ui
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateDataConnectedSubscriptionContextForCTContext:(uint64_t)a1
+- (void)_updateDataConnectedSubscriptionContextForCTContext:(uint64_t)context
 {
   v3 = a2;
-  if (a1)
+  if (context)
   {
     v17 = v3;
     if (v3)
     {
-      v4 = [v3 slotID];
-      if (v4)
+      slotID = [v3 slotID];
+      if (slotID)
       {
-        v5 = v4;
-        if ([(STTelephonyStateProvider *)a1 _hasCTContextForSlot:v4])
+        v5 = slotID;
+        if ([(STTelephonyStateProvider *)context _hasCTContextForSlot:slotID])
         {
           if (v5 == 2)
           {
-            v14 = *(a1 + 64);
-            v15 = *(a1 + 72);
-            v8 = v14;
-            v16 = [v8 subscriptionInfo];
-            [v16 setProvidingDataConnection:0];
+            v14 = *(context + 64);
+            v15 = *(context + 72);
+            subscriptionInfo5 = v14;
+            subscriptionInfo = [subscriptionInfo5 subscriptionInfo];
+            [subscriptionInfo setProvidingDataConnection:0];
 
-            v10 = [v15 subscriptionInfo];
+            subscriptionInfo2 = [v15 subscriptionInfo];
 
-            v11 = v10;
+            v11 = subscriptionInfo2;
             v12 = 1;
             goto LABEL_14;
           }
 
           if (v5 == 1)
           {
-            v6 = *(a1 + 64);
-            v7 = *(a1 + 72);
-            v8 = v6;
-            v9 = [v8 subscriptionInfo];
-            [v9 setProvidingDataConnection:1];
+            v6 = *(context + 64);
+            v7 = *(context + 72);
+            subscriptionInfo5 = v6;
+            subscriptionInfo3 = [subscriptionInfo5 subscriptionInfo];
+            [subscriptionInfo3 setProvidingDataConnection:1];
 
-            v10 = [v7 subscriptionInfo];
+            subscriptionInfo2 = [v7 subscriptionInfo];
 
-            v11 = v10;
+            v11 = subscriptionInfo2;
             v12 = 0;
 LABEL_14:
             [v11 setProvidingDataConnection:v12];
@@ -2723,14 +2723,14 @@ LABEL_14:
       }
     }
 
-    v13 = [*(a1 + 64) subscriptionInfo];
-    [v13 setProvidingDataConnection:0];
+    subscriptionInfo4 = [*(context + 64) subscriptionInfo];
+    [subscriptionInfo4 setProvidingDataConnection:0];
 
-    v8 = [*(a1 + 72) subscriptionInfo];
-    [v8 setProvidingDataConnection:0];
+    subscriptionInfo5 = [*(context + 72) subscriptionInfo];
+    [subscriptionInfo5 setProvidingDataConnection:0];
 LABEL_9:
 
-    [(STTelephonyStateProvider *)a1 _internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:?];
+    [(STTelephonyStateProvider *)context _internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:?];
     v3 = v17;
   }
 }
@@ -2803,54 +2803,54 @@ void __53__STTelephonyStateProvider_subscriptionInfoDidChange__block_invoke_72(u
   }
 }
 
-- (uint64_t)_backgroundQueryQueue_shouldSuppressSOSOnlyWithLimitedServiceForCTContext:(void *)a1
+- (uint64_t)_backgroundQueryQueue_shouldSuppressSOSOnlyWithLimitedServiceForCTContext:(void *)context
 {
-  v3 = a1;
+  contextCopy = context;
   v4 = MEMORY[0x277CC3620];
   v5 = a2;
   v6 = [[v4 alloc] initWithBundleType:6];
   v10 = 0;
-  v7 = [v3 copyCarrierBundleValueWithDefault:v5 key:@"SuppressSOSOnlyWithLimitedService" bundleType:v6 error:&v10];
+  v7 = [contextCopy copyCarrierBundleValueWithDefault:v5 key:@"SuppressSOSOnlyWithLimitedService" bundleType:v6 error:&v10];
 
   if (v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (void)_setSIMStatus:(void *)a3 inSubscriptionContext:
+- (void)_setSIMStatus:(void *)status inSubscriptionContext:
 {
   v11 = a2;
-  if (a1)
+  if (self)
   {
-    v5 = a3;
-    v6 = [v5 subscriptionInfo];
-    v7 = [v6 SIMStatus];
-    if ([v7 isEqualToString:v11])
+    statusCopy = status;
+    subscriptionInfo = [statusCopy subscriptionInfo];
+    sIMStatus = [subscriptionInfo SIMStatus];
+    if ([sIMStatus isEqualToString:v11])
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"SIM status not changing (%@) - firing notification anyway", v7];
-      [(STTelephonyStateProvider *)a1 _logSubscriptionEvent:v8 forContext:v5];
+      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"SIM status not changing (%@) - firing notification anyway", sIMStatus];
+      [(STTelephonyStateProvider *)self _logSubscriptionEvent:v8 forContext:statusCopy];
     }
 
     else
     {
-      [v6 setSIMStatus:v11];
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"SIM status changed from %@ to %@", v7, v11];
-      [(STTelephonyStateProvider *)a1 _logSubscriptionEvent:v9 forContext:v5];
+      [subscriptionInfo setSIMStatus:v11];
+      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"SIM status changed from %@ to %@", sIMStatus, v11];
+      [(STTelephonyStateProvider *)self _logSubscriptionEvent:v9 forContext:statusCopy];
 
-      [(STTelephonyStateProvider *)a1 _updateCallForwardingIndicatorForContext:v5];
+      [(STTelephonyStateProvider *)self _updateCallForwardingIndicatorForContext:statusCopy];
     }
 
-    v10 = [(STTelephonyStateProvider *)a1 _subscriptionSlotForContext:v5];
+    v10 = [(STTelephonyStateProvider *)self _subscriptionSlotForContext:statusCopy];
 
-    [(STTelephonyStateProvider *)a1 _internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:v10];
+    [(STTelephonyStateProvider *)self _internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:v10];
   }
 }
 
@@ -2892,19 +2892,19 @@ void __64__STTelephonyStateProvider__querySubscriptionStateForCTContext___block_
   }
 }
 
-- (void)_handleNetworkReselectionNeeded:(void *)a3 forCTContext:
+- (void)_handleNetworkReselectionNeeded:(void *)needed forCTContext:
 {
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  neededCopy = needed;
+  v6 = neededCopy;
+  if (self)
   {
-    v7 = *(a1 + 32);
+    v7 = *(self + 32);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __73__STTelephonyStateProvider__handleNetworkReselectionNeeded_forCTContext___block_invoke;
     block[3] = &unk_279D35440;
-    block[4] = a1;
-    v9 = v5;
+    block[4] = self;
+    v9 = neededCopy;
     v10 = a2;
     dispatch_async(v7, block);
   }
@@ -2920,18 +2920,18 @@ uint64_t __64__STTelephonyStateProvider__querySubscriptionStateForCTContext___bl
   return result;
 }
 
-- (void)_queryCallForwardingStateForCTContext:(uint64_t)a1
+- (void)_queryCallForwardingStateForCTContext:(uint64_t)context
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (context)
   {
-    v5 = *(a1 + 56);
+    v5 = *(context + 56);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __66__STTelephonyStateProvider__queryCallForwardingStateForCTContext___block_invoke;
     v6[3] = &unk_279D353C8;
-    v6[4] = a1;
+    v6[4] = context;
     v7 = v3;
     [v5 isUnconditionalCallForwardingActive:v7 completion:v6];
   }
@@ -3083,10 +3083,10 @@ void __72__STTelephonyStateProvider__updateDualSIMCapabilitySendingNotification_
   }
 }
 
-- (void)signalStrengthChanged:(id)a3 info:(id)a4
+- (void)signalStrengthChanged:(id)changed info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  infoCopy = info;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -3102,10 +3102,10 @@ void __72__STTelephonyStateProvider__updateDualSIMCapabilitySendingNotification_
   block[2] = __55__STTelephonyStateProvider_signalStrengthChanged_info___block_invoke;
   block[3] = &unk_279D34E60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = changedCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = changedCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -3150,10 +3150,10 @@ void __55__STTelephonyStateProvider_signalStrengthChanged_info___block_invoke(ui
   }
 }
 
-- (void)operatorNameChanged:(id)a3 name:(id)a4
+- (void)operatorNameChanged:(id)changed name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  nameCopy = name;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -3169,10 +3169,10 @@ void __55__STTelephonyStateProvider_signalStrengthChanged_info___block_invoke(ui
   block[2] = __53__STTelephonyStateProvider_operatorNameChanged_name___block_invoke;
   block[3] = &unk_279D34E60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = changedCopy;
+  v13 = nameCopy;
+  v9 = nameCopy;
+  v10 = changedCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -3197,20 +3197,20 @@ void __53__STTelephonyStateProvider_operatorNameChanged_name___block_invoke(uint
   }
 }
 
-- (void)_setOperatorName:(void *)a3 inSubscriptionContext:
+- (void)_setOperatorName:(void *)name inSubscriptionContext:
 {
   v52[10] = *MEMORY[0x277D85DE8];
   v41 = a2;
-  v5 = a3;
-  val = a1;
-  if (!a1)
+  nameCopy = name;
+  val = self;
+  if (!self)
   {
     goto LABEL_41;
   }
 
-  v40 = v5;
-  v42 = [v5 subscriptionInfo];
-  v38 = [v42 operatorName];
+  v40 = nameCopy;
+  subscriptionInfo = [nameCopy subscriptionInfo];
+  operatorName = [subscriptionInfo operatorName];
   v6 = v41;
   v39 = v40;
   obj = [v39 statusBarImages];
@@ -3238,7 +3238,7 @@ void __53__STTelephonyStateProvider_operatorNameChanged_name___block_invoke(uint
       v11 = *(*(&v44 + 1) + 8 * i);
       v12 = [v11 objectForKey:@"CarrierName"];
       v13 = [v11 objectForKey:@"AllowPrefixMatching"];
-      v14 = [v13 BOOLValue];
+      bOOLValue = [v13 BOOLValue];
 
       v15 = v6;
       v16 = v12;
@@ -3264,7 +3264,7 @@ LABEL_17:
 
       v19 = [v17 stringByReplacingOccurrencesOfString:@" " withString:&stru_287CFDAC8];
 
-      if (v14)
+      if (bOOLValue)
       {
         v20 = [v18 rangeOfString:v19 options:1];
       }
@@ -3302,15 +3302,15 @@ LABEL_20:
 
   v23 = v22;
 
-  v24 = v38;
-  if ([v23 isEqualToString:v38])
+  v24 = operatorName;
+  if ([v23 isEqualToString:operatorName])
   {
     [STTelephonyStateProvider _cancelFakeServiceForContext:v39];
   }
 
   else
   {
-    if ([v38 length])
+    if ([operatorName length])
     {
       v25 = [v23 length] != 0;
     }
@@ -3323,24 +3323,24 @@ LABEL_20:
     v26 = val[20];
     isUsingStewieFor = [(STTelephonyStateProvider *)val _internalQueue_isUsingStewieForSOS];
     v28 = [v23 length];
-    v29 = v28 == 0;
+    _internalQueue_needsUserIdentificationModule = v28 == 0;
     if (!v28 && (v26 & 1) == 0 && (isUsingStewieFor & 1) == 0)
     {
-      v30 = [v42 SIMStatus];
-      if ([v30 isEqual:*MEMORY[0x277CC3ED8]])
+      sIMStatus = [subscriptionInfo SIMStatus];
+      if ([sIMStatus isEqual:*MEMORY[0x277CC3ED8]])
       {
-        v29 = [(STTelephonyStateProvider *)val _internalQueue_needsUserIdentificationModule];
+        _internalQueue_needsUserIdentificationModule = [(STTelephonyStateProvider *)val _internalQueue_needsUserIdentificationModule];
       }
 
       else
       {
-        v29 = 0;
+        _internalQueue_needsUserIdentificationModule = 0;
       }
 
-      v24 = v38;
+      v24 = operatorName;
     }
 
-    if ((v25 | v29))
+    if ((v25 | _internalQueue_needsUserIdentificationModule))
     {
       [(STTelephonyStateProvider *)val _reallySetOperatorName:v23 inSubscriptionContext:v39];
     }
@@ -3375,32 +3375,32 @@ LABEL_20:
         objc_destroyWeak(&location);
       }
 
-      v24 = v38;
+      v24 = operatorName;
     }
   }
 
-  v5 = v40;
+  nameCopy = v40;
 LABEL_41:
 
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reallySetOperatorName:(void *)a3 inSubscriptionContext:
+- (void)_reallySetOperatorName:(void *)name inSubscriptionContext:
 {
   v10 = a2;
-  v5 = a3;
-  v6 = [v5 subscriptionInfo];
-  v7 = [v6 operatorName];
-  if (([v10 isEqualToString:v7] & 1) == 0)
+  nameCopy = name;
+  subscriptionInfo = [nameCopy subscriptionInfo];
+  operatorName = [subscriptionInfo operatorName];
+  if (([v10 isEqualToString:operatorName] & 1) == 0)
   {
-    [v6 setOperatorName:v10];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"operatorName changed from '%@' to '%@'", v7, v10];
-    [(STTelephonyStateProvider *)a1 _logSubscriptionEvent:v8 forContext:v5];
+    [subscriptionInfo setOperatorName:v10];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"operatorName changed from '%@' to '%@'", operatorName, v10];
+    [(STTelephonyStateProvider *)self _logSubscriptionEvent:v8 forContext:nameCopy];
   }
 
-  [STTelephonyStateProvider _cancelFakeServiceForContext:v5];
-  v9 = [(STTelephonyStateProvider *)a1 _subscriptionSlotForContext:v5];
-  [(STTelephonyStateProvider *)a1 _internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:v9];
+  [STTelephonyStateProvider _cancelFakeServiceForContext:nameCopy];
+  v9 = [(STTelephonyStateProvider *)self _subscriptionSlotForContext:nameCopy];
+  [(STTelephonyStateProvider *)self _internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:v9];
 }
 
 void __67__STTelephonyStateProvider__startFakeServiceIfNecessaryForContext___block_invoke(uint64_t a1)
@@ -3413,58 +3413,58 @@ void __67__STTelephonyStateProvider__startFakeServiceIfNecessaryForContext___blo
   }
 }
 
-- (void)_stopFakingServiceAndRegistrationForContext:(_BYTE *)a1
+- (void)_stopFakingServiceAndRegistrationForContext:(_BYTE *)context
 {
   v5 = a2;
   if ([v5 isFakingService])
   {
-    [(STTelephonyStateProvider *)a1 _stopFakeServiceForContext:v5];
+    [(STTelephonyStateProvider *)context _stopFakeServiceForContext:v5];
   }
 
   if ([v5 isFakingRegistration])
   {
     [STTelephonyStateProvider _cancelFakeRegistrationForContext:v5];
-    [(STTelephonyStateProvider *)a1 _updateRegistrationNowInSubscriptionContext:v5];
+    [(STTelephonyStateProvider *)context _updateRegistrationNowInSubscriptionContext:v5];
   }
 
   if ([v5 isFakingCellularRegistration])
   {
     [STTelephonyStateProvider _cancelFakeCellularRegistrationForContext:v5];
-    v3 = [v5 cachedCTRegistrationCellularStatus];
-    v4 = STTelephonyRegistrationStatusForStatus(v3);
-    [(STTelephonyStateProvider *)a1 _setCellRegistrationStatus:v4 inSubscriptionContext:v5];
+    cachedCTRegistrationCellularStatus = [v5 cachedCTRegistrationCellularStatus];
+    v4 = STTelephonyRegistrationStatusForStatus(cachedCTRegistrationCellularStatus);
+    [(STTelephonyStateProvider *)context _setCellRegistrationStatus:v4 inSubscriptionContext:v5];
   }
 }
 
-- (void)_setCellRegistrationStatus:(void *)a3 inSubscriptionContext:
+- (void)_setCellRegistrationStatus:(void *)status inSubscriptionContext:
 {
-  v13 = a3;
-  if (a1)
+  statusCopy = status;
+  if (self)
   {
-    v5 = [v13 subscriptionInfo];
-    v6 = [v5 cellularRegistrationStatus];
-    if (v6 != a2)
+    subscriptionInfo = [statusCopy subscriptionInfo];
+    cellularRegistrationStatus = [subscriptionInfo cellularRegistrationStatus];
+    if (cellularRegistrationStatus != a2)
     {
-      v7 = v6;
-      [v5 setCellularRegistrationStatus:a2];
+      v7 = cellularRegistrationStatus;
+      [subscriptionInfo setCellularRegistrationStatus:a2];
       v8 = MEMORY[0x277CCACA8];
       v9 = STTelephonyRegistrationStatusDebugName(v7);
       v10 = STTelephonyRegistrationStatusDebugName(a2);
       v11 = [v8 stringWithFormat:@"cell status changed from %@ to %@", v9, v10];
-      [(STTelephonyStateProvider *)a1 _logSubscriptionEvent:v11 forContext:v13];
+      [(STTelephonyStateProvider *)self _logSubscriptionEvent:v11 forContext:statusCopy];
 
-      v12 = [(STTelephonyStateProvider *)a1 _subscriptionSlotForContext:v13];
-      [(STTelephonyStateProvider *)a1 _internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:v12];
+      v12 = [(STTelephonyStateProvider *)self _subscriptionSlotForContext:statusCopy];
+      [(STTelephonyStateProvider *)self _internalQueue_notifyObserversOfSubscriptionInfoChangeForSlot:v12];
     }
 
-    [STTelephonyStateProvider _cancelFakeCellularRegistrationForContext:v13];
+    [STTelephonyStateProvider _cancelFakeCellularRegistrationForContext:statusCopy];
   }
 }
 
-- (void)displayStatusChanged:(id)a3 status:(id)a4
+- (void)displayStatusChanged:(id)changed status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  statusCopy = status;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -3480,10 +3480,10 @@ void __67__STTelephonyStateProvider__startFakeServiceIfNecessaryForContext___blo
   block[2] = __56__STTelephonyStateProvider_displayStatusChanged_status___block_invoke;
   block[3] = &unk_279D34E60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = changedCopy;
+  v13 = statusCopy;
+  v9 = statusCopy;
+  v10 = changedCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -3792,9 +3792,9 @@ void __80__STTelephonyStateProvider__startFakeCellularRegistrationIfNecessaryFor
   }
 }
 
-- (void)cellChanged:(id)a3 cell:(id)a4
+- (void)cellChanged:(id)changed cell:(id)cell
 {
-  v5 = a3;
+  changedCopy = changed;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -3810,8 +3810,8 @@ void __80__STTelephonyStateProvider__startFakeCellularRegistrationIfNecessaryFor
   v8[2] = __45__STTelephonyStateProvider_cellChanged_cell___block_invoke;
   v8[3] = &unk_279D34B18;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = changedCopy;
+  v7 = changedCopy;
   dispatch_async(internalQueue, v8);
 }
 
@@ -3843,11 +3843,11 @@ LABEL_6:
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)networkSelected:(id)a3 success:(BOOL)a4 mode:(id)a5
+- (void)networkSelected:(id)selected success:(BOOL)success mode:(id)mode
 {
-  if (a4)
+  if (success)
   {
-    [(STTelephonyStateProvider *)self _handleNetworkReselectionNeeded:a3 forCTContext:?];
+    [(STTelephonyStateProvider *)self _handleNetworkReselectionNeeded:selected forCTContext:?];
   }
 }
 
@@ -3883,10 +3883,10 @@ void __73__STTelephonyStateProvider__handleNetworkReselectionNeeded_forCTContext
   }
 }
 
-- (void)rejectCauseCodeChanged:(id)a3 causeCode:(id)a4
+- (void)rejectCauseCodeChanged:(id)changed causeCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  codeCopy = code;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -3902,10 +3902,10 @@ void __73__STTelephonyStateProvider__handleNetworkReselectionNeeded_forCTContext
   block[2] = __61__STTelephonyStateProvider_rejectCauseCodeChanged_causeCode___block_invoke;
   block[3] = &unk_279D34E60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = changedCopy;
+  v13 = codeCopy;
+  v9 = codeCopy;
+  v10 = changedCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -3940,10 +3940,10 @@ void __61__STTelephonyStateProvider_rejectCauseCodeChanged_causeCode___block_inv
   }
 }
 
-- (void)simStatusDidChange:(id)a3 status:(id)a4
+- (void)simStatusDidChange:(id)change status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  statusCopy = status;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -3959,10 +3959,10 @@ void __61__STTelephonyStateProvider_rejectCauseCodeChanged_causeCode___block_inv
   block[2] = __54__STTelephonyStateProvider_simStatusDidChange_status___block_invoke;
   block[3] = &unk_279D34E60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = changeCopy;
+  v13 = statusCopy;
+  v9 = statusCopy;
+  v10 = changeCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -3983,9 +3983,9 @@ void __54__STTelephonyStateProvider_simStatusDidChange_status___block_invoke(uin
   }
 }
 
-- (void)servingNetworkChanged:(id)a3
+- (void)servingNetworkChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -4001,8 +4001,8 @@ void __54__STTelephonyStateProvider_simStatusDidChange_status___block_invoke(uin
   v7[2] = __50__STTelephonyStateProvider_servingNetworkChanged___block_invoke;
   v7[3] = &unk_279D34B18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -4034,9 +4034,9 @@ LABEL_6:
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)currentDataSimChanged:(id)a3
+- (void)currentDataSimChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -4052,8 +4052,8 @@ LABEL_6:
   v7[2] = __50__STTelephonyStateProvider_currentDataSimChanged___block_invoke;
   v7[3] = &unk_279D34B18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -4066,10 +4066,10 @@ void __50__STTelephonyStateProvider_currentDataSimChanged___block_invoke(uint64_
   [(STTelephonyStateProvider *)v2 _updateDataConnectedSubscriptionContextForCTContext:v3];
 }
 
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4
+- (void)dataStatus:(id)status dataStatusInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  infoCopy = info;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -4085,10 +4085,10 @@ void __50__STTelephonyStateProvider_currentDataSimChanged___block_invoke(uint64_
   block[2] = __54__STTelephonyStateProvider_dataStatus_dataStatusInfo___block_invoke;
   block[3] = &unk_279D34E60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = statusCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = statusCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -4153,10 +4153,10 @@ void __54__STTelephonyStateProvider_dataStatus_dataStatusInfo___block_invoke(uin
   }
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
-  v4 = a3;
-  v5 = v4;
+  changeCopy = change;
+  v5 = changeCopy;
   if (self)
   {
     v6 = objc_alloc_init(STMutableTelephonyCarrierBundleInfo);
@@ -4329,10 +4329,10 @@ void __48__STTelephonyStateProvider_carrierBundleChange___block_invoke(uint64_t 
   }
 }
 
-- (void)operatorBundleChange:(id)a3
+- (void)operatorBundleChange:(id)change
 {
-  v4 = a3;
-  [(STTelephonyStateProvider *)self carrierBundleChange:v4];
+  changeCopy = change;
+  [(STTelephonyStateProvider *)self carrierBundleChange:changeCopy];
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -4348,8 +4348,8 @@ void __48__STTelephonyStateProvider_carrierBundleChange___block_invoke(uint64_t 
   v7[2] = __49__STTelephonyStateProvider_operatorBundleChange___block_invoke;
   v7[3] = &unk_279D34B18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -4477,10 +4477,10 @@ void __49__STTelephonyStateProvider_operatorBundleChange___block_invoke_3(uint64
   }
 }
 
-- (void)suppServicesEvent:(id)a3 event:(int)a4 settingsType:(int)a5 data:(id)a6
+- (void)suppServicesEvent:(id)event event:(int)a4 settingsType:(int)type data:(id)data
 {
-  v10 = a3;
-  v11 = a6;
+  eventCopy = event;
+  dataCopy = data;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -4496,12 +4496,12 @@ void __49__STTelephonyStateProvider_operatorBundleChange___block_invoke_3(uint64
   v15[2] = __70__STTelephonyStateProvider_suppServicesEvent_event_settingsType_data___block_invoke;
   v15[3] = &unk_279D34D20;
   v18 = a4;
-  v19 = a5;
+  typeCopy = type;
   v15[4] = self;
-  v16 = v10;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
+  v16 = eventCopy;
+  v17 = dataCopy;
+  v13 = dataCopy;
+  v14 = eventCopy;
   dispatch_async(internalQueue, v15);
 }
 
@@ -4604,7 +4604,7 @@ void __69__STTelephonyStateProvider__updateCallForwardingIndicatorForContext___b
 
   v4 = radiosPreferences;
   [(RadiosPreferences *)v4 refresh];
-  v5 = [(RadiosPreferences *)v4 airplaneMode];
+  airplaneMode = [(RadiosPreferences *)v4 airplaneMode];
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -4619,7 +4619,7 @@ void __69__STTelephonyStateProvider__updateCallForwardingIndicatorForContext___b
   v7[1] = 3221225472;
   v7[2] = __47__STTelephonyStateProvider_airplaneModeChanged__block_invoke;
   v7[3] = &unk_279D35528;
-  v8 = v5;
+  v8 = airplaneMode;
   v7[4] = self;
   dispatch_async(internalQueue, v7);
 }
@@ -4735,9 +4735,9 @@ void __47__STTelephonyStateProvider_airplaneModeChanged__block_invoke(uint64_t a
   }
 }
 
-- (void)stateChanged:(id)a3
+- (void)stateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (self)
   {
     observerQueue = self->_observerQueue;
@@ -4753,17 +4753,17 @@ void __47__STTelephonyStateProvider_airplaneModeChanged__block_invoke(uint64_t a
   v7[2] = __41__STTelephonyStateProvider_stateChanged___block_invoke;
   v7[3] = &unk_279D34B18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(observerQueue, v7);
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STTelephonyStateProvider *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STTelephonyStateProvider *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -4782,9 +4782,9 @@ void __47__STTelephonyStateProvider_airplaneModeChanged__block_invoke(uint64_t a
     slot1SubscriptionContext = 0;
   }
 
-  v7 = [(STTelephonySubscriptionContext *)slot1SubscriptionContext subscriptionInfo];
-  v8 = [v7 succinctDescription];
-  [v4 appendString:v8 withName:@"slot1SubscriptionInfo"];
+  subscriptionInfo = [(STTelephonySubscriptionContext *)slot1SubscriptionContext subscriptionInfo];
+  succinctDescription = [subscriptionInfo succinctDescription];
+  [v4 appendString:succinctDescription withName:@"slot1SubscriptionInfo"];
 
   if (self)
   {
@@ -4796,25 +4796,25 @@ void __47__STTelephonyStateProvider_airplaneModeChanged__block_invoke(uint64_t a
     slot2SubscriptionContext = 0;
   }
 
-  v10 = [(STTelephonySubscriptionContext *)slot2SubscriptionContext subscriptionInfo];
-  v11 = [v10 succinctDescription];
-  [v4 appendString:v11 withName:@"slot2SubscriptionInfo"];
+  subscriptionInfo2 = [(STTelephonySubscriptionContext *)slot2SubscriptionContext subscriptionInfo];
+  succinctDescription2 = [subscriptionInfo2 succinctDescription];
+  [v4 appendString:succinctDescription2 withName:@"slot2SubscriptionInfo"];
 
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STTelephonyStateProvider *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STTelephonyStateProvider *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -4822,8 +4822,8 @@ void __47__STTelephonyStateProvider_airplaneModeChanged__block_invoke(uint64_t a
   v10[3] = &unk_279D34B18;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;
@@ -4862,14 +4862,14 @@ void __66__STTelephonyStateProvider_descriptionBuilderWithMultilinePrefix___bloc
   v13 = [v11 appendObject:v12 withName:@"slot2SubscriptionInfo"];
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = self;
+  selfCopy = self;
   if (self)
   {
     v4 = MEMORY[0x277CF0C00];
-    v5 = a3;
-    v6 = [v4 builderWithObject:v3];
+    prefixCopy = prefix;
+    v6 = [v4 builderWithObject:selfCopy];
     [v6 setUseDebugDescription:1];
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
@@ -4877,13 +4877,13 @@ void __66__STTelephonyStateProvider_descriptionBuilderWithMultilinePrefix___bloc
     v13 = &unk_279D34B18;
     v7 = v6;
     v14 = v7;
-    v15 = v3;
-    [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:&v10];
+    v15 = selfCopy;
+    [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:&v10];
 
-    v3 = v7;
+    selfCopy = v7;
   }
 
-  v8 = [(STTelephonyStateProvider *)v3 build:a3];
+  v8 = [(STTelephonyStateProvider *)selfCopy build:prefix];
 
   return v8;
 }

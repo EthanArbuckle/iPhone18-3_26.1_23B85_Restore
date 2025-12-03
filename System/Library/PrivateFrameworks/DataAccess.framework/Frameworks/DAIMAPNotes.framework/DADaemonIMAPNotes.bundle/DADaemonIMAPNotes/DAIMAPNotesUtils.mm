@@ -1,45 +1,45 @@
 @interface DAIMAPNotesUtils
-+ (BOOL)messageIsSyncableNote:(id)a3;
-+ (id)_copyMessageDetailsForNote:(id)a3 inLibrary:(id)a4;
++ (BOOL)messageIsSyncableNote:(id)note;
++ (id)_copyMessageDetailsForNote:(id)note inLibrary:(id)library;
 + (id)_mimeVersion;
-+ (id)_noteObjectFromMessage:(id)a3 withTextContentData:(id)a4 inStore:(id)a5 attachmentManager:(id)a6 andContext:(id)a7;
-+ (id)headersFromLocalNoteObject:(id)a3 imapAccount:(id)a4;
-+ (id)messageAttachmentsFromNoteAttachmentObjects:(id)a3 attachmentManager:(id)a4;
-+ (id)messageFromLocalNoteObject:(id)a3 inMailboxUid:(id)a4 inAccount:(id)a5;
-+ (id)noteAttachmentObjectsFromAttachmentsOfMessage:(id)a3 attachmentManager:(id)a4 noteContext:(id)a5;
-+ (id)outgoingMessageFromLocalNoteObject:(id)a3 imapAccount:(id)a4 attachmentManager:(id)a5;
-+ (void)_runInterimWorkerThreadWithStartupLock:(id)a3;
-+ (void)drainWorkerThreadAndInvokeBlock:(id)a3;
-+ (void)logBytes:(const char *)a3 length:(int)a4;
++ (id)_noteObjectFromMessage:(id)message withTextContentData:(id)data inStore:(id)store attachmentManager:(id)manager andContext:(id)context;
++ (id)headersFromLocalNoteObject:(id)object imapAccount:(id)account;
++ (id)messageAttachmentsFromNoteAttachmentObjects:(id)objects attachmentManager:(id)manager;
++ (id)messageFromLocalNoteObject:(id)object inMailboxUid:(id)uid inAccount:(id)account;
++ (id)noteAttachmentObjectsFromAttachmentsOfMessage:(id)message attachmentManager:(id)manager noteContext:(id)context;
++ (id)outgoingMessageFromLocalNoteObject:(id)object imapAccount:(id)account attachmentManager:(id)manager;
++ (void)_runInterimWorkerThreadWithStartupLock:(id)lock;
++ (void)drainWorkerThreadAndInvokeBlock:(id)block;
++ (void)logBytes:(const char *)bytes length:(int)length;
 + (void)setUpMailLogging;
 - (void)flushLog;
 @end
 
 @implementation DAIMAPNotesUtils
 
-+ (id)noteAttachmentObjectsFromAttachmentsOfMessage:(id)a3 attachmentManager:(id)a4 noteContext:(id)a5
++ (id)noteAttachmentObjectsFromAttachmentsOfMessage:(id)message attachmentManager:(id)manager noteContext:(id)context
 {
-  v7 = a3;
-  v38 = a4;
-  v37 = a5;
+  messageCopy = message;
+  managerCopy = manager;
+  contextCopy = context;
   v8 = +[NSMutableArray array];
   v9 = objc_autoreleasePoolPush();
-  v10 = [v7 messageBody];
+  messageBody = [messageCopy messageBody];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v10 attachmentURLs];
-    if ([v11 count])
+    attachmentURLs = [messageBody attachmentURLs];
+    if ([attachmentURLs count])
     {
-      v32 = v10;
+      v32 = messageBody;
       v33 = v9;
       v35 = v8;
-      v34 = v7;
+      v34 = messageCopy;
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      obj = v11;
+      obj = attachmentURLs;
       v12 = [obj countByEnumeratingWithState:&v40 objects:v48 count:16];
       if (v12)
       {
@@ -57,35 +57,35 @@
 
             v17 = *(*(&v40 + 1) + 8 * i);
             v18 = objc_autoreleasePoolPush();
-            v19 = [v38 attachmentForURL:v17 error:0];
+            v19 = [managerCopy attachmentForURL:v17 error:0];
             if (v19)
             {
-              v20 = [v37 newlyAddedAttachment];
-              v21 = [v19 contentID];
-              [v20 setContentID:v21];
+              newlyAddedAttachment = [contextCopy newlyAddedAttachment];
+              contentID = [v19 contentID];
+              [newlyAddedAttachment setContentID:contentID];
 
-              v22 = [v19 fileName];
-              [v20 setFilename:v22];
+              fileName = [v19 fileName];
+              [newlyAddedAttachment setFilename:fileName];
 
-              v23 = [v19 mimeType];
-              if (v23)
+              mimeType = [v19 mimeType];
+              if (mimeType)
               {
-                [v20 setMimeType:v23];
+                [newlyAddedAttachment setMimeType:mimeType];
               }
 
               else
               {
-                v24 = [v19 inferredMimeType];
-                [v20 setMimeType:v24];
+                inferredMimeType = [v19 inferredMimeType];
+                [newlyAddedAttachment setMimeType:inferredMimeType];
               }
 
               v25 = [v19 fetchDataSynchronously:0];
               v39 = 0;
-              v26 = [v20 persistAttachmentData:v25 error:&v39];
+              v26 = [newlyAddedAttachment persistAttachmentData:v25 error:&v39];
               v27 = v39;
               if (v26)
               {
-                [v35 addObject:v20];
+                [v35 addObject:newlyAddedAttachment];
               }
 
               else
@@ -94,7 +94,7 @@
                 if (os_log_type_enabled(v28, v15))
                 {
                   *buf = 138412290;
-                  v45 = v20;
+                  v45 = newlyAddedAttachment;
                   _os_log_impl(&dword_0, v28, v15, "Couldn't persist data for attachment: %@", buf, 0xCu);
                 }
               }
@@ -102,14 +102,14 @@
 
             else
             {
-              v20 = DALoggingwithCategory();
-              if (os_log_type_enabled(v20, v15))
+              newlyAddedAttachment = DALoggingwithCategory();
+              if (os_log_type_enabled(newlyAddedAttachment, v15))
               {
                 *buf = 138412546;
                 v45 = v17;
                 v46 = 2112;
-                v47 = v38;
-                _os_log_impl(&dword_0, v20, v15, "I don't know how to archive this attachment.  It will be lost on modify.  Attachment %@, manager %@", buf, 0x16u);
+                v47 = managerCopy;
+                _os_log_impl(&dword_0, newlyAddedAttachment, v15, "I don't know how to archive this attachment.  It will be lost on modify.  Attachment %@, manager %@", buf, 0x16u);
               }
             }
 
@@ -122,24 +122,24 @@
         while (v13);
       }
 
-      v11 = obj;
+      attachmentURLs = obj;
 
       v9 = v33;
-      v7 = v34;
+      messageCopy = v34;
       v8 = v35;
-      v10 = v32;
+      messageBody = v32;
     }
   }
 
   else
   {
-    v11 = DALoggingwithCategory();
+    attachmentURLs = DALoggingwithCategory();
     v29 = _CPLog_to_os_log_type[3];
-    if (os_log_type_enabled(v11, v29))
+    if (os_log_type_enabled(attachmentURLs, v29))
     {
       *buf = 138412290;
-      v45 = v7;
-      _os_log_impl(&dword_0, v11, v29, "The following message doesn't have a mime body: %@", buf, 0xCu);
+      v45 = messageCopy;
+      _os_log_impl(&dword_0, attachmentURLs, v29, "The following message doesn't have a mime body: %@", buf, 0xCu);
     }
   }
 
@@ -157,16 +157,16 @@
   return v30;
 }
 
-+ (id)messageAttachmentsFromNoteAttachmentObjects:(id)a3 attachmentManager:(id)a4
++ (id)messageAttachmentsFromNoteAttachmentObjects:(id)objects attachmentManager:(id)manager
 {
-  v5 = a3;
-  v29 = a4;
+  objectsCopy = objects;
+  managerCopy = manager;
   v6 = +[NSMutableArray array];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v5;
+  obj = objectsCopy;
   v31 = [obj countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (!v31)
   {
@@ -200,23 +200,23 @@
 
         if (v15)
         {
-          v17 = [v10 filename];
-          v18 = v17;
-          if (v17)
+          filename = [v10 filename];
+          v18 = filename;
+          if (filename)
           {
-            v19 = v17;
+            contentID = filename;
           }
 
           else
           {
-            v19 = [v10 contentID];
+            contentID = [v10 contentID];
           }
 
-          v20 = v19;
+          v20 = contentID;
 
-          v21 = [v10 mimeType];
-          v22 = [v10 contentID];
-          v23 = [v29 attachmentForData:v15 mimeType:v21 fileName:v20 contentID:v22 context:@"DataAccess"];
+          mimeType = [v10 mimeType];
+          contentID2 = [v10 contentID];
+          v23 = [managerCopy attachmentForData:v15 mimeType:mimeType fileName:v20 contentID:contentID2 context:@"DataAccess"];
 
           v24 = DALoggingwithCategory();
           if (os_log_type_enabled(v24, v8))
@@ -273,11 +273,11 @@ LABEL_19:
   return v25;
 }
 
-+ (BOOL)messageIsSyncableNote:(id)a3
++ (BOOL)messageIsSyncableNote:(id)note
 {
-  v3 = a3;
-  v4 = [v3 headers];
-  v5 = [v4 firstHeaderForKey:@"X-Uniform-Type-Identifier"];
+  noteCopy = note;
+  headers = [noteCopy headers];
+  v5 = [headers firstHeaderForKey:@"X-Uniform-Type-Identifier"];
   v6 = v5;
   if (!v5 || ![v5 hasPrefix:@"com.apple.mail-note"])
   {
@@ -286,10 +286,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7 = [v3 messageSize];
-  if (v7 >= 0xF00000)
+  messageSize = [noteCopy messageSize];
+  if (messageSize >= 0xF00000)
   {
-    v9 = v7;
+    v9 = messageSize;
     v10 = DALoggingwithCategory();
     v11 = _CPLog_to_os_log_type[4];
     if (os_log_type_enabled(v10, v11))
@@ -308,26 +308,26 @@ LABEL_9:
   return v8;
 }
 
-+ (id)_noteObjectFromMessage:(id)a3 withTextContentData:(id)a4 inStore:(id)a5 attachmentManager:(id)a6 andContext:(id)a7
++ (id)_noteObjectFromMessage:(id)message withTextContentData:(id)data inStore:(id)store attachmentManager:(id)manager andContext:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v39 = a6;
-  v14 = a7;
-  v15 = a5;
-  v36 = a1;
-  v16 = [a1 messageIsSyncableNote:v12];
-  v17 = [v12 headers];
-  v18 = [v17 firstHeaderForKey:@"X-Universally-Unique-Identifier"];
+  messageCopy = message;
+  dataCopy = data;
+  managerCopy = manager;
+  contextCopy = context;
+  storeCopy = store;
+  selfCopy = self;
+  v16 = [self messageIsSyncableNote:messageCopy];
+  headers = [messageCopy headers];
+  v18 = [headers firstHeaderForKey:@"X-Universally-Unique-Identifier"];
   if (!v18)
   {
     v18 = +[NSString da_newGUID];
   }
 
-  v40 = v13;
-  v38 = v14;
-  v19 = [v14 newlyAddedNoteWithGUID:v18];
-  v20 = [v17 firstHeaderForKey:H_SUBJECT];
+  v40 = dataCopy;
+  v38 = contextCopy;
+  v19 = [contextCopy newlyAddedNoteWithGUID:v18];
+  v20 = [headers firstHeaderForKey:H_SUBJECT];
   if (v20)
   {
     v21 = v20;
@@ -341,26 +341,26 @@ LABEL_9:
   v22 = [NSNumber numberWithInt:v16 ^ 1];
   [v19 setIsBookkeepingEntry:v22];
 
-  [v19 setStore:v15];
+  [v19 setStore:storeCopy];
   v37 = v21;
   [v19 setTitle:v21];
-  v23 = [v17 firstSenderAddress];
-  [v19 setAuthor:v23];
+  firstSenderAddress = [headers firstSenderAddress];
+  [v19 setAuthor:firstSenderAddress];
 
-  v24 = [v19 author];
+  author = [v19 author];
 
-  if (!v24)
+  if (!author)
   {
     [v19 setAuthor:&stru_1C808];
   }
 
-  v25 = [v17 firstHeaderForKey:H_DATE];
+  v25 = [headers firstHeaderForKey:H_DATE];
   if (!v25 || (v26 = [NSDate mf_copyDateInCommonFormatsWithString:v25]) == 0)
   {
     v26 = +[NSDate date];
   }
 
-  v27 = [v17 firstHeaderForKey:@"X-Mail-Created-Date"];
+  v27 = [headers firstHeaderForKey:@"X-Mail-Created-Date"];
   if (v27 || (v27 = v25, v25))
   {
     v28 = v27;
@@ -392,7 +392,7 @@ LABEL_17:
     v32 = [[NSString alloc] initWithBytes:objc_msgSend(v40 length:"bytes") encoding:{objc_msgSend(v40, "length"), 4}];
     [v19 setContent:v32];
 
-    v33 = [v36 noteAttachmentObjectsFromAttachmentsOfMessage:v12 attachmentManager:v39 noteContext:v38];
+    v33 = [selfCopy noteAttachmentObjectsFromAttachmentsOfMessage:messageCopy attachmentManager:managerCopy noteContext:v38];
     if ([v33 count])
     {
       v34 = [NSSet setWithArray:v33];
@@ -402,7 +402,7 @@ LABEL_17:
     v30 = v40;
   }
 
-  [v19 setServerIntId:{objc_msgSend(v12, "uid")}];
+  [v19 setServerIntId:{objc_msgSend(messageCopy, "uid")}];
 
   return v19;
 }
@@ -419,88 +419,88 @@ LABEL_17:
   return v3;
 }
 
-+ (id)headersFromLocalNoteObject:(id)a3 imapAccount:(id)a4
++ (id)headersFromLocalNoteObject:(id)object imapAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  accountCopy = account;
   v8 = objc_opt_new();
-  v9 = [v6 title];
-  v10 = [v9 componentsSeparatedByString:@"\n"];
+  title = [objectCopy title];
+  v10 = [title componentsSeparatedByString:@"\n"];
 
   v11 = [v10 objectAtIndexedSubscript:0];
   [v8 setHeader:v11 forKey:H_SUBJECT];
 
-  v12 = [a1 _mimeVersion];
-  [v8 setHeader:v12 forKey:H_MIME_VERSION];
+  _mimeVersion = [self _mimeVersion];
+  [v8 setHeader:_mimeVersion forKey:H_MIME_VERSION];
 
-  v13 = [v6 author];
-  if (!v13)
+  author = [objectCopy author];
+  if (!author)
   {
-    v14 = [v7 fullUserName];
-    v15 = [v7 firstEmailAddress];
-    v13 = [NSString mf_formattedAddressWithName:v14 email:v15 useQuotes:1];
+    fullUserName = [accountCopy fullUserName];
+    firstEmailAddress = [accountCopy firstEmailAddress];
+    author = [NSString mf_formattedAddressWithName:fullUserName email:firstEmailAddress useQuotes:1];
 
-    if (!v13)
+    if (!author)
     {
-      v13 = &stru_1C808;
+      author = &stru_1C808;
     }
   }
 
-  v29 = v13;
+  v29 = author;
   v16 = [NSArray arrayWithObjects:&v29 count:1];
   [v8 setAddressListForSender:v16];
 
-  v17 = [v6 modificationDate];
+  modificationDate = [objectCopy modificationDate];
   v18 = +[NSTimeZone systemTimeZone];
-  v19 = [v17 dateWithCalendarFormat:@"%a timeZone:%d %b %Y %H:%M:%S %z", v18];
+  v19 = [modificationDate dateWithCalendarFormat:@"%a timeZone:%d %b %Y %H:%M:%S %z", v18];
   v20 = [v19 description];
 
   [v8 setHeader:v20 forKey:H_DATE];
-  v21 = [v6 creationDate];
-  if (!v21)
+  creationDate = [objectCopy creationDate];
+  if (!creationDate)
   {
-    v21 = [v6 modificationDate];
-    if (!v21)
+    creationDate = [objectCopy modificationDate];
+    if (!creationDate)
     {
-      v21 = +[NSDate date];
+      creationDate = +[NSDate date];
     }
   }
 
-  v22 = v21;
+  v22 = creationDate;
   v23 = +[NSTimeZone systemTimeZone];
   v24 = [v22 dateWithCalendarFormat:@"%a timeZone:%d %b %Y %H:%M:%S %z", v23];
   v25 = [v24 description];
 
   [v8 setHeader:v25 forKey:@"X-Mail-Created-Date"];
-  v26 = [v6 isBookkeepingEntry];
-  LOBYTE(v24) = [v26 BOOLValue];
+  isBookkeepingEntry = [objectCopy isBookkeepingEntry];
+  LOBYTE(v24) = [isBookkeepingEntry BOOLValue];
 
   if ((v24 & 1) == 0)
   {
     [v8 setHeader:@"com.apple.mail-note" forKey:@"X-Uniform-Type-Identifier"];
-    v27 = [v6 guid];
-    [v8 setHeader:v27 forKey:@"X-Universally-Unique-Identifier"];
+    guid = [objectCopy guid];
+    [v8 setHeader:guid forKey:@"X-Universally-Unique-Identifier"];
   }
 
   return v8;
 }
 
-+ (id)outgoingMessageFromLocalNoteObject:(id)a3 imapAccount:(id)a4 attachmentManager:(id)a5
++ (id)outgoingMessageFromLocalNoteObject:(id)object imapAccount:(id)account attachmentManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 isBookkeepingEntry];
-  v12 = [v11 BOOLValue];
+  objectCopy = object;
+  accountCopy = account;
+  managerCopy = manager;
+  isBookkeepingEntry = [objectCopy isBookkeepingEntry];
+  bOOLValue = [isBookkeepingEntry BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
     v13 = DALoggingwithCategory();
     v14 = _CPLog_to_os_log_type[3];
     if (os_log_type_enabled(v13, v14))
     {
       *buf = 138412290;
-      v36 = v8;
+      v36 = objectCopy;
       _os_log_impl(&dword_0, v13, v14, "Asked to create an outgoing message from a bookkeeping entry.  Who's the joker trying to introduce data loss? Note %@", buf, 0xCu);
     }
 
@@ -509,23 +509,23 @@ LABEL_17:
 
   else
   {
-    v13 = [a1 headersFromLocalNoteObject:v8 imapAccount:v9];
+    v13 = [self headersFromLocalNoteObject:objectCopy imapAccount:accountCopy];
     v16 = objc_opt_new();
     [v16 setMessageClassToInstantiate:objc_opt_class()];
-    if ([v8 isPlainText])
+    if ([objectCopy isPlainText])
     {
-      v17 = [v8 content];
-      v15 = [v16 createMessageWithString:v17 headers:v13];
+      content = [objectCopy content];
+      v15 = [v16 createMessageWithString:content headers:v13];
     }
 
     else
     {
-      v29 = v9;
-      v18 = [v8 attachments];
-      v19 = [DAIMAPNotesUtils messageAttachmentsFromNoteAttachmentObjects:v18 attachmentManager:v10];
+      v29 = accountCopy;
+      attachments = [objectCopy attachments];
+      v19 = [DAIMAPNotesUtils messageAttachmentsFromNoteAttachmentObjects:attachments attachmentManager:managerCopy];
 
-      v20 = [v8 content];
-      v15 = [v16 createMessageWithHtmlString:v20 plainTextAlternative:0 otherHtmlStringsAndAttachments:v19 headers:v13];
+      content2 = [objectCopy content];
+      v15 = [v16 createMessageWithHtmlString:content2 plainTextAlternative:0 otherHtmlStringsAndAttachments:v19 headers:v13];
 
       v32 = 0u;
       v33 = 0u;
@@ -547,7 +547,7 @@ LABEL_17:
             }
 
             v26 = [*(*(&v30 + 1) + 8 * i) url];
-            [v10 removeAttachmentForURL:v26];
+            [managerCopy removeAttachmentForURL:v26];
           }
 
           v23 = [v21 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -556,35 +556,35 @@ LABEL_17:
         while (v23);
       }
 
-      v9 = v29;
+      accountCopy = v29;
     }
 
-    v27 = [v8 integerId];
-    [v15 setLocalIntegerId:{objc_msgSend(v27, "intValue")}];
+    integerId = [objectCopy integerId];
+    [v15 setLocalIntegerId:{objc_msgSend(integerId, "intValue")}];
   }
 
   return v15;
 }
 
-+ (id)messageFromLocalNoteObject:(id)a3 inMailboxUid:(id)a4 inAccount:(id)a5
++ (id)messageFromLocalNoteObject:(id)object inMailboxUid:(id)uid inAccount:(id)account
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  objectCopy = object;
+  uidCopy = uid;
+  accountCopy = account;
+  if (objectCopy)
   {
-    v10 = [v7 integerId];
-    v11 = [v10 intValue];
+    integerId = [objectCopy integerId];
+    intValue = [integerId intValue];
 
-    v12 = [[MFLibraryMessage alloc] initWithLibraryID:v11];
-    [v12 setFlags:{objc_msgSend(v7, "flags")}];
-    if ([v7 serverIntId])
+    v12 = [[MFLibraryMessage alloc] initWithLibraryID:intValue];
+    [v12 setFlags:{objc_msgSend(objectCopy, "flags")}];
+    if ([objectCopy serverIntId])
     {
-      v13 = [v7 serverIntId];
-      v14 = v13;
-      if (v13 < 0)
+      serverIntId = [objectCopy serverIntId];
+      v14 = serverIntId;
+      if (serverIntId < 0)
       {
-        v14 = -v13;
+        v14 = -serverIntId;
         [v12 setHasTemporaryUid:1];
       }
 
@@ -592,22 +592,22 @@ LABEL_17:
       [v12 setRemoteID:v15];
     }
 
-    if (v8)
+    if (uidCopy)
     {
-      v16 = [v9 storeForMailboxUid:v8];
-      [v12 setMessageStore:v16];
+      store = [accountCopy storeForMailboxUid:uidCopy];
+      [v12 setMessageStore:store];
     }
 
     else
     {
-      v16 = [v7 store];
-      v17 = [v16 externalIdentifier];
-      if (v17)
+      store = [objectCopy store];
+      externalIdentifier = [store externalIdentifier];
+      if (externalIdentifier)
       {
-        v18 = [v9 mailboxUidForURL:v17];
+        v18 = [accountCopy mailboxUidForURL:externalIdentifier];
         if (v18)
         {
-          v19 = [v9 storeForMailboxUid:v18];
+          v19 = [accountCopy storeForMailboxUid:v18];
           [v12 setMessageStore:v19];
         }
 
@@ -618,9 +618,9 @@ LABEL_17:
           if (os_log_type_enabled(v19, v21))
           {
             *buf = 138412546;
-            v36 = v9;
+            v36 = accountCopy;
             v37 = 2112;
-            v38 = v17;
+            v38 = externalIdentifier;
             _os_log_impl(&dword_0, v19, v21, "Couldn't get a MailboxUID from account %@ with url %@", buf, 0x16u);
           }
         }
@@ -633,38 +633,38 @@ LABEL_17:
         if (os_log_type_enabled(v18, v20))
         {
           *buf = 138412290;
-          v36 = v16;
+          v36 = store;
           _os_log_impl(&dword_0, v18, v20, "Couldn't find a url on store %@", buf, 0xCu);
         }
       }
     }
 
-    v22 = [v7 author];
-    if (!v22)
+    author = [objectCopy author];
+    if (!author)
     {
-      v23 = [v9 fullUserName];
-      if (v23)
+      fullUserName = [accountCopy fullUserName];
+      if (fullUserName)
       {
-        v22 = v23;
+        author = fullUserName;
       }
 
       else
       {
-        v22 = &stru_1C808;
+        author = &stru_1C808;
       }
     }
 
-    v24 = [v7 title];
-    v34 = v22;
+    title = [objectCopy title];
+    v34 = author;
     v25 = [NSArray arrayWithObjects:&v34 count:1];
-    v26 = [v7 modificationDate];
-    [v26 timeIntervalSince1970];
+    modificationDate = [objectCopy modificationDate];
+    [modificationDate timeIntervalSince1970];
     v28 = v27;
-    v29 = [v7 creationDate];
-    [v29 timeIntervalSince1970];
+    creationDate = [objectCopy creationDate];
+    [creationDate timeIntervalSince1970];
     v31 = v30;
-    v32 = [v7 title];
-    [v12 setMessageInfo:v24 to:&__NSArray0__struct cc:&__NSArray0__struct bcc:&__NSArray0__struct sender:v25 dateReceivedTimeIntervalSince1970:0 dateSentTimeIntervalSince1970:v28 messageIDHash:v31 conversationID:0 summary:v32];
+    title2 = [objectCopy title];
+    [v12 setMessageInfo:title to:&__NSArray0__struct cc:&__NSArray0__struct bcc:&__NSArray0__struct sender:v25 dateReceivedTimeIntervalSince1970:0 dateSentTimeIntervalSince1970:v28 messageIDHash:v31 conversationID:0 summary:title2];
   }
 
   else
@@ -675,22 +675,22 @@ LABEL_17:
   return v12;
 }
 
-+ (id)_copyMessageDetailsForNote:(id)a3 inLibrary:(id)a4
++ (id)_copyMessageDetailsForNote:(id)note inLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 hasValidServerIntId])
+  noteCopy = note;
+  libraryCopy = library;
+  if ([noteCopy hasValidServerIntId])
   {
     v7 = objc_opt_new();
-    *&v7[OBJC_IVAR___MFMessageDetails_library] = v6;
-    v8 = [v5 integerId];
-    v9 = [v8 intValue];
-    *&v7[OBJC_IVAR___MFMessageDetails_libraryID] = v9;
+    *&v7[OBJC_IVAR___MFMessageDetails_library] = libraryCopy;
+    integerId = [noteCopy integerId];
+    intValue = [integerId intValue];
+    *&v7[OBJC_IVAR___MFMessageDetails_libraryID] = intValue;
 
-    v10 = [v5 serverIntId];
-    *&v7[OBJC_IVAR___MFMessageDetails_uid] = v10;
-    v11 = [v5 flags];
-    *&v7[OBJC_IVAR___MFMessageDetails_messageFlags] = v11;
+    serverIntId = [noteCopy serverIntId];
+    *&v7[OBJC_IVAR___MFMessageDetails_uid] = serverIntId;
+    flags = [noteCopy flags];
+    *&v7[OBJC_IVAR___MFMessageDetails_messageFlags] = flags;
   }
 
   else
@@ -701,7 +701,7 @@ LABEL_17:
   return v7;
 }
 
-+ (void)logBytes:(const char *)a3 length:(int)a4
++ (void)logBytes:(const char *)bytes length:(int)length
 {
   if (qword_22250 != -1)
   {
@@ -713,7 +713,7 @@ LABEL_17:
   v9 = 0x3032000000;
   v10 = sub_EDF8;
   v11 = sub_EE08;
-  v12 = [[NSData alloc] initWithBytesNoCopy:a3 length:a4 freeWhenDone:0];
+  v12 = [[NSData alloc] initWithBytesNoCopy:bytes length:length freeWhenDone:0];
   v6 = v8[5];
   DACPLoggingAppendDataToLogFile();
   _Block_object_dispose(&v7, 8);
@@ -743,18 +743,18 @@ LABEL_17:
       }
 
       v6 = v4;
-      [v4 addObject:a1];
+      [v4 addObject:self];
       [MFConnection setLogClasses:v6];
       [MFConnection setLogAllSocketActivity:1];
     }
   }
 }
 
-+ (void)_runInterimWorkerThreadWithStartupLock:(id)a3
++ (void)_runInterimWorkerThreadWithStartupLock:(id)lock
 {
-  v8 = a3;
+  lockCopy = lock;
   v3 = objc_autoreleasePoolPush();
-  [v8 lockWhenCondition:0];
+  [lockCopy lockWhenCondition:0];
   v4 = +[NSRunLoop currentRunLoop];
   qword_22268 = CFRetain([v4 getCFRunLoop]);
 
@@ -762,22 +762,22 @@ LABEL_17:
   v6 = +[NSRunLoop currentRunLoop];
   [v5 scheduleInRunLoop:v6 forMode:NSDefaultRunLoopMode];
 
-  [v8 unlockWithCondition:1];
+  [lockCopy unlockWithCondition:1];
   v7 = +[NSRunLoop currentRunLoop];
   [v7 run];
 
   objc_autoreleasePoolPop(v3);
 }
 
-+ (void)drainWorkerThreadAndInvokeBlock:(id)a3
++ (void)drainWorkerThreadAndInvokeBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_autoreleasePoolPush();
   v6 = qword_22268;
   if (!qword_22268)
   {
     v7 = [[NSConditionLock alloc] initWithCondition:0];
-    v8 = [[NSThread alloc] initWithTarget:a1 selector:"_runInterimWorkerThreadWithStartupLock:" object:v7];
+    v8 = [[NSThread alloc] initWithTarget:self selector:"_runInterimWorkerThreadWithStartupLock:" object:v7];
     v9 = qword_22260;
     qword_22260 = v8;
 
@@ -792,7 +792,7 @@ LABEL_17:
   block[1] = 3221225472;
   block[2] = sub_F1A0;
   block[3] = &unk_1C788;
-  v10 = v4;
+  v10 = blockCopy;
   v12 = v10;
   CFRunLoopPerformBlock(v6, kCFRunLoopCommonModes, block);
   CFRunLoopWakeUp(qword_22268);

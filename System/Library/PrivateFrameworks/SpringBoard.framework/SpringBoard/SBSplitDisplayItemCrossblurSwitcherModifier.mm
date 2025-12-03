@@ -1,47 +1,47 @@
 @interface SBSplitDisplayItemCrossblurSwitcherModifier
-- (CGRect)frameForShelf:(id)a3;
-- (SBSplitDisplayItemCrossblurSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 layoutRole:(int64_t)a6;
+- (CGRect)frameForShelf:(id)shelf;
+- (SBSplitDisplayItemCrossblurSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout layoutRole:(int64_t)role;
 - (id)_previousHomeAffordanceAppLayout;
-- (id)appLayoutContainingAppLayout:(id)a3;
-- (id)containerLeafAppLayoutForShelf:(id)a3;
-- (id)handleEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
-- (id)homeAffordanceLayoutElementToPortalIntoShelf:(id)a3;
+- (id)appLayoutContainingAppLayout:(id)layout;
+- (id)containerLeafAppLayoutForShelf:(id)shelf;
+- (id)handleEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
+- (id)homeAffordanceLayoutElementToPortalIntoShelf:(id)shelf;
 - (id)topMostLayoutElements;
 - (id)visibleHomeAffordanceLayoutElements;
 @end
 
 @implementation SBSplitDisplayItemCrossblurSwitcherModifier
 
-- (SBSplitDisplayItemCrossblurSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 layoutRole:(int64_t)a6
+- (SBSplitDisplayItemCrossblurSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout layoutRole:(int64_t)role
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dCopy = d;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
   v24.receiver = self;
   v24.super_class = SBSplitDisplayItemCrossblurSwitcherModifier;
   v14 = [(SBSwitcherModifier *)&v24 init];
   if (v14)
   {
-    if (!v12)
+    if (!layoutCopy)
     {
       [SBSplitDisplayItemCrossblurSwitcherModifier initWithTransitionID:a2 fromAppLayout:v14 toAppLayout:? layoutRole:?];
     }
 
-    if (!v13)
+    if (!appLayoutCopy)
     {
       [SBSplitDisplayItemCrossblurSwitcherModifier initWithTransitionID:a2 fromAppLayout:v14 toAppLayout:? layoutRole:?];
     }
 
-    objc_storeStrong(&v14->_fromAppLayout, a4);
-    objc_storeStrong(&v14->_toAppLayout, a5);
-    v14->_layoutRole = a6;
-    v15 = [(SBAppLayout *)v14->_fromAppLayout itemForLayoutRole:a6];
+    objc_storeStrong(&v14->_fromAppLayout, layout);
+    objc_storeStrong(&v14->_toAppLayout, appLayout);
+    v14->_layoutRole = role;
+    v15 = [(SBAppLayout *)v14->_fromAppLayout itemForLayoutRole:role];
     v16 = [[SBSplitDisplayItemSwitcherModifier alloc] initWithDisplayItem:v15];
     [(SBChainableModifier *)v14 addChildModifier:v16];
     v17 = [(SBAppLayout *)v14->_fromAppLayout leafAppLayoutForRole:v14->_layoutRole];
     v18 = [(SBAppLayout *)v14->_toAppLayout leafAppLayoutForRole:v14->_layoutRole];
-    v19 = [[SBCrossblurDosidoSwitcherModifier alloc] initWithTransitionID:v11 fromAppLayout:v17 toAppLayout:v18 direction:0];
+    v19 = [[SBCrossblurDosidoSwitcherModifier alloc] initWithTransitionID:dCopy fromAppLayout:v17 toAppLayout:v18 direction:0];
     v20 = [(SBAppLayout *)v14->_toAppLayout itemForLayoutRole:v14->_layoutRole];
     v21 = [[SBSplitDisplayItemSwitcherModifier alloc] initWithDisplayItem:v20 wrappingModifier:v19];
     toSplitDisplayItemModifier = v14->_toSplitDisplayItemModifier;
@@ -53,23 +53,23 @@
   return v14;
 }
 
-- (id)handleEvent:(id)a3
+- (id)handleEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = SBSplitDisplayItemCrossblurSwitcherModifier;
-  v4 = [(SBChainableModifier *)&v6 handleEvent:a3];
+  v4 = [(SBChainableModifier *)&v6 handleEvent:event];
   [(SBChainableModifier *)self setState:[(SBChainableModifier *)self->_toSplitDisplayItemModifier state]];
 
   return v4;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  self->_floatingConfiguration = [v4 toFloatingConfiguration];
+  eventCopy = event;
+  self->_floatingConfiguration = [eventCopy toFloatingConfiguration];
   v7.receiver = self;
   v7.super_class = SBSplitDisplayItemCrossblurSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v7 handleTransitionEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v7 handleTransitionEvent:eventCopy];
 
   return v5;
 }
@@ -78,29 +78,29 @@
 {
   v7.receiver = self;
   v7.super_class = SBSplitDisplayItemCrossblurSwitcherModifier;
-  v3 = [(SBSplitDisplayItemCrossblurSwitcherModifier *)&v7 visibleHomeAffordanceLayoutElements];
-  v4 = [(SBSplitDisplayItemCrossblurSwitcherModifier *)self _previousHomeAffordanceAppLayout];
-  v5 = [v3 setByAddingObject:v4];
+  visibleHomeAffordanceLayoutElements = [(SBSplitDisplayItemCrossblurSwitcherModifier *)&v7 visibleHomeAffordanceLayoutElements];
+  _previousHomeAffordanceAppLayout = [(SBSplitDisplayItemCrossblurSwitcherModifier *)self _previousHomeAffordanceAppLayout];
+  v5 = [visibleHomeAffordanceLayoutElements setByAddingObject:_previousHomeAffordanceAppLayout];
 
   return v5;
 }
 
-- (id)homeAffordanceLayoutElementToPortalIntoShelf:(id)a3
+- (id)homeAffordanceLayoutElementToPortalIntoShelf:(id)shelf
 {
-  v4 = a3;
-  if ([v4 layoutRole] == 3)
+  shelfCopy = shelf;
+  if ([shelfCopy layoutRole] == 3)
   {
-    v5 = [(SBSplitDisplayItemCrossblurSwitcherModifier *)self _previousHomeAffordanceAppLayout];
+    _previousHomeAffordanceAppLayout = [(SBSplitDisplayItemCrossblurSwitcherModifier *)self _previousHomeAffordanceAppLayout];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SBSplitDisplayItemCrossblurSwitcherModifier;
-    v5 = [(SBSplitDisplayItemCrossblurSwitcherModifier *)&v8 homeAffordanceLayoutElementToPortalIntoShelf:v4];
+    _previousHomeAffordanceAppLayout = [(SBSplitDisplayItemCrossblurSwitcherModifier *)&v8 homeAffordanceLayoutElementToPortalIntoShelf:shelfCopy];
   }
 
-  v6 = v5;
+  v6 = _previousHomeAffordanceAppLayout;
 
   return v6;
 }
@@ -134,9 +134,9 @@ uint64_t __79__SBSplitDisplayItemCrossblurSwitcherModifier__previousHomeAffordan
   return v4 ^ 1;
 }
 
-- (id)containerLeafAppLayoutForShelf:(id)a3
+- (id)containerLeafAppLayoutForShelf:(id)shelf
 {
-  if ([a3 layoutRole] == 3)
+  if ([shelf layoutRole] == 3)
   {
     v4 = 0;
   }
@@ -167,19 +167,19 @@ uint64_t __78__SBSplitDisplayItemCrossblurSwitcherModifier_containerLeafAppLayou
   return v4 ^ 1;
 }
 
-- (CGRect)frameForShelf:(id)a3
+- (CGRect)frameForShelf:(id)shelf
 {
   v20.receiver = self;
   v20.super_class = SBSplitDisplayItemCrossblurSwitcherModifier;
-  v4 = a3;
-  [(SBSplitDisplayItemCrossblurSwitcherModifier *)&v20 frameForShelf:v4];
+  shelfCopy = shelf;
+  [(SBSplitDisplayItemCrossblurSwitcherModifier *)&v20 frameForShelf:shelfCopy];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v4 layoutRole];
+  layoutRole = [shelfCopy layoutRole];
 
-  if (v13 == 3)
+  if (layoutRole == 3)
   {
     [(SBSplitDisplayItemCrossblurSwitcherModifier *)self floatingApplicationFrameInInterfaceOrientation:[(SBSplitDisplayItemCrossblurSwitcherModifier *)self switcherInterfaceOrientation] floatingConfiguration:self->_floatingConfiguration];
     v6 = v6 + v14;
@@ -197,11 +197,11 @@ uint64_t __78__SBSplitDisplayItemCrossblurSwitcherModifier_containerLeafAppLayou
   return result;
 }
 
-- (id)appLayoutContainingAppLayout:(id)a3
+- (id)appLayoutContainingAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = 152;
-  if ([(SBAppLayout *)self->_toAppLayout isOrContainsAppLayout:v4]|| (v5 = 144, [(SBAppLayout *)self->_fromAppLayout isOrContainsAppLayout:v4]))
+  if ([(SBAppLayout *)self->_toAppLayout isOrContainsAppLayout:layoutCopy]|| (v5 = 144, [(SBAppLayout *)self->_fromAppLayout isOrContainsAppLayout:layoutCopy]))
   {
     v6 = *(&self->super.super.super.super.isa + v5);
   }
@@ -210,7 +210,7 @@ uint64_t __78__SBSplitDisplayItemCrossblurSwitcherModifier_containerLeafAppLayou
   {
     v9.receiver = self;
     v9.super_class = SBSplitDisplayItemCrossblurSwitcherModifier;
-    v6 = [(SBSplitDisplayItemCrossblurSwitcherModifier *)&v9 appLayoutContainingAppLayout:v4];
+    v6 = [(SBSplitDisplayItemCrossblurSwitcherModifier *)&v9 appLayoutContainingAppLayout:layoutCopy];
   }
 
   v7 = v6;
@@ -222,7 +222,7 @@ uint64_t __78__SBSplitDisplayItemCrossblurSwitcherModifier_containerLeafAppLayou
 {
   v10.receiver = self;
   v10.super_class = SBSplitDisplayItemCrossblurSwitcherModifier;
-  v3 = [(SBSplitDisplayItemCrossblurSwitcherModifier *)&v10 topMostLayoutElements];
+  topMostLayoutElements = [(SBSplitDisplayItemCrossblurSwitcherModifier *)&v10 topMostLayoutElements];
   fromAppLayout = self->_fromAppLayout;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -233,12 +233,12 @@ uint64_t __78__SBSplitDisplayItemCrossblurSwitcherModifier_containerLeafAppLayou
   if (v5)
   {
     v6 = [(SBAppLayout *)self->_toAppLayout leafAppLayoutForRole:self->_layoutRole];
-    v7 = [v3 sb_arrayByInsertingOrMovingObject:v6 toIndex:0];
+    v7 = [topMostLayoutElements sb_arrayByInsertingOrMovingObject:v6 toIndex:0];
 
-    v3 = [v7 sb_arrayByInsertingOrMovingObject:v5 toIndex:0];
+    topMostLayoutElements = [v7 sb_arrayByInsertingOrMovingObject:v5 toIndex:0];
   }
 
-  return v3;
+  return topMostLayoutElements;
 }
 
 uint64_t __68__SBSplitDisplayItemCrossblurSwitcherModifier_topMostLayoutElements__block_invoke(uint64_t a1, void *a2)

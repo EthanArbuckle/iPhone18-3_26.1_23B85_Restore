@@ -1,21 +1,21 @@
 @interface HMFSystemPreference
-- (HMFSystemPreference)initWithKey:(id)a3 options:(unint64_t)a4 domain:(id)a5 defaultValue:(id)a6 parent:(id)a7;
+- (HMFSystemPreference)initWithKey:(id)key options:(unint64_t)options domain:(id)domain defaultValue:(id)value parent:(id)parent;
 - (NSString)propertyDescription;
 @end
 
 @implementation HMFSystemPreference
 
-- (HMFSystemPreference)initWithKey:(id)a3 options:(unint64_t)a4 domain:(id)a5 defaultValue:(id)a6 parent:(id)a7
+- (HMFSystemPreference)initWithKey:(id)key options:(unint64_t)options domain:(id)domain defaultValue:(id)value parent:(id)parent
 {
-  v12 = a5;
+  domainCopy = domain;
   v20.receiver = self;
   v20.super_class = HMFSystemPreference;
-  v13 = [(HMFPreference *)&v20 initWithKey:a3 options:a4 defaultValue:a6 parent:a7];
+  v13 = [(HMFPreference *)&v20 initWithKey:key options:options defaultValue:value parent:parent];
   if (v13)
   {
-    if (v12)
+    if (domainCopy)
     {
-      v14 = [v12 copy];
+      v14 = [domainCopy copy];
     }
 
     else
@@ -24,14 +24,14 @@
     }
 
     objc_storeStrong(&v13->_domain, v14);
-    if (v12)
+    if (domainCopy)
     {
     }
 
     v15 = v13;
     v16 = [(HMFPreference *)v15 key];
-    v17 = [(HMFSystemPreference *)v15 domain];
-    v18 = CFPreferencesCopyAppValue(v16, v17);
+    domain = [(HMFSystemPreference *)v15 domain];
+    v18 = CFPreferencesCopyAppValue(v16, domain);
 
     if (v18)
     {
@@ -45,10 +45,10 @@
 - (NSString)propertyDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMFSystemPreference *)self domain];
+  domain = [(HMFSystemPreference *)self domain];
   v5 = [(HMFPreference *)self key];
-  v6 = [(HMFPreference *)self value];
-  v7 = [v3 stringWithFormat:@", Domain = %@, Key = %@, Value = %@", v4, v5, v6];
+  value = [(HMFPreference *)self value];
+  v7 = [v3 stringWithFormat:@", Domain = %@, Key = %@, Value = %@", domain, v5, value];
 
   return v7;
 }

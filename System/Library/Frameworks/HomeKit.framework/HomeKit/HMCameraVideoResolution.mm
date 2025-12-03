@@ -1,47 +1,47 @@
 @interface HMCameraVideoResolution
-- (BOOL)isEqual:(id)a3;
-- (HMCameraVideoResolution)initWithCoder:(id)a3;
-- (HMCameraVideoResolution)initWithVideoResolutionType:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMCameraVideoResolution)initWithCoder:(id)coder;
+- (HMCameraVideoResolution)initWithVideoResolutionType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMCameraVideoResolution
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(HMCameraVideoResolution *)self videoResolution];
-  v6 = [v4 videoResolution];
+  equalCopy = equal;
+  videoResolution = [(HMCameraVideoResolution *)self videoResolution];
+  videoResolution2 = [equalCopy videoResolution];
 
-  return v5 == v6;
+  return videoResolution == videoResolution2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[HMCameraVideoResolution videoResolution](self forKey:{"videoResolution"), @"a"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[HMCameraVideoResolution videoResolution](self forKey:{"videoResolution"), @"a"}];
 }
 
-- (HMCameraVideoResolution)initWithCoder:(id)a3
+- (HMCameraVideoResolution)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = HMCameraVideoResolution;
   v5 = [(HMCameraVideoResolution *)&v7 init];
   if (v5)
   {
-    v5->_videoResolution = [v4 decodeIntegerForKey:@"a"];
+    v5->_videoResolution = [coderCopy decodeIntegerForKey:@"a"];
   }
 
   return v5;
 }
 
-- (HMCameraVideoResolution)initWithVideoResolutionType:(unint64_t)a3
+- (HMCameraVideoResolution)initWithVideoResolutionType:(unint64_t)type
 {
   if ([HMCameraVideoResolution isValid:?])
   {
@@ -50,19 +50,19 @@
     v5 = [(HMCameraVideoResolution *)&v8 init];
     if (v5)
     {
-      v5->_videoResolution = a3;
+      v5->_videoResolution = type;
     }
 
     self = v5;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

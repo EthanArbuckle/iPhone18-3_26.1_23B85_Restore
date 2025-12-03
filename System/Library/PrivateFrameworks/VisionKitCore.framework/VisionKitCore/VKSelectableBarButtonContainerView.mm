@@ -1,14 +1,14 @@
 @interface VKSelectableBarButtonContainerView
 - (CGSize)_buttonSize;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIImage)image;
 - (VKSelectableBarButtonContainerView)init;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)updateForMiniBarState:(BOOL)a3;
+- (void)setImage:(id)image;
+- (void)setSelected:(BOOL)selected;
+- (void)updateForMiniBarState:(BOOL)state;
 @end
 
 @implementation VKSelectableBarButtonContainerView
@@ -18,9 +18,9 @@
   v4.receiver = self;
   v4.super_class = VKSelectableBarButtonContainerView;
   [(VKSelectableBarButtonContainerView *)&v4 didMoveToWindow];
-  v3 = [(VKSelectableBarButtonContainerView *)self window];
+  window = [(VKSelectableBarButtonContainerView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(VKSelectableBarButtonContainerView *)self setNeedsLayout];
     [(VKSelectableBarButtonContainerView *)self layoutIfNeeded];
@@ -51,22 +51,22 @@
   return v3;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(VKSelectableBarButtonContainerView *)self button];
-  [v5 setImage:v4 forState:0];
+  imageCopy = image;
+  button = [(VKSelectableBarButtonContainerView *)self button];
+  [button setImage:imageCopy forState:0];
 
-  v6 = [(VKSelectableBarButtonContainerView *)self button];
-  [v6 setContentMode:4];
+  button2 = [(VKSelectableBarButtonContainerView *)self button];
+  [button2 setContentMode:4];
 
   [(VKSelectableBarButtonContainerView *)self setNeedsLayout];
 }
 
 - (UIImage)image
 {
-  v2 = [(VKSelectableBarButtonContainerView *)self button];
-  v3 = [v2 imageForState:0];
+  button = [(VKSelectableBarButtonContainerView *)self button];
+  v3 = [button imageForState:0];
 
   return v3;
 }
@@ -76,26 +76,26 @@
   v18.receiver = self;
   v18.super_class = VKSelectableBarButtonContainerView;
   [(VKSelectableBarButtonContainerView *)&v18 layoutSubviews];
-  v3 = [(VKSelectableBarButtonContainerView *)self button];
-  [v3 intrinsicContentSize];
+  button = [(VKSelectableBarButtonContainerView *)self button];
+  [button intrinsicContentSize];
   v5 = v4;
   [(VKSelectableBarButtonContainerView *)self bounds];
   v10 = VKMCenterOfRect(v6, v7, v8, v9);
-  [v3 setFrame:{VKMRectWithCenterAndSize(v10, v11, v5)}];
+  [button setFrame:{VKMRectWithCenterAndSize(v10, v11, v5)}];
   [(VKSelectableBarButtonContainerView *)self cornerRadiusRatio];
   v13 = v5 * v12;
-  v14 = [v3 layer];
-  [v14 setCornerRadius:v13];
+  layer = [button layer];
+  [layer setCornerRadius:v13];
 
   v15 = *MEMORY[0x1E69796E8];
-  v16 = [v3 layer];
-  [v16 setCornerCurve:v15];
+  layer2 = [button layer];
+  [layer2 setCornerCurve:v15];
 
-  v17 = [v3 layer];
-  [v17 setMasksToBounds:1];
+  layer3 = [button layer];
+  [layer3 setMasksToBounds:1];
 }
 
-- (void)updateForMiniBarState:(BOOL)a3
+- (void)updateForMiniBarState:(BOOL)state
 {
   [(VKSelectableBarButtonContainerView *)self setNeedsLayout];
 
@@ -115,12 +115,12 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(VKSelectableBarButtonContainerView *)self button];
-  [v6 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  button = [(VKSelectableBarButtonContainerView *)self button];
+  [button sizeThatFits:{width, height}];
   v8 = v7;
 
   [(VKSelectableBarButtonContainerView *)self width];
@@ -130,14 +130,14 @@
   return result;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  self->_selected = a3;
+  selectedCopy = selected;
+  self->_selected = selected;
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  v5 = [(VKSelectableBarButtonContainerView *)self button];
-  [v5 setSelected:v3];
+  button = [(VKSelectableBarButtonContainerView *)self button];
+  [button setSelected:selectedCopy];
 
   v6 = MEMORY[0x1E6979518];
 
@@ -146,13 +146,13 @@
 
 - (CGSize)_buttonSize
 {
-  v3 = [(VKSelectableBarButtonContainerView *)self button];
-  [v3 intrinsicContentSize];
+  button = [(VKSelectableBarButtonContainerView *)self button];
+  [button intrinsicContentSize];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(VKSelectableBarButtonContainerView *)self traitCollection];
-  if ([v8 vk_hasCompactHeight])
+  traitCollection = [(VKSelectableBarButtonContainerView *)self traitCollection];
+  if ([traitCollection vk_hasCompactHeight])
   {
     [(VKSelectableBarButtonContainerView *)self compactPadding];
   }

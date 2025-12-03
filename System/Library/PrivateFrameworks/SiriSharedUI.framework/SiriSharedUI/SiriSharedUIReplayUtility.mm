@@ -1,20 +1,20 @@
 @interface SiriSharedUIReplayUtility
 + (NSString)replayOverridePathKey;
 + (_TtC12SiriSharedUI25SiriSharedUIReplayUtility)shared;
-- (BOOL)hasContentAt:(CGPoint)a3;
+- (BOOL)hasContentAt:(CGPoint)at;
 - (BOOL)isReplaying;
 - (BOOL)isSiriDetached;
 - (BOOL)shouldSkipAutoDismissal;
-- (void)addReplayControlTo:(id)a3;
-- (void)received:(id)a3;
-- (void)registerWithReplayCallback:(id)a3;
+- (void)addReplayControlTo:(id)to;
+- (void)received:(id)received;
+- (void)registerWithReplayCallback:(id)callback;
 - (void)removeReplayControl;
-- (void)replayAllWithIntervalSeconds:(unint64_t)a3 recordingUrl:(id)a4 completion:(id)a5;
-- (void)replayAtIndex:(int64_t)a3 recordingUrl:(id)a4;
+- (void)replayAllWithIntervalSeconds:(unint64_t)seconds recordingUrl:(id)url completion:(id)completion;
+- (void)replayAtIndex:(int64_t)index recordingUrl:(id)url;
 - (void)replayWithTestEnviormentData;
-- (void)setIsReplaying:(BOOL)a3;
+- (void)setIsReplaying:(BOOL)replaying;
 - (void)setIsSiriDetached;
-- (void)setIsSiriDetached:(BOOL)a3;
+- (void)setIsSiriDetached:(BOOL)detached;
 @end
 
 @implementation SiriSharedUIReplayUtility
@@ -33,7 +33,7 @@
 
 - (BOOL)shouldSkipAutoDismissal
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21E3EE024();
 
   return v3 & 1;
@@ -53,11 +53,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsReplaying:(BOOL)a3
+- (void)setIsReplaying:(BOOL)replaying
 {
   v5 = OBJC_IVAR____TtC12SiriSharedUI25SiriSharedUIReplayUtility_isReplaying;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = replaying;
 }
 
 - (BOOL)isSiriDetached
@@ -67,20 +67,20 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsSiriDetached:(BOOL)a3
+- (void)setIsSiriDetached:(BOOL)detached
 {
   v5 = OBJC_IVAR____TtC12SiriSharedUI25SiriSharedUIReplayUtility_isSiriDetached;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = detached;
 }
 
-- (void)replayAllWithIntervalSeconds:(unint64_t)a3 recordingUrl:(id)a4 completion:(id)a5
+- (void)replayAllWithIntervalSeconds:(unint64_t)seconds recordingUrl:(id)url completion:(id)completion
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CEC6700);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v16 - v10;
-  v12 = _Block_copy(a5);
-  if (a4)
+  v12 = _Block_copy(completion);
+  if (url)
   {
     sub_21E4DB568();
     v13 = sub_21E4DB588();
@@ -94,21 +94,21 @@
   }
 
   _Block_copy(v12);
-  v15 = self;
+  selfCopy = self;
   sub_21E4AF664(v11);
-  sub_21E4B1BD8(a3, v15, v12);
+  sub_21E4B1BD8(seconds, selfCopy, v12);
   _Block_release(v12);
 
   _Block_release(v12);
   sub_21E424BC0(v11, &qword_27CEC6700);
 }
 
-- (void)replayAtIndex:(int64_t)a3 recordingUrl:(id)a4
+- (void)replayAtIndex:(int64_t)index recordingUrl:(id)url
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CEC6700);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v13 - v8;
-  if (a4)
+  if (url)
   {
     sub_21E4DB568();
     v10 = sub_21E4DB588();
@@ -121,18 +121,18 @@
     (*(*(v11 - 8) + 56))(v9, 1, 1, v11);
   }
 
-  v12 = self;
+  selfCopy = self;
   sub_21E4AF664(v9);
-  sub_21E4B012C(a3);
+  sub_21E4B012C(index);
 
   sub_21E424BC0(v9, &qword_27CEC6700);
 }
 
-- (void)addReplayControlTo:(id)a3
+- (void)addReplayControlTo:(id)to
 {
-  v4 = a3;
-  v5 = self;
-  sub_21E4AC924(v4);
+  toCopy = to;
+  selfCopy = self;
+  sub_21E4AC924(toCopy);
 }
 
 - (void)removeReplayControl
@@ -140,13 +140,13 @@
   v2 = *(&self->super.isa + OBJC_IVAR____TtC12SiriSharedUI25SiriSharedUIReplayUtility_viewHostingController);
   if (v2)
   {
-    v6 = self;
+    selfCopy = self;
     v3 = v2;
-    v4 = [v3 view];
-    if (v4)
+    view = [v3 view];
+    if (view)
     {
-      v5 = v4;
-      [v4 removeFromSuperview];
+      v5 = view;
+      [view removeFromSuperview];
 
       [v3 removeFromParentViewController];
     }
@@ -158,23 +158,23 @@
   }
 }
 
-- (void)received:(id)a3
+- (void)received:(id)received
 {
-  v4 = a3;
-  v5 = self;
-  sub_21E4AD110(v4);
+  receivedCopy = received;
+  selfCopy = self;
+  sub_21E4AD110(receivedCopy);
 }
 
-- (void)registerWithReplayCallback:(id)a3
+- (void)registerWithReplayCallback:(id)callback
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(callback);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR____TtC12SiriSharedUI25SiriSharedUIReplayUtility_storedCallback);
   v7 = *(&self->super.isa + OBJC_IVAR____TtC12SiriSharedUI25SiriSharedUIReplayUtility_storedCallback);
   *v6 = sub_21E47C4D8;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
 
   sub_21E3F1EB0(v7);
   swift_getKeyPath();
@@ -183,20 +183,20 @@
   sub_21E4DBDF8();
 }
 
-- (BOOL)hasContentAt:(CGPoint)a3
+- (BOOL)hasContentAt:(CGPoint)at
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC12SiriSharedUI25SiriSharedUIReplayUtility_viewHostingController);
   if (v3)
   {
-    y = a3.y;
-    x = a3.x;
-    v6 = self;
+    y = at.y;
+    x = at.x;
+    selfCopy = self;
     v7 = v3;
-    v8 = [v7 view];
-    if (v8)
+    view = [v7 view];
+    if (view)
     {
-      v9 = v8;
-      [v8 frame];
+      v9 = view;
+      [view frame];
       v11 = v10;
       v13 = v12;
       v15 = v14;
@@ -210,7 +210,7 @@
       v19.y = y;
       LOBYTE(v9) = CGRectContainsPoint(v20, v19);
 
-      LOBYTE(v8) = v9;
+      LOBYTE(view) = v9;
     }
 
     else
@@ -221,10 +221,10 @@
 
   else
   {
-    LOBYTE(v8) = 0;
+    LOBYTE(view) = 0;
   }
 
-  return v8;
+  return view;
 }
 
 - (void)setIsSiriDetached
@@ -236,7 +236,7 @@
 
 - (void)replayWithTestEnviormentData
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E4AE3A4();
 }
 

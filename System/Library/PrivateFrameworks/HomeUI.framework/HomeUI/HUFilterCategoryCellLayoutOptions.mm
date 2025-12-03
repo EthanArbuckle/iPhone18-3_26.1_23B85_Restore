@@ -1,16 +1,16 @@
 @interface HUFilterCategoryCellLayoutOptions
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3;
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass;
 - (double)cellHeight;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUFilterCategoryCellLayoutOptions
 
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___HUFilterCategoryCellLayoutOptions;
-  v3 = objc_msgSendSuper2(&v8, sel_defaultOptionsForCellSizeSubclass_, a3);
+  v3 = objc_msgSendSuper2(&v8, sel_defaultOptionsForCellSizeSubclass_, subclass);
   [v3 setIconSize:24.0];
   [v3 setIconToTextPadding:6.0];
   [v3 setInnerTopMargin:5.0];
@@ -27,11 +27,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = HUFilterCategoryCellLayoutOptions;
-  v4 = [(HUGridCellLayoutOptions *)&v8 copyWithZone:a3];
+  v4 = [(HUGridCellLayoutOptions *)&v8 copyWithZone:zone];
   [(HUFilterCategoryCellLayoutOptions *)self iconToTextPadding];
   [v4 setIconToTextPadding:?];
   [(HUFilterCategoryCellLayoutOptions *)self innerTopMargin];
@@ -42,11 +42,11 @@
   [v4 setInnerLeadingMargin:?];
   [(HUFilterCategoryCellLayoutOptions *)self innerTrailingMargin];
   [v4 setInnerTrailingMargin:?];
-  v5 = [(HUFilterCategoryCellLayoutOptions *)self primaryTextFont];
-  [v4 setPrimaryTextFont:v5];
+  primaryTextFont = [(HUFilterCategoryCellLayoutOptions *)self primaryTextFont];
+  [v4 setPrimaryTextFont:primaryTextFont];
 
-  v6 = [(HUFilterCategoryCellLayoutOptions *)self secondaryTextFont];
-  [v4 setSecondaryTextFont:v6];
+  secondaryTextFont = [(HUFilterCategoryCellLayoutOptions *)self secondaryTextFont];
+  [v4 setSecondaryTextFont:secondaryTextFont];
 
   return v4;
 }
@@ -57,11 +57,11 @@
   v4 = v3;
   [(HUGridCellLayoutOptions *)self iconSize];
   v6 = v5;
-  v7 = [(HUFilterCategoryCellLayoutOptions *)self primaryTextFont];
-  [v7 lineHeight];
+  primaryTextFont = [(HUFilterCategoryCellLayoutOptions *)self primaryTextFont];
+  [primaryTextFont lineHeight];
   v9 = v8 + 2.0;
-  v10 = [(HUFilterCategoryCellLayoutOptions *)self secondaryTextFont];
-  [v10 lineHeight];
+  secondaryTextFont = [(HUFilterCategoryCellLayoutOptions *)self secondaryTextFont];
+  [secondaryTextFont lineHeight];
   v12 = v9 + v11;
 
   if (v6 >= v12)

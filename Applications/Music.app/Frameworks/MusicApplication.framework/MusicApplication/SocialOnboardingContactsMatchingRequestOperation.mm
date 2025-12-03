@@ -1,22 +1,22 @@
 @interface SocialOnboardingContactsMatchingRequestOperation
 - (_TtC16MusicApplication48SocialOnboardingContactsMatchingRequestOperation)init;
 - (void)execute;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation SocialOnboardingContactsMatchingRequestOperation
 
 - (void)execute
 {
-  v2 = self;
+  selfCopy = self;
   sub_304410();
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  sub_304A58(a3);
+  selfCopy = self;
+  errorCopy = error;
+  sub_304A58(error);
 }
 
 - (_TtC16MusicApplication48SocialOnboardingContactsMatchingRequestOperation)init

@@ -1,68 +1,68 @@
 @interface WFParsedForecastData
-- (id)objectForForecastType:(unint64_t)a3;
+- (id)objectForForecastType:(unint64_t)type;
 @end
 
 @implementation WFParsedForecastData
 
-- (id)objectForForecastType:(unint64_t)a3
+- (id)objectForForecastType:(unint64_t)type
 {
-  v4 = 0;
-  if (a3 > 15)
+  pollenForecasts = 0;
+  if (type > 15)
   {
-    if (a3 <= 63)
+    if (type <= 63)
     {
-      if (a3 == 16)
+      if (type == 16)
       {
-        v4 = [(WFParsedForecastData *)self pollenForecasts];
+        pollenForecasts = [(WFParsedForecastData *)self pollenForecasts];
       }
 
-      else if (a3 == 32)
+      else if (type == 32)
       {
-        v4 = [(WFParsedForecastData *)self lastTwentyFourHoursOfObservations];
+        pollenForecasts = [(WFParsedForecastData *)self lastTwentyFourHoursOfObservations];
       }
 
       goto LABEL_19;
     }
 
-    if (a3 != 64 && a3 != 128)
+    if (type != 64 && type != 128)
     {
       goto LABEL_19;
     }
 
 LABEL_15:
-    v4 = [(WFParsedForecastData *)self currentConditions];
+    pollenForecasts = [(WFParsedForecastData *)self currentConditions];
     goto LABEL_19;
   }
 
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
-      v4 = [(WFParsedForecastData *)self hourlyForecasts];
+      pollenForecasts = [(WFParsedForecastData *)self hourlyForecasts];
     }
 
-    else if (a3 == 8)
+    else if (type == 8)
     {
-      v4 = [(WFParsedForecastData *)self dailyForecasts];
+      pollenForecasts = [(WFParsedForecastData *)self dailyForecasts];
     }
 
     goto LABEL_19;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    v4 = [(WFParsedForecastData *)self airQualityObservations];
+    pollenForecasts = [(WFParsedForecastData *)self airQualityObservations];
     goto LABEL_19;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     goto LABEL_15;
   }
 
 LABEL_19:
 
-  return v4;
+  return pollenForecasts;
 }
 
 @end

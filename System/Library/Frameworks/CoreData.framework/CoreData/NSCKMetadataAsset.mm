@@ -1,19 +1,19 @@
 @interface NSCKMetadataAsset
 - (BOOL)_validate:(_BOOL8)result;
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForUpdate:(id *)a3;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForUpdate:(id *)update;
 @end
 
 @implementation NSCKMetadataAsset
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v7.receiver = self;
   v7.super_class = NSCKMetadataAsset;
   v5 = [(NSManagedObject *)&v7 validateForInsert:?];
   if (v5)
   {
-    LOBYTE(v5) = [(NSCKMetadataAsset *)self _validate:a3];
+    LOBYTE(v5) = [(NSCKMetadataAsset *)self _validate:insert];
   }
 
   return v5;
@@ -83,14 +83,14 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)validateForUpdate:(id *)a3
+- (BOOL)validateForUpdate:(id *)update
 {
   v7.receiver = self;
   v7.super_class = NSCKMetadataAsset;
   v5 = [(NSManagedObject *)&v7 validateForUpdate:?];
   if (v5)
   {
-    LOBYTE(v5) = [(NSCKMetadataAsset *)self _validate:a3];
+    LOBYTE(v5) = [(NSCKMetadataAsset *)self _validate:update];
   }
 
   return v5;

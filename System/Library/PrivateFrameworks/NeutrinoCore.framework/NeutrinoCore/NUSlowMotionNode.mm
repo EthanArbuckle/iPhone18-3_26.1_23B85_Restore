@@ -1,22 +1,22 @@
 @interface NUSlowMotionNode
 - (BOOL)requiresVideoComposition;
-- (NUSlowMotionNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (NUSlowMotionNode)initWithTimeRange:(id *)a3 rate:(float)a4 input:(id)a5;
-- (id)_evaluateAudioMix:(id *)a3;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateVideo:(id *)a3;
-- (id)_evaluateVideoComposition:(id *)a3;
-- (id)_evaluateVideoProperties:(id *)a3;
-- (id)_transformWithError:(id *)a3;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (NUSlowMotionNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (NUSlowMotionNode)initWithTimeRange:(id *)range rate:(float)rate input:(id)input;
+- (id)_evaluateAudioMix:(id *)mix;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateVideo:(id *)video;
+- (id)_evaluateVideoComposition:(id *)composition;
+- (id)_evaluateVideoProperties:(id *)properties;
+- (id)_transformWithError:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUSlowMotionNode
 
-- (id)_evaluateAudioMix:(id *)a3
+- (id)_evaluateAudioMix:(id *)mix
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!mix)
   {
     v12 = NUAssertLogger_5458();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -37,8 +37,8 @@
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v19;
         v30 = 2114;
@@ -49,8 +49,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -60,46 +60,46 @@
   }
 
   v5 = [(NURenderNode *)self inputForKey:*MEMORY[0x1E695FAB0]];
-  v6 = [v5 outputVideo:a3];
+  v6 = [v5 outputVideo:mix];
   [(NUSlowMotionNode *)self rate];
   v8 = v7;
   [(NUSlowMotionNode *)self range];
   LODWORD(v9) = v8;
-  v10 = [NUSlowMotionUtilities slowMotionAudioMixFromAsset:v6 rate:buf range:a3 error:v9];
+  v10 = [NUSlowMotionUtilities slowMotionAudioMixFromAsset:v6 rate:buf range:mix error:v9];
 
   return v10;
 }
 
-- (id)_evaluateVideoProperties:(id *)a3
+- (id)_evaluateVideoProperties:(id *)properties
 {
   v20.receiver = self;
   v20.super_class = NUSlowMotionNode;
-  v4 = [(NURenderNode *)&v20 _evaluateVideoProperties:a3];
+  v4 = [(NURenderNode *)&v20 _evaluateVideoProperties:properties];
   v5 = v4;
   if (v4)
   {
     v6 = MEMORY[0x1E6987FE0];
-    v7 = [(_NUVideoProperties *)v4 metadata];
-    v8 = [v6 metadataItemsFromArray:v7 withKey:*MEMORY[0x1E69878B0] keySpace:*MEMORY[0x1E6987850]];
-    v9 = [v8 firstObject];
+    metadata = [(_NUVideoProperties *)v4 metadata];
+    v8 = [v6 metadataItemsFromArray:metadata withKey:*MEMORY[0x1E69878B0] keySpace:*MEMORY[0x1E6987850]];
+    firstObject = [v8 firstObject];
 
-    if (v9)
+    if (firstObject)
     {
-      v10 = [v9 numberValue];
-      v11 = [v10 integerValue];
+      numberValue = [firstObject numberValue];
+      integerValue = [numberValue integerValue];
 
       [(NUSlowMotionNode *)self rate];
       v13 = fabs(v12 + -1.0) <= 0.00000999999975;
-      if (v11 != v13)
+      if (integerValue != v13)
       {
-        v14 = [v9 mutableCopy];
+        v14 = [firstObject mutableCopy];
         v15 = [MEMORY[0x1E696AD98] numberWithInteger:v13];
         [v14 setValue:v15];
 
-        v16 = [(_NUVideoProperties *)v5 metadata];
-        v17 = [v16 mutableCopy];
+        metadata2 = [(_NUVideoProperties *)v5 metadata];
+        v17 = [metadata2 mutableCopy];
 
-        [v17 removeObject:v9];
+        [v17 removeObject:firstObject];
         [v17 addObject:v14];
         v18 = [[_NUVideoProperties alloc] initWithProperties:v5];
         [(_NUVideoProperties *)v18 setMetadata:v17];
@@ -114,10 +114,10 @@
   return v5;
 }
 
-- (id)_evaluateVideo:(id *)a3
+- (id)_evaluateVideo:(id *)video
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!video)
   {
     v12 = NUAssertLogger_5458();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -138,8 +138,8 @@
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v19;
         v30 = 2114;
@@ -150,8 +150,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -161,20 +161,20 @@
   }
 
   v5 = [(NURenderNode *)self inputForKey:*MEMORY[0x1E695FAB0]];
-  v6 = [v5 outputVideo:a3];
+  v6 = [v5 outputVideo:video];
   [(NUSlowMotionNode *)self rate];
   v8 = v7;
   [(NUSlowMotionNode *)self range];
   LODWORD(v9) = v8;
-  v10 = [NUSlowMotionUtilities slowMotionVideoFromAsset:v6 rate:buf range:a3 error:v9];
+  v10 = [NUSlowMotionUtilities slowMotionVideoFromAsset:v6 rate:buf range:video error:v9];
 
   return v10;
 }
 
-- (id)_evaluateVideoComposition:(id *)a3
+- (id)_evaluateVideoComposition:(id *)composition
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!composition)
   {
     v20 = NUAssertLogger_5458();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -195,8 +195,8 @@
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v27;
         *&buf[12] = 2114;
@@ -207,8 +207,8 @@
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -224,22 +224,22 @@
     goto LABEL_13;
   }
 
-  v6 = [(NURenderNode *)self inputs];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v7 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
-  v8 = [v7 outputVideoComposition:a3];
+  v8 = [v7 outputVideoComposition:composition];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 instructions];
-    v11 = [v10 count];
+    instructions = [v8 instructions];
+    v11 = [instructions count];
 
     if (v11 == 1)
     {
-      v12 = [NUVideoUtilities firstEnabledVideoTrackInAsset:v5 error:a3];
+      v12 = [NUVideoUtilities firstEnabledVideoTrackInAsset:v5 error:composition];
       if (v12)
       {
-        v13 = [v7 videoProperties:a3];
+        v13 = [v7 videoProperties:composition];
         v14 = [v9 mutableCopy];
         v15 = [NUVideoCompositionInstruction instructionForVideoTrack:v12];
         v39[0] = v15;
@@ -264,8 +264,8 @@
       goto LABEL_12;
     }
 
-    v18 = [v9 instructions];
-    *a3 = [NUError unsupportedError:@"Unsupported video configuration" object:v18];
+    instructions2 = [v9 instructions];
+    *composition = [NUError unsupportedError:@"Unsupported video configuration" object:instructions2];
   }
 
   v14 = 0;
@@ -279,24 +279,24 @@ LABEL_13:
 - (BOOL)requiresVideoComposition
 {
   v2 = [(NURenderNode *)self inputForKey:*MEMORY[0x1E695FAB0]];
-  v3 = [v2 requiresVideoComposition];
+  requiresVideoComposition = [v2 requiresVideoComposition];
 
-  return v3;
+  return requiresVideoComposition;
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v4 = [(NURenderNode *)self inputForKey:*MEMORY[0x1E695FAB0]];
-  v5 = [v4 _evaluateImage:a3];
+  v5 = [v4 _evaluateImage:image];
 
   return v5;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v11.receiver = self;
   v11.super_class = NUSlowMotionNode;
-  v7 = [(NURenderNode *)&v11 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v7 = [(NURenderNode *)&v11 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
   if (v7)
   {
     v9 = *&self->_range.start.epoch;
@@ -310,7 +310,7 @@ LABEL_13:
   return v7;
 }
 
-- (id)_transformWithError:(id *)a3
+- (id)_transformWithError:(id *)error
 {
   v5 = *&self->_range.start.epoch;
   *&v24.value = *&self->_range.start.value;
@@ -321,10 +321,10 @@ LABEL_13:
   memset(&v23, 0, sizeof(v23));
   *&range.duration.timescale = v6;
   CMTimeRangeGetEnd(&v23, &range);
-  v7 = [(NURenderNode *)self inputs];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v8 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
-  v9 = [v8 _evaluateVideo:a3];
+  v9 = [v8 _evaluateVideo:error];
   v10 = v9;
   if (v9)
   {
@@ -356,37 +356,37 @@ LABEL_13:
 
   else
   {
-    [NUError errorWithCode:1 reason:@"[NUSlowMotionNode _transformWithError] input's _evaluateVideo failed." object:0 underlyingError:*a3];
-    *a3 = v17 = 0;
+    [NUError errorWithCode:1 reason:@"[NUSlowMotionNode _transformWithError] input's _evaluateVideo failed." object:0 underlyingError:*error];
+    *error = v17 = 0;
   }
 
   return v17;
 }
 
-- (NUSlowMotionNode)initWithTimeRange:(id *)a3 rate:(float)a4 input:(id)a5
+- (NUSlowMotionNode)initWithTimeRange:(id *)range rate:(float)rate input:(id)input
 {
   v28[2] = *MEMORY[0x1E69E9840];
   *&start.start.value = *MEMORY[0x1E6960CC0];
   start.start.epoch = *(MEMORY[0x1E6960CC0] + 16);
   *&duration.start.value = *MEMORY[0x1E6960C88];
   duration.start.epoch = *(MEMORY[0x1E6960C88] + 16);
-  v8 = a5;
+  inputCopy = input;
   CMTimeRangeMake(&otherRange, &start.start, &duration.start);
-  v9 = *&a3->var0.var3;
-  *&duration.start.value = *&a3->var0.var0;
+  v9 = *&range->var0.var3;
+  *&duration.start.value = *&range->var0.var0;
   *&duration.start.epoch = v9;
-  *&duration.duration.timescale = *&a3->var1.var1;
+  *&duration.duration.timescale = *&range->var1.var1;
   CMTimeRangeGetIntersection(&start, &duration, &otherRange);
   v10 = *&start.start.epoch;
-  *&a3->var0.var0 = *&start.start.value;
-  *&a3->var0.var3 = v10;
-  *&a3->var1.var1 = *&start.duration.timescale;
-  v11 = *&a3->var0.var3;
-  *&start.start.value = *&a3->var0.var0;
+  *&range->var0.var0 = *&start.start.value;
+  *&range->var0.var3 = v10;
+  *&range->var1.var1 = *&start.duration.timescale;
+  v11 = *&range->var0.var3;
+  *&start.start.value = *&range->var0.var0;
   *&start.start.epoch = v11;
-  *&start.duration.timescale = *&a3->var1.var1;
+  *&start.duration.timescale = *&range->var1.var1;
   v12 = [MEMORY[0x1E696B098] valueWithCMTimeRange:&start];
-  *&v13 = a4;
+  *&v13 = rate;
   v14 = [MEMORY[0x1E696AD98] numberWithFloat:v13];
   v27[0] = @"range";
   v27[1] = @"rate";
@@ -394,27 +394,27 @@ LABEL_13:
   v28[1] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
   v25 = *MEMORY[0x1E695FAB0];
-  v26 = v8;
+  v26 = inputCopy;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
   v21.receiver = self;
   v21.super_class = NUSlowMotionNode;
   v17 = [(NURenderNode *)&v21 initWithSettings:v15 inputs:v16];
 
-  v19 = *&a3->var0.var3;
-  v18 = *&a3->var1.var1;
-  *(v17 + 184) = *&a3->var0.var0;
+  v19 = *&range->var0.var3;
+  v18 = *&range->var1.var1;
+  *(v17 + 184) = *&range->var0.var0;
   *(v17 + 200) = v19;
   *(v17 + 216) = v18;
-  *(v17 + 42) = a4;
+  *(v17 + 42) = rate;
 
   return v17;
 }
 
-- (NUSlowMotionNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NUSlowMotionNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_5478);
@@ -458,8 +458,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -475,8 +475,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;

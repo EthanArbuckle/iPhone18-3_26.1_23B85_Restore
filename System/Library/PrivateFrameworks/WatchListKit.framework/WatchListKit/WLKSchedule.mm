@@ -1,23 +1,23 @@
 @interface WLKSchedule
-- (BOOL)_isDate:(id)a3 containedByDate:(id)a4 andDate:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isDate:(id)date containedByDate:(id)byDate andDate:(id)andDate;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)events;
-- (WLKSchedule)initWithDictionary:(id)a3;
-- (id)adjacentEventsForDate:(id)a3 fuzziness:(double)a4;
-- (id)eventAfterDate:(id)a3;
-- (id)eventForDate:(id)a3;
-- (id)eventForDate:(id)a3 fuzziness:(double)a4;
+- (WLKSchedule)initWithDictionary:(id)dictionary;
+- (id)adjacentEventsForDate:(id)date fuzziness:(double)fuzziness;
+- (id)eventAfterDate:(id)date;
+- (id)eventForDate:(id)date;
+- (id)eventForDate:(id)date fuzziness:(double)fuzziness;
 - (void)prune;
 @end
 
 @implementation WLKSchedule
 
-- (WLKSchedule)initWithDictionary:(id)a3
+- (WLKSchedule)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (![v4 count])
+  dictionaryCopy = dictionary;
+  if (![dictionaryCopy count])
   {
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
@@ -26,27 +26,27 @@
   v5 = [(WLKSchedule *)&v27 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
-    v7 = [v4 wlk_arrayForKey:@"schedule"];
+    array = [MEMORY[0x277CBEB18] array];
+    v7 = [dictionaryCopy wlk_arrayForKey:@"schedule"];
     if (v7)
     {
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __34__WLKSchedule_initWithDictionary___block_invoke;
       v25[3] = &unk_279E5F4A8;
-      v26 = v6;
+      v26 = array;
       [v7 enumerateObjectsUsingBlock:v25];
-      v8 = [v4 wlk_stringForKey:@"serviceId"];
+      v8 = [dictionaryCopy wlk_stringForKey:@"serviceId"];
       v9 = [v8 copy];
       serviceID = v5->_serviceID;
       v5->_serviceID = v9;
 
-      v11 = [v4 wlk_dateFromMillisecondsSince1970ForKey:@"scheduleStartTime"];
+      v11 = [dictionaryCopy wlk_dateFromMillisecondsSince1970ForKey:@"scheduleStartTime"];
       v12 = [v11 copy];
       startDate = v5->_startDate;
       v5->_startDate = v12;
 
-      v14 = [v4 wlk_dateFromMillisecondsSince1970ForKey:@"scheduleEndTime"];
+      v14 = [dictionaryCopy wlk_dateFromMillisecondsSince1970ForKey:@"scheduleEndTime"];
       v15 = [v14 copy];
       endDate = v5->_endDate;
       v5->_endDate = v15;
@@ -56,35 +56,35 @@
 
     else
     {
-      v24 = [v4 wlk_stringForKey:@"canonicalId"];
+      v24 = [dictionaryCopy wlk_stringForKey:@"canonicalId"];
 
       if (!v24)
       {
         goto LABEL_6;
       }
 
-      v17 = [[WLKEvent alloc] initWithDictionary:v4];
+      v17 = [[WLKEvent alloc] initWithDictionary:dictionaryCopy];
       if (v17)
       {
-        [(NSMutableArray *)v6 addObject:v17];
+        [(NSMutableArray *)array addObject:v17];
       }
     }
 
 LABEL_6:
     mutableEvents = v5->_mutableEvents;
-    v5->_mutableEvents = v6;
-    v19 = v6;
+    v5->_mutableEvents = array;
+    v19 = array;
 
-    v20 = [v4 copy];
+    v20 = [dictionaryCopy copy];
     dictionary = v5->_dictionary;
     v5->_dictionary = v20;
   }
 
   self = v5;
-  v22 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v22;
+  return selfCopy;
 }
 
 void __34__WLKSchedule_initWithDictionary___block_invoke(uint64_t a1, void *a2)
@@ -107,10 +107,10 @@ void __34__WLKSchedule_initWithDictionary___block_invoke(uint64_t a1, void *a2)
   return v2;
 }
 
-- (id)eventForDate:(id)a3
+- (id)eventForDate:(id)date
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -131,9 +131,9 @@ void __34__WLKSchedule_initWithDictionary___block_invoke(uint64_t a1, void *a2)
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 startDate];
-        v12 = [v10 endDate];
-        v13 = [(WLKSchedule *)self _isDate:v4 containedByDate:v11 andDate:v12];
+        startDate = [v10 startDate];
+        endDate = [v10 endDate];
+        v13 = [(WLKSchedule *)self _isDate:dateCopy containedByDate:startDate andDate:endDate];
 
         if (v13)
         {
@@ -160,10 +160,10 @@ LABEL_11:
   return v14;
 }
 
-- (id)eventForDate:(id)a3 fuzziness:(double)a4
+- (id)eventForDate:(id)date fuzziness:(double)fuzziness
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dateCopy = date;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -184,9 +184,9 @@ LABEL_11:
 
         v11 = *(*(&v18 + 1) + 8 * i);
         v12 = objc_alloc(MEMORY[0x277CCA970]);
-        v13 = [v12 initWithStartDate:v6 duration:{a4, v18}];
-        v14 = [v11 startDate];
-        v15 = [v13 containsDate:v14];
+        v13 = [v12 initWithStartDate:dateCopy duration:{fuzziness, v18}];
+        startDate = [v11 startDate];
+        v15 = [v13 containsDate:startDate];
 
         if (v15)
         {
@@ -213,11 +213,11 @@ LABEL_11:
   return v8;
 }
 
-- (id)adjacentEventsForDate:(id)a3 fuzziness:(double)a4
+- (id)adjacentEventsForDate:(id)date fuzziness:(double)fuzziness
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v20 = [MEMORY[0x277CBEB18] array];
+  dateCopy = date;
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -238,15 +238,15 @@ LABEL_11:
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v12 startDate];
-        v14 = [v13 dateByAddingTimeInterval:-a4];
+        startDate = [v12 startDate];
+        v14 = [startDate dateByAddingTimeInterval:-fuzziness];
 
-        v15 = [v12 endDate];
-        v16 = [v15 dateByAddingTimeInterval:a4];
+        endDate = [v12 endDate];
+        v16 = [endDate dateByAddingTimeInterval:fuzziness];
 
-        if ([(WLKSchedule *)self _isDate:v6 containedByDate:v14 andDate:v16])
+        if ([(WLKSchedule *)self _isDate:dateCopy containedByDate:v14 andDate:v16])
         {
-          [v20 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -256,16 +256,16 @@ LABEL_11:
     while (v9);
   }
 
-  v17 = [v20 copy];
+  v17 = [array copy];
   v18 = *MEMORY[0x277D85DE8];
 
   return v17;
 }
 
-- (id)eventAfterDate:(id)a3
+- (id)eventAfterDate:(id)date
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -285,8 +285,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 startDate];
-        v11 = [v10 compare:v4];
+        startDate = [v9 startDate];
+        v11 = [startDate compare:dateCopy];
 
         if (v11 == 1)
         {
@@ -315,15 +315,15 @@ LABEL_11:
 - (void)prune
 {
   v8 = objc_alloc_init(MEMORY[0x277CCAB58]);
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   if ([(NSMutableArray *)self->_mutableEvents count])
   {
     v4 = 0;
     do
     {
       v5 = [(NSMutableArray *)self->_mutableEvents objectAtIndex:v4];
-      v6 = [v5 endDate];
-      v7 = [v3 compare:v6];
+      endDate = [v5 endDate];
+      v7 = [date compare:endDate];
 
       if (v7 == 1)
       {
@@ -339,19 +339,19 @@ LABEL_11:
   [(NSMutableArray *)self->_mutableEvents removeObjectsAtIndexes:v8];
 }
 
-- (BOOL)_isDate:(id)a3 containedByDate:(id)a4 andDate:(id)a5
+- (BOOL)_isDate:(id)date containedByDate:(id)byDate andDate:(id)andDate
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 compare:a4] <= 1 && (objc_msgSend(v7, "compare:", v8) + 1) < 2;
+  dateCopy = date;
+  andDateCopy = andDate;
+  v9 = [dateCopy compare:byDate] <= 1 && (objc_msgSend(dateCopy, "compare:", andDateCopy) + 1) < 2;
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -359,7 +359,7 @@ LABEL_11:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSDictionary *)self->_dictionary isEqualToDictionary:v4->_dictionary];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSDictionary *)self->_dictionary isEqualToDictionary:equalCopy->_dictionary];
   }
 
   return v5;

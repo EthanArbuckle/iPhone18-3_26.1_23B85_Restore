@@ -1,17 +1,17 @@
 @interface SVButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (SVButton)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (SVButton)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)touchInsets;
 - (void)_privateButtonTapped;
 @end
 
 @implementation SVButton
 
-- (SVButton)initWithFrame:(CGRect)a3
+- (SVButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SVButton;
-  v3 = [(SVButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SVButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -21,13 +21,13 @@
   return v4;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v28.receiver = self;
   v28.super_class = SVButton;
-  v7 = [(SVButton *)&v28 pointInside:a4 withEvent:?];
+  v7 = [(SVButton *)&v28 pointInside:event withEvent:?];
   [(SVButton *)self bounds];
   v26 = v9;
   v27 = v8;
@@ -60,12 +60,12 @@
 
 - (void)_privateButtonTapped
 {
-  v3 = [(SVButton *)self touchUpInsideBlock];
+  touchUpInsideBlock = [(SVButton *)self touchUpInsideBlock];
 
-  if (v3)
+  if (touchUpInsideBlock)
   {
-    v4 = [(SVButton *)self touchUpInsideBlock];
-    v4[2]();
+    touchUpInsideBlock2 = [(SVButton *)self touchUpInsideBlock];
+    touchUpInsideBlock2[2]();
   }
 }
 

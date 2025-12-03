@@ -1,10 +1,10 @@
 @interface AXLiveCaptionSourceInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSLocale)locale;
 - (_TtC17LiveTranscription23AXLiveCaptionSourceInfo)init;
-- (_TtC17LiveTranscription23AXLiveCaptionSourceInfo)initWithSourceType:(int64_t)a3 pid:(int)a4 appID:(id)a5 appName:(id)a6 locale:(id)a7;
+- (_TtC17LiveTranscription23AXLiveCaptionSourceInfo)initWithSourceType:(int64_t)type pid:(int)pid appID:(id)d appName:(id)name locale:(id)locale;
 - (int64_t)hash;
-- (void)setLocale:(id)a3;
+- (void)setLocale:(id)locale;
 @end
 
 @implementation AXLiveCaptionSourceInfo
@@ -25,7 +25,7 @@
   return v9;
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
   v4 = sub_25605347C();
   v5 = *(v4 - 8);
@@ -36,12 +36,12 @@
   v9 = OBJC_IVAR____TtC17LiveTranscription23AXLiveCaptionSourceInfo_locale;
   swift_beginAccess();
   v10 = *(v5 + 40);
-  v11 = self;
+  selfCopy = self;
   v10(self + v9, v8, v4);
   swift_endAccess();
 }
 
-- (_TtC17LiveTranscription23AXLiveCaptionSourceInfo)initWithSourceType:(int64_t)a3 pid:(int)a4 appID:(id)a5 appName:(id)a6 locale:(id)a7
+- (_TtC17LiveTranscription23AXLiveCaptionSourceInfo)initWithSourceType:(int64_t)type pid:(int)pid appID:(id)d appName:(id)name locale:(id)locale
 {
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F8256A8, &qword_2560559A0);
   v11 = *(*(v10 - 8) + 64);
@@ -51,7 +51,7 @@
   v16 = v15;
   v17 = sub_2560536AC();
   v19 = v18;
-  if (a7)
+  if (locale)
   {
     sub_25605342C();
     v20 = sub_25605347C();
@@ -64,14 +64,14 @@
     (*(*(v21 - 8) + 56))(v13, 1, 1, v21);
   }
 
-  return AXLiveCaptionSourceInfo.init(sourceType:pid:appID:appName:locale:)(a3, a4, v14, v16, v17, v19, v13);
+  return AXLiveCaptionSourceInfo.init(sourceType:pid:appID:appName:locale:)(type, pid, v14, v16, v17, v19, v13);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_25605388C();
     swift_unknownObjectRelease();
@@ -80,7 +80,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_25603138C(v8);
@@ -91,7 +91,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2560316B8();
 
   return v3;

@@ -18,55 +18,55 @@
 
 - (BOOL)_isPostalAddress
 {
-  v2 = [(PKPaymentPreferenceContactOptionListItem *)self contactSectionPreference];
-  v3 = [v2 contactKey];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E695C360]];
+  contactSectionPreference = [(PKPaymentPreferenceContactOptionListItem *)self contactSectionPreference];
+  contactKey = [contactSectionPreference contactKey];
+  v4 = [contactKey isEqualToString:*MEMORY[0x1E695C360]];
 
   return v4;
 }
 
 - (BOOL)_isPhoneNumber
 {
-  v2 = [(PKPaymentPreferenceContactOptionListItem *)self contactSectionPreference];
-  v3 = [v2 contactKey];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E695C330]];
+  contactSectionPreference = [(PKPaymentPreferenceContactOptionListItem *)self contactSectionPreference];
+  contactKey = [contactSectionPreference contactKey];
+  v4 = [contactKey isEqualToString:*MEMORY[0x1E695C330]];
 
   return v4;
 }
 
 - (BOOL)_isEmail
 {
-  v2 = [(PKPaymentPreferenceContactOptionListItem *)self contactSectionPreference];
-  v3 = [v2 contactKey];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E695C208]];
+  contactSectionPreference = [(PKPaymentPreferenceContactOptionListItem *)self contactSectionPreference];
+  contactKey = [contactSectionPreference contactKey];
+  v4 = [contactKey isEqualToString:*MEMORY[0x1E695C208]];
 
   return v4;
 }
 
 - (BOOL)_isHideMyEmail
 {
-  v3 = [(PKPaymentPreferenceContactOptionListItem *)self _isEmail];
-  if (v3)
+  _isEmail = [(PKPaymentPreferenceContactOptionListItem *)self _isEmail];
+  if (_isEmail)
   {
-    v4 = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
-    v5 = [v4 isHideMyEmail];
+    contactPreference = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
+    isHideMyEmail = [contactPreference isHideMyEmail];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(_isEmail) = isHideMyEmail;
   }
 
-  return v3;
+  return _isEmail;
 }
 
 - (id)_inlineEditingConfiguration
 {
   v11.receiver = self;
   v11.super_class = PKPaymentPreferenceContactOptionListItem;
-  v3 = [(PKPaymentPreferenceOptionListItem *)&v11 _inlineEditingConfiguration];
+  _inlineEditingConfiguration = [(PKPaymentPreferenceOptionListItem *)&v11 _inlineEditingConfiguration];
   if ([(PKPaymentPreferenceContactOptionListItem *)self _isEmail])
   {
     v4 = 7;
 LABEL_5:
-    [v3 setKeyboardType:v4];
+    [_inlineEditingConfiguration setKeyboardType:v4];
     goto LABEL_6;
   }
 
@@ -77,30 +77,30 @@ LABEL_5:
   }
 
 LABEL_6:
-  v5 = [(PKPaymentPreferenceContactOptionListItem *)self contactSectionPreference];
-  v6 = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
-  v7 = [v5 errorsForPreference:v6];
+  contactSectionPreference = [(PKPaymentPreferenceContactOptionListItem *)self contactSectionPreference];
+  contactPreference = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
+  v7 = [contactSectionPreference errorsForPreference:contactPreference];
   if ([v7 count])
   {
-    v8 = [v5 selectedIndex];
-    if (v8 == [v5 indexOfContact:v6])
+    selectedIndex = [contactSectionPreference selectedIndex];
+    if (selectedIndex == [contactSectionPreference indexOfContact:contactPreference])
     {
-      v9 = [v7 firstObject];
-      [v3 setError:v9];
+      firstObject = [v7 firstObject];
+      [_inlineEditingConfiguration setError:firstObject];
     }
   }
 
-  return v3;
+  return _inlineEditingConfiguration;
 }
 
 - (id)_text
 {
   if ([(PKPaymentPreferenceContactOptionListItem *)self _isPostalAddress])
   {
-    v3 = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
-    v4 = [v3 pk_displayName];
+    contactPreference = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
+    pk_displayName = [contactPreference pk_displayName];
 LABEL_3:
-    v5 = v4;
+    pkFormattedStringValue = pk_displayName;
 LABEL_6:
 
     goto LABEL_7;
@@ -108,30 +108,30 @@ LABEL_6:
 
   if ([(PKPaymentPreferenceContactOptionListItem *)self _isPhoneNumber])
   {
-    v6 = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
-    v7 = [v6 phoneNumbers];
-    v3 = [v7 firstObject];
+    contactPreference2 = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
+    phoneNumbers = [contactPreference2 phoneNumbers];
+    contactPreference = [phoneNumbers firstObject];
 
-    v8 = [v3 value];
-    v5 = [v8 pkFormattedStringValue];
+    value = [contactPreference value];
+    pkFormattedStringValue = [value pkFormattedStringValue];
 
     goto LABEL_6;
   }
 
   if ([(PKPaymentPreferenceContactOptionListItem *)self _isEmail])
   {
-    v10 = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
-    v11 = [v10 emailAddresses];
-    v3 = [v11 firstObject];
+    contactPreference3 = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
+    emailAddresses = [contactPreference3 emailAddresses];
+    contactPreference = [emailAddresses firstObject];
 
-    v4 = [v3 value];
+    pk_displayName = [contactPreference value];
     goto LABEL_3;
   }
 
-  v5 = 0;
+  pkFormattedStringValue = 0;
 LABEL_7:
 
-  return v5;
+  return pkFormattedStringValue;
 }
 
 - (id)_placeholderText
@@ -160,8 +160,8 @@ LABEL_7:
 {
   if ([(PKPaymentPreferenceContactOptionListItem *)self _isPostalAddress])
   {
-    v3 = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
-    v4 = [v3 pkSingleLineFormattedContactAddress];
+    contactPreference = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
+    pkSingleLineFormattedContactAddress = [contactPreference pkSingleLineFormattedContactAddress];
 LABEL_9:
 
     goto LABEL_10;
@@ -169,31 +169,31 @@ LABEL_9:
 
   if ([(PKPaymentPreferenceContactOptionListItem *)self _isEmail]|| [(PKPaymentPreferenceContactOptionListItem *)self _isPhoneNumber])
   {
-    v5 = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
-    v4 = [v5 pk_displayName];
+    contactPreference2 = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
+    pkSingleLineFormattedContactAddress = [contactPreference2 pk_displayName];
 
     if (![(PKPaymentPreferenceContactOptionListItem *)self _isHideMyEmail])
     {
       goto LABEL_10;
     }
 
-    v3 = objc_alloc_init(MEMORY[0x1E69B88F0]);
-    v6 = [v3 forwardingEmailForPrimaryAccount];
-    v7 = v6;
-    if (v6)
+    contactPreference = objc_alloc_init(MEMORY[0x1E69B88F0]);
+    forwardingEmailForPrimaryAccount = [contactPreference forwardingEmailForPrimaryAccount];
+    v7 = forwardingEmailForPrimaryAccount;
+    if (forwardingEmailForPrimaryAccount)
     {
-      v8 = PKLocalizedHideMyEmailString(&cfstr_HmeSettingsRow.isa, &stru_1F3BD5BF0.isa, v6);
+      v8 = PKLocalizedHideMyEmailString(&cfstr_HmeSettingsRow.isa, &stru_1F3BD5BF0.isa, forwardingEmailForPrimaryAccount);
 
-      v4 = v8;
+      pkSingleLineFormattedContactAddress = v8;
     }
 
     goto LABEL_9;
   }
 
-  v4 = 0;
+  pkSingleLineFormattedContactAddress = 0;
 LABEL_10:
 
-  return v4;
+  return pkSingleLineFormattedContactAddress;
 }
 
 - (id)defaultAccessories
@@ -208,10 +208,10 @@ LABEL_10:
       [v3 addObject:v4];
     }
 
-    v5 = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
-    v6 = [v5 contactSource];
+    contactPreference = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
+    contactSource = [contactPreference contactSource];
 
-    if (v6 != 1)
+    if (contactSource != 1)
     {
       v7 = objc_alloc_init(MEMORY[0x1E69DC798]);
       [v3 addObject:v7];
@@ -241,10 +241,10 @@ LABEL_10:
     return 0;
   }
 
-  v3 = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
-  v4 = [v3 contactSource];
+  contactPreference = [(PKPaymentPreferenceContactOptionListItem *)self contactPreference];
+  contactSource = [contactPreference contactSource];
 
-  if (v4 == 1)
+  if (contactSource == 1)
   {
     return 0;
   }

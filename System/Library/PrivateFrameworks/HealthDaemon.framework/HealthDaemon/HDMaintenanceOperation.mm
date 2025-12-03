@@ -1,16 +1,16 @@
 @interface HDMaintenanceOperation
-+ (id)maintenanceOperationWithName:(id)a3 asynchronousBlock:(id)a4 canceledBlock:(id)a5;
-+ (id)maintenanceOperationWithName:(id)a3 database:(id)a4 asynchronousBlock:(id)a5 canceledBlock:(id)a6;
-+ (id)maintenanceOperationWithName:(id)a3 queue:(id)a4 synchronousBlock:(id)a5 canceledBlock:(id)a6;
++ (id)maintenanceOperationWithName:(id)name asynchronousBlock:(id)block canceledBlock:(id)canceledBlock;
++ (id)maintenanceOperationWithName:(id)name database:(id)database asynchronousBlock:(id)block canceledBlock:(id)canceledBlock;
++ (id)maintenanceOperationWithName:(id)name queue:(id)queue synchronousBlock:(id)block canceledBlock:(id)canceledBlock;
 - (HDMaintenanceOperation)init;
-- (HDMaintenanceOperation)initWithName:(id)a3;
+- (HDMaintenanceOperation)initWithName:(id)name;
 - (double)elapsedTime;
 - (double)timeoutTime;
 - (id)description;
 - (void)cancel;
 - (void)finish;
-- (void)setExecutionPoint:(int64_t)a3;
-- (void)startWithCompletionDelegate:(id)a3 fromImmediateRequest:(BOOL)a4;
+- (void)setExecutionPoint:(int64_t)point;
+- (void)startWithCompletionDelegate:(id)delegate fromImmediateRequest:(BOOL)request;
 @end
 
 @implementation HDMaintenanceOperation
@@ -25,9 +25,9 @@
   return 0;
 }
 
-- (HDMaintenanceOperation)initWithName:(id)a3
+- (HDMaintenanceOperation)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = HDMaintenanceOperation;
   v5 = [(HDMaintenanceOperation *)&v12 init];
@@ -35,7 +35,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 copy];
+    v7 = [nameCopy copy];
     name = v6->_name;
     v6->_name = v7;
 
@@ -53,42 +53,42 @@
   return v6;
 }
 
-+ (id)maintenanceOperationWithName:(id)a3 asynchronousBlock:(id)a4 canceledBlock:(id)a5
++ (id)maintenanceOperationWithName:(id)name asynchronousBlock:(id)block canceledBlock:(id)canceledBlock
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[_HDMaintenanceWorkCoordinatorAsynchronousOperation alloc] initWithName:v9 operationBlock:v8 canceledBlock:v7];
+  canceledBlockCopy = canceledBlock;
+  blockCopy = block;
+  nameCopy = name;
+  v10 = [[_HDMaintenanceWorkCoordinatorAsynchronousOperation alloc] initWithName:nameCopy operationBlock:blockCopy canceledBlock:canceledBlockCopy];
 
   return v10;
 }
 
-+ (id)maintenanceOperationWithName:(id)a3 queue:(id)a4 synchronousBlock:(id)a5 canceledBlock:(id)a6
++ (id)maintenanceOperationWithName:(id)name queue:(id)queue synchronousBlock:(id)block canceledBlock:(id)canceledBlock
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[_HDMaintenanceWorkCoordinatorSynchronousOperation alloc] initWithName:v12 queue:v11 block:v10 canceledBlock:v9];
+  canceledBlockCopy = canceledBlock;
+  blockCopy = block;
+  queueCopy = queue;
+  nameCopy = name;
+  v13 = [[_HDMaintenanceWorkCoordinatorSynchronousOperation alloc] initWithName:nameCopy queue:queueCopy block:blockCopy canceledBlock:canceledBlockCopy];
 
   return v13;
 }
 
-+ (id)maintenanceOperationWithName:(id)a3 database:(id)a4 asynchronousBlock:(id)a5 canceledBlock:(id)a6
++ (id)maintenanceOperationWithName:(id)name database:(id)database asynchronousBlock:(id)block canceledBlock:(id)canceledBlock
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[_HDMaintenanceWorkCoordinatorProtectedDatabaseOperation alloc] initWithName:v12 database:v11 operationBlock:v10 canceledBlock:v9];
+  canceledBlockCopy = canceledBlock;
+  blockCopy = block;
+  databaseCopy = database;
+  nameCopy = name;
+  v13 = [[_HDMaintenanceWorkCoordinatorProtectedDatabaseOperation alloc] initWithName:nameCopy database:databaseCopy operationBlock:blockCopy canceledBlock:canceledBlockCopy];
 
   return v13;
 }
 
-- (void)startWithCompletionDelegate:(id)a3 fromImmediateRequest:(BOOL)a4
+- (void)startWithCompletionDelegate:(id)delegate fromImmediateRequest:(BOOL)request
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_lock);
   if (self->_hasStarted)
   {
@@ -101,9 +101,9 @@
     daemonTransaction = self->_daemonTransaction;
     self->_daemonTransaction = v7;
 
-    self->_isImmediateRequest = a4;
+    self->_isImmediateRequest = request;
     self->_hasStarted = 1;
-    objc_storeWeak(&self->_delegate, v6);
+    objc_storeWeak(&self->_delegate, delegateCopy);
     Current = CFAbsoluteTimeGetCurrent();
     self->_startedTime = Current;
     self->_timeoutTime = Current + self->_timeout;
@@ -122,7 +122,7 @@
       }
 
       v20 = 138543618;
-      v21 = self;
+      selfCopy = self;
       v22 = 2114;
       v23 = v13;
       _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Started%{public}@.", &v20, 0x16u);
@@ -138,9 +138,9 @@
       v17 = v16;
       if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
       {
-        v18 = [(HDMaintenanceOperation *)self name];
+        name = [(HDMaintenanceOperation *)self name];
         v20 = 138543362;
-        v21 = v18;
+        selfCopy = name;
         _os_signpost_emit_with_name_impl(&dword_228986000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v11, "maintenance work operation", "name=%{public}@", &v20, 0xCu);
       }
     }
@@ -167,18 +167,18 @@
 - (void)finish
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v2 = _HKLogPersistedSignposts();
-    v3 = os_signpost_id_make_with_pointer(v2, a1);
+    v3 = os_signpost_id_make_with_pointer(v2, self);
 
     _HKInitializeLogging();
     v4 = HKLogInfrastructure();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = CFAbsoluteTimeGetCurrent() - *(a1 + 88);
+      v5 = CFAbsoluteTimeGetCurrent() - *(self + 88);
       v13 = 138543618;
-      v14 = a1;
+      selfCopy = self;
       v15 = 2048;
       v16 = v5;
       _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Stopped after %0.3lfs.", &v13, 0x16u);
@@ -194,19 +194,19 @@
       v9 = v8;
       if (v3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
       {
-        v10 = [a1 name];
+        name = [self name];
         v13 = 138543362;
-        v14 = v10;
+        selfCopy = name;
         _os_signpost_emit_with_name_impl(&dword_228986000, v9, OS_SIGNPOST_INTERVAL_END, v3, "maintenance work operation", "name=%{public}@", &v13, 0xCu);
       }
     }
 
-    os_unfair_lock_lock((a1 + 8));
-    *(a1 + 41) = 1;
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
-    objc_storeWeak((a1 + 32), 0);
-    os_unfair_lock_unlock((a1 + 8));
-    [WeakRetained operationDidFinish:a1];
+    os_unfair_lock_lock((self + 8));
+    *(self + 41) = 1;
+    WeakRetained = objc_loadWeakRetained((self + 32));
+    objc_storeWeak((self + 32), 0);
+    os_unfair_lock_unlock((self + 8));
+    [WeakRetained operationDidFinish:self];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -242,7 +242,7 @@
   return v3;
 }
 
-- (void)setExecutionPoint:(int64_t)a3
+- (void)setExecutionPoint:(int64_t)point
 {
   os_unfair_lock_lock(&self->_lock);
   if (self->_enqueuedTime != 0.0)
@@ -250,7 +250,7 @@
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"%@ attempted to set executionPoint after queuing", objc_opt_class()}];
   }
 
-  self->_executionPoint = a3;
+  self->_executionPoint = point;
 
   os_unfair_lock_unlock(&self->_lock);
 }

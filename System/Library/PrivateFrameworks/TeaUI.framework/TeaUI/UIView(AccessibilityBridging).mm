@@ -9,12 +9,12 @@
   if (objc_opt_respondsToSelector())
   {
 
-    return [a1 ts_accessibilityIsSpeakThisElement];
+    return [self ts_accessibilityIsSpeakThisElement];
   }
 
   else
   {
-    v3.receiver = a1;
+    v3.receiver = self;
     v3.super_class = UIView_0;
     return objc_msgSendSuper2(&v3, sel__accessibilityIsSpeakThisElement);
   }

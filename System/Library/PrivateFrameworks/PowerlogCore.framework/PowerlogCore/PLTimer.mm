@@ -1,35 +1,35 @@
 @interface PLTimer
 - (BOOL)timerActive;
 - (NSDate)fireDate;
-- (PLTimer)initWithFireDate:(id)a3 withInterval:(double)a4 withTolerance:(double)a5 repeats:(BOOL)a6 withUserInfo:(id)a7 withQueue:(id)a8 withBlock:(id)a9;
+- (PLTimer)initWithFireDate:(id)date withInterval:(double)interval withTolerance:(double)tolerance repeats:(BOOL)repeats withUserInfo:(id)info withQueue:(id)queue withBlock:(id)block;
 - (void)arm;
 - (void)dealloc;
 - (void)fire;
 - (void)handleTimerFire;
 - (void)invalidate;
-- (void)setFireDate:(id)a3;
-- (void)setTimerActive:(BOOL)a3;
+- (void)setFireDate:(id)date;
+- (void)setTimerActive:(BOOL)active;
 @end
 
 @implementation PLTimer
 
 - (BOOL)timerActive
 {
-  v2 = [(PLTimer *)self timer];
-  v3 = v2 != 0;
+  timer = [(PLTimer *)self timer];
+  v3 = timer != 0;
 
   return v3;
 }
 
 - (void)handleTimerFire
 {
-  v3 = [(PLTimer *)self queue];
-  if (v3)
+  queue = [(PLTimer *)self queue];
+  if (queue)
   {
-    v4 = v3;
-    v5 = [(PLTimer *)self block];
+    v4 = queue;
+    block = [(PLTimer *)self block];
 
-    if (v5)
+    if (block)
     {
       v6 = objc_autoreleasePoolPush();
       if (+[PLDefaults debugEnabled])
@@ -48,13 +48,13 @@
         if (handleTimerFire_classDebugEnabled == 1)
         {
           v8 = MEMORY[0x1E696AEC0];
-          v9 = [(PLTimer *)self queue];
-          v10 = [v8 stringWithFormat:@"PLTimer::%@::TimerFire", v9, block, v19, v20, v21, v22];
+          queue2 = [(PLTimer *)self queue];
+          v10 = [v8 stringWithFormat:@"PLTimer::%@::TimerFire", queue2, block, v19, v20, v21, v22];
 
           v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Operators/Compositions/PLTimer.m"];
-          v12 = [v11 lastPathComponent];
+          lastPathComponent = [v11 lastPathComponent];
           v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLTimer handleTimerFire]"];
-          [PLCoreStorage logMessage:v10 fromFile:v12 fromFunction:v13 fromLineNumber:146];
+          [PLCoreStorage logMessage:v10 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:146];
 
           v14 = PLLogCommon();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -64,10 +64,10 @@
         }
       }
 
-      v15 = [(PLTimer *)self block];
-      v16 = [(PLTimer *)self fireDate];
-      v17 = [(PLTimer *)self userInfo];
-      (v15)[2](v15, v16, v17);
+      block2 = [(PLTimer *)self block];
+      fireDate = [(PLTimer *)self fireDate];
+      userInfo = [(PLTimer *)self userInfo];
+      (block2)[2](block2, fireDate, userInfo);
 
       objc_autoreleasePoolPop(v6);
     }
@@ -76,18 +76,18 @@
 
 - (NSDate)fireDate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_fireDate;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_fireDate;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (void)invalidate
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (+[PLDefaults debugEnabled])
   {
     v3 = objc_opt_class();
@@ -104,13 +104,13 @@
     if (invalidate_classDebugEnabled == 1)
     {
       v4 = MEMORY[0x1E696AEC0];
-      v5 = [(PLTimer *)v2 queue];
-      v6 = [v4 stringWithFormat:@"PLTimer::%@:: invalidate", v5, block, v14, v15, v16, v17];
+      queue = [(PLTimer *)selfCopy queue];
+      v6 = [v4 stringWithFormat:@"PLTimer::%@:: invalidate", queue, block, v14, v15, v16, v17];
 
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Operators/Compositions/PLTimer.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLTimer invalidate]"];
-      [PLCoreStorage logMessage:v6 fromFile:v8 fromFunction:v9 fromLineNumber:70];
+      [PLCoreStorage logMessage:v6 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:70];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -120,15 +120,15 @@
     }
   }
 
-  timer = v2->_timer;
+  timer = selfCopy->_timer;
   if (timer)
   {
     dispatch_source_cancel(timer);
-    v12 = v2->_timer;
-    v2->_timer = 0;
+    v12 = selfCopy->_timer;
+    selfCopy->_timer = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)dealloc
@@ -149,13 +149,13 @@
     if (dealloc_classDebugEnabled == 1)
     {
       v4 = MEMORY[0x1E696AEC0];
-      v5 = [(PLTimer *)self queue];
-      v6 = [v4 stringWithFormat:@"PLTimer::%@::dealloc: self=%@", v5, self];
+      queue = [(PLTimer *)self queue];
+      v6 = [v4 stringWithFormat:@"PLTimer::%@::dealloc: self=%@", queue, self];
 
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Operators/Compositions/PLTimer.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLTimer dealloc]"];
-      [PLCoreStorage logMessage:v6 fromFile:v8 fromFunction:v9 fromLineNumber:57];
+      [PLCoreStorage logMessage:v6 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:57];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -171,15 +171,15 @@
   [(PLTimer *)&v11 dealloc];
 }
 
-- (PLTimer)initWithFireDate:(id)a3 withInterval:(double)a4 withTolerance:(double)a5 repeats:(BOOL)a6 withUserInfo:(id)a7 withQueue:(id)a8 withBlock:(id)a9
+- (PLTimer)initWithFireDate:(id)date withInterval:(double)interval withTolerance:(double)tolerance repeats:(BOOL)repeats withUserInfo:(id)info withQueue:(id)queue withBlock:(id)block
 {
-  v17 = a3;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = v20;
-  v22 = 0;
-  if (v19 && v20)
+  dateCopy = date;
+  infoCopy = info;
+  queueCopy = queue;
+  blockCopy = block;
+  v21 = blockCopy;
+  selfCopy = 0;
+  if (queueCopy && blockCopy)
   {
     v28.receiver = self;
     v28.super_class = PLTimer;
@@ -187,24 +187,24 @@
     v24 = v23;
     if (v23)
     {
-      objc_storeStrong(&v23->_queue, a8);
-      objc_storeStrong(&v24->_fireDate, a3);
-      v24->_interval = a4;
-      v24->_tolerance = a5;
-      v24->_repeats = a6;
-      objc_storeStrong(&v24->_userInfo, a7);
+      objc_storeStrong(&v23->_queue, queue);
+      objc_storeStrong(&v24->_fireDate, date);
+      v24->_interval = interval;
+      v24->_tolerance = tolerance;
+      v24->_repeats = repeats;
+      objc_storeStrong(&v24->_userInfo, info);
       v25 = MEMORY[0x1DA71B0D0](v21);
       block = v24->_block;
       v24->_block = v25;
 
-      [(PLTimer *)v24 setTimerActive:v17 != 0];
+      [(PLTimer *)v24 setTimerActive:dateCopy != 0];
     }
 
     self = v24;
-    v22 = self;
+    selfCopy = self;
   }
 
-  return v22;
+  return selfCopy;
 }
 
 BOOL __18__PLTimer_dealloc__block_invoke(uint64_t a1)
@@ -240,11 +240,11 @@ BOOL __21__PLTimer_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setTimerActive:(BOOL)a3
+- (void)setTimerActive:(BOOL)active
 {
-  v3 = a3;
-  v5 = [(PLTimer *)self queue];
-  if (v3)
+  activeCopy = active;
+  queue = [(PLTimer *)self queue];
+  if (activeCopy)
   {
     v6 = v10;
     v10[0] = MEMORY[0x1E69E9820];
@@ -263,7 +263,7 @@ BOOL __21__PLTimer_invalidate__block_invoke(uint64_t a1)
   v6[2] = v7;
   v6[3] = &unk_1E85190B8;
   v6[4] = self;
-  [PLUtilities dispatchSyncIfNotCallerQueue:v5 withBlock:v8, v9];
+  [PLUtilities dispatchSyncIfNotCallerQueue:queue withBlock:v8, v9];
 }
 
 void __26__PLTimer_setTimerActive___block_invoke(uint64_t a1)
@@ -428,17 +428,17 @@ BOOL __26__PLTimer_setTimerActive___block_invoke_2_24(uint64_t a1)
   return result;
 }
 
-- (void)setFireDate:(id)a3
+- (void)setFireDate:(id)date
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  fireDate = v5->_fireDate;
-  v5->_fireDate = v4;
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  fireDate = selfCopy->_fireDate;
+  selfCopy->_fireDate = dateCopy;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  [(PLTimer *)v5 setTimerActive:1];
+  [(PLTimer *)selfCopy setTimerActive:1];
 }
 
 BOOL __26__PLTimer_handleTimerFire__block_invoke(uint64_t a1)

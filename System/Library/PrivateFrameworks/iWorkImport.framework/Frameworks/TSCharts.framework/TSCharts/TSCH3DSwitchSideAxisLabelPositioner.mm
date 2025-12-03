@@ -1,16 +1,16 @@
 @interface TSCH3DSwitchSideAxisLabelPositioner
-- (tvec3<float>)positionForValue:(double)a3 count:(unint64_t)a4 chartDirection:(void *)a5;
-- (unsigned)alignmentForChartDirection:(void *)a3;
+- (tvec3<float>)positionForValue:(double)value count:(unint64_t)count chartDirection:(void *)direction;
+- (unsigned)alignmentForChartDirection:(void *)direction;
 @end
 
 @implementation TSCH3DSwitchSideAxisLabelPositioner
 
-- (unsigned)alignmentForChartDirection:(void *)a3
+- (unsigned)alignmentForChartDirection:(void *)direction
 {
   v32.receiver = self;
   v32.super_class = TSCH3DSwitchSideAxisLabelPositioner;
   v5 = [(TSCH3DGenericAxisLabelPositioner *)&v32 alignmentForChartDirection:?];
-  LODWORD(v11) = *(a3 + objc_msgSend_p_otherAxis(self, v6, v7, v8, v9));
+  LODWORD(v11) = *(direction + objc_msgSend_p_otherAxis(self, v6, v7, v8, v9));
   if (*&v11 > 0.0)
   {
     HIDWORD(v15) = v5 - 4;
@@ -35,14 +35,14 @@
   return v5;
 }
 
-- (tvec3<float>)positionForValue:(double)a3 count:(unint64_t)a4 chartDirection:(void *)a5
+- (tvec3<float>)positionForValue:(double)value count:(unint64_t)count chartDirection:(void *)direction
 {
   v8 = v5;
   v18.receiver = self;
   v18.super_class = TSCH3DSwitchSideAxisLabelPositioner;
-  [(TSCH3DGenericAxisLabelPositioner *)&v18 positionForValue:a4 count:a3 chartDirection:?];
+  [(TSCH3DGenericAxisLabelPositioner *)&v18 positionForValue:count count:value chartDirection:?];
   v13 = objc_msgSend_p_otherAxis(self, v9, v10, v11, v12);
-  LODWORD(v17) = *(a5 + v13);
+  LODWORD(v17) = *(direction + v13);
   if (*&v17 > 0.0)
   {
     v13 = objc_msgSend_p_otherAxis(self, v14, v17, v15, v16);

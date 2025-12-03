@@ -1,11 +1,11 @@
 @interface CWFAutoJoinParameters
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAutoJoinParameters:(id)a3;
-- (CWFAutoJoinParameters)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAutoJoinParameters:(id)parameters;
+- (CWFAutoJoinParameters)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFAutoJoinParameters
@@ -21,20 +21,20 @@
   return v7;
 }
 
-- (BOOL)isEqualToAutoJoinParameters:(id)a3
+- (BOOL)isEqualToAutoJoinParameters:(id)parameters
 {
-  v6 = a3;
+  parametersCopy = parameters;
   trigger = self->_trigger;
-  if (trigger == [v6 trigger])
+  if (trigger == [parametersCopy trigger])
   {
     mode = self->_mode;
-    if (mode == [v6 mode])
+    if (mode == [parametersCopy mode])
     {
       targetNetworkProfile = self->_targetNetworkProfile;
-      v10 = [v6 targetNetworkProfile];
-      if (targetNetworkProfile != v10)
+      targetNetworkProfile = [parametersCopy targetNetworkProfile];
+      if (targetNetworkProfile != targetNetworkProfile)
       {
-        if (!self->_targetNetworkProfile || ([v6 targetNetworkProfile], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+        if (!self->_targetNetworkProfile || ([parametersCopy targetNetworkProfile], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
         {
           v13 = 0;
           goto LABEL_17;
@@ -42,8 +42,8 @@
 
         v3 = v11;
         v12 = self->_targetNetworkProfile;
-        v4 = [v6 targetNetworkProfile];
-        if (![(CWFNetworkProfile *)v12 isEqual:v4])
+        targetNetworkProfile2 = [parametersCopy targetNetworkProfile];
+        if (![(CWFNetworkProfile *)v12 isEqual:targetNetworkProfile2])
         {
           v13 = 0;
 LABEL_16:
@@ -53,17 +53,17 @@ LABEL_16:
       }
 
       preferredChannels = self->_preferredChannels;
-      v15 = [v6 preferredChannels];
-      v13 = preferredChannels == v15;
+      preferredChannels = [parametersCopy preferredChannels];
+      v13 = preferredChannels == preferredChannels;
       if (!v13 && self->_preferredChannels)
       {
-        v16 = [v6 preferredChannels];
-        if (!v16)
+        preferredChannels2 = [parametersCopy preferredChannels];
+        if (!preferredChannels2)
         {
 
           v13 = 0;
 LABEL_15:
-          if (targetNetworkProfile != v10)
+          if (targetNetworkProfile != targetNetworkProfile)
           {
             goto LABEL_16;
           }
@@ -73,10 +73,10 @@ LABEL_17:
           goto LABEL_18;
         }
 
-        v17 = v16;
+        v17 = preferredChannels2;
         v18 = self->_preferredChannels;
-        v19 = [v6 preferredChannels];
-        v13 = [(NSArray *)v18 isEqual:v19];
+        preferredChannels3 = [parametersCopy preferredChannels];
+        v13 = [(NSArray *)v18 isEqual:preferredChannels3];
       }
 
       goto LABEL_15;
@@ -89,18 +89,18 @@ LABEL_18:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFAutoJoinParameters *)self isEqualToAutoJoinParameters:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFAutoJoinParameters *)self isEqualToAutoJoinParameters:v5];
   }
 
   return v6;
@@ -113,7 +113,7 @@ LABEL_18:
   return v4 ^ [(NSArray *)self->_preferredChannels hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFAutoJoinParameters allocWithZone:?]];
   [(CWFAutoJoinParameters *)v4 setTrigger:self->_trigger];
@@ -123,34 +123,34 @@ LABEL_18:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   trigger = self->_trigger;
-  v5 = a3;
-  [v5 encodeInteger:trigger forKey:@"_trigger"];
-  [v5 encodeInteger:self->_mode forKey:@"_mode"];
-  [v5 encodeObject:self->_targetNetworkProfile forKey:@"_targetNetworkProfile"];
-  [v5 encodeObject:self->_preferredChannels forKey:@"_preferredChannels"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:trigger forKey:@"_trigger"];
+  [coderCopy encodeInteger:self->_mode forKey:@"_mode"];
+  [coderCopy encodeObject:self->_targetNetworkProfile forKey:@"_targetNetworkProfile"];
+  [coderCopy encodeObject:self->_preferredChannels forKey:@"_preferredChannels"];
 }
 
-- (CWFAutoJoinParameters)initWithCoder:(id)a3
+- (CWFAutoJoinParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CWFAutoJoinParameters;
   v5 = [(CWFAutoJoinParameters *)&v14 init];
   if (v5)
   {
-    v5->_trigger = [v4 decodeIntegerForKey:@"_trigger"];
-    v5->_mode = [v4 decodeIntegerForKey:@"_mode"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_targetNetworkProfile"];
+    v5->_trigger = [coderCopy decodeIntegerForKey:@"_trigger"];
+    v5->_mode = [coderCopy decodeIntegerForKey:@"_mode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_targetNetworkProfile"];
     targetNetworkProfile = v5->_targetNetworkProfile;
     v5->_targetNetworkProfile = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"_preferredChannels"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"_preferredChannels"];
     preferredChannels = v5->_preferredChannels;
     v5->_preferredChannels = v11;
   }

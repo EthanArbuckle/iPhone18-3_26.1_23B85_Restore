@@ -1,5 +1,5 @@
 @interface MRUILockScreenAssertion
-- (MRUILockScreenAssertion)initWithAnimated:(BOOL)a3;
+- (MRUILockScreenAssertion)initWithAnimated:(BOOL)animated;
 - (void)acquire;
 - (void)dealloc;
 - (void)delayAcquire;
@@ -8,7 +8,7 @@
 
 @implementation MRUILockScreenAssertion
 
-- (MRUILockScreenAssertion)initWithAnimated:(BOOL)a3
+- (MRUILockScreenAssertion)initWithAnimated:(BOOL)animated
 {
   v7.receiver = self;
   v7.super_class = MRUILockScreenAssertion;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_animated = a3;
+    v4->_animated = animated;
     [(MRUILockScreenAssertion *)v4 acquire];
   }
 
@@ -53,8 +53,8 @@
 
 - (void)invalidate
 {
-  v3 = [(MRUILockScreenAssertion *)self backgroundContentAssertion];
-  [v3 invalidate];
+  backgroundContentAssertion = [(MRUILockScreenAssertion *)self backgroundContentAssertion];
+  [backgroundContentAssertion invalidate];
 
   [(MRUILockScreenAssertion *)self setBackgroundContentAssertion:0];
   self->_valid = 0;

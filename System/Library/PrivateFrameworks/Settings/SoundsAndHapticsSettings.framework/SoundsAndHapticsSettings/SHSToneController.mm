@@ -1,16 +1,16 @@
 @interface SHSToneController
 - (SHSToneController)init;
-- (id)_defaultToneIdentifierForTonePickerWithAlertType:(int64_t)a3 topic:(id)a4;
-- (id)_defaultVibrationIdentifierForVibrationPickerWithAlertType:(int64_t)a3 topic:(id)a4;
-- (void)_handleAlertOverridePolicyDidChangeNotification:(id)a3;
+- (id)_defaultToneIdentifierForTonePickerWithAlertType:(int64_t)type topic:(id)topic;
+- (id)_defaultVibrationIdentifierForVibrationPickerWithAlertType:(int64_t)type topic:(id)topic;
+- (void)_handleAlertOverridePolicyDidChangeNotification:(id)notification;
 - (void)_insertTonePickerView;
 - (void)_updateReloadSpecifierInParentController;
 - (void)dealloc;
-- (void)setSpecifier:(id)a3;
-- (void)tonePickerViewController:(id)a3 didDismissVibrationPickerViewController:(id)a4;
-- (void)tonePickerViewController:(id)a3 selectedToneWithIdentifier:(id)a4;
-- (void)tonePickerViewController:(id)a3 willPresentVibrationPickerViewController:(id)a4;
-- (void)vibrationPickerViewController:(id)a3 selectedVibrationWithIdentifier:(id)a4;
+- (void)setSpecifier:(id)specifier;
+- (void)tonePickerViewController:(id)controller didDismissVibrationPickerViewController:(id)viewController;
+- (void)tonePickerViewController:(id)controller selectedToneWithIdentifier:(id)identifier;
+- (void)tonePickerViewController:(id)controller willPresentVibrationPickerViewController:(id)viewController;
+- (void)vibrationPickerViewController:(id)controller selectedVibrationWithIdentifier:(id)identifier;
 - (void)viewDidLoad;
 @end
 
@@ -23,8 +23,8 @@
   v2 = [(SHSToneController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__handleAlertOverridePolicyDidChangeNotification_ name:*MEMORY[0x277D72080] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleAlertOverridePolicyDidChangeNotification_ name:*MEMORY[0x277D72080] object:0];
   }
 
   return v2;
@@ -32,42 +32,42 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D72080] object:0];
-  v4 = [(SHSToneController *)self tonePickerViewController];
-  [v4 willMoveToParentViewController:0];
-  if ([v4 isViewLoaded])
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D72080] object:0];
+  tonePickerViewController = [(SHSToneController *)self tonePickerViewController];
+  [tonePickerViewController willMoveToParentViewController:0];
+  if ([tonePickerViewController isViewLoaded])
   {
-    v5 = [v4 view];
-    [v5 removeFromSuperview];
+    view = [tonePickerViewController view];
+    [view removeFromSuperview];
   }
 
-  [v4 removeFromParentViewController];
-  [v4 setDelegate:0];
+  [tonePickerViewController removeFromParentViewController];
+  [tonePickerViewController setDelegate:0];
 
   v6.receiver = self;
   v6.super_class = SHSToneController;
   [(SHSToneController *)&v6 dealloc];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v17.receiver = self;
   v17.super_class = SHSToneController;
-  [(SHSToneController *)&v17 setSpecifier:v4];
-  v5 = [v4 name];
-  [(SHSToneController *)self setTitle:v5];
+  [(SHSToneController *)&v17 setSpecifier:specifierCopy];
+  name = [specifierCopy name];
+  [(SHSToneController *)self setTitle:name];
 
-  v6 = [v4 propertyForKey:@"alertType"];
+  v6 = [specifierCopy propertyForKey:@"alertType"];
   if (v6)
   {
-    v7 = [(SHSToneController *)self tonePickerViewController];
+    tonePickerViewController = [(SHSToneController *)self tonePickerViewController];
 
-    if (!v7)
+    if (!tonePickerViewController)
     {
       v8 = TLAlertTypeFromString();
-      v9 = [(SHSToneController *)self view];
+      view = [(SHSToneController *)self view];
       v10 = PSShouldInsetListView();
 
       if (v10)
@@ -81,7 +81,7 @@
       }
 
       v12 = [objc_alloc(MEMORY[0x277D71F40]) _initWithAlertType:v8 tableViewStyle:v11];
-      v13 = [v4 propertyForKey:@"accountIdentifier"];
+      v13 = [specifierCopy propertyForKey:@"accountIdentifier"];
       if (v13)
       {
         [v12 setTopic:v13];
@@ -101,8 +101,8 @@
       v14 = [(SHSToneController *)self _defaultToneIdentifierForTonePickerWithAlertType:v8 topic:v13];
       [v12 setDefaultToneIdentifier:v14];
 
-      v15 = [MEMORY[0x277D71F78] sharedToneManager];
-      v16 = [v15 currentToneIdentifierForAlertType:v8 topic:v13];
+      mEMORY[0x277D71F78] = [MEMORY[0x277D71F78] sharedToneManager];
+      v16 = [mEMORY[0x277D71F78] currentToneIdentifierForAlertType:v8 topic:v13];
       [v12 setSelectedToneIdentifier:v16];
 
       [v12 setShowsVibrations:1];
@@ -124,103 +124,103 @@
   v5.receiver = self;
   v5.super_class = SHSToneController;
   [(SHSToneController *)&v5 viewDidLoad];
-  v3 = [(SHSToneController *)self specifier];
-  v4 = [v3 name];
-  [(SHSToneController *)self setTitle:v4];
+  specifier = [(SHSToneController *)self specifier];
+  name = [specifier name];
+  [(SHSToneController *)self setTitle:name];
 
   [(SHSToneController *)self _insertTonePickerView];
 }
 
 - (void)_insertTonePickerView
 {
-  v11 = [(SHSToneController *)self view];
-  v3 = [(SHSToneController *)self tonePickerViewController];
-  v4 = [v3 view];
-  [v11 bounds];
-  [v4 setFrame:?];
-  [v4 setAutoresizingMask:18];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 sf_isiPad];
+  view = [(SHSToneController *)self view];
+  tonePickerViewController = [(SHSToneController *)self tonePickerViewController];
+  view2 = [tonePickerViewController view];
+  [view bounds];
+  [view2 setFrame:?];
+  [view2 setAutoresizingMask:18];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPad = [currentDevice sf_isiPad];
 
-  if (v6)
+  if (sf_isiPad)
   {
     PSTableViewSideInset();
     v8 = v7;
     v9 = *MEMORY[0x277D76F30];
-    v10 = [v3 tableView];
-    [v10 _setSectionContentInset:{v9, v8, v9, v8}];
+    tableView = [tonePickerViewController tableView];
+    [tableView _setSectionContentInset:{v9, v8, v9, v8}];
   }
 
-  [v11 addSubview:v4];
+  [view addSubview:view2];
 }
 
 - (void)_updateReloadSpecifierInParentController
 {
-  v5 = [(SHSToneController *)self parentController];
+  parentController = [(SHSToneController *)self parentController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v5;
-    v4 = [(SHSToneController *)self specifier];
-    [v3 reloadSpecifier:v4];
+    v3 = parentController;
+    specifier = [(SHSToneController *)self specifier];
+    [v3 reloadSpecifier:specifier];
   }
 }
 
-- (void)tonePickerViewController:(id)a3 selectedToneWithIdentifier:(id)a4
+- (void)tonePickerViewController:(id)controller selectedToneWithIdentifier:(id)identifier
 {
   v6 = MEMORY[0x277D71F78];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 sharedToneManager];
-  v10 = [v8 alertType];
-  v11 = [v8 topic];
+  identifierCopy = identifier;
+  controllerCopy = controller;
+  sharedToneManager = [v6 sharedToneManager];
+  alertType = [controllerCopy alertType];
+  topic = [controllerCopy topic];
 
-  [v9 setCurrentToneIdentifier:v7 forAlertType:v10 topic:v11];
+  [sharedToneManager setCurrentToneIdentifier:identifierCopy forAlertType:alertType topic:topic];
 
   [(SHSToneController *)self _updateReloadSpecifierInParentController];
 }
 
-- (void)tonePickerViewController:(id)a3 willPresentVibrationPickerViewController:(id)a4
+- (void)tonePickerViewController:(id)controller willPresentVibrationPickerViewController:(id)viewController
 {
-  v10 = a4;
-  v6 = a3;
-  [v10 setShowsDefault:0];
-  [v10 setShowsUserGenerated:1];
-  [v10 setShowsNone:1];
-  [v10 setShowsEditButtonInNavigationBar:1];
-  v7 = [v6 alertType];
-  v8 = [v6 topic];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  [viewControllerCopy setShowsDefault:0];
+  [viewControllerCopy setShowsUserGenerated:1];
+  [viewControllerCopy setShowsNone:1];
+  [viewControllerCopy setShowsEditButtonInNavigationBar:1];
+  alertType = [controllerCopy alertType];
+  topic = [controllerCopy topic];
 
-  v9 = [(SHSToneController *)self _defaultVibrationIdentifierForVibrationPickerWithAlertType:v7 topic:v8];
-  [v10 setDefaultVibrationIdentifier:v9];
+  v9 = [(SHSToneController *)self _defaultVibrationIdentifierForVibrationPickerWithAlertType:alertType topic:topic];
+  [viewControllerCopy setDefaultVibrationIdentifier:v9];
 
-  [v10 setAllowsDeletingDefaultVibration:1];
-  [v10 setDelegate:self];
-  [(SHSToneController *)self setVibrationPickerViewController:v10];
+  [viewControllerCopy setAllowsDeletingDefaultVibration:1];
+  [viewControllerCopy setDelegate:self];
+  [(SHSToneController *)self setVibrationPickerViewController:viewControllerCopy];
 }
 
-- (void)tonePickerViewController:(id)a3 didDismissVibrationPickerViewController:(id)a4
+- (void)tonePickerViewController:(id)controller didDismissVibrationPickerViewController:(id)viewController
 {
-  [a4 setDelegate:0];
+  [viewController setDelegate:0];
 
   [(SHSToneController *)self setVibrationPickerViewController:0];
 }
 
-- (void)vibrationPickerViewController:(id)a3 selectedVibrationWithIdentifier:(id)a4
+- (void)vibrationPickerViewController:(id)controller selectedVibrationWithIdentifier:(id)identifier
 {
   v6 = MEMORY[0x277D71F88];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 sharedVibrationManager];
-  v10 = [v8 alertType];
-  v11 = [v8 topic];
+  identifierCopy = identifier;
+  controllerCopy = controller;
+  sharedVibrationManager = [v6 sharedVibrationManager];
+  alertType = [controllerCopy alertType];
+  topic = [controllerCopy topic];
 
-  [v9 setCurrentVibrationIdentifier:v7 forAlertType:v10 topic:v11];
+  [sharedVibrationManager setCurrentVibrationIdentifier:identifierCopy forAlertType:alertType topic:topic];
 
   [(SHSToneController *)self _updateReloadSpecifierInParentController];
 }
 
-- (void)_handleAlertOverridePolicyDidChangeNotification:(id)a3
+- (void)_handleAlertOverridePolicyDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -250,27 +250,27 @@ void __69__SHSToneController__handleAlertOverridePolicyDidChangeNotification___b
   }
 }
 
-- (id)_defaultToneIdentifierForTonePickerWithAlertType:(int64_t)a3 topic:(id)a4
+- (id)_defaultToneIdentifierForTonePickerWithAlertType:(int64_t)type topic:(id)topic
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277D71F78] sharedToneManager];
-  v7 = [v6 defaultToneIdentifierForAlertType:a3];
+  topicCopy = topic;
+  mEMORY[0x277D71F78] = [MEMORY[0x277D71F78] sharedToneManager];
+  v7 = [mEMORY[0x277D71F78] defaultToneIdentifierForAlertType:type];
 
-  if (v5)
+  if (topicCopy)
   {
-    v8 = [MEMORY[0x277D71F78] sharedToneManager];
-    v9 = [v8 hasSpecificDefaultToneIdentifierForAlertType:a3 topic:v5];
+    mEMORY[0x277D71F78]2 = [MEMORY[0x277D71F78] sharedToneManager];
+    v9 = [mEMORY[0x277D71F78]2 hasSpecificDefaultToneIdentifierForAlertType:type topic:topicCopy];
 
-    v10 = [MEMORY[0x277D71F78] sharedToneManager];
-    v11 = v10;
+    mEMORY[0x277D71F78]3 = [MEMORY[0x277D71F78] sharedToneManager];
+    v11 = mEMORY[0x277D71F78]3;
     if (v9)
     {
-      [v10 defaultToneIdentifierForAlertType:a3 topic:v5];
+      [mEMORY[0x277D71F78]3 defaultToneIdentifierForAlertType:type topic:topicCopy];
     }
 
     else
     {
-      [v10 currentToneIdentifierForAlertType:a3];
+      [mEMORY[0x277D71F78]3 currentToneIdentifierForAlertType:type];
     }
     v12 = ;
 
@@ -280,27 +280,27 @@ void __69__SHSToneController__handleAlertOverridePolicyDidChangeNotification___b
   return v7;
 }
 
-- (id)_defaultVibrationIdentifierForVibrationPickerWithAlertType:(int64_t)a3 topic:(id)a4
+- (id)_defaultVibrationIdentifierForVibrationPickerWithAlertType:(int64_t)type topic:(id)topic
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277D71F88] sharedVibrationManager];
-  v7 = [v6 defaultVibrationIdentifierForAlertType:a3];
+  topicCopy = topic;
+  mEMORY[0x277D71F88] = [MEMORY[0x277D71F88] sharedVibrationManager];
+  v7 = [mEMORY[0x277D71F88] defaultVibrationIdentifierForAlertType:type];
 
-  if (v5)
+  if (topicCopy)
   {
-    v8 = [MEMORY[0x277D71F88] sharedVibrationManager];
-    v9 = [v8 hasSpecificDefaultVibrationIdentifierForAlertType:a3 topic:v5];
+    mEMORY[0x277D71F88]2 = [MEMORY[0x277D71F88] sharedVibrationManager];
+    v9 = [mEMORY[0x277D71F88]2 hasSpecificDefaultVibrationIdentifierForAlertType:type topic:topicCopy];
 
-    v10 = [MEMORY[0x277D71F88] sharedVibrationManager];
-    v11 = v10;
+    mEMORY[0x277D71F88]3 = [MEMORY[0x277D71F88] sharedVibrationManager];
+    v11 = mEMORY[0x277D71F88]3;
     if (v9)
     {
-      [v10 defaultVibrationIdentifierForAlertType:a3 topic:v5];
+      [mEMORY[0x277D71F88]3 defaultVibrationIdentifierForAlertType:type topic:topicCopy];
     }
 
     else
     {
-      [v10 currentVibrationIdentifierForAlertType:a3];
+      [mEMORY[0x277D71F88]3 currentVibrationIdentifierForAlertType:type];
     }
     v12 = ;
 

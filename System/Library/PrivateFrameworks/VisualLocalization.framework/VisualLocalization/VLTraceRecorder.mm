@@ -1,11 +1,11 @@
 @interface VLTraceRecorder
 + (NSURL)defaultDirectory;
-- (VLTraceRecorder)initWithDirectory:(id)a3;
+- (VLTraceRecorder)initWithDirectory:(id)directory;
 - (void)_beginTraceIfNecessary;
 - (void)_finishOnIsolationQueue;
-- (void)_recordAttemptOnIsolationQueue:(id)a3;
+- (void)_recordAttemptOnIsolationQueue:(id)queue;
 - (void)finish;
-- (void)recordAttempt:(id)a3;
+- (void)recordAttempt:(id)attempt;
 - (void)start;
 @end
 
@@ -34,21 +34,21 @@ uint64_t __35__VLTraceRecorder_defaultDirectory__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (VLTraceRecorder)initWithDirectory:(id)a3
+- (VLTraceRecorder)initWithDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v13.receiver = self;
   v13.super_class = VLTraceRecorder;
   v5 = [(VLTraceRecorder *)&v13 init];
   if (v5)
   {
-    if (([v4 isFileURL] & 1) == 0)
+    if (([directoryCopy isFileURL] & 1) == 0)
     {
       v12 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Trace directory must be a file URL" userInfo:0];
       objc_exception_throw(v12);
     }
 
-    v6 = [v4 copy];
+    v6 = [directoryCopy copy];
     destinationDirectory = v5->_destinationDirectory;
     v5->_destinationDirectory = v6;
 
@@ -83,7 +83,7 @@ uint64_t __35__VLTraceRecorder_defaultDirectory__block_invoke()
   v4[1] = 3221225472;
   v5 = __25__VLTraceRecorder_finish__block_invoke;
   v6 = &unk_279E2DA70;
-  v7 = self;
+  selfCopy = self;
   v3 = v4;
   os_unfair_lock_lock(&self->_finished);
   if (!self->_finished.didRun)
@@ -113,7 +113,7 @@ void __25__VLTraceRecorder_finish__block_invoke(uint64_t a1)
   v4[1] = 3221225472;
   v5 = __41__VLTraceRecorder__beginTraceIfNecessary__block_invoke;
   v6 = &unk_279E2DA70;
-  v7 = self;
+  selfCopy = self;
   v3 = v4;
   os_unfair_lock_lock(&self->_began);
   if (!self->_began.didRun)
@@ -359,42 +359,42 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)recordAttempt:(id)a3
+- (void)recordAttempt:(id)attempt
 {
-  v4 = a3;
+  attemptCopy = attempt;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__VLTraceRecorder_recordAttempt___block_invoke;
   v7[3] = &unk_279E2DA98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = attemptCopy;
+  v6 = attemptCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_recordAttemptOnIsolationQueue:(id)a3
+- (void)_recordAttemptOnIsolationQueue:(id)queue
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queueCopy = queue;
   dispatch_assert_queue_V2(self->_queue);
   [(VLTraceRecorder *)self _beginTraceIfNecessary];
   if (self->_baseDirectory)
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v7 = [v4 pngData];
-    if (!v7)
+    pngData = [queueCopy pngData];
+    if (!pngData)
     {
       goto LABEL_8;
     }
 
-    v8 = [(NSURL *)self->_imagesDirectory URLByAppendingPathComponent:v6];
+    v8 = [(NSURL *)self->_imagesDirectory URLByAppendingPathComponent:uUIDString];
     v9 = [v8 URLByAppendingPathExtension:@"png"];
 
     v39 = 0;
-    v10 = [v7 writeToURL:v9 options:0 error:&v39];
+    v10 = [pngData writeToURL:v9 options:0 error:&v39];
     v11 = v39;
     if ((v10 & 1) == 0)
     {
@@ -423,8 +423,8 @@ LABEL_6:
 LABEL_7:
 
 LABEL_8:
-    v13 = [v4 inputParameters];
-    v14 = [v13 mutableCopy];
+    inputParameters = [queueCopy inputParameters];
+    v14 = [inputParameters mutableCopy];
 
     v15 = 0x277CCA000uLL;
     if (!v14)
@@ -432,7 +432,7 @@ LABEL_8:
       goto LABEL_19;
     }
 
-    [v14 setObject:v6 forKeyedSubscript:@"uuid"];
+    [v14 setObject:uUIDString forKeyedSubscript:@"uuid"];
     v38 = 0;
     v16 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v14 options:0 error:&v38];
     v17 = v38;
@@ -463,7 +463,7 @@ LABEL_8:
       goto LABEL_18;
     }
 
-    v18 = [(NSURL *)self->_parametersDirectory URLByAppendingPathComponent:v6];
+    v18 = [(NSURL *)self->_parametersDirectory URLByAppendingPathComponent:uUIDString];
     v19 = [v18 URLByAppendingPathExtension:@"json"];
 
     v37 = 0;
@@ -499,8 +499,8 @@ LABEL_14:
 LABEL_18:
 
 LABEL_19:
-    v24 = [v4 results];
-    v25 = [v24 mutableCopy];
+    results = [queueCopy results];
+    v25 = [results mutableCopy];
 
     if (!v25)
     {
@@ -509,7 +509,7 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    [v25 setObject:v6 forKeyedSubscript:@"uuid"];
+    [v25 setObject:uUIDString forKeyedSubscript:@"uuid"];
     v26 = *(v15 + 2720);
     v36 = 0;
     v27 = [v26 dataWithJSONObject:v25 options:0 error:&v36];
@@ -541,7 +541,7 @@ LABEL_30:
       goto LABEL_29;
     }
 
-    v29 = [(NSURL *)self->_resultsDirectory URLByAppendingPathComponent:v6];
+    v29 = [(NSURL *)self->_resultsDirectory URLByAppendingPathComponent:uUIDString];
     v30 = [v29 URLByAppendingPathExtension:@"json"];
 
     v35 = 0;
@@ -582,19 +582,19 @@ LABEL_31:
 
 - (void)_finishOnIsolationQueue
 {
-  v2 = self;
+  selfCopy = self;
   v55 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(NSURL *)v2->_destinationDirectory path];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [(NSURL *)selfCopy->_destinationDirectory path];
+  v5 = [defaultManager fileExistsAtPath:path];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    destinationDirectory = v2->_destinationDirectory;
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    destinationDirectory = selfCopy->_destinationDirectory;
     v51 = 0;
-    v8 = [v6 createDirectoryAtURL:destinationDirectory withIntermediateDirectories:1 attributes:0 error:&v51];
+    v8 = [defaultManager2 createDirectoryAtURL:destinationDirectory withIntermediateDirectories:1 attributes:0 error:&v51];
     v9 = v51;
 
     if (!v8)
@@ -625,10 +625,10 @@ LABEL_31:
     }
   }
 
-  v10 = v2->_destinationDirectory;
+  v10 = selfCopy->_destinationDirectory;
   v11 = MEMORY[0x277CCACA8];
-  v12 = [(NSURL *)v2->_baseDirectory lastPathComponent];
-  v13 = [v11 stringWithFormat:@"VisualLocalization.%@", v12];
+  lastPathComponent = [(NSURL *)selfCopy->_baseDirectory lastPathComponent];
+  v13 = [v11 stringWithFormat:@"VisualLocalization.%@", lastPathComponent];
   v14 = [(NSURL *)v10 URLByAppendingPathComponent:v13];
   v15 = [v14 URLByAppendingPathExtension:@"tar.gz"];
 
@@ -658,13 +658,13 @@ LABEL_7:
   archive_write_set_format_v7tar();
   archive_write_add_filter_gzip();
   v41 = v15;
-  v17 = [v15 path];
-  [v17 UTF8String];
+  path2 = [v15 path];
+  [path2 UTF8String];
   archive_write_open_filename();
 
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
-  v19 = [(NSURL *)v2->_baseDirectory path];
-  v20 = [v18 subpathsAtPath:v19];
+  defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+  path3 = [(NSURL *)selfCopy->_baseDirectory path];
+  v20 = [defaultManager3 subpathsAtPath:path3];
 
   v49 = 0u;
   v50 = 0u;
@@ -687,12 +687,12 @@ LABEL_7:
 
         v24 = *(*(&v47 + 1) + 8 * i);
         v25 = objc_autoreleasePoolPush();
-        v26 = v2;
-        v27 = [(NSURL *)v2->_baseDirectory URLByAppendingPathComponent:v24];
+        v26 = selfCopy;
+        v27 = [(NSURL *)selfCopy->_baseDirectory URLByAppendingPathComponent:v24];
         v46 = 0;
-        v28 = [MEMORY[0x277CCAA00] defaultManager];
-        v29 = [v27 path];
-        v30 = [v28 fileExistsAtPath:v29 isDirectory:&v46];
+        defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
+        path4 = [v27 path];
+        v30 = [defaultManager4 fileExistsAtPath:path4 isDirectory:&v46];
         v31 = v46;
 
         if (v30 && (v31 & 1) == 0)
@@ -740,7 +740,7 @@ LABEL_21:
         }
 
         objc_autoreleasePoolPop(v25);
-        v2 = v26;
+        selfCopy = v26;
       }
 
       v22 = [obj countByEnumeratingWithState:&v47 objects:v52 count:16];
@@ -751,10 +751,10 @@ LABEL_21:
 
   archive_write_close();
   archive_write_free();
-  v35 = [MEMORY[0x277CCAA00] defaultManager];
-  baseDirectory = v2->_baseDirectory;
+  defaultManager5 = [MEMORY[0x277CCAA00] defaultManager];
+  baseDirectory = selfCopy->_baseDirectory;
   v44 = 0;
-  v37 = [v35 removeItemAtURL:baseDirectory error:&v44];
+  v37 = [defaultManager5 removeItemAtURL:baseDirectory error:&v44];
   v38 = v44;
 
   if (v37)

@@ -1,26 +1,26 @@
 @interface ImageViewLayer
 - (CGColor)shadowColor;
 - (CGSize)shadowOffset;
-- (_TtC5TeaUIP33_01AB305DE961FE9633E4B4930A1B15A714ImageViewLayer)initWithLayer:(id)a3;
+- (_TtC5TeaUIP33_01AB305DE961FE9633E4B4930A1B15A714ImageViewLayer)initWithLayer:(id)layer;
 - (const)shadowPath;
 - (double)cornerRadius;
 - (double)shadowRadius;
 - (float)shadowOpacity;
 - (unint64_t)maskedCorners;
-- (void)setCornerRadius:(double)a3;
-- (void)setMaskedCorners:(unint64_t)a3;
-- (void)setShadowColor:(CGColor *)a3;
-- (void)setShadowOffset:(CGSize)a3;
-- (void)setShadowOpacity:(float)a3;
-- (void)setShadowPath:(const CGPath *)a3;
-- (void)setShadowRadius:(double)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setMaskedCorners:(unint64_t)corners;
+- (void)setShadowColor:(CGColor *)color;
+- (void)setShadowOffset:(CGSize)offset;
+- (void)setShadowOpacity:(float)opacity;
+- (void)setShadowPath:(const CGPath *)path;
+- (void)setShadowRadius:(double)radius;
 @end
 
 @implementation ImageViewLayer
 
 - (double)cornerRadius
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7E7CD34();
   v4 = v3;
 
@@ -29,7 +29,7 @@
 
 - (float)shadowOpacity
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7E7CEC4();
   v4 = v3;
 
@@ -38,7 +38,7 @@
 
 - (CGColor)shadowColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D7E7CF00();
 
   return v3;
@@ -46,7 +46,7 @@
 
 - (CGSize)shadowOffset
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7E7D044();
   v4 = v3;
   v6 = v5;
@@ -60,7 +60,7 @@
 
 - (double)shadowRadius
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7E7CD34();
   v4 = v3;
 
@@ -69,19 +69,19 @@
 
 - (const)shadowPath
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D7E7CF00();
 
   return v3;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = self;
-  sub_1D7EA6964(a3);
+  selfCopy = self;
+  sub_1D7EA6964(radius);
 }
 
-- (_TtC5TeaUIP33_01AB305DE961FE9633E4B4930A1B15A714ImageViewLayer)initWithLayer:(id)a3
+- (_TtC5TeaUIP33_01AB305DE961FE9633E4B4930A1B15A714ImageViewLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_1D8191F34();
@@ -91,50 +91,50 @@
 
 - (unint64_t)maskedCorners
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D7FF2B58();
 
   return v3;
 }
 
-- (void)setMaskedCorners:(unint64_t)a3
+- (void)setMaskedCorners:(unint64_t)corners
 {
-  v4 = self;
-  sub_1D7FF2BE4(a3);
+  selfCopy = self;
+  sub_1D7FF2BE4(corners);
 }
 
-- (void)setShadowPath:(const CGPath *)a3
+- (void)setShadowPath:(const CGPath *)path
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D7FF2EC4(a3);
+  pathCopy = path;
+  selfCopy = self;
+  sub_1D7FF2EC4(path);
 }
 
-- (void)setShadowOffset:(CGSize)a3
+- (void)setShadowOffset:(CGSize)offset
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = offset.height;
+  width = offset.width;
+  selfCopy = self;
   sub_1D7FF2D70(width, height);
 }
 
-- (void)setShadowOpacity:(float)a3
+- (void)setShadowOpacity:(float)opacity
 {
-  v4 = self;
-  sub_1D7FF2E18(a3);
+  selfCopy = self;
+  sub_1D7FF2E18(opacity);
 }
 
-- (void)setShadowColor:(CGColor *)a3
+- (void)setShadowColor:(CGColor *)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D7FF2EC4(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1D7FF2EC4(color);
 }
 
-- (void)setShadowRadius:(double)a3
+- (void)setShadowRadius:(double)radius
 {
-  v4 = self;
-  sub_1D7FF2F68(a3);
+  selfCopy = self;
+  sub_1D7FF2F68(radius);
 }
 
 @end

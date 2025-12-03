@@ -1,30 +1,30 @@
 @interface MBDriveEncryptionManager
-+ (MBDriveEncryptionManager)encryptionManagerWithSettingsContext:(id)a3;
-- (BOOL)_changeBackupKeyBagPasswordInProperties:(id)a3 fromPassword:(id)a4 toPassword:(id)a5 error:(id *)a6;
-- (BOOL)changePasswordFrom:(id)a3 toPassword:(id)a4 error:(id *)a5;
-- (BOOL)makeLockdownAndKeychainConsistentWithError:(id *)a3;
-- (BOOL)setPasswordInKeychain:(id)a3 error:(id *)a4;
-- (MBDriveEncryptionManager)initWithSettingsContext:(id)a3;
++ (MBDriveEncryptionManager)encryptionManagerWithSettingsContext:(id)context;
+- (BOOL)_changeBackupKeyBagPasswordInProperties:(id)properties fromPassword:(id)password toPassword:(id)toPassword error:(id *)error;
+- (BOOL)changePasswordFrom:(id)from toPassword:(id)password error:(id *)error;
+- (BOOL)makeLockdownAndKeychainConsistentWithError:(id *)error;
+- (BOOL)setPasswordInKeychain:(id)keychain error:(id *)error;
+- (MBDriveEncryptionManager)initWithSettingsContext:(id)context;
 - (void)dealloc;
 @end
 
 @implementation MBDriveEncryptionManager
 
-+ (MBDriveEncryptionManager)encryptionManagerWithSettingsContext:(id)a3
++ (MBDriveEncryptionManager)encryptionManagerWithSettingsContext:(id)context
 {
-  v3 = [[MBDriveEncryptionManager alloc] initWithSettingsContext:a3];
+  v3 = [[MBDriveEncryptionManager alloc] initWithSettingsContext:context];
 
   return v3;
 }
 
-- (MBDriveEncryptionManager)initWithSettingsContext:(id)a3
+- (MBDriveEncryptionManager)initWithSettingsContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = MBDriveEncryptionManager;
   v4 = [(MBDriveEncryptionManager *)&v6 init];
   if (v4)
   {
-    v4->_settingsContext = a3;
+    v4->_settingsContext = context;
   }
 
   return v4;
@@ -37,12 +37,12 @@
   [(MBDriveEncryptionManager *)&v3 dealloc];
 }
 
-- (BOOL)_changeBackupKeyBagPasswordInProperties:(id)a3 fromPassword:(id)a4 toPassword:(id)a5 error:(id *)a6
+- (BOOL)_changeBackupKeyBagPasswordInProperties:(id)properties fromPassword:(id)password toPassword:(id)toPassword error:(id *)error
 {
-  v10 = [a3 keybagData];
-  if (v10)
+  keybagData = [properties keybagData];
+  if (keybagData)
   {
-    v11 = v10;
+    v11 = keybagData;
     v12 = MBGetDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -51,7 +51,7 @@
       _MBLog();
     }
 
-    v13 = [MBKeyBag keybagWithData:v11 error:a6];
+    v13 = [MBKeyBag keybagWithData:v11 error:error];
     if (v13)
     {
       v14 = v13;
@@ -63,7 +63,7 @@
         _MBLog();
       }
 
-      LODWORD(v13) = [(MBKeyBag *)v14 changePasswordFrom:a4 toPassword:a5 error:a6];
+      LODWORD(v13) = [(MBKeyBag *)v14 changePasswordFrom:password toPassword:toPassword error:error];
       if (v13)
       {
         v16 = MBGetDefaultLog();
@@ -74,21 +74,21 @@
           _MBLog();
         }
 
-        v13 = [(MBKeyBag *)v14 dataWithError:a6];
+        v13 = [(MBKeyBag *)v14 dataWithError:error];
         if (v13)
         {
-          [a3 setKeybagData:v13];
+          [properties setKeybagData:v13];
           LOBYTE(v13) = 1;
         }
       }
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     v17 = [MBError errorWithCode:205 format:@"No backup keybag data in encrypted backup properties"];
     LOBYTE(v13) = 0;
-    *a6 = v17;
+    *error = v17;
   }
 
   else
@@ -99,7 +99,7 @@
   return v13;
 }
 
-- (BOOL)changePasswordFrom:(id)a3 toPassword:(id)a4 error:(id *)a5
+- (BOOL)changePasswordFrom:(id)from toPassword:(id)password error:(id *)error
 {
   v50 = 0;
   v9 = objc_opt_new();
@@ -134,7 +134,7 @@
 
     if ((v47[3] & 1) == 0)
     {
-      if (a5)
+      if (error)
       {
         v16 = [MBError errorWithCode:208 format:@"Device locked"];
         goto LABEL_27;
@@ -151,8 +151,8 @@
       _MBLog();
     }
 
-    v18 = a3 == 0;
-    if (!a3)
+    v18 = from == 0;
+    if (!from)
     {
       v19 = MBGetDefaultLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -163,7 +163,7 @@
       }
     }
 
-    if (!a4)
+    if (!password)
     {
       v20 = MBGetDefaultLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -177,7 +177,7 @@
     v21 = [MBKeychainManager fetchLocalBackupPasswordAndReturnError:&v50];
     if (v21)
     {
-      if (![a3 isEqualToString:v21])
+      if (![from isEqualToString:v21])
       {
         v29 = MBGetDefaultLog();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -187,8 +187,8 @@
           _MBLog();
         }
 
-        v30 = ![(MBDriveEncryptionManager *)self setWillEncryptInLockdown:1 error:a5];
-        if (!a5)
+        v30 = ![(MBDriveEncryptionManager *)self setWillEncryptInLockdown:1 error:error];
+        if (!error)
         {
           LOBYTE(v30) = 1;
         }
@@ -210,25 +210,25 @@
         _MBLog();
       }
 
-      if (!a4)
+      if (!password)
       {
-        if (![(MBDriveEncryptionManager *)self setWillEncryptInLockdown:0 error:a5])
+        if (![(MBDriveEncryptionManager *)self setWillEncryptInLockdown:0 error:error])
         {
           goto LABEL_91;
         }
 
-        v31 = [MBKeychainManager removeLocalBackupPasswordAndReturnError:a5];
+        v31 = [MBKeychainManager removeLocalBackupPasswordAndReturnError:error];
         goto LABEL_52;
       }
 
-      if (![MBKeychainManager updateLocalBackupPassword:a4 error:a5])
+      if (![MBKeychainManager updateLocalBackupPassword:password error:error])
       {
         goto LABEL_91;
       }
 
       v18 = 0;
       v23 = 0;
-      if (![(MBDriveEncryptionManager *)self setWillEncryptInLockdown:1 error:a5])
+      if (![(MBDriveEncryptionManager *)self setWillEncryptInLockdown:1 error:error])
       {
         goto LABEL_92;
       }
@@ -249,7 +249,7 @@
         _MBLog();
       }
 
-      if (!a4)
+      if (!password)
       {
         v32 = MBGetDefaultLog();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
@@ -259,7 +259,7 @@
           _MBLog();
         }
 
-        v31 = [(MBDriveEncryptionManager *)self setWillEncryptInLockdown:0 error:a5];
+        v31 = [(MBDriveEncryptionManager *)self setWillEncryptInLockdown:0 error:error];
 LABEL_52:
         if (v31)
         {
@@ -273,7 +273,7 @@ LABEL_91:
         goto LABEL_92;
       }
 
-      if (![MBKeychainManager addLocalBackupPassword:a4 error:a5]|| ![(MBDriveEncryptionManager *)self setWillEncryptInLockdown:1 error:a5])
+      if (![MBKeychainManager addLocalBackupPassword:password error:error]|| ![(MBDriveEncryptionManager *)self setWillEncryptInLockdown:1 error:error])
       {
         goto LABEL_91;
       }
@@ -317,7 +317,7 @@ LABEL_91:
         goto LABEL_53;
       }
 
-      if ([(MBDriveEncryptionManager *)self _changeBackupKeyBagPasswordInProperties:v26 fromPassword:a3 toPassword:a4 error:&v50])
+      if ([(MBDriveEncryptionManager *)self _changeBackupKeyBagPasswordInProperties:v26 fromPassword:from toPassword:password error:&v50])
       {
         v31 = [[(MBDriveSettingsContext *)self->_settingsContext drive] uploadPropertyList:[(MBProperties *)v26 propertyList] toPath:[(MBDriveSettingsContext *)self->_settingsContext driveSnapshotPropertiesPath] options:0 error:&v50];
         goto LABEL_52;
@@ -337,10 +337,10 @@ LABEL_91:
       }
 
 LABEL_89:
-      if (a5)
+      if (error)
       {
         v23 = 0;
-        *a5 = v50;
+        *error = v50;
         goto LABEL_92;
       }
 
@@ -349,7 +349,7 @@ LABEL_89:
 
     if (![MBError isError:v50 withCode:4])
     {
-      if (a5)
+      if (error)
       {
         v16 = [MBBackupHelper driveReadError:v50 description:@"Error reading snapshot manifest properties"];
         goto LABEL_27;
@@ -404,7 +404,7 @@ LABEL_89:
         goto LABEL_78;
       }
 
-      if (![(MBDriveEncryptionManager *)self _changeBackupKeyBagPasswordInProperties:v35 fromPassword:a3 toPassword:a4 error:&v50])
+      if (![(MBDriveEncryptionManager *)self _changeBackupKeyBagPasswordInProperties:v35 fromPassword:from toPassword:password error:&v50])
       {
         if ([MBError isError:v50 withCode:207])
         {
@@ -422,7 +422,7 @@ LABEL_89:
         goto LABEL_89;
       }
 
-      if (![[(MBDriveSettingsContext *)self->_settingsContext drive] uploadPropertyList:[(MBProperties *)v35 propertyList] toPath:[(MBDriveSettingsContext *)self->_settingsContext driveBackupPropertiesPath] options:0 error:a5])
+      if (![[(MBDriveSettingsContext *)self->_settingsContext drive] uploadPropertyList:[(MBProperties *)v35 propertyList] toPath:[(MBDriveSettingsContext *)self->_settingsContext driveBackupPropertiesPath] options:0 error:error])
       {
         goto LABEL_91;
       }
@@ -432,7 +432,7 @@ LABEL_89:
     {
       if (![MBError isError:v50 withCode:4])
       {
-        if (a5)
+        if (error)
         {
           v16 = [MBBackupHelper driveReadError:v50 description:@"Error reading backup manifest properties"];
           goto LABEL_27;
@@ -467,7 +467,7 @@ LABEL_78:
 
   [v10 invalidate];
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_91;
   }
@@ -475,33 +475,33 @@ LABEL_78:
   v16 = [MBError errorWithCode:208 format:@"Device locked - timeout waiting for passcode entry"];
 LABEL_27:
   v23 = 0;
-  *a5 = v16;
+  *error = v16;
 LABEL_92:
   _Block_object_dispose(&v46, 8);
   return v23;
 }
 
-- (BOOL)setPasswordInKeychain:(id)a3 error:(id *)a4
+- (BOOL)setPasswordInKeychain:(id)keychain error:(id *)error
 {
   v7 = 0;
   if ([MBKeychainManager fetchLocalBackupPasswordAndReturnError:&v7])
   {
-    if (a3)
+    if (keychain)
     {
-      return [MBKeychainManager updateLocalBackupPassword:a3 error:a4];
+      return [MBKeychainManager updateLocalBackupPassword:keychain error:error];
     }
 
     else
     {
-      return [MBKeychainManager removeLocalBackupPasswordAndReturnError:a4];
+      return [MBKeychainManager removeLocalBackupPasswordAndReturnError:error];
     }
   }
 
   else if ([MBError isError:v7 withCode:4])
   {
-    if (a3)
+    if (keychain)
     {
-      return [MBKeychainManager addLocalBackupPassword:a3 error:a4];
+      return [MBKeychainManager addLocalBackupPassword:keychain error:error];
     }
 
     else
@@ -513,16 +513,16 @@ LABEL_92:
   else
   {
     result = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v7;
+      *error = v7;
     }
   }
 
   return result;
 }
 
-- (BOOL)makeLockdownAndKeychainConsistentWithError:(id *)a3
+- (BOOL)makeLockdownAndKeychainConsistentWithError:(id *)error
 {
   v10 = 0;
   v5 = MBGetDefaultLog();
@@ -535,22 +535,22 @@ LABEL_92:
 
   if ([MBKeychainManager fetchLocalBackupPasswordAndReturnError:&v10])
   {
-    v6 = self;
+    selfCopy2 = self;
     v7 = 1;
-    return [(MBDriveEncryptionManager *)v6 setWillEncryptInLockdown:v7 error:a3];
+    return [(MBDriveEncryptionManager *)selfCopy2 setWillEncryptInLockdown:v7 error:error];
   }
 
   if ([MBError isError:v10 withCode:4])
   {
-    v6 = self;
+    selfCopy2 = self;
     v7 = 0;
-    return [(MBDriveEncryptionManager *)v6 setWillEncryptInLockdown:v7 error:a3];
+    return [(MBDriveEncryptionManager *)selfCopy2 setWillEncryptInLockdown:v7 error:error];
   }
 
   result = 0;
-  if (a3)
+  if (error)
   {
-    *a3 = v10;
+    *error = v10;
   }
 
   return result;

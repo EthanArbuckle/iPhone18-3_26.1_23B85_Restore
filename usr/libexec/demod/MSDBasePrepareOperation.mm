@@ -23,19 +23,19 @@
 
 - (BOOL)_prepareStagingArea
 {
-  v3 = [(MSDOperation *)self context];
-  v4 = [v3 stagingRootPath];
-  v5 = [NSMutableArray arrayWithObject:v4];
+  context = [(MSDOperation *)self context];
+  stagingRootPath = [context stagingRootPath];
+  v5 = [NSMutableArray arrayWithObject:stagingRootPath];
 
   v6 = +[NSFileManager defaultManager];
-  v7 = [(MSDOperation *)self context];
-  v8 = [v7 secondaryStagingRootPath];
+  context2 = [(MSDOperation *)self context];
+  secondaryStagingRootPath = [context2 secondaryStagingRootPath];
 
-  if (v8)
+  if (secondaryStagingRootPath)
   {
-    v9 = [(MSDOperation *)self context];
-    v10 = [v9 secondaryStagingRootPath];
-    [v5 addObject:v10];
+    context3 = [(MSDOperation *)self context];
+    secondaryStagingRootPath2 = [context3 secondaryStagingRootPath];
+    [v5 addObject:secondaryStagingRootPath2];
   }
 
   v25 = 0u;

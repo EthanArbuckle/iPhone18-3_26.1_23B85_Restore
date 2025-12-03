@@ -1,40 +1,40 @@
 @interface HDInsertRacingClustersOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (HDInsertRacingClustersOperation)initWithClusters:(id)a3 provenance:(int64_t)a4;
-- (HDInsertRacingClustersOperation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (HDInsertRacingClustersOperation)initWithClusters:(id)clusters provenance:(int64_t)provenance;
+- (HDInsertRacingClustersOperation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDInsertRacingClustersOperation
 
-- (HDInsertRacingClustersOperation)initWithClusters:(id)a3 provenance:(int64_t)a4
+- (HDInsertRacingClustersOperation)initWithClusters:(id)clusters provenance:(int64_t)provenance
 {
-  v6 = a3;
+  clustersCopy = clusters;
   v11.receiver = self;
   v11.super_class = HDInsertRacingClustersOperation;
   v7 = [(HDInsertRacingClustersOperation *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [clustersCopy copy];
     clusters = v7->_clusters;
     v7->_clusters = v8;
 
-    v7->_provenance = a4;
+    v7->_provenance = provenance;
   }
 
   return v7;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v40 = a3;
-  v8 = a4;
+  profileCopy = profile;
+  transactionCopy = transaction;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v42 = self;
+  selfCopy = self;
   obj = self->_clusters;
   v9 = [(NSArray *)obj countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (!v9)
@@ -46,8 +46,8 @@
   v12 = *v49;
   *&v10 = 138543362;
   v37 = v10;
-  v38 = a5;
-  v39 = v8;
+  errorCopy = error;
+  v39 = transactionCopy;
   do
   {
     for (i = 0; i != v11; ++i)
@@ -58,33 +58,33 @@
       }
 
       v14 = *(*(&v48 + 1) + 8 * i);
-      v15 = [v14 eligibleClusterUUIDs];
-      v16 = [v15 count];
+      eligibleClusterUUIDs = [v14 eligibleClusterUUIDs];
+      v16 = [eligibleClusterUUIDs count];
 
       if (!v16)
       {
-        v20 = [v40 syncIdentityManager];
-        v21 = [v20 legacySyncIdentity];
+        syncIdentityManager = [profileCopy syncIdentityManager];
+        legacySyncIdentity = [syncIdentityManager legacySyncIdentity];
 
         if ([v14 hasSyncIdentity])
         {
-          v22 = [v14 syncIdentity];
+          syncIdentity = [v14 syncIdentity];
           v44 = 0;
-          v23 = [HDSyncIdentity syncIdentityWithCodable:v22 error:&v44];
+          v23 = [HDSyncIdentity syncIdentityWithCodable:syncIdentity error:&v44];
           v24 = v44;
 
           if (v23)
           {
-            v25 = [v40 syncIdentityManager];
+            syncIdentityManager2 = [profileCopy syncIdentityManager];
             v43 = v24;
-            v26 = [v25 concreteIdentityForIdentity:v23 shouldCreate:1 transaction:v39 error:&v43];
+            v26 = [syncIdentityManager2 concreteIdentityForIdentity:v23 shouldCreate:1 transaction:v39 error:&v43];
             v27 = v43;
 
             if (v26)
             {
 
-              v21 = v26;
-              v8 = v39;
+              legacySyncIdentity = v26;
+              transactionCopy = v39;
               goto LABEL_13;
             }
 
@@ -97,9 +97,9 @@
               _os_log_fault_impl(&dword_228986000, v33, OS_LOG_TYPE_FAULT, "ConcreteSyncIdentity from received codable is nil %{public}@", buf, 0xCu);
             }
 
-            v21 = 0;
+            legacySyncIdentity = 0;
             v24 = v27;
-            a5 = v38;
+            error = errorCopy;
           }
 
           else
@@ -114,18 +114,18 @@
             }
           }
 
-          v8 = v39;
+          transactionCopy = v39;
         }
 
         else
         {
 LABEL_13:
-          provenance = v42->_provenance;
-          v29 = [v21 entity];
-          v30 = [v29 persistentID];
+          provenance = selfCopy->_provenance;
+          entity = [legacySyncIdentity entity];
+          persistentID = [entity persistentID];
           v31 = provenance;
-          a5 = v38;
-          v34 = [HDRaceRouteClusterEntity insertCodableCluster:v14 syncProvenance:v31 syncIdentity:v30 transaction:v8 error:v38];
+          error = errorCopy;
+          v34 = [HDRaceRouteClusterEntity insertCodableCluster:v14 syncProvenance:v31 syncIdentity:persistentID transaction:transactionCopy error:errorCopy];
 
           if (!v34)
           {
@@ -137,18 +137,18 @@ LABEL_13:
         continue;
       }
 
-      v17 = [v14 eligibleClusterUUIDs];
+      eligibleClusterUUIDs2 = [v14 eligibleClusterUUIDs];
       v45[0] = MEMORY[0x277D85DD0];
       v45[1] = 3221225472;
       v45[2] = __72__HDInsertRacingClustersOperation_performWithProfile_transaction_error___block_invoke;
       v45[3] = &unk_278623BD0;
-      v18 = v8;
+      v18 = transactionCopy;
       v46 = v18;
-      v47 = v42;
-      v19 = [v17 hk_map:v45];
+      v47 = selfCopy;
+      v19 = [eligibleClusterUUIDs2 hk_map:v45];
 
-      LOBYTE(v17) = [HDRaceRouteClusterEntity pruneRaceRouteClustersWithEligibleEntities:v19 transaction:v18 error:a5];
-      if ((v17 & 1) == 0)
+      LOBYTE(eligibleClusterUUIDs2) = [HDRaceRouteClusterEntity pruneRaceRouteClustersWithEligibleEntities:v19 transaction:v18 error:error];
+      if ((eligibleClusterUUIDs2 & 1) == 0)
       {
         LOBYTE(v34) = 0;
         goto LABEL_25;
@@ -200,31 +200,31 @@ id __72__HDInsertRacingClustersOperation_performWithProfile_transaction_error___
   return v5;
 }
 
-- (HDInsertRacingClustersOperation)initWithCoder:(id)a3
+- (HDInsertRacingClustersOperation)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 alloc];
   v14[0] = objc_opt_class();
   v14[1] = objc_opt_class();
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
   v8 = [v6 initWithArray:v7];
 
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"clusters"];
-  v10 = [v5 decodeInt64ForKey:@"provenance"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"clusters"];
+  v10 = [coderCopy decodeInt64ForKey:@"provenance"];
 
   v11 = [(HDInsertRacingClustersOperation *)self initWithClusters:v9 provenance:v10];
   v12 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   clusters = self->_clusters;
-  v5 = a3;
-  [v5 encodeObject:clusters forKey:@"clusters"];
-  [v5 encodeInt64:self->_provenance forKey:@"provenance"];
+  coderCopy = coder;
+  [coderCopy encodeObject:clusters forKey:@"clusters"];
+  [coderCopy encodeInt64:self->_provenance forKey:@"provenance"];
 }
 
 @end

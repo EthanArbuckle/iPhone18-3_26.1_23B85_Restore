@@ -1,52 +1,52 @@
 @interface WiFiAnalyticsAWDWiFiSlowWiFiReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addLinkQualSample:(id)a3;
-- (void)addUsbEvent:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addLinkQualSample:(id)sample;
+- (void)addUsbEvent:(id)event;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWiFiSlowWiFiReport
 
-- (void)addLinkQualSample:(id)a3
+- (void)addLinkQualSample:(id)sample
 {
-  v4 = a3;
+  sampleCopy = sample;
   linkQualSamples = self->_linkQualSamples;
-  v8 = v4;
+  v8 = sampleCopy;
   if (!linkQualSamples)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_linkQualSamples;
     self->_linkQualSamples = v6;
 
-    v4 = v8;
+    sampleCopy = v8;
     linkQualSamples = self->_linkQualSamples;
   }
 
-  [(NSMutableArray *)linkQualSamples addObject:v4];
+  [(NSMutableArray *)linkQualSamples addObject:sampleCopy];
 }
 
-- (void)addUsbEvent:(id)a3
+- (void)addUsbEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   usbEvents = self->_usbEvents;
-  v8 = v4;
+  v8 = eventCopy;
   if (!usbEvents)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_usbEvents;
     self->_usbEvents = v6;
 
-    v4 = v8;
+    eventCopy = v8;
     usbEvents = self->_usbEvents;
   }
 
-  [(NSMutableArray *)usbEvents addObject:v4];
+  [(NSMutableArray *)usbEvents addObject:eventCopy];
 }
 
 - (id)description
@@ -55,8 +55,8 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWiFiSlowWiFiReport;
   v4 = [(WiFiAnalyticsAWDWiFiSlowWiFiReport *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWiFiSlowWiFiReport *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWiFiSlowWiFiReport *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -64,18 +64,18 @@
 - (id)dictionaryRepresentation
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   slowNotice = self->_slowNotice;
   if (slowNotice)
   {
-    v6 = [(WiFiAnalyticsAWDSlowWiFiNotification *)slowNotice dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"slowNotice"];
+    dictionaryRepresentation = [(WiFiAnalyticsAWDSlowWiFiNotification *)slowNotice dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"slowNotice"];
   }
 
   if ([(NSMutableArray *)self->_linkQualSamples count])
@@ -100,8 +100,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation2 = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation2];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -110,7 +110,7 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"linkQualSample"];
+    [dictionary setObject:v7 forKey:@"linkQualSample"];
   }
 
   if ([(NSMutableArray *)self->_usbEvents count])
@@ -135,8 +135,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v23 + 1) + 8 * j) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation3 = [*(*(&v23 + 1) + 8 * j) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation3];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -145,18 +145,18 @@
       while (v17);
     }
 
-    [v3 setObject:v14 forKey:@"usbEvent"];
+    [dictionary setObject:v14 forKey:@"usbEvent"];
   }
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
@@ -235,28 +235,28 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 40) |= 1u;
   }
 
-  v13 = v4;
+  v13 = toCopy;
   if (self->_slowNotice)
   {
-    [v4 setSlowNotice:?];
+    [toCopy setSlowNotice:?];
   }
 
   if ([(WiFiAnalyticsAWDWiFiSlowWiFiReport *)self linkQualSamplesCount])
   {
     [v13 clearLinkQualSamples];
-    v5 = [(WiFiAnalyticsAWDWiFiSlowWiFiReport *)self linkQualSamplesCount];
-    if (v5)
+    linkQualSamplesCount = [(WiFiAnalyticsAWDWiFiSlowWiFiReport *)self linkQualSamplesCount];
+    if (linkQualSamplesCount)
     {
-      v6 = v5;
+      v6 = linkQualSamplesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(WiFiAnalyticsAWDWiFiSlowWiFiReport *)self linkQualSampleAtIndex:i];
@@ -268,10 +268,10 @@
   if ([(WiFiAnalyticsAWDWiFiSlowWiFiReport *)self usbEventsCount])
   {
     [v13 clearUsbEvents];
-    v9 = [(WiFiAnalyticsAWDWiFiSlowWiFiReport *)self usbEventsCount];
-    if (v9)
+    usbEventsCount = [(WiFiAnalyticsAWDWiFiSlowWiFiReport *)self usbEventsCount];
+    if (usbEventsCount)
     {
-      v10 = v9;
+      v10 = usbEventsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(WiFiAnalyticsAWDWiFiSlowWiFiReport *)self usbEventAtIndex:j];
@@ -281,10 +281,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -292,7 +292,7 @@
     *(v5 + 40) |= 1u;
   }
 
-  v7 = [(WiFiAnalyticsAWDSlowWiFiNotification *)self->_slowNotice copyWithZone:a3];
+  v7 = [(WiFiAnalyticsAWDSlowWiFiNotification *)self->_slowNotice copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
@@ -316,7 +316,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v27 + 1) + 8 * v13) copyWithZone:a3];
+        v14 = [*(*(&v27 + 1) + 8 * v13) copyWithZone:zone];
         [v6 addLinkQualSample:v14];
 
         ++v13;
@@ -349,7 +349,7 @@
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v23 + 1) + 8 * v19) copyWithZone:{a3, v23}];
+        v20 = [*(*(&v23 + 1) + 8 * v19) copyWithZone:{zone, v23}];
         [v6 addUsbEvent:v20];
 
         ++v19;
@@ -366,24 +366,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -391,13 +391,13 @@ LABEL_13:
   }
 
   slowNotice = self->_slowNotice;
-  if (slowNotice | *(v4 + 3) && ![(WiFiAnalyticsAWDSlowWiFiNotification *)slowNotice isEqual:?])
+  if (slowNotice | *(equalCopy + 3) && ![(WiFiAnalyticsAWDSlowWiFiNotification *)slowNotice isEqual:?])
   {
     goto LABEL_13;
   }
 
   linkQualSamples = self->_linkQualSamples;
-  if (linkQualSamples | *(v4 + 2))
+  if (linkQualSamples | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)linkQualSamples isEqual:?])
     {
@@ -406,7 +406,7 @@ LABEL_13:
   }
 
   usbEvents = self->_usbEvents;
-  if (usbEvents | *(v4 + 4))
+  if (usbEvents | *(equalCopy + 4))
   {
     v9 = [(NSMutableArray *)usbEvents isEqual:?];
   }
@@ -438,14 +438,14 @@ LABEL_14:
   return v4 ^ v5 ^ [(NSMutableArray *)self->_usbEvents hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4[5])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[5])
   {
-    self->_timestamp = v4[1];
+    self->_timestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 

@@ -1,6 +1,6 @@
 @interface SDAirDropHandleriTunesStoreLinks
 - (BOOL)canHandleTransfer;
-- (SDAirDropHandleriTunesStoreLinks)initWithTransfer:(id)a3;
+- (SDAirDropHandleriTunesStoreLinks)initWithTransfer:(id)transfer;
 - (id)candidateIdentifiers;
 - (id)suitableContentsDescription;
 - (int64_t)transferTypes;
@@ -8,23 +8,23 @@
 
 @implementation SDAirDropHandleriTunesStoreLinks
 
-- (SDAirDropHandleriTunesStoreLinks)initWithTransfer:(id)a3
+- (SDAirDropHandleriTunesStoreLinks)initWithTransfer:(id)transfer
 {
   v4.receiver = self;
   v4.super_class = SDAirDropHandleriTunesStoreLinks;
-  return [(SDAirDropHandler *)&v4 initWithTransfer:a3 bundleIdentifier:@"com.apple.MobileStore"];
+  return [(SDAirDropHandler *)&v4 initWithTransfer:transfer bundleIdentifier:@"com.apple.MobileStore"];
 }
 
 - (id)candidateIdentifiers
 {
   v3 = objc_opt_new();
-  v4 = [(SDAirDropHandler *)self bundleProxy];
+  bundleProxy = [(SDAirDropHandler *)self bundleProxy];
 
-  if (v4)
+  if (bundleProxy)
   {
-    v5 = [(SDAirDropHandler *)self bundleProxy];
-    v6 = [v5 bundleIdentifier];
-    [v3 addObject:v6];
+    bundleProxy2 = [(SDAirDropHandler *)self bundleProxy];
+    bundleIdentifier = [bundleProxy2 bundleIdentifier];
+    [v3 addObject:bundleIdentifier];
   }
 
   [v3 addObject:@"com.apple.Music"];
@@ -39,15 +39,15 @@
     return 0;
   }
 
-  v3 = [(SDAirDropHandleriTunesStoreLinks *)self candidateIdentifiers];
+  candidateIdentifiers = [(SDAirDropHandleriTunesStoreLinks *)self candidateIdentifiers];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(SDAirDropHandler *)self transfer];
-  v5 = [v4 completedURLs];
+  transfer = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer completedURLs];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [completedURLs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -58,10 +58,10 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(completedURLs);
         }
 
-        v10 = [(SDAirDropHandler *)self bundleProxyFromCandidateIdentifiers:v3 handlesURL:*(*(&v13 + 1) + 8 * i)];
+        v10 = [(SDAirDropHandler *)self bundleProxyFromCandidateIdentifiers:candidateIdentifiers handlesURL:*(*(&v13 + 1) + 8 * i)];
 
         if (!v10)
         {
@@ -70,7 +70,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [completedURLs countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -95,41 +95,41 @@ LABEL_13:
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
-  v4 = [(SDAirDropHandler *)self transfer];
-  v5 = [v4 metaData];
-  v6 = [v5 itemsDescriptionAdvanced];
+  senderName = [(SDAirDropHandler *)self senderName];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  itemsDescriptionAdvanced = [metaData itemsDescriptionAdvanced];
 
-  v7 = [(SDAirDropHandler *)self transfer];
-  v8 = v7;
-  if (v6)
+  transfer2 = [(SDAirDropHandler *)self transfer];
+  v8 = transfer2;
+  if (itemsDescriptionAdvanced)
   {
-    v9 = [v7 metaData];
-    v10 = [v9 itemsDescriptionAdvanced];
-    v11 = [v10 objectForKeyedSubscript:@"SFAirDropActivitySubjectiTunesStoreLinkType"];
-    v12 = [v11 integerValue];
+    metaData2 = [transfer2 metaData];
+    itemsDescriptionAdvanced2 = [metaData2 itemsDescriptionAdvanced];
+    v11 = [itemsDescriptionAdvanced2 objectForKeyedSubscript:@"SFAirDropActivitySubjectiTunesStoreLinkType"];
+    integerValue = [v11 integerValue];
   }
 
   else
   {
-    v9 = [v7 completedURLs];
-    v10 = [v9 firstObject];
-    v12 = SFiTunesStoreLinkType();
+    metaData2 = [transfer2 completedURLs];
+    itemsDescriptionAdvanced2 = [metaData2 firstObject];
+    integerValue = SFiTunesStoreLinkType();
   }
 
-  if ((v12 - 1) > 4)
+  if ((integerValue - 1) > 4)
   {
     v13 = &off_1009105E0;
   }
 
   else
   {
-    v13 = off_1008D5348[(v12 - 1)];
+    v13 = off_1008D5348[(integerValue - 1)];
   }
 
   v14 = [(SDAirDropHandler *)self alertMessageLocalizedKeyForTypeDicts:v13];
   v15 = SFLocalizedStringForKey();
-  v16 = [NSString localizedStringWithFormat:v15, v3];
+  v16 = [NSString localizedStringWithFormat:v15, senderName];
 
   return v16;
 }

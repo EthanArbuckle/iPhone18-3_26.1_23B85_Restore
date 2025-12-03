@@ -1,17 +1,17 @@
 @interface TSCESpillingOriginCache
 - (TSCECalculationEngine)calcEngine;
-- (TSCESpillingOriginCache)initWithCalcEngine:(id)a3;
-- (TSUCellRect)spillRangeForSpillingOriginCellRef:(const TSCECellRef *)a3 outError:(id *)a4;
+- (TSCESpillingOriginCache)initWithCalcEngine:(id)engine;
+- (TSUCellRect)spillRangeForSpillingOriginCellRef:(const TSCECellRef *)ref outError:(id *)error;
 - (id).cxx_construct;
 - (void)clearCache;
-- (void)replaceSpillError:(id)a3 forSpillingOriginCellRef:(const TSCECellRef *)a4;
+- (void)replaceSpillError:(id)error forSpillingOriginCellRef:(const TSCECellRef *)ref;
 @end
 
 @implementation TSCESpillingOriginCache
 
-- (TSCESpillingOriginCache)initWithCalcEngine:(id)a3
+- (TSCESpillingOriginCache)initWithCalcEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v8.receiver = self;
   v8.super_class = TSCESpillingOriginCache;
   v5 = [(TSCESpillingOriginCache *)&v8 init];
@@ -19,7 +19,7 @@
   if (v5)
   {
     pthread_rwlock_init(&v5->_rwLock, 0);
-    objc_storeWeak(&v6->_calcEngine, v4);
+    objc_storeWeak(&v6->_calcEngine, engineCopy);
   }
 
   return v6;
@@ -33,10 +33,10 @@
   pthread_rwlock_unlock(&self->_rwLock);
 }
 
-- (TSUCellRect)spillRangeForSpillingOriginCellRef:(const TSCECellRef *)a3 outError:(id *)a4
+- (TSUCellRect)spillRangeForSpillingOriginCellRef:(const TSCECellRef *)ref outError:(id *)error
 {
   pthread_rwlock_rdlock(&self->_rwLock);
-  v7 = sub_221244B44(&self->_cache.__table_.__bucket_list_.__ptr_, a3);
+  v7 = sub_221244B44(&self->_cache.__table_.__bucket_list_.__ptr_, ref);
   if (v7)
   {
     v8 = v7[5];
@@ -49,23 +49,23 @@
   {
     pthread_rwlock_unlock(&self->_rwLock);
     WeakRetained = objc_loadWeakRetained(&self->_calcEngine);
-    v19 = objc_msgSend_errorForCell_(WeakRetained, v21, a3, v22, v23);
+    v19 = objc_msgSend_errorForCell_(WeakRetained, v21, ref, v22, v23);
 
     v24 = objc_loadWeakRetained(&self->_calcEngine);
-    v15 = objc_msgSend_spillSizeForCell_(v24, v25, a3, v26, v27);
+    v15 = objc_msgSend_spillSizeForCell_(v24, v25, ref, v26, v27);
 
-    coordinate = a3->coordinate;
+    coordinate = ref->coordinate;
     v8 = objc_alloc_init(TSCESpillingOriginCacheEntry);
     objc_msgSend_setSpillRange_(v8, v28, coordinate, v15, v29);
     objc_msgSend_setError_(v8, v30, v19, v31, v32);
     pthread_rwlock_wrlock(&self->_rwLock);
-    v33 = sub_2215A80D4(&self->_cache.__table_.__bucket_list_.__ptr_, a3);
+    v33 = sub_2215A80D4(&self->_cache.__table_.__bucket_list_.__ptr_, ref);
     objc_storeStrong(v33 + 5, v8);
   }
 
   pthread_rwlock_unlock(&self->_rwLock);
   v34 = v19;
-  *a4 = v19;
+  *error = v19;
 
   v35 = coordinate;
   v36 = v15;
@@ -74,14 +74,14 @@
   return result;
 }
 
-- (void)replaceSpillError:(id)a3 forSpillingOriginCellRef:(const TSCECellRef *)a4
+- (void)replaceSpillError:(id)error forSpillingOriginCellRef:(const TSCECellRef *)ref
 {
-  v10 = a3;
+  errorCopy = error;
   pthread_rwlock_wrlock(&self->_rwLock);
-  v6 = sub_221244B44(&self->_cache.__table_.__bucket_list_.__ptr_, a4);
+  v6 = sub_221244B44(&self->_cache.__table_.__bucket_list_.__ptr_, ref);
   if (v6)
   {
-    objc_msgSend_setError_(v6[5], v7, v10, v8, v9);
+    objc_msgSend_setError_(v6[5], v7, errorCopy, v8, v9);
   }
 
   pthread_rwlock_unlock(&self->_rwLock);

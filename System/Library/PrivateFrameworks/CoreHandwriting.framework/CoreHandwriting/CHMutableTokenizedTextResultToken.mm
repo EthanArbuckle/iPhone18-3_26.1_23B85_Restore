@@ -1,21 +1,21 @@
 @interface CHMutableTokenizedTextResultToken
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)bounds;
-- (CHMutableTokenizedTextResultToken)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initWithString:(double)a3 strokeIndexes:(double)a4 wordID:(double)a5 modelScore:(double)a6 recognitionScore:(double)a7 combinedScore:(double)a8 alignmentScore:(double)a9 properties:(uint64_t)a10 recognizerSourceLocale:(void *)a11 inputSources:(void *)a12 substrokeCount:(uint64_t)a13 bounds:(uint64_t)a14 originalBounds:(uint64_t)a15 principalLines:(uint64_t)a16 principalPoints:(uint64_t)a17;
-- (void)encodeWithCoder:(id)a3;
-- (void)setRecognizerSourceLocale:(id)a3;
-- (void)setString:(id)a3;
-- (void)setStrokeIndexes:(id)a3;
+- (CHMutableTokenizedTextResultToken)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initWithString:(double)string strokeIndexes:(double)indexes wordID:(double)d modelScore:(double)score recognitionScore:(double)recognitionScore combinedScore:(double)combinedScore alignmentScore:(double)alignmentScore properties:(uint64_t)self0 recognizerSourceLocale:(void *)self1 inputSources:(void *)self2 substrokeCount:(uint64_t)self3 bounds:(uint64_t)self4 originalBounds:(uint64_t)self5 principalLines:(uint64_t)self6 principalPoints:(uint64_t)self7;
+- (void)encodeWithCoder:(id)coder;
+- (void)setRecognizerSourceLocale:(id)locale;
+- (void)setString:(id)string;
+- (void)setStrokeIndexes:(id)indexes;
 @end
 
 @implementation CHMutableTokenizedTextResultToken
 
-- (id)initWithString:(double)a3 strokeIndexes:(double)a4 wordID:(double)a5 modelScore:(double)a6 recognitionScore:(double)a7 combinedScore:(double)a8 alignmentScore:(double)a9 properties:(uint64_t)a10 recognizerSourceLocale:(void *)a11 inputSources:(void *)a12 substrokeCount:(uint64_t)a13 bounds:(uint64_t)a14 originalBounds:(uint64_t)a15 principalLines:(uint64_t)a16 principalPoints:(uint64_t)a17
+- (id)initWithString:(double)string strokeIndexes:(double)indexes wordID:(double)d modelScore:(double)score recognitionScore:(double)recognitionScore combinedScore:(double)combinedScore alignmentScore:(double)alignmentScore properties:(uint64_t)self0 recognizerSourceLocale:(void *)self1 inputSources:(void *)self2 substrokeCount:(uint64_t)self3 bounds:(uint64_t)self4 originalBounds:(uint64_t)self5 principalLines:(uint64_t)self6 principalPoints:(uint64_t)self7
 {
-  v33 = a11;
-  v34 = a12;
+  localeCopy = locale;
+  sourcesCopy = sources;
   v35 = a21[5];
   v47[4] = a21[4];
   v47[5] = v35;
@@ -28,24 +28,24 @@
   v38 = a21[3];
   v47[2] = a21[2];
   v47[3] = v38;
-  v46.receiver = a1;
+  v46.receiver = self;
   v46.super_class = CHMutableTokenizedTextResultToken;
-  v39 = objc_msgSendSuper2(&v46, sel_initWithString_strokeIndexes_wordID_modelScore_recognitionScore_combinedScore_alignmentScore_properties_recognizerSourceLocale_inputSources_substrokeCount_bounds_originalBounds_principalLines_principalPoints_, v33, v34, a13, a14, a15, a16, a2, a3, a4, a5, a6, a7, a8, a9, a17, a18, a19, a20, v47, a22);
+  v39 = objc_msgSendSuper2(&v46, sel_initWithString_strokeIndexes_wordID_modelScore_recognitionScore_combinedScore_alignmentScore_properties_recognizerSourceLocale_inputSources_substrokeCount_bounds_originalBounds_principalLines_principalPoints_, localeCopy, sourcesCopy, count, bounds, originalBounds, lines, a2, string, indexes, d, score, recognitionScore, combinedScore, alignmentScore, points, a18, a19, a20, v47, a22);
   v40 = v39;
   if (v39)
   {
-    objc_storeStrong(v39 + 38, a11);
-    objc_storeStrong(v40 + 39, a12);
-    *(v40 + 40) = a6;
-    *(v40 + 41) = a7;
-    *(v40 + 42) = a8;
-    *(v40 + 43) = a9;
+    objc_storeStrong(v39 + 38, locale);
+    objc_storeStrong(v40 + 39, sources);
+    *(v40 + 40) = score;
+    *(v40 + 41) = recognitionScore;
+    *(v40 + 42) = combinedScore;
+    *(v40 + 43) = alignmentScore;
   }
 
   return v40;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHTokenizedTextResultToken alloc];
   string = self->_string;
@@ -81,12 +81,12 @@
   return objc_msgSend_initWithString_strokeIndexes_wordID_modelScore_recognitionScore_combinedScore_alignmentScore_properties_recognizerSourceLocale_inputSources_substrokeCount_bounds_originalBounds_principalLines_principalPoints_(v4, v27, string, strokeIndexes, wordID, properties, recognizerSourceLocale, inputSources, modelScore, recognitionScore, combinedScore, alignmentScore, x, y, width, height, substrokeCount, *&v20, v21, *&v22, v29, self->super._principalPoints);
 }
 
-- (CHMutableTokenizedTextResultToken)initWithCoder:(id)a3
+- (CHMutableTokenizedTextResultToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CHMutableTokenizedTextResultToken;
-  v5 = [(CHTokenizedTextResultToken *)&v14 initWithCoder:v4];
+  v5 = [(CHTokenizedTextResultToken *)&v14 initWithCoder:coderCopy];
   v11 = v5;
   if (v5)
   {
@@ -101,21 +101,21 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v14 = a3;
+  coderCopy = coder;
   v9 = objc_msgSend_copy(self, v4, v5, v6, v7, v8);
-  objc_msgSend_encodeWithCoder_(v9, v10, v14, v11, v12, v13);
+  objc_msgSend_encodeWithCoder_(v9, v10, coderCopy, v11, v12, v13);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v10 = objc_msgSend_copy(self, v5, v6, v7, v8, v9);
-    v11 = sub_1836A9AF4(v10, v4);
+    v11 = sub_1836A9AF4(v10, equalCopy);
 
     return v11;
   }
@@ -127,37 +127,37 @@
   }
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  v12 = a3;
+  stringCopy = string;
   v10 = objc_msgSend_string(self, v5, v6, v7, v8, v9);
 
-  v11 = v12;
-  if (v10 != v12)
+  v11 = stringCopy;
+  if (v10 != stringCopy)
   {
-    objc_storeStrong(&self->_string, a3);
-    v11 = v12;
+    objc_storeStrong(&self->_string, string);
+    v11 = stringCopy;
   }
 }
 
-- (void)setStrokeIndexes:(id)a3
+- (void)setStrokeIndexes:(id)indexes
 {
-  v4 = a3;
-  if (self->_strokeIndexes != v4)
+  indexesCopy = indexes;
+  if (self->_strokeIndexes != indexesCopy)
   {
-    v12 = v4;
-    v10 = objc_msgSend_copy(v4, v5, v6, v7, v8, v9);
+    v12 = indexesCopy;
+    v10 = objc_msgSend_copy(indexesCopy, v5, v6, v7, v8, v9);
     strokeIndexes = self->_strokeIndexes;
     self->_strokeIndexes = v10;
 
-    v4 = v12;
+    indexesCopy = v12;
   }
 }
 
-- (void)setRecognizerSourceLocale:(id)a3
+- (void)setRecognizerSourceLocale:(id)locale
 {
-  v11 = a3;
-  v9 = objc_msgSend_copy(v11, v4, v5, v6, v7, v8);
+  localeCopy = locale;
+  v9 = objc_msgSend_copy(localeCopy, v4, v5, v6, v7, v8);
   recognizerSourceLocale = self->super._recognizerSourceLocale;
   self->super._recognizerSourceLocale = v9;
 }

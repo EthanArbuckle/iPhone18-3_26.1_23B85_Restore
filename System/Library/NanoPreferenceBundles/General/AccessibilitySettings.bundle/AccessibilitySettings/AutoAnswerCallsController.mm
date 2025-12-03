@@ -3,7 +3,7 @@
 - (BOOL)numericalPreferenceEnabled;
 - (double)numericalPreferenceValue;
 - (void)dealloc;
-- (void)setNumericalPreferenceValueFromUser:(double)a3;
+- (void)setNumericalPreferenceValueFromUser:(double)user;
 @end
 
 @implementation AutoAnswerCallsController
@@ -39,8 +39,8 @@
 - (double)numericalPreferenceValue
 {
   v6 = 0;
-  v2 = [(AutoAnswerCallsController *)self domainAccessor];
-  [v2 floatForKey:*MEMORY[0x277CE7EE0] keyExistsAndHasValidFormat:&v6];
+  domainAccessor = [(AutoAnswerCallsController *)self domainAccessor];
+  [domainAccessor floatForKey:*MEMORY[0x277CE7EE0] keyExistsAndHasValidFormat:&v6];
   v4 = v3;
 
   result = v4;
@@ -52,32 +52,32 @@
   return result;
 }
 
-- (void)setNumericalPreferenceValueFromUser:(double)a3
+- (void)setNumericalPreferenceValueFromUser:(double)user
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v5 = [(AutoAnswerCallsController *)self domainAccessor];
+  domainAccessor = [(AutoAnswerCallsController *)self domainAccessor];
   v6 = *MEMORY[0x277CE7EE0];
-  [v5 setDouble:*MEMORY[0x277CE7EE0] forKey:a3];
+  [domainAccessor setDouble:*MEMORY[0x277CE7EE0] forKey:user];
 
-  v7 = [(AutoAnswerCallsController *)self domainAccessor];
-  v8 = [v7 synchronize];
+  domainAccessor2 = [(AutoAnswerCallsController *)self domainAccessor];
+  synchronize = [domainAccessor2 synchronize];
 
   v9 = objc_opt_new();
-  v10 = [(AutoAnswerCallsController *)self domainAccessor];
-  v11 = [v10 domain];
+  domainAccessor3 = [(AutoAnswerCallsController *)self domainAccessor];
+  domain = [domainAccessor3 domain];
   v12 = MEMORY[0x277CBEB98];
   v16[0] = v6;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
   v14 = [v12 setWithArray:v13];
-  [v9 synchronizeNanoDomain:v11 keys:v14];
+  [v9 synchronizeNanoDomain:domain keys:v14];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)numericalPreferenceEnabled
 {
-  v2 = [(AutoAnswerCallsController *)self domainAccessor];
-  v3 = [v2 BOOLForKey:*MEMORY[0x277CE7ED8]];
+  domainAccessor = [(AutoAnswerCallsController *)self domainAccessor];
+  v3 = [domainAccessor BOOLForKey:*MEMORY[0x277CE7ED8]];
 
   return v3;
 }

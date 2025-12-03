@@ -8,36 +8,36 @@
 - (BOOL)primaryPhysicalCardEnabled;
 - (NSDate)primaryPhysicalCardExpirationDate;
 - (PKPaymentSetupViewControllerDelegate)setupDelegate;
-- (PKPhysicalCardController)initWithAccountService:(id)a3 paymentPass:(id)a4 account:(id)a5 accountUser:(id)a6 physicalCards:(id)a7;
+- (PKPhysicalCardController)initWithAccountService:(id)service paymentPass:(id)pass account:(id)account accountUser:(id)user physicalCards:(id)cards;
 - (void)_updatePhysicalCards;
 - (void)dealloc;
-- (void)nextViewControllerWithCompletion:(id)a3;
-- (void)orderFlowViewControllerForReason:(unint64_t)a3 content:(int64_t)a4 completion:(id)a5;
-- (void)replaceFlowViewControllerForReason:(unint64_t)a3 content:(int64_t)a4 currentPhysicalCard:(id)a5 completion:(id)a6;
-- (void)updateWithAccount:(id)a3;
-- (void)updateWithPhysicalCards:(id)a3;
+- (void)nextViewControllerWithCompletion:(id)completion;
+- (void)orderFlowViewControllerForReason:(unint64_t)reason content:(int64_t)content completion:(id)completion;
+- (void)replaceFlowViewControllerForReason:(unint64_t)reason content:(int64_t)content currentPhysicalCard:(id)card completion:(id)completion;
+- (void)updateWithAccount:(id)account;
+- (void)updateWithPhysicalCards:(id)cards;
 @end
 
 @implementation PKPhysicalCardController
 
-- (PKPhysicalCardController)initWithAccountService:(id)a3 paymentPass:(id)a4 account:(id)a5 accountUser:(id)a6 physicalCards:(id)a7
+- (PKPhysicalCardController)initWithAccountService:(id)service paymentPass:(id)pass account:(id)account accountUser:(id)user physicalCards:(id)cards
 {
-  v22 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  serviceCopy = service;
+  passCopy = pass;
+  accountCopy = account;
+  userCopy = user;
+  cardsCopy = cards;
   v23.receiver = self;
   v23.super_class = PKPhysicalCardController;
   v17 = [(PKPhysicalCardController *)&v23 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_account, a5);
-    objc_storeStrong(&v18->_accountService, a3);
-    objc_storeStrong(&v18->_paymentPass, a4);
-    objc_storeStrong(&v18->_accountUser, a6);
-    v19 = [v16 copy];
+    objc_storeStrong(&v17->_account, account);
+    objc_storeStrong(&v18->_accountService, service);
+    objc_storeStrong(&v18->_paymentPass, pass);
+    objc_storeStrong(&v18->_accountUser, user);
+    v19 = [cardsCopy copy];
     physicalCards = v18->_physicalCards;
     v18->_physicalCards = v19;
 
@@ -49,24 +49,24 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKPhysicalCardController;
   [(PKPhysicalCardController *)&v4 dealloc];
 }
 
-- (void)updateWithAccount:(id)a3
+- (void)updateWithAccount:(id)account
 {
-  objc_storeStrong(&self->_account, a3);
+  objc_storeStrong(&self->_account, account);
 
   [(PKPhysicalCardController *)self _updatePhysicalCards];
 }
 
-- (void)updateWithPhysicalCards:(id)a3
+- (void)updateWithPhysicalCards:(id)cards
 {
-  v4 = [a3 copy];
+  v4 = [cards copy];
   physicalCards = self->_physicalCards;
   self->_physicalCards = v4;
 
@@ -82,8 +82,8 @@
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(PKPhysicalCard *)self->_unactivatedPhysicalCard orderActivity];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    orderActivity = [(PKPhysicalCard *)self->_unactivatedPhysicalCard orderActivity];
+    v4 = [orderActivity countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -95,7 +95,7 @@
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(orderActivity);
           }
 
           if ([*(*(&v9 + 1) + 8 * v7) activity] == 2)
@@ -108,7 +108,7 @@
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [orderActivity countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v5)
         {
           continue;
@@ -146,10 +146,10 @@
 
   if ([(PKAccountUser *)self->_accountUser accessLevel]== 2)
   {
-    v3 = [(PKAccountUser *)self->_accountUser preferences];
-    v4 = [v3 spendingEnabled];
+    preferences = [(PKAccountUser *)self->_accountUser preferences];
+    spendingEnabled = [preferences spendingEnabled];
 
-    if (!v4)
+    if (!spendingEnabled)
     {
       return 0;
     }
@@ -198,48 +198,48 @@
 
 - (BOOL)primaryPhysicalCardEnabled
 {
-  v3 = [(PKPhysicalCardController *)self hasPrimaryPhysicalCard];
-  if (v3)
+  hasPrimaryPhysicalCard = [(PKPhysicalCardController *)self hasPrimaryPhysicalCard];
+  if (hasPrimaryPhysicalCard)
   {
-    LOBYTE(v3) = [(PKPhysicalCard *)self->_primaryPhysicalCard state]== 2;
+    LOBYTE(hasPrimaryPhysicalCard) = [(PKPhysicalCard *)self->_primaryPhysicalCard state]== 2;
   }
 
-  return v3;
+  return hasPrimaryPhysicalCard;
 }
 
 - (BOOL)physicalCardBlocked
 {
-  v3 = [(PKPhysicalCardController *)self hasPrimaryPhysicalCard];
-  if (v3)
+  hasPrimaryPhysicalCard = [(PKPhysicalCardController *)self hasPrimaryPhysicalCard];
+  if (hasPrimaryPhysicalCard)
   {
-    LOBYTE(v3) = [(PKPhysicalCard *)self->_primaryPhysicalCard state]== 4 && self->_unactivatedPhysicalCard == 0;
+    LOBYTE(hasPrimaryPhysicalCard) = [(PKPhysicalCard *)self->_primaryPhysicalCard state]== 4 && self->_unactivatedPhysicalCard == 0;
   }
 
-  return v3;
+  return hasPrimaryPhysicalCard;
 }
 
 - (NSDate)primaryPhysicalCardExpirationDate
 {
   v3 = objc_alloc(MEMORY[0x1E695DEE8]);
   v4 = [v3 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-  v5 = [(PKAccount *)self->_account productTimeZone];
-  [v4 setTimeZone:v5];
+  productTimeZone = [(PKAccount *)self->_account productTimeZone];
+  [v4 setTimeZone:productTimeZone];
 
   v6 = [(PKPhysicalCard *)self->_primaryPhysicalCard expirationDateInCalendar:v4];
 
   return v6;
 }
 
-- (void)replaceFlowViewControllerForReason:(unint64_t)a3 content:(int64_t)a4 currentPhysicalCard:(id)a5 completion:(id)a6
+- (void)replaceFlowViewControllerForReason:(unint64_t)reason content:(int64_t)content currentPhysicalCard:(id)card completion:(id)completion
 {
-  v10 = a6;
-  if (v10)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v11 = a5;
+    cardCopy = card;
     v12 = [PKOrderPhysicalCardController alloc];
     accountService = self->_accountService;
-    v14 = [MEMORY[0x1E69B8EF8] sharedService];
-    v15 = [(PKOrderPhysicalCardController *)v12 initWithAccountService:accountService paymentWebService:v14 paymentPass:self->_paymentPass account:self->_account accountUser:self->_accountUser orderReason:a3 context:a4 currentPhysicalCard:v11];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    v15 = [(PKOrderPhysicalCardController *)v12 initWithAccountService:accountService paymentWebService:mEMORY[0x1E69B8EF8] paymentPass:self->_paymentPass account:self->_account accountUser:self->_accountUser orderReason:reason context:content currentPhysicalCard:cardCopy];
 
     [(PKOrderPhysicalCardController *)v15 setParentFlowController:self];
     v17[0] = MEMORY[0x1E69E9820];
@@ -247,8 +247,8 @@
     v17[2] = __102__PKPhysicalCardController_replaceFlowViewControllerForReason_content_currentPhysicalCard_completion___block_invoke;
     v17[3] = &unk_1E8017470;
     v18 = v15;
-    v19 = self;
-    v20 = v10;
+    selfCopy = self;
+    v20 = completionCopy;
     v16 = v15;
     [(PKOrderPhysicalCardController *)v16 updateCustomizationOptionsWithCompletion:v17];
   }
@@ -326,15 +326,15 @@ uint64_t __102__PKPhysicalCardController_replaceFlowViewControllerForReason_cont
   }
 }
 
-- (void)orderFlowViewControllerForReason:(unint64_t)a3 content:(int64_t)a4 completion:(id)a5
+- (void)orderFlowViewControllerForReason:(unint64_t)reason content:(int64_t)content completion:(id)completion
 {
-  v8 = a5;
-  if (v8)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v9 = [PKOrderPhysicalCardController alloc];
     accountService = self->_accountService;
-    v11 = [MEMORY[0x1E69B8EF8] sharedService];
-    v12 = [(PKOrderPhysicalCardController *)v9 initWithAccountService:accountService paymentWebService:v11 paymentPass:self->_paymentPass account:self->_account accountUser:self->_accountUser orderReason:a3 context:a4 currentPhysicalCard:0];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    v12 = [(PKOrderPhysicalCardController *)v9 initWithAccountService:accountService paymentWebService:mEMORY[0x1E69B8EF8] paymentPass:self->_paymentPass account:self->_account accountUser:self->_accountUser orderReason:reason context:content currentPhysicalCard:0];
 
     [(PKOrderPhysicalCardController *)v12 setParentFlowController:self];
     v14[0] = MEMORY[0x1E69E9820];
@@ -342,8 +342,8 @@ uint64_t __102__PKPhysicalCardController_replaceFlowViewControllerForReason_cont
     v14[2] = __80__PKPhysicalCardController_orderFlowViewControllerForReason_content_completion___block_invoke;
     v14[3] = &unk_1E8017470;
     v15 = v12;
-    v16 = self;
-    v17 = v8;
+    selfCopy = self;
+    v17 = completionCopy;
     v13 = v12;
     [(PKOrderPhysicalCardController *)v13 updateCustomizationOptionsWithCompletion:v14];
   }
@@ -421,10 +421,10 @@ uint64_t __80__PKPhysicalCardController_orderFlowViewControllerForReason_content
   }
 }
 
-- (void)nextViewControllerWithCompletion:(id)a3
+- (void)nextViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   parentFlowController = self->_parentFlowController;
   if (parentFlowController)
   {
@@ -433,13 +433,13 @@ uint64_t __80__PKPhysicalCardController_orderFlowViewControllerForReason_content
     v7[2] = __61__PKPhysicalCardController_nextViewControllerWithCompletion___block_invoke;
     v7[3] = &unk_1E8019EA0;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [(PKSetupFlowControllerProtocol *)parentFlowController nextViewControllerWithCompletion:v7];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -455,12 +455,12 @@ void __61__PKPhysicalCardController_nextViewControllerWithCompletion___block_inv
 {
   v49 = *MEMORY[0x1E69E9840];
   v3 = PKCurrentUserAltDSID();
-  v4 = [(PKAccountUser *)self->_accountUser altDSID];
-  v5 = v4;
+  altDSID = [(PKAccountUser *)self->_accountUser altDSID];
+  v5 = altDSID;
   v43 = v3;
-  if (v4)
+  if (altDSID)
   {
-    v6 = v4;
+    v6 = altDSID;
   }
 
   else
@@ -474,7 +474,7 @@ void __61__PKPhysicalCardController_nextViewControllerWithCompletion___block_inv
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v39 = self;
+  selfCopy = self;
   obj = self->_physicalCards;
   v8 = [(NSSet *)obj countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (!v8)
@@ -501,12 +501,12 @@ void __61__PKPhysicalCardController_nextViewControllerWithCompletion___block_inv
       }
 
       v14 = *(*(&v44 + 1) + 8 * i);
-      v15 = [v14 accountUserAltDSID];
-      v16 = v15;
+      accountUserAltDSID = [v14 accountUserAltDSID];
+      v16 = accountUserAltDSID;
       v17 = v43;
-      if (v15)
+      if (accountUserAltDSID)
       {
-        v17 = v15;
+        v17 = accountUserAltDSID;
       }
 
       v18 = v17;
@@ -525,14 +525,14 @@ void __61__PKPhysicalCardController_nextViewControllerWithCompletion___block_inv
 
         v7 = v21;
 LABEL_17:
-        v28 = [v14 state];
-        if ((v28 - 2) >= 3)
+        state = [v14 state];
+        if ((state - 2) >= 3)
         {
-          if (v28 == 5)
+          if (state == 5)
           {
             v29 = [objc_alloc(MEMORY[0x1E695DEE8]) initWithCalendarIdentifier:v38];
-            v30 = [(PKAccount *)v39->_account productTimeZone];
-            [v29 setTimeZone:v30];
+            productTimeZone = [(PKAccount *)selfCopy->_account productTimeZone];
+            [v29 setTimeZone:productTimeZone];
 
             if ([v14 isExpiredInCalendar:v29])
             {
@@ -544,7 +544,7 @@ LABEL_17:
 
           else
           {
-            if (v28 != 1)
+            if (state != 1)
             {
 LABEL_26:
               if (v11 && v10 && v40)
@@ -612,16 +612,16 @@ LABEL_29:
 
 LABEL_34:
 
-  unactivatedPhysicalCard = v39->_unactivatedPhysicalCard;
-  v39->_unactivatedPhysicalCard = v10;
+  unactivatedPhysicalCard = selfCopy->_unactivatedPhysicalCard;
+  selfCopy->_unactivatedPhysicalCard = v10;
   v33 = v10;
 
-  primaryPhysicalCard = v39->_primaryPhysicalCard;
-  v39->_primaryPhysicalCard = v11;
+  primaryPhysicalCard = selfCopy->_primaryPhysicalCard;
+  selfCopy->_primaryPhysicalCard = v11;
   v35 = v11;
 
-  expiredPhysicalCard = v39->_expiredPhysicalCard;
-  v39->_expiredPhysicalCard = v40;
+  expiredPhysicalCard = selfCopy->_expiredPhysicalCard;
+  selfCopy->_expiredPhysicalCard = v40;
   v37 = v40;
 }
 

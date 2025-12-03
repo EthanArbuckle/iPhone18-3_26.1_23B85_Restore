@@ -1,51 +1,51 @@
 @interface NTKFoghornFaceView
-+ (BOOL)_isSixpackComplicationSlot:(id)a3;
++ (BOOL)_isSixpackComplicationSlot:(id)slot;
 + (id)_sixpackComplicationNames;
-+ (id)_snapshotImageForLayoutStyle:(id)a3 bezelStyle:(id)a4 colorPalette:(id)a5 withSelectedOptions:(id)a6 forDevice:(id)a7;
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
-+ (void)_applyComplicationsLayoutForDevice:(id)a3 size:(CGSize)a4 circularScale:(double)a5 circularShift:(double)a6 fromTopBottomMargin:(double)a7 fromInterSixpackSpacing:(double)a8 block:(id)a9;
-+ (void)_applyComplicationsLayoutForDevice:(id)a3 size:(CGSize)a4 fromBezelStyle:(int64_t)a5 toBezelStyle:(int64_t)a6 progress:(double)a7 block:(id)a8;
-+ (void)_drawComplicationsSnapshotInContext:(CGContext *)a3 bezelStyle:(int64_t)a4 layoutStyle:(unint64_t)a5 forDevice:(id)a6;
++ (id)_snapshotImageForLayoutStyle:(id)style bezelStyle:(id)bezelStyle colorPalette:(id)palette withSelectedOptions:(id)options forDevice:(id)device;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
++ (void)_applyComplicationsLayoutForDevice:(id)device size:(CGSize)size circularScale:(double)scale circularShift:(double)shift fromTopBottomMargin:(double)margin fromInterSixpackSpacing:(double)spacing block:(id)block;
++ (void)_applyComplicationsLayoutForDevice:(id)device size:(CGSize)size fromBezelStyle:(int64_t)style toBezelStyle:(int64_t)bezelStyle progress:(double)progress block:(id)block;
++ (void)_drawComplicationsSnapshotInContext:(CGContext *)context bezelStyle:(int64_t)style layoutStyle:(unint64_t)layoutStyle forDevice:(id)device;
 - (BOOL)_statusIndicatorNeedsOffsetForBezel;
-- (CGAffineTransform)_transformForBreathingFraction:(SEL)a3;
-- (CGAffineTransform)_transformForRubberBandingFraction:(SEL)a3;
-- (NTKFoghornFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_alphaForComplicationSlot:(id)a3 inEditOption:(id)a4 ofEditMode:(int64_t)a5;
+- (CGAffineTransform)_transformForBreathingFraction:(SEL)fraction;
+- (CGAffineTransform)_transformForRubberBandingFraction:(SEL)fraction;
+- (NTKFoghornFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_alphaForComplicationSlot:(id)slot inEditOption:(id)option ofEditMode:(int64_t)mode;
 - (double)_horizontalPaddingForStatusBar;
-- (double)_keylineCornerRadiusForComplicationSlot:(id)a3;
+- (double)_keylineCornerRadiusForComplicationSlot:(id)slot;
 - (double)_verticalPaddingForStatusBar;
 - (id)_complicationSlotsHiddenByCurrentConfiguration;
 - (id)_multiPalette;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)createFaceColorPalette;
 - (int64_t)_currentBezelStyle;
-- (int64_t)_keylineStyleForComplicationSlot:(id)a3;
+- (int64_t)_keylineStyleForComplicationSlot:(id)slot;
 - (unint64_t)_currentLayoutStyle;
 - (unint64_t)_currentNightModePolicy;
-- (unint64_t)_effectiveNightModeForEditMode:(int64_t)a3;
-- (void)_applyComplicationColor:(id)a3 withPalette:(id)a4 slot:(id)a5;
-- (void)_applyComplicationFont:(id)a3;
-- (void)_applyComplicationLayoutRuleForDevice:(id)a3 frame:(CGRect)a4 transform:(CGAffineTransform *)a5 slot:(id)a6 states:(id)a7;
-- (void)_applyComplicationsAlphaForTransitionFraction:(double)a3 fromLayoutStyle:(unint64_t)a4 toLayoutStyle:(unint64_t)a5 editMode:(int64_t)a6;
-- (void)_applyComplicationsLayoutCircularScale:(double)a3 circularShift:(double)a4 fromTopBottomMargin:(double)a5 fromInterSixpackSpacing:(double)a6 states:(id)a7;
+- (unint64_t)_effectiveNightModeForEditMode:(int64_t)mode;
+- (void)_applyComplicationColor:(id)color withPalette:(id)palette slot:(id)slot;
+- (void)_applyComplicationFont:(id)font;
+- (void)_applyComplicationLayoutRuleForDevice:(id)device frame:(CGRect)frame transform:(CGAffineTransform *)transform slot:(id)slot states:(id)states;
+- (void)_applyComplicationsAlphaForTransitionFraction:(double)fraction fromLayoutStyle:(unint64_t)style toLayoutStyle:(unint64_t)layoutStyle editMode:(int64_t)mode;
+- (void)_applyComplicationsLayoutCircularScale:(double)scale circularShift:(double)shift fromTopBottomMargin:(double)margin fromInterSixpackSpacing:(double)spacing states:(id)states;
 - (void)_applyComplicationsLayoutForComplicationsEditing;
-- (void)_applyComplicationsLayoutFromBezelStyle:(int64_t)a3 toBezelStyle:(int64_t)a4 progress:(double)a5;
+- (void)_applyComplicationsLayoutFromBezelStyle:(int64_t)style toBezelStyle:(int64_t)bezelStyle progress:(double)progress;
 - (void)_applyDataMode;
 - (void)_applyMultiPaletteFractions;
-- (void)_applyNightModeFraction:(double)a3;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyPaletteBezelStyle:(int64_t)a3 updateColorsIfNeeded:(BOOL)a4;
-- (void)_applyPaletteFromBezelStyle:(int64_t)a3 toBezelStyle:(int64_t)a4 progress:(double)a5 updateColorsIfNeeded:(BOOL)a6;
-- (void)_applyPaletteToComplications:(id)a3;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromColor:(id)a4 toColor:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromNightMode:(unint64_t)a4 toNightMode:(unint64_t)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyNightModeFraction:(double)fraction;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyPaletteBezelStyle:(int64_t)style updateColorsIfNeeded:(BOOL)needed;
+- (void)_applyPaletteFromBezelStyle:(int64_t)style toBezelStyle:(int64_t)bezelStyle progress:(double)progress updateColorsIfNeeded:(BOOL)needed;
+- (void)_applyPaletteToComplications:(id)complications;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromColor:(id)color toColor:(id)toColor;
+- (void)_applyTransitionFraction:(double)fraction fromNightMode:(unint64_t)mode toNightMode:(unint64_t)nightMode;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_checkTransforms;
-- (void)_checkTransformsForView:(id)a3;
+- (void)_checkTransformsForView:(id)view;
 - (void)_cleanupAfterEditing;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
 - (void)_configureShowingStatusIndicator;
 - (void)_fixLayoutStyle;
 - (void)_fixTransforms;
@@ -53,33 +53,33 @@
 - (void)_loadSnapshotContentViews;
 - (void)_prepareComplicationsForSnapshotting;
 - (void)_prepareForEditing;
-- (void)_prepareForStatusChange:(BOOL)a3;
+- (void)_prepareForStatusChange:(BOOL)change;
 - (void)_reorderSwitcherSnapshotView;
-- (void)_setLive:(int64_t)a3;
+- (void)_setLive:(int64_t)live;
 - (void)_unloadSnapshotContentViews;
 - (void)_updateFromPreferences;
-- (void)_updateStatusBarColorForNightModeFraction:(double)a3;
+- (void)_updateStatusBarColorForNightModeFraction:(double)fraction;
 - (void)_updateViewColorsWithMultiPalette;
-- (void)_updateViewColorsWithPalette:(id)a3;
+- (void)_updateViewColorsWithPalette:(id)palette;
 - (void)dealloc;
-- (void)setDataMode:(int64_t)a3;
-- (void)setNightMode:(unint64_t)a3;
+- (void)setDataMode:(int64_t)mode;
+- (void)setNightMode:(unint64_t)mode;
 @end
 
 @implementation NTKFoghornFaceView
 
-- (NTKFoghornFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKFoghornFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v22.receiver = self;
   v22.super_class = NTKFoghornFaceView;
-  v9 = [(NTKFoghornFaceView *)&v22 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKFoghornFaceView *)&v22 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   v12 = v9;
   if (v9)
   {
     objc_msgSend_setComplicationFactory_(v9, v10, 0, v11);
     v13 = objc_alloc(MEMORY[0x277D2C080]);
-    v16 = objc_msgSend_initWithDevice_(v13, v14, v8, v15);
+    v16 = objc_msgSend_initWithDevice_(v13, v14, deviceCopy, v15);
     complicationsFilterProvider = v12->_complicationsFilterProvider;
     v12->_complicationsFilterProvider = v16;
 
@@ -97,21 +97,21 @@
   [(NTKFoghornFaceView *)&v4 dealloc];
 }
 
-- (void)setDataMode:(int64_t)a3
+- (void)setDataMode:(int64_t)mode
 {
   v14.receiver = self;
   v14.super_class = NTKFoghornFaceView;
-  v5 = [(NTKFoghornFaceView *)&v14 dataMode];
-  v9 = v5;
-  if (a3 == 1 && v5 == 3)
+  dataMode = [(NTKFoghornFaceView *)&v14 dataMode];
+  v9 = dataMode;
+  if (mode == 1 && dataMode == 3)
   {
     objc_msgSend__updateAveragePixelLuminance(self, v6, v7, v8);
   }
 
   v13.receiver = self;
   v13.super_class = NTKFoghornFaceView;
-  [(NTKFoghornFaceView *)&v13 setDataMode:a3];
-  if (a3 == 1 && v9 != 1)
+  [(NTKFoghornFaceView *)&v13 setDataMode:mode];
+  if (mode == 1 && v9 != 1)
   {
     objc_msgSend__refreshBezelFromDataSource(self, v10, v11, v12);
   }
@@ -198,16 +198,16 @@
   objc_msgSend__updateFromPreferences(self, v3, v4, v5);
 }
 
-- (void)_checkTransformsForView:(id)a3
+- (void)_checkTransformsForView:(id)view
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v7 = v3;
+  viewCopy = view;
+  v7 = viewCopy;
   v8 = 0;
   memset(&v13[1], 0, sizeof(CGAffineTransformComponents));
-  if (v3)
+  if (viewCopy)
   {
-    objc_msgSend_transform(v3, v4, v5, v6);
+    objc_msgSend_transform(viewCopy, v4, v5, v6);
     v8 = 0;
   }
 
@@ -301,25 +301,25 @@
   objc_msgSend__fixLayoutStyle(self, v9, v10, v11);
 }
 
-- (void)setNightMode:(unint64_t)a3
+- (void)setNightMode:(unint64_t)mode
 {
-  self->_nightMode = a3;
+  self->_nightMode = mode;
   v3 = 0.0;
-  if (a3 == 1)
+  if (mode == 1)
   {
     v3 = 1.0;
   }
 
   self->_nightModeFraction = v3;
-  (MEMORY[0x2821F9670])(self, sel__applyMultiPaletteFractions, a3);
+  (MEMORY[0x2821F9670])(self, sel__applyMultiPaletteFractions, mode);
 }
 
-- (void)_applyNightModeFraction:(double)a3
+- (void)_applyNightModeFraction:(double)fraction
 {
-  if (self->_nightModeFraction != a3)
+  if (self->_nightModeFraction != fraction)
   {
-    self->_nightModeFraction = a3;
-    if (a3 == 0.0 || a3 == 1.0)
+    self->_nightModeFraction = fraction;
+    if (fraction == 0.0 || fraction == 1.0)
     {
       objc_msgSend__updateAveragePixelLuminance(self, a2, v3, v4);
     }
@@ -328,26 +328,26 @@
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromNightMode:(unint64_t)a4 toNightMode:(unint64_t)a5
+- (void)_applyTransitionFraction:(double)fraction fromNightMode:(unint64_t)mode toNightMode:(unint64_t)nightMode
 {
-  if (a4 != 2 && a5 != 2)
+  if (mode != 2 && nightMode != 2)
   {
-    objc_msgSend__nightModeActiveFor_(self, a2, a4, a5);
-    objc_msgSend__nightModeActiveFor_(self, v7, a5, v8);
+    objc_msgSend__nightModeActiveFor_(self, a2, mode, nightMode);
+    objc_msgSend__nightModeActiveFor_(self, v7, nightMode, v8);
 
     MEMORY[0x2821F9670](self, sel__applyNightModeFraction_, v9, v10);
   }
 }
 
-- (void)_updateStatusBarColorForNightModeFraction:(double)a3
+- (void)_updateStatusBarColorForNightModeFraction:(double)fraction
 {
-  if (a3 <= 0.5)
+  if (fraction <= 0.5)
   {
-    v18 = fabs(a3);
-    if (v18 >= 0.00000011920929)
+    fractionCopy = fabs(fraction);
+    if (fractionCopy >= 0.00000011920929)
     {
       v7 = objc_msgSend_blackColor(MEMORY[0x277D75348], a2, v3, v4);
-      v22 = objc_msgSend_colorWithAlphaComponent_(v7, v19, v20, v21, a3 + a3);
+      v22 = objc_msgSend_colorWithAlphaComponent_(v7, v19, v20, v21, fraction + fraction);
       statusBarOverrideColor = self->_statusBarOverrideColor;
       self->_statusBarOverrideColor = v22;
     }
@@ -364,15 +364,15 @@
     v7 = objc_msgSend_foghornFaceColorPalette(self, a2, v3, v4);
     v11 = objc_msgSend_nightModeStatusBarColor(v7, v8, v9, v10);
     v15 = objc_msgSend_blackColor(MEMORY[0x277D75348], v12, v13, v14);
-    v16 = MEMORY[0x23EEBFD00](v15, v11, a3 + -0.5 + a3 + -0.5);
+    v16 = MEMORY[0x23EEBFD00](v15, v11, fraction + -0.5 + fraction + -0.5);
     v17 = self->_statusBarOverrideColor;
     self->_statusBarOverrideColor = v16;
 
-    v18 = a3;
+    fractionCopy = fraction;
   }
 
   v29 = objc_msgSend_delegate(self, v24, v25, v26);
-  objc_msgSend_faceViewDidChangeStatusBarOverrideColor_(v29, v27, fmin(v18, fabs(a3 + -1.0)) < 0.00000011920929, v28);
+  objc_msgSend_faceViewDidChangeStatusBarOverrideColor_(v29, v27, fmin(fractionCopy, fabs(fraction + -1.0)) < 0.00000011920929, v28);
 }
 
 - (BOOL)_statusIndicatorNeedsOffsetForBezel
@@ -470,12 +470,12 @@
   objc_msgSend_setShowingStatusIndicator_(bezelView, a2, v5, v3);
 }
 
-- (void)_prepareForStatusChange:(BOOL)a3
+- (void)_prepareForStatusChange:(BOOL)change
 {
-  if (self->_showingStatus != a3)
+  if (self->_showingStatus != change)
   {
-    self->_showingStatus = a3;
-    objc_msgSend__configureShowingStatusIndicator(self, a2, a3, v3);
+    self->_showingStatus = change;
+    objc_msgSend__configureShowingStatusIndicator(self, a2, change, v3);
   }
 }
 
@@ -496,11 +496,11 @@
   return v5;
 }
 
-+ (BOOL)_isSixpackComplicationSlot:(id)a3
++ (BOOL)_isSixpackComplicationSlot:(id)slot
 {
-  v4 = a3;
-  v8 = objc_msgSend__sixpackComplicationNames(a1, v5, v6, v7);
-  v11 = objc_msgSend_containsObject_(v8, v9, v4, v10);
+  slotCopy = slot;
+  v8 = objc_msgSend__sixpackComplicationNames(self, v5, v6, v7);
+  v11 = objc_msgSend_containsObject_(v8, v9, slotCopy, v10);
 
   return v11;
 }
@@ -517,20 +517,20 @@
   objc_msgSend__applyComplicationsLayoutCircularScale_circularShift_fromTopBottomMargin_fromInterSixpackSpacing_states_(self, v5, &unk_284EA1530, v6, v12, *&v9, *&v10);
 }
 
-- (void)_applyComplicationLayoutRuleForDevice:(id)a3 frame:(CGRect)a4 transform:(CGAffineTransform *)a5 slot:(id)a6 states:(id)a7
+- (void)_applyComplicationLayoutRuleForDevice:(id)device frame:(CGRect)frame transform:(CGAffineTransform *)transform slot:(id)slot states:(id)states
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v56 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a6;
+  deviceCopy = device;
+  slotCopy = slot;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = a7;
+  obj = states;
   v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v17, &v51, v55, 16);
   if (v18)
   {
@@ -553,29 +553,29 @@
 
         v29 = objc_msgSend_integerValue(*(*(&v51 + 1) + 8 * v28), v19, v20, v21, v46);
         v30 = objc_opt_class();
-        if (objc_msgSend__isSixpackComplicationSlot_(v30, v31, v16, v32))
+        if (objc_msgSend__isSixpackComplicationSlot_(v30, v31, slotCopy, v32))
         {
-          v34 = *&a5->c;
-          v48 = *&a5->a;
+          v34 = *&transform->c;
+          v48 = *&transform->a;
           v49 = v34;
-          v50 = *&a5->tx;
-          v35 = objc_msgSend_layoutRuleForDevice_withReferenceFrame_horizontalLayout_verticalLayout_keylinePadding_clip_contentTransform_(MEMORY[0x277D2BFC0], v33, v15, 3, 3, 0, &v48, x, y, width, height, v24, v25, v26, v27);
-          objc_msgSend_complicationLayoutforSlot_(self, v36, v16, v37);
+          v50 = *&transform->tx;
+          v35 = objc_msgSend_layoutRuleForDevice_withReferenceFrame_horizontalLayout_verticalLayout_keylinePadding_clip_contentTransform_(MEMORY[0x277D2BFC0], v33, deviceCopy, 3, 3, 0, &v48, x, y, width, height, v24, v25, v26, v27);
+          objc_msgSend_complicationLayoutforSlot_(self, v36, slotCopy, v37);
         }
 
         else
         {
           v38 = objc_opt_class();
-          if (!objc_msgSend__isMiddleComplicationSlot_(v38, v39, v16, v40))
+          if (!objc_msgSend__isMiddleComplicationSlot_(v38, v39, slotCopy, v40))
           {
             goto LABEL_11;
           }
 
-          v41 = *&a5->c;
-          v48 = *&a5->a;
+          v41 = *&transform->c;
+          v48 = *&transform->a;
           v49 = v41;
-          v50 = *&a5->tx;
-          v35 = objc_msgSend_layoutRuleForDevice_withReferenceFrame_horizontalLayout_verticalLayout_keylinePadding_clip_contentTransform_(MEMORY[0x277D2BFC0], v19, v15, 3, 3, 0, &v48, x, y, width, height, v24, v25, v26, v27);
+          v50 = *&transform->tx;
+          v35 = objc_msgSend_layoutRuleForDevice_withReferenceFrame_horizontalLayout_verticalLayout_keylinePadding_clip_contentTransform_(MEMORY[0x277D2BFC0], v19, deviceCopy, 3, 3, 0, &v48, x, y, width, height, v24, v25, v26, v27);
           objc_msgSend_complicationLayoutforSlot_(self, v42, v46, v43);
         }
         v44 = ;
@@ -593,9 +593,9 @@ LABEL_11:
   }
 }
 
-- (void)_applyComplicationsLayoutFromBezelStyle:(int64_t)a3 toBezelStyle:(int64_t)a4 progress:(double)a5
+- (void)_applyComplicationsLayoutFromBezelStyle:(int64_t)style toBezelStyle:(int64_t)bezelStyle progress:(double)progress
 {
-  v9 = objc_msgSend_device(self, a2, a3, a4);
+  v9 = objc_msgSend_device(self, a2, style, bezelStyle);
   objc_msgSend_bounds(self, v10, v11, v12);
   v14 = v13;
   v16 = v15;
@@ -608,18 +608,18 @@ LABEL_11:
   v21 = v9;
   v22 = &unk_284EA1548;
   v18 = v9;
-  objc_msgSend__applyComplicationsLayoutForDevice_size_fromBezelStyle_toBezelStyle_progress_block_(v17, v19, v18, a3, a4, v20, v14, v16, a5);
+  objc_msgSend__applyComplicationsLayoutForDevice_size_fromBezelStyle_toBezelStyle_progress_block_(v17, v19, v18, style, bezelStyle, v20, v14, v16, progress);
 }
 
-+ (void)_applyComplicationsLayoutForDevice:(id)a3 size:(CGSize)a4 fromBezelStyle:(int64_t)a5 toBezelStyle:(int64_t)a6 progress:(double)a7 block:(id)a8
++ (void)_applyComplicationsLayoutForDevice:(id)device size:(CGSize)size fromBezelStyle:(int64_t)style toBezelStyle:(int64_t)bezelStyle progress:(double)progress block:(id)block
 {
-  height = a4.height;
-  width = a4.width;
-  v28 = a3;
-  v15 = a8;
+  height = size.height;
+  width = size.width;
+  deviceCopy = device;
+  blockCopy = block;
   memset(v29, 0, sizeof(v29));
-  sub_23BE78818(v28, v29);
-  if (a5)
+  sub_23BE78818(deviceCopy, v29);
+  if (style)
   {
     v17 = *v29;
   }
@@ -630,7 +630,7 @@ LABEL_11:
   }
 
   v18 = 40;
-  if (a5)
+  if (style)
   {
     v19 = 40;
   }
@@ -640,7 +640,7 @@ LABEL_11:
     v19 = 48;
   }
 
-  if (a5)
+  if (style)
   {
     v20 = 56;
   }
@@ -650,7 +650,7 @@ LABEL_11:
     v20 = 64;
   }
 
-  if (a6)
+  if (bezelStyle)
   {
     v21 = *v29;
   }
@@ -660,13 +660,13 @@ LABEL_11:
     v21 = *(v29 + 1);
   }
 
-  if (!a6)
+  if (!bezelStyle)
   {
     v18 = 48;
   }
 
   v22 = *(v29 + v18);
-  if (a6)
+  if (bezelStyle)
   {
     v23 = 56;
   }
@@ -677,11 +677,11 @@ LABEL_11:
   }
 
   v24 = *(v29 + v23);
-  if (a5 != a6 && fabs(a7 + -1.0) >= 0.00000011920929)
+  if (style != bezelStyle && fabs(progress + -1.0) >= 0.00000011920929)
   {
-    if (fabs(a7) < 0.00000011920929)
+    if (fabs(progress) < 0.00000011920929)
     {
-      objc_msgSend__applyComplicationsLayoutForDevice_size_circularScale_circularShift_fromTopBottomMargin_fromInterSixpackSpacing_block_(a1, v16, v28, v15, width, height, v17, 0.0, *(v29 + v19), *(v29 + v20));
+      objc_msgSend__applyComplicationsLayoutForDevice_size_circularScale_circularShift_fromTopBottomMargin_fromInterSixpackSpacing_block_(self, v16, deviceCopy, blockCopy, width, height, v17, 0.0, *(v29 + v19), *(v29 + v20));
       goto LABEL_24;
     }
 
@@ -693,13 +693,13 @@ LABEL_11:
     v24 = v27;
   }
 
-  objc_msgSend__applyComplicationsLayoutForDevice_size_circularScale_circularShift_fromTopBottomMargin_fromInterSixpackSpacing_block_(a1, v16, v28, v15, width, height, v21, 0.0, v22, v24);
+  objc_msgSend__applyComplicationsLayoutForDevice_size_circularScale_circularShift_fromTopBottomMargin_fromInterSixpackSpacing_block_(self, v16, deviceCopy, blockCopy, width, height, v21, 0.0, v22, v24);
 LABEL_24:
 }
 
-- (void)_applyComplicationsLayoutCircularScale:(double)a3 circularShift:(double)a4 fromTopBottomMargin:(double)a5 fromInterSixpackSpacing:(double)a6 states:(id)a7
+- (void)_applyComplicationsLayoutCircularScale:(double)scale circularShift:(double)shift fromTopBottomMargin:(double)margin fromInterSixpackSpacing:(double)spacing states:(id)states
 {
-  v12 = a7;
+  statesCopy = states;
   v16 = objc_msgSend_device(self, v13, v14, v15);
   objc_msgSend_bounds(self, v17, v18, v19);
   v21 = v20;
@@ -711,17 +711,17 @@ LABEL_24:
   v28[3] = &unk_278B9CB40;
   v28[4] = self;
   v29 = v16;
-  v30 = v12;
-  v25 = v12;
+  v30 = statesCopy;
+  v25 = statesCopy;
   v26 = v16;
-  objc_msgSend__applyComplicationsLayoutForDevice_size_circularScale_circularShift_fromTopBottomMargin_fromInterSixpackSpacing_block_(v24, v27, v26, v28, v21, v23, a3, a4, a5, a6);
+  objc_msgSend__applyComplicationsLayoutForDevice_size_circularScale_circularShift_fromTopBottomMargin_fromInterSixpackSpacing_block_(v24, v27, v26, v28, v21, v23, scale, shift, margin, spacing);
 }
 
-+ (void)_applyComplicationsLayoutForDevice:(id)a3 size:(CGSize)a4 circularScale:(double)a5 circularShift:(double)a6 fromTopBottomMargin:(double)a7 fromInterSixpackSpacing:(double)a8 block:(id)a9
++ (void)_applyComplicationsLayoutForDevice:(id)device size:(CGSize)size circularScale:(double)scale circularShift:(double)shift fromTopBottomMargin:(double)margin fromInterSixpackSpacing:(double)spacing block:(id)block
 {
-  width = a4.width;
-  v13 = a3;
-  v14 = a9;
+  width = size.width;
+  deviceCopy = device;
+  blockCopy = block;
   v68 = 0u;
   v69 = 0u;
   v66 = 0u;
@@ -729,10 +729,10 @@ LABEL_24:
   v64 = 0u;
   v65 = 0u;
   v63 = 0u;
-  sub_23BE78818(v13, &v63);
+  sub_23BE78818(deviceCopy, &v63);
   v15 = *&v64;
   memset(&v62, 0, sizeof(v62));
-  if (a5 == 1.0)
+  if (scale == 1.0)
   {
     v16 = *(MEMORY[0x277CBF2C0] + 16);
     *&v62.a = *MEMORY[0x277CBF2C0];
@@ -742,12 +742,12 @@ LABEL_24:
 
   else
   {
-    CGAffineTransformMakeScale(&v62, a5, a5);
+    CGAffineTransformMakeScale(&v62, scale, scale);
   }
 
   memset(&v61, 0, sizeof(v61));
   v59 = v15;
-  if (v15 == a5)
+  if (v15 == scale)
   {
     v61 = v62;
   }
@@ -757,11 +757,11 @@ LABEL_24:
     CGAffineTransformMakeScale(&v61, v15, v15);
   }
 
-  v17 = MEMORY[0x23EEBFD40](v13);
-  v18 = MEMORY[0x23EEBFD30](v13);
+  v17 = MEMORY[0x23EEBFD40](deviceCopy);
+  v18 = MEMORY[0x23EEBFD30](deviceCopy);
   v57 = v19;
   v58 = v18;
-  v20 = v17 * a5;
+  v20 = v17 * scale;
   v56 = width * 0.5;
   CLKFloorForDevice();
   v22 = v21;
@@ -813,9 +813,9 @@ LABEL_24:
         v51 = v30;
       }
 
-      v52 = v14[2];
+      v52 = blockCopy[2];
       v60 = v62;
-      v52(v14, v49, &v60, v50 + a6, v51 + a6, v20 + a6 * -2.0, v20 + a6 * -2.0);
+      v52(blockCopy, v49, &v60, v50 + shift, v51 + shift, v20 + shift * -2.0, v20 + shift * -2.0);
 
       ++v40;
     }
@@ -824,9 +824,9 @@ LABEL_24:
   }
 
   v53 = *MEMORY[0x277D2BEF0];
-  v54 = v14[2];
+  v54 = blockCopy[2];
   v60 = v61;
-  v54(v14, v53, &v60, v56 + v58 * -0.5, v55, v58, v59 * v57);
+  v54(blockCopy, v53, &v60, v56 + v58 * -0.5, v55, v58, v59 * v57);
 }
 
 - (void)_loadLayoutRules
@@ -837,12 +837,12 @@ LABEL_24:
   MEMORY[0x2821F9670](self, sel__applyComplicationsLayoutForComplicationsEditing, v7, v8);
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  v6 = a5;
-  v7 = a3;
+  slotCopy = slot;
+  complicationCopy = complication;
   v8 = objc_opt_class();
-  isSixpackComplicationSlot = objc_msgSend__isSixpackComplicationSlot_(v8, v9, v6, v10);
+  isSixpackComplicationSlot = objc_msgSend__isSixpackComplicationSlot_(v8, v9, slotCopy, v10);
 
   v15 = 0x277D2C0D0;
   if (!isSixpackComplicationSlot)
@@ -851,29 +851,29 @@ LABEL_24:
   }
 
   v16 = *v15;
-  v17 = objc_msgSend_complicationType(v7, v12, v13, v14);
+  v17 = objc_msgSend_complicationType(complicationCopy, v12, v13, v14);
 
   objc_msgSend_viewWithLegacyComplicationType_(v16, v18, v17, v19);
   return objc_claimAutoreleasedReturnValue();
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
   v15.receiver = self;
   v15.super_class = NTKFoghornFaceView;
-  v6 = a4;
-  v7 = a3;
-  [(NTKFoghornFaceView *)&v15 _configureComplicationView:v7 forSlot:v6];
-  objc_msgSend__applyComplicationFont_(self, v8, v7, v9, v15.receiver, v15.super_class);
+  slotCopy = slot;
+  viewCopy = view;
+  [(NTKFoghornFaceView *)&v15 _configureComplicationView:viewCopy forSlot:slotCopy];
+  objc_msgSend__applyComplicationFont_(self, v8, viewCopy, v9, v15.receiver, v15.super_class);
   v13 = objc_msgSend__multiPalette(self, v10, v11, v12);
-  objc_msgSend__applyComplicationColor_withPalette_slot_(self, v14, v7, v13, v6);
+  objc_msgSend__applyComplicationColor_withPalette_slot_(self, v14, viewCopy, v13, slotCopy);
 }
 
-- (int64_t)_keylineStyleForComplicationSlot:(id)a3
+- (int64_t)_keylineStyleForComplicationSlot:(id)slot
 {
-  v4 = a3;
+  slotCopy = slot;
   v5 = objc_opt_class();
-  if (objc_msgSend__isSixpackComplicationSlot_(v5, v6, v4, v7))
+  if (objc_msgSend__isSixpackComplicationSlot_(v5, v6, slotCopy, v7))
   {
     v8 = 1;
   }
@@ -882,16 +882,16 @@ LABEL_24:
   {
     v10.receiver = self;
     v10.super_class = NTKFoghornFaceView;
-    v8 = [(NTKFoghornFaceView *)&v10 _keylineStyleForComplicationSlot:v4];
+    v8 = [(NTKFoghornFaceView *)&v10 _keylineStyleForComplicationSlot:slotCopy];
   }
 
   return v8;
 }
 
-- (double)_keylineCornerRadiusForComplicationSlot:(id)a3
+- (double)_keylineCornerRadiusForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if (objc_msgSend_isEqualToString_(v4, v5, *MEMORY[0x277D2BEF0], v6))
+  slotCopy = slot;
+  if (objc_msgSend_isEqualToString_(slotCopy, v5, *MEMORY[0x277D2BEF0], v6))
   {
     v10 = MEMORY[0x277D2C078];
     v11 = objc_msgSend_device(self, v7, v8, v9);
@@ -903,20 +903,20 @@ LABEL_24:
   {
     v17.receiver = self;
     v17.super_class = NTKFoghornFaceView;
-    [(NTKFoghornFaceView *)&v17 _keylineCornerRadiusForComplicationSlot:v4];
+    [(NTKFoghornFaceView *)&v17 _keylineCornerRadiusForComplicationSlot:slotCopy];
     v14 = v15;
   }
 
   return v14;
 }
 
-- (void)_applyComplicationFont:(id)a3
+- (void)_applyComplicationFont:(id)font
 {
-  v31 = a3;
+  fontCopy = font;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = objc_msgSend_display(v31, v4, v5, v6);
+    v7 = objc_msgSend_display(fontCopy, v4, v5, v6);
     objc_msgSend__applyComplicationFont_(self, v8, v7, v9);
   }
 
@@ -925,7 +925,7 @@ LABEL_24:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_msgSend_setFontStyle_(v31, v10, 3, v11);
+      objc_msgSend_setFontStyle_(fontCopy, v10, 3, v11);
     }
 
     else
@@ -934,7 +934,7 @@ LABEL_24:
       if (objc_opt_isKindOfClass())
       {
         v12 = MEMORY[0x277CBBB08];
-        v13 = v31;
+        v13 = fontCopy;
         v17 = objc_msgSend_font(v13, v14, v15, v16);
         objc_msgSend_pointSize(v17, v18, v19, v20);
         v24 = objc_msgSend_foghornSimpleComplicationFontOfSize_(v12, v21, v22, v23);
@@ -945,16 +945,16 @@ LABEL_24:
   }
 }
 
-- (void)_applyComplicationColor:(id)a3 withPalette:(id)a4 slot:(id)a5
+- (void)_applyComplicationColor:(id)color withPalette:(id)palette slot:(id)slot
 {
-  v86 = a3;
-  v8 = a4;
-  v9 = a5;
+  colorCopy = color;
+  paletteCopy = palette;
+  slotCopy = slot;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = objc_msgSend_display(v86, v10, v11, v12);
-    objc_msgSend__applyComplicationColor_withPalette_slot_(self, v14, v13, v8, v9);
+    v13 = objc_msgSend_display(colorCopy, v10, v11, v12);
+    objc_msgSend__applyComplicationColor_withPalette_slot_(self, v14, v13, paletteCopy, slotCopy);
   }
 
   else
@@ -962,13 +962,13 @@ LABEL_24:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = objc_msgSend_complicationAccentColor(v8, v15, v16, v17);
+      v18 = objc_msgSend_complicationAccentColor(paletteCopy, v15, v16, v17);
       objc_msgSend_setAccentColor_(self->_complicationsFilterProvider, v19, v18, v20);
 
-      v24 = objc_msgSend_complicationNonAccentColor(v8, v21, v22, v23);
+      v24 = objc_msgSend_complicationNonAccentColor(paletteCopy, v21, v22, v23);
       objc_msgSend_setNonAccentColor_(self->_complicationsFilterProvider, v25, v24, v26);
 
-      v13 = v86;
+      v13 = colorCopy;
       if (objc_msgSend_conformsToProtocol_(v13, v27, &unk_28A9F43D8, v28))
       {
         nightModeFraction = self->_nightModeFraction;
@@ -984,11 +984,11 @@ LABEL_24:
         objc_msgSend_setTintedPlatterColor_(v36, v49, v45, v50);
       }
 
-      v51 = objc_msgSend_isNightModeF(v8, v29, v30, v31);
+      v51 = objc_msgSend_isNightModeF(paletteCopy, v29, v30, v31);
       objc_msgSend_floatValue(v51, v52, v53, v54);
       v56 = v55;
 
-      v60 = objc_msgSend_isMulticolorF(v8, v57, v58, v59);
+      v60 = objc_msgSend_isMulticolorF(paletteCopy, v57, v58, v59);
       objc_msgSend_floatValue(v60, v61, v62, v63);
       v65 = 1.0 - v64;
 
@@ -1014,8 +1014,8 @@ LABEL_24:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v70 = v86;
-        v13 = objc_msgSend_simpleTextComplicationColor(v8, v71, v72, v73);
+        v70 = colorCopy;
+        v13 = objc_msgSend_simpleTextComplicationColor(paletteCopy, v71, v72, v73);
         v77 = objc_msgSend_label(v70, v74, v75, v76);
 
         objc_msgSend_setTextColor_(v77, v78, v13, v79);
@@ -1029,8 +1029,8 @@ LABEL_24:
           goto LABEL_16;
         }
 
-        v80 = v86;
-        v13 = objc_msgSend_simpleTextComplicationColor(v8, v81, v82, v83);
+        v80 = colorCopy;
+        v13 = objc_msgSend_simpleTextComplicationColor(paletteCopy, v81, v82, v83);
         objc_msgSend_setTextColor_(v80, v84, v13, v85);
       }
     }
@@ -1039,16 +1039,16 @@ LABEL_24:
 LABEL_16:
 }
 
-- (void)_applyPaletteToComplications:(id)a3
+- (void)_applyPaletteToComplications:(id)complications
 {
-  v4 = a3;
+  complicationsCopy = complications;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_23BE76678;
   v8[3] = &unk_278B9CB68;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = complicationsCopy;
+  v5 = complicationsCopy;
   objc_msgSend_enumerateComplicationDisplayWrappersWithBlock_(self, v6, v8, v7);
 }
 
@@ -1058,31 +1058,31 @@ LABEL_16:
   objc_msgSend__updateViewColorsWithPalette_(self, v5, v7, v6);
 }
 
-- (void)_updateViewColorsWithPalette:(id)a3
+- (void)_updateViewColorsWithPalette:(id)palette
 {
-  v4 = a3;
-  objc_msgSend__applyPaletteToComplications_(self, v5, v4, v6);
+  paletteCopy = palette;
+  objc_msgSend__applyPaletteToComplications_(self, v5, paletteCopy, v6);
   objc_msgSend_activate(MEMORY[0x277CD9FF0], v7, v8, v9);
   objc_msgSend_begin(MEMORY[0x277CD9FF0], v10, v11, v12);
   objc_msgSend_setDisableActions_(MEMORY[0x277CD9FF0], v13, 1, v14);
   v41 = objc_msgSend_timeView(self, v15, v16, v17);
-  v21 = objc_msgSend_timeMinutesColor(v4, v18, v19, v20);
+  v21 = objc_msgSend_timeMinutesColor(paletteCopy, v18, v19, v20);
   objc_msgSend_setMinutesColor_(v41, v22, v21, v23);
 
-  v27 = objc_msgSend_timeSecondsColor(v4, v24, v25, v26);
+  v27 = objc_msgSend_timeSecondsColor(paletteCopy, v24, v25, v26);
   objc_msgSend_setSecondsColor_(v41, v28, v27, v29);
 
   objc_msgSend_setNeedsDisplay(v41, v30, v31, v32);
-  objc_msgSend_setColorPalette_(self->_bezelView, v33, v4, v34);
+  objc_msgSend_setColorPalette_(self->_bezelView, v33, paletteCopy, v34);
 
   objc_msgSend__updateStatusBarColorForNightModeFraction_(self, v35, v36, v37, self->_nightModeFraction);
   objc_msgSend_commit(MEMORY[0x277CD9FF0], v38, v39, v40);
 }
 
-- (void)_applyPaletteFromBezelStyle:(int64_t)a3 toBezelStyle:(int64_t)a4 progress:(double)a5 updateColorsIfNeeded:(BOOL)a6
+- (void)_applyPaletteFromBezelStyle:(int64_t)style toBezelStyle:(int64_t)bezelStyle progress:(double)progress updateColorsIfNeeded:(BOOL)needed
 {
-  v6 = a6;
-  v46 = objc_msgSend_interpolatedColorPalette(self, a2, a3, a4);
+  neededCopy = needed;
+  v46 = objc_msgSend_interpolatedColorPalette(self, a2, style, bezelStyle);
   v14 = objc_msgSend_fromPalette(v46, v11, v12, v13);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1090,7 +1090,7 @@ LABEL_16:
     v18 = v14;
     if (objc_msgSend_isMulticolor(v18, v19, v20, v21))
     {
-      v25 = objc_msgSend_bezelStyle(v18, v22, v23, v24) != a3 && v6;
+      v25 = objc_msgSend_bezelStyle(v18, v22, v23, v24) != style && neededCopy;
     }
 
     else
@@ -1098,7 +1098,7 @@ LABEL_16:
       v25 = 0;
     }
 
-    objc_msgSend_setBezelStyle_(v18, v22, a3, v24);
+    objc_msgSend_setBezelStyle_(v18, v22, style, v24);
   }
 
   else
@@ -1111,16 +1111,16 @@ LABEL_16:
   if (objc_opt_isKindOfClass())
   {
     v30 = v26;
-    if (objc_msgSend_isMulticolor(v30, v31, v32, v33) && objc_msgSend_bezelStyle(v30, v34, v35, v36) != a4)
+    if (objc_msgSend_isMulticolor(v30, v31, v32, v33) && objc_msgSend_bezelStyle(v30, v34, v35, v36) != bezelStyle)
     {
-      v25 = v6;
+      v25 = neededCopy;
     }
 
-    objc_msgSend_setBezelStyle_(v30, v34, a4, v36);
+    objc_msgSend_setBezelStyle_(v30, v34, bezelStyle, v36);
   }
 
   objc_msgSend_transitionFraction(v46, v27, v28, v29);
-  if (v40 == a5)
+  if (v40 == progress)
   {
     if (!v25)
     {
@@ -1130,8 +1130,8 @@ LABEL_16:
 
   else
   {
-    objc_msgSend_setTransitionFraction_(v46, v37, v38, v39, a5);
-    if (!v6)
+    objc_msgSend_setTransitionFraction_(v46, v37, v38, v39, progress);
+    if (!neededCopy)
     {
       goto LABEL_20;
     }
@@ -1139,23 +1139,23 @@ LABEL_16:
 
   if ((objc_msgSend__nightModeActive(self, v37, v38, v39) & 1) == 0)
   {
-    objc_msgSend_setTransitionFraction_(v46, v41, v42, v43, a5);
+    objc_msgSend_setTransitionFraction_(v46, v41, v42, v43, progress);
     objc_msgSend__updateViewColorsWithPalette_(self, v44, v46, v45);
   }
 
 LABEL_20:
 }
 
-- (void)_applyPaletteBezelStyle:(int64_t)a3 updateColorsIfNeeded:(BOOL)a4
+- (void)_applyPaletteBezelStyle:(int64_t)style updateColorsIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v24 = objc_msgSend_faceColorPalette(self, a2, a3, a4);
+  neededCopy = needed;
+  v24 = objc_msgSend_faceColorPalette(self, a2, style, needed);
   if (objc_msgSend_isMulticolor(v24, v7, v8, v9))
   {
     v13 = objc_msgSend_bezelStyle(v24, v10, v11, v12);
-    objc_msgSend_setBezelStyle_(v24, v14, a3, v15);
-    objc_msgSend__applyPaletteFromBezelStyle_toBezelStyle_progress_updateColorsIfNeeded_(self, v16, a3, a3, 0, 1.0);
-    if (v13 != a3 && v4 && (objc_msgSend__nightModeActive(self, v17, v18, v19) & 1) == 0)
+    objc_msgSend_setBezelStyle_(v24, v14, style, v15);
+    objc_msgSend__applyPaletteFromBezelStyle_toBezelStyle_progress_updateColorsIfNeeded_(self, v16, style, style, 0, 1.0);
+    if (v13 != style && neededCopy && (objc_msgSend__nightModeActive(self, v17, v18, v19) & 1) == 0)
     {
       objc_msgSend__updateViewColorsWithMultiPalette(self, v20, v21, v22);
     }
@@ -1163,15 +1163,15 @@ LABEL_20:
 
   else
   {
-    objc_msgSend_setBezelStyle_(v24, v10, a3, v12);
-    objc_msgSend__applyPaletteFromBezelStyle_toBezelStyle_progress_updateColorsIfNeeded_(self, v23, a3, a3, 0, 1.0);
+    objc_msgSend_setBezelStyle_(v24, v10, style, v12);
+    objc_msgSend__applyPaletteFromBezelStyle_toBezelStyle_progress_updateColorsIfNeeded_(self, v23, style, style, 0, 1.0);
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromColor:(id)a4 toColor:(id)a5
+- (void)_applyTransitionFraction:(double)fraction fromColor:(id)color toColor:(id)toColor
 {
-  v12 = objc_msgSend_interpolatedColorPalette(self, a2, a4, a5);
-  objc_msgSend_setTransitionFraction_(v12, v7, v8, v9, a3);
+  v12 = objc_msgSend_interpolatedColorPalette(self, a2, color, toColor);
+  objc_msgSend_setTransitionFraction_(v12, v7, v8, v9, fraction);
   objc_msgSend__updateViewColorsWithPalette_(self, v10, v12, v11);
 }
 
@@ -1190,7 +1190,7 @@ LABEL_20:
   objc_msgSend__updateViewColorsWithMultiPalette(self, v18, v19, v20);
 }
 
-- (void)_applyComplicationsAlphaForTransitionFraction:(double)a3 fromLayoutStyle:(unint64_t)a4 toLayoutStyle:(unint64_t)a5 editMode:(int64_t)a6
+- (void)_applyComplicationsAlphaForTransitionFraction:(double)fraction fromLayoutStyle:(unint64_t)style toLayoutStyle:(unint64_t)layoutStyle editMode:(int64_t)mode
 {
   CLKInterpolateBetweenFloatsClipped();
   v8 = v7;
@@ -1244,20 +1244,20 @@ LABEL_20:
   return v6;
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v87 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
+  optionCopy = option;
+  toOptionCopy = toOption;
   v13 = NTKFoghornFaceBundleLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v74 = objc_msgSend_localizedName(v11, v14, v15, v16);
-    v78 = objc_msgSend_localizedName(v12, v75, v76, v77);
+    v74 = objc_msgSend_localizedName(optionCopy, v14, v15, v16);
+    v78 = objc_msgSend_localizedName(toOptionCopy, v75, v76, v77);
     v79 = 136315906;
     v80 = "[NTKFoghornFaceView _applyTransitionFraction:fromOption:toOption:forCustomEditMode:slot:]";
     v81 = 2048;
-    v82 = a3;
+    fractionCopy = fraction;
     v83 = 2112;
     v84 = v74;
     v85 = 2112;
@@ -1265,92 +1265,92 @@ LABEL_20:
     _os_log_debug_impl(&dword_23BE5B000, v13, OS_LOG_TYPE_DEBUG, "%s: fraction = %f fromOption = %@ toOption = %@", &v79, 0x2Au);
   }
 
-  if (a6 > 14)
+  if (mode > 14)
   {
-    if (a6 == 18)
+    if (mode == 18)
     {
-      v68 = objc_msgSend_nightMode(v11, v17, v18, v19);
-      v72 = objc_msgSend_nightMode(v12, v69, v70, v71);
-      objc_msgSend__applyTransitionFraction_fromNightMode_toNightMode_(self, v73, v68, v72, a3);
+      v68 = objc_msgSend_nightMode(optionCopy, v17, v18, v19);
+      v72 = objc_msgSend_nightMode(toOptionCopy, v69, v70, v71);
+      objc_msgSend__applyTransitionFraction_fromNightMode_toNightMode_(self, v73, v68, v72, fraction);
     }
 
-    else if (a6 == 15)
+    else if (mode == 15)
     {
-      v36 = v12;
-      v37 = v11;
+      v36 = toOptionCopy;
+      v37 = optionCopy;
       v41 = objc_msgSend_timeView(self, v38, v39, v40);
       v45 = objc_msgSend_layoutStyle(v37, v42, v43, v44);
       v49 = objc_msgSend_layoutStyle(v36, v46, v47, v48);
-      objc_msgSend_setLayoutFromStyle_toStyle_progress_(v41, v50, v45, v49, a3);
+      objc_msgSend_setLayoutFromStyle_toStyle_progress_(v41, v50, v45, v49, fraction);
 
       v54 = objc_msgSend_layoutStyle(v37, v51, v52, v53);
       v58 = objc_msgSend_layoutStyle(v36, v55, v56, v57);
 
-      objc_msgSend__applyComplicationsAlphaForTransitionFraction_fromLayoutStyle_toLayoutStyle_editMode_(self, v59, v54, v58, 15, a3);
+      objc_msgSend__applyComplicationsAlphaForTransitionFraction_fromLayoutStyle_toLayoutStyle_editMode_(self, v59, v54, v58, 15, fraction);
     }
   }
 
-  else if (a6 == 10)
+  else if (mode == 10)
   {
-    v60 = v12;
-    v61 = v11;
+    v60 = toOptionCopy;
+    v61 = optionCopy;
     v65 = objc_msgSend__currentBezelStyle(self, v62, v63, v64);
     objc_msgSend__applyPaletteBezelStyle_updateColorsIfNeeded_(self, v66, v65, 0);
-    objc_msgSend__applyTransitionFraction_fromColor_toColor_(self, v67, v61, v60, a3);
+    objc_msgSend__applyTransitionFraction_fromColor_toColor_(self, v67, v61, v60, fraction);
   }
 
-  else if (a6 == 12)
+  else if (mode == 12)
   {
-    v20 = v12;
-    v24 = objc_msgSend_bezelStyle(v11, v21, v22, v23);
+    v20 = toOptionCopy;
+    v24 = objc_msgSend_bezelStyle(optionCopy, v21, v22, v23);
     v31 = objc_msgSend_bezelStyle(v20, v25, v26, v27);
     if ((v24 != 0) != (v31 != 0))
     {
       v32 = objc_msgSend_timeView(self, v28, v29, v30);
-      objc_msgSend_setFromInset_toInset_progress_(v32, v33, v24 != 0, v31 != 0, a3);
+      objc_msgSend_setFromInset_toInset_progress_(v32, v33, v24 != 0, v31 != 0, fraction);
     }
 
-    objc_msgSend__applyPaletteFromBezelStyle_toBezelStyle_progress_updateColorsIfNeeded_(self, v28, v24, v31, 1, a3);
-    objc_msgSend_setBezelFromStyle_toStyle_progress_(self->_bezelView, v34, v24, v31, a3);
-    objc_msgSend__applyComplicationsLayoutFromBezelStyle_toBezelStyle_progress_(self, v35, v24, v31, a3);
+    objc_msgSend__applyPaletteFromBezelStyle_toBezelStyle_progress_updateColorsIfNeeded_(self, v28, v24, v31, 1, fraction);
+    objc_msgSend_setBezelFromStyle_toStyle_progress_(self->_bezelView, v34, v24, v31, fraction);
+    objc_msgSend__applyComplicationsLayoutFromBezelStyle_toBezelStyle_progress_(self, v35, v24, v31, fraction);
   }
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v89 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  optionCopy = option;
   v8 = NTKFoghornFaceBundleLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v74 = objc_msgSend_dataMode(self, v9, v10, v11);
-    v78 = objc_msgSend_localizedName(v7, v75, v76, v77);
+    v78 = objc_msgSend_localizedName(optionCopy, v75, v76, v77);
     v79 = 136316162;
     v80 = "[NTKFoghornFaceView _applyOption:forCustomEditMode:slot:]";
     v81 = 2048;
-    v82 = self;
+    selfCopy = self;
     v83 = 2048;
     v84 = v74;
     v85 = 2112;
     v86 = v78;
     v87 = 1024;
-    v88 = a4;
+    modeCopy = mode;
     _os_log_debug_impl(&dword_23BE5B000, v8, OS_LOG_TYPE_DEBUG, "%s(%p): dataMode = %ld option = %@ mode = %u", &v79, 0x30u);
   }
 
-  if (a4 > 14)
+  if (mode > 14)
   {
-    if (a4 == 18)
+    if (mode == 18)
     {
-      v66 = objc_msgSend_nightMode(v7, v12, v13, v14);
+      v66 = objc_msgSend_nightMode(optionCopy, v12, v13, v14);
       objc_msgSend_setNightMode_(self, v67, v66, v68);
       v72 = objc_msgSend__currentLayoutStyle(self, v69, v70, v71);
       objc_msgSend__applyComplicationsAlphaForLayoutStyle_editMode_(self, v73, v72, 18);
     }
 
-    else if (a4 == 15)
+    else if (mode == 15)
     {
-      v37 = v7;
+      v37 = optionCopy;
       v41 = objc_msgSend_timeView(self, v38, v39, v40);
       v45 = objc_msgSend_layoutStyle(v37, v42, v43, v44);
       objc_msgSend_setLayoutStyle_(v41, v46, v45, v47);
@@ -1360,7 +1360,7 @@ LABEL_20:
     }
   }
 
-  else if (a4 == 10)
+  else if (mode == 10)
   {
     v53 = objc_msgSend__currentBezelStyle(self, v12, v13, v14);
     objc_msgSend__applyPaletteBezelStyle_updateColorsIfNeeded_(self, v54, v53, 0);
@@ -1373,9 +1373,9 @@ LABEL_20:
     objc_msgSend__updateViewColorsWithMultiPalette(self, v63, v64, v65);
   }
 
-  else if (a4 == 12)
+  else if (mode == 12)
   {
-    v15 = objc_msgSend_bezelStyle(v7, v12, v13, v14);
+    v15 = objc_msgSend_bezelStyle(optionCopy, v12, v13, v14);
     v19 = objc_msgSend_timeView(self, v16, v17, v18);
     objc_msgSend_setInset_(v19, v20, v15 != 0, v21);
 
@@ -1392,24 +1392,24 @@ LABEL_20:
   }
 }
 
-- (unint64_t)_effectiveNightModeForEditMode:(int64_t)a3
+- (unint64_t)_effectiveNightModeForEditMode:(int64_t)mode
 {
   result = 0;
-  if (a3 != 1 && a3 != 10)
+  if (mode != 1 && mode != 10)
   {
-    return objc_msgSend__nightModeActive(self, a2, a3, v3);
+    return objc_msgSend__nightModeActive(self, a2, mode, v3);
   }
 
   return result;
 }
 
-- (double)_alphaForComplicationSlot:(id)a3 inEditOption:(id)a4 ofEditMode:(int64_t)a5
+- (double)_alphaForComplicationSlot:(id)slot inEditOption:(id)option ofEditMode:(int64_t)mode
 {
-  v8 = a3;
-  v12 = a4;
-  if (a5 == 15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  slotCopy = slot;
+  optionCopy = option;
+  if (mode == 15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v13 = objc_msgSend_layoutStyle(v12, v9, v10, v11);
+    v13 = objc_msgSend_layoutStyle(optionCopy, v9, v10, v11);
   }
 
   else
@@ -1419,7 +1419,7 @@ LABEL_20:
 
   v14 = v13;
   v15 = objc_opt_class();
-  if (objc_msgSend__isSixpackComplicationSlot_(v15, v16, v8, v17))
+  if (objc_msgSend__isSixpackComplicationSlot_(v15, v16, slotCopy, v17))
   {
     v18 = 0.0;
     if (v14 > 3)
@@ -1432,7 +1432,7 @@ LABEL_20:
   {
     v19 = objc_opt_class();
     v18 = 1.0;
-    if (!objc_msgSend__isMiddleComplicationSlot_(v19, v20, v8, v21))
+    if (!objc_msgSend__isMiddleComplicationSlot_(v19, v20, slotCopy, v21))
     {
       goto LABEL_13;
     }
@@ -1444,7 +1444,7 @@ LABEL_20:
     }
   }
 
-  if (a5 == 15 || (v18 = 1.0, a5 == 12))
+  if (mode == 15 || (v18 = 1.0, mode == 12))
   {
     v18 = *MEMORY[0x277D2BF18];
   }
@@ -1495,60 +1495,60 @@ LABEL_13:
   objc_msgSend_enumerateComplicationDisplayWrappersWithBlock_(self, v6, v8, v7);
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v17.receiver = self;
   v17.super_class = NTKFoghornFaceView;
-  [(NTKFoghornFaceView *)&v17 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4)
+  [(NTKFoghornFaceView *)&v17 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode)
   {
-    objc_msgSend__transformForRubberBandingFraction_(self, v8, v9, v10, a3);
+    objc_msgSend__transformForRubberBandingFraction_(self, v8, v9, v10, fraction);
     objc_msgSend_setTransform_(self, v11, &v16, v12);
     NTKAlphaForRubberBandingFraction();
     objc_msgSend_setAlpha_(self, v13, v14, v15);
   }
 }
 
-- (CGAffineTransform)_transformForBreathingFraction:(SEL)a3
+- (CGAffineTransform)_transformForBreathingFraction:(SEL)fraction
 {
   NTKLargeElementScaleForBreathingFraction();
 
   return CGAffineTransformMakeScale(retstr, v5, v5);
 }
 
-- (CGAffineTransform)_transformForRubberBandingFraction:(SEL)a3
+- (CGAffineTransform)_transformForRubberBandingFraction:(SEL)fraction
 {
   NTKScaleForRubberBandingFraction();
 
   return CGAffineTransformMakeScale(retstr, v5, v5);
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if ((a3 - 10) > 8)
+  if ((options - 10) > 8)
   {
     return 0;
   }
 
   else
   {
-    return qword_278B9CC28[a3 - 10];
+    return qword_278B9CC28[options - 10];
   }
 }
 
-+ (void)_drawComplicationsSnapshotInContext:(CGContext *)a3 bezelStyle:(int64_t)a4 layoutStyle:(unint64_t)a5 forDevice:(id)a6
++ (void)_drawComplicationsSnapshotInContext:(CGContext *)context bezelStyle:(int64_t)style layoutStyle:(unint64_t)layoutStyle forDevice:(id)device
 {
-  v10 = a6;
-  if (a5 <= 3)
+  deviceCopy = device;
+  if (layoutStyle <= 3)
   {
-    v11 = a5 < 2;
-    CGContextSaveGState(a3);
+    v11 = layoutStyle < 2;
+    CGContextSaveGState(context);
     v15 = objc_msgSend_colorWithWhite_alpha_(MEMORY[0x277D75348], v12, v13, v14, 0.9, 0.05);
     v16 = v15;
     v20 = objc_msgSend_CGColor(v16, v17, v18, v19);
-    CGContextSetFillColorWithColor(a3, v20);
+    CGContextSetFillColorWithColor(context, v20);
 
-    objc_msgSend_screenBounds(v10, v21, v22, v23);
+    objc_msgSend_screenBounds(deviceCopy, v21, v22, v23);
     v25 = v24;
     v27 = v26;
     v29[0] = MEMORY[0x277D85DD0];
@@ -1556,26 +1556,26 @@ LABEL_13:
     v29[2] = sub_23BE77A54;
     v29[3] = &unk_278B9CBE0;
     v33 = 1;
-    v31 = a1;
-    v32 = a3;
+    selfCopy = self;
+    contextCopy = context;
     v34 = v11;
-    v30 = v10;
-    objc_msgSend__applyComplicationsLayoutForDevice_size_fromBezelStyle_toBezelStyle_progress_block_(a1, v28, v30, a4, a4, v29, v25, v27, 1.0);
-    CGContextRestoreGState(a3);
+    v30 = deviceCopy;
+    objc_msgSend__applyComplicationsLayoutForDevice_size_fromBezelStyle_toBezelStyle_progress_block_(self, v28, v30, style, style, v29, v25, v27, 1.0);
+    CGContextRestoreGState(context);
   }
 }
 
-+ (id)_snapshotImageForLayoutStyle:(id)a3 bezelStyle:(id)a4 colorPalette:(id)a5 withSelectedOptions:(id)a6 forDevice:(id)a7
++ (id)_snapshotImageForLayoutStyle:(id)style bezelStyle:(id)bezelStyle colorPalette:(id)palette withSelectedOptions:(id)options forDevice:(id)device
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  styleCopy = style;
+  bezelStyleCopy = bezelStyle;
+  paletteCopy = palette;
+  deviceCopy = device;
   v18 = objc_msgSend_mainScreen(MEMORY[0x277D759A0], v15, v16, v17);
   objc_msgSend_scale(v18, v19, v20, v21);
   v23 = v22;
 
-  objc_msgSend_screenBounds(v14, v24, v25, v26);
+  objc_msgSend_screenBounds(deviceCopy, v24, v25, v26);
   v28 = v27;
   v30 = v29;
   v31 = objc_opt_new();
@@ -1588,40 +1588,40 @@ LABEL_13:
   v47[3] = &unk_278B9CC08;
   v52 = v28;
   v53 = v30;
-  v54 = a1;
-  v48 = v12;
-  v49 = v11;
-  v50 = v14;
-  v51 = v13;
-  v39 = v13;
-  v40 = v14;
-  v41 = v11;
-  v42 = v12;
+  selfCopy = self;
+  v48 = bezelStyleCopy;
+  v49 = styleCopy;
+  v50 = deviceCopy;
+  v51 = paletteCopy;
+  v39 = paletteCopy;
+  v40 = deviceCopy;
+  v41 = styleCopy;
+  v42 = bezelStyleCopy;
   v45 = objc_msgSend_imageWithActions_(v38, v43, v47, v44);
 
   return v45;
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v11 = a5;
+  optionCopy = option;
+  optionsCopy = options;
   v12 = 0;
-  if (a4 <= 14)
+  if (mode <= 14)
   {
-    if (a4 == 10)
+    if (mode == 10)
     {
       v13 = 0;
       v12 = 0;
-      v14 = v8;
+      v14 = optionCopy;
     }
 
     else
     {
-      v13 = v8;
+      v13 = optionCopy;
       v14 = 0;
       v15 = 0;
-      if (a4 != 12)
+      if (mode != 12)
       {
         goto LABEL_10;
       }
@@ -1629,14 +1629,14 @@ LABEL_13:
 
 LABEL_9:
     v15 = v12;
-    v16 = v8;
+    v16 = optionCopy;
     v12 = v13;
     goto LABEL_10;
   }
 
-  if (a4 == 15)
+  if (mode == 15)
   {
-    v18 = v8;
+    v18 = optionCopy;
     v12 = 0;
     v15 = 0;
     v14 = 0;
@@ -1650,16 +1650,16 @@ LABEL_9:
 
   v15 = 0;
   v14 = 0;
-  if (a4 == 18)
+  if (mode == 18)
   {
     v13 = 0;
     v14 = 0;
-    v12 = v8;
+    v12 = optionCopy;
     goto LABEL_9;
   }
 
 LABEL_10:
-  v17 = objc_msgSend_objectForKeyedSubscript_(v11, v9, &unk_284EA12F0, v10);
+  v17 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v9, &unk_284EA12F0, v10);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1682,7 +1682,7 @@ LABEL_10:
   }
 
 LABEL_19:
-  v20 = objc_msgSend_objectForKeyedSubscript_(v11, v9, &unk_284EA12A8, v10);
+  v20 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v9, &unk_284EA12A8, v10);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1703,7 +1703,7 @@ LABEL_15:
     }
 
 LABEL_27:
-    v22 = objc_msgSend_objectForKeyedSubscript_(v11, v9, &unk_284EA12C0, v10);
+    v22 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v9, &unk_284EA12C0, v10);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1724,7 +1724,7 @@ LABEL_27:
   }
 
 LABEL_23:
-  v21 = objc_msgSend_objectForKeyedSubscript_(v11, v9, &unk_284EA12D8, v10);
+  v21 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v9, &unk_284EA12D8, v10);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1747,7 +1747,7 @@ LABEL_16:
 LABEL_37:
     v51.receiver = self;
     v51.super_class = NTKFoghornFaceView;
-    v49 = [(NTKFoghornFaceView *)&v51 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v11];
+    v49 = [(NTKFoghornFaceView *)&v51 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
     goto LABEL_38;
   }
 
@@ -1772,7 +1772,7 @@ LABEL_31:
 
   v43 = objc_opt_class();
   v47 = objc_msgSend_device(self, v44, v45, v46);
-  v49 = objc_msgSend__snapshotImageForLayoutStyle_bezelStyle_colorPalette_withSelectedOptions_forDevice_(v43, v48, v18, v12, v27, v11, v47);
+  v49 = objc_msgSend__snapshotImageForLayoutStyle_bezelStyle_colorPalette_withSelectedOptions_forDevice_(v43, v48, v18, v12, v27, optionsCopy, v47);
 
 LABEL_38:
 
@@ -1789,11 +1789,11 @@ LABEL_38:
   objc_msgSend__applyComplicationsAlphaForLayoutStyle_editMode_(self, v11, v6, v10);
 }
 
-- (void)_setLive:(int64_t)a3
+- (void)_setLive:(int64_t)live
 {
-  v5 = a3 - 1;
-  v6 = a3 != 1;
-  v30 = objc_msgSend_timeView(self, a2, a3, v3);
+  v5 = live - 1;
+  v6 = live != 1;
+  v30 = objc_msgSend_timeView(self, a2, live, v3);
   objc_msgSend_setFrozen_(v30, v7, v6, v8);
   if (v5 > 1)
   {

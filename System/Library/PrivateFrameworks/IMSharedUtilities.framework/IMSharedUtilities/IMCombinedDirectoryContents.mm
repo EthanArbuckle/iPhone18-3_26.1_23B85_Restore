@@ -1,21 +1,21 @@
 @interface IMCombinedDirectoryContents
-- (IMCombinedDirectoryContents)initWithCombinedDirectoryContents:(id)a3;
-- (id)combineArrays:(id)a3 rhs:(id)a4;
+- (IMCombinedDirectoryContents)initWithCombinedDirectoryContents:(id)contents;
+- (id)combineArrays:(id)arrays rhs:(id)rhs;
 - (void)gather;
 @end
 
 @implementation IMCombinedDirectoryContents
 
-- (IMCombinedDirectoryContents)initWithCombinedDirectoryContents:(id)a3
+- (IMCombinedDirectoryContents)initWithCombinedDirectoryContents:(id)contents
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
+  contentsCopy = contents;
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v5;
+  v7 = contentsCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -31,8 +31,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * v11) rootPath];
-        [v6 addObject:v12];
+        rootPath = [*(*(&v17 + 1) + 8 * v11) rootPath];
+        [array addObject:rootPath];
 
         ++v11;
       }
@@ -44,31 +44,31 @@
     while (v9);
   }
 
-  v13 = [v6 componentsJoinedByString:@" + "];
+  v13 = [array componentsJoinedByString:@" + "];
   v16.receiver = self;
   v16.super_class = IMCombinedDirectoryContents;
   v14 = [(IMDirectoryContents *)&v16 initWithRootPath:v13 attachmentsPath:0 syncAssetsPath:0 stickersPath:0];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_directoryContents, a3);
+    objc_storeStrong(&v14->_directoryContents, contents);
   }
 
   return v14;
 }
 
-- (id)combineArrays:(id)a3 rhs:(id)a4
+- (id)combineArrays:(id)arrays rhs:(id)rhs
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
-  if (!v6)
+  rhsCopy = rhs;
+  array = [arrays mutableCopy];
+  if (!array)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
-  [v6 addObjectsFromArray:v5];
+  [array addObjectsFromArray:rhsCopy];
 
-  return v6;
+  return array;
 }
 
 - (void)gather
@@ -77,9 +77,9 @@
   v3 = IMLogHandleForCategory("DiskSpace");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(IMDirectoryContents *)self rootPath];
+    rootPath = [(IMDirectoryContents *)self rootPath];
     *buf = 138412290;
-    v36 = v4;
+    v36 = rootPath;
     _os_log_impl(&dword_1A85E5000, v3, OS_LOG_TYPE_INFO, "IMCombinedDirectoryContents: Combining directory contents for paths: %@", buf, 0xCu);
   }
 
@@ -104,50 +104,50 @@
         }
 
         v9 = *(*(&v30 + 1) + 8 * v8);
-        v10 = [(IMDirectoryContents *)self fileInfoMap];
-        v11 = [v10 mutableCopy];
+        fileInfoMap = [(IMDirectoryContents *)self fileInfoMap];
+        dictionary = [fileInfoMap mutableCopy];
 
-        if (!v11)
+        if (!dictionary)
         {
-          v11 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
         }
 
-        v12 = [v9 fileInfoMap];
-        [v11 addEntriesFromDictionary:v12];
+        fileInfoMap2 = [v9 fileInfoMap];
+        [dictionary addEntriesFromDictionary:fileInfoMap2];
 
-        [(IMDirectoryContents *)self setFileInfoMap:v11];
-        v13 = [(IMDirectoryContents *)self sortedPaths];
-        v14 = [v9 sortedPaths];
-        v15 = [(IMCombinedDirectoryContents *)self combineArrays:v13 rhs:v14];
+        [(IMDirectoryContents *)self setFileInfoMap:dictionary];
+        sortedPaths = [(IMDirectoryContents *)self sortedPaths];
+        sortedPaths2 = [v9 sortedPaths];
+        v15 = [(IMCombinedDirectoryContents *)self combineArrays:sortedPaths rhs:sortedPaths2];
 
         [v15 sortUsingComparator:&unk_1F1BA89A8];
         [(IMDirectoryContents *)self setSortedPaths:v15];
-        v16 = [(IMDirectoryContents *)self topLevelPaths];
-        v17 = [v9 topLevelPaths];
-        v18 = [(IMCombinedDirectoryContents *)self combineArrays:v16 rhs:v17];
+        topLevelPaths = [(IMDirectoryContents *)self topLevelPaths];
+        topLevelPaths2 = [v9 topLevelPaths];
+        v18 = [(IMCombinedDirectoryContents *)self combineArrays:topLevelPaths rhs:topLevelPaths2];
         [(IMDirectoryContents *)self setTopLevelPaths:v18];
 
-        v19 = [(IMDirectoryContents *)self attachmentPaths];
-        v20 = [v9 attachmentPaths];
-        v21 = [(IMCombinedDirectoryContents *)self combineArrays:v19 rhs:v20];
+        attachmentPaths = [(IMDirectoryContents *)self attachmentPaths];
+        attachmentPaths2 = [v9 attachmentPaths];
+        v21 = [(IMCombinedDirectoryContents *)self combineArrays:attachmentPaths rhs:attachmentPaths2];
         [(IMDirectoryContents *)self setAttachmentPaths:v21];
 
-        v22 = [(IMDirectoryContents *)self syncAssetPaths];
-        v23 = [v9 syncAssetPaths];
-        v24 = [(IMCombinedDirectoryContents *)self combineArrays:v22 rhs:v23];
+        syncAssetPaths = [(IMDirectoryContents *)self syncAssetPaths];
+        syncAssetPaths2 = [v9 syncAssetPaths];
+        v24 = [(IMCombinedDirectoryContents *)self combineArrays:syncAssetPaths rhs:syncAssetPaths2];
         [(IMDirectoryContents *)self setSyncAssetPaths:v24];
 
-        v25 = [(IMDirectoryContents *)self allPaths];
-        v26 = [v25 mutableCopy];
+        allPaths = [(IMDirectoryContents *)self allPaths];
+        v26 = [allPaths mutableCopy];
 
         if (!v26)
         {
           v26 = [MEMORY[0x1E695DFA8] set];
         }
 
-        v27 = [v9 allPaths];
-        v28 = [v27 allObjects];
-        [v26 addObjectsFromArray:v28];
+        allPaths2 = [v9 allPaths];
+        allObjects = [allPaths2 allObjects];
+        [v26 addObjectsFromArray:allObjects];
 
         [(IMDirectoryContents *)self setAllPaths:v26];
         -[IMDirectoryContents setSpaceSavedFromIgnoreLivePhotoBundles:](self, "setSpaceSavedFromIgnoreLivePhotoBundles:", -[IMDirectoryContents spaceSavedFromIgnoreLivePhotoBundles](self, "spaceSavedFromIgnoreLivePhotoBundles") + [v9 spaceSavedFromIgnoreLivePhotoBundles]);

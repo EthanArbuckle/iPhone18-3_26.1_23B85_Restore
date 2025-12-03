@@ -1,116 +1,116 @@
 @interface AKAccountPrivacyOptInViewController
-- (AKAccountPrivacyOptInViewController)initWithViewModel:(id)a3 userActionCompletion:(id)a4;
+- (AKAccountPrivacyOptInViewController)initWithViewModel:(id)model userActionCompletion:(id)completion;
 - (void)_addPrimaryButton;
 - (void)_addPrivacyLinkController;
 - (void)_addSecondaryButton;
-- (void)_cancelBarButtonItemPressed:(id)a3;
+- (void)_cancelBarButtonItemPressed:(id)pressed;
 - (void)_cleanupOldViews;
 - (void)_configureViews;
-- (void)_optUserWithChoice:(BOOL)a3 withCompletion:(id)a4;
-- (void)_primaryButtonSelected:(id)a3;
-- (void)_secondaryButtonSelected:(id)a3;
-- (void)updateViewWithViewModel:(id)a3;
+- (void)_optUserWithChoice:(BOOL)choice withCompletion:(id)completion;
+- (void)_primaryButtonSelected:(id)selected;
+- (void)_secondaryButtonSelected:(id)selected;
+- (void)updateViewWithViewModel:(id)model;
 - (void)viewDidLoad;
 @end
 
 @implementation AKAccountPrivacyOptInViewController
 
-- (AKAccountPrivacyOptInViewController)initWithViewModel:(id)a3 userActionCompletion:(id)a4
+- (AKAccountPrivacyOptInViewController)initWithViewModel:(id)model userActionCompletion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
-  v12 = v19;
-  v14 = [location[0] titleText];
-  v13 = [location[0] detailedText];
-  v19 = 0;
+  objc_storeStrong(&v17, completion);
+  v12 = selfCopy;
+  titleText = [location[0] titleText];
+  detailedText = [location[0] detailedText];
+  selfCopy = 0;
   v16.receiver = v12;
   v16.super_class = AKAccountPrivacyOptInViewController;
-  v15 = [AKAccountPrivacyOptInViewController initWithTitle:sel_initWithTitle_detailText_symbolName_ detailText:v14 symbolName:?];
-  v19 = v15;
-  objc_storeStrong(&v19, v15);
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
+  v15 = [AKAccountPrivacyOptInViewController initWithTitle:sel_initWithTitle_detailText_symbolName_ detailText:titleText symbolName:?];
+  selfCopy = v15;
+  objc_storeStrong(&selfCopy, v15);
+  MEMORY[0x277D82BD8](detailedText);
+  MEMORY[0x277D82BD8](titleText);
   if (v15)
   {
-    objc_storeStrong(&v19->_viewModel, location[0]);
+    objc_storeStrong(&selfCopy->_viewModel, location[0]);
     v4 = objc_alloc_init(MEMORY[0x277CF0178]);
-    authController = v19->_authController;
-    v19->_authController = v4;
+    authController = selfCopy->_authController;
+    selfCopy->_authController = v4;
     v6 = MEMORY[0x277D82BD8](authController);
     v7 = MEMORY[0x223DB6C90](v17, v6);
-    userActionCompletionHandler = v19->_userActionCompletionHandler;
-    v19->_userActionCompletionHandler = v7;
+    userActionCompletionHandler = selfCopy->_userActionCompletionHandler;
+    selfCopy->_userActionCompletionHandler = v7;
     MEMORY[0x277D82BD8](userActionCompletionHandler);
   }
 
-  v10 = MEMORY[0x277D82BE0](v19);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
-- (void)updateViewWithViewModel:(id)a3
+- (void)updateViewWithViewModel:(id)model
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKAccountPrivacyOptInViewController *)v13 setViewModel:location[0]];
-  v7 = [location[0] detailedText];
-  v6 = [(AKAccountPrivacyOptInViewController *)v13 headerView];
-  [v6 setDetailText:v7];
-  MEMORY[0x277D82BD8](v6);
-  *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  v9 = [location[0] titleText];
-  v8 = [(AKAccountPrivacyOptInViewController *)v13 headerView];
-  [v8 setTitle:v9];
-  MEMORY[0x277D82BD8](v8);
-  *&v4 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-  v10 = [(AKAccountPrivacyOptInViewController *)v13 buttonTray];
-  [v10 removeAllButtons];
-  *&v5 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-  [(AKAccountPrivacyOptInViewController *)v13 _configureViews];
-  v11 = [(AKAccountPrivacyOptInViewController *)v13 view];
-  [v11 layoutIfNeeded];
-  MEMORY[0x277D82BD8](v11);
+  objc_storeStrong(location, model);
+  [(AKAccountPrivacyOptInViewController *)selfCopy setViewModel:location[0]];
+  detailedText = [location[0] detailedText];
+  headerView = [(AKAccountPrivacyOptInViewController *)selfCopy headerView];
+  [headerView setDetailText:detailedText];
+  MEMORY[0x277D82BD8](headerView);
+  *&v3 = MEMORY[0x277D82BD8](detailedText).n128_u64[0];
+  titleText = [location[0] titleText];
+  headerView2 = [(AKAccountPrivacyOptInViewController *)selfCopy headerView];
+  [headerView2 setTitle:titleText];
+  MEMORY[0x277D82BD8](headerView2);
+  *&v4 = MEMORY[0x277D82BD8](titleText).n128_u64[0];
+  buttonTray = [(AKAccountPrivacyOptInViewController *)selfCopy buttonTray];
+  [buttonTray removeAllButtons];
+  *&v5 = MEMORY[0x277D82BD8](buttonTray).n128_u64[0];
+  [(AKAccountPrivacyOptInViewController *)selfCopy _configureViews];
+  view = [(AKAccountPrivacyOptInViewController *)selfCopy view];
+  [view layoutIfNeeded];
+  MEMORY[0x277D82BD8](view);
   objc_storeStrong(location, 0);
 }
 
 - (void)viewDidLoad
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = AKAccountPrivacyOptInViewController;
   [(OBBaseWelcomeController *)&v2 viewDidLoad];
-  [(AKAccountPrivacyOptInViewController *)v4 _configureViews];
+  [(AKAccountPrivacyOptInViewController *)selfCopy _configureViews];
 }
 
-- (void)_cancelBarButtonItemPressed:(id)a3
+- (void)_cancelBarButtonItemPressed:(id)pressed
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_cancelAction)
+  objc_storeStrong(location, pressed);
+  if (selfCopy->_cancelAction)
   {
-    (*(v4->_cancelAction + 2))();
+    (*(selfCopy->_cancelAction + 2))();
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_primaryButtonSelected:(id)a3
+- (void)_primaryButtonSelected:(id)selected
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, selected);
   v12 = _AKLogSystem();
   v11 = 2;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -122,32 +122,32 @@
   }
 
   objc_storeStrong(&v12, 0);
-  v6 = [(AKAccountPrivacyOptInViewController *)v14 viewModel];
-  v7 = [(AKAccountPrivacyOptInViewModel *)v6 altDSID];
-  MEMORY[0x277D82BD8](v7);
-  v3 = MEMORY[0x277D82BD8](v6);
-  if (v7)
+  viewModel = [(AKAccountPrivacyOptInViewController *)selfCopy viewModel];
+  altDSID = [(AKAccountPrivacyOptInViewModel *)viewModel altDSID];
+  MEMORY[0x277D82BD8](altDSID);
+  v3 = MEMORY[0x277D82BD8](viewModel);
+  if (altDSID)
   {
-    v4 = v14;
-    v5 = [(AKAccountPrivacyOptInViewController *)v14 userActionCompletionHandler];
+    v4 = selfCopy;
+    userActionCompletionHandler = [(AKAccountPrivacyOptInViewController *)selfCopy userActionCompletionHandler];
     [(AKAccountPrivacyOptInViewController *)v4 _optUserWithChoice:1 withCompletion:?];
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](userActionCompletionHandler);
   }
 
-  else if (v14->_primaryButtonAction)
+  else if (selfCopy->_primaryButtonAction)
   {
-    (*(v14->_primaryButtonAction + 2))(v3);
+    (*(selfCopy->_primaryButtonAction + 2))(v3);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_secondaryButtonSelected:(id)a3
+- (void)_secondaryButtonSelected:(id)selected
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, selected);
   v12 = _AKLogSystem();
   v11 = 2;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -159,65 +159,65 @@
   }
 
   objc_storeStrong(&v12, 0);
-  v6 = [(AKAccountPrivacyOptInViewController *)v14 viewModel];
-  v7 = [(AKAccountPrivacyOptInViewModel *)v6 altDSID];
-  MEMORY[0x277D82BD8](v7);
-  v3 = MEMORY[0x277D82BD8](v6);
-  if (v7)
+  viewModel = [(AKAccountPrivacyOptInViewController *)selfCopy viewModel];
+  altDSID = [(AKAccountPrivacyOptInViewModel *)viewModel altDSID];
+  MEMORY[0x277D82BD8](altDSID);
+  v3 = MEMORY[0x277D82BD8](viewModel);
+  if (altDSID)
   {
-    v4 = v14;
-    v5 = [(AKAccountPrivacyOptInViewController *)v14 userActionCompletionHandler];
+    v4 = selfCopy;
+    userActionCompletionHandler = [(AKAccountPrivacyOptInViewController *)selfCopy userActionCompletionHandler];
     [(AKAccountPrivacyOptInViewController *)v4 _optUserWithChoice:0 withCompletion:?];
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](userActionCompletionHandler);
   }
 
-  else if (v14->_alternateButtonAction)
+  else if (selfCopy->_alternateButtonAction)
   {
-    (*(v14->_alternateButtonAction + 2))(v3);
+    (*(selfCopy->_alternateButtonAction + 2))(v3);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_optUserWithChoice:(BOOL)a3 withCompletion:(id)a4
+- (void)_optUserWithChoice:(BOOL)choice withCompletion:(id)completion
 {
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
+  choiceCopy = choice;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v23 = [MEMORY[0x277CF0130] sharedInstance];
-  v7 = [MEMORY[0x277CF0130] sharedInstance];
-  v6 = [(AKAccountPrivacyOptInViewController *)v27 viewModel];
-  v5 = [(AKAccountPrivacyOptInViewModel *)v6 altDSID];
-  v22 = [v7 authKitAccountWithAltDSID:? error:?];
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
-  *&v4 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  v21 = [MEMORY[0x277CCABB0] numberWithBool:{v25, v4}];
-  v12 = [(AKAccountPrivacyOptInViewController *)v27 authController];
+  objc_storeStrong(&location, completion);
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  mEMORY[0x277CF0130]2 = [MEMORY[0x277CF0130] sharedInstance];
+  viewModel = [(AKAccountPrivacyOptInViewController *)selfCopy viewModel];
+  altDSID = [(AKAccountPrivacyOptInViewModel *)viewModel altDSID];
+  v22 = [mEMORY[0x277CF0130]2 authKitAccountWithAltDSID:? error:?];
+  MEMORY[0x277D82BD8](altDSID);
+  MEMORY[0x277D82BD8](viewModel);
+  *&v4 = MEMORY[0x277D82BD8](mEMORY[0x277CF0130]2).n128_u64[0];
+  v21 = [MEMORY[0x277CCABB0] numberWithBool:{choiceCopy, v4}];
+  authController = [(AKAccountPrivacyOptInViewController *)selfCopy authController];
   v8 = v21;
   v9 = *MEMORY[0x277CEFEA8];
-  v11 = [(AKAccountPrivacyOptInViewController *)v27 viewModel];
-  v10 = [(AKAccountPrivacyOptInViewModel *)v11 altDSID];
+  viewModel2 = [(AKAccountPrivacyOptInViewController *)selfCopy viewModel];
+  altDSID2 = [(AKAccountPrivacyOptInViewModel *)viewModel2 altDSID];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __73__AKAccountPrivacyOptInViewController__optUserWithChoice_withCompletion___block_invoke;
   v16 = &unk_2784A6AE0;
-  v17 = MEMORY[0x277D82BE0](v23);
-  v20 = v25;
+  v17 = MEMORY[0x277D82BE0](mEMORY[0x277CF0130]);
+  v20 = choiceCopy;
   v18 = MEMORY[0x277D82BE0](v22);
   v19 = MEMORY[0x277D82BE0](location);
-  [(AKAppleIDAuthenticationController *)v12 setConfigurationInfo:v8 forIdentifier:v9 forAltDSID:v10 completion:?];
-  MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
+  [(AKAppleIDAuthenticationController *)authController setConfigurationInfo:v8 forIdentifier:v9 forAltDSID:altDSID2 completion:?];
+  MEMORY[0x277D82BD8](altDSID2);
+  MEMORY[0x277D82BD8](viewModel2);
+  MEMORY[0x277D82BD8](authController);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(&v22, 0);
-  objc_storeStrong(&v23, 0);
+  objc_storeStrong(&mEMORY[0x277CF0130], 0);
   objc_storeStrong(&location, 0);
 }
 
@@ -299,101 +299,101 @@ void __73__AKAccountPrivacyOptInViewController__optUserWithChoice_withCompletion
 
 - (void)_addPrimaryButton
 {
-  v10 = [(AKAccountPrivacyOptInViewController *)self viewModel];
-  v11 = [(AKAccountPrivacyOptInViewModel *)v10 primaryButtonTitle];
-  MEMORY[0x277D82BD8](v11);
-  *&v2 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-  if (v11)
+  viewModel = [(AKAccountPrivacyOptInViewController *)self viewModel];
+  primaryButtonTitle = [(AKAccountPrivacyOptInViewModel *)viewModel primaryButtonTitle];
+  MEMORY[0x277D82BD8](primaryButtonTitle);
+  *&v2 = MEMORY[0x277D82BD8](viewModel).n128_u64[0];
+  if (primaryButtonTitle)
   {
-    v3 = [MEMORY[0x277D37618] boldButton];
+    boldButton = [MEMORY[0x277D37618] boldButton];
     primaryButton = self->_primaryButton;
-    self->_primaryButton = v3;
+    self->_primaryButton = boldButton;
     *&v5 = MEMORY[0x277D82BD8](primaryButton).n128_u64[0];
     v6 = self->_primaryButton;
-    v8 = [(AKAccountPrivacyOptInViewController *)self viewModel];
-    v7 = [(AKAccountPrivacyOptInViewModel *)v8 primaryButtonTitle];
+    viewModel2 = [(AKAccountPrivacyOptInViewController *)self viewModel];
+    primaryButtonTitle2 = [(AKAccountPrivacyOptInViewModel *)viewModel2 primaryButtonTitle];
     [OBTrayButton setTitle:v6 forState:"setTitle:forState:"];
-    MEMORY[0x277D82BD8](v7);
-    [(OBTrayButton *)self->_primaryButton addTarget:self action:sel__primaryButtonSelected_ forControlEvents:64, MEMORY[0x277D82BD8](v8).n128_f64[0]];
-    v9 = [(AKAccountPrivacyOptInViewController *)self buttonTray];
-    [v9 addButton:self->_primaryButton];
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](primaryButtonTitle2);
+    [(OBTrayButton *)self->_primaryButton addTarget:self action:sel__primaryButtonSelected_ forControlEvents:64, MEMORY[0x277D82BD8](viewModel2).n128_f64[0]];
+    buttonTray = [(AKAccountPrivacyOptInViewController *)self buttonTray];
+    [buttonTray addButton:self->_primaryButton];
+    MEMORY[0x277D82BD8](buttonTray);
   }
 }
 
 - (void)_addSecondaryButton
 {
-  v11 = [(AKAccountPrivacyOptInViewController *)self viewModel];
-  v12 = [(AKAccountPrivacyOptInViewModel *)v11 secondaryButtonTitle];
-  MEMORY[0x277D82BD8](v12);
-  *&v2 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-  if (v12)
+  viewModel = [(AKAccountPrivacyOptInViewController *)self viewModel];
+  secondaryButtonTitle = [(AKAccountPrivacyOptInViewModel *)viewModel secondaryButtonTitle];
+  MEMORY[0x277D82BD8](secondaryButtonTitle);
+  *&v2 = MEMORY[0x277D82BD8](viewModel).n128_u64[0];
+  if (secondaryButtonTitle)
   {
-    v3 = [MEMORY[0x277D37650] linkButton];
+    linkButton = [MEMORY[0x277D37650] linkButton];
     secondaryButton = self->_secondaryButton;
-    self->_secondaryButton = v3;
+    self->_secondaryButton = linkButton;
     *&v5 = MEMORY[0x277D82BD8](secondaryButton).n128_u64[0];
     v7 = self->_secondaryButton;
-    v9 = [(AKAccountPrivacyOptInViewController *)self viewModel];
-    v8 = [(AKAccountPrivacyOptInViewModel *)v9 secondaryButtonTitle];
+    viewModel2 = [(AKAccountPrivacyOptInViewController *)self viewModel];
+    secondaryButtonTitle2 = [(AKAccountPrivacyOptInViewModel *)viewModel2 secondaryButtonTitle];
     [OBTrayButton setTitle:v7 forState:"setTitle:forState:"];
-    MEMORY[0x277D82BD8](v8);
-    [(OBTrayButton *)self->_secondaryButton addTarget:self action:sel__secondaryButtonSelected_ forControlEvents:64, MEMORY[0x277D82BD8](v9).n128_f64[0]];
-    v10 = [(AKAccountPrivacyOptInViewController *)self buttonTray];
-    [v10 addButton:self->_secondaryButton];
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](secondaryButtonTitle2);
+    [(OBTrayButton *)self->_secondaryButton addTarget:self action:sel__secondaryButtonSelected_ forControlEvents:64, MEMORY[0x277D82BD8](viewModel2).n128_f64[0]];
+    buttonTray = [(AKAccountPrivacyOptInViewController *)self buttonTray];
+    [buttonTray addButton:self->_secondaryButton];
+    MEMORY[0x277D82BD8](buttonTray);
   }
 
   else
   {
     objc_storeStrong(&self->_secondaryButton, 0);
-    v6 = [(AKAccountPrivacyOptInViewController *)self buttonTray];
-    [v6 removeButton:self->_secondaryButton];
-    MEMORY[0x277D82BD8](v6);
+    buttonTray2 = [(AKAccountPrivacyOptInViewController *)self buttonTray];
+    [buttonTray2 removeButton:self->_secondaryButton];
+    MEMORY[0x277D82BD8](buttonTray2);
   }
 }
 
 - (void)_addPrivacyLinkController
 {
   v4[1] = *MEMORY[0x277D85DE8];
-  v3 = [(AKAccountPrivacyOptInViewController *)self buttonTray];
+  buttonTray = [(AKAccountPrivacyOptInViewController *)self buttonTray];
   v4[0] = @"com.apple.onboarding.improveaccountsecurity";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v4 count:1];
-  [v3 setPrivacyLinkForBundles:?];
+  [buttonTray setPrivacyLinkForBundles:?];
   MEMORY[0x277D82BD8](v2);
-  MEMORY[0x277D82BD8](v3);
+  MEMORY[0x277D82BD8](buttonTray);
   *MEMORY[0x277D85DE8];
 }
 
 - (void)_cleanupOldViews
 {
   v17 = *MEMORY[0x277D85DE8];
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   if (self->_primaryButton)
   {
-    v11 = [(AKAccountPrivacyOptInViewController *)v15 buttonTray];
-    [v11 removeButton:v15->_primaryButton];
-    MEMORY[0x277D82BD8](v11);
-    objc_storeStrong(&v15->_primaryButton, 0);
+    buttonTray = [(AKAccountPrivacyOptInViewController *)selfCopy buttonTray];
+    [buttonTray removeButton:selfCopy->_primaryButton];
+    MEMORY[0x277D82BD8](buttonTray);
+    objc_storeStrong(&selfCopy->_primaryButton, 0);
   }
 
-  if (v15->_secondaryButton)
+  if (selfCopy->_secondaryButton)
   {
-    v10 = [(AKAccountPrivacyOptInViewController *)v15 buttonTray];
-    [v10 removeButton:v15->_secondaryButton];
-    MEMORY[0x277D82BD8](v10);
-    objc_storeStrong(&v15->_secondaryButton, 0);
+    buttonTray2 = [(AKAccountPrivacyOptInViewController *)selfCopy buttonTray];
+    [buttonTray2 removeButton:selfCopy->_secondaryButton];
+    MEMORY[0x277D82BD8](buttonTray2);
+    objc_storeStrong(&selfCopy->_secondaryButton, 0);
   }
 
-  v9 = [(AKAccountPrivacyOptInViewController *)v15 contentView];
-  MEMORY[0x277D82BD8](v9);
-  if (v9)
+  contentView = [(AKAccountPrivacyOptInViewController *)selfCopy contentView];
+  MEMORY[0x277D82BD8](contentView);
+  if (contentView)
   {
     memset(__b, 0, sizeof(__b));
-    v6 = [(AKAccountPrivacyOptInViewController *)v15 contentView];
-    obj = [v6 subviews];
-    v8 = [obj countByEnumeratingWithState:__b objects:v16 count:{16, MEMORY[0x277D82BD8](v6).n128_f64[0]}];
+    contentView2 = [(AKAccountPrivacyOptInViewController *)selfCopy contentView];
+    obj = [contentView2 subviews];
+    v8 = [obj countByEnumeratingWithState:__b objects:v16 count:{16, MEMORY[0x277D82BD8](contentView2).n128_f64[0]}];
     if (v8)
     {
       v3 = *__b[2];

@@ -1,8 +1,8 @@
 @interface PKAsyncUnaryOperationComposer
 - (PKAsyncUnaryOperationComposer)init;
-- (id)evaluateWithInput:(id)a3 completion:(id)a4;
-- (id)evaluatorWithInput:(id)a3;
-- (void)addOperation:(id)a3;
+- (id)evaluateWithInput:(id)input completion:(id)completion;
+- (id)evaluatorWithInput:(id)input;
+- (void)addOperation:(id)operation;
 @end
 
 @implementation PKAsyncUnaryOperationComposer
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  if (a3)
+  if (operation)
   {
-    v4 = a3;
+    operationCopy = operation;
     os_unfair_lock_lock(&self->_lock);
     operations = self->_operations;
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(operationCopy);
 
     [(NSMutableArray *)operations addObject:v6];
 
@@ -39,27 +39,27 @@
   }
 }
 
-- (id)evaluatorWithInput:(id)a3
+- (id)evaluatorWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSMutableArray *)self->_operations copy];
   os_unfair_lock_unlock(&self->_lock);
-  if (!v4)
+  if (!inputCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"PKAsyncUnaryOperationComposer: cannot compose operations with nil initial input."];
   }
 
-  v6 = [[PKAsyncUnaryOperationEvaluator alloc] _initWithOperations:v5 input:v4];
+  v6 = [[PKAsyncUnaryOperationEvaluator alloc] _initWithOperations:v5 input:inputCopy];
 
   return v6;
 }
 
-- (id)evaluateWithInput:(id)a3 completion:(id)a4
+- (id)evaluateWithInput:(id)input completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PKAsyncUnaryOperationComposer *)self evaluatorWithInput:a3];
-  v8 = [v7 evaluateWithCompletion:v6];
+  completionCopy = completion;
+  v7 = [(PKAsyncUnaryOperationComposer *)self evaluatorWithInput:input];
+  v8 = [v7 evaluateWithCompletion:completionCopy];
 
   return v8;
 }

@@ -1,11 +1,11 @@
 @interface PXGAXCoalescingResponder
-- (BOOL)axGroup:(id)a3 didRequestToPerformAction:(int64_t)a4 userInfo:(id)a5;
+- (BOOL)axGroup:(id)group didRequestToPerformAction:(int64_t)action userInfo:(id)info;
 - (PXGAXResponder)axNextResponder;
-- (id)axContainingScrollViewForAXGroup:(id)a3;
+- (id)axContainingScrollViewForAXGroup:(id)group;
 - (void)_distributeEvents;
-- (void)_notifyResponder:(id)a3;
-- (void)axGroup:(id)a3 didChange:(unint64_t)a4 userInfo:(id)a5;
-- (void)setPauseEventDelivery:(BOOL)a3;
+- (void)_notifyResponder:(id)responder;
+- (void)axGroup:(id)group didChange:(unint64_t)change userInfo:(id)info;
+- (void)setPauseEventDelivery:(BOOL)delivery;
 @end
 
 @implementation PXGAXCoalescingResponder
@@ -24,8 +24,8 @@
   {
     v3 = [(NSMutableArray *)self->_pendingAXEventBlocks copy];
     [(NSMutableArray *)self->_pendingAXEventBlocks removeAllObjects];
-    v4 = [(PXGAXCoalescingResponder *)self axNextResponder];
-    if (v4)
+    axNextResponder = [(PXGAXCoalescingResponder *)self axNextResponder];
+    if (axNextResponder)
     {
       v12 = 0u;
       v13 = 0u;
@@ -61,67 +61,67 @@
   }
 }
 
-- (BOOL)axGroup:(id)a3 didRequestToPerformAction:(int64_t)a4 userInfo:(id)a5
+- (BOOL)axGroup:(id)group didRequestToPerformAction:(int64_t)action userInfo:(id)info
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PXGAXCoalescingResponder *)self axNextResponder];
-  LOBYTE(a4) = [v10 axGroup:v9 didRequestToPerformAction:a4 userInfo:v8];
+  infoCopy = info;
+  groupCopy = group;
+  axNextResponder = [(PXGAXCoalescingResponder *)self axNextResponder];
+  LOBYTE(action) = [axNextResponder axGroup:groupCopy didRequestToPerformAction:action userInfo:infoCopy];
 
-  return a4;
+  return action;
 }
 
-- (void)axGroup:(id)a3 didChange:(unint64_t)a4 userInfo:(id)a5
+- (void)axGroup:(id)group didChange:(unint64_t)change userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a5;
+  groupCopy = group;
+  infoCopy = info;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__PXGAXCoalescingResponder_axGroup_didChange_userInfo___block_invoke;
   v12[3] = &unk_2782AC628;
-  v14 = v9;
-  v15 = a4;
-  v13 = v8;
-  v10 = v9;
-  v11 = v8;
+  v14 = infoCopy;
+  changeCopy = change;
+  v13 = groupCopy;
+  v10 = infoCopy;
+  v11 = groupCopy;
   [(PXGAXCoalescingResponder *)self _notifyResponder:v12];
 }
 
-- (id)axContainingScrollViewForAXGroup:(id)a3
+- (id)axContainingScrollViewForAXGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(PXGAXCoalescingResponder *)self axNextResponder];
-  v6 = [v5 axContainingScrollViewForAXGroup:v4];
+  groupCopy = group;
+  axNextResponder = [(PXGAXCoalescingResponder *)self axNextResponder];
+  v6 = [axNextResponder axContainingScrollViewForAXGroup:groupCopy];
 
   return v6;
 }
 
-- (void)_notifyResponder:(id)a3
+- (void)_notifyResponder:(id)responder
 {
-  v7 = a3;
-  v4 = [(PXGAXCoalescingResponder *)self axNextResponder];
-  if (v4)
+  responderCopy = responder;
+  axNextResponder = [(PXGAXCoalescingResponder *)self axNextResponder];
+  if (axNextResponder)
   {
     if ([(PXGAXCoalescingResponder *)self pauseEventDelivery])
     {
       pendingAXEventBlocks = self->_pendingAXEventBlocks;
-      v6 = MEMORY[0x21CEE40A0](v7);
+      v6 = MEMORY[0x21CEE40A0](responderCopy);
       [(NSMutableArray *)pendingAXEventBlocks addObject:v6];
     }
 
     else
     {
-      v7[2](v7, v4);
+      responderCopy[2](responderCopy, axNextResponder);
     }
   }
 }
 
-- (void)setPauseEventDelivery:(BOOL)a3
+- (void)setPauseEventDelivery:(BOOL)delivery
 {
-  if (self->_pauseEventDelivery != a3)
+  if (self->_pauseEventDelivery != delivery)
   {
-    self->_pauseEventDelivery = a3;
-    if (!a3)
+    self->_pauseEventDelivery = delivery;
+    if (!delivery)
     {
       [(PXGAXCoalescingResponder *)self _distributeEvents];
     }

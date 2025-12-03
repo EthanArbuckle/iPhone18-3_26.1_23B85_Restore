@@ -1,35 +1,35 @@
 @interface ICPencilKitTextFindingResult
 - (CGSize)drawingSize;
-- (id)framesForHighlightInTextView:(id)a3;
-- (int64_t)compare:(id)a3;
-- (void)selectInTextView:(id)a3;
+- (id)framesForHighlightInTextView:(id)view;
+- (int64_t)compare:(id)compare;
+- (void)selectInTextView:(id)view;
 @end
 
 @implementation ICPencilKitTextFindingResult
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v10.receiver = self;
   v10.super_class = ICPencilKitTextFindingResult;
-  v5 = [(ICTextFindingResult *)&v10 compare:v4];
+  v5 = [(ICTextFindingResult *)&v10 compare:compareCopy];
   if (!v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
-      v7 = [(ICPencilKitTextFindingResult *)self order];
-      v8 = [v6 order];
+      v6 = compareCopy;
+      order = [(ICPencilKitTextFindingResult *)self order];
+      order2 = [v6 order];
 
-      if (v7 < v8)
+      if (order < order2)
       {
         v5 = -1;
       }
 
       else
       {
-        v5 = v7 != v8;
+        v5 = order != order2;
       }
     }
 
@@ -42,32 +42,32 @@
   return v5;
 }
 
-- (id)framesForHighlightInTextView:(id)a3
+- (id)framesForHighlightInTextView:(id)view
 {
   v75 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 textStorage];
-  v6 = [v5 attribute:*MEMORY[0x277D74060] atIndex:-[ICTextFindingResult range](self effectiveRange:{"range"), 0}];
+  viewCopy = view;
+  textStorage = [viewCopy textStorage];
+  v6 = [textStorage attribute:*MEMORY[0x277D74060] atIndex:-[ICTextFindingResult range](self effectiveRange:{"range"), 0}];
 
   if (v6)
   {
     if (ICInternalSettingsIsTextKit2Enabled())
     {
-      v7 = [v4 _pk_viewProviderForAttachment:v6 atCharacterIndex:-[ICTextFindingResult range](self createIfNeeded:{"range"), 0}];
+      v7 = [viewCopy _pk_viewProviderForAttachment:v6 atCharacterIndex:-[ICTextFindingResult range](self createIfNeeded:{"range"), 0}];
     }
 
     else
     {
-      v10 = [v4 layoutManager];
-      v7 = [v10 viewProviderForTextAttachment:v6 characterIndex:{-[ICTextFindingResult range](self, "range")}];
+      layoutManager = [viewCopy layoutManager];
+      v7 = [layoutManager viewProviderForTextAttachment:v6 characterIndex:{-[ICTextFindingResult range](self, "range")}];
     }
 
-    v8 = [v7 view];
-    v11 = [v8 window];
+    view = [v7 view];
+    window = [view window];
 
-    if (v11)
+    if (window)
     {
-      [v8 bounds];
+      [view bounds];
       v13 = v12;
       v15 = v14;
       Width = v16;
@@ -76,13 +76,13 @@
 
     else
     {
-      v20 = [(ICTextFindingResult *)self range];
-      [v4 ic_rectForRange:{v20, v21}];
+      range = [(ICTextFindingResult *)self range];
+      [viewCopy ic_rectForRange:{range, v21}];
       v23 = v22;
       v25 = v24;
       v27 = v26;
       v29 = v28;
-      [v4 ic_textContainerOrigin];
+      [viewCopy ic_textContainerOrigin];
       v31 = v30;
       v33 = v32;
       v77.origin.x = v23;
@@ -93,7 +93,7 @@
       height = v78.size.height;
       v13 = floor(v78.origin.x);
       v15 = floor(v78.origin.y);
-      [v4 bounds];
+      [viewCopy bounds];
       Width = CGRectGetWidth(v79);
       v19 = ceil(height);
     }
@@ -102,8 +102,8 @@
     v72 = v15;
     [ICPaperKitTextFindingResult scaleForDrawingBounds:v13, v15, Width, v19];
     v37 = v36;
-    v38 = [(ICPencilKitTextFindingResult *)self searchQueryItem];
-    [v38 bounds];
+    searchQueryItem = [(ICPencilKitTextFindingResult *)self searchQueryItem];
+    [searchQueryItem bounds];
     v40 = v39;
     v42 = v41;
     v44 = v43;
@@ -120,10 +120,10 @@
     y = v82.origin.y;
     v49 = v82.size.width;
     v50 = v82.size.height;
-    v51 = [v8 window];
-    if (v51)
+    window2 = [view window];
+    if (window2)
     {
-      [v8 convertRect:v4 toView:x, y, v49, v50];
+      [view convertRect:viewCopy toView:x, y, v49, v50];
     }
 
     else
@@ -162,8 +162,8 @@
     v65 = os_log_create("com.apple.notes", "PencilKit");
     if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
     {
-      v68 = [(ICPencilKitTextFindingResult *)self searchQueryItem];
-      [v68 bounds];
+      searchQueryItem2 = [(ICPencilKitTextFindingResult *)self searchQueryItem];
+      [searchQueryItem2 bounds];
       v69 = NSStringFromRect(v88);
       v89.origin.x = v61;
       v89.origin.y = v62;
@@ -184,25 +184,25 @@
 
   else
   {
-    v8 = os_log_create("com.apple.notes", "PencilKit");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    view = os_log_create("com.apple.notes", "PencilKit");
+    if (os_log_type_enabled(view, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf.a) = 134217984;
       *(&buf.a + 4) = [(ICTextFindingResult *)self range];
-      _os_log_impl(&dword_2151A1000, v8, OS_LOG_TYPE_DEFAULT, "Couldn't find text attachment for PencilKit text finding result at %ld", &buf, 0xCu);
+      _os_log_impl(&dword_2151A1000, view, OS_LOG_TYPE_DEFAULT, "Couldn't find text attachment for PencilKit text finding result at %ld", &buf, 0xCu);
     }
 
     v9 = MEMORY[0x277CBEBF8];
-    v7 = v8;
+    v7 = view;
   }
 
   return v9;
 }
 
-- (void)selectInTextView:(id)a3
+- (void)selectInTextView:(id)view
 {
-  v4 = a3;
-  [v4 setSelectedRange:{-[ICTextFindingResult range](self, "range"), 0}];
+  viewCopy = view;
+  [viewCopy setSelectedRange:{-[ICTextFindingResult range](self, "range"), 0}];
 }
 
 - (CGSize)drawingSize

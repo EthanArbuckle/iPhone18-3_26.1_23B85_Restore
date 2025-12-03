@@ -1,20 +1,20 @@
 @interface MessagesNotificationFilteringController
-- (BOOL)isMessageSpamFilteringEnabled:(id)a3;
+- (BOOL)isMessageSpamFilteringEnabled:(id)enabled;
 - (MessagesNotificationFilteringController)init;
-- (id)alertCount:(id)a3;
-- (id)promotionsNotificationsValue:(id)a3;
-- (id)safetyMonitorUseCriticalAlertsValue:(id)a3;
-- (id)sosAlertingUseCriticalAlertsValue:(id)a3;
+- (id)alertCount:(id)count;
+- (id)promotionsNotificationsValue:(id)value;
+- (id)safetyMonitorUseCriticalAlertsValue:(id)value;
+- (id)sosAlertingUseCriticalAlertsValue:(id)value;
 - (id)specifiers;
-- (id)transactionsNotificationsValue:(id)a3;
-- (id)unknownSendersNotificationsValue:(id)a3;
-- (int64_t)_validateAlertCount:(int64_t)a3;
-- (void)setAlertCount:(id)a3 specifier:(id)a4;
-- (void)setPromotionsNotificationsValue:(id)a3 specifier:(id)a4;
-- (void)setSOSAlertingUseCriticalAlertsValue:(id)a3 specifier:(id)a4;
-- (void)setSafetyMonitorUseCriticalAlertsValue:(id)a3 specifier:(id)a4;
-- (void)setTransactionsNotificationsValue:(id)a3 specifier:(id)a4;
-- (void)setUnknownSendersNotificationsValue:(id)a3 specifier:(id)a4;
+- (id)transactionsNotificationsValue:(id)value;
+- (id)unknownSendersNotificationsValue:(id)value;
+- (int64_t)_validateAlertCount:(int64_t)count;
+- (void)setAlertCount:(id)count specifier:(id)specifier;
+- (void)setPromotionsNotificationsValue:(id)value specifier:(id)specifier;
+- (void)setSOSAlertingUseCriticalAlertsValue:(id)value specifier:(id)specifier;
+- (void)setSafetyMonitorUseCriticalAlertsValue:(id)value specifier:(id)specifier;
+- (void)setTransactionsNotificationsValue:(id)value specifier:(id)specifier;
+- (void)setUnknownSendersNotificationsValue:(id)value specifier:(id)specifier;
 @end
 
 @implementation MessagesNotificationFilteringController
@@ -26,20 +26,20 @@
   return [(MessagesNotificationFilteringController *)&v3 init];
 }
 
-- (int64_t)_validateAlertCount:(int64_t)a3
+- (int64_t)_validateAlertCount:(int64_t)count
 {
-  if (a3 > 0xB)
+  if (count > 0xB)
   {
     return 2;
   }
 
   else
   {
-    return qword_32E8[a3];
+    return qword_32E8[count];
   }
 }
 
-- (id)alertCount:(id)a3
+- (id)alertCount:(id)count
 {
   CFPreferencesAppSynchronize(@"com.apple.MobileSMS");
   keyExistsAndHasValidFormat = 0;
@@ -55,9 +55,9 @@
   return v4;
 }
 
-- (void)setAlertCount:(id)a3 specifier:(id)a4
+- (void)setAlertCount:(id)count specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"IncomingMessageAlertCount", a3, @"com.apple.MobileSMS");
+  CFPreferencesSetAppValue(@"IncomingMessageAlertCount", count, @"com.apple.MobileSMS");
   CFPreferencesAppSynchronize(@"com.apple.MobileSMS");
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.MobileSMS.IncomingMessageAlertCount.changed", 0, 0, 1u);
@@ -70,7 +70,7 @@
   }
 }
 
-- (id)unknownSendersNotificationsValue:(id)a3
+- (id)unknownSendersNotificationsValue:(id)value
 {
   CFPreferencesAppSynchronize(@"com.apple.MobileSMS");
   keyExistsAndHasValidFormat = 0;
@@ -86,9 +86,9 @@
   return v3;
 }
 
-- (void)setUnknownSendersNotificationsValue:(id)a3 specifier:(id)a4
+- (void)setUnknownSendersNotificationsValue:(id)value specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"IncomingMessageAlertFiltrationUnknownSenders", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [a3 BOOLValue] ^ 1), @"com.apple.MobileSMS");
+  CFPreferencesSetAppValue(@"IncomingMessageAlertFiltrationUnknownSenders", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [value BOOLValue] ^ 1), @"com.apple.MobileSMS");
   CFPreferencesAppSynchronize(@"com.apple.MobileSMS");
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.MobileSMS.IncomingMessageAlertFiltrationUnknownSenders.changed", 0, 0, 1u);
@@ -104,7 +104,7 @@
   CFNotificationCenterPostNotification(v6, @"__kIMDBadgeUtilitiesRebuildUnreadMessageCountNotification", 0, 0, 1u);
 }
 
-- (id)transactionsNotificationsValue:(id)a3
+- (id)transactionsNotificationsValue:(id)value
 {
   CFPreferencesAppSynchronize(@"com.apple.MobileSMS");
   keyExistsAndHasValidFormat = 0;
@@ -120,9 +120,9 @@
   return v3;
 }
 
-- (void)setTransactionsNotificationsValue:(id)a3 specifier:(id)a4
+- (void)setTransactionsNotificationsValue:(id)value specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"IncomingMessageAlertFiltrationTransactions", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [a3 BOOLValue] ^ 1), @"com.apple.MobileSMS");
+  CFPreferencesSetAppValue(@"IncomingMessageAlertFiltrationTransactions", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [value BOOLValue] ^ 1), @"com.apple.MobileSMS");
   CFPreferencesAppSynchronize(@"com.apple.MobileSMS");
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.MobileSMS.IncomingMessageAlertFiltrationTransactions.changed", 0, 0, 1u);
@@ -135,7 +135,7 @@
   }
 }
 
-- (id)promotionsNotificationsValue:(id)a3
+- (id)promotionsNotificationsValue:(id)value
 {
   CFPreferencesAppSynchronize(@"com.apple.MobileSMS");
   keyExistsAndHasValidFormat = 0;
@@ -151,9 +151,9 @@
   return v3;
 }
 
-- (void)setPromotionsNotificationsValue:(id)a3 specifier:(id)a4
+- (void)setPromotionsNotificationsValue:(id)value specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"IncomingMessageAlertFiltrationPromotions", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [a3 BOOLValue] ^ 1), @"com.apple.MobileSMS");
+  CFPreferencesSetAppValue(@"IncomingMessageAlertFiltrationPromotions", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [value BOOLValue] ^ 1), @"com.apple.MobileSMS");
   CFPreferencesAppSynchronize(@"com.apple.MobileSMS");
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.MobileSMS.IncomingMessageAlertFiltrationPromotions.changed", 0, 0, 1u);
@@ -166,7 +166,7 @@
   }
 }
 
-- (BOOL)isMessageSpamFilteringEnabled:(id)a3
+- (BOOL)isMessageSpamFilteringEnabled:(id)enabled
 {
   CFPreferencesSynchronize(@"com.apple.MobileSMS", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   keyExistsAndHasValidFormat = 0;
@@ -183,32 +183,32 @@
   return !v3;
 }
 
-- (id)sosAlertingUseCriticalAlertsValue:(id)a3
+- (id)sosAlertingUseCriticalAlertsValue:(id)value
 {
-  v3 = [sub_155C() isSOSMessagesUrgentAlertingEnabled];
+  isSOSMessagesUrgentAlertingEnabled = [sub_155C() isSOSMessagesUrgentAlertingEnabled];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:isSOSMessagesUrgentAlertingEnabled];
 }
 
-- (void)setSOSAlertingUseCriticalAlertsValue:(id)a3 specifier:(id)a4
+- (void)setSOSAlertingUseCriticalAlertsValue:(id)value specifier:(id)specifier
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = sub_155C();
-  v6 = [v4 BOOLValue];
+  bOOLValue = [valueCopy BOOLValue];
 
-  [v5 setSOSMessagesUrgentAlertingEnabled:v6];
+  [v5 setSOSMessagesUrgentAlertingEnabled:bOOLValue];
 }
 
-- (id)safetyMonitorUseCriticalAlertsValue:(id)a3
+- (id)safetyMonitorUseCriticalAlertsValue:(id)value
 {
   v3 = +[SMMobileSMSPreferencesUtilities criticalAlertPreference]== &dword_0 + 1;
 
   return [NSNumber numberWithInt:v3];
 }
 
-- (void)setSafetyMonitorUseCriticalAlertsValue:(id)a3 specifier:(id)a4
+- (void)setSafetyMonitorUseCriticalAlertsValue:(id)value specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([value BOOLValue])
   {
     v4 = 1;
   }
@@ -321,14 +321,14 @@
 
     v32 = v31;
     _Block_object_dispose(&v64, 8);
-    v33 = [v31 currentNotificationSettingsCenter];
-    v34 = [v33 notificationSourceWithIdentifier:@"com.apple.MobileSMS"];
+    currentNotificationSettingsCenter = [v31 currentNotificationSettingsCenter];
+    v34 = [currentNotificationSettingsCenter notificationSourceWithIdentifier:@"com.apple.MobileSMS"];
 
-    v35 = [v34 sourceSettings];
-    v36 = [v35 notificationSettings];
-    v37 = [v36 criticalAlertSetting];
+    sourceSettings = [v34 sourceSettings];
+    notificationSettings = [sourceSettings notificationSettings];
+    criticalAlertSetting = [notificationSettings criticalAlertSetting];
 
-    if (v37 == &dword_0 + 2)
+    if (criticalAlertSetting == &dword_0 + 2)
     {
       v38 = [PSSpecifier groupSpecifierWithID:@"SOS_ALERTING_GROUP_ID"];
       [v38 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
@@ -357,9 +357,9 @@
     }
 
     v46 = +[IMFeatureFlags sharedFeatureFlags];
-    v47 = [v46 isZelkovaEnabled];
+    isZelkovaEnabled = [v46 isZelkovaEnabled];
 
-    if ((v47 & (v37 == &dword_0 + 2)) == 1 && [(MessagesNotificationFilteringController *)self showSafetyMonitorUseCriticalAlertsSwitch])
+    if ((isZelkovaEnabled & (criticalAlertSetting == &dword_0 + 2)) == 1 && [(MessagesNotificationFilteringController *)self showSafetyMonitorUseCriticalAlertsSwitch])
     {
       v48 = [PSSpecifier groupSpecifierWithID:@"SAFETY_MONITOR_GROUP_ID"];
       [v48 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];

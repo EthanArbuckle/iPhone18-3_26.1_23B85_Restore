@@ -1,13 +1,13 @@
 @interface MTObjCExceptionBridge
-+ (void)perform:(id)a3 error:(id *)a4;
++ (void)perform:(id)perform error:(id *)error;
 @end
 
 @implementation MTObjCExceptionBridge
 
-+ (void)perform:(id)a3 error:(id *)a4
++ (void)perform:(id)perform error:(id *)error
 {
-  v4 = a3;
-  v4[2]();
+  performCopy = perform;
+  performCopy[2]();
 }
 
 @end

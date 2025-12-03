@@ -1,12 +1,12 @@
 @interface CCSetChangeBookmark
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSetChangeBookmark:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSetChangeBookmark:(id)bookmark;
 - (CCSetChangeBookmark)init;
-- (CCSetChangeBookmark)initWithCoder:(id)a3;
-- (CCSetChangeBookmark)initWithContentVector:(id)a3 metaContentVector:(id)a4 localResourceGeneration:(int64_t)a5 lastDeltaDate:(int64_t)a6 set:(id)a7;
+- (CCSetChangeBookmark)initWithCoder:(id)coder;
+- (CCSetChangeBookmark)initWithContentVector:(id)vector metaContentVector:(id)contentVector localResourceGeneration:(int64_t)generation lastDeltaDate:(int64_t)date set:(id)set;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CCSetChangeBookmark
@@ -17,62 +17,62 @@
   objc_exception_throw(v2);
 }
 
-- (CCSetChangeBookmark)initWithContentVector:(id)a3 metaContentVector:(id)a4 localResourceGeneration:(int64_t)a5 lastDeltaDate:(int64_t)a6 set:(id)a7
+- (CCSetChangeBookmark)initWithContentVector:(id)vector metaContentVector:(id)contentVector localResourceGeneration:(int64_t)generation lastDeltaDate:(int64_t)date set:(id)set
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  vectorCopy = vector;
+  contentVectorCopy = contentVector;
+  setCopy = set;
   v19.receiver = self;
   v19.super_class = CCSetChangeBookmark;
   v16 = [(CCSetChangeBookmark *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_contentVector, a3);
-    objc_storeStrong(&v17->_metaContentVector, a4);
+    objc_storeStrong(&v16->_contentVector, vector);
+    objc_storeStrong(&v17->_metaContentVector, contentVector);
     v17->_bookmarkVersion = 2;
-    v17->_localResourceGeneration = a5;
-    v17->_lastDeltaDate = a6;
-    objc_storeStrong(&v17->_set, a7);
+    v17->_localResourceGeneration = generation;
+    v17->_lastDeltaDate = date;
+    objc_storeStrong(&v17->_set, set);
   }
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCSetChangeBookmark *)self isEqualToSetChangeBookmark:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCSetChangeBookmark *)self isEqualToSetChangeBookmark:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToSetChangeBookmark:(id)a3
+- (BOOL)isEqualToSetChangeBookmark:(id)bookmark
 {
-  v4 = a3;
+  bookmarkCopy = bookmark;
   localResourceGeneration = self->_localResourceGeneration;
-  if (localResourceGeneration == [v4 localResourceGeneration] && (bookmarkVersion = self->_bookmarkVersion, bookmarkVersion == objc_msgSend(v4, "bookmarkVersion")) && (lastDeltaDate = self->_lastDeltaDate, lastDeltaDate == objc_msgSend(v4, "lastDeltaDate")))
+  if (localResourceGeneration == [bookmarkCopy localResourceGeneration] && (bookmarkVersion = self->_bookmarkVersion, bookmarkVersion == objc_msgSend(bookmarkCopy, "bookmarkVersion")) && (lastDeltaDate = self->_lastDeltaDate, lastDeltaDate == objc_msgSend(bookmarkCopy, "lastDeltaDate")))
   {
     set = self->_set;
-    v9 = [v4 set];
+    v9 = [bookmarkCopy set];
     if ([(CCSet *)set isEqual:v9])
     {
       contentVector = self->_contentVector;
-      v11 = [v4 contentVector];
-      if ([(CKDistributedTimestampStateVector *)contentVector isEqual:v11])
+      contentVector = [bookmarkCopy contentVector];
+      if ([(CKDistributedTimestampStateVector *)contentVector isEqual:contentVector])
       {
         metaContentVector = self->_metaContentVector;
-        v13 = [v4 metaContentVector];
-        v14 = [(CKDistributedTimestampStateVector *)metaContentVector isEqual:v13];
+        metaContentVector = [bookmarkCopy metaContentVector];
+        v14 = [(CKDistributedTimestampStateVector *)metaContentVector isEqual:metaContentVector];
       }
 
       else
@@ -121,14 +121,14 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_contentVector forKey:@"c"];
-  [v4 encodeObject:self->_metaContentVector forKey:@"m"];
-  [v4 encodeInt64:self->_localResourceGeneration forKey:@"r"];
-  [v4 encodeInt32:self->_bookmarkVersion forKey:@"b"];
-  [v4 encodeInt64:self->_lastDeltaDate forKey:@"d"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_contentVector forKey:@"c"];
+  [coderCopy encodeObject:self->_metaContentVector forKey:@"m"];
+  [coderCopy encodeInt64:self->_localResourceGeneration forKey:@"r"];
+  [coderCopy encodeInt32:self->_bookmarkVersion forKey:@"b"];
+  [coderCopy encodeInt64:self->_lastDeltaDate forKey:@"d"];
   set = self->_set;
   p_set = &self->_set;
   v7 = set;
@@ -137,12 +137,12 @@
   if (objc_opt_isKindOfClass())
   {
     v9 = [CCSet alloc];
-    v10 = [*p_set itemType];
-    v11 = [*p_set personaIdentifier];
-    v12 = [*p_set descriptors];
-    v13 = [*p_set options];
+    itemType = [*p_set itemType];
+    personaIdentifier = [*p_set personaIdentifier];
+    descriptors = [*p_set descriptors];
+    options = [*p_set options];
     v17 = 0;
-    v14 = [(CCSet *)v9 initWithItemType:v10 personaIdentifier:v11 descriptors:v12 options:v13 error:&v17];
+    v14 = [(CCSet *)v9 initWithItemType:itemType personaIdentifier:personaIdentifier descriptors:descriptors options:options error:&v17];
     v15 = v17;
 
     if (!v14)
@@ -157,27 +157,27 @@
     v7 = v14;
   }
 
-  [v4 encodeObject:v7 forKey:@"s"];
+  [coderCopy encodeObject:v7 forKey:@"s"];
 }
 
-- (CCSetChangeBookmark)initWithCoder:(id)a3
+- (CCSetChangeBookmark)initWithCoder:(id)coder
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"r"];
-  v6 = [v4 decodeInt32ForKey:@"b"];
-  v7 = [v4 decodeInt64ForKey:@"d"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"s"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"r"];
+  v6 = [coderCopy decodeInt32ForKey:@"b"];
+  v7 = [coderCopy decodeInt64ForKey:@"d"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"s"];
   if (v8)
   {
-    v9 = [v4 decodeObjectOfClass:getCKDistributedTimestampStateVectorClass() forKey:@"c"];
+    v9 = [coderCopy decodeObjectOfClass:getCKDistributedTimestampStateVectorClass() forKey:@"c"];
     if (v9)
     {
-      v10 = [v4 decodeObjectOfClass:getCKDistributedTimestampStateVectorClass() forKey:@"m"];
+      v10 = [coderCopy decodeObjectOfClass:getCKDistributedTimestampStateVectorClass() forKey:@"m"];
       if (v10)
       {
         self = [(CCSetChangeBookmark *)self initWithContentVector:v9 metaContentVector:v10 localResourceGeneration:v5 lastDeltaDate:v7 set:v8];
-        v11 = self;
+        selfCopy = self;
 LABEL_14:
 
         goto LABEL_15;
@@ -209,7 +209,7 @@ LABEL_14:
       }
     }
 
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
@@ -219,11 +219,11 @@ LABEL_14:
     [(CCSetChangeBookmark *)v5 initWithCoder:v6, v9];
   }
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_15:
 
   v14 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 - (void)encodeWithCoder:(os_log_t)log .cold.1(uint64_t *a1, uint64_t a2, os_log_t log)

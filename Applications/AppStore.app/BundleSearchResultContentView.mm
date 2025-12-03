@@ -1,11 +1,11 @@
 @interface BundleSearchResultContentView
-- (_TtC8AppStore29BundleSearchResultContentView)initWithCoder:(id)a3;
+- (_TtC8AppStore29BundleSearchResultContentView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation BundleSearchResultContentView
 
-- (_TtC8AppStore29BundleSearchResultContentView)initWithCoder:(id)a3
+- (_TtC8AppStore29BundleSearchResultContentView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore29BundleSearchResultContentView_lockupView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(type metadata accessor for SmallSearchLockupView()) initWithFrame:{0.0, 0.0, 0.0, 0.0}];
@@ -18,7 +18,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002A711C();
 }
 

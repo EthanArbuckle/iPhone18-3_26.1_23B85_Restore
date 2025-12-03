@@ -1,35 +1,35 @@
 @interface SUUIGiftConfirmViewController
-- (SUUIGiftConfirmViewController)initWithGift:(id)a3 configuration:(id)a4;
+- (SUUIGiftConfirmViewController)initWithGift:(id)gift configuration:(id)configuration;
 - (id)_buyButtonTitle;
 - (id)_confirmButtonTitle;
-- (id)_newBuyBarButtonItemWithTitle:(id)a3;
-- (void)_buyButtonAction:(id)a3;
-- (void)_cancelBuyConfirmation:(id)a3;
-- (void)_finishPurchaseWithResult:(BOOL)a3 errorMessage:(id)a4;
+- (id)_newBuyBarButtonItemWithTitle:(id)title;
+- (void)_buyButtonAction:(id)action;
+- (void)_cancelBuyConfirmation:(id)confirmation;
+- (void)_finishPurchaseWithResult:(BOOL)result errorMessage:(id)message;
 - (void)_purchaseGift;
 - (void)_removeCancelGestureRecognizer;
-- (void)_setShowingConfirmation:(BOOL)a3 animated:(BOOL)a4;
+- (void)_setShowingConfirmation:(BOOL)confirmation animated:(BOOL)animated;
 - (void)_showSuccessPage;
-- (void)_termsButtonAction:(id)a3;
+- (void)_termsButtonAction:(id)action;
 - (void)dealloc;
 - (void)loadView;
 @end
 
 @implementation SUUIGiftConfirmViewController
 
-- (SUUIGiftConfirmViewController)initWithGift:(id)a3 configuration:(id)a4
+- (SUUIGiftConfirmViewController)initWithGift:(id)gift configuration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = SUUIGiftConfirmViewController;
-  v7 = [(SUUIGiftStepViewController *)&v12 initWithGift:a3 configuration:v6];
+  v7 = [(SUUIGiftStepViewController *)&v12 initWithGift:gift configuration:configurationCopy];
   if (v7)
   {
-    v8 = [v6 clientContext];
-    v9 = v8;
-    if (v8)
+    clientContext = [configurationCopy clientContext];
+    v9 = clientContext;
+    if (clientContext)
     {
-      [v8 localizedStringForKey:@"GIFTING_REVIEW_TITLE" inTable:@"Gifting"];
+      [clientContext localizedStringForKey:@"GIFTING_REVIEW_TITLE" inTable:@"Gifting"];
     }
 
     else
@@ -47,8 +47,8 @@
 
 - (void)dealloc
 {
-  v3 = [(SUUIGiftConfirmView *)self->_confirmView termsButton];
-  [v3 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  termsButton = [(SUUIGiftConfirmView *)self->_confirmView termsButton];
+  [termsButton removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
   [(SUUIFocusedTouchGestureRecognizer *)self->_touchRecognizer removeTarget:self action:0];
   v4.receiver = self;
@@ -62,43 +62,43 @@
   if (!confirmView)
   {
     v4 = [SUUIGiftConfirmView alloc];
-    v5 = [(SUUIGiftStepViewController *)self gift];
-    v6 = [(SUUIGiftStepViewController *)self giftConfiguration];
-    v7 = [(SUUIGiftConfirmView *)v4 initWithGift:v5 configuration:v6];
+    gift = [(SUUIGiftStepViewController *)self gift];
+    giftConfiguration = [(SUUIGiftStepViewController *)self giftConfiguration];
+    v7 = [(SUUIGiftConfirmView *)v4 initWithGift:gift configuration:giftConfiguration];
     v8 = self->_confirmView;
     self->_confirmView = v7;
 
     v9 = self->_confirmView;
-    v10 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(SUUIGiftConfirmView *)v9 setBackgroundColor:v10];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(SUUIGiftConfirmView *)v9 setBackgroundColor:systemBackgroundColor];
 
-    v11 = [(SUUIGiftConfirmView *)self->_confirmView termsButton];
-    [v11 addTarget:self action:sel__termsButtonAction_ forControlEvents:64];
+    termsButton = [(SUUIGiftConfirmView *)self->_confirmView termsButton];
+    [termsButton addTarget:self action:sel__termsButtonAction_ forControlEvents:64];
 
     confirmView = self->_confirmView;
   }
 
   [(SUUIGiftConfirmViewController *)self setView:confirmView];
-  v12 = [(SUUIGiftStepViewController *)self giftConfiguration];
-  v16 = [v12 clientContext];
+  giftConfiguration2 = [(SUUIGiftStepViewController *)self giftConfiguration];
+  clientContext = [giftConfiguration2 clientContext];
 
-  v13 = [(SUUIGiftConfirmViewController *)self _buyButtonTitle];
-  v14 = [(SUUIGiftConfirmViewController *)self _newBuyBarButtonItemWithTitle:v13];
-  v15 = [(SUUIGiftConfirmViewController *)self navigationItem];
-  [v15 setRightBarButtonItem:v14];
+  _buyButtonTitle = [(SUUIGiftConfirmViewController *)self _buyButtonTitle];
+  v14 = [(SUUIGiftConfirmViewController *)self _newBuyBarButtonItemWithTitle:_buyButtonTitle];
+  navigationItem = [(SUUIGiftConfirmViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v14];
 }
 
-- (void)_buyButtonAction:(id)a3
+- (void)_buyButtonAction:(id)action
 {
-  v12 = a3;
+  actionCopy = action;
   if (self->_isShowingConfirmation)
   {
     [(SUUIGiftConfirmViewController *)self _purchaseGift];
     [(SUUIGiftConfirmViewController *)self _setShowingConfirmation:0 animated:1];
     [(SUUIGiftConfirmViewController *)self _removeCancelGestureRecognizer];
-    v4 = [(SUUIGiftConfirmViewController *)self navigationItem];
-    v5 = [v4 rightBarButtonItem];
-    [v5 setEnabled:0];
+    navigationItem = [(SUUIGiftConfirmViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:0];
   }
 
   else
@@ -109,56 +109,56 @@
       goto LABEL_6;
     }
 
-    v6 = [(SUUIGiftConfirmViewController *)self navigationItem];
-    v7 = [v6 rightBarButtonItem];
-    v4 = [v7 customView];
+    navigationItem2 = [(SUUIGiftConfirmViewController *)self navigationItem];
+    rightBarButtonItem2 = [navigationItem2 rightBarButtonItem];
+    navigationItem = [rightBarButtonItem2 customView];
 
     v8 = [SUUIFocusedTouchGestureRecognizer alloc];
-    v9 = [(SUUIFocusedTouchGestureRecognizer *)v8 initWithFocusedView:v4 touchAllowance:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
+    v9 = [(SUUIFocusedTouchGestureRecognizer *)v8 initWithFocusedView:navigationItem touchAllowance:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
     touchRecognizer = self->_touchRecognizer;
     self->_touchRecognizer = v9;
 
     [(SUUIFocusedTouchGestureRecognizer *)self->_touchRecognizer addTarget:self action:sel__cancelBuyConfirmation_];
-    v5 = [(SUUIGiftConfirmViewController *)self navigationController];
-    v11 = [v5 view];
-    [v11 addGestureRecognizer:self->_touchRecognizer];
+    rightBarButtonItem = [(SUUIGiftConfirmViewController *)self navigationController];
+    view = [rightBarButtonItem view];
+    [view addGestureRecognizer:self->_touchRecognizer];
   }
 
 LABEL_6:
 }
 
-- (void)_cancelBuyConfirmation:(id)a3
+- (void)_cancelBuyConfirmation:(id)confirmation
 {
   [(SUUIGiftConfirmViewController *)self _setShowingConfirmation:0 animated:1];
 
   [(SUUIGiftConfirmViewController *)self _removeCancelGestureRecognizer];
 }
 
-- (void)_termsButtonAction:(id)a3
+- (void)_termsButtonAction:(id)action
 {
-  v3 = [MEMORY[0x277CBEBC0] termsAndConditionsURL];
-  SUUIMetricsOpenURL(v3);
+  termsAndConditionsURL = [MEMORY[0x277CBEBC0] termsAndConditionsURL];
+  SUUIMetricsOpenURL(termsAndConditionsURL);
 }
 
-- (void)_finishPurchaseWithResult:(BOOL)a3 errorMessage:(id)a4
+- (void)_finishPurchaseWithResult:(BOOL)result errorMessage:(id)message
 {
-  v4 = a3;
-  v6 = a4;
-  v18 = v6;
-  if (v4)
+  resultCopy = result;
+  messageCopy = message;
+  v18 = messageCopy;
+  if (resultCopy)
   {
     [(SUUIGiftConfirmViewController *)self _showSuccessPage];
   }
 
-  else if (v6)
+  else if (messageCopy)
   {
-    v7 = [(SUUIGiftStepViewController *)self giftConfiguration];
-    v8 = [v7 clientContext];
+    giftConfiguration = [(SUUIGiftStepViewController *)self giftConfiguration];
+    clientContext = [giftConfiguration clientContext];
 
     v9 = MEMORY[0x277D75110];
-    if (v8)
+    if (clientContext)
     {
-      [v8 localizedStringForKey:@"GIFTING_UNABLE_TO_GIFT" inTable:@"Gifting"];
+      [clientContext localizedStringForKey:@"GIFTING_UNABLE_TO_GIFT" inTable:@"Gifting"];
     }
 
     else
@@ -169,9 +169,9 @@ LABEL_6:
     v11 = [v9 alertControllerWithTitle:v10 message:v18 preferredStyle:1];
 
     v12 = MEMORY[0x277D750F8];
-    if (v8)
+    if (clientContext)
     {
-      [v8 localizedStringForKey:@"GIFTING_OK_BUTTON" inTable:@"Gifting"];
+      [clientContext localizedStringForKey:@"GIFTING_OK_BUTTON" inTable:@"Gifting"];
     }
 
     else
@@ -188,9 +188,9 @@ LABEL_6:
   purchaseRequest = self->_purchaseRequest;
   self->_purchaseRequest = 0;
 
-  v16 = [(SUUIGiftConfirmViewController *)self navigationItem];
-  v17 = [v16 rightBarButtonItem];
-  [v17 setEnabled:1];
+  navigationItem = [(SUUIGiftConfirmViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:1];
 }
 
 - (void)_purchaseGift
@@ -199,9 +199,9 @@ LABEL_6:
   {
     objc_initWeak(&location, self);
     v3 = [SUUIGiftPurchaseRequest alloc];
-    v4 = [(SUUIGiftStepViewController *)self gift];
-    v5 = [(SUUIGiftStepViewController *)self giftConfiguration];
-    v6 = [(SUUIGiftPurchaseRequest *)v3 initWithGift:v4 configuration:v5];
+    gift = [(SUUIGiftStepViewController *)self gift];
+    giftConfiguration = [(SUUIGiftStepViewController *)self giftConfiguration];
+    v6 = [(SUUIGiftPurchaseRequest *)v3 initWithGift:gift configuration:giftConfiguration];
     purchaseRequest = self->_purchaseRequest;
     self->_purchaseRequest = v6;
 
@@ -242,19 +242,19 @@ void __46__SUUIGiftConfirmViewController__purchaseGift__block_invoke_2(uint64_t 
 - (void)_removeCancelGestureRecognizer
 {
   [(SUUIFocusedTouchGestureRecognizer *)self->_touchRecognizer removeTarget:self action:0];
-  v3 = [(SUUIFocusedTouchGestureRecognizer *)self->_touchRecognizer view];
-  [v3 removeGestureRecognizer:self->_touchRecognizer];
+  view = [(SUUIFocusedTouchGestureRecognizer *)self->_touchRecognizer view];
+  [view removeGestureRecognizer:self->_touchRecognizer];
 
   touchRecognizer = self->_touchRecognizer;
   self->_touchRecognizer = 0;
 }
 
-- (void)_setShowingConfirmation:(BOOL)a3 animated:(BOOL)a4
+- (void)_setShowingConfirmation:(BOOL)confirmation animated:(BOOL)animated
 {
-  if (self->_isShowingConfirmation != a3)
+  if (self->_isShowingConfirmation != confirmation)
   {
-    v4 = a4;
-    if (a3)
+    animatedCopy = animated;
+    if (confirmation)
     {
       [(SUUIGiftConfirmViewController *)self _confirmButtonTitle];
     }
@@ -265,40 +265,40 @@ void __46__SUUIGiftConfirmViewController__purchaseGift__block_invoke_2(uint64_t 
     }
     v9 = ;
     v7 = [(SUUIGiftConfirmViewController *)self _newBuyBarButtonItemWithTitle:v9];
-    v8 = [(SUUIGiftConfirmViewController *)self navigationItem];
-    [v8 setRightBarButtonItem:v7 animated:v4];
+    navigationItem = [(SUUIGiftConfirmViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v7 animated:animatedCopy];
 
-    self->_isShowingConfirmation = a3;
+    self->_isShowingConfirmation = confirmation;
   }
 }
 
 - (void)_showSuccessPage
 {
   v3 = [SUUIGiftResultViewController alloc];
-  v4 = [(SUUIGiftStepViewController *)self gift];
-  v5 = [(SUUIGiftStepViewController *)self giftConfiguration];
-  v8 = [(SUUIGiftResultViewController *)v3 initWithGift:v4 configuration:v5];
+  gift = [(SUUIGiftStepViewController *)self gift];
+  giftConfiguration = [(SUUIGiftStepViewController *)self giftConfiguration];
+  v8 = [(SUUIGiftResultViewController *)v3 initWithGift:gift configuration:giftConfiguration];
 
-  v6 = [(SUUIGiftStepViewController *)self operationQueue];
-  [(SUUIGiftStepViewController *)v8 setOperationQueue:v6];
+  operationQueue = [(SUUIGiftStepViewController *)self operationQueue];
+  [(SUUIGiftStepViewController *)v8 setOperationQueue:operationQueue];
 
-  v7 = [(SUUIGiftConfirmViewController *)self navigationController];
-  [v7 pushViewController:v8 animated:1];
+  navigationController = [(SUUIGiftConfirmViewController *)self navigationController];
+  [navigationController pushViewController:v8 animated:1];
 
   [(SUUIGiftConfirmViewController *)self _removeCancelGestureRecognizer];
 }
 
-- (id)_newBuyBarButtonItemWithTitle:(id)a3
+- (id)_newBuyBarButtonItemWithTitle:(id)title
 {
   v4 = MEMORY[0x277D75220];
-  v5 = a3;
+  titleCopy = title;
   v6 = [v4 buttonWithType:1];
   v7 = [MEMORY[0x277D74300] boldSystemFontOfSize:17.0];
-  v8 = [v6 titleLabel];
-  [v8 setFont:v7];
+  titleLabel = [v6 titleLabel];
+  [titleLabel setFont:v7];
 
   [v6 addTarget:self action:sel__buyButtonAction_ forEvents:64];
-  [v6 setTitle:v5 forState:0];
+  [v6 setTitle:titleCopy forState:0];
 
   [v6 sizeToFit];
   v9 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v6];
@@ -308,12 +308,12 @@ void __46__SUUIGiftConfirmViewController__purchaseGift__block_invoke_2(uint64_t 
 
 - (id)_buyButtonTitle
 {
-  v2 = [(SUUIGiftStepViewController *)self giftConfiguration];
-  v3 = [v2 clientContext];
-  v4 = v3;
-  if (v3)
+  giftConfiguration = [(SUUIGiftStepViewController *)self giftConfiguration];
+  clientContext = [giftConfiguration clientContext];
+  v4 = clientContext;
+  if (clientContext)
   {
-    [v3 localizedStringForKey:@"GIFTING_BUY_GIFT_BUTTON" inTable:@"Gifting"];
+    [clientContext localizedStringForKey:@"GIFTING_BUY_GIFT_BUTTON" inTable:@"Gifting"];
   }
 
   else
@@ -327,12 +327,12 @@ void __46__SUUIGiftConfirmViewController__purchaseGift__block_invoke_2(uint64_t 
 
 - (id)_confirmButtonTitle
 {
-  v2 = [(SUUIGiftStepViewController *)self giftConfiguration];
-  v3 = [v2 clientContext];
-  v4 = v3;
-  if (v3)
+  giftConfiguration = [(SUUIGiftStepViewController *)self giftConfiguration];
+  clientContext = [giftConfiguration clientContext];
+  v4 = clientContext;
+  if (clientContext)
   {
-    [v3 localizedStringForKey:@"GIFTING_BUY_CONFIRM_BUTTON" inTable:@"Gifting"];
+    [clientContext localizedStringForKey:@"GIFTING_BUY_CONFIRM_BUTTON" inTable:@"Gifting"];
   }
 
   else

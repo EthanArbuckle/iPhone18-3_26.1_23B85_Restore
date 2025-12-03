@@ -2,16 +2,16 @@
 - (double)itemViewLuminance;
 - (id)effectiveColor1;
 - (id)effectiveColor2;
-- (id)itemViewWithGlassStyleApplied:(BOOL)a3;
+- (id)itemViewWithGlassStyleApplied:(BOOL)applied;
 @end
 
 @implementation _PREditingPosterContentTwoToneStyleCoordinatorImpl
 
 - (id)effectiveColor1
 {
-  v3 = [(_PREditingPosterContentStyleCoordinatorImpl *)self variationSupportingStyle];
-  v4 = [v3 variationAppliedColors];
-  v5 = [v4 objectAtIndexedSubscript:0];
+  variationSupportingStyle = [(_PREditingPosterContentStyleCoordinatorImpl *)self variationSupportingStyle];
+  variationAppliedColors = [variationSupportingStyle variationAppliedColors];
+  v5 = [variationAppliedColors objectAtIndexedSubscript:0];
   v6 = v5;
   if (v5)
   {
@@ -20,9 +20,9 @@
 
   else
   {
-    v8 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-    v9 = [v8 colors];
-    v7 = [v9 objectAtIndexedSubscript:0];
+    style = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+    colors = [style colors];
+    v7 = [colors objectAtIndexedSubscript:0];
   }
 
   return v7;
@@ -30,9 +30,9 @@
 
 - (id)effectiveColor2
 {
-  v3 = [(_PREditingPosterContentStyleCoordinatorImpl *)self variationSupportingStyle];
-  v4 = [v3 variationAppliedColors];
-  v5 = [v4 objectAtIndexedSubscript:1];
+  variationSupportingStyle = [(_PREditingPosterContentStyleCoordinatorImpl *)self variationSupportingStyle];
+  variationAppliedColors = [variationSupportingStyle variationAppliedColors];
+  v5 = [variationAppliedColors objectAtIndexedSubscript:1];
   v6 = v5;
   if (v5)
   {
@@ -41,9 +41,9 @@
 
   else
   {
-    v8 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-    v9 = [v8 colors];
-    v7 = [v9 objectAtIndexedSubscript:1];
+    style = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+    colors = [style colors];
+    v7 = [colors objectAtIndexedSubscript:1];
   }
 
   return v7;
@@ -51,31 +51,31 @@
 
 - (double)itemViewLuminance
 {
-  v2 = [(_PREditingPosterContentTwoToneStyleCoordinatorImpl *)self effectiveColor1];
-  v3 = [[PRPosterColorValues alloc] initWithColor:v2];
-  v4 = [(PRPosterColorValues *)v3 hslValues];
-  [v4 luminance];
+  effectiveColor1 = [(_PREditingPosterContentTwoToneStyleCoordinatorImpl *)self effectiveColor1];
+  v3 = [[PRPosterColorValues alloc] initWithColor:effectiveColor1];
+  hslValues = [(PRPosterColorValues *)v3 hslValues];
+  [hslValues luminance];
   v6 = v5;
 
   return v6;
 }
 
-- (id)itemViewWithGlassStyleApplied:(BOOL)a3
+- (id)itemViewWithGlassStyleApplied:(BOOL)applied
 {
   itemView = self->_itemView;
   if (!itemView)
   {
-    v5 = [(_PREditingPosterContentTwoToneStyleCoordinatorImpl *)self effectiveColor1];
-    v6 = [(_PREditingPosterContentTwoToneStyleCoordinatorImpl *)self effectiveColor2];
-    v7 = v6;
-    if (v6)
+    effectiveColor1 = [(_PREditingPosterContentTwoToneStyleCoordinatorImpl *)self effectiveColor1];
+    effectiveColor2 = [(_PREditingPosterContentTwoToneStyleCoordinatorImpl *)self effectiveColor2];
+    v7 = effectiveColor2;
+    if (effectiveColor2)
     {
-      v8 = v6;
+      v8 = effectiveColor2;
     }
 
     else
     {
-      v8 = v5;
+      v8 = effectiveColor1;
     }
 
     v9 = v8;
@@ -83,7 +83,7 @@
     v10 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, 50.0, 50.0}];
     [(UIView *)v10 setClipsToBounds:1];
     v11 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, 25.0, 50.0}];
-    [(UIView *)v11 setBackgroundColor:v5];
+    [(UIView *)v11 setBackgroundColor:effectiveColor1];
     [(UIView *)v11 setAutoresizingMask:22];
     [(UIView *)v10 addSubview:v11];
     v12 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{25.0, 0.0, 25.0, 50.0}];

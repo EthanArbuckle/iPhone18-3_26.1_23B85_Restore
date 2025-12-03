@@ -2,81 +2,81 @@
 - (CPEntityClientTemplateDelegate)templateDelegate;
 - (CPEntityProviding)entityTemplate;
 - (CPSEntityActionDelegate)actionDelegate;
-- (CPSEntityResourceProvider)initWithTemplateEnvironment:(id)a3 entityTemplate:(id)a4 templateDelegate:(id)a5 actionDelegate:(id)a6;
+- (CPSEntityResourceProvider)initWithTemplateEnvironment:(id)environment entityTemplate:(id)template templateDelegate:(id)delegate actionDelegate:(id)actionDelegate;
 - (CPSTemplateEnvironment)templateEnvironment;
 - (NSString)description;
-- (void)updateEntityTemplate:(id)a3 withProxyDelegate:(id)a4;
+- (void)updateEntityTemplate:(id)template withProxyDelegate:(id)delegate;
 @end
 
 @implementation CPSEntityResourceProvider
 
-- (CPSEntityResourceProvider)initWithTemplateEnvironment:(id)a3 entityTemplate:(id)a4 templateDelegate:(id)a5 actionDelegate:(id)a6
+- (CPSEntityResourceProvider)initWithTemplateEnvironment:(id)environment entityTemplate:(id)template templateDelegate:(id)delegate actionDelegate:(id)actionDelegate
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, environment);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, template);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
+  objc_storeStrong(&v14, delegate);
   v13 = 0;
-  objc_storeStrong(&v13, a6);
-  v6 = v17;
-  v17 = 0;
+  objc_storeStrong(&v13, actionDelegate);
+  v6 = selfCopy;
+  selfCopy = 0;
   v12.receiver = v6;
   v12.super_class = CPSEntityResourceProvider;
-  v17 = [(CPSEntityResourceProvider *)&v12 init];
-  objc_storeStrong(&v17, v17);
-  if (v17)
+  selfCopy = [(CPSEntityResourceProvider *)&v12 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeWeak(&v17->_templateEnvironment, location[0]);
-    objc_storeWeak(&v17->_entityTemplate, v15);
-    objc_storeWeak(&v17->_templateDelegate, v14);
-    objc_storeWeak(&v17->_actionDelegate, v13);
+    objc_storeWeak(&selfCopy->_templateEnvironment, location[0]);
+    objc_storeWeak(&selfCopy->_entityTemplate, v15);
+    objc_storeWeak(&selfCopy->_templateDelegate, v14);
+    objc_storeWeak(&selfCopy->_actionDelegate, v13);
   }
 
-  v8 = MEMORY[0x277D82BE0](v17);
+  v8 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
 - (NSString)description
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   v3 = MEMORY[0x277CCACA8];
   v10.receiver = self;
   v10.super_class = CPSEntityResourceProvider;
   v8 = [(CPSEntityResourceProvider *)&v10 description];
-  v7 = [(CPSEntityResourceProvider *)v12 templateEnvironment];
-  v6 = [(CPSEntityResourceProvider *)v12 entityTemplate];
-  v5 = [(CPSEntityResourceProvider *)v12 templateDelegate];
-  v4 = [(CPSEntityResourceProvider *)v12 actionDelegate];
-  v9 = [v3 stringWithFormat:@"%@\n\t%@\n\t%@\n\t%@\n\t%@", v8, v7, v6, v5, v4];
-  MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
+  templateEnvironment = [(CPSEntityResourceProvider *)selfCopy templateEnvironment];
+  entityTemplate = [(CPSEntityResourceProvider *)selfCopy entityTemplate];
+  templateDelegate = [(CPSEntityResourceProvider *)selfCopy templateDelegate];
+  actionDelegate = [(CPSEntityResourceProvider *)selfCopy actionDelegate];
+  v9 = [v3 stringWithFormat:@"%@\n\t%@\n\t%@\n\t%@\n\t%@", v8, templateEnvironment, entityTemplate, templateDelegate, actionDelegate];
+  MEMORY[0x277D82BD8](actionDelegate);
+  MEMORY[0x277D82BD8](templateDelegate);
+  MEMORY[0x277D82BD8](entityTemplate);
+  MEMORY[0x277D82BD8](templateEnvironment);
   MEMORY[0x277D82BD8](v8);
 
   return v9;
 }
 
-- (void)updateEntityTemplate:(id)a3 withProxyDelegate:(id)a4
+- (void)updateEntityTemplate:(id)template withProxyDelegate:(id)delegate
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, template);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(CPSEntityResourceProvider *)v7 setEntityTemplate:location[0]];
-  [(CPSEntityResourceProvider *)v7 setTemplateDelegate:v5];
+  objc_storeStrong(&v5, delegate);
+  [(CPSEntityResourceProvider *)selfCopy setEntityTemplate:location[0]];
+  [(CPSEntityResourceProvider *)selfCopy setTemplateDelegate:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }

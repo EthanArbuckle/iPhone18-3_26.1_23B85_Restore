@@ -1,28 +1,28 @@
 @interface _UIRepeatingPressGestureRecognizer
-- (BOOL)_shouldReceivePress:(id)a3;
-- (_UIRepeatingPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (BOOL)_shouldReceivePress:(id)press;
+- (_UIRepeatingPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (int64_t)_buttonType;
 - (void)_resetGestureRecognizer;
-- (void)_setButtonType:(int64_t)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesChanged:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)repeatingGestureClockDidTick:(id)a3;
-- (void)setView:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)_setButtonType:(int64_t)type;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesChanged:(id)changed withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)repeatingGestureClockDidTick:(id)tick;
+- (void)setView:(id)view;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UIRepeatingPressGestureRecognizer
 
-- (_UIRepeatingPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UIRepeatingPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _UIRepeatingPressGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:target action:action];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -35,42 +35,42 @@
 
 - (int64_t)_buttonType
 {
-  v2 = [(UIGestureRecognizer *)self allowedPressTypes];
-  if ([v2 count])
+  allowedPressTypes = [(UIGestureRecognizer *)self allowedPressTypes];
+  if ([allowedPressTypes count])
   {
-    v3 = [v2 firstObject];
-    v4 = [v3 integerValue];
+    firstObject = [allowedPressTypes firstObject];
+    integerValue = [firstObject integerValue];
   }
 
   else
   {
-    v4 = -1;
+    integerValue = -1;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)_setButtonType:(int64_t)a3
+- (void)_setButtonType:(int64_t)type
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if ([(_UIRepeatingPressGestureRecognizer *)self _buttonType]!= a3)
+  if ([(_UIRepeatingPressGestureRecognizer *)self _buttonType]!= type)
   {
-    v6 = [(UIGestureRecognizer *)self view];
+    view = [(UIGestureRecognizer *)self view];
 
-    if (v6)
+    if (view)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"UIRepeatingPressGestureRecognizer.m" lineNumber:59 description:@"_buttonType can't be changed after a gesture recognizer is added to a view"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIRepeatingPressGestureRecognizer.m" lineNumber:59 description:@"_buttonType can't be changed after a gesture recognizer is added to a view"];
     }
 
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     v10[0] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     [(UIGestureRecognizer *)self setAllowedPressTypes:v8];
   }
 }
 
-- (BOOL)_shouldReceivePress:(id)a3
+- (BOOL)_shouldReceivePress:(id)press
 {
   v7.receiver = self;
   v7.super_class = _UIRepeatingPressGestureRecognizer;
@@ -79,43 +79,43 @@
     return 1;
   }
 
-  v6 = [(_UIRepeatingPressGestureRecognizer *)self _buttonType];
-  return v6 == [a3 type];
+  _buttonType = [(_UIRepeatingPressGestureRecognizer *)self _buttonType];
+  return _buttonType == [press type];
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  if (!a3)
+  if (!view)
   {
-    v5 = [(_UIRepeatingPressGestureRecognizer *)self clock];
-    [v5 stopClock];
+    clock = [(_UIRepeatingPressGestureRecognizer *)self clock];
+    [clock stopClock];
   }
 
   v6.receiver = self;
   v6.super_class = _UIRepeatingPressGestureRecognizer;
-  [(UIGestureRecognizer *)&v6 setView:a3];
+  [(UIGestureRecognizer *)&v6 setView:view];
 }
 
 - (void)_resetGestureRecognizer
 {
   self->_force = 0.0;
-  v3 = [(_UIRepeatingPressGestureRecognizer *)self clock];
-  [v3 stopClock];
+  clock = [(_UIRepeatingPressGestureRecognizer *)self clock];
+  [clock stopClock];
 
   v4.receiver = self;
   v4.super_class = _UIRepeatingPressGestureRecognizer;
   [(UIGestureRecognizer *)&v4 _resetGestureRecognizer];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   self->_force = 1.0;
-  if ([(_UIRepeatingPressGestureRecognizer *)self _buttonType:a3]== -1)
+  if ([(_UIRepeatingPressGestureRecognizer *)self _buttonType:began]== -1)
   {
     [(_UIRepeatingPressGestureRecognizer *)self setChangeCount:0];
     [(UIGestureRecognizer *)self setState:1];
-    v5 = [(_UIRepeatingPressGestureRecognizer *)self clock];
-    [v5 startClock];
+    clock = [(_UIRepeatingPressGestureRecognizer *)self clock];
+    [clock startClock];
   }
 
   else
@@ -125,73 +125,73 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  if ([(_UIRepeatingPressGestureRecognizer *)self _buttonType:a3]== -1)
+  if ([(_UIRepeatingPressGestureRecognizer *)self _buttonType:moved]== -1)
   {
 
     [(UIGestureRecognizer *)self setState:2];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if ([(_UIRepeatingPressGestureRecognizer *)self _buttonType:a3]== -1)
+  if ([(_UIRepeatingPressGestureRecognizer *)self _buttonType:ended]== -1)
   {
     [(UIGestureRecognizer *)self setState:3];
-    v5 = [(_UIRepeatingPressGestureRecognizer *)self clock];
-    [v5 stopClock];
+    clock = [(_UIRepeatingPressGestureRecognizer *)self clock];
+    [clock stopClock];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  if ([(_UIRepeatingPressGestureRecognizer *)self _buttonType:a3]== -1)
+  if ([(_UIRepeatingPressGestureRecognizer *)self _buttonType:cancelled]== -1)
   {
     [(UIGestureRecognizer *)self setState:4];
-    v5 = [(_UIRepeatingPressGestureRecognizer *)self clock];
-    [v5 stopClock];
+    clock = [(_UIRepeatingPressGestureRecognizer *)self clock];
+    [clock stopClock];
   }
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v5 = [a4 _lastPreparedPress];
-  [v5 force];
+  _lastPreparedPress = [event _lastPreparedPress];
+  [_lastPreparedPress force];
   self->_force = v6;
 
   [(_UIRepeatingPressGestureRecognizer *)self setChangeCount:0];
   [(UIGestureRecognizer *)self setState:1];
-  v7 = [(_UIRepeatingPressGestureRecognizer *)self clock];
-  [v7 startClock];
+  clock = [(_UIRepeatingPressGestureRecognizer *)self clock];
+  [clock startClock];
 }
 
-- (void)pressesChanged:(id)a3 withEvent:(id)a4
+- (void)pressesChanged:(id)changed withEvent:(id)event
 {
-  v5 = [a4 _lastPreparedPress];
-  [v5 force];
+  _lastPreparedPress = [event _lastPreparedPress];
+  [_lastPreparedPress force];
   self->_force = v6;
 
   [(UIGestureRecognizer *)self setState:2];
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   self->_force = 0.0;
-  [(UIGestureRecognizer *)self setState:3, a4];
-  v5 = [(_UIRepeatingPressGestureRecognizer *)self clock];
-  [v5 stopClock];
+  [(UIGestureRecognizer *)self setState:3, event];
+  clock = [(_UIRepeatingPressGestureRecognizer *)self clock];
+  [clock stopClock];
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
   self->_force = 0.0;
-  [(UIGestureRecognizer *)self setState:4, a4];
-  v5 = [(_UIRepeatingPressGestureRecognizer *)self clock];
-  [v5 stopClock];
+  [(UIGestureRecognizer *)self setState:4, event];
+  clock = [(_UIRepeatingPressGestureRecognizer *)self clock];
+  [clock stopClock];
 }
 
-- (void)repeatingGestureClockDidTick:(id)a3
+- (void)repeatingGestureClockDidTick:(id)tick
 {
   [(_UIRepeatingPressGestureRecognizer *)self setChangeCount:[(_UIRepeatingPressGestureRecognizer *)self changeCount]+ 1];
 

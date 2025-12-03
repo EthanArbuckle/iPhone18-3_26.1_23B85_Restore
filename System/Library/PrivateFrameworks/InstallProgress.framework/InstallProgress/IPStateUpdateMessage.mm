@@ -1,23 +1,23 @@
 @interface IPStateUpdateMessage
-- (IPStateUpdateMessage)initWithType:(unint64_t)a3 identity:(id)a4;
-- (IPStateUpdateMessage)initWithXPCDictionaryRepresentation:(id)a3 error:(id *)a4;
+- (IPStateUpdateMessage)initWithType:(unint64_t)type identity:(id)identity;
+- (IPStateUpdateMessage)initWithXPCDictionaryRepresentation:(id)representation error:(id *)error;
 - (id)XPCDictionaryRepresentation;
 - (void)XPCDictionaryRepresentation;
 @end
 
 @implementation IPStateUpdateMessage
 
-- (IPStateUpdateMessage)initWithType:(unint64_t)a3 identity:(id)a4
+- (IPStateUpdateMessage)initWithType:(unint64_t)type identity:(id)identity
 {
-  v7 = a4;
+  identityCopy = identity;
   v11.receiver = self;
   v11.super_class = IPStateUpdateMessage;
   v8 = [(IPStateUpdateMessage *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_identity, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_identity, identity);
   }
 
   return v9;
@@ -64,9 +64,9 @@
   return v9;
 }
 
-- (IPStateUpdateMessage)initWithXPCDictionaryRepresentation:(id)a3 error:(id *)a4
+- (IPStateUpdateMessage)initWithXPCDictionaryRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
+  representationCopy = representation;
   if (MEMORY[0x259C29850]() != MEMORY[0x277D86468])
   {
     v7 = *MEMORY[0x277CCA050];
@@ -76,9 +76,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  uint64 = xpc_dictionary_get_uint64(v6, [@"type" UTF8String]);
+  uint64 = xpc_dictionary_get_uint64(representationCopy, [@"type" UTF8String]);
   length = 0;
-  data = xpc_dictionary_get_data(v6, [@"data" UTF8String], &length);
+  data = xpc_dictionary_get_data(representationCopy, [@"data" UTF8String], &length);
   if (!uint64 || !data)
   {
     v7 = *MEMORY[0x277CCA050];
@@ -99,12 +99,12 @@ LABEL_8:
 
 LABEL_9:
 
-  if (a4)
+  if (error)
   {
     v15 = v13;
     v12 = 0;
     v14 = 0;
-    *a4 = v13;
+    *error = v13;
   }
 
   else
@@ -123,7 +123,7 @@ LABEL_12:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_254C69000, a2, OS_LOG_TYPE_FAULT, "Could not encode identity: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

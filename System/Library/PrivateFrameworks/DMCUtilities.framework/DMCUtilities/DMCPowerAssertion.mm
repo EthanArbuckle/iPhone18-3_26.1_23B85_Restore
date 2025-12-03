@@ -1,5 +1,5 @@
 @interface DMCPowerAssertion
-- (DMCPowerAssertion)initWithReason:(id)a3;
+- (DMCPowerAssertion)initWithReason:(id)reason;
 - (void)dealloc;
 - (void)park;
 - (void)unpark;
@@ -7,11 +7,11 @@
 
 @implementation DMCPowerAssertion
 
-- (DMCPowerAssertion)initWithReason:(id)a3
+- (DMCPowerAssertion)initWithReason:(id)reason
 {
   v7.receiver = self;
   v7.super_class = DMCPowerAssertion;
-  v3 = [(DMCProcessAssertion *)&v7 initWithReason:a3];
+  v3 = [(DMCProcessAssertion *)&v7 initWithReason:reason];
   v4 = v3;
   if (v3)
   {

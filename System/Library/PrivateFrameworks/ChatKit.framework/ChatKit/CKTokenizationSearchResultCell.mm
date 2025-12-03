@@ -1,62 +1,62 @@
 @interface CKTokenizationSearchResultCell
-- (CKTokenizationSearchResultCell)initWithFrame:(CGRect)a3;
+- (CKTokenizationSearchResultCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)marginInsets;
-- (id)_displayStringForTokenResult:(id)a3 searchText:(id)a4;
-- (void)configureWithQueryResult:(id)a3 searchText:(id)a4 mode:(unint64_t)a5;
+- (id)_displayStringForTokenResult:(id)result searchText:(id)text;
+- (void)configureWithQueryResult:(id)result searchText:(id)text mode:(unint64_t)mode;
 @end
 
 @implementation CKTokenizationSearchResultCell
 
-- (CKTokenizationSearchResultCell)initWithFrame:(CGRect)a3
+- (CKTokenizationSearchResultCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CKTokenizationSearchResultCell;
-  v3 = [(CKTokenizationSearchResultCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [MEMORY[0x1E69DC888] labelColor];
-  [(CKTokenizationSearchResultCell *)v3 setTintColor:v4];
+  v3 = [(CKTokenizationSearchResultCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(CKTokenizationSearchResultCell *)v3 setTintColor:labelColor];
 
   return v3;
 }
 
-- (void)configureWithQueryResult:(id)a3 searchText:(id)a4 mode:(unint64_t)a5
+- (void)configureWithQueryResult:(id)result searchText:(id)text mode:(unint64_t)mode
 {
-  v7 = a3;
+  resultCopy = result;
   v8 = MEMORY[0x1E69DB878];
   v9 = *MEMORY[0x1E69DB978];
-  v10 = a4;
+  textCopy = text;
   v11 = [v8 systemFontOfSize:14.0 weight:v9];
   v12 = [MEMORY[0x1E69DCA40] metricsForTextStyle:*MEMORY[0x1E69DDD00]];
   v13 = [v12 scaledFontForFont:v11];
 
   v14 = [MEMORY[0x1E69DCAD8] configurationWithFont:v13];
-  v15 = [(CKTokenizationSearchResultCell *)self defaultContentConfiguration];
+  defaultContentConfiguration = [(CKTokenizationSearchResultCell *)self defaultContentConfiguration];
   v16 = +[CKUIBehavior sharedBehaviors];
   [v16 searchSuggestionsImageToTextPadding];
-  [v15 setImageToTextPadding:?];
+  [defaultContentConfiguration setImageToTextPadding:?];
 
-  v20 = v7;
-  v17 = [(CKTokenizationSearchResultCell *)self _displayStringForTokenResult:v20 searchText:v10];
+  v20 = resultCopy;
+  v17 = [(CKTokenizationSearchResultCell *)self _displayStringForTokenResult:v20 searchText:textCopy];
 
-  [v15 setAttributedText:v17];
-  v18 = [v20 image];
+  [defaultContentConfiguration setAttributedText:v17];
+  image = [v20 image];
 
-  v19 = [v18 imageByApplyingSymbolConfiguration:v14];
-  [v15 setImage:v19];
+  v19 = [image imageByApplyingSymbolConfiguration:v14];
+  [defaultContentConfiguration setImage:v19];
 
-  [(CKTokenizationSearchResultCell *)self setContentConfiguration:v15];
+  [(CKTokenizationSearchResultCell *)self setContentConfiguration:defaultContentConfiguration];
 }
 
-- (id)_displayStringForTokenResult:(id)a3 searchText:(id)a4
+- (id)_displayStringForTokenResult:(id)result searchText:(id)text
 {
   v5 = MEMORY[0x1E69DB878];
   v6 = *MEMORY[0x1E69DB978];
-  v7 = a4;
-  v8 = a3;
+  textCopy = text;
+  resultCopy = result;
   v9 = [v5 systemFontOfSize:16.0 weight:v6];
   v10 = [MEMORY[0x1E69DCA40] metricsForTextStyle:*MEMORY[0x1E69DDCF8]];
   v11 = [v10 scaledFontForFont:v9];
 
-  v12 = [v8 attributedSuggestionTextForSearchText:v7 font:v11];
+  v12 = [resultCopy attributedSuggestionTextForSearchText:textCopy font:v11];
 
   return v12;
 }

@@ -1,16 +1,16 @@
 @interface _DASSwapModelAverageAggregator
-- (double)scoreForApplication:(id)a3 atDate:(id)a4;
-- (id)scoresForAllApplicationsAtDate:(id)a3;
+- (double)scoreForApplication:(id)application atDate:(id)date;
+- (id)scoresForAllApplicationsAtDate:(id)date;
 @end
 
 @implementation _DASSwapModelAverageAggregator
 
-- (id)scoresForAllApplicationsAtDate:(id)a3
+- (id)scoresForAllApplicationsAtDate:(id)date
 {
-  v39 = a3;
+  dateCopy = date;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(_DASSwapModelAbstractAggregator *)self algorithms];
-  v6 = [v5 count];
+  algorithms = [(_DASSwapModelAbstractAggregator *)self algorithms];
+  v6 = [algorithms count];
 
   if (!v6)
   {
@@ -19,9 +19,9 @@
 
   if (v6 == 1)
   {
-    v7 = [(_DASSwapModelAbstractAggregator *)self algorithms];
-    v8 = [v7 firstObject];
-    v6 = [v8 scoresForAllApplicationsAtDate:v39];
+    algorithms2 = [(_DASSwapModelAbstractAggregator *)self algorithms];
+    firstObject = [algorithms2 firstObject];
+    v6 = [firstObject scoresForAllApplicationsAtDate:dateCopy];
 
 LABEL_4:
     v9 = v4;
@@ -35,8 +35,8 @@ LABEL_4:
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v12 = [(_DASSwapModelAbstractAggregator *)self algorithms];
-  v13 = [v12 countByEnumeratingWithState:&v44 objects:v49 count:16];
+  algorithms3 = [(_DASSwapModelAbstractAggregator *)self algorithms];
+  v13 = [algorithms3 countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v13)
   {
     v14 = v13;
@@ -47,20 +47,20 @@ LABEL_4:
       {
         if (*v45 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(algorithms3);
         }
 
         v17 = *(*(&v44 + 1) + 8 * i);
         v18 = objc_autoreleasePoolPush();
-        v19 = [v17 scoresForAllApplicationsAtDate:v39];
+        v19 = [v17 scoresForAllApplicationsAtDate:dateCopy];
         [v11 addObject:v19];
-        v20 = [v19 allKeys];
-        [v10 addObjectsFromArray:v20];
+        allKeys = [v19 allKeys];
+        [v10 addObjectsFromArray:allKeys];
 
         objc_autoreleasePoolPop(v18);
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v44 objects:v49 count:16];
+      v14 = [algorithms3 countByEnumeratingWithState:&v44 objects:v49 count:16];
     }
 
     while (v14);
@@ -118,35 +118,35 @@ LABEL_23:
   return v6;
 }
 
-- (double)scoreForApplication:(id)a3 atDate:(id)a4
+- (double)scoreForApplication:(id)application atDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_DASSwapModelAbstractAggregator *)self algorithms];
-  v9 = [v8 count];
+  applicationCopy = application;
+  dateCopy = date;
+  algorithms = [(_DASSwapModelAbstractAggregator *)self algorithms];
+  v9 = [algorithms count];
 
   if (v9)
   {
     if (v9 == 1)
     {
-      v10 = [(_DASSwapModelAbstractAggregator *)self algorithms];
-      v11 = [v10 firstObject];
-      [v11 scoreForApplication:v6 atDate:v7];
+      algorithms2 = [(_DASSwapModelAbstractAggregator *)self algorithms];
+      firstObject = [algorithms2 firstObject];
+      [firstObject scoreForApplication:applicationCopy atDate:dateCopy];
       v13 = v12;
     }
 
     else
     {
-      v14 = [(_DASSwapModelAbstractAggregator *)self algorithms];
-      v15 = [v14 objectAtIndexedSubscript:0];
-      [v15 scoreForApplication:v6 atDate:v7];
+      algorithms3 = [(_DASSwapModelAbstractAggregator *)self algorithms];
+      v15 = [algorithms3 objectAtIndexedSubscript:0];
+      [v15 scoreForApplication:applicationCopy atDate:dateCopy];
       v17 = v16;
 
       for (i = 1; i != v9; ++i)
       {
-        v19 = [(_DASSwapModelAbstractAggregator *)self algorithms];
-        v20 = [v19 objectAtIndexedSubscript:i];
-        [v20 scoreForApplication:v6 atDate:v7];
+        algorithms4 = [(_DASSwapModelAbstractAggregator *)self algorithms];
+        v20 = [algorithms4 objectAtIndexedSubscript:i];
+        [v20 scoreForApplication:applicationCopy atDate:dateCopy];
         v17 = v17 + v21;
       }
 

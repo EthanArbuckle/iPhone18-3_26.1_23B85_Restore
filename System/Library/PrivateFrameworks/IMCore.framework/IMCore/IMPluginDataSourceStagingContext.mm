@@ -1,27 +1,27 @@
 @interface IMPluginDataSourceStagingContext
-- (IMPluginDataSourceStagingContext)initWithTransientIdentifier:(id)a3 isEmbeddedInTextView:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (IMPluginDataSourceStagingContext)initWithTransientIdentifier:(id)identifier isEmbeddedInTextView:(BOOL)view;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation IMPluginDataSourceStagingContext
 
-- (IMPluginDataSourceStagingContext)initWithTransientIdentifier:(id)a3 isEmbeddedInTextView:(BOOL)a4
+- (IMPluginDataSourceStagingContext)initWithTransientIdentifier:(id)identifier isEmbeddedInTextView:(BOOL)view
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = IMPluginDataSourceStagingContext;
   v8 = [(IMPluginDataSourceStagingContext *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_transientIdentifier, a3);
-    v9->_isEmbeddedInTextView = a4;
+    objc_storeStrong(&v8->_transientIdentifier, identifier);
+    v9->_isEmbeddedInTextView = view;
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [IMPluginDataSourceStagingContext alloc];
   v7 = objc_msgSend_transientIdentifier(self, v5, v6);

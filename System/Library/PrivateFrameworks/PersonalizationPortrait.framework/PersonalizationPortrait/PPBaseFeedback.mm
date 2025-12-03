@@ -1,12 +1,12 @@
 @interface PPBaseFeedback
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPPBaseFeedback:(id)a3;
-- (PPBaseFeedback)initWithCoder:(id)a3;
-- (PPBaseFeedback)initWithFeedbackItems:(id)a3 mappingId:(id)a4;
-- (PPBaseFeedback)initWithFeedbackItems:(id)a3 timestamp:(id)a4 clientIdentifier:(id)a5 clientBundleId:(id)a6 mappingId:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPPBaseFeedback:(id)feedback;
+- (PPBaseFeedback)initWithCoder:(id)coder;
+- (PPBaseFeedback)initWithFeedbackItems:(id)items mappingId:(id)id;
+- (PPBaseFeedback)initWithFeedbackItems:(id)items timestamp:(id)timestamp clientIdentifier:(id)identifier clientBundleId:(id)id mappingId:(id)mappingId;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPBaseFeedback
@@ -60,17 +60,17 @@
   return v11;
 }
 
-- (BOOL)isEqualToPPBaseFeedback:(id)a3
+- (BOOL)isEqualToPPBaseFeedback:(id)feedback
 {
-  v4 = a3;
-  if (!v4)
+  feedbackCopy = feedback;
+  if (!feedbackCopy)
   {
     goto LABEL_16;
   }
 
   v5 = self->_feedbackItems;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == feedbackCopy[2])
   {
   }
 
@@ -86,7 +86,7 @@
 
   v8 = self->_timestamp;
   v9 = v8;
-  if (v8 == v4[5])
+  if (v8 == feedbackCopy[5])
   {
   }
 
@@ -102,7 +102,7 @@
 
   v11 = self->_clientIdentifier;
   v12 = v11;
-  if (v11 == v4[1])
+  if (v11 == feedbackCopy[1])
   {
   }
 
@@ -118,7 +118,7 @@
 
   v14 = self->_clientBundleId;
   v15 = v14;
-  if (v14 == v4[3])
+  if (v14 == feedbackCopy[3])
   {
   }
 
@@ -136,7 +136,7 @@ LABEL_16:
 
   v19 = self->_mappingId;
   v20 = v19;
-  if (v19 == v4[4])
+  if (v19 == feedbackCopy[4])
   {
     v17 = 1;
   }
@@ -150,56 +150,56 @@ LABEL_17:
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPBaseFeedback *)self isEqualToPPBaseFeedback:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPBaseFeedback *)self isEqualToPPBaseFeedback:v5];
   }
 
   return v6;
 }
 
-- (PPBaseFeedback)initWithCoder:(id)a3
+- (PPBaseFeedback)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v7 = objc_autoreleasePoolPush();
   v8 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v6, v5, 0}];
   objc_autoreleasePoolPop(v7);
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"feedbackItems"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"feedbackItems"];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientBundleId"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mappingId"];
-  v14 = 0;
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientBundleId"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mappingId"];
+  selfCopy = 0;
   if (v9 && v10)
   {
     self = [(PPBaseFeedback *)self initWithFeedbackItems:v9 timestamp:v10 clientIdentifier:v11 clientBundleId:v12 mappingId:v13];
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   feedbackItems = self->_feedbackItems;
-  v5 = a3;
-  [v5 encodeObject:feedbackItems forKey:@"feedbackItems"];
-  [v5 encodeObject:self->_timestamp forKey:@"timestamp"];
-  [v5 encodeObject:self->_clientIdentifier forKey:@"clientIdentifier"];
-  [v5 encodeObject:self->_clientBundleId forKey:@"clientBundleId"];
-  [v5 encodeObject:self->_mappingId forKey:@"mappingId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:feedbackItems forKey:@"feedbackItems"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"timestamp"];
+  [coderCopy encodeObject:self->_clientIdentifier forKey:@"clientIdentifier"];
+  [coderCopy encodeObject:self->_clientBundleId forKey:@"clientBundleId"];
+  [coderCopy encodeObject:self->_mappingId forKey:@"mappingId"];
 }
 
 - (unint64_t)hash
@@ -211,37 +211,37 @@ LABEL_17:
   return [(NSString *)self->_mappingId hash]- v6 + 32 * v6;
 }
 
-- (PPBaseFeedback)initWithFeedbackItems:(id)a3 timestamp:(id)a4 clientIdentifier:(id)a5 clientBundleId:(id)a6 mappingId:(id)a7
+- (PPBaseFeedback)initWithFeedbackItems:(id)items timestamp:(id)timestamp clientIdentifier:(id)identifier clientBundleId:(id)id mappingId:(id)mappingId
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  itemsCopy = items;
+  timestampCopy = timestamp;
+  identifierCopy = identifier;
+  idCopy = id;
+  mappingIdCopy = mappingId;
   v21.receiver = self;
   v21.super_class = PPBaseFeedback;
   v17 = [(PPBaseFeedback *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_feedbackItems, a3);
-    objc_storeStrong(&v18->_timestamp, a4);
-    objc_storeStrong(&v18->_clientIdentifier, a5);
-    objc_storeStrong(&v18->_clientBundleId, a6);
-    objc_storeStrong(&v18->_mappingId, a7);
+    objc_storeStrong(&v17->_feedbackItems, items);
+    objc_storeStrong(&v18->_timestamp, timestamp);
+    objc_storeStrong(&v18->_clientIdentifier, identifier);
+    objc_storeStrong(&v18->_clientBundleId, id);
+    objc_storeStrong(&v18->_mappingId, mappingId);
   }
 
   return v18;
 }
 
-- (PPBaseFeedback)initWithFeedbackItems:(id)a3 mappingId:(id)a4
+- (PPBaseFeedback)initWithFeedbackItems:(id)items mappingId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
+  idCopy = id;
+  itemsCopy = items;
   v8 = objc_opt_new();
-  v9 = [MEMORY[0x1E696AAE8] mainBundle];
-  v10 = [v9 bundleIdentifier];
-  v11 = [(PPBaseFeedback *)self initWithFeedbackItems:v7 timestamp:v8 clientIdentifier:0 clientBundleId:v10 mappingId:v6];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v11 = [(PPBaseFeedback *)self initWithFeedbackItems:itemsCopy timestamp:v8 clientIdentifier:0 clientBundleId:bundleIdentifier mappingId:idCopy];
 
   return v11;
 }

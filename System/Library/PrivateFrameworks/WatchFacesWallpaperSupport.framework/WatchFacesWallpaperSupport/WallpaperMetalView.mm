@@ -1,8 +1,8 @@
 @interface WallpaperMetalView
 + (Class)layerClass;
-- (_TtC26WatchFacesWallpaperSupport18WallpaperMetalView)initWithFrame:(CGRect)a3;
+- (_TtC26WatchFacesWallpaperSupport18WallpaperMetalView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)displayLayer:(id)a3;
+- (void)displayLayer:(id)layer;
 @end
 
 @implementation WallpaperMetalView
@@ -12,9 +12,9 @@
   v2 = (*(&self->super.super.super.isa + OBJC_IVAR____TtC26WatchFacesWallpaperSupport18WallpaperMetalView_displayLink))[4];
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     [v2 invalidate];
-    v4.receiver = v3;
+    v4.receiver = selfCopy;
     v4.super_class = type metadata accessor for WallpaperMetalView(0);
     [(WallpaperMetalView *)&v4 dealloc];
   }
@@ -32,14 +32,14 @@
   return MEMORY[0x1EEE6BF48](v2);
 }
 
-- (void)displayLayer:(id)a3
+- (void)displayLayer:(id)layer
 {
-  v4 = a3;
-  v5 = self;
+  layerCopy = layer;
+  selfCopy = self;
   sub_1D96C0764();
 }
 
-- (_TtC26WatchFacesWallpaperSupport18WallpaperMetalView)initWithFrame:(CGRect)a3
+- (_TtC26WatchFacesWallpaperSupport18WallpaperMetalView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

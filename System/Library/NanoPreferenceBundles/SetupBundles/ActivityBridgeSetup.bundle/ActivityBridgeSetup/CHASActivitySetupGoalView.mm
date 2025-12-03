@@ -1,31 +1,31 @@
 @interface CHASActivitySetupGoalView
 - (CGSize)intrinsicContentSize;
-- (CHASActivitySetupGoalView)initWithFrame:(CGRect)a3 configuration:(id)a4;
+- (CHASActivitySetupGoalView)initWithFrame:(CGRect)frame configuration:(id)configuration;
 - (CHASActivitySetupGoalViewDelegate)delegate;
 - (void)_fitGoalLabel;
 - (void)_formatGoalLabel;
-- (void)_updateGoalLabelWithGoal:(id)a3;
+- (void)_updateGoalLabelWithGoal:(id)goal;
 - (void)buttonControllerDidUpdate;
 - (void)layoutSubviews;
-- (void)setGoal:(id)a3;
+- (void)setGoal:(id)goal;
 @end
 
 @implementation CHASActivitySetupGoalView
 
-- (CHASActivitySetupGoalView)initWithFrame:(CGRect)a3 configuration:(id)a4
+- (CHASActivitySetupGoalView)initWithFrame:(CGRect)frame configuration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
   v44.receiver = self;
   v44.super_class = CHASActivitySetupGoalView;
-  v11 = [(CHASActivitySetupGoalView *)&v44 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(CHASActivitySetupGoalView *)&v44 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_configuration, a4);
+    objc_storeStrong(&height->_configuration, configuration);
     v13 = objc_alloc_init(UILabel);
     goalLabel = v12->_goalLabel;
     v12->_goalLabel = v13;
@@ -36,8 +36,8 @@
 
     v16 = v12->_goalLabel;
     v17 = [UIFont systemFontOfSize:UIFontSystemFontDesignRounded weight:72.0 design:UIFontWeightSemibold];
-    v18 = [v17 fu_monospacedFont];
-    [(UILabel *)v16 setFont:v18];
+    fu_monospacedFont = [v17 fu_monospacedFont];
+    [(UILabel *)v16 setFont:fu_monospacedFont];
 
     [(UILabel *)v12->_goalLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)v12->_goalLabel setText:@"300"];
@@ -45,8 +45,8 @@
     unitLabel = v12->_unitLabel;
     v12->_unitLabel = v19;
 
-    v21 = [v10 goalColor];
-    [(UILabel *)v12->_unitLabel setTextColor:v21];
+    goalColor = [configurationCopy goalColor];
+    [(UILabel *)v12->_unitLabel setTextColor:goalColor];
 
     [(UILabel *)v12->_unitLabel setTextAlignment:1];
     v40 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleTitle2 addingSymbolicTraits:2 options:1];
@@ -54,8 +54,8 @@
     [(UILabel *)v12->_unitLabel setFont:?];
     v22 = [UIImageSymbolConfiguration configurationWithPointSize:48.0];
     v23 = [UIImage _systemImageNamed:@"minus.circle.fill" withConfiguration:v22];
-    v24 = [v10 goalColor];
-    v25 = [v23 imageWithTintColor:v24 renderingMode:1];
+    goalColor2 = [configurationCopy goalColor];
+    v25 = [v23 imageWithTintColor:goalColor2 renderingMode:1];
 
     v26 = [UIButton buttonWithType:0];
     minusButton = v12->_minusButton;
@@ -64,8 +64,8 @@
     [(UIButton *)v12->_minusButton setImage:v25 forState:0];
     v38 = v22;
     v28 = [UIImage _systemImageNamed:@"plus.circle.fill" withConfiguration:v22];
-    v29 = [v10 goalColor];
-    v30 = [v28 imageWithTintColor:v29 renderingMode:1];
+    goalColor3 = [configurationCopy goalColor];
+    v30 = [v28 imageWithTintColor:goalColor3 renderingMode:1];
 
     v31 = [UIButton buttonWithType:0];
     plusButton = v12->_plusButton;
@@ -85,13 +85,13 @@
     v12->_buttonController = v35;
 
     [(FIUIValueAdjustmentButtonController *)v12->_buttonController setIncrementButton:v12->_plusButton decrementButton:v12->_minusButton];
-    [v10 minimumValue];
+    [configurationCopy minimumValue];
     [(FIUIValueAdjustmentButtonController *)v12->_buttonController setMinValue:?];
-    [v10 maximumValue];
+    [configurationCopy maximumValue];
     [(FIUIValueAdjustmentButtonController *)v12->_buttonController setMaxValue:?];
-    [v10 valueIncrement];
+    [configurationCopy valueIncrement];
     [(FIUIValueAdjustmentButtonController *)v12->_buttonController setMinumumStepValueIncrement:?];
-    [v10 valueIncrement];
+    [configurationCopy valueIncrement];
     [(FIUIValueAdjustmentButtonController *)v12->_buttonController setValueStepIncremement:?];
     objc_initWeak(&location, v12);
     v41[0] = _NSConcreteStackBlock;
@@ -208,26 +208,26 @@
 
 - (void)buttonControllerDidUpdate
 {
-  v3 = [(CHASActivitySetupGoalViewConfiguration *)self->_configuration unit];
+  unit = [(CHASActivitySetupGoalViewConfiguration *)self->_configuration unit];
   [(FIUIValueAdjustmentButtonController *)self->_buttonController value];
-  v4 = [HKQuantity quantityWithUnit:v3 doubleValue:?];
+  v4 = [HKQuantity quantityWithUnit:unit doubleValue:?];
   dailyGoal = self->_dailyGoal;
   self->_dailyGoal = v4;
 
   [(CHASActivitySetupGoalView *)self _updateGoalLabelWithGoal:self->_dailyGoal];
-  v6 = [(CHASActivitySetupGoalView *)self delegate];
-  [v6 setupGoalViewValueChanged:self value:self->_dailyGoal];
+  delegate = [(CHASActivitySetupGoalView *)self delegate];
+  [delegate setupGoalViewValueChanged:self value:self->_dailyGoal];
 }
 
-- (void)_updateGoalLabelWithGoal:(id)a3
+- (void)_updateGoalLabelWithGoal:(id)goal
 {
-  v13 = a3;
-  v4 = [(CHASActivitySetupGoalViewConfiguration *)self->_configuration goalValueStringFormatter];
-  v5 = (v4)[2](v4, v13);
+  goalCopy = goal;
+  goalValueStringFormatter = [(CHASActivitySetupGoalViewConfiguration *)self->_configuration goalValueStringFormatter];
+  v5 = (goalValueStringFormatter)[2](goalValueStringFormatter, goalCopy);
 
   [(UILabel *)self->_goalLabel setText:v5];
-  v6 = [(CHASActivitySetupGoalViewConfiguration *)self->_configuration unit];
-  [v13 doubleValueForUnit:v6];
+  unit = [(CHASActivitySetupGoalViewConfiguration *)self->_configuration unit];
+  [goalCopy doubleValueForUnit:unit];
   v8 = v7;
 
   v9 = [NSString stringWithFormat:@"%ld", v8];
@@ -245,21 +245,21 @@
     [(CHASActivitySetupGoalView *)self setNeedsLayout];
   }
 
-  v11 = [(CHASActivitySetupGoalViewConfiguration *)self->_configuration goalUnitStringFormatter];
-  v12 = (v11)[2](v11, v13);
+  goalUnitStringFormatter = [(CHASActivitySetupGoalViewConfiguration *)self->_configuration goalUnitStringFormatter];
+  v12 = (goalUnitStringFormatter)[2](goalUnitStringFormatter, goalCopy);
   [(UILabel *)self->_unitLabel setText:v12];
 }
 
-- (void)setGoal:(id)a3
+- (void)setGoal:(id)goal
 {
-  objc_storeStrong(&self->_dailyGoal, a3);
-  v8 = a3;
+  objc_storeStrong(&self->_dailyGoal, goal);
+  goalCopy = goal;
   buttonController = self->_buttonController;
-  v6 = [(CHASActivitySetupGoalViewConfiguration *)self->_configuration unit];
-  [v8 doubleValueForUnit:v6];
+  unit = [(CHASActivitySetupGoalViewConfiguration *)self->_configuration unit];
+  [goalCopy doubleValueForUnit:unit];
   [(FIUIValueAdjustmentButtonController *)buttonController setValue:round(v7)];
 
-  [(CHASActivitySetupGoalView *)self _updateGoalLabelWithGoal:v8];
+  [(CHASActivitySetupGoalView *)self _updateGoalLabelWithGoal:goalCopy];
 }
 
 - (CGSize)intrinsicContentSize

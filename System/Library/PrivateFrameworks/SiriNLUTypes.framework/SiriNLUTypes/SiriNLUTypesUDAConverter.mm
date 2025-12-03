@@ -1,24 +1,24 @@
 @interface SiriNLUTypesUDAConverter
-+ (id)convertDelegatedUserDialogAct:(id)a3;
-+ (id)convertReferenceContext:(id)a3;
-+ (id)convertRewriteMessage:(id)a3;
-+ (id)convertRewriteMessages:(id)a3;
-+ (id)convertUserAccepted:(id)a3;
-+ (id)convertUserAcknowledged:(id)a3;
-+ (id)convertUserCancelled:(id)a3;
-+ (id)convertUserDialogAct:(id)a3;
-+ (id)convertUserDialogActs:(id)a3;
-+ (id)convertUserRejected:(id)a3;
-+ (id)convertUserStatedTask:(id)a3;
-+ (id)convertUserWantedToPause:(id)a3;
-+ (id)convertUserWantedToProceed:(id)a3;
-+ (id)convertUserWantedToRepeat:(id)a3;
-+ (void)convertUtteranceAlignment:(id)a3;
++ (id)convertDelegatedUserDialogAct:(id)act;
++ (id)convertReferenceContext:(id)context;
++ (id)convertRewriteMessage:(id)message;
++ (id)convertRewriteMessages:(id)messages;
++ (id)convertUserAccepted:(id)accepted;
++ (id)convertUserAcknowledged:(id)acknowledged;
++ (id)convertUserCancelled:(id)cancelled;
++ (id)convertUserDialogAct:(id)act;
++ (id)convertUserDialogActs:(id)acts;
++ (id)convertUserRejected:(id)rejected;
++ (id)convertUserStatedTask:(id)task;
++ (id)convertUserWantedToPause:(id)pause;
++ (id)convertUserWantedToProceed:(id)proceed;
++ (id)convertUserWantedToRepeat:(id)repeat;
++ (void)convertUtteranceAlignment:(id)alignment;
 @end
 
 @implementation SiriNLUTypesUDAConverter
 
-+ (void)convertUtteranceAlignment:(id)a3
++ (void)convertUtteranceAlignment:(id)alignment
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = loggerContext(1);
@@ -32,14 +32,14 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)convertUserStatedTask:(id)a3
++ (id)convertUserStatedTask:(id)task
 {
-  v3 = a3;
-  if (v3)
+  taskCopy = task;
+  if (taskCopy)
   {
     v4 = objc_alloc(MEMORY[0x1E69D25A8]);
-    v5 = [v3 task];
-    v6 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:v5];
+    task = [taskCopy task];
+    v6 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:task];
     v7 = [v4 initWithTask:v6];
   }
 
@@ -51,39 +51,39 @@
   return v7;
 }
 
-+ (id)convertDelegatedUserDialogAct:(id)a3
++ (id)convertDelegatedUserDialogAct:(id)act
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  actCopy = act;
+  v5 = actCopy;
+  if (actCopy)
   {
-    if ([v4 hasRewrittenUtterance])
+    if ([actCopy hasRewrittenUtterance])
     {
-      v6 = [v5 rewrittenUtterance];
-      v7 = [v6 value];
+      rewrittenUtterance = [v5 rewrittenUtterance];
+      value = [rewrittenUtterance value];
     }
 
     else
     {
-      v7 = 0;
+      value = 0;
     }
 
     if ([v5 hasAsrHypothesisIndex])
     {
-      v9 = [v5 asrHypothesisIndex];
+      asrHypothesisIndex = [v5 asrHypothesisIndex];
     }
 
     else
     {
-      v9 = 0;
+      asrHypothesisIndex = 0;
     }
 
-    v10 = [v5 matchingSpans];
+    matchingSpans = [v5 matchingSpans];
 
-    if (v10)
+    if (matchingSpans)
     {
-      v11 = [v5 matchingSpans];
-      v12 = [SiriNLUTypesConverter convertMatchingSpans:v11];
+      matchingSpans2 = [v5 matchingSpans];
+      v12 = [SiriNLUTypesConverter convertMatchingSpans:matchingSpans2];
     }
 
     else
@@ -91,15 +91,15 @@
       v12 = MEMORY[0x1E695E0F0];
     }
 
-    v13 = [v5 rewrite];
-    v14 = [a1 convertRewriteMessage:v13];
+    rewrite = [v5 rewrite];
+    v14 = [self convertRewriteMessage:rewrite];
 
-    v15 = [v5 referenceContext];
-    v16 = [a1 convertReferenceContext:v15];
+    referenceContext = [v5 referenceContext];
+    v16 = [self convertReferenceContext:referenceContext];
 
     v17 = objc_alloc(MEMORY[0x1E69D24C0]);
-    v18 = [v5 externalParserId];
-    v8 = [v17 initWithAsrHypothesisIndex:v9 rewrittenUtterace:v7 externalParserId:v18 spans:v12 rewriteMessage:v14 referenceContext:v16];
+    externalParserId = [v5 externalParserId];
+    v8 = [v17 initWithAsrHypothesisIndex:asrHypothesisIndex rewrittenUtterace:value externalParserId:externalParserId spans:v12 rewriteMessage:v14 referenceContext:v16];
   }
 
   else
@@ -110,12 +110,12 @@
   return v8;
 }
 
-+ (id)convertReferenceContext:(id)a3
++ (id)convertReferenceContext:(id)context
 {
-  v3 = a3;
-  if (v3)
+  contextCopy = context;
+  if (contextCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E69D24F8]) initWithContextualReference:objc_msgSend(v3 DisambiguationNeeded:{"contextualReference"), objc_msgSend(v3, "disambiguationNeeded")}];
+    v4 = [objc_alloc(MEMORY[0x1E69D24F8]) initWithContextualReference:objc_msgSend(contextCopy DisambiguationNeeded:{"contextualReference"), objc_msgSend(contextCopy, "disambiguationNeeded")}];
   }
 
   else
@@ -126,15 +126,15 @@
   return v4;
 }
 
-+ (id)convertRewriteMessage:(id)a3
++ (id)convertRewriteMessage:(id)message
 {
-  v3 = a3;
-  if (v3)
+  messageCopy = message;
+  if (messageCopy)
   {
     v4 = objc_alloc(MEMORY[0x1E69D2528]);
-    v5 = [v3 rewriteType];
-    v6 = [v3 rewrittenUtterance];
-    v7 = [v4 initWithType:v5 utterance:v6];
+    rewriteType = [messageCopy rewriteType];
+    rewrittenUtterance = [messageCopy rewrittenUtterance];
+    v7 = [v4 initWithType:rewriteType utterance:rewrittenUtterance];
   }
 
   else
@@ -145,18 +145,18 @@
   return v7;
 }
 
-+ (id)convertRewriteMessages:(id)a3
++ (id)convertRewriteMessages:(id)messages
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messagesCopy = messages;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v4)
+  if (messagesCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = messagesCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -170,7 +170,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v10 = [a1 convertRewriteMessage:{*(*(&v13 + 1) + 8 * i), v13}];
+          v10 = [self convertRewriteMessage:{*(*(&v13 + 1) + 8 * i), v13}];
           if (v10)
           {
             [v5 addObject:v10];
@@ -189,27 +189,27 @@
   return v5;
 }
 
-+ (id)convertUserWantedToPause:(id)a3
++ (id)convertUserWantedToPause:(id)pause
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  pauseCopy = pause;
+  v4 = pauseCopy;
+  if (pauseCopy)
   {
-    if ([v3 hasTaskId])
+    if ([pauseCopy hasTaskId])
     {
       v5 = objc_alloc(MEMORY[0x1E69D25B0]);
-      v6 = [v4 taskId];
-      v7 = [SiriNLUTypesConverter convertUUID:v6];
-      v8 = [v4 reference];
-      v9 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:v8];
+      taskId = [v4 taskId];
+      v7 = [SiriNLUTypesConverter convertUUID:taskId];
+      reference = [v4 reference];
+      v9 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:reference];
       v10 = [v5 initWithTaskId:v7 reference:v9];
     }
 
     else
     {
       v11 = objc_alloc(MEMORY[0x1E69D25B0]);
-      v6 = [v4 reference];
-      v7 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:v6];
+      taskId = [v4 reference];
+      v7 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:taskId];
       v10 = [v11 initWithReference:v7];
     }
   }
@@ -222,27 +222,27 @@
   return v10;
 }
 
-+ (id)convertUserWantedToProceed:(id)a3
++ (id)convertUserWantedToProceed:(id)proceed
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  proceedCopy = proceed;
+  v4 = proceedCopy;
+  if (proceedCopy)
   {
-    if ([v3 hasTaskId])
+    if ([proceedCopy hasTaskId])
     {
       v5 = objc_alloc(MEMORY[0x1E69D25B8]);
-      v6 = [v4 taskId];
-      v7 = [SiriNLUTypesConverter convertUUID:v6];
-      v8 = [v4 reference];
-      v9 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:v8];
+      taskId = [v4 taskId];
+      v7 = [SiriNLUTypesConverter convertUUID:taskId];
+      reference = [v4 reference];
+      v9 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:reference];
       v10 = [v5 initWithTaskId:v7 reference:v9];
     }
 
     else
     {
       v11 = objc_alloc(MEMORY[0x1E69D25B8]);
-      v6 = [v4 reference];
-      v7 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:v6];
+      taskId = [v4 reference];
+      v7 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:taskId];
       v10 = [v11 initWithReference:v7];
     }
   }
@@ -255,16 +255,16 @@
   return v10;
 }
 
-+ (id)convertUserAcknowledged:(id)a3
++ (id)convertUserAcknowledged:(id)acknowledged
 {
-  v3 = a3;
-  if (v3)
+  acknowledgedCopy = acknowledged;
+  if (acknowledgedCopy)
   {
     v4 = objc_alloc(MEMORY[0x1E69D2588]);
-    v5 = [v3 systemDialogActId];
-    v6 = [SiriNLUTypesConverter convertUUID:v5];
-    v7 = [v3 reference];
-    v8 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:v7];
+    systemDialogActId = [acknowledgedCopy systemDialogActId];
+    v6 = [SiriNLUTypesConverter convertUUID:systemDialogActId];
+    reference = [acknowledgedCopy reference];
+    v8 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:reference];
     v9 = [v4 initWithSystemDialogActId:v6 reference:v8];
   }
 
@@ -276,16 +276,16 @@
   return v9;
 }
 
-+ (id)convertUserWantedToRepeat:(id)a3
++ (id)convertUserWantedToRepeat:(id)repeat
 {
-  v3 = a3;
-  if (v3)
+  repeatCopy = repeat;
+  if (repeatCopy)
   {
     v4 = objc_alloc(MEMORY[0x1E69D25C0]);
-    v5 = [v3 systemDialogActId];
-    v6 = [SiriNLUTypesConverter convertUUID:v5];
-    v7 = [v3 reference];
-    v8 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:v7];
+    systemDialogActId = [repeatCopy systemDialogActId];
+    v6 = [SiriNLUTypesConverter convertUUID:systemDialogActId];
+    reference = [repeatCopy reference];
+    v8 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:reference];
     v9 = [v4 initWithSystemDialogActId:v6 reference:v8];
   }
 
@@ -297,27 +297,27 @@
   return v9;
 }
 
-+ (id)convertUserCancelled:(id)a3
++ (id)convertUserCancelled:(id)cancelled
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  cancelledCopy = cancelled;
+  v4 = cancelledCopy;
+  if (cancelledCopy)
   {
-    if ([v3 hasTaskId])
+    if ([cancelledCopy hasTaskId])
     {
       v5 = objc_alloc(MEMORY[0x1E69D2590]);
-      v6 = [v4 taskId];
-      v7 = [SiriNLUTypesConverter convertUUID:v6];
-      v8 = [v4 reference];
-      v9 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:v8];
+      taskId = [v4 taskId];
+      v7 = [SiriNLUTypesConverter convertUUID:taskId];
+      reference = [v4 reference];
+      v9 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:reference];
       v10 = [v5 initWithTaskId:v7 reference:v9];
     }
 
     else
     {
       v11 = objc_alloc(MEMORY[0x1E69D2590]);
-      v6 = [v4 reference];
-      v7 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:v6];
+      taskId = [v4 reference];
+      v7 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:taskId];
       v10 = [v11 initWithReference:v7];
     }
   }
@@ -330,16 +330,16 @@
   return v10;
 }
 
-+ (id)convertUserRejected:(id)a3
++ (id)convertUserRejected:(id)rejected
 {
-  v3 = a3;
-  if (v3)
+  rejectedCopy = rejected;
+  if (rejectedCopy)
   {
     v4 = objc_alloc(MEMORY[0x1E69D25A0]);
-    v5 = [v3 offerId];
-    v6 = [SiriNLUTypesConverter convertUUID:v5];
-    v7 = [v3 reference];
-    v8 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:v7];
+    offerId = [rejectedCopy offerId];
+    v6 = [SiriNLUTypesConverter convertUUID:offerId];
+    reference = [rejectedCopy reference];
+    v8 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:reference];
     v9 = [v4 initWithOfferId:v6 reference:v8];
   }
 
@@ -351,16 +351,16 @@
   return v9;
 }
 
-+ (id)convertUserAccepted:(id)a3
++ (id)convertUserAccepted:(id)accepted
 {
-  v3 = a3;
-  if (v3)
+  acceptedCopy = accepted;
+  if (acceptedCopy)
   {
     v4 = objc_alloc(MEMORY[0x1E69D2580]);
-    v5 = [v3 offerId];
-    v6 = [SiriNLUTypesConverter convertUUID:v5];
-    v7 = [v3 reference];
-    v8 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:v7];
+    offerId = [acceptedCopy offerId];
+    v6 = [SiriNLUTypesConverter convertUUID:offerId];
+    reference = [acceptedCopy reference];
+    v8 = [SiriNLUTypesUsoGraphConverter convertUsoGraph:reference];
     v9 = [v4 initWithOfferId:v6 reference:v8];
   }
 
@@ -372,18 +372,18 @@
   return v9;
 }
 
-+ (id)convertUserDialogActs:(id)a3
++ (id)convertUserDialogActs:(id)acts
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actsCopy = acts;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v4)
+  if (actsCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = actsCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -397,7 +397,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v10 = [a1 convertUserDialogAct:{*(*(&v13 + 1) + 8 * i), v13}];
+          v10 = [self convertUserDialogAct:{*(*(&v13 + 1) + 8 * i), v13}];
           if (v10)
           {
             [v5 addObject:v10];
@@ -416,23 +416,23 @@
   return v5;
 }
 
-+ (id)convertUserDialogAct:(id)a3
++ (id)convertUserDialogAct:(id)act
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  actCopy = act;
+  v5 = actCopy;
+  if (actCopy)
   {
-    if ([v4 hasAlignment])
+    if ([actCopy hasAlignment])
     {
-      v6 = [v5 alignment];
-      [a1 convertUtteranceAlignment:v6];
+      alignment = [v5 alignment];
+      [self convertUtteranceAlignment:alignment];
     }
 
     if ([v5 hasAccepted])
     {
-      v7 = [v5 accepted];
-      v8 = [a1 convertUserAccepted:v7];
+      accepted = [v5 accepted];
+      v8 = [self convertUserAccepted:accepted];
 LABEL_22:
       v9 = v8;
 
@@ -441,57 +441,57 @@ LABEL_22:
 
     if ([v5 hasRejected])
     {
-      v7 = [v5 rejected];
-      v8 = [a1 convertUserRejected:v7];
+      accepted = [v5 rejected];
+      v8 = [self convertUserRejected:accepted];
       goto LABEL_22;
     }
 
     if ([v5 hasCancelled])
     {
-      v7 = [v5 cancelled];
-      v8 = [a1 convertUserCancelled:v7];
+      accepted = [v5 cancelled];
+      v8 = [self convertUserCancelled:accepted];
       goto LABEL_22;
     }
 
     if ([v5 hasWantedToRepeat])
     {
-      v7 = [v5 wantedToRepeat];
-      v8 = [a1 convertUserWantedToRepeat:v7];
+      accepted = [v5 wantedToRepeat];
+      v8 = [self convertUserWantedToRepeat:accepted];
       goto LABEL_22;
     }
 
     if ([v5 hasAcknowledged])
     {
-      v7 = [v5 acknowledged];
-      v8 = [a1 convertUserAcknowledged:v7];
+      accepted = [v5 acknowledged];
+      v8 = [self convertUserAcknowledged:accepted];
       goto LABEL_22;
     }
 
     if ([v5 hasWantedToProceed])
     {
-      v7 = [v5 wantedToProceed];
-      v8 = [a1 convertUserWantedToProceed:v7];
+      accepted = [v5 wantedToProceed];
+      v8 = [self convertUserWantedToProceed:accepted];
       goto LABEL_22;
     }
 
     if ([v5 hasWantedToPause])
     {
-      v7 = [v5 wantedToPause];
-      v8 = [a1 convertUserWantedToPause:v7];
+      accepted = [v5 wantedToPause];
+      v8 = [self convertUserWantedToPause:accepted];
       goto LABEL_22;
     }
 
     if ([v5 hasDelegated])
     {
-      v7 = [v5 delegated];
-      v8 = [a1 convertDelegatedUserDialogAct:v7];
+      accepted = [v5 delegated];
+      v8 = [self convertDelegatedUserDialogAct:accepted];
       goto LABEL_22;
     }
 
     if ([v5 hasUserStatedTask])
     {
-      v7 = [v5 userStatedTask];
-      v8 = [a1 convertUserStatedTask:v7];
+      accepted = [v5 userStatedTask];
+      v8 = [self convertUserStatedTask:accepted];
       goto LABEL_22;
     }
 

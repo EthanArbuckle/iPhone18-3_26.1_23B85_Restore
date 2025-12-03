@@ -1,36 +1,36 @@
 @interface WiFiSoftErrorManager
-- (BOOL)askToLaunchSlowWiFiRadar:(__CFString *)a3;
-- (BOOL)askToLaunchTapToRadar:(int)a3;
-- (BOOL)askToLaunchTriggerDisconnectRadar:(__CFString *)a3;
+- (BOOL)askToLaunchSlowWiFiRadar:(__CFString *)radar;
+- (BOOL)askToLaunchTapToRadar:(int)radar;
+- (BOOL)askToLaunchTriggerDisconnectRadar:(__CFString *)radar;
 - (BOOL)askToLaunchUserDisconnectRadar;
 - (BOOL)getReachabilityStatus;
-- (BOOL)isEventMitigationEnabled:(int)a3;
+- (BOOL)isEventMitigationEnabled:(int)enabled;
 - (BOOL)isLQAIndicatingTxStall;
-- (BOOL)isTxStalled:(unsigned int *)a3 rateType:(unsigned __int8)a4 size:(unsigned int)a5;
-- (BOOL)supressEventDetectionProcesssing:(int)a3 deviceContext:(void *)a4;
-- (BOOL)supressTapToRadar:(int)a3 deviceContext:(void *)a4;
-- (BOOL)wifiSoftErrorTxDataStallProcessHistory:(__CFDictionary *)a3;
-- (WiFiSoftErrorManager)initWithWiFiManager:(__WiFiManager *)a3 queue:(id)a4;
-- (id)copySoftErrorEventDescription:(int)a3;
-- (id)fetchSoftErrorContext:(void *)a3 softErrorType:(int)a4;
+- (BOOL)isTxStalled:(unsigned int *)stalled rateType:(unsigned __int8)type size:(unsigned int)size;
+- (BOOL)supressEventDetectionProcesssing:(int)processsing deviceContext:(void *)context;
+- (BOOL)supressTapToRadar:(int)radar deviceContext:(void *)context;
+- (BOOL)wifiSoftErrorTxDataStallProcessHistory:(__CFDictionary *)history;
+- (WiFiSoftErrorManager)initWithWiFiManager:(__WiFiManager *)manager queue:(id)queue;
+- (id)copySoftErrorEventDescription:(int)description;
+- (id)fetchSoftErrorContext:(void *)context softErrorType:(int)type;
 - (void)WiFiSoftErrorDriverAvailableEventhandler;
 - (void)WiFiSoftErrorDriverLinkupEventhandler;
-- (void)WiFiSoftErrorManagerLQMEventHandler:(id)a3;
-- (void)initErrorArray:(int)a3;
+- (void)WiFiSoftErrorManagerLQMEventHandler:(id)handler;
+- (void)initErrorArray:(int)array;
 - (void)initEventMitigation;
-- (void)populateTxFailHistory:(__CFArray *)a3 failureHistoryArray:(unsigned int *)a4 historyArraySz:(unsigned int)a5;
-- (void)purgeOutdatedEvents:(id)a3 currTime:(double)a4;
+- (void)populateTxFailHistory:(__CFArray *)history failureHistoryArray:(unsigned int *)array historyArraySz:(unsigned int)sz;
+- (void)purgeOutdatedEvents:(id)events currTime:(double)time;
 - (void)updateReportingPreference;
-- (void)wifiSoftErrorAwdlEventNotificationHandler:(void *)a3 eventData:(void *)a4;
-- (void)wifiSoftErrorRxDataStallEventHandler:(void *)a3 eventData:(void *)a4;
-- (void)wifiSoftErrorSlowWiFiEventHandler:(void *)a3 eventData:(void *)a4;
-- (void)wifiSoftErrorTxDataStallEventHandler:(void *)a3 eventData:(void *)a4;
-- (void)wifiSoftErrorUserConfirmationFlagSetting:(int)a3 forError:(int)a4 withDeviceContext:(void *)a5;
-- (void)wifiSoftErrorWiFiAutoJoinEventHandler:(void *)a3;
-- (void)wifiSoftErrorWiFiScanEventHandler:(void *)a3;
-- (void)wifiSoftErrorWiFiToggleEventHandler:(int)a3 deviceContext:(void *)a4;
-- (void)wifiSoftErrorsInProcessStateSet:(int)a3;
-- (void)wifiSoftErrorsInProcessStateUnset:(int)a3;
+- (void)wifiSoftErrorAwdlEventNotificationHandler:(void *)handler eventData:(void *)data;
+- (void)wifiSoftErrorRxDataStallEventHandler:(void *)handler eventData:(void *)data;
+- (void)wifiSoftErrorSlowWiFiEventHandler:(void *)handler eventData:(void *)data;
+- (void)wifiSoftErrorTxDataStallEventHandler:(void *)handler eventData:(void *)data;
+- (void)wifiSoftErrorUserConfirmationFlagSetting:(int)setting forError:(int)error withDeviceContext:(void *)context;
+- (void)wifiSoftErrorWiFiAutoJoinEventHandler:(void *)handler;
+- (void)wifiSoftErrorWiFiScanEventHandler:(void *)handler;
+- (void)wifiSoftErrorWiFiToggleEventHandler:(int)handler deviceContext:(void *)context;
+- (void)wifiSoftErrorsInProcessStateSet:(int)set;
+- (void)wifiSoftErrorsInProcessStateUnset:(int)unset;
 @end
 
 @implementation WiFiSoftErrorManager
@@ -44,22 +44,22 @@
   }
 }
 
-- (void)initErrorArray:(int)a3
+- (void)initErrorArray:(int)array
 {
   v5 = objc_alloc_init(NSMutableArray);
   v9 = v5;
   if (v5)
   {
     v6 = v5;
-    if (a3 <= 3)
+    if (array <= 3)
     {
-      if (a3 == 1)
+      if (array == 1)
       {
         p_wifiToggleErrors = &self->_wifiToggleErrors;
         goto LABEL_13;
       }
 
-      if (a3 == 2)
+      if (array == 2)
       {
         p_wifiToggleErrors = &self->_noNetworkFoundErrors;
         goto LABEL_13;
@@ -68,7 +68,7 @@
 
     else
     {
-      switch(a3)
+      switch(array)
       {
         case 4:
           p_wifiToggleErrors = &self->_autoJoinDelayErrors;
@@ -101,9 +101,9 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)wifiSoftErrorsInProcessStateSet:(int)a3
+- (void)wifiSoftErrorsInProcessStateSet:(int)set
 {
-  if (a3 >= 0x400)
+  if (set >= 0x400)
   {
     v4 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -114,7 +114,7 @@ LABEL_14:
 
   else
   {
-    self->_softErrorInProcessFlags |= a3;
+    self->_softErrorInProcessFlags |= set;
     v4 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
@@ -125,9 +125,9 @@ LABEL_14:
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)wifiSoftErrorsInProcessStateUnset:(int)a3
+- (void)wifiSoftErrorsInProcessStateUnset:(int)unset
 {
-  if (a3 >= 0x400)
+  if (unset >= 0x400)
   {
     v4 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -138,7 +138,7 @@ LABEL_14:
 
   else
   {
-    self->_softErrorInProcessFlags &= ~a3;
+    self->_softErrorInProcessFlags &= ~unset;
     v4 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
@@ -149,9 +149,9 @@ LABEL_14:
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)fetchSoftErrorContext:(void *)a3 softErrorType:(int)a4
+- (id)fetchSoftErrorContext:(void *)context softErrorType:(int)type
 {
-  if (!a3)
+  if (!context)
   {
     v14 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -162,16 +162,16 @@ LABEL_14:
     goto LABEL_25;
   }
 
-  if (a4 <= 3)
+  if (type <= 3)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       v7 = 40;
     }
 
     else
     {
-      if (a4 != 2)
+      if (type != 2)
       {
         goto LABEL_23;
       }
@@ -182,7 +182,7 @@ LABEL_14:
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 4:
         v7 = 56;
@@ -225,7 +225,7 @@ LABEL_25:
       v12 = v11;
       v11 = [v9 objectAtIndex:v10];
 
-      if (a4 == 1)
+      if (type == 1)
       {
         manager = self->_manager;
       }
@@ -235,7 +235,7 @@ LABEL_25:
         manager = self->_deviceManager;
       }
 
-      if (manager == a3)
+      if (manager == context)
       {
         break;
       }
@@ -256,18 +256,18 @@ LABEL_26:
   return v11;
 }
 
-- (void)wifiSoftErrorWiFiToggleEventHandler:(int)a3 deviceContext:(void *)a4
+- (void)wifiSoftErrorWiFiToggleEventHandler:(int)handler deviceContext:(void *)context
 {
   Current = CFAbsoluteTimeGetCurrent();
   if (self->_wifiToggleErrors)
   {
-    v21 = [(WiFiSoftErrorManager *)self fetchSoftErrorContext:a4 softErrorType:1];
+    v21 = [(WiFiSoftErrorManager *)self fetchSoftErrorContext:context softErrorType:1];
     if (v21)
     {
       goto LABEL_8;
     }
 
-    v21 = [[WiFiSoftErrorContext alloc] initWithErrorType:1 deviceContext:a4];
+    v21 = [[WiFiSoftErrorContext alloc] initWithErrorType:1 deviceContext:context];
     if (!v21)
     {
       sub_10013A28C();
@@ -275,7 +275,7 @@ LABEL_43:
       v8 = 0;
       v10 = 0;
       v11 = 0;
-      v9 = 0;
+      fetchSoftErrorContextData = 0;
 LABEL_36:
       v21 = 0;
       goto LABEL_29;
@@ -291,7 +291,7 @@ LABEL_36:
       goto LABEL_43;
     }
 
-    v21 = [[WiFiSoftErrorContext alloc] initWithErrorType:1 deviceContext:a4];
+    v21 = [[WiFiSoftErrorContext alloc] initWithErrorType:1 deviceContext:context];
     if (!v21)
     {
       sub_10013A4B8();
@@ -307,12 +307,12 @@ LABEL_8:
     sub_10013A44C();
     v10 = 0;
     v11 = 0;
-    v9 = 0;
+    fetchSoftErrorContextData = 0;
     goto LABEL_29;
   }
 
-  v9 = [(WiFiSoftErrorContext *)v21 fetchSoftErrorContextData];
-  if (!v9)
+  fetchSoftErrorContextData = [(WiFiSoftErrorContext *)v21 fetchSoftErrorContextData];
+  if (!fetchSoftErrorContextData)
   {
     sub_10013A3E0();
     v10 = 0;
@@ -326,23 +326,23 @@ LABEL_8:
     goto LABEL_28;
   }
 
-  if ((a3 & 0xFFFFFFF7) == 0)
+  if ((handler & 0xFFFFFFF7) == 0)
   {
     [v8 setObject:v10 forKey:@"WiFiOFFEvent"];
-    [v9 addObject:v8];
+    [fetchSoftErrorContextData addObject:v8];
 LABEL_28:
     v11 = 0;
     goto LABEL_29;
   }
 
-  if (a3 != 7 && a3 != 1)
+  if (handler != 7 && handler != 1)
   {
     goto LABEL_28;
   }
 
   [v8 setObject:v10 forKey:@"WiFiONEvent"];
-  [v9 addObject:v8];
-  v11 = [v9 count];
+  [fetchSoftErrorContextData addObject:v8];
+  v11 = [fetchSoftErrorContextData count];
   v12 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
@@ -356,7 +356,7 @@ LABEL_28:
     v14 = v11 - 1;
     while (1)
     {
-      v15 = [v9 objectAtIndex:v14];
+      v15 = [fetchSoftErrorContextData objectAtIndex:v14];
       v16 = v15;
       if (!v15)
       {
@@ -397,8 +397,8 @@ LABEL_28:
 
       objc_autoreleasePoolPop(v20);
       [(WiFiSoftErrorManager *)self wifiSoftErrorsInProcessStateSet:1];
-      [(WiFiSoftErrorManager *)self WiFiSoftErrorReporting:1 deviceContext:a4 displayString:0];
-      [(WiFiSoftErrorManager *)self wifiSoftErrorMitigation:1 mitigationContext:a4];
+      [(WiFiSoftErrorManager *)self WiFiSoftErrorReporting:1 deviceContext:context displayString:0];
+      [(WiFiSoftErrorManager *)self wifiSoftErrorMitigation:1 mitigationContext:context];
     }
 
     else
@@ -420,7 +420,7 @@ LABEL_28:
 LABEL_29:
 }
 
-- (void)wifiSoftErrorWiFiScanEventHandler:(void *)a3
+- (void)wifiSoftErrorWiFiScanEventHandler:(void *)handler
 {
   v5 = objc_autoreleasePoolPush();
   if (off_100298C40)
@@ -431,13 +431,13 @@ LABEL_29:
   objc_autoreleasePoolPop(v5);
   if (self->_noNetworkFoundErrors)
   {
-    v6 = [(WiFiSoftErrorManager *)self fetchSoftErrorContext:a3 softErrorType:2];
+    v6 = [(WiFiSoftErrorManager *)self fetchSoftErrorContext:handler softErrorType:2];
     if (v6)
     {
       goto LABEL_13;
     }
 
-    v7 = [[WiFiSoftErrorContext alloc] initWithErrorType:2 deviceContext:a3];
+    v7 = [[WiFiSoftErrorContext alloc] initWithErrorType:2 deviceContext:handler];
     if (!v7)
     {
       sub_10013A590();
@@ -457,7 +457,7 @@ LABEL_29:
       return;
     }
 
-    v8 = [[WiFiSoftErrorContext alloc] initWithErrorType:2 deviceContext:a3];
+    v8 = [[WiFiSoftErrorContext alloc] initWithErrorType:2 deviceContext:handler];
     if (!v8)
     {
       sub_10013A674();
@@ -478,9 +478,9 @@ LABEL_29:
   v6 = v19;
 LABEL_13:
   v20 = v6;
-  v21 = [v6 fetchSoftErrorContextData];
+  fetchSoftErrorContextData = [v6 fetchSoftErrorContextData];
   v10 = objc_autoreleasePoolPush();
-  if (!v21)
+  if (!fetchSoftErrorContextData)
   {
     if (off_100298C40)
     {
@@ -493,21 +493,21 @@ LABEL_13:
 
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: noNetworksEventsArray:%@", "-[WiFiSoftErrorManager wifiSoftErrorWiFiScanEventHandler:]", v21}];
+    [off_100298C40 WFLog:3 message:{"%s: noNetworksEventsArray:%@", "-[WiFiSoftErrorManager wifiSoftErrorWiFiScanEventHandler:]", fetchSoftErrorContextData}];
   }
 
   objc_autoreleasePoolPop(v10);
   Current = CFAbsoluteTimeGetCurrent();
-  if ([v21 count] > 2)
+  if ([fetchSoftErrorContextData count] > 2)
   {
-    v14 = [v21 objectAtIndex:0];
+    v14 = [fetchSoftErrorContextData objectAtIndex:0];
     if (v14)
     {
       v15 = v14;
       [v14 doubleValue];
       if (Current - v16 < 60.0)
       {
-        [v21 removeAllObjects];
+        [fetchSoftErrorContextData removeAllObjects];
         v17 = objc_autoreleasePoolPush();
         if (off_100298C40)
         {
@@ -517,16 +517,16 @@ LABEL_13:
         objc_autoreleasePoolPop(v17);
         [v20 setErrorState:2];
         [(WiFiSoftErrorManager *)self wifiSoftErrorsInProcessStateSet:2];
-        [(WiFiSoftErrorManager *)self WiFiSoftErrorReporting:2 deviceContext:a3 displayString:0];
-        [(WiFiSoftErrorManager *)self wifiSoftErrorMitigation:2 mitigationContext:a3];
-        [v21 removeAllObjects];
+        [(WiFiSoftErrorManager *)self WiFiSoftErrorReporting:2 deviceContext:handler displayString:0];
+        [(WiFiSoftErrorManager *)self wifiSoftErrorMitigation:2 mitigationContext:handler];
+        [fetchSoftErrorContextData removeAllObjects];
         [(NSMutableArray *)self->_noNetworkFoundErrors removeObject:v20];
 
-        v18 = v21;
+        v18 = fetchSoftErrorContextData;
         goto LABEL_27;
       }
 
-      [v21 removeObjectAtIndex:0];
+      [fetchSoftErrorContextData removeObjectAtIndex:0];
       v13 = [[NSNumber alloc] initWithDouble:Current];
 
       if (v13)
@@ -548,14 +548,14 @@ LABEL_37:
 
   v13 = v12;
 LABEL_25:
-  [v21 addObject:v13];
+  [fetchSoftErrorContextData addObject:v13];
 
 LABEL_26:
   v18 = v20;
 LABEL_27:
 }
 
-- (void)wifiSoftErrorWiFiAutoJoinEventHandler:(void *)a3
+- (void)wifiSoftErrorWiFiAutoJoinEventHandler:(void *)handler
 {
   v5 = objc_autoreleasePoolPush();
   if (off_100298C40)
@@ -566,13 +566,13 @@ LABEL_27:
   objc_autoreleasePoolPop(v5);
   if (self->_autoJoinDelayErrors)
   {
-    v6 = [(WiFiSoftErrorManager *)self fetchSoftErrorContext:a3 softErrorType:4];
+    v6 = [(WiFiSoftErrorManager *)self fetchSoftErrorContext:handler softErrorType:4];
     if (v6)
     {
       goto LABEL_10;
     }
 
-    v7 = [[WiFiSoftErrorContext alloc] initWithErrorType:4 deviceContext:a3];
+    v7 = [[WiFiSoftErrorContext alloc] initWithErrorType:4 deviceContext:handler];
     if (!v7)
     {
 LABEL_39:
@@ -590,7 +590,7 @@ LABEL_39:
       return;
     }
 
-    v7 = [[WiFiSoftErrorContext alloc] initWithErrorType:4 deviceContext:a3];
+    v7 = [[WiFiSoftErrorContext alloc] initWithErrorType:4 deviceContext:handler];
     if (!v7)
     {
       goto LABEL_39;
@@ -600,11 +600,11 @@ LABEL_39:
   v6 = v7;
   [(NSMutableArray *)self->_autoJoinDelayErrors addObject:v7];
 LABEL_10:
-  v8 = [v6 fetchSoftErrorContextData];
+  fetchSoftErrorContextData = [v6 fetchSoftErrorContextData];
   v9 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: slowAutoJoinEventsArray:%@", "-[WiFiSoftErrorManager wifiSoftErrorWiFiAutoJoinEventHandler:]", v8}];
+    [off_100298C40 WFLog:3 message:{"%s: slowAutoJoinEventsArray:%@", "-[WiFiSoftErrorManager wifiSoftErrorWiFiAutoJoinEventHandler:]", fetchSoftErrorContextData}];
   }
 
   objc_autoreleasePoolPop(v9);
@@ -618,19 +618,19 @@ LABEL_10:
   }
 
   v12 = v11;
-  [v8 addObject:v11];
-  if ([v8 count] == 10)
+  [fetchSoftErrorContextData addObject:v11];
+  if ([fetchSoftErrorContextData count] == 10)
   {
-    [v8 replaceObjectsInRange:0 withObjectsFromArray:9 range:{v8, 1, 9}];
+    [fetchSoftErrorContextData replaceObjectsInRange:0 withObjectsFromArray:9 range:{fetchSoftErrorContextData, 1, 9}];
   }
 
-  v13 = [(WiFiSoftErrorManager *)self fetchSoftErrorContext:a3 softErrorType:1];
+  v13 = [(WiFiSoftErrorManager *)self fetchSoftErrorContext:handler softErrorType:1];
   v26 = v13;
   if (v13)
   {
-    v14 = [v13 fetchSoftErrorContextData];
-    v15 = v14;
-    if (v14 && [v14 count])
+    fetchSoftErrorContextData2 = [v13 fetchSoftErrorContextData];
+    v15 = fetchSoftErrorContextData2;
+    if (fetchSoftErrorContextData2 && [fetchSoftErrorContextData2 count])
     {
       v16 = [v15 count];
       if (v16 - 1 < 0)
@@ -697,12 +697,12 @@ LABEL_30:
   objc_autoreleasePoolPop(v25);
   [v6 setErrorState:2];
   [(WiFiSoftErrorManager *)self wifiSoftErrorsInProcessStateSet:4];
-  [(WiFiSoftErrorManager *)self WiFiSoftErrorReporting:4 deviceContext:a3 displayString:0];
-  [(WiFiSoftErrorManager *)self wifiSoftErrorMitigation:4 mitigationContext:a3];
+  [(WiFiSoftErrorManager *)self WiFiSoftErrorReporting:4 deviceContext:handler displayString:0];
+  [(WiFiSoftErrorManager *)self wifiSoftErrorMitigation:4 mitigationContext:handler];
 LABEL_34:
 }
 
-- (void)wifiSoftErrorRxDataStallEventHandler:(void *)a3 eventData:(void *)a4
+- (void)wifiSoftErrorRxDataStallEventHandler:(void *)handler eventData:(void *)data
 {
   v7 = objc_autoreleasePoolPush();
   if (off_100298C40)
@@ -711,7 +711,7 @@ LABEL_34:
   }
 
   objc_autoreleasePoolPop(v7);
-  if (!a3 || !a4)
+  if (!handler || !data)
   {
     sub_10013A9EC();
     return;
@@ -726,7 +726,7 @@ LABEL_34:
       return;
     }
 
-    v9 = [[WiFiSoftErrorContext alloc] initWithErrorType:16 deviceContext:a3];
+    v9 = [[WiFiSoftErrorContext alloc] initWithErrorType:16 deviceContext:handler];
     if (!v9)
     {
       goto LABEL_32;
@@ -739,10 +739,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v8 = [(WiFiSoftErrorManager *)self fetchSoftErrorContext:a3 softErrorType:16];
+  v8 = [(WiFiSoftErrorManager *)self fetchSoftErrorContext:handler softErrorType:16];
   if (!v8)
   {
-    v9 = [[WiFiSoftErrorContext alloc] initWithErrorType:16 deviceContext:a3];
+    v9 = [[WiFiSoftErrorContext alloc] initWithErrorType:16 deviceContext:handler];
     if (!v9)
     {
 LABEL_32:
@@ -755,18 +755,18 @@ LABEL_32:
 
 LABEL_12:
   v20 = v8;
-  v10 = [v8 fetchSoftErrorContextData];
+  fetchSoftErrorContextData = [v8 fetchSoftErrorContextData];
   v11 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: rxDataStallEventsArray:%@", "-[WiFiSoftErrorManager wifiSoftErrorRxDataStallEventHandler:eventData:]", v10}];
+    [off_100298C40 WFLog:3 message:{"%s: rxDataStallEventsArray:%@", "-[WiFiSoftErrorManager wifiSoftErrorRxDataStallEventHandler:eventData:]", fetchSoftErrorContextData}];
   }
 
   objc_autoreleasePoolPop(v11);
-  v12 = *a4;
-  v13 = [(WiFiSoftErrorManager *)self getReachabilityStatus];
+  v12 = *data;
+  getReachabilityStatus = [(WiFiSoftErrorManager *)self getReachabilityStatus];
   v14 = objc_autoreleasePoolPush();
-  if (v13)
+  if (getReachabilityStatus)
   {
     if (off_100298C40)
     {
@@ -784,10 +784,10 @@ LABEL_12:
     }
 
     v17 = v16;
-    [v10 addObject:v16];
-    if ([v10 count] == 20)
+    [fetchSoftErrorContextData addObject:v16];
+    if ([fetchSoftErrorContextData count] == 20)
     {
-      [v10 replaceObjectsInRange:0 withObjectsFromArray:19 range:{v10, 1, 19}];
+      [fetchSoftErrorContextData replaceObjectsInRange:0 withObjectsFromArray:19 range:{fetchSoftErrorContextData, 1, 19}];
     }
 
     v18 = objc_autoreleasePoolPush();
@@ -799,8 +799,8 @@ LABEL_12:
     objc_autoreleasePoolPop(v18);
     [v20 setErrorState:2];
     [(WiFiSoftErrorManager *)self wifiSoftErrorsInProcessStateSet:16];
-    [(WiFiSoftErrorManager *)self WiFiSoftErrorReporting:16 deviceContext:a3 displayString:0];
-    [(WiFiSoftErrorManager *)self wifiSoftErrorMitigation:16 mitigationContext:a3];
+    [(WiFiSoftErrorManager *)self WiFiSoftErrorReporting:16 deviceContext:handler displayString:0];
+    [(WiFiSoftErrorManager *)self wifiSoftErrorMitigation:16 mitigationContext:handler];
   }
 
   else
@@ -814,7 +814,7 @@ LABEL_12:
   }
 }
 
-- (void)wifiSoftErrorTxDataStallEventHandler:(void *)a3 eventData:(void *)a4
+- (void)wifiSoftErrorTxDataStallEventHandler:(void *)handler eventData:(void *)data
 {
   v7 = objc_autoreleasePoolPush();
   if (off_100298C40)
@@ -823,7 +823,7 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v7);
-  if (!a3 || !a4)
+  if (!handler || !data)
   {
     sub_10013AB9C();
     goto LABEL_46;
@@ -834,7 +834,7 @@ LABEL_12:
     [(WiFiSoftErrorManager *)self initErrorArray:8];
     if (self->_txDataStallErrors)
     {
-      v9 = [[WiFiSoftErrorContext alloc] initWithErrorType:8 deviceContext:a3];
+      v9 = [[WiFiSoftErrorContext alloc] initWithErrorType:8 deviceContext:handler];
       if (!v9)
       {
 LABEL_45:
@@ -848,17 +848,17 @@ LABEL_45:
     sub_10013AB30();
 LABEL_46:
     v16 = 0;
-    v10 = 0;
+    fetchSoftErrorContextData = 0;
     goto LABEL_37;
   }
 
-  v8 = [(WiFiSoftErrorManager *)self fetchSoftErrorContext:a3 softErrorType:8];
+  v8 = [(WiFiSoftErrorManager *)self fetchSoftErrorContext:handler softErrorType:8];
   if (v8)
   {
     goto LABEL_12;
   }
 
-  v9 = [[WiFiSoftErrorContext alloc] initWithErrorType:8 deviceContext:a3];
+  v9 = [[WiFiSoftErrorContext alloc] initWithErrorType:8 deviceContext:handler];
   if (!v9)
   {
     goto LABEL_45;
@@ -870,8 +870,8 @@ LABEL_11:
   v8 = v21;
 LABEL_12:
   v22 = v8;
-  v10 = [v8 fetchSoftErrorContextData];
-  if (![(WiFiSoftErrorManager *)self wifiSoftErrorTxDataStallProcessHistory:a4])
+  fetchSoftErrorContextData = [v8 fetchSoftErrorContextData];
+  if (![(WiFiSoftErrorManager *)self wifiSoftErrorTxDataStallProcessHistory:data])
   {
 LABEL_40:
     v16 = 0;
@@ -895,13 +895,13 @@ LABEL_40:
   }
 
   v14 = v13;
-  [v10 addObject:v13];
-  if ([v10 count])
+  [fetchSoftErrorContextData addObject:v13];
+  if ([fetchSoftErrorContextData count])
   {
-    [(WiFiSoftErrorManager *)self purgeOutdatedEvents:v10 currTime:Current];
+    [(WiFiSoftErrorManager *)self purgeOutdatedEvents:fetchSoftErrorContextData currTime:Current];
   }
 
-  v15 = [v10 count];
+  v15 = [fetchSoftErrorContextData count];
   if (v15 < 2)
   {
     v16 = v14;
@@ -910,10 +910,10 @@ LABEL_40:
 
   if (v15 >= 0x15)
   {
-    [v10 removeObjectsInRange:{1, (v15 - 20)}];
+    [fetchSoftErrorContextData removeObjectsInRange:{1, (v15 - 20)}];
   }
 
-  v16 = [v10 objectAtIndex:0];
+  v16 = [fetchSoftErrorContextData objectAtIndex:0];
 
   if (v16)
   {
@@ -931,9 +931,9 @@ LABEL_40:
 
       else
       {
-        v19 = [(WiFiSoftErrorManager *)self getReachabilityStatus];
+        getReachabilityStatus = [(WiFiSoftErrorManager *)self getReachabilityStatus];
         v18 = objc_autoreleasePoolPush();
-        if (v19)
+        if (getReachabilityStatus)
         {
           if (off_100298C40)
           {
@@ -960,10 +960,10 @@ LABEL_40:
       objc_autoreleasePoolPop(v20);
       [v22 setErrorState:2];
       [(WiFiSoftErrorManager *)self wifiSoftErrorsInProcessStateSet:8];
-      [(WiFiSoftErrorManager *)self WiFiSoftErrorReporting:8 deviceContext:a3 displayString:0];
-      [(WiFiSoftErrorManager *)self wifiSoftErrorMitigation:8 mitigationContext:a3];
+      [(WiFiSoftErrorManager *)self WiFiSoftErrorReporting:8 deviceContext:handler displayString:0];
+      [(WiFiSoftErrorManager *)self wifiSoftErrorMitigation:8 mitigationContext:handler];
 LABEL_36:
-      [v10 removeAllObjects];
+      [fetchSoftErrorContextData removeAllObjects];
       [(NSMutableArray *)self->_txDataStallErrors removeObject:v22];
 
 LABEL_37:
@@ -974,14 +974,14 @@ LABEL_37:
 LABEL_41:
 }
 
-- (void)wifiSoftErrorAwdlEventNotificationHandler:(void *)a3 eventData:(void *)a4
+- (void)wifiSoftErrorAwdlEventNotificationHandler:(void *)handler eventData:(void *)data
 {
   v7 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    if (a4)
+    if (data)
     {
-      v8 = *a4;
+      v8 = *data;
     }
 
     else
@@ -994,10 +994,10 @@ LABEL_41:
 
   objc_autoreleasePoolPop(v7);
 
-  [(WiFiSoftErrorManager *)self WiFiSoftErrorReporting:256 deviceContext:a3 displayString:0];
+  [(WiFiSoftErrorManager *)self WiFiSoftErrorReporting:256 deviceContext:handler displayString:0];
 }
 
-- (void)wifiSoftErrorSlowWiFiEventHandler:(void *)a3 eventData:(void *)a4
+- (void)wifiSoftErrorSlowWiFiEventHandler:(void *)handler eventData:(void *)data
 {
   v7 = objc_autoreleasePoolPush();
   if (off_100298C40)
@@ -1006,7 +1006,7 @@ LABEL_41:
   }
 
   objc_autoreleasePoolPop(v7);
-  v8 = sub_1000102AC(a3, a4);
+  v8 = sub_1000102AC(handler, data);
   if (v8)
   {
     v9 = v8;
@@ -1035,7 +1035,7 @@ LABEL_41:
     else
     {
       CFStringAppendFormat(Mutable, 0, @"A slow Wi-Fi connection to “%@“ has been detected. Your response will be used to help tune our detection algorithm.", v10);
-      [(WiFiSoftErrorManager *)self WiFiSoftErrorReporting:512 deviceContext:a3 displayString:v12];
+      [(WiFiSoftErrorManager *)self WiFiSoftErrorReporting:512 deviceContext:handler displayString:v12];
       CFRelease(v9);
     }
 
@@ -1043,13 +1043,13 @@ LABEL_41:
   }
 }
 
-- (void)WiFiSoftErrorManagerLQMEventHandler:(id)a3
+- (void)WiFiSoftErrorManagerLQMEventHandler:(id)handler
 {
-  v4 = a3;
-  v11 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (handlerCopy)
   {
-    v5 = [v4 objectForKeyedSubscript:@"RSSI"];
+    v5 = [handlerCopy objectForKeyedSubscript:@"RSSI"];
     self->_primaryInterfaceRssi = [v5 integerValue];
 
     v6 = [v11 objectForKeyedSubscript:@"CCA"];
@@ -1120,16 +1120,16 @@ LABEL_41:
   }
 }
 
-- (void)wifiSoftErrorUserConfirmationFlagSetting:(int)a3 forError:(int)a4 withDeviceContext:(void *)a5
+- (void)wifiSoftErrorUserConfirmationFlagSetting:(int)setting forError:(int)error withDeviceContext:(void *)context
 {
-  self->_errorCounters.lastSoftErrorUserFeedbk = a3;
-  if (a3 != -1 && a4 == 512)
+  self->_errorCounters.lastSoftErrorUserFeedbk = setting;
+  if (setting != -1 && error == 512)
   {
-    sub_1000D79C8(a5, a3 == 1);
+    sub_1000D79C8(context, setting == 1);
   }
 }
 
-- (BOOL)wifiSoftErrorTxDataStallProcessHistory:(__CFDictionary *)a3
+- (BOOL)wifiSoftErrorTxDataStallProcessHistory:(__CFDictionary *)history
 {
   valuePtr = 0;
   v16 = 0;
@@ -1139,9 +1139,9 @@ LABEL_41:
   memset(v21, 0, sizeof(v21));
   memset(v20, 0, sizeof(v20));
   memset(v19, 0, sizeof(v19));
-  if (a3)
+  if (history)
   {
-    if (CFDictionaryGetValueIfPresent(a3, @"TX_FAILURE_PHYRATE_SERIES_COUNT", &value) && value)
+    if (CFDictionaryGetValueIfPresent(history, @"TX_FAILURE_PHYRATE_SERIES_COUNT", &value) && value)
     {
       CFNumberGetValue(value, kCFNumberIntType, &valuePtr);
       v5 = objc_autoreleasePoolPush();
@@ -1154,7 +1154,7 @@ LABEL_41:
     }
 
     v6 = 0;
-    if (CFDictionaryGetValueIfPresent(a3, @"TX_FAILURE_PHYRATE_SERIES_LEGACY_RATES", &v16) && v16)
+    if (CFDictionaryGetValueIfPresent(history, @"TX_FAILURE_PHYRATE_SERIES_LEGACY_RATES", &v16) && v16)
     {
       [(WiFiSoftErrorManager *)self populateTxFailHistory:v16 failureHistoryArray:v23 historyArraySz:12];
       v7 = objc_autoreleasePoolPush();
@@ -1168,7 +1168,7 @@ LABEL_41:
     }
 
     v8 = 0;
-    if (CFDictionaryGetValueIfPresent(a3, @"TX_FAILURE_PHYRATE_SERIES_11N_1SS", &v16) && v16)
+    if (CFDictionaryGetValueIfPresent(history, @"TX_FAILURE_PHYRATE_SERIES_11N_1SS", &v16) && v16)
     {
       [(WiFiSoftErrorManager *)self populateTxFailHistory:v16 failureHistoryArray:v22 historyArraySz:12];
       v9 = objc_autoreleasePoolPush();
@@ -1182,7 +1182,7 @@ LABEL_41:
       v8 = 1;
     }
 
-    if (CFDictionaryGetValueIfPresent(a3, @"TX_FAILURE_PHYRATE_SERIES_11N_2SS", &v16) && v16)
+    if (CFDictionaryGetValueIfPresent(history, @"TX_FAILURE_PHYRATE_SERIES_11N_2SS", &v16) && v16)
     {
       [(WiFiSoftErrorManager *)self populateTxFailHistory:v16 failureHistoryArray:v21 historyArraySz:12];
       v10 = objc_autoreleasePoolPush();
@@ -1196,7 +1196,7 @@ LABEL_41:
       v8 = 1;
     }
 
-    if (CFDictionaryGetValueIfPresent(a3, @"TX_FAILURE_PHYRATE_SERIES_11AC_1SS", &v16) && v16)
+    if (CFDictionaryGetValueIfPresent(history, @"TX_FAILURE_PHYRATE_SERIES_11AC_1SS", &v16) && v16)
     {
       [(WiFiSoftErrorManager *)self populateTxFailHistory:v16 failureHistoryArray:v20 historyArraySz:12];
       v11 = objc_autoreleasePoolPush();
@@ -1210,7 +1210,7 @@ LABEL_41:
       v8 = 1;
     }
 
-    if (CFDictionaryGetValueIfPresent(a3, @"TX_FAILURE_PHYRATE_SERIES_11AC_2SS", &v16) && v16)
+    if (CFDictionaryGetValueIfPresent(history, @"TX_FAILURE_PHYRATE_SERIES_11AC_2SS", &v16) && v16)
     {
       [(WiFiSoftErrorManager *)self populateTxFailHistory:v16 failureHistoryArray:v19 historyArraySz:12];
       v12 = objc_autoreleasePoolPush();
@@ -1247,16 +1247,16 @@ LABEL_41:
   return v13;
 }
 
-- (BOOL)isTxStalled:(unsigned int *)a3 rateType:(unsigned __int8)a4 size:(unsigned int)a5
+- (BOOL)isTxStalled:(unsigned int *)stalled rateType:(unsigned __int8)type size:(unsigned int)size
 {
-  if (a3 && a5)
+  if (stalled && size)
   {
     v5 = 0;
     v6 = 0;
     v7 = 0;
     do
     {
-      v8 = a3[v5];
+      v8 = stalled[v5];
       if (v5 >= 9)
       {
         v9 = 0;
@@ -1264,7 +1264,7 @@ LABEL_41:
 
       else
       {
-        v9 = a3[v5];
+        v9 = stalled[v5];
       }
 
       if (v5)
@@ -1274,10 +1274,10 @@ LABEL_41:
 
       else
       {
-        v10 = *a3;
+        v10 = *stalled;
       }
 
-      if (a4)
+      if (type)
       {
         v9 = v10;
       }
@@ -1292,7 +1292,7 @@ LABEL_41:
       ++v5;
     }
 
-    while (a5 != v5);
+    while (size != v5);
     if (v7)
     {
       v12 = (v6 / v7);
@@ -1324,31 +1324,31 @@ LABEL_41:
   return 0;
 }
 
-- (void)populateTxFailHistory:(__CFArray *)a3 failureHistoryArray:(unsigned int *)a4 historyArraySz:(unsigned int)a5
+- (void)populateTxFailHistory:(__CFArray *)history failureHistoryArray:(unsigned int *)array historyArraySz:(unsigned int)sz
 {
-  if (CFArrayGetCount(a3) >= a5)
+  if (CFArrayGetCount(history) >= sz)
   {
-    Count = a5;
+    Count = sz;
   }
 
   else
   {
-    Count = CFArrayGetCount(a3);
+    Count = CFArrayGetCount(history);
   }
 
-  if (a3 && a4 && a5)
+  if (history && array && sz)
   {
     if (Count >= 1)
     {
       for (i = 0; i != Count; ++i)
       {
-        ValueAtIndex = CFArrayGetValueAtIndex(a3, i);
+        ValueAtIndex = CFArrayGetValueAtIndex(history, i);
         if (ValueAtIndex)
         {
-          CFNumberGetValue(ValueAtIndex, kCFNumberSInt32Type, a4);
+          CFNumberGetValue(ValueAtIndex, kCFNumberSInt32Type, array);
         }
 
-        ++a4;
+        ++array;
       }
     }
   }
@@ -1359,14 +1359,14 @@ LABEL_41:
   }
 }
 
-- (BOOL)askToLaunchTapToRadar:(int)a3
+- (BOOL)askToLaunchTapToRadar:(int)radar
 {
   v10 = 0;
   Mutable = CFStringCreateMutable(kCFAllocatorDefault, 0);
   if (Mutable)
   {
     v5 = Mutable;
-    if (a3 == 4)
+    if (radar == 4)
     {
       v6 = @"Did you manually disconnect from this network?";
     }
@@ -1376,7 +1376,7 @@ LABEL_41:
       v6 = @"Seeing WiFi Problems?";
     }
 
-    if (a3 == 4)
+    if (radar == 4)
     {
       v7 = @"If not, please file a radar.";
     }
@@ -1401,17 +1401,17 @@ LABEL_41:
   return v8;
 }
 
-- (BOOL)askToLaunchTriggerDisconnectRadar:(__CFString *)a3
+- (BOOL)askToLaunchTriggerDisconnectRadar:(__CFString *)radar
 {
   v4 = 0;
-  CFUserNotificationDisplayAlert(0.0, 0, 0, 0, 0, a3, @"If WiFi was usable, please file radar", @"Dismiss", @"Radar", 0, &v4);
+  CFUserNotificationDisplayAlert(0.0, 0, 0, 0, 0, radar, @"If WiFi was usable, please file radar", @"Dismiss", @"Radar", 0, &v4);
   return (v4 & 3) != 0;
 }
 
-- (BOOL)askToLaunchSlowWiFiRadar:(__CFString *)a3
+- (BOOL)askToLaunchSlowWiFiRadar:(__CFString *)radar
 {
   v4 = 0;
-  CFUserNotificationDisplayAlert(0.0, 0, 0, 0, 0, @"[Internal Only]", a3, @"Slow, File Radar", @"Not Slow", 0, &v4);
+  CFUserNotificationDisplayAlert(0.0, 0, 0, 0, 0, @"[Internal Only]", radar, @"Slow, File Radar", @"Not Slow", 0, &v4);
   return (v4 & 3) == 0;
 }
 
@@ -1422,27 +1422,27 @@ LABEL_41:
   return (v3 & 3) != 0;
 }
 
-- (void)purgeOutdatedEvents:(id)a3 currTime:(double)a4
+- (void)purgeOutdatedEvents:(id)events currTime:(double)time
 {
-  v14 = a3;
-  if (v14)
+  eventsCopy = events;
+  if (eventsCopy)
   {
     v5 = +[NSMutableIndexSet indexSet];
     if (v5)
     {
       v6 = v5;
-      v7 = [v14 count];
+      v7 = [eventsCopy count];
       if (v7)
       {
         v8 = v7;
         for (i = 0; i != v8; ++i)
         {
-          v10 = [v14 objectAtIndex:i];
+          v10 = [eventsCopy objectAtIndex:i];
           v11 = v10;
           if (v10)
           {
             [v10 doubleValue];
-            if (v12 != 0.0 && a4 - v12 > 15.0)
+            if (v12 != 0.0 && time - v12 > 15.0)
             {
               [v6 addIndex:i];
             }
@@ -1450,7 +1450,7 @@ LABEL_41:
         }
       }
 
-      [v14 removeObjectsAtIndexes:v6];
+      [eventsCopy removeObjectsAtIndexes:v6];
     }
 
     else
@@ -1547,7 +1547,7 @@ LABEL_41:
   return v4;
 }
 
-- (BOOL)supressTapToRadar:(int)a3 deviceContext:(void *)a4
+- (BOOL)supressTapToRadar:(int)radar deviceContext:(void *)context
 {
   v10 = 0;
   if (sub_10007B118(self->_manager) == 1)
@@ -1569,15 +1569,15 @@ LABEL_41:
     }
 
     objc_autoreleasePoolPop(v7);
-    if (a3 > 15)
+    if (radar > 15)
     {
-      if (a3 != 16)
+      if (radar != 16)
       {
-        return a3 == 512;
+        return radar == 512;
       }
     }
 
-    else if (a3 != 4 && a3 != 8)
+    else if (radar != 4 && radar != 8)
     {
       return 0;
     }
@@ -1591,16 +1591,16 @@ LABEL_41:
   return 1;
 }
 
-- (BOOL)supressEventDetectionProcesssing:(int)a3 deviceContext:(void *)a4
+- (BOOL)supressEventDetectionProcesssing:(int)processsing deviceContext:(void *)context
 {
-  if ((a3 & 0xFFFFFFFE) != 4)
+  if ((processsing & 0xFFFFFFFE) != 4)
   {
     return 0;
   }
 
-  if (a4)
+  if (context)
   {
-    return sub_1000D5998(a4) < -70;
+    return sub_1000D5998(context) < -70;
   }
 
   sub_10013B1D0();
@@ -1620,7 +1620,7 @@ LABEL_41:
   [(WiFiSoftErrorManager *)self enableSoftErrorMitigation:8];
 }
 
-- (BOOL)isEventMitigationEnabled:(int)a3
+- (BOOL)isEventMitigationEnabled:(int)enabled
 {
   v5 = [(WiFiSoftErrorManager *)self softErrorTypeIndex:?];
   if (v5 >= 7)
@@ -1629,12 +1629,12 @@ LABEL_41:
     return 0;
   }
 
-  if (a3 == 8)
+  if (enabled == 8)
   {
     return 1;
   }
 
-  if (a3 != 2)
+  if (enabled != 2)
   {
     return 0;
   }
@@ -1642,22 +1642,22 @@ LABEL_41:
   return self->_mitigationInfo.mitigationAllowedFlag[v5];
 }
 
-- (id)copySoftErrorEventDescription:(int)a3
+- (id)copySoftErrorEventDescription:(int)description
 {
-  if (a3 > 0x12)
+  if (description > 0x12)
   {
     return 0;
   }
 
   else
   {
-    return off_10025EC08[a3];
+    return off_10025EC08[description];
   }
 }
 
-- (WiFiSoftErrorManager)initWithWiFiManager:(__WiFiManager *)a3 queue:(id)a4
+- (WiFiSoftErrorManager)initWithWiFiManager:(__WiFiManager *)manager queue:(id)queue
 {
-  v7 = a4;
+  queueCopy = queue;
   if (objc_opt_class())
   {
     v16.receiver = self;
@@ -1666,10 +1666,10 @@ LABEL_41:
     if (v8)
     {
       self = v8;
-      v8->_manager = a3;
+      v8->_manager = manager;
       v8->_softErrorInProcessFlags = 0;
       v8->_lastReportedSoftErrorTs = 0.0;
-      objc_storeStrong(&v8->_queue, a4);
+      objc_storeStrong(&v8->_queue, queue);
       *&self->_errorCounters.slowWiFiUserConfirmCount = 0;
       *&self->_errorCounters.triggerDisconnectUserConfirmCount = 0u;
       *&self->_errorCounters.noNetworksFoundErrorUserConfirmCount = 0u;

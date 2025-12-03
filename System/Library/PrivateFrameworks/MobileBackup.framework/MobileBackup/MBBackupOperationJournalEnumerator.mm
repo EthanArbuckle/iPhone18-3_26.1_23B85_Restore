@@ -1,16 +1,16 @@
 @interface MBBackupOperationJournalEnumerator
-- (MBBackupOperationJournalEnumerator)initWithFile:(id)a3 domainManager:(id)a4;
+- (MBBackupOperationJournalEnumerator)initWithFile:(id)file domainManager:(id)manager;
 - (id)nextObject;
 @end
 
 @implementation MBBackupOperationJournalEnumerator
 
-- (MBBackupOperationJournalEnumerator)initWithFile:(id)a3 domainManager:(id)a4
+- (MBBackupOperationJournalEnumerator)initWithFile:(id)file domainManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  fileCopy = file;
+  managerCopy = manager;
   v20 = 0;
-  v8 = [NSData dataWithContentsOfFile:v6 options:1 error:&v20];
+  v8 = [NSData dataWithContentsOfFile:fileCopy options:1 error:&v20];
   v9 = v20;
   if (!v8)
   {
@@ -44,7 +44,7 @@ LABEL_11:
   if (v12)
   {
     objc_storeStrong(&v12->_decoder, v10);
-    objc_storeStrong(&v13->_domainManager, a4);
+    objc_storeStrong(&v13->_domainManager, manager);
   }
 
   return v13;
@@ -53,11 +53,11 @@ LABEL_11:
 - (id)nextObject
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(MBDecoder *)self->_decoder offset];
-  v5 = [(MBDecoder *)self->_decoder data];
-  v6 = [v5 length];
+  offset = [(MBDecoder *)self->_decoder offset];
+  data = [(MBDecoder *)self->_decoder data];
+  v6 = [data length];
 
-  if (v4 >= v6)
+  if (offset >= v6)
   {
     v7 = 0;
   }

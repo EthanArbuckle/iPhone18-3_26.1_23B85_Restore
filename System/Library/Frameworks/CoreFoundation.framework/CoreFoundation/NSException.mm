@@ -1,12 +1,12 @@
 @interface NSException
 + (NSException)exceptionWithName:(NSExceptionName)name reason:(NSString *)reason userInfo:(NSDictionary *)userInfo;
-+ (NSException)exceptionWithName:(id)a3 reason:(id)a4 userInfo:(id)a5 osLogPack:(void *)a6 size:(unint64_t)a7;
++ (NSException)exceptionWithName:(id)name reason:(id)reason userInfo:(id)info osLogPack:(void *)pack size:(unint64_t)size;
 + (void)raise:(NSExceptionName)name format:(NSString *)format;
 + (void)raise:(NSExceptionName)name format:(NSString *)format arguments:(va_list)argList;
 - (BOOL)_installStackTraceKeyIfNeeded;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)userInfo;
-- (NSException)initWithName:(id)a3 reason:(id)a4 userInfo:(id)a5 osLogPack:(void *)a6 size:(unint64_t)a7;
+- (NSException)initWithName:(id)name reason:(id)reason userInfo:(id)info osLogPack:(void *)pack size:(unint64_t)size;
 - (NSExceptionName)name;
 - (NSString)reason;
 - (id)description;
@@ -108,9 +108,9 @@ LABEL_6:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -122,19 +122,19 @@ LABEL_6:
   }
 
   name = self->name;
-  v8 = *(a3 + 1);
+  v8 = *(equal + 1);
 
   return [(NSString *)name isEqual:v8];
 }
 
-- (NSException)initWithName:(id)a3 reason:(id)a4 userInfo:(id)a5 osLogPack:(void *)a6 size:(unint64_t)a7
+- (NSException)initWithName:(id)name reason:(id)reason userInfo:(id)info osLogPack:(void *)pack size:(unint64_t)size
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  self->name = [a3 copy];
-  self->reason = [a4 copy];
-  self->userInfo = a5;
+  self->name = [name copy];
+  self->reason = [reason copy];
+  self->userInfo = info;
   v12 = v20 - ((_os_log_pack_size() + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a6)
+  if (pack)
   {
     goto LABEL_4;
   }
@@ -147,11 +147,11 @@ LABEL_6:
     v16 = _os_log_pack_fill();
     *v16 = 136315138;
     *(v16 + 4) = CStringPtr;
-    a6 = v12;
+    pack = v12;
 LABEL_4:
     __CFLookUpClass("NSMutableDictionary");
     self->reserved = objc_opt_new();
-    v17 = CFDataCreate(&__kCFAllocatorSystemDefault, a6, a7);
+    v17 = CFDataCreate(&__kCFAllocatorSystemDefault, pack, size);
     [self->reserved setObject:v17 forKey:@"osLogPack"];
   }
 
@@ -161,14 +161,14 @@ LABEL_4:
 
 + (NSException)exceptionWithName:(NSExceptionName)name reason:(NSString *)reason userInfo:(NSDictionary *)userInfo
 {
-  v5 = [[a1 alloc] initWithName:name reason:reason userInfo:userInfo];
+  v5 = [[self alloc] initWithName:name reason:reason userInfo:userInfo];
 
   return v5;
 }
 
-+ (NSException)exceptionWithName:(id)a3 reason:(id)a4 userInfo:(id)a5 osLogPack:(void *)a6 size:(unint64_t)a7
++ (NSException)exceptionWithName:(id)name reason:(id)reason userInfo:(id)info osLogPack:(void *)pack size:(unint64_t)size
 {
-  v7 = [[a1 alloc] initWithName:a3 reason:a4 userInfo:a5 osLogPack:a6 size:a7];
+  v7 = [[self alloc] initWithName:name reason:reason userInfo:info osLogPack:pack size:size];
 
   return v7;
 }
@@ -185,7 +185,7 @@ LABEL_4:
     v7 = &stru_1EF068AA8;
   }
 
-  objc_exception_throw([a1 exceptionWithName:name reason:v7 userInfo:0]);
+  objc_exception_throw([self exceptionWithName:name reason:v7 userInfo:0]);
 }
 
 + (void)raise:(NSExceptionName)name format:(NSString *)format
@@ -203,7 +203,7 @@ LABEL_4:
     v6 = &stru_1EF068AA8;
   }
 
-  objc_exception_throw([a1 exceptionWithName:name reason:v6 userInfo:{0, v7, v8}]);
+  objc_exception_throw([self exceptionWithName:name reason:v6 userInfo:{0, v7, v8}]);
 }
 
 @end

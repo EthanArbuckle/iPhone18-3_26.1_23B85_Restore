@@ -1,12 +1,12 @@
 @interface CNCalculatesContactDiff
-+ (BOOL)shouldSaveDuplicateProperty:(id)a3 value1:(id)a4 value2:(id)a5;
++ (BOOL)shouldSaveDuplicateProperty:(id)property value1:(id)value1 value2:(id)value2;
 + (id)backgroundColorRelatedKeys;
-+ (id)diffContact:(id)a3 to:(id)a4 options:(id)a5 error:(id *)a6;
++ (id)diffContact:(id)contact to:(id)to options:(id)options error:(id *)error;
 + (id)imageMetadataLog;
-+ (void)addMultiValueUpdateTo:(id)a3 forProperty:(id)a4 contact1:(id)a5 contact2:(id)a6;
-+ (void)addSingleValueUpdateTo:(id)a3 forProperty:(id)a4 contact1:(id)a5 contact2:(id)a6;
-+ (void)cleanOrphanedCropUpdates:(id)a3 withContact1:(id)a4 contact2:(id)a5;
-+ (void)clearBackgroundColorInUpdates:(id)a3 forContact:(id)a4;
++ (void)addMultiValueUpdateTo:(id)to forProperty:(id)property contact1:(id)contact1 contact2:(id)contact2;
++ (void)addSingleValueUpdateTo:(id)to forProperty:(id)property contact1:(id)contact1 contact2:(id)contact2;
++ (void)cleanOrphanedCropUpdates:(id)updates withContact1:(id)contact1 contact2:(id)contact2;
++ (void)clearBackgroundColorInUpdates:(id)updates forContact:(id)contact;
 @end
 
 @implementation CNCalculatesContactDiff
@@ -32,22 +32,22 @@ uint64_t __43__CNCalculatesContactDiff_imageMetadataLog__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)diffContact:(id)a3 to:(id)a4 options:(id)a5 error:(id *)a6
++ (id)diffContact:(id)contact to:(id)to options:(id)options error:(id *)error
 {
   v60 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v48 = a5;
-  if (v10 == v11)
+  contactCopy = contact;
+  toCopy = to;
+  optionsCopy = options;
+  if (contactCopy == toCopy)
   {
-    v30 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
   else
   {
-    v44 = a6;
-    v45 = a1;
-    v46 = [MEMORY[0x1E695DF70] array];
+    errorCopy = error;
+    selfCopy = self;
+    array2 = [MEMORY[0x1E695DF70] array];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
@@ -68,14 +68,14 @@ LABEL_4:
         }
 
         v16 = *(*(&v49 + 1) + 8 * v15);
-        if (v10)
+        if (contactCopy)
         {
           v17 = [*(*(&v49 + 1) + 8 * v15) key];
           v58 = v17;
           v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v58 count:1];
-          v19 = [v10 areKeysAvailable:v18];
+          v19 = [contactCopy areKeysAvailable:v18];
 
-          if (!v11)
+          if (!toCopy)
           {
             goto LABEL_14;
           }
@@ -84,7 +84,7 @@ LABEL_4:
         else
         {
           v19 = 1;
-          if (!v11)
+          if (!toCopy)
           {
 LABEL_14:
             v22 = 1;
@@ -95,34 +95,34 @@ LABEL_14:
         v20 = [v16 key];
         v57 = v20;
         v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v57 count:1];
-        v22 = [v11 areKeysAvailable:v21];
+        v22 = [toCopy areKeysAvailable:v21];
 
-        if (v10 && v19 != v22)
+        if (contactCopy && v19 != v22)
         {
-          if (([v48 ignoreUnavailableKeys] & 1) == 0)
+          if (([optionsCopy ignoreUnavailableKeys] & 1) == 0)
           {
             if (v22)
             {
-              v31 = v10;
+              v31 = contactCopy;
             }
 
             else
             {
-              v31 = v11;
+              v31 = toCopy;
             }
 
             v32 = v31;
             v33 = v32;
-            if (v44)
+            if (errorCopy)
             {
-              if (v32 == v10)
+              if (v32 == contactCopy)
               {
-                v34 = v11;
+                v34 = toCopy;
               }
 
               else
               {
-                v34 = v10;
+                v34 = contactCopy;
               }
 
               v54[1] = v34;
@@ -142,11 +142,11 @@ LABEL_14:
               v41 = [CNErrorFactory errorWithCode:1000 userInfo:v40];
 
               v42 = v41;
-              *v44 = v41;
+              *errorCopy = v41;
             }
 
-            v30 = 0;
-            v26 = v46;
+            array = 0;
+            v26 = array2;
             goto LABEL_35;
           }
 
@@ -156,20 +156,20 @@ LABEL_14:
 LABEL_15:
         if ((v19 & v22) == 1)
         {
-          v23 = [v48 ignoredKeys];
+          ignoredKeys = [optionsCopy ignoredKeys];
           v24 = [v16 key];
-          v25 = [v23 containsObject:v24];
+          v25 = [ignoredKeys containsObject:v24];
 
           if ((v25 & 1) == 0)
           {
             if ([v16 isMultiValue])
             {
-              [v45 addMultiValueUpdateTo:v46 forProperty:v16 contact1:v10 contact2:v11];
+              [selfCopy addMultiValueUpdateTo:array2 forProperty:v16 contact1:contactCopy contact2:toCopy];
             }
 
             else
             {
-              [v45 addSingleValueUpdateTo:v46 forProperty:v16 contact1:v10 contact2:v11];
+              [selfCopy addSingleValueUpdateTo:array2 forProperty:v16 contact1:contactCopy contact2:toCopy];
             }
           }
         }
@@ -188,47 +188,47 @@ LABEL_20:
       }
     }
 
-    v26 = v46;
-    [v45 cleanOrphanedCropUpdates:v46 withContact1:v10 contact2:v11];
-    v27 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v28 = [v27 featureFlags];
-    v29 = [v28 isFeatureEnabled:8];
+    v26 = array2;
+    [selfCopy cleanOrphanedCropUpdates:array2 withContact1:contactCopy contact2:toCopy];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    v29 = [featureFlags isFeatureEnabled:8];
 
     if (v29)
     {
-      [v45 clearBackgroundColorInUpdates:v46 forContact:v11];
+      [selfCopy clearBackgroundColorInUpdates:array2 forContact:toCopy];
     }
 
-    v30 = v46;
+    array = array2;
 LABEL_35:
   }
 
-  return v30;
+  return array;
 }
 
-+ (void)addSingleValueUpdateTo:(id)a3 forProperty:(id)a4 contact1:(id)a5 contact2:(id)a6
++ (void)addSingleValueUpdateTo:(id)to forProperty:(id)property contact1:(id)contact1 contact2:(id)contact2
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v10 CNValueForContact:a5];
-  v13 = [v10 CNValueForContact:v11];
+  toCopy = to;
+  propertyCopy = property;
+  contact2Copy = contact2;
+  v12 = [propertyCopy CNValueForContact:contact1];
+  v13 = [propertyCopy CNValueForContact:contact2Copy];
 
-  if (![v10 isValue:v12 equalToEmptyEquivalentOrValue:v13] || objc_msgSend(a1, "shouldSaveDuplicateProperty:value1:value2:", v10, v12, v13))
+  if (![propertyCopy isValue:v12 equalToEmptyEquivalentOrValue:v13] || objc_msgSend(self, "shouldSaveDuplicateProperty:value1:value2:", propertyCopy, v12, v13))
   {
-    v14 = [CNContactUpdate updateWithValue:v13 property:v10];
-    [v15 addObject:v14];
+    v14 = [CNContactUpdate updateWithValue:v13 property:propertyCopy];
+    [toCopy addObject:v14];
   }
 }
 
-+ (BOOL)shouldSaveDuplicateProperty:(id)a3 value1:(id)a4 value2:(id)a5
++ (BOOL)shouldSaveDuplicateProperty:(id)property value1:(id)value1 value2:(id)value2
 {
-  v6 = a5;
-  v7 = [a3 key];
+  value2Copy = value2;
+  v7 = [property key];
 
   if (v7 == @"cropRect")
   {
-    [v6 rectValue];
+    [value2Copy rectValue];
     v8 = !CGRectIsEmpty(v10);
   }
 
@@ -240,29 +240,29 @@ LABEL_35:
   return v8;
 }
 
-+ (void)addMultiValueUpdateTo:(id)a3 forProperty:(id)a4 contact1:(id)a5 contact2:(id)a6
++ (void)addMultiValueUpdateTo:(id)to forProperty:(id)property contact1:(id)contact1 contact2:(id)contact2
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 key];
-  v14 = [v11 valueForKey:v13];
+  toCopy = to;
+  propertyCopy = property;
+  contact1Copy = contact1;
+  contact2Copy = contact2;
+  v13 = [propertyCopy key];
+  v14 = [contact1Copy valueForKey:v13];
 
-  v15 = [v10 key];
-  v16 = [v12 valueForKey:v15];
+  v15 = [propertyCopy key];
+  v16 = [contact2Copy valueForKey:v15];
 
   v17 = [CNMultiValueDiff diffMultiValue:v14 toMultiValue:v16];
   if (([v17 isEmpty] & 1) == 0)
   {
-    v18 = [CNContactUpdate updateMultiValueWithDiff:v17 property:v10];
-    v19 = [v11 isUnified];
-    v20 = [v12 isUnified];
-    if (v19)
+    v18 = [CNContactUpdate updateMultiValueWithDiff:v17 property:propertyCopy];
+    isUnified = [contact1Copy isUnified];
+    isUnified2 = [contact2Copy isUnified];
+    if (isUnified)
     {
-      v28 = v9;
-      if ((v20 & 1) == 0)
+      v28 = toCopy;
+      if ((isUnified2 & 1) == 0)
       {
         [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"A contact and its snapshot should both be unified."];
       }
@@ -273,8 +273,8 @@ LABEL_35:
       v30 = 0u;
       v31 = 0u;
       v26 = v32 = 0u;
-      v21 = [v26 updates];
-      v22 = [v21 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      updates = [v26 updates];
+      v22 = [updates countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v22)
       {
         v23 = v22;
@@ -286,52 +286,52 @@ LABEL_35:
           {
             if (*v30 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(updates);
             }
 
             [*(*(&v29 + 1) + 8 * v25++) setIgnoreIdentifiers:1];
           }
 
           while (v23 != v25);
-          v23 = [v21 countByEnumeratingWithState:&v29 objects:v33 count:16];
+          v23 = [updates countByEnumeratingWithState:&v29 objects:v33 count:16];
         }
 
         while (v23);
       }
 
       v18 = v27;
-      v9 = v28;
+      toCopy = v28;
     }
 
-    else if (v20)
+    else if (isUnified2)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"A contact and its snapshot should both be non-unified."];
     }
 
-    [v9 addObject:v18];
+    [toCopy addObject:v18];
   }
 }
 
-+ (void)cleanOrphanedCropUpdates:(id)a3 withContact1:(id)a4 contact2:(id)a5
++ (void)cleanOrphanedCropUpdates:(id)updates withContact1:(id)contact1 contact2:(id)contact2
 {
-  v16 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v16 _cn_firstObjectPassingTest:&__block_literal_global_17_1];
+  updatesCopy = updates;
+  contact1Copy = contact1;
+  contact2Copy = contact2;
+  v9 = [updatesCopy _cn_firstObjectPassingTest:&__block_literal_global_17_1];
   if (v9)
   {
-    if (([v16 _cn_any:&__block_literal_global_19] & 1) == 0)
+    if (([updatesCopy _cn_any:&__block_literal_global_19] & 1) == 0)
     {
-      v10 = [v9 property];
-      v11 = [v9 property];
-      v12 = [v11 CNValueForContact:v7];
-      v13 = [v9 property];
-      v14 = [v13 CNValueForContact:v8];
-      v15 = [v10 isValue:v12 equalToEmptyEquivalentOrValue:v14];
+      property = [v9 property];
+      property2 = [v9 property];
+      v12 = [property2 CNValueForContact:contact1Copy];
+      property3 = [v9 property];
+      v14 = [property3 CNValueForContact:contact2Copy];
+      v15 = [property isValue:v12 equalToEmptyEquivalentOrValue:v14];
 
       if (v15)
       {
-        [v16 removeObject:v9];
+        [updatesCopy removeObject:v9];
       }
     }
   }
@@ -355,32 +355,32 @@ BOOL __74__CNCalculatesContactDiff_cleanOrphanedCropUpdates_withContact1_contact
   return v4;
 }
 
-+ (void)clearBackgroundColorInUpdates:(id)a3 forContact:(id)a4
++ (void)clearBackgroundColorInUpdates:(id)updates forContact:(id)contact
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 _cn_firstObjectPassingTest:&__block_literal_global_21];
+  updatesCopy = updates;
+  contactCopy = contact;
+  v8 = [updatesCopy _cn_firstObjectPassingTest:&__block_literal_global_21];
   if (!v8)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __68__CNCalculatesContactDiff_clearBackgroundColorInUpdates_forContact___block_invoke_2;
     v13[3] = &__block_descriptor_40_e8_B16__0_8l;
-    v13[4] = a1;
-    if ([v6 _cn_any:v13])
+    v13[4] = self;
+    if ([updatesCopy _cn_any:v13])
     {
       v9 = +[CN imageBackgroundColorsDataDescription];
       v10 = [CNContactUpdate updateWithValue:0 property:v9];
 
-      [v6 addObject:v10];
-      v11 = [objc_opt_class() imageMetadataLog];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      [updatesCopy addObject:v10];
+      imageMetadataLog = [objc_opt_class() imageMetadataLog];
+      if (os_log_type_enabled(imageMetadataLog, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v7 identifier];
+        identifier = [contactCopy identifier];
         *buf = 138543362;
-        v15 = v12;
-        _os_log_impl(&dword_1954A0000, v11, OS_LOG_TYPE_DEFAULT, "Cleared image background colors for contact identifier %{public}@", buf, 0xCu);
+        v15 = identifier;
+        _os_log_impl(&dword_1954A0000, imageMetadataLog, OS_LOG_TYPE_DEFAULT, "Cleared image background colors for contact identifier %{public}@", buf, 0xCu);
       }
     }
   }

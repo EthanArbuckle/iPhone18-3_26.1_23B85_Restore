@@ -1,22 +1,22 @@
 @interface PLPrefetchConfiguration
-+ (id)descriptionForPrefetchOptimizeMode:(int64_t)a3;
++ (id)descriptionForPrefetchOptimizeMode:(int64_t)mode;
 + (id)overridePrefetchOptimizeMode;
 + (int64_t)_defaultPrefetchOptimizeMode;
 + (int64_t)defaultPrefetchOptimizeMode;
-- (PLPrefetchConfiguration)initWithPrefetchDictionary:(id)a3;
-- (int64_t)prefetchOptimizeModeForTotalSizeOfOriginalResources:(int64_t)a3 totalSizeOfLocallyAvailableOriginalResources:(int64_t)a4 availableSpace:(int64_t)a5 overrideMaximumSmallLibraryThresholdGB:(int64_t)a6 nonThumbnailsBudget:(int64_t)a7;
-- (unint64_t)smallLibrarySizeThresholdForTotalSizeOfLocallyAvailableOriginalResources:(int64_t)a3 availableSpace:(int64_t)a4 overrideMaximumThresholdGB:(int64_t)a5;
-- (void)updateValuesFromPrefetchDictionary:(id)a3;
+- (PLPrefetchConfiguration)initWithPrefetchDictionary:(id)dictionary;
+- (int64_t)prefetchOptimizeModeForTotalSizeOfOriginalResources:(int64_t)resources totalSizeOfLocallyAvailableOriginalResources:(int64_t)originalResources availableSpace:(int64_t)space overrideMaximumSmallLibraryThresholdGB:(int64_t)b nonThumbnailsBudget:(int64_t)budget;
+- (unint64_t)smallLibrarySizeThresholdForTotalSizeOfLocallyAvailableOriginalResources:(int64_t)resources availableSpace:(int64_t)space overrideMaximumThresholdGB:(int64_t)b;
+- (void)updateValuesFromPrefetchDictionary:(id)dictionary;
 - (void)updateValuesFromTrialIfNecessary;
 @end
 
 @implementation PLPrefetchConfiguration
 
-- (int64_t)prefetchOptimizeModeForTotalSizeOfOriginalResources:(int64_t)a3 totalSizeOfLocallyAvailableOriginalResources:(int64_t)a4 availableSpace:(int64_t)a5 overrideMaximumSmallLibraryThresholdGB:(int64_t)a6 nonThumbnailsBudget:(int64_t)a7
+- (int64_t)prefetchOptimizeModeForTotalSizeOfOriginalResources:(int64_t)resources totalSizeOfLocallyAvailableOriginalResources:(int64_t)originalResources availableSpace:(int64_t)space overrideMaximumSmallLibraryThresholdGB:(int64_t)b nonThumbnailsBudget:(int64_t)budget
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = [(PLPrefetchConfiguration *)self smallLibrarySizeThresholdForTotalSizeOfLocallyAvailableOriginalResources:a4 availableSpace:a5 overrideMaximumThresholdGB:a6];
-  if ((a4 | a3) < 0 || (v11 = v10, v10 < a3) || a3 - a4 > a7)
+  v10 = [(PLPrefetchConfiguration *)self smallLibrarySizeThresholdForTotalSizeOfLocallyAvailableOriginalResources:originalResources availableSpace:space overrideMaximumThresholdGB:b];
+  if ((originalResources | resources) < 0 || (v11 = v10, v10 < resources) || resources - originalResources > budget)
   {
     v15 = objc_opt_class();
 
@@ -30,7 +30,7 @@
     {
       v13 = [PLPrefetchConfiguration descriptionForPrefetchOptimizeMode:2];
       v16 = 134218498;
-      v17 = a3;
+      resourcesCopy = resources;
       v18 = 2048;
       v19 = v11;
       v20 = 2112;
@@ -42,19 +42,19 @@
   }
 }
 
-- (unint64_t)smallLibrarySizeThresholdForTotalSizeOfLocallyAvailableOriginalResources:(int64_t)a3 availableSpace:(int64_t)a4 overrideMaximumThresholdGB:(int64_t)a5
+- (unint64_t)smallLibrarySizeThresholdForTotalSizeOfLocallyAvailableOriginalResources:(int64_t)resources availableSpace:(int64_t)space overrideMaximumThresholdGB:(int64_t)b
 {
-  if (a5 < 1)
+  if (b < 1)
   {
     cloudResourceMaximumSmallLibraryThreshold = self->_cloudResourceMaximumSmallLibraryThreshold;
   }
 
   else
   {
-    cloudResourceMaximumSmallLibraryThreshold = a5 << 30;
+    cloudResourceMaximumSmallLibraryThreshold = b << 30;
   }
 
-  v6 = self->_cloudResourceSmallLibraryThresholdRatio * (a4 + a3);
+  v6 = self->_cloudResourceSmallLibraryThresholdRatio * (space + resources);
   if (v6 >= cloudResourceMaximumSmallLibraryThreshold)
   {
     return cloudResourceMaximumSmallLibraryThreshold;
@@ -63,9 +63,9 @@
   return v6;
 }
 
-- (void)updateValuesFromPrefetchDictionary:(id)a3
+- (void)updateValuesFromPrefetchDictionary:(id)dictionary
 {
-  v25 = [a3 objectForKeyedSubscript:@"iOS"];
+  v25 = [dictionary objectForKeyedSubscript:@"iOS"];
   if (v25)
   {
     v4 = [v25 objectForKeyedSubscript:@"memoryMaxPrefetchPhotosCount"];
@@ -151,9 +151,9 @@
   }
 }
 
-- (PLPrefetchConfiguration)initWithPrefetchDictionary:(id)a3
+- (PLPrefetchConfiguration)initWithPrefetchDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = PLPrefetchConfiguration;
   v5 = [(PLPrefetchConfiguration *)&v8 init];
@@ -169,9 +169,9 @@
     *(v5 + 9) = 0x3FB999999999999ALL;
     *(v5 + 5) = xmmword_19C60AFC0;
     *(v5 + 6) = xmmword_19C60AFD0;
-    if (v4)
+    if (dictionaryCopy)
     {
-      [v5 updateValuesFromPrefetchDictionary:v4];
+      [v5 updateValuesFromPrefetchDictionary:dictionaryCopy];
     }
 
     [(PLPrefetchConfiguration *)v6 updateValuesFromTrialIfNecessary];
@@ -182,15 +182,15 @@
 
 + (id)overridePrefetchOptimizeMode
 {
-  if (MEMORY[0x19EAEE230](a1, a2))
+  if (MEMORY[0x19EAEE230](self, a2))
   {
-    v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v3 = [v2 objectForKey:@"PLPrefetchOptimizeMode"];
-    v4 = [v3 lowercaseString];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v3 = [standardUserDefaults objectForKey:@"PLPrefetchOptimizeMode"];
+    lowercaseString = [v3 lowercaseString];
 
-    if (v4)
+    if (lowercaseString)
     {
-      if ([v4 isEqualToString:@"medium"])
+      if ([lowercaseString isEqualToString:@"medium"])
       {
         v5 = &unk_1F0FBC0B8;
 LABEL_9:
@@ -200,13 +200,13 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      if ([v4 isEqualToString:@"fullsize"])
+      if ([lowercaseString isEqualToString:@"fullsize"])
       {
         v5 = &unk_1F0FBC0D0;
         goto LABEL_9;
       }
 
-      if ([v4 isEqualToString:@"original"])
+      if ([lowercaseString isEqualToString:@"original"])
       {
         v5 = &unk_1F0FBC0E8;
         goto LABEL_9;
@@ -221,15 +221,15 @@ LABEL_10:
   return v7;
 }
 
-+ (id)descriptionForPrefetchOptimizeMode:(int64_t)a3
++ (id)descriptionForPrefetchOptimizeMode:(int64_t)mode
 {
   v3 = @"medium";
-  if (a3 == 1)
+  if (mode == 1)
   {
     v3 = @"fullsize";
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     return @"original";
   }
@@ -242,23 +242,23 @@ LABEL_10:
 
 + (int64_t)_defaultPrefetchOptimizeMode
 {
-  v2 = [MEMORY[0x1E69BF200] defaultDeviceConfiguration];
-  v3 = [v2 logicalScreenPixelSize] > 0x3A147A;
+  defaultDeviceConfiguration = [MEMORY[0x1E69BF200] defaultDeviceConfiguration];
+  v3 = [defaultDeviceConfiguration logicalScreenPixelSize] > 0x3A147A;
 
   return v3;
 }
 
 + (int64_t)defaultPrefetchOptimizeMode
 {
-  v2 = [objc_opt_class() _defaultPrefetchOptimizeMode];
-  v3 = [objc_opt_class() overridePrefetchOptimizeMode];
-  v4 = v3;
-  if (v3)
+  _defaultPrefetchOptimizeMode = [objc_opt_class() _defaultPrefetchOptimizeMode];
+  overridePrefetchOptimizeMode = [objc_opt_class() overridePrefetchOptimizeMode];
+  v4 = overridePrefetchOptimizeMode;
+  if (overridePrefetchOptimizeMode)
   {
-    v2 = [v3 integerValue];
+    _defaultPrefetchOptimizeMode = [overridePrefetchOptimizeMode integerValue];
   }
 
-  return v2;
+  return _defaultPrefetchOptimizeMode;
 }
 
 - (void)updateValuesFromTrialIfNecessary
@@ -266,9 +266,9 @@ LABEL_10:
   v40 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E69DB518] clientWithIdentifier:235];
   v4 = [v3 levelForFactor:@"com.apple.photos.photolibraryservices.prefetch.trialOverride" withNamespaceName:@"PHOTOS_GENERAL"];
-  v5 = [v4 BOOLeanValue];
+  bOOLeanValue = [v4 BOOLeanValue];
 
-  if (v5)
+  if (bOOLeanValue)
   {
     v6 = [v3 levelForFactor:@"com.apple.photos.photolibraryservices.prefetch.memoryMaxPrefetchPhotosCount" withNamespaceName:@"PHOTOS_GENERAL"];
     v7 = v6;
@@ -337,29 +337,29 @@ LABEL_10:
     v16 = PLResourceCachingGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [(PLPrefetchConfiguration *)self memoryMaxPrefetchPhotosCount];
-      v17 = [(PLPrefetchConfiguration *)self memoryMaxPrefetchVideosCount];
-      v18 = [(PLPrefetchConfiguration *)self memoryPrefetchLimit];
-      v19 = [(PLPrefetchConfiguration *)self cloudResourcePrefetchMaxFileSize];
+      memoryMaxPrefetchPhotosCount = [(PLPrefetchConfiguration *)self memoryMaxPrefetchPhotosCount];
+      memoryMaxPrefetchVideosCount = [(PLPrefetchConfiguration *)self memoryMaxPrefetchVideosCount];
+      memoryPrefetchLimit = [(PLPrefetchConfiguration *)self memoryPrefetchLimit];
+      cloudResourcePrefetchMaxFileSize = [(PLPrefetchConfiguration *)self cloudResourcePrefetchMaxFileSize];
       [(PLPrefetchConfiguration *)self cloudResourceInitialMinimumFreeDiskSpaceForOptimizeRatio];
       *buf = 67111168;
-      v23 = v21;
+      v23 = memoryMaxPrefetchPhotosCount;
       v24 = 1024;
-      v25 = v17;
+      v25 = memoryMaxPrefetchVideosCount;
       v26 = 1024;
-      v27 = v18;
+      v27 = memoryPrefetchLimit;
       v28 = 2048;
-      v29 = v19;
+      v29 = cloudResourcePrefetchMaxFileSize;
       v30 = 2048;
       v31 = v20;
       v32 = 2048;
-      v33 = [(PLPrefetchConfiguration *)self cloudResourceMaximumSmallLibraryThreshold];
+      cloudResourceMaximumSmallLibraryThreshold = [(PLPrefetchConfiguration *)self cloudResourceMaximumSmallLibraryThreshold];
       v34 = 2048;
-      v35 = [(PLPrefetchConfiguration *)self memoryPrefetchAllowedIfLastViewedDateWithin];
+      memoryPrefetchAllowedIfLastViewedDateWithin = [(PLPrefetchConfiguration *)self memoryPrefetchAllowedIfLastViewedDateWithin];
       v36 = 2048;
-      v37 = [(PLPrefetchConfiguration *)self memoryPrefetchIfCreationDateWithin];
+      memoryPrefetchIfCreationDateWithin = [(PLPrefetchConfiguration *)self memoryPrefetchIfCreationDateWithin];
       v38 = 1024;
-      v39 = [(PLPrefetchConfiguration *)self cloudResourceComputeSyncMaxResourcesPerFetch];
+      cloudResourceComputeSyncMaxResourcesPerFetch = [(PLPrefetchConfiguration *)self cloudResourceComputeSyncMaxResourcesPerFetch];
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEBUG, "Trial Override is TRUE. Using values from Trial Experiment\n\t memoryMaxPrefetchPhotosCount:%hu\n\tmemoryMaxPrefetchVideosCount:%hu\n\tmemoryPrefetchLimit:%hu\n\tcloudResourcePrefetchMaxFileSize:%llu\n\t\n\tcloudResourceInitialMinimumFreeDiskSpaceForOptimizeRatio:%f\n\tcloudResourceMaximumSmallLibraryThreshold:%llu\n\tmemoryPrefetchAllowedIfLastViewedDateWithin:%lld\n\tmemoryPrefetchIfCreationDateWithin:%lld\n\tcloudResourceComputeSyncMaxResourcesPerFetch:%hu\n", buf, 0x4Cu);
     }
   }

@@ -1,16 +1,16 @@
 @interface CHWorkoutDetailAppleWeatherFooterView
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (CHWorkoutDetailAppleWeatherFooterView)initWithCoder:(id)a3;
-- (CHWorkoutDetailAppleWeatherFooterView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (CHWorkoutDetailAppleWeatherFooterView)initWithCoder:(id)coder;
+- (CHWorkoutDetailAppleWeatherFooterView)initWithFrame:(CGRect)frame textContainer:(id)container;
 @end
 
 @implementation CHWorkoutDetailAppleWeatherFooterView
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  v5 = self;
-  [(CHWorkoutDetailAppleWeatherFooterView *)v5 frame];
-  [(CHWorkoutDetailAppleWeatherFooterView *)v5 sizeThatFits:CGRectGetWidth(v13), INFINITY];
+  selfCopy = self;
+  [(CHWorkoutDetailAppleWeatherFooterView *)selfCopy frame];
+  [(CHWorkoutDetailAppleWeatherFooterView *)selfCopy sizeThatFits:CGRectGetWidth(v13), INFINITY];
   v7 = v6;
   v9 = v8;
 
@@ -21,14 +21,14 @@
   return result;
 }
 
-- (CHWorkoutDetailAppleWeatherFooterView)initWithCoder:(id)a3
+- (CHWorkoutDetailAppleWeatherFooterView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (CHWorkoutDetailAppleWeatherFooterView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (CHWorkoutDetailAppleWeatherFooterView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

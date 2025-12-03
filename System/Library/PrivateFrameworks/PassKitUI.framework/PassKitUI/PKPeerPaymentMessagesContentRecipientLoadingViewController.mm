@@ -9,9 +9,9 @@
   v5.receiver = self;
   v5.super_class = PKPeerPaymentMessagesContentRecipientLoadingViewController;
   [(PKPeerPaymentMessagesContentRecipientLoadingViewController *)&v5 viewDidLoad];
-  v3 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentView];
-  v4 = [v3 activityIndicator];
-  [v4 startAnimating];
+  contentView = [(PKPeerPaymentMessagesContentBaseViewController *)self contentView];
+  activityIndicator = [contentView activityIndicator];
+  [activityIndicator startAnimating];
 }
 
 @end

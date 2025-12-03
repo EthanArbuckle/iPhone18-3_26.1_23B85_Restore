@@ -1,22 +1,22 @@
 @interface DDParsecFadeAnimator
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation DDParsecFadeAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v6 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v7 = [v4 containerView];
-  v8 = [v5 view];
-  [v7 addSubview:v8];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  v6 = [transitionCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  containerView = [transitionCopy containerView];
+  view = [v5 view];
+  [containerView addSubview:view];
 
-  v9 = [v5 view];
-  [v9 setAlpha:0.0];
+  view2 = [v5 view];
+  [view2 setAlpha:0.0];
 
-  [(DDParsecFadeAnimator *)self transitionDuration:v4];
+  [(DDParsecFadeAnimator *)self transitionDuration:transitionCopy];
   v11 = v10;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
@@ -29,8 +29,8 @@
   v15[2] = sub_100005164;
   v15[3] = &unk_1000189E0;
   v16 = v20;
-  v17 = v4;
-  v12 = v4;
+  v17 = transitionCopy;
+  v12 = transitionCopy;
   v13 = v20;
   v14 = v5;
   [UIView animateWithDuration:v18 animations:v15 completion:v11];

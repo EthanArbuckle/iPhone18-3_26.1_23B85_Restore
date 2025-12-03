@@ -1,24 +1,24 @@
 @interface SPUIProactiveResultsViewController
-- (BOOL)searchAgentHasWindow:(id)a3;
-- (SPUIProactiveResultsViewController)initWithSearchModel:(id)a3 searchEntity:(id)a4;
-- (unint64_t)refreshResultsWithContext:(id)a3 allowPartialUpdates:(BOOL)a4;
+- (BOOL)searchAgentHasWindow:(id)window;
+- (SPUIProactiveResultsViewController)initWithSearchModel:(id)model searchEntity:(id)entity;
+- (unint64_t)refreshResultsWithContext:(id)context allowPartialUpdates:(BOOL)updates;
 - (void)fadeInFooterView;
-- (void)searchAgentUpdatedResults:(id)a3;
-- (void)setFooterView:(id)a3;
+- (void)searchAgentUpdatedResults:(id)results;
+- (void)setFooterView:(id)view;
 @end
 
 @implementation SPUIProactiveResultsViewController
 
 - (void)fadeInFooterView
 {
-  v3 = [(SearchUIResultsViewController *)self footerView];
-  [v3 alpha];
+  footerView = [(SearchUIResultsViewController *)self footerView];
+  [footerView alpha];
   v5 = v4;
 
   if (v5 < 1.0)
   {
-    v6 = [(SPUIProactiveResultsViewController *)self footerTransitionTimer];
-    [v6 invalidate];
+    footerTransitionTimer = [(SPUIProactiveResultsViewController *)self footerTransitionTimer];
+    [footerTransitionTimer invalidate];
 
     objc_initWeak(&location, self);
     v7 = MEMORY[0x277CBEBB8];
@@ -35,49 +35,49 @@
   }
 }
 
-- (SPUIProactiveResultsViewController)initWithSearchModel:(id)a3 searchEntity:(id)a4
+- (SPUIProactiveResultsViewController)initWithSearchModel:(id)model searchEntity:(id)entity
 {
   v5.receiver = self;
   v5.super_class = SPUIProactiveResultsViewController;
-  return [(SPUIResultsViewController *)&v5 initWithSearchModel:a3 searchEntity:a4];
+  return [(SPUIResultsViewController *)&v5 initWithSearchModel:model searchEntity:entity];
 }
 
-- (void)searchAgentUpdatedResults:(id)a3
+- (void)searchAgentUpdatedResults:(id)results
 {
-  v4 = a3;
-  v5 = [(SearchUIResultsViewController *)self sections];
-  v6 = [v5 count];
+  resultsCopy = results;
+  sections = [(SearchUIResultsViewController *)self sections];
+  v6 = [sections count];
 
-  v7 = [(SearchUIResultsViewController *)self footerView];
-  if (v7)
+  footerView = [(SearchUIResultsViewController *)self footerView];
+  if (footerView)
   {
-    v8 = v7;
-    v9 = [(SearchUIResultsViewController *)self sections];
-    v10 = [v9 count];
-    v11 = [v4 sections];
-    v12 = [v11 count];
+    v8 = footerView;
+    sections2 = [(SearchUIResultsViewController *)self sections];
+    v10 = [sections2 count];
+    sections3 = [resultsCopy sections];
+    v12 = [sections3 count];
 
     if (v10 < v12)
     {
-      v13 = [(SearchUIResultsViewController *)self footerView];
-      [v13 setAlpha:0.0];
+      footerView2 = [(SearchUIResultsViewController *)self footerView];
+      [footerView2 setAlpha:0.0];
     }
   }
 
   v17.receiver = self;
   v17.super_class = SPUIProactiveResultsViewController;
-  [(SPUIResultsViewController *)&v17 searchAgentUpdatedResults:v4];
-  if ([v4 queryPartiallyComplete])
+  [(SPUIResultsViewController *)&v17 searchAgentUpdatedResults:resultsCopy];
+  if ([resultsCopy queryPartiallyComplete])
   {
-    v14 = [v4 sections];
-    v15 = [v14 count];
+    sections4 = [resultsCopy sections];
+    v15 = [sections4 count];
 
     if (v15)
     {
       if (!v6)
       {
-        v16 = [(SPUIProactiveResultsViewController *)self view];
-        [v16 layoutBelowIfNeeded];
+        view = [(SPUIProactiveResultsViewController *)self view];
+        [view layoutBelowIfNeeded];
       }
     }
   }
@@ -106,30 +106,30 @@ void __54__SPUIProactiveResultsViewController_fadeInFooterView__block_invoke_2(u
   [v1 setAlpha:1.0];
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v4 = a3;
-  v5 = [(SPUIProactiveResultsViewController *)self footerTransitionTimer];
-  v6 = [v5 isValid];
+  viewCopy = view;
+  footerTransitionTimer = [(SPUIProactiveResultsViewController *)self footerTransitionTimer];
+  isValid = [footerTransitionTimer isValid];
 
-  if (v6)
+  if (isValid)
   {
-    [v4 setAlpha:0.0];
+    [viewCopy setAlpha:0.0];
   }
 
-  v7 = [(SearchUIResultsViewController *)self sections];
-  v8 = [v7 count];
+  sections = [(SearchUIResultsViewController *)self sections];
+  v8 = [sections count];
 
   if (!v8)
   {
-    [v4 setAlpha:0.0];
+    [viewCopy setAlpha:0.0];
   }
 
   v11.receiver = self;
   v11.super_class = SPUIProactiveResultsViewController;
-  [(SearchUIResultsViewController *)&v11 setFooterView:v4];
-  v9 = [(SearchUIResultsViewController *)self sections];
-  v10 = [v9 count];
+  [(SearchUIResultsViewController *)&v11 setFooterView:viewCopy];
+  sections2 = [(SearchUIResultsViewController *)self sections];
+  v10 = [sections2 count];
 
   if (!v10)
   {
@@ -137,29 +137,29 @@ void __54__SPUIProactiveResultsViewController_fadeInFooterView__block_invoke_2(u
   }
 }
 
-- (BOOL)searchAgentHasWindow:(id)a3
+- (BOOL)searchAgentHasWindow:(id)window
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 applicationState] == 0;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v4 = [mEMORY[0x277D75128] applicationState] == 0;
 
   return v4;
 }
 
-- (unint64_t)refreshResultsWithContext:(id)a3 allowPartialUpdates:(BOOL)a4
+- (unint64_t)refreshResultsWithContext:(id)context allowPartialUpdates:(BOOL)updates
 {
-  v6 = a3;
-  v7 = [(SPUIResultsViewController *)self model];
+  contextCopy = context;
+  model = [(SPUIResultsViewController *)self model];
 
-  if (v7)
+  if (model)
   {
-    v8 = [(SPUIResultsViewController *)self model];
+    model2 = [(SPUIResultsViewController *)self model];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v10 = [(SPUIResultsViewController *)self model];
-      if (a4 || (-[SearchUIResultsViewController sections](self, "sections"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 count], v11, !v12))
+      model3 = [(SPUIResultsViewController *)self model];
+      if (updates || (-[SearchUIResultsViewController sections](self, "sections"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 count], v11, !v12))
       {
         v21 = MEMORY[0x277D65D40];
         v22 = *(MEMORY[0x277D65D40] + 40);
@@ -175,7 +175,7 @@ void __54__SPUIProactiveResultsViewController_fadeInFooterView__block_invoke_2(u
           _os_log_impl(&dword_26B837000, v22, OS_LOG_TYPE_DEFAULT, "Fetching full proactive results.", buf, 2u);
         }
 
-        [v10 updateWithQueryContext:v6];
+        [model3 updateWithQueryContext:contextCopy];
       }
 
       else
@@ -194,12 +194,12 @@ void __54__SPUIProactiveResultsViewController_fadeInFooterView__block_invoke_2(u
           _os_log_impl(&dword_26B837000, v14, OS_LOG_TYPE_DEFAULT, "Refreshing proactive results.", v26, 2u);
         }
 
-        [v10 refreshWithQueryContext:v6];
+        [model3 refreshWithQueryContext:contextCopy];
       }
 
-      v23 = [v10 queryTask];
-      v24 = [v23 query];
-      v17 = [v24 queryIdent];
+      queryTask = [model3 queryTask];
+      query = [queryTask query];
+      queryIdent = [query queryIdent];
     }
 
     else
@@ -217,10 +217,10 @@ void __54__SPUIProactiveResultsViewController_fadeInFooterView__block_invoke_2(u
         [SPUIProactiveResultsViewController refreshResultsWithContext:v19 allowPartialUpdates:?];
       }
 
-      v20 = [(SPUIResultsViewController *)self model];
-      [v20 updateWithQueryContext:v6];
+      model4 = [(SPUIResultsViewController *)self model];
+      [model4 updateWithQueryContext:contextCopy];
 
-      v17 = 0;
+      queryIdent = 0;
     }
   }
 
@@ -239,10 +239,10 @@ void __54__SPUIProactiveResultsViewController_fadeInFooterView__block_invoke_2(u
       [SPUIProactiveResultsViewController refreshResultsWithContext:v16 allowPartialUpdates:?];
     }
 
-    v17 = -1;
+    queryIdent = -1;
   }
 
-  return v17;
+  return queryIdent;
 }
 
 @end

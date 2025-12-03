@@ -1,5 +1,5 @@
 @interface WatchFaceView
-- (_TtC15PhotosUIPrivate13WatchFaceView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (_TtC15PhotosUIPrivate13WatchFaceView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 - (void)layoutSubviews;
 @end
 
@@ -7,14 +7,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37EDD9C();
 }
 
-- (_TtC15PhotosUIPrivate13WatchFaceView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (_TtC15PhotosUIPrivate13WatchFaceView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
-  v5 = a3;
-  v6 = a4;
+  imageCopy = image;
+  highlightedImageCopy = highlightedImage;
   sub_1B37EE004();
 }
 

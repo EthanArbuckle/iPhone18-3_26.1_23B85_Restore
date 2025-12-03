@@ -1,48 +1,48 @@
 @interface NUFilterNode
-- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)a3;
-- (BOOL)isEqualToRenderNode:(id)a3;
+- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)data;
+- (BOOL)isEqualToRenderNode:(id)node;
 - (BOOL)isGeometryNode;
-- (BOOL)shouldCacheNodeForPipelineState:(id)a3;
-- (NUFilterNode)initWithFilterName:(id)a3 settings:(id)a4 inputs:(id)a5;
-- (NUFilterNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)_evaluateAuxiliaryImageForType:(int64_t)a3 error:(id *)a4;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateImageGeometry:(id *)a3;
-- (id)_evaluateImageProperties:(id *)a3;
+- (BOOL)shouldCacheNodeForPipelineState:(id)state;
+- (NUFilterNode)initWithFilterName:(id)name settings:(id)settings inputs:(id)inputs;
+- (NUFilterNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)_evaluateAuxiliaryImageForType:(int64_t)type error:(id *)error;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateImageGeometry:(id *)geometry;
+- (id)_evaluateImageProperties:(id *)properties;
 - (id)debugQuickLookObject;
 - (id)descriptionSubClassHook;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 - (unint64_t)hash;
-- (void)nu_updateDigest:(id)a3;
+- (void)nu_updateDigest:(id)digest;
 @end
 
 @implementation NUFilterNode
 
-- (void)nu_updateDigest:(id)a3
+- (void)nu_updateDigest:(id)digest
 {
   v5.receiver = self;
   v5.super_class = NUFilterNode;
-  v4 = a3;
-  [(NURenderNode *)&v5 nu_updateDigest:v4];
-  [v4 addCString:{"filterName", v5.receiver, v5.super_class}];
-  [v4 addString:self->_filterName];
-  [v4 addCString:"gainMapMode"];
-  [v4 addBytes:&self->_gainMapMode length:8];
+  digestCopy = digest;
+  [(NURenderNode *)&v5 nu_updateDigest:digestCopy];
+  [digestCopy addCString:{"filterName", v5.receiver, v5.super_class}];
+  [digestCopy addString:self->_filterName];
+  [digestCopy addCString:"gainMapMode"];
+  [digestCopy addBytes:&self->_gainMapMode length:8];
 }
 
 - (id)descriptionSubClassHook
 {
   v3 = self->_filterName;
-  v4 = [(NUFilterNode *)self gainMapMode];
-  if ((v4 - 1) >= 3)
+  gainMapMode = [(NUFilterNode *)self gainMapMode];
+  if ((gainMapMode - 1) >= 3)
   {
     v5 = v3;
   }
 
   else
   {
-    v5 = [(NSString *)v3 stringByAppendingFormat:@"[gm:%@]", off_1E810ABC8[v4 - 1]];
+    v5 = [(NSString *)v3 stringByAppendingFormat:@"[gm:%@]", off_1E810ABC8[gainMapMode - 1]];
   }
 
   v6 = v5;
@@ -58,15 +58,15 @@
   return (0x41359F86079F7 * [(NSString *)self->_filterName hash]) ^ v3;
 }
 
-- (BOOL)isEqualToRenderNode:(id)a3
+- (BOOL)isEqualToRenderNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v11.receiver = self;
   v11.super_class = NUFilterNode;
-  if (-[NURenderNode isEqualToRenderNode:](&v11, sel_isEqualToRenderNode_, v4) && (-[NUFilterNode filterName](self, "filterName"), v5 = objc_claimAutoreleasedReturnValue(), [v4 filterName], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqualToString:", v6), v6, v5, v7))
+  if (-[NURenderNode isEqualToRenderNode:](&v11, sel_isEqualToRenderNode_, nodeCopy) && (-[NUFilterNode filterName](self, "filterName"), v5 = objc_claimAutoreleasedReturnValue(), [nodeCopy filterName], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqualToString:", v6), v6, v5, v7))
   {
-    v8 = [(NUFilterNode *)self gainMapMode];
-    v9 = v8 == [v4 gainMapMode];
+    gainMapMode = [(NUFilterNode *)self gainMapMode];
+    v9 = gainMapMode == [nodeCopy gainMapMode];
   }
 
   else
@@ -83,22 +83,22 @@
   {
     v5.receiver = self;
     v5.super_class = NUFilterNode;
-    v3 = [(NURenderNode *)&v5 debugQuickLookObject];
+    debugQuickLookObject = [(NURenderNode *)&v5 debugQuickLookObject];
   }
 
   else
   {
     v6 = 0;
-    v3 = [(NUFilterNode *)self _evaluateImage:&v6];
+    debugQuickLookObject = [(NUFilterNode *)self _evaluateImage:&v6];
   }
 
-  return v3;
+  return debugQuickLookObject;
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v47 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!image)
   {
     v20 = NUAssertLogger_20065();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -119,8 +119,8 @@
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v44 = v27;
         v45 = 2114;
@@ -131,8 +131,8 @@
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v44 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -143,13 +143,13 @@
 
   v4 = MEMORY[0x1E695F648];
   filterName = self->_filterName;
-  v6 = [(NURenderNode *)self settings];
-  v7 = [v4 filterWithName:filterName withInputParameters:v6];
+  settings = [(NURenderNode *)self settings];
+  v7 = [v4 filterWithName:filterName withInputParameters:settings];
 
   if (!v7)
   {
     [NUError errorWithCode:1 reason:@"Cannot create filter with name" object:self->_filterName];
-    *a3 = v18 = 0;
+    *image = v18 = 0;
     goto LABEL_20;
   }
 
@@ -157,8 +157,8 @@
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v8 = [(NURenderNode *)self inputs];
-  v9 = [v8 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  inputs = [(NURenderNode *)self inputs];
+  v9 = [inputs countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v9)
   {
     v10 = *v39;
@@ -168,7 +168,7 @@
       {
         if (*v39 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(inputs);
         }
 
         v12 = *(*(&v38 + 1) + 8 * i);
@@ -178,7 +178,7 @@
         v15 = v37;
         if (!v14)
         {
-          *a3 = [NUError errorWithCode:2 reason:@"Cannot evaluate input" object:v13 underlyingError:v15];
+          *image = [NUError errorWithCode:2 reason:@"Cannot evaluate input" object:v13 underlyingError:v15];
 
           v18 = 0;
           goto LABEL_20;
@@ -187,7 +187,7 @@
         [v7 setValue:v14 forKey:v12];
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v9 = [inputs countByEnumeratingWithState:&v38 objects:v42 count:16];
       if (v9)
       {
         continue;
@@ -197,26 +197,26 @@
     }
   }
 
-  v16 = [v7 outputImage];
-  if (!v16)
+  outputImage = [v7 outputImage];
+  if (!outputImage)
   {
     v17 = [NUError invalidError:@"Filter produced a nil output image" object:v7];
 LABEL_18:
     [NUError errorWithCode:1 reason:@"Failed to produce valid output image for CIFilter" object:v7 underlyingError:v17];
-    *a3 = v18 = 0;
+    *image = v18 = 0;
     goto LABEL_19;
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = [NUError invalidError:@"Output image is not a CIImage" object:v16];
+    v17 = [NUError invalidError:@"Output image is not a CIImage" object:outputImage];
 
     goto LABEL_18;
   }
 
   v17 = 0;
-  v18 = v16;
+  v18 = outputImage;
 LABEL_19:
 
 LABEL_20:
@@ -224,11 +224,11 @@ LABEL_20:
   return v18;
 }
 
-- (id)_evaluateImageProperties:(id *)a3
+- (id)_evaluateImageProperties:(id *)properties
 {
   v7.receiver = self;
   v7.super_class = NUFilterNode;
-  v4 = [(NURenderNode *)&v7 _evaluateImageProperties:a3];
+  v4 = [(NURenderNode *)&v7 _evaluateImageProperties:properties];
   if (v4 && [(NUFilterNode *)self gainMapMode]== 3)
   {
     v5 = [[_NUImageProperties alloc] initWithProperties:v4];
@@ -240,7 +240,7 @@ LABEL_20:
   return v4;
 }
 
-- (id)_evaluateImageGeometry:(id *)a3
+- (id)_evaluateImageGeometry:(id *)geometry
 {
   v25.receiver = self;
   v25.super_class = NUFilterNode;
@@ -261,9 +261,9 @@ LABEL_20:
 
     if (v7)
     {
-      v8 = [v6 renderScale];
+      renderScale = [v6 renderScale];
       v10 = v9;
-      v11 = [(NURenderNode *)self outputImage:a3];
+      v11 = [(NURenderNode *)self outputImage:geometry];
       v12 = v11;
       if (v11)
       {
@@ -293,10 +293,10 @@ LABEL_20:
         v23 = v26[1];
         v24 = v26[0];
         v20 = [NUImageGeometry alloc];
-        v21 = [v6 orientation];
+        orientation = [v6 orientation];
         v27.origin = v24;
         v27.size = v23;
-        v19 = [(NUImageGeometry *)v20 initWithExtent:&v27 renderScale:v8 orientation:v10, v21];
+        v19 = [(NUImageGeometry *)v20 initWithExtent:&v27 renderScale:renderScale orientation:v10, orientation];
       }
 
       else
@@ -321,18 +321,18 @@ LABEL_20:
 
 - (BOOL)isGeometryNode
 {
-  v2 = [(NURenderNode *)self inputs];
-  v3 = [v2 count];
+  inputs = [(NURenderNode *)self inputs];
+  v3 = [inputs count];
 
   return v3 != 1;
 }
 
-- (id)_evaluateAuxiliaryImageForType:(int64_t)a3 error:(id *)a4
+- (id)_evaluateAuxiliaryImageForType:(int64_t)type error:(id *)error
 {
-  if (a3 == 7 && [(NUFilterNode *)self gainMapMode])
+  if (type == 7 && [(NUFilterNode *)self gainMapMode])
   {
     v7 = @"HDRGainMap";
-    *a4 = [NUError failureError:@"Filter node cannot propagate original auxiliary data" object:@"HDRGainMap"];
+    *error = [NUError failureError:@"Filter node cannot propagate original auxiliary data" object:@"HDRGainMap"];
 
     v8 = 0;
   }
@@ -341,46 +341,46 @@ LABEL_20:
   {
     v10.receiver = self;
     v10.super_class = NUFilterNode;
-    v8 = [(NURenderNode *)&v10 _evaluateAuxiliaryImageForType:a3 error:a4];
+    v8 = [(NURenderNode *)&v10 _evaluateAuxiliaryImageForType:type error:error];
   }
 
   return v8;
 }
 
-- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)a3
+- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)data
 {
-  if (a3 == 7 && [(NUFilterNode *)self gainMapMode])
+  if (data == 7 && [(NUFilterNode *)self gainMapMode])
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = NUFilterNode;
-  return [(NURenderNode *)&v6 canPropagateOriginalAuxiliaryData:a3];
+  return [(NURenderNode *)&v6 canPropagateOriginalAuxiliaryData:data];
 }
 
-- (BOOL)shouldCacheNodeForPipelineState:(id)a3
+- (BOOL)shouldCacheNodeForPipelineState:(id)state
 {
-  v4 = a3;
-  if ([v4 auxiliaryImageType] == 1 || !objc_msgSend(v4, "auxiliaryImageType"))
+  stateCopy = state;
+  if ([stateCopy auxiliaryImageType] == 1 || !objc_msgSend(stateCopy, "auxiliaryImageType"))
   {
-    v9 = [v4 evaluationMode];
-    v6 = v9 >= 4;
-    v7 = v9 & 0xF;
+    evaluationMode = [stateCopy evaluationMode];
+    v6 = evaluationMode >= 4;
+    v7 = evaluationMode & 0xF;
     v8 = 11;
   }
 
   else
   {
-    if ([v4 auxiliaryImageType] != 7)
+    if ([stateCopy auxiliaryImageType] != 7)
     {
       v11 = 0;
       goto LABEL_9;
     }
 
-    v5 = [(NUFilterNode *)self gainMapMode];
-    v6 = v5 >= 4;
-    v7 = v5 & 0xF;
+    gainMapMode = [(NUFilterNode *)self gainMapMode];
+    v6 = gainMapMode >= 4;
+    v7 = gainMapMode & 0xF;
     v8 = 6;
   }
 
@@ -400,11 +400,11 @@ LABEL_9:
   return v11 & 1;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v10.receiver = self;
   v10.super_class = NUFilterNode;
-  v7 = [(NURenderNode *)&v10 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v7 = [(NURenderNode *)&v10 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
   v8 = v7;
   if (v7)
   {
@@ -415,12 +415,12 @@ LABEL_9:
   return v8;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  cacheCopy = cache;
+  stateCopy = state;
+  if (!error)
   {
     v24 = NUAssertLogger_20065();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -441,8 +441,8 @@ LABEL_9:
         v31 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v34 = [v32 callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v32 callStackSymbols];
+        v35 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v31;
         v46 = 2114;
@@ -453,8 +453,8 @@ LABEL_9:
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v30;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -463,37 +463,37 @@ LABEL_9:
     _NUAssertFailHandler("[NUFilterNode nodeByReplayingAgainstCache:pipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderNode+Filter.m", 59, @"Invalid parameter not satisfying: %s", v36, v37, v38, v39, "error != nil");
   }
 
-  v10 = v9;
-  v11 = [(NURenderNode *)self inputs];
-  v12 = [v11 count];
+  v10 = stateCopy;
+  inputs = [(NURenderNode *)self inputs];
+  v12 = [inputs count];
 
   if (!v12)
   {
-    v13 = v10;
-    if ([v13 evaluationMode] == 3)
+    dominantInputKey = v10;
+    if ([dominantInputKey evaluationMode] == 3)
     {
-      v20 = [v13 copy];
+      v20 = [dominantInputKey copy];
 
       [v20 setEvaluationMode:1];
-      v13 = v20;
+      dominantInputKey = v20;
     }
 
     v43.receiver = self;
     v43.super_class = NUFilterNode;
-    [(NURenderNode *)&v43 nodeByReplayingAgainstCache:v8 pipelineState:v13 error:a5];
+    [(NURenderNode *)&v43 nodeByReplayingAgainstCache:cacheCopy pipelineState:dominantInputKey error:error];
     goto LABEL_17;
   }
 
-  v13 = [(NURenderNode *)self dominantInputKey];
-  v14 = [v10 auxiliaryImageType];
-  if (v14 == 7)
+  dominantInputKey = [(NURenderNode *)self dominantInputKey];
+  auxiliaryImageType = [v10 auxiliaryImageType];
+  if (auxiliaryImageType == 7)
   {
-    v15 = [(NUFilterNode *)self gainMapMode];
-    switch(v15)
+    gainMapMode = [(NUFilterNode *)self gainMapMode];
+    switch(gainMapMode)
     {
       case 3:
-        v22 = [(NUFilterNode *)self filterName];
-        *a5 = [NUError unsupportedError:@"Gain map is disabled" object:v22];
+        filterName = [(NUFilterNode *)self filterName];
+        *error = [NUError unsupportedError:@"Gain map is disabled" object:filterName];
 
         v21 = 0;
         goto LABEL_23;
@@ -502,20 +502,20 @@ LABEL_9:
         [v18 setAuxiliaryImageType:1];
         v41.receiver = self;
         v41.super_class = NUFilterNode;
-        v19 = [(NURenderNode *)&v41 nodeByReplayingAgainstCache:v8 pipelineState:v18 error:a5];
+        v19 = [(NURenderNode *)&v41 nodeByReplayingAgainstCache:cacheCopy pipelineState:v18 error:error];
         goto LABEL_19;
       case 1:
         v42[0] = self;
         v42[1] = NUFilterNode;
         v16 = v42;
 LABEL_16:
-        [(objc_super *)v16 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+        [(objc_super *)v16 nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
         v21 = LABEL_17:;
         goto LABEL_23;
     }
   }
 
-  if (v14 == 1 || !v13)
+  if (auxiliaryImageType == 1 || !dominantInputKey)
   {
     v40.receiver = self;
     v40.super_class = NUFilterNode;
@@ -523,16 +523,16 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v17 = [(NURenderNode *)self inputForKey:v13];
+  v17 = [(NURenderNode *)self inputForKey:dominantInputKey];
   v18 = v17;
   if (!v17)
   {
     [NUError missingError:@"missing dominant input" object:self];
-    *a5 = v21 = 0;
+    *error = v21 = 0;
     goto LABEL_22;
   }
 
-  v19 = [v17 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+  v19 = [v17 nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
 LABEL_19:
   v21 = v19;
 LABEL_22:
@@ -542,13 +542,13 @@ LABEL_23:
   return v21;
 }
 
-- (NUFilterNode)initWithFilterName:(id)a3 settings:(id)a4 inputs:(id)a5
+- (NUFilterNode)initWithFilterName:(id)name settings:(id)settings inputs:(id)inputs
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  nameCopy = name;
+  settingsCopy = settings;
+  inputsCopy = inputs;
+  if (!nameCopy)
   {
     v20 = NUAssertLogger_20065();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -569,8 +569,8 @@ LABEL_23:
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v38 = v27;
         v39 = 2114;
@@ -581,8 +581,8 @@ LABEL_23:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v38 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -591,37 +591,37 @@ LABEL_23:
     _NUAssertFailHandler("[NUFilterNode initWithFilterName:settings:inputs:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderNode+Filter.m", 37, @"Invalid parameter not satisfying: %s", v32, v33, v34, v35, "filterName != nil");
   }
 
-  v11 = v10;
-  v12 = [v9 objectForKeyedSubscript:@"__gainMapMode"];
+  v11 = inputsCopy;
+  v12 = [settingsCopy objectForKeyedSubscript:@"__gainMapMode"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v14 = [v9 objectForKeyedSubscript:@"__gainMapMode"];
+    v14 = [settingsCopy objectForKeyedSubscript:@"__gainMapMode"];
     self->_gainMapMode = [v14 integerValue];
 
-    v15 = [v9 mutableCopy];
+    v15 = [settingsCopy mutableCopy];
     [v15 setObject:0 forKeyedSubscript:@"__gainMapMode"];
 
-    v9 = v15;
+    settingsCopy = v15;
   }
 
   v36.receiver = self;
   v36.super_class = NUFilterNode;
-  v16 = [(NURenderNode *)&v36 initWithSettings:v9 inputs:v11];
-  v17 = [v8 copy];
+  v16 = [(NURenderNode *)&v36 initWithSettings:settingsCopy inputs:v11];
+  v17 = [nameCopy copy];
   filterName = v16->_filterName;
   v16->_filterName = v17;
 
   return v16;
 }
 
-- (NUFilterNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NUFilterNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_20112);
@@ -665,8 +665,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -682,8 +682,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;

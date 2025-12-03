@@ -1,15 +1,15 @@
 @interface ReadingActivityServiceFactory
-- (void)deleteCloudDataWithCompletion:(id)a3;
+- (void)deleteCloudDataWithCompletion:(id)completion;
 @end
 
 @implementation ReadingActivityServiceFactory
 
-- (void)deleteCloudDataWithCompletion:(id)a3
+- (void)deleteCloudDataWithCompletion:(id)completion
 {
   v4 = sub_1001F1160(&qword_100AD67D0);
   __chkstk_darwin(v4 - 8);
   v6 = &v13 - v5;
-  v7 = _Block_copy(a3);
+  v7 = _Block_copy(completion);
   if (v7)
   {
     v8 = v7;

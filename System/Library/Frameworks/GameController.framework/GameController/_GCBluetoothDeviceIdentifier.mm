@@ -1,6 +1,6 @@
 @interface _GCBluetoothDeviceIdentifier
-+ (id)identifierWithHardwareAddress:(id)a3;
-+ (id)identifierWithHardwareAddressString:(id)a3;
++ (id)identifierWithHardwareAddress:(id)address;
++ (id)identifierWithHardwareAddressString:(id)string;
 - (_GCBluetoothDeviceIdentifier)init;
 - (char)btAddress;
 @end
@@ -14,13 +14,13 @@
   return 0;
 }
 
-+ (id)identifierWithHardwareAddress:(id)a3
++ (id)identifierWithHardwareAddress:(id)address
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length] == 6)
+  addressCopy = address;
+  v5 = addressCopy;
+  if (addressCopy && [addressCopy length] == 6)
   {
-    v6 = [a1 alloc];
+    v6 = [self alloc];
     [v5 getBytes:v6 + 8 length:6];
   }
 
@@ -32,13 +32,13 @@
   return v6;
 }
 
-+ (id)identifierWithHardwareAddressString:(id)a3
++ (id)identifierWithHardwareAddressString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
     v5 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@":-"];
-    v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+    v6 = [stringCopy componentsSeparatedByCharactersInSet:v5];
 
     if ([v6 count] == 6)
     {
@@ -60,7 +60,7 @@
         if (v7 == 6)
         {
           v12 = [MEMORY[0x1E695DEF0] dataWithBytes:v15 length:6];
-          v13 = [a1 identifierWithHardwareAddress:v12];
+          v13 = [self identifierWithHardwareAddress:v12];
 
           goto LABEL_8;
         }
@@ -81,13 +81,13 @@ LABEL_8:
 
 - (char)btAddress
 {
-  if (a1)
+  if (self)
   {
-    a1 = [MEMORY[0x1E695DEF0] dataWithBytes:a1 + 8 length:6];
+    self = [MEMORY[0x1E695DEF0] dataWithBytes:self + 8 length:6];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

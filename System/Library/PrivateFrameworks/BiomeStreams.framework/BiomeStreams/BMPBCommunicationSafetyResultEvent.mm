@@ -1,33 +1,33 @@
 @interface BMPBCommunicationSafetyResultEvent
-- (BMPBCommunicationSafetyResultEvent)initWithData:(id)a3 skipImage:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BMPBCommunicationSafetyResultEvent)initWithData:(id)data skipImage:(BOOL)image;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCommunicationSafetyResultContentType:(id)a3;
-- (int)StringAsCommunicationSafetyResultEventDirection:(id)a3;
-- (int)StringAsCommunicationSafetyResultEventType:(id)a3;
+- (int)StringAsCommunicationSafetyResultContentType:(id)type;
+- (int)StringAsCommunicationSafetyResultEventDirection:(id)direction;
+- (int)StringAsCommunicationSafetyResultEventType:(id)type;
 - (int)communicationSafetyResultContentType;
 - (int)communicationSafetyResultEventDirection;
 - (int)communicationSafetyResultEventType;
 - (unint64_t)hash;
-- (void)addContactHandles:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCommunicationSafetyResultContentType:(BOOL)a3;
-- (void)setHasCommunicationSafetyResultEventDirection:(BOOL)a3;
-- (void)setHasCommunicationSafetyResultEventType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addContactHandles:(id)handles;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCommunicationSafetyResultContentType:(BOOL)type;
+- (void)setHasCommunicationSafetyResultEventDirection:(BOOL)direction;
+- (void)setHasCommunicationSafetyResultEventType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBCommunicationSafetyResultEvent
 
-- (BMPBCommunicationSafetyResultEvent)initWithData:(id)a3 skipImage:(BOOL)a4
+- (BMPBCommunicationSafetyResultEvent)initWithData:(id)data skipImage:(BOOL)image
 {
-  self->_skipImage = a4;
+  self->_skipImage = image;
   v5.receiver = self;
   v5.super_class = BMPBCommunicationSafetyResultEvent;
-  return [(BMPBCommunicationSafetyResultEvent *)&v5 initWithData:a3];
+  return [(BMPBCommunicationSafetyResultEvent *)&v5 initWithData:data];
 }
 
 - (int)communicationSafetyResultEventDirection
@@ -43,9 +43,9 @@
   }
 }
 
-- (void)setHasCommunicationSafetyResultEventDirection:(BOOL)a3
+- (void)setHasCommunicationSafetyResultEventDirection:(BOOL)direction
 {
-  if (a3)
+  if (direction)
   {
     v3 = 4;
   }
@@ -58,20 +58,20 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsCommunicationSafetyResultEventDirection:(id)a3
+- (int)StringAsCommunicationSafetyResultEventDirection:(id)direction
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Sent"])
+  directionCopy = direction;
+  if ([directionCopy isEqualToString:@"Sent"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Received"])
+  else if ([directionCopy isEqualToString:@"Received"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UnknownOrNotApplicable"])
+  else if ([directionCopy isEqualToString:@"UnknownOrNotApplicable"])
   {
     v4 = 2;
   }
@@ -97,9 +97,9 @@
   }
 }
 
-- (void)setHasCommunicationSafetyResultEventType:(BOOL)a3
+- (void)setHasCommunicationSafetyResultEventType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -112,25 +112,25 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsCommunicationSafetyResultEventType:(id)a3
+- (int)StringAsCommunicationSafetyResultEventType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Sensitive"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Sensitive"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NonSensitive"])
+  else if ([typeCopy isEqualToString:@"NonSensitive"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Deleted"])
+  else if ([typeCopy isEqualToString:@"Deleted"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ConversationDeleted"])
+  else if ([typeCopy isEqualToString:@"ConversationDeleted"])
   {
     v4 = 3;
   }
@@ -156,9 +156,9 @@
   }
 }
 
-- (void)setHasCommunicationSafetyResultContentType:(BOOL)a3
+- (void)setHasCommunicationSafetyResultContentType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -171,20 +171,20 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsCommunicationSafetyResultContentType:(id)a3
+- (int)StringAsCommunicationSafetyResultContentType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Photo"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Photo"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Message"])
+  else if ([typeCopy isEqualToString:@"Message"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Conversation"])
+  else if ([typeCopy isEqualToString:@"Conversation"])
   {
     v4 = 2;
   }
@@ -197,22 +197,22 @@
   return v4;
 }
 
-- (void)addContactHandles:(id)a3
+- (void)addContactHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   contactHandles = self->_contactHandles;
-  v8 = v4;
+  v8 = handlesCopy;
   if (!contactHandles)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_contactHandles;
     self->_contactHandles = v6;
 
-    v4 = v8;
+    handlesCopy = v8;
     contactHandles = self->_contactHandles;
   }
 
-  [(NSMutableArray *)contactHandles addObject:v4];
+  [(NSMutableArray *)contactHandles addObject:handlesCopy];
 }
 
 - (id)description
@@ -221,31 +221,31 @@
   v8.receiver = self;
   v8.super_class = BMPBCommunicationSafetyResultEvent;
   v4 = [(BMPBCommunicationSafetyResultEvent *)&v8 description];
-  v5 = [(BMPBCommunicationSafetyResultEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBCommunicationSafetyResultEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_absoluteTimestamp];
-    [v3 setObject:v4 forKey:@"absoluteTimestamp"];
+    [dictionary setObject:v4 forKey:@"absoluteTimestamp"];
   }
 
   childId = self->_childId;
   if (childId)
   {
-    [v3 setObject:childId forKey:@"childId"];
+    [dictionary setObject:childId forKey:@"childId"];
   }
 
   deviceId = self->_deviceId;
   if (deviceId)
   {
-    [v3 setObject:deviceId forKey:@"deviceId"];
+    [dictionary setObject:deviceId forKey:@"deviceId"];
   }
 
   has = self->_has;
@@ -262,7 +262,7 @@
       v9 = off_1E6E544F8[communicationSafetyResultEventDirection];
     }
 
-    [v3 setObject:v9 forKey:@"communicationSafetyResultEventDirection"];
+    [dictionary setObject:v9 forKey:@"communicationSafetyResultEventDirection"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -293,7 +293,7 @@ LABEL_9:
     v11 = off_1E6E54510[communicationSafetyResultEventType];
   }
 
-  [v3 setObject:v11 forKey:@"communicationSafetyResultEventType"];
+  [dictionary setObject:v11 forKey:@"communicationSafetyResultEventType"];
 
   if ((*&self->_has & 2) != 0)
   {
@@ -309,65 +309,65 @@ LABEL_19:
       v13 = off_1E6E54530[communicationSafetyResultContentType];
     }
 
-    [v3 setObject:v13 forKey:@"communicationSafetyResultContentType"];
+    [dictionary setObject:v13 forKey:@"communicationSafetyResultContentType"];
   }
 
 LABEL_23:
   contactHandles = self->_contactHandles;
   if (contactHandles)
   {
-    [v3 setObject:contactHandles forKey:@"contactHandles"];
+    [dictionary setObject:contactHandles forKey:@"contactHandles"];
   }
 
   contentId = self->_contentId;
   if (contentId)
   {
-    [v3 setObject:contentId forKey:@"contentId"];
+    [dictionary setObject:contentId forKey:@"contentId"];
   }
 
   conversationId = self->_conversationId;
   if (conversationId)
   {
-    [v3 setObject:conversationId forKey:@"conversationId"];
+    [dictionary setObject:conversationId forKey:@"conversationId"];
   }
 
   imageData = self->_imageData;
   if (imageData)
   {
-    [v3 setObject:imageData forKey:@"imageData"];
+    [dictionary setObject:imageData forKey:@"imageData"];
   }
 
   sourceBundleId = self->_sourceBundleId;
   if (sourceBundleId)
   {
-    [v3 setObject:sourceBundleId forKey:@"sourceBundleId"];
+    [dictionary setObject:sourceBundleId forKey:@"sourceBundleId"];
   }
 
   senderHandle = self->_senderHandle;
   if (senderHandle)
   {
-    [v3 setObject:senderHandle forKey:@"senderHandle"];
+    [dictionary setObject:senderHandle forKey:@"senderHandle"];
   }
 
   contentURL = self->_contentURL;
   if (contentURL)
   {
-    [v3 setObject:contentURL forKey:@"contentURL"];
+    [dictionary setObject:contentURL forKey:@"contentURL"];
   }
 
   conversationURL = self->_conversationURL;
   if (conversationURL)
   {
-    [v3 setObject:conversationURL forKey:@"conversationURL"];
+    [dictionary setObject:conversationURL forKey:@"conversationURL"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     absoluteTimestamp = self->_absoluteTimestamp;
@@ -484,26 +484,26 @@ LABEL_11:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_absoluteTimestamp;
-    *(v4 + 112) |= 1u;
+    toCopy[1] = *&self->_absoluteTimestamp;
+    *(toCopy + 112) |= 1u;
   }
 
-  v11 = v4;
+  v11 = toCopy;
   if (self->_childId)
   {
-    [v4 setChildId:?];
-    v4 = v11;
+    [toCopy setChildId:?];
+    toCopy = v11;
   }
 
   if (self->_deviceId)
   {
     [v11 setDeviceId:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   has = self->_has;
@@ -515,8 +515,8 @@ LABEL_11:
     }
 
 LABEL_33:
-    *(v4 + 8) = self->_communicationSafetyResultEventType;
-    *(v4 + 112) |= 8u;
+    *(toCopy + 8) = self->_communicationSafetyResultEventType;
+    *(toCopy + 112) |= 8u;
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_11;
@@ -525,8 +525,8 @@ LABEL_33:
     goto LABEL_10;
   }
 
-  *(v4 + 7) = self->_communicationSafetyResultEventDirection;
-  *(v4 + 112) |= 4u;
+  *(toCopy + 7) = self->_communicationSafetyResultEventDirection;
+  *(toCopy + 112) |= 4u;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -537,18 +537,18 @@ LABEL_9:
   if ((has & 2) != 0)
   {
 LABEL_10:
-    *(v4 + 6) = self->_communicationSafetyResultContentType;
-    *(v4 + 112) |= 2u;
+    *(toCopy + 6) = self->_communicationSafetyResultContentType;
+    *(toCopy + 112) |= 2u;
   }
 
 LABEL_11:
   if ([(BMPBCommunicationSafetyResultEvent *)self contactHandlesCount])
   {
     [v11 clearContactHandles];
-    v6 = [(BMPBCommunicationSafetyResultEvent *)self contactHandlesCount];
-    if (v6)
+    contactHandlesCount = [(BMPBCommunicationSafetyResultEvent *)self contactHandlesCount];
+    if (contactHandlesCount)
     {
-      v7 = v6;
+      v7 = contactHandlesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(BMPBCommunicationSafetyResultEvent *)self contactHandlesAtIndex:i];
@@ -600,10 +600,10 @@ LABEL_11:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -611,11 +611,11 @@ LABEL_11:
     *(v5 + 112) |= 1u;
   }
 
-  v7 = [(NSString *)self->_childId copyWithZone:a3];
+  v7 = [(NSString *)self->_childId copyWithZone:zone];
   v8 = *(v6 + 16);
   *(v6 + 16) = v7;
 
-  v9 = [(NSString *)self->_deviceId copyWithZone:a3];
+  v9 = [(NSString *)self->_deviceId copyWithZone:zone];
   v10 = *(v6 + 80);
   *(v6 + 80) = v9;
 
@@ -671,7 +671,7 @@ LABEL_7:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v34 + 1) + 8 * i) copyWithZone:{a3, v34}];
+        v17 = [*(*(&v34 + 1) + 8 * i) copyWithZone:{zone, v34}];
         [v6 addContactHandles:v17];
       }
 
@@ -681,31 +681,31 @@ LABEL_7:
     while (v14);
   }
 
-  v18 = [(NSString *)self->_contentId copyWithZone:a3];
+  v18 = [(NSString *)self->_contentId copyWithZone:zone];
   v19 = *(v6 + 48);
   *(v6 + 48) = v18;
 
-  v20 = [(NSString *)self->_conversationId copyWithZone:a3];
+  v20 = [(NSString *)self->_conversationId copyWithZone:zone];
   v21 = *(v6 + 64);
   *(v6 + 64) = v20;
 
-  v22 = [(NSData *)self->_imageData copyWithZone:a3];
+  v22 = [(NSData *)self->_imageData copyWithZone:zone];
   v23 = *(v6 + 88);
   *(v6 + 88) = v22;
 
-  v24 = [(NSString *)self->_sourceBundleId copyWithZone:a3];
+  v24 = [(NSString *)self->_sourceBundleId copyWithZone:zone];
   v25 = *(v6 + 104);
   *(v6 + 104) = v24;
 
-  v26 = [(NSString *)self->_senderHandle copyWithZone:a3];
+  v26 = [(NSString *)self->_senderHandle copyWithZone:zone];
   v27 = *(v6 + 96);
   *(v6 + 96) = v26;
 
-  v28 = [(NSString *)self->_contentURL copyWithZone:a3];
+  v28 = [(NSString *)self->_contentURL copyWithZone:zone];
   v29 = *(v6 + 56);
   *(v6 + 56) = v28;
 
-  v30 = [(NSString *)self->_conversationURL copyWithZone:a3];
+  v30 = [(NSString *)self->_conversationURL copyWithZone:zone];
   v31 = *(v6 + 72);
   *(v6 + 72) = v30;
 
@@ -713,24 +713,24 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
-  v5 = *(v4 + 112);
+  v5 = *(equalCopy + 112);
   if (*&self->_has)
   {
-    if ((*(v4 + 112) & 1) == 0 || self->_absoluteTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 112) & 1) == 0 || self->_absoluteTimestamp != *(equalCopy + 1))
     {
       goto LABEL_42;
     }
   }
 
-  else if (*(v4 + 112))
+  else if (*(equalCopy + 112))
   {
 LABEL_42:
     v17 = 0;
@@ -738,13 +738,13 @@ LABEL_42:
   }
 
   childId = self->_childId;
-  if (childId | *(v4 + 2) && ![(NSString *)childId isEqual:?])
+  if (childId | *(equalCopy + 2) && ![(NSString *)childId isEqual:?])
   {
     goto LABEL_42;
   }
 
   deviceId = self->_deviceId;
-  if (deviceId | *(v4 + 10))
+  if (deviceId | *(equalCopy + 10))
   {
     if (![(NSString *)deviceId isEqual:?])
     {
@@ -752,54 +752,54 @@ LABEL_42:
     }
   }
 
-  v8 = *(v4 + 112);
+  v8 = *(equalCopy + 112);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 112) & 4) == 0 || self->_communicationSafetyResultEventDirection != *(v4 + 7))
+    if ((*(equalCopy + 112) & 4) == 0 || self->_communicationSafetyResultEventDirection != *(equalCopy + 7))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 112) & 4) != 0)
+  else if ((*(equalCopy + 112) & 4) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 112) & 8) == 0 || self->_communicationSafetyResultEventType != *(v4 + 8))
+    if ((*(equalCopy + 112) & 8) == 0 || self->_communicationSafetyResultEventType != *(equalCopy + 8))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 112) & 8) != 0)
+  else if ((*(equalCopy + 112) & 8) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 112) & 2) == 0 || self->_communicationSafetyResultContentType != *(v4 + 6))
+    if ((*(equalCopy + 112) & 2) == 0 || self->_communicationSafetyResultContentType != *(equalCopy + 6))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 112) & 2) != 0)
+  else if ((*(equalCopy + 112) & 2) != 0)
   {
     goto LABEL_42;
   }
 
   contactHandles = self->_contactHandles;
-  if (contactHandles | *(v4 + 5) && ![(NSMutableArray *)contactHandles isEqual:?])
+  if (contactHandles | *(equalCopy + 5) && ![(NSMutableArray *)contactHandles isEqual:?])
   {
     goto LABEL_42;
   }
 
   contentId = self->_contentId;
-  if (contentId | *(v4 + 6))
+  if (contentId | *(equalCopy + 6))
   {
     if (![(NSString *)contentId isEqual:?])
     {
@@ -808,7 +808,7 @@ LABEL_42:
   }
 
   conversationId = self->_conversationId;
-  if (conversationId | *(v4 + 8))
+  if (conversationId | *(equalCopy + 8))
   {
     if (![(NSString *)conversationId isEqual:?])
     {
@@ -817,7 +817,7 @@ LABEL_42:
   }
 
   imageData = self->_imageData;
-  if (imageData | *(v4 + 11))
+  if (imageData | *(equalCopy + 11))
   {
     if (![(NSData *)imageData isEqual:?])
     {
@@ -826,7 +826,7 @@ LABEL_42:
   }
 
   sourceBundleId = self->_sourceBundleId;
-  if (sourceBundleId | *(v4 + 13))
+  if (sourceBundleId | *(equalCopy + 13))
   {
     if (![(NSString *)sourceBundleId isEqual:?])
     {
@@ -835,7 +835,7 @@ LABEL_42:
   }
 
   senderHandle = self->_senderHandle;
-  if (senderHandle | *(v4 + 12))
+  if (senderHandle | *(equalCopy + 12))
   {
     if (![(NSString *)senderHandle isEqual:?])
     {
@@ -844,7 +844,7 @@ LABEL_42:
   }
 
   contentURL = self->_contentURL;
-  if (contentURL | *(v4 + 7))
+  if (contentURL | *(equalCopy + 7))
   {
     if (![(NSString *)contentURL isEqual:?])
     {
@@ -853,7 +853,7 @@ LABEL_42:
   }
 
   conversationURL = self->_conversationURL;
-  if (conversationURL | *(v4 + 9))
+  if (conversationURL | *(equalCopy + 9))
   {
     v17 = [(NSString *)conversationURL isEqual:?];
   }
@@ -952,18 +952,18 @@ LABEL_16:
   return v20 ^ v21 ^ [(NSString *)self->_conversationURL hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4[14])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[14])
   {
-    self->_absoluteTimestamp = v4[1];
+    self->_absoluteTimestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BMPBCommunicationSafetyResultEvent *)self setChildId:?];
   }

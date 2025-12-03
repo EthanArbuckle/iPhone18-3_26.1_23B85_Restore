@@ -73,20 +73,20 @@
 
 - (id)fp_realpathURL
 {
-  v2 = [a1 path];
-  v3 = [v2 fp_realpath];
+  path = [self path];
+  fp_realpath = [path fp_realpath];
 
-  if ([v3 length])
+  if ([fp_realpath length])
   {
-    v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3 isDirectory:{objc_msgSend(a1, "hasDirectoryPath")}];
+    selfCopy = [MEMORY[0x1E695DFF8] fileURLWithPath:fp_realpath isDirectory:{objc_msgSend(self, "hasDirectoryPath")}];
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = v4;
+  v5 = selfCopy;
 
   return v5;
 }
@@ -121,7 +121,7 @@
   }
 
   v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/private/var"];
-  v5 = [v4 fp_relativePathWithRealpath:a1];
+  v5 = [v4 fp_relativePathWithRealpath:self];
 
   if (v5)
   {
@@ -168,26 +168,26 @@
 
 + (id)fp_lmdURL
 {
-  v0 = [MEMORY[0x1E695DFF8] fp_homeDirectory];
-  v1 = [v0 URLByAppendingPathComponent:@"Library/Mobile Documents" isDirectory:1];
+  fp_homeDirectory = [MEMORY[0x1E695DFF8] fp_homeDirectory];
+  v1 = [fp_homeDirectory URLByAppendingPathComponent:@"Library/Mobile Documents" isDirectory:1];
 
   return v1;
 }
 
 - (id)fp_shortDescription
 {
-  v1 = [a1 path];
-  v2 = [v1 fp_prettyPath];
+  path = [self path];
+  fp_prettyPath = [path fp_prettyPath];
 
-  return v2;
+  return fp_prettyPath;
 }
 
 - (uint64_t)fp_checkSandboxFileMetadataRead
 {
   getpid();
   v2 = (*MEMORY[0x1E69E9BD0] | *MEMORY[0x1E69E9BC8]);
-  v3 = [a1 path];
-  v11 = [v3 fileSystemRepresentation];
+  path = [self path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
   v4 = sandbox_check();
 
   if (!v4)
@@ -196,13 +196,13 @@
   }
 
   v13 = 0;
-  v5 = [a1 checkResourceIsReachableAndReturnError:{&v13, v11}];
+  v5 = [self checkResourceIsReachableAndReturnError:{&v13, fileSystemRepresentation}];
   v6 = v13;
-  if (v5 && (v12 = 0, [a1 getResourceValue:&v12 forKey:*MEMORY[0x1E695DBC8] error:0]) && objc_msgSend(v12, "BOOLValue"))
+  if (v5 && (v12 = 0, [self getResourceValue:&v12 forKey:*MEMORY[0x1E695DBC8] error:0]) && objc_msgSend(v12, "BOOLValue"))
   {
-    v7 = [a1 path];
-    v8 = [v7 stringByDeletingLastPathComponent];
-    [v8 fileSystemRepresentation];
+    path2 = [self path];
+    stringByDeletingLastPathComponent = [path2 stringByDeletingLastPathComponent];
+    [stringByDeletingLastPathComponent fileSystemRepresentation];
     v9 = sandbox_check() == 0;
   }
 
@@ -216,17 +216,17 @@
 
 - (void)fp_issueSandboxExtensionOfClass:()FPAdditions report:error:
 {
-  v8 = [a1 path];
-  if ([a1 hasDirectoryPath])
+  path = [self path];
+  if ([self hasDirectoryPath])
   {
-    v9 = [v8 stringByAppendingString:@"/"];
+    v9 = [path stringByAppendingString:@"/"];
 
-    v8 = v9;
+    path = v9;
   }
 
   v10 = *MEMORY[0x1E69E9BE8];
   v11 = *MEMORY[0x1E69E9BF0];
-  [v8 fileSystemRepresentation];
+  [path fileSystemRepresentation];
   v12 = sandbox_extension_issue_file();
   if (v12)
   {
@@ -237,9 +237,9 @@
   {
     v13 = MEMORY[0x1E696ABC0];
     v14 = *__error();
-    v15 = [a1 path];
+    path2 = [self path];
     v16 = __error();
-    *a5 = [v13 fp_errorWithPOSIXCode:v14 description:{@"couldn't issue sandbox extension %s for '%@': %s", a3, v15, strerror(*v16)}];
+    *a5 = [v13 fp_errorWithPOSIXCode:v14 description:{@"couldn't issue sandbox extension %s for '%@': %s", a3, path2, strerror(*v16)}];
 
     a5 = 0;
   }
@@ -299,15 +299,15 @@
 
   v4 = fp_personaSharedDirectoryPathForUserID__pathByPersonaID;
   objc_sync_enter(v4);
-  v5 = [MEMORY[0x1E69DF068] sharedManager];
-  v6 = [v5 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
-  v7 = [v6 userPersonaUniqueString];
-  v8 = v7;
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  v8 = userPersonaUniqueString;
   v9 = @"__FPDefaultPersona__";
-  if (v7)
+  if (userPersonaUniqueString)
   {
-    v9 = v7;
+    v9 = userPersonaUniqueString;
   }
 
   v10 = v9;
@@ -321,7 +321,7 @@
 
   else
   {
-    if ([v6 isEnterprisePersona])
+    if ([currentPersona isEnterprisePersona])
     {
       if (fpfs_supports_sokoban())
       {
@@ -385,12 +385,12 @@
 
 + (id)fp_tempDirectoryForEnterprisePersona
 {
-  v0 = [MEMORY[0x1E695DFF8] fp_personaSharedDirectory];
-  v1 = [v0 URLByAppendingPathComponent:@"tmp/com.apple.fileproviderd"];
+  fp_personaSharedDirectory = [MEMORY[0x1E695DFF8] fp_personaSharedDirectory];
+  v1 = [fp_personaSharedDirectory URLByAppendingPathComponent:@"tmp/com.apple.fileproviderd"];
 
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v7 = 0;
-  v3 = [v2 createDirectoryAtURL:v1 withIntermediateDirectories:1 attributes:0 error:&v7];
+  v3 = [defaultManager createDirectoryAtURL:v1 withIntermediateDirectories:1 attributes:0 error:&v7];
   v4 = v7;
 
   if ((v3 & 1) == 0)
@@ -407,10 +407,10 @@
 
 + (id)fp_secureTempDirectory
 {
-  v0 = [MEMORY[0x1E69DF068] sharedManager];
-  v1 = [v0 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
-  if ([v1 isEnterprisePersona])
+  if ([currentPersona isEnterprisePersona])
   {
     [MEMORY[0x1E695DFF8] fp_tempDirectoryForEnterprisePersona];
   }
@@ -438,10 +438,10 @@
 
 + (id)fp_insecureTempDirectory
 {
-  v0 = [MEMORY[0x1E69DF068] sharedManager];
-  v1 = [v0 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
-  if ([v1 isEnterprisePersona])
+  if ([currentPersona isEnterprisePersona])
   {
     [MEMORY[0x1E695DFF8] fp_tempDirectoryForEnterprisePersona];
   }
@@ -458,32 +458,32 @@
 + (id)fp_insecureTempDirectoryIgnoringPersona
 {
   v0 = MEMORY[0x1E695DFF8];
-  v1 = [MEMORY[0x1E695DFF8] fp_insecureTempDirectoryIgnoringPersonaString];
-  v2 = [v0 fileURLWithPath:v1 isDirectory:1];
+  fp_insecureTempDirectoryIgnoringPersonaString = [MEMORY[0x1E695DFF8] fp_insecureTempDirectoryIgnoringPersonaString];
+  v2 = [v0 fileURLWithPath:fp_insecureTempDirectoryIgnoringPersonaString isDirectory:1];
 
   return v2;
 }
 
 + (id)fp_cloudStorageDirectory
 {
-  v0 = [MEMORY[0x1E695DFF8] fp_personaSharedDirectory];
-  v1 = [v0 URLByAppendingPathComponent:kFPPath_Library_Slash_CloudStorage_Slash];
+  fp_personaSharedDirectory = [MEMORY[0x1E695DFF8] fp_personaSharedDirectory];
+  v1 = [fp_personaSharedDirectory URLByAppendingPathComponent:kFPPath_Library_Slash_CloudStorage_Slash];
 
   return v1;
 }
 
 + (id)fp_supportDirectory
 {
-  v0 = [MEMORY[0x1E695DFF8] fp_personaSharedDirectory];
-  v1 = [v0 URLByAppendingPathComponent:@"Library/Application Support/FileProvider"];
+  fp_personaSharedDirectory = [MEMORY[0x1E695DFF8] fp_personaSharedDirectory];
+  v1 = [fp_personaSharedDirectory URLByAppendingPathComponent:@"Library/Application Support/FileProvider"];
 
   return v1;
 }
 
 + (id)fp_backupManifestDirectory
 {
-  v0 = [MEMORY[0x1E695DFF8] fp_supportDirectory];
-  v1 = [v0 URLByAppendingPathComponent:@"backup" isDirectory:1];
+  fp_supportDirectory = [MEMORY[0x1E695DFF8] fp_supportDirectory];
+  v1 = [fp_supportDirectory URLByAppendingPathComponent:@"backup" isDirectory:1];
 
   return v1;
 }
@@ -492,23 +492,23 @@
 {
   v3 = MEMORY[0x1E695DFF8];
   v4 = a3;
-  v5 = [v3 fp_personaSharedDirectory];
-  v6 = [v5 fp_mountOnName];
+  fp_personaSharedDirectory = [v3 fp_personaSharedDirectory];
+  fp_mountOnName = [fp_personaSharedDirectory fp_mountOnName];
 
-  v7 = [v4 fp_mountOnName];
+  fp_mountOnName2 = [v4 fp_mountOnName];
 
-  if ([v6 fp_relationshipToItemAtURL:v7] == 1)
+  if ([fp_mountOnName fp_relationshipToItemAtURL:fp_mountOnName2] == 1)
   {
-    v8 = [MEMORY[0x1E695DFF8] fp_supportDirectory];
+    fp_supportDirectory = [MEMORY[0x1E695DFF8] fp_supportDirectory];
   }
 
   else
   {
     v9 = [kFPPath_DotCloudStorage_Slash stringByAppendingPathComponent:@"System"];
-    v8 = [v7 URLByAppendingPathComponent:v9 isDirectory:1];
+    fp_supportDirectory = [fp_mountOnName2 URLByAppendingPathComponent:v9 isDirectory:1];
   }
 
-  return v8;
+  return fp_supportDirectory;
 }
 
 - (id)fp_scopeDescription
@@ -516,11 +516,11 @@
   v2 = MEMORY[0x1AC593480]();
   v3 = _CFURLPromiseCopyPhysicalURL();
   v4 = v3;
-  if (v3 && ([v3 isEqual:a1] & 1) == 0)
+  if (v3 && ([v3 isEqual:self] & 1) == 0)
   {
     v7 = MEMORY[0x1AC593480](v4);
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [a1 fp_shortDescription];
+    fp_shortDescription = [self fp_shortDescription];
     if (v2)
     {
       v12 = @"s";
@@ -531,8 +531,8 @@
       v12 = @"n";
     }
 
-    v13 = [v4 lastPathComponent];
-    v14 = v13;
+    lastPathComponent = [v4 lastPathComponent];
+    v14 = lastPathComponent;
     if (v7)
     {
       v15 = @"s";
@@ -543,21 +543,21 @@
       v15 = @"n";
     }
 
-    v9 = [v10 stringWithFormat:@"%@ (%@) -> %@ (%@)", v11, v12, v13, v15];
+    v9 = [v10 stringWithFormat:@"%@ (%@) -> %@ (%@)", fp_shortDescription, v12, lastPathComponent, v15];
   }
 
   else
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [a1 fp_shortDescription];
-    v7 = v6;
+    fp_shortDescription2 = [self fp_shortDescription];
+    v7 = fp_shortDescription2;
     v8 = @"s";
     if (!v2)
     {
       v8 = @"n";
     }
 
-    v9 = [v5 stringWithFormat:@"%@ (%@)", v6, v8];
+    v9 = [v5 stringWithFormat:@"%@ (%@)", fp_shortDescription2, v8];
   }
 
   return v9;
@@ -566,10 +566,10 @@
 - (id)fp_relativePathOf:()FPAdditions
 {
   v4 = a3;
-  v5 = [a1 fp_realpathURL];
-  v6 = [v4 fp_realpathURL];
+  fp_realpathURL = [self fp_realpathURL];
+  fp_realpathURL2 = [v4 fp_realpathURL];
 
-  v7 = [v5 fp_relativePathWithRealpath:v6];
+  v7 = [fp_realpathURL fp_relativePathWithRealpath:fp_realpathURL2];
 
   return v7;
 }
@@ -577,13 +577,13 @@
 - (id)fp_relativePathWithRealpath:()FPAdditions
 {
   v4 = a3;
-  v5 = [a1 path];
-  v6 = [v4 path];
+  path = [self path];
+  path2 = [v4 path];
 
   v7 = 0;
-  if (v5 && v6)
+  if (path && path2)
   {
-    v7 = [v5 fp_relativePathWithRealpath:v6];
+    v7 = [path fp_relativePathWithRealpath:path2];
   }
 
   return v7;
@@ -596,7 +596,7 @@
   v32 = 2;
   if (v6)
   {
-    v8 = [a1 fp_relativePathWithRealpath:v6];
+    v8 = [self fp_relativePathWithRealpath:v6];
     if (v8)
     {
       v9 = v8;
@@ -607,15 +607,15 @@ LABEL_29:
     }
 
     v10 = *MEMORY[0x1E695DD70];
-    [a1 removeCachedResourceValueForKey:*MEMORY[0x1E695DD70]];
+    [self removeCachedResourceValueForKey:*MEMORY[0x1E695DD70]];
     v11 = *MEMORY[0x1E695DB78];
-    [a1 removeCachedResourceValueForKey:*MEMORY[0x1E695DB78]];
-    [a1 removeCachedResourceValueForKey:*MEMORY[0x1E695DB00]];
-    [a1 removeCachedResourceValueForKey:*MEMORY[0x1E695DBE8]];
-    [a1 removeCachedResourceValueForKey:*MEMORY[0x1E695DC38]];
+    [self removeCachedResourceValueForKey:*MEMORY[0x1E695DB78]];
+    [self removeCachedResourceValueForKey:*MEMORY[0x1E695DB00]];
+    [self removeCachedResourceValueForKey:*MEMORY[0x1E695DBE8]];
+    [self removeCachedResourceValueForKey:*MEMORY[0x1E695DC38]];
     v30 = 0;
     v31 = 0;
-    v12 = [a1 getResourceValue:&v31 forKey:v10 error:&v30];
+    v12 = [self getResourceValue:&v31 forKey:v10 error:&v30];
     v13 = v31;
     v14 = v30;
     if (v12)
@@ -652,9 +652,9 @@ LABEL_11:
 
         else
         {
-          v22 = [a1 fp_realpathURL];
-          v23 = [v6 fp_realpathURL];
-          v9 = [v22 fp_relativePathWithRealpath:v23];
+          fp_realpathURL = [self fp_realpathURL];
+          fp_realpathURL2 = [v6 fp_realpathURL];
+          v9 = [fp_realpathURL fp_relativePathWithRealpath:fp_realpathURL2];
           if ([v9 isEqualToString:&stru_1F1F94B20])
           {
             v7 = 1;
@@ -678,15 +678,15 @@ LABEL_11:
 
       v26 = 0;
       v27 = 0;
-      [a1 getResourceValue:&v27 forKey:v11 error:&v26];
+      [self getResourceValue:&v27 forKey:v11 error:&v26];
       v19 = v27;
       v14 = v26;
 
       if ([v19 BOOLValue])
       {
-        v20 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
         v25 = v14;
-        v21 = [v20 getRelationship:&v32 ofDirectoryAtURL:a1 toItemAtURL:v6 error:&v25];
+        v21 = [defaultManager getRelationship:&v32 ofDirectoryAtURL:self toItemAtURL:v6 error:&v25];
         v18 = v25;
 
         if (v21)
@@ -717,32 +717,32 @@ LABEL_30:
 
 - (uint64_t)fp_isSymlink
 {
-  v2 = [a1 startAccessingSecurityScopedResource];
+  startAccessingSecurityScopedResource = [self startAccessingSecurityScopedResource];
   v6 = 0;
-  [a1 getResourceValue:&v6 forKey:*MEMORY[0x1E695DBC8] error:0];
+  [self getResourceValue:&v6 forKey:*MEMORY[0x1E695DBC8] error:0];
   v3 = v6;
-  if (v2)
+  if (startAccessingSecurityScopedResource)
   {
-    [a1 stopAccessingSecurityScopedResource];
+    [self stopAccessingSecurityScopedResource];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (uint64_t)fp_isFolder
 {
-  v2 = [a1 startAccessingSecurityScopedResource];
+  startAccessingSecurityScopedResource = [self startAccessingSecurityScopedResource];
   memset(&v9, 0, sizeof(v9));
-  v3 = [a1 path];
-  v4 = lstat([v3 fileSystemRepresentation], &v9);
+  path = [self path];
+  v4 = lstat([path fileSystemRepresentation], &v9);
 
   if (v4 < 0 || (v9.st_mode & 0xF000) != 0x4000)
   {
-    if (v2)
+    if (startAccessingSecurityScopedResource)
     {
-      [a1 stopAccessingSecurityScopedResource];
+      [self stopAccessingSecurityScopedResource];
     }
 
     return 0;
@@ -751,11 +751,11 @@ LABEL_30:
   else
   {
     v8 = 0;
-    [a1 getResourceValue:&v8 forKey:*MEMORY[0x1E695DBA0] error:0];
+    [self getResourceValue:&v8 forKey:*MEMORY[0x1E695DBA0] error:0];
     v5 = v8;
-    if (v2)
+    if (startAccessingSecurityScopedResource)
     {
-      [a1 stopAccessingSecurityScopedResource];
+      [self stopAccessingSecurityScopedResource];
     }
 
     v6 = [v5 BOOLValue] ^ 1;
@@ -766,15 +766,15 @@ LABEL_30:
 
 - (uint64_t)fp_isPackage
 {
-  v2 = [a1 startAccessingSecurityScopedResource];
+  startAccessingSecurityScopedResource = [self startAccessingSecurityScopedResource];
   v8 = 0;
-  [a1 getResourceValue:&v8 forKey:*MEMORY[0x1E695DB78] error:0];
+  [self getResourceValue:&v8 forKey:*MEMORY[0x1E695DB78] error:0];
   v3 = v8;
   if (([v3 BOOLValue] & 1) == 0)
   {
-    if (v2)
+    if (startAccessingSecurityScopedResource)
     {
-      [a1 stopAccessingSecurityScopedResource];
+      [self stopAccessingSecurityScopedResource];
     }
 
     v4 = 0;
@@ -782,24 +782,24 @@ LABEL_30:
   }
 
   v7 = 0;
-  [a1 getResourceValue:&v7 forKey:*MEMORY[0x1E695DBA0] error:0];
+  [self getResourceValue:&v7 forKey:*MEMORY[0x1E695DBA0] error:0];
   v4 = v7;
-  if (v2)
+  if (startAccessingSecurityScopedResource)
   {
-    [a1 stopAccessingSecurityScopedResource];
+    [self stopAccessingSecurityScopedResource];
   }
 
   if (![v4 BOOLValue])
   {
 LABEL_9:
-    v5 = 0;
+    bOOLValue = 0;
     goto LABEL_10;
   }
 
-  v5 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 LABEL_10:
 
-  return v5;
+  return bOOLValue;
 }
 
 - (void)fp_hideExtension:()FPAdditions
@@ -807,7 +807,7 @@ LABEL_10:
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
   v3 = *MEMORY[0x1E695DB60];
   v7 = 0;
-  v4 = [a1 setResourceValue:v2 forKey:v3 error:&v7];
+  v4 = [self setResourceValue:v2 forKey:v3 error:&v7];
   v5 = v7;
 
   if ((v4 & 1) == 0)
@@ -815,20 +815,20 @@ LABEL_10:
     v6 = fp_current_or_default_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(NSURL(FPAdditions) *)a1 fp_hideExtension:v5];
+      [(NSURL(FPAdditions) *)self fp_hideExtension:v5];
     }
   }
 }
 
 - (uint64_t)fp_removeFileProviderXattrsWithError:()FPAdditions
 {
-  v5 = open([a1 fileSystemRepresentation], 2097158);
-  if (v5 < 0 && (*__error() != 21 || (v5 = open([a1 fileSystemRepresentation], 1048836), v5 < 0)))
+  v5 = open([self fileSystemRepresentation], 2097158);
+  if (v5 < 0 && (*__error() != 21 || (v5 = open([self fileSystemRepresentation], 1048836), v5 < 0)))
   {
     v11 = fp_current_or_default_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [(NSURL(FPAdditions) *)a1 fp_removeFileProviderXattrsWithError:v11];
+      [(NSURL(FPAdditions) *)self fp_removeFileProviderXattrsWithError:v11];
     }
   }
 
@@ -872,7 +872,7 @@ LABEL_10:
     [NSURL(FPAdditions) fp_removeACLWithError:];
   }
 
-  v6 = fpfs_clear_file_acl([a1 fileSystemRepresentation]);
+  v6 = fpfs_clear_file_acl([self fileSystemRepresentation]);
   v7 = v6;
   if (a3 && v6 < 0)
   {
@@ -885,7 +885,7 @@ LABEL_10:
 
 - (uint64_t)fp_makeWritableWithError:()FPAdditions
 {
-  v5 = open([a1 fileSystemRepresentation], 33028);
+  v5 = open([self fileSystemRepresentation], 33028);
   if ((v5 & 0x80000000) != 0)
   {
     if (a3)
@@ -899,7 +899,7 @@ LABEL_10:
   else
   {
     v6 = v5;
-    v7 = [a1 fp_makeWritableOnFD:v5 error:a3];
+    v7 = [self fp_makeWritableOnFD:v5 error:a3];
     close(v6);
     return v7;
   }
@@ -1006,7 +1006,7 @@ LABEL_29:
 
 - (id)fp_addDocumentTrackingWithError:()FPAdditions
 {
-  v4 = [a1 fileSystemRepresentation];
+  fileSystemRepresentation = [self fileSystemRepresentation];
   getpid();
   v5 = (*MEMORY[0x1E69E9BD0] | *MEMORY[0x1E69E9BC8]);
   if (sandbox_check())
@@ -1027,7 +1027,7 @@ LABEL_29:
     goto LABEL_20;
   }
 
-  v9 = open(v4, 260, v4);
+  v9 = open(fileSystemRepresentation, 260, fileSystemRepresentation);
   if (v9 < 0)
   {
     v8 = *__error();
@@ -1098,7 +1098,7 @@ LABEL_22:
 {
   if (MEMORY[0x1AC593480](a3))
   {
-    MEMORY[0x1AC593440](a1);
+    MEMORY[0x1AC593440](self);
   }
 
   return MEMORY[0x1EEE66BB8]();
@@ -1125,20 +1125,20 @@ LABEL_22:
 
   v8 = v7;
   _Block_object_dispose(&v19, 8);
-  v9 = [v7 manager];
-  v10 = [v9 isPermanentStorageSupportedAtURL:a1 error:0];
+  manager = [v7 manager];
+  v10 = [manager isPermanentStorageSupportedAtURL:self error:0];
 
   if (v10)
   {
-    v11 = [a1 startAccessingSecurityScopedResource];
-    v12 = [v6 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource = [self startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource2 = [v6 startAccessingSecurityScopedResource];
     v17 = 0;
-    [getQLThumbnailAdditionClass() associateThumbnailsForDocumentAtURL:v6 withDocumentAtURL:a1 error:&v17];
+    [getQLThumbnailAdditionClass() associateThumbnailsForDocumentAtURL:v6 withDocumentAtURL:self error:&v17];
     v13 = v17;
-    if (v11)
+    if (startAccessingSecurityScopedResource)
     {
-      [a1 stopAccessingSecurityScopedResource];
-      if (!v12)
+      [self stopAccessingSecurityScopedResource];
+      if (!startAccessingSecurityScopedResource2)
       {
 LABEL_6:
         if (!a4)
@@ -1156,7 +1156,7 @@ LABEL_7:
       }
     }
 
-    else if (!v12)
+    else if (!startAccessingSecurityScopedResource2)
     {
       goto LABEL_6;
     }
@@ -1191,29 +1191,29 @@ LABEL_15:
   v21[1] = *MEMORY[0x1E69E9840];
   v8 = a3;
   v9 = a4;
-  v10 = [a1 startAccessingSecurityScopedResource];
-  v11 = [v8 startAccessingSecurityScopedResource];
+  startAccessingSecurityScopedResource = [self startAccessingSecurityScopedResource];
+  startAccessingSecurityScopedResource2 = [v8 startAccessingSecurityScopedResource];
   QLThumbnailAdditionClass = getQLThumbnailAdditionClass();
   v20 = *MEMORY[0x1E695DA70];
   v21[0] = v8;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
   v19 = 0;
-  LODWORD(QLThumbnailAdditionClass) = [QLThumbnailAdditionClass associateThumbnailImagesDictionary:v13 serializedQuickLookMetadata:v9 withImmutableDocument:1 atURL:a1 error:&v19];
+  LODWORD(QLThumbnailAdditionClass) = [QLThumbnailAdditionClass associateThumbnailImagesDictionary:v13 serializedQuickLookMetadata:v9 withImmutableDocument:1 atURL:self error:&v19];
 
   v14 = v19;
   if (QLThumbnailAdditionClass)
   {
-    [a1 fp_hasThumbnailOnImmutableDocument];
+    [self fp_hasThumbnailOnImmutableDocument];
     v18 = fp_current_or_default_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
       [NSURL(FPAdditions) fp_associateThumbnailToVersionAtURL:thumbnailMetadata:error:];
     }
 
-    if (!v10)
+    if (!startAccessingSecurityScopedResource)
     {
 LABEL_3:
-      if (!v11)
+      if (!startAccessingSecurityScopedResource2)
       {
         goto LABEL_4;
       }
@@ -1229,13 +1229,13 @@ LABEL_11:
     }
   }
 
-  else if (!v10)
+  else if (!startAccessingSecurityScopedResource)
   {
     goto LABEL_3;
   }
 
-  [a1 stopAccessingSecurityScopedResource];
-  if (v11)
+  [self stopAccessingSecurityScopedResource];
+  if (startAccessingSecurityScopedResource2)
   {
     goto LABEL_11;
   }
@@ -1258,14 +1258,14 @@ LABEL_6:
 {
   QLThumbnailAdditionClass = getQLThumbnailAdditionClass();
 
-  return [QLThumbnailAdditionClass hasThumbnailOnImmutableDocumentAtURL:a1];
+  return [QLThumbnailAdditionClass hasThumbnailOnImmutableDocumentAtURL:self];
 }
 
 - (id)fp_directorySizeWithError:()FPAdditions
 {
   v19 = 0;
   Current = CFAbsoluteTimeGetCurrent();
-  [a1 fileSystemRepresentation];
+  [self fileSystemRepresentation];
   v6 = dirstat_np();
   if (CFAbsoluteTimeGetCurrent() - Current > 1.0)
   {
@@ -1303,18 +1303,18 @@ LABEL_6:
 
 - (id)fp_uniqueTempFolderWithError:()FPAdditions
 {
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 URLForDirectory:99 inDomain:1 appropriateForURL:a1 create:1 error:a3];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:self create:1 error:a3];
 
   if (v6)
   {
-    v7 = [v6 path];
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
-    v10 = [v7 stringByAppendingPathComponent:v9];
+    path = [v6 path];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v10 = [path stringByAppendingPathComponent:uUIDString];
 
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
-    v12 = [v11 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:a3];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    v12 = [defaultManager2 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:a3];
     v13 = 0;
     if (v12)
     {
@@ -1333,31 +1333,31 @@ LABEL_6:
 - (id)fp_moveToTempFolderWithFilename:()FPAdditions error:
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 fp_uniqueTempFolderWithError:a4];
+  lastPathComponent = a3;
+  v7 = [self fp_uniqueTempFolderWithError:a4];
   if (v7)
   {
-    if (!v6)
+    if (!lastPathComponent)
     {
-      v6 = [a1 lastPathComponent];
+      lastPathComponent = [self lastPathComponent];
     }
 
-    v8 = [v7 URLByAppendingPathComponent:v6];
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v7 path];
-    v11 = [v9 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:a4];
+    v8 = [v7 URLByAppendingPathComponent:lastPathComponent];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v7 path];
+    v11 = [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:a4];
 
     v12 = 0;
     if (v11)
     {
-      if ([v9 moveItemAtURL:a1 toURL:v8 error:a4])
+      if ([defaultManager moveItemAtURL:self toURL:v8 error:a4])
       {
         v22 = *MEMORY[0x1E696A3A0];
         v23[0] = *MEMORY[0x1E696A388];
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-        v14 = [v8 path];
+        path2 = [v8 path];
         v21 = 0;
-        v15 = [v9 setAttributes:v13 ofItemAtPath:v14 error:&v21];
+        v15 = [defaultManager setAttributes:v13 ofItemAtPath:path2 error:&v21];
         v16 = v21;
 
         if ((v15 & 1) == 0)
@@ -1397,16 +1397,16 @@ LABEL_6:
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 fp_relativePathWithRealpath:a1];
-    v7 = [v6 pathComponents];
-    if ([v7 count] < 2)
+    v6 = [v4 fp_relativePathWithRealpath:self];
+    pathComponents = [v6 pathComponents];
+    if ([pathComponents count] < 2)
     {
       v9 = 0;
     }
 
     else
     {
-      v8 = [v7 objectAtIndexedSubscript:1];
+      v8 = [pathComponents objectAtIndexedSubscript:1];
       v9 = [v8 isEqualToString:@"File Provider Storage"];
     }
   }
@@ -1422,7 +1422,7 @@ LABEL_6:
 - (BOOL)fp_isLocationOrInLocation:()FPAdditions relativeTo:
 {
   v5 = [a4 URLByAppendingPathComponent:a3 isDirectory:1];
-  v6 = [v5 fp_relativePathWithRealpath:a1];
+  v6 = [v5 fp_relativePathWithRealpath:self];
   v7 = v6 != 0;
 
   return v7;
@@ -1436,8 +1436,8 @@ LABEL_6:
   }
 
   v4 = a3;
-  v5 = [v4 fp_relativePathWithRealpath:a1];
-  v6 = [a1 fp_isLocationOrInLocation:@"Library/Mobile Documents" relativeTo:v4];
+  v5 = [v4 fp_relativePathWithRealpath:self];
+  v6 = [self fp_isLocationOrInLocation:@"Library/Mobile Documents" relativeTo:v4];
 
   return v6;
 }
@@ -1449,7 +1449,7 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [a3 fp_relativePathWithRealpath:a1];
+  v3 = [a3 fp_relativePathWithRealpath:self];
   v4 = v3;
   if (v3)
   {
@@ -1471,7 +1471,7 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [a3 fp_relativePathWithRealpath:a1];
+  v3 = [a3 fp_relativePathWithRealpath:self];
   if ([v3 hasPrefix:@"Library/liveFiles/"])
   {
     v4 = 1;
@@ -1491,16 +1491,16 @@ LABEL_6:
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 fp_relativePathWithRealpath:a1];
-    v7 = [v6 pathComponents];
+    v6 = [v4 fp_relativePathWithRealpath:self];
+    pathComponents = [v6 pathComponents];
   }
 
   else
   {
-    v7 = 0;
+    pathComponents = 0;
   }
 
-  return v7;
+  return pathComponents;
 }
 
 - (uint64_t)_fp_partOfAppInboxWithURLComponents:()FPAdditions
@@ -1531,12 +1531,12 @@ LABEL_6:
 
 - (uint64_t)fp_isAppInboxOrDescendants
 {
-  v2 = [MEMORY[0x1E695DFF8] fp_homeDirectory];
-  v3 = [a1 _fp_componentsRelativeToRoot:v2];
+  fp_homeDirectory = [MEMORY[0x1E695DFF8] fp_homeDirectory];
+  v3 = [self _fp_componentsRelativeToRoot:fp_homeDirectory];
 
   if (v3)
   {
-    v4 = [a1 _fp_partOfAppInboxWithURLComponents:v3];
+    v4 = [self _fp_partOfAppInboxWithURLComponents:v3];
   }
 
   else
@@ -1584,9 +1584,9 @@ LABEL_3:
 
       v9 = 1;
       v10 = [v4 URLByAppendingPathComponent:*(*(&v17 + 1) + 8 * v8) isDirectory:1];
-      v11 = [v10 fp_relativePathWithRealpath:a1];
-      v12 = [v11 pathComponents];
-      v13 = [v12 count];
+      v11 = [v10 fp_relativePathWithRealpath:self];
+      pathComponents = [v11 pathComponents];
+      v13 = [pathComponents count];
 
       if (v13)
       {
@@ -1623,9 +1623,9 @@ LABEL_9:
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 fp_relativePathWithRealpath:a1];
-    v8 = [v7 pathComponents];
-    if ([v8 count] > 1)
+    v7 = [v5 fp_relativePathWithRealpath:self];
+    pathComponents = [v7 pathComponents];
+    if ([pathComponents count] > 1)
     {
       v9 = 1;
 LABEL_8:
@@ -1633,7 +1633,7 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v10 = [a1 _fp_componentsRelativeToRoot:v4];
+    v10 = [self _fp_componentsRelativeToRoot:v4];
 
     if ([v10 count] < 3)
     {
@@ -1666,7 +1666,7 @@ LABEL_8:
 
     if (v17)
     {
-      v9 = [a1 _fp_partOfAppInboxWithURLComponents:v10] ^ 1;
+      v9 = [self _fp_partOfAppInboxWithURLComponents:v10] ^ 1;
     }
 
     else
@@ -1676,7 +1676,7 @@ LABEL_6:
     }
 
 LABEL_7:
-    v8 = v10;
+    pathComponents = v10;
     goto LABEL_8;
   }
 
@@ -1688,11 +1688,11 @@ LABEL_9:
 
 - (uint64_t)fp_matchesApplicationContainerURL:()FPAdditions
 {
-  v2 = [a1 _fp_componentsRelativeToRoot:?];
+  v2 = [self _fp_componentsRelativeToRoot:?];
   v3 = v2;
   if (v2 && [v2 count] >= 2 && (objc_msgSend(v3, "objectAtIndexedSubscript:", 1), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", @"Documents"), v4, v5))
   {
-    v6 = [a1 _fp_partOfAppInboxWithURLComponents:v3] ^ 1;
+    v6 = [self _fp_partOfAppInboxWithURLComponents:v3] ^ 1;
   }
 
   else
@@ -1709,7 +1709,7 @@ LABEL_9:
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 fp_relativePathWithRealpath:a1];
+    v6 = [v4 fp_relativePathWithRealpath:self];
     v7 = [v6 rangeOfString:@"/"];
     v10 = 0;
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1734,22 +1734,22 @@ LABEL_9:
 
 - (id)fp_fpfsRootURL
 {
-  v2 = [MEMORY[0x1E695DFF8] fp_homeDirectory];
-  v3 = v2;
-  if (v2)
+  fp_homeDirectory = [MEMORY[0x1E695DFF8] fp_homeDirectory];
+  v3 = fp_homeDirectory;
+  if (fp_homeDirectory)
   {
-    v4 = [v2 fp_relativePathOf:a1];
+    v4 = [fp_homeDirectory fp_relativePathOf:self];
     v5 = kFPPath_Library_Slash_CloudStorage_Slash;
     if ([v4 hasPrefix:v5])
     {
       v6 = [v4 substringFromIndex:{objc_msgSend(v5, "length")}];
 
-      v7 = [v6 pathComponents];
-      if ([v7 count] >= 2)
+      pathComponents = [v6 pathComponents];
+      if ([pathComponents count] >= 2)
       {
         v9 = [v3 URLByAppendingPathComponent:v5];
-        v10 = [v7 firstObject];
-        v8 = [v9 URLByAppendingPathComponent:v10];
+        firstObject = [pathComponents firstObject];
+        v8 = [v9 URLByAppendingPathComponent:firstObject];
       }
 
       else
@@ -1776,15 +1776,15 @@ LABEL_9:
 
 - (BOOL)fp_isInSyncableRootFast
 {
-  v2 = [a1 path];
-  if ([v2 containsString:kFPPath_Library_Slash_CloudStorage_Slash])
+  path = [self path];
+  if ([path containsString:kFPPath_Library_Slash_CloudStorage_Slash])
   {
   }
 
   else
   {
-    v3 = [a1 path];
-    v4 = [v3 containsString:kFPPath_DotCloudStorage_Slash];
+    path2 = [self path];
+    v4 = [path2 containsString:kFPPath_DotCloudStorage_Slash];
 
     if (!v4)
     {
@@ -1795,7 +1795,7 @@ LABEL_9:
   v5 = getiopolicy_np(3, 1);
   setiopolicy_np(3, 1, 1);
   v10 = 0;
-  if ((fsctl([a1 fileSystemRepresentation], 0x40084A4AuLL, &v10, 1u) & 0x80000000) == 0)
+  if ((fsctl([self fileSystemRepresentation], 0x40084A4AuLL, &v10, 1u) & 0x80000000) == 0)
   {
     if (v10)
     {
@@ -1803,10 +1803,10 @@ LABEL_9:
       goto LABEL_16;
     }
 
-    if ([a1 hasDirectoryPath])
+    if ([self hasDirectoryPath])
     {
       v9 = 0;
-      v6 = fsctl([a1 fileSystemRepresentation], 0x40044A48uLL, &v9, 1u) >= 0 && v9 != 0;
+      v6 = fsctl([self fileSystemRepresentation], 0x40044A48uLL, &v9, 1u) >= 0 && v9 != 0;
       goto LABEL_16;
     }
   }
@@ -1825,7 +1825,7 @@ LABEL_16:
 {
   v16 = *MEMORY[0x1E69E9840];
   bzero(v15, 0x878uLL);
-  [a1 fileSystemRepresentation];
+  [self fileSystemRepresentation];
   if (statfs_ext())
   {
     if (*__error() != 2)
@@ -1833,7 +1833,7 @@ LABEL_16:
       v7 = fp_current_or_default_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        [NSURL(FPAdditions) fp_matchesFileProviderHeuristics:a1 options:?];
+        [NSURL(FPAdditions) fp_matchesFileProviderHeuristics:self options:?];
       }
     }
   }
@@ -1846,26 +1846,26 @@ LABEL_16:
 
   if ((a4 & 2) != 0)
   {
-    v8 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = [a1 fp_realpathURL];
+    selfCopy = [self fp_realpathURL];
   }
 
-  v9 = v8;
+  v9 = selfCopy;
   v10 = [MEMORY[0x1E695DFF8] fp_homeDirectoryForUserID:a3];
-  v11 = [v10 fp_realpathURL];
+  fp_realpathURL = [v10 fp_realpathURL];
 
-  if (a4 & 1) != 0 && (([v9 fp_matchesApplicationDataOrGroupContainerURL:v11] & 1) != 0 || (objc_msgSend(v9, "fp_matchesOtherBookmarkContainersURL:", v11)) || (objc_msgSend(v9, "fp_matchesFileProviderURL:", v11) & 1) != 0 || (objc_msgSend(v9, "fp_matchesApplicationContainerURL:", v11) & 1) != 0 || (objc_msgSend(v9, "fp_matchesEDSLocation") & 1) != 0 || (objc_msgSend(v9, "fp_matchesCloudDocsURL:", v11) & 1) != 0 || (objc_msgSend(v9, "fp_matchesFPFSURL:", v11) & 1) != 0 || (objc_msgSend(v9, "fp_matchesLiveFilesURL:", v11))
+  if (a4 & 1) != 0 && (([v9 fp_matchesApplicationDataOrGroupContainerURL:fp_realpathURL] & 1) != 0 || (objc_msgSend(v9, "fp_matchesOtherBookmarkContainersURL:", fp_realpathURL)) || (objc_msgSend(v9, "fp_matchesFileProviderURL:", fp_realpathURL) & 1) != 0 || (objc_msgSend(v9, "fp_matchesApplicationContainerURL:", fp_realpathURL) & 1) != 0 || (objc_msgSend(v9, "fp_matchesEDSLocation") & 1) != 0 || (objc_msgSend(v9, "fp_matchesCloudDocsURL:", fp_realpathURL) & 1) != 0 || (objc_msgSend(v9, "fp_matchesFPFSURL:", fp_realpathURL) & 1) != 0 || (objc_msgSend(v9, "fp_matchesLiveFilesURL:", fp_realpathURL))
   {
     v12 = 1;
   }
 
   else
   {
-    v12 = [v9 fp_matchesAlternateContentsURL:v11];
+    v12 = [v9 fp_matchesAlternateContentsURL:fp_realpathURL];
   }
 
 LABEL_22:
@@ -1875,29 +1875,29 @@ LABEL_22:
 
 - (uint64_t)fp_matchesUbiquitousHeuristics
 {
-  v1 = [a1 fp_realpathURL];
-  if ([v1 fp_isInSyncableRootFast])
+  fp_realpathURL = [self fp_realpathURL];
+  if ([fp_realpathURL fp_isInSyncableRootFast])
   {
     v2 = MEMORY[0x1E695E118];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFF8] fp_homeDirectory];
-    v4 = [v3 fp_realpathURL];
+    fp_homeDirectory = [MEMORY[0x1E695DFF8] fp_homeDirectory];
+    fp_realpathURL2 = [fp_homeDirectory fp_realpathURL];
 
-    if (v4)
+    if (fp_realpathURL2)
     {
-      if ([v1 fp_matchesApplicationContainerURL:v4] & 1) != 0 || (objc_msgSend(v1, "fp_matchesLiveFilesURL:", v4))
+      if ([fp_realpathURL fp_matchesApplicationContainerURL:fp_realpathURL2] & 1) != 0 || (objc_msgSend(fp_realpathURL, "fp_matchesLiveFilesURL:", fp_realpathURL2))
       {
         v2 = MEMORY[0x1E695E110];
       }
 
       else
       {
-        v6 = [v1 fp_matchesCloudDocsURL:v4];
+        v6 = [fp_realpathURL fp_matchesCloudDocsURL:fp_realpathURL2];
         v2 = MEMORY[0x1E695E118];
-        if ((v6 & 1) == 0 && ![v1 fp_matchesFPFSURL:v4])
+        if ((v6 & 1) == 0 && ![fp_realpathURL fp_matchesFPFSURL:fp_realpathURL2])
         {
           v2 = 0;
         }
@@ -1917,21 +1917,21 @@ LABEL_22:
 {
   v30 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if (v4 && ([a1 path], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "path"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "hasPrefix:", v6), v6, v5, v7))
+  if (v4 && ([self path], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "path"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "hasPrefix:", v6), v6, v5, v7))
   {
-    v8 = [a1 pathComponents];
-    if ([v8 count])
+    pathComponents = [self pathComponents];
+    if ([pathComponents count])
     {
       v9 = MEMORY[0x1E695DFF8];
-      v10 = [v8 objectAtIndexedSubscript:0];
+      v10 = [pathComponents objectAtIndexedSubscript:0];
       v11 = [v9 URLWithString:v10];
 
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v24 = v8;
-      v12 = [v8 subarrayWithRange:{1, objc_msgSend(v8, "count") - 1}];
+      v24 = pathComponents;
+      v12 = [pathComponents subarrayWithRange:{1, objc_msgSend(pathComponents, "count") - 1}];
       v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v13)
       {
@@ -1949,9 +1949,9 @@ LABEL_22:
             }
 
             v18 = *(*(&v25 + 1) + 8 * v16);
-            v19 = [v4 path];
-            v20 = [v17 path];
-            v21 = [v19 hasPrefix:v20];
+            path = [v4 path];
+            path2 = [v17 path];
+            v21 = [path hasPrefix:path2];
 
             if (!v21)
             {
@@ -1978,7 +1978,7 @@ LABEL_22:
 
 LABEL_15:
 
-      v8 = v24;
+      pathComponents = v24;
     }
 
     else
@@ -1999,15 +1999,15 @@ LABEL_15:
 
 - (id)fp_bouncedNameWithIndex:()FPAdditions
 {
-  v5 = [a1 startAccessingSecurityScopedResource];
-  v6 = [a1 fp_isFolder];
-  if (v5)
+  startAccessingSecurityScopedResource = [self startAccessingSecurityScopedResource];
+  fp_isFolder = [self fp_isFolder];
+  if (startAccessingSecurityScopedResource)
   {
-    [a1 stopAccessingSecurityScopedResource];
+    [self stopAccessingSecurityScopedResource];
   }
 
-  v7 = [a1 lastPathComponent];
-  v8 = [v7 fp_bouncedNameWithIndex:a3 isDir:v6];
+  lastPathComponent = [self lastPathComponent];
+  v8 = [lastPathComponent fp_bouncedNameWithIndex:a3 isDir:fp_isFolder];
 
   return v8;
 }
@@ -2020,12 +2020,12 @@ LABEL_15:
   v9 = 0;
   v6 = xmmword_1AAC26570;
   v7 = 0;
-  if (getattrlist([a1 fileSystemRepresentation], &v6, v8, 0x14uLL, 0) < 0)
+  if (getattrlist([self fileSystemRepresentation], &v6, v8, 0x14uLL, 0) < 0)
   {
     v3 = fp_current_or_default_log();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
-      [(NSURL(FPAdditions) *)a1 fp_volumeUUID];
+      [(NSURL(FPAdditions) *)self fp_volumeUUID];
     }
 
     v2 = 0;
@@ -2047,12 +2047,12 @@ LABEL_15:
   bzero(v8, 0x40CuLL);
   v6 = xmmword_1AAC26588;
   v7 = 0;
-  if (getattrlist([a1 fileSystemRepresentation], &v6, v8, 0x40CuLL, 1u) < 0)
+  if (getattrlist([self fileSystemRepresentation], &v6, v8, 0x40CuLL, 1u) < 0)
   {
     v2 = fp_current_or_default_log();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
     {
-      [(NSURL(FPAdditions) *)a1 fp_mountOnName];
+      [(NSURL(FPAdditions) *)self fp_mountOnName];
     }
 
     v3 = 0;
@@ -2072,23 +2072,23 @@ LABEL_15:
 + (id)fp_uncachedContainerURLForSecurityApplicationGroupIdentifier:()FPAdditions forPrimaryPersona:
 {
   v5 = a3;
-  v6 = [MEMORY[0x1E69DF068] sharedManager];
-  [v6 isSharedIPad];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  [mEMORY[0x1E69DF068] isSharedIPad];
 
   v7 = *MEMORY[0x1E69E9980];
   if ((a4 & 1) == 0)
   {
-    v8 = [MEMORY[0x1E69DF068] sharedManager];
-    v9 = [v8 currentPersona];
+    mEMORY[0x1E69DF068]2 = [MEMORY[0x1E69DF068] sharedManager];
+    currentPersona = [mEMORY[0x1E69DF068]2 currentPersona];
 
-    v10 = [v9 userPersonaUniqueString];
-    v11 = v10;
-    if (v10)
+    userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+    v11 = userPersonaUniqueString;
+    if (userPersonaUniqueString)
     {
-      [v10 UTF8String];
+      [userPersonaUniqueString UTF8String];
     }
 
-    [v9 isEnterprisePersona];
+    [currentPersona isEnterprisePersona];
   }
 
   container_query_create();
@@ -2128,16 +2128,16 @@ LABEL_15:
   v26 = *MEMORY[0x1E69E9840];
   if (a3)
   {
-    v6 = [a1 fp_fpfsRootURL];
+    selfCopy = [self fp_fpfsRootURL];
   }
 
   else
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
-  v7 = v6;
-  if (!v6)
+  v7 = selfCopy;
+  if (!selfCopy)
   {
     if (!a5)
     {
@@ -2188,8 +2188,8 @@ LABEL_20:
     if (v11)
     {
       v12 = v11;
-      v13 = [v7 fileSystemRepresentation];
-      v10 = getxattr(v13, v9, v12, size, 0, 1);
+      fileSystemRepresentation = [v7 fileSystemRepresentation];
+      v10 = getxattr(fileSystemRepresentation, v9, v12, size, 0, 1);
       if (v10 >= 1 && v10 <= size)
       {
         size = v10;
@@ -2258,11 +2258,11 @@ LABEL_32:
     setiopolicy_np(3, 1, 1);
   }
 
-  v8 = open([a1 fileSystemRepresentation], 1081604);
+  v8 = open([self fileSystemRepresentation], 1081604);
   if ((v8 & 0x80000000) == 0)
   {
     v9 = v8;
-    v10 = a1;
+    selfCopy = self;
     v11 = fgetxattr(v9, "com.apple.fileprovider.detached#B", 0, 0, 0, 0);
     if ((v11 & 0x8000000000000000) != 0)
     {
@@ -2283,7 +2283,7 @@ LABEL_50:
           goto LABEL_51;
         }
 
-        v21 = v10;
+        v21 = selfCopy;
         v22 = [MEMORY[0x1E696AE40] propertyListWithData:v20 options:0 format:0 error:a4];
         if (!v22)
         {
@@ -2382,7 +2382,7 @@ LABEL_49:
 
           if (a4)
           {
-            *a4 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:12 itemURL:v10 debugDescription:@"xattr is too large for the allocated buffer"];
+            *a4 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:12 itemURL:selfCopy debugDescription:@"xattr is too large for the allocated buffer"];
           }
 
           free(v18);
@@ -2401,7 +2401,7 @@ LABEL_49:
         v13 = MEMORY[0x1E696ABC0];
         v14 = @"detach root xattr is too large";
 LABEL_24:
-        v16 = [v13 fp_errorWithPOSIXCode:12 itemURL:v10 debugDescription:v14];
+        v16 = [v13 fp_errorWithPOSIXCode:12 itemURL:selfCopy debugDescription:v14];
         goto LABEL_25;
       }
     }
@@ -2412,7 +2412,7 @@ LABEL_24:
 
   if (a4)
   {
-    [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error() itemURL:a1 debugDescription:@"item doesn't exist or is not a directory"];
+    [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error() itemURL:self debugDescription:@"item doesn't exist or is not a directory"];
     *a4 = v15 = 0;
   }
 
@@ -2575,7 +2575,7 @@ LABEL_51:
 - (void)fp_volumeUUID
 {
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [a1 fp_shortDescription];
+  fp_shortDescription = [self fp_shortDescription];
   v2 = __error();
   strerror(*v2);
   OUTLINED_FUNCTION_15();
@@ -2587,7 +2587,7 @@ LABEL_51:
 - (void)fp_mountOnName
 {
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [a1 fp_shortDescription];
+  fp_shortDescription = [self fp_shortDescription];
   v2 = *__error();
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_15();

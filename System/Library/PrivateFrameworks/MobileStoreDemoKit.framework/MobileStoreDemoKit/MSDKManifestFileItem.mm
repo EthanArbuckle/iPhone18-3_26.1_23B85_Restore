@@ -1,22 +1,22 @@
 @interface MSDKManifestFileItem
-- (MSDKManifestFileItem)initWithIdentifier:(id)a3 andDictionary:(id)a4 forComponent:(id)a5;
+- (MSDKManifestFileItem)initWithIdentifier:(id)identifier andDictionary:(id)dictionary forComponent:(id)component;
 - (id)description;
 @end
 
 @implementation MSDKManifestFileItem
 
-- (MSDKManifestFileItem)initWithIdentifier:(id)a3 andDictionary:(id)a4 forComponent:(id)a5
+- (MSDKManifestFileItem)initWithIdentifier:(id)identifier andDictionary:(id)dictionary forComponent:(id)component
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
   v30.receiver = self;
   v30.super_class = MSDKManifestFileItem;
-  v11 = [(MSDKManifestItem *)&v30 initWithIdentifier:v9 andDictionary:v10 forComponent:a5];
+  v11 = [(MSDKManifestItem *)&v30 initWithIdentifier:identifierCopy andDictionary:dictionaryCopy forComponent:component];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_manifestFilePath, a3);
-    v13 = [v10 objectForKey:@"MSDManifestFileAttributes" ofType:objc_opt_class()];
+    objc_storeStrong(&v11->_manifestFilePath, identifier);
+    v13 = [dictionaryCopy objectForKey:@"MSDManifestFileAttributes" ofType:objc_opt_class()];
     fileAttributes = v12->_fileAttributes;
     v12->_fileAttributes = v13;
 
@@ -29,15 +29,15 @@
 
       if (v12->_fileType)
       {
-        v18 = [v10 objectForKey:@"MSDManifestFileHash"];
+        v18 = [dictionaryCopy objectForKey:@"MSDManifestFileHash"];
         fileHash = v12->_fileHash;
         v12->_fileHash = v18;
 
-        v20 = [v10 objectForKey:@"MSDManifestFileExtendedAttributes"];
+        v20 = [dictionaryCopy objectForKey:@"MSDManifestFileExtendedAttributes"];
         fileExtendedAttributes = v12->_fileExtendedAttributes;
         v12->_fileExtendedAttributes = v20;
 
-        v22 = [v10 objectForKey:@"MSDManifestSymbolicLinkTargetFile"];
+        v22 = [dictionaryCopy objectForKey:@"MSDManifestSymbolicLinkTargetFile"];
         symbolicLinkTargetFilePath = v12->_symbolicLinkTargetFilePath;
         v12->_symbolicLinkTargetFilePath = v22;
 
@@ -46,8 +46,8 @@
 
         if (v12->_fileHash)
         {
-          v25 = [(MSDKManifestFileItem *)v12 fileHash];
-          v26 = [MSDKCacheManager getBundleFilePathFromHash:v25];
+          fileHash = [(MSDKManifestFileItem *)v12 fileHash];
+          v26 = [MSDKCacheManager getBundleFilePathFromHash:fileHash];
           v27 = v12->_bundleFilePath;
           v12->_bundleFilePath = v26;
         }

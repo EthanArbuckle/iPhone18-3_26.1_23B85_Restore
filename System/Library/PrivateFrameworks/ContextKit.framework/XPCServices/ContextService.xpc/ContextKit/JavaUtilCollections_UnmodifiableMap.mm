@@ -1,11 +1,11 @@
 @interface JavaUtilCollections_UnmodifiableMap
-- (BOOL)containsKeyWithId:(id)a3;
-- (BOOL)containsValueWithId:(id)a3;
+- (BOOL)containsKeyWithId:(id)id;
+- (BOOL)containsValueWithId:(id)id;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)entrySet;
-- (id)getWithId:(id)a3;
+- (id)getWithId:(id)id;
 - (id)keySet;
 - (id)values;
 - (int)size;
@@ -15,7 +15,7 @@
 
 @implementation JavaUtilCollections_UnmodifiableMap
 
-- (BOOL)containsKeyWithId:(id)a3
+- (BOOL)containsKeyWithId:(id)id
 {
   m = self->m_;
   if (!m)
@@ -23,10 +23,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap *)m containsKeyWithId:a3];
+  return [(JavaUtilMap *)m containsKeyWithId:id];
 }
 
-- (BOOL)containsValueWithId:(id)a3
+- (BOOL)containsValueWithId:(id)id
 {
   m = self->m_;
   if (!m)
@@ -34,7 +34,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap *)m containsValueWithId:a3];
+  return [(JavaUtilMap *)m containsValueWithId:id];
 }
 
 - (id)entrySet
@@ -45,14 +45,14 @@
     JreThrowNullPointerException();
   }
 
-  v3 = [(JavaUtilMap *)m entrySet];
+  entrySet = [(JavaUtilMap *)m entrySet];
   v4 = [JavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet alloc];
-  JreStrongAssign(&v4->super.super.c_, v3);
+  JreStrongAssign(&v4->super.super.c_, entrySet);
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   m = self->m_;
   if (!m)
@@ -60,10 +60,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap *)m isEqual:a3];
+  return [(JavaUtilMap *)m isEqual:equal];
 }
 
-- (id)getWithId:(id)a3
+- (id)getWithId:(id)id
 {
   m = self->m_;
   if (!m)
@@ -71,7 +71,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap *)m getWithId:a3];
+  return [(JavaUtilMap *)m getWithId:id];
 }
 
 - (unint64_t)hash
@@ -104,9 +104,9 @@
     JreThrowNullPointerException();
   }
 
-  v3 = [(JavaUtilMap *)m keySet];
+  keySet = [(JavaUtilMap *)m keySet];
   v4 = [JavaUtilCollections_UnmodifiableSet alloc];
-  JreStrongAssign(&v4->super.c_, v3);
+  JreStrongAssign(&v4->super.c_, keySet);
 
   return v4;
 }
@@ -130,9 +130,9 @@
     JreThrowNullPointerException();
   }
 
-  v3 = [(JavaUtilMap *)m values];
+  values = [(JavaUtilMap *)m values];
   v4 = [JavaUtilCollections_UnmodifiableCollection alloc];
-  JreStrongAssign(&v4->c_, v3);
+  JreStrongAssign(&v4->c_, values);
 
   return v4;
 }

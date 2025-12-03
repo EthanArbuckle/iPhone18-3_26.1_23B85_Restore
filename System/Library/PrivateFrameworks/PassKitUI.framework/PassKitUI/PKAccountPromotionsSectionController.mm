@@ -1,43 +1,43 @@
 @interface PKAccountPromotionsSectionController
-- (BOOL)_updateImpressionCountForItem:(id)a3 shouldCountAsImpression:(BOOL)a4;
-- (Class)supplementaryRegistrationClassForKind:(id)a3 sectionIdentifier:(id)a4;
-- (PKAccountPromotionsSectionController)initWithSectionIdentifier:(id)a3 account:(id)a4 accountService:(id)a5 delegate:(id)a6;
+- (BOOL)_updateImpressionCountForItem:(id)item shouldCountAsImpression:(BOOL)impression;
+- (Class)supplementaryRegistrationClassForKind:(id)kind sectionIdentifier:(id)identifier;
+- (PKAccountPromotionsSectionController)initWithSectionIdentifier:(id)identifier account:(id)account accountService:(id)service delegate:(id)delegate;
 - (id)_promotionsWithDefaultOrdering;
-- (id)_promotionsWithOrderingContext:(unint64_t)a3;
+- (id)_promotionsWithOrderingContext:(unint64_t)context;
 - (id)itemsCopy;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)promotionForProgramIdentifier:(id)a3;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)promotionForProgramIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
 - (void)_clearViewedPromotions;
 - (void)_configureDataSource;
-- (void)_reloadDataWithCompletion:(id)a3;
-- (void)_updateImpressionCountsForAllItems:(id)a3 shouldCountAsImpression:(BOOL)a4;
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5;
+- (void)_reloadDataWithCompletion:(id)completion;
+- (void)_updateImpressionCountsForAllItems:(id)items shouldCountAsImpression:(BOOL)impression;
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)didUpdateAccountPromotions:(id)a3 accountIdentifier:(id)a4;
-- (void)preflightWithCompletion:(id)a3;
-- (void)setItems:(id)a3;
-- (void)willDisplayItem:(id)a3;
+- (void)didUpdateAccountPromotions:(id)promotions accountIdentifier:(id)identifier;
+- (void)preflightWithCompletion:(id)completion;
+- (void)setItems:(id)items;
+- (void)willDisplayItem:(id)item;
 @end
 
 @implementation PKAccountPromotionsSectionController
 
-- (PKAccountPromotionsSectionController)initWithSectionIdentifier:(id)a3 account:(id)a4 accountService:(id)a5 delegate:(id)a6
+- (PKAccountPromotionsSectionController)initWithSectionIdentifier:(id)identifier account:(id)account accountService:(id)service delegate:(id)delegate
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  accountCopy = account;
+  serviceCopy = service;
+  delegateCopy = delegate;
   v32.receiver = self;
   v32.super_class = PKAccountPromotionsSectionController;
   v14 = [(PKAccountPromotionsSectionController *)&v32 init];
   if (v14)
   {
     v15 = @"PKRewardsHubSectionAccountPromotions";
-    if (v10)
+    if (identifierCopy)
     {
-      v15 = v10;
+      v15 = identifierCopy;
     }
 
     v33[0] = v15;
@@ -47,12 +47,12 @@
     identifiers = v14->_identifiers;
     v14->_identifiers = v18;
 
-    objc_storeStrong(&v14->_account, a4);
-    objc_storeStrong(&v14->_accountService, a5);
-    objc_storeWeak(&v14->_delegate, v13);
-    v20 = [MEMORY[0x1E695DEC8] array];
+    objc_storeStrong(&v14->_account, account);
+    objc_storeStrong(&v14->_accountService, service);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    array = [MEMORY[0x1E695DEC8] array];
     items = v14->_items;
-    v14->_items = v20;
+    v14->_items = array;
 
     v14->_itemsLock._os_unfair_lock_opaque = 0;
     v22 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -85,19 +85,19 @@
   [(PKAccountPromotionsSectionController *)&v3 dealloc];
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(PKAccountPromotionsSectionController *)self _clearViewedPromotions];
-  [(PKAccountPromotionsSectionController *)self _reloadDataWithCompletion:v4];
+  [(PKAccountPromotionsSectionController *)self _reloadDataWithCompletion:completionCopy];
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   os_unfair_lock_lock(&self->_itemsLock);
   items = self->_items;
-  self->_items = v4;
+  self->_items = itemsCopy;
 
   os_unfair_lock_unlock(&self->_itemsLock);
 }
@@ -111,33 +111,33 @@
   return v3;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
-  v6 = [(PKAccountPromotionsSectionController *)self _promotionsWithOrderingContext:100];
-  if (!v6)
+  _promotionsWithDefaultOrdering = [(PKAccountPromotionsSectionController *)self _promotionsWithOrderingContext:100];
+  if (!_promotionsWithDefaultOrdering)
   {
-    v6 = [(PKAccountPromotionsSectionController *)self _promotionsWithDefaultOrdering];
+    _promotionsWithDefaultOrdering = [(PKAccountPromotionsSectionController *)self _promotionsWithDefaultOrdering];
   }
 
   os_unfair_lock_lock(&self->_itemsLock);
   v7 = [(PKAccountPromotionBehavior *)self->_promotionBehavior copy];
   os_unfair_lock_unlock(&self->_itemsLock);
-  v8 = [(PKAccountPromotionsSectionController *)self itemsCopy];
-  [(PKAccountPromotionsSectionController *)self _updateImpressionCountsForAllItems:v8 shouldCountAsImpression:0];
-  v9 = [MEMORY[0x1E695DF00] date];
+  itemsCopy = [(PKAccountPromotionsSectionController *)self itemsCopy];
+  [(PKAccountPromotionsSectionController *)self _updateImpressionCountsForAllItems:itemsCopy shouldCountAsImpression:0];
+  date = [MEMORY[0x1E695DF00] date];
   [v7 timeVisibleAfterCompleted];
   v11 = v10;
-  v12 = [v7 maxImpressionCount];
+  maxImpressionCount = [v7 maxImpressionCount];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __90__PKAccountPromotionsSectionController_snapshotWithPreviousSnapshot_forSectionIdentifier___block_invoke;
   v16[3] = &unk_1E8023060;
-  v17 = v9;
+  v17 = date;
   v18 = v11;
-  v19 = v12;
-  v13 = v9;
-  v14 = [v6 pk_objectsPassingTest:v16];
+  v19 = maxImpressionCount;
+  v13 = date;
+  v14 = [_promotionsWithDefaultOrdering pk_objectsPassingTest:v16];
   [v5 appendItems:v14];
 
   return v5;
@@ -163,10 +163,10 @@ BOOL __90__PKAccountPromotionsSectionController_snapshotWithPreviousSnapshot_for
   return v7;
 }
 
-- (id)promotionForProgramIdentifier:(id)a3
+- (id)promotionForProgramIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     os_unfair_lock_lock(&self->_itemsLock);
     items = self->_items;
@@ -174,7 +174,7 @@ BOOL __90__PKAccountPromotionsSectionController_snapshotWithPreviousSnapshot_for
     v8[1] = 3221225472;
     v8[2] = __70__PKAccountPromotionsSectionController_promotionForProgramIdentifier___block_invoke;
     v8[3] = &unk_1E8023088;
-    v9 = v4;
+    v9 = identifierCopy;
     v6 = [(NSArray *)items pk_firstObjectPassingTest:v8];
     os_unfair_lock_unlock(&self->_itemsLock);
   }
@@ -251,10 +251,10 @@ void __60__PKAccountPromotionsSectionController__configureDataSource__block_invo
   [WeakRetained[5] configureCell:v7 withPromotion:v6];
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v19 = [MEMORY[0x1E6995558] fractionalWidthDimension:{a3, a4, 1.0}];
+  v19 = [MEMORY[0x1E6995558] fractionalWidthDimension:{environment, identifier, 1.0}];
   v4 = [MEMORY[0x1E6995558] estimatedDimension:500.0];
   v18 = [MEMORY[0x1E6995588] sizeWithWidthDimension:v19 heightDimension:v4];
   v16 = [MEMORY[0x1E6995578] itemWithLayoutSize:v18];
@@ -279,11 +279,11 @@ void __60__PKAccountPromotionsSectionController__configureDataSource__block_invo
   return v7;
 }
 
-- (Class)supplementaryRegistrationClassForKind:(id)a3 sectionIdentifier:(id)a4
+- (Class)supplementaryRegistrationClassForKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  kindCopy = kind;
+  identifierCopy = identifier;
+  v7 = kindCopy;
   v8 = v7;
   if (v7 != @"PKAccountPromotionsHeaderIdentifier")
   {
@@ -308,12 +308,12 @@ void __60__PKAccountPromotionsSectionController__configureDataSource__block_invo
   return v12;
 }
 
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v18 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = v7;
+  registrationCopy = registration;
+  kindCopy = kind;
+  identifierCopy = identifier;
+  v9 = kindCopy;
   v10 = v9;
   if (v9 == @"PKAccountPromotionsHeaderIdentifier")
   {
@@ -330,7 +330,7 @@ void __60__PKAccountPromotionsSectionController__configureDataSource__block_invo
   if (v11)
   {
 LABEL_4:
-    v12 = v18;
+    v12 = registrationCopy;
     v13 = PKLocalizedFeatureString();
     [v12 setTitle:v13];
 LABEL_5:
@@ -341,7 +341,7 @@ LABEL_5:
   v14 = v10;
   if (v14 == @"PKAccountPromotionsFooterIdentifier" || (v15 = v14, v16 = [(__CFString *)v14 isEqualToString:@"PKAccountPromotionsFooterIdentifier"], v15, v16))
   {
-    v17 = v18;
+    v17 = registrationCopy;
     [v17 setBottomInsetType:2];
     [v17 setHorizontalAlignment:1];
     v13 = PKLocalizedFeatureString();
@@ -352,29 +352,29 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)willDisplayItem:(id)a3
+- (void)willDisplayItem:(id)item
 {
-  v8 = a3;
+  itemCopy = item;
   if ([PKAccountPromotionsSectionController _updateImpressionCountForItem:"_updateImpressionCountForItem:shouldCountAsImpression:" shouldCountAsImpression:?])
   {
     accountService = self->_accountService;
-    v5 = [v8 impressionCount];
-    v6 = [v8 programIdentifier];
-    v7 = [(PKAccount *)self->_account accountIdentifier];
-    [(PKAccountService *)accountService updateImpressionCount:v5 promotionProgramIdentifier:v6 accountIdentifier:v7 completion:0];
+    impressionCount = [itemCopy impressionCount];
+    programIdentifier = [itemCopy programIdentifier];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+    [(PKAccountService *)accountService updateImpressionCount:impressionCount promotionProgramIdentifier:programIdentifier accountIdentifier:accountIdentifier completion:0];
   }
 }
 
-- (void)_updateImpressionCountsForAllItems:(id)a3 shouldCountAsImpression:(BOOL)a4
+- (void)_updateImpressionCountsForAllItems:(id)items shouldCountAsImpression:(BOOL)impression
 {
-  v4 = a4;
+  impressionCopy = impression;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  itemsCopy = items;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [itemsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -386,34 +386,34 @@ LABEL_6:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(itemsCopy);
         }
 
-        v9 |= [(PKAccountPromotionsSectionController *)self _updateImpressionCountForItem:*(*(&v14 + 1) + 8 * i) shouldCountAsImpression:v4];
+        v9 |= [(PKAccountPromotionsSectionController *)self _updateImpressionCountForItem:*(*(&v14 + 1) + 8 * i) shouldCountAsImpression:impressionCopy];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [itemsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
     if (v9)
     {
       accountService = self->_accountService;
-      v13 = [(PKAccount *)self->_account accountIdentifier];
-      [(PKAccountService *)accountService updateImpressionCountsForPromotions:v6 accountIdentifier:v13 completion:0];
+      accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+      [(PKAccountService *)accountService updateImpressionCountsForPromotions:itemsCopy accountIdentifier:accountIdentifier completion:0];
     }
   }
 }
 
-- (BOOL)_updateImpressionCountForItem:(id)a3 shouldCountAsImpression:(BOOL)a4
+- (BOOL)_updateImpressionCountForItem:(id)item shouldCountAsImpression:(BOOL)impression
 {
-  v4 = a4;
-  v6 = a3;
-  if (![v6 isInTerminalState])
+  impressionCopy = impression;
+  itemCopy = item;
+  if (![itemCopy isInTerminalState])
   {
-    if ([v6 impressionCount] >= 1)
+    if ([itemCopy impressionCount] >= 1)
     {
-      [v6 resetImpressionCount];
+      [itemCopy resetImpressionCount];
       v11 = 1;
       goto LABEL_12;
     }
@@ -423,18 +423,18 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v4)
+  if (!impressionCopy)
   {
     goto LABEL_11;
   }
 
-  v7 = [v6 impressionCount];
-  v8 = [v6 programIdentifier];
+  impressionCount = [itemCopy impressionCount];
+  programIdentifier = [itemCopy programIdentifier];
   os_unfair_lock_lock(&self->_itemsLock);
-  v9 = [(NSMutableSet *)self->_promotionsViewedSinceViewLoad containsObject:v8];
-  [(NSMutableSet *)self->_promotionsViewedSinceViewLoad addObject:v8];
+  v9 = [(NSMutableSet *)self->_promotionsViewedSinceViewLoad containsObject:programIdentifier];
+  [(NSMutableSet *)self->_promotionsViewedSinceViewLoad addObject:programIdentifier];
   os_unfair_lock_unlock(&self->_itemsLock);
-  if (v7)
+  if (impressionCount)
   {
     v10 = v9;
   }
@@ -446,7 +446,7 @@ LABEL_11:
 
   if ((v10 & 1) == 0)
   {
-    [v6 incrementImpressionCount];
+    [itemCopy incrementImpressionCount];
   }
 
   v11 = v10 ^ 1;
@@ -455,20 +455,20 @@ LABEL_12:
   return v11;
 }
 
-- (id)_promotionsWithOrderingContext:(unint64_t)a3
+- (id)_promotionsWithOrderingContext:(unint64_t)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (context)
   {
-    v5 = [(PKAccountPromotionsSectionController *)self itemsCopy];
-    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    itemsCopy = [(PKAccountPromotionsSectionController *)self itemsCopy];
+    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
     os_unfair_lock_lock(&self->_itemsLock);
     orderings = self->_orderings;
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __71__PKAccountPromotionsSectionController__promotionsWithOrderingContext___block_invoke;
     v25[3] = &__block_descriptor_40_e33_B16__0__PKAccountEntityOrdering_8l;
-    v25[4] = a3;
+    v25[4] = context;
     v8 = [(NSArray *)orderings pk_firstObjectPassingTest:v25];
     v9 = [v8 copy];
     os_unfair_lock_unlock(&self->_itemsLock);
@@ -479,8 +479,8 @@ LABEL_12:
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v10 = [v9 ordering];
-      v11 = [v10 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      ordering = [v9 ordering];
+      v11 = [ordering countByEnumeratingWithState:&v21 objects:v26 count:16];
       if (v11)
       {
         v12 = v11;
@@ -491,7 +491,7 @@ LABEL_12:
           {
             if (*v22 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(ordering);
             }
 
             v15 = *(*(&v21 + 1) + 8 * i);
@@ -500,11 +500,11 @@ LABEL_12:
             v20[2] = __71__PKAccountPromotionsSectionController__promotionsWithOrderingContext___block_invoke_2;
             v20[3] = &unk_1E8023088;
             v20[4] = v15;
-            v16 = [v5 pk_firstObjectPassingTest:v20];
+            v16 = [itemsCopy pk_firstObjectPassingTest:v20];
             [v6 safelyAddObject:v16];
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v21 objects:v26 count:16];
+          v12 = [ordering countByEnumeratingWithState:&v21 objects:v26 count:16];
         }
 
         while (v12);
@@ -568,8 +568,8 @@ uint64_t __71__PKAccountPromotionsSectionController__promotionsWithOrderingConte
 
 - (id)_promotionsWithDefaultOrdering
 {
-  v2 = [(PKAccountPromotionsSectionController *)self itemsCopy];
-  v3 = [v2 sortedArrayUsingComparator:&__block_literal_global_232];
+  itemsCopy = [(PKAccountPromotionsSectionController *)self itemsCopy];
+  v3 = [itemsCopy sortedArrayUsingComparator:&__block_literal_global_232];
 
   return v3;
 }
@@ -616,18 +616,18 @@ uint64_t __70__PKAccountPromotionsSectionController__promotionsWithDefaultOrderi
   os_unfair_lock_unlock(&self->_itemsLock);
 }
 
-- (void)_reloadDataWithCompletion:(id)a3
+- (void)_reloadDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x1E69B8658]);
-  v6 = [(PKAccount *)self->_account accountIdentifier];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
   objc_initWeak(&location, self);
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __66__PKAccountPromotionsSectionController__reloadDataWithCompletion___block_invoke;
   v21[3] = &unk_1E801F240;
   v21[4] = self;
-  v7 = v6;
+  v7 = accountIdentifier;
   v22 = v7;
   objc_copyWeak(&v23, &location);
   [v5 addOperation:v21];
@@ -649,14 +649,14 @@ uint64_t __70__PKAccountPromotionsSectionController__promotionsWithDefaultOrderi
   v16 = v9;
   objc_copyWeak(&v17, &location);
   [v5 addOperation:v15];
-  v10 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __66__PKAccountPromotionsSectionController__reloadDataWithCompletion___block_invoke_7;
   v13[3] = &unk_1E8014A58;
-  v11 = v4;
+  v11 = completionCopy;
   v14 = v11;
-  v12 = [v5 evaluateWithInput:v10 completion:v13];
+  v12 = [v5 evaluateWithInput:null completion:v13];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&v20);
@@ -785,13 +785,13 @@ uint64_t __66__PKAccountPromotionsSectionController__reloadDataWithCompletion___
   return result;
 }
 
-- (void)didUpdateAccountPromotions:(id)a3 accountIdentifier:(id)a4
+- (void)didUpdateAccountPromotions:(id)promotions accountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKAccount *)self->_account accountIdentifier];
-  v9 = v7;
-  v10 = v8;
+  promotionsCopy = promotions;
+  identifierCopy = identifier;
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  v9 = identifierCopy;
+  v10 = accountIdentifier;
   v11 = v10;
   if (v10 == v9)
   {
@@ -813,7 +813,7 @@ uint64_t __66__PKAccountPromotionsSectionController__reloadDataWithCompletion___
     }
   }
 
-  [(PKAccountPromotionsSectionController *)self setItems:v6];
+  [(PKAccountPromotionsSectionController *)self setItems:promotionsCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {

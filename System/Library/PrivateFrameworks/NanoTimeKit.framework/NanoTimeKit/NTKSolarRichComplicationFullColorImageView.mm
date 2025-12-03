@@ -1,36 +1,36 @@
 @interface NTKSolarRichComplicationFullColorImageView
 - (CLKMonochromeFilterProvider)filterProvider;
-- (id)initFullColorImageViewWithDevice:(id)a3 family:(int64_t)a4;
+- (id)initFullColorImageViewWithDevice:(id)device family:(int64_t)family;
 - (void)_dateDidUpdate;
 - (void)_didReceiveSignificantTimeChangeNotification;
 - (void)_didReceiveTimeZoneDidChangeNotification;
 - (void)_startClockUpdates;
 - (void)_stopClockUpdates;
-- (void)_updateGradientBackgroundWithYPosition:(double)a3 xPercentage:(double)a4 topDistanceAboveHorizonLine:(double)a5 bottomDistanceBelowHorizonLine:(double)a6;
-- (void)_updateSolarDiskWithUsingIdealizedTime:(BOOL)a3 forceUpdate:(BOOL)a4 animated:(BOOL)a5;
-- (void)_updateSolarPathWithAnimated:(BOOL)a3;
+- (void)_updateGradientBackgroundWithYPosition:(double)position xPercentage:(double)percentage topDistanceAboveHorizonLine:(double)line bottomDistanceBelowHorizonLine:(double)horizonLine;
+- (void)_updateSolarDiskWithUsingIdealizedTime:(BOOL)time forceUpdate:(BOOL)update animated:(BOOL)animated;
+- (void)_updateSolarPathWithAnimated:(BOOL)animated;
 - (void)_updateWaypoints;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
-- (void)updateWithLocation:(id)a3 useIdealizedTime:(BOOL)a4 forceUpdate:(BOOL)a5 animated:(BOOL)a6;
+- (void)updateWithLocation:(id)location useIdealizedTime:(BOOL)time forceUpdate:(BOOL)update animated:(BOOL)animated;
 @end
 
 @implementation NTKSolarRichComplicationFullColorImageView
 
-- (id)initFullColorImageViewWithDevice:(id)a3 family:(int64_t)a4
+- (id)initFullColorImageViewWithDevice:(id)device family:(int64_t)family
 {
   v73[5] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  deviceCopy = device;
   v66.receiver = self;
   v66.super_class = NTKSolarRichComplicationFullColorImageView;
   v8 = [(NTKSolarRichComplicationFullColorImageView *)&v66 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_device, a3);
+    objc_storeStrong(&v8->_device, device);
     [(NTKSolarRichComplicationFullColorImageView *)v9 _setSolarPathNeedsUpdate];
     memset(v71, 0, sizeof(v71));
     v69 = 0u;
@@ -38,10 +38,10 @@
     v68 = 0u;
     memset(&v67, 0, sizeof(v67));
     v10 = &v67;
-    ___LayoutConstants_block_invoke_58(v7, &v67);
-    if (a4 != 10)
+    ___LayoutConstants_block_invoke_58(deviceCopy, &v67);
+    if (family != 10)
     {
-      if (a4 == 12)
+      if (family == 12)
       {
         v10 = v71;
       }
@@ -51,7 +51,7 @@
         v11 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          _LayoutConstants_cold_1(a4, v11);
+          _LayoutConstants_cold_1(family, v11);
         }
 
         v10 = &v67;
@@ -88,8 +88,8 @@
     gradientLayer = v9->_gradientLayer;
     v9->_gradientLayer = v20;
 
-    v22 = [(UIView *)v9->_backgroundView layer];
-    [v22 addSublayer:v9->_gradientLayer];
+    layer = [(UIView *)v9->_backgroundView layer];
+    [layer addSublayer:v9->_gradientLayer];
 
     v23 = objc_alloc_init(MEMORY[0x277CD9ED0]);
     gradientAdjustmentLayer = v9->_gradientAdjustmentLayer;
@@ -101,8 +101,8 @@
     v26 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA608]];
     [(CALayer *)v9->_gradientAdjustmentLayer setCompositingFilter:v26];
 
-    v27 = [(UIView *)v9->_backgroundView layer];
-    [v27 addSublayer:v9->_gradientAdjustmentLayer];
+    layer2 = [(UIView *)v9->_backgroundView layer];
+    [layer2 addSublayer:v9->_gradientAdjustmentLayer];
 
     v28 = objc_alloc_init(MEMORY[0x277D75D18]);
     lineView = v9->_lineView;
@@ -146,36 +146,36 @@
     strokeDiskMaskLayer = v9->_strokeDiskMaskLayer;
     v9->_strokeDiskMaskLayer = v44;
 
-    v46 = [MEMORY[0x277D75348] whiteColor];
-    -[CALayer setBackgroundColor:](v9->_strokeDiskMaskLayer, "setBackgroundColor:", [v46 CGColor]);
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    -[CALayer setBackgroundColor:](v9->_strokeDiskMaskLayer, "setBackgroundColor:", [whiteColor CGColor]);
 
     v47 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA628]];
     [(CALayer *)v9->_strokeDiskMaskLayer setCompositingFilter:v47];
 
     [(CALayer *)v9->_strokeDiskMaskLayer setFrame:0.0, 0.0, strokeDiskDiameter, strokeDiskDiameter];
     [(CALayer *)v9->_strokeDiskMaskLayer setCornerRadius:strokeDiskDiameter * 0.5];
-    v48 = [(NTKBezierPathView *)v9->_pathView layer];
-    [v48 addSublayer:v9->_strokeDiskMaskLayer];
+    layer3 = [(NTKBezierPathView *)v9->_pathView layer];
+    [layer3 addSublayer:v9->_strokeDiskMaskLayer];
 
     v49 = objc_alloc_init(MEMORY[0x277CD9ED0]);
     strokeDiskBorderLayer = v9->_strokeDiskBorderLayer;
     v9->_strokeDiskBorderLayer = v49;
 
-    v51 = [MEMORY[0x277D75348] whiteColor];
-    -[CALayer setBorderColor:](v9->_strokeDiskBorderLayer, "setBorderColor:", [v51 CGColor]);
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    -[CALayer setBorderColor:](v9->_strokeDiskBorderLayer, "setBorderColor:", [whiteColor2 CGColor]);
 
     [(CALayer *)v9->_strokeDiskBorderLayer setBorderWidth:v9->_layoutConstants.strokeDiskBorderWidth];
     [(CALayer *)v9->_strokeDiskBorderLayer setFrame:0.0, 0.0, strokeDiskDiameter, strokeDiskDiameter];
     [(CALayer *)v9->_strokeDiskBorderLayer setCornerRadius:strokeDiskDiameter * 0.5];
-    v52 = [(NTKBezierPathView *)v9->_pathView layer];
-    [v52 addSublayer:v9->_strokeDiskBorderLayer];
+    layer4 = [(NTKBezierPathView *)v9->_pathView layer];
+    [layer4 addSublayer:v9->_strokeDiskBorderLayer];
 
     v53 = objc_alloc_init(MEMORY[0x277CD9ED0]);
     fillDiskLayer = v9->_fillDiskLayer;
     v9->_fillDiskLayer = v53;
 
-    v55 = [MEMORY[0x277D75348] whiteColor];
-    -[CALayer setBackgroundColor:](v9->_fillDiskLayer, "setBackgroundColor:", [v55 CGColor]);
+    whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+    -[CALayer setBackgroundColor:](v9->_fillDiskLayer, "setBackgroundColor:", [whiteColor3 CGColor]);
 
     [(CALayer *)v9->_fillDiskLayer setFrame:0.0, 0.0, v9->_layoutConstants.fillDiskDiameter, v9->_layoutConstants.fillDiskDiameter];
     [(CALayer *)v9->_fillDiskLayer setCornerRadius:v9->_layoutConstants.fillDiskDiameter * 0.5];
@@ -191,8 +191,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = NTKSolarRichComplicationFullColorImageView;
@@ -233,15 +233,15 @@
   }
 
   v14 = Height * 0.5;
-  v15 = [(NTKSolarRichComplicationFullColorImageView *)self layer];
-  [v15 setCornerRadius:v14];
+  layer = [(NTKSolarRichComplicationFullColorImageView *)self layer];
+  [layer setCornerRadius:v14];
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v9 = a3;
-  v5 = [v9 metadata];
-  v6 = [v5 objectForKeyedSubscript:@"NTKSolarComplicationEntryLocationKey"];
+  providerCopy = provider;
+  metadata = [providerCopy metadata];
+  v6 = [metadata objectForKeyedSubscript:@"NTKSolarComplicationEntryLocationKey"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -250,8 +250,8 @@
     v6 = 0;
   }
 
-  v7 = [v9 metadata];
-  v8 = [v7 objectForKeyedSubscript:@"NTKSolarComplicationUseIdealizedTimeKey"];
+  metadata2 = [providerCopy metadata];
+  v8 = [metadata2 objectForKeyedSubscript:@"NTKSolarComplicationUseIdealizedTimeKey"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -263,19 +263,19 @@
   -[NTKSolarRichComplicationFullColorImageView updateWithLocation:useIdealizedTime:forceUpdate:animated:](self, "updateWithLocation:useIdealizedTime:forceUpdate:animated:", v6, [v8 BOOLValue], 0, -[NTKSolarRichComplicationFullColorImageView _shouldAnimateWithTemplateUpdateReason:](self, "_shouldAnimateWithTemplateUpdateReason:", 1));
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   CLKInterpolateBetweenFloatsClipped();
   [(UIView *)self->_backgroundView setAlpha:?];
-  if (fabs(a3) >= 0.00000011920929)
+  if (fabs(fraction) >= 0.00000011920929)
   {
-    v6 = [(NTKSolarRichComplicationFullColorImageView *)self filterProvider];
-    v7 = [v6 filtersForView:self style:2];
+    filterProvider = [(NTKSolarRichComplicationFullColorImageView *)self filterProvider];
+    v7 = [filterProvider filtersForView:self style:2];
 
     if (v7)
     {
-      v8 = [(UIView *)self->_fillDiskHaloContainerView layer];
-      [v8 setFilters:v7];
+      layer = [(UIView *)self->_fillDiskHaloContainerView layer];
+      [layer setFilters:v7];
 
       [(CALayer *)self->_strokeDiskBorderLayer setFilters:v7];
     }
@@ -283,14 +283,14 @@
 
   else
   {
-    v5 = [(UIView *)self->_fillDiskHaloContainerView layer];
-    [v5 setFilters:0];
+    layer2 = [(UIView *)self->_fillDiskHaloContainerView layer];
+    [layer2 setFilters:0];
 
     [(CALayer *)self->_strokeDiskBorderLayer setFilters:0];
   }
 
-  v9 = [(NTKSolarRichComplicationFullColorImageView *)self filterProvider];
-  v13 = [v9 colorForView:self accented:0];
+  filterProvider2 = [(NTKSolarRichComplicationFullColorImageView *)self filterProvider];
+  v13 = [filterProvider2 colorForView:self accented:0];
 
   v10 = [v13 colorWithAlphaComponent:0.4];
   [(UIView *)self->_lineView setBackgroundColor:v10];
@@ -305,19 +305,19 @@
 - (void)updateMonochromeColor
 {
   [(UIView *)self->_backgroundView setAlpha:0.0];
-  v3 = [(NTKSolarRichComplicationFullColorImageView *)self filterProvider];
-  v10 = [v3 filtersForView:self style:2];
+  filterProvider = [(NTKSolarRichComplicationFullColorImageView *)self filterProvider];
+  v10 = [filterProvider filtersForView:self style:2];
 
   if (v10)
   {
-    v4 = [(UIView *)self->_fillDiskHaloContainerView layer];
-    [v4 setFilters:v10];
+    layer = [(UIView *)self->_fillDiskHaloContainerView layer];
+    [layer setFilters:v10];
 
     [(CALayer *)self->_strokeDiskBorderLayer setFilters:v10];
   }
 
-  v5 = [(NTKSolarRichComplicationFullColorImageView *)self filterProvider];
-  v6 = [v5 colorForView:self accented:0];
+  filterProvider2 = [(NTKSolarRichComplicationFullColorImageView *)self filterProvider];
+  v6 = [filterProvider2 colorForView:self accented:0];
 
   v7 = [v6 colorWithAlphaComponent:0.4];
   [(UIView *)self->_lineView setBackgroundColor:v7];
@@ -335,13 +335,13 @@
   if (!self->_clockTimerToken)
   {
     objc_initWeak(&location, self);
-    v3 = [MEMORY[0x277CBB700] sharedInstance];
+    mEMORY[0x277CBB700] = [MEMORY[0x277CBB700] sharedInstance];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __64__NTKSolarRichComplicationFullColorImageView__startClockUpdates__block_invoke;
     v6[3] = &unk_27877ED48;
     objc_copyWeak(&v7, &location);
-    v4 = [v3 startUpdatesWithUpdateFrequency:0 withHandler:v6 identificationLog:&__block_literal_global_151];
+    v4 = [mEMORY[0x277CBB700] startUpdatesWithUpdateFrequency:0 withHandler:v6 identificationLog:&__block_literal_global_151];
     clockTimerToken = self->_clockTimerToken;
     self->_clockTimerToken = v4;
 
@@ -366,8 +366,8 @@ void __64__NTKSolarRichComplicationFullColorImageView__startClockUpdates__block_
   self->_paused = 1;
   if (self->_clockTimerToken)
   {
-    v3 = [MEMORY[0x277CBB700] sharedInstance];
-    [v3 stopUpdatesForToken:self->_clockTimerToken];
+    mEMORY[0x277CBB700] = [MEMORY[0x277CBB700] sharedInstance];
+    [mEMORY[0x277CBB700] stopUpdatesForToken:self->_clockTimerToken];
 
     clockTimerToken = self->_clockTimerToken;
     self->_clockTimerToken = 0;
@@ -383,26 +383,26 @@ void __64__NTKSolarRichComplicationFullColorImageView__startClockUpdates__block_
   [(NTKSolarRichComplicationFullColorImageView *)self updateWithLocation:location useIdealizedTime:usingIdealizedTime forceUpdate:0 animated:v3];
 }
 
-- (void)updateWithLocation:(id)a3 useIdealizedTime:(BOOL)a4 forceUpdate:(BOOL)a5 animated:(BOOL)a6
+- (void)updateWithLocation:(id)location useIdealizedTime:(BOOL)time forceUpdate:(BOOL)update animated:(BOOL)animated
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  objc_storeStrong(&self->_location, a3);
-  v11 = a3;
-  self->_usingIdealizedTime = v8;
-  [(NTKSolarTimeModel *)self->_solarTimeModel setUsePlaceholderData:v11 == 0];
-  [(NTKSolarTimeModel *)self->_solarTimeModel setReferenceLocation:v11];
+  animatedCopy = animated;
+  updateCopy = update;
+  timeCopy = time;
+  objc_storeStrong(&self->_location, location);
+  locationCopy = location;
+  self->_usingIdealizedTime = timeCopy;
+  [(NTKSolarTimeModel *)self->_solarTimeModel setUsePlaceholderData:locationCopy == 0];
+  [(NTKSolarTimeModel *)self->_solarTimeModel setReferenceLocation:locationCopy];
 
   [(NTKSolarRichComplicationFullColorImageView *)self _setSolarPathNeedsUpdate];
-  [(NTKSolarRichComplicationFullColorImageView *)self _updateSolarPathWithAnimated:v6];
+  [(NTKSolarRichComplicationFullColorImageView *)self _updateSolarPathWithAnimated:animatedCopy];
 
-  [(NTKSolarRichComplicationFullColorImageView *)self _updateSolarDiskWithUsingIdealizedTime:v8 forceUpdate:v7 animated:v6];
+  [(NTKSolarRichComplicationFullColorImageView *)self _updateSolarDiskWithUsingIdealizedTime:timeCopy forceUpdate:updateCopy animated:animatedCopy];
 }
 
-- (void)_updateSolarPathWithAnimated:(BOOL)a3
+- (void)_updateSolarPathWithAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   solarPath = self->_solarPath;
   solarPathNeedsUpdate = self->_solarPathNeedsUpdate;
   v7 = solarPath;
@@ -417,8 +417,8 @@ void __64__NTKSolarRichComplicationFullColorImageView__startClockUpdates__block_
     v7 = self->_solarPath;
   }
 
-  v12 = [(NTKSolarPath *)v7 bezierPath];
-  v13 = [v12 copy];
+  bezierPath = [(NTKSolarPath *)v7 bezierPath];
+  v13 = [bezierPath copy];
 
   [v13 setLineWidth:self->_layoutConstants.curveLineWidth];
   if (self->_solarPathNeedsUpdate)
@@ -442,7 +442,7 @@ void __64__NTKSolarRichComplicationFullColorImageView__startClockUpdates__block_
   v21 = v22;
   [v13 applyTransform:&v21];
   pathView = self->_pathView;
-  if (v3 && solarPath)
+  if (animatedCopy && solarPath)
   {
     [(NTKBezierPathView *)pathView animateToPath:v13 duration:1 curve:0.5];
   }
@@ -460,8 +460,8 @@ void __64__NTKSolarRichComplicationFullColorImageView__startClockUpdates__block_
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v3 = [(NSDictionary *)self->_waypoints allValues];
-  v4 = [v3 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  allValues = [(NSDictionary *)self->_waypoints allValues];
+  v4 = [allValues countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v4)
   {
     v5 = v4;
@@ -472,13 +472,13 @@ void __64__NTKSolarRichComplicationFullColorImageView__startClockUpdates__block_
       {
         if (*v37 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v36 + 1) + 8 * i);
-        v9 = [(NTKSolarTimeModel *)self->_solarTimeModel referenceLocation];
+        referenceLocation = [(NTKSolarTimeModel *)self->_solarTimeModel referenceLocation];
 
-        if (v9)
+        if (referenceLocation)
         {
           [v8 updateDependentValues];
         }
@@ -489,7 +489,7 @@ void __64__NTKSolarRichComplicationFullColorImageView__startClockUpdates__block_
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v36 objects:v40 count:16];
     }
 
     while (v5);
@@ -512,8 +512,8 @@ void __64__NTKSolarRichComplicationFullColorImageView__startClockUpdates__block_
     else
     {
       solarTimeModel = self->_solarTimeModel;
-      v21 = [v11 waypointDate];
-      [(NTKSolarTimeModel *)solarTimeModel percentageThroughPeriodForDate:v21];
+      waypointDate = [v11 waypointDate];
+      [(NTKSolarTimeModel *)solarTimeModel percentageThroughPeriodForDate:waypointDate];
       v23 = v22;
 
       [(NTKBezierPathPointModel *)self->_pointModel pointOnPathForHorizontalPercentage:v23];
@@ -524,8 +524,8 @@ void __64__NTKSolarRichComplicationFullColorImageView__startClockUpdates__block_
   else
   {
     v13 = self->_solarTimeModel;
-    v14 = [v10 waypointDate];
-    [(NTKSolarTimeModel *)v13 percentageThroughPeriodForDate:v14];
+    waypointDate2 = [v10 waypointDate];
+    [(NTKSolarTimeModel *)v13 percentageThroughPeriodForDate:waypointDate2];
     v16 = v15;
 
     [(NTKBezierPathPointModel *)self->_pointModel pointOnPathForHorizontalPercentage:v16];
@@ -543,8 +543,8 @@ void __64__NTKSolarRichComplicationFullColorImageView__startClockUpdates__block_
   else
   {
     v30 = self->_solarTimeModel;
-    v31 = [v11 waypointDate];
-    [(NTKSolarTimeModel *)v30 percentageThroughPeriodForDate:v31];
+    waypointDate3 = [v11 waypointDate];
+    [(NTKSolarTimeModel *)v30 percentageThroughPeriodForDate:waypointDate3];
     v33 = v32;
 
     [(NTKBezierPathPointModel *)self->_pointModel pointOnPathForHorizontalPercentage:v33];
@@ -555,26 +555,26 @@ void __64__NTKSolarRichComplicationFullColorImageView__startClockUpdates__block_
   self->_sunsetXInCurve = v35;
 }
 
-- (void)_updateSolarDiskWithUsingIdealizedTime:(BOOL)a3 forceUpdate:(BOOL)a4 animated:(BOOL)a5
+- (void)_updateSolarDiskWithUsingIdealizedTime:(BOOL)time forceUpdate:(BOOL)update animated:(BOOL)animated
 {
-  v6 = a3;
-  v8 = [(NTKSolarRichComplicationFullColorImageView *)self timeTravelDate:a3];
+  timeCopy = time;
+  v8 = [(NTKSolarRichComplicationFullColorImageView *)self timeTravelDate:time];
 
   solarTimeModel = self->_solarTimeModel;
   if (v8)
   {
-    v10 = [(NTKSolarRichComplicationFullColorImageView *)self timeTravelDate];
+    timeTravelDate = [(NTKSolarRichComplicationFullColorImageView *)self timeTravelDate];
 LABEL_6:
-    v13 = v10;
-    [(NTKSolarTimeModel *)solarTimeModel percentageThroughPeriodForDate:v10];
+    v13 = timeTravelDate;
+    [(NTKSolarTimeModel *)solarTimeModel percentageThroughPeriodForDate:timeTravelDate];
     v12 = v14;
 
     goto LABEL_7;
   }
 
-  if (!v6)
+  if (!timeCopy)
   {
-    v10 = [MEMORY[0x277CBBAD8] complicationDate];
+    timeTravelDate = [MEMORY[0x277CBBAD8] complicationDate];
     goto LABEL_6;
   }
 
@@ -585,7 +585,7 @@ LABEL_7:
   [(NTKBezierPathPointModel *)self->_pointModel pointOnPathForHorizontalPercentage:v12 withEndPadding:v15];
   y = self->_solarPathViewRect.origin.y;
   prevDiskTimePercentage = self->_prevDiskTimePercentage;
-  if (a4 || vabdd_f64(v12, prevDiskTimePercentage) >= 0.00000011920929)
+  if (update || vabdd_f64(v12, prevDiskTimePercentage) >= 0.00000011920929)
   {
     v30 = v16;
     height = self->_layoutConstants.curveMaxSize.height;
@@ -672,10 +672,10 @@ void __106__NTKSolarRichComplicationFullColorImageView__updateSolarDiskWithUsing
   }
 }
 
-- (void)_updateGradientBackgroundWithYPosition:(double)a3 xPercentage:(double)a4 topDistanceAboveHorizonLine:(double)a5 bottomDistanceBelowHorizonLine:(double)a6
+- (void)_updateGradientBackgroundWithYPosition:(double)position xPercentage:(double)percentage topDistanceAboveHorizonLine:(double)line bottomDistanceBelowHorizonLine:(double)horizonLine
 {
   v69[3] = *MEMORY[0x277D85DE8];
-  v8 = a3 * 90.0 / a6;
+  v8 = position * 90.0 / horizonLine;
   if (v8 > 90.0)
   {
     v8 = 90.0;
@@ -708,21 +708,21 @@ void __106__NTKSolarRichComplicationFullColorImageView__updateSolarDiskWithUsing
   v54 = 0x2020000000;
   v55 = 0;
   v10 = +[NTKSolarRichComplicationCircularViewColorPoint allPoints];
-  v11 = [v10 firstObject];
-  [v11 progress];
+  firstObject = [v10 firstObject];
+  [firstObject progress];
   v13 = v9 > v12;
 
   if (v13)
   {
-    v14 = [v10 lastObject];
-    [v14 progress];
+    lastObject = [v10 lastObject];
+    [lastObject progress];
     v16 = v9 < v15;
 
     if (v16)
     {
-      v17 = [v10 firstObject];
+      firstObject2 = [v10 firstObject];
       v18 = v63[5];
-      v63[5] = v17;
+      v63[5] = firstObject2;
 
       v51[0] = MEMORY[0x277D85DD0];
       v51[1] = 3221225472;
@@ -736,37 +736,37 @@ void __106__NTKSolarRichComplicationFullColorImageView__updateSolarDiskWithUsing
       goto LABEL_12;
     }
 
-    v22 = [v10 lastObject];
+    lastObject2 = [v10 lastObject];
     v23 = v63[5];
-    v63[5] = v22;
+    v63[5] = lastObject2;
 
-    v21 = [v10 lastObject];
+    lastObject3 = [v10 lastObject];
   }
 
   else
   {
-    v19 = [v10 firstObject];
+    firstObject3 = [v10 firstObject];
     v20 = v63[5];
-    v63[5] = v19;
+    v63[5] = firstObject3;
 
-    v21 = [v10 firstObject];
+    lastObject3 = [v10 firstObject];
   }
 
   v24 = v57[5];
-  v57[5] = v21;
+  v57[5] = lastObject3;
 
   v53[3] = 0x3FF0000000000000;
 LABEL_12:
-  v25 = [v63[5] color1];
-  v26 = [v57[5] color1];
+  color1 = [v63[5] color1];
+  color12 = [v57[5] color1];
   v27 = NTKInterpolateBetweenColors();
 
-  v28 = [v63[5] color2];
-  v29 = [v57[5] color2];
+  color2 = [v63[5] color2];
+  color22 = [v57[5] color2];
   v30 = NTKInterpolateBetweenColors();
 
-  v31 = [v63[5] color3];
-  v32 = [v57[5] color3];
+  color3 = [v63[5] color3];
+  color32 = [v57[5] color3];
   v33 = NTKInterpolateBetweenColors();
 
   [v63[5] position1];
@@ -801,14 +801,14 @@ LABEL_12:
 
   v48 = self->_sunsetXInCurve / self->_solarPathViewRect.size.width;
   backgroundGradientSunsetLayerMaxAlpha = self->_layoutConstants.backgroundGradientSunsetLayerMaxAlpha;
-  if (v48 <= a4)
+  if (v48 <= percentage)
   {
     *&v48 = backgroundGradientSunsetLayerMaxAlpha;
   }
 
   else
   {
-    v50 = v48 - a4;
+    v50 = v48 - percentage;
     v48 = 0.0;
     if (v50 <= 0.15)
     {

@@ -1,5 +1,5 @@
 @interface MTLDebugFunction
-- (MTLDebugFunction)initWithFunction:(id)a3 library:(id)a4;
+- (MTLDebugFunction)initWithFunction:(id)function library:(id)library;
 - (id)bitcodeData;
 - (id)importedLibraries;
 - (id)importedSymbols;
@@ -33,12 +33,12 @@
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) tagType];
-        if (v8 > 5)
+        tagType = [*(*(&v11 + 1) + 8 * i) tagType];
+        if (tagType > 5)
         {
-          if (v8 <= 7)
+          if (tagType <= 7)
           {
-            if (v8 == 6)
+            if (tagType == 6)
             {
               v5 |= 0x20uLL;
             }
@@ -51,7 +51,7 @@
 
           else
           {
-            switch(v8)
+            switch(tagType)
             {
               case 8:
                 v5 |= 0x40uLL;
@@ -66,25 +66,25 @@
           }
         }
 
-        else if (v8 <= 2)
+        else if (tagType <= 2)
         {
-          if (v8 == 1)
+          if (tagType == 1)
           {
             v5 |= 1uLL;
           }
 
-          else if (v8 == 2)
+          else if (tagType == 2)
           {
             v5 |= 2uLL;
           }
         }
 
-        else if (v8 == 3)
+        else if (tagType == 3)
         {
           v5 |= 4uLL;
         }
 
-        else if (v8 == 4)
+        else if (tagType == 4)
         {
           v5 |= 8uLL;
         }
@@ -123,12 +123,12 @@
   }
 }
 
-- (MTLDebugFunction)initWithFunction:(id)a3 library:(id)a4
+- (MTLDebugFunction)initWithFunction:(id)function library:(id)library
 {
   v7.receiver = self;
   v7.super_class = MTLDebugFunction;
-  v5 = [(MTLToolsFunction *)&v7 initWithFunction:a3 library:a4];
-  if (v5 && [a3 functionType] == 6)
+  v5 = [(MTLToolsFunction *)&v7 initWithFunction:function library:library];
+  if (v5 && [function functionType] == 6)
   {
     v5->_intersectionFunctionSignature = [(MTLDebugFunction *)v5 getIntersectionFunctionSignature];
   }
@@ -145,23 +145,23 @@
 
 - (id)importedSymbols
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 importedSymbols];
+  return [baseObject importedSymbols];
 }
 
 - (id)importedLibraries
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 importedLibraries];
+  return [baseObject importedLibraries];
 }
 
 - (id)bitcodeData
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 bitcodeData];
+  return [baseObject bitcodeData];
 }
 
 @end

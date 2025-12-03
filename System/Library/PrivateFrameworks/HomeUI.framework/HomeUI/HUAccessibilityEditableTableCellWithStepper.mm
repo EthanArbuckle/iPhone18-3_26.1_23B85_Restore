@@ -1,61 +1,61 @@
 @interface HUAccessibilityEditableTableCellWithStepper
-- (HUAccessibilityEditableTableCellWithStepper)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUAccessibilityEditableTableCellWithStepper)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (HUStepperCellDelegate)stepperCellDelegate;
-- (double)maximumValueForSpecifier:(id)a3;
-- (double)minimumValueForSpecifier:(id)a3;
-- (double)stepValueForSpecifier:(id)a3;
-- (double)valueForSpecifier:(id)a3;
-- (id)stringValueForSpecifier:(id)a3;
+- (double)maximumValueForSpecifier:(id)specifier;
+- (double)minimumValueForSpecifier:(id)specifier;
+- (double)stepValueForSpecifier:(id)specifier;
+- (double)valueForSpecifier:(id)specifier;
+- (id)stringValueForSpecifier:(id)specifier;
 - (void)_update;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setDisabled:(BOOL)a3;
-- (void)setMaximumValue:(id)a3;
-- (void)setMinimumValue:(id)a3;
-- (void)setStepValue:(id)a3;
-- (void)setStepperValue:(id)a3;
-- (void)specifier:(id)a3 setValue:(double)a4;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setMaximumValue:(id)value;
+- (void)setMinimumValue:(id)value;
+- (void)setStepValue:(id)value;
+- (void)setStepperValue:(id)value;
+- (void)specifier:(id)specifier setValue:(double)value;
 @end
 
 @implementation HUAccessibilityEditableTableCellWithStepper
 
-- (HUAccessibilityEditableTableCellWithStepper)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUAccessibilityEditableTableCellWithStepper)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v19.receiver = self;
   v19.super_class = HUAccessibilityEditableTableCellWithStepper;
-  v4 = [(AXUISettingsEditableTableCellWithStepper *)&v19 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(AXUISettingsEditableTableCellWithStepper *)&v19 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(HUAccessibilityEditableTableCellWithStepper *)v4 setDisabled:0];
-    v6 = [(AXUISettingsEditableTableCellWithStepper *)v5 secondsLabel];
+    secondsLabel = [(AXUISettingsEditableTableCellWithStepper *)v5 secondsLabel];
 
-    if (!v6)
+    if (!secondsLabel)
     {
       v7 = objc_opt_new();
       [(AXUISettingsEditableTableCellWithStepper *)v5 setSecondsLabel:v7];
 
       v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-      v9 = [(AXUISettingsEditableTableCellWithStepper *)v5 secondsLabel];
-      [v9 setFont:v8];
+      secondsLabel2 = [(AXUISettingsEditableTableCellWithStepper *)v5 secondsLabel];
+      [secondsLabel2 setFont:v8];
 
-      v10 = [MEMORY[0x277D75348] clearColor];
-      v11 = [(AXUISettingsEditableTableCellWithStepper *)v5 secondsLabel];
-      [v11 setBackgroundColor:v10];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      secondsLabel3 = [(AXUISettingsEditableTableCellWithStepper *)v5 secondsLabel];
+      [secondsLabel3 setBackgroundColor:clearColor];
 
-      v12 = [MEMORY[0x277D75348] systemBlackColor];
-      v13 = [(AXUISettingsEditableTableCellWithStepper *)v5 secondsLabel];
-      [v13 setTextColor:v12];
+      systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+      secondsLabel4 = [(AXUISettingsEditableTableCellWithStepper *)v5 secondsLabel];
+      [secondsLabel4 setTextColor:systemBlackColor];
 
-      v14 = [(AXUISettingsEditableTableCellWithStepper *)v5 secondsLabel];
-      [v14 setAdjustsFontForContentSizeCategory:1];
+      secondsLabel5 = [(AXUISettingsEditableTableCellWithStepper *)v5 secondsLabel];
+      [secondsLabel5 setAdjustsFontForContentSizeCategory:1];
 
-      v15 = [(AXUISettingsEditableTableCellWithStepper *)v5 secondsLabel];
-      [v15 setIsAccessibilityElement:0];
+      secondsLabel6 = [(AXUISettingsEditableTableCellWithStepper *)v5 secondsLabel];
+      [secondsLabel6 setIsAccessibilityElement:0];
 
-      v16 = [(HUAccessibilityEditableTableCellWithStepper *)v5 contentView];
-      v17 = [(AXUISettingsEditableTableCellWithStepper *)v5 secondsLabel];
-      [v16 addSubview:v17];
+      contentView = [(HUAccessibilityEditableTableCellWithStepper *)v5 contentView];
+      secondsLabel7 = [(AXUISettingsEditableTableCellWithStepper *)v5 secondsLabel];
+      [contentView addSubview:secondsLabel7];
     }
   }
 
@@ -76,17 +76,17 @@
   v5.receiver = self;
   v5.super_class = HUAccessibilityEditableTableCellWithStepper;
   [(AXUISettingsEditableTableCellWithStepper *)&v5 layoutSubviews];
-  v3 = [MEMORY[0x277D75348] labelColor];
-  v4 = [(AXUISettingsEditableTextCell *)self nameTextField];
-  [v4 setTextColor:v3];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  nameTextField = [(AXUISettingsEditableTextCell *)self nameTextField];
+  [nameTextField setTextColor:labelColor];
 }
 
-- (void)setMaximumValue:(id)a3
+- (void)setMaximumValue:(id)value
 {
-  v6 = a3;
+  valueCopy = value;
   if (![(NSNumber *)self->_maximumValue isEqualToNumber:?])
   {
-    v4 = [v6 copy];
+    v4 = [valueCopy copy];
     maximumValue = self->_maximumValue;
     self->_maximumValue = v4;
 
@@ -94,12 +94,12 @@
   }
 }
 
-- (void)setMinimumValue:(id)a3
+- (void)setMinimumValue:(id)value
 {
-  v6 = a3;
+  valueCopy = value;
   if (![(NSNumber *)self->_minimumValue isEqualToNumber:?])
   {
-    v4 = [v6 copy];
+    v4 = [valueCopy copy];
     minimumValue = self->_minimumValue;
     self->_minimumValue = v4;
 
@@ -107,12 +107,12 @@
   }
 }
 
-- (void)setStepValue:(id)a3
+- (void)setStepValue:(id)value
 {
-  v6 = a3;
+  valueCopy = value;
   if (![(NSNumber *)self->_stepValue isEqualToNumber:?])
   {
-    v4 = [v6 copy];
+    v4 = [valueCopy copy];
     stepValue = self->_stepValue;
     self->_stepValue = v4;
 
@@ -120,12 +120,12 @@
   }
 }
 
-- (void)setStepperValue:(id)a3
+- (void)setStepperValue:(id)value
 {
-  v6 = a3;
+  valueCopy = value;
   if (![(NSNumber *)self->_stepperValue isEqualToNumber:?])
   {
-    v4 = [v6 copy];
+    v4 = [valueCopy copy];
     stepperValue = self->_stepperValue;
     self->_stepperValue = v4;
 
@@ -133,11 +133,11 @@
   }
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  if (self->_disabled != a3)
+  if (self->_disabled != disabled)
   {
-    self->_disabled = a3;
+    self->_disabled = disabled;
     [(HUAccessibilityEditableTableCellWithStepper *)self _update];
   }
 }
@@ -154,16 +154,16 @@
     [MEMORY[0x277D75348] labelColor];
   }
   v3 = ;
-  v4 = [(AXUISettingsEditableTableCellWithStepper *)self secondsLabel];
-  [v4 setTextColor:v3];
+  secondsLabel = [(AXUISettingsEditableTableCellWithStepper *)self secondsLabel];
+  [secondsLabel setTextColor:v3];
 
   LODWORD(v3) = [(HUAccessibilityEditableTableCellWithStepper *)self isDisabled];
-  v5 = [(AXUISettingsEditableTableCellWithStepper *)self stepper];
-  [v5 setUserInteractionEnabled:v3 ^ 1];
+  stepper = [(AXUISettingsEditableTableCellWithStepper *)self stepper];
+  [stepper setUserInteractionEnabled:v3 ^ 1];
 
   LODWORD(v3) = [(HUAccessibilityEditableTableCellWithStepper *)self isDisabled];
-  v6 = [(AXUISettingsEditableTableCellWithStepper *)self stepper];
-  [v6 setEnabled:v3 ^ 1];
+  stepper2 = [(AXUISettingsEditableTableCellWithStepper *)self stepper];
+  [stepper2 setEnabled:v3 ^ 1];
 
   if ([(HUAccessibilityEditableTableCellWithStepper *)self isDisabled])
   {
@@ -175,29 +175,29 @@
     [MEMORY[0x277D75348] labelColor];
   }
   v7 = ;
-  v8 = [(AXUISettingsEditableTableCellWithStepper *)self stepper];
-  [v8 setTintColor:v7];
+  stepper3 = [(AXUISettingsEditableTableCellWithStepper *)self stepper];
+  [stepper3 setTintColor:v7];
 
-  v9 = [(HUAccessibilityEditableTableCellWithStepper *)self stepperValue];
+  stepperValue = [(HUAccessibilityEditableTableCellWithStepper *)self stepperValue];
 
-  if (v9)
+  if (stepperValue)
   {
     [(AXUISettingsEditableTextCell *)self updateText];
-    v10 = [(HUAccessibilityEditableTableCellWithStepper *)self minimumValue];
-    if (v10)
+    minimumValue = [(HUAccessibilityEditableTableCellWithStepper *)self minimumValue];
+    if (minimumValue)
     {
-      v15 = v10;
-      v11 = [(HUAccessibilityEditableTableCellWithStepper *)self maximumValue];
-      if (v11)
+      v15 = minimumValue;
+      maximumValue = [(HUAccessibilityEditableTableCellWithStepper *)self maximumValue];
+      if (maximumValue)
       {
-        v12 = v11;
-        v13 = [(HUAccessibilityEditableTableCellWithStepper *)self stepValue];
+        v12 = maximumValue;
+        stepValue = [(HUAccessibilityEditableTableCellWithStepper *)self stepValue];
 
-        if (v13)
+        if (stepValue)
         {
-          v14 = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
+          delegate = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
 
-          if (v14 != self)
+          if (delegate != self)
           {
 
             [(AXUISettingsEditableTableCellWithStepper *)self setDelegate:self];
@@ -212,59 +212,59 @@
   }
 }
 
-- (double)valueForSpecifier:(id)a3
+- (double)valueForSpecifier:(id)specifier
 {
-  v3 = [(HUAccessibilityEditableTableCellWithStepper *)self stepperValue];
-  [v3 doubleValue];
+  stepperValue = [(HUAccessibilityEditableTableCellWithStepper *)self stepperValue];
+  [stepperValue doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)specifier:(id)a3 setValue:(double)a4
+- (void)specifier:(id)specifier setValue:(double)value
 {
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:specifier];
   [(HUAccessibilityEditableTableCellWithStepper *)self setStepperValue:v6];
 
-  v7 = [(HUAccessibilityEditableTableCellWithStepper *)self stepperCellDelegate];
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-  [v7 stepperCell:self steppedToValue:v8];
+  stepperCellDelegate = [(HUAccessibilityEditableTableCellWithStepper *)self stepperCellDelegate];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:value];
+  [stepperCellDelegate stepperCell:self steppedToValue:v8];
 
   [(HUAccessibilityEditableTableCellWithStepper *)self _update];
 
   [(HUAccessibilityEditableTableCellWithStepper *)self setNeedsLayout];
 }
 
-- (double)stepValueForSpecifier:(id)a3
+- (double)stepValueForSpecifier:(id)specifier
 {
-  v3 = [(HUAccessibilityEditableTableCellWithStepper *)self stepValue];
-  [v3 doubleValue];
+  stepValue = [(HUAccessibilityEditableTableCellWithStepper *)self stepValue];
+  [stepValue doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (double)minimumValueForSpecifier:(id)a3
+- (double)minimumValueForSpecifier:(id)specifier
 {
-  v3 = [(HUAccessibilityEditableTableCellWithStepper *)self minimumValue];
-  [v3 doubleValue];
+  minimumValue = [(HUAccessibilityEditableTableCellWithStepper *)self minimumValue];
+  [minimumValue doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (double)maximumValueForSpecifier:(id)a3
+- (double)maximumValueForSpecifier:(id)specifier
 {
-  v3 = [(HUAccessibilityEditableTableCellWithStepper *)self maximumValue];
-  [v3 doubleValue];
+  maximumValue = [(HUAccessibilityEditableTableCellWithStepper *)self maximumValue];
+  [maximumValue doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (id)stringValueForSpecifier:(id)a3
+- (id)stringValueForSpecifier:(id)specifier
 {
-  v3 = [(HUAccessibilityEditableTableCellWithStepper *)self stepperValue];
+  stepperValue = [(HUAccessibilityEditableTableCellWithStepper *)self stepperValue];
   v4 = AXFormatNumberWithOptions();
 
   return v4;

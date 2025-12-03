@@ -1,9 +1,9 @@
 @interface CPLCloudKitResourceInfoImageDimensions
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CPLCloudKitResourceInfoImageDimensions
@@ -13,8 +13,8 @@
   v7.receiver = self;
   v7.super_class = CPLCloudKitResourceInfoImageDimensions;
   v3 = [(CPLCloudKitResourceInfoImageDimensions *)&v7 description];
-  v4 = [(CPLCloudKitResourceInfoImageDimensions *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CPLCloudKitResourceInfoImageDimensions *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -31,27 +31,27 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   width = self->_width;
-  v6 = a3;
+  toCopy = to;
   PBDataWriterWriteInt64Field();
   height = self->_height;
   PBDataWriterWriteInt64Field();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = self->_width;
   *(result + 1) = self->_height;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_width == v4[2] && self->_height == v4[1];
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_width == equalCopy[2] && self->_height == equalCopy[1];
 
   return v5;
 }

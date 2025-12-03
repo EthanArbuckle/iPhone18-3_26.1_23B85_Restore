@@ -1,53 +1,53 @@
 @interface PXHorizontalCollectionGadget
-- (BOOL)gadget:(id)a3 transitionToViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (CGPoint)collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4;
+- (BOOL)gadget:(id)gadget transitionToViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (CGPoint)collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset;
 - (CGRect)visibleBounds;
 - (CGRect)visibleContentRect;
 - (CGSize)cachedMaxHeightForColumnWidth;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PXGadgetDelegate)delegate;
-- (PXHorizontalCollectionGadget)initWithDataSourceManager:(id)a3;
-- (PXHorizontalCollectionGadget)initWithLayout:(id)a3 dataSourceManager:(id)a4;
-- (PXHorizontalCollectionGadget)initWithProviders:(id)a3;
-- (PXHorizontalCollectionGadget)initWithProviders:(id)a3 layout:(id)a4;
+- (PXHorizontalCollectionGadget)initWithDataSourceManager:(id)manager;
+- (PXHorizontalCollectionGadget)initWithLayout:(id)layout dataSourceManager:(id)manager;
+- (PXHorizontalCollectionGadget)initWithProviders:(id)providers;
+- (PXHorizontalCollectionGadget)initWithProviders:(id)providers layout:(id)layout;
 - (PXHorizontalCollectionGadgetDelegate)horizontalGadgetDelegate;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)contextMenuWithSuggestedActions:(id)a3;
-- (id)presentationEnvironmentForGadget:(id)a3;
-- (id)previewParametersForTargetPreviewView:(id)a3;
-- (id)previewViewControllerAtLocation:(CGPoint)a3 fromSourceView:(id)a4;
-- (id)targetPreviewViewForLocation:(CGPoint)a3 inCoordinateSpace:(id)a4;
-- (int64_t)_columnSpanForTraitCollection:(id)a3;
-- (void)_extendedTraitCollectionDidChange:(unint64_t)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)contextMenuWithSuggestedActions:(id)actions;
+- (id)presentationEnvironmentForGadget:(id)gadget;
+- (id)previewParametersForTargetPreviewView:(id)view;
+- (id)previewViewControllerAtLocation:(CGPoint)location fromSourceView:(id)view;
+- (id)targetPreviewViewForLocation:(CGPoint)location inCoordinateSpace:(id)space;
+- (int64_t)_columnSpanForTraitCollection:(id)collection;
+- (void)_extendedTraitCollectionDidChange:(unint64_t)change;
 - (void)_updateCollectionViewPaging;
 - (void)_updateColumnSettings;
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4;
-- (void)commitPreviewView:(id)a3;
-- (void)commitPreviewViewController:(id)a3;
-- (void)didDismissPreviewViewController:(id)a3 committing:(BOOL)a4;
-- (void)didDismissPreviewWithPreviewView:(id)a3 committing:(BOOL)a4;
-- (void)gadget:(id)a3 didChange:(unint64_t)a4;
-- (void)gadgetControllerFinishedUpdatingDataSourceWithChange:(id)a3;
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths;
+- (void)commitPreviewView:(id)view;
+- (void)commitPreviewViewController:(id)controller;
+- (void)didDismissPreviewViewController:(id)controller committing:(BOOL)committing;
+- (void)didDismissPreviewWithPreviewView:(id)view committing:(BOOL)committing;
+- (void)gadget:(id)gadget didChange:(unint64_t)change;
+- (void)gadgetControllerFinishedUpdatingDataSourceWithChange:(id)change;
 - (void)gadgetControllerHasAppeared;
 - (void)gadgetControllerHasDisappeared;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)prefetchDuringScrollingForWidth:(double)a3;
-- (void)setCollectionAccessoryButtonTitle:(id)a3;
-- (void)setCollectionAccessoryButtonType:(unint64_t)a3;
-- (void)setCollectionHeight:(double)a3;
-- (void)setCollectionTitle:(id)a3;
-- (void)setCurrentColumnSpan:(int64_t)a3;
-- (void)setDefaultColumnSpan:(int64_t)a3;
-- (void)setGadgetSpec:(id)a3;
-- (void)setLayout:(id)a3;
-- (void)setVisibleContentRect:(CGRect)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)prefetchDuringScrollingForWidth:(double)width;
+- (void)setCollectionAccessoryButtonTitle:(id)title;
+- (void)setCollectionAccessoryButtonType:(unint64_t)type;
+- (void)setCollectionHeight:(double)height;
+- (void)setCollectionTitle:(id)title;
+- (void)setCurrentColumnSpan:(int64_t)span;
+- (void)setDefaultColumnSpan:(int64_t)span;
+- (void)setGadgetSpec:(id)spec;
+- (void)setLayout:(id)layout;
+- (void)setVisibleContentRect:(CGRect)rect;
 - (void)updateIfNeeded;
-- (void)userDidSelectAccessoryButton:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)userDidSelectAccessoryButton:(id)button;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PXHorizontalCollectionGadget
@@ -111,8 +111,8 @@
       v4 = v3;
     }
 
-    v5 = [(PXHorizontalCollectionGadget *)self delegate];
-    [v5 gadget:self didChange:v4];
+    delegate = [(PXHorizontalCollectionGadget *)self delegate];
+    [delegate gadget:self didChange:v4];
 
     _horizontalGadgetUpdateFlags = 0;
     byte_1EB1EB0B2 = 0;
@@ -123,42 +123,42 @@
 {
   if (self->_gadgetSpec)
   {
-    v3 = [(PXGadgetUIViewController *)self layout];
-    v4 = [(PXHorizontalCollectionGadget *)self currentColumnSpan];
-    [(PXGadgetSpec *)self->_gadgetSpec columnWidthForColumnSpan:v4];
+    layout = [(PXGadgetUIViewController *)self layout];
+    currentColumnSpan = [(PXHorizontalCollectionGadget *)self currentColumnSpan];
+    [(PXGadgetSpec *)self->_gadgetSpec columnWidthForColumnSpan:currentColumnSpan];
     if (v5 > 0.0)
     {
-      [v3 setColumnWidth:?];
+      [layout setColumnWidth:?];
     }
 
-    [(PXGadgetSpec *)self->_gadgetSpec columnSpacingForColumnSpan:v4];
-    [v3 setInterSectionSpacing:?];
-    v6 = [off_1E7721858 sharedScheduler];
+    [(PXGadgetSpec *)self->_gadgetSpec columnSpacingForColumnSpan:currentColumnSpan];
+    [layout setInterSectionSpacing:?];
+    sharedScheduler = [off_1E7721858 sharedScheduler];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __53__PXHorizontalCollectionGadget__updateColumnSettings__block_invoke;
     v7[3] = &unk_1E774C648;
     v7[4] = self;
-    [v6 scheduleMainQueueTask:v7];
+    [sharedScheduler scheduleMainQueueTask:v7];
   }
 }
 
-- (int64_t)_columnSpanForTraitCollection:(id)a3
+- (int64_t)_columnSpanForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
-  v15 = [(PXHorizontalCollectionGadget *)self defaultColumnSpan];
-  v5 = [(PXHorizontalCollectionGadget *)self columnSpans];
+  defaultColumnSpan = [(PXHorizontalCollectionGadget *)self defaultColumnSpan];
+  columnSpans = [(PXHorizontalCollectionGadget *)self columnSpans];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__PXHorizontalCollectionGadget__columnSpanForTraitCollection___block_invoke;
   v9[3] = &unk_1E77404B0;
-  v6 = v4;
+  v6 = collectionCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [columnSpans enumerateKeysAndObjectsUsingBlock:v9];
   v7 = v13[3];
 
   _Block_object_dispose(&v12, 8);
@@ -175,15 +175,15 @@ void __62__PXHorizontalCollectionGadget__columnSpanForTraitCollection___block_in
   }
 }
 
-- (void)setCurrentColumnSpan:(int64_t)a3
+- (void)setCurrentColumnSpan:(int64_t)span
 {
-  if (self->_currentColumnSpan != a3)
+  if (self->_currentColumnSpan != span)
   {
-    self->_currentColumnSpan = a3;
+    self->_currentColumnSpan = span;
     [(PXHorizontalCollectionGadget *)self _updateColumnSettings];
     [(PXHorizontalCollectionGadget *)self _updateCollectionViewPaging];
-    v5 = [(PXHorizontalCollectionGadget *)self delegate];
-    [v5 gadget:self didChange:64];
+    delegate = [(PXHorizontalCollectionGadget *)self delegate];
+    [delegate gadget:self didChange:64];
   }
 }
 
@@ -207,25 +207,25 @@ uint64_t __66__PXHorizontalCollectionGadget__ensureCachedHeightForColumnWidth___
   return result;
 }
 
-- (void)_extendedTraitCollectionDidChange:(unint64_t)a3
+- (void)_extendedTraitCollectionDidChange:(unint64_t)change
 {
-  v3 = a3;
-  v8 = [(PXHorizontalCollectionGadget *)self px_extendedTraitCollection];
-  if ([v8 layoutSizeClass])
+  changeCopy = change;
+  px_extendedTraitCollection = [(PXHorizontalCollectionGadget *)self px_extendedTraitCollection];
+  if ([px_extendedTraitCollection layoutSizeClass])
   {
-    if ([v8 layoutSizeSubclass])
+    if ([px_extendedTraitCollection layoutSizeSubclass])
     {
-      if ([v8 layoutOrientation])
+      if ([px_extendedTraitCollection layoutOrientation])
       {
-        v5 = [v8 userInterfaceIdiom];
-        if ((v3 & 0x1F) != 0)
+        userInterfaceIdiom = [px_extendedTraitCollection userInterfaceIdiom];
+        if ((changeCopy & 0x1F) != 0)
         {
-          if (v5)
+          if (userInterfaceIdiom)
           {
-            v6 = [(PXHorizontalCollectionGadget *)self px_extendedTraitCollection];
-            v7 = [v6 traitCollection];
+            px_extendedTraitCollection2 = [(PXHorizontalCollectionGadget *)self px_extendedTraitCollection];
+            traitCollection = [px_extendedTraitCollection2 traitCollection];
 
-            [(PXHorizontalCollectionGadget *)self setCurrentColumnSpan:[(PXHorizontalCollectionGadget *)self _columnSpanForTraitCollection:v7]];
+            [(PXHorizontalCollectionGadget *)self setCurrentColumnSpan:[(PXHorizontalCollectionGadget *)self _columnSpanForTraitCollection:traitCollection]];
           }
         }
       }
@@ -235,22 +235,22 @@ uint64_t __66__PXHorizontalCollectionGadget__ensureCachedHeightForColumnWidth___
 
 - (CGRect)visibleBounds
 {
-  v3 = [(PXHorizontalCollectionGadget *)self collectionView];
+  collectionView = [(PXHorizontalCollectionGadget *)self collectionView];
   [(PXHorizontalCollectionGadget *)self visibleContentRect];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(PXHorizontalCollectionGadget *)self collectionView];
-  v13 = [v12 superview];
-  [v3 convertRect:v13 fromView:{v5, v7, v9, v11}];
+  collectionView2 = [(PXHorizontalCollectionGadget *)self collectionView];
+  superview = [collectionView2 superview];
+  [collectionView convertRect:superview fromView:{v5, v7, v9, v11}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [(PXHorizontalCollectionGadget *)self collectionView];
-  [v22 bounds];
+  collectionView3 = [(PXHorizontalCollectionGadget *)self collectionView];
+  [collectionView3 bounds];
   v34.origin.x = v15;
   v34.origin.y = v17;
   v34.size.width = v19;
@@ -272,26 +272,26 @@ uint64_t __66__PXHorizontalCollectionGadget__ensureCachedHeightForColumnWidth___
   return result;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v8.receiver = self;
   v8.super_class = PXHorizontalCollectionGadget;
-  [PXGadgetUIViewController observable:sel_observable_didChange_context_ didChange:a3 context:?];
-  if (PXExtendedTraitCollectionObservationContext_176541 == a5)
+  [PXGadgetUIViewController observable:sel_observable_didChange_context_ didChange:observable context:?];
+  if (PXExtendedTraitCollectionObservationContext_176541 == context)
   {
-    [(PXHorizontalCollectionGadget *)self _extendedTraitCollectionDidChange:a4];
+    [(PXHorizontalCollectionGadget *)self _extendedTraitCollectionDidChange:change];
   }
 }
 
-- (CGPoint)collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4
+- (CGPoint)collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  v5 = a3;
-  v6 = [(PXGadgetUIViewController *)self layout];
-  [v5 contentOffset];
+  viewCopy = view;
+  layout = [(PXGadgetUIViewController *)self layout];
+  [viewCopy contentOffset];
   v8 = v7;
   v10 = v9;
 
-  [v6 targetContentOffsetForProposedContentOffset:{v8, v10}];
+  [layout targetContentOffsetForProposedContentOffset:{v8, v10}];
   v12 = v11;
   v14 = v13;
 
@@ -302,35 +302,35 @@ uint64_t __66__PXHorizontalCollectionGadget__ensureCachedHeightForColumnWidth___
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = PXHorizontalCollectionGadget;
-  v4 = [(PXGadgetUIViewController *)&v6 collectionView:a3 cellForItemAtIndexPath:a4];
+  v4 = [(PXGadgetUIViewController *)&v6 collectionView:view cellForItemAtIndexPath:path];
   [v4 setClipsToBounds:0];
 
   return v4;
 }
 
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths
 {
-  v5 = a4;
-  v6 = [(PXGadgetUIViewController *)self gadgetViewControllerLog];
-  if (os_signpost_enabled(v6))
+  pathsCopy = paths;
+  gadgetViewControllerLog = [(PXGadgetUIViewController *)self gadgetViewControllerLog];
+  if (os_signpost_enabled(gadgetViewControllerLog))
   {
     LOWORD(v12[0]) = 0;
-    _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v6, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "H_Gadget_CV_prefetchItems", "", v12, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1A3C1C000, gadgetViewControllerLog, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "H_Gadget_CV_prefetchItems", "", v12, 2u);
   }
 
-  v7 = [v5 firstObject];
+  firstObject = [pathsCopy firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [(PXGadgetUIViewController *)self dataSource];
-    v9 = v8;
-    if (v8)
+    dataSource = [(PXGadgetUIViewController *)self dataSource];
+    v9 = dataSource;
+    if (dataSource)
     {
-      [v8 firstItemIndexPath];
+      [dataSource firstItemIndexPath];
     }
 
     else
@@ -341,8 +341,8 @@ uint64_t __66__PXHorizontalCollectionGadget__ensureCachedHeightForColumnWidth___
     v10 = [v9 gadgetAtIndexPath:v12];
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v10 contentViewController];
-      [v11 view];
+      contentViewController = [v10 contentViewController];
+      [contentViewController view];
     }
 
     else
@@ -359,41 +359,41 @@ LABEL_12:
         goto LABEL_15;
       }
 
-      v11 = [v10 contentView];
+      contentViewController = [v10 contentView];
     }
 
     goto LABEL_12;
   }
 
 LABEL_15:
-  if (os_signpost_enabled(v6))
+  if (os_signpost_enabled(gadgetViewControllerLog))
   {
     LOWORD(v12[0]) = 0;
-    _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v6, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "H_Gadget_CV_prefetchItems", "", v12, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1A3C1C000, gadgetViewControllerLog, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "H_Gadget_CV_prefetchItems", "", v12, 2u);
   }
 }
 
-- (id)presentationEnvironmentForGadget:(id)a3
+- (id)presentationEnvironmentForGadget:(id)gadget
 {
-  v5 = a3;
-  if (!v5)
+  gadgetCopy = gadget;
+  if (!gadgetCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:452 description:{@"Invalid parameter not satisfying: %@", @"gadget"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:452 description:{@"Invalid parameter not satisfying: %@", @"gadget"}];
   }
 
-  v6 = [(PXHorizontalCollectionGadget *)self delegate];
-  v7 = v6;
-  if (v6)
+  delegate = [(PXHorizontalCollectionGadget *)self delegate];
+  v7 = delegate;
+  if (delegate)
   {
-    v8 = [v6 presentationEnvironmentForGadget:v5];
+    v8 = [delegate presentationEnvironmentForGadget:gadgetCopy];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = PXHorizontalCollectionGadget;
-    v8 = [(PXGadgetUIViewController *)&v12 presentationEnvironmentForGadget:v5];
+    v8 = [(PXGadgetUIViewController *)&v12 presentationEnvironmentForGadget:gadgetCopy];
   }
 
   v9 = v8;
@@ -401,25 +401,25 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)gadget:(id)a3 transitionToViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (BOOL)gadget:(id)gadget transitionToViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a6;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
   v16.receiver = self;
   v16.super_class = PXHorizontalCollectionGadget;
-  if ([(PXGadgetUIViewController *)&v16 gadget:a3 transitionToViewController:v10 animated:v7 completion:v11])
+  if ([(PXGadgetUIViewController *)&v16 gadget:gadget transitionToViewController:controllerCopy animated:animatedCopy completion:completionCopy])
   {
     v12 = 1;
   }
 
   else
   {
-    v13 = [(PXHorizontalCollectionGadget *)self delegate];
-    v14 = v13;
-    if (v13)
+    delegate = [(PXHorizontalCollectionGadget *)self delegate];
+    v14 = delegate;
+    if (delegate)
     {
-      v12 = [v13 gadget:self transitionToViewController:v10 animated:v7 completion:v11];
+      v12 = [delegate gadget:self transitionToViewController:controllerCopy animated:animatedCopy completion:completionCopy];
     }
 
     else
@@ -431,38 +431,38 @@ LABEL_15:
   return v12;
 }
 
-- (void)gadget:(id)a3 didChange:(unint64_t)a4
+- (void)gadget:(id)gadget didChange:(unint64_t)change
 {
-  v6 = a3;
+  gadgetCopy = gadget;
   v14.receiver = self;
   v14.super_class = PXHorizontalCollectionGadget;
-  [(PXGadgetUIViewController *)&v14 gadget:v6 didChange:a4];
-  if ((a4 & 0x40) != 0)
+  [(PXGadgetUIViewController *)&v14 gadget:gadgetCopy didChange:change];
+  if ((change & 0x40) != 0)
   {
     [(PXHorizontalCollectionGadget *)self setCachedMaxHeightForColumnWidth:*off_1E7722230, *(off_1E7722230 + 1)];
   }
 
-  if (a4)
+  if (change)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __49__PXHorizontalCollectionGadget_gadget_didChange___block_invoke;
     v12[3] = &unk_1E7740460;
-    v13 = v6;
+    v13 = gadgetCopy;
     [(PXHorizontalCollectionGadget *)self performChanges:v12];
   }
 
-  v7 = [(PXHorizontalCollectionGadget *)self delegate];
-  if (v7)
+  delegate = [(PXHorizontalCollectionGadget *)self delegate];
+  if (delegate)
   {
-    v8 = v7;
-    v9 = [(PXHorizontalCollectionGadget *)self delegate];
+    v8 = delegate;
+    delegate2 = [(PXHorizontalCollectionGadget *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(PXHorizontalCollectionGadget *)self delegate];
-      [v11 gadget:v6 didChange:a4];
+      delegate3 = [(PXHorizontalCollectionGadget *)self delegate];
+      [delegate3 gadget:gadgetCopy didChange:change];
     }
   }
 }
@@ -475,7 +475,7 @@ void __49__PXHorizontalCollectionGadget_gadget_didChange___block_invoke(uint64_t
   [v3 setCollectionTitle:v4];
 }
 
-- (void)prefetchDuringScrollingForWidth:(double)a3
+- (void)prefetchDuringScrollingForWidth:(double)width
 {
   if (![(PXHorizontalCollectionGadget *)self isResourceLoaded])
   {
@@ -485,15 +485,15 @@ void __49__PXHorizontalCollectionGadget_gadget_didChange___block_invoke(uint64_t
     v9[0] = 0;
     v9[1] = v9;
     v9[2] = 0x2020000000;
-    v9[3] = vcvtpd_s64_f64(a3 / v5);
-    v7 = [(PXGadgetUIViewController *)self dataSource];
+    v9[3] = vcvtpd_s64_f64(width / v5);
+    dataSource = [(PXGadgetUIViewController *)self dataSource];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __64__PXHorizontalCollectionGadget_prefetchDuringScrollingForWidth___block_invoke;
     v8[3] = &unk_1E7740438;
     *&v8[5] = v6;
     v8[4] = v9;
-    [v7 enumerateGadgetsUsingBlock:v8];
+    [dataSource enumerateGadgetsUsingBlock:v8];
 
     _Block_object_dispose(v9, 8);
   }
@@ -527,15 +527,15 @@ LABEL_6:
   *a3 = --*(*(*(a1 + 32) + 8) + 24) < 1;
 }
 
-- (id)targetPreviewViewForLocation:(CGPoint)a3 inCoordinateSpace:(id)a4
+- (id)targetPreviewViewForLocation:(CGPoint)location inCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PXGadgetUIViewController *)self gadgetAtLocation:v7 inCoordinateSpace:x, y];
+  y = location.y;
+  x = location.x;
+  spaceCopy = space;
+  v8 = [(PXGadgetUIViewController *)self gadgetAtLocation:spaceCopy inCoordinateSpace:x, y];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 targetPreviewViewForLocation:v7 inCoordinateSpace:{x, y}];
+    v9 = [v8 targetPreviewViewForLocation:spaceCopy inCoordinateSpace:{x, y}];
   }
 
   else
@@ -546,97 +546,97 @@ LABEL_6:
   return v9;
 }
 
-- (void)commitPreviewView:(id)a3
+- (void)commitPreviewView:(id)view
 {
-  v9 = a3;
-  v5 = [(PXHorizontalCollectionGadget *)self previewOrbContext];
+  viewCopy = view;
+  previewOrbContext = [(PXHorizontalCollectionGadget *)self previewOrbContext];
 
-  if (!v5)
+  if (!previewOrbContext)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:376 description:@"previewOrbContext cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:376 description:@"previewOrbContext cannot be nil"];
   }
 
-  v6 = [(PXHorizontalCollectionGadget *)self previewOrbContext];
-  v7 = [v6 gadget];
+  previewOrbContext2 = [(PXHorizontalCollectionGadget *)self previewOrbContext];
+  gadget = [previewOrbContext2 gadget];
 
   if (objc_opt_respondsToSelector())
   {
-    [v7 commitPreviewView:v9];
+    [gadget commitPreviewView:viewCopy];
   }
 }
 
-- (void)didDismissPreviewWithPreviewView:(id)a3 committing:(BOOL)a4
+- (void)didDismissPreviewWithPreviewView:(id)view committing:(BOOL)committing
 {
-  v4 = a4;
-  v11 = a3;
-  v7 = [(PXHorizontalCollectionGadget *)self previewOrbContext];
+  committingCopy = committing;
+  viewCopy = view;
+  previewOrbContext = [(PXHorizontalCollectionGadget *)self previewOrbContext];
 
-  if (!v7)
+  if (!previewOrbContext)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:368 description:@"previewOrbContext cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:368 description:@"previewOrbContext cannot be nil"];
   }
 
-  v8 = [(PXHorizontalCollectionGadget *)self previewOrbContext];
-  v9 = [v8 gadget];
+  previewOrbContext2 = [(PXHorizontalCollectionGadget *)self previewOrbContext];
+  gadget = [previewOrbContext2 gadget];
 
   if (objc_opt_respondsToSelector())
   {
-    [v9 didDismissPreviewWithPreviewView:v11 committing:v4];
+    [gadget didDismissPreviewWithPreviewView:viewCopy committing:committingCopy];
   }
 }
 
-- (void)didDismissPreviewViewController:(id)a3 committing:(BOOL)a4
+- (void)didDismissPreviewViewController:(id)controller committing:(BOOL)committing
 {
-  v4 = a4;
-  v11 = a3;
-  v7 = [(PXHorizontalCollectionGadget *)self previewOrbContext];
+  committingCopy = committing;
+  controllerCopy = controller;
+  previewOrbContext = [(PXHorizontalCollectionGadget *)self previewOrbContext];
 
-  if (!v7)
+  if (!previewOrbContext)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:360 description:@"previewOrbContext cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:360 description:@"previewOrbContext cannot be nil"];
   }
 
-  v8 = [(PXHorizontalCollectionGadget *)self previewOrbContext];
-  v9 = [v8 gadget];
+  previewOrbContext2 = [(PXHorizontalCollectionGadget *)self previewOrbContext];
+  gadget = [previewOrbContext2 gadget];
 
   if (objc_opt_respondsToSelector())
   {
-    [v9 didDismissPreviewViewController:v11 committing:v4];
+    [gadget didDismissPreviewViewController:controllerCopy committing:committingCopy];
   }
 }
 
-- (void)commitPreviewViewController:(id)a3
+- (void)commitPreviewViewController:(id)controller
 {
-  v9 = a3;
-  v5 = [(PXHorizontalCollectionGadget *)self previewOrbContext];
+  controllerCopy = controller;
+  previewOrbContext = [(PXHorizontalCollectionGadget *)self previewOrbContext];
 
-  if (!v5)
+  if (!previewOrbContext)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:352 description:@"previewOrbContext cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:352 description:@"previewOrbContext cannot be nil"];
   }
 
-  v6 = [(PXHorizontalCollectionGadget *)self previewOrbContext];
-  v7 = [v6 gadget];
+  previewOrbContext2 = [(PXHorizontalCollectionGadget *)self previewOrbContext];
+  gadget = [previewOrbContext2 gadget];
 
   if (objc_opt_respondsToSelector())
   {
-    [v7 commitPreviewViewController:v9];
+    [gadget commitPreviewViewController:controllerCopy];
   }
 }
 
-- (id)contextMenuWithSuggestedActions:(id)a3
+- (id)contextMenuWithSuggestedActions:(id)actions
 {
-  v4 = a3;
-  v5 = [(PXHorizontalCollectionGadget *)self previewOrbContext];
-  v6 = [v5 gadget];
+  actionsCopy = actions;
+  previewOrbContext = [(PXHorizontalCollectionGadget *)self previewOrbContext];
+  gadget = [previewOrbContext gadget];
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 contextMenuWithSuggestedActions:v4];
+    v7 = [gadget contextMenuWithSuggestedActions:actionsCopy];
   }
 
   else
@@ -647,15 +647,15 @@ LABEL_6:
   return v7;
 }
 
-- (id)previewParametersForTargetPreviewView:(id)a3
+- (id)previewParametersForTargetPreviewView:(id)view
 {
-  v4 = a3;
-  v5 = [(PXHorizontalCollectionGadget *)self previewOrbContext];
-  v6 = [v5 gadget];
+  viewCopy = view;
+  previewOrbContext = [(PXHorizontalCollectionGadget *)self previewOrbContext];
+  gadget = [previewOrbContext gadget];
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 previewParametersForTargetPreviewView:v4];
+    v7 = [gadget previewParametersForTargetPreviewView:viewCopy];
   }
 
   else
@@ -666,19 +666,19 @@ LABEL_6:
   return v7;
 }
 
-- (id)previewViewControllerAtLocation:(CGPoint)a3 fromSourceView:(id)a4
+- (id)previewViewControllerAtLocation:(CGPoint)location fromSourceView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PXGadgetUIViewController *)self gadgetAtLocation:v7 inCoordinateSpace:x, y];
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  v8 = [(PXGadgetUIViewController *)self gadgetAtLocation:viewCopy inCoordinateSpace:x, y];
   if (v8)
   {
     v9 = objc_alloc_init(PXGadgetOrbContext);
     [(PXGadgetOrbContext *)v9 setGadget:v8];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v8 previewViewControllerAtLocation:v7 fromSourceView:{x, y}];
+      v10 = [v8 previewViewControllerAtLocation:viewCopy fromSourceView:{x, y}];
     }
 
     else
@@ -698,16 +698,16 @@ LABEL_6:
   return v10;
 }
 
-- (void)gadgetControllerFinishedUpdatingDataSourceWithChange:(id)a3
+- (void)gadgetControllerFinishedUpdatingDataSourceWithChange:(id)change
 {
-  v4 = [(PXHorizontalCollectionGadget *)self horizontalGadgetDelegate];
-  [v4 horizontalCollectionGadgetDatasourceDidUpdate:self];
+  horizontalGadgetDelegate = [(PXHorizontalCollectionGadget *)self horizontalGadgetDelegate];
+  [horizontalGadgetDelegate horizontalCollectionGadgetDatasourceDidUpdate:self];
 }
 
 - (void)gadgetControllerHasDisappeared
 {
-  v2 = [(PXGadgetUIViewController *)self dataSource];
-  [v2 enumerateGadgetsUsingBlock:&__block_literal_global_22_176569];
+  dataSource = [(PXGadgetUIViewController *)self dataSource];
+  [dataSource enumerateGadgetsUsingBlock:&__block_literal_global_22_176569];
 }
 
 void __62__PXHorizontalCollectionGadget_gadgetControllerHasDisappeared__block_invoke(uint64_t a1, void *a2)
@@ -721,8 +721,8 @@ void __62__PXHorizontalCollectionGadget_gadgetControllerHasDisappeared__block_in
 
 - (void)gadgetControllerHasAppeared
 {
-  v2 = [(PXGadgetUIViewController *)self dataSource];
-  [v2 enumerateGadgetsUsingBlock:&__block_literal_global_176572];
+  dataSource = [(PXGadgetUIViewController *)self dataSource];
+  [dataSource enumerateGadgetsUsingBlock:&__block_literal_global_176572];
 }
 
 void __59__PXHorizontalCollectionGadget_gadgetControllerHasAppeared__block_invoke(uint64_t a1, void *a2)
@@ -736,27 +736,27 @@ void __59__PXHorizontalCollectionGadget_gadgetControllerHasAppeared__block_invok
 
 - (void)_updateCollectionViewPaging
 {
-  v16 = [(PXHorizontalCollectionGadget *)self gadgetSpec];
-  v3 = [(PXGadgetUIViewController *)self layout];
-  v4 = [v16 layoutSizeClass];
-  v5 = [v16 layoutOrientation];
-  v6 = 0;
-  if (v4 == 1 && v5 != 2)
+  gadgetSpec = [(PXHorizontalCollectionGadget *)self gadgetSpec];
+  layout = [(PXGadgetUIViewController *)self layout];
+  layoutSizeClass = [gadgetSpec layoutSizeClass];
+  layoutOrientation = [gadgetSpec layoutOrientation];
+  prefersPagingEnabled = 0;
+  if (layoutSizeClass == 1 && layoutOrientation != 2)
   {
-    v6 = [v3 prefersPagingEnabled];
+    prefersPagingEnabled = [layout prefersPagingEnabled];
   }
 
-  v7 = [(PXHorizontalCollectionGadget *)self collectionView];
-  [v16 columnSpacingForColumnSpan:{-[PXHorizontalCollectionGadget currentColumnSpan](self, "currentColumnSpan")}];
+  collectionView = [(PXHorizontalCollectionGadget *)self collectionView];
+  [gadgetSpec columnSpacingForColumnSpan:{-[PXHorizontalCollectionGadget currentColumnSpan](self, "currentColumnSpan")}];
   v9 = v8;
-  [v16 contentInsets];
-  [v7 _setPagingOrigin:{-v10, 0.0}];
-  [v3 columnWidth];
+  [gadgetSpec contentInsets];
+  [collectionView _setPagingOrigin:{-v10, 0.0}];
+  [layout columnWidth];
   v12 = v11;
-  [v16 layoutReferenceWidth];
-  [v7 _setInterpageSpacing:{v9 + v12 - v13, 0.0}];
-  v14 = v6 & 1;
-  if (v6)
+  [gadgetSpec layoutReferenceWidth];
+  [collectionView _setInterpageSpacing:{v9 + v12 - v13, 0.0}];
+  v14 = prefersPagingEnabled & 1;
+  if (prefersPagingEnabled)
   {
     v15 = MEMORY[0x1E69DE3A0];
   }
@@ -766,17 +766,17 @@ void __59__PXHorizontalCollectionGadget_gadgetControllerHasAppeared__block_invok
     v15 = MEMORY[0x1E69DE3A8];
   }
 
-  [v7 setPagingEnabled:v14];
-  [v7 setDecelerationRate:*v15];
+  [collectionView setPagingEnabled:v14];
+  [collectionView setDecelerationRate:*v15];
 }
 
-- (void)setGadgetSpec:(id)a3
+- (void)setGadgetSpec:(id)spec
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_gadgetSpec != v5 && ![(PXGadgetSpec *)v5 isEqual:?])
+  specCopy = spec;
+  v6 = specCopy;
+  if (self->_gadgetSpec != specCopy && ![(PXGadgetSpec *)specCopy isEqual:?])
   {
-    objc_storeStrong(&self->_gadgetSpec, a3);
+    objc_storeStrong(&self->_gadgetSpec, spec);
     if (self->_gadgetSpec)
     {
       v7 = MEMORY[0x1E69DD250];
@@ -785,7 +785,7 @@ void __59__PXHorizontalCollectionGadget_gadgetControllerHasAppeared__block_invok
       v8[2] = __46__PXHorizontalCollectionGadget_setGadgetSpec___block_invoke;
       v8[3] = &unk_1E774C620;
       v9 = v6;
-      v10 = self;
+      selfCopy = self;
       [v7 performWithoutAnimation:v8];
     }
   }
@@ -807,20 +807,20 @@ uint64_t __46__PXHorizontalCollectionGadget_setGadgetSpec___block_invoke(uint64_
   return [v11 _updateCollectionViewPaging];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PXHorizontalCollectionGadget *)self collectionHeight:a3.width];
+  width = fits.width;
+  [(PXHorizontalCollectionGadget *)self collectionHeight:fits.width];
   if (v5 == 0.0)
   {
-    v6 = [(PXHorizontalCollectionGadget *)self collectionView];
-    [v6 contentInset];
+    collectionView = [(PXHorizontalCollectionGadget *)self collectionView];
+    [collectionView contentInset];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(PXGadgetUIViewController *)self layout];
-    [v15 columnWidth];
+    layout = [(PXGadgetUIViewController *)self layout];
+    [layout columnWidth];
     if (v16 == 0.0)
     {
       v16 = width - v10 - v14;
@@ -843,26 +843,26 @@ uint64_t __46__PXHorizontalCollectionGadget_setGadgetSpec___block_invoke(uint64_
   return result;
 }
 
-- (void)userDidSelectAccessoryButton:(id)a3
+- (void)userDidSelectAccessoryButton:(id)button
 {
-  v6 = a3;
-  v4 = [(PXHorizontalCollectionGadget *)self accessoryButtonAction];
+  buttonCopy = button;
+  accessoryButtonAction = [(PXHorizontalCollectionGadget *)self accessoryButtonAction];
 
-  if (v4)
+  if (accessoryButtonAction)
   {
-    v5 = [(PXHorizontalCollectionGadget *)self accessoryButtonAction];
-    (v5)[2](v5, self, v6);
+    accessoryButtonAction2 = [(PXHorizontalCollectionGadget *)self accessoryButtonAction];
+    (accessoryButtonAction2)[2](accessoryButtonAction2, self, buttonCopy);
   }
 }
 
-- (void)setVisibleContentRect:(CGRect)a3
+- (void)setVisibleContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_visibleContentRect = &self->_visibleContentRect;
-  if (!CGRectEqualToRect(a3, self->_visibleContentRect))
+  if (!CGRectEqualToRect(rect, self->_visibleContentRect))
   {
     p_visibleContentRect->origin.x = x;
     p_visibleContentRect->origin.y = y;
@@ -873,139 +873,139 @@ uint64_t __46__PXHorizontalCollectionGadget_setGadgetSpec___block_invoke(uint64_
   }
 }
 
-- (void)setCollectionHeight:(double)a3
+- (void)setCollectionHeight:(double)height
 {
   if (![(PXHorizontalCollectionGadget *)self isPerformingChanges])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = NSStringFromSelector(a2);
-    [v6 handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:189 description:{@"[%@] %@ must be called from a performChanges block.", self, v7}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:189 description:{@"[%@] %@ must be called from a performChanges block.", self, v7}];
   }
 
-  if (self->_collectionHeight != a3)
+  if (self->_collectionHeight != height)
   {
-    self->_collectionHeight = a3;
+    self->_collectionHeight = height;
     byte_1EB1EB0B2 = 1;
   }
 }
 
-- (void)setCollectionAccessoryButtonTitle:(id)a3
+- (void)setCollectionAccessoryButtonTitle:(id)title
 {
-  v11 = a3;
+  titleCopy = title;
   if (![(PXHorizontalCollectionGadget *)self isPerformingChanges])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = NSStringFromSelector(a2);
-    [v9 handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:179 description:{@"[%@] %@ must be called from a performChanges block.", self, v10}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:179 description:{@"[%@] %@ must be called from a performChanges block.", self, v10}];
   }
 
-  v5 = v11;
-  if (self->_collectionAccessoryButtonTitle != v11)
+  v5 = titleCopy;
+  if (self->_collectionAccessoryButtonTitle != titleCopy)
   {
-    v6 = [(NSString *)v11 isEqual:?];
-    v5 = v11;
+    v6 = [(NSString *)titleCopy isEqual:?];
+    v5 = titleCopy;
     if ((v6 & 1) == 0)
     {
-      v7 = [(NSString *)v11 copy];
+      v7 = [(NSString *)titleCopy copy];
       collectionAccessoryButtonTitle = self->_collectionAccessoryButtonTitle;
       self->_collectionAccessoryButtonTitle = v7;
 
-      v5 = v11;
+      v5 = titleCopy;
       HIBYTE(_horizontalGadgetUpdateFlags) = 1;
     }
   }
 }
 
-- (void)setCollectionAccessoryButtonType:(unint64_t)a3
+- (void)setCollectionAccessoryButtonType:(unint64_t)type
 {
   if (![(PXHorizontalCollectionGadget *)self isPerformingChanges])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = NSStringFromSelector(a2);
-    [v6 handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:169 description:{@"[%@] %@ must be called from a performChanges block.", self, v7}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:169 description:{@"[%@] %@ must be called from a performChanges block.", self, v7}];
   }
 
-  if (self->_collectionAccessoryButtonType != a3)
+  if (self->_collectionAccessoryButtonType != type)
   {
-    self->_collectionAccessoryButtonType = a3;
+    self->_collectionAccessoryButtonType = type;
     HIBYTE(_horizontalGadgetUpdateFlags) = 1;
   }
 }
 
-- (void)setCollectionTitle:(id)a3
+- (void)setCollectionTitle:(id)title
 {
-  v8 = a3;
+  titleCopy = title;
   if (![(PXHorizontalCollectionGadget *)self isPerformingChanges])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = NSStringFromSelector(a2);
-    [v6 handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:159 description:{@"[%@] %@ must be called from a performChanges block.", self, v7}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadget.m" lineNumber:159 description:{@"[%@] %@ must be called from a performChanges block.", self, v7}];
   }
 
-  if (![(NSString *)self->_collectionTitle isEqualToString:v8])
+  if (![(NSString *)self->_collectionTitle isEqualToString:titleCopy])
   {
-    objc_storeStrong(&self->_collectionTitle, a3);
+    objc_storeStrong(&self->_collectionTitle, title);
     LOBYTE(_horizontalGadgetUpdateFlags) = 1;
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v5 = a3;
-  v4 = [(PXHorizontalCollectionGadget *)self isPerformingChanges];
+  changesCopy = changes;
+  isPerformingChanges = [(PXHorizontalCollectionGadget *)self isPerformingChanges];
   [(PXHorizontalCollectionGadget *)self setIsPerformingChanges:1];
-  if (v5)
+  if (changesCopy)
   {
-    v5[2](v5, self);
+    changesCopy[2](changesCopy, self);
   }
 
-  [(PXHorizontalCollectionGadget *)self setIsPerformingChanges:v4];
+  [(PXHorizontalCollectionGadget *)self setIsPerformingChanges:isPerformingChanges];
   if (![(PXHorizontalCollectionGadget *)self isPerformingChanges])
   {
     [(PXHorizontalCollectionGadget *)self updateIfNeeded];
   }
 }
 
-- (void)setLayout:(id)a3
+- (void)setLayout:(id)layout
 {
   v4.receiver = self;
   v4.super_class = PXHorizontalCollectionGadget;
-  [(PXGadgetUIViewController *)&v4 setLayout:a3];
+  [(PXGadgetUIViewController *)&v4 setLayout:layout];
   [(PXHorizontalCollectionGadget *)self _updateColumnSettings];
   [(PXHorizontalCollectionGadget *)self _updateCollectionViewPaging];
 }
 
-- (void)setDefaultColumnSpan:(int64_t)a3
+- (void)setDefaultColumnSpan:(int64_t)span
 {
-  if (self->_defaultColumnSpan != a3)
+  if (self->_defaultColumnSpan != span)
   {
-    self->_defaultColumnSpan = a3;
-    v5 = [(PXHorizontalCollectionGadget *)self traitCollection];
-    [(PXHorizontalCollectionGadget *)self setCurrentColumnSpan:[(PXHorizontalCollectionGadget *)self _columnSpanForTraitCollection:v5]];
+    self->_defaultColumnSpan = span;
+    traitCollection = [(PXHorizontalCollectionGadget *)self traitCollection];
+    [(PXHorizontalCollectionGadget *)self setCurrentColumnSpan:[(PXHorizontalCollectionGadget *)self _columnSpanForTraitCollection:traitCollection]];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PXHorizontalCollectionGadget;
-  [(PXGadgetUIViewController *)&v4 viewDidAppear:a3];
+  [(PXGadgetUIViewController *)&v4 viewDidAppear:appear];
   [(PXHorizontalCollectionGadget *)self setIsResourceLoaded:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PXHorizontalCollectionGadget;
-  [(PXGadgetUIViewController *)&v4 viewWillAppear:a3];
+  [(PXGadgetUIViewController *)&v4 viewWillAppear:appear];
   [(PXHorizontalCollectionGadget *)self contentViewWillAppear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PXHorizontalCollectionGadget;
-  [(PXGadgetUIViewController *)&v4 viewDidDisappear:a3];
+  [(PXGadgetUIViewController *)&v4 viewDidDisappear:disappear];
   [(PXHorizontalCollectionGadget *)self contentViewDidDisappear];
 }
 
@@ -1014,64 +1014,64 @@ uint64_t __46__PXHorizontalCollectionGadget_setGadgetSpec___block_invoke(uint64_
   v8.receiver = self;
   v8.super_class = PXHorizontalCollectionGadget;
   [(PXGadgetUIViewController *)&v8 viewDidLoad];
-  v3 = [(PXHorizontalCollectionGadget *)self collectionView];
-  [v3 setClipsToBounds:0];
-  v4 = [(PXHorizontalCollectionGadget *)self gadgetSpec];
-  [v4 contentInsets];
-  [v3 setContentInset:?];
+  collectionView = [(PXHorizontalCollectionGadget *)self collectionView];
+  [collectionView setClipsToBounds:0];
+  gadgetSpec = [(PXHorizontalCollectionGadget *)self gadgetSpec];
+  [gadgetSpec contentInsets];
+  [collectionView setContentInset:?];
 
-  [v3 setShowsHorizontalScrollIndicator:0];
-  [v3 setShowsVerticalScrollIndicator:0];
-  [v3 setContentInsetAdjustmentBehavior:2];
-  [v3 _setAutomaticContentOffsetAdjustmentEnabled:1];
-  [v3 setAlwaysBounceVertical:0];
-  [v3 setAlwaysBounceHorizontal:1];
-  [v3 setDirectionalLockEnabled:1];
-  [v3 setFocusGroupIdentifier:0];
-  [v3 setSelectionFollowsFocus:{-[PXHorizontalCollectionGadget selectionFollowsFocus](self, "selectionFollowsFocus")}];
+  [collectionView setShowsHorizontalScrollIndicator:0];
+  [collectionView setShowsVerticalScrollIndicator:0];
+  [collectionView setContentInsetAdjustmentBehavior:2];
+  [collectionView _setAutomaticContentOffsetAdjustmentEnabled:1];
+  [collectionView setAlwaysBounceVertical:0];
+  [collectionView setAlwaysBounceHorizontal:1];
+  [collectionView setDirectionalLockEnabled:1];
+  [collectionView setFocusGroupIdentifier:0];
+  [collectionView setSelectionFollowsFocus:{-[PXHorizontalCollectionGadget selectionFollowsFocus](self, "selectionFollowsFocus")}];
   prefersPagingEnabled = self->_prefersPagingEnabled;
-  v6 = [(PXGadgetUIViewController *)self layout];
-  [v6 setPrefersPagingEnabled:prefersPagingEnabled];
+  layout = [(PXGadgetUIViewController *)self layout];
+  [layout setPrefersPagingEnabled:prefersPagingEnabled];
 
-  v7 = [(PXHorizontalCollectionGadget *)self px_extendedTraitCollection];
-  [v7 registerChangeObserver:self context:PXExtendedTraitCollectionObservationContext_176541];
+  px_extendedTraitCollection = [(PXHorizontalCollectionGadget *)self px_extendedTraitCollection];
+  [px_extendedTraitCollection registerChangeObserver:self context:PXExtendedTraitCollectionObservationContext_176541];
   [(PXHorizontalCollectionGadget *)self _updateColumnSettings];
 }
 
-- (PXHorizontalCollectionGadget)initWithDataSourceManager:(id)a3
+- (PXHorizontalCollectionGadget)initWithDataSourceManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_alloc_init(PXGadgetCollectionViewLayout);
   [(PXGadgetCollectionViewLayout *)v5 setScrollDirection:1];
-  v6 = [(PXHorizontalCollectionGadget *)self initWithLayout:v5 dataSourceManager:v4];
+  v6 = [(PXHorizontalCollectionGadget *)self initWithLayout:v5 dataSourceManager:managerCopy];
 
   return v6;
 }
 
-- (PXHorizontalCollectionGadget)initWithProviders:(id)a3 layout:(id)a4
+- (PXHorizontalCollectionGadget)initWithProviders:(id)providers layout:(id)layout
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PXBasicGadgetDataSourceManager alloc] initWithProviders:v7];
+  layoutCopy = layout;
+  providersCopy = providers;
+  v8 = [[PXBasicGadgetDataSourceManager alloc] initWithProviders:providersCopy];
 
-  v9 = [(PXHorizontalCollectionGadget *)self initWithLayout:v6 dataSourceManager:v8];
+  v9 = [(PXHorizontalCollectionGadget *)self initWithLayout:layoutCopy dataSourceManager:v8];
   return v9;
 }
 
-- (PXHorizontalCollectionGadget)initWithProviders:(id)a3
+- (PXHorizontalCollectionGadget)initWithProviders:(id)providers
 {
-  v4 = a3;
-  v5 = [[PXBasicGadgetDataSourceManager alloc] initWithProviders:v4];
+  providersCopy = providers;
+  v5 = [[PXBasicGadgetDataSourceManager alloc] initWithProviders:providersCopy];
 
   v6 = [(PXHorizontalCollectionGadget *)self initWithDataSourceManager:v5];
   return v6;
 }
 
-- (PXHorizontalCollectionGadget)initWithLayout:(id)a3 dataSourceManager:(id)a4
+- (PXHorizontalCollectionGadget)initWithLayout:(id)layout dataSourceManager:(id)manager
 {
   v7.receiver = self;
   v7.super_class = PXHorizontalCollectionGadget;
-  v4 = [(PXGadgetUIViewController *)&v7 initWithLayout:a3 dataSourceManager:a4];
+  v4 = [(PXGadgetUIViewController *)&v7 initWithLayout:layout dataSourceManager:manager];
   v5 = v4;
   if (v4)
   {

@@ -1,24 +1,24 @@
 @interface SCNKeyedUnarchiver
 - (NSURL)documentEnclosingURL;
-- (id)initForReadingWithData:(id)a3 secure:(BOOL)a4;
+- (id)initForReadingWithData:(id)data secure:(BOOL)secure;
 - (void)dealloc;
-- (void)decodeValueOfObjCType:(const char *)a3 at:(void *)a4;
+- (void)decodeValueOfObjCType:(const char *)type at:(void *)at;
 @end
 
 @implementation SCNKeyedUnarchiver
 
-- (id)initForReadingWithData:(id)a3 secure:(BOOL)a4
+- (id)initForReadingWithData:(id)data secure:(BOOL)secure
 {
-  v4 = a4;
+  secureCopy = secure;
   v9.receiver = self;
   v9.super_class = SCNKeyedUnarchiver;
   v10 = 0;
-  v5 = [(SCNKeyedUnarchiver *)&v9 initForReadingFromData:a3 error:&v10];
+  v5 = [(SCNKeyedUnarchiver *)&v9 initForReadingFromData:data error:&v10];
   v6 = v5;
   if (v5)
   {
     [v5 setDecodingFailurePolicy:0];
-    [v6 setRequiresSecureCoding:v4];
+    [v6 setRequiresSecureCoding:secureCopy];
   }
 
   if (v10)
@@ -47,56 +47,56 @@
 
 - (NSURL)documentEnclosingURL
 {
-  v3 = [(SCNKeyedUnarchiver *)self documentURL];
-  if (v3)
+  documentURL = [(SCNKeyedUnarchiver *)self documentURL];
+  if (documentURL)
   {
 
-    return [(NSURL *)v3 URLByDeletingLastPathComponent];
+    return [(NSURL *)documentURL URLByDeletingLastPathComponent];
   }
 
   else
   {
-    v5 = [(SCNKeyedUnarchiver *)self context];
+    context = [(SCNKeyedUnarchiver *)self context];
 
-    return [(NSDictionary *)v5 valueForKey:@"kEnclosingFolderURL"];
+    return [(NSDictionary *)context valueForKey:@"kEnclosingFolderURL"];
   }
 }
 
-- (void)decodeValueOfObjCType:(const char *)a3 at:(void *)a4
+- (void)decodeValueOfObjCType:(const char *)type at:(void *)at
 {
-  if (!strcmp(a3, "{SCNVector3=fff}"))
+  if (!strcmp(type, "{SCNVector3=fff}"))
   {
     v14 = 0;
     v7 = [(SCNKeyedUnarchiver *)self decodeBytesWithReturnedLength:&v14];
     v8 = *v7;
-    *a4 = *v7;
-    *(a4 + 2) = DWORD2(v8);
+    *at = *v7;
+    *(at + 2) = DWORD2(v8);
   }
 
-  else if (!strcmp(a3, "{SCNVector4=ffff}"))
+  else if (!strcmp(type, "{SCNVector4=ffff}"))
   {
     v14 = 0;
-    *a4 = *[(SCNKeyedUnarchiver *)self decodeBytesWithReturnedLength:&v14];
+    *at = *[(SCNKeyedUnarchiver *)self decodeBytesWithReturnedLength:&v14];
   }
 
-  else if (!strcmp(a3, "{SCNMatrix4=ffffffffffffffff}"))
+  else if (!strcmp(type, "{SCNMatrix4=ffffffffffffffff}"))
   {
     v14 = 0;
     v9 = [(SCNKeyedUnarchiver *)self decodeBytesWithReturnedLength:&v14];
     v10 = v9[1];
     v11 = v9[2];
     v12 = v9[3];
-    *a4 = *v9;
-    *(a4 + 1) = v10;
-    *(a4 + 2) = v11;
-    *(a4 + 3) = v12;
+    *at = *v9;
+    *(at + 1) = v10;
+    *(at + 2) = v11;
+    *(at + 3) = v12;
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = SCNKeyedUnarchiver;
-    [(SCNKeyedUnarchiver *)&v13 decodeValueOfObjCType:a3 at:a4];
+    [(SCNKeyedUnarchiver *)&v13 decodeValueOfObjCType:type at:at];
   }
 }
 

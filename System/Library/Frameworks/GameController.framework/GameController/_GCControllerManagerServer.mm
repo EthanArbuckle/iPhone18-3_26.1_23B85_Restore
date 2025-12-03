@@ -1,41 +1,41 @@
 @interface _GCControllerManagerServer
 + (id)sharedInstance;
-- (BOOL)acceptIncomingDriverConnection:(id)a3;
-- (BOOL)addConfiguration:(id)a3 replaceExisting:(BOOL)a4;
-- (BOOL)getLastGeneratedName:(id *)a3 directoryHandle:(id *)a4 url:(id *)a5;
-- (BOOL)hasConfigurationWithIdentifier:(id)a3;
-- (BOOL)removeConfigurationWithIdentifier:(id)a3;
-- (BOOL)updateConfiguration:(id)a3;
+- (BOOL)acceptIncomingDriverConnection:(id)connection;
+- (BOOL)addConfiguration:(id)configuration replaceExisting:(BOOL)existing;
+- (BOOL)getLastGeneratedName:(id *)name directoryHandle:(id *)handle url:(id *)url;
+- (BOOL)hasConfigurationWithIdentifier:(id)identifier;
+- (BOOL)removeConfigurationWithIdentifier:(id)identifier;
+- (BOOL)updateConfiguration:(id)configuration;
 - (_GCControllerManagerServer)init;
-- (_GCControllerManagerServer)initWithControllerProfiles:(id)a3;
-- (id)IPCObjectWithIdentifier:(id)a3;
-- (id)_hidqueue_popPendingDriverConnectionsForRegistryID:(id)a3;
-- (id)_hidqueue_popPendingFilterConnectionsForRegistryID:(id)a3;
-- (id)configurationWithIdentifier:(id)a3;
+- (_GCControllerManagerServer)initWithControllerProfiles:(id)profiles;
+- (id)IPCObjectWithIdentifier:(id)identifier;
+- (id)_hidqueue_popPendingDriverConnectionsForRegistryID:(id)d;
+- (id)_hidqueue_popPendingFilterConnectionsForRegistryID:(id)d;
+- (id)configurationWithIdentifier:(id)identifier;
 - (id)lastGeneratedURL;
 - (id)matchingHIDServiceAttributes;
-- (void)_hidqueue_pushPendingDriverConnection:(id)a3 forRegistryID:(id)a4;
-- (void)_hidqueue_pushPendingFilterConnection:(id)a3 forRegistryID:(id)a4;
+- (void)_hidqueue_pushPendingDriverConnection:(id)connection forRegistryID:(id)d;
+- (void)_hidqueue_pushPendingFilterConnection:(id)connection forRegistryID:(id)d;
 - (void)_onqueue_refreshControllers;
 - (void)_onqueue_refreshLogicalDevices;
-- (void)_onqueue_registerLogicalDevice:(id)a3;
-- (void)_onqueue_registerPhysicalDevice:(id)a3;
+- (void)_onqueue_registerLogicalDevice:(id)device;
+- (void)_onqueue_registerPhysicalDevice:(id)device;
 - (void)_onqueue_signalGameControllerFocusModeEvent;
-- (void)_onqueue_unregisterLogicalDevice:(id)a3;
-- (void)_onqueue_unregisterPhysicalDevice:(id)a3;
+- (void)_onqueue_unregisterLogicalDevice:(id)device;
+- (void)_onqueue_unregisterPhysicalDevice:(id)device;
 - (void)_rebuildCoPilotConfigurations;
 - (void)_refreshCoPilotSettings;
 - (void)dealloc;
-- (void)deviceManager:(id)a3 deviceDidConnect:(id)a4;
-- (void)deviceManager:(id)a3 deviceDidDisconnect:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)onHIDServiceAdded:(id)a3;
-- (void)onHIDServiceRemoved:(id)a3;
+- (void)deviceManager:(id)manager deviceDidConnect:(id)connect;
+- (void)deviceManager:(id)manager deviceDidDisconnect:(id)disconnect;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)onHIDServiceAdded:(id)added;
+- (void)onHIDServiceRemoved:(id)removed;
 - (void)refreshActiveConfigurations;
-- (void)refreshActiveConfigurationsWithCompletion:(id)a3;
-- (void)registerIPCObject:(id)a3;
-- (void)setLastGeneratedName:(id)a3 directoryHandle:(id)a4 url:(id)a5;
-- (void)setupHIDMonitor:(BOOL)a3;
+- (void)refreshActiveConfigurationsWithCompletion:(id)completion;
+- (void)registerIPCObject:(id)object;
+- (void)setLastGeneratedName:(id)name directoryHandle:(id)handle url:(id)url;
+- (void)setupHIDMonitor:(BOOL)monitor;
 - (void)teardownHIDMonitor;
 @end
 
@@ -61,10 +61,10 @@
   return v4;
 }
 
-- (_GCControllerManagerServer)initWithControllerProfiles:(id)a3
+- (_GCControllerManagerServer)initWithControllerProfiles:(id)profiles
 {
   v82 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  profilesCopy = profiles;
   v80.receiver = self;
   v80.super_class = _GCControllerManagerServer;
   v5 = [(_GCControllerManagerServer *)&v80 init];
@@ -85,15 +85,15 @@
     v5->_ipcObjectRegistry = v10;
 
     notify_register_check("com.apple.GameController.system.status", &v5->_systemStatusNotification);
-    v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(profilesCopy, "count")}];
     allDeviceManagers = v5->_allDeviceManagers;
     v5->_allDeviceManagers = v12;
 
-    v14 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v14 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(profilesCopy, "count")}];
     physicalDeviceManagers = v5->_physicalDeviceManagers;
     v5->_physicalDeviceManagers = v14;
 
-    v16 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v16 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(profilesCopy, "count")}];
     logicalDeviceManagers = v5->_logicalDeviceManagers;
     v5->_logicalDeviceManagers = v16;
 
@@ -105,7 +105,7 @@
     v79 = 0u;
     v76 = 0u;
     v77 = 0u;
-    v20 = v4;
+    v20 = profilesCopy;
     v21 = [v20 countByEnumeratingWithState:&v76 objects:v81 count:16];
     if (v21)
     {
@@ -123,24 +123,24 @@
           v25 = *(*(&v76 + 1) + 8 * i);
           if ([v25 conformsToProtocol:{&unk_1F4E97480, v71}])
           {
-            v26 = [v25 deviceManager];
-            [v26 setDeviceRegistry:v5];
+            deviceManager = [v25 deviceManager];
+            [deviceManager setDeviceRegistry:v5];
             v27 = v5->_allDeviceManagers;
-            v28 = [v26 identifier];
-            [(NSMutableDictionary *)v27 setObject:v26 forKey:v28];
+            identifier = [deviceManager identifier];
+            [(NSMutableDictionary *)v27 setObject:deviceManager forKey:identifier];
 
-            if ([v26 conformsToProtocol:&unk_1F4E99998])
+            if ([deviceManager conformsToProtocol:&unk_1F4E99998])
             {
               v29 = v5->_physicalDeviceManagers;
-              v30 = [v26 identifier];
-              [(NSMutableDictionary *)v29 setObject:v26 forKey:v30];
+              identifier2 = [deviceManager identifier];
+              [(NSMutableDictionary *)v29 setObject:deviceManager forKey:identifier2];
             }
 
-            if ([v26 conformsToProtocol:&unk_1F4E99AB0])
+            if ([deviceManager conformsToProtocol:&unk_1F4E99AB0])
             {
               v31 = v5->_logicalDeviceManagers;
-              v32 = [v26 identifier];
-              [(NSMutableDictionary *)v31 setObject:v26 forKey:v32];
+              identifier3 = [deviceManager identifier];
+              [(NSMutableDictionary *)v31 setObject:deviceManager forKey:identifier3];
             }
           }
         }
@@ -154,16 +154,16 @@
     v33 = objc_opt_new();
     [v33 setDeviceRegistry:v5];
     v34 = v5->_allDeviceManagers;
-    v35 = [v33 identifier];
-    [(NSMutableDictionary *)v34 setObject:v33 forKey:v35];
+    identifier4 = [v33 identifier];
+    [(NSMutableDictionary *)v34 setObject:v33 forKey:identifier4];
 
     v36 = v5->_physicalDeviceManagers;
-    v37 = [v33 identifier];
-    [(NSMutableDictionary *)v36 setObject:v33 forKey:v37];
+    identifier5 = [v33 identifier];
+    [(NSMutableDictionary *)v36 setObject:v33 forKey:identifier5];
 
     v38 = v5->_logicalDeviceManagers;
-    v39 = [v33 identifier];
-    [(NSMutableDictionary *)v38 setObject:v33 forKey:v39];
+    identifier6 = [v33 identifier];
+    [(NSMutableDictionary *)v38 setObject:v33 forKey:identifier6];
 
     v5->_configurationsLock._os_unfair_lock_opaque = 0;
     v40 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -181,8 +181,8 @@
     copilotSettings = v5->_copilotSettings;
     v5->_copilotSettings = MEMORY[0x1E695E0F0];
 
-    v47 = [(GCSSettingsStore *)v5->_settingsStore copilotFusedControllers];
-    [v47 addObserver:v5 forKeyPath:@"values" options:5 context:0];
+    copilotFusedControllers = [(GCSSettingsStore *)v5->_settingsStore copilotFusedControllers];
+    [copilotFusedControllers addObserver:v5 forKeyPath:@"values" options:5 context:0];
 
     v48 = objc_alloc_init(MEMORY[0x1E695DF90]);
     allDevices = v5->_allDevices;
@@ -229,13 +229,13 @@
     v67 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, -1, block);
     dispatch_async(MEMORY[0x1E69E96A0], v67);
 
-    v68 = [(_GCControllerManagerServer *)v66 controllersQueue];
+    controllersQueue = [(_GCControllerManagerServer *)v66 controllersQueue];
     v72[0] = MEMORY[0x1E69E9820];
     v72[1] = 3221225472;
     v72[2] = __57___GCControllerManagerServer_initWithControllerProfiles___block_invoke_2;
     v72[3] = &unk_1E8418C28;
     v73 = v66;
-    dispatch_async(v68, v72);
+    dispatch_async(controllersQueue, v72);
   }
 
   v69 = *MEMORY[0x1E69E9840];
@@ -246,12 +246,12 @@
 {
   [(_GCControllerManagerServer *)self teardownHIDMonitor];
   [(GCUserDefaults *)self->_defaults removeObserver:self forKeyPath:@"configurations_v1" context:0];
-  v3 = [(GCSSettingsStore *)self->_settingsStore copilotFusedControllers];
+  copilotFusedControllers = [(GCSSettingsStore *)self->_settingsStore copilotFusedControllers];
 
-  if (v3)
+  if (copilotFusedControllers)
   {
-    v4 = [(GCSSettingsStore *)self->_settingsStore copilotFusedControllers];
-    [v4 removeObserver:self forKeyPath:@"values" context:0];
+    copilotFusedControllers2 = [(GCSSettingsStore *)self->_settingsStore copilotFusedControllers];
+    [copilotFusedControllers2 removeObserver:self forKeyPath:@"values" context:0];
   }
 
   v5.receiver = self;
@@ -259,24 +259,24 @@
   [(_GCControllerManagerServer *)&v5 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(GCSSettingsStore *)self->_settingsStore copilotFusedControllers];
-  v14 = v13;
-  if (v13 != v11)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  copilotFusedControllers = [(GCSSettingsStore *)self->_settingsStore copilotFusedControllers];
+  v14 = copilotFusedControllers;
+  if (copilotFusedControllers != objectCopy)
   {
 
 LABEL_5:
     v17.receiver = self;
     v17.super_class = _GCControllerManagerServer;
-    [(_GCControllerManagerServer *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(_GCControllerManagerServer *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_6;
   }
 
-  v15 = [v10 isEqualToString:@"values"];
+  v15 = [pathCopy isEqualToString:@"values"];
 
   if (!v15)
   {
@@ -296,7 +296,7 @@ LABEL_6:
 - (void)_refreshCoPilotSettings
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(self, OS_LOG_TYPE_DEBUG))
   {
     OUTLINED_FUNCTION_8();
     OUTLINED_FUNCTION_0();
@@ -309,16 +309,16 @@ LABEL_6:
 - (void)_onqueue_refreshControllers
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(_GCControllerManagerServer *)self controllersQueue];
-  dispatch_assert_queue_V2(v3);
+  controllersQueue = [(_GCControllerManagerServer *)self controllersQueue];
+  dispatch_assert_queue_V2(controllersQueue);
 
   v4 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{-[NSMutableDictionary count](self->_logicalDevices, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMutableDictionary *)self->_logicalDevices allValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_logicalDevices allValues];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -329,7 +329,7 @@ LABEL_6:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -339,7 +339,7 @@ LABEL_6:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -351,164 +351,164 @@ LABEL_6:
 
 - (void)_onqueue_refreshLogicalDevices
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"GCControllerManagerServer.m" lineNumber:403 description:@"We are missing a device."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"GCControllerManagerServer.m" lineNumber:403 description:@"We are missing a device."];
 }
 
-- (void)_onqueue_registerPhysicalDevice:(id)a3
+- (void)_onqueue_registerPhysicalDevice:(id)device
 {
-  v13 = a3;
-  v4 = [(_GCControllerManagerServer *)self controllersQueue];
-  dispatch_assert_queue_V2(v4);
+  deviceCopy = device;
+  controllersQueue = [(_GCControllerManagerServer *)self controllersQueue];
+  dispatch_assert_queue_V2(controllersQueue);
 
-  if (([v13 conformsToProtocol:&unk_1F4E9B800] & 1) == 0)
+  if (([deviceCopy conformsToProtocol:&unk_1F4E9B800] & 1) == 0)
   {
     [_GCControllerManagerServer _onqueue_registerPhysicalDevice:];
   }
 
-  v5 = [v13 identifier];
-  v6 = [(NSMutableDictionary *)self->_allDevices objectForKey:v5];
+  identifier = [deviceCopy identifier];
+  v6 = [(NSMutableDictionary *)self->_allDevices objectForKey:identifier];
 
   if (v6)
   {
-    v7 = [(NSMutableDictionary *)self->_allDevices objectForKey:v5];
+    v7 = [(NSMutableDictionary *)self->_allDevices objectForKey:identifier];
 
-    if (v7 != v13)
+    if (v7 != deviceCopy)
     {
       [_GCControllerManagerServer _onqueue_registerPhysicalDevice:];
     }
   }
 
   allDevices = self->_allDevices;
-  v9 = [v13 identifier];
-  [(NSMutableDictionary *)allDevices setObject:v13 forKey:v9];
+  identifier2 = [deviceCopy identifier];
+  [(NSMutableDictionary *)allDevices setObject:deviceCopy forKey:identifier2];
 
   physicalDevices = self->_physicalDevices;
-  v11 = [v13 identifier];
-  [(NSMutableDictionary *)physicalDevices setObject:v13 forKey:v11];
+  identifier3 = [deviceCopy identifier];
+  [(NSMutableDictionary *)physicalDevices setObject:deviceCopy forKey:identifier3];
 
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v12 postNotificationName:@"GCPhysicalDeviceWasRegisteredNotification" object:v13 userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"GCPhysicalDeviceWasRegisteredNotification" object:deviceCopy userInfo:0];
 }
 
-- (void)_onqueue_unregisterPhysicalDevice:(id)a3
+- (void)_onqueue_unregisterPhysicalDevice:(id)device
 {
-  v9 = a3;
-  v4 = [(_GCControllerManagerServer *)self controllersQueue];
-  dispatch_assert_queue_V2(v4);
+  deviceCopy = device;
+  controllersQueue = [(_GCControllerManagerServer *)self controllersQueue];
+  dispatch_assert_queue_V2(controllersQueue);
 
-  v5 = [v9 identifier];
-  v6 = [(NSMutableDictionary *)self->_physicalDevices objectForKey:v5];
+  identifier = [deviceCopy identifier];
+  v6 = [(NSMutableDictionary *)self->_physicalDevices objectForKey:identifier];
 
   if (!v6)
   {
     [_GCControllerManagerServer _onqueue_unregisterPhysicalDevice:];
   }
 
-  [(NSMutableDictionary *)self->_physicalDevices removeObjectForKey:v5];
-  v7 = [(NSMutableDictionary *)self->_logicalDevices objectForKey:v5];
+  [(NSMutableDictionary *)self->_physicalDevices removeObjectForKey:identifier];
+  v7 = [(NSMutableDictionary *)self->_logicalDevices objectForKey:identifier];
 
   if (!v7)
   {
-    [(NSMutableDictionary *)self->_allDevices removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_allDevices removeObjectForKey:identifier];
   }
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 postNotificationName:@"GCPhysicalDeviceWasUnregisteredNotification" object:v9 userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"GCPhysicalDeviceWasUnregisteredNotification" object:deviceCopy userInfo:0];
 }
 
-- (void)_onqueue_registerLogicalDevice:(id)a3
+- (void)_onqueue_registerLogicalDevice:(id)device
 {
-  v13 = a3;
-  v4 = [(_GCControllerManagerServer *)self controllersQueue];
-  dispatch_assert_queue_V2(v4);
+  deviceCopy = device;
+  controllersQueue = [(_GCControllerManagerServer *)self controllersQueue];
+  dispatch_assert_queue_V2(controllersQueue);
 
-  if (([v13 conformsToProtocol:&unk_1F4E9B8B8] & 1) == 0)
+  if (([deviceCopy conformsToProtocol:&unk_1F4E9B8B8] & 1) == 0)
   {
     [_GCControllerManagerServer _onqueue_registerLogicalDevice:];
   }
 
-  v5 = [v13 identifier];
-  v6 = [(NSMutableDictionary *)self->_allDevices objectForKey:v5];
+  identifier = [deviceCopy identifier];
+  v6 = [(NSMutableDictionary *)self->_allDevices objectForKey:identifier];
 
   if (v6)
   {
-    v7 = [(NSMutableDictionary *)self->_allDevices objectForKey:v5];
+    v7 = [(NSMutableDictionary *)self->_allDevices objectForKey:identifier];
 
-    if (v7 != v13)
+    if (v7 != deviceCopy)
     {
       [_GCControllerManagerServer _onqueue_registerLogicalDevice:];
     }
   }
 
   allDevices = self->_allDevices;
-  v9 = [v13 identifier];
-  [(NSMutableDictionary *)allDevices setObject:v13 forKey:v9];
+  identifier2 = [deviceCopy identifier];
+  [(NSMutableDictionary *)allDevices setObject:deviceCopy forKey:identifier2];
 
   logicalDevices = self->_logicalDevices;
-  v11 = [v13 identifier];
-  [(NSMutableDictionary *)logicalDevices setObject:v13 forKey:v11];
+  identifier3 = [deviceCopy identifier];
+  [(NSMutableDictionary *)logicalDevices setObject:deviceCopy forKey:identifier3];
 
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v12 postNotificationName:@"GCLogicalDeviceWasRegisteredNotification" object:v13 userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"GCLogicalDeviceWasRegisteredNotification" object:deviceCopy userInfo:0];
 
   [(_GCControllerManagerServer *)self _onqueue_signalGameControllerFocusModeEvent];
 }
 
-- (void)_onqueue_unregisterLogicalDevice:(id)a3
+- (void)_onqueue_unregisterLogicalDevice:(id)device
 {
-  v9 = a3;
-  v4 = [(_GCControllerManagerServer *)self controllersQueue];
-  dispatch_assert_queue_V2(v4);
+  deviceCopy = device;
+  controllersQueue = [(_GCControllerManagerServer *)self controllersQueue];
+  dispatch_assert_queue_V2(controllersQueue);
 
-  v5 = [v9 identifier];
-  v6 = [(NSMutableDictionary *)self->_logicalDevices objectForKey:v5];
+  identifier = [deviceCopy identifier];
+  v6 = [(NSMutableDictionary *)self->_logicalDevices objectForKey:identifier];
 
   if (!v6)
   {
     [_GCControllerManagerServer _onqueue_unregisterLogicalDevice:];
   }
 
-  [(NSMutableDictionary *)self->_logicalDevices removeObjectForKey:v5];
-  v7 = [(NSMutableDictionary *)self->_physicalDevices objectForKey:v5];
+  [(NSMutableDictionary *)self->_logicalDevices removeObjectForKey:identifier];
+  v7 = [(NSMutableDictionary *)self->_physicalDevices objectForKey:identifier];
 
   if (!v7)
   {
-    [(NSMutableDictionary *)self->_allDevices removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_allDevices removeObjectForKey:identifier];
   }
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 postNotificationName:@"GCLogicalDeviceWasUnregisteredNotification" object:v9 userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"GCLogicalDeviceWasUnregisteredNotification" object:deviceCopy userInfo:0];
 
   [(_GCControllerManagerServer *)self _onqueue_signalGameControllerFocusModeEvent];
 }
 
-- (void)deviceManager:(id)a3 deviceDidConnect:(id)a4
+- (void)deviceManager:(id)manager deviceDidConnect:(id)connect
 {
-  v5 = a4;
-  v6 = [(_GCControllerManagerServer *)self controllersQueue];
+  connectCopy = connect;
+  controllersQueue = [(_GCControllerManagerServer *)self controllersQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __61___GCControllerManagerServer_deviceManager_deviceDidConnect___block_invoke;
   v8[3] = &unk_1E8418C50;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = connectCopy;
+  v7 = connectCopy;
+  dispatch_async(controllersQueue, v8);
 }
 
-- (void)deviceManager:(id)a3 deviceDidDisconnect:(id)a4
+- (void)deviceManager:(id)manager deviceDidDisconnect:(id)disconnect
 {
-  v5 = a4;
-  v6 = [(_GCControllerManagerServer *)self controllersQueue];
+  disconnectCopy = disconnect;
+  controllersQueue = [(_GCControllerManagerServer *)self controllersQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64___GCControllerManagerServer_deviceManager_deviceDidDisconnect___block_invoke;
   v8[3] = &unk_1E8418C50;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = disconnectCopy;
+  v7 = disconnectCopy;
+  dispatch_async(controllersQueue, v8);
 }
 
 - (void)_onqueue_signalGameControllerFocusModeEvent
@@ -524,36 +524,36 @@ LABEL_6:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)hasConfigurationWithIdentifier:(id)a3
+- (BOOL)hasConfigurationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_configurationsLock);
-  v5 = [(NSMutableSet *)self->_configurations member:v4];
+  v5 = [(NSMutableSet *)self->_configurations member:identifierCopy];
 
   os_unfair_lock_unlock(&self->_configurationsLock);
   return v5 != 0;
 }
 
-- (id)configurationWithIdentifier:(id)a3
+- (id)configurationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_configurationsLock);
-  v5 = [(NSMutableSet *)self->_configurations member:v4];
+  v5 = [(NSMutableSet *)self->_configurations member:identifierCopy];
 
   os_unfair_lock_unlock(&self->_configurationsLock);
 
   return v5;
 }
 
-- (BOOL)addConfiguration:(id)a3 replaceExisting:(BOOL)a4
+- (BOOL)addConfiguration:(id)configuration replaceExisting:(BOOL)existing
 {
-  v6 = a3;
+  configurationCopy = configuration;
   os_unfair_lock_lock(&self->_configurationsLock);
   configurations = self->_configurations;
-  v8 = [v6 identifier];
-  v9 = [(NSMutableSet *)configurations member:v8];
+  identifier = [configurationCopy identifier];
+  v9 = [(NSMutableSet *)configurations member:identifier];
 
-  if (!a4 && v9 && (![v9 isTransient] || (objc_msgSend(v6, "isTransient") & 1) != 0))
+  if (!existing && v9 && (![v9 isTransient] || (objc_msgSend(configurationCopy, "isTransient") & 1) != 0))
   {
 
     os_unfair_lock_unlock(&self->_configurationsLock);
@@ -561,7 +561,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v12 = [v6 copy];
+  v12 = [configurationCopy copy];
 
   if (gc_isInternalBuild())
   {
@@ -590,23 +590,23 @@ LABEL_10:
   os_unfair_lock_unlock(&self->_configurationsLock);
   [(_GCControllerManagerServer *)self _rebuildCoPilotConfigurations];
   v10 = 1;
-  v6 = v12;
+  configurationCopy = v12;
 LABEL_6:
 
   return v10;
 }
 
-- (BOOL)updateConfiguration:(id)a3
+- (BOOL)updateConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   os_unfair_lock_lock(&self->_configurationsLock);
   configurations = self->_configurations;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableSet *)configurations member:v6];
+  identifier = [configurationCopy identifier];
+  v7 = [(NSMutableSet *)configurations member:identifier];
 
   if (v7)
   {
-    v8 = [v4 copy];
+    v8 = [configurationCopy copy];
 
     if (gc_isInternalBuild())
     {
@@ -627,17 +627,17 @@ LABEL_6:
   else
   {
     os_unfair_lock_unlock(&self->_configurationsLock);
-    v8 = v4;
+    v8 = configurationCopy;
   }
 
   return v7 != 0;
 }
 
-- (BOOL)removeConfigurationWithIdentifier:(id)a3
+- (BOOL)removeConfigurationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_configurationsLock);
-  v5 = [(NSMutableSet *)self->_configurations member:v4];
+  v5 = [(NSMutableSet *)self->_configurations member:identifierCopy];
   if (v5)
   {
     if (gc_isInternalBuild())
@@ -645,7 +645,7 @@ LABEL_6:
       [_GCControllerManagerServer removeConfigurationWithIdentifier:v5];
     }
 
-    [(NSMutableSet *)self->_configurations removeObject:v4];
+    [(NSMutableSet *)self->_configurations removeObject:identifierCopy];
     if (gc_isInternalBuild())
     {
       [_GCControllerManagerServer removeConfigurationWithIdentifier:];
@@ -663,22 +663,22 @@ LABEL_6:
   return v5 != 0;
 }
 
-- (void)refreshActiveConfigurationsWithCompletion:(id)a3
+- (void)refreshActiveConfigurationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v5 = _os_activity_create(&dword_1D2CD5000, "Refresh Active Configurations", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v5, &state);
-  v6 = [(_GCControllerManagerServer *)self controllersQueue];
+  controllersQueue = [(_GCControllerManagerServer *)self controllersQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72___GCControllerManagerServer_refreshActiveConfigurationsWithCompletion___block_invoke;
   v8[3] = &unk_1E8418BB8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(controllersQueue, v8);
 
   os_activity_scope_leave(&state);
 }
@@ -689,13 +689,13 @@ LABEL_6:
   state.opaque[1] = 0;
   v3 = _os_activity_create(&dword_1D2CD5000, "Refresh Active Configurations", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v3, &state);
-  v4 = [(_GCControllerManagerServer *)self controllersQueue];
+  controllersQueue = [(_GCControllerManagerServer *)self controllersQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57___GCControllerManagerServer_refreshActiveConfigurations__block_invoke;
   block[3] = &unk_1E8418C28;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(controllersQueue, block);
 
   os_activity_scope_leave(&state);
 }
@@ -703,38 +703,38 @@ LABEL_6:
 - (id)matchingHIDServiceAttributes
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15[0] = @"DeviceUsagePage";
   v15[1] = @"DeviceUsage";
   v16[0] = &unk_1F4E8DEF8;
   v16[1] = &unk_1F4E8DF10;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
-  [v2 addObject:v3];
+  [array addObject:v3];
   v13[0] = @"DeviceUsagePage";
   v13[1] = @"DeviceUsage";
   v14[0] = &unk_1F4E8DEF8;
   v14[1] = &unk_1F4E8DF28;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
-  [v2 addObject:v4];
+  [array addObject:v4];
   v11[0] = @"DeviceUsagePage";
   v11[1] = @"DeviceUsage";
   v12[0] = &unk_1F4E8DEF8;
   v12[1] = &unk_1F4E8DF40;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
-  [v2 addObject:v5];
+  [array addObject:v5];
   v9[0] = @"DeviceUsagePage";
   v9[1] = @"DeviceUsage";
   v10[0] = &unk_1F4E8DF58;
   v10[1] = &unk_1F4E8DF70;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
-  [v2 addObject:v6];
+  [array addObject:v6];
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return array;
 }
 
-- (void)setupHIDMonitor:(BOOL)a3
+- (void)setupHIDMonitor:(BOOL)monitor
 {
   p_hidEventSystemClient = &self->_hidEventSystemClient;
   if (!self->_hidEventSystemClient)
@@ -753,7 +753,7 @@ LABEL_6:
     v9[2] = __46___GCControllerManagerServer_setupHIDMonitor___block_invoke;
     v9[3] = &unk_1E8418C50;
     v10 = v6;
-    v11 = self;
+    selfCopy = self;
     v7 = v6;
     v8 = _Block_copy(v9);
     dispatch_async_and_wait(self->_hidSystemClientQueue, v8);
@@ -779,23 +779,23 @@ LABEL_6:
   }
 }
 
-- (void)onHIDServiceAdded:(id)a3
+- (void)onHIDServiceAdded:(id)added
 {
   v85 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableSet *)self->_hidServices member:v4];
+  addedCopy = added;
+  v5 = [(NSMutableSet *)self->_hidServices member:addedCopy];
 
   if (!v5)
   {
-    [(NSMutableSet *)self->_hidServices addObject:v4];
-    [(_GCControllerManagerServer *)self registerIPCObject:v4];
+    [(NSMutableSet *)self->_hidServices addObject:addedCopy];
+    [(_GCControllerManagerServer *)self registerIPCObject:addedCopy];
     v7 = *MEMORY[0x1E69A0688];
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v8 = [(NSMutableDictionary *)self->_physicalDeviceManagers allValues];
-    v9 = [v8 countByEnumeratingWithState:&v72 objects:v84 count:16];
+    allValues = [(NSMutableDictionary *)self->_physicalDeviceManagers allValues];
+    v9 = [allValues countByEnumeratingWithState:&v72 objects:v84 count:16];
     if (v9)
     {
       v10 = v9;
@@ -806,24 +806,24 @@ LABEL_6:
         {
           if (*v73 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allValues);
           }
 
           v13 = *(*(&v72 + 1) + 8 * i);
-          [(NSMutableDictionary *)self->_hidServiceOwners setObject:v13 forKey:v4];
-          v6 = [v13 matchHIDService:v4];
+          [(NSMutableDictionary *)self->_hidServiceOwners setObject:v13 forKey:addedCopy];
+          v6 = [v13 matchHIDService:addedCopy];
           if (v6 > v7)
           {
 
             v16 = v13;
-            [v16 claimHIDService:v4];
+            [v16 claimHIDService:addedCopy];
             if (gc_isInternalBuild())
             {
               [_GCControllerManagerServer onHIDServiceAdded:];
             }
 
-            v35 = [v4 registryID];
-            v36 = [(_GCControllerManagerServer *)self _hidqueue_popPendingDriverConnectionsForRegistryID:v35];
+            registryID = [addedCopy registryID];
+            v36 = [(_GCControllerManagerServer *)self _hidqueue_popPendingDriverConnectionsForRegistryID:registryID];
 
             v70 = 0u;
             v71 = 0u;
@@ -864,7 +864,7 @@ LABEL_6:
                     }
                   }
 
-                  if (([v16 acceptDriverConnection:v41 forHIDService:v4] & 1) == 0)
+                  if (([v16 acceptDriverConnection:v41 forHIDService:addedCopy] & 1) == 0)
                   {
 LABEL_86:
                     if (gc_isInternalBuild())
@@ -894,8 +894,8 @@ LABEL_86:
               while (v42);
             }
 
-            v43 = [v4 registryID];
-            v44 = [(_GCControllerManagerServer *)self _hidqueue_popPendingFilterConnectionsForRegistryID:v43];
+            registryID2 = [addedCopy registryID];
+            v44 = [(_GCControllerManagerServer *)self _hidqueue_popPendingFilterConnectionsForRegistryID:registryID2];
 
             v66 = 0u;
             v67 = 0u;
@@ -936,7 +936,7 @@ LABEL_86:
                     }
                   }
 
-                  if (([v16 acceptFilterConnection:v49 forHIDService:v4] & 1) == 0)
+                  if (([v16 acceptFilterConnection:v49 forHIDService:addedCopy] & 1) == 0)
                   {
 LABEL_87:
                     if (gc_isInternalBuild())
@@ -969,10 +969,10 @@ LABEL_87:
             goto LABEL_81;
           }
 
-          [(NSMutableDictionary *)self->_hidServiceOwners removeObjectForKey:v4];
+          [(NSMutableDictionary *)self->_hidServiceOwners removeObjectForKey:addedCopy];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v72 objects:v84 count:16];
+        v10 = [allValues countByEnumeratingWithState:&v72 objects:v84 count:16];
         if (v10)
         {
           continue;
@@ -987,8 +987,8 @@ LABEL_87:
       [_GCControllerManagerServer onHIDServiceAdded:];
     }
 
-    v14 = [v4 registryID];
-    v15 = [(_GCControllerManagerServer *)self _hidqueue_popPendingDriverConnectionsForRegistryID:v14];
+    registryID3 = [addedCopy registryID];
+    v15 = [(_GCControllerManagerServer *)self _hidqueue_popPendingDriverConnectionsForRegistryID:registryID3];
 
     v62 = 0u;
     v63 = 0u;
@@ -1019,7 +1019,7 @@ LABEL_87:
               *buf = 138412546;
               v80 = v21;
               v81 = 2112;
-              v82 = v4;
+              v82 = addedCopy;
               _os_log_impl(&dword_1D2CD5000, v22, OS_LOG_TYPE_INFO, "Ignoring incoming driver connection %@ because it is for unclaimed service %@", buf, 0x16u);
             }
           }
@@ -1035,8 +1035,8 @@ LABEL_87:
       while (v23);
     }
 
-    v24 = [v4 registryID];
-    v25 = [(_GCControllerManagerServer *)self _hidqueue_popPendingFilterConnectionsForRegistryID:v24];
+    registryID4 = [addedCopy registryID];
+    v25 = [(_GCControllerManagerServer *)self _hidqueue_popPendingFilterConnectionsForRegistryID:registryID4];
 
     v58 = 0u;
     v59 = 0u;
@@ -1067,7 +1067,7 @@ LABEL_87:
               *buf = 138412546;
               v80 = v31;
               v81 = 2112;
-              v82 = v4;
+              v82 = addedCopy;
               _os_log_impl(&dword_1D2CD5000, v32, OS_LOG_TYPE_INFO, "Ignoring incoming filter connection %@ because it is for unclaimed service %@", buf, 0x16u);
             }
           }
@@ -1104,16 +1104,16 @@ LABEL_82:
   v51 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onHIDServiceRemoved:(id)a3
+- (void)onHIDServiceRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_hidServiceOwners objectForKey:v4];
+  removedCopy = removed;
+  v5 = [(NSMutableDictionary *)self->_hidServiceOwners objectForKey:removedCopy];
   v6 = v5;
   if (v5)
   {
-    [v5 relinquishHIDService:v4];
-    [(NSMutableDictionary *)self->_hidServiceOwners removeObjectForKey:v4];
-    [(NSMutableSet *)self->_hidServices removeObject:v4];
+    [v5 relinquishHIDService:removedCopy];
+    [(NSMutableDictionary *)self->_hidServiceOwners removeObjectForKey:removedCopy];
+    [(NSMutableSet *)self->_hidServices removeObject:removedCopy];
   }
 
   else if (gc_isInternalBuild())
@@ -1122,12 +1122,12 @@ LABEL_82:
   }
 }
 
-- (id)_hidqueue_popPendingDriverConnectionsForRegistryID:(id)a3
+- (id)_hidqueue_popPendingDriverConnectionsForRegistryID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_hidSystemClientQueue);
-  v5 = [(NSMutableDictionary *)self->_pendingDriverConnections objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_pendingDriverConnections objectForKey:dCopy];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1155,17 +1155,17 @@ LABEL_82:
     while (v7);
   }
 
-  [(NSMutableDictionary *)self->_pendingDriverConnections removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_pendingDriverConnections removeObjectForKey:dCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 
   return v5;
 }
 
-- (void)_hidqueue_pushPendingDriverConnection:(id)a3 forRegistryID:(id)a4
+- (void)_hidqueue_pushPendingDriverConnection:(id)connection forRegistryID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_hidSystemClientQueue);
   if (!self->_pendingDriverConnections)
   {
@@ -1178,12 +1178,12 @@ LABEL_82:
   v13[1] = 3221225472;
   v13[2] = __82___GCControllerManagerServer__hidqueue_pushPendingDriverConnection_forRegistryID___block_invoke;
   v13[3] = &unk_1E8418CA0;
-  v15 = v6;
+  v15 = connectionCopy;
   v13[4] = self;
-  v10 = v7;
+  v10 = dCopy;
   v14 = v10;
-  v11 = [v6 addInvalidationHandler:v13];
-  objc_setAssociatedObject(v6, "DriverConnectionInvalidationRegistrationKey", v11, 1);
+  v11 = [connectionCopy addInvalidationHandler:v13];
+  objc_setAssociatedObject(connectionCopy, "DriverConnectionInvalidationRegistrationKey", v11, 1);
   v12 = [(NSMutableDictionary *)self->_pendingDriverConnections objectForKey:v10];
   if (!v12)
   {
@@ -1191,15 +1191,15 @@ LABEL_82:
     [(NSMutableDictionary *)self->_pendingDriverConnections setObject:v12 forKey:v10];
   }
 
-  [v12 addObject:v6];
+  [v12 addObject:connectionCopy];
 }
 
-- (id)_hidqueue_popPendingFilterConnectionsForRegistryID:(id)a3
+- (id)_hidqueue_popPendingFilterConnectionsForRegistryID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_hidSystemClientQueue);
-  v5 = [(NSMutableDictionary *)self->_pendingFilterConnections objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_pendingFilterConnections objectForKey:dCopy];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1227,17 +1227,17 @@ LABEL_82:
     while (v7);
   }
 
-  [(NSMutableDictionary *)self->_pendingFilterConnections removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_pendingFilterConnections removeObjectForKey:dCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 
   return v5;
 }
 
-- (void)_hidqueue_pushPendingFilterConnection:(id)a3 forRegistryID:(id)a4
+- (void)_hidqueue_pushPendingFilterConnection:(id)connection forRegistryID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_hidSystemClientQueue);
   if (!self->_pendingFilterConnections)
   {
@@ -1250,12 +1250,12 @@ LABEL_82:
   v13[1] = 3221225472;
   v13[2] = __82___GCControllerManagerServer__hidqueue_pushPendingFilterConnection_forRegistryID___block_invoke;
   v13[3] = &unk_1E8418CA0;
-  v15 = v6;
+  v15 = connectionCopy;
   v13[4] = self;
-  v10 = v7;
+  v10 = dCopy;
   v14 = v10;
-  v11 = [v6 addInvalidationHandler:v13];
-  objc_setAssociatedObject(v6, "FilterConnectionInvalidationRegistrationKey", v11, 1);
+  v11 = [connectionCopy addInvalidationHandler:v13];
+  objc_setAssociatedObject(connectionCopy, "FilterConnectionInvalidationRegistrationKey", v11, 1);
   v12 = [(NSMutableDictionary *)self->_pendingFilterConnections objectForKey:v10];
   if (!v12)
   {
@@ -1263,25 +1263,25 @@ LABEL_82:
     [(NSMutableDictionary *)self->_pendingFilterConnections setObject:v12 forKey:v10];
   }
 
-  [v12 addObject:v6];
+  [v12 addObject:connectionCopy];
 }
 
-- (id)IPCObjectWithIdentifier:(id)a3
+- (id)IPCObjectWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_ipcRegistryLock);
-  v5 = [(NSMapTable *)self->_ipcObjectRegistry objectForKey:v4];
+  v5 = [(NSMapTable *)self->_ipcObjectRegistry objectForKey:identifierCopy];
 
   os_unfair_lock_unlock(&self->_ipcRegistryLock);
 
   return v5;
 }
 
-- (void)registerIPCObject:(id)a3
+- (void)registerIPCObject:(id)object
 {
-  v5 = a3;
-  v6 = [v5 identifier];
-  v7 = [v6 copyWithZone:0];
+  objectCopy = object;
+  identifier = [objectCopy identifier];
+  v7 = [identifier copyWithZone:0];
 
   if (!v7)
   {
@@ -1289,88 +1289,88 @@ LABEL_82:
   }
 
   os_unfair_lock_lock(&self->_ipcRegistryLock);
-  [(NSMapTable *)self->_ipcObjectRegistry setObject:v5 forKey:v7];
+  [(NSMapTable *)self->_ipcObjectRegistry setObject:objectCopy forKey:v7];
 
   os_unfair_lock_unlock(&self->_ipcRegistryLock);
 }
 
-- (BOOL)acceptIncomingDriverConnection:(id)a3
+- (BOOL)acceptIncomingDriverConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v5 = _os_activity_create(&dword_1D2CD5000, "Incoming Driver Connection", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v5, &state);
-  [v4 setExportedObject:self];
-  [v4 resume];
-  v6 = [v4 remoteProxy];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
+  remoteProxy = [connectionCopy remoteProxy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __74___GCControllerManagerServer_Connections__acceptIncomingDriverConnection___block_invoke;
   v9[3] = &unk_1E8418CF0;
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
-  [v6 fetchDeviceRegistryIDWithReply:v9];
+  v10 = connectionCopy;
+  selfCopy = self;
+  v7 = connectionCopy;
+  [remoteProxy fetchDeviceRegistryIDWithReply:v9];
 
   os_activity_scope_leave(&state);
   return 1;
 }
 
-- (void)setLastGeneratedName:(id)a3 directoryHandle:(id)a4 url:(id)a5
+- (void)setLastGeneratedName:(id)name directoryHandle:(id)handle url:(id)url
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  handleCopy = handle;
+  urlCopy = url;
   obj = self;
   objc_sync_enter(obj);
   lastGeneratedName = obj->_lastGeneratedName;
-  obj->_lastGeneratedName = v8;
-  v12 = v8;
+  obj->_lastGeneratedName = nameCopy;
+  v12 = nameCopy;
 
   lastGeneratedDirectoryHandle = obj->_lastGeneratedDirectoryHandle;
-  obj->_lastGeneratedDirectoryHandle = v9;
-  v14 = v9;
+  obj->_lastGeneratedDirectoryHandle = handleCopy;
+  v14 = handleCopy;
 
   lastGeneratedURL = obj->_lastGeneratedURL;
-  obj->_lastGeneratedURL = v10;
+  obj->_lastGeneratedURL = urlCopy;
 
   objc_sync_exit(obj);
 }
 
-- (BOOL)getLastGeneratedName:(id *)a3 directoryHandle:(id *)a4 url:(id *)a5
+- (BOOL)getLastGeneratedName:(id *)name directoryHandle:(id *)handle url:(id *)url
 {
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = v8->_lastGeneratedName;
-  lastGeneratedName = v8->_lastGeneratedName;
-  v8->_lastGeneratedName = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = selfCopy->_lastGeneratedName;
+  lastGeneratedName = selfCopy->_lastGeneratedName;
+  selfCopy->_lastGeneratedName = 0;
 
-  lastGeneratedDirectoryHandle = v8->_lastGeneratedDirectoryHandle;
-  v8->_lastGeneratedDirectoryHandle = 0;
+  lastGeneratedDirectoryHandle = selfCopy->_lastGeneratedDirectoryHandle;
+  selfCopy->_lastGeneratedDirectoryHandle = 0;
   v12 = lastGeneratedDirectoryHandle;
 
-  v13 = v8->_lastGeneratedURL;
-  lastGeneratedURL = v8->_lastGeneratedURL;
-  v8->_lastGeneratedURL = 0;
+  v13 = selfCopy->_lastGeneratedURL;
+  lastGeneratedURL = selfCopy->_lastGeneratedURL;
+  selfCopy->_lastGeneratedURL = 0;
 
-  objc_sync_exit(v8);
-  if (a3)
+  objc_sync_exit(selfCopy);
+  if (name)
   {
     v15 = v9;
-    *a3 = v9;
+    *name = v9;
   }
 
-  if (a4)
+  if (handle)
   {
     v16 = v12;
-    *a4 = v12;
+    *handle = v12;
   }
 
-  if (a5)
+  if (url)
   {
     v17 = v13;
-    *a5 = v13;
+    *url = v13;
   }
 
   if (v9)
@@ -1390,13 +1390,13 @@ LABEL_82:
 
 - (id)lastGeneratedURL
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_lastGeneratedURL;
-  lastGeneratedURL = v2->_lastGeneratedURL;
-  v2->_lastGeneratedURL = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_lastGeneratedURL;
+  lastGeneratedURL = selfCopy->_lastGeneratedURL;
+  selfCopy->_lastGeneratedURL = 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -1404,30 +1404,30 @@ LABEL_82:
 - (void)_rebuildCoPilotConfigurations
 {
   v82 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 64));
-    [*(a1 + 72) minusSet:*(a1 + 104)];
-    [*(a1 + 104) removeAllObjects];
-    v2 = objc_getProperty(a1, sel__rebuildCoPilotConfigurations, 88, 1);
-    v58 = [*(a1 + 72) mutableCopy];
+    os_unfair_lock_lock((self + 64));
+    [*(self + 72) minusSet:*(self + 104)];
+    [*(self + 104) removeAllObjects];
+    copilotIdentifier = objc_getProperty(self, sel__rebuildCoPilotConfigurations, 88, 1);
+    v58 = [*(self + 72) mutableCopy];
     if (gc_isInternalBuild())
     {
       v54 = getGCLogger();
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v81 = v2;
+        v81 = copilotIdentifier;
         _os_log_debug_impl(&dword_1D2CD5000, v54, OS_LOG_TYPE_DEBUG, "Co-pilot: Rebuild configurations with settings %@", buf, 0xCu);
       }
     }
 
-    v56 = a1;
+    selfCopy = self;
     v75 = 0u;
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    obj = v2;
+    obj = copilotIdentifier;
     v3 = [obj countByEnumeratingWithState:&v73 objects:v79 count:16];
     if (v3)
     {
@@ -1460,14 +1460,14 @@ LABEL_82:
             }
           }
 
-          v9 = [v8 pilotIdentifier];
-          v2 = [v8 copilotIdentifier];
-          v10 = [v8 fusedControllerIdentifier];
-          v11 = v10;
-          if (v9 && v2 && v10)
+          pilotIdentifier = [v8 pilotIdentifier];
+          copilotIdentifier = [v8 copilotIdentifier];
+          fusedControllerIdentifier = [v8 fusedControllerIdentifier];
+          v11 = fusedControllerIdentifier;
+          if (pilotIdentifier && copilotIdentifier && fusedControllerIdentifier)
           {
-            v62 = v9;
-            v63 = v2;
+            v62 = pilotIdentifier;
+            v63 = copilotIdentifier;
             v71 = 0u;
             v72 = 0u;
             v69 = 0u;
@@ -1489,14 +1489,14 @@ LABEL_82:
                   }
 
                   v17 = *(*(&v69 + 1) + 8 * i);
-                  v18 = [v17 deviceDependencies];
-                  v19 = [v18 count];
+                  deviceDependencies = [v17 deviceDependencies];
+                  v19 = [deviceDependencies count];
 
                   if (v19 == 1)
                   {
-                    v20 = [v17 deviceIdentifier];
-                    v21 = [v8 pilotIdentifier];
-                    v22 = [v20 isEqual:v21];
+                    deviceIdentifier = [v17 deviceIdentifier];
+                    pilotIdentifier2 = [v8 pilotIdentifier];
+                    v22 = [deviceIdentifier isEqual:pilotIdentifier2];
 
                     if (v22)
                     {
@@ -1546,14 +1546,14 @@ LABEL_26:
                   }
 
                   v30 = *(*(&v65 + 1) + 8 * j);
-                  v31 = [v30 deviceDependencies];
-                  v32 = [v31 count];
+                  deviceDependencies2 = [v30 deviceDependencies];
+                  v32 = [deviceDependencies2 count];
 
                   if (v32 == 1)
                   {
-                    v33 = [v30 deviceIdentifier];
-                    v34 = [v8 copilotIdentifier];
-                    v35 = [v33 isEqual:v34];
+                    deviceIdentifier2 = [v30 deviceIdentifier];
+                    copilotIdentifier2 = [v8 copilotIdentifier];
+                    v35 = [deviceIdentifier2 isEqual:copilotIdentifier2];
 
                     if (v35)
                     {
@@ -1583,8 +1583,8 @@ LABEL_39:
               v36 = 0;
             }
 
-            v9 = v62;
-            v2 = v63;
+            pilotIdentifier = v62;
+            copilotIdentifier = v63;
             if (v23)
             {
               if (v36)
@@ -1596,10 +1596,10 @@ LABEL_39:
                   v37 = [v23 mutableCopy];
                   [v37 setIdentifier:v11];
                   [v37 setDeviceIdentifier:v11];
-                  v41 = [v37 deviceDependencies];
-                  v42 = [v36 deviceDependencies];
-                  v43 = [v42 firstObject];
-                  v44 = [v41 arrayByAddingObject:v43];
+                  deviceDependencies3 = [v37 deviceDependencies];
+                  deviceDependencies4 = [v36 deviceDependencies];
+                  firstObject = [deviceDependencies4 firstObject];
+                  v44 = [deviceDependencies3 arrayByAddingObject:firstObject];
                   [v37 setDeviceDependencies:v44];
 
                   [v37 setTransient:1];
@@ -1616,10 +1616,10 @@ LABEL_39:
                     }
                   }
 
-                  [*(v56 + 104) addObject:v45];
-                  [*(v56 + 72) addObject:v45];
+                  [*(selfCopy + 104) addObject:v45];
+                  [*(selfCopy + 72) addObject:v45];
 
-                  v2 = v63;
+                  copilotIdentifier = v63;
                   goto LABEL_56;
                 }
 
@@ -1709,7 +1709,7 @@ LABEL_59:
       while (v52);
     }
 
-    os_unfair_lock_unlock((v56 + 64));
+    os_unfair_lock_unlock((selfCopy + 64));
   }
 
   v53 = *MEMORY[0x1E69E9840];

@@ -1,23 +1,23 @@
 @interface _TUIButtonMetrics
 - (UIEdgeInsets)alignmentRectInsets;
-- (_TUIButtonMetrics)initWithHeight:(double)a3 widthPadding:(double)a4 alignmentRectInsets:(UIEdgeInsets)a5;
+- (_TUIButtonMetrics)initWithHeight:(double)height widthPadding:(double)padding alignmentRectInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation _TUIButtonMetrics
 
-- (_TUIButtonMetrics)initWithHeight:(double)a3 widthPadding:(double)a4 alignmentRectInsets:(UIEdgeInsets)a5
+- (_TUIButtonMetrics)initWithHeight:(double)height widthPadding:(double)padding alignmentRectInsets:(UIEdgeInsets)insets
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v12.receiver = self;
   v12.super_class = _TUIButtonMetrics;
   result = [(_TUIButtonMetrics *)&v12 init];
   if (result)
   {
-    result->_height = a3;
-    result->_widthPadding = a4;
+    result->_height = height;
+    result->_widthPadding = padding;
     result->_alignmentRectInsets.top = top;
     result->_alignmentRectInsets.left = left;
     result->_alignmentRectInsets.bottom = bottom;

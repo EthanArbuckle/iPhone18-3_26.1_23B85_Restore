@@ -166,8 +166,8 @@ void __45__NTKTimelineSetupOperation__getCurrentEntry__block_invoke_36(uint64_t 
     localDataSource = self->super._localDataSource;
     if (localDataSource)
     {
-      v5 = [(CLKCComplicationDataSource *)localDataSource alwaysOnTemplate];
-      v3[2](v3, v5);
+      alwaysOnTemplate = [(CLKCComplicationDataSource *)localDataSource alwaysOnTemplate];
+      v3[2](v3, alwaysOnTemplate);
     }
 
     else

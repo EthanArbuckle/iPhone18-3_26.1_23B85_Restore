@@ -1,6 +1,6 @@
 @interface IntroPresetsModel
 - (NSDictionary)restrictions;
-- (void)setRestrictions:(id)a3;
+- (void)setRestrictions:(id)restrictions;
 @end
 
 @implementation IntroPresetsModel
@@ -21,9 +21,9 @@
   return v2;
 }
 
-- (void)setRestrictions:(id)a3
+- (void)setRestrictions:(id)restrictions
 {
-  if (a3)
+  if (restrictions)
   {
     v4 = sub_264CC454C();
   }

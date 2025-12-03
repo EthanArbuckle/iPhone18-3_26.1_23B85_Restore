@@ -1,41 +1,41 @@
 @interface GATSchemaGATImageResizingEventFailed
-- (BOOL)isEqual:(id)a3;
-- (GATSchemaGATImageResizingEventFailed)initWithDictionary:(id)a3;
-- (GATSchemaGATImageResizingEventFailed)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GATSchemaGATImageResizingEventFailed)initWithDictionary:(id)dictionary;
+- (GATSchemaGATImageResizingEventFailed)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GATSchemaGATImageResizingEventFailed
 
-- (GATSchemaGATImageResizingEventFailed)initWithDictionary:(id)a3
+- (GATSchemaGATImageResizingEventFailed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = GATSchemaGATImageResizingEventFailed;
   v5 = [(GATSchemaGATImageResizingEventFailed *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"errorDomain"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"errorDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GATSchemaGATImageResizingEventFailed setErrorDomain:](v5, "setErrorDomain:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"errorCode"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GATSchemaGATImageResizingEventFailed setErrorCode:](v5, "setErrorCode:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"error"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"error"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (GATSchemaGATImageResizingEventFailed)initWithJSON:(id)a3
+- (GATSchemaGATImageResizingEventFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GATSchemaGATImageResizingEventFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GATSchemaGATImageResizingEventFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GATSchemaGATImageResizingEventFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,20 +85,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_error)
   {
-    v4 = [(GATSchemaGATImageResizingEventFailed *)self error];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    error = [(GATSchemaGATImageResizingEventFailed *)self error];
+    dictionaryRepresentation = [error dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"error"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"error"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"error"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"error"];
     }
   }
 
@@ -106,7 +106,7 @@
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[GATSchemaGATImageResizingEventFailed errorCode](self, "errorCode")}];
-    [v3 setObject:v8 forKeyedSubscript:@"errorCode"];
+    [dictionary setObject:v8 forKeyedSubscript:@"errorCode"];
 
     has = self->_has;
   }
@@ -124,12 +124,12 @@
       v10 = off_1E78D7150[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"errorDomain"];
+    [dictionary setObject:v10 forKeyedSubscript:@"errorDomain"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -158,16 +158,16 @@ LABEL_3:
   return v7 ^ v6 ^ [(GATSchemaGATError *)self->_error hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -176,27 +176,27 @@ LABEL_3:
   if (*&has)
   {
     errorDomain = self->_errorDomain;
-    if (errorDomain != [v4 errorDomain])
+    if (errorDomain != [equalCopy errorDomain])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (errorCode = self->_errorCode, errorCode == [v4 errorCode]))
+    if (!v8 || (errorCode = self->_errorCode, errorCode == [equalCopy errorCode]))
     {
-      v10 = [(GATSchemaGATImageResizingEventFailed *)self error];
-      v11 = [v4 error];
-      v12 = v11;
-      if ((v10 != 0) != (v11 == 0))
+      error = [(GATSchemaGATImageResizingEventFailed *)self error];
+      error2 = [equalCopy error];
+      v12 = error2;
+      if ((error != 0) != (error2 == 0))
       {
-        v13 = [(GATSchemaGATImageResizingEventFailed *)self error];
-        if (!v13)
+        error3 = [(GATSchemaGATImageResizingEventFailed *)self error];
+        if (!error3)
         {
 
 LABEL_17:
@@ -204,10 +204,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v14 = v13;
-        v15 = [(GATSchemaGATImageResizingEventFailed *)self error];
-        v16 = [v4 error];
-        v17 = [v15 isEqual:v16];
+        v14 = error3;
+        error4 = [(GATSchemaGATImageResizingEventFailed *)self error];
+        error5 = [equalCopy error];
+        v17 = [error4 isEqual:error5];
 
         if (v17)
         {
@@ -228,9 +228,9 @@ LABEL_15:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -243,21 +243,21 @@ LABEL_15:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(GATSchemaGATImageResizingEventFailed *)self error];
+  error = [(GATSchemaGATImageResizingEventFailed *)self error];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (error)
   {
-    v7 = [(GATSchemaGATImageResizingEventFailed *)self error];
+    error2 = [(GATSchemaGATImageResizingEventFailed *)self error];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -270,17 +270,17 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = GATSchemaGATImageResizingEventFailed;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(GATSchemaGATImageResizingEventFailed *)self error:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(GATSchemaGATImageResizingEventFailed *)self deleteError];
   }

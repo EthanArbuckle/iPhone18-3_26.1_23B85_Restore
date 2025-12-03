@@ -1,21 +1,21 @@
 @interface STUsageCountedItem
-+ (id)notificationItemsExcludingSystemHiddenApplications:(id)a3;
-+ (id)pickupItemsExcludingSystemHiddenApplications:(id)a3;
++ (id)notificationItemsExcludingSystemHiddenApplications:(id)applications;
++ (id)pickupItemsExcludingSystemHiddenApplications:(id)applications;
 @end
 
 @implementation STUsageCountedItem
 
-+ (id)notificationItemsExcludingSystemHiddenApplications:(id)a3
++ (id)notificationItemsExcludingSystemHiddenApplications:(id)applications
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  applicationsCopy = applications;
+  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(applicationsCopy, "count")}];
   v5 = [MEMORY[0x1E6993B98] systemHiddenBundleIdentifiersForDeviceFamily:102];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v6 = v3;
+  v6 = applicationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v7)
   {
@@ -33,23 +33,23 @@
         }
 
         v11 = *(*(&v33 + 1) + 8 * i);
-        v12 = [v11 numberOfNotifications];
-        v13 = [v11 bundleIdentifier];
-        if (v12 >= 1 && ([v5 containsObject:v13] & 1) == 0 && (-[__CFString hasPrefix:](v13, "hasPrefix:", @"_SYSTEM_CENTER_:") & 1) == 0 && (-[__CFString hasPrefix:](v13, "hasPrefix:", @"_SOCIAL_CENTER_:") & 1) == 0)
+        numberOfNotifications = [v11 numberOfNotifications];
+        bundleIdentifier = [v11 bundleIdentifier];
+        if (numberOfNotifications >= 1 && ([v5 containsObject:bundleIdentifier] & 1) == 0 && (-[__CFString hasPrefix:](bundleIdentifier, "hasPrefix:", @"_SYSTEM_CENTER_:") & 1) == 0 && (-[__CFString hasPrefix:](bundleIdentifier, "hasPrefix:", @"_SOCIAL_CENTER_:") & 1) == 0)
         {
-          v14 = [(__CFString *)v13 hasPrefix:@"_WEB_CENTER_:"];
+          v14 = [(__CFString *)bundleIdentifier hasPrefix:@"_WEB_CENTER_:"];
           v15 = @"com.apple.mobilesafari";
           if ((v14 & 1) == 0)
           {
-            v16 = [(__CFString *)v13 hasPrefix:@"_WALLET_CENTER_:"];
+            v16 = [(__CFString *)bundleIdentifier hasPrefix:@"_WALLET_CENTER_:"];
             v15 = @"com.apple.Passbook";
             if (!v16)
             {
-              v15 = v13;
+              v15 = bundleIdentifier;
             }
           }
 
-          v17 = v12;
+          v17 = numberOfNotifications;
           v18 = v15;
           v19 = -[STUsageTrustIdentifier initWithIdentifier:usageTrusted:]([STUsageTrustIdentifier alloc], "initWithIdentifier:usageTrusted:", v18, [v11 usageTrusted]);
           v20 = v4;
@@ -65,8 +65,8 @@
           else
           {
             v25 = [STUsageDetailItem alloc];
-            v26 = [(STUsageTrustIdentifier *)v19 identifier];
-            v22 = [(STUsageDetailItem *)v25 initWithType:1 identifier:v26 usageTrusted:[(STUsageTrustIdentifier *)v19 usageTrusted]];
+            identifier = [(STUsageTrustIdentifier *)v19 identifier];
+            v22 = [(STUsageDetailItem *)v25 initWithType:1 identifier:identifier usageTrusted:[(STUsageTrustIdentifier *)v19 usageTrusted]];
 
             v4 = v31;
             *&v27 = v17;
@@ -84,24 +84,24 @@
     while (v8);
   }
 
-  v28 = [v4 allValues];
+  allValues = [v4 allValues];
 
   v29 = *MEMORY[0x1E69E9840];
 
-  return v28;
+  return allValues;
 }
 
-+ (id)pickupItemsExcludingSystemHiddenApplications:(id)a3
++ (id)pickupItemsExcludingSystemHiddenApplications:(id)applications
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  applicationsCopy = applications;
+  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(applicationsCopy, "count")}];
   v5 = [MEMORY[0x1E6993B98] systemHiddenBundleIdentifiersForDeviceFamily:102];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v6 = v3;
+  v6 = applicationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v7)
   {
@@ -120,12 +120,12 @@
         }
 
         v12 = *(*(&v33 + 1) + 8 * v11);
-        v13 = [v12 numberOfPickups];
-        v14 = [v12 bundleIdentifier];
-        if (v13 >= 1 && ([v5 containsObject:v14] & 1) == 0)
+        numberOfPickups = [v12 numberOfPickups];
+        bundleIdentifier = [v12 bundleIdentifier];
+        if (numberOfPickups >= 1 && ([v5 containsObject:bundleIdentifier] & 1) == 0)
         {
-          v15 = v13;
-          v16 = [objc_alloc(*(v10 + 4064)) initWithIdentifier:v14 usageTrusted:{objc_msgSend(v12, "usageTrusted")}];
+          v15 = numberOfPickups;
+          v16 = [objc_alloc(*(v10 + 4064)) initWithIdentifier:bundleIdentifier usageTrusted:{objc_msgSend(v12, "usageTrusted")}];
           v17 = v4;
           v18 = [v17 objectForKeyedSubscript:v16];
           if (v18)
@@ -169,11 +169,11 @@
     while (v8);
   }
 
-  v29 = [v4 allValues];
+  allValues = [v4 allValues];
 
   v30 = *MEMORY[0x1E69E9840];
 
-  return v29;
+  return allValues;
 }
 
 @end

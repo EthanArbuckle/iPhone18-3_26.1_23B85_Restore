@@ -1,17 +1,17 @@
 @interface PKSTSTapToProvisionReader
-- (BOOL)cancelProvisionAndReturnError:(id *)a3;
+- (BOOL)cancelProvisionAndReturnError:(id *)error;
 - (PKSTSTapToProvisionDelegate)delegate;
-- (PKSTSTapToProvisionReader)initWithReplyQueue:(id)a3;
-- (void)onUpdateWithEvent:(int64_t)a3;
-- (void)provisionCardWithParameters:(id)a3 completion:(id)a4;
-- (void)tapToProvisionAvailableWithTimeout:(double)a3 completion:(id)a4;
+- (PKSTSTapToProvisionReader)initWithReplyQueue:(id)queue;
+- (void)onUpdateWithEvent:(int64_t)event;
+- (void)provisionCardWithParameters:(id)parameters completion:(id)completion;
+- (void)tapToProvisionAvailableWithTimeout:(double)timeout completion:(id)completion;
 @end
 
 @implementation PKSTSTapToProvisionReader
 
-- (PKSTSTapToProvisionReader)initWithReplyQueue:(id)a3
+- (PKSTSTapToProvisionReader)initWithReplyQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = PKSTSTapToProvisionReader;
   v6 = [(PKSTSTapToProvisionReader *)&v13 init];
@@ -21,7 +21,7 @@
     workQueue = v6->_workQueue;
     v6->_workQueue = v7;
 
-    objc_storeStrong(&v6->_replyQueue, a3);
+    objc_storeStrong(&v6->_replyQueue, queue);
     v9 = v6->_workQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -46,20 +46,20 @@ uint64_t __48__PKSTSTapToProvisionReader_initWithReplyQueue___block_invoke(uint6
   return [v5 setDelegate:?];
 }
 
-- (void)provisionCardWithParameters:(id)a3 completion:(id)a4
+- (void)provisionCardWithParameters:(id)parameters completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__PKSTSTapToProvisionReader_provisionCardWithParameters_completion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = parametersCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = parametersCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -141,7 +141,7 @@ void __68__PKSTSTapToProvisionReader_provisionCardWithParameters_completion___bl
   }
 }
 
-- (BOOL)cancelProvisionAndReturnError:(id *)a3
+- (BOOL)cancelProvisionAndReturnError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -162,9 +162,9 @@ void __68__PKSTSTapToProvisionReader_provisionCardWithParameters_completion___bl
   block[5] = &v14;
   block[6] = &v8;
   dispatch_sync(workQueue, block);
-  if (a3)
+  if (error)
   {
-    *a3 = v9[5];
+    *error = v9[5];
   }
 
   v5 = *(v15 + 24);
@@ -184,9 +184,9 @@ void __59__PKSTSTapToProvisionReader_cancelProvisionAndReturnError___block_invok
   *(*(a1[5] + 8) + 24) = v4;
 }
 
-- (void)tapToProvisionAvailableWithTimeout:(double)a3 completion:(id)a4
+- (void)tapToProvisionAvailableWithTimeout:(double)timeout completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (self->_timer)
   {
     v7 = PKLogFacilityTypeGetObject(0x25uLL);
@@ -206,7 +206,7 @@ void __59__PKSTSTapToProvisionReader_cancelProvisionAndReturnError___block_invok
   self->_timer = v9;
 
   v11 = self->_timer;
-  v12 = dispatch_time(0, (a3 * 1000000000.0));
+  v12 = dispatch_time(0, (timeout * 1000000000.0));
   dispatch_source_set_timer(v11, v12, 0xFFFFFFFFFFFFFFFFLL, 0x5F5E100uLL);
   v13 = self->_timer;
   handler[0] = MEMORY[0x1E69E9820];
@@ -214,7 +214,7 @@ void __59__PKSTSTapToProvisionReader_cancelProvisionAndReturnError___block_invok
   handler[2] = __75__PKSTSTapToProvisionReader_tapToProvisionAvailableWithTimeout_completion___block_invoke;
   handler[3] = &unk_1E79C4A40;
   handler[4] = self;
-  v14 = v6;
+  v14 = completionCopy;
   v20 = v14;
   dispatch_source_set_event_handler(v13, handler);
   workQueue = self->_workQueue;
@@ -362,7 +362,7 @@ LABEL_23:
   }
 }
 
-- (void)onUpdateWithEvent:(int64_t)a3
+- (void)onUpdateWithEvent:(int64_t)event
 {
   replyQueue = self->_replyQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -370,7 +370,7 @@ LABEL_23:
   v4[2] = __47__PKSTSTapToProvisionReader_onUpdateWithEvent___block_invoke;
   v4[3] = &unk_1E79CAED8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = event;
   dispatch_async(replyQueue, v4);
 }
 

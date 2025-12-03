@@ -14,12 +14,12 @@
 {
   v4 = a3;
   property = -1;
-  if ([a1 absPropertyID:&property])
+  if ([self absPropertyID:&property])
   {
     TypeOfProperty = ABPersonGetTypeOfProperty(property);
     v6 = v4;
-    v7 = [a1 ABSMultiValueLabeledValueFromCNLabeledValueTransform];
-    v8 = [v6 _cn_map:v7];
+    aBSMultiValueLabeledValueFromCNLabeledValueTransform = [self ABSMultiValueLabeledValueFromCNLabeledValueTransform];
+    v8 = [v6 _cn_map:aBSMultiValueLabeledValueFromCNLabeledValueTransform];
     v9 = [v8 mutableCopy];
 
     v10 = [[ABSMultiValue alloc] initWithPropertyType:TypeOfProperty mutable:0 values:v9];
@@ -36,7 +36,7 @@
 
   else
   {
-    [MEMORY[0x277CBEAD8] raise:@"AddressBookInvalidPropertyIDException" format:{@"%@ didn't return a absPropertyID", a1}];
+    [MEMORY[0x277CBEAD8] raise:@"AddressBookInvalidPropertyIDException" format:{@"%@ didn't return a absPropertyID", self}];
     v11 = *MEMORY[0x277CBEEE8];
   }
 
@@ -45,9 +45,9 @@
 
 - (id)CNValueFromABSValue:()ABSExtentions
 {
-  v4 = [a3 values];
-  v5 = [a1 CNLabeledValueFromABSMultiValueTranform];
-  v6 = [v4 _cn_map:v5];
+  values = [a3 values];
+  cNLabeledValueFromABSMultiValueTranform = [self CNLabeledValueFromABSMultiValueTranform];
+  v6 = [values _cn_map:cNLabeledValueFromABSMultiValueTranform];
 
   return v6;
 }
@@ -55,7 +55,7 @@
 - (id)CNLabeledValueFromABSMultiValueTranform
 {
   v2 = +[ABSConstantsMapping ABToCNLabelConstantsMapping];
-  v3 = [a1 passThroughMultivalueTransformWithLabelMapping:v2];
+  v3 = [self passThroughMultivalueTransformWithLabelMapping:v2];
 
   return v3;
 }
@@ -63,7 +63,7 @@
 - (id)ABSMultiValueLabeledValueFromCNLabeledValueTransform
 {
   v2 = +[ABSConstantsMapping CNToABLabelConstantsMapping];
-  v3 = [a1 passThroughMultivalueTransformWithLabelMapping:v2];
+  v3 = [self passThroughMultivalueTransformWithLabelMapping:v2];
 
   return v3;
 }
@@ -98,7 +98,7 @@
   v17 = v10;
   v12 = v11;
   v13 = v10;
-  v14 = [a1 multiValueTransformWithLabelMapping:a3 valueTransform:v16];
+  v14 = [self multiValueTransformWithLabelMapping:a3 valueTransform:v16];
 
   return v14;
 }

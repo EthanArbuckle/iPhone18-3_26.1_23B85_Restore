@@ -1,24 +1,24 @@
 @interface TransparencyBAACertFetcher
-- (TransparencyBAACertFetcher)initWithWorkloop:(id)a3 analytics:(id)a4;
-- (id)eventNameForFetchPolicy:(unint64_t)a3;
+- (TransparencyBAACertFetcher)initWithWorkloop:(id)workloop analytics:(id)analytics;
+- (id)eventNameForFetchPolicy:(unint64_t)policy;
 - (void)dealloc;
-- (void)deviceIdentityIssueCert:(id)a3 completionHandler:(id)a4;
-- (void)fetchWithPolicy:(unint64_t)a3 completion:(id)a4;
-- (void)getDeviceCertWithForcedFetch:(BOOL)a3 completionHandler:(id)a4;
+- (void)deviceIdentityIssueCert:(id)cert completionHandler:(id)handler;
+- (void)fetchWithPolicy:(unint64_t)policy completion:(id)completion;
+- (void)getDeviceCertWithForcedFetch:(BOOL)fetch completionHandler:(id)handler;
 - (void)triggerRemoteBAACertFetch;
 @end
 
 @implementation TransparencyBAACertFetcher
 
-- (id)eventNameForFetchPolicy:(unint64_t)a3
+- (id)eventNameForFetchPolicy:(unint64_t)policy
 {
   v3 = &stru_10032E8E8;
-  if (a3 == 2)
+  if (policy == 2)
   {
     v3 = @"-noNet";
   }
 
-  if (a3 == 1)
+  if (policy == 1)
   {
     v3 = @"-net";
   }
@@ -26,10 +26,10 @@
   return [NSString stringWithFormat:@"baaFetch%@", v3];
 }
 
-- (TransparencyBAACertFetcher)initWithWorkloop:(id)a3 analytics:(id)a4
+- (TransparencyBAACertFetcher)initWithWorkloop:(id)workloop analytics:(id)analytics
 {
-  v6 = a3;
-  v7 = a4;
+  workloopCopy = workloop;
+  analyticsCopy = analytics;
   v23.receiver = self;
   v23.super_class = TransparencyBAACertFetcher;
   v8 = [(TransparencyBAACertFetcher *)&v23 init];
@@ -45,7 +45,7 @@
     v10 = [(KTNearFutureScheduler *)v9 initWithName:@"BAACertFetch" initialDelay:2000000000 exponentialBackoff:7200000000000 maximumDelay:0 keepProcessAlive:0 dependencyDescriptionCode:&v17 block:2.0];
     [(TransparencyBAACertFetcher *)v8 setBAACertFetcher:v10, v17, v18, v19, v20];
 
-    [(TransparencyBAACertFetcher *)v8 setWorkloop:v6];
+    [(TransparencyBAACertFetcher *)v8 setWorkloop:workloopCopy];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.transparency.deviceCertIssuanceQueue", v11);
     [(TransparencyBAACertFetcher *)v8 setIssuanceQueue:v12];
@@ -56,7 +56,7 @@
     v14 = objc_alloc_init(TransparencyBAAIssuer);
     [(TransparencyBAACertFetcher *)v8 setCertIssuer:v14];
 
-    [(TransparencyBAACertFetcher *)v8 setAnalytics:v7];
+    [(TransparencyBAACertFetcher *)v8 setAnalytics:analyticsCopy];
     v15 = v8;
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -65,20 +65,20 @@
   return v8;
 }
 
-- (void)deviceIdentityIssueCert:(id)a3 completionHandler:(id)a4
+- (void)deviceIdentityIssueCert:(id)cert completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(TransparencyBAACertFetcher *)self certIssuer];
-  v8 = [(TransparencyBAACertFetcher *)self workloop];
-  [v9 deviceIdentityIssueCert:v7 queue:v8 completionHandler:v6];
+  handlerCopy = handler;
+  certCopy = cert;
+  certIssuer = [(TransparencyBAACertFetcher *)self certIssuer];
+  workloop = [(TransparencyBAACertFetcher *)self workloop];
+  [certIssuer deviceIdentityIssueCert:certCopy queue:workloop completionHandler:handlerCopy];
 }
 
-- (void)fetchWithPolicy:(unint64_t)a3 completion:(id)a4
+- (void)fetchWithPolicy:(unint64_t)policy completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(TransparencyBAACertFetcher *)self issuanceGroup];
-  objc_sync_enter(v7);
+  completionCopy = completion;
+  issuanceGroup = [(TransparencyBAACertFetcher *)self issuanceGroup];
+  objc_sync_enter(issuanceGroup);
   if ([(TransparencyBAACertFetcher *)self outstandingRemoteFetchSignal])
   {
     if (qword_10039CED8 != -1)
@@ -93,33 +93,33 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "An existing remote cert fetch is in progress. Waiting for that to finish.", buf, 2u);
     }
 
-    v9 = [(TransparencyBAACertFetcher *)self issuanceGroup];
-    v10 = [(TransparencyBAACertFetcher *)self issuanceQueue];
+    issuanceGroup2 = [(TransparencyBAACertFetcher *)self issuanceGroup];
+    issuanceQueue = [(TransparencyBAACertFetcher *)self issuanceQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1002434E4;
     block[3] = &unk_10031ABA0;
     block[4] = self;
-    v25 = v6;
-    v11 = v6;
-    dispatch_group_notify(v9, v10, block);
+    v25 = completionCopy;
+    v11 = completionCopy;
+    dispatch_group_notify(issuanceGroup2, issuanceQueue, block);
 
-    objc_sync_exit(v7);
+    objc_sync_exit(issuanceGroup);
   }
 
   else
   {
-    objc_sync_exit(v7);
+    objc_sync_exit(issuanceGroup);
 
-    if (a3 == 1)
+    if (policy == 1)
     {
-      v12 = [(TransparencyBAACertFetcher *)self issuanceGroup];
-      objc_sync_enter(v12);
-      v13 = [(TransparencyBAACertFetcher *)self issuanceGroup];
-      dispatch_group_enter(v13);
+      issuanceGroup3 = [(TransparencyBAACertFetcher *)self issuanceGroup];
+      objc_sync_enter(issuanceGroup3);
+      issuanceGroup4 = [(TransparencyBAACertFetcher *)self issuanceGroup];
+      dispatch_group_enter(issuanceGroup4);
 
       [(TransparencyBAACertFetcher *)self setOutstandingRemoteFetchSignal:1];
-      objc_sync_exit(v12);
+      objc_sync_exit(issuanceGroup3);
     }
 
     v29[0] = kTransparencyBAACertKeychainLabelKey;
@@ -137,9 +137,9 @@
     v28[4] = kMAOptionsUseSoftwareGeneratedKey;
     v29[4] = &__kCFBooleanTrue;
     v16 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:5];
-    v7 = [v16 mutableCopy];
+    issuanceGroup = [v16 mutableCopy];
 
-    if (a3 == 2)
+    if (policy == 2)
     {
       if (qword_10039CED8 != -1)
       {
@@ -153,10 +153,10 @@
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Calling deviceIdentityIssueCert with KTBAAForceNoNetworkFetchPolicy", buf, 2u);
       }
 
-      [v7 setObject:&__kCFBooleanTrue forKeyedSubscript:kMAOptionsBAASkipNetworkRequest];
+      [issuanceGroup setObject:&__kCFBooleanTrue forKeyedSubscript:kMAOptionsBAASkipNetworkRequest];
     }
 
-    else if (a3 == 1)
+    else if (policy == 1)
     {
       if (qword_10039CED8 != -1)
       {
@@ -170,7 +170,7 @@
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Calling deviceIdentityIssueCert with KTBAAForceNetworkFetchPolicy", buf, 2u);
       }
 
-      [v7 setObject:&__kCFBooleanTrue forKeyedSubscript:kMAOptionsBAAIgnoreExistingKeychainItems];
+      [issuanceGroup setObject:&__kCFBooleanTrue forKeyedSubscript:kMAOptionsBAAIgnoreExistingKeychainItems];
     }
 
     else
@@ -192,11 +192,11 @@
     v21[1] = 3221225472;
     v21[2] = sub_1002435C0;
     v21[3] = &unk_10032CE98;
-    v22 = v6;
-    v23 = a3;
+    v22 = completionCopy;
+    policyCopy = policy;
     v21[4] = self;
-    v20 = v6;
-    [(TransparencyBAACertFetcher *)self deviceIdentityIssueCert:v7 completionHandler:v21];
+    v20 = completionCopy;
+    [(TransparencyBAACertFetcher *)self deviceIdentityIssueCert:issuanceGroup completionHandler:v21];
   }
 }
 
@@ -210,23 +210,23 @@
   [(TransparencyBAACertFetcher *)self fetchWithPolicy:1 completion:v2];
 }
 
-- (void)getDeviceCertWithForcedFetch:(BOOL)a3 completionHandler:(id)a4
+- (void)getDeviceCertWithForcedFetch:(BOOL)fetch completionHandler:(id)handler
 {
-  v4 = a3;
+  fetchCopy = fetch;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1002439EC;
   v6[3] = &unk_10032C2B0;
-  v7 = self;
-  v8 = a4;
-  v5 = v8;
-  [(TransparencyBAACertFetcher *)v7 fetchWithPolicy:v4 completion:v6];
+  selfCopy = self;
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  [(TransparencyBAACertFetcher *)selfCopy fetchWithPolicy:fetchCopy completion:v6];
 }
 
 - (void)dealloc
 {
-  v3 = [(TransparencyBAACertFetcher *)self BAACertFetcher];
-  [v3 cancel];
+  bAACertFetcher = [(TransparencyBAACertFetcher *)self BAACertFetcher];
+  [bAACertFetcher cancel];
 
   v4.receiver = self;
   v4.super_class = TransparencyBAACertFetcher;

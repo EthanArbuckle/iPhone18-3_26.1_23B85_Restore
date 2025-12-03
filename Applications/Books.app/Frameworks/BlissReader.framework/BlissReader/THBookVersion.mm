@@ -1,11 +1,11 @@
 @interface THBookVersion
-+ (THBookVersion)bookVersionWithVersionString:(id)a3;
++ (THBookVersion)bookVersionWithVersionString:(id)string;
 + (id)newUnversionedBookVersion;
 + (id)unversionedBookVersion;
-- (BOOL)isEqualToBookVersion:(id)a3;
-- (BOOL)isStrictlyNewerThanBookVersion:(id)a3;
-- (BOOL)p_componentIsValid:(id)a3;
-- (THBookVersion)initWithString:(id)a3;
+- (BOOL)isEqualToBookVersion:(id)version;
+- (BOOL)isStrictlyNewerThanBookVersion:(id)version;
+- (BOOL)p_componentIsValid:(id)valid;
+- (THBookVersion)initWithString:(id)string;
 - (id)description;
 - (void)dealloc;
 - (void)p_parseString;
@@ -13,9 +13,9 @@
 
 @implementation THBookVersion
 
-+ (THBookVersion)bookVersionWithVersionString:(id)a3
++ (THBookVersion)bookVersionWithVersionString:(id)string
 {
-  v3 = [[THBookVersion alloc] initWithString:a3];
+  v3 = [[THBookVersion alloc] initWithString:string];
 
   return v3;
 }
@@ -39,7 +39,7 @@
   return result;
 }
 
-- (THBookVersion)initWithString:(id)a3
+- (THBookVersion)initWithString:(id)string
 {
   v8.receiver = self;
   v8.super_class = THBookVersion;
@@ -47,17 +47,17 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (string)
     {
-      v6 = a3;
+      stringCopy = string;
     }
 
     else
     {
-      v6 = &stru_471858;
+      stringCopy = &stru_471858;
     }
 
-    [(THBookVersion *)v4 setVersionString:v6];
+    [(THBookVersion *)v4 setVersionString:stringCopy];
     [(THBookVersion *)v5 p_parseString];
   }
 
@@ -131,16 +131,16 @@ LABEL_15:
   [(THBookVersion *)self setIsValid:v3];
 }
 
-- (BOOL)p_componentIsValid:(id)a3
+- (BOOL)p_componentIsValid:(id)valid
 {
-  if (![a3 length] || (objc_msgSend(a3, "integerValue") & 0x8000000000000000) != 0)
+  if (![valid length] || (objc_msgSend(valid, "integerValue") & 0x8000000000000000) != 0)
   {
     return 0;
   }
 
-  v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [a3 integerValue]);
+  v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [valid integerValue]);
 
-  return [a3 isEqualToString:v4];
+  return [valid isEqualToString:v4];
 }
 
 - (id)description
@@ -153,37 +153,37 @@ LABEL_15:
   return [(THBookVersion *)self versionString];
 }
 
-- (BOOL)isStrictlyNewerThanBookVersion:(id)a3
+- (BOOL)isStrictlyNewerThanBookVersion:(id)version
 {
-  if (-[THBookVersion isValid](self, "isValid") && [a3 isValid])
+  if (-[THBookVersion isValid](self, "isValid") && [version isValid])
   {
-    if (![a3 isUnversioned] || -[THBookVersion isUnversioned](self, "isUnversioned"))
+    if (![version isUnversioned] || -[THBookVersion isUnversioned](self, "isUnversioned"))
     {
       if ([(THBookVersion *)self isUnversioned])
       {
 LABEL_6:
-        LOBYTE(v5) = 0;
-        return v5;
+        LOBYTE(isValid) = 0;
+        return isValid;
       }
 
-      v6 = [(THBookVersion *)self majorVersion];
-      if (v6 <= [a3 majorVersion])
+      majorVersion = [(THBookVersion *)self majorVersion];
+      if (majorVersion <= [version majorVersion])
       {
-        v7 = [(THBookVersion *)self majorVersion];
-        if (v7 != [a3 majorVersion])
+        majorVersion2 = [(THBookVersion *)self majorVersion];
+        if (majorVersion2 != [version majorVersion])
         {
           goto LABEL_6;
         }
 
-        v8 = [(THBookVersion *)self minorVersion];
-        if (v8 <= [a3 minorVersion])
+        minorVersion = [(THBookVersion *)self minorVersion];
+        if (minorVersion <= [version minorVersion])
         {
-          v9 = [(THBookVersion *)self minorVersion];
-          if (v9 == [a3 minorVersion])
+          minorVersion2 = [(THBookVersion *)self minorVersion];
+          if (minorVersion2 == [version minorVersion])
           {
-            v10 = [(THBookVersion *)self subMinorVersion];
-            LOBYTE(v5) = v10 > [a3 subMinorVersion];
-            return v5;
+            subMinorVersion = [(THBookVersion *)self subMinorVersion];
+            LOBYTE(isValid) = subMinorVersion > [version subMinorVersion];
+            return isValid;
           }
 
           goto LABEL_6;
@@ -191,55 +191,55 @@ LABEL_6:
       }
     }
 
-    LOBYTE(v5) = 1;
-    return v5;
+    LOBYTE(isValid) = 1;
+    return isValid;
   }
 
-  v5 = [(THBookVersion *)self isValid];
-  if (v5)
+  isValid = [(THBookVersion *)self isValid];
+  if (isValid)
   {
-    LOBYTE(v5) = [a3 isValid] ^ 1;
+    LOBYTE(isValid) = [version isValid] ^ 1;
   }
 
-  return v5;
+  return isValid;
 }
 
-- (BOOL)isEqualToBookVersion:(id)a3
+- (BOOL)isEqualToBookVersion:(id)version
 {
-  v5 = [(THBookVersion *)self isValid];
-  if (v5 != [a3 isValid])
+  isValid = [(THBookVersion *)self isValid];
+  if (isValid != [version isValid])
   {
     return 0;
   }
 
-  v6 = [(THBookVersion *)self isUnversioned];
-  if (v6 != [a3 isUnversioned])
+  isUnversioned = [(THBookVersion *)self isUnversioned];
+  if (isUnversioned != [version isUnversioned])
   {
     return 0;
   }
 
-  v7 = [(THBookVersion *)self majorVersion];
-  if (v7 != [a3 majorVersion])
+  majorVersion = [(THBookVersion *)self majorVersion];
+  if (majorVersion != [version majorVersion])
   {
     return 0;
   }
 
-  v8 = [(THBookVersion *)self minorVersion];
-  if (v8 != [a3 minorVersion])
+  minorVersion = [(THBookVersion *)self minorVersion];
+  if (minorVersion != [version minorVersion])
   {
     return 0;
   }
 
-  v9 = [(THBookVersion *)self subMinorVersion];
-  if (v9 != [a3 subMinorVersion])
+  subMinorVersion = [(THBookVersion *)self subMinorVersion];
+  if (subMinorVersion != [version subMinorVersion])
   {
     return 0;
   }
 
-  v10 = [(THBookVersion *)self versionString];
-  v11 = [a3 versionString];
+  versionString = [(THBookVersion *)self versionString];
+  versionString2 = [version versionString];
 
-  return [(NSString *)v10 isEqualToString:v11];
+  return [(NSString *)versionString isEqualToString:versionString2];
 }
 
 @end

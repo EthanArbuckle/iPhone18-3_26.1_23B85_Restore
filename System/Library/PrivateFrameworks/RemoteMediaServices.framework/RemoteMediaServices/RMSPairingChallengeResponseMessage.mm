@@ -1,20 +1,20 @@
 @interface RMSPairingChallengeResponseMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasUserCancelled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasUserCancelled:(BOOL)cancelled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RMSPairingChallengeResponseMessage
 
-- (void)setHasUserCancelled:(BOOL)a3
+- (void)setHasUserCancelled:(BOOL)cancelled
 {
-  if (a3)
+  if (cancelled)
   {
     v3 = 2;
   }
@@ -33,85 +33,85 @@
   v8.receiver = self;
   v8.super_class = RMSPairingChallengeResponseMessage;
   v4 = [(RMSPairingChallengeResponseMessage *)&v8 description];
-  v5 = [(RMSPairingChallengeResponseMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(RMSPairingChallengeResponseMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithInt:self->_sessionIdentifier];
-    [v3 setObject:v4 forKey:@"sessionIdentifier"];
+    [dictionary setObject:v4 forKey:@"sessionIdentifier"];
   }
 
   code = self->_code;
   if (code)
   {
-    [v3 setObject:code forKey:@"code"];
+    [dictionary setObject:code forKey:@"code"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_userCancelled];
-    [v3 setObject:v6 forKey:@"userCancelled"];
+    [dictionary setObject:v6 forKey:@"userCancelled"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_code)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_sessionIdentifier;
-    *(v4 + 24) |= 1u;
+    toCopy[4] = self->_sessionIdentifier;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_code)
   {
-    v5 = v4;
-    [v4 setCode:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setCode:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 20) = self->_userCancelled;
-    *(v4 + 24) |= 2u;
+    *(toCopy + 20) = self->_userCancelled;
+    *(toCopy + 24) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -119,7 +119,7 @@
     *(v5 + 24) |= 1u;
   }
 
-  v7 = [(NSString *)self->_code copyWithZone:a3];
+  v7 = [(NSString *)self->_code copyWithZone:zone];
   v8 = *(v6 + 8);
   *(v6 + 8) = v7;
 
@@ -132,10 +132,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
@@ -143,19 +143,19 @@
   has = self->_has;
   if (has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_sessionIdentifier != *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_sessionIdentifier != *(equalCopy + 4))
     {
       goto LABEL_12;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_12;
   }
 
   code = self->_code;
-  if (code | *(v4 + 1))
+  if (code | *(equalCopy + 1))
   {
     if (![(NSString *)code isEqual:?])
     {
@@ -165,20 +165,20 @@
     has = self->_has;
   }
 
-  v7 = (*(v4 + 24) & 2) == 0;
+  v7 = (*(equalCopy + 24) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) != 0)
+    if ((*(equalCopy + 24) & 2) != 0)
     {
       if (self->_userCancelled)
       {
-        if ((*(v4 + 20) & 1) == 0)
+        if ((*(equalCopy + 20) & 1) == 0)
         {
           goto LABEL_12;
         }
       }
 
-      else if (*(v4 + 20))
+      else if (*(equalCopy + 20))
       {
         goto LABEL_12;
       }
@@ -222,25 +222,25 @@ LABEL_13:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 24))
+  fromCopy = from;
+  if (*(fromCopy + 24))
   {
-    self->_sessionIdentifier = *(v4 + 4);
+    self->_sessionIdentifier = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(RMSPairingChallengeResponseMessage *)self setCode:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 24) & 2) != 0)
+  if ((*(fromCopy + 24) & 2) != 0)
   {
-    self->_userCancelled = *(v4 + 20);
+    self->_userCancelled = *(fromCopy + 20);
     *&self->_has |= 2u;
   }
 }

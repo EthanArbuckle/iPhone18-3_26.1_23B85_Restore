@@ -1,5 +1,5 @@
 @interface MPHomeSharingURLProtocol
-+ (BOOL)canInitWithRequest:(id)a3;
++ (BOOL)canInitWithRequest:(id)request;
 + (void)initialize;
 - (void)startLoading;
 @end
@@ -10,9 +10,9 @@
 {
   v45 = *MEMORY[0x1E69E9840];
   v36 = objc_autoreleasePoolPush();
-  v34 = self;
-  v3 = [(NSURLProtocol *)self request];
-  v4 = [v3 URL];
+  selfCopy = self;
+  request = [(NSURLProtocol *)self request];
+  v4 = [request URL];
 
   v5 = os_log_create("com.apple.amp.mediaplayer", "HomeSharing");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -23,12 +23,12 @@
   }
 
   v6 = MEMORY[0x1E696AD60];
-  v7 = [v4 absoluteString];
-  v8 = [v6 stringWithString:v7];
+  absoluteString = [v4 absoluteString];
+  v8 = [v6 stringWithString:absoluteString];
 
   v35 = v4;
-  v9 = [v4 scheme];
-  [v8 replaceCharactersInRange:0 withString:{objc_msgSend(v9, "length"), @"http"}];
+  scheme = [v4 scheme];
+  [v8 replaceCharactersInRange:0 withString:{objc_msgSend(scheme, "length"), @"http"}];
 
   v37 = v8;
   [v8 appendString:@"&daap-no-disconnect=1"];
@@ -43,9 +43,9 @@
 LABEL_13:
 
 LABEL_20:
-    v16 = [(NSURLProtocol *)v34 client];
+    client = [(NSURLProtocol *)selfCopy client];
     v25 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HomeSharingURLProtocolErrorDomain" code:-1 userInfo:0];
-    [v16 URLProtocol:v34 didFailWithError:v25];
+    [client URLProtocol:selfCopy didFailWithError:v25];
     v23 = v35;
     v22 = v36;
     goto LABEL_21;
@@ -62,17 +62,17 @@ LABEL_5:
       objc_enumerationMutation(v10);
     }
 
-    v15 = [*(*(&v38 + 1) + 8 * v14) libraryDataProvider];
+    libraryDataProvider = [*(*(&v38 + 1) + 8 * v14) libraryDataProvider];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       goto LABEL_11;
     }
 
-    v16 = [v15 homeSharingLibrary];
-    v17 = [v16 baseURL];
-    v18 = [v17 absoluteString];
-    v19 = [v37 hasPrefix:v18];
+    client = [libraryDataProvider homeSharingLibrary];
+    baseURL = [client baseURL];
+    absoluteString2 = [baseURL absoluteString];
+    v19 = [v37 hasPrefix:absoluteString2];
 
     if (v19)
     {
@@ -92,31 +92,31 @@ LABEL_11:
     }
   }
 
-  if (!v16)
+  if (!client)
   {
     goto LABEL_20;
   }
 
-  v20 = [v16 homeSharingGroupID];
-  v21 = [v20 length];
+  homeSharingGroupID = [client homeSharingGroupID];
+  v21 = [homeSharingGroupID length];
 
   v23 = v35;
   v22 = v36;
   if (v21)
   {
-    v24 = [v16 homeSharingGroupID];
-    [v37 appendFormat:@"&hsgid=%@", v24];
+    homeSharingGroupID2 = [client homeSharingGroupID];
+    [v37 appendFormat:@"&hsgid=%@", homeSharingGroupID2];
   }
 
   [v37 appendString:@"&hs-mobile-device-client=1"];
   v25 = [MEMORY[0x1E695DFF8] URLWithString:v37];
   v26 = [objc_alloc(MEMORY[0x1E696AF70]) initWithURL:v35 MIMEType:@"text/plain" expectedContentLength:0 textEncodingName:0];
   v27 = [MEMORY[0x1E696AD68] requestWithURL:v25];
-  v28 = [(NSURLProtocol *)v34 request];
-  v29 = [v28 allHTTPHeaderFields];
-  v30 = [v29 mutableCopy];
+  request2 = [(NSURLProtocol *)selfCopy request];
+  allHTTPHeaderFields = [request2 allHTTPHeaderFields];
+  v30 = [allHTTPHeaderFields mutableCopy];
 
-  v31 = [v16 securityInfoForURL:v25];
+  v31 = [client securityInfoForURL:v25];
   if (v31)
   {
     [v30 setObject:v31 forKey:@"Client-Daap-Validation"];
@@ -126,21 +126,21 @@ LABEL_11:
   [v30 setObject:v32 forKey:@"Client-Daap-Request-Id"];
 
   [v27 setAllHTTPHeaderFields:v30];
-  v33 = [(NSURLProtocol *)v34 client];
-  [v33 URLProtocol:v34 wasRedirectedToRequest:v27 redirectResponse:v26];
-  [v33 URLProtocolDidFinishLoading:v34];
+  client2 = [(NSURLProtocol *)selfCopy client];
+  [client2 URLProtocol:selfCopy wasRedirectedToRequest:v27 redirectResponse:v26];
+  [client2 URLProtocolDidFinishLoading:selfCopy];
 
 LABEL_21:
   objc_autoreleasePoolPop(v22);
 }
 
-+ (BOOL)canInitWithRequest:(id)a3
++ (BOOL)canInitWithRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 URL];
-  v6 = [v5 scheme];
-  v7 = [v6 isEqualToString:@"home-sharing"];
+  v5 = [requestCopy URL];
+  scheme = [v5 scheme];
+  v7 = [scheme isEqualToString:@"home-sharing"];
 
   objc_autoreleasePoolPop(v4);
   return v7;
@@ -153,7 +153,7 @@ LABEL_21:
   {
     v4 = MEMORY[0x1E696AF58];
 
-    [v4 registerClass:a1];
+    [v4 registerClass:self];
   }
 }
 

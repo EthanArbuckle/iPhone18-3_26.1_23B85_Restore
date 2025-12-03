@@ -1,60 +1,60 @@
 @interface SpotlightGraph
-- (BOOL)addItem:(id)a3 cancelBlock:(id)a4;
-- (BOOL)addPerson:(id)a3 cancelBlock:(id)a4;
-- (BOOL)analyzePeopleWithCancelBlock:(id)a3;
-- (BOOL)closeWithCancelBlock:(id)a3;
-- (BOOL)containsReference:(id)a3 personaIdentifier:(id)a4 protectionClass:(id)a5 domainIdentifier:(id)a6;
-- (BOOL)deleteDomainIdentifier:(id)a3 cancelBlock:(id)a4;
-- (BOOL)deleteDomainIdentifier:(id)a3 personaIdentifier:(id)a4 cancelBlock:(id)a5;
-- (BOOL)deleteEntitiesWithCancelBlock:(id)a3;
-- (BOOL)deletePeopleWithCancelBlock:(id)a3;
-- (BOOL)deleteReferences:(id)a3 domainIdentifier:(id)a4 cancelBlock:(id)a5;
-- (BOOL)deleteReferences:(id)a3 personaIdentifier:(id)a4 protectionClass:(id)a5 domainIdentifier:(id)a6 cancelBlock:(id)a7;
-- (BOOL)enumeratePeopleUsingBlock:(id)a3;
-- (BOOL)findAllContactInfoForNode:(id)a3 info:(id)a4 reference:(id)a5 foundUser:(BOOL *)a6;
-- (BOOL)generatePeopleUsingBlock:(id)a3;
+- (BOOL)addItem:(id)item cancelBlock:(id)block;
+- (BOOL)addPerson:(id)person cancelBlock:(id)block;
+- (BOOL)analyzePeopleWithCancelBlock:(id)block;
+- (BOOL)closeWithCancelBlock:(id)block;
+- (BOOL)containsReference:(id)reference personaIdentifier:(id)identifier protectionClass:(id)class domainIdentifier:(id)domainIdentifier;
+- (BOOL)deleteDomainIdentifier:(id)identifier cancelBlock:(id)block;
+- (BOOL)deleteDomainIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier cancelBlock:(id)block;
+- (BOOL)deleteEntitiesWithCancelBlock:(id)block;
+- (BOOL)deletePeopleWithCancelBlock:(id)block;
+- (BOOL)deleteReferences:(id)references domainIdentifier:(id)identifier cancelBlock:(id)block;
+- (BOOL)deleteReferences:(id)references personaIdentifier:(id)identifier protectionClass:(id)class domainIdentifier:(id)domainIdentifier cancelBlock:(id)block;
+- (BOOL)enumeratePeopleUsingBlock:(id)block;
+- (BOOL)findAllContactInfoForNode:(id)node info:(id)info reference:(id)reference foundUser:(BOOL *)user;
+- (BOOL)generatePeopleUsingBlock:(id)block;
 - (BOOL)hasPeople;
-- (BOOL)openWithCancelBlock:(id)a3;
-- (BOOL)peopleAnalyzeWithCancelBlock:(id)a3;
-- (BOOL)peopleScoreWithCancelBlock:(id)a3;
-- (BOOL)peopleUpdateInfo:(id)a3 attributeKey:(id)a4 attribute:(id)a5 forNode:(id)a6 person:(id)a7 score:(id)a8 rank:(id)a9 bestCount:(unint64_t *)a10;
-- (BOOL)peopleUpdateNetwork:(void *)a3 sourceNodeId:(unsigned int)a4 nodes:(id)a5;
-- (BOOL)pruneWithCancelBlock:(id)a3;
-- (BOOL)scorePeopleWithCancelBlock:(id)a3;
-- (SpotlightGraph)initWithConfig:(id)a3;
+- (BOOL)openWithCancelBlock:(id)block;
+- (BOOL)peopleAnalyzeWithCancelBlock:(id)block;
+- (BOOL)peopleScoreWithCancelBlock:(id)block;
+- (BOOL)peopleUpdateInfo:(id)info attributeKey:(id)key attribute:(id)attribute forNode:(id)node person:(id)person score:(id)score rank:(id)rank bestCount:(unint64_t *)self0;
+- (BOOL)peopleUpdateNetwork:(void *)network sourceNodeId:(unsigned int)id nodes:(id)nodes;
+- (BOOL)pruneWithCancelBlock:(id)block;
+- (BOOL)scorePeopleWithCancelBlock:(id)block;
+- (SpotlightGraph)initWithConfig:(id)config;
 - (id)cachedPeopleScoresPath;
 - (id)domains;
-- (id)nameNodeFromName:(id)a3 nameComponents:(id)a4 reference:(id)a5 domain:(id)a6 nodes:(id)a7 edges:(id)a8 isOwner:(BOOL)a9;
-- (id)primaryNodesForPerson:(id)a3 reference:(id)a4 domain:(id)a5 nodes:(id)a6 edges:(id)a7 isOwner:(BOOL)a8;
+- (id)nameNodeFromName:(id)name nameComponents:(id)components reference:(id)reference domain:(id)domain nodes:(id)nodes edges:(id)edges isOwner:(BOOL)owner;
+- (id)primaryNodesForPerson:(id)person reference:(id)reference domain:(id)domain nodes:(id)nodes edges:(id)edges isOwner:(BOOL)owner;
 - (int64_t)domainCount;
 - (int64_t)emailCount;
 - (int64_t)nameCount;
 - (int64_t)personCount;
-- (int64_t)personaCountForDomain:(id)a3;
+- (int64_t)personaCountForDomain:(id)domain;
 - (int64_t)phoneCount;
-- (int64_t)referenceCountForDomain:(id)a3;
-- (int64_t)referenceCountForDomain:(id)a3 personaIdentifier:(id)a4;
+- (int64_t)referenceCountForDomain:(id)domain;
+- (int64_t)referenceCountForDomain:(id)domain personaIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)peopleUpdateFromItem:(id)a3 reference:(id)a4 domain:(id)a5 nodes:(id)a6 edges:(id)a7;
+- (void)peopleUpdateFromItem:(id)item reference:(id)reference domain:(id)domain nodes:(id)nodes edges:(id)edges;
 @end
 
 @implementation SpotlightGraph
 
-- (SpotlightGraph)initWithConfig:(id)a3
+- (SpotlightGraph)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v13.receiver = self;
   v13.super_class = SpotlightGraph;
   v6 = [(SpotlightGraph *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, config);
     v7->_peopleScores = 0;
-    v8 = [(SpotlightGraph *)v7 cachedPeopleScoresPath];
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
-    v10 = [v8 path];
-    v11 = [v9 fileExistsAtPath:v10];
+    cachedPeopleScoresPath = [(SpotlightGraph *)v7 cachedPeopleScoresPath];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [cachedPeopleScoresPath path];
+    v11 = [defaultManager fileExistsAtPath:path];
 
     if (v11)
     {
@@ -65,17 +65,17 @@
   return v7;
 }
 
-- (BOOL)openWithCancelBlock:(id)a3
+- (BOOL)openWithCancelBlock:(id)block
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   graph = self->_graph;
   self->_graph = 0;
 
   v6 = self->_config;
   v7 = [SKGGraph alloc];
-  v8 = [(SKGConfig *)v6 resourcePath];
-  v9 = [(SKGGraph *)v7 initWithResourceDirectoryPath:v8];
+  resourcePath = [(SKGConfig *)v6 resourcePath];
+  v9 = [(SKGGraph *)v7 initWithResourceDirectoryPath:resourcePath];
   v10 = self->_graph;
   self->_graph = v9;
 
@@ -85,14 +85,14 @@
     v12 = +[SKGUserNode user];
     v16[0] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-    LOBYTE(v11) = [(SKGGraph *)v11 addNodes:v13 addEdges:0 cancelBlock:v4];
+    LOBYTE(v11) = [(SKGGraph *)v11 addNodes:v13 addEdges:0 cancelBlock:blockCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (BOOL)closeWithCancelBlock:(id)a3
+- (BOOL)closeWithCancelBlock:(id)block
 {
   graph = self->_graph;
   self->_graph = 0;
@@ -100,9 +100,9 @@
   return 1;
 }
 
-- (BOOL)pruneWithCancelBlock:(id)a3
+- (BOOL)pruneWithCancelBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -120,10 +120,10 @@
   {
     if (v5)
     {
-      v7 = [(SKGGraph *)v5 removeNodeSet:v6 removeEdgeSet:0 cancelBlock:v4];
-      if (v4)
+      v7 = [(SKGGraph *)v5 removeNodeSet:v6 removeEdgeSet:0 cancelBlock:blockCopy];
+      if (blockCopy)
       {
-        v8 = v4[2](v4, @"pruneWithCancelBlock") ^ 1;
+        v8 = blockCopy[2](blockCopy, @"pruneWithCancelBlock") ^ 1;
       }
 
       else
@@ -150,7 +150,7 @@
       v14[3] = &unk_27893DBC0;
       v16 = &v18;
       v17 = &v24;
-      v15 = v4;
+      v15 = blockCopy;
       [v11 enumerateNodesInGraph:v5 usingBlock:v14];
     }
 
@@ -265,13 +265,13 @@ void __25__SpotlightGraph_domains__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (int64_t)personaCountForDomain:(id)a3
+- (int64_t)personaCountForDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v5 = objc_autoreleasePoolPush();
-  v6 = [SKGDomains domainsWithDomain:v4 inGraph:self->_graph];
-  v7 = [v6 personas];
-  v8 = [v7 count];
+  v6 = [SKGDomains domainsWithDomain:domainCopy inGraph:self->_graph];
+  personas = [v6 personas];
+  v8 = [personas count];
 
   objc_autoreleasePoolPop(v5);
   if (v8)
@@ -287,23 +287,23 @@ void __25__SpotlightGraph_domains__block_invoke(uint64_t a1, void *a2)
   return v9;
 }
 
-- (int64_t)referenceCountForDomain:(id)a3
+- (int64_t)referenceCountForDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
   v5 = objc_autoreleasePoolPush();
   v6 = self->_graph;
-  v7 = [SKGDomains domainsWithDomain:v4 inGraph:v6];
-  v8 = [v7 personas];
+  v7 = [SKGDomains domainsWithDomain:domainCopy inGraph:v6];
+  personas = [v7 personas];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __42__SpotlightGraph_referenceCountForDomain___block_invoke;
   v11[3] = &unk_27893DC10;
   v11[4] = &v12;
-  [v8 enumeratePersonasInGraph:v6 usingBlock:v11];
+  [personas enumeratePersonasInGraph:v6 usingBlock:v11];
 
   objc_autoreleasePoolPop(v5);
   if (v13[3])
@@ -327,17 +327,17 @@ void __42__SpotlightGraph_referenceCountForDomain___block_invoke(uint64_t a1, vo
   *(*(*(a1 + 32) + 8) + 24) += [v3 count];
 }
 
-- (int64_t)referenceCountForDomain:(id)a3 personaIdentifier:(id)a4
+- (int64_t)referenceCountForDomain:(id)domain personaIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  identifierCopy = identifier;
   v8 = objc_autoreleasePoolPush();
   v9 = self->_graph;
-  v10 = [SKGDomains domainsWithDomain:v6 inGraph:v9];
-  v11 = [v10 personasWithPersona:v7 inGraph:v9];
+  v10 = [SKGDomains domainsWithDomain:domainCopy inGraph:v9];
+  v11 = [v10 personasWithPersona:identifierCopy inGraph:v9];
 
-  v12 = [v11 references];
-  v13 = [v12 count];
+  references = [v11 references];
+  v13 = [references count];
 
   objc_autoreleasePoolPop(v8);
   if (v13)
@@ -353,32 +353,32 @@ void __42__SpotlightGraph_referenceCountForDomain___block_invoke(uint64_t a1, vo
   return v14;
 }
 
-- (id)nameNodeFromName:(id)a3 nameComponents:(id)a4 reference:(id)a5 domain:(id)a6 nodes:(id)a7 edges:(id)a8 isOwner:(BOOL)a9
+- (id)nameNodeFromName:(id)name nameComponents:(id)components reference:(id)reference domain:(id)domain nodes:(id)nodes edges:(id)edges isOwner:(BOOL)owner
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  nameCopy = name;
+  componentsCopy = components;
+  referenceCopy = reference;
+  domainCopy = domain;
+  nodesCopy = nodes;
+  edgesCopy = edges;
   v20 = 0;
-  if (v14 && v15 && v18)
+  if (nameCopy && componentsCopy && nodesCopy)
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = [v15 givenName];
-    if (v22)
+    givenName = [componentsCopy givenName];
+    if (givenName)
     {
-      v23 = v22;
-      v24 = [v15 familyName];
+      v23 = givenName;
+      familyName = [componentsCopy familyName];
 
-      if (v24)
+      if (familyName)
       {
-        v25 = [v15 givenName];
-        [v15 familyName];
+        givenName2 = [componentsCopy givenName];
+        [componentsCopy familyName];
         v26 = v34 = v21;
-        v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v25, v26];
-        v24 = [[SKGNameKeyNode alloc] initWithNameKey:v27 firstName:v25 lastName:v26];
-        [v18 addObject:v24];
+        v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", givenName2, v26];
+        familyName = [[SKGNameKeyNode alloc] initWithNameKey:v27 firstName:givenName2 lastName:v26];
+        [nodesCopy addObject:familyName];
 
         v21 = v34;
       }
@@ -386,38 +386,38 @@ void __42__SpotlightGraph_referenceCountForDomain___block_invoke(uint64_t a1, vo
 
     else
     {
-      v24 = 0;
+      familyName = 0;
     }
 
-    v20 = [[SKGNameNode alloc] initWithName:v14];
+    v20 = [[SKGNameNode alloc] initWithName:nameCopy];
     if (v20)
     {
-      [v18 addObject:v20];
-      if (v19)
+      [nodesCopy addObject:v20];
+      if (edgesCopy)
       {
-        if (v16)
+        if (referenceCopy)
         {
-          v28 = [SKGReferenceEdge edgeFromReference:v16 toNode:v20];
-          [v19 addObject:v28];
+          v28 = [SKGReferenceEdge edgeFromReference:referenceCopy toNode:v20];
+          [edgesCopy addObject:v28];
         }
 
         v35 = v21;
-        if (v17)
+        if (domainCopy)
         {
-          v29 = [SKGNameEdge edgeFromName:v20 toNode:v17];
-          [v19 addObject:v29];
-          v30 = [SKGDomainEdge edgeFromDomain:v17 toNode:v20];
-          [v19 addObject:v30];
+          v29 = [SKGNameEdge edgeFromName:v20 toNode:domainCopy];
+          [edgesCopy addObject:v29];
+          v30 = [SKGDomainEdge edgeFromDomain:domainCopy toNode:v20];
+          [edgesCopy addObject:v30];
 
           v21 = v35;
         }
 
-        if (v24)
+        if (familyName)
         {
-          v31 = [SKGNameEdge edgeFromName:v20 toNode:v24];
-          [v19 addObject:v31];
-          v32 = [SKGNameKeyEdge edgeFromNameKey:v24 toNode:v20];
-          [v19 addObject:v32];
+          v31 = [SKGNameEdge edgeFromName:v20 toNode:familyName];
+          [edgesCopy addObject:v31];
+          v32 = [SKGNameKeyEdge edgeFromNameKey:familyName toNode:v20];
+          [edgesCopy addObject:v32];
 
           v21 = v35;
         }
@@ -430,31 +430,31 @@ void __42__SpotlightGraph_referenceCountForDomain___block_invoke(uint64_t a1, vo
   return v20;
 }
 
-- (id)primaryNodesForPerson:(id)a3 reference:(id)a4 domain:(id)a5 nodes:(id)a6 edges:(id)a7 isOwner:(BOOL)a8
+- (id)primaryNodesForPerson:(id)person reference:(id)reference domain:(id)domain nodes:(id)nodes edges:(id)edges isOwner:(BOOL)owner
 {
-  obj = a8;
+  obj = owner;
   v294 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v208 = a4;
-  v210 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = 0;
-  v209 = v14;
-  if (!v13 || !v14)
+  personCopy = person;
+  referenceCopy = reference;
+  domainCopy = domain;
+  nodesCopy = nodes;
+  edgesCopy = edges;
+  allObjects4 = 0;
+  v209 = nodesCopy;
+  if (!personCopy || !nodesCopy)
   {
     goto LABEL_215;
   }
 
   v192 = objc_alloc_init(MEMORY[0x277CBEB58]);
   context = objc_autoreleasePoolPush();
-  v17 = [v13 entityIdentifier];
+  entityIdentifier = [personCopy entityIdentifier];
 
-  if (v17)
+  if (entityIdentifier)
   {
     v18 = [SKGEntityNode alloc];
-    v19 = [v13 entityIdentifier];
-    v20 = [(SKGEntityNode *)v18 initWithIdentifier:v19];
+    entityIdentifier2 = [personCopy entityIdentifier];
+    v20 = [(SKGEntityNode *)v18 initWithIdentifier:entityIdentifier2];
 
     [v209 addObject:v20];
   }
@@ -465,25 +465,25 @@ void __42__SpotlightGraph_referenceCountForDomain___block_invoke(uint64_t a1, vo
   }
 
   v211 = v20;
-  v21 = [v13 names];
-  v22 = [v21 count];
+  names = [personCopy names];
+  v22 = [names count];
 
   if (v22)
   {
     v195 = 0;
     v23 = 0;
     v212 = v22;
-    v206 = self;
+    selfCopy = self;
     while (1)
     {
-      v24 = [v13 names];
-      v25 = [v24 objectAtIndexedSubscript:v23];
+      names2 = [personCopy names];
+      v25 = [names2 objectAtIndexedSubscript:v23];
 
-      v26 = [v13 displayNames];
-      v27 = [v26 objectAtIndexedSubscript:v23];
+      displayNames = [personCopy displayNames];
+      v27 = [displayNames objectAtIndexedSubscript:v23];
 
-      v28 = [v13 nameComponents];
-      v29 = [v28 objectAtIndexedSubscript:v23];
+      nameComponents = [personCopy nameComponents];
+      v29 = [nameComponents objectAtIndexedSubscript:v23];
 
       if (v211)
       {
@@ -497,15 +497,15 @@ void __42__SpotlightGraph_referenceCountForDomain___block_invoke(uint64_t a1, vo
         v195 = v31;
         [v31 addObject:v30];
         [v209 addObject:v30];
-        if (!v15)
+        if (!edgesCopy)
         {
           goto LABEL_20;
         }
 
         v32 = [SKGEdge edgeFromNode:v211 toNode:v30];
-        [v15 addObject:v32];
+        [edgesCopy addObject:v32];
         v33 = [SKGEdge edgeFromNode:v30 toNode:v211];
-        [v15 addObject:v33];
+        [edgesCopy addObject:v33];
       }
 
       else
@@ -513,7 +513,7 @@ void __42__SpotlightGraph_referenceCountForDomain___block_invoke(uint64_t a1, vo
         v30 = [[SKGDisplayNameNode alloc] initWithName:v27];
         [v209 addObject:v30];
         LOBYTE(v189) = obj;
-        v32 = [(SpotlightGraph *)self nameNodeFromName:v25 nameComponents:v29 reference:v208 domain:v210 nodes:v209 edges:v15 isOwner:v189];
+        v32 = [(SpotlightGraph *)self nameNodeFromName:v25 nameComponents:v29 reference:referenceCopy domain:domainCopy nodes:v209 edges:edgesCopy isOwner:v189];
         if (!v32)
         {
           goto LABEL_19;
@@ -527,17 +527,17 @@ void __42__SpotlightGraph_referenceCountForDomain___block_invoke(uint64_t a1, vo
 
         v195 = v34;
         [v34 addObject:v32];
-        if (!v15)
+        if (!edgesCopy)
         {
           goto LABEL_19;
         }
 
         v33 = [SKGEdge edgeFromNode:v30 toNode:v32];
-        [v15 addObject:v33];
+        [edgesCopy addObject:v33];
         v35 = [SKGEdge edgeFromNode:v32 toNode:v30];
-        [v15 addObject:v35];
+        [edgesCopy addObject:v35];
 
-        self = v206;
+        self = selfCopy;
       }
 
       v22 = v212;
@@ -553,37 +553,37 @@ LABEL_20:
 
   v195 = 0;
 LABEL_23:
-  v36 = [v13 contactIdentifier];
+  contactIdentifier = [personCopy contactIdentifier];
 
-  if (v36)
+  if (contactIdentifier)
   {
     v37 = [SKGContactNode alloc];
-    v38 = [v13 contactIdentifier];
-    v213 = [(SKGContactNode *)v37 initWithIdentifier:v38];
+    contactIdentifier2 = [personCopy contactIdentifier];
+    v213 = [(SKGContactNode *)v37 initWithIdentifier:contactIdentifier2];
 
     [v209 addObject:v213];
-    if (v15)
+    if (edgesCopy)
     {
-      if (v208)
+      if (referenceCopy)
       {
-        v39 = [SKGReferenceEdge edgeFromReference:v208 toNode:v213];
-        [v15 addObject:v39];
+        v39 = [SKGReferenceEdge edgeFromReference:referenceCopy toNode:v213];
+        [edgesCopy addObject:v39];
       }
 
-      if (v210)
+      if (domainCopy)
       {
-        v40 = [SKGEdge edgeFromNode:v213 toNode:v210];
-        [v15 addObject:v40];
-        v41 = [SKGEdge edgeFromNode:v210 toNode:v213];
-        [v15 addObject:v41];
+        v40 = [SKGEdge edgeFromNode:v213 toNode:domainCopy];
+        [edgesCopy addObject:v40];
+        v41 = [SKGEdge edgeFromNode:domainCopy toNode:v213];
+        [edgesCopy addObject:v41];
       }
 
       if (v211)
       {
         v42 = [SKGEdge edgeFromNode:v211 toNode:v213];
-        [v15 addObject:v42];
+        [edgesCopy addObject:v42];
         v43 = [SKGEdge edgeFromNode:v213 toNode:v211];
-        [v15 addObject:v43];
+        [edgesCopy addObject:v43];
       }
 
       if (obj)
@@ -591,11 +591,11 @@ LABEL_23:
         v44 = +[SKGUserNode user];
         v45 = [SKGEdge edgeFromNode:v213 toNode:v44];
 
-        [v15 addObject:v45];
+        [edgesCopy addObject:v45];
         v46 = +[SKGUserNode user];
         v47 = [SKGEdge edgeFromNode:v46 toNode:v213];
 
-        [v15 addObject:v47];
+        [edgesCopy addObject:v47];
       }
     }
   }
@@ -605,37 +605,37 @@ LABEL_23:
     v213 = 0;
   }
 
-  v48 = [v13 photosPersonIdentifier];
+  photosPersonIdentifier = [personCopy photosPersonIdentifier];
 
-  if (v48)
+  if (photosPersonIdentifier)
   {
     v49 = [SKGPhotoNode alloc];
-    v50 = [v13 photosPersonIdentifier];
-    v204 = [(SKGPhotoNode *)v49 initWithIdentifier:v50];
+    photosPersonIdentifier2 = [personCopy photosPersonIdentifier];
+    v204 = [(SKGPhotoNode *)v49 initWithIdentifier:photosPersonIdentifier2];
 
     [v209 addObject:v204];
-    if (v15)
+    if (edgesCopy)
     {
-      if (v208)
+      if (referenceCopy)
       {
-        v51 = [SKGReferenceEdge edgeFromReference:v208 toNode:v204];
-        [v15 addObject:v51];
+        v51 = [SKGReferenceEdge edgeFromReference:referenceCopy toNode:v204];
+        [edgesCopy addObject:v51];
       }
 
-      if (v210)
+      if (domainCopy)
       {
-        v52 = [SKGEdge edgeFromNode:v204 toNode:v210];
-        [v15 addObject:v52];
-        v53 = [SKGEdge edgeFromNode:v210 toNode:v204];
-        [v15 addObject:v53];
+        v52 = [SKGEdge edgeFromNode:v204 toNode:domainCopy];
+        [edgesCopy addObject:v52];
+        v53 = [SKGEdge edgeFromNode:domainCopy toNode:v204];
+        [edgesCopy addObject:v53];
       }
 
       if (v211)
       {
         v54 = [SKGEdge edgeFromNode:v211 toNode:v204];
-        [v15 addObject:v54];
+        [edgesCopy addObject:v54];
         v55 = [SKGEdge edgeFromNode:v204 toNode:v211];
-        [v15 addObject:v55];
+        [edgesCopy addObject:v55];
       }
 
       if (obj)
@@ -643,11 +643,11 @@ LABEL_23:
         v56 = +[SKGUserNode user];
         v57 = [SKGEdge edgeFromNode:v204 toNode:v56];
 
-        [v15 addObject:v57];
+        [edgesCopy addObject:v57];
         v58 = +[SKGUserNode user];
         v59 = [SKGEdge edgeFromNode:v58 toNode:v204];
 
-        [v15 addObject:v59];
+        [edgesCopy addObject:v59];
       }
     }
   }
@@ -661,8 +661,8 @@ LABEL_23:
   v276 = 0u;
   v275 = 0u;
   v274 = 0u;
-  v60 = [v13 emailAddresses];
-  v61 = [v60 countByEnumeratingWithState:&v274 objects:v293 count:16];
+  emailAddresses = [personCopy emailAddresses];
+  v61 = [emailAddresses countByEnumeratingWithState:&v274 objects:v293 count:16];
   if (v61)
   {
     v205 = 0;
@@ -673,7 +673,7 @@ LABEL_23:
       {
         if (*v275 != v62)
         {
-          objc_enumerationMutation(v60);
+          objc_enumerationMutation(emailAddresses);
         }
 
         v64 = [[SKGEmailNode alloc] initWithEmailAddress:*(*(&v274 + 1) + 8 * i)];
@@ -686,33 +686,33 @@ LABEL_23:
 
         v205 = v65;
         [v65 addObject:v64];
-        if (v15)
+        if (edgesCopy)
         {
-          if (v208)
+          if (referenceCopy)
           {
-            v66 = [SKGReferenceEdge edgeFromReference:v208 toNode:v64];
-            [v15 addObject:v66];
+            v66 = [SKGReferenceEdge edgeFromReference:referenceCopy toNode:v64];
+            [edgesCopy addObject:v66];
           }
 
-          if (v210)
+          if (domainCopy)
           {
-            v67 = [SKGEdge edgeFromNode:v64 toNode:v210];
-            [v15 addObject:v67];
-            v68 = [SKGEdge edgeFromNode:v210 toNode:v64];
-            [v15 addObject:v68];
+            v67 = [SKGEdge edgeFromNode:v64 toNode:domainCopy];
+            [edgesCopy addObject:v67];
+            v68 = [SKGEdge edgeFromNode:domainCopy toNode:v64];
+            [edgesCopy addObject:v68];
           }
 
           if (v211)
           {
             v69 = [SKGEdge edgeFromNode:v211 toNode:v64];
-            [v15 addObject:v69];
+            [edgesCopy addObject:v69];
             v70 = [SKGEdge edgeFromNode:v64 toNode:v211];
-            [v15 addObject:v70];
+            [edgesCopy addObject:v70];
           }
         }
       }
 
-      v61 = [v60 countByEnumeratingWithState:&v274 objects:v293 count:16];
+      v61 = [emailAddresses countByEnumeratingWithState:&v274 objects:v293 count:16];
     }
 
     while (v61);
@@ -727,8 +727,8 @@ LABEL_23:
   v272 = 0u;
   v271 = 0u;
   v270 = 0u;
-  v71 = [v13 phoneNumbers];
-  v72 = [v71 countByEnumeratingWithState:&v270 objects:v292 count:16];
+  phoneNumbers = [personCopy phoneNumbers];
+  v72 = [phoneNumbers countByEnumeratingWithState:&v270 objects:v292 count:16];
   if (v72)
   {
     v207 = 0;
@@ -739,7 +739,7 @@ LABEL_23:
       {
         if (*v271 != v73)
         {
-          objc_enumerationMutation(v71);
+          objc_enumerationMutation(phoneNumbers);
         }
 
         v75 = [[SKGPhoneNode alloc] initWithPhoneNumber:*(*(&v270 + 1) + 8 * j)];
@@ -752,28 +752,28 @@ LABEL_23:
 
         v207 = v76;
         [v76 addObject:v75];
-        if (v15)
+        if (edgesCopy)
         {
-          if (v208)
+          if (referenceCopy)
           {
-            v77 = [SKGReferenceEdge edgeFromReference:v208 toNode:v75];
-            [v15 addObject:v77];
+            v77 = [SKGReferenceEdge edgeFromReference:referenceCopy toNode:v75];
+            [edgesCopy addObject:v77];
           }
 
-          if (v210)
+          if (domainCopy)
           {
-            v78 = [SKGEdge edgeFromNode:v75 toNode:v210];
-            [v15 addObject:v78];
-            v79 = [SKGEdge edgeFromNode:v210 toNode:v75];
-            [v15 addObject:v79];
+            v78 = [SKGEdge edgeFromNode:v75 toNode:domainCopy];
+            [edgesCopy addObject:v78];
+            v79 = [SKGEdge edgeFromNode:domainCopy toNode:v75];
+            [edgesCopy addObject:v79];
           }
 
           if (v211)
           {
             v80 = [SKGEdge edgeFromNode:v211 toNode:v75];
-            [v15 addObject:v80];
+            [edgesCopy addObject:v80];
             v81 = [SKGEdge edgeFromNode:v75 toNode:v211];
-            [v15 addObject:v81];
+            [edgesCopy addObject:v81];
           }
 
           if (obj)
@@ -781,16 +781,16 @@ LABEL_23:
             v82 = +[SKGUserNode user];
             v83 = [SKGEdge edgeFromNode:v75 toNode:v82];
 
-            [v15 addObject:v83];
+            [edgesCopy addObject:v83];
             v84 = +[SKGUserNode user];
             v85 = [SKGEdge edgeFromNode:v84 toNode:v75];
 
-            [v15 addObject:v85];
+            [edgesCopy addObject:v85];
           }
         }
       }
 
-      v72 = [v71 countByEnumeratingWithState:&v270 objects:v292 count:16];
+      v72 = [phoneNumbers countByEnumeratingWithState:&v270 objects:v292 count:16];
     }
 
     while (v72);
@@ -801,16 +801,16 @@ LABEL_23:
     v207 = 0;
   }
 
-  if (v15 && !v211)
+  if (edgesCopy && !v211)
   {
     if (v213)
     {
       if (v204)
       {
         v86 = [SKGEdge edgeFromNode:v213 toNode:v204];
-        [v15 addObject:v86];
+        [edgesCopy addObject:v86];
         v87 = [SKGEdge edgeFromNode:v204 toNode:v213];
-        [v15 addObject:v87];
+        [edgesCopy addObject:v87];
       }
 
       v269 = 0u;
@@ -833,9 +833,9 @@ LABEL_23:
 
             v92 = *(*(&v266 + 1) + 8 * k);
             v93 = [SKGEdge edgeFromNode:v213 toNode:v92];
-            [v15 addObject:v93];
+            [edgesCopy addObject:v93];
             v94 = [SKGEdge edgeFromNode:v92 toNode:v213];
-            [v15 addObject:v94];
+            [edgesCopy addObject:v94];
           }
 
           v89 = [v88 countByEnumeratingWithState:&v266 objects:v291 count:16];
@@ -864,9 +864,9 @@ LABEL_23:
 
             v99 = *(*(&v262 + 1) + 8 * m);
             v100 = [SKGEdge edgeFromNode:v213 toNode:v99];
-            [v15 addObject:v100];
+            [edgesCopy addObject:v100];
             v101 = [SKGEdge edgeFromNode:v99 toNode:v213];
-            [v15 addObject:v101];
+            [edgesCopy addObject:v101];
           }
 
           v96 = [v95 countByEnumeratingWithState:&v262 objects:v290 count:16];
@@ -895,9 +895,9 @@ LABEL_23:
 
             v106 = *(*(&v258 + 1) + 8 * n);
             v107 = [SKGEdge edgeFromNode:v213 toNode:v106];
-            [v15 addObject:v107];
+            [edgesCopy addObject:v107];
             v108 = [SKGEdge edgeFromNode:v106 toNode:v213];
-            [v15 addObject:v108];
+            [edgesCopy addObject:v108];
           }
 
           v103 = [v102 countByEnumeratingWithState:&v258 objects:v289 count:16];
@@ -909,9 +909,9 @@ LABEL_23:
       if (v204)
       {
         v109 = [SKGEdge edgeFromNode:v204 toNode:v213];
-        [v15 addObject:v109];
+        [edgesCopy addObject:v109];
         v110 = [SKGEdge edgeFromNode:v213 toNode:v204];
-        [v15 addObject:v110];
+        [edgesCopy addObject:v110];
 
 LABEL_112:
         v256 = 0u;
@@ -934,9 +934,9 @@ LABEL_112:
 
               v115 = *(*(&v254 + 1) + 8 * ii);
               v116 = [SKGEdge edgeFromNode:v204 toNode:v115];
-              [v15 addObject:v116];
+              [edgesCopy addObject:v116];
               v117 = [SKGEdge edgeFromNode:v115 toNode:v204];
-              [v15 addObject:v117];
+              [edgesCopy addObject:v117];
             }
 
             v112 = [v111 countByEnumeratingWithState:&v254 objects:v288 count:16];
@@ -965,9 +965,9 @@ LABEL_112:
 
               v122 = *(*(&v250 + 1) + 8 * jj);
               v123 = [SKGEdge edgeFromNode:v204 toNode:v122];
-              [v15 addObject:v123];
+              [edgesCopy addObject:v123];
               v124 = [SKGEdge edgeFromNode:v122 toNode:v204];
-              [v15 addObject:v124];
+              [edgesCopy addObject:v124];
             }
 
             v119 = [v118 countByEnumeratingWithState:&v250 objects:v287 count:16];
@@ -996,9 +996,9 @@ LABEL_112:
 
               v129 = *(*(&v246 + 1) + 8 * kk);
               v130 = [SKGEdge edgeFromNode:v204 toNode:v129];
-              [v15 addObject:v130];
+              [edgesCopy addObject:v130];
               v131 = [SKGEdge edgeFromNode:v129 toNode:v204];
-              [v15 addObject:v131];
+              [edgesCopy addObject:v131];
             }
 
             v126 = [v125 countByEnumeratingWithState:&v246 objects:v286 count:16];
@@ -1061,9 +1061,9 @@ LABEL_135:
                 if (([v134 isEqualToNode:v139] & 1) == 0)
                 {
                   v140 = [SKGEdge edgeFromNode:v134 toNode:v139];
-                  [v15 addObject:v140];
+                  [edgesCopy addObject:v140];
                   v141 = [SKGEdge edgeFromNode:v139 toNode:v134];
-                  [v15 addObject:v141];
+                  [edgesCopy addObject:v141];
                 }
               }
 
@@ -1103,17 +1103,17 @@ LABEL_135:
           if ((v194 & 1) == 0)
           {
             v145 = [SKGEdge edgeFromNode:v204 toNode:*(*(&v234 + 1) + 8 * i1)];
-            [v15 addObject:v145];
+            [edgesCopy addObject:v145];
             v146 = [SKGEdge edgeFromNode:v144 toNode:v204];
-            [v15 addObject:v146];
+            [edgesCopy addObject:v146];
           }
 
           if (v213)
           {
             v147 = [SKGEdge edgeFromNode:v213 toNode:v144];
-            [v15 addObject:v147];
+            [edgesCopy addObject:v147];
             v148 = [SKGEdge edgeFromNode:v144 toNode:v213];
-            [v15 addObject:v148];
+            [edgesCopy addObject:v148];
           }
 
           v232 = 0u;
@@ -1136,9 +1136,9 @@ LABEL_135:
 
                 v153 = *(*(&v230 + 1) + 8 * i2);
                 v154 = [SKGEdge edgeFromNode:v144 toNode:v153];
-                [v15 addObject:v154];
+                [edgesCopy addObject:v154];
                 v155 = [SKGEdge edgeFromNode:v153 toNode:v144];
-                [v15 addObject:v155];
+                [edgesCopy addObject:v155];
               }
 
               v150 = [v149 countByEnumeratingWithState:&v230 objects:v282 count:16];
@@ -1167,9 +1167,9 @@ LABEL_135:
 
                 v160 = *(*(&v226 + 1) + 8 * i3);
                 v161 = [SKGEdge edgeFromNode:v144 toNode:v160];
-                [v15 addObject:v161];
+                [edgesCopy addObject:v161];
                 v162 = [SKGEdge edgeFromNode:v160 toNode:v144];
-                [v15 addObject:v162];
+                [edgesCopy addObject:v162];
               }
 
               v157 = [v156 countByEnumeratingWithState:&v226 objects:v281 count:16];
@@ -1208,17 +1208,17 @@ LABEL_135:
           if ((v194 & 1) == 0)
           {
             v166 = [SKGEdge edgeFromNode:v204 toNode:*(*(&v222 + 1) + 8 * i4)];
-            [v15 addObject:v166];
+            [edgesCopy addObject:v166];
             v167 = [SKGEdge edgeFromNode:v165 toNode:v204];
-            [v15 addObject:v167];
+            [edgesCopy addObject:v167];
           }
 
           if (v213)
           {
             v168 = [SKGEdge edgeFromNode:v213 toNode:v165];
-            [v15 addObject:v168];
+            [edgesCopy addObject:v168];
             v169 = [SKGEdge edgeFromNode:v165 toNode:v213];
-            [v15 addObject:v169];
+            [edgesCopy addObject:v169];
           }
 
           v220 = 0u;
@@ -1241,9 +1241,9 @@ LABEL_135:
 
                 v174 = *(*(&v218 + 1) + 8 * i5);
                 v175 = [SKGEdge edgeFromNode:v165 toNode:v174];
-                [v15 addObject:v175];
+                [edgesCopy addObject:v175];
                 v176 = [SKGEdge edgeFromNode:v174 toNode:v165];
-                [v15 addObject:v176];
+                [edgesCopy addObject:v176];
               }
 
               v171 = [v170 countByEnumeratingWithState:&v218 objects:v279 count:16];
@@ -1271,9 +1271,9 @@ LABEL_135:
                 }
 
                 v181 = [SKGEdge edgeFromNode:v165 toNode:*(*(&v214 + 1) + 8 * i6)];
-                [v15 addObject:v181];
+                [edgesCopy addObject:v181];
                 v182 = [SKGEdge edgeFromNode:v165 toNode:v213];
-                [v15 addObject:v182];
+                [edgesCopy addObject:v182];
               }
 
               v178 = [v177 countByEnumeratingWithState:&v214 objects:v278 count:16];
@@ -1308,57 +1308,57 @@ LABEL_135:
 
   if ([v205 count])
   {
-    v184 = [v205 allObjects];
-    [v192 addObjectsFromArray:v184];
+    allObjects = [v205 allObjects];
+    [v192 addObjectsFromArray:allObjects];
 
     v183 = v207;
   }
 
   if ([v183 count])
   {
-    v185 = [v183 allObjects];
-    [v192 addObjectsFromArray:v185];
+    allObjects2 = [v183 allObjects];
+    [v192 addObjectsFromArray:allObjects2];
 
     v183 = v207;
   }
 
   if ([v195 count])
   {
-    v186 = [v195 allObjects];
-    [v192 addObjectsFromArray:v186];
+    allObjects3 = [v195 allObjects];
+    [v192 addObjectsFromArray:allObjects3];
 
     v183 = v207;
   }
 
   objc_autoreleasePoolPop(context);
-  v16 = [v192 allObjects];
+  allObjects4 = [v192 allObjects];
 
 LABEL_215:
   v187 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return allObjects4;
 }
 
-- (void)peopleUpdateFromItem:(id)a3 reference:(id)a4 domain:(id)a5 nodes:(id)a6 edges:(id)a7
+- (void)peopleUpdateFromItem:(id)item reference:(id)reference domain:(id)domain nodes:(id)nodes edges:(id)edges
 {
   v368 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v156 = a4;
-  v155 = a5;
-  v154 = a6;
-  v231 = a7;
+  itemCopy = item;
+  referenceCopy = reference;
+  domainCopy = domain;
+  nodesCopy = nodes;
+  edgesCopy = edges;
   context = objc_autoreleasePoolPush();
   v333 = 0u;
   v334 = 0u;
   v335 = 0u;
   v336 = 0u;
-  obj = [v12 owners];
-  v232 = v12;
+  obj = [itemCopy owners];
+  v232 = itemCopy;
   v151 = [obj countByEnumeratingWithState:&v333 objects:v367 count:16];
   if (v151)
   {
     v149 = *v334;
-    v150 = self;
+    selfCopy = self;
     do
     {
       v13 = 0;
@@ -1379,7 +1379,7 @@ LABEL_215:
         v165 = v16;
         [v16 addObject:v18];
 
-        v19 = [(SpotlightGraph *)self primaryNodesForPerson:v14 reference:v156 domain:v155 nodes:v154 edges:v231 isOwner:1];
+        v19 = [(SpotlightGraph *)self primaryNodesForPerson:v14 reference:referenceCopy domain:domainCopy nodes:nodesCopy edges:edgesCopy isOwner:1];
         if (v19)
         {
           [v15 addObject:v19];
@@ -1474,8 +1474,8 @@ LABEL_215:
                                 v314 = 0u;
                                 v315 = 0u;
                                 v316 = 0u;
-                                v26 = [v12 interactions];
-                                v27 = [v26 countByEnumeratingWithState:&v313 objects:v361 count:16];
+                                interactions = [itemCopy interactions];
+                                v27 = [interactions countByEnumeratingWithState:&v313 objects:v361 count:16];
                                 if (v27)
                                 {
                                   v28 = v27;
@@ -1486,22 +1486,22 @@ LABEL_215:
                                     {
                                       if (*v314 != v29)
                                       {
-                                        objc_enumerationMutation(v26);
+                                        objc_enumerationMutation(interactions);
                                       }
 
                                       v31 = *(*(&v313 + 1) + 8 * i);
-                                      v32 = [v12 interactions];
-                                      v33 = [v32 objectForKeyedSubscript:v31];
+                                      interactions2 = [itemCopy interactions];
+                                      v33 = [interactions2 objectForKeyedSubscript:v31];
 
                                       v34 = [SKGInteractionEdge alloc];
-                                      v35 = [v12 bundleIdentifier];
-                                      v36 = [(SKGInteractionEdge *)v34 initWithSourceNode:v23 targetNode:v25 domainIdentifier:v35 relationship:v31 score:v33];
+                                      bundleIdentifier = [itemCopy bundleIdentifier];
+                                      v36 = [(SKGInteractionEdge *)v34 initWithSourceNode:v23 targetNode:v25 domainIdentifier:bundleIdentifier relationship:v31 score:v33];
 
-                                      v12 = v232;
-                                      [v231 addObject:v36];
+                                      itemCopy = v232;
+                                      [edgesCopy addObject:v36];
                                     }
 
-                                    v28 = [v26 countByEnumeratingWithState:&v313 objects:v361 count:16];
+                                    v28 = [interactions countByEnumeratingWithState:&v313 objects:v361 count:16];
                                   }
 
                                   while (v28);
@@ -1548,7 +1548,7 @@ LABEL_215:
         }
 
         v13 = v153 + 1;
-        self = v150;
+        self = selfCopy;
       }
 
       while (v153 + 1 != v151);
@@ -1558,11 +1558,11 @@ LABEL_215:
     while (v151);
   }
 
-  v37 = [v12 authors];
-  if ([v37 count])
+  authors = [itemCopy authors];
+  if ([authors count])
   {
-    v38 = [v12 recipients];
-    v39 = [v38 count];
+    recipients = [itemCopy recipients];
+    v39 = [recipients count];
 
     if (v39)
     {
@@ -1577,8 +1577,8 @@ LABEL_215:
       v311 = 0u;
       v310 = 0u;
       v309 = 0u;
-      v44 = [v12 authors];
-      v45 = [v44 countByEnumeratingWithState:&v309 objects:v359 count:16];
+      authors2 = [itemCopy authors];
+      v45 = [authors2 countByEnumeratingWithState:&v309 objects:v359 count:16];
       if (v45)
       {
         v46 = v45;
@@ -1589,17 +1589,17 @@ LABEL_215:
           {
             if (*v310 != v47)
             {
-              objc_enumerationMutation(v44);
+              objc_enumerationMutation(authors2);
             }
 
-            v49 = [(SpotlightGraph *)self primaryNodesForPerson:*(*(&v309 + 1) + 8 * j) reference:v156 domain:v155 nodes:v154 edges:v231 isOwner:0];
+            v49 = [(SpotlightGraph *)self primaryNodesForPerson:*(*(&v309 + 1) + 8 * j) reference:referenceCopy domain:domainCopy nodes:nodesCopy edges:edgesCopy isOwner:0];
             if (v49)
             {
               [v40 addObject:v49];
             }
           }
 
-          v46 = [v44 countByEnumeratingWithState:&v309 objects:v359 count:16];
+          v46 = [authors2 countByEnumeratingWithState:&v309 objects:v359 count:16];
         }
 
         while (v46);
@@ -1609,8 +1609,8 @@ LABEL_215:
       v307 = 0u;
       v306 = 0u;
       v305 = 0u;
-      v50 = [v12 recipients];
-      v51 = [v50 countByEnumeratingWithState:&v305 objects:v358 count:16];
+      recipients2 = [itemCopy recipients];
+      v51 = [recipients2 countByEnumeratingWithState:&v305 objects:v358 count:16];
       if (v51)
       {
         v52 = v51;
@@ -1621,17 +1621,17 @@ LABEL_215:
           {
             if (*v306 != v53)
             {
-              objc_enumerationMutation(v50);
+              objc_enumerationMutation(recipients2);
             }
 
-            v55 = [(SpotlightGraph *)self primaryNodesForPerson:*(*(&v305 + 1) + 8 * k) reference:v156 domain:v155 nodes:v154 edges:v231 isOwner:0];
+            v55 = [(SpotlightGraph *)self primaryNodesForPerson:*(*(&v305 + 1) + 8 * k) reference:referenceCopy domain:domainCopy nodes:nodesCopy edges:edgesCopy isOwner:0];
             if (v55)
             {
               [v41 addObject:v55];
             }
           }
 
-          v52 = [v50 countByEnumeratingWithState:&v305 objects:v358 count:16];
+          v52 = [recipients2 countByEnumeratingWithState:&v305 objects:v358 count:16];
         }
 
         while (v52);
@@ -1730,8 +1730,8 @@ LABEL_215:
                             v286 = 0u;
                             v287 = 0u;
                             v288 = 0u;
-                            v63 = [v232 interactions];
-                            v64 = [v63 countByEnumeratingWithState:&v285 objects:v353 count:16];
+                            interactions3 = [v232 interactions];
+                            v64 = [interactions3 countByEnumeratingWithState:&v285 objects:v353 count:16];
                             if (v64)
                             {
                               v65 = v64;
@@ -1742,21 +1742,21 @@ LABEL_215:
                                 {
                                   if (*v286 != v66)
                                   {
-                                    objc_enumerationMutation(v63);
+                                    objc_enumerationMutation(interactions3);
                                   }
 
                                   v68 = *(*(&v285 + 1) + 8 * m);
-                                  v69 = [v232 interactions];
-                                  v70 = [v69 objectForKeyedSubscript:v68];
+                                  interactions4 = [v232 interactions];
+                                  v70 = [interactions4 objectForKeyedSubscript:v68];
 
                                   v71 = [SKGInteractionEdge alloc];
-                                  v72 = [v232 bundleIdentifier];
-                                  v73 = [(SKGInteractionEdge *)v71 initWithSourceNode:v60 targetNode:v62 domainIdentifier:v72 relationship:v68 score:v70];
+                                  bundleIdentifier2 = [v232 bundleIdentifier];
+                                  v73 = [(SKGInteractionEdge *)v71 initWithSourceNode:v60 targetNode:v62 domainIdentifier:bundleIdentifier2 relationship:v68 score:v70];
 
-                                  [v231 addObject:v73];
+                                  [edgesCopy addObject:v73];
                                 }
 
-                                v65 = [v63 countByEnumeratingWithState:&v285 objects:v353 count:16];
+                                v65 = [interactions3 countByEnumeratingWithState:&v285 objects:v353 count:16];
                               }
 
                               while (v65);
@@ -1810,23 +1810,23 @@ LABEL_215:
   {
   }
 
-  v74 = [v12 authors];
-  if ([v74 count])
+  authors3 = [itemCopy authors];
+  if ([authors3 count])
   {
 
     goto LABEL_105;
   }
 
-  v75 = [v12 recipients];
-  v76 = [v75 count];
+  recipients3 = [itemCopy recipients];
+  v76 = [recipients3 count];
 
   if (v76)
   {
 LABEL_105:
     v166 = objc_opt_new();
     v41 = objc_opt_new();
-    v77 = [v12 authors];
-    v78 = [v77 count];
+    authors4 = [itemCopy authors];
+    v78 = [authors4 count];
 
     if (v78)
     {
@@ -1839,8 +1839,8 @@ LABEL_105:
       v283 = 0u;
       v282 = 0u;
       v281 = 0u;
-      v81 = [v12 authors];
-      v82 = [v81 countByEnumeratingWithState:&v281 objects:v351 count:16];
+      authors5 = [itemCopy authors];
+      v82 = [authors5 countByEnumeratingWithState:&v281 objects:v351 count:16];
       if (v82)
       {
         v83 = v82;
@@ -1851,17 +1851,17 @@ LABEL_105:
           {
             if (*v282 != v84)
             {
-              objc_enumerationMutation(v81);
+              objc_enumerationMutation(authors5);
             }
 
-            v86 = [(SpotlightGraph *)self primaryNodesForPerson:*(*(&v281 + 1) + 8 * n) reference:v156 domain:v155 nodes:v154 edges:v231 isOwner:0];
+            v86 = [(SpotlightGraph *)self primaryNodesForPerson:*(*(&v281 + 1) + 8 * n) reference:referenceCopy domain:domainCopy nodes:nodesCopy edges:edgesCopy isOwner:0];
             if (v86)
             {
               [v166 addObject:v86];
             }
           }
 
-          v83 = [v81 countByEnumeratingWithState:&v281 objects:v351 count:16];
+          v83 = [authors5 countByEnumeratingWithState:&v281 objects:v351 count:16];
         }
 
         while (v83);
@@ -1870,8 +1870,8 @@ LABEL_105:
 
     else
     {
-      v120 = [v12 recipients];
-      v121 = [v120 count];
+      recipients4 = [itemCopy recipients];
+      v121 = [recipients4 count];
 
       if (!v121)
       {
@@ -1887,8 +1887,8 @@ LABEL_105:
       v280 = 0u;
       v277 = 0u;
       v278 = 0u;
-      v81 = [v12 recipients];
-      v124 = [v81 countByEnumeratingWithState:&v277 objects:v349 count:16];
+      authors5 = [itemCopy recipients];
+      v124 = [authors5 countByEnumeratingWithState:&v277 objects:v349 count:16];
       if (v124)
       {
         v125 = v124;
@@ -1899,17 +1899,17 @@ LABEL_105:
           {
             if (*v278 != v126)
             {
-              objc_enumerationMutation(v81);
+              objc_enumerationMutation(authors5);
             }
 
-            v128 = [(SpotlightGraph *)self primaryNodesForPerson:*(*(&v277 + 1) + 8 * ii) reference:v156 domain:v155 nodes:v154 edges:v231 isOwner:0];
+            v128 = [(SpotlightGraph *)self primaryNodesForPerson:*(*(&v277 + 1) + 8 * ii) reference:referenceCopy domain:domainCopy nodes:nodesCopy edges:edgesCopy isOwner:0];
             if (v128)
             {
               [v41 addObject:v128];
             }
           }
 
-          v125 = [v81 countByEnumeratingWithState:&v277 objects:v349 count:16];
+          v125 = [authors5 countByEnumeratingWithState:&v277 objects:v349 count:16];
         }
 
         while (v125);
@@ -2018,8 +2018,8 @@ LABEL_215:
                           v258 = 0u;
                           v259 = 0u;
                           v260 = 0u;
-                          v135 = [v232 interactions];
-                          v136 = [v135 countByEnumeratingWithState:&v257 objects:v344 count:16];
+                          interactions5 = [v232 interactions];
+                          v136 = [interactions5 countByEnumeratingWithState:&v257 objects:v344 count:16];
                           if (v136)
                           {
                             v137 = v136;
@@ -2030,21 +2030,21 @@ LABEL_215:
                               {
                                 if (*v258 != v138)
                                 {
-                                  objc_enumerationMutation(v135);
+                                  objc_enumerationMutation(interactions5);
                                 }
 
                                 v140 = *(*(&v257 + 1) + 8 * jj);
-                                v141 = [v232 interactions];
-                                v142 = [v141 objectForKeyedSubscript:v140];
+                                interactions6 = [v232 interactions];
+                                v142 = [interactions6 objectForKeyedSubscript:v140];
 
                                 v143 = [SKGInteractionEdge alloc];
-                                v144 = [v232 bundleIdentifier];
-                                v145 = [(SKGInteractionEdge *)v143 initWithSourceNode:v132 targetNode:v134 domainIdentifier:v144 relationship:v140 score:v142];
+                                bundleIdentifier3 = [v232 bundleIdentifier];
+                                v145 = [(SKGInteractionEdge *)v143 initWithSourceNode:v132 targetNode:v134 domainIdentifier:bundleIdentifier3 relationship:v140 score:v142];
 
-                                [v231 addObject:v145];
+                                [edgesCopy addObject:v145];
                               }
 
-                              v137 = [v135 countByEnumeratingWithState:&v257 objects:v344 count:16];
+                              v137 = [interactions5 countByEnumeratingWithState:&v257 objects:v344 count:16];
                             }
 
                             while (v137);
@@ -2092,13 +2092,13 @@ LABEL_215:
     while (v164);
 LABEL_212:
     v41 = v57;
-    v12 = v232;
+    itemCopy = v232;
     goto LABEL_213;
   }
 
-  v87 = [v12 participants];
+  participants = [itemCopy participants];
 
-  if (v87)
+  if (participants)
   {
     v88 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v89 = +[SKGUserNode user];
@@ -2110,8 +2110,8 @@ LABEL_212:
     v256 = 0u;
     v253 = 0u;
     v254 = 0u;
-    v91 = [v12 participants];
-    v92 = [v91 countByEnumeratingWithState:&v253 objects:v342 count:16];
+    participants2 = [itemCopy participants];
+    v92 = [participants2 countByEnumeratingWithState:&v253 objects:v342 count:16];
     if (v92)
     {
       v93 = v92;
@@ -2122,17 +2122,17 @@ LABEL_212:
         {
           if (*v254 != v94)
           {
-            objc_enumerationMutation(v91);
+            objc_enumerationMutation(participants2);
           }
 
-          v96 = [(SpotlightGraph *)self primaryNodesForPerson:*(*(&v253 + 1) + 8 * kk) reference:v156 domain:v155 nodes:v154 edges:v231 isOwner:0];
+          v96 = [(SpotlightGraph *)self primaryNodesForPerson:*(*(&v253 + 1) + 8 * kk) reference:referenceCopy domain:domainCopy nodes:nodesCopy edges:edgesCopy isOwner:0];
           if (v96)
           {
             [v88 addObject:v96];
           }
         }
 
-        v93 = [v91 countByEnumeratingWithState:&v253 objects:v342 count:16];
+        v93 = [participants2 countByEnumeratingWithState:&v253 objects:v342 count:16];
       }
 
       while (v93);
@@ -2235,8 +2235,8 @@ LABEL_212:
                               v234 = 0u;
                               v235 = 0u;
                               v236 = 0u;
-                              v108 = [v12 interactions];
-                              v109 = [v108 countByEnumeratingWithState:&v233 objects:v337 count:16];
+                              interactions7 = [itemCopy interactions];
+                              v109 = [interactions7 countByEnumeratingWithState:&v233 objects:v337 count:16];
                               if (v109)
                               {
                                 v110 = v109;
@@ -2247,23 +2247,23 @@ LABEL_212:
                                   {
                                     if (*v234 != v111)
                                     {
-                                      objc_enumerationMutation(v108);
+                                      objc_enumerationMutation(interactions7);
                                     }
 
                                     v113 = *(*(&v233 + 1) + 8 * mm);
-                                    v114 = [v12 interactions];
-                                    v115 = [v114 objectForKeyedSubscript:v113];
+                                    interactions8 = [itemCopy interactions];
+                                    v115 = [interactions8 objectForKeyedSubscript:v113];
 
                                     v116 = [SKGInteractionEdge alloc];
-                                    v117 = [v232 bundleIdentifier];
+                                    bundleIdentifier4 = [v232 bundleIdentifier];
                                     v118 = v116;
-                                    v12 = v232;
-                                    v119 = [(SKGInteractionEdge *)v118 initWithSourceNode:v105 targetNode:v107 domainIdentifier:v117 relationship:v113 score:v115];
+                                    itemCopy = v232;
+                                    v119 = [(SKGInteractionEdge *)v118 initWithSourceNode:v105 targetNode:v107 domainIdentifier:bundleIdentifier4 relationship:v113 score:v115];
 
-                                    [v231 addObject:v119];
+                                    [edgesCopy addObject:v119];
                                   }
 
-                                  v110 = [v108 countByEnumeratingWithState:&v233 objects:v337 count:16];
+                                  v110 = [interactions7 countByEnumeratingWithState:&v233 objects:v337 count:16];
                                 }
 
                                 while (v110);
@@ -2332,55 +2332,55 @@ LABEL_216:
   v146 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addItem:(id)a3 cancelBlock:(id)a4
+- (BOOL)addItem:(id)item cancelBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  blockCopy = block;
   if (![(SpotlightGraph *)self available])
   {
     v31 = 0;
     goto LABEL_13;
   }
 
-  v8 = [v6 referenceIdentifier];
-  if (!v8)
+  referenceIdentifier = [itemCopy referenceIdentifier];
+  if (!referenceIdentifier)
   {
 LABEL_12:
     v31 = 1;
     goto LABEL_13;
   }
 
-  v9 = v8;
-  v10 = [v6 bundleIdentifier];
-  if (!v10)
+  v9 = referenceIdentifier;
+  bundleIdentifier = [itemCopy bundleIdentifier];
+  if (!bundleIdentifier)
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v11 = v10;
-  v12 = [v6 personaIdentifier];
-  if (!v12)
+  v11 = bundleIdentifier;
+  personaIdentifier = [itemCopy personaIdentifier];
+  if (!personaIdentifier)
   {
 
     goto LABEL_11;
   }
 
-  v13 = v12;
-  v14 = [v6 protectionClass];
+  v13 = personaIdentifier;
+  protectionClass = [itemCopy protectionClass];
 
-  if (!v14)
+  if (!protectionClass)
   {
     goto LABEL_12;
   }
 
   context = objc_autoreleasePoolPush();
-  v15 = [v6 referenceIdentifier];
-  v16 = [v6 bundleIdentifier];
-  v17 = [v6 personaIdentifier];
-  v18 = [v6 protectionClass];
-  v19 = [(SpotlightGraph *)self referenceIdentifierWithReference:v15 domain:v16 persona:v17 protectionClass:v18];
+  referenceIdentifier2 = [itemCopy referenceIdentifier];
+  bundleIdentifier2 = [itemCopy bundleIdentifier];
+  personaIdentifier2 = [itemCopy personaIdentifier];
+  protectionClass2 = [itemCopy protectionClass];
+  v19 = [(SpotlightGraph *)self referenceIdentifierWithReference:referenceIdentifier2 domain:bundleIdentifier2 persona:personaIdentifier2 protectionClass:protectionClass2];
 
   v20 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v21 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -2388,13 +2388,13 @@ LABEL_11:
   v22 = [[SKGReferenceNode alloc] initWithReference:v19];
   [v20 addObject:v22];
   v23 = [SKGPersonaNode alloc];
-  v24 = [v6 personaIdentifier];
-  v25 = [(SKGPersonaNode *)v23 initWithPersona:v24];
+  personaIdentifier3 = [itemCopy personaIdentifier];
+  v25 = [(SKGPersonaNode *)v23 initWithPersona:personaIdentifier3];
 
   [v20 addObject:v25];
   v26 = [SKGDomainNode alloc];
-  v27 = [v6 bundleIdentifier];
-  v28 = [(SKGDomainNode *)v26 initWithDomain:v27];
+  bundleIdentifier3 = [itemCopy bundleIdentifier];
+  v28 = [(SKGDomainNode *)v26 initWithDomain:bundleIdentifier3];
 
   [v20 addObject:v28];
   v39 = [SKGDomainEdge edgeFromDomain:v28 toNode:v25];
@@ -2406,8 +2406,8 @@ LABEL_11:
   v29 = [SKGReferenceEdge edgeFromReference:v22 toNode:v25];
   [v21 addObject:v29];
   v30 = v22;
-  [(SpotlightGraph *)self peopleUpdateFromItem:v6 reference:v22 domain:v28 nodes:v20 edges:v21];
-  if (v7 && (v7[2](v7, @"addItem") & 1) != 0)
+  [(SpotlightGraph *)self peopleUpdateFromItem:itemCopy reference:v22 domain:v28 nodes:v20 edges:v21];
+  if (blockCopy && (blockCopy[2](blockCopy, @"addItem") & 1) != 0)
   {
     v31 = 1;
   }
@@ -2417,8 +2417,8 @@ LABEL_11:
     graph = self->_graph;
     [v20 allObjects];
     v34 = v36 = v20;
-    v35 = [v21 allObjects];
-    v31 = [(SKGGraph *)graph addNodes:v34 addEdges:v35 cancelBlock:v7];
+    allObjects = [v21 allObjects];
+    v31 = [(SKGGraph *)graph addNodes:v34 addEdges:allObjects cancelBlock:blockCopy];
 
     v20 = v36;
   }
@@ -2429,22 +2429,22 @@ LABEL_13:
   return v31;
 }
 
-- (BOOL)addPerson:(id)a3 cancelBlock:(id)a4
+- (BOOL)addPerson:(id)person cancelBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  personCopy = person;
+  blockCopy = block;
   if ([(SpotlightGraph *)self available])
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v10 = [v6 person];
-    v11 = [(SpotlightGraph *)self primaryNodesForPerson:v10 reference:0 domain:0 nodes:v8 edges:v9 isOwner:0];
+    person = [personCopy person];
+    v11 = [(SpotlightGraph *)self primaryNodesForPerson:person reference:0 domain:0 nodes:v8 edges:v9 isOwner:0];
 
     v12 = objc_autoreleasePoolPush();
     graph = self->_graph;
-    v14 = [v8 allObjects];
-    v15 = [v9 allObjects];
-    v16 = [(SKGGraph *)graph addNodes:v14 addEdges:v15 cancelBlock:v7];
+    allObjects = [v8 allObjects];
+    allObjects2 = [v9 allObjects];
+    v16 = [(SKGGraph *)graph addNodes:allObjects addEdges:allObjects2 cancelBlock:blockCopy];
 
     objc_autoreleasePoolPop(v12);
   }
@@ -2457,10 +2457,10 @@ LABEL_13:
   return v16;
 }
 
-- (BOOL)deleteDomainIdentifier:(id)a3 cancelBlock:(id)a4
+- (BOOL)deleteDomainIdentifier:(id)identifier cancelBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   if (![(SpotlightGraph *)self available])
   {
     LOBYTE(v12) = 0;
@@ -2469,13 +2469,13 @@ LABEL_13:
 
   v8 = objc_autoreleasePoolPush();
   v9 = self->_graph;
-  v10 = [SKGDomains domainsWithDomain:v6 inGraph:v9];
-  v11 = [v10 personas];
-  v12 = [(SKGGraph *)v9 removeNodeSet:v11 removeEdgeSet:0 cancelBlock:v7];
+  v10 = [SKGDomains domainsWithDomain:identifierCopy inGraph:v9];
+  personas = [v10 personas];
+  v12 = [(SKGGraph *)v9 removeNodeSet:personas removeEdgeSet:0 cancelBlock:blockCopy];
 
-  if (v7)
+  if (blockCopy)
   {
-    if ((v7[2](v7, @"deleteDomainIdentifier") & 1) != 0 || !v12)
+    if ((blockCopy[2](blockCopy, @"deleteDomainIdentifier") & 1) != 0 || !v12)
     {
       goto LABEL_6;
     }
@@ -2486,7 +2486,7 @@ LABEL_13:
     goto LABEL_6;
   }
 
-  LOBYTE(v12) = [(SKGGraph *)v9 removeNodeSet:v10 removeEdgeSet:0 cancelBlock:v7];
+  LOBYTE(v12) = [(SKGGraph *)v9 removeNodeSet:v10 removeEdgeSet:0 cancelBlock:blockCopy];
 LABEL_6:
 
   objc_autoreleasePoolPop(v8);
@@ -2495,11 +2495,11 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)deleteDomainIdentifier:(id)a3 personaIdentifier:(id)a4 cancelBlock:(id)a5
+- (BOOL)deleteDomainIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier cancelBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  personaIdentifierCopy = personaIdentifier;
+  blockCopy = block;
   if (![(SpotlightGraph *)self available])
   {
     v16 = 0;
@@ -2508,7 +2508,7 @@ LABEL_8:
 
   context = objc_autoreleasePoolPush();
   v11 = self->_graph;
-  v12 = [SKGDomains domainsWithDomain:v8 inGraph:v11];
+  v12 = [SKGDomains domainsWithDomain:identifierCopy inGraph:v11];
   v13 = 0;
   v32 = 0;
   v33 = &v32;
@@ -2524,15 +2524,15 @@ LABEL_8:
   {
     if (v13)
     {
-      v14 = [(SKGGraph *)v11 removeNodeSet:v13 removeEdgeSet:0 cancelBlock:v10];
+      v14 = [(SKGGraph *)v11 removeNodeSet:v13 removeEdgeSet:0 cancelBlock:blockCopy];
       v15 = v33[5];
       v33[5] = 0;
 
-      if (v10)
+      if (blockCopy)
       {
         v16 = v14;
 LABEL_7:
-        v17 = v10[2](v10, @"deleteDomainIdentifier");
+        v17 = blockCopy[2](blockCopy, @"deleteDomainIdentifier");
         *(v29 + 24) = v17 ^ 1;
         if (v17 & 1 | !v16)
         {
@@ -2554,7 +2554,7 @@ LABEL_7:
     else
     {
       v16 = 1;
-      if (v10)
+      if (blockCopy)
       {
         goto LABEL_7;
       }
@@ -2563,21 +2563,21 @@ LABEL_7:
     }
 
 LABEL_12:
-    v18 = [v12 personas];
+    personas = [v12 personas];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __71__SpotlightGraph_deleteDomainIdentifier_personaIdentifier_cancelBlock___block_invoke;
     v23[3] = &unk_27893DC38;
     v19 = v11;
     v24 = v19;
-    v25 = v9;
+    v25 = personaIdentifierCopy;
     v26 = &v32;
     v27 = &v28;
-    [v18 enumeratePersonasInGraph:v19 usingBlock:v23];
+    [personas enumeratePersonasInGraph:v19 usingBlock:v23];
 
-    if (v10)
+    if (blockCopy)
     {
-      v20 = v10[2](v10, @"deleteDomainIdentifier") ^ 1;
+      v20 = blockCopy[2](blockCopy, @"deleteDomainIdentifier") ^ 1;
     }
 
     else
@@ -2628,12 +2628,12 @@ void __71__SpotlightGraph_deleteDomainIdentifier_personaIdentifier_cancelBlock__
   }
 }
 
-- (BOOL)deleteReferences:(id)a3 domainIdentifier:(id)a4 cancelBlock:(id)a5
+- (BOOL)deleteReferences:(id)references domainIdentifier:(id)identifier cancelBlock:(id)block
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v25 = a4;
-  v9 = a5;
+  referencesCopy = references;
+  identifierCopy = identifier;
+  blockCopy = block;
   if ([(SpotlightGraph *)self available])
   {
     context = objc_autoreleasePoolPush();
@@ -2642,8 +2642,8 @@ void __71__SpotlightGraph_deleteDomainIdentifier_personaIdentifier_cancelBlock__
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v23 = v8;
-    obj = v8;
+    v23 = referencesCopy;
+    obj = referencesCopy;
     v11 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v11)
     {
@@ -2658,12 +2658,12 @@ void __71__SpotlightGraph_deleteDomainIdentifier_personaIdentifier_cancelBlock__
             objc_enumerationMutation(obj);
           }
 
-          v15 = [(SpotlightGraph *)self referenceIdentifierWithReference:*(*(&v26 + 1) + 8 * i) domain:v25 persona:0 protectionClass:0];
+          v15 = [(SpotlightGraph *)self referenceIdentifierWithReference:*(*(&v26 + 1) + 8 * i) domain:identifierCopy persona:0 protectionClass:0];
           v16 = [SKGReferences referencesWithReference:v15 inGraph:v10];
           if ([v16 count])
           {
-            v17 = [(SKGGraph *)v10 removeNodeSet:v16 removeEdgeSet:0 cancelBlock:v9];
-            if (v9)
+            v17 = [(SKGGraph *)v10 removeNodeSet:v16 removeEdgeSet:0 cancelBlock:blockCopy];
+            if (blockCopy)
             {
               goto LABEL_9;
             }
@@ -2672,10 +2672,10 @@ void __71__SpotlightGraph_deleteDomainIdentifier_personaIdentifier_cancelBlock__
           else
           {
             v17 = 1;
-            if (v9)
+            if (blockCopy)
             {
 LABEL_9:
-              v18 = v9[2](v9, @"deleteReferences") ^ 1;
+              v18 = blockCopy[2](blockCopy, @"deleteReferences") ^ 1;
               goto LABEL_12;
             }
           }
@@ -2700,7 +2700,7 @@ LABEL_12:
 LABEL_16:
 
     objc_autoreleasePoolPop(context);
-    v8 = v23;
+    referencesCopy = v23;
   }
 
   else
@@ -2712,30 +2712,30 @@ LABEL_16:
   return v17;
 }
 
-- (BOOL)deleteReferences:(id)a3 personaIdentifier:(id)a4 protectionClass:(id)a5 domainIdentifier:(id)a6 cancelBlock:(id)a7
+- (BOOL)deleteReferences:(id)references personaIdentifier:(id)identifier protectionClass:(id)class domainIdentifier:(id)domainIdentifier cancelBlock:(id)block
 {
   v47 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v41 = a6;
-  v15 = a7;
+  referencesCopy = references;
+  identifierCopy = identifier;
+  classCopy = class;
+  domainIdentifierCopy = domainIdentifier;
+  blockCopy = block;
   if ([(SpotlightGraph *)self available])
   {
-    v38 = v14;
+    v38 = classCopy;
     context = objc_autoreleasePoolPush();
     v16 = self->_graph;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    obj = v12;
+    obj = referencesCopy;
     v17 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v17)
     {
       v18 = v17;
-      v35 = v13;
-      v36 = v12;
+      v35 = identifierCopy;
+      v36 = referencesCopy;
       v40 = *v43;
 LABEL_4:
       v19 = 0;
@@ -2746,12 +2746,12 @@ LABEL_4:
           objc_enumerationMutation(obj);
         }
 
-        v20 = self;
-        v21 = [(SpotlightGraph *)self referenceIdentifierWithReference:*(*(&v42 + 1) + 8 * v19) domain:v41 persona:0 protectionClass:0, v35, v36, context];
-        v22 = [SKGReferences referencesWithReference:v21 inGraph:v16];
+        selfCopy = self;
+        context = [(SpotlightGraph *)self referenceIdentifierWithReference:*(*(&v42 + 1) + 8 * v19) domain:domainIdentifierCopy persona:0 protectionClass:0, v35, v36, context];
+        v22 = [SKGReferences referencesWithReference:context inGraph:v16];
         v23 = v16;
-        v24 = [(SKGGraph *)v16 removeNodeSet:v22 removeEdgeSet:0 cancelBlock:v15];
-        v25 = v15 ? v15[2](v15, @"deleteReferences") ^ 1 : 1;
+        v24 = [(SKGGraph *)v16 removeNodeSet:v22 removeEdgeSet:0 cancelBlock:blockCopy];
+        v25 = blockCopy ? blockCopy[2](blockCopy, @"deleteReferences") ^ 1 : 1;
 
         if ((v24 & v25) != 1)
         {
@@ -2759,7 +2759,7 @@ LABEL_4:
         }
 
         ++v19;
-        self = v20;
+        self = selfCopy;
         v16 = v23;
         if (v18 == v19)
         {
@@ -2775,8 +2775,8 @@ LABEL_4:
         }
       }
 
-      v13 = v35;
-      v12 = v36;
+      identifierCopy = v35;
+      referencesCopy = v36;
     }
 
     else
@@ -2786,15 +2786,15 @@ LABEL_4:
       v24 = 1;
     }
 
-    if (v13 && v25)
+    if (identifierCopy && v25)
     {
       v26 = v23;
       if (v24)
       {
-        v27 = [SKGDomains domainsWithDomain:v41 inGraph:v23];
-        v28 = [v27 personasWithPersona:v13 inGraph:v26];
-        v29 = [v28 references];
-        v30 = [v29 count];
+        v27 = [SKGDomains domainsWithDomain:domainIdentifierCopy inGraph:v23];
+        v28 = [v27 personasWithPersona:identifierCopy inGraph:v26];
+        references = [v28 references];
+        v30 = [references count];
 
         if (v30)
         {
@@ -2803,15 +2803,15 @@ LABEL_4:
 
         else
         {
-          v24 = [(SKGGraph *)v26 removeNodeSet:v28 removeEdgeSet:0 cancelBlock:v15];
+          v24 = [(SKGGraph *)v26 removeNodeSet:v28 removeEdgeSet:0 cancelBlock:blockCopy];
         }
 
-        v31 = [v27 personas];
-        v32 = [v31 count];
+        personas = [v27 personas];
+        v32 = [personas count];
 
         if (!v32 && v24)
         {
-          LOBYTE(v24) = [(SKGGraph *)v26 removeNodeSet:v27 removeEdgeSet:0 cancelBlock:v15];
+          LOBYTE(v24) = [(SKGGraph *)v26 removeNodeSet:v27 removeEdgeSet:0 cancelBlock:blockCopy];
         }
       }
     }
@@ -2822,7 +2822,7 @@ LABEL_4:
     }
 
     objc_autoreleasePoolPop(context);
-    v14 = v38;
+    classCopy = v38;
   }
 
   else
@@ -2834,17 +2834,17 @@ LABEL_4:
   return v24;
 }
 
-- (BOOL)containsReference:(id)a3 personaIdentifier:(id)a4 protectionClass:(id)a5 domainIdentifier:(id)a6
+- (BOOL)containsReference:(id)reference personaIdentifier:(id)identifier protectionClass:(id)class domainIdentifier:(id)domainIdentifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  referenceCopy = reference;
+  identifierCopy = identifier;
+  classCopy = class;
+  domainIdentifierCopy = domainIdentifier;
   if ([(SpotlightGraph *)self available])
   {
     v14 = objc_autoreleasePoolPush();
     v15 = self->_graph;
-    v16 = [(SpotlightGraph *)self referenceIdentifierWithReference:v10 domain:v13 persona:0 protectionClass:0];
+    v16 = [(SpotlightGraph *)self referenceIdentifierWithReference:referenceCopy domain:domainIdentifierCopy persona:0 protectionClass:0];
     v17 = [SKGReferences referencesWithReference:v16 inGraph:v15];
 
     v18 = [v17 count] != 0;
@@ -2948,31 +2948,31 @@ LABEL_4:
 {
   v2 = MEMORY[0x277CBEBC0];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SKGConfig *)self->_config resourcePath];
-  v5 = [v3 stringWithFormat:@"%@/%@", v4, @"cachedPeopleScores"];
+  resourcePath = [(SKGConfig *)self->_config resourcePath];
+  v5 = [v3 stringWithFormat:@"%@/%@", resourcePath, @"cachedPeopleScores"];
   v6 = [v2 URLWithString:v5];
 
   return v6;
 }
 
-- (BOOL)peopleUpdateNetwork:(void *)a3 sourceNodeId:(unsigned int)a4 nodes:(id)a5
+- (BOOL)peopleUpdateNetwork:(void *)network sourceNodeId:(unsigned int)id nodes:(id)nodes
 {
-  v8 = a5;
+  nodesCopy = nodes;
   v9 = objc_autoreleasePoolPush();
   v10 = self->_graph;
-  v11 = [(SKGGraph *)v10 available];
-  if (v11)
+  available = [(SKGGraph *)v10 available];
+  if (available)
   {
     v12 = +[SKGInteractionEdge filter];
-    v13 = [(MAEdgeCollection *)SKGInteractionEdges edgesFromNodes:v8 matchingFilter:v12];
+    v13 = [(MAEdgeCollection *)SKGInteractionEdges edgesFromNodes:nodesCopy matchingFilter:v12];
 
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __57__SpotlightGraph_peopleUpdateNetwork_sourceNodeId_nodes___block_invoke;
     v16[3] = &unk_27893DC88;
-    v19 = a4;
+    idCopy = id;
     v17 = v10;
-    v18 = a3;
+    networkCopy = network;
     v14 = v10;
     [v13 enumerateEdgesUsingBlock:v16];
   }
@@ -2983,7 +2983,7 @@ LABEL_4:
 
   objc_autoreleasePoolPop(v9);
 
-  return v11;
+  return available;
 }
 
 void __57__SpotlightGraph_peopleUpdateNetwork_sourceNodeId_nodes___block_invoke(uint64_t a1, void *a2)
@@ -3031,9 +3031,9 @@ void __57__SpotlightGraph_peopleUpdateNetwork_sourceNodeId_nodes___block_invoke_
   objc_autoreleasePoolPop(v3);
 }
 
-- (BOOL)peopleScoreWithCancelBlock:(id)a3
+- (BOOL)peopleScoreWithCancelBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -3331,43 +3331,43 @@ void __45__SpotlightGraph_peopleScoreWithCancelBlock___block_invoke_130(void *a1
   *a3 = *(*(a1[7] + 8) + 24) ^ 1;
 }
 
-- (BOOL)findAllContactInfoForNode:(id)a3 info:(id)a4 reference:(id)a5 foundUser:(BOOL *)a6
+- (BOOL)findAllContactInfoForNode:(id)node info:(id)info reference:(id)reference foundUser:(BOOL *)user
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nodeCopy = node;
+  infoCopy = info;
+  referenceCopy = reference;
   v13 = objc_autoreleasePoolPush();
   v14 = self->_graph;
-  v15 = [(SKGGraph *)v14 available];
-  if (v15)
+  available = [(SKGGraph *)v14 available];
+  if (available)
   {
     v70 = 0;
     v71 = &v70;
     v72 = 0x2020000000;
     v73 = 0;
-    v16 = [v10 users];
-    v17 = [v16 count];
+    users = [nodeCopy users];
+    v17 = [users count];
 
     if (v17)
     {
       *(v71 + 24) = 1;
     }
 
-    v18 = [v10 names];
+    names = [nodeCopy names];
     v65[0] = MEMORY[0x277D85DD0];
     v65[1] = 3221225472;
     v65[2] = __69__SpotlightGraph_findAllContactInfoForNode_info_reference_foundUser___block_invoke;
     v65[3] = &unk_27893DDF0;
-    v19 = v12;
+    v19 = referenceCopy;
     v66 = v19;
-    v20 = v11;
+    v20 = infoCopy;
     v67 = v20;
     v69 = &v70;
     v21 = v14;
     v68 = v21;
-    [v18 enumerateNamesInGraph:v21 usingBlock:v65];
+    [names enumerateNamesInGraph:v21 usingBlock:v65];
 
-    v22 = [v10 displayNames];
+    displayNames = [nodeCopy displayNames];
     v60[0] = MEMORY[0x277D85DD0];
     v60[1] = 3221225472;
     v60[2] = __69__SpotlightGraph_findAllContactInfoForNode_info_reference_foundUser___block_invoke_3;
@@ -3379,9 +3379,9 @@ void __45__SpotlightGraph_peopleScoreWithCancelBlock___block_invoke_130(void *a1
     v25 = v21;
     v63 = v25;
     v64 = &v70;
-    [v22 enumerateDisplayNamesInGraph:v25 usingBlock:v60];
+    [displayNames enumerateDisplayNamesInGraph:v25 usingBlock:v60];
 
-    v26 = [v10 contacts];
+    contacts = [nodeCopy contacts];
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __69__SpotlightGraph_findAllContactInfoForNode_info_reference_foundUser___block_invoke_5;
@@ -3393,9 +3393,9 @@ void __45__SpotlightGraph_peopleScoreWithCancelBlock___block_invoke_130(void *a1
     v59 = &v70;
     v29 = v25;
     v58 = v29;
-    [v26 enumerateContactsInGraph:v29 usingBlock:v55];
+    [contacts enumerateContactsInGraph:v29 usingBlock:v55];
 
-    v30 = [v10 photos];
+    photos = [nodeCopy photos];
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = __69__SpotlightGraph_findAllContactInfoForNode_info_reference_foundUser___block_invoke_7;
@@ -3407,9 +3407,9 @@ void __45__SpotlightGraph_peopleScoreWithCancelBlock___block_invoke_130(void *a1
     v54 = &v70;
     v33 = v29;
     v53 = v33;
-    [v30 enumeratePhotosInGraph:v33 usingBlock:v50];
+    [photos enumeratePhotosInGraph:v33 usingBlock:v50];
 
-    v34 = [v10 emails];
+    emails = [nodeCopy emails];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __69__SpotlightGraph_findAllContactInfoForNode_info_reference_foundUser___block_invoke_9;
@@ -3421,9 +3421,9 @@ void __45__SpotlightGraph_peopleScoreWithCancelBlock___block_invoke_130(void *a1
     v49 = &v70;
     v37 = v33;
     v48 = v37;
-    [v34 enumerateEmailsInGraph:v37 usingBlock:v45];
+    [emails enumerateEmailsInGraph:v37 usingBlock:v45];
 
-    v38 = [v10 phones];
+    phones = [nodeCopy phones];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __69__SpotlightGraph_findAllContactInfoForNode_info_reference_foundUser___block_invoke_11;
@@ -3433,18 +3433,18 @@ void __45__SpotlightGraph_peopleScoreWithCancelBlock___block_invoke_130(void *a1
     v44 = &v70;
     v14 = v37;
     v43 = v14;
-    [v38 enumeratePhonesInGraph:v14 usingBlock:v40];
+    [phones enumeratePhonesInGraph:v14 usingBlock:v40];
 
-    if (a6)
+    if (user)
     {
-      *a6 = *(v71 + 24);
+      *user = *(v71 + 24);
     }
 
     _Block_object_dispose(&v70, 8);
   }
 
   objc_autoreleasePoolPop(v13);
-  return v15;
+  return available;
 }
 
 void __69__SpotlightGraph_findAllContactInfoForNode_info_reference_foundUser___block_invoke(uint64_t a1, void *a2)
@@ -3877,9 +3877,9 @@ void __69__SpotlightGraph_findAllContactInfoForNode_info_reference_foundUser___b
   }
 }
 
-- (BOOL)peopleAnalyzeWithCancelBlock:(id)a3
+- (BOOL)peopleAnalyzeWithCancelBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v60 = 0;
   v61 = &v60;
   v62 = 0x2020000000;
@@ -3904,12 +3904,12 @@ void __69__SpotlightGraph_findAllContactInfoForNode_info_reference_foundUser___b
   }
 
   v8 = [(SKGNodes *)SKGPersons nodesInGraph:v7];
-  v9 = [(SKGGraph *)v7 removeNodeSet:v8 removeEdgeSet:0 cancelBlock:v5];
+  v9 = [(SKGGraph *)v7 removeNodeSet:v8 removeEdgeSet:0 cancelBlock:blockCopy];
   v10 = v61;
   *(v61 + 24) = v9;
-  if (v5)
+  if (blockCopy)
   {
-    v11 = (*(v5 + 2))(v5, @"analyzePeopleWithCancelBlock");
+    v11 = (*(blockCopy + 2))(blockCopy, @"analyzePeopleWithCancelBlock");
     *(v57 + 24) = v11 ^ 1;
     LOBYTE(v3) = *(v61 + 24);
     if (v11 & 1 | ((v3 & 1) == 0))
@@ -3949,7 +3949,7 @@ void __69__SpotlightGraph_findAllContactInfoForNode_info_reference_foundUser___b
   v41 = &v40;
   v42 = 0x2020000000;
   v3 = v30;
-  v13 = (v5 + 16);
+  v13 = (blockCopy + 16);
   v43 = 0;
   v14 = &v40;
   while (1)
@@ -3963,10 +3963,10 @@ void __69__SpotlightGraph_findAllContactInfoForNode_info_reference_foundUser___b
     v16 = v7;
     v39 = Mutable;
     v31 = v16;
-    v32 = self;
+    selfCopy = self;
     v34 = &v60;
     v35 = &v56;
-    v17 = v5;
+    v17 = blockCopy;
     v33 = v17;
     v36 = &v50;
     v37 = &v44;
@@ -3982,12 +3982,12 @@ void __69__SpotlightGraph_findAllContactInfoForNode_info_reference_foundUser___b
       goto LABEL_24;
     }
 
-    v18 = [v51[5] allObjects];
-    v19 = [v45[5] allObjects];
-    v20 = [(SKGGraph *)v16 addNodes:v18 addEdges:v19 cancelBlock:v17];
+    allObjects = [v51[5] allObjects];
+    allObjects2 = [v45[5] allObjects];
+    v20 = [(SKGGraph *)v16 addNodes:allObjects addEdges:allObjects2 cancelBlock:v17];
     *(v61 + 24) = v20;
 
-    if (v5)
+    if (blockCopy)
     {
       v21 = (*v13)(v17, @"analyzePeopleWithCancelBlock");
       *(v57 + 24) = v21 ^ 1;
@@ -4008,7 +4008,7 @@ void __69__SpotlightGraph_findAllContactInfoForNode_info_reference_foundUser___b
 
     v22 = [(SKGGraph *)v16 flushWithCancelBlock:v17];
     *(v61 + 24) = v22;
-    if (v5)
+    if (blockCopy)
     {
       v23 = (*v13)(v17, @"analyzePeopleWithCancelBlock") ^ 1;
     }
@@ -4361,106 +4361,106 @@ void __47__SpotlightGraph_peopleAnalyzeWithCancelBlock___block_invoke(uint64_t a
   v57 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)peopleUpdateInfo:(id)a3 attributeKey:(id)a4 attribute:(id)a5 forNode:(id)a6 person:(id)a7 score:(id)a8 rank:(id)a9 bestCount:(unint64_t *)a10
+- (BOOL)peopleUpdateInfo:(id)info attributeKey:(id)key attribute:(id)attribute forNode:(id)node person:(id)person score:(id)score rank:(id)rank bestCount:(unint64_t *)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
+  infoCopy = info;
+  keyCopy = key;
+  attributeCopy = attribute;
+  nodeCopy = node;
+  personCopy = person;
+  scoreCopy = score;
+  rankCopy = rank;
   v23 = objc_autoreleasePoolPush();
   v24 = self->_graph;
-  v25 = [(SKGGraph *)v24 available];
-  v26 = v25;
-  if (v25)
+  available = [(SKGGraph *)v24 available];
+  v26 = available;
+  if (available)
   {
     context = v23;
-    v70 = v25;
-    v72 = v20;
-    v27 = [v16 objectForKeyedSubscript:@"com.apple.spotlight"];
+    v70 = available;
+    v72 = personCopy;
+    v27 = [infoCopy objectForKeyedSubscript:@"com.apple.spotlight"];
 
     if (!v27)
     {
-      v28 = [MEMORY[0x277CBEB38] dictionary];
-      [v16 setObject:v28 forKey:@"com.apple.spotlight"];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [infoCopy setObject:dictionary forKey:@"com.apple.spotlight"];
     }
 
-    v29 = [v16 objectForKeyedSubscript:@"com.apple.spotlight"];
+    v29 = [infoCopy objectForKeyedSubscript:@"com.apple.spotlight"];
     v30 = [v29 objectForKeyedSubscript:@"score"];
 
-    v31 = v17;
+    v31 = keyCopy;
     if (!v30)
     {
-      v32 = [v16 objectForKeyedSubscript:@"com.apple.spotlight"];
-      [v32 setObject:v21 forKey:@"score"];
+      v32 = [infoCopy objectForKeyedSubscript:@"com.apple.spotlight"];
+      [v32 setObject:scoreCopy forKey:@"score"];
     }
 
-    v33 = [v16 objectForKeyedSubscript:@"com.apple.spotlight"];
+    v33 = [infoCopy objectForKeyedSubscript:@"com.apple.spotlight"];
     v34 = [v33 objectForKeyedSubscript:@"rank"];
 
     if (!v34)
     {
-      v35 = [v16 objectForKeyedSubscript:@"com.apple.spotlight"];
-      [v35 setObject:v22 forKey:@"rank"];
+      v35 = [infoCopy objectForKeyedSubscript:@"com.apple.spotlight"];
+      [v35 setObject:rankCopy forKey:@"rank"];
     }
 
-    v69 = v22;
-    v71 = v21;
-    v73 = v18;
-    v36 = [v16 objectForKeyedSubscript:@"com.apple.spotlight"];
-    v37 = [v36 objectForKeyedSubscript:v17];
+    v69 = rankCopy;
+    v71 = scoreCopy;
+    v73 = attributeCopy;
+    v36 = [infoCopy objectForKeyedSubscript:@"com.apple.spotlight"];
+    v37 = [v36 objectForKeyedSubscript:keyCopy];
 
     if (!v37)
     {
-      v38 = [v16 objectForKeyedSubscript:@"com.apple.spotlight"];
-      v39 = [MEMORY[0x277CBEB18] array];
-      [v38 setObject:v39 forKey:v17];
+      v38 = [infoCopy objectForKeyedSubscript:@"com.apple.spotlight"];
+      array = [MEMORY[0x277CBEB18] array];
+      [v38 setObject:array forKey:keyCopy];
     }
 
     v40 = +[SKGInteractionEdge filter];
-    v41 = [(MAEdgeCollection *)SKGInteractionEdges edgesFromNodes:v19 matchingFilter:v40];
+    v41 = [(MAEdgeCollection *)SKGInteractionEdges edgesFromNodes:nodeCopy matchingFilter:v40];
     v66 = [v41 count];
 
     v42 = +[SKGInteractionEdge filter];
-    v43 = [(MAEdgeCollection *)SKGInteractionEdges edgesToNodes:v19 matchingFilter:v42];
+    v43 = [(MAEdgeCollection *)SKGInteractionEdges edgesToNodes:nodeCopy matchingFilter:v42];
     v64 = [v43 count];
 
-    v44 = [v19 references];
-    v45 = [v44 count];
+    references = [nodeCopy references];
+    v45 = [references count];
 
-    v46 = [v19 persons];
-    v47 = [v46 count];
+    persons = [nodeCopy persons];
+    v47 = [persons count];
     v67 = v47 != 1;
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v48 = a10 ? *a10 : 0;
+      v48 = count ? *count : 0;
       if (v45 > v48)
       {
-        v49 = [v19 displayNames];
+        displayNames = [nodeCopy displayNames];
         v81[0] = MEMORY[0x277D85DD0];
         v81[1] = 3221225472;
         v81[2] = __94__SpotlightGraph_peopleUpdateInfo_attributeKey_attribute_forNode_person_score_rank_bestCount___block_invoke;
         v81[3] = &unk_27893DF08;
         v82 = v24;
-        v83 = v16;
-        v84 = a10;
+        v83 = infoCopy;
+        countCopy = count;
         v85 = v45;
-        [v49 enumerateDisplayNamesInGraph:v82 usingBlock:v81];
+        [displayNames enumerateDisplayNamesInGraph:v82 usingBlock:v81];
       }
     }
 
-    v50 = +[SKGNode nodeWithElementIdentifier:inGraph:](SKGNode, "nodeWithElementIdentifier:inGraph:", [v19 nodeIdentifier], v24);
-    v51 = [v50 value];
+    v50 = +[SKGNode nodeWithElementIdentifier:inGraph:](SKGNode, "nodeWithElementIdentifier:inGraph:", [nodeCopy nodeIdentifier], v24);
+    value = [v50 value];
 
     v52 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v53 = v52;
-    if (v51)
+    if (value)
     {
-      [v52 setObject:v51 forKey:@"value"];
+      [v52 setObject:value forKey:@"value"];
     }
 
     v54 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v66];
@@ -4475,38 +4475,38 @@ void __47__SpotlightGraph_peopleAnalyzeWithCancelBlock___block_invoke(uint64_t a
     v57 = [MEMORY[0x277CCABB0] numberWithBool:v47 != 1];
     [v53 setObject:v57 forKey:@"ambiguous"];
 
-    v58 = [v16 objectForKeyedSubscript:@"com.apple.spotlight"];
-    v59 = [v58 objectForKeyedSubscript:v17];
+    v58 = [infoCopy objectForKeyedSubscript:@"com.apple.spotlight"];
+    v59 = [v58 objectForKeyedSubscript:keyCopy];
     [v59 addObject:v53];
 
-    v60 = [v19 domains];
+    domains = [nodeCopy domains];
     v74[0] = MEMORY[0x277D85DD0];
     v74[1] = 3221225472;
     v74[2] = __94__SpotlightGraph_peopleUpdateInfo_attributeKey_attribute_forNode_person_score_rank_bestCount___block_invoke_2;
     v74[3] = &unk_27893DF30;
     v75 = v24;
-    v76 = v16;
-    v77 = v17;
-    v78 = v19;
-    v79 = v51;
+    v76 = infoCopy;
+    v77 = keyCopy;
+    v78 = nodeCopy;
+    v79 = value;
     v80 = v67;
-    v61 = v51;
+    v61 = value;
     v62 = v24;
-    [v60 enumerateDomainsInGraph:v62 usingBlock:v74];
+    [domains enumerateDomainsInGraph:v62 usingBlock:v74];
 
     objc_autoreleasePoolPop(context);
-    v20 = v72;
-    v18 = v73;
-    v21 = v71;
+    personCopy = v72;
+    attributeCopy = v73;
+    scoreCopy = v71;
     v26 = v70;
-    v22 = v69;
+    rankCopy = v69;
   }
 
   else
   {
 
     objc_autoreleasePoolPop(v23);
-    v31 = v17;
+    v31 = keyCopy;
   }
 
   return v26;
@@ -4576,17 +4576,17 @@ void __94__SpotlightGraph_peopleUpdateInfo_attributeKey_attribute_forNode_person
   [v25 addObject:v17];
 }
 
-- (BOOL)generatePeopleUsingBlock:(id)a3
+- (BOOL)generatePeopleUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 1;
   v5 = objc_autoreleasePoolPush();
   v6 = self->_graph;
-  v7 = [(SKGGraph *)v6 available];
-  if (v7)
+  available = [(SKGGraph *)v6 available];
+  if (available)
   {
     peopleScores = self->_peopleScores;
     v9 = [(SKGNodes *)SKGPersons nodesInGraph:v6];
@@ -4599,14 +4599,14 @@ void __94__SpotlightGraph_peopleUpdateInfo_attributeKey_attribute_forNode_person
       v17 = peopleScores;
       v16 = &v18;
       v13 = v6;
-      v14 = self;
-      v15 = v4;
+      selfCopy = self;
+      v15 = blockCopy;
       [v9 enumeratePersonsInGraph:v13 usingBlock:v12];
     }
   }
 
   objc_autoreleasePoolPop(v5);
-  if (v7)
+  if (available)
   {
     v10 = *(v19 + 24);
   }
@@ -4875,12 +4875,12 @@ void __43__SpotlightGraph_generatePeopleUsingBlock___block_invoke_7(uint64_t a1,
   *(*(*(a1 + 56) + 8) + 24) = v3;
 }
 
-- (BOOL)analyzePeopleWithCancelBlock:(id)a3
+- (BOOL)analyzePeopleWithCancelBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(SpotlightGraph *)self available])
   {
-    v5 = [(SpotlightGraph *)self peopleAnalyzeWithCancelBlock:v4];
+    v5 = [(SpotlightGraph *)self peopleAnalyzeWithCancelBlock:blockCopy];
   }
 
   else
@@ -4891,12 +4891,12 @@ void __43__SpotlightGraph_generatePeopleUsingBlock___block_invoke_7(uint64_t a1,
   return v5;
 }
 
-- (BOOL)scorePeopleWithCancelBlock:(id)a3
+- (BOOL)scorePeopleWithCancelBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(SpotlightGraph *)self available])
   {
-    v5 = [(SpotlightGraph *)self peopleScoreWithCancelBlock:v4];
+    v5 = [(SpotlightGraph *)self peopleScoreWithCancelBlock:blockCopy];
   }
 
   else
@@ -4907,31 +4907,31 @@ void __43__SpotlightGraph_generatePeopleUsingBlock___block_invoke_7(uint64_t a1,
   return v5;
 }
 
-- (BOOL)enumeratePeopleUsingBlock:(id)a3
+- (BOOL)enumeratePeopleUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SpotlightGraph *)self available]&& [(SpotlightGraph *)self commitWithCancelBlock:0]&& [(SpotlightGraph *)self generatePeopleUsingBlock:v4];
+  blockCopy = block;
+  v5 = [(SpotlightGraph *)self available]&& [(SpotlightGraph *)self commitWithCancelBlock:0]&& [(SpotlightGraph *)self generatePeopleUsingBlock:blockCopy];
 
   return v5;
 }
 
-- (BOOL)deletePeopleWithCancelBlock:(id)a3
+- (BOOL)deletePeopleWithCancelBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(SpotlightGraph *)self available])
   {
     v5 = objc_autoreleasePoolPush();
     v6 = self->_graph;
     v7 = [(SKGNodes *)SKGPersons nodesInGraph:v6];
-    v8 = [(SKGGraph *)v6 removeNodeSet:v7 removeEdgeSet:0 cancelBlock:v4];
+    v8 = [(SKGGraph *)v6 removeNodeSet:v7 removeEdgeSet:0 cancelBlock:blockCopy];
     if (self->_peopleScores)
     {
       SIGeneralTrieRelease();
       self->_peopleScores = 0;
-      v9 = [MEMORY[0x277CCAA00] defaultManager];
-      v10 = [(SpotlightGraph *)self cachedPeopleScoresPath];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      cachedPeopleScoresPath = [(SpotlightGraph *)self cachedPeopleScoresPath];
       v12 = 0;
-      [v9 removeItemAtURL:v10 error:&v12];
+      [defaultManager removeItemAtURL:cachedPeopleScoresPath error:&v12];
     }
 
     objc_autoreleasePoolPop(v5);
@@ -4945,15 +4945,15 @@ void __43__SpotlightGraph_generatePeopleUsingBlock___block_invoke_7(uint64_t a1,
   return v8;
 }
 
-- (BOOL)deleteEntitiesWithCancelBlock:(id)a3
+- (BOOL)deleteEntitiesWithCancelBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(SpotlightGraph *)self available])
   {
     v5 = objc_autoreleasePoolPush();
     v6 = self->_graph;
     v7 = [(SKGNodes *)SKGEntities nodesInGraph:v6];
-    v8 = [(SKGGraph *)v6 removeNodeSet:v7 removeEdgeSet:0 cancelBlock:v4];
+    v8 = [(SKGGraph *)v6 removeNodeSet:v7 removeEdgeSet:0 cancelBlock:blockCopy];
 
     objc_autoreleasePoolPop(v5);
   }

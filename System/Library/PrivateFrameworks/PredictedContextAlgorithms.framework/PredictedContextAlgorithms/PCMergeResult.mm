@@ -1,41 +1,41 @@
 @interface PCMergeResult
-- (PCMergeResult)initWithLoiId:(id)a3 confidence:(double)a4 entryTime:(double)a5 exitTime:(double)a6 entryUnc:(double)a7 exitUnc:(double)a8 sources:(id)a9 transports:(id)a10;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PCMergeResult)initWithLoiId:(id)id confidence:(double)confidence entryTime:(double)time exitTime:(double)exitTime entryUnc:(double)unc exitUnc:(double)exitUnc sources:(id)sources transports:(id)self0;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation PCMergeResult
 
-- (PCMergeResult)initWithLoiId:(id)a3 confidence:(double)a4 entryTime:(double)a5 exitTime:(double)a6 entryUnc:(double)a7 exitUnc:(double)a8 sources:(id)a9 transports:(id)a10
+- (PCMergeResult)initWithLoiId:(id)id confidence:(double)confidence entryTime:(double)time exitTime:(double)exitTime entryUnc:(double)unc exitUnc:(double)exitUnc sources:(id)sources transports:(id)self0
 {
-  v18 = a3;
-  v19 = a9;
-  v20 = a10;
+  idCopy = id;
+  sourcesCopy = sources;
+  transportsCopy = transports;
   v25.receiver = self;
   v25.super_class = PCMergeResult;
   v21 = [(PCMergeResult *)&v25 init];
   if (v21)
   {
-    v22 = [v18 copy];
+    v22 = [idCopy copy];
     loiId = v21->_loiId;
     v21->_loiId = v22;
 
-    v21->_confidence = a4;
-    v21->_entryTime = a5;
-    v21->_exitTime = a6;
-    v21->_entryUnc = a7;
-    v21->_exitUnc = a8;
-    objc_storeStrong(&v21->_sources, a9);
-    objc_storeStrong(&v21->_transports, a10);
+    v21->_confidence = confidence;
+    v21->_entryTime = time;
+    v21->_exitTime = exitTime;
+    v21->_entryUnc = unc;
+    v21->_exitUnc = exitUnc;
+    objc_storeStrong(&v21->_sources, sources);
+    objc_storeStrong(&v21->_transports, transports);
   }
 
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(PCMergeResult *)self loiId];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  loiId = [(PCMergeResult *)self loiId];
   [(PCMergeResult *)self confidence];
   v7 = v6;
   [(PCMergeResult *)self entryTime];
@@ -46,9 +46,9 @@
   v13 = v12;
   [(PCMergeResult *)self exitUnc];
   v15 = v14;
-  v16 = [(PCMergeResult *)self sources];
-  v17 = [(PCMergeResult *)self transports];
-  v18 = [v4 initWithLoiId:v5 confidence:v16 entryTime:v17 exitTime:v7 entryUnc:v9 exitUnc:v11 sources:v13 transports:v15];
+  sources = [(PCMergeResult *)self sources];
+  transports = [(PCMergeResult *)self transports];
+  v18 = [v4 initWithLoiId:loiId confidence:sources entryTime:transports exitTime:v7 entryUnc:v9 exitUnc:v11 sources:v13 transports:v15];
 
   return v18;
 }
@@ -60,8 +60,8 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"%@:\n", v5];
 
-  v7 = [(PCMergeResult *)self loiId];
-  v8 = [PCAlgorithmsCommonUtils uuidStringFromData:v7];
+  loiId = [(PCMergeResult *)self loiId];
+  v8 = [PCAlgorithmsCommonUtils uuidStringFromData:loiId];
   [v6 appendFormat:@"loiId: %@\n", v8];
 
   [(PCMergeResult *)self confidence];
@@ -74,11 +74,11 @@
   v14 = v13;
   [(PCMergeResult *)self exitUnc];
   [v6 appendFormat:@"exitTime: %.2f (±%.2f)\n", v14, v15];
-  v16 = [(PCMergeResult *)self sources];
-  [v6 appendFormat:@"sources count: %lu\n", objc_msgSend(v16, "count")];
+  sources = [(PCMergeResult *)self sources];
+  [v6 appendFormat:@"sources count: %lu\n", objc_msgSend(sources, "count")];
 
-  v17 = [(PCMergeResult *)self transports];
-  [v6 appendFormat:@"transports count: %lu", objc_msgSend(v17, "count")];
+  transports = [(PCMergeResult *)self transports];
+  [v6 appendFormat:@"transports count: %lu", objc_msgSend(transports, "count")];
 
   v18 = [v6 copy];
 

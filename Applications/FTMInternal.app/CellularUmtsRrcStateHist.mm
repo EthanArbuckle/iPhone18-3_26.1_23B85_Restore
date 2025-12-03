@@ -1,25 +1,25 @@
 @interface CellularUmtsRrcStateHist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addStateHist:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasTotalDurationMs:(BOOL)a3;
-- (void)setHasWcdma:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addStateHist:(id)hist;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasTotalDurationMs:(BOOL)ms;
+- (void)setHasWcdma:(BOOL)wcdma;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularUmtsRrcStateHist
 
-- (void)setHasTotalDurationMs:(BOOL)a3
+- (void)setHasTotalDurationMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 16;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasWcdma:(BOOL)a3
+- (void)setHasWcdma:(BOOL)wcdma
 {
-  if (a3)
+  if (wcdma)
   {
     v3 = 32;
   }
@@ -47,27 +47,27 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)addStateHist:(id)a3
+- (void)addStateHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   stateHists = self->_stateHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!stateHists)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_stateHists;
     self->_stateHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     stateHists = self->_stateHists;
   }
 
-  [(NSMutableArray *)stateHists addObject:v4];
+  [(NSMutableArray *)stateHists addObject:histCopy];
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 2;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 8;
   }
@@ -95,9 +95,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 4;
   }
@@ -115,8 +115,8 @@
   v7.receiver = self;
   v7.super_class = CellularUmtsRrcStateHist;
   v3 = [(CellularUmtsRrcStateHist *)&v7 description];
-  v4 = [(CellularUmtsRrcStateHist *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularUmtsRrcStateHist *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -181,8 +181,8 @@ LABEL_5:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -224,9 +224,9 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -332,14 +332,14 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 60) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 60) |= 1u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -358,29 +358,29 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 13) = self->_totalDurationMs;
-  *(v4 + 60) |= 0x10u;
+  *(toCopy + 13) = self->_totalDurationMs;
+  *(toCopy + 60) |= 0x10u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_4:
-    *(v4 + 56) = self->_wcdma;
-    *(v4 + 60) |= 0x20u;
+    *(toCopy + 56) = self->_wcdma;
+    *(toCopy + 60) |= 0x20u;
   }
 
 LABEL_5:
-  v11 = v4;
+  v11 = toCopy;
   if (self->_plmn)
   {
-    [v4 setPlmn:?];
+    [toCopy setPlmn:?];
   }
 
   if ([(CellularUmtsRrcStateHist *)self stateHistsCount])
   {
     [v11 clearStateHists];
-    v6 = [(CellularUmtsRrcStateHist *)self stateHistsCount];
-    if (v6)
+    stateHistsCount = [(CellularUmtsRrcStateHist *)self stateHistsCount];
+    if (stateHistsCount)
     {
-      v7 = v6;
+      v7 = stateHistsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(CellularUmtsRrcStateHist *)self stateHistAtIndex:i];
@@ -424,9 +424,9 @@ LABEL_14:
 LABEL_15:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -461,7 +461,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSData *)self->_plmn copyWithZone:a3];
+  v8 = [(NSData *)self->_plmn copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
@@ -484,7 +484,7 @@ LABEL_5:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{zone, v18}];
         [v6 addStateHist:v15];
       }
 
@@ -532,76 +532,76 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(equalCopy + 60);
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_22;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 60) & 0x10) == 0 || self->_totalDurationMs != *(v4 + 13))
+    if ((*(equalCopy + 60) & 0x10) == 0 || self->_totalDurationMs != *(equalCopy + 13))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 60) & 0x10) != 0)
+  else if ((*(equalCopy + 60) & 0x10) != 0)
   {
     goto LABEL_22;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 60) & 0x20) == 0)
+    if ((*(equalCopy + 60) & 0x20) == 0)
     {
       goto LABEL_22;
     }
 
-    v10 = *(v4 + 56);
+    v10 = *(equalCopy + 56);
     if (self->_wcdma)
     {
-      if ((*(v4 + 56) & 1) == 0)
+      if ((*(equalCopy + 56) & 1) == 0)
       {
         goto LABEL_22;
       }
     }
 
-    else if (*(v4 + 56))
+    else if (*(equalCopy + 56))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 60) & 0x20) != 0)
+  else if ((*(equalCopy + 60) & 0x20) != 0)
   {
     goto LABEL_22;
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 3) && ![(NSData *)plmn isEqual:?])
+  if (plmn | *(equalCopy + 3) && ![(NSData *)plmn isEqual:?])
   {
     goto LABEL_22;
   }
 
   stateHists = self->_stateHists;
-  if (stateHists | *(v4 + 5))
+  if (stateHists | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)stateHists isEqual:?])
     {
@@ -611,37 +611,37 @@ LABEL_15:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_numSubs != *(v4 + 4))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_numSubs != *(equalCopy + 4))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_22;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 60) & 8) == 0 || self->_subsId != *(v4 + 12))
+    if ((*(equalCopy + 60) & 8) == 0 || self->_subsId != *(equalCopy + 12))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 60) & 8) != 0)
+  else if ((*(equalCopy + 60) & 8) != 0)
   {
     goto LABEL_22;
   }
 
-  v8 = (*(v4 + 60) & 4) == 0;
+  v8 = (*(equalCopy + 60) & 4) == 0;
   if ((*&self->_has & 4) == 0)
   {
     goto LABEL_23;
   }
 
-  if ((*(v4 + 60) & 4) != 0 && self->_psPref == *(v4 + 8))
+  if ((*(equalCopy + 60) & 4) != 0 && self->_psPref == *(equalCopy + 8))
   {
     v8 = 1;
     goto LABEL_23;
@@ -732,16 +732,16 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 60);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 60);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 60);
+    v6 = *(fromCopy + 60);
     if ((v6 & 0x10) == 0)
     {
 LABEL_3:
@@ -754,22 +754,22 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 60) & 0x10) == 0)
+  else if ((*(fromCopy + 60) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_totalDurationMs = *(v4 + 13);
+  self->_totalDurationMs = *(fromCopy + 13);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 60) & 0x20) != 0)
+  if ((*(fromCopy + 60) & 0x20) != 0)
   {
 LABEL_4:
-    self->_wcdma = *(v4 + 56);
+    self->_wcdma = *(fromCopy + 56);
     *&self->_has |= 0x20u;
   }
 
 LABEL_5:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(CellularUmtsRrcStateHist *)self setPlmn:?];
   }

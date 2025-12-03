@@ -1,25 +1,25 @@
 @interface IDSDRegistrationPushManager
 + (id)sharedInstance;
-- (BOOL)_isAccountRelevantForRegistrationPush:(id)a3;
+- (BOOL)_isAccountRelevantForRegistrationPush:(id)push;
 - (IDSDRegistrationPushManager)init;
-- (id)_accountsWithService:(id)a3;
+- (id)_accountsWithService:(id)service;
 - (void)_acceptIncomingPushes;
-- (void)_handleAction:(int64_t)a3 forAccounts:(id)a4;
-- (void)_handleForceRepairRegistrationActionForAccounts:(id)a3;
+- (void)_handleAction:(int64_t)action forAccounts:(id)accounts;
+- (void)_handleForceRepairRegistrationActionForAccounts:(id)accounts;
 - (void)_handleKTOptOutActionForAllAccounts;
-- (void)_handleReIdentifyActionForAccounts:(id)a3;
-- (void)_handleReProvisionActionForAccounts:(id)a3;
-- (void)_handleReRegisterActionForAccounts:(id)a3;
-- (void)_handleValidateCredentialsActionForAccounts:(id)a3;
+- (void)_handleReIdentifyActionForAccounts:(id)accounts;
+- (void)_handleReProvisionActionForAccounts:(id)accounts;
+- (void)_handleReRegisterActionForAccounts:(id)accounts;
+- (void)_handleValidateCredentialsActionForAccounts:(id)accounts;
 - (void)_ignoreIncomingPushes;
 - (void)_updatePushState;
 - (void)dealloc;
-- (void)handler:(id)a3 cohortSelected:(id)a4;
-- (void)handler:(id)a3 requestedPromptThroughPushWithTitle:(id)a4 message:(id)a5 defaultButton:(id)a6 defaultUrl:(id)a7 alternateButton:(id)a8 alternateUrl:(id)a9;
-- (void)handler:(id)a3 requestedSysdiagnoseWithTapToRadarPushPayload:(id)a4;
-- (void)handler:(id)a3 reregisterUserID:(id)a4 style:(id)a5 service:(id)a6;
-- (void)startTrackingRegisteredAccountID:(id)a3;
-- (void)stopTrackingRegisteredAccountID:(id)a3;
+- (void)handler:(id)handler cohortSelected:(id)selected;
+- (void)handler:(id)handler requestedPromptThroughPushWithTitle:(id)title message:(id)message defaultButton:(id)button defaultUrl:(id)url alternateButton:(id)alternateButton alternateUrl:(id)alternateUrl;
+- (void)handler:(id)handler requestedSysdiagnoseWithTapToRadarPushPayload:(id)payload;
+- (void)handler:(id)handler reregisterUserID:(id)d style:(id)style service:(id)service;
+- (void)startTrackingRegisteredAccountID:(id)d;
+- (void)stopTrackingRegisteredAccountID:(id)d;
 @end
 
 @implementation IDSDRegistrationPushManager
@@ -73,38 +73,38 @@
   [(IDSDRegistrationPushManager *)&v4 dealloc];
 }
 
-- (void)startTrackingRegisteredAccountID:(id)a3
+- (void)startTrackingRegisteredAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "IDSDRegistrationPushManager now tracking registered account {accountID: %@}", &v6, 0xCu);
   }
 
-  if (v4)
+  if (dCopy)
   {
-    [(NSMutableSet *)self->_registeredAccountIDs addObject:v4];
+    [(NSMutableSet *)self->_registeredAccountIDs addObject:dCopy];
     [(IDSDRegistrationPushManager *)self _updatePushState];
   }
 }
 
-- (void)stopTrackingRegisteredAccountID:(id)a3
+- (void)stopTrackingRegisteredAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "IDSDRegistrationPushManager stopped tracking registered account {accountID: %@}", &v6, 0xCu);
   }
 
-  if (v4)
+  if (dCopy)
   {
-    [(NSMutableSet *)self->_registeredAccountIDs removeObject:v4];
+    [(NSMutableSet *)self->_registeredAccountIDs removeObject:dCopy];
     [(IDSDRegistrationPushManager *)self _updatePushState];
   }
 }
@@ -153,53 +153,53 @@
   self->_registeredForPushes = 0;
 }
 
-- (id)_accountsWithService:(id)a3
+- (id)_accountsWithService:(id)service
 {
-  v3 = a3;
-  v4 = [v3 length];
+  serviceCopy = service;
+  v4 = [serviceCopy length];
   v5 = +[IDSDAccountController sharedInstance];
   v6 = v5;
   if (v4)
   {
     v7 = +[IDSDServiceController sharedInstance];
-    v8 = [v7 serviceWithName:v3];
-    v9 = [v6 accountsOnService:v8];
+    v8 = [v7 serviceWithName:serviceCopy];
+    accounts = [v6 accountsOnService:v8];
   }
 
   else
   {
-    v9 = [v5 accounts];
+    accounts = [v5 accounts];
   }
 
-  return v9;
+  return accounts;
 }
 
-- (BOOL)_isAccountRelevantForRegistrationPush:(id)a3
+- (BOOL)_isAccountRelevantForRegistrationPush:(id)push
 {
-  v3 = a3;
-  v4 = [v3 accountType];
-  v5 = [v3 accountType];
-  v6 = [v3 service];
+  pushCopy = push;
+  accountType = [pushCopy accountType];
+  accountType2 = [pushCopy accountType];
+  service = [pushCopy service];
 
-  v7 = [v6 adHocServiceType];
-  return (v4 == 1 || v5 == 0) && v7 == 0;
+  adHocServiceType = [service adHocServiceType];
+  return (accountType == 1 || accountType2 == 0) && adHocServiceType == 0;
 }
 
-- (void)handler:(id)a3 requestedSysdiagnoseWithTapToRadarPushPayload:(id)a4
+- (void)handler:(id)handler requestedSysdiagnoseWithTapToRadarPushPayload:(id)payload
 {
-  v4 = a4;
+  payloadCopy = payload;
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 errorCode];
-    v7 = [v4 serverErrorDetail];
-    v8 = [v4 promptMessage];
+    errorCode = [payloadCopy errorCode];
+    serverErrorDetail = [payloadCopy serverErrorDetail];
+    promptMessage = [payloadCopy promptMessage];
     *buf = 138412802;
-    v51 = *&v6;
+    v51 = *&errorCode;
     v52 = 2112;
-    v53 = *&v7;
+    v53 = *&serverErrorDetail;
     v54 = 2112;
-    v55 = *&v8;
+    v55 = *&promptMessage;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Device received sysdiagnose request push {error code: %@, serverErrorDetail: %@, userFacingMessage: %@}", buf, 0x20u);
   }
 
@@ -214,12 +214,12 @@
 
     v13 = objc_alloc_init(NSMutableDictionary);
     v15 = +[FTDeviceSupport sharedInstance];
-    v16 = [v15 productBuildVersion];
-    v17 = [v4 radarTitle];
-    v18 = v17;
-    if (v17)
+    productBuildVersion = [v15 productBuildVersion];
+    radarTitle = [payloadCopy radarTitle];
+    v18 = radarTitle;
+    if (radarTitle)
     {
-      v19 = v17;
+      v19 = radarTitle;
     }
 
     else
@@ -227,19 +227,19 @@
       v19 = @"Internal IDS error detected ";
     }
 
-    v20 = [v4 errorCode];
-    v21 = [NSString stringWithFormat:@"[%@] Tap-to-Radar: %@ (server error code: %@)", v16, v19, v20];
+    errorCode2 = [payloadCopy errorCode];
+    v21 = [NSString stringWithFormat:@"[%@] Tap-to-Radar: %@ (server error code: %@)", productBuildVersion, v19, errorCode2];
     v22 = kIDSTapToRadarTitleKey;
     [v13 setObject:v21 forKeyedSubscript:kIDSTapToRadarTitleKey];
 
     v23 = [v13 objectForKeyedSubscript:v22];
     v24 = +[FTDeviceSupport sharedInstance];
-    v25 = [v24 deviceInformationString];
-    v26 = [v4 serverErrorDetail];
-    v27 = v26;
-    if (v26)
+    deviceInformationString = [v24 deviceInformationString];
+    serverErrorDetail2 = [payloadCopy serverErrorDetail];
+    v27 = serverErrorDetail2;
+    if (serverErrorDetail2)
     {
-      v28 = v26;
+      v28 = serverErrorDetail2;
     }
 
     else
@@ -247,11 +247,11 @@
       v28 = &stru_100C06028;
     }
 
-    v29 = [v4 radarDescription];
-    v30 = v29;
-    if (v29)
+    radarDescription = [payloadCopy radarDescription];
+    v30 = radarDescription;
+    if (radarDescription)
     {
-      v31 = v29;
+      v31 = radarDescription;
     }
 
     else
@@ -259,68 +259,68 @@
       v31 = &stru_100C06028;
     }
 
-    v32 = [NSString stringWithFormat:@"%@\n\n%@\n\n%@\n\n%@", v23, v25, v28, v31];
+    v32 = [NSString stringWithFormat:@"%@\n\n%@\n\n%@\n\n%@", v23, deviceInformationString, v28, v31];
     [v13 setObject:v32 forKeyedSubscript:kIDSTapToRadarDescriptionKey];
 
-    v33 = [v4 radarComponentName];
-    if (v33)
+    radarComponentName = [payloadCopy radarComponentName];
+    if (radarComponentName)
     {
-      CFDictionarySetValue(v13, kIDSTapToRadarComponentNameKey, v33);
+      CFDictionarySetValue(v13, kIDSTapToRadarComponentNameKey, radarComponentName);
     }
 
-    v34 = [v4 radarComponentVersion];
-    if (v34)
+    radarComponentVersion = [payloadCopy radarComponentVersion];
+    if (radarComponentVersion)
     {
-      CFDictionarySetValue(v13, kIDSTapToRadarComponentVersionKey, v34);
+      CFDictionarySetValue(v13, kIDSTapToRadarComponentVersionKey, radarComponentVersion);
     }
 
-    v35 = [v4 radarComponentId];
-    if (v35)
+    radarComponentId = [payloadCopy radarComponentId];
+    if (radarComponentId)
     {
-      CFDictionarySetValue(v13, kIDSTapToRadarComponentIDKey, v35);
+      CFDictionarySetValue(v13, kIDSTapToRadarComponentIDKey, radarComponentId);
     }
 
-    v36 = [v4 radarClassification];
-    if (v36)
+    radarClassification = [payloadCopy radarClassification];
+    if (radarClassification)
     {
-      CFDictionarySetValue(v13, kIDSTapToRadarClassificationKey, v36);
+      CFDictionarySetValue(v13, kIDSTapToRadarClassificationKey, radarClassification);
     }
 
-    v37 = [v4 radarReproducibility];
-    if (v37)
+    radarReproducibility = [payloadCopy radarReproducibility];
+    if (radarReproducibility)
     {
-      CFDictionarySetValue(v13, kIDSTapToRadarReproducibilityKey, v37);
+      CFDictionarySetValue(v13, kIDSTapToRadarReproducibilityKey, radarReproducibility);
     }
 
-    v38 = [v4 radarKeywords];
-    if (v38)
+    radarKeywords = [payloadCopy radarKeywords];
+    if (radarKeywords)
     {
-      CFDictionarySetValue(v13, kIDSTapToRadarKeywordsKey, v38);
+      CFDictionarySetValue(v13, kIDSTapToRadarKeywordsKey, radarKeywords);
     }
 
-    v39 = [v4 radarQueryParameter];
-    if (v39)
+    radarQueryParameter = [payloadCopy radarQueryParameter];
+    if (radarQueryParameter)
     {
-      CFDictionarySetValue(v13, kIDSTapToRadarQueryParameterKey, v39);
+      CFDictionarySetValue(v13, kIDSTapToRadarQueryParameterKey, radarQueryParameter);
     }
 
     v40 = [[IDSTapToRadarContext alloc] initWithDictionary:v13];
-    v41 = [v4 promptTitle];
-    v42 = v41;
+    promptTitle = [payloadCopy promptTitle];
+    v42 = promptTitle;
     v43 = @"Internal IDS Error Detected";
-    if (v41)
+    if (promptTitle)
     {
-      v43 = v41;
+      v43 = promptTitle;
     }
 
     v44 = v43;
 
-    v45 = [v4 promptMessage];
-    v46 = v45;
+    promptMessage2 = [payloadCopy promptMessage];
+    v46 = promptMessage2;
     v47 = @"An internal IDS error has been detected";
-    if (v45)
+    if (promptMessage2)
     {
-      v47 = v45;
+      v47 = promptMessage2;
     }
 
     v48 = v47;
@@ -345,29 +345,29 @@
   }
 }
 
-- (void)handler:(id)a3 requestedPromptThroughPushWithTitle:(id)a4 message:(id)a5 defaultButton:(id)a6 defaultUrl:(id)a7 alternateButton:(id)a8 alternateUrl:(id)a9
+- (void)handler:(id)handler requestedPromptThroughPushWithTitle:(id)title message:(id)message defaultButton:(id)button defaultUrl:(id)url alternateButton:(id)alternateButton alternateUrl:(id)alternateUrl
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  titleCopy = title;
+  messageCopy = message;
+  buttonCopy = button;
+  urlCopy = url;
+  alternateButtonCopy = alternateButton;
+  alternateUrlCopy = alternateUrl;
   v19 = +[IMRGLog registration];
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138413570;
-    v27 = *&v13;
+    v27 = *&titleCopy;
     v28 = 2112;
-    v29 = *&v14;
+    v29 = *&messageCopy;
     v30 = 2112;
-    v31 = *&v15;
+    v31 = *&buttonCopy;
     v32 = 2112;
-    v33 = v16;
+    v33 = urlCopy;
     v34 = 2112;
-    v35 = v17;
+    v35 = alternateButtonCopy;
     v36 = 2112;
-    v37 = v18;
+    v37 = alternateUrlCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Device received request for prompt {title: %@, message: %@, default button: %@, default url: %@, alternate button: %@, alternate url: %@}", &v26, 0x3Eu);
   }
 
@@ -380,8 +380,8 @@
     v25 = [NSNumber numberWithDouble:v21];
     IMSetAppValueForKey();
 
-    v24 = [[IDSPopupPrompt alloc] initWithTitle:v13 promptMessage:v14];
-    [v24 launchPromptWithButton:v15 defaultUrl:v16 alternateButton:v17 alternateUrl:v18];
+    v24 = [[IDSPopupPrompt alloc] initWithTitle:titleCopy promptMessage:messageCopy];
+    [v24 launchPromptWithButton:buttonCopy defaultUrl:urlCopy alternateButton:alternateButtonCopy alternateUrl:alternateUrlCopy];
   }
 
   else
@@ -400,12 +400,12 @@
   }
 }
 
-- (void)handler:(id)a3 reregisterUserID:(id)a4 style:(id)a5 service:(id)a6
+- (void)handler:(id)handler reregisterUserID:(id)d style:(id)style service:(id)service
 {
-  v29 = a3;
-  v9 = a4;
-  v30 = a5;
-  v31 = a6;
+  handlerCopy = handler;
+  dCopy = d;
+  styleCopy = style;
+  serviceCopy = service;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   v41 = _os_activity_create(&_mh_execute_header, "Registration push manager received registration push", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
@@ -414,11 +414,11 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v44 = v30;
+    v44 = styleCopy;
     v45 = 2112;
-    v46 = v9;
+    v46 = dCopy;
     v47 = 2112;
-    v48 = v31;
+    v48 = serviceCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Device received registration push {style: %@, userID: %@, service: %@}", buf, 0x20u);
   }
 
@@ -439,7 +439,7 @@
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v13 = [(IDSDRegistrationPushManager *)self _accountsWithService:v31];
+    v13 = [(IDSDRegistrationPushManager *)self _accountsWithService:serviceCopy];
     v14 = [v13 countByEnumeratingWithState:&v36 objects:v42 count:16];
     v32 = v12;
     if (v14)
@@ -458,17 +458,17 @@
           v16 = *(*(&v36 + 1) + 8 * i);
           if ([(IDSDRegistrationPushManager *)self _isAccountRelevantForRegistrationPush:v16])
           {
-            v17 = [v9 length];
-            v18 = [v16 registration];
-            v19 = [v18 userID];
-            v20 = [v9 isEqualToIgnoringCase:v19];
+            v17 = [dCopy length];
+            registration = [v16 registration];
+            userID = [registration userID];
+            v20 = [dCopy isEqualToIgnoringCase:userID];
 
-            v21 = [v16 registration];
-            v22 = [v21 profileID];
-            if ([v9 isEqualToIgnoringCase:v22])
+            registration2 = [v16 registration];
+            profileID = [registration2 profileID];
+            if ([dCopy isEqualToIgnoringCase:profileID])
             {
-              v23 = [v16 registration];
-              v24 = [v23 registrationType] == 1;
+              registration3 = [v16 registration];
+              v24 = [registration3 registrationType] == 1;
             }
 
             else
@@ -476,9 +476,9 @@
               v24 = 0;
             }
 
-            v25 = [v16 registration];
-            v26 = [v25 idsUserID];
-            v27 = [v9 isEqualToIgnoringCase:v26];
+            registration4 = [v16 registration];
+            idsUserID = [registration4 idsUserID];
+            v27 = [dCopy isEqualToIgnoringCase:idsUserID];
 
             if ((v17 == 0 || v24) | v20 & 1 | v27 & 1)
             {
@@ -503,26 +503,26 @@
     }
 
     v11 = v32;
-    -[IDSDRegistrationPushManager _handleAction:forAccounts:](self, "_handleAction:forAccounts:", [v30 integerValue], v32);
+    -[IDSDRegistrationPushManager _handleAction:forAccounts:](self, "_handleAction:forAccounts:", [styleCopy integerValue], v32);
   }
 
   os_activity_scope_leave(&state);
   cut_arc_os_release();
 }
 
-- (void)handler:(id)a3 cohortSelected:(id)a4
+- (void)handler:(id)handler cohortSelected:(id)selected
 {
-  v4 = a4;
+  selectedCopy = selected;
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = selectedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Device received cohort selected push {cohortSelected: %@}", &v10, 0xCu);
   }
 
-  v6 = [v4 integerValue];
-  if (CUTIsInternalInstall() && v6 == 256)
+  integerValue = [selectedCopy integerValue];
+  if (CUTIsInternalInstall() && integerValue == 256)
   {
     v7 = +[IMRGLog registration];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -534,10 +534,10 @@
     goto LABEL_11;
   }
 
-  if (v6 < 0x100)
+  if (integerValue < 0x100)
   {
 LABEL_11:
-    v8 = [[IDSBassHarborCheckInMetric alloc] initWithCohort:v4];
+    v8 = [[IDSBassHarborCheckInMetric alloc] initWithCohort:selectedCopy];
     v9 = +[IDSCoreAnalyticsLogger defaultLogger];
     [v9 logMetric:v8];
 
@@ -547,54 +547,54 @@ LABEL_11:
   v8 = +[IMRGLog registration];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    sub_10091D414(v4, v8);
+    sub_10091D414(selectedCopy, v8);
   }
 
 LABEL_12:
 }
 
-- (void)_handleAction:(int64_t)a3 forAccounts:(id)a4
+- (void)_handleAction:(int64_t)action forAccounts:(id)accounts
 {
-  v6 = a4;
-  if (a3 <= 1)
+  accountsCopy = accounts;
+  if (action <= 1)
   {
-    switch(a3)
+    switch(action)
     {
       case -1:
         goto LABEL_18;
       case 0:
-        [(IDSDRegistrationPushManager *)self _handleReIdentifyActionForAccounts:v6];
+        [(IDSDRegistrationPushManager *)self _handleReIdentifyActionForAccounts:accountsCopy];
         goto LABEL_18;
       case 1:
-        [(IDSDRegistrationPushManager *)self _handleReProvisionActionForAccounts:v6];
+        [(IDSDRegistrationPushManager *)self _handleReProvisionActionForAccounts:accountsCopy];
         goto LABEL_18;
     }
   }
 
   else
   {
-    if (a3 <= 3)
+    if (action <= 3)
     {
-      if (a3 == 2)
+      if (action == 2)
       {
-        [(IDSDRegistrationPushManager *)self _handleReRegisterActionForAccounts:v6];
+        [(IDSDRegistrationPushManager *)self _handleReRegisterActionForAccounts:accountsCopy];
       }
 
       else
       {
-        [(IDSDRegistrationPushManager *)self _handleValidateCredentialsActionForAccounts:v6];
+        [(IDSDRegistrationPushManager *)self _handleValidateCredentialsActionForAccounts:accountsCopy];
       }
 
       goto LABEL_18;
     }
 
-    if (a3 == 4)
+    if (action == 4)
     {
-      [(IDSDRegistrationPushManager *)self _handleForceRepairRegistrationActionForAccounts:v6];
+      [(IDSDRegistrationPushManager *)self _handleForceRepairRegistrationActionForAccounts:accountsCopy];
       goto LABEL_18;
     }
 
-    if (a3 == 5)
+    if (action == 5)
     {
       [(IDSDRegistrationPushManager *)self _handleKTOptOutActionForAllAccounts];
       goto LABEL_18;
@@ -604,15 +604,15 @@ LABEL_12:
   v7 = +[IMRGLog registration];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
   {
-    sub_10091D48C(a3, v7);
+    sub_10091D48C(action, v7);
   }
 
 LABEL_18:
 }
 
-- (void)_handleReIdentifyActionForAccounts:(id)a3
+- (void)_handleReIdentifyActionForAccounts:(id)accounts
 {
-  v3 = a3;
+  accountsCopy = accounts;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   v40 = _os_activity_create(&_mh_execute_header, "Registration push manager re-identify", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
@@ -628,7 +628,7 @@ LABEL_18:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = v3;
+  v5 = accountsCopy;
   v6 = [v5 countByEnumeratingWithState:&v35 objects:v44 count:16];
   if (v6)
   {
@@ -643,27 +643,27 @@ LABEL_18:
         }
 
         v9 = *(*(&v35 + 1) + 8 * i);
-        v10 = [v9 registration];
-        v11 = [v10 registrationType] == 0;
+        registration = [v9 registration];
+        v11 = [registration registrationType] == 0;
 
         if (v11)
         {
           v12 = +[IDSRegistrationReasonTracker sharedInstance];
-          v13 = [v9 userUniqueIdentifier];
-          [v12 setPNRReason:9 forUserUniqueIdentifier:v13];
+          userUniqueIdentifier = [v9 userUniqueIdentifier];
+          [v12 setPNRReason:9 forUserUniqueIdentifier:userUniqueIdentifier];
         }
 
-        v14 = [v9 registration];
-        [v14 setRegistrationStatus:0];
+        registration2 = [v9 registration];
+        [registration2 setRegistrationStatus:0];
 
-        v15 = [v9 registration];
-        [v15 voidPassword];
+        registration3 = [v9 registration];
+        [registration3 voidPassword];
 
-        v16 = [v9 registration];
-        [v16 voidAuthenticationTokenAllowingGracePeriod];
+        registration4 = [v9 registration];
+        [registration4 voidAuthenticationTokenAllowingGracePeriod];
 
-        v17 = [v9 registration];
-        [v17 saveToKeychain];
+        registration5 = [v9 registration];
+        [registration5 saveToKeychain];
 
         [v9 _removeAuthenticationCredentialsIncludingAuthToken:0];
       }
@@ -703,11 +703,11 @@ LABEL_18:
         else
         {
           v24 = +[IDSDaemon sharedInstance];
-          v25 = [v24 registrationConductor];
-          v26 = [v25 userStore];
+          registrationConductor = [v24 registrationConductor];
+          userStore = [registrationConductor userStore];
 
-          v27 = [v23 userUniqueIdentifier];
-          v28 = [v26 userWithUniqueIdentifier:v27];
+          userUniqueIdentifier2 = [v23 userUniqueIdentifier];
+          v28 = [userStore userWithUniqueIdentifier:userUniqueIdentifier2];
 
           v29 = +[IMRGLog registration];
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -717,7 +717,7 @@ LABEL_18:
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "We can't re-identify a temporary account. Nuking Home Number user %@", buf, 0xCu);
           }
 
-          [v26 forceRemoveUser:v28 silently:0];
+          [userStore forceRemoveUser:v28 silently:0];
         }
       }
 
@@ -731,9 +731,9 @@ LABEL_18:
   cut_arc_os_release();
 }
 
-- (void)_handleReProvisionActionForAccounts:(id)a3
+- (void)_handleReProvisionActionForAccounts:(id)accounts
 {
-  v3 = a3;
+  accountsCopy = accounts;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   v40 = _os_activity_create(&_mh_execute_header, "Registration push manager re-provision", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
@@ -749,7 +749,7 @@ LABEL_18:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = v3;
+  v5 = accountsCopy;
   v6 = [v5 countByEnumeratingWithState:&v35 objects:v44 count:16];
   if (v6)
   {
@@ -764,27 +764,27 @@ LABEL_18:
         }
 
         v9 = *(*(&v35 + 1) + 8 * i);
-        v10 = [v9 registration];
-        v11 = [v10 registrationType] == 0;
+        registration = [v9 registration];
+        v11 = [registration registrationType] == 0;
 
         if (v11)
         {
           v12 = +[IDSRegistrationReasonTracker sharedInstance];
-          v13 = [v9 userUniqueIdentifier];
-          [v12 setPNRReason:13 forUserUniqueIdentifier:v13];
+          userUniqueIdentifier = [v9 userUniqueIdentifier];
+          [v12 setPNRReason:13 forUserUniqueIdentifier:userUniqueIdentifier];
 
           v14 = +[IDSPACStateTracker sharedInstance];
           [v14 notePhoneAuthCertLost:6];
         }
 
-        v15 = [v9 registration];
-        [v15 setAuthenticationCert:0];
+        registration2 = [v9 registration];
+        [registration2 setAuthenticationCert:0];
 
-        v16 = [v9 registration];
-        [v16 setUris:0];
+        registration3 = [v9 registration];
+        [registration3 setUris:0];
 
-        v17 = [v9 registration];
-        [v17 setRegistrationCert:0];
+        registration4 = [v9 registration];
+        [registration4 setRegistrationCert:0];
       }
 
       v6 = [v5 countByEnumeratingWithState:&v35 objects:v44 count:16];
@@ -822,11 +822,11 @@ LABEL_18:
         else
         {
           v24 = +[IDSDaemon sharedInstance];
-          v25 = [v24 registrationConductor];
-          v26 = [v25 userStore];
+          registrationConductor = [v24 registrationConductor];
+          userStore = [registrationConductor userStore];
 
-          v27 = [v23 userUniqueIdentifier];
-          v28 = [v26 userWithUniqueIdentifier:v27];
+          userUniqueIdentifier2 = [v23 userUniqueIdentifier];
+          v28 = [userStore userWithUniqueIdentifier:userUniqueIdentifier2];
 
           v29 = +[IMRGLog registration];
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -836,7 +836,7 @@ LABEL_18:
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "We can't re-provision a temporary account. Nuking Home Number user %@", buf, 0xCu);
           }
 
-          [v26 forceRemoveUser:v28 silently:0];
+          [userStore forceRemoveUser:v28 silently:0];
         }
       }
 
@@ -850,9 +850,9 @@ LABEL_18:
   cut_arc_os_release();
 }
 
-- (void)_handleReRegisterActionForAccounts:(id)a3
+- (void)_handleReRegisterActionForAccounts:(id)accounts
 {
-  v3 = a3;
+  accountsCopy = accounts;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   v15 = _os_activity_create(&_mh_execute_header, "Registration push manager re-register", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
@@ -868,7 +868,7 @@ LABEL_18:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v5 = v3;
+  v5 = accountsCopy;
   v6 = [v5 countByEnumeratingWithState:&v9 objects:v16 count:16];
   if (v6)
   {
@@ -898,9 +898,9 @@ LABEL_18:
   cut_arc_os_release();
 }
 
-- (void)_handleForceRepairRegistrationActionForAccounts:(id)a3
+- (void)_handleForceRepairRegistrationActionForAccounts:(id)accounts
 {
-  v3 = a3;
+  accountsCopy = accounts;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   v9 = _os_activity_create(&_mh_execute_header, "Registration push manager repair registration", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
@@ -913,8 +913,8 @@ LABEL_18:
   }
 
   v5 = +[IDSDaemon sharedInstance];
-  v6 = [v5 registrationConductor];
-  [v6 forceRepairAccounts:v3];
+  registrationConductor = [v5 registrationConductor];
+  [registrationConductor forceRepairAccounts:accountsCopy];
 
   os_activity_scope_leave(&state);
   cut_arc_os_release();
@@ -965,16 +965,16 @@ LABEL_18:
   }
 
   v9 = +[IDSDaemon sharedInstance];
-  v10 = [v9 registrationConductor];
-  [v10 kickRepair];
+  registrationConductor = [v9 registrationConductor];
+  [registrationConductor kickRepair];
 
   os_activity_scope_leave(&state);
   cut_arc_os_release();
 }
 
-- (void)_handleValidateCredentialsActionForAccounts:(id)a3
+- (void)_handleValidateCredentialsActionForAccounts:(id)accounts
 {
-  v4 = a3;
+  accountsCopy = accounts;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   v18 = _os_activity_create(&_mh_execute_header, "Registration push manager validate credentials", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
@@ -990,7 +990,7 @@ LABEL_18:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v4;
+  v6 = accountsCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v19 count:16];
   if (v7)
   {

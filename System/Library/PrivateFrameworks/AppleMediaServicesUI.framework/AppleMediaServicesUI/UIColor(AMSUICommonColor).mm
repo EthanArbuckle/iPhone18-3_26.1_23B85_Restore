@@ -112,19 +112,19 @@ LABEL_21:
 
     if ([v7 isEqualToString:@"named"])
     {
-      v9 = [a1 ams_namedColorFromDictionary:v5];
+      v9 = [self ams_namedColorFromDictionary:v5];
     }
 
     else
     {
       if ([v7 isEqualToString:@"dynamic"])
       {
-        [a1 ams_dynamicColorFromDictionary:v5];
+        [self ams_dynamicColorFromDictionary:v5];
       }
 
       else
       {
-        [a1 ams_rgbColorFromDictionary:v5];
+        [self ams_rgbColorFromDictionary:v5];
       }
       v9 = ;
     }
@@ -234,8 +234,8 @@ LABEL_21:
 
   if (v5)
   {
-    v6 = [a1 _colorIdentifierDictionary];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    _colorIdentifierDictionary = [self _colorIdentifierDictionary];
+    v7 = [_colorIdentifierDictionary objectForKeyedSubscript:v5];
   }
 
   else
@@ -302,113 +302,113 @@ LABEL_21:
 {
   v40[34] = *MEMORY[0x1E69E9840];
   v39[0] = @"black";
-  v38 = [MEMORY[0x1E69DC888] blackColor];
-  v40[0] = v38;
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v40[0] = blackColor;
   v39[1] = @"blue";
-  v37 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v40[1] = v37;
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v40[1] = systemBlueColor;
   v39[2] = @"brown";
-  v36 = [MEMORY[0x1E69DC888] systemBrownColor];
-  v40[2] = v36;
+  systemBrownColor = [MEMORY[0x1E69DC888] systemBrownColor];
+  v40[2] = systemBrownColor;
   v39[3] = @"clear";
-  v35 = [MEMORY[0x1E69DC888] clearColor];
-  v40[3] = v35;
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  v40[3] = clearColor;
   v39[4] = @"cyan";
-  v34 = [MEMORY[0x1E69DC888] systemCyanColor];
-  v40[4] = v34;
+  systemCyanColor = [MEMORY[0x1E69DC888] systemCyanColor];
+  v40[4] = systemCyanColor;
   v39[5] = @"gray";
-  v33 = [MEMORY[0x1E69DC888] systemGrayColor];
-  v40[5] = v33;
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  v40[5] = systemGrayColor;
   v39[6] = @"green";
-  v32 = [MEMORY[0x1E69DC888] systemGreenColor];
-  v40[6] = v32;
+  systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+  v40[6] = systemGreenColor;
   v39[7] = @"indigo";
-  v31 = [MEMORY[0x1E69DC888] systemIndigoColor];
-  v40[7] = v31;
+  systemIndigoColor = [MEMORY[0x1E69DC888] systemIndigoColor];
+  v40[7] = systemIndigoColor;
   v39[8] = @"mint";
-  v30 = [MEMORY[0x1E69DC888] systemMintColor];
-  v40[8] = v30;
+  systemMintColor = [MEMORY[0x1E69DC888] systemMintColor];
+  v40[8] = systemMintColor;
   v39[9] = @"orange";
-  v29 = [MEMORY[0x1E69DC888] systemOrangeColor];
-  v40[9] = v29;
+  systemOrangeColor = [MEMORY[0x1E69DC888] systemOrangeColor];
+  v40[9] = systemOrangeColor;
   v39[10] = @"pink";
-  v28 = [MEMORY[0x1E69DC888] systemPinkColor];
-  v40[10] = v28;
+  systemPinkColor = [MEMORY[0x1E69DC888] systemPinkColor];
+  v40[10] = systemPinkColor;
   v39[11] = @"purple";
-  v27 = [MEMORY[0x1E69DC888] systemPurpleColor];
-  v40[11] = v27;
+  systemPurpleColor = [MEMORY[0x1E69DC888] systemPurpleColor];
+  v40[11] = systemPurpleColor;
   v39[12] = @"red";
-  v26 = [MEMORY[0x1E69DC888] systemRedColor];
-  v40[12] = v26;
+  systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+  v40[12] = systemRedColor;
   v39[13] = @"teal";
-  v25 = [MEMORY[0x1E69DC888] systemTealColor];
-  v40[13] = v25;
+  systemTealColor = [MEMORY[0x1E69DC888] systemTealColor];
+  v40[13] = systemTealColor;
   v39[14] = @"white";
-  v24 = [MEMORY[0x1E69DC888] whiteColor];
-  v40[14] = v24;
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v40[14] = whiteColor;
   v39[15] = @"yellow";
-  v23 = [MEMORY[0x1E69DC888] systemYellowColor];
-  v40[15] = v23;
+  systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+  v40[15] = systemYellowColor;
   v39[16] = @"appTint";
-  v0 = [MEMORY[0x1E69DC888] ams_appTint];
-  v22 = v0;
-  if (!v0)
+  ams_appTint = [MEMORY[0x1E69DC888] ams_appTint];
+  v22 = ams_appTint;
+  if (!ams_appTint)
   {
-    v0 = [MEMORY[0x1E69DC888] systemBlueColor];
+    ams_appTint = [MEMORY[0x1E69DC888] systemBlueColor];
   }
 
-  v40[16] = v0;
+  v40[16] = ams_appTint;
   v39[17] = @"defaultPlatformBackground";
-  v21 = [MEMORY[0x1E69DC888] ams_defaultPlatformBackgroundColor];
-  v40[17] = v21;
+  ams_defaultPlatformBackgroundColor = [MEMORY[0x1E69DC888] ams_defaultPlatformBackgroundColor];
+  v40[17] = ams_defaultPlatformBackgroundColor;
   v39[18] = @"primaryBackground";
-  v20 = [MEMORY[0x1E69DC888] ams_primaryBackground];
-  v40[18] = v20;
+  ams_primaryBackground = [MEMORY[0x1E69DC888] ams_primaryBackground];
+  v40[18] = ams_primaryBackground;
   v39[19] = @"primaryGroupedBackground";
-  v19 = [MEMORY[0x1E69DC888] ams_primaryGroupedBackground];
-  v40[19] = v19;
+  ams_primaryGroupedBackground = [MEMORY[0x1E69DC888] ams_primaryGroupedBackground];
+  v40[19] = ams_primaryGroupedBackground;
   v39[20] = @"secondaryBackground";
-  v18 = [MEMORY[0x1E69DC888] ams_secondaryBackground];
-  v40[20] = v18;
+  ams_secondaryBackground = [MEMORY[0x1E69DC888] ams_secondaryBackground];
+  v40[20] = ams_secondaryBackground;
   v39[21] = @"secondaryGroupedBackground";
-  v17 = [MEMORY[0x1E69DC888] ams_secondaryGroupedBackground];
-  v40[21] = v17;
+  ams_secondaryGroupedBackground = [MEMORY[0x1E69DC888] ams_secondaryGroupedBackground];
+  v40[21] = ams_secondaryGroupedBackground;
   v39[22] = @"componentBackground";
-  v16 = [MEMORY[0x1E69DC888] ams_componentBackground];
-  v40[22] = v16;
+  ams_componentBackground = [MEMORY[0x1E69DC888] ams_componentBackground];
+  v40[22] = ams_componentBackground;
   v39[23] = @"placeholderBackground";
-  v15 = [MEMORY[0x1E69DC888] ams_placeholderBackground];
-  v40[23] = v15;
+  ams_placeholderBackground = [MEMORY[0x1E69DC888] ams_placeholderBackground];
+  v40[23] = ams_placeholderBackground;
   v39[24] = @"tertiarySystemFillColor";
-  v1 = [MEMORY[0x1E69DC888] ams_tertiarySystemFillColor];
-  v40[24] = v1;
+  ams_tertiarySystemFillColor = [MEMORY[0x1E69DC888] ams_tertiarySystemFillColor];
+  v40[24] = ams_tertiarySystemFillColor;
   v39[25] = @"defaultLine";
-  v2 = [MEMORY[0x1E69DC888] ams_defaultLine];
-  v40[25] = v2;
+  ams_defaultLine = [MEMORY[0x1E69DC888] ams_defaultLine];
+  v40[25] = ams_defaultLine;
   v39[26] = @"primaryText";
-  v3 = [MEMORY[0x1E69DC888] ams_primaryText];
-  v40[26] = v3;
+  ams_primaryText = [MEMORY[0x1E69DC888] ams_primaryText];
+  v40[26] = ams_primaryText;
   v39[27] = @"secondaryText";
-  v4 = [MEMORY[0x1E69DC888] ams_secondaryText];
-  v40[27] = v4;
+  ams_secondaryText = [MEMORY[0x1E69DC888] ams_secondaryText];
+  v40[27] = ams_secondaryText;
   v39[28] = @"tertiaryText";
-  v5 = [MEMORY[0x1E69DC888] ams_tertiaryText];
-  v40[28] = v5;
+  ams_tertiaryText = [MEMORY[0x1E69DC888] ams_tertiaryText];
+  v40[28] = ams_tertiaryText;
   v39[29] = @"quaternaryText";
-  v6 = [MEMORY[0x1E69DC888] ams_quaternaryText];
-  v40[29] = v6;
+  ams_quaternaryText = [MEMORY[0x1E69DC888] ams_quaternaryText];
+  v40[29] = ams_quaternaryText;
   v39[30] = @"primaryFill";
-  v7 = [MEMORY[0x1E69DC888] systemFillColor];
-  v40[30] = v7;
+  systemFillColor = [MEMORY[0x1E69DC888] systemFillColor];
+  v40[30] = systemFillColor;
   v39[31] = @"secondaryFill";
-  v8 = [MEMORY[0x1E69DC888] secondarySystemFillColor];
-  v40[31] = v8;
+  secondarySystemFillColor = [MEMORY[0x1E69DC888] secondarySystemFillColor];
+  v40[31] = secondarySystemFillColor;
   v39[32] = @"tertiaryFill";
-  v9 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-  v40[32] = v9;
+  tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+  v40[32] = tertiarySystemFillColor;
   v39[33] = @"quaternaryFill";
-  v10 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-  v40[33] = v10;
+  quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+  v40[33] = quaternarySystemFillColor;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:34];
 
   if (!v22)

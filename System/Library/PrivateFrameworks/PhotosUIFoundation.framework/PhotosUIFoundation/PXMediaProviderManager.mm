@@ -1,14 +1,14 @@
 @interface PXMediaProviderManager
 + (PXMediaProviderManager)defaultManager;
 - (PXMediaProviderManager)init;
-- (id)imageProviderForAsset:(id)a3;
+- (id)imageProviderForAsset:(id)asset;
 @end
 
 @implementation PXMediaProviderManager
 
-- (id)imageProviderForAsset:(id)a3
+- (id)imageProviderForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -20,10 +20,10 @@
   block[1] = 3221225472;
   block[2] = __48__PXMediaProviderManager_imageProviderForAsset___block_invoke;
   block[3] = &unk_1E7BB5CA0;
-  v10 = v4;
+  v10 = assetCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = assetCopy;
   dispatch_sync(isolationQueue, block);
   v7 = v13[5];
 
@@ -66,9 +66,9 @@ void __48__PXMediaProviderManager_imageProviderForAsset___block_invoke(uint64_t 
     isolationQueue = v2->_isolationQueue;
     v2->_isolationQueue = v4;
 
-    v6 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     imageProviderByClass = v2->_imageProviderByClass;
-    v2->_imageProviderByClass = v6;
+    v2->_imageProviderByClass = strongToStrongObjectsMapTable;
   }
 
   return v2;

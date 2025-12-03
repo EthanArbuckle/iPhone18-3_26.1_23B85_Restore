@@ -4,12 +4,12 @@
 - (BOOL)isReadyForReuse;
 - (CKReusableVideoPlayer)init;
 - (CKReusableVideoPlayerDelegate)delegate;
-- (void)configureWithPlayerItem:(id)a3;
+- (void)configureWithPlayerItem:(id)item;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4;
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4;
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
 - (void)removeCurrentPlayerItem;
 - (void)removeRateObserverIfNecessary;
 - (void)selectedConversationChanged;
@@ -22,8 +22,8 @@
 - (void)dealloc
 {
   [(CKReusableVideoPlayer *)self removeRateObserverIfNecessary];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CKReusableVideoPlayer;
@@ -37,25 +37,25 @@
   v2 = [(CKReusableVideoPlayer *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_selectedConversationChanged name:@"CKConversationListSelectionDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_selectedConversationChanged name:@"CKConversationListSelectionDidChangeNotification" object:0];
   }
 
   return v2;
 }
 
-- (void)configureWithPlayerItem:(id)a3
+- (void)configureWithPlayerItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if ([(CKReusableVideoPlayer *)self isObservingPlayer])
   {
     [(CKReusableVideoPlayer *)self removeRateObserverIfNecessary];
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E6988098]) initWithPlayerItem:v4];
+  v6 = [objc_alloc(MEMORY[0x1E6988098]) initWithPlayerItem:itemCopy];
 
-  v5 = [(CKReusableVideoPlayer *)self playerViewController];
-  [v5 setPlayer:v6];
+  playerViewController = [(CKReusableVideoPlayer *)self playerViewController];
+  [playerViewController setPlayer:v6];
 
   [v6 addObserver:self forKeyPath:@"rate" options:3 context:CKReusableVideoPlayerObservationContext];
   [(CKReusableVideoPlayer *)self setObservingPlayer:1];
@@ -64,15 +64,15 @@
 - (void)removeCurrentPlayerItem
 {
   [(CKReusableVideoPlayer *)self removeRateObserverIfNecessary];
-  v3 = [(CKReusableVideoPlayer *)self playerViewController];
-  [v3 setPlayer:0];
+  playerViewController = [(CKReusableVideoPlayer *)self playerViewController];
+  [playerViewController setPlayer:0];
 }
 
 - (void)willDisappear
 {
-  v3 = [(CKReusableVideoPlayer *)self isPlaying];
+  isPlaying = [(CKReusableVideoPlayer *)self isPlaying];
 
-  [(CKReusableVideoPlayer *)self setWasPlayingBeforeDisappearing:v3];
+  [(CKReusableVideoPlayer *)self setWasPlayingBeforeDisappearing:isPlaying];
 }
 
 - (void)windowDidClose
@@ -99,17 +99,17 @@
 
 - (void)pause
 {
-  v3 = [(CKReusableVideoPlayer *)self playerViewController];
-  v2 = [v3 player];
-  [v2 pause];
+  playerViewController = [(CKReusableVideoPlayer *)self playerViewController];
+  player = [playerViewController player];
+  [player pause];
 }
 
 - (BOOL)isPictureInPictureActive
 {
-  v2 = [(CKReusableVideoPlayer *)self playerViewController];
-  v3 = [v2 isPictureInPictureActive];
+  playerViewController = [(CKReusableVideoPlayer *)self playerViewController];
+  isPictureInPictureActive = [playerViewController isPictureInPictureActive];
 
-  return v3;
+  return isPictureInPictureActive;
 }
 
 - (void)selectedConversationChanged
@@ -145,27 +145,27 @@
   return v6;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (CKReusableVideoPlayerObservationContext == a6)
+  if (CKReusableVideoPlayerObservationContext == context)
   {
-    v7 = [(CKReusableVideoPlayer *)self playerViewController:a3];
-    v8 = [v7 player];
-    [v8 rate];
+    v7 = [(CKReusableVideoPlayer *)self playerViewController:path];
+    player = [v7 player];
+    [player rate];
     v10 = v9;
 
     if (v10 == 0.0)
     {
       [(CKReusableVideoPlayer *)self setPlaying:0];
-      v11 = [(CKReusableVideoPlayer *)self delegate];
-      [v11 reusablePlayerDidStop];
+      delegate = [(CKReusableVideoPlayer *)self delegate];
+      [delegate reusablePlayerDidStop];
     }
 
     else
     {
       [(CKReusableVideoPlayer *)self setPlaying:1];
-      v11 = [(CKReusableVideoPlayer *)self delegate];
-      [v11 reusablePlayerDidStart];
+      delegate = [(CKReusableVideoPlayer *)self delegate];
+      [delegate reusablePlayerDidStart];
     }
   }
 
@@ -173,7 +173,7 @@
   {
     v12.receiver = self;
     v12.super_class = CKReusableVideoPlayer;
-    [(CKReusableVideoPlayer *)&v12 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(CKReusableVideoPlayer *)&v12 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -181,23 +181,23 @@
 {
   if ([(CKReusableVideoPlayer *)self isObservingPlayer])
   {
-    v3 = [(CKReusableVideoPlayer *)self playerViewController];
-    v4 = [v3 player];
-    [v4 removeObserver:self forKeyPath:@"rate" context:CKReusableVideoPlayerObservationContext];
+    playerViewController = [(CKReusableVideoPlayer *)self playerViewController];
+    player = [playerViewController player];
+    [player removeObserver:self forKeyPath:@"rate" context:CKReusableVideoPlayerObservationContext];
 
     [(CKReusableVideoPlayer *)self setObservingPlayer:0];
   }
 }
 
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
-  v5 = [(CKReusableVideoPlayer *)self delegate:a3];
+  v5 = [(CKReusableVideoPlayer *)self delegate:controller];
   [v5 reusablePlayerWillBeginFullScreenPresentation:self];
 }
 
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
-  v5 = [(CKReusableVideoPlayer *)self delegate:a3];
+  v5 = [(CKReusableVideoPlayer *)self delegate:controller];
   [v5 reusablePlayerWillEndFullScreenPresentation:self];
 }
 

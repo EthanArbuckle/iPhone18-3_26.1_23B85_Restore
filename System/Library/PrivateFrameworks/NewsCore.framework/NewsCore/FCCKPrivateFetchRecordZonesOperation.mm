@@ -1,6 +1,6 @@
 @interface FCCKPrivateFetchRecordZonesOperation
 - (BOOL)validateOperation;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -11,9 +11,9 @@
   v18 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = FCCKPrivateFetchRecordZonesOperation;
-  v3 = [(FCCKPrivateDatabaseOperation *)&v9 validateOperation];
-  v4 = [(FCCKPrivateFetchRecordZonesOperation *)self recordZoneIDs];
-  v5 = [v4 count];
+  validateOperation = [(FCCKPrivateDatabaseOperation *)&v9 validateOperation];
+  recordZoneIDs = [(FCCKPrivateFetchRecordZonesOperation *)self recordZoneIDs];
+  v5 = [recordZoneIDs count];
 
   if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -31,7 +31,7 @@
 
   if (v5)
   {
-    result = v3;
+    result = validateOperation;
   }
 
   else
@@ -46,25 +46,25 @@
 - (void)performOperation
 {
   v3 = objc_alloc_init(FCCKPrivateDatabaseCKOperationResults);
-  v4 = [(FCCKPrivateDatabaseOperation *)self skipPreflight];
-  v5 = [(FCCKPrivateDatabaseOperation *)self database];
-  v6 = [(FCCKPrivateFetchRecordZonesOperation *)self recordZoneIDs];
+  skipPreflight = [(FCCKPrivateDatabaseOperation *)self skipPreflight];
+  database = [(FCCKPrivateDatabaseOperation *)self database];
+  recordZoneIDs = [(FCCKPrivateFetchRecordZonesOperation *)self recordZoneIDs];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__FCCKPrivateFetchRecordZonesOperation_performOperation__block_invoke;
   v10[3] = &unk_1E7C39678;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v7 = v3;
-  [(FCCKPrivateDatabase *)v5 enumeratePayloadsWithRecordIDs:0 records:v6 zoneIDs:0 zones:v4 options:v10 payloadHandler:?];
+  [(FCCKPrivateDatabase *)database enumeratePayloadsWithRecordIDs:0 records:recordZoneIDs zoneIDs:0 zones:skipPreflight options:v10 payloadHandler:?];
 
-  v8 = [(FCCKPrivateFetchRecordZonesOperation *)self qualityOfService];
+  qualityOfService = [(FCCKPrivateFetchRecordZonesOperation *)self qualityOfService];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56__FCCKPrivateFetchRecordZonesOperation_performOperation__block_invoke_3;
   v9[3] = &unk_1E7C37750;
   v9[4] = self;
-  [(FCCKPrivateDatabaseCKOperationResults *)v7 notifyWhenFinishWithQoS:v8 completionHandler:v9];
+  [(FCCKPrivateDatabaseCKOperationResults *)v7 notifyWhenFinishWithQoS:qualityOfService completionHandler:v9];
 }
 
 void __56__FCCKPrivateFetchRecordZonesOperation_performOperation__block_invoke(uint64_t a1, void *a2)
@@ -137,16 +137,16 @@ void __56__FCCKPrivateFetchRecordZonesOperation_performOperation__block_invoke_3
   [*(a1 + 32) finishedPerformingOperationWithError:v6];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(FCCKPrivateFetchRecordZonesOperation *)self fetchRecordZonesCompletionBlock];
+  errorCopy = error;
+  fetchRecordZonesCompletionBlock = [(FCCKPrivateFetchRecordZonesOperation *)self fetchRecordZonesCompletionBlock];
 
-  if (v4)
+  if (fetchRecordZonesCompletionBlock)
   {
-    v5 = [(FCCKPrivateFetchRecordZonesOperation *)self fetchRecordZonesCompletionBlock];
-    v6 = [(FCCKPrivateFetchRecordZonesOperation *)self resultRecordZonesByZoneID];
-    (v5)[2](v5, v6, v7);
+    fetchRecordZonesCompletionBlock2 = [(FCCKPrivateFetchRecordZonesOperation *)self fetchRecordZonesCompletionBlock];
+    resultRecordZonesByZoneID = [(FCCKPrivateFetchRecordZonesOperation *)self resultRecordZonesByZoneID];
+    (fetchRecordZonesCompletionBlock2)[2](fetchRecordZonesCompletionBlock2, resultRecordZonesByZoneID, errorCopy);
   }
 }
 

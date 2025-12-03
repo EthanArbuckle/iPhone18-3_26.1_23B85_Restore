@@ -1,5 +1,5 @@
 @interface BRCBGSystemTaskContext
-- (BRCBGSystemTaskContext)initWithOptions:(unint64_t)a3;
+- (BRCBGSystemTaskContext)initWithOptions:(unint64_t)options;
 - (unint64_t)releaseReference;
 - (void)addReference;
 @end
@@ -8,16 +8,16 @@
 
 - (unint64_t)releaseReference
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_referenceCounter - 1;
-  v2->_referenceCounter = v3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_referenceCounter - 1;
+  selfCopy->_referenceCounter = v3;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (BRCBGSystemTaskContext)initWithOptions:(unint64_t)a3
+- (BRCBGSystemTaskContext)initWithOptions:(unint64_t)options
 {
   v5.receiver = self;
   v5.super_class = BRCBGSystemTaskContext;
@@ -25,7 +25,7 @@
   if (result)
   {
     result->_referenceCounter = 1;
-    result->_options = a3;
+    result->_options = options;
   }
 
   return result;

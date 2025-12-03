@@ -1,8 +1,8 @@
 @interface TIHardwareKeyboardModifierRemapDetailController
 - (id)newSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation TIHardwareKeyboardModifierRemapDetailController
@@ -13,9 +13,9 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(TIHardwareKeyboardModifierRemapDetailController *)self newSpecifiers];
+    newSpecifiers = [(TIHardwareKeyboardModifierRemapDetailController *)self newSpecifiers];
     v6 = *(&self->super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.isa + v3) = newSpecifiers;
 
     v4 = *(&self->super.super.super.super.super.isa + v3);
   }
@@ -27,19 +27,19 @@
 {
   v38 = *MEMORY[0x277D85DE8];
   v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v3 = [(TIHardwareKeyboardModifierRemapDetailController *)self parentController];
-  v4 = [v3 currentKeyboard];
+  parentController = [(TIHardwareKeyboardModifierRemapDetailController *)self parentController];
+  currentKeyboard = [parentController currentKeyboard];
 
-  v5 = self;
-  v6 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifier];
+  selfCopy = self;
+  specifier = [(TIHardwareKeyboardModifierRemapDetailController *)self specifier];
   v7 = *MEMORY[0x277D3FFB8];
-  v8 = [v6 propertyForKey:*MEMORY[0x277D3FFB8]];
+  v8 = [specifier propertyForKey:*MEMORY[0x277D3FFB8]];
 
   v9 = [v8 isEqualToString:@"Function"];
   v10 = v9;
   if (v9)
   {
-    v11 = showGlobeKeyInsteadOfFunctionKey(v4);
+    v11 = showGlobeKeyInsteadOfFunctionKey(currentKeyboard);
   }
 
   else
@@ -48,13 +48,13 @@
   }
 
   v31 = v8;
-  v30 = attributedTitleForKey(v8, v4, @" key", 0);
-  v12 = [v30 string];
+  v30 = attributedTitleForKey(v8, currentKeyboard, @" key", 0);
+  string = [v30 string];
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v14 = [v13 localizedStringForKey:@"CHOOSE_KEY_ACTION" value:&stru_28679E3A8 table:@"Keyboard"];
 
-  v29 = v12;
-  v15 = [v14 stringByReplacingOccurrencesOfString:@"%@" withString:v12];
+  v29 = string;
+  v15 = [v14 stringByReplacingOccurrencesOfString:@"%@" withString:string];
 
   v28 = v15;
   v16 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:v15];
@@ -85,7 +85,7 @@
         v23 = v22;
         if (((v10 & 1) != 0 || ([v22 isEqualToString:@"Function"] & 1) == 0) && (!v11 || (objc_msgSend(v23, "isEqualToString:", @"Globe") & 1) == 0))
         {
-          v24 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:v5 set:0 get:0 detail:0 cell:3 edit:0];
+          v24 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
           [v24 setProperty:v23 forKey:v7];
           [v32 addObject:v24];
         }
@@ -104,39 +104,39 @@
   return v32;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v49.receiver = self;
   v49.super_class = TIHardwareKeyboardModifierRemapDetailController;
-  v7 = a3;
-  v8 = [(TIHardwareKeyboardModifierRemapDetailController *)&v49 tableView:v7 cellForRowAtIndexPath:v6];
-  v9 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifierAtIndexPath:v6];
+  viewCopy = view;
+  v8 = [(TIHardwareKeyboardModifierRemapDetailController *)&v49 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  v9 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifierAtIndexPath:pathCopy];
   v10 = *MEMORY[0x277D3FFB8];
   v48 = v9;
   v11 = [v9 propertyForKey:*MEMORY[0x277D3FFB8]];
-  v12 = [(TIHardwareKeyboardModifierRemapDetailController *)self parentController];
-  v13 = attributedTitleForKey(v11, [v12 currentKeyboard], 0, 1);
+  parentController = [(TIHardwareKeyboardModifierRemapDetailController *)self parentController];
+  v13 = attributedTitleForKey(v11, [parentController currentKeyboard], 0, 1);
 
-  v14 = [v8 titleLabel];
+  titleLabel = [v8 titleLabel];
   v47 = v13;
-  [v14 setAttributedText:v13];
+  [titleLabel setAttributedText:v13];
 
-  v15 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifier];
-  v16 = [v15 propertyForKey:v10];
+  specifier = [(TIHardwareKeyboardModifierRemapDetailController *)self specifier];
+  v16 = [specifier propertyForKey:v10];
 
-  v17 = [(TIHardwareKeyboardModifierRemapDetailController *)self parentController];
-  v18 = [v17 valueForRemappingKey:v16];
+  parentController2 = [(TIHardwareKeyboardModifierRemapDetailController *)self parentController];
+  v18 = [parentController2 valueForRemappingKey:v16];
 
   [v8 setChecked:{objc_msgSend(v11, "isEqualToString:", v18)}];
-  v19 = [v7 window];
-  v20 = [v19 screen];
-  [v20 scale];
+  window = [viewCopy window];
+  screen = [window screen];
+  [screen scale];
   v22 = v21;
 
   v23 = fmax(v22, 1.0);
-  v24 = [MEMORY[0x277D75348] clearColor];
-  [v7 setSeparatorColor:v24];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [viewCopy setSeparatorColor:clearColor];
 
   v25 = [v8 viewWithTag:10086];
   [v8 bounds];
@@ -149,16 +149,16 @@
     v25 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v26, v27, v28, v29}];
     [v25 setTag:10086];
     [v25 setAutoresizingMask:10];
-    v34 = [MEMORY[0x277D75348] separatorColor];
-    [v25 setBackgroundColor:v34];
+    separatorColor = [MEMORY[0x277D75348] separatorColor];
+    [v25 setBackgroundColor:separatorColor];
 
     [v8 addSubview:v25];
   }
 
   v35 = 1.0 / v23;
-  v36 = [v6 row];
-  v37 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifiers];
-  v38 = [v37 count] - 3;
+  v36 = [pathCopy row];
+  specifiers = [(TIHardwareKeyboardModifierRemapDetailController *)self specifiers];
+  v38 = [specifiers count] - 3;
 
   if (v36 == v38)
   {
@@ -168,9 +168,9 @@
 
   else
   {
-    v39 = [v6 row];
-    v40 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifiers];
-    v41 = [v40 count] - 2;
+    v39 = [pathCopy row];
+    specifiers2 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifiers];
+    v41 = [specifiers2 count] - 2;
 
     if (v39 >= v41)
     {
@@ -192,21 +192,21 @@
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v13 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifierAtIndexPath:v6];
-  v8 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifier];
+  pathCopy = path;
+  viewCopy = view;
+  v13 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifierAtIndexPath:pathCopy];
+  specifier = [(TIHardwareKeyboardModifierRemapDetailController *)self specifier];
   v9 = *MEMORY[0x277D3FFB8];
-  v10 = [v8 propertyForKey:*MEMORY[0x277D3FFB8]];
+  v10 = [specifier propertyForKey:*MEMORY[0x277D3FFB8]];
 
   v11 = [v13 propertyForKey:v9];
-  v12 = [(TIHardwareKeyboardModifierRemapDetailController *)self parentController];
-  [v12 setRemappingFromKey:v10 toValue:v11];
+  parentController = [(TIHardwareKeyboardModifierRemapDetailController *)self parentController];
+  [parentController setRemappingFromKey:v10 toValue:v11];
 
   [(TIHardwareKeyboardModifierRemapDetailController *)self reloadSpecifiers];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 @end

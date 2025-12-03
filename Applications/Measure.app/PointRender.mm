@@ -1,7 +1,7 @@
 @interface PointRender
 - (SCNVector3)position;
 - (_TtC7Measure11PointRender)init;
-- (void)setPosition:(SCNVector3)a3;
+- (void)setPosition:(SCNVector3)position;
 @end
 
 @implementation PointRender
@@ -15,18 +15,18 @@
   return result;
 }
 
-- (void)setPosition:(SCNVector3)a3
+- (void)setPosition:(SCNVector3)position
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
+  z = position.z;
+  y = position.y;
+  x = position.x;
   v6 = *(&self->super.super.isa + OBJC_IVAR____TtC7Measure11PointRender_point);
-  v14 = self;
+  selfCopy = self;
   *&v7 = x;
   *&v8 = y;
   *&v9 = z;
   [v6 setWorldPosition:{v7, v8, v9}];
-  v10 = *(&v14->super.super.isa + OBJC_IVAR____TtC7Measure11PointRender_pointPrime);
+  v10 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtC7Measure11PointRender_pointPrime);
   *&v11 = x;
   *&v12 = y;
   *&v13 = z;

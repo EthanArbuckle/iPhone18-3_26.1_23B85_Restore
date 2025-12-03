@@ -1,7 +1,7 @@
 @interface ACActivityPresentationOptions
-- (ACActivityPresentationOptions)initWithDestinations:(id)a3;
+- (ACActivityPresentationOptions)initWithDestinations:(id)destinations;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ACActivityPresentationOptions
@@ -25,16 +25,16 @@
   return v3;
 }
 
-- (ACActivityPresentationOptions)initWithDestinations:(id)a3
+- (ACActivityPresentationOptions)initWithDestinations:(id)destinations
 {
-  v5 = a3;
+  destinationsCopy = destinations;
   v9.receiver = self;
   v9.super_class = ACActivityPresentationOptions;
   v6 = [(ACActivityPresentationOptions *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_destinations, a3);
+    objc_storeStrong(&v6->_destinations, destinations);
     *&v7->_isUserDismissalAllowedOnLockScreen = 65792;
     *&v7->_isActionButtonInitiated = 0;
     v7->_authorizationOptionsType = 3;
@@ -43,7 +43,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ACActivityPresentationOptions);
   [(ACActivityPresentationOptions *)v4 setUserDismissalAllowedOnLockScreen:self->_isUserDismissalAllowedOnLockScreen];

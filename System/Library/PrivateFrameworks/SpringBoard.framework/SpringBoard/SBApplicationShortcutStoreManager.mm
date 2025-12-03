@@ -1,13 +1,13 @@
 @interface SBApplicationShortcutStoreManager
 + (id)sharedManager;
 - (SBApplicationShortcutStoreManager)init;
-- (id)_stateLock_storeForBundleIdentifier:(id)a3;
-- (id)applicationShortcutItemsForBundleIdentifier:(id)a3 withVersion:(unint64_t)a4;
-- (void)_installedAppsDidChange:(id)a3;
+- (id)_stateLock_storeForBundleIdentifier:(id)identifier;
+- (id)applicationShortcutItemsForBundleIdentifier:(id)identifier withVersion:(unint64_t)version;
+- (void)_installedAppsDidChange:(id)change;
 - (void)dealloc;
 - (void)invalidateCache;
 - (void)saveSynchronously;
-- (void)setApplicationShortcutItems:(id)a3 forBundleIdentifier:(id)a4 withVersion:(unint64_t)a5;
+- (void)setApplicationShortcutItems:(id)items forBundleIdentifier:(id)identifier withVersion:(unint64_t)version;
 @end
 
 @implementation SBApplicationShortcutStoreManager
@@ -47,8 +47,8 @@ void __50__SBApplicationShortcutStoreManager_sharedManager__block_invoke()
     storesKeyedByBundleIdentifier = v2->_storesKeyedByBundleIdentifier;
     v2->_storesKeyedByBundleIdentifier = v5;
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel__installedAppsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__installedAppsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
   }
 
   return v2;
@@ -56,38 +56,38 @@ void __50__SBApplicationShortcutStoreManager_sharedManager__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBApplicationShortcutStoreManager;
   [(SBApplicationShortcutStoreManager *)&v4 dealloc];
 }
 
-- (id)applicationShortcutItemsForBundleIdentifier:(id)a3 withVersion:(unint64_t)a4
+- (id)applicationShortcutItemsForBundleIdentifier:(id)identifier withVersion:(unint64_t)version
 {
-  if (!a3)
+  if (!identifier)
   {
     v13 = 0;
     goto LABEL_9;
   }
 
   v6 = MEMORY[0x277CBEAF8];
-  v7 = a3;
-  v8 = [v6 preferredLanguages];
+  identifierCopy = identifier;
+  preferredLanguages = [v6 preferredLanguages];
   [(NSLock *)self->_stateLock lock];
-  v9 = [(SBApplicationShortcutStoreManager *)self _stateLock_storeForBundleIdentifier:v7];
+  v9 = [(SBApplicationShortcutStoreManager *)self _stateLock_storeForBundleIdentifier:identifierCopy];
 
-  v10 = [v9 languages];
-  if (![v10 isEqualToArray:v8])
+  languages = [v9 languages];
+  if (![languages isEqualToArray:preferredLanguages])
   {
 
     goto LABEL_7;
   }
 
-  v11 = [v9 version];
+  version = [v9 version];
 
-  if (v11 != a4)
+  if (version != version)
   {
 LABEL_7:
     [v9 invalidateCache];
@@ -95,8 +95,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v12 = [v9 applicationShortcutItems];
-  v13 = [v12 copy];
+  applicationShortcutItems = [v9 applicationShortcutItems];
+  v13 = [applicationShortcutItems copy];
 
 LABEL_8:
   [(NSLock *)self->_stateLock unlock];
@@ -106,18 +106,18 @@ LABEL_9:
   return v13;
 }
 
-- (void)setApplicationShortcutItems:(id)a3 forBundleIdentifier:(id)a4 withVersion:(unint64_t)a5
+- (void)setApplicationShortcutItems:(id)items forBundleIdentifier:(id)identifier withVersion:(unint64_t)version
 {
-  if (a4)
+  if (identifier)
   {
     v8 = MEMORY[0x277CBEAF8];
-    v9 = a4;
-    v10 = a3;
-    v12 = [v8 preferredLanguages];
+    identifierCopy = identifier;
+    itemsCopy = items;
+    preferredLanguages = [v8 preferredLanguages];
     [(NSLock *)self->_stateLock lock];
-    v11 = [(SBApplicationShortcutStoreManager *)self _stateLock_storeForBundleIdentifier:v9];
+    v11 = [(SBApplicationShortcutStoreManager *)self _stateLock_storeForBundleIdentifier:identifierCopy];
 
-    [v11 setApplicationShortcutItems:v10 withLanguages:v12 version:a5];
+    [v11 setApplicationShortcutItems:itemsCopy withLanguages:preferredLanguages version:version];
     [(NSLock *)self->_stateLock unlock];
   }
 }
@@ -130,7 +130,7 @@ LABEL_9:
   {
     storesKeyedByBundleIdentifier = self->_storesKeyedByBundleIdentifier;
     *buf = 138412546;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = storesKeyedByBundleIdentifier;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_INFO, "%@: Request to invalidate all stores immediately: %@", buf, 0x16u);
@@ -141,8 +141,8 @@ LABEL_9:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(NSMutableDictionary *)self->_storesKeyedByBundleIdentifier allValues];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_storesKeyedByBundleIdentifier allValues];
+  v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -154,14 +154,14 @@ LABEL_9:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * v9++) invalidateCache];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -179,7 +179,7 @@ LABEL_9:
   {
     storesKeyedByBundleIdentifier = self->_storesKeyedByBundleIdentifier;
     *buf = 138412546;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = storesKeyedByBundleIdentifier;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_INFO, "%@: Request to save all stores immediately: %@", buf, 0x16u);
@@ -190,8 +190,8 @@ LABEL_9:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(NSMutableDictionary *)self->_storesKeyedByBundleIdentifier allValues];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_storesKeyedByBundleIdentifier allValues];
+  v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -203,14 +203,14 @@ LABEL_9:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * v9++) saveSynchronously];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -219,11 +219,11 @@ LABEL_9:
   [(NSLock *)self->_stateLock unlock];
 }
 
-- (void)_installedAppsDidChange:(id)a3
+- (void)_installedAppsDidChange:(id)change
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"SBInstalledApplicationsRemovedBundleIDs"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:@"SBInstalledApplicationsRemovedBundleIDs"];
 
   v15 = 0u;
   v16 = 0u;
@@ -249,7 +249,7 @@ LABEL_9:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v18 = self;
+          selfCopy = self;
           v19 = 2114;
           v20 = v11;
           _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_INFO, "%@: Removing shortcut items for %{public}@ because it was uninstalled", buf, 0x16u);
@@ -265,25 +265,25 @@ LABEL_9:
   }
 }
 
-- (id)_stateLock_storeForBundleIdentifier:(id)a3
+- (id)_stateLock_storeForBundleIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_storesKeyedByBundleIdentifier objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_storesKeyedByBundleIdentifier objectForKeyedSubscript:identifierCopy];
   if (!v5)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v8 = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 2114;
-      v11 = v4;
+      v11 = identifierCopy;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "%@: Creating store for bundle identifier: %{public}@", &v8, 0x16u);
     }
 
-    v5 = [[SBApplicationShortcutStore alloc] initWithBundleIdentifier:v4];
-    [(NSMutableDictionary *)self->_storesKeyedByBundleIdentifier setObject:v5 forKeyedSubscript:v4];
+    v5 = [[SBApplicationShortcutStore alloc] initWithBundleIdentifier:identifierCopy];
+    [(NSMutableDictionary *)self->_storesKeyedByBundleIdentifier setObject:v5 forKeyedSubscript:identifierCopy];
   }
 
   return v5;

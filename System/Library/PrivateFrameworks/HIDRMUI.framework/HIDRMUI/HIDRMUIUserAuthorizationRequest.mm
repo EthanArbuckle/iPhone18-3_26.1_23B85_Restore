@@ -1,39 +1,39 @@
 @interface HIDRMUIUserAuthorizationRequest
-- (BOOL)isEqual:(id)a3;
-- (HIDRMUIUserAuthorizationRequest)initWithCoder:(id)a3;
-- (HIDRMUIUserAuthorizationRequest)initWithDeviceName:(id)a3 requiresPairing:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (HIDRMUIUserAuthorizationRequest)initWithCoder:(id)coder;
+- (HIDRMUIUserAuthorizationRequest)initWithDeviceName:(id)name requiresPairing:(BOOL)pairing;
 - (OS_os_log)log;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HIDRMUIUserAuthorizationRequest
 
-- (HIDRMUIUserAuthorizationRequest)initWithDeviceName:(id)a3 requiresPairing:(BOOL)a4
+- (HIDRMUIUserAuthorizationRequest)initWithDeviceName:(id)name requiresPairing:(BOOL)pairing
 {
-  v7 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = HIDRMUIUserAuthorizationRequest;
   v8 = [(HIDRMUIUserAuthorizationRequest *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_deviceName, a3);
-    v9->_requiresPairing = a4;
+    objc_storeStrong(&v8->_deviceName, name);
+    v9->_requiresPairing = pairing;
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(HIDRMUIUserAuthorizationRequest *)self deviceName];
-    v7 = [v6 copyWithZone:a3];
+    deviceName = [(HIDRMUIUserAuthorizationRequest *)self deviceName];
+    v7 = [deviceName copyWithZone:zone];
     [v5 setDeviceName:v7];
 
     [v5 setRequiresPairing:{-[HIDRMUIUserAuthorizationRequest requiresPairing](self, "requiresPairing")}];
@@ -42,42 +42,42 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(HIDRMUIUserAuthorizationRequest *)self deviceName];
-  [v5 encodeObject:v4 forKey:@"deviceName"];
+  coderCopy = coder;
+  deviceName = [(HIDRMUIUserAuthorizationRequest *)self deviceName];
+  [coderCopy encodeObject:deviceName forKey:@"deviceName"];
 
-  [v5 encodeBool:-[HIDRMUIUserAuthorizationRequest requiresPairing](self forKey:{"requiresPairing"), @"requiresPairing"}];
+  [coderCopy encodeBool:-[HIDRMUIUserAuthorizationRequest requiresPairing](self forKey:{"requiresPairing"), @"requiresPairing"}];
 }
 
-- (HIDRMUIUserAuthorizationRequest)initWithCoder:(id)a3
+- (HIDRMUIUserAuthorizationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
-  v6 = [v4 decodeBoolForKey:@"requiresPairing"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
+  v6 = [coderCopy decodeBoolForKey:@"requiresPairing"];
 
   v7 = [(HIDRMUIUserAuthorizationRequest *)self initWithDeviceName:v5 requiresPairing:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  equalCopy = equal;
+  if (self == equalCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v10 = 1;
   }
 
   else
   {
-    v5 = v4;
-    v6 = [(HIDRMUIUserAuthorizationRequest *)self deviceName];
-    v7 = [(HIDRMUIUserAuthorizationRequest *)v5 deviceName];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    deviceName = [(HIDRMUIUserAuthorizationRequest *)self deviceName];
+    deviceName2 = [(HIDRMUIUserAuthorizationRequest *)v5 deviceName];
+    if ([deviceName isEqualToString:deviceName2])
     {
-      v8 = [(HIDRMUIUserAuthorizationRequest *)self requiresPairing];
-      v9 = v8 ^ [(HIDRMUIUserAuthorizationRequest *)v5 requiresPairing];
+      requiresPairing = [(HIDRMUIUserAuthorizationRequest *)self requiresPairing];
+      v9 = requiresPairing ^ [(HIDRMUIUserAuthorizationRequest *)v5 requiresPairing];
 
       v10 = v9 ^ 1;
     }
@@ -94,8 +94,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HIDRMUIUserAuthorizationRequest *)self deviceName];
-  v4 = [v3 hash];
+  deviceName = [(HIDRMUIUserAuthorizationRequest *)self deviceName];
+  v4 = [deviceName hash];
 
   return v4 ^ [(HIDRMUIUserAuthorizationRequest *)self requiresPairing];
 }
@@ -105,15 +105,15 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HIDRMUIUserAuthorizationRequest *)self deviceName];
-  v7 = [(HIDRMUIUserAuthorizationRequest *)self requiresPairing];
+  deviceName = [(HIDRMUIUserAuthorizationRequest *)self deviceName];
+  requiresPairing = [(HIDRMUIUserAuthorizationRequest *)self requiresPairing];
   v8 = "NO";
-  if (v7)
+  if (requiresPairing)
   {
     v8 = "YES";
   }
 
-  v9 = [v3 stringWithFormat:@"<%@: %p, deviceName: %@, requiresPairing: %s>", v5, self, v6, v8];
+  v9 = [v3 stringWithFormat:@"<%@: %p, deviceName: %@, requiresPairing: %s>", v5, self, deviceName, v8];
 
   return v9;
 }

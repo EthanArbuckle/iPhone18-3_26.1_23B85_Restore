@@ -7,9 +7,9 @@
 
 - (id)_fides_shuffledArray
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = [a1 mutableCopy];
+    v2 = [self mutableCopy];
     v3 = [v2 count];
     v4 = v3 - 1;
     if (v3 != 1)
@@ -23,15 +23,15 @@
       while (v4);
     }
 
-    v5 = [v2 copy];
+    array = [v2 copy];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  return v5;
+  return array;
 }
 
 - (id)_fides_objectByReplacingValue:()DESExtensions withValue:
@@ -44,8 +44,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = a1;
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  selfCopy = self;
+  v10 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -56,14 +56,14 @@
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(selfCopy);
         }
 
         v14 = [*(*(&v17 + 1) + 8 * i) _fides_objectByReplacingValue:v6 withValue:{v7, v17}];
         [v8 addObject:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);

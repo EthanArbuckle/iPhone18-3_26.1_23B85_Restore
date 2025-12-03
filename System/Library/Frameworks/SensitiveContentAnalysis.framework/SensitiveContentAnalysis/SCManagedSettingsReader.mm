@@ -1,7 +1,7 @@
 @interface SCManagedSettingsReader
 + (id)currentInterventionType;
 + (id)currentScanningPolicy;
-+ (id)subscribeForScanningPolicyChanges:(id)a3;
++ (id)subscribeForScanningPolicyChanges:(id)changes;
 @end
 
 @implementation SCManagedSettingsReader
@@ -9,31 +9,31 @@
 + (id)currentScanningPolicy
 {
   v2 = objc_opt_new();
-  v3 = [v2 userSafety];
-  v4 = [v3 scanningPolicy];
+  userSafety = [v2 userSafety];
+  scanningPolicy = [userSafety scanningPolicy];
 
-  return v4;
+  return scanningPolicy;
 }
 
 + (id)currentInterventionType
 {
-  v2 = [a1 currentScanningPolicy];
-  v3 = [v2 interventionType];
+  currentScanningPolicy = [self currentScanningPolicy];
+  interventionType = [currentScanningPolicy interventionType];
 
-  return v3;
+  return interventionType;
 }
 
-+ (id)subscribeForScanningPolicyChanges:(id)a3
++ (id)subscribeForScanningPolicyChanges:(id)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   v4 = [MEMORY[0x1E695DFD8] setWithObject:*MEMORY[0x1E69ADFE0]];
   v5 = [MEMORY[0x1E69AE020] publisherForGroups:v4];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__SCManagedSettingsReader_subscribeForScanningPolicyChanges___block_invoke;
   v9[3] = &unk_1E7A43B80;
-  v10 = v3;
-  v6 = v3;
+  v10 = changesCopy;
+  v6 = changesCopy;
   v7 = [v5 sinkWithReceiveInput:v9];
 
   return v7;

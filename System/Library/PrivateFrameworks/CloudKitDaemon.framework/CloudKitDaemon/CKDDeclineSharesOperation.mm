@@ -1,24 +1,24 @@
 @interface CKDDeclineSharesOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)_declineShares;
 - (BOOL)makeStateTransition;
-- (CKDDeclineSharesOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDDeclineSharesOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_handleShareURLDeclined:(id)a3 responseCode:(id)a4;
-- (void)_performCallbackForURL:(id)a3 error:(id)a4;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_handleShareURLDeclined:(id)declined responseCode:(id)code;
+- (void)_performCallbackForURL:(id)l error:(id)error;
 - (void)main;
 @end
 
 @implementation CKDDeclineSharesOperation
 
-- (CKDDeclineSharesOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDDeclineSharesOperation)initWithOperationInfo:(id)info container:(id)container
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  infoCopy = info;
   v44.receiver = self;
   v44.super_class = CKDDeclineSharesOperation;
-  v7 = [(CKDDatabaseOperation *)&v44 initWithOperationInfo:v6 container:a4];
+  v7 = [(CKDDatabaseOperation *)&v44 initWithOperationInfo:infoCopy container:container];
   if (v7)
   {
     v8 = objc_opt_new();
@@ -33,8 +33,8 @@
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v38 = v6;
-    obj = objc_msgSend_shareMetadatasToDecline(v6, v12, v13);
+    v38 = infoCopy;
+    obj = objc_msgSend_shareMetadatasToDecline(infoCopy, v12, v13);
     v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v14, &v40, v45, 16);
     if (v15)
     {
@@ -67,7 +67,7 @@
       while (v18);
     }
 
-    v6 = v38;
+    infoCopy = v38;
   }
 
   v36 = *MEMORY[0x277D85DE8];
@@ -109,9 +109,9 @@
   return MEMORY[0x2821F9670](self, sel__declineShares, v7);
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     v5 = @"Declining Shares";
   }
@@ -120,7 +120,7 @@
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDDeclineSharesOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
@@ -128,15 +128,15 @@
   return v5;
 }
 
-- (void)_performCallbackForURL:(id)a3 error:(id)a4
+- (void)_performCallbackForURL:(id)l error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  errorCopy = error;
   v10 = objc_msgSend_shareURLsToDecline(self, v8, v9);
-  objc_msgSend_removeObject_(v10, v11, v6);
+  objc_msgSend_removeObject_(v10, v11, lCopy);
 
   v14 = objc_msgSend_clientProvidedMetadatasByURL(self, v12, v13);
-  objc_msgSend_removeObjectForKey_(v14, v15, v6);
+  objc_msgSend_removeObjectForKey_(v14, v15, lCopy);
 
   v18 = objc_msgSend_callbackQueue(self, v16, v17);
   block[0] = MEMORY[0x277D85DD0];
@@ -144,19 +144,19 @@
   block[2] = sub_22522CB0C;
   block[3] = &unk_278546990;
   block[4] = self;
-  v22 = v6;
-  v23 = v7;
-  v19 = v7;
-  v20 = v6;
+  v22 = lCopy;
+  v23 = errorCopy;
+  v19 = errorCopy;
+  v20 = lCopy;
   dispatch_async(v18, block);
 }
 
-- (void)_handleShareURLDeclined:(id)a3 responseCode:(id)a4
+- (void)_handleShareURLDeclined:(id)declined responseCode:(id)code
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_code(v7, v8, v9) == 1)
+  declinedCopy = declined;
+  codeCopy = code;
+  if (objc_msgSend_code(codeCopy, v8, v9) == 1)
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -167,16 +167,16 @@
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v50 = v6;
+      v50 = declinedCopy;
       _os_log_impl(&dword_22506F000, v12, OS_LOG_TYPE_INFO, "Share with URL %@ was successfully declined", buf, 0xCu);
     }
 
-    objc_msgSend__performCallbackForURL_error_(self, v13, v6, 0);
+    objc_msgSend__performCallbackForURL_error_(self, v13, declinedCopy, 0);
   }
 
   else
   {
-    v14 = objc_msgSend_error(v7, v10, v11);
+    v14 = objc_msgSend_error(codeCopy, v10, v11);
     v17 = objc_msgSend_serverError(v14, v15, v16);
     v20 = objc_msgSend_type(v17, v18, v19);
 
@@ -193,7 +193,7 @@
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v50 = v6;
+        v50 = declinedCopy;
         _os_log_impl(&dword_22506F000, v23, OS_LOG_TYPE_INFO, "Zone busy failure for share with url %@.", buf, 0xCu);
       }
     }
@@ -209,10 +209,10 @@
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
       {
         v25 = v24;
-        v28 = objc_msgSend_error(v7, v26, v27);
+        v28 = objc_msgSend_error(codeCopy, v26, v27);
         v31 = objc_msgSend_errorDescription(v28, v29, v30);
         *buf = 138412546;
-        v50 = v6;
+        v50 = declinedCopy;
         v51 = 2114;
         v52 = v31;
         _os_log_impl(&dword_22506F000, v25, OS_LOG_TYPE_INFO, "Error declining share with URL %@: %{public}@", buf, 0x16u);
@@ -220,14 +220,14 @@
 
       v32 = MEMORY[0x277CBC560];
       v33 = *MEMORY[0x277CBC120];
-      v34 = sub_2253962A4(v7);
+      v34 = sub_2253962A4(codeCopy);
       v37 = objc_msgSend_request(self, v35, v36);
-      v38 = sub_225395734(v37, v7);
-      v41 = objc_msgSend_error(v7, v39, v40);
+      v38 = sub_225395734(v37, codeCopy);
+      v41 = objc_msgSend_error(codeCopy, v39, v40);
       v44 = objc_msgSend_errorDescription(v41, v42, v43);
-      v46 = objc_msgSend_errorWithDomain_code_userInfo_format_(v32, v45, v33, v34, v38, @"Error declining share %@: %@", v6, v44);
+      v46 = objc_msgSend_errorWithDomain_code_userInfo_format_(v32, v45, v33, v34, v38, @"Error declining share %@: %@", declinedCopy, v44);
 
-      objc_msgSend__performCallbackForURL_error_(self, v47, v6, v46);
+      objc_msgSend__performCallbackForURL_error_(self, v47, declinedCopy, v46);
     }
   }
 
@@ -375,13 +375,13 @@
   objc_msgSend_makeStateTransition_(self, v8, v7);
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_setDeclineCompletionBlock_(self, v5, 0);
   v6.receiver = self;
   v6.super_class = CKDDeclineSharesOperation;
-  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 @end

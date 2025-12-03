@@ -1,29 +1,29 @@
 @interface FLOWSchemaFLOWKGQAExecutionTier1
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWKGQAExecutionTier1)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWKGQAExecutionTier1)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWKGQAExecutionTier1)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWKGQAExecutionTier1)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addPrimaryEntities:(id)a3;
-- (void)addSecondaryEntities:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPrimaryEntities:(id)entities;
+- (void)addSecondaryEntities:(id)entities;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWKGQAExecutionTier1
 
-- (FLOWSchemaFLOWKGQAExecutionTier1)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWKGQAExecutionTier1)initWithDictionary:(id)dictionary
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v34.receiver = self;
   v34.super_class = FLOWSchemaFLOWKGQAExecutionTier1;
   v5 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)&v34 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"primaryEntities"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"primaryEntities"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"secondaryEntities"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"secondaryEntities"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,7 +109,7 @@
       }
     }
 
-    v22 = [v4 objectForKeyedSubscript:{@"answerId", v26}];
+    v22 = [dictionaryCopy objectForKeyedSubscript:{@"answerId", v26}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -123,30 +123,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWKGQAExecutionTier1)initWithJSON:(id)a3
+- (FLOWSchemaFLOWKGQAExecutionTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -159,31 +159,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_answerId)
   {
-    v4 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self answerId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"answerId"];
+    answerId = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self answerId];
+    v5 = [answerId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"answerId"];
   }
 
   if (self->_primaryEntities)
   {
-    v6 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self primaryEntities];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"primaryEntities"];
+    primaryEntities = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self primaryEntities];
+    v7 = [primaryEntities copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"primaryEntities"];
   }
 
   if (self->_secondaryEntities)
   {
-    v8 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self secondaryEntities];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"secondaryEntities"];
+    secondaryEntities = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self secondaryEntities];
+    v9 = [secondaryEntities copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"secondaryEntities"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -193,28 +193,28 @@
   return v4 ^ [(NSString *)self->_answerId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self primaryEntities];
-  v6 = [v4 primaryEntities];
-  if ((v5 != 0) == (v6 == 0))
+  primaryEntities = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self primaryEntities];
+  primaryEntities2 = [equalCopy primaryEntities];
+  if ((primaryEntities != 0) == (primaryEntities2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self primaryEntities];
-  if (v7)
+  primaryEntities3 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self primaryEntities];
+  if (primaryEntities3)
   {
-    v8 = v7;
-    v9 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self primaryEntities];
-    v10 = [v4 primaryEntities];
-    v11 = [v9 isEqual:v10];
+    v8 = primaryEntities3;
+    primaryEntities4 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self primaryEntities];
+    primaryEntities5 = [equalCopy primaryEntities];
+    v11 = [primaryEntities4 isEqual:primaryEntities5];
 
     if (!v11)
     {
@@ -226,20 +226,20 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self secondaryEntities];
-  v6 = [v4 secondaryEntities];
-  if ((v5 != 0) == (v6 == 0))
+  primaryEntities = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self secondaryEntities];
+  primaryEntities2 = [equalCopy secondaryEntities];
+  if ((primaryEntities != 0) == (primaryEntities2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self secondaryEntities];
-  if (v12)
+  secondaryEntities = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self secondaryEntities];
+  if (secondaryEntities)
   {
-    v13 = v12;
-    v14 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self secondaryEntities];
-    v15 = [v4 secondaryEntities];
-    v16 = [v14 isEqual:v15];
+    v13 = secondaryEntities;
+    secondaryEntities2 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self secondaryEntities];
+    secondaryEntities3 = [equalCopy secondaryEntities];
+    v16 = [secondaryEntities2 isEqual:secondaryEntities3];
 
     if (!v16)
     {
@@ -251,12 +251,12 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self answerId];
-  v6 = [v4 answerId];
-  if ((v5 != 0) != (v6 == 0))
+  primaryEntities = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self answerId];
+  primaryEntities2 = [equalCopy answerId];
+  if ((primaryEntities != 0) != (primaryEntities2 == 0))
   {
-    v17 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self answerId];
-    if (!v17)
+    answerId = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self answerId];
+    if (!answerId)
     {
 
 LABEL_20:
@@ -264,10 +264,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self answerId];
-    v20 = [v4 answerId];
-    v21 = [v19 isEqual:v20];
+    v18 = answerId;
+    answerId2 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self answerId];
+    answerId3 = [equalCopy answerId];
+    v21 = [answerId2 isEqual:answerId3];
 
     if (v21)
     {
@@ -287,10 +287,10 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -353,85 +353,85 @@ LABEL_18:
     while (v12);
   }
 
-  v15 = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self answerId];
+  answerId = [(FLOWSchemaFLOWKGQAExecutionTier1 *)self answerId];
 
-  if (v15)
+  if (answerId)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)addSecondaryEntities:(id)a3
+- (void)addSecondaryEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   secondaryEntities = self->_secondaryEntities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!secondaryEntities)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_secondaryEntities;
-    self->_secondaryEntities = v6;
+    self->_secondaryEntities = array;
 
-    v4 = v8;
+    entitiesCopy = v8;
     secondaryEntities = self->_secondaryEntities;
   }
 
-  [(NSArray *)secondaryEntities addObject:v4];
+  [(NSArray *)secondaryEntities addObject:entitiesCopy];
 }
 
-- (void)addPrimaryEntities:(id)a3
+- (void)addPrimaryEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   primaryEntities = self->_primaryEntities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!primaryEntities)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_primaryEntities;
-    self->_primaryEntities = v6;
+    self->_primaryEntities = array;
 
-    v4 = v8;
+    entitiesCopy = v8;
     primaryEntities = self->_primaryEntities;
   }
 
-  [(NSArray *)primaryEntities addObject:v4];
+  [(NSArray *)primaryEntities addObject:entitiesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = FLOWSchemaFLOWKGQAExecutionTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(FLOWSchemaFLOWKGQAExecutionTier1 *)self deletePrimaryEntities];
     [(FLOWSchemaFLOWKGQAExecutionTier1 *)self deleteSecondaryEntities];
     [(FLOWSchemaFLOWKGQAExecutionTier1 *)self deleteAnswerId];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(FLOWSchemaFLOWKGQAExecutionTier1 *)self deletePrimaryEntities];
     [(FLOWSchemaFLOWKGQAExecutionTier1 *)self deleteSecondaryEntities];
     [(FLOWSchemaFLOWKGQAExecutionTier1 *)self deleteAnswerId];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(FLOWSchemaFLOWKGQAExecutionTier1 *)self deletePrimaryEntities];
     [(FLOWSchemaFLOWKGQAExecutionTier1 *)self deleteSecondaryEntities];
     [(FLOWSchemaFLOWKGQAExecutionTier1 *)self deleteAnswerId];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(FLOWSchemaFLOWKGQAExecutionTier1 *)self deletePrimaryEntities];
     [(FLOWSchemaFLOWKGQAExecutionTier1 *)self deleteSecondaryEntities];
     [(FLOWSchemaFLOWKGQAExecutionTier1 *)self deleteAnswerId];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(FLOWSchemaFLOWKGQAExecutionTier1 *)self deletePrimaryEntities];
     [(FLOWSchemaFLOWKGQAExecutionTier1 *)self deleteSecondaryEntities];

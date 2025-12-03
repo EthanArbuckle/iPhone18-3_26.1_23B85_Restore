@@ -1,125 +1,125 @@
 @interface ShelvesDelegate
 - (_TtC23ShelfKitCollectionViews15ShelvesDelegate)init;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 targetIndexPathForMoveFromItemAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6;
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDecelerating:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view targetIndexPathForMoveFromItemAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path;
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDecelerating:(id)decelerating;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation ShelvesDelegate
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_301F38();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_301EB8();
-  v10 = a3;
-  v11 = self;
-  ShelvesDelegate.collectionView(_:didSelectItemAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  ShelvesDelegate.collectionView(_:didSelectItemAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path
 {
   v9 = sub_301F38();
   v10 = *(v9 - 8);
   __chkstk_darwin(v9);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_301EB8();
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
-  sub_17FDC8(v14, v12);
+  viewCopy = view;
+  supplementaryViewCopy = supplementaryView;
+  selfCopy = self;
+  sub_17FDC8(supplementaryViewCopy, v12);
 
   (*(v10 + 8))(v12, v9);
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_301F38();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_301EB8();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  ShelvesDelegate.collectionView(_:willDisplay:forItemAt:)(v12, v13, v11);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  ShelvesDelegate.collectionView(_:willDisplay:forItemAt:)(viewCopy, cellCopy, v11);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_301F38();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_301EB8();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_180C7C(v13, v11);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_180C7C(cellCopy, v11);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
   v6 = sub_301F38();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_301EB8();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_181494(v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
+  y = point.y;
+  x = point.x;
   v9 = sub_301F38();
   v10 = *(v9 - 8);
   __chkstk_darwin(v9);
   v12 = &v17 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_301EB8();
-  v13 = a3;
-  v14 = self;
-  v15 = ShelvesDelegate.collectionView(_:contextMenuConfigurationForItemAt:point:)(v13, v12, x, y);
+  viewCopy = view;
+  selfCopy = self;
+  v15 = ShelvesDelegate.collectionView(_:contextMenuConfigurationForItemAt:point:)(viewCopy, v12, x, y);
 
   (*(v10 + 8))(v12, v9);
 
   return v15;
 }
 
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
   __swift_project_boxed_opaque_existential_1Tm((&self->super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews15ShelvesDelegate_episodeController), *&self->presenter[OBJC_IVAR____TtC23ShelfKitCollectionViews15ShelvesDelegate_episodeController + 8]);
-  v7 = a4;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
   sub_30A928();
 
   swift_unknownObjectRelease();
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveFromItemAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)collectionView:(id)view targetIndexPathForMoveFromItemAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
   v5 = sub_301F38();
   v6 = *(v5 - 8);
@@ -163,41 +163,41 @@
   return v21.super.isa;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  ShelvesDelegate.scrollViewDidScroll(_:)(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  ShelvesDelegate.scrollViewDidScroll(_:)(scrollCopy);
 }
 
-- (void)scrollViewWillBeginDecelerating:(id)a3
+- (void)scrollViewWillBeginDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
-  ShelvesDelegate.scrollViewWillBeginDecelerating(_:)(v4);
+  deceleratingCopy = decelerating;
+  selfCopy = self;
+  ShelvesDelegate.scrollViewWillBeginDecelerating(_:)(deceleratingCopy);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
-  ShelvesDelegate.scrollViewDidEndDecelerating(_:)(v4);
+  deceleratingCopy = decelerating;
+  selfCopy = self;
+  ShelvesDelegate.scrollViewDidEndDecelerating(_:)(deceleratingCopy);
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  v7 = self;
-  ShelvesDelegate.scrollViewDidEndDragging(_:willDecelerate:)(v6, a4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  ShelvesDelegate.scrollViewDidEndDragging(_:willDecelerate:)(draggingCopy, decelerate);
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = self;
-  ShelvesDelegate.scrollViewWillEndDragging(_:withVelocity:targetContentOffset:)(v9, a5, x, y);
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  selfCopy = self;
+  ShelvesDelegate.scrollViewWillEndDragging(_:withVelocity:targetContentOffset:)(draggingCopy, offset, x, y);
 }
 
 - (_TtC23ShelfKitCollectionViews15ShelvesDelegate)init

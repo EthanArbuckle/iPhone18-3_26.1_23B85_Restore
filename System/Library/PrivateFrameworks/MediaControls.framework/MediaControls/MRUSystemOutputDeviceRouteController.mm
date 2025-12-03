@@ -7,7 +7,7 @@
 - (MRUOutputDeviceAsset)systemOutputDeviceAsset;
 - (MRUOutputDeviceAsset)systemOutputDeviceAssetWithInCall;
 - (MRUSystemOutputDeviceRouteController)init;
-- (void)callMonitorDidUpdateOnCall:(id)a3 isOnCall:(BOOL)a4;
+- (void)callMonitorDidUpdateOnCall:(id)call isOnCall:(BOOL)onCall;
 - (void)routeDidChangeNotification;
 - (void)updateOutputDevices;
 @end
@@ -17,8 +17,8 @@
 - (void)updateOutputDevices
 {
   v59 = *MEMORY[0x1E69E9840];
-  v3 = [(MPAVEndpointRoute *)self->_systemRoute endpointObject];
-  v4 = [v3 outputDevices];
+  endpointObject = [(MPAVEndpointRoute *)self->_systemRoute endpointObject];
+  outputDevices = [endpointObject outputDevices];
 
   v5 = MCLogCategoryDefault();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -26,13 +26,13 @@
     *buf = 138543618;
     v56 = objc_opt_class();
     v57 = 2114;
-    v58 = v4;
+    v58 = outputDevices;
     _os_log_impl(&dword_1A20FC000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ output devices changed: %{public}@", buf, 0x16u);
   }
 
-  if (v4)
+  if (outputDevices)
   {
-    if (-[MPAVEndpointRoute isSplitRoute](self->_systemRoute, "isSplitRoute") && [v4 count] == 2)
+    if (-[MPAVEndpointRoute isSplitRoute](self->_systemRoute, "isSplitRoute") && [outputDevices count] == 2)
     {
       isSplitRoute = self->_isSplitRoute;
       if (!isSplitRoute)
@@ -40,18 +40,18 @@
         self->_isSplitRoute = 1;
       }
 
-      v6 = [objc_alloc(MEMORY[0x1E6970470]) initWithOutputDevices:v4];
+      v6 = [objc_alloc(MEMORY[0x1E6970470]) initWithOutputDevices:outputDevices];
       systemOutputDeviceRoute = self->_systemOutputDeviceRoute;
       self->_systemOutputDeviceRoute = v6;
 
       [(MPAVOutputDeviceRoute *)self->_primaryOutputDeviceRoute logicalLeaderOutputDevice];
       v8 = MRAVOutputDeviceCopyUniqueIdentifier();
-      v9 = [v4 firstObject];
+      firstObject = [outputDevices firstObject];
       v10 = MRAVOutputDeviceCopyUniqueIdentifier();
 
       v11 = objc_alloc(MEMORY[0x1E6970470]);
-      v12 = [v4 firstObject];
-      v54 = v12;
+      firstObject2 = [outputDevices firstObject];
+      v54 = firstObject2;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1];
       v14 = [v11 initWithOutputDevices:v13];
       primaryOutputDeviceRoute = self->_primaryOutputDeviceRoute;
@@ -60,12 +60,12 @@
       v16 = [v10 isEqualToString:v8];
       [(MPAVOutputDeviceRoute *)self->_secondaryOutputDeviceRoute logicalLeaderOutputDevice];
       v17 = MRAVOutputDeviceCopyUniqueIdentifier();
-      v18 = [v4 lastObject];
+      lastObject = [outputDevices lastObject];
       v19 = MRAVOutputDeviceCopyUniqueIdentifier();
 
       v20 = objc_alloc(MEMORY[0x1E6970470]);
-      v21 = [v4 lastObject];
-      v53 = v21;
+      lastObject2 = [outputDevices lastObject];
+      v53 = lastObject2;
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
       v23 = [v20 initWithOutputDevices:v22];
       secondaryOutputDeviceRoute = self->_secondaryOutputDeviceRoute;
@@ -81,10 +81,10 @@
     else
     {
       self->_isSplitRoute = 0;
-      v25 = [(MPAVOutputDeviceRoute *)self->_systemOutputDeviceRoute outputDevices];
-      v26 = [v25 isEqualToArray:v4];
+      outputDevices2 = [(MPAVOutputDeviceRoute *)self->_systemOutputDeviceRoute outputDevices];
+      v26 = [outputDevices2 isEqualToArray:outputDevices];
 
-      v27 = [objc_alloc(MEMORY[0x1E6970470]) initWithOutputDevices:v4];
+      v27 = [objc_alloc(MEMORY[0x1E6970470]) initWithOutputDevices:outputDevices];
       v28 = self->_systemOutputDeviceRoute;
       self->_systemOutputDeviceRoute = v27;
 
@@ -181,15 +181,15 @@ LABEL_33:
 
 - (MRUOutputDeviceAsset)systemOutputDeviceAssetWithInCall
 {
-  v3 = [(MPAVOutputDeviceRoute *)self->_systemOutputDeviceRoute outputDevice];
-  v4 = [v3 deviceType];
+  outputDevice = [(MPAVOutputDeviceRoute *)self->_systemOutputDeviceRoute outputDevice];
+  deviceType = [outputDevice deviceType];
 
   v5 = +[MRUCallMonitor sharedMonitor];
-  v6 = [v5 isOnCall];
+  isOnCall = [v5 isOnCall];
 
-  if (v6)
+  if (isOnCall)
   {
-    v7 = v4 == 4;
+    v7 = deviceType == 4;
   }
 
   else
@@ -235,12 +235,12 @@ LABEL_33:
 
 - (BOOL)isPrimaryOutputDeviceAlternateTransportTypeUSBC
 {
-  v2 = [(MRUSystemOutputDeviceRouteController *)self primaryOutputDeviceRoute];
-  v3 = [v2 logicalLeaderOutputDevice];
+  primaryOutputDeviceRoute = [(MRUSystemOutputDeviceRouteController *)self primaryOutputDeviceRoute];
+  logicalLeaderOutputDevice = [primaryOutputDeviceRoute logicalLeaderOutputDevice];
 
-  if ([v3 isAirpodsMaxDevice])
+  if ([logicalLeaderOutputDevice isAirpodsMaxDevice])
   {
-    v4 = [v3 deviceType] == 5;
+    v4 = [logicalLeaderOutputDevice deviceType] == 5;
   }
 
   else
@@ -277,19 +277,19 @@ uint64_t __56__MRUSystemOutputDeviceRouteController_sharedController__block_invo
   v2 = [(MRUSystemOutputDeviceRouteController *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
-    v5 = [MEMORY[0x1E6970490] systemRoute];
+    systemRoute = [MEMORY[0x1E6970490] systemRoute];
     systemRoute = v2->_systemRoute;
-    v2->_systemRoute = v5;
+    v2->_systemRoute = systemRoute;
 
     v7 = +[MRUCallMonitor sharedMonitor];
     [v7 addObserver:v2];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v2 selector:sel_routeDidChangeNotification name:*MEMORY[0x1E696F860] object:v2->_systemRoute];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_routeDidChangeNotification name:*MEMORY[0x1E696F860] object:v2->_systemRoute];
 
     [(MRUSystemOutputDeviceRouteController *)v2 updateOutputDevices];
   }
@@ -308,21 +308,21 @@ uint64_t __56__MRUSystemOutputDeviceRouteController_sharedController__block_invo
 {
   MRAVOutputContextGetSharedAudioPresentationContext();
   v2 = MRAVOutputContextCopyOutputDevices();
-  v3 = [v2 firstObject];
-  [v3 deviceType];
+  firstObject = [v2 firstObject];
+  [firstObject deviceType];
   v4 = MRAVOutputDeviceTypeCopyDescription();
 
   return v4;
 }
 
-- (void)callMonitorDidUpdateOnCall:(id)a3 isOnCall:(BOOL)a4
+- (void)callMonitorDidUpdateOnCall:(id)call isOnCall:(BOOL)onCall
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSHashTable *)self->_observers copy:a3];
+  v5 = [(NSHashTable *)self->_observers copy:call];
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

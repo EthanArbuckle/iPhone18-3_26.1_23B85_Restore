@@ -1,82 +1,82 @@
 @interface EQKitOffsetVBox
-- (BOOL)isEqual:(id)a3;
-- (EQKitOffsetVBox)initWithChildBoxes:(id)a3 pivotIndex:(unint64_t)a4 offset:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (EQKitOffsetVBox)initWithChildBoxes:(id)boxes pivotIndex:(unint64_t)index offset:(double)offset;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5;
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width;
 @end
 
 @implementation EQKitOffsetVBox
 
-- (EQKitOffsetVBox)initWithChildBoxes:(id)a3 pivotIndex:(unint64_t)a4 offset:(double)a5
+- (EQKitOffsetVBox)initWithChildBoxes:(id)boxes pivotIndex:(unint64_t)index offset:(double)offset
 {
   v7.receiver = self;
   v7.super_class = EQKitOffsetVBox;
-  result = [(EQKitVBox *)&v7 initWithChildBoxes:a3 pivotIndex:a4];
+  result = [(EQKitVBox *)&v7 initWithChildBoxes:boxes pivotIndex:index];
   if (result)
   {
-    result->mOffset = a5;
+    result->mOffset = offset;
   }
 
   return result;
 }
 
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width
 {
   v8.receiver = self;
   v8.super_class = EQKitOffsetVBox;
-  [(EQKitVBox *)&v8 p_cacheDimensionsForHeight:a3 depth:a4 width:a5];
-  if (a3)
+  [(EQKitVBox *)&v8 p_cacheDimensionsForHeight:height depth:depth width:width];
+  if (height)
   {
-    *a3 = self->mOffset + *a3;
+    *height = self->mOffset + *height;
   }
 
-  if (a4)
+  if (depth)
   {
-    *a4 = *a4 - self->mOffset;
+    *depth = *depth - self->mOffset;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(EQKitCompoundBox *)self childBoxes];
-  v6 = [(EQKitVBox *)self pivotIndex];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  childBoxes = [(EQKitCompoundBox *)self childBoxes];
+  pivotIndex = [(EQKitVBox *)self pivotIndex];
   [(EQKitOffsetVBox *)self offset];
 
-  return [v4 initWithChildBoxes:v5 pivotIndex:v6 offset:?];
+  return [v4 initWithChildBoxes:childBoxes pivotIndex:pivotIndex offset:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = self;
-  v4 = self == a3;
-  LOBYTE(self) = self == a3;
-  if (a3)
+  selfCopy = self;
+  v4 = self == equal;
+  LOBYTE(self) = self == equal;
+  if (equal)
   {
     if (!v4)
     {
-      LODWORD(self) = [a3 isMemberOfClass:objc_opt_class()];
+      LODWORD(self) = [equal isMemberOfClass:objc_opt_class()];
       if (self)
       {
-        v6 = [(EQKitVBox *)v3 pivotIndex];
-        if (v6 == [a3 pivotIndex] && (-[EQKitOffsetVBox offset](v3, "offset"), v8 = v7, objc_msgSend(a3, "offset"), v8 == v9))
+        pivotIndex = [(EQKitVBox *)selfCopy pivotIndex];
+        if (pivotIndex == [equal pivotIndex] && (-[EQKitOffsetVBox offset](selfCopy, "offset"), v8 = v7, objc_msgSend(equal, "offset"), v8 == v9))
         {
-          v10 = [(EQKitCompoundBox *)v3 childBoxes];
-          self = [a3 childBoxes];
-          if (v10 == self)
+          childBoxes = [(EQKitCompoundBox *)selfCopy childBoxes];
+          self = [equal childBoxes];
+          if (childBoxes == self)
           {
             LOBYTE(self) = 1;
           }
 
           else
           {
-            v11 = self;
+            selfCopy2 = self;
             LOBYTE(self) = 0;
-            if (v10 && v11)
+            if (childBoxes && selfCopy2)
             {
 
-              LOBYTE(self) = [(EQKitOffsetVBox *)v10 isEqual:?];
+              LOBYTE(self) = [(EQKitOffsetVBox *)childBoxes isEqual:?];
             }
           }
         }
@@ -102,10 +102,10 @@
   v8 = v7;
   [(EQKitCompoundBox *)self width];
   v10 = v9;
-  v11 = [(EQKitCompoundBox *)self childBoxes];
-  v12 = [(EQKitVBox *)self pivotIndex];
+  childBoxes = [(EQKitCompoundBox *)self childBoxes];
+  pivotIndex = [(EQKitVBox *)self pivotIndex];
   [(EQKitOffsetVBox *)self offset];
-  return [v3 stringWithFormat:@"<%@ %p>: height=%f depth=%f width=%f childBoxes=%@ pivotIndex=%lu offset=%f", v4, self, v6, v8, v10, v11, v12, v13];
+  return [v3 stringWithFormat:@"<%@ %p>: height=%f depth=%f width=%f childBoxes=%@ pivotIndex=%lu offset=%f", v4, self, v6, v8, v10, childBoxes, pivotIndex, v13];
 }
 
 @end

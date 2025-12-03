@@ -1,18 +1,18 @@
 @interface SMTriggerNotification
-+ (id)triggerSOSCategoryToString:(unint64_t)a3;
-- (SMTriggerNotification)initWithTriggerCategory:(unint64_t)a3 SOSState:(unint64_t)a4 triggerName:(id)a5 date:(id)a6 details:(id)a7;
++ (id)triggerSOSCategoryToString:(unint64_t)string;
+- (SMTriggerNotification)initWithTriggerCategory:(unint64_t)category SOSState:(unint64_t)state triggerName:(id)name date:(id)date details:(id)details;
 - (id)description;
 @end
 
 @implementation SMTriggerNotification
 
-- (SMTriggerNotification)initWithTriggerCategory:(unint64_t)a3 SOSState:(unint64_t)a4 triggerName:(id)a5 date:(id)a6 details:(id)a7
+- (SMTriggerNotification)initWithTriggerCategory:(unint64_t)category SOSState:(unint64_t)state triggerName:(id)name date:(id)date details:(id)details
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
-  if (a3 >= 0x1B)
+  nameCopy = name;
+  dateCopy = date;
+  detailsCopy = details;
+  v16 = detailsCopy;
+  if (category >= 0x1B)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -27,7 +27,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (a4 - 1 >= 2)
+  if (state - 1 >= 2)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -40,7 +40,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v13)
+  if (!nameCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -53,7 +53,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v14)
+  if (!dateCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -66,7 +66,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v15)
+  if (!detailsCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -78,7 +78,7 @@ LABEL_19:
 
 LABEL_20:
 
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_21;
   }
 
@@ -88,29 +88,29 @@ LABEL_20:
   p_isa = &v17->super.super.isa;
   if (v17)
   {
-    v17->_triggerCategory = a3;
-    v17->_SOSState = a4;
-    objc_storeStrong(&v17->_triggerName, a5);
-    objc_storeStrong(p_isa + 4, a6);
-    objc_storeStrong(p_isa + 5, a7);
+    v17->_triggerCategory = category;
+    v17->_SOSState = state;
+    objc_storeStrong(&v17->_triggerName, name);
+    objc_storeStrong(p_isa + 4, date);
+    objc_storeStrong(p_isa + 5, details);
   }
 
   self = p_isa;
-  v19 = self;
+  selfCopy = self;
 LABEL_21:
 
-  return v19;
+  return selfCopy;
 }
 
-+ (id)triggerSOSCategoryToString:(unint64_t)a3
++ (id)triggerSOSCategoryToString:(unint64_t)string
 {
   v3 = @"SMTriggerSOSCategoryNonSOS";
-  if (a3 == 2)
+  if (string == 2)
   {
     v3 = @"SMTriggerSOSCategorySOS";
   }
 
-  if (a3)
+  if (string)
   {
     return v3;
   }
@@ -126,11 +126,11 @@ LABEL_21:
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277D4ABC8] triggerCategoryToString:{-[SMTriggerNotification triggerCategory](self, "triggerCategory")}];
   v5 = [objc_opt_class() triggerSOSCategoryToString:{-[SMTriggerNotification SOSState](self, "SOSState")}];
-  v6 = [(SMTriggerNotification *)self triggerName];
-  v7 = [(SMTriggerNotification *)self date];
-  v8 = [v7 stringFromDate];
-  v9 = [(SMTriggerNotification *)self details];
-  v10 = [v3 stringWithFormat:@"SMTriggerNotification, triggerCategory, %@, SOS state, %@, triggerName, %@, date, %@, details, %@", v4, v5, v6, v8, v9];
+  triggerName = [(SMTriggerNotification *)self triggerName];
+  date = [(SMTriggerNotification *)self date];
+  stringFromDate = [date stringFromDate];
+  details = [(SMTriggerNotification *)self details];
+  v10 = [v3 stringWithFormat:@"SMTriggerNotification, triggerCategory, %@, SOS state, %@, triggerName, %@, date, %@, details, %@", v4, v5, triggerName, stringFromDate, details];
 
   return v10;
 }

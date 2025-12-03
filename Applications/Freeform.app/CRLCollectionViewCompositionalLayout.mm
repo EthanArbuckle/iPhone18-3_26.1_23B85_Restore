@@ -1,24 +1,24 @@
 @interface CRLCollectionViewCompositionalLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGSize)collectionViewContentSize;
-- (_TtC8Freeform36CRLCollectionViewCompositionalLayout)initWithSection:(id)a3;
-- (_TtC8Freeform36CRLCollectionViewCompositionalLayout)initWithSection:(id)a3 configuration:(id)a4;
-- (_TtC8Freeform36CRLCollectionViewCompositionalLayout)initWithSectionProvider:(id)a3;
-- (_TtC8Freeform36CRLCollectionViewCompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (_TtC8Freeform36CRLCollectionViewCompositionalLayout)initWithSection:(id)section;
+- (_TtC8Freeform36CRLCollectionViewCompositionalLayout)initWithSection:(id)section configuration:(id)configuration;
+- (_TtC8Freeform36CRLCollectionViewCompositionalLayout)initWithSectionProvider:(id)provider;
+- (_TtC8Freeform36CRLCollectionViewCompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 - (void)prepareLayout;
 @end
 
 @implementation CRLCollectionViewCompositionalLayout
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  selfCopy = self;
   v8 = sub_1000710F8(x, y, width, height);
 
   return v8 & 1;
@@ -27,14 +27,14 @@
 - (void)prepareLayout
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform36CRLCollectionViewCompositionalLayout_coreLayout);
-  v3 = self;
+  selfCopy = self;
 
-  sub_1000757A8(v3, v2, v3);
+  sub_1000757A8(selfCopy, v2, selfCopy);
 }
 
 - (CGSize)collectionViewContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_10007752C();
   v4 = v3;
   v6 = v5;
@@ -46,19 +46,19 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v15.receiver = self;
   v15.super_class = swift_getObjectType();
   v7 = v15.receiver;
-  v8 = [(CRLCollectionViewCompositionalLayout *)&v15 layoutAttributesForElementsInRect:x, y, width, height];
-  if (v8)
+  height = [(CRLCollectionViewCompositionalLayout *)&v15 layoutAttributesForElementsInRect:x, y, width, height];
+  if (height)
   {
-    v9 = v8;
+    v9 = height;
     sub_10007775C();
     v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -83,7 +83,7 @@ LABEL_6:
   return v13;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   ObjectType = swift_getObjectType();
   v6 = type metadata accessor for IndexPath();
@@ -92,10 +92,10 @@ LABEL_6:
   v9 = &v16 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = self;
+  selfCopy = self;
   v11 = String._bridgeToObjectiveC()();
   isa = IndexPath._bridgeToObjectiveC()().super.isa;
-  v16.receiver = v10;
+  v16.receiver = selfCopy;
   v16.super_class = ObjectType;
   v13 = [(CRLCollectionViewCompositionalLayout *)&v16 layoutAttributesForSupplementaryViewOfKind:v11 atIndexPath:isa];
 
@@ -115,31 +115,31 @@ LABEL_6:
   return v13;
 }
 
-- (_TtC8Freeform36CRLCollectionViewCompositionalLayout)initWithSection:(id)a3
+- (_TtC8Freeform36CRLCollectionViewCompositionalLayout)initWithSection:(id)section
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC8Freeform36CRLCollectionViewCompositionalLayout)initWithSection:(id)a3 configuration:(id)a4
+- (_TtC8Freeform36CRLCollectionViewCompositionalLayout)initWithSection:(id)section configuration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC8Freeform36CRLCollectionViewCompositionalLayout)initWithSectionProvider:(id)a3
+- (_TtC8Freeform36CRLCollectionViewCompositionalLayout)initWithSectionProvider:(id)provider
 {
-  _Block_copy(a3);
+  _Block_copy(provider);
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC8Freeform36CRLCollectionViewCompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4
+- (_TtC8Freeform36CRLCollectionViewCompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration
 {
-  _Block_copy(a3);
+  _Block_copy(provider);
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;

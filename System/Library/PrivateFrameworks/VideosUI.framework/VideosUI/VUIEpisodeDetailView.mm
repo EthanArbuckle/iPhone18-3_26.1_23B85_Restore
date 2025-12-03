@@ -1,32 +1,32 @@
 @interface VUIEpisodeDetailView
-+ (CGSize)_episodeFrameImageSizeForDetailView:(id)a3 withViewSize:(CGSize)a4;
-+ (void)configureEpisodeDetailView:(id)a3 withMedia:(id)a4 viewSize:(CGSize)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (VUIEpisodeDetailView)initWithFrame:(CGRect)a3;
++ (CGSize)_episodeFrameImageSizeForDetailView:(id)view withViewSize:(CGSize)size;
++ (void)configureEpisodeDetailView:(id)view withMedia:(id)media viewSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (VUIEpisodeDetailView)initWithFrame:(CGRect)frame;
 - (VUIEpisodeDetailViewDelegate)episodeViewDelegate;
-- (double)_descriptionBottomMarginWithBaselineMargin:(double)a3;
-- (double)_descriptionTopMarginWithBaselineMargin:(double)a3 otherFont:(id)a4;
+- (double)_descriptionBottomMarginWithBaselineMargin:(double)margin;
+- (double)_descriptionTopMarginWithBaselineMargin:(double)margin otherFont:(id)font;
 - (double)_seasonMargin;
 - (void)_configureDotSeparator;
 - (void)_configureViewElementsForAX;
-- (void)didTapButtonForEpisodeFrameView:(id)a3;
+- (void)didTapButtonForEpisodeFrameView:(id)view;
 - (void)layoutSubviews;
-- (void)setContentDescriptionView:(id)a3;
-- (void)setEpisodeNumberLabel:(id)a3;
-- (void)setEpisodeTitleLabel:(id)a3;
-- (void)setImageFrameView:(id)a3;
-- (void)setMediaBadgeTagsView:(id)a3;
-- (void)setReleaseDateLabel:(id)a3;
-- (void)setSeasonNumberLabel:(id)a3;
+- (void)setContentDescriptionView:(id)view;
+- (void)setEpisodeNumberLabel:(id)label;
+- (void)setEpisodeTitleLabel:(id)label;
+- (void)setImageFrameView:(id)view;
+- (void)setMediaBadgeTagsView:(id)view;
+- (void)setReleaseDateLabel:(id)label;
+- (void)setSeasonNumberLabel:(id)label;
 - (void)updateProgress;
 @end
 
 @implementation VUIEpisodeDetailView
 
-+ (CGSize)_episodeFrameImageSizeForDetailView:(id)a3 withViewSize:(CGSize)a4
++ (CGSize)_episodeFrameImageSizeForDetailView:(id)view withViewSize:(CGSize)size
 {
-  width = a4.width;
-  if ([VUIUtilities isIpadInterface:a3])
+  width = size.width;
+  if ([VUIUtilities isIpadInterface:view])
   {
     v5 = width + -48.0;
   }
@@ -42,41 +42,41 @@
   return result;
 }
 
-+ (void)configureEpisodeDetailView:(id)a3 withMedia:(id)a4 viewSize:(CGSize)a5
++ (void)configureEpisodeDetailView:(id)view withMedia:(id)media viewSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v70 = a3;
-  v9 = a4;
-  [v70 setMediaItem:v9];
-  v10 = [v70 imageFrameView];
-  if (v10)
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  mediaCopy = media;
+  [viewCopy setMediaItem:mediaCopy];
+  imageFrameView = [viewCopy imageFrameView];
+  if (imageFrameView)
   {
-    v11 = [v70 imageFrameView];
+    imageFrameView2 = [viewCopy imageFrameView];
   }
 
   else
   {
-    v11 = [[VUILibraryEpisodeFrameView alloc] initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+    imageFrameView2 = [[VUILibraryEpisodeFrameView alloc] initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   }
 
-  v12 = v11;
+  v12 = imageFrameView2;
 
-  [a1 _episodeFrameImageSizeForDetailView:v70 withViewSize:{width, height}];
-  [VUILibraryEpisodeFrameView configureEpisodeFrameView:v12 withMedia:v9 layout:1 imageSize:?];
+  [self _episodeFrameImageSizeForDetailView:viewCopy withViewSize:{width, height}];
+  [VUILibraryEpisodeFrameView configureEpisodeFrameView:v12 withMedia:mediaCopy layout:1 imageSize:?];
   v69 = v12;
-  [v70 setImageFrameView:v12];
+  [viewCopy setImageFrameView:v12];
   v13 = objc_alloc_init(VUITextLayout);
   [(VUITextLayout *)v13 setTextStyle:+[VUIUtilities isIpadInterface]^ 1];
   [(VUITextLayout *)v13 setFontWeight:10];
-  v14 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-  [(VUITextLayout *)v13 setColor:v14];
+  vui_primaryTextColor = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+  [(VUITextLayout *)v13 setColor:vui_primaryTextColor];
 
   [(VUITextLayout *)v13 setNumberOfLines:2];
-  v15 = [v9 title];
-  v16 = [v70 episodeTitleLabel];
-  v17 = [VUILabel labelWithString:v15 textLayout:v13 existingLabel:v16];
-  [v70 setEpisodeTitleLabel:v17];
+  title = [mediaCopy title];
+  episodeTitleLabel = [viewCopy episodeTitleLabel];
+  v17 = [VUILabel labelWithString:title textLayout:v13 existingLabel:episodeTitleLabel];
+  [viewCopy setEpisodeTitleLabel:v17];
 
   v18 = objc_alloc_init(VUITextLayout);
   if (+[VUIUtilities isIpadInterface])
@@ -91,16 +91,16 @@
 
   [(VUITextLayout *)v18 setTextStyle:v19];
   [(VUITextLayout *)v18 setFontWeight:10];
-  v20 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-  [(VUITextLayout *)v18 setColor:v20];
+  vui_secondaryTextColor = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+  [(VUITextLayout *)v18 setColor:vui_secondaryTextColor];
 
   [(VUITextLayout *)v18 setNumberOfLines:1];
-  v21 = [v9 seasonNumber];
-  v22 = v21;
+  seasonNumber = [mediaCopy seasonNumber];
+  v22 = seasonNumber;
   v23 = &unk_1F5E5D968;
-  if (v21)
+  if (seasonNumber)
   {
-    v23 = v21;
+    v23 = seasonNumber;
   }
 
   v24 = v23;
@@ -110,12 +110,12 @@
   v27 = [v26 localizedStringForKey:@"SEASON_%@"];
   v28 = [v25 stringWithValidatedFormat:v27 validFormatSpecifiers:@"%@" error:0, v24];
 
-  v29 = [v28 localizedUppercaseString];
+  localizedUppercaseString = [v28 localizedUppercaseString];
 
-  v30 = [v70 seasonNumberLabel];
-  v68 = v29;
-  v31 = [VUILabel labelWithString:v29 textLayout:v18 existingLabel:v30];
-  [v70 setSeasonNumberLabel:v31];
+  seasonNumberLabel = [viewCopy seasonNumberLabel];
+  v68 = localizedUppercaseString;
+  v31 = [VUILabel labelWithString:localizedUppercaseString textLayout:v18 existingLabel:seasonNumberLabel];
+  [viewCopy setSeasonNumberLabel:v31];
 
   v32 = objc_alloc_init(VUITextLayout);
   if (+[VUIUtilities isIpadInterface])
@@ -130,62 +130,62 @@
 
   [(VUITextLayout *)v32 setTextStyle:v33];
   [(VUITextLayout *)v32 setFontWeight:10];
-  v34 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-  [(VUITextLayout *)v32 setColor:v34];
+  vui_secondaryTextColor2 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+  [(VUITextLayout *)v32 setColor:vui_secondaryTextColor2];
 
   [(VUITextLayout *)v32 setNumberOfLines:1];
   v35 = MEMORY[0x1E696AEC0];
   v36 = +[VUILocalizationManager sharedInstance];
   v37 = [v36 localizedStringForKey:@"EPISODE_%@"];
-  v38 = [v9 episodeNumber];
-  v39 = [v35 stringWithValidatedFormat:v37 validFormatSpecifiers:@"%@" error:0, v38];
-  v40 = [v39 localizedUppercaseString];
+  episodeNumber = [mediaCopy episodeNumber];
+  v39 = [v35 stringWithValidatedFormat:v37 validFormatSpecifiers:@"%@" error:0, episodeNumber];
+  localizedUppercaseString2 = [v39 localizedUppercaseString];
 
-  v41 = [v70 episodeNumberLabel];
-  v67 = v40;
-  v42 = [VUILabel labelWithString:v40 textLayout:v32 existingLabel:v41];
-  [v70 setEpisodeNumberLabel:v42];
+  episodeNumberLabel = [viewCopy episodeNumberLabel];
+  v67 = localizedUppercaseString2;
+  v42 = [VUILabel labelWithString:localizedUppercaseString2 textLayout:v32 existingLabel:episodeNumberLabel];
+  [viewCopy setEpisodeNumberLabel:v42];
 
   v43 = objc_alloc_init(VUITextLayout);
   [(VUITextLayout *)v43 setTextStyle:21];
   [(VUITextLayout *)v43 setFontWeight:0];
-  v44 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-  [(VUITextLayout *)v43 setColor:v44];
+  vui_primaryTextColor2 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+  [(VUITextLayout *)v43 setColor:vui_primaryTextColor2];
 
   [(VUITextLayout *)v43 setNumberOfLines:1];
-  v45 = [v9 releaseDate];
-  if (v45)
+  releaseDate = [mediaCopy releaseDate];
+  if (releaseDate)
   {
-    v46 = [MEMORY[0x1E696AB78] localizedStringFromDate:v45 dateStyle:2 timeStyle:0];
-    v47 = [v70 releaseDateLabel];
-    v48 = [VUILabel labelWithString:v46 textLayout:v43 existingLabel:v47];
-    [v70 setReleaseDateLabel:v48];
+    v46 = [MEMORY[0x1E696AB78] localizedStringFromDate:releaseDate dateStyle:2 timeStyle:0];
+    releaseDateLabel = [viewCopy releaseDateLabel];
+    v48 = [VUILabel labelWithString:v46 textLayout:v43 existingLabel:releaseDateLabel];
+    [viewCopy setReleaseDateLabel:v48];
   }
 
-  v49 = [v9 contentDescription];
-  v50 = [v49 length];
+  contentDescription = [mediaCopy contentDescription];
+  v50 = [contentDescription length];
 
   if (v50)
   {
     v51 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v51 setTextStyle:21];
     [(VUITextLayout *)v51 setFontWeight:0];
-    v52 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-    [(VUITextLayout *)v51 setColor:v52];
+    vui_secondaryTextColor3 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+    [(VUITextLayout *)v51 setColor:vui_secondaryTextColor3];
 
-    v53 = [MEMORY[0x1E69DC888] vui_keyColor];
-    [(VUITextLayout *)v51 setSeeMoreTextColor:v53];
+    vui_keyColor = [MEMORY[0x1E69DC888] vui_keyColor];
+    [(VUITextLayout *)v51 setSeeMoreTextColor:vui_keyColor];
 
     [(VUITextLayout *)v51 setNumberOfLines:0];
-    v54 = [v9 contentDescription];
-    v55 = [v70 contentDescriptionView];
-    v56 = [VUIFocusableTextView textViewWithString:v54 textLayout:v51 existingTextView:v55];
+    contentDescription2 = [mediaCopy contentDescription];
+    contentDescriptionView = [viewCopy contentDescriptionView];
+    v56 = [VUIFocusableTextView textViewWithString:contentDescription2 textLayout:v51 existingTextView:contentDescriptionView];
 
-    v57 = [v9 contentDescription];
-    v58 = v57;
-    if (v57)
+    contentDescription3 = [mediaCopy contentDescription];
+    v58 = contentDescription3;
+    if (contentDescription3)
     {
-      v59 = v57;
+      v59 = contentDescription3;
     }
 
     else
@@ -197,30 +197,30 @@
 
     [v56 setDescriptionText:v60];
     v61 = [MEMORY[0x1E69DB878] vui_fontFromTextStyle:-[VUITextLayout textStyle](v51 fontWeight:"textStyle") fontSize:0 fontWidth:0 symbolicTraits:{0, 0.0}];
-    [v70 setContentDescriptionFont:v61];
+    [viewCopy setContentDescriptionFont:v61];
 
-    [v70 setContentDescriptionView:v56];
+    [viewCopy setContentDescriptionView:v56];
   }
 
   v62 = [[VUIMediaTagsViewLayout alloc] initWithType:11];
   v63 = [VUIMediaTagsView alloc];
   v64 = [(VUIMediaTagsView *)v63 initWithFrame:v62 layout:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  v65 = [[VUIMediaTagsViewHelper alloc] initWithVUIMediaItem:v9];
-  v66 = [(VUIMediaTagsViewHelper *)v65 tagsViewDictionary];
-  [(VUIMediaTagsView *)v64 updateWithMetadata:v66];
+  v65 = [[VUIMediaTagsViewHelper alloc] initWithVUIMediaItem:mediaCopy];
+  tagsViewDictionary = [(VUIMediaTagsViewHelper *)v65 tagsViewDictionary];
+  [(VUIMediaTagsView *)v64 updateWithMetadata:tagsViewDictionary];
 
-  [v70 setMediaBadgeTagsView:v64];
+  [viewCopy setMediaBadgeTagsView:v64];
 }
 
-- (VUIEpisodeDetailView)initWithFrame:(CGRect)a3
+- (VUIEpisodeDetailView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VUIEpisodeDetailView;
-  v3 = [(VUIEpisodeDetailView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIEpisodeDetailView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-    [(VUIEpisodeDetailView *)v3 setBackgroundColor:v4];
+    vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+    [(VUIEpisodeDetailView *)v3 setBackgroundColor:vui_primaryDynamicBackgroundColor];
 
     [(VUIEpisodeDetailView *)v3 setShowsVerticalScrollIndicator:0];
     [(VUIEpisodeDetailView *)v3 setShowsHorizontalScrollIndicator:0];
@@ -230,16 +230,16 @@
   return v3;
 }
 
-- (void)setImageFrameView:(id)a3
+- (void)setImageFrameView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   imageFrameView = self->_imageFrameView;
-  if (imageFrameView != v5)
+  if (imageFrameView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(VUILibraryEpisodeFrameView *)imageFrameView removeFromSuperview];
     [(VUILibraryEpisodeFrameView *)self->_imageFrameView setDelegate:0];
-    objc_storeStrong(&self->_imageFrameView, a3);
+    objc_storeStrong(&self->_imageFrameView, view);
     v7 = self->_imageFrameView;
     if (v7)
     {
@@ -248,38 +248,38 @@
     }
 
     [(VUIEpisodeDetailView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)setEpisodeTitleLabel:(id)a3
+- (void)setEpisodeTitleLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   episodeTitleLabel = self->_episodeTitleLabel;
-  if (episodeTitleLabel != v5)
+  if (episodeTitleLabel != labelCopy)
   {
-    v7 = v5;
+    v7 = labelCopy;
     [(VUILabel *)episodeTitleLabel removeFromSuperview];
-    objc_storeStrong(&self->_episodeTitleLabel, a3);
+    objc_storeStrong(&self->_episodeTitleLabel, label);
     if (self->_episodeTitleLabel)
     {
       [(VUIEpisodeDetailView *)self addSubview:?];
     }
 
     [(VUIEpisodeDetailView *)self setNeedsLayout];
-    v5 = v7;
+    labelCopy = v7;
   }
 }
 
-- (void)setSeasonNumberLabel:(id)a3
+- (void)setSeasonNumberLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   seasonNumberLabel = self->_seasonNumberLabel;
-  if (seasonNumberLabel != v5)
+  if (seasonNumberLabel != labelCopy)
   {
-    v7 = v5;
+    v7 = labelCopy;
     [(VUILabel *)seasonNumberLabel removeFromSuperview];
-    objc_storeStrong(&self->_seasonNumberLabel, a3);
+    objc_storeStrong(&self->_seasonNumberLabel, label);
     if (self->_seasonNumberLabel)
     {
       [(VUIEpisodeDetailView *)self addSubview:?];
@@ -287,19 +287,19 @@
     }
 
     [(VUIEpisodeDetailView *)self setNeedsLayout];
-    v5 = v7;
+    labelCopy = v7;
   }
 }
 
-- (void)setEpisodeNumberLabel:(id)a3
+- (void)setEpisodeNumberLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   episodeNumberLabel = self->_episodeNumberLabel;
-  if (episodeNumberLabel != v5)
+  if (episodeNumberLabel != labelCopy)
   {
-    v7 = v5;
+    v7 = labelCopy;
     [(VUILabel *)episodeNumberLabel removeFromSuperview];
-    objc_storeStrong(&self->_episodeNumberLabel, a3);
+    objc_storeStrong(&self->_episodeNumberLabel, label);
     if (self->_episodeNumberLabel)
     {
       [(VUIEpisodeDetailView *)self addSubview:?];
@@ -307,38 +307,38 @@
     }
 
     [(VUIEpisodeDetailView *)self setNeedsLayout];
-    v5 = v7;
+    labelCopy = v7;
   }
 }
 
-- (void)setReleaseDateLabel:(id)a3
+- (void)setReleaseDateLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   releaseDateLabel = self->_releaseDateLabel;
-  if (releaseDateLabel != v5)
+  if (releaseDateLabel != labelCopy)
   {
-    v7 = v5;
+    v7 = labelCopy;
     [(VUILabel *)releaseDateLabel removeFromSuperview];
-    objc_storeStrong(&self->_releaseDateLabel, a3);
+    objc_storeStrong(&self->_releaseDateLabel, label);
     if (self->_releaseDateLabel)
     {
       [(VUIEpisodeDetailView *)self addSubview:?];
     }
 
     [(VUIEpisodeDetailView *)self setNeedsLayout];
-    v5 = v7;
+    labelCopy = v7;
   }
 }
 
-- (void)setMediaBadgeTagsView:(id)a3
+- (void)setMediaBadgeTagsView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   mediaBadgeTagsView = self->_mediaBadgeTagsView;
-  v7 = v5;
-  if (mediaBadgeTagsView != v5)
+  v7 = viewCopy;
+  if (mediaBadgeTagsView != viewCopy)
   {
     [(VUIMediaTagsView *)mediaBadgeTagsView removeFromSuperview];
-    objc_storeStrong(&self->_mediaBadgeTagsView, a3);
+    objc_storeStrong(&self->_mediaBadgeTagsView, view);
     if (self->_mediaBadgeTagsView)
     {
       [(VUIEpisodeDetailView *)self addSubview:?];
@@ -346,15 +346,15 @@
   }
 }
 
-- (void)setContentDescriptionView:(id)a3
+- (void)setContentDescriptionView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentDescriptionView = self->_contentDescriptionView;
-  if (contentDescriptionView != v5)
+  if (contentDescriptionView != viewCopy)
   {
     [(VUIFocusableTextView *)contentDescriptionView removeFromSuperview];
     [(TVFocusableTextView *)self->_contentDescriptionView setSelectionHandler:0];
-    objc_storeStrong(&self->_contentDescriptionView, a3);
+    objc_storeStrong(&self->_contentDescriptionView, view);
     if (self->_contentDescriptionView)
     {
       [(VUIEpisodeDetailView *)self addSubview:?];
@@ -392,8 +392,8 @@ void __50__VUIEpisodeDetailView_setContentDescriptionView___block_invoke(uint64_
   v165.super_class = VUIEpisodeDetailView;
   [(VUIEpisodeDetailView *)&v165 layoutSubviews];
   [(VUIEpisodeDetailView *)self _configureViewElementsForAX];
-  v3 = [(VUIEpisodeDetailView *)self traitCollection];
-  v4 = [v3 isAXEnabled];
+  traitCollection = [(VUIEpisodeDetailView *)self traitCollection];
+  isAXEnabled = [traitCollection isAXEnabled];
 
   [(VUIEpisodeDetailView *)self safeAreaInsets];
   v6 = v5;
@@ -491,7 +491,7 @@ void __50__VUIEpisodeDetailView_setContentDescriptionView___block_invoke(uint64_
   v147 = v38;
   v144 = v43;
   v145 = MaxX;
-  if (v4)
+  if (isAXEnabled)
   {
     v173.origin.x = v8;
     v173.origin.y = v41;
@@ -572,10 +572,10 @@ void __50__VUIEpisodeDetailView_setContentDescriptionView___block_invoke(uint64_
 
   else
   {
-    v74 = v4;
+    v74 = isAXEnabled;
   }
 
-  if ((v73 & ~v4) != 0)
+  if ((v73 & ~isAXEnabled) != 0)
   {
     v75 = v69;
   }
@@ -605,8 +605,8 @@ void __50__VUIEpisodeDetailView_setContentDescriptionView___block_invoke(uint64_
   [(TVFocusableTextView *)contentDescriptionView sizeThatFits:CGRectGetWidth(v182) - v139, 1.79769313e308];
   v135 = v80;
   v82 = v81;
-  v83 = [(VUILabel *)self->_releaseDateLabel font];
-  [(VUIEpisodeDetailView *)self _descriptionTopMarginWithBaselineMargin:v83 otherFont:28.0];
+  font = [(VUILabel *)self->_releaseDateLabel font];
+  [(VUIEpisodeDetailView *)self _descriptionTopMarginWithBaselineMargin:font otherFont:28.0];
   v85 = v84;
 
   v183.origin.x = v8;
@@ -617,7 +617,7 @@ void __50__VUIEpisodeDetailView_setContentDescriptionView___block_invoke(uint64_
   v86 = CGRectGetMaxY(v183);
   v87 = v136;
   v138 = v77;
-  if (!self->_releaseDateLabel || (v88 = v85 + v86, v4) && self->_mediaBadgeTagsView)
+  if (!self->_releaseDateLabel || (v88 = v85 + v86, isAXEnabled) && self->_mediaBadgeTagsView)
   {
     [(VUIEpisodeDetailView *)self _descriptionTopMarginWithBaselineMargin:0 otherFont:28.0];
     v90 = v89;
@@ -707,10 +707,10 @@ void __50__VUIEpisodeDetailView_setContentDescriptionView___block_invoke(uint64_
   [(VUIEpisodeDetailView *)self setContentSize:v129, CGRectGetMaxY(v186)];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [MEMORY[0x1E69DD2E8] vui_padding];
   v7 = v6;
   v9 = v8;
@@ -723,10 +723,10 @@ void __50__VUIEpisodeDetailView_setContentDescriptionView___block_invoke(uint64_
   v15 = width - (v7 + v9);
   [(VUILabel *)self->_seasonNumberLabel sizeThatFits:v15, 1.79769313e308];
   v17 = v14 + v16;
-  v18 = [(VUIEpisodeDetailView *)self traitCollection];
-  v19 = [v18 isAXEnabled];
+  traitCollection = [(VUIEpisodeDetailView *)self traitCollection];
+  isAXEnabled = [traitCollection isAXEnabled];
 
-  if (v19)
+  if (isAXEnabled)
   {
     episodeNumberLabel = self->_episodeNumberLabel;
     [(VUIEpisodeDetailView *)self _seasonMargin];
@@ -753,8 +753,8 @@ void __50__VUIEpisodeDetailView_setContentDescriptionView___block_invoke(uint64_
   v33 = v31 + v32;
   [(VUILabel *)self->_releaseDateLabel sizeThatFits:v15, 1.79769313e308];
   v35 = v33 + v34;
-  v36 = [(VUILabel *)self->_releaseDateLabel font];
-  [(VUIEpisodeDetailView *)self _descriptionTopMarginWithBaselineMargin:v36 otherFont:28.0];
+  font = [(VUILabel *)self->_releaseDateLabel font];
+  [(VUIEpisodeDetailView *)self _descriptionTopMarginWithBaselineMargin:font otherFont:28.0];
   v38 = v35 + v37;
 
   [(TVFocusableTextView *)self->_contentDescriptionView sizeThatFits:v15, 1.79769313e308];
@@ -777,9 +777,9 @@ void __50__VUIEpisodeDetailView_setContentDescriptionView___block_invoke(uint64_
 
 - (void)updateProgress
 {
-  v4 = [(VUIEpisodeDetailView *)self imageFrameView];
-  v3 = [(VUIEpisodeDetailView *)self mediaItem];
-  [v4 updateProgress:v3];
+  imageFrameView = [(VUIEpisodeDetailView *)self imageFrameView];
+  mediaItem = [(VUIEpisodeDetailView *)self mediaItem];
+  [imageFrameView updateProgress:mediaItem];
 }
 
 - (void)_configureDotSeparator
@@ -789,8 +789,8 @@ void __50__VUIEpisodeDetailView_setContentDescriptionView___block_invoke(uint64_
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@" %@ ", @"·"];
     v3 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v3 setTextStyle:22];
-    v4 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-    [(VUITextLayout *)v3 setColor:v4];
+    vui_secondaryTextColor = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+    [(VUITextLayout *)v3 setColor:vui_secondaryTextColor];
 
     [(VUITextLayout *)v3 setNumberOfLines:1];
     v5 = [VUILabel labelWithString:v7 textLayout:v3 existingLabel:self->_dotSeparatorLabel];
@@ -801,19 +801,19 @@ void __50__VUIEpisodeDetailView_setContentDescriptionView___block_invoke(uint64_
   }
 }
 
-- (double)_descriptionTopMarginWithBaselineMargin:(double)a3 otherFont:(id)a4
+- (double)_descriptionTopMarginWithBaselineMargin:(double)margin otherFont:(id)font
 {
-  v6 = a4;
-  v7 = [(VUIEpisodeDetailView *)self contentDescriptionFont];
-  v8 = [(VUIEpisodeDetailView *)self traitCollection];
-  if (v6)
+  fontCopy = font;
+  contentDescriptionFont = [(VUIEpisodeDetailView *)self contentDescriptionFont];
+  traitCollection = [(VUIEpisodeDetailView *)self traitCollection];
+  if (fontCopy)
   {
-    [v7 topMarginToFont:v6 withBaselineMargin:v8 traitCollection:a3];
+    [contentDescriptionFont topMarginToFont:fontCopy withBaselineMargin:traitCollection traitCollection:margin];
   }
 
   else
   {
-    [v7 topMarginWithBaselineMargin:v8 traitCollection:a3];
+    [contentDescriptionFont topMarginWithBaselineMargin:traitCollection traitCollection:margin];
   }
 
   v10 = v9;
@@ -821,17 +821,17 @@ void __50__VUIEpisodeDetailView_setContentDescriptionView___block_invoke(uint64_
   return v10;
 }
 
-- (double)_descriptionBottomMarginWithBaselineMargin:(double)a3
+- (double)_descriptionBottomMarginWithBaselineMargin:(double)margin
 {
-  v5 = [(VUIEpisodeDetailView *)self contentDescriptionFont];
-  v6 = [(VUIEpisodeDetailView *)self traitCollection];
-  [v5 bottomMarginWithBaselineMargin:v6 traitCollection:a3];
+  contentDescriptionFont = [(VUIEpisodeDetailView *)self contentDescriptionFont];
+  traitCollection = [(VUIEpisodeDetailView *)self traitCollection];
+  [contentDescriptionFont bottomMarginWithBaselineMargin:traitCollection traitCollection:margin];
   v8 = v7;
 
   return v8;
 }
 
-- (void)didTapButtonForEpisodeFrameView:(id)a3
+- (void)didTapButtonForEpisodeFrameView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_episodeViewDelegate);
   [WeakRetained didTapPlay];
@@ -839,25 +839,25 @@ void __50__VUIEpisodeDetailView_setContentDescriptionView___block_invoke(uint64_
 
 - (void)_configureViewElementsForAX
 {
-  v3 = [(VUIEpisodeDetailView *)self traitCollection];
-  v4 = [v3 isAXEnabled];
+  traitCollection = [(VUIEpisodeDetailView *)self traitCollection];
+  isAXEnabled = [traitCollection isAXEnabled];
 
-  v5 = [(VUIEpisodeDetailView *)self dotSeparatorLabel];
-  [v5 setHidden:v4];
+  dotSeparatorLabel = [(VUIEpisodeDetailView *)self dotSeparatorLabel];
+  [dotSeparatorLabel setHidden:isAXEnabled];
 }
 
 - (double)_seasonMargin
 {
-  v2 = [(VUIEpisodeDetailView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(VUIEpisodeDetailView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   result = 15.0;
-  if (!v3)
+  if (!userInterfaceIdiom)
   {
     result = 20.0;
   }
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 24.0;
   }

@@ -1,11 +1,11 @@
 @interface WBSOfflineSearchSuggestionsFetcher
-- (WBSOfflineSearchSuggestionsFetcher)initWithMaximumSuggestionsToFetch:(unint64_t)a3;
+- (WBSOfflineSearchSuggestionsFetcher)initWithMaximumSuggestionsToFetch:(unint64_t)fetch;
 - (WBSOfflineSearchSuggestionsFetcherDelegate)delegate;
 - (id)_searchHelperProxy;
-- (void)_checkForRemoteDisablement:(id)a3;
+- (void)_checkForRemoteDisablement:(id)disablement;
 - (void)_logOfflineSuggestionStatus;
 - (void)dealloc;
-- (void)setCurrentQuery:(id)a3;
+- (void)setCurrentQuery:(id)query;
 - (void)updateAvailability;
 @end
 
@@ -60,7 +60,7 @@ void __56__WBSOfflineSearchSuggestionsFetcher_updateAvailability__block_invoke_2
   dispatch_async(MEMORY[0x1E69E96A0], v2);
 }
 
-- (WBSOfflineSearchSuggestionsFetcher)initWithMaximumSuggestionsToFetch:(unint64_t)a3
+- (WBSOfflineSearchSuggestionsFetcher)initWithMaximumSuggestionsToFetch:(unint64_t)fetch
 {
   v9.receiver = self;
   v9.super_class = WBSOfflineSearchSuggestionsFetcher;
@@ -68,8 +68,8 @@ void __56__WBSOfflineSearchSuggestionsFetcher_updateAvailability__block_invoke_2
   v5 = v4;
   if (v4)
   {
-    v6 = [(WBSOfflineSearchSuggestionsFetcher *)v4 _searchHelperProxy];
-    [v6 setMaximumNumberOfOfflineSuggestionsToFetch:a3];
+    _searchHelperProxy = [(WBSOfflineSearchSuggestionsFetcher *)v4 _searchHelperProxy];
+    [_searchHelperProxy setMaximumNumberOfOfflineSuggestionsToFetch:fetch];
 
     [(WBSOfflineSearchSuggestionsFetcher *)v5 updateAvailability];
     v7 = v5;
@@ -113,16 +113,16 @@ uint64_t __56__WBSOfflineSearchSuggestionsFetcher_updateAvailability__block_invo
   return [v2 _logOfflineSuggestionStatus];
 }
 
-- (void)_checkForRemoteDisablement:(id)a3
+- (void)_checkForRemoteDisablement:(id)disablement
 {
-  v3 = a3;
+  disablementCopy = disablement;
   v4 = +[WBSOfflineSearchRemoteDisablementManager sharedManager];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__WBSOfflineSearchSuggestionsFetcher__checkForRemoteDisablement___block_invoke;
   v6[3] = &unk_1E7FC8870;
-  v7 = v3;
-  v5 = v3;
+  v7 = disablementCopy;
+  v5 = disablementCopy;
   [v4 areOfflineSearchSuggestionsDisabled:v6];
 }
 
@@ -234,21 +234,21 @@ void __56__WBSOfflineSearchSuggestionsFetcher__searchHelperProxy__block_invoke(u
   *(*(a1 + 32) + 8) = 1;
 }
 
-- (void)setCurrentQuery:(id)a3
+- (void)setCurrentQuery:(id)query
 {
-  v5 = a3;
+  queryCopy = query;
   if (self->_offlineSuggestionsStatus == 5)
   {
-    objc_storeStrong(&self->_currentQuery, a3);
-    v6 = [(WBSOfflineSearchSuggestionsFetcher *)self _searchHelperProxy];
-    v7 = [v5 queryString];
+    objc_storeStrong(&self->_currentQuery, query);
+    _searchHelperProxy = [(WBSOfflineSearchSuggestionsFetcher *)self _searchHelperProxy];
+    queryString = [queryCopy queryString];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __54__WBSOfflineSearchSuggestionsFetcher_setCurrentQuery___block_invoke;
     v8[3] = &unk_1E7FC8898;
     v8[4] = self;
-    v9 = v5;
-    [v6 fetchOfflineSuggestionsForQueryString:v7 completionHandler:v8];
+    v9 = queryCopy;
+    [_searchHelperProxy fetchOfflineSuggestionsForQueryString:queryString completionHandler:v8];
   }
 }
 

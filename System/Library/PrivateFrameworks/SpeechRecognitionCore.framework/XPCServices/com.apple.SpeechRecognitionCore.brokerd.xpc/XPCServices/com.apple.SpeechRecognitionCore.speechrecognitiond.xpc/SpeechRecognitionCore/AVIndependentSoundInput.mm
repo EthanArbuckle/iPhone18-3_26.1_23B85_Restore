@@ -1,14 +1,14 @@
 @interface AVIndependentSoundInput
-- (AVIndependentSoundInput)initWithExpectedFormat:(id)a3 deliverSamples:(id)a4;
+- (AVIndependentSoundInput)initWithExpectedFormat:(id)format deliverSamples:(id)samples;
 - (BOOL)isRecording;
 - (BOOL)setupAudioSession;
-- (BOOL)startRecording:(int)a3;
+- (BOOL)startRecording:(int)recording;
 - (BOOL)startRunningAudioEngine;
-- (void)_addRecordedSpeechSampleData:(signed __int16 *)a3 length:(unsigned int)a4;
-- (void)_appendPCMBuffer:(id)a3;
-- (void)_convertAndFeedPCMBufferAVAudioPCMBuffer:(id)a3;
+- (void)_addRecordedSpeechSampleData:(signed __int16 *)data length:(unsigned int)length;
+- (void)_appendPCMBuffer:(id)buffer;
+- (void)_convertAndFeedPCMBufferAVAudioPCMBuffer:(id)buffer;
 - (void)_drainAndClearAudioConverter;
-- (void)_handleConfigurationChangeNotification:(id)a3;
+- (void)_handleConfigurationChangeNotification:(id)notification;
 - (void)activateNotifications;
 - (void)deactivateNotifications;
 - (void)dealloc;
@@ -18,10 +18,10 @@
 
 @implementation AVIndependentSoundInput
 
-- (AVIndependentSoundInput)initWithExpectedFormat:(id)a3 deliverSamples:(id)a4
+- (AVIndependentSoundInput)initWithExpectedFormat:(id)format deliverSamples:(id)samples
 {
-  v7 = a3;
-  v8 = a4;
+  formatCopy = format;
+  samplesCopy = samples;
   v21.receiver = self;
   v21.super_class = AVIndependentSoundInput;
   v9 = [(AVIndependentSoundInput *)&v21 init];
@@ -35,8 +35,8 @@
   *(v9 + 2) = v10;
 
   dispatch_queue_set_specific(*(v9 + 2), v9, v9, 0);
-  objc_storeStrong(v9 + 6, a3);
-  v12 = objc_retainBlock(v8);
+  objc_storeStrong(v9 + 6, format);
+  v12 = objc_retainBlock(samplesCopy);
   v13 = *(v9 + 5);
   *(v9 + 5) = v12;
 
@@ -44,9 +44,9 @@
   v15 = *(v9 + 4);
   *(v9 + 4) = v14;
 
-  v16 = [v9 setupAudioSession];
-  *(v9 + 24) = v16;
-  if ((v16 & 1) == 0)
+  setupAudioSession = [v9 setupAudioSession];
+  *(v9 + 24) = setupAudioSession;
+  if ((setupAudioSession & 1) == 0)
   {
     v18 = RXOSLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -78,14 +78,14 @@ LABEL_3:
 
   if (v4)
   {
-    v5 = RXOSLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    preferredRouteControlConfig = RXOSLog();
+    if (os_log_type_enabled(preferredRouteControlConfig, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v20 = v4;
       v6 = "AVI:Error setting preffered route: %@";
 LABEL_7:
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, v6, buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, preferredRouteControlConfig, OS_LOG_TYPE_ERROR, v6, buf, 0xCu);
       goto LABEL_17;
     }
 
@@ -100,7 +100,7 @@ LABEL_7:
   if (!v4)
   {
     v8 = +[AVAudioSession sharedInstance];
-    v5 = [v8 preferredRouteControlConfig];
+    preferredRouteControlConfig = [v8 preferredRouteControlConfig];
 
     if ([v2 routeControlOptions] != 1)
     {
@@ -169,8 +169,8 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  v5 = RXOSLog();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  preferredRouteControlConfig = RXOSLog();
+  if (os_log_type_enabled(preferredRouteControlConfig, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v20 = v4;
@@ -211,14 +211,14 @@ LABEL_18:
   [v4 removeObserver:self name:AVAudioEngineConfigurationChangeNotification object:self->_audioEngine];
 }
 
-- (void)_handleConfigurationChangeNotification:(id)a3
+- (void)_handleConfigurationChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = RXOSLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "AVI::Audio configuration changed = %@", buf, 0xCu);
   }
 
@@ -230,7 +230,7 @@ LABEL_18:
   dispatch_async(gRDServerQueue, block);
 }
 
-- (BOOL)startRecording:(int)a3
+- (BOOL)startRecording:(int)recording
 {
   v4 = RXOSLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -273,11 +273,11 @@ LABEL_18:
       {
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
-          v17 = [v5 localizedDescription];
+          localizedDescription = [v5 localizedDescription];
           *buf = 138412546;
           v23 = v5;
           v24 = 2112;
-          v25 = v17;
+          v25 = localizedDescription;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "AVI:AVAudioSession set active failed with error code:{%@}, error message: {%@}", buf, 0x16u);
         }
 
@@ -293,10 +293,10 @@ LABEL_18:
     }
 
     [(AVIndependentSoundInput *)self activateNotifications];
-    v11 = [(AVIndependentSoundInput *)self startRunningAudioEngine];
+    startRunningAudioEngine = [(AVIndependentSoundInput *)self startRunningAudioEngine];
     v12 = RXOSLog();
     v10 = v12;
-    if (v11)
+    if (startRunningAudioEngine)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -333,11 +333,11 @@ LABEL_18:
 
       else if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v15 localizedDescription];
+        localizedDescription2 = [v15 localizedDescription];
         *buf = 138412546;
         v23 = v15;
         v24 = 2112;
-        v25 = v18;
+        v25 = localizedDescription2;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "AVI:AVAudioSession could not deactivate, error code:{%@}, error message: {%@}", buf, 0x16u);
       }
 
@@ -365,21 +365,21 @@ LABEL_33:
 
 - (BOOL)startRunningAudioEngine
 {
-  v3 = [(AVAudioEngine *)self->_audioEngine inputNode];
-  v4 = [v3 inputFormatForBus:0];
+  inputNode = [(AVAudioEngine *)self->_audioEngine inputNode];
+  v4 = [inputNode inputFormatForBus:0];
   if ([v4 channelCount])
   {
     v5 = +[AVAudioSession sharedInstance];
-    v6 = [v5 availableInputs];
+    availableInputs = [v5 availableInputs];
 
-    [v3 removeTapOnBus:0];
+    [inputNode removeTapOnBus:0];
     objc_initWeak(&location, self);
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100008604;
     v13[3] = &unk_1000FE158;
     objc_copyWeak(&v14, &location);
-    [v3 installTapOnBus:0 bufferSize:1024 format:v4 block:v13];
+    [inputNode installTapOnBus:0 bufferSize:1024 format:v4 block:v13];
     objc_destroyWeak(&v14);
     audioEngine = self->_audioEngine;
     v12 = 0;
@@ -401,11 +401,11 @@ LABEL_33:
 
   else
   {
-    v6 = RXOSLog();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    availableInputs = RXOSLog();
+    if (os_log_type_enabled(availableInputs, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "AVI:No audio input available, channel count 0", buf, 2u);
+      _os_log_impl(&_mh_execute_header, availableInputs, OS_LOG_TYPE_ERROR, "AVI:No audio input available, channel count 0", buf, 2u);
     }
 
     v8 = 0;
@@ -423,8 +423,8 @@ LABEL_33:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "AVI:stopRunningAudioEngine", v5, 2u);
   }
 
-  v4 = [(AVAudioEngine *)self->_audioEngine inputNode];
-  [v4 removeTapOnBus:0];
+  inputNode = [(AVAudioEngine *)self->_audioEngine inputNode];
+  [inputNode removeTapOnBus:0];
 
   [(AVAudioEngine *)self->_audioEngine stop];
 }
@@ -475,10 +475,10 @@ LABEL_33:
 
 - (BOOL)isRecording
 {
-  v2 = [(AVIndependentSoundInput *)self audioEngine];
-  v3 = [v2 isRunning];
+  audioEngine = [(AVIndependentSoundInput *)self audioEngine];
+  isRunning = [audioEngine isRunning];
 
-  return v3;
+  return isRunning;
 }
 
 - (void)dealloc
@@ -512,42 +512,42 @@ LABEL_33:
   [(AVIndependentSoundInput *)&v5 dealloc];
 }
 
-- (void)_appendPCMBuffer:(id)a3
+- (void)_appendPCMBuffer:(id)buffer
 {
-  v8 = a3;
-  v5 = [v8 format];
-  v6 = [v5 isEqual:self->_expectedFormat];
+  bufferCopy = buffer;
+  format = [bufferCopy format];
+  v6 = [format isEqual:self->_expectedFormat];
 
   if (v6)
   {
     [(AVIndependentSoundInput *)self _drainAndClearAudioConverter];
-    v7 = [v8 int16ChannelData];
-    if (!v7)
+    int16ChannelData = [bufferCopy int16ChannelData];
+    if (!int16ChannelData)
     {
       sub_1000C8EE8(a2, self);
     }
 
-    -[AVIndependentSoundInput _addRecordedSpeechSampleData:length:](self, "_addRecordedSpeechSampleData:length:", *v7, [v8 frameLength]);
+    -[AVIndependentSoundInput _addRecordedSpeechSampleData:length:](self, "_addRecordedSpeechSampleData:length:", *int16ChannelData, [bufferCopy frameLength]);
   }
 
   else
   {
-    [(AVIndependentSoundInput *)self _convertAndFeedPCMBufferAVAudioPCMBuffer:v8];
+    [(AVIndependentSoundInput *)self _convertAndFeedPCMBufferAVAudioPCMBuffer:bufferCopy];
   }
 }
 
-- (void)_convertAndFeedPCMBufferAVAudioPCMBuffer:(id)a3
+- (void)_convertAndFeedPCMBufferAVAudioPCMBuffer:(id)buffer
 {
-  v4 = a3;
-  v19 = [v4 format];
+  bufferCopy = buffer;
+  format = [bufferCopy format];
   v18 = self->_expectedFormat;
-  v5 = [(AVAudioConverter *)self->_converter inputFormat];
-  v6 = [v5 isEqual:v19];
+  inputFormat = [(AVAudioConverter *)self->_converter inputFormat];
+  v6 = [inputFormat isEqual:format];
 
   if ((v6 & 1) == 0)
   {
     [(AVIndependentSoundInput *)self _drainAndClearAudioConverter];
-    v7 = [[AVAudioConverter alloc] initFromFormat:v19 toFormat:v18];
+    v7 = [[AVAudioConverter alloc] initFromFormat:format toFormat:v18];
     converter = self->_converter;
     self->_converter = v7;
 
@@ -569,7 +569,7 @@ LABEL_33:
     v20[1] = 3221225472;
     v20[2] = sub_100008E40;
     v20[3] = &unk_1000FE1A0;
-    v11 = v4;
+    v11 = bufferCopy;
     v21 = v11;
     v12 = [(AVAudioConverter *)v10 convertToBuffer:v9 error:&v23 withInputFromBlock:v20];
     v13 = v23;
@@ -591,14 +591,14 @@ LABEL_33:
       break;
     }
 
-    v14 = [v9 int16ChannelData];
-    if (!v14)
+    int16ChannelData = [v9 int16ChannelData];
+    if (!int16ChannelData)
     {
       v16 = +[NSAssertionHandler currentHandler];
       [v16 handleFailureInMethod:a2 object:self file:@"RDSoundInputImpl_iOS_Independent_AV.m" lineNumber:308 description:@"Invalid audio format"];
     }
 
-    -[AVIndependentSoundInput _addRecordedSpeechSampleData:length:](self, "_addRecordedSpeechSampleData:length:", *v14, [v9 frameLength]);
+    -[AVIndependentSoundInput _addRecordedSpeechSampleData:length:](self, "_addRecordedSpeechSampleData:length:", *int16ChannelData, [v9 frameLength]);
     if (v12 == 1)
     {
       break;
@@ -608,12 +608,12 @@ LABEL_33:
   _Block_object_dispose(v24, 8);
 }
 
-- (void)_addRecordedSpeechSampleData:(signed __int16 *)a3 length:(unsigned int)a4
+- (void)_addRecordedSpeechSampleData:(signed __int16 *)data length:(unsigned int)length
 {
   deliverSamples = self->_deliverSamples;
   if (deliverSamples)
   {
-    deliverSamples[2](deliverSamples, a3, a4);
+    deliverSamples[2](deliverSamples, data, length);
   }
 }
 
@@ -647,13 +647,13 @@ LABEL_33:
         break;
       }
 
-      v8 = [v4 int16ChannelData];
-      if (!v8)
+      int16ChannelData = [v4 int16ChannelData];
+      if (!int16ChannelData)
       {
         sub_1000C8F5C(a2, self);
       }
 
-      -[AVIndependentSoundInput _addRecordedSpeechSampleData:length:](self, "_addRecordedSpeechSampleData:length:", *v8, [v4 frameLength]);
+      -[AVIndependentSoundInput _addRecordedSpeechSampleData:length:](self, "_addRecordedSpeechSampleData:length:", *int16ChannelData, [v4 frameLength]);
       if (v6 == 1)
       {
         break;

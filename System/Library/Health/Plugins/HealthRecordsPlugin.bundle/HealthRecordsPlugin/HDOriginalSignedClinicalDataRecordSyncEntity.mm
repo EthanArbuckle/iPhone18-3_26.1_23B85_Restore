@@ -1,47 +1,47 @@
 @interface HDOriginalSignedClinicalDataRecordSyncEntity
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
++ (id)decodeSyncObjectWithData:(id)data;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDOriginalSignedClinicalDataRecordSyncEntity
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[HDCodableOriginalSignedClinicalDataRecord alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[HDCodableOriginalSignedClinicalDataRecord alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  var1 = range.var1;
+  var0 = range.var0;
+  sessionCopy = session;
+  profileCopy = profile;
+  handlerCopy = handler;
   v15 = objc_alloc_init(NSMutableArray);
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
   v37 = -1;
-  v16 = [v13 database];
+  database = [profileCopy database];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_6AFF4;
   v27[3] = &unk_105748;
-  v17 = v12;
+  v17 = sessionCopy;
   v32 = var0;
   v33 = var1;
   v28 = v17;
   v31 = &v34;
-  v18 = v13;
+  v18 = profileCopy;
   v29 = v18;
   v19 = v15;
   v30 = v19;
-  v20 = [HDOriginalSignedClinicalDataRecordEntity performReadTransactionWithHealthDatabase:v16 error:a7 block:v27];
+  v20 = [HDOriginalSignedClinicalDataRecordEntity performReadTransactionWithHealthDatabase:database error:error block:v27];
 
   _HKInitializeLogging();
   v21 = HKLogHealthRecords;
@@ -52,7 +52,7 @@
     {
       v25 = [v19 count];
       *buf = 138544130;
-      v39 = a1;
+      selfCopy = self;
       v40 = 2114;
       v41 = v18;
       v42 = 2048;
@@ -65,7 +65,7 @@
 
   if (v20)
   {
-    v23 = [v14 sendCodableChange:v19 resultAnchor:v35[3] sequence:0 done:1 error:a7];
+    v23 = [handlerCopy sendCodableChange:v19 resultAnchor:v35[3] sequence:0 done:1 error:error];
   }
 
   else
@@ -77,22 +77,22 @@
   return v23;
 }
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = [a3 hk_filter:&stru_108170];
-  v13 = [v11 syncProvenance];
+  profileCopy = profile;
+  storeCopy = store;
+  v12 = [objects hk_filter:&stru_108170];
+  syncProvenance = [storeCopy syncProvenance];
 
-  LODWORD(a7) = [HDOriginalSignedClinicalDataRecordEntity insertCodableOriginalRecordsFromSync:v12 syncProvenance:v13 profile:v10 error:a7];
-  return a7 ^ 1;
+  LODWORD(error) = [HDOriginalSignedClinicalDataRecordEntity insertCodableOriginalRecordsFromSync:v12 syncProvenance:syncProvenance profile:profileCopy error:error];
+  return error ^ 1;
 }
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
-  v9 = a3;
-  v10 = [a5 database];
-  v11 = [HDOriginalSignedClinicalDataRecordEntity nextSyncAnchorWithStartAnchor:a4 predicate:0 session:v9 healthDatabase:v10 error:a6];
+  sessionCopy = session;
+  database = [profile database];
+  v11 = [HDOriginalSignedClinicalDataRecordEntity nextSyncAnchorWithStartAnchor:anchor predicate:0 session:sessionCopy healthDatabase:database error:error];
 
   return v11;
 }

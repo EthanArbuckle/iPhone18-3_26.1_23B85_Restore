@@ -2,15 +2,15 @@
 - (CGRect)sceneFrame;
 - (DBWidgetSceneHostViewControllerDelegate)delegate;
 - (UIEdgeInsets)sceneSafeAreaInsets;
-- (void)_performSceneUpdateForeground:(BOOL)a3;
-- (void)initializeSceneForeground:(BOOL)a3 active:(BOOL)a4;
-- (void)processMonitor:(id)a3 didHandleDeathOfBundleIdentifier:(id)a4;
-- (void)processMonitor:(id)a3 shouldHandleDeathOfBundleIdentifier:(id)a4 isCrash:(BOOL)a5;
-- (void)sceneContentStateDidUpdate:(int64_t)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setForeground:(BOOL)a3;
-- (void)setWidgetStyle:(unint64_t)a3;
-- (void)updateSceneFrame:(CGRect)a3 animationSettings:(id)a4 fenceHandle:(id)a5;
+- (void)_performSceneUpdateForeground:(BOOL)foreground;
+- (void)initializeSceneForeground:(BOOL)foreground active:(BOOL)active;
+- (void)processMonitor:(id)monitor didHandleDeathOfBundleIdentifier:(id)identifier;
+- (void)processMonitor:(id)monitor shouldHandleDeathOfBundleIdentifier:(id)identifier isCrash:(BOOL)crash;
+- (void)sceneContentStateDidUpdate:(int64_t)update;
+- (void)setActive:(BOOL)active;
+- (void)setForeground:(BOOL)foreground;
+- (void)setWidgetStyle:(unint64_t)style;
+- (void)updateSceneFrame:(CGRect)frame animationSettings:(id)settings fenceHandle:(id)handle;
 @end
 
 @implementation DBWidgetSceneHostViewController
@@ -24,8 +24,8 @@
 
 - (CGRect)sceneFrame
 {
-  v2 = [(DBWidgetSceneHostViewController *)self view];
-  [v2 bounds];
+  view = [(DBWidgetSceneHostViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -55,24 +55,24 @@
   return result;
 }
 
-- (void)setForeground:(BOOL)a3
+- (void)setForeground:(BOOL)foreground
 {
-  if (self->_foreground != a3)
+  if (self->_foreground != foreground)
   {
-    self->_foreground = a3;
+    self->_foreground = foreground;
     [(DBWidgetSceneHostViewController *)self _performSceneUpdateForeground:?];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
     v6[5] = v3;
     v6[6] = v4;
-    self->_active = a3;
+    self->_active = active;
     v5 = 128;
-    if (a3)
+    if (active)
     {
       v5 = 0;
     }
@@ -86,18 +86,18 @@
   }
 }
 
-- (void)setWidgetStyle:(unint64_t)a3
+- (void)setWidgetStyle:(unint64_t)style
 {
-  if (self->_widgetStyle != a3)
+  if (self->_widgetStyle != style)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_widgetStyle = a3;
+    self->_widgetStyle = style;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __50__DBWidgetSceneHostViewController_setWidgetStyle___block_invoke;
     v5[3] = &__block_descriptor_40_e50_v16__0__UIMutableCarPlayApplicationSceneSettings_8l;
-    v5[4] = a3;
+    v5[4] = style;
     [(DBSceneHostViewController *)self updateSceneSettingsWithBlock:v5];
   }
 }
@@ -120,22 +120,22 @@ void __50__DBWidgetSceneHostViewController_setWidgetStyle___block_invoke(uint64_
   [v4 setWidgetStyle:*(a1 + 32)];
 }
 
-- (void)initializeSceneForeground:(BOOL)a3 active:(BOOL)a4
+- (void)initializeSceneForeground:(BOOL)foreground active:(BOOL)active
 {
-  self->_foreground = a3;
-  self->_active = a4;
+  self->_foreground = foreground;
+  self->_active = active;
   [(DBWidgetSceneHostViewController *)self _performSceneUpdateForeground:?];
 }
 
-- (void)updateSceneFrame:(CGRect)a3 animationSettings:(id)a4 fenceHandle:(id)a5
+- (void)updateSceneFrame:(CGRect)frame animationSettings:(id)settings fenceHandle:(id)handle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v30 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
+  settingsCopy = settings;
+  handleCopy = handle;
   v13 = DBLogForCategory(2uLL);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -145,11 +145,11 @@ void __50__DBWidgetSceneHostViewController_setWidgetStyle___block_invoke(uint64_
     v31.size.height = height;
     v14 = NSStringFromCGRect(v31);
     *buf = 138543874;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
     v27 = v14;
     v28 = 2112;
-    v29 = v11;
+    v29 = settingsCopy;
     _os_log_impl(&dword_248146000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Updating frame for widget scene to %@, with animation settings: %@", buf, 0x20u);
   }
 
@@ -161,10 +161,10 @@ void __50__DBWidgetSceneHostViewController_setWidgetStyle___block_invoke(uint64_
   v21 = y;
   v22 = width;
   v23 = height;
-  v18 = v12;
-  v19 = v11;
-  v15 = v11;
-  v16 = v12;
+  v18 = handleCopy;
+  v19 = settingsCopy;
+  v15 = settingsCopy;
+  v16 = handleCopy;
   [(DBSceneHostViewController *)self updateSceneSettingsWithTransitionBlock:v17];
 }
 
@@ -180,31 +180,31 @@ void __82__DBWidgetSceneHostViewController_updateSceneFrame_animationSettings_fe
   [v9 setAnimationSettings:*(a1 + 5)];
 }
 
-- (void)sceneContentStateDidUpdate:(int64_t)a3
+- (void)sceneContentStateDidUpdate:(int64_t)update
 {
-  v5 = [(DBWidgetSceneHostViewController *)self delegate];
-  [v5 widgetSceneHostViewController:self sceneContentStateDidUpdate:a3];
+  delegate = [(DBWidgetSceneHostViewController *)self delegate];
+  [delegate widgetSceneHostViewController:self sceneContentStateDidUpdate:update];
 }
 
-- (void)processMonitor:(id)a3 shouldHandleDeathOfBundleIdentifier:(id)a4 isCrash:(BOOL)a5
+- (void)processMonitor:(id)monitor shouldHandleDeathOfBundleIdentifier:(id)identifier isCrash:(BOOL)crash
 {
-  v5 = a5;
+  crashCopy = crash;
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = DBWidgetSceneHostViewController;
-  [(DBSceneHostViewController *)&v18 processMonitor:a3 shouldHandleDeathOfBundleIdentifier:v8 isCrash:v5];
-  v9 = [(DBSceneHostViewController *)self application];
-  v10 = [v9 bundleIdentifier];
-  if ([v8 isEqualToString:v10])
+  [(DBSceneHostViewController *)&v18 processMonitor:monitor shouldHandleDeathOfBundleIdentifier:identifierCopy isCrash:crashCopy];
+  application = [(DBSceneHostViewController *)self application];
+  bundleIdentifier = [application bundleIdentifier];
+  if ([identifierCopy isEqualToString:bundleIdentifier])
   {
   }
 
   else
   {
-    v11 = [(DBSceneHostViewController *)self proxyApplication];
-    v12 = [v11 bundleIdentifier];
-    v13 = [v8 isEqualToString:v12];
+    proxyApplication = [(DBSceneHostViewController *)self proxyApplication];
+    bundleIdentifier2 = [proxyApplication bundleIdentifier];
+    v13 = [identifierCopy isEqualToString:bundleIdentifier2];
 
     if (!v13)
     {
@@ -222,31 +222,31 @@ void __82__DBWidgetSceneHostViewController_updateSceneFrame_animationSettings_fe
     _os_log_impl(&dword_248146000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] Dead process is current widget target identifier, pausing persistence.", buf, 0xCu);
   }
 
-  v17 = [(DBWidgetSceneHostViewController *)self delegate];
-  [v17 widgetSceneHostViewControllerSceneWillDeactivate:self];
+  delegate = [(DBWidgetSceneHostViewController *)self delegate];
+  [delegate widgetSceneHostViewControllerSceneWillDeactivate:self];
 
   [(DBSceneHostViewController *)self deactivateScene];
 LABEL_7:
 }
 
-- (void)processMonitor:(id)a3 didHandleDeathOfBundleIdentifier:(id)a4
+- (void)processMonitor:(id)monitor didHandleDeathOfBundleIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = DBWidgetSceneHostViewController;
-  [(DBSceneHostViewController *)&v15 processMonitor:a3 didHandleDeathOfBundleIdentifier:v6];
-  v7 = [(DBSceneHostViewController *)self application];
-  v8 = [v7 bundleIdentifier];
-  if ([v6 isEqualToString:v8])
+  [(DBSceneHostViewController *)&v15 processMonitor:monitor didHandleDeathOfBundleIdentifier:identifierCopy];
+  application = [(DBSceneHostViewController *)self application];
+  bundleIdentifier = [application bundleIdentifier];
+  if ([identifierCopy isEqualToString:bundleIdentifier])
   {
   }
 
   else
   {
-    v9 = [(DBSceneHostViewController *)self proxyApplication];
-    v10 = [v9 bundleIdentifier];
-    v11 = [v6 isEqualToString:v10];
+    proxyApplication = [(DBSceneHostViewController *)self proxyApplication];
+    bundleIdentifier2 = [proxyApplication bundleIdentifier];
+    v11 = [identifierCopy isEqualToString:bundleIdentifier2];
 
     if (!v11)
     {
@@ -268,14 +268,14 @@ LABEL_7:
 LABEL_7:
 }
 
-- (void)_performSceneUpdateForeground:(BOOL)a3
+- (void)_performSceneUpdateForeground:(BOOL)foreground
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __65__DBWidgetSceneHostViewController__performSceneUpdateForeground___block_invoke;
   v3[3] = &unk_278F01BE8;
   v3[4] = self;
-  v4 = a3;
+  foregroundCopy = foreground;
   [(DBSceneHostViewController *)self performSceneUpdateWithBlock:v3 completion:0];
 }
 

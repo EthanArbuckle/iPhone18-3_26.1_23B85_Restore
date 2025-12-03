@@ -1,5 +1,5 @@
 @interface ISStoreServicesRequestOperation
-- (ISStoreServicesRequestOperation)initWithRequest:(id)a3;
+- (ISStoreServicesRequestOperation)initWithRequest:(id)request;
 - (SSRequest)request;
 - (void)cancel;
 - (void)dealloc;
@@ -8,9 +8,9 @@
 
 @implementation ISStoreServicesRequestOperation
 
-- (ISStoreServicesRequestOperation)initWithRequest:(id)a3
+- (ISStoreServicesRequestOperation)initWithRequest:(id)request
 {
-  if (!a3)
+  if (!request)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Invalid request"];
   }
@@ -20,7 +20,7 @@
   v5 = [(ISOperation *)&v7 init];
   if (v5)
   {
-    v5->_request = a3;
+    v5->_request = request;
   }
 
   return v5;

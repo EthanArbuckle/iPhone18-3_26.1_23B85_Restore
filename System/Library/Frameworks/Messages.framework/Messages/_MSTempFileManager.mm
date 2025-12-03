@@ -1,7 +1,7 @@
 @interface _MSTempFileManager
 + (id)sharedInstance;
 - (_MSTempFileManager)init;
-- (id)writeTemporaryFileWithData:(id)a3 type:(id)a4;
+- (id)writeTemporaryFileWithData:(id)data type:(id)type;
 @end
 
 @implementation _MSTempFileManager
@@ -25,12 +25,12 @@
   return [(_MSTempFileManager *)&v3 init];
 }
 
-- (id)writeTemporaryFileWithData:(id)a3 type:(id)a4
+- (id)writeTemporaryFileWithData:(id)data type:(id)type
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E6963710];
-  v6 = a3;
-  v7 = UTTypeCopyPreferredTagWithClass(a4, v5);
+  dataCopy = data;
+  v7 = UTTypeCopyPreferredTagWithClass(type, v5);
   v8 = v7;
   v9 = @"data";
   if (v7)
@@ -41,8 +41,8 @@
   v10 = v9;
 
   v11 = IMSafeTemporaryDirectory();
-  v12 = [v11 path];
-  v13 = [v12 stringByAppendingPathComponent:@"ms-XXXXXX"];
+  path = [v11 path];
+  v13 = [path stringByAppendingPathComponent:@"ms-XXXXXX"];
   v14 = [v13 stringByAppendingPathExtension:v10];
 
   [v14 UTF8String];
@@ -55,7 +55,7 @@
   v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v19];
   v17 = [_MSTempURL fileURLWithPath:v16];
 
-  [v6 writeToURL:v17 atomically:1];
+  [dataCopy writeToURL:v17 atomically:1];
 
   return v17;
 }

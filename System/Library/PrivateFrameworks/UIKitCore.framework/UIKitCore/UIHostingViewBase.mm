@@ -9,21 +9,21 @@
 - (void)sceneWillDeactivate;
 - (void)sceneWillEnterForeground;
 - (void)willBeginSnapshotSession;
-- (void)windowDidMoveToSceneWithNotification:(id)a3;
+- (void)windowDidMoveToSceneWithNotification:(id)notification;
 @end
 
 @implementation UIHostingViewBase
 
 - (void)sceneWillEnterForeground
 {
-  v2 = self;
+  selfCopy = self;
   UIHostingViewBase.updateSceneActivationState()();
   v3 = OBJC_IVAR____TtC5UIKit17UIHostingViewBase_isEnteringForeground;
   swift_beginAccess();
-  *(&v2->super.isa + v3) = 1;
+  *(&selfCopy->super.isa + v3) = 1;
   v4 = swift_allocObject();
-  *(v4 + 16) = v2;
-  v5 = v2;
+  *(v4 + 16) = selfCopy;
+  v5 = selfCopy;
   sub_188BA94B8(sub_188C48560, v4);
 
   v6 = OBJC_IVAR____TtC5UIKit17UIHostingViewBase_isExitingForeground;
@@ -34,21 +34,21 @@
 
 - (void)sceneDidActivate
 {
-  v1 = a1;
+  selfCopy = self;
   UIHostingViewBase.updateSceneActivationState()();
   v2 = OBJC_IVAR____TtC5UIKit17UIHostingViewBase_isExitingForeground;
   swift_beginAccess();
-  v1[v2] = 0;
+  selfCopy[v2] = 0;
   UIHostingViewBase.requestUpdateForFidelity()();
 }
 
 - (void)sceneWillDeactivate
 {
-  v2 = self;
+  selfCopy = self;
   UIHostingViewBase.updateSceneActivationState()();
   v3 = OBJC_IVAR____TtC5UIKit17UIHostingViewBase_isExitingForeground;
   swift_beginAccess();
-  *(&v2->super.isa + v3) = 1;
+  *(&selfCopy->super.isa + v3) = 1;
 }
 
 - (_TtC5UIKit17UIHostingViewBase)init
@@ -58,14 +58,14 @@
   return result;
 }
 
-- (void)windowDidMoveToSceneWithNotification:(id)a3
+- (void)windowDidMoveToSceneWithNotification:(id)notification
 {
   v4 = sub_18A4A2458();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18A4A2418();
-  v8 = self;
+  selfCopy = self;
   sub_188AFFD0C();
 
   (*(v5 + 8))(v7, v4);
@@ -94,7 +94,7 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(v4 + 40);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
@@ -109,7 +109,7 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(v4 + 48);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }

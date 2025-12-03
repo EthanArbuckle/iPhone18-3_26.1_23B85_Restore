@@ -1,24 +1,24 @@
 @interface BPSFollowUpAttributes
-+ (id)attributeWithOptions:(id)a3;
++ (id)attributeWithOptions:(id)options;
 @end
 
 @implementation BPSFollowUpAttributes
 
-+ (id)attributeWithOptions:(id)a3
++ (id)attributeWithOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = objc_alloc_init(BPSFollowUpAttributes);
-  v5 = [v3 objectForKeyedSubscript:@"title"];
+  v5 = [optionsCopy objectForKeyedSubscript:@"title"];
   [(BPSFollowUpAttributes *)v4 setLocalizedTitle:v5];
 
-  v6 = [v3 objectForKeyedSubscript:@"description"];
+  v6 = [optionsCopy objectForKeyedSubscript:@"description"];
   [(BPSFollowUpAttributes *)v4 setLocalizedDescription:v6];
 
-  v7 = [v3 objectForKeyedSubscript:@"followUpActions"];
+  v7 = [optionsCopy objectForKeyedSubscript:@"followUpActions"];
   [(BPSFollowUpAttributes *)v4 setFollowUpActions:v7];
 
-  v8 = [v3 objectForKeyedSubscript:@"notificationTitle"];
-  v9 = [v3 objectForKeyedSubscript:@"notificationDescription"];
+  v8 = [optionsCopy objectForKeyedSubscript:@"notificationTitle"];
+  v9 = [optionsCopy objectForKeyedSubscript:@"notificationDescription"];
 
   if ([v8 length] && objc_msgSend(v9, "length"))
   {

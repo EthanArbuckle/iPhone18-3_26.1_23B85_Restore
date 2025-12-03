@@ -1,10 +1,10 @@
 @interface TTRISECreateRemindersViewController
-- (_TtC25RemindersSharingExtension35TTRISECreateRemindersViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC25RemindersSharingExtension35TTRISECreateRemindersViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC25RemindersSharingExtension35TTRISECreateRemindersViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC25RemindersSharingExtension35TTRISECreateRemindersViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -12,7 +12,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001C4A4();
 }
 
@@ -25,38 +25,38 @@
   sub_10001DFC4();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10001E610(a3);
+  selfCopy = self;
+  sub_10001E610(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10001E728(a3);
+  selfCopy = self;
+  sub_10001E728(disappear);
 }
 
-- (_TtC25RemindersSharingExtension35TTRISECreateRemindersViewController)initWithCollectionViewLayout:(id)a3
-{
-  result = _swift_stdlib_reportUnimplementedInitializer();
-  __break(1u);
-  return result;
-}
-
-- (_TtC25RemindersSharingExtension35TTRISECreateRemindersViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC25RemindersSharingExtension35TTRISECreateRemindersViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (_TtC25RemindersSharingExtension35TTRISECreateRemindersViewController)initWithNibName:(id)name bundle:(id)bundle
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
   sub_100049EF0();
   v7 = sub_10004C720();
-  v8 = a3;
-  v9 = self;
+  viewCopy = view;
+  selfCopy = self;
   v10 = sub_1000273AC(v7);
 
   return v10;

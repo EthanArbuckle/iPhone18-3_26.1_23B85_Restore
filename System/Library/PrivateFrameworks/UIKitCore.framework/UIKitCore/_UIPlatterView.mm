@@ -1,8 +1,8 @@
 @interface _UIPlatterView
 - (BOOL)_hasRadiosityShadow;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CATransform3D)scaleTransform;
-- (CATransform3D)targetTransformIncludingAppliedTransform:(SEL)a3;
+- (CATransform3D)targetTransformIncludingAppliedTransform:(SEL)transform;
 - (CGAffineTransform)additionalTransform;
 - (CGAffineTransform)appliedTransform;
 - (CGAffineTransform)containerCounterRotationTransform;
@@ -12,47 +12,47 @@
 - (CGPoint)initialBadgeLocation;
 - (CGPoint)offset;
 - (CGSize)overrideSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)contentInsets;
 - (UIView)sourceView;
-- (_UIPlatterView)initWithDUIPreview:(id)a3;
-- (_UIPlatterView)initWithDUIPreview:(id)a3 imageComponent:(id)a4 sourceView:(id)a5;
-- (_UIPlatterView)initWithDroppedItem:(id)a3;
+- (_UIPlatterView)initWithDUIPreview:(id)preview;
+- (_UIPlatterView)initWithDUIPreview:(id)preview imageComponent:(id)component sourceView:(id)view;
+- (_UIPlatterView)initWithDroppedItem:(id)item;
 - (double)scaleFactor;
-- (id)_applyMaskPath:(id)a3 toView:(id)a4 bounds:(CGRect)a5;
-- (void)_configureRadiosityShadowIfNeededWithSourceView:(id)a3;
+- (id)_applyMaskPath:(id)path toView:(id)view bounds:(CGRect)bounds;
+- (void)_configureRadiosityShadowIfNeededWithSourceView:(id)view;
 - (void)_updateMasking;
 - (void)_updateShadowViewState;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)setAdditionalTransform:(CGAffineTransform *)a3;
-- (void)setAppliedTransform:(CGAffineTransform *)a3;
-- (void)setAppliesOriginalRotation:(BOOL)a3;
-- (void)setBackgroundVisible:(BOOL)a3;
-- (void)setComponentView:(id)a3;
-- (void)setConstrainSize:(BOOL)a3;
-- (void)setContainerCounterRotationTransform:(CGAffineTransform *)a3;
-- (void)setContainerCounterScaleTransform:(CGAffineTransform *)a3;
-- (void)setLifted:(BOOL)a3;
-- (void)setOrientationRotation:(double)a3;
-- (void)setOverrideSize:(CGSize)a3;
-- (void)setShadowProperties:(id)a3;
-- (void)setShadowVisible:(BOOL)a3;
-- (void)setSourceView:(id)a3;
-- (void)setStackRotation:(double)a3;
-- (void)setTransformAppliedExternally:(BOOL)a3;
-- (void)takeCounterTransformsToAddToContainer:(id)a3;
+- (void)setAdditionalTransform:(CGAffineTransform *)transform;
+- (void)setAppliedTransform:(CGAffineTransform *)transform;
+- (void)setAppliesOriginalRotation:(BOOL)rotation;
+- (void)setBackgroundVisible:(BOOL)visible;
+- (void)setComponentView:(id)view;
+- (void)setConstrainSize:(BOOL)size;
+- (void)setContainerCounterRotationTransform:(CGAffineTransform *)transform;
+- (void)setContainerCounterScaleTransform:(CGAffineTransform *)transform;
+- (void)setLifted:(BOOL)lifted;
+- (void)setOrientationRotation:(double)rotation;
+- (void)setOverrideSize:(CGSize)size;
+- (void)setShadowProperties:(id)properties;
+- (void)setShadowVisible:(BOOL)visible;
+- (void)setSourceView:(id)view;
+- (void)setStackRotation:(double)rotation;
+- (void)setTransformAppliedExternally:(BOOL)externally;
+- (void)takeCounterTransformsToAddToContainer:(id)container;
 - (void)updateTransform;
 @end
 
 @implementation _UIPlatterView
 
-- (_UIPlatterView)initWithDUIPreview:(id)a3
+- (_UIPlatterView)initWithDUIPreview:(id)preview
 {
-  v4 = a3;
+  previewCopy = preview;
   v5 = *MEMORY[0x1E695EFF8];
   v6 = *(MEMORY[0x1E695EFF8] + 8);
-  [v4 unscaledSize];
+  [previewCopy unscaledSize];
   v8 = v7;
   v10 = v9;
   v73.receiver = self;
@@ -77,10 +77,10 @@
     *(v11 + 632) = v16;
     *(v11 + 648) = v15;
     *(v11 + 664) = v14;
-    v17 = [v11 _disableLayoutFlushingCount];
-    if (v17 >= 1)
+    _disableLayoutFlushingCount = [v11 _disableLayoutFlushingCount];
+    if (_disableLayoutFlushingCount >= 1)
     {
-      v18 = v17 + 1;
+      v18 = _disableLayoutFlushingCount + 1;
     }
 
     else
@@ -90,22 +90,22 @@
 
     [(UIView *)v12 _setDisableLayoutFlushingCount:v18];
     [(UIView *)v12 _disableLayoutFlushing];
-    v19 = [(UIView *)v12 layer];
-    [v19 setAllowsGroupOpacity:1];
+    layer = [(UIView *)v12 layer];
+    [layer setAllowsGroupOpacity:1];
 
-    v20 = [v4 copy];
+    v20 = [previewCopy copy];
     preview = v12->_preview;
     v12->_preview = v20;
 
-    [v4 previewMode];
+    [previewCopy previewMode];
     if (![(_UIPlatterView *)v12 _isLivePreviewContainer])
     {
-      v22 = [v4 effectiveShadowPath];
-      if (v22)
+      effectiveShadowPath = [previewCopy effectiveShadowPath];
+      if (effectiveShadowPath)
       {
-        v23 = v22;
-        v24 = [v4 shadowPath];
-        if (v24 && (v25 = v24, v26 = dyld_program_sdk_at_least(), v25, v26))
+        v23 = effectiveShadowPath;
+        shadowPath = [previewCopy shadowPath];
+        if (shadowPath && (v25 = shadowPath, v26 = dyld_program_sdk_at_least(), v25, v26))
         {
           [v23 bounds];
           v28 = v27;
@@ -168,21 +168,21 @@
         x = v5;
       }
 
-      v43 = [v4 backgroundColor];
-      v44 = [(UIView *)v12 traitCollection];
-      v45 = [v43 resolvedColorWithTraitCollection:v44];
+      backgroundColor = [previewCopy backgroundColor];
+      traitCollection = [(UIView *)v12 traitCollection];
+      v45 = [backgroundColor resolvedColorWithTraitCollection:traitCollection];
       [v45 alphaComponent];
       v47 = v46;
 
-      v48 = [v4 shadowProperties];
+      shadowProperties = [previewCopy shadowProperties];
       shadowProperties = v12->_shadowProperties;
-      v12->_shadowProperties = v48;
+      v12->_shadowProperties = shadowProperties;
 
-      v50 = [(_UIPlatterView *)v12 _hasRadiosityShadow];
-      v51 = [(UIView *)v12 traitCollection];
-      v52 = [v51 userInterfaceIdiom];
+      _hasRadiosityShadow = [(_UIPlatterView *)v12 _hasRadiosityShadow];
+      traitCollection2 = [(UIView *)v12 traitCollection];
+      userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
 
-      if (v52 != 6 && !v50)
+      if (userInterfaceIdiom != 6 && !_hasRadiosityShadow)
       {
         v53 = [[_UIPlatterSoftShadowView alloc] initWithFrame:v35 shadowPath:x, y, width, tx];
         [(UIView *)v53 setAlpha:0.0];
@@ -197,24 +197,24 @@
     backgroundView = v12->_backgroundView;
     v12->_backgroundView = v55;
 
-    v57 = [v4 backgroundColor];
-    [(UIView *)v12->_backgroundView setBackgroundColor:v57];
+    backgroundColor2 = [previewCopy backgroundColor];
+    [(UIView *)v12->_backgroundView setBackgroundColor:backgroundColor2];
 
     [(UIView *)v12->_backgroundView setAlpha:0.0];
-    v58 = [(UIView *)v12->_backgroundView layer];
-    [v58 setAllowsEdgeAntialiasing:1];
+    layer2 = [(UIView *)v12->_backgroundView layer];
+    [layer2 setAllowsEdgeAntialiasing:1];
 
     [(UIView *)v12 addSubview:v12->_backgroundView];
-    [v4 contentOffset];
+    [previewCopy contentOffset];
     v60 = v59;
     v62 = v61;
-    [v4 contentSize];
+    [previewCopy contentSize];
     v65 = [[UIView alloc] initWithFrame:v60, v62, v63, v64];
     portalWrapperView = v12->_portalWrapperView;
     v12->_portalWrapperView = v65;
 
     [(UIView *)v12 addSubview:v12->_portalWrapperView];
-    if ([v4 hasCustomOutline])
+    if ([previewCopy hasCustomOutline])
     {
       [(_UIPlatterView *)v12 _updateMasking];
     }
@@ -225,110 +225,110 @@
   return v12;
 }
 
-- (id)_applyMaskPath:(id)a3 toView:(id)a4 bounds:(CGRect)a5
+- (id)_applyMaskPath:(id)path toView:(id)view bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
-  if ([v11 _isRoundedRect] && (objc_msgSend(v12, "bounds"), v14 = v13, v16 = v15, v18 = v17, v20 = v19, objc_msgSend(v11, "bounds"), v48.origin.x = v21, v48.origin.y = v22, v48.size.width = v23, v48.size.height = v24, v47.origin.x = v14, v47.origin.y = v16, v47.size.width = v18, v47.size.height = v20, CGRectEqualToRect(v47, v48)) && ((-[_DUIPreview contentSize](self->_preview, "contentSize"), v26 = v25, v28 = v27, objc_msgSend(v11, "bounds"), v26 == v30) ? (v31 = v28 == v29) : (v31 = 0), v31))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  pathCopy = path;
+  viewCopy = view;
+  if ([pathCopy _isRoundedRect] && (objc_msgSend(viewCopy, "bounds"), v14 = v13, v16 = v15, v18 = v17, v20 = v19, objc_msgSend(pathCopy, "bounds"), v48.origin.x = v21, v48.origin.y = v22, v48.size.width = v23, v48.size.height = v24, v47.origin.x = v14, v47.origin.y = v16, v47.size.width = v18, v47.size.height = v20, CGRectEqualToRect(v47, v48)) && ((-[_DUIPreview contentSize](self->_preview, "contentSize"), v26 = v25, v28 = v27, objc_msgSend(pathCopy, "bounds"), v26 == v30) ? (v31 = v28 == v29) : (v31 = 0), v31))
   {
-    [v11 _cornerRadius];
+    [pathCopy _cornerRadius];
     v37 = v36;
-    v38 = [v12 layer];
-    [v38 setCornerRadius:v37];
+    layer = [viewCopy layer];
+    [layer setCornerRadius:v37];
 
-    v39 = [v11 _hasContinuousCorners];
+    _hasContinuousCorners = [pathCopy _hasContinuousCorners];
     v40 = MEMORY[0x1E69796E8];
-    if (!v39)
+    if (!_hasContinuousCorners)
     {
       v40 = MEMORY[0x1E69796E0];
     }
 
     v41 = *v40;
-    v42 = [v12 layer];
-    [v42 setCornerCurve:v41];
+    layer2 = [viewCopy layer];
+    [layer2 setCornerCurve:v41];
 
-    v43 = [v11 _cornerMask];
-    v44 = [v12 layer];
-    [v44 setMaskedCorners:v43];
+    _cornerMask = [pathCopy _cornerMask];
+    layer3 = [viewCopy layer];
+    [layer3 setMaskedCorners:_cornerMask];
 
-    v45 = [v12 layer];
-    [v45 setMasksToBounds:1];
+    layer4 = [viewCopy layer];
+    [layer4 setMasksToBounds:1];
 
-    v32 = 0;
+    height = 0;
   }
 
   else
   {
-    v32 = [(UIView *)[_UIShapeView alloc] initWithFrame:x, y, width, height];
-    v33 = [v11 CGPath];
-    v34 = [(_UIShapeView *)v32 shapeLayer];
-    [v34 setPath:v33];
+    height = [(UIView *)[_UIShapeView alloc] initWithFrame:x, y, width, height];
+    cGPath = [pathCopy CGPath];
+    shapeLayer = [(_UIShapeView *)height shapeLayer];
+    [shapeLayer setPath:cGPath];
 
-    [v12 setMaskView:v32];
+    [viewCopy setMaskView:height];
   }
 
-  return v32;
+  return height;
 }
 
-- (_UIPlatterView)initWithDUIPreview:(id)a3 imageComponent:(id)a4 sourceView:(id)a5
+- (_UIPlatterView)initWithDUIPreview:(id)preview imageComponent:(id)component sourceView:(id)view
 {
-  v7 = a4;
-  v8 = [(_UIPlatterView *)self initWithDUIPreview:a3];
+  componentCopy = component;
+  v8 = [(_UIPlatterView *)self initWithDUIPreview:preview];
   v9 = v8;
   if (v8)
   {
-    v10 = [(_UIPlatterView *)v8 componentView];
-    if (v10)
+    componentView = [(_UIPlatterView *)v8 componentView];
+    if (componentView)
     {
     }
 
     else
     {
-      v12 = [v7 image];
+      image = [componentCopy image];
 
-      if (v12)
+      if (image)
       {
         v13 = [UIImageView alloc];
-        v14 = [v7 image];
-        v11 = [(UIImageView *)v13 initWithImage:v14];
+        image2 = [componentCopy image];
+        view = [(UIImageView *)v13 initWithImage:image2];
 
-        [(_UIPlatterView *)v9 setComponentView:v11];
+        [(_UIPlatterView *)v9 setComponentView:view];
         goto LABEL_7;
       }
     }
 
-    v11 = [v7 view];
-    [(_UIPlatterView *)v9 setSourceView:v11];
+    view = [componentCopy view];
+    [(_UIPlatterView *)v9 setSourceView:view];
 LABEL_7:
   }
 
   return v9;
 }
 
-- (_UIPlatterView)initWithDroppedItem:(id)a3
+- (_UIPlatterView)initWithDroppedItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 preview];
-  v6 = [v4 imageComponent];
-  v7 = v5;
+  itemCopy = item;
+  preview = [itemCopy preview];
+  imageComponent = [itemCopy imageComponent];
+  v7 = preview;
   v8 = [[_UIPlatterView alloc] initWithDUIPreview:v7];
 
-  v9 = v6;
+  v9 = imageComponent;
   if ([v9 representsPortal])
   {
     v10 = [_UIPortalView alloc];
     [v9 frame];
     v11 = [(_UIPortalView *)v10 initWithFrame:?];
-    v12 = [(_UIPortalView *)v11 portalLayer];
-    [v12 setSourceLayerRenderId:{objc_msgSend(v9, "renderID")}];
-    v13 = [v9 contextID];
+    portalLayer = [(_UIPortalView *)v11 portalLayer];
+    [portalLayer setSourceLayerRenderId:{objc_msgSend(v9, "renderID")}];
+    contextID = [v9 contextID];
 
-    [v12 setSourceContextId:v13];
-    [v12 setHidesSourceLayer:1];
+    [portalLayer setSourceContextId:contextID];
+    [portalLayer setHidesSourceLayer:1];
     [(_UIPortalView *)v11 setAllowsBackdropGroups:1];
   }
 
@@ -344,24 +344,24 @@ LABEL_7:
     v24 = v23;
     v26 = v25;
     v28 = v27;
-    v29 = [v9 slotID];
+    slotID = [v9 slotID];
 
-    v11 = [(_UIDragSlotHostingView *)v14 initWithFrame:v29 contentSize:v16 slotID:v18, v20, v22, v24, v26, v28];
+    v11 = [(_UIDragSlotHostingView *)v14 initWithFrame:slotID contentSize:v16 slotID:v18, v20, v22, v24, v26, v28];
   }
 
   [(_UIPlatterView *)v8 setComponentView:v11];
 
-  [v4 rotation];
+  [itemCopy rotation];
   [(_UIPlatterView *)v8 setStackRotation:?];
   [(_UIPlatterView *)v8 setLifted:1];
-  -[_UIPlatterView setConstrainSize:](v8, "setConstrainSize:", [v4 constrainSize]);
-  v30 = [v4 preview];
-  [v30 stackAlpha];
+  -[_UIPlatterView setConstrainSize:](v8, "setConstrainSize:", [itemCopy constrainSize]);
+  preview2 = [itemCopy preview];
+  [preview2 stackAlpha];
   [(UIView *)v8 setAlpha:?];
 
-  if (v4)
+  if (itemCopy)
   {
-    [v4 appliedTransform];
+    [itemCopy appliedTransform];
   }
 
   else
@@ -375,29 +375,29 @@ LABEL_7:
   v34[1] = v36;
   v34[2] = v37;
   [(_UIPlatterView *)v8 setAppliedTransform:v34];
-  v31 = [v4 preview];
-  v32 = [v31 shadowProperties];
-  [(_UIPlatterView *)v8 setShadowProperties:v32];
+  preview3 = [itemCopy preview];
+  shadowProperties = [preview3 shadowProperties];
+  [(_UIPlatterView *)v8 setShadowProperties:shadowProperties];
 
   return v8;
 }
 
-- (void)setBackgroundVisible:(BOOL)a3
+- (void)setBackgroundVisible:(BOOL)visible
 {
-  if (self->_backgroundVisible != a3)
+  if (self->_backgroundVisible != visible)
   {
-    self->_backgroundVisible = a3;
-    v4 = a3;
-    v5 = [(_UIPlatterView *)self backgroundView];
-    [v5 setAlpha:v4];
+    self->_backgroundVisible = visible;
+    visibleCopy = visible;
+    backgroundView = [(_UIPlatterView *)self backgroundView];
+    [backgroundView setAlpha:visibleCopy];
   }
 }
 
-- (void)setShadowVisible:(BOOL)a3
+- (void)setShadowVisible:(BOOL)visible
 {
-  if (self->_shadowVisible != a3)
+  if (self->_shadowVisible != visible)
   {
-    self->_shadowVisible = a3;
+    self->_shadowVisible = visible;
     [(_UIPlatterView *)self _updateShadowViewState];
   }
 }
@@ -406,13 +406,13 @@ LABEL_7:
 {
   if ([(_UIPlatterView *)self constrainSize])
   {
-    v3 = [(_UIPlatterView *)self preview];
-    [v3 croppedScaledSize];
+    preview = [(_UIPlatterView *)self preview];
+    [preview croppedScaledSize];
     v5 = v4;
     v7 = v6;
 
-    v8 = [(_UIPlatterView *)self preview];
-    [v8 scaleFactor];
+    preview2 = [(_UIPlatterView *)self preview];
+    [preview2 scaleFactor];
     v10 = 1.0 / v9;
 
     v11 = v5 * v10;
@@ -430,12 +430,12 @@ LABEL_7:
     v12 = v18;
   }
 
-  v19 = [UIApp userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [UIApp userInterfaceLayoutDirection];
   v20 = v13;
   v21 = v14;
   v22 = v11;
   v23 = v12;
-  if (v19)
+  if (userInterfaceLayoutDirection)
   {
     MinX = CGRectGetMinX(*&v20);
   }
@@ -459,8 +459,8 @@ LABEL_7:
 
 - (CGPoint)initialBadgeLocation
 {
-  v2 = [(_UIPlatterView *)self preview];
-  [v2 initialBadgeLocation];
+  preview = [(_UIPlatterView *)self preview];
+  [preview initialBadgeLocation];
   v4 = v3;
   v6 = v5;
 
@@ -471,19 +471,19 @@ LABEL_7:
   return result;
 }
 
-- (void)setConstrainSize:(BOOL)a3
+- (void)setConstrainSize:(BOOL)size
 {
-  if (self->_constrainSize != a3)
+  if (self->_constrainSize != size)
   {
-    self->_constrainSize = a3;
+    self->_constrainSize = size;
     [(_UIPlatterView *)self updateTransform];
   }
 }
 
 - (CGPoint)contentOffset
 {
-  v2 = [(_UIPlatterView *)self preview];
-  [v2 contentOffset];
+  preview = [(_UIPlatterView *)self preview];
+  [preview contentOffset];
   v4 = v3;
   v6 = v5;
 
@@ -494,29 +494,29 @@ LABEL_7:
   return result;
 }
 
-- (void)setComponentView:(id)a3
+- (void)setComponentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (([(UIView *)self->_componentView isEqual:?]& 1) == 0)
   {
     [(UIView *)self->_componentView removeFromSuperview];
-    if (v5)
+    if (viewCopy)
     {
-      v4 = [(_UIPlatterView *)self portalWrapperView];
-      [v4 addSubview:v5];
+      portalWrapperView = [(_UIPlatterView *)self portalWrapperView];
+      [portalWrapperView addSubview:viewCopy];
     }
 
-    [(_UIPlatterView *)self _configureRadiosityShadowIfNeededWithSourceView:v5];
+    [(_UIPlatterView *)self _configureRadiosityShadowIfNeededWithSourceView:viewCopy];
   }
 }
 
 - (BOOL)_hasRadiosityShadow
 {
-  v3 = [(_UIPlatterView *)self shadowProperties];
-  if (v3)
+  shadowProperties = [(_UIPlatterView *)self shadowProperties];
+  if (shadowProperties)
   {
-    v4 = [(_UIPlatterView *)self shadowProperties];
-    v5 = [v4 shadowType] == 1;
+    shadowProperties2 = [(_UIPlatterView *)self shadowProperties];
+    v5 = [shadowProperties2 shadowType] == 1;
   }
 
   else
@@ -527,48 +527,48 @@ LABEL_7:
   return v5;
 }
 
-- (void)setShadowProperties:(id)a3
+- (void)setShadowProperties:(id)properties
 {
-  v7 = a3;
-  objc_storeStrong(&self->_shadowProperties, a3);
+  propertiesCopy = properties;
+  objc_storeStrong(&self->_shadowProperties, properties);
   componentView = self->_componentView;
   if (componentView)
   {
-    v6 = componentView;
+    sourceView = componentView;
   }
 
   else
   {
-    v6 = [(_UIPortalView *)self->_portalView sourceView];
-    if (!v6)
+    sourceView = [(_UIPortalView *)self->_portalView sourceView];
+    if (!sourceView)
     {
       goto LABEL_5;
     }
   }
 
-  [(_UIPlatterView *)self _configureRadiosityShadowIfNeededWithSourceView:v6];
+  [(_UIPlatterView *)self _configureRadiosityShadowIfNeededWithSourceView:sourceView];
 
 LABEL_5:
 }
 
-- (void)_configureRadiosityShadowIfNeededWithSourceView:(id)a3
+- (void)_configureRadiosityShadowIfNeededWithSourceView:(id)view
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   if ([(_UIPlatterView *)self _hasRadiosityShadow])
   {
     [(UIView *)self->_shadowView removeFromSuperview];
-    v5 = [[_UIPortalView alloc] initWithSourceView:v4];
-    [v4 bounds];
+    v5 = [[_UIPortalView alloc] initWithSourceView:viewCopy];
+    [viewCopy bounds];
     [(_UIPortalView *)v5 setFrame:?];
-    v6 = [(UIView *)v5 layer];
-    [v6 setZPosition:-1.0];
+    layer = [(UIView *)v5 layer];
+    [layer setZPosition:-1.0];
 
     [(UIView *)self addSubview:v5];
     v7 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979928]];
     v8 = MEMORY[0x1E696AD98];
-    v9 = [(_UIPlatterView *)self shadowProperties];
-    [v9 radiosityBlurRadius];
+    shadowProperties = [(_UIPlatterView *)self shadowProperties];
+    [shadowProperties radiosityBlurRadius];
     v10 = [v8 numberWithDouble:?];
     [v7 setValue:v10 forKey:*MEMORY[0x1E6979BA8]];
 
@@ -577,20 +577,20 @@ LABEL_5:
     v21[0] = v7;
     v21[1] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
-    v13 = [(UIView *)v5 layer];
-    [v13 setFilters:v12];
+    layer2 = [(UIView *)v5 layer];
+    [layer2 setFilters:v12];
 
     v14 = [UIColor colorWithWhite:0.75 alpha:1.0];
-    v15 = [v14 CGColor];
-    v16 = [(UIView *)v5 layer];
-    [v16 setContentsMultiplyColor:v15];
+    cGColor = [v14 CGColor];
+    layer3 = [(UIView *)v5 layer];
+    [layer3 setContentsMultiplyColor:cGColor];
 
     v17 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CE8]];
-    v18 = [(UIView *)v5 layer];
-    [v18 setCompositingFilter:v17];
+    layer4 = [(UIView *)v5 layer];
+    [layer4 setCompositingFilter:v17];
 
-    v19 = [(UIView *)v5 layer];
-    [v19 setShouldRasterize:1];
+    layer5 = [(UIView *)v5 layer];
+    [layer5 setShouldRasterize:1];
 
     shadowView = self->_shadowView;
     self->_shadowView = &v5->super;
@@ -650,8 +650,8 @@ LABEL_6:
     v6 = 0.0;
   }
 
-  v9 = [(_UIPlatterView *)self shadowView];
-  [v9 setAlpha:v6];
+  shadowView = [(_UIPlatterView *)self shadowView];
+  [shadowView setAlpha:v6];
 
   if ([(_UIPlatterView *)self isShadowVisible])
   {
@@ -681,7 +681,7 @@ LABEL_6:
   }
 
   v12 = self->_preview;
-  v3 = [(_DUIPreview *)v12 wantsSuppressedMask];
+  wantsSuppressedMask = [(_DUIPreview *)v12 wantsSuppressedMask];
   if ([(_UIPlatterView *)self _isLivePreviewContainer])
   {
     v4 = self->_backgroundView;
@@ -689,21 +689,21 @@ LABEL_6:
 
   else
   {
-    v5 = [(_DUIPreview *)v12 outline];
+    outline = [(_DUIPreview *)v12 outline];
     v4 = self->_backgroundView;
-    if (v5)
+    if (outline)
     {
       [(UIView *)self bounds];
-      v6 = [(_UIPlatterView *)self _applyMaskPath:v5 toView:v4 bounds:?];
+      v6 = [(_UIPlatterView *)self _applyMaskPath:outline toView:v4 bounds:?];
       platterMaskView = self->_platterMaskView;
       self->_platterMaskView = v6;
 
       [(UIView *)self->_portalWrapperView setClipsToBounds:0];
-      if (!v3)
+      if (!wantsSuppressedMask)
       {
         [(UIView *)self bounds];
         [(UIView *)self convertRect:self->_portalWrapperView toView:?];
-        v8 = [(_UIPlatterView *)self _applyMaskPath:v5 toView:self->_portalWrapperView bounds:?];
+        v8 = [(_UIPlatterView *)self _applyMaskPath:outline toView:self->_portalWrapperView bounds:?];
         portalMaskView = self->_portalMaskView;
         self->_portalMaskView = v8;
       }
@@ -712,58 +712,58 @@ LABEL_6:
     }
   }
 
-  v10 = [(_DUIPreview *)v12 shadowPath];
-  v11 = v10 == 0;
+  shadowPath = [(_DUIPreview *)v12 shadowPath];
+  v11 = shadowPath == 0;
 
   [(UIView *)self->_portalWrapperView setClipsToBounds:v11 & ~[(_UIPlatterView *)self _isLivePreviewContainer]];
-  v5 = 0;
+  outline = 0;
 LABEL_8:
   self->_hasAppliedMasking = 1;
 }
 
-- (void)setLifted:(BOOL)a3
+- (void)setLifted:(BOOL)lifted
 {
-  if (self->_lifted != a3)
+  if (self->_lifted != lifted)
   {
     v9 = v4;
     v10 = v3;
-    v7 = a3;
-    self->_lifted = a3;
-    if (a3)
+    liftedCopy = lifted;
+    self->_lifted = lifted;
+    if (lifted)
     {
       [(_UIPlatterView *)self _updateMasking];
     }
 
-    [(_UIPlatterView *)self setShadowVisible:v7, v9, v10, v5];
-    [(_UIPlatterView *)self setBackgroundVisible:v7];
+    [(_UIPlatterView *)self setShadowVisible:liftedCopy, v9, v10, v5];
+    [(_UIPlatterView *)self setBackgroundVisible:liftedCopy];
 
     [(_UIPlatterView *)self updateTransform];
   }
 }
 
-- (void)setOrientationRotation:(double)a3
+- (void)setOrientationRotation:(double)rotation
 {
-  if (self->_orientationRotation != a3)
+  if (self->_orientationRotation != rotation)
   {
-    self->_orientationRotation = a3;
+    self->_orientationRotation = rotation;
     [(_UIPlatterView *)self updateTransform];
   }
 }
 
-- (void)setOverrideSize:(CGSize)a3
+- (void)setOverrideSize:(CGSize)size
 {
-  if (self->_overrideSize.width != a3.width || self->_overrideSize.height != a3.height)
+  if (self->_overrideSize.width != size.width || self->_overrideSize.height != size.height)
   {
-    self->_overrideSize = a3;
+    self->_overrideSize = size;
     [(_UIPlatterView *)self updateTransform];
   }
 }
 
-- (void)setAppliesOriginalRotation:(BOOL)a3
+- (void)setAppliesOriginalRotation:(BOOL)rotation
 {
-  if (self->_appliesOriginalRotation != a3)
+  if (self->_appliesOriginalRotation != rotation)
   {
-    self->_appliesOriginalRotation = a3;
+    self->_appliesOriginalRotation = rotation;
     [(_UIPlatterView *)self updateTransform];
   }
 }
@@ -775,8 +775,8 @@ LABEL_8:
     return 1.0;
   }
 
-  v3 = [(_UIPlatterView *)self preview];
-  [v3 scaleFactor];
+  preview = [(_UIPlatterView *)self preview];
+  [preview scaleFactor];
   v5 = v4;
 
   return v5;
@@ -784,109 +784,109 @@ LABEL_8:
 
 - (UIView)sourceView
 {
-  v2 = [(_UIPlatterView *)self portalView];
-  v3 = [v2 sourceView];
+  portalView = [(_UIPlatterView *)self portalView];
+  sourceView = [portalView sourceView];
 
-  return v3;
+  return sourceView;
 }
 
-- (void)setSourceView:(id)a3
+- (void)setSourceView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UIPlatterView *)self portalView];
-  v6 = [v5 sourceView];
+  viewCopy = view;
+  portalView = [(_UIPlatterView *)self portalView];
+  sourceView = [portalView sourceView];
 
-  if (v6 != v4)
+  if (sourceView != viewCopy)
   {
-    v7 = [(_UIPlatterView *)self portalView];
+    portalView2 = [(_UIPlatterView *)self portalView];
 
-    if (v7)
+    if (portalView2)
     {
-      v8 = [(_UIPlatterView *)self portalView];
-      [v8 removeFromSuperview];
+      portalView3 = [(_UIPlatterView *)self portalView];
+      [portalView3 removeFromSuperview];
     }
 
-    v9 = [(_UIPlatterView *)self portalWrapperView];
-    [v9 bounds];
+    portalWrapperView = [(_UIPlatterView *)self portalWrapperView];
+    [portalWrapperView bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    [v4 bounds];
+    [viewCopy bounds];
     memset(&v24, 0, sizeof(v24));
     CGAffineTransformMakeScale(&v24, v15 / v18, v17 / v19);
     v20 = [[_UIPortalView alloc] initWithFrame:v11, v13, v15, v17];
-    v21 = [(_UIPlatterView *)self preview];
-    -[_UIPortalView setHidesSourceView:](v20, "setHidesSourceView:", [v21 hidesSourceView]);
+    preview = [(_UIPlatterView *)self preview];
+    -[_UIPortalView setHidesSourceView:](v20, "setHidesSourceView:", [preview hidesSourceView]);
 
     [(_UIPortalView *)v20 setMatchesAlpha:0];
     [(_UIPortalView *)v20 setMatchesPosition:0];
     [(_UIPortalView *)v20 setMatchesTransform:0];
     v23 = v24;
     [(UIView *)v20 setTransform:&v23];
-    [(_UIPortalView *)v20 setSourceView:v4];
-    v22 = [(_UIPlatterView *)self preview];
-    -[_UIPortalView setAllowsHitTesting:](v20, "setAllowsHitTesting:", [v22 previewMode] == 4);
+    [(_UIPortalView *)v20 setSourceView:viewCopy];
+    preview2 = [(_UIPlatterView *)self preview];
+    -[_UIPortalView setAllowsHitTesting:](v20, "setAllowsHitTesting:", [preview2 previewMode] == 4);
 
     [(_UIPortalView *)v20 setAllowsBackdropGroups:1];
-    -[UIView _setFlipsHorizontalAxis:](v20, "_setFlipsHorizontalAxis:", [v4 _flipsHorizontalAxis]);
-    [v9 addSubview:v20];
+    -[UIView _setFlipsHorizontalAxis:](v20, "_setFlipsHorizontalAxis:", [viewCopy _flipsHorizontalAxis]);
+    [portalWrapperView addSubview:v20];
 
     [(_UIPlatterView *)self setPortalView:v20];
-    if (v4)
+    if (viewCopy)
     {
-      [(_UIPlatterView *)self _configureRadiosityShadowIfNeededWithSourceView:v4];
+      [(_UIPlatterView *)self _configureRadiosityShadowIfNeededWithSourceView:viewCopy];
     }
   }
 }
 
-- (void)setStackRotation:(double)a3
+- (void)setStackRotation:(double)rotation
 {
-  if (self->_stackRotation != a3)
+  if (self->_stackRotation != rotation)
   {
-    self->_stackRotation = a3;
+    self->_stackRotation = rotation;
     [(_UIPlatterView *)self updateTransform];
   }
 }
 
-- (void)setAppliedTransform:(CGAffineTransform *)a3
+- (void)setAppliedTransform:(CGAffineTransform *)transform
 {
   p_appliedTransform = &self->_appliedTransform;
   v6 = *&self->_appliedTransform.c;
   *&t1.a = *&self->_appliedTransform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_appliedTransform.tx;
-  v7 = *&a3->c;
-  *&v10.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v10.a = *&transform->a;
   *&v10.c = v7;
-  *&v10.tx = *&a3->tx;
+  *&v10.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v10))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_appliedTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_appliedTransform->c = *&transform->c;
     *&p_appliedTransform->tx = v9;
     *&p_appliedTransform->a = v8;
     [(_UIPlatterView *)self updateTransform];
   }
 }
 
-- (void)setAdditionalTransform:(CGAffineTransform *)a3
+- (void)setAdditionalTransform:(CGAffineTransform *)transform
 {
   p_additionalTransform = &self->_additionalTransform;
   v6 = *&self->_additionalTransform.c;
   *&t1.a = *&self->_additionalTransform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_additionalTransform.tx;
-  v7 = *&a3->c;
-  *&v10.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v10.a = *&transform->a;
   *&v10.c = v7;
-  *&v10.tx = *&a3->tx;
+  *&v10.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v10))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_additionalTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_additionalTransform->c = *&transform->c;
     *&p_additionalTransform->tx = v9;
     *&p_additionalTransform->a = v8;
     [(_UIPlatterView *)self updateTransform];
@@ -914,11 +914,11 @@ LABEL_8:
   *&retstr->m23 = v59;
   if ([(_UIPlatterView *)self isLifted])
   {
-    v6 = [(_UIPlatterView *)self preview];
-    v7 = v6;
-    if (v6)
+    preview = [(_UIPlatterView *)self preview];
+    v7 = preview;
+    if (preview)
     {
-      [v6 liftTransform];
+      [preview liftTransform];
     }
 
     else
@@ -938,11 +938,11 @@ LABEL_8:
     CATransform3DConcat(retstr, &m, &b);
   }
 
-  v8 = [(UIView *)self traitCollection];
-  v9 = [v8 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   v10 = 1.0;
-  if (v9 == 6)
+  if (userInterfaceIdiom == 6)
   {
     [(_UIPlatterView *)self scaleFactor];
     v10 = v11;
@@ -979,32 +979,32 @@ LABEL_8:
   result = [(_UIPlatterView *)self overrideSize];
   if (v25 != *MEMORY[0x1E695F060] || v24 != *(MEMORY[0x1E695F060] + 8))
   {
-    v26 = [(_UIPlatterView *)self constrainSize];
-    v27 = [(_UIPlatterView *)self preview];
-    v28 = v27;
-    if (v26)
+    constrainSize = [(_UIPlatterView *)self constrainSize];
+    preview2 = [(_UIPlatterView *)self preview];
+    v28 = preview2;
+    if (constrainSize)
     {
-      [v27 croppedScaledSize];
+      [preview2 croppedScaledSize];
     }
 
     else
     {
-      [v27 unscaledSize];
+      [preview2 unscaledSize];
     }
 
     v31 = v29;
     v32 = v30;
 
-    v33 = [(_UIPlatterView *)self preview];
-    v34 = v33;
+    preview3 = [(_UIPlatterView *)self preview];
+    v34 = preview3;
     v35 = 0.0;
     m14 = 0.0;
     m12 = 0.0;
     m13 = 0.0;
     m11 = 0.0;
-    if (v33)
+    if (preview3)
     {
-      [v33 liftTransform];
+      [preview3 liftTransform];
       m11 = b.m11;
       m12 = b.m12;
       m13 = b.m13;
@@ -1014,14 +1014,14 @@ LABEL_8:
     v40 = v32 * m13 + v31 * m11;
     v41 = v32 * m14 + v31 * m12;
 
-    v42 = [(_UIPlatterView *)self preview];
-    v43 = v42;
+    preview4 = [(_UIPlatterView *)self preview];
+    v43 = preview4;
     v44 = 0.0;
     v45 = 0.0;
     v46 = 0.0;
-    if (v42)
+    if (preview4)
     {
-      [v42 liftTransform];
+      [preview4 liftTransform];
       v46 = b.m11;
       v44 = b.m12;
       v45 = b.m13;
@@ -1062,7 +1062,7 @@ LABEL_8:
   return result;
 }
 
-- (CATransform3D)targetTransformIncludingAppliedTransform:(SEL)a3
+- (CATransform3D)targetTransformIncludingAppliedTransform:(SEL)transform
 {
   v4 = a4;
   *&retstr->m41 = 0u;
@@ -1084,11 +1084,11 @@ LABEL_8:
   v14 = v13;
   [(UIView *)self bounds];
   v16 = v15;
-  v17 = [(_UIPlatterView *)self preview];
-  v18 = v17;
-  if (v17)
+  preview = [(_UIPlatterView *)self preview];
+  v18 = preview;
+  if (preview)
   {
-    [v17 overrideStackTransform];
+    [preview overrideStackTransform];
   }
 
   else
@@ -1107,11 +1107,11 @@ LABEL_8:
   else
   {
     memset(&v94, 0, 48);
-    v22 = [(_UIPlatterView *)self preview];
-    v23 = v22;
-    if (v22)
+    preview2 = [(_UIPlatterView *)self preview];
+    v23 = preview2;
+    if (preview2)
     {
-      [v22 overrideStackTransform];
+      [preview2 overrideStackTransform];
     }
 
     else
@@ -1256,8 +1256,8 @@ LABEL_8:
   *&retstr->m23 = v62;
   if (self->_appliesOriginalRotation)
   {
-    v63 = [(_UIPlatterView *)self preview];
-    [v63 originalRotation];
+    preview3 = [(_UIPlatterView *)self preview];
+    [preview3 originalRotation];
     v64 = *&retstr->m33;
     *&v94.m31 = *&retstr->m31;
     *&v94.m33 = v64;
@@ -1359,20 +1359,20 @@ LABEL_8:
   return result;
 }
 
-- (void)takeCounterTransformsToAddToContainer:(id)a3
+- (void)takeCounterTransformsToAddToContainer:(id)container
 {
-  v4 = a3;
-  v5 = [v4 _window];
+  containerCopy = container;
+  _window = [containerCopy _window];
   v6 = *MEMORY[0x1E695EFF8];
   v7 = *(MEMORY[0x1E695EFF8] + 8);
-  v8 = v4;
-  [v5 convertPoint:v8 toView:{v6, v7}];
+  v8 = containerCopy;
+  [_window convertPoint:v8 toView:{v6, v7}];
   v10 = v9;
   v12 = v11;
-  [v5 convertPoint:v8 toView:{1.0, 0.0}];
+  [_window convertPoint:v8 toView:{1.0, 0.0}];
   v14 = v13;
   v16 = v15;
-  [v5 convertPoint:v8 toView:{0.0, 1.0}];
+  [_window convertPoint:v8 toView:{0.0, 1.0}];
   v18 = v17;
   v20 = v19;
   v21 = hypot(v14 - v10, v16 - v12);
@@ -1392,10 +1392,10 @@ LABEL_8:
   [(_UIPlatterView *)self updateTransform];
 }
 
-- (void)setTransformAppliedExternally:(BOOL)a3
+- (void)setTransformAppliedExternally:(BOOL)externally
 {
-  self->_transformAppliedExternally = a3;
-  if (a3)
+  self->_transformAppliedExternally = externally;
+  if (externally)
   {
     v3 = *(MEMORY[0x1E69792E8] + 80);
     v7[4] = *(MEMORY[0x1E69792E8] + 64);
@@ -1413,9 +1413,9 @@ LABEL_8:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(_UIPlatterView *)self preview:a3.width];
+  v3 = [(_UIPlatterView *)self preview:fits.width];
   [v3 unscaledSize];
   v5 = v4;
   v7 = v6;
@@ -1432,23 +1432,23 @@ LABEL_8:
   v4.receiver = self;
   v4.super_class = _UIPlatterView;
   [(UIView *)&v4 didMoveToWindow];
-  v3 = [(UIView *)self superview];
-  -[UIView _setFlipsHorizontalAxis:](self, "_setFlipsHorizontalAxis:", [v3 _isRenderedHorizontallyFlipped]);
+  superview = [(UIView *)self superview];
+  -[UIView _setFlipsHorizontalAxis:](self, "_setFlipsHorizontalAxis:", [superview _isRenderedHorizontallyFlipped]);
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   if ([(_UIPlatterView *)self constrainSize])
   {
-    v8 = [(_UIPlatterView *)self preview];
-    [v8 scaleFactor];
+    preview = [(_UIPlatterView *)self preview];
+    [preview scaleFactor];
     v10 = 1.0 / v9;
 
-    v11 = [(_UIPlatterView *)self preview];
-    [v11 croppedScaledSize];
+    preview2 = [(_UIPlatterView *)self preview];
+    [preview2 croppedScaledSize];
     v13 = v12;
     v15 = v14;
 
@@ -1465,7 +1465,7 @@ LABEL_8:
   {
     v19.receiver = self;
     v19.super_class = _UIPlatterView;
-    v16 = [(UIView *)&v19 pointInside:v7 withEvent:x, y];
+    v16 = [(UIView *)&v19 pointInside:eventCopy withEvent:x, y];
   }
 
   v17 = v16;
@@ -1475,39 +1475,39 @@ LABEL_8:
 
 - (void)didMoveToSuperview
 {
-  v3 = [(UIView *)self superview];
-  if (v3)
+  superview = [(UIView *)self superview];
+  if (superview)
   {
     anchorPointValueToAdjustToOnMoveToWindow = self->_anchorPointValueToAdjustToOnMoveToWindow;
     if (anchorPointValueToAdjustToOnMoveToWindow)
     {
       self->_anchorPointValueToAdjustToOnMoveToWindow = 0;
-      v32 = v3;
+      v32 = superview;
       v5 = anchorPointValueToAdjustToOnMoveToWindow;
 
       [(NSValue *)v5 CGPointValue];
       v7 = v6;
       v9 = v8;
 
-      v10 = self;
-      v11 = [(UIView *)v10 superview];
-      [(UIView *)v10 bounds];
+      selfCopy = self;
+      superview2 = [(UIView *)selfCopy superview];
+      [(UIView *)selfCopy bounds];
       v13 = v12;
       v15 = v14;
       v17 = v16;
       v19 = v18;
-      [(UIView *)v10 anchorPoint];
-      [(UIView *)v10 convertPoint:v11 toView:___PlatterViewAdjustAnchorPointWhileKeepingPosition_block_invoke(v20, v21, v13, v15, v17, v19)];
+      [(UIView *)selfCopy anchorPoint];
+      [(UIView *)selfCopy convertPoint:superview2 toView:___PlatterViewAdjustAnchorPointWhileKeepingPosition_block_invoke(v20, v21, v13, v15, v17, v19)];
       v23 = v22;
       v25 = v24;
-      [(UIView *)v10 convertPoint:v11 toView:___PlatterViewAdjustAnchorPointWhileKeepingPosition_block_invoke(v7, v9, v13, v15, v17, v19)];
+      [(UIView *)selfCopy convertPoint:superview2 toView:___PlatterViewAdjustAnchorPointWhileKeepingPosition_block_invoke(v7, v9, v13, v15, v17, v19)];
       v27 = v26;
       v29 = v28;
-      [(UIView *)v10 center];
-      [(UIView *)v10 setCenter:v30 + v27 - v23, v31 + v29 - v25];
-      [(UIView *)v10 setAnchorPoint:v7, v9];
+      [(UIView *)selfCopy center];
+      [(UIView *)selfCopy setCenter:v30 + v27 - v23, v31 + v29 - v25];
+      [(UIView *)selfCopy setAnchorPoint:v7, v9];
 
-      v3 = v32;
+      superview = v32;
     }
   }
 }
@@ -1588,11 +1588,11 @@ LABEL_8:
   return self;
 }
 
-- (void)setContainerCounterScaleTransform:(CGAffineTransform *)a3
+- (void)setContainerCounterScaleTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_containerCounterScaleTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_containerCounterScaleTransform.a = *&transform->a;
   *&self->_containerCounterScaleTransform.c = v4;
   *&self->_containerCounterScaleTransform.tx = v3;
 }
@@ -1606,11 +1606,11 @@ LABEL_8:
   return self;
 }
 
-- (void)setContainerCounterRotationTransform:(CGAffineTransform *)a3
+- (void)setContainerCounterRotationTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_containerCounterRotationTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_containerCounterRotationTransform.a = *&transform->a;
   *&self->_containerCounterRotationTransform.c = v4;
   *&self->_containerCounterRotationTransform.tx = v3;
 }

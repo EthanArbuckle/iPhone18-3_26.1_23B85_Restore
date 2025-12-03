@@ -1,12 +1,12 @@
 @interface SKUIReviewListPageComponent
-- (SKUIReviewListPageComponent)initWithViewElement:(id)a3;
+- (SKUIReviewListPageComponent)initWithViewElement:(id)element;
 @end
 
 @implementation SKUIReviewListPageComponent
 
-- (SKUIReviewListPageComponent)initWithViewElement:(id)a3
+- (SKUIReviewListPageComponent)initWithViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIReviewListPageComponent initWithViewElement:];
@@ -14,7 +14,7 @@
 
   v7.receiver = self;
   v7.super_class = SKUIReviewListPageComponent;
-  v5 = [(SKUIPageComponent *)&v7 initWithViewElement:v4];
+  v5 = [(SKUIPageComponent *)&v7 initWithViewElement:elementCopy];
 
   return v5;
 }

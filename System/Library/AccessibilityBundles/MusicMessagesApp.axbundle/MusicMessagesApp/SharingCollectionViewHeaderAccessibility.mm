@@ -1,17 +1,17 @@
 @interface SharingCollectionViewHeaderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation SharingCollectionViewHeaderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicMessagesApp.SharingCollectionViewHeader" hasInstanceMethod:@"accessibilityAttributionImageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicMessagesApp.SharingCollectionViewHeader" hasInstanceMethod:@"accessibilityShareRecentlyPlayedLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicMessagesApp.SharingCollectionViewHeader" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicMessagesApp.SharingCollectionViewHeader" hasInstanceMethod:@"accessibilityAttributionImageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicMessagesApp.SharingCollectionViewHeader" hasInstanceMethod:@"accessibilityShareRecentlyPlayedLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicMessagesApp.SharingCollectionViewHeader" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

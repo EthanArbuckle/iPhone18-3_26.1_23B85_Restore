@@ -1,34 +1,34 @@
 @interface SMSMessageSender
-- (SMSMessageSender)initWithSession:(id)a3 forMessage:(id)a4 chat:(id)a5 chatStyle:(unsigned __int8)a6 recipients:(id)a7;
+- (SMSMessageSender)initWithSession:(id)session forMessage:(id)message chat:(id)chat chatStyle:(unsigned __int8)style recipients:(id)recipients;
 - (id)chatIdentifier;
 - (unsigned)chatStyle;
-- (void)buildWith:(id)a3 parts:(id)a4 completion:(id)a5;
-- (void)cleanupFailedBuildWithError:(unsigned int)a3 forParts:(id)a4;
+- (void)buildWith:(id)with parts:(id)parts completion:(id)completion;
+- (void)cleanupFailedBuildWithError:(unsigned int)error forParts:(id)parts;
 - (void)deriveConfiguration;
-- (void)prepareWithCompletion:(id)a3;
-- (void)sendMetricForSMS:(id)a3 wasSuccessful:(BOOL)a4 error:(unsigned int)a5;
-- (void)sendWithCompletion:(id)a3;
+- (void)prepareWithCompletion:(id)completion;
+- (void)sendMetricForSMS:(id)s wasSuccessful:(BOOL)successful error:(unsigned int)error;
+- (void)sendWithCompletion:(id)completion;
 @end
 
 @implementation SMSMessageSender
 
-- (SMSMessageSender)initWithSession:(id)a3 forMessage:(id)a4 chat:(id)a5 chatStyle:(unsigned __int8)a6 recipients:(id)a7
+- (SMSMessageSender)initWithSession:(id)session forMessage:(id)message chat:(id)chat chatStyle:(unsigned __int8)style recipients:(id)recipients
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  sessionCopy = session;
+  messageCopy = message;
+  chatCopy = chat;
+  recipientsCopy = recipients;
   v22.receiver = self;
   v22.super_class = SMSMessageSender;
   v17 = [(SMSMessageSender *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_session, a3);
-    objc_storeStrong(&v18->_message, a4);
-    objc_storeStrong(&v18->_chat, a5);
-    v18->_style = a6;
-    objc_storeStrong(&v18->_recipients, a7);
+    objc_storeStrong(&v17->_session, session);
+    objc_storeStrong(&v18->_message, message);
+    objc_storeStrong(&v18->_chat, chat);
+    v18->_style = style;
+    objc_storeStrong(&v18->_recipients, recipients);
     v19 = objc_alloc_init(NSArray);
     outgoing = v18->_outgoing;
     v18->_outgoing = v19;
@@ -43,9 +43,9 @@
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v2 = [(SMSMessageSender *)self recipients];
+  recipients = [(SMSMessageSender *)self recipients];
   v3 = 0;
-  v4 = [v2 countByEnumeratingWithState:&v52 objects:v68 count:16];
+  v4 = [recipients countByEnumeratingWithState:&v52 objects:v68 count:16];
   if (v4)
   {
     v5 = *v53;
@@ -56,7 +56,7 @@
       {
         if (*v53 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(recipients);
         }
 
         v8 = [*(*(&v52 + 1) + 8 * i) objectForKey:v6];
@@ -65,36 +65,36 @@
         v3 |= IsEmail;
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v52 objects:v68 count:16];
+      v4 = [recipients countByEnumeratingWithState:&v52 objects:v68 count:16];
     }
 
     while (v4);
   }
 
-  v10 = [(SMSMessageSender *)self smsSession];
-  v11 = [(SMSMessageSender *)self chat];
-  v50 = [v10 isGroupMessagingEnabledFor:v11];
+  smsSession = [(SMSMessageSender *)self smsSession];
+  chat = [(SMSMessageSender *)self chat];
+  v50 = [smsSession isGroupMessagingEnabledFor:chat];
 
-  v12 = [(SMSMessageSender *)self style];
-  v13 = [(SMSMessageSender *)self smsSession];
-  v14 = [v13 relayController];
-  v15 = [(SMSMessageSender *)self chat];
-  v16 = [v15 lastAddressedLocalHandle];
-  v17 = [(SMSMessageSender *)self chat];
-  v18 = [v17 lastAddressedSIMID];
-  v19 = [v14 _checkMMSEnablementForPhoneNumber:v16 simID:v18];
+  style = [(SMSMessageSender *)self style];
+  smsSession2 = [(SMSMessageSender *)self smsSession];
+  relayController = [smsSession2 relayController];
+  chat2 = [(SMSMessageSender *)self chat];
+  lastAddressedLocalHandle = [chat2 lastAddressedLocalHandle];
+  chat3 = [(SMSMessageSender *)self chat];
+  lastAddressedSIMID = [chat3 lastAddressedSIMID];
+  v19 = [relayController _checkMMSEnablementForPhoneNumber:lastAddressedLocalHandle simID:lastAddressedSIMID];
 
-  v20 = [(SMSMessageSender *)self message];
-  v21 = [v20 subject];
-  v22 = [v21 length];
+  message = [(SMSMessageSender *)self message];
+  subject = [message subject];
+  v22 = [subject length];
 
-  v23 = [(SMSMessageSender *)self message];
-  v24 = [v23 fileTransferGUIDs];
-  v25 = [v24 count];
+  message2 = [(SMSMessageSender *)self message];
+  fileTransferGUIDs = [message2 fileTransferGUIDs];
+  v25 = [fileTransferGUIDs count];
 
-  v26 = [(SMSMessageSender *)self message];
-  v27 = [v26 balloonBundleID];
-  v28 = [v27 isEqualToString:IMBalloonPluginIdentifierRichLinks];
+  message3 = [(SMSMessageSender *)self message];
+  balloonBundleID = [message3 balloonBundleID];
+  v28 = [balloonBundleID isEqualToString:IMBalloonPluginIdentifierRichLinks];
 
   if ((v22 != 0) | v3 & 1 || !((v25 == 0) | v28 & 1))
   {
@@ -105,9 +105,9 @@
     }
   }
 
-  else if (v19 & 1 | (((v12 != 45) & v50) == 0))
+  else if (v19 & 1 | (((style != 45) & v50) == 0))
   {
-    v29 = (v12 != 45) & v50 & v19;
+    v29 = (style != 45) & v50 & v19;
     goto LABEL_35;
   }
 
@@ -165,7 +165,7 @@
 
       v60 = 2112;
       v61 = v35;
-      if (v12 == 45)
+      if (style == 45)
       {
         v37 = @"NO";
       }
@@ -194,7 +194,7 @@
 
 LABEL_35:
   [(SMSMessageSender *)self setShouldSendMMS:v29];
-  if (v12 != 45)
+  if (style != 45)
   {
     [(SMSMessageSender *)self setSendAsGroupMessage:v50 & v19];
     if (![(SMSMessageSender *)self sendAsGroupMessage])
@@ -235,9 +235,9 @@ LABEL_35:
     v41 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
     {
-      v42 = [(SMSMessageSender *)self shouldSendMMS];
+      shouldSendMMS = [(SMSMessageSender *)self shouldSendMMS];
       v43 = @"NO";
-      if (v42)
+      if (shouldSendMMS)
       {
         v43 = @"YES";
       }
@@ -253,9 +253,9 @@ LABEL_35:
     v44 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
     {
-      v45 = [(SMSMessageSender *)self sendAsGroupMessage];
+      sendAsGroupMessage = [(SMSMessageSender *)self sendAsGroupMessage];
       v46 = @"NO";
-      if (v45)
+      if (sendAsGroupMessage)
       {
         v46 = @"YES";
       }
@@ -266,82 +266,82 @@ LABEL_35:
     }
   }
 
-  v47 = [(SMSMessageSender *)self session];
-  v48 = [(SMSMessageSender *)self chat];
-  v49 = [v47 subscriptionContextForChat:v48];
+  session = [(SMSMessageSender *)self session];
+  chat4 = [(SMSMessageSender *)self chat];
+  v49 = [session subscriptionContextForChat:chat4];
 
   [(SMSMessageSender *)self setContext:v49];
 }
 
-- (void)prepareWithCompletion:(id)a3
+- (void)prepareWithCompletion:(id)completion
 {
-  v4 = a3;
-  v12 = [(SMSMessageSender *)self smsSession];
-  v5 = [v12 attachmentController];
-  v6 = [(SMSMessageSender *)self message];
-  v7 = [(SMSMessageSender *)self shouldSendMMS];
-  v8 = [(SMSMessageSender *)self chat];
-  v9 = [v8 lastAddressedLocalHandle];
-  v10 = [(SMSMessageSender *)self chat];
-  v11 = [v10 lastAddressedSIMID];
-  [v5 processAttachmentsForMessage:v6 generateTextParts:v7 lastAddressedHandle:v9 lastAddressedSIMID:v11 completionBlock:v4];
+  completionCopy = completion;
+  smsSession = [(SMSMessageSender *)self smsSession];
+  attachmentController = [smsSession attachmentController];
+  message = [(SMSMessageSender *)self message];
+  shouldSendMMS = [(SMSMessageSender *)self shouldSendMMS];
+  chat = [(SMSMessageSender *)self chat];
+  lastAddressedLocalHandle = [chat lastAddressedLocalHandle];
+  chat2 = [(SMSMessageSender *)self chat];
+  lastAddressedSIMID = [chat2 lastAddressedSIMID];
+  [attachmentController processAttachmentsForMessage:message generateTextParts:shouldSendMMS lastAddressedHandle:lastAddressedLocalHandle lastAddressedSIMID:lastAddressedSIMID completionBlock:completionCopy];
 }
 
 - (unsigned)chatStyle
 {
-  v2 = [(SMSMessageSender *)self chat];
-  v3 = [v2 style];
+  chat = [(SMSMessageSender *)self chat];
+  style = [chat style];
 
-  return v3;
+  return style;
 }
 
 - (id)chatIdentifier
 {
-  v2 = [(SMSMessageSender *)self chat];
-  v3 = [v2 chatIdentifier];
+  chat = [(SMSMessageSender *)self chat];
+  chatIdentifier = [chat chatIdentifier];
 
-  return v3;
+  return chatIdentifier;
 }
 
-- (void)buildWith:(id)a3 parts:(id)a4 completion:(id)a5
+- (void)buildWith:(id)with parts:(id)parts completion:(id)completion
 {
-  v46 = a3;
-  v44 = a4;
-  v45 = a5;
-  v8 = [(SMSMessageSender *)self context];
+  withCopy = with;
+  partsCopy = parts;
+  completionCopy = completion;
+  context = [(SMSMessageSender *)self context];
 
-  if (v8)
+  if (context)
   {
-    [(SMSMessageSender *)self setOutputMessage:v46];
+    [(SMSMessageSender *)self setOutputMessage:withCopy];
     v47 = objc_alloc_init(NSDate);
-    v9 = [(SMSMessageSender *)self smsSession];
-    v10 = [(SMSMessageSender *)self recipients];
-    v11 = [v9 newTelephonyMessagesForHandles:v10 shouldBroadcastMessage:{-[SMSMessageSender sendAsGroupMessage](self, "sendAsGroupMessage") ^ 1}];
+    smsSession = [(SMSMessageSender *)self smsSession];
+    recipients = [(SMSMessageSender *)self recipients];
+    v11 = [smsSession newTelephonyMessagesForHandles:recipients shouldBroadcastMessage:{-[SMSMessageSender sendAsGroupMessage](self, "sendAsGroupMessage") ^ 1}];
 
-    v12 = [(SMSMessageSender *)self smsSession];
-    v13 = [(SMSMessageSender *)self message];
-    [v12 setSubjectForTelephonyMessages:v11 messageItem:v13];
+    smsSession2 = [(SMSMessageSender *)self smsSession];
+    message = [(SMSMessageSender *)self message];
+    [smsSession2 setSubjectForTelephonyMessages:v11 messageItem:message];
 
     if (![(SMSMessageSender *)self shouldSendMMS])
     {
-      v14 = [(SMSMessageSender *)self smsSession];
-      v15 = [(SMSMessageSender *)self message];
-      v16 = [(SMSMessageSender *)self outputMessage];
-      [v14 addMessagePlainTextToTelephonyMessages:v11 messageItem:v15 processedMessageItem:v16];
+      smsSession3 = [(SMSMessageSender *)self smsSession];
+      message2 = [(SMSMessageSender *)self message];
+      outputMessage = [(SMSMessageSender *)self outputMessage];
+      [smsSession3 addMessagePlainTextToTelephonyMessages:v11 messageItem:message2 processedMessageItem:outputMessage];
     }
 
-    v17 = [(SMSMessageSender *)self smsSession];
+    smsSession4 = [(SMSMessageSender *)self smsSession];
     v18 = [(SMSMessageSender *)self chatStyle]!= 45;
-    v19 = [(SMSMessageSender *)self chat];
-    v20 = [v19 lastAddressedLocalHandle];
-    v21 = [(SMSMessageSender *)self chat];
-    v22 = [v21 lastAddressedSIMID];
-    [v17 processPartsOfTelephonyMessages:v11 parts:v44 messageItem:v46 isGroupChat:v18 phoneNumber:v20 simID:v22];
+    chat = [(SMSMessageSender *)self chat];
+    lastAddressedLocalHandle = [chat lastAddressedLocalHandle];
+    chat2 = [(SMSMessageSender *)self chat];
+    lastAddressedSIMID = [chat2 lastAddressedSIMID];
+    [smsSession4 processPartsOfTelephonyMessages:v11 parts:partsCopy messageItem:withCopy isGroupChat:v18 phoneNumber:lastAddressedLocalHandle simID:lastAddressedSIMID];
 
-    v23 = [(SMSMessageSender *)self smsSession];
-    LODWORD(v21) = [(SMSMessageSender *)self sendAsGroupMessage];
-    v24 = [(SMSMessageSender *)self recipients];
-    [v23 buildTelephonyPhoneNumbersForTelephonyMessages:v11 shouldBroadcastMessage:v21 ^ 1 handles:v24];
+    smsSession5 = [(SMSMessageSender *)self smsSession];
+    LODWORD(chat2) = [(SMSMessageSender *)self sendAsGroupMessage];
+    recipients2 = [(SMSMessageSender *)self recipients];
+    [smsSession5 buildTelephonyPhoneNumbersForTelephonyMessages:v11 shouldBroadcastMessage:chat2 ^ 1 handles:recipients2];
 
     v57 = 0u;
     v58 = 0u;
@@ -366,19 +366,19 @@ LABEL_35:
           [v27 setServiceCenter:0];
           if (v25)
           {
-            v28 = [(SMSMessageSender *)self message];
-            v29 = [v28 guid];
+            message3 = [(SMSMessageSender *)self message];
+            guid = [message3 guid];
           }
 
           else
           {
-            v29 = +[NSString stringGUID];
+            guid = +[NSString stringGUID];
           }
 
-          v30 = [(SMSMessageSender *)self smsSession];
-          [v27 setMessageId:{objc_msgSend(v30, "_generateMessageIDForMessageGUID:", v29)}];
+          smsSession6 = [(SMSMessageSender *)self smsSession];
+          [v27 setMessageId:{objc_msgSend(smsSession6, "_generateMessageIDForMessageGUID:", guid)}];
 
-          v31 = [(SMSMessageSender *)self smsSession];
+          smsSession7 = [(SMSMessageSender *)self smsSession];
           if (v25)
           {
             v32 = v53;
@@ -403,36 +403,36 @@ LABEL_35:
             v33 = 0;
           }
 
-          [v31 _registerMessageGUID:v29 completionBlock:v32 failureBlock:v33];
+          [smsSession7 _registerMessageGUID:guid completionBlock:v32 failureBlock:v33];
 
-          v34 = [(SMSMessageSender *)self smsSession];
-          [v34 setMessageTypeForTelephonyMessage:v27 shouldSendMMS:{-[SMSMessageSender shouldSendMMS](self, "shouldSendMMS")}];
+          smsSession8 = [(SMSMessageSender *)self smsSession];
+          [smsSession8 setMessageTypeForTelephonyMessage:v27 shouldSendMMS:{-[SMSMessageSender shouldSendMMS](self, "shouldSendMMS")}];
 
-          v35 = [(SMSMessageSender *)self chat];
-          v36 = [v35 lastAddressedLocalHandle];
+          chat3 = [(SMSMessageSender *)self chat];
+          lastAddressedLocalHandle2 = [chat3 lastAddressedLocalHandle];
 
-          v37 = [(SMSMessageSender *)self chat];
-          v38 = [v37 lastAddressedSIMID];
+          chat4 = [(SMSMessageSender *)self chat];
+          lastAddressedSIMID2 = [chat4 lastAddressedSIMID];
 
           if (IMOSLoggingEnabled())
           {
             v39 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
             {
-              v40 = [(SMSMessageSender *)self chat];
-              v41 = [v40 guid];
+              chat5 = [(SMSMessageSender *)self chat];
+              guid2 = [chat5 guid];
               *buf = 138412802;
-              v60 = v41;
+              v60 = guid2;
               v61 = 2112;
-              v62 = v36;
+              v62 = lastAddressedLocalHandle2;
               v63 = 2112;
-              v64 = v38;
+              v64 = lastAddressedSIMID2;
               _os_log_impl(&dword_0, v39, OS_LOG_TYPE_INFO, "Not first chat (%@): lastAddressedLocalHandle %@ lastAddressedSIMID %@", buf, 0x20u);
             }
           }
 
-          v42 = [(SMSMessageSender *)self context];
-          [v27 setContext:v42];
+          context2 = [(SMSMessageSender *)self context];
+          [v27 setContext:context2];
 
           if (v25)
           {
@@ -449,58 +449,58 @@ LABEL_35:
     }
 
     [(SMSMessageSender *)self setOutgoing:obj];
-    if (v45)
+    if (completionCopy)
     {
-      v45[2](v45, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
-    v43 = v45;
+    v43 = completionCopy;
   }
 
   else
   {
-    v43 = v45;
-    if (v45)
+    v43 = completionCopy;
+    if (completionCopy)
     {
-      v45[2](v45, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (void)sendMetricForSMS:(id)a3 wasSuccessful:(BOOL)a4 error:(unsigned int)a5
+- (void)sendMetricForSMS:(id)s wasSuccessful:(BOOL)successful error:(unsigned int)error
 {
-  v49 = a3;
-  v6 = [(SMSMessageSender *)self chatStyle];
-  v7 = [(SMSMessageSender *)self message];
-  v8 = [v7 fileTransferGUIDs];
-  v9 = [v8 count];
+  sCopy = s;
+  chatStyle = [(SMSMessageSender *)self chatStyle];
+  message = [(SMSMessageSender *)self message];
+  fileTransferGUIDs = [message fileTransferGUIDs];
+  v9 = [fileTransferGUIDs count];
 
-  v10 = [(SMSMessageSender *)self chat];
-  v11 = [v10 properties];
-  v12 = [v11 valueForKey:IMChatPropertyLastKnownHybridState];
-  v13 = [v12 BOOLValue];
+  chat = [(SMSMessageSender *)self chat];
+  properties = [chat properties];
+  v12 = [properties valueForKey:IMChatPropertyLastKnownHybridState];
+  bOOLValue = [v12 BOOLValue];
 
-  v14 = [(SMSMessageSender *)self message];
-  v15 = [v14 bodyData];
-  v16 = [v15 length];
-  v17 = [(SMSMessageSender *)self message];
-  v18 = [v17 payloadData];
-  v19 = &v16[[v18 length]];
+  message2 = [(SMSMessageSender *)self message];
+  bodyData = [message2 bodyData];
+  v16 = [bodyData length];
+  message3 = [(SMSMessageSender *)self message];
+  payloadData = [message3 payloadData];
+  v19 = &v16[[payloadData length]];
 
-  v20 = [(SMSMessageSender *)self message];
-  v21 = [v20 fileTransferGUIDs];
+  message4 = [(SMSMessageSender *)self message];
+  fileTransferGUIDs2 = [message4 fileTransferGUIDs];
 
-  v46 = v21;
-  if (v21)
+  v46 = fileTransferGUIDs2;
+  if (fileTransferGUIDs2)
   {
-    v43 = v13;
-    v44 = v6;
+    v43 = bOOLValue;
+    v44 = chatStyle;
     v22 = v9;
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v23 = v21;
+    v23 = fileTransferGUIDs2;
     v24 = [v23 countByEnumeratingWithState:&v50 objects:v54 count:16];
     if (v24)
     {
@@ -532,11 +532,11 @@ LABEL_35:
     }
 
     v9 = v22;
-    v13 = v43;
-    v6 = v44;
+    bOOLValue = v43;
+    chatStyle = v44;
   }
 
-  if (v6 == 45)
+  if (chatStyle == 45)
   {
     v31 = 0;
     v32 = @"individual";
@@ -545,7 +545,7 @@ LABEL_35:
   else
   {
     v33 = @"SMS_Hybrid";
-    if (!v13)
+    if (!bOOLValue)
     {
       v33 = @"SMS";
     }
@@ -576,26 +576,26 @@ LABEL_35:
     v36 = @"text";
   }
 
-  v37 = [(SMSMessageSender *)self message];
-  v38 = [v37 originalServiceName];
-  v39 = [(SMSMessageSender *)self message];
-  v40 = [v39 handle];
-  v41 = [IMMetricsCollector stringForFZErrorType:a5];
-  LOBYTE(v42) = a4;
-  [v34 trackSentMessageEventOfType:v35 subtype:v36 originalServiceName:v38 messageSize:v19 sendDuration:v49 receiverType:v45 receiverGroupType:v31 wasSuccessful:v42 sourceHandle:0 destinationHandle:v40 error:v41];
+  message5 = [(SMSMessageSender *)self message];
+  originalServiceName = [message5 originalServiceName];
+  message6 = [(SMSMessageSender *)self message];
+  handle = [message6 handle];
+  v41 = [IMMetricsCollector stringForFZErrorType:error];
+  LOBYTE(v42) = successful;
+  [v34 trackSentMessageEventOfType:v35 subtype:v36 originalServiceName:originalServiceName messageSize:v19 sendDuration:sCopy receiverType:v45 receiverGroupType:v31 wasSuccessful:v42 sourceHandle:0 destinationHandle:handle error:v41];
 }
 
-- (void)sendWithCompletion:(id)a3
+- (void)sendWithCompletion:(id)completion
 {
-  v74 = a3;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(SMSMessageSender *)self outgoing];
+      outgoing = [(SMSMessageSender *)self outgoing];
       *buf = 138412290;
-      *&buf[4] = v5;
+      *&buf[4] = outgoing;
       _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "   No parts failed, sending message(s): %@", buf, 0xCu);
     }
   }
@@ -620,10 +620,10 @@ LABEL_35:
         }
 
         v7 = *(*(&v84 + 1) + 8 * i);
-        v8 = [(SMSMessageSender *)self outputMessage];
-        v9 = [v8 useStandalone];
+        outputMessage = [(SMSMessageSender *)self outputMessage];
+        useStandalone = [outputMessage useStandalone];
 
-        if (v9)
+        if (useStandalone)
         {
           if (!IMOSLoggingEnabled())
           {
@@ -633,10 +633,10 @@ LABEL_35:
           v10 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
           {
-            v11 = [(SMSMessageSender *)self outputMessage];
-            v12 = [v11 guid];
+            outputMessage2 = [(SMSMessageSender *)self outputMessage];
+            guid = [outputMessage2 guid];
             *buf = 138412290;
-            *&buf[4] = v12;
+            *&buf[4] = guid;
             _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "   => Message should use standalone. SettingCTMessage's BypassSupportedMessageModesCheck for message: %@", buf, 0xCu);
           }
 
@@ -645,8 +645,8 @@ LABEL_35:
 
         if (IMSharedHelperDeviceHasMultipleSubscriptions())
         {
-          v13 = [v7 context];
-          v14 = v13 == 0;
+          context = [v7 context];
+          v14 = context == 0;
 
           if (v14)
           {
@@ -655,10 +655,10 @@ LABEL_35:
               v10 = OSLogHandleForIMFoundationCategory();
               if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
               {
-                v15 = [(SMSMessageSender *)self outputMessage];
-                v16 = [v15 guid];
+                outputMessage3 = [(SMSMessageSender *)self outputMessage];
+                guid2 = [outputMessage3 guid];
                 *buf = 138412290;
-                *&buf[4] = v16;
+                *&buf[4] = guid2;
                 _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "This message [%@] is not an SOS message but has nil context ******* FILE RADAR ******", buf, 0xCu);
               }
 
@@ -668,23 +668,23 @@ LABEL_20:
         }
 
 LABEL_21:
-        [v7 setBypassSupportedMessageModesCheck:v9];
+        [v7 setBypassSupportedMessageModesCheck:useStandalone];
         v17 = +[IDSCTAdapter sharedInstance];
-        v18 = [(SMSMessageSender *)self message];
-        v19 = [v18 handle];
-        v20 = [v17 isPhoneNumberEmergencyNumber:v19];
+        message = [(SMSMessageSender *)self message];
+        handle = [message handle];
+        v20 = [v17 isPhoneNumberEmergencyNumber:handle];
 
         if (v20)
         {
           v21 = +[IMFeatureFlags sharedFeatureFlags];
-          v22 = [v21 stewieEnabled];
+          stewieEnabled = [v21 stewieEnabled];
 
-          if (v22)
+          if (stewieEnabled)
           {
-            v23 = [(SMSMessageSender *)self chat];
-            v24 = [v23 isEmergencyChat];
+            chat = [(SMSMessageSender *)self chat];
+            isEmergencyChat = [chat isEmergencyChat];
 
-            if ((v24 & 1) == 0)
+            if ((isEmergencyChat & 1) == 0)
             {
               if (IMOSLoggingEnabled())
               {
@@ -696,8 +696,8 @@ LABEL_21:
                 }
               }
 
-              v26 = [(SMSMessageSender *)self chat];
-              [v26 updateIsEmergencyChat:1];
+              chat2 = [(SMSMessageSender *)self chat];
+              [chat2 updateIsEmergencyChat:1];
             }
           }
 
@@ -706,10 +706,10 @@ LABEL_21:
             v27 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
             {
-              v28 = [(SMSMessageSender *)self message];
-              v29 = [v28 handle];
+              message2 = [(SMSMessageSender *)self message];
+              handle2 = [message2 handle];
               *buf = 138412290;
-              *&buf[4] = v29;
+              *&buf[4] = handle2;
               _os_log_impl(&dword_0, v27, OS_LOG_TYPE_INFO, "Sending SMS to emergency number: %@, need to disable ScreenTime restrictions", buf, 0xCu);
             }
           }
@@ -720,7 +720,7 @@ LABEL_21:
           v30 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
           {
-            if (v9)
+            if (useStandalone)
             {
               v31 = @"YES";
             }
@@ -748,7 +748,7 @@ LABEL_21:
           }
         }
 
-        if ((v9 | v20))
+        if ((useStandalone | v20))
         {
           if (IMOSLoggingEnabled())
           {
@@ -778,9 +778,9 @@ LABEL_21:
 
           v35 = v34;
           _Block_object_dispose(&v88, 8);
-          v36 = [v34 sharedMonitor];
+          sharedMonitor = [v34 sharedMonitor];
           v83 = 0;
-          v37 = [v36 enableEmergencyModeWithError:&v83];
+          v37 = [sharedMonitor enableEmergencyModeWithError:&v83];
           v38 = v83;
           if (v38)
           {
@@ -811,8 +811,8 @@ LABEL_21:
             }
           }
 
-          v42 = [(SMSMessageSender *)self smsSession];
-          [v42 _scheduleSchoolModeTimer];
+          smsSession = [(SMSMessageSender *)self smsSession];
+          [smsSession _scheduleSchoolModeTimer];
         }
 
         v43 = +[CTMessageCenter sharedMessageCenter];
@@ -847,20 +847,20 @@ LABEL_21:
 
         else
         {
-          v48 = [(SMSMessageSender *)self smsSession];
-          v49 = [(SMSMessageSender *)self message];
-          v50 = [v49 guid];
-          v51 = [v48 _failureBlockForMessageGUID:v50];
+          smsSession2 = [(SMSMessageSender *)self smsSession];
+          message3 = [(SMSMessageSender *)self message];
+          guid3 = [message3 guid];
+          v51 = [smsSession2 _failureBlockForMessageGUID:guid3];
 
           if (v51)
           {
             v51[2](v51, 4, v44);
           }
 
-          v52 = [(SMSMessageSender *)self smsSession];
-          v53 = [(SMSMessageSender *)self message];
-          v54 = [v53 guid];
-          [v52 _clearMapForMessageGUID:v54];
+          smsSession3 = [(SMSMessageSender *)self smsSession];
+          message4 = [(SMSMessageSender *)self message];
+          guid4 = [message4 guid];
+          [smsSession3 _clearMapForMessageGUID:guid4];
 
           if (IMOSLoggingEnabled())
           {
@@ -878,49 +878,49 @@ LABEL_21:
           }
         }
 
-        v56 = [(SMSMessageSender *)self message];
-        v57 = [v56 notificationIDSTokenURI];
+        message5 = [(SMSMessageSender *)self message];
+        notificationIDSTokenURI = [message5 notificationIDSTokenURI];
 
         if (v46)
         {
-          if ([v57 length])
+          if ([notificationIDSTokenURI length])
           {
             if (IMOSLoggingEnabled())
             {
               v58 = OSLogHandleForIMFoundationCategory();
               if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
               {
-                v59 = [(SMSMessageSender *)self chatIdentifier];
+                chatIdentifier = [(SMSMessageSender *)self chatIdentifier];
                 *buf = 138412546;
-                *&buf[4] = v57;
+                *&buf[4] = notificationIDSTokenURI;
                 *&buf[12] = 2112;
-                *&buf[14] = v59;
+                *&buf[14] = chatIdentifier;
                 _os_log_impl(&dword_0, v58, OS_LOG_TYPE_INFO, "Successfully sent message, setting message item notificationIDSTokenURI %@ for chatIdentifier %@", buf, 0x16u);
               }
             }
 
             v60 = +[IMMessageNotificationTimeManager sharedInstance];
-            [v60 setLatestNotificationIDSTokenURI:v57];
+            [v60 setLatestNotificationIDSTokenURI:notificationIDSTokenURI];
 
             v61 = +[IMMessageNotificationTimeManager sharedInstance];
             v62 = +[NSDate date];
-            v63 = [(SMSMessageSender *)self chatIdentifier];
-            [v61 setDate:v62 forChatIdentifier:v63];
+            chatIdentifier2 = [(SMSMessageSender *)self chatIdentifier];
+            [v61 setDate:v62 forChatIdentifier:chatIdentifier2];
           }
 
           else
           {
             v64 = +[IMMessageNotificationTimeManager sharedInstance];
-            v65 = [(SMSMessageSender *)self chatIdentifier];
-            [v64 tearDownSessionForChatIdentifier:v65];
+            chatIdentifier3 = [(SMSMessageSender *)self chatIdentifier];
+            [v64 tearDownSessionForChatIdentifier:chatIdentifier3];
 
             v81 = 0u;
             v82 = 0u;
             v79 = 0u;
             v80 = 0u;
             v66 = +[IMDChatRegistry sharedInstance];
-            v67 = [(SMSMessageSender *)self chatIdentifier];
-            v61 = [v66 allExistingSupportedServiceChatsWithIdentifier:v67 style:{-[SMSMessageSender chatStyle](self, "chatStyle")}];
+            chatIdentifier4 = [(SMSMessageSender *)self chatIdentifier];
+            v61 = [v66 allExistingSupportedServiceChatsWithIdentifier:chatIdentifier4 style:{-[SMSMessageSender chatStyle](self, "chatStyle")}];
 
             v68 = [v61 countByEnumeratingWithState:&v79 objects:v92 count:16];
             if (v68)
@@ -936,9 +936,9 @@ LABEL_21:
                   }
 
                   v71 = *(*(&v79 + 1) + 8 * j);
-                  v72 = [(SMSMessageSender *)self outputMessage];
-                  v73 = [v72 guid];
-                  [v71 updateLastSeenMessageGuidIfNeeded:v73];
+                  outputMessage4 = [(SMSMessageSender *)self outputMessage];
+                  guid5 = [outputMessage4 guid];
+                  [v71 updateLastSeenMessageGuidIfNeeded:guid5];
                 }
 
                 v68 = [v61 countByEnumeratingWithState:&v79 objects:v92 count:16];
@@ -961,20 +961,20 @@ LABEL_21:
   v75 = 0;
 LABEL_100:
 
-  v74[2](v74, v75 & 1);
+  completionCopy[2](completionCopy, v75 & 1);
 }
 
-- (void)cleanupFailedBuildWithError:(unsigned int)a3 forParts:(id)a4
+- (void)cleanupFailedBuildWithError:(unsigned int)error forParts:(id)parts
 {
-  v21 = a4;
+  partsCopy = parts;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(SMSMessageSender *)self outgoing];
+      outgoing = [(SMSMessageSender *)self outgoing];
       *buf = 138412290;
-      v28 = v6;
+      v28 = outgoing;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "   *** Parts failed, failing message(s): %@", buf, 0xCu);
     }
   }
@@ -983,8 +983,8 @@ LABEL_100:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(SMSMessageSender *)self outgoing];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  outgoing2 = [(SMSMessageSender *)self outgoing];
+  v8 = [outgoing2 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = *v23;
@@ -994,7 +994,7 @@ LABEL_100:
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(outgoing2);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
@@ -1020,23 +1020,23 @@ LABEL_100:
           }
         }
 
-        v14 = [(SMSMessageSender *)self smsSession];
-        v15 = [(SMSMessageSender *)self message];
-        v16 = [v15 guid];
-        v17 = [v14 _failureBlockForMessageGUID:v16];
+        smsSession = [(SMSMessageSender *)self smsSession];
+        message = [(SMSMessageSender *)self message];
+        guid = [message guid];
+        v17 = [smsSession _failureBlockForMessageGUID:guid];
 
         if (v17)
         {
           v17[2](v17, 25, 0);
         }
 
-        v18 = [(SMSMessageSender *)self smsSession];
-        v19 = [(SMSMessageSender *)self message];
-        v20 = [v19 guid];
-        [v18 _clearMapForMessageGUID:v20];
+        smsSession2 = [(SMSMessageSender *)self smsSession];
+        message2 = [(SMSMessageSender *)self message];
+        guid2 = [message2 guid];
+        [smsSession2 _clearMapForMessageGUID:guid2];
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v8 = [outgoing2 countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v8);

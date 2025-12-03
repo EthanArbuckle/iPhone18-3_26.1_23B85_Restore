@@ -1,31 +1,31 @@
 @interface LACAnalyticsSession
-- (LACAnalyticsSession)initWithDialogID:(id)a3 bundleID:(id)a4;
+- (LACAnalyticsSession)initWithDialogID:(id)d bundleID:(id)iD;
 - (NSString)description;
-- (void)authenticationAttemptFailedForEvent:(int64_t)a3;
-- (void)authenticationStartedForEvent:(int64_t)a3;
-- (void)authenticationSuccessfulForEvent:(int64_t)a3;
+- (void)authenticationAttemptFailedForEvent:(int64_t)event;
+- (void)authenticationStartedForEvent:(int64_t)event;
+- (void)authenticationSuccessfulForEvent:(int64_t)event;
 - (void)dealloc;
 - (void)finish;
-- (void)mergeEvaluationAnalytics:(id)a3;
-- (void)trackEvaluationAnalytics:(id)a3;
-- (void)untrackEvaluationAnalytics:(id)a3;
+- (void)mergeEvaluationAnalytics:(id)analytics;
+- (void)trackEvaluationAnalytics:(id)analytics;
+- (void)untrackEvaluationAnalytics:(id)analytics;
 @end
 
 @implementation LACAnalyticsSession
 
-- (LACAnalyticsSession)initWithDialogID:(id)a3 bundleID:(id)a4
+- (LACAnalyticsSession)initWithDialogID:(id)d bundleID:(id)iD
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v18.receiver = self;
   v18.super_class = LACAnalyticsSession;
   v9 = [(LACAnalyticsSession *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dialogID, a3);
-    objc_storeStrong(&v10->_bundleID, a4);
+    objc_storeStrong(&v9->_dialogID, d);
+    objc_storeStrong(&v10->_bundleID, iD);
     v11 = objc_opt_new();
     analyticsData = v10->_analyticsData;
     v10->_analyticsData = v11;
@@ -58,8 +58,8 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(LACAnalyticsSession *)self dialogID];
-  v5 = [v3 stringWithFormat:@"<LACAnalyticsSession %p dialogID: %@, evaluationAnalytics: %u>", self, v4, -[NSMutableArray count](self->_evaluationAnalytics, "count")];;
+  dialogID = [(LACAnalyticsSession *)self dialogID];
+  v5 = [v3 stringWithFormat:@"<LACAnalyticsSession %p dialogID: %@, evaluationAnalytics: %u>", self, dialogID, -[NSMutableArray count](self->_evaluationAnalytics, "count")];;
 
   return v5;
 }
@@ -73,7 +73,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v21 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B0233000, v3, OS_LOG_TYPE_DEFAULT, "Finishing %{public}@", buf, 0xCu);
     }
 
@@ -108,74 +108,74 @@
       while (v6);
     }
 
-    v9 = [(LACAnalyticsSession *)self analyticsData];
-    v10 = [v9 biomeDialogEvent];
+    analyticsData = [(LACAnalyticsSession *)self analyticsData];
+    biomeDialogEvent = [analyticsData biomeDialogEvent];
 
-    v11 = [(LACAnalyticsSession *)self dialogID];
-    [v10 setDialogID:v11];
+    dialogID = [(LACAnalyticsSession *)self dialogID];
+    [biomeDialogEvent setDialogID:dialogID];
 
-    v12 = [(LACAnalyticsSession *)self bundleID];
-    [v10 setBundleID:v12];
+    bundleID = [(LACAnalyticsSession *)self bundleID];
+    [biomeDialogEvent setBundleID:bundleID];
 
     v13 = +[LACBiomeDialogDonationHelper sharedInstance];
-    [v13 donateEvent:v10];
+    [v13 donateEvent:biomeDialogEvent];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)trackEvaluationAnalytics:(id)a3
+- (void)trackEvaluationAnalytics:(id)analytics
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(NSMutableArray *)self->_evaluationAnalytics addObject:v4];
+  analyticsCopy = analytics;
+  [(NSMutableArray *)self->_evaluationAnalytics addObject:analyticsCopy];
   v5 = LACLogAnalytics();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = analyticsCopy;
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ is now tracking %{public}@", &v7, 0x16u);
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)untrackEvaluationAnalytics:(id)a3
+- (void)untrackEvaluationAnalytics:(id)analytics
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(NSMutableArray *)self->_evaluationAnalytics removeObject:v4];
+  analyticsCopy = analytics;
+  [(NSMutableArray *)self->_evaluationAnalytics removeObject:analyticsCopy];
   v5 = LACLogAnalytics();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = analyticsCopy;
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ is no longer tracking %{public}@", &v7, 0x16u);
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)mergeEvaluationAnalytics:(id)a3
+- (void)mergeEvaluationAnalytics:(id)analytics
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([(NSMutableArray *)self->_evaluationAnalytics containsObject:v4]& 1) != 0)
+  analyticsCopy = analytics;
+  if (([(NSMutableArray *)self->_evaluationAnalytics containsObject:analyticsCopy]& 1) != 0)
   {
-    v5 = [(LACAnalyticsSession *)self analyticsData];
-    [v5 mergeAnalyticsData:v4];
+    analyticsData = [(LACAnalyticsSession *)self analyticsData];
+    [analyticsData mergeAnalyticsData:analyticsCopy];
 
     v6 = LACLogAnalytics();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543618;
-      v9 = self;
+      selfCopy = self;
       v10 = 2114;
-      v11 = v4;
+      v11 = analyticsCopy;
       _os_log_impl(&dword_1B0233000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ has merged %{public}@", &v8, 0x16u);
     }
   }
@@ -185,29 +185,29 @@
     v6 = LACLogAnalytics();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(LACAnalyticsSession *)v4 mergeEvaluationAnalytics:v6];
+      [(LACAnalyticsSession *)analyticsCopy mergeEvaluationAnalytics:v6];
     }
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)authenticationAttemptFailedForEvent:(int64_t)a3
+- (void)authenticationAttemptFailedForEvent:(int64_t)event
 {
-  v4 = [(LACAnalyticsSession *)self analyticsData];
-  [v4 authenticationAttemptFailedForEvent:a3];
+  analyticsData = [(LACAnalyticsSession *)self analyticsData];
+  [analyticsData authenticationAttemptFailedForEvent:event];
 }
 
-- (void)authenticationSuccessfulForEvent:(int64_t)a3
+- (void)authenticationSuccessfulForEvent:(int64_t)event
 {
-  v4 = [(LACAnalyticsSession *)self analyticsData];
-  [v4 authenticationSuccessfulForEvent:a3];
+  analyticsData = [(LACAnalyticsSession *)self analyticsData];
+  [analyticsData authenticationSuccessfulForEvent:event];
 }
 
-- (void)authenticationStartedForEvent:(int64_t)a3
+- (void)authenticationStartedForEvent:(int64_t)event
 {
-  v4 = [(LACAnalyticsSession *)self analyticsData];
-  [v4 authenticationStartedForEvent:a3];
+  analyticsData = [(LACAnalyticsSession *)self analyticsData];
+  [analyticsData authenticationStartedForEvent:event];
 }
 
 - (void)mergeEvaluationAnalytics:(os_log_t)log .cold.1(uint64_t a1, uint64_t a2, os_log_t log)

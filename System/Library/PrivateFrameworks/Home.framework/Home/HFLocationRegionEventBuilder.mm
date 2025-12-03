@@ -1,32 +1,32 @@
 @interface HFLocationRegionEventBuilder
-- (BOOL)isRegionAtHome:(id)a3;
-- (HFLocationRegionEventBuilder)initWithEvent:(id)a3;
+- (BOOL)isRegionAtHome:(id)home;
+- (HFLocationRegionEventBuilder)initWithEvent:(id)event;
 - (NSString)description;
 - (id)buildNewEventsFromCurrentState;
-- (id)compareToObject:(id)a3;
+- (id)compareToObject:(id)object;
 - (id)comparisonKey;
-- (id)naturalLanguageNameWithOptions:(id)a3;
+- (id)naturalLanguageNameWithOptions:(id)options;
 - (unint64_t)locationEventType;
 @end
 
 @implementation HFLocationRegionEventBuilder
 
-- (HFLocationRegionEventBuilder)initWithEvent:(id)a3
+- (HFLocationRegionEventBuilder)initWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = HFLocationRegionEventBuilder;
-  v5 = [(HFEventBuilder *)&v10 initWithEvent:v4];
+  v5 = [(HFEventBuilder *)&v10 initWithEvent:eventCopy];
   if (v5)
   {
-    v6 = [v4 region];
+    region = [eventCopy region];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [v4 region];
-      [(HFLocationRegionEventBuilder *)v5 setRegion:v8];
+      region2 = [eventCopy region];
+      [(HFLocationRegionEventBuilder *)v5 setRegion:region2];
     }
   }
 
@@ -36,22 +36,22 @@
 - (unint64_t)locationEventType
 {
   v2 = MEMORY[0x277CD1B38];
-  v3 = [(HFLocationRegionEventBuilder *)self region];
-  v4 = [v2 hf_locationEventTypeForRegion:v3];
+  region = [(HFLocationRegionEventBuilder *)self region];
+  v4 = [v2 hf_locationEventTypeForRegion:region];
 
   return v4;
 }
 
 - (id)buildNewEventsFromCurrentState
 {
-  v3 = [(HFLocationRegionEventBuilder *)self region];
+  region = [(HFLocationRegionEventBuilder *)self region];
 
-  if (v3)
+  if (region)
   {
     v4 = MEMORY[0x277CBEB98];
     v5 = objc_alloc(MEMORY[0x277CD1B38]);
-    v6 = [(HFLocationRegionEventBuilder *)self region];
-    v7 = [v5 initWithRegion:v6];
+    region2 = [(HFLocationRegionEventBuilder *)self region];
+    v7 = [v5 initWithRegion:region2];
     v8 = [v4 setWithObject:v7];
   }
 
@@ -63,15 +63,15 @@
   return v8;
 }
 
-- (BOOL)isRegionAtHome:(id)a3
+- (BOOL)isRegionAtHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HFLocationRegionEventBuilder *)self region];
-  if (v5)
+  homeCopy = home;
+  region = [(HFLocationRegionEventBuilder *)self region];
+  if (region)
   {
     v6 = MEMORY[0x277CD1B38];
-    v7 = [(HFLocationRegionEventBuilder *)self region];
-    v8 = [v6 hf_isRegion:v7 atHome:v4];
+    region2 = [(HFLocationRegionEventBuilder *)self region];
+    v8 = [v6 hf_isRegion:region2 atHome:homeCopy];
   }
 
   else
@@ -85,21 +85,21 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFLocationRegionEventBuilder *)self region];
-  v5 = [v3 appendObject:v4 withName:@"region"];
+  region = [(HFLocationRegionEventBuilder *)self region];
+  v5 = [v3 appendObject:region withName:@"region"];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (id)naturalLanguageNameWithOptions:(id)a3
+- (id)naturalLanguageNameWithOptions:(id)options
 {
   v4 = MEMORY[0x277CD19F8];
-  v5 = a3;
-  v6 = [(HFLocationRegionEventBuilder *)self region];
-  v7 = [v5 locationEventUser];
-  v8 = [v4 hf_naturalLanguageNameWithOptions:v5 region:v6 forUser:v7];
+  optionsCopy = options;
+  region = [(HFLocationRegionEventBuilder *)self region];
+  locationEventUser = [optionsCopy locationEventUser];
+  v8 = [v4 hf_naturalLanguageNameWithOptions:optionsCopy region:region forUser:locationEventUser];
 
   return v8;
 }
@@ -109,26 +109,26 @@
   v3 = MEMORY[0x277CCACA8];
   v15.receiver = self;
   v15.super_class = HFLocationRegionEventBuilder;
-  v4 = [(HFEventBuilder *)&v15 comparisonKey];
-  v5 = [(HFLocationRegionEventBuilder *)self region];
-  [v5 center];
+  comparisonKey = [(HFEventBuilder *)&v15 comparisonKey];
+  region = [(HFLocationRegionEventBuilder *)self region];
+  [region center];
   v7 = v6;
-  v8 = [(HFLocationRegionEventBuilder *)self region];
-  [v8 center];
+  region2 = [(HFLocationRegionEventBuilder *)self region];
+  [region2 center];
   v10 = v9;
-  v11 = [(HFLocationRegionEventBuilder *)self region];
-  [v11 radius];
-  v13 = [v3 stringWithFormat:@"%@-%f, %f:%f", v4, v7, v10, v12];
+  region3 = [(HFLocationRegionEventBuilder *)self region];
+  [region3 radius];
+  v13 = [v3 stringWithFormat:@"%@-%f, %f:%f", comparisonKey, v7, v10, v12];
 
   return v13;
 }
 
-- (id)compareToObject:(id)a3
+- (id)compareToObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = HFLocationRegionEventBuilder;
-  v5 = [(HFEventBuilder *)&v9 compareToObject:v4];
+  v5 = [(HFEventBuilder *)&v9 compareToObject:objectCopy];
   if (([v5 containsCriticalDifference] & 1) == 0)
   {
     v7[0] = MEMORY[0x277D85DD0];
@@ -136,7 +136,7 @@
     v7[2] = __60__HFLocationRegionEventBuilder_Comparison__compareToObject___block_invoke;
     v7[3] = &unk_277DF6EF8;
     v7[4] = self;
-    v8 = v4;
+    v8 = objectCopy;
   }
 
   return v5;

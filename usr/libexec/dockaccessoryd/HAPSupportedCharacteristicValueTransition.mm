@@ -1,34 +1,34 @@
 @interface HAPSupportedCharacteristicValueTransition
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPSupportedCharacteristicValueTransition)init;
-- (HAPSupportedCharacteristicValueTransition)initWithHAPInstanceID:(id)a3 transitionTypes:(id)a4;
+- (HAPSupportedCharacteristicValueTransition)initWithHAPInstanceID:(id)d transitionTypes:(id)types;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPSupportedCharacteristicValueTransition
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPSupportedCharacteristicValueTransition);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPSupportedCharacteristicValueTransition *)v6 parseFromData:v5 error:&v11];
+    [(HAPSupportedCharacteristicValueTransition *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -48,28 +48,28 @@
   return [(HAPSupportedCharacteristicValueTransition *)&v3 init];
 }
 
-- (HAPSupportedCharacteristicValueTransition)initWithHAPInstanceID:(id)a3 transitionTypes:(id)a4
+- (HAPSupportedCharacteristicValueTransition)initWithHAPInstanceID:(id)d transitionTypes:(id)types
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  typesCopy = types;
   v12.receiver = self;
   v12.super_class = HAPSupportedCharacteristicValueTransition;
   v9 = [(HAPSupportedCharacteristicValueTransition *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_HAPInstanceID, a3);
-    objc_storeStrong(&v10->_transitionTypes, a4);
+    objc_storeStrong(&v9->_HAPInstanceID, d);
+    objc_storeStrong(&v10->_transitionTypes, types);
   }
 
   return v10;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v9 = 0;
@@ -82,11 +82,11 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  v22 = a4;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  v12 = &v7[v8];
+  v12 = &bytes[v8];
   while (1)
   {
     v28 = 0;
@@ -96,10 +96,10 @@ LABEL_14:
     Next = TLV8GetNext();
     if (Next)
     {
-      if (v22)
+      if (errorCopy)
       {
         sub_100041618(Next);
-        *v22 = v18 = 0;
+        *errorCopy = v18 = 0;
         goto LABEL_21;
       }
 
@@ -154,11 +154,11 @@ LABEL_9:
   }
 
 LABEL_18:
-  if (v22)
+  if (errorCopy)
   {
     v20 = v11;
     v18 = 0;
-    *v22 = v11;
+    *errorCopy = v11;
     goto LABEL_21;
   }
 
@@ -169,7 +169,7 @@ LABEL_21:
   return v18;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v37 = 0u;
   v38 = 0u;
@@ -193,16 +193,16 @@ LABEL_21:
   v20 = 0u;
   v18 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPSupportedCharacteristicValueTransition *)self HAPInstanceID];
+  hAPInstanceID = [(HAPSupportedCharacteristicValueTransition *)self HAPInstanceID];
 
-  if (!v5)
+  if (!hAPInstanceID)
   {
     goto LABEL_5;
   }
 
-  v6 = [(HAPSupportedCharacteristicValueTransition *)self HAPInstanceID];
+  hAPInstanceID2 = [(HAPSupportedCharacteristicValueTransition *)self HAPInstanceID];
   v17 = 0;
-  v7 = [v6 serializeWithError:&v17];
+  v7 = [hAPInstanceID2 serializeWithError:&v17];
   v8 = v17;
 
   if (v8)
@@ -219,16 +219,16 @@ LABEL_7:
   {
 
 LABEL_5:
-    v10 = [(HAPSupportedCharacteristicValueTransition *)self transitionTypes];
+    transitionTypes = [(HAPSupportedCharacteristicValueTransition *)self transitionTypes];
 
-    if (!v10)
+    if (!transitionTypes)
     {
       goto LABEL_16;
     }
 
-    v11 = [(HAPSupportedCharacteristicValueTransition *)self transitionTypes];
+    transitionTypes2 = [(HAPSupportedCharacteristicValueTransition *)self transitionTypes];
     v16 = 0;
-    v7 = [v11 serializeWithError:&v16];
+    v7 = [transitionTypes2 serializeWithError:&v16];
     v8 = v16;
 
     if (v8)
@@ -248,11 +248,11 @@ LABEL_10:
   {
     if (v12)
     {
-      if (a3)
+      if (error)
       {
         sub_100041618(v12);
         v8 = 0;
-        *a3 = v14 = 0;
+        *error = v14 = 0;
         goto LABEL_19;
       }
 
@@ -266,11 +266,11 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  if (a3)
+  if (error)
   {
     v13 = v8;
     v14 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_19;
   }
 
@@ -282,20 +282,20 @@ LABEL_19:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPSupportedCharacteristicValueTransition allocWithZone:a3];
-  v5 = [(HAPSupportedCharacteristicValueTransition *)self HAPInstanceID];
-  v6 = [(HAPSupportedCharacteristicValueTransition *)self transitionTypes];
-  v7 = [(HAPSupportedCharacteristicValueTransition *)v4 initWithHAPInstanceID:v5 transitionTypes:v6];
+  v4 = [HAPSupportedCharacteristicValueTransition allocWithZone:zone];
+  hAPInstanceID = [(HAPSupportedCharacteristicValueTransition *)self HAPInstanceID];
+  transitionTypes = [(HAPSupportedCharacteristicValueTransition *)self transitionTypes];
+  v7 = [(HAPSupportedCharacteristicValueTransition *)v4 initWithHAPInstanceID:hAPInstanceID transitionTypes:transitionTypes];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -305,14 +305,14 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPSupportedCharacteristicValueTransition *)self HAPInstanceID];
-      v8 = [(HAPSupportedCharacteristicValueTransition *)v6 HAPInstanceID];
-      if (v7 != v8)
+      v6 = equalCopy;
+      hAPInstanceID = [(HAPSupportedCharacteristicValueTransition *)self HAPInstanceID];
+      hAPInstanceID2 = [(HAPSupportedCharacteristicValueTransition *)v6 HAPInstanceID];
+      if (hAPInstanceID != hAPInstanceID2)
       {
-        v9 = [(HAPSupportedCharacteristicValueTransition *)self HAPInstanceID];
-        v3 = [(HAPSupportedCharacteristicValueTransition *)v6 HAPInstanceID];
-        if (![v9 isEqual:v3])
+        hAPInstanceID3 = [(HAPSupportedCharacteristicValueTransition *)self HAPInstanceID];
+        hAPInstanceID4 = [(HAPSupportedCharacteristicValueTransition *)v6 HAPInstanceID];
+        if (![hAPInstanceID3 isEqual:hAPInstanceID4])
         {
           v10 = 0;
 LABEL_13:
@@ -321,25 +321,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = hAPInstanceID3;
       }
 
-      v11 = [(HAPSupportedCharacteristicValueTransition *)self transitionTypes];
-      v12 = [(HAPSupportedCharacteristicValueTransition *)v6 transitionTypes];
-      if (v11 == v12)
+      transitionTypes = [(HAPSupportedCharacteristicValueTransition *)self transitionTypes];
+      transitionTypes2 = [(HAPSupportedCharacteristicValueTransition *)v6 transitionTypes];
+      if (transitionTypes == transitionTypes2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HAPSupportedCharacteristicValueTransition *)self transitionTypes];
-        v14 = [(HAPSupportedCharacteristicValueTransition *)v6 transitionTypes];
-        v10 = [v13 isEqual:v14];
+        transitionTypes3 = [(HAPSupportedCharacteristicValueTransition *)self transitionTypes];
+        transitionTypes4 = [(HAPSupportedCharacteristicValueTransition *)v6 transitionTypes];
+        v10 = [transitionTypes3 isEqual:transitionTypes4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      hAPInstanceID3 = v16;
+      if (hAPInstanceID == hAPInstanceID2)
       {
         goto LABEL_14;
       }
@@ -357,9 +357,9 @@ LABEL_15:
 
 - (NSString)description
 {
-  v3 = [(HAPSupportedCharacteristicValueTransition *)self HAPInstanceID];
-  v4 = [(HAPSupportedCharacteristicValueTransition *)self transitionTypes];
-  v5 = [NSString stringWithFormat:@"<HAPSupportedCharacteristicValueTransition HAPInstanceID=%@, transitionTypes=%@>", v3, v4];
+  hAPInstanceID = [(HAPSupportedCharacteristicValueTransition *)self HAPInstanceID];
+  transitionTypes = [(HAPSupportedCharacteristicValueTransition *)self transitionTypes];
+  v5 = [NSString stringWithFormat:@"<HAPSupportedCharacteristicValueTransition HAPInstanceID=%@, transitionTypes=%@>", hAPInstanceID, transitionTypes];
 
   return v5;
 }

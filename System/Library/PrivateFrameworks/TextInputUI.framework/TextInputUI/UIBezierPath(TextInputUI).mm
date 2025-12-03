@@ -6,18 +6,18 @@
 
 + (id)_bezierPathRect:()TextInputUI topLeftRadius:topRightRadius:bottomRightRadius:bottomLeftRadius:
 {
-  MinX = CGRectGetMinX(*&a1);
-  v24.origin.x = a1;
+  MinX = CGRectGetMinX(*&self);
+  v24.origin.x = self;
   v24.origin.y = a2;
   v24.size.width = a3;
   v24.size.height = a4;
   MinY = CGRectGetMinY(v24);
-  v25.origin.x = a1;
+  v25.origin.x = self;
   v25.origin.y = a2;
   v25.size.width = a3;
   v25.size.height = a4;
   MaxX = CGRectGetMaxX(v25);
-  v26.origin.x = a1;
+  v26.origin.x = self;
   v26.origin.y = a2;
   v26.size.width = a3;
   v26.size.height = a4;

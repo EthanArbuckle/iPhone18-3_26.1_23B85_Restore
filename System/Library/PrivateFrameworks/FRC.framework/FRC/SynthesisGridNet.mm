@@ -1,16 +1,16 @@
 @interface SynthesisGridNet
-- (BOOL)synthesizeFrameFromFeatureForward:(id *)a3 backward:(id *)a4 destination:(__CVBuffer *)a5 pyramidStartLevel:(unint64_t)a6 callback:(id)a7;
-- (SynthesisGridNet)initWithMode:(int64_t)a3;
+- (BOOL)synthesizeFrameFromFeatureForward:(id *)forward backward:(id *)backward destination:(__CVBuffer *)destination pyramidStartLevel:(unint64_t)level callback:(id)callback;
+- (SynthesisGridNet)initWithMode:(int64_t)mode;
 - (void)dealloc;
 @end
 
 @implementation SynthesisGridNet
 
-- (SynthesisGridNet)initWithMode:(int64_t)a3
+- (SynthesisGridNet)initWithMode:(int64_t)mode
 {
   v12 = 0;
   v13 = 0;
-  FRCGetInputFrameSizeForUsage(a3, &v13, &v12);
+  FRCGetInputFrameSizeForUsage(mode, &v13, &v12);
   if (v13 <= 0x3E8)
   {
     v5 = @"synthesis_net_GridNet_pyrlite";
@@ -24,7 +24,7 @@
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:v5];
   v11.receiver = self;
   v11.super_class = SynthesisGridNet;
-  v7 = [(EspressoModel *)&v11 initWithModelName:v6 usage:a3];
+  v7 = [(EspressoModel *)&v11 initWithModelName:v6 usage:mode];
   v8 = v7;
   if (v7)
   {
@@ -41,13 +41,13 @@
   [(EspressoModel *)&v2 dealloc];
 }
 
-- (BOOL)synthesizeFrameFromFeatureForward:(id *)a3 backward:(id *)a4 destination:(__CVBuffer *)a5 pyramidStartLevel:(unint64_t)a6 callback:(id)a7
+- (BOOL)synthesizeFrameFromFeatureForward:(id *)forward backward:(id *)backward destination:(__CVBuffer *)destination pyramidStartLevel:(unint64_t)level callback:(id)callback
 {
-  v11 = a7;
+  callbackCopy = callback;
   v12 = 0;
   p_net = &self->super._net;
-  v14 = &a4->var0[a6];
-  v15 = &a3->var0[a6];
+  v14 = &backward->var0[level];
+  v15 = &forward->var0[level];
   v16 = off_278FEA7E0;
   do
   {
@@ -78,14 +78,14 @@ LABEL_8:
 
   kdebug_trace();
   v29 = self->super._plan;
-  if (v11)
+  if (callbackCopy)
   {
     callbackQueue = self->super._callbackQueue;
     v34 = MEMORY[0x277D85DD0];
     v35 = 3221225472;
     v36 = __102__SynthesisGridNet_synthesizeFrameFromFeatureForward_backward_destination_pyramidStartLevel_callback___block_invoke;
     v37 = &unk_278FEA538;
-    v38 = v11;
+    v38 = callbackCopy;
     v31 = espresso_plan_submit();
 
     if (v31)

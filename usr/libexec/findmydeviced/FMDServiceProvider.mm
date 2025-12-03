@@ -1,65 +1,65 @@
 @interface FMDServiceProvider
-- (BOOL)_handleSecureLocationsPush:(id)a3 completion:(id)a4;
-- (BOOL)_isValidIntentAccountId:(id)a3;
-- (BOOL)enqueueRequest:(id)a3;
-- (BOOL)enqueueRequest:(id)a3 account:(id)a4;
-- (BOOL)enqueueRequest:(id)a3 forAccessory:(id)a4;
+- (BOOL)_handleSecureLocationsPush:(id)push completion:(id)completion;
+- (BOOL)_isValidIntentAccountId:(id)id;
+- (BOOL)enqueueRequest:(id)request;
+- (BOOL)enqueueRequest:(id)request account:(id)account;
+- (BOOL)enqueueRequest:(id)request forAccessory:(id)accessory;
 - (BOOL)isActivationLocked;
-- (BOOL)supportsAccessory:(id)a3;
+- (BOOL)supportsAccessory:(id)accessory;
 - (FMDAccount)account;
 - (FMDServiceProvider)init;
 - (id)apsToken;
-- (id)futureForCommandId:(id)a3;
+- (id)futureForCommandId:(id)id;
 - (id)newLocationManager;
-- (id)serverInteractionControllerForAccessory:(id)a3;
-- (id)serverInteractionControllerForAccount:(id)a3;
-- (id)urlForRequestType:(id)a3;
+- (id)serverInteractionControllerForAccessory:(id)accessory;
+- (id)serverInteractionControllerForAccount:(id)account;
+- (id)urlForRequestType:(id)type;
 - (unint64_t)_accountSecurityLevel;
 - (unsigned)authInvalidError;
 - (unsigned)essentialServerInfoMissingError;
-- (void)_accountDidChangeFrom:(id)a3 to:(id)a4;
-- (void)_handleAccessoryDidPairNotification:(id)a3;
-- (void)_handleLocateIntent:(id)a3 serverContext:(id)a4;
-- (void)_handlePushWithoutIntents:(id)a3;
-- (void)_handleQCIntent:(id)a3 serverContext:(id)a4;
-- (void)_handleSoundIntent:(id)a3 serverContext:(id)a4;
+- (void)_accountDidChangeFrom:(id)from to:(id)to;
+- (void)_handleAccessoryDidPairNotification:(id)notification;
+- (void)_handleLocateIntent:(id)intent serverContext:(id)context;
+- (void)_handlePushWithoutIntents:(id)intents;
+- (void)_handleQCIntent:(id)intent serverContext:(id)context;
+- (void)_handleSoundIntent:(id)intent serverContext:(id)context;
 - (void)_sendStartupRegister;
-- (void)accessoryDidPair:(id)a3;
-- (void)accessoryDidUnpair:(id)a3;
-- (void)accessoryDidUpdate:(id)a3;
+- (void)accessoryDidPair:(id)pair;
+- (void)accessoryDidUnpair:(id)unpair;
+- (void)accessoryDidUpdate:(id)update;
 - (void)accountAdded;
 - (void)accountInfoDidChange;
-- (void)accountRemoveRequestedWithCompletion:(id)a3;
-- (void)activationLockAuthInfo:(id)a3;
+- (void)accountRemoveRequestedWithCompletion:(id)completion;
+- (void)activationLockAuthInfo:(id)info;
 - (void)clearFutures;
 - (void)dealloc;
 - (void)deregisterCommonNotifications;
-- (void)deviceNameChanged:(id)a3;
-- (void)didReceiveAPSMessage:(id)a3;
-- (void)didReceiveAPSToken:(id)a3;
-- (void)didReceiveAuthFailureForRequest:(id)a3;
-- (void)didReceiveServerAlertForRequest:(id)a3;
-- (void)locationServicesStateChanged:(id)a3;
+- (void)deviceNameChanged:(id)changed;
+- (void)didReceiveAPSMessage:(id)message;
+- (void)didReceiveAPSToken:(id)token;
+- (void)didReceiveAuthFailureForRequest:(id)request;
+- (void)didReceiveServerAlertForRequest:(id)request;
+- (void)locationServicesStateChanged:(id)changed;
 - (void)makeProviderActive;
 - (void)makeProviderInactive;
-- (void)petForUserWithCompletion:(id)a3;
-- (void)queueAccessoryActionsIfNeeded:(id)a3;
-- (void)registerAccessory:(id)a3 completion:(id)a4;
+- (void)petForUserWithCompletion:(id)completion;
+- (void)queueAccessoryActionsIfNeeded:(id)needed;
+- (void)registerAccessory:(id)accessory completion:(id)completion;
 - (void)registerCommonNotifications;
-- (void)reinitializeProviderWithAccount:(id)a3;
-- (void)removeAccount:(id)a3 completion:(id)a4;
+- (void)reinitializeProviderWithAccount:(id)account;
+- (void)removeAccount:(id)account completion:(id)completion;
 - (void)removeAccountPreferences;
-- (void)removeFutureForCommandId:(id)a3;
-- (void)searchPartyBeaconsChanged:(id)a3;
-- (void)setAccount:(id)a3;
-- (void)setFuture:(id)a3 commandId:(id)a4;
-- (void)showAlertFromServerResponse:(id)a3;
+- (void)removeFutureForCommandId:(id)id;
+- (void)searchPartyBeaconsChanged:(id)changed;
+- (void)setAccount:(id)account;
+- (void)setFuture:(id)future commandId:(id)id;
+- (void)showAlertFromServerResponse:(id)response;
 - (void)start;
 - (void)startLocationMonitoringIfNeeded;
-- (void)supportedAccessoryRegistryDidUpdateSupportedAccessories:(id)a3;
+- (void)supportedAccessoryRegistryDidUpdateSupportedAccessories:(id)accessories;
 - (void)tryToFetchAuthToken;
-- (void)unregisterAccessory:(id)a3 completion:(id)a4;
-- (void)updateAccount:(id)a3;
+- (void)unregisterAccessory:(id)accessory completion:(id)completion;
+- (void)updateAccount:(id)account;
 @end
 
 @implementation FMDServiceProvider
@@ -67,9 +67,9 @@
 - (id)newLocationManager
 {
   v2 = +[FMDLocationManagerFactory sharedInstance];
-  v3 = [v2 newLocationManager];
+  newLocationManager = [v2 newLocationManager];
 
-  return v3;
+  return newLocationManager;
 }
 
 - (FMDServiceProvider)init
@@ -125,15 +125,15 @@
   v3 = sub_100002880();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FMDServiceProvider *)self fm_logID];
+    fm_logID = [(FMDServiceProvider *)self fm_logID];
     v18 = 138412290;
-    v19 = v4;
+    v19 = fm_logID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Starting %@...", &v18, 0xCu);
   }
 
-  v5 = [(FMDServiceProvider *)self accountStore];
-  v6 = [v5 loadAccount];
-  [(FMDServiceProvider *)self setAccount:v6];
+  accountStore = [(FMDServiceProvider *)self accountStore];
+  loadAccount = [accountStore loadAccount];
+  [(FMDServiceProvider *)self setAccount:loadAccount];
 
   if (+[FMDPreferencesMgr wipeState])
   {
@@ -144,17 +144,17 @@
 
   else
   {
-    v10 = [(FMDServiceProvider *)self account];
+    account = [(FMDServiceProvider *)self account];
 
-    if (v10)
+    if (account)
     {
       v11 = sub_100002880();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(FMDServiceProvider *)self account];
-        v13 = [v12 username];
+        account2 = [(FMDServiceProvider *)self account];
+        username = [account2 username];
         v18 = 138412290;
-        v19 = v13;
+        v19 = username;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Found FMIP account %@...", &v18, 0xCu);
       }
 
@@ -162,9 +162,9 @@
     }
   }
 
-  v14 = [(FMDServiceProvider *)self account];
+  account3 = [(FMDServiceProvider *)self account];
 
-  if (!v14)
+  if (!account3)
   {
     v15 = sub_100002880();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -180,21 +180,21 @@
   }
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(FMDServiceProvider *)self account];
-  v6 = [(FMDServiceProvider *)self accountReadWriteLock];
+  accountCopy = account;
+  account = [(FMDServiceProvider *)self account];
+  accountReadWriteLock = [(FMDServiceProvider *)self accountReadWriteLock];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001CBF14;
   v9[3] = &unk_1002CDD98;
   v9[4] = self;
-  v10 = v4;
-  v11 = v5;
-  v7 = v5;
-  v8 = v4;
-  [v6 performWithWriteLock:v9];
+  v10 = accountCopy;
+  v11 = account;
+  v7 = account;
+  v8 = accountCopy;
+  [accountReadWriteLock performWithWriteLock:v9];
 }
 
 - (FMDAccount)account
@@ -205,14 +205,14 @@
   v10 = sub_10000AB54;
   v11 = sub_100002B74;
   v12 = 0;
-  v3 = [(FMDServiceProvider *)self accountReadWriteLock];
+  accountReadWriteLock = [(FMDServiceProvider *)self accountReadWriteLock];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001CC078;
   v6[3] = &unk_1002CD260;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performWithReadLock:v6];
+  [accountReadWriteLock performWithReadLock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -220,33 +220,33 @@
   return v4;
 }
 
-- (void)updateAccount:(id)a3
+- (void)updateAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(FMDServiceProvider *)self account];
-  if (v5)
+  accountCopy = account;
+  account = [(FMDServiceProvider *)self account];
+  if (account)
   {
-    v6 = [v4 authId];
-    v7 = [v5 authId];
-    v8 = [v6 isEqualToString:v7];
+    authId = [accountCopy authId];
+    authId2 = [account authId];
+    v8 = [authId isEqualToString:authId2];
 
     if ((v8 & 1) == 0)
     {
       v9 = sub_100002880();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        sub_10022E41C(v5, v4);
+        sub_10022E41C(account, accountCopy);
       }
     }
 
-    if ([v5 activityState] != 2)
+    if ([account activityState] != 2)
     {
-      v10 = [(FMDServiceProvider *)self account];
-      [v10 copyInfoFromAccount:v4];
+      account2 = [(FMDServiceProvider *)self account];
+      [account2 copyInfoFromAccount:accountCopy];
 
-      v11 = [(FMDServiceProvider *)self accountStore];
-      v12 = [(FMDServiceProvider *)self account];
-      [v11 saveAccount:v12];
+      accountStore = [(FMDServiceProvider *)self accountStore];
+      account3 = [(FMDServiceProvider *)self account];
+      [accountStore saveAccount:account3];
 
       [(FMDServiceProvider *)self accountInfoDidChange];
     }
@@ -261,9 +261,9 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "updateAccount is adding a new account", v16, 2u);
     }
 
-    [(FMDServiceProvider *)self setAccount:v4];
-    v14 = [(FMDServiceProvider *)self accountStore];
-    [v14 saveAccount:v4];
+    [(FMDServiceProvider *)self setAccount:accountCopy];
+    accountStore2 = [(FMDServiceProvider *)self accountStore];
+    [accountStore2 saveAccount:accountCopy];
 
     v15 = +[FMDStartupRegisterManager sharedInstance];
     [v15 eventDidOccur:0];
@@ -272,28 +272,28 @@
   }
 }
 
-- (void)removeAccount:(id)a3 completion:(id)a4
+- (void)removeAccount:(id)account completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FMDServiceProvider *)self account];
+  accountCopy = account;
+  completionCopy = completion;
+  account = [(FMDServiceProvider *)self account];
 
-  if (v8)
+  if (account)
   {
-    v9 = [(FMDServiceProvider *)self account];
-    [v9 copyInfoFromAccount:v6];
+    account2 = [(FMDServiceProvider *)self account];
+    [account2 copyInfoFromAccount:accountCopy];
 
-    v10 = [(FMDServiceProvider *)self accountStore];
-    v11 = [(FMDServiceProvider *)self account];
-    [v10 saveAccount:v11];
+    accountStore = [(FMDServiceProvider *)self accountStore];
+    account3 = [(FMDServiceProvider *)self account];
+    [accountStore saveAccount:account3];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1001CC468;
     v16[3] = &unk_1002D0B98;
     v16[4] = self;
-    v17 = v6;
-    v18 = v7;
+    v17 = accountCopy;
+    v18 = completionCopy;
     [(FMDServiceProvider *)self accountRemoveRequestedWithCompletion:v16];
   }
 
@@ -302,7 +302,7 @@
     v12 = sub_100002880();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_10022E4C8(v6);
+      sub_10022E4C8(accountCopy);
     }
 
     v13 = kFMDErrorDomain;
@@ -311,9 +311,9 @@
     v14 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     v15 = [NSError errorWithDomain:v13 code:-1 userInfo:v14];
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, v15);
+      (*(completionCopy + 2))(completionCopy, v15);
     }
   }
 }
@@ -323,9 +323,9 @@
   v3 = sub_100002880();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FMDServiceProvider *)self fm_logID];
+    fm_logID = [(FMDServiceProvider *)self fm_logID];
     v6 = 138412290;
-    v7 = v4;
+    v7 = fm_logID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Attempting to clean prefs %@", &v6, 0xCu);
   }
 
@@ -340,22 +340,22 @@
   [v5 clearCache];
 }
 
-- (void)reinitializeProviderWithAccount:(id)a3
+- (void)reinitializeProviderWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   [(FMDServiceProvider *)self setAccount:0];
-  v4 = [(FMDServiceProvider *)self accountStore];
-  [v4 saveAccount:0];
+  accountStore = [(FMDServiceProvider *)self accountStore];
+  [accountStore saveAccount:0];
 
-  [(FMDServiceProvider *)self addAccount:v5];
+  [(FMDServiceProvider *)self addAccount:accountCopy];
 }
 
 - (void)accountInfoDidChange
 {
-  v3 = [(FMDServiceProvider *)self account];
-  v4 = [v3 activityState];
+  account = [(FMDServiceProvider *)self account];
+  activityState = [account activityState];
 
-  if (v4 == 1)
+  if (activityState == 1)
   {
 
     [(FMDServiceProvider *)self registerDeviceWithCause:@"AccountChange" force:0];
@@ -366,9 +366,9 @@
     v5 = sub_100002880();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(FMDServiceProvider *)self fm_logID];
+      fm_logID = [(FMDServiceProvider *)self fm_logID];
       v7 = 138412290;
-      v8 = v6;
+      v8 = fm_logID;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Attempting to start %@ again because account changed", &v7, 0xCu);
     }
 
@@ -383,143 +383,143 @@
   [(FMDServiceProvider *)self makeProviderActive];
 }
 
-- (void)accountRemoveRequestedWithCompletion:(id)a3
+- (void)accountRemoveRequestedWithCompletion:(id)completion
 {
-  v10 = a3;
-  v4 = [(FMDServiceProvider *)self accessoryRegistry];
-  v5 = [v4 allAccessories];
-  [v5 enumerateObjectsUsingBlock:&stru_1002D1068];
+  completionCopy = completion;
+  accessoryRegistry = [(FMDServiceProvider *)self accessoryRegistry];
+  allAccessories = [accessoryRegistry allAccessories];
+  [allAccessories enumerateObjectsUsingBlock:&stru_1002D1068];
 
-  v6 = [(FMDServiceProvider *)self supportedAccessoryRegistry];
-  [v6 clearSupportedAccessoryRegistry];
+  supportedAccessoryRegistry = [(FMDServiceProvider *)self supportedAccessoryRegistry];
+  [supportedAccessoryRegistry clearSupportedAccessoryRegistry];
 
   [(FMDServiceProvider *)self setSupportedAccessoryRegistry:0];
-  v7 = [(FMDServiceProvider *)self accessoryRegistry];
-  [v7 clearAccessoryRegistry];
+  accessoryRegistry2 = [(FMDServiceProvider *)self accessoryRegistry];
+  [accessoryRegistry2 clearAccessoryRegistry];
 
   [(FMDServiceProvider *)self setAccessoryRegistry:0];
-  v8 = [(FMDServiceProvider *)self accessoryLocationStore];
-  [v8 clearAccessoryLocationStore];
+  accessoryLocationStore = [(FMDServiceProvider *)self accessoryLocationStore];
+  [accessoryLocationStore clearAccessoryLocationStore];
 
   [(FMDServiceProvider *)self setAccessoryLocationStore:0];
   [(FMDServiceProvider *)self clearFutures];
-  v9 = v10;
-  if (v10)
+  v9 = completionCopy;
+  if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0);
-    v9 = v10;
+    (*(completionCopy + 2))(completionCopy, 0);
+    v9 = completionCopy;
   }
 }
 
-- (void)registerAccessory:(id)a3 completion:(id)a4
+- (void)registerAccessory:(id)accessory completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  completionCopy = completion;
   v8 = sub_100002880();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412290;
-    v22 = v6;
+    v22 = accessoryCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Now Registering Accessory - %@", &v21, 0xCu);
   }
 
-  v9 = [[FMDInternalLocalFindableAccessory alloc] initWithLocalFindableAccessory:v6];
-  v10 = [(FMDServiceProvider *)self accessoryRegistry];
-  [v10 updateAccessory:v9];
+  v9 = [[FMDInternalLocalFindableAccessory alloc] initWithLocalFindableAccessory:accessoryCopy];
+  accessoryRegistry = [(FMDServiceProvider *)self accessoryRegistry];
+  [accessoryRegistry updateAccessory:v9];
 
   v11 = [AccessoryRegisterAction alloc];
-  v12 = [(FMDServiceProvider *)self account];
+  account = [(FMDServiceProvider *)self account];
   v13 = [(FMDServiceProvider *)self serverInteractionControllerForAccessory:v9];
-  v14 = [(AccessoryRegisterAction *)v11 initWithAccount:v12 accessory:v9 cause:@"deviceDidPair" force:0 serverInteractionController:v13];
+  v14 = [(AccessoryRegisterAction *)v11 initWithAccount:account accessory:v9 cause:@"deviceDidPair" force:0 serverInteractionController:v13];
 
   [(AccessoryRegisterAction *)v14 setIncludeDeviceState:1];
   v15 = +[FMDOperationManager sharedManager];
-  v16 = [(FMDInternalLocalFindableAccessory *)v9 accessoryIdentifier];
-  v17 = [v16 stringValue];
-  v18 = [v15 addAction:v14 forIdentifier:v17];
+  accessoryIdentifier = [(FMDInternalLocalFindableAccessory *)v9 accessoryIdentifier];
+  stringValue = [accessoryIdentifier stringValue];
+  v18 = [v15 addAction:v14 forIdentifier:stringValue];
 
   if (v18)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
     v19 = [NSError alloc];
     v20 = [v19 initWithDomain:kFMDErrorDomain code:1 userInfo:0];
-    (v7)[2](v7, v20);
+    (completionCopy)[2](completionCopy, v20);
   }
 }
 
-- (void)unregisterAccessory:(id)a3 completion:(id)a4
+- (void)unregisterAccessory:(id)accessory completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  completionCopy = completion;
   v8 = sub_100002880();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = accessoryCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Now Unregistering Accessory - %@", &v11, 0xCu);
   }
 
-  v9 = [[FMDInternalLocalFindableAccessory alloc] initWithLocalFindableAccessory:v6];
-  v10 = [(FMDServiceProvider *)self accessoryRegistry];
-  [v10 removeAccessory:v9];
+  v9 = [[FMDInternalLocalFindableAccessory alloc] initWithLocalFindableAccessory:accessoryCopy];
+  accessoryRegistry = [(FMDServiceProvider *)self accessoryRegistry];
+  [accessoryRegistry removeAccessory:v9];
 
   [(FMDServiceProvider *)self registerDeviceWithCause:@"deviceDidUnpair" force:1];
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
 - (BOOL)isActivationLocked
 {
   v2 = +[FMDServiceProvider activeServiceProvider];
-  v3 = [v2 account];
+  account = [v2 account];
 
-  v4 = [v3 lastIdentityTime];
+  lastIdentityTime = [account lastIdentityTime];
 
   v5 = sub_100002880();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v3 lastIdentityTime];
+    lastIdentityTime2 = [account lastIdentityTime];
     v8[0] = 67109376;
-    v8[1] = v4 != 0;
+    v8[1] = lastIdentityTime != 0;
     v9 = 2048;
-    v10 = [v6 fm_epoch];
+    fm_epoch = [lastIdentityTime2 fm_epoch];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "isActivationLocked returned %i, %lli", v8, 0x12u);
   }
 
-  return v4 != 0;
+  return lastIdentityTime != 0;
 }
 
-- (void)activationLockAuthInfo:(id)a3
+- (void)activationLockAuthInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(FMDServiceProvider *)self account];
+  infoCopy = info;
+  account = [(FMDServiceProvider *)self account];
 
-  if (v5)
+  if (account)
   {
     v6 = objc_alloc_init(FMDActivationLockAuthInfo);
     [v6 setIsFindMyON:1];
     [v6 setIsSignedIntoICloud:1];
     [v6 setIsActivationLockEnabled:{-[FMDServiceProvider isActivationLocked](self, "isActivationLocked")}];
-    v7 = [(FMDServiceProvider *)self _accountSecurityLevel];
-    if (v7)
+    _accountSecurityLevel = [(FMDServiceProvider *)self _accountSecurityLevel];
+    if (_accountSecurityLevel)
     {
-      v8 = v7;
-      v9 = [(FMDServiceProvider *)self account];
-      v10 = [v9 adsid];
+      v8 = _accountSecurityLevel;
+      account2 = [(FMDServiceProvider *)self account];
+      adsid = [account2 adsid];
 
-      v11 = [(FMDServiceProvider *)self account];
-      v12 = [v11 dsid];
+      account3 = [(FMDServiceProvider *)self account];
+      dsid = [account3 dsid];
 
-      [v6 setDsid:v12];
-      [v6 setAltDsid:v10];
+      [v6 setDsid:dsid];
+      [v6 setAltDsid:adsid];
       [v6 setIsAccountHSA2:v8 == 4];
-      LODWORD(v11) = [v6 isAccountHSA2];
+      LODWORD(account3) = [v6 isAccountHSA2];
       v13 = sub_100002880();
       v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-      if (v11)
+      if (account3)
       {
         if (v14)
         {
@@ -532,7 +532,7 @@
         v25[2] = sub_1001CD184;
         v25[3] = &unk_1002D1090;
         v26 = v6;
-        v27 = v4;
+        v27 = infoCopy;
         [(FMDServiceProvider *)self petForUserWithCompletion:v25];
       }
 
@@ -544,7 +544,7 @@
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Account is non-HSA2. Not requesting PET - returning immediately", buf, 2u);
         }
 
-        (*(v4 + 2))(v4, v6, 0);
+        (*(infoCopy + 2))(infoCopy, v6, 0);
       }
     }
 
@@ -557,8 +557,8 @@
       }
 
       v24 = [NSError alloc];
-      v10 = [v24 initWithDomain:kFMDErrorDomain code:5 userInfo:0];
-      (*(v4 + 2))(v4, 0, v10);
+      adsid = [v24 initWithDomain:kFMDErrorDomain code:5 userInfo:0];
+      (*(infoCopy + 2))(infoCopy, 0, adsid);
     }
   }
 
@@ -574,23 +574,23 @@
     v6 = objc_alloc_init(FMDActivationLockAuthInfo);
     [v6 setIsFindMyON:0];
     [v6 setPet:0];
-    (*(v4 + 2))(v4, v6, 0);
+    (*(infoCopy + 2))(infoCopy, v6, 0);
   }
 }
 
-- (void)petForUserWithCompletion:(id)a3
+- (void)petForUserWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(AKAppleIDAuthenticationController);
   if (v5)
   {
     v6 = objc_alloc_init(AKAppleIDAuthenticationContext);
     if (v6)
     {
-      v7 = [(FMDServiceProvider *)self account];
-      v8 = [v7 adsid];
+      account = [(FMDServiceProvider *)self account];
+      adsid = [account adsid];
 
-      [v6 setAltDSID:v8];
+      [v6 setAltDSID:adsid];
       [v6 setAuthenticationType:1];
       [v6 setIsUsernameEditable:0];
       [v6 setServiceType:1];
@@ -601,7 +601,7 @@
       v13[1] = 3221225472;
       v13[2] = sub_1001CD520;
       v13[3] = &unk_1002CF5F0;
-      v14 = v4;
+      v14 = completionCopy;
       [v5 authenticateWithContext:v6 completion:v13];
     }
 
@@ -615,8 +615,8 @@
       }
 
       v12 = [NSError alloc];
-      v8 = [v12 initWithDomain:kFMDErrorDomain code:5 userInfo:0];
-      (*(v4 + 2))(v4, 0, v8);
+      adsid = [v12 initWithDomain:kFMDErrorDomain code:5 userInfo:0];
+      (*(completionCopy + 2))(completionCopy, 0, adsid);
     }
   }
 
@@ -631,22 +631,22 @@
 
     v10 = [NSError alloc];
     v6 = [v10 initWithDomain:kFMDErrorDomain code:5 userInfo:0];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(completionCopy + 2))(completionCopy, 0, v6);
   }
 }
 
 - (unint64_t)_accountSecurityLevel
 {
-  v2 = [(FMDServiceProvider *)self account];
-  v3 = [v2 adsid];
+  account = [(FMDServiceProvider *)self account];
+  adsid = [account adsid];
 
-  if (v3)
+  if (adsid)
   {
     v4 = +[AKAccountManager sharedInstance];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 authKitAccountWithAltDSID:v3];
+      v6 = [v4 authKitAccountWithAltDSID:adsid];
       if (v6)
       {
         v7 = [v5 securityLevelForAccount:v6];
@@ -701,9 +701,9 @@
 
 - (void)makeProviderActive
 {
-  v3 = [(FMDServiceProvider *)self account];
-  v4 = v3;
-  if (!v3 || [v3 activityState] == 1)
+  account = [(FMDServiceProvider *)self account];
+  v4 = account;
+  if (!account || [account activityState] == 1)
   {
     goto LABEL_36;
   }
@@ -711,18 +711,18 @@
   v5 = sub_100002880();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(FMDServiceProvider *)self fm_logID];
+    fm_logID = [(FMDServiceProvider *)self fm_logID];
     *buf = 138412290;
-    v69 = v6;
+    v69 = fm_logID;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#start Making %@ active...", buf, 0xCu);
   }
 
   v7 = sub_100002880();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 username];
+    username = [v4 username];
     *buf = 138412290;
-    v69 = v8;
+    v69 = username;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#start Found account: %@", buf, 0xCu);
   }
 
@@ -740,28 +740,28 @@
     [(FMDServiceProvider *)self setAccessoryRegistry:v12];
 
     v13 = [FMDAccessoryRegistryDelegateAdaptor alloc];
-    v14 = [(FMDServiceProvider *)self accessoryRegistry];
-    v15 = [(FMDAccessoryRegistryDelegateAdaptor *)v13 initWithAccessoryRegistry:v14];
+    accessoryRegistry = [(FMDServiceProvider *)self accessoryRegistry];
+    v15 = [(FMDAccessoryRegistryDelegateAdaptor *)v13 initWithAccessoryRegistry:accessoryRegistry];
     [(FMDServiceProvider *)self setAccessoryRegistryDelegateAdaptor:v15];
 
     v16 = objc_alloc_init(FMDBluetoothManager);
     [(FMDServiceProvider *)self setBluetoothManager:v16];
 
-    v17 = [(FMDServiceProvider *)self supportedAccessoryRegistry];
-    v18 = [(FMDServiceProvider *)self bluetoothManager];
-    [v18 setSupportedAccessoryRegistry:v17];
+    supportedAccessoryRegistry = [(FMDServiceProvider *)self supportedAccessoryRegistry];
+    bluetoothManager = [(FMDServiceProvider *)self bluetoothManager];
+    [bluetoothManager setSupportedAccessoryRegistry:supportedAccessoryRegistry];
 
-    v19 = [(FMDServiceProvider *)self accessoryRegistryDelegateAdaptor];
-    v20 = [(FMDServiceProvider *)self bluetoothManager];
-    [v20 setDelegate:v19];
+    accessoryRegistryDelegateAdaptor = [(FMDServiceProvider *)self accessoryRegistryDelegateAdaptor];
+    bluetoothManager2 = [(FMDServiceProvider *)self bluetoothManager];
+    [bluetoothManager2 setDelegate:accessoryRegistryDelegateAdaptor];
 
-    v21 = [(FMDServiceProvider *)self bluetoothManager];
-    [v9 addObject:v21];
+    bluetoothManager3 = [(FMDServiceProvider *)self bluetoothManager];
+    [v9 addObject:bluetoothManager3];
 
-    LOBYTE(v20) = [FMPreferencesUtil BOOLForKey:@"DisableFindkit" inDomain:kFMDNotBackedUpPrefDomain];
+    LOBYTE(bluetoothManager2) = [FMPreferencesUtil BOOLForKey:@"DisableFindkit" inDomain:kFMDNotBackedUpPrefDomain];
     v22 = sub_10000BE38();
     v23 = os_log_type_enabled(&v22->super, OS_LOG_TYPE_DEFAULT);
-    if (v20)
+    if (bluetoothManager2)
     {
       if (v23)
       {
@@ -780,35 +780,35 @@
 
       v26 = +[FMDExtConfigurationRegistry sharedInstance];
       v22 = objc_alloc_init(FMDExtAccessoryManager);
-      v27 = [(FMDServiceProvider *)self accessoryRegistry];
-      [(FMDExtAccessoryManager *)v22 setAccessoryRegistry:v27];
+      accessoryRegistry2 = [(FMDServiceProvider *)self accessoryRegistry];
+      [(FMDExtAccessoryManager *)v22 setAccessoryRegistry:accessoryRegistry2];
 
       [(FMDServiceProvider *)self setExtAccessoryManager:v22];
-      v28 = [(FMDServiceProvider *)self extAccessoryManager];
-      [v9 addObject:v28];
+      extAccessoryManager = [(FMDServiceProvider *)self extAccessoryManager];
+      [v9 addObject:extAccessoryManager];
 
       [(FMDExtAccessoryManager *)v22 startMonitoring];
     }
 
     v29 = [FMDAccessoryLocationStore alloc];
-    v30 = [(FMDServiceProvider *)self supportedAccessoryRegistry];
-    v31 = [(FMDServiceProvider *)self accessoryRegistry];
-    v32 = [(FMDAccessoryLocationStore *)v29 initWithSupportedAccessoryRegistry:v30 accessoryRegistry:v31];
+    supportedAccessoryRegistry2 = [(FMDServiceProvider *)self supportedAccessoryRegistry];
+    accessoryRegistry3 = [(FMDServiceProvider *)self accessoryRegistry];
+    v32 = [(FMDAccessoryLocationStore *)v29 initWithSupportedAccessoryRegistry:supportedAccessoryRegistry2 accessoryRegistry:accessoryRegistry3];
     [(FMDServiceProvider *)self setAccessoryLocationStore:v32];
 
-    v33 = [(FMDServiceProvider *)self accessoryRegistry];
-    [v33 registerDelegate:self];
+    accessoryRegistry4 = [(FMDServiceProvider *)self accessoryRegistry];
+    [accessoryRegistry4 registerDelegate:self];
 
-    v34 = [(FMDServiceProvider *)self accessoryRegistry];
-    v35 = [(FMDServiceProvider *)self accessoryLocationStore];
-    [v34 registerDelegate:v35];
+    accessoryRegistry5 = [(FMDServiceProvider *)self accessoryRegistry];
+    accessoryLocationStore = [(FMDServiceProvider *)self accessoryLocationStore];
+    [accessoryRegistry5 registerDelegate:accessoryLocationStore];
 
-    v36 = [(FMDServiceProvider *)self accessoryRegistryDelegateAdaptor];
-    v37 = [FMDCompanionRegistryFactory companionRegistryWithDelegate:v36];
+    accessoryRegistryDelegateAdaptor2 = [(FMDServiceProvider *)self accessoryRegistryDelegateAdaptor];
+    v37 = [FMDCompanionRegistryFactory companionRegistryWithDelegate:accessoryRegistryDelegateAdaptor2];
 
     [v9 addObject:v37];
-    v38 = [(FMDServiceProvider *)self accessoryRegistry];
-    [v38 addDataSources:v9];
+    accessoryRegistry6 = [(FMDServiceProvider *)self accessoryRegistry];
+    [accessoryRegistry6 addDataSources:v9];
 
     v39 = +[FMSystemInfo sharedInstance];
     if ([v39 isInternalBuild])
@@ -819,13 +819,13 @@
       {
 LABEL_21:
         v42 = +[FMDDaemon sharedInstance];
-        v43 = [v4 apsEnvironmentConstant];
-        v44 = [v42 apsHandlerForEnvironment:v43];
+        apsEnvironmentConstant = [v4 apsEnvironmentConstant];
+        v44 = [v42 apsHandlerForEnvironment:apsEnvironmentConstant];
 
         [v44 registerDelegate:self forTopic:@"com.apple.mobileme.fmip"];
-        v45 = [v44 apsToken];
+        apsToken = [v44 apsToken];
 
-        if (v45)
+        if (apsToken)
         {
           [(FMDServiceProvider *)self _sendStartupRegister];
         }
@@ -840,9 +840,9 @@ LABEL_21:
           }
 
           v47 = +[FMSystemInfo sharedInstance];
-          v48 = [v47 isInternalBuild];
+          isInternalBuild = [v47 isInternalBuild];
 
-          if (v48)
+          if (isInternalBuild)
           {
             objc_initWeak(buf, self);
             v49 = dispatch_time(0, 5000000000);
@@ -860,39 +860,39 @@ LABEL_21:
         }
 
         [(FMDServiceProvider *)self didMakeProviderActive:v62];
-        v50 = [(FMDServiceProvider *)self account];
-        [v50 setActivityState:1];
+        account2 = [(FMDServiceProvider *)self account];
+        [account2 setActivityState:1];
 
-        v51 = [(FMDServiceProvider *)self authInvalidError];
-        if (v51 != 1196379972)
+        authInvalidError = [(FMDServiceProvider *)self authInvalidError];
+        if (authInvalidError != 1196379972)
         {
-          v52 = v51;
+          v52 = authInvalidError;
           v53 = sub_100002880();
           if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
           {
-            v54 = [(FMDServiceProvider *)self serviceName];
-            v55 = [v4 username];
+            serviceName = [(FMDServiceProvider *)self serviceName];
+            username2 = [v4 username];
             v56 = [NSString stringWithFourCC:v52];
             *buf = 138412802;
-            v69 = v54;
+            v69 = serviceName;
             v70 = 2112;
-            v71 = v55;
+            v71 = username2;
             v72 = 2112;
             v73 = v56;
             _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "%@: Account %@ is invalid due to '%@'", buf, 0x20u);
           }
 
           v57 = +[FMSystemInfo sharedInstance];
-          v58 = [v57 isInternalBuild];
+          isInternalBuild2 = [v57 isInternalBuild];
 
-          if (v58)
+          if (isInternalBuild2)
           {
             v59 = sub_100002880();
             if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
             {
-              v60 = [(FMDServiceProvider *)self serviceName];
+              serviceName2 = [(FMDServiceProvider *)self serviceName];
               *buf = 138412290;
-              v69 = v60;
+              v69 = serviceName2;
               _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "%@ is not functional as authentication credentials are not available.", buf, 0xCu);
             }
           }
@@ -908,8 +908,8 @@ LABEL_21:
       }
 
       v39 = +[FMDInternalAccessoryConnectionMonitor sharedMonitor];
-      v41 = [(FMDServiceProvider *)self accessoryRegistry];
-      [v41 registerDelegate:v39];
+      accessoryRegistry7 = [(FMDServiceProvider *)self accessoryRegistry];
+      [accessoryRegistry7 registerDelegate:v39];
     }
 
     goto LABEL_21;
@@ -918,9 +918,9 @@ LABEL_21:
   v24 = sub_100002880();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [(FMDServiceProvider *)self fm_logID];
+    fm_logID2 = [(FMDServiceProvider *)self fm_logID];
     *buf = 138412290;
-    v69 = v25;
+    v69 = fm_logID2;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Not making %@ active now", buf, 0xCu);
   }
 
@@ -933,31 +933,31 @@ LABEL_36:
   v3 = sub_100002880();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FMDServiceProvider *)self fm_logID];
+    fm_logID = [(FMDServiceProvider *)self fm_logID];
     v20 = 138412290;
-    v21 = v4;
+    v21 = fm_logID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Making %@ inactive...", &v20, 0xCu);
   }
 
-  v5 = [(FMDServiceProvider *)self account];
-  v6 = [(FMDServiceProvider *)self account];
-  [v6 setActivityState:2];
+  account = [(FMDServiceProvider *)self account];
+  account2 = [(FMDServiceProvider *)self account];
+  [account2 setActivityState:2];
 
   [(FMDServiceProvider *)self willMakeProviderInactive];
-  v7 = [(FMDServiceProvider *)self serverInteractionController];
-  [v7 cancelAllRequests];
+  serverInteractionController = [(FMDServiceProvider *)self serverInteractionController];
+  [serverInteractionController cancelAllRequests];
 
   v8 = +[ActionManager sharedManager];
   [v8 cancelAllActions];
 
-  v9 = [(FMDServiceProvider *)self standardLocator];
-  if (v9)
+  standardLocator = [(FMDServiceProvider *)self standardLocator];
+  if (standardLocator)
   {
-    v10 = v9;
-    v11 = [(FMDServiceProvider *)self standardLocator];
-    v12 = [v11 locatorRunning];
+    v10 = standardLocator;
+    standardLocator2 = [(FMDServiceProvider *)self standardLocator];
+    locatorRunning = [standardLocator2 locatorRunning];
 
-    if (v12)
+    if (locatorRunning)
     {
       v13 = sub_100002880();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -966,18 +966,18 @@ LABEL_36:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Stopping standard locate...", &v20, 2u);
       }
 
-      v14 = [(FMDServiceProvider *)self standardLocator];
-      [v14 stopLocator];
+      standardLocator3 = [(FMDServiceProvider *)self standardLocator];
+      [standardLocator3 stopLocator];
 
-      v15 = [(FMDServiceProvider *)self standardLocator];
-      [v15 setStoppedLocatorBlock:0];
+      standardLocator4 = [(FMDServiceProvider *)self standardLocator];
+      [standardLocator4 setStoppedLocatorBlock:0];
     }
   }
 
   [(FMDServiceProvider *)self setStandardLocator:0];
   v16 = +[FMDDaemon sharedInstance];
-  v17 = [v5 apsEnvironmentConstant];
-  v18 = [v16 apsHandlerForEnvironment:v17];
+  apsEnvironmentConstant = [account apsEnvironmentConstant];
+  v18 = [v16 apsHandlerForEnvironment:apsEnvironmentConstant];
 
   [v18 deregisterDelegate:self];
   v19 = +[FMDSPStatusUtil sharedInstance];
@@ -997,9 +997,9 @@ LABEL_36:
   dispatch_async(v3, block);
 }
 
-- (void)queueAccessoryActionsIfNeeded:(id)a3
+- (void)queueAccessoryActionsIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v5 = sub_100002880();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1007,7 +1007,7 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "FMDServiceProvider checking if we need to QC for accessory", &v16, 2u);
   }
 
-  if (!v4)
+  if (!neededCopy)
   {
     v12 = sub_100002880();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1019,26 +1019,26 @@ LABEL_36:
     goto LABEL_10;
   }
 
-  v6 = [v4 commandContext];
-  v7 = [v6 pendingAction];
+  commandContext = [neededCopy commandContext];
+  pendingAction = [commandContext pendingAction];
 
-  if (v7)
+  if (pendingAction)
   {
     v8 = sub_100002880();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v4;
+      v17 = neededCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "FMDServiceProvider QC required for %@", &v16, 0xCu);
     }
 
     v9 = [AccessoryAction alloc];
-    v10 = [(FMDServiceProvider *)self account];
-    v11 = [(FMDServiceProvider *)self serverInteractionControllerForAccessory:v4];
-    v12 = [(AccessoryAction *)v9 initWithAccount:v10 accessory:v4 requiresConnectivity:1 serverInteractionController:v11];
+    account = [(FMDServiceProvider *)self account];
+    v11 = [(FMDServiceProvider *)self serverInteractionControllerForAccessory:neededCopy];
+    v12 = [(AccessoryAction *)v9 initWithAccount:account accessory:neededCopy requiresConnectivity:1 serverInteractionController:v11];
 
-    v13 = [(FMDServiceProvider *)self accessoryRegistry];
-    [v13 registerDelegate:v12];
+    accessoryRegistry = [(FMDServiceProvider *)self accessoryRegistry];
+    [accessoryRegistry registerDelegate:v12];
 
     v14 = +[ActionManager sharedManager];
     v15 = [v14 enqueueAction:v12];
@@ -1057,8 +1057,8 @@ LABEL_10:
   [v4 addObserver:self selector:"localeChanged:" name:@"FMDLocaleChangedNotification" object:0];
   [v4 addObserver:self selector:"searchPartyBeaconsChanged:" name:@"kFMDDeviceSPSelfBeaconChangeNotification" object:0];
   [v4 addObserver:self selector:"_handleAccessoryDidPairNotification:" name:@"kFMDAccessoryDidPairLocalNotification" object:0];
-  v3 = [(FMDServiceProvider *)self accessoryRegistry];
-  [v4 addObserver:v3 selector:"refetchBauuids:" name:@"kFMDAccessoryDidPairLocalNotification" object:0];
+  accessoryRegistry = [(FMDServiceProvider *)self accessoryRegistry];
+  [v4 addObserver:accessoryRegistry selector:"refetchBauuids:" name:@"kFMDAccessoryDidPairLocalNotification" object:0];
 }
 
 - (void)deregisterCommonNotifications
@@ -1071,24 +1071,24 @@ LABEL_10:
   [v4 removeObserver:self name:@"FMDLocaleChangedNotification" object:0];
   [v4 removeObserver:self name:@"kFMDDeviceSPSelfBeaconChangeNotification" object:0];
   [v4 removeObserver:self name:@"kFMDAccessoryDidPairLocalNotification" object:0];
-  v3 = [(FMDServiceProvider *)self accessoryRegistry];
-  [v4 removeObserver:v3 name:@"kFMDAccessoryDidPairLocalNotification" object:0];
+  accessoryRegistry = [(FMDServiceProvider *)self accessoryRegistry];
+  [v4 removeObserver:accessoryRegistry name:@"kFMDAccessoryDidPairLocalNotification" object:0];
 }
 
-- (id)urlForRequestType:(id)a3
+- (id)urlForRequestType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = +[FMDServerConfig sharedInstance];
-  v6 = [v5 urlTemplateForRequestType:v4];
+  v6 = [v5 urlTemplateForRequestType:typeCopy];
 
   if (v6)
   {
     v7 = +[FMDSystemConfig sharedInstance];
-    v8 = [v7 deviceUDID];
+    deviceUDID = [v7 deviceUDID];
 
     v9 = objc_alloc_init(RequestTemplateURL);
-    v10 = [(FMDServiceProvider *)self account];
-    v11 = [(RequestTemplateURL *)v9 urlFromTemplate:v6 account:v10 udid:v8];
+    account = [(FMDServiceProvider *)self account];
+    v11 = [(RequestTemplateURL *)v9 urlFromTemplate:v6 account:account udid:deviceUDID];
   }
 
   else
@@ -1097,7 +1097,7 @@ LABEL_10:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = typeCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Did not find a url template for request type : %@", &v14, 0xCu);
     }
 
@@ -1107,11 +1107,11 @@ LABEL_10:
   return v11;
 }
 
-- (id)serverInteractionControllerForAccessory:(id)a3
+- (id)serverInteractionControllerForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [v4 accessoryIdentifier];
-  if (v5)
+  accessoryCopy = accessory;
+  accessoryIdentifier = [accessoryCopy accessoryIdentifier];
+  if (accessoryIdentifier)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -1119,15 +1119,15 @@ LABEL_10:
     v15 = sub_10000AB54;
     v16 = sub_100002B74;
     v17 = 0;
-    v6 = [(FMDServiceProvider *)self serialQueue];
+    serialQueue = [(FMDServiceProvider *)self serialQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001CEDAC;
     block[3] = &unk_1002CDA70;
     p_buf = &buf;
     block[4] = self;
-    v11 = v5;
-    dispatch_sync(v6, block);
+    v11 = accessoryIdentifier;
+    dispatch_sync(serialQueue, block);
 
     v7 = *(*(&buf + 1) + 40);
     _Block_object_dispose(&buf, 8);
@@ -1139,7 +1139,7 @@ LABEL_10:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v4;
+      *(&buf + 4) = accessoryCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Unable to get serverInteractionController by accessory since accessoryIdentifier was nil. Accessory: %@.", &buf, 0xCu);
     }
 
@@ -1149,11 +1149,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)serverInteractionControllerForAccount:(id)a3
+- (id)serverInteractionControllerForAccount:(id)account
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 authId], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  accountCopy = account;
+  v5 = accountCopy;
+  if (accountCopy && ([accountCopy authId], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     *buf = 0;
     v15 = buf;
@@ -1161,7 +1161,7 @@ LABEL_10:
     v17 = sub_10000AB54;
     v18 = sub_100002B74;
     v19 = 0;
-    v7 = [(FMDServiceProvider *)self serialQueue];
+    serialQueue = [(FMDServiceProvider *)self serialQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001CF0C8;
@@ -1169,7 +1169,7 @@ LABEL_10:
     v13 = buf;
     block[4] = self;
     v12 = v5;
-    dispatch_sync(v7, block);
+    dispatch_sync(serialQueue, block);
 
     v8 = *(v15 + 5);
     _Block_object_dispose(buf, 8);
@@ -1192,60 +1192,60 @@ LABEL_10:
 
 - (unsigned)essentialServerInfoMissingError
 {
-  v3 = [(FMDServiceProvider *)self authInvalidError];
-  if (v3 == 1196379972)
+  authInvalidError = [(FMDServiceProvider *)self authInvalidError];
+  if (authInvalidError == 1196379972)
   {
     v4 = +[FMDDaemon sharedInstance];
-    v5 = [(FMDServiceProvider *)self account];
-    v6 = [v5 apsEnvironmentConstant];
-    v7 = [v4 apsHandlerForEnvironment:v6];
+    account = [(FMDServiceProvider *)self account];
+    apsEnvironmentConstant = [account apsEnvironmentConstant];
+    v7 = [v4 apsHandlerForEnvironment:apsEnvironmentConstant];
 
-    v8 = [v7 apsToken];
+    apsToken = [v7 apsToken];
 
-    if (v8)
+    if (apsToken)
     {
-      v3 = 1196379972;
+      authInvalidError = 1196379972;
     }
 
     else
     {
-      v3 = 1480675411;
+      authInvalidError = 1480675411;
     }
   }
 
-  return v3;
+  return authInvalidError;
 }
 
 - (unsigned)authInvalidError
 {
-  v3 = [(FMDServiceProvider *)self account];
+  account = [(FMDServiceProvider *)self account];
 
-  if (!v3)
+  if (!account)
   {
     return 1480672067;
   }
 
-  v4 = [(FMDServiceProvider *)self account];
-  v5 = [v4 username];
-  v6 = [v5 length];
+  account2 = [(FMDServiceProvider *)self account];
+  username = [account2 username];
+  v6 = [username length];
 
   if (!v6)
   {
     return 1481986898;
   }
 
-  v7 = [(FMDServiceProvider *)self account];
-  v8 = [v7 authToken];
-  v9 = [v8 length];
+  account3 = [(FMDServiceProvider *)self account];
+  authToken = [account3 authToken];
+  v9 = [authToken length];
 
   if (!v9)
   {
     return 1481920331;
   }
 
-  v10 = [(FMDServiceProvider *)self account];
-  v11 = [v10 authId];
-  v12 = [v11 length];
+  account4 = [(FMDServiceProvider *)self account];
+  authId = [account4 authId];
+  v12 = [authId length];
 
   if (v12)
   {
@@ -1260,29 +1260,29 @@ LABEL_10:
 
 - (void)tryToFetchAuthToken
 {
-  v3 = [(FMDServiceProvider *)self account];
-  v2 = [v3 authToken];
-  [v2 length];
+  account = [(FMDServiceProvider *)self account];
+  authToken = [account authToken];
+  [authToken length];
 }
 
-- (void)showAlertFromServerResponse:(id)a3
+- (void)showAlertFromServerResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = sub_100002880();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     sub_10022E664();
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"title"];
-  v6 = [v3 objectForKeyedSubscript:@"text"];
-  v7 = [v3 objectForKeyedSubscript:@"okButtonTitle"];
-  v8 = [v3 objectForKeyedSubscript:@"okButtonURL"];
-  v9 = [v3 objectForKeyedSubscript:@"okButtonAction"];
-  v10 = [v3 objectForKeyedSubscript:@"cancelButtonTitle"];
-  v11 = [v3 objectForKeyedSubscript:@"cancelButtonURL"];
-  v12 = [v3 objectForKeyedSubscript:@"cancelButtonAction"];
-  v13 = [v3 objectForKeyedSubscript:@"delay"];
+  v5 = [responseCopy objectForKeyedSubscript:@"title"];
+  v6 = [responseCopy objectForKeyedSubscript:@"text"];
+  v7 = [responseCopy objectForKeyedSubscript:@"okButtonTitle"];
+  v8 = [responseCopy objectForKeyedSubscript:@"okButtonURL"];
+  v9 = [responseCopy objectForKeyedSubscript:@"okButtonAction"];
+  v10 = [responseCopy objectForKeyedSubscript:@"cancelButtonTitle"];
+  v11 = [responseCopy objectForKeyedSubscript:@"cancelButtonURL"];
+  v12 = [responseCopy objectForKeyedSubscript:@"cancelButtonAction"];
+  v13 = [responseCopy objectForKeyedSubscript:@"delay"];
   [v13 doubleValue];
   v15 = v14;
 
@@ -1295,11 +1295,11 @@ LABEL_10:
     [v18 setCategory:2];
     if (v17)
     {
-      v19 = [v5 fm_stringByReplacingNonBreakingSpaces];
-      [v18 setMsgTitle:v19];
+      fm_stringByReplacingNonBreakingSpaces = [v5 fm_stringByReplacingNonBreakingSpaces];
+      [v18 setMsgTitle:fm_stringByReplacingNonBreakingSpaces];
 
-      v20 = [v6 fm_stringByReplacingNonBreakingSpaces];
-      [v18 setMsgText:v20];
+      fm_stringByReplacingNonBreakingSpaces2 = [v6 fm_stringByReplacingNonBreakingSpaces];
+      [v18 setMsgText:fm_stringByReplacingNonBreakingSpaces2];
     }
 
     else
@@ -1372,18 +1372,18 @@ LABEL_10:
       [v18 setAlternateButtonAction:v36];
     }
 
-    v27 = [v18 defaultButtonTitle];
-    if (!v27)
+    defaultButtonTitle = [v18 defaultButtonTitle];
+    if (!defaultButtonTitle)
     {
-      v28 = [v18 alternateButtonTitle];
+      alternateButtonTitle = [v18 alternateButtonTitle];
 
-      if (v28)
+      if (alternateButtonTitle)
       {
         goto LABEL_24;
       }
 
-      v27 = [@"FMD_DEFAULT_ALERT_BUTTON" fmd_localizedString];
-      [v18 setDefaultButtonTitle:v27];
+      defaultButtonTitle = [@"FMD_DEFAULT_ALERT_BUTTON" fmd_localizedString];
+      [v18 setDefaultButtonTitle:defaultButtonTitle];
     }
 
 LABEL_24:
@@ -1417,41 +1417,41 @@ LABEL_24:
   }
 }
 
-- (void)didReceiveAuthFailureForRequest:(id)a3
+- (void)didReceiveAuthFailureForRequest:(id)request
 {
   v4 = sub_100002880();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(FMDServiceProvider *)self serviceName];
-    v6 = [(FMDServiceProvider *)self account];
-    v7 = [v6 username];
+    serviceName = [(FMDServiceProvider *)self serviceName];
+    account = [(FMDServiceProvider *)self account];
+    username = [account username];
     v8 = 138412546;
-    v9 = v5;
+    v9 = serviceName;
     v10 = 2112;
-    v11 = v7;
+    v11 = username;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@ - Auth failure received for account %@", &v8, 0x16u);
   }
 }
 
-- (void)didReceiveServerAlertForRequest:(id)a3
+- (void)didReceiveServerAlertForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 alertFromServerResponse];
+  requestCopy = request;
+  alertFromServerResponse = [requestCopy alertFromServerResponse];
 
-  if (v5)
+  if (alertFromServerResponse)
   {
     v6 = sub_100002880();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      sub_10022E6CC(v4, v6);
+      sub_10022E6CC(requestCopy, v6);
     }
 
-    v7 = [v4 alertFromServerResponse];
-    [(FMDServiceProvider *)self showAlertFromServerResponse:v7];
+    alertFromServerResponse2 = [requestCopy alertFromServerResponse];
+    [(FMDServiceProvider *)self showAlertFromServerResponse:alertFromServerResponse2];
   }
 }
 
-- (void)deviceNameChanged:(id)a3
+- (void)deviceNameChanged:(id)changed
 {
   v4 = sub_100002880();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1463,20 +1463,20 @@ LABEL_24:
   [(FMDServiceProvider *)self registerDeviceWithCause:@"DeviceNameChanged" force:0];
 }
 
-- (void)locationServicesStateChanged:(id)a3
+- (void)locationServicesStateChanged:(id)changed
 {
   [(FMDServiceProvider *)self registerDeviceWithCause:@"LocationServicesStateChanged" force:0];
   v4 = +[FMDSystemConfig sharedInstance];
-  v5 = [v4 isLocationServicesEnabled];
+  isLocationServicesEnabled = [v4 isLocationServicesEnabled];
 
-  if ((v5 & 1) == 0)
+  if ((isLocationServicesEnabled & 1) == 0)
   {
-    v6 = [(FMDServiceProvider *)self accessoryLocationStore];
-    [v6 clearAccessoryLocationStore];
+    accessoryLocationStore = [(FMDServiceProvider *)self accessoryLocationStore];
+    [accessoryLocationStore clearAccessoryLocationStore];
   }
 }
 
-- (void)searchPartyBeaconsChanged:(id)a3
+- (void)searchPartyBeaconsChanged:(id)changed
 {
   v4 = sub_100002880();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1494,7 +1494,7 @@ LABEL_24:
   dispatch_after(v5, &_dispatch_main_q, block);
 }
 
-- (void)_handleAccessoryDidPairNotification:(id)a3
+- (void)_handleAccessoryDidPairNotification:(id)notification
 {
   v4 = sub_100002880();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1503,14 +1503,14 @@ LABEL_24:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "_handleAccessoryDidPairNotification", v6, 2u);
   }
 
-  v5 = [(FMDServiceProvider *)self accessoryRegistry];
-  [v5 reloadData];
+  accessoryRegistry = [(FMDServiceProvider *)self accessoryRegistry];
+  [accessoryRegistry reloadData];
 }
 
-- (void)accessoryDidUpdate:(id)a3
+- (void)accessoryDidUpdate:(id)update
 {
-  v4 = a3;
-  if ([v4 category] == 1 || objc_msgSend(v4, "category") == 3)
+  updateCopy = update;
+  if ([updateCopy category] == 1 || objc_msgSend(updateCopy, "category") == 3)
   {
     v5 = sub_10017DA30();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1519,35 +1519,35 @@ LABEL_24:
     }
 
     v6 = [AccessoryRegisterAction alloc];
-    v7 = [(FMDServiceProvider *)self account];
-    v8 = [(FMDServiceProvider *)self serverInteractionControllerForAccessory:v4];
-    v9 = [(AccessoryRegisterAction *)v6 initWithAccount:v7 accessory:v4 cause:@"accessoryRegistryUpdate" force:0 serverInteractionController:v8];
+    account = [(FMDServiceProvider *)self account];
+    v8 = [(FMDServiceProvider *)self serverInteractionControllerForAccessory:updateCopy];
+    v9 = [(AccessoryRegisterAction *)v6 initWithAccount:account accessory:updateCopy cause:@"accessoryRegistryUpdate" force:0 serverInteractionController:v8];
 
     [(AccessoryRegisterAction *)v9 setIncludeDeviceState:1];
     v10 = +[FMDOperationManager sharedManager];
-    v11 = [v4 accessoryIdentifier];
-    v12 = [v11 stringValue];
-    [v10 addAction:v9 forIdentifier:v12];
+    accessoryIdentifier = [updateCopy accessoryIdentifier];
+    stringValue = [accessoryIdentifier stringValue];
+    [v10 addAction:v9 forIdentifier:stringValue];
   }
 }
 
-- (void)accessoryDidPair:(id)a3
+- (void)accessoryDidPair:(id)pair
 {
-  v4 = a3;
+  pairCopy = pair;
   v5 = sub_100002880();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = pairCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Accessory did pair : sending a register: %@", &v13, 0xCu);
   }
 
-  v6 = [(FMDServiceProvider *)self supportedAccessoryRegistry];
-  [v6 resetSupportedAccessoriesVersion];
+  supportedAccessoryRegistry = [(FMDServiceProvider *)self supportedAccessoryRegistry];
+  [supportedAccessoryRegistry resetSupportedAccessoriesVersion];
 
   [(FMDServiceProvider *)self registerDeviceWithCause:@"deviceDidPair" force:0];
-  [AccessoryRegisterAction cleanupContextForAccessory:v4];
-  v7 = [v4 conformsToProtocol:&OBJC_PROTOCOL___FMDAudioAccessory];
+  [AccessoryRegisterAction cleanupContextForAccessory:pairCopy];
+  v7 = [pairCopy conformsToProtocol:&OBJC_PROTOCOL___FMDAudioAccessory];
   v8 = sub_100002880();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
   if (v7)
@@ -1558,11 +1558,11 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Audio Accessory did pair", &v13, 2u);
     }
 
-    v10 = [(FMDServiceProvider *)self supportedAccessoryRegistry];
-    v11 = [v10 assetsForAccessory:v4];
+    supportedAccessoryRegistry2 = [(FMDServiceProvider *)self supportedAccessoryRegistry];
+    accessoryRegistry2 = [supportedAccessoryRegistry2 assetsForAccessory:pairCopy];
 
-    v12 = [(FMDServiceProvider *)self accessoryRegistry];
-    [v12 updateAccessory:v4 assets:v11];
+    accessoryRegistry = [(FMDServiceProvider *)self accessoryRegistry];
+    [accessoryRegistry updateAccessory:pairCopy assets:accessoryRegistry2];
   }
 
   else
@@ -1573,14 +1573,14 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Internal Accessory did pair", &v13, 2u);
     }
 
-    v11 = [(FMDServiceProvider *)self accessoryRegistry];
-    [v11 forceUpdateAccessory:v4];
+    accessoryRegistry2 = [(FMDServiceProvider *)self accessoryRegistry];
+    [accessoryRegistry2 forceUpdateAccessory:pairCopy];
   }
 }
 
-- (void)accessoryDidUnpair:(id)a3
+- (void)accessoryDidUnpair:(id)unpair
 {
-  v4 = a3;
+  unpairCopy = unpair;
   v5 = sub_100002880();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1589,62 +1589,62 @@ LABEL_24:
   }
 
   [(FMDServiceProvider *)self registerDeviceWithCause:@"deviceDidUnpair" force:0];
-  v6 = [v4 commandContext];
-  [v6 cleanupContexts];
+  commandContext = [unpairCopy commandContext];
+  [commandContext cleanupContexts];
 
-  [AccessoryRegisterAction cleanupContextForAccessory:v4];
+  [AccessoryRegisterAction cleanupContextForAccessory:unpairCopy];
 }
 
-- (BOOL)supportsAccessory:(id)a3
+- (BOOL)supportsAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = sub_100002880();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_10022E7E8();
   }
 
-  v6 = [(FMDServiceProvider *)self supportedAccessoryRegistry];
-  v7 = [v6 isAccessorySupported:v4];
+  supportedAccessoryRegistry = [(FMDServiceProvider *)self supportedAccessoryRegistry];
+  v7 = [supportedAccessoryRegistry isAccessorySupported:accessoryCopy];
 
   return v7;
 }
 
-- (void)supportedAccessoryRegistryDidUpdateSupportedAccessories:(id)a3
+- (void)supportedAccessoryRegistryDidUpdateSupportedAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = [(FMDServiceProvider *)self accessoryRegistry];
-  v6 = [v5 allAccessories];
+  accessoriesCopy = accessories;
+  accessoryRegistry = [(FMDServiceProvider *)self accessoryRegistry];
+  allAccessories = [accessoryRegistry allAccessories];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001D0598;
   v8[3] = &unk_1002D10D8;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  [v6 enumerateObjectsUsingBlock:v8];
+  v9 = accessoriesCopy;
+  selfCopy = self;
+  v7 = accessoriesCopy;
+  [allAccessories enumerateObjectsUsingBlock:v8];
 }
 
-- (BOOL)enqueueRequest:(id)a3
+- (BOOL)enqueueRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(FMDServiceProvider *)self account];
-  LOBYTE(self) = [(FMDServiceProvider *)self enqueueRequest:v4 account:v5];
+  requestCopy = request;
+  account = [(FMDServiceProvider *)self account];
+  LOBYTE(self) = [(FMDServiceProvider *)self enqueueRequest:requestCopy account:account];
 
   return self;
 }
 
-- (BOOL)enqueueRequest:(id)a3 account:(id)a4
+- (BOOL)enqueueRequest:(id)request account:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  requestCopy = request;
+  accountCopy = account;
+  v8 = accountCopy;
+  if (accountCopy)
   {
-    v9 = [v7 authId];
-    v10 = [(FMDServiceProvider *)self account];
-    v11 = [v10 authId];
-    v12 = [v9 localizedCaseInsensitiveCompare:v11];
+    authId = [accountCopy authId];
+    account = [(FMDServiceProvider *)self account];
+    authId2 = [account authId];
+    v12 = [authId localizedCaseInsensitiveCompare:authId2];
 
     if (v12)
     {
@@ -1656,7 +1656,7 @@ LABEL_24:
       [(FMDServiceProvider *)self serverInteractionController];
     }
     v16 = ;
-    v15 = [v16 enqueueRequest:v6];
+    v15 = [v16 enqueueRequest:requestCopy];
   }
 
   else
@@ -1664,9 +1664,9 @@ LABEL_24:
     v13 = sub_100002880();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v6 fm_logID];
+      fm_logID = [requestCopy fm_logID];
       v18 = 138412290;
-      v19 = v14;
+      v19 = fm_logID;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Not sending request %@ to server since there is no account. This seems like a stray request that escaped the deinitialization process", &v18, 0xCu);
     }
 
@@ -1676,20 +1676,20 @@ LABEL_24:
   return v15;
 }
 
-- (BOOL)enqueueRequest:(id)a3 forAccessory:(id)a4
+- (BOOL)enqueueRequest:(id)request forAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FMDServiceProvider *)self account];
+  requestCopy = request;
+  accessoryCopy = accessory;
+  account = [(FMDServiceProvider *)self account];
 
-  if (!v8)
+  if (!account)
   {
     v11 = sub_100002880();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 fm_logID];
+      fm_logID = [requestCopy fm_logID];
       v15 = 138412290;
-      v16 = v12;
+      v16 = fm_logID;
       v13 = "Not sending request %@ to server since there is no account. This seems like a stray request that escaped the deinitialization process";
 LABEL_8:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, v13, &v15, 0xCu);
@@ -1701,14 +1701,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v7)
+  if (!accessoryCopy)
   {
     v11 = sub_100002880();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 fm_logID];
+      fm_logID = [requestCopy fm_logID];
       v15 = 138412290;
-      v16 = v12;
+      v16 = fm_logID;
       v13 = "Not sending request %@ to server since there is no accessory. This seems like a stray request that escaped the deinitialization process";
       goto LABEL_8;
     }
@@ -1716,28 +1716,28 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [(FMDServiceProvider *)self serverInteractionControllerForAccessory:v7];
-  v10 = [v9 enqueueRequest:v6];
+  v9 = [(FMDServiceProvider *)self serverInteractionControllerForAccessory:accessoryCopy];
+  v10 = [v9 enqueueRequest:requestCopy];
 
 LABEL_10:
   return v10;
 }
 
-- (void)didReceiveAPSMessage:(id)a3
+- (void)didReceiveAPSMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = sub_100002880();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v58 = v4;
+    *v58 = messageCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Push message received %@", buf, 0xCu);
   }
 
-  v6 = [v4 objectForKey:@"fmipIntents"];
-  v7 = [v4 objectForKey:@"fmipAccessoryIntents"];
-  v8 = [v4 objectForKey:@"fmipId"];
-  v50 = [v4 objectForKeyedSubscript:@"serverContext"];
+  v6 = [messageCopy objectForKey:@"fmipIntents"];
+  v7 = [messageCopy objectForKey:@"fmipAccessoryIntents"];
+  v8 = [messageCopy objectForKey:@"fmipId"];
+  v50 = [messageCopy objectForKeyedSubscript:@"serverContext"];
   v9 = +[FMSystemInfo sharedInstance];
   if ([v9 isInternalBuild])
   {
@@ -1762,11 +1762,11 @@ LABEL_14:
   {
   }
 
-  if (![(FMDServiceProvider *)self _handleSecureLocationsPush:v4 completion:0])
+  if (![(FMDServiceProvider *)self _handleSecureLocationsPush:messageCopy completion:0])
   {
-    v12 = [(FMDServiceProvider *)self account];
+    account = [(FMDServiceProvider *)self account];
 
-    if (!v12)
+    if (!account)
     {
       v11 = sub_100002880();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1824,7 +1824,7 @@ LABEL_14:
           v45 = v8;
           v46 = v7;
           v47 = v6;
-          v48 = v4;
+          v48 = messageCopy;
           v54 = 0u;
           v55 = 0u;
           v52 = 0u;
@@ -1872,7 +1872,7 @@ LABEL_14:
           }
 
           v6 = v47;
-          v4 = v48;
+          messageCopy = v48;
           v8 = v45;
           v7 = v46;
         }
@@ -1899,7 +1899,7 @@ LABEL_14:
             }
           }
 
-          v36 = self;
+          selfCopy = self;
           v37 = [v6 objectForKey:@"LOC"];
           v38 = v37;
           if (v37)
@@ -1916,7 +1916,7 @@ LABEL_14:
 
             else
             {
-              [(FMDServiceProvider *)v36 _handleLocateIntent:v38 serverContext:v50];
+              [(FMDServiceProvider *)selfCopy _handleLocateIntent:v38 serverContext:v50];
             }
           }
 
@@ -1936,7 +1936,7 @@ LABEL_14:
 
             else
             {
-              [(FMDServiceProvider *)v36 _handleQCIntent:v42 serverContext:v50];
+              [(FMDServiceProvider *)selfCopy _handleQCIntent:v42 serverContext:v50];
             }
           }
         }
@@ -1947,7 +1947,7 @@ LABEL_14:
 LABEL_65:
 }
 
-- (void)didReceiveAPSToken:(id)a3
+- (void)didReceiveAPSToken:(id)token
 {
   if ([(FMDServiceProvider *)self completedStartupRegister])
   {
@@ -1962,19 +1962,19 @@ LABEL_65:
   }
 }
 
-- (void)_handlePushWithoutIntents:(id)a3
+- (void)_handlePushWithoutIntents:(id)intents
 {
-  v4 = a3;
+  intentsCopy = intents;
   v5 = sub_100002880();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v4;
+    v25 = intentsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handling push without intent %@", buf, 0xCu);
   }
 
-  v6 = [(FMDServiceProvider *)self essentialServerInfoMissingError];
-  if (v6 == 1196379972)
+  essentialServerInfoMissingError = [(FMDServiceProvider *)self essentialServerInfoMissingError];
+  if (essentialServerInfoMissingError == 1196379972)
   {
     v7 = [FMDActingRequestDecorator alloc];
     v23[0] = _NSConcreteStackBlock;
@@ -1986,12 +1986,12 @@ LABEL_65:
     v19 = 3221225472;
     v20 = sub_1001D13FC;
     v21 = &unk_1002CD580;
-    v22 = v4;
+    v22 = intentsCopy;
     v8 = [(FMDActingRequestDecorator *)v7 initWithDeviceContextGenerator:&stru_1002D10F8 deviceInfoGenerator:v23 serverContextGenerator:&v18 requestHeaderGenerator:0];
     v9 = [QCAction alloc];
     v10 = [(FMDServiceProvider *)self account:v18];
-    v11 = [(FMDServiceProvider *)self serverInteractionController];
-    v12 = [(QCAction *)v9 initWithAccount:v10 shutdownActivityPending:0 serverInteractionController:v11];
+    serverInteractionController = [(FMDServiceProvider *)self serverInteractionController];
+    v12 = [(QCAction *)v9 initWithAccount:v10 shutdownActivityPending:0 serverInteractionController:serverInteractionController];
 
     [(QCAction *)v12 setRequestDecorator:v8];
     v13 = +[ActionManager sharedManager];
@@ -2000,7 +2000,7 @@ LABEL_65:
 
   else
   {
-    v15 = v6;
+    v15 = essentialServerInfoMissingError;
     v16 = sub_100002880();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -2014,11 +2014,11 @@ LABEL_65:
   }
 }
 
-- (void)_handleLocateIntent:(id)a3 serverContext:(id)a4
+- (void)_handleLocateIntent:(id)intent serverContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"id"];
+  intentCopy = intent;
+  contextCopy = context;
+  v8 = [intentCopy objectForKey:@"id"];
   if (v8)
   {
     v9 = sub_100002880();
@@ -2028,19 +2028,19 @@ LABEL_65:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Locate command intent found", &v24, 2u);
     }
 
-    v10 = [v6 objectForKey:@"udid"];
-    v11 = [v10 fm_nullToNil];
+    v10 = [intentCopy objectForKey:@"udid"];
+    fm_nullToNil = [v10 fm_nullToNil];
 
-    if ([v11 length])
+    if ([fm_nullToNil length])
     {
-      v12 = [[FMDAccessoryIdentifier alloc] initWithString:v11];
-      v13 = [(FMDServiceProvider *)self accessoryRegistry];
-      v14 = [v13 accessoryForIdentifier:v12];
+      v12 = [[FMDAccessoryIdentifier alloc] initWithString:fm_nullToNil];
+      accessoryRegistry = [(FMDServiceProvider *)self accessoryRegistry];
+      v14 = [accessoryRegistry accessoryForIdentifier:v12];
 
       if (v14)
       {
-        v15 = [v14 commandContext];
-        [v15 setPendingActionIntent:v6];
+        commandContext = [v14 commandContext];
+        [commandContext setPendingActionIntent:intentCopy];
 
         v16 = sub_100002880();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -2048,17 +2048,17 @@ LABEL_65:
           v24 = 138412546;
           v25 = v14;
           v26 = 2112;
-          v27 = v11;
+          v27 = fm_nullToNil;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Found accessory %@ from push for id %@", &v24, 0x16u);
         }
 
         v17 = [AccessoryAction alloc];
-        v18 = [(FMDServiceProvider *)self account];
+        account = [(FMDServiceProvider *)self account];
         v19 = [(FMDServiceProvider *)self serverInteractionControllerForAccessory:v14];
-        v20 = [(AccessoryAction *)v17 initWithAccount:v18 accessory:v14 requiresConnectivity:0 serverInteractionController:v19];
+        v20 = [(AccessoryAction *)v17 initWithAccount:account accessory:v14 requiresConnectivity:0 serverInteractionController:v19];
 
-        v21 = [(FMDServiceProvider *)self accessoryRegistry];
-        [v21 registerDelegate:v20];
+        accessoryRegistry2 = [(FMDServiceProvider *)self accessoryRegistry];
+        [accessoryRegistry2 registerDelegate:v20];
 
         v22 = +[ActionManager sharedManager];
         v23 = [v22 enqueueAction:v20];
@@ -2067,21 +2067,21 @@ LABEL_65:
 
     else
     {
-      [(FMDServiceProvider *)self _handlePushWithoutIntents:v7];
+      [(FMDServiceProvider *)self _handlePushWithoutIntents:contextCopy];
     }
   }
 }
 
-- (void)_handleQCIntent:(id)a3 serverContext:(id)a4
+- (void)_handleQCIntent:(id)intent serverContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"id"];
-  v9 = [v6 objectForKey:@"udid"];
-  v10 = [v9 fm_nullToNil];
+  intentCopy = intent;
+  contextCopy = context;
+  v8 = [intentCopy objectForKey:@"id"];
+  v9 = [intentCopy objectForKey:@"udid"];
+  fm_nullToNil = [v9 fm_nullToNil];
 
-  v11 = [v6 objectForKey:@"waitForConnect"];
-  v12 = [v11 BOOLValue];
+  v11 = [intentCopy objectForKey:@"waitForConnect"];
+  bOOLValue = [v11 BOOLValue];
 
   if (v8)
   {
@@ -2092,17 +2092,17 @@ LABEL_65:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "QC intent found", buf, 2u);
     }
 
-    if ([v10 length])
+    if ([fm_nullToNil length])
     {
-      v14 = [[FMDAccessoryIdentifier alloc] initWithString:v10];
-      v15 = [(FMDServiceProvider *)self accessoryRegistry];
-      v16 = [v15 accessoryForIdentifier:v14];
+      v14 = [[FMDAccessoryIdentifier alloc] initWithString:fm_nullToNil];
+      accessoryRegistry = [(FMDServiceProvider *)self accessoryRegistry];
+      v16 = [accessoryRegistry accessoryForIdentifier:v14];
 
       if (v16)
       {
-        v26 = v12;
-        v17 = [v16 commandContext];
-        [v17 setPendingActionIntent:v6];
+        v26 = bOOLValue;
+        commandContext = [v16 commandContext];
+        [commandContext setPendingActionIntent:intentCopy];
 
         v18 = sub_100002880();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -2110,17 +2110,17 @@ LABEL_65:
           *buf = 138412546;
           v28 = v16;
           v29 = 2112;
-          v30 = v10;
+          v30 = fm_nullToNil;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Found accessory %@ from push for id %@", buf, 0x16u);
         }
 
         v19 = [AccessoryAction alloc];
-        v20 = [(FMDServiceProvider *)self account];
+        account = [(FMDServiceProvider *)self account];
         v21 = [(FMDServiceProvider *)self serverInteractionControllerForAccessory:v16];
-        v22 = [(AccessoryAction *)v19 initWithAccount:v20 accessory:v16 requiresConnectivity:v26 serverInteractionController:v21];
+        v22 = [(AccessoryAction *)v19 initWithAccount:account accessory:v16 requiresConnectivity:v26 serverInteractionController:v21];
 
-        v23 = [(FMDServiceProvider *)self accessoryRegistry];
-        [v23 registerDelegate:v22];
+        accessoryRegistry2 = [(FMDServiceProvider *)self accessoryRegistry];
+        [accessoryRegistry2 registerDelegate:v22];
 
         v24 = +[ActionManager sharedManager];
         v25 = [v24 enqueueAction:v22];
@@ -2129,54 +2129,54 @@ LABEL_65:
 
     else
     {
-      [(FMDServiceProvider *)self _handlePushWithoutIntents:v7];
+      [(FMDServiceProvider *)self _handlePushWithoutIntents:contextCopy];
     }
   }
 }
 
-- (id)futureForCommandId:(id)a3
+- (id)futureForCommandId:(id)id
 {
-  v4 = a3;
-  v5 = [(FMDServiceProvider *)self futuresByCommandId];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  idCopy = id;
+  futuresByCommandId = [(FMDServiceProvider *)self futuresByCommandId];
+  v6 = [futuresByCommandId objectForKeyedSubscript:idCopy];
 
   return v6;
 }
 
-- (void)setFuture:(id)a3 commandId:(id)a4
+- (void)setFuture:(id)future commandId:(id)id
 {
-  if (a3 && a4)
+  if (future && id)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(FMDServiceProvider *)self futuresByCommandId];
-    [v8 setObject:v7 forKeyedSubscript:v6];
+    idCopy = id;
+    futureCopy = future;
+    futuresByCommandId = [(FMDServiceProvider *)self futuresByCommandId];
+    [futuresByCommandId setObject:futureCopy forKeyedSubscript:idCopy];
   }
 }
 
-- (void)removeFutureForCommandId:(id)a3
+- (void)removeFutureForCommandId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    v4 = a3;
-    v5 = [(FMDServiceProvider *)self futuresByCommandId];
-    [v5 removeObjectForKey:v4];
+    idCopy = id;
+    futuresByCommandId = [(FMDServiceProvider *)self futuresByCommandId];
+    [futuresByCommandId removeObjectForKey:idCopy];
   }
 }
 
 - (void)clearFutures
 {
-  v2 = [(FMDServiceProvider *)self futuresByCommandId];
-  [v2 removeAllObjects];
+  futuresByCommandId = [(FMDServiceProvider *)self futuresByCommandId];
+  [futuresByCommandId removeAllObjects];
 }
 
-- (void)_handleSoundIntent:(id)a3 serverContext:(id)a4
+- (void)_handleSoundIntent:(id)intent serverContext:(id)context
 {
-  v5 = a3;
-  v6 = [v5 objectForKey:@"id"];
-  v7 = [v5 objectForKey:@"maxDurationInSeconds"];
-  v8 = [v5 objectForKey:@"udid"];
-  v9 = [v8 fm_nullToNil];
+  intentCopy = intent;
+  v6 = [intentCopy objectForKey:@"id"];
+  v7 = [intentCopy objectForKey:@"maxDurationInSeconds"];
+  v8 = [intentCopy objectForKey:@"udid"];
+  fm_nullToNil = [v8 fm_nullToNil];
 
   if (v6)
   {
@@ -2189,26 +2189,26 @@ LABEL_65:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Play sound intent found, playing sound for %f seconds...", buf, 0xCu);
     }
 
-    if ([v9 length])
+    if ([fm_nullToNil length])
     {
-      v12 = [v5 objectForKey:@"rampUpDurationInSeconds"];
-      v13 = [v5 objectForKey:@"rampDownDurationInSeconds"];
-      v68 = [v5 objectForKey:@"channels"];
-      v14 = [v5 objectForKey:@"userConfirmedSafetyWarning"];
-      v61 = [v14 BOOLValue];
+      v12 = [intentCopy objectForKey:@"rampUpDurationInSeconds"];
+      v13 = [intentCopy objectForKey:@"rampDownDurationInSeconds"];
+      v68 = [intentCopy objectForKey:@"channels"];
+      v14 = [intentCopy objectForKey:@"userConfirmedSafetyWarning"];
+      bOOLValue = [v14 BOOLValue];
 
-      v15 = [v5 objectForKey:@"forceConnection"];
-      v60 = [v15 BOOLValue];
+      v15 = [intentCopy objectForKey:@"forceConnection"];
+      bOOLValue2 = [v15 BOOLValue];
 
-      v16 = [v5 objectForKeyedSubscript:@"scanDurationInSeconds"];
-      v71 = [v5 objectForKey:@"intentEpochTime"];
-      v70 = [v5 objectForKey:@"intentExpiryInSeconds"];
-      v69 = [v5 objectForKey:@"delayIntervalInSeconds"];
-      v67 = [v5 objectForKey:@"inEarDetectionTimeout"];
-      v17 = [[FMDAccessoryIdentifier alloc] initWithString:v9];
-      v18 = [(FMDServiceProvider *)self accessoryRegistry];
+      v16 = [intentCopy objectForKeyedSubscript:@"scanDurationInSeconds"];
+      v71 = [intentCopy objectForKey:@"intentEpochTime"];
+      v70 = [intentCopy objectForKey:@"intentExpiryInSeconds"];
+      v69 = [intentCopy objectForKey:@"delayIntervalInSeconds"];
+      v67 = [intentCopy objectForKey:@"inEarDetectionTimeout"];
+      v17 = [[FMDAccessoryIdentifier alloc] initWithString:fm_nullToNil];
+      accessoryRegistry = [(FMDServiceProvider *)self accessoryRegistry];
       v66 = v17;
-      v19 = [v18 accessoryForIdentifier:v17];
+      v19 = [accessoryRegistry accessoryForIdentifier:v17];
 
       v20 = sub_100002880();
       v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
@@ -2220,18 +2220,18 @@ LABEL_65:
           *buf = 138412546;
           v73 = v19;
           v74 = 2112;
-          v75 = v9;
+          v75 = fm_nullToNil;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Found accessory %@ from push for id %@", buf, 0x16u);
         }
 
-        v22 = [v19 commandContext];
-        [v22 setPendingActionIntent:v5];
+        commandContext = [v19 commandContext];
+        [commandContext setPendingActionIntent:intentCopy];
 
-        v23 = [(FMDServiceProvider *)self supportedAccessoryRegistry];
-        [v23 downloadAssetsIfNeededForAccessory:v19];
+        supportedAccessoryRegistry = [(FMDServiceProvider *)self supportedAccessoryRegistry];
+        [supportedAccessoryRegistry downloadAssetsIfNeededForAccessory:v19];
 
-        v24 = [(FMDServiceProvider *)self supportedAccessoryRegistry];
-        v59 = [v24 defaultTimeoutAudioSafetyStatusForAccessory:v19];
+        supportedAccessoryRegistry2 = [(FMDServiceProvider *)self supportedAccessoryRegistry];
+        v59 = [supportedAccessoryRegistry2 defaultTimeoutAudioSafetyStatusForAccessory:v19];
 
         v20 = +[NSDate fm_dateFromEpoch:](NSDate, "fm_dateFromEpoch:", [v71 integerValue]);
         v63 = v16;
@@ -2276,8 +2276,8 @@ LABEL_11:
             [(FMDServiceProvider *)self clearFutures];
             v58 = objc_alloc_init(FMFuture);
             [(FMDServiceProvider *)self setFuture:v58 commandId:v6];
-            v35 = [(FMDServiceProvider *)self supportedAccessoryRegistry];
-            v36 = [v35 playbackChannelNamesForAccessory:v19 commandChannels:v68];
+            supportedAccessoryRegistry3 = [(FMDServiceProvider *)self supportedAccessoryRegistry];
+            v36 = [supportedAccessoryRegistry3 playbackChannelNamesForAccessory:v19 commandChannels:v68];
 
             v37 = [FMDAccessoryPlaySoundAction alloc];
             [(FMDServiceProvider *)self accessoryRegistry];
@@ -2292,14 +2292,14 @@ LABEL_11:
             [(FMDAccessoryPlaySoundAction *)v40 setRampDownDuration:v64];
             [(FMDAccessoryPlaySoundAction *)v40 setDefaultAudioSafetyStatus:v59];
             [(FMDAccessoryPlaySoundAction *)v40 setFuture:v58];
-            [(FMDAccessoryPlaySoundAction *)v40 setForceConnection:v60];
-            [(FMDAccessoryPlaySoundAction *)v40 setBypassInEarCheck:v61];
+            [(FMDAccessoryPlaySoundAction *)v40 setForceConnection:bOOLValue2];
+            [(FMDAccessoryPlaySoundAction *)v40 setBypassInEarCheck:bOOLValue];
             [(FMDAccessoryPlaySoundAction *)v40 setInEarDetectionTimeout:v67];
-            v42 = [(FMDServiceProvider *)self bluetoothManager];
-            [(FMDAccessoryPlaySoundAction *)v40 setBluetoothManager:v42];
+            bluetoothManager = [(FMDServiceProvider *)self bluetoothManager];
+            [(FMDAccessoryPlaySoundAction *)v40 setBluetoothManager:bluetoothManager];
 
-            v43 = [(FMDServiceProvider *)self accessoryRegistry];
-            [v43 registerDelegate:v40];
+            accessoryRegistry2 = [(FMDServiceProvider *)self accessoryRegistry];
+            [accessoryRegistry2 registerDelegate:v40];
 
             v44 = +[ActionManager sharedManager];
             v45 = [v44 enqueueAction:v40];
@@ -2309,12 +2309,12 @@ LABEL_11:
         }
 
         v46 = [AccessoryAction alloc];
-        v47 = [(FMDServiceProvider *)self account];
+        account = [(FMDServiceProvider *)self account];
         v48 = [(FMDServiceProvider *)self serverInteractionControllerForAccessory:v19];
-        v49 = [(AccessoryAction *)v46 initWithAccount:v47 accessory:v19 requiresConnectivity:0 serverInteractionController:v48];
+        v49 = [(AccessoryAction *)v46 initWithAccount:account accessory:v19 requiresConnectivity:0 serverInteractionController:v48];
 
-        v50 = [(FMDServiceProvider *)self accessoryRegistry];
-        [v50 registerDelegate:v49];
+        accessoryRegistry3 = [(FMDServiceProvider *)self accessoryRegistry];
+        [accessoryRegistry3 registerDelegate:v49];
 
         [v69 doubleValue];
         if (v51 <= 0.0)
@@ -2344,7 +2344,7 @@ LABEL_11:
       else if (v21)
       {
         *buf = 138412290;
-        v73 = v9;
+        v73 = fm_nullToNil;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "No accessory found with id %@. Ignoring the push", buf, 0xCu);
       }
     }
@@ -2361,13 +2361,13 @@ LABEL_11:
   }
 }
 
-- (BOOL)_isValidIntentAccountId:(id)a3
+- (BOOL)_isValidIntentAccountId:(id)id
 {
-  v4 = a3;
-  v5 = [(FMDServiceProvider *)self account];
-  v6 = [v5 adsid];
+  idCopy = id;
+  account = [(FMDServiceProvider *)self account];
+  adsid = [account adsid];
 
-  v7 = [v6 dataUsingEncoding:4];
+  v7 = [adsid dataUsingEncoding:4];
   CC_SHA256([v7 bytes], objc_msgSend(v7, "length"), md);
   v8 = [NSData dataWithBytes:md length:32];
   v9 = [v8 base64EncodedStringWithOptions:0];
@@ -2375,21 +2375,21 @@ LABEL_11:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v4;
+    v14 = idCopy;
     v15 = 2112;
     v16 = v9;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Comparing ADSIDs (_isValidIntentAccountId) %@ : %@", &v13, 0x16u);
   }
 
-  v11 = [v4 isEqualToString:v9];
+  v11 = [idCopy isEqualToString:v9];
   return v11;
 }
 
-- (void)_accountDidChangeFrom:(id)a3 to:(id)a4
+- (void)_accountDidChangeFrom:(id)from to:(id)to
 {
-  v12 = a3;
-  v5 = a4;
-  if (v12 && !v5)
+  fromCopy = from;
+  toCopy = to;
+  if (fromCopy && !toCopy)
   {
     v6 = 1;
 LABEL_4:
@@ -2399,13 +2399,13 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (v12)
+  if (fromCopy)
   {
-    if (v5)
+    if (toCopy)
     {
-      v8 = [v12 authId];
-      v9 = [v5 authId];
-      v10 = [v8 isEqualToString:v9];
+      authId = [fromCopy authId];
+      authId2 = [toCopy authId];
+      v10 = [authId isEqualToString:authId2];
 
       if ((v10 & 1) == 0)
       {
@@ -2421,11 +2421,11 @@ LABEL_4:
 LABEL_5:
 }
 
-- (BOOL)_handleSecureLocationsPush:(id)a3 completion:(id)a4
+- (BOOL)_handleSecureLocationsPush:(id)push completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"findmyws"];
+  pushCopy = push;
+  completionCopy = completion;
+  v8 = [pushCopy objectForKey:@"findmyws"];
   if (v8)
   {
     v9 = +[FMXPCTransactionManager sharedInstance];
@@ -2472,9 +2472,9 @@ LABEL_19:
       v26 = +[FMXPCTransactionManager sharedInstance];
       [v26 endTransaction:@"MDSecureLocationsHandlePushTransaction"];
 
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, v13);
+        completionCopy[2](completionCopy, v13);
       }
 
       goto LABEL_37;
@@ -2503,13 +2503,13 @@ LABEL_19:
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Sending processLocationPayload payload to FML %@", buf, 0xCu);
         }
 
-        v24 = [(FMDServiceProvider *)self findMyLocate];
+        findMyLocate = [(FMDServiceProvider *)self findMyLocate];
         v46[0] = _NSConcreteStackBlock;
         v46[1] = 3221225472;
         v46[2] = sub_1001D2C6C;
         v46[3] = &unk_1002CD770;
-        v47 = v7;
-        [v24 processLocationPayload:v12 completionHandler:v46];
+        v47 = completionCopy;
+        [findMyLocate processLocationPayload:v12 completionHandler:v46];
 
         v25 = v47;
         goto LABEL_35;
@@ -2527,7 +2527,7 @@ LABEL_19:
       v44[1] = 3221225472;
       v44[2] = sub_1001D2D64;
       v44[3] = &unk_1002CD770;
-      v45 = v7;
+      v45 = completionCopy;
       [v25 receivedLocationPayload:v12 completion:v44];
       v32 = v45;
     }
@@ -2552,7 +2552,7 @@ LABEL_37:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v50 = v6;
+        v50 = pushCopy;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Received Location Command Push %@", buf, 0xCu);
       }
 
@@ -2568,13 +2568,13 @@ LABEL_37:
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Sending processLocationCommandPayload payload to FML %@", buf, 0xCu);
         }
 
-        v31 = [(FMDServiceProvider *)self findMyLocate];
+        findMyLocate2 = [(FMDServiceProvider *)self findMyLocate];
         v42[0] = _NSConcreteStackBlock;
         v42[1] = 3221225472;
         v42[2] = sub_1001D2E5C;
         v42[3] = &unk_1002CD770;
-        v43 = v7;
-        [v31 processLocationCommandPayload:v12 completionHandler:v42];
+        v43 = completionCopy;
+        [findMyLocate2 processLocationCommandPayload:v12 completionHandler:v42];
 
         v25 = v43;
         goto LABEL_35;
@@ -2592,7 +2592,7 @@ LABEL_37:
       v38 = 3221225472;
       v39 = sub_1001D2F54;
       v40 = &unk_1002CD770;
-      v41 = v7;
+      v41 = completionCopy;
       [v25 receivedLocationCommand:v12 completion:&v37];
       v32 = v41;
     }
@@ -2603,10 +2603,10 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v19 = [NSError errorWithDomain:kFMDErrorDomain code:1 userInfo:0];
-    v7[2](v7, v19);
+    completionCopy[2](completionCopy, v19);
   }
 
   v14 = 0;
@@ -2617,38 +2617,38 @@ LABEL_38:
 
 - (void)startLocationMonitoringIfNeeded
 {
-  v3 = [(FMDServiceProvider *)self locationMonitor];
+  locationMonitor = [(FMDServiceProvider *)self locationMonitor];
 
-  if (!v3)
+  if (!locationMonitor)
   {
     v4 = objc_alloc_init(FMDSecureLocationMonitor);
     [(FMDServiceProvider *)self setLocationMonitor:v4];
   }
 
-  v5 = [(FMDServiceProvider *)self locationMonitor];
-  [v5 startLocationMonitorAfterRestart];
+  locationMonitor2 = [(FMDServiceProvider *)self locationMonitor];
+  [locationMonitor2 startLocationMonitorAfterRestart];
 }
 
 - (id)apsToken
 {
-  v3 = [(FMDServiceProvider *)self account];
+  account = [(FMDServiceProvider *)self account];
 
   v4 = +[FMDDaemon sharedInstance];
   v5 = v4;
-  if (v3)
+  if (account)
   {
-    v6 = [(FMDServiceProvider *)self account];
-    v7 = [v6 apsEnvironmentConstant];
-    v8 = [v5 apsHandlerForEnvironment:v7];
+    account2 = [(FMDServiceProvider *)self account];
+    apsEnvironmentConstant = [account2 apsEnvironmentConstant];
+    v8 = [v5 apsHandlerForEnvironment:apsEnvironmentConstant];
 
-    v9 = [v8 apsToken];
+    apsToken = [v8 apsToken];
   }
 
   else
   {
     v10 = [v4 apsHandlerForEnvironment:@"production"];
 
-    v9 = [v10 apsToken];
+    apsToken = [v10 apsToken];
     v11 = sub_1000029E0();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -2657,7 +2657,7 @@ LABEL_38:
     }
   }
 
-  return v9;
+  return apsToken;
 }
 
 @end

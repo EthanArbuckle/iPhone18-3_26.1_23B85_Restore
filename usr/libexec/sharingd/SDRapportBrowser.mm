@@ -1,28 +1,28 @@
 @interface SDRapportBrowser
-+ (BOOL)deviceIsEligibleForAirDrop:(id)a3;
-+ (BOOL)personHasAirDropEligibleDevice:(id)a3;
++ (BOOL)deviceIsEligibleForAirDrop:(id)drop;
++ (BOOL)personHasAirDropEligibleDevice:(id)device;
 + (SDRapportBrowser)sharedRapportBrowser;
-+ (id)deviceTypeFromModelIdentifier:(id)a3;
-+ (id)identifiersForPerson:(id)a3;
-+ (void)updateRangingMeasurementForDevice:(id)a3 inNode:(__SFNode *)a4;
-+ (void)updateRangingMeasurementForPerson:(id)a3 inNode:(__SFNode *)a4;
++ (id)deviceTypeFromModelIdentifier:(id)identifier;
++ (id)identifiersForPerson:(id)person;
++ (void)updateRangingMeasurementForDevice:(id)device inNode:(__SFNode *)node;
++ (void)updateRangingMeasurementForPerson:(id)person inNode:(__SFNode *)node;
 - (SDRapportBrowser)init;
 - (SDXPCHelperConnection)helperConnection;
-- (__SFNode)createSFNodeFromCNContacts:(id)a3 identifier:(id)a4 device:(id)a5;
-- (__SFNode)createSFNodeFromMyRPDevice:(id)a3;
-- (__SFNode)createSFNodeFromRPPerson:(id)a3;
+- (__SFNode)createSFNodeFromCNContacts:(id)contacts identifier:(id)identifier device:(id)device;
+- (__SFNode)createSFNodeFromMyRPDevice:(id)device;
+- (__SFNode)createSFNodeFromRPPerson:(id)person;
 - (void)_start;
 - (void)_stop;
 - (void)addObservers;
-- (void)addOrUpdateNodesForPerson:(id)a3 withChanges:(unsigned int)a4;
-- (void)contactsChanged:(id)a3;
-- (void)removeNodesForPerson:(id)a3;
+- (void)addOrUpdateNodesForPerson:(id)person withChanges:(unsigned int)changes;
+- (void)contactsChanged:(id)changed;
+- (void)removeNodesForPerson:(id)person;
 - (void)removeObservers;
 - (void)resumeHandoffAdvertisingIfAppropriate;
 - (void)start;
 - (void)stop;
 - (void)stopHandoffAdvertisingIfAppropriate;
-- (void)updateUltraWideBandStateTo:(unint64_t)a3;
+- (void)updateUltraWideBandStateTo:(unint64_t)to;
 @end
 
 @implementation SDRapportBrowser
@@ -122,9 +122,9 @@
   [(RPPeopleDiscovery *)self->_peopleDiscovery setDiscoveryFlags:[(RPPeopleDiscovery *)self->_peopleDiscovery discoveryFlags]| 8];
   [(RPPeopleDiscovery *)self->_peopleDiscovery setDiscoveryFlags:[(RPPeopleDiscovery *)self->_peopleDiscovery discoveryFlags]| 0x80];
   v8 = +[SDStatusMonitor sharedMonitor];
-  v9 = [v8 enableStrangers];
+  enableStrangers = [v8 enableStrangers];
 
-  if (v9)
+  if (enableStrangers)
   {
     v10 = airdrop_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -197,22 +197,22 @@
   [(SDRapportBrowser *)self resumeHandoffAdvertisingIfAppropriate];
 }
 
-- (void)updateUltraWideBandStateTo:(unint64_t)a3
+- (void)updateUltraWideBandStateTo:(unint64_t)to
 {
-  if (self->_ultraWideBandState != a3)
+  if (self->_ultraWideBandState != to)
   {
-    self->_ultraWideBandState = a3;
+    self->_ultraWideBandState = to;
     v4 = airdrop_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3 > 2)
+      if (to > 2)
       {
         v5 = "?";
       }
 
       else
       {
-        v5 = off_1008D0478[a3];
+        v5 = off_1008D0478[to];
       }
 
       v7 = 136315138;
@@ -225,15 +225,15 @@
   }
 }
 
-- (void)contactsChanged:(id)a3
+- (void)contactsChanged:(id)changed
 {
   [(NSMutableDictionary *)self->_cachedNodes removeAllObjects];
-  v4 = [(RPPeopleDiscovery *)self->_peopleDiscovery discoveredPeople];
+  discoveredPeople = [(RPPeopleDiscovery *)self->_peopleDiscovery discoveredPeople];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [discoveredPeople countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -245,7 +245,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(discoveredPeople);
         }
 
         [(SDRapportBrowser *)self addOrUpdateNodesForPerson:*(*(&v10 + 1) + 8 * v8) withChanges:0];
@@ -253,7 +253,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [discoveredPeople countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -275,39 +275,39 @@
   [v3 removeObserver:self];
 }
 
-- (void)addOrUpdateNodesForPerson:(id)a3 withChanges:(unsigned int)a4
+- (void)addOrUpdateNodesForPerson:(id)person withChanges:(unsigned int)changes
 {
-  v6 = a3;
-  if ([v6 flags])
+  personCopy = person;
+  if ([personCopy flags])
   {
-    v7 = [v6 devices];
+    devices = [personCopy devices];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1000F91C8;
     v14[3] = &unk_1008D0458;
     v14[4] = self;
-    v15 = a4;
-    [v7 enumerateObjectsUsingBlock:v14];
+    changesCopy = changes;
+    [devices enumerateObjectsUsingBlock:v14];
   }
 
   else
   {
-    v7 = [v6 identifier];
-    v8 = [(NSMutableDictionary *)self->_cachedNodes objectForKeyedSubscript:v7];
+    devices = [personCopy identifier];
+    v8 = [(NSMutableDictionary *)self->_cachedNodes objectForKeyedSubscript:devices];
 
-    if ([objc_opt_class() personHasAirDropEligibleDevice:v6])
+    if ([objc_opt_class() personHasAirDropEligibleDevice:personCopy])
     {
       if (v8)
       {
-        if ((a4 & 8) != 0)
+        if ((changes & 8) != 0)
         {
-          [objc_opt_class() updateRangingMeasurementForPerson:v6 inNode:v8];
+          [objc_opt_class() updateRangingMeasurementForPerson:personCopy inNode:v8];
         }
       }
 
-      else if (v7 || ([v6 flags] & 0x100) != 0)
+      else if (devices || ([personCopy flags] & 0x100) != 0)
       {
-        v11 = [(SDRapportBrowser *)self createSFNodeFromRPPerson:v6];
+        v11 = [(SDRapportBrowser *)self createSFNodeFromRPPerson:personCopy];
         v12 = airdrop_log();
         v13 = v12;
         if (v11)
@@ -317,11 +317,11 @@
             *buf = 138412546;
             v17 = v11;
             v18 = 2112;
-            v19 = v6;
+            v19 = personCopy;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "SDRapportBrowser: Adding SFNode %@ for %@", buf, 0x16u);
           }
 
-          [(NSMutableDictionary *)self->_cachedNodes setObject:v11 forKeyedSubscript:v7];
+          [(NSMutableDictionary *)self->_cachedNodes setObject:v11 forKeyedSubscript:devices];
         }
 
         else
@@ -351,19 +351,19 @@
         *buf = 138412546;
         v17 = v8;
         v18 = 2112;
-        v19 = v6;
+        v19 = personCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "SDRapportBrowser: Removing SFNode %@ for RPPerson %@", buf, 0x16u);
       }
 
-      [(NSMutableDictionary *)self->_cachedNodes setObject:0 forKeyedSubscript:v7];
+      [(NSMutableDictionary *)self->_cachedNodes setObject:0 forKeyedSubscript:devices];
     }
   }
 }
 
-- (void)removeNodesForPerson:(id)a3
+- (void)removeNodesForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [objc_opt_class() identifiersForPerson:v4];
+  personCopy = person;
+  v5 = [objc_opt_class() identifiersForPerson:personCopy];
 
   [(NSMutableDictionary *)self->_cachedNodes removeObjectsForKeys:v5];
 }
@@ -373,8 +373,8 @@
   if ([(SDRapportBrowser *)self shouldStopHandoffAdvertising])
   {
     v4 = +[SDActivityAdvertiser sharedAdvertiser];
-    v3 = [(SDRapportBrowser *)self assertionIdentifier];
-    [v4 stopForReason:v3];
+    assertionIdentifier = [(SDRapportBrowser *)self assertionIdentifier];
+    [v4 stopForReason:assertionIdentifier];
   }
 }
 
@@ -383,25 +383,25 @@
   if ([(SDRapportBrowser *)self shouldStopHandoffAdvertising])
   {
     v4 = +[SDActivityAdvertiser sharedAdvertiser];
-    v3 = [(SDRapportBrowser *)self assertionIdentifier];
-    [v4 resumeForReason:v3];
+    assertionIdentifier = [(SDRapportBrowser *)self assertionIdentifier];
+    [v4 resumeForReason:assertionIdentifier];
   }
 }
 
-+ (void)updateRangingMeasurementForPerson:(id)a3 inNode:(__SFNode *)a4
++ (void)updateRangingMeasurementForPerson:(id)person inNode:(__SFNode *)node
 {
-  v5 = a3;
+  personCopy = person;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = [v5 devices];
-  v7 = [v6 countByEnumeratingWithState:&v35 objects:v47 count:16];
+  devices = [personCopy devices];
+  v7 = [devices countByEnumeratingWithState:&v35 objects:v47 count:16];
   if (v7)
   {
     v8 = v7;
-    v32 = a4;
-    v33 = v5;
+    nodeCopy = node;
+    v33 = personCopy;
     v9 = 0;
     v10 = 0;
     v11 = *v36;
@@ -411,7 +411,7 @@
       {
         if (*v36 != v11)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(devices);
         }
 
         v13 = *(*(&v35 + 1) + 8 * i);
@@ -422,19 +422,19 @@
         {
           if (v16)
           {
-            v17 = [v13 relativeLocation];
+            relativeLocation = [v13 relativeLocation];
             *buf = 138412546;
             v40 = v13;
             v41 = 2112;
-            v42 = v17;
+            v42 = relativeLocation;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "SDRapportBrowser: Device %@ with location %@ eligible for AirDrop", buf, 0x16u);
           }
 
-          v18 = [v13 relativeLocation];
-          v15 = v18;
-          if (v18)
+          relativeLocation2 = [v13 relativeLocation];
+          v15 = relativeLocation2;
+          if (relativeLocation2)
           {
-            [v18 ptsScore];
+            [relativeLocation2 ptsScore];
             v20 = v19;
             [v9 ptsScore];
             if (v20 > v21 || v9 == 0)
@@ -448,8 +448,8 @@
 
         else if (v16)
         {
-          v23 = [v13 relativeLocation];
-          [v23 ptsScore];
+          relativeLocation3 = [v13 relativeLocation];
+          [relativeLocation3 ptsScore];
           *buf = 138412546;
           v40 = v13;
           v41 = 2048;
@@ -460,7 +460,7 @@
         v10 |= ([v13 flags] & 0x100) >> 8;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v35 objects:v47 count:16];
+      v8 = [devices countByEnumeratingWithState:&v35 objects:v47 count:16];
     }
 
     while (v8);
@@ -473,7 +473,7 @@
       [v9 timestampTicks];
       v27 = SFUpTicksDiffFromNowToString();
       v28 = magic_head_log();
-      v5 = v33;
+      personCopy = v33;
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138413058;
@@ -490,7 +490,7 @@
       goto LABEL_29;
     }
 
-    v5 = v33;
+    personCopy = v33;
   }
 
   else
@@ -503,7 +503,7 @@
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v40 = v5;
+    v40 = personCopy;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "No highest ranging measurement found for %@", buf, 0xCu);
   }
 
@@ -513,39 +513,39 @@ LABEL_29:
 
   SFNodeSetRangingData();
   v29 = SFNodeCopyFlags();
-  v30 = [v29 longValue];
+  longValue = [v29 longValue];
   if (v10)
   {
-    v31 = v30 | 0x400;
+    v31 = longValue | 0x400;
   }
 
   else
   {
-    v31 = v30 & 0x400;
+    v31 = longValue & 0x400;
   }
 
-  [NSNumber numberWithUnsignedInteger:v31, v32];
+  [NSNumber numberWithUnsignedInteger:v31, nodeCopy];
   SFNodeSetFlags();
 }
 
-+ (void)updateRangingMeasurementForDevice:(id)a3 inNode:(__SFNode *)a4
++ (void)updateRangingMeasurementForDevice:(id)device inNode:(__SFNode *)node
 {
-  v4 = a3;
-  v5 = [v4 relativeLocation];
-  if (v5)
+  deviceCopy = device;
+  relativeLocation = [deviceCopy relativeLocation];
+  if (relativeLocation)
   {
     v14 = 0;
-    v6 = [NSKeyedArchiver archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v14];
+    v6 = [NSKeyedArchiver archivedDataWithRootObject:relativeLocation requiringSecureCoding:1 error:&v14];
     v7 = v14;
-    [v5 timestampTicks];
+    [relativeLocation timestampTicks];
     v8 = SFUpTicksDiffFromNowToString();
     v9 = magic_head_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      v16 = v4;
+      v16 = deviceCopy;
       v17 = 2112;
-      v18 = v5;
+      v18 = relativeLocation;
       v19 = 2112;
       v20 = v8;
       v21 = 2112;
@@ -560,7 +560,7 @@ LABEL_29:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v4;
+      v16 = deviceCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "No highest ranging measurement found for %@", buf, 0xCu);
     }
 
@@ -568,88 +568,88 @@ LABEL_29:
   }
 
   SFNodeSetRangingData();
-  v10 = [v4 flags];
+  flags = [deviceCopy flags];
   v11 = SFNodeCopyFlags();
-  v12 = [v11 longValue];
-  if ((v10 & 0x100) != 0)
+  longValue = [v11 longValue];
+  if ((flags & 0x100) != 0)
   {
-    v13 = v12 | 0x400;
+    v13 = longValue | 0x400;
   }
 
   else
   {
-    v13 = v12 & 0x400;
+    v13 = longValue & 0x400;
   }
 
   [NSNumber numberWithUnsignedInteger:v13];
   SFNodeSetFlags();
 }
 
-- (__SFNode)createSFNodeFromCNContacts:(id)a3 identifier:(id)a4 device:(id)a5
+- (__SFNode)createSFNodeFromCNContacts:(id)contacts identifier:(id)identifier device:(id)device
 {
-  v7 = a3;
-  v8 = a5;
+  contactsCopy = contacts;
+  deviceCopy = device;
   v9 = SFNodeCreate();
-  if ([v7 count])
+  if ([contactsCopy count])
   {
     v10 = +[SDStatusMonitor sharedMonitor];
-    v11 = [v10 contactWithPreferredIdentifierForContacts:v7];
+    v11 = [v10 contactWithPreferredIdentifierForContacts:contactsCopy];
     v12 = objc_alloc_init(CNContactFormatter);
     v13 = [v11 mutableCopy];
     [v13 setMiddleName:&stru_1008EFBD0];
     v33 = v12;
     v14 = [v12 stringFromContact:v13];
-    v15 = [v11 identifier];
+    identifier = [v11 identifier];
     SFNodeSetContactIdentifier();
 
-    sub_1001EAB78(v7);
+    sub_1001EAB78(contactsCopy);
     SFNodeSetContactIdentifiers();
     SFNodeSetDisplayName();
-    v16 = [v11 givenName];
+    givenName = [v11 givenName];
     SFNodeSetFirstName();
 
-    v17 = [v11 familyName];
+    familyName = [v11 familyName];
     SFNodeSetLastName();
 
-    v18 = [v11 nickname];
+    nickname = [v11 nickname];
     SFNodeSetNickName();
 
-    v19 = [v10 meCard];
-    LODWORD(v15) = [v19 isEqual:v11];
+    meCard = [v10 meCard];
+    LODWORD(identifier) = [meCard isEqual:v11];
 
-    if (v15)
+    if (identifier)
     {
       SFNodeAddKind();
-      v20 = [v10 myAppleID];
+      myAppleID = [v10 myAppleID];
       SFNodeSetAppleID();
 
-      if ([v8 idsDeviceIdentifierConflict])
+      if ([deviceCopy idsDeviceIdentifierConflict])
       {
-        v21 = airdrop_log();
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+        idsDeviceIdentifier = airdrop_log();
+        if (os_log_type_enabled(idsDeviceIdentifier, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v35 = v8;
-          _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "SDRapportBrowser: IDS device info for %@ may be inaccurate. Don't use it for AirDrop", buf, 0xCu);
+          v35 = deviceCopy;
+          _os_log_impl(&_mh_execute_header, idsDeviceIdentifier, OS_LOG_TYPE_DEFAULT, "SDRapportBrowser: IDS device info for %@ may be inaccurate. Don't use it for AirDrop", buf, 0xCu);
         }
       }
 
       else
       {
-        v23 = [v8 name];
+        name = [deviceCopy name];
         SFNodeSetComputerName();
 
-        v21 = [v8 idsDeviceIdentifier];
+        idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
         SFNodeSetIDSDeviceIdentifier();
       }
 
-      v32 = self;
+      selfCopy = self;
       v24 = objc_opt_class();
-      v25 = [v8 model];
-      v26 = [v24 deviceTypeFromModelIdentifier:v25];
+      model = [deviceCopy model];
+      v26 = [v24 deviceTypeFromModelIdentifier:model];
 
       SFNodeSetSecondaryName();
-      v27 = [v8 model];
+      model2 = [deviceCopy model];
       v28 = SFDeviceImageFromDeviceModel();
 
       if ([v28 CGImage])
@@ -657,7 +657,7 @@ LABEL_29:
         [v28 CGImage];
         v29 = SFDataFromCGImage();
 
-        self = v32;
+        self = selfCopy;
         if (v29)
         {
 LABEL_14:
@@ -670,13 +670,13 @@ LABEL_14:
       else
       {
 
-        self = v32;
+        self = selfCopy;
       }
     }
 
     buf[0] = 0;
-    v30 = [(SDRapportBrowser *)self helperConnection];
-    v29 = sub_1000906C0(v11, 1, buf, v30);
+    helperConnection = [(SDRapportBrowser *)self helperConnection];
+    v29 = sub_1000906C0(v11, 1, buf, helperConnection);
 
     if ((buf[0] & 1) == 0)
     {
@@ -687,8 +687,8 @@ LABEL_14:
   }
 
   SFNodeAddKind();
-  v22 = [v8 bleAuthTag];
-  [v22 base64EncodedStringWithOptions:0];
+  bleAuthTag = [deviceCopy bleAuthTag];
+  [bleAuthTag base64EncodedStringWithOptions:0];
   SFNodeSetUserName();
 
 LABEL_15:
@@ -700,9 +700,9 @@ LABEL_15:
   return v9;
 }
 
-- (__SFNode)createSFNodeFromRPPerson:(id)a3
+- (__SFNode)createSFNodeFromRPPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   v5 = +[SDStatusMonitor sharedMonitor];
   v6 = [CNContactFormatter descriptorForRequiredKeysForStyle:0];
   v16[0] = v6;
@@ -711,19 +711,19 @@ LABEL_15:
   v16[3] = CNContactEmailAddressesKey;
   v7 = [NSArray arrayWithObjects:v16 count:4];
 
-  v8 = [v4 identifier];
-  v9 = [v5 contactsWithPhoneNumberOrEmail:v8 keys:v7];
+  identifier = [personCopy identifier];
+  v9 = [v5 contactsWithPhoneNumberOrEmail:identifier keys:v7];
 
-  if ([v9 count] || (objc_msgSend(v4, "flags") & 0x100) != 0)
+  if ([v9 count] || (objc_msgSend(personCopy, "flags") & 0x100) != 0)
   {
-    v12 = [v4 identifier];
-    v13 = [v4 devices];
-    v14 = [v13 firstObject];
-    v11 = [(SDRapportBrowser *)self createSFNodeFromCNContacts:v9 identifier:v12 device:v14];
+    identifier2 = [personCopy identifier];
+    devices = [personCopy devices];
+    firstObject = [devices firstObject];
+    v11 = [(SDRapportBrowser *)self createSFNodeFromCNContacts:v9 identifier:identifier2 device:firstObject];
 
-    +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 flags]);
+    +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [personCopy flags]);
     SFNodeSetRapportFlags();
-    [objc_opt_class() updateRangingMeasurementForPerson:v4 inNode:v11];
+    [objc_opt_class() updateRangingMeasurementForPerson:personCopy inNode:v11];
   }
 
   else
@@ -740,20 +740,20 @@ LABEL_15:
   return v11;
 }
 
-- (__SFNode)createSFNodeFromMyRPDevice:(id)a3
+- (__SFNode)createSFNodeFromMyRPDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[SDStatusMonitor sharedMonitor];
-  v6 = [v5 meCard];
+  meCard = [v5 meCard];
 
-  if (v6)
+  if (meCard)
   {
-    v7 = [NSSet setWithObject:v6];
-    v8 = [v4 identifier];
-    v9 = [(SDRapportBrowser *)self createSFNodeFromCNContacts:v7 identifier:v8 device:v4];
+    v7 = [NSSet setWithObject:meCard];
+    identifier = [deviceCopy identifier];
+    v9 = [(SDRapportBrowser *)self createSFNodeFromCNContacts:v7 identifier:identifier device:deviceCopy];
 
     SFNodeSetRapportFlags();
-    [objc_opt_class() updateRangingMeasurementForDevice:v4 inNode:v9];
+    [objc_opt_class() updateRangingMeasurementForDevice:deviceCopy inNode:v9];
   }
 
   else
@@ -770,36 +770,36 @@ LABEL_15:
   return v9;
 }
 
-+ (id)identifiersForPerson:(id)a3
++ (id)identifiersForPerson:(id)person
 {
-  v3 = a3;
+  personCopy = person;
   v4 = objc_opt_new();
-  if ([v3 flags])
+  if ([personCopy flags])
   {
-    v5 = [v3 devices];
+    devices = [personCopy devices];
 
-    v6 = [v5 valueForKey:@"identifier"];
+    v6 = [devices valueForKey:@"identifier"];
     [v4 addObjectsFromArray:v6];
   }
 
   else
   {
-    v5 = [v3 identifier];
+    devices = [personCopy identifier];
 
-    [v4 addObject:v5];
+    [v4 addObject:devices];
   }
 
   return v4;
 }
 
-+ (BOOL)personHasAirDropEligibleDevice:(id)a3
++ (BOOL)personHasAirDropEligibleDevice:(id)device
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a3 devices];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  devices = [device devices];
+  v5 = [devices countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -810,17 +810,17 @@ LABEL_15:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devices);
         }
 
-        if ([a1 deviceIsEligibleForAirDrop:*(*(&v11 + 1) + 8 * i)])
+        if ([self deviceIsEligibleForAirDrop:*(*(&v11 + 1) + 8 * i)])
         {
           v9 = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [devices countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -836,12 +836,12 @@ LABEL_11:
   return v9;
 }
 
-+ (BOOL)deviceIsEligibleForAirDrop:(id)a3
++ (BOOL)deviceIsEligibleForAirDrop:(id)drop
 {
-  v3 = a3;
-  v4 = [v3 model];
-  v5 = v4;
-  if (v4 && (([v4 hasPrefix:@"AppleTV"] & 1) != 0 || (objc_msgSend(v5, "hasPrefix:", @"Watch") & 1) != 0 || (objc_msgSend(v5, "hasPrefix:", @"Audio") & 1) != 0))
+  dropCopy = drop;
+  model = [dropCopy model];
+  v5 = model;
+  if (model && (([model hasPrefix:@"AppleTV"] & 1) != 0 || (objc_msgSend(v5, "hasPrefix:", @"Watch") & 1) != 0 || (objc_msgSend(v5, "hasPrefix:", @"Audio") & 1) != 0))
   {
 
     LOBYTE(v5) = 0;
@@ -850,37 +850,37 @@ LABEL_11:
   else
   {
 
-    LODWORD(v5) = ([v3 flags] >> 11) & 1;
+    LODWORD(v5) = ([dropCopy flags] >> 11) & 1;
   }
 
   return v5;
 }
 
-+ (id)deviceTypeFromModelIdentifier:(id)a3
++ (id)deviceTypeFromModelIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = @"iPhone";
-  if (([v3 hasPrefix:@"iPhone"] & 1) == 0)
+  if (([identifierCopy hasPrefix:@"iPhone"] & 1) == 0)
   {
     v4 = @"iPad";
-    if (([v3 hasPrefix:@"iPad"] & 1) == 0)
+    if (([identifierCopy hasPrefix:@"iPad"] & 1) == 0)
     {
-      if ([v3 hasPrefix:@"iPod"])
+      if ([identifierCopy hasPrefix:@"iPod"])
       {
         v4 = @"iPod touch";
       }
 
-      else if ([v3 hasPrefix:@"MacBookPro"])
+      else if ([identifierCopy hasPrefix:@"MacBookPro"])
       {
         v4 = @"MacBook Pro";
       }
 
-      else if ([v3 hasPrefix:@"MacBookAir"])
+      else if ([identifierCopy hasPrefix:@"MacBookAir"])
       {
         v4 = @"MacBook Air";
       }
 
-      else if ([v3 hasPrefix:@"MacPro"])
+      else if ([identifierCopy hasPrefix:@"MacPro"])
       {
         v4 = @"Mac Pro";
       }
@@ -888,7 +888,7 @@ LABEL_11:
       else
       {
         v4 = @"iMac";
-        if (![v3 hasPrefix:@"iMac"])
+        if (![identifierCopy hasPrefix:@"iMac"])
         {
           v4 = &stru_1008EFBD0;
         }

@@ -1,12 +1,12 @@
 @interface FLHeadlessExtensionLoader
 + (id)sharedExtensionQueue;
-- (BOOL)_loadExtension:(id *)a3;
-- (BOOL)_setupSessionIfNeeded:(id *)a3;
-- (FLHeadlessExtensionLoader)initWithFollowUp:(id)a3 andDelegate:(id)a4;
-- (FLHeadlessExtensionLoader)initWithIdentifier:(id)a3;
+- (BOOL)_loadExtension:(id *)extension;
+- (BOOL)_setupSessionIfNeeded:(id *)needed;
+- (FLHeadlessExtensionLoader)initWithFollowUp:(id)up andDelegate:(id)delegate;
+- (FLHeadlessExtensionLoader)initWithIdentifier:(id)identifier;
 - (NSExtension)extension;
-- (id)_hostContextForExtension:(id)a3;
-- (id)_loadExtensionForIdentifier:(id)a3 error:(id *)a4;
+- (id)_hostContextForExtension:(id)extension;
+- (id)_loadExtensionForIdentifier:(id)identifier error:(id *)error;
 - (id)description;
 - (id)remoteInterface;
 - (void)_terminate;
@@ -15,28 +15,28 @@
 
 @implementation FLHeadlessExtensionLoader
 
-- (FLHeadlessExtensionLoader)initWithFollowUp:(id)a3 andDelegate:(id)a4
+- (FLHeadlessExtensionLoader)initWithFollowUp:(id)up andDelegate:(id)delegate
 {
-  v6 = a4;
-  v7 = [a3 extensionIdentifier];
-  v8 = [(FLHeadlessExtensionLoader *)self initWithIdentifier:v7];
+  delegateCopy = delegate;
+  extensionIdentifier = [up extensionIdentifier];
+  v8 = [(FLHeadlessExtensionLoader *)self initWithIdentifier:extensionIdentifier];
 
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
   }
 
   return v8;
 }
 
-- (FLHeadlessExtensionLoader)initWithIdentifier:(id)a3
+- (FLHeadlessExtensionLoader)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(FLHeadlessExtensionLoader *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
@@ -47,8 +47,8 @@
   extension = self->_extension;
   if (!extension)
   {
-    v4 = [(FLHeadlessExtensionLoader *)self identifier];
-    v5 = [(FLHeadlessExtensionLoader *)self _loadExtensionForIdentifier:v4 error:0];
+    identifier = [(FLHeadlessExtensionLoader *)self identifier];
+    v5 = [(FLHeadlessExtensionLoader *)self _loadExtensionForIdentifier:identifier error:0];
     v6 = self->_extension;
     self->_extension = v5;
 
@@ -85,7 +85,7 @@
   return extensionContext;
 }
 
-- (BOOL)_loadExtension:(id *)a3
+- (BOOL)_loadExtension:(id *)extension
 {
   v28 = *MEMORY[0x277D85DE8];
   v25 = 0;
@@ -93,17 +93,17 @@
   v6 = v25;
   if (v5)
   {
-    v7 = [(FLHeadlessExtensionLoader *)self extension];
-    v8 = [(FLHeadlessExtensionLoader *)self _hostContextForExtension:v7];
+    extension = [(FLHeadlessExtensionLoader *)self extension];
+    v8 = [(FLHeadlessExtensionLoader *)self _hostContextForExtension:extension];
     v9 = [v8 remoteContextWithErrorHandler:&__block_literal_global_1];
     extensionContext = self->_extensionContext;
     self->_extensionContext = v9;
   }
 
-  if (a3)
+  if (extension)
   {
     v11 = v6;
-    *a3 = v6;
+    *extension = v6;
   }
 
   v12 = self->_extensionContext;
@@ -140,10 +140,10 @@ void __44__FLHeadlessExtensionLoader__loadExtension___block_invoke(uint64_t a1, 
   }
 }
 
-- (BOOL)_setupSessionIfNeeded:(id *)a3
+- (BOOL)_setupSessionIfNeeded:(id *)needed
 {
-  v5 = [(FLHeadlessExtensionLoader *)self extension];
-  v6 = v5;
+  extension = [(FLHeadlessExtensionLoader *)self extension];
+  v6 = extension;
   sessionID = self->_sessionID;
   if (sessionID)
   {
@@ -152,21 +152,21 @@ void __44__FLHeadlessExtensionLoader__loadExtension___block_invoke(uint64_t a1, 
 
   else
   {
-    v8 = v5 == 0;
+    v8 = extension == 0;
   }
 
   if (!v8)
   {
     v15 = 0;
-    v9 = [v5 beginExtensionRequestWithInputItems:MEMORY[0x277CBEBF8] error:&v15];
+    v9 = [extension beginExtensionRequestWithInputItems:MEMORY[0x277CBEBF8] error:&v15];
     v10 = v15;
     v11 = self->_sessionID;
     self->_sessionID = v9;
 
-    if (a3)
+    if (needed)
     {
       v12 = v10;
-      *a3 = v10;
+      *needed = v10;
     }
 
     sessionID = self->_sessionID;
@@ -196,22 +196,22 @@ uint64_t __49__FLHeadlessExtensionLoader_sharedExtensionQueue__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_loadExtensionForIdentifier:(id)a3 error:(id *)a4
+- (id)_loadExtensionForIdentifier:(id)identifier error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v7 = _FLLogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v25 = v6;
+      v25 = identifierCopy;
       _os_log_impl(&dword_22E696000, v7, OS_LOG_TYPE_DEFAULT, "Loading extension with identifier: %@", buf, 0xCu);
     }
 
     v23 = 0;
-    v8 = [MEMORY[0x277CCA9C8] extensionWithIdentifier:v6 error:&v23];
+    v8 = [MEMORY[0x277CCA9C8] extensionWithIdentifier:identifierCopy error:&v23];
     v9 = v23;
     objc_initWeak(&location, self);
     v20[0] = MEMORY[0x277D85DD0];
@@ -220,10 +220,10 @@ uint64_t __49__FLHeadlessExtensionLoader_sharedExtensionQueue__block_invoke()
     v20[3] = &unk_278852968;
     objc_copyWeak(&v21, &location);
     [v8 setRequestInterruptionBlock:v20];
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v9;
+      *error = v9;
     }
 
     if (v9)
@@ -279,11 +279,11 @@ void __63__FLHeadlessExtensionLoader__loadExtensionForIdentifier_error___block_i
   }
 }
 
-- (id)_hostContextForExtension:(id)a3
+- (id)_hostContextForExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [(FLHeadlessExtensionLoader *)self sessionID];
-  v6 = [v4 _extensionContextForUUID:v5];
+  extensionCopy = extension;
+  sessionID = [(FLHeadlessExtensionLoader *)self sessionID];
+  v6 = [extensionCopy _extensionContextForUUID:sessionID];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [v6 setDelegate:WeakRetained];
@@ -307,7 +307,7 @@ void __63__FLHeadlessExtensionLoader__loadExtensionForIdentifier_error___block_i
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22E696000, v3, OS_LOG_TYPE_DEFAULT, "%@ going away", buf, 0xCu);
   }
 

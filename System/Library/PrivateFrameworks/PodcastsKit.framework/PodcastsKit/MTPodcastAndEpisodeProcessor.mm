@@ -1,18 +1,18 @@
 @interface MTPodcastAndEpisodeProcessor
 - (MTPodcastAndEpisodeProcessor)init;
-- (id)createEpisodeObserverForPodcastUuid:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5;
-- (id)episodeObserverForPodcastUuid:(id)a3;
-- (id)episodePredicateForPodcast:(id)a3;
+- (id)createEpisodeObserverForPodcastUuid:(id)uuid predicate:(id)predicate sortDescriptors:(id)descriptors;
+- (id)episodeObserverForPodcastUuid:(id)uuid;
+- (id)episodePredicateForPodcast:(id)podcast;
 - (id)episodeUuids;
 - (id)podcastPredicate;
 - (id)podcastUuids;
-- (void)addEpisodeObserverForPodcast:(id)a3;
-- (void)episodeUuidObserver:(id)a3 resultsChangedForPodcast:(id)a4 withDeletedIds:(id)a5 andInsertIds:(id)a6;
-- (void)removeEpisodeObserverForPodcast:(id)a3;
-- (void)removeEpisodeObserverForPodcasts:(id)a3;
+- (void)addEpisodeObserverForPodcast:(id)podcast;
+- (void)episodeUuidObserver:(id)observer resultsChangedForPodcast:(id)podcast withDeletedIds:(id)ids andInsertIds:(id)insertIds;
+- (void)removeEpisodeObserverForPodcast:(id)podcast;
+- (void)removeEpisodeObserverForPodcasts:(id)podcasts;
 - (void)stop;
-- (void)updateEpisodeObserverForPodcast:(id)a3;
-- (void)updateEpisodePredicatesWithDeletedIds:(id)a3 andInsertIds:(id)a4 andUpdatedIds:(id)a5;
+- (void)updateEpisodeObserverForPodcast:(id)podcast;
+- (void)updateEpisodePredicatesWithDeletedIds:(id)ids andInsertIds:(id)insertIds andUpdatedIds:(id)updatedIds;
 @end
 
 @implementation MTPodcastAndEpisodeProcessor
@@ -24,9 +24,9 @@
   v2 = [(MTBaseProcessor *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     episodeObservers = v2->_episodeObservers;
-    v2->_episodeObservers = v3;
+    v2->_episodeObservers = dictionary;
   }
 
   return v2;
@@ -37,9 +37,9 @@
   v5.receiver = self;
   v5.super_class = MTPodcastAndEpisodeProcessor;
   [(MTBaseProcessor *)&v5 stop];
-  v3 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
-  v4 = [v3 allValues];
-  [v4 enumerateObjectsUsingBlock:&__block_literal_global];
+  episodeObservers = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
+  allValues = [episodeObservers allValues];
+  [allValues enumerateObjectsUsingBlock:&__block_literal_global];
 }
 
 - (id)podcastPredicate
@@ -48,29 +48,29 @@
   objc_exception_throw(v2);
 }
 
-- (id)episodePredicateForPodcast:(id)a3
+- (id)episodePredicateForPodcast:(id)podcast
 {
-  v3 = a3;
+  podcastCopy = podcast;
   v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"episodePredicateForPodcast must be implemented by subclasses" userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (void)updateEpisodePredicatesWithDeletedIds:(id)a3 andInsertIds:(id)a4 andUpdatedIds:(id)a5
+- (void)updateEpisodePredicatesWithDeletedIds:(id)ids andInsertIds:(id)insertIds andUpdatedIds:(id)updatedIds
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idsCopy = ids;
+  insertIdsCopy = insertIds;
+  updatedIdsCopy = updatedIds;
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __97__MTPodcastAndEpisodeProcessor_updateEpisodePredicatesWithDeletedIds_andInsertIds_andUpdatedIds___block_invoke;
   v14[3] = &unk_279A446C8;
   objc_copyWeak(&v18, &location);
-  v11 = v8;
+  v11 = idsCopy;
   v15 = v11;
-  v12 = v10;
+  v12 = updatedIdsCopy;
   v16 = v12;
-  v13 = v9;
+  v13 = insertIdsCopy;
   v17 = v13;
   [(MTBaseProcessor *)self enqueueWorkBlock:v14];
 
@@ -151,97 +151,97 @@ void __97__MTPodcastAndEpisodeProcessor_updateEpisodePredicatesWithDeletedIds_an
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addEpisodeObserverForPodcast:(id)a3
+- (void)addEpisodeObserverForPodcast:(id)podcast
 {
-  v10 = a3;
+  podcastCopy = podcast;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(MTPodcastAndEpisodeProcessor *)self episodePredicateForPodcast:v10];
-  if (!v5)
+  falsePredicate = [(MTPodcastAndEpisodeProcessor *)self episodePredicateForPodcast:podcastCopy];
+  if (!falsePredicate)
   {
-    v5 = [MEMORY[0x277CCAC30] falsePredicate];
+    falsePredicate = [MEMORY[0x277CCAC30] falsePredicate];
   }
 
-  v6 = [(MTPodcastAndEpisodeProcessor *)self episodeSortDescriptorsForPodcast:v10];
-  v7 = [(MTPodcastAndEpisodeProcessor *)self createEpisodeObserverForPodcastUuid:v10 predicate:v5 sortDescriptors:v6];
-  [v7 setIdentifier:v10];
-  v8 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
-  objc_sync_enter(v8);
-  v9 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
-  [v9 setObject:v7 forKeyedSubscript:v10];
+  v6 = [(MTPodcastAndEpisodeProcessor *)self episodeSortDescriptorsForPodcast:podcastCopy];
+  v7 = [(MTPodcastAndEpisodeProcessor *)self createEpisodeObserverForPodcastUuid:podcastCopy predicate:falsePredicate sortDescriptors:v6];
+  [v7 setIdentifier:podcastCopy];
+  episodeObservers = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
+  objc_sync_enter(episodeObservers);
+  episodeObservers2 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
+  [episodeObservers2 setObject:v7 forKeyedSubscript:podcastCopy];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(episodeObservers);
   [v7 startObserving];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)updateEpisodeObserverForPodcast:(id)a3
+- (void)updateEpisodeObserverForPodcast:(id)podcast
 {
-  v13 = a3;
+  podcastCopy = podcast;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(MTPodcastAndEpisodeProcessor *)self episodePredicateForPodcast:v13];
-  if (!v5)
+  falsePredicate = [(MTPodcastAndEpisodeProcessor *)self episodePredicateForPodcast:podcastCopy];
+  if (!falsePredicate)
   {
-    v5 = [MEMORY[0x277CCAC30] falsePredicate];
+    falsePredicate = [MEMORY[0x277CCAC30] falsePredicate];
   }
 
-  v6 = [(MTPodcastAndEpisodeProcessor *)self episodeObserverForPodcastUuid:v13];
+  v6 = [(MTPodcastAndEpisodeProcessor *)self episodeObserverForPodcastUuid:podcastCopy];
   v7 = v6;
   if (!v6)
   {
     goto LABEL_7;
   }
 
-  v8 = [v6 predicate];
-  v9 = v8;
-  if (!v8 || ([v8 isEqual:v5] & 1) == 0)
+  predicate = [v6 predicate];
+  v9 = predicate;
+  if (!predicate || ([predicate isEqual:falsePredicate] & 1) == 0)
   {
     [v7 stop];
 
 LABEL_7:
-    v9 = [(MTPodcastAndEpisodeProcessor *)self episodeSortDescriptorsForPodcast:v13];
-    v10 = [(MTPodcastAndEpisodeProcessor *)self createEpisodeObserverForPodcastUuid:v13 predicate:v5 sortDescriptors:v9];
-    [v10 setIdentifier:v13];
-    v11 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
-    objc_sync_enter(v11);
-    v12 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
-    [v12 setObject:v10 forKeyedSubscript:v13];
+    v9 = [(MTPodcastAndEpisodeProcessor *)self episodeSortDescriptorsForPodcast:podcastCopy];
+    v10 = [(MTPodcastAndEpisodeProcessor *)self createEpisodeObserverForPodcastUuid:podcastCopy predicate:falsePredicate sortDescriptors:v9];
+    [v10 setIdentifier:podcastCopy];
+    episodeObservers = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
+    objc_sync_enter(episodeObservers);
+    episodeObservers2 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
+    [episodeObservers2 setObject:v10 forKeyedSubscript:podcastCopy];
 
-    objc_sync_exit(v11);
+    objc_sync_exit(episodeObservers);
     [v10 startObserving];
   }
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)removeEpisodeObserverForPodcast:(id)a3
+- (void)removeEpisodeObserverForPodcast:(id)podcast
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
-  v10 = a3;
+  podcastCopy = podcast;
   v5 = MEMORY[0x277CBEA60];
-  v6 = a3;
-  v7 = [v5 arrayWithObjects:&v10 count:1];
-  v8 = [v4 setWithArray:{v7, v10, v11}];
+  podcastCopy2 = podcast;
+  v7 = [v5 arrayWithObjects:&podcastCopy count:1];
+  v8 = [v4 setWithArray:{v7, podcastCopy, v11}];
 
   [(MTPodcastAndEpisodeProcessor *)self removeEpisodeObserverForPodcasts:v8];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeEpisodeObserverForPodcasts:(id)a3
+- (void)removeEpisodeObserverForPodcasts:(id)podcasts
 {
   v21 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v4 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
-  objc_sync_enter(v4);
-  if ([v15 count])
+  podcastsCopy = podcasts;
+  episodeObservers = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
+  objc_sync_enter(episodeObservers);
+  if ([podcastsCopy count])
   {
     v5 = objc_opt_new();
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v15;
+    v6 = podcastsCopy;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
@@ -257,8 +257,8 @@ LABEL_7:
           }
 
           v10 = *(*(&v16 + 1) + 8 * v9);
-          v11 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
-          v12 = [v11 objectForKeyedSubscript:v10];
+          episodeObservers2 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
+          v12 = [episodeObservers2 objectForKeyedSubscript:v10];
 
           if (v12)
           {
@@ -276,22 +276,22 @@ LABEL_7:
       while (v7);
     }
 
-    v13 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
-    [v13 removeObjectsForKeys:v5];
+    episodeObservers3 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
+    [episodeObservers3 removeObjectsForKeys:v5];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(episodeObservers);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createEpisodeObserverForPodcastUuid:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5
+- (id)createEpisodeObserverForPodcastUuid:(id)uuid predicate:(id)predicate sortDescriptors:(id)descriptors
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  uuidCopy = uuid;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
   v11 = [MTUuidQueryObserver alloc];
-  v12 = [(MTBaseQueryObserver *)v11 initWithEntityName:*MEMORY[0x277D3DCF8] predicate:v9 sortDescriptors:v10];
+  v12 = [(MTBaseQueryObserver *)v11 initWithEntityName:*MEMORY[0x277D3DCF8] predicate:predicateCopy sortDescriptors:descriptorsCopy];
   objc_initWeak(&location, self);
   objc_initWeak(&from, v12);
   v16[0] = MEMORY[0x277D85DD0];
@@ -300,7 +300,7 @@ LABEL_7:
   v16[3] = &unk_279A44718;
   objc_copyWeak(&v18, &location);
   objc_copyWeak(&v19, &from);
-  v13 = v8;
+  v13 = uuidCopy;
   v17 = v13;
   v14 = [(MTUuidQueryObserver *)v12 addResultsChangedHandler:v16];
 
@@ -341,12 +341,12 @@ void __94__MTPodcastAndEpisodeProcessor_createEpisodeObserverForPodcastUuid_pred
   [v2 episodeUuidObserver:WeakRetained resultsChangedForPodcast:*(a1 + 32) withDeletedIds:*(a1 + 40) andInsertIds:*(a1 + 48)];
 }
 
-- (void)episodeUuidObserver:(id)a3 resultsChangedForPodcast:(id)a4 withDeletedIds:(id)a5 andInsertIds:(id)a6
+- (void)episodeUuidObserver:(id)observer resultsChangedForPodcast:(id)podcast withDeletedIds:(id)ids andInsertIds:(id)insertIds
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  observerCopy = observer;
+  podcastCopy = podcast;
+  idsCopy = ids;
+  insertIdsCopy = insertIds;
   v14 = MEMORY[0x277CCACA8];
   v15 = NSStringFromSelector(a2);
   v16 = [v14 stringWithFormat:@"%@ must be implemented by subclasses", v15];
@@ -355,15 +355,15 @@ void __94__MTPodcastAndEpisodeProcessor_createEpisodeObserverForPodcastUuid_pred
   objc_exception_throw(v17);
 }
 
-- (id)episodeObserverForPodcastUuid:(id)a3
+- (id)episodeObserverForPodcastUuid:(id)uuid
 {
-  v4 = a3;
-  v5 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
-  objc_sync_enter(v5);
-  v6 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  uuidCopy = uuid;
+  episodeObservers = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
+  objc_sync_enter(episodeObservers);
+  episodeObservers2 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
+  v7 = [episodeObservers2 objectForKeyedSubscript:uuidCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(episodeObservers);
 
   return v7;
 }
@@ -406,17 +406,17 @@ uint64_t __44__MTPodcastAndEpisodeProcessor_podcastUuids__block_invoke(uint64_t 
   v11 = __Block_byref_object_copy_;
   v12 = __Block_byref_object_dispose_;
   v13 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v3 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
-  objc_sync_enter(v3);
-  v4 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
+  episodeObservers = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
+  objc_sync_enter(episodeObservers);
+  episodeObservers2 = [(MTPodcastAndEpisodeProcessor *)self episodeObservers];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__MTPodcastAndEpisodeProcessor_episodeUuids__block_invoke;
   v7[3] = &unk_279A44768;
   v7[4] = &v8;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [episodeObservers2 enumerateKeysAndObjectsUsingBlock:v7];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(episodeObservers);
   v5 = [v9[5] copy];
   _Block_object_dispose(&v8, 8);
 

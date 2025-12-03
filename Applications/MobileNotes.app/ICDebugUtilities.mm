@@ -1,63 +1,63 @@
 @interface ICDebugUtilities
 + (id)stateOfTheWorld;
-+ (void)deleteEverythingWithCompletionHandler:(id)a3;
++ (void)deleteEverythingWithCompletionHandler:(id)handler;
 + (void)deleteInvalidObjects;
-+ (void)deleteMigratedDuplicatesWithCompletionHandler:(id)a3;
-+ (void)deleteZonesWithZoneIDs:(id)a3 accountID:(id)a4 completionHandler:(id)a5;
++ (void)deleteMigratedDuplicatesWithCompletionHandler:(id)handler;
++ (void)deleteZonesWithZoneIDs:(id)ds accountID:(id)d completionHandler:(id)handler;
 + (void)markEverythingNeedToBeFetched;
-+ (void)purgeEverythingWithCompletionHandler:(id)a3;
++ (void)purgeEverythingWithCompletionHandler:(id)handler;
 + (void)pushEverythingToCloud;
-+ (void)showAlertForError:(id)a3 title:(id)a4;
-+ (void)showAlertWithTitle:(id)a3 description:(id)a4;
-+ (void)startFreshWithCompletionHandler:(id)a3;
++ (void)showAlertForError:(id)error title:(id)title;
++ (void)showAlertWithTitle:(id)title description:(id)description;
++ (void)startFreshWithCompletionHandler:(id)handler;
 @end
 
 @implementation ICDebugUtilities
 
-+ (void)purgeEverythingWithCompletionHandler:(id)a3
++ (void)purgeEverythingWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[ICMigrationController sharedController];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000C9160;
   v6[3] = &unk_100645CC8;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [v4 cancelAllOperationsWithCompletionHandler:v6];
 }
 
-+ (void)deleteEverythingWithCompletionHandler:(id)a3
++ (void)deleteEverythingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[ICNoteContext sharedContext];
-  v6 = [v5 managedObjectContext];
+  managedObjectContext = [v5 managedObjectContext];
 
-  [v6 performBlockAndWait:&stru_100648950];
+  [managedObjectContext performBlockAndWait:&stru_100648950];
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
   v14[3] = 0;
-  [ICAccount allActiveCloudKitAccountsInContext:v6];
+  [ICAccount allActiveCloudKitAccountsInContext:managedObjectContext];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000C94E0;
   v9[3] = &unk_1006489C0;
   v12 = v14;
-  v7 = v13 = a1;
+  v7 = v13 = self;
   v10 = v7;
-  v8 = v4;
+  v8 = handlerCopy;
   v11 = v8;
   [v7 enumerateObjectsUsingBlock:v9];
 
   _Block_object_dispose(v14, 8);
 }
 
-+ (void)deleteZonesWithZoneIDs:(id)a3 accountID:(id)a4 completionHandler:(id)a5
++ (void)deleteZonesWithZoneIDs:(id)ds accountID:(id)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = +[ICCloudContext sharedContext];
   v12 = +[ICMigrationController sharedController];
   v17[0] = _NSConcreteStackBlock;
@@ -65,47 +65,47 @@
   v17[2] = sub_1000C9894;
   v17[3] = &unk_100648A38;
   v18 = v11;
-  v19 = v8;
-  v21 = v10;
-  v22 = a1;
-  v20 = v9;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v19 = dsCopy;
+  v21 = handlerCopy;
+  selfCopy = self;
+  v20 = dCopy;
+  v13 = handlerCopy;
+  v14 = dCopy;
+  v15 = dsCopy;
   v16 = v11;
   [v12 cancelAllOperationsWithCompletionHandler:v17];
 }
 
-+ (void)showAlertForError:(id)a3 title:(id)a4
++ (void)showAlertForError:(id)error title:(id)title
 {
-  v6 = a4;
-  v7 = [a3 localizedDescription];
-  [a1 showAlertWithTitle:v6 description:v7];
+  titleCopy = title;
+  localizedDescription = [error localizedDescription];
+  [self showAlertWithTitle:titleCopy description:localizedDescription];
 }
 
-+ (void)showAlertWithTitle:(id)a3 description:(id)a4
++ (void)showAlertWithTitle:(id)title description:(id)description
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C9D7C;
   v7[3] = &unk_100645BA0;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  titleCopy = title;
+  descriptionCopy = description;
+  v5 = descriptionCopy;
+  v6 = titleCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-+ (void)startFreshWithCompletionHandler:(id)a3
++ (void)startFreshWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.notes", "Internal");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_1004DEAAC(v5);
   }
 
-  v6 = [v4 copy];
+  v6 = [handlerCopy copy];
   [ICMigrationController setDidChooseToMigrateLocalAccount:0];
   [ICMigrationController setDidMigrateLocalAccount:0];
   v7 = +[NSNotificationCenter defaultCenter];
@@ -114,8 +114,8 @@
   [ICStartupController setHasShownWelcomeScreen:0];
   [ICNoteContext setLegacyNotesDisabled:0];
   v8 = +[ICNoteContext sharedContext];
-  v9 = [v8 managedObjectContext];
-  v10 = [ICAccount allCloudKitAccountsInContext:v9];
+  managedObjectContext = [v8 managedObjectContext];
+  v10 = [ICAccount allCloudKitAccountsInContext:managedObjectContext];
 
   if ([v10 count])
   {
@@ -128,10 +128,10 @@
     v12[2] = sub_1000CA140;
     v12[3] = &unk_100648B60;
     v17 = buf;
-    v18 = a1;
+    selfCopy = self;
     v13 = v8;
     v14 = v10;
-    v15 = v4;
+    v15 = handlerCopy;
     v16 = v6;
     [v14 enumerateObjectsUsingBlock:v12];
 
@@ -147,10 +147,10 @@
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Trying to reset migration without a CloudKit account", buf, 2u);
     }
 
-    [a1 showAlertWithTitle:@"No CloudKit account to reset" description:@"Cannot reset migration without a CloudKit account."];
-    if (v4)
+    [self showAlertWithTitle:@"No CloudKit account to reset" description:@"Cannot reset migration without a CloudKit account."];
+    if (handlerCopy)
     {
-      v4[2](v4);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
@@ -158,14 +158,14 @@
 + (void)pushEverythingToCloud
 {
   v2 = +[ICNoteContext sharedContext];
-  v3 = [v2 snapshotManagedObjectContext];
+  snapshotManagedObjectContext = [v2 snapshotManagedObjectContext];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000CABB8;
   v6[3] = &unk_100645E30;
-  v7 = v3;
-  v4 = v3;
+  v7 = snapshotManagedObjectContext;
+  v4 = snapshotManagedObjectContext;
   [v4 performBlockAndWait:v6];
   v5 = +[ICCloudContext sharedContext];
   [v5 processAllCloudObjectsWithCompletionHandler:0];
@@ -195,20 +195,20 @@
   }
 
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 managedObjectContext];
+  managedObjectContext = [v3 managedObjectContext];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000CAF24;
   v6[3] = &unk_100645E30;
-  v7 = v4;
-  v5 = v4;
+  v7 = managedObjectContext;
+  v5 = managedObjectContext;
   [v5 performBlockAndWait:v6];
 }
 
-+ (void)deleteMigratedDuplicatesWithCompletionHandler:(id)a3
++ (void)deleteMigratedDuplicatesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.notes", "Internal");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -222,10 +222,10 @@
   block[1] = 3221225472;
   block[2] = sub_1000CB268;
   block[3] = &unk_100646158;
-  v12 = v4;
-  v13 = a1;
+  v12 = handlerCopy;
+  selfCopy = self;
   v11 = v6;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = v6;
   dispatch_async(v7, block);
 }

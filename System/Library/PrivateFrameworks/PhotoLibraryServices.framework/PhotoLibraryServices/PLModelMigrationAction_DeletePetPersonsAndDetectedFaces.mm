@@ -1,25 +1,25 @@
 @interface PLModelMigrationAction_DeletePetPersonsAndDetectedFaces
-- (int64_t)deleteManagedObjectsWithManagedObjectContext:(id)a3 entity:(Class)a4 predicate:(id)a5 pendingParentUnitCount:(int64_t)a6 deletedIdentifiers:(id *)a7 entityIdentifierKeyPath:(id)a8 error:(id *)a9;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)deleteManagedObjectsWithManagedObjectContext:(id)context entity:(Class)entity predicate:(id)predicate pendingParentUnitCount:(int64_t)count deletedIdentifiers:(id *)identifiers entityIdentifierKeyPath:(id)path error:(id *)error;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_DeletePetPersonsAndDetectedFaces
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v62[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLModelMigrationActionCore *)self progress];
-  v8 = [v7 totalUnitCount] / 2;
+  contextCopy = context;
+  progress = [(PLModelMigrationActionCore *)self progress];
+  v8 = [progress totalUnitCount] / 2;
 
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"detectionType", &unk_1F0FBFCD0];
   v26 = 0;
-  v10 = [(PLModelMigrationAction_DeletePetPersonsAndDetectedFaces *)self deleteManagedObjectsWithManagedObjectContext:v6 entity:objc_opt_class() predicate:v9 pendingParentUnitCount:v8 deletedIdentifiers:&v26 entityIdentifierKeyPath:@"personUUID" error:a4];
+  v10 = [(PLModelMigrationAction_DeletePetPersonsAndDetectedFaces *)self deleteManagedObjectsWithManagedObjectContext:contextCopy entity:objc_opt_class() predicate:v9 pendingParentUnitCount:v8 deletedIdentifiers:&v26 entityIdentifierKeyPath:@"personUUID" error:error];
   v11 = v26;
   if (v10 == 1)
   {
     v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"detectionType", &unk_1F0FBFCE8];
-    v10 = [(PLModelMigrationAction_DeletePetPersonsAndDetectedFaces *)self deleteManagedObjectsWithManagedObjectContext:v6 entity:objc_opt_class() predicate:v12 pendingParentUnitCount:v8 deletedIdentifiers:0 entityIdentifierKeyPath:0 error:a4];
+    v10 = [(PLModelMigrationAction_DeletePetPersonsAndDetectedFaces *)self deleteManagedObjectsWithManagedObjectContext:contextCopy entity:objc_opt_class() predicate:v12 pendingParentUnitCount:v8 deletedIdentifiers:0 entityIdentifierKeyPath:0 error:error];
   }
 
   if ([v11 count])
@@ -27,8 +27,8 @@
     v61 = @"RKPerson";
     v62[0] = v11;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v62 forKeys:&v61 count:1];
-    v14 = [(PLModelMigrationActionCore *)self pathManager];
-    v15 = [v14 photoDirectoryWithType:14 leafType:3 createIfNeeded:1 error:0];
+    pathManager = [(PLModelMigrationActionCore *)self pathManager];
+    v15 = [pathManager photoDirectoryWithType:14 leafType:3 createIfNeeded:1 error:0];
 
     v16 = [v15 stringByAppendingPathComponent:@"recordstodelete.plist"];
     if (([v13 writeToFile:v16 atomically:1] & 1) == 0)
@@ -38,9 +38,9 @@
 
       if (v18)
       {
-        v19 = [(PLModelMigrationActionCore *)self logger];
+        logger = [(PLModelMigrationActionCore *)self logger];
 
-        if (v19)
+        if (logger)
         {
           v59 = 0u;
           v60 = 0u;
@@ -109,23 +109,23 @@
   return v10;
 }
 
-- (int64_t)deleteManagedObjectsWithManagedObjectContext:(id)a3 entity:(Class)a4 predicate:(id)a5 pendingParentUnitCount:(int64_t)a6 deletedIdentifiers:(id *)a7 entityIdentifierKeyPath:(id)a8 error:(id *)a9
+- (int64_t)deleteManagedObjectsWithManagedObjectContext:(id)context entity:(Class)entity predicate:(id)predicate pendingParentUnitCount:(int64_t)count deletedIdentifiers:(id *)identifiers entityIdentifierKeyPath:(id)path error:(id *)error
 {
   v106 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a8;
+  contextCopy = context;
+  pathCopy = path;
   v16 = MEMORY[0x1E695D5E0];
-  v17 = a5;
-  v18 = [(objc_class *)a4 entityName];
-  v19 = [v16 fetchRequestWithEntityName:v18];
+  predicateCopy = predicate;
+  entityName = [(objc_class *)entity entityName];
+  v19 = [v16 fetchRequestWithEntityName:entityName];
 
-  [v19 setPredicate:v17];
-  v20 = v14;
+  [v19 setPredicate:predicateCopy];
+  v20 = contextCopy;
   [v19 setFetchBatchSize:100];
   v70 = 0;
-  v21 = [v14 executeFetchRequest:v19 error:&v70];
+  v21 = [contextCopy executeFetchRequest:v19 error:&v70];
   v22 = v70;
-  v23 = -[PLModelMigrationActionCore cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:](self, "cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:", [v21 count], a6);
+  v23 = -[PLModelMigrationActionCore cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:](self, "cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:", [v21 count], count);
   v24 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v21, "count")}];
   v63 = v24;
   if (!v21)
@@ -136,9 +136,9 @@
 
     if (v33)
     {
-      v34 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v34)
+      if (logger)
       {
         v104 = 0u;
         v105 = 0u;
@@ -218,8 +218,8 @@
   v64[1] = 3221225472;
   v64[2] = __193__PLModelMigrationAction_DeletePetPersonsAndDetectedFaces_deleteManagedObjectsWithManagedObjectContext_entity_predicate_pendingParentUnitCount_deletedIdentifiers_entityIdentifierKeyPath_error___block_invoke;
   v64[3] = &unk_1E756DCA0;
-  v65 = v15;
-  v69 = a4;
+  v65 = pathCopy;
+  entityCopy = entity;
   v66 = v25;
   v67 = v20;
   v68 = v23;
@@ -253,9 +253,9 @@
     goto LABEL_27;
   }
 
-  v42 = [(PLModelMigrationActionCore *)self logger];
+  logger2 = [(PLModelMigrationActionCore *)self logger];
 
-  if (!v42)
+  if (!logger2)
   {
     v52 = PLMigrationGetLog();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
@@ -334,24 +334,24 @@ LABEL_28:
   if (v61)
   {
     v30 = 1;
-    v56 = a7;
+    identifiersCopy2 = identifiers;
     goto LABEL_33;
   }
 
 LABEL_30:
-  v56 = a7;
-  if (a9)
+  identifiersCopy2 = identifiers;
+  if (error)
   {
     v57 = v51;
-    *a9 = v51;
+    *error = v51;
   }
 
   v55 = v63;
 LABEL_33:
 
-  if (v56)
+  if (identifiersCopy2)
   {
-    *v56 = [v55 copy];
+    *identifiersCopy2 = [v55 copy];
   }
 
   return v30;

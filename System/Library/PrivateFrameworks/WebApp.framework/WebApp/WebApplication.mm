@@ -1,22 +1,22 @@
 @interface WebApplication
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)buildMenuWithBuilder:(id)builder;
 @end
 
 @implementation WebApplication
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v8.receiver = self;
   v8.super_class = WebApplication;
-  [(WebApplication *)&v8 buildMenuWithBuilder:v4];
-  v5 = [v4 system];
-  v6 = [MEMORY[0x277D75730] mainSystem];
+  [(WebApplication *)&v8 buildMenuWithBuilder:builderCopy];
+  system = [builderCopy system];
+  mainSystem = [MEMORY[0x277D75730] mainSystem];
 
-  if (v5 == v6)
+  if (system == mainSystem)
   {
-    v7 = [MEMORY[0x277D28BF0] sharedProvider];
-    [v7 setMenusIfNecessaryForWebAppWithBuilder:v4];
+    mEMORY[0x277D28BF0] = [MEMORY[0x277D28BF0] sharedProvider];
+    [mEMORY[0x277D28BF0] setMenusIfNecessaryForWebAppWithBuilder:builderCopy];
   }
 }
 

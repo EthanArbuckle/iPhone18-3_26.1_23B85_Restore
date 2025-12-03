@@ -1,27 +1,27 @@
 @interface MLMediaLibraryResourcesServiceClient
 + (MLMediaLibraryResourcesServiceClient)sharedService;
 - (NSXPCConnection)xpcClientConnection;
-- (id)_initWithAccountChangeObserver:(id)a3;
-- (id)_libraryContainerPathWithError:(id *)a3;
-- (id)_musicContainerPathWithError:(id *)a3;
-- (id)connectionWithListenerEndpoint:(id)a3;
-- (id)libraryContainerPathWithError:(id *)a3;
-- (id)musicContainerPathWithError:(id *)a3;
-- (void)_performOnServerObjectWithMaxRetries:(int64_t)a3 error:(id *)a4 remoteObjectBlock:(id)a5;
-- (void)emergencyDisconnectWithCompletion:(id)a3;
-- (void)performDatabasePathChange:(id)a3 completion:(id)a4;
+- (id)_initWithAccountChangeObserver:(id)observer;
+- (id)_libraryContainerPathWithError:(id *)error;
+- (id)_musicContainerPathWithError:(id *)error;
+- (id)connectionWithListenerEndpoint:(id)endpoint;
+- (id)libraryContainerPathWithError:(id *)error;
+- (id)musicContainerPathWithError:(id *)error;
+- (void)_performOnServerObjectWithMaxRetries:(int64_t)retries error:(id *)error remoteObjectBlock:(id)block;
+- (void)emergencyDisconnectWithCompletion:(id)completion;
+- (void)performDatabasePathChange:(id)change completion:(id)completion;
 - (void)terminateForFailureToPerformDatabasePathChange;
 @end
 
 @implementation MLMediaLibraryResourcesServiceClient
 
-- (id)connectionWithListenerEndpoint:(id)a3
+- (id)connectionWithListenerEndpoint:(id)endpoint
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  endpointCopy = endpoint;
+  if (endpointCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:v4];
+    v5 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:endpointCopy];
     [v5 setExportedObject:self];
     v6 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2840E3818];
     [v5 setRemoteObjectInterface:v6];
@@ -193,14 +193,14 @@ void __71__MLMediaLibraryResourcesServiceClient_connectionWithListenerEndpoint__
   v10 = __Block_byref_object_copy__9036;
   v11 = __Block_byref_object_dispose__9037;
   v12 = 0;
-  v3 = [(MLMediaLibraryResourcesServiceClient *)self serialQueue];
+  serialQueue = [(MLMediaLibraryResourcesServiceClient *)self serialQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__MLMediaLibraryResourcesServiceClient_xpcClientConnection__block_invoke;
   v6[3] = &unk_278766080;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serialQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -272,39 +272,39 @@ void __59__MLMediaLibraryResourcesServiceClient_xpcClientConnection__block_invok
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D2FA000, v3, OS_LOG_TYPE_DEBUG, "MLMediaLibraryResourcesServiceClient %p - terminateForFailureToPrepareForAccountChange:", &v5, 0xCu);
   }
 
-  v4 = [(MLMediaLibraryResourcesServiceClient *)self accountChangeObserver];
-  [v4 terminateForFailureToPerformDatabasePathChange];
+  accountChangeObserver = [(MLMediaLibraryResourcesServiceClient *)self accountChangeObserver];
+  [accountChangeObserver terminateForFailureToPerformDatabasePathChange];
 }
 
-- (void)emergencyDisconnectWithCompletion:(id)a3
+- (void)emergencyDisconnectWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MLMediaLibraryResourcesServiceClient *)self accountChangeObserver];
-  [v5 emergencyDisconnectWithCompletion:v4];
+  completionCopy = completion;
+  accountChangeObserver = [(MLMediaLibraryResourcesServiceClient *)self accountChangeObserver];
+  [accountChangeObserver emergencyDisconnectWithCompletion:completionCopy];
 }
 
-- (void)performDatabasePathChange:(id)a3 completion:(id)a4
+- (void)performDatabasePathChange:(id)change completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218243;
-    v18 = self;
+    selfCopy = self;
     v19 = 2113;
-    v20 = v6;
+    v20 = changeCopy;
     _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEBUG, "MLMediaLibraryResourcesServiceClient %p - performDatabasePathChange: - newPath=%{private}@", buf, 0x16u);
   }
 
   v9 = [_ML3MultiUserAccountChangeOperation alloc];
-  v10 = [(MLMediaLibraryResourcesServiceClient *)self accountChangeObserver];
-  v11 = [(_ML3MultiUserAccountChangeOperation *)v9 initWithDatabasePath:v6 accountChangeObserver:v10];
+  accountChangeObserver = [(MLMediaLibraryResourcesServiceClient *)self accountChangeObserver];
+  v11 = [(_ML3MultiUserAccountChangeOperation *)v9 initWithDatabasePath:changeCopy accountChangeObserver:accountChangeObserver];
 
   objc_initWeak(buf, v11);
   v14[0] = MEMORY[0x277D85DD0];
@@ -312,12 +312,12 @@ void __59__MLMediaLibraryResourcesServiceClient_xpcClientConnection__block_invok
   v14[2] = __77__MLMediaLibraryResourcesServiceClient_performDatabasePathChange_completion___block_invoke;
   v14[3] = &unk_278763F88;
   objc_copyWeak(&v16, buf);
-  v12 = v7;
+  v12 = completionCopy;
   v14[4] = self;
   v15 = v12;
   [(_ML3MultiUserAccountChangeOperation *)v11 setCompletionBlock:v14];
-  v13 = [(MLMediaLibraryResourcesServiceClient *)self accountChangeOperationQueue];
-  [v13 addOperation:v11];
+  accountChangeOperationQueue = [(MLMediaLibraryResourcesServiceClient *)self accountChangeOperationQueue];
+  [accountChangeOperationQueue addOperation:v11];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -354,10 +354,10 @@ void __77__MLMediaLibraryResourcesServiceClient_performDatabasePathChange_comple
   [v4 postNotificationName:@"MLUserDatabasePathDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_performOnServerObjectWithMaxRetries:(int64_t)a3 error:(id *)a4 remoteObjectBlock:(id)a5
+- (void)_performOnServerObjectWithMaxRetries:(int64_t)retries error:(id *)error remoteObjectBlock:(id)block
 {
-  v15 = a4;
-  v7 = a5;
+  errorCopy = error;
+  blockCopy = block;
   v8 = 0;
   v21 = 0;
   v22 = &v21;
@@ -372,7 +372,7 @@ void __77__MLMediaLibraryResourcesServiceClient_performDatabasePathChange_comple
   v9 = *MEMORY[0x277CCA050];
   while (1)
   {
-    v10 = [(MLMediaLibraryResourcesServiceClient *)self xpcClientConnection];
+    xpcClientConnection = [(MLMediaLibraryResourcesServiceClient *)self xpcClientConnection];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __101__MLMediaLibraryResourcesServiceClient__performOnServerObjectWithMaxRetries_error_remoteObjectBlock___block_invoke;
@@ -380,12 +380,12 @@ void __77__MLMediaLibraryResourcesServiceClient_performDatabasePathChange_comple
     v16[4] = self;
     v16[5] = &v17;
     v16[6] = &v21;
-    v16[7] = a3;
-    v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v16];
+    v16[7] = retries;
+    v11 = [xpcClientConnection synchronousRemoteObjectProxyWithErrorHandler:v16];
 
     if (v11)
     {
-      if (v7[2](v7, v11))
+      if (blockCopy[2](blockCopy, v11))
       {
         break;
       }
@@ -397,14 +397,14 @@ void __77__MLMediaLibraryResourcesServiceClient_performDatabasePathChange_comple
       goto LABEL_10;
     }
 
-    v13 = [v12 domain];
-    if (![v13 isEqualToString:v9] || objc_msgSend(v22[5], "code") != 4097)
+    domain = [v12 domain];
+    if (![domain isEqualToString:v9] || objc_msgSend(v22[5], "code") != 4097)
     {
 
 LABEL_10:
-      if (v15)
+      if (errorCopy)
       {
-        *v15 = v22[5];
+        *errorCopy = v22[5];
       }
 
       break;
@@ -413,7 +413,7 @@ LABEL_10:
     v14 = v18[3];
 
     v8 = v11;
-    if (v14 >= a3)
+    if (v14 >= retries)
     {
       goto LABEL_10;
     }
@@ -491,7 +491,7 @@ void __101__MLMediaLibraryResourcesServiceClient__performOnServerObjectWithMaxRe
   *(v1 + 24) = 0;
 }
 
-- (id)_libraryContainerPathWithError:(id *)a3
+- (id)_libraryContainerPathWithError:(id *)error
 {
   v6 = 0;
   v7 = &v6;
@@ -504,7 +504,7 @@ void __101__MLMediaLibraryResourcesServiceClient__performOnServerObjectWithMaxRe
   v5[2] = __71__MLMediaLibraryResourcesServiceClient__libraryContainerPathWithError___block_invoke;
   v5[3] = &unk_2787629D8;
   v5[4] = &v6;
-  [(MLMediaLibraryResourcesServiceClient *)self _performOnServerObjectWithMaxRetries:10 error:a3 remoteObjectBlock:v5];
+  [(MLMediaLibraryResourcesServiceClient *)self _performOnServerObjectWithMaxRetries:10 error:error remoteObjectBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
@@ -532,7 +532,7 @@ uint64_t __71__MLMediaLibraryResourcesServiceClient__libraryContainerPathWithErr
   return MEMORY[0x2821F96F8](v3, v5);
 }
 
-- (id)_musicContainerPathWithError:(id *)a3
+- (id)_musicContainerPathWithError:(id *)error
 {
   v6 = 0;
   v7 = &v6;
@@ -545,7 +545,7 @@ uint64_t __71__MLMediaLibraryResourcesServiceClient__libraryContainerPathWithErr
   v5[2] = __69__MLMediaLibraryResourcesServiceClient__musicContainerPathWithError___block_invoke;
   v5[3] = &unk_2787629D8;
   v5[4] = &v6;
-  [(MLMediaLibraryResourcesServiceClient *)self _performOnServerObjectWithMaxRetries:10 error:a3 remoteObjectBlock:v5];
+  [(MLMediaLibraryResourcesServiceClient *)self _performOnServerObjectWithMaxRetries:10 error:error remoteObjectBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
@@ -563,15 +563,15 @@ BOOL __69__MLMediaLibraryResourcesServiceClient__musicContainerPathWithError___b
   return *(*(*(a1 + 32) + 8) + 40) != 0;
 }
 
-- (id)_initWithAccountChangeObserver:(id)a3
+- (id)_initWithAccountChangeObserver:(id)observer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  observerCopy = observer;
   v6 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEBUG, "MLMediaLibraryResourcesServiceClient %p - _initWithXPCListenerEndpoint:", buf, 0xCu);
   }
 
@@ -581,7 +581,7 @@ BOOL __69__MLMediaLibraryResourcesServiceClient__musicContainerPathWithError___b
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_accountChangeObserver, a3);
+    objc_storeStrong(&v7->_accountChangeObserver, observer);
     v9 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v10 = dispatch_queue_create("com.apple.MusicLibrary.MLMediaLibraryResourceServiceClient.serial.queue", v9);
     serialQueue = v8->_serialQueue;
@@ -604,17 +604,17 @@ BOOL __69__MLMediaLibraryResourcesServiceClient__musicContainerPathWithError___b
   return v8;
 }
 
-- (id)musicContainerPathWithError:(id *)a3
+- (id)musicContainerPathWithError:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
   v4 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MLMediaLibraryResourcesServiceClient *)self accountChangeOperationQueue];
+    accountChangeOperationQueue = [(MLMediaLibraryResourcesServiceClient *)self accountChangeOperationQueue];
     *buf = 134218242;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v5;
+    *&buf[14] = accountChangeOperationQueue;
     _os_log_impl(&dword_22D2FA000, v4, OS_LOG_TYPE_DEFAULT, "MLMediaLibraryResourcesServiceClient %p - BLOCKING - Retrieving musicContainerPath on serial queue: %@", buf, 0x16u);
   }
 
@@ -638,19 +638,19 @@ BOOL __69__MLMediaLibraryResourcesServiceClient__musicContainerPathWithError___b
   v13[5] = buf;
   v13[6] = v14;
   v6 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v13];
-  v7 = [(MLMediaLibraryResourcesServiceClient *)self accountChangeOperationQueue];
-  [v7 addOperation:v6];
+  accountChangeOperationQueue2 = [(MLMediaLibraryResourcesServiceClient *)self accountChangeOperationQueue];
+  [accountChangeOperationQueue2 addOperation:v6];
 
   [v6 waitUntilFinished];
   v8 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(MLMediaLibraryResourcesServiceClient *)self accountChangeOperationQueue];
+    accountChangeOperationQueue3 = [(MLMediaLibraryResourcesServiceClient *)self accountChangeOperationQueue];
     v10 = *(*&buf[8] + 40);
     *v16 = 134218498;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = v9;
+    v19 = accountChangeOperationQueue3;
     v20 = 2112;
     v21 = v10;
     _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "MLMediaLibraryResourcesServiceClient %p - UNBLOCKED - Retrieved musicContainerPath on serial queue: %@ - %@", v16, 0x20u);
@@ -676,7 +676,7 @@ void __68__MLMediaLibraryResourcesServiceClient_musicContainerPathWithError___bl
   *(v5 + 40) = v4;
 }
 
-- (id)libraryContainerPathWithError:(id *)a3
+- (id)libraryContainerPathWithError:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
   v5 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
@@ -690,11 +690,11 @@ void __68__MLMediaLibraryResourcesServiceClient_musicContainerPathWithError___bl
   v6 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(MLMediaLibraryResourcesServiceClient *)self accountChangeOperationQueue];
+    accountChangeOperationQueue = [(MLMediaLibraryResourcesServiceClient *)self accountChangeOperationQueue];
     *buf = 134218242;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = accountChangeOperationQueue;
     _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEFAULT, "MLMediaLibraryResourcesServiceClient %p - BLOCKING - Retrieving libraryContainerPath on serial queue: %@", buf, 0x16u);
   }
 
@@ -718,27 +718,27 @@ void __68__MLMediaLibraryResourcesServiceClient_musicContainerPathWithError___bl
   v15[5] = buf;
   v15[6] = &v16;
   v8 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v15];
-  v9 = [(MLMediaLibraryResourcesServiceClient *)self accountChangeOperationQueue];
-  [v9 addOperation:v8];
+  accountChangeOperationQueue2 = [(MLMediaLibraryResourcesServiceClient *)self accountChangeOperationQueue];
+  [accountChangeOperationQueue2 addOperation:v8];
 
   [v8 waitUntilFinished];
   v10 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(MLMediaLibraryResourcesServiceClient *)self accountChangeOperationQueue];
+    accountChangeOperationQueue3 = [(MLMediaLibraryResourcesServiceClient *)self accountChangeOperationQueue];
     v12 = *(*&buf[8] + 40);
     *v22 = 134218498;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
-    v25 = v11;
+    v25 = accountChangeOperationQueue3;
     v26 = 2112;
     v27 = v12;
     _os_log_impl(&dword_22D2FA000, v10, OS_LOG_TYPE_DEFAULT, "MLMediaLibraryResourcesServiceClient %p - UNBLOCKED - Retrieved mediaFolderPath on serial queue: %@ - %@", v22, 0x20u);
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v17[5];
+    *error = v17[5];
   }
 
   v13 = *(*&buf[8] + 40);
@@ -776,7 +776,7 @@ void __70__MLMediaLibraryResourcesServiceClient_libraryContainerPathWithError___
   block[1] = 3221225472;
   block[2] = __53__MLMediaLibraryResourcesServiceClient_sharedService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedService_onceToken[0] != -1)
   {
     dispatch_once(sharedService_onceToken, block);

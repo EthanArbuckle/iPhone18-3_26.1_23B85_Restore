@@ -1,37 +1,37 @@
 @interface RBMutableInheritanceCollection
-+ (id)collectionWithInheritances:(id)a3;
-- (id)_initWithCollection:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addInheritance:(id)a3;
-- (void)removeInheritance:(id)a3;
-- (void)unionCollection:(id)a3;
++ (id)collectionWithInheritances:(id)inheritances;
+- (id)_initWithCollection:(id)collection;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addInheritance:(id)inheritance;
+- (void)removeInheritance:(id)inheritance;
+- (void)unionCollection:(id)collection;
 @end
 
 @implementation RBMutableInheritanceCollection
 
-+ (id)collectionWithInheritances:(id)a3
++ (id)collectionWithInheritances:(id)inheritances
 {
-  v4 = a3;
+  inheritancesCopy = inheritances;
   v5 = [RBMutableInheritanceCollection alloc];
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___RBMutableInheritanceCollection;
-  v6 = objc_msgSendSuper2(&v9, sel_collectionWithInheritances_, v4);
+  v6 = objc_msgSendSuper2(&v9, sel_collectionWithInheritances_, inheritancesCopy);
 
   v7 = [(RBMutableInheritanceCollection *)v5 _initWithCollection:v6];
 
   return v7;
 }
 
-- (id)_initWithCollection:(id)a3
+- (id)_initWithCollection:(id)collection
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  collectionCopy = collection;
   v30.receiver = self;
   v30.super_class = RBMutableInheritanceCollection;
   v5 = [(RBMutableInheritanceCollection *)&v30 init];
   if (v5)
   {
-    v6 = v4[1];
+    v6 = collectionCopy[1];
     if ([v6 count])
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -46,7 +46,7 @@
       [v6 enumerateKeysAndObjectsUsingBlock:v28];
     }
 
-    v9 = v4[2];
+    v9 = collectionCopy[2];
     if ([v9 count])
     {
       v23 = v6;
@@ -79,8 +79,8 @@
             }
 
             v19 = v5->_countedNamespaces;
-            v20 = [*(*(&v24 + 1) + 8 * v18) endowmentNamespace];
-            [(NSCountedSet *)v19 addObject:v20];
+            endowmentNamespace = [*(*(&v24 + 1) + 8 * v18) endowmentNamespace];
+            [(NSCountedSet *)v19 addObject:endowmentNamespace];
 
             ++v18;
           }
@@ -108,14 +108,14 @@ void __54__RBMutableInheritanceCollection__initWithCollection___block_invoke(uin
   [v4 setObject:v6 forKey:v5];
 }
 
-- (void)addInheritance:(id)a3
+- (void)addInheritance:(id)inheritance
 {
-  v5 = a3;
-  v17 = v5;
-  if (!v5)
+  inheritanceCopy = inheritance;
+  v17 = inheritanceCopy;
+  if (!inheritanceCopy)
   {
     [(RBMutableInheritanceCollection *)a2 addInheritance:?];
-    v5 = 0;
+    inheritanceCopy = 0;
   }
 
   if (!self->super._inheritances)
@@ -124,7 +124,7 @@ void __54__RBMutableInheritanceCollection__initWithCollection___block_invoke(uin
     inheritances = self->super._inheritances;
     self->super._inheritances = v6;
 
-    v5 = v17;
+    inheritanceCopy = v17;
   }
 
   if (!self->_countedNamespaces)
@@ -133,11 +133,11 @@ void __54__RBMutableInheritanceCollection__initWithCollection___block_invoke(uin
     countedNamespaces = self->_countedNamespaces;
     self->_countedNamespaces = v8;
 
-    v5 = v17;
+    inheritanceCopy = v17;
   }
 
-  v10 = [v5 environment];
-  if (v10)
+  environment = [inheritanceCopy environment];
+  if (environment)
   {
     inheritancesByEnvironment = self->super._inheritancesByEnvironment;
     if (!inheritancesByEnvironment)
@@ -149,11 +149,11 @@ void __54__RBMutableInheritanceCollection__initWithCollection___block_invoke(uin
       inheritancesByEnvironment = self->super._inheritancesByEnvironment;
     }
 
-    v14 = [(NSDictionary *)inheritancesByEnvironment objectForKey:v10];
+    v14 = [(NSDictionary *)inheritancesByEnvironment objectForKey:environment];
     if (!v14)
     {
       v14 = [MEMORY[0x277CBEB58] set];
-      [(NSDictionary *)self->super._inheritancesByEnvironment setObject:v14 forKey:v10];
+      [(NSDictionary *)self->super._inheritancesByEnvironment setObject:v14 forKey:environment];
     }
 
     [v14 addObject:v17];
@@ -161,35 +161,35 @@ void __54__RBMutableInheritanceCollection__initWithCollection___block_invoke(uin
 
   [(NSSet *)self->super._inheritances addObject:v17];
   v15 = self->_countedNamespaces;
-  v16 = [v17 endowmentNamespace];
-  [(NSCountedSet *)v15 addObject:v16];
+  endowmentNamespace = [v17 endowmentNamespace];
+  [(NSCountedSet *)v15 addObject:endowmentNamespace];
 }
 
-- (void)removeInheritance:(id)a3
+- (void)removeInheritance:(id)inheritance
 {
-  v5 = a3;
-  v12 = v5;
-  if (!v5)
+  inheritanceCopy = inheritance;
+  v12 = inheritanceCopy;
+  if (!inheritanceCopy)
   {
     [(RBMutableInheritanceCollection *)a2 removeInheritance:?];
-    v5 = 0;
+    inheritanceCopy = 0;
   }
 
-  v6 = [v5 environment];
-  if (v6)
+  environment = [inheritanceCopy environment];
+  if (environment)
   {
-    v7 = [(NSDictionary *)self->super._inheritancesByEnvironment objectForKey:v6];
+    v7 = [(NSDictionary *)self->super._inheritancesByEnvironment objectForKey:environment];
     [v7 removeObject:v12];
     if (![v7 count])
     {
-      [(NSDictionary *)self->super._inheritancesByEnvironment removeObjectForKey:v6];
+      [(NSDictionary *)self->super._inheritancesByEnvironment removeObjectForKey:environment];
     }
   }
 
   [(NSSet *)self->super._inheritances removeObject:v12];
   countedNamespaces = self->_countedNamespaces;
-  v9 = [v12 endowmentNamespace];
-  [(NSCountedSet *)countedNamespaces removeObject:v9];
+  endowmentNamespace = [v12 endowmentNamespace];
+  [(NSCountedSet *)countedNamespaces removeObject:endowmentNamespace];
 
   if (![(NSSet *)self->super._inheritances count])
   {
@@ -204,15 +204,15 @@ void __54__RBMutableInheritanceCollection__initWithCollection___block_invoke(uin
   }
 }
 
-- (void)unionCollection:(id)a3
+- (void)unionCollection:(id)collection
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  collectionCopy = collection;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [collectionCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -224,14 +224,14 @@ void __54__RBMutableInheritanceCollection__initWithCollection___block_invoke(uin
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(collectionCopy);
         }
 
         [(RBMutableInheritanceCollection *)self addInheritance:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [collectionCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -240,7 +240,7 @@ void __54__RBMutableInheritanceCollection__initWithCollection___block_invoke(uin
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [RBInheritanceCollection alloc];
 

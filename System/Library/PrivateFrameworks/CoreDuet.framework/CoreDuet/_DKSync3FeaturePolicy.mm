@@ -1,7 +1,7 @@
 @interface _DKSync3FeaturePolicy
 - (_DKSync3FeaturePolicy)init;
 - (id)description;
-- (id)initWithName:(void *)a3 properties:;
+- (id)initWithName:(void *)name properties:;
 @end
 
 @implementation _DKSync3FeaturePolicy
@@ -19,26 +19,26 @@
   return result;
 }
 
-- (id)initWithName:(void *)a3 properties:
+- (id)initWithName:(void *)name properties:
 {
   v92[4] = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  nameCopy = name;
+  if (self)
   {
-    v91.receiver = a1;
+    v91.receiver = self;
     v91.super_class = _DKSync3FeaturePolicy;
     v8 = objc_msgSendSuper2(&v91, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       *(v8 + 8) = 1;
       if (v6)
       {
-        if (v7)
+        if (nameCopy)
         {
-          v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
-          objc_storeStrong(a1 + 4, a2);
+          v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(nameCopy, "count")}];
+          objc_storeStrong(self + 4, a2);
           OUTLINED_FUNCTION_4_7();
           _DKSync3PolicyDuplicateNSStringPropertyValue(v10, v11, v12);
           OUTLINED_FUNCTION_4_7();
@@ -74,10 +74,10 @@
           OUTLINED_FUNCTION_4_7();
           _DKSync3PolicyDuplicateNSNumberPropertyValue(v58, v59, v60);
           v61 = [v9 objectForKeyedSubscript:@"IsSyncDisabled"];
-          v62 = [v61 BOOLValue];
+          bOOLValue = [v61 BOOLValue];
 
-          *(a1 + 8) = v62;
-          if ((v62 & 1) == 0)
+          *(self + 8) = bOOLValue;
+          if ((bOOLValue & 1) == 0)
           {
             v92[0] = @"Feature";
             v92[1] = @"StreamNames";
@@ -88,71 +88,71 @@
 
             if (v64)
             {
-              objc_storeStrong(a1 + 3, v9);
+              objc_storeStrong(self + 3, v9);
               v65 = [v9 objectForKeyedSubscript:@"Feature"];
-              v66 = a1[5];
-              a1[5] = v65;
+              v66 = self[5];
+              self[5] = v65;
 
               v67 = [v9 objectForKeyedSubscript:@"StreamNames"];
-              v68 = a1[6];
-              a1[6] = v67;
+              v68 = self[6];
+              self[6] = v67;
 
               v69 = [v9 objectForKeyedSubscript:@"Sources"];
-              v70 = a1[7];
-              a1[7] = v69;
+              v70 = self[7];
+              self[7] = v69;
 
               v71 = [v9 objectForKeyedSubscript:@"Destinations"];
-              v72 = a1[8];
-              a1[8] = v71;
+              v72 = self[8];
+              self[8] = v71;
 
               v73 = [v9 objectForKeyedSubscript:@"Transport"];
-              v74 = a1[9];
-              a1[9] = v73;
+              v74 = self[9];
+              self[9] = v73;
 
               v75 = [v9 objectForKeyedSubscript:@"PeriodicSyncCadenceInMinutes"];
-              v76 = [v75 unsignedIntegerValue];
+              unsignedIntegerValue = [v75 unsignedIntegerValue];
 
-              a1[10] = v76;
+              self[10] = unsignedIntegerValue;
               v77 = [v9 objectForKeyedSubscript:@"OldestEventToSyncInDays"];
-              v78 = [v77 unsignedIntegerValue];
+              unsignedIntegerValue2 = [v77 unsignedIntegerValue];
 
-              a1[11] = v78;
+              self[11] = unsignedIntegerValue2;
               v79 = [v9 objectForKeyedSubscript:@"OnlyMultiDevice"];
-              LOBYTE(v78) = [v79 BOOLValue];
+              LOBYTE(unsignedIntegerValue2) = [v79 BOOLValue];
 
-              *(a1 + 9) = v78;
+              *(self + 9) = unsignedIntegerValue2;
               v80 = [v9 objectForKeyedSubscript:@"OnlySingleDevice"];
-              LOBYTE(v78) = [v80 BOOLValue];
+              LOBYTE(unsignedIntegerValue2) = [v80 BOOLValue];
 
-              *(a1 + 10) = v78;
+              *(self + 10) = unsignedIntegerValue2;
               v81 = [v9 objectForKeyedSubscript:@"RequiresCharging"];
-              LOBYTE(v78) = [v81 BOOLValue];
+              LOBYTE(unsignedIntegerValue2) = [v81 BOOLValue];
 
-              *(a1 + 11) = v78;
+              *(self + 11) = unsignedIntegerValue2;
               v82 = [v9 objectForKeyedSubscript:@"RequiresCompanions"];
-              v83 = a1[12];
-              a1[12] = v82;
+              v83 = self[12];
+              self[12] = v82;
 
               v84 = [v9 objectForKeyedSubscript:@"PushTriggersSync"];
-              LOBYTE(v78) = [v84 BOOLValue];
+              LOBYTE(unsignedIntegerValue2) = [v84 BOOLValue];
 
-              *(a1 + 12) = v78;
+              *(self + 12) = unsignedIntegerValue2;
               v85 = [v9 objectForKeyedSubscript:@"AdditionsCountTowardTriggeredSyncBucket"];
-              LOBYTE(v78) = [v85 BOOLValue];
+              LOBYTE(unsignedIntegerValue2) = [v85 BOOLValue];
 
-              *(a1 + 13) = v78;
+              *(self + 13) = unsignedIntegerValue2;
               v86 = [v9 objectForKeyedSubscript:@"DeletionsCountTowardTriggeredSyncBucket"];
-              LOBYTE(v78) = [v86 BOOLValue];
+              LOBYTE(unsignedIntegerValue2) = [v86 BOOLValue];
 
-              *(a1 + 14) = v78;
+              *(self + 14) = unsignedIntegerValue2;
               v87 = [v9 objectForKeyedSubscript:@"AdditionTriggersImmediateSync"];
-              LOBYTE(v78) = [v87 BOOLValue];
+              LOBYTE(unsignedIntegerValue2) = [v87 BOOLValue];
 
-              *(a1 + 15) = v78;
+              *(self + 15) = unsignedIntegerValue2;
               v88 = [v9 objectForKeyedSubscript:@"DeletionTriggersImmediateSync"];
-              LOBYTE(v78) = [v88 BOOLValue];
+              LOBYTE(unsignedIntegerValue2) = [v88 BOOLValue];
 
-              *(a1 + 16) = v78;
+              *(self + 16) = unsignedIntegerValue2;
             }
           }
         }
@@ -161,7 +161,7 @@
   }
 
   v89 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
 - (id)description

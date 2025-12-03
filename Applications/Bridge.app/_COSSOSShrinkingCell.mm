@@ -1,16 +1,16 @@
 @interface _COSSOSShrinkingCell
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation _COSSOSShrinkingCell
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5.receiver = self;
   v5.super_class = _COSSOSShrinkingCell;
-  [(_COSSOSShrinkingCell *)&v5 setTitle:a3];
-  v4 = [(_COSSOSShrinkingCell *)self titleLabel];
-  [v4 setAdjustsFontSizeToFitWidth:1];
+  [(_COSSOSShrinkingCell *)&v5 setTitle:title];
+  titleLabel = [(_COSSOSShrinkingCell *)self titleLabel];
+  [titleLabel setAdjustsFontSizeToFitWidth:1];
 }
 
 @end

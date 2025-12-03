@@ -1,32 +1,32 @@
 @interface PHCarPlayVoicemailViewController
-- (BOOL)isRestrictedMessage:(id)a3;
-- (PHCarPlayVoicemailViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)isRestrictedMessage:(id)message;
+- (PHCarPlayVoicemailViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)badgeString;
-- (id)restrictedSubtitleForMessage:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)restrictedSubtitleForMessage:(id)message;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)titleForNoContentBanner;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)addMessageIDToPlaybackQueue:(id)a3;
-- (void)configureCell:(id)a3 withVoicemail:(id)a4;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)addMessageIDToPlaybackQueue:(id)queue;
+- (void)configureCell:(id)cell withVoicemail:(id)voicemail;
 - (void)dealloc;
 - (void)playMessageFromPlaybackQueue;
-- (void)playMessageWithID:(id)a3;
-- (void)programmaticallySelectRowAtIndexPath:(id)a3;
-- (void)providersChangedForProviderManager:(id)a3;
-- (void)showRestrictedAlertForMessage:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)playMessageWithID:(id)d;
+- (void)programmaticallySelectRowAtIndexPath:(id)path;
+- (void)providersChangedForProviderManager:(id)manager;
+- (void)showRestrictedAlertForMessage:(id)message;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)voicemailManagerChangedNotification:(id)a3;
-- (void)voicemailViewControllerPlayVoicemailEventNotification:(id)a3;
+- (void)voicemailManagerChangedNotification:(id)notification;
+- (void)voicemailViewControllerPlayVoicemailEventNotification:(id)notification;
 @end
 
 @implementation PHCarPlayVoicemailViewController
 
-- (PHCarPlayVoicemailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PHCarPlayVoicemailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v14.receiver = self;
   v14.super_class = PHCarPlayVoicemailViewController;
-  v4 = [(PHCarPlayGenericViewController *)&v14 initWithNibName:a3 bundle:a4];
+  v4 = [(PHCarPlayGenericViewController *)&v14 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[NSNotificationCenter defaultCenter];
@@ -34,9 +34,9 @@
   }
 
   v6 = +[(PHApplicationServices *)MPApplicationServices];
-  v7 = [v6 contactStore];
+  contactStore = [v6 contactStore];
   v8 = *(v4 + 49);
-  *(v4 + 49) = v7;
+  *(v4 + 49) = contactStore;
 
   v9 = +[NSMutableArray array];
   v10 = *(v4 + 57);
@@ -45,9 +45,9 @@
   if (+[PHDevice isGeminiCapable])
   {
     v11 = +[(PHApplicationServices *)MPApplicationServices];
-    v12 = [v11 callProviderManager];
+    callProviderManager = [v11 callProviderManager];
 
-    [v12 addDelegate:v4 queue:0];
+    [callProviderManager addDelegate:v4 queue:0];
   }
 
   return v4;
@@ -71,44 +71,44 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 addObserver:self selector:"voicemailManagerChangedNotification:" name:@"PHCarPlayVoicemailManagerChangedNotification" object:0];
 
-  v4 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-  [v4 setRowHeight:UITableViewAutomaticDimension];
+  mainTableView = [(PHCarPlayGenericTableViewController *)self mainTableView];
+  [mainTableView setRowHeight:UITableViewAutomaticDimension];
 
-  v5 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+  mainTableView2 = [(PHCarPlayGenericTableViewController *)self mainTableView];
   v6 = objc_opt_class();
   v7 = +[(PHCarPlayGenericTableViewCell *)PHCarPlayVoicemailTableViewCell];
-  [v5 registerClass:v6 forCellReuseIdentifier:v7];
+  [mainTableView2 registerClass:v6 forCellReuseIdentifier:v7];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = PHCarPlayVoicemailViewController;
-  [(PHCarPlayGenericViewController *)&v7 viewDidAppear:a3];
-  v4 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-  v5 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-  v6 = [v5 indexPathForSelectedRow];
-  [v4 deselectRowAtIndexPath:v6 animated:1];
+  [(PHCarPlayGenericViewController *)&v7 viewDidAppear:appear];
+  mainTableView = [(PHCarPlayGenericTableViewController *)self mainTableView];
+  mainTableView2 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+  indexPathForSelectedRow = [mainTableView2 indexPathForSelectedRow];
+  [mainTableView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 }
 
-- (void)voicemailManagerChangedNotification:(id)a3
+- (void)voicemailManagerChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     v10 = 138412546;
-    v11 = v6;
+    v11 = name;
     v12 = 1024;
-    v13 = [(PHCarPlayGenericViewController *)self viewIsInAppearedState];
+    viewIsInAppearedState = [(PHCarPlayGenericViewController *)self viewIsInAppearedState];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handling %@ with self.viewIsInAppearedState: %d", &v10, 0x12u);
   }
 
   if ([(PHCarPlayGenericViewController *)self viewIsInAppearedState])
   {
-    v7 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-    [v7 reloadData];
+    mainTableView = [(PHCarPlayGenericTableViewController *)self mainTableView];
+    [mainTableView reloadData];
 
     [(PHCarPlayVoicemailViewController *)self playMessageFromPlaybackQueue];
   }
@@ -118,23 +118,23 @@
     [(PHCarPlayGenericTableViewController *)self setTableViewReloadIsRequiredOnViewWillAppear:1];
   }
 
-  v8 = [(PHCarPlayVoicemailViewController *)self tabBarItem];
-  v9 = [(PHCarPlayVoicemailViewController *)self badgeString];
-  [v8 setBadgeValue:v9];
+  tabBarItem = [(PHCarPlayVoicemailViewController *)self tabBarItem];
+  badgeString = [(PHCarPlayVoicemailViewController *)self badgeString];
+  [tabBarItem setBadgeValue:badgeString];
 }
 
-- (void)voicemailViewControllerPlayVoicemailEventNotification:(id)a3
+- (void)voicemailViewControllerPlayVoicemailEventNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v8 = [v4 valueForKey:@"kPHCarPlayVoicemailViewControllerVoicemailIDKey"];
+  userInfo = [notification userInfo];
+  v8 = [userInfo valueForKey:@"kPHCarPlayVoicemailViewControllerVoicemailIDKey"];
 
   if (v8)
   {
-    v5 = [(PHCarPlayVoicemailViewController *)self tabBarController];
-    [v5 setSelectedViewController:self];
+    tabBarController = [(PHCarPlayVoicemailViewController *)self tabBarController];
+    [tabBarController setSelectedViewController:self];
 
-    v6 = [v8 stringValue];
-    v7 = [v6 isEqualToString:@"-1"];
+    stringValue = [v8 stringValue];
+    v7 = [stringValue isEqualToString:@"-1"];
 
     if ((v7 & 1) == 0)
     {
@@ -143,17 +143,17 @@
   }
 }
 
-- (void)playMessageWithID:(id)a3
+- (void)playMessageWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[PHCarPlayVoicemailManager sharedVoicemailManager];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __54__PHCarPlayVoicemailViewController_playMessageWithID___block_invoke;
   v7[3] = &unk_1002869A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   [v5 voicemailWithID:v6 completion:v7];
 }
 
@@ -263,91 +263,91 @@ void __54__PHCarPlayVoicemailViewController_playMessageWithID___block_invoke_2(u
 
 - (void)playMessageFromPlaybackQueue
 {
-  v3 = [(PHCarPlayVoicemailViewController *)self messagePlaybackQueue];
-  v4 = [v3 firstObject];
+  messagePlaybackQueue = [(PHCarPlayVoicemailViewController *)self messagePlaybackQueue];
+  firstObject = [messagePlaybackQueue firstObject];
 
-  if (v4)
+  if (firstObject)
   {
     v5 = PHDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PHCarPlayVoicemailViewController *)self messagePlaybackQueue];
+      messagePlaybackQueue2 = [(PHCarPlayVoicemailViewController *)self messagePlaybackQueue];
       v8 = 138412546;
-      v9 = v4;
+      v9 = firstObject;
       v10 = 2112;
-      v11 = v6;
+      v11 = messagePlaybackQueue2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Found a messageID: %@ from the playback queue: %@ that needs to be played", &v8, 0x16u);
     }
 
-    v7 = [(PHCarPlayVoicemailViewController *)self messagePlaybackQueue];
-    [v7 removeObject:v4];
+    messagePlaybackQueue3 = [(PHCarPlayVoicemailViewController *)self messagePlaybackQueue];
+    [messagePlaybackQueue3 removeObject:firstObject];
 
-    [(PHCarPlayVoicemailViewController *)self playMessageWithID:v4];
+    [(PHCarPlayVoicemailViewController *)self playMessageWithID:firstObject];
   }
 }
 
-- (void)addMessageIDToPlaybackQueue:(id)a3
+- (void)addMessageIDToPlaybackQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(PHCarPlayVoicemailViewController *)self messagePlaybackQueue];
-  v6 = [v5 containsObject:v4];
+  queueCopy = queue;
+  messagePlaybackQueue = [(PHCarPlayVoicemailViewController *)self messagePlaybackQueue];
+  v6 = [messagePlaybackQueue containsObject:queueCopy];
 
   if (v6)
   {
-    v7 = PHDefaultLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    messagePlaybackQueue3 = PHDefaultLog();
+    if (os_log_type_enabled(messagePlaybackQueue3, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(PHCarPlayVoicemailViewController *)self messagePlaybackQueue];
+      messagePlaybackQueue2 = [(PHCarPlayVoicemailViewController *)self messagePlaybackQueue];
       v9 = 138412290;
-      v10 = v8;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Message already exists in queue: %@ not adding it", &v9, 0xCu);
+      v10 = messagePlaybackQueue2;
+      _os_log_impl(&_mh_execute_header, messagePlaybackQueue3, OS_LOG_TYPE_DEFAULT, "Message already exists in queue: %@ not adding it", &v9, 0xCu);
     }
   }
 
   else
   {
-    v7 = [(PHCarPlayVoicemailViewController *)self messagePlaybackQueue];
-    [v7 addObject:v4];
+    messagePlaybackQueue3 = [(PHCarPlayVoicemailViewController *)self messagePlaybackQueue];
+    [messagePlaybackQueue3 addObject:queueCopy];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [PHCarPlayVoicemailManager sharedVoicemailManager:a3];
-  v6 = [v5 voicemails];
-  v7 = [v6 count];
+  v5 = [PHCarPlayVoicemailManager sharedVoicemailManager:view];
+  voicemails = [v5 voicemails];
+  v7 = [voicemails count];
 
   [(PHCarPlayGenericTableViewController *)self setNoContentBannerShown:v7 == 0];
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[(PHCarPlayGenericTableViewCell *)PHCarPlayVoicemailTableViewCell];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8 forIndexPath:pathCopy];
 
   v10 = +[PHCarPlayVoicemailManager sharedVoicemailManager];
-  v11 = [v10 voicemails];
-  v12 = [v6 row];
+  voicemails = [v10 voicemails];
+  v12 = [pathCopy row];
 
-  v13 = [v11 objectAtIndex:v12];
+  v13 = [voicemails objectAtIndex:v12];
 
   [(PHCarPlayVoicemailViewController *)self configureCell:v9 withVoicemail:v13];
 
   return v9;
 }
 
-- (void)configureCell:(id)a3 withVoicemail:(id)a4
+- (void)configureCell:(id)cell withVoicemail:(id)voicemail
 {
-  v23 = a3;
-  v6 = a4;
-  [v23 setVoicemailMessage:v6];
-  [v23 setRestrictedMessage:{-[PHCarPlayVoicemailViewController isRestrictedMessage:](self, "isRestrictedMessage:", v6)}];
+  cellCopy = cell;
+  voicemailCopy = voicemail;
+  [cellCopy setVoicemailMessage:voicemailCopy];
+  [cellCopy setRestrictedMessage:{-[PHCarPlayVoicemailViewController isRestrictedMessage:](self, "isRestrictedMessage:", voicemailCopy)}];
   v7 = +[(PHApplicationServices *)MPApplicationServices];
-  v8 = [v7 contactStore];
-  v9 = [v6 displayNameUsingContactStore:v8];
+  contactStore = [v7 contactStore];
+  v9 = [voicemailCopy displayNameUsingContactStore:contactStore];
 
   if (![v9 length])
   {
@@ -357,11 +357,11 @@ void __54__PHCarPlayVoicemailViewController_playMessageWithID___block_invoke_2(u
     v9 = v11;
   }
 
-  [v23 setNameString:v9];
-  if ([v6 isDataAvailable])
+  [cellCopy setNameString:v9];
+  if ([voicemailCopy isDataAvailable])
   {
     v12 = +[PHCarPlayVoicemailManager sharedVoicemailManager];
-    [v12 localizedSubtitleForMessage:v6];
+    [v12 localizedSubtitleForMessage:voicemailCopy];
   }
 
   else
@@ -371,76 +371,76 @@ void __54__PHCarPlayVoicemailViewController_playMessageWithID___block_invoke_2(u
   }
   v13 = ;
 
-  [v23 setSubtitle:v13];
+  [cellCopy setSubtitle:v13];
   if (!+[PHDevice isGeminiCapable])
   {
-    v22 = 0;
+    localizedShortName = 0;
     goto LABEL_14;
   }
 
   v14 = +[(PHApplicationServices *)MPApplicationServices];
-  v15 = [v14 callProviderManager];
+  callProviderManager = [v14 callProviderManager];
 
-  v16 = [v15 telephonyProvider];
-  v17 = [v16 prioritizedSenderIdentities];
-  if ([v17 count] < 2)
+  telephonyProvider = [callProviderManager telephonyProvider];
+  prioritizedSenderIdentities = [telephonyProvider prioritizedSenderIdentities];
+  if ([prioritizedSenderIdentities count] < 2)
   {
-    v22 = 0;
+    localizedShortName = 0;
   }
 
   else
   {
-    v18 = [v6 receiverDestinationID];
-    v19 = [v18 length];
+    receiverDestinationID = [voicemailCopy receiverDestinationID];
+    v19 = [receiverDestinationID length];
 
     if (!v19)
     {
-      v22 = 0;
+      localizedShortName = 0;
       goto LABEL_13;
     }
 
-    v16 = [v15 telephonyProvider];
-    v17 = [v6 receiverDestinationID];
-    v20 = [TUHandle handleWithDestinationID:v17];
-    v21 = [v16 senderIdentityForHandle:v20];
-    v22 = [v21 localizedShortName];
+    telephonyProvider = [callProviderManager telephonyProvider];
+    prioritizedSenderIdentities = [voicemailCopy receiverDestinationID];
+    v20 = [TUHandle handleWithDestinationID:prioritizedSenderIdentities];
+    v21 = [telephonyProvider senderIdentityForHandle:v20];
+    localizedShortName = [v21 localizedShortName];
   }
 
 LABEL_13:
 LABEL_14:
-  [v23 setLocalizedSenderIdentityTitle:v22];
+  [cellCopy setLocalizedSenderIdentityTitle:localizedShortName];
 }
 
-- (BOOL)isRestrictedMessage:(id)a3
+- (BOOL)isRestrictedMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 senderDestinationID];
-  if ([v4 length])
+  messageCopy = message;
+  senderDestinationID = [messageCopy senderDestinationID];
+  if ([senderDestinationID length])
   {
-    v5 = [v3 senderDestinationID];
+    senderDestinationID2 = [messageCopy senderDestinationID];
   }
 
   else
   {
-    v5 = TUCallFilterUnknownCallerAddress;
+    senderDestinationID2 = TUCallFilterUnknownCallerAddress;
   }
 
-  v6 = v5;
+  v6 = senderDestinationID2;
 
   v7 = [TUHandle handleWithDestinationID:v6];
   v8 = +[TUCallCenter sharedInstance];
-  v9 = [v8 callFilterController];
-  v10 = [v9 containsRestrictedHandle:v7 forBundleIdentifier:TUBundleIdentifierMobilePhoneApplication];
+  callFilterController = [v8 callFilterController];
+  v10 = [callFilterController containsRestrictedHandle:v7 forBundleIdentifier:TUBundleIdentifierMobilePhoneApplication];
 
   return v10;
 }
 
-- (void)showRestrictedAlertForMessage:(id)a3
+- (void)showRestrictedAlertForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = TUBundle();
   v6 = [v5 localizedStringForKey:@"RESTRICTED_CONTENT" value:&stru_10028F310 table:@"TelephonyUtilities"];
-  v7 = [(PHCarPlayVoicemailViewController *)self restrictedSubtitleForMessage:v4];
+  v7 = [(PHCarPlayVoicemailViewController *)self restrictedSubtitleForMessage:messageCopy];
 
   v11 = [UIAlertController alertControllerWithTitle:v6 message:v7 preferredStyle:1];
 
@@ -452,11 +452,11 @@ LABEL_14:
   [(PHCarPlayVoicemailViewController *)self presentViewController:v11 animated:1 completion:0];
 }
 
-- (id)restrictedSubtitleForMessage:(id)a3
+- (id)restrictedSubtitleForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(PHCarPlayVoicemailViewController *)self contactStore];
-  v6 = [v4 displayNameUsingContactStore:v5];
+  messageCopy = message;
+  contactStore = [(PHCarPlayVoicemailViewController *)self contactStore];
+  v6 = [messageCopy displayNameUsingContactStore:contactStore];
 
   if (![v6 length])
   {
@@ -473,20 +473,20 @@ LABEL_14:
   return v11;
 }
 
-- (void)programmaticallySelectRowAtIndexPath:(id)a3
+- (void)programmaticallySelectRowAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = pathCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "programmaticallySelectRowAtIndexPath:%@", &v16, 0xCu);
   }
 
   v6 = +[PHCarPlayVoicemailManager sharedVoicemailManager];
-  v7 = [v6 voicemails];
-  v8 = [v7 objectAtIndex:{objc_msgSend(v4, "row")}];
+  voicemails = [v6 voicemails];
+  v8 = [voicemails objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   v9 = [(PHCarPlayVoicemailViewController *)self isRestrictedMessage:v8];
   if (v9)
@@ -499,8 +499,8 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Screen Time: Voicemail playback is restricted for message: %@", &v16, 0xCu);
     }
 
-    v11 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-    [v11 deselectRowAtIndexPath:v4 animated:0];
+    mainTableView = [(PHCarPlayGenericTableViewController *)self mainTableView];
+    [mainTableView deselectRowAtIndexPath:pathCopy animated:0];
 
     [(PHCarPlayVoicemailViewController *)self showRestrictedAlertForMessage:v8];
   }
@@ -511,8 +511,8 @@ LABEL_14:
     {
       v12 = objc_alloc_init(PHCarPlayVoicemailPlayerViewController);
       [(PHCarPlayVoicemailPlayerViewController *)v12 setRepresentedVoicemail:v8];
-      v13 = [(PHCarPlayVoicemailViewController *)self navigationController];
-      [v13 pushViewController:v12 animated:1];
+      navigationController = [(PHCarPlayVoicemailViewController *)self navigationController];
+      [navigationController pushViewController:v12 animated:1];
     }
 
     else
@@ -529,11 +529,11 @@ LABEL_14:
 
   if (((v9 | !+[PHCarPlayUtilities activeInterfaceMechanismIsHardware]) & 1) == 0)
   {
-    v14 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-    [v14 deselectRowAtIndexPath:v4 animated:0];
+    mainTableView2 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+    [mainTableView2 deselectRowAtIndexPath:pathCopy animated:0];
 
-    v15 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-    [v15 highlightRowAtIndexPath:v4 animated:0 scrollPosition:0];
+    mainTableView3 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+    [mainTableView3 highlightRowAtIndexPath:pathCopy animated:0 scrollPosition:0];
   }
 }
 
@@ -548,15 +548,15 @@ LABEL_14:
 - (id)badgeString
 {
   v2 = +[PHCarPlayVoicemailManager sharedVoicemailManager];
-  v3 = [v2 badgeString];
+  badgeString = [v2 badgeString];
 
-  return v3;
+  return badgeString;
 }
 
-- (void)providersChangedForProviderManager:(id)a3
+- (void)providersChangedForProviderManager:(id)manager
 {
-  v3 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-  [v3 reloadData];
+  mainTableView = [(PHCarPlayGenericTableViewController *)self mainTableView];
+  [mainTableView reloadData];
 }
 
 @end

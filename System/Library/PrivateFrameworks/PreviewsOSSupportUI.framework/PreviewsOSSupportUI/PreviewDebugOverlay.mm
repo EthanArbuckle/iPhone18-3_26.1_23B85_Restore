@@ -1,18 +1,18 @@
 @interface PreviewDebugOverlay
 - (_TtC19PreviewsOSSupportUI19PreviewDebugOverlay)init;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation PreviewDebugOverlay
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
   v5 = objc_opt_self();
-  v7 = self;
-  v6 = [v5 rootSettings];
-  LOBYTE(v5) = [v6 showDebugUI];
+  selfCopy = self;
+  rootSettings = [v5 rootSettings];
+  LOBYTE(v5) = [rootSettings showDebugUI];
 
-  *(&v7->super.isa + OBJC_IVAR____TtC19PreviewsOSSupportUI19PreviewDebugOverlay_settingsEnabled) = v5;
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC19PreviewsOSSupportUI19PreviewDebugOverlay_settingsEnabled) = v5;
   sub_25F511928();
 }
 

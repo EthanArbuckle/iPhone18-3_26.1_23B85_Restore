@@ -3,7 +3,7 @@
 - (NMSOutgoingResponse)init;
 - (id)description;
 - (void)send;
-- (void)setPbResponse:(id)a3;
+- (void)setPbResponse:(id)response;
 @end
 
 @implementation NMSOutgoingResponse
@@ -36,27 +36,27 @@
 - (void)send
 {
   WeakRetained = objc_loadWeakRetained(&self->_request);
-  v7 = [WeakRetained messageCenter];
+  messageCenter = [WeakRetained messageCenter];
 
   pbResponse = self->_pbResponse;
   if (pbResponse)
   {
-    v5 = [pbResponse data];
+    data = [pbResponse data];
     data = self->_data;
-    self->_data = v5;
+    self->_data = data;
   }
 
-  [v7 _sendResponse:self];
+  [messageCenter _sendResponse:self];
 }
 
-- (void)setPbResponse:(id)a3
+- (void)setPbResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   WeakRetained = objc_loadWeakRetained(&self->_request);
-  v5 = [WeakRetained messageCenter];
-  v6 = [v5 _pbMappingForMessageID:{objc_msgSend(WeakRetained, "messageID")}];
+  messageCenter = [WeakRetained messageCenter];
+  v6 = [messageCenter _pbMappingForMessageID:{objc_msgSend(WeakRetained, "messageID")}];
   pbResponse = self->_pbResponse;
-  self->_pbResponse = v4;
+  self->_pbResponse = responseCopy;
 }
 
 - (NMSIncomingRequest)request

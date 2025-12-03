@@ -11,24 +11,24 @@
 - (id)tapbackUserData;
 - (void)_setupBalloonView;
 - (void)_tearDownBalloonView;
-- (void)balloonViewTapped:(id)a3 withModifierFlags:(int64_t)a4 selectedText:(id)a5;
+- (void)balloonViewTapped:(id)tapped withModifierFlags:(int64_t)flags selectedText:(id)text;
 - (void)layoutSubviews;
-- (void)performInsertion:(id)a3;
-- (void)setUserData:(id)a3;
+- (void)performInsertion:(id)insertion;
+- (void)setUserData:(id)data;
 @end
 
 @implementation CKPhotoGridTapbackView
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v5 = a3;
-  if (self->_userData != v5)
+  dataCopy = data;
+  if (self->_userData != dataCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_userData, a3);
+    v6 = dataCopy;
+    objc_storeStrong(&self->_userData, data);
     [(CKPhotoGridTapbackView *)self _tearDownBalloonView];
     [(CKPhotoGridTapbackView *)self _setupBalloonView];
-    v5 = v6;
+    dataCopy = v6;
   }
 }
 
@@ -37,8 +37,8 @@
   v27.receiver = self;
   v27.super_class = CKPhotoGridTapbackView;
   [(CKPhotoGridTapbackView *)&v27 layoutSubviews];
-  v3 = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
-  [v3 prepareForDisplayIfNeeded];
+  tapbackBalloonView = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
+  [tapbackBalloonView prepareForDisplayIfNeeded];
 
   [(CKPhotoGridTapbackView *)self bounds];
   v5 = v4;
@@ -73,8 +73,8 @@
     v21 = v13 * 0.5;
   }
 
-  v25 = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
-  [v25 setFrame:{v20, v21, v10, v12}];
+  tapbackBalloonView2 = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
+  [tapbackBalloonView2 setFrame:{v20, v21, v10, v12}];
 
   if ([(CKPhotoGridTapbackView *)self needsAnimation])
   {
@@ -90,21 +90,21 @@
 
 - (id)tapbackUserData
 {
-  v3 = [(CKPhotoGridTapbackView *)self userData];
+  userData = [(CKPhotoGridTapbackView *)self userData];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(CKPhotoGridTapbackView *)self userData];
+    userData2 = [(CKPhotoGridTapbackView *)self userData];
   }
 
   else
   {
-    v5 = 0;
+    userData2 = 0;
   }
 
-  return v5;
+  return userData2;
 }
 
 - (void)_setupBalloonView
@@ -113,12 +113,12 @@
   v6 = CKBalloonViewForClass([(CKPhotoGridTapbackView *)self balloonViewClass]);
   [(CKPhotoGridTapbackView *)self setTapbackBalloonView:v6];
   [(CKPhotoGridTapbackView *)self addSubview:v6];
-  v3 = [(CKPhotoGridTapbackView *)self asset];
-  v4 = [v3 acknowledgmentChatItem];
-  [v6 configureForAggregateAcknowledgmentChatItem:v4];
+  asset = [(CKPhotoGridTapbackView *)self asset];
+  acknowledgmentChatItem = [asset acknowledgmentChatItem];
+  [v6 configureForAggregateAcknowledgmentChatItem:acknowledgmentChatItem];
 
-  v5 = [(CKPhotoGridTapbackView *)self gradientReferenceView];
-  [v6 setGradientReferenceView:v5];
+  gradientReferenceView = [(CKPhotoGridTapbackView *)self gradientReferenceView];
+  [v6 setGradientReferenceView:gradientReferenceView];
 
   [v6 setInvertTailDirection:{-[CKPhotoGridTapbackView invertTail](self, "invertTail")}];
   [v6 setNeedsPrepareForDisplay];
@@ -130,18 +130,18 @@
 
 - (void)_tearDownBalloonView
 {
-  v3 = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
+  tapbackBalloonView = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
 
-  if (v3)
+  if (tapbackBalloonView)
   {
-    v4 = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
-    [v4 removeFromSuperview];
+    tapbackBalloonView2 = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
+    [tapbackBalloonView2 removeFromSuperview];
 
-    v5 = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
-    [v5 prepareForReuse];
+    tapbackBalloonView3 = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
+    [tapbackBalloonView3 prepareForReuse];
 
-    v6 = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
-    CKBalloonViewReuse(v6);
+    tapbackBalloonView4 = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
+    CKBalloonViewReuse(tapbackBalloonView4);
 
     [(CKPhotoGridTapbackView *)self setTapbackBalloonView:0];
   }
@@ -149,8 +149,8 @@
 
 - (id)asset
 {
-  v3 = [(CKPhotoGridTapbackView *)self userData];
-  v4 = [v3 asset];
+  userData = [(CKPhotoGridTapbackView *)self userData];
+  asset = [userData asset];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -164,61 +164,61 @@
     [(CKPhotoGridTapbackView *)self tapbackUserData];
   }
   v6 = ;
-  v7 = [v6 asset];
+  asset2 = [v6 asset];
 
-  return v7;
+  return asset2;
 }
 
 - (id)gradientReferenceView
 {
-  v3 = [(CKPhotoGridTapbackView *)self tapbackUserData];
-  v4 = v3;
-  if (v3 && ([v3 isDisplayedInGridView] & 1) == 0)
+  tapbackUserData = [(CKPhotoGridTapbackView *)self tapbackUserData];
+  v4 = tapbackUserData;
+  if (tapbackUserData && ([tapbackUserData isDisplayedInGridView] & 1) == 0)
   {
-    v5 = [v4 gradientReferenceView];
+    selfCopy = [v4 gradientReferenceView];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   return v6;
 }
 
 - (BOOL)isDisplayedInGridView
 {
-  v2 = [(CKPhotoGridTapbackView *)self tapbackUserData];
-  v3 = [v2 isDisplayedInGridView];
+  tapbackUserData = [(CKPhotoGridTapbackView *)self tapbackUserData];
+  isDisplayedInGridView = [tapbackUserData isDisplayedInGridView];
 
-  return v3;
+  return isDisplayedInGridView;
 }
 
 - (BOOL)isFromMe
 {
-  v2 = [(CKPhotoGridTapbackView *)self asset];
-  v3 = [v2 acknowledgmentChatItem];
-  v4 = [v3 isFromMe];
+  asset = [(CKPhotoGridTapbackView *)self asset];
+  acknowledgmentChatItem = [asset acknowledgmentChatItem];
+  isFromMe = [acknowledgmentChatItem isFromMe];
 
-  return v4;
+  return isFromMe;
 }
 
 - (BOOL)shouldAnimate
 {
-  v2 = [(CKPhotoGridTapbackView *)self tapbackUserData];
-  v3 = [v2 shouldAnimate];
+  tapbackUserData = [(CKPhotoGridTapbackView *)self tapbackUserData];
+  shouldAnimate = [tapbackUserData shouldAnimate];
 
-  return v3;
+  return shouldAnimate;
 }
 
 - (BOOL)invertTail
 {
-  v2 = [(CKPhotoGridTapbackView *)self tapbackUserData];
-  v3 = [v2 invertTailDirection];
+  tapbackUserData = [(CKPhotoGridTapbackView *)self tapbackUserData];
+  invertTailDirection = [tapbackUserData invertTailDirection];
 
-  return v3;
+  return invertTailDirection;
 }
 
 - (Class)balloonViewClass
@@ -231,22 +231,22 @@
 
 - (id)_imAggregateAcknowledgmentChatItem
 {
-  v2 = [(CKPhotoGridTapbackView *)self asset];
-  v3 = [v2 acknowledgmentChatItem];
-  v4 = [v3 IMChatItem];
+  asset = [(CKPhotoGridTapbackView *)self asset];
+  acknowledgmentChatItem = [asset acknowledgmentChatItem];
+  iMChatItem = [acknowledgmentChatItem IMChatItem];
 
-  return v4;
+  return iMChatItem;
 }
 
-- (void)performInsertion:(id)a3
+- (void)performInsertion:(id)insertion
 {
-  v4 = a3;
+  insertionCopy = insertion;
   [MEMORY[0x1E6979518] flush];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setAnimationDuration:2.0];
-  v5 = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
-  v6 = [v5 layer];
-  [v6 convertTime:0 fromLayer:CACurrentMediaTime()];
+  tapbackBalloonView = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
+  layer = [tapbackBalloonView layer];
+  [layer convertTime:0 fromLayer:CACurrentMediaTime()];
   v8 = v7;
 
   v9 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"transform.scale.xy"];
@@ -259,22 +259,22 @@
   [v9 setSpeed:v10];
   [v9 setDuration:1.0];
   [v9 setFillMode:*MEMORY[0x1E69797E8]];
-  v11 = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
-  v12 = [v11 layer];
-  [v12 addAnimation:v9 forKey:@"transform.scale.xy"];
+  tapbackBalloonView2 = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
+  layer2 = [tapbackBalloonView2 layer];
+  [layer2 addAnimation:v9 forKey:@"transform.scale.xy"];
 
-  v13 = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
-  v14 = [v13 glyphView];
+  tapbackBalloonView3 = [(CKPhotoGridTapbackView *)self tapbackBalloonView];
+  glyphView = [tapbackBalloonView3 glyphView];
 
-  [v14 animationDuration];
-  [v14 animateWithBeginTime:0 completionDelay:v8 completion:v15];
+  [glyphView animationDuration];
+  [glyphView animateWithBeginTime:0 completionDelay:v8 completion:v15];
   v16 = MEMORY[0x1E6979518];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __43__CKPhotoGridTapbackView_performInsertion___block_invoke;
   v18[3] = &unk_1E72EBDB8;
-  v19 = v4;
-  v17 = v4;
+  v19 = insertionCopy;
+  v17 = insertionCopy;
   [v16 setCompletionBlock:v18];
   [MEMORY[0x1E6979518] commit];
   [MEMORY[0x1E6979518] flush];
@@ -291,26 +291,26 @@ uint64_t __43__CKPhotoGridTapbackView_performInsertion___block_invoke(uint64_t a
   return result;
 }
 
-- (void)balloonViewTapped:(id)a3 withModifierFlags:(int64_t)a4 selectedText:(id)a5
+- (void)balloonViewTapped:(id)tapped withModifierFlags:(int64_t)flags selectedText:(id)text
 {
   v15 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  tappedCopy = tapped;
+  textCopy = text;
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v7;
+      v14 = tappedCopy;
       _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "Detected tap on view: %@", &v13, 0xCu);
     }
   }
 
-  v10 = [(CKPhotoGridTapbackView *)self tapbackUserData];
-  v11 = [v10 photoGridTapbackPileDelegate];
-  v12 = [(CKPhotoGridTapbackView *)self asset];
-  [v11 tapbackPileViewTapped:v7 asset:v12];
+  tapbackUserData = [(CKPhotoGridTapbackView *)self tapbackUserData];
+  photoGridTapbackPileDelegate = [tapbackUserData photoGridTapbackPileDelegate];
+  asset = [(CKPhotoGridTapbackView *)self asset];
+  [photoGridTapbackPileDelegate tapbackPileViewTapped:tappedCopy asset:asset];
 }
 
 - (CGRect)clippingRect

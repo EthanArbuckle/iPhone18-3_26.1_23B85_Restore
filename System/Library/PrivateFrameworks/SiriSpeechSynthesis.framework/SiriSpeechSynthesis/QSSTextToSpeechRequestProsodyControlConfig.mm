@@ -1,6 +1,6 @@
 @interface QSSTextToSpeechRequestProsodyControlConfig
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestProsodyControlConfig>)addObjectToBuffer:(void *)a3;
-- (QSSTextToSpeechRequestProsodyControlConfig)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestProsodyControlConfig *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestProsodyControlConfig>)addObjectToBuffer:(void *)buffer;
+- (QSSTextToSpeechRequestProsodyControlConfig)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestProsodyControlConfig *)root verify:(BOOL)verify;
 - (float)global_energy;
 - (float)global_pitch;
 - (float)global_rate;
@@ -43,7 +43,7 @@ flatbuffers::DetachedBuffer *__58__QSSTextToSpeechRequestProsodyControlConfig_fl
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestProsodyControlConfig>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestProsodyControlConfig>)addObjectToBuffer:(void *)buffer
 {
   [(QSSTextToSpeechRequestProsodyControlConfig *)self global_rate];
   v6 = v5;
@@ -61,20 +61,20 @@ flatbuffers::DetachedBuffer *__58__QSSTextToSpeechRequestProsodyControlConfig_fl
   v18 = v17;
   [(QSSTextToSpeechRequestProsodyControlConfig *)self global_sent_tilt];
   v20 = v19;
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v21 = *(a3 + 10);
-  v22 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 4, v6);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 6, v8);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 8, v10);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 10, v12);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 12, v14);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 14, v16);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 16, v18);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 18, v20);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v21 = *(buffer + 10);
+  v22 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 4, v6);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 6, v8);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 8, v10);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 10, v12);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 12, v14);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 14, v16);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 16, v18);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 18, v20);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v22 + v21);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v22 + v21);
 }
 
 - (float)global_sent_tilt
@@ -213,42 +213,42 @@ flatbuffers::DetachedBuffer *__58__QSSTextToSpeechRequestProsodyControlConfig_fl
   return result;
 }
 
-- (QSSTextToSpeechRequestProsodyControlConfig)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestProsodyControlConfig *)a4 verify:(BOOL)a5
+- (QSSTextToSpeechRequestProsodyControlConfig)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestProsodyControlConfig *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSTextToSpeechRequestProsodyControlConfig;
   v10 = [(QSSTextToSpeechRequestProsodyControlConfig *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -270,9 +270,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

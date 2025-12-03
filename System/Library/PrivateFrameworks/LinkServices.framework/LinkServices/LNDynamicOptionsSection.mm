@@ -1,9 +1,9 @@
 @interface LNDynamicOptionsSection
-- (LNDynamicOptionsSection)initWithCoder:(id)a3;
-- (LNDynamicOptionsSection)initWithOptions:(id)a3 title:(id)a4;
-- (LNDynamicOptionsSection)initWithOptions:(id)a3 title:(id)a4 subtitle:(id)a5 image:(id)a6;
+- (LNDynamicOptionsSection)initWithCoder:(id)coder;
+- (LNDynamicOptionsSection)initWithOptions:(id)options title:(id)title;
+- (LNDynamicOptionsSection)initWithOptions:(id)options title:(id)title subtitle:(id)subtitle image:(id)image;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNDynamicOptionsSection
@@ -13,55 +13,55 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNDynamicOptionsSection *)self title];
-  v7 = [(LNDynamicOptionsSection *)self options];
-  v8 = [v3 stringWithFormat:@"<%@: %p titleKey=%@, optionsCount=%lu>", v5, self, v6, objc_msgSend(v7, "count")];
+  title = [(LNDynamicOptionsSection *)self title];
+  options = [(LNDynamicOptionsSection *)self options];
+  v8 = [v3 stringWithFormat:@"<%@: %p titleKey=%@, optionsCount=%lu>", v5, self, title, objc_msgSend(options, "count")];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNDynamicOptionsSection *)self options];
-  [v4 encodeObject:v5 forKey:@"options"];
+  coderCopy = coder;
+  options = [(LNDynamicOptionsSection *)self options];
+  [coderCopy encodeObject:options forKey:@"options"];
 
-  v6 = [(LNDynamicOptionsSection *)self title];
-  [v4 encodeObject:v6 forKey:@"title"];
+  title = [(LNDynamicOptionsSection *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v7 = [(LNDynamicOptionsSection *)self subtitle];
-  [v4 encodeObject:v7 forKey:@"subtitle"];
+  subtitle = [(LNDynamicOptionsSection *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"subtitle"];
 
-  v8 = [(LNDynamicOptionsSection *)self image];
-  [v4 encodeObject:v8 forKey:@"image"];
+  image = [(LNDynamicOptionsSection *)self image];
+  [coderCopy encodeObject:image forKey:@"image"];
 }
 
-- (LNDynamicOptionsSection)initWithCoder:(id)a3
+- (LNDynamicOptionsSection)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"options"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"options"];
 
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
-  v11 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
 
   v12 = [(LNDynamicOptionsSection *)self initWithOptions:v8 title:v9 subtitle:v10 image:v11];
   return v12;
 }
 
-- (LNDynamicOptionsSection)initWithOptions:(id)a3 title:(id)a4 subtitle:(id)a5 image:(id)a6
+- (LNDynamicOptionsSection)initWithOptions:(id)options title:(id)title subtitle:(id)subtitle image:(id)image
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  optionsCopy = options;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  imageCopy = image;
+  if (!optionsCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"LNDynamicOptionsResult.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"options"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNDynamicOptionsResult.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"options"}];
   }
 
   v27.receiver = self;
@@ -69,19 +69,19 @@
   v15 = [(LNDynamicOptionsSection *)&v27 init];
   if (v15)
   {
-    v16 = [v11 copy];
+    v16 = [optionsCopy copy];
     options = v15->_options;
     v15->_options = v16;
 
-    v18 = [v12 copy];
+    v18 = [titleCopy copy];
     title = v15->_title;
     v15->_title = v18;
 
-    v20 = [v13 copy];
+    v20 = [subtitleCopy copy];
     subtitle = v15->_subtitle;
     v15->_subtitle = v20;
 
-    v22 = [v14 copy];
+    v22 = [imageCopy copy];
     image = v15->_image;
     v15->_image = v22;
 
@@ -91,17 +91,17 @@
   return v15;
 }
 
-- (LNDynamicOptionsSection)initWithOptions:(id)a3 title:(id)a4
+- (LNDynamicOptionsSection)initWithOptions:(id)options title:(id)title
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  optionsCopy = options;
+  titleCopy = title;
+  if (!optionsCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"LNDynamicOptionsResult.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"options"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNDynamicOptionsResult.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"options"}];
   }
 
-  v9 = [(LNDynamicOptionsSection *)self initWithOptions:v7 title:v8 subtitle:0 image:0];
+  v9 = [(LNDynamicOptionsSection *)self initWithOptions:optionsCopy title:titleCopy subtitle:0 image:0];
 
   return v9;
 }

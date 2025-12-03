@@ -1,5 +1,5 @@
 @interface PKPinCodeFieldAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (_NSRange)_accessibilitySelectedTextRange;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -7,11 +7,11 @@
 
 @implementation PKPinCodeFieldAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPinCodeField" hasInstanceVariable:@"_pinCode" withType:"NSMutableString"];
-  [v3 validateClass:@"PKPinCodeField" hasInstanceVariable:@"_pinCodeLength" withType:"Q"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPinCodeField" hasInstanceVariable:@"_pinCode" withType:"NSMutableString"];
+  [validationsCopy validateClass:@"PKPinCodeField" hasInstanceVariable:@"_pinCodeLength" withType:"Q"];
 }
 
 - (_NSRange)_accessibilitySelectedTextRange

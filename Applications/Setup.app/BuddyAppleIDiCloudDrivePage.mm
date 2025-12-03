@@ -1,8 +1,8 @@
 @interface BuddyAppleIDiCloudDrivePage
 - (BOOL)controllerNeedsToRun;
 - (BuddyAppleIDiCloudDrivePage)init;
-- (void)_continueTapped:(id)a3;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)_continueTapped:(id)tapped;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -28,28 +28,28 @@
 
 - (void)viewDidLoad
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = BuddyAppleIDiCloudDrivePage;
   [(BuddyAppleIDiCloudDrivePage *)&v5 viewDidLoad];
-  v2 = v7;
+  v2 = selfCopy;
   v3 = +[NSBundle mainBundle];
   v4 = [(NSBundle *)v3 localizedStringForKey:@"CONTINUE" value:&stru_10032F900 table:@"Localizable"];
   [(BuddyWelcomeController *)v2 addBoldButton:v4 action:"_continueTapped:"];
 }
 
-- (void)_continueTapped:(id)a3
+- (void)_continueTapped:(id)tapped
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tapped);
   v3 = +[ACAccountStore defaultStore];
-  v20 = [v3 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
 
-  v19 = [v20 aa_personID];
-  v18 = [[AACloudKitStartMigrationRequest alloc] initWithAccount:v20];
+  aa_personID = [aa_primaryAppleAccount aa_personID];
+  v18 = [[AACloudKitStartMigrationRequest alloc] initWithAccount:aa_primaryAppleAccount];
   oslog = _BYLoggingFacility();
   v16 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -67,33 +67,33 @@
   v11 = 0;
   v12 = sub_1000F8F98;
   v13 = &unk_10032CD28;
-  v14 = v19;
+  v14 = aa_personID;
   [v6 performRequestWithHandler:&v9];
-  [v20 aa_setUsesCloudDocs:1];
+  [aa_primaryAppleAccount aa_setUsesCloudDocs:1];
   v7 = +[ACAccountStore defaultStore];
-  [v7 saveAccount:v20 withCompletionHandler:0];
+  [v7 saveAccount:aa_primaryAppleAccount withCompletionHandler:0];
 
-  v8 = [(BuddyWelcomeController *)v22 delegate];
-  [(BFFFlowItemDelegate *)v8 flowItemDone:v22];
+  delegate = [(BuddyWelcomeController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v18, 0);
-  objc_storeStrong(&v19, 0);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&aa_personID, 0);
+  objc_storeStrong(&aa_primaryAppleAccount, 0);
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)controllerNeedsToRun
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   v2 = +[ACAccountStore defaultStore];
   location[0] = [v2 aa_primaryAppleAccount];
 
   if (location[0])
   {
-    v3 = [(BuddyAppleIDiCloudDrivePage *)v7 managedConfiguration];
-    v4 = [(MCProfileConnection *)v3 BOOLRestrictionForFeature:MCFeatureCloudDocumentSyncAllowed];
+    managedConfiguration = [(BuddyAppleIDiCloudDrivePage *)selfCopy managedConfiguration];
+    v4 = [(MCProfileConnection *)managedConfiguration BOOLRestrictionForFeature:MCFeatureCloudDocumentSyncAllowed];
 
     v8 = v4 != 2;
   }
@@ -107,16 +107,16 @@
   return v8;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = +[ACAccountStore defaultStore];
-  v17 = [v3 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
 
-  v16 = [[AACloudKitMigrationStateRequest alloc] initWithAccount:v17];
+  v16 = [[AACloudKitMigrationStateRequest alloc] initWithAccount:aa_primaryAppleAccount];
   oslog = _BYLoggingFacility();
   v14 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -138,7 +138,7 @@
   [v6 performRequestWithHandler:&v7];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v16, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&aa_primaryAppleAccount, 0);
   objc_storeStrong(location, 0);
 }
 

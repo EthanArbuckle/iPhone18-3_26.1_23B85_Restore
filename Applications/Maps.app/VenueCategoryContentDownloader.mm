@@ -1,15 +1,15 @@
 @interface VenueCategoryContentDownloader
-- (VenueCategoryContentDownloader)initWithDelegate:(id)a3 venueAutoCompleteCategoryCardItem:(id)a4;
-- (VenueCategoryContentDownloader)initWithDelegate:(id)a3 venueCategoryCardItem:(id)a4;
+- (VenueCategoryContentDownloader)initWithDelegate:(id)delegate venueAutoCompleteCategoryCardItem:(id)item;
+- (VenueCategoryContentDownloader)initWithDelegate:(id)delegate venueCategoryCardItem:(id)item;
 - (VenueCategoryContentDownloaderDelegate)delegate;
-- (void)fetchVenueMapItemWithBusinessID:(unint64_t)a3 completion:(id)a4;
-- (void)performSearchWithSearchCategory:(id)a3 subcategoriesType:(int)a4 filter:(id)a5 shouldFrameMapViewport:(BOOL)a6 actionCoordination:(id)a7;
-- (void)performSearchWithVenueCategoryItem:(id)a3 actionCoordination:(id)a4;
+- (void)fetchVenueMapItemWithBusinessID:(unint64_t)d completion:(id)completion;
+- (void)performSearchWithSearchCategory:(id)category subcategoriesType:(int)type filter:(id)filter shouldFrameMapViewport:(BOOL)viewport actionCoordination:(id)coordination;
+- (void)performSearchWithVenueCategoryItem:(id)item actionCoordination:(id)coordination;
 - (void)searchDidCancel;
 - (void)searchDidFail;
-- (void)searchDidReceiveAutoCompleteSubcategories:(id)a3;
-- (void)searchDidReceiveEVChargerUpdates:(id)a3;
-- (void)searchDidReceiveResults:(id)a3;
+- (void)searchDidReceiveAutoCompleteSubcategories:(id)subcategories;
+- (void)searchDidReceiveEVChargerUpdates:(id)updates;
+- (void)searchDidReceiveResults:(id)results;
 - (void)searchWillStart;
 @end
 
@@ -22,61 +22,61 @@
   return WeakRetained;
 }
 
-- (void)searchDidReceiveAutoCompleteSubcategories:(id)a3
+- (void)searchDidReceiveAutoCompleteSubcategories:(id)subcategories
 {
-  v6 = [a3 firstObject];
-  v4 = [(VenueCategoryContentDownloader *)self delegate];
-  v5 = [v6 subcategories];
-  [v4 venueCategoryContentDownloader:self didReceiveAutoCompleteSubcategories:v5 subcategoriesType:{objc_msgSend(v6, "subCategoryType")}];
+  firstObject = [subcategories firstObject];
+  delegate = [(VenueCategoryContentDownloader *)self delegate];
+  subcategories = [firstObject subcategories];
+  [delegate venueCategoryContentDownloader:self didReceiveAutoCompleteSubcategories:subcategories subcategoriesType:{objc_msgSend(firstObject, "subCategoryType")}];
 }
 
-- (void)searchDidReceiveResults:(id)a3
+- (void)searchDidReceiveResults:(id)results
 {
-  v4 = a3;
-  v5 = [(VenueCategoryContentDownloader *)self delegate];
-  [v5 venueCategoryContentDownloader:self didReceiveSearchResults:v4 shouldSwitchToBestFloor:{-[VenueCategoryContentDownloader currentSearchShouldFrameMapViewport](self, "currentSearchShouldFrameMapViewport")}];
+  resultsCopy = results;
+  delegate = [(VenueCategoryContentDownloader *)self delegate];
+  [delegate venueCategoryContentDownloader:self didReceiveSearchResults:resultsCopy shouldSwitchToBestFloor:{-[VenueCategoryContentDownloader currentSearchShouldFrameMapViewport](self, "currentSearchShouldFrameMapViewport")}];
 }
 
-- (void)searchDidReceiveEVChargerUpdates:(id)a3
+- (void)searchDidReceiveEVChargerUpdates:(id)updates
 {
-  v7 = a3;
-  v4 = [(VenueCategoryContentDownloader *)self delegate];
+  updatesCopy = updates;
+  delegate = [(VenueCategoryContentDownloader *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VenueCategoryContentDownloader *)self delegate];
-    [v6 venueDidReceiveEVChargerUpdates:v7];
+    delegate2 = [(VenueCategoryContentDownloader *)self delegate];
+    [delegate2 venueDidReceiveEVChargerUpdates:updatesCopy];
   }
 }
 
 - (void)searchDidCancel
 {
-  v3 = [(VenueCategoryContentDownloader *)self delegate];
-  [v3 venueCategoryContentDownloaderDidCancel:self];
+  delegate = [(VenueCategoryContentDownloader *)self delegate];
+  [delegate venueCategoryContentDownloaderDidCancel:self];
 }
 
 - (void)searchDidFail
 {
-  v3 = [(VenueCategoryContentDownloader *)self delegate];
-  [v3 venueCategoryContentDownloaderDidFail:self];
+  delegate = [(VenueCategoryContentDownloader *)self delegate];
+  [delegate venueCategoryContentDownloaderDidFail:self];
 }
 
 - (void)searchWillStart
 {
-  v3 = [(VenueCategoryContentDownloader *)self delegate];
-  [v3 venueCategoryContentDownloaderDidStart:self];
+  delegate = [(VenueCategoryContentDownloader *)self delegate];
+  [delegate venueCategoryContentDownloaderDidStart:self];
 }
 
-- (void)performSearchWithVenueCategoryItem:(id)a3 actionCoordination:(id)a4
+- (void)performSearchWithVenueCategoryItem:(id)item actionCoordination:(id)coordination
 {
-  v6 = a4;
-  v10 = [SearchFieldItem searchFieldItemWithObject:a3];
-  v7 = [(VenueCategoryContentDownloader *)self delegate];
+  coordinationCopy = coordination;
+  v10 = [SearchFieldItem searchFieldItemWithObject:item];
+  delegate = [(VenueCategoryContentDownloader *)self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = delegate;
   }
 
   else
@@ -86,53 +86,53 @@
 
   v9 = v8;
 
-  [v6 viewController:v9 doSearchItem:v10 withUserInfo:0];
+  [coordinationCopy viewController:v9 doSearchItem:v10 withUserInfo:0];
 }
 
-- (void)performSearchWithSearchCategory:(id)a3 subcategoriesType:(int)a4 filter:(id)a5 shouldFrameMapViewport:(BOOL)a6 actionCoordination:(id)a7
+- (void)performSearchWithSearchCategory:(id)category subcategoriesType:(int)type filter:(id)filter shouldFrameMapViewport:(BOOL)viewport actionCoordination:(id)coordination
 {
-  v8 = a6;
-  v23 = a3;
-  v12 = a5;
-  v13 = a7;
-  v14 = [(VenueCategoryContentDownloader *)self mapItem];
+  viewportCopy = viewport;
+  categoryCopy = category;
+  filterCopy = filter;
+  coordinationCopy = coordination;
+  mapItem = [(VenueCategoryContentDownloader *)self mapItem];
 
-  if (v14)
+  if (mapItem)
   {
-    [(VenueCategoryContentDownloader *)self setCurrentSearchShouldFrameMapViewport:v8];
-    v15 = [(VenueCategoryContentDownloader *)self mapItem];
-    v16 = [v15 _venueInfo];
-    v17 = [v16 venueIdentifier];
+    [(VenueCategoryContentDownloader *)self setCurrentSearchShouldFrameMapViewport:viewportCopy];
+    mapItem2 = [(VenueCategoryContentDownloader *)self mapItem];
+    _venueInfo = [mapItem2 _venueInfo];
+    venueIdentifier = [_venueInfo venueIdentifier];
 
-    if (a4 == 2)
+    if (type == 2)
     {
-      v18 = [v12 filterID];
-      v19 = v18;
-      if (v18)
+      filterID = [filterCopy filterID];
+      v19 = filterID;
+      if (filterID)
       {
-        v20 = v18;
+        v20 = filterID;
       }
 
       else
       {
-        v20 = v17;
+        v20 = venueIdentifier;
       }
 
       v21 = v20;
 
-      v17 = v21;
+      venueIdentifier = v21;
     }
 
-    v22 = -[VenueCategoryItem initWithSearchCategory:venueIdentifier:displayMode:isAutoCompleteCategory:shouldFrameMapViewport:]([VenueCategoryItem alloc], "initWithSearchCategory:venueIdentifier:displayMode:isAutoCompleteCategory:shouldFrameMapViewport:", v23, v17, [v23 displayMode], 0, -[VenueCategoryContentDownloader currentSearchShouldFrameMapViewport](self, "currentSearchShouldFrameMapViewport"));
-    [(VenueCategoryContentDownloader *)self performSearchWithVenueCategoryItem:v22 actionCoordination:v13];
+    v22 = -[VenueCategoryItem initWithSearchCategory:venueIdentifier:displayMode:isAutoCompleteCategory:shouldFrameMapViewport:]([VenueCategoryItem alloc], "initWithSearchCategory:venueIdentifier:displayMode:isAutoCompleteCategory:shouldFrameMapViewport:", categoryCopy, venueIdentifier, [categoryCopy displayMode], 0, -[VenueCategoryContentDownloader currentSearchShouldFrameMapViewport](self, "currentSearchShouldFrameMapViewport"));
+    [(VenueCategoryContentDownloader *)self performSearchWithVenueCategoryItem:v22 actionCoordination:coordinationCopy];
   }
 }
 
-- (void)fetchVenueMapItemWithBusinessID:(unint64_t)a3 completion:(id)a4
+- (void)fetchVenueMapItemWithBusinessID:(unint64_t)d completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = [MKMapItemIdentifier alloc];
-  v7 = [v6 initWithMUID:a3 resultProviderID:0 coordinate:{MKCoordinateInvalid[0], MKCoordinateInvalid[1]}];
+  v7 = [v6 initWithMUID:d resultProviderID:0 coordinate:{MKCoordinateInvalid[0], MKCoordinateInvalid[1]}];
   if (v7)
   {
     v8 = +[MKMapService sharedService];
@@ -144,49 +144,49 @@
     v11[1] = 3221225472;
     v11[2] = sub_100982930;
     v11[3] = &unk_10165EB78;
-    v12 = v5;
+    v12 = completionCopy;
     [v10 submitWithHandler:v11 networkActivity:0];
   }
 }
 
-- (VenueCategoryContentDownloader)initWithDelegate:(id)a3 venueAutoCompleteCategoryCardItem:(id)a4
+- (VenueCategoryContentDownloader)initWithDelegate:(id)delegate venueAutoCompleteCategoryCardItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  itemCopy = item;
   v15.receiver = self;
   v15.super_class = VenueCategoryContentDownloader;
   v8 = [(VenueCategoryContentDownloader *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    v10 = [v7 venueIdentifier];
-    v11 = [v10 businessID];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    venueIdentifier = [itemCopy venueIdentifier];
+    businessID = [venueIdentifier businessID];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100982AC8;
     v13[3] = &unk_101630438;
     v14 = v9;
-    [(VenueCategoryContentDownloader *)v14 fetchVenueMapItemWithBusinessID:v11 completion:v13];
+    [(VenueCategoryContentDownloader *)v14 fetchVenueMapItemWithBusinessID:businessID completion:v13];
   }
 
   return v9;
 }
 
-- (VenueCategoryContentDownloader)initWithDelegate:(id)a3 venueCategoryCardItem:(id)a4
+- (VenueCategoryContentDownloader)initWithDelegate:(id)delegate venueCategoryCardItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  itemCopy = item;
   v14.receiver = self;
   v14.super_class = VenueCategoryContentDownloader;
   v8 = [(VenueCategoryContentDownloader *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    v10 = [v7 venueMapItem];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    venueMapItem = [itemCopy venueMapItem];
     mapItem = v9->_mapItem;
-    v9->_mapItem = v10;
+    v9->_mapItem = venueMapItem;
 
     WeakRetained = objc_loadWeakRetained(&v9->_delegate);
     [WeakRetained venueCategoryContentDownloader:v9 didChangeMapItem:v9->_mapItem];

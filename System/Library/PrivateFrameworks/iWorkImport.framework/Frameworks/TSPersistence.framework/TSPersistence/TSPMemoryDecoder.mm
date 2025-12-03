@@ -1,8 +1,8 @@
 @interface TSPMemoryDecoder
 - (TSPMemoryDecoder)init;
-- (TSPMemoryDecoder)initWithEncodedData:(id)a3 delegate:(id)a4;
-- (TSPMemoryDecoder)initWithMetadataDispatchData:(id)a3 rootObjectComponentDispatchData:(id)a4 delegate:(id)a5;
-- (id)newReadChannelForDataWithIdentifier:(int64_t)a3 info:(id)a4;
+- (TSPMemoryDecoder)initWithEncodedData:(id)data delegate:(id)delegate;
+- (TSPMemoryDecoder)initWithMetadataDispatchData:(id)data rootObjectComponentDispatchData:(id)dispatchData delegate:(id)delegate;
+- (id)newReadChannelForDataWithIdentifier:(int64_t)identifier info:(id)info;
 - (id)newReadChannelForMetadata;
 - (id)newReadChannelForRootObjectComponent;
 @end
@@ -25,29 +25,29 @@
   objc_exception_throw(v13);
 }
 
-- (TSPMemoryDecoder)initWithMetadataDispatchData:(id)a3 rootObjectComponentDispatchData:(id)a4 delegate:(id)a5
+- (TSPMemoryDecoder)initWithMetadataDispatchData:(id)data rootObjectComponentDispatchData:(id)dispatchData delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  dispatchDataCopy = dispatchData;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = TSPMemoryDecoder;
   v12 = [(TSPMemoryDecoder *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_metadataDispatchData, a3);
-    objc_storeStrong(&v13->_rootObjectComponentDispatchData, a4);
-    objc_storeWeak(&v13->_delegate, v11);
+    objc_storeStrong(&v12->_metadataDispatchData, data);
+    objc_storeStrong(&v13->_rootObjectComponentDispatchData, dispatchData);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
   }
 
   return v13;
 }
 
-- (TSPMemoryDecoder)initWithEncodedData:(id)a3 delegate:(id)a4
+- (TSPMemoryDecoder)initWithEncodedData:(id)data delegate:(id)delegate
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  delegateCopy = delegate;
   v7 = MEMORY[0x277D85CC8];
   v8 = MEMORY[0x277D85CC8];
   v9 = v7;
@@ -65,7 +65,7 @@
   v25[3] = &unk_27A6E5C18;
   v25[4] = v26;
   v25[5] = &v27;
-  v11 = objc_msgSend_tsp_dispatchDataWithApplier_(a3, v10, v25);
+  v11 = objc_msgSend_tsp_dispatchDataWithApplier_(data, v10, v25);
   size = dispatch_data_get_size(v11);
   v14 = size;
   v15 = 0;
@@ -102,7 +102,7 @@
 
   subrange = v19;
 LABEL_10:
-  v22 = objc_msgSend_initWithMetadataDispatchData_rootObjectComponentDispatchData_delegate_(self, v13, subrange, v19, v6);
+  v22 = objc_msgSend_initWithMetadataDispatchData_rootObjectComponentDispatchData_delegate_(self, v13, subrange, v19, delegateCopy);
 
   _Block_object_dispose(v26, 8);
   _Block_object_dispose(&v27, 8);
@@ -127,11 +127,11 @@ LABEL_10:
   return objc_msgSend_initWithDispatchData_(v3, v4, rootObjectComponentDispatchData);
 }
 
-- (id)newReadChannelForDataWithIdentifier:(int64_t)a3 info:(id)a4
+- (id)newReadChannelForDataWithIdentifier:(int64_t)identifier info:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  ChannelForDataWithIdentifier_info = objc_msgSend_newReadChannelForDataWithIdentifier_info_(WeakRetained, v8, a3, v6);
+  ChannelForDataWithIdentifier_info = objc_msgSend_newReadChannelForDataWithIdentifier_info_(WeakRetained, v8, identifier, infoCopy);
 
   return ChannelForDataWithIdentifier_info;
 }

@@ -1,14 +1,14 @@
 @interface DOCTextFieldRoundedBackgroundView
 - (BOOL)usePillShape;
 - (CGRect)bounds;
-- (_TtC26DocumentManagerExecutables33DOCTextFieldRoundedBackgroundView)initWithCoder:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setUsePillShape:(BOOL)a3;
+- (_TtC26DocumentManagerExecutables33DOCTextFieldRoundedBackgroundView)initWithCoder:(id)coder;
+- (void)setBounds:(CGRect)bounds;
+- (void)setUsePillShape:(BOOL)shape;
 @end
 
 @implementation DOCTextFieldRoundedBackgroundView
 
-- (_TtC26DocumentManagerExecutables33DOCTextFieldRoundedBackgroundView)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables33DOCTextFieldRoundedBackgroundView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables33DOCTextFieldRoundedBackgroundView_usePillShape) = 1;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables33DOCTextFieldRoundedBackgroundView____lazy_storage___backgroundProvidingTextField) = 0;
@@ -24,16 +24,16 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setUsePillShape:(BOOL)a3
+- (void)setUsePillShape:(BOOL)shape
 {
-  v3 = a3;
+  shapeCopy = shape;
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables33DOCTextFieldRoundedBackgroundView_usePillShape;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = v3;
-  if (v6 != v3)
+  *(&self->super.super.super.isa + v5) = shapeCopy;
+  if (v6 != shapeCopy)
   {
-    v7 = self;
+    selfCopy = self;
     DOCTextFieldRoundedBackgroundView.updateStyling()();
   }
 }
@@ -50,25 +50,25 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = type metadata accessor for DOCTextFieldRoundedBackgroundView();
   v19.receiver = self;
   v19.super_class = v8;
-  v9 = self;
+  selfCopy = self;
   [(DOCTextFieldRoundedBackgroundView *)&v19 bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18.receiver = v9;
+  v18.receiver = selfCopy;
   v18.super_class = v8;
   [(DOCTextFieldRoundedBackgroundView *)&v18 setBounds:x, y, width, height];
-  [(DOCTextFieldRoundedBackgroundView *)v9 bounds];
+  [(DOCTextFieldRoundedBackgroundView *)selfCopy bounds];
   v21.origin.x = v11;
   v21.origin.y = v13;
   v21.size.width = v15;

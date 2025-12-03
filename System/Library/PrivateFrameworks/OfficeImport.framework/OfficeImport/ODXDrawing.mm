@@ -1,21 +1,21 @@
 @interface ODXDrawing
-+ (id)readDrawingRelationshipIdFromDataNode:(_xmlNode *)a3 state:(id)a4;
-+ (void)readNode:(_xmlNode *)a3 toDiagram:(id)a4 state:(id)a5;
++ (id)readDrawingRelationshipIdFromDataNode:(_xmlNode *)node state:(id)state;
++ (void)readNode:(_xmlNode *)node toDiagram:(id)diagram state:(id)state;
 @end
 
 @implementation ODXDrawing
 
-+ (id)readDrawingRelationshipIdFromDataNode:(_xmlNode *)a3 state:(id)a4
++ (id)readDrawingRelationshipIdFromDataNode:(_xmlNode *)node state:(id)state
 {
-  v5 = a4;
-  v6 = [v5 ODXDiagramNamespace];
-  Child = OCXFindChild(a3, v6, "extLst");
+  stateCopy = state;
+  oDXDiagramNamespace = [stateCopy ODXDiagramNamespace];
+  Child = OCXFindChild(node, oDXDiagramNamespace, "extLst");
 
   if (Child)
   {
-    v8 = [v5 officeArtState];
-    v9 = [v8 OAXMainNamespace];
-    Child = OCXFindChild(Child, v9, "ext");
+    officeArtState = [stateCopy officeArtState];
+    oAXMainNamespace = [officeArtState OAXMainNamespace];
+    Child = OCXFindChild(Child, oAXMainNamespace, "ext");
 
     if (Child)
     {
@@ -37,9 +37,9 @@
           }
         }
 
-        v14 = [v5 officeArtState];
-        v15 = [v14 OAXMainNamespace];
-        Child = OCXFindNextChild(Child, v15, "ext");
+        officeArtState2 = [stateCopy officeArtState];
+        oAXMainNamespace2 = [officeArtState2 OAXMainNamespace];
+        Child = OCXFindNextChild(Child, oAXMainNamespace2, "ext");
 
         if (!Child)
         {
@@ -56,20 +56,20 @@ LABEL_7:
   return Child;
 }
 
-+ (void)readNode:(_xmlNode *)a3 toDiagram:(id)a4 state:(id)a5
++ (void)readNode:(_xmlNode *)node toDiagram:(id)diagram state:(id)state
 {
-  v12 = a4;
-  v7 = a5;
+  diagramCopy = diagram;
+  stateCopy = state;
   v8 = [[CXNamespace alloc] initWithUri:"http://schemas.microsoft.com/office/drawing/2008/diagram"];
-  if (CXNodeHasName(a3, v8, "drawing"))
+  if (CXNodeHasName(node, v8, "drawing"))
   {
-    v9 = OCXFindChild(a3, v8, "spTree");
+    v9 = OCXFindChild(node, v8, "spTree");
     if (v9)
     {
-      v10 = [v7 officeArtState];
-      v11 = [OAXDrawable readDrawablesFromXmlNode:v9 inNamespace:v8 drawingState:v10];
+      officeArtState = [stateCopy officeArtState];
+      v11 = [OAXDrawable readDrawablesFromXmlNode:v9 inNamespace:v8 drawingState:officeArtState];
 
-      [v12 setEquivalentDrawables:v11];
+      [diagramCopy setEquivalentDrawables:v11];
     }
   }
 }

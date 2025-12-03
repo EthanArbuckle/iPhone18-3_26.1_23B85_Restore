@@ -1,60 +1,60 @@
 @interface EDMessageChangeManager
 + (OS_os_log)log;
 + (id)signpostLog;
-- (BOOL)_hookResponderRespondsToRequiredMethods:(id)a3;
-- (BOOL)_needToStoreServerMessagesForMailboxURL:(id)a3;
-- (BOOL)_persistFlagChangeResults:(id)a3 forFlagChangeAction:(id)a4;
-- (BOOL)_persistResults:(id)a3 forFlagChangeAction:(id)a4;
-- (BOOL)_persistResults:(id)a3 forLabelChangeAction:(id)a4;
-- (BOOL)_persistResults:(id)a3 forTransferAction:(id)a4;
-- (BOOL)mailboxURL:(id)a3 isInSameAccountAsMailboxURL:(id)a4;
-- (BOOL)mailboxURLIsInRemoteAccount:(id)a3;
-- (BOOL)persistResults:(id)a3 forAction:(id)a4;
+- (BOOL)_hookResponderRespondsToRequiredMethods:(id)methods;
+- (BOOL)_needToStoreServerMessagesForMailboxURL:(id)l;
+- (BOOL)_persistFlagChangeResults:(id)results forFlagChangeAction:(id)action;
+- (BOOL)_persistResults:(id)results forFlagChangeAction:(id)action;
+- (BOOL)_persistResults:(id)results forLabelChangeAction:(id)action;
+- (BOOL)_persistResults:(id)results forTransferAction:(id)action;
+- (BOOL)mailboxURL:(id)l isInSameAccountAsMailboxURL:(id)rL;
+- (BOOL)mailboxURLIsInRemoteAccount:(id)account;
+- (BOOL)persistResults:(id)results forAction:(id)action;
 - (EDMessageAuthenticator)messageAuthenticator;
 - (EDMessageCategorizer)messageCategorizer;
 - (EDMessageChangeHookResponder)hookResponder;
-- (EDMessageChangeManager)initWithDatabase:(id)a3 localActionPersistence:(id)a4 messagePersistence:(id)a5 serverMessagePersistenceFactory:(id)a6 readLaterPersistence:(id)a7 categoryPersistence:(id)a8 bimiManager:(id)a9 hookResponder:(id)a10 hookRegistry:(id)a11;
-- (id)_applyReadLaterDate:(id)a3 displayDate:(id)a4 toMessages:(id)a5 changeIsRemote:(BOOL)a6;
-- (id)_findDestinationMessagesFromCompletedItems:(id)a3 notInServerMessages:(id)a4;
-- (id)_handleDuplicateServerMessage:(id)a3 serverMessagePersistence:(id)a4;
-- (id)_truncateReadLaterDate:(id)a3;
-- (id)accountForMailboxURL:(id)a3;
-- (id)addLabels:(id)a3 removeLabels:(id)a4 forMessages:(id)a5;
-- (id)addNewMessages:(id)a3 mailboxURL:(id)a4 userInitiated:(BOOL)a5;
-- (id)applyFlagChange:(id)a3 toMessages:(id)a4;
-- (id)applyReadLaterDate:(id)a3 displayDate:(id)a4 toMessages:(id)a5;
-- (id)reflectNewMessages:(id)a3 mailboxURL:(id)a4;
+- (EDMessageChangeManager)initWithDatabase:(id)database localActionPersistence:(id)persistence messagePersistence:(id)messagePersistence serverMessagePersistenceFactory:(id)factory readLaterPersistence:(id)laterPersistence categoryPersistence:(id)categoryPersistence bimiManager:(id)manager hookResponder:(id)self0 hookRegistry:(id)self1;
+- (id)_applyReadLaterDate:(id)date displayDate:(id)displayDate toMessages:(id)messages changeIsRemote:(BOOL)remote;
+- (id)_findDestinationMessagesFromCompletedItems:(id)items notInServerMessages:(id)messages;
+- (id)_handleDuplicateServerMessage:(id)message serverMessagePersistence:(id)persistence;
+- (id)_truncateReadLaterDate:(id)date;
+- (id)accountForMailboxURL:(id)l;
+- (id)addLabels:(id)labels removeLabels:(id)removeLabels forMessages:(id)messages;
+- (id)addNewMessages:(id)messages mailboxURL:(id)l userInitiated:(BOOL)initiated;
+- (id)applyFlagChange:(id)change toMessages:(id)messages;
+- (id)applyReadLaterDate:(id)date displayDate:(id)displayDate toMessages:(id)messages;
+- (id)reflectNewMessages:(id)messages mailboxURL:(id)l;
 - (unint64_t)signpostID;
-- (unsigned)_bucketSignatureMessageCount:(unint64_t)a3;
-- (void)_addLogMassDeletion:(unint64_t)a3;
-- (void)_clearFollowUpsFromThreadsForMessages:(id)a3;
-- (void)_deleteDestinationMessagesFromCompletedItems:(id)a3 notInServerMessages:(id)a4;
-- (void)_generateFakeSummariesIfNeededForMessages:(id)a3 flagChange:(id)a4;
-- (void)_handleFailedCopyItems:(id)a3 transferAction:(id)a4 generationWindow:(id)a5;
-- (void)_handleFailedDownload:(id)a3 generationWindow:(id)a4;
-- (void)_reflectFlagChanges:(id)a3 messages:(id)a4 remoteIDs:(id)a5 mailboxURL:(id)a6;
+- (unsigned)_bucketSignatureMessageCount:(unint64_t)count;
+- (void)_addLogMassDeletion:(unint64_t)deletion;
+- (void)_clearFollowUpsFromThreadsForMessages:(id)messages;
+- (void)_deleteDestinationMessagesFromCompletedItems:(id)items notInServerMessages:(id)messages;
+- (void)_generateFakeSummariesIfNeededForMessages:(id)messages flagChange:(id)change;
+- (void)_handleFailedCopyItems:(id)items transferAction:(id)action generationWindow:(id)window;
+- (void)_handleFailedDownload:(id)download generationWindow:(id)window;
+- (void)_reflectFlagChanges:(id)changes messages:(id)messages remoteIDs:(id)ds mailboxURL:(id)l;
 - (void)_registerStateCaptureHandler;
-- (void)_resetLocalFlagsToServerFlagsForMessagesWithRemoteIDs:(id)a3 mailboxURL:(id)a4;
-- (void)_resetLocalLabelsToServerLabelsForMessagesWithRemoteIDs:(id)a3 mailboxURL:(id)a4;
-- (void)_storeServerMessages:(id)a3 mailboxURL:(id)a4 generationWindow:(id)a5;
-- (void)applyFlagChange:(id)a3 toAllMessagesFromMailboxes:(id)a4 exceptMessages:(id)a5;
-- (void)applyFollowUp:(id)a3 toMessages:(id)a4 withNegativeFeedbackForSuggestions:(BOOL)a5;
+- (void)_resetLocalFlagsToServerFlagsForMessagesWithRemoteIDs:(id)ds mailboxURL:(id)l;
+- (void)_resetLocalLabelsToServerLabelsForMessagesWithRemoteIDs:(id)ds mailboxURL:(id)l;
+- (void)_storeServerMessages:(id)messages mailboxURL:(id)l generationWindow:(id)window;
+- (void)applyFlagChange:(id)change toAllMessagesFromMailboxes:(id)mailboxes exceptMessages:(id)messages;
+- (void)applyFollowUp:(id)up toMessages:(id)messages withNegativeFeedbackForSuggestions:(BOOL)suggestions;
 - (void)dealloc;
-- (void)deleteAllMessageFromMailboxes:(id)a3 exceptMessages:(id)a4;
-- (void)deleteLocalMessageActionsWithIDs:(id)a3;
-- (void)deleteMessages:(id)a3;
-- (void)didReflectNewMessages:(id)a3;
-- (void)reflectAddedLabels:(id)a3 removedLabels:(id)a4 forMessagesWithRemoteIDs:(id)a5 mailboxURL:(id)a6;
-- (void)reflectAllMessagesDeletedInMailboxURL:(id)a3;
-- (void)reflectDeletedAllClearedMessagesInMailboxURL:(id)a3;
-- (void)reflectDeletedMessages:(id)a3;
-- (void)reflectDeletedMessagesWithRemoteIDs:(id)a3 mailboxURL:(id)a4;
-- (void)reflectFlagChanges:(id)a3 forMessages:(id)a4;
-- (void)reflectFlagChanges:(id)a3 forMessagesWithRemoteIDs:(id)a4 mailboxURL:(id)a5;
-- (void)reflectSortedFlagChanges:(id)a3 mailboxURL:(id)a4;
-- (void)remindMeCloudStorageChangedWithAddedOrChangedItems:(id)a3 deletedItems:(id)a4;
+- (void)deleteAllMessageFromMailboxes:(id)mailboxes exceptMessages:(id)messages;
+- (void)deleteLocalMessageActionsWithIDs:(id)ds;
+- (void)deleteMessages:(id)messages;
+- (void)didReflectNewMessages:(id)messages;
+- (void)reflectAddedLabels:(id)labels removedLabels:(id)removedLabels forMessagesWithRemoteIDs:(id)ds mailboxURL:(id)l;
+- (void)reflectAllMessagesDeletedInMailboxURL:(id)l;
+- (void)reflectDeletedAllClearedMessagesInMailboxURL:(id)l;
+- (void)reflectDeletedMessages:(id)messages;
+- (void)reflectDeletedMessagesWithRemoteIDs:(id)ds mailboxURL:(id)l;
+- (void)reflectFlagChanges:(id)changes forMessages:(id)messages;
+- (void)reflectFlagChanges:(id)changes forMessagesWithRemoteIDs:(id)ds mailboxURL:(id)l;
+- (void)reflectSortedFlagChanges:(id)changes mailboxURL:(id)l;
+- (void)remindMeCloudStorageChangedWithAddedOrChangedItems:(id)items deletedItems:(id)deletedItems;
 - (void)test_tearDown;
-- (void)transferAllMessagesFromMailboxes:(id)a3 exceptMessages:(id)a4 transferType:(int64_t)a5 destinationMailboxURL:(id)a6 userInitiated:(BOOL)a7;
+- (void)transferAllMessagesFromMailboxes:(id)mailboxes exceptMessages:(id)messages transferType:(int64_t)type destinationMailboxURL:(id)l userInitiated:(BOOL)initiated;
 @end
 
 @implementation EDMessageChangeManager
@@ -65,7 +65,7 @@
   block[1] = 3221225472;
   block[2] = __29__EDMessageChangeManager_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_59 != -1)
   {
     dispatch_once(&log_onceToken_59, block);
@@ -90,7 +90,7 @@ void __29__EDMessageChangeManager_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __37__EDMessageChangeManager_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken_3 != -1)
   {
     dispatch_once(&signpostLog_onceToken_3, block);
@@ -111,22 +111,22 @@ void __37__EDMessageChangeManager_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
 
-- (EDMessageChangeManager)initWithDatabase:(id)a3 localActionPersistence:(id)a4 messagePersistence:(id)a5 serverMessagePersistenceFactory:(id)a6 readLaterPersistence:(id)a7 categoryPersistence:(id)a8 bimiManager:(id)a9 hookResponder:(id)a10 hookRegistry:(id)a11
+- (EDMessageChangeManager)initWithDatabase:(id)database localActionPersistence:(id)persistence messagePersistence:(id)messagePersistence serverMessagePersistenceFactory:(id)factory readLaterPersistence:(id)laterPersistence categoryPersistence:(id)categoryPersistence bimiManager:(id)manager hookResponder:(id)self0 hookRegistry:(id)self1
 {
-  v34 = a3;
-  v33 = a4;
-  v32 = a5;
-  v31 = a6;
-  v30 = a7;
-  v29 = a9;
-  v17 = a10;
-  v18 = a11;
+  databaseCopy = database;
+  persistenceCopy = persistence;
+  messagePersistenceCopy = messagePersistence;
+  factoryCopy = factory;
+  laterPersistenceCopy = laterPersistence;
+  managerCopy = manager;
+  responderCopy = responder;
+  registryCopy = registry;
   v35.receiver = self;
   v35.super_class = EDMessageChangeManager;
   v19 = [(EDMessageChangeManager *)&v35 init];
@@ -134,26 +134,26 @@ void __37__EDMessageChangeManager_signpostLog__block_invoke(uint64_t a1)
   v21 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_database, a3);
-    objc_storeStrong(p_isa + 9, a4);
-    objc_storeStrong(p_isa + 7, a5);
-    objc_storeStrong(p_isa + 3, a6);
-    objc_storeStrong(p_isa + 2, a7);
-    objc_storeStrong(p_isa + 4, a9);
+    objc_storeStrong(&v19->_database, database);
+    objc_storeStrong(p_isa + 9, persistence);
+    objc_storeStrong(p_isa + 7, messagePersistence);
+    objc_storeStrong(p_isa + 3, factory);
+    objc_storeStrong(p_isa + 2, laterPersistence);
+    objc_storeStrong(p_isa + 4, manager);
     v22 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v23 = dispatch_queue_attr_make_with_qos_class(v22, QOS_CLASS_UTILITY, 0);
     v24 = dispatch_queue_create("com.apple.email.EDMessageChangeManager", v23);
     markAllWorkQueue = v21->_markAllWorkQueue;
     v21->_markAllWorkQueue = v24;
 
-    if (![(EDMessageChangeManager *)v21 _hookResponderRespondsToRequiredMethods:v17])
+    if (![(EDMessageChangeManager *)v21 _hookResponderRespondsToRequiredMethods:responderCopy])
     {
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v27 handleFailureInMethod:a2 object:v21 file:@"EDMessageChangeManager.m" lineNumber:130 description:@"HookResponder does not respond to all of the methods required by the EDMessageChangeManager."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v21 file:@"EDMessageChangeManager.m" lineNumber:130 description:@"HookResponder does not respond to all of the methods required by the EDMessageChangeManager."];
     }
 
-    objc_storeWeak(p_isa + 8, v17);
-    [v18 registerCloudStorageChangeHookResponder:v21];
+    objc_storeWeak(p_isa + 8, responderCopy);
+    [registryCopy registerCloudStorageChangeHookResponder:v21];
   }
 
   return v21;
@@ -163,12 +163,12 @@ void __37__EDMessageChangeManager_signpostLog__block_invoke(uint64_t a1)
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"EDMessageChangeManager.m" lineNumber:143 description:{@"%s can only be called from unit tests", "-[EDMessageChangeManager test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDMessageChangeManager.m" lineNumber:143 description:{@"%s can only be called from unit tests", "-[EDMessageChangeManager test_tearDown]"}];
   }
 
-  v5 = [(EDMessageChangeManager *)self markAllWorkQueue];
-  dispatch_sync(v5, &__block_literal_global_52);
+  markAllWorkQueue = [(EDMessageChangeManager *)self markAllWorkQueue];
+  dispatch_sync(markAllWorkQueue, &__block_literal_global_52);
 }
 
 id __116__EDMessageChangeManager_transferMessages_transferType_destinationMailboxURL_userInitiated_oldMessagesByNewMessage___block_invoke(uint64_t a1, void *a2)
@@ -686,9 +686,9 @@ uint64_t __116__EDMessageChangeManager_transferMessages_transferType_destination
   return v3 ^ 1u;
 }
 
-- (unsigned)_bucketSignatureMessageCount:(unint64_t)a3
+- (unsigned)_bucketSignatureMessageCount:(unint64_t)count
 {
-  if (a3 <= 0x64)
+  if (count <= 0x64)
   {
     v3 = 100;
   }
@@ -698,7 +698,7 @@ uint64_t __116__EDMessageChangeManager_transferMessages_transferType_destination
     v3 = 200;
   }
 
-  if (a3 <= 0x12B)
+  if (count <= 0x12B)
   {
     v4 = v3;
   }
@@ -708,7 +708,7 @@ uint64_t __116__EDMessageChangeManager_transferMessages_transferType_destination
     v4 = 300;
   }
 
-  if (a3 <= 0x1F3)
+  if (count <= 0x1F3)
   {
     v5 = v4;
   }
@@ -718,7 +718,7 @@ uint64_t __116__EDMessageChangeManager_transferMessages_transferType_destination
     v5 = 500;
   }
 
-  if (a3 <= 0x3E7)
+  if (count <= 0x3E7)
   {
     return v5;
   }
@@ -729,32 +729,32 @@ uint64_t __116__EDMessageChangeManager_transferMessages_transferType_destination
   }
 }
 
-- (void)_addLogMassDeletion:(unint64_t)a3
+- (void)_addLogMassDeletion:(unint64_t)deletion
 {
   v5 = objc_alloc(MEMORY[0x1E695DF70]);
-  v6 = [MEMORY[0x1E695E000] em_userDefaults];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
   v7 = *MEMORY[0x1E699ABA0];
-  v8 = [v6 objectForKey:*MEMORY[0x1E699ABA0]];
+  v8 = [em_userDefaults objectForKey:*MEMORY[0x1E699ABA0]];
   v19 = [v5 initWithArray:v8];
 
   if ([v19 count])
   {
-    v9 = [v19 lastObject];
-    v10 = [v9 objectForKey:*MEMORY[0x1E699ABA8]];
+    lastObject = [v19 lastObject];
+    v10 = [lastObject objectForKey:*MEMORY[0x1E699ABA8]];
     if (!v10)
     {
-      v11 = [v9 objectForKey:*MEMORY[0x1E699ABB8]];
+      v11 = [lastObject objectForKey:*MEMORY[0x1E699ABB8]];
 
       if (v11)
       {
         goto LABEL_5;
       }
 
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Large Google Message Deletion: The user has selected to transfer %u messages", -[EDMessageChangeManager _bucketSignatureMessageCount:](self, "_bucketSignatureMessageCount:", a3)];
-      v16 = [MEMORY[0x1E699B780] sharedReporter];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Large Google Message Deletion: The user has selected to transfer %u messages", -[EDMessageChangeManager _bucketSignatureMessageCount:](self, "_bucketSignatureMessageCount:", deletion)];
+      mEMORY[0x1E699B780] = [MEMORY[0x1E699B780] sharedReporter];
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
-      [v16 reportIssueType:v18 description:v10];
+      [mEMORY[0x1E699B780] reportIssueType:v18 description:v10];
     }
 
 LABEL_5:
@@ -770,9 +770,9 @@ LABEL_5:
   [v12 setObject:v13 forKeyedSubscript:*MEMORY[0x1E699ABB0]];
 
   [v19 addObject:v12];
-  v14 = [MEMORY[0x1E695E000] em_userDefaults];
+  em_userDefaults2 = [MEMORY[0x1E695E000] em_userDefaults];
   v15 = [v19 copy];
-  [v14 setValue:v15 forKey:v7];
+  [em_userDefaults2 setValue:v15 forKey:v7];
 
   [(EDMessageChangeManager *)self _registerStateCaptureHandler];
 }
@@ -792,12 +792,12 @@ id __54__EDMessageChangeManager__registerStateCaptureHandler__block_invoke()
   return v1;
 }
 
-- (void)deleteAllMessageFromMailboxes:(id)a3 exceptMessages:(id)a4
+- (void)deleteAllMessageFromMailboxes:(id)mailboxes exceptMessages:(id)messages
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 ef_map:&__block_literal_global_77_1];
+  mailboxesCopy = mailboxes;
+  messagesCopy = messages;
+  v8 = [mailboxesCopy ef_map:&__block_literal_global_77_1];
   v9 = +[EDMessageChangeManager log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -806,7 +806,7 @@ id __54__EDMessageChangeManager__registerStateCaptureHandler__block_invoke()
     _os_log_impl(&dword_1C61EF000, v9, OS_LOG_TYPE_DEFAULT, "Deleting all message from %{public}@", &v11, 0xCu);
   }
 
-  [(EDMessageChangeManager *)self transferAllMessagesFromMailboxes:v6 exceptMessages:v7 transferType:3 destinationMailboxURL:0 userInitiated:0];
+  [(EDMessageChangeManager *)self transferAllMessagesFromMailboxes:mailboxesCopy exceptMessages:messagesCopy transferType:3 destinationMailboxURL:0 userInitiated:0];
   v10 = *MEMORY[0x1E69E9840];
 }
 
@@ -817,12 +817,12 @@ id __71__EDMessageChangeManager_deleteAllMessageFromMailboxes_exceptMessages___b
   return v2;
 }
 
-- (void)transferAllMessagesFromMailboxes:(id)a3 exceptMessages:(id)a4 transferType:(int64_t)a5 destinationMailboxURL:(id)a6 userInitiated:(BOOL)a7
+- (void)transferAllMessagesFromMailboxes:(id)mailboxes exceptMessages:(id)messages transferType:(int64_t)type destinationMailboxURL:(id)l userInitiated:(BOOL)initiated
 {
   v45 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v29 = a4;
-  v27 = a6;
+  mailboxesCopy = mailboxes;
+  messagesCopy = messages;
+  lCopy = l;
   v12 = +[EDMessageChangeManager signpostLog];
   v13 = os_signpost_id_generate(v12);
 
@@ -830,8 +830,8 @@ id __71__EDMessageChangeManager_deleteAllMessageFromMailboxes_exceptMessages___b
   v15 = v14;
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
   {
-    v16 = [MEMORY[0x1E699B858] bucketMessageCount:{objc_msgSend(v29, "count")}];
-    v17 = [MEMORY[0x1E699B858] ec_redactedStringForMailboxURL:v27];
+    v16 = [MEMORY[0x1E699B858] bucketMessageCount:{objc_msgSend(messagesCopy, "count")}];
+    v17 = [MEMORY[0x1E699B858] ec_redactedStringForMailboxURL:lCopy];
     *buf = 67240450;
     v42 = v16;
     v43 = 2114;
@@ -844,26 +844,26 @@ id __71__EDMessageChangeManager_deleteAllMessageFromMailboxes_exceptMessages___b
   v37[2] = __123__EDMessageChangeManager_transferAllMessagesFromMailboxes_exceptMessages_transferType_destinationMailboxURL_userInitiated___block_invoke;
   v37[3] = &unk_1E8253C18;
   v37[4] = self;
-  v39 = a5;
-  v18 = v27;
+  typeCopy = type;
+  v18 = lCopy;
   v38 = v18;
-  v40 = a7;
-  v19 = [(EDMessageChangeManager *)self iterateMessagesInMailboxURLs:v28 excludingMessages:v29 batchSize:256 returnMessagesForFlagChange:0 handler:v37];
-  v20 = [(EDMessageChangeManager *)self markAllWorkQueue];
+  initiatedCopy = initiated;
+  v19 = [(EDMessageChangeManager *)self iterateMessagesInMailboxURLs:mailboxesCopy excludingMessages:messagesCopy batchSize:256 returnMessagesForFlagChange:0 handler:v37];
+  markAllWorkQueue = [(EDMessageChangeManager *)self markAllWorkQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __123__EDMessageChangeManager_transferAllMessagesFromMailboxes_exceptMessages_transferType_destinationMailboxURL_userInitiated___block_invoke_3;
   block[3] = &unk_1E8251600;
-  v21 = v28;
-  v35 = a5;
+  v21 = mailboxesCopy;
+  typeCopy2 = type;
   v31 = v21;
-  v32 = self;
+  selfCopy = self;
   v22 = v18;
   v33 = v22;
   v23 = v19;
   v34 = v23;
-  v36 = a7;
-  dispatch_sync(v20, block);
+  initiatedCopy2 = initiated;
+  dispatch_sync(markAllWorkQueue, block);
 
   v24 = +[EDMessageChangeManager signpostLog];
   v25 = v24;
@@ -990,17 +990,17 @@ void __123__EDMessageChangeManager_transferAllMessagesFromMailboxes_exceptMessag
   [v3 setOldestPersistedRemoteID:*(a1 + 48)];
 }
 
-- (id)addNewMessages:(id)a3 mailboxURL:(id)a4 userInitiated:(BOOL)a5
+- (id)addNewMessages:(id)messages mailboxURL:(id)l userInitiated:(BOOL)initiated
 {
   v40 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v8 = a4;
+  messagesCopy = messages;
+  lCopy = l;
   v26 = objc_alloc_init(EDPersistenceDatabaseGenerationWindow);
   v9 = +[EDMessageChangeManager log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v27 count];
-    v11 = [MEMORY[0x1E699B858] ec_redactedStringForMailboxURL:v8];
+    v10 = [messagesCopy count];
+    v11 = [MEMORY[0x1E699B858] ec_redactedStringForMailboxURL:lCopy];
     *buf = 134218242;
     v37 = v10;
     v38 = 2114;
@@ -1008,10 +1008,10 @@ void __123__EDMessageChangeManager_transferAllMessagesFromMailboxes_exceptMessag
     _os_log_impl(&dword_1C61EF000, v9, OS_LOG_TYPE_DEFAULT, "Adding %lu new messages to %{public}@", buf, 0x16u);
   }
 
-  v12 = [(EDMessageChangeManager *)self hookResponder];
-  [v12 persistenceWillBeginUpdates];
+  hookResponder = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder persistenceWillBeginUpdates];
 
-  LOBYTE(v12) = [(EDMessageChangeManager *)self mailboxURLIsInRemoteAccount:v8];
+  LOBYTE(hookResponder) = [(EDMessageChangeManager *)self mailboxURLIsInRemoteAccount:lCopy];
   v13 = objc_opt_new();
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v28[0] = MEMORY[0x1E69E9820];
@@ -1019,7 +1019,7 @@ void __123__EDMessageChangeManager_transferAllMessagesFromMailboxes_exceptMessag
   v28[2] = __66__EDMessageChangeManager_addNewMessages_mailboxURL_userInitiated___block_invoke;
   v28[3] = &unk_1E8253CE0;
   v28[4] = self;
-  v15 = v8;
+  v15 = lCopy;
   v29 = v15;
   v16 = v13;
   v30 = v16;
@@ -1027,22 +1027,22 @@ void __123__EDMessageChangeManager_transferAllMessagesFromMailboxes_exceptMessag
   v31 = v17;
   v18 = v14;
   v32 = v18;
-  v19 = v27;
+  v19 = messagesCopy;
   v33 = v19;
-  v34 = v12;
-  v35 = a5;
+  v34 = hookResponder;
+  initiatedCopy = initiated;
   [v19 ef_enumerateObjectsInBatchesOfSize:25 block:v28];
   if ([v18 count])
   {
     [(EDMessageChangeManager *)self willStartPersistenceDidAddMessages:v16];
-    v20 = [(EDMessageChangeManager *)self hookResponder];
-    [v20 persistenceDidAddMessages:v18 generationWindow:v17];
+    hookResponder2 = [(EDMessageChangeManager *)self hookResponder];
+    [hookResponder2 persistenceDidAddMessages:v18 generationWindow:v17];
 
     [(EDMessageChangeManager *)self didFinishPersistenceDidAddMessages:v16];
   }
 
-  v21 = [(EDMessageChangeManager *)self hookResponder];
-  [v21 persistenceDidFinishUpdates];
+  hookResponder3 = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder3 persistenceDidFinishUpdates];
 
   v22 = v33;
   v23 = v18;
@@ -1185,35 +1185,35 @@ void __66__EDMessageChangeManager_addNewMessages_mailboxURL_userInitiated___bloc
   [v3 setTransferType:2];
 }
 
-- (void)deleteMessages:(id)a3
+- (void)deleteMessages:(id)messages
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messagesCopy = messages;
   v5 = +[EDMessageChangeManager log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = [v4 count];
+    v9 = [messagesCopy count];
     _os_log_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_DEFAULT, "Deleting %lu messages", &v8, 0xCu);
   }
 
-  v6 = [(EDMessageChangeManager *)self transferMessages:v4 transferType:3 destinationMailboxURL:0 userInitiated:0];
+  v6 = [(EDMessageChangeManager *)self transferMessages:messagesCopy transferType:3 destinationMailboxURL:0 userInitiated:0];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applyFlagChange:(id)a3 toAllMessagesFromMailboxes:(id)a4 exceptMessages:(id)a5
+- (void)applyFlagChange:(id)change toAllMessagesFromMailboxes:(id)mailboxes exceptMessages:(id)messages
 {
   v38 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v8 = a4;
-  v9 = a5;
-  v27 = [v8 ef_map:&__block_literal_global_87_0];
+  changeCopy = change;
+  mailboxesCopy = mailboxes;
+  messagesCopy = messages;
+  v27 = [mailboxesCopy ef_map:&__block_literal_global_87_0];
   v10 = +[EDMessageChangeManager log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v28 ef_publicDescription];
+    ef_publicDescription = [changeCopy ef_publicDescription];
     *buf = 138543618;
-    *v37 = v11;
+    *v37 = ef_publicDescription;
     *&v37[8] = 2114;
     *&v37[10] = v27;
     _os_log_impl(&dword_1C61EF000, v10, OS_LOG_TYPE_DEFAULT, "Setting flags %{public}@ on all message for mailboxes %{public}@", buf, 0x16u);
@@ -1226,8 +1226,8 @@ void __66__EDMessageChangeManager_addNewMessages_mailboxURL_userInitiated___bloc
   v15 = v14;
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
   {
-    v16 = [MEMORY[0x1E699B858] bucketMessageCount:{objc_msgSend(v9, "count")}];
-    v17 = [v28 hash];
+    v16 = [MEMORY[0x1E699B858] bucketMessageCount:{objc_msgSend(messagesCopy, "count")}];
+    v17 = [changeCopy hash];
     *buf = 67240448;
     *v37 = v16;
     *&v37[4] = 2050;
@@ -1240,22 +1240,22 @@ void __66__EDMessageChangeManager_addNewMessages_mailboxURL_userInitiated___bloc
   v34[2] = __84__EDMessageChangeManager_applyFlagChange_toAllMessagesFromMailboxes_exceptMessages___block_invoke_88;
   v34[3] = &unk_1E8253D08;
   v34[4] = self;
-  v18 = v28;
+  v18 = changeCopy;
   v35 = v18;
-  v19 = [(EDMessageChangeManager *)self iterateMessagesInMailboxURLs:v8 excludingMessages:v9 batchSize:256 returnMessagesForFlagChange:v18 handler:v34];
-  v20 = [(EDMessageChangeManager *)self markAllWorkQueue];
+  v19 = [(EDMessageChangeManager *)self iterateMessagesInMailboxURLs:mailboxesCopy excludingMessages:messagesCopy batchSize:256 returnMessagesForFlagChange:v18 handler:v34];
+  markAllWorkQueue = [(EDMessageChangeManager *)self markAllWorkQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__EDMessageChangeManager_applyFlagChange_toAllMessagesFromMailboxes_exceptMessages___block_invoke_3;
   block[3] = &unk_1E8250AB8;
-  v21 = v8;
+  v21 = mailboxesCopy;
   v30 = v21;
   v22 = v18;
   v31 = v22;
-  v32 = self;
+  selfCopy = self;
   v23 = v19;
   v33 = v23;
-  dispatch_sync(v20, block);
+  dispatch_sync(markAllWorkQueue, block);
 
   v24 = +[EDMessageChangeManager signpostLog];
   v25 = v24;
@@ -1367,15 +1367,15 @@ void __84__EDMessageChangeManager_applyFlagChange_toAllMessagesFromMailboxes_exc
   [v3 setOldestPersistedRemoteID:a1[6]];
 }
 
-- (id)applyFlagChange:(id)a3 toMessages:(id)a4
+- (id)applyFlagChange:(id)change toMessages:(id)messages
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v39 = a4;
-  v7 = [v39 count];
-  v8 = [v6 readChanged];
+  changeCopy = change;
+  messagesCopy = messages;
+  v7 = [messagesCopy count];
+  readChanged = [changeCopy readChanged];
   v9 = &stru_1F45B4608;
-  if (v8)
+  if (readChanged)
   {
     v9 = @"[ReadFlags] ";
   }
@@ -1384,11 +1384,11 @@ void __84__EDMessageChangeManager_applyFlagChange_toAllMessagesFromMailboxes_exc
   v10 = +[EDMessageChangeManager log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 ef_publicDescription];
+    ef_publicDescription = [changeCopy ef_publicDescription];
     *buf = 138543874;
     *&buf[4] = v38;
     *&buf[12] = 2114;
-    *&buf[14] = v11;
+    *&buf[14] = ef_publicDescription;
     *&buf[22] = 2048;
     v54 = v7;
     _os_log_impl(&dword_1C61EF000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Setting flags %{public}@ on %lu messages", buf, 0x20u);
@@ -1403,7 +1403,7 @@ void __84__EDMessageChangeManager_applyFlagChange_toAllMessagesFromMailboxes_exc
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
   {
     v16 = [MEMORY[0x1E699B858] bucketMessageCount:v7];
-    v17 = [v6 hash];
+    v17 = [changeCopy hash];
     *buf = 67240448;
     *&buf[4] = v16;
     *&buf[8] = 2050;
@@ -1411,15 +1411,15 @@ void __84__EDMessageChangeManager_applyFlagChange_toAllMessagesFromMailboxes_exc
     _os_signpost_emit_with_name_impl(&dword_1C61EF000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v13, "EDMessageChangeManagerChangeFlagMessages", "Begin flag change NumberOfMessages=%{public,signpost.telemetry:number1}u messages to FlagChange=%{public,signpost.telemetry:number2}lu enableTelemetry=YES ", buf, 0x12u);
   }
 
-  v18 = [(EDMessageChangeManager *)self hookResponder];
-  [v18 persistenceWillBeginUpdates];
+  hookResponder = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder persistenceWillBeginUpdates];
 
-  v19 = [v39 ef_filter:&__block_literal_global_93];
+  v19 = [messagesCopy ef_filter:&__block_literal_global_93];
   v20 = [v19 ef_groupBy:&__block_literal_global_96];
 
-  v21 = [v20 allValues];
-  v22 = [v21 ef_flatten];
-  v23 = [v22 count];
+  allValues = [v20 allValues];
+  ef_flatten = [allValues ef_flatten];
+  v23 = [ef_flatten count];
 
   if (v23 != v7)
   {
@@ -1430,28 +1430,28 @@ void __84__EDMessageChangeManager_applyFlagChange_toAllMessagesFromMailboxes_exc
     }
   }
 
-  v25 = [(EDMessageChangeManager *)self hookResponder];
-  v26 = [v39 ef_filter:&__block_literal_global_418];
-  [v25 persistenceWillChangeFlags:v6 messages:v26];
+  hookResponder2 = [(EDMessageChangeManager *)self hookResponder];
+  v26 = [messagesCopy ef_filter:&__block_literal_global_418];
+  [hookResponder2 persistenceWillChangeFlags:changeCopy messages:v26];
 
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
   v54 = __Block_byref_object_copy__22;
   v55 = __Block_byref_object_dispose__22;
-  v56 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
   v50 = __Block_byref_object_copy__22;
   v51 = __Block_byref_object_dispose__22;
-  v52 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __53__EDMessageChangeManager_applyFlagChange_toMessages___block_invoke_97;
   v41[3] = &unk_1E8253DC8;
   v41[4] = self;
-  v27 = v6;
+  v27 = changeCopy;
   v42 = v27;
   v28 = v38;
   v43 = v28;
@@ -1460,11 +1460,11 @@ void __84__EDMessageChangeManager_applyFlagChange_toAllMessagesFromMailboxes_exc
   v45 = buf;
   v46 = &v47;
   [v20 enumerateKeysAndObjectsUsingBlock:v41];
-  v30 = [(EDMessageChangeManager *)self hookResponder];
-  [v30 persistenceDidChangeFlags:v27 messages:v48[5] generationWindow:v29];
+  hookResponder3 = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder3 persistenceDidChangeFlags:v27 messages:v48[5] generationWindow:v29];
 
-  v31 = [(EDMessageChangeManager *)self hookResponder];
-  [v31 persistenceDidFinishUpdates];
+  hookResponder4 = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder4 persistenceDidFinishUpdates];
 
   [(EDMessageChangeManager *)self _generateFakeSummariesIfNeededForMessages:v48[5] flagChange:v27];
   v32 = +[EDMessageChangeManager signpostLog];
@@ -1610,37 +1610,37 @@ void __53__EDMessageChangeManager_applyFlagChange_toMessages___block_invoke_100(
   [v4 setFlagChange:*(a1 + 56)];
 }
 
-- (void)applyFollowUp:(id)a3 toMessages:(id)a4 withNegativeFeedbackForSuggestions:(BOOL)a5
+- (void)applyFollowUp:(id)up toMessages:(id)messages withNegativeFeedbackForSuggestions:(BOOL)suggestions
 {
-  v5 = a5;
+  suggestionsCopy = suggestions;
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  upCopy = up;
+  messagesCopy = messages;
   v10 = +[EDMessageChangeManager log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    *&buf[4] = v8;
+    *&buf[4] = upCopy;
     *&buf[12] = 2048;
-    *&buf[14] = [v9 count];
+    *&buf[14] = [messagesCopy count];
     _os_log_impl(&dword_1C61EF000, v10, OS_LOG_TYPE_DEFAULT, "Setting follow up dates and json data %{public}@ on %lu messages", buf, 0x16u);
   }
 
   v11 = objc_alloc_init(EDPersistenceDatabaseGenerationWindow);
-  v12 = [(EDMessageChangeManager *)self hookResponder];
-  [v12 persistenceWillBeginUpdates];
+  hookResponder = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder persistenceWillBeginUpdates];
 
-  if (v5)
+  if (suggestionsCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
     v27 = __Block_byref_object_copy__22;
     v28 = __Block_byref_object_dispose__22;
-    v29 = [MEMORY[0x1E69992A0] serviceForMail];
+    serviceForMail = [MEMORY[0x1E69992A0] serviceForMail];
     [*(*&buf[8] + 40) setSyncTimeout:0.1];
-    v13 = [(EDMessageChangeManager *)self messagePersistence];
-    v14 = [v13 retrieveFollowUpJsonStringForModelEvaluationForSuggestionsForMessages:v9];
+    messagePersistence = [(EDMessageChangeManager *)self messagePersistence];
+    v14 = [messagePersistence retrieveFollowUpJsonStringForModelEvaluationForSuggestionsForMessages:messagesCopy];
 
     v22[0] = 0;
     v22[1] = v22;
@@ -1669,14 +1669,14 @@ void __53__EDMessageChangeManager_applyFlagChange_toMessages___block_invoke_100(
     _Block_object_dispose(buf, 8);
   }
 
-  v17 = [(EDMessageChangeManager *)self messagePersistence];
-  [v17 persistFollowUp:v8 forMessages:v9];
+  messagePersistence2 = [(EDMessageChangeManager *)self messagePersistence];
+  [messagePersistence2 persistFollowUp:upCopy forMessages:messagesCopy];
 
-  v18 = [(EDMessageChangeManager *)self hookResponder];
-  [v18 persistenceDidUpdateFollowUpForMessages:v9 generationWindow:v11];
+  hookResponder2 = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder2 persistenceDidUpdateFollowUpForMessages:messagesCopy generationWindow:v11];
 
-  v19 = [(EDMessageChangeManager *)self hookResponder];
-  [v19 persistenceDidFinishUpdates];
+  hookResponder3 = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder3 persistenceDidFinishUpdates];
 
   v20 = *MEMORY[0x1E69E9840];
 }
@@ -1716,21 +1716,21 @@ LABEL_7:
   }
 }
 
-- (id)applyReadLaterDate:(id)a3 displayDate:(id)a4 toMessages:(id)a5
+- (id)applyReadLaterDate:(id)date displayDate:(id)displayDate toMessages:(id)messages
 {
-  v5 = [(EDMessageChangeManager *)self _applyReadLaterDate:a3 displayDate:a4 toMessages:a5 changeIsRemote:0];
+  v5 = [(EDMessageChangeManager *)self _applyReadLaterDate:date displayDate:displayDate toMessages:messages changeIsRemote:0];
 
   return v5;
 }
 
-- (id)_applyReadLaterDate:(id)a3 displayDate:(id)a4 toMessages:(id)a5 changeIsRemote:(BOOL)a6
+- (id)_applyReadLaterDate:(id)date displayDate:(id)displayDate toMessages:(id)messages changeIsRemote:(BOOL)remote
 {
-  v32 = a6;
+  remoteCopy = remote;
   v57 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v30 = a4;
-  v35 = a5;
-  v10 = [(EDMessageChangeManager *)self _truncateReadLaterDate:v9];
+  dateCopy = date;
+  displayDateCopy = displayDate;
+  messagesCopy = messages;
+  v10 = [(EDMessageChangeManager *)self _truncateReadLaterDate:dateCopy];
 
   v34 = v10;
   if (v10)
@@ -1749,34 +1749,34 @@ LABEL_7:
     *buf = 138544130;
     *&buf[4] = v10;
     *&buf[12] = 2114;
-    *&buf[14] = v30;
+    *&buf[14] = displayDateCopy;
     *&buf[22] = 2048;
-    v54 = [v35 count];
+    v54 = [messagesCopy count];
     LOWORD(v55) = 1024;
-    *(&v55 + 2) = v32;
+    *(&v55 + 2) = remoteCopy;
     _os_log_impl(&dword_1C61EF000, v11, OS_LOG_TYPE_DEFAULT, "Setting read later date=%{public}@, displayDate=%{public}@ on %lu messages, changeIsRemote:%{BOOL}d", buf, 0x26u);
   }
 
   v28 = objc_alloc_init(EDPersistenceDatabaseGenerationWindow);
-  v12 = [(EDMessageChangeManager *)self hookResponder];
-  v31 = v12;
-  [v12 persistenceWillBeginUpdates];
-  if ([v35 count])
+  hookResponder = [(EDMessageChangeManager *)self hookResponder];
+  v31 = hookResponder;
+  [hookResponder persistenceWillBeginUpdates];
+  if ([messagesCopy count])
   {
-    [v12 persistenceWillChangeReadLaterDate:v34 messages:v35];
+    [hookResponder persistenceWillChangeReadLaterDate:v34 messages:messagesCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __84__EDMessageChangeManager__applyReadLaterDate_displayDate_toMessages_changeIsRemote___block_invoke;
   aBlock[3] = &unk_1E8251360;
-  v13 = v30;
+  v13 = displayDateCopy;
   v52 = v13;
   v33 = _Block_copy(aBlock);
-  v14 = [v35 ef_filter:v33];
+  v14 = [messagesCopy ef_filter:v33];
   if ([v14 count])
   {
-    [v12 persistenceWillUpdateDisplayDateForMessages:v14];
+    [hookResponder persistenceWillUpdateDisplayDateForMessages:v14];
   }
 
   v47 = 0;
@@ -1789,7 +1789,7 @@ LABEL_7:
   v54 = __Block_byref_object_copy__22;
   v55 = __Block_byref_object_dispose__22;
   v56 = 0;
-  v15 = [(EDMessageChangeManager *)self database];
+  database = [(EDMessageChangeManager *)self database];
   v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDMessageChangeManager _applyReadLaterDate:displayDate:toMessages:changeIsRemote:]"];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
@@ -1798,7 +1798,7 @@ LABEL_7:
   v45 = &v47;
   v17 = v28;
   v37 = v17;
-  v18 = v35;
+  v18 = messagesCopy;
   v38 = v18;
   v19 = v29;
   v39 = v19;
@@ -1806,22 +1806,22 @@ LABEL_7:
   v44 = v20;
   v21 = v34;
   v40 = v21;
-  v41 = self;
+  selfCopy = self;
   v22 = v13;
   v42 = v22;
   v23 = v31;
   v43 = v23;
   v46 = buf;
-  [v15 __performWriteWithCaller:v16 usingBlock:v36];
+  [database __performWriteWithCaller:v16 usingBlock:v36];
 
   if ([v18 count])
   {
-    [v23 persistenceDidChangeReadLaterDate:v21 messages:*(*&buf[8] + 40) changeIsRemote:v32 generationWindow:v17];
+    [v23 persistenceDidChangeReadLaterDate:v21 messages:*(*&buf[8] + 40) changeIsRemote:remoteCopy generationWindow:v17];
   }
 
   if ([v14 count])
   {
-    [v23 persistenceDidUpdateDisplayDateForMessages:v14 changeIsRemote:v32 generation:v48[3]];
+    [v23 persistenceDidUpdateDisplayDateForMessages:v14 changeIsRemote:remoteCopy generation:v48[3]];
   }
 
   [v23 persistenceDidFinishUpdates];
@@ -1923,23 +1923,23 @@ uint64_t __84__EDMessageChangeManager__applyReadLaterDate_displayDate_toMessages
   return 1;
 }
 
-- (id)_truncateReadLaterDate:(id)a3
+- (id)_truncateReadLaterDate:(id)date
 {
-  v3 = a3;
-  v4 = [v3 ef_dateWithTruncatedSeconds];
+  dateCopy = date;
+  ef_dateWithTruncatedSeconds = [dateCopy ef_dateWithTruncatedSeconds];
   v5 = [MEMORY[0x1E695DF00] now];
-  v6 = [v4 ef_isLaterThanOrEqualDate:v5];
+  v6 = [ef_dateWithTruncatedSeconds ef_isLaterThanOrEqualDate:v5];
 
-  v7 = v4;
+  v7 = ef_dateWithTruncatedSeconds;
   if ((v6 & 1) == 0)
   {
     v8 = +[EDMessageChangeManager log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [(EDMessageChangeManager *)v4 _truncateReadLaterDate:v3, v8];
+      [(EDMessageChangeManager *)ef_dateWithTruncatedSeconds _truncateReadLaterDate:dateCopy, v8];
     }
 
-    v7 = v3;
+    v7 = dateCopy;
   }
 
   v9 = v7;
@@ -1947,41 +1947,41 @@ uint64_t __84__EDMessageChangeManager__applyReadLaterDate_displayDate_toMessages
   return v7;
 }
 
-- (id)addLabels:(id)a3 removeLabels:(id)a4 forMessages:(id)a5
+- (id)addLabels:(id)labels removeLabels:(id)removeLabels forMessages:(id)messages
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  labelsCopy = labels;
+  removeLabelsCopy = removeLabels;
+  messagesCopy = messages;
   v26 = objc_alloc_init(EDPersistenceDatabaseGenerationWindow);
-  v11 = [(EDMessageChangeManager *)self hookResponder];
-  [v11 persistenceWillBeginUpdates];
+  hookResponder = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder persistenceWillBeginUpdates];
 
-  v12 = [(EDMessageChangeManager *)self hookResponder];
-  v13 = [v10 ef_filter:&__block_literal_global_418];
-  [v12 persistenceWillAddLabels:v8 removeLabels:v9 messages:v13];
+  hookResponder2 = [(EDMessageChangeManager *)self hookResponder];
+  v13 = [messagesCopy ef_filter:&__block_literal_global_418];
+  [hookResponder2 persistenceWillAddLabels:labelsCopy removeLabels:removeLabelsCopy messages:v13];
 
-  v14 = [v10 ef_groupBy:&__block_literal_global_108_0];
-  v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
+  v14 = [messagesCopy ef_groupBy:&__block_literal_global_108_0];
+  v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(messagesCopy, "count")}];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __61__EDMessageChangeManager_addLabels_removeLabels_forMessages___block_invoke_2;
   v27[3] = &unk_1E8253E90;
   v27[4] = self;
-  v16 = v8;
+  v16 = labelsCopy;
   v28 = v16;
-  v17 = v9;
+  v17 = removeLabelsCopy;
   v29 = v17;
   v18 = v26;
   v30 = v18;
   v19 = v15;
   v31 = v19;
   [v14 enumerateKeysAndObjectsUsingBlock:v27];
-  v20 = [(EDMessageChangeManager *)self hookResponder];
+  hookResponder3 = [(EDMessageChangeManager *)self hookResponder];
   v21 = [v19 ef_filter:&__block_literal_global_418];
-  [v20 persistenceDidAddLabels:v16 removeLabels:v17 messages:v21 generationWindow:v18];
+  [hookResponder3 persistenceDidAddLabels:v16 removeLabels:v17 messages:v21 generationWindow:v18];
 
-  v22 = [(EDMessageChangeManager *)self hookResponder];
-  [v22 persistenceDidFinishUpdates];
+  hookResponder4 = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder4 persistenceDidFinishUpdates];
 
   v23 = v31;
   v24 = v19;
@@ -2067,19 +2067,19 @@ void __61__EDMessageChangeManager_addLabels_removeLabels_forMessages___block_inv
   [v3 setLabelsToRemove:a1[7]];
 }
 
-- (id)reflectNewMessages:(id)a3 mailboxURL:(id)a4
+- (id)reflectNewMessages:(id)messages mailboxURL:(id)l
 {
   v65 = *MEMORY[0x1E69E9840];
-  v41 = a3;
-  v40 = a4;
-  v6 = [(EDMessageChangeManager *)self hookResponder];
-  [v6 persistenceWillBeginUpdates];
+  messagesCopy = messages;
+  lCopy = l;
+  hookResponder = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder persistenceWillBeginUpdates];
 
   v7 = +[EDMessageChangeManager log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v41 count];
-    v9 = [MEMORY[0x1E699B858] ec_redactedStringForMailboxURL:v40];
+    v8 = [messagesCopy count];
+    v9 = [MEMORY[0x1E699B858] ec_redactedStringForMailboxURL:lCopy];
     *buf = 134218242;
     v59 = v8;
     v60 = 2114;
@@ -2087,15 +2087,15 @@ void __61__EDMessageChangeManager_addLabels_removeLabels_forMessages___block_inv
     _os_log_impl(&dword_1C61EF000, v7, OS_LOG_TYPE_DEFAULT, "Adding %lu new messages from server sync to %{public}@", buf, 0x16u);
   }
 
-  if ([v41 count])
+  if ([messagesCopy count])
   {
-    v10 = [(EDMessageChangeManager *)self hookResponder];
-    [v10 persistenceWillAddNewMessages:v41];
+    hookResponder2 = [(EDMessageChangeManager *)self hookResponder];
+    [hookResponder2 persistenceWillAddNewMessages:messagesCopy];
   }
 
   v38 = objc_alloc_init(EDPersistenceDatabaseGenerationWindow);
   v42 = objc_opt_new();
-  if ([(EDMessageChangeManager *)self _needToStoreServerMessagesForMailboxURL:v40])
+  if ([(EDMessageChangeManager *)self _needToStoreServerMessagesForMailboxURL:lCopy])
   {
     v11 = objc_opt_new();
     v51[0] = MEMORY[0x1E69E9820];
@@ -2104,30 +2104,30 @@ void __61__EDMessageChangeManager_addLabels_removeLabels_forMessages___block_inv
     v51[3] = &unk_1E8253FA8;
     v51[4] = self;
     v52 = v38;
-    v53 = v40;
+    v53 = lCopy;
     v54 = v42;
     v12 = v11;
     v55 = v12;
-    [v41 ef_enumerateObjectsInBatchesOfSize:256 block:v51];
+    [messagesCopy ef_enumerateObjectsInBatchesOfSize:256 block:v51];
     v13 = v55;
-    v14 = v12;
+    allKeys = v12;
   }
 
   else
   {
-    [(EDMessageChangeManager *)self persistNewMessages:v41 mailboxURL:v40 oldMessagesByNewMessage:v42 fromSyncing:1];
-    v14 = [v42 allKeys];
+    [(EDMessageChangeManager *)self persistNewMessages:messagesCopy mailboxURL:lCopy oldMessagesByNewMessage:v42 fromSyncing:1];
+    allKeys = [v42 allKeys];
   }
 
-  v15 = [(EDMessageChangeManager *)self markAllWorkQueue];
+  markAllWorkQueue = [(EDMessageChangeManager *)self markAllWorkQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__EDMessageChangeManager_reflectNewMessages_mailboxURL___block_invoke_117;
   block[3] = &unk_1E8250128;
   block[4] = self;
-  v16 = v14;
+  v16 = allKeys;
   v50 = v16;
-  dispatch_async(v15, block);
+  dispatch_async(markAllWorkQueue, block);
 
   v47 = 0u;
   v48 = 0u;
@@ -2149,9 +2149,9 @@ void __61__EDMessageChangeManager_addLabels_removeLabels_forMessages___block_inv
 
         v20 = *(*(&v45 + 1) + 8 * i);
         v21 = objc_autoreleasePoolPush();
-        v22 = [(EDMessageChangeManager *)self readLaterPersistence];
+        readLaterPersistence = [(EDMessageChangeManager *)self readLaterPersistence];
         v44 = 0;
-        v23 = [v22 cloudStorageReadLaterDateForMessage:v20 displayDate:&v44];
+        v23 = [readLaterPersistence cloudStorageReadLaterDateForMessage:v20 displayDate:&v44];
         v24 = v44;
 
         if (v23 | v24)
@@ -2159,10 +2159,10 @@ void __61__EDMessageChangeManager_addLabels_removeLabels_forMessages___block_inv
           v25 = EDRemindMeLog();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
-            v26 = [v20 messageIDHeaderHash];
-            v27 = [v26 int64Value];
+            messageIDHeaderHash = [v20 messageIDHeaderHash];
+            int64Value = [messageIDHeaderHash int64Value];
             *buf = 134218498;
-            v59 = v27;
+            v59 = int64Value;
             v60 = 2114;
             v61 = v23;
             v62 = 2114;
@@ -2173,8 +2173,8 @@ void __61__EDMessageChangeManager_addLabels_removeLabels_forMessages___block_inv
           if (v23)
           {
             v57 = v20;
-            v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v57 count:1];
-            v29 = [(EDMessageChangeManager *)self _applyReadLaterDate:v23 displayDate:v24 toMessages:v28 changeIsRemote:1];
+            messagePersistence = [MEMORY[0x1E695DEC8] arrayWithObjects:&v57 count:1];
+            v29 = [(EDMessageChangeManager *)self _applyReadLaterDate:v23 displayDate:v24 toMessages:messagePersistence changeIsRemote:1];
           }
 
           else
@@ -2184,10 +2184,10 @@ void __61__EDMessageChangeManager_addLabels_removeLabels_forMessages___block_inv
               goto LABEL_21;
             }
 
-            v28 = [(EDMessageChangeManager *)self messagePersistence];
+            messagePersistence = [(EDMessageChangeManager *)self messagePersistence];
             v56 = v20;
             v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v56 count:1];
-            [v28 updateDisplayDateForPersistedMessages:v30 displayDate:v24 changeIsRemote:1];
+            [messagePersistence updateDisplayDateForPersistedMessages:v30 displayDate:v24 changeIsRemote:1];
           }
         }
 
@@ -2205,17 +2205,17 @@ LABEL_21:
   if ([v42 count] && objc_msgSend(obj, "count"))
   {
     [(EDMessageChangeManager *)self willStartPersistenceDidAddMessages:v42];
-    v31 = [(EDMessageChangeManager *)self hookResponder];
-    [v31 persistenceDidAddMessages:obj generationWindow:v39];
+    hookResponder3 = [(EDMessageChangeManager *)self hookResponder];
+    [hookResponder3 persistenceDidAddMessages:obj generationWindow:v39];
 
     [(EDMessageChangeManager *)self didFinishPersistenceDidAddMessages:v42];
     [(EDMessageChangeManager *)self didReflectNewMessages:obj];
-    v32 = [(EDMessageChangeManager *)self hookResponder];
-    [v32 persistenceDidAddNewMessages:v42];
+    hookResponder4 = [(EDMessageChangeManager *)self hookResponder];
+    [hookResponder4 persistenceDidAddNewMessages:v42];
   }
 
-  v33 = [(EDMessageChangeManager *)self hookResponder];
-  [v33 persistenceDidFinishUpdates];
+  hookResponder5 = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder5 persistenceDidFinishUpdates];
 
   [(EDMessageChangeManager *)self _generateFakeSummariesIfNeededForMessages:obj flagChange:0];
   v34 = v50;
@@ -2488,21 +2488,21 @@ void __56__EDMessageChangeManager_reflectNewMessages_mailboxURL___block_invoke_8
   }
 }
 
-- (void)_generateFakeSummariesIfNeededForMessages:(id)a3 flagChange:(id)a4
+- (void)_generateFakeSummariesIfNeededForMessages:(id)messages flagChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  if ([MEMORY[0x1E699ACE8] preferenceEnabled:50] && (!v7 || objc_msgSend(v7, "flaggedChanged")))
+  messagesCopy = messages;
+  changeCopy = change;
+  if ([MEMORY[0x1E699ACE8] preferenceEnabled:50] && (!changeCopy || objc_msgSend(changeCopy, "flaggedChanged")))
   {
     v8 = dispatch_time(0, 3000000000);
-    v9 = [(EDMessageChangeManager *)self markAllWorkQueue];
+    markAllWorkQueue = [(EDMessageChangeManager *)self markAllWorkQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __79__EDMessageChangeManager__generateFakeSummariesIfNeededForMessages_flagChange___block_invoke;
     v10[3] = &unk_1E8250128;
-    v11 = v6;
-    v12 = self;
-    dispatch_after(v8, v9, v10);
+    v11 = messagesCopy;
+    selfCopy = self;
+    dispatch_after(v8, markAllWorkQueue, v10);
   }
 }
 
@@ -2574,18 +2574,18 @@ void __79__EDMessageChangeManager__generateFakeSummariesIfNeededForMessages_flag
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didReflectNewMessages:(id)a3
+- (void)didReflectNewMessages:(id)messages
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 ef_filter:&__block_literal_global_133];
+  messagesCopy = messages;
+  v5 = [messagesCopy ef_filter:&__block_literal_global_133];
   if ([v5 count])
   {
     v6 = [v5 objectAtIndexedSubscript:0];
-    v23 = [v6 mailbox];
+    mailbox = [v6 mailbox];
 
     v7 = objc_alloc(MEMORY[0x1E699AD20]);
-    v8 = [v23 URL];
+    v8 = [mailbox URL];
     v9 = [v7 initWithURL:v8];
 
     v10 = MEMORY[0x1E699AD28];
@@ -2593,24 +2593,24 @@ void __79__EDMessageChangeManager__generateFakeSummariesIfNeededForMessages_flag
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
     v12 = [v10 mailboxScopeForMailboxObjectIDs:v11 forExclusion:0];
 
-    v13 = [(EDMessageChangeManager *)self messagePersistence];
-    v14 = [v13 messagesForPersistedMessages:v5 mailboxScope:v12];
+    messagePersistence = [(EDMessageChangeManager *)self messagePersistence];
+    v14 = [messagePersistence messagesForPersistedMessages:v5 mailboxScope:v12];
 
     v15 = [v14 ef_compactMap:&__block_literal_global_138];
-    v16 = [MEMORY[0x1E6997A68] keyPathForRecentEmails];
+    keyPathForRecentEmails = [MEMORY[0x1E6997A68] keyPathForRecentEmails];
     v17 = [v15 copy];
-    v18 = [MEMORY[0x1E6997A60] userContext];
-    [v18 setObject:v17 forKeyedSubscript:v16];
+    userContext = [MEMORY[0x1E6997A60] userContext];
+    [userContext setObject:v17 forKeyedSubscript:keyPathForRecentEmails];
 
     v19 = +[EDMessageChangeManager log];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v20 = [v14 count];
-      v21 = [v9 ef_publicDescription];
+      ef_publicDescription = [v9 ef_publicDescription];
       *buf = 134218242;
       v25 = v20;
       v26 = 2114;
-      v27 = v21;
+      v27 = ef_publicDescription;
       _os_log_impl(&dword_1C61EF000, v19, OS_LOG_TYPE_DEFAULT, "Notifying CoreDuet about %lu new messages in %{public}@", buf, 0x16u);
     }
   }
@@ -2685,25 +2685,25 @@ id __48__EDMessageChangeManager_didReflectNewMessages___block_invoke_4(uint64_t 
   return v3;
 }
 
-- (void)reflectDeletedMessages:(id)a3
+- (void)reflectDeletedMessages:(id)messages
 {
-  v5 = a3;
-  v6 = [v5 firstObject];
-  v7 = [v6 mailbox];
-  v8 = [v7 URL];
+  messagesCopy = messages;
+  firstObject = [messagesCopy firstObject];
+  mailbox = [firstObject mailbox];
+  v8 = [mailbox URL];
   v9 = [(EDMessageChangeManager *)self _needToStoreServerMessagesForMailboxURL:v8];
 
   if (v9)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"EDMessageChangeManager.m" lineNumber:1058 description:@"Calling reflectFlagChanges:forMessages: on IMAP"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDMessageChangeManager.m" lineNumber:1058 description:@"Calling reflectFlagChanges:forMessages: on IMAP"];
   }
 
   v10 = objc_alloc_init(EDPersistenceDatabaseGenerationWindow);
-  v11 = [(EDMessageChangeManager *)self hookResponder];
-  [v11 persistenceWillBeginUpdates];
+  hookResponder = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder persistenceWillBeginUpdates];
 
-  v12 = [(EDMessageChangeManager *)self database];
+  database = [(EDMessageChangeManager *)self database];
   v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDMessageChangeManager reflectDeletedMessages:]"];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -2711,16 +2711,16 @@ id __48__EDMessageChangeManager_didReflectNewMessages___block_invoke_4(uint64_t 
   v19[3] = &unk_1E8250440;
   v14 = v10;
   v20 = v14;
-  v21 = self;
-  v15 = v5;
+  selfCopy = self;
+  v15 = messagesCopy;
   v22 = v15;
-  [v12 __performWriteWithCaller:v13 usingBlock:v19];
+  [database __performWriteWithCaller:v13 usingBlock:v19];
 
-  v16 = [(EDMessageChangeManager *)self hookResponder];
-  [v16 persistenceDidDeleteMessages:v15 generationWindow:v14];
+  hookResponder2 = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder2 persistenceDidDeleteMessages:v15 generationWindow:v14];
 
-  v17 = [(EDMessageChangeManager *)self hookResponder];
-  [v17 persistenceDidFinishUpdates];
+  hookResponder3 = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder3 persistenceDidFinishUpdates];
 }
 
 uint64_t __49__EDMessageChangeManager_reflectDeletedMessages___block_invoke(uint64_t a1, void *a2)
@@ -2732,20 +2732,20 @@ uint64_t __49__EDMessageChangeManager_reflectDeletedMessages___block_invoke(uint
   return 1;
 }
 
-- (void)reflectDeletedMessagesWithRemoteIDs:(id)a3 mailboxURL:(id)a4
+- (void)reflectDeletedMessagesWithRemoteIDs:(id)ds mailboxURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  lCopy = l;
   v8 = objc_alloc_init(EDPersistenceDatabaseGenerationWindow);
-  v9 = [(EDMessageChangeManager *)self hookResponder];
-  [v9 persistenceWillBeginUpdates];
+  hookResponder = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder persistenceWillBeginUpdates];
 
-  v10 = [(EDMessageChangeManager *)self _needToStoreServerMessagesForMailboxURL:v7];
+  v10 = [(EDMessageChangeManager *)self _needToStoreServerMessagesForMailboxURL:lCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [(EDMessageChangeManager *)self serverMessagePersistenceFactory];
-    v13 = [v12 serverMessagePersistenceForMailboxURL:v7];
+    serverMessagePersistenceFactory = [(EDMessageChangeManager *)self serverMessagePersistenceFactory];
+    v13 = [serverMessagePersistenceFactory serverMessagePersistenceForMailboxURL:lCopy];
   }
 
   else
@@ -2758,16 +2758,16 @@ uint64_t __49__EDMessageChangeManager_reflectDeletedMessages___block_invoke(uint
   v18[2] = __73__EDMessageChangeManager_reflectDeletedMessagesWithRemoteIDs_mailboxURL___block_invoke;
   v18[3] = &unk_1E8254038;
   v18[4] = self;
-  v14 = v7;
+  v14 = lCopy;
   v19 = v14;
   v15 = v8;
   v20 = v15;
   v22 = v11;
   v16 = v13;
   v21 = v16;
-  [v6 ef_enumerateObjectsInBatchesOfSize:25 block:v18];
-  v17 = [(EDMessageChangeManager *)self hookResponder];
-  [v17 persistenceDidFinishUpdates];
+  [dsCopy ef_enumerateObjectsInBatchesOfSize:25 block:v18];
+  hookResponder2 = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder2 persistenceDidFinishUpdates];
 }
 
 void __73__EDMessageChangeManager_reflectDeletedMessagesWithRemoteIDs_mailboxURL___block_invoke(uint64_t a1, void *a2)
@@ -2820,22 +2820,22 @@ uint64_t __73__EDMessageChangeManager_reflectDeletedMessagesWithRemoteIDs_mailbo
   return 1;
 }
 
-- (void)reflectAllMessagesDeletedInMailboxURL:(id)a3
+- (void)reflectAllMessagesDeletedInMailboxURL:(id)l
 {
   v43 = *MEMORY[0x1E69E9840];
-  v29 = a3;
+  lCopy = l;
   if (![(EDMessageChangeManager *)self _needToStoreServerMessagesForMailboxURL:?])
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"EDMessageChangeManager.m" lineNumber:1105 description:@"Reflect all deleted server messages for a data source without server messages"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDMessageChangeManager.m" lineNumber:1105 description:@"Reflect all deleted server messages for a data source without server messages"];
   }
 
   v30 = objc_alloc_init(EDPersistenceDatabaseGenerationWindow);
-  v5 = [(EDMessageChangeManager *)self hookResponder];
-  [v5 persistenceWillBeginUpdates];
+  hookResponder = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder persistenceWillBeginUpdates];
 
-  v6 = [(EDMessageChangeManager *)self serverMessagePersistenceFactory];
-  v31 = [v6 serverMessagePersistenceForMailboxURL:v29];
+  serverMessagePersistenceFactory = [(EDMessageChangeManager *)self serverMessagePersistenceFactory];
+  v31 = [serverMessagePersistenceFactory serverMessagePersistenceForMailboxURL:lCopy];
 
   while (1)
   {
@@ -2868,15 +2868,15 @@ uint64_t __73__EDMessageChangeManager_reflectDeletedMessagesWithRemoteIDs_mailbo
           }
 
           v15 = *(*(&v38 + 1) + 8 * i);
-          v16 = [v15 remoteID];
-          [v9 addObject:v16];
+          remoteID = [v15 remoteID];
+          [v9 addObject:remoteID];
 
-          v17 = [v15 messagePersistentID];
+          messagePersistentID = [v15 messagePersistentID];
 
-          if (v17)
+          if (messagePersistentID)
           {
-            v18 = [v15 messagePersistentID];
-            v19 = -[EDMessageChangeManager messageForDatabaseID:](self, "messageForDatabaseID:", [v18 longLongValue]);
+            messagePersistentID2 = [v15 messagePersistentID];
+            v19 = -[EDMessageChangeManager messageForDatabaseID:](self, "messageForDatabaseID:", [messagePersistentID2 longLongValue]);
             [v10 addObject:v19];
           }
         }
@@ -2887,7 +2887,7 @@ uint64_t __73__EDMessageChangeManager_reflectDeletedMessagesWithRemoteIDs_mailbo
       while (v12);
     }
 
-    v20 = [(EDMessageChangeManager *)self database];
+    database = [(EDMessageChangeManager *)self database];
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDMessageChangeManager reflectAllMessagesDeletedInMailboxURL:]"];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
@@ -2898,17 +2898,17 @@ uint64_t __73__EDMessageChangeManager_reflectDeletedMessagesWithRemoteIDs_mailbo
     v34 = v31;
     v23 = v9;
     v35 = v23;
-    v36 = self;
+    selfCopy = self;
     v24 = v10;
     v37 = v24;
-    [v20 __performWriteWithCaller:v21 usingBlock:v32];
+    [database __performWriteWithCaller:v21 usingBlock:v32];
 
-    v25 = [(EDMessageChangeManager *)self hookResponder];
-    [v25 persistenceDidDeleteMessages:v24 generationWindow:v22];
+    hookResponder2 = [(EDMessageChangeManager *)self hookResponder];
+    [hookResponder2 persistenceDidDeleteMessages:v24 generationWindow:v22];
   }
 
-  v26 = [(EDMessageChangeManager *)self hookResponder];
-  [v26 persistenceDidFinishUpdates];
+  hookResponder3 = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder3 persistenceDidFinishUpdates];
 
   v27 = *MEMORY[0x1E69E9840];
 }
@@ -2923,21 +2923,21 @@ uint64_t __64__EDMessageChangeManager_reflectAllMessagesDeletedInMailboxURL___bl
   return 1;
 }
 
-- (void)reflectDeletedAllClearedMessagesInMailboxURL:(id)a3
+- (void)reflectDeletedAllClearedMessagesInMailboxURL:(id)l
 {
-  v20 = a3;
+  lCopy = l;
   if ([(EDMessageChangeManager *)self _needToStoreServerMessagesForMailboxURL:?])
   {
     v21 = objc_alloc_init(EDPersistenceDatabaseGenerationWindow);
-    v4 = [(EDMessageChangeManager *)self hookResponder];
-    [v4 persistenceWillBeginUpdates];
+    hookResponder = [(EDMessageChangeManager *)self hookResponder];
+    [hookResponder persistenceWillBeginUpdates];
 
-    v5 = [(EDMessageChangeManager *)self serverMessagePersistenceFactory];
-    v6 = [v5 serverMessagePersistenceForMailboxURL:v20];
+    serverMessagePersistenceFactory = [(EDMessageChangeManager *)self serverMessagePersistenceFactory];
+    v6 = [serverMessagePersistenceFactory serverMessagePersistenceForMailboxURL:lCopy];
 
     v7 = MEMORY[0x1E695DF70];
-    v8 = [v6 deleteAllClearedUIDMessages];
-    v9 = [v7 arrayWithArray:v8];
+    deleteAllClearedUIDMessages = [v6 deleteAllClearedUIDMessages];
+    v9 = [v7 arrayWithArray:deleteAllClearedUIDMessages];
 
     while ([v9 count])
     {
@@ -2960,7 +2960,7 @@ uint64_t __64__EDMessageChangeManager_reflectAllMessagesDeletedInMailboxURL___bl
       v26[3] = &unk_1E8254088;
       v26[4] = self;
       v13 = [v12 ef_compactMap:v26];
-      v14 = [(EDMessageChangeManager *)self database];
+      database = [(EDMessageChangeManager *)self database];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDMessageChangeManager reflectDeletedAllClearedMessagesInMailboxURL:]"];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
@@ -2968,17 +2968,17 @@ uint64_t __64__EDMessageChangeManager_reflectAllMessagesDeletedInMailboxURL___bl
       v22[3] = &unk_1E8250440;
       v16 = v21;
       v23 = v16;
-      v24 = self;
+      selfCopy = self;
       v17 = v13;
       v25 = v17;
-      [v14 __performWriteWithCaller:v15 usingBlock:v22];
+      [database __performWriteWithCaller:v15 usingBlock:v22];
 
-      v18 = [(EDMessageChangeManager *)self hookResponder];
-      [v18 persistenceDidDeleteMessages:v17 generationWindow:v16];
+      hookResponder2 = [(EDMessageChangeManager *)self hookResponder];
+      [hookResponder2 persistenceDidDeleteMessages:v17 generationWindow:v16];
     }
 
-    v19 = [(EDMessageChangeManager *)self hookResponder];
-    [v19 persistenceDidFinishUpdates];
+    hookResponder3 = [(EDMessageChangeManager *)self hookResponder];
+    [hookResponder3 persistenceDidFinishUpdates];
   }
 }
 
@@ -3008,47 +3008,47 @@ uint64_t __71__EDMessageChangeManager_reflectDeletedAllClearedMessagesInMailboxU
   return 1;
 }
 
-- (void)reflectFlagChanges:(id)a3 forMessages:(id)a4
+- (void)reflectFlagChanges:(id)changes forMessages:(id)messages
 {
-  v13 = a3;
-  v7 = a4;
-  v8 = [v7 firstObject];
-  v9 = [v8 mailbox];
-  v10 = [v9 URL];
+  changesCopy = changes;
+  messagesCopy = messages;
+  firstObject = [messagesCopy firstObject];
+  mailbox = [firstObject mailbox];
+  v10 = [mailbox URL];
   v11 = [(EDMessageChangeManager *)self _needToStoreServerMessagesForMailboxURL:v10];
 
   if (v11)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"EDMessageChangeManager.m" lineNumber:1175 description:@"Calling reflectFlagChanges:forMessages: on IMAP"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDMessageChangeManager.m" lineNumber:1175 description:@"Calling reflectFlagChanges:forMessages: on IMAP"];
   }
 
-  [(EDMessageChangeManager *)self _reflectFlagChanges:v13 messages:v7 remoteIDs:0 mailboxURL:0];
+  [(EDMessageChangeManager *)self _reflectFlagChanges:changesCopy messages:messagesCopy remoteIDs:0 mailboxURL:0];
 }
 
-- (void)reflectFlagChanges:(id)a3 forMessagesWithRemoteIDs:(id)a4 mailboxURL:(id)a5
+- (void)reflectFlagChanges:(id)changes forMessagesWithRemoteIDs:(id)ds mailboxURL:(id)l
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(EDMessageChangeManager *)self messagesForRemoteIDs:v8 mailboxURL:v9];
-  [(EDMessageChangeManager *)self _reflectFlagChanges:v11 messages:v10 remoteIDs:v8 mailboxURL:v9];
+  changesCopy = changes;
+  dsCopy = ds;
+  lCopy = l;
+  v10 = [(EDMessageChangeManager *)self messagesForRemoteIDs:dsCopy mailboxURL:lCopy];
+  [(EDMessageChangeManager *)self _reflectFlagChanges:changesCopy messages:v10 remoteIDs:dsCopy mailboxURL:lCopy];
 }
 
-- (void)_reflectFlagChanges:(id)a3 messages:(id)a4 remoteIDs:(id)a5 mailboxURL:(id)a6
+- (void)_reflectFlagChanges:(id)changes messages:(id)messages remoteIDs:(id)ds mailboxURL:(id)l
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  changesCopy = changes;
+  messagesCopy = messages;
+  dsCopy = ds;
+  lCopy = l;
   v14 = objc_alloc_init(EDPersistenceDatabaseGenerationWindow);
-  v15 = [(EDMessageChangeManager *)self hookResponder];
-  [v15 persistenceWillBeginUpdates];
+  hookResponder = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder persistenceWillBeginUpdates];
 
-  if ([v11 count])
+  if ([messagesCopy count])
   {
-    v16 = [(EDMessageChangeManager *)self hookResponder];
-    [v16 persistenceWillChangeFlags:v10 messages:v11];
+    hookResponder2 = [(EDMessageChangeManager *)self hookResponder];
+    [hookResponder2 persistenceWillChangeFlags:changesCopy messages:messagesCopy];
   }
 
   v34 = 0;
@@ -3057,7 +3057,7 @@ uint64_t __71__EDMessageChangeManager_reflectDeletedAllClearedMessagesInMailboxU
   v37 = __Block_byref_object_copy__22;
   v38 = __Block_byref_object_dispose__22;
   v39 = 0;
-  v17 = [(EDMessageChangeManager *)self database];
+  database = [(EDMessageChangeManager *)self database];
   v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDMessageChangeManager _reflectFlagChanges:messages:remoteIDs:mailboxURL:]"];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
@@ -3065,26 +3065,26 @@ uint64_t __71__EDMessageChangeManager_reflectDeletedAllClearedMessagesInMailboxU
   v26[3] = &unk_1E82540B0;
   v19 = v14;
   v27 = v19;
-  v28 = self;
-  v20 = v13;
+  selfCopy = self;
+  v20 = lCopy;
   v29 = v20;
-  v21 = v12;
+  v21 = dsCopy;
   v30 = v21;
-  v22 = v10;
+  v22 = changesCopy;
   v31 = v22;
-  v23 = v11;
+  v23 = messagesCopy;
   v32 = v23;
   v33 = &v34;
-  [v17 __performWriteWithCaller:v18 usingBlock:v26];
+  [database __performWriteWithCaller:v18 usingBlock:v26];
 
   if ([v23 count])
   {
-    v24 = [(EDMessageChangeManager *)self hookResponder];
-    [v24 persistenceDidChangeFlags:v22 messages:v35[5] generationWindow:v19];
+    hookResponder3 = [(EDMessageChangeManager *)self hookResponder];
+    [hookResponder3 persistenceDidChangeFlags:v22 messages:v35[5] generationWindow:v19];
   }
 
-  v25 = [(EDMessageChangeManager *)self hookResponder];
-  [v25 persistenceDidFinishUpdates];
+  hookResponder4 = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder4 persistenceDidFinishUpdates];
 
   _Block_object_dispose(&v34, 8);
 }
@@ -3118,15 +3118,15 @@ uint64_t __76__EDMessageChangeManager__reflectFlagChanges_messages_remoteIDs_mai
   return 1;
 }
 
-- (void)reflectSortedFlagChanges:(id)a3 mailboxURL:(id)a4
+- (void)reflectSortedFlagChanges:(id)changes mailboxURL:(id)l
 {
   v48 = *MEMORY[0x1E69E9840];
-  v30 = a3;
-  v34 = a4;
-  v5 = [v30 count];
-  if (v34 && v5)
+  changesCopy = changes;
+  lCopy = l;
+  v5 = [changesCopy count];
+  if (lCopy && v5)
   {
-    v29 = v30;
+    v29 = changesCopy;
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v29, "count")}];
     v44 = 0u;
     v45 = 0u;
@@ -3147,8 +3147,8 @@ uint64_t __76__EDMessageChangeManager__reflectFlagChanges_messages_remoteIDs_mai
           }
 
           v10 = *(*(&v42 + 1) + 8 * i);
-          v11 = [v10 first];
-          v12 = [v11 unsignedIntegerValue];
+          first = [v10 first];
+          unsignedIntegerValue = [first unsignedIntegerValue];
 
           v41[0] = MEMORY[0x1E69E9820];
           v41[1] = 3221225472;
@@ -3159,17 +3159,17 @@ uint64_t __76__EDMessageChangeManager__reflectFlagChanges_messages_remoteIDs_mai
           if (v13 == 0x7FFFFFFFFFFFFFFFLL)
           {
             v14 = MEMORY[0x1E699B848];
-            v15 = [MEMORY[0x1E696AD50] indexSetWithIndex:v12];
-            v16 = [v10 second];
-            v17 = [v14 pairWithFirst:v15 second:v16];
+            v15 = [MEMORY[0x1E696AD50] indexSetWithIndex:unsignedIntegerValue];
+            second = [v10 second];
+            v17 = [v14 pairWithFirst:v15 second:second];
             [v6 addObject:v17];
           }
 
           else
           {
             v15 = [v6 objectAtIndexedSubscript:v13];
-            v16 = [v15 first];
-            [v16 addIndex:v12];
+            second = [v15 first];
+            [second addIndex:unsignedIntegerValue];
           }
         }
 
@@ -3199,20 +3199,20 @@ uint64_t __76__EDMessageChangeManager__reflectFlagChanges_messages_remoteIDs_mai
 
           v21 = *(*(&v37 + 1) + 8 * j);
           v22 = MEMORY[0x1E695DF70];
-          v23 = [v21 first];
-          v24 = [v22 arrayWithCapacity:{objc_msgSend(v23, "count")}];
+          first2 = [v21 first];
+          v24 = [v22 arrayWithCapacity:{objc_msgSend(first2, "count")}];
 
-          v25 = [v21 first];
+          first3 = [v21 first];
           v35[0] = MEMORY[0x1E69E9820];
           v35[1] = 3221225472;
           v35[2] = __62__EDMessageChangeManager_reflectSortedFlagChanges_mailboxURL___block_invoke;
           v35[3] = &unk_1E82540D8;
           v26 = v24;
           v36 = v26;
-          [v25 enumerateIndexesUsingBlock:v35];
+          [first3 enumerateIndexesUsingBlock:v35];
 
-          v27 = [v21 second];
-          [(EDMessageChangeManager *)self reflectFlagChanges:v27 forMessagesWithRemoteIDs:v26 mailboxURL:v34];
+          second2 = [v21 second];
+          [(EDMessageChangeManager *)self reflectFlagChanges:second2 forMessagesWithRemoteIDs:v26 mailboxURL:lCopy];
         }
 
         v18 = [obja countByEnumeratingWithState:&v37 objects:v46 count:16];
@@ -3232,14 +3232,14 @@ void __62__EDMessageChangeManager_reflectSortedFlagChanges_mailboxURL___block_in
   [v2 addObject:?];
 }
 
-- (void)reflectAddedLabels:(id)a3 removedLabels:(id)a4 forMessagesWithRemoteIDs:(id)a5 mailboxURL:(id)a6
+- (void)reflectAddedLabels:(id)labels removedLabels:(id)removedLabels forMessagesWithRemoteIDs:(id)ds mailboxURL:(id)l
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  labelsCopy = labels;
+  removedLabelsCopy = removedLabels;
+  dsCopy = ds;
+  lCopy = l;
   v30 = objc_alloc_init(EDPersistenceDatabaseGenerationWindow);
-  v14 = [(EDMessageChangeManager *)self hookResponder:v13];
+  v14 = [(EDMessageChangeManager *)self hookResponder:lCopy];
   [v14 persistenceWillBeginUpdates];
 
   v50 = 0;
@@ -3248,7 +3248,7 @@ void __62__EDMessageChangeManager_reflectSortedFlagChanges_mailboxURL___block_in
   v53 = __Block_byref_object_copy__22;
   v54 = __Block_byref_object_dispose__22;
   v55 = 0;
-  v15 = [(EDMessageChangeManager *)self database];
+  database = [(EDMessageChangeManager *)self database];
   v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDMessageChangeManager reflectAddedLabels:removedLabels:forMessagesWithRemoteIDs:mailboxURL:]"];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
@@ -3256,14 +3256,14 @@ void __62__EDMessageChangeManager_reflectSortedFlagChanges_mailboxURL___block_in
   v46[3] = &unk_1E8254100;
   v49 = &v50;
   v46[4] = self;
-  v17 = v12;
+  v17 = dsCopy;
   v47 = v17;
-  v18 = v13;
+  v18 = lCopy;
   v48 = v18;
-  [v15 __performReadWithCaller:v16 usingBlock:v46];
+  [database __performReadWithCaller:v16 usingBlock:v46];
 
-  v19 = [(EDMessageChangeManager *)self hookResponder];
-  [v19 persistenceWillAddLabels:v10 removeLabels:v11 messages:v51[5]];
+  hookResponder = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder persistenceWillAddLabels:labelsCopy removeLabels:removedLabelsCopy messages:v51[5]];
 
   v20 = [(EDMessageChangeManager *)self _needToStoreServerMessagesForMailboxURL:v18];
   v40 = 0;
@@ -3272,7 +3272,7 @@ void __62__EDMessageChangeManager_reflectSortedFlagChanges_mailboxURL___block_in
   v43 = __Block_byref_object_copy__22;
   v44 = __Block_byref_object_dispose__22;
   v45 = 0;
-  v21 = [(EDMessageChangeManager *)self database];
+  database2 = [(EDMessageChangeManager *)self database];
   v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDMessageChangeManager reflectAddedLabels:removedLabels:forMessagesWithRemoteIDs:mailboxURL:]"];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
@@ -3281,23 +3281,23 @@ void __62__EDMessageChangeManager_reflectSortedFlagChanges_mailboxURL___block_in
   v23 = v30;
   v39 = v20;
   v32 = v23;
-  v33 = self;
+  selfCopy = self;
   v24 = v18;
   v34 = v24;
-  v25 = v10;
+  v25 = labelsCopy;
   v35 = v25;
-  v26 = v11;
+  v26 = removedLabelsCopy;
   v36 = v26;
   v27 = v17;
   v37 = v27;
   v38 = &v40;
-  [v21 __performWriteWithCaller:v22 usingBlock:v31];
+  [database2 __performWriteWithCaller:v22 usingBlock:v31];
 
-  v28 = [(EDMessageChangeManager *)self hookResponder];
-  [v28 persistenceDidAddLabels:v25 removeLabels:v26 messages:v41[5] generationWindow:v23];
+  hookResponder2 = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder2 persistenceDidAddLabels:v25 removeLabels:v26 messages:v41[5] generationWindow:v23];
 
-  v29 = [(EDMessageChangeManager *)self hookResponder];
-  [v29 persistenceDidFinishUpdates];
+  hookResponder3 = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder3 persistenceDidFinishUpdates];
 
   _Block_object_dispose(&v40, 8);
   _Block_object_dispose(&v50, 8);
@@ -3334,12 +3334,12 @@ uint64_t __95__EDMessageChangeManager_reflectAddedLabels_removedLabels_forMessag
   return 1;
 }
 
-- (BOOL)persistResults:(id)a3 forAction:(id)a4
+- (BOOL)persistResults:(id)results forAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDMessageChangeManager *)self hookResponder];
-  [v8 persistenceWillBeginUpdates];
+  resultsCopy = results;
+  actionCopy = action;
+  hookResponder = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder persistenceWillBeginUpdates];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -3347,7 +3347,7 @@ uint64_t __95__EDMessageChangeManager_reflectAddedLabels_removedLabels_forMessag
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(EDMessageChangeManager *)self _persistResults:v6 forFlagChangeAction:v7];
+      [(EDMessageChangeManager *)self _persistResults:resultsCopy forFlagChangeAction:actionCopy];
     }
 
     else
@@ -3371,23 +3371,23 @@ uint64_t __95__EDMessageChangeManager_reflectAddedLabels_removedLabels_forMessag
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
 LABEL_10:
-          v12 = [(EDMessageChangeManager *)self localActionPersistence];
-          v13 = [v7 persistentID];
-          [v12 removeMessageAction:{objc_msgSend(v13, "databaseID")}];
+          localActionPersistence = [(EDMessageChangeManager *)self localActionPersistence];
+          persistentID = [actionCopy persistentID];
+          [localActionPersistence removeMessageAction:{objc_msgSend(persistentID, "databaseID")}];
 
           v9 = 0;
         }
 
         else
         {
-          v12 = [(EDMessageChangeManager *)self localActionPersistence];
-          v9 = [v12 updateTransferUndownloadedMessageAction:v7 withResults:v6];
+          localActionPersistence = [(EDMessageChangeManager *)self localActionPersistence];
+          v9 = [localActionPersistence updateTransferUndownloadedMessageAction:actionCopy withResults:resultsCopy];
         }
 
         goto LABEL_8;
       }
 
-      [(EDMessageChangeManager *)self _persistResults:v6 forLabelChangeAction:v7];
+      [(EDMessageChangeManager *)self _persistResults:resultsCopy forLabelChangeAction:actionCopy];
     }
 
 LABEL_7:
@@ -3395,42 +3395,42 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = [(EDMessageChangeManager *)self _persistResults:v6 forTransferAction:v7];
+  v9 = [(EDMessageChangeManager *)self _persistResults:resultsCopy forTransferAction:actionCopy];
 LABEL_8:
-  v10 = [(EDMessageChangeManager *)self hookResponder];
-  [v10 persistenceDidFinishUpdates];
+  hookResponder2 = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder2 persistenceDidFinishUpdates];
 
   return v9;
 }
 
-- (void)deleteLocalMessageActionsWithIDs:(id)a3
+- (void)deleteLocalMessageActionsWithIDs:(id)ds
 {
-  v7 = a3;
-  v4 = [(EDMessageChangeManager *)self hookResponder];
-  [v4 persistenceWillBeginUpdates];
+  dsCopy = ds;
+  hookResponder = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder persistenceWillBeginUpdates];
 
-  v5 = [(EDMessageChangeManager *)self localActionPersistence];
-  [v5 removeMessageActions:v7];
+  localActionPersistence = [(EDMessageChangeManager *)self localActionPersistence];
+  [localActionPersistence removeMessageActions:dsCopy];
 
-  v6 = [(EDMessageChangeManager *)self hookResponder];
-  [v6 persistenceDidFinishUpdates];
+  hookResponder2 = [(EDMessageChangeManager *)self hookResponder];
+  [hookResponder2 persistenceDidFinishUpdates];
 }
 
-- (BOOL)_persistResults:(id)a3 forLabelChangeAction:(id)a4
+- (BOOL)_persistResults:(id)results forLabelChangeAction:(id)action
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 remoteIDs];
-  v9 = [v8 allObjects];
-  v10 = [v9 mutableCopy];
+  resultsCopy = results;
+  actionCopy = action;
+  remoteIDs = [actionCopy remoteIDs];
+  allObjects = [remoteIDs allObjects];
+  v10 = [allObjects mutableCopy];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v11 = [v7 messages];
-  v12 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  messages = [actionCopy messages];
+  v12 = [messages countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v12)
   {
     v13 = *v29;
@@ -3441,39 +3441,39 @@ LABEL_8:
       {
         if (*v29 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(messages);
         }
 
-        v15 = [*(*(&v28 + 1) + 8 * v14) remoteID];
-        if ([v15 length])
+        remoteID = [*(*(&v28 + 1) + 8 * v14) remoteID];
+        if ([remoteID length])
         {
-          [v10 addObject:v15];
+          [v10 addObject:remoteID];
         }
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v12 = [messages countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v12);
   }
 
-  v16 = [(EDMessageChangeManager *)self database];
+  database = [(EDMessageChangeManager *)self database];
   v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDMessageChangeManager _persistResults:forLabelChangeAction:]"];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __63__EDMessageChangeManager__persistResults_forLabelChangeAction___block_invoke;
   v23[3] = &unk_1E8254150;
-  v18 = v6;
+  v18 = resultsCopy;
   v24 = v18;
-  v25 = self;
-  v19 = v7;
+  selfCopy = self;
+  v19 = actionCopy;
   v26 = v19;
   v20 = v10;
   v27 = v20;
-  [v16 __performWriteWithCaller:v17 usingBlock:v23];
+  [database __performWriteWithCaller:v17 usingBlock:v23];
 
   v21 = *MEMORY[0x1E69E9840];
   return 0;
@@ -3509,18 +3509,18 @@ uint64_t __63__EDMessageChangeManager__persistResults_forLabelChangeAction___blo
   return 1;
 }
 
-- (void)_resetLocalLabelsToServerLabelsForMessagesWithRemoteIDs:(id)a3 mailboxURL:(id)a4
+- (void)_resetLocalLabelsToServerLabelsForMessagesWithRemoteIDs:(id)ds mailboxURL:(id)l
 {
   v35 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v23 = a4;
+  dsCopy = ds;
+  lCopy = l;
   v25 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v26 = self;
-  v6 = [(EDMessageChangeManager *)self serverMessagePersistenceFactory];
-  v7 = [v6 serverMessagePersistenceForMailboxURL:v23];
+  selfCopy = self;
+  serverMessagePersistenceFactory = [(EDMessageChangeManager *)self serverMessagePersistenceFactory];
+  v7 = [serverMessagePersistenceFactory serverMessagePersistenceForMailboxURL:lCopy];
 
   v21 = v7;
-  [v7 serverMessagesForRemoteIDs:v22];
+  [v7 serverMessagesForRemoteIDs:dsCopy];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
@@ -3539,17 +3539,17 @@ uint64_t __63__EDMessageChangeManager__persistResults_forLabelChangeAction___blo
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
-        v12 = [v11 messagePersistentID];
-        v13 = -[EDMessageChangeManager messageForDatabaseID:](v26, "messageForDatabaseID:", [v12 longLongValue]);
+        messagePersistentID = [v11 messagePersistentID];
+        v13 = -[EDMessageChangeManager messageForDatabaseID:](selfCopy, "messageForDatabaseID:", [messagePersistentID longLongValue]);
 
         if (v13)
         {
-          v14 = [v13 labels];
-          v15 = [v11 labels];
-          v16 = [MEMORY[0x1E695DFA8] setWithSet:v15];
-          [v16 minusSet:v14];
-          v17 = [MEMORY[0x1E695DFA8] setWithSet:v14];
-          [v17 minusSet:v15];
+          labels = [v13 labels];
+          labels2 = [v11 labels];
+          v16 = [MEMORY[0x1E695DFA8] setWithSet:labels2];
+          [v16 minusSet:labels];
+          v17 = [MEMORY[0x1E695DFA8] setWithSet:labels];
+          [v17 minusSet:labels2];
           v32[0] = MEMORY[0x1E695E118];
           v32[1] = MEMORY[0x1E695E110];
           v33[0] = v16;
@@ -3576,7 +3576,7 @@ uint64_t __63__EDMessageChangeManager__persistResults_forLabelChangeAction___blo
   v27[1] = 3221225472;
   v27[2] = __93__EDMessageChangeManager__resetLocalLabelsToServerLabelsForMessagesWithRemoteIDs_mailboxURL___block_invoke;
   v27[3] = &unk_1E8254178;
-  v27[4] = v26;
+  v27[4] = selfCopy;
   [v25 enumerateKeysAndObjectsUsingBlock:v27];
 
   v20 = *MEMORY[0x1E69E9840];
@@ -3592,30 +3592,30 @@ void __93__EDMessageChangeManager__resetLocalLabelsToServerLabelsForMessagesWith
   v9 = [v6 addLabels:v7 removeLabels:v8 toMessagesInDatabase:v5];
 }
 
-- (BOOL)_persistResults:(id)a3 forFlagChangeAction:(id)a4
+- (BOOL)_persistResults:(id)results forFlagChangeAction:(id)action
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v25 = v6;
+  resultsCopy = results;
+  actionCopy = action;
+  v25 = resultsCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(EDMessageChangeManager *)self _persistFlagChangeResults:v6 forFlagChangeAction:v7];
+    v8 = [(EDMessageChangeManager *)self _persistFlagChangeResults:resultsCopy forFlagChangeAction:actionCopy];
   }
 
   else
   {
-    v9 = [v7 remoteIDs];
-    v10 = [v9 allObjects];
-    v11 = [v10 mutableCopy];
+    remoteIDs = [actionCopy remoteIDs];
+    allObjects = [remoteIDs allObjects];
+    v11 = [allObjects mutableCopy];
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v12 = [v7 messages];
-    v13 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    messages = [actionCopy messages];
+    v13 = [messages countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v13)
     {
       v14 = *v32;
@@ -3625,38 +3625,38 @@ void __93__EDMessageChangeManager__resetLocalLabelsToServerLabelsForMessagesWith
         {
           if (*v32 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(messages);
           }
 
           v16 = *(*(&v31 + 1) + 8 * i);
-          v17 = [v16 remoteID];
-          v18 = [v17 length];
+          remoteID = [v16 remoteID];
+          v18 = [remoteID length];
 
           if (v18)
           {
-            v19 = [v16 remoteID];
-            [v11 addObject:v19];
+            remoteID2 = [v16 remoteID];
+            [v11 addObject:remoteID2];
           }
         }
 
-        v13 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v13 = [messages countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v13);
     }
 
-    v20 = [(EDMessageChangeManager *)self database];
+    database = [(EDMessageChangeManager *)self database];
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDMessageChangeManager _persistResults:forFlagChangeAction:]"];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __62__EDMessageChangeManager__persistResults_forFlagChangeAction___block_invoke;
     v26[3] = &unk_1E8254150;
     v27 = v25;
-    v28 = self;
-    v29 = v7;
+    selfCopy = self;
+    v29 = actionCopy;
     v22 = v11;
     v30 = v22;
-    [v20 __performWriteWithCaller:v21 usingBlock:v26];
+    [database __performWriteWithCaller:v21 usingBlock:v26];
 
     v8 = 0;
   }
@@ -3695,18 +3695,18 @@ uint64_t __62__EDMessageChangeManager__persistResults_forFlagChangeAction___bloc
   return 1;
 }
 
-- (BOOL)_persistFlagChangeResults:(id)a3 forFlagChangeAction:(id)a4
+- (BOOL)_persistFlagChangeResults:(id)results forFlagChangeAction:(id)action
 {
   v96 = *MEMORY[0x1E69E9840];
-  v63 = a3;
-  v64 = a4;
-  v5 = [MEMORY[0x1E696AD50] indexSet];
+  resultsCopy = results;
+  actionCopy = action;
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v87 = 0u;
   v88 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v6 = [v64 remoteIDs];
-  v7 = [v6 countByEnumeratingWithState:&v85 objects:v95 count:16];
+  remoteIDs = [actionCopy remoteIDs];
+  v7 = [remoteIDs countByEnumeratingWithState:&v85 objects:v95 count:16];
   if (v7)
   {
     v8 = *v86;
@@ -3716,7 +3716,7 @@ uint64_t __62__EDMessageChangeManager__persistResults_forFlagChangeAction___bloc
       {
         if (*v86 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(remoteIDs);
         }
 
         v10 = *(*(&v85 + 1) + 8 * i);
@@ -3734,11 +3734,11 @@ uint64_t __62__EDMessageChangeManager__persistResults_forFlagChangeAction___bloc
 
         else
         {
-          [v5 addIndex:v11];
+          [indexSet addIndex:v11];
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v85 objects:v95 count:16];
+      v7 = [remoteIDs countByEnumeratingWithState:&v85 objects:v95 count:16];
     }
 
     while (v7);
@@ -3748,8 +3748,8 @@ uint64_t __62__EDMessageChangeManager__persistResults_forFlagChangeAction___bloc
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v13 = [v64 messages];
-  v14 = [v13 countByEnumeratingWithState:&v81 objects:v94 count:16];
+  messages = [actionCopy messages];
+  v14 = [messages countByEnumeratingWithState:&v81 objects:v94 count:16];
   if (v14)
   {
     v15 = *v82;
@@ -3759,49 +3759,49 @@ uint64_t __62__EDMessageChangeManager__persistResults_forFlagChangeAction___bloc
       {
         if (*v82 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(messages);
         }
 
         v17 = *(*(&v81 + 1) + 8 * j);
-        v18 = [v17 remoteID];
-        v19 = uidFromString(v18);
+        remoteID = [v17 remoteID];
+        v19 = uidFromString(remoteID);
 
         if (v19 - 1 > 0xFFFFFFFD)
         {
           v20 = +[EDMessageChangeManager log];
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
-            v21 = [v17 remoteID];
-            [(EDMessageChangeManager *)v21 _persistFlagChangeResults:v92 forFlagChangeAction:&v93, v20];
+            remoteID2 = [v17 remoteID];
+            [(EDMessageChangeManager *)remoteID2 _persistFlagChangeResults:v92 forFlagChangeAction:&v93, v20];
           }
         }
 
         else
         {
-          [v5 addIndex:v19];
+          [indexSet addIndex:v19];
         }
       }
 
-      v14 = [v13 countByEnumeratingWithState:&v81 objects:v94 count:16];
+      v14 = [messages countByEnumeratingWithState:&v81 objects:v94 count:16];
     }
 
     while (v14);
   }
 
-  v22 = [v5 count];
-  v23 = [v64 remoteIDs];
-  v24 = v22 == [v23 count];
+  v22 = [indexSet count];
+  remoteIDs2 = [actionCopy remoteIDs];
+  v24 = v22 == [remoteIDs2 count];
 
   if (!v24)
   {
     v25 = +[EDMessageChangeManager log];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v57 = [v5 count];
-      v58 = [v64 remoteIDs];
-      v59 = [v58 count];
-      v60 = [v64 remoteIDs];
-      v61 = [v60 count];
+      v57 = [indexSet count];
+      remoteIDs3 = [actionCopy remoteIDs];
+      v59 = [remoteIDs3 count];
+      remoteIDs4 = [actionCopy remoteIDs];
+      v61 = [remoteIDs4 count];
       *buf = 67109376;
       *v91 = v57 - v59;
       *&v91[4] = 1024;
@@ -3810,30 +3810,30 @@ uint64_t __62__EDMessageChangeManager__persistResults_forFlagChangeAction___bloc
     }
   }
 
-  v26 = [v63 completedUIDs];
-  v27 = [v26 isEqualToIndexSet:v5];
+  completedUIDs = [resultsCopy completedUIDs];
+  v27 = [completedUIDs isEqualToIndexSet:indexSet];
 
   if (v27)
   {
     v28 = +[EDMessageChangeManager log];
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
-      v29 = [v5 count];
+      v29 = [indexSet count];
       *buf = 67109120;
       *v91 = v29;
       _os_log_impl(&dword_1C61EF000, v28, OS_LOG_TYPE_INFO, "All %d UIDs in flag change action were completed.", buf, 8u);
     }
 
-    v30 = [v64 remoteIDs];
-    v31 = [v30 allObjects];
-    v32 = [v31 mutableCopy];
+    remoteIDs5 = [actionCopy remoteIDs];
+    allObjects = [remoteIDs5 allObjects];
+    v32 = [allObjects mutableCopy];
 
     v79 = 0u;
     v80 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v33 = [v64 messages];
-    v34 = [v33 countByEnumeratingWithState:&v77 objects:v89 count:16];
+    messages2 = [actionCopy messages];
+    v34 = [messages2 countByEnumeratingWithState:&v77 objects:v89 count:16];
     if (v34)
     {
       v35 = *v78;
@@ -3843,37 +3843,37 @@ uint64_t __62__EDMessageChangeManager__persistResults_forFlagChangeAction___bloc
         {
           if (*v78 != v35)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(messages2);
           }
 
           v37 = *(*(&v77 + 1) + 8 * k);
-          v38 = [v37 remoteID];
-          v39 = [v38 length];
+          remoteID3 = [v37 remoteID];
+          v39 = [remoteID3 length];
 
           if (v39)
           {
-            v40 = [v37 remoteID];
-            [v32 addObject:v40];
+            remoteID4 = [v37 remoteID];
+            [v32 addObject:remoteID4];
           }
         }
 
-        v34 = [v33 countByEnumeratingWithState:&v77 objects:v89 count:16];
+        v34 = [messages2 countByEnumeratingWithState:&v77 objects:v89 count:16];
       }
 
       while (v34);
     }
 
-    v41 = [(EDMessageChangeManager *)self database];
+    database = [(EDMessageChangeManager *)self database];
     v42 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDMessageChangeManager _persistFlagChangeResults:forFlagChangeAction:]"];
     v72[0] = MEMORY[0x1E69E9820];
     v72[1] = 3221225472;
     v72[2] = __72__EDMessageChangeManager__persistFlagChangeResults_forFlagChangeAction___block_invoke;
     v72[3] = &unk_1E8254150;
-    v73 = v63;
-    v74 = self;
-    v75 = v64;
+    v73 = resultsCopy;
+    selfCopy = self;
+    v75 = actionCopy;
     v76 = v32;
-    [v41 __performWriteWithCaller:v42 usingBlock:v72];
+    [database __performWriteWithCaller:v42 usingBlock:v72];
   }
 
   else
@@ -3881,9 +3881,9 @@ uint64_t __62__EDMessageChangeManager__persistResults_forFlagChangeAction___bloc
     v43 = +[EDMessageChangeManager log];
     if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
     {
-      v44 = [v63 completedUIDs];
-      v45 = [v44 count];
-      v46 = [v5 count];
+      completedUIDs2 = [resultsCopy completedUIDs];
+      v45 = [completedUIDs2 count];
+      v46 = [indexSet count];
       *buf = 67109376;
       *v91 = v45;
       *&v91[4] = 1024;
@@ -3892,34 +3892,34 @@ uint64_t __62__EDMessageChangeManager__persistResults_forFlagChangeAction___bloc
     }
 
     v47 = MEMORY[0x1E695DF70];
-    v48 = [v63 completedUIDs];
-    v32 = [v47 arrayWithCapacity:{objc_msgSend(v48, "count")}];
+    completedUIDs3 = [resultsCopy completedUIDs];
+    v32 = [v47 arrayWithCapacity:{objc_msgSend(completedUIDs3, "count")}];
 
-    v49 = [v63 completedUIDs];
+    completedUIDs4 = [resultsCopy completedUIDs];
     v71[0] = MEMORY[0x1E69E9820];
     v71[1] = 3221225472;
     v71[2] = __72__EDMessageChangeManager__persistFlagChangeResults_forFlagChangeAction___block_invoke_167;
     v71[3] = &unk_1E82540D8;
     v71[4] = v32;
-    [v49 enumerateIndexesUsingBlock:v71];
+    [completedUIDs4 enumerateIndexesUsingBlock:v71];
 
-    v50 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexSet:v5];
-    v51 = [v63 completedUIDs];
-    [v50 removeIndexes:v51];
+    v50 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexSet:indexSet];
+    completedUIDs5 = [resultsCopy completedUIDs];
+    [v50 removeIndexes:completedUIDs5];
 
-    v52 = [(EDMessageChangeManager *)self database];
+    database2 = [(EDMessageChangeManager *)self database];
     v53 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDMessageChangeManager _persistFlagChangeResults:forFlagChangeAction:]"];
     v65[0] = MEMORY[0x1E69E9820];
     v65[1] = 3221225472;
     v65[2] = __72__EDMessageChangeManager__persistFlagChangeResults_forFlagChangeAction___block_invoke_2;
     v65[3] = &unk_1E8254060;
-    v66 = v63;
-    v67 = self;
-    v68 = v64;
+    v66 = resultsCopy;
+    selfCopy2 = self;
+    v68 = actionCopy;
     v69 = v32;
     v54 = v50;
     v70 = v54;
-    [v52 __performWriteWithCaller:v53 usingBlock:v65];
+    [database2 __performWriteWithCaller:v53 usingBlock:v65];
   }
 
   v55 = *MEMORY[0x1E69E9840];
@@ -3992,18 +3992,18 @@ uint64_t __72__EDMessageChangeManager__persistFlagChangeResults_forFlagChangeAct
   return 1;
 }
 
-- (void)_clearFollowUpsFromThreadsForMessages:(id)a3
+- (void)_clearFollowUpsFromThreadsForMessages:(id)messages
 {
   v55 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  if ([v38 count])
+  messagesCopy = messages;
+  if ([messagesCopy count])
   {
     context = objc_autoreleasePoolPush();
     v3 = +[EDMessageChangeManager log];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v54 = [v38 count];
+      v54 = [messagesCopy count];
       _os_log_impl(&dword_1C61EF000, v3, OS_LOG_TYPE_DEFAULT, "Starting to clear follow-ups from threads of %lu incoming messages.", buf, 0xCu);
     }
 
@@ -4012,7 +4012,7 @@ uint64_t __72__EDMessageChangeManager__persistFlagChangeResults_forFlagChangeAct
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    obj = v38;
+    obj = messagesCopy;
     v5 = [obj countByEnumeratingWithState:&v47 objects:v52 count:16];
     if (v5)
     {
@@ -4032,9 +4032,9 @@ uint64_t __72__EDMessageChangeManager__persistFlagChangeResults_forFlagChangeAct
 
           if (!v10 || ([v8 dateReceived], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "ef_isEarlierThanDate:", v11), v11, v12))
           {
-            v13 = [v8 dateReceived];
+            dateReceived = [v8 dateReceived];
             v14 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v8, "conversationID")}];
-            [v4 setObject:v13 forKeyedSubscript:v14];
+            [v4 setObject:dateReceived forKeyedSubscript:v14];
           }
         }
 
@@ -4044,16 +4044,16 @@ uint64_t __72__EDMessageChangeManager__persistFlagChangeResults_forFlagChangeAct
       while (v5);
     }
 
-    v35 = [v4 allKeys];
+    allKeys = [v4 allKeys];
     v15 = objc_alloc(MEMORY[0x1E695DFD8]);
     v16 = [obj ef_map:&__block_literal_global_175];
     v40 = [v15 initWithArray:v16];
 
-    v17 = [(EDMessageChangeManager *)self messagePersistence];
-    v36 = [v17 persistedMessageIDsForMessagesWithFollowUpsForConversationIDs:v35];
+    messagePersistence = [(EDMessageChangeManager *)self messagePersistence];
+    v36 = [messagePersistence persistedMessageIDsForMessagesWithFollowUpsForConversationIDs:allKeys];
 
-    v18 = [(EDMessageChangeManager *)self messagePersistence];
-    v34 = [v18 persistedMessagesForDatabaseIDs:v36 requireProtectedData:0 temporarilyUnavailableDatabaseIDs:0];
+    messagePersistence2 = [(EDMessageChangeManager *)self messagePersistence];
+    v34 = [messagePersistence2 persistedMessagesForDatabaseIDs:v36 requireProtectedData:0 temporarilyUnavailableDatabaseIDs:0];
 
     v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v45 = 0u;
@@ -4075,10 +4075,10 @@ uint64_t __72__EDMessageChangeManager__persistFlagChangeResults_forFlagChangeAct
           }
 
           v22 = *(*(&v43 + 1) + 8 * j);
-          v23 = [v22 dateReceived];
+          dateReceived2 = [v22 dateReceived];
           v24 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v22, "conversationID")}];
           v25 = [v4 objectForKeyedSubscript:v24];
-          v26 = [v23 ef_isEarlierThanDate:v25];
+          v26 = [dateReceived2 ef_isEarlierThanDate:v25];
 
           if (v26)
           {
@@ -4098,8 +4098,8 @@ uint64_t __72__EDMessageChangeManager__persistFlagChangeResults_forFlagChangeAct
       while (v19);
     }
 
-    v29 = [(EDMessageChangeManager *)self messagePersistence];
-    [v29 persistFollowUp:0 forMessages:v39];
+    messagePersistence3 = [(EDMessageChangeManager *)self messagePersistence];
+    [messagePersistence3 persistFollowUp:0 forMessages:v39];
 
     v30 = +[EDMessageChangeManager log];
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -4124,17 +4124,17 @@ id __64__EDMessageChangeManager__clearFollowUpsFromThreadsForMessages___block_in
   return v3;
 }
 
-- (void)_resetLocalFlagsToServerFlagsForMessagesWithRemoteIDs:(id)a3 mailboxURL:(id)a4
+- (void)_resetLocalFlagsToServerFlagsForMessagesWithRemoteIDs:(id)ds mailboxURL:(id)l
 {
   v30 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v22 = a4;
+  dsCopy = ds;
+  lCopy = l;
   v23 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(EDMessageChangeManager *)self serverMessagePersistenceFactory];
-  v7 = [v6 serverMessagePersistenceForMailboxURL:v22];
+  serverMessagePersistenceFactory = [(EDMessageChangeManager *)self serverMessagePersistenceFactory];
+  v7 = [serverMessagePersistenceFactory serverMessagePersistenceForMailboxURL:lCopy];
 
   v20 = v7;
-  [v7 serverMessagesForRemoteIDs:v21];
+  [v7 serverMessagesForRemoteIDs:dsCopy];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -4153,16 +4153,16 @@ id __64__EDMessageChangeManager__clearFollowUpsFromThreadsForMessages___block_in
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v12 messagePersistentID];
-        v14 = -[EDMessageChangeManager messageForDatabaseID:](self, "messageForDatabaseID:", [v13 longLongValue]);
+        messagePersistentID = [v12 messagePersistentID];
+        v14 = -[EDMessageChangeManager messageForDatabaseID:](self, "messageForDatabaseID:", [messagePersistentID longLongValue]);
 
         if (v14)
         {
-          v15 = [v14 flags];
-          v16 = [v12 serverFlags];
-          if (([v15 isEqual:v16] & 1) == 0)
+          flags = [v14 flags];
+          serverFlags = [v12 serverFlags];
+          if (([flags isEqual:serverFlags] & 1) == 0)
           {
-            v17 = [MEMORY[0x1E699B300] changeFrom:v15 to:v16];
+            v17 = [MEMORY[0x1E699B300] changeFrom:flags to:serverFlags];
             v18 = [v23 objectForKeyedSubscript:v17];
             if (!v18)
             {
@@ -4191,10 +4191,10 @@ id __64__EDMessageChangeManager__clearFollowUpsFromThreadsForMessages___block_in
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_persistResults:(id)a3 forTransferAction:(id)a4
+- (BOOL)_persistResults:(id)results forTransferAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  actionCopy = action;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -4204,7 +4204,7 @@ id __64__EDMessageChangeManager__clearFollowUpsFromThreadsForMessages___block_in
   v29 = 0x2020000000;
   v30 = 0;
   v8 = objc_alloc_init(EDPersistenceDatabaseGenerationWindow);
-  v9 = [(EDMessageChangeManager *)self database];
+  database = [(EDMessageChangeManager *)self database];
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDMessageChangeManager _persistResults:forTransferAction:]"];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
@@ -4212,18 +4212,18 @@ id __64__EDMessageChangeManager__clearFollowUpsFromThreadsForMessages___block_in
   v20 = &unk_1E82530D0;
   v11 = v8;
   v21 = v11;
-  v12 = v6;
+  v12 = resultsCopy;
   v22 = v12;
-  v23 = self;
-  v13 = v7;
+  selfCopy = self;
+  v13 = actionCopy;
   v24 = v13;
   v25 = &v31;
   v26 = &v27;
-  [v9 __performWriteWithCaller:v10 usingBlock:&v17];
+  [database __performWriteWithCaller:v10 usingBlock:&v17];
 
-  v14 = [v12 error];
+  error = [v12 error];
 
-  if (v14)
+  if (error)
   {
     [(EDMessageChangeManager *)self displayErrorForTransferAction:v13 withResults:v12];
   }
@@ -4460,19 +4460,19 @@ void __60__EDMessageChangeManager__persistResults_forTransferAction___block_invo
   [*(a1 + 32) setData:v6 onMessage:v5];
 }
 
-- (void)_handleFailedDownload:(id)a3 generationWindow:(id)a4
+- (void)_handleFailedDownload:(id)download generationWindow:(id)window
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  downloadCopy = download;
+  windowCopy = window;
+  if ([downloadCopy count])
   {
     v8 = objc_opt_new();
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = v6;
+    v9 = downloadCopy;
     v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
@@ -4487,10 +4487,10 @@ void __60__EDMessageChangeManager__persistResults_forTransferAction___block_invo
             objc_enumerationMutation(v9);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * v12) destinationMessage];
-          if (v13)
+          destinationMessage = [*(*(&v16 + 1) + 8 * v12) destinationMessage];
+          if (destinationMessage)
           {
-            [v8 addObject:v13];
+            [v8 addObject:destinationMessage];
           }
 
           ++v12;
@@ -4504,27 +4504,27 @@ void __60__EDMessageChangeManager__persistResults_forTransferAction___block_invo
     }
 
     [(EDMessageChangeManager *)self deletePersistedMessages:v8];
-    v14 = [(EDMessageChangeManager *)self hookResponder];
-    [v14 persistenceDidDeleteMessages:v8 generationWindow:v7];
+    hookResponder = [(EDMessageChangeManager *)self hookResponder];
+    [hookResponder persistenceDidDeleteMessages:v8 generationWindow:windowCopy];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleFailedCopyItems:(id)a3 transferAction:(id)a4 generationWindow:(id)a5
+- (void)_handleFailedCopyItems:(id)items transferAction:(id)action generationWindow:(id)window
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v31 = a4;
-  v28 = a5;
-  v29 = v7;
-  if ([v7 count])
+  itemsCopy = items;
+  actionCopy = action;
+  windowCopy = window;
+  v29 = itemsCopy;
+  if ([itemsCopy count])
   {
-    v8 = [v31 sourceMailboxURL];
-    v26 = v8;
-    if (v8)
+    sourceMailboxURL = [actionCopy sourceMailboxURL];
+    v26 = sourceMailboxURL;
+    if (sourceMailboxURL)
     {
-      v9 = [(EDMessageChangeManager *)self mailboxURLIsInRemoteAccount:v8, v8];
+      v9 = [(EDMessageChangeManager *)self mailboxURLIsInRemoteAccount:sourceMailboxURL, sourceMailboxURL];
     }
 
     else
@@ -4538,7 +4538,7 @@ void __60__EDMessageChangeManager__persistResults_forTransferAction___block_invo
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v11 = v7;
+    v11 = itemsCopy;
     v12 = [v11 countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v12)
     {
@@ -4555,16 +4555,16 @@ void __60__EDMessageChangeManager__persistResults_forTransferAction___block_invo
           v15 = *(*(&v36 + 1) + 8 * i);
           if (v9)
           {
-            v16 = [*(*(&v36 + 1) + 8 * i) sourceRemoteID];
-            if (v16)
+            sourceRemoteID = [*(*(&v36 + 1) + 8 * i) sourceRemoteID];
+            if (sourceRemoteID)
             {
             }
 
             else
             {
-              v17 = [v15 sourceMessage];
-              v18 = [v17 remoteID];
-              v19 = [v18 length] == 0;
+              sourceMessage = [v15 sourceMessage];
+              remoteID = [sourceMessage remoteID];
+              v19 = [remoteID length] == 0;
 
               if (v19)
               {
@@ -4573,11 +4573,11 @@ void __60__EDMessageChangeManager__persistResults_forTransferAction___block_invo
             }
           }
 
-          v20 = [v15 destinationMessage];
-          if (v20)
+          destinationMessage = [v15 destinationMessage];
+          if (destinationMessage)
           {
-            [v32 addObject:v20];
-            [v10 setObject:v15 forKeyedSubscript:v20];
+            [v32 addObject:destinationMessage];
+            [v10 setObject:v15 forKeyedSubscript:destinationMessage];
           }
         }
 
@@ -4587,11 +4587,11 @@ void __60__EDMessageChangeManager__persistResults_forTransferAction___block_invo
       while (v12);
     }
 
-    if ([v31 transferType] == 1 && objc_msgSend(v32, "count"))
+    if ([actionCopy transferType] == 1 && objc_msgSend(v32, "count"))
     {
       v21 = objc_opt_new();
-      v22 = [v31 sourceMailboxURL];
-      v23 = [(EDMessageChangeManager *)self persistNewMessages:v32 mailboxURL:v22 oldMessagesByNewMessage:v21 fromSyncing:0];
+      sourceMailboxURL2 = [actionCopy sourceMailboxURL];
+      v23 = [(EDMessageChangeManager *)self persistNewMessages:v32 mailboxURL:sourceMailboxURL2 oldMessagesByNewMessage:v21 fromSyncing:0];
 
       if ((v23 & v9) == 1)
       {
@@ -4600,14 +4600,14 @@ void __60__EDMessageChangeManager__persistResults_forTransferAction___block_invo
         v33[2] = __81__EDMessageChangeManager__handleFailedCopyItems_transferAction_generationWindow___block_invoke;
         v33[3] = &unk_1E8253EB8;
         v34 = v10;
-        v35 = self;
+        selfCopy = self;
         [v21 enumerateKeysAndObjectsUsingBlock:v33];
       }
     }
 
     [(EDMessageChangeManager *)self deletePersistedMessages:v32, v26];
-    v24 = [(EDMessageChangeManager *)self hookResponder];
-    [v24 persistenceDidDeleteMessages:v32 generationWindow:v28];
+    hookResponder = [(EDMessageChangeManager *)self hookResponder];
+    [hookResponder persistenceDidDeleteMessages:v32 generationWindow:windowCopy];
   }
 
   v25 = *MEMORY[0x1E69E9840];
@@ -4637,22 +4637,22 @@ void __81__EDMessageChangeManager__handleFailedCopyItems_transferAction_generati
   }
 }
 
-- (void)_storeServerMessages:(id)a3 mailboxURL:(id)a4 generationWindow:(id)a5
+- (void)_storeServerMessages:(id)messages mailboxURL:(id)l generationWindow:(id)window
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v28 = a5;
-  v29 = v9;
-  v10 = [(EDMessageChangeManager *)self serverMessagePersistenceFactory];
-  v33 = [v10 serverMessagePersistenceForMailboxURL:v9];
+  messagesCopy = messages;
+  lCopy = l;
+  windowCopy = window;
+  v29 = lCopy;
+  serverMessagePersistenceFactory = [(EDMessageChangeManager *)self serverMessagePersistenceFactory];
+  v33 = [serverMessagePersistenceFactory serverMessagePersistenceForMailboxURL:lCopy];
 
   v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v8;
+  obj = messagesCopy;
   v11 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v11)
   {
@@ -4705,15 +4705,15 @@ void __81__EDMessageChangeManager__handleFailedCopyItems_transferAction_generati
           v21 = v29;
           v36 = v21;
           v22 = [v19 initWithBuilder:v34];
-          v23 = [(EDMessageChangeManager *)self localActionPersistence];
-          [v23 persistTransferAction:v22];
+          localActionPersistence = [(EDMessageChangeManager *)self localActionPersistence];
+          [localActionPersistence persistTransferAction:v22];
 
           [(EDMessageChangeManager *)self checkForNewActionsInMailboxID:[(EDMessageChangeManager *)self mailboxDatabaseIDForURL:v21]];
         }
 
-        v24 = [v13 remoteID];
-        v25 = [v13 messagePersistentID];
-        -[EDMessageChangeManager setRemoteID:onMessageWithDatabaseID:](self, "setRemoteID:onMessageWithDatabaseID:", v24, [v25 longLongValue]);
+        remoteID = [v13 remoteID];
+        messagePersistentID = [v13 messagePersistentID];
+        -[EDMessageChangeManager setRemoteID:onMessageWithDatabaseID:](self, "setRemoteID:onMessageWithDatabaseID:", remoteID, [messagePersistentID longLongValue]);
       }
 
       v11 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
@@ -4725,8 +4725,8 @@ void __81__EDMessageChangeManager__handleFailedCopyItems_transferAction_generati
   if ([v30 count])
   {
     [(EDMessageChangeManager *)self deletePersistedMessages:v30];
-    v26 = [(EDMessageChangeManager *)self hookResponder];
-    [v26 persistenceDidDeleteMessages:v30 generationWindow:v28];
+    hookResponder = [(EDMessageChangeManager *)self hookResponder];
+    [hookResponder persistenceDidDeleteMessages:v30 generationWindow:windowCopy];
   }
 
   v27 = *MEMORY[0x1E69E9840];
@@ -4765,28 +4765,28 @@ void __75__EDMessageChangeManager__storeServerMessages_mailboxURL_generationWind
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_deleteDestinationMessagesFromCompletedItems:(id)a3 notInServerMessages:(id)a4
+- (void)_deleteDestinationMessagesFromCompletedItems:(id)items notInServerMessages:(id)messages
 {
-  v6 = [(EDMessageChangeManager *)self _findDestinationMessagesFromCompletedItems:a3 notInServerMessages:a4];
+  v6 = [(EDMessageChangeManager *)self _findDestinationMessagesFromCompletedItems:items notInServerMessages:messages];
   v5 = [v6 ef_filter:&__block_literal_global_418];
   [(EDMessageChangeManager *)self deletePersistedMessages:v5];
 }
 
-- (id)_findDestinationMessagesFromCompletedItems:(id)a3 notInServerMessages:(id)a4
+- (id)_findDestinationMessagesFromCompletedItems:(id)items notInServerMessages:(id)messages
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v17 = a4;
-  if (v17)
+  itemsCopy = items;
+  messagesCopy = messages;
+  if (messagesCopy)
   {
-    v6 = [v5 ef_compactMap:&__block_literal_global_186];
+    v6 = [itemsCopy ef_compactMap:&__block_literal_global_186];
     v7 = [v6 mutableCopy];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = v17;
+    v8 = messagesCopy;
     v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
@@ -4800,15 +4800,15 @@ void __75__EDMessageChangeManager__storeServerMessages_mailboxURL_generationWind
             objc_enumerationMutation(v8);
           }
 
-          v12 = [*(*(&v20 + 1) + 8 * i) messagePersistentID];
-          v13 = v12;
-          if (v12)
+          messagePersistentID = [*(*(&v20 + 1) + 8 * i) messagePersistentID];
+          v13 = messagePersistentID;
+          if (messagePersistentID)
           {
             v18[0] = MEMORY[0x1E69E9820];
             v18[1] = 3221225472;
             v18[2] = __89__EDMessageChangeManager__findDestinationMessagesFromCompletedItems_notInServerMessages___block_invoke_2;
             v18[3] = &unk_1E8254280;
-            v19 = v12;
+            v19 = messagePersistentID;
             v14 = [v7 indexOfObjectPassingTest:v18];
             if (v14 != 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -4849,23 +4849,23 @@ uint64_t __89__EDMessageChangeManager__findDestinationMessagesFromCompletedItems
   return v4;
 }
 
-- (id)_handleDuplicateServerMessage:(id)a3 serverMessagePersistence:(id)a4
+- (id)_handleDuplicateServerMessage:(id)message serverMessagePersistence:(id)persistence
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 remoteID];
-  v20[0] = v8;
+  messageCopy = message;
+  persistenceCopy = persistence;
+  remoteID = [messageCopy remoteID];
+  v20[0] = remoteID;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-  v10 = [v7 serverMessagesForRemoteIDs:v9];
-  v11 = [v10 firstObject];
+  v10 = [persistenceCopy serverMessagesForRemoteIDs:v9];
+  firstObject = [v10 firstObject];
 
-  v12 = [v11 messagePersistentID];
+  messagePersistentID = [firstObject messagePersistentID];
 
-  if (v12)
+  if (messagePersistentID)
   {
-    v13 = [v11 messagePersistentID];
-    v14 = -[EDMessageChangeManager messageForDatabaseID:](self, "messageForDatabaseID:", [v13 longLongValue]);
+    messagePersistentID2 = [firstObject messagePersistentID];
+    v14 = -[EDMessageChangeManager messageForDatabaseID:](self, "messageForDatabaseID:", [messagePersistentID2 longLongValue]);
   }
 
   else
@@ -4873,23 +4873,23 @@ uint64_t __89__EDMessageChangeManager__findDestinationMessagesFromCompletedItems
     v14 = 0;
   }
 
-  v15 = [v6 messagePersistentID];
-  v16 = [v15 longLongValue];
-  v17 = [v11 remoteID];
-  [v7 attachMessage:v16 toServerMessageWithRemoteID:v17];
+  messagePersistentID3 = [messageCopy messagePersistentID];
+  longLongValue = [messagePersistentID3 longLongValue];
+  remoteID2 = [firstObject remoteID];
+  [persistenceCopy attachMessage:longLongValue toServerMessageWithRemoteID:remoteID2];
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v14;
 }
 
-- (BOOL)mailboxURLIsInRemoteAccount:(id)a3
+- (BOOL)mailboxURLIsInRemoteAccount:(id)account
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  accountCopy = account;
+  v4 = accountCopy;
+  if (accountCopy)
   {
-    if ([v3 ef_hasScheme:*MEMORY[0x1E699A698]] & 1) != 0 || (objc_msgSend(v4, "ef_hasScheme:", *MEMORY[0x1E699A690]))
+    if ([accountCopy ef_hasScheme:*MEMORY[0x1E699A698]] & 1) != 0 || (objc_msgSend(v4, "ef_hasScheme:", *MEMORY[0x1E699A690]))
     {
       v5 = 1;
     }
@@ -4908,13 +4908,13 @@ uint64_t __89__EDMessageChangeManager__findDestinationMessagesFromCompletedItems
   return v5;
 }
 
-- (BOOL)_needToStoreServerMessagesForMailboxURL:(id)a3
+- (BOOL)_needToStoreServerMessagesForMailboxURL:(id)l
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  lCopy = l;
+  v4 = lCopy;
+  if (lCopy)
   {
-    v5 = [v3 ef_hasScheme:*MEMORY[0x1E699A698]];
+    v5 = [lCopy ef_hasScheme:*MEMORY[0x1E699A698]];
   }
 
   else
@@ -4925,32 +4925,32 @@ uint64_t __89__EDMessageChangeManager__findDestinationMessagesFromCompletedItems
   return v5;
 }
 
-- (BOOL)mailboxURL:(id)a3 isInSameAccountAsMailboxURL:(id)a4
+- (BOOL)mailboxURL:(id)l isInSameAccountAsMailboxURL:(id)rL
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  lCopy = l;
+  rLCopy = rL;
+  v7 = rLCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (lCopy && rLCopy)
   {
-    v9 = [v5 host];
-    v10 = [v7 host];
-    v8 = [v9 isEqualToString:v10];
+    host = [lCopy host];
+    host2 = [v7 host];
+    v8 = [host isEqualToString:host2];
   }
 
   return v8;
 }
 
-- (id)accountForMailboxURL:(id)a3
+- (id)accountForMailboxURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   [(EDMessageChangeManager *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDMessageChangeManager accountForMailboxURL:]", "EDMessageChangeManager.m", 1819, "0");
 }
 
-- (BOOL)_hookResponderRespondsToRequiredMethods:(id)a3
+- (BOOL)_hookResponderRespondsToRequiredMethods:(id)methods
 {
-  v3 = a3;
+  methodsCopy = methods;
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
     v4 = objc_opt_respondsToSelector();
@@ -4964,27 +4964,27 @@ uint64_t __89__EDMessageChangeManager__findDestinationMessagesFromCompletedItems
   return v4 & 1;
 }
 
-- (void)remindMeCloudStorageChangedWithAddedOrChangedItems:(id)a3 deletedItems:(id)a4
+- (void)remindMeCloudStorageChangedWithAddedOrChangedItems:(id)items deletedItems:(id)deletedItems
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v16 = a4;
+  itemsCopy = items;
+  deletedItemsCopy = deletedItems;
   v7 = EDRemindMeLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v24 = v6;
+    v24 = itemsCopy;
     v25 = 2114;
-    v26 = v16;
+    v26 = deletedItemsCopy;
     _os_log_impl(&dword_1C61EF000, v7, OS_LOG_TYPE_DEFAULT, "Processing remote changes for changed items: %{public}@ deleted items: %{public}@", buf, 0x16u);
   }
 
-  v8 = [v6 mutableCopy];
+  v8 = [itemsCopy mutableCopy];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v16;
+  v9 = deletedItemsCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -5000,8 +5000,8 @@ uint64_t __89__EDMessageChangeManager__findDestinationMessagesFromCompletedItems
         }
 
         v13 = *(*(&v18 + 1) + 8 * v12);
-        v14 = [MEMORY[0x1E695DFB0] null];
-        [v8 setObject:v14 forKeyedSubscript:v13];
+        null = [MEMORY[0x1E695DFB0] null];
+        [v8 setObject:null forKeyedSubscript:v13];
 
         ++v12;
       }

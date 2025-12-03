@@ -1,31 +1,31 @@
 @interface CDMAssistantNLUResponse
-- (CDMAssistantNLUResponse)initWithCoder:(id)a3;
-- (CDMAssistantNLUResponse)initWithNLUResponse:(id)a3 preprocessingWrapper:(id)a4 requestId:(id)a5;
+- (CDMAssistantNLUResponse)initWithCoder:(id)coder;
+- (CDMAssistantNLUResponse)initWithNLUResponse:(id)response preprocessingWrapper:(id)wrapper requestId:(id)id;
 @end
 
 @implementation CDMAssistantNLUResponse
 
-- (CDMAssistantNLUResponse)initWithCoder:(id)a3
+- (CDMAssistantNLUResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CDMAssistantNLUResponse;
   return [(CDMBaseCommand *)&v4 init];
 }
 
-- (CDMAssistantNLUResponse)initWithNLUResponse:(id)a3 preprocessingWrapper:(id)a4 requestId:(id)a5
+- (CDMAssistantNLUResponse)initWithNLUResponse:(id)response preprocessingWrapper:(id)wrapper requestId:(id)id
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  responseCopy = response;
+  wrapperCopy = wrapper;
+  idCopy = id;
   v15.receiver = self;
   v15.super_class = CDMAssistantNLUResponse;
   v12 = [(CDMBaseCommand *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_requestId, a5);
-    objc_storeStrong(&v13->_siriNLUTypeObj, a3);
-    objc_storeStrong(&v13->_preprocessingWrapper, a4);
+    objc_storeStrong(&v12->_requestId, id);
+    objc_storeStrong(&v13->_siriNLUTypeObj, response);
+    objc_storeStrong(&v13->_preprocessingWrapper, wrapper);
   }
 
   return v13;

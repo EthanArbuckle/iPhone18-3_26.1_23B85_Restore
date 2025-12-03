@@ -1,18 +1,18 @@
 @interface WLSourceDevicesControllerSurrogate
-- (WLSourceDevicesControllerSurrogate)initWithDelegate:(id)a3;
+- (WLSourceDevicesControllerSurrogate)initWithDelegate:(id)delegate;
 - (void)scheduleSurrogateDeviceDiscovery;
-- (void)startWiFiAndDeviceDiscoveryWithCompletion:(id)a3;
-- (void)stopDeviceDiscoveryWithCompletion:(id)a3;
-- (void)stopWiFiAndDeviceDiscoveryWithCompletion:(id)a3;
+- (void)startWiFiAndDeviceDiscoveryWithCompletion:(id)completion;
+- (void)stopDeviceDiscoveryWithCompletion:(id)completion;
+- (void)stopWiFiAndDeviceDiscoveryWithCompletion:(id)completion;
 @end
 
 @implementation WLSourceDevicesControllerSurrogate
 
-- (WLSourceDevicesControllerSurrogate)initWithDelegate:(id)a3
+- (WLSourceDevicesControllerSurrogate)initWithDelegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = WLSourceDevicesControllerSurrogate;
-  v3 = [(WLSourceDevicesController *)&v7 initWithDelegate:a3];
+  v3 = [(WLSourceDevicesController *)&v7 initWithDelegate:delegate];
   if (v3)
   {
     v4 = dispatch_queue_create("com.apple.welcomekit.sourceDeviceControllerSurrogate", 0);
@@ -23,9 +23,9 @@
   return v3;
 }
 
-- (void)startWiFiAndDeviceDiscoveryWithCompletion:(id)a3
+- (void)startWiFiAndDeviceDiscoveryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_time(0, 500000000);
   serialQueue = self->_serialQueue;
   v8[0] = MEMORY[0x277D85DD0];
@@ -33,8 +33,8 @@
   v8[2] = __80__WLSourceDevicesControllerSurrogate_startWiFiAndDeviceDiscoveryWithCompletion___block_invoke;
   v8[3] = &unk_279EB4260;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_after(v5, serialQueue, v8);
 }
 
@@ -76,9 +76,9 @@ void __70__WLSourceDevicesControllerSurrogate_scheduleSurrogateDeviceDiscovery__
   }
 }
 
-- (void)stopDeviceDiscoveryWithCompletion:(id)a3
+- (void)stopDeviceDiscoveryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_time(0, 100000000);
   serialQueue = self->_serialQueue;
   v8[0] = MEMORY[0x277D85DD0];
@@ -86,8 +86,8 @@ void __70__WLSourceDevicesControllerSurrogate_scheduleSurrogateDeviceDiscovery__
   v8[2] = __72__WLSourceDevicesControllerSurrogate_stopDeviceDiscoveryWithCompletion___block_invoke;
   v8[3] = &unk_279EB4260;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_after(v5, serialQueue, v8);
 }
 
@@ -111,9 +111,9 @@ uint64_t __72__WLSourceDevicesControllerSurrogate_stopDeviceDiscoveryWithComplet
   return result;
 }
 
-- (void)stopWiFiAndDeviceDiscoveryWithCompletion:(id)a3
+- (void)stopWiFiAndDeviceDiscoveryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_time(0, 100000000);
   serialQueue = self->_serialQueue;
   v8[0] = MEMORY[0x277D85DD0];
@@ -121,8 +121,8 @@ uint64_t __72__WLSourceDevicesControllerSurrogate_stopDeviceDiscoveryWithComplet
   v8[2] = __79__WLSourceDevicesControllerSurrogate_stopWiFiAndDeviceDiscoveryWithCompletion___block_invoke;
   v8[3] = &unk_279EB4260;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_after(v5, serialQueue, v8);
 }
 

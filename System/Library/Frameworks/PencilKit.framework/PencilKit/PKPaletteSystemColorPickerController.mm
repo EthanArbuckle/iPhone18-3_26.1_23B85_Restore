@@ -3,10 +3,10 @@
 - (BOOL)supportsAlpha;
 - (PKPaletteSystemColorPickerController)init;
 - (id)selectedColor;
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5;
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously;
 - (void)dismissEyeDropper;
-- (void)setSelectedColor:(id)a3;
-- (void)setSupportsAlpha:(BOOL)a3;
+- (void)setSelectedColor:(id)color;
+- (void)setSupportsAlpha:(BOOL)alpha;
 @end
 
 @implementation PKPaletteSystemColorPickerController
@@ -39,66 +39,66 @@
     _os_log_impl(&dword_1C7CCA000, v3, OS_LOG_TYPE_DEFAULT, "Dismiss eye dropper, don't reshow color picker.", v5, 2u);
   }
 
-  v4 = [(PKPaletteSystemColorPickerController *)self colorPickerViewController];
-  [v4 dismissEyedropper:0];
+  colorPickerViewController = [(PKPaletteSystemColorPickerController *)self colorPickerViewController];
+  [colorPickerViewController dismissEyedropper:0];
 }
 
 - (id)selectedColor
 {
-  v3 = [(PKPaletteSystemColorPickerController *)self colorPickerViewController];
-  v4 = [v3 selectedColor];
+  colorPickerViewController = [(PKPaletteSystemColorPickerController *)self colorPickerViewController];
+  selectedColor = [colorPickerViewController selectedColor];
 
   if ([(PKPaletteSystemColorPickerController *)self _shouldConvertColorPickerColorFromDarkToLight])
   {
     v5 = MEMORY[0x1E69DC888];
-    v6 = [(PKPaletteSystemColorPickerController *)self colorPickerViewController];
-    v7 = [v6 selectedColor];
-    v8 = [v5 pk_convertColorPickerColor:v7 fromUserInterfaceStyle:2 to:1];
+    colorPickerViewController2 = [(PKPaletteSystemColorPickerController *)self colorPickerViewController];
+    selectedColor2 = [colorPickerViewController2 selectedColor];
+    v8 = [v5 pk_convertColorPickerColor:selectedColor2 fromUserInterfaceStyle:2 to:1];
 
-    v4 = v8;
+    selectedColor = v8;
   }
 
-  return v4;
+  return selectedColor;
 }
 
-- (void)setSelectedColor:(id)a3
+- (void)setSelectedColor:(id)color
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  colorCopy = color;
+  v8 = colorCopy;
+  if (colorCopy)
   {
-    v5 = v4;
+    colorPickerViewController2 = colorCopy;
     if ([(PKPaletteSystemColorPickerController *)self _shouldConvertColorPickerColorFromDarkToLight])
     {
-      v6 = [MEMORY[0x1E69DC888] pk_convertColorPickerColor:v5 fromUserInterfaceStyle:2 to:1];
+      v6 = [MEMORY[0x1E69DC888] pk_convertColorPickerColor:colorPickerViewController2 fromUserInterfaceStyle:2 to:1];
 
-      v5 = v6;
+      colorPickerViewController2 = v6;
     }
 
-    v7 = [(PKPaletteSystemColorPickerController *)self colorPickerViewController];
-    [v7 setSelectedColor:v5];
+    colorPickerViewController = [(PKPaletteSystemColorPickerController *)self colorPickerViewController];
+    [colorPickerViewController setSelectedColor:colorPickerViewController2];
   }
 
   else
   {
-    v5 = [(PKPaletteSystemColorPickerController *)self colorPickerViewController];
-    [v5 setSelectedColor:0];
+    colorPickerViewController2 = [(PKPaletteSystemColorPickerController *)self colorPickerViewController];
+    [colorPickerViewController2 setSelectedColor:0];
   }
 }
 
 - (BOOL)supportsAlpha
 {
-  v2 = [(PKPaletteSystemColorPickerController *)self colorPickerViewController];
-  v3 = [v2 supportsAlpha];
+  colorPickerViewController = [(PKPaletteSystemColorPickerController *)self colorPickerViewController];
+  supportsAlpha = [colorPickerViewController supportsAlpha];
 
-  return v3;
+  return supportsAlpha;
 }
 
-- (void)setSupportsAlpha:(BOOL)a3
+- (void)setSupportsAlpha:(BOOL)alpha
 {
-  v3 = a3;
-  v4 = [(PKPaletteSystemColorPickerController *)self colorPickerViewController];
-  [v4 setSupportsAlpha:v3];
+  alphaCopy = alpha;
+  colorPickerViewController = [(PKPaletteSystemColorPickerController *)self colorPickerViewController];
+  [colorPickerViewController setSupportsAlpha:alphaCopy];
 }
 
 - (BOOL)_shouldConvertColorPickerColorFromDarkToLight
@@ -108,18 +108,18 @@
     return 0;
   }
 
-  v3 = [(PKPaletteSystemColorPickerController *)self colorPickerViewController];
-  v4 = [v3 traitCollection];
-  v5 = [v4 userInterfaceStyle] == 2;
+  colorPickerViewController = [(PKPaletteSystemColorPickerController *)self colorPickerViewController];
+  traitCollection = [colorPickerViewController traitCollection];
+  v5 = [traitCollection userInterfaceStyle] == 2;
 
   return v5;
 }
 
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously
 {
-  v5 = a5;
-  v7 = [(PKPaletteBaseColorPickerController *)self delegate:a3];
-  [v7 colorPickerControllerDidChangeSelectedColor:self isContinuousColorSelection:v5];
+  continuouslyCopy = continuously;
+  v7 = [(PKPaletteBaseColorPickerController *)self delegate:controller];
+  [v7 colorPickerControllerDidChangeSelectedColor:self isContinuousColorSelection:continuouslyCopy];
 }
 
 @end

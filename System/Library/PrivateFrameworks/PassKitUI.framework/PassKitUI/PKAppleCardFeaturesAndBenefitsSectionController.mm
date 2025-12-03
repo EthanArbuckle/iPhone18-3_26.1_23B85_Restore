@@ -3,9 +3,9 @@
 - (NSArray)sectionIdentifiers;
 - (PKAppleCardFeaturesAndBenefitsSectionController)init;
 - (id)selectionHandler;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (void)setSelectionHandler:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (void)setSelectionHandler:(id)handler;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
 @end
 
 @implementation PKAppleCardFeaturesAndBenefitsSectionController
@@ -35,9 +35,9 @@
   return v4;
 }
 
-- (void)setSelectionHandler:(id)a3
+- (void)setSelectionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -55,7 +55,7 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_1BD0D4744(v7);
 }
 
@@ -75,28 +75,28 @@
 
 - (NSArray)allSectionIdentifiers
 {
-  v2 = [(PKAppleCardFeaturesAndBenefitsSectionController *)self sectionIdentifiers];
+  sectionIdentifiers = [(PKAppleCardFeaturesAndBenefitsSectionController *)self sectionIdentifiers];
 
-  return v2;
+  return sectionIdentifiers;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
   v7 = sub_1BE04B414();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7, v9);
   v11 = &v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1BE04B3D4();
-  v12 = a3;
-  v13 = self;
-  v14 = sub_1BD6464A8(v12);
+  viewCopy = view;
+  selfCopy = self;
+  v14 = sub_1BD6464A8(viewCopy);
 
   (*(v8 + 8))(v11, v7);
 
   return v14;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
   v7 = sub_1BE04B414();
   v8 = *(v7 - 8);
@@ -105,9 +105,9 @@
   sub_1BE04B3D4();
   v12 = sub_1BE052434();
   v14 = v13;
-  v15 = a3;
-  v16 = self;
-  sub_1BD6460E8(v15, v11, v12, v14);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1BD6460E8(viewCopy, v11, v12, v14);
 
   (*(v8 + 8))(v11, v7);
 }

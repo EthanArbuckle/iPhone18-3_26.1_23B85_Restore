@@ -1,19 +1,19 @@
 @interface HeadGesturesDiagnosticExtensionExtension
-- (BOOL)createZipArchiveForURL:(id)a3 destinationURL:(id)a4;
+- (BOOL)createZipArchiveForURL:(id)l destinationURL:(id)rL;
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 - (id)generateTimeStamp;
 @end
 
 @implementation HeadGesturesDiagnosticExtensionExtension
 
-- (BOOL)createZipArchiveForURL:(id)a3 destinationURL:(id)a4
+- (BOOL)createZipArchiveForURL:(id)l destinationURL:(id)rL
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  rLCopy = rL;
   if (BOMCopierNew())
   {
-    v7 = [[NSOutputStream alloc] initWithURL:v6 append:1];
+    v7 = [[NSOutputStream alloc] initWithURL:rLCopy append:1];
     [v7 open];
     v22[0] = @"createPKZip";
     v22[1] = @"outputStream";
@@ -23,18 +23,18 @@
     v9 = _HGObjCLoggingFacility(kHGObjCLogCategoryDE);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v5 absoluteString];
-      v11 = [v10 UTF8String];
-      v12 = [v6 absoluteString];
+      absoluteString = [lCopy absoluteString];
+      uTF8String = [absoluteString UTF8String];
+      absoluteString2 = [rLCopy absoluteString];
       v18 = 136315394;
-      v19 = v11;
+      v19 = uTF8String;
       v20 = 2080;
-      v21 = [v12 UTF8String];
+      uTF8String2 = [absoluteString2 UTF8String];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "zipping %s to %s", &v18, 0x16u);
     }
 
-    v13 = [v5 path];
-    [v13 fileSystemRepresentation];
+    path = [lCopy path];
+    [path fileSystemRepresentation];
     v14 = BOMCopierCopyWithOptions();
     v15 = v14 == 0;
 
@@ -81,15 +81,15 @@
 {
   v3 = objc_opt_new();
   v4 = +[NSFileManager defaultManager];
-  v5 = [(HeadGesturesDiagnosticExtensionExtension *)self generateTimeStamp];
+  generateTimeStamp = [(HeadGesturesDiagnosticExtensionExtension *)self generateTimeStamp];
   if (![v4 fileExistsAtPath:@"/var/tmp/HeadGestures/RawData"])
   {
     v51 = 0;
     goto LABEL_12;
   }
 
-  v6 = v5;
-  v7 = [NSString stringWithFormat:@"HeadGestures_RawDataArchive_%@.zip", v5];
+  v6 = generateTimeStamp;
+  v7 = [NSString stringWithFormat:@"HeadGestures_RawDataArchive_%@.zip", generateTimeStamp];
   v8 = [@"/var/tmp/HeadGestures" stringByAppendingPathComponent:v7];
   v9 = [NSURL fileURLWithPath:@"/var/tmp/HeadGestures/RawData"];
   v10 = [NSURL fileURLWithPath:v8];
@@ -103,7 +103,7 @@
     if (!v51)
     {
       v51 = 0;
-      v5 = v6;
+      generateTimeStamp = v6;
       goto LABEL_11;
     }
 
@@ -125,15 +125,15 @@
     v51 = 0;
   }
 
-  v5 = v6;
+  generateTimeStamp = v6;
 
 LABEL_11:
 LABEL_12:
-  v49 = v5;
+  v49 = generateTimeStamp;
   v50 = v4;
   if ([v4 fileExistsAtPath:@"/var/mobile/tmp/HeadGestures/RawData"])
   {
-    v13 = [NSString stringWithFormat:@"HeadGestures_RawDataArchive_mobile_%@.zip", v5, v5];
+    v13 = [NSString stringWithFormat:@"HeadGestures_RawDataArchive_mobile_%@.zip", generateTimeStamp, generateTimeStamp];
     v14 = [@"/var/mobile/tmp/HeadGestures/" stringByAppendingPathComponent:v13];
     v15 = [NSURL fileURLWithPath:@"/var/mobile/tmp/HeadGestures/RawData"];
     v16 = [NSURL fileURLWithPath:v14];
@@ -276,29 +276,29 @@ LABEL_12:
   return v29;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = _HGObjCLoggingFacility(kHGObjCLogCategoryDE);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received attachment request: %@", &v9, 0xCu);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
+  v6 = [parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
   if ([v6 BOOLValue])
   {
-    v7 = [(HeadGesturesDiagnosticExtensionExtension *)self attachmentList];
+    attachmentList = [(HeadGesturesDiagnosticExtensionExtension *)self attachmentList];
   }
 
   else
   {
-    v7 = &__NSArray0__struct;
+    attachmentList = &__NSArray0__struct;
   }
 
-  return v7;
+  return attachmentList;
 }
 
 @end

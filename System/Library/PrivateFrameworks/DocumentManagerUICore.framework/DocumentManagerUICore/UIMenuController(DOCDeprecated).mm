@@ -6,12 +6,12 @@
 
 - (void)hideMenuIfActive
 {
-  v2 = [MEMORY[0x277D75238] activeCalloutBar];
+  activeCalloutBar = [MEMORY[0x277D75238] activeCalloutBar];
 
-  if (v2)
+  if (activeCalloutBar)
   {
 
-    [a1 hideMenu];
+    [self hideMenu];
   }
 }
 

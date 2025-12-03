@@ -1,5 +1,5 @@
 @interface RevealingVideoMirrorView
-- (_TtC22SubscribePageExtension24RevealingVideoMirrorView)initWithFrame:(CGRect)a3;
+- (_TtC22SubscribePageExtension24RevealingVideoMirrorView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -14,7 +14,7 @@
   sub_100562C44();
 }
 
-- (_TtC22SubscribePageExtension24RevealingVideoMirrorView)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension24RevealingVideoMirrorView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

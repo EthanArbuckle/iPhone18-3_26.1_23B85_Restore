@@ -8,14 +8,14 @@
 - (void)_accessibilityLoadInvertColors
 {
   v8 = [(SUNavigationControllerInvertColorsAccessibility *)self safeUIViewForKey:@"view"];
-  v3 = [v8 backgroundColor];
-  if (v3)
+  backgroundColor = [v8 backgroundColor];
+  if (backgroundColor)
   {
     AXColorGetLuma();
     v5 = v4 < 0.5;
     [v8 setAccessibilityIgnoresInvertColors:v5];
-    v6 = [(SUNavigationControllerInvertColorsAccessibility *)self parentViewController];
-    v7 = [v6 safeUIViewForKey:@"tabBar"];
+    parentViewController = [(SUNavigationControllerInvertColorsAccessibility *)self parentViewController];
+    v7 = [parentViewController safeUIViewForKey:@"tabBar"];
     [v7 setAccessibilityIgnoresInvertColors:v5];
   }
 }

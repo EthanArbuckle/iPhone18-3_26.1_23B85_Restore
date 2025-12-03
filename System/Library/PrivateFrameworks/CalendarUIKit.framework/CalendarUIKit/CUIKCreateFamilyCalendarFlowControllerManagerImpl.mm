@@ -1,13 +1,13 @@
 @interface CUIKCreateFamilyCalendarFlowControllerManagerImpl
 - (UIViewController)viewController;
 - (_TtC13CalendarUIKit49CUIKCreateFamilyCalendarFlowControllerManagerImpl)init;
-- (_TtC13CalendarUIKit49CUIKCreateFamilyCalendarFlowControllerManagerImpl)initWithDelegate:(id)a3;
-- (void)setViewController:(id)a3;
+- (_TtC13CalendarUIKit49CUIKCreateFamilyCalendarFlowControllerManagerImpl)initWithDelegate:(id)delegate;
+- (void)setViewController:(id)controller;
 @end
 
 @implementation CUIKCreateFamilyCalendarFlowControllerManagerImpl
 
-- (_TtC13CalendarUIKit49CUIKCreateFamilyCalendarFlowControllerManagerImpl)initWithDelegate:(id)a3
+- (_TtC13CalendarUIKit49CUIKCreateFamilyCalendarFlowControllerManagerImpl)initWithDelegate:(id)delegate
 {
   swift_unknownObjectWeakInit();
   *(&self->super.isa + OBJC_IVAR____TtC13CalendarUIKit49CUIKCreateFamilyCalendarFlowControllerManagerImpl____lazy_storage___viewController) = 0;
@@ -19,17 +19,17 @@
 
 - (UIViewController)viewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CACB3E54();
 
   return v3;
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC13CalendarUIKit49CUIKCreateFamilyCalendarFlowControllerManagerImpl____lazy_storage___viewController);
-  *(&self->super.isa + OBJC_IVAR____TtC13CalendarUIKit49CUIKCreateFamilyCalendarFlowControllerManagerImpl____lazy_storage___viewController) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC13CalendarUIKit49CUIKCreateFamilyCalendarFlowControllerManagerImpl____lazy_storage___viewController) = controller;
+  controllerCopy = controller;
 }
 
 - (_TtC13CalendarUIKit49CUIKCreateFamilyCalendarFlowControllerManagerImpl)init

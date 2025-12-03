@@ -1,33 +1,33 @@
 @interface CSRecordTypeSpeechEventConverter
-+ (int64_t)getRecordTypeForSpeechEvent:(int64_t)a3;
-+ (int64_t)getSpeechEventForRecordType:(int64_t)a3;
++ (int64_t)getRecordTypeForSpeechEvent:(int64_t)event;
++ (int64_t)getSpeechEventForRecordType:(int64_t)type;
 @end
 
 @implementation CSRecordTypeSpeechEventConverter
 
-+ (int64_t)getSpeechEventForRecordType:(int64_t)a3
++ (int64_t)getSpeechEventForRecordType:(int64_t)type
 {
-  if ((a3 - 20) > 7)
+  if ((type - 20) > 7)
   {
     return 0;
   }
 
   else
   {
-    return qword_25613D260[a3 - 20];
+    return qword_25613D260[type - 20];
   }
 }
 
-+ (int64_t)getRecordTypeForSpeechEvent:(int64_t)a3
++ (int64_t)getRecordTypeForSpeechEvent:(int64_t)event
 {
-  if ((a3 - 1) > 0x23)
+  if ((event - 1) > 0x23)
   {
     return 0;
   }
 
   else
   {
-    return qword_25613D140[a3 - 1];
+    return qword_25613D140[event - 1];
   }
 }
 

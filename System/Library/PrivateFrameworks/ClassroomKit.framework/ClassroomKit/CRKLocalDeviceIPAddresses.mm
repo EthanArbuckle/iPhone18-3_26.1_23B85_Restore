@@ -1,7 +1,7 @@
 @interface CRKLocalDeviceIPAddresses
 + (id)makeIPAddresses;
 + (void)makeIPAddresses;
-- (BOOL)containsIPAddress:(id)a3;
+- (BOOL)containsIPAddress:(id)address;
 - (CRKLocalDeviceIPAddresses)init;
 @end
 
@@ -14,19 +14,19 @@
   v2 = [(CRKLocalDeviceIPAddresses *)&v6 init];
   if (v2)
   {
-    v3 = [objc_opt_class() makeIPAddresses];
+    makeIPAddresses = [objc_opt_class() makeIPAddresses];
     IPAddresses = v2->_IPAddresses;
-    v2->_IPAddresses = v3;
+    v2->_IPAddresses = makeIPAddresses;
   }
 
   return v2;
 }
 
-- (BOOL)containsIPAddress:(id)a3
+- (BOOL)containsIPAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(CRKLocalDeviceIPAddresses *)self IPAddresses];
-  v6 = [v5 containsObject:v4];
+  addressCopy = address;
+  iPAddresses = [(CRKLocalDeviceIPAddresses *)self IPAddresses];
+  v6 = [iPAddresses containsObject:addressCopy];
 
   return v6;
 }
@@ -59,10 +59,10 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * i) IPAddress];
-          if (v11)
+          iPAddress = [*(*(&v15 + 1) + 8 * i) IPAddress];
+          if (iPAddress)
           {
-            [v5 addObject:v11];
+            [v5 addObject:iPAddress];
           }
         }
 
@@ -97,14 +97,14 @@
 + (void)makeIPAddresses
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a1;
+  selfCopy = self;
   v5 = objc_opt_class();
-  v6 = [a3 verboseDescription];
+  verboseDescription = [a3 verboseDescription];
   v7 = 138543618;
   v8 = v5;
   v9 = 2114;
-  v10 = v6;
-  _os_log_error_impl(&dword_243550000, v4, OS_LOG_TYPE_ERROR, "Failed to create ifaddrs enumerator in %{public}@: %{public}@", &v7, 0x16u);
+  v10 = verboseDescription;
+  _os_log_error_impl(&dword_243550000, selfCopy, OS_LOG_TYPE_ERROR, "Failed to create ifaddrs enumerator in %{public}@: %{public}@", &v7, 0x16u);
 }
 
 @end

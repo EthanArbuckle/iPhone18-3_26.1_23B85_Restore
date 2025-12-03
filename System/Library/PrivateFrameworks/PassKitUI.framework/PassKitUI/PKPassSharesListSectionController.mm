@@ -1,33 +1,33 @@
 @interface PKPassSharesListSectionController
-- (PKPassSharesListSectionController)initWithMode:(unint64_t)a3 sharesController:(id)a4 rootShare:(id)a5 delegate:(id)a6;
+- (PKPassSharesListSectionController)initWithMode:(unint64_t)mode sharesController:(id)controller rootShare:(id)share delegate:(id)delegate;
 - (PKPassSharesListSectionControllerDelegate)delegate;
-- (id)_alertForDisplayableError:(id)a3;
-- (id)_alertForRevokeOptionsForShare:(id)a3;
-- (id)_contactForPKShareRowItem:(id)a3;
+- (id)_alertForDisplayableError:(id)error;
+- (id)_alertForRevokeOptionsForShare:(id)share;
+- (id)_contactForPKShareRowItem:(id)item;
 - (id)_displayableShares;
-- (id)_subtitleForShare:(id)a3;
-- (id)_titleForPKShareRowItem:(id)a3;
-- (id)decorateListCell:(id)a3 forPKShareRowItem:(id)a4;
-- (id)headerAttributedStringForIdentifier:(id)a3;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_confirmRevokeShare:(id)a3 forItem:(id)a4;
+- (id)_subtitleForShare:(id)share;
+- (id)_titleForPKShareRowItem:(id)item;
+- (id)decorateListCell:(id)cell forPKShareRowItem:(id)item;
+- (id)headerAttributedStringForIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_confirmRevokeShare:(id)share forItem:(id)item;
 - (void)_revokeAllShares;
-- (void)_revokeShare:(id)a3 cascade:(BOOL)a4;
+- (void)_revokeShare:(id)share cascade:(BOOL)cascade;
 - (void)_updatePKShareRowItems;
-- (void)_updateStopSharingItemToDisabled:(BOOL)a3;
+- (void)_updateStopSharingItemToDisabled:(BOOL)disabled;
 - (void)dealloc;
-- (void)didSelectItem:(id)a3;
-- (void)sharedPassSharesControllerDidUpdateShares:(id)a3;
+- (void)didSelectItem:(id)item;
+- (void)sharedPassSharesControllerDidUpdateShares:(id)shares;
 @end
 
 @implementation PKPassSharesListSectionController
 
-- (PKPassSharesListSectionController)initWithMode:(unint64_t)a3 sharesController:(id)a4 rootShare:(id)a5 delegate:(id)a6
+- (PKPassSharesListSectionController)initWithMode:(unint64_t)mode sharesController:(id)controller rootShare:(id)share delegate:(id)delegate
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  shareCopy = share;
+  delegateCopy = delegate;
   v24[0] = @"SharesSection";
   v24[1] = @"ShareActionsSection";
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
@@ -37,11 +37,11 @@
 
   if (v15)
   {
-    v15->_mode = a3;
-    objc_storeStrong(&v15->_sharesController, a4);
+    v15->_mode = mode;
+    objc_storeStrong(&v15->_sharesController, controller);
     [(PKSharedPassSharesController *)v15->_sharesController addDelegate:v15];
-    objc_storeWeak(&v15->_delegate, v13);
-    objc_storeStrong(&v15->_rootShare, a5);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    objc_storeStrong(&v15->_rootShare, share);
     objc_initWeak(&location, v15);
     v16 = MEMORY[0x1E69DC800];
     v17 = objc_opt_class();
@@ -89,8 +89,8 @@ void __86__PKPassSharesListSectionController_initWithMode_sharesController_rootS
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v4 = [(PKPassSharesListSectionController *)self _displayableShares];
-  v5 = [v4 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  _displayableShares = [(PKPassSharesListSectionController *)self _displayableShares];
+  v5 = [_displayableShares countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v5)
   {
     v6 = v5;
@@ -101,7 +101,7 @@ void __86__PKPassSharesListSectionController_initWithMode_sharesController_rootS
       {
         if (*v36 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_displayableShares);
         }
 
         v9 = *(*(&v35 + 1) + 8 * i);
@@ -120,7 +120,7 @@ void __86__PKPassSharesListSectionController_initWithMode_sharesController_rootS
         [v3 addObject:v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v6 = [_displayableShares countByEnumeratingWithState:&v35 objects:v40 count:16];
     }
 
     while (v6);
@@ -132,14 +132,14 @@ void __86__PKPassSharesListSectionController_initWithMode_sharesController_rootS
     v15 = PKLocalizedShareableCredentialString(&cfstr_ShareManagemen.isa);
     [(PKShareRowItem *)v14 setTitle:v15];
 
-    v16 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [(PKShareRowItem *)v14 setTitleTextColor:v16];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [(PKShareRowItem *)v14 setTitleTextColor:systemBlueColor];
 
     v17 = MEMORY[0x1E69DCAD8];
-    v18 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v39[0] = v18;
-    v19 = [MEMORY[0x1E69DC888] quaternaryLabelColor];
-    v39[1] = v19;
+    systemBlueColor2 = [MEMORY[0x1E69DC888] systemBlueColor];
+    v39[0] = systemBlueColor2;
+    quaternaryLabelColor = [MEMORY[0x1E69DC888] quaternaryLabelColor];
+    v39[1] = quaternaryLabelColor;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
     v21 = [v17 configurationWithPaletteColors:v20];
 
@@ -158,11 +158,11 @@ void __86__PKPassSharesListSectionController_initWithMode_sharesController_rootS
   rootShare = self->_rootShare;
   if (rootShare)
   {
-    v27 = [(PKPassShare *)rootShare isRevokable];
-    v28 = v27;
+    isRevokable = [(PKPassShare *)rootShare isRevokable];
+    v28 = isRevokable;
     if (self->_rootShare)
     {
-      if (!v27)
+      if (!isRevokable)
       {
         goto LABEL_19;
       }
@@ -176,16 +176,16 @@ void __86__PKPassSharesListSectionController_initWithMode_sharesController_rootS
     v28 = 0;
   }
 
-  v29 = [(PKSharedPassSharesController *)self->_sharesController hasRevokableShares];
-  if (v28 & 1) != 0 || (v29)
+  hasRevokableShares = [(PKSharedPassSharesController *)self->_sharesController hasRevokableShares];
+  if (v28 & 1) != 0 || (hasRevokableShares)
   {
 LABEL_18:
     v30 = objc_alloc_init(PKShareRowItem);
     v31 = PKLocalizedShareableCredentialString(&cfstr_SharesListStop.isa);
     [(PKShareRowItem *)v30 setTitle:v31];
 
-    v32 = [MEMORY[0x1E69DC888] systemRedColor];
-    [(PKShareRowItem *)v30 setTitleTextColor:v32];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+    [(PKShareRowItem *)v30 setTitleTextColor:systemRedColor];
 
     [(PKShareRowItem *)v30 setIsStopSharingItem:1];
     [(PKShareRowItem *)v30 setShouldCenterText:1];
@@ -198,23 +198,23 @@ LABEL_19:
   self->_actionItems = v33;
 }
 
-- (id)_contactForPKShareRowItem:(id)a3
+- (id)_contactForPKShareRowItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 contact];
+  itemCopy = item;
+  contact = [itemCopy contact];
 
-  if (v5)
+  if (contact)
   {
-    v6 = [v4 contact];
+    contact2 = [itemCopy contact];
   }
 
   else
   {
-    v7 = [v4 share];
-    v6 = [(PKSharedPassSharesController *)self->_sharesController contactForShare:v7];
-    if (!v6 && ([v4 hasFetchedContact] & 1) == 0)
+    share = [itemCopy share];
+    contact2 = [(PKSharedPassSharesController *)self->_sharesController contactForShare:share];
+    if (!contact2 && ([itemCopy hasFetchedContact] & 1) == 0)
     {
-      [v4 setHasFetchedContact:1];
+      [itemCopy setHasFetchedContact:1];
       objc_initWeak(&location, self);
       sharesController = self->_sharesController;
       v10[0] = MEMORY[0x1E69E9820];
@@ -222,15 +222,15 @@ LABEL_19:
       v10[2] = __63__PKPassSharesListSectionController__contactForPKShareRowItem___block_invoke;
       v10[3] = &unk_1E8013F10;
       objc_copyWeak(&v12, &location);
-      v11 = v4;
-      [(PKSharedPassSharesController *)sharesController fetchContactForShare:v7 withCompletion:v10];
+      v11 = itemCopy;
+      [(PKSharedPassSharesController *)sharesController fetchContactForShare:share withCompletion:v10];
 
       objc_destroyWeak(&v12);
       objc_destroyWeak(&location);
     }
   }
 
-  return v6;
+  return contact2;
 }
 
 void __63__PKPassSharesListSectionController__contactForPKShareRowItem___block_invoke(uint64_t a1, void *a2)
@@ -245,62 +245,62 @@ void __63__PKPassSharesListSectionController__contactForPKShareRowItem___block_i
   }
 }
 
-- (id)_titleForPKShareRowItem:(id)a3
+- (id)_titleForPKShareRowItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 share];
-  v5 = [v3 contact];
+  itemCopy = item;
+  share = [itemCopy share];
+  contact = [itemCopy contact];
 
-  if (v5)
+  if (contact)
   {
     v6 = MEMORY[0x1E69B8F30];
-    v7 = [v4 recipientHandle];
-    v8 = [v6 displayNameForCounterpartHandle:v7 contact:v5];
+    recipientHandle = [share recipientHandle];
+    v8 = [v6 displayNameForCounterpartHandle:recipientHandle contact:contact];
 
     if ([v8 length])
     {
       goto LABEL_9;
     }
 
-    v9 = [v4 recipientNickname];
+    recipientNickname = [share recipientNickname];
   }
 
   else
   {
-    v10 = [v4 recipientNickname];
-    if (!v10)
+    recipientNickname2 = [share recipientNickname];
+    if (!recipientNickname2)
     {
-      v11 = [v4 recipientHandle];
+      recipientHandle2 = [share recipientHandle];
       v8 = 0;
       goto LABEL_8;
     }
 
-    v9 = v10;
-    v8 = v9;
+    recipientNickname = recipientNickname2;
+    v8 = recipientNickname;
   }
 
-  v11 = v9;
+  recipientHandle2 = recipientNickname;
 LABEL_8:
 
-  v8 = v11;
+  v8 = recipientHandle2;
 LABEL_9:
 
   return v8;
 }
 
-- (id)_subtitleForShare:(id)a3
+- (id)_subtitleForShare:(id)share
 {
-  v4 = a3;
-  v5 = [v4 status];
-  if (v5 <= 8)
+  shareCopy = share;
+  status = [shareCopy status];
+  if (status <= 8)
   {
-    if (((1 << v5) & 0x2C) != 0)
+    if (((1 << status) & 0x2C) != 0)
     {
       v6 = @"SHARED_KEY_INVITED_CELL_SUBTITLE";
       goto LABEL_8;
     }
 
-    if (((1 << v5) & 0x1C0) != 0)
+    if (((1 << status) & 0x1C0) != 0)
     {
       v6 = @"SHARED_KEY_REVOKING_CELL_SUBTITLE";
 LABEL_8:
@@ -308,35 +308,35 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    if (v5 == 4)
+    if (status == 4)
     {
       v6 = @"SHARED_KEY_PENDING_ACTIVATION_CELL_SUBTITLE";
       goto LABEL_8;
     }
   }
 
-  if (v5 == 1)
+  if (status == 1)
   {
-    v9 = [(PKSharedPassSharesController *)self->_sharesController pass];
-    v10 = [v9 isCarKeyPass];
+    pass = [(PKSharedPassSharesController *)self->_sharesController pass];
+    isCarKeyPass = [pass isCarKeyPass];
 
-    if (v10)
+    if (isCarKeyPass)
     {
       v11 = objc_alloc(MEMORY[0x1E69B8A38]);
-      v12 = [v4 sharedEntitlements];
-      v13 = [(PKSharedPassSharesController *)self->_sharesController shareableEntitlements];
-      v14 = [(PKSharedPassSharesController *)self->_sharesController possiblePredefinedEntitlements];
-      v15 = [v11 initWithSharedEntitlements:v12 availableEntitlements:v13 predefinedSharedEntitlements:v14 editable:{objc_msgSend(v4, "isEditable")}];
+      sharedEntitlements = [shareCopy sharedEntitlements];
+      shareableEntitlements = [(PKSharedPassSharesController *)self->_sharesController shareableEntitlements];
+      possiblePredefinedEntitlements = [(PKSharedPassSharesController *)self->_sharesController possiblePredefinedEntitlements];
+      displayableSharedEntitlements = [v11 initWithSharedEntitlements:sharedEntitlements availableEntitlements:shareableEntitlements predefinedSharedEntitlements:possiblePredefinedEntitlements editable:{objc_msgSend(shareCopy, "isEditable")}];
 
-      v7 = [v15 localizedSelectedEntitlementSummaryForAccessType:4];
+      v7 = [displayableSharedEntitlements localizedSelectedEntitlementSummaryForAccessType:4];
     }
 
     else
     {
-      v15 = [v4 displayableSharedEntitlements];
-      v16 = [(PKSharedPassSharesController *)self->_sharesController shareableEntitlements];
-      v17 = [v15 count];
-      if (v17 >= [v16 count])
+      displayableSharedEntitlements = [shareCopy displayableSharedEntitlements];
+      shareableEntitlements2 = [(PKSharedPassSharesController *)self->_sharesController shareableEntitlements];
+      v17 = [displayableSharedEntitlements count];
+      if (v17 >= [shareableEntitlements2 count])
       {
         v18 = @"SHARE_OVERVIEW_SECTION_ENTITLEMENTS_FULL_ACCESS";
       }
@@ -386,14 +386,14 @@ LABEL_9:
   return v3;
 }
 
-- (void)_updateStopSharingItemToDisabled:(BOOL)a3
+- (void)_updateStopSharingItemToDisabled:(BOOL)disabled
 {
-  v3 = a3;
+  disabledCopy = disabled;
   v5 = [(NSArray *)self->_actionItems pk_firstObjectPassingTest:&__block_literal_global_41];
   if (v5)
   {
     v8 = v5;
-    if (v3)
+    if (disabledCopy)
     {
       [MEMORY[0x1E69DC888] secondaryLabelColor];
     }
@@ -412,42 +412,42 @@ LABEL_9:
   }
 }
 
-- (id)decorateListCell:(id)a3 forPKShareRowItem:(id)a4
+- (id)decorateListCell:(id)cell forPKShareRowItem:(id)item
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+  cellCopy = cell;
+  itemCopy = item;
+  subtitleCellConfiguration = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [v6 title];
-  [v7 setText:v9];
+  title = [itemCopy title];
+  [subtitleCellConfiguration setText:title];
 
-  v10 = [v7 textProperties];
+  textProperties = [subtitleCellConfiguration textProperties];
   v11 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], 0);
-  [v10 setFont:v11];
+  [textProperties setFont:v11];
 
-  v12 = [v6 titleTextColor];
+  titleTextColor = [itemCopy titleTextColor];
 
-  if (v12)
+  if (titleTextColor)
   {
-    v13 = [v6 titleTextColor];
-    [v10 setColor:v13];
+    titleTextColor2 = [itemCopy titleTextColor];
+    [textProperties setColor:titleTextColor2];
   }
 
-  if ([v6 showContactAvatar])
+  if ([itemCopy showContactAvatar])
   {
     v14 = objc_alloc_init(PKAvatarView);
     [(PKAvatarView *)v14 setDiameter:35.0];
-    v15 = [v6 contact];
-    if (v15)
+    contact = [itemCopy contact];
+    if (contact)
     {
-      [(PKAvatarView *)v14 setContact:v15];
+      [(PKAvatarView *)v14 setContact:contact];
     }
 
     else
     {
-      v18 = [v6 share];
-      v19 = [v18 recipientNickname];
-      [(PKAvatarView *)v14 setPlaceholderName:v19];
+      share = [itemCopy share];
+      recipientNickname = [share recipientNickname];
+      [(PKAvatarView *)v14 setPlaceholderName:recipientNickname];
     }
 
     v20 = [objc_alloc(MEMORY[0x1E69DC790]) initWithCustomView:v14 placement:0];
@@ -457,44 +457,44 @@ LABEL_9:
 
   else
   {
-    v16 = [v6 icon];
+    icon = [itemCopy icon];
 
-    if (!v16)
+    if (!icon)
     {
       goto LABEL_11;
     }
 
     v14 = objc_alloc_init(PKAvatarView);
     [(PKAvatarView *)v14 setDiameter:35.0];
-    v17 = [v6 icon];
-    [(PKAvatarView *)v14 setPlaceholderImage:v17];
+    icon2 = [itemCopy icon];
+    [(PKAvatarView *)v14 setPlaceholderImage:icon2];
 
-    v15 = [objc_alloc(MEMORY[0x1E69DC790]) initWithCustomView:v14 placement:0];
-    [v8 addObject:v15];
-    [v15 setReservedLayoutWidth:35.0];
+    contact = [objc_alloc(MEMORY[0x1E69DC790]) initWithCustomView:v14 placement:0];
+    [v8 addObject:contact];
+    [contact setReservedLayoutWidth:35.0];
   }
 
 LABEL_11:
-  if ([v6 shouldCenterText])
+  if ([itemCopy shouldCenterText])
   {
-    [v10 setAlignment:1];
+    [textProperties setAlignment:1];
   }
 
-  [v7 directionalLayoutMargins];
+  [subtitleCellConfiguration directionalLayoutMargins];
   v22 = v21;
   v24 = v23;
-  v25 = [v6 subtitle];
-  if (v25)
+  subtitle = [itemCopy subtitle];
+  if (subtitle)
   {
-    v26 = [v6 subtitle];
-    [v7 setSecondaryText:v26];
+    subtitle2 = [itemCopy subtitle];
+    [subtitleCellConfiguration setSecondaryText:subtitle2];
 
-    v27 = [v7 secondaryTextProperties];
-    v28 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v27 setColor:v28];
+    secondaryTextProperties = [subtitleCellConfiguration secondaryTextProperties];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [secondaryTextProperties setColor:secondaryLabelColor];
 
     v29 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], 0);
-    [v27 setFont:v29];
+    [secondaryTextProperties setFont:v29];
 
     v30 = 10.0;
   }
@@ -504,20 +504,20 @@ LABEL_11:
     v30 = 15.0;
   }
 
-  [v7 setDirectionalLayoutMargins:{v30, v22, v30, v24}];
-  [v5 setContentConfiguration:v7];
-  [v5 setConfigurationUpdateHandler:&__block_literal_global_176];
-  v31 = [v6 share];
+  [subtitleCellConfiguration setDirectionalLayoutMargins:{v30, v22, v30, v24}];
+  [cellCopy setContentConfiguration:subtitleCellConfiguration];
+  [cellCopy setConfigurationUpdateHandler:&__block_literal_global_176];
+  share2 = [itemCopy share];
 
-  if (v31)
+  if (share2)
   {
     v32 = objc_alloc_init(MEMORY[0x1E69DC7A8]);
     [v8 addObject:v32];
   }
 
-  [v5 setAccessories:v8];
+  [cellCopy setAccessories:v8];
 
-  return v7;
+  return subtitleCellConfiguration;
 }
 
 void __72__PKPassSharesListSectionController_decorateListCell_forPKShareRowItem___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -542,9 +542,9 @@ void __72__PKPassSharesListSectionController_decorateListCell_forPKShareRowItem_
   [v5 setBackgroundConfiguration:v6];
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   if (!PKEqualObjects() || (actionItems = self->_shareItems) == 0)
   {
@@ -562,32 +562,32 @@ LABEL_6:
   return v6;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v8 = a3;
-  v4 = [v8 share];
+  itemCopy = item;
+  share = [itemCopy share];
 
-  if (v4)
+  if (share)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v6 = [v8 share];
-    [WeakRetained passSharesListSectionController:self didSelectShare:v6];
+    share2 = [itemCopy share];
+    [WeakRetained passSharesListSectionController:self didSelectShare:share2];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v8 isAddShareItem])
+  if ([itemCopy isAddShareItem])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained passSharesListSectionControllerDidSelectAddShare:self];
     goto LABEL_5;
   }
 
-  if ([v8 isStopSharingItem])
+  if ([itemCopy isStopSharingItem])
   {
     [(PKPassSharesListSectionController *)self _updateStopSharingItemToDisabled:1];
-    [(PKPassSharesListSectionController *)self _confirmRevokeShare:self->_rootShare forItem:v8];
+    [(PKPassSharesListSectionController *)self _confirmRevokeShare:self->_rootShare forItem:itemCopy];
   }
 
 LABEL_6:
@@ -595,27 +595,27 @@ LABEL_6:
   [v7 deselectCells];
 }
 
-- (void)_confirmRevokeShare:(id)a3 forItem:(id)a4
+- (void)_confirmRevokeShare:(id)share forItem:(id)item
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(PKPassSharesListSectionController *)self _alertForRevokeOptionsForShare:v9];
+  shareCopy = share;
+  itemCopy = item;
+  v7 = [(PKPassSharesListSectionController *)self _alertForRevokeOptionsForShare:shareCopy];
   if (v7)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained passSharesListSectionController:self presentAlert:v7 forItem:v6];
+    [WeakRetained passSharesListSectionController:self presentAlert:v7 forItem:itemCopy];
   }
 
   else
   {
-    [(PKPassSharesListSectionController *)self _revokeShare:v9 cascade:0];
+    [(PKPassSharesListSectionController *)self _revokeShare:shareCopy cascade:0];
   }
 }
 
-- (void)_revokeShare:(id)a3 cascade:(BOOL)a4
+- (void)_revokeShare:(id)share cascade:(BOOL)cascade
 {
-  v4 = a4;
-  v6 = a3;
+  cascadeCopy = cascade;
+  shareCopy = share;
   objc_initWeak(&location, self);
   sharesController = self->_sharesController;
   v8[0] = MEMORY[0x1E69E9820];
@@ -624,7 +624,7 @@ LABEL_6:
   v8[3] = &unk_1E8013F58;
   objc_copyWeak(&v9, &location);
   v8[4] = self;
-  [(PKSharedPassSharesController *)sharesController revokeShare:v6 shouldCascade:v4 withCompletion:v8];
+  [(PKSharedPassSharesController *)sharesController revokeShare:shareCopy shouldCascade:cascadeCopy withCompletion:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
@@ -699,13 +699,13 @@ void __53__PKPassSharesListSectionController__revokeAllShares__block_invoke(uint
   }
 }
 
-- (id)_alertForRevokeOptionsForShare:(id)a3
+- (id)_alertForRevokeOptionsForShare:(id)share
 {
-  v4 = a3;
-  v5 = [(PKSharedPassSharesController *)self->_sharesController childSharesOfShare:v4];
+  shareCopy = share;
+  v5 = [(PKSharedPassSharesController *)self->_sharesController childSharesOfShare:shareCopy];
   v6 = [v5 count];
 
-  if (!v4 || v6)
+  if (!shareCopy || v6)
   {
     if (self->_rootShare)
     {
@@ -719,7 +719,7 @@ void __53__PKPassSharesListSectionController__revokeAllShares__block_invoke(uint
 
     v9 = PKLocalizedShareableCredentialString(&v8->isa);
     v7 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v9 message:0 preferredStyle:0];
-    if (!v4 || (v10 = MEMORY[0x1E69DC648], PKLocalizedShareableCredentialString(&cfstr_ShareManagemen_2.isa), v11 = objc_claimAutoreleasedReturnValue(), v24[0] = MEMORY[0x1E69E9820], v24[1] = 3221225472, v24[2] = __68__PKPassSharesListSectionController__alertForRevokeOptionsForShare___block_invoke, v24[3] = &unk_1E8011310, v24[4] = self, v25 = v4, [v10 actionWithTitle:v11 style:2 handler:v24], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "addAction:", v12), v12, v11, v25, v6))
+    if (!shareCopy || (v10 = MEMORY[0x1E69DC648], PKLocalizedShareableCredentialString(&cfstr_ShareManagemen_2.isa), v11 = objc_claimAutoreleasedReturnValue(), v24[0] = MEMORY[0x1E69E9820], v24[1] = 3221225472, v24[2] = __68__PKPassSharesListSectionController__alertForRevokeOptionsForShare___block_invoke, v24[3] = &unk_1E8011310, v24[4] = self, v25 = shareCopy, [v10 actionWithTitle:v11 style:2 handler:v24], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "addAction:", v12), v12, v11, v25, v6))
     {
       v13 = MEMORY[0x1E69DC648];
       v14 = PKLocalizedShareableCredentialString(&cfstr_ShareManagemen_3.isa);
@@ -727,8 +727,8 @@ void __53__PKPassSharesListSectionController__revokeAllShares__block_invoke(uint
       v21[1] = 3221225472;
       v21[2] = __68__PKPassSharesListSectionController__alertForRevokeOptionsForShare___block_invoke_2;
       v21[3] = &unk_1E8011310;
-      v22 = v4;
-      v23 = self;
+      v22 = shareCopy;
+      selfCopy = self;
       v15 = [v13 actionWithTitle:v14 style:2 handler:v21];
       [v7 addAction:v15];
     }
@@ -767,10 +767,10 @@ uint64_t __68__PKPassSharesListSectionController__alertForRevokeOptionsForShare_
   }
 }
 
-- (id)_alertForDisplayableError:(id)a3
+- (id)_alertForDisplayableError:(id)error
 {
-  v3 = a3;
-  v4 = PKSharingDisplayableError(v3);
+  errorCopy = error;
+  v4 = PKSharingDisplayableError(errorCopy);
   if (!v4)
   {
     v5 = PKLocalizedShareableCredentialString(&cfstr_RevokeShareErr.isa);
@@ -778,10 +778,10 @@ uint64_t __68__PKPassSharesListSectionController__alertForRevokeOptionsForShare_
     v4 = PKDisplayableErrorCustom();
   }
 
-  v7 = [v4 userInfo];
+  userInfo = [v4 userInfo];
   v8 = MEMORY[0x1E69DC650];
-  v9 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696A578]];
-  v10 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696A598]];
+  v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A578]];
+  v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A598]];
   v11 = [v8 alertControllerWithTitle:v9 message:v10 preferredStyle:1];
 
   v12 = MEMORY[0x1E69DC648];
@@ -792,10 +792,10 @@ uint64_t __68__PKPassSharesListSectionController__alertForRevokeOptionsForShare_
   return v11;
 }
 
-- (id)headerAttributedStringForIdentifier:(id)a3
+- (id)headerAttributedStringForIdentifier:(id)identifier
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (self->_rootShare && [(NSArray *)self->_shareItems count]&& PKEqualObjects())
   {
     v5 = objc_alloc(MEMORY[0x1E696AAB0]);
@@ -804,8 +804,8 @@ uint64_t __68__PKPassSharesListSectionController__alertForRevokeOptionsForShare_
     v7 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], *MEMORY[0x1E69DDC58], 2, 0);
     v13[0] = v7;
     v12[1] = *MEMORY[0x1E69DB650];
-    v8 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v13[1] = v8;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v13[1] = secondaryLabelColor;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
     v10 = [v5 initWithString:v6 attributes:v9];
   }
@@ -818,7 +818,7 @@ uint64_t __68__PKPassSharesListSectionController__alertForRevokeOptionsForShare_
   return v10;
 }
 
-- (void)sharedPassSharesControllerDidUpdateShares:(id)a3
+- (void)sharedPassSharesControllerDidUpdateShares:(id)shares
 {
   [(PKPassSharesListSectionController *)self _updatePKShareRowItems];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);

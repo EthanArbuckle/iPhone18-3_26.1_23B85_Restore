@@ -10,7 +10,7 @@
 
 - (void)showUI
 {
-  v2 = self;
+  selfCopy = self;
   sub_18380();
 }
 
@@ -30,7 +30,7 @@
 
 - (void)hideUI
 {
-  v2 = self;
+  selfCopy = self;
   sub_19C18();
 }
 

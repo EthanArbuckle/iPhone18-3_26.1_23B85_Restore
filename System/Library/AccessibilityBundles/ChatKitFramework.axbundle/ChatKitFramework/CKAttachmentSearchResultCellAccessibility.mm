@@ -1,27 +1,27 @@
 @interface CKAttachmentSearchResultCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation CKAttachmentSearchResultCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKAttachmentSearchResultCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKAttachmentSearchResultCell" hasInstanceMethod:@"dateLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKAttachmentSearchResultCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKAttachmentSearchResultCell" hasInstanceMethod:@"dateLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(CKAttachmentSearchResultCellAccessibility *)self _axContact];
-  v4 = AXCKLocalizedFromStringWithContact(v3);
+  _axContact = [(CKAttachmentSearchResultCellAccessibility *)self _axContact];
+  v4 = AXCKLocalizedFromStringWithContact(_axContact);
 
   v5 = [(CKAttachmentSearchResultCellAccessibility *)self safeValueForKey:@"titleLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel = [v5 accessibilityLabel];
 
   v7 = [(CKAttachmentSearchResultCellAccessibility *)self safeValueForKey:@"dateLabel"];
-  v8 = [v7 accessibilityLabel];
+  accessibilityLabel2 = [v7 accessibilityLabel];
 
   v11 = accessibilityLocalizedString(@"search.item.attachment");
   v9 = __UIAXStringForVariables();

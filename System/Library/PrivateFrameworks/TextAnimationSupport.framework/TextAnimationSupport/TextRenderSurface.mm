@@ -1,16 +1,16 @@
 @interface TextRenderSurface
-- (CGRect)adjustedLayoutFragmentFrame:(CGRect)a3;
+- (CGRect)adjustedLayoutFragmentFrame:(CGRect)frame;
 - (_TtC20TextAnimationSupportP33_EB92A35C21DD52D72B91A53CA741919417TextRenderSurface)init;
 @end
 
 @implementation TextRenderSurface
 
-- (CGRect)adjustedLayoutFragmentFrame:(CGRect)a3
+- (CGRect)adjustedLayoutFragmentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC20TextAnimationSupportP33_EB92A35C21DD52D72B91A53CA741919417TextRenderSurface_yDisplacement;
   swift_beginAccess();
   v9 = (*(&self->super.isa + OBJC_IVAR____TtC20TextAnimationSupportP33_EB92A35C21DD52D72B91A53CA741919417TextRenderSurface__layer) + OBJC_IVAR____TtC20TextAnimationSupport15TextRenderLayer_currentDisplacement);

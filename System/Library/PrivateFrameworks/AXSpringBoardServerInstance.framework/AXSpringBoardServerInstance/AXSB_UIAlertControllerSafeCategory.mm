@@ -1,5 +1,5 @@
 @interface AXSB_UIAlertControllerSafeCategory
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_canDismissWithGestureRecognizer;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_applyAccessibilityLoadAccessibilityInformation;
@@ -7,17 +7,17 @@
 
 @implementation AXSB_UIAlertControllerSafeCategory
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIAlertController" hasInstanceMethod:@"_canDismissWithGestureRecognizer" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UIAlertController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"UIAlertController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"_UIAlertControllerPhoneTVMacView" hasInstanceVariable:@"_mainInterfaceActionsGroupView" withType:"_UIAlertControllerInterfaceActionGroupView"];
-  [v3 validateClass:@"UIInterfaceActionGroupView" hasInstanceMethod:@"actionSequenceView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_UIAlertControllerInterfaceActionGroupView" isKindOfClass:@"UIInterfaceActionGroupView"];
-  [v3 validateClass:@"_UIInterfaceActionRepresentationsSequenceView" hasInstanceMethod:@"arrangedActionRepresentationViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_UIInterfaceActionCustomViewRepresentationView" hasInstanceVariable:@"_actionContentView" withType:"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIAlertController" hasInstanceMethod:@"_canDismissWithGestureRecognizer" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UIAlertController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"UIAlertController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"_UIAlertControllerPhoneTVMacView" hasInstanceVariable:@"_mainInterfaceActionsGroupView" withType:"_UIAlertControllerInterfaceActionGroupView"];
+  [validationsCopy validateClass:@"UIInterfaceActionGroupView" hasInstanceMethod:@"actionSequenceView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_UIAlertControllerInterfaceActionGroupView" isKindOfClass:@"UIInterfaceActionGroupView"];
+  [validationsCopy validateClass:@"_UIInterfaceActionRepresentationsSequenceView" hasInstanceMethod:@"arrangedActionRepresentationViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_UIInterfaceActionCustomViewRepresentationView" hasInstanceVariable:@"_actionContentView" withType:"UIView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -36,8 +36,8 @@
     LOBYTE(location) = 0;
     objc_opt_class();
     v2 = __UIAccessibilityCastAsClass();
-    v3 = [v2 view];
-    v13 = [v3 safeValueForKey:@"_mainInterfaceActionsGroupView"];
+    view = [v2 view];
+    v13 = [view safeValueForKey:@"_mainInterfaceActionsGroupView"];
 
     v15 = [v13 safeValueForKey:@"actionSequenceView"];
     v4 = [v15 safeArrayForKey:@"arrangedActionRepresentationViews"];

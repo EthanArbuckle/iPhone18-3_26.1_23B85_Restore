@@ -1,44 +1,44 @@
 @interface TMLSLink
-- (TMLSLink)initWithDelegate:(id)a3 clock:(id)a4 workloop:(id)a5;
-- (void)convertBTTime:(id)a3;
-- (void)convertBTTimeFinal:(id)a3;
+- (TMLSLink)initWithDelegate:(id)delegate clock:(id)clock workloop:(id)workloop;
+- (void)convertBTTime:(id)time;
+- (void)convertBTTimeFinal:(id)final;
 - (void)createSyncTimer;
-- (void)dataReceived:(id)a3;
-- (void)didSendDataIdentifier:(id)a3 withError:(id)a4;
-- (void)didUpdateDeviceRegistryCompatibilityState:(id)a3;
+- (void)dataReceived:(id)received;
+- (void)didSendDataIdentifier:(id)identifier withError:(id)error;
+- (void)didUpdateDeviceRegistryCompatibilityState:(id)state;
 - (void)doBTConversionFailure;
 - (void)doSyncRTC;
-- (void)handleDeliveryOfIdentifier:(id)a3 withData:(id)a4 withError:(id)a5;
+- (void)handleDeliveryOfIdentifier:(id)identifier withData:(id)data withError:(id)error;
 - (void)handleSyncTimer;
 - (void)restartSync;
 - (void)sendBTConversionFailure;
-- (void)sendDrift:(double)a3;
+- (void)sendDrift:(double)drift;
 - (void)sendReset;
 - (void)sendSyncRequest;
-- (void)sendTimeZone:(id)a3 forSource:(id)a4;
-- (void)setCompatible:(BOOL)a3;
-- (void)setSyncState:(int)a3;
+- (void)sendTimeZone:(id)zone forSource:(id)source;
+- (void)setCompatible:(BOOL)compatible;
+- (void)setSyncState:(int)state;
 - (void)syncRTC;
 - (void)updateCompatibilityState;
 @end
 
 @implementation TMLSLink
 
-- (TMLSLink)initWithDelegate:(id)a3 clock:(id)a4 workloop:(id)a5
+- (TMLSLink)initWithDelegate:(id)delegate clock:(id)clock workloop:(id)workloop
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  delegateCopy = delegate;
+  clockCopy = clock;
+  workloopCopy = workloop;
   v26.receiver = self;
   v26.super_class = TMLSLink;
   v12 = [(TMLSLink *)&v26 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_clock, a4);
-    objc_storeStrong(&v13->_delegate, a3);
-    objc_storeStrong(&v13->_workloop, a5);
-    v14 = [[TMLSTransport alloc] initWithDelegate:v13 clock:v10 workloop:v11];
+    objc_storeStrong(&v12->_clock, clock);
+    objc_storeStrong(&v13->_delegate, delegate);
+    objc_storeStrong(&v13->_workloop, workloop);
+    v14 = [[TMLSTransport alloc] initWithDelegate:v13 clock:clockCopy workloop:workloopCopy];
     transport = v13->_transport;
     v13->_transport = v14;
 
@@ -73,10 +73,10 @@
   return v13;
 }
 
-- (void)sendTimeZone:(id)a3 forSource:(id)a4
+- (void)sendTimeZone:(id)zone forSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  zoneCopy = zone;
+  sourceCopy = source;
   if ([(TMLSLink *)self isGizmo])
   {
     sub_8870();
@@ -85,9 +85,9 @@
   v12[0] = @"kTMLSLinkMsgKey";
   v12[1] = @"kTMLSLinkTimeZoneKey";
   v13[0] = &off_112C0;
-  v13[1] = v6;
+  v13[1] = zoneCopy;
   v12[2] = @"kTMLSLinkSourceKey";
-  v13[2] = v7;
+  v13[2] = sourceCopy;
   v8 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:3];
   v9 = TIMELINK_FACILITY;
   if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_INFO))
@@ -100,12 +100,12 @@
   [(TMLSLink *)self sendData:v8 localOnly:1 nonWaking:0];
 }
 
-- (void)sendDrift:(double)a3
+- (void)sendDrift:(double)drift
 {
   v6[0] = @"kTMLSLinkMsgKey";
   v6[1] = @"kTMLSLinkDriftKey";
   v7[0] = &off_112F0;
-  v4 = [NSNumber numberWithDouble:a3];
+  v4 = [NSNumber numberWithDouble:drift];
   v7[1] = v4;
   v5 = [NSDictionary dictionaryWithObjects:v7 forKeys:v6 count:2];
 
@@ -120,18 +120,18 @@
   [(TMLSLink *)self sendData:v3 localOnly:0 nonWaking:0 includeTinker:1];
 }
 
-- (void)dataReceived:(id)a3
+- (void)dataReceived:(id)received
 {
-  v4 = a3;
-  v5 = [NSPropertyListSerialization propertyListWithData:v4 options:0 format:0 error:0];
+  receivedCopy = received;
+  v5 = [NSPropertyListSerialization propertyListWithData:receivedCopy options:0 format:0 error:0];
   v6 = [v5 objectForKey:@"kTMLSLinkMsgKey"];
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
 
-  if (v7 <= 6)
+  if (intValue <= 6)
   {
-    if (v7 > 4)
+    if (intValue > 4)
     {
-      if (v7 == 5)
+      if (intValue == 5)
       {
         if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_DEBUG))
         {
@@ -142,8 +142,8 @@
         [v23 doubleValue];
         v25 = v24;
 
-        v8 = [(TMLSLink *)self delegate];
-        [v8 link:self didReceiveDrift:v25];
+        delegate = [(TMLSLink *)self delegate];
+        [delegate link:self didReceiveDrift:v25];
       }
 
       else
@@ -153,14 +153,14 @@
           sub_8998();
         }
 
-        v8 = [(TMLSLink *)self delegate];
-        [v8 linkDidReceiveReset:self];
+        delegate = [(TMLSLink *)self delegate];
+        [delegate linkDidReceiveReset:self];
       }
 
       goto LABEL_32;
     }
 
-    if (v7 == 1)
+    if (intValue == 1)
     {
       if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_DEBUG))
       {
@@ -179,41 +179,41 @@
       [v17 doubleValue];
       v19 = v18;
 
-      v8 = [v5 objectForKey:@"kTMLSLinkSourceKey"];
+      delegate = [v5 objectForKey:@"kTMLSLinkSourceKey"];
       v20 = [v5 objectForKey:@"kTMLSLinkReliableKey"];
-      v21 = [v20 BOOLValue];
+      bOOLValue = [v20 BOOLValue];
 
-      if (v21)
+      if (bOOLValue)
       {
         v22 = @"TMLSSourceComputedReliable";
 
-        v8 = v22;
+        delegate = v22;
       }
 
-      v9 = [(TMLSLink *)self delegate];
-      [v9 link:self didReceiveTime:v8 remoteRTC:v13 uncertainty:v16 source:v19];
+      delegate2 = [(TMLSLink *)self delegate];
+      [delegate2 link:self didReceiveTime:delegate remoteRTC:v13 uncertainty:v16 source:v19];
       goto LABEL_28;
     }
 
-    if (v7 == 4)
+    if (intValue == 4)
     {
       if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_DEBUG))
       {
         sub_8A00();
       }
 
-      v8 = [v5 objectForKey:@"kTMLSLinkTimeZoneKey"];
-      v9 = [v5 objectForKey:@"kTMLSLinkSourceKey"];
-      v10 = [(TMLSLink *)self delegate];
-      [v10 link:self didReceiveTimeZone:v8 forSource:v9];
+      delegate = [v5 objectForKey:@"kTMLSLinkTimeZoneKey"];
+      delegate2 = [v5 objectForKey:@"kTMLSLinkSourceKey"];
+      delegate3 = [(TMLSLink *)self delegate];
+      [delegate3 link:self didReceiveTimeZone:delegate forSource:delegate2];
 
       goto LABEL_28;
     }
   }
 
-  else if (v7 <= 8)
+  else if (intValue <= 8)
   {
-    if (v7 == 7)
+    if (intValue == 7)
     {
       if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_DEBUG))
       {
@@ -241,7 +241,7 @@
 
   else
   {
-    switch(v7)
+    switch(intValue)
     {
       case 9:
         if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_DEBUG))
@@ -265,9 +265,9 @@
           sub_88C8();
         }
 
-        v8 = [(TMLSLink *)self delegate];
-        v9 = [v5 objectForKeyedSubscript:@"kTMLSLinkAutomaticTimeEnabledKey"];
-        [v8 link:self didReceiveAutomaticTimeEnabled:{objc_msgSend(v9, "BOOLValue")}];
+        delegate = [(TMLSLink *)self delegate];
+        delegate2 = [v5 objectForKeyedSubscript:@"kTMLSLinkAutomaticTimeEnabledKey"];
+        [delegate link:self didReceiveAutomaticTimeEnabled:{objc_msgSend(delegate2, "BOOLValue")}];
 LABEL_28:
 
 LABEL_32:
@@ -276,36 +276,36 @@ LABEL_32:
   }
 }
 
-- (void)didSendDataIdentifier:(id)a3 withError:(id)a4
+- (void)didSendDataIdentifier:(id)identifier withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_dataPendingSend objectForKeyedSubscript:v6];
-  [(NSMutableDictionary *)self->_dataPendingSend removeObjectForKey:v6];
+  identifierCopy = identifier;
+  errorCopy = error;
+  v8 = [(NSMutableDictionary *)self->_dataPendingSend objectForKeyedSubscript:identifierCopy];
+  [(NSMutableDictionary *)self->_dataPendingSend removeObjectForKey:identifierCopy];
   v9 = TIMELINK_FACILITY;
   if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v23 = v6;
+    v23 = identifierCopy;
     v24 = 2112;
-    v25 = v7;
+    v25 = errorCopy;
     v26 = 2112;
     v27 = v8;
     _os_log_debug_impl(&dword_0, v9, OS_LOG_TYPE_DEBUG, "didSendDataIdentifier:%@ withError: %@ (data: %@)", buf, 0x20u);
   }
 
-  v10 = v7;
+  v10 = errorCopy;
   v11 = v8;
   AnalyticsSendEventLazy();
   if (v11)
   {
     v12 = sub_573C(v11);
     v13 = [(NSMutableDictionary *)self->_pendingIdentifiers objectForKeyedSubscript:v12];
-    v14 = [v13 isEqualToString:v6];
+    v14 = [v13 isEqualToString:identifierCopy];
 
     if (v14)
     {
-      [(TMLSLink *)self handleDeliveryOfIdentifier:v6 withData:v11 withError:v10];
+      [(TMLSLink *)self handleDeliveryOfIdentifier:identifierCopy withData:v11 withError:v10];
     }
 
     else
@@ -317,7 +317,7 @@ LABEL_32:
         v18 = v16;
         v19 = [(NSMutableDictionary *)pendingIdentifiers objectForKeyedSubscript:v12];
         *buf = 138412546;
-        v23 = v6;
+        v23 = identifierCopy;
         v24 = 2112;
         v25 = v19;
         _os_log_impl(&dword_0, v18, OS_LOG_TYPE_INFO, "%@ superseded by %@", buf, 0x16u);
@@ -334,7 +334,7 @@ LABEL_32:
     if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v6;
+      v23 = identifierCopy;
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Do not remember sent message: %@", buf, 0xCu);
     }
 
@@ -344,43 +344,43 @@ LABEL_32:
   }
 }
 
-- (void)handleDeliveryOfIdentifier:(id)a3 withData:(id)a4 withError:(id)a5
+- (void)handleDeliveryOfIdentifier:(id)identifier withData:(id)data withError:(id)error
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  dataCopy = data;
   v48 = _NSConcreteStackBlock;
   v49 = 3221225472;
   v50 = sub_5F60;
   v51 = &unk_10678;
-  v11 = a5;
-  v52 = v11;
-  v12 = v10;
+  errorCopy = error;
+  v52 = errorCopy;
+  v12 = dataCopy;
   v53 = v12;
   AnalyticsSendEventLazy();
   v13 = sub_573C(v12);
   v14 = [(NSMutableDictionary *)self->_pendingIdentifiers objectForKeyedSubscript:v13];
-  if (([v14 isEqualToString:v9] & 1) == 0)
+  if (([v14 isEqualToString:identifierCopy] & 1) == 0)
   {
     v43 = +[NSAssertionHandler currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"TMLSLink.m" lineNumber:383 description:{@"Handling delivery of '%@' despite being superceded by '%@' on '%@' with error (%@) and data (%@)", v9, v14, v13, v11, v12}];
+    [v43 handleFailureInMethod:a2 object:self file:@"TMLSLink.m" lineNumber:383 description:{@"Handling delivery of '%@' despite being superceded by '%@' on '%@' with error (%@) and data (%@)", identifierCopy, v14, v13, errorCopy, v12}];
   }
 
   v15 = [v12 objectForKeyedSubscript:@"kTMLSLinkMsgKey"];
-  v16 = [v15 integerValue];
+  integerValue = [v15 integerValue];
 
-  if (v16 != 9)
+  if (integerValue != 9)
   {
-    if (v16 == 7)
+    if (integerValue == 7)
     {
       if ([(TMLSLink *)self isGizmo])
       {
         sub_8BAC(a2, self);
       }
 
-      v17 = [(TMLSLink *)self syncState];
-      if (!v11)
+      syncState = [(TMLSLink *)self syncState];
+      if (!errorCopy)
       {
-        if (v17 == 1)
+        if (syncState == 1)
         {
           [(TMLSLink *)self setSyncState:3];
           v31 = TIMELINK_FACILITY;
@@ -410,14 +410,14 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      if (v17 != 1)
+      if (syncState != 1)
       {
         v18 = TIMELINK_FACILITY;
         if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_INFO))
         {
           v19 = v18;
           *buf = 138412546;
-          v55 = v11;
+          v55 = errorCopy;
           v56 = 1024;
           LODWORD(v57) = [(TMLSLink *)self syncState];
           v20 = "TMLS_MSG_SYNC_RTC_INIT send failure (%@), but syncState is %d";
@@ -436,14 +436,14 @@ LABEL_22:
       }
     }
 
-    else if (!v11)
+    else if (!errorCopy)
     {
       goto LABEL_33;
     }
 
-    v25 = [v11 code];
+    code = [errorCopy code];
     v26 = TIMELINK_FACILITY;
-    if (v25 == &dword_18)
+    if (code == &dword_18)
     {
       if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_INFO))
       {
@@ -451,7 +451,7 @@ LABEL_22:
         v19 = v26;
         v28 = [(NSMutableDictionary *)pendingIdentifiers objectForKeyedSubscript:v13];
         *buf = 138412802;
-        v55 = v9;
+        v55 = identifierCopy;
         v56 = 2112;
         v57 = v13;
         v58 = 2112;
@@ -467,26 +467,26 @@ LABEL_22:
       if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v55 = v9;
+        v55 = identifierCopy;
         v56 = 2112;
         v57 = v13;
         v58 = 2112;
-        v59 = v11;
+        v59 = errorCopy;
         _os_log_error_impl(&dword_0, v26, OS_LOG_TYPE_ERROR, "%@ (%@) send failure (%@), will retry", buf, 0x20u);
       }
 
-      [(NSMutableDictionary *)self->_dataPendingRetry setObject:v12 forKeyedSubscript:v9];
+      [(NSMutableDictionary *)self->_dataPendingRetry setObject:v12 forKeyedSubscript:identifierCopy];
       v29 = dispatch_time(0, 30000000000);
-      v30 = [(TMLSLink *)self workloop];
+      workloop = [(TMLSLink *)self workloop];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_60C8;
       block[3] = &unk_106C8;
       block[4] = self;
-      v45 = v9;
+      v45 = identifierCopy;
       v46 = v13;
       v47 = v12;
-      dispatch_after(v29, v30, block);
+      dispatch_after(v29, workloop, block);
     }
 
     goto LABEL_33;
@@ -498,13 +498,13 @@ LABEL_22:
   }
 
   v23 = TIMELINK_FACILITY;
-  if (v11)
+  if (errorCopy)
   {
     if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_DEFAULT))
     {
       v19 = v23;
       *buf = 138412546;
-      v55 = v11;
+      v55 = errorCopy;
       v56 = 1024;
       LODWORD(v57) = [(TMLSLink *)self syncState];
       v20 = "TMLS_MSG_CONVERT_BT_TIME_FINAL send failure (%@), sync state, %d, dropping";
@@ -521,7 +521,7 @@ LABEL_22:
       sub_8B2C(v23);
     }
 
-    v32 = [(TMLSLink *)self delegate];
+    delegate = [(TMLSLink *)self delegate];
     v33 = [v12 objectForKeyedSubscript:@"kTMLSLinkRTCKey"];
     [v33 doubleValue];
     v35 = v34;
@@ -530,7 +530,7 @@ LABEL_22:
     v38 = v37;
     v39 = [v12 objectForKeyedSubscript:@"kTMLSLinkUncertaintyKey"];
     [v39 doubleValue];
-    [v32 link:self didSyncLocalRTC:v35 remoteRTC:v38 uncertainty:v40];
+    [delegate link:self didSyncLocalRTC:v35 remoteRTC:v38 uncertainty:v40];
 
     [(TMLSLink *)self setSyncState:0];
   }
@@ -540,10 +540,10 @@ LABEL_33:
 
 - (void)syncRTC
 {
-  v3 = [(TMLSLink *)self syncState];
+  syncState = [(TMLSLink *)self syncState];
   v4 = TIMELINK_FACILITY;
   v5 = os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_INFO);
-  if (v3)
+  if (syncState)
   {
     if (v5)
     {
@@ -642,9 +642,9 @@ LABEL_33:
   }
 }
 
-- (void)didUpdateDeviceRegistryCompatibilityState:(id)a3
+- (void)didUpdateDeviceRegistryCompatibilityState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_DEBUG))
   {
     sub_8DDC();
@@ -659,12 +659,12 @@ LABEL_33:
   dispatch_async(workloop, block);
 }
 
-- (void)setCompatible:(BOOL)a3
+- (void)setCompatible:(BOOL)compatible
 {
-  if (self->_compatible != a3)
+  if (self->_compatible != compatible)
   {
-    self->_compatible = a3;
-    if (a3)
+    self->_compatible = compatible;
+    if (compatible)
     {
       if ([(TMLSLink *)self isGizmo])
       {
@@ -676,11 +676,11 @@ LABEL_33:
       else
       {
         [(TMLSLink *)self setSyncState:0];
-        v4 = [(TMLSLink *)self delegate];
-        [v4 linkBecameCompatible:self];
+        delegate = [(TMLSLink *)self delegate];
+        [delegate linkBecameCompatible:self];
 
-        v5 = [(TMLSLink *)self delegate];
-        [v5 linkDidReceiveReset:self];
+        delegate2 = [(TMLSLink *)self delegate];
+        [delegate2 linkDidReceiveReset:self];
       }
     }
   }
@@ -688,18 +688,18 @@ LABEL_33:
 
 - (void)updateCompatibilityState
 {
-  v3 = [(TMLSLink *)self isCompatible];
+  isCompatible = [(TMLSLink *)self isCompatible];
   v4 = +[NRPairedDeviceRegistry sharedInstance];
-  v5 = [v4 compatibilityState];
+  compatibilityState = [v4 compatibilityState];
 
-  v6 = v5 - 2;
+  v6 = compatibilityState - 2;
   v7 = CORETIME_DATA_FACILITY;
   if (os_log_type_enabled(CORETIME_DATA_FACILITY, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109632;
-    v9 = v5;
+    v9 = compatibilityState;
     v10 = 1024;
-    v11 = v3;
+    v11 = isCompatible;
     v12 = 1024;
     v13 = v6 < 3;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "cmd,updateCompatibilityState,raw,%d,old,%d,new,%d", buf, 0x14u);
@@ -709,17 +709,17 @@ LABEL_33:
   [(TMLSLink *)self setCompatible:v6 < 3];
 }
 
-- (void)convertBTTime:(id)a3
+- (void)convertBTTime:(id)time
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"kTMLSLinkRemoteMachKey"];
-  v6 = [v5 unsignedLongLongValue];
+  timeCopy = time;
+  v5 = [timeCopy objectForKey:@"kTMLSLinkRemoteMachKey"];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-  v7 = [v4 objectForKey:@"kTMLSLinkRTCKey"];
+  v7 = [timeCopy objectForKey:@"kTMLSLinkRTCKey"];
   [v7 doubleValue];
   v9 = v8;
 
-  v10 = [v4 objectForKeyedSubscript:@"kTMLSLinkUncertaintyKey"];
+  v10 = [timeCopy objectForKeyedSubscript:@"kTMLSLinkUncertaintyKey"];
 
   [v10 doubleValue];
   v12 = v11;
@@ -729,13 +729,13 @@ LABEL_33:
     sub_8E50();
   }
 
-  v13 = [(TMLSLink *)self clock];
-  v14 = [v13 machTime];
+  clock = [(TMLSLink *)self clock];
+  machTime = [clock machTime];
 
-  if (v6 <= v14)
+  if (unsignedLongLongValue <= machTime)
   {
-    v16 = [(TMLSLink *)self clock];
-    v17 = [(TMLSLink *)self workloop];
+    clock2 = [(TMLSLink *)self clock];
+    workloop = [(TMLSLink *)self workloop];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_70C4;
@@ -743,7 +743,7 @@ LABEL_33:
     v18[4] = self;
     v18[5] = v9;
     v18[6] = v12;
-    [v16 montonicTimeForMachTime:v6 toQueue:v17 withCompletionHandler:v18];
+    [clock2 montonicTimeForMachTime:unsignedLongLongValue toQueue:workloop withCompletionHandler:v18];
   }
 
   else
@@ -756,18 +756,18 @@ LABEL_33:
   }
 }
 
-- (void)convertBTTimeFinal:(id)a3
+- (void)convertBTTimeFinal:(id)final
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"kTMLSLinkRemoteRTCKey"];
+  finalCopy = final;
+  v5 = [finalCopy objectForKey:@"kTMLSLinkRemoteRTCKey"];
   [v5 doubleValue];
   v7 = v6;
 
-  v8 = [v4 objectForKey:@"kTMLSLinkRTCKey"];
+  v8 = [finalCopy objectForKey:@"kTMLSLinkRTCKey"];
   [v8 doubleValue];
   v10 = v9;
 
-  v11 = [v4 objectForKey:@"kTMLSLinkUncertaintyKey"];
+  v11 = [finalCopy objectForKey:@"kTMLSLinkUncertaintyKey"];
 
   [v11 doubleValue];
   v13 = v12;
@@ -783,12 +783,12 @@ LABEL_33:
     v21 = 2048;
     v22 = v13;
     v23 = 1024;
-    v24 = [(TMLSLink *)self syncState];
+    syncState = [(TMLSLink *)self syncState];
     _os_log_debug_impl(&dword_0, v16, OS_LOG_TYPE_DEBUG, "convertBTTimeFinal, calling didSyncLocalRTC with localRTC: %f, remoteRTC: %f, uncertainty: %f, syncState: %d", &v17, 0x26u);
   }
 
-  v15 = [(TMLSLink *)self delegate];
-  [v15 link:self didSyncLocalRTC:v7 remoteRTC:v10 uncertainty:v13];
+  delegate = [(TMLSLink *)self delegate];
+  [delegate link:self didSyncLocalRTC:v7 remoteRTC:v10 uncertainty:v13];
 
   [(TMLSLink *)self setSyncState:0];
 }
@@ -825,7 +825,7 @@ LABEL_33:
   }
 }
 
-- (void)setSyncState:(int)a3
+- (void)setSyncState:(int)state
 {
   v5 = TIMELINK_FACILITY;
   if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_INFO))
@@ -834,7 +834,7 @@ LABEL_33:
     *buf = 67109376;
     v11 = syncState;
     v12 = 1024;
-    v13 = a3;
+    stateCopy2 = state;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "sync state transition from %d to %d", buf, 0xEu);
   }
 
@@ -845,12 +845,12 @@ LABEL_33:
     *buf = 67109376;
     v11 = v8;
     v12 = 1024;
-    v13 = a3;
+    stateCopy2 = state;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "cmd,SyncStateTransition,old,%d,new,%d", buf, 0xEu);
   }
 
   AnalyticsSendEventLazy();
-  if (a3 <= 2)
+  if (state <= 2)
   {
     if (os_log_type_enabled(TIMELINK_FACILITY, OS_LOG_TYPE_DEBUG))
     {
@@ -875,13 +875,13 @@ LABEL_13:
   }
 
 LABEL_14:
-  self->_syncState = a3;
+  self->_syncState = state;
 }
 
 - (void)createSyncTimer
 {
-  v3 = [(TMLSLink *)self workloop];
-  v4 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v3);
+  workloop = [(TMLSLink *)self workloop];
+  v4 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, workloop);
   syncTimer = self->_syncTimer;
   self->_syncTimer = v4;
 

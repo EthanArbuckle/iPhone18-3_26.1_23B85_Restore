@@ -1,20 +1,20 @@
 @interface SDAuthenticationPairingDisable
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDAuthenticationPairingDisable
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -32,8 +32,8 @@
   v7.receiver = self;
   v7.super_class = SDAuthenticationPairingDisable;
   v3 = [(SDAuthenticationPairingDisable *)&v7 description];
-  v4 = [(SDAuthenticationPairingDisable *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDAuthenticationPairingDisable *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -68,69 +68,69 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     version = self->_version;
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_pairingID)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     type = self->_type;
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_sessionID)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[7] = self->_version;
-    *(v4 + 32) |= 2u;
+    toCopy[7] = self->_version;
+    *(toCopy + 32) |= 2u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_pairingID)
   {
-    [v4 setPairingID:?];
-    v4 = v5;
+    [toCopy setPairingID:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[6] = self->_type;
-    *(v4 + 32) |= 1u;
+    toCopy[6] = self->_type;
+    *(toCopy + 32) |= 1u;
   }
 
   if (self->_sessionID)
   {
     [v5 setSessionID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -138,7 +138,7 @@
     *(v5 + 32) |= 2u;
   }
 
-  v7 = [(NSString *)self->_pairingID copyWithZone:a3];
+  v7 = [(NSString *)self->_pairingID copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
@@ -148,38 +148,38 @@
     *(v6 + 32) |= 1u;
   }
 
-  v9 = [(NSString *)self->_sessionID copyWithZone:a3];
+  v9 = [(NSString *)self->_sessionID copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_version != *(v4 + 7))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_version != *(equalCopy + 7))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_17;
   }
 
   pairingID = self->_pairingID;
-  if (pairingID | *(v4 + 1))
+  if (pairingID | *(equalCopy + 1))
   {
     if (![(NSString *)pairingID isEqual:?])
     {
@@ -191,22 +191,22 @@ LABEL_17:
     has = self->_has;
   }
 
-  v8 = *(v4 + 32);
+  v8 = *(equalCopy + 32);
   if (has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_type != *(v4 + 6))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_type != *(equalCopy + 6))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_17;
   }
 
   sessionID = self->_sessionID;
-  if (sessionID | *(v4 + 2))
+  if (sessionID | *(equalCopy + 2))
   {
     v10 = [(NSString *)sessionID isEqual:?];
   }
@@ -247,32 +247,32 @@ LABEL_18:
   return v4 ^ v3 ^ v5 ^ [(NSString *)self->_sessionID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((v4[8] & 2) != 0)
+  fromCopy = from;
+  if ((fromCopy[8] & 2) != 0)
   {
-    self->_version = v4[7];
+    self->_version = fromCopy[7];
     *&self->_has |= 2u;
   }
 
-  v5 = v4;
-  if (*(v4 + 1))
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(SDAuthenticationPairingDisable *)self setPairingID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
-    self->_type = v4[6];
+    self->_type = fromCopy[6];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SDAuthenticationPairingDisable *)self setSessionID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

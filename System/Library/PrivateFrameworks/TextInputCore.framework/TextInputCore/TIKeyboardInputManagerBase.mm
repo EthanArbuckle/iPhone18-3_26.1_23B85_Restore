@@ -1,20 +1,20 @@
 @interface TIKeyboardInputManagerBase
-- (TIKeyboardInputManagerBase)initWithInputMode:(id)a3 keyboardState:(id)a4;
-- (_NSRange)smartSelectionRangeForTextInDocument:(id)a3 inRange:(_NSRange)a4 language:(id)a5 tokenizedRanges:(id)a6 options:(unint64_t)a7;
-- (id)handleKeyboardInput:(id)a3;
+- (TIKeyboardInputManagerBase)initWithInputMode:(id)mode keyboardState:(id)state;
+- (_NSRange)smartSelectionRangeForTextInDocument:(id)document inRange:(_NSRange)range language:(id)language tokenizedRanges:(id)ranges options:(unint64_t)options;
+- (id)handleKeyboardInput:(id)input;
 - (id)keyboardConfiguration;
-- (int64_t)deletionCountForString:(id)a3;
-- (void)generateAutocorrectionsWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 candidateHandler:(id)a5;
-- (void)generateCandidatesWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 candidateHandler:(id)a5;
+- (int64_t)deletionCountForString:(id)string;
+- (void)generateAutocorrectionsWithKeyboardState:(id)state candidateRange:(_NSRange)range candidateHandler:(id)handler;
+- (void)generateCandidatesWithKeyboardState:(id)state candidateRange:(_NSRange)range candidateHandler:(id)handler;
 @end
 
 @implementation TIKeyboardInputManagerBase
 
-- (int64_t)deletionCountForString:(id)a3
+- (int64_t)deletionCountForString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length] && (v5 = objc_msgSend(v4, "length"), v5 >= 1))
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy && [stringCopy length] && (v5 = objc_msgSend(v4, "length"), v5 >= 1))
   {
     v6 = v5;
     v7 = 0;
@@ -36,58 +36,58 @@
   return v7;
 }
 
-- (_NSRange)smartSelectionRangeForTextInDocument:(id)a3 inRange:(_NSRange)a4 language:(id)a5 tokenizedRanges:(id)a6 options:(unint64_t)a7
+- (_NSRange)smartSelectionRangeForTextInDocument:(id)document inRange:(_NSRange)range language:(id)language tokenizedRanges:(id)ranges options:(unint64_t)options
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   result.length = length;
   result.location = location;
   return result;
 }
 
-- (void)generateCandidatesWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 candidateHandler:(id)a5
+- (void)generateCandidatesWithKeyboardState:(id)state candidateRange:(_NSRange)range candidateHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    v5 = a5;
-    [v5 open];
+    handlerCopy = handler;
+    [handlerCopy open];
     v6 = [MEMORY[0x277D6F3D0] setWithCandidates:0];
-    [v5 pushCandidateResultSet:v6];
-    [v5 close];
+    [handlerCopy pushCandidateResultSet:v6];
+    [handlerCopy close];
   }
 }
 
-- (void)generateAutocorrectionsWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 candidateHandler:(id)a5
+- (void)generateAutocorrectionsWithKeyboardState:(id)state candidateRange:(_NSRange)range candidateHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    v5 = a5;
-    [v5 open];
+    handlerCopy = handler;
+    [handlerCopy open];
     v6 = [MEMORY[0x277D6F328] listWithAutocorrection:0 predictions:0];
-    [v5 pushCandidates:v6];
-    [v5 close];
+    [handlerCopy pushCandidates:v6];
+    [handlerCopy close];
   }
 }
 
-- (id)handleKeyboardInput:(id)a3
+- (id)handleKeyboardInput:(id)input
 {
   v3 = MEMORY[0x277D6F410];
-  v4 = a3;
+  inputCopy = input;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 string];
+  string = [inputCopy string];
 
-  if (v6)
+  if (string)
   {
-    v7 = [v4 string];
+    string2 = [inputCopy string];
 
-    [v5 setInsertionText:v7];
+    [v5 setInsertionText:string2];
   }
 
   else
   {
-    v8 = [v4 isBackspace];
+    isBackspace = [inputCopy isBackspace];
 
-    if (v8)
+    if (isBackspace)
     {
       [v5 setDeletionCount:1];
     }
@@ -105,16 +105,16 @@
   return v2;
 }
 
-- (TIKeyboardInputManagerBase)initWithInputMode:(id)a3 keyboardState:(id)a4
+- (TIKeyboardInputManagerBase)initWithInputMode:(id)mode keyboardState:(id)state
 {
-  v6 = a3;
+  modeCopy = mode;
   v10.receiver = self;
   v10.super_class = TIKeyboardInputManagerBase;
   v7 = [(TIKeyboardInputManagerBase *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_inputMode, a3);
+    objc_storeStrong(&v7->_inputMode, mode);
   }
 
   return v8;

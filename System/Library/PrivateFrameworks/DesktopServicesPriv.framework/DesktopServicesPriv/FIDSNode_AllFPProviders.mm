@@ -1,14 +1,14 @@
 @interface FIDSNode_AllFPProviders
-- (BOOL)markAsUsed:(id *)a3;
+- (BOOL)markAsUsed:(id *)used;
 @end
 
 @implementation FIDSNode_AllFPProviders
 
-- (BOOL)markAsUsed:(id *)a3
+- (BOOL)markAsUsed:(id *)used
 {
-  if (a3)
+  if (used)
   {
-    *a3 = ErrorWithOSStatus(0, 0);
+    *used = ErrorWithOSStatus(0, 0);
   }
 
   return 1;

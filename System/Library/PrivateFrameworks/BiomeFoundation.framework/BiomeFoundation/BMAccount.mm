@@ -1,19 +1,19 @@
 @interface BMAccount
-+ (BOOL)verifyFormattedLikeIdentifier:(id)a3;
-+ (id)_hashOfString:(id)a3;
-- (BMAccount)initWithAltDSID:(id)a3;
-- (BMAccount)initWithCoder:(id)a3;
-- (BMAccount)initWithIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (BOOL)verifyFormattedLikeIdentifier:(id)identifier;
++ (id)_hashOfString:(id)string;
+- (BMAccount)initWithAltDSID:(id)d;
+- (BMAccount)initWithCoder:(id)coder;
+- (BMAccount)initWithIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMAccount
 
-- (BMAccount)initWithAltDSID:(id)a3
+- (BMAccount)initWithAltDSID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
     [(BMAccount *)a2 initWithAltDSID:?];
   }
@@ -23,11 +23,11 @@
   v6 = [(BMAccount *)&v12 init];
   if (v6)
   {
-    v7 = [BMAccount _hashOfString:v5];
+    v7 = [BMAccount _hashOfString:dCopy];
     identifier = v6->_identifier;
     v6->_identifier = v7;
 
-    v9 = [v5 copy];
+    v9 = [dCopy copy];
     altDSID = v6->_altDSID;
     v6->_altDSID = v9;
   }
@@ -35,22 +35,22 @@
   return v6;
 }
 
-- (BMAccount)initWithIdentifier:(id)a3
+- (BMAccount)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [(BMAccount *)a2 initWithIdentifier:?];
   }
 
-  if ([BMAccount verifyFormattedLikeIdentifier:v5])
+  if ([BMAccount verifyFormattedLikeIdentifier:identifierCopy])
   {
     v13.receiver = self;
     v13.super_class = BMAccount;
     v6 = [(BMAccount *)&v13 init];
     if (v6)
     {
-      v7 = [v5 copy];
+      v7 = [identifierCopy copy];
       identifier = v6->_identifier;
       v6->_identifier = v7;
 
@@ -59,7 +59,7 @@
     }
 
     self = v6;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -67,19 +67,19 @@
     v11 = __biome_log_for_category(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(BMAccount *)v5 initWithIdentifier:v11];
+      [(BMAccount *)identifierCopy initWithIdentifier:v11];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-+ (id)_hashOfString:(id)a3
++ (id)_hashOfString:(id)string
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [a3 cStringUsingEncoding:4];
+  v3 = [string cStringUsingEncoding:4];
   v4 = strlen(v3);
   CC_SHA1(v3, v4, md);
   v5 = [MEMORY[0x1E696AD60] stringWithCapacity:40];
@@ -93,16 +93,16 @@
   return v5;
 }
 
-+ (BOOL)verifyFormattedLikeIdentifier:(id)a3
++ (BOOL)verifyFormattedLikeIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 length] != 40)
+  identifierCopy = identifier;
+  if ([identifierCopy length] != 40)
   {
     v22 = 0;
     goto LABEL_34;
   }
 
-  v4 = v3;
+  v4 = identifierCopy;
   v5 = objc_opt_self();
 
   if (!v5)
@@ -213,18 +213,18 @@ LABEL_34:
   return v22;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"id"];
-  [v5 encodeObject:self->_altDSID forKey:@"altDSID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"id"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"altDSID"];
 }
 
-- (BMAccount)initWithCoder:(id)a3
+- (BMAccount)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
   if (v5)
   {
     v6 = [(BMAccount *)self initWithAltDSID:v5];
@@ -232,20 +232,20 @@ LABEL_34:
 
   else
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
     v6 = [(BMAccount *)self initWithIdentifier:v7];
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSString *)self->_identifier isEqual:v4[1]];
+    v5 = [(NSString *)self->_identifier isEqual:equalCopy[1]];
   }
 
   else

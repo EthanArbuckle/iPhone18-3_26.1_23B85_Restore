@@ -1,21 +1,21 @@
 @interface _ActivitySummaryForCollection
-- (_ActivitySummaryForCollection)initWithActivitySummary:(id)a3 timeScope:(int64_t)a4 hasNoData:(BOOL)a5;
+- (_ActivitySummaryForCollection)initWithActivitySummary:(id)summary timeScope:(int64_t)scope hasNoData:(BOOL)data;
 @end
 
 @implementation _ActivitySummaryForCollection
 
-- (_ActivitySummaryForCollection)initWithActivitySummary:(id)a3 timeScope:(int64_t)a4 hasNoData:(BOOL)a5
+- (_ActivitySummaryForCollection)initWithActivitySummary:(id)summary timeScope:(int64_t)scope hasNoData:(BOOL)data
 {
-  v9 = a3;
+  summaryCopy = summary;
   v13.receiver = self;
   v13.super_class = _ActivitySummaryForCollection;
   v10 = [(_ActivitySummaryForCollection *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_summaryResult, a3);
-    v11->_timeScope = a4;
-    v11->_hasNoData = a5;
+    objc_storeStrong(&v10->_summaryResult, summary);
+    v11->_timeScope = scope;
+    v11->_hasNoData = data;
   }
 
   return v11;

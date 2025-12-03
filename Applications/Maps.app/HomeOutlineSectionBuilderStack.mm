@@ -1,27 +1,27 @@
 @interface HomeOutlineSectionBuilderStack
-- (HomeOutlineSectionBuilderStack)initWithSectionIdentifier:(id)a3 sectionIndex:(int64_t)a4;
+- (HomeOutlineSectionBuilderStack)initWithSectionIdentifier:(id)identifier sectionIndex:(int64_t)index;
 - (IdentifierPath)topIdentifierPath;
 - (id)parentItem;
 - (int64_t)topIndex;
 - (void)_pop;
-- (void)_pushItem:(id)a3 index:(int64_t)a4;
-- (void)_setTopIdentifier:(id)a3;
+- (void)_pushItem:(id)item index:(int64_t)index;
+- (void)_setTopIdentifier:(id)identifier;
 @end
 
 @implementation HomeOutlineSectionBuilderStack
 
 - (int64_t)topIndex
 {
-  v2 = [(NSMutableArray *)self->_indices lastObject];
-  v3 = [v2 integerValue];
+  lastObject = [(NSMutableArray *)self->_indices lastObject];
+  integerValue = [lastObject integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (IdentifierPath)topIdentifierPath
 {
-  v3 = [(NSMutableArray *)self->_identifiers lastObject];
-  v4 = [v3 length];
+  lastObject = [(NSMutableArray *)self->_identifiers lastObject];
+  v4 = [lastObject length];
 
   if (v4)
   {
@@ -76,33 +76,33 @@
   }
 }
 
-- (void)_setTopIdentifier:(id)a3
+- (void)_setTopIdentifier:(id)identifier
 {
   depth = self->_depth;
   if (depth >= 2)
   {
-    [(NSMutableArray *)self->_identifiers setObject:a3 atIndexedSubscript:depth - 1];
+    [(NSMutableArray *)self->_identifiers setObject:identifier atIndexedSubscript:depth - 1];
     topIdentifierPath = self->_topIdentifierPath;
     self->_topIdentifierPath = 0;
   }
 }
 
-- (void)_pushItem:(id)a3 index:(int64_t)a4
+- (void)_pushItem:(id)item index:(int64_t)index
 {
   ++self->_depth;
-  [(NSMutableArray *)self->_items addObject:a3];
+  [(NSMutableArray *)self->_items addObject:item];
   [(NSMutableArray *)self->_identifiers addObject:&stru_1016631F0];
   indices = self->_indices;
-  v7 = [NSNumber numberWithInteger:a4];
+  v7 = [NSNumber numberWithInteger:index];
   [(NSMutableArray *)indices addObject:v7];
 
   topIdentifierPath = self->_topIdentifierPath;
   self->_topIdentifierPath = 0;
 }
 
-- (HomeOutlineSectionBuilderStack)initWithSectionIdentifier:(id)a3 sectionIndex:(int64_t)a4
+- (HomeOutlineSectionBuilderStack)initWithSectionIdentifier:(id)identifier sectionIndex:(int64_t)index
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v21.receiver = self;
   v21.super_class = HomeOutlineSectionBuilderStack;
   v7 = [(HomeOutlineSectionBuilderStack *)&v21 init];
@@ -117,13 +117,13 @@
     items = v8->_items;
     v8->_items = v11;
 
-    v23 = v6;
+    v23 = identifierCopy;
     v13 = [NSArray arrayWithObjects:&v23 count:1];
     v14 = [NSMutableArray arrayWithArray:v13];
     identifiers = v8->_identifiers;
     v8->_identifiers = v14;
 
-    v16 = [NSNumber numberWithInteger:a4];
+    v16 = [NSNumber numberWithInteger:index];
     v22 = v16;
     v17 = [NSArray arrayWithObjects:&v22 count:1];
     v18 = [NSMutableArray arrayWithArray:v17];

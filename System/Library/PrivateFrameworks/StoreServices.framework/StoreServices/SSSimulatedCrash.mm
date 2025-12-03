@@ -1,27 +1,27 @@
 @interface SSSimulatedCrash
-+ (void)simulateCrashWithFormat:(id)a3;
-+ (void)simulateCrashWithString:(id)a3;
++ (void)simulateCrashWithFormat:(id)format;
++ (void)simulateCrashWithString:(id)string;
 @end
 
 @implementation SSSimulatedCrash
 
-+ (void)simulateCrashWithFormat:(id)a3
++ (void)simulateCrashWithFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   if (SSIsInternalBuild())
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v4 arguments:&v6];
-    [a1 simulateCrashWithString:v5];
+    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:formatCopy arguments:&v6];
+    [self simulateCrashWithString:v5];
   }
 }
 
-+ (void)simulateCrashWithString:(id)a3
++ (void)simulateCrashWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (SSIsInternalBuild())
   {
     v3 = getpid();
-    softLinkSimulateCrash(v3, 195939070, v4);
+    softLinkSimulateCrash(v3, 195939070, stringCopy);
   }
 }
 

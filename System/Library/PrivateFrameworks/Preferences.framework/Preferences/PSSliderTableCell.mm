@@ -1,22 +1,22 @@
 @interface PSSliderTableCell
 + (Class)alternativeCellClass;
 - (BOOL)canReload;
-- (PSSliderTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PSSliderTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)controlValue;
 - (id)newControl;
 - (void)_configureLayout;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setValue:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setValue:(id)value;
 @end
 
 @implementation PSSliderTableCell
 
-- (PSSliderTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PSSliderTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = PSSliderTableCell;
-  v4 = [(PSControlTableCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSControlTableCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -31,10 +31,10 @@
 {
   v33[4] = *MEMORY[0x1E69E9840];
   objc_opt_class();
-  v31 = [(PSControlTableCell *)self control];
+  control = [(PSControlTableCell *)self control];
   if (objc_opt_isKindOfClass())
   {
-    v3 = v31;
+    v3 = control;
   }
 
   else
@@ -46,39 +46,39 @@
   if (v4)
   {
     v5 = v4;
-    v6 = [(PSTableCell *)self skipsPreferencesTableCellLayoutSubviews];
+    skipsPreferencesTableCellLayoutSubviews = [(PSTableCell *)self skipsPreferencesTableCellLayoutSubviews];
 
-    if (!v6)
+    if (!skipsPreferencesTableCellLayoutSubviews)
     {
-      v7 = [(PSControlTableCell *)self control];
-      [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+      control2 = [(PSControlTableCell *)self control];
+      [control2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
       v21 = MEMORY[0x1E696ACD8];
-      v32 = [(PSControlTableCell *)self control];
-      v29 = [v32 leadingAnchor];
-      v30 = [(PSSliderTableCell *)self contentView];
-      v28 = [v30 layoutMarginsGuide];
-      v27 = [v28 leadingAnchor];
-      v26 = [v29 constraintEqualToAnchor:v27];
+      control3 = [(PSControlTableCell *)self control];
+      leadingAnchor = [control3 leadingAnchor];
+      contentView = [(PSSliderTableCell *)self contentView];
+      layoutMarginsGuide = [contentView layoutMarginsGuide];
+      leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+      v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v33[0] = v26;
-      v25 = [(PSSliderTableCell *)self contentView];
-      v24 = [v25 layoutMarginsGuide];
-      v22 = [v24 trailingAnchor];
-      v23 = [(PSControlTableCell *)self control];
-      v20 = [v23 trailingAnchor];
-      v19 = [v22 constraintEqualToAnchor:v20];
+      contentView2 = [(PSSliderTableCell *)self contentView];
+      layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+      trailingAnchor = [layoutMarginsGuide2 trailingAnchor];
+      control4 = [(PSControlTableCell *)self control];
+      trailingAnchor2 = [control4 trailingAnchor];
+      v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v33[1] = v19;
-      v18 = [(PSControlTableCell *)self control];
-      v8 = [v18 topAnchor];
-      v9 = [(PSSliderTableCell *)self contentView];
-      v10 = [v9 topAnchor];
-      v11 = [v8 constraintLessThanOrEqualToSystemSpacingBelowAnchor:v10 multiplier:1.0];
+      control5 = [(PSControlTableCell *)self control];
+      topAnchor = [control5 topAnchor];
+      contentView3 = [(PSSliderTableCell *)self contentView];
+      topAnchor2 = [contentView3 topAnchor];
+      v11 = [topAnchor constraintLessThanOrEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
       v33[2] = v11;
-      v12 = [(PSSliderTableCell *)self contentView];
-      v13 = [v12 bottomAnchor];
-      v14 = [(PSControlTableCell *)self control];
-      v15 = [v14 bottomAnchor];
-      v16 = [v13 constraintLessThanOrEqualToSystemSpacingBelowAnchor:v15 multiplier:1.0];
+      contentView4 = [(PSSliderTableCell *)self contentView];
+      bottomAnchor = [contentView4 bottomAnchor];
+      control6 = [(PSControlTableCell *)self control];
+      bottomAnchor2 = [control6 bottomAnchor];
+      v16 = [bottomAnchor constraintLessThanOrEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
       v33[3] = v16;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:4];
       [v21 activateConstraints:v17];
@@ -90,160 +90,160 @@
   }
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(PSControlTableCell *)self control];
-  v6 = [v4 name];
-  v39 = self;
-  [(PSTableCell *)self setTitle:v6];
+  specifierCopy = specifier;
+  control = [(PSControlTableCell *)self control];
+  name = [specifierCopy name];
+  selfCopy = self;
+  [(PSTableCell *)self setTitle:name];
 
-  v7 = [v4 propertyForKey:@"defaults"];
-  v8 = [v7 lastPathComponent];
+  v7 = [specifierCopy propertyForKey:@"defaults"];
+  lastPathComponent = [v7 lastPathComponent];
 
-  if (([v8 hasPrefix:@"com.apple"] & 1) == 0 && objc_msgSend(v8, "length") || (objc_msgSend(v4, "propertyForKey:", @"isContinuous"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "BOOLValue"), v9, (v10 & 1) == 0))
+  if (([lastPathComponent hasPrefix:@"com.apple"] & 1) == 0 && objc_msgSend(lastPathComponent, "length") || (objc_msgSend(specifierCopy, "propertyForKey:", @"isContinuous"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "BOOLValue"), v9, (v10 & 1) == 0))
   {
-    [v5 setContinuous:0];
+    [control setContinuous:0];
   }
 
-  v38 = v8;
-  v11 = [v4 propertyForKey:@"min"];
-  v12 = [v4 propertyForKey:@"max"];
+  v38 = lastPathComponent;
+  v11 = [specifierCopy propertyForKey:@"min"];
+  v12 = [specifierCopy propertyForKey:@"max"];
   if (v11)
   {
     [v11 floatValue];
-    [v5 setMinimumValue:?];
+    [control setMinimumValue:?];
   }
 
   v37 = v11;
   if (v12)
   {
     [v12 floatValue];
-    [v5 setMaximumValue:?];
+    [control setMaximumValue:?];
   }
 
-  v13 = [v4 propertyForKey:{@"isSegmented", v12}];
-  v14 = [v13 BOOLValue];
+  v13 = [specifierCopy propertyForKey:{@"isSegmented", v12}];
+  bOOLValue = [v13 BOOLValue];
 
-  [v5 setSegmented:v14];
-  v15 = [v4 propertyForKey:@"locksToSegment"];
+  [control setSegmented:bOOLValue];
+  v15 = [specifierCopy propertyForKey:@"locksToSegment"];
   v16 = v15;
   if (v15)
   {
-    [v5 setLocksToSegment:{objc_msgSend(v15, "BOOLValue")}];
+    [control setLocksToSegment:{objc_msgSend(v15, "BOOLValue")}];
   }
 
-  v17 = [v4 propertyForKey:@"snapsToSegment"];
+  v17 = [specifierCopy propertyForKey:@"snapsToSegment"];
   v18 = v17;
   if (v17)
   {
-    [v5 setSnapsToSegment:{objc_msgSend(v17, "BOOLValue")}];
+    [control setSnapsToSegment:{objc_msgSend(v17, "BOOLValue")}];
   }
 
-  v19 = [v4 propertyForKey:@"segmentCount"];
-  [v5 setSegmentCount:{objc_msgSend(v19, "unsignedIntegerValue")}];
-  v20 = [v4 propertyForKey:@"rightImage"];
+  v19 = [specifierCopy propertyForKey:@"segmentCount"];
+  [control setSegmentCount:{objc_msgSend(v19, "unsignedIntegerValue")}];
+  v20 = [specifierCopy propertyForKey:@"rightImage"];
   if (v20)
   {
-    v21 = v20;
+    image = v20;
   }
 
   else
   {
-    v32 = [v4 propertyForKey:@"rightImagePromise"];
+    v32 = [specifierCopy propertyForKey:@"rightImagePromise"];
     if (!v32)
     {
       goto LABEL_18;
     }
 
     v33 = v32;
-    v21 = [v32 image];
-    [v4 setProperty:v21 forKey:@"rightImage"];
-    [v4 removePropertyForKey:@"rightImagePromise"];
+    image = [v32 image];
+    [specifierCopy setProperty:image forKey:@"rightImage"];
+    [specifierCopy removePropertyForKey:@"rightImagePromise"];
 
-    if (!v21)
+    if (!image)
     {
       goto LABEL_18;
     }
   }
 
-  v22 = [v4 propertyForKey:@"iconImageShouldFlipForRightToLeft"];
-  v23 = [v22 BOOLValue];
+  v22 = [specifierCopy propertyForKey:@"iconImageShouldFlipForRightToLeft"];
+  bOOLValue2 = [v22 BOOLValue];
 
-  if (v23)
+  if (bOOLValue2)
   {
-    v24 = [v21 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [image imageFlippedForRightToLeftLayoutDirection];
 
-    v21 = v24;
+    image = imageFlippedForRightToLeftLayoutDirection;
   }
 
-  [v5 setMaximumValueImage:v21];
+  [control setMaximumValueImage:image];
 
 LABEL_18:
-  v25 = [v4 propertyForKey:@"leftImage"];
+  v25 = [specifierCopy propertyForKey:@"leftImage"];
   if (v25)
   {
-    v26 = v25;
+    image2 = v25;
   }
 
   else
   {
-    v34 = [v4 propertyForKey:@"leftImagePromise"];
+    v34 = [specifierCopy propertyForKey:@"leftImagePromise"];
     if (!v34)
     {
       goto LABEL_23;
     }
 
     v35 = v34;
-    v26 = [v34 image];
-    [v4 setProperty:v26 forKey:@"leftImage"];
-    [v4 removePropertyForKey:@"leftImagePromise"];
+    image2 = [v34 image];
+    [specifierCopy setProperty:image2 forKey:@"leftImage"];
+    [specifierCopy removePropertyForKey:@"leftImagePromise"];
 
-    if (!v26)
+    if (!image2)
     {
       goto LABEL_23;
     }
   }
 
-  v27 = [v4 propertyForKey:@"iconImageShouldFlipForRightToLeft"];
-  v28 = [v27 BOOLValue];
+  v27 = [specifierCopy propertyForKey:@"iconImageShouldFlipForRightToLeft"];
+  bOOLValue3 = [v27 BOOLValue];
 
-  if (v28)
+  if (bOOLValue3)
   {
-    v29 = [v26 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection2 = [image2 imageFlippedForRightToLeftLayoutDirection];
 
-    v26 = v29;
+    image2 = imageFlippedForRightToLeftLayoutDirection2;
   }
 
-  [v5 setMinimumValueImage:v26];
+  [control setMinimumValueImage:image2];
 
 LABEL_23:
-  v30 = [v4 propertyForKey:@"showValue"];
+  v30 = [specifierCopy propertyForKey:@"showValue"];
   v31 = v30;
   if (v30)
   {
-    [v5 setShowValue:{objc_msgSend(v30, "BOOLValue")}];
+    [control setShowValue:{objc_msgSend(v30, "BOOLValue")}];
   }
 
-  v40.receiver = v39;
+  v40.receiver = selfCopy;
   v40.super_class = PSSliderTableCell;
-  [(PSControlTableCell *)&v40 refreshCellContentsWithSpecifier:v4];
+  [(PSControlTableCell *)&v40 refreshCellContentsWithSpecifier:specifierCopy];
 }
 
 - (void)prepareForReuse
 {
-  v3 = [(PSControlTableCell *)self control];
+  control = [(PSControlTableCell *)self control];
   if ([(PSTableCell *)self type]== 5)
   {
-    [v3 setContinuous:1];
-    [v3 setMinimumValue:0.0];
+    [control setContinuous:1];
+    [control setMinimumValue:0.0];
     LODWORD(v4) = 1.0;
-    [v3 setMaximumValue:v4];
-    [v3 setMaximumValueImage:0];
-    [v3 setMinimumValueImage:0];
-    [v3 setShowValue:0];
-    [v3 setSegmented:0];
-    [v3 setSegmentCount:0];
+    [control setMaximumValue:v4];
+    [control setMaximumValueImage:0];
+    [control setMinimumValueImage:0];
+    [control setShowValue:0];
+    [control setSegmented:0];
+    [control setSegmentCount:0];
   }
 
   v5.receiver = self;
@@ -281,23 +281,23 @@ LABEL_23:
   return [v2 numberWithFloat:?];
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = a3;
-  if (self->super.super._value != v5)
+  valueCopy = value;
+  if (self->super.super._value != valueCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->super.super._value, a3);
+    v7 = valueCopy;
+    objc_storeStrong(&self->super.super._value, value);
     control = self->super._control;
     [v7 floatValue];
     [(UIControl *)control setValue:?];
-    v5 = v7;
+    valueCopy = v7;
   }
 }
 
 + (Class)alternativeCellClass
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_class();
   }

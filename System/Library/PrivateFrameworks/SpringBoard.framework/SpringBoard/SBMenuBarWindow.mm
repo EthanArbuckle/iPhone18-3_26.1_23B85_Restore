@@ -8,20 +8,20 @@
 {
   v10.receiver = self;
   v10.super_class = SBMenuBarWindow;
-  v3 = [(SBMenuBarWindow *)&v10 _keyboardShortcutMenuLeaves];
-  v4 = [(UIWindow *)self _sbWindowScene];
-  v5 = [v4 menuBarManager];
-  v6 = [v5 menuBarViewController];
-  v7 = [v6 additionalKeyboardShortcutActionsForSession];
+  _keyboardShortcutMenuLeaves = [(SBMenuBarWindow *)&v10 _keyboardShortcutMenuLeaves];
+  _sbWindowScene = [(UIWindow *)self _sbWindowScene];
+  menuBarManager = [_sbWindowScene menuBarManager];
+  menuBarViewController = [menuBarManager menuBarViewController];
+  additionalKeyboardShortcutActionsForSession = [menuBarViewController additionalKeyboardShortcutActionsForSession];
 
-  if ([v3 count])
+  if ([_keyboardShortcutMenuLeaves count])
   {
-    v8 = [v7 arrayByAddingObjectsFromArray:v3];
+    v8 = [additionalKeyboardShortcutActionsForSession arrayByAddingObjectsFromArray:_keyboardShortcutMenuLeaves];
 
-    v7 = v8;
+    additionalKeyboardShortcutActionsForSession = v8;
   }
 
-  return v7;
+  return additionalKeyboardShortcutActionsForSession;
 }
 
 @end

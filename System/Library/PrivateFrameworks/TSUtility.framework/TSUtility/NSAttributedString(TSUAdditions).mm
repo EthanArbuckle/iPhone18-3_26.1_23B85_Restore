@@ -15,7 +15,7 @@
   v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a5];
   [v8 setObject:*MEMORY[0x277D74130] forKey:*MEMORY[0x277D74090]];
 
-  return [a1 dataFromRange:a3 documentAttributes:a4 error:{v8, 0}];
+  return [self dataFromRange:a3 documentAttributes:a4 error:{v8, 0}];
 }
 
 - (uint64_t)tsu_RTFDFromRange:()TSUAdditions documentAttributes:
@@ -23,23 +23,23 @@
   v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a5];
   [v8 setObject:*MEMORY[0x277D74128] forKey:*MEMORY[0x277D74090]];
 
-  return [a1 dataFromRange:a3 documentAttributes:a4 error:{v8, 0}];
+  return [self dataFromRange:a3 documentAttributes:a4 error:{v8, 0}];
 }
 
 - (void)tsu_stringByFixingBrokenSurrogatePairs
 {
-  v1 = a1;
-  v2 = [a1 string];
-  Length = CFStringGetLength(v2);
-  theString = v2;
+  selfCopy = self;
+  string = [self string];
+  Length = CFStringGetLength(string);
+  theString = string;
   v32 = 0;
   v33 = Length;
-  CharactersPtr = CFStringGetCharactersPtr(v2);
+  CharactersPtr = CFStringGetCharactersPtr(string);
   CStringPtr = 0;
   v30 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(v2, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(string, 0x600u);
   }
 
   v34 = 0;
@@ -107,22 +107,22 @@
 LABEL_37:
             if (!v7)
             {
-              v7 = [v1 mutableCopyWithZone:{0, v21, v22, v23, v24, v25, v26, v27, v28}];
-              v1 = v7;
+              v7 = [selfCopy mutableCopyWithZone:{0, v21, v22, v23, v24, v25, v26, v27, v28}];
+              selfCopy = v7;
             }
 
             [v7 replaceCharactersInRange:v8 withString:{1, @"\uFFFD", v21, v22, v23, v24, v25, v26, v27, v28}];
-            v17 = [v1 string];
-            Length = CFStringGetLength(v17);
-            theString = v17;
+            string2 = [selfCopy string];
+            Length = CFStringGetLength(string2);
+            theString = string2;
             v32 = 0;
             v33 = Length;
-            v18 = CFStringGetCharactersPtr(v17);
+            v18 = CFStringGetCharactersPtr(string2);
             v19 = 0;
             v30 = v18;
             if (!v18)
             {
-              v19 = CFStringGetCStringPtr(v17, 0x600u);
+              v19 = CFStringGetCStringPtr(string2, 0x600u);
             }
 
             v6 = 0;
@@ -199,15 +199,15 @@ LABEL_42:
     while (v8 < Length);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)tsu_stringWithoutAttachments
 {
-  v2 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:a1];
+  v2 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:self];
   v12 = 0;
   v13 = 0;
-  v3 = [a1 length];
+  v3 = [self length];
   if (v3)
   {
     v4 = v3;
@@ -216,7 +216,7 @@ LABEL_42:
     v7 = *MEMORY[0x277D74060];
     do
     {
-      v8 = [a1 attribute:v7 atIndex:v6 effectiveRange:&v12];
+      v8 = [self attribute:v7 atIndex:v6 effectiveRange:&v12];
       v10 = v12;
       v9 = v13;
       if (v8)
@@ -236,7 +236,7 @@ LABEL_42:
 
 - (uint64_t)tsu_nextTableStringFromIndex:()TSUAdditions tableRange:
 {
-  v6 = [a1 length];
+  v6 = [self length];
   if (a4)
   {
     v7 = v6 - a3;
@@ -254,12 +254,12 @@ LABEL_42:
 
 - (uint64_t)tsu_numberOfTables
 {
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
 
-  v2 = [a1 length];
+  v2 = [self length];
   if (!v2)
   {
     return 0;
@@ -272,7 +272,7 @@ LABEL_42:
   {
     v7 = 0;
     v8 = 0;
-    if ([a1 tsu_nextTableStringFromIndex:v5 tableRange:&v7])
+    if ([self tsu_nextTableStringFromIndex:v5 tableRange:&v7])
     {
       ++v4;
     }

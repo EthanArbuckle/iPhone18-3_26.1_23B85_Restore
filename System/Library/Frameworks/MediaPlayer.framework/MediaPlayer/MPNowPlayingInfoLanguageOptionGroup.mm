@@ -1,7 +1,7 @@
 @interface MPNowPlayingInfoLanguageOptionGroup
 - (MPNowPlayingInfoLanguageOption)defaultLanguageOption;
 - (MPNowPlayingInfoLanguageOptionGroup)initWithLanguageOptions:(NSArray *)languageOptions defaultLanguageOption:(MPNowPlayingInfoLanguageOption *)defaultLanguageOption allowEmptySelection:(BOOL)allowEmptySelection;
-- (MPNowPlayingInfoLanguageOptionGroup)initWithMRLanguageOptionGroup:(void *)a3;
+- (MPNowPlayingInfoLanguageOptionGroup)initWithMRLanguageOptionGroup:(void *)group;
 - (NSArray)languageOptions;
 - (void)dealloc;
 @end
@@ -68,15 +68,15 @@
   [(MPNowPlayingInfoLanguageOptionGroup *)&v4 dealloc];
 }
 
-- (MPNowPlayingInfoLanguageOptionGroup)initWithMRLanguageOptionGroup:(void *)a3
+- (MPNowPlayingInfoLanguageOptionGroup)initWithMRLanguageOptionGroup:(void *)group
 {
   v7.receiver = self;
   v7.super_class = MPNowPlayingInfoLanguageOptionGroup;
   v4 = [(MPNowPlayingInfoLanguageOptionGroup *)&v7 init];
   v5 = v4;
-  if (a3 && v4)
+  if (group && v4)
   {
-    v4->_mrLanguageOptionGroup = CFRetain(a3);
+    v4->_mrLanguageOptionGroup = CFRetain(group);
   }
 
   return v5;

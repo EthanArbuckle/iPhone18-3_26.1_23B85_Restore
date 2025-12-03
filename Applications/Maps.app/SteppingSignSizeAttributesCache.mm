@@ -1,48 +1,48 @@
 @interface SteppingSignSizeAttributesCache
 - (SteppingSignSizeAttributesCache)init;
-- (id)sizeAttributesForSignAtIndex:(int64_t)a3 fittingSize:(CGSize)a4;
-- (void)invalidateSizeAttributesForSignAtIndex:(int64_t)a3;
-- (void)setSizeAttributes:(id)a3 forSignAtIndex:(int64_t)a4 fittingSize:(CGSize)a5;
+- (id)sizeAttributesForSignAtIndex:(int64_t)index fittingSize:(CGSize)size;
+- (void)invalidateSizeAttributesForSignAtIndex:(int64_t)index;
+- (void)setSizeAttributes:(id)attributes forSignAtIndex:(int64_t)index fittingSize:(CGSize)size;
 @end
 
 @implementation SteppingSignSizeAttributesCache
 
-- (void)invalidateSizeAttributesForSignAtIndex:(int64_t)a3
+- (void)invalidateSizeAttributesForSignAtIndex:(int64_t)index
 {
   attributesCache = self->_attributesCache;
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:index];
   [(NSMutableDictionary *)attributesCache removeObjectForKey:v4];
 }
 
-- (void)setSizeAttributes:(id)a3 forSignAtIndex:(int64_t)a4 fittingSize:(CGSize)a5
+- (void)setSizeAttributes:(id)attributes forSignAtIndex:(int64_t)index fittingSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   attributesCache = self->_attributesCache;
-  v10 = a3;
-  v11 = [NSNumber numberWithInteger:a4];
+  attributesCopy = attributes;
+  v11 = [NSNumber numberWithInteger:index];
   v15 = [(NSMutableDictionary *)attributesCache objectForKey:v11];
 
   if (!v15)
   {
     v15 = objc_alloc_init(NSMutableDictionary);
     v12 = self->_attributesCache;
-    v13 = [NSNumber numberWithInteger:a4];
+    v13 = [NSNumber numberWithInteger:index];
     [(NSMutableDictionary *)v12 setObject:v15 forKey:v13];
   }
 
   v17.width = width;
   v17.height = height;
   v14 = NSStringFromCGSize(v17);
-  [v15 setObject:v10 forKey:v14];
+  [v15 setObject:attributesCopy forKey:v14];
 }
 
-- (id)sizeAttributesForSignAtIndex:(int64_t)a3 fittingSize:(CGSize)a4
+- (id)sizeAttributesForSignAtIndex:(int64_t)index fittingSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   attributesCache = self->_attributesCache;
-  v7 = [NSNumber numberWithInteger:a3];
+  v7 = [NSNumber numberWithInteger:index];
   v8 = [(NSMutableDictionary *)attributesCache objectForKey:v7];
 
   v13.width = width;

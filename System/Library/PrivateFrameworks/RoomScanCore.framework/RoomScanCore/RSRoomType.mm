@@ -1,30 +1,30 @@
 @interface RSRoomType
-- (RSRoomType)initWithCoder:(id)a3;
-- (RSRoomType)initWithDictionaryRepresentation:(id)a3 withGroupId:(unsigned int)a4;
+- (RSRoomType)initWithCoder:(id)coder;
+- (RSRoomType)initWithDictionaryRepresentation:(id)representation withGroupId:(unsigned int)id;
 - (double)transform;
 - (float32x2_t)dimensions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)rotateAlongZAxisRightHand:(float)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)rotateAlongZAxisRightHand:(float)hand;
 - (void)translateBy:(RSRoomType *)self;
 @end
 
 @implementation RSRoomType
 
-- (RSRoomType)initWithCoder:(id)a3
+- (RSRoomType)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v42.receiver = self;
   v42.super_class = RSRoomType;
   v6 = [(RSRoomType *)&v42 init];
   if (v6)
   {
-    objc_msgSend_decodeFloatForKey_(v4, v5, @"confidenceScore");
+    objc_msgSend_decodeFloatForKey_(coderCopy, v5, @"confidenceScore");
     v6->_confidenceScore = v7;
-    v6->_insideRoom = objc_msgSend_decodeIntForKey_(v4, v8, @"insideRoom");
+    v6->_insideRoom = objc_msgSend_decodeIntForKey_(coderCopy, v8, @"insideRoom");
     v9 = objc_opt_class();
-    v11 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v10, v9, @"label");
+    v11 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v10, v9, @"label");
     label = v6->_label;
     v6->_label = v11;
 
@@ -32,15 +32,15 @@
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v17 = objc_msgSend_setWithObjects_(v13, v16, v14, v15, 0);
-    v38 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v18, v17, @"polygonCenter");
+    v38 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v18, v17, @"polygonCenter");
     sub_26230EF8C(v38, v6->_polygonCenter);
-    v20 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v19, v17, @"quad");
+    v20 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v19, v17, @"quad");
     sub_26230F05C(v20, &v6[1].super.isa);
-    v22 = objc_msgSend_decodeIntForKey_(v4, v21, @"type");
+    v22 = objc_msgSend_decodeIntForKey_(coderCopy, v21, @"type");
     __p = 0;
     v40 = 0;
     v41 = 0;
-    v26 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v23, v17, @"points");
+    v26 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v23, v17, @"points");
     for (i = 0; objc_msgSend_count(v26, v24, v25) > i; ++i)
     {
       v29 = objc_msgSend_objectAtIndexedSubscript_(v26, v28, i);
@@ -77,7 +77,7 @@
     polygon = v6->_polygon;
     v6->_polygon = v34;
 
-    v6->storyLevel = objc_msgSend_decodeIntegerForKey_(v4, v36, @"story");
+    v6->storyLevel = objc_msgSend_decodeIntegerForKey_(coderCopy, v36, @"story");
     if (__p)
     {
       operator delete(__p);
@@ -87,12 +87,12 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   *&v5 = self->_confidenceScore;
-  v42 = v4;
-  objc_msgSend_encodeFloat_forKey_(v4, v6, @"confidenceScore", v5);
+  v42 = coderCopy;
+  objc_msgSend_encodeFloat_forKey_(coderCopy, v6, @"confidenceScore", v5);
   objc_msgSend_encodeInt_forKey_(v42, v7, self->_insideRoom, @"insideRoom");
   v9 = objc_msgSend_encodeObject_forKey_(v42, v8, self->_label, @"label");
   v12 = sub_26230F388(*self->_polygonCenter, v9, v10, v11);
@@ -187,9 +187,9 @@
   }
 }
 
-- (void)rotateAlongZAxisRightHand:(float)a3
+- (void)rotateAlongZAxisRightHand:(float)hand
 {
-  v8 = __sincosf_stret(a3);
+  v8 = __sincosf_stret(hand);
   *v7.i32 = v8.__cosval;
   *v6.i8 = v8;
   v9 = 0;
@@ -238,23 +238,23 @@
 
 - (float32x2_t)dimensions
 {
-  v1 = a1[9];
-  v2 = vsub_f32(v1, a1[8]);
+  v1 = self[9];
+  v2 = vsub_f32(v1, self[8]);
   v3 = vmul_f32(v2, v2);
-  v4 = vsub_f32(a1[10], v1);
+  v4 = vsub_f32(self[10], v1);
   v5 = vmul_f32(v4, v4);
   return vsqrt_f32(vadd_f32(vzip1_s32(v3, v5), vzip2_s32(v3, v5)));
 }
 
 - (double)transform
 {
-  v2 = a1[8];
-  v1 = a1[9];
+  v2 = self[8];
+  v1 = self[9];
   v3 = vceq_f32(v1, v2);
   v4 = xmmword_2623A7700;
   if ((vpmin_u32(v3, v3).u32[0] & 0x80000000) == 0)
   {
-    v5 = a1[10];
+    v5 = self[10];
     v6 = vceq_f32(v1, v5);
     v4 = xmmword_2623A7700;
     if ((vpmin_u32(v6, v6).u32[0] & 0x80000000) == 0)
@@ -284,8 +284,8 @@
   }
 
   v20 = 0;
-  *v21.f32 = a1[7];
-  v21.f32[2] = (a1[1].f32[1] + a1[1].f32[0]) * 0.5;
+  *v21.f32 = self[7];
+  v21.f32[2] = (self[1].f32[1] + self[1].f32[0]) * 0.5;
   v21.i32[3] = 1.0;
   v23[2] = v4;
   v23[3] = xmmword_2623A7810;
@@ -299,25 +299,25 @@
   return *&v24;
 }
 
-- (RSRoomType)initWithDictionaryRepresentation:(id)a3 withGroupId:(unsigned int)a4
+- (RSRoomType)initWithDictionaryRepresentation:(id)representation withGroupId:(unsigned int)id
 {
   v78 = *MEMORY[0x277D85DE8];
-  v69 = a3;
+  representationCopy = representation;
   v76.receiver = self;
   v76.super_class = RSRoomType;
   v6 = [(RSRoomType *)&v76 init];
-  v8 = objc_msgSend_objectForKeyedSubscript_(v69, v7, @"insideRoom");
+  v8 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v7, @"insideRoom");
   v6->_insideRoom = objc_msgSend_intValue(v8, v9, v10);
 
-  v12 = objc_msgSend_objectForKeyedSubscript_(v69, v11, @"confidenceScore");
+  v12 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v11, @"confidenceScore");
   objc_msgSend_floatValue(v12, v13, v14);
   v6->_confidenceScore = v15;
 
-  v17 = objc_msgSend_objectForKeyedSubscript_(v69, v16, @"label");
+  v17 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v16, @"label");
   label = v6->_label;
   v6->_label = v17;
 
-  v20 = objc_msgSend_objectForKeyedSubscript_(v69, v19, @"quad");
+  v20 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v19, @"quad");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -334,8 +334,8 @@
     sub_26230F05C(v68, &v6[1].super.isa);
   }
 
-  v6->_groupId = a4;
-  v66 = objc_msgSend_objectForKeyedSubscript_(v69, v21, @"polygon");
+  v6->_groupId = id;
+  v66 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v21, @"polygon");
   v67 = objc_msgSend_objectForKeyedSubscript_(v66, v22, @"points");
   v24 = objc_msgSend_objectForKeyedSubscript_(v66, v23, @"type");
   v65 = objc_msgSend_intValue(v24, v25, v26);
@@ -381,7 +381,7 @@
   polygon = v6->_polygon;
   v6->_polygon = v44;
 
-  v47 = objc_msgSend_objectForKeyedSubscript_(v69, v46, @"polygonCenter");
+  v47 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v46, @"polygonCenter");
   if (objc_msgSend_count(v47, v48, v49) == 2)
   {
     v51 = objc_msgSend_objectAtIndexedSubscript_(v47, v50, 0);
@@ -392,7 +392,7 @@
     *v6->_polygonCenter = __PAIR64__(v59, v71);
   }
 
-  v60 = objc_msgSend_objectForKeyedSubscript_(v69, v50, @"story");
+  v60 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v50, @"story");
   v6->storyLevel = objc_msgSend_integerValue(v60, v61, v62);
 
   v63 = *MEMORY[0x277D85DE8];
@@ -456,7 +456,7 @@
   return v65;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(RSRoomType);
   v4->_confidenceScore = self->_confidenceScore;

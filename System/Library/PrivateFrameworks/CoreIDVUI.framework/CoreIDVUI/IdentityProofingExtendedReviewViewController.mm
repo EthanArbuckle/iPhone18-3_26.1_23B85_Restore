@@ -1,12 +1,12 @@
 @interface IdentityProofingExtendedReviewViewController
-- (_TtC9CoreIDVUI44IdentityProofingExtendedReviewViewController)initWithCoder:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC9CoreIDVUI44IdentityProofingExtendedReviewViewController)initWithCoder:(id)coder;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation IdentityProofingExtendedReviewViewController
 
-- (_TtC9CoreIDVUI44IdentityProofingExtendedReviewViewController)initWithCoder:(id)a3
+- (_TtC9CoreIDVUI44IdentityProofingExtendedReviewViewController)initWithCoder:(id)coder
 {
   result = sub_2459115D4();
   __break(1u);
@@ -21,12 +21,12 @@
   v6 = type metadata accessor for IdentityProofingExtendedReviewViewController();
   v13.receiver = self;
   v13.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(IdentityProofingViewController *)&v13 viewDidLoad];
   v8 = sub_245910D64();
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
   sub_245910D34();
-  v9 = v7;
+  v9 = selfCopy;
   v10 = sub_245910D24();
   v11 = swift_allocObject();
   v12 = MEMORY[0x277D85700];
@@ -38,10 +38,10 @@
   sub_2457BA848();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_2457BA734(a3);
+  selfCopy = self;
+  sub_2457BA734(disappear);
 }
 
 @end

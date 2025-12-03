@@ -1,7 +1,7 @@
 @interface APSDiagnostic
 + (id)sharedInstance;
 - (APSDiagnostic)init;
-- (void)promptTapToRadarWithURL:(id)a3;
+- (void)promptTapToRadarWithURL:(id)l;
 @end
 
 @implementation APSDiagnostic
@@ -37,16 +37,16 @@
   return v2;
 }
 
-- (void)promptTapToRadarWithURL:(id)a3
+- (void)promptTapToRadarWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100097064;
   block[3] = &unk_100186D90;
-  v8 = v4;
-  v6 = v4;
+  v8 = lCopy;
+  v6 = lCopy;
   dispatch_async(queue, block);
 }
 

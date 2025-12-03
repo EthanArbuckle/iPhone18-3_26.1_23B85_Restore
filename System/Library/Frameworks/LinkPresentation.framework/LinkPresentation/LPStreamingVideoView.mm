@@ -2,39 +2,39 @@
 - (BOOL)releaseDecodingResourcesIfInactive;
 - (BOOL)shouldAutoPlay;
 - (BOOL)shouldShowMuteButton;
-- (LPStreamingVideoView)initWithHost:(id)a3 video:(id)a4 style:(id)a5 posterFrame:(id)a6 posterFrameStyle:(id)a7 configuration:(id)a8;
+- (LPStreamingVideoView)initWithHost:(id)host video:(id)video style:(id)style posterFrame:(id)frame posterFrameStyle:(id)frameStyle configuration:(id)configuration;
 - (id)createFullScreenVideoViewController;
 - (id)createVideoPlayerView;
 - (void)beginLoadingMediaForPreroll;
 - (void)createPlayerIfNeeded;
-- (void)createPlayerItemAdjustedForLoopingWithAsset:(id)a3 completionHandler:(id)a4;
+- (void)createPlayerItemAdjustedForLoopingWithAsset:(id)asset completionHandler:(id)handler;
 - (void)dealloc;
 - (void)destroyPlayer;
 - (void)didFailToPlay;
 - (void)fullScreenVideoDidPresent;
 - (void)fullScreenVideoWillDismiss;
 - (void)layoutComponentView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)prepareForDisplayWithCompletionHandler:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)prepareForDisplayWithCompletionHandler:(id)handler;
 - (void)resetToPlaceholderView;
-- (void)setMuted:(BOOL)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)setVolume:(double)a3;
+- (void)setMuted:(BOOL)muted;
+- (void)setPlaying:(BOOL)playing;
+- (void)setVolume:(double)volume;
 @end
 
 @implementation LPStreamingVideoView
 
-- (LPStreamingVideoView)initWithHost:(id)a3 video:(id)a4 style:(id)a5 posterFrame:(id)a6 posterFrameStyle:(id)a7 configuration:(id)a8
+- (LPStreamingVideoView)initWithHost:(id)host video:(id)video style:(id)style posterFrame:(id)frame posterFrameStyle:(id)frameStyle configuration:(id)configuration
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  hostCopy = host;
+  videoCopy = video;
+  styleCopy = style;
+  frameCopy = frame;
+  frameStyleCopy = frameStyle;
+  configurationCopy = configuration;
   v24.receiver = self;
   v24.super_class = LPStreamingVideoView;
-  v20 = [(LPVisualMediaView *)&v24 initWithHost:v14 media:v15 style:v16 posterFrame:v17 posterFrameStyle:v18 configuration:v19];
+  v20 = [(LPVisualMediaView *)&v24 initWithHost:hostCopy media:videoCopy style:styleCopy posterFrame:frameCopy posterFrameStyle:frameStyleCopy configuration:configurationCopy];
   v21 = v20;
   if (v20)
   {
@@ -54,19 +54,19 @@
   [(LPVisualMediaView *)&v3 dealloc];
 }
 
-- (void)createPlayerItemAdjustedForLoopingWithAsset:(id)a3 completionHandler:(id)a4
+- (void)createPlayerItemAdjustedForLoopingWithAsset:(id)asset completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __86__LPStreamingVideoView_createPlayerItemAdjustedForLoopingWithAsset_completionHandler___block_invoke;
   v10[3] = &unk_1E7A354C8;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = assetCopy;
+  v8 = assetCopy;
+  v9 = handlerCopy;
   [v8 loadValuesAsynchronouslyForKeys:&unk_1F24836F8 keysForCollectionKeys:&unk_1F2483CB0 completionHandler:v10];
 }
 
@@ -206,12 +206,12 @@ id __86__LPStreamingVideoView_createPlayerItemAdjustedForLoopingWithAsset_comple
     self->_player = v4;
 
     v6 = +[LPMediaPlaybackManager shared];
-    v7 = [v6 audioSession];
-    [(AVQueuePlayer *)self->_player setAudioSession:v7];
+    audioSession = [v6 audioSession];
+    [(AVQueuePlayer *)self->_player setAudioSession:audioSession];
 
-    v8 = [(LPVisualMediaView *)self media];
-    v9 = [v8 streamingURL];
-    [(AVQueuePlayer *)self->_player setAutomaticallyWaitsToMinimizeStalling:v9 != 0];
+    media = [(LPVisualMediaView *)self media];
+    streamingURL = [media streamingURL];
+    [(AVQueuePlayer *)self->_player setAutomaticallyWaitsToMinimizeStalling:streamingURL != 0];
 
     [(AVQueuePlayer *)self->_player setPreventsDisplaySleepDuringVideoPlayback:0];
     v10 = [MEMORY[0x1E69880E0] playerLayerWithPlayer:self->_player];
@@ -224,15 +224,15 @@ id __86__LPStreamingVideoView_createPlayerItemAdjustedForLoopingWithAsset_comple
 
     v22 = self->_playerLayer;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
-    v14 = [(LPVisualMediaView *)self playbackView];
-    v15 = [v14 layer];
-    [v15 setSublayers:v13];
+    playbackView = [(LPVisualMediaView *)self playbackView];
+    layer = [playbackView layer];
+    [layer setSublayers:v13];
 
     [(UIView *)self _lp_setNeedsLayout];
-    v16 = [(LPVisualMediaView *)self media];
-    v17 = [v16 _asset];
+    media2 = [(LPVisualMediaView *)self media];
+    _asset = [media2 _asset];
 
-    if (v17)
+    if (_asset)
     {
       objc_initWeak(&location, self);
       v19[0] = MEMORY[0x1E69E9820];
@@ -240,7 +240,7 @@ id __86__LPStreamingVideoView_createPlayerItemAdjustedForLoopingWithAsset_comple
       v19[2] = __44__LPStreamingVideoView_createPlayerIfNeeded__block_invoke;
       v19[3] = &unk_1E7A354F0;
       objc_copyWeak(&v20, &location);
-      [(LPStreamingVideoView *)self createPlayerItemAdjustedForLoopingWithAsset:v17 completionHandler:v19];
+      [(LPStreamingVideoView *)self createPlayerItemAdjustedForLoopingWithAsset:_asset completionHandler:v19];
       objc_destroyWeak(&v20);
       objc_destroyWeak(&location);
     }
@@ -327,42 +327,42 @@ void __44__LPStreamingVideoView_createPlayerIfNeeded__block_invoke(uint64_t a1, 
   [(LPVisualMediaView *)&v3 resetToPlaceholderView];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (timeControlStatusKVOContext != a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (timeControlStatusKVOContext != context)
   {
-    if (readyForDisplayKVOContext == a6)
+    if (readyForDisplayKVOContext == context)
     {
       v23[0] = 0;
       v23[1] = v23;
       v23[2] = 0x3032000000;
       v23[3] = __Block_byref_object_copy_;
       v23[4] = __Block_byref_object_dispose_;
-      v16 = self;
-      v24 = v16;
+      selfCopy = self;
+      v24 = selfCopy;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __71__LPStreamingVideoView_observeValueForKeyPath_ofObject_change_context___block_invoke;
       block[3] = &unk_1E7A35518;
       block[4] = v23;
       dispatch_async(MEMORY[0x1E69E96A0], block);
-      readyForDisplayCallback = v16->_readyForDisplayCallback;
+      readyForDisplayCallback = selfCopy->_readyForDisplayCallback;
       if (readyForDisplayCallback)
       {
         readyForDisplayCallback[2]();
-        v18 = v16->_readyForDisplayCallback;
-        v16->_readyForDisplayCallback = 0;
+        v18 = selfCopy->_readyForDisplayCallback;
+        selfCopy->_readyForDisplayCallback = 0;
 
-        [(AVPlayerLayer *)v16->_playerLayer removeObserver:v16 forKeyPath:@"readyForDisplay" context:&readyForDisplayKVOContext];
+        [(AVPlayerLayer *)selfCopy->_playerLayer removeObserver:selfCopy forKeyPath:@"readyForDisplay" context:&readyForDisplayKVOContext];
       }
 
       _Block_object_dispose(v23, 8);
     }
 
-    else if (statusChangeKVOContext == a6)
+    else if (statusChangeKVOContext == context)
     {
       if ([(AVPlayerLooper *)self->_looper status]== AVPlayerLooperStatusFailed)
       {
@@ -374,15 +374,15 @@ void __44__LPStreamingVideoView_createPlayerIfNeeded__block_invoke(uint64_t a1, 
     {
       v21.receiver = self;
       v21.super_class = LPStreamingVideoView;
-      [(LPStreamingVideoView *)&v21 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(LPStreamingVideoView *)&v21 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     }
 
     goto LABEL_20;
   }
 
-  v13 = [(LPVisualMediaView *)self hasEverPlayed];
+  hasEverPlayed = [(LPVisualMediaView *)self hasEverPlayed];
   player = self->_player;
-  if (v13)
+  if (hasEverPlayed)
   {
     if ([(AVQueuePlayer *)player timeControlStatus])
     {
@@ -424,7 +424,7 @@ void __71__LPStreamingVideoView_observeValueForKeyPath_ofObject_change_context__
   *buf = 67109378;
   *(buf + 1) = a3;
   *(buf + 4) = 2112;
-  *(buf + 10) = a1;
+  *(buf + 10) = self;
   _os_log_debug_impl(&dword_1AE886000, log, OS_LOG_TYPE_DEBUG, "LPStreamingVideoView<%d>: failed to play, will try again later (%@)", buf, 0x12u);
 }
 
@@ -465,16 +465,16 @@ uint64_t __37__LPStreamingVideoView_didFailToPlay__block_invoke(uint64_t a1)
   [(LPVisualMediaView *)self removePlaceholderViews];
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  v3 = a3;
-  if ([(LPVisualMediaView *)self isPlaying]!= a3)
+  playingCopy = playing;
+  if ([(LPVisualMediaView *)self isPlaying]!= playing)
   {
     [(LPStreamingVideoView *)self createPlayerIfNeeded];
-    self->_desiredPlayingState = v3;
-    *&v5 = v3;
+    self->_desiredPlayingState = playingCopy;
+    *&v5 = playingCopy;
     [(AVQueuePlayer *)self->_player setRate:v5];
-    [(LPVisualMediaView *)self setWaitingForPlayback:v3];
+    [(LPVisualMediaView *)self setWaitingForPlayback:playingCopy];
 
     [(LPVisualMediaView *)self swapVideoPlaceholderForPlaybackIfNeeded];
   }
@@ -515,21 +515,21 @@ uint64_t __37__LPStreamingVideoView_didFailToPlay__block_invoke(uint64_t a1)
     return 0;
   }
 
-  v3 = [(LPVisualMediaView *)self configuration];
-  v4 = [v3 disableAutoPlay];
+  configuration = [(LPVisualMediaView *)self configuration];
+  disableAutoPlay = [configuration disableAutoPlay];
 
-  if (v4)
+  if (disableAutoPlay)
   {
     return 0;
   }
 
-  v6 = [(LPVisualMediaView *)self media];
-  v7 = [v6 data];
-  if (v7)
+  media = [(LPVisualMediaView *)self media];
+  data = [media data];
+  if (data)
   {
-    v8 = [(LPVisualMediaView *)self media];
-    v9 = [v8 streamingURL];
-    v5 = v9 == 0;
+    media2 = [(LPVisualMediaView *)self media];
+    streamingURL = [media2 streamingURL];
+    v5 = streamingURL == 0;
   }
 
   else
@@ -542,34 +542,34 @@ uint64_t __37__LPStreamingVideoView_didFailToPlay__block_invoke(uint64_t a1)
 
 - (BOOL)shouldShowMuteButton
 {
-  v2 = [(LPVisualMediaView *)self media];
-  v3 = [v2 hasAudio];
+  media = [(LPVisualMediaView *)self media];
+  hasAudio = [media hasAudio];
 
-  return v3;
+  return hasAudio;
 }
 
-- (void)setMuted:(BOOL)a3
+- (void)setMuted:(BOOL)muted
 {
-  v3 = a3;
-  if ([(LPStreamingVideoView *)self isMuted]!= a3)
+  mutedCopy = muted;
+  if ([(LPStreamingVideoView *)self isMuted]!= muted)
   {
 
-    [(LPStreamingVideoView *)self setVolume:!v3];
+    [(LPStreamingVideoView *)self setVolume:!mutedCopy];
   }
 }
 
-- (void)setVolume:(double)a3
+- (void)setVolume:(double)volume
 {
-  v5 = [(LPStreamingVideoView *)self isMuted];
-  v6 = a3;
-  self->_desiredVolume = v6;
+  isMuted = [(LPStreamingVideoView *)self isMuted];
+  volumeCopy = volume;
+  self->_desiredVolume = volumeCopy;
   [(AVQueuePlayer *)self->_player setVolume:?];
   [(AVQueuePlayer *)self->_player setMuted:0];
-  if (v5 != [(LPStreamingVideoView *)self isMuted])
+  if (isMuted != [(LPStreamingVideoView *)self isMuted])
   {
-    v7 = [(LPStreamingVideoView *)self isMuted];
+    isMuted2 = [(LPStreamingVideoView *)self isMuted];
 
-    [(LPVisualMediaView *)self didChangeMutedState:v7];
+    [(LPVisualMediaView *)self didChangeMutedState:isMuted2];
   }
 }
 
@@ -578,9 +578,9 @@ uint64_t __37__LPStreamingVideoView_didFailToPlay__block_invoke(uint64_t a1)
   v5.receiver = self;
   v5.super_class = LPStreamingVideoView;
   [(LPVisualMediaView *)&v5 layoutComponentView];
-  v3 = [(LPVisualMediaView *)self playbackView];
-  v4 = [v3 layer];
-  [v4 bounds];
+  playbackView = [(LPVisualMediaView *)self playbackView];
+  layer = [playbackView layer];
+  [layer bounds];
   [(AVPlayerLayer *)self->_playerLayer setFrame:?];
 }
 
@@ -602,16 +602,16 @@ uint64_t __37__LPStreamingVideoView_didFailToPlay__block_invoke(uint64_t a1)
   {
     v7[0] = self->_playerLayer;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
-    v5 = [v3 layer];
-    [v5 setSublayers:v4];
+    layer = [v3 layer];
+    [layer setSublayers:v4];
   }
 
   return v3;
 }
 
-- (void)prepareForDisplayWithCompletionHandler:(id)a3
+- (void)prepareForDisplayWithCompletionHandler:(id)handler
 {
-  aBlock = a3;
+  aBlock = handler;
   if ([(AVPlayerLayer *)self->_playerLayer isReadyForDisplay])
   {
     aBlock[2]();

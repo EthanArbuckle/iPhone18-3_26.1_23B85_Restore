@@ -1,11 +1,11 @@
 @interface DetailsHeaderContainer.HeaderContainerView
-- (_TtCV20CommunicationDetailsP33_2DB30AA36CA0269A8F3FE974D4E6106422DetailsHeaderContainer19HeaderContainerView)initWithCoder:(id)a3;
-- (_TtCV20CommunicationDetailsP33_2DB30AA36CA0269A8F3FE974D4E6106422DetailsHeaderContainer19HeaderContainerView)initWithFrame:(CGRect)a3;
+- (_TtCV20CommunicationDetailsP33_2DB30AA36CA0269A8F3FE974D4E6106422DetailsHeaderContainer19HeaderContainerView)initWithCoder:(id)coder;
+- (_TtCV20CommunicationDetailsP33_2DB30AA36CA0269A8F3FE974D4E6106422DetailsHeaderContainer19HeaderContainerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation DetailsHeaderContainer.HeaderContainerView
 
-- (_TtCV20CommunicationDetailsP33_2DB30AA36CA0269A8F3FE974D4E6106422DetailsHeaderContainer19HeaderContainerView)initWithCoder:(id)a3
+- (_TtCV20CommunicationDetailsP33_2DB30AA36CA0269A8F3FE974D4E6106422DetailsHeaderContainer19HeaderContainerView)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (_TtCV20CommunicationDetailsP33_2DB30AA36CA0269A8F3FE974D4E6106422DetailsHeaderContainer19HeaderContainerView)initWithFrame:(CGRect)a3
+- (_TtCV20CommunicationDetailsP33_2DB30AA36CA0269A8F3FE974D4E6106422DetailsHeaderContainer19HeaderContainerView)initWithFrame:(CGRect)frame
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

@@ -1,16 +1,16 @@
 @interface FLTSSUIntent
-- (FLTSSUIntent)initWithFlatbuffData:(id)a3 root:(const SSUIntent *)a4 verify:(BOOL)a5;
+- (FLTSSUIntent)initWithFlatbuffData:(id)data root:(const SSUIntent *)root verify:(BOOL)verify;
 - (NSArray)examples;
 - (NSArray)parameters;
 - (NSString)name;
-- (Offset<SSUIntent>)addObjectToBuffer:(void *)a3;
-- (id)examples_objectAtIndex:(unint64_t)a3;
+- (Offset<SSUIntent>)addObjectToBuffer:(void *)buffer;
+- (id)examples_objectAtIndex:(unint64_t)index;
 - (id)flatbuffData;
-- (id)parameters_objectAtIndex:(unint64_t)a3;
+- (id)parameters_objectAtIndex:(unint64_t)index;
 - (unint64_t)examples_count;
 - (unint64_t)parameters_count;
-- (void)examples_enumerateObjectsUsingBlock:(id)a3;
-- (void)parameters_enumerateObjectsUsingBlock:(id)a3;
+- (void)examples_enumerateObjectsUsingBlock:(id)block;
+- (void)parameters_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FLTSSUIntent
@@ -44,22 +44,22 @@ apple::aiml::flatbuffers2::DetachedBuffer *__28__FLTSSUIntent_flatbuffData__bloc
   return result;
 }
 
-- (Offset<SSUIntent>)addObjectToBuffer:(void *)a3
+- (Offset<SSUIntent>)addObjectToBuffer:(void *)buffer
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = [(FLTSSUIntent *)self name];
-  v5 = v4;
-  if (!v4)
+  name = [(FLTSSUIntent *)self name];
+  v5 = name;
+  if (!name)
   {
-    v4 = &stru_1F487A568;
+    name = &stru_1F487A568;
   }
 
-  v6 = [(__CFString *)v4 UTF8String];
-  v7 = strlen(v6);
-  LODWORD(v33) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v6, v7);
+  uTF8String = [(__CFString *)name UTF8String];
+  v7 = strlen(uTF8String);
+  LODWORD(v33) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v7);
 
-  v8 = [(FLTSSUIntent *)self parameters];
-  v9 = [v8 count];
+  parameters = [(FLTSSUIntent *)self parameters];
+  v9 = [parameters count];
   if (v9)
   {
     if (!(v9 >> 62))
@@ -74,22 +74,22 @@ apple::aiml::flatbuffers2::DetachedBuffer *__28__FLTSSUIntent_flatbuffData__bloc
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v10 = [(FLTSSUIntent *)self parameters];
-  if ([v10 countByEnumeratingWithState:&v43 objects:v48 count:16])
+  parameters2 = [(FLTSSUIntent *)self parameters];
+  if ([parameters2 countByEnumeratingWithState:&v43 objects:v48 count:16])
   {
     *v44;
     *v44;
-    [**(&v43 + 1) addObjectToBuffer:{a3, v33}];
+    [**(&v43 + 1) addObjectToBuffer:{buffer, v33}];
     std::__allocate_at_least[abi:ne200100]<std::allocator<float>>(1uLL);
   }
 
-  apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  HIDWORD(v33) = apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(a3, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  HIDWORD(v33) = apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(buffer, 0);
   v40 = 0;
   v41 = 0;
   v42 = 0;
-  v11 = [(FLTSSUIntent *)self examples];
-  std::vector<apple::aiml::flatbuffers2::Offset<SSUExample>>::reserve(&v40, [v11 count]);
+  examples = [(FLTSSUIntent *)self examples];
+  std::vector<apple::aiml::flatbuffers2::Offset<SSUExample>>::reserve(&v40, [examples count]);
 
   v38 = 0u;
   v39 = 0u;
@@ -112,7 +112,7 @@ apple::aiml::flatbuffers2::DetachedBuffer *__28__FLTSSUIntent_flatbuffData__bloc
           objc_enumerationMutation(obj);
         }
 
-        v18 = [*(*(&v36 + 1) + 8 * i) addObjectToBuffer:{a3, v33}];
+        v18 = [*(*(&v36 + 1) + 8 * i) addObjectToBuffer:{buffer, v33}];
         v19 = v18;
         if (v15 >= v16)
         {
@@ -190,21 +190,21 @@ apple::aiml::flatbuffers2::DetachedBuffer *__28__FLTSSUIntent_flatbuffData__bloc
     v24 = v13;
   }
 
-  v25 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<SSUExample>(a3, v24, (v15 - v13) >> 2);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v26 = *(a3 + 8);
-  v27 = *(a3 + 12);
-  v28 = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, v33);
+  v25 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<SSUExample>(buffer, v24, (v15 - v13) >> 2);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v26 = *(buffer + 8);
+  v27 = *(buffer + 12);
+  v28 = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, v33);
   if (HIDWORD(v33))
   {
-    v29 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(a3, HIDWORD(v33));
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v29, 0);
+    v29 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(buffer, HIDWORD(v33));
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, v29, 0);
   }
 
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<apple::aiml::flatbuffers2::Offset<SSUExample>>>(a3, v25);
-  v30.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v26 - v27 + v28);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<apple::aiml::flatbuffers2::Offset<SSUExample>>>(buffer, v25);
+  v30.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v26 - v27 + v28);
   if (v13)
   {
     v41 = v13;
@@ -215,14 +215,14 @@ apple::aiml::flatbuffers2::DetachedBuffer *__28__FLTSSUIntent_flatbuffData__bloc
   return v30;
 }
 
-- (void)examples_enumerateObjectsUsingBlock:(id)a3
+- (void)examples_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"examples"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -245,7 +245,7 @@ apple::aiml::flatbuffers2::DetachedBuffer *__28__FLTSSUIntent_flatbuffData__bloc
           do
           {
             v15 = [[FLTSSUExample alloc] initWithFlatbuffData:self->_data root:&v14[*v14->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -293,13 +293,13 @@ apple::aiml::flatbuffers2::DetachedBuffer *__28__FLTSSUIntent_flatbuffData__bloc
   return v5;
 }
 
-- (id)examples_objectAtIndex:(unint64_t)a3
+- (id)examples_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"examples"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_9;
@@ -313,12 +313,12 @@ LABEL_3:
     if (v11)
     {
       v12 = &root[v11 + *root[v11].var0];
-      if (*v12->var0 <= a3)
+      if (*v12->var0 <= index)
       {
         __assert_rtn("Get", "flatbuffers.h", 275, "i < size()");
       }
 
-      v7 = [[FLTSSUExample alloc] initWithFlatbuffData:self->_data root:&v12[4 * a3 + 4 + *v12[4 * a3 + 4].var0] verify:0];
+      v7 = [[FLTSSUExample alloc] initWithFlatbuffData:self->_data root:&v12[4 * index + 4 + *v12[4 * index + 4].var0] verify:0];
       goto LABEL_3;
     }
   }
@@ -334,12 +334,12 @@ LABEL_9:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"examples"];
   if (!v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __24__FLTSSUIntent_examples__block_invoke;
     v6[3] = &unk_1E8328338;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FLTSSUIntent *)self examples_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"examples"];
@@ -348,14 +348,14 @@ LABEL_9:
   return v3;
 }
 
-- (void)parameters_enumerateObjectsUsingBlock:(id)a3
+- (void)parameters_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"parameters"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -378,7 +378,7 @@ LABEL_9:
           do
           {
             v15 = [[FLTSSUIntentParameter alloc] initWithFlatbuffData:self->_data root:&v14[*v14->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -426,13 +426,13 @@ LABEL_9:
   return v5;
 }
 
-- (id)parameters_objectAtIndex:(unint64_t)a3
+- (id)parameters_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"parameters"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_9;
@@ -446,12 +446,12 @@ LABEL_3:
     if (v11)
     {
       v12 = &root[v11 + *root[v11].var0];
-      if (*v12->var0 <= a3)
+      if (*v12->var0 <= index)
       {
         __assert_rtn("Get", "flatbuffers.h", 275, "i < size()");
       }
 
-      v7 = [[FLTSSUIntentParameter alloc] initWithFlatbuffData:self->_data root:&v12[4 * a3 + 4 + *v12[4 * a3 + 4].var0] verify:0];
+      v7 = [[FLTSSUIntentParameter alloc] initWithFlatbuffData:self->_data root:&v12[4 * index + 4 + *v12[4 * index + 4].var0] verify:0];
       goto LABEL_3;
     }
   }
@@ -467,12 +467,12 @@ LABEL_9:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"parameters"];
   if (!v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __26__FLTSSUIntent_parameters__block_invoke;
     v6[3] = &unk_1E8328338;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FLTSSUIntent *)self parameters_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"parameters"];
@@ -504,10 +504,10 @@ LABEL_9:
   return v6;
 }
 
-- (FLTSSUIntent)initWithFlatbuffData:(id)a3 root:(const SSUIntent *)a4 verify:(BOOL)a5
+- (FLTSSUIntent)initWithFlatbuffData:(id)data root:(const SSUIntent *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FLTSSUIntent;
   v10 = [(FLTSSUIntent *)&v25 init];
@@ -516,35 +516,35 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_15;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_1C8C15D50;
   v23 = 0;

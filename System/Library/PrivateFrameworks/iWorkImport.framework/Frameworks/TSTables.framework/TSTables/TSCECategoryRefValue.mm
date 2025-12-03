@@ -1,19 +1,19 @@
 @interface TSCECategoryRefValue
-+ (id)categoryRefValue:(id)a3;
++ (id)categoryRefValue:(id)value;
 + (id)emptyCategoryRefValue;
-- (BOOL)asBoolean:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
+- (BOOL)asBoolean:(id)boolean functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
 - (TSCECategoryRefValue)init;
-- (TSCECategoryRefValue)initWithCategoryRef:(id)a3;
-- (TSCECategoryRefValue)initWithCategoryRef:(id)a3 format:(const TSCEFormat *)a4;
-- (TSCERichTextStorage)asRichTextStorage:(SEL)a3 functionSpec:(id)a4 argumentIndex:(id)a5 outError:(int)a6;
-- (char)deepType:(id)a3 outError:(id *)a4;
-- (id)asDate:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)asGrid:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 applyPreferredFormat:(BOOL)a6 outError:(id *)a7;
-- (id)asNumber:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)asRawString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)asString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)referredToValue:(id)a3;
+- (TSCECategoryRefValue)initWithCategoryRef:(id)ref;
+- (TSCECategoryRefValue)initWithCategoryRef:(id)ref format:(const TSCEFormat *)format;
+- (TSCERichTextStorage)asRichTextStorage:(SEL)storage functionSpec:(id)spec argumentIndex:(id)index outError:(int)error;
+- (char)deepType:(id)type outError:(id *)error;
+- (id)asDate:(id)date functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)asGrid:(id)grid functionSpec:(id)spec argumentIndex:(int)index applyPreferredFormat:(BOOL)format outError:(id *)error;
+- (id)asNumber:(id)number functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)asRawString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)asString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)referredToValue:(id)value;
 @end
 
 @implementation TSCECategoryRefValue
@@ -25,11 +25,11 @@
   return v2;
 }
 
-+ (id)categoryRefValue:(id)a3
++ (id)categoryRefValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = [TSCECategoryRefValue alloc];
-  v8 = objc_msgSend_initWithCategoryRef_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithCategoryRef_(v4, v5, valueCopy, v6, v7);
 
   return v8;
 }
@@ -56,7 +56,7 @@
   return v3;
 }
 
-- (TSCECategoryRefValue)initWithCategoryRef:(id)a3
+- (TSCECategoryRefValue)initWithCategoryRef:(id)ref
 {
   v5 = 0;
   v6 = 0;
@@ -65,29 +65,29 @@
   v9 = 1;
   v10 = -50266102;
   v11 = 253;
-  return objc_msgSend_initWithCategoryRef_format_(self, a2, a3, &v5, v3);
+  return objc_msgSend_initWithCategoryRef_format_(self, a2, ref, &v5, v3);
 }
 
-- (TSCECategoryRefValue)initWithCategoryRef:(id)a3 format:(const TSCEFormat *)a4
+- (TSCECategoryRefValue)initWithCategoryRef:(id)ref format:(const TSCEFormat *)format
 {
-  v7 = a3;
+  refCopy = ref;
   v11.receiver = self;
   v11.super_class = TSCECategoryRefValue;
-  v8 = [(TSCEValue *)&v11 initWithTSCEFormat:a4];
+  v8 = [(TSCEValue *)&v11 initWithTSCEFormat:format];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_categoryRef, a3);
+    objc_storeStrong(&v8->_categoryRef, ref);
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = TSCECategoryRefValue;
-  v4 = [(TSCEValue *)&v12 copyWithZone:a3];
+  v4 = [(TSCEValue *)&v12 copyWithZone:zone];
   v9 = objc_msgSend_copy(self->_categoryRef, v5, v6, v7, v8);
   v10 = v4[7];
   v4[7] = v9;
@@ -95,19 +95,19 @@
   return v4;
 }
 
-- (char)deepType:(id)a3 outError:(id *)a4
+- (char)deepType:(id)type outError:(id *)error
 {
-  v7 = objc_msgSend_referredToValue_(self, a2, a3, a4, v4);
+  v7 = objc_msgSend_referredToValue_(self, a2, type, error, v4);
   v14 = 0;
-  v10 = objc_msgSend_deepType_outError_(v7, v8, a3, &v14, v9);
+  v10 = objc_msgSend_deepType_outError_(v7, v8, type, &v14, v9);
   v11 = v14;
 
   if (v11)
   {
-    if (a4)
+    if (error)
     {
       v12 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
     v10 = 9;
@@ -116,20 +116,20 @@
   return v10;
 }
 
-- (id)asNumber:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asNumber:(id)number functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCECategoryRefValue asNumber:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCECategoryRefValue asNumber:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCECategoryRefValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 88, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_referredToValue_(self, a2, a3, a4, *&a5);
+  v22 = objc_msgSend_referredToValue_(self, a2, number, spec, *&index);
   if (objc_msgSend_nativeType(v22, v23, v24, v25, v26) == 14)
   {
     objc_msgSend_zero(TSCENumberValue, v27, v28, v29, v30);
@@ -137,27 +137,27 @@
 
   else
   {
-    objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v22, v27, a3, a4, v7, a6);
+    objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v22, v27, number, spec, v7, error);
   }
   v31 = ;
 
   return v31;
 }
 
-- (id)asDate:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asDate:(id)date functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCECategoryRefValue asDate:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCECategoryRefValue asDate:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCECategoryRefValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 103, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_referredToValue_(self, a2, a3, a4, *&a5);
+  v22 = objc_msgSend_referredToValue_(self, a2, date, spec, *&index);
   if (objc_msgSend_nativeType(v22, v23, v24, v25, v26) == 14)
   {
     v30 = MEMORY[0x277D81150];
@@ -171,26 +171,26 @@
 
   else
   {
-    v41 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v22, v27, a3, a4, v7, a6);
+    v41 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v22, v27, date, spec, v7, error);
   }
 
   return v41;
 }
 
-- (id)asString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCECategoryRefValue asString:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCECategoryRefValue asString:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCECategoryRefValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 120, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_referredToValue_(self, a2, a3, a4, *&a5);
+  v22 = objc_msgSend_referredToValue_(self, a2, string, spec, *&index);
   if (objc_msgSend_nativeType(v22, v23, v24, v25, v26) == 14)
   {
     v28 = 0;
@@ -198,26 +198,26 @@
 
   else
   {
-    v28 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v22, v27, a3, a4, v7, a6);
+    v28 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v22, v27, string, spec, v7, error);
   }
 
   return v28;
 }
 
-- (id)asRawString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asRawString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCECategoryRefValue asRawString:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCECategoryRefValue asRawString:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCECategoryRefValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 136, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_referredToValue_(self, a2, a3, a4, *&a5);
+  v22 = objc_msgSend_referredToValue_(self, a2, string, spec, *&index);
   if (objc_msgSend_nativeType(v22, v23, v24, v25, v26) == 14)
   {
     v28 = 0;
@@ -225,26 +225,26 @@
 
   else
   {
-    v28 = objc_msgSend_asRawString_functionSpec_argumentIndex_outError_(v22, v27, a3, a4, v7, a6);
+    v28 = objc_msgSend_asRawString_functionSpec_argumentIndex_outError_(v22, v27, string, spec, v7, error);
   }
 
   return v28;
 }
 
-- (BOOL)asBoolean:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (BOOL)asBoolean:(id)boolean functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCECategoryRefValue asBoolean:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCECategoryRefValue asBoolean:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCECategoryRefValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 152, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_referredToValue_(self, a2, a3, a4, *&a5);
+  v22 = objc_msgSend_referredToValue_(self, a2, boolean, spec, *&index);
   if (objc_msgSend_nativeType(v22, v23, v24, v25, v26) == 14)
   {
     v30 = MEMORY[0x277D81150];
@@ -258,27 +258,27 @@
 
   else
   {
-    v41 = objc_msgSend_asBoolean_functionSpec_argumentIndex_outError_(v22, v27, a3, a4, v7, a6);
+    v41 = objc_msgSend_asBoolean_functionSpec_argumentIndex_outError_(v22, v27, boolean, spec, v7, error);
   }
 
   return v41;
 }
 
-- (TSCERichTextStorage)asRichTextStorage:(SEL)a3 functionSpec:(id)a4 argumentIndex:(id)a5 outError:(int)a6
+- (TSCERichTextStorage)asRichTextStorage:(SEL)storage functionSpec:(id)spec argumentIndex:(id)index outError:(int)error
 {
-  v8 = *&a6;
+  v8 = *&error;
   if (!a7)
   {
     v13 = MEMORY[0x277D81150];
-    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a3, "[TSCECategoryRefValue asRichTextStorage:functionSpec:argumentIndex:outError:]", a5, *&a6);
+    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], storage, "[TSCECategoryRefValue asRichTextStorage:functionSpec:argumentIndex:outError:]", index, *&error);
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCECategoryRefValue.mm", v16, v17);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v19, v14, v18, 169, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  v24 = a5;
-  v25 = objc_msgSend_referredToValue_(self, a3, a4, a5, *&a6);
+  indexCopy = index;
+  v25 = objc_msgSend_referredToValue_(self, storage, spec, index, *&error);
   if (objc_msgSend_nativeType(v25, v26, v27, v28, v29) == 14)
   {
     v33 = MEMORY[0x277D81150];
@@ -289,12 +289,12 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v40, v41, v42, v43);
     v45.receiver = self;
     v45.super_class = TSCECategoryRefValue;
-    [(TSCERichTextStorage *)&v45 asRichTextStorage:a4 functionSpec:v24 argumentIndex:v8 outError:a7];
+    [(TSCERichTextStorage *)&v45 asRichTextStorage:spec functionSpec:indexCopy argumentIndex:v8 outError:a7];
   }
 
   else if (v25)
   {
-    objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v25, v30, a4, a5, v8, a7);
+    objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v25, v30, spec, index, v8, a7);
   }
 
   else
@@ -307,21 +307,21 @@
   return result;
 }
 
-- (id)asGrid:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 applyPreferredFormat:(BOOL)a6 outError:(id *)a7
+- (id)asGrid:(id)grid functionSpec:(id)spec argumentIndex:(int)index applyPreferredFormat:(BOOL)format outError:(id *)error
 {
-  v8 = a6;
-  v9 = *&a5;
-  if (!a7)
+  formatCopy = format;
+  v9 = *&index;
+  if (!error)
   {
     v13 = MEMORY[0x277D81150];
-    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCECategoryRefValue asGrid:functionSpec:argumentIndex:applyPreferredFormat:outError:]", a4, *&a5);
+    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCECategoryRefValue asGrid:functionSpec:argumentIndex:applyPreferredFormat:outError:]", spec, *&index);
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCECategoryRefValue.mm", v16, v17);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v19, v14, v18, 187, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  v24 = objc_msgSend_referredToValue_(self, a2, a3, a4, *&a5);
+  v24 = objc_msgSend_referredToValue_(self, a2, grid, spec, *&index);
   if (objc_msgSend_nativeType(v24, v25, v26, v27, v28) == 14)
   {
     v32 = MEMORY[0x277D81150];
@@ -332,12 +332,12 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v39, v40, v41, v42);
     v46.receiver = self;
     v46.super_class = TSCECategoryRefValue;
-    v43 = [(TSCEValue *)&v46 asGrid:a3 functionSpec:a4 argumentIndex:v9 applyPreferredFormat:v8 outError:a7];
+    v43 = [(TSCEValue *)&v46 asGrid:grid functionSpec:spec argumentIndex:v9 applyPreferredFormat:formatCopy outError:error];
   }
 
   else
   {
-    v43 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v24, v29, a3, a4, v9, v8, a7);
+    v43 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v24, v29, grid, spec, v9, formatCopy, error);
   }
 
   v44 = v43;
@@ -345,20 +345,20 @@
   return v44;
 }
 
-- (id)referredToValue:(id)a3
+- (id)referredToValue:(id)value
 {
   v41 = 0;
   v42 = 0;
-  v7 = objc_msgSend_relativeGroupUid(self->_categoryRef, a2, a3, v3, v4);
+  v7 = objc_msgSend_relativeGroupUid(self->_categoryRef, a2, value, v3, v4);
   if (v7 | v8)
   {
-    v41 = objc_msgSend_containingRowUid(a3, v8, v9, v10, v11);
+    v41 = objc_msgSend_containingRowUid(value, v8, v9, v10, v11);
     v42 = v8;
   }
 
-  v12 = objc_msgSend_calcEngine(a3, v8, v9, v10, v11);
+  v12 = objc_msgSend_calcEngine(value, v8, v9, v10, v11);
   categoryRef = self->_categoryRef;
-  v18 = objc_msgSend_hidingActionMask(a3, v14, v15, v16, v17);
+  v18 = objc_msgSend_hidingActionMask(value, v14, v15, v16, v17);
   v37 = 0;
   if (v12)
   {

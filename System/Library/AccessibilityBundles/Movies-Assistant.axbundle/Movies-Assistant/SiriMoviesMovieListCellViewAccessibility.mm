@@ -6,44 +6,44 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(SiriMoviesMovieListCellViewAccessibility *)self safeValueForKey:@"_movieTitleLabel"];
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  if ([v5 length])
+  if ([accessibilityLabel length])
   {
-    [v3 addObject:v5];
+    [array addObject:accessibilityLabel];
   }
 
   v6 = [(SiriMoviesMovieListCellViewAccessibility *)self safeValueForKey:@"_showtimeLabel"];
-  v7 = [v6 accessibilityLabel];
+  accessibilityLabel2 = [v6 accessibilityLabel];
 
-  if ([v7 length])
+  if ([accessibilityLabel2 length])
   {
     v8 = MEMORY[0x29EDBA0F8];
     v9 = accessibilityLocalizedString(@"movie.times");
-    v10 = [v8 stringWithFormat:v9, v7];
+    v10 = [v8 stringWithFormat:v9, accessibilityLabel2];
 
-    [v3 addObject:v10];
+    [array addObject:v10];
   }
 
   v11 = [(SiriMoviesMovieListCellViewAccessibility *)self safeValueForKey:@"_tomatoView"];
-  v12 = [v11 accessibilityLabel];
+  accessibilityLabel3 = [v11 accessibilityLabel];
 
-  if ([v12 length])
+  if ([accessibilityLabel3 length])
   {
-    [v3 addObject:v12];
+    [array addObject:accessibilityLabel3];
   }
 
   v13 = [(SiriMoviesMovieListCellViewAccessibility *)self safeValueForKey:@"_ratingView"];
-  v14 = [v13 accessibilityLabel];
+  accessibilityLabel4 = [v13 accessibilityLabel];
 
-  if ([v14 length])
+  if ([accessibilityLabel4 length])
   {
-    [v3 addObject:v14];
+    [array addObject:accessibilityLabel4];
   }
 
-  v15 = [v3 componentsJoinedByString:{@", "}];
+  v15 = [array componentsJoinedByString:{@", "}];
 
   return v15;
 }

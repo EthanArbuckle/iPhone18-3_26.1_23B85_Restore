@@ -3,9 +3,9 @@
 - (NSDictionary)sessionDataPerSessionID;
 - (NSString)storagePath;
 - (void)cleanupExistingFiles;
-- (void)processEvent:(id)a3;
-- (void)storeSession:(id)a3;
-- (void)storeToLocalFile:(id)a3;
+- (void)processEvent:(id)event;
+- (void)storeSession:(id)session;
+- (void)storeToLocalFile:(id)file;
 @end
 
 @implementation ICNADebugEventProcessor
@@ -27,9 +27,9 @@
     v7 = os_log_create("com.apple.notes", "Analytics");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [(ICNADebugEventProcessor *)v2 storagePath];
+      storagePath = [(ICNADebugEventProcessor *)v2 storagePath];
       *buf = 138412290;
-      v13 = v8;
+      v13 = storagePath;
       _os_log_impl(&dword_25C6BF000, v7, OS_LOG_TYPE_INFO, "ICNADebugEventProcessor file path: %@", buf, 0xCu);
     }
 
@@ -42,11 +42,11 @@
 
 - (void)cleanupExistingFiles
 {
-  v3 = [(ICNADebugEventProcessor *)self storagePath];
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v2 fileExistsAtPath:v3])
+  storagePath = [(ICNADebugEventProcessor *)self storagePath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:storagePath])
   {
-    [v2 removeItemAtPath:v3 error:0];
+    [defaultManager removeItemAtPath:storagePath error:0];
   }
 }
 
@@ -56,12 +56,12 @@
   if (!storagePath)
   {
     v4 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-    v5 = [v4 lastObject];
-    v6 = [v5 stringByAppendingPathComponent:@"AppAnalyticsDebug.json"];
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    if (([v7 fileExistsAtPath:v6] & 1) == 0)
+    lastObject = [v4 lastObject];
+    v6 = [lastObject stringByAppendingPathComponent:@"AppAnalyticsDebug.json"];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if (([defaultManager fileExistsAtPath:v6] & 1) == 0)
     {
-      [v7 createFileAtPath:v6 contents:0 attributes:0];
+      [defaultManager createFileAtPath:v6 contents:0 attributes:0];
     }
 
     [(ICNADebugEventProcessor *)self setStoragePath:v6];
@@ -72,17 +72,17 @@
   return storagePath;
 }
 
-- (void)storeToLocalFile:(id)a3
+- (void)storeToLocalFile:(id)file
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 aa_jsonData];
-  v6 = [(ICNADebugEventProcessor *)self storagePath];
-  v7 = [MEMORY[0x277CCA9F8] fileHandleForWritingAtPath:v6];
-  if (v7 || ([MEMORY[0x277CCAA00] defaultManager], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "createFileAtPath:contents:attributes:", v6, 0, 0), v8, objc_msgSend(MEMORY[0x277CCA9F8], "fileHandleForWritingAtPath:", v6), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  fileCopy = file;
+  aa_jsonData = [fileCopy aa_jsonData];
+  storagePath = [(ICNADebugEventProcessor *)self storagePath];
+  v7 = [MEMORY[0x277CCA9F8] fileHandleForWritingAtPath:storagePath];
+  if (v7 || ([MEMORY[0x277CCAA00] defaultManager], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "createFileAtPath:contents:attributes:", storagePath, 0, 0), v8, objc_msgSend(MEMORY[0x277CCA9F8], "fileHandleForWritingAtPath:", storagePath), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     [v7 seekToEndOfFile];
-    [v7 writeData:v5];
+    [v7 writeData:aa_jsonData];
     [v7 closeFile];
   }
 
@@ -102,17 +102,17 @@
   return sessionDataPerSessionID;
 }
 
-- (void)storeSession:(id)a3
+- (void)storeSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   sessionsQueue = self->_sessionsQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__ICNADebugEventProcessor_storeSession___block_invoke;
   v7[3] = &unk_2799AF050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_sync(sessionsQueue, v7);
 }
 
@@ -128,12 +128,12 @@ void __40__ICNADebugEventProcessor_storeSession___block_invoke(uint64_t a1)
   [*(a1 + 32) setSessionDataPerSessionID:v5];
 }
 
-- (void)processEvent:(id)a3
+- (void)processEvent:(id)event
 {
   v30[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 json];
-  v6 = [v5 toDataWithOptions:8 :0];
+  eventCopy = event;
+  json = [eventCopy json];
+  v6 = [json toDataWithOptions:8 :0];
 
   v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v6 options:0 error:0];
   if (v7)
@@ -163,18 +163,18 @@ void __40__ICNADebugEventProcessor_storeSession___block_invoke(uint64_t a1)
     v18 = __40__ICNADebugEventProcessor_processEvent___block_invoke;
     v19 = &unk_2799AF078;
     v22 = &v23;
-    v20 = self;
+    selfCopy = self;
     v21 = v10;
     dispatch_sync(sessionsQueue, &v16);
   }
 
-  v12 = [v4 name];
-  v13 = v12;
-  if (v12)
+  name = [eventCopy name];
+  v13 = name;
+  if (name)
   {
     v29[0] = @"name";
     v29[1] = @"type";
-    v30[0] = v12;
+    v30[0] = name;
     v30[1] = @"event";
     v29[2] = @"sessionData";
     v29[3] = @"data";

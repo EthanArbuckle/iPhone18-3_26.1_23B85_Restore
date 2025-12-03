@@ -1,17 +1,17 @@
 @interface MADAutoAssetAuthorizationPolicy
-+ (BOOL)_accessibleAssetTypes:(id)a3 containsAssetType:(id)a4;
-+ (BOOL)isConnection:(id)a3 authorizedForMessage:(id)a4;
++ (BOOL)_accessibleAssetTypes:(id)types containsAssetType:(id)type;
++ (BOOL)isConnection:(id)connection authorizedForMessage:(id)message;
 + (id)_allowListedAutoAssetTypes;
-+ (id)authorizationAssetTypeFromMessage:(id)a3 alreadyOnStateQueue:(BOOL)a4;
-+ (id)issueSandboxExtensionForAuditToken:(id *)a3 path:(id)a4;
++ (id)authorizationAssetTypeFromMessage:(id)message alreadyOnStateQueue:(BOOL)queue;
++ (id)issueSandboxExtensionForAuditToken:(id *)token path:(id)path;
 @end
 
 @implementation MADAutoAssetAuthorizationPolicy
 
-+ (BOOL)isConnection:(id)a3 authorizedForMessage:(id)a4
++ (BOOL)isConnection:(id)connection authorizedForMessage:(id)message
 {
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
   [NSSet setWithObject:@"com.apple.private.assets.bypass-asset-types-check"];
   v20 = 0u;
   v21 = 0u;
@@ -31,7 +31,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [v5 valueForEntitlement:{*(*(&v20 + 1) + 8 * i), v20}];
+        v12 = [connectionCopy valueForEntitlement:{*(*(&v20 + 1) + 8 * i), v20}];
         v13 = v12;
         if (v12 && ([v12 BOOLValue]& 1) != 0)
         {
@@ -51,16 +51,16 @@
     }
   }
 
-  v14 = [MADAutoAssetAuthorizationPolicy authorizationAssetTypeFromMessage:v6 alreadyOnStateQueue:0];
+  v14 = [MADAutoAssetAuthorizationPolicy authorizationAssetTypeFromMessage:messageCopy alreadyOnStateQueue:0];
   if (!v14)
   {
     v13 = _MADLog(@"Auto");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v25 = v5;
+      v25 = connectionCopy;
       v26 = 2114;
-      v27 = v6;
+      v27 = messageCopy;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "{MADAutoAssetAuthorizationPolicy}(%{public}@) Request had no asset type listed for message: %{public}@", buf, 0x16u);
     }
 
@@ -72,7 +72,7 @@
 
   if ((v16 & 1) == 0)
   {
-    v13 = [v5 valueForEntitlement:@"com.apple.private.assets.accessible-asset-types"];
+    v13 = [connectionCopy valueForEntitlement:@"com.apple.private.assets.accessible-asset-types"];
     if (v13)
     {
       objc_opt_class();
@@ -90,7 +90,7 @@ LABEL_24:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543874;
-          v25 = v5;
+          v25 = connectionCopy;
           v26 = 2112;
           v27 = v14;
           v28 = 2112;
@@ -111,15 +111,15 @@ LABEL_25:
   return v17;
 }
 
-+ (BOOL)_accessibleAssetTypes:(id)a3 containsAssetType:(id)a4
++ (BOOL)_accessibleAssetTypes:(id)types containsAssetType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
+  typesCopy = types;
+  typeCopy = type;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = typesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -139,7 +139,7 @@ LABEL_25:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            if ([v11 isEqualToString:{v6, v15}] & 1) != 0 || objc_msgSend(v11, "hasPrefix:", @"com.asset.MobileAsset.") && objc_msgSend(v11, "hasSuffix:", @".*") && (objc_msgSend(v11, "isEqualToString:", @"com.asset.MobileAsset.*") & 1) == 0 && (objc_msgSend(v11, "substringToIndex:", objc_msgSend(v11, "length") - 1), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v6, "hasPrefix:", v12), v12, (v13))
+            if ([v11 isEqualToString:{typeCopy, v15}] & 1) != 0 || objc_msgSend(v11, "hasPrefix:", @"com.asset.MobileAsset.") && objc_msgSend(v11, "hasSuffix:", @".*") && (objc_msgSend(v11, "isEqualToString:", @"com.asset.MobileAsset.*") & 1) == 0 && (objc_msgSend(v11, "substringToIndex:", objc_msgSend(v11, "length") - 1), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(typeCopy, "hasPrefix:", v12), v12, (v13))
             {
               LOBYTE(v8) = 1;
               goto LABEL_17;
@@ -178,20 +178,20 @@ LABEL_17:
   return v2;
 }
 
-+ (id)issueSandboxExtensionForAuditToken:(id *)a3 path:(id)a4
++ (id)issueSandboxExtensionForAuditToken:(id *)token path:(id)path
 {
-  v5 = a4;
-  v6 = v5;
-  if (!v5)
+  pathCopy = path;
+  v6 = pathCopy;
+  if (!pathCopy)
   {
 LABEL_9:
     v11 = 0;
     goto LABEL_10;
   }
 
-  [v5 fileSystemRepresentation];
-  v7 = *&a3->var0[4];
-  *buf = *a3->var0;
+  [pathCopy fileSystemRepresentation];
+  v7 = *&token->var0[4];
+  *buf = *token->var0;
   v14 = v7;
   v8 = sandbox_extension_issue_file_to_process();
   v9 = _MADLog(@"Auto");
@@ -222,47 +222,47 @@ LABEL_10:
   return v11;
 }
 
-+ (id)authorizationAssetTypeFromMessage:(id)a3 alreadyOnStateQueue:(BOOL)a4
++ (id)authorizationAssetTypeFromMessage:(id)message alreadyOnStateQueue:(BOOL)queue
 {
-  v4 = a4;
-  v5 = a3;
+  queueCopy = queue;
+  messageCopy = message;
   v6 = objc_alloc_init(NSMutableSet);
-  v7 = [v5 message];
-  v8 = [v7 safeObjectForKey:@"instance" ofClass:objc_opt_class()];
+  message = [messageCopy message];
+  v8 = [message safeObjectForKey:@"instance" ofClass:objc_opt_class()];
 
   if (v8)
   {
-    v9 = [v8 clientAssetSelector];
-    v10 = [v9 assetType];
+    clientAssetSelector = [v8 clientAssetSelector];
+    assetType = [clientAssetSelector assetType];
 
-    if (v10)
+    if (assetType)
     {
-      v11 = [v8 clientAssetSelector];
-      v12 = [v11 assetType];
-      [v6 addObject:v12];
+      clientAssetSelector2 = [v8 clientAssetSelector];
+      assetType2 = [clientAssetSelector2 assetType];
+      [v6 addObject:assetType2];
     }
   }
 
   if (__isPlatformVersionAtLeast(2, 17, 0, 0))
   {
-    v13 = [v5 message];
-    v14 = [v13 safeObjectForKey:@"setInstance" ofClass:objc_opt_class()];
+    message2 = [messageCopy message];
+    v14 = [message2 safeObjectForKey:@"setInstance" ofClass:objc_opt_class()];
 
     if (v14)
     {
-      v15 = [v14 autoAssetEntries];
+      autoAssetEntries = [v14 autoAssetEntries];
 
-      if (v15)
+      if (autoAssetEntries)
       {
-        v54 = v4;
+        v54 = queueCopy;
         v55 = v8;
-        v56 = v5;
+        v56 = messageCopy;
         v69 = 0u;
         v70 = 0u;
         v67 = 0u;
         v68 = 0u;
-        v16 = [v14 autoAssetEntries];
-        v17 = [v16 countByEnumeratingWithState:&v67 objects:v77 count:16];
+        autoAssetEntries2 = [v14 autoAssetEntries];
+        v17 = [autoAssetEntries2 countByEnumeratingWithState:&v67 objects:v77 count:16];
         if (v17)
         {
           v18 = v17;
@@ -273,22 +273,22 @@ LABEL_10:
             {
               if (*v68 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(autoAssetEntries2);
               }
 
               v21 = *(*(&v67 + 1) + 8 * i);
-              v22 = [v21 assetSelector];
-              v23 = [v22 assetType];
+              assetSelector = [v21 assetSelector];
+              assetType3 = [assetSelector assetType];
 
-              if (v23)
+              if (assetType3)
               {
-                v24 = [v21 assetSelector];
-                v25 = [v24 assetType];
-                [v6 addObject:v25];
+                assetSelector2 = [v21 assetSelector];
+                assetType4 = [assetSelector2 assetType];
+                [v6 addObject:assetType4];
               }
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v67 objects:v77 count:16];
+            v18 = [autoAssetEntries2 countByEnumeratingWithState:&v67 objects:v77 count:16];
           }
 
           while (v18);
@@ -319,8 +319,8 @@ LABEL_10:
               v60 = 0u;
               v61 = 0u;
               v62 = 0u;
-              v30 = [v29 autoAssetEntries];
-              v31 = [v30 countByEnumeratingWithState:&v59 objects:v75 count:16];
+              autoAssetEntries3 = [v29 autoAssetEntries];
+              v31 = [autoAssetEntries3 countByEnumeratingWithState:&v59 objects:v75 count:16];
               if (v31)
               {
                 v32 = v31;
@@ -331,22 +331,22 @@ LABEL_10:
                   {
                     if (*v60 != v33)
                     {
-                      objc_enumerationMutation(v30);
+                      objc_enumerationMutation(autoAssetEntries3);
                     }
 
                     v35 = *(*(&v59 + 1) + 8 * k);
-                    v36 = [v35 assetSelector];
-                    v37 = [v36 assetType];
+                    assetSelector3 = [v35 assetSelector];
+                    assetType5 = [assetSelector3 assetType];
 
-                    if (v37)
+                    if (assetType5)
                     {
-                      v38 = [v35 assetSelector];
-                      v39 = [v38 assetType];
-                      [v6 addObject:v39];
+                      assetSelector4 = [v35 assetSelector];
+                      assetType6 = [assetSelector4 assetType];
+                      [v6 addObject:assetType6];
                     }
                   }
 
-                  v32 = [v30 countByEnumeratingWithState:&v59 objects:v75 count:16];
+                  v32 = [autoAssetEntries3 countByEnumeratingWithState:&v59 objects:v75 count:16];
                 }
 
                 while (v32);
@@ -360,22 +360,22 @@ LABEL_10:
         }
 
         v8 = v55;
-        v5 = v56;
-        v4 = v54;
+        messageCopy = v56;
+        queueCopy = v54;
         v14 = v53;
       }
 
-      v40 = [v14 clientDomainName];
-      if (v40)
+      clientDomainName = [v14 clientDomainName];
+      if (clientDomainName)
       {
-        v41 = v40;
-        v42 = [v14 assetSetIdentifier];
+        v41 = clientDomainName;
+        assetSetIdentifier = [v14 assetSetIdentifier];
 
-        if (v42)
+        if (assetSetIdentifier)
         {
-          v43 = [v14 clientDomainName];
-          v44 = [v14 assetSetIdentifier];
-          v45 = [MADAutoAssetControlManager assetTypeForClientDomainName:v43 forSetIdentifier:v44 alreadyOnStateQueue:v4];
+          clientDomainName2 = [v14 clientDomainName];
+          assetSetIdentifier2 = [v14 assetSetIdentifier];
+          v45 = [MADAutoAssetControlManager assetTypeForClientDomainName:clientDomainName2 forSetIdentifier:assetSetIdentifier2 alreadyOnStateQueue:queueCopy];
 
           if (v45)
           {
@@ -391,33 +391,33 @@ LABEL_10:
     v46 = _MADLog(@"Auto");
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
-      v47 = [v5 summary];
+      summary = [messageCopy summary];
       *buf = 138543618;
       v72 = v6;
       v73 = 2114;
-      v74 = v47;
+      v74 = summary;
       _os_log_impl(&dword_0, v46, OS_LOG_TYPE_DEFAULT, "{MADAutoAssetAuthorizationPolicy}(authorizationAssetTypeFromMessage) Found multiple asset types: %{public}@, for message: %{public}@", buf, 0x16u);
     }
   }
 
-  v48 = [v6 allObjects];
-  v49 = [v48 firstObject];
+  allObjects = [v6 allObjects];
+  firstObject = [allObjects firstObject];
 
   if (_MAPreferencesIsVerboseLoggingEnabled())
   {
     v50 = _MADLog(@"Auto");
     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
     {
-      v51 = [v5 summary];
+      summary2 = [messageCopy summary];
       *buf = 138543618;
-      v72 = v49;
+      v72 = firstObject;
       v73 = 2114;
-      v74 = v51;
+      v74 = summary2;
       _os_log_impl(&dword_0, v50, OS_LOG_TYPE_DEFAULT, "{MADAutoAssetAuthorizationPolicy}(authorizationAssetTypeFromMessage) Found asset type: %{public}@, for message: %{public}@", buf, 0x16u);
     }
   }
 
-  return v49;
+  return firstObject;
 }
 
 @end

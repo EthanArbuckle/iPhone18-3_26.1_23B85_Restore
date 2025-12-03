@@ -1,8 +1,8 @@
 @interface DSPController
-- (DSPController)initWithBundleID:(id)a3 withLogger:(id)a4 andADMConfigurator:(id)a5 andHALDSPFactory:(id)a6;
+- (DSPController)initWithBundleID:(id)d withLogger:(id)logger andADMConfigurator:(id)configurator andHALDSPFactory:(id)factory;
 - (id).cxx_construct;
-- (id)adaptToConfigurationChange:(id)a3 error:(id *)a4 inputStreamIndicesInIOProc:(id)a5 outputStreamIndicesInIOProc:(id)a6 frameBufferSize:(unint64_t)a7;
-- (id)negotiateConfigurationChange:(id)a3 error:(id *)a4;
+- (id)adaptToConfigurationChange:(id)change error:(id *)error inputStreamIndicesInIOProc:(id)proc outputStreamIndicesInIOProc:(id)oProc frameBufferSize:(unint64_t)size;
+- (id)negotiateConfigurationChange:(id)change error:(id *)error;
 - (void)dealloc;
 - (void)startIO;
 - (void)stopIO;
@@ -10,41 +10,41 @@
 
 @implementation DSPController
 
-- (DSPController)initWithBundleID:(id)a3 withLogger:(id)a4 andADMConfigurator:(id)a5 andHALDSPFactory:(id)a6
+- (DSPController)initWithBundleID:(id)d withLogger:(id)logger andADMConfigurator:(id)configurator andHALDSPFactory:(id)factory
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  loggerCopy = logger;
+  configuratorCopy = configurator;
+  factoryCopy = factory;
   v26.receiver = self;
   v26.super_class = DSPController;
   v14 = [(DSPController *)&v26 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->admConfigurator, a5);
-    if (v13 && [v13 conformsToProtocol:&unk_28580B0B8])
+    objc_storeStrong(&v14->admConfigurator, configurator);
+    if (factoryCopy && [factoryCopy conformsToProtocol:&unk_28580B0B8])
     {
-      v16 = v13;
+      createFactory = factoryCopy;
     }
 
     else
     {
-      v17 = [[CoreAudioOrchestration_ADM_Loader alloc] initWithLogger:v11];
+      v17 = [[CoreAudioOrchestration_ADM_Loader alloc] initWithLogger:loggerCopy];
       admLoader = v15->admLoader;
       v15->admLoader = v17;
 
-      v16 = [(CoreAudioOrchestration_ADM_Loader *)v15->admLoader createFactory];
+      createFactory = [(CoreAudioOrchestration_ADM_Loader *)v15->admLoader createFactory];
     }
 
     admFactory = v15->admFactory;
-    v15->admFactory = v16;
+    v15->admFactory = createFactory;
 
     v20 = v15->admFactory;
     v27[0] = @"client bundle identifier";
     v27[1] = @"client unique identifier";
-    v28[0] = v10;
+    v28[0] = dCopy;
     v28[1] = @"Isolated ADM DSP";
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
     v22 = [(HAL_DSP_Factory *)v20 createProcessor:v21 withHost:0];
@@ -56,58 +56,58 @@
   return v15;
 }
 
-- (id)negotiateConfigurationChange:(id)a3 error:(id *)a4
+- (id)negotiateConfigurationChange:(id)change error:(id *)error
 {
-  v4 = [(HAL_DSP_IOProcessor *)self->dspIOProcessor negotiateConfigurationChange:a3 error:a4];
+  v4 = [(HAL_DSP_IOProcessor *)self->dspIOProcessor negotiateConfigurationChange:change error:error];
 
   return v4;
 }
 
-- (id)adaptToConfigurationChange:(id)a3 error:(id *)a4 inputStreamIndicesInIOProc:(id)a5 outputStreamIndicesInIOProc:(id)a6 frameBufferSize:(unint64_t)a7
+- (id)adaptToConfigurationChange:(id)change error:(id *)error inputStreamIndicesInIOProc:(id)proc outputStreamIndicesInIOProc:(id)oProc frameBufferSize:(unint64_t)size
 {
   v38 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  changeCopy = change;
+  procCopy = proc;
+  oProcCopy = oProc;
   if (self->admCallbacks.m_unregisterClientCallback.__f_.__f_)
   {
     std::function<void ()>::operator()(&self->admCallbacks.m_unregisterClientCallback, 1);
   }
 
-  v15 = [(HAL_DSP_IOProcessor *)self->dspIOProcessor adaptToConfigurationChange:v12 withCallbacks:&self->admCallbacks error:a4];
-  v16 = [v13 count];
+  v15 = [(HAL_DSP_IOProcessor *)self->dspIOProcessor adaptToConfigurationChange:changeCopy withCallbacks:&self->admCallbacks error:error];
+  v16 = [procCopy count];
   std::vector<unsigned long>::vector[abi:ne200100](&v29, v16);
   if (v16)
   {
     for (i = 0; i != v16; ++i)
     {
-      v18 = [v13 objectAtIndex:i];
-      v19 = [v18 unsignedLongLongValue];
-      *(v29 + i) = v19;
+      v18 = [procCopy objectAtIndex:i];
+      unsignedLongLongValue = [v18 unsignedLongLongValue];
+      *(v29 + i) = unsignedLongLongValue;
     }
   }
 
-  v20 = [v14 count];
+  v20 = [oProcCopy count];
   std::vector<unsigned long>::vector[abi:ne200100](&v27, v20);
   if (v20)
   {
     for (j = 0; j != v20; ++j)
     {
-      v22 = [v14 objectAtIndex:j];
-      v23 = [v22 unsignedLongLongValue];
-      *(v27 + j) = v23;
+      v22 = [oProcCopy objectAtIndex:j];
+      unsignedLongLongValue2 = [v22 unsignedLongLongValue];
+      *(v27 + j) = unsignedLongLongValue2;
     }
   }
 
   v31 = 1;
-  v32 = a7;
+  sizeCopy = size;
   *v34 = 0u;
   v35 = 0u;
   *__p = 0u;
   v37 = 0;
-  if (a4)
+  if (error)
   {
-    if (!*a4)
+    if (!*error)
     {
       std::function<void ()(unsigned int,AMCP::Proc_Cycle_Info const&,unsigned long,AMCP::Proc_Stream *,unsigned long,AMCP::Proc_Stream *)>::operator=(v33, &self->admCallbacks.m_ioCallback);
       std::vector<unsigned long>::__assign_with_size[abi:ne200100]<unsigned long *,unsigned long *>(&v34[1], v29, v30, (v30 - v29) >> 3);

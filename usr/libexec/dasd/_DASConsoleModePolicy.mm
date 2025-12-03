@@ -1,8 +1,8 @@
 @interface _DASConsoleModePolicy
 + (id)policyInstance;
 - (_DASConsoleModePolicy)init;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
-- (void)consoleModeChangedHandler:(BOOL)a3;
+- (id)responseForActivity:(id)activity withState:(id)state;
+- (void)consoleModeChangedHandler:(BOOL)handler;
 @end
 
 @implementation _DASConsoleModePolicy
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = sub_100039850;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020AF80 != -1)
   {
     dispatch_once(&qword_10020AF80, block);
@@ -49,20 +49,20 @@
   return v2;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  stateCopy = state;
   v8 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"Console Mode Policy"];
   if (self->_isConsoleModeActive)
   {
-    v9 = [_DASApplicationPolicy focalApplicationsWithContext:v7];
+    v9 = [_DASApplicationPolicy focalApplicationsWithContext:stateCopy];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = [v6 relatedApplications];
-    v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    relatedApplications = [activityCopy relatedApplications];
+    v11 = [relatedApplications countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v11)
     {
       v12 = v11;
@@ -73,7 +73,7 @@
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(relatedApplications);
           }
 
           if ([v9 containsObject:*(*(&v20 + 1) + 8 * i)])
@@ -85,7 +85,7 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v12 = [relatedApplications countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v12)
         {
           continue;
@@ -114,10 +114,10 @@ LABEL_13:
   return v18;
 }
 
-- (void)consoleModeChangedHandler:(BOOL)a3
+- (void)consoleModeChangedHandler:(BOOL)handler
 {
-  self->_isConsoleModeActive = a3;
-  if (a3)
+  self->_isConsoleModeActive = handler;
+  if (handler)
   {
     v3 = +[_DASDaemon sharedInstance];
     v5 = @"com.apple.system.console_mode_changed";

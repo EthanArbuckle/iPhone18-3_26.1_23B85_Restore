@@ -1,9 +1,9 @@
 @interface BMBehaviorStorage
 - (BMBehaviorStorage)init;
 - (id)description;
-- (id)fetchRulesWithAbsoluteSupport:(unint64_t)a3 support:(double)a4 confidence:(double)a5 conviction:(double)a6 lift:(double)a7 rulePowerFactor:(double)a8 uniqueDaysLastWeek:(unint64_t)a9 uniqueDaysTotal:(unint64_t)a10 filters:(id)a11 limit:(unint64_t)a12 error:(id *)a13;
-- (void)resetStorageWithMetadata:(id)a3 error:(id *)a4;
-- (void)saveRules:(id)a3 error:(id *)a4;
+- (id)fetchRulesWithAbsoluteSupport:(unint64_t)support support:(double)a4 confidence:(double)confidence conviction:(double)conviction lift:(double)lift rulePowerFactor:(double)factor uniqueDaysLastWeek:(unint64_t)week uniqueDaysTotal:(unint64_t)self0 filters:(id)self1 limit:(unint64_t)self2 error:(id *)self3;
+- (void)resetStorageWithMetadata:(id)metadata error:(id *)error;
+- (void)saveRules:(id)rules error:(id *)error;
 @end
 
 @implementation BMBehaviorStorage
@@ -16,9 +16,9 @@
   return v4;
 }
 
-- (id)fetchRulesWithAbsoluteSupport:(unint64_t)a3 support:(double)a4 confidence:(double)a5 conviction:(double)a6 lift:(double)a7 rulePowerFactor:(double)a8 uniqueDaysLastWeek:(unint64_t)a9 uniqueDaysTotal:(unint64_t)a10 filters:(id)a11 limit:(unint64_t)a12 error:(id *)a13
+- (id)fetchRulesWithAbsoluteSupport:(unint64_t)support support:(double)a4 confidence:(double)confidence conviction:(double)conviction lift:(double)lift rulePowerFactor:(double)factor uniqueDaysLastWeek:(unint64_t)week uniqueDaysTotal:(unint64_t)self0 filters:(id)self1 limit:(unint64_t)self2 error:(id *)self3
 {
-  v24 = a11;
+  filtersCopy = filters;
   v49 = 0;
   v50 = &v49;
   v51 = 0x3032000000;
@@ -31,30 +31,30 @@
   v46 = __Block_byref_object_copy__2;
   v47 = __Block_byref_object_dispose__2;
   v48 = 0;
-  v25 = [(BMBehaviorStorage *)self context];
+  context = [(BMBehaviorStorage *)self context];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __157__BMBehaviorStorage_fetchRulesWithAbsoluteSupport_support_confidence_conviction_lift_rulePowerFactor_uniqueDaysLastWeek_uniqueDaysTotal_filters_limit_error___block_invoke;
   v29[3] = &unk_278D067C0;
-  v34 = a12;
+  limitCopy = limit;
   v35 = a4;
-  v36 = a5;
-  v26 = v24;
+  confidenceCopy = confidence;
+  v26 = filtersCopy;
   v30 = v26;
-  v31 = self;
-  v37 = a3;
-  v38 = a6;
-  v39 = a7;
-  v40 = a8;
-  v41 = a9;
-  v42 = a10;
+  selfCopy = self;
+  supportCopy = support;
+  convictionCopy = conviction;
+  liftCopy = lift;
+  factorCopy = factor;
+  weekCopy = week;
+  totalCopy = total;
   v32 = &v49;
   v33 = &v43;
-  [v25 performBlockAndWait:v29];
+  [context performBlockAndWait:v29];
 
-  if (a13)
+  if (error)
   {
-    *a13 = v44[5];
+    *error = v44[5];
   }
 
   v27 = v50[5];
@@ -166,29 +166,29 @@ LABEL_14:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveRules:(id)a3 error:(id *)a4
+- (void)saveRules:(id)rules error:(id *)error
 {
-  v6 = a3;
+  rulesCopy = rules;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__2;
   v16 = __Block_byref_object_dispose__2;
   v17 = 0;
-  v7 = [(BMBehaviorStorage *)self context];
+  context = [(BMBehaviorStorage *)self context];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __37__BMBehaviorStorage_saveRules_error___block_invoke;
   v9[3] = &unk_278D067E8;
   v9[4] = self;
-  v8 = v6;
+  v8 = rulesCopy;
   v10 = v8;
   v11 = &v12;
-  [v7 performBlockAndWait:v9];
+  [context performBlockAndWait:v9];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v13[5];
+    *error = v13[5];
   }
 
   _Block_object_dispose(&v12, 8);
@@ -217,15 +217,15 @@ void __37__BMBehaviorStorage_saveRules_error___block_invoke(uint64_t a1)
   }
 }
 
-- (void)resetStorageWithMetadata:(id)a3 error:(id *)a4
+- (void)resetStorageWithMetadata:(id)metadata error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  metadataCopy = metadata;
   v7 = BMLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = metadataCopy;
     _os_log_impl(&dword_241ACA000, v7, OS_LOG_TYPE_INFO, "Resetting behavior storage and applying new metadata %@", &buf, 0xCu);
   }
 
@@ -235,38 +235,38 @@ void __37__BMBehaviorStorage_saveRules_error___block_invoke(uint64_t a1)
   v20 = __Block_byref_object_copy__2;
   v21 = __Block_byref_object_dispose__2;
   v22 = 0;
-  v8 = [(BMBehaviorStorage *)self context];
+  context = [(BMBehaviorStorage *)self context];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __52__BMBehaviorStorage_resetStorageWithMetadata_error___block_invoke;
   v17[3] = &unk_278D06810;
   v17[4] = self;
   v17[5] = &buf;
-  [v8 performBlockAndWait:v17];
+  [context performBlockAndWait:v17];
 
-  v9 = [(BMBehaviorStorage *)self context];
+  context2 = [(BMBehaviorStorage *)self context];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __52__BMBehaviorStorage_resetStorageWithMetadata_error___block_invoke_2;
   v16[3] = &unk_278D06838;
   v16[4] = self;
-  [v9 performBlockAndWait:v16];
+  [context2 performBlockAndWait:v16];
 
   if (!*(*(&buf + 1) + 40))
   {
-    v10 = [(BMBehaviorStorage *)self container];
-    v11 = [v10 persistentStoreCoordinator];
-    v12 = [v11 persistentStores];
-    v13 = [v12 firstObject];
+    container = [(BMBehaviorStorage *)self container];
+    persistentStoreCoordinator = [container persistentStoreCoordinator];
+    persistentStores = [persistentStoreCoordinator persistentStores];
+    firstObject = [persistentStores firstObject];
 
-    v14 = [v6 dictionaryRepresntation];
-    [v13 setMetadata:v14];
-    [(BMBehaviorStorage *)self setMetadata:v6];
+    dictionaryRepresntation = [metadataCopy dictionaryRepresntation];
+    [firstObject setMetadata:dictionaryRepresntation];
+    [(BMBehaviorStorage *)self setMetadata:metadataCopy];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = *(*(&buf + 1) + 40);
+    *error = *(*(&buf + 1) + 40);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -322,11 +322,11 @@ void __52__BMBehaviorStorage_resetStorageWithMetadata_error___block_invoke_2(uin
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(BMBehaviorStorage *)self container];
-  v6 = [v5 debugDescription];
+  container = [(BMBehaviorStorage *)self container];
+  v6 = [container debugDescription];
   v7 = [(BMBehaviorStorage *)self URL];
-  v8 = [(BMBehaviorStorage *)self metadata];
-  v9 = [v3 stringWithFormat:@"<%@ %p> container: %@, URL: %@, metadata: %@", v4, self, v6, v7, v8];
+  metadata = [(BMBehaviorStorage *)self metadata];
+  v9 = [v3 stringWithFormat:@"<%@ %p> container: %@, URL: %@, metadata: %@", v4, self, v6, v7, metadata];
 
   return v9;
 }

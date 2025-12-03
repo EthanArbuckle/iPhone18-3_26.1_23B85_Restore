@@ -1,30 +1,30 @@
 @interface CALNSuggestedEventNotificationSource
 + (id)_bundle;
 - (CALNNotificationManager)notificationManager;
-- (CALNSuggestedEventNotificationSource)initWithDataSource:(id)a3 notificationManager:(id)a4 iconIdentifierProvider:(id)a5;
+- (CALNSuggestedEventNotificationSource)initWithDataSource:(id)source notificationManager:(id)manager iconIdentifierProvider:(id)provider;
 - (NSArray)categories;
-- (id)_sourceClientIdentifiersForObjectIDs:(id)a3;
-- (id)contentForNotificationWithSourceClientIdentifier:(id)a3;
-- (void)didReceiveResponse:(id)a3;
-- (void)refreshNotifications:(id)a3;
+- (id)_sourceClientIdentifiersForObjectIDs:(id)ds;
+- (id)contentForNotificationWithSourceClientIdentifier:(id)identifier;
+- (void)didReceiveResponse:(id)response;
+- (void)refreshNotifications:(id)notifications;
 @end
 
 @implementation CALNSuggestedEventNotificationSource
 
-- (CALNSuggestedEventNotificationSource)initWithDataSource:(id)a3 notificationManager:(id)a4 iconIdentifierProvider:(id)a5
+- (CALNSuggestedEventNotificationSource)initWithDataSource:(id)source notificationManager:(id)manager iconIdentifierProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sourceCopy = source;
+  managerCopy = manager;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = CALNSuggestedEventNotificationSource;
   v12 = [(CALNSuggestedEventNotificationSource *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dataSource, a3);
-    objc_storeWeak(&v13->_notificationManager, v10);
-    objc_storeStrong(&v13->_iconIdentifierProvider, a5);
+    objc_storeStrong(&v12->_dataSource, source);
+    objc_storeWeak(&v13->_notificationManager, managerCopy);
+    objc_storeStrong(&v13->_iconIdentifierProvider, provider);
   }
 
   return v13;
@@ -89,7 +89,7 @@ void __50__CALNSuggestedEventNotificationSource_categories__block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __47__CALNSuggestedEventNotificationSource__bundle__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_bundle_onceToken != -1)
   {
     dispatch_once(&_bundle_onceToken, block);
@@ -108,52 +108,52 @@ uint64_t __47__CALNSuggestedEventNotificationSource__bundle__block_invoke(uint64
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)contentForNotificationWithSourceClientIdentifier:(id)a3
+- (id)contentForNotificationWithSourceClientIdentifier:(id)identifier
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CALNSuggestedEventNotificationSource *)self dataSource];
-  v6 = [v5 fetchSuggestedEventNotificationsWithSourceClientIdentifier:v4];
+  identifierCopy = identifier;
+  dataSource = [(CALNSuggestedEventNotificationSource *)self dataSource];
+  v6 = [dataSource fetchSuggestedEventNotificationsWithSourceClientIdentifier:identifierCopy];
 
   if ([v6 count])
   {
-    v45 = v4;
+    v45 = identifierCopy;
     if ([v6 count] < 2)
     {
       if ([v6 count] == 1)
       {
         v25 = [v6 objectAtIndexedSubscript:0];
-        v26 = [v25 suggestionNotification];
-        v20 = [v26 title];
-        v27 = [v26 allDescriptionStringsWithOptions:1];
-        v50 = [v27 componentsJoinedByString:@"\n"];
+        suggestionNotification = [v25 suggestionNotification];
+        title = [suggestionNotification title];
+        v27 = [suggestionNotification allDescriptionStringsWithOptions:1];
+        descriptionText = [v27 componentsJoinedByString:@"\n"];
 
-        v49 = [v25 launchURL];
-        v28 = [v26 type];
+        launchURL = [v25 launchURL];
+        type = [suggestionNotification type];
         v29 = 0;
-        if ((v28 - 12) <= 2)
+        if ((type - 12) <= 2)
         {
-          v29 = off_278D6F4E0[v28 - 12];
+          v29 = off_278D6F4E0[type - 12];
         }
 
         v44 = v29;
-        v23 = [v26 startDate];
-        v47 = [v25 expirationDate];
-        v48 = [v26 originAppName];
-        v30 = [v26 calendar];
-        v46 = [v30 calendarIdentifier];
+        startDate = [suggestionNotification startDate];
+        expirationDate = [v25 expirationDate];
+        originAppName = [suggestionNotification originAppName];
+        calendar = [suggestionNotification calendar];
+        calendarIdentifier = [calendar calendarIdentifier];
       }
 
       else
       {
-        v46 = 0;
-        v47 = 0;
-        v48 = 0;
-        v49 = 0;
+        calendarIdentifier = 0;
+        expirationDate = 0;
+        originAppName = 0;
+        launchURL = 0;
         v44 = 0;
-        v23 = 0;
-        v50 = 0;
-        v20 = 0;
+        startDate = 0;
+        descriptionText = 0;
+        title = 0;
       }
     }
 
@@ -181,10 +181,10 @@ uint64_t __47__CALNSuggestedEventNotificationSource__bundle__block_invoke(uint64
             }
 
             v14 = *(*(&v51 + 1) + 8 * i);
-            v15 = [v14 suggestionNotification];
-            [v7 addObject:v15];
-            v16 = [v14 expirationDate];
-            [v8 addObject:v16];
+            suggestionNotification2 = [v14 suggestionNotification];
+            [v7 addObject:suggestionNotification2];
+            expirationDate2 = [v14 expirationDate];
+            [v8 addObject:expirationDate2];
           }
 
           v11 = [v9 countByEnumeratingWithState:&v51 objects:v59 count:16];
@@ -198,51 +198,51 @@ uint64_t __47__CALNSuggestedEventNotificationSource__bundle__block_invoke(uint64
       v18 = [v7 copy];
       v19 = [v17 coalescedInfoForSuggestionNotifications:v18];
 
-      v20 = [v19 title];
-      v50 = [v19 descriptionText];
-      v49 = CUIKLaunchURLForInbox();
+      title = [v19 title];
+      descriptionText = [v19 descriptionText];
+      launchURL = CUIKLaunchURLForInbox();
       v21 = [v7 objectAtIndexedSubscript:0];
-      v48 = [v21 originAppName];
-      v22 = [v21 calendar];
-      v46 = [v22 calendarIdentifier];
+      originAppName = [v21 originAppName];
+      calendar2 = [v21 calendar];
+      calendarIdentifier = [calendar2 calendarIdentifier];
 
-      v47 = [v8 lastObject];
+      expirationDate = [v8 lastObject];
 
-      v23 = 0;
+      startDate = 0;
       v44 = @"SuggestedEvent.Coalesced";
     }
 
     v31 = [CALNNotificationSound soundWithAlertType:10 alertTopic:@"com.apple.mobilecal.bulletin-subsection.suggestions"];
-    v32 = v23;
-    v33 = v32;
+    v32 = startDate;
+    date = v32;
     if (!v32)
     {
-      v33 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
-    v34 = [(CALNSuggestedEventNotificationSource *)self iconIdentifierProvider];
-    v35 = [MEMORY[0x277CBEA80] currentCalendar];
-    v36 = [v34 identifierForIconWithDate:v33 inCalendar:v35];
+    iconIdentifierProvider = [(CALNSuggestedEventNotificationSource *)self iconIdentifierProvider];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v36 = [iconIdentifierProvider identifierForIconWithDate:date inCalendar:currentCalendar];
 
     v37 = MEMORY[0x277CCACA8];
-    v38 = [(CALNSuggestedEventNotificationSource *)self sourceIdentifier];
-    v39 = [v37 stringWithFormat:@"%@.%@", v38, v48];
+    sourceIdentifier = [(CALNSuggestedEventNotificationSource *)self sourceIdentifier];
+    v39 = [v37 stringWithFormat:@"%@.%@", sourceIdentifier, originAppName];
 
     v40 = objc_opt_new();
-    [v40 setTitle:v20];
-    [v40 setBody:v50];
+    [v40 setTitle:title];
+    [v40 setBody:descriptionText];
     [v40 setCategoryIdentifier:v44];
     [v40 setSectionIdentifier:@"com.apple.mobilecal.bulletin-subsection.suggestions"];
     [v40 setDate:v32];
-    [v40 setExpirationDate:v47];
-    [v40 setDefaultActionURL:v49];
+    [v40 setExpirationDate:expirationDate];
+    [v40 setDefaultActionURL:launchURL];
     [v40 setIconIdentifier:v36];
     [v40 setSound:v31];
     [v40 setThreadIdentifier:v39];
     [v40 setInterruptionLevel:1];
-    [v40 setFilterCriteria:v46];
+    [v40 setFilterCriteria:calendarIdentifier];
     v41 = +[CALNLogSubsystem calendar];
-    v4 = v45;
+    identifierCopy = v45;
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
@@ -257,10 +257,10 @@ uint64_t __47__CALNSuggestedEventNotificationSource__bundle__block_invoke(uint64
 
   else
   {
-    v20 = +[CALNLogSubsystem calendar];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    title = +[CALNLogSubsystem calendar];
+    if (os_log_type_enabled(title, OS_LOG_TYPE_ERROR))
     {
-      [(CALNSuggestedEventNotificationSource *)v4 contentForNotificationWithSourceClientIdentifier:v20];
+      [(CALNSuggestedEventNotificationSource *)identifierCopy contentForNotificationWithSourceClientIdentifier:title];
     }
 
     v24 = 0;
@@ -271,16 +271,16 @@ uint64_t __47__CALNSuggestedEventNotificationSource__bundle__block_invoke(uint64
   return v24;
 }
 
-- (void)refreshNotifications:(id)a3
+- (void)refreshNotifications:(id)notifications
 {
   v36 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v4 = [(CALNSuggestedEventNotificationSource *)self dataSource];
-  v5 = [v4 fetchSuggestedEventNotificationObjectIDs];
+  notificationsCopy = notifications;
+  dataSource = [(CALNSuggestedEventNotificationSource *)self dataSource];
+  fetchSuggestedEventNotificationObjectIDs = [dataSource fetchSuggestedEventNotificationObjectIDs];
 
   v28 = objc_opt_new();
-  v25 = v5;
-  [(CALNSuggestedEventNotificationSource *)self _sourceClientIdentifiersForObjectIDs:v5];
+  v25 = fetchSuggestedEventNotificationObjectIDs;
+  [(CALNSuggestedEventNotificationSource *)self _sourceClientIdentifiersForObjectIDs:fetchSuggestedEventNotificationObjectIDs];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -305,8 +305,8 @@ uint64_t __47__CALNSuggestedEventNotificationSource__bundle__block_invoke(uint64
         if (v12)
         {
           v13 = [CALNNotificationRecord alloc];
-          v14 = [(CALNSuggestedEventNotificationSource *)self sourceIdentifier];
-          v15 = [(CALNNotificationRecord *)v13 initWithSourceIdentifier:v14 sourceClientIdentifier:v10 content:v12];
+          sourceIdentifier = [(CALNSuggestedEventNotificationSource *)self sourceIdentifier];
+          v15 = [(CALNNotificationRecord *)v13 initWithSourceIdentifier:sourceIdentifier sourceClientIdentifier:v10 content:v12];
 
           [v28 addObject:v15];
         }
@@ -322,7 +322,7 @@ uint64_t __47__CALNSuggestedEventNotificationSource__bundle__block_invoke(uint64
 
   v16 = +[CALNLogSubsystem calendar];
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-  if (v26)
+  if (notificationsCopy)
   {
     if (!v17)
     {
@@ -360,23 +360,23 @@ LABEL_16:
     _os_log_impl(&dword_242909000, v20, OS_LOG_TYPE_DEFAULT, "Refreshed suggested event notifications. Found %{public}@ notifications.", buf, 0xCu);
   }
 
-  v22 = [(CALNSuggestedEventNotificationSource *)self notificationManager];
-  v23 = [(CALNSuggestedEventNotificationSource *)self sourceIdentifier];
-  [CALNNotificationRecordsDiffApplier refreshNotificationManager:v22 withNotificationRecords:v28 forSourceWithIdentifier:v23 filteredBySourceClientIDs:0];
+  notificationManager = [(CALNSuggestedEventNotificationSource *)self notificationManager];
+  sourceIdentifier2 = [(CALNSuggestedEventNotificationSource *)self sourceIdentifier];
+  [CALNNotificationRecordsDiffApplier refreshNotificationManager:notificationManager withNotificationRecords:v28 forSourceWithIdentifier:sourceIdentifier2 filteredBySourceClientIDs:0];
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_sourceClientIdentifiersForObjectIDs:(id)a3
+- (id)_sourceClientIdentifiersForObjectIDs:(id)ds
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -392,13 +392,13 @@ LABEL_16:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [(CALNSuggestedEventNotificationSource *)self dataSource];
-        v13 = [v12 fetchSuggestedEventNotificationWithObjectID:v11];
+        dataSource = [(CALNSuggestedEventNotificationSource *)self dataSource];
+        v13 = [dataSource fetchSuggestedEventNotificationWithObjectID:v11];
 
         if (v13)
         {
-          v14 = [v13 sourceClientIdentifier];
-          [v5 addObject:v14];
+          sourceClientIdentifier = [v13 sourceClientIdentifier];
+          [v5 addObject:sourceClientIdentifier];
         }
       }
 
@@ -408,71 +408,71 @@ LABEL_16:
     while (v8);
   }
 
-  v15 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return allObjects;
 }
 
-- (void)didReceiveResponse:(id)a3
+- (void)didReceiveResponse:(id)response
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 notificationRecord];
-  v6 = [v5 content];
-  v7 = [v6 categoryIdentifier];
+  responseCopy = response;
+  notificationRecord = [responseCopy notificationRecord];
+  content = [notificationRecord content];
+  categoryIdentifier = [content categoryIdentifier];
 
-  v8 = [v4 actionIdentifier];
-  v9 = [v4 notificationRecord];
+  actionIdentifier = [responseCopy actionIdentifier];
+  notificationRecord2 = [responseCopy notificationRecord];
 
-  v10 = [v9 sourceClientIdentifier];
+  sourceClientIdentifier = [notificationRecord2 sourceClientIdentifier];
 
   v11 = +[CALNLogSubsystem calendar];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543618;
-    v15 = v10;
+    v15 = sourceClientIdentifier;
     v16 = 2114;
-    v17 = v8;
+    v17 = actionIdentifier;
     _os_log_impl(&dword_242909000, v11, OS_LOG_TYPE_DEFAULT, "Received notification response for suggested event notification with source client identifier = %{public}@, actionIdentifier = %{public}@", &v14, 0x16u);
   }
 
-  if (([v8 isEqualToString:@"com.apple.CALNNotificationDefaultActionIdentifier"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"com.apple.CALNNotificationDismissActionIdentifier"))
+  if (([actionIdentifier isEqualToString:@"com.apple.CALNNotificationDefaultActionIdentifier"] & 1) != 0 || objc_msgSend(actionIdentifier, "isEqualToString:", @"com.apple.CALNNotificationDismissActionIdentifier"))
   {
-    v12 = [(CALNSuggestedEventNotificationSource *)self dataSource];
-    [v12 clearSuggestedEventNotificationWithSourceClientIdentifier:v10];
+    dataSource = [(CALNSuggestedEventNotificationSource *)self dataSource];
+    [dataSource clearSuggestedEventNotificationWithSourceClientIdentifier:sourceClientIdentifier];
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  if ([v7 isEqualToString:@"SuggestedEvent.Default"])
+  if ([categoryIdentifier isEqualToString:@"SuggestedEvent.Default"])
   {
-    if ([v8 isEqualToString:@"CALNNotificationConfirmAction"])
+    if ([actionIdentifier isEqualToString:@"CALNNotificationConfirmAction"])
     {
-      v12 = [(CALNSuggestedEventNotificationSource *)self dataSource];
-      [v12 confirmSuggestedEventWithSourceClientIdentifier:v10];
+      dataSource = [(CALNSuggestedEventNotificationSource *)self dataSource];
+      [dataSource confirmSuggestedEventWithSourceClientIdentifier:sourceClientIdentifier];
     }
 
     else
     {
-      if (![v8 isEqualToString:@"CALNNotificationIgnoreAction"])
+      if (![actionIdentifier isEqualToString:@"CALNNotificationIgnoreAction"])
       {
         goto LABEL_7;
       }
 
-      v12 = [(CALNSuggestedEventNotificationSource *)self dataSource];
-      [v12 ignoreSuggestedEventWithSourceClientIdentifier:v10];
+      dataSource = [(CALNSuggestedEventNotificationSource *)self dataSource];
+      [dataSource ignoreSuggestedEventWithSourceClientIdentifier:sourceClientIdentifier];
     }
 
     goto LABEL_6;
   }
 
-  if ([v7 isEqualToString:@"SuggestedEvent.Canceled"] && objc_msgSend(v8, "isEqualToString:", @"CALNNotificationDeleteAction"))
+  if ([categoryIdentifier isEqualToString:@"SuggestedEvent.Canceled"] && objc_msgSend(actionIdentifier, "isEqualToString:", @"CALNNotificationDeleteAction"))
   {
-    v12 = [(CALNSuggestedEventNotificationSource *)self dataSource];
-    [v12 deleteCanceledSuggestedEventWithSourceClientIdentifier:v10];
+    dataSource = [(CALNSuggestedEventNotificationSource *)self dataSource];
+    [dataSource deleteCanceledSuggestedEventWithSourceClientIdentifier:sourceClientIdentifier];
     goto LABEL_6;
   }
 

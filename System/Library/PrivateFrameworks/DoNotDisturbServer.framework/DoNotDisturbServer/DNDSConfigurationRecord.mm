@@ -1,49 +1,49 @@
 @interface DNDSConfigurationRecord
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_initWithApplicationConfigurationType:(id)a3 senderConfigurationType:(id)a4 suppressionType:(id)a5 suppressionMode:(id)a6 minimumBreakthroughUrgency:(id)a7 hideApplicationBadges:(id)a8 allowIntelligentManagement:(id)a9 compatibilityVersion:(id)a10;
-- (id)_initWithRecord:(id)a3;
-- (id)dictionaryRepresentationWithContext:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithApplicationConfigurationType:(id)type senderConfigurationType:(id)configurationType suppressionType:(id)suppressionType suppressionMode:(id)mode minimumBreakthroughUrgency:(id)urgency hideApplicationBadges:(id)badges allowIntelligentManagement:(id)management compatibilityVersion:(id)self0;
+- (id)_initWithRecord:(id)record;
+- (id)dictionaryRepresentationWithContext:(id)context;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation DNDSConfigurationRecord
 
-- (id)_initWithRecord:(id)a3
+- (id)_initWithRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 applicationConfigurationType];
-  v6 = [v4 senderConfigurationType];
-  v7 = [v4 suppressionType];
-  v8 = [v4 suppressionMode];
-  v9 = [v4 minimumBreakthroughUrgency];
-  v10 = [v4 hideApplicationBadges];
-  v11 = [v4 allowIntelligentManagement];
-  v12 = [v4 compatibilityVersion];
+  recordCopy = record;
+  applicationConfigurationType = [recordCopy applicationConfigurationType];
+  senderConfigurationType = [recordCopy senderConfigurationType];
+  suppressionType = [recordCopy suppressionType];
+  suppressionMode = [recordCopy suppressionMode];
+  minimumBreakthroughUrgency = [recordCopy minimumBreakthroughUrgency];
+  hideApplicationBadges = [recordCopy hideApplicationBadges];
+  allowIntelligentManagement = [recordCopy allowIntelligentManagement];
+  compatibilityVersion = [recordCopy compatibilityVersion];
 
-  v13 = [(DNDSConfigurationRecord *)self _initWithApplicationConfigurationType:v5 senderConfigurationType:v6 suppressionType:v7 suppressionMode:v8 minimumBreakthroughUrgency:v9 hideApplicationBadges:v10 allowIntelligentManagement:v11 compatibilityVersion:v12];
+  v13 = [(DNDSConfigurationRecord *)self _initWithApplicationConfigurationType:applicationConfigurationType senderConfigurationType:senderConfigurationType suppressionType:suppressionType suppressionMode:suppressionMode minimumBreakthroughUrgency:minimumBreakthroughUrgency hideApplicationBadges:hideApplicationBadges allowIntelligentManagement:allowIntelligentManagement compatibilityVersion:compatibilityVersion];
   return v13;
 }
 
-- (id)_initWithApplicationConfigurationType:(id)a3 senderConfigurationType:(id)a4 suppressionType:(id)a5 suppressionMode:(id)a6 minimumBreakthroughUrgency:(id)a7 hideApplicationBadges:(id)a8 allowIntelligentManagement:(id)a9 compatibilityVersion:(id)a10
+- (id)_initWithApplicationConfigurationType:(id)type senderConfigurationType:(id)configurationType suppressionType:(id)suppressionType suppressionMode:(id)mode minimumBreakthroughUrgency:(id)urgency hideApplicationBadges:(id)badges allowIntelligentManagement:(id)management compatibilityVersion:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  typeCopy = type;
+  configurationTypeCopy = configurationType;
+  suppressionTypeCopy = suppressionType;
+  modeCopy = mode;
+  urgencyCopy = urgency;
+  badgesCopy = badges;
+  managementCopy = management;
+  versionCopy = version;
   v55.receiver = self;
   v55.super_class = DNDSConfigurationRecord;
   v24 = [(DNDSConfigurationRecord *)&v55 init];
   if (v24)
   {
-    v54 = v16;
-    v25 = [v16 copy];
+    v54 = typeCopy;
+    v25 = [typeCopy copy];
     v26 = v25;
     if (v25)
     {
@@ -58,7 +58,7 @@
     applicationConfigurationType = v24->_applicationConfigurationType;
     v24->_applicationConfigurationType = v27;
 
-    v29 = [v17 copy];
+    v29 = [configurationTypeCopy copy];
     v30 = v29;
     if (v29)
     {
@@ -73,7 +73,7 @@
     senderConfigurationType = v24->_senderConfigurationType;
     v24->_senderConfigurationType = v31;
 
-    v33 = [v18 copy];
+    v33 = [suppressionTypeCopy copy];
     v34 = v33;
     if (v33)
     {
@@ -88,7 +88,7 @@
     suppressionType = v24->_suppressionType;
     v24->_suppressionType = v35;
 
-    v37 = [v19 copy];
+    v37 = [modeCopy copy];
     v38 = v37;
     if (v37)
     {
@@ -102,7 +102,7 @@
 
     objc_storeStrong(&v24->_suppressionMode, v39);
 
-    v40 = [v20 copy];
+    v40 = [urgencyCopy copy];
     v41 = v40;
     if (v40)
     {
@@ -117,7 +117,7 @@
     minimumBreakthroughUrgency = v24->_minimumBreakthroughUrgency;
     v24->_minimumBreakthroughUrgency = v42;
 
-    v44 = [v21 copy];
+    v44 = [badgesCopy copy];
     v45 = v44;
     if (v44)
     {
@@ -131,7 +131,7 @@
 
     objc_storeStrong(&v24->_hideApplicationBadges, v46);
 
-    v47 = [v22 copy];
+    v47 = [managementCopy copy];
     v48 = v47;
     if (v47)
     {
@@ -145,7 +145,7 @@
 
     objc_storeStrong(&v24->_allowIntelligentManagement, v49);
 
-    v50 = [v23 copy];
+    v50 = [versionCopy copy];
     v51 = v50;
     if (v50)
     {
@@ -159,7 +159,7 @@
 
     objc_storeStrong(&v24->_compatibilityVersion, v52);
 
-    v16 = v54;
+    typeCopy = v54;
   }
 
   return v24;
@@ -167,30 +167,30 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDSConfigurationRecord *)self applicationConfigurationType];
-  v4 = [v3 hash];
-  v5 = [(DNDSConfigurationRecord *)self senderConfigurationType];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DNDSConfigurationRecord *)self minimumBreakthroughUrgency];
-  v8 = [v7 hash];
-  v9 = [(DNDSConfigurationRecord *)self suppressionType];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(DNDSConfigurationRecord *)self suppressionMode];
-  v12 = [v11 hash];
-  v13 = [(DNDSConfigurationRecord *)self hideApplicationBadges];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(DNDSConfigurationRecord *)self allowIntelligentManagement];
-  v16 = v10 ^ v14 ^ [v15 hash];
-  v17 = [(DNDSConfigurationRecord *)self compatibilityVersion];
-  v18 = [v17 hash];
+  applicationConfigurationType = [(DNDSConfigurationRecord *)self applicationConfigurationType];
+  v4 = [applicationConfigurationType hash];
+  senderConfigurationType = [(DNDSConfigurationRecord *)self senderConfigurationType];
+  v6 = [senderConfigurationType hash] ^ v4;
+  minimumBreakthroughUrgency = [(DNDSConfigurationRecord *)self minimumBreakthroughUrgency];
+  v8 = [minimumBreakthroughUrgency hash];
+  suppressionType = [(DNDSConfigurationRecord *)self suppressionType];
+  v10 = v6 ^ v8 ^ [suppressionType hash];
+  suppressionMode = [(DNDSConfigurationRecord *)self suppressionMode];
+  v12 = [suppressionMode hash];
+  hideApplicationBadges = [(DNDSConfigurationRecord *)self hideApplicationBadges];
+  v14 = v12 ^ [hideApplicationBadges hash];
+  allowIntelligentManagement = [(DNDSConfigurationRecord *)self allowIntelligentManagement];
+  v16 = v10 ^ v14 ^ [allowIntelligentManagement hash];
+  compatibilityVersion = [(DNDSConfigurationRecord *)self compatibilityVersion];
+  v18 = [compatibilityVersion hash];
 
   return v16 ^ v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -200,10 +200,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DNDSConfigurationRecord *)self applicationConfigurationType];
-      v7 = [(DNDSConfigurationRecord *)v5 applicationConfigurationType];
-      if (v6 != v7)
+      v5 = equalCopy;
+      applicationConfigurationType = [(DNDSConfigurationRecord *)self applicationConfigurationType];
+      applicationConfigurationType2 = [(DNDSConfigurationRecord *)v5 applicationConfigurationType];
+      if (applicationConfigurationType != applicationConfigurationType2)
       {
         v8 = 0;
 LABEL_63:
@@ -211,9 +211,9 @@ LABEL_63:
         goto LABEL_64;
       }
 
-      v9 = [(DNDSConfigurationRecord *)self senderConfigurationType];
-      v10 = [(DNDSConfigurationRecord *)v5 senderConfigurationType];
-      if (v9 != v10)
+      senderConfigurationType = [(DNDSConfigurationRecord *)self senderConfigurationType];
+      senderConfigurationType2 = [(DNDSConfigurationRecord *)v5 senderConfigurationType];
+      if (senderConfigurationType != senderConfigurationType2)
       {
         v8 = 0;
 LABEL_62:
@@ -221,21 +221,21 @@ LABEL_62:
         goto LABEL_63;
       }
 
-      v11 = [(DNDSConfigurationRecord *)self minimumBreakthroughUrgency];
-      v12 = [(DNDSConfigurationRecord *)v5 minimumBreakthroughUrgency];
-      v81 = v11;
-      if (v11 != v12)
+      minimumBreakthroughUrgency = [(DNDSConfigurationRecord *)self minimumBreakthroughUrgency];
+      minimumBreakthroughUrgency2 = [(DNDSConfigurationRecord *)v5 minimumBreakthroughUrgency];
+      v81 = minimumBreakthroughUrgency;
+      if (minimumBreakthroughUrgency != minimumBreakthroughUrgency2)
       {
-        v13 = [(DNDSConfigurationRecord *)self minimumBreakthroughUrgency];
-        if (!v13)
+        minimumBreakthroughUrgency3 = [(DNDSConfigurationRecord *)self minimumBreakthroughUrgency];
+        if (!minimumBreakthroughUrgency3)
         {
           v8 = 0;
           goto LABEL_61;
         }
 
-        v14 = v13;
-        v15 = [(DNDSConfigurationRecord *)v5 minimumBreakthroughUrgency];
-        if (!v15)
+        v14 = minimumBreakthroughUrgency3;
+        minimumBreakthroughUrgency4 = [(DNDSConfigurationRecord *)v5 minimumBreakthroughUrgency];
+        if (!minimumBreakthroughUrgency4)
         {
           v8 = 0;
 LABEL_60:
@@ -243,11 +243,11 @@ LABEL_60:
           goto LABEL_61;
         }
 
-        v78 = v15;
-        v11 = [(DNDSConfigurationRecord *)self minimumBreakthroughUrgency];
-        v76 = [(DNDSConfigurationRecord *)v5 minimumBreakthroughUrgency];
-        v77 = v11;
-        if (![v11 isEqual:?])
+        v78 = minimumBreakthroughUrgency4;
+        minimumBreakthroughUrgency = [(DNDSConfigurationRecord *)self minimumBreakthroughUrgency];
+        minimumBreakthroughUrgency5 = [(DNDSConfigurationRecord *)v5 minimumBreakthroughUrgency];
+        v77 = minimumBreakthroughUrgency;
+        if (![minimumBreakthroughUrgency isEqual:?])
         {
           v8 = 0;
 LABEL_59:
@@ -258,24 +258,24 @@ LABEL_59:
         v75 = v14;
       }
 
-      v16 = [(DNDSConfigurationRecord *)self suppressionType];
-      v79 = [(DNDSConfigurationRecord *)v5 suppressionType];
-      v80 = v16;
-      if (v16 != v79)
+      suppressionType = [(DNDSConfigurationRecord *)self suppressionType];
+      suppressionType2 = [(DNDSConfigurationRecord *)v5 suppressionType];
+      v80 = suppressionType;
+      if (suppressionType != suppressionType2)
       {
-        v17 = [(DNDSConfigurationRecord *)self suppressionType];
-        if (v17)
+        suppressionType3 = [(DNDSConfigurationRecord *)self suppressionType];
+        if (suppressionType3)
         {
-          v73 = v17;
-          v18 = [(DNDSConfigurationRecord *)v5 suppressionType];
-          if (v18)
+          v73 = suppressionType3;
+          suppressionType4 = [(DNDSConfigurationRecord *)v5 suppressionType];
+          if (suppressionType4)
           {
-            v70 = v18;
-            v11 = [(DNDSConfigurationRecord *)self suppressionType];
-            v19 = [(DNDSConfigurationRecord *)v5 suppressionType];
-            if ([v11 isEqual:v19])
+            v70 = suppressionType4;
+            minimumBreakthroughUrgency = [(DNDSConfigurationRecord *)self suppressionType];
+            suppressionType5 = [(DNDSConfigurationRecord *)v5 suppressionType];
+            if ([minimumBreakthroughUrgency isEqual:suppressionType5])
             {
-              v66 = v19;
+              v66 = suppressionType5;
               goto LABEL_20;
             }
           }
@@ -287,48 +287,48 @@ LABEL_57:
       }
 
 LABEL_20:
-      v20 = [(DNDSConfigurationRecord *)self suppressionMode];
-      v74 = [(DNDSConfigurationRecord *)v5 suppressionMode];
-      v71 = v11;
-      v72 = v20;
-      if (v20 == v74)
+      suppressionMode = [(DNDSConfigurationRecord *)self suppressionMode];
+      suppressionMode2 = [(DNDSConfigurationRecord *)v5 suppressionMode];
+      v71 = minimumBreakthroughUrgency;
+      v72 = suppressionMode;
+      if (suppressionMode == suppressionMode2)
       {
         goto LABEL_27;
       }
 
-      v21 = [(DNDSConfigurationRecord *)self suppressionMode];
-      if (v21)
+      suppressionMode3 = [(DNDSConfigurationRecord *)self suppressionMode];
+      if (suppressionMode3)
       {
-        v67 = v21;
-        v22 = [(DNDSConfigurationRecord *)v5 suppressionMode];
-        if (v22)
+        v67 = suppressionMode3;
+        suppressionMode4 = [(DNDSConfigurationRecord *)v5 suppressionMode];
+        if (suppressionMode4)
         {
-          v65 = v22;
-          v23 = [(DNDSConfigurationRecord *)self suppressionMode];
-          v24 = [(DNDSConfigurationRecord *)v5 suppressionMode];
-          if ([v23 isEqual:v24])
+          v65 = suppressionMode4;
+          suppressionMode5 = [(DNDSConfigurationRecord *)self suppressionMode];
+          suppressionMode6 = [(DNDSConfigurationRecord *)v5 suppressionMode];
+          if ([suppressionMode5 isEqual:suppressionMode6])
           {
-            v62 = v24;
-            v63 = v23;
+            v62 = suppressionMode6;
+            v63 = suppressionMode5;
 LABEL_27:
-            v25 = [(DNDSConfigurationRecord *)self hideApplicationBadges];
+            hideApplicationBadges = [(DNDSConfigurationRecord *)self hideApplicationBadges];
             [(DNDSConfigurationRecord *)v5 hideApplicationBadges];
-            v69 = v68 = v25;
-            if (v25 == v69)
+            v69 = v68 = hideApplicationBadges;
+            if (hideApplicationBadges == v69)
             {
               goto LABEL_35;
             }
 
-            v26 = [(DNDSConfigurationRecord *)self hideApplicationBadges];
-            if (v26)
+            hideApplicationBadges2 = [(DNDSConfigurationRecord *)self hideApplicationBadges];
+            if (hideApplicationBadges2)
             {
-              v64 = v26;
-              v27 = [(DNDSConfigurationRecord *)v5 hideApplicationBadges];
+              v64 = hideApplicationBadges2;
+              hideApplicationBadges3 = [(DNDSConfigurationRecord *)v5 hideApplicationBadges];
               v28 = v72;
-              if (!v27)
+              if (!hideApplicationBadges3)
               {
 
-                v44 = v74;
+                v44 = suppressionMode2;
 LABEL_51:
                 if (v28 != v44)
                 {
@@ -337,45 +337,45 @@ LABEL_51:
                 goto LABEL_54;
               }
 
-              v59 = v27;
-              v29 = [(DNDSConfigurationRecord *)self hideApplicationBadges];
-              v30 = [(DNDSConfigurationRecord *)v5 hideApplicationBadges];
-              if ([v29 isEqual:v30])
+              v59 = hideApplicationBadges3;
+              hideApplicationBadges4 = [(DNDSConfigurationRecord *)self hideApplicationBadges];
+              hideApplicationBadges5 = [(DNDSConfigurationRecord *)v5 hideApplicationBadges];
+              if ([hideApplicationBadges4 isEqual:hideApplicationBadges5])
               {
-                v56 = v30;
-                v57 = v29;
+                v56 = hideApplicationBadges5;
+                v57 = hideApplicationBadges4;
 LABEL_35:
-                v31 = [(DNDSConfigurationRecord *)self allowIntelligentManagement];
-                v32 = [(DNDSConfigurationRecord *)v5 allowIntelligentManagement];
-                v33 = v32;
-                if (v31 == v32)
+                allowIntelligentManagement = [(DNDSConfigurationRecord *)self allowIntelligentManagement];
+                allowIntelligentManagement2 = [(DNDSConfigurationRecord *)v5 allowIntelligentManagement];
+                v33 = allowIntelligentManagement2;
+                if (allowIntelligentManagement == allowIntelligentManagement2)
                 {
-                  v60 = v31;
-                  v61 = v32;
+                  v60 = allowIntelligentManagement;
+                  v61 = allowIntelligentManagement2;
                   goto LABEL_44;
                 }
 
-                v34 = [(DNDSConfigurationRecord *)self allowIntelligentManagement];
-                if (v34)
+                allowIntelligentManagement3 = [(DNDSConfigurationRecord *)self allowIntelligentManagement];
+                if (allowIntelligentManagement3)
                 {
-                  v58 = v34;
-                  v60 = v31;
+                  v58 = allowIntelligentManagement3;
+                  v60 = allowIntelligentManagement;
                   v61 = v33;
-                  v35 = [(DNDSConfigurationRecord *)v5 allowIntelligentManagement];
+                  allowIntelligentManagement4 = [(DNDSConfigurationRecord *)v5 allowIntelligentManagement];
                   v36 = v72;
-                  if (v35)
+                  if (allowIntelligentManagement4)
                   {
-                    v55 = v35;
-                    v37 = [(DNDSConfigurationRecord *)self allowIntelligentManagement];
-                    v38 = [(DNDSConfigurationRecord *)v5 allowIntelligentManagement];
-                    if ([v37 isEqual:v38])
+                    v55 = allowIntelligentManagement4;
+                    allowIntelligentManagement5 = [(DNDSConfigurationRecord *)self allowIntelligentManagement];
+                    allowIntelligentManagement6 = [(DNDSConfigurationRecord *)v5 allowIntelligentManagement];
+                    if ([allowIntelligentManagement5 isEqual:allowIntelligentManagement6])
                     {
-                      v52 = v38;
-                      v53 = v37;
+                      v52 = allowIntelligentManagement6;
+                      v53 = allowIntelligentManagement5;
 LABEL_44:
-                      v39 = [(DNDSConfigurationRecord *)self compatibilityVersion];
-                      v40 = [(DNDSConfigurationRecord *)v5 compatibilityVersion];
-                      if (v39 == v40)
+                      compatibilityVersion = [(DNDSConfigurationRecord *)self compatibilityVersion];
+                      compatibilityVersion2 = [(DNDSConfigurationRecord *)v5 compatibilityVersion];
+                      if (compatibilityVersion == compatibilityVersion2)
                       {
 
                         v8 = 1;
@@ -383,20 +383,20 @@ LABEL_44:
 
                       else
                       {
-                        v54 = v40;
-                        v41 = [(DNDSConfigurationRecord *)self compatibilityVersion];
-                        if (v41)
+                        v54 = compatibilityVersion2;
+                        compatibilityVersion3 = [(DNDSConfigurationRecord *)self compatibilityVersion];
+                        if (compatibilityVersion3)
                         {
-                          v51 = v41;
-                          v42 = [(DNDSConfigurationRecord *)v5 compatibilityVersion];
-                          if (v42)
+                          v51 = compatibilityVersion3;
+                          compatibilityVersion4 = [(DNDSConfigurationRecord *)v5 compatibilityVersion];
+                          if (compatibilityVersion4)
                           {
-                            v50 = v42;
-                            v49 = [(DNDSConfigurationRecord *)self compatibilityVersion];
-                            v43 = [(DNDSConfigurationRecord *)v5 compatibilityVersion];
-                            v8 = [v49 isEqual:?];
+                            v50 = compatibilityVersion4;
+                            compatibilityVersion5 = [(DNDSConfigurationRecord *)self compatibilityVersion];
+                            compatibilityVersion6 = [(DNDSConfigurationRecord *)v5 compatibilityVersion];
+                            v8 = [compatibilityVersion5 isEqual:?];
 
-                            v42 = v50;
+                            compatibilityVersion4 = v50;
                           }
 
                           else
@@ -420,17 +420,17 @@ LABEL_44:
                       {
                       }
 
-                      if (v72 != v74)
+                      if (v72 != suppressionMode2)
                       {
                       }
 
-                      if (v80 != v79)
+                      if (v80 != suppressionType2)
                       {
                       }
 
 LABEL_58:
                       v14 = v75;
-                      if (v81 != v12)
+                      if (v81 != minimumBreakthroughUrgency2)
                       {
                         goto LABEL_59;
                       }
@@ -440,7 +440,7 @@ LABEL_61:
                       goto LABEL_62;
                     }
 
-                    v35 = v55;
+                    allowIntelligentManagement4 = v55;
                     v36 = v72;
                   }
 
@@ -465,12 +465,12 @@ LABEL_61:
                 }
 
 LABEL_71:
-                if (v36 != v74)
+                if (v36 != suppressionMode2)
                 {
                 }
 
                 v45 = v80;
-                if (v80 != v79)
+                if (v80 != suppressionType2)
                 {
                 }
 
@@ -480,14 +480,14 @@ LABEL_56:
               }
             }
 
-            v44 = v74;
+            v44 = suppressionMode2;
             v28 = v72;
             goto LABEL_51;
           }
 
 LABEL_54:
           v45 = v80;
-          if (v80 != v79)
+          if (v80 != suppressionType2)
           {
           }
 
@@ -510,110 +510,110 @@ LABEL_64:
 {
   v18 = MEMORY[0x277CCACA8];
   v17 = objc_opt_class();
-  v21 = [(DNDSConfigurationRecord *)self applicationConfigurationType];
-  [v21 unsignedIntegerValue];
+  applicationConfigurationType = [(DNDSConfigurationRecord *)self applicationConfigurationType];
+  [applicationConfigurationType unsignedIntegerValue];
   v15 = DNDStringFromConfigurationType();
-  v20 = [(DNDSConfigurationRecord *)self senderConfigurationType];
-  [v20 unsignedIntegerValue];
+  senderConfigurationType = [(DNDSConfigurationRecord *)self senderConfigurationType];
+  [senderConfigurationType unsignedIntegerValue];
   v22 = DNDStringFromConfigurationType();
-  v19 = [(DNDSConfigurationRecord *)self suppressionType];
-  [v19 unsignedIntegerValue];
+  suppressionType = [(DNDSConfigurationRecord *)self suppressionType];
+  [suppressionType unsignedIntegerValue];
   v12 = DNDStringFromInterruptionSuppression();
-  v16 = [(DNDSConfigurationRecord *)self suppressionMode];
-  [v16 unsignedIntegerValue];
+  suppressionMode = [(DNDSConfigurationRecord *)self suppressionMode];
+  [suppressionMode unsignedIntegerValue];
   v13 = DNDStringFromInterruptionSuppressionMode();
-  v14 = [(DNDSConfigurationRecord *)self minimumBreakthroughUrgency];
-  [v14 unsignedIntegerValue];
+  minimumBreakthroughUrgency = [(DNDSConfigurationRecord *)self minimumBreakthroughUrgency];
+  [minimumBreakthroughUrgency unsignedIntegerValue];
   v3 = DNDStringFromBreakthroughUrgency();
-  v4 = [(DNDSConfigurationRecord *)self hideApplicationBadges];
-  [v4 unsignedIntegerValue];
+  hideApplicationBadges = [(DNDSConfigurationRecord *)self hideApplicationBadges];
+  [hideApplicationBadges unsignedIntegerValue];
   v5 = DNDEnabledSettingToString();
-  v6 = [(DNDSConfigurationRecord *)self allowIntelligentManagement];
-  [v6 unsignedIntegerValue];
+  allowIntelligentManagement = [(DNDSConfigurationRecord *)self allowIntelligentManagement];
+  [allowIntelligentManagement unsignedIntegerValue];
   v7 = DNDEnabledSettingToString();
-  v8 = [(DNDSConfigurationRecord *)self compatibilityVersion];
-  [v8 integerValue];
+  compatibilityVersion = [(DNDSConfigurationRecord *)self compatibilityVersion];
+  [compatibilityVersion integerValue];
   v9 = DNDCompatibilityVersionToString();
   v10 = [v18 stringWithFormat:@"<%@: %p applicationConfigurationType: %@; senderConfigurationType: %@; suppressionType: %@; suppressionMode: %@; minimumBreakthroughUrgency: %@; hideApplicationBadges: %@; allowIntelligentManagement: %@; compatibilityVersion: %@>", v17, self, v15, v22, v12, v13, v3, v5, v7, v9];;
 
   return v10;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSMutableConfigurationRecord alloc];
 
   return [(DNDSConfigurationRecord *)v4 _initWithRecord:self];
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v21 = [v6 bs_safeObjectForKey:@"applicationConfigurationType" ofType:objc_opt_class()];
-  v8 = [v6 bs_safeObjectForKey:@"senderConfigurationType" ofType:objc_opt_class()];
-  v9 = [v6 bs_safeObjectForKey:@"suppressionType" ofType:objc_opt_class()];
-  v10 = [v6 bs_safeNumberForKey:@"suppressionMode"];
-  v11 = [v7 currentRecord];
+  representationCopy = representation;
+  contextCopy = context;
+  v21 = [representationCopy bs_safeObjectForKey:@"applicationConfigurationType" ofType:objc_opt_class()];
+  v8 = [representationCopy bs_safeObjectForKey:@"senderConfigurationType" ofType:objc_opt_class()];
+  v9 = [representationCopy bs_safeObjectForKey:@"suppressionType" ofType:objc_opt_class()];
+  v10 = [representationCopy bs_safeNumberForKey:@"suppressionMode"];
+  currentRecord = [contextCopy currentRecord];
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v13 = [v7 currentRecord];
-    v14 = [v13 suppressionMode];
+    currentRecord2 = [contextCopy currentRecord];
+    suppressionMode = [currentRecord2 suppressionMode];
 
-    v10 = v14;
+    v10 = suppressionMode;
   }
 
-  v15 = [v6 bs_safeObjectForKey:@"minimumBreakthroughUrgency" ofType:objc_opt_class()];
-  v16 = [v6 bs_safeNumberForKey:@"hideApplicationBadges"];
-  v17 = [v6 bs_safeNumberForKey:@"allowIntelligentManagement"];
-  v18 = [v6 bs_safeNumberForKey:@"compatibilityVersion"];
-  v19 = [[a1 alloc] _initWithApplicationConfigurationType:v21 senderConfigurationType:v8 suppressionType:v9 suppressionMode:v10 minimumBreakthroughUrgency:v15 hideApplicationBadges:v16 allowIntelligentManagement:v17 compatibilityVersion:v18];
+  v15 = [representationCopy bs_safeObjectForKey:@"minimumBreakthroughUrgency" ofType:objc_opt_class()];
+  v16 = [representationCopy bs_safeNumberForKey:@"hideApplicationBadges"];
+  v17 = [representationCopy bs_safeNumberForKey:@"allowIntelligentManagement"];
+  v18 = [representationCopy bs_safeNumberForKey:@"compatibilityVersion"];
+  v19 = [[self alloc] _initWithApplicationConfigurationType:v21 senderConfigurationType:v8 suppressionType:v9 suppressionMode:v10 minimumBreakthroughUrgency:v15 hideApplicationBadges:v16 allowIntelligentManagement:v17 compatibilityVersion:v18];
 
   return v19;
 }
 
-- (id)dictionaryRepresentationWithContext:(id)a3
+- (id)dictionaryRepresentationWithContext:(id)context
 {
-  v4 = [a3 healingSource];
-  v5 = [v4 mutableCopy];
+  healingSource = [context healingSource];
+  v5 = [healingSource mutableCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    dictionary = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v8 = v7;
+  v8 = dictionary;
 
-  v9 = [(DNDSConfigurationRecord *)self applicationConfigurationType];
-  [v8 setObject:v9 forKey:@"applicationConfigurationType"];
+  applicationConfigurationType = [(DNDSConfigurationRecord *)self applicationConfigurationType];
+  [v8 setObject:applicationConfigurationType forKey:@"applicationConfigurationType"];
 
-  v10 = [(DNDSConfigurationRecord *)self senderConfigurationType];
-  [v8 setObject:v10 forKey:@"senderConfigurationType"];
+  senderConfigurationType = [(DNDSConfigurationRecord *)self senderConfigurationType];
+  [v8 setObject:senderConfigurationType forKey:@"senderConfigurationType"];
 
-  v11 = [(DNDSConfigurationRecord *)self suppressionType];
-  [v8 setObject:v11 forKey:@"suppressionType"];
+  suppressionType = [(DNDSConfigurationRecord *)self suppressionType];
+  [v8 setObject:suppressionType forKey:@"suppressionType"];
 
-  v12 = [(DNDSConfigurationRecord *)self suppressionMode];
-  [v8 setObject:v12 forKey:@"suppressionMode"];
+  suppressionMode = [(DNDSConfigurationRecord *)self suppressionMode];
+  [v8 setObject:suppressionMode forKey:@"suppressionMode"];
 
-  v13 = [(DNDSConfigurationRecord *)self minimumBreakthroughUrgency];
-  [v8 setObject:v13 forKey:@"minimumBreakthroughUrgency"];
+  minimumBreakthroughUrgency = [(DNDSConfigurationRecord *)self minimumBreakthroughUrgency];
+  [v8 setObject:minimumBreakthroughUrgency forKey:@"minimumBreakthroughUrgency"];
 
-  v14 = [(DNDSConfigurationRecord *)self hideApplicationBadges];
-  [v8 setObject:v14 forKey:@"hideApplicationBadges"];
+  hideApplicationBadges = [(DNDSConfigurationRecord *)self hideApplicationBadges];
+  [v8 setObject:hideApplicationBadges forKey:@"hideApplicationBadges"];
 
-  v15 = [(DNDSConfigurationRecord *)self allowIntelligentManagement];
-  [v8 setObject:v15 forKey:@"allowIntelligentManagement"];
+  allowIntelligentManagement = [(DNDSConfigurationRecord *)self allowIntelligentManagement];
+  [v8 setObject:allowIntelligentManagement forKey:@"allowIntelligentManagement"];
 
-  v16 = [(DNDSConfigurationRecord *)self compatibilityVersion];
-  [v8 setObject:v16 forKey:@"compatibilityVersion"];
+  compatibilityVersion = [(DNDSConfigurationRecord *)self compatibilityVersion];
+  [v8 setObject:compatibilityVersion forKey:@"compatibilityVersion"];
 
   return v8;
 }

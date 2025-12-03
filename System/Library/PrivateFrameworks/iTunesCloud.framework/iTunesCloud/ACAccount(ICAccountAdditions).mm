@@ -31,65 +31,65 @@
   v2 = +[ICDeviceInfo currentDeviceInfo];
   if (([v2 isAppleTV] & 1) == 0 && (objc_msgSend(v2, "isAudioAccessory") & 1) == 0)
   {
-    v6 = [a1 ic_isActive];
+    ic_isActive = [self ic_isActive];
     goto LABEL_16;
   }
 
-  v3 = [v2 isAppleTV];
-  v4 = [a1 ic_isActive];
-  if (v3)
+  isAppleTV = [v2 isAppleTV];
+  ic_isActive2 = [self ic_isActive];
+  if (isAppleTV)
   {
-    if ((v4 & 1) == 0)
+    if ((ic_isActive2 & 1) == 0)
     {
-      if (([a1 ic_isLocalAccount] & 1) == 0)
+      if (([self ic_isLocalAccount] & 1) == 0)
       {
-        v5 = [a1 ic_DSID];
-        v6 = v5 != 0;
+        ic_DSID = [self ic_DSID];
+        ic_isActive = ic_DSID != 0;
 
         goto LABEL_16;
       }
 
 LABEL_11:
-      v6 = 0;
+      ic_isActive = 0;
       goto LABEL_16;
     }
 
 LABEL_8:
-    v6 = 1;
+    ic_isActive = 1;
     goto LABEL_16;
   }
 
-  if (v4)
+  if (ic_isActive2)
   {
     goto LABEL_8;
   }
 
-  if ([a1 ic_isLocalAccount])
+  if ([self ic_isLocalAccount])
   {
     goto LABEL_11;
   }
 
-  v7 = [a1 ic_homeUserIdentifiers];
-  if ([v7 count])
+  ic_homeUserIdentifiers = [self ic_homeUserIdentifiers];
+  if ([ic_homeUserIdentifiers count])
   {
-    v8 = [a1 ic_DSID];
-    v6 = v8 != 0;
+    ic_DSID2 = [self ic_DSID];
+    ic_isActive = ic_DSID2 != 0;
   }
 
   else
   {
-    v6 = 0;
+    ic_isActive = 0;
   }
 
 LABEL_16:
-  return v6;
+  return ic_isActive;
 }
 
 - (uint64_t)ic_isITunesAccount
 {
-  v2 = [a1 accountType];
-  v3 = [v2 identifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E6959930]];
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  v4 = [identifier isEqualToString:*MEMORY[0x1E6959930]];
 
   if (!v4)
   {
@@ -97,22 +97,22 @@ LABEL_16:
   }
 
   v5 = +[ICDeviceInfo currentDeviceInfo];
-  v6 = [v5 isMac];
+  isMac = [v5 isMac];
 
-  if (!v6)
+  if (!isMac)
   {
     return 1;
   }
 
-  v7 = [a1 ic_activeMediaTypes];
-  v8 = ![v7 count] || objc_msgSend(v7, "containsObject:", @"com.apple.AppleMediaServices.accountmediatype.itunes");
+  ic_activeMediaTypes = [self ic_activeMediaTypes];
+  v8 = ![ic_activeMediaTypes count] || objc_msgSend(ic_activeMediaTypes, "containsObject:", @"com.apple.AppleMediaServices.accountmediatype.itunes");
 
   return v8;
 }
 
 - (id)ic_DSID
 {
-  v1 = [a1 accountPropertyForKey:@"dsid"];
+  v1 = [self accountPropertyForKey:@"dsid"];
   v2 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v1, "longLongValue")}];
 
   return v2;
@@ -121,17 +121,17 @@ LABEL_16:
 - (id)ic_description
 {
   v72[0] = *MEMORY[0x1E69E9840];
-  v2 = [a1 identifier];
-  v3 = [a1 username];
+  identifier = [self identifier];
+  username = [self username];
   v4 = +[ICDeviceInfo currentDeviceInfo];
-  v5 = [v4 isInternalBuild];
+  isInternalBuild = [v4 isInternalBuild];
 
-  if ((v5 & 1) == 0)
+  if ((isInternalBuild & 1) == 0)
   {
     v6 = &stru_1F2C4A680;
-    if (v3)
+    if (username)
     {
-      v6 = v3;
+      v6 = username;
     }
 
     v7 = v6;
@@ -315,7 +315,7 @@ LABEL_51:
             v56 = v39;
 LABEL_52:
 
-            v3 = v56;
+            username = v56;
             goto LABEL_53;
           }
 
@@ -323,9 +323,9 @@ LABEL_52:
         }
 
 LABEL_62:
-        v65 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v66 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-        [v65 handleFailureInFunction:v66 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+        [currentHandler handleFailureInFunction:v66 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
         v56 = &stru_1F2C4A680;
         goto LABEL_52;
@@ -384,28 +384,28 @@ LABEL_62:
   }
 
 LABEL_53:
-  if ([a1 ic_isITunesAccount])
+  if ([self ic_isITunesAccount])
   {
     v57 = MEMORY[0x1E696AEC0];
-    v58 = [a1 ic_DSID];
-    v59 = ICCreateLoggableValueForDSID(v58);
-    v60 = [v57 stringWithFormat:@"<%@ (%@) [DSID=%@, isActive=%d]>", v3, v2, v59, objc_msgSend(a1, "ic_isActive")];
+    ic_DSID = [self ic_DSID];
+    v59 = ICCreateLoggableValueForDSID(ic_DSID);
+    v60 = [v57 stringWithFormat:@"<%@ (%@) [DSID=%@, isActive=%d]>", username, identifier, v59, objc_msgSend(self, "ic_isActive")];
   }
 
   else
   {
-    v61 = [a1 accountType];
-    v62 = [v61 identifier];
-    v63 = [v62 isEqualToString:*MEMORY[0x1E69597F8]];
+    accountType = [self accountType];
+    identifier2 = [accountType identifier];
+    v63 = [identifier2 isEqualToString:*MEMORY[0x1E69597F8]];
 
     if (v63)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@ (%@) [primary=%d]>", v3, v2, objc_msgSend(a1, "aa_isAccountClass:", *MEMORY[0x1E698B760])];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@ (%@) [primary=%d]>", username, identifier, objc_msgSend(self, "aa_isAccountClass:", *MEMORY[0x1E698B760])];
     }
 
     else
     {
-      [a1 description];
+      [self description];
     }
     v60 = ;
   }
@@ -416,7 +416,7 @@ LABEL_53:
 - (id)ic_storefront
 {
   v10 = *MEMORY[0x1E69E9840];
-  v1 = [a1 accountPropertyForKey:@"storefrontID"];
+  v1 = [self accountPropertyForKey:@"storefrontID"];
   if (_NSIsNSString())
   {
     v2 = v1;
@@ -446,23 +446,23 @@ LABEL_53:
 
 - (uint64_t)ic_isActiveLockerAccount
 {
-  v1 = [a1 accountPropertyForKey:@"isActiveLockerAccount"];
-  v2 = [v1 BOOLValue];
+  v1 = [self accountPropertyForKey:@"isActiveLockerAccount"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)ic_isManagedAppleID
 {
-  v1 = [a1 accountPropertyForKey:@"isManagedAppleID"];
-  v2 = [v1 BOOLValue];
+  v1 = [self accountPropertyForKey:@"isManagedAppleID"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (BOOL)ic_isSandboxed
 {
-  v1 = [a1 accountPropertyForKey:@"scope"];
+  v1 = [self accountPropertyForKey:@"scope"];
   v2 = [v1 integerValue] == 1;
 
   return v2;
@@ -470,17 +470,17 @@ LABEL_53:
 
 - (uint64_t)ic_isSubscriptionStatusEnabled
 {
-  v1 = [a1 accountPropertyForKey:@"eligibleServices"];
+  v1 = [self accountPropertyForKey:@"eligibleServices"];
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", 0];
   v3 = [v1 objectForKey:v2];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)ic_ageVerificationExpirationDate
 {
-  v1 = [a1 ams_accountFlagValueForAccountFlag:*MEMORY[0x1E698C498]];
+  v1 = [self ams_accountFlagValueForAccountFlag:*MEMORY[0x1E698C498]];
   if (v1 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v2 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{(objc_msgSend(v1, "longLongValue") / 1000)}];
@@ -496,7 +496,7 @@ LABEL_53:
 
 - (id)ic_privateListeningEnabledForHomeUsers
 {
-  v1 = [a1 accountPropertyForKey:@"musicPrivateListeningEnabledForHomeUsers"];
+  v1 = [self accountPropertyForKey:@"musicPrivateListeningEnabledForHomeUsers"];
   v2 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v1, "count")}];
   if (_NSIsNSDictionary())
   {
@@ -514,9 +514,9 @@ LABEL_53:
 - (uint64_t)ic_isU18MinorAccount
 {
   v0 = +[ICDefaults standardDefaults];
-  v1 = [v0 cachedU18MinorAccountStatus];
+  cachedU18MinorAccountStatus = [v0 cachedU18MinorAccountStatus];
 
-  return v1;
+  return cachedU18MinorAccountStatus;
 }
 
 - (void)ic_setPrivateListeningEnabledForHomeUsers:()ICAccountAdditions
@@ -540,13 +540,13 @@ LABEL_53:
     v7 = 0;
   }
 
-  [a1 setAccountProperty:v7 forKey:@"musicPrivateListeningEnabledForHomeUsers"];
+  [self setAccountProperty:v7 forKey:@"musicPrivateListeningEnabledForHomeUsers"];
 }
 
 - (uint64_t)ic_isAutomaticDownloadsEnabledForMediaKindMusic
 {
   v14 = *MEMORY[0x1E69E9840];
-  v1 = [a1 ams_automaticDownloadKinds];
+  ams_automaticDownloadKinds = [self ams_automaticDownloadKinds];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -567,7 +567,7 @@ LABEL_53:
           objc_enumerationMutation(v2);
         }
 
-        v6 = [v1 containsObject:*(*(&v9 + 1) + 8 * i)] & v6;
+        v6 = [ams_automaticDownloadKinds containsObject:*(*(&v9 + 1) + 8 * i)] & v6;
       }
 
       v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
@@ -588,24 +588,24 @@ LABEL_53:
 {
   if (a3)
   {
-    v4 = [a3 allObjects];
+    allObjects = [a3 allObjects];
   }
 
   else
   {
-    v4 = 0;
+    allObjects = 0;
   }
 
-  v5 = v4;
-  [a1 setAccountProperty:v4 forKey:@"automaticDownloadKinds"];
+  v5 = allObjects;
+  [self setAccountProperty:allObjects forKey:@"automaticDownloadKinds"];
 }
 
 - (id)ic_automaticDownloadKinds
 {
-  v1 = [a1 ams_automaticDownloadKinds];
-  if ([v1 count])
+  ams_automaticDownloadKinds = [self ams_automaticDownloadKinds];
+  if ([ams_automaticDownloadKinds count])
   {
-    v2 = [MEMORY[0x1E695DFD8] setWithArray:v1];
+    v2 = [MEMORY[0x1E695DFD8] setWithArray:ams_automaticDownloadKinds];
   }
 
   else
@@ -618,7 +618,7 @@ LABEL_53:
 
 - (void)ic_setSubscriptionStatusEnabled:()ICAccountAdditions
 {
-  v5 = [a1 accountPropertyForKey:@"eligibleServices"];
+  v5 = [self accountPropertyForKey:@"eligibleServices"];
   v6 = [v5 mutableCopy];
   v7 = v6;
   if (v6)
@@ -638,43 +638,43 @@ LABEL_53:
   [v9 setObject:v11 forKey:v10];
 
   v12 = [v9 copy];
-  [a1 setAccountProperty:v12 forKey:@"eligibleServices"];
+  [self setAccountProperty:v12 forKey:@"eligibleServices"];
 }
 
 - (void)ic_setAgeVerificationExpirationDate:()ICAccountAdditions
 {
   [a3 timeIntervalSince1970];
   v5 = [MEMORY[0x1E696AD98] numberWithLongLong:v4];
-  [a1 ams_setAccountFlagValue:v5 forAccountFlag:*MEMORY[0x1E698C498]];
+  [self ams_setAccountFlagValue:v5 forAccountFlag:*MEMORY[0x1E698C498]];
 }
 
 - (void)ic_setManagedAppleID:()ICAccountAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 setAccountProperty:v2 forKey:@"isManagedAppleID"];
+  [self setAccountProperty:v2 forKey:@"isManagedAppleID"];
 }
 
 - (void)ic_setActiveLockerAccount:()ICAccountAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 setAccountProperty:v2 forKey:@"isActiveLockerAccount"];
+  [self setAccountProperty:v2 forKey:@"isActiveLockerAccount"];
 }
 
 - (void)ic_setSandboxed:()ICAccountAdditions
 {
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [a1 setAccountProperty:v4 forKey:@"scope"];
+  [self setAccountProperty:v4 forKey:@"scope"];
 }
 
 - (void)ic_setUniqueIdentifier:()ICAccountAdditions
 {
-  v4 = [a3 stringValue];
-  [a1 setAccountProperty:v4 forKey:@"dsid"];
+  stringValue = [a3 stringValue];
+  [self setAccountProperty:stringValue forKey:@"dsid"];
 }
 
 - (id)ic_uniqueIdentifier
 {
-  v1 = [a1 accountPropertyForKey:@"dsid"];
+  v1 = [self accountPropertyForKey:@"dsid"];
   v2 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v1, "longLongValue")}];
 
   return v2;

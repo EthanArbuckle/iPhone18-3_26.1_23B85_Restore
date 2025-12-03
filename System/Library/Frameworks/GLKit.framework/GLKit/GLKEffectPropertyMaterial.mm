@@ -1,5 +1,5 @@
 @interface GLKEffectPropertyMaterial
-+ (void)setStaticMasksWithVshRoot:(id)a3 fshRoot:(id)a4;
++ (void)setStaticMasksWithVshRoot:(id)root fshRoot:(id)fshRoot;
 - (GLKBigInt_s)_colorMaterialEnabledMask;
 - (GLKEffectPropertyMaterial)init;
 - (GLKVector4)ambientColor;
@@ -12,7 +12,7 @@
 - (void)initializeMasks;
 - (void)setAmbientColor:(GLKVector4)ambientColor;
 - (void)setDiffuseColor:(GLKVector4)diffuseColor;
-- (void)setEffectDirtyUniforms:(unint64_t *)a3;
+- (void)setEffectDirtyUniforms:(unint64_t *)uniforms;
 - (void)setEmissiveColor:(GLKVector4)emissiveColor;
 - (void)setShaderBindings;
 - (void)setShininess:(GLfloat)shininess;
@@ -41,12 +41,12 @@
   return result;
 }
 
-- (void)setEffectDirtyUniforms:(unint64_t *)a3
+- (void)setEffectDirtyUniforms:(unint64_t *)uniforms
 {
-  if (self->_effectDirtyUniforms != a3)
+  if (self->_effectDirtyUniforms != uniforms)
   {
-    self->_effectDirtyUniforms = a3;
-    *a3 |= 0x5000000uLL;
+    self->_effectDirtyUniforms = uniforms;
+    *uniforms |= 0x5000000uLL;
   }
 }
 
@@ -235,7 +235,7 @@
   [(GLKEffectPropertyMaterial *)self dirtyAllUniforms];
 }
 
-+ (void)setStaticMasksWithVshRoot:(id)a3 fshRoot:(id)a4
++ (void)setStaticMasksWithVshRoot:(id)root fshRoot:(id)fshRoot
 {
   v6 = 0;
   _allVshMasks_0 = 0uLL;
@@ -245,7 +245,7 @@
   {
     v8 = v7;
     v9 = &_staticVshMasks_1[2 * v6];
-    v10 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", _maskStrs_1[v6], a3, [a3 index]);
+    v10 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", _maskStrs_1[v6], root, [root index]);
     v7 = 0;
     *v9 = v10;
     v9[1] = v11;
@@ -261,7 +261,7 @@
   {
     v14 = v13;
     v15 = &_staticFshMasks_0[2 * v12];
-    v16 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", _maskStrs_1[v12], a4, [a4 index]);
+    v16 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", _maskStrs_1[v12], fshRoot, [fshRoot index]);
     v13 = 0;
     *v15 = v16;
     v15[1] = v17;

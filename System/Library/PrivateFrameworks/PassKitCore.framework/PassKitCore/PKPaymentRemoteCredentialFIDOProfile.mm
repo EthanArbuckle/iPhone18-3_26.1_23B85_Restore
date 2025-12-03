@@ -1,55 +1,55 @@
 @interface PKPaymentRemoteCredentialFIDOProfile
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentRemoteCredentialFIDOProfile)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentRemoteCredentialFIDOProfile)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation PKPaymentRemoteCredentialFIDOProfile
 
-- (PKPaymentRemoteCredentialFIDOProfile)initWithDictionary:(id)a3
+- (PKPaymentRemoteCredentialFIDOProfile)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v18.receiver = self;
     v18.super_class = PKPaymentRemoteCredentialFIDOProfile;
     v5 = [(PKPaymentRemoteCredentialFIDOProfile *)&v18 init];
     if (v5)
     {
-      v6 = [v4 objectForKeyedSubscript:@"relyingPartyIdentifier"];
+      v6 = [dictionaryCopy objectForKeyedSubscript:@"relyingPartyIdentifier"];
       v7 = [v6 copy];
       relyingPartyIdentifier = v5->_relyingPartyIdentifier;
       v5->_relyingPartyIdentifier = v7;
 
-      v9 = [v4 objectForKeyedSubscript:@"accountHash"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"accountHash"];
       v10 = [v9 copy];
       accountHash = v5->_accountHash;
       v5->_accountHash = v10;
 
       v12 = MEMORY[0x1E695DEF0];
-      v13 = [v4 objectForKeyedSubscript:@"keyHash"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"keyHash"];
       v14 = [v12 dataWithHexEncodedString:v13];
       keyHash = v5->_keyHash;
       v5->_keyHash = v14;
     }
 
     self = v5;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -59,7 +59,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v18.receiver = self;
       v18.super_class = PKPaymentRemoteCredentialFIDOProfile;
       if (![(PKPaymentRemoteCredentialFIDOProfile *)&v18 isEqual:v5])
@@ -144,11 +144,11 @@ LABEL_20:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_relyingPartyIdentifier];
-  [v3 safelyAddObject:self->_accountHash];
-  [v3 safelyAddObject:self->_keyHash];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_relyingPartyIdentifier];
+  [array safelyAddObject:self->_accountHash];
+  [array safelyAddObject:self->_keyHash];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }

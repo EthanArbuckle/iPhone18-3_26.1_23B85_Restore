@@ -1,71 +1,71 @@
 @interface PETConfig
-- (BOOL)isAggregatedForMessageName:(id)a3;
-- (BOOL)isChinaEnabledForMessageName:(id)a3 messageGroup:(id)a4;
-- (BOOL)isTVOSEnabledForMessageName:(id)a3 messageGroup:(id)a4;
+- (BOOL)isAggregatedForMessageName:(id)name;
+- (BOOL)isChinaEnabledForMessageName:(id)name messageGroup:(id)group;
+- (BOOL)isTVOSEnabledForMessageName:(id)name messageGroup:(id)group;
 - (BOOL)shouldUploadToFBFv2;
 - (BOOL)shouldUploadToFBFv2ForCarryAndSeed;
 - (BOOL)shouldUploadToParsec;
-- (PETConfig)initWithDictionary:(id)a3;
-- (PETConfig)initWithFile:(id)a3;
-- (double)deviceSamplingForMessageName:(id)a3 isSeed:(BOOL)a4;
-- (double)messageSamplingForMessageName:(id)a3 isSeed:(BOOL)a4;
-- (id)_configForMessageName:(id)a3;
-- (id)_groupConfigForMessageName:(id)a3;
-- (id)_nestedFieldsHelper:(id)a3;
-- (id)_whitelistHelper:(id)a3;
-- (id)bucketsForMessageName:(id)a3;
-- (id)groupForMessageName:(id)a3;
-- (unint64_t)samplingLimitForMessageGroup:(id)a3;
-- (unint64_t)sigFigsForMessageName:(id)a3;
-- (void)_enumerateGroupConfigsWithBlock:(id)a3;
+- (PETConfig)initWithDictionary:(id)dictionary;
+- (PETConfig)initWithFile:(id)file;
+- (double)deviceSamplingForMessageName:(id)name isSeed:(BOOL)seed;
+- (double)messageSamplingForMessageName:(id)name isSeed:(BOOL)seed;
+- (id)_configForMessageName:(id)name;
+- (id)_groupConfigForMessageName:(id)name;
+- (id)_nestedFieldsHelper:(id)helper;
+- (id)_whitelistHelper:(id)helper;
+- (id)bucketsForMessageName:(id)name;
+- (id)groupForMessageName:(id)name;
+- (unint64_t)samplingLimitForMessageGroup:(id)group;
+- (unint64_t)sigFigsForMessageName:(id)name;
+- (void)_enumerateGroupConfigsWithBlock:(id)block;
 @end
 
 @implementation PETConfig
 
 - (BOOL)shouldUploadToFBFv2ForCarryAndSeed
 {
-  v2 = [(PETConfig *)self configDictionary];
-  v3 = [v2 pet_numForKey:@"upload_to_fbfv2_carry_seed"];
-  v4 = [v3 BOOLValue];
+  configDictionary = [(PETConfig *)self configDictionary];
+  v3 = [configDictionary pet_numForKey:@"upload_to_fbfv2_carry_seed"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)shouldUploadToFBFv2
 {
-  v2 = [(PETConfig *)self configDictionary];
-  v3 = [v2 pet_numForKey:@"upload_to_fbfv2"];
-  v4 = [v3 BOOLValue];
+  configDictionary = [(PETConfig *)self configDictionary];
+  v3 = [configDictionary pet_numForKey:@"upload_to_fbfv2"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)shouldUploadToParsec
 {
-  v2 = [(PETConfig *)self configDictionary];
-  v3 = [v2 pet_numForKey:@"upload_to_parsec"];
-  v4 = [v3 BOOLValue];
+  configDictionary = [(PETConfig *)self configDictionary];
+  v3 = [configDictionary pet_numForKey:@"upload_to_parsec"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)isChinaEnabledForMessageName:(id)a3 messageGroup:(id)a4
+- (BOOL)isChinaEnabledForMessageName:(id)name messageGroup:(id)group
 {
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_messageGroups objectForKeyedSubscript:a4];
+  nameCopy = name;
+  v7 = [(NSDictionary *)self->_messageGroups objectForKeyedSubscript:group];
   if (!v7)
   {
-    v7 = [(PETConfig *)self _groupConfigForMessageName:v6];
+    v7 = [(PETConfig *)self _groupConfigForMessageName:nameCopy];
     if (!v7)
     {
-      v14 = 0;
+      bOOLValue = 0;
       goto LABEL_8;
     }
   }
 
   v8 = v7;
   v9 = [v7 pet_numForKey:@"china_enabled"];
-  v10 = [(PETConfig *)self _configForMessageName:v6];
+  v10 = [(PETConfig *)self _configForMessageName:nameCopy];
   v11 = [v10 pet_numForKey:@"china_enabled"];
   v12 = v11;
   if (v11)
@@ -77,34 +77,34 @@
 
   else if (!v9)
   {
-    v14 = 0;
+    bOOLValue = 0;
     goto LABEL_7;
   }
 
-  v14 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 LABEL_7:
 
 LABEL_8:
-  return v14;
+  return bOOLValue;
 }
 
-- (BOOL)isTVOSEnabledForMessageName:(id)a3 messageGroup:(id)a4
+- (BOOL)isTVOSEnabledForMessageName:(id)name messageGroup:(id)group
 {
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_messageGroups objectForKeyedSubscript:a4];
+  nameCopy = name;
+  v7 = [(NSDictionary *)self->_messageGroups objectForKeyedSubscript:group];
   if (!v7)
   {
-    v7 = [(PETConfig *)self _groupConfigForMessageName:v6];
+    v7 = [(PETConfig *)self _groupConfigForMessageName:nameCopy];
     if (!v7)
     {
-      v14 = 0;
+      bOOLValue = 0;
       goto LABEL_8;
     }
   }
 
   v8 = v7;
   v9 = [v7 pet_numForKey:@"tvos_enabled"];
-  v10 = [(PETConfig *)self _configForMessageName:v6];
+  v10 = [(PETConfig *)self _configForMessageName:nameCopy];
   v11 = [v10 pet_numForKey:@"tvos_enabled"];
   v12 = v11;
   if (v11)
@@ -116,26 +116,26 @@ LABEL_8:
 
   else if (!v9)
   {
-    v14 = 0;
+    bOOLValue = 0;
     goto LABEL_7;
   }
 
-  v14 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 LABEL_7:
 
 LABEL_8:
-  return v14;
+  return bOOLValue;
 }
 
-- (BOOL)isAggregatedForMessageName:(id)a3
+- (BOOL)isAggregatedForMessageName:(id)name
 {
-  v4 = a3;
-  v5 = [(PETConfig *)self _groupConfigForMessageName:v4];
+  nameCopy = name;
+  v5 = [(PETConfig *)self _groupConfigForMessageName:nameCopy];
   v6 = v5;
   if (v5)
   {
     v7 = [v5 pet_numForKey:@"aggregated"];
-    v8 = [(PETConfig *)self _configForMessageName:v4];
+    v8 = [(PETConfig *)self _configForMessageName:nameCopy];
     v9 = [v8 pet_numForKey:@"aggregated"];
     v10 = v9;
     if (v9)
@@ -147,31 +147,31 @@ LABEL_8:
 
     else if (!v7)
     {
-      v12 = 1;
+      bOOLValue = 1;
       goto LABEL_7;
     }
 
-    v12 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v12 = 1;
+  bOOLValue = 1;
 LABEL_8:
 
-  return v12;
+  return bOOLValue;
 }
 
-- (unint64_t)sigFigsForMessageName:(id)a3
+- (unint64_t)sigFigsForMessageName:(id)name
 {
-  v4 = a3;
-  v5 = [(PETConfig *)self _groupConfigForMessageName:v4];
+  nameCopy = name;
+  v5 = [(PETConfig *)self _groupConfigForMessageName:nameCopy];
   v6 = v5;
   if (v5)
   {
     v7 = [v5 pet_numForKey:@"sig_figs"];
-    v8 = [(PETConfig *)self _configForMessageName:v4];
+    v8 = [(PETConfig *)self _configForMessageName:nameCopy];
     v9 = [v8 pet_numForKey:@"sig_figs"];
     v10 = v9;
     if (v9)
@@ -183,26 +183,26 @@ LABEL_8:
 
     else if (!v7)
     {
-      v12 = 0x7FFFFFFFFFFFFFFFLL;
+      unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_7;
     }
 
-    v12 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v12 = 0x7FFFFFFFFFFFFFFFLL;
+  unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_8:
 
-  return v12;
+  return unsignedIntegerValue;
 }
 
-- (id)bucketsForMessageName:(id)a3
+- (id)bucketsForMessageName:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PETConfig *)self _configForMessageName:a3];
+  v3 = [(PETConfig *)self _configForMessageName:name];
   [v3 pet_arrayForKey:@"hist_buckets"];
   v13 = 0u;
   v14 = 0u;
@@ -250,16 +250,16 @@ LABEL_11:
   return v10;
 }
 
-- (double)messageSamplingForMessageName:(id)a3 isSeed:(BOOL)a4
+- (double)messageSamplingForMessageName:(id)name isSeed:(BOOL)seed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PETConfig *)self _groupConfigForMessageName:v6];
+  seedCopy = seed;
+  nameCopy = name;
+  v7 = [(PETConfig *)self _groupConfigForMessageName:nameCopy];
   v8 = v7;
   if (v7)
   {
     v9 = [v7 pet_numForKey:@"message_sampling"];
-    v10 = [(PETConfig *)self _configForMessageName:v6];
+    v10 = [(PETConfig *)self _configForMessageName:nameCopy];
     v11 = [v10 pet_numForKey:@"message_sampling"];
     v12 = v11;
     if (v11)
@@ -269,7 +269,7 @@ LABEL_11:
       v9 = v13;
     }
 
-    if (v4)
+    if (seedCopy)
     {
       v14 = [v8 pet_numForKey:@"message_sampling_seed"];
       v15 = v14;
@@ -310,16 +310,16 @@ LABEL_11:
   return v21;
 }
 
-- (double)deviceSamplingForMessageName:(id)a3 isSeed:(BOOL)a4
+- (double)deviceSamplingForMessageName:(id)name isSeed:(BOOL)seed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PETConfig *)self _groupConfigForMessageName:v6];
+  seedCopy = seed;
+  nameCopy = name;
+  v7 = [(PETConfig *)self _groupConfigForMessageName:nameCopy];
   v8 = v7;
   if (v7)
   {
     v9 = [v7 pet_numForKey:@"device_sampling"];
-    v10 = [(PETConfig *)self _configForMessageName:v6];
+    v10 = [(PETConfig *)self _configForMessageName:nameCopy];
     v11 = [v10 pet_numForKey:@"device_sampling"];
     v12 = v11;
     if (v11)
@@ -329,7 +329,7 @@ LABEL_11:
       v9 = v13;
     }
 
-    if (v4)
+    if (seedCopy)
     {
       v14 = [v8 pet_numForKey:@"device_sampling_seed"];
       v15 = v14;
@@ -370,9 +370,9 @@ LABEL_11:
   return v21;
 }
 
-- (id)_nestedFieldsHelper:(id)a3
+- (id)_nestedFieldsHelper:(id)helper
 {
-  v4 = [(PETConfig *)self _configForMessageName:a3];
+  v4 = [(PETConfig *)self _configForMessageName:helper];
   v5 = v4;
   if (v4)
   {
@@ -384,7 +384,7 @@ LABEL_11:
     v11[3] = &unk_1E86C28E0;
     v8 = v7;
     v12 = v8;
-    v13 = self;
+    selfCopy = self;
     [v6 enumerateKeysAndObjectsUsingBlock:v11];
     v9 = v8;
   }
@@ -407,11 +407,11 @@ void __33__PETConfig__nestedFieldsHelper___block_invoke(uint64_t a1, void *a2, v
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v8];
 }
 
-- (id)_whitelistHelper:(id)a3
+- (id)_whitelistHelper:(id)helper
 {
-  v4 = a3;
+  helperCopy = helper;
   v5 = objc_opt_new();
-  v6 = [(PETConfig *)self _configForMessageName:v4];
+  v6 = [(PETConfig *)self _configForMessageName:helperCopy];
 
   if (v6)
   {
@@ -430,7 +430,7 @@ void __33__PETConfig__nestedFieldsHelper___block_invoke(uint64_t a1, void *a2, v
     v13[3] = &unk_1E86C28E0;
     v10 = v8;
     v14 = v10;
-    v15 = self;
+    selfCopy = self;
     [v9 enumerateKeysAndObjectsUsingBlock:v13];
     v11 = v10;
   }
@@ -456,9 +456,9 @@ void __30__PETConfig__whitelistHelper___block_invoke_2(uint64_t a1, void *a2, vo
   }
 }
 
-- (id)_groupConfigForMessageName:(id)a3
+- (id)_groupConfigForMessageName:(id)name
 {
-  v4 = [(PETConfig *)self groupForMessageName:a3];
+  v4 = [(PETConfig *)self groupForMessageName:name];
   if ([v4 isEqualToString:@"default"])
   {
     v5 = 0;
@@ -472,9 +472,9 @@ void __30__PETConfig__whitelistHelper___block_invoke_2(uint64_t a1, void *a2, vo
   return v5;
 }
 
-- (id)_configForMessageName:(id)a3
+- (id)_configForMessageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -485,7 +485,7 @@ void __30__PETConfig__whitelistHelper___block_invoke_2(uint64_t a1, void *a2, vo
   v8[1] = 3221225472;
   v8[2] = __35__PETConfig__configForMessageName___block_invoke;
   v8[3] = &unk_1E86C2890;
-  v5 = v4;
+  v5 = nameCopy;
   v9 = v5;
   v10 = &v11;
   [(PETConfig *)self _enumerateGroupConfigsWithBlock:v8];
@@ -507,9 +507,9 @@ void __35__PETConfig__configForMessageName___block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (id)groupForMessageName:(id)a3
+- (id)groupForMessageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -520,7 +520,7 @@ void __35__PETConfig__configForMessageName___block_invoke(uint64_t a1, uint64_t 
   v8[1] = 3221225472;
   v8[2] = __33__PETConfig_groupForMessageName___block_invoke;
   v8[3] = &unk_1E86C2890;
-  v5 = v4;
+  v5 = nameCopy;
   v9 = v5;
   v10 = &v11;
   [(PETConfig *)self _enumerateGroupConfigsWithBlock:v8];
@@ -544,17 +544,17 @@ void __33__PETConfig_groupForMessageName___block_invoke(uint64_t a1, void *a2, v
   }
 }
 
-- (void)_enumerateGroupConfigsWithBlock:(id)a3
+- (void)_enumerateGroupConfigsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   messageGroups = self->_messageGroups;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__PETConfig__enumerateGroupConfigsWithBlock___block_invoke;
   v7[3] = &unk_1E86C2868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSDictionary *)messageGroups enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -571,35 +571,35 @@ void __45__PETConfig__enumerateGroupConfigsWithBlock___block_invoke(uint64_t a1,
   }
 }
 
-- (unint64_t)samplingLimitForMessageGroup:(id)a3
+- (unint64_t)samplingLimitForMessageGroup:(id)group
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"default"])
+  groupCopy = group;
+  if ([groupCopy isEqualToString:@"default"])
   {
-    v5 = 40960;
+    unsignedIntegerValue = 40960;
   }
 
   else
   {
-    v6 = [(NSDictionary *)self->_messageGroups pet_dictForKey:v4];
+    v6 = [(NSDictionary *)self->_messageGroups pet_dictForKey:groupCopy];
     v7 = [v6 pet_numForKey:@"sampling_limit"];
     if ([v7 longValue] < 1 || objc_msgSend(v7, "longValue") > 4294967294)
     {
-      v5 = 4096;
+      unsignedIntegerValue = 4096;
     }
 
     else
     {
-      v5 = [v7 unsignedIntegerValue];
+      unsignedIntegerValue = [v7 unsignedIntegerValue];
     }
   }
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
-- (PETConfig)initWithDictionary:(id)a3
+- (PETConfig)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = PETConfig;
   v6 = [(PETConfig *)&v13 init];
@@ -608,9 +608,9 @@ void __45__PETConfig__enumerateGroupConfigsWithBlock___block_invoke(uint64_t a1,
     goto LABEL_4;
   }
 
-  if ([PETConfigValidator configIsValid:v5])
+  if ([PETConfigValidator configIsValid:dictionaryCopy])
   {
-    objc_storeStrong(&v6->_configDictionary, a3);
+    objc_storeStrong(&v6->_configDictionary, dictionary);
     v7 = [(NSDictionary *)v6->_configDictionary pet_numForKey:@"version"];
     v6->_version = [v7 unsignedIntegerValue];
 
@@ -636,23 +636,23 @@ LABEL_8:
   return v10;
 }
 
-- (PETConfig)initWithFile:(id)a3
+- (PETConfig)initWithFile:(id)file
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fileCopy = file;
   v16.receiver = self;
   v16.super_class = PETConfig;
   v5 = [(PETConfig *)&v16 init];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 pathExtension];
-    v8 = [v7 isEqualToString:@"bin"];
+    pathExtension = [fileCopy pathExtension];
+    v8 = [pathExtension isEqualToString:@"bin"];
 
     if (v8)
     {
       v15 = 0;
-      v9 = [MEMORY[0x1E69C5D40] propertyListWithPath:v4 error:&v15];
+      v9 = [MEMORY[0x1E69C5D40] propertyListWithPath:fileCopy error:&v15];
       v10 = v15;
       if (v10)
       {
@@ -672,7 +672,7 @@ LABEL_8:
 
     else
     {
-      v9 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:v4];
+      v9 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:fileCopy];
     }
 
     if (v9)
@@ -688,7 +688,7 @@ LABEL_15:
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v18 = v4;
+      v18 = fileCopy;
       _os_log_error_impl(&dword_1DF726000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Error loading pet config. File is missing or corrupted: %@", buf, 0xCu);
     }
 

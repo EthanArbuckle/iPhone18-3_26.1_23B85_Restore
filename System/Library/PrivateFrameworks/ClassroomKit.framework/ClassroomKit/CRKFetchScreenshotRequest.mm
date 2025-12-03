@@ -1,39 +1,39 @@
 @interface CRKFetchScreenshotRequest
-- (CRKFetchScreenshotRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CRKFetchScreenshotRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKFetchScreenshotRequest
 
-- (CRKFetchScreenshotRequest)initWithCoder:(id)a3
+- (CRKFetchScreenshotRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CRKFetchScreenshotRequest;
-  v5 = [(CATTaskRequest *)&v9 initWithCoder:v4];
+  v5 = [(CATTaskRequest *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxWidth"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxWidth"];
     v5->_maxWidth = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxHeight"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxHeight"];
     v5->_maxHeight = [v7 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CRKFetchScreenshotRequest;
-  v4 = a3;
-  [(CATTaskRequest *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskRequest *)&v7 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRKFetchScreenshotRequest maxWidth](self, "maxWidth", v7.receiver, v7.super_class)}];
-  [v4 encodeObject:v5 forKey:@"maxWidth"];
+  [coderCopy encodeObject:v5 forKey:@"maxWidth"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRKFetchScreenshotRequest maxHeight](self, "maxHeight")}];
-  [v4 encodeObject:v6 forKey:@"maxHeight"];
+  [coderCopy encodeObject:v6 forKey:@"maxHeight"];
 }
 
 @end

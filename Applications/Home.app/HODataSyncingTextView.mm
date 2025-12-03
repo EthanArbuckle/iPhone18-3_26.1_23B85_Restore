@@ -1,10 +1,10 @@
 @interface HODataSyncingTextView
 - (HODataSyncingTextView)init;
-- (id)_createConstraintsForFirstItem:(id)a3 secondItem:(id)a4;
-- (id)boldFontForStyle:(id)a3;
+- (id)_createConstraintsForFirstItem:(id)item secondItem:(id)secondItem;
+- (id)boldFontForStyle:(id)style;
 - (void)_configureForSpinnerLayout;
 - (void)_configureForTwoLabelLayout;
-- (void)setDataSyncState:(unint64_t)a3;
+- (void)setDataSyncState:(unint64_t)state;
 @end
 
 @implementation HODataSyncingTextView
@@ -53,17 +53,17 @@
   return v2;
 }
 
-- (void)setDataSyncState:(unint64_t)a3
+- (void)setDataSyncState:(unint64_t)state
 {
-  if (a3 > 2)
+  if (state > 2)
   {
-    if (a3 - 4 >= 2)
+    if (state - 4 >= 2)
     {
-      if (a3 == 6 || a3 == 3)
+      if (state == 6 || state == 3)
       {
         v7 = sub_10003DB38(@"HODataSyncingTitleiCloud");
-        v8 = [(HODataSyncingTextView *)self titleLabel];
-        [v8 setText:v7];
+        titleLabel = [(HODataSyncingTextView *)self titleLabel];
+        [titleLabel setText:v7];
 
         v6 = @"HODataSyncingDescriptionEnableiCloud";
         goto LABEL_12;
@@ -73,18 +73,18 @@
     }
   }
 
-  else if (a3)
+  else if (state)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
       return;
     }
 
-    if (a3 == 2)
+    if (state == 2)
     {
       v4 = sub_10003DB38(@"HODataSyncingTitleKeychain");
-      v5 = [(HODataSyncingTextView *)self titleLabel];
-      [v5 setText:v4];
+      titleLabel2 = [(HODataSyncingTextView *)self titleLabel];
+      [titleLabel2 setText:v4];
 
       if (+[HFUtilities isAMac])
       {
@@ -98,164 +98,164 @@
 
 LABEL_12:
       v9 = sub_10003DB38(v6);
-      v10 = [(HODataSyncingTextView *)self descriptionLabel];
-      [v10 setText:v9];
+      descriptionLabel = [(HODataSyncingTextView *)self descriptionLabel];
+      [descriptionLabel setText:v9];
 
-      v11 = [(HODataSyncingTextView *)self spinner];
-      [v11 stopAnimating];
+      spinner = [(HODataSyncingTextView *)self spinner];
+      [spinner stopAnimating];
 
       [(HODataSyncingTextView *)self _configureForTwoLabelLayout];
       return;
     }
 
 LABEL_18:
-    v15 = [NSString stringWithFormat:@"Unhandled dataSyncState %lu", a3];
+    state = [NSString stringWithFormat:@"Unhandled dataSyncState %lu", state];
     v16 = HFLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      sub_100081134(v15, v16);
+      sub_100081134(state, v16);
     }
 
-    NSLog(@"%@", v15);
+    NSLog(@"%@", state);
     return;
   }
 
   v12 = sub_10003DB38(@"HODataSyncingTitleGeneric");
-  v13 = [(HODataSyncingTextView *)self titleLabel];
-  [v13 setText:v12];
+  titleLabel3 = [(HODataSyncingTextView *)self titleLabel];
+  [titleLabel3 setText:v12];
 
-  v14 = [(HODataSyncingTextView *)self spinner];
-  [v14 startAnimating];
+  spinner2 = [(HODataSyncingTextView *)self spinner];
+  [spinner2 startAnimating];
 
   [(HODataSyncingTextView *)self _configureForSpinnerLayout];
 }
 
 - (void)_configureForTwoLabelLayout
 {
-  v3 = [(HODataSyncingTextView *)self buttonLayoutConstraints];
+  buttonLayoutConstraints = [(HODataSyncingTextView *)self buttonLayoutConstraints];
 
-  if (!v3)
+  if (!buttonLayoutConstraints)
   {
-    v4 = [(HODataSyncingTextView *)self titleLabel];
-    v5 = [(HODataSyncingTextView *)self descriptionLabel];
-    v6 = [(HODataSyncingTextView *)self _createConstraintsForFirstItem:v4 secondItem:v5];
+    titleLabel = [(HODataSyncingTextView *)self titleLabel];
+    descriptionLabel = [(HODataSyncingTextView *)self descriptionLabel];
+    v6 = [(HODataSyncingTextView *)self _createConstraintsForFirstItem:titleLabel secondItem:descriptionLabel];
     [(HODataSyncingTextView *)self setButtonLayoutConstraints:v6];
   }
 
-  v7 = [(HODataSyncingTextView *)self spinner];
-  [v7 setHidden:1];
+  spinner = [(HODataSyncingTextView *)self spinner];
+  [spinner setHidden:1];
 
-  v8 = [(HODataSyncingTextView *)self descriptionLabel];
-  [v8 setHidden:0];
+  descriptionLabel2 = [(HODataSyncingTextView *)self descriptionLabel];
+  [descriptionLabel2 setHidden:0];
 
-  v9 = [(HODataSyncingTextView *)self activeConstraints];
-  v10 = [(HODataSyncingTextView *)self buttonLayoutConstraints];
+  activeConstraints = [(HODataSyncingTextView *)self activeConstraints];
+  buttonLayoutConstraints2 = [(HODataSyncingTextView *)self buttonLayoutConstraints];
 
-  if (v9 != v10)
+  if (activeConstraints != buttonLayoutConstraints2)
   {
-    v11 = [(HODataSyncingTextView *)self activeConstraints];
-    [NSLayoutConstraint deactivateConstraints:v11];
+    activeConstraints2 = [(HODataSyncingTextView *)self activeConstraints];
+    [NSLayoutConstraint deactivateConstraints:activeConstraints2];
 
-    v12 = [(HODataSyncingTextView *)self buttonLayoutConstraints];
-    [(HODataSyncingTextView *)self setActiveConstraints:v12];
+    buttonLayoutConstraints3 = [(HODataSyncingTextView *)self buttonLayoutConstraints];
+    [(HODataSyncingTextView *)self setActiveConstraints:buttonLayoutConstraints3];
 
-    v13 = [(HODataSyncingTextView *)self activeConstraints];
-    [NSLayoutConstraint activateConstraints:v13];
+    activeConstraints3 = [(HODataSyncingTextView *)self activeConstraints];
+    [NSLayoutConstraint activateConstraints:activeConstraints3];
   }
 }
 
 - (void)_configureForSpinnerLayout
 {
-  v3 = [(HODataSyncingTextView *)self spinnerLayoutConstraints];
+  spinnerLayoutConstraints = [(HODataSyncingTextView *)self spinnerLayoutConstraints];
 
-  if (!v3)
+  if (!spinnerLayoutConstraints)
   {
-    v4 = [(HODataSyncingTextView *)self spinner];
-    v5 = [(HODataSyncingTextView *)self titleLabel];
-    v6 = [(HODataSyncingTextView *)self _createConstraintsForFirstItem:v4 secondItem:v5];
+    spinner = [(HODataSyncingTextView *)self spinner];
+    titleLabel = [(HODataSyncingTextView *)self titleLabel];
+    v6 = [(HODataSyncingTextView *)self _createConstraintsForFirstItem:spinner secondItem:titleLabel];
     [(HODataSyncingTextView *)self setSpinnerLayoutConstraints:v6];
   }
 
-  v7 = [(HODataSyncingTextView *)self spinner];
-  [v7 setHidden:0];
+  spinner2 = [(HODataSyncingTextView *)self spinner];
+  [spinner2 setHidden:0];
 
-  v8 = [(HODataSyncingTextView *)self descriptionLabel];
-  [v8 setHidden:1];
+  descriptionLabel = [(HODataSyncingTextView *)self descriptionLabel];
+  [descriptionLabel setHidden:1];
 
-  v9 = [(HODataSyncingTextView *)self activeConstraints];
-  v10 = [(HODataSyncingTextView *)self spinnerLayoutConstraints];
+  activeConstraints = [(HODataSyncingTextView *)self activeConstraints];
+  spinnerLayoutConstraints2 = [(HODataSyncingTextView *)self spinnerLayoutConstraints];
 
-  if (v9 != v10)
+  if (activeConstraints != spinnerLayoutConstraints2)
   {
-    v11 = [(HODataSyncingTextView *)self activeConstraints];
-    [NSLayoutConstraint deactivateConstraints:v11];
+    activeConstraints2 = [(HODataSyncingTextView *)self activeConstraints];
+    [NSLayoutConstraint deactivateConstraints:activeConstraints2];
 
-    v12 = [(HODataSyncingTextView *)self spinnerLayoutConstraints];
-    [(HODataSyncingTextView *)self setActiveConstraints:v12];
+    spinnerLayoutConstraints3 = [(HODataSyncingTextView *)self spinnerLayoutConstraints];
+    [(HODataSyncingTextView *)self setActiveConstraints:spinnerLayoutConstraints3];
 
-    v13 = [(HODataSyncingTextView *)self activeConstraints];
-    [NSLayoutConstraint activateConstraints:v13];
+    activeConstraints3 = [(HODataSyncingTextView *)self activeConstraints];
+    [NSLayoutConstraint activateConstraints:activeConstraints3];
   }
 }
 
-- (id)_createConstraintsForFirstItem:(id)a3 secondItem:(id)a4
+- (id)_createConstraintsForFirstItem:(id)item secondItem:(id)secondItem
 {
-  v6 = a4;
-  v7 = a3;
+  secondItemCopy = secondItem;
+  itemCopy = item;
   v8 = objc_opt_new();
-  v9 = [v7 topAnchor];
-  v10 = [(HODataSyncingTextView *)self topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  topAnchor = [itemCopy topAnchor];
+  topAnchor2 = [(HODataSyncingTextView *)self topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v8 addObject:v11];
 
-  v12 = [v7 centerXAnchor];
-  v13 = [(HODataSyncingTextView *)self centerXAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  centerXAnchor = [itemCopy centerXAnchor];
+  centerXAnchor2 = [(HODataSyncingTextView *)self centerXAnchor];
+  v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v8 addObject:v14];
 
-  v15 = [v7 leadingAnchor];
-  v16 = [(HODataSyncingTextView *)self leadingAnchor];
-  v17 = [v15 constraintGreaterThanOrEqualToAnchor:v16];
+  leadingAnchor = [itemCopy leadingAnchor];
+  leadingAnchor2 = [(HODataSyncingTextView *)self leadingAnchor];
+  v17 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   [v8 addObject:v17];
 
-  v18 = [v7 trailingAnchor];
-  v19 = [(HODataSyncingTextView *)self trailingAnchor];
-  v20 = [v18 constraintLessThanOrEqualToAnchor:v19];
+  trailingAnchor = [itemCopy trailingAnchor];
+  trailingAnchor2 = [(HODataSyncingTextView *)self trailingAnchor];
+  v20 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   [v8 addObject:v20];
 
-  v21 = [v7 bottomAnchor];
+  bottomAnchor = [itemCopy bottomAnchor];
 
-  v22 = [v6 topAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22 constant:-10.0];
+  topAnchor3 = [secondItemCopy topAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:-10.0];
   [v8 addObject:v23];
 
-  v24 = [v6 centerXAnchor];
-  v25 = [(HODataSyncingTextView *)self centerXAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  centerXAnchor3 = [secondItemCopy centerXAnchor];
+  centerXAnchor4 = [(HODataSyncingTextView *)self centerXAnchor];
+  v26 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v8 addObject:v26];
 
-  v27 = [v6 leadingAnchor];
-  v28 = [(HODataSyncingTextView *)self leadingAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  leadingAnchor3 = [secondItemCopy leadingAnchor];
+  leadingAnchor4 = [(HODataSyncingTextView *)self leadingAnchor];
+  v29 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v8 addObject:v29];
 
-  v30 = [v6 trailingAnchor];
-  v31 = [(HODataSyncingTextView *)self trailingAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  trailingAnchor3 = [secondItemCopy trailingAnchor];
+  trailingAnchor4 = [(HODataSyncingTextView *)self trailingAnchor];
+  v32 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v8 addObject:v32];
 
-  v33 = [v6 bottomAnchor];
+  bottomAnchor2 = [secondItemCopy bottomAnchor];
 
-  v34 = [(HODataSyncingTextView *)self bottomAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
+  bottomAnchor3 = [(HODataSyncingTextView *)self bottomAnchor];
+  v35 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   [v8 addObject:v35];
 
   return v8;
 }
 
-- (id)boldFontForStyle:(id)a3
+- (id)boldFontForStyle:(id)style
 {
-  v3 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:a3 addingSymbolicTraits:2 options:0];
+  v3 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:style addingSymbolicTraits:2 options:0];
   v4 = [UIFont fontWithDescriptor:v3 size:0.0];
 
   return v4;

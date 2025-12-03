@@ -1,23 +1,23 @@
 @interface ASUSQLiteDatabaseStoreMigrator
-- (ASUSQLiteDatabaseStoreMigrator)initWithConnection:(id)a3 tableNames:(id)a4;
-- (void)_executeQuery:(char)a3 canFailMigration:(void *)a4 withResults:;
-- (void)_executeStatement:(int)a3 canFailMigration:(void *)a4 bindings:;
+- (ASUSQLiteDatabaseStoreMigrator)initWithConnection:(id)connection tableNames:(id)names;
+- (void)_executeQuery:(char)query canFailMigration:(void *)migration withResults:;
+- (void)_executeStatement:(int)statement canFailMigration:(void *)migration bindings:;
 @end
 
 @implementation ASUSQLiteDatabaseStoreMigrator
 
-- (ASUSQLiteDatabaseStoreMigrator)initWithConnection:(id)a3 tableNames:(id)a4
+- (ASUSQLiteDatabaseStoreMigrator)initWithConnection:(id)connection tableNames:(id)names
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  namesCopy = names;
   v14.receiver = self;
   v14.super_class = ASUSQLiteDatabaseStoreMigrator;
   v9 = [(ASUSQLiteDatabaseStoreMigrator *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_connection, connection);
+    v11 = [namesCopy copy];
     tableNames = v10->_tableNames;
     v10->_tableNames = v11;
 
@@ -27,21 +27,21 @@
   return v10;
 }
 
-- (void)_executeStatement:(int)a3 canFailMigration:(void *)a4 bindings:
+- (void)_executeStatement:(int)statement canFailMigration:(void *)migration bindings:
 {
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  migrationCopy = migration;
+  if (self)
   {
-    if (*(a1 + 24) == 1)
+    if (*(self + 24) == 1)
     {
-      v9 = *(a1 + 8);
+      v9 = *(self + 8);
       v12 = 0;
-      v10 = [v9 executeStatement:v7 error:&v12 bindings:v8];
+      v10 = [v9 executeStatement:v7 error:&v12 bindings:migrationCopy];
       v11 = v12;
-      if ((v10 & 1) == 0 && a3)
+      if ((v10 & 1) == 0 && statement)
       {
-        *(a1 + 24) = 0;
+        *(self + 24) = 0;
       }
     }
 
@@ -52,21 +52,21 @@
   }
 }
 
-- (void)_executeQuery:(char)a3 canFailMigration:(void *)a4 withResults:
+- (void)_executeQuery:(char)query canFailMigration:(void *)migration withResults:
 {
   v7 = a2;
-  v8 = a4;
-  v9 = v8;
-  if (a1 && *(a1 + 24) == 1)
+  migrationCopy = migration;
+  v9 = migrationCopy;
+  if (self && *(self + 24) == 1)
   {
-    v10 = *(a1 + 8);
+    v10 = *(self + 8);
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __77__ASUSQLiteDatabaseStoreMigrator__executeQuery_canFailMigration_withResults___block_invoke;
     v11[3] = &unk_278C97CF0;
-    v13 = a3;
-    v11[4] = a1;
-    v12 = v8;
+    queryCopy = query;
+    v11[4] = self;
+    v12 = migrationCopy;
     [v10 executeQuery:v7 withResults:v11];
   }
 }

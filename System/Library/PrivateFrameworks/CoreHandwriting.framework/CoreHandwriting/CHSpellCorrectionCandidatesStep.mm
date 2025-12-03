@@ -1,40 +1,40 @@
 @interface CHSpellCorrectionCandidatesStep
-- (CHSpellCorrectionCandidatesStep)initWithLocale:(id)a3 spellChecker:(id)a4 staticLexicon:(_LXLexicon *)a5 customLexicon:(_LXLexicon *)a6;
-- (id)process:(id)a3 options:(id)a4;
+- (CHSpellCorrectionCandidatesStep)initWithLocale:(id)locale spellChecker:(id)checker staticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)customLexicon;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHSpellCorrectionCandidatesStep
 
-- (CHSpellCorrectionCandidatesStep)initWithLocale:(id)a3 spellChecker:(id)a4 staticLexicon:(_LXLexicon *)a5 customLexicon:(_LXLexicon *)a6
+- (CHSpellCorrectionCandidatesStep)initWithLocale:(id)locale spellChecker:(id)checker staticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)customLexicon
 {
-  v11 = a3;
-  v12 = a4;
+  localeCopy = locale;
+  checkerCopy = checker;
   v16.receiver = self;
   v16.super_class = CHSpellCorrectionCandidatesStep;
   v13 = [(CHSpellCorrectionCandidatesStep *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_locale, a3);
-    objc_storeStrong(&v14->_spellChecker, a4);
-    v14->_staticLexicon = a5;
-    v14->_customLexicon = a6;
+    objc_storeStrong(&v13->_locale, locale);
+    objc_storeStrong(&v14->_spellChecker, checker);
+    v14->_staticLexicon = lexicon;
+    v14->_customLexicon = customLexicon;
   }
 
   return v14;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v539 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v495 = a4;
+  processCopy = process;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
   }
 
-  v499 = v5;
+  v499 = processCopy;
   v6 = qword_1EA84DC58;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -176,7 +176,7 @@
             }
 
             v241 = objc_msgSend_principalPoints(v132, v228, v229, v230, v231, v232);
-            v142 = objc_msgSend_initWithString_strokeIndexes_wordID_modelScore_recognitionScore_combinedScore_alignmentScore_properties_recognizerSourceLocale_inputSources_substrokeCount_bounds_originalBounds_principalLines_principalPoints_(v160, v242, v143, v515, v152, v159, v199, v205 | 0x20, v509, v179 * 0.5, v186 * 0.5, v507, v505, v503, v220, v222, v211, v234, v236, v238, v240, buf, v241, v495);
+            v142 = objc_msgSend_initWithString_strokeIndexes_wordID_modelScore_recognitionScore_combinedScore_alignmentScore_properties_recognizerSourceLocale_inputSources_substrokeCount_bounds_originalBounds_principalLines_principalPoints_(v160, v242, v143, v515, v152, v159, v199, v205 | 0x20, v509, v179 * 0.5, v186 * 0.5, v507, v505, v503, v220, v222, v211, v234, v236, v238, v240, buf, v241, optionsCopy);
           }
 
           v243 = objc_msgSend_objectAtIndexedSubscript_(v512, v138, 0, v139, v140, v141);

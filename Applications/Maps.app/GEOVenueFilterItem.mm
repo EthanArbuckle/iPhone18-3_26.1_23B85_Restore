@@ -6,10 +6,10 @@
 
 - (id)_maps_alphabeticallySortableObject_name
 {
-  v2 = [(GEOVenueFilterItem *)self label];
-  v3 = [v2 name];
+  label = [(GEOVenueFilterItem *)self label];
+  name = [label name];
 
-  return v3;
+  return name;
 }
 
 @end

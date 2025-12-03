@@ -1,12 +1,12 @@
 @interface NSArray
-- (id)originalElementforElement:(id)a3;
+- (id)originalElementforElement:(id)element;
 @end
 
 @implementation NSArray
 
-- (id)originalElementforElement:(id)a3
+- (id)originalElementforElement:(id)element
 {
-  v4 = [(NSArray *)self indexOfObject:a3];
+  v4 = [(NSArray *)self indexOfObject:element];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;

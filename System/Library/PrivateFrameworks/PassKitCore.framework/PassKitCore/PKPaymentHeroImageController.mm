@@ -1,15 +1,15 @@
 @interface PKPaymentHeroImageController
-+ (CGSize)cardArtSizeForWatchViewSize:(CGSize)a3;
++ (CGSize)cardArtSizeForWatchViewSize:(CGSize)size;
 + (id)defaultImages;
-- (CGSize)cardArtSizeForSize:(CGSize)a3;
+- (CGSize)cardArtSizeForSize:(CGSize)size;
 - (NSArray)featuredImages;
 - (NSString)primaryImageIdentifier;
-- (PKPaymentHeroImageController)initWithManifest:(id)a3 webService:(id)a4;
+- (PKPaymentHeroImageController)initWithManifest:(id)manifest webService:(id)service;
 - (PKPaymentHeroImageControllerDelegate)delegate;
 - (id)featuredDefaultImages;
 - (id)featuredImageIdentifiers;
-- (id)filterImages:(id)a3;
-- (void)downloadImages:(id)a3;
+- (id)filterImages:(id)images;
+- (void)downloadImages:(id)images;
 @end
 
 @implementation PKPaymentHeroImageController
@@ -68,18 +68,18 @@ void __45__PKPaymentHeroImageController_defaultImages__block_invoke(uint64_t a1,
   }
 }
 
-- (PKPaymentHeroImageController)initWithManifest:(id)a3 webService:(id)a4
+- (PKPaymentHeroImageController)initWithManifest:(id)manifest webService:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  manifestCopy = manifest;
+  serviceCopy = service;
   v12.receiver = self;
   v12.super_class = PKPaymentHeroImageController;
   v9 = [(PKPaymentHeroImageController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_manifest, a3);
-    objc_storeStrong(&v10->_webService, a4);
+    objc_storeStrong(&v9->_manifest, manifest);
+    objc_storeStrong(&v10->_webService, service);
   }
 
   return v10;
@@ -88,14 +88,14 @@ void __45__PKPaymentHeroImageController_defaultImages__block_invoke(uint64_t a1,
 - (NSArray)featuredImages
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentHeroImageController *)self featuredImageIdentifiers];
-  v4 = [(PKPaymentHeroImageManifest *)self->_manifest images];
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  featuredImageIdentifiers = [(PKPaymentHeroImageController *)self featuredImageIdentifiers];
+  images = [(PKPaymentHeroImageManifest *)self->_manifest images];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(featuredImageIdentifiers, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v3;
+  v6 = featuredImageIdentifiers;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -110,7 +110,7 @@ void __45__PKPaymentHeroImageController_defaultImages__block_invoke(uint64_t a1,
           objc_enumerationMutation(v6);
         }
 
-        v11 = [v4 objectForKey:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [images objectForKey:{*(*(&v14 + 1) + 8 * i), v14}];
         if (v11)
         {
           [v5 addObject:v11];
@@ -138,39 +138,39 @@ void __45__PKPaymentHeroImageController_defaultImages__block_invoke(uint64_t a1,
 
 - (NSString)primaryImageIdentifier
 {
-  v3 = [(PKPaymentWebService *)self->_webService targetDevice];
-  v4 = [v3 deviceRegion];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+  deviceRegion = [targetDevice deviceRegion];
 
-  v5 = [(PKPaymentWebService *)self->_webService context];
-  v6 = [v5 configuration];
-  v7 = [v6 primaryFeaturedNetworkForRegion:v4];
+  context = [(PKPaymentWebService *)self->_webService context];
+  configuration = [context configuration];
+  v7 = [configuration primaryFeaturedNetworkForRegion:deviceRegion];
 
   return v7;
 }
 
 - (id)featuredImageIdentifiers
 {
-  v3 = [(PKPaymentWebService *)self->_webService targetDevice];
-  v4 = [v3 deviceRegion];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+  deviceRegion = [targetDevice deviceRegion];
 
-  v5 = [(PKPaymentWebService *)self->_webService context];
-  v6 = [v5 configuration];
-  v7 = [v6 paymentSetupFeaturedNetworksForRegion:v4];
+  context = [(PKPaymentWebService *)self->_webService context];
+  configuration = [context configuration];
+  v7 = [configuration paymentSetupFeaturedNetworksForRegion:deviceRegion];
 
   return v7;
 }
 
-- (id)filterImages:(id)a3
+- (id)filterImages:(id)images
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  imagesCopy = images;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(PKPaymentWebService *)self->_webService targetDevice];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = imagesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -186,7 +186,7 @@ void __45__PKPaymentHeroImageController_defaultImages__block_invoke(uint64_t a1,
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if ([v12 isSupportedByDevice:{v6, v15}])
+        if ([v12 isSupportedByDevice:{targetDevice, v15}])
         {
           [v5 addObject:v12];
         }
@@ -206,14 +206,14 @@ void __45__PKPaymentHeroImageController_defaultImages__block_invoke(uint64_t a1,
 - (id)featuredDefaultImages
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() defaultImages];
-  v4 = [(PKPaymentHeroImageController *)self featuredImageIdentifiers];
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  defaultImages = [objc_opt_class() defaultImages];
+  featuredImageIdentifiers = [(PKPaymentHeroImageController *)self featuredImageIdentifiers];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(featuredImageIdentifiers, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v3;
+  v6 = defaultImages;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -229,8 +229,8 @@ void __45__PKPaymentHeroImageController_defaultImages__block_invoke(uint64_t a1,
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        v13 = [v4 containsObject:v12];
+        identifier = [v11 identifier];
+        v13 = [featuredImageIdentifiers containsObject:identifier];
 
         if (v13)
         {
@@ -257,17 +257,17 @@ void __45__PKPaymentHeroImageController_defaultImages__block_invoke(uint64_t a1,
   return v14;
 }
 
-- (void)downloadImages:(id)a3
+- (void)downloadImages:(id)images
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  imagesCopy = images;
   v5 = PKScreenScale();
   v6 = +[PKObjectDownloader sharedImageAssetDownloader];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v4;
+  v7 = imagesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -320,18 +320,18 @@ void __47__PKPaymentHeroImageController_downloadImages___block_invoke(uint64_t a
   }
 }
 
-- (CGSize)cardArtSizeForSize:(CGSize)a3
+- (CGSize)cardArtSizeForSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   if (self->_watchSize)
   {
-    height = a3.height;
+    height = size.height;
     v5 = objc_opt_class();
 
     [v5 cardArtSizeForWatchViewSize:{width, height}];
   }
 
-  else if (a3.width <= 320.0)
+  else if (size.width <= 320.0)
   {
     v7 = 113.0;
     v6 = 180.0;
@@ -358,10 +358,10 @@ void __47__PKPaymentHeroImageController_downloadImages___block_invoke(uint64_t a
   return result;
 }
 
-+ (CGSize)cardArtSizeForWatchViewSize:(CGSize)a3
++ (CGSize)cardArtSizeForWatchViewSize:(CGSize)size
 {
-  v3 = a3.width * 0.555;
-  v4 = a3.height * 0.206;
+  v3 = size.width * 0.555;
+  v4 = size.height * 0.206;
   result.height = v4;
   result.width = v3;
   return result;

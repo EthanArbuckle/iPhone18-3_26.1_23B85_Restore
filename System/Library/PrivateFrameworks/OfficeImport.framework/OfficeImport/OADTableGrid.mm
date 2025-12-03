@@ -32,9 +32,9 @@
 
 - (void)flipColumnsRTL
 {
-  v3 = [(OADTableGrid *)self columnCount];
-  v4 = v3 - 1;
-  if (v3 != 1)
+  columnCount = [(OADTableGrid *)self columnCount];
+  v4 = columnCount - 1;
+  if (columnCount != 1)
   {
     v5 = 1;
     do

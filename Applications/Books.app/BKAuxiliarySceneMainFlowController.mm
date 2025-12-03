@@ -2,73 +2,73 @@
 - (BKAuxiliarySceneMainFlowControllerDelegate)delegate;
 - (BOOL)coverEffectsNightMode;
 - (BOOL)presenterShouldOpenBookUsingLargeCover;
-- (id)presenterFirstVisibleChildConformingToProtocol:(id)a3;
+- (id)presenterFirstVisibleChildConformingToProtocol:(id)protocol;
 - (id)presenterModalPresentingViewController;
 - (id)presenterSceneController;
-- (id)presenterViewControllersConformingToProtocol:(id)a3;
-- (void)presenterDismissAllModalControllersAnimated:(BOOL)a3 completion:(id)a4;
-- (void)presenterDismissModalController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presenterFinishModalTransitionsWithCompletion:(id)a3;
-- (void)presenterShowAlertController:(id)a3 animated:(BOOL)a4;
-- (void)presenterShowModalController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presenterVisibleViewControllerDidChangeAnimated:(BOOL)a3;
-- (void)presenterVisibleViewControllerWillChangeAnimated:(BOOL)a3;
-- (void)presenterWaitForAssetPresenterTransitionsToFinishIfNeededWithCompletion:(id)a3;
+- (id)presenterViewControllersConformingToProtocol:(id)protocol;
+- (void)presenterDismissAllModalControllersAnimated:(BOOL)animated completion:(id)completion;
+- (void)presenterDismissModalController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)presenterFinishModalTransitionsWithCompletion:(id)completion;
+- (void)presenterShowAlertController:(id)controller animated:(BOOL)animated;
+- (void)presenterShowModalController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)presenterVisibleViewControllerDidChangeAnimated:(BOOL)animated;
+- (void)presenterVisibleViewControllerWillChangeAnimated:(BOOL)animated;
+- (void)presenterWaitForAssetPresenterTransitionsToFinishIfNeededWithCompletion:(id)completion;
 @end
 
 @implementation BKAuxiliarySceneMainFlowController
 
 - (id)presenterSceneController
 {
-  v2 = [(BKAuxiliarySceneMainFlowController *)self delegate];
-  v3 = [v2 rootViewController];
-  v4 = [BKAppDelegate sceneControllerForViewController:v3];
+  delegate = [(BKAuxiliarySceneMainFlowController *)self delegate];
+  rootViewController = [delegate rootViewController];
+  v4 = [BKAppDelegate sceneControllerForViewController:rootViewController];
 
   return v4;
 }
 
-- (void)presenterShowAlertController:(id)a3 animated:(BOOL)a4
+- (void)presenterShowAlertController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v8 = [(BKAuxiliarySceneMainFlowController *)self delegate];
-  v7 = [v8 rootViewController];
-  [v7 presentViewController:v6 animated:v4 completion:0];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  delegate = [(BKAuxiliarySceneMainFlowController *)self delegate];
+  rootViewController = [delegate rootViewController];
+  [rootViewController presentViewController:controllerCopy animated:animatedCopy completion:0];
 }
 
 - (id)presenterModalPresentingViewController
 {
-  v2 = [(BKAuxiliarySceneMainFlowController *)self delegate];
-  v3 = [v2 flowControllerModalPresentingViewController];
+  delegate = [(BKAuxiliarySceneMainFlowController *)self delegate];
+  flowControllerModalPresentingViewController = [delegate flowControllerModalPresentingViewController];
 
-  return v3;
+  return flowControllerModalPresentingViewController;
 }
 
-- (void)presenterShowModalController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presenterShowModalController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  [v8 setTransitioningDelegate:self];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  [controllerCopy setTransitioningDelegate:self];
   [(BKAuxiliarySceneMainFlowController *)self presenterModalPresentingViewController];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10009B164;
   v16[3] = &unk_100A057F0;
   v16[4] = self;
-  v10 = v20 = v6;
+  v10 = v20 = animatedCopy;
   v17 = v10;
-  v18 = v8;
-  v19 = v9;
-  v11 = v9;
-  v12 = v8;
+  v18 = controllerCopy;
+  v19 = completionCopy;
+  v11 = completionCopy;
+  v12 = controllerCopy;
   v13 = objc_retainBlock(v16);
-  v14 = [v10 bc_descendentPresentedViewController];
+  bc_descendentPresentedViewController = [v10 bc_descendentPresentedViewController];
 
-  if (v14)
+  if (bc_descendentPresentedViewController)
   {
-    v15 = [v10 bc_descendentPresentedViewController];
-    [v15 dismissViewControllerAnimated:v6 completion:v13];
+    bc_descendentPresentedViewController2 = [v10 bc_descendentPresentedViewController];
+    [bc_descendentPresentedViewController2 dismissViewControllerAnimated:animatedCopy completion:v13];
   }
 
   else
@@ -77,27 +77,27 @@
   }
 }
 
-- (void)presenterDismissModalController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presenterDismissModalController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  [(BKAuxiliarySceneMainFlowController *)self presenterVisibleViewControllerWillChangeAnimated:v6];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  [(BKAuxiliarySceneMainFlowController *)self presenterVisibleViewControllerWillChangeAnimated:animatedCopy];
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_10009B3A0;
   v17 = &unk_100A03468;
-  v10 = v8;
-  v21 = v6;
-  v19 = self;
-  v20 = v9;
+  v10 = controllerCopy;
+  v21 = animatedCopy;
+  selfCopy = self;
+  v20 = completionCopy;
   v18 = v10;
-  v11 = v9;
+  v11 = completionCopy;
   v12 = objc_retainBlock(&v14);
-  v13 = [v10 bc_descendentPresentedViewController];
-  if (v13)
+  bc_descendentPresentedViewController = [v10 bc_descendentPresentedViewController];
+  if (bc_descendentPresentedViewController)
   {
-    [(BKAuxiliarySceneMainFlowController *)self presenterDismissModalController:v13 animated:v6 completion:v12];
+    [(BKAuxiliarySceneMainFlowController *)self presenterDismissModalController:bc_descendentPresentedViewController animated:animatedCopy completion:v12];
   }
 
   else
@@ -106,29 +106,29 @@
   }
 }
 
-- (void)presenterDismissAllModalControllersAnimated:(BOOL)a3 completion:(id)a4
+- (void)presenterDismissAllModalControllersAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(BKAuxiliarySceneMainFlowController *)self delegate];
-  v8 = [v7 rootViewController];
-  v9 = [v8 bc_descendentPresentedViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  delegate = [(BKAuxiliarySceneMainFlowController *)self delegate];
+  rootViewController = [delegate rootViewController];
+  bc_descendentPresentedViewController = [rootViewController bc_descendentPresentedViewController];
 
-  if (v9)
+  if (bc_descendentPresentedViewController)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10009B5C0;
     v12[3] = &unk_100A03490;
     v12[4] = self;
-    v14 = v4;
-    v13 = v6;
-    [(BKAuxiliarySceneMainFlowController *)self presenterDismissModalController:v9 animated:v4 completion:v12];
+    v14 = animatedCopy;
+    v13 = completionCopy;
+    [(BKAuxiliarySceneMainFlowController *)self presenterDismissModalController:bc_descendentPresentedViewController animated:animatedCopy completion:v12];
   }
 
   else
   {
-    v10 = objc_retainBlock(v6);
+    v10 = objc_retainBlock(completionCopy);
     v11 = v10;
     if (v10)
     {
@@ -148,18 +148,18 @@
   else
   {
     v4 = +[BKAppDelegate delegate];
-    v5 = [v4 appLaunchCoordinator];
-    v6 = [v5 appLaunchCoordinatorHasAppLaunched];
+    appLaunchCoordinator = [v4 appLaunchCoordinator];
+    appLaunchCoordinatorHasAppLaunched = [appLaunchCoordinator appLaunchCoordinatorHasAppLaunched];
 
-    v3 = v6 ^ 1;
+    v3 = appLaunchCoordinatorHasAppLaunched ^ 1;
   }
 
   return v3;
 }
 
-- (void)presenterFinishModalTransitionsWithCompletion:(id)a3
+- (void)presenterFinishModalTransitionsWithCompletion:(id)completion
 {
-  v3 = objc_retainBlock(a3);
+  v3 = objc_retainBlock(completion);
   if (v3)
   {
     v4 = v3;
@@ -168,61 +168,61 @@
   }
 }
 
-- (void)presenterVisibleViewControllerWillChangeAnimated:(BOOL)a3
+- (void)presenterVisibleViewControllerWillChangeAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(BKAuxiliarySceneMainFlowController *)self delegate];
-  [v5 mainFlowController:self visibleViewControllerWillChangeAnimated:v3];
+  animatedCopy = animated;
+  delegate = [(BKAuxiliarySceneMainFlowController *)self delegate];
+  [delegate mainFlowController:self visibleViewControllerWillChangeAnimated:animatedCopy];
 }
 
-- (void)presenterVisibleViewControllerDidChangeAnimated:(BOOL)a3
+- (void)presenterVisibleViewControllerDidChangeAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(BKAuxiliarySceneMainFlowController *)self delegate];
-  [v5 mainFlowController:self visibleViewControllerDidChangeAnimated:v3];
+  animatedCopy = animated;
+  delegate = [(BKAuxiliarySceneMainFlowController *)self delegate];
+  [delegate mainFlowController:self visibleViewControllerDidChangeAnimated:animatedCopy];
 }
 
-- (id)presenterFirstVisibleChildConformingToProtocol:(id)a3
+- (id)presenterFirstVisibleChildConformingToProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [(BKAuxiliarySceneMainFlowController *)self delegate];
-  v6 = [v5 rootViewController];
-  v7 = [v6 im_firstVisibleChildConformingToProtocol:v4 includePresented:1];
+  protocolCopy = protocol;
+  delegate = [(BKAuxiliarySceneMainFlowController *)self delegate];
+  rootViewController = [delegate rootViewController];
+  v7 = [rootViewController im_firstVisibleChildConformingToProtocol:protocolCopy includePresented:1];
 
   return v7;
 }
 
-- (id)presenterViewControllersConformingToProtocol:(id)a3
+- (id)presenterViewControllersConformingToProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(BKAuxiliarySceneMainFlowController *)self delegate];
-  v7 = [v6 rootViewController];
+  delegate = [(BKAuxiliarySceneMainFlowController *)self delegate];
+  rootViewController = [delegate rootViewController];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10009B8C4;
   v10[3] = &unk_100A05990;
   v8 = v5;
   v11 = v8;
-  [v7 im_enumerateChildrenConformingToProtocol:v4 block:v10];
+  [rootViewController im_enumerateChildrenConformingToProtocol:protocolCopy block:v10];
 
   return v8;
 }
 
-- (void)presenterWaitForAssetPresenterTransitionsToFinishIfNeededWithCompletion:(id)a3
+- (void)presenterWaitForAssetPresenterTransitionsToFinishIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(BKAuxiliarySceneMainFlowController *)self delegate];
-  v5 = [v6 rootViewController];
-  [v5 im_finishOngoingModalTransitionAnimations:v4];
+  completionCopy = completion;
+  delegate = [(BKAuxiliarySceneMainFlowController *)self delegate];
+  rootViewController = [delegate rootViewController];
+  [rootViewController im_finishOngoingModalTransitionAnimations:completionCopy];
 }
 
 - (BOOL)coverEffectsNightMode
 {
   v2 = [(BKAuxiliarySceneMainFlowController *)self presenterFirstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BCUCoverEffectsEnvironment];
-  v3 = [v2 coverEffectsNightMode];
+  coverEffectsNightMode = [v2 coverEffectsNightMode];
 
-  return v3;
+  return coverEffectsNightMode;
 }
 
 - (BKAuxiliarySceneMainFlowControllerDelegate)delegate

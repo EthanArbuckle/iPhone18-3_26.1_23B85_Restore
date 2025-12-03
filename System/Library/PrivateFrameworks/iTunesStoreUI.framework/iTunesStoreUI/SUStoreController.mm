@@ -1,12 +1,12 @@
 @interface SUStoreController
-+ (void)setSharedInstance:(id)a3;
++ (void)setSharedInstance:(id)instance;
 - (BOOL)_isAccountViewControllerVisible;
-- (BOOL)_loadSectionsAllowingCache:(BOOL)a3 withCompletionBlock:(id)a4;
+- (BOOL)_loadSectionsAllowingCache:(BOOL)cache withCompletionBlock:(id)block;
 - (BOOL)_reloadForStorefrontChange;
-- (BOOL)_showWildcatAccountViewController:(id)a3 animated:(BOOL)a4;
-- (BOOL)application:(id)a3 handleOpenURL:(id)a4;
-- (BOOL)client:(id)a3 presentAccountViewController:(id)a4 animated:(BOOL)a5;
-- (BOOL)client:(id)a3 presentModalViewController:(id)a4 animated:(BOOL)a5;
+- (BOOL)_showWildcatAccountViewController:(id)controller animated:(BOOL)animated;
+- (BOOL)application:(id)application handleOpenURL:(id)l;
+- (BOOL)client:(id)client presentAccountViewController:(id)controller animated:(BOOL)animated;
+- (BOOL)client:(id)client presentModalViewController:(id)controller animated:(BOOL)animated;
 - (BOOL)isStoreEnabled;
 - (NSString)defaultPNGNameForSuspend;
 - (SUStoreController)init;
@@ -14,44 +14,44 @@
 - (UINavigationController)topNavigationController;
 - (double)defaultImageSnapshotExpiration;
 - (id)_resumableViewController;
-- (id)overlayConfigurationForStorePage:(id)a3;
+- (id)overlayConfigurationForStorePage:(id)page;
 - (id)storeContentLanguage;
-- (id)topViewControllerForClient:(id)a3;
-- (void)_accountControllerDisappearedNotification:(id)a3;
-- (void)_bagDidLoadNotification:(id)a3;
+- (id)topViewControllerForClient:(id)client;
+- (void)_accountControllerDisappearedNotification:(id)notification;
+- (void)_bagDidLoadNotification:(id)notification;
 - (void)_cancelLoadSectionsOperation;
 - (void)_cancelSuspendAfterDialogsDismissed;
-- (void)_defaultHandleApplicationURLRequestProperties:(id)a3;
-- (void)_dialogDidFinishNotification:(id)a3;
-- (void)_handleAccountURL:(id)a3;
-- (void)_handleFinishedBackgroundLoadSectionsOperation:(id)a3;
-- (void)_handleFinishedLoadSectionsOperation:(id)a3;
-- (void)_handleSearchURL:(id)a3;
-- (void)_handleSectionsLoadFailedWithError:(id)a3;
-- (void)_mainThreadStoreFrontChangedNotification:(id)a3;
+- (void)_defaultHandleApplicationURLRequestProperties:(id)properties;
+- (void)_dialogDidFinishNotification:(id)notification;
+- (void)_handleAccountURL:(id)l;
+- (void)_handleFinishedBackgroundLoadSectionsOperation:(id)operation;
+- (void)_handleFinishedLoadSectionsOperation:(id)operation;
+- (void)_handleSearchURL:(id)l;
+- (void)_handleSectionsLoadFailedWithError:(id)error;
+- (void)_mainThreadStoreFrontChangedNotification:(id)notification;
 - (void)_presentSectionFetchUI;
 - (void)_reloadOverlayConfigurations;
-- (void)_reloadWithSectionsResponse:(id)a3;
-- (void)_restrictionsChangedNotification:(id)a3;
+- (void)_reloadWithSectionsResponse:(id)response;
+- (void)_restrictionsChangedNotification:(id)notification;
 - (void)_retrySectionsAfterNetworkTransition;
 - (void)_saveArchivedNavigationPath;
-- (void)_selectFooterSectionNotification:(id)a3;
-- (void)_storeFrontChangedNotification:(id)a3;
+- (void)_selectFooterSectionNotification:(id)notification;
+- (void)_storeFrontChangedNotification:(id)notification;
 - (void)cancelAllOperations;
 - (void)composeEmailByRestoringAutosavedMessage;
-- (void)composeEmailWithSubject:(id)a3 body:(id)a4;
+- (void)composeEmailWithSubject:(id)subject body:(id)body;
 - (void)connect;
 - (void)dealloc;
-- (void)dismissMailComposeViewControllerAnimated:(BOOL)a3;
+- (void)dismissMailComposeViewControllerAnimated:(BOOL)animated;
 - (void)exitStoreAfterDialogsDismiss;
-- (void)exitStoreWithReason:(int64_t)a3;
-- (void)handleApplicationURL:(id)a3;
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5;
+- (void)exitStoreWithReason:(int64_t)reason;
+- (void)handleApplicationURL:(id)l;
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error;
 - (void)prepareForSuspend;
-- (void)presentExternalURLViewController:(id)a3;
-- (void)presentMailComposeViewController:(id)a3 animated:(BOOL)a4;
+- (void)presentExternalURLViewController:(id)controller;
+- (void)presentMailComposeViewController:(id)controller animated:(BOOL)animated;
 - (void)setupUI;
-- (void)tabBarController:(id)a3 didEndCustomizingViewControllers:(id)a4 changed:(BOOL)a5;
+- (void)tabBarController:(id)controller didEndCustomizingViewControllers:(id)controllers changed:(BOOL)changed;
 - (void)tearDownUI;
 @end
 
@@ -85,13 +85,13 @@
     [MEMORY[0x1E69D4990] setDefaultConditionalContext:v4];
 
     +[SURemoteNotificationController sharedInstance];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__selectFooterSectionNotification_ name:*MEMORY[0x1E69E46F8] object:0];
-    [v5 addObserver:v2 selector:sel__storeFrontChangedNotification_ name:*MEMORY[0x1E69D4A70] object:0];
-    [v5 addObserver:v2 selector:sel__bagDidLoadNotification_ name:*MEMORY[0x1E69E4718] object:0];
-    [v5 addObserver:v2 selector:sel__restrictionsChangedNotification_ name:*MEMORY[0x1E69ADD68] object:0];
-    [v5 addObserver:v2 selector:sel__accountControllerDisappearedNotification_ name:@"SUAccountViewControllerDidDisappearNotification" object:0];
-    [v5 addObserver:v2 selector:sel__reloadForNetworkTypeChange_ name:@"SUNetworkTypeChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__selectFooterSectionNotification_ name:*MEMORY[0x1E69E46F8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__storeFrontChangedNotification_ name:*MEMORY[0x1E69D4A70] object:0];
+    [defaultCenter addObserver:v2 selector:sel__bagDidLoadNotification_ name:*MEMORY[0x1E69E4718] object:0];
+    [defaultCenter addObserver:v2 selector:sel__restrictionsChangedNotification_ name:*MEMORY[0x1E69ADD68] object:0];
+    [defaultCenter addObserver:v2 selector:sel__accountControllerDisappearedNotification_ name:@"SUAccountViewControllerDidDisappearNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__reloadForNetworkTypeChange_ name:@"SUNetworkTypeChangedNotification" object:0];
     _Block_object_dispose(v8, 8);
   }
 
@@ -100,20 +100,20 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69E46F8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69D4A70] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69E4718] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69ADD68] object:0];
-  [v3 removeObserver:self name:@"SUAccountViewControllerDidDisappearNotification" object:0];
-  [v3 removeObserver:self name:@"SUNetworkTypeChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69E46F8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69D4A70] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69E4718] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69ADD68] object:0];
+  [defaultCenter removeObserver:self name:@"SUAccountViewControllerDidDisappearNotification" object:0];
+  [defaultCenter removeObserver:self name:@"SUNetworkTypeChangedNotification" object:0];
   v4 = [objc_msgSend(MEMORY[0x1E69E4748] "sharedInstance")];
   [MEMORY[0x1E69D4990] setDefaultConditionalContext:v4];
 
-  v5 = [(SUClientInterface *)[(SUClient *)self->_client clientInterface] purchaseManager];
-  if ([(SUPurchaseManager *)v5 delegate]== self)
+  purchaseManager = [(SUClientInterface *)[(SUClient *)self->_client clientInterface] purchaseManager];
+  if ([(SUPurchaseManager *)purchaseManager delegate]== self)
   {
-    [(SUPurchaseManager *)v5 setDelegate:0];
+    [(SUPurchaseManager *)purchaseManager setDelegate:0];
   }
 
   [SUClient setSharedClient:0];
@@ -128,25 +128,25 @@
   [(SUStoreController *)&v6 dealloc];
 }
 
-+ (void)setSharedInstance:(id)a3
++ (void)setSharedInstance:(id)instance
 {
-  if (__SharedInstance_2 != a3)
+  if (__SharedInstance_2 != instance)
   {
 
-    __SharedInstance_2 = a3;
+    __SharedInstance_2 = instance;
   }
 }
 
-- (BOOL)application:(id)a3 handleOpenURL:(id)a4
+- (BOOL)application:(id)application handleOpenURL:(id)l
 {
   if (self->_lastSectionsResponse)
   {
-    [(SUStoreController *)self handleApplicationURL:a4];
+    [(SUStoreController *)self handleApplicationURL:l];
   }
 
   else
   {
-    [(SUStoreController *)self setLaunchURL:a4];
+    [(SUStoreController *)self setLaunchURL:l];
   }
 
   return 1;
@@ -155,9 +155,9 @@
 - (void)cancelAllOperations
 {
   [(SUStoreController *)self _cancelLoadSectionsOperation];
-  v2 = [MEMORY[0x1E69E4798] mainQueue];
+  mainQueue = [MEMORY[0x1E69E4798] mainQueue];
 
-  [v2 cancelAllOperations];
+  [mainQueue cancelAllOperations];
 }
 
 - (void)connect
@@ -168,11 +168,11 @@
   [objc_msgSend(MEMORY[0x1E69D4890] "existingDefaultStore")];
   if (self->_localStoreFrontAtLastSuspend || self->_synchedStoreFrontAtLastSuspend)
   {
-    v3 = [MEMORY[0x1E69D48B0] currentDevice];
-    [v3 reloadStoreFrontIdentifier];
-    v4 = [v3 storeFrontIdentifier];
+    currentDevice = [MEMORY[0x1E69D48B0] currentDevice];
+    [currentDevice reloadStoreFrontIdentifier];
+    storeFrontIdentifier = [currentDevice storeFrontIdentifier];
     localStoreFrontAtLastSuspend = self->_localStoreFrontAtLastSuspend;
-    if ((localStoreFrontAtLastSuspend == v4 || -[NSString isEqualToString:](localStoreFrontAtLastSuspend, "isEqualToString:")) && (![v3 isStoreFrontIdentifierTransient] || (v6 = objc_msgSend(v3, "synchedStoreFrontIdentifier"), synchedStoreFrontAtLastSuspend = self->_synchedStoreFrontAtLastSuspend, synchedStoreFrontAtLastSuspend == v6) || -[NSString isEqualToString:](synchedStoreFrontAtLastSuspend, "isEqualToString:")))
+    if ((localStoreFrontAtLastSuspend == storeFrontIdentifier || -[NSString isEqualToString:](localStoreFrontAtLastSuspend, "isEqualToString:")) && (![currentDevice isStoreFrontIdentifierTransient] || (v6 = objc_msgSend(currentDevice, "synchedStoreFrontIdentifier"), synchedStoreFrontAtLastSuspend = self->_synchedStoreFrontAtLastSuspend, synchedStoreFrontAtLastSuspend == v6) || -[NSString isEqualToString:](synchedStoreFrontAtLastSuspend, "isEqualToString:")))
     {
       v8 = 0;
       v9 = 1;
@@ -180,19 +180,19 @@
 
     else
     {
-      v10 = [MEMORY[0x1E69D4938] sharedConfig];
-      v11 = [v10 shouldLog];
-      if ([v10 shouldLogToDisk])
+      mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+      if ([mEMORY[0x1E69D4938] shouldLogToDisk])
       {
-        v12 = v11 | 2;
+        v12 = shouldLog | 2;
       }
 
       else
       {
-        v12 = v11;
+        v12 = shouldLog;
       }
 
-      if (!os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_DEBUG))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
       {
         v12 &= 2u;
       }
@@ -219,8 +219,8 @@
       v8 = 1;
     }
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:self selector:sel__storeFrontChangedNotification_ name:*MEMORY[0x1E69D4A70] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__storeFrontChangedNotification_ name:*MEMORY[0x1E69D4A70] object:0];
 
     self->_localStoreFrontAtLastSuspend = 0;
     self->_synchedStoreFrontAtLastSuspend = 0;
@@ -249,19 +249,19 @@ LABEL_24:
   v19 = [objc_msgSend(objc_msgSend(MEMORY[0x1E69D4890] "defaultStore")];
   if (v19 != v18 && ([v18 isEqual:v19] & 1) == 0)
   {
-    v20 = [MEMORY[0x1E69D4938] sharedConfig];
-    v21 = [v20 shouldLog];
-    if ([v20 shouldLogToDisk])
+    mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+    if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
     {
-      v22 = v21 | 2;
+      v22 = shouldLog2 | 2;
     }
 
     else
     {
-      v22 = v21;
+      v22 = shouldLog2;
     }
 
-    if (!os_log_type_enabled([v20 OSLogObject], OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_DEBUG))
     {
       v22 &= 2u;
     }
@@ -301,7 +301,7 @@ LABEL_24:
       v32[3] = &unk_1E8164348;
       v32[4] = self;
       v27 = v32;
-      v28 = self;
+      selfCopy2 = self;
       v29 = v9;
     }
 
@@ -320,11 +320,11 @@ LABEL_24:
       v33[3] = &unk_1E8164348;
       v33[4] = self;
       v27 = v33;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 1;
     }
 
-    [(SUStoreController *)v28 _loadSectionsAllowingCache:v29 withCompletionBlock:v27];
+    [(SUStoreController *)selfCopy2 _loadSectionsAllowingCache:v29 withCompletionBlock:v27];
   }
 }
 
@@ -349,9 +349,9 @@ uint64_t __28__SUStoreController_connect__block_invoke_2(uint64_t a1)
   [objc_msgSend(MEMORY[0x1E695DF00] "distantFuture")];
   if (self->_reloadSectionsOnNextLaunch)
   {
-    v4 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
 
-    [v4 timeIntervalSinceReferenceDate];
+    [distantPast timeIntervalSinceReferenceDate];
   }
 
   else
@@ -377,9 +377,9 @@ uint64_t __28__SUStoreController_connect__block_invoke_2(uint64_t a1)
   if ([+[SUDialogManager numberOfPendingDialogs] sharedInstance]
   {
     [(SUStoreController *)self _cancelSuspendAfterDialogsDismissed];
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-    [v3 addObserver:self selector:sel__dialogDidFinishNotification_ name:@"SUDialogDidFinishNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__dialogDidFinishNotification_ name:@"SUDialogDidFinishNotification" object:0];
   }
 
   else
@@ -389,17 +389,17 @@ uint64_t __28__SUStoreController_connect__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)exitStoreWithReason:(int64_t)a3
+- (void)exitStoreWithReason:(int64_t)reason
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
 
-  [v3 suspend];
+  [mEMORY[0x1E69DC668] suspend];
 }
 
 - (BOOL)isStoreEnabled
 {
-  v2 = [MEMORY[0x1E69E47F8] sharedCache];
-  v3 = [v2 URLBagForContext:{objc_msgSend(MEMORY[0x1E69D49F8], "contextWithBagType:", 0)}];
+  mEMORY[0x1E69E47F8] = [MEMORY[0x1E69E47F8] sharedCache];
+  v3 = [mEMORY[0x1E69E47F8] URLBagForContext:{objc_msgSend(MEMORY[0x1E69D49F8], "contextWithBagType:", 0)}];
   if (!v3)
   {
     return 0;
@@ -438,12 +438,12 @@ uint64_t __28__SUStoreController_connect__block_invoke_2(uint64_t a1)
   return v8;
 }
 
-- (id)overlayConfigurationForStorePage:(id)a3
+- (id)overlayConfigurationForStorePage:(id)page
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a3 URLRequestProperties];
-  v5 = [v4 URLBagKey];
-  v6 = [v4 URL];
+  uRLRequestProperties = [page URLRequestProperties];
+  uRLBagKey = [uRLRequestProperties URLBagKey];
+  v6 = [uRLRequestProperties URL];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -475,7 +475,7 @@ LABEL_3:
       }
     }
 
-    if (v5 && ([v12 matchesURLBagKey:v5] & 1) != 0)
+    if (uRLBagKey && ([v12 matchesURLBagKey:uRLBagKey] & 1) != 0)
     {
       return v12;
     }
@@ -501,13 +501,13 @@ LABEL_3:
     v12 = &v11;
     v13 = 0x2020000000;
     v14 = *MEMORY[0x1E69DDBE8];
-    v3 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __38__SUStoreController_prepareForSuspend__block_invoke;
     v10[3] = &unk_1E8164320;
     v10[4] = &v11;
-    v4 = [v3 beginBackgroundTaskWithExpirationHandler:v10];
+    v4 = [mEMORY[0x1E69DC668] beginBackgroundTaskWithExpirationHandler:v10];
     v12[3] = v4;
     mailComposeViewController = self->_mailComposeViewController;
     v9[0] = MEMORY[0x1E69E9820];
@@ -526,15 +526,15 @@ LABEL_3:
     [(SUTabBarController *)self->_tabBarController dismissViewControllerAnimated:0 completion:0];
   }
 
-  v6 = [MEMORY[0x1E69D48B0] currentDevice];
+  currentDevice = [MEMORY[0x1E69D48B0] currentDevice];
 
-  self->_localStoreFrontAtLastSuspend = [v6 storeFrontIdentifier];
-  v7 = [v6 synchedStoreFrontIdentifier];
-  self->_synchedStoreFrontAtLastSuspend = v7;
-  if (self->_localStoreFrontAtLastSuspend | v7)
+  self->_localStoreFrontAtLastSuspend = [currentDevice storeFrontIdentifier];
+  synchedStoreFrontIdentifier = [currentDevice synchedStoreFrontIdentifier];
+  self->_synchedStoreFrontAtLastSuspend = synchedStoreFrontIdentifier;
+  if (self->_localStoreFrontAtLastSuspend | synchedStoreFrontIdentifier)
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 removeObserver:self name:*MEMORY[0x1E69D4A70] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69D4A70] object:0];
   }
 
   [(SUStoreController *)self _saveArchivedNavigationPath];
@@ -558,32 +558,32 @@ uint64_t __38__SUStoreController_prepareForSuspend__block_invoke_2(uint64_t a1, 
   return result;
 }
 
-- (void)presentExternalURLViewController:(id)a3
+- (void)presentExternalURLViewController:(id)controller
 {
   objc_opt_class();
-  v5 = a3;
+  controllerCopy = controller;
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a3 topViewController];
+    controllerCopy = [controller topViewController];
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = [(SUStoreController *)self overlayConfigurationForStorePage:v5]) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = [(SUStoreController *)self overlayConfigurationForStorePage:controllerCopy]) != 0)
   {
     v7 = v6;
-    v8 = [(SUStoreController *)self tabBarController];
+    tabBarController = [(SUStoreController *)self tabBarController];
 
-    [(UIViewController *)v8 presentViewController:a3 inOverlayWithConfiguration:v7];
+    [(UIViewController *)tabBarController presentViewController:controller inOverlayWithConfiguration:v7];
   }
 
   else
   {
-    v9 = [(SUStoreController *)self tabBarController];
-    [(SUTabBarController *)v9 setTransientViewController:a3 animated:0];
-    if ([(SUTabBarController *)v9 presentedViewController])
+    tabBarController2 = [(SUStoreController *)self tabBarController];
+    [(SUTabBarController *)tabBarController2 setTransientViewController:controller animated:0];
+    if ([(SUTabBarController *)tabBarController2 presentedViewController])
     {
 
-      [(SUTabBarController *)v9 dismissViewControllerAnimated:1 completion:0];
+      [(SUTabBarController *)tabBarController2 dismissViewControllerAnimated:1 completion:0];
     }
   }
 }
@@ -603,9 +603,9 @@ uint64_t __38__SUStoreController_prepareForSuspend__block_invoke_2(uint64_t a1, 
 
 - (NSString)defaultPNGNameForSuspend
 {
-  v2 = [(SUStoreController *)self _resumableViewController];
+  _resumableViewController = [(SUStoreController *)self _resumableViewController];
 
-  return [v2 defaultPNGName];
+  return [_resumableViewController defaultPNGName];
 }
 
 - (id)storeContentLanguage
@@ -666,44 +666,44 @@ LABEL_8:
 
 - (UINavigationController)topNavigationController
 {
-  v3 = [(SUTabBarController *)[(SUStoreController *)self tabBarController] transientViewController];
-  if (!v3)
+  transientViewController = [(SUTabBarController *)[(SUStoreController *)self tabBarController] transientViewController];
+  if (!transientViewController)
   {
-    v3 = [(UITabBarController *)[(SUStoreController *)self tabBarController] selectedNavigationController];
+    transientViewController = [(UITabBarController *)[(SUStoreController *)self tabBarController] selectedNavigationController];
   }
 
-  for (i = v3; [(UINavigationController *)i presentedViewController]; v3 = i)
+  for (i = transientViewController; [(UINavigationController *)i presentedViewController]; transientViewController = i)
   {
-    i = [(UINavigationController *)v3 presentedViewController];
+    i = [(UINavigationController *)transientViewController presentedViewController];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v3;
+    return transientViewController;
   }
 
-  return [(UINavigationController *)v3 navigationController];
+  return [(UINavigationController *)transientViewController navigationController];
 }
 
-- (void)_accountControllerDisappearedNotification:(id)a3
+- (void)_accountControllerDisappearedNotification:(id)notification
 {
   v14 = *MEMORY[0x1E69E9840];
   if (self->_reloadForStorefrontChangeAfterAccountSetup)
   {
-    v4 = [MEMORY[0x1E69D4938] sharedConfig];
-    v5 = [v4 shouldLog];
-    if ([v4 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
     {
       v6 &= 2u;
     }
@@ -732,24 +732,24 @@ LABEL_8:
   [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
 }
 
-- (void)_bagDidLoadNotification:(id)a3
+- (void)_bagDidLoadNotification:(id)notification
 {
   v14 = *MEMORY[0x1E69E9840];
   if ([(SUStoreController *)self _isAccountViewControllerVisible])
   {
-    v4 = [MEMORY[0x1E69D4938] sharedConfig];
-    v5 = [v4 shouldLog];
-    if ([v4 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
     {
       v6 &= 2u;
     }
@@ -781,16 +781,16 @@ LABEL_8:
   [(SUStoreController *)self _reloadOverlayConfigurations];
 }
 
-- (void)_dialogDidFinishNotification:(id)a3
+- (void)_dialogDidFinishNotification:(id)notification
 {
-  if (![+[SUDialogManager numberOfPendingDialogs:a3]])
+  if (![+[SUDialogManager numberOfPendingDialogs:notification]])
   {
 
     [(SUStoreController *)self exitStoreWithReason:0];
   }
 }
 
-- (void)_restrictionsChangedNotification:(id)a3
+- (void)_restrictionsChangedNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -846,24 +846,24 @@ uint64_t __54__SUStoreController__restrictionsChangedNotification___block_invoke
   return result;
 }
 
-- (void)_mainThreadStoreFrontChangedNotification:(id)a3
+- (void)_mainThreadStoreFrontChangedNotification:(id)notification
 {
   v12 = *MEMORY[0x1E69E9840];
   if ([(SUStoreController *)self _isAccountViewControllerVisible])
   {
-    v4 = [MEMORY[0x1E69D4938] sharedConfig];
-    v5 = [v4 shouldLog];
-    if ([v4 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
     {
       v6 &= 2u;
     }
@@ -893,29 +893,29 @@ uint64_t __54__SUStoreController__restrictionsChangedNotification___block_invoke
   }
 }
 
-- (void)_selectFooterSectionNotification:(id)a3
+- (void)_selectFooterSectionNotification:(id)notification
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69E46F0]];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69E46F0]];
   if (([objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")] & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [MEMORY[0x1E69D4938] sharedConfig];
-      v7 = [v6 shouldLog];
-      if ([v6 shouldLogToDisk])
+      mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+      if ([mEMORY[0x1E69D4938] shouldLogToDisk])
       {
-        v8 = v7 | 2;
+        v8 = shouldLog | 2;
       }
 
       else
       {
-        v8 = v7;
+        v8 = shouldLog;
       }
 
-      if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_DEBUG))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
       {
         v8 &= 2u;
       }
@@ -944,27 +944,27 @@ uint64_t __54__SUStoreController__restrictionsChangedNotification___block_invoke
   }
 }
 
-- (void)_storeFrontChangedNotification:(id)a3
+- (void)_storeFrontChangedNotification:(id)notification
 {
-  v4 = [(SUStoreController *)self mainThreadProxy];
+  mainThreadProxy = [(SUStoreController *)self mainThreadProxy];
 
-  [v4 _mainThreadStoreFrontChangedNotification:a3];
+  [mainThreadProxy _mainThreadStoreFrontChangedNotification:notification];
 }
 
-- (BOOL)client:(id)a3 presentAccountViewController:(id)a4 animated:(BOOL)a5
+- (BOOL)client:(id)client presentAccountViewController:(id)controller animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = [[SUNavigationController alloc] initWithRootViewController:a4];
-  -[SUNavigationController setClientInterface:](v8, "setClientInterface:", [a3 clientInterface]);
+  animatedCopy = animated;
+  v8 = [[SUNavigationController alloc] initWithRootViewController:controller];
+  -[SUNavigationController setClientInterface:](v8, "setClientInterface:", [client clientInterface]);
   [(SUNavigationController *)v8 setNavigationBarHidden:1];
   if ([objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")] == 1)
   {
-    v9 = [(SUStoreController *)self _showWildcatAccountViewController:v8 animated:v5];
+    v9 = [(SUStoreController *)self _showWildcatAccountViewController:v8 animated:animatedCopy];
   }
 
   else
   {
-    v9 = [(SUStoreController *)self client:a3 presentModalViewController:v8 animated:v5];
+    v9 = [(SUStoreController *)self client:client presentModalViewController:v8 animated:animatedCopy];
   }
 
   v10 = v9;
@@ -972,9 +972,9 @@ uint64_t __54__SUStoreController__restrictionsChangedNotification___block_invoke
   return v10;
 }
 
-- (BOOL)client:(id)a3 presentModalViewController:(id)a4 animated:(BOOL)a5
+- (BOOL)client:(id)client presentModalViewController:(id)controller animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   for (i = [(SUStoreController *)self tabBarController]; ; i = [(SUTabBarController *)v8 presentedViewController])
   {
     v8 = i;
@@ -984,40 +984,40 @@ uint64_t __54__SUStoreController__restrictionsChangedNotification___block_invoke
     }
   }
 
-  [(UIViewController *)v8 transitionSafePresentModalViewController:a4 animated:v5];
+  [(UIViewController *)v8 transitionSafePresentModalViewController:controller animated:animatedCopy];
   return v8 != 0;
 }
 
-- (id)topViewControllerForClient:(id)a3
+- (id)topViewControllerForClient:(id)client
 {
-  v3 = [(SUStoreController *)self topNavigationController];
+  topNavigationController = [(SUStoreController *)self topNavigationController];
 
-  return [(UINavigationController *)v3 topViewController];
+  return [(UINavigationController *)topNavigationController topViewController];
 }
 
-- (void)tabBarController:(id)a3 didEndCustomizingViewControllers:(id)a4 changed:(BOOL)a5
+- (void)tabBarController:(id)controller didEndCustomizingViewControllers:(id)controllers changed:(BOOL)changed
 {
-  if (a5)
+  if (changed)
   {
-    [(SUTabBarController *)self->_tabBarController saveOrderingToDefaults:a3];
+    [(SUTabBarController *)self->_tabBarController saveOrderingToDefaults:controller];
   }
 }
 
-- (void)handleApplicationURL:(id)a3
+- (void)handleApplicationURL:(id)l
 {
-  v5 = [a3 storeURLType];
+  storeURLType = [l storeURLType];
   v6 = [objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")];
-  if (v5 != 1 || v6 == 1)
+  if (storeURLType != 1 || v6 == 1)
   {
-    if (v5 == 2)
+    if (storeURLType == 2)
     {
 
-      [(SUStoreController *)self _handleAccountURL:a3];
+      [(SUStoreController *)self _handleAccountURL:l];
     }
 
     else
     {
-      v7 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:{objc_msgSend(a3, "schemeSwizzledURL")}];
+      v7 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:{objc_msgSend(l, "schemeSwizzledURL")}];
       [(SUStoreController *)self _defaultHandleApplicationURLRequestProperties:v7];
     }
   }
@@ -1025,16 +1025,16 @@ uint64_t __54__SUStoreController__restrictionsChangedNotification___block_invoke
   else
   {
 
-    [(SUStoreController *)self _handleSearchURL:a3];
+    [(SUStoreController *)self _handleSearchURL:l];
   }
 }
 
 - (void)setupUI
 {
-  v3 = [(SUStoreController *)self launchURL];
-  if (v3)
+  launchURL = [(SUStoreController *)self launchURL];
+  if (launchURL)
   {
-    [(SUStoreController *)self handleApplicationURL:v3];
+    [(SUStoreController *)self handleApplicationURL:launchURL];
   }
 
   if (([objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")] & 1) == 0)
@@ -1052,27 +1052,27 @@ uint64_t __54__SUStoreController__restrictionsChangedNotification___block_invoke
   self->_loadSectionsOperation = 0;
 }
 
-- (void)_handleFinishedBackgroundLoadSectionsOperation:(id)a3
+- (void)_handleFinishedBackgroundLoadSectionsOperation:(id)operation
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = [a3 sectionsResponse];
+  sectionsResponse = [operation sectionsResponse];
 
   self->_lastBackgroundSectionsResponse = 0;
-  if ([a3 success] && objc_msgSend(v5, "responseType") == 1 && (objc_msgSend(objc_msgSend(v5, "versionString"), "isEqualToString:", -[SUSectionsResponse versionString](self->_lastSectionsResponse, "versionString")) & 1) == 0)
+  if ([operation success] && objc_msgSend(sectionsResponse, "responseType") == 1 && (objc_msgSend(objc_msgSend(sectionsResponse, "versionString"), "isEqualToString:", -[SUSectionsResponse versionString](self->_lastSectionsResponse, "versionString")) & 1) == 0)
   {
-    v6 = [MEMORY[0x1E69D4938] sharedConfig];
-    v7 = [v6 shouldLog];
-    if ([v6 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
     {
       v8 &= 2u;
     }
@@ -1094,46 +1094,46 @@ uint64_t __54__SUStoreController__restrictionsChangedNotification___block_invoke
       }
     }
 
-    self->_lastBackgroundSectionsResponse = v5;
+    self->_lastBackgroundSectionsResponse = sectionsResponse;
     self->_reloadSectionsOnNextLaunch = 1;
   }
 
   [(SUStoreController *)self _cancelLoadSectionsOperation];
 }
 
-- (void)_handleFinishedLoadSectionsOperation:(id)a3
+- (void)_handleFinishedLoadSectionsOperation:(id)operation
 {
-  if ([a3 success])
+  if ([operation success])
   {
-    -[SUStoreController _reloadWithSectionsResponse:](self, "_reloadWithSectionsResponse:", [a3 sectionsResponse]);
+    -[SUStoreController _reloadWithSectionsResponse:](self, "_reloadWithSectionsResponse:", [operation sectionsResponse]);
   }
 
   else
   {
-    -[SUStoreController _handleSectionsLoadFailedWithError:](self, "_handleSectionsLoadFailedWithError:", [a3 error]);
+    -[SUStoreController _handleSectionsLoadFailedWithError:](self, "_handleSectionsLoadFailedWithError:", [operation error]);
   }
 
   [(SUStoreController *)self _cancelLoadSectionsOperation];
 }
 
-- (void)_handleSectionsLoadFailedWithError:(id)a3
+- (void)_handleSectionsLoadFailedWithError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
   if (ISErrorIndicatesSlowNetwork())
   {
-    v5 = [MEMORY[0x1E69D4938] sharedConfig];
-    v6 = [v5 shouldLog];
-    if ([v5 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v7 &= 2u;
     }
@@ -1155,49 +1155,49 @@ uint64_t __54__SUStoreController__restrictionsChangedNotification___block_invoke
       }
     }
 
-    [+[SUDialogManager presentDialogForError:v13], "presentDialogForError:", a3];
+    [+[SUDialogManager presentDialogForError:v13], "presentDialogForError:", error];
     [(SUStoreController *)self _retrySectionsAfterNetworkTransition];
   }
 
   else
   {
-    v11 = [(SUTabBarController *)self->_tabBarController transientViewController];
+    transientViewController = [(SUTabBarController *)self->_tabBarController transientViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v11 topViewController];
+      transientViewController = [transientViewController topViewController];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v11 setSkLoading:0];
+      [transientViewController setSkLoading:0];
     }
 
     v12 = +[SUDialogManager sharedInstance];
     if (![(SUDialogManager *)v12 numberOfPendingDialogs])
     {
-      if (!a3)
+      if (!error)
       {
-        a3 = ISError();
+        error = ISError();
       }
 
-      [(SUDialogManager *)v12 presentDialogForError:a3];
+      [(SUDialogManager *)v12 presentDialogForError:error];
     }
 
     [(SUStoreController *)self exitStoreAfterDialogsDismiss];
   }
 }
 
-- (BOOL)_loadSectionsAllowingCache:(BOOL)a3 withCompletionBlock:(id)a4
+- (BOOL)_loadSectionsAllowingCache:(BOOL)cache withCompletionBlock:(id)block
 {
   loadSectionsOperation = self->_loadSectionsOperation;
   if (!loadSectionsOperation)
   {
-    v6 = a3;
+    cacheCopy = cache;
     v8 = [[SULoadSectionsOperation alloc] initWithClientInterface:[(SUClient *)self->_client clientInterface]];
     [(SULoadSectionsOperation *)v8 setActiveSectionVersionString:[(SUSectionsResponse *)self->_lastSectionsResponse versionString]];
-    [(SULoadSectionsOperation *)v8 setCompletionBlock:a4];
-    [(SULoadSectionsOperation *)v8 setShouldUseCache:v6];
+    [(SULoadSectionsOperation *)v8 setCompletionBlock:block];
+    [(SULoadSectionsOperation *)v8 setShouldUseCache:cacheCopy];
     self->_loadSectionsOperation = &v8->super;
     [objc_msgSend(MEMORY[0x1E69E4798] "mainQueue")];
   }
@@ -1241,19 +1241,19 @@ uint64_t __47__SUStoreController__reloadForStorefrontChange__block_invoke(uint64
   v14 = *MEMORY[0x1E69E9840];
   if (!self->_lastSectionsResponse && [objc_msgSend(MEMORY[0x1E69E4778] "sharedInstance")] >= 1)
   {
-    v3 = [MEMORY[0x1E69D4938] sharedConfig];
-    v4 = [v3 shouldLog];
-    if ([v3 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
     {
       v5 &= 2u;
     }
@@ -1295,27 +1295,27 @@ uint64_t __57__SUStoreController__retrySectionsAfterNetworkTransition__block_inv
 
 - (void)_cancelSuspendAfterDialogsDismissed
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v3 removeObserver:self name:@"SUDialogDidFinishNotification" object:0];
+  [defaultCenter removeObserver:self name:@"SUDialogDidFinishNotification" object:0];
 }
 
-- (void)_defaultHandleApplicationURLRequestProperties:(id)a3
+- (void)_defaultHandleApplicationURLRequestProperties:(id)properties
 {
   v5 = [-[SUTabBarController selectedViewController](-[SUStoreController tabBarController](self "tabBarController")];
   v7 = [-[SUClient viewControllerFactory](self->_client "viewControllerFactory")];
   [v7 setClientInterface:{-[SUClient clientInterface](self->_client, "clientInterface")}];
   [v7 setExternalRequest:1];
-  [v7 setURLRequestProperties:a3];
+  [v7 setURLRequestProperties:properties];
   v6 = [[SUNavigationController alloc] initWithSection:v5 rootViewController:v7];
   [(SUNavigationController *)v6 setClientInterface:[(SUClient *)self->_client clientInterface]];
   [(SUStoreController *)self presentExternalURLViewController:v6];
 }
 
-- (void)_handleAccountURL:(id)a3
+- (void)_handleAccountURL:(id)l
 {
   v4 = 1;
-  v14 = [a3 copyQueryStringDictionaryWithUnescapedValues:1];
+  v14 = [l copyQueryStringDictionaryWithUnescapedValues:1];
   v5 = [v14 objectForKey:@"url"];
   if (v5)
   {
@@ -1376,16 +1376,16 @@ uint64_t __57__SUStoreController__retrySectionsAfterNetworkTransition__block_inv
   [+[SUClient sharedClient](SUClient "sharedClient")];
 }
 
-- (void)_handleSearchURL:(id)a3
+- (void)_handleSearchURL:(id)l
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [(SUStoreController *)self tabBarController];
-  v6 = [(SUTabBarController *)v5 sections];
+  tabBarController = [(SUStoreController *)self tabBarController];
+  sections = [(SUTabBarController *)tabBarController sections];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [(NSArray *)sections countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1396,14 +1396,14 @@ LABEL_3:
     {
       if (*v15 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(sections);
       }
 
       v11 = *(*(&v14 + 1) + 8 * v10);
-      v12 = [v11 searchFieldConfiguration];
-      if (v12)
+      searchFieldConfiguration = [v11 searchFieldConfiguration];
+      if (searchFieldConfiguration)
       {
-        if ([v12 location] != 2)
+        if ([searchFieldConfiguration location] != 2)
         {
           break;
         }
@@ -1411,7 +1411,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [(NSArray *)sections countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -1426,29 +1426,29 @@ LABEL_3:
       goto LABEL_13;
     }
 
-    -[SUTabBarController setSelectedIdentifier:](v5, "setSelectedIdentifier:", [v11 identifier]);
+    -[SUTabBarController setSelectedIdentifier:](tabBarController, "setSelectedIdentifier:", [v11 identifier]);
   }
 
   else
   {
 LABEL_13:
-    [(SUTabBarController *)v5 selectSectionOfType:1];
+    [(SUTabBarController *)tabBarController selectSectionOfType:1];
   }
 
-  v13 = [(UINavigationController *)[(SUStoreController *)self topNavigationController] topViewController];
+  topViewController = [(UINavigationController *)[(SUStoreController *)self topNavigationController] topViewController];
   if (objc_opt_respondsToSelector())
   {
-    -[UIViewController handleApplicationURL:](v13, "handleApplicationURL:", [a3 schemeSwizzledURL]);
+    -[UIViewController handleApplicationURL:](topViewController, "handleApplicationURL:", [l schemeSwizzledURL]);
   }
 }
 
 - (BOOL)_isAccountViewControllerVisible
 {
-  v2 = [(SUTabBarController *)self->_tabBarController presentedViewController];
+  presentedViewController = [(SUTabBarController *)self->_tabBarController presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v2 topViewController];
+    [presentedViewController topViewController];
   }
 
   objc_opt_class();
@@ -1502,13 +1502,13 @@ LABEL_13:
   self->_overlayConfigurations = v5;
 }
 
-- (void)_reloadWithSectionsResponse:(id)a3
+- (void)_reloadWithSectionsResponse:(id)response
 {
   lastSectionsResponse = self->_lastSectionsResponse;
-  if (lastSectionsResponse != a3)
+  if (lastSectionsResponse != response)
   {
 
-    self->_lastSectionsResponse = a3;
+    self->_lastSectionsResponse = response;
   }
 
   [(SUTabBarController *)self->_tabBarController setTransientViewController:0 animated:0];
@@ -1544,15 +1544,15 @@ LABEL_11:
 
 - (id)_resumableViewController
 {
-  v2 = [(SUTabBarController *)self->_tabBarController selectedViewController];
+  selectedViewController = [(SUTabBarController *)self->_tabBarController selectedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 copyArchivableContext];
-    if (v3)
+    copyArchivableContext = [selectedViewController copyArchivableContext];
+    if (copyArchivableContext)
     {
 
-      return v2;
+      return selectedViewController;
     }
 
     return 0;
@@ -1564,8 +1564,8 @@ LABEL_11:
     return 0;
   }
 
-  v4 = [v2 viewControllers];
-  v5 = [v4 count];
+  viewControllers = [selectedViewController viewControllers];
+  v5 = [viewControllers count];
   if (v5 < 1)
   {
     return 0;
@@ -1574,15 +1574,15 @@ LABEL_11:
   v6 = v5;
   do
   {
-    v2 = [v4 objectAtIndex:v6 - 1];
+    selectedViewController = [viewControllers objectAtIndex:v6 - 1];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = [v2 copyArchivableContext]) != 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = [selectedViewController copyArchivableContext]) != 0)
     {
     }
 
     else
     {
-      v2 = 0;
+      selectedViewController = 0;
     }
 
     if (v6 < 2)
@@ -1593,8 +1593,8 @@ LABEL_11:
     --v6;
   }
 
-  while (!v2);
-  return v2;
+  while (!selectedViewController);
+  return selectedViewController;
 }
 
 - (void)_saveArchivedNavigationPath
@@ -1609,15 +1609,15 @@ LABEL_11:
   [v3 setDontSaveNavigationPath:0];
 }
 
-- (BOOL)_showWildcatAccountViewController:(id)a3 animated:(BOOL)a4
+- (BOOL)_showWildcatAccountViewController:(id)controller animated:(BOOL)animated
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = [-[SUTabBarController overlayBackgroundViewController](self->_tabBarController overlayBackgroundViewController];
+  overlayBackgroundViewController = [-[SUTabBarController overlayBackgroundViewController](self->_tabBarController overlayBackgroundViewController];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [overlayBackgroundViewController countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1628,15 +1628,15 @@ LABEL_3:
     {
       if (*v15 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(overlayBackgroundViewController);
       }
 
       v11 = *(*(&v14 + 1) + 8 * v10);
-      v12 = [v11 backViewController];
+      backViewController = [v11 backViewController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v12 topViewController];
+        [backViewController topViewController];
       }
 
       objc_opt_class();
@@ -1647,7 +1647,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [overlayBackgroundViewController countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -1662,13 +1662,13 @@ LABEL_3:
       goto LABEL_14;
     }
 
-    [v11 setBackViewController:a3];
+    [v11 setBackViewController:controller];
   }
 
   else
   {
 LABEL_14:
-    [(SUStoreController *)self presentExternalURLViewController:a3];
+    [(SUStoreController *)self presentExternalURLViewController:controller];
   }
 
   return 1;
@@ -1702,7 +1702,7 @@ LABEL_14:
   }
 }
 
-- (void)composeEmailWithSubject:(id)a3 body:(id)a4
+- (void)composeEmailWithSubject:(id)subject body:(id)body
 {
   if (CPCanSendMail() && ![(SUStoreController *)self isComposingEmail])
   {
@@ -1710,35 +1710,35 @@ LABEL_14:
     self->_mailComposeViewController = v7;
     [(MFMailComposeViewController *)v7 setKeyboardVisible:1];
     [(MFMailComposeViewController *)self->_mailComposeViewController setMailComposeDelegate:self];
-    [(MFMailComposeViewController *)self->_mailComposeViewController setSubject:a3];
-    [(MFMailComposeViewController *)self->_mailComposeViewController setMessageBody:a4 isHTML:1];
+    [(MFMailComposeViewController *)self->_mailComposeViewController setSubject:subject];
+    [(MFMailComposeViewController *)self->_mailComposeViewController setMessageBody:body isHTML:1];
     mailComposeViewController = self->_mailComposeViewController;
 
     [(SUStoreController *)self presentMailComposeViewController:mailComposeViewController animated:1];
   }
 }
 
-- (void)dismissMailComposeViewControllerAnimated:(BOOL)a3
+- (void)dismissMailComposeViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(SUStoreController *)self tabBarController];
+  animatedCopy = animated;
+  tabBarController = [(SUStoreController *)self tabBarController];
 
-  [(SUTabBarController *)v4 dismissViewControllerAnimated:v3 completion:0];
+  [(SUTabBarController *)tabBarController dismissViewControllerAnimated:animatedCopy completion:0];
 }
 
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error
 {
-  [(SUStoreController *)self dismissMailComposeViewControllerAnimated:1, a4, a5];
+  [(SUStoreController *)self dismissMailComposeViewControllerAnimated:1, result, error];
 
   self->_mailComposeViewController = 0;
 }
 
-- (void)presentMailComposeViewController:(id)a3 animated:(BOOL)a4
+- (void)presentMailComposeViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(SUStoreController *)self topNavigationController];
+  animatedCopy = animated;
+  topNavigationController = [(SUStoreController *)self topNavigationController];
 
-  [(UINavigationController *)v6 presentViewController:a3 animated:v4 completion:0];
+  [(UINavigationController *)topNavigationController presentViewController:controller animated:animatedCopy completion:0];
 }
 
 @end

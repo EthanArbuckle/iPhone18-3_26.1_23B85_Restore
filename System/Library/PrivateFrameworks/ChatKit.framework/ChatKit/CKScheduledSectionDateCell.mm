@@ -1,51 +1,51 @@
 @interface CKScheduledSectionDateCell
 + (id)createStampLabelView;
-- (CGSize)layoutSizeForWidth:(double)a3 applyLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKScheduledSectionDateCell)initWithFrame:(CGRect)a3;
+- (CGSize)layoutSizeForWidth:(double)width applyLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKScheduledSectionDateCell)initWithFrame:(CGRect)frame;
 - (CKScheduledSectionDateCellDelegate)delegate;
 - (id)_deferredMenuForEditScheduleButton;
-- (id)scheduledSectionDateStringWithControlState:(unint64_t)a3;
-- (void)_updateEditScheduleButtonAttributedTitleForControlState:(unint64_t)a3;
-- (void)addFilter:(id)a3;
+- (id)scheduledSectionDateStringWithControlState:(unint64_t)state;
+- (void)_updateEditScheduleButtonAttributedTitleForControlState:(unint64_t)state;
+- (void)addFilter:(id)filter;
 - (void)clearFilters;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
-- (void)handleDeleteAllAction:(id)a3;
-- (void)handleEditDateAction:(id)a3;
-- (void)handleSendNowAction:(id)a3;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
+- (void)handleDeleteAllAction:(id)action;
+- (void)handleEditDateAction:(id)action;
+- (void)handleSendNowAction:(id)action;
 - (void)layoutSubviewsForAlignmentContents;
-- (void)setDisplayEditButton:(BOOL)a3;
-- (void)setTimeString:(id)a3;
+- (void)setDisplayEditButton:(BOOL)button;
+- (void)setTimeString:(id)string;
 @end
 
 @implementation CKScheduledSectionDateCell
 
-- (CKScheduledSectionDateCell)initWithFrame:(CGRect)a3
+- (CKScheduledSectionDateCell)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = CKScheduledSectionDateCell;
-  v3 = [(CKTranscriptStampCell *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTranscriptStampCell *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [CKTranscriptLegibilityButton buttonWithType:1];
     [(CKEditableCollectionViewCell *)v3 setEffect:0];
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 transcriptSendLaterButtonConfiguration];
-    [(CKTranscriptLegibilityButton *)v4 setConfiguration:v6];
+    transcriptSendLaterButtonConfiguration = [v5 transcriptSendLaterButtonConfiguration];
+    [(CKTranscriptLegibilityButton *)v4 setConfiguration:transcriptSendLaterButtonConfiguration];
 
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 transcriptSendLaterButtonConfigurationUpdateHandler];
-    [(CKTranscriptLegibilityButton *)v4 setConfigurationUpdateHandler:v8];
+    transcriptSendLaterButtonConfigurationUpdateHandler = [v7 transcriptSendLaterButtonConfigurationUpdateHandler];
+    [(CKTranscriptLegibilityButton *)v4 setConfigurationUpdateHandler:transcriptSendLaterButtonConfigurationUpdateHandler];
 
-    v9 = [(CKEditableCollectionViewCell *)v3 contentView];
-    [v9 addSubview:v4];
+    contentView = [(CKEditableCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v4];
 
     editScheduleButton = v3->_editScheduleButton;
     v3->_editScheduleButton = v4;
     v11 = v4;
 
-    v12 = [(CKScheduledSectionDateCell *)v3 _deferredMenuForEditScheduleButton];
-    [(CKTranscriptLegibilityButton *)v3->_editScheduleButton setMenu:v12];
+    _deferredMenuForEditScheduleButton = [(CKScheduledSectionDateCell *)v3 _deferredMenuForEditScheduleButton];
+    [(CKTranscriptLegibilityButton *)v3->_editScheduleButton setMenu:_deferredMenuForEditScheduleButton];
 
     [(CKTranscriptLegibilityButton *)v3->_editScheduleButton setShowsMenuAsPrimaryAction:1];
   }
@@ -53,35 +53,35 @@
   return v3;
 }
 
-- (void)setDisplayEditButton:(BOOL)a3
+- (void)setDisplayEditButton:(BOOL)button
 {
-  if (self->_displayEditButton != a3)
+  if (self->_displayEditButton != button)
   {
-    self->_displayEditButton = a3;
+    self->_displayEditButton = button;
     [(CKTranscriptLegibilityButton *)self->_editScheduleButton setEnabled:?];
 
     [(CKScheduledSectionDateCell *)self _updateEditScheduleButtonAttributedTitleForControlState:0];
   }
 }
 
-- (void)setTimeString:(id)a3
+- (void)setTimeString:(id)string
 {
-  v5 = a3;
-  if (self->_timeString != v5)
+  stringCopy = string;
+  if (self->_timeString != stringCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_timeString, a3);
+    v7 = stringCopy;
+    objc_storeStrong(&self->_timeString, string);
     [(CKScheduledSectionDateCell *)self _updateEditScheduleButtonAttributedTitleForControlState:0];
     [(CKTranscriptStampCell *)self contentAlignmentRect];
     [(CKScheduledSectionDateCell *)self layoutSizeForWidth:1 applyLayout:v6];
-    v5 = v7;
+    stringCopy = v7;
   }
 }
 
-- (void)_updateEditScheduleButtonAttributedTitleForControlState:(unint64_t)a3
+- (void)_updateEditScheduleButtonAttributedTitleForControlState:(unint64_t)state
 {
   v5 = [(CKScheduledSectionDateCell *)self scheduledSectionDateStringWithControlState:?];
-  [(CKTranscriptLegibilityButton *)self->_editScheduleButton setAttributedTitle:v5 forState:a3];
+  [(CKTranscriptLegibilityButton *)self->_editScheduleButton setAttributedTitle:v5 forState:state];
 }
 
 - (id)_deferredMenuForEditScheduleButton
@@ -293,21 +293,21 @@ void __64__CKScheduledSectionDateCell__deferredMenuForEditScheduleButton__block_
   }
 }
 
-- (void)handleSendNowAction:(id)a3
+- (void)handleSendNowAction:(id)action
 {
-  v4 = [(CKScheduledSectionDateCell *)self delegate];
-  [v4 dateCellRequestedScheduledMessageModification:self scheduleType:0 deliveryTime:0];
+  delegate = [(CKScheduledSectionDateCell *)self delegate];
+  [delegate dateCellRequestedScheduledMessageModification:self scheduleType:0 deliveryTime:0];
 }
 
-- (void)handleDeleteAllAction:(id)a3
+- (void)handleDeleteAllAction:(id)action
 {
-  v4 = [(CKScheduledSectionDateCell *)self delegate];
-  [v4 dateCellRequestedDeleteAllMessages:self];
+  delegate = [(CKScheduledSectionDateCell *)self delegate];
+  [delegate dateCellRequestedDeleteAllMessages:self];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(CKScheduledSectionDateCell *)self layoutSizeForWidth:0 applyLayout:a3.width, a3.height];
+  [(CKScheduledSectionDateCell *)self layoutSizeForWidth:0 applyLayout:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -330,19 +330,19 @@ void __64__CKScheduledSectionDateCell__deferredMenuForEditScheduleButton__block_
   return v3;
 }
 
-- (CGSize)layoutSizeForWidth:(double)a3 applyLayout:(BOOL)a4
+- (CGSize)layoutSizeForWidth:(double)width applyLayout:(BOOL)layout
 {
-  v4 = a4;
+  layoutCopy = layout;
   [(CKTranscriptStampCell *)self contentAlignmentRect];
   v8 = v7;
   v10 = v9;
-  v11 = [(CKScheduledSectionDateCell *)self editScheduleButton];
-  [v11 sizeThatFits:{a3, 1.79769313e308}];
+  editScheduleButton = [(CKScheduledSectionDateCell *)self editScheduleButton];
+  [editScheduleButton sizeThatFits:{width, 1.79769313e308}];
   v13 = v12;
   v15 = v14;
   if (CKMainScreenScale_once_54 == -1)
   {
-    if (!v4)
+    if (!layoutCopy)
     {
       goto LABEL_6;
     }
@@ -351,38 +351,38 @@ void __64__CKScheduledSectionDateCell__deferredMenuForEditScheduleButton__block_
   else
   {
     [CKScheduledSectionDateCell layoutSizeForWidth:applyLayout:];
-    if (!v4)
+    if (!layoutCopy)
     {
       goto LABEL_6;
     }
   }
 
-  v16 = fmin(a3, v13);
+  v16 = fmin(width, v13);
   v17 = *&CKMainScreenScale_sMainScreenScale_54;
   if (*&CKMainScreenScale_sMainScreenScale_54 == 0.0)
   {
     v17 = 1.0;
   }
 
-  [v11 setFrame:{floor((v8 + (v10 - v16) * 0.5) * v17) / v17, 0.0, v16, v15}];
-  [v11 __ck_ensureMinimumTouchInsets];
+  [editScheduleButton setFrame:{floor((v8 + (v10 - v16) * 0.5) * v17) / v17, 0.0, v16, v15}];
+  [editScheduleButton __ck_ensureMinimumTouchInsets];
 LABEL_6:
 
-  v18 = a3;
+  widthCopy = width;
   v19 = v15;
   result.height = v19;
-  result.width = v18;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
   v8.receiver = self;
   v8.super_class = CKScheduledSectionDateCell;
-  v4 = a3;
-  [(CKTranscriptStampCell *)&v8 addFilter:v4];
+  filterCopy = filter;
+  [(CKTranscriptStampCell *)&v8 addFilter:filterCopy];
   v5 = [(CKScheduledSectionDateCell *)self editScheduleButton:v8.receiver];
-  [v4 contentAlpha];
+  [filterCopy contentAlpha];
   v7 = v6;
 
   [v5 setAlpha:v7];
@@ -393,8 +393,8 @@ LABEL_6:
   v4.receiver = self;
   v4.super_class = CKScheduledSectionDateCell;
   [(CKTranscriptStampCell *)&v4 clearFilters];
-  v3 = [(CKScheduledSectionDateCell *)self editScheduleButton];
-  [v3 setAlpha:1.0];
+  editScheduleButton = [(CKScheduledSectionDateCell *)self editScheduleButton];
+  [editScheduleButton setAlpha:1.0];
 }
 
 - (CKScheduledSectionDateCellDelegate)delegate
@@ -404,24 +404,24 @@ LABEL_6:
   return WeakRetained;
 }
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
   v7.receiver = self;
   v7.super_class = CKScheduledSectionDateCell;
-  [(CKTranscriptStampCell *)&v7 configureForChatItem:a3 context:a4 animated:a5 animationDuration:a7 animationCurve:a6];
+  [(CKTranscriptStampCell *)&v7 configureForChatItem:item context:context animated:animated animationDuration:curve animationCurve:duration];
 }
 
-- (void)handleEditDateAction:(id)a3
+- (void)handleEditDateAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   sub_190BDA7AC();
 }
 
-- (id)scheduledSectionDateStringWithControlState:(unint64_t)a3
+- (id)scheduledSectionDateStringWithControlState:(unint64_t)state
 {
-  v4 = self;
-  v5.super.isa = CKScheduledSectionDateCell.scheduledSectionDateString(controlState:)(a3).super.isa;
+  selfCopy = self;
+  v5.super.isa = CKScheduledSectionDateCell.scheduledSectionDateString(controlState:)(state).super.isa;
 
   return v5.super.isa;
 }

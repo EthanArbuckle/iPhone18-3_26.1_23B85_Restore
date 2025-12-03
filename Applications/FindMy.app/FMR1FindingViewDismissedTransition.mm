@@ -1,15 +1,15 @@
 @interface FMR1FindingViewDismissedTransition
 - (_TtC6FindMy34FMR1FindingViewDismissedTransition)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation FMR1FindingViewDismissedTransition
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1004088DC(a3);
+  selfCopy = self;
+  sub_1004088DC(transition);
   swift_unknownObjectRelease();
 }
 

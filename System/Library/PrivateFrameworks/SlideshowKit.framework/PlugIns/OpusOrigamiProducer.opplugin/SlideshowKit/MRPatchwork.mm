@@ -1,6 +1,6 @@
 @interface MRPatchwork
 - (MRPatchwork)init;
-- (MRPatchwork)patchworkWithPatch:(id)a3;
+- (MRPatchwork)patchworkWithPatch:(id)patch;
 - (void)dealloc;
 @end
 
@@ -27,10 +27,10 @@
   [(MRPatchwork *)&v3 dealloc];
 }
 
-- (MRPatchwork)patchworkWithPatch:(id)a3
+- (MRPatchwork)patchworkWithPatch:(id)patch
 {
   v4 = objc_alloc_init(MRPatchwork);
-  [(MRPatchwork *)v4 addPatch:a3];
+  [(MRPatchwork *)v4 addPatch:patch];
 
   return v4;
 }

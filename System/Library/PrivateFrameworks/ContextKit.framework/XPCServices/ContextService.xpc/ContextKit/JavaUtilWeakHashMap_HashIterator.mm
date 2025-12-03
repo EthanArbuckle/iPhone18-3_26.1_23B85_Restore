@@ -1,6 +1,6 @@
 @interface JavaUtilWeakHashMap_HashIterator
 - (BOOL)hasNext;
-- (JavaUtilWeakHashMap_HashIterator)initWithJavaUtilWeakHashMap:(id)a3 withJavaUtilWeakHashMap_Entry_Type:(id)a4;
+- (JavaUtilWeakHashMap_HashIterator)initWithJavaUtilWeakHashMap:(id)map withJavaUtilWeakHashMap_Entry_Type:(id)type;
 - (id)next;
 - (void)dealloc;
 - (void)remove;
@@ -8,12 +8,12 @@
 
 @implementation JavaUtilWeakHashMap_HashIterator
 
-- (JavaUtilWeakHashMap_HashIterator)initWithJavaUtilWeakHashMap:(id)a3 withJavaUtilWeakHashMap_Entry_Type:(id)a4
+- (JavaUtilWeakHashMap_HashIterator)initWithJavaUtilWeakHashMap:(id)map withJavaUtilWeakHashMap_Entry_Type:(id)type
 {
-  JreStrongAssign(&self->this$0_, a3);
+  JreStrongAssign(&self->this$0_, map);
   self->position_ = 0;
-  JreStrongAssign(&self->type_, a4);
-  v7 = atomic_load(a3 + 10);
+  JreStrongAssign(&self->type_, type);
+  v7 = atomic_load(map + 10);
   self->expectedModCount_ = v7;
   return self;
 }

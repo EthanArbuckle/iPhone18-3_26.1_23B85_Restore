@@ -7,21 +7,21 @@
 - (id)_loadAppSpecifiers;
 - (id)_messagesIniCloudTip;
 - (id)_reviewLargeAttachmentsTip;
-- (id)_spaceTakenForSpecifier:(id)a3;
+- (id)_spaceTakenForSpecifier:(id)specifier;
 - (id)cloudDocumentSpecifiers;
 - (id)documentAppIdentifiers;
-- (id)documentSpecifiersForApp:(id)a3;
+- (id)documentSpecifiersForApp:(id)app;
 - (id)tips;
 - (unint64_t)_iterationOptionForsForCalculatingSpaceSavedByReviewingLargeConversations;
 - (void)_configureCloudTipController;
 - (void)_displayICloudErrorMessage;
 - (void)_enableAutoDeleteMessages;
-- (void)_iCloudHooksSetEnabledReturned:(id)a3;
+- (void)_iCloudHooksSetEnabledReturned:(id)returned;
 - (void)_loadiCloudAppSpecifiers;
 - (void)_refreshMessageIniCloudTipIfNeeded;
 - (void)dealloc;
-- (void)enableOptionForTip:(id)a3;
-- (void)storagePlugingDataModelDidUpdate:(id)a3;
+- (void)enableOptionForTip:(id)tip;
+- (void)storagePlugingDataModelDidUpdate:(id)update;
 @end
 
 @implementation CKStoragePlugin
@@ -35,8 +35,8 @@
   if (v2)
   {
     [(CKStoragePlugin *)v2 _configureCloudTipController];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__iCloudHooksSetEnabledReturned_ name:*MEMORY[0x1E69A5948] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__iCloudHooksSetEnabledReturned_ name:*MEMORY[0x1E69A5948] object:0];
 
     v5 = objc_alloc_init(CKStoragePluginDataModel);
     dataModel = v3->_dataModel;
@@ -53,8 +53,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(STStorageOptionTip *)self->_cachedAutoDeleteMessagesTip setDelegate:0];
   [(STStorageOptionTip *)self->_cachedMessagesIniCloudTip setDelegate:0];
@@ -66,10 +66,10 @@
 
 - (unint64_t)_iterationOptionForsForCalculatingSpaceSavedByReviewingLargeConversations
 {
-  v3 = [(CKStoragePlugin *)self dataModel];
-  v4 = [v3 isCloudKitEnabled];
+  dataModel = [(CKStoragePlugin *)self dataModel];
+  isCloudKitEnabled = [dataModel isCloudKitEnabled];
 
-  if (!v4)
+  if (!isCloudKitEnabled)
   {
     return 0;
   }
@@ -82,9 +82,9 @@
   return 1;
 }
 
-- (void)storagePlugingDataModelDidUpdate:(id)a3
+- (void)storagePlugingDataModelDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -95,8 +95,8 @@
     }
   }
 
-  v6 = [objc_opt_class() _representedApp];
-  [(STStoragePlugin *)self reloadSpecifiersForApp:v6];
+  _representedApp = [objc_opt_class() _representedApp];
+  [(STStoragePlugin *)self reloadSpecifiersForApp:_representedApp];
 
   [(CKStoragePlugin *)self setCanDisplayTips:1];
   [(STStoragePlugin *)self reloadTips];
@@ -105,43 +105,43 @@
 - (id)documentAppIdentifiers
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_class() _representedApp];
-  v5[0] = v2;
+  _representedApp = [objc_opt_class() _representedApp];
+  v5[0] = _representedApp;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   return v3;
 }
 
-- (id)documentSpecifiersForApp:(id)a3
+- (id)documentSpecifiersForApp:(id)app
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_opt_class() _representedApp];
-  v6 = [v4 isEqualToString:v5];
+  appCopy = app;
+  _representedApp = [objc_opt_class() _representedApp];
+  v6 = [appCopy isEqualToString:_representedApp];
 
   if (v6)
   {
-    v7 = [(CKStoragePlugin *)self dataModel];
-    v8 = [v7 loadCountsIfNeeded];
+    dataModel = [(CKStoragePlugin *)self dataModel];
+    loadCountsIfNeeded = [dataModel loadCountsIfNeeded];
 
-    if (v8)
+    if (loadCountsIfNeeded)
     {
       v11[0] = self->_initialAppSpecifier;
-      v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
+      _loadAppSpecifiers = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     }
 
     else
     {
-      v9 = [(CKStoragePlugin *)self _loadAppSpecifiers];
+      _loadAppSpecifiers = [(CKStoragePlugin *)self _loadAppSpecifiers];
     }
   }
 
   else
   {
-    v9 = MEMORY[0x1E695E0F0];
+    _loadAppSpecifiers = MEMORY[0x1E695E0F0];
   }
 
-  return v9;
+  return _loadAppSpecifiers;
 }
 
 - (id)cloudDocumentSpecifiers
@@ -151,45 +151,45 @@
   return [(CKStoragePlugin *)self cloudAppSpecifiers];
 }
 
-- (void)enableOptionForTip:(id)a3
+- (void)enableOptionForTip:(id)tip
 {
-  v8 = a3;
-  v4 = [(CKStoragePlugin *)self cachedAutoDeleteMessagesTip];
+  tipCopy = tip;
+  cachedAutoDeleteMessagesTip = [(CKStoragePlugin *)self cachedAutoDeleteMessagesTip];
 
-  if (v4 == v8)
+  if (cachedAutoDeleteMessagesTip == tipCopy)
   {
     [(CKStoragePlugin *)self _enableAutoDeleteMessages];
   }
 
   else
   {
-    v5 = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
+    cachedMessagesIniCloudTip = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
 
-    v6 = v8;
-    if (v5 != v8)
+    v6 = tipCopy;
+    if (cachedMessagesIniCloudTip != tipCopy)
     {
       goto LABEL_6;
     }
 
-    v7 = [(CKStoragePlugin *)self dataModel];
-    [v7 setIsCloudKitEnabled:1];
+    dataModel = [(CKStoragePlugin *)self dataModel];
+    [dataModel setIsCloudKitEnabled:1];
   }
 
-  v6 = v8;
+  v6 = tipCopy;
 LABEL_6:
 }
 
 - (id)_conversationSpecifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(CKStoragePlugin *)self _iterationOptionForsForCalculatingSpaceSavedByReviewingLargeConversations];
+  _iterationOptionForsForCalculatingSpaceSavedByReviewingLargeConversations = [(CKStoragePlugin *)self _iterationOptionForsForCalculatingSpaceSavedByReviewingLargeConversations];
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = @"unsynced";
-      if (v3 == 2)
+      if (_iterationOptionForsForCalculatingSpaceSavedByReviewingLargeConversations == 2)
       {
         v5 = @"synced";
       }
@@ -210,62 +210,62 @@ LABEL_6:
 
 - (id)_loadAppSpecifiers
 {
-  v3 = [(CKStoragePlugin *)self appSpecifiers];
+  appSpecifiers = [(CKStoragePlugin *)self appSpecifiers];
 
-  if (!v3)
+  if (!appSpecifiers)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [(CKStoragePlugin *)self _conversationSpecifier];
-    if (v5)
+    array = [MEMORY[0x1E695DF70] array];
+    _conversationSpecifier = [(CKStoragePlugin *)self _conversationSpecifier];
+    if (_conversationSpecifier)
     {
-      [v4 addObject:v5];
+      [array addObject:_conversationSpecifier];
     }
 
-    v6 = [(CKStoragePlugin *)self dataModel];
-    v7 = [v6 nonPurgeableSpaceTakenByFileType:*MEMORY[0x1E69A5D88]];
+    dataModel = [(CKStoragePlugin *)self dataModel];
+    v7 = [dataModel nonPurgeableSpaceTakenByFileType:*MEMORY[0x1E69A5D88]];
 
     if (v7 >= 1)
     {
       v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v9 = [v8 localizedStringForKey:@"PHOTOS" value:&stru_1F04268F8 table:@"General"];
       v10 = [(CKStoragePlugin *)self _spaceTakenSpecifierForName:v9 viewControllerClass:objc_opt_class()];
-      [v4 addObject:v10];
+      [array addObject:v10];
     }
 
-    v11 = [(CKStoragePlugin *)self dataModel];
-    v12 = [v11 nonPurgeableSpaceTakenByFileType:*MEMORY[0x1E69A5D90]];
+    dataModel2 = [(CKStoragePlugin *)self dataModel];
+    v12 = [dataModel2 nonPurgeableSpaceTakenByFileType:*MEMORY[0x1E69A5D90]];
 
     if (v12 >= 1)
     {
       v13 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v14 = [v13 localizedStringForKey:@"VIDEOS" value:&stru_1F04268F8 table:@"General"];
       v15 = [(CKStoragePlugin *)self _spaceTakenSpecifierForName:v14 viewControllerClass:objc_opt_class()];
-      [v4 addObject:v15];
+      [array addObject:v15];
     }
 
-    v16 = [(CKStoragePlugin *)self dataModel];
-    v17 = [v16 nonPurgeableSpaceTakenByFileType:*MEMORY[0x1E69A5D78]];
+    dataModel3 = [(CKStoragePlugin *)self dataModel];
+    v17 = [dataModel3 nonPurgeableSpaceTakenByFileType:*MEMORY[0x1E69A5D78]];
 
     if (v17 >= 1)
     {
       v18 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v19 = [v18 localizedStringForKey:@"GIFSANDSTICKERS" value:&stru_1F04268F8 table:@"General"];
       v20 = [(CKStoragePlugin *)self _spaceTakenSpecifierForName:v19 viewControllerClass:objc_opt_class()];
-      [v4 addObject:v20];
+      [array addObject:v20];
     }
 
-    v21 = [(CKStoragePlugin *)self dataModel];
-    v22 = [v21 nonPurgeableSpaceTakenByFileType:*MEMORY[0x1E69A5D80]];
+    dataModel4 = [(CKStoragePlugin *)self dataModel];
+    v22 = [dataModel4 nonPurgeableSpaceTakenByFileType:*MEMORY[0x1E69A5D80]];
 
     if (v22 >= 1)
     {
       v23 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v24 = [v23 localizedStringForKey:@"OTHER" value:&stru_1F04268F8 table:@"General"];
       v25 = [(CKStoragePlugin *)self _spaceTakenSpecifierForName:v24 viewControllerClass:objc_opt_class()];
-      [v4 addObject:v25];
+      [array addObject:v25];
     }
 
-    v26 = [v4 copy];
+    v26 = [array copy];
     [(CKStoragePlugin *)self setAppSpecifiers:v26];
   }
 
@@ -274,63 +274,63 @@ LABEL_6:
 
 - (void)_loadiCloudAppSpecifiers
 {
-  v3 = [(CKStoragePlugin *)self cloudAppSpecifiers];
+  cloudAppSpecifiers = [(CKStoragePlugin *)self cloudAppSpecifiers];
 
-  if (!v3)
+  if (!cloudAppSpecifiers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
-    v4 = [(CKStoragePlugin *)self _conversationSpecifier];
-    if (v4)
+    array = [MEMORY[0x1E695DF70] array];
+    _conversationSpecifier = [(CKStoragePlugin *)self _conversationSpecifier];
+    if (_conversationSpecifier)
     {
-      [v6 addObject:v4];
+      [array addObject:_conversationSpecifier];
     }
 
-    v5 = [v6 copy];
+    v5 = [array copy];
     [(CKStoragePlugin *)self setCloudAppSpecifiers:v5];
   }
 }
 
-- (id)_spaceTakenForSpecifier:(id)a3
+- (id)_spaceTakenForSpecifier:(id)specifier
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 detailControllerClass];
-  if (v5 != objc_opt_class())
+  specifierCopy = specifier;
+  detailControllerClass = [specifierCopy detailControllerClass];
+  if (detailControllerClass != objc_opt_class())
   {
-    v6 = [v4 detailControllerClass];
-    if (v6 != objc_opt_class())
+    detailControllerClass2 = [specifierCopy detailControllerClass];
+    if (detailControllerClass2 != objc_opt_class())
     {
-      v7 = [v4 detailControllerClass];
-      if (v7 == objc_opt_class())
+      detailControllerClass3 = [specifierCopy detailControllerClass];
+      if (detailControllerClass3 == objc_opt_class())
       {
-        v11 = [(CKStoragePlugin *)self dataModel];
+        dataModel = [(CKStoragePlugin *)self dataModel];
         v12 = MEMORY[0x1E69A5D88];
         goto LABEL_18;
       }
 
-      v8 = [v4 detailControllerClass];
-      if (v8 == objc_opt_class())
+      detailControllerClass4 = [specifierCopy detailControllerClass];
+      if (detailControllerClass4 == objc_opt_class())
       {
-        v11 = [(CKStoragePlugin *)self dataModel];
+        dataModel = [(CKStoragePlugin *)self dataModel];
         v12 = MEMORY[0x1E69A5D90];
         goto LABEL_18;
       }
 
-      v9 = [v4 detailControllerClass];
-      if (v9 == objc_opt_class())
+      detailControllerClass5 = [specifierCopy detailControllerClass];
+      if (detailControllerClass5 == objc_opt_class())
       {
-        v11 = [(CKStoragePlugin *)self dataModel];
+        dataModel = [(CKStoragePlugin *)self dataModel];
         v12 = MEMORY[0x1E69A5D78];
         goto LABEL_18;
       }
 
-      v10 = [v4 detailControllerClass];
-      if (v10 == objc_opt_class())
+      detailControllerClass6 = [specifierCopy detailControllerClass];
+      if (detailControllerClass6 == objc_opt_class())
       {
-        v11 = [(CKStoragePlugin *)self dataModel];
+        dataModel = [(CKStoragePlugin *)self dataModel];
         v12 = MEMORY[0x1E69A5D80];
 LABEL_18:
-        v14 = [v11 nonPurgeableSpaceTakenByFileType:*v12];
+        spaceTakenBySyncedConversations = [dataModel nonPurgeableSpaceTakenByFileType:*v12];
         goto LABEL_19;
       }
 
@@ -340,32 +340,32 @@ LABEL_12:
     }
   }
 
-  v13 = [(CKStoragePlugin *)self _iterationOptionForsForCalculatingSpaceSavedByReviewingLargeConversations];
-  if (v13 == 2)
+  _iterationOptionForsForCalculatingSpaceSavedByReviewingLargeConversations = [(CKStoragePlugin *)self _iterationOptionForsForCalculatingSpaceSavedByReviewingLargeConversations];
+  if (_iterationOptionForsForCalculatingSpaceSavedByReviewingLargeConversations == 2)
   {
-    v11 = [(CKStoragePlugin *)self dataModel];
-    v14 = [v11 spaceTakenBySyncedConversations];
+    dataModel = [(CKStoragePlugin *)self dataModel];
+    spaceTakenBySyncedConversations = [dataModel spaceTakenBySyncedConversations];
   }
 
-  else if (v13 == 1)
+  else if (_iterationOptionForsForCalculatingSpaceSavedByReviewingLargeConversations == 1)
   {
-    v11 = [(CKStoragePlugin *)self dataModel];
-    v14 = [v11 spaceTakenByUnsyncedConversations];
+    dataModel = [(CKStoragePlugin *)self dataModel];
+    spaceTakenBySyncedConversations = [dataModel spaceTakenByUnsyncedConversations];
   }
 
   else
   {
-    if (v13)
+    if (_iterationOptionForsForCalculatingSpaceSavedByReviewingLargeConversations)
     {
       goto LABEL_12;
     }
 
-    v11 = [(CKStoragePlugin *)self dataModel];
-    v14 = [v11 spaceTakenByAllConversations];
+    dataModel = [(CKStoragePlugin *)self dataModel];
+    spaceTakenBySyncedConversations = [dataModel spaceTakenByAllConversations];
   }
 
 LABEL_19:
-  v15 = v14;
+  v15 = spaceTakenBySyncedConversations;
 
 LABEL_20:
   v16 = [MEMORY[0x1E696AAF0] stringFromByteCount:v15 countStyle:0];
@@ -374,7 +374,7 @@ LABEL_20:
     v17 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = NSStringFromClass([v4 detailControllerClass]);
+      v18 = NSStringFromClass([specifierCopy detailControllerClass]);
       v20 = 138412546;
       v21 = v16;
       v22 = 2112;
@@ -388,36 +388,36 @@ LABEL_20:
 
 - (id)tips
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CKStoragePlugin *)self _autoDeleteMessagesTip];
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  _autoDeleteMessagesTip = [(CKStoragePlugin *)self _autoDeleteMessagesTip];
+  if (_autoDeleteMessagesTip)
   {
-    [v3 addObject:v4];
+    [array addObject:_autoDeleteMessagesTip];
   }
 
-  v5 = [(CKStoragePlugin *)self _reviewLargeAttachmentsTip];
-  if (v5)
+  _reviewLargeAttachmentsTip = [(CKStoragePlugin *)self _reviewLargeAttachmentsTip];
+  if (_reviewLargeAttachmentsTip)
   {
-    [v3 addObject:v5];
+    [array addObject:_reviewLargeAttachmentsTip];
   }
 
-  v6 = [(CKStoragePlugin *)self _messagesIniCloudTip];
-  if (v6)
+  _messagesIniCloudTip = [(CKStoragePlugin *)self _messagesIniCloudTip];
+  if (_messagesIniCloudTip)
   {
-    [v3 addObject:v6];
+    [array addObject:_messagesIniCloudTip];
   }
 
-  v7 = [v3 copy];
+  v7 = [array copy];
 
   return v7;
 }
 
 - (BOOL)_shouldDisplayAutoDeleteMessagesTip
 {
-  v3 = [(CKStoragePlugin *)self dataModel];
-  v4 = [v3 isCloudKitEnabled];
+  dataModel = [(CKStoragePlugin *)self dataModel];
+  isCloudKitEnabled = [dataModel isCloudKitEnabled];
 
-  if (v4)
+  if (isCloudKitEnabled)
   {
     if (IMOSLoggingEnabled())
     {
@@ -446,8 +446,8 @@ LABEL_20:
 
       else
       {
-        v8 = [(CKStoragePlugin *)self dataModel];
-        v6 = [v8 spaceSavedByAutoDeletingMessages] > 104857600;
+        dataModel2 = [(CKStoragePlugin *)self dataModel];
+        v6 = [dataModel2 spaceSavedByAutoDeletingMessages] > 104857600;
       }
     }
   }
@@ -459,13 +459,13 @@ LABEL_20:
 {
   if ([(CKStoragePlugin *)self _shouldDisplayAutoDeleteMessagesTip])
   {
-    v3 = [(CKStoragePlugin *)self cachedAutoDeleteMessagesTip];
+    cachedAutoDeleteMessagesTip = [(CKStoragePlugin *)self cachedAutoDeleteMessagesTip];
 
-    if (!v3)
+    if (!cachedAutoDeleteMessagesTip)
     {
       v4 = objc_alloc_init(MEMORY[0x1E69D4858]);
-      v5 = [objc_opt_class() _representedApp];
-      [v4 setRepresentedApp:v5];
+      _representedApp = [objc_opt_class() _representedApp];
+      [v4 setRepresentedApp:_representedApp];
 
       v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v7 = [v6 localizedStringForKey:@"AUTO_DELETE_MESSAGES_TITLE" value:&stru_1F04268F8 table:@"General"];
@@ -492,14 +492,14 @@ LABEL_20:
         [v4 setMayCauseDataLoss:1];
       }
 
-      v16 = [(CKStoragePlugin *)self dataModel];
-      [v4 setEventualGain:{objc_msgSend(v16, "spaceSavedByAutoDeletingMessages")}];
+      dataModel = [(CKStoragePlugin *)self dataModel];
+      [v4 setEventualGain:{objc_msgSend(dataModel, "spaceSavedByAutoDeletingMessages")}];
 
       [v4 setDelegate:self];
       [(CKStoragePlugin *)self setCachedAutoDeleteMessagesTip:v4];
     }
 
-    v17 = [(CKStoragePlugin *)self cachedAutoDeleteMessagesTip];
+    cachedAutoDeleteMessagesTip2 = [(CKStoragePlugin *)self cachedAutoDeleteMessagesTip];
   }
 
   else
@@ -514,10 +514,10 @@ LABEL_20:
       }
     }
 
-    v17 = 0;
+    cachedAutoDeleteMessagesTip2 = 0;
   }
 
-  return v17;
+  return cachedAutoDeleteMessagesTip2;
 }
 
 - (void)_enableAutoDeleteMessages
@@ -527,9 +527,9 @@ LABEL_20:
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.MobileSMS.KeepMessages.changed", 0, 0, 1u);
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.imautomatichistorydeletionagent.prefchange", 0, 0, 1u);
-  v4 = [(CKStoragePlugin *)self cachedAutoDeleteMessagesTip];
+  cachedAutoDeleteMessagesTip = [(CKStoragePlugin *)self cachedAutoDeleteMessagesTip];
   LODWORD(v5) = 1.0;
-  [v4 setActivationPercent:v5];
+  [cachedAutoDeleteMessagesTip setActivationPercent:v5];
 
   if (IMOSLoggingEnabled())
   {
@@ -545,11 +545,11 @@ LABEL_20:
 - (BOOL)_shouldDisplayReviewLargeAttachmentsTip
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(CKStoragePlugin *)self _forceShowingReviewLargeAttachmentsTip];
-  v4 = [(CKStoragePlugin *)self dataModel];
-  v5 = [v4 totalSpaceOfNonPurgeableAttachments];
+  _forceShowingReviewLargeAttachmentsTip = [(CKStoragePlugin *)self _forceShowingReviewLargeAttachmentsTip];
+  dataModel = [(CKStoragePlugin *)self dataModel];
+  totalSpaceOfNonPurgeableAttachments = [dataModel totalSpaceOfNonPurgeableAttachments];
 
-  v6 = v5 > 104857600 || v3;
+  v6 = totalSpaceOfNonPurgeableAttachments > 104857600 || _forceShowingReviewLargeAttachmentsTip;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -566,7 +566,7 @@ LABEL_20:
         v9 = @"NO";
       }
 
-      if (v3)
+      if (_forceShowingReviewLargeAttachmentsTip)
       {
         v10 = @"YES";
       }
@@ -580,7 +580,7 @@ LABEL_20:
       v13 = v9;
       v14 = 2112;
       v15 = v10;
-      if (v5 > 104857600)
+      if (totalSpaceOfNonPurgeableAttachments > 104857600)
       {
         v8 = @"YES";
       }
@@ -599,16 +599,16 @@ LABEL_20:
   v20 = *MEMORY[0x1E69E9840];
   if ([(CKStoragePlugin *)self _shouldDisplayReviewLargeAttachmentsTip])
   {
-    v3 = [(CKStoragePlugin *)self dataModel];
-    v4 = [v3 totalSpaceOfNonPurgeableAttachments];
+    dataModel = [(CKStoragePlugin *)self dataModel];
+    totalSpaceOfNonPurgeableAttachments = [dataModel totalSpaceOfNonPurgeableAttachments];
 
-    v5 = [(CKStoragePlugin *)self cachedReviewLargeAttachmentsTip];
+    cachedReviewLargeAttachmentsTip = [(CKStoragePlugin *)self cachedReviewLargeAttachmentsTip];
 
-    if (!v5)
+    if (!cachedReviewLargeAttachmentsTip)
     {
       v6 = objc_alloc_init(MEMORY[0x1E69D4848]);
-      v7 = [objc_opt_class() _representedApp];
-      [v6 setRepresentedApp:v7];
+      _representedApp = [objc_opt_class() _representedApp];
+      [v6 setRepresentedApp:_representedApp];
 
       v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v9 = [v8 localizedStringForKey:@"REVIEW_LARGE_ATTACHMENTS_TITLE" value:&stru_1F04268F8 table:@"General"];
@@ -622,22 +622,22 @@ LABEL_20:
       [(CKStoragePlugin *)self setCachedReviewLargeAttachmentsTip:v6];
     }
 
-    v12 = [(CKStoragePlugin *)self cachedReviewLargeAttachmentsTip];
-    [v12 setSize:v4];
+    cachedReviewLargeAttachmentsTip2 = [(CKStoragePlugin *)self cachedReviewLargeAttachmentsTip];
+    [cachedReviewLargeAttachmentsTip2 setSize:totalSpaceOfNonPurgeableAttachments];
 
     if (IMOSLoggingEnabled())
     {
       v13 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v4];
+        v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:totalSpaceOfNonPurgeableAttachments];
         v18 = 138412290;
         v19 = v14;
         _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "Created updated large attachments tip with size: %@", &v18, 0xCu);
       }
     }
 
-    v15 = [(CKStoragePlugin *)self cachedReviewLargeAttachmentsTip];
+    cachedReviewLargeAttachmentsTip3 = [(CKStoragePlugin *)self cachedReviewLargeAttachmentsTip];
   }
 
   else
@@ -652,10 +652,10 @@ LABEL_20:
       }
     }
 
-    v15 = 0;
+    cachedReviewLargeAttachmentsTip3 = 0;
   }
 
-  return v15;
+  return cachedReviewLargeAttachmentsTip3;
 }
 
 - (void)_configureCloudTipController
@@ -674,12 +674,12 @@ LABEL_20:
 
   if ([MEMORY[0x1E69A8090] summarizationModelsAvailable])
   {
-    v4 = 1;
+    generativePlaygroundModelsAvailable = 1;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69A8090] generativePlaygroundModelsAvailable];
+    generativePlaygroundModelsAvailable = [MEMORY[0x1E69A8090] generativePlaygroundModelsAvailable];
   }
 
   if (CFPreferencesGetAppBooleanValue(@"ForceModelCriteriaToShowMiCTip", @"com.apple.MobileSMS", 0))
@@ -689,7 +689,7 @@ LABEL_20:
 
   else
   {
-    v5 = v4;
+    v5 = generativePlaygroundModelsAvailable;
   }
 
   if (v5 == 1)
@@ -785,10 +785,10 @@ void __47__CKStoragePlugin__configureCloudTipController__block_invoke_2()
 
 - (id)_messagesIniCloudTip
 {
-  v3 = [(CKStoragePlugin *)self dataModel];
-  v4 = [v3 isCloudKitEnabled];
+  dataModel = [(CKStoragePlugin *)self dataModel];
+  isCloudKitEnabled = [dataModel isCloudKitEnabled];
 
-  if (v4)
+  if (isCloudKitEnabled)
   {
     if (IMOSLoggingEnabled())
     {
@@ -800,33 +800,33 @@ void __47__CKStoragePlugin__configureCloudTipController__block_invoke_2()
       }
     }
 
-    v6 = 0;
+    cachedMessagesIniCloudTip2 = 0;
   }
 
   else
   {
-    v7 = [(CKStoragePlugin *)self cloudTipDescriptor];
-    if (v7)
+    cloudTipDescriptor = [(CKStoragePlugin *)self cloudTipDescriptor];
+    if (cloudTipDescriptor)
     {
-      v8 = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
+      cachedMessagesIniCloudTip = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
 
-      if (v8)
+      if (cachedMessagesIniCloudTip)
       {
-        v6 = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
+        cachedMessagesIniCloudTip2 = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
       }
 
       else
       {
         v10 = objc_alloc_init(MEMORY[0x1E69D4858]);
-        v11 = [objc_opt_class() _representedApp];
-        [v10 setRepresentedApp:v11];
+        _representedApp = [objc_opt_class() _representedApp];
+        [v10 setRepresentedApp:_representedApp];
 
         v12 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
         v13 = [v12 localizedStringForKey:@"MESSAGES_ON_ICLOUD_TIP_TITLE" value:&stru_1F04268F8 table:@"General"];
         [v10 setTitle:v13];
 
-        v14 = [(CKStoragePlugin *)self dataModel];
-        [v10 setEventualGain:{objc_msgSend(v14, "spaceSavedByDeletingNonSyncedAttachments")}];
+        dataModel2 = [(CKStoragePlugin *)self dataModel];
+        [v10 setEventualGain:{objc_msgSend(dataModel2, "spaceSavedByDeletingNonSyncedAttachments")}];
 
         [v10 setDelegate:self];
         [v10 setActivationPercent:0.0];
@@ -847,7 +847,7 @@ void __47__CKStoragePlugin__configureCloudTipController__block_invoke_2()
         [v10 setConfirmationButtonTitle:v22];
 
         [(CKStoragePlugin *)self setCachedMessagesIniCloudTip:v10];
-        v6 = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
+        cachedMessagesIniCloudTip2 = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
       }
     }
 
@@ -863,11 +863,11 @@ void __47__CKStoragePlugin__configureCloudTipController__block_invoke_2()
         }
       }
 
-      v6 = 0;
+      cachedMessagesIniCloudTip2 = 0;
     }
   }
 
-  return v6;
+  return cachedMessagesIniCloudTip2;
 }
 
 - (void)_displayICloudErrorMessage
@@ -885,15 +885,15 @@ void __47__CKStoragePlugin__configureCloudTipController__block_invoke_2()
   v9 = [MEMORY[0x1E69DC648] actionWithTitle:v7 style:0 handler:0];
   [v8 addAction:v9];
 
-  v10 = [MEMORY[0x1E69DC668] sharedApplication];
-  v11 = [v10 keyWindow];
-  v12 = [v11 rootViewController];
-  [v12 presentViewController:v8 animated:1 completion:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  keyWindow = [mEMORY[0x1E69DC668] keyWindow];
+  rootViewController = [keyWindow rootViewController];
+  [rootViewController presentViewController:v8 animated:1 completion:0];
 
   if (self->_cachedMessagesIniCloudTip)
   {
-    v13 = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
-    [v13 setActivationPercent:0.0];
+    cachedMessagesIniCloudTip = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
+    [cachedMessagesIniCloudTip setActivationPercent:0.0];
   }
 }
 
@@ -902,11 +902,11 @@ void __47__CKStoragePlugin__configureCloudTipController__block_invoke_2()
   v28 = *MEMORY[0x1E69E9840];
   if (self->_cachedMessagesIniCloudTip)
   {
-    v3 = [(CKStoragePlugin *)self dataModel];
-    v4 = [v3 cloudKitHooks];
-    v5 = [v4 lastSyncDate];
+    dataModel = [(CKStoragePlugin *)self dataModel];
+    cloudKitHooks = [dataModel cloudKitHooks];
+    lastSyncDate = [cloudKitHooks lastSyncDate];
 
-    if (v5)
+    if (lastSyncDate)
     {
       v6 = 1.0;
     }
@@ -916,17 +916,17 @@ void __47__CKStoragePlugin__configureCloudTipController__block_invoke_2()
       v6 = -1.0;
     }
 
-    v7 = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
+    cachedMessagesIniCloudTip = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
     *&v8 = v6;
-    [v7 setActivationPercent:v8];
+    [cachedMessagesIniCloudTip setActivationPercent:v8];
 
-    v9 = [(CKStoragePlugin *)self dataModel];
-    v10 = [v9 cloudKitHooks];
-    v11 = [v10 isEnabled];
+    dataModel2 = [(CKStoragePlugin *)self dataModel];
+    cloudKitHooks2 = [dataModel2 cloudKitHooks];
+    isEnabled = [cloudKitHooks2 isEnabled];
 
-    v12 = [(CKStoragePlugin *)self dataModel];
-    v13 = [v12 cloudKitHooks];
-    v14 = [v13 eligibleForTruthZone];
+    dataModel3 = [(CKStoragePlugin *)self dataModel];
+    cloudKitHooks3 = [dataModel3 cloudKitHooks];
+    eligibleForTruthZone = [cloudKitHooks3 eligibleForTruthZone];
 
     if (IMOSLoggingEnabled())
     {
@@ -934,7 +934,7 @@ void __47__CKStoragePlugin__configureCloudTipController__block_invoke_2()
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         v16 = @"NO";
-        if (v11)
+        if (isEnabled)
         {
           v17 = @"YES";
         }
@@ -944,7 +944,7 @@ void __47__CKStoragePlugin__configureCloudTipController__block_invoke_2()
           v17 = @"NO";
         }
 
-        if (v14)
+        if (eligibleForTruthZone)
         {
           v18 = @"YES";
         }
@@ -958,7 +958,7 @@ void __47__CKStoragePlugin__configureCloudTipController__block_invoke_2()
         v23 = v17;
         v24 = 2112;
         v25 = v18;
-        if (v5)
+        if (lastSyncDate)
         {
           v16 = @"YES";
         }
@@ -969,29 +969,29 @@ void __47__CKStoragePlugin__configureCloudTipController__block_invoke_2()
       }
     }
 
-    if (!v5)
+    if (!lastSyncDate)
     {
       v19 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v20 = [v19 localizedStringForKey:@"MESSAGES_ON_ICLOUD_TIP_INFO" value:&stru_1F04268F8 table:@"General"];
-      v21 = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
-      [v21 setInfoText:v20];
+      cachedMessagesIniCloudTip2 = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
+      [cachedMessagesIniCloudTip2 setInfoText:v20];
     }
   }
 }
 
-- (void)_iCloudHooksSetEnabledReturned:(id)a3
+- (void)_iCloudHooksSetEnabledReturned:(id)returned
 {
-  v4 = a3;
-  v5 = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
+  returnedCopy = returned;
+  cachedMessagesIniCloudTip = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
 
-  if (v5)
+  if (cachedMessagesIniCloudTip)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69A5940]];
-    v8 = [v7 BOOLValue];
+    userInfo = [returnedCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69A5940]];
+    bOOLValue = [v7 BOOLValue];
 
     v9 = IMOSLoggingEnabled();
-    if (v8)
+    if (bOOLValue)
     {
       if (v9)
       {
@@ -1003,9 +1003,9 @@ void __47__CKStoragePlugin__configureCloudTipController__block_invoke_2()
         }
       }
 
-      v11 = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
+      cachedMessagesIniCloudTip2 = [(CKStoragePlugin *)self cachedMessagesIniCloudTip];
       LODWORD(v12) = 1.0;
-      [v11 setActivationPercent:v12];
+      [cachedMessagesIniCloudTip2 setActivationPercent:v12];
     }
 
     else

@@ -1,58 +1,58 @@
 @interface UASharedPasteboardOutputStreamManager
-- (UASharedPasteboardOutputStreamManager)initWithOutputStream:(id)a3 inputStream:(id)a4 pasteboard:(id)a5;
-- (id)headerForData:(id)a3;
-- (void)sendTypes:(id)a3 completionHandler:(id)a4;
+- (UASharedPasteboardOutputStreamManager)initWithOutputStream:(id)stream inputStream:(id)inputStream pasteboard:(id)pasteboard;
+- (id)headerForData:(id)data;
+- (void)sendTypes:(id)types completionHandler:(id)handler;
 - (void)shutdownStream;
-- (void)shutdownTimerFired:(id)a3;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)shutdownTimerFired:(id)fired;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation UASharedPasteboardOutputStreamManager
 
-- (UASharedPasteboardOutputStreamManager)initWithOutputStream:(id)a3 inputStream:(id)a4 pasteboard:(id)a5
+- (UASharedPasteboardOutputStreamManager)initWithOutputStream:(id)stream inputStream:(id)inputStream pasteboard:(id)pasteboard
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  streamCopy = stream;
+  inputStreamCopy = inputStream;
+  pasteboardCopy = pasteboard;
   v19.receiver = self;
   v19.super_class = UASharedPasteboardOutputStreamManager;
   v11 = [(UASharedPasteboardOutputStreamManager *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    [(UASharedPasteboardOutputStreamManager *)v11 setStream:v8];
-    [(UASharedPasteboardOutputStreamManager *)v12 setInStream:v9];
-    [(UASharedPasteboardOutputStreamManager *)v12 setPbwrapper:v10];
-    v13 = [(UASharedPasteboardOutputStreamManager *)v12 pbwrapper];
-    v14 = [v13 pbinfo];
-    v15 = [v14 dataFile];
-    [(UASharedPasteboardOutputStreamManager *)v12 setDataFile:v15];
+    [(UASharedPasteboardOutputStreamManager *)v11 setStream:streamCopy];
+    [(UASharedPasteboardOutputStreamManager *)v12 setInStream:inputStreamCopy];
+    [(UASharedPasteboardOutputStreamManager *)v12 setPbwrapper:pasteboardCopy];
+    pbwrapper = [(UASharedPasteboardOutputStreamManager *)v12 pbwrapper];
+    pbinfo = [pbwrapper pbinfo];
+    dataFile = [pbinfo dataFile];
+    [(UASharedPasteboardOutputStreamManager *)v12 setDataFile:dataFile];
 
-    v16 = [(UASharedPasteboardOutputStreamManager *)v12 pbwrapper];
-    v17 = [v16 pbinfo];
-    [v17 setDataFile:0];
+    pbwrapper2 = [(UASharedPasteboardOutputStreamManager *)v12 pbwrapper];
+    pbinfo2 = [pbwrapper2 pbinfo];
+    [pbinfo2 setDataFile:0];
   }
 
   return v12;
 }
 
-- (void)sendTypes:(id)a3 completionHandler:(id)a4
+- (void)sendTypes:(id)types completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  handlerCopy = handler;
   [(UASharedPasteboardOutputStreamManager *)self setDataSent:0];
-  [(UASharedPasteboardOutputStreamManager *)self setTypesToSend:v6];
-  [(UASharedPasteboardOutputStreamManager *)self setSendErrorHandler:v7];
+  [(UASharedPasteboardOutputStreamManager *)self setTypesToSend:typesCopy];
+  [(UASharedPasteboardOutputStreamManager *)self setSendErrorHandler:handlerCopy];
 
-  v8 = [(UASharedPasteboardOutputStreamManager *)self pbwrapper];
-  v9 = [NSKeyedArchiver archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
+  pbwrapper = [(UASharedPasteboardOutputStreamManager *)self pbwrapper];
+  v9 = [NSKeyedArchiver archivedDataWithRootObject:pbwrapper requiringSecureCoding:1 error:0];
 
   v10 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(UASharedPasteboardOutputStreamManager *)self pbwrapper];
+    pbwrapper2 = [(UASharedPasteboardOutputStreamManager *)self pbwrapper];
     v23 = 138412290;
-    v24 = v11;
+    v24 = pbwrapper2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[OUT STREAM] Sending pboard info: %@", &v23, 0xCu);
   }
 
@@ -63,9 +63,9 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = @"All";
-    if (v6)
+    if (typesCopy)
     {
-      v14 = v6;
+      v14 = typesCopy;
     }
 
     v23 = 138412290;
@@ -73,51 +73,51 @@
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[OUT STREAM] Starting to send types: %@", &v23, 0xCu);
   }
 
-  v15 = [(UASharedPasteboardOutputStreamManager *)self stream];
-  [v15 setDelegate:self];
+  stream = [(UASharedPasteboardOutputStreamManager *)self stream];
+  [stream setDelegate:self];
 
-  v16 = [(UASharedPasteboardOutputStreamManager *)self inStream];
-  [v16 setDelegate:self];
+  inStream = [(UASharedPasteboardOutputStreamManager *)self inStream];
+  [inStream setDelegate:self];
 
-  v17 = [(UASharedPasteboardOutputStreamManager *)self stream];
+  stream2 = [(UASharedPasteboardOutputStreamManager *)self stream];
   v18 = +[NSRunLoop mainRunLoop];
-  [v17 scheduleInRunLoop:v18 forMode:NSRunLoopCommonModes];
+  [stream2 scheduleInRunLoop:v18 forMode:NSRunLoopCommonModes];
 
-  v19 = [(UASharedPasteboardOutputStreamManager *)self stream];
-  [v19 open];
+  stream3 = [(UASharedPasteboardOutputStreamManager *)self stream];
+  [stream3 open];
 
-  v20 = [(UASharedPasteboardOutputStreamManager *)self inStream];
+  inStream2 = [(UASharedPasteboardOutputStreamManager *)self inStream];
   v21 = +[NSRunLoop mainRunLoop];
-  [v20 scheduleInRunLoop:v21 forMode:NSRunLoopCommonModes];
+  [inStream2 scheduleInRunLoop:v21 forMode:NSRunLoopCommonModes];
 
-  v22 = [(UASharedPasteboardOutputStreamManager *)self inStream];
-  [v22 open];
+  inStream3 = [(UASharedPasteboardOutputStreamManager *)self inStream];
+  [inStream3 open];
 }
 
-- (id)headerForData:(id)a3
+- (id)headerForData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_alloc_init(NSMutableData);
-  v6 = [v3 length];
+  v6 = [dataCopy length];
   [v4 appendBytes:"===" length:3];
   [v4 appendBytes:&v6 length:4];
   [v4 appendBytes:"===" length:3];
-  [v4 appendData:v3];
+  [v4 appendData:dataCopy];
 
   [v4 appendBytes:"===" length:3];
 
   return v4;
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
-  v7 = [(UASharedPasteboardOutputStreamManager *)self stream];
-  v8 = [v6 isEqual:v7];
+  streamCopy = stream;
+  stream = [(UASharedPasteboardOutputStreamManager *)self stream];
+  v8 = [streamCopy isEqual:stream];
 
   if (v8)
   {
-    if (a4 == 8)
+    if (event == 8)
     {
       v39 = sub_100001A30(@"pasteboard-server");
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -128,30 +128,30 @@
       }
 
       [(UASharedPasteboardOutputStreamManager *)self shutdownStream];
-      v35 = [(UASharedPasteboardOutputStreamManager *)self sendErrorHandler];
-      v40 = [(UASharedPasteboardOutputStreamManager *)self dataSent];
-      v41 = [NSError errorWithDomain:UAContinuityErrorDomain code:-127 userInfo:0];
+      sendErrorHandler = [(UASharedPasteboardOutputStreamManager *)self sendErrorHandler];
+      dataSent = [(UASharedPasteboardOutputStreamManager *)self dataSent];
+      streamError = [NSError errorWithDomain:UAContinuityErrorDomain code:-127 userInfo:0];
 LABEL_25:
-      v38 = v41;
-      v35[2](v35, v40, v41);
+      sendErrorHandler2 = streamError;
+      sendErrorHandler[2](sendErrorHandler, dataSent, streamError);
 LABEL_26:
 
 LABEL_27:
       goto LABEL_28;
     }
 
-    if (a4 == 4)
+    if (event == 4)
     {
-      v9 = [(UASharedPasteboardOutputStreamManager *)self currentSendData];
-      if (!v9 || (v10 = v9, v11 = -[UASharedPasteboardOutputStreamManager byteIndex](self, "byteIndex"), -[UASharedPasteboardOutputStreamManager currentSendData](self, "currentSendData"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 length], v12, v10, v11 >= v13))
+      currentSendData = [(UASharedPasteboardOutputStreamManager *)self currentSendData];
+      if (!currentSendData || (v10 = currentSendData, v11 = -[UASharedPasteboardOutputStreamManager byteIndex](self, "byteIndex"), -[UASharedPasteboardOutputStreamManager currentSendData](self, "currentSendData"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 length], v12, v10, v11 >= v13))
       {
-        v14 = [(UASharedPasteboardOutputStreamManager *)self dataFile];
-        v15 = [v14 readDataOfLength:0x10000];
+        dataFile = [(UASharedPasteboardOutputStreamManager *)self dataFile];
+        v15 = [dataFile readDataOfLength:0x10000];
         [(UASharedPasteboardOutputStreamManager *)self setCurrentSendData:v15];
 
         [(UASharedPasteboardOutputStreamManager *)self setByteIndex:0];
-        v16 = [(UASharedPasteboardOutputStreamManager *)self currentSendData];
-        v17 = [v16 length];
+        currentSendData2 = [(UASharedPasteboardOutputStreamManager *)self currentSendData];
+        v17 = [currentSendData2 length];
 
         if (!v17)
         {
@@ -165,38 +165,38 @@ LABEL_27:
           v43 = [NSTimer timerWithTimeInterval:self target:"shutdownTimerFired:" selector:0 userInfo:0 repeats:30.0];
           [(UASharedPasteboardOutputStreamManager *)self setBackupTimer:v43];
 
-          v35 = +[NSRunLoop mainRunLoop];
-          v44 = [(UASharedPasteboardOutputStreamManager *)self backupTimer];
-          [v35 addTimer:v44 forMode:NSRunLoopCommonModes];
+          sendErrorHandler = +[NSRunLoop mainRunLoop];
+          backupTimer = [(UASharedPasteboardOutputStreamManager *)self backupTimer];
+          [sendErrorHandler addTimer:backupTimer forMode:NSRunLoopCommonModes];
 
           goto LABEL_27;
         }
       }
 
-      v18 = [(UASharedPasteboardOutputStreamManager *)self currentSendData];
-      v19 = [v18 length];
+      currentSendData3 = [(UASharedPasteboardOutputStreamManager *)self currentSendData];
+      v19 = [currentSendData3 length];
 
       if (v19)
       {
-        v20 = [(UASharedPasteboardOutputStreamManager *)self currentSendData];
-        v21 = [v20 bytes];
+        currentSendData4 = [(UASharedPasteboardOutputStreamManager *)self currentSendData];
+        bytes = [currentSendData4 bytes];
 
-        v22 = [(UASharedPasteboardOutputStreamManager *)self byteIndex];
-        v23 = [(UASharedPasteboardOutputStreamManager *)self currentSendData];
-        v24 = [v23 length];
+        byteIndex = [(UASharedPasteboardOutputStreamManager *)self byteIndex];
+        currentSendData5 = [(UASharedPasteboardOutputStreamManager *)self currentSendData];
+        v24 = [currentSendData5 length];
 
-        v25 = [(UASharedPasteboardOutputStreamManager *)self byteIndex];
-        if (v24 - v25 >= 0x10000)
+        byteIndex2 = [(UASharedPasteboardOutputStreamManager *)self byteIndex];
+        if (v24 - byteIndex2 >= 0x10000)
         {
           v26 = 0x10000;
         }
 
         else
         {
-          v26 = v24 - v25;
+          v26 = v24 - byteIndex2;
         }
 
-        v27 = [v6 write:&v21[v22] maxLength:v26];
+        v27 = [streamCopy write:&bytes[byteIndex] maxLength:v26];
         if (v27 != -1)
         {
           v28 = v27;
@@ -206,9 +206,9 @@ LABEL_27:
         }
 
         [(UASharedPasteboardOutputStreamManager *)self shutdownStream];
-        v35 = [(UASharedPasteboardOutputStreamManager *)self sendErrorHandler];
-        v40 = [(UASharedPasteboardOutputStreamManager *)self dataSent];
-        v41 = [v6 streamError];
+        sendErrorHandler = [(UASharedPasteboardOutputStreamManager *)self sendErrorHandler];
+        dataSent = [(UASharedPasteboardOutputStreamManager *)self dataSent];
+        streamError = [streamCopy streamError];
         goto LABEL_25;
       }
     }
@@ -216,24 +216,24 @@ LABEL_27:
 
   else
   {
-    v29 = [(UASharedPasteboardOutputStreamManager *)self inStream];
-    v30 = [v6 isEqual:v29];
+    inStream = [(UASharedPasteboardOutputStreamManager *)self inStream];
+    v30 = [streamCopy isEqual:inStream];
 
-    if (v30 && (a4 == 16 || a4 == 2))
+    if (v30 && (event == 16 || event == 2))
     {
-      v31 = [v6 read:v45 maxLength:10];
+      v31 = [streamCopy read:v45 maxLength:10];
       if ((v31 & 0x8000000000000000) == 0)
       {
         v32 = v31;
         v33 = [NSString alloc];
         v34 = [NSData dataWithBytes:v45 length:v32];
-        v35 = [v33 initWithData:v34 encoding:4];
+        sendErrorHandler = [v33 initWithData:v34 encoding:4];
 
         v36 = sub_100001A30(@"pasteboard-server");
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v47 = v35;
+          v47 = sendErrorHandler;
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "[OUT STREAM] Got data back: %@", buf, 0xCu);
         }
 
@@ -245,8 +245,8 @@ LABEL_27:
         }
 
         [(UASharedPasteboardOutputStreamManager *)self shutdownStream];
-        v38 = [(UASharedPasteboardOutputStreamManager *)self sendErrorHandler];
-        v38[2](v38, [(UASharedPasteboardOutputStreamManager *)self dataSent], 0);
+        sendErrorHandler2 = [(UASharedPasteboardOutputStreamManager *)self sendErrorHandler];
+        sendErrorHandler2[2](sendErrorHandler2, [(UASharedPasteboardOutputStreamManager *)self dataSent], 0);
         goto LABEL_26;
       }
     }
@@ -255,7 +255,7 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)shutdownTimerFired:(id)a3
+- (void)shutdownTimerFired:(id)fired
 {
   v4 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -265,28 +265,28 @@ LABEL_28:
   }
 
   [(UASharedPasteboardOutputStreamManager *)self shutdownStream];
-  v5 = [(UASharedPasteboardOutputStreamManager *)self sendErrorHandler];
-  v5[2](v5, [(UASharedPasteboardOutputStreamManager *)self dataSent], 0);
+  sendErrorHandler = [(UASharedPasteboardOutputStreamManager *)self sendErrorHandler];
+  sendErrorHandler[2](sendErrorHandler, [(UASharedPasteboardOutputStreamManager *)self dataSent], 0);
 }
 
 - (void)shutdownStream
 {
-  v3 = [(UASharedPasteboardOutputStreamManager *)self backupTimer];
-  [v3 invalidate];
+  backupTimer = [(UASharedPasteboardOutputStreamManager *)self backupTimer];
+  [backupTimer invalidate];
 
-  v4 = [(UASharedPasteboardOutputStreamManager *)self stream];
-  [v4 close];
+  stream = [(UASharedPasteboardOutputStreamManager *)self stream];
+  [stream close];
 
-  v5 = [(UASharedPasteboardOutputStreamManager *)self stream];
+  stream2 = [(UASharedPasteboardOutputStreamManager *)self stream];
   v6 = +[NSRunLoop mainRunLoop];
-  [v5 removeFromRunLoop:v6 forMode:NSRunLoopCommonModes];
+  [stream2 removeFromRunLoop:v6 forMode:NSRunLoopCommonModes];
 
-  v7 = [(UASharedPasteboardOutputStreamManager *)self inStream];
-  [v7 close];
+  inStream = [(UASharedPasteboardOutputStreamManager *)self inStream];
+  [inStream close];
 
-  v9 = [(UASharedPasteboardOutputStreamManager *)self inStream];
+  inStream2 = [(UASharedPasteboardOutputStreamManager *)self inStream];
   v8 = +[NSRunLoop mainRunLoop];
-  [v9 removeFromRunLoop:v8 forMode:NSRunLoopCommonModes];
+  [inStream2 removeFromRunLoop:v8 forMode:NSRunLoopCommonModes];
 }
 
 @end

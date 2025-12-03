@@ -2,27 +2,27 @@
 - (BOOL)_shouldReportMetricForExternal;
 - (BOOL)_shouldReportReason;
 - (BOOL)shouldReportMetric;
-- (IDSMissingMessageMetric)initWithReason:(int64_t)a3 guid:(id)a4 service:(id)a5 additionalInformation:(id)a6;
+- (IDSMissingMessageMetric)initWithReason:(int64_t)reason guid:(id)guid service:(id)service additionalInformation:(id)information;
 - (NSDictionary)payload;
 @end
 
 @implementation IDSMissingMessageMetric
 
-- (IDSMissingMessageMetric)initWithReason:(int64_t)a3 guid:(id)a4 service:(id)a5 additionalInformation:(id)a6
+- (IDSMissingMessageMetric)initWithReason:(int64_t)reason guid:(id)guid service:(id)service additionalInformation:(id)information
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  guidCopy = guid;
+  serviceCopy = service;
+  informationCopy = information;
   v17.receiver = self;
   v17.super_class = IDSMissingMessageMetric;
   v14 = [(IDSMissingMessageMetric *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_reason = a3;
-    objc_storeStrong(&v14->_guid, a4);
-    objc_storeStrong(&v15->_service, a5);
-    objc_storeStrong(&v15->_additionalInfo, a6);
+    v14->_reason = reason;
+    objc_storeStrong(&v14->_guid, guid);
+    objc_storeStrong(&v15->_service, service);
+    objc_storeStrong(&v15->_additionalInfo, information);
   }
 
   return v15;
@@ -62,12 +62,12 @@
 
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
   if ([(IDSMissingMessageMetric *)self _isInternal])
@@ -77,7 +77,7 @@
 
   else
   {
-    v6 = [(IDSMissingMessageMetric *)self _shouldReportMetricForExternal]& v5;
+    v6 = [(IDSMissingMessageMetric *)self _shouldReportMetricForExternal]& bOOLValue;
   }
 
   return v6;
@@ -100,19 +100,19 @@
 
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
   reason = self->_reason;
   v7 = (reason - 702) > 0xA || ((1 << (reason + 66)) & 0x5A7) == 0;
   if (!v7 || reason == 801)
   {
-    v8 = [(IDSMissingMessageMetric *)self _shouldReportReasonForExternal]| v5;
+    v8 = [(IDSMissingMessageMetric *)self _shouldReportReasonForExternal]| bOOLValue;
   }
 
   else

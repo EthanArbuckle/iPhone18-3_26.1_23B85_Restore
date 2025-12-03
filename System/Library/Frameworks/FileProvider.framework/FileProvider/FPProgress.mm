@@ -1,14 +1,14 @@
 @interface FPProgress
-- (FPProgress)initWithOperation:(id)a3;
+- (FPProgress)initWithOperation:(id)operation;
 - (void)cancel;
 @end
 
 @implementation FPProgress
 
-- (FPProgress)initWithOperation:(id)a3
+- (FPProgress)initWithOperation:(id)operation
 {
-  v6 = a3;
-  if (!v6)
+  operationCopy = operation;
+  if (!operationCopy)
   {
     [(FPProgress *)a2 initWithOperation:?];
   }
@@ -19,7 +19,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_operation, a3);
+    objc_storeStrong(&v7->_operation, operation);
   }
 
   return v8;

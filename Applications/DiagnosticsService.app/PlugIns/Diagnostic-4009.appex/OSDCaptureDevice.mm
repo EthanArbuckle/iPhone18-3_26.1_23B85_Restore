@@ -1,13 +1,13 @@
 @interface OSDCaptureDevice
 + (id)ispBinary;
 + (id)ispVersion;
-- (BOOL)getDeviceAndStreams:(id *)a3;
-- (BOOL)setupCaptureDevice:(id *)a3;
-- (BOOL)setupCaptureStreams:(id *)a3;
+- (BOOL)getDeviceAndStreams:(id *)streams;
+- (BOOL)setupCaptureDevice:(id *)device;
+- (BOOL)setupCaptureStreams:(id *)streams;
 - (OSDCaptureDevice)init;
-- (id)captureStreamForPortType:(__CFString *)a3 error:(id *)a4;
-- (int)backingCopyProperty:(__CFString *)a3 dest:(const void *)a4;
-- (int)backingSetProperty:(__CFString *)a3 value:(void *)a4;
+- (id)captureStreamForPortType:(__CFString *)type error:(id *)error;
+- (int)backingCopyProperty:(__CFString *)property dest:(const void *)dest;
+- (int)backingSetProperty:(__CFString *)property value:(void *)value;
 - (void)dealloc;
 - (void)doneWithDeviceAndStreams;
 - (void)teardown;
@@ -43,37 +43,37 @@
   return result;
 }
 
-- (BOOL)getDeviceAndStreams:(id *)a3
+- (BOOL)getDeviceAndStreams:(id *)streams
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(OSDCaptureDevice *)v4 owners]|| [(OSDCaptureDevice *)v4 setupCaptureDevice:a3]&& [(OSDCaptureDevice *)v4 setupCaptureStreams:a3])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(OSDCaptureDevice *)selfCopy owners]|| [(OSDCaptureDevice *)selfCopy setupCaptureDevice:streams]&& [(OSDCaptureDevice *)selfCopy setupCaptureStreams:streams])
   {
-    [(OSDCaptureDevice *)v4 setOwners:[(OSDCaptureDevice *)v4 owners]+ 8];
+    [(OSDCaptureDevice *)selfCopy setOwners:[(OSDCaptureDevice *)selfCopy owners]+ 8];
     v5 = 1;
   }
 
   else
   {
-    [(OSDCaptureDevice *)v4 teardown];
+    [(OSDCaptureDevice *)selfCopy teardown];
     v5 = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
 - (void)doneWithDeviceAndStreams
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(OSDCaptureDevice *)v2 owners])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(OSDCaptureDevice *)selfCopy owners])
   {
-    [(OSDCaptureDevice *)v2 setOwners:[(OSDCaptureDevice *)v2 owners]- 8];
-    if (![(OSDCaptureDevice *)v2 owners])
+    [(OSDCaptureDevice *)selfCopy setOwners:[(OSDCaptureDevice *)selfCopy owners]- 8];
+    if (![(OSDCaptureDevice *)selfCopy owners])
     {
-      [(OSDCaptureDevice *)v2 teardown];
+      [(OSDCaptureDevice *)selfCopy teardown];
     }
   }
 
@@ -83,15 +83,15 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v4 = 138412290;
-      v5 = v2;
+      v5 = selfCopy;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ >> Attempted to deactivate a camera with no matching activiation!", &v4, 0xCu);
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)setupCaptureDevice:(id *)a3
+- (BOOL)setupCaptureDevice:(id *)device
 {
   v5 = sub_100002364();
   v6 = dlopen(v5[1], 4);
@@ -99,10 +99,10 @@
   {
     v17 = dlerror();
     v15 = @"%@ >> Unable to open the isp plugin: %s";
-    v23 = self;
+    selfCopy4 = self;
     v24 = v17;
 LABEL_18:
-    v16 = a3;
+    deviceCopy2 = device;
     goto LABEL_19;
   }
 
@@ -110,7 +110,7 @@ LABEL_18:
   if (!v7)
   {
     v15 = @"%@ >> Unable to load the isp symbols.";
-    v23 = self;
+    selfCopy4 = self;
     goto LABEL_18;
   }
 
@@ -162,19 +162,19 @@ LABEL_18:
   {
     self->_deviceRef = 0;
     v15 = @"%@ >> Unable to create the FigCaptureDevice with status: (0x%08x)";
-    v23 = self;
+    selfCopy4 = self;
     v24 = v9;
 LABEL_15:
-    v16 = a3;
+    deviceCopy2 = device;
 LABEL_19:
-    [OSDError setError:v16 withDomain:@"com.apple.osdiags.OSDCaptureDevice" withCode:1 format:v15, v23, v24];
+    [OSDError setError:deviceCopy2 withDomain:@"com.apple.osdiags.OSDCaptureDevice" withCode:1 format:v15, selfCopy4, v24];
     return 0;
   }
 
   if (!self->_deviceRef)
   {
     v15 = @"%@ >> CRITICAL CreateCaptureDevice returned success but the device was NULL";
-    v23 = self;
+    selfCopy4 = self;
     goto LABEL_15;
   }
 
@@ -194,19 +194,19 @@ LABEL_19:
   return 1;
 }
 
-- (BOOL)setupCaptureStreams:(id *)a3
+- (BOOL)setupCaptureStreams:(id *)streams
 {
-  v5 = [(OSDPropertyBasedDevice *)self copyProperty:kFigCaptureDeviceProperty_StreamArray error:a3];
-  if (a3 && *a3)
+  v5 = [(OSDPropertyBasedDevice *)self copyProperty:kFigCaptureDeviceProperty_StreamArray error:streams];
+  if (streams && *streams)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(OSDCaptureDevice *)self deviceRef];
+    deviceRef = [(OSDCaptureDevice *)self deviceRef];
     v8 = *(CMBaseObjectGetVTable() + 16);
-    if (*v8 < 2uLL || (v9 = v8[2]) == 0 || (v10 = v8[2], (v11 = v9(v7, v5, 0), v11 != -12782) ? (v12 = v11 == 0) : (v12 = 1), v12))
+    if (*v8 < 2uLL || (v9 = v8[2]) == 0 || (v10 = v8[2], (v11 = v9(deviceRef, v5, 0), v11 != -12782) ? (v12 = v11 == 0) : (v12 = 1), v12))
     {
       v6 = 1;
     }
@@ -218,7 +218,7 @@ LABEL_19:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v38 = self;
+        selfCopy = self;
         v39 = 1024;
         v40 = v27;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%@: Failed to request control of the streams! %d", buf, 0x12u);
@@ -250,7 +250,7 @@ LABEL_19:
           }
 
           v19 = [[OSDCaptureStream alloc] initWithStream:*(*(&v32 + 1) + 8 * i)];
-          v20 = [(OSDCaptureStream *)v19 name:a3];
+          v20 = [(OSDCaptureStream *)v19 name:streams];
           if (!v20)
           {
 
@@ -287,7 +287,7 @@ LABEL_23:
     {
       v25 = [(NSDictionary *)self->_portToStreamMap count];
       *buf = 134217984;
-      v38 = v25;
+      selfCopy = v25;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "OSDCaptureDevice has %lu streams", buf, 0xCu);
     }
   }
@@ -317,15 +317,15 @@ LABEL_23:
   }
 }
 
-- (id)captureStreamForPortType:(__CFString *)a3 error:(id *)a4
+- (id)captureStreamForPortType:(__CFString *)type error:(id *)error
 {
-  v5 = [(OSDCaptureDevice *)self portToStreamMap:a3];
-  v6 = [v5 objectForKeyedSubscript:a3];
+  v5 = [(OSDCaptureDevice *)self portToStreamMap:type];
+  v6 = [v5 objectForKeyedSubscript:type];
 
   return v6;
 }
 
-- (int)backingSetProperty:(__CFString *)a3 value:(void *)a4
+- (int)backingSetProperty:(__CFString *)property value:(void *)value
 {
   deviceRef = self->_deviceRef;
   FigBaseObject = FigCaptureDeviceGetFigBaseObject();
@@ -338,10 +338,10 @@ LABEL_23:
 
   v10 = *(VTable + 8) + 56;
 
-  return v9(FigBaseObject, a3, a4);
+  return v9(FigBaseObject, property, value);
 }
 
-- (int)backingCopyProperty:(__CFString *)a3 dest:(const void *)a4
+- (int)backingCopyProperty:(__CFString *)property dest:(const void *)dest
 {
   deviceRef = self->_deviceRef;
   FigBaseObject = FigCaptureDeviceGetFigBaseObject();
@@ -351,7 +351,7 @@ LABEL_23:
     return -12782;
   }
 
-  return v8(FigBaseObject, a3, kCFAllocatorDefault, a4);
+  return v8(FigBaseObject, property, kCFAllocatorDefault, dest);
 }
 
 @end

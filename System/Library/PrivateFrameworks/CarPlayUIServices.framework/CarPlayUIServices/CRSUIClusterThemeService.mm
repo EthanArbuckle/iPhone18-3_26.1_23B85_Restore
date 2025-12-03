@@ -1,15 +1,15 @@
 @interface CRSUIClusterThemeService
 - (CRSUIClusterThemeDataProviding)themeDataProvider;
 - (CRSUIClusterThemeService)init;
-- (void)_connectionQueue_addConnection:(id)a3;
-- (void)_connectionQueue_removeConnection:(id)a3;
-- (void)getClusterThemeLayoutData:(id)a3;
-- (void)getURLForAssetWithIdentifier:(id)a3 displayID:(id)a4 reply:(id)a5;
+- (void)_connectionQueue_addConnection:(id)connection;
+- (void)_connectionQueue_removeConnection:(id)connection;
+- (void)getClusterThemeLayoutData:(id)data;
+- (void)getURLForAssetWithIdentifier:(id)identifier displayID:(id)d reply:(id)reply;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)registerThemeObserver:(id)a3;
-- (void)setThemeData:(id)a3 reply:(id)a4;
-- (void)updateExtraAssetsURL:(id)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)registerThemeObserver:(id)observer;
+- (void)setThemeData:(id)data reply:(id)reply;
+- (void)updateExtraAssetsURL:(id)l;
 @end
 
 @implementation CRSUIClusterThemeService
@@ -24,7 +24,7 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CF0C18] serial];
+    serial = [MEMORY[0x277CF0C18] serial];
     v5 = BSDispatchQueueCreate();
     connectionQueue = v3->_connectionQueue;
     v3->_connectionQueue = v5;
@@ -80,34 +80,34 @@ void __32__CRSUIClusterThemeService_init__block_invoke(uint64_t a1, void *a2)
   v3 = CRSUILogForCategory(6uLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CRSUIClusterThemeService *)self listener];
+    listener = [(CRSUIClusterThemeService *)self listener];
     v7 = 138412290;
-    v8 = v4;
+    v8 = listener;
     _os_log_impl(&dword_243218000, v3, OS_LOG_TYPE_DEFAULT, "Invalidating listener! %@", &v7, 0xCu);
   }
 
-  v5 = [(CRSUIClusterThemeService *)self listener];
-  [v5 invalidate];
+  listener2 = [(CRSUIClusterThemeService *)self listener];
+  [listener2 invalidate];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
   v11 = CRSUILogForCategory(6uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v9;
+    v27 = connectionCopy;
     _os_log_impl(&dword_243218000, v11, OS_LOG_TYPE_DEFAULT, "Received connection! %@", buf, 0xCu);
   }
 
-  v12 = [v9 remoteProcess];
-  if (v12 && ([v9 remoteProcess], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "hasEntitlement:", @"com.apple.private.CarPlayUIServices.cluster-theme"), v13, v12, (v14 & 1) != 0))
+  remoteProcess = [connectionCopy remoteProcess];
+  if (remoteProcess && ([connectionCopy remoteProcess], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "hasEntitlement:", @"com.apple.private.CarPlayUIServices.cluster-theme"), v13, remoteProcess, (v14 & 1) != 0))
   {
     objc_initWeak(&location, self);
     v23[0] = MEMORY[0x277D85DD0];
@@ -116,12 +116,12 @@ void __32__CRSUIClusterThemeService_init__block_invoke(uint64_t a1, void *a2)
     v23[3] = &unk_278DA0B58;
     v23[4] = self;
     objc_copyWeak(&v24, &location);
-    [v9 configureConnection:v23];
+    [connectionCopy configureConnection:v23];
     v15 = CRSUILogForCategory(6uLL);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v27 = v9;
+      v27 = connectionCopy;
       _os_log_impl(&dword_243218000, v15, OS_LOG_TYPE_DEFAULT, "Activating connection... %@", buf, 0xCu);
     }
 
@@ -131,7 +131,7 @@ void __32__CRSUIClusterThemeService_init__block_invoke(uint64_t a1, void *a2)
     block[2] = __70__CRSUIClusterThemeService_listener_didReceiveConnection_withContext___block_invoke_79;
     block[3] = &unk_278DA0B80;
     objc_copyWeak(&v22, &location);
-    v17 = v9;
+    v17 = connectionCopy;
     v21 = v17;
     dispatch_async(connectionQueue, block);
     [v17 activate];
@@ -146,10 +146,10 @@ void __32__CRSUIClusterThemeService_init__block_invoke(uint64_t a1, void *a2)
     v18 = CRSUILogForCategory(6uLL);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [CRSUIClusterThemeService listener:v9 didReceiveConnection:v18 withContext:?];
+      [CRSUIClusterThemeService listener:connectionCopy didReceiveConnection:v18 withContext:?];
     }
 
-    [v9 invalidate];
+    [connectionCopy invalidate];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -197,42 +197,42 @@ void __70__CRSUIClusterThemeService_listener_didReceiveConnection_withContext___
   [WeakRetained _connectionQueue_addConnection:*(a1 + 32)];
 }
 
-- (void)getClusterThemeLayoutData:(id)a3
+- (void)getClusterThemeLayoutData:(id)data
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = CRSUILogForCategory(6uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x277CF3280] currentContext];
+    currentContext = [MEMORY[0x277CF3280] currentContext];
     *buf = 138412290;
-    v25 = v6;
+    v25 = currentContext;
     _os_log_impl(&dword_243218000, v5, OS_LOG_TYPE_DEFAULT, "Received request for cluster layouts (connection: %@)", buf, 0xCu);
   }
 
-  v7 = [(CRSUIClusterThemeService *)self themeDataProvider];
+  themeDataProvider = [(CRSUIClusterThemeService *)self themeDataProvider];
 
-  if (v7)
+  if (themeDataProvider)
   {
-    v8 = [(CRSUIClusterThemeService *)self themeDataProvider];
-    v9 = [v8 themeData];
+    themeDataProvider2 = [(CRSUIClusterThemeService *)self themeDataProvider];
+    themeData = [themeDataProvider2 themeData];
 
-    v10 = [(CRSUIClusterThemeService *)self themeDataProvider];
-    v11 = [v10 clusterThemeDisplays];
+    themeDataProvider3 = [(CRSUIClusterThemeService *)self themeDataProvider];
+    clusterThemeDisplays = [themeDataProvider3 clusterThemeDisplays];
 
-    v12 = [(CRSUIClusterThemeService *)self themeDataProvider];
-    v13 = [v12 assetBaseURL];
+    themeDataProvider4 = [(CRSUIClusterThemeService *)self themeDataProvider];
+    assetBaseURL = [themeDataProvider4 assetBaseURL];
 
-    v14 = [(CRSUIClusterThemeService *)self themeDataProvider];
-    v15 = [v14 extraAssetsURL];
+    themeDataProvider5 = [(CRSUIClusterThemeService *)self themeDataProvider];
+    extraAssetsURL = [themeDataProvider5 extraAssetsURL];
 
     v16 = objc_alloc_init(_CRSUIClusterThemeLayoutData);
-    [(_CRSUIClusterThemeLayoutData *)v16 setThemeData:v9];
-    [(_CRSUIClusterThemeLayoutData *)v16 setDisplays:v11];
-    [(_CRSUIClusterThemeLayoutData *)v16 setAssetBaseURL:v13];
-    [(_CRSUIClusterThemeLayoutData *)v16 setExtraAssetsURL:v15];
-    v17 = [(CRSUIClusterThemeService *)self themeDataProvider];
-    -[_CRSUIClusterThemeLayoutData setAssetVersion:](v16, "setAssetVersion:", [v17 assetVersion]);
+    [(_CRSUIClusterThemeLayoutData *)v16 setThemeData:themeData];
+    [(_CRSUIClusterThemeLayoutData *)v16 setDisplays:clusterThemeDisplays];
+    [(_CRSUIClusterThemeLayoutData *)v16 setAssetBaseURL:assetBaseURL];
+    [(_CRSUIClusterThemeLayoutData *)v16 setExtraAssetsURL:extraAssetsURL];
+    themeDataProvider6 = [(CRSUIClusterThemeService *)self themeDataProvider];
+    -[_CRSUIClusterThemeLayoutData setAssetVersion:](v16, "setAssetVersion:", [themeDataProvider6 assetVersion]);
 
     v18 = 0;
   }
@@ -248,40 +248,40 @@ void __70__CRSUIClusterThemeService_listener_didReceiveConnection_withContext___
     v20 = MEMORY[0x277CCA9B8];
     v22 = *MEMORY[0x277CCA450];
     v23 = @"Unable to retrieve cluster theme data";
-    v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-    v18 = [v20 errorWithDomain:@"com.apple.CarPlayUIServices.cluster-theme-service" code:1 userInfo:v9];
+    themeData = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
+    v18 = [v20 errorWithDomain:@"com.apple.CarPlayUIServices.cluster-theme-service" code:1 userInfo:themeData];
     v16 = 0;
   }
 
-  v4[2](v4, v16, v18);
+  dataCopy[2](dataCopy, v16, v18);
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getURLForAssetWithIdentifier:(id)a3 displayID:(id)a4 reply:(id)a5
+- (void)getURLForAssetWithIdentifier:(id)identifier displayID:(id)d reply:(id)reply
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  replyCopy = reply;
   v11 = CRSUILogForCategory(6uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [MEMORY[0x277CF3280] currentContext];
+    currentContext = [MEMORY[0x277CF3280] currentContext];
     *buf = 138412802;
-    v23 = v12;
+    v23 = currentContext;
     v24 = 2112;
-    v25 = v9;
+    v25 = dCopy;
     v26 = 2112;
-    v27 = v8;
+    v27 = identifierCopy;
     _os_log_impl(&dword_243218000, v11, OS_LOG_TYPE_DEFAULT, "Received request for asset url (connection: %@): %@:%@", buf, 0x20u);
   }
 
-  v13 = [(CRSUIClusterThemeService *)self themeDataProvider];
+  themeDataProvider = [(CRSUIClusterThemeService *)self themeDataProvider];
 
-  if (v13)
+  if (themeDataProvider)
   {
-    v14 = [(CRSUIClusterThemeService *)self themeDataProvider];
-    v15 = [v14 getURLForAssetWithIdentifier:v8 displayID:v9];
+    themeDataProvider2 = [(CRSUIClusterThemeService *)self themeDataProvider];
+    v15 = [themeDataProvider2 getURLForAssetWithIdentifier:identifierCopy displayID:dCopy];
     v16 = 0;
   }
 
@@ -296,29 +296,29 @@ void __70__CRSUIClusterThemeService_listener_didReceiveConnection_withContext___
     v18 = MEMORY[0x277CCA9B8];
     v20 = *MEMORY[0x277CCA450];
     v21 = @"Unable to retrieve asset url";
-    v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    v16 = [v18 errorWithDomain:@"com.apple.CarPlayUIServices.cluster-theme-service" code:1 userInfo:v14];
+    themeDataProvider2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
+    v16 = [v18 errorWithDomain:@"com.apple.CarPlayUIServices.cluster-theme-service" code:1 userInfo:themeDataProvider2];
     v15 = 0;
   }
 
-  v10[2](v10, v15, v16);
+  replyCopy[2](replyCopy, v15, v16);
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setThemeData:(id)a3 reply:(id)a4
+- (void)setThemeData:(id)data reply:(id)reply
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  replyCopy = reply;
   v8 = CRSUILogForCategory(6uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x277CF3280] currentContext];
-    v10 = [v6 themeData];
+    currentContext = [MEMORY[0x277CF3280] currentContext];
+    themeData = [dataCopy themeData];
     *buf = 138412546;
-    *&buf[4] = v9;
+    *&buf[4] = currentContext;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = themeData;
     _os_log_impl(&dword_243218000, v8, OS_LOG_TYPE_DEFAULT, "Received request to set theme data (connection: %@): %@", buf, 0x16u);
   }
 
@@ -328,18 +328,18 @@ void __70__CRSUIClusterThemeService_listener_didReceiveConnection_withContext___
   v18 = __Block_byref_object_copy_;
   v19 = __Block_byref_object_dispose_;
   v20 = 0;
-  v11 = [(CRSUIClusterThemeService *)self themeObservers];
+  themeObservers = [(CRSUIClusterThemeService *)self themeObservers];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __47__CRSUIClusterThemeService_setThemeData_reply___block_invoke;
   v14[3] = &unk_278DA0BA8;
   v16 = buf;
   v14[4] = self;
-  v12 = v6;
+  v12 = dataCopy;
   v15 = v12;
-  [v11 enumerateObserversWithBlock:v14];
+  [themeObservers enumerateObserversWithBlock:v14];
 
-  v7[2](v7, *(*&buf[8] + 40));
+  replyCopy[2](replyCopy, *(*&buf[8] + 40));
   _Block_object_dispose(buf, 8);
 
   v13 = *MEMORY[0x277D85DE8];
@@ -364,22 +364,22 @@ void __47__CRSUIClusterThemeService_setThemeData_reply___block_invoke(uint64_t a
   }
 }
 
-- (void)registerThemeObserver:(id)a3
+- (void)registerThemeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRSUIClusterThemeService *)self themeObservers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  themeObservers = [(CRSUIClusterThemeService *)self themeObservers];
+  [themeObservers registerObserver:observerCopy];
 }
 
-- (void)updateExtraAssetsURL:(id)a3
+- (void)updateExtraAssetsURL:(id)l
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = CRSUILogForCategory(6uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = lCopy;
     _os_log_impl(&dword_243218000, v5, OS_LOG_TYPE_DEFAULT, "service extraAssetsURL=%@", buf, 0xCu);
   }
 
@@ -390,8 +390,8 @@ void __47__CRSUIClusterThemeService_setThemeData_reply___block_invoke(uint64_t a
   v9[2] = __49__CRSUIClusterThemeService_updateExtraAssetsURL___block_invoke;
   v9[3] = &unk_278DA0B80;
   objc_copyWeak(&v11, buf);
-  v10 = v4;
-  v7 = v4;
+  v10 = lCopy;
+  v7 = lCopy;
   dispatch_async(connectionQueue, v9);
 
   objc_destroyWeak(&v11);
@@ -439,22 +439,22 @@ void __49__CRSUIClusterThemeService_updateExtraAssetsURL___block_invoke(uint64_t
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_connectionQueue_addConnection:(id)a3
+- (void)_connectionQueue_addConnection:(id)connection
 {
   connectionQueue = self->_connectionQueue;
-  v5 = a3;
+  connectionCopy = connection;
   BSDispatchQueueAssert();
-  v6 = [(CRSUIClusterThemeService *)self connections];
-  [v6 addObject:v5];
+  connections = [(CRSUIClusterThemeService *)self connections];
+  [connections addObject:connectionCopy];
 }
 
-- (void)_connectionQueue_removeConnection:(id)a3
+- (void)_connectionQueue_removeConnection:(id)connection
 {
   connectionQueue = self->_connectionQueue;
-  v5 = a3;
+  connectionCopy = connection;
   BSDispatchQueueAssert();
-  v6 = [(CRSUIClusterThemeService *)self connections];
-  [v6 removeObject:v5];
+  connections = [(CRSUIClusterThemeService *)self connections];
+  [connections removeObject:connectionCopy];
 }
 
 - (CRSUIClusterThemeDataProviding)themeDataProvider

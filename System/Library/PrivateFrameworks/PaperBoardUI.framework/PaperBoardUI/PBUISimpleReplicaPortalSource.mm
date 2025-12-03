@@ -1,28 +1,28 @@
 @interface PBUISimpleReplicaPortalSource
-- (PBUISimpleReplicaPortalSource)initWithTargetView:(id)a3 cacheIdentifier:(id)a4 legibilitySettings:(id)a5 effectsAreBakedIn:(BOOL)a6;
+- (PBUISimpleReplicaPortalSource)initWithTargetView:(id)view cacheIdentifier:(id)identifier legibilitySettings:(id)settings effectsAreBakedIn:(BOOL)in;
 @end
 
 @implementation PBUISimpleReplicaPortalSource
 
-- (PBUISimpleReplicaPortalSource)initWithTargetView:(id)a3 cacheIdentifier:(id)a4 legibilitySettings:(id)a5 effectsAreBakedIn:(BOOL)a6
+- (PBUISimpleReplicaPortalSource)initWithTargetView:(id)view cacheIdentifier:(id)identifier legibilitySettings:(id)settings effectsAreBakedIn:(BOOL)in
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  viewCopy = view;
+  identifierCopy = identifier;
+  settingsCopy = settings;
   v14 = [(PBUISimpleReplicaPortalSource *)self init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_targetView, a3);
-    v16 = [v12 copy];
+    objc_storeStrong(&v14->_targetView, view);
+    v16 = [identifierCopy copy];
     cacheIdentifier = v15->_cacheIdentifier;
     v15->_cacheIdentifier = v16;
 
-    v18 = [v13 copy];
+    v18 = [settingsCopy copy];
     legibilitySettings = v15->_legibilitySettings;
     v15->_legibilitySettings = v18;
 
-    v15->_effectsAreBakedIn = a6;
+    v15->_effectsAreBakedIn = in;
   }
 
   return v15;

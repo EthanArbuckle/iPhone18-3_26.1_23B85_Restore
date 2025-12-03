@@ -16,36 +16,36 @@
       switch(a4)
       {
         case 10:
-          LOWORD(v15) = [v6 unsignedShortValue];
-          [a1 appendBytes:&v15 length:2];
+          LOWORD(unsignedLongValue) = [v6 unsignedShortValue];
+          [self appendBytes:&unsignedLongValue length:2];
           break;
         case 11:
-          LODWORD(v15) = [v6 unsignedIntValue];
-          [a1 appendBytes:&v15 length:4];
+          LODWORD(unsignedLongValue) = [v6 unsignedIntValue];
+          [self appendBytes:&unsignedLongValue length:4];
           break;
         case 12:
-          v15 = [v6 unsignedLongValue];
-          [a1 appendBytes:&v15 length:8];
+          unsignedLongValue = [v6 unsignedLongValue];
+          [self appendBytes:&unsignedLongValue length:8];
           break;
       }
     }
 
     else if (a4 == 7)
     {
-      LODWORD(v15) = [v6 intValue];
-      [a1 appendBytes:&v15 length:4];
+      LODWORD(unsignedLongValue) = [v6 intValue];
+      [self appendBytes:&unsignedLongValue length:4];
     }
 
     else if (a4 == 8)
     {
-      v15 = [v6 longValue];
-      [a1 appendBytes:&v15 length:8];
+      unsignedLongValue = [v6 longValue];
+      [self appendBytes:&unsignedLongValue length:8];
     }
 
     else
     {
-      LOBYTE(v15) = [v6 unsignedCharValue];
-      [a1 appendBytes:&v15 length:1];
+      LOBYTE(unsignedLongValue) = [v6 unsignedCharValue];
+      [self appendBytes:&unsignedLongValue length:1];
     }
   }
 
@@ -54,20 +54,20 @@
     if (a4 == 4)
     {
       [v6 doubleValue];
-      v15 = v9;
-      [a1 appendBytes:&v15 length:8];
+      unsignedLongValue = v9;
+      [self appendBytes:&unsignedLongValue length:8];
     }
 
     else if (a4 == 5)
     {
-      LOBYTE(v15) = [v6 charValue];
-      [a1 appendBytes:&v15 length:1];
+      LOBYTE(unsignedLongValue) = [v6 charValue];
+      [self appendBytes:&unsignedLongValue length:1];
     }
 
     else
     {
-      LOWORD(v15) = [v6 shortValue];
-      [a1 appendBytes:&v15 length:2];
+      LOWORD(unsignedLongValue) = [v6 shortValue];
+      [self appendBytes:&unsignedLongValue length:2];
     }
   }
 
@@ -78,22 +78,22 @@
       [v6 floatValue];
       __asm { FCVT            H0, S0 }
 
-      LOWORD(v15) = _S0;
-      [a1 appendBytes:&v15 length:2];
+      LOWORD(unsignedLongValue) = _S0;
+      [self appendBytes:&unsignedLongValue length:2];
     }
 
     else if (a4 == 3)
     {
       [v6 floatValue];
-      LODWORD(v15) = v8;
-      [a1 appendBytes:&v15 length:4];
+      LODWORD(unsignedLongValue) = v8;
+      [self appendBytes:&unsignedLongValue length:4];
     }
   }
 
   else
   {
-    LOBYTE(v15) = [v6 BOOLValue];
-    [a1 appendBytes:&v15 length:1];
+    LOBYTE(unsignedLongValue) = [v6 BOOLValue];
+    [self appendBytes:&unsignedLongValue length:1];
   }
 }
 
@@ -119,7 +119,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [a1 appendScalar:*(*(&v11 + 1) + 8 * v9++) dataType:{a4, v11}];
+        [self appendScalar:*(*(&v11 + 1) + 8 * v9++) dataType:{a4, v11}];
       }
 
       while (v7 != v9);

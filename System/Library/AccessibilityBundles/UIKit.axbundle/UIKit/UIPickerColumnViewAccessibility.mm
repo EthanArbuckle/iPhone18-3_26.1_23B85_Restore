@@ -1,5 +1,5 @@
 @interface UIPickerColumnViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityKeyCommands;
 - (id)_accessibilityNativeFocusPreferredElement;
 - (id)accessibilityPath;
@@ -11,14 +11,14 @@
 
 @implementation UIPickerColumnViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   v6 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIPickerTableView" isKindOfClass:@"UITableView"];
   v3 = @"UIPickerColumnView";
   [location[0] validateClass:? hasInstanceVariable:? withType:?];
@@ -34,17 +34,17 @@
 
 - (id)_accessibilityNativeFocusPreferredElement
 {
-  v18 = self;
+  selfCopy = self;
   v17[1] = a2;
   v16 = 0;
   objc_opt_class();
-  v5 = [(UIPickerColumnViewAccessibility *)v18 safeValueForKey:@"_pickerView"];
+  v5 = [(UIPickerColumnViewAccessibility *)selfCopy safeValueForKey:@"_pickerView"];
   v15 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v5);
   v14 = MEMORY[0x29EDC9748](v15);
   objc_storeStrong(&v15, 0);
   v17[0] = v14;
-  v4 = [v14 accessibilityElements];
+  accessibilityElements = [v14 accessibilityElements];
   v9 = 0;
   v10 = &v9;
   v11 = 0x20000000;
@@ -52,14 +52,14 @@
   v13 = 0;
   v8[1] = &v9;
   v7 = MEMORY[0x29EDC9748](v17[0]);
-  v8[0] = MEMORY[0x29EDC9748](v18);
+  v8[0] = MEMORY[0x29EDC9748](selfCopy);
   AXPerformSafeBlock();
   v6 = v10[3];
   objc_storeStrong(v8, 0);
   objc_storeStrong(&v7, 0);
   _Block_object_dispose(&v9, 8);
-  v3 = [v4 axSafeObjectAtIndex:v6];
-  MEMORY[0x29EDC9740](v4);
+  v3 = [accessibilityElements axSafeObjectAtIndex:v6];
+  MEMORY[0x29EDC9740](accessibilityElements);
   objc_storeStrong(v17, 0);
 
   return v3;
@@ -77,10 +77,10 @@ double __76__UIPickerColumnViewAccessibility__accessibilityNativeFocusPreferredE
 - (id)_accessibilityKeyCommands
 {
   v15[4] = *MEMORY[0x29EDCA608];
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = [(UIPickerColumnViewAccessibility *)self _accessibilityIsRTL];
-  if (v12)
+  _accessibilityIsRTL = [(UIPickerColumnViewAccessibility *)self _accessibilityIsRTL];
+  if (_accessibilityIsRTL)
   {
     v2 = MEMORY[0x29EDC9748](*MEMORY[0x29EDC8170]);
   }
@@ -91,7 +91,7 @@ double __76__UIPickerColumnViewAccessibility__accessibilityNativeFocusPreferredE
   }
 
   v11 = v2;
-  if (v12)
+  if (_accessibilityIsRTL)
   {
     v3 = MEMORY[0x29EDC9748](*MEMORY[0x29EDC8168]);
   }
@@ -123,7 +123,7 @@ double __76__UIPickerColumnViewAccessibility__accessibilityNativeFocusPreferredE
 
 - (void)_fkaScrollToPreviousRow
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v3 = MEMORY[0x29EDB9FE0];
   v12 = 0;
@@ -145,7 +145,7 @@ double __76__UIPickerColumnViewAccessibility__accessibilityNativeFocusPreferredE
   v6 = 0;
   v7 = __58__UIPickerColumnViewAccessibility__fkaScrollToPreviousRow__block_invoke;
   v8 = &unk_29F30C888;
-  v9 = MEMORY[0x29EDC9748](v14);
+  v9 = MEMORY[0x29EDC9748](selfCopy);
   v10[0] = MEMORY[0x29EDC9748](v13[0]);
   AXPerformSafeBlock();
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7440], 0);
@@ -156,7 +156,7 @@ double __76__UIPickerColumnViewAccessibility__accessibilityNativeFocusPreferredE
 
 - (void)_fkaScrollToNextRow
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   v9[0] = [MEMORY[0x29EDB9FE0] indexPathForRow:-[UIPickerColumnViewAccessibility safeIntegerForKey:](self inSection:{"safeIntegerForKey:", @"selectionBarRow", 0}];
   v2 = MEMORY[0x29EDCA5F8];
@@ -164,7 +164,7 @@ double __76__UIPickerColumnViewAccessibility__accessibilityNativeFocusPreferredE
   v4 = 0;
   v5 = __54__UIPickerColumnViewAccessibility__fkaScrollToNextRow__block_invoke;
   v6 = &unk_29F30C888;
-  v7 = MEMORY[0x29EDC9748](v10);
+  v7 = MEMORY[0x29EDC9748](selfCopy);
   v8 = MEMORY[0x29EDC9748](v9[0]);
   AXPerformSafeBlock();
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7440], 0);

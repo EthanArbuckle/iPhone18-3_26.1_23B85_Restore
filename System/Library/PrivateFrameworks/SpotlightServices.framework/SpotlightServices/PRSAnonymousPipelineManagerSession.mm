@@ -1,7 +1,7 @@
 @interface PRSAnonymousPipelineManagerSession
 + (id)sharedManager;
 - (PRSAnonymousPipelineManagerSession)init;
-- (void)sendCustomFeedback:(id)a3;
+- (void)sendCustomFeedback:(id)feedback;
 @end
 
 @implementation PRSAnonymousPipelineManagerSession
@@ -39,16 +39,16 @@ uint64_t __51__PRSAnonymousPipelineManagerSession_sharedManager__block_invoke()
   return v3;
 }
 
-- (void)sendCustomFeedback:(id)a3
+- (void)sendCustomFeedback:(id)feedback
 {
-  v4 = a3;
-  v5 = [(PRSAnonymousPipelineManagerSession *)self session];
+  feedbackCopy = feedback;
+  session = [(PRSAnonymousPipelineManagerSession *)self session];
 
-  if (!v5)
+  if (!session)
   {
     v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v7 = [v6 infoDictionary];
-    v8 = [v7 objectForKeyedSubscript:@"CFBundleVersion"];
+    infoDictionary = [v6 infoDictionary];
+    v8 = [infoDictionary objectForKeyedSubscript:@"CFBundleVersion"];
 
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Metadata/%@", v8];
     v10 = [objc_alloc(MEMORY[0x1E6998678]) initWithId:@"com.apple.spotlight.metadata" userAgent:v9];
@@ -56,8 +56,8 @@ uint64_t __51__PRSAnonymousPipelineManagerSession_sharedManager__block_invoke()
     [(PRSAnonymousPipelineManagerSession *)self setSession:v11];
   }
 
-  v12 = [(PRSAnonymousPipelineManagerSession *)self session];
-  [v12 sendCustomFeedback:v4];
+  session2 = [(PRSAnonymousPipelineManagerSession *)self session];
+  [session2 sendCustomFeedback:feedbackCopy];
 }
 
 @end

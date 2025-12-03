@@ -1,19 +1,19 @@
 @interface ATXCategoricalFeatureLocationOfInterest
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4;
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate;
 @end
 
 @implementation ATXCategoricalFeatureLocationOfInterest
 
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate
 {
-  v4 = [a3 locationMotionContext];
-  v5 = [v4 currentLOI];
-  v6 = [v5 uuid];
-  v7 = [v6 UUIDString];
+  locationMotionContext = [context locationMotionContext];
+  currentLOI = [locationMotionContext currentLOI];
+  uuid = [currentLOI uuid];
+  uUIDString = [uuid UUIDString];
 
-  if (v7)
+  if (uUIDString)
   {
-    v8 = v7;
+    v8 = uUIDString;
   }
 
   else

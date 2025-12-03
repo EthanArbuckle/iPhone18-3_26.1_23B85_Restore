@@ -1,17 +1,17 @@
 @interface _INPBSaveHealthSampleIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSaveHealthSampleIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSaveHealthSampleIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsObjectType:(id)a3;
+- (int)StringAsObjectType:(id)type;
 - (unint64_t)hash;
-- (void)addSampleMetadata:(id)a3;
-- (void)addValues:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setObjectType:(int)a3;
-- (void)setSampleMetadatas:(id)a3;
-- (void)setValues:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSampleMetadata:(id)metadata;
+- (void)addValues:(id)values;
+- (void)encodeWithCoder:(id)coder;
+- (void)setObjectType:(int)type;
+- (void)setSampleMetadatas:(id)metadatas;
+- (void)setValues:(id)values;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSaveHealthSampleIntent
@@ -19,34 +19,34 @@
 - (id)dictionaryRepresentation
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBSaveHealthSampleIntent *)self intentMetadata];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"intentMetadata"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  intentMetadata = [(_INPBSaveHealthSampleIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
   if ([(_INPBSaveHealthSampleIntent *)self hasObjectType])
   {
-    v6 = [(_INPBSaveHealthSampleIntent *)self objectType];
-    if (v6 >= 0x4B)
+    objectType = [(_INPBSaveHealthSampleIntent *)self objectType];
+    if (objectType >= 0x4B)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", objectType];
     }
 
     else
     {
-      v7 = off_1E7282C98[v6];
+      v7 = off_1E7282C98[objectType];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"objectType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"objectType"];
   }
 
-  v8 = [(_INPBSaveHealthSampleIntent *)self recordDate];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"recordDate"];
+  recordDate = [(_INPBSaveHealthSampleIntent *)self recordDate];
+  dictionaryRepresentation2 = [recordDate dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"recordDate"];
 
   if ([(NSArray *)self->_sampleMetadatas count])
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
@@ -66,8 +66,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v32 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation3 = [*(*(&v32 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation3];
         }
 
         v13 = [(NSArray *)v11 countByEnumeratingWithState:&v32 objects:v37 count:16];
@@ -76,16 +76,16 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"sampleMetadata"];
+    [dictionary setObject:array forKeyedSubscript:@"sampleMetadata"];
   }
 
-  v17 = [(_INPBSaveHealthSampleIntent *)self unit];
-  v18 = [v17 dictionaryRepresentation];
-  [v3 setObject:v18 forKeyedSubscript:@"unit"];
+  unit = [(_INPBSaveHealthSampleIntent *)self unit];
+  dictionaryRepresentation4 = [unit dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"unit"];
 
   if ([(NSArray *)self->_values count])
   {
-    v19 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -105,8 +105,8 @@
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v28 + 1) + 8 * j) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation5 = [*(*(&v28 + 1) + 8 * j) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation5];
         }
 
         v22 = [(NSArray *)v20 countByEnumeratingWithState:&v28 objects:v36 count:16];
@@ -115,12 +115,12 @@
       while (v22);
     }
 
-    [v3 setObject:v19 forKeyedSubscript:@"values"];
+    [dictionary setObject:array2 forKeyedSubscript:@"values"];
   }
 
   v26 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -143,28 +143,28 @@
   return v7 ^ v8 ^ [(NSArray *)self->_values hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
-  v5 = [(_INPBSaveHealthSampleIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  intentMetadata = [(_INPBSaveHealthSampleIntent *)self intentMetadata];
+  intentMetadata2 = [equalCopy intentMetadata];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_30;
   }
 
-  v7 = [(_INPBSaveHealthSampleIntent *)self intentMetadata];
-  if (v7)
+  intentMetadata3 = [(_INPBSaveHealthSampleIntent *)self intentMetadata];
+  if (intentMetadata3)
   {
-    v8 = v7;
-    v9 = [(_INPBSaveHealthSampleIntent *)self intentMetadata];
-    v10 = [v4 intentMetadata];
-    v11 = [v9 isEqual:v10];
+    v8 = intentMetadata3;
+    intentMetadata4 = [(_INPBSaveHealthSampleIntent *)self intentMetadata];
+    intentMetadata5 = [equalCopy intentMetadata];
+    v11 = [intentMetadata4 isEqual:intentMetadata5];
 
     if (!v11)
     {
@@ -176,38 +176,38 @@
   {
   }
 
-  v12 = [(_INPBSaveHealthSampleIntent *)self hasObjectType];
-  if (v12 != [v4 hasObjectType])
+  hasObjectType = [(_INPBSaveHealthSampleIntent *)self hasObjectType];
+  if (hasObjectType != [equalCopy hasObjectType])
   {
     goto LABEL_31;
   }
 
   if ([(_INPBSaveHealthSampleIntent *)self hasObjectType])
   {
-    if ([v4 hasObjectType])
+    if ([equalCopy hasObjectType])
     {
       objectType = self->_objectType;
-      if (objectType != [v4 objectType])
+      if (objectType != [equalCopy objectType])
       {
         goto LABEL_31;
       }
     }
   }
 
-  v5 = [(_INPBSaveHealthSampleIntent *)self recordDate];
-  v6 = [v4 recordDate];
-  if ((v5 != 0) == (v6 == 0))
+  intentMetadata = [(_INPBSaveHealthSampleIntent *)self recordDate];
+  intentMetadata2 = [equalCopy recordDate];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_30;
   }
 
-  v14 = [(_INPBSaveHealthSampleIntent *)self recordDate];
-  if (v14)
+  recordDate = [(_INPBSaveHealthSampleIntent *)self recordDate];
+  if (recordDate)
   {
-    v15 = v14;
-    v16 = [(_INPBSaveHealthSampleIntent *)self recordDate];
-    v17 = [v4 recordDate];
-    v18 = [v16 isEqual:v17];
+    v15 = recordDate;
+    recordDate2 = [(_INPBSaveHealthSampleIntent *)self recordDate];
+    recordDate3 = [equalCopy recordDate];
+    v18 = [recordDate2 isEqual:recordDate3];
 
     if (!v18)
     {
@@ -219,20 +219,20 @@
   {
   }
 
-  v5 = [(_INPBSaveHealthSampleIntent *)self sampleMetadatas];
-  v6 = [v4 sampleMetadatas];
-  if ((v5 != 0) == (v6 == 0))
+  intentMetadata = [(_INPBSaveHealthSampleIntent *)self sampleMetadatas];
+  intentMetadata2 = [equalCopy sampleMetadatas];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_30;
   }
 
-  v19 = [(_INPBSaveHealthSampleIntent *)self sampleMetadatas];
-  if (v19)
+  sampleMetadatas = [(_INPBSaveHealthSampleIntent *)self sampleMetadatas];
+  if (sampleMetadatas)
   {
-    v20 = v19;
-    v21 = [(_INPBSaveHealthSampleIntent *)self sampleMetadatas];
-    v22 = [v4 sampleMetadatas];
-    v23 = [v21 isEqual:v22];
+    v20 = sampleMetadatas;
+    sampleMetadatas2 = [(_INPBSaveHealthSampleIntent *)self sampleMetadatas];
+    sampleMetadatas3 = [equalCopy sampleMetadatas];
+    v23 = [sampleMetadatas2 isEqual:sampleMetadatas3];
 
     if (!v23)
     {
@@ -244,20 +244,20 @@
   {
   }
 
-  v5 = [(_INPBSaveHealthSampleIntent *)self unit];
-  v6 = [v4 unit];
-  if ((v5 != 0) == (v6 == 0))
+  intentMetadata = [(_INPBSaveHealthSampleIntent *)self unit];
+  intentMetadata2 = [equalCopy unit];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_30;
   }
 
-  v24 = [(_INPBSaveHealthSampleIntent *)self unit];
-  if (v24)
+  unit = [(_INPBSaveHealthSampleIntent *)self unit];
+  if (unit)
   {
-    v25 = v24;
-    v26 = [(_INPBSaveHealthSampleIntent *)self unit];
-    v27 = [v4 unit];
-    v28 = [v26 isEqual:v27];
+    v25 = unit;
+    unit2 = [(_INPBSaveHealthSampleIntent *)self unit];
+    unit3 = [equalCopy unit];
+    v28 = [unit2 isEqual:unit3];
 
     if (!v28)
     {
@@ -269,12 +269,12 @@
   {
   }
 
-  v5 = [(_INPBSaveHealthSampleIntent *)self values];
-  v6 = [v4 values];
-  if ((v5 != 0) != (v6 == 0))
+  intentMetadata = [(_INPBSaveHealthSampleIntent *)self values];
+  intentMetadata2 = [equalCopy values];
+  if ((intentMetadata != 0) != (intentMetadata2 == 0))
   {
-    v29 = [(_INPBSaveHealthSampleIntent *)self values];
-    if (!v29)
+    values = [(_INPBSaveHealthSampleIntent *)self values];
+    if (!values)
     {
 
 LABEL_34:
@@ -282,10 +282,10 @@ LABEL_34:
       goto LABEL_32;
     }
 
-    v30 = v29;
-    v31 = [(_INPBSaveHealthSampleIntent *)self values];
-    v32 = [v4 values];
-    v33 = [v31 isEqual:v32];
+    v30 = values;
+    values2 = [(_INPBSaveHealthSampleIntent *)self values];
+    values3 = [equalCopy values];
+    v33 = [values2 isEqual:values3];
 
     if (v33)
     {
@@ -305,10 +305,10 @@ LABEL_32:
   return v34;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSaveHealthSampleIntent allocWithZone:](_INPBSaveHealthSampleIntent init];
-  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSaveHealthSampleIntent *)v5 setIntentMetadata:v6];
 
   if ([(_INPBSaveHealthSampleIntent *)self hasObjectType])
@@ -316,54 +316,54 @@ LABEL_32:
     [(_INPBSaveHealthSampleIntent *)v5 setObjectType:[(_INPBSaveHealthSampleIntent *)self objectType]];
   }
 
-  v7 = [(_INPBDateTimeRange *)self->_recordDate copyWithZone:a3];
+  v7 = [(_INPBDateTimeRange *)self->_recordDate copyWithZone:zone];
   [(_INPBSaveHealthSampleIntent *)v5 setRecordDate:v7];
 
-  v8 = [(NSArray *)self->_sampleMetadatas copyWithZone:a3];
+  v8 = [(NSArray *)self->_sampleMetadatas copyWithZone:zone];
   [(_INPBSaveHealthSampleIntent *)v5 setSampleMetadatas:v8];
 
-  v9 = [(_INPBWellnessUnitType *)self->_unit copyWithZone:a3];
+  v9 = [(_INPBWellnessUnitType *)self->_unit copyWithZone:zone];
   [(_INPBSaveHealthSampleIntent *)v5 setUnit:v9];
 
-  v10 = [(NSArray *)self->_values copyWithZone:a3];
+  v10 = [(NSArray *)self->_values copyWithZone:zone];
   [(_INPBSaveHealthSampleIntent *)v5 setValues:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSaveHealthSampleIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSaveHealthSampleIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSaveHealthSampleIntent)initWithCoder:(id)a3
+- (_INPBSaveHealthSampleIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSaveHealthSampleIntent *)self initWithData:v6];
+    self = [(_INPBSaveHealthSampleIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBSaveHealthSampleIntent *)self intentMetadata];
+  toCopy = to;
+  intentMetadata = [(_INPBSaveHealthSampleIntent *)self intentMetadata];
 
-  if (v5)
+  if (intentMetadata)
   {
-    v6 = [(_INPBSaveHealthSampleIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSaveHealthSampleIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -373,11 +373,11 @@ LABEL_32:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(_INPBSaveHealthSampleIntent *)self recordDate];
+  recordDate = [(_INPBSaveHealthSampleIntent *)self recordDate];
 
-  if (v8)
+  if (recordDate)
   {
-    v9 = [(_INPBSaveHealthSampleIntent *)self recordDate];
+    recordDate2 = [(_INPBSaveHealthSampleIntent *)self recordDate];
     PBDataWriterWriteSubmessage();
   }
 
@@ -413,11 +413,11 @@ LABEL_32:
     while (v12);
   }
 
-  v16 = [(_INPBSaveHealthSampleIntent *)self unit];
+  unit = [(_INPBSaveHealthSampleIntent *)self unit];
 
-  if (v16)
+  if (unit)
   {
-    v17 = [(_INPBSaveHealthSampleIntent *)self unit];
+    unit2 = [(_INPBSaveHealthSampleIntent *)self unit];
     PBDataWriterWriteSubmessage();
   }
 
@@ -456,434 +456,434 @@ LABEL_32:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addValues:(id)a3
+- (void)addValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   values = self->_values;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!values)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_values;
-    self->_values = v6;
+    self->_values = array;
 
-    v4 = v8;
+    valuesCopy = v8;
     values = self->_values;
   }
 
-  [(NSArray *)values addObject:v4];
+  [(NSArray *)values addObject:valuesCopy];
 }
 
-- (void)setValues:(id)a3
+- (void)setValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   values = self->_values;
   self->_values = v4;
 
   MEMORY[0x1EEE66BB8](v4, values);
 }
 
-- (void)addSampleMetadata:(id)a3
+- (void)addSampleMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   sampleMetadatas = self->_sampleMetadatas;
-  v8 = v4;
+  v8 = metadataCopy;
   if (!sampleMetadatas)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_sampleMetadatas;
-    self->_sampleMetadatas = v6;
+    self->_sampleMetadatas = array;
 
-    v4 = v8;
+    metadataCopy = v8;
     sampleMetadatas = self->_sampleMetadatas;
   }
 
-  [(NSArray *)sampleMetadatas addObject:v4];
+  [(NSArray *)sampleMetadatas addObject:metadataCopy];
 }
 
-- (void)setSampleMetadatas:(id)a3
+- (void)setSampleMetadatas:(id)metadatas
 {
-  v4 = [a3 mutableCopy];
+  v4 = [metadatas mutableCopy];
   sampleMetadatas = self->_sampleMetadatas;
   self->_sampleMetadatas = v4;
 
   MEMORY[0x1EEE66BB8](v4, sampleMetadatas);
 }
 
-- (int)StringAsObjectType:(id)a3
+- (int)StringAsObjectType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BASAL_BODY_TEMPERATURE"])
+  else if ([typeCopy isEqualToString:@"BASAL_BODY_TEMPERATURE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"BIOTIN"])
+  else if ([typeCopy isEqualToString:@"BIOTIN"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BLOOD_ALCOHOL_CONTENT"])
+  else if ([typeCopy isEqualToString:@"BLOOD_ALCOHOL_CONTENT"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"BLOOD_GLUCOSE"])
+  else if ([typeCopy isEqualToString:@"BLOOD_GLUCOSE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"BLOOD_PRESSURE"])
+  else if ([typeCopy isEqualToString:@"BLOOD_PRESSURE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"BLOOD_PRESSURE_DIASTOLIC"])
+  else if ([typeCopy isEqualToString:@"BLOOD_PRESSURE_DIASTOLIC"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"BLOOD_PRESSURE_SYSTOLIC"])
+  else if ([typeCopy isEqualToString:@"BLOOD_PRESSURE_SYSTOLIC"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"BLOOD_TYPE"])
+  else if ([typeCopy isEqualToString:@"BLOOD_TYPE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"BODY_FAT_PERCENTAGE"])
+  else if ([typeCopy isEqualToString:@"BODY_FAT_PERCENTAGE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"BODY_MASS_INDEX"])
+  else if ([typeCopy isEqualToString:@"BODY_MASS_INDEX"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"BODY_TEMPERATURE"])
+  else if ([typeCopy isEqualToString:@"BODY_TEMPERATURE"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"CAFFEINE"])
+  else if ([typeCopy isEqualToString:@"CAFFEINE"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"CALCIUM"])
+  else if ([typeCopy isEqualToString:@"CALCIUM"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"CARBOHYDRATES"])
+  else if ([typeCopy isEqualToString:@"CARBOHYDRATES"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"CHLORIDE"])
+  else if ([typeCopy isEqualToString:@"CHLORIDE"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"CHROMIUM"])
+  else if ([typeCopy isEqualToString:@"CHROMIUM"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"COPPER"])
+  else if ([typeCopy isEqualToString:@"COPPER"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"DIETARY_CHOLESTEROL"])
+  else if ([typeCopy isEqualToString:@"DIETARY_CHOLESTEROL"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"DIETARY_SUGAR"])
+  else if ([typeCopy isEqualToString:@"DIETARY_SUGAR"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"ELECTRODERMAL_ACTIVITY"])
+  else if ([typeCopy isEqualToString:@"ELECTRODERMAL_ACTIVITY"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"ENERGY_CONSUMED"])
+  else if ([typeCopy isEqualToString:@"ENERGY_CONSUMED"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"FAT_MONOUN_SATURATED"])
+  else if ([typeCopy isEqualToString:@"FAT_MONOUN_SATURATED"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"FAT_POLYUN_SATURATED"])
+  else if ([typeCopy isEqualToString:@"FAT_POLYUN_SATURATED"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"FAT_SATURATED"])
+  else if ([typeCopy isEqualToString:@"FAT_SATURATED"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"FAT_TOTAL"])
+  else if ([typeCopy isEqualToString:@"FAT_TOTAL"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"FIBER"])
+  else if ([typeCopy isEqualToString:@"FIBER"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"FOLATE"])
+  else if ([typeCopy isEqualToString:@"FOLATE"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"FORCED_EXPIRATORY_VOLUME"])
+  else if ([typeCopy isEqualToString:@"FORCED_EXPIRATORY_VOLUME"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"FORCED_VITAL_CAPACITY"])
+  else if ([typeCopy isEqualToString:@"FORCED_VITAL_CAPACITY"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"HEART_RATE"])
+  else if ([typeCopy isEqualToString:@"HEART_RATE"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"HEART_RATE_VARIABILITY_SDNN"])
+  else if ([typeCopy isEqualToString:@"HEART_RATE_VARIABILITY_SDNN"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"HEIGHT"])
+  else if ([typeCopy isEqualToString:@"HEIGHT"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"INHALER_USAGE"])
+  else if ([typeCopy isEqualToString:@"INHALER_USAGE"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"INSULIN_DELIVERY"])
+  else if ([typeCopy isEqualToString:@"INSULIN_DELIVERY"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"IODINE"])
+  else if ([typeCopy isEqualToString:@"IODINE"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"IRON"])
+  else if ([typeCopy isEqualToString:@"IRON"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"LEAN_BODY_MASS"])
+  else if ([typeCopy isEqualToString:@"LEAN_BODY_MASS"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"MAGNESIUM"])
+  else if ([typeCopy isEqualToString:@"MAGNESIUM"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"MANGANESE"])
+  else if ([typeCopy isEqualToString:@"MANGANESE"])
   {
     v4 = 39;
   }
 
-  else if ([v3 isEqualToString:@"MOLYBDENUM"])
+  else if ([typeCopy isEqualToString:@"MOLYBDENUM"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"NIACIN"])
+  else if ([typeCopy isEqualToString:@"NIACIN"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"NUMBER_OF_TIMES_FALLEN"])
+  else if ([typeCopy isEqualToString:@"NUMBER_OF_TIMES_FALLEN"])
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqualToString:@"OXYGEN_SATURATION"])
+  else if ([typeCopy isEqualToString:@"OXYGEN_SATURATION"])
   {
     v4 = 43;
   }
 
-  else if ([v3 isEqualToString:@"PANTOTHENIC_ACID"])
+  else if ([typeCopy isEqualToString:@"PANTOTHENIC_ACID"])
   {
     v4 = 44;
   }
 
-  else if ([v3 isEqualToString:@"PEAK_EXPIRATORY_FLOW_RATE"])
+  else if ([typeCopy isEqualToString:@"PEAK_EXPIRATORY_FLOW_RATE"])
   {
     v4 = 45;
   }
 
-  else if ([v3 isEqualToString:@"PERIPHERAL_PERFUSION_INDEX"])
+  else if ([typeCopy isEqualToString:@"PERIPHERAL_PERFUSION_INDEX"])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:@"PHOSPHORUS"])
+  else if ([typeCopy isEqualToString:@"PHOSPHORUS"])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:@"POTASSIUM"])
+  else if ([typeCopy isEqualToString:@"POTASSIUM"])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:@"PROTEIN"])
+  else if ([typeCopy isEqualToString:@"PROTEIN"])
   {
     v4 = 49;
   }
 
-  else if ([v3 isEqualToString:@"RESPIRATORY_RATE"])
+  else if ([typeCopy isEqualToString:@"RESPIRATORY_RATE"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"RESTINGHEART_RATE"])
+  else if ([typeCopy isEqualToString:@"RESTINGHEART_RATE"])
   {
     v4 = 51;
   }
 
-  else if ([v3 isEqualToString:@"RIBOFLAVIN"])
+  else if ([typeCopy isEqualToString:@"RIBOFLAVIN"])
   {
     v4 = 52;
   }
 
-  else if ([v3 isEqualToString:@"SELENIUM"])
+  else if ([typeCopy isEqualToString:@"SELENIUM"])
   {
     v4 = 53;
   }
 
-  else if ([v3 isEqualToString:@"SODIUM"])
+  else if ([typeCopy isEqualToString:@"SODIUM"])
   {
     v4 = 54;
   }
 
-  else if ([v3 isEqualToString:@"THIAMIN"])
+  else if ([typeCopy isEqualToString:@"THIAMIN"])
   {
     v4 = 55;
   }
 
-  else if ([v3 isEqualToString:@"UV_INDEX"])
+  else if ([typeCopy isEqualToString:@"UV_INDEX"])
   {
     v4 = 56;
   }
 
-  else if ([v3 isEqualToString:@"VITAMIN_A"])
+  else if ([typeCopy isEqualToString:@"VITAMIN_A"])
   {
     v4 = 57;
   }
 
-  else if ([v3 isEqualToString:@"VITAMIN_B12"])
+  else if ([typeCopy isEqualToString:@"VITAMIN_B12"])
   {
     v4 = 58;
   }
 
-  else if ([v3 isEqualToString:@"VITAMIN_B6"])
+  else if ([typeCopy isEqualToString:@"VITAMIN_B6"])
   {
     v4 = 59;
   }
 
-  else if ([v3 isEqualToString:@"VITAMIN_C"])
+  else if ([typeCopy isEqualToString:@"VITAMIN_C"])
   {
     v4 = 60;
   }
 
-  else if ([v3 isEqualToString:@"VITAMIN_D"])
+  else if ([typeCopy isEqualToString:@"VITAMIN_D"])
   {
     v4 = 61;
   }
 
-  else if ([v3 isEqualToString:@"VITAMIN_E"])
+  else if ([typeCopy isEqualToString:@"VITAMIN_E"])
   {
     v4 = 62;
   }
 
-  else if ([v3 isEqualToString:@"VITAMIN_K"])
+  else if ([typeCopy isEqualToString:@"VITAMIN_K"])
   {
     v4 = 63;
   }
 
-  else if ([v3 isEqualToString:@"WAIST_CIRCUMFERENCE"])
+  else if ([typeCopy isEqualToString:@"WAIST_CIRCUMFERENCE"])
   {
     v4 = 64;
   }
 
-  else if ([v3 isEqualToString:@"WALKING_HEART_RATE_AVERAGE"])
+  else if ([typeCopy isEqualToString:@"WALKING_HEART_RATE_AVERAGE"])
   {
     v4 = 65;
   }
 
-  else if ([v3 isEqualToString:@"WATER"])
+  else if ([typeCopy isEqualToString:@"WATER"])
   {
     v4 = 66;
   }
 
-  else if ([v3 isEqualToString:@"WEIGHT"])
+  else if ([typeCopy isEqualToString:@"WEIGHT"])
   {
     v4 = 67;
   }
 
-  else if ([v3 isEqualToString:@"ZINC"])
+  else if ([typeCopy isEqualToString:@"ZINC"])
   {
     v4 = 68;
   }
 
-  else if ([v3 isEqualToString:@"CERVICAL_MUCUS_QUALITY"])
+  else if ([typeCopy isEqualToString:@"CERVICAL_MUCUS_QUALITY"])
   {
     v4 = 69;
   }
 
-  else if ([v3 isEqualToString:@"OVULATION_TEST_RESULT"])
+  else if ([typeCopy isEqualToString:@"OVULATION_TEST_RESULT"])
   {
     v4 = 70;
   }
 
-  else if ([v3 isEqualToString:@"MENSTRUAL_FLOW"])
+  else if ([typeCopy isEqualToString:@"MENSTRUAL_FLOW"])
   {
     v4 = 71;
   }
 
-  else if ([v3 isEqualToString:@"INTERMENSTRUAL_BLEEDING"])
+  else if ([typeCopy isEqualToString:@"INTERMENSTRUAL_BLEEDING"])
   {
     v4 = 72;
   }
 
-  else if ([v3 isEqualToString:@"SEXUAL_ACTIVITY"])
+  else if ([typeCopy isEqualToString:@"SEXUAL_ACTIVITY"])
   {
     v4 = 73;
   }
 
-  else if ([v3 isEqualToString:@"MINDFUL_SESSION"])
+  else if ([typeCopy isEqualToString:@"MINDFUL_SESSION"])
   {
     v4 = 74;
   }
@@ -896,10 +896,10 @@ LABEL_32:
   return v4;
 }
 
-- (void)setObjectType:(int)a3
+- (void)setObjectType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -907,7 +907,7 @@ LABEL_32:
   else
   {
     *&self->_has = has | 1;
-    self->_objectType = a3;
+    self->_objectType = type;
   }
 }
 

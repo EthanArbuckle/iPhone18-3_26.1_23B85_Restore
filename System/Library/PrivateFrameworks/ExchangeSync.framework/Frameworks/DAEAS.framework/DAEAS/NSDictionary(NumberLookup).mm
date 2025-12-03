@@ -9,7 +9,7 @@
   v2 = [MEMORY[0x277CCABB0] numberWithInt:?];
   if (v2)
   {
-    v3 = [a1 objectForKeyedSubscript:v2];
+    v3 = [self objectForKeyedSubscript:v2];
   }
 
   else

@@ -1,77 +1,77 @@
 @interface ShortcutsRowCollectionViewCell
-+ (CGSize)cellSizeWithTraitCollection:(id)a3;
++ (CGSize)cellSizeWithTraitCollection:(id)collection;
 + (NSString)cellReuseIdentifier;
-+ (id)_effectiveTraitCollectionWithTraitCollection:(id)a3;
-- (BOOL)shortcutsRowCellModelShouldFetchMissingImage:(id)a3;
-- (ShortcutsRowCollectionViewCell)initWithFrame:(CGRect)a3;
++ (id)_effectiveTraitCollectionWithTraitCollection:(id)collection;
+- (BOOL)shortcutsRowCellModelShouldFetchMissingImage:(id)image;
+- (ShortcutsRowCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)_updateConstraints;
 - (void)_updateFonts;
 - (void)_updateFromModel;
 - (void)_updateHighlight;
 - (void)_updateTextAlignment;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setModel:(id)a3;
-- (void)setVibrant:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setModel:(id)model;
+- (void)setVibrant:(BOOL)vibrant;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ShortcutsRowCollectionViewCell
 
 - (void)_updateFromModel
 {
-  v3 = [(ShortcutsRowCellModel *)self->_model title];
-  [(UILabel *)self->_titleLabel setText:v3];
+  title = [(ShortcutsRowCellModel *)self->_model title];
+  [(UILabel *)self->_titleLabel setText:title];
 
-  v4 = [(ShortcutsRowCellModel *)self->_model subtitle];
-  [(UILabel *)self->_subtitleLabel setText:v4];
+  subtitle = [(ShortcutsRowCellModel *)self->_model subtitle];
+  [(UILabel *)self->_subtitleLabel setText:subtitle];
 
-  v5 = [(ShortcutsRowCellModel *)self->_model subtitleColor];
-  [(UILabel *)self->_subtitleLabel setTextColor:v5];
+  subtitleColor = [(ShortcutsRowCellModel *)self->_model subtitleColor];
+  [(UILabel *)self->_subtitleLabel setTextColor:subtitleColor];
 
   [(UIImageView *)self->_imageView setContentMode:[(ShortcutsRowCellModel *)self->_model contentMode]];
-  v6 = [(ShortcutsRowCellModel *)self->_model image];
-  [(UIImageView *)self->_imageView setImage:v6];
+  image = [(ShortcutsRowCellModel *)self->_model image];
+  [(UIImageView *)self->_imageView setImage:image];
 
-  v7 = [(ShortcutsRowCellModel *)self->_model vibrantBackground];
+  vibrantBackground = [(ShortcutsRowCellModel *)self->_model vibrantBackground];
 
-  [(ShortcutsRowCollectionViewCell *)self setVibrant:v7];
+  [(ShortcutsRowCollectionViewCell *)self setVibrant:vibrantBackground];
 }
 
-- (BOOL)shortcutsRowCellModelShouldFetchMissingImage:(id)a3
+- (BOOL)shortcutsRowCellModelShouldFetchMissingImage:(id)image
 {
-  v4 = [(ShortcutsRowCollectionViewCell *)self window];
+  window = [(ShortcutsRowCollectionViewCell *)self window];
 
-  if (v4)
+  if (window)
   {
-    v5 = self;
-    if (v5)
+    selfCopy = self;
+    if (selfCopy)
     {
-      v6 = v5;
+      v6 = selfCopy;
       do
       {
-        v7 = [v6 isHidden];
-        if (v7)
+        isHidden = [v6 isHidden];
+        if (isHidden)
         {
           break;
         }
 
-        v8 = [v6 superview];
+        superview = [v6 superview];
 
-        v6 = v8;
+        v6 = superview;
       }
 
-      while (v8);
-      LOBYTE(v4) = v7 ^ 1;
+      while (superview);
+      LOBYTE(window) = isHidden ^ 1;
     }
 
     else
     {
-      LOBYTE(v4) = 1;
+      LOBYTE(window) = 1;
     }
   }
 
-  return v4;
+  return window;
 }
 
 - (void)_updateConstraints
@@ -108,9 +108,9 @@
   v14 = [NSArray arrayWithObjects:p_titleLabel count:v12];
   [v10 setArrangedLayoutItems:v14];
 
-  v15 = [(ShortcutsRowCollectionViewCell *)self traitCollection];
-  v16 = [v15 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v16);
+  traitCollection = [(ShortcutsRowCollectionViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v18 = [MUCompositionalStackLayoutGroup alloc];
   if (IsAccessibilityCategory)
@@ -165,8 +165,8 @@
   else
   {
     v34 = [MUCompositionalStackLayout alloc];
-    v35 = [(ShortcutsRowCollectionViewCell *)self contentView];
-    v36 = [v34 initWithContainer:v35 group:v19];
+    contentView = [(ShortcutsRowCollectionViewCell *)self contentView];
+    v36 = [v34 initWithContainer:contentView group:v19];
     v37 = self->_contentStackLayout;
     self->_contentStackLayout = v36;
   }
@@ -183,16 +183,16 @@
   v13.receiver = self;
   v13.super_class = ShortcutsRowCollectionViewCell;
   [(ShortcutsRowCollectionViewCell *)&v13 layoutSubviews];
-  v3 = [(ShortcutsRowCollectionViewCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(ShortcutsRowCollectionViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   highlightLayer = self->_highlightLayer;
   if (IsAccessibilityCategory)
   {
     [(CAShapeLayer *)highlightLayer setAnchorPoint:0.0, 0.5];
-    v7 = [(ShortcutsRowCollectionViewCell *)self contentView];
-    [v7 bounds];
+    contentView = [(ShortcutsRowCollectionViewCell *)self contentView];
+    [contentView bounds];
     MidY = CGRectGetMidY(v14);
     v9 = self->_highlightLayer;
     v10 = 0.0;
@@ -201,8 +201,8 @@
   else
   {
     [(CAShapeLayer *)highlightLayer setAnchorPoint:0.5, 0.0];
-    v7 = [(ShortcutsRowCollectionViewCell *)self contentView];
-    [v7 bounds];
+    contentView = [(ShortcutsRowCollectionViewCell *)self contentView];
+    [contentView bounds];
     MidX = CGRectGetMidX(v15);
     [objc_opt_class() imageTopMargin];
     MidY = v12;
@@ -216,8 +216,8 @@
 - (void)_updateFonts
 {
   v3 = objc_opt_class();
-  v4 = [(ShortcutsRowCollectionViewCell *)self traitCollection];
-  v7 = [v3 _effectiveTraitCollectionWithTraitCollection:v4];
+  traitCollection = [(ShortcutsRowCollectionViewCell *)self traitCollection];
+  v7 = [v3 _effectiveTraitCollectionWithTraitCollection:traitCollection];
 
   v5 = [objc_opt_class() titleFontWithTraitCollection:v7];
   [(UILabel *)self->_titleLabel setFont:v5];
@@ -228,9 +228,9 @@
 
 - (void)_updateTextAlignment
 {
-  v3 = [(ShortcutsRowCollectionViewCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(ShortcutsRowCollectionViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -248,17 +248,17 @@
   [(UILabel *)subtitleLabel setTextAlignment:v6];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v14.receiver = self;
   v14.super_class = ShortcutsRowCollectionViewCell;
-  [(ShortcutsRowCollectionViewCell *)&v14 traitCollectionDidChange:v4];
-  v5 = [v4 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
-  v7 = [(ShortcutsRowCollectionViewCell *)self traitCollection];
-  v8 = [v7 preferredContentSizeCategory];
-  v9 = UIContentSizeCategoryIsAccessibilityCategory(v8);
+  [(ShortcutsRowCollectionViewCell *)&v14 traitCollectionDidChange:changeCopy];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
+  traitCollection = [(ShortcutsRowCollectionViewCell *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+  v9 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
 
   if (IsAccessibilityCategory != v9)
   {
@@ -266,10 +266,10 @@
     [(ShortcutsRowCollectionViewCell *)self _updateTextAlignment];
   }
 
-  v10 = [(ShortcutsRowCollectionViewCell *)self traitCollection];
-  v11 = [v10 preferredContentSizeCategory];
-  v12 = [v4 preferredContentSizeCategory];
-  v13 = sub_10008FB5C(v11, v12);
+  traitCollection2 = [(ShortcutsRowCollectionViewCell *)self traitCollection];
+  preferredContentSizeCategory3 = [traitCollection2 preferredContentSizeCategory];
+  preferredContentSizeCategory4 = [changeCopy preferredContentSizeCategory];
+  v13 = sub_10008FB5C(preferredContentSizeCategory3, preferredContentSizeCategory4);
 
   if (v13)
   {
@@ -277,37 +277,37 @@
   }
 }
 
-- (void)setVibrant:(BOOL)a3
+- (void)setVibrant:(BOOL)vibrant
 {
-  if (self->_vibrant != a3)
+  if (self->_vibrant != vibrant)
   {
-    self->_vibrant = a3;
-    if (a3)
+    self->_vibrant = vibrant;
+    if (vibrant)
     {
       v4 = [[MKVibrantView alloc] initWithFrame:{0.0, 0.0, 60.0, 60.0}];
       [v4 _setCornerRadius:30.0];
       [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v5 = [(ShortcutsRowCollectionViewCell *)self contentView];
-      [v5 insertSubview:v4 belowSubview:self->_imageView];
+      contentView = [(ShortcutsRowCollectionViewCell *)self contentView];
+      [contentView insertSubview:v4 belowSubview:self->_imageView];
 
       vibrantView = self->_vibrantView;
       self->_vibrantView = v4;
       v7 = v4;
 
-      v20 = [v7 centerXAnchor];
-      v19 = [(UIImageView *)self->_imageView centerXAnchor];
-      v18 = [v20 constraintEqualToAnchor:v19];
+      centerXAnchor = [v7 centerXAnchor];
+      centerXAnchor2 = [(UIImageView *)self->_imageView centerXAnchor];
+      v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v21[0] = v18;
-      v8 = [v7 centerYAnchor];
-      v9 = [(UIImageView *)self->_imageView centerYAnchor];
-      v10 = [v8 constraintEqualToAnchor:v9];
+      centerYAnchor = [v7 centerYAnchor];
+      centerYAnchor2 = [(UIImageView *)self->_imageView centerYAnchor];
+      v10 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v21[1] = v10;
-      v11 = [v7 widthAnchor];
-      v12 = [v11 constraintEqualToConstant:60.0];
+      widthAnchor = [v7 widthAnchor];
+      v12 = [widthAnchor constraintEqualToConstant:60.0];
       v21[2] = v12;
-      v13 = [v7 heightAnchor];
-      v14 = [v7 widthAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      heightAnchor = [v7 heightAnchor];
+      widthAnchor2 = [v7 widthAnchor];
+      v15 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
       v21[3] = v15;
       v16 = [NSArray arrayWithObjects:v21 count:4];
       [NSLayoutConstraint activateConstraints:v16];
@@ -322,11 +322,11 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = ShortcutsRowCollectionViewCell;
-  [(ShortcutsRowCollectionViewCell *)&v4 setHighlighted:a3];
+  [(ShortcutsRowCollectionViewCell *)&v4 setHighlighted:highlighted];
   [(ShortcutsRowCollectionViewCell *)self _updateHighlight];
 }
 
@@ -338,19 +338,19 @@
   [(CAShapeLayer *)highlightLayer setHidden:v3];
 }
 
-- (void)setModel:(id)a3
+- (void)setModel:(id)model
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_model != v5)
+  modelCopy = model;
+  v6 = modelCopy;
+  if (self->_model != modelCopy)
   {
-    v8 = v5;
-    v7 = [(ShortcutsRowCellModel *)v5 isEqual:?];
+    v8 = modelCopy;
+    v7 = [(ShortcutsRowCellModel *)modelCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
       [(ShortcutsRowCellModel *)self->_model removeObserver:self];
-      objc_storeStrong(&self->_model, a3);
+      objc_storeStrong(&self->_model, model);
       [(ShortcutsRowCellModel *)self->_model addObserver:self];
       [(ShortcutsRowCollectionViewCell *)self _updateFromModel];
       v6 = v8;
@@ -358,11 +358,11 @@
   }
 }
 
-- (ShortcutsRowCollectionViewCell)initWithFrame:(CGRect)a3
+- (ShortcutsRowCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v32.receiver = self;
   v32.super_class = ShortcutsRowCollectionViewCell;
-  v3 = [(ShortcutsRowCollectionViewCell *)&v32 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ShortcutsRowCollectionViewCell *)&v32 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UIImageView);
@@ -375,19 +375,19 @@
     v7 = +[UIColor clearColor];
     [(UIImageView *)v3->_imageView setBackgroundColor:v7];
 
-    v8 = [(ShortcutsRowCollectionViewCell *)v3 theme];
-    v9 = [v8 keyColor];
-    [(UIImageView *)v3->_imageView setTintColor:v9];
+    theme = [(ShortcutsRowCollectionViewCell *)v3 theme];
+    keyColor = [theme keyColor];
+    [(UIImageView *)v3->_imageView setTintColor:keyColor];
 
     [objc_opt_class() imageSize];
     v11 = v10 * 0.5;
-    v12 = [(UIImageView *)v3->_imageView layer];
-    [v12 setCornerRadius:v11];
+    layer = [(UIImageView *)v3->_imageView layer];
+    [layer setCornerRadius:v11];
 
     [(UIImageView *)v3->_imageView setClipsToBounds:1];
     [(UIImageView *)v3->_imageView setAccessibilityIdentifier:@"ShortcutImage"];
-    v13 = [(ShortcutsRowCollectionViewCell *)v3 contentView];
-    [v13 addSubview:v3->_imageView];
+    contentView = [(ShortcutsRowCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_imageView];
 
     v14 = +[CAShapeLayer layer];
     highlightLayer = v3->_highlightLayer;
@@ -404,9 +404,9 @@
     v20 = [UIBezierPath bezierPathWithOvalInRect:?];
     -[CAShapeLayer setPath:](v3->_highlightLayer, "setPath:", [v20 CGPath]);
 
-    v21 = [(ShortcutsRowCollectionViewCell *)v3 contentView];
-    v22 = [v21 layer];
-    [v22 addSublayer:v3->_highlightLayer];
+    contentView2 = [(ShortcutsRowCollectionViewCell *)v3 contentView];
+    layer2 = [contentView2 layer];
+    [layer2 addSublayer:v3->_highlightLayer];
 
     v23 = objc_alloc_init(UILabel);
     titleLabel = v3->_titleLabel;
@@ -418,8 +418,8 @@
     [(UILabel *)v3->_titleLabel setAllowsDefaultTighteningForTruncation:1];
     [(UILabel *)v3->_titleLabel setAccessibilityIdentifier:@"ShortcutTitle"];
     -[UILabel setAdjustsFontForContentSizeCategory:](v3->_titleLabel, "setAdjustsFontForContentSizeCategory:", [objc_opt_class() supportsSizeCategory]);
-    v26 = [(ShortcutsRowCollectionViewCell *)v3 contentView];
-    [v26 addSubview:v3->_titleLabel];
+    contentView3 = [(ShortcutsRowCollectionViewCell *)v3 contentView];
+    [contentView3 addSubview:v3->_titleLabel];
 
     if (([objc_opt_class() isSubtitleHidden] & 1) == 0)
     {
@@ -434,8 +434,8 @@
       [(UILabel *)v3->_subtitleLabel setMinimumScaleFactor:0.7];
       [(UILabel *)v3->_subtitleLabel setAccessibilityIdentifier:@"ShortcutSubtitle"];
       -[UILabel setAdjustsFontForContentSizeCategory:](v3->_subtitleLabel, "setAdjustsFontForContentSizeCategory:", [objc_opt_class() supportsSizeCategory]);
-      v30 = [(ShortcutsRowCollectionViewCell *)v3 contentView];
-      [v30 addSubview:v3->_subtitleLabel];
+      contentView4 = [(ShortcutsRowCollectionViewCell *)v3 contentView];
+      [contentView4 addSubview:v3->_subtitleLabel];
     }
 
     [(ShortcutsRowCollectionViewCell *)v3 _updateConstraints];
@@ -447,23 +447,23 @@
   return v3;
 }
 
-+ (CGSize)cellSizeWithTraitCollection:(id)a3
++ (CGSize)cellSizeWithTraitCollection:(id)collection
 {
-  v4 = [a1 _effectiveTraitCollectionWithTraitCollection:a3];
+  v4 = [self _effectiveTraitCollectionWithTraitCollection:collection];
   [v4 _maps_displayScaleOrMainScreenScale];
   v6 = v5;
-  v7 = [a1 titleFontWithTraitCollection:v4];
+  v7 = [self titleFontWithTraitCollection:v4];
   [UILabel _maps_maximumHeightWithFont:v7 numberOfLines:1 displayScale:v6];
   v9 = v8;
-  if (([a1 isSubtitleHidden] & 1) == 0)
+  if (([self isSubtitleHidden] & 1) == 0)
   {
-    v10 = [a1 subtitleFontWithTraitCollection:v4];
+    v10 = [self subtitleFontWithTraitCollection:v4];
     [UILabel _maps_maximumHeightWithFont:v10 numberOfLines:1 displayScale:v6];
     v9 = v11 + v9;
   }
 
-  v12 = [v4 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v12);
+  preferredContentSizeCategory = [v4 preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -474,16 +474,16 @@
 
   else
   {
-    [a1 imageSize];
+    [self imageSize];
     [UIFont _maps_bodyScaledValueForValue:v4 compatibleWithTraitCollection:v17 + 26.0];
     v15 = v18;
-    [a1 imageTopMargin];
+    [self imageTopMargin];
     v20 = v19;
-    [a1 imageSize];
+    [self imageSize];
     v22 = v21;
-    [a1 titleTopMargin];
+    [self titleTopMargin];
     v24 = v23;
-    [a1 bottomMargin];
+    [self bottomMargin];
     v16 = v20 + v22 + v9 + v24 + v25;
   }
 
@@ -494,11 +494,11 @@
   return result;
 }
 
-+ (id)_effectiveTraitCollectionWithTraitCollection:(id)a3
++ (id)_effectiveTraitCollectionWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [a1 maximumContentSizeCategory];
-  v6 = [v4 _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:v5];
+  collectionCopy = collection;
+  maximumContentSizeCategory = [self maximumContentSizeCategory];
+  v6 = [collectionCopy _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:maximumContentSizeCategory];
 
   return v6;
 }

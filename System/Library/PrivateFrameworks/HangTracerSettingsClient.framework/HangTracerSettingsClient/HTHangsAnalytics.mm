@@ -1,12 +1,12 @@
 @interface HTHangsAnalytics
-+ (void)sendActivationEvent:(BOOL)a3 developerAppCount:(unint64_t)a4;
-+ (void)sendHangThresholdChangedEvent:(unint64_t)a3;
++ (void)sendActivationEvent:(BOOL)event developerAppCount:(unint64_t)count;
++ (void)sendHangThresholdChangedEvent:(unint64_t)event;
 + (void)sendLogSharedEvent;
 @end
 
 @implementation HTHangsAnalytics
 
-+ (void)sendActivationEvent:(BOOL)a3 developerAppCount:(unint64_t)a4
++ (void)sendActivationEvent:(BOOL)event developerAppCount:(unint64_t)count
 {
   if (CoreAnalyticsLibraryCore())
   {
@@ -14,8 +14,8 @@
     v6[1] = 3221225472;
     v6[2] = __58__HTHangsAnalytics_sendActivationEvent_developerAppCount___block_invoke;
     v6[3] = &__block_descriptor_41_e19___NSDictionary_8__0l;
-    v7 = a3;
-    v6[4] = a4;
+    eventCopy = event;
+    v6[4] = count;
     HTAnalyticsSendEventLazy(@"com.apple.hangtracer.thirdpartyhangdetection.enablement.v1", v6);
   }
 }
@@ -36,7 +36,7 @@ id __58__HTHangsAnalytics_sendActivationEvent_developerAppCount___block_invoke(u
   return v4;
 }
 
-+ (void)sendHangThresholdChangedEvent:(unint64_t)a3
++ (void)sendHangThresholdChangedEvent:(unint64_t)event
 {
   if (CoreAnalyticsLibraryCore())
   {
@@ -44,7 +44,7 @@ id __58__HTHangsAnalytics_sendActivationEvent_developerAppCount___block_invoke(u
     v4[1] = 3221225472;
     v4[2] = __50__HTHangsAnalytics_sendHangThresholdChangedEvent___block_invoke;
     v4[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-    v4[4] = a3;
+    v4[4] = event;
     HTAnalyticsSendEventLazy(@"com.apple.hangtracer.thirdpartyhangdetection.hangthreshold.v1", v4);
   }
 }

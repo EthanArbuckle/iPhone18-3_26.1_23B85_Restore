@@ -1,13 +1,13 @@
 @interface MailAppController
 + (id)log;
-- (BOOL)_allMessageViewControllersDidDisplayContent:(id)a3;
-- (BOOL)_shouldShowAlertForUndoManager:(id)a3;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)canPerformNetworkOperationOnAccount:(id)a3;
+- (BOOL)_allMessageViewControllersDidDisplayContent:(id)content;
+- (BOOL)_shouldShowAlertForUndoManager:(id)manager;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)canPerformNetworkOperationOnAccount:(id)account;
 - (BOOL)isComposeWindowActive;
 - (BOOL)isForeground;
 - (BOOL)isFrontmost;
-- (BOOL)runTest:(id)a3 options:(id)a4;
+- (BOOL)runTest:(id)test options:(id)options;
 - (EFFuture)didFinishDelayedStartupTasks;
 - (EMBlockedSenderManager)blockedSenderManager;
 - (EMCachingContactStore)contactStore;
@@ -17,154 +17,154 @@
 - (NSArray)activeScenes;
 - (NSSet)selectedAccounts;
 - (id)_createContactStore;
-- (id)_dumpBucketBarConfigurationAtURL:(id)a3;
-- (id)_dumpCurrentFocusAtURL:(id)a3;
-- (id)_dumpDictionary:(id)a3 atURL:(id)a4;
-- (id)_dumpEMUserDefaultsAtURL:(id)a3;
-- (id)_dumpNotificationSettingsAtURL:(id)a3;
-- (id)_dumpStandardUserDefaultsAtURL:(id)a3;
-- (id)_dumpUIStateAtURL:(id)a3;
-- (id)_dumpUserDefaults:(id)a3 atURL:(id)a4;
-- (id)_mailboxStringFromMailbox:(id)a3;
+- (id)_dumpBucketBarConfigurationAtURL:(id)l;
+- (id)_dumpCurrentFocusAtURL:(id)l;
+- (id)_dumpDictionary:(id)dictionary atURL:(id)l;
+- (id)_dumpEMUserDefaultsAtURL:(id)l;
+- (id)_dumpNotificationSettingsAtURL:(id)l;
+- (id)_dumpStandardUserDefaultsAtURL:(id)l;
+- (id)_dumpUIStateAtURL:(id)l;
+- (id)_dumpUserDefaults:(id)defaults atURL:(id)l;
+- (id)_mailboxStringFromMailbox:(id)mailbox;
 - (id)_preallocateWebViewsAndReturnFuture;
-- (id)_prepareForComposeView:(id)a3;
-- (id)_prepareForScrollMailboxesTest:(id)a3;
-- (id)_prepareForScrollMessagesTest:(id)a3 inEditMode:(BOOL)a4 currentDelay:(double *)a5;
-- (id)accountCanPerformNetworkOperations:(id)a3;
+- (id)_prepareForComposeView:(id)view;
+- (id)_prepareForScrollMailboxesTest:(id)test;
+- (id)_prepareForScrollMessagesTest:(id)test inEditMode:(BOOL)mode currentDelay:(double *)delay;
+- (id)accountCanPerformNetworkOperations:(id)operations;
 - (id)activeViewController;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 - (id)copyDiagnosticInformation;
 - (id)dockContainer;
 - (id)getAccount;
-- (id)getControllerOfType:(Class)a3;
-- (id)getControllerOfType:(Class)a3 fromNavigationController:(id)a4;
+- (id)getControllerOfType:(Class)type;
+- (id)getControllerOfType:(Class)type fromNavigationController:(id)controller;
 - (id)getConversationViewController;
 - (id)getMailboxListViewControllerMail;
 - (id)getMailboxPickerController;
-- (id)getMailboxWithName:(id)a3;
+- (id)getMailboxWithName:(id)name;
 - (id)getMessageListViewController;
 - (id)getiCloudMailCleanupService;
 - (id)identifiersToExcludeFromDockedItemRecovery;
 - (id)masterNavigationController;
-- (id)presentingViewControllerForTriageInteraction:(id)a3;
+- (id)presentingViewControllerForTriageInteraction:(id)interaction;
 - (id)rootViewController;
-- (void)_accountsChanged:(id)a3;
+- (void)_accountsChanged:(id)changed;
 - (void)_beginAutoFetchIfViable;
-- (void)_configureUserDefaultsKVOAdd:(BOOL)a3;
+- (void)_configureUserDefaultsKVOAdd:(BOOL)add;
 - (void)_createAppStoreReviewManager;
-- (void)_deliveryQueueProcessingFinished:(id)a3;
-- (void)_didFinishExitEditModeTest:(id)a3;
-- (void)_dismissComposeViewController:(id)a3 animated:(BOOL)a4;
-- (void)_dismissPhotoPickerWithCompletion:(id)a3;
+- (void)_deliveryQueueProcessingFinished:(id)finished;
+- (void)_didFinishExitEditModeTest:(id)test;
+- (void)_dismissComposeViewController:(id)controller animated:(BOOL)animated;
+- (void)_dismissPhotoPickerWithCompletion:(id)completion;
 - (void)_ensureBlockedSenderManagerIsCreated;
-- (void)_finishTestDismissingReply:(id)a3;
-- (void)_finishTestIfComposeAndKeyboardDidShow:(id)a3;
-- (void)_handleDeliveryFailure:(id)a3;
-- (void)_mailWasSent:(id)a3;
+- (void)_finishTestDismissingReply:(id)reply;
+- (void)_finishTestIfComposeAndKeyboardDidShow:(id)show;
+- (void)_handleDeliveryFailure:(id)failure;
+- (void)_mailWasSent:(id)sent;
 - (void)_messageContentLayerFinished;
-- (void)_messageLibraryDidBecomeAvailable:(id)a3;
-- (void)_messageLibraryWillBecomeUnavailable:(id)a3;
+- (void)_messageLibraryDidBecomeAvailable:(id)available;
+- (void)_messageLibraryWillBecomeUnavailable:(id)unavailable;
 - (void)_performBackEndOneShotInitialization;
-- (void)_performNextShowDismissComposeTransitionForTest:(id)a3;
-- (void)_performScrollTestOnMessageListOnCollectionView:(id)a3 withOptions:(id)a4 isNatural:(BOOL)a5;
+- (void)_performNextShowDismissComposeTransitionForTest:(id)test;
+- (void)_performScrollTestOnMessageListOnCollectionView:(id)view withOptions:(id)options isNatural:(BOOL)natural;
 - (void)_performUIRelatedLaunchTasksIfNeeded;
-- (void)_prepareForComposePseudoContactTest:(id)a3 withOptions:(id)a4;
-- (void)_prepareForDismissComposeTest:(id)a3;
-- (void)_prepareForScrollPseudoContactTest:(id)a3 withOptions:(id)a4;
-- (void)_prepareForShowComposeTest:(id)a3;
-- (void)_reallyStartComposeToPseudoContactTest:(id)a3 withOptions:(id)a4;
-- (void)_reallyStartDismissComposeTest:(id)a3;
-- (void)_reallyStartExitEditModeTest:(id)a3;
-- (void)_reallyStartMessageTransferTest:(id)a3 mailboxController:(id)a4;
-- (void)_reallyStartRotationTest:(id)a3;
-- (void)_reallyStartScrollPseudoContactTest:(id)a3 withOptions:(id)a4;
-- (void)_reallyStartShowComposeTest:(id)a3;
-- (void)_reallyStartShowEmptyComposeAnimationTest:(id)a3 composeButtonItem:(id)a4;
-- (void)_reallyStartShowEmptyComposeTest:(id)a3;
-- (void)_reallyStartShowReplyTest:(id)a3;
+- (void)_prepareForComposePseudoContactTest:(id)test withOptions:(id)options;
+- (void)_prepareForDismissComposeTest:(id)test;
+- (void)_prepareForScrollPseudoContactTest:(id)test withOptions:(id)options;
+- (void)_prepareForShowComposeTest:(id)test;
+- (void)_reallyStartComposeToPseudoContactTest:(id)test withOptions:(id)options;
+- (void)_reallyStartDismissComposeTest:(id)test;
+- (void)_reallyStartExitEditModeTest:(id)test;
+- (void)_reallyStartMessageTransferTest:(id)test mailboxController:(id)controller;
+- (void)_reallyStartRotationTest:(id)test;
+- (void)_reallyStartScrollPseudoContactTest:(id)test withOptions:(id)options;
+- (void)_reallyStartShowComposeTest:(id)test;
+- (void)_reallyStartShowEmptyComposeAnimationTest:(id)test composeButtonItem:(id)item;
+- (void)_reallyStartShowEmptyComposeTest:(id)test;
+- (void)_reallyStartShowReplyTest:(id)test;
 - (void)_reallyUpdateDefaultImage;
 - (void)_registerApplicationLifecycleObservers;
 - (void)_registerBucketBarStateCapture;
-- (void)_setProtectedDataAvailabilityWithNotification:(id)a3;
+- (void)_setProtectedDataAvailabilityWithNotification:(id)notification;
 - (void)_setupDiagnosticProviderIfNeeded;
-- (void)_showEditAlertViewWithUndoManager:(id)a3 window:(id)a4;
-- (void)_showMessageListView:(BOOL)a3;
-- (void)_showPhotoPickerWithCompletion:(id)a3;
-- (void)_startPhotoPickerTest:(id)a3;
-- (void)_testFailedDueToNilReferenceMessage:(id)a3 messageCount:(unint64_t)a4;
-- (void)_updateAccountsIfNecessaryFromCollection:(id)a3;
-- (void)_userDefaultDidChange:(id)a3;
-- (void)_userDidTakeScreenshot:(id)a3;
-- (void)_waitForTimeInterval:(double)a3;
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)_showEditAlertViewWithUndoManager:(id)manager window:(id)window;
+- (void)_showMessageListView:(BOOL)view;
+- (void)_showPhotoPickerWithCompletion:(id)completion;
+- (void)_startPhotoPickerTest:(id)test;
+- (void)_testFailedDueToNilReferenceMessage:(id)message messageCount:(unint64_t)count;
+- (void)_updateAccountsIfNecessaryFromCollection:(id)collection;
+- (void)_userDefaultDidChange:(id)change;
+- (void)_userDidTakeScreenshot:(id)screenshot;
+- (void)_waitForTimeInterval:(double)interval;
+- (void)buildMenuWithBuilder:(id)builder;
 - (void)cancelPreviousPerformRequestsWhenProtectedDataIsAvailable;
 - (void)cleanUpAfterSuspend;
 - (void)dealloc;
 - (void)delayedStartupTasks;
-- (void)didFailToContinueUserActivityWithType:(id)a3 error:(id)a4;
-- (void)didFinishLoadAllScenes:(id)a3;
+- (void)didFailToContinueUserActivityWithType:(id)type error:(id)error;
+- (void)didFinishLoadAllScenes:(id)scenes;
 - (void)didReceiveMemoryWarning;
-- (void)dismissAnyModalViewControllerOrPopoverAnimated:(BOOL)a3;
-- (void)dismissComposeViewController:(id)a3 animated:(BOOL)a4 afterSending:(BOOL)a5;
+- (void)dismissAnyModalViewControllerOrPopoverAnimated:(BOOL)animated;
+- (void)dismissComposeViewController:(id)controller animated:(BOOL)animated afterSending:(BOOL)sending;
 - (void)dismissReply;
-- (void)displayError:(id)a3 forAccount:(id)a4 mode:(int64_t)a5;
-- (void)failedTest:(id)a3 withFailure:(id)a4;
-- (void)finishedTest:(id)a3 extraResults:(id)a4;
-- (void)installNotificationObserverForNotificationName:(id)a3 object:(id)a4 forOneNotification:(BOOL)a5 usingBlock:(id)a6;
-- (void)mailComposeDeliveryController:(id)a3 didMoveCancelledMessageToDrafts:(id)a4 draftMailboxObjectID:(id)a5;
-- (void)mailComposeDeliveryControllerDidAttemptToSaveDraft:(id)a3 account:(id)a4 result:(unint64_t)a5;
-- (void)mailComposeDeliveryControllerDidAttemptToSend:(id)a3 outgoingMessageDelivery:(id)a4 result:(id)a5;
-- (void)mailComposeDeliveryControllerWillAttemptToSend:(id)a3;
+- (void)displayError:(id)error forAccount:(id)account mode:(int64_t)mode;
+- (void)failedTest:(id)test withFailure:(id)failure;
+- (void)finishedTest:(id)test extraResults:(id)results;
+- (void)installNotificationObserverForNotificationName:(id)name object:(id)object forOneNotification:(BOOL)notification usingBlock:(id)block;
+- (void)mailComposeDeliveryController:(id)controller didMoveCancelledMessageToDrafts:(id)drafts draftMailboxObjectID:(id)d;
+- (void)mailComposeDeliveryControllerDidAttemptToSaveDraft:(id)draft account:(id)account result:(unint64_t)result;
+- (void)mailComposeDeliveryControllerDidAttemptToSend:(id)send outgoingMessageDelivery:(id)delivery result:(id)result;
+- (void)mailComposeDeliveryControllerWillAttemptToSend:(id)send;
 - (void)mf_updateCurrentContexts;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performWhenProtectedDataIsAvailable:(id)a3;
-- (void)provideDiagnosticsAt:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)reallyStartScrollMessageViewListTest:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performWhenProtectedDataIsAvailable:(id)available;
+- (void)provideDiagnosticsAt:(id)at options:(unint64_t)options completion:(id)completion;
+- (void)reallyStartScrollMessageViewListTest:(id)test;
 - (void)registerAppIntentsDependencies;
-- (void)reportPPTTimings:(id)a3;
+- (void)reportPPTTimings:(id)timings;
 - (void)runAllTests;
-- (void)scrollPseudoContactList:(id)a3;
-- (void)searchPseudoContact:(id)a3;
-- (void)showComposeWithContext:(id)a3 animated:(BOOL)a4 initialTitle:(id)a5 completionBlock:(id)a6;
+- (void)scrollPseudoContactList:(id)list;
+- (void)searchPseudoContact:(id)contact;
+- (void)showComposeWithContext:(id)context animated:(BOOL)animated initialTitle:(id)title completionBlock:(id)block;
 - (void)significantTimeChange;
-- (void)startComposeToPseudoContactTest:(id)a3;
-- (void)startConversationLoadAllMessagesTestWithOptions:(id)a3;
-- (void)startConversationScrollTestWithOptions:(id)a3;
-- (void)startConversationSelectionTestWithOptions:(id)a3;
-- (void)startConversationViewRotationTestWithOptions:(id)a3;
-- (void)startDismissComposeTest:(id)a3;
-- (void)startExitEditModeTest:(id)a3;
+- (void)startComposeToPseudoContactTest:(id)test;
+- (void)startConversationLoadAllMessagesTestWithOptions:(id)options;
+- (void)startConversationScrollTestWithOptions:(id)options;
+- (void)startConversationSelectionTestWithOptions:(id)options;
+- (void)startConversationViewRotationTestWithOptions:(id)options;
+- (void)startDismissComposeTest:(id)test;
+- (void)startExitEditModeTest:(id)test;
 - (void)startListeningForNotifications;
-- (void)startMailCategorizationTest:(id)a3;
-- (void)startMailboxFilterDisableTestWithOptions:(id)a3;
-- (void)startMailboxFilterEnableTestWithOptions:(id)a3;
-- (void)startMailboxFilterPickerDisableTestWithOptions:(id)a3;
-- (void)startMailboxFilterPickerEnableTestWithOptions:(id)a3;
-- (void)startMailboxPredictionTestWithOptions:(id)a3;
-- (void)startMessageDeleteTest:(id)a3;
-- (void)startMessageIterationTest:(id)a3;
-- (void)startMessageListSwipeActionTestWithOptions:(id)a3;
-- (void)startMessageTransferTest:(id)a3 multiSelect:(BOOL)a4;
-- (void)startPhotoPickerTest:(id)a3;
-- (void)startRotationTest:(id)a3;
-- (void)startScrollMailboxListTestWithOptions:(id)a3;
-- (void)startScrollMessageListSearchTestWithOptions:(id)a3;
-- (void)startScrollMessageListTest:(id)a3 withOptions:(id)a4;
-- (void)startScrollMessagesInEditModeTest:(id)a3;
-- (void)startScrollMessagesInEditModeWithSelectionTest:(id)a3;
-- (void)startScrollPseudoContactTest:(id)a3;
-- (void)startSearchWhileTypingTestWithOptions:(id)a3;
-- (void)startSenderListSelectionTestWithOptions:(id)a3;
-- (void)startShowComposeTest:(id)a3;
-- (void)startShowDismissComposeTest:(id)a3;
-- (void)startShowDismissReplyTest:(id)a3;
-- (void)startShowEmptyComposeTest:(id)a3;
+- (void)startMailCategorizationTest:(id)test;
+- (void)startMailboxFilterDisableTestWithOptions:(id)options;
+- (void)startMailboxFilterEnableTestWithOptions:(id)options;
+- (void)startMailboxFilterPickerDisableTestWithOptions:(id)options;
+- (void)startMailboxFilterPickerEnableTestWithOptions:(id)options;
+- (void)startMailboxPredictionTestWithOptions:(id)options;
+- (void)startMessageDeleteTest:(id)test;
+- (void)startMessageIterationTest:(id)test;
+- (void)startMessageListSwipeActionTestWithOptions:(id)options;
+- (void)startMessageTransferTest:(id)test multiSelect:(BOOL)select;
+- (void)startPhotoPickerTest:(id)test;
+- (void)startRotationTest:(id)test;
+- (void)startScrollMailboxListTestWithOptions:(id)options;
+- (void)startScrollMessageListSearchTestWithOptions:(id)options;
+- (void)startScrollMessageListTest:(id)test withOptions:(id)options;
+- (void)startScrollMessagesInEditModeTest:(id)test;
+- (void)startScrollMessagesInEditModeWithSelectionTest:(id)test;
+- (void)startScrollPseudoContactTest:(id)test;
+- (void)startSearchWhileTypingTestWithOptions:(id)options;
+- (void)startSenderListSelectionTestWithOptions:(id)options;
+- (void)startShowComposeTest:(id)test;
+- (void)startShowDismissComposeTest:(id)test;
+- (void)startShowDismissReplyTest:(id)test;
+- (void)startShowEmptyComposeTest:(id)test;
 - (void)switchToDesiredMailbox;
 - (void)switchToInbox;
 - (void)systemDidWake;
 - (void)systemWillSleep;
 - (void)tearDownPhotoPickerTest;
-- (void)updateDefaultImageWithReason:(id)a3;
+- (void)updateDefaultImageWithReason:(id)reason;
 - (void)waitForUIToSettleDown;
 @end
 
@@ -193,13 +193,13 @@
     v8 = [[EMDaemonInterface alloc] initAndConfigureBlockedSenderManager:1];
     [(MailAppController *)v6 setDaemonInterface:v8];
 
-    v9 = [(MailAppController *)v6 daemonInterface];
-    [v9 launchDaemon];
+    daemonInterface = [(MailAppController *)v6 daemonInterface];
+    [daemonInterface launchDaemon];
 
     v54 = +[NSTimeZone defaultTimeZone];
     [v54 secondsFromGMT];
-    v10 = [(MailAppController *)v6 daemonInterface];
-    [MFWKWebViewFactory setDaemonInterface:v10 URLCacheWithMemoryCapacity:0x400000];
+    daemonInterface2 = [(MailAppController *)v6 daemonInterface];
+    [MFWKWebViewFactory setDaemonInterface:daemonInterface2 URLCacheWithMemoryCapacity:0x400000];
 
     v60[0] = _NSConcreteStackBlock;
     v60[1] = 3221225472;
@@ -209,15 +209,15 @@
     v61 = v11;
     [MFComposeWebView setURLCacheBlock:v60];
     [MFAccount setShouldHealAccounts:1];
-    v12 = [(MailAppController *)v11 daemonInterface];
-    v13 = [v12 accountRepository];
-    [v13 requestAccounts];
+    daemonInterface3 = [(MailAppController *)v11 daemonInterface];
+    accountRepository = [daemonInterface3 accountRepository];
+    [accountRepository requestAccounts];
 
     v14 = objc_alloc_init(MUICachingSVGConverter);
     v15 = [MUIBrandIndicatorProvider alloc];
-    v16 = [(MailAppController *)v11 daemonInterface];
-    v17 = [v16 messageRepository];
-    v18 = [v15 initWithMessageRepository:v17 svgConverter:v14];
+    daemonInterface4 = [(MailAppController *)v11 daemonInterface];
+    messageRepository = [daemonInterface4 messageRepository];
+    v18 = [v15 initWithMessageRepository:messageRepository svgConverter:v14];
     brandIndicatorProvider = v11->_brandIndicatorProvider;
     v11->_brandIndicatorProvider = v18;
 
@@ -249,14 +249,14 @@
     objc_initWeak(&location, v11);
     v29 = [MUIAvatarImageGenerator alloc];
     v30 = v11->_brandIndicatorProvider;
-    v31 = [(MailAppController *)v11 daemonInterface];
-    v32 = [v31 messageRepository];
+    daemonInterface5 = [(MailAppController *)v11 daemonInterface];
+    messageRepository2 = [daemonInterface5 messageRepository];
     v57[0] = _NSConcreteStackBlock;
     v57[1] = 3221225472;
     v57[2] = sub_100022890;
     v57[3] = &unk_10064F620;
     objc_copyWeak(&v58, &location);
-    v33 = [v29 initWithBimiProvider:v30 messageRepository:v32 contactsProviderHandler:v57];
+    v33 = [v29 initWithBimiProvider:v30 messageRepository:messageRepository2 contactsProviderHandler:v57];
     avatarGenerator = v11->_avatarGenerator;
     v11->_avatarGenerator = v33;
 
@@ -280,9 +280,9 @@
     +[EMServerConfiguration refreshAsync];
     [(MailAppController *)v11 _configureUserDefaultsKVOAdd:1];
     v40 = +[EFDevice currentDevice];
-    v41 = [v40 isInternal];
+    isInternal = [v40 isInternal];
 
-    if (v41)
+    if (isInternal)
     {
       v42 = +[NSNotificationCenter defaultCenter];
       [v42 addObserver:v11 selector:"_userDidTakeScreenshot:" name:UIApplicationUserDidTakeScreenshotNotification object:0];
@@ -345,7 +345,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000058BC;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DCFB0 != -1)
   {
     dispatch_once(&qword_1006DCFB0, block);
@@ -370,51 +370,51 @@
     accountsController = self->_accountsController;
     self->_accountsController = v5;
 
-    v7 = [(MFAccountsController *)self->_accountsController accountsProvider];
+    accountsProvider = [(MFAccountsController *)self->_accountsController accountsProvider];
     accountsProvider = self->_accountsProvider;
-    self->_accountsProvider = v7;
+    self->_accountsProvider = accountsProvider;
 
-    v9 = [(MFAccountsController *)self->_accountsController mailboxProvider];
+    mailboxProvider = [(MFAccountsController *)self->_accountsController mailboxProvider];
     mailboxProvider = self->_mailboxProvider;
-    self->_mailboxProvider = v9;
+    self->_mailboxProvider = mailboxProvider;
 
-    v11 = [(MailAppController *)self daemonInterface];
-    [v11 setAllowsBackgroundResume:1];
+    daemonInterface = [(MailAppController *)self daemonInterface];
+    [daemonInterface setAllowsBackgroundResume:1];
 
-    v12 = [(MailAppController *)self daemonInterface];
-    v13 = [v12 vipManager];
-    [VIPManager setBackingManager:v13];
+    daemonInterface2 = [(MailAppController *)self daemonInterface];
+    vipManager = [daemonInterface2 vipManager];
+    [VIPManager setBackingManager:vipManager];
 
     v14 = +[NSNotificationCenter defaultCenter];
     [v14 addObserver:self selector:"_mailWasSent:" name:@"MailComposeControllerDidSendMail" object:0];
     [v14 addObserver:self selector:"_accountsChanged:" name:EMAccountsChangedNotification object:0];
     v15 = +[UIApplication sharedApplication];
-    v16 = [v15 daemonInterface];
-    v17 = [v16 mailboxRepository];
+    daemonInterface3 = [v15 daemonInterface];
+    mailboxRepository = [daemonInterface3 mailboxRepository];
 
     v18 = [EMQuery alloc];
     v19 = objc_opt_class();
     v20 = +[NSPredicate ef_matchEverythingPredicate];
     v21 = [v18 initWithTargetClass:v19 predicate:v20 sortDescriptors:&__NSArray0__struct];
 
-    v22 = [[EMQueryingCollection alloc] initWithQuery:v21 repository:v17];
+    v22 = [[EMQueryingCollection alloc] initWithQuery:v21 repository:mailboxRepository];
     [v22 beginObserving:self];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, self, sub_1000D0A6C, @"com.apple.mail.MailAccountSignaturesChanged", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
     LocalCenter = CFNotificationCenterGetLocalCenter();
     CFNotificationCenterAddObserver(LocalCenter, self, sub_1000D0A78, kCFLocaleCurrentLocaleDidChangeNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-    v25 = [(MailAppController *)self accountsController];
-    [v25 resetAccountsSynchronouslyOnMainThread];
+    accountsController = [(MailAppController *)self accountsController];
+    [accountsController resetAccountsSynchronouslyOnMainThread];
 
     [(MailAppController *)self setMailboxCollection:v22];
     v26 = +[MFMailMessageLibrary defaultInstance];
-    v27 = [v26 persistence];
-    v28 = [v27 conversationPersistence];
+    persistence = [v26 persistence];
+    conversationPersistence = [persistence conversationPersistence];
 
     v29 = [FavoritesPersistence alloc];
     v30 = self->_accountsProvider;
-    v31 = [(MailAppController *)self daemonInterface];
-    v32 = [(FavoritesPersistence *)v29 initWithConversationSubscriptionProvider:v28 accountsProvider:v30 mailboxPersistence:0 daemonInterface:v31 analyticsCollector:0];
+    daemonInterface4 = [(MailAppController *)self daemonInterface];
+    v32 = [(FavoritesPersistence *)v29 initWithConversationSubscriptionProvider:conversationPersistence accountsProvider:v30 mailboxPersistence:0 daemonInterface:daemonInterface4 analyticsCollector:0];
     favoritesPersistence = self->_favoritesPersistence;
     self->_favoritesPersistence = v32;
 
@@ -428,15 +428,15 @@
     self->_dockPersistence = v35;
 
     objc_initWeak(&location, self);
-    v37 = [(MailAppController *)self daemonInterface];
-    v38 = [v37 clientState];
-    v39 = [v38 foregroundObservable];
+    daemonInterface5 = [(MailAppController *)self daemonInterface];
+    clientState = [daemonInterface5 clientState];
+    foregroundObservable = [clientState foregroundObservable];
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
     v41[2] = sub_1000198BC;
     v41[3] = &unk_10064F768;
     objc_copyWeak(&v42, &location);
-    v40 = [v39 subscribeWithResultBlock:v41];
+    v40 = [foregroundObservable subscribeWithResultBlock:v41];
 
     objc_destroyWeak(&v42);
     objc_destroyWeak(&location);
@@ -453,9 +453,9 @@
     contactStoreCachingPromise = self->_contactStoreCachingPromise;
     self->_contactStoreCachingPromise = v4;
 
-    v6 = [(MailAppController *)self _createContactStore];
+    _createContactStore = [(MailAppController *)self _createContactStore];
     v7 = self->_contactStore;
-    self->_contactStore = v6;
+    self->_contactStore = _createContactStore;
 
     contactStore = self->_contactStore;
   }
@@ -469,9 +469,9 @@
 - (id)_createContactStore
 {
   v3 = [EMCachingContactStore alloc];
-  v4 = [(MailAppController *)self contactStoreCachingPromise];
-  v5 = [v4 future];
-  v6 = [v3 initWithOptions:3 cacheFuture:v5];
+  contactStoreCachingPromise = [(MailAppController *)self contactStoreCachingPromise];
+  future = [contactStoreCachingPromise future];
+  v6 = [v3 initWithOptions:3 cacheFuture:future];
 
   return v6;
 }
@@ -491,8 +491,8 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [(MailAppController *)self activeScenes];
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  activeScenes = [(MailAppController *)self activeScenes];
+  v4 = [activeScenes countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v4)
   {
     v5 = *v24;
@@ -503,19 +503,19 @@
       {
         if (*v24 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activeScenes);
         }
 
         v7 = *(*(&v23 + 1) + 8 * v6);
         if (objc_opt_respondsToSelector())
         {
-          v8 = [v7 suppressionMailboxes];
+          suppressionMailboxes = [v7 suppressionMailboxes];
           v22[0] = _NSConcreteStackBlock;
           v22[1] = 3221225472;
           v22[2] = sub_10001FCB4;
           v22[3] = &unk_10064F740;
           v22[4] = self;
-          v9 = [v8 ef_compactMap:v22];
+          v9 = [suppressionMailboxes ef_compactMap:v22];
 
           if ([v9 count])
           {
@@ -527,41 +527,41 @@
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v4 = [activeScenes countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v4);
   }
 
   [(MailAppController *)self setCurrentAlertSuppressionContexts:v21];
-  v10 = [(MailAppController *)self daemonInterface];
-  v11 = [v10 fetchController];
-  [v11 setSuppressedContexts:v21];
+  daemonInterface = [(MailAppController *)self daemonInterface];
+  fetchController = [daemonInterface fetchController];
+  [fetchController setSuppressedContexts:v21];
 
   v12 = objc_opt_new();
-  v13 = [(MailAppController *)self mostRecentMainScene];
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(MailAppController *)self mostRecentMainScene];
-    v16 = [v15 visibleMailboxes];
-    v17 = [v16 allObjects];
+    mostRecentMainScene2 = [(MailAppController *)self mostRecentMainScene];
+    visibleMailboxes = [mostRecentMainScene2 visibleMailboxes];
+    allObjects = [visibleMailboxes allObjects];
 
-    v12 = v17;
+    v12 = allObjects;
   }
 
   v18 = +[UIApplication sharedApplication];
-  v19 = [v18 daemonInterface];
-  v20 = [v19 clientState];
-  [v20 setCurrentlyVisibleMailboxes:v12];
+  daemonInterface2 = [v18 daemonInterface];
+  clientState = [daemonInterface2 clientState];
+  [clientState setCurrentlyVisibleMailboxes:v12];
 }
 
 - (NSArray)activeScenes
 {
-  v2 = [(MailAppController *)self connectedScenes];
-  v3 = [v2 allObjects];
-  v4 = [v3 ef_compactMap:&stru_10064F870];
+  connectedScenes = [(MailAppController *)self connectedScenes];
+  allObjects = [connectedScenes allObjects];
+  v4 = [allObjects ef_compactMap:&stru_10064F870];
 
   return v4;
 }
@@ -572,8 +572,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(MailAppController *)self openSessions];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  openSessions = [(MailAppController *)self openSessions];
+  v3 = [openSessions countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -583,10 +583,10 @@ LABEL_3:
     {
       if (*v9 != v4)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(openSessions);
       }
 
-      v6 = [*(*(&v8 + 1) + 8 * v5) scene];
+      scene = [*(*(&v8 + 1) + 8 * v5) scene];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -595,7 +595,7 @@ LABEL_3:
 
       if (v3 == ++v5)
       {
-        v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v3 = [openSessions countByEnumeratingWithState:&v8 objects:v12 count:16];
         if (v3)
         {
           goto LABEL_3;
@@ -609,21 +609,21 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v6 = 0;
+    scene = 0;
   }
 
-  return v6;
+  return scene;
 }
 
 - (void)_beginAutoFetchIfViable
 {
-  v3 = [(MailAppController *)self freeSpaceMonitor];
+  freeSpaceMonitor = [(MailAppController *)self freeSpaceMonitor];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10001A468;
   v4[3] = &unk_10064F6F8;
   v4[4] = self;
-  [v3 getFreeSpaceStatusWithCompletionHandler:v4];
+  [freeSpaceMonitor getFreeSpaceStatusWithCompletionHandler:v4];
 }
 
 - (MFDiskFreeSpaceMonitor)freeSpaceMonitor
@@ -683,11 +683,11 @@ LABEL_9:
           objc_enumerationMutation(v8);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * v11) copyDiagnosticInformation];
-        v13 = v12;
-        if (v12)
+        copyDiagnosticInformation = [*(*(&v17 + 1) + 8 * v11) copyDiagnosticInformation];
+        v13 = copyDiagnosticInformation;
+        if (copyDiagnosticInformation)
         {
-          [v2 appendFormat:@"\n%@\n", v12];
+          [v2 appendFormat:@"\n%@\n", copyDiagnosticInformation];
         }
 
         v11 = v11 + 1;
@@ -780,9 +780,9 @@ LABEL_9:
     v3 = EFIsRunningUnitTests();
   }
 
-  v4 = [(MailAppController *)self daemonInterface];
-  v5 = [v4 clientState];
-  [v5 setIsRunningTests:v3];
+  daemonInterface = [(MailAppController *)self daemonInterface];
+  clientState = [daemonInterface clientState];
+  [clientState setIsRunningTests:v3];
 
   if ([(MailAppController *)self isForeground])
   {
@@ -793,16 +793,16 @@ LABEL_9:
   [v6 startListeningForBatterySaverNotifications];
 
   v7 = +[NSMutableArray array];
-  v8 = [(MailAppController *)self _preallocateWebViewsAndReturnFuture];
-  [v7 addObject:v8];
+  _preallocateWebViewsAndReturnFuture = [(MailAppController *)self _preallocateWebViewsAndReturnFuture];
+  [v7 addObject:_preallocateWebViewsAndReturnFuture];
   if ((v3 & 1) == 0)
   {
     if ([(MailAppController *)self isForeground])
     {
       [(MailAppController *)self _setupDiagnosticProviderIfNeeded];
-      v9 = [(MailAppController *)self daemonInterface];
-      v10 = [v9 fetchController];
-      [v10 performFetchOfType:EMFetchTypeLaunch];
+      daemonInterface2 = [(MailAppController *)self daemonInterface];
+      fetchController = [daemonInterface2 fetchController];
+      [fetchController performFetchOfType:EMFetchTypeLaunch];
     }
 
     v11 = +[_TtC10MobileMail14MailTipsHelper shared];
@@ -811,8 +811,8 @@ LABEL_9:
     if (+[MUIiCloudMailCleanupService isFeatureAvailable])
     {
       v12 = +[EFPromise promise];
-      v13 = [v12 future];
-      [v7 addObject:v13];
+      future = [v12 future];
+      [v7 addObject:future];
 
       v14 = dispatch_get_global_queue(0, 0);
       block[0] = _NSConcreteStackBlock;
@@ -828,8 +828,8 @@ LABEL_9:
 
   [(MailAppController *)self _createAppStoreReviewManager];
   v16 = +[EFPromise promise];
-  v17 = [v16 future];
-  [v7 addObject:v17];
+  future2 = [v16 future];
+  [v7 addObject:future2];
 
   v18 = dispatch_get_global_queue(0, 0);
   v37[0] = _NSConcreteStackBlock;
@@ -842,8 +842,8 @@ LABEL_9:
   dispatch_async(v18, v37);
 
   v20 = +[EFPromise promise];
-  v21 = [v20 future];
-  [v7 addObject:v21];
+  future3 = [v20 future];
+  [v7 addObject:future3];
 
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
@@ -854,19 +854,19 @@ LABEL_9:
   v36 = v22;
   dispatch_async(v18, v35);
 
-  v23 = [(MailAppController *)self mostRecentMainScene];
-  v24 = [v23 splitViewController];
-  v25 = [v24 conversationViewController];
-  [v25 prewarmContent];
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  splitViewController = [mostRecentMainScene splitViewController];
+  conversationViewController = [splitViewController conversationViewController];
+  [conversationViewController prewarmContent];
 
   [(MailAppController *)self _ensureBlockedSenderManagerIsCreated];
-  v26 = [(MailAppController *)self contactStoreCachingPromise];
+  contactStoreCachingPromise = [(MailAppController *)self contactStoreCachingPromise];
   v27 = +[NSNull null];
-  [v26 finishWithResult:v27];
+  [contactStoreCachingPromise finishWithResult:v27];
 
-  v28 = [(MailAppController *)self contactStore];
-  v29 = [v28 emailAddressCacheFinishedFuture];
-  [v7 ef_addOptionalObject:v29];
+  contactStore = [(MailAppController *)self contactStore];
+  emailAddressCacheFinishedFuture = [contactStore emailAddressCacheFinishedFuture];
+  [v7 ef_addOptionalObject:emailAddressCacheFinishedFuture];
 
   +[EMInternalPreferences registerForDefaultChanges];
   objc_initWeak(&location, self);
@@ -885,7 +885,7 @@ LABEL_9:
 
 - (void)_ensureBlockedSenderManagerIsCreated
 {
-  v2 = [(MailAppController *)self blockedSenderManager];
+  blockedSenderManager = [(MailAppController *)self blockedSenderManager];
 }
 
 - (id)_preallocateWebViewsAndReturnFuture
@@ -898,7 +898,7 @@ LABEL_9:
     *buf = 138412546;
     v24 = v5;
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "<%@: %p> [Launch] Preallocate web views", buf, 0x16u);
   }
 
@@ -920,22 +920,22 @@ LABEL_9:
   v15 = 3221225472;
   v16 = sub_1000CECB8;
   v17 = &unk_10064DD80;
-  v18 = self;
+  selfCopy2 = self;
   v11 = v9;
   v19 = v11;
   [v7 onScheduler:v10 addFailureBlock:&v14];
 
-  v12 = [v11 future];
+  future = [v11 future];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(buf);
 
-  return v12;
+  return future;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v5 = [MailAppController log:a3];
+  v5 = [MailAppController log:application];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = +[NSBundle mainBundle];
@@ -947,9 +947,9 @@ LABEL_9:
 
   [(MailAppController *)self _performBackEndOneShotInitialization];
   [(MailAppController *)self _registerApplicationLifecycleObservers];
-  v8 = [(MailAppController *)self daemonInterface];
-  v9 = [v8 interactionLogger];
-  [v9 applicationLaunched];
+  daemonInterface = [(MailAppController *)self daemonInterface];
+  interactionLogger = [daemonInterface interactionLogger];
+  [interactionLogger applicationLaunched];
 
   sub_1000CEFB4(self);
   v10 = qos_class_self();
@@ -985,18 +985,18 @@ LABEL_9:
   }
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v7 = a4;
-  v28 = a5;
-  v8 = [v7 configuration];
-  v9 = [v7 role];
-  v10 = [v28 userActivities];
-  v11 = [v10 anyObject];
-  if ([v10 count])
+  sessionCopy = session;
+  optionsCopy = options;
+  configuration = [sessionCopy configuration];
+  role = [sessionCopy role];
+  userActivities = [optionsCopy userActivities];
+  anyObject = [userActivities anyObject];
+  if ([userActivities count])
   {
-    v12 = [v10 allObjects];
-    v13 = [v12 ef_mapSelector:"activityType"];
+    allObjects = [userActivities allObjects];
+    v13 = [allObjects ef_mapSelector:"activityType"];
     v26 = [v13 componentsJoinedByString:{@", "}];
   }
 
@@ -1009,21 +1009,21 @@ LABEL_9:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = NSStringFromSelector(a2);
-    v16 = [v11 activityType];
+    activityType = [anyObject activityType];
     *buf = 138544130;
     v30 = v15;
     v31 = 2114;
-    v32 = v9;
+    v32 = role;
     v33 = 2114;
-    v34 = v16;
+    v34 = activityType;
     v35 = 2114;
     v36 = v27;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ -\n\tRole: %{public}@\n\tSelected User Activity: %{public}@\n\tUser Activity Types: %{public}@", buf, 0x2Au);
   }
 
-  if (v9 != UIWindowSceneSessionRoleApplication)
+  if (role != UIWindowSceneSessionRoleApplication)
   {
-    if (v9 == SiriInteractiveSessionRoleSnippet)
+    if (role == SiriInteractiveSessionRoleSnippet)
     {
       v21 = +[MailAppController log];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -1032,33 +1032,33 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Found SiriInteractiveSessionRoleSnippet, updating config", buf, 2u);
       }
 
-      v17 = [UISceneConfiguration configurationWithName:0 sessionRole:v9];
+      v17 = [UISceneConfiguration configurationWithName:0 sessionRole:role];
 
       [v17 setDelegateClass:objc_opt_class()];
     }
 
     else
     {
-      v17 = v8;
+      v17 = configuration;
     }
 
     goto LABEL_23;
   }
 
   v18 = MailSceneNameMainScene;
-  if (!v11)
+  if (!anyObject)
   {
 LABEL_22:
     v17 = [UISceneConfiguration configurationWithName:v18 sessionRole:UIWindowSceneSessionRoleApplication];
 
 LABEL_23:
-    v8 = v17;
-    v23 = v8;
+    configuration = v17;
+    v23 = configuration;
     goto LABEL_24;
   }
 
-  v19 = [v11 activityType];
-  if ([v19 isEqualToString:MSMailActivityHandoffTypeComposeWithStreams])
+  activityType2 = [anyObject activityType];
+  if ([activityType2 isEqualToString:MSMailActivityHandoffTypeComposeWithStreams])
   {
     v20 = &MailSceneNameComposeScene;
 LABEL_19:
@@ -1070,13 +1070,13 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if ([v19 isEqualToString:MSMailActivityHandoffTypeDisplayMessage])
+  if ([activityType2 isEqualToString:MSMailActivityHandoffTypeDisplayMessage])
   {
     v20 = &MailSceneNameConversationScene;
     goto LABEL_19;
   }
 
-  if ([v19 isEqualToString:MSMailActivityHandoffTypeQuickLook])
+  if ([activityType2 isEqualToString:MSMailActivityHandoffTypeQuickLook])
   {
     v20 = &MailSceneNameQuickLookScene;
     goto LABEL_19;
@@ -1088,7 +1088,7 @@ LABEL_21:
     goto LABEL_20;
   }
 
-  v25 = [v19 isEqualToString:@"com.apple.mail.private.debugmenu"];
+  v25 = [activityType2 isEqualToString:@"com.apple.mail.private.debugmenu"];
 
   if (!v25)
   {
@@ -1104,38 +1104,38 @@ LABEL_24:
   return v23;
 }
 
-- (void)_deliveryQueueProcessingFinished:(id)a3
+- (void)_deliveryQueueProcessingFinished:(id)finished
 {
-  v8 = a3;
-  v4 = [v8 userInfo];
-  v5 = [v4 objectForKey:@"sent"];
+  finishedCopy = finished;
+  userInfo = [finishedCopy userInfo];
+  v5 = [userInfo objectForKey:@"sent"];
   if ([v5 count])
   {
-    v6 = [v4 objectForKey:@"playSound"];
-    v7 = [v6 BOOLValue];
+    v6 = [userInfo objectForKey:@"playSound"];
+    bOOLValue = [v6 BOOLValue];
 
-    if (v7)
+    if (bOOLValue)
     {
       +[MFSoundController playSentMailSound];
     }
 
-    [(MailAppController *)self _mailWasSent:v8];
+    [(MailAppController *)self _mailWasSent:finishedCopy];
   }
 }
 
-- (void)_mailWasSent:(id)a3
+- (void)_mailWasSent:(id)sent
 {
-  v7 = a3;
+  sentCopy = sent;
   if (+[NSThread isMainThread])
   {
-    v5 = [(MailAppController *)self daemonInterface];
-    v6 = [v5 fetchController];
-    [v6 performFetchOfType:EMFetchTypeStandardMailbox];
+    daemonInterface = [(MailAppController *)self daemonInterface];
+    fetchController = [daemonInterface fetchController];
+    [fetchController performFetchOfType:EMFetchTypeStandardMailbox];
   }
 
   else
   {
-    [(MailAppController *)self performSelectorOnMainThread:a2 withObject:v7 waitUntilDone:0];
+    [(MailAppController *)self performSelectorOnMainThread:a2 withObject:sentCopy waitUntilDone:0];
   }
 }
 
@@ -1152,10 +1152,10 @@ LABEL_24:
 
 - (EMBlockedSenderManager)blockedSenderManager
 {
-  v2 = [(MailAppController *)self daemonInterface];
-  v3 = [v2 blockedSenderManager];
+  daemonInterface = [(MailAppController *)self daemonInterface];
+  blockedSenderManager = [daemonInterface blockedSenderManager];
 
-  return v3;
+  return blockedSenderManager;
 }
 
 - (void)_createAppStoreReviewManager
@@ -1178,68 +1178,68 @@ LABEL_24:
   }
 }
 
-- (id)_mailboxStringFromMailbox:(id)a3
+- (id)_mailboxStringFromMailbox:(id)mailbox
 {
-  v3 = a3;
-  if (![v3 isSmartMailbox])
+  mailboxCopy = mailbox;
+  if (![mailboxCopy isSmartMailbox])
   {
     v6 = +[UIApplication sharedApplication];
-    v4 = [v6 mailboxProvider];
+    mailboxProvider = [v6 mailboxProvider];
 
-    v7 = [v3 objectID];
-    v8 = [v4 legacyMailboxForObjectID:v7];
+    objectID = [mailboxCopy objectID];
+    v8 = [mailboxProvider legacyMailboxForObjectID:objectID];
 
-    v5 = [v8 URLString];
+    uRLString = [v8 URLString];
 
     goto LABEL_11;
   }
 
-  v4 = v3;
-  if ([v4 smartMailboxType] == 8)
+  mailboxProvider = mailboxCopy;
+  if ([mailboxProvider smartMailboxType] == 8)
   {
-    v5 = @"com.apple.mobilemail.context.AllInbox";
+    uRLString = @"com.apple.mobilemail.context.AllInbox";
     goto LABEL_11;
   }
 
-  if (![v4 smartMailboxType] || !objc_msgSend(v4, "smartMailboxType"))
+  if (![mailboxProvider smartMailboxType] || !objc_msgSend(mailboxProvider, "smartMailboxType"))
   {
     v9 = &MSUserNotificationCenterTopicVIP;
 LABEL_10:
-    v5 = *v9;
+    uRLString = *v9;
     goto LABEL_11;
   }
 
-  if ([v4 smartMailboxType] == 1)
+  if ([mailboxProvider smartMailboxType] == 1)
   {
-    v5 = @"com.apple.mobilemail.context.flagged";
+    uRLString = @"com.apple.mobilemail.context.flagged";
     goto LABEL_11;
   }
 
-  if ([v4 smartMailboxType] == 3)
+  if ([mailboxProvider smartMailboxType] == 3)
   {
-    v5 = @"com.apple.mobilemail.context.toMe";
+    uRLString = @"com.apple.mobilemail.context.toMe";
     goto LABEL_11;
   }
 
-  if ([v4 smartMailboxType] == 4)
+  if ([mailboxProvider smartMailboxType] == 4)
   {
-    v5 = @"com.apple.mobilemail.context.hasAttachments";
+    uRLString = @"com.apple.mobilemail.context.hasAttachments";
     goto LABEL_11;
   }
 
-  if ([v4 smartMailboxType] == 5)
+  if ([mailboxProvider smartMailboxType] == 5)
   {
     v9 = &MSUserNotificationCenterTopicNotifiedThreads;
     goto LABEL_10;
   }
 
-  v5 = 0;
+  uRLString = 0;
 LABEL_11:
 
-  return v5;
+  return uRLString;
 }
 
-- (void)_accountsChanged:(id)a3
+- (void)_accountsChanged:(id)changed
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -1250,16 +1250,16 @@ LABEL_11:
   [v3 performSyncBlock:v4];
 }
 
-- (void)updateDefaultImageWithReason:(id)a3
+- (void)updateDefaultImageWithReason:(id)reason
 {
-  v6 = a3;
+  reasonCopy = reason;
   if (pthread_main_np() != 1)
   {
     v5 = +[NSAssertionHandler currentHandler];
     [v5 handleFailureInMethod:a2 object:self file:@"MailAppController.m" lineNumber:731 description:@"Current thread must be main"];
   }
 
-  [(MailAppController *)self setLastDefaultImageUpdateReason:v6];
+  [(MailAppController *)self setLastDefaultImageUpdateReason:reasonCopy];
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_reallyUpdateDefaultImage" object:0];
   [(MailAppController *)self performSelector:"_reallyUpdateDefaultImage" withObject:0 afterDelay:1.0];
 }
@@ -1268,30 +1268,30 @@ LABEL_11:
 {
   if ([(MailAppController *)self isSuspended])
   {
-    v3 = [(MailAppController *)self mostRecentMainScene];
+    mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
 
-    if (v3)
+    if (mostRecentMainScene)
     {
       v4 = +[MFMailMessageLibrary defaultInstance];
-      v5 = [v4 protectedDataAvailability];
+      protectedDataAvailability = [v4 protectedDataAvailability];
 
-      if (!v5)
+      if (!protectedDataAvailability)
       {
         [(MailAppController *)self _updateSnapshotForBackgroundApplication:0];
-        v6 = [(MailAppController *)self lastDefaultImageUpdateReason];
+        lastDefaultImageUpdateReason = [(MailAppController *)self lastDefaultImageUpdateReason];
         v7 = MFLogGeneral();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
         {
           v8 = ": ";
-          if (!v6)
+          if (!lastDefaultImageUpdateReason)
           {
             v8 = "";
           }
 
           v9 = &stru_100662A88;
-          if (v6)
+          if (lastDefaultImageUpdateReason)
           {
-            v9 = v6;
+            v9 = lastDefaultImageUpdateReason;
           }
 
           v10 = 136315394;
@@ -1336,25 +1336,25 @@ LABEL_11:
 
 - (BOOL)isForeground
 {
-  v2 = [(MailAppController *)self daemonInterface];
-  v3 = [v2 clientState];
-  v4 = [v3 isForeground];
+  daemonInterface = [(MailAppController *)self daemonInterface];
+  clientState = [daemonInterface clientState];
+  isForeground = [clientState isForeground];
 
-  return v4;
+  return isForeground;
 }
 
 - (void)_registerApplicationLifecycleObservers
 {
-  v3 = [(MailAppController *)self daemonInterface];
-  v4 = [v3 clientState];
-  v5 = [v4 foregroundObservable];
+  daemonInterface = [(MailAppController *)self daemonInterface];
+  clientState = [daemonInterface clientState];
+  foregroundObservable = [clientState foregroundObservable];
 
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000D07C0;
   v7[3] = &unk_10064D900;
   v7[4] = self;
-  v6 = [v5 subscribeWithResultBlock:v7];
+  v6 = [foregroundObservable subscribeWithResultBlock:v7];
 }
 
 - (void)dealloc
@@ -1366,8 +1366,8 @@ LABEL_11:
     CFRelease(emptiedTrashTimestamps);
   }
 
-  v4 = [(MailAppController *)self diagnosticInfoProviderToken];
-  [v4 cancel];
+  diagnosticInfoProviderToken = [(MailAppController *)self diagnosticInfoProviderToken];
+  [diagnosticInfoProviderToken cancel];
 
   [(MailAppController *)self _configureUserDefaultsKVOAdd:0];
   [(EFCancelable *)self->_bucketBarStateCancelable cancel];
@@ -1376,39 +1376,39 @@ LABEL_11:
   [(MailAppController *)&v5 dealloc];
 }
 
-- (void)_handleDeliveryFailure:(id)a3
+- (void)_handleDeliveryFailure:(id)failure
 {
-  v6 = [a3 userInfo];
-  v4 = [v6 objectForKey:@"account"];
-  v5 = [v6 objectForKey:@"error"];
+  userInfo = [failure userInfo];
+  v4 = [userInfo objectForKey:@"account"];
+  v5 = [userInfo objectForKey:@"error"];
   if (v5)
   {
     [(MailAppController *)self displayError:v5 forAccount:v4 mode:1];
   }
 }
 
-- (void)provideDiagnosticsAt:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)provideDiagnosticsAt:(id)at options:(unint64_t)options completion:(id)completion
 {
-  v7 = a3;
-  v26 = a5;
+  atCopy = at;
+  completionCopy = completion;
   v8 = +[MailAppController log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(MailAppController *)self providerObjectID];
+    providerObjectID = [(MailAppController *)self providerObjectID];
     *buf = 138412290;
-    v34 = v9;
+    v34 = providerObjectID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "<%@> Gathering diagnostics...", buf, 0xCu);
   }
 
-  v25 = [v7 ef_URLByAppendingTimestampedPathComponent:@"SceneSessions" withExtension:@"log"];
+  v25 = [atCopy ef_URLByAppendingTimestampedPathComponent:@"SceneSessions" withExtension:@"log"];
   v24 = [(MailAppController *)self _dumpUIStateAtURL:v25];
-  v23 = [v7 ef_URLByAppendingTimestampedPathComponent:@"EMUserDefaults" withExtension:@"plist"];
+  v23 = [atCopy ef_URLByAppendingTimestampedPathComponent:@"EMUserDefaults" withExtension:@"plist"];
   v22 = [(MailAppController *)self _dumpEMUserDefaultsAtURL:v23];
-  v21 = [v7 ef_URLByAppendingTimestampedPathComponent:@"StandardUserDefaults" withExtension:@"plist"];
+  v21 = [atCopy ef_URLByAppendingTimestampedPathComponent:@"StandardUserDefaults" withExtension:@"plist"];
   v27 = [(MailAppController *)self _dumpEMUserDefaultsAtURL:?];
-  v10 = [v7 ef_URLByAppendingTimestampedPathComponent:@"NotificationSettings" withExtension:@"plist"];
+  v10 = [atCopy ef_URLByAppendingTimestampedPathComponent:@"NotificationSettings" withExtension:@"plist"];
   v11 = [(MailAppController *)self _dumpNotificationSettingsAtURL:v10];
-  v12 = [v7 ef_URLByAppendingTimestampedPathComponent:@"CurrentFocus" withExtension:@"plist"];
+  v12 = [atCopy ef_URLByAppendingTimestampedPathComponent:@"CurrentFocus" withExtension:@"plist"];
   v13 = [(MailAppController *)self _dumpCurrentFocusAtURL:v12];
   v32[0] = v24;
   v32[1] = v22;
@@ -1416,7 +1416,7 @@ LABEL_11:
   v32[3] = v11;
   v32[4] = v13;
   v14 = [NSArray arrayWithObjects:v32 count:5];
-  v15 = [v7 ef_URLByAppendingTimestampedPathComponent:@"BucketBarConfiguration" withExtension:@"plist"];
+  v15 = [atCopy ef_URLByAppendingTimestampedPathComponent:@"BucketBarConfiguration" withExtension:@"plist"];
   v16 = [(MailAppController *)self _dumpBucketBarConfigurationAtURL:v15];
   v17 = [v14 arrayByAddingObject:v16];
 
@@ -1425,7 +1425,7 @@ LABEL_11:
   v30[1] = 3221225472;
   v30[2] = sub_1000D101C;
   v30[3] = &unk_10064D298;
-  v19 = v26;
+  v19 = completionCopy;
   v31 = v19;
   [v18 addSuccessBlock:v30];
   v28[0] = _NSConcreteStackBlock;
@@ -1437,7 +1437,7 @@ LABEL_11:
   [v18 addFailureBlock:v28];
 }
 
-- (void)_userDidTakeScreenshot:(id)a3
+- (void)_userDidTakeScreenshot:(id)screenshot
 {
   v4 = +[MailAppController log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1457,8 +1457,8 @@ LABEL_11:
     v8 = +[MailAppController log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v5 path];
-      sub_100488240(v9, v7, buf);
+      path = [v5 path];
+      sub_100488240(path, v7, buf);
     }
   }
 
@@ -1466,9 +1466,9 @@ LABEL_11:
   v11 = [(MailAppController *)self _dumpUIStateAtURL:v10];
 }
 
-- (id)_dumpUIStateAtURL:(id)a3
+- (id)_dumpUIStateAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[EFPromise promise];
   v16[0] = 0;
   v16[1] = v16;
@@ -1477,75 +1477,75 @@ LABEL_11:
   v16[4] = sub_1000D154C;
   v17 = objc_alloc_init(NSMutableString);
   v15 = v16;
-  v6 = v4;
+  v6 = lCopy;
   v12 = v6;
-  v13 = self;
+  selfCopy = self;
   v7 = v5;
   v14 = v7;
   v8 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v8 performBlock:&v11];
 
-  v9 = [v7 future];
+  future = [v7 future];
 
   _Block_object_dispose(v16, 8);
 
-  return v9;
+  return future;
 }
 
-- (id)_dumpEMUserDefaultsAtURL:(id)a3
+- (id)_dumpEMUserDefaultsAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[NSUserDefaults em_userDefaults];
-  v6 = [(MailAppController *)self _dumpUserDefaults:v5 atURL:v4];
+  v6 = [(MailAppController *)self _dumpUserDefaults:v5 atURL:lCopy];
 
   return v6;
 }
 
-- (id)_dumpStandardUserDefaultsAtURL:(id)a3
+- (id)_dumpStandardUserDefaultsAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[NSUserDefaults standardUserDefaults];
-  v6 = [(MailAppController *)self _dumpUserDefaults:v5 atURL:v4];
+  v6 = [(MailAppController *)self _dumpUserDefaults:v5 atURL:lCopy];
 
   return v6;
 }
 
-- (id)_dumpUserDefaults:(id)a3 atURL:(id)a4
+- (id)_dumpUserDefaults:(id)defaults atURL:(id)l
 {
-  v6 = a4;
-  v7 = [a3 dictionaryRepresentation];
-  v8 = [(MailAppController *)self _dumpDictionary:v7 atURL:v6];
+  lCopy = l;
+  dictionaryRepresentation = [defaults dictionaryRepresentation];
+  v8 = [(MailAppController *)self _dumpDictionary:dictionaryRepresentation atURL:lCopy];
 
   return v8;
 }
 
-- (id)_dumpDictionary:(id)a3 atURL:(id)a4
+- (id)_dumpDictionary:(id)dictionary atURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  lCopy = l;
   v8 = +[EFPromise promise];
   v9 = +[EFScheduler globalAsyncScheduler];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_1000D1EE8;
   v18 = &unk_10064E348;
-  v10 = v6;
+  v10 = dictionaryCopy;
   v19 = v10;
-  v11 = v7;
+  v11 = lCopy;
   v20 = v11;
-  v21 = self;
+  selfCopy = self;
   v12 = v8;
   v22 = v12;
   [v9 performBlock:&v15];
 
-  v13 = [v12 future];
+  future = [v12 future];
 
-  return v13;
+  return future;
 }
 
-- (id)_dumpNotificationSettingsAtURL:(id)a3
+- (id)_dumpNotificationSettingsAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[EFPromise promise];
   v6 = +[UNUserNotificationCenter currentNotificationCenter];
   v11[0] = _NSConcreteStackBlock;
@@ -1553,42 +1553,42 @@ LABEL_11:
   v11[2] = sub_1000D22AC;
   v11[3] = &unk_10064F808;
   v11[4] = self;
-  v7 = v4;
+  v7 = lCopy;
   v12 = v7;
   v8 = v5;
   v13 = v8;
   [v6 getNotificationSettingsForTopicsWithCompletionHandler:v11];
 
-  v9 = [v8 future];
+  future = [v8 future];
 
-  return v9;
+  return future;
 }
 
-- (id)_dumpCurrentFocusAtURL:(id)a3
+- (id)_dumpCurrentFocusAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [(MailAppController *)self focusController];
-  v6 = [v5 _stateCaptureInformation];
+  lCopy = l;
+  focusController = [(MailAppController *)self focusController];
+  _stateCaptureInformation = [focusController _stateCaptureInformation];
 
-  v7 = [(MailAppController *)self _dumpDictionary:v6 atURL:v4];
+  v7 = [(MailAppController *)self _dumpDictionary:_stateCaptureInformation atURL:lCopy];
 
   return v7;
 }
 
-- (id)_dumpBucketBarConfigurationAtURL:(id)a3
+- (id)_dumpBucketBarConfigurationAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [(MailAppController *)self bucketBarConfigurationController];
-  v6 = [v5 stateCaptureInformation];
+  lCopy = l;
+  bucketBarConfigurationController = [(MailAppController *)self bucketBarConfigurationController];
+  stateCaptureInformation = [bucketBarConfigurationController stateCaptureInformation];
 
-  v7 = [(MailAppController *)self _dumpDictionary:v6 atURL:v4];
+  v7 = [(MailAppController *)self _dumpDictionary:stateCaptureInformation atURL:lCopy];
 
   return v7;
 }
 
-- (void)_configureUserDefaultsKVOAdd:(BOOL)a3
+- (void)_configureUserDefaultsKVOAdd:(BOOL)add
 {
-  v3 = a3;
+  addCopy = add;
   v5 = +[NSUserDefaults em_userDefaults];
   v14 = 0u;
   v15 = 0u;
@@ -1609,7 +1609,7 @@ LABEL_11:
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        if (v3)
+        if (addCopy)
         {
           [v5 addObserver:self forKeyPath:*(*(&v12 + 1) + 8 * i) options:1 context:"UserDefaultsKVOContext"];
         }
@@ -1623,9 +1623,9 @@ LABEL_11:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
           *buf = 134218498;
-          v17 = self;
+          selfCopy = self;
           v18 = 1024;
-          v19 = v3;
+          v19 = addCopy;
           v20 = 2112;
           v21 = v10;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "MailAppController (%p) add(%{BOOL}d) observer for key path %@", buf, 0x1Cu);
@@ -1639,18 +1639,18 @@ LABEL_11:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  if (a6 == "UserDefaultsKVOContext")
+  pathCopy = path;
+  if (context == "UserDefaultsKVOContext")
   {
-    [(MailAppController *)self _userDefaultDidChange:v8];
+    [(MailAppController *)self _userDefaultDidChange:pathCopy];
   }
 }
 
-- (void)_userDefaultDidChange:(id)a3
+- (void)_userDefaultDidChange:(id)change
 {
-  v16 = a3;
+  changeCopy = change;
   v4 = +[NSUserDefaults standardUserDefaults];
   [v4 synchronize];
 
@@ -1658,7 +1658,7 @@ LABEL_11:
   [v5 synchronize];
 
   v6 = +[NSNotificationCenter defaultCenter];
-  if ([v16 isEqualToString:MFMailAccountDescription])
+  if ([changeCopy isEqualToString:MFMailAccountDescription])
   {
     v7 = &MailApplicationDidChangeAccountDisplayName;
 LABEL_3:
@@ -1667,40 +1667,40 @@ LABEL_3:
     goto LABEL_10;
   }
 
-  if ([v16 isEqualToString:EMUserDefaultLoadRemoteContentKey])
+  if ([changeCopy isEqualToString:EMUserDefaultLoadRemoteContentKey])
   {
     v9 = &MailApplicationDidChangeRemoteImageLoading;
   }
 
   else
   {
-    if ([v16 isEqualToString:IncludeAttachmentRepliesKey])
+    if ([changeCopy isEqualToString:IncludeAttachmentRepliesKey])
     {
       v10 = sub_10024BAB8(1);
       goto LABEL_9;
     }
 
-    if ([v16 isEqualToString:EMUserDefaultLinesOfPreviewKey])
+    if ([changeCopy isEqualToString:EMUserDefaultLinesOfPreviewKey])
     {
       +[NSUserDefaults em_resetLinesOfPreview];
       v7 = &MailApplicationDidChangePreviewLinesNotification;
       goto LABEL_3;
     }
 
-    if ([v16 isEqualToString:ShowToCCIndicatorsKey])
+    if ([changeCopy isEqualToString:ShowToCCIndicatorsKey])
     {
       sub_100020DC4(1);
       v7 = &MailApplicationDidChangeShowToCCNotification;
       goto LABEL_3;
     }
 
-    if ([v16 isEqualToString:DisableThreadingKey])
+    if ([changeCopy isEqualToString:DisableThreadingKey])
     {
       v7 = &MailApplicationsDisableThreadingKeyChanged;
       goto LABEL_3;
     }
 
-    if ([v16 isEqualToString:RightSwipeActionKey])
+    if ([changeCopy isEqualToString:RightSwipeActionKey])
     {
       v13 = sub_10024BB48(1);
       v14 = +[NSNotificationCenter defaultCenter];
@@ -1709,19 +1709,19 @@ LABEL_3:
       goto LABEL_9;
     }
 
-    if ([v16 isEqualToString:LeftSwipeActionKey])
+    if ([changeCopy isEqualToString:LeftSwipeActionKey])
     {
       v15 = sub_10024BC14(1);
       v9 = &MailApplicationDidChangeSwipeActions;
     }
 
-    else if ([v16 isEqualToString:ConversationViewShowsNewestAtTop])
+    else if ([changeCopy isEqualToString:ConversationViewShowsNewestAtTop])
     {
       sub_10000ED28(1);
       v9 = &MailApplicationDidChangeConversationOrder;
     }
 
-    else if ([v16 isEqualToString:ConversationViewExcludesRelatedMessagesKey])
+    else if ([changeCopy isEqualToString:ConversationViewExcludesRelatedMessagesKey])
     {
       sub_10000CA34(1);
       v9 = &MailApplicationDidChangeConversationViewIncludesRelatedMessages;
@@ -1729,7 +1729,7 @@ LABEL_3:
 
     else
     {
-      if (![v16 isEqualToString:CollapseReadConversationMessagesKey])
+      if (![changeCopy isEqualToString:CollapseReadConversationMessagesKey])
       {
         goto LABEL_9;
       }
@@ -1744,12 +1744,12 @@ LABEL_9:
   v8 = 0;
 LABEL_10:
   v11 = +[NSNotificationCenter defaultCenter];
-  [v11 postNotificationName:MailDefaultsChangedNotification object:v16 userInfo:0];
+  [v11 postNotificationName:MailDefaultsChangedNotification object:changeCopy userInfo:0];
 
   if (v8)
   {
-    v12 = [NSString stringWithFormat:@"defaults changed: %@", v16];
-    [(MailAppController *)self updateDefaultImageWithReason:v12];
+    changeCopy = [NSString stringWithFormat:@"defaults changed: %@", changeCopy];
+    [(MailAppController *)self updateDefaultImageWithReason:changeCopy];
   }
 }
 
@@ -1765,41 +1765,41 @@ LABEL_10:
   [v2 makeObjectsPerformSelector:"systemDidWake"];
 }
 
-- (BOOL)canPerformNetworkOperationOnAccount:(id)a3
+- (BOOL)canPerformNetworkOperationOnAccount:(id)account
 {
-  v3 = a3;
-  if ([v3 canGoOffline])
+  accountCopy = account;
+  if ([accountCopy canGoOffline])
   {
-    v4 = 1;
+    isDataAvailable = 1;
   }
 
   else
   {
     v5 = +[MFNetworkController sharedInstance];
-    v4 = [v5 isDataAvailable];
+    isDataAvailable = [v5 isDataAvailable];
   }
 
-  return v4;
+  return isDataAvailable;
 }
 
-- (id)accountCanPerformNetworkOperations:(id)a3
+- (id)accountCanPerformNetworkOperations:(id)operations
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000D2EF8;
   v6[3] = &unk_10064E6A0;
   v6[4] = self;
-  v7 = a3;
-  v3 = v7;
+  operationsCopy = operations;
+  v3 = operationsCopy;
   v4 = [EFFuture futureWithBlock:v6];
 
   return v4;
 }
 
-- (void)_setProtectedDataAvailabilityWithNotification:(id)a3
+- (void)_setProtectedDataAvailabilityWithNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v6 = [v4 objectForKey:MailMessageLibraryProtectedDataAvailibilityKey];
+  userInfo = [notification userInfo];
+  v6 = [userInfo objectForKey:MailMessageLibraryProtectedDataAvailibilityKey];
 
   v5 = v6;
   if (v6)
@@ -1809,9 +1809,9 @@ LABEL_10:
   }
 }
 
-- (void)performWhenProtectedDataIsAvailable:(id)a3
+- (void)performWhenProtectedDataIsAvailable:(id)available
 {
-  v5 = a3;
+  availableCopy = available;
   if (pthread_main_np() != 1)
   {
     v10 = +[NSAssertionHandler currentHandler];
@@ -1830,9 +1830,9 @@ LABEL_10:
     blockToPerformWhenProtectedDataIsAvailable = self->_blockToPerformWhenProtectedDataIsAvailable;
     self->_blockToPerformWhenProtectedDataIsAvailable = 0;
 
-    if (v5)
+    if (availableCopy)
     {
-      v8 = objc_retainBlock(v5);
+      v8 = objc_retainBlock(availableCopy);
       v9 = self->_blockToPerformWhenProtectedDataIsAvailable;
       self->_blockToPerformWhenProtectedDataIsAvailable = v8;
 
@@ -1841,9 +1841,9 @@ LABEL_10:
     }
   }
 
-  else if (v5)
+  else if (availableCopy)
   {
-    v5[2](v5);
+    availableCopy[2](availableCopy);
   }
 }
 
@@ -1858,16 +1858,16 @@ LABEL_10:
   [(MailAppController *)self performWhenProtectedDataIsAvailable:0];
 }
 
-- (void)_messageLibraryWillBecomeUnavailable:(id)a3
+- (void)_messageLibraryWillBecomeUnavailable:(id)unavailable
 {
-  v5 = a3;
+  unavailableCopy = unavailable;
   if (pthread_main_np() != 1)
   {
     v12 = +[NSAssertionHandler currentHandler];
     [v12 handleFailureInMethod:a2 object:self file:@"MailAppController.m" lineNumber:1269 description:@"Current thread must be main"];
   }
 
-  [(MailAppController *)self _setProtectedDataAvailabilityWithNotification:v5];
+  [(MailAppController *)self _setProtectedDataAvailabilityWithNotification:unavailableCopy];
   v6 = MFLogGeneral();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1880,17 +1880,17 @@ LABEL_10:
   v8 = +[NSNotificationCenter defaultCenter];
   [v8 postNotificationName:MailApplicationProtectedDataWillBecomeUnavailable object:self];
 
-  v9 = [(MailAppController *)self postponedMessageURL];
-  LOBYTE(v8) = v9 == 0;
+  postponedMessageURL = [(MailAppController *)self postponedMessageURL];
+  LOBYTE(v8) = postponedMessageURL == 0;
 
   if ((v8 & 1) == 0)
   {
     v10 = MFLogGeneral();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(MailAppController *)self postponedMessageURL];
+      postponedMessageURL2 = [(MailAppController *)self postponedMessageURL];
       v13 = 138412290;
-      v14 = v11;
+      v14 = postponedMessageURL2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Forgetting postponed URL %@ because protected data became unavailable", &v13, 0xCu);
     }
 
@@ -1898,16 +1898,16 @@ LABEL_10:
   }
 }
 
-- (void)_messageLibraryDidBecomeAvailable:(id)a3
+- (void)_messageLibraryDidBecomeAvailable:(id)available
 {
-  v5 = a3;
+  availableCopy = available;
   if (pthread_main_np() != 1)
   {
     v10 = +[NSAssertionHandler currentHandler];
     [v10 handleFailureInMethod:a2 object:self file:@"MailAppController.m" lineNumber:1283 description:@"Current thread must be main"];
   }
 
-  [(MailAppController *)self _setProtectedDataAvailabilityWithNotification:v5];
+  [(MailAppController *)self _setProtectedDataAvailabilityWithNotification:availableCopy];
   v6 = MFLogGeneral();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1929,28 +1929,28 @@ LABEL_10:
   }
 }
 
-- (void)displayError:(id)a3 forAccount:(id)a4 mode:(int64_t)a5
+- (void)displayError:(id)error forAccount:(id)account mode:(int64_t)mode
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = [(MailAppController *)self mostRecentMainScene];
-  [v9 displayError:v10 forAccount:v8 mode:a5];
+  errorCopy = error;
+  accountCopy = account;
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  [mostRecentMainScene displayError:errorCopy forAccount:accountCopy mode:mode];
 }
 
 - (NSSet)selectedAccounts
 {
-  v2 = [(MailAppController *)self mostRecentMainScene];
-  v3 = [v2 selectedAccounts];
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  selectedAccounts = [mostRecentMainScene selectedAccounts];
 
-  return v3;
+  return selectedAccounts;
 }
 
-- (void)_updateAccountsIfNecessaryFromCollection:(id)a3
+- (void)_updateAccountsIfNecessaryFromCollection:(id)collection
 {
-  v5 = a3;
-  v6 = [(MailAppController *)self mailboxCollection];
+  collectionCopy = collection;
+  mailboxCollection = [(MailAppController *)self mailboxCollection];
 
-  if (v6 == v5)
+  if (mailboxCollection == collectionCopy)
   {
     v7 = +[MailAppController log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1982,7 +1982,7 @@ LABEL_10:
   return v3;
 }
 
-- (void)didFinishLoadAllScenes:(id)a3
+- (void)didFinishLoadAllScenes:(id)scenes
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -1991,37 +1991,37 @@ LABEL_10:
   v7[4] = self;
   sub_100488094(self, v7);
   v4 = UIApp;
-  v5 = [UIApp _launchTestName];
-  [v4 finishedTest:v5 extraResults:0];
+  _launchTestName = [UIApp _launchTestName];
+  [v4 finishedTest:_launchTestName extraResults:0];
 
   [(MailAppController *)self setExtendedLaunchTracker:0];
-  v6 = [(MailAppController *)self avatarGenerator];
-  [v6 allowGeneratingAvatarImages];
+  avatarGenerator = [(MailAppController *)self avatarGenerator];
+  [avatarGenerator allowGeneratingAvatarImages];
 }
 
 - (EFFuture)didFinishDelayedStartupTasks
 {
-  v2 = [(MailAppController *)self didFinishDelayedStartupTasksPromise];
-  v3 = [v2 future];
+  didFinishDelayedStartupTasksPromise = [(MailAppController *)self didFinishDelayedStartupTasksPromise];
+  future = [didFinishDelayedStartupTasksPromise future];
 
-  return v3;
+  return future;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v124.receiver = self;
   v124.super_class = MailAppController;
-  v111 = v4;
-  [(MailAppController *)&v124 buildMenuWithBuilder:v4];
+  v111 = builderCopy;
+  [(MailAppController *)&v124 buildMenuWithBuilder:builderCopy];
   if (self)
   {
     v5 = self->_menuCommandsCollection;
     if (v5)
     {
-      v6 = [v4 system];
+      system = [builderCopy system];
       v7 = +[UIMenuSystem mainSystem];
-      v8 = v6 == v7;
+      v8 = system == v7;
 
       if (v8)
       {
@@ -2119,73 +2119,73 @@ LABEL_10:
         (v17[2])(v17, UIMenuFind, v91);
         (v17[2])(v17, UIMenuView, v90);
         v64 = (v13[2])(v13, UIMenuView, v89, 1);
-        v19 = [v64 identifier];
-        (v105[2])(v105, v19, v88);
+        identifier = [v64 identifier];
+        (v105[2])(v105, identifier, v88);
 
         [v107 insertSiblingMenu:v109 afterMenuForIdentifier:UIMenuView];
-        v20 = [v109 identifier];
+        identifier2 = [v109 identifier];
         v21 = sub_1000D52D4(@"GO_TO_MAILBOX_CATEGORY");
-        v22 = (v104[2])(v104, v20, v21, v87, 1);
+        v22 = (v104[2])(v104, identifier2, v21, v87, 1);
 
-        v23 = [v109 identifier];
+        identifier3 = [v109 identifier];
         v24 = sub_1000D52D4(@"MOVE_TO_FAVORITE_MAILBOX");
-        v25 = (v104[2])(v104, v23, v24, v86, 1);
+        v25 = (v104[2])(v104, identifier3, v24, v86, 1);
 
-        v26 = [v109 identifier];
+        identifier4 = [v109 identifier];
         v27 = sub_1000D52D4(@"GO_TO_FAVORITE_MAILBOX");
-        v28 = (v104[2])(v104, v26, v27, v85, 1);
+        v28 = (v104[2])(v104, identifier4, v27, v85, 1);
 
-        v29 = [v109 identifier];
-        v30 = (v13[2])(v13, v29, v84, 1);
+        identifier5 = [v109 identifier];
+        v30 = (v13[2])(v13, identifier5, v84, 1);
 
-        v31 = [v109 identifier];
-        [v107 insertSiblingMenu:v110 afterMenuForIdentifier:v31];
+        identifier6 = [v109 identifier];
+        [v107 insertSiblingMenu:v110 afterMenuForIdentifier:identifier6];
 
-        v32 = [v110 identifier];
-        v33 = (v13[2])(v13, v32, v83, 0);
+        identifier7 = [v110 identifier];
+        v33 = (v13[2])(v13, identifier7, v83, 0);
 
-        v34 = [v110 identifier];
-        v35 = (v13[2])(v13, v34, v82, 0);
+        identifier8 = [v110 identifier];
+        v35 = (v13[2])(v13, identifier8, v82, 0);
 
-        v36 = [v110 identifier];
+        identifier9 = [v110 identifier];
         v37 = _EFLocalizedString();
-        v70 = (v108[2])(v108, v36, v37, MFImageGlyphReadLater, v81, 0);
+        v70 = (v108[2])(v108, identifier9, v37, MFImageGlyphReadLater, v81, 0);
 
-        v38 = [v70 identifier];
-        v39 = (v13[2])(v13, v38, v80, 0);
+        identifier10 = [v70 identifier];
+        v39 = (v13[2])(v13, identifier10, v80, 0);
 
-        v40 = [v110 identifier];
-        v69 = (v13[2])(v13, v40, v79, 0);
+        identifier11 = [v110 identifier];
+        v69 = (v13[2])(v13, identifier11, v79, 0);
 
         if (UIAccessibilityShouldDifferentiateWithoutColor() || UIAccessibilityIsVoiceOverRunning())
         {
-          v41 = [v69 identifier];
+          identifier12 = [v69 identifier];
           v42 = _EFLocalizedString();
-          v106 = (v108[2])(v108, v41, v42, MFImageGlyphFlag, v78, 0);
+          v106 = (v108[2])(v108, identifier12, v42, MFImageGlyphFlag, v78, 0);
         }
 
         else
         {
-          v41 = [v69 identifier];
+          identifier12 = [v69 identifier];
           v42 = _EFLocalizedString();
-          v106 = (v65[2])(v65, v41, v42, MFImageGlyphFlag, v78, 0);
+          v106 = (v65[2])(v65, identifier12, v42, MFImageGlyphFlag, v78, 0);
         }
 
-        v43 = [v106 identifier];
-        v44 = (v13[2])(v13, v43, v77, 0);
+        identifier13 = [v106 identifier];
+        v44 = (v13[2])(v13, identifier13, v77, 0);
 
-        v45 = [v110 identifier];
-        v46 = (v13[2])(v13, v45, v76, 0);
+        identifier14 = [v110 identifier];
+        v46 = (v13[2])(v13, identifier14, v76, 0);
 
-        v47 = [v110 identifier];
-        v68 = (v13[2])(v13, v47, v75, 0);
+        identifier15 = [v110 identifier];
+        v68 = (v13[2])(v13, identifier15, v75, 0);
 
-        v48 = [v68 identifier];
+        identifier16 = [v68 identifier];
         v49 = _EFLocalizedString();
-        v67 = (v108[2])(v108, v48, v49, MFImageGlyphCategorizationAction, v74, 1);
+        v67 = (v108[2])(v108, identifier16, v49, MFImageGlyphCategorizationAction, v74, 1);
 
-        v50 = [v67 identifier];
-        v51 = (v13[2])(v13, v50, v73, 0);
+        identifier17 = [v67 identifier];
+        v51 = (v13[2])(v13, identifier17, v73, 0);
 
         (v103[2])(v103, UIMenuWindow, v72);
         v52 = sub_1000D52D4(@"QUOTE_LEVEL_TITLE");
@@ -2193,19 +2193,19 @@ LABEL_10:
 
         v66 = [v107 menuForIdentifier:UIMenuFormat];
         [v107 removeMenuForIdentifier:UIMenuFormat];
-        v54 = [v110 identifier];
-        [v107 insertSiblingMenu:v66 afterMenuForIdentifier:v54];
+        identifier18 = [v110 identifier];
+        [v107 insertSiblingMenu:v66 afterMenuForIdentifier:identifier18];
 
         v55 = [v107 commandForAction:"delete:" propertyList:0];
         v56 = v55;
         if (v55)
         {
-          v57 = [v55 title];
-          v58 = [v56 image];
-          v59 = [v56 action];
+          title = [v55 title];
+          image = [v56 image];
+          action = [v56 action];
           v60 = +[UICommand mail_deleteMessageCommandPropertyList];
-          v61 = [v56 alternates];
-          v62 = [UIKeyCommand commandWithTitle:v57 image:v58 action:v59 input:UIKeyInputDelete modifierFlags:0 propertyList:v60 alternates:v61];
+          alternates = [v56 alternates];
+          v62 = [UIKeyCommand commandWithTitle:title image:image action:action input:UIKeyInputDelete modifierFlags:0 propertyList:v60 alternates:alternates];
 
           [v62 setAttributes:{objc_msgSend(v56, "attributes")}];
           [v62 setRepeatBehavior:2];
@@ -2223,9 +2223,9 @@ LABEL_10:
   }
 }
 
-- (void)dismissComposeViewController:(id)a3 animated:(BOOL)a4 afterSending:(BOOL)a5
+- (void)dismissComposeViewController:(id)controller animated:(BOOL)animated afterSending:(BOOL)sending
 {
-  if (a5)
+  if (sending)
   {
     v5 = 2;
   }
@@ -2235,91 +2235,91 @@ LABEL_10:
     v5 = 3;
   }
 
-  v8 = [a3 view];
-  v6 = [v8 window];
-  v7 = [v6 windowScene];
-  [v7 closeSceneWithAnimation:v5];
+  view = [controller view];
+  window = [view window];
+  windowScene = [window windowScene];
+  [windowScene closeSceneWithAnimation:v5];
 }
 
-- (void)didFailToContinueUserActivityWithType:(id)a3 error:(id)a4
+- (void)didFailToContinueUserActivityWithType:(id)type error:(id)error
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(MailAppController *)self mostRecentMainScene];
-  [v7 didFailToContinueUserActivityWithType:v8 error:v6];
+  typeCopy = type;
+  errorCopy = error;
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  [mostRecentMainScene didFailToContinueUserActivityWithType:typeCopy error:errorCopy];
 }
 
 - (id)activeViewController
 {
-  v2 = [(MailAppController *)self mostRecentMainScene];
-  v3 = [v2 activeViewController];
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  activeViewController = [mostRecentMainScene activeViewController];
 
-  return v3;
+  return activeViewController;
 }
 
-- (void)mailComposeDeliveryControllerDidAttemptToSaveDraft:(id)a3 account:(id)a4 result:(unint64_t)a5
+- (void)mailComposeDeliveryControllerDidAttemptToSaveDraft:(id)draft account:(id)account result:(unint64_t)result
 {
-  v8 = a3;
-  v9 = a4;
-  v14 = self;
-  v10 = v8;
+  draftCopy = draft;
+  accountCopy = account;
+  selfCopy = self;
+  v10 = draftCopy;
   v15 = v10;
-  v11 = v9;
+  v11 = accountCopy;
   v16 = v11;
-  v17 = a5;
+  resultCopy = result;
   v12 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v12 performBlock:&v13];
 }
 
-- (void)mailComposeDeliveryControllerDidAttemptToSend:(id)a3 outgoingMessageDelivery:(id)a4 result:(id)a5
+- (void)mailComposeDeliveryControllerDidAttemptToSend:(id)send outgoingMessageDelivery:(id)delivery result:(id)result
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v16 = self;
-  v11 = v8;
+  sendCopy = send;
+  deliveryCopy = delivery;
+  resultCopy = result;
+  selfCopy = self;
+  v11 = sendCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = deliveryCopy;
   v18 = v12;
-  v13 = v10;
+  v13 = resultCopy;
   v19 = v13;
   v14 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v14 performBlock:&v15];
 }
 
-- (void)mailComposeDeliveryControllerWillAttemptToSend:(id)a3
+- (void)mailComposeDeliveryControllerWillAttemptToSend:(id)send
 {
-  v6 = self;
-  v3 = a3;
-  v7 = v3;
+  selfCopy = self;
+  sendCopy = send;
+  v7 = sendCopy;
   v4 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v4 performBlock:&v5];
 }
 
-- (void)mailComposeDeliveryController:(id)a3 didMoveCancelledMessageToDrafts:(id)a4 draftMailboxObjectID:(id)a5
+- (void)mailComposeDeliveryController:(id)controller didMoveCancelledMessageToDrafts:(id)drafts draftMailboxObjectID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v16 = self;
-  v11 = v8;
+  controllerCopy = controller;
+  draftsCopy = drafts;
+  dCopy = d;
+  selfCopy = self;
+  v11 = controllerCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = draftsCopy;
   v18 = v12;
-  v13 = v10;
+  v13 = dCopy;
   v19 = v13;
   v14 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v14 performBlock:&v15];
 }
 
-- (BOOL)_shouldShowAlertForUndoManager:(id)a3
+- (BOOL)_shouldShowAlertForUndoManager:(id)manager
 {
-  v4 = a3;
-  v5 = MFMailboxUid_ptr;
+  managerCopy = manager;
+  _motionKeyWindow = MFMailboxUid_ptr;
   if (![UIApplication instancesRespondToSelector:"_motionKeyWindow"]|| ![UIApplication instancesRespondToSelector:"_shouldShowAlertForUndoManager:"])
   {
-    v5 = +[MailAppController log];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    _motionKeyWindow = +[MailAppController log];
+    if (os_log_type_enabled(_motionKeyWindow, OS_LOG_TYPE_ERROR))
     {
       sub_100488360();
     }
@@ -2328,17 +2328,17 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v6 = v4;
-  if (!v4)
+  undoManager = managerCopy;
+  if (!managerCopy)
   {
-    v5 = [(MailAppController *)self _motionKeyWindow];
-    v6 = [v5 undoManager];
+    _motionKeyWindow = [(MailAppController *)self _motionKeyWindow];
+    undoManager = [_motionKeyWindow undoManager];
   }
 
   v9.receiver = self;
   v9.super_class = MailAppController;
-  v7 = [(MailAppController *)&v9 _shouldShowAlertForUndoManager:v6];
-  if (!v4)
+  v7 = [(MailAppController *)&v9 _shouldShowAlertForUndoManager:undoManager];
+  if (!managerCopy)
   {
 
 LABEL_10:
@@ -2347,15 +2347,15 @@ LABEL_10:
   return v7;
 }
 
-- (void)_showEditAlertViewWithUndoManager:(id)a3 window:(id)a4
+- (void)_showEditAlertViewWithUndoManager:(id)manager window:(id)window
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = MFMailboxUid_ptr;
+  managerCopy = manager;
+  windowCopy = window;
+  _motionKeyWindow = MFMailboxUid_ptr;
   if (![UIApplication instancesRespondToSelector:"_motionKeyWindow"]|| ![UIApplication instancesRespondToSelector:"_shouldShowAlertForUndoManager:"])
   {
-    v8 = +[MailAppController log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    _motionKeyWindow = +[MailAppController log];
+    if (os_log_type_enabled(_motionKeyWindow, OS_LOG_TYPE_ERROR))
     {
       sub_1004883A0();
     }
@@ -2363,17 +2363,17 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  v9 = v6;
-  if (!v6)
+  undoManager = managerCopy;
+  if (!managerCopy)
   {
-    v8 = [(MailAppController *)self _motionKeyWindow];
-    v9 = [v8 undoManager];
+    _motionKeyWindow = [(MailAppController *)self _motionKeyWindow];
+    undoManager = [_motionKeyWindow undoManager];
   }
 
   v10.receiver = self;
   v10.super_class = MailAppController;
-  [(MailAppController *)&v10 _showEditAlertViewWithUndoManager:v9 window:v7];
-  if (!v6)
+  [(MailAppController *)&v10 _showEditAlertViewWithUndoManager:undoManager window:windowCopy];
+  if (!managerCopy)
   {
 
 LABEL_9:
@@ -2413,16 +2413,16 @@ LABEL_9:
   }
 }
 
-- (BOOL)runTest:(id)a3 options:(id)a4
+- (BOOL)runTest:(id)test options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  testCopy = test;
+  optionsCopy = options;
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_1000D7058;
   v34[3] = &unk_10064D9B0;
   v34[4] = self;
-  v9 = v7;
+  v9 = testCopy;
   v35 = v9;
   v10 = objc_retainBlock(v34);
   v32[0] = _NSConcreteStackBlock;
@@ -2433,37 +2433,37 @@ LABEL_9:
   v11 = v9;
   v33 = v11;
   v12 = objc_retainBlock(v32);
-  objc_storeStrong(&qword_1006DCF88, a3);
-  objc_storeStrong(&qword_1006DCF90, a4);
-  v13 = [v8 mf_mailboxName];
+  objc_storeStrong(&qword_1006DCF88, test);
+  objc_storeStrong(&qword_1006DCF90, options);
+  mf_mailboxName = [optionsCopy mf_mailboxName];
   v14 = qword_1006DCF98;
-  qword_1006DCF98 = v13;
+  qword_1006DCF98 = mf_mailboxName;
 
-  v15 = [objc_opt_class() allTestsName];
+  allTestsName = [objc_opt_class() allTestsName];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_1000D7160;
   v30[3] = &unk_10064E820;
   v16 = v11;
   v31 = v16;
-  v17 = [v15 ef_any:v30];
+  v17 = [allTestsName ef_any:v30];
 
   if (v17)
   {
     [(MailAppController *)self waitForUIToSettleDown];
-    v18 = [v8 mf_testInterfaceOrientation];
+    mf_testInterfaceOrientation = [optionsCopy mf_testInterfaceOrientation];
     v19 = UIApp;
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_1000D716C;
     v22[3] = &unk_10064F9C8;
-    v28 = v18;
+    v28 = mf_testInterfaceOrientation;
     v23 = v16;
-    v24 = self;
-    v25 = v8;
+    selfCopy = self;
+    v25 = optionsCopy;
     v26 = v10;
     v27 = v12;
-    [v19 rotateIfNeeded:v18 completion:v22];
+    [v19 rotateIfNeeded:mf_testInterfaceOrientation completion:v22];
 
     v20 = 1;
   }
@@ -2472,18 +2472,18 @@ LABEL_9:
   {
     v29.receiver = self;
     v29.super_class = MailAppController;
-    v20 = [(MailAppController *)&v29 runTest:v16 options:v8];
+    v20 = [(MailAppController *)&v29 runTest:v16 options:optionsCopy];
   }
 
   return v20;
 }
 
-- (void)finishedTest:(id)a3 extraResults:(id)a4
+- (void)finishedTest:(id)test extraResults:(id)results
 {
   v6 = qword_1006DCF88;
   qword_1006DCF88 = 0;
-  v7 = a4;
-  v8 = a3;
+  resultsCopy = results;
+  testCopy = test;
 
   v9 = qword_1006DCF90;
   qword_1006DCF90 = 0;
@@ -2493,25 +2493,25 @@ LABEL_9:
 
   v11.receiver = self;
   v11.super_class = MailAppController;
-  [(MailAppController *)&v11 finishedTest:v8 extraResults:v7];
+  [(MailAppController *)&v11 finishedTest:testCopy extraResults:resultsCopy];
 }
 
-- (void)_finishTestDismissingReply:(id)a3
+- (void)_finishTestDismissingReply:(id)reply
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000D8018;
   v3[3] = &unk_10064C7E8;
   v3[4] = self;
-  [(MailAppController *)self finishedTest:a3 extraResults:0 withTeardownBlock:v3];
+  [(MailAppController *)self finishedTest:reply extraResults:0 withTeardownBlock:v3];
 }
 
-- (void)failedTest:(id)a3 withFailure:(id)a4
+- (void)failedTest:(id)test withFailure:(id)failure
 {
   v6 = qword_1006DCF88;
   qword_1006DCF88 = 0;
-  v7 = a4;
-  v8 = a3;
+  failureCopy = failure;
+  testCopy = test;
 
   v9 = qword_1006DCF90;
   qword_1006DCF90 = 0;
@@ -2521,23 +2521,23 @@ LABEL_9:
 
   v11.receiver = self;
   v11.super_class = MailAppController;
-  [(MailAppController *)&v11 failedTest:v8 withFailure:v7];
+  [(MailAppController *)&v11 failedTest:testCopy withFailure:failureCopy];
 }
 
-- (id)getControllerOfType:(Class)a3 fromNavigationController:(id)a4
+- (id)getControllerOfType:(Class)type fromNavigationController:(id)controller
 {
-  v4 = a4;
-  v5 = [v4 viewControllers];
-  if (v5)
+  controllerCopy = controller;
+  viewControllers = [controllerCopy viewControllers];
+  if (viewControllers)
   {
-    for (i = 0; i < [v5 count]; ++i)
+    for (i = 0; i < [viewControllers count]; ++i)
     {
-      v7 = [v5 objectAtIndex:i];
+      v7 = [viewControllers objectAtIndex:i];
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v9 = [v5 objectAtIndex:i];
+        v9 = [viewControllers objectAtIndex:i];
         goto LABEL_8;
       }
     }
@@ -2549,10 +2549,10 @@ LABEL_8:
   return v9;
 }
 
-- (id)getControllerOfType:(Class)a3
+- (id)getControllerOfType:(Class)type
 {
-  v5 = [(MailAppController *)self masterNavigationController];
-  v6 = [(MailAppController *)self getControllerOfType:a3 fromNavigationController:v5];
+  masterNavigationController = [(MailAppController *)self masterNavigationController];
+  v6 = [(MailAppController *)self getControllerOfType:type fromNavigationController:masterNavigationController];
 
   return v6;
 }
@@ -2580,29 +2580,29 @@ LABEL_8:
 
 - (id)getConversationViewController
 {
-  v2 = [(MailAppController *)self mostRecentMainScene];
-  v3 = [v2 splitViewController];
-  v4 = [v3 messageDetailNavController];
-  v5 = [v4 conversationViewController];
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  splitViewController = [mostRecentMainScene splitViewController];
+  messageDetailNavController = [splitViewController messageDetailNavController];
+  conversationViewController = [messageDetailNavController conversationViewController];
 
-  return v5;
+  return conversationViewController;
 }
 
 - (id)getAccount
 {
-  v2 = [(MailAppController *)self mostRecentMainScene];
-  v3 = [v2 _defaultAccountsToSelect];
-  v4 = [v3 anyObject];
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  _defaultAccountsToSelect = [mostRecentMainScene _defaultAccountsToSelect];
+  anyObject = [_defaultAccountsToSelect anyObject];
 
-  return v4;
+  return anyObject;
 }
 
-- (id)getMailboxWithName:(id)a3
+- (id)getMailboxWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[MailChangeManager sharedChangeManager];
-  v6 = [(MailAppController *)self getAccount];
-  v7 = [v5 allMailboxUidsSortedWithSpecialsAtTopForAccount:v6 includingLocals:0 client:0 outbox:0];
+  getAccount = [(MailAppController *)self getAccount];
+  v7 = [v5 allMailboxUidsSortedWithSpecialsAtTopForAccount:getAccount includingLocals:0 client:0 outbox:0];
 
   v18 = 0u;
   v19 = 0u;
@@ -2623,8 +2623,8 @@ LABEL_8:
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 name];
-        v14 = [v13 isEqualToString:v4];
+        name = [v12 name];
+        v14 = [name isEqualToString:nameCopy];
 
         if (v14)
         {
@@ -2651,8 +2651,8 @@ LABEL_11:
 - (void)switchToInbox
 {
   v3 = +[MailChangeManager sharedChangeManager];
-  v4 = [(MailAppController *)self getAccount];
-  v5 = [v3 allMailboxUidsSortedWithSpecialsAtTopForAccount:v4 includingLocals:0 client:0 outbox:0];
+  getAccount = [(MailAppController *)self getAccount];
+  v5 = [v3 allMailboxUidsSortedWithSpecialsAtTopForAccount:getAccount includingLocals:0 client:0 outbox:0];
 
   v14 = 0u;
   v15 = 0u;
@@ -2675,8 +2675,8 @@ LABEL_11:
         v10 = *(*(&v12 + 1) + 8 * i);
         if ([v10 mailboxType] == 7)
         {
-          v11 = [(MailAppController *)self getMailboxListViewControllerMail];
-          [v11 setSelectedMailbox:v10];
+          getMailboxListViewControllerMail = [(MailAppController *)self getMailboxListViewControllerMail];
+          [getMailboxListViewControllerMail setSelectedMailbox:v10];
 
           goto LABEL_11;
         }
@@ -2702,8 +2702,8 @@ LABEL_11:
     v5 = [(MailAppController *)self getMailboxWithName:?];
     if (v5)
     {
-      v3 = [(MailAppController *)self getMailboxListViewControllerMail];
-      [v3 setSelectedMailbox:v5];
+      getMailboxListViewControllerMail = [(MailAppController *)self getMailboxListViewControllerMail];
+      [getMailboxListViewControllerMail setSelectedMailbox:v5];
     }
   }
 
@@ -2718,8 +2718,8 @@ LABEL_11:
 
   if (+[UIDevice mf_isPadIdiom](UIDevice, "mf_isPadIdiom") && [qword_1006DCF88 rangeOfString:@"DismissCompose"] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(MailAppController *)self getMessageListViewController];
-    [v7 selectMessageAtIndex:0];
+    getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+    [getMessageListViewController selectMessageAtIndex:0];
   }
 }
 
@@ -2727,9 +2727,9 @@ LABEL_11:
 {
   if (+[UIDevice mf_isPadIdiom])
   {
-    v3 = [(MailAppController *)self getMessageListViewController];
+    getMessageListViewController = [(MailAppController *)self getMessageListViewController];
 
-    if (!v3)
+    if (!getMessageListViewController)
     {
       v5 = +[NSRunLoop currentRunLoop];
       v4 = [NSDate dateWithTimeIntervalSinceNow:2.0];
@@ -2738,17 +2738,17 @@ LABEL_11:
   }
 }
 
-- (id)_prepareForScrollMessagesTest:(id)a3 inEditMode:(BOOL)a4 currentDelay:(double *)a5
+- (id)_prepareForScrollMessagesTest:(id)test inEditMode:(BOOL)mode currentDelay:(double *)delay
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(MailAppController *)self getMessageListViewController];
-  v10 = v9;
-  if (v9)
+  modeCopy = mode;
+  testCopy = test;
+  getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+  v10 = getMessageListViewController;
+  if (getMessageListViewController)
   {
-    if (a5)
+    if (delay)
     {
-      v11 = *a5;
+      v11 = *delay;
     }
 
     else
@@ -2756,7 +2756,7 @@ LABEL_11:
       v11 = 0.0;
     }
 
-    [v9 setEditing:0 animated:0];
+    [getMessageListViewController setEditing:0 animated:0];
     if (+[UIDevice mf_isPadIdiom])
     {
       v11 = v11 + 2.0;
@@ -2786,7 +2786,7 @@ LABEL_11:
       [EFScheduler mf_afterUIDelay:v22 performBlock:v13];
     }
 
-    if (v6)
+    if (modeCopy)
     {
       v13 = v13 + 2.0;
       v20[0] = _NSConcreteStackBlock;
@@ -2799,7 +2799,7 @@ LABEL_11:
 
     if (EMBlackPearlIsFeatureEnabled())
     {
-      v14 = [v8 objectForKeyedSubscript:@"testName"];
+      v14 = [testCopy objectForKeyedSubscript:@"testName"];
       v15 = [v14 mf_containsSubstring:@"SenderListNatural"];
 
       if (v15)
@@ -2815,9 +2815,9 @@ LABEL_11:
       }
     }
 
-    if (a5)
+    if (delay)
     {
-      *a5 = v13;
+      *delay = v13;
     }
 
     v16 = v10;
@@ -2825,26 +2825,26 @@ LABEL_11:
 
   else
   {
-    v12 = [v8 objectForKey:@"testName"];
+    v12 = [testCopy objectForKey:@"testName"];
     [(MailAppController *)self failedTest:v12];
   }
 
   return v10;
 }
 
-- (void)_showMessageListView:(BOOL)a3
+- (void)_showMessageListView:(BOOL)view
 {
-  v3 = a3;
-  v5 = [(MailAppController *)self mostRecentMainScene];
-  v4 = [v5 splitViewController];
-  [v4 showMessageListViewController:1 animated:v3 completion:0];
+  viewCopy = view;
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  splitViewController = [mostRecentMainScene splitViewController];
+  [splitViewController showMessageListViewController:1 animated:viewCopy completion:0];
 }
 
-- (void)_performScrollTestOnMessageListOnCollectionView:(id)a3 withOptions:(id)a4 isNatural:(BOOL)a5
+- (void)_performScrollTestOnMessageListOnCollectionView:(id)view withOptions:(id)options isNatural:(BOOL)natural
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  naturalCopy = natural;
+  viewCopy = view;
+  optionsCopy = options;
   v10 = +[MailAppController log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -2852,46 +2852,46 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Starting to perform scroll test", v29, 2u);
   }
 
-  if (v8)
+  if (viewCopy)
   {
-    if (v5)
+    if (naturalCopy)
     {
 LABEL_5:
       v11 = [RPTScrollViewTestParameters alloc];
-      v12 = [v9 mf_testName];
-      v13 = [v11 initWithTestName:v12 scrollView:v8 completionHandler:0];
+      mf_testName = [optionsCopy mf_testName];
+      mf_testName2 = [v11 initWithTestName:mf_testName scrollView:viewCopy completionHandler:0];
 
-      [v9 mf_pages];
+      [optionsCopy mf_pages];
       RPTAmplitudeFromPagesOfView();
-      [v13 setAmplitude:v14 * 0.8];
-      [v13 setDirection:3];
-      [v13 setIterationDurationFactor:0.9];
+      [mf_testName2 setAmplitude:v14 * 0.8];
+      [mf_testName2 setDirection:3];
+      [mf_testName2 setIterationDurationFactor:0.9];
       RPTGetBoundsForView();
       v16 = v15;
       v18 = v17;
       v20 = v19;
       v22 = v21;
-      [v8 adjustedContentInset];
+      [viewCopy adjustedContentInset];
       v24 = v23;
-      [v8 adjustedContentInset];
-      [v13 setScrollingBounds:{v16 + 0.0, v18 + v24, v20, v22 - (v24 + v25 + 5.0)}];
-      [RPTTestRunner runTestWithParameters:v13];
+      [viewCopy adjustedContentInset];
+      [mf_testName2 setScrollingBounds:{v16 + 0.0, v18 + v24, v20, v22 - (v24 + v25 + 5.0)}];
+      [RPTTestRunner runTestWithParameters:mf_testName2];
       goto LABEL_11;
     }
   }
 
   else
   {
-    v26 = [(MailAppController *)self getMessageListViewController];
-    v8 = [v26 collectionView];
+    getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+    viewCopy = [getMessageListViewController collectionView];
 
-    if (v5)
+    if (naturalCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v27 = [v8 desiredScrollLength:v9];
+  v27 = [viewCopy desiredScrollLength:optionsCopy];
   if (v27 >= 0)
   {
     v28 = v27;
@@ -2902,21 +2902,21 @@ LABEL_5:
     v28 = v27 + 15;
   }
 
-  v13 = [v9 mf_testName];
-  [v8 _performScrollTest:v13 iterations:objc_msgSend(v9 delta:"mf_iterations") length:{objc_msgSend(v9, "mf_scrollOffset"), (v28 >> 4)}];
+  mf_testName2 = [optionsCopy mf_testName];
+  [viewCopy _performScrollTest:mf_testName2 iterations:objc_msgSend(optionsCopy delta:"mf_iterations") length:{objc_msgSend(optionsCopy, "mf_scrollOffset"), (v28 >> 4)}];
 LABEL_11:
 }
 
-- (id)_prepareForScrollMailboxesTest:(id)a3
+- (id)_prepareForScrollMailboxesTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   if ((+[UIDevice mf_isPadIdiom]& 1) != 0)
   {
-    v5 = [(MailAppController *)self getMessageListViewController];
-    v6 = v5;
-    if (v5)
+    getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+    v6 = getMessageListViewController;
+    if (getMessageListViewController)
     {
-      [v5 setEditing:0 animated:0];
+      [getMessageListViewController setEditing:0 animated:0];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_1000D94D4;
@@ -2940,16 +2940,16 @@ LABEL_11:
       }
     }
 
-    v7 = [(MailAppController *)self getMailboxPickerController];
-    v8 = v7;
-    if (v7)
+    getMailboxPickerController = [(MailAppController *)self getMailboxPickerController];
+    v8 = getMailboxPickerController;
+    if (getMailboxPickerController)
     {
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_1000D94F8;
       v14[3] = &unk_10064C660;
       v14[4] = self;
-      v9 = v7;
+      v9 = getMailboxPickerController;
       v15 = v9;
       [EFScheduler mf_afterUIDelay:v14 performBlock:8.0];
       v10 = v9;
@@ -2957,14 +2957,14 @@ LABEL_11:
 
     else
     {
-      v12 = [v4 objectForKey:@"testName"];
+      v12 = [testCopy objectForKey:@"testName"];
       [(MailAppController *)self failedTest:v12];
     }
   }
 
   else
   {
-    v11 = [v4 objectForKey:@"testName"];
+    v11 = [testCopy objectForKey:@"testName"];
     [(MailAppController *)self failedTest:v11];
 
     v8 = 0;
@@ -2973,22 +2973,22 @@ LABEL_11:
   return v8;
 }
 
-- (void)startScrollMessagesInEditModeWithSelectionTest:(id)a3
+- (void)startScrollMessagesInEditModeWithSelectionTest:(id)test
 {
-  v6 = a3;
+  testCopy = test;
   v4 = [MailAppController _prepareForScrollMessagesTest:"_prepareForScrollMessagesTest:inEditMode:currentDelay:" inEditMode:? currentDelay:?];
 
   if (!v4)
   {
-    v5 = [v6 objectForKey:@"testName"];
+    v5 = [testCopy objectForKey:@"testName"];
     [(MailAppController *)self failedTest:v5];
   }
 }
 
-- (void)startScrollMessagesInEditModeTest:(id)a3
+- (void)startScrollMessagesInEditModeTest:(id)test
 {
-  v4 = a3;
-  v5 = [(MailAppController *)self _prepareForScrollMessagesTest:v4 inEditMode:1 currentDelay:0];
+  testCopy = test;
+  v5 = [(MailAppController *)self _prepareForScrollMessagesTest:testCopy inEditMode:1 currentDelay:0];
 
   if (v5)
   {
@@ -2997,25 +2997,25 @@ LABEL_11:
     v7[2] = sub_1000D9744;
     v7[3] = &unk_10064C660;
     v7[4] = self;
-    v8 = v4;
+    v8 = testCopy;
     [EFScheduler mf_afterUIDelay:v7 performBlock:12.0];
   }
 
   else
   {
-    v6 = [v4 objectForKey:@"testName"];
+    v6 = [testCopy objectForKey:@"testName"];
     [(MailAppController *)self failedTest:v6];
   }
 }
 
-- (void)startSenderListSelectionTestWithOptions:(id)a3
+- (void)startSenderListSelectionTestWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v12 = 0.0;
-  v5 = [(MailAppController *)self _prepareForScrollMessagesTest:v4 inEditMode:0 currentDelay:&v12];
+  v5 = [(MailAppController *)self _prepareForScrollMessagesTest:optionsCopy inEditMode:0 currentDelay:&v12];
   if (v5)
   {
-    v6 = [v4 mf_testName];
+    mf_testName = [optionsCopy mf_testName];
     v12 = v12 + 2.0;
     v7 = v12;
     v9[0] = _NSConcreteStackBlock;
@@ -3023,22 +3023,22 @@ LABEL_11:
     v9[2] = sub_1000D98A8;
     v9[3] = &unk_10064C6B0;
     v9[4] = self;
-    v10 = v6;
+    v10 = mf_testName;
     v11 = v5;
-    v8 = v6;
+    v8 = mf_testName;
     [EFScheduler mf_afterUIDelay:v9 performBlock:v7];
   }
 }
 
-- (void)reallyStartScrollMessageViewListTest:(id)a3
+- (void)reallyStartScrollMessageViewListTest:(id)test
 {
-  v14 = a3;
-  v4 = [v14 objectForKey:@"testName"];
+  testCopy = test;
+  v4 = [testCopy objectForKey:@"testName"];
   [(MailAppController *)self startedTest:v4];
 
-  v5 = [(MailAppController *)self getMessageListViewController];
-  v6 = [v5 collectionView];
-  v7 = [v6 desiredScrollLength:v14];
+  getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+  collectionView = [getMessageListViewController collectionView];
+  v7 = [collectionView desiredScrollLength:testCopy];
   if (v7 >= 0)
   {
     v8 = v7;
@@ -3049,34 +3049,34 @@ LABEL_11:
     v8 = v7 + 15;
   }
 
-  v9 = [v5 collectionView];
-  v10 = [v14 objectForKey:@"testName"];
-  v11 = [v14 objectForKey:@"iterations"];
-  v12 = [v11 intValue];
-  v13 = [v14 objectForKey:@"offset"];
-  [v9 _performScrollTest:v10 iterations:v12 delta:objc_msgSend(v13 length:{"intValue"), (v8 >> 4)}];
+  collectionView2 = [getMessageListViewController collectionView];
+  v10 = [testCopy objectForKey:@"testName"];
+  v11 = [testCopy objectForKey:@"iterations"];
+  intValue = [v11 intValue];
+  v13 = [testCopy objectForKey:@"offset"];
+  [collectionView2 _performScrollTest:v10 iterations:intValue delta:objc_msgSend(v13 length:{"intValue"), (v8 >> 4)}];
 }
 
-- (void)startScrollMessageListTest:(id)a3 withOptions:(id)a4
+- (void)startScrollMessageListTest:(id)test withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  optionsCopy = options;
   if (+[UIDevice mf_isPadIdiom])
   {
-    if ([v6 mf_isScrollMessageListTest])
+    if ([testCopy mf_isScrollMessageListTest])
     {
-      [(MailAppController *)self _prepareForScrollMessagesTest:v7 inEditMode:0 currentDelay:0];
+      [(MailAppController *)self _prepareForScrollMessagesTest:optionsCopy inEditMode:0 currentDelay:0];
     }
 
     else
     {
-      [(MailAppController *)self _prepareForScrollMailboxesTest:v7];
+      [(MailAppController *)self _prepareForScrollMailboxesTest:optionsCopy];
     }
     v8 = ;
     v9 = v8;
     if (!v8)
     {
-      [(MailAppController *)self failedTest:v6];
+      [(MailAppController *)self failedTest:testCopy];
       goto LABEL_12;
     }
 
@@ -3086,8 +3086,8 @@ LABEL_11:
     v20[3] = &unk_10064E348;
     v20[4] = self;
     v21 = v8;
-    v22 = v7;
-    v23 = v6;
+    v22 = optionsCopy;
+    v23 = testCopy;
     [EFScheduler mf_afterUIDelay:v20 performBlock:12.0];
 
     v13 = v21;
@@ -3096,9 +3096,9 @@ LABEL_11:
   else
   {
     v19 = 0.0;
-    v9 = [(MailAppController *)self _prepareForScrollMessagesTest:v7 inEditMode:0 currentDelay:&v19];
+    v9 = [(MailAppController *)self _prepareForScrollMessagesTest:optionsCopy inEditMode:0 currentDelay:&v19];
     v19 = v19 + 2.0;
-    v10 = [v6 hasSuffix:@"Natural"];
+    v10 = [testCopy hasSuffix:@"Natural"];
     v11 = v19;
     if (v10)
     {
@@ -3108,7 +3108,7 @@ LABEL_11:
       v16[3] = &unk_10064C6B0;
       v16[4] = self;
       v17 = v9;
-      v18 = v7;
+      v18 = optionsCopy;
       [EFScheduler mf_afterUIDelay:v16 performBlock:v11];
       v12 = &v17;
     }
@@ -3120,7 +3120,7 @@ LABEL_11:
       v14[2] = sub_1000D9F8C;
       v14[3] = &unk_10064C660;
       v14[4] = self;
-      v15 = v7;
+      v15 = optionsCopy;
       [EFScheduler mf_afterUIDelay:v14 performBlock:v11];
       v12 = &v15;
     }
@@ -3131,12 +3131,12 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)startScrollMessageListSearchTestWithOptions:(id)a3
+- (void)startScrollMessageListSearchTestWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v29 = 1.0;
-  v5 = [(MailAppController *)self _prepareForScrollMessagesTest:v4 inEditMode:0 currentDelay:&v29];
-  v6 = [v5 conversationViewController];
+  v5 = [(MailAppController *)self _prepareForScrollMessagesTest:optionsCopy inEditMode:0 currentDelay:&v29];
+  conversationViewController = [v5 conversationViewController];
   if (+[UIDevice mf_isPadIdiom])
   {
     if ((qword_1006DCFB8 - 1) <= 1)
@@ -3151,11 +3151,11 @@ LABEL_12:
     }
   }
 
-  else if (!v5 || [v6 isFullyVisible])
+  else if (!v5 || [conversationViewController isFullyVisible])
   {
     v29 = v29 + 1.0;
-    v7 = [v5 navigationController];
-    v8 = [v7 popToViewController:v5 animated:1];
+    navigationController = [v5 navigationController];
+    v8 = [navigationController popToViewController:v5 animated:1];
 
     [(MailAppController *)self _waitForTimeInterval:v29];
   }
@@ -3168,7 +3168,7 @@ LABEL_12:
   v25[3] = &unk_10064C660;
   v10 = v5;
   v26 = v10;
-  v11 = v4;
+  v11 = optionsCopy;
   v27 = v11;
   [EFScheduler mf_afterUIDelay:v25 performBlock:v9];
   v29 = v29 + 1.0;
@@ -3179,7 +3179,7 @@ LABEL_12:
   v21[3] = &unk_10064C6B0;
   v13 = v10;
   v22 = v13;
-  v23 = self;
+  selfCopy = self;
   v14 = v11;
   v24 = v14;
   [EFScheduler mf_afterUIDelay:v21 performBlock:v12];
@@ -3197,21 +3197,21 @@ LABEL_12:
   [EFScheduler mf_afterUIDelay:v18 performBlock:v15];
 }
 
-- (void)startSearchWhileTypingTestWithOptions:(id)a3
+- (void)startSearchWhileTypingTestWithOptions:(id)options
 {
   v51 = 0.5;
-  v30 = a3;
-  v26 = [v30 objectForKey:@"testName"];
-  v29 = [(MailAppController *)self _prepareForScrollMessagesTest:v30 inEditMode:0 currentDelay:&v51];
-  v28 = [v29 conversationViewController];
-  v25 = [v29 presentedViewController];
-  v4 = [v25 searchResultsUpdater];
-  v31 = self;
-  v5 = [v30 objectForKeyedSubscript:@"searchStrings"];
+  optionsCopy = options;
+  v26 = [optionsCopy objectForKey:@"testName"];
+  v29 = [(MailAppController *)self _prepareForScrollMessagesTest:optionsCopy inEditMode:0 currentDelay:&v51];
+  conversationViewController = [v29 conversationViewController];
+  presentedViewController = [v29 presentedViewController];
+  searchResultsUpdater = [presentedViewController searchResultsUpdater];
+  selfCopy = self;
+  v5 = [optionsCopy objectForKeyedSubscript:@"searchStrings"];
   v27 = [v5 componentsSeparatedByString:@" "];
 
   v6 = v29;
-  v7 = v31;
+  v7 = selfCopy;
   if (+[UIDevice mf_isPadIdiom]&& (qword_1006DCFB8 - 1) <= 1)
   {
     v51 = v51 + 0.5;
@@ -3219,19 +3219,19 @@ LABEL_12:
     v50[1] = 3221225472;
     v50[2] = sub_1000DADF4;
     v50[3] = &unk_10064C7E8;
-    v50[4] = v31;
+    v50[4] = selfCopy;
     [EFScheduler mf_afterUIDelay:v50 performBlock:?];
   }
 
-  else if (!v29 || [v28 isFullyVisible])
+  else if (!v29 || [conversationViewController isFullyVisible])
   {
     v51 = v51 + 0.5;
-    v8 = [v29 navigationController];
-    v9 = [v8 popToViewController:v29 animated:1];
+    navigationController = [v29 navigationController];
+    v9 = [navigationController popToViewController:v29 animated:1];
 
-    v7 = v31;
+    v7 = selfCopy;
     v6 = v29;
-    [(MailAppController *)v31 _waitForTimeInterval:v51];
+    [(MailAppController *)selfCopy _waitForTimeInterval:v51];
   }
 
   v51 = v51 + 0.5;
@@ -3247,7 +3247,7 @@ LABEL_12:
   v49 = v12;
   [EFScheduler mf_afterUIDelay:v47 performBlock:v10];
   v51 = v51 + 1.0;
-  v13 = [v30 objectForKeyedSubscript:@"timeBetweenLetters"];
+  v13 = [optionsCopy objectForKeyedSubscript:@"timeBetweenLetters"];
   [v13 floatValue];
   v15 = v14;
 
@@ -3284,7 +3284,7 @@ LABEL_12:
           v39 = v12;
           v40 = v20;
           v42 = v19;
-          v41 = v4;
+          v41 = searchResultsUpdater;
           [EFScheduler mf_afterUIDelay:v38 performBlock:v21];
           v51 = v51 + v17;
 
@@ -3306,7 +3306,7 @@ LABEL_12:
   v35[1] = 3221225472;
   v35[2] = sub_1000DAF48;
   v35[3] = &unk_10064C6B0;
-  v35[4] = v31;
+  v35[4] = selfCopy;
   v23 = v11;
   v36 = v23;
   v24 = v12;
@@ -3314,9 +3314,9 @@ LABEL_12:
   [EFScheduler mf_afterUIDelay:v35 performBlock:v22];
 }
 
-- (void)_reallyStartShowComposeTest:(id)a3
+- (void)_reallyStartShowComposeTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = [[_MFMailCompositionContext alloc] initWithComposeType:0];
   [v5 setShowKeyboardImmediately:1];
   v6 = MFMailComposeViewDidShow;
@@ -3325,7 +3325,7 @@ LABEL_12:
   v18[2] = sub_1000DB21C;
   v18[3] = &unk_10064F9F0;
   v18[4] = self;
-  v7 = v4;
+  v7 = testCopy;
   v19 = v7;
   [(MailAppController *)self installNotificationObserverForNotificationName:v6 forOneNotification:1 usingBlock:v18];
   if ((+[UIDevice mf_isPadIdiom]& 1) == 0)
@@ -3344,69 +3344,69 @@ LABEL_12:
   v11 = 3221225472;
   v12 = sub_1000DB248;
   v13 = &unk_10064F9F0;
-  v14 = self;
+  selfCopy = self;
   v9 = v7;
   v15 = v9;
   [(MailAppController *)self installNotificationObserverForNotificationName:UIKeyboardDidShowNotification forOneNotification:1 usingBlock:&v10];
-  [(MailAppController *)self startedTest:v9, v10, v11, v12, v13, v14];
+  [(MailAppController *)self startedTest:v9, v10, v11, v12, v13, selfCopy];
   [(MailAppController *)self startedSubTest:@"ComposeViewAnimationStart" forTest:v9];
   [(MailAppController *)self showComposeWithContext:v5 animated:1 initialTitle:0 completionBlock:0];
 }
 
-- (void)_finishTestIfComposeAndKeyboardDidShow:(id)a3
+- (void)_finishTestIfComposeAndKeyboardDidShow:(id)show
 {
-  v4 = a3;
+  showCopy = show;
   if ((+[UIDevice mf_isPadIdiom]& 1) != 0 || byte_1006DCFC0 == 1 && byte_1006DCFC1 == 1)
   {
-    [(MailAppController *)self _finishTestDismissingReply:v4];
+    [(MailAppController *)self _finishTestDismissingReply:showCopy];
     byte_1006DCFC0 = 0;
     byte_1006DCFC1 = 0;
   }
 }
 
-- (void)_reallyStartShowEmptyComposeTest:(id)a3
+- (void)_reallyStartShowEmptyComposeTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = MFMailComposeViewDidShow;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000DB4AC;
   v15[3] = &unk_10064F9F0;
   v15[4] = self;
-  v6 = v4;
+  v6 = testCopy;
   v16 = v6;
   [(MailAppController *)self installNotificationObserverForNotificationName:v5 forOneNotification:1 usingBlock:v15];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_1000DB4C0;
   v12 = &unk_10064F9F0;
-  v13 = self;
+  selfCopy = self;
   v7 = v6;
   v14 = v7;
   [(MailAppController *)self installNotificationObserverForNotificationName:UIKeyboardDidShowNotification forOneNotification:1 usingBlock:&v9];
-  [(MailAppController *)self startedTest:v7, v9, v10, v11, v12, v13];
+  [(MailAppController *)self startedTest:v7, v9, v10, v11, v12, selfCopy];
   [(MailAppController *)self startedSubTest:@"ComposeViewAnimationStart" forTest:v7];
-  v8 = [(MailAppController *)self mostRecentMainScene];
-  [v8 composeButtonPressed:0];
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  [mostRecentMainScene composeButtonPressed:0];
 }
 
-- (void)_reallyStartShowEmptyComposeAnimationTest:(id)a3 composeButtonItem:(id)a4
+- (void)_reallyStartShowEmptyComposeAnimationTest:(id)test composeButtonItem:(id)item
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DB5B0;
   v7[3] = &unk_10064C6B0;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(MailAppController *)v8 installCACommitCompletionBlock:v7];
+  selfCopy = self;
+  testCopy = test;
+  itemCopy = item;
+  v5 = itemCopy;
+  v6 = testCopy;
+  [(MailAppController *)selfCopy installCACommitCompletionBlock:v7];
 }
 
-- (void)_prepareForShowComposeTest:(id)a3
+- (void)_prepareForShowComposeTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000DB7E0;
@@ -3418,59 +3418,59 @@ LABEL_12:
   v6[2] = sub_1000DB7EC;
   v6[3] = &unk_10064C660;
   v6[4] = self;
-  v5 = v4;
+  v5 = testCopy;
   v7 = v5;
   [EFScheduler mf_afterUIDelay:v6 performBlock:4.0];
 }
 
-- (void)searchPseudoContact:(id)a3
+- (void)searchPseudoContact:(id)contact
 {
-  v11 = a3;
-  v4 = [(MailAppController *)self dockContainer];
-  v5 = [v4 activeViewController];
+  contactCopy = contact;
+  dockContainer = [(MailAppController *)self dockContainer];
+  activeViewController = [dockContainer activeViewController];
 
-  if (v5)
+  if (activeViewController)
   {
-    v6 = [v5 _mailComposeController];
-    v7 = [v6 mailComposeView];
-    v8 = [v7 toField];
+    _mailComposeController = [activeViewController _mailComposeController];
+    mailComposeView = [_mailComposeController mailComposeView];
+    toField = [mailComposeView toField];
 
-    v9 = [v8 textView];
-    [v9 setText:v11];
+    textView = [toField textView];
+    [textView setText:contactCopy];
 
-    v10 = [v8 textView];
-    [v8 textViewDidChange:v10];
+    textView2 = [toField textView];
+    [toField textViewDidChange:textView2];
   }
 }
 
-- (void)scrollPseudoContactList:(id)a3
+- (void)scrollPseudoContactList:(id)list
 {
-  v15 = a3;
-  v4 = [(MailAppController *)self dockContainer];
-  v5 = [v4 activeViewController];
+  listCopy = list;
+  dockContainer = [(MailAppController *)self dockContainer];
+  activeViewController = [dockContainer activeViewController];
 
-  v6 = [v5 _mailComposeController];
-  v7 = [v6 mailComposeView];
-  v8 = [v7 searchTableView];
+  _mailComposeController = [activeViewController _mailComposeController];
+  mailComposeView = [_mailComposeController mailComposeView];
+  searchTableView = [mailComposeView searchTableView];
 
-  v9 = [v15 objectForKey:@"offset"];
-  v10 = [v9 intValue];
+  v9 = [listCopy objectForKey:@"offset"];
+  intValue = [v9 intValue];
 
-  v11 = [v15 objectForKey:@"iterations"];
-  v12 = [v11 intValue];
+  v11 = [listCopy objectForKey:@"iterations"];
+  intValue2 = [v11 intValue];
 
-  v13 = [v8 desiredScrollLength:v15];
-  v14 = [v15 objectForKey:@"testName"];
-  [v8 _performScrollTest:v14 iterations:v12 delta:v10 length:v13];
+  v13 = [searchTableView desiredScrollLength:listCopy];
+  v14 = [listCopy objectForKey:@"testName"];
+  [searchTableView _performScrollTest:v14 iterations:intValue2 delta:intValue length:v13];
 }
 
-- (void)_reallyStartComposeToPseudoContactTest:(id)a3 withOptions:(id)a4
+- (void)_reallyStartComposeToPseudoContactTest:(id)test withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  optionsCopy = options;
   v8 = [[_MFMailCompositionContext alloc] initWithComposeType:0];
   [v8 setShowKeyboardImmediately:1];
-  v9 = [v7 objectForKey:@"PseudoContact"];
+  v9 = [optionsCopy objectForKey:@"PseudoContact"];
   v10 = MFMailComposeViewDidShow;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
@@ -3485,21 +3485,21 @@ LABEL_12:
   v15 = 3221225472;
   v16 = sub_1000DBCFC;
   v17 = &unk_10064F9F0;
-  v18 = self;
-  v13 = v6;
+  selfCopy = self;
+  v13 = testCopy;
   v19 = v13;
   [(MailAppController *)self installNotificationObserverForNotificationName:v12 forOneNotification:1 usingBlock:&v14];
-  [(MailAppController *)self showComposeWithContext:v8 animated:1 initialTitle:0 completionBlock:0, v14, v15, v16, v17, v18];
+  [(MailAppController *)self showComposeWithContext:v8 animated:1 initialTitle:0 completionBlock:0, v14, v15, v16, v17, selfCopy];
   [(MailAppController *)self startedTest:v13];
 }
 
-- (void)_reallyStartScrollPseudoContactTest:(id)a3 withOptions:(id)a4
+- (void)_reallyStartScrollPseudoContactTest:(id)test withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  optionsCopy = options;
   v8 = [[_MFMailCompositionContext alloc] initWithComposeType:0];
   [v8 setShowKeyboardImmediately:1];
-  v9 = [v7 objectForKey:@"PseudoContact"];
+  v9 = [optionsCopy objectForKey:@"PseudoContact"];
   v10 = MFMailComposeViewDidShow;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
@@ -3514,18 +3514,18 @@ LABEL_12:
   v15 = 3221225472;
   v16 = sub_1000DBF10;
   v17 = &unk_10064F9F0;
-  v18 = self;
-  v13 = v7;
+  selfCopy = self;
+  v13 = optionsCopy;
   v19 = v13;
   [(MailAppController *)self installNotificationObserverForNotificationName:v12 forOneNotification:1 usingBlock:&v14];
-  [(MailAppController *)self showComposeWithContext:v8 animated:1 initialTitle:0 completionBlock:0, v14, v15, v16, v17, v18];
-  [(MailAppController *)self startedTest:v6];
+  [(MailAppController *)self showComposeWithContext:v8 animated:1 initialTitle:0 completionBlock:0, v14, v15, v16, v17, selfCopy];
+  [(MailAppController *)self startedTest:testCopy];
 }
 
-- (void)_prepareForComposePseudoContactTest:(id)a3 withOptions:(id)a4
+- (void)_prepareForComposePseudoContactTest:(id)test withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  optionsCopy = options;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000DC07C;
@@ -3537,17 +3537,17 @@ LABEL_12:
   v10[2] = sub_1000DC088;
   v10[3] = &unk_10064C6B0;
   v10[4] = self;
-  v8 = v6;
+  v8 = testCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = optionsCopy;
   v12 = v9;
   [EFScheduler mf_afterUIDelay:v10 performBlock:4.0];
 }
 
-- (void)_prepareForScrollPseudoContactTest:(id)a3 withOptions:(id)a4
+- (void)_prepareForScrollPseudoContactTest:(id)test withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  optionsCopy = options;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000DC1F8;
@@ -3559,39 +3559,39 @@ LABEL_12:
   v10[2] = sub_1000DC204;
   v10[3] = &unk_10064C6B0;
   v10[4] = self;
-  v8 = v6;
+  v8 = testCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = optionsCopy;
   v12 = v9;
   [EFScheduler mf_afterUIDelay:v10 performBlock:4.0];
 }
 
 - (void)tearDownPhotoPickerTest
 {
-  v3 = [(MailAppController *)self dockContainer];
-  v6 = [v3 activeViewController];
+  dockContainer = [(MailAppController *)self dockContainer];
+  activeViewController = [dockContainer activeViewController];
 
-  v4 = v6;
-  if (v6)
+  v4 = activeViewController;
+  if (activeViewController)
   {
-    v5 = [v6 _mailComposeController];
-    [(MailAppController *)self _dismissComposeViewController:v5 animated:0];
+    _mailComposeController = [activeViewController _mailComposeController];
+    [(MailAppController *)self _dismissComposeViewController:_mailComposeController animated:0];
 
-    v4 = v6;
+    v4 = activeViewController;
   }
 }
 
-- (void)_startPhotoPickerTest:(id)a3
+- (void)_startPhotoPickerTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = MFMailComposeViewDidShow;
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_1000DC3FC;
   v13 = &unk_10064F9F0;
-  v6 = v4;
+  v6 = testCopy;
   v14 = v6;
-  v15 = self;
+  selfCopy = self;
   [(MailAppController *)self installNotificationObserverForNotificationName:v5 forOneNotification:1 usingBlock:&v10];
   v7 = [_MFMailCompositionContext alloc];
   v8 = [NSURL URLWithString:@"mailto:foo@bar.com", v10, v11, v12, v13];
@@ -3600,42 +3600,42 @@ LABEL_12:
   [(MailAppController *)self showComposeWithContext:v9 animated:1 initialTitle:0 completionBlock:0];
 }
 
-- (void)_showPhotoPickerWithCompletion:(id)a3
+- (void)_showPhotoPickerWithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(MailAppController *)self dockContainer];
-  v5 = [v4 activeViewController];
+  completionCopy = completion;
+  dockContainer = [(MailAppController *)self dockContainer];
+  activeViewController = [dockContainer activeViewController];
 
-  if (v5)
+  if (activeViewController)
   {
-    v6 = [v5 _mailComposeController];
-    [v6 insertPhotoOrVideo];
-    [(MailAppController *)self installCACommitCompletionBlock:v7];
+    _mailComposeController = [activeViewController _mailComposeController];
+    [_mailComposeController insertPhotoOrVideo];
+    [(MailAppController *)self installCACommitCompletionBlock:completionCopy];
   }
 }
 
-- (void)_dismissPhotoPickerWithCompletion:(id)a3
+- (void)_dismissPhotoPickerWithCompletion:(id)completion
 {
-  v8 = a3;
-  v4 = [(MailAppController *)self dockContainer];
-  v5 = [v4 activeViewController];
+  completionCopy = completion;
+  dockContainer = [(MailAppController *)self dockContainer];
+  activeViewController = [dockContainer activeViewController];
 
-  if (v5)
+  if (activeViewController)
   {
-    v6 = [v5 _mailComposeController];
-    v7 = [v6 presentedViewController];
-    [v6 imagePickerControllerDidCancel:v7];
-    if (v8)
+    _mailComposeController = [activeViewController _mailComposeController];
+    presentedViewController = [_mailComposeController presentedViewController];
+    [_mailComposeController imagePickerControllerDidCancel:presentedViewController];
+    if (completionCopy)
     {
-      v8[2]();
+      completionCopy[2]();
     }
   }
 }
 
-- (void)startPhotoPickerTest:(id)a3
+- (void)startPhotoPickerTest:(id)test
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"testName"];
+  testCopy = test;
+  v5 = [testCopy objectForKey:@"testName"];
   v6 = [(MailAppController *)self _prepareForComposeView:v5];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -3647,11 +3647,11 @@ LABEL_12:
   [EFScheduler mf_afterUIDelay:v8 performBlock:4.0];
 }
 
-- (void)startShowComposeTest:(id)a3
+- (void)startShowComposeTest:(id)test
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"testName"];
-  v6 = [(MailAppController *)self _prepareForScrollMessagesTest:v4 inEditMode:0 currentDelay:0];
+  testCopy = test;
+  v5 = [testCopy objectForKey:@"testName"];
+  v6 = [(MailAppController *)self _prepareForScrollMessagesTest:testCopy inEditMode:0 currentDelay:0];
   v7 = [(MailAppController *)self _prepareForComposeView:v5];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -3663,19 +3663,19 @@ LABEL_12:
   [EFScheduler mf_afterUIDelay:v9 performBlock:4.0];
 }
 
-- (void)startShowEmptyComposeTest:(id)a3
+- (void)startShowEmptyComposeTest:(id)test
 {
-  v4 = a3;
-  v5 = [v4 mf_testName];
-  v6 = [(MailAppController *)self _prepareForComposeView:v5];
-  if ([v5 mf_containsSubstring:@"Animation"])
+  testCopy = test;
+  mf_testName = [testCopy mf_testName];
+  v6 = [(MailAppController *)self _prepareForComposeView:mf_testName];
+  if ([mf_testName mf_containsSubstring:@"Animation"])
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000DCBE4;
     v10[3] = &unk_10064C6B0;
     v10[4] = self;
-    v11 = v5;
+    v11 = mf_testName;
     v12 = v6;
     [EFScheduler mf_afterUIDelay:v10 performBlock:4.0];
     v7 = &v11;
@@ -3688,16 +3688,16 @@ LABEL_12:
     v8[2] = sub_1000DCBF4;
     v8[3] = &unk_10064C660;
     v8[4] = self;
-    v9 = v5;
+    v9 = mf_testName;
     [EFScheduler mf_afterUIDelay:v8 performBlock:4.0];
     v7 = &v9;
   }
 }
 
-- (void)startComposeToPseudoContactTest:(id)a3
+- (void)startComposeToPseudoContactTest:(id)test
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"testName"];
+  testCopy = test;
+  v5 = [testCopy objectForKey:@"testName"];
   v6 = [(MailAppController *)self _prepareForComposeView:v5];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -3706,15 +3706,15 @@ LABEL_12:
   v9[4] = self;
   v7 = v5;
   v10 = v7;
-  v8 = v4;
+  v8 = testCopy;
   v11 = v8;
   [EFScheduler mf_afterUIDelay:v9 performBlock:4.0];
 }
 
-- (void)startScrollPseudoContactTest:(id)a3
+- (void)startScrollPseudoContactTest:(id)test
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"testName"];
+  testCopy = test;
+  v5 = [testCopy objectForKey:@"testName"];
   v6 = [(MailAppController *)self _prepareForComposeView:v5];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -3723,55 +3723,55 @@ LABEL_12:
   v9[4] = self;
   v7 = v5;
   v10 = v7;
-  v8 = v4;
+  v8 = testCopy;
   v11 = v8;
   [EFScheduler mf_afterUIDelay:v9 performBlock:4.0];
 }
 
-- (id)_prepareForComposeView:(id)a3
+- (id)_prepareForComposeView:(id)view
 {
-  v4 = a3;
-  v5 = [(MailAppController *)self getMessageListViewController];
-  v6 = v5;
-  if (v5)
+  viewCopy = view;
+  getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+  v6 = getMessageListViewController;
+  if (getMessageListViewController)
   {
-    [v5 setEditing:0 animated:0];
+    [getMessageListViewController setEditing:0 animated:0];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000DCF94;
     v9[3] = &unk_10064C7E8;
     v9[4] = self;
     [EFScheduler mf_afterUIDelay:v9 performBlock:2.0];
-    v7 = [v6 composeButtonItem];
+    composeButtonItem = [v6 composeButtonItem];
   }
 
   else
   {
-    [(MailAppController *)self failedTest:v4];
-    v7 = 0;
+    [(MailAppController *)self failedTest:viewCopy];
+    composeButtonItem = 0;
   }
 
-  return v7;
+  return composeButtonItem;
 }
 
-- (void)_reallyStartDismissComposeTest:(id)a3
+- (void)_reallyStartDismissComposeTest:(id)test
 {
-  v4 = a3;
-  v5 = [(MailAppController *)self dockContainer];
-  v6 = [v5 activeViewController];
+  testCopy = test;
+  dockContainer = [(MailAppController *)self dockContainer];
+  activeViewController = [dockContainer activeViewController];
 
-  if (v6)
+  if (activeViewController)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 _mailComposeController];
+      _mailComposeController = [activeViewController _mailComposeController];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_1000DD208;
       v15[3] = &unk_10064F9F0;
       v15[4] = self;
-      v8 = v4;
+      v8 = testCopy;
       v16 = v8;
       [(MailAppController *)self installNotificationObserverForNotificationName:UIKeyboardDidHideNotification forOneNotification:1 usingBlock:v15];
       v12[0] = _NSConcreteStackBlock;
@@ -3780,7 +3780,7 @@ LABEL_12:
       v12[3] = &unk_10064C6B0;
       v12[4] = self;
       v13 = v8;
-      v9 = v7;
+      v9 = _mailComposeController;
       v14 = v9;
       [(MailAppController *)self installCACommitCompletionBlock:v12];
     }
@@ -3791,30 +3791,30 @@ LABEL_12:
       v11 = NSStringFromClass(v10);
       v9 = [NSString stringWithFormat:@"activeViewController is not a ComposeNavigationController. It is a %@", v11];
 
-      [(MailAppController *)self failedTest:v4 withFailure:v9];
+      [(MailAppController *)self failedTest:testCopy withFailure:v9];
     }
   }
 
   else
   {
-    [(MailAppController *)self failedTest:v4 withFailure:@"Unable to get the active ViewController"];
+    [(MailAppController *)self failedTest:testCopy withFailure:@"Unable to get the active ViewController"];
   }
 }
 
-- (void)_prepareForDismissComposeTest:(id)a3
+- (void)_prepareForDismissComposeTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   if (![(MailAppController *)self isComposeWindowActive])
   {
-    v5 = [(MailAppController *)self getMessageListViewController];
-    v6 = v5;
-    if (!v5)
+    getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+    v6 = getMessageListViewController;
+    if (!getMessageListViewController)
     {
-      [(MailAppController *)self failedTest:v4];
+      [(MailAppController *)self failedTest:testCopy];
       goto LABEL_5;
     }
 
-    [v5 setEditing:0 animated:0];
+    [getMessageListViewController setEditing:0 animated:0];
     v7 = [_MFMailCompositionContext alloc];
     v8 = [NSURL URLWithString:@"mailto:"];
     v9 = [v7 initWithURL:v8];
@@ -3835,33 +3835,33 @@ LABEL_12:
   v11[2] = sub_1000DD490;
   v11[3] = &unk_10064C660;
   v11[4] = self;
-  v12 = v4;
+  v12 = testCopy;
   [EFScheduler mf_afterUIDelay:v11 performBlock:4.0];
 
 LABEL_5:
 }
 
-- (void)startDismissComposeTest:(id)a3
+- (void)startDismissComposeTest:(id)test
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000DD554;
   v4[3] = &unk_10064C660;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  testCopy = test;
+  v3 = testCopy;
   [EFScheduler mf_afterUIDelay:v4 performBlock:3.0];
 }
 
-- (void)startRotationTest:(id)a3
+- (void)startRotationTest:(id)test
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"testName"];
-  v6 = [(MailAppController *)self getMessageListViewController];
-  v7 = v6;
-  if (v6)
+  testCopy = test;
+  v5 = [testCopy objectForKey:@"testName"];
+  getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+  v7 = getMessageListViewController;
+  if (getMessageListViewController)
   {
-    [v6 setEditing:0 animated:0];
+    [getMessageListViewController setEditing:0 animated:0];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000DD75C;
@@ -3883,7 +3883,7 @@ LABEL_5:
   }
 }
 
-- (void)_reallyStartRotationTest:(id)a3
+- (void)_reallyStartRotationTest:(id)test
 {
   v3[4] = self;
   v4[0] = _NSConcreteStackBlock;
@@ -3895,33 +3895,33 @@ LABEL_5:
   v3[1] = 3221225472;
   v3[2] = sub_1000DD8F0;
   v3[3] = &unk_10064C7E8;
-  [(MailAppController *)self runTestForKeyboardRotationWithName:a3 fromOrientation:qword_1006DCFB8 withShowKeyboardBlock:v4 withExtraResultsBlock:0 withCleanupBlock:v3];
+  [(MailAppController *)self runTestForKeyboardRotationWithName:test fromOrientation:qword_1006DCFB8 withShowKeyboardBlock:v4 withExtraResultsBlock:0 withCleanupBlock:v3];
 }
 
-- (void)_reallyStartExitEditModeTest:(id)a3
+- (void)_reallyStartExitEditModeTest:(id)test
 {
-  v6 = a3;
-  v4 = [(MailAppController *)self getMessageListViewController];
-  if (v4)
+  testCopy = test;
+  getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+  if (getMessageListViewController)
   {
     v5 = +[NSNotificationCenter defaultCenter];
     [v5 addObserver:self selector:"_didFinishExitEditModeTest:" name:@"DidFinishExitEditModeTest" object:0];
 
-    [(MailAppController *)self startedTest:v6];
-    [v4 setEditing:0 animated:1];
+    [(MailAppController *)self startedTest:testCopy];
+    [getMessageListViewController setEditing:0 animated:1];
   }
 
   else
   {
-    [(MailAppController *)self failedTest:v6];
+    [(MailAppController *)self failedTest:testCopy];
   }
 }
 
-- (void)startExitEditModeTest:(id)a3
+- (void)startExitEditModeTest:(id)test
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"testName"];
-  v6 = [(MailAppController *)self _prepareForScrollMessagesTest:v4 inEditMode:1 currentDelay:0];
+  testCopy = test;
+  v5 = [testCopy objectForKey:@"testName"];
+  v6 = [(MailAppController *)self _prepareForScrollMessagesTest:testCopy inEditMode:1 currentDelay:0];
 
   if (v6)
   {
@@ -3940,7 +3940,7 @@ LABEL_5:
   }
 }
 
-- (void)_didFinishExitEditModeTest:(id)a3
+- (void)_didFinishExitEditModeTest:(id)test
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -3950,33 +3950,33 @@ LABEL_5:
   [(MailAppController *)self finishedTest:qword_1006DCF88 extraResults:0 withTeardownBlock:v3];
 }
 
-- (void)_reallyStartMessageTransferTest:(id)a3 mailboxController:(id)a4
+- (void)_reallyStartMessageTransferTest:(id)test mailboxController:(id)controller
 {
-  v7 = a3;
-  v5 = [(MailAppController *)self getAccount];
-  v6 = [v5 mailboxUidOfType:3 createIfNeeded:0];
+  testCopy = test;
+  getAccount = [(MailAppController *)self getAccount];
+  v6 = [getAccount mailboxUidOfType:3 createIfNeeded:0];
 
   if (v6)
   {
-    [(MailAppController *)self runTest:v7 forAnimation:@"MessageToPointAnimation"];
+    [(MailAppController *)self runTest:testCopy forAnimation:@"MessageToPointAnimation"];
   }
 
   else
   {
-    [(MailAppController *)self failedTest:v7];
+    [(MailAppController *)self failedTest:testCopy];
   }
 }
 
-- (void)startMessageTransferTest:(id)a3 multiSelect:(BOOL)a4
+- (void)startMessageTransferTest:(id)test multiSelect:(BOOL)select
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MailAppController *)self _prepareForScrollMessagesTest:v6 inEditMode:1 currentDelay:0];
-  v8 = [v6 objectForKey:@"testName"];
+  selectCopy = select;
+  testCopy = test;
+  v7 = [(MailAppController *)self _prepareForScrollMessagesTest:testCopy inEditMode:1 currentDelay:0];
+  v8 = [testCopy objectForKey:@"testName"];
   if (v7)
   {
-    v9 = [(MailAppController *)self getAccount];
-    v10 = [v9 mailboxUidOfType:3 createIfNeeded:1];
+    getAccount = [(MailAppController *)self getAccount];
+    v10 = [getAccount mailboxUidOfType:3 createIfNeeded:1];
 
     if (v10)
     {
@@ -3987,7 +3987,7 @@ LABEL_5:
       v11 = v7;
       v21 = v11;
       [EFScheduler mf_afterUIDelay:v20 performBlock:12.0];
-      if (v4)
+      if (selectCopy)
       {
         v18[0] = _NSConcreteStackBlock;
         v18[1] = 3221225472;
@@ -4026,17 +4026,17 @@ LABEL_5:
   }
 }
 
-- (void)startMessageDeleteTest:(id)a3
+- (void)startMessageDeleteTest:(id)test
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"testName"];
+  testCopy = test;
+  v5 = [testCopy objectForKey:@"testName"];
   if ((+[UIDevice mf_isPadIdiom]& 1) != 0)
   {
-    v6 = [(MailAppController *)self getMessageListViewController];
-    v7 = v6;
-    if (v6)
+    getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+    v7 = getMessageListViewController;
+    if (getMessageListViewController)
     {
-      [v6 setEditing:0 animated:0];
+      [getMessageListViewController setEditing:0 animated:0];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_1000DE208;
@@ -4069,17 +4069,17 @@ LABEL_5:
   if ([qword_1006DCF88 isEqualToString:@"MessageIteration"])
   {
     [(MailAppController *)self finishedSubTest:@"MessageLoad" forTest:qword_1006DCF88];
-    v3 = [(MailAppController *)self getMessageListViewController];
-    v4 = v3;
-    if (!v3)
+    getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+    v4 = getMessageListViewController;
+    if (!getMessageListViewController)
     {
 LABEL_32:
 
       return;
     }
 
-    v5 = [v3 conversationViewController];
-    v31 = [v5 referenceMessageListItem];
+    conversationViewController = [getMessageListViewController conversationViewController];
+    referenceMessageListItem = [conversationViewController referenceMessageListItem];
 
     if (dword_1006DCFC8 < 1)
     {
@@ -4088,8 +4088,8 @@ LABEL_32:
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v17 = [qword_1006DCFA0 allValues];
-      v18 = [v17 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      allValues = [qword_1006DCFA0 allValues];
+      v18 = [allValues countByEnumeratingWithState:&v32 objects:v36 count:16];
       if (v18)
       {
         v19 = *v33;
@@ -4100,14 +4100,14 @@ LABEL_32:
           {
             if (*v33 != v19)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(allValues);
             }
 
             [*(*(&v32 + 1) + 8 * i) doubleValue];
             v20 = v20 + v22;
           }
 
-          v18 = [v17 countByEnumeratingWithState:&v32 objects:v36 count:16];
+          v18 = [allValues countByEnumeratingWithState:&v32 objects:v36 count:16];
         }
 
         while (v18);
@@ -4137,18 +4137,18 @@ LABEL_32:
       goto LABEL_31;
     }
 
-    v6 = [v4 dataSource];
-    v7 = [v6 collectionViewDataSource];
+    dataSource = [v4 dataSource];
+    collectionViewDataSource = [dataSource collectionViewDataSource];
 
-    v8 = [v7 snapshot];
-    v9 = [v31 itemID];
-    v10 = [v7 indexPathForItemIdentifier:v9];
+    snapshot = [collectionViewDataSource snapshot];
+    itemID = [referenceMessageListItem itemID];
+    v10 = [collectionViewDataSource indexPathForItemIdentifier:itemID];
 
-    v11 = [v10 row];
-    v12 = [v10 section];
-    v13 = [v8 numberOfItems];
+    numberOfSections = [v10 row];
+    section = [v10 section];
+    numberOfItems = [snapshot numberOfItems];
     v14 = byte_1006DCFC4;
-    if (v13 - 1 == v11)
+    if (numberOfItems - 1 == numberOfSections)
     {
       v15 = byte_1006DCFC4;
     }
@@ -4160,7 +4160,7 @@ LABEL_32:
 
     if (v15)
     {
-      if (v11)
+      if (numberOfSections)
       {
         v14 = 0;
       }
@@ -4170,20 +4170,20 @@ LABEL_32:
         goto LABEL_27;
       }
 
-      if (v12)
+      if (section)
       {
-        v11 = [v8 numberOfSections];
+        numberOfSections = [snapshot numberOfSections];
 LABEL_27:
         v29 = byte_1006DCFC4;
         [(MailAppController *)self startedSubTest:@"MessageLoad" forTest:qword_1006DCF88];
         if (v29)
         {
-          v30 = v11 - 1;
+          v30 = numberOfSections - 1;
         }
 
         else
         {
-          v30 = v11 + 1;
+          v30 = numberOfSections + 1;
         }
 
         --dword_1006DCFC8;
@@ -4193,12 +4193,12 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      v11 = 0;
+      numberOfSections = 0;
     }
 
-    else if (v12 != [v8 numberOfSections])
+    else if (section != [snapshot numberOfSections])
     {
-      v11 = -1;
+      numberOfSections = -1;
       goto LABEL_27;
     }
 
@@ -4207,102 +4207,102 @@ LABEL_31:
   }
 }
 
-- (void)startMessageIterationTest:(id)a3
+- (void)startMessageIterationTest:(id)test
 {
-  v6 = a3;
-  v4 = [v6 objectForKey:@"iterations"];
+  testCopy = test;
+  v4 = [testCopy objectForKey:@"iterations"];
   dword_1006DCFC8 = [v4 intValue];
 
   qword_1006DCFD0 = CFAbsoluteTimeGetCurrent();
   [(MailAppController *)self startedTest:qword_1006DCF88];
   [(MailAppController *)self startedSubTest:@"MessageLoad" forTest:qword_1006DCF88];
-  v5 = [(MailAppController *)self _prepareForScrollMessagesTest:v6 inEditMode:0 currentDelay:0];
+  v5 = [(MailAppController *)self _prepareForScrollMessagesTest:testCopy inEditMode:0 currentDelay:0];
   [v5 selectMessageAtIndex:0];
 }
 
-- (void)startMailboxFilterEnableTestWithOptions:(id)a3
+- (void)startMailboxFilterEnableTestWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(MailAppController *)self _prepareForScrollMessagesTest:v4 inEditMode:0 currentDelay:0];
+  optionsCopy = options;
+  v5 = [(MailAppController *)self _prepareForScrollMessagesTest:optionsCopy inEditMode:0 currentDelay:0];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000DE840;
   v8[3] = &unk_10064C6B0;
-  v6 = v4;
+  v6 = optionsCopy;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   v11 = v5;
   v7 = v5;
   [v7 _doOnInitialLoadCompletion:v8];
 }
 
-- (void)startMailboxFilterDisableTestWithOptions:(id)a3
+- (void)startMailboxFilterDisableTestWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(MailAppController *)self _prepareForScrollMessagesTest:v4 inEditMode:0 currentDelay:0];
+  optionsCopy = options;
+  v5 = [(MailAppController *)self _prepareForScrollMessagesTest:optionsCopy inEditMode:0 currentDelay:0];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000DEB0C;
   v8[3] = &unk_10064C6B0;
-  v6 = v4;
+  v6 = optionsCopy;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   v11 = v5;
   v7 = v5;
   [v7 _doOnInitialLoadCompletion:v8];
 }
 
-- (void)startMailboxFilterPickerEnableTestWithOptions:(id)a3
+- (void)startMailboxFilterPickerEnableTestWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(MailAppController *)self getMessageListViewController];
-  [v4 mf_testName];
+  optionsCopy = options;
+  getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+  [optionsCopy mf_testName];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000DEE38;
   v8[3] = &unk_10064FA18;
   v6 = v8[4] = self;
   v9 = v6;
-  v7 = v5;
+  v7 = getMessageListViewController;
   v10 = v7;
   [(MailAppController *)self installNotificationObserverForNotificationName:@"MFMailboxFilterPickerViewControllerDidShow" forOneNotification:1 usingBlock:v8];
   [(MailAppController *)self startedTest:v6];
 }
 
-- (void)startMailboxFilterPickerDisableTestWithOptions:(id)a3
+- (void)startMailboxFilterPickerDisableTestWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(MailAppController *)self getMessageListViewController];
-  v6 = [v4 mf_testName];
+  optionsCopy = options;
+  getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+  mf_testName = [optionsCopy mf_testName];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000DF0C4;
   v9[3] = &unk_10064FA18;
-  v7 = v5;
+  v7 = getMessageListViewController;
   v10 = v7;
-  v11 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = mf_testName;
   v12 = v8;
   [(MailAppController *)self installNotificationObserverForNotificationName:@"MFMailboxFilterPickerViewControllerDidShow" forOneNotification:1 usingBlock:v9];
   [(MailAppController *)self startedTest:v8];
 }
 
-- (void)startShowDismissReplyTest:(id)a3
+- (void)startShowDismissReplyTest:(id)test
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"testName"];
-  v6 = [(MailAppController *)self getMessageListViewController];
-  v7 = v6;
-  if (v6)
+  testCopy = test;
+  v5 = [testCopy objectForKey:@"testName"];
+  getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+  v7 = getMessageListViewController;
+  if (getMessageListViewController)
   {
-    [v6 setEditing:0 animated:0];
+    [getMessageListViewController setEditing:0 animated:0];
     [(MailAppController *)self dismissAnyModalViewControllerOrPopoverAnimated:0];
     [(MailAppController *)self _waitForTimeInterval:1.0];
     if (+[UIDevice mf_isPadIdiom])
     {
-      v8 = [v7 dataSource];
+      dataSource = [v7 dataSource];
       v9 = [NSIndexPath indexPathWithIndex:0];
-      v10 = [v8 itemIdentifierForIndexPath:v9];
+      v10 = [dataSource itemIdentifierForIndexPath:v9];
       [v7 selectItemID:v10 userInitiated:1 animated:0];
     }
 
@@ -4310,8 +4310,8 @@ LABEL_31:
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 itemID];
-      [v7 _handleDidSelectItemID:v13 referenceItem:0 scrollToVisible:1 userInitiated:1 animated:0];
+      itemID = [v11 itemID];
+      [v7 _handleDidSelectItemID:itemID referenceItem:0 scrollToVisible:1 userInitiated:1 animated:0];
 
       v14 = 7.0;
       if ([v5 rangeOfString:@"WarmedUp"] != 0x7FFFFFFFFFFFFFFFLL)
@@ -4339,8 +4339,8 @@ LABEL_31:
 
     else
     {
-      v16 = [v7 dataSource];
-      -[MailAppController _testFailedDueToNilReferenceMessage:messageCount:](self, "_testFailedDueToNilReferenceMessage:messageCount:", v5, [v16 numberOfItems]);
+      dataSource2 = [v7 dataSource];
+      -[MailAppController _testFailedDueToNilReferenceMessage:messageCount:](self, "_testFailedDueToNilReferenceMessage:messageCount:", v5, [dataSource2 numberOfItems]);
     }
   }
 
@@ -4350,17 +4350,17 @@ LABEL_31:
   }
 }
 
-- (void)_reallyStartShowReplyTest:(id)a3
+- (void)_reallyStartShowReplyTest:(id)test
 {
-  v4 = a3;
-  v5 = [(MailAppController *)self getConversationViewController];
-  v6 = v5;
-  if (v5)
+  testCopy = test;
+  getConversationViewController = [(MailAppController *)self getConversationViewController];
+  v6 = getConversationViewController;
+  if (getConversationViewController)
   {
-    v7 = [v5 targetMessageForBarButtonTriage];
-    if (v7)
+    targetMessageForBarButtonTriage = [getConversationViewController targetMessageForBarButtonTriage];
+    if (targetMessageForBarButtonTriage)
     {
-      v8 = [v4 rangeOfString:@"NoKeyboard"];
+      v8 = [testCopy rangeOfString:@"NoKeyboard"];
       +[NSDate timeIntervalSinceReferenceDate];
       v10 = v9;
       v11 = 4 * (v8 != 0x7FFFFFFFFFFFFFFFLL);
@@ -4378,7 +4378,7 @@ LABEL_31:
       v23[2] = sub_1000DF81C;
       v23[3] = &unk_10064FA40;
       v23[4] = self;
-      v13 = v4;
+      v13 = testCopy;
       v27 = v10;
       v24 = v13;
       v25 = v29;
@@ -4390,12 +4390,12 @@ LABEL_31:
       v17 = sub_1000DF968;
       v18 = &unk_10064FA68;
       v21 = v31;
-      v19 = self;
+      selfCopy = self;
       v14 = v13;
       v20 = v14;
       v22 = v29;
       [(MailAppController *)self installNotificationObserverForNotificationName:UIKeyboardDidShowNotification forOneNotification:1 usingBlock:&v15];
-      [(MailAppController *)self startedTest:v14, v15, v16, v17, v18, v19];
+      [(MailAppController *)self startedTest:v14, v15, v16, v17, v18, selfCopy];
       [(MailAppController *)self startedSubTest:@"ComposeViewAnimationStart" forTest:v14];
       [v6 _testReplyForSelectedMessage];
 
@@ -4405,13 +4405,13 @@ LABEL_31:
 
     else
     {
-      [(MailAppController *)self failedTest:v4 withFailure:@"Could not get message from the conversation view controller"];
+      [(MailAppController *)self failedTest:testCopy withFailure:@"Could not get message from the conversation view controller"];
     }
   }
 
   else
   {
-    [(MailAppController *)self failedTest:v4 withFailure:@"Could not get the conversationViewController"];
+    [(MailAppController *)self failedTest:testCopy withFailure:@"Could not get the conversationViewController"];
   }
 }
 
@@ -4425,9 +4425,9 @@ LABEL_31:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_performNextShowDismissComposeTransitionForTest:(id)a3
+- (void)_performNextShowDismissComposeTransitionForTest:(id)test
 {
-  v9 = a3;
+  testCopy = test;
   if ([(MailAppController *)self isComposeWindowActive])
   {
     [(MailAppController *)self dismissAnyModalViewControllerOrPopoverAnimated:1];
@@ -4446,22 +4446,22 @@ LABEL_31:
 
   if (v5 < 1)
   {
-    [(MailAppController *)self finishedTest:v9 extraResults:0];
+    [(MailAppController *)self finishedTest:testCopy extraResults:0];
   }
 
   else
   {
-    [(MailAppController *)self performSelector:a2 withObject:v9 afterDelay:1.0];
+    [(MailAppController *)self performSelector:a2 withObject:testCopy afterDelay:1.0];
   }
 }
 
-- (void)startShowDismissComposeTest:(id)a3
+- (void)startShowDismissComposeTest:(id)test
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"iterations"];
+  testCopy = test;
+  v5 = [testCopy objectForKey:@"iterations"];
   dword_1006DCFC8 = [v5 intValue];
 
-  v6 = [v4 objectForKey:@"testName"];
+  v6 = [testCopy objectForKey:@"testName"];
   [(MailAppController *)self startedTest:v6];
   [(MailAppController *)self dismissAnyModalViewControllerOrPopoverAnimated:0];
   v7 = dispatch_time(0, 2000000000);
@@ -4475,9 +4475,9 @@ LABEL_31:
   dispatch_after(v7, &_dispatch_main_q, v9);
 }
 
-- (void)reportPPTTimings:(id)a3
+- (void)reportPPTTimings:(id)timings
 {
-  v3 = a3;
+  timingsCopy = timings;
   if (!qword_1006DCFA0)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
@@ -4489,8 +4489,8 @@ LABEL_31:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v3 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allKeys = [timingsCopy allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = *v19;
@@ -4500,11 +4500,11 @@ LABEL_31:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v3 objectForKey:v10];
+        v11 = [timingsCopy objectForKey:v10];
         [v11 doubleValue];
         v13 = v12;
 
@@ -4520,20 +4520,20 @@ LABEL_31:
         [qword_1006DCFA0 setObject:v17 forKey:v10];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)startConversationSelectionTestWithOptions:(id)a3
+- (void)startConversationSelectionTestWithOptions:(id)options
 {
-  v4 = a3;
-  v35 = [v4 mf_testName];
-  v5 = [v35 containsString:@"SelectSingleMessage"];
-  v6 = [(MailAppController *)self getMessageListViewController];
-  v7 = [v6 conversationViewController];
+  optionsCopy = options;
+  mf_testName = [optionsCopy mf_testName];
+  v5 = [mf_testName containsString:@"SelectSingleMessage"];
+  getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+  conversationViewController = [getMessageListViewController conversationViewController];
   v68[0] = 0;
   v68[1] = v68;
   v68[2] = 0x2020000000;
@@ -4543,19 +4543,19 @@ LABEL_31:
   v64[2] = sub_1000E09D0;
   v64[3] = &unk_10064FA90;
   v67 = v68;
-  v8 = v35;
+  v8 = mf_testName;
   v65 = v8;
-  v66 = self;
+  selfCopy = self;
   v9 = objc_retainBlock(v64);
   v57[0] = _NSConcreteStackBlock;
   v57[1] = 3221225472;
   v57[2] = sub_1000E0B8C;
   v57[3] = &unk_10064FAB8;
-  v10 = v6;
+  v10 = getMessageListViewController;
   v62 = v5;
   v63 = v5 ^ 1;
   v58 = v10;
-  v59 = self;
+  selfCopy2 = self;
   v37 = v9;
   v61 = v37;
   v36 = v8;
@@ -4564,9 +4564,9 @@ LABEL_31:
   [(MailAppController *)self _waitForTimeInterval:1.0];
   if (+[UIDevice mf_isPadIdiom])
   {
-    v11 = [v10 dataSource];
+    dataSource = [v10 dataSource];
     v12 = [NSIndexPath indexPathWithIndex:1];
-    v13 = [v11 itemIdentifierForIndexPath:v12];
+    v13 = [dataSource itemIdentifierForIndexPath:v12];
     [v10 selectItemID:v13 userInitiated:1 animated:0];
 
     if ((qword_1006DCFB8 - 1) <= 1)
@@ -4592,15 +4592,15 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!v10 || [v7 isFullyVisible])
+  if (!v10 || [conversationViewController isFullyVisible])
   {
-    v15 = [v10 navigationController];
-    v16 = [v15 popToViewController:v10 animated:1];
+    navigationController = [v10 navigationController];
+    v16 = [navigationController popToViewController:v10 animated:1];
 
     [(MailAppController *)self _waitForTimeInterval:1.0];
-    v17 = [v10 dataSource];
+    dataSource2 = [v10 dataSource];
     v18 = [NSIndexPath indexPathWithIndex:1];
-    v19 = [v17 itemIdentifierForIndexPath:v18];
+    v19 = [dataSource2 itemIdentifierForIndexPath:v18];
     [v10 selectItemID:v19 userInitiated:1 animated:0];
 
     v52[0] = _NSConcreteStackBlock;
@@ -4612,10 +4612,10 @@ LABEL_10:
     [EFScheduler mf_afterUIDelay:v52 performBlock:1.0];
     [(MailAppController *)self _waitForTimeInterval:2.0];
     v14 = &v53;
-    if (!v10 || [v7 isFullyVisible])
+    if (!v10 || [conversationViewController isFullyVisible])
     {
-      v21 = [v20 navigationController];
-      v22 = [v21 popToViewController:v20 animated:1];
+      navigationController2 = [v20 navigationController];
+      v22 = [navigationController2 popToViewController:v20 animated:1];
 
       [(MailAppController *)self _waitForTimeInterval:1.0];
     }
@@ -4624,8 +4624,8 @@ LABEL_10:
   }
 
 LABEL_11:
-  v23 = [v4 mf_testName];
-  v24 = [v23 mf_containsSubstring:@"SelectDigestView"];
+  mf_testName2 = [optionsCopy mf_testName];
+  v24 = [mf_testName2 mf_containsSubstring:@"SelectDigestView"];
 
   if (v24)
   {
@@ -4645,7 +4645,7 @@ LABEL_11:
   v45[2] = sub_1000E0D7C;
   v45[3] = &unk_10064FB08;
   objc_copyWeak(&v48, &location);
-  v25 = v4;
+  v25 = optionsCopy;
   v46 = v25;
   v26 = v38;
   v47 = v26;
@@ -4657,7 +4657,7 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Will wait to finish preallocating web views", buf, 2u);
   }
 
-  v29 = [(MailAppController *)self didFinishDelayedStartupTasks];
+  didFinishDelayedStartupTasks = [(MailAppController *)self didFinishDelayedStartupTasks];
   v30 = +[EFScheduler mainThreadScheduler];
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
@@ -4665,9 +4665,9 @@ LABEL_11:
   v42[3] = &unk_10064C450;
   v31 = v27;
   v43 = v31;
-  [v29 onScheduler:v30 addSuccessBlock:v42];
+  [didFinishDelayedStartupTasks onScheduler:v30 addSuccessBlock:v42];
 
-  v32 = [(MailAppController *)self didFinishDelayedStartupTasks];
+  didFinishDelayedStartupTasks2 = [(MailAppController *)self didFinishDelayedStartupTasks];
   v33 = +[EFScheduler mainThreadScheduler];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
@@ -4676,7 +4676,7 @@ LABEL_11:
   objc_copyWeak(&v41, &location);
   v34 = v36;
   v40 = v34;
-  [v32 onScheduler:v33 addFailureBlock:v39];
+  [didFinishDelayedStartupTasks2 onScheduler:v33 addFailureBlock:v39];
 
   objc_destroyWeak(&v41);
   objc_destroyWeak(&v48);
@@ -4685,79 +4685,79 @@ LABEL_11:
   _Block_object_dispose(v68, 8);
 }
 
-- (void)startConversationScrollTestWithOptions:(id)a3
+- (void)startConversationScrollTestWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   [(MailAppController *)self _waitForTimeInterval:1.0];
-  if (+[UIDevice mf_isPadIdiom](UIDevice, "mf_isPadIdiom") && [v4 mf_testInterfaceOrientation] == 1)
+  if (+[UIDevice mf_isPadIdiom](UIDevice, "mf_isPadIdiom") && [optionsCopy mf_testInterfaceOrientation] == 1)
   {
-    v5 = [(MailAppController *)self mostRecentMainScene];
-    v6 = [v5 splitViewController];
-    [v6 showMessageListViewController:1 animated:1 completion:0];
+    mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+    splitViewController = [mostRecentMainScene splitViewController];
+    [splitViewController showMessageListViewController:1 animated:1 completion:0];
 
     [(MailAppController *)self _waitForTimeInterval:1.0];
   }
 
-  v7 = [v4 mf_testName];
-  v8 = [v4 mf_isAMSTest];
-  v9 = [(MailAppController *)self getMessageListViewController];
-  if ([v7 mf_containsSubstring:@"ScrollDigestViewNatural"])
+  mf_testName = [optionsCopy mf_testName];
+  mf_isAMSTest = [optionsCopy mf_isAMSTest];
+  getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+  if ([mf_testName mf_containsSubstring:@"ScrollDigestViewNatural"])
   {
     [(MailAppController *)self _waitForTimeInterval:1.0];
-    v10 = [(MailAppController *)self getMessageListViewController];
-    v11 = [v9 mailboxes];
-    [v10 setMailboxes:v11 senderSpecificMessageListItem:0 bucket:3 forceReload:1];
+    getMessageListViewController2 = [(MailAppController *)self getMessageListViewController];
+    mailboxes = [getMessageListViewController mailboxes];
+    [getMessageListViewController2 setMailboxes:mailboxes senderSpecificMessageListItem:0 bucket:3 forceReload:1];
 
     [(MailAppController *)self _waitForTimeInterval:2.0];
   }
 
-  v12 = [v9 referenceMessageListItemForFirstConversationWithSingleMessage:0 markAsRead:1];
-  v13 = [v9 conversationViewController];
-  [v13 setDisableScrollPinning:1];
+  v12 = [getMessageListViewController referenceMessageListItemForFirstConversationWithSingleMessage:0 markAsRead:1];
+  conversationViewController = [getMessageListViewController conversationViewController];
+  [conversationViewController setDisableScrollPinning:1];
 
-  v14 = [v9 conversationViewController];
-  v15 = [v14 collectionView];
+  conversationViewController2 = [getMessageListViewController conversationViewController];
+  collectionView = [conversationViewController2 collectionView];
 
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_1000E158C;
   v28[3] = &unk_10064C6B0;
-  v16 = v7;
+  v16 = mf_testName;
   v29 = v16;
-  v17 = v4;
+  v17 = optionsCopy;
   v30 = v17;
-  v18 = v15;
+  v18 = collectionView;
   v31 = v18;
   v19 = objc_retainBlock(v28);
   if (v12)
   {
-    v20 = [v12 itemID];
-    [v9 _handleDidSelectItemID:v20 referenceItem:0 scrollToVisible:0 userInitiated:1 animated:1];
+    itemID = [v12 itemID];
+    [getMessageListViewController _handleDidSelectItemID:itemID referenceItem:0 scrollToVisible:0 userInitiated:1 animated:1];
 
     v21 = +[EFScheduler mainThreadScheduler];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_1000E16D8;
     v24[3] = &unk_10064FB58;
-    v27 = v8;
+    v27 = mf_isAMSTest;
     v25 = v18;
     v26 = v19;
     v22 = [v21 afterDelay:v24 performBlock:1.0];
 
-    v23 = v25;
+    dataSource = v25;
   }
 
   else
   {
-    v23 = [v9 dataSource];
-    -[MailAppController _testFailedDueToNilReferenceMessage:messageCount:](self, "_testFailedDueToNilReferenceMessage:messageCount:", v16, [v23 numberOfItems]);
+    dataSource = [getMessageListViewController dataSource];
+    -[MailAppController _testFailedDueToNilReferenceMessage:messageCount:](self, "_testFailedDueToNilReferenceMessage:messageCount:", v16, [dataSource numberOfItems]);
   }
 }
 
-- (BOOL)_allMessageViewControllersDidDisplayContent:(id)a3
+- (BOOL)_allMessageViewControllersDidDisplayContent:(id)content
 {
-  v3 = a3;
-  if ([v3 count] < 2 || objc_msgSend(0, "countOfMessages") < 2)
+  contentCopy = content;
+  if ([contentCopy count] < 2 || objc_msgSend(0, "countOfMessages") < 2)
   {
     LOBYTE(v5) = 0;
   }
@@ -4768,8 +4768,8 @@ LABEL_11:
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [0 childViewControllers];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    childViewControllers = [0 childViewControllers];
+    v5 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = *v10;
@@ -4779,17 +4779,17 @@ LABEL_11:
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(childViewControllers);
           }
 
-          if (![v3 containsObject:*(*(&v9 + 1) + 8 * i)])
+          if (![contentCopy containsObject:*(*(&v9 + 1) + 8 * i)])
           {
             LOBYTE(v5) = 0;
             goto LABEL_14;
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v5)
         {
           continue;
@@ -4807,14 +4807,14 @@ LABEL_14:
   return v5;
 }
 
-- (void)startConversationLoadAllMessagesTestWithOptions:(id)a3
+- (void)startConversationLoadAllMessagesTestWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = [NSHashTable hashTableWithOptions:517];
   [(MailAppController *)self _waitForTimeInterval:1.0];
-  v6 = [v4 mf_testName];
-  v7 = [(MailAppController *)self getMessageListViewController];
-  v8 = [v7 referenceMessageListItemForFirstConversationWithSingleMessage:0 markAsRead:0];
+  mf_testName = [optionsCopy mf_testName];
+  getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+  v8 = [getMessageListViewController referenceMessageListItemForFirstConversationWithSingleMessage:0 markAsRead:0];
   if (v8)
   {
     v16[0] = _NSConcreteStackBlock;
@@ -4822,7 +4822,7 @@ LABEL_14:
     v16[2] = sub_1000E1BE4;
     v16[3] = &unk_10064F9F0;
     v16[4] = self;
-    v9 = v6;
+    v9 = mf_testName;
     v17 = v9;
     [(MailAppController *)self installNotificationObserverForNotificationName:@"MFMailConversationViewDidShow" forOneNotification:1 usingBlock:v16];
     v12[0] = _NSConcreteStackBlock;
@@ -4830,24 +4830,24 @@ LABEL_14:
     v12[2] = sub_1000E1BF0;
     v12[3] = &unk_10064FA18;
     v13 = v5;
-    v14 = self;
+    selfCopy = self;
     v15 = v9;
     [(MailAppController *)self installNotificationObserverForNotificationName:@"MFMailConversationViewChildMessageViewDidDisplayContent" forOneNotification:0 usingBlock:v12];
-    v10 = [v8 itemID];
-    [v7 _handleDidSelectItemID:v10 referenceItem:0 scrollToVisible:1 userInitiated:1 animated:0];
+    itemID = [v8 itemID];
+    [getMessageListViewController _handleDidSelectItemID:itemID referenceItem:0 scrollToVisible:1 userInitiated:1 animated:0];
   }
 
   else
   {
-    v11 = [v7 dataSource];
-    -[MailAppController _testFailedDueToNilReferenceMessage:messageCount:](self, "_testFailedDueToNilReferenceMessage:messageCount:", v6, [v11 numberOfItems]);
+    dataSource = [getMessageListViewController dataSource];
+    -[MailAppController _testFailedDueToNilReferenceMessage:messageCount:](self, "_testFailedDueToNilReferenceMessage:messageCount:", mf_testName, [dataSource numberOfItems]);
   }
 }
 
-- (void)startConversationViewRotationTestWithOptions:(id)a3
+- (void)startConversationViewRotationTestWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 mf_testName];
+  optionsCopy = options;
+  mf_testName = [optionsCopy mf_testName];
   if ((qword_1006DCFB8 - 3) < 2)
   {
     v6 = 1;
@@ -4859,13 +4859,13 @@ LABEL_14:
   }
 
   [(MailAppController *)self _waitForTimeInterval:1.0];
-  v7 = [(MailAppController *)self getMessageListViewController];
-  v8 = [v7 referenceMessageListItemForFirstConversationWithSingleMessage:0 markAsRead:0];
+  getMessageListViewController = [(MailAppController *)self getMessageListViewController];
+  v8 = [getMessageListViewController referenceMessageListItemForFirstConversationWithSingleMessage:0 markAsRead:0];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 itemID];
-    [v7 selectItemID:v10 userInitiated:1 animated:1];
+    itemID = [v8 itemID];
+    [getMessageListViewController selectItemID:itemID userInitiated:1 animated:1];
 
     [(MailAppController *)self _waitForTimeInterval:2.0];
     v19[0] = _NSConcreteStackBlock;
@@ -4873,33 +4873,33 @@ LABEL_14:
     v19[2] = sub_1000E1F70;
     v19[3] = &unk_10064F9F0;
     v19[4] = self;
-    v11 = v5;
+    v11 = mf_testName;
     v20 = v11;
     [(MailAppController *)self installNotificationObserverForNotificationName:@"MailSplitViewControllerWillTransitionToSizeNotification" forOneNotification:1 usingBlock:v19];
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_1000E2028;
     v16 = &unk_10064F9F0;
-    v17 = self;
+    selfCopy = self;
     v18 = v11;
     [(MailAppController *)self installNotificationObserverForNotificationName:@"MailSplitViewControllerDidTransitionToSizeNotification" forOneNotification:1 usingBlock:&v13];
-    [UIApp rotateIfNeeded:v6 completion:{0, v13, v14, v15, v16, v17}];
+    [UIApp rotateIfNeeded:v6 completion:{0, v13, v14, v15, v16, selfCopy}];
   }
 
   else
   {
-    v12 = [v7 dataSource];
-    -[MailAppController _testFailedDueToNilReferenceMessage:messageCount:](self, "_testFailedDueToNilReferenceMessage:messageCount:", v5, [v12 numberOfItems]);
+    dataSource = [getMessageListViewController dataSource];
+    -[MailAppController _testFailedDueToNilReferenceMessage:messageCount:](self, "_testFailedDueToNilReferenceMessage:messageCount:", mf_testName, [dataSource numberOfItems]);
   }
 }
 
-- (void)startMailboxPredictionTestWithOptions:(id)a3
+- (void)startMailboxPredictionTestWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   [(MailAppController *)self _waitForTimeInterval:1.0];
   [0 selectMessageAtIndex:0];
   [(MailAppController *)self _waitForTimeInterval:1.0];
-  [v4 mf_testName];
+  [optionsCopy mf_testName];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_1000E21A8;
@@ -4908,15 +4908,15 @@ LABEL_14:
   v13 = v5;
   [(MailAppController *)self installNotificationObserverForNotificationName:@"MFMoveToPredictionTriageInteractionPredictionPresented" forOneNotification:1 usingBlock:&v8];
   [(MailAppController *)self startedTest:v5, v8, v9, v10, v11, v12];
-  v6 = [0 barItemsManager];
-  v7 = [v6 moveButtonItem];
-  [0 moveButtonTapped:v7];
+  barItemsManager = [0 barItemsManager];
+  moveButtonItem = [barItemsManager moveButtonItem];
+  [0 moveButtonTapped:moveButtonItem];
 }
 
-- (void)startMessageListSwipeActionTestWithOptions:(id)a3
+- (void)startMessageListSwipeActionTestWithOptions:(id)options
 {
-  v4 = a3;
-  [v4 mf_testName];
+  optionsCopy = options;
+  [optionsCopy mf_testName];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1000E246C;
@@ -4936,8 +4936,8 @@ LABEL_14:
   v22 = 0;
   v8 = objc_retainBlock(v20);
   objc_initWeak(&location, self);
-  v9 = [(MailAppController *)self mostRecentMainScene];
-  v10 = [v9 splitViewController];
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  splitViewController = [mostRecentMainScene splitViewController];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000E27B0;
@@ -4949,17 +4949,17 @@ LABEL_14:
   v16 = v12;
   v13 = v8;
   v17 = v13;
-  [v10 showMessageListViewController:1 animated:1 completion:v14];
+  [splitViewController showMessageListViewController:1 animated:1 completion:v14];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
 }
 
-- (void)startMailCategorizationTest:(id)a3
+- (void)startMailCategorizationTest:(id)test
 {
-  v17 = a3;
-  v4 = [v17 mf_testName];
-  [(MailAppController *)self startedTest:v4];
+  testCopy = test;
+  mf_testName = [testCopy mf_testName];
+  [(MailAppController *)self startedTest:mf_testName];
   v18 = [EMMessageListItemPredicates predicateForMessagesInMailboxWithType:7];
   v5 = [EMQuery alloc];
   v6 = objc_opt_class();
@@ -4973,59 +4973,59 @@ LABEL_14:
   v21[1] = 3221225472;
   v21[2] = sub_1000E2BF8;
   v21[3] = &unk_10064FC20;
-  v11 = v17;
+  v11 = testCopy;
   v22 = v11;
   v12 = [v5 initWithTargetClass:v6 predicate:v8 sortDescriptors:v10 builder:v21];
 
-  v13 = [(MailAppController *)self mostRecentMainScene];
-  v14 = [v13 daemonInterface];
-  v15 = [v14 messageRepository];
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  daemonInterface = [mostRecentMainScene daemonInterface];
+  messageRepository = [daemonInterface messageRepository];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000E2C64;
   v19[3] = &unk_10064DD80;
   v19[4] = self;
-  v16 = v4;
+  v16 = mf_testName;
   v20 = v16;
-  [v15 recategorizeMessagesForQuery:v12 completion:v19];
+  [messageRepository recategorizeMessagesForQuery:v12 completion:v19];
 }
 
-- (void)_testFailedDueToNilReferenceMessage:(id)a3 messageCount:(unint64_t)a4
+- (void)_testFailedDueToNilReferenceMessage:(id)message messageCount:(unint64_t)count
 {
-  v7 = a3;
-  v6 = [NSString stringWithFormat:@"Couldn't find a conversation to select. Mail message count: %lu", a4];
-  [(MailAppController *)self failedTest:v7 withFailure:v6];
+  messageCopy = message;
+  v6 = [NSString stringWithFormat:@"Couldn't find a conversation to select. Mail message count: %lu", count];
+  [(MailAppController *)self failedTest:messageCopy withFailure:v6];
 }
 
-- (void)startScrollMailboxListTestWithOptions:(id)a3
+- (void)startScrollMailboxListTestWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(MailAppController *)self getMailboxPickerController];
-  v6 = [(MailAppController *)self mostRecentMainScene];
-  v7 = [v6 splitViewController];
+  optionsCopy = options;
+  getMailboxPickerController = [(MailAppController *)self getMailboxPickerController];
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  splitViewController = [mostRecentMainScene splitViewController];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000E3008;
   v10[3] = &unk_10064FC70;
-  v8 = v5;
+  v8 = getMailboxPickerController;
   v11 = v8;
-  v9 = v4;
+  v9 = optionsCopy;
   v12 = v9;
-  [v7 showMailboxPickerController:1 animated:0 completion:v10];
+  [splitViewController showMailboxPickerController:1 animated:0 completion:v10];
 }
 
-- (void)_waitForTimeInterval:(double)a3
+- (void)_waitForTimeInterval:(double)interval
 {
   v5 = +[NSRunLoop currentRunLoop];
-  v4 = [NSDate dateWithTimeIntervalSinceNow:a3];
+  v4 = [NSDate dateWithTimeIntervalSinceNow:interval];
   [v5 runUntilDate:v4];
 }
 
-- (void)installNotificationObserverForNotificationName:(id)a3 object:(id)a4 forOneNotification:(BOOL)a5 usingBlock:(id)a6
+- (void)installNotificationObserverForNotificationName:(id)name object:(id)object forOneNotification:(BOOL)notification usingBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  nameCopy = name;
+  objectCopy = object;
+  blockCopy = block;
   v12 = +[NSOperationQueue mainQueue];
   v21 = 0;
   v22 = &v21;
@@ -5039,10 +5039,10 @@ LABEL_14:
   v17[2] = sub_1000E3458;
   v17[3] = &unk_10064FC98;
   v19 = &v21;
-  v20 = a5;
-  v14 = v11;
+  notificationCopy = notification;
+  v14 = blockCopy;
   v18 = v14;
-  v15 = [v13 addObserverForName:v9 object:v10 queue:v12 usingBlock:v17];
+  v15 = [v13 addObserverForName:nameCopy object:objectCopy queue:v12 usingBlock:v17];
   v16 = v22[5];
   v22[5] = v15;
 
@@ -5051,69 +5051,69 @@ LABEL_14:
 
 - (id)masterNavigationController
 {
-  v2 = [(MailAppController *)self mostRecentMainScene];
-  v3 = [v2 masterNavigationController];
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  masterNavigationController = [mostRecentMainScene masterNavigationController];
 
-  return v3;
+  return masterNavigationController;
 }
 
 - (BOOL)isComposeWindowActive
 {
-  v2 = [(MailAppController *)self mostRecentMainScene];
-  v3 = [v2 isComposeWindowActive];
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  isComposeWindowActive = [mostRecentMainScene isComposeWindowActive];
 
-  return v3;
+  return isComposeWindowActive;
 }
 
-- (void)showComposeWithContext:(id)a3 animated:(BOOL)a4 initialTitle:(id)a5 completionBlock:(id)a6
+- (void)showComposeWithContext:(id)context animated:(BOOL)animated initialTitle:(id)title completionBlock:(id)block
 {
-  v8 = a4;
-  v13 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(MailAppController *)self mostRecentMainScene];
-  [v12 showComposeWithContext:v13 animated:v8 initialTitle:v10 presentationSource:0 completionBlock:v11];
+  animatedCopy = animated;
+  contextCopy = context;
+  titleCopy = title;
+  blockCopy = block;
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  [mostRecentMainScene showComposeWithContext:contextCopy animated:animatedCopy initialTitle:titleCopy presentationSource:0 completionBlock:blockCopy];
 }
 
-- (void)dismissAnyModalViewControllerOrPopoverAnimated:(BOOL)a3
+- (void)dismissAnyModalViewControllerOrPopoverAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(MailAppController *)self mostRecentMainScene];
-  [v4 _dismissAnyModalViewControllerOrPopoverAnimated:v3];
+  animatedCopy = animated;
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  [mostRecentMainScene _dismissAnyModalViewControllerOrPopoverAnimated:animatedCopy];
 }
 
 - (id)dockContainer
 {
-  v2 = [(MailAppController *)self mostRecentMainScene];
-  v3 = [v2 dockContainer];
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  dockContainer = [mostRecentMainScene dockContainer];
 
-  return v3;
+  return dockContainer;
 }
 
 - (id)rootViewController
 {
-  v2 = [(MailAppController *)self mostRecentMainScene];
-  v3 = [v2 mf_rootViewController];
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  mf_rootViewController = [mostRecentMainScene mf_rootViewController];
 
-  return v3;
+  return mf_rootViewController;
 }
 
-- (void)_dismissComposeViewController:(id)a3 animated:(BOOL)a4
+- (void)_dismissComposeViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  v6 = [(MailAppController *)self mostRecentMainScene];
-  [v6 dismissComposeViewController:v7 animated:v4 afterSending:0];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  mostRecentMainScene = [(MailAppController *)self mostRecentMainScene];
+  [mostRecentMainScene dismissComposeViewController:controllerCopy animated:animatedCopy afterSending:0];
 }
 
-- (id)presentingViewControllerForTriageInteraction:(id)a3
+- (id)presentingViewControllerForTriageInteraction:(id)interaction
 {
   swift_getObjectType();
-  _objc_retain(a3);
+  _objc_retain(interaction);
   _objc_retain(self);
-  isa = MailAppController.presentingViewController(for:)(a3).super.super.isa;
+  isa = MailAppController.presentingViewController(for:)(interaction).super.super.isa;
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(interaction);
 
   return isa;
 }

@@ -1,17 +1,17 @@
 @interface DropletBackgroundView
 - (void)layoutSubviews;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation DropletBackgroundView
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (a4)
+  if (key)
   {
     if (sub_249ED6C70() == 0xD000000000000020 && 0x8000000249ED96E0 == v5 || (sub_249ED6ED0() & 1) != 0)
     {
-      v6 = self;
+      selfCopy = self;
       sub_249ED1618();
     }
 
@@ -23,7 +23,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_249ED0E18();
 }
 

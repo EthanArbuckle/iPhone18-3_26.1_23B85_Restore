@@ -1,39 +1,39 @@
 @interface NMCServer
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NMCServer)init;
-- (id)_locationManagerForBundleIdentifier:(id)a3;
-- (id)_locationManagerForEffectiveBundleIdentifier:(id)a3;
+- (id)_locationManagerForBundleIdentifier:(id)identifier;
+- (id)_locationManagerForEffectiveBundleIdentifier:(id)identifier;
 - (void)_checkinWithSubscriptionStateSummary;
-- (void)_debug_fetchDiagnosticsString:(id)a3;
-- (void)_debug_fetchServerConfiguration:(id)a3;
-- (void)_enumerateMapsPeerConnectionsUnderAssertionNamed:(id)a3 usingBlock:(id)a4;
-- (void)_forgetConnection:(id)a3 reason:(id)a4;
-- (void)_loadDataFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_openURL:(id)a3 forMessage:(id)a4 withRouteContext:(id)a5 underAssertionNamed:(id)a6;
-- (void)_performServiceRequest:(id)a3 traits:(id)a4 requestType:(int)a5 auditToken:(id)a6 completionHandler:(id)a7;
+- (void)_debug_fetchDiagnosticsString:(id)string;
+- (void)_debug_fetchServerConfiguration:(id)configuration;
+- (void)_enumerateMapsPeerConnectionsUnderAssertionNamed:(id)named usingBlock:(id)block;
+- (void)_forgetConnection:(id)connection reason:(id)reason;
+- (void)_loadDataFromURL:(id)l completionHandler:(id)handler;
+- (void)_openURL:(id)l forMessage:(id)message withRouteContext:(id)context underAssertionNamed:(id)named;
+- (void)_performServiceRequest:(id)request traits:(id)traits requestType:(int)type auditToken:(id)token completionHandler:(id)handler;
 - (void)_registerMessageObservers;
 - (void)_registerXPCRoutes;
 - (void)_sendTileGroupDidChange;
 - (void)_syncConfigStore;
-- (void)_syncConfigStore:(id)a3;
-- (void)_syncManager:(id)a3 didUpdateDroppedPin:(id)a4;
-- (void)_syncSubscriptionInfoIfNecessaryWithExistingHash:(id)a3;
+- (void)_syncConfigStore:(id)store;
+- (void)_syncManager:(id)manager didUpdateDroppedPin:(id)pin;
+- (void)_syncSubscriptionInfoIfNecessaryWithExistingHash:(id)hash;
 - (void)_updateManifestConfiguration;
 - (void)_updatePairedDeviceConfiguration;
 - (void)checkinForNavigationControl;
-- (void)checkinWithCurrentTileGroupIdentifier:(id)a3;
-- (void)connection:(id)a3 didChangeDeviceConnectivity:(BOOL)a4;
-- (void)connectionNeedsStateSynchronization:(id)a3;
+- (void)checkinWithCurrentTileGroupIdentifier:(id)identifier;
+- (void)connection:(id)connection didChangeDeviceConnectivity:(BOOL)connectivity;
+- (void)connectionNeedsStateSynchronization:(id)synchronization;
 - (void)dealloc;
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5;
-- (void)experimentConfigurationDidChange:(id)a3;
-- (void)fetchTilesForMessage:(id)a3;
-- (void)setDroppedPin:(id)a3;
-- (void)setLocationDidUpdate:(id)a3;
-- (void)startOrStopDownloadForSubscriptionIdentifiers:(id)a3;
-- (void)syncManager:(id)a3 didRequestInitialSync:(id)a4;
-- (void)syncManagerDidUpdate:(id)a3;
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value;
+- (void)experimentConfigurationDidChange:(id)change;
+- (void)fetchTilesForMessage:(id)message;
+- (void)setDroppedPin:(id)pin;
+- (void)setLocationDidUpdate:(id)update;
+- (void)startOrStopDownloadForSubscriptionIdentifiers:(id)identifiers;
+- (void)syncManager:(id)manager didRequestInitialSync:(id)sync;
+- (void)syncManagerDidUpdate:(id)update;
 - (void)updateObservedStateSubscriptionIdentifiers;
 @end
 
@@ -178,7 +178,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004D194;
   block[3] = &unk_100084E80;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10009E878 != -1)
   {
     dispatch_once(&qword_10009E878, block);
@@ -345,9 +345,9 @@
 
 - (void)_updatePairedDeviceConfiguration
 {
-  v3 = [(NRPairedDeviceRegistry *)self->_registry getActivePairedDevice];
+  getActivePairedDevice = [(NRPairedDeviceRegistry *)self->_registry getActivePairedDevice];
   activeDevice = self->_activeDevice;
-  if (v3 != activeDevice)
+  if (getActivePairedDevice != activeDevice)
   {
     v5 = NRDevicePropertySystemVersion;
     v6 = NRDevicePropertySystemBuildVersion;
@@ -359,9 +359,9 @@
     v9[0] = v5;
     v9[1] = v6;
     v8 = [NSArray arrayWithObjects:v9 count:2];
-    [(NRDevice *)v3 addPropertyObserver:self forPropertyChanges:v8];
+    [(NRDevice *)getActivePairedDevice addPropertyObserver:self forPropertyChanges:v8];
 
-    objc_storeStrong(&self->_activeDevice, v3);
+    objc_storeStrong(&self->_activeDevice, getActivePairedDevice);
   }
 }
 
@@ -421,37 +421,37 @@
   }
 }
 
-- (void)_performServiceRequest:(id)a3 traits:(id)a4 requestType:(int)a5 auditToken:(id)a6 completionHandler:(id)a7
+- (void)_performServiceRequest:(id)request traits:(id)traits requestType:(int)type auditToken:(id)token completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (a5 > 2)
+  requestCopy = request;
+  traitsCopy = traits;
+  tokenCopy = token;
+  handlerCopy = handler;
+  if (type > 2)
   {
-    if (a5 == 3)
+    if (type == 3)
     {
       v16 = objc_alloc_init(GEOLocationShifter);
-      [v16 _fetchSerializedCachedShiftFunctionResponseForRequest:v12 callbackQueue:self->_connectionQueue completionHandler:v15];
+      [v16 _fetchSerializedCachedShiftFunctionResponseForRequest:requestCopy callbackQueue:self->_connectionQueue completionHandler:handlerCopy];
       goto LABEL_13;
     }
 
-    if (a5 == 4)
+    if (type == 4)
     {
-      v16 = [[GEODirectionsRequest alloc] initWithData:v12];
+      v16 = [[GEODirectionsRequest alloc] initWithData:requestCopy];
       v20 = +[GEODirectionsRequester sharedRequester];
       connectionQueue = self->_connectionQueue;
       v27[0] = _NSConcreteStackBlock;
       v27[1] = 3221225472;
       v27[2] = sub_100050764;
       v27[3] = &unk_100086C08;
-      v28 = v15;
+      v28 = handlerCopy;
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
       v25[2] = sub_1000507C8;
       v25[3] = &unk_100086C30;
       v26 = v28;
-      [v20 startRequest:v16 traits:v13 auditToken:v14 callbackQueue:connectionQueue finished:v27 networkActivity:0 error:v25];
+      [v20 startRequest:v16 traits:traitsCopy auditToken:tokenCopy callbackQueue:connectionQueue finished:v27 networkActivity:0 error:v25];
 
       v19 = v28;
       goto LABEL_8;
@@ -460,36 +460,36 @@
 
   else
   {
-    if (a5 == 1)
+    if (type == 1)
     {
-      v22 = [[GEOPDPlaceRequest alloc] initWithData:v12];
+      v22 = [[GEOPDPlaceRequest alloc] initWithData:requestCopy];
       v23 = +[GEOPlaceCardRequester sharedRequester];
       v33[0] = _NSConcreteStackBlock;
       v33[1] = 3221225472;
       v33[2] = sub_10005066C;
       v33[3] = &unk_100086B90;
-      v34 = v15;
-      v24 = [v23 performPlaceDataRequest:v22 traits:v13 cachePolicy:0 timeout:v14 auditToken:0 throttleToken:0 networkActivity:0.0 requesterHandler:v33];
+      v34 = handlerCopy;
+      v24 = [v23 performPlaceDataRequest:v22 traits:traitsCopy cachePolicy:0 timeout:tokenCopy auditToken:0 throttleToken:0 networkActivity:0.0 requesterHandler:v33];
 
       goto LABEL_11;
     }
 
-    if (a5 == 2)
+    if (type == 2)
     {
-      v16 = [[GEOETARequest alloc] initWithData:v12];
+      v16 = [[GEOETARequest alloc] initWithData:requestCopy];
       v17 = +[GEOETARequester sharedRequester];
       v18 = self->_connectionQueue;
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
       v31[2] = sub_1000506E8;
       v31[3] = &unk_100086BB8;
-      v32 = v15;
+      v32 = handlerCopy;
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_10005074C;
       v29[3] = &unk_100086BE0;
       v30 = v32;
-      [v17 startSimpleETARequest:v16 auditToken:v14 throttleToken:0 traits:v13 callbackQueue:v18 finished:v31 networkActivity:0 error:v29];
+      [v17 startSimpleETARequest:v16 auditToken:tokenCopy throttleToken:0 traits:traitsCopy callbackQueue:v18 finished:v31 networkActivity:0 error:v29];
 
       v19 = v32;
 LABEL_8:
@@ -500,7 +500,7 @@ LABEL_13:
   }
 
   v22 = [NSError GEOErrorWithCode:-6];
-  (*(v15 + 2))(v15, 0, v22);
+  (*(handlerCopy + 2))(handlerCopy, 0, v22);
 LABEL_11:
 
 LABEL_14:
@@ -517,10 +517,10 @@ LABEL_14:
   dispatch_async(v3, block);
 }
 
-- (void)_syncConfigStore:(id)a3
+- (void)_syncConfigStore:(id)store
 {
   v8 = 0;
-  v3 = [NSPropertyListSerialization dataWithPropertyList:a3 format:200 options:0 error:&v8];
+  v3 = [NSPropertyListSerialization dataWithPropertyList:store format:200 options:0 error:&v8];
   v4 = v8;
   if (v3)
   {
@@ -546,35 +546,35 @@ LABEL_14:
   }
 }
 
-- (void)_enumerateMapsPeerConnectionsUnderAssertionNamed:(id)a3 usingBlock:(id)a4
+- (void)_enumerateMapsPeerConnectionsUnderAssertionNamed:(id)named usingBlock:(id)block
 {
   connectionQueue = self->_connectionQueue;
-  v7 = a4;
-  v8 = a3;
+  blockCopy = block;
+  namedCopy = named;
   dispatch_assert_queue_V2(connectionQueue);
   v9 = [(NSMutableArray *)self->_mapsPeerConnections copy];
-  sub_100013B60(v9, v8, v7);
+  sub_100013B60(v9, namedCopy, blockCopy);
 }
 
-- (void)_openURL:(id)a3 forMessage:(id)a4 withRouteContext:(id)a5 underAssertionNamed:(id)a6
+- (void)_openURL:(id)l forMessage:(id)message withRouteContext:(id)context underAssertionNamed:(id)named
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  messageCopy = message;
+  contextCopy = context;
   v11 = objc_alloc_init(NMReply);
-  if (v8)
+  if (lCopy)
   {
     v12 = +[MapsCompanionDaemonIPCInterface sharedInterface];
     v13 = objc_alloc_init(IPCLoadDirectionsMessage);
-    [(IPCLoadDirectionsMessage *)v13 setUrl:v8];
+    [(IPCLoadDirectionsMessage *)v13 setUrl:lCopy];
     [(IPCLoadDirectionsMessage *)v13 setOriginIsWatch:1];
-    [(IPCLoadDirectionsMessage *)v13 setRouteContextData:v10];
+    [(IPCLoadDirectionsMessage *)v13 setRouteContextData:contextCopy];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100050C74;
     v15[3] = &unk_1000851A0;
     v16 = v11;
-    v17 = v9;
+    v17 = messageCopy;
     [v12 loadDirections:v13 completion:v15];
   }
 
@@ -584,22 +584,22 @@ LABEL_14:
     v13 = [[NMArgument alloc] _nm_initWithErrorValue:v12 tag:3];
     [(NMReply *)v11 addArgument:v13];
     v14 = +[NMCGizmoConnection sharedInstance];
-    [v14 sendReply:v11 forMessage:v9 options:0];
+    [v14 sendReply:v11 forMessage:messageCopy options:0];
   }
 }
 
-- (id)_locationManagerForBundleIdentifier:(id)a3
+- (id)_locationManagerForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     [(NSLock *)self->_locationManagersLock lock];
-    v5 = [(NSMutableDictionary *)self->_locationManagers objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_locationManagers objectForKey:identifierCopy];
     if (!v5)
     {
-      v5 = [[NMCLocationManager alloc] initWithBundleIdentifier:v4];
+      v5 = [[NMCLocationManager alloc] initWithBundleIdentifier:identifierCopy];
       [(NMCLocationManager *)v5 setLocationDidUpdate:self->_locationDidUpdate];
-      [(NSMutableDictionary *)self->_locationManagers setObject:v5 forKey:v4];
+      [(NSMutableDictionary *)self->_locationManagers setObject:v5 forKey:identifierCopy];
     }
 
     [(NSLock *)self->_locationManagersLock unlock];
@@ -613,18 +613,18 @@ LABEL_14:
   return v5;
 }
 
-- (id)_locationManagerForEffectiveBundleIdentifier:(id)a3
+- (id)_locationManagerForEffectiveBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     [(NSLock *)self->_locationManagersLock lock];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [(NSMutableDictionary *)self->_locationManagers allValues];
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    allValues = [(NSMutableDictionary *)self->_locationManagers allValues];
+    v6 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
       v7 = v6;
@@ -635,12 +635,12 @@ LABEL_4:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v17 + 1) + 8 * v9);
-        v11 = [v10 effectiveBundleIdentifier];
-        v12 = [v11 isEqualToString:v4];
+        effectiveBundleIdentifier = [v10 effectiveBundleIdentifier];
+        v12 = [effectiveBundleIdentifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -649,7 +649,7 @@ LABEL_4:
 
         if (v7 == ++v9)
         {
-          v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v7 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
           if (v7)
           {
             goto LABEL_4;
@@ -672,11 +672,11 @@ LABEL_4:
 LABEL_10:
     }
 
-    v13 = [[NMCLocationManager alloc] initWithEffectiveBundleIdentifier:v4];
+    v13 = [[NMCLocationManager alloc] initWithEffectiveBundleIdentifier:identifierCopy];
     [(NMCLocationManager *)v13 setLocationDidUpdate:self->_locationDidUpdate];
     locationManagers = self->_locationManagers;
-    v15 = [(NMCLocationManager *)v13 bundleIdentifier];
-    [(NSMutableDictionary *)locationManagers setObject:v13 forKey:v15];
+    bundleIdentifier = [(NMCLocationManager *)v13 bundleIdentifier];
+    [(NSMutableDictionary *)locationManagers setObject:v13 forKey:bundleIdentifier];
 
 LABEL_13:
     [(NSLock *)self->_locationManagersLock unlock];
@@ -690,10 +690,10 @@ LABEL_13:
   return v13;
 }
 
-- (void)setLocationDidUpdate:(id)a3
+- (void)setLocationDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  updateCopy = update;
+  v5 = [updateCopy copy];
   locationDidUpdate = self->_locationDidUpdate;
   self->_locationDidUpdate = v5;
 
@@ -701,8 +701,8 @@ LABEL_13:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(NSMutableDictionary *)self->_locationManagers allValues];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_locationManagers allValues];
+  v8 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -714,24 +714,24 @@ LABEL_13:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) setLocationDidUpdate:v4];
+        [*(*(&v12 + 1) + 8 * v11) setLocationDidUpdate:updateCopy];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)connection:(id)a3 didChangeDeviceConnectivity:(BOOL)a4
+- (void)connection:(id)connection didChangeDeviceConnectivity:(BOOL)connectivity
 {
-  if (!a4)
+  if (!connectivity)
   {
     [(NSLock *)self->_locationManagersLock lock];
     v5 = [(NSMutableDictionary *)self->_locationManagers copy];
@@ -772,9 +772,9 @@ LABEL_13:
   }
 }
 
-- (void)connectionNeedsStateSynchronization:(id)a3
+- (void)connectionNeedsStateSynchronization:(id)synchronization
 {
-  if ([a3 isNearbyAndUsable])
+  if ([synchronization isNearbyAndUsable])
   {
     [(NMCSyncManager *)self->_syncManager synchronizePreferences];
     [(NMCRoutePlanningController *)self->_routePlanningController sendPreviewRoutesIfAvailable];
@@ -794,7 +794,7 @@ LABEL_13:
   }
 }
 
-- (void)experimentConfigurationDidChange:(id)a3
+- (void)experimentConfigurationDidChange:(id)change
 {
   v4 = objc_alloc_init(NMMessage);
   [(NMMessage *)v4 setType:53];
@@ -802,18 +802,18 @@ LABEL_13:
   [v3 sendMessage:v4 options:0];
 }
 
-- (void)fetchTilesForMessage:(id)a3
+- (void)fetchTilesForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 argumentForTag:102];
-  v6 = [v5 tileRequestValues];
+  messageCopy = message;
+  v5 = [messageCopy argumentForTag:102];
+  tileRequestValues = [v5 tileRequestValues];
 
-  if ([v6 count])
+  if ([tileRequestValues count])
   {
-    v7 = [v4 argumentForTag:103];
-    v8 = [v7 stringValue];
+    v7 = [messageCopy argumentForTag:103];
+    stringValue = [v7 stringValue];
 
-    if (v8)
+    if (stringValue)
     {
       [(NSLock *)self->_requestIdentifierToPendingTileLoaderLock lock];
       requestIdentifierToPendingTileLoader = self->_requestIdentifierToPendingTileLoader;
@@ -826,22 +826,22 @@ LABEL_13:
         requestIdentifierToPendingTileLoader = self->_requestIdentifierToPendingTileLoader;
       }
 
-      v12 = [(NSMutableDictionary *)requestIdentifierToPendingTileLoader objectForKey:v8];
+      v12 = [(NSMutableDictionary *)requestIdentifierToPendingTileLoader objectForKey:stringValue];
 
       if (v12)
       {
         [(NSLock *)self->_requestIdentifierToPendingTileLoaderLock unlock];
-        NSLog(@"Tile request identifier %@ is already in-progress. Ignoring subsequent request to start", v8);
+        NSLog(@"Tile request identifier %@ is already in-progress. Ignoring subsequent request to start", stringValue);
       }
 
       else
       {
-        v13 = [v4 argumentForTag:4];
-        v14 = [v13 stringValue];
+        v13 = [messageCopy argumentForTag:4];
+        stringValue2 = [v13 stringValue];
 
-        if (v14)
+        if (stringValue2)
         {
-          v15 = [[GEOApplicationAuditToken alloc] initWithProxiedExternalApplicationBundleId:v14];
+          v15 = [[GEOApplicationAuditToken alloc] initWithProxiedExternalApplicationBundleId:stringValue2];
         }
 
         else
@@ -849,18 +849,18 @@ LABEL_13:
           v15 = 0;
         }
 
-        v16 = [v4 argumentForTag:7];
-        v17 = [v16 stringValue];
+        v16 = [messageCopy argumentForTag:7];
+        stringValue3 = [v16 stringValue];
 
-        if ([v17 length])
+        if ([stringValue3 length])
         {
-          v18 = [v15 overrideTokenWithOfflineCohortId:v17];
+          v18 = [v15 overrideTokenWithOfflineCohortId:stringValue3];
 
           v15 = v18;
         }
 
-        v19 = [[NMCTileLoader alloc] initWithRequestIdentifier:v8 manifestConfiguration:self->_manifestConfiguration tileRequests:v6 auditToken:v15];
-        [(NSMutableDictionary *)self->_requestIdentifierToPendingTileLoader setObject:v19 forKey:v8];
+        v19 = [[NMCTileLoader alloc] initWithRequestIdentifier:stringValue manifestConfiguration:self->_manifestConfiguration tileRequests:tileRequestValues auditToken:v15];
+        [(NSMutableDictionary *)self->_requestIdentifierToPendingTileLoader setObject:v19 forKey:stringValue];
         [(NSLock *)self->_requestIdentifierToPendingTileLoaderLock unlock];
         objc_initWeak(&location, self);
         tileLoaderQueue = self->_tileLoaderQueue;
@@ -868,9 +868,9 @@ LABEL_13:
         v21[1] = 3221225472;
         v21[2] = sub_100051884;
         v21[3] = &unk_100086D08;
-        v22 = v4;
+        v22 = messageCopy;
         objc_copyWeak(&v24, &location);
-        v23 = v8;
+        v23 = stringValue;
         [(NMCTileLoader *)v19 startWithCallbackQueue:tileLoaderQueue tileHandler:&stru_100086CE0 completionHandler:v21];
 
         objc_destroyWeak(&v24);
@@ -880,17 +880,17 @@ LABEL_13:
   }
 }
 
-- (void)checkinWithCurrentTileGroupIdentifier:(id)a3
+- (void)checkinWithCurrentTileGroupIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(GEOResourceManifestManager *)self->_manifestManager activeTileGroup];
-  v6 = [v5 uniqueIdentifier];
-  if (v6)
+  identifierCopy = identifier;
+  activeTileGroup = [(GEOResourceManifestManager *)self->_manifestManager activeTileGroup];
+  uniqueIdentifier = [activeTileGroup uniqueIdentifier];
+  if (uniqueIdentifier)
   {
-    v7 = v6;
-    v8 = [(GEOResourceManifestManager *)self->_manifestManager activeTileGroup];
-    v9 = [v8 uniqueIdentifier];
-    v10 = [v4 isEqualToString:v9];
+    v7 = uniqueIdentifier;
+    activeTileGroup2 = [(GEOResourceManifestManager *)self->_manifestManager activeTileGroup];
+    uniqueIdentifier2 = [activeTileGroup2 uniqueIdentifier];
+    v10 = [identifierCopy isEqualToString:uniqueIdentifier2];
 
     if ((v10 & 1) == 0)
     {
@@ -903,9 +903,9 @@ LABEL_13:
   {
   }
 
-  v11 = [(GEOResourceManifestManager *)self->_manifestManager activeTileGroup];
+  activeTileGroup3 = [(GEOResourceManifestManager *)self->_manifestManager activeTileGroup];
 
-  if (!v4 || !v11)
+  if (!identifierCopy || !activeTileGroup3)
   {
     [(GEOResourceManifestManager *)self->_manifestManager openServerConnection];
     manifestManager = self->_manifestManager;
@@ -922,13 +922,13 @@ LABEL_8:
 
 - (void)_sendTileGroupDidChange
 {
-  v6 = [(GEOResourceManifestManager *)self->_manifestManager activeTileGroup];
+  activeTileGroup = [(GEOResourceManifestManager *)self->_manifestManager activeTileGroup];
   v2 = objc_alloc_init(NMMessage);
   [(NMMessage *)v2 setType:102];
   v3 = objc_alloc_init(NMArgument);
   [(NMArgument *)v3 setTag:1];
-  v4 = [v6 data];
-  [(NMArgument *)v3 setDataValue:v4];
+  data = [activeTileGroup data];
+  [(NMArgument *)v3 setDataValue:data];
 
   [(NMMessage *)v2 addArgument:v3];
   v5 = +[NMCGizmoConnection sharedInstance];
@@ -950,18 +950,18 @@ LABEL_8:
   self->_companionControllerConnection = v3;
 }
 
-- (void)setDroppedPin:(id)a3
+- (void)setDroppedPin:(id)pin
 {
-  if (a3)
+  if (pin)
   {
-    v4 = a3;
+    pinCopy = pin;
     v7 = objc_alloc_init(MSPPinStorage);
     [v7 setType:1];
     v5 = +[NSUUID UUID];
-    v6 = [v5 UUIDString];
-    [v7 setIdentifier:v6];
+    uUIDString = [v5 UUIDString];
+    [v7 setIdentifier:uUIDString];
 
-    [v7 setDroppedPin:v4];
+    [v7 setDroppedPin:pinCopy];
   }
 
   else
@@ -972,9 +972,9 @@ LABEL_8:
   [(NMCSyncManager *)self->_syncManager setDroppedPin:v7];
 }
 
-- (void)_debug_fetchServerConfiguration:(id)a3
+- (void)_debug_fetchServerConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = objc_alloc_init(NMMessage);
   [(NMMessage *)v4 setType:1500];
   v5 = +[NMCGizmoConnection sharedInstance];
@@ -985,14 +985,14 @@ LABEL_8:
   v8[1] = 3221225472;
   v8[2] = sub_100051E8C;
   v8[3] = &unk_100086D30;
-  v9 = v3;
-  v7 = v3;
+  v9 = configurationCopy;
+  v7 = configurationCopy;
   [v5 sendMessage:v4 options:v6 withReply:v8];
 }
 
-- (void)_debug_fetchDiagnosticsString:(id)a3
+- (void)_debug_fetchDiagnosticsString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(NMMessage);
   [(NMMessage *)v4 setType:1501];
   v5 = +[NMCGizmoConnection sharedInstance];
@@ -1003,33 +1003,33 @@ LABEL_8:
   v8[1] = 3221225472;
   v8[2] = sub_100052094;
   v8[3] = &unk_100086D30;
-  v9 = v3;
-  v7 = v3;
+  v9 = stringCopy;
+  v7 = stringCopy;
   [v5 sendMessage:v4 options:v6 withReply:v8];
 }
 
-- (void)syncManagerDidUpdate:(id)a3
+- (void)syncManagerDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 pins];
-  v6 = [v5 firstObject];
-  v7 = [v6 droppedPin];
+  updateCopy = update;
+  pins = [updateCopy pins];
+  firstObject = [pins firstObject];
+  droppedPin = [firstObject droppedPin];
   connectionQueue = self->_connectionQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100052248;
   block[3] = &unk_100085E38;
   block[4] = self;
-  v12 = v4;
-  v13 = v7;
-  v9 = v7;
-  v10 = v4;
+  v12 = updateCopy;
+  v13 = droppedPin;
+  v9 = droppedPin;
+  v10 = updateCopy;
   dispatch_async(connectionQueue, block);
 }
 
-- (void)_syncManager:(id)a3 didUpdateDroppedPin:(id)a4
+- (void)_syncManager:(id)manager didUpdateDroppedPin:(id)pin
 {
-  v5 = a4;
+  pinCopy = pin;
   dispatch_assert_queue_V2(self->_connectionQueue);
   v6 = [(NSMutableArray *)self->_mapsPeerConnections copy];
   v13 = 0u;
@@ -1052,8 +1052,8 @@ LABEL_8:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v13 + 1) + 8 * v11) remoteObjectProxy];
-        [v12 updateDroppedPin:v5];
+        remoteObjectProxy = [*(*(&v13 + 1) + 8 * v11) remoteObjectProxy];
+        [remoteObjectProxy updateDroppedPin:pinCopy];
 
         v11 = v11 + 1;
       }
@@ -1066,9 +1066,9 @@ LABEL_8:
   }
 }
 
-- (void)syncManager:(id)a3 didRequestInitialSync:(id)a4
+- (void)syncManager:(id)manager didRequestInitialSync:(id)sync
 {
-  v4 = a4;
+  syncCopy = sync;
   v5 = objc_alloc_init(NMMessage);
   [(NMMessage *)v5 setType:50];
   v6 = +[NMCGizmoConnection sharedInstance];
@@ -1081,15 +1081,15 @@ LABEL_8:
   v10[1] = 3221225472;
   v10[2] = sub_1000524F0;
   v10[3] = &unk_100086D30;
-  v11 = v4;
-  v9 = v4;
+  v11 = syncCopy;
+  v9 = syncCopy;
   [v6 sendMessage:v5 options:v8 withReply:v10];
 }
 
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value
 {
-  v6 = a4;
-  if (([v6 isEqualToString:NRDevicePropertySystemVersion] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", NRDevicePropertySystemBuildVersion))
+  changeCopy = change;
+  if (([changeCopy isEqualToString:NRDevicePropertySystemVersion] & 1) != 0 || objc_msgSend(changeCopy, "isEqualToString:", NRDevicePropertySystemBuildVersion))
   {
     [(NMCServer *)self _updateManifestConfiguration];
   }
@@ -1120,23 +1120,23 @@ LABEL_8:
   [(NSXPCListener *)v10 resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_connectionQueue);
-  if (self->_geoListener == v6)
+  if (self->_geoListener == listenerCopy)
   {
-    v11 = [v7 valueForEntitlement:@"com.apple.nanomapscd.spi"];
+    v11 = [connectionCopy valueForEntitlement:@"com.apple.nanomapscd.spi"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 BOOLValue])
     {
       v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___GEONMCXPCInterface];
-      [v7 setExportedInterface:v12];
+      [connectionCopy setExportedInterface:v12];
 
-      [v7 setExportedObject:self];
-      [v7 _setQueue:self->_connectionQueue];
-      [v7 resume];
+      [connectionCopy setExportedObject:self];
+      [connectionCopy _setQueue:self->_connectionQueue];
+      [connectionCopy resume];
       v10 = 1;
     }
 
@@ -1149,31 +1149,31 @@ LABEL_8:
   else
   {
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___NanoCompanionXPCDaemonControlling];
-    [v7 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
-    [v7 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___NanoCompanionXPCAppControlling];
-    [v7 setRemoteObjectInterface:v9];
+    [connectionCopy setRemoteObjectInterface:v9];
 
-    [v7 _setQueue:self->_connectionQueue];
+    [connectionCopy _setQueue:self->_connectionQueue];
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v7);
+    objc_initWeak(&from, connectionCopy);
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1000529DC;
     v20[3] = &unk_100085720;
     objc_copyWeak(&v21, &location);
     objc_copyWeak(&v22, &from);
-    [v7 setInvalidationHandler:v20];
+    [connectionCopy setInvalidationHandler:v20];
     v14 = _NSConcreteStackBlock;
     v15 = 3221225472;
     v16 = sub_100052A48;
     v17 = &unk_100085720;
     objc_copyWeak(&v18, &location);
     objc_copyWeak(&v19, &from);
-    [v7 setInterruptionHandler:&v14];
-    [(NSMutableArray *)self->_mapsPeerConnections addObject:v7, v14, v15, v16, v17];
-    [v7 resume];
+    [connectionCopy setInterruptionHandler:&v14];
+    [(NSMutableArray *)self->_mapsPeerConnections addObject:connectionCopy, v14, v15, v16, v17];
+    [connectionCopy resume];
     objc_destroyWeak(&v19);
     objc_destroyWeak(&v18);
     objc_destroyWeak(&v22);
@@ -1186,14 +1186,14 @@ LABEL_8:
   return v10;
 }
 
-- (void)_forgetConnection:(id)a3 reason:(id)a4
+- (void)_forgetConnection:(id)connection reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(self->_connectionQueue);
-  if (v6)
+  if (connectionCopy)
   {
-    if (self->_companionControllerConnection == v6)
+    if (self->_companionControllerConnection == connectionCopy)
     {
       v9 = sub_100001B24();
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
@@ -1219,7 +1219,7 @@ LABEL_8:
       v8 = 0;
     }
 
-    [(NSMutableArray *)self->_mapsPeerConnections removeObject:v6];
+    [(NSMutableArray *)self->_mapsPeerConnections removeObject:connectionCopy];
     v12 = sub_10005318C();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -1230,25 +1230,25 @@ LABEL_8:
 
       v13 = [(NSMutableArray *)self->_mapsPeerConnections count];
       v14 = 138413058;
-      v15 = v7;
+      v15 = reasonCopy;
       v16 = 2112;
       v17 = v8;
       v18 = 2048;
       v19 = v13;
       v20 = 2112;
-      v21 = v6;
+      v21 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%@ XPC connection %@ (%lu remaining peers) %@", &v14, 0x2Au);
     }
   }
 }
 
-- (void)startOrStopDownloadForSubscriptionIdentifiers:(id)a3
+- (void)startOrStopDownloadForSubscriptionIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v6 = objc_alloc_init(NMMessage);
   [(NMMessage *)v6 setType:64];
   v4 = objc_alloc_init(NMArgument);
-  [(NMArgument *)v4 setDataValue:v3];
+  [(NMArgument *)v4 setDataValue:identifiersCopy];
 
   [(NMArgument *)v4 setTag:1];
   [(NMMessage *)v6 addArgument:v4];
@@ -1256,11 +1256,11 @@ LABEL_8:
   [v5 sendMessage:v6 options:0 withReply:&stru_100086D90];
 }
 
-- (void)_loadDataFromURL:(id)a3 completionHandler:(id)a4
+- (void)_loadDataFromURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 && v6)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (l && handlerCopy)
   {
     urlSession = self->_urlSession;
     sub_100052E18();
@@ -1268,14 +1268,14 @@ LABEL_8:
     v12 = sub_1000507E0;
     v13 = &unk_100086C58;
     v14 = v7;
-    v9 = [(NSURLSession *)urlSession dataTaskWithURL:a3 completionHandler:v10];
+    v9 = [(NSURLSession *)urlSession dataTaskWithURL:l completionHandler:v10];
     [v9 resume];
   }
 }
 
-- (void)_syncSubscriptionInfoIfNecessaryWithExistingHash:(id)a3
+- (void)_syncSubscriptionInfoIfNecessaryWithExistingHash:(id)hash
 {
-  v4 = a3;
+  hashCopy = hash;
   activeDevice = self->_activeDevice;
   if (activeDevice)
   {
@@ -1286,7 +1286,7 @@ LABEL_8:
     v10 = 3221225472;
     v11 = sub_100055FD8;
     v12 = &unk_100086C80;
-    v13 = v4;
+    v13 = hashCopy;
     [v7 _fetchSubscriptionsForSyncToWatch:v6 callbackQueue:connectionQueue completionHandler:v9];
   }
 }

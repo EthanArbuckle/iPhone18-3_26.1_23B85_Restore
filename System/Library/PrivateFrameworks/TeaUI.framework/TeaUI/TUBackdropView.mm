@@ -1,16 +1,16 @@
 @interface TUBackdropView
-- (TUBackdropView)initWithFrame:(CGRect)a3;
+- (TUBackdropView)initWithFrame:(CGRect)frame;
 - (UIView)contentView;
 - (void)layoutSubviews;
 @end
 
 @implementation TUBackdropView
 
-- (TUBackdropView)initWithFrame:(CGRect)a3
+- (TUBackdropView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = TUBackdropView;
-  v3 = [(TUBackdropView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUBackdropView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DC730] effectWithStyle:7];
@@ -20,8 +20,8 @@
 
     [(TUBackdropView *)v3 addSubview:v3->_backdropView];
     [(TUBackdropView *)v3 setOpaque:0];
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [(TUBackdropView *)v3 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(TUBackdropView *)v3 setBackgroundColor:clearColor];
   }
 
   return v3;
@@ -29,10 +29,10 @@
 
 - (UIView)contentView
 {
-  v2 = [(TUBackdropView *)self backdropView];
-  v3 = [v2 contentView];
+  backdropView = [(TUBackdropView *)self backdropView];
+  contentView = [backdropView contentView];
 
-  return v3;
+  return contentView;
 }
 
 - (void)layoutSubviews
@@ -45,8 +45,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TUBackdropView *)self backdropView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  backdropView = [(TUBackdropView *)self backdropView];
+  [backdropView setFrame:{v4, v6, v8, v10}];
 }
 
 @end

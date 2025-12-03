@@ -1,35 +1,35 @@
 @interface RBSProcessPlatformPredicate
-- (BOOL)isEqual:(id)a3;
-- (RBSProcessPlatformPredicate)initWithPlatform:(int)a3;
-- (RBSProcessPlatformPredicate)initWithRBSXPCCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (RBSProcessPlatformPredicate)initWithPlatform:(int)platform;
+- (RBSProcessPlatformPredicate)initWithRBSXPCCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation RBSProcessPlatformPredicate
 
-- (RBSProcessPlatformPredicate)initWithPlatform:(int)a3
+- (RBSProcessPlatformPredicate)initWithPlatform:(int)platform
 {
-  if (a3)
+  if (platform)
   {
     v7.receiver = self;
     v7.super_class = RBSProcessPlatformPredicate;
     v4 = [(RBSProcessPlatformPredicate *)&v7 init];
     if (v4)
     {
-      v4->_platform = a3;
+      v4->_platform = platform;
     }
 
     self = v4;
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (unint64_t)hash
@@ -39,10 +39,10 @@
   return [(RBSProcessPredicateImpl *)&v3 hash]^ self->_platform;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -50,7 +50,7 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v5 == objc_opt_class() && self->_platform == v4->_platform;
+    v6 = v5 == objc_opt_class() && self->_platform == equalCopy->_platform;
   }
 
   return v6;
@@ -65,15 +65,15 @@
   return v5;
 }
 
-- (RBSProcessPlatformPredicate)initWithRBSXPCCoder:(id)a3
+- (RBSProcessPlatformPredicate)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = RBSProcessPlatformPredicate;
   v5 = [(RBSProcessPlatformPredicate *)&v7 init];
   if (v5)
   {
-    v5->_platform = [v4 decodeInt64ForKey:@"_platform"];
+    v5->_platform = [coderCopy decodeInt64ForKey:@"_platform"];
   }
 
   return v5;

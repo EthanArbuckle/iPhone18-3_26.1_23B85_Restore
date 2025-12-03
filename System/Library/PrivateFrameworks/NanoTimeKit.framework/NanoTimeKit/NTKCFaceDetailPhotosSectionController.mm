@@ -1,52 +1,52 @@
 @interface NTKCFaceDetailPhotosSectionController
-- (BOOL)_canDisplayActionRowForCustomEditMode:(int64_t)a3 andOption:(id)a4;
-- (BOOL)_handleDidSelectActionRowForOption:(id)a3;
-- (BOOL)_handleDidSelectOption:(id)a3;
+- (BOOL)_canDisplayActionRowForCustomEditMode:(int64_t)mode andOption:(id)option;
+- (BOOL)_handleDidSelectActionRowForOption:(id)option;
+- (BOOL)_handleDidSelectOption:(id)option;
 - (BOOL)canAddFace;
 - (BOOL)hasChanges;
-- (NTKCFaceDetailPhotosSectionController)initWithTableViewController:(id)a3 face:(id)a4 inGallery:(BOOL)a5 editOptionCollection:(id)a6 faceView:(id)a7 externalAssets:(id)a8;
+- (NTKCFaceDetailPhotosSectionController)initWithTableViewController:(id)controller face:(id)face inGallery:(BOOL)gallery editOptionCollection:(id)collection faceView:(id)view externalAssets:(id)assets;
 - (UIViewController)parentViewController;
-- (id)_actionNameForOption:(id)a3;
+- (id)_actionNameForOption:(id)option;
 - (id)_currentEditor;
-- (void)_customizeActionRow:(id)a3 withEditOption:(id)a4;
-- (void)_setPhotos:(id)a3;
+- (void)_customizeActionRow:(id)row withEditOption:(id)option;
+- (void)_setPhotos:(id)photos;
 - (void)_updatePhotosSection;
-- (void)albumChooserDidFinish:(id)a3;
-- (void)customPhotosControllerDidFinish:(id)a3;
+- (void)albumChooserDidFinish:(id)finish;
+- (void)customPhotosControllerDidFinish:(id)finish;
 - (void)faceDidChange;
 - (void)faceDidChangeResourceDirectory;
-- (void)saveChangesWithCompletion:(id)a3;
-- (void)setSelectedOptions:(id)a3;
+- (void)saveChangesWithCompletion:(id)completion;
+- (void)setSelectedOptions:(id)options;
 @end
 
 @implementation NTKCFaceDetailPhotosSectionController
 
-- (NTKCFaceDetailPhotosSectionController)initWithTableViewController:(id)a3 face:(id)a4 inGallery:(BOOL)a5 editOptionCollection:(id)a6 faceView:(id)a7 externalAssets:(id)a8
+- (NTKCFaceDetailPhotosSectionController)initWithTableViewController:(id)controller face:(id)face inGallery:(BOOL)gallery editOptionCollection:(id)collection faceView:(id)view externalAssets:(id)assets
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v18)
+  galleryCopy = gallery;
+  controllerCopy = controller;
+  faceCopy = face;
+  collectionCopy = collection;
+  viewCopy = view;
+  assetsCopy = assets;
+  if (assetsCopy)
   {
-    v19 = [v16 filteredCollectionWithObjectsPassingTest:&__block_literal_global_139];
+    v19 = [collectionCopy filteredCollectionWithObjectsPassingTest:&__block_literal_global_139];
   }
 
   else
   {
-    v19 = v16;
+    v19 = collectionCopy;
   }
 
   v20 = v19;
   v24.receiver = self;
   v24.super_class = NTKCFaceDetailPhotosSectionController;
-  v21 = [(NTKCFaceDetailEditOptionVerticalSectionController *)&v24 initWithTableViewController:v14 face:v15 inGallery:v11 editOptionCollection:v19 faceView:v17];
+  v21 = [(NTKCFaceDetailEditOptionVerticalSectionController *)&v24 initWithTableViewController:controllerCopy face:faceCopy inGallery:galleryCopy editOptionCollection:v19 faceView:viewCopy];
   v22 = v21;
   if (v21)
   {
-    [(NTKCFaceDetailPhotosSectionController *)v21 setExternalAssets:v18];
+    [(NTKCFaceDetailPhotosSectionController *)v21 setExternalAssets:assetsCopy];
   }
 
   return v22;
@@ -54,16 +54,16 @@
 
 - (BOOL)canAddFace
 {
-  v3 = [(NTKCFaceDetailEditOptionSectionController *)self selectedOptions];
+  selectedOptions = [(NTKCFaceDetailEditOptionSectionController *)self selectedOptions];
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(NTKCFaceDetailEditOptionSectionController *)self collection];
-  v6 = [v4 numberWithInteger:{objc_msgSend(v5, "mode")}];
-  v7 = [v3 objectForKeyedSubscript:v6];
+  collection = [(NTKCFaceDetailEditOptionSectionController *)self collection];
+  v6 = [v4 numberWithInteger:{objc_msgSend(collection, "mode")}];
+  v7 = [selectedOptions objectForKeyedSubscript:v6];
 
-  v8 = [v7 photosContent];
-  if (v8)
+  photosContent = [v7 photosContent];
+  if (photosContent)
   {
-    v9 = v8 == 2;
+    v9 = photosContent == 2;
   }
 
   else
@@ -76,7 +76,7 @@
     v10 = 1;
   }
 
-  else if (v8 == 1)
+  else if (photosContent == 1)
   {
     transientEditor = self->_transientEditor;
     if (!transientEditor)
@@ -111,27 +111,27 @@
   [(NTKCFaceDetailPhotosSectionController *)self _updatePhotosSection];
 }
 
-- (void)setSelectedOptions:(id)a3
+- (void)setSelectedOptions:(id)options
 {
   v107.receiver = self;
   v107.super_class = NTKCFaceDetailPhotosSectionController;
-  v4 = a3;
-  [(NTKCFaceDetailEditOptionVerticalSectionController *)&v107 setSelectedOptions:v4];
+  optionsCopy = options;
+  [(NTKCFaceDetailEditOptionVerticalSectionController *)&v107 setSelectedOptions:optionsCopy];
   v5 = *&self->_syncedAlbumEditor == 0 && !self->_customPhotosEditor && self->_transientEditor == 0;
   v6 = MEMORY[0x277CCABB0];
-  v7 = [(NTKCFaceDetailEditOptionSectionController *)self collection];
-  v8 = [v6 numberWithInteger:{objc_msgSend(v7, "mode")}];
-  v9 = [v4 objectForKeyedSubscript:v8];
+  collection = [(NTKCFaceDetailEditOptionSectionController *)self collection];
+  v8 = [v6 numberWithInteger:{objc_msgSend(collection, "mode")}];
+  v9 = [optionsCopy objectForKeyedSubscript:v8];
 
   if (v5 || (currentContent = self->_currentContent, currentContent != [v9 photosContent]))
   {
-    v11 = [v9 photosContent];
-    self->_currentContent = v11;
-    if (v11)
+    photosContent = [v9 photosContent];
+    self->_currentContent = photosContent;
+    if (photosContent)
     {
-      if (v11 != 2)
+      if (photosContent != 2)
       {
-        if (v11 != 1)
+        if (photosContent != 1)
         {
 LABEL_65:
           [(NTKCFaceDetailEditOptionVerticalSectionController *)self reloadActionRow];
@@ -144,7 +144,7 @@ LABEL_65:
         externalAssets = self->_externalAssets;
         if (externalAssets)
         {
-          v14 = [(NSArray *)externalAssets firstObject];
+          firstObject = [(NSArray *)externalAssets firstObject];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -154,19 +154,19 @@ LABEL_65:
             if (!transientEditor)
             {
               v17 = [NTKCompanionTransientCustomPhotosEditor alloc];
-              v18 = [(NTKCFaceDetailSectionController *)self face];
-              v19 = [v18 device];
-              v20 = [(NTKCompanionTransientCustomPhotosEditor *)v17 initWithResourceDirectory:0 forDevice:v19];
+              face = [(NTKCFaceDetailSectionController *)self face];
+              device = [face device];
+              v20 = [(NTKCompanionTransientCustomPhotosEditor *)v17 initWithResourceDirectory:0 forDevice:device];
               [(NTKCFaceDetailPhotosSectionController *)self setTransientEditor:v20];
 
               [(NTKCompanionTransientCustomPhotosEditor *)self->_transientEditor addImageList:self->_externalAssets];
               transientEditor = self->_transientEditor;
             }
 
-            v21 = [(NTKCompanionResourceDirectoryEditor *)transientEditor galleryPreviewResourceDirectory];
+            galleryPreviewResourceDirectory = [(NTKCompanionResourceDirectoryEditor *)transientEditor galleryPreviewResourceDirectory];
 
             v22 = self->_transientEditor;
-            if (!v21)
+            if (!galleryPreviewResourceDirectory)
             {
               v106[0] = MEMORY[0x277D85DD0];
               v106[1] = 3221225472;
@@ -188,16 +188,16 @@ LABEL_64:
           v36 = self->_externalAssets;
           if (v36)
           {
-            v37 = [(NSArray *)v36 firstObject];
+            firstObject2 = [(NSArray *)v36 firstObject];
             objc_opt_class();
             v38 = objc_opt_isKindOfClass();
 
             if (v38)
             {
               v39 = [NTKCompanionCustomPhotosEditor alloc];
-              v40 = [(NTKCFaceDetailSectionController *)self face];
-              v41 = [v40 device];
-              v42 = [(NTKCompanionCustomPhotosEditor *)v39 initWithResourceDirectory:0 forDevice:v41];
+              face2 = [(NTKCFaceDetailSectionController *)self face];
+              device2 = [face2 device];
+              v42 = [(NTKCompanionCustomPhotosEditor *)v39 initWithResourceDirectory:0 forDevice:device2];
               customPhotosEditor = self->_customPhotosEditor;
               self->_customPhotosEditor = v42;
 
@@ -214,45 +214,45 @@ LABEL_64:
           }
 
           v82 = [NTKCompanionCustomPhotosEditor alloc];
-          v26 = [(NTKCFaceDetailSectionController *)self face];
-          v27 = [v26 resourceDirectory];
-          v28 = [(NTKCFaceDetailSectionController *)self face];
-          v29 = [v28 device];
-          v30 = [(NTKCompanionCustomPhotosEditor *)v82 initWithResourceDirectory:v27 forDevice:v29];
+          face3 = [(NTKCFaceDetailSectionController *)self face];
+          resourceDirectory = [face3 resourceDirectory];
+          face4 = [(NTKCFaceDetailSectionController *)self face];
+          device3 = [face4 device];
+          v30 = [(NTKCompanionCustomPhotosEditor *)v82 initWithResourceDirectory:resourceDirectory forDevice:device3];
           v31 = 160;
           goto LABEL_46;
         }
 
-        v63 = [(NTKCFaceDetailSectionController *)self inGallery];
+        inGallery = [(NTKCFaceDetailSectionController *)self inGallery];
         v64 = self->_customPhotosEditor;
-        if (v63)
+        if (inGallery)
         {
           if (!v64)
           {
             v65 = [NTKCompanionCustomPhotosEditor alloc];
-            v66 = [(NTKCFaceDetailSectionController *)self face];
-            v67 = [v66 device];
-            v68 = [(NTKCompanionCustomPhotosEditor *)v65 initWithResourceDirectory:0 forDevice:v67];
+            face5 = [(NTKCFaceDetailSectionController *)self face];
+            device4 = [face5 device];
+            v68 = [(NTKCompanionCustomPhotosEditor *)v65 initWithResourceDirectory:0 forDevice:device4];
             v69 = self->_customPhotosEditor;
             self->_customPhotosEditor = v68;
 
             v64 = self->_customPhotosEditor;
           }
 
-          v70 = [(NTKCompanionResourceDirectoryEditor *)v64 galleryPreviewResourceDirectory];
+          galleryPreviewResourceDirectory2 = [(NTKCompanionResourceDirectoryEditor *)v64 galleryPreviewResourceDirectory];
 
           v71 = self->_customPhotosEditor;
-          if (v70)
+          if (galleryPreviewResourceDirectory2)
           {
-            v72 = [(NTKCompanionResourceDirectoryEditor *)v71 galleryPreviewResourceDirectory];
+            galleryPreviewResourceDirectory3 = [(NTKCompanionResourceDirectoryEditor *)v71 galleryPreviewResourceDirectory];
           }
 
           else
           {
-            v97 = [(NTKCompanionResourceDirectoryEditor *)v71 resourceDirectory];
+            resourceDirectory2 = [(NTKCompanionResourceDirectoryEditor *)v71 resourceDirectory];
 
             v98 = self->_customPhotosEditor;
-            if (!v97)
+            if (!resourceDirectory2)
             {
               v104[0] = MEMORY[0x277D85DD0];
               v104[1] = 3221225472;
@@ -263,12 +263,12 @@ LABEL_64:
               goto LABEL_60;
             }
 
-            v72 = [(NTKCompanionResourceDirectoryEditor *)v98 resourceDirectory];
+            galleryPreviewResourceDirectory3 = [(NTKCompanionResourceDirectoryEditor *)v98 resourceDirectory];
           }
 
-          v89 = v72;
-          v99 = [(NTKCFaceDetailSectionController *)self face];
-          [v99 setResourceDirectory:v89];
+          face8 = galleryPreviewResourceDirectory3;
+          face6 = [(NTKCFaceDetailSectionController *)self face];
+          [face6 setResourceDirectory:face8];
         }
 
         else
@@ -276,15 +276,15 @@ LABEL_64:
           if (!v64)
           {
             v84 = [NTKCompanionCustomPhotosEditor alloc];
-            v85 = [(NTKCFaceDetailSectionController *)self face];
-            v86 = [v85 device];
-            v87 = [(NTKCompanionCustomPhotosEditor *)v84 initWithResourceDirectory:0 forDevice:v86];
+            face7 = [(NTKCFaceDetailSectionController *)self face];
+            device5 = [face7 device];
+            v87 = [(NTKCompanionCustomPhotosEditor *)v84 initWithResourceDirectory:0 forDevice:device5];
             v88 = self->_customPhotosEditor;
             self->_customPhotosEditor = v87;
           }
 
-          v89 = [(NTKCFaceDetailSectionController *)self face];
-          [v89 setResourceDirectory:0];
+          face8 = [(NTKCFaceDetailSectionController *)self face];
+          [face8 setResourceDirectory:0];
         }
 
 LABEL_60:
@@ -302,11 +302,11 @@ LABEL_60:
       if (v5)
       {
         v25 = [NTKCompanionMemoriesEditor alloc];
-        v26 = [(NTKCFaceDetailSectionController *)self face];
-        v27 = [v26 resourceDirectory];
-        v28 = [(NTKCFaceDetailSectionController *)self face];
-        v29 = [v28 device];
-        v30 = [(NTKCompanionSinglePHAssetEditor *)v25 initWithResourceDirectory:v27 forDevice:v29 shouldFinalize:[(NTKCFaceDetailSectionController *)self inGallery]];
+        face3 = [(NTKCFaceDetailSectionController *)self face];
+        resourceDirectory = [face3 resourceDirectory];
+        face4 = [(NTKCFaceDetailSectionController *)self face];
+        device3 = [face4 device];
+        v30 = [(NTKCompanionSinglePHAssetEditor *)v25 initWithResourceDirectory:resourceDirectory forDevice:device3 shouldFinalize:[(NTKCFaceDetailSectionController *)self inGallery]];
         v31 = 176;
 LABEL_46:
         v83 = *(&self->super.super.super.super.isa + v31);
@@ -315,31 +315,31 @@ LABEL_46:
         goto LABEL_47;
       }
 
-      v44 = [(NTKCFaceDetailSectionController *)self inGallery];
+      inGallery2 = [(NTKCFaceDetailSectionController *)self inGallery];
       memoriesEditor = self->_memoriesEditor;
-      if (v44)
+      if (inGallery2)
       {
         if (!memoriesEditor)
         {
           v46 = [NTKCompanionMemoriesEditor alloc];
-          v47 = [(NTKCFaceDetailSectionController *)self face];
-          v48 = [v47 device];
-          v49 = [(NTKCompanionSinglePHAssetEditor *)v46 initWithResourceDirectory:0 forDevice:v48 shouldFinalize:1];
+          face9 = [(NTKCFaceDetailSectionController *)self face];
+          device6 = [face9 device];
+          v49 = [(NTKCompanionSinglePHAssetEditor *)v46 initWithResourceDirectory:0 forDevice:device6 shouldFinalize:1];
           v50 = self->_memoriesEditor;
           self->_memoriesEditor = v49;
 
           memoriesEditor = self->_memoriesEditor;
         }
 
-        v51 = [memoriesEditor galleryPreviewResourceDirectory];
+        galleryPreviewResourceDirectory4 = [memoriesEditor galleryPreviewResourceDirectory];
 
         v22 = self->_memoriesEditor;
-        if (!v51)
+        if (!galleryPreviewResourceDirectory4)
         {
-          v52 = [v22 resourceDirectory];
+          resourceDirectory3 = [v22 resourceDirectory];
 
           v22 = self->_memoriesEditor;
-          if (!v52)
+          if (!resourceDirectory3)
           {
             v101[0] = MEMORY[0x277D85DD0];
             v101[1] = 3221225472;
@@ -359,9 +359,9 @@ LABEL_46:
       if (!memoriesEditor)
       {
         v73 = [NTKCompanionMemoriesEditor alloc];
-        v74 = [(NTKCFaceDetailSectionController *)self face];
-        v75 = [v74 device];
-        v76 = [(NTKCompanionSinglePHAssetEditor *)v73 initWithResourceDirectory:0 forDevice:v75 shouldFinalize:1];
+        face10 = [(NTKCFaceDetailSectionController *)self face];
+        device7 = [face10 device];
+        v76 = [(NTKCompanionSinglePHAssetEditor *)v73 initWithResourceDirectory:0 forDevice:device7 shouldFinalize:1];
         v77 = self->_memoriesEditor;
         self->_memoriesEditor = v76;
 
@@ -386,11 +386,11 @@ LABEL_54:
       if (v5)
       {
         v33 = [NTKCompanionSyncedAlbumEditor alloc];
-        v26 = [(NTKCFaceDetailSectionController *)self face];
-        v27 = [v26 resourceDirectory];
-        v28 = [(NTKCFaceDetailSectionController *)self face];
-        v29 = [v28 device];
-        v34 = [(NTKCompanionSinglePHAssetEditor *)v33 initWithResourceDirectory:v27 forDevice:v29 shouldFinalize:[(NTKCFaceDetailSectionController *)self inGallery]];
+        face3 = [(NTKCFaceDetailSectionController *)self face];
+        resourceDirectory = [face3 resourceDirectory];
+        face4 = [(NTKCFaceDetailSectionController *)self face];
+        device3 = [face4 device];
+        v34 = [(NTKCompanionSinglePHAssetEditor *)v33 initWithResourceDirectory:resourceDirectory forDevice:device3 shouldFinalize:[(NTKCFaceDetailSectionController *)self inGallery]];
         syncedAlbumEditor = self->_syncedAlbumEditor;
         self->_syncedAlbumEditor = v34;
 
@@ -398,31 +398,31 @@ LABEL_47:
         goto LABEL_65;
       }
 
-      v53 = [(NTKCFaceDetailSectionController *)self inGallery];
+      inGallery3 = [(NTKCFaceDetailSectionController *)self inGallery];
       memoriesEditor = self->_syncedAlbumEditor;
-      if (v53)
+      if (inGallery3)
       {
         if (!memoriesEditor)
         {
           v54 = [NTKCompanionSyncedAlbumEditor alloc];
-          v55 = [(NTKCFaceDetailSectionController *)self face];
-          v56 = [v55 device];
-          v57 = [(NTKCompanionSinglePHAssetEditor *)v54 initWithResourceDirectory:0 forDevice:v56 shouldFinalize:1];
+          face11 = [(NTKCFaceDetailSectionController *)self face];
+          device8 = [face11 device];
+          v57 = [(NTKCompanionSinglePHAssetEditor *)v54 initWithResourceDirectory:0 forDevice:device8 shouldFinalize:1];
           v58 = self->_syncedAlbumEditor;
           self->_syncedAlbumEditor = v57;
 
           memoriesEditor = self->_syncedAlbumEditor;
         }
 
-        v59 = [memoriesEditor galleryPreviewResourceDirectory];
+        galleryPreviewResourceDirectory5 = [memoriesEditor galleryPreviewResourceDirectory];
 
         v22 = self->_syncedAlbumEditor;
-        if (!v59)
+        if (!galleryPreviewResourceDirectory5)
         {
-          v90 = [v22 resourceDirectory];
+          resourceDirectory4 = [v22 resourceDirectory];
 
           v22 = self->_syncedAlbumEditor;
-          if (!v90)
+          if (!resourceDirectory4)
           {
             v103[0] = MEMORY[0x277D85DD0];
             v103[1] = 3221225472;
@@ -434,16 +434,16 @@ LABEL_47:
           }
 
 LABEL_52:
-          v60 = [v22 resourceDirectory];
+          resourceDirectory5 = [v22 resourceDirectory];
           goto LABEL_34;
         }
 
 LABEL_33:
-        v60 = [v22 galleryPreviewResourceDirectory];
+        resourceDirectory5 = [v22 galleryPreviewResourceDirectory];
 LABEL_34:
-        v61 = v60;
-        v62 = [(NTKCFaceDetailSectionController *)self face];
-        [v62 setResourceDirectory:v61];
+        v61 = resourceDirectory5;
+        face12 = [(NTKCFaceDetailSectionController *)self face];
+        [face12 setResourceDirectory:v61];
 
         goto LABEL_65;
       }
@@ -451,9 +451,9 @@ LABEL_34:
       if (!memoriesEditor)
       {
         v91 = [NTKCompanionSyncedAlbumEditor alloc];
-        v92 = [(NTKCFaceDetailSectionController *)self face];
-        v93 = [v92 device];
-        v94 = [(NTKCompanionSinglePHAssetEditor *)v91 initWithResourceDirectory:0 forDevice:v93 shouldFinalize:1];
+        face13 = [(NTKCFaceDetailSectionController *)self face];
+        device9 = [face13 device];
+        v94 = [(NTKCompanionSinglePHAssetEditor *)v91 initWithResourceDirectory:0 forDevice:device9 shouldFinalize:1];
         v95 = self->_syncedAlbumEditor;
         self->_syncedAlbumEditor = v94;
 
@@ -468,9 +468,9 @@ LABEL_34:
       }
     }
 
-    v80 = [memoriesEditor resourceDirectory];
-    v81 = [(NTKCFaceDetailSectionController *)self face];
-    [v81 setResourceDirectory:v80];
+    resourceDirectory6 = [memoriesEditor resourceDirectory];
+    face14 = [(NTKCFaceDetailSectionController *)self face];
+    [face14 setResourceDirectory:resourceDirectory6];
 
 LABEL_55:
     v96 = self->_customPhotosEditor;
@@ -538,9 +538,9 @@ void __60__NTKCFaceDetailPhotosSectionController_setSelectedOptions___block_invo
   [v4 setResourceDirectory:v3];
 }
 
-- (BOOL)_canDisplayActionRowForCustomEditMode:(int64_t)a3 andOption:(id)a4
+- (BOOL)_canDisplayActionRowForCustomEditMode:(int64_t)mode andOption:(id)option
 {
-  v6 = a4;
+  optionCopy = option;
   if (!self->_externalAssets)
   {
     goto LABEL_5;
@@ -562,16 +562,16 @@ void __60__NTKCFaceDetailPhotosSectionController_setSelectedOptions___block_invo
 LABEL_5:
     v10.receiver = self;
     v10.super_class = NTKCFaceDetailPhotosSectionController;
-    v8 = [(NTKCFaceDetailEditOptionSectionController *)&v10 _canDisplayActionRowForCustomEditMode:a3 andOption:v6];
+    v8 = [(NTKCFaceDetailEditOptionSectionController *)&v10 _canDisplayActionRowForCustomEditMode:mode andOption:optionCopy];
   }
 
   return v8;
 }
 
-- (BOOL)_handleDidSelectOption:(id)a3
+- (BOOL)_handleDidSelectOption:(id)option
 {
-  v4 = a3;
-  if ([v4 photosContent] == 1 || -[NTKCFaceDetailSectionController inGallery](self, "inGallery"))
+  optionCopy = option;
+  if ([optionCopy photosContent] == 1 || -[NTKCFaceDetailSectionController inGallery](self, "inGallery"))
   {
     goto LABEL_6;
   }
@@ -584,9 +584,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v4 photosContent])
+  if ([optionCopy photosContent])
   {
-    if ([v4 photosContent] != 2)
+    if ([optionCopy photosContent] != 2)
     {
       v10 = 0;
       goto LABEL_14;
@@ -623,18 +623,18 @@ LABEL_14:
   v24 = 3221225472;
   v25 = __64__NTKCFaceDetailPhotosSectionController__handleDidSelectOption___block_invoke;
   v26 = &unk_278786078;
-  v27 = self;
-  v28 = v4;
+  selfCopy = self;
+  v28 = optionCopy;
   v17 = [v16 actionWithTitle:v15 style:2 handler:&v23];
-  [v11 addAction:{v17, v23, v24, v25, v26, v27}];
+  [v11 addAction:{v17, v23, v24, v25, v26, selfCopy}];
 
   v18 = MEMORY[0x277D750F8];
   v20 = NTKCCustomizationLocalizedString(@"PHOTOS_CANCEL_BUTTON", @"Cancel", v19);
   v21 = [v18 actionWithTitle:v20 style:1 handler:0];
   [v11 addAction:v21];
 
-  v22 = [(NTKCFaceDetailPhotosSectionController *)self parentViewController];
-  [v22 presentViewController:v11 animated:1 completion:0];
+  parentViewController = [(NTKCFaceDetailPhotosSectionController *)self parentViewController];
+  [parentViewController presentViewController:v11 animated:1 completion:0];
 
   v5 = 0;
 LABEL_7:
@@ -677,10 +677,10 @@ uint64_t __64__NTKCFaceDetailPhotosSectionController__handleDidSelectOption___bl
   return [v11 didSelectRow:v10];
 }
 
-- (BOOL)_handleDidSelectActionRowForOption:(id)a3
+- (BOOL)_handleDidSelectActionRowForOption:(id)option
 {
-  v4 = a3;
-  if ([v4 photosContent] == 1)
+  optionCopy = option;
+  if ([optionCopy photosContent] == 1)
   {
     if ([(NTKCompanionCustomPhotosEditor *)self->_customPhotosEditor photosCount]|| [(NTKCompanionTransientCustomPhotosEditor *)self->_transientEditor photosCount])
     {
@@ -692,41 +692,41 @@ uint64_t __64__NTKCFaceDetailPhotosSectionController__handleDidSelectOption___bl
 
       v6 = transientEditor;
       v7 = [NTKCFaceDetailCustomPhotosViewController alloc];
-      v8 = [(NTKCFaceDetailSectionController *)self face];
-      v9 = [(NTKCFaceDetailSectionController *)self inGallery];
-      v10 = [(NTKCFaceDetailEditOptionSectionController *)self faceView];
-      v11 = [(NTKCFaceDetailCustomPhotosViewController *)v7 initWithPhotosEditor:v6 forFace:v8 inGallery:v9 faceView:v10 externalImagesSet:self->_externalAssets != 0];
+      face = [(NTKCFaceDetailSectionController *)self face];
+      inGallery = [(NTKCFaceDetailSectionController *)self inGallery];
+      faceView = [(NTKCFaceDetailEditOptionSectionController *)self faceView];
+      parentViewController2 = [(NTKCFaceDetailCustomPhotosViewController *)v7 initWithPhotosEditor:v6 forFace:face inGallery:inGallery faceView:faceView externalImagesSet:self->_externalAssets != 0];
 
-      [(NTKCFaceDetailCustomPhotosViewController *)v11 setDelegate:self];
-      v12 = [(NTKCFaceDetailPhotosSectionController *)self parentViewController];
+      [(NTKCFaceDetailCustomPhotosViewController *)parentViewController2 setDelegate:self];
+      parentViewController = [(NTKCFaceDetailPhotosSectionController *)self parentViewController];
 
-      [v12 presentViewController:v11 animated:1 completion:0];
+      [parentViewController presentViewController:parentViewController2 animated:1 completion:0];
     }
 
     else
     {
-      v11 = [(NTKCFaceDetailPhotosSectionController *)self parentViewController];
+      parentViewController2 = [(NTKCFaceDetailPhotosSectionController *)self parentViewController];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __76__NTKCFaceDetailPhotosSectionController__handleDidSelectActionRowForOption___block_invoke;
       v20[3] = &unk_2787860A0;
       v20[4] = self;
-      [NTKCPhotosAddController presentPhotosAddControllerFromViewController:v11 selectionLimit:24 withCompletion:v20];
+      [NTKCPhotosAddController presentPhotosAddControllerFromViewController:parentViewController2 selectionLimit:24 withCompletion:v20];
     }
 
     goto LABEL_11;
   }
 
-  if (![v4 photosContent])
+  if (![optionCopy photosContent])
   {
     v14 = [NTKCFaceDetailAlbumChooserViewController alloc];
     syncedAlbumEditor = self->_syncedAlbumEditor;
-    v16 = [(NTKCFaceDetailSectionController *)self face];
-    v17 = [(NTKCFaceDetailAlbumChooserViewController *)v14 initWithPhotosEditor:syncedAlbumEditor forFace:v16 inGallery:[(NTKCFaceDetailSectionController *)self inGallery]];
+    face2 = [(NTKCFaceDetailSectionController *)self face];
+    v17 = [(NTKCFaceDetailAlbumChooserViewController *)v14 initWithPhotosEditor:syncedAlbumEditor forFace:face2 inGallery:[(NTKCFaceDetailSectionController *)self inGallery]];
 
     [(NTKCFaceDetailAlbumChooserViewController *)v17 setDelegate:self];
-    v18 = [(NTKCFaceDetailPhotosSectionController *)self parentViewController];
-    [v18 presentViewController:v17 animated:1 completion:0];
+    parentViewController3 = [(NTKCFaceDetailPhotosSectionController *)self parentViewController];
+    [parentViewController3 presentViewController:v17 animated:1 completion:0];
 
 LABEL_11:
     v13 = 0;
@@ -739,13 +739,13 @@ LABEL_12:
   return v13;
 }
 
-- (id)_actionNameForOption:(id)a3
+- (id)_actionNameForOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = optionCopy;
     if ([v5 photosContent] == 1)
     {
       transientEditor = self->_transientEditor;
@@ -755,10 +755,10 @@ LABEL_12:
       }
 
       v7 = transientEditor;
-      v8 = [(NTKCompanionTransientCustomPhotosEditor *)v7 photosCount];
-      if (v8)
+      photosCount = [(NTKCompanionTransientCustomPhotosEditor *)v7 photosCount];
+      if (photosCount)
       {
-        v10 = v8;
+        v10 = photosCount;
         v11 = MEMORY[0x277CCACA8];
         v12 = NTKCCustomizationLocalizedFormat(@"PHOTOS_NUMBER", @"%d Photos", v9);
         v13 = [v11 localizedStringWithFormat:v12, v10];
@@ -779,10 +779,10 @@ LABEL_12:
 
     if (![v5 photosContent])
     {
-      v14 = [(NTKCompanionSinglePHAssetEditor *)self->_syncedAlbumEditor albumName];
+      albumName = [(NTKCompanionSinglePHAssetEditor *)self->_syncedAlbumEditor albumName];
 
-      v13 = v14;
-      if (!v14)
+      v13 = albumName;
+      if (!albumName)
       {
         v16.receiver = self;
         v16.super_class = NTKCFaceDetailPhotosSectionController;
@@ -795,24 +795,24 @@ LABEL_12:
   {
     v18.receiver = self;
     v18.super_class = NTKCFaceDetailPhotosSectionController;
-    v13 = [(NTKCFaceDetailEditOptionSectionController *)&v18 _actionNameForOption:v4];
+    v13 = [(NTKCFaceDetailEditOptionSectionController *)&v18 _actionNameForOption:optionCopy];
   }
 
   return v13;
 }
 
-- (void)_customizeActionRow:(id)a3 withEditOption:(id)a4
+- (void)_customizeActionRow:(id)row withEditOption:(id)option
 {
-  v14 = a3;
-  v6 = a4;
+  rowCopy = row;
+  optionCopy = option;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(NTKCFaceDetailPhotosSectionController *)self _actionNameForOption:v6];
-    v8 = [v14 textLabel];
-    [v8 setText:v7];
+    v7 = [(NTKCFaceDetailPhotosSectionController *)self _actionNameForOption:optionCopy];
+    textLabel = [rowCopy textLabel];
+    [textLabel setText:v7];
 
-    if ([v6 photosContent])
+    if ([optionCopy photosContent])
     {
       transientEditor = self->_transientEditor;
       if (!transientEditor)
@@ -828,23 +828,23 @@ LABEL_12:
 
     else
     {
-      v12 = [(NTKCompanionSinglePHAssetEditor *)self->_syncedAlbumEditor albumName];
+      albumName = [(NTKCompanionSinglePHAssetEditor *)self->_syncedAlbumEditor albumName];
 
-      if (v12)
+      if (albumName)
       {
 LABEL_6:
-        v10 = [MEMORY[0x277D75348] secondaryLabelColor];
+        secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
         v11 = 1;
 LABEL_9:
-        v13 = [v14 textLabel];
-        [v13 setTextColor:v10];
+        textLabel2 = [rowCopy textLabel];
+        [textLabel2 setTextColor:secondaryLabelColor];
 
-        [v14 setAccessoryType:v11];
+        [rowCopy setAccessoryType:v11];
         goto LABEL_10;
       }
     }
 
-    v10 = NTKCActionColor();
+    secondaryLabelColor = NTKCActionColor();
     v11 = 0;
     goto LABEL_9;
   }
@@ -852,9 +852,9 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_setPhotos:(id)a3
+- (void)_setPhotos:(id)photos
 {
-  [(NTKCompanionCustomPhotosEditor *)self->_customPhotosEditor addPhotosFromUIImagePicker:a3];
+  [(NTKCompanionCustomPhotosEditor *)self->_customPhotosEditor addPhotosFromUIImagePicker:photos];
   [(NTKCFaceDetailPhotosSectionController *)self _updatePhotosSection];
   if ([(NTKCFaceDetailSectionController *)self inGallery])
   {
@@ -904,14 +904,14 @@ void __52__NTKCFaceDetailPhotosSectionController__setPhotos___block_invoke(uint6
       transientEditor = self->_customPhotosEditor;
     }
 
-    v5 = [(NTKCompanionTransientCustomPhotosEditor *)transientEditor photosCount];
-    v6 = [(NTKCFaceDetailEditOptionSectionController *)self actionRow];
+    photosCount = [(NTKCompanionTransientCustomPhotosEditor *)transientEditor photosCount];
+    actionRow = [(NTKCFaceDetailEditOptionSectionController *)self actionRow];
 
-    if (v6)
+    if (actionRow)
     {
       if (self->_externalAssets)
       {
-        v7 = v5 == 0;
+        v7 = photosCount == 0;
       }
 
       else
@@ -935,17 +935,17 @@ void __52__NTKCFaceDetailPhotosSectionController__setPhotos___block_invoke(uint6
 
   if (!currentContent)
   {
-    v8 = [(NTKCFaceDetailEditOptionSectionController *)self actionRow];
+    actionRow2 = [(NTKCFaceDetailEditOptionSectionController *)self actionRow];
 
-    if (v8)
+    if (actionRow2)
     {
       [(NTKCFaceDetailEditOptionSectionController *)self _refreshActionRowContent];
       [(NTKCFaceDetailEditOptionVerticalSectionController *)self reloadActionRow];
     }
   }
 
-  v9 = [(NTKCFaceDetailEditOptionSectionController *)self delegate];
-  [v9 photoSectionDidUpdate:self];
+  delegate = [(NTKCFaceDetailEditOptionSectionController *)self delegate];
+  [delegate photoSectionDidUpdate:self];
 }
 
 - (id)_currentEditor
@@ -982,38 +982,38 @@ LABEL_9:
 
 - (BOOL)hasChanges
 {
-  v2 = [(NTKCFaceDetailPhotosSectionController *)self _currentEditor];
-  v3 = [v2 state] == 2;
+  _currentEditor = [(NTKCFaceDetailPhotosSectionController *)self _currentEditor];
+  v3 = [_currentEditor state] == 2;
 
   return v3;
 }
 
-- (void)saveChangesWithCompletion:(id)a3
+- (void)saveChangesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(NTKCFaceDetailPhotosSectionController *)self hasChanges])
   {
-    v5 = [(NTKCFaceDetailPhotosSectionController *)self _currentEditor];
-    if (v5)
+    _currentEditor = [(NTKCFaceDetailPhotosSectionController *)self _currentEditor];
+    if (_currentEditor)
     {
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __67__NTKCFaceDetailPhotosSectionController_saveChangesWithCompletion___block_invoke;
       v6[3] = &unk_2787860C8;
       v6[4] = self;
-      v7 = v4;
-      [v5 finalizeWithCompletion:v6];
+      v7 = completionCopy;
+      [_currentEditor finalizeWithCompletion:v6];
     }
 
-    else if (v4)
+    else if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1045,43 +1045,43 @@ void __67__NTKCFaceDetailPhotosSectionController_saveChangesWithCompletion___blo
   }
 }
 
-- (void)customPhotosControllerDidFinish:(id)a3
+- (void)customPhotosControllerDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   [(NTKCFaceDetailPhotosSectionController *)self _updatePhotosSection];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  [finishCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)albumChooserDidFinish:(id)a3
+- (void)albumChooserDidFinish:(id)finish
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  finishCopy = finish;
   v5 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 editor];
-    v7 = [v6 albumIdentifier];
+    editor = [finishCopy editor];
+    albumIdentifier = [editor albumIdentifier];
     *buf = 138412290;
-    v16 = v7;
+    v16 = albumIdentifier;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "[NTKCFaceDetailPhotosSectionController albumChooserDidFinish:] chose asset collection %@", buf, 0xCu);
   }
 
-  v8 = [v4 editor];
-  v9 = [v8 state];
+  editor2 = [finishCopy editor];
+  state = [editor2 state];
 
-  if (v9 != 1)
+  if (state != 1)
   {
-    v10 = [v4 inGallery];
-    v11 = [v4 editor];
-    v12 = v11;
-    if (v10)
+    inGallery = [finishCopy inGallery];
+    editor3 = [finishCopy editor];
+    v12 = editor3;
+    if (inGallery)
     {
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __63__NTKCFaceDetailPhotosSectionController_albumChooserDidFinish___block_invoke;
       v14[3] = &unk_27877F598;
       v14[4] = self;
-      [v11 generateGalleryPreviewResourceDirectoryWithCompletion:v14];
+      [editor3 generateGalleryPreviewResourceDirectoryWithCompletion:v14];
     }
 
     else
@@ -1091,11 +1091,11 @@ void __67__NTKCFaceDetailPhotosSectionController_saveChangesWithCompletion___blo
       v13[2] = __63__NTKCFaceDetailPhotosSectionController_albumChooserDidFinish___block_invoke_2;
       v13[3] = &unk_27877F598;
       v13[4] = self;
-      [v11 finalizeWithCompletion:v13];
+      [editor3 finalizeWithCompletion:v13];
     }
   }
 
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  [finishCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 uint64_t __63__NTKCFaceDetailPhotosSectionController_albumChooserDidFinish___block_invoke(uint64_t a1, void *a2)

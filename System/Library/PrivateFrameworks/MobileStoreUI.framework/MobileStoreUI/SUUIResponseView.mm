@@ -1,22 +1,22 @@
 @interface SUUIResponseView
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForSubtitleLabel:(id)a3 context:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIResponseView)initWithFrame:(CGRect)a3;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForSubtitleLabel:(id)label context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIResponseView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SUUIResponseView
 
-- (SUUIResponseView)initWithFrame:(CGRect)a3
+- (SUUIResponseView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SUUIResponseView;
-  v3 = [(SUUIViewReuseView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIViewReuseView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = MEMORY[0x277D755B8];
@@ -33,12 +33,12 @@
   return v3;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  contextCopy = context;
+  elementCopy = element;
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v9 = v8;
   v11 = v10;
 
@@ -49,18 +49,18 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__SUUIResponseView_requestLayoutForViewElement_width_context___block_invoke;
   v10[3] = &unk_2798F75D8;
-  v12 = a4;
-  v11 = v8;
-  v13 = a1;
-  v9 = v8;
-  [a3 enumerateChildrenUsingBlock:v10];
+  widthCopy = width;
+  v11 = contextCopy;
+  selfCopy = self;
+  v9 = contextCopy;
+  [element enumerateChildrenUsingBlock:v10];
 }
 
 void __62__SUUIResponseView_requestLayoutForViewElement_width_context___block_invoke(uint64_t a1, void *a2)
@@ -105,16 +105,16 @@ LABEL_10:
 LABEL_11:
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3010000000;
   v25 = "";
   v26 = *MEMORY[0x277CBF3A8];
-  *&v26 = a3;
+  *&v26 = width;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x2020000000;
@@ -127,13 +127,13 @@ LABEL_11:
   v14[1] = 3221225472;
   v14[2] = __58__SUUIResponseView_sizeThatFitsWidth_viewElement_context___block_invoke;
   v14[3] = &unk_2798F7600;
-  v19 = a3;
-  v9 = v8;
+  widthCopy = width;
+  v9 = contextCopy;
   v15 = v9;
   v16 = &v22;
   v17 = v21;
   v18 = v20;
-  [v7 enumerateChildrenUsingBlock:v14];
+  [elementCopy enumerateChildrenUsingBlock:v14];
   v10 = v23[4];
   v11 = v23[5];
 
@@ -180,20 +180,20 @@ void __58__SUUIResponseView_sizeThatFitsWidth_viewElement_context___block_invoke
   ++*(*(*(a1 + 48) + 8) + 24);
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __56__SUUIResponseView_reloadWithViewElement_width_context___block_invoke;
   v12[3] = &unk_2798F5EF0;
   v12[4] = self;
-  v13 = v8;
-  v15 = a4;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = elementCopy;
+  widthCopy = width;
+  v14 = contextCopy;
+  v10 = contextCopy;
+  v11 = elementCopy;
   [(SUUIViewReuseView *)self modifyUsingBlock:v12];
 }
 
@@ -268,13 +268,13 @@ LABEL_8:
 LABEL_9:
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(SUUIResponseView *)self contentInset:a3.width];
+  width = fits.width;
+  [(SUUIResponseView *)self contentInset:fits.width];
   v6 = v5;
   v9 = width - (v7 + 17.5) - v8;
-  v10 = [(SUUIViewReuseView *)self allExistingViews];
+  allExistingViews = [(SUUIViewReuseView *)self allExistingViews];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
@@ -291,7 +291,7 @@ LABEL_9:
   v14[5] = &v15;
   v14[6] = v19;
   *&v14[7] = v9;
-  [v10 enumerateObjectsUsingBlock:v14];
+  [allExistingViews enumerateObjectsUsingBlock:v14];
   v11 = v16[3];
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(v19, 8);
@@ -367,7 +367,7 @@ void __33__SUUIResponseView_sizeThatFits___block_invoke(uint64_t a1, void *a2, u
   v16 = v15;
   v18 = v17 + 17.5;
   v19 = v8 - (v17 + 17.5) - v15;
-  v20 = [(SUUIViewReuseView *)self allExistingViews];
+  allExistingViews = [(SUUIViewReuseView *)self allExistingViews];
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x2020000000;
@@ -393,10 +393,10 @@ void __33__SUUIResponseView_sizeThatFits___block_invoke(uint64_t a1, void *a2, u
   v25[13] = v6;
   *&v25[14] = v8;
   v25[15] = v10;
-  [v20 enumerateObjectsUsingBlock:v25];
-  v21 = [(SUUIResponseView *)self replyImageView];
-  [v21 sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
-  [v21 setFrame:{0.0, v12, v22, v23}];
+  [allExistingViews enumerateObjectsUsingBlock:v25];
+  replyImageView = [(SUUIResponseView *)self replyImageView];
+  [replyImageView sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+  [replyImageView setFrame:{0.0, v12, v22, v23}];
 
   _Block_object_dispose(v27, 8);
   _Block_object_dispose(v28, 8);
@@ -480,27 +480,27 @@ void __34__SUUIResponseView_layoutSubviews__block_invoke(uint64_t a1, void *a2, 
   }
 }
 
-+ (id)_attributedStringForSubtitleLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForSubtitleLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SUUIViewElementFontWithStyle(v7);
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = SUUIViewElementFontWithStyle(style);
   if (!v8)
   {
     v8 = SUUIFontPreferredFontForTextStyle(21);
   }
 
-  v9 = [v6 tintColor];
-  v10 = SUUIViewElementPlainColorWithStyle(v7, v9);
+  tintColor = [contextCopy tintColor];
+  v10 = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
   if (!v10)
   {
     v10 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.3];
   }
 
-  v11 = [v5 text];
-  v12 = [v11 attributedStringWithDefaultFont:v8 foregroundColor:v10 style:v7];
+  text = [labelCopy text];
+  v12 = [text attributedStringWithDefaultFont:v8 foregroundColor:v10 style:style];
 
   return v12;
 }

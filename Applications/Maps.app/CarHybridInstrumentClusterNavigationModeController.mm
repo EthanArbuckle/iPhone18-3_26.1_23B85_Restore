@@ -5,7 +5,7 @@
 - (BOOL)showsSpeedLimit;
 - (CGSize)availableSize;
 - (CarGuidanceCardViewController)guidanceCardController;
-- (CarHybridInstrumentClusterNavigationModeController)initWithPresentationType:(unint64_t)a3;
+- (CarHybridInstrumentClusterNavigationModeController)initWithPresentationType:(unint64_t)type;
 - (CarMapWidgetETACardViewController)etaCardController;
 - (ChromeViewController)chromeViewController;
 - (GuidanceObserver)guidanceObserver;
@@ -14,33 +14,33 @@
 - (id)mapView;
 - (id)personalizedItemSources;
 - (id)upcomingWaypoints;
-- (void)_setupGuidanceDisplays:(BOOL)a3;
+- (void)_setupGuidanceDisplays:(BOOL)displays;
 - (void)_updateCardsForScreenInfoChangeIfNecessary;
 - (void)_updateDisplayETA;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)carChromeNavigationCameraStyleManager:(id)a3 didChangeCenterConsoleCameraStyle:(int64_t)a4;
-- (void)carChromeNavigationCameraStyleManager:(id)a3 didChangeInstrumentClusterCameraStyle:(int64_t)a4;
-- (void)carDisplayConfigDidChangeNotification:(id)a3;
-- (void)chromeConfigurationDidUpdateNotification:(id)a3;
-- (void)chromeNavigationDisplay:(id)a3 configurationDidChange:(id)a4;
-- (void)configureCard:(id)a3 forKey:(id)a4;
-- (void)configureNavigationDisplay:(id)a3;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)carChromeNavigationCameraStyleManager:(id)manager didChangeCenterConsoleCameraStyle:(int64_t)style;
+- (void)carChromeNavigationCameraStyleManager:(id)manager didChangeInstrumentClusterCameraStyle:(int64_t)style;
+- (void)carDisplayConfigDidChangeNotification:(id)notification;
+- (void)chromeConfigurationDidUpdateNotification:(id)notification;
+- (void)chromeNavigationDisplay:(id)display configurationDidChange:(id)change;
+- (void)configureCard:(id)card forKey:(id)key;
+- (void)configureNavigationDisplay:(id)display;
 - (void)dealloc;
-- (void)etaCardSign:(id)a3 didSelectAction:(unint64_t)a4;
-- (void)generateAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5;
-- (void)prepareToEnterStackInChromeViewController:(id)a3;
-- (void)refreshCameraTypeAnimated:(BOOL)a3;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)session:(id)a3 didUpdateConfiguration:(id)a4;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
-- (void)setCameraStyle:(int64_t)a3 animated:(BOOL)a4;
-- (void)setCurrentRoute:(id)a3;
-- (void)setHasArrived:(BOOL)a3;
-- (void)setHasETAInfo:(BOOL)a3;
-- (void)updateCardsAnimated:(BOOL)a3;
+- (void)etaCardSign:(id)sign didSelectAction:(unint64_t)action;
+- (void)generateAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didUpdateArrivalInfo:(id)info previousState:(int64_t)state;
+- (void)prepareToEnterStackInChromeViewController:(id)controller;
+- (void)refreshCameraTypeAnimated:(BOOL)animated;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)session:(id)session didUpdateConfiguration:(id)configuration;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
+- (void)setCameraStyle:(int64_t)style animated:(BOOL)animated;
+- (void)setCurrentRoute:(id)route;
+- (void)setHasArrived:(BOOL)arrived;
+- (void)setHasETAInfo:(BOOL)info;
+- (void)updateCardsAnimated:(BOOL)animated;
 @end
 
 @implementation CarHybridInstrumentClusterNavigationModeController
@@ -52,16 +52,16 @@
   return WeakRetained;
 }
 
-- (void)session:(id)a3 didUpdateConfiguration:(id)a4
+- (void)session:(id)session didUpdateConfiguration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   v6 = sub_100BA3DFC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v5;
+    v11 = configurationCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] CARSessionUpdateConfiguration: %@", buf, 0x16u);
   }
 
@@ -73,16 +73,16 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = sub_100BA3DFC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = disconnectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] CARSessionDidDisconnect: %@", buf, 0x16u);
   }
 
@@ -94,16 +94,16 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   v5 = sub_100BA3DFC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = connectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] CARSessionDidConnect: %@", buf, 0x16u);
   }
 
@@ -117,16 +117,16 @@
 
 - (void)_updateCardsForScreenInfoChangeIfNecessary
 {
-  v14 = [(CarHybridInstrumentClusterNavigationModeController *)self currentScreenInfo];
-  v3 = [v14 identifier];
-  v4 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-  v5 = [v4 view];
-  v6 = [v5 window];
-  v7 = [v6 screen];
-  v8 = [v7 _car_screenInfo];
-  v9 = [v8 identifier];
-  v10 = v3;
-  v11 = v9;
+  currentScreenInfo = [(CarHybridInstrumentClusterNavigationModeController *)self currentScreenInfo];
+  identifier = [currentScreenInfo identifier];
+  chromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+  view = [chromeViewController view];
+  window = [view window];
+  screen = [window screen];
+  _car_screenInfo = [screen _car_screenInfo];
+  identifier2 = [_car_screenInfo identifier];
+  v10 = identifier;
+  v11 = identifier2;
   if (v10 | v11)
   {
     v12 = v11;
@@ -137,8 +137,8 @@
       return;
     }
 
-    v14 = [(CarHybridInstrumentClusterNavigationModeController *)self carChromeViewController];
-    [v14 setNeedsUpdateComponent:@"cards" animated:1];
+    currentScreenInfo = [(CarHybridInstrumentClusterNavigationModeController *)self carChromeViewController];
+    [currentScreenInfo setNeedsUpdateComponent:@"cards" animated:1];
   }
 
   else
@@ -146,67 +146,67 @@
   }
 }
 
-- (void)generateAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4
+- (void)generateAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100BA4318;
   block[3] = &unk_1016605F8;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  draftCopy = draft;
+  completionCopy = completion;
+  v5 = completionCopy;
+  v6 = draftCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)carChromeNavigationCameraStyleManager:(id)a3 didChangeCenterConsoleCameraStyle:(int64_t)a4
+- (void)carChromeNavigationCameraStyleManager:(id)manager didChangeCenterConsoleCameraStyle:(int64_t)style
 {
-  v6 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-  v7 = [v6 view];
-  v8 = [v7 window];
-  v9 = [v8 _car_hybridInstrumentClusterDisplayLocation];
+  chromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+  view = [chromeViewController view];
+  window = [view window];
+  _car_hybridInstrumentClusterDisplayLocation = [window _car_hybridInstrumentClusterDisplayLocation];
 
-  if (v9 == 2)
+  if (_car_hybridInstrumentClusterDisplayLocation == 2)
   {
-    [(CarHybridInstrumentClusterNavigationModeController *)self setCameraStyle:a4 animated:1];
+    [(CarHybridInstrumentClusterNavigationModeController *)self setCameraStyle:style animated:1];
 
     [(CarHybridInstrumentClusterNavigationModeController *)self updateCardsAnimated:1];
   }
 }
 
-- (void)carChromeNavigationCameraStyleManager:(id)a3 didChangeInstrumentClusterCameraStyle:(int64_t)a4
+- (void)carChromeNavigationCameraStyleManager:(id)manager didChangeInstrumentClusterCameraStyle:(int64_t)style
 {
-  v6 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-  v7 = [v6 view];
-  v8 = [v7 window];
-  v9 = [v8 _car_hybridInstrumentClusterDisplayLocation];
+  chromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+  view = [chromeViewController view];
+  window = [view window];
+  _car_hybridInstrumentClusterDisplayLocation = [window _car_hybridInstrumentClusterDisplayLocation];
 
-  if (v9 <= 1)
+  if (_car_hybridInstrumentClusterDisplayLocation <= 1)
   {
-    [(CarHybridInstrumentClusterNavigationModeController *)self setCameraStyle:a4 animated:1];
+    [(CarHybridInstrumentClusterNavigationModeController *)self setCameraStyle:style animated:1];
 
     [(CarHybridInstrumentClusterNavigationModeController *)self updateCardsAnimated:1];
   }
 }
 
-- (void)carDisplayConfigDidChangeNotification:(id)a3
+- (void)carDisplayConfigDidChangeNotification:(id)notification
 {
-  v3 = [(CarHybridInstrumentClusterNavigationModeController *)self carChromeViewController];
-  [v3 setNeedsUpdateComponent:@"statusBanner" animated:0];
+  carChromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self carChromeViewController];
+  [carChromeViewController setNeedsUpdateComponent:@"statusBanner" animated:0];
 }
 
-- (void)chromeConfigurationDidUpdateNotification:(id)a3
+- (void)chromeConfigurationDidUpdateNotification:(id)notification
 {
   [(CarHybridInstrumentClusterNavigationModeController *)self updateCardsAnimated:1];
-  v4 = [(CarHybridInstrumentClusterNavigationModeController *)self carChromeViewController];
-  [v4 reloadAccessoriesForContext:self animated:1];
+  carChromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self carChromeViewController];
+  [carChromeViewController reloadAccessoriesForContext:self animated:1];
 }
 
 - (CGSize)availableSize
 {
-  v2 = [(CarHybridInstrumentClusterNavigationModeController *)self guidanceCardController];
-  [v2 availableCardSize];
+  guidanceCardController = [(CarHybridInstrumentClusterNavigationModeController *)self guidanceCardController];
+  [guidanceCardController availableCardSize];
   v4 = v3;
   v6 = v5;
 
@@ -219,14 +219,14 @@
 
 - (id)upcomingWaypoints
 {
-  v2 = [(CarHybridInstrumentClusterNavigationModeController *)self currentRoute];
+  currentRoute = [(CarHybridInstrumentClusterNavigationModeController *)self currentRoute];
   v3 = +[MNNavigationService sharedService];
-  v4 = [v2 waypointsAfterStepIndex:objc_msgSend(v3 legIndex:{"stepIndex"), 0}];
+  v4 = [currentRoute waypointsAfterStepIndex:objc_msgSend(v3 legIndex:{"stepIndex"), 0}];
 
   return v4;
 }
 
-- (void)etaCardSign:(id)a3 didSelectAction:(unint64_t)a4
+- (void)etaCardSign:(id)sign didSelectAction:(unint64_t)action
 {
   v4 = sub_10006D178();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -253,51 +253,51 @@
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5
+- (void)navigationService:(id)service didUpdateArrivalInfo:(id)info previousState:(int64_t)state
 {
-  v6 = [a3 arrivalState] == 5;
+  v6 = [service arrivalState] == 5;
 
   [(CarHybridInstrumentClusterNavigationModeController *)self setHasArrived:v6];
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v7 = a3;
+  serviceCopy = service;
   if (MNNavigationServiceStateChangedToNavigating())
   {
-    v6 = [v7 route];
-    [(CarHybridInstrumentClusterNavigationModeController *)self setCurrentRoute:v6];
+    route = [serviceCopy route];
+    [(CarHybridInstrumentClusterNavigationModeController *)self setCurrentRoute:route];
   }
 }
 
-- (void)updateCardsAnimated:(BOOL)a3
+- (void)updateCardsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CarHybridInstrumentClusterNavigationModeController *)self carChromeViewController];
-  [v5 updateCardsForContext:self animated:v3];
+  animatedCopy = animated;
+  carChromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self carChromeViewController];
+  [carChromeViewController updateCardsForContext:self animated:animatedCopy];
 
-  v6 = [(CarHybridInstrumentClusterNavigationModeController *)self carChromeViewController];
-  [v6 setNeedsUpdateComponent:@"navigationDisplay" animated:v3];
+  carChromeViewController2 = [(CarHybridInstrumentClusterNavigationModeController *)self carChromeViewController];
+  [carChromeViewController2 setNeedsUpdateComponent:@"navigationDisplay" animated:animatedCopy];
 }
 
 - (BOOL)shouldShowETATray
 {
-  v3 = [(CarHybridInstrumentClusterNavigationModeController *)self _mapWidgetChromeViewController];
-  v4 = [v3 chromeConfiguration];
-  v5 = [v4 showsETA];
-  LOBYTE(v6) = v5 != 2;
+  _mapWidgetChromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self _mapWidgetChromeViewController];
+  chromeConfiguration = [_mapWidgetChromeViewController chromeConfiguration];
+  showsETA = [chromeConfiguration showsETA];
+  LOBYTE(v6) = showsETA != 2;
 
-  v7 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-  v8 = [v7 view];
-  v9 = [v8 window];
-  v10 = [v9 _car_hybridInstrumentClusterAlignmentStyle];
+  chromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+  view = [chromeViewController view];
+  window = [view window];
+  _car_hybridInstrumentClusterAlignmentStyle = [window _car_hybridInstrumentClusterAlignmentStyle];
 
-  v11 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-  v12 = [v11 view];
-  v13 = [v12 window];
-  v14 = [v13 _car_hybridInstrumentClusterLayout];
+  chromeViewController2 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+  view2 = [chromeViewController2 view];
+  window2 = [view2 window];
+  _car_hybridInstrumentClusterLayout = [window2 _car_hybridInstrumentClusterLayout];
 
-  if (!v10 && v14 == 2)
+  if (!_car_hybridInstrumentClusterAlignmentStyle && _car_hybridInstrumentClusterLayout == 2)
   {
     return v6;
   }
@@ -325,7 +325,7 @@
   }
 
 LABEL_10:
-  v17 = (v14 != 0) & BOOL;
+  v17 = (_car_hybridInstrumentClusterLayout != 0) & BOOL;
   if ([(CarHybridInstrumentClusterNavigationModeController *)self hasArrived])
   {
     v6 = 0;
@@ -333,15 +333,15 @@ LABEL_10:
 
   else
   {
-    v18 = [(CarHybridInstrumentClusterNavigationModeController *)self hasETAInfo];
-    if (v5 == 2)
+    hasETAInfo = [(CarHybridInstrumentClusterNavigationModeController *)self hasETAInfo];
+    if (showsETA == 2)
     {
       v19 = 0;
     }
 
     else
     {
-      v19 = v18;
+      v19 = hasETAInfo;
     }
 
     v6 = v19 & v17;
@@ -363,40 +363,40 @@ LABEL_10:
       {
         v27 = @"?";
         v28 = @"Wide";
-        if (v10 != 1)
+        if (_car_hybridInstrumentClusterAlignmentStyle != 1)
         {
           v28 = @"?";
         }
 
-        if (!v10)
+        if (!_car_hybridInstrumentClusterAlignmentStyle)
         {
           v28 = @"Narrow";
         }
 
         v36 = v28;
-        if (v14 <= 2)
+        if (_car_hybridInstrumentClusterLayout <= 2)
         {
-          v27 = off_10163C1E0[v14];
+          v27 = off_10163C1E0[_car_hybridInstrumentClusterLayout];
         }
 
-        v35 = v5 != 2;
-        v29 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-        v30 = [v29 view];
-        v31 = [v30 window];
+        v35 = showsETA != 2;
+        chromeViewController3 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+        view3 = [chromeViewController3 view];
+        window3 = [view3 window];
         *buf = 134350850;
-        v38 = self;
+        selfCopy = self;
         v39 = 2112;
         v40 = v36;
         v41 = 2112;
         v42 = v27;
         v43 = 2112;
-        v44 = v31;
+        v44 = window3;
         v45 = 1024;
-        v46 = [(CarHybridInstrumentClusterNavigationModeController *)self hasArrived];
+        hasArrived = [(CarHybridInstrumentClusterNavigationModeController *)self hasArrived];
         v47 = 1024;
         v48 = v17;
         v49 = 1024;
-        v50 = [(CarHybridInstrumentClusterNavigationModeController *)self hasETAInfo];
+        hasETAInfo2 = [(CarHybridInstrumentClusterNavigationModeController *)self hasETAInfo];
         v51 = 1024;
         v52 = v35;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "[%{public}p] Configuring ETA card with alignment style: %@, layout: %@, window: %@, hasArrived: %d, showETATray: %d, hasETAInfo: %d, chromeConfigEnabled: %d", buf, 0x42u);
@@ -413,10 +413,10 @@ LABEL_10:
 
 - (BOOL)shouldShowGuidanceCard
 {
-  v3 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-  v4 = [v3 view];
-  v5 = [v4 window];
-  v6 = [v5 _car_hybridInstrumentClusterAlignmentStyle];
+  chromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+  view = [chromeViewController view];
+  window = [view window];
+  _car_hybridInstrumentClusterAlignmentStyle = [window _car_hybridInstrumentClusterAlignmentStyle];
 
   if (GEOConfigGetBOOL() && self->_cameraStyle == 2)
   {
@@ -461,12 +461,12 @@ LABEL_10:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         v17 = @"?";
-        if (v6 == 1)
+        if (_car_hybridInstrumentClusterAlignmentStyle == 1)
         {
           v17 = @"Wide";
         }
 
-        if (v6)
+        if (_car_hybridInstrumentClusterAlignmentStyle)
         {
           v18 = v17;
         }
@@ -476,17 +476,17 @@ LABEL_10:
           v18 = @"Narrow";
         }
 
-        v19 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-        v20 = [v19 view];
-        v21 = [v20 window];
+        chromeViewController2 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+        view2 = [chromeViewController2 view];
+        window2 = [view2 window];
         v25 = 134350338;
-        v26 = self;
+        selfCopy = self;
         v27 = 2112;
         v28 = v18;
         v29 = 2112;
-        v30 = v21;
+        v30 = window2;
         v31 = 1024;
-        v32 = [(CarHybridInstrumentClusterNavigationModeController *)self hasArrived];
+        hasArrived = [(CarHybridInstrumentClusterNavigationModeController *)self hasArrived];
         v33 = 1024;
         v34 = v7;
         v35 = 1024;
@@ -505,13 +505,13 @@ LABEL_10:
 
 - (id)_mapWidgetChromeViewController
 {
-  v3 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+  chromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+    chromeViewController2 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
   }
 
   else
@@ -520,7 +520,7 @@ LABEL_10:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v12 = 136315650;
-      v13 = "[CarHybridInstrumentClusterNavigationModeController _mapWidgetChromeViewController]";
+      selfCopy = "[CarHybridInstrumentClusterNavigationModeController _mapWidgetChromeViewController]";
       v14 = 2080;
       v15 = "CarHybridInstrumentClusterNavigationModeController.m";
       v16 = 1024;
@@ -535,7 +535,7 @@ LABEL_10:
       {
         v8 = +[NSThread callStackSymbols];
         v12 = 138412290;
-        v13 = v8;
+        selfCopy = v8;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%@", &v12, 0xCu);
       }
     }
@@ -543,33 +543,33 @@ LABEL_10:
     v9 = sub_100BA3DFC();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+      chromeViewController3 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
       v12 = 134349314;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
-      v15 = v10;
+      v15 = chromeViewController3;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "[%{public}p] chromeViewController (%@) was not a CarMapWidgetChromeViewController", &v12, 0x16u);
     }
 
-    v5 = 0;
+    chromeViewController2 = 0;
   }
 
-  return v5;
+  return chromeViewController2;
 }
 
-- (void)setHasETAInfo:(BOOL)a3
+- (void)setHasETAInfo:(BOOL)info
 {
-  if (self->_hasETAInfo != a3)
+  if (self->_hasETAInfo != info)
   {
-    v3 = a3;
-    self->_hasETAInfo = a3;
+    infoCopy = info;
+    self->_hasETAInfo = info;
     v5 = sub_100BA3DFC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 134349312;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = infoCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Updating has eta info: %d", &v6, 0x12u);
     }
 
@@ -577,19 +577,19 @@ LABEL_10:
   }
 }
 
-- (void)setHasArrived:(BOOL)a3
+- (void)setHasArrived:(BOOL)arrived
 {
-  if (self->_hasArrived != a3)
+  if (self->_hasArrived != arrived)
   {
-    v3 = a3;
-    self->_hasArrived = a3;
+    arrivedCopy = arrived;
+    self->_hasArrived = arrived;
     v5 = sub_100BA3DFC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 134349312;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = arrivedCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Updating has arrived: %d", &v6, 0x12u);
     }
 
@@ -597,55 +597,55 @@ LABEL_10:
   }
 }
 
-- (void)chromeNavigationDisplay:(id)a3 configurationDidChange:(id)a4
+- (void)chromeNavigationDisplay:(id)display configurationDidChange:(id)change
 {
   v5 = sub_100BA3DFC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] CarNavigationDisplay configuration changed", &v7, 0xCu);
   }
 
-  v6 = [(CarHybridInstrumentClusterNavigationModeController *)self carChromeViewController];
-  [v6 updateCardsForContext:self animated:0];
+  carChromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self carChromeViewController];
+  [carChromeViewController updateCardsForContext:self animated:0];
 }
 
-- (void)_setupGuidanceDisplays:(BOOL)a3
+- (void)_setupGuidanceDisplays:(BOOL)displays
 {
   v4 = sub_100BA3DFC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v12 = 134349056;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Setting up guidance displays", &v12, 0xCu);
   }
 
-  v5 = [(CarHybridInstrumentClusterNavigationModeController *)self guidanceObserver];
-  v6 = [(CarHybridInstrumentClusterNavigationModeController *)self guidanceCardController];
-  [v5 addOutlet:v6];
+  guidanceObserver = [(CarHybridInstrumentClusterNavigationModeController *)self guidanceObserver];
+  guidanceCardController = [(CarHybridInstrumentClusterNavigationModeController *)self guidanceCardController];
+  [guidanceObserver addOutlet:guidanceCardController];
 
-  v7 = [(CarHybridInstrumentClusterNavigationModeController *)self guidanceCardController];
-  v8 = [v7 isViewLoaded];
+  guidanceCardController2 = [(CarHybridInstrumentClusterNavigationModeController *)self guidanceCardController];
+  isViewLoaded = [guidanceCardController2 isViewLoaded];
 
-  if ((v8 & 1) == 0)
+  if ((isViewLoaded & 1) == 0)
   {
-    v9 = [(CarHybridInstrumentClusterNavigationModeController *)self guidanceCardController];
-    v10 = [v9 view];
+    guidanceCardController3 = [(CarHybridInstrumentClusterNavigationModeController *)self guidanceCardController];
+    view = [guidanceCardController3 view];
 
     [(CarHybridInstrumentClusterNavigationModeController *)self updateCardsAnimated:0];
   }
 
-  v11 = [(CarHybridInstrumentClusterNavigationModeController *)self guidanceCardController];
-  [v5 repeatAllUpdatesForOutlet:v11];
+  guidanceCardController4 = [(CarHybridInstrumentClusterNavigationModeController *)self guidanceCardController];
+  [guidanceObserver repeatAllUpdatesForOutlet:guidanceCardController4];
 }
 
 - (GuidanceObserver)guidanceObserver
 {
   v2 = +[CarDisplayController sharedInstance];
-  v3 = [v2 guidanceObserver];
+  guidanceObserver = [v2 guidanceObserver];
 
-  return v3;
+  return guidanceObserver;
 }
 
 - (CarMapWidgetETACardViewController)etaCardController
@@ -678,11 +678,11 @@ LABEL_10:
   return guidanceCardController;
 }
 
-- (void)setCurrentRoute:(id)a3
+- (void)setCurrentRoute:(id)route
 {
-  v5 = a3;
+  routeCopy = route;
   v6 = self->_currentRoute;
-  v7 = v5;
+  v7 = routeCopy;
   if (v7 | v6)
   {
     v8 = [v6 isEqual:v7];
@@ -692,19 +692,19 @@ LABEL_10:
       v9 = sub_100BA3DFC();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [v7 uniqueRouteID];
-        v11 = [v10 UUIDString];
+        uniqueRouteID = [v7 uniqueRouteID];
+        uUIDString = [uniqueRouteID UUIDString];
         v14 = 134349314;
-        v15 = self;
+        selfCopy = self;
         v16 = 2112;
-        v17 = v11;
+        v17 = uUIDString;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Updating route: %@", &v14, 0x16u);
       }
 
-      objc_storeStrong(&self->_currentRoute, a3);
-      v12 = [(CarHybridInstrumentClusterNavigationModeController *)self carChromeViewController];
-      v13 = [v12 navigationDisplay];
-      [v13 updateWithRoute:self->_currentRoute];
+      objc_storeStrong(&self->_currentRoute, route);
+      carChromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self carChromeViewController];
+      navigationDisplay = [carChromeViewController navigationDisplay];
+      [navigationDisplay updateWithRoute:self->_currentRoute];
     }
   }
 }
@@ -715,79 +715,79 @@ LABEL_10:
   if ([v11 navigationState] != 5)
   {
     v3 = [GuidanceETA alloc];
-    v4 = [v11 displayEtaInfo];
-    v5 = [v11 remainingDistanceInfo];
-    v6 = [v11 batteryChargeInfo];
-    v7 = [v11 upcomingStop];
-    v8 = [v7 timezone];
-    v9 = -[GuidanceETA initWithDisplayETA:remainingDistance:batteryChargeInfo:destinationTimeZone:transportType:](v3, "initWithDisplayETA:remainingDistance:batteryChargeInfo:destinationTimeZone:transportType:", v4, v5, v6, v8, [v11 navigationTransportType]);
+    displayEtaInfo = [v11 displayEtaInfo];
+    remainingDistanceInfo = [v11 remainingDistanceInfo];
+    batteryChargeInfo = [v11 batteryChargeInfo];
+    upcomingStop = [v11 upcomingStop];
+    timezone = [upcomingStop timezone];
+    v9 = -[GuidanceETA initWithDisplayETA:remainingDistance:batteryChargeInfo:destinationTimeZone:transportType:](v3, "initWithDisplayETA:remainingDistance:batteryChargeInfo:destinationTimeZone:transportType:", displayEtaInfo, remainingDistanceInfo, batteryChargeInfo, timezone, [v11 navigationTransportType]);
 
-    v10 = [(CarHybridInstrumentClusterNavigationModeController *)self etaCardController];
-    [v10 setLatestETA:v9];
+    etaCardController = [(CarHybridInstrumentClusterNavigationModeController *)self etaCardController];
+    [etaCardController setLatestETA:v9];
 
     [(CarHybridInstrumentClusterNavigationModeController *)self setHasETAInfo:v9 != 0];
   }
 }
 
-- (void)configureCard:(id)a3 forKey:(id)a4
+- (void)configureCard:(id)card forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  cardCopy = card;
+  keyCopy = key;
   v8 = sub_100BA3DFC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v98 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-    v97 = [v98 view];
-    v9 = [v97 window];
-    v10 = [v9 _car_debugDescription];
+    chromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+    view = [chromeViewController view];
+    window = [view window];
+    _car_debugDescription = [window _car_debugDescription];
     [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-    v11 = v99 = v6;
+    v11 = v99 = cardCopy;
     [v11 view];
-    v13 = v12 = v7;
-    v14 = [v13 window];
-    v15 = [v14 screen];
-    v16 = [v15 _car_debugDescription];
+    v13 = v12 = keyCopy;
+    window2 = [v13 window];
+    screen = [window2 screen];
+    _car_debugDescription2 = [screen _car_debugDescription];
     *buf = 134349826;
-    v103 = self;
+    selfCopy = self;
     v104 = 2112;
     v105 = v12;
     v106 = 2112;
-    v107 = v10;
+    v107 = _car_debugDescription;
     v108 = 2112;
-    v109 = v16;
+    v109 = _car_debugDescription2;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Configuring card: %@ with window: %@, screen: %@", buf, 0x2Au);
 
-    v7 = v12;
-    v6 = v99;
+    keyCopy = v12;
+    cardCopy = v99;
   }
 
-  v17 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-  v18 = [v17 view];
-  v19 = [v18 window];
-  v20 = [v19 screen];
-  v21 = [v20 _car_screenInfo];
-  [(CarHybridInstrumentClusterNavigationModeController *)self setCurrentScreenInfo:v21];
+  chromeViewController2 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+  view2 = [chromeViewController2 view];
+  window3 = [view2 window];
+  screen2 = [window3 screen];
+  _car_screenInfo = [screen2 _car_screenInfo];
+  [(CarHybridInstrumentClusterNavigationModeController *)self setCurrentScreenInfo:_car_screenInfo];
 
-  v22 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-  v23 = [v22 view];
-  v24 = [v23 window];
-  v25 = [v24 _car_shouldHorizontallyCenterMapInsets];
+  chromeViewController3 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+  view3 = [chromeViewController3 view];
+  window4 = [view3 window];
+  _car_shouldHorizontallyCenterMapInsets = [window4 _car_shouldHorizontallyCenterMapInsets];
 
   presentationType = self->_presentationType;
-  if ([v7 isEqualToString:@"Guidance"])
+  if ([keyCopy isEqualToString:@"Guidance"])
   {
-    v100 = v25;
-    v27 = [(CarHybridInstrumentClusterNavigationModeController *)self guidanceCardController];
-    [v6 setContent:v27];
+    v100 = _car_shouldHorizontallyCenterMapInsets;
+    guidanceCardController = [(CarHybridInstrumentClusterNavigationModeController *)self guidanceCardController];
+    [cardCopy setContent:guidanceCardController];
 
     v28 = objc_alloc_init(CarCardLayout);
-    v29 = self;
-    v30 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-    v31 = [v30 view];
-    v32 = [v31 window];
-    v33 = [v32 _car_hybridInstrumentClusterAlignment];
+    selfCopy2 = self;
+    chromeViewController4 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+    view4 = [chromeViewController4 view];
+    window5 = [view4 window];
+    _car_hybridInstrumentClusterAlignment = [window5 _car_hybridInstrumentClusterAlignment];
 
-    if (v33 == 2)
+    if (_car_hybridInstrumentClusterAlignment == 2)
     {
       v55 = objc_alloc_init(CarCardLayout);
       [(CarCardLayout *)v55 setEdgePosition:0];
@@ -797,9 +797,9 @@ LABEL_10:
 
     else
     {
-      if (v33 != 1)
+      if (_car_hybridInstrumentClusterAlignment != 1)
       {
-        if (v33)
+        if (_car_hybridInstrumentClusterAlignment)
         {
           goto LABEL_106;
         }
@@ -818,11 +818,11 @@ LABEL_10:
         [(CarCardLayout *)v34 setMargins:*&qword_10193E338, *&qword_10193E338, *&qword_10193E338, *&qword_10193E338];
         [(CarCardLayout *)v34 setFlipForRightHandDrive:1];
         v37 = v34;
-        v38 = [(CarCardLayout *)v37 primaryAxis];
-        v39 = [(CarCardLayout *)v37 cornerPosition];
-        if (v38 == 1)
+        primaryAxis = [(CarCardLayout *)v37 primaryAxis];
+        cornerPosition = [(CarCardLayout *)v37 cornerPosition];
+        if (primaryAxis == 1)
         {
-          if (v39 == 4 || [(CarCardLayout *)v37 cornerPosition]== 1 || [(CarCardLayout *)v37 edgePosition]== 2)
+          if (cornerPosition == 4 || [(CarCardLayout *)v37 cornerPosition]== 1 || [(CarCardLayout *)v37 edgePosition]== 2)
           {
             v40 = 8;
           }
@@ -847,7 +847,7 @@ LABEL_10:
 
         else
         {
-          v75 = v39 == 4 || [(CarCardLayout *)v37 cornerPosition]== 8 || [(CarCardLayout *)v37 edgePosition]== 4;
+          v75 = cornerPosition == 4 || [(CarCardLayout *)v37 cornerPosition]== 8 || [(CarCardLayout *)v37 edgePosition]== 4;
           if ([(CarCardLayout *)v37 cornerPosition]== 1 || [(CarCardLayout *)v37 cornerPosition]== 2 || [(CarCardLayout *)v37 edgePosition]== 1)
           {
             v75 |= 4uLL;
@@ -879,15 +879,15 @@ LABEL_105:
 
         v28 = v37;
 LABEL_106:
-        v76 = v29;
+        v76 = selfCopy2;
         if (presentationType == 2)
         {
           [(CarCardLayout *)v28 setMargins:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
-          v77 = [(CarHybridInstrumentClusterNavigationModeController *)v29 chromeViewController];
-          v78 = [v77 view];
-          v79 = [v78 window];
-          v80 = [v79 screen];
-          [v80 _car_pixelsToPoints:436.0];
+          chromeViewController5 = [(CarHybridInstrumentClusterNavigationModeController *)selfCopy2 chromeViewController];
+          view5 = [chromeViewController5 view];
+          window6 = [view5 window];
+          screen3 = [window6 screen];
+          [screen3 _car_pixelsToPoints:436.0];
           v81 = [NSNumber numberWithDouble:?];
           [(CarCardLayout *)v28 setSecondaryAxisFillUpperLimit:v81];
 
@@ -906,22 +906,22 @@ LABEL_111:
             [(CarCardLayout *)v28 setPrimaryAxisFillModePriority:v87];
             LODWORD(v88) = 1148846080;
             [(CarCardLayout *)v28 setSecondaryAxisFillModePriority:v88];
-            [v6 setLayout:v28];
-            [v6 setAccessoryType:0];
-            [v6 setSelectionHandler:0];
+            [cardCopy setLayout:v28];
+            [cardCopy setAccessoryType:0];
+            [cardCopy setSelectionHandler:0];
 LABEL_132:
 
             goto LABEL_133;
           }
 
-          v77 = [(CarHybridInstrumentClusterNavigationModeController *)v76 chromeViewController];
-          v78 = [v77 view];
-          v79 = [v78 safeAreaLayoutGuide];
-          [v79 layoutFrame];
+          chromeViewController5 = [(CarHybridInstrumentClusterNavigationModeController *)v76 chromeViewController];
+          view5 = [chromeViewController5 view];
+          window6 = [view5 safeAreaLayoutGuide];
+          [window6 layoutFrame];
           v84 = v83;
           GEOConfigGetDouble();
-          v80 = [NSNumber numberWithDouble:v85 * v84];
-          [(CarCardLayout *)v28 setPrimaryAxisFillUpperLimit:v80];
+          screen3 = [NSNumber numberWithDouble:v85 * v84];
+          [(CarCardLayout *)v28 setPrimaryAxisFillUpperLimit:screen3];
         }
 
         GEOConfigGetDouble();
@@ -949,11 +949,11 @@ LABEL_132:
     [(CarCardLayout *)v55 setMargins:*&qword_10193E338, *&qword_10193E338, *&qword_10193E338, *&qword_10193E338];
     [(CarCardLayout *)v55 setFlipForRightHandDrive:1];
     v37 = v55;
-    v60 = [(CarCardLayout *)v37 primaryAxis];
-    v61 = [(CarCardLayout *)v37 cornerPosition];
-    if (v60 == 1)
+    primaryAxis2 = [(CarCardLayout *)v37 primaryAxis];
+    cornerPosition2 = [(CarCardLayout *)v37 cornerPosition];
+    if (primaryAxis2 == 1)
     {
-      if (v61 == 4 || [(CarCardLayout *)v37 cornerPosition]== 1 || [(CarCardLayout *)v37 edgePosition]== 2)
+      if (cornerPosition2 == 4 || [(CarCardLayout *)v37 cornerPosition]== 1 || [(CarCardLayout *)v37 edgePosition]== 2)
       {
         v62 = 8;
       }
@@ -978,7 +978,7 @@ LABEL_132:
 
     else
     {
-      v64 = v61 == 4 || [(CarCardLayout *)v37 cornerPosition]== 8 || [(CarCardLayout *)v37 edgePosition]== 4;
+      v64 = cornerPosition2 == 4 || [(CarCardLayout *)v37 cornerPosition]== 8 || [(CarCardLayout *)v37 edgePosition]== 4;
       if ([(CarCardLayout *)v37 cornerPosition]== 1 || [(CarCardLayout *)v37 cornerPosition]== 2 || [(CarCardLayout *)v37 edgePosition]== 1)
       {
         v64 |= 4uLL;
@@ -1005,19 +1005,19 @@ LABEL_132:
     goto LABEL_105;
   }
 
-  if ([v7 isEqualToString:@"ETA"])
+  if ([keyCopy isEqualToString:@"ETA"])
   {
-    v42 = [(CarHybridInstrumentClusterNavigationModeController *)self etaCardController];
-    [v6 setContent:v42];
+    etaCardController = [(CarHybridInstrumentClusterNavigationModeController *)self etaCardController];
+    [cardCopy setContent:etaCardController];
 
     v28 = objc_alloc_init(CarCardLayout);
-    v101 = self;
-    v43 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-    v44 = [v43 view];
-    v45 = [v44 window];
-    v46 = [v45 _car_hybridInstrumentClusterAlignment];
+    selfCopy3 = self;
+    chromeViewController6 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+    view6 = [chromeViewController6 view];
+    window7 = [view6 window];
+    _car_hybridInstrumentClusterAlignment2 = [window7 _car_hybridInstrumentClusterAlignment];
 
-    if (v46 == 2)
+    if (_car_hybridInstrumentClusterAlignment2 == 2)
     {
       v65 = objc_alloc_init(CarCardLayout);
       [(CarCardLayout *)v65 setEdgePosition:0];
@@ -1027,9 +1027,9 @@ LABEL_132:
 
     else
     {
-      if (v46 != 1)
+      if (_car_hybridInstrumentClusterAlignment2 != 1)
       {
-        if (v46)
+        if (_car_hybridInstrumentClusterAlignment2)
         {
           goto LABEL_127;
         }
@@ -1048,11 +1048,11 @@ LABEL_132:
         [(CarCardLayout *)v47 setMargins:*&qword_10193E338, *&qword_10193E338, *&qword_10193E338, *&qword_10193E338];
         [(CarCardLayout *)v47 setFlipForRightHandDrive:1];
         v50 = v47;
-        v51 = [(CarCardLayout *)v50 primaryAxis];
-        v52 = [(CarCardLayout *)v50 cornerPosition];
-        if (v51 == 1)
+        primaryAxis3 = [(CarCardLayout *)v50 primaryAxis];
+        cornerPosition3 = [(CarCardLayout *)v50 cornerPosition];
+        if (primaryAxis3 == 1)
         {
-          if (v52 == 4 || [(CarCardLayout *)v50 cornerPosition]== 1 || [(CarCardLayout *)v50 edgePosition]== 2)
+          if (cornerPosition3 == 4 || [(CarCardLayout *)v50 cornerPosition]== 1 || [(CarCardLayout *)v50 edgePosition]== 2)
           {
             v53 = 8;
           }
@@ -1077,7 +1077,7 @@ LABEL_132:
 
         else
         {
-          v89 = v52 == 4 || [(CarCardLayout *)v50 cornerPosition]== 8 || [(CarCardLayout *)v50 edgePosition]== 4;
+          v89 = cornerPosition3 == 4 || [(CarCardLayout *)v50 cornerPosition]== 8 || [(CarCardLayout *)v50 edgePosition]== 4;
           if ([(CarCardLayout *)v50 cornerPosition]== 1 || [(CarCardLayout *)v50 cornerPosition]== 2 || [(CarCardLayout *)v50 edgePosition]== 1)
           {
             v89 |= 4uLL;
@@ -1112,11 +1112,11 @@ LABEL_127:
         if (presentationType == 2)
         {
           [(CarCardLayout *)v28 setMargins:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
-          v90 = [(CarHybridInstrumentClusterNavigationModeController *)v101 chromeViewController];
-          v91 = [v90 view];
-          v92 = [v91 window];
-          v93 = [v92 screen];
-          [v93 nativeScale];
+          chromeViewController7 = [(CarHybridInstrumentClusterNavigationModeController *)selfCopy3 chromeViewController];
+          view7 = [chromeViewController7 view];
+          window8 = [view7 window];
+          screen4 = [window8 screen];
+          [screen4 nativeScale];
           v95 = [NSNumber numberWithDouble:436.0 / v94];
           [(CarCardLayout *)v28 setSecondaryAxisFillUpperLimit:v95];
         }
@@ -1124,10 +1124,10 @@ LABEL_127:
         else if (presentationType - 1 > 1)
         {
 LABEL_131:
-          [(CarCardLayout *)v28 setHorizontallyCenterMapInsets:v25];
+          [(CarCardLayout *)v28 setHorizontallyCenterMapInsets:_car_shouldHorizontallyCenterMapInsets];
           [(CarCardLayout *)v28 setFlipForRightHandDrive:0];
-          [v6 setLayout:v28];
-          [v6 setAccessoryType:0];
+          [cardCopy setLayout:v28];
+          [cardCopy setAccessoryType:0];
           goto LABEL_132;
         }
 
@@ -1156,11 +1156,11 @@ LABEL_131:
     [(CarCardLayout *)v65 setMargins:*&qword_10193E338, *&qword_10193E338, *&qword_10193E338, *&qword_10193E338];
     [(CarCardLayout *)v65 setFlipForRightHandDrive:1];
     v50 = v65;
-    v70 = [(CarCardLayout *)v50 primaryAxis];
-    v71 = [(CarCardLayout *)v50 cornerPosition];
-    if (v70 == 1)
+    primaryAxis4 = [(CarCardLayout *)v50 primaryAxis];
+    cornerPosition4 = [(CarCardLayout *)v50 cornerPosition];
+    if (primaryAxis4 == 1)
     {
-      if (v71 == 4 || [(CarCardLayout *)v50 cornerPosition]== 1 || [(CarCardLayout *)v50 edgePosition]== 2)
+      if (cornerPosition4 == 4 || [(CarCardLayout *)v50 cornerPosition]== 1 || [(CarCardLayout *)v50 edgePosition]== 2)
       {
         v72 = 8;
       }
@@ -1185,7 +1185,7 @@ LABEL_131:
 
     else
     {
-      v74 = v71 == 4 || [(CarCardLayout *)v50 cornerPosition]== 8 || [(CarCardLayout *)v50 edgePosition]== 4;
+      v74 = cornerPosition4 == 4 || [(CarCardLayout *)v50 cornerPosition]== 8 || [(CarCardLayout *)v50 edgePosition]== 4;
       if ([(CarCardLayout *)v50 cornerPosition]== 1 || [(CarCardLayout *)v50 cornerPosition]== 2 || [(CarCardLayout *)v50 edgePosition]== 1)
       {
         v74 |= 4uLL;
@@ -1239,23 +1239,23 @@ LABEL_133:
       v7 = sub_100BA3DFC();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v20 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-        v19 = [v20 view];
-        v8 = [v19 window];
-        v9 = [v8 _car_debugDescription];
-        v10 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-        v11 = [v10 view];
-        v12 = [v11 window];
-        v13 = [v12 screen];
-        v14 = [v13 _car_debugDescription];
+        chromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+        view = [chromeViewController view];
+        window = [view window];
+        _car_debugDescription = [window _car_debugDescription];
+        chromeViewController2 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+        view2 = [chromeViewController2 view];
+        window2 = [view2 window];
+        screen = [window2 screen];
+        _car_debugDescription2 = [screen _car_debugDescription];
         *buf = 134349826;
-        v22 = self;
+        selfCopy = self;
         v23 = 2112;
         v24 = v5;
         v25 = 2112;
-        v26 = v9;
+        v26 = _car_debugDescription;
         v27 = 2112;
-        v28 = v14;
+        v28 = _car_debugDescription2;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Returning desired cards: %@, for window: %@, screen: %@", buf, 0x2Au);
       }
 
@@ -1272,15 +1272,15 @@ LABEL_133:
 
 - (id)personalizedItemSources
 {
-  v3 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-  v4 = [v3 searchPinsManager];
+  chromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+  searchPinsManager = [chromeViewController searchPinsManager];
 
-  if (v4)
+  if (searchPinsManager)
   {
-    v5 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-    v6 = [v5 searchPinsManager];
-    v7 = [v6 routeStartEndItemSource];
-    v10 = v7;
+    chromeViewController2 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+    searchPinsManager2 = [chromeViewController2 searchPinsManager];
+    routeStartEndItemSource = [searchPinsManager2 routeStartEndItemSource];
+    v10 = routeStartEndItemSource;
     v8 = [NSArray arrayWithObjects:&v10 count:1];
   }
 
@@ -1292,14 +1292,14 @@ LABEL_133:
   return v8;
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v5 = a4;
+  animationCopy = animation;
   v6 = sub_100BA3DFC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Resigning top context", buf, 0xCu);
   }
 
@@ -1311,17 +1311,17 @@ LABEL_133:
   v8[2] = sub_100BA6F50;
   v8[3] = &unk_101661B18;
   v8[4] = self;
-  [v5 addPreparation:v8];
+  [animationCopy addPreparation:v8];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v5 = a4;
+  animationCopy = animation;
   v6 = sub_100BA3DFC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Becoming top context", buf, 0xCu);
   }
 
@@ -1338,112 +1338,112 @@ LABEL_133:
   v8[2] = sub_100BA7684;
   v8[3] = &unk_101661AE0;
   v8[4] = self;
-  v9 = [v5 isAnimated];
-  [v5 addPreparation:v10 animations:v8 completion:0];
+  isAnimated = [animationCopy isAnimated];
+  [animationCopy addPreparation:v10 animations:v8 completion:0];
 }
 
 - (BOOL)showsSpeedLimit
 {
-  v2 = [(CarHybridInstrumentClusterNavigationModeController *)self _mapWidgetChromeViewController];
-  v3 = [v2 chromeConfiguration];
-  v4 = [v3 showsSpeedLimit] != 2;
+  _mapWidgetChromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self _mapWidgetChromeViewController];
+  chromeConfiguration = [_mapWidgetChromeViewController chromeConfiguration];
+  v4 = [chromeConfiguration showsSpeedLimit] != 2;
 
   return v4;
 }
 
 - (BOOL)showsHeadingIndicator
 {
-  v2 = [(CarHybridInstrumentClusterNavigationModeController *)self _mapWidgetChromeViewController];
-  v3 = [v2 chromeConfiguration];
-  v4 = [v3 showsHeadingIndicator] != 2;
+  _mapWidgetChromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self _mapWidgetChromeViewController];
+  chromeConfiguration = [_mapWidgetChromeViewController chromeConfiguration];
+  v4 = [chromeConfiguration showsHeadingIndicator] != 2;
 
   return v4;
 }
 
-- (void)configureNavigationDisplay:(id)a3
+- (void)configureNavigationDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   v5 = sub_100BA3DFC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v13 = 134349056;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Configuring navigation display", &v13, 0xCu);
   }
 
-  [v4 setCameraStyle:{-[CarHybridInstrumentClusterNavigationModeController cameraStyle](self, "cameraStyle")}];
-  [v4 setCameraPaused:0];
+  [displayCopy setCameraStyle:{-[CarHybridInstrumentClusterNavigationModeController cameraStyle](self, "cameraStyle")}];
+  [displayCopy setCameraPaused:0];
   if (GEOConfigGetBOOL())
   {
-    [v4 setShowsRoadLabel:&__kCFBooleanFalse];
+    [displayCopy setShowsRoadLabel:&__kCFBooleanFalse];
   }
 
   else
   {
-    v6 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-    v7 = [v6 view];
-    v8 = [v7 window];
-    v9 = [v8 _car_hybridInstrumentClusterLayout];
+    chromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+    view = [chromeViewController view];
+    window = [view window];
+    _car_hybridInstrumentClusterLayout = [window _car_hybridInstrumentClusterLayout];
 
-    v11 = [(CarHybridInstrumentClusterNavigationModeController *)self cameraStyle]== 1 && v9 == 2;
+    v11 = [(CarHybridInstrumentClusterNavigationModeController *)self cameraStyle]== 1 && _car_hybridInstrumentClusterLayout == 2;
     v12 = [NSNumber numberWithInt:v11];
-    [v4 setShowsRoadLabel:v12];
+    [displayCopy setShowsRoadLabel:v12];
   }
 }
 
-- (void)refreshCameraTypeAnimated:(BOOL)a3
+- (void)refreshCameraTypeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = sub_100BA3DFC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Refreshing camera type", buf, 0xCu);
   }
 
-  v6 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-  [v6 setNeedsUpdateMapInsets];
+  chromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+  [chromeViewController setNeedsUpdateMapInsets];
 
-  v7 = [(CarHybridInstrumentClusterNavigationModeController *)self carChromeViewController];
-  v8 = [v7 navigationDisplay];
+  carChromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self carChromeViewController];
+  navigationDisplay = [carChromeViewController navigationDisplay];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100BA7BC8;
   v9[3] = &unk_10164F208;
   v9[4] = self;
-  [v8 configureDisplay:v9 animated:v3];
+  [navigationDisplay configureDisplay:v9 animated:animatedCopy];
 }
 
-- (void)setCameraStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)setCameraStyle:(int64_t)style animated:(BOOL)animated
 {
-  if (self->_cameraStyle != a3)
+  if (self->_cameraStyle != style)
   {
-    v4 = a4;
+    animatedCopy = animated;
     v7 = sub_100BA3DFC();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = 134349312;
-      v9 = self;
+      selfCopy = self;
       v10 = 2048;
-      v11 = a3;
+      styleCopy = style;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Updating camera style: %ld", &v8, 0x16u);
     }
 
-    self->_cameraStyle = a3;
-    [(CarHybridInstrumentClusterNavigationModeController *)self refreshCameraTypeAnimated:v4];
+    self->_cameraStyle = style;
+    [(CarHybridInstrumentClusterNavigationModeController *)self refreshCameraTypeAnimated:animatedCopy];
   }
 }
 
 - (id)mapView
 {
-  v2 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-  v3 = [v2 mapView];
+  chromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  return v3;
+  return mapView;
 }
 
-- (void)prepareToEnterStackInChromeViewController:(id)a3
+- (void)prepareToEnterStackInChromeViewController:(id)controller
 {
   [(CarChromeNavigationCameraStyleManager *)self->_cameraStyleManager unregisterObserver:self];
   v4 = +[CarChromeNavigationCameraStyleManager sharedInstance];
@@ -1451,16 +1451,16 @@ LABEL_133:
   self->_cameraStyleManager = v4;
 
   [(CarChromeNavigationCameraStyleManager *)self->_cameraStyleManager registerObserver:self];
-  v6 = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
-  v7 = [v6 view];
-  v8 = [v7 window];
-  v9 = [v8 _car_hybridInstrumentClusterDisplayLocation];
+  chromeViewController = [(CarHybridInstrumentClusterNavigationModeController *)self chromeViewController];
+  view = [chromeViewController view];
+  window = [view window];
+  _car_hybridInstrumentClusterDisplayLocation = [window _car_hybridInstrumentClusterDisplayLocation];
 
-  if (v9 >= 2)
+  if (_car_hybridInstrumentClusterDisplayLocation >= 2)
   {
-    if (v9 == 2)
+    if (_car_hybridInstrumentClusterDisplayLocation == 2)
     {
-      v10 = [(CarChromeNavigationCameraStyleManager *)self->_cameraStyleManager centerConsoleCameraStyle];
+      centerConsoleCameraStyle = [(CarChromeNavigationCameraStyleManager *)self->_cameraStyleManager centerConsoleCameraStyle];
       goto LABEL_6;
     }
 
@@ -1489,9 +1489,9 @@ LABEL_133:
     }
   }
 
-  v10 = [(CarChromeNavigationCameraStyleManager *)self->_cameraStyleManager instrumentClusterCameraStyle];
+  centerConsoleCameraStyle = [(CarChromeNavigationCameraStyleManager *)self->_cameraStyleManager instrumentClusterCameraStyle];
 LABEL_6:
-  self->_cameraStyle = v10;
+  self->_cameraStyle = centerConsoleCameraStyle;
 }
 
 - (void)dealloc
@@ -1500,7 +1500,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -1511,7 +1511,7 @@ LABEL_6:
   [(CarHybridInstrumentClusterNavigationModeController *)&v4 dealloc];
 }
 
-- (CarHybridInstrumentClusterNavigationModeController)initWithPresentationType:(unint64_t)a3
+- (CarHybridInstrumentClusterNavigationModeController)initWithPresentationType:(unint64_t)type
 {
   v11.receiver = self;
   v11.super_class = CarHybridInstrumentClusterNavigationModeController;
@@ -1527,7 +1527,7 @@ LABEL_6:
     }
 
     v4->_cameraStyle = 1;
-    v4->_presentationType = a3;
+    v4->_presentationType = type;
     v6 = objc_alloc_init(CARSessionStatus);
     sessionStatus = v4->_sessionStatus;
     v4->_sessionStatus = v6;

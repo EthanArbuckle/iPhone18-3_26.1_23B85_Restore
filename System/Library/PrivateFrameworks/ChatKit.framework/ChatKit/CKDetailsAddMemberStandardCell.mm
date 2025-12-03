@@ -1,66 +1,66 @@
 @interface CKDetailsAddMemberStandardCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKDetailsAddMemberStandardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKDetailsAddMemberStandardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation CKDetailsAddMemberStandardCell
 
-- (CKDetailsAddMemberStandardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKDetailsAddMemberStandardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v36.receiver = self;
   v36.super_class = CKDetailsAddMemberStandardCell;
-  v4 = [(CKDetailsAddMemberCell *)&v36 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKDetailsAddMemberCell *)&v36 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v6 = [v5 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     [(CKDetailsAddMemberStandardCell *)v4 setAddIcon:v6];
 
-    v7 = [(CKDetailsAddMemberStandardCell *)v4 addIcon];
-    [v7 setBackgroundColor:0];
+    addIcon = [(CKDetailsAddMemberStandardCell *)v4 addIcon];
+    [addIcon setBackgroundColor:0];
 
-    v8 = [(CKDetailsAddMemberStandardCell *)v4 addIcon];
-    [v8 setContentMode:4];
+    addIcon2 = [(CKDetailsAddMemberStandardCell *)v4 addIcon];
+    [addIcon2 setContentMode:4];
 
-    v9 = [(CKDetailsAddMemberStandardCell *)v4 addIcon];
+    addIcon3 = [(CKDetailsAddMemberStandardCell *)v4 addIcon];
     v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"plus"];
     v11 = MEMORY[0x1E69DCAD8];
     v12 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
     v13 = [v11 configurationWithFont:v12];
     v14 = [v10 imageWithConfiguration:v13];
-    [v9 setImage:v14];
+    [addIcon3 setImage:v14];
 
-    v15 = [(CKDetailsAddMemberStandardCell *)v4 addIcon];
+    addIcon4 = [(CKDetailsAddMemberStandardCell *)v4 addIcon];
     v16 = +[CKUIBehavior sharedBehaviors];
-    v17 = [v16 theme];
-    v18 = [v17 detailsTextColor];
-    [v15 setTintColor:v18];
+    theme = [v16 theme];
+    detailsTextColor = [theme detailsTextColor];
+    [addIcon4 setTintColor:detailsTextColor];
 
-    v19 = [(CKDetailsAddMemberStandardCell *)v4 addIcon];
+    addIcon5 = [(CKDetailsAddMemberStandardCell *)v4 addIcon];
     v20 = +[CKUIBehavior sharedBehaviors];
     [v20 detailsAddButtonDiameter];
     v22 = v21;
     v23 = +[CKUIBehavior sharedBehaviors];
     [v23 detailsAddButtonDiameter];
-    [v19 setBounds:{0.0, 0.0, v22, v24}];
+    [addIcon5 setBounds:{0.0, 0.0, v22, v24}];
 
-    v25 = [(CKDetailsAddMemberStandardCell *)v4 addIcon];
+    addIcon6 = [(CKDetailsAddMemberStandardCell *)v4 addIcon];
     v26 = +[CKUIBehavior sharedBehaviors];
-    v27 = [v26 theme];
-    v28 = [v27 detailsAddButtonBackgroundColor];
-    [v25 setBackgroundColor:v28];
+    theme2 = [v26 theme];
+    detailsAddButtonBackgroundColor = [theme2 detailsAddButtonBackgroundColor];
+    [addIcon6 setBackgroundColor:detailsAddButtonBackgroundColor];
 
-    v29 = [(CKDetailsAddMemberStandardCell *)v4 addIcon];
-    v30 = [v29 layer];
+    addIcon7 = [(CKDetailsAddMemberStandardCell *)v4 addIcon];
+    layer = [addIcon7 layer];
     v31 = +[CKUIBehavior sharedBehaviors];
     [v31 detailsAddButtonDiameter];
-    [v30 setCornerRadius:v32 * 0.5];
+    [layer setCornerRadius:v32 * 0.5];
 
-    v33 = [(CKDetailsAddMemberStandardCell *)v4 contentView];
-    v34 = [(CKDetailsAddMemberStandardCell *)v4 addIcon];
-    [v33 addSubview:v34];
+    contentView = [(CKDetailsAddMemberStandardCell *)v4 contentView];
+    addIcon8 = [(CKDetailsAddMemberStandardCell *)v4 addIcon];
+    [contentView addSubview:addIcon8];
   }
 
   return v4;
@@ -71,17 +71,17 @@
   *&rect.size.width = self;
   *&rect.size.height = CKDetailsAddMemberStandardCell;
   [(CGSize *)&rect.size layoutSubviews];
-  v3 = [(CKDetailsAddMemberStandardCell *)self contentView];
-  [v3 layoutMargins];
+  contentView = [(CKDetailsAddMemberStandardCell *)self contentView];
+  [contentView layoutMargins];
   v5 = v4;
   v7 = v6;
 
-  v8 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
-  v9 = [(CKDetailsAddMemberStandardCell *)self addIcon];
-  [v9 sizeToFit];
+  userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+  addIcon = [(CKDetailsAddMemberStandardCell *)self addIcon];
+  [addIcon sizeToFit];
 
-  v10 = [(CKDetailsAddMemberStandardCell *)self addIcon];
-  [v10 frame];
+  addIcon2 = [(CKDetailsAddMemberStandardCell *)self addIcon];
+  [addIcon2 frame];
   v12 = v11;
   v14 = v13;
 
@@ -97,10 +97,10 @@
   [v21 detailsContactAvatarLabelSpacing];
   v23 = v22;
 
-  if (v8)
+  if (userInterfaceLayoutDirection)
   {
-    v24 = [(CKDetailsAddMemberStandardCell *)self contentView];
-    [v24 bounds];
+    contentView2 = [(CKDetailsAddMemberStandardCell *)self contentView];
+    [contentView2 bounds];
     v26 = v25 - v7;
     v75.origin.x = v12;
     v75.origin.y = v14;
@@ -159,11 +159,11 @@
     rect.origin = vdivq_f64(vrndmq_f64(vmulq_n_f64(v36, *&v35)), vdupq_lane_s64(v35, 0));
   }
 
-  v37 = [(CKDetailsAddMemberStandardCell *)self addIcon];
-  [v37 setFrame:?];
+  addIcon3 = [(CKDetailsAddMemberStandardCell *)self addIcon];
+  [addIcon3 setFrame:?];
 
-  v38 = [(CKDetailsAddMemberStandardCell *)self contentView];
-  [v38 bounds];
+  contentView3 = [(CKDetailsAddMemberStandardCell *)self contentView];
+  [contentView3 bounds];
   v40 = v39;
   v42 = v41;
   v44 = v43;
@@ -172,7 +172,7 @@
   y = rect.origin.y;
   v47 = v20;
   v48 = v17;
-  if (v8)
+  if (userInterfaceLayoutDirection)
   {
     v49 = CGRectGetMinX(*&x) - v23;
   }
@@ -180,22 +180,22 @@
   else
   {
     v40 = v23 + CGRectGetMaxX(*&x);
-    v50 = [(CKDetailsAddMemberStandardCell *)self contentView];
-    [v50 bounds];
+    contentView4 = [(CKDetailsAddMemberStandardCell *)self contentView];
+    [contentView4 bounds];
     v49 = v51 - v40;
   }
 
-  v52 = [(CKDetailsAddMemberCell *)self addLabel];
-  [v52 setFrame:{v40, v42, v49, v44}];
+  addLabel = [(CKDetailsAddMemberCell *)self addLabel];
+  [addLabel setFrame:{v40, v42, v49, v44}];
 
-  v53 = [(CKDetailsCell *)self topSeperator];
-  [v53 frame];
+  topSeperator = [(CKDetailsCell *)self topSeperator];
+  [topSeperator frame];
   v55 = v54;
   v57 = v56;
   v59 = v58;
 
-  v60 = [(CKDetailsAddMemberStandardCell *)self contentView];
-  [v60 layoutMargins];
+  contentView5 = [(CKDetailsAddMemberStandardCell *)self contentView];
+  [contentView5 layoutMargins];
   v62 = v61;
   v63 = +[CKUIBehavior sharedBehaviors];
   [v63 detailsContactAvatarLabelSpacing];
@@ -205,53 +205,53 @@
   v68 = v65 + v67;
 
   v69 = v68;
-  if (v8)
+  if (userInterfaceLayoutDirection)
   {
-    v70 = [(CKDetailsAddMemberStandardCell *)self contentView];
-    [v70 layoutMargins];
+    contentView6 = [(CKDetailsAddMemberStandardCell *)self contentView];
+    [contentView6 layoutMargins];
     v69 = v71;
   }
 
-  v72 = [(CKDetailsCell *)self topSeperator];
-  [v72 setFrame:{v69, v55, v57 - v68, v59}];
+  topSeperator2 = [(CKDetailsCell *)self topSeperator];
+  [topSeperator2 setFrame:{v69, v55, v57 - v68, v59}];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v14.receiver = self;
   v14.super_class = CKDetailsAddMemberStandardCell;
   [(CKDetailsAddMemberCell *)&v14 setEnabled:?];
-  v5 = [(CKDetailsAddMemberStandardCell *)self addIcon];
+  addIcon = [(CKDetailsAddMemberStandardCell *)self addIcon];
   v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"plus"];
-  v7 = +[CKUIBehavior sharedBehaviors];
-  v8 = [v7 theme];
-  v9 = v8;
-  if (v3)
+  theme2 = +[CKUIBehavior sharedBehaviors];
+  theme = [theme2 theme];
+  lightGrayColor2 = theme;
+  if (enabledCopy)
   {
-    v10 = [v8 detailsTextColor];
-    v11 = [v6 _flatImageWithColor:v10];
-    [v5 setImage:v11];
+    detailsTextColor = [theme detailsTextColor];
+    v11 = [v6 _flatImageWithColor:detailsTextColor];
+    [addIcon setImage:v11];
   }
 
   else
   {
-    v12 = [v8 lightGrayColor];
-    v13 = [v6 _flatImageWithColor:v12];
-    [v5 setImage:v13];
+    lightGrayColor = [theme lightGrayColor];
+    v13 = [v6 _flatImageWithColor:lightGrayColor];
+    [addIcon setImage:v13];
 
-    v5 = [(CKDetailsAddMemberStandardCell *)self addIcon];
+    addIcon = [(CKDetailsAddMemberStandardCell *)self addIcon];
     v6 = +[CKUIBehavior sharedBehaviors];
-    v7 = [v6 theme];
-    v9 = [v7 lightGrayColor];
-    [v5 setTintColor:v9];
+    theme2 = [v6 theme];
+    lightGrayColor2 = [theme2 lightGrayColor];
+    [addIcon setTintColor:lightGrayColor2];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = objc_alloc([CKDetailsContactsTableViewCell cellClass:a3.width]);
+  width = fits.width;
+  v4 = objc_alloc([CKDetailsContactsTableViewCell cellClass:fits.width]);
   v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [v5 sizeThatFits:{width, 3.40282347e38}];
   v7 = v6;

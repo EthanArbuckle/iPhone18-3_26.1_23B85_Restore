@@ -6,7 +6,7 @@
 - (void)getInitialFolioState;
 - (void)registerForFolioEvents;
 - (void)registerForKeyboardEvents;
-- (void)updateFolioState:(BOOL)a3;
+- (void)updateFolioState:(BOOL)state;
 - (void)updateKeyboardState;
 - (void)updateSensorExchangeKey;
 @end
@@ -210,11 +210,11 @@
 
 - (void)updateKeyboardState
 {
-  v3 = [(KeyboardHelper *)self isKeyboardConnected];
-  if (self->_cachedIsKeyboardAttached != v3)
+  isKeyboardConnected = [(KeyboardHelper *)self isKeyboardConnected];
+  if (self->_cachedIsKeyboardAttached != isKeyboardConnected)
   {
-    self->_cachedIsKeyboardAttached = v3;
-    if (v3)
+    self->_cachedIsKeyboardAttached = isKeyboardConnected;
+    if (isKeyboardConnected)
     {
       [(KeyboardHelper *)self isR18xKeyboardAttached];
     }
@@ -289,11 +289,11 @@
   return v4;
 }
 
-- (void)updateFolioState:(BOOL)a3
+- (void)updateFolioState:(BOOL)state
 {
-  if (self->_cachedIsFolioAttached != a3)
+  if (self->_cachedIsFolioAttached != state)
   {
-    self->_cachedIsFolioAttached = a3;
+    self->_cachedIsFolioAttached = state;
     [(KeyboardHelper *)self updateSensorExchangeKey];
   }
 }

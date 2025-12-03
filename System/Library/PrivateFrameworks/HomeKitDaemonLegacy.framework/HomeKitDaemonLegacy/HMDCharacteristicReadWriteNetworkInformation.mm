@@ -1,6 +1,6 @@
 @interface HMDCharacteristicReadWriteNetworkInformation
-- (HMDCharacteristicReadWriteNetworkInformation)initWithWifiManager:(id)a3;
-- (void)_handleWifiCurrentNetworkChangedNotification:(id)a3;
+- (HMDCharacteristicReadWriteNetworkInformation)initWithWifiManager:(id)manager;
+- (void)_handleWifiCurrentNetworkChangedNotification:(id)notification;
 - (void)_refreshBluetoothInformation;
 - (void)_refreshWifiInformation;
 - (void)refreshNetworkInformation;
@@ -72,27 +72,27 @@ uint64_t __73__HMDCharacteristicReadWriteNetworkInformation_refreshNetworkInform
 
 - (void)_refreshBluetoothInformation
 {
-  v3 = [MEMORY[0x277CFEA60] getInstance];
-  -[HMDCharacteristicReadWriteNetworkInformation setBluetoothState:](self, "setBluetoothState:", [v3 state]);
+  getInstance = [MEMORY[0x277CFEA60] getInstance];
+  -[HMDCharacteristicReadWriteNetworkInformation setBluetoothState:](self, "setBluetoothState:", [getInstance state]);
 }
 
 - (void)_refreshWifiInformation
 {
-  v3 = [(HMDCharacteristicReadWriteNetworkInformation *)self wifiManager];
-  v4 = [v3 currentNetworkAssociation];
+  wifiManager = [(HMDCharacteristicReadWriteNetworkInformation *)self wifiManager];
+  currentNetworkAssociation = [wifiManager currentNetworkAssociation];
 
-  if (v4)
+  if (currentNetworkAssociation)
   {
-    v5 = [(HMDCharacteristicReadWriteNetworkInformation *)self wifiManager];
-    v6 = [v5 currentNetworkAssociation];
-    v7 = [v6 SSID];
-    [(HMDCharacteristicReadWriteNetworkInformation *)self setWifiSSID:v7];
+    wifiManager2 = [(HMDCharacteristicReadWriteNetworkInformation *)self wifiManager];
+    currentNetworkAssociation2 = [wifiManager2 currentNetworkAssociation];
+    sSID = [currentNetworkAssociation2 SSID];
+    [(HMDCharacteristicReadWriteNetworkInformation *)self setWifiSSID:sSID];
 
-    v8 = [(HMDCharacteristicReadWriteNetworkInformation *)self wifiManager];
-    v9 = [v8 currentNetworkAssociation];
-    v10 = [v9 BSSID];
-    v11 = [v10 formattedString];
-    [(HMDCharacteristicReadWriteNetworkInformation *)self setWifiBSSID:v11];
+    wifiManager3 = [(HMDCharacteristicReadWriteNetworkInformation *)self wifiManager];
+    currentNetworkAssociation3 = [wifiManager3 currentNetworkAssociation];
+    bSSID = [currentNetworkAssociation3 BSSID];
+    formattedString = [bSSID formattedString];
+    [(HMDCharacteristicReadWriteNetworkInformation *)self setWifiBSSID:formattedString];
   }
 
   else
@@ -103,25 +103,25 @@ uint64_t __73__HMDCharacteristicReadWriteNetworkInformation_refreshNetworkInform
 
   v14 = objc_alloc_init(MEMORY[0x277D02B18]);
   [v14 activate];
-  v12 = [v14 wifiUIStateFlags];
+  wifiUIStateFlags = [v14 wifiUIStateFlags];
   [v14 invalidate];
-  if (v12)
+  if (wifiUIStateFlags)
   {
-    if ((v12 & 2) != 0)
+    if ((wifiUIStateFlags & 2) != 0)
     {
-      if (v12)
+      if (wifiUIStateFlags)
       {
         v13 = 2;
       }
 
-      else if ((v12 & 4) != 0)
+      else if ((wifiUIStateFlags & 4) != 0)
       {
         v13 = 3;
       }
 
       else
       {
-        v13 = (v12 >> 1) & 4;
+        v13 = (wifiUIStateFlags >> 1) & 4;
       }
     }
 
@@ -139,12 +139,12 @@ uint64_t __73__HMDCharacteristicReadWriteNetworkInformation_refreshNetworkInform
   [(HMDCharacteristicReadWriteNetworkInformation *)self setWifiConnectionState:v13];
 }
 
-- (void)_handleWifiCurrentNetworkChangedNotification:(id)a3
+- (void)_handleWifiCurrentNetworkChangedNotification:(id)notification
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -155,23 +155,23 @@ uint64_t __73__HMDCharacteristicReadWriteNetworkInformation_refreshNetworkInform
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDCharacteristicReadWriteNetworkInformation *)v6 refreshNetworkInformation];
+  [(HMDCharacteristicReadWriteNetworkInformation *)selfCopy refreshNetworkInformation];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCharacteristicReadWriteNetworkInformation)initWithWifiManager:(id)a3
+- (HMDCharacteristicReadWriteNetworkInformation)initWithWifiManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = HMDCharacteristicReadWriteNetworkInformation;
   v6 = [(HMDCharacteristicReadWriteNetworkInformation *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wifiManager, a3);
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel__handleWifiCurrentNetworkChangedNotification_ name:*MEMORY[0x277D0F768] object:0];
+    objc_storeStrong(&v6->_wifiManager, manager);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__handleWifiCurrentNetworkChangedNotification_ name:*MEMORY[0x277D0F768] object:0];
   }
 
   return v7;

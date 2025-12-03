@@ -1,28 +1,28 @@
 @interface UISplitViewControllerPanelImplAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySpeakThisViewController;
 - (id)displayModeButtonItem;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityUpdatePanelController;
 - (void)_accessibilityUpdateSecondaryOnlyShortcutButtonItem;
 - (void)_accessibilityUpdateSideBarToggleButtonItem;
-- (void)_axApplyDisplayModeLabelToButtonItem:(void *)a1;
+- (void)_axApplyDisplayModeLabelToButtonItem:(void *)item;
 - (void)_updateDisplayModeButtonItem;
 - (void)loadView;
-- (void)setViewControllers:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setViewControllers:(id)controllers;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation UISplitViewControllerPanelImplAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v11 = location;
   v10 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v5 = @"UISplitViewControllerPanelImpl";
   v8 = "@";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -54,41 +54,41 @@
 
 - (void)loadView
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v4.receiver = self;
   v4.super_class = UISplitViewControllerPanelImplAccessibility;
   [(UISplitViewControllerPanelImplAccessibility *)&v4 loadView];
   objc_opt_class();
-  v2 = [(UISplitViewControllerPanelImplAccessibility *)v6 safeValueForKey:@"_svc"];
+  v2 = [(UISplitViewControllerPanelImplAccessibility *)selfCopy safeValueForKey:@"_svc"];
   v3 = __UIAccessibilityCastAsSafeCategory();
   MEMORY[0x29EDC9740](v2);
   [(UISplitViewControllerAccessibility *)v3 _axModalizeViewControllerViews];
   objc_storeStrong(&v3, 0);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = UISplitViewControllerPanelImplAccessibility;
-  [(UISplitViewControllerPanelImplAccessibility *)&v3 viewDidAppear:a3];
-  [(UISplitViewControllerPanelImplAccessibility *)v6 _accessibilityUpdatePanelController];
+  [(UISplitViewControllerPanelImplAccessibility *)&v3 viewDidAppear:appear];
+  [(UISplitViewControllerPanelImplAccessibility *)selfCopy _accessibilityUpdatePanelController];
 }
 
-- (void)setViewControllers:(id)a3
+- (void)setViewControllers:(id)controllers
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5.receiver = v7;
+  objc_storeStrong(location, controllers);
+  v5.receiver = selfCopy;
   v5.super_class = UISplitViewControllerPanelImplAccessibility;
   [(UISplitViewControllerPanelImplAccessibility *)&v5 setViewControllers:location[0]];
   objc_opt_class();
-  v3 = [(UISplitViewControllerPanelImplAccessibility *)v7 safeValueForKey:@"_svc"];
+  v3 = [(UISplitViewControllerPanelImplAccessibility *)selfCopy safeValueForKey:@"_svc"];
   v4 = __UIAccessibilityCastAsSafeCategory();
   if ([v4 isViewLoaded])
   {
@@ -101,32 +101,32 @@
 
 - (id)displayModeButtonItem
 {
-  v6 = self;
+  selfCopy = self;
   v5[1] = a2;
   v4.receiver = self;
   v4.super_class = UISplitViewControllerPanelImplAccessibility;
   v5[0] = [(UISplitViewControllerPanelImplAccessibility *)&v4 displayModeButtonItem];
-  [(UISplitViewControllerPanelImplAccessibility *)v6 _axApplyDisplayModeLabelToButtonItem:?];
+  [(UISplitViewControllerPanelImplAccessibility *)selfCopy _axApplyDisplayModeLabelToButtonItem:?];
   v3 = MEMORY[0x29EDC9748](v5[0]);
   objc_storeStrong(v5, 0);
 
   return v3;
 }
 
-- (void)_axApplyDisplayModeLabelToButtonItem:(void *)a1
+- (void)_axApplyDisplayModeLabelToButtonItem:(void *)item
 {
-  v9 = a1;
+  itemCopy = item;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v9 && location)
+  if (itemCopy && location)
   {
     v7 = 0;
-    if ([v9 safeIntegerForKey:@"style"] == 1)
+    if ([itemCopy safeIntegerForKey:@"style"] == 1)
     {
-      v5 = [v9 safeValueForKey:@"_effectiveTargetDisplayMode"];
-      v6 = [v5 integerValue];
+      v5 = [itemCopy safeValueForKey:@"_effectiveTargetDisplayMode"];
+      integerValue = [v5 integerValue];
       MEMORY[0x29EDC9740](v5);
-      if (v6 == 1)
+      if (integerValue == 1)
       {
         v3 = location;
         v4 = accessibilityUIKitLocalizedString();
@@ -151,23 +151,23 @@
 
 - (void)_updateDisplayModeButtonItem
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UISplitViewControllerPanelImplAccessibility;
   [(UISplitViewControllerPanelImplAccessibility *)&v2 _updateDisplayModeButtonItem];
-  [(UISplitViewControllerPanelImplAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
-  [(UISplitViewControllerPanelImplAccessibility *)v4 _accessibilityUpdatePanelController];
+  [(UISplitViewControllerPanelImplAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation];
+  [(UISplitViewControllerPanelImplAccessibility *)selfCopy _accessibilityUpdatePanelController];
 }
 
 - (void)_accessibilityUpdateSideBarToggleButtonItem
 {
-  v17 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v15 = 0;
     objc_opt_class();
-    v5 = [v17 safeValueForKey:@"_sidebarToggleButtonItem"];
+    v5 = [selfCopy safeValueForKey:@"_sidebarToggleButtonItem"];
     v14 = __UIAccessibilityCastAsClass();
     MEMORY[0x29EDC9740](v5);
     v13 = MEMORY[0x29EDC9748](v14);
@@ -182,7 +182,7 @@
 
     else
     {
-      objc_initWeak(&v12, v17);
+      objc_initWeak(&v12, selfCopy);
       v4 = v16;
       v6 = MEMORY[0x29EDCA5F8];
       v7 = -1073741824;
@@ -281,18 +281,18 @@ id __90__UISplitViewControllerPanelImplAccessibility__accessibilityUpdateSideBar
 
 - (void)_accessibilityUpdateSecondaryOnlyShortcutButtonItem
 {
-  v17 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v15 = 0;
     objc_opt_class();
-    v5 = [v17 safeValueForKey:@"_secondaryOnlyShortcutButtonItem"];
+    v5 = [selfCopy safeValueForKey:@"_secondaryOnlyShortcutButtonItem"];
     v14 = __UIAccessibilityCastAsClass();
     MEMORY[0x29EDC9740](v5);
     v13 = MEMORY[0x29EDC9748](v14);
     objc_storeStrong(&v14, 0);
     v16 = v13;
-    objc_initWeak(&v12, v17);
+    objc_initWeak(&v12, selfCopy);
     v4 = v16;
     v6 = MEMORY[0x29EDCA5F8];
     v7 = -1073741824;
@@ -339,27 +339,27 @@ id __98__UISplitViewControllerPanelImplAccessibility__accessibilityUpdateSeconda
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v4.receiver = self;
   v4.super_class = UISplitViewControllerPanelImplAccessibility;
   [(UISplitViewControllerPanelImplAccessibility *)&v4 _accessibilityLoadAccessibilityInformation];
-  [(UISplitViewControllerPanelImplAccessibility *)v6 _accessibilityUpdateSideBarToggleButtonItem];
-  [(UISplitViewControllerPanelImplAccessibility *)v6 _accessibilityUpdateSecondaryOnlyShortcutButtonItem];
-  v2 = v6;
-  v3 = [(UISplitViewControllerPanelImplAccessibility *)v6 safeValueForKey:@"_unspecifiedCompositionDisplayModeButtonItem"];
+  [(UISplitViewControllerPanelImplAccessibility *)selfCopy _accessibilityUpdateSideBarToggleButtonItem];
+  [(UISplitViewControllerPanelImplAccessibility *)selfCopy _accessibilityUpdateSecondaryOnlyShortcutButtonItem];
+  v2 = selfCopy;
+  v3 = [(UISplitViewControllerPanelImplAccessibility *)selfCopy safeValueForKey:@"_unspecifiedCompositionDisplayModeButtonItem"];
   [(UISplitViewControllerPanelImplAccessibility *)v2 _axApplyDisplayModeLabelToButtonItem:v3];
   MEMORY[0x29EDC9740](v3);
 }
 
 - (id)_accessibilitySpeakThisViewController
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v7[0] = [(UISplitViewControllerPanelImplAccessibility *)self safeValueForKeyPath:@"panelController.collapsedViewController"];
   if (!v7[0])
   {
-    v7[0] = [(UISplitViewControllerPanelImplAccessibility *)v8 safeValueForKeyPath:@"panelController.mainViewController"];
+    v7[0] = [(UISplitViewControllerPanelImplAccessibility *)selfCopy safeValueForKeyPath:@"panelController.mainViewController"];
     MEMORY[0x29EDC9740](0);
   }
 
@@ -368,11 +368,11 @@ id __98__UISplitViewControllerPanelImplAccessibility__accessibilityUpdateSeconda
   v5 = __UIAccessibilityCastAsSafeCategory();
   v4 = MEMORY[0x29EDC9748](v5);
   objc_storeStrong(&v5, 0);
-  v3 = [v4 _accessibilitySpeakThisViewController];
+  _accessibilitySpeakThisViewController = [v4 _accessibilitySpeakThisViewController];
   MEMORY[0x29EDC9740](v4);
   objc_storeStrong(v7, 0);
 
-  return v3;
+  return _accessibilitySpeakThisViewController;
 }
 
 - (void)_accessibilityUpdatePanelController

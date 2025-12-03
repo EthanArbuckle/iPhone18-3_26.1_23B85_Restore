@@ -1,52 +1,52 @@
 @interface TUITextFieldView
-+ (id)renderModelWithStates:(id)a3 actionHandler:(id)a4 viewState:(id)a5 enabled:(BOOL)a6 name:(id)a7 identifier:(id)a8 editingInsets:(UIEdgeInsets)a9 style:(id)a10 placeholderText:(id)a11 text:(id)a12 returnKeyType:(id)a13 keyboardAppearance:(unint64_t)a14;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (id)_textForControlUsingRenderModel:(id)a3;
++ (id)renderModelWithStates:(id)states actionHandler:(id)handler viewState:(id)state enabled:(BOOL)enabled name:(id)name identifier:(id)identifier editingInsets:(UIEdgeInsets)insets style:(id)self0 placeholderText:(id)self1 text:(id)self2 returnKeyType:(id)self3 keyboardAppearance:(unint64_t)self4;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (id)_textForControlUsingRenderModel:(id)model;
 - (id)accessibilityLabel;
 - (id)currentState;
 - (id)viewStateSave;
-- (void)_callActionHandlerForTrigger:(id)a3 arguments:(id)a4;
+- (void)_callActionHandlerForTrigger:(id)trigger arguments:(id)arguments;
 - (void)_textFieldContentChanged;
 - (void)_updateDynamicViewState;
-- (void)configureWithModel:(id)a3 outsets:(UIEdgeInsets)a4;
+- (void)configureWithModel:(id)model outsets:(UIEdgeInsets)outsets;
 - (void)dealloc;
 - (void)loadControlIfNeeded;
 - (void)prepareForReuse;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)viewStateRestore:(id)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)viewStateRestore:(id)restore;
 @end
 
 @implementation TUITextFieldView
 
-+ (id)renderModelWithStates:(id)a3 actionHandler:(id)a4 viewState:(id)a5 enabled:(BOOL)a6 name:(id)a7 identifier:(id)a8 editingInsets:(UIEdgeInsets)a9 style:(id)a10 placeholderText:(id)a11 text:(id)a12 returnKeyType:(id)a13 keyboardAppearance:(unint64_t)a14
++ (id)renderModelWithStates:(id)states actionHandler:(id)handler viewState:(id)state enabled:(BOOL)enabled name:(id)name identifier:(id)identifier editingInsets:(UIEdgeInsets)insets style:(id)self0 placeholderText:(id)self1 text:(id)self2 returnKeyType:(id)self3 keyboardAppearance:(unint64_t)self4
 {
-  v37 = a6;
-  right = a9.right;
-  bottom = a9.bottom;
-  left = a9.left;
-  top = a9.top;
-  v34 = a13;
+  enabledCopy = enabled;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  typeCopy = type;
   v33 = a12;
-  v22 = a11;
-  v23 = a10;
-  v32 = a8;
-  v31 = a7;
-  v24 = a5;
-  v25 = a4;
-  v26 = a3;
+  textCopy = text;
+  styleCopy = style;
+  identifierCopy = identifier;
+  nameCopy = name;
+  stateCopy = state;
+  handlerCopy = handler;
+  statesCopy = states;
   v27 = [TUIRenderModelInteractiveText alloc];
-  v28 = [a1 tuiReuseIdentifier];
-  v29 = [(TUIRenderModelInteractiveText *)v27 initWithReuseIdentifier:v28 identifier:v32 elementStates:v26 actionHandler:v25 viewState:v24 enabled:v37 name:top editingInsets:left style:bottom placeholderText:right text:v31 returnKeyType:v23 keyboardAppearance:v22, v33, v34, a14];
+  tuiReuseIdentifier = [self tuiReuseIdentifier];
+  appearance = [(TUIRenderModelInteractiveText *)v27 initWithReuseIdentifier:tuiReuseIdentifier identifier:identifierCopy elementStates:statesCopy actionHandler:handlerCopy viewState:stateCopy enabled:enabledCopy name:top editingInsets:left style:bottom placeholderText:right text:nameCopy returnKeyType:styleCopy keyboardAppearance:textCopy, v33, typeCopy, appearance];
 
-  return v29;
+  return appearance;
 }
 
 - (void)dealloc
 {
-  v3 = [(TUIInteractiveBaseView *)self control];
-  [v3 setDelegate:0];
-  [v3 removeTarget:self action:"_textFieldContentChanged" forControlEvents:0x20000];
+  control = [(TUIInteractiveBaseView *)self control];
+  [control setDelegate:0];
+  [control removeTarget:self action:"_textFieldContentChanged" forControlEvents:0x20000];
 
   v4.receiver = self;
   v4.super_class = TUITextFieldView;
@@ -56,16 +56,16 @@
 - (id)currentState
 {
   v3 = @"default";
-  v4 = [(TUIInteractiveBaseView *)self control];
-  v5 = [v4 isEditing];
-  v6 = [v4 text];
-  v7 = [v6 length];
+  control = [(TUIInteractiveBaseView *)self control];
+  isEditing = [control isEditing];
+  text = [control text];
+  v7 = [text length];
 
   if (v7)
   {
     v8 = @"hasValue";
 
-    if ((v5 & 1) == 0)
+    if ((isEditing & 1) == 0)
     {
       goto LABEL_8;
     }
@@ -74,7 +74,7 @@
     goto LABEL_6;
   }
 
-  if (v5)
+  if (isEditing)
   {
     v9 = TUIElementStateEditing;
     v8 = v3;
@@ -90,8 +90,8 @@ LABEL_8:
 
 - (void)loadControlIfNeeded
 {
-  v3 = [(TUIInteractiveBaseView *)self control];
-  if (!v3)
+  control = [(TUIInteractiveBaseView *)self control];
+  if (!control)
   {
     v4 = [TUIUIKitTextField alloc];
     [(TUITextFieldView *)self bounds];
@@ -104,85 +104,85 @@ LABEL_8:
     [(TUITextFieldView *)self addSubview:v5];
     [(TUIInteractiveBaseView *)self setControl:v5];
     [(TUITextFieldView *)self setTextInitialized:0];
-    v3 = v5;
+    control = v5;
   }
 }
 
-- (void)configureWithModel:(id)a3 outsets:(UIEdgeInsets)a4
+- (void)configureWithModel:(id)model outsets:(UIEdgeInsets)outsets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v9 = a3;
+  right = outsets.right;
+  bottom = outsets.bottom;
+  left = outsets.left;
+  top = outsets.top;
+  modelCopy = model;
   v38.receiver = self;
   v38.super_class = TUITextFieldView;
-  [(TUIInteractiveBaseView *)&v38 configureWithModel:v9 outsets:top, left, bottom, right];
-  v10 = v9;
+  [(TUIInteractiveBaseView *)&v38 configureWithModel:modelCopy outsets:top, left, bottom, right];
+  v10 = modelCopy;
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 viewState];
+    viewState = [v10 viewState];
     dynamicViewState = self->_dynamicViewState;
-    self->_dynamicViewState = v12;
+    self->_dynamicViewState = viewState;
 
     [v11 editingInsets];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(TUIInteractiveBaseView *)self control];
-    [v22 setEditingInsets:{v15, v17, v19, v21}];
+    control = [(TUIInteractiveBaseView *)self control];
+    [control setEditingInsets:{v15, v17, v19, v21}];
 
     v32 = _NSConcreteStackBlock;
     v33 = 3221225472;
     v34 = sub_188E70;
     v35 = &unk_25DCA0;
-    v36 = self;
+    selfCopy = self;
     v23 = v11;
     v37 = v23;
     [UIView performWithoutAnimation:&v32];
-    [(TUITextFieldView *)self setTextInitialized:1, v32, v33, v34, v35, v36];
-    v24 = [v23 enabled];
-    v25 = [(TUIInteractiveBaseView *)self control];
-    [v25 setEnabled:v24];
+    [(TUITextFieldView *)self setTextInitialized:1, v32, v33, v34, v35, selfCopy];
+    enabled = [v23 enabled];
+    control2 = [(TUIInteractiveBaseView *)self control];
+    [control2 setEnabled:enabled];
 
     [(TUIInteractiveBaseView *)self updateFromState];
     if ([v23 returnKeyType])
     {
-      v26 = [(TUIInteractiveBaseView *)self control];
-      [v26 setReturnKeyType:{objc_msgSend(v23, "returnKeyType")}];
+      control3 = [(TUIInteractiveBaseView *)self control];
+      [control3 setReturnKeyType:{objc_msgSend(v23, "returnKeyType")}];
     }
 
     v27 = TUIPlatformKeyboardAppearanceFromKeyboardAppearance([v23 keyboardAppearance]);
-    v28 = [(TUIInteractiveBaseView *)self control];
-    v29 = [v28 keyboardAppearance];
+    control4 = [(TUIInteractiveBaseView *)self control];
+    keyboardAppearance = [control4 keyboardAppearance];
 
-    if (v27 != v29)
+    if (v27 != keyboardAppearance)
     {
-      v30 = [(TUIInteractiveBaseView *)self control];
-      [v30 setKeyboardAppearance:v27];
+      control5 = [(TUIInteractiveBaseView *)self control];
+      [control5 setKeyboardAppearance:v27];
 
-      v31 = [(TUIInteractiveBaseView *)self control];
-      [v31 reloadInputViewsWithoutReset];
+      control6 = [(TUIInteractiveBaseView *)self control];
+      [control6 reloadInputViewsWithoutReset];
     }
   }
 
   [(TUITextFieldView *)self setViewStateToRestore:0];
 }
 
-- (id)_textForControlUsingRenderModel:(id)a3
+- (id)_textForControlUsingRenderModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   if (!self->_textInitialized || (-[TUIInteractiveBaseView control](self, "control"), v5 = objc_claimAutoreleasedReturnValue(), [v5 text], v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
   {
-    v7 = [(_TUITextFieldViewState *)self->_viewStateToRestore text];
-    if (!v7)
+    text = [(_TUITextFieldViewState *)self->_viewStateToRestore text];
+    if (!text)
     {
-      v7 = [v4 text];
+      text = [modelCopy text];
     }
 
-    v6 = v7;
+    v6 = text;
   }
 
   return v6;
@@ -192,67 +192,67 @@ LABEL_8:
 {
   if (self->_dynamicViewState)
   {
-    v3 = [(TUIInteractiveBaseView *)self control];
+    control = [(TUIInteractiveBaseView *)self control];
 
-    if (v3)
+    if (control)
     {
       dynamicViewState = self->_dynamicViewState;
       v8 = @"value";
-      v5 = [(TUIInteractiveBaseView *)self control];
-      v6 = [v5 text];
-      v9 = v6;
+      control2 = [(TUIInteractiveBaseView *)self control];
+      text = [control2 text];
+      v9 = text;
       v7 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
       [(TUIMutableDynamicValue *)dynamicViewState updateWithValueIfChanged:v7];
     }
   }
 }
 
-- (void)_callActionHandlerForTrigger:(id)a3 arguments:(id)a4
+- (void)_callActionHandlerForTrigger:(id)trigger arguments:(id)arguments
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(TUIInteractiveBaseView *)self renderModel];
-  v8 = [v9 actionHandler];
-  [v8 invoke:v7 arguments:v6];
+  argumentsCopy = arguments;
+  triggerCopy = trigger;
+  renderModel = [(TUIInteractiveBaseView *)self renderModel];
+  actionHandler = [renderModel actionHandler];
+  [actionHandler invoke:triggerCopy arguments:argumentsCopy];
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   [(TUIInteractiveBaseView *)self updateFromState];
   v7 = @"value";
-  v4 = [(TUIInteractiveBaseView *)self control];
-  v5 = [v4 text];
-  v8 = v5;
+  control = [(TUIInteractiveBaseView *)self control];
+  text = [control text];
+  v8 = text;
   v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   [(TUITextFieldView *)self _callActionHandlerForTrigger:@"beginInput" arguments:v6];
 
   [(TUITextFieldView *)self _updateDynamicViewState];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
   [(TUIInteractiveBaseView *)self updateFromState];
   v7 = @"value";
-  v4 = [(TUIInteractiveBaseView *)self control];
-  v5 = [v4 text];
-  v8 = v5;
+  control = [(TUIInteractiveBaseView *)self control];
+  text = [control text];
+  v8 = text;
   v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   [(TUITextFieldView *)self _callActionHandlerForTrigger:@"endInput" arguments:v6];
 
   [(TUITextFieldView *)self _updateDynamicViewState];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
   v9 = @"value";
-  v4 = a3;
-  v5 = [(TUIInteractiveBaseView *)self control];
-  v6 = [v5 text];
-  v10 = v6;
+  returnCopy = return;
+  control = [(TUIInteractiveBaseView *)self control];
+  text = [control text];
+  v10 = text;
   v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   [(TUITextFieldView *)self _callActionHandlerForTrigger:@"returnPressed" arguments:v7];
 
-  [v4 resignFirstResponder];
+  [returnCopy resignFirstResponder];
   return 0;
 }
 
@@ -260,9 +260,9 @@ LABEL_8:
 {
   [(TUIInteractiveBaseView *)self updateFromState];
   v6 = @"value";
-  v3 = [(TUIInteractiveBaseView *)self control];
-  v4 = [v3 text];
-  v7 = v4;
+  control = [(TUIInteractiveBaseView *)self control];
+  text = [control text];
+  v7 = text;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
   [(TUITextFieldView *)self _callActionHandlerForTrigger:@"changedInput" arguments:v5];
 
@@ -271,12 +271,12 @@ LABEL_8:
 
 - (id)viewStateSave
 {
-  v2 = [(TUIInteractiveBaseView *)self control];
-  if (v2)
+  control = [(TUIInteractiveBaseView *)self control];
+  if (control)
   {
     v3 = [_TUITextFieldViewState alloc];
-    v4 = [v2 text];
-    v5 = [(_TUITextFieldViewState *)v3 initWithText:v4];
+    text = [control text];
+    v5 = [(_TUITextFieldViewState *)v3 initWithText:text];
   }
 
   else
@@ -287,24 +287,24 @@ LABEL_8:
   return v5;
 }
 
-- (void)viewStateRestore:(id)a3
+- (void)viewStateRestore:(id)restore
 {
-  v7 = a3;
-  v4 = [(TUIInteractiveBaseView *)self control];
+  restoreCopy = restore;
+  control = [(TUIInteractiveBaseView *)self control];
 
-  if (v7 && v4)
+  if (restoreCopy && control)
   {
-    v5 = [v7 text];
+    text = [restoreCopy text];
 
-    v6 = [(TUIInteractiveBaseView *)self control];
-    [v6 setText:v5];
+    control2 = [(TUIInteractiveBaseView *)self control];
+    [control2 setText:text];
 
     [(TUIInteractiveBaseView *)self updateFromState];
   }
 
   else
   {
-    [(TUITextFieldView *)self setViewStateToRestore:v7];
+    [(TUITextFieldView *)self setViewStateToRestore:restoreCopy];
   }
 }
 
@@ -314,27 +314,27 @@ LABEL_8:
   v4.super_class = TUITextFieldView;
   [(TUIInteractiveBaseView *)&v4 prepareForReuse];
   [(TUITextFieldView *)self setViewStateToRestore:0];
-  v3 = [(TUIInteractiveBaseView *)self control];
-  [v3 setText:0];
+  control = [(TUIInteractiveBaseView *)self control];
+  [control setText:0];
 
   [(TUITextFieldView *)self setTextInitialized:0];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(TUIInteractiveBaseView *)self control];
-  v4 = [v3 text];
-  v5 = [v4 length];
-  v6 = [(TUIInteractiveBaseView *)self control];
-  v7 = v6;
+  control = [(TUIInteractiveBaseView *)self control];
+  text = [control text];
+  v5 = [text length];
+  control2 = [(TUIInteractiveBaseView *)self control];
+  v7 = control2;
   if (v5)
   {
-    [v6 text];
+    [control2 text];
   }
 
   else
   {
-    [v6 placeholder];
+    [control2 placeholder];
   }
   v8 = ;
 

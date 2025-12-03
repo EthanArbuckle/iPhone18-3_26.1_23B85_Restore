@@ -1,5 +1,5 @@
 @interface FCOfflineDownloadsConfiguration
-+ (BOOL)_automaticDownloadsEnabledForKey:(id)a3;
++ (BOOL)_automaticDownloadsEnabledForKey:(id)key;
 - (BOOL)automaticRecipeDownloadsEnabled;
 @end
 
@@ -17,16 +17,16 @@
   return [v2 _automaticDownloadsEnabledForKey:@"automatically_download_recipes"];
 }
 
-+ (BOOL)_automaticDownloadsEnabledForKey:(id)a3
++ (BOOL)_automaticDownloadsEnabledForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = NewsCoreUserDefaults();
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:keyCopy];
 
   if (v5)
   {
     v6 = NewsCoreUserDefaults();
-    v7 = [v6 BOOLForKey:v3];
+    v7 = [v6 BOOLForKey:keyCopy];
   }
 
   else

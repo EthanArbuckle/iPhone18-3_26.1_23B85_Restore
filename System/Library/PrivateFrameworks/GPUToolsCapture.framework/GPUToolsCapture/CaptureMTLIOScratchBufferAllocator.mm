@@ -1,8 +1,8 @@
 @interface CaptureMTLIOScratchBufferAllocator
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTLIOScratchBufferAllocator)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTLIOScratchBufferAllocator)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context;
 - (NSString)description;
-- (id)newScratchBufferWithMinimumSize:(unint64_t)a3;
+- (id)newScratchBufferWithMinimumSize:(unint64_t)size;
 - (unint64_t)streamReference;
 - (void)dealloc;
 - (void)touch;
@@ -36,10 +36,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLIOScratchBufferAllocator *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLIOScratchBufferAllocator *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -58,13 +58,13 @@
   [(CaptureMTLIOScratchBufferAllocator *)&v13 dealloc];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLIOScratchBufferAllocator *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLIOScratchBufferAllocator *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -119,7 +119,7 @@
   }
 }
 
-- (id)newScratchBufferWithMinimumSize:(unint64_t)a3
+- (id)newScratchBufferWithMinimumSize:(unint64_t)size
 {
   v24 = 0u;
   v25 = 0u;
@@ -168,10 +168,10 @@
   }
 
   *(v12 + 13) = v13;
-  v17 = [(CaptureMTLIOScratchBufferAllocator *)self traceStream];
-  if (v17)
+  traceStream = [(CaptureMTLIOScratchBufferAllocator *)self traceStream];
+  if (traceStream)
   {
-    var0 = v17->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -179,10 +179,10 @@
     var0 = 0;
   }
 
-  v19 = [(CaptureMTLIOScratchBuffer *)v11 traceStream];
-  if (v19)
+  traceStream2 = [(CaptureMTLIOScratchBuffer *)v11 traceStream];
+  if (traceStream2)
   {
-    v20 = v19->var0;
+    v20 = traceStream2->var0;
   }
 
   else
@@ -192,7 +192,7 @@
 
   *v14 = var0;
   *(v14 + 1) = v20;
-  *(v14 + 2) = a3;
+  *(v14 + 2) = size;
   v21 = v24;
   *v7 = v25;
   *(v7 + 8) = BYTE8(v25);
@@ -201,19 +201,19 @@
   return v11;
 }
 
-- (CaptureMTLIOScratchBufferAllocator)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4
+- (CaptureMTLIOScratchBufferAllocator)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context
 {
-  v7 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = CaptureMTLIOScratchBufferAllocator;
   v8 = [(CaptureMTLIOScratchBufferAllocator *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_baseObject, a3);
-    v9->_traceContext = a4;
-    v10 = DEVICEOBJECT(v7);
-    v9->_traceStream = GTTraceContext_openStream(a4, v10, v9);
+    objc_storeStrong(&v8->_baseObject, object);
+    v9->_traceContext = context;
+    v10 = DEVICEOBJECT(objectCopy);
+    v9->_traceStream = GTTraceContext_openStream(context, v10, v9);
   }
 
   return v9;

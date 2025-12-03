@@ -1,7 +1,7 @@
 @interface PUIReportWebsiteListController
-+ (BOOL)websiteSpecifiersWithLimit:(unint64_t)a3 showDetail:(BOOL)a4 completion:(id)a5;
-+ (id)websiteSpecifiersFromResults:(id)a3 showDetail:(BOOL)a4;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
++ (BOOL)websiteSpecifiersWithLimit:(unint64_t)limit showDetail:(BOOL)detail completion:(id)completion;
++ (id)websiteSpecifiersFromResults:(id)results showDetail:(BOOL)detail;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
 - (PUIReportWebsiteListController)init;
 - (id)specifiers;
 - (void)dataDidChange;
@@ -11,18 +11,18 @@
 
 @implementation PUIReportWebsiteListController
 
-+ (id)websiteSpecifiersFromResults:(id)a3 showDetail:(BOOL)a4
++ (id)websiteSpecifiersFromResults:(id)results showDetail:(BOOL)detail
 {
-  v38 = a4;
+  detailCopy = detail;
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v39 = objc_opt_new();
   v5 = dispatch_group_create();
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v4;
+  obj = resultsCopy;
   v6 = [obj countByEnumeratingWithState:&v47 objects:v52 count:16];
   v7 = 0x277CCA000uLL;
   if (v6)
@@ -45,16 +45,16 @@
         v11 = *(*(&v47 + 1) + 8 * i);
         v12 = [v11 objectForKeyedSubscript:@"context"];
         v13 = [v11 objectForKeyedSubscript:@"sumHits"];
-        v14 = [v13 integerValue];
+        integerValue = [v13 integerValue];
 
         v15 = [v11 objectForKeyedSubscript:@"contextVerificationType"];
         v16 = [v15 integerValue] != 2;
 
-        v17 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v12 target:a1 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+        v17 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v12 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
         [v17 setIdentifier:v12];
         [v17 setObject:v12 forKeyedSubscript:@"PUIReportWebsiteKey"];
         [v17 setObject:objc_opt_class() forKeyedSubscript:v35];
-        [*(v7 + 2992) numberWithInteger:v14];
+        [*(v7 + 2992) numberWithInteger:integerValue];
         v19 = v18 = v7;
         [v17 setObject:v19 forKeyedSubscript:@"PUITrackerBarValueKey"];
 
@@ -63,12 +63,12 @@
         v20 = [*(v18 + 2992) numberWithInt:v16];
         [v17 setObject:v20 forKeyedSubscript:@"PUITrackerBarShowAppAttributedBadgeKey"];
 
-        if (v14 > v9)
+        if (integerValue > v9)
         {
-          v9 = v14;
+          v9 = integerValue;
         }
 
-        if (v38)
+        if (detailCopy)
         {
           v21 = objc_opt_new();
           [v21 setObject:&unk_28772B528 forKeyedSubscript:v33];
@@ -165,15 +165,15 @@ void __74__PUIReportWebsiteListController_websiteSpecifiersFromResults_showDetai
   dispatch_group_leave(*(a1 + 40));
 }
 
-+ (BOOL)websiteSpecifiersWithLimit:(unint64_t)a3 showDetail:(BOOL)a4 completion:(id)a5
++ (BOOL)websiteSpecifiersWithLimit:(unint64_t)limit showDetail:(BOOL)detail completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v8 = objc_opt_new();
   [v8 setObject:&unk_28772B540 forKeyedSubscript:*MEMORY[0x277D6B668]];
   [v8 setObject:&unk_28772B558 forKeyedSubscript:*MEMORY[0x277D6B648]];
-  if (a3)
+  if (limit)
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:limit];
     [v8 setObject:v9 forKeyedSubscript:*MEMORY[0x277D6B658]];
   }
 
@@ -181,9 +181,9 @@ void __74__PUIReportWebsiteListController_websiteSpecifiersFromResults_showDetai
   v13[1] = 3221225472;
   v13[2] = __83__PUIReportWebsiteListController_websiteSpecifiersWithLimit_showDetail_completion___block_invoke;
   v13[3] = &unk_279BA22C0;
-  v15 = a4;
-  v14 = v7;
-  v10 = v7;
+  detailCopy = detail;
+  v14 = completionCopy;
+  v10 = completionCopy;
   v11 = [PUITrackingReportManager queryWithOptions:v8 reply:v13];
 
   return v11;
@@ -212,8 +212,8 @@ void __83__PUIReportWebsiteListController_websiteSpecifiersWithLimit_showDetail_
   v2 = [(PUIReportWebsiteListController *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_dataDidChange name:*MEMORY[0x277D76648] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_dataDidChange name:*MEMORY[0x277D76648] object:0];
 
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
@@ -225,8 +225,8 @@ void __83__PUIReportWebsiteListController_websiteSpecifiersWithLimit_showDetail_
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PUIReportWebsiteListController;
@@ -246,8 +246,8 @@ void __83__PUIReportWebsiteListController_websiteSpecifiersWithLimit_showDetail_
     v6 = objc_alloc(MEMORY[0x277D751E0]);
     v7 = PUI_LocalizedStringForAppReport(@"SORT_BY");
     v8 = [v6 initWithTitle:v7 style:0 target:self action:sel_sortByWasTapped];
-    v9 = [(PUIReportWebsiteListController *)self navigationItem];
-    [v9 setRightBarButtonItem:v8];
+    navigationItem = [(PUIReportWebsiteListController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v8];
 
     v10 = objc_opt_new();
     if ([(PUIReportWebsiteListController *)self alphabeticalSort])
@@ -267,12 +267,12 @@ void __83__PUIReportWebsiteListController_websiteSpecifiersWithLimit_showDetail_
     [v12 setObject:v14 forKeyedSubscript:*MEMORY[0x277D3FF48]];
 
     [v10 addObject:v12];
-    v16 = [(PUIReportWebsiteListController *)self cachedSpecifiers];
+    cachedSpecifiers = [(PUIReportWebsiteListController *)self cachedSpecifiers];
 
-    if (!v16)
+    if (!cachedSpecifiers)
     {
-      v17 = [(PUIReportWebsiteListController *)self specifier];
-      v18 = [v17 objectForKeyedSubscript:@"PUIReportWebsiteListApp"];
+      specifier = [(PUIReportWebsiteListController *)self specifier];
+      v18 = [specifier objectForKeyedSubscript:@"PUIReportWebsiteListApp"];
 
       if ([v18 length])
       {
@@ -299,12 +299,12 @@ void __83__PUIReportWebsiteListController_websiteSpecifiersWithLimit_showDetail_
       }
     }
 
-    v21 = [(PUIReportWebsiteListController *)self alphabeticalSort];
-    v22 = [(PUIReportWebsiteListController *)self cachedSpecifiers];
-    v23 = v22;
-    if (v21)
+    alphabeticalSort = [(PUIReportWebsiteListController *)self alphabeticalSort];
+    cachedSpecifiers2 = [(PUIReportWebsiteListController *)self cachedSpecifiers];
+    v23 = cachedSpecifiers2;
+    if (alphabeticalSort)
     {
-      v24 = [v22 sortedArrayUsingComparator:&__block_literal_global_21];
+      v24 = [cachedSpecifiers2 sortedArrayUsingComparator:&__block_literal_global_21];
 
       v23 = v24;
     }
@@ -334,9 +334,9 @@ void __83__PUIReportWebsiteListController_websiteSpecifiersWithLimit_showDetail_
           }
 
           v31 = [*(*(&v54 + 1) + 8 * i) objectForKeyedSubscript:@"PUITrackerBarShowAppAttributedBadgeKey"];
-          v32 = [v31 BOOLValue];
+          bOOLValue = [v31 BOOLValue];
 
-          if (v32)
+          if (bOOLValue)
           {
 
             v33 = objc_opt_class();
@@ -526,7 +526,7 @@ uint64_t __49__PUIReportWebsiteListController_sortByWasTapped__block_invoke_2(ui
   return result;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v7 = objc_alloc(MEMORY[0x277D37688]);
   v8 = PUI_LocalizedStringForAppReport(@"LEARN_MORE_TITLE");
@@ -546,8 +546,8 @@ uint64_t __49__PUIReportWebsiteListController_sortByWasTapped__block_invoke_2(ui
   v14 = [v12 actionWithHandler:v19];
   v15 = [v11 initWithBarButtonSystemItem:0 primaryAction:v14];
 
-  v16 = [v13 navigationItem];
-  [v16 setRightBarButtonItem:v15];
+  navigationItem = [v13 navigationItem];
+  [navigationItem setRightBarButtonItem:v15];
 
   v17 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v13];
   [(PUIReportWebsiteListController *)self presentModalViewController:v17 withTransition:3];

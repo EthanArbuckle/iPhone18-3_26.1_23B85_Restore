@@ -1,54 +1,54 @@
 @interface EDInMemoryThreadCollection
-+ (id)_comparatorForInThreadProxiesWithSortDescriptors:(id)a3;
-+ (uint64_t)_comparisonForSortDescriptor:(void *)a3 value1:(void *)a4 value2:;
-- (EDInMemoryThreadCollection)initWithQuery:(id)a3 mailboxTypeResolver:(id)a4 dataSource:(id)a5 delgate:(id)a6 logClient:(id)a7 limitedCache:(BOOL)a8 inMemoryThreadClass:(Class)a9;
++ (id)_comparatorForInThreadProxiesWithSortDescriptors:(id)descriptors;
++ (uint64_t)_comparisonForSortDescriptor:(void *)descriptor value1:(void *)value1 value2:;
+- (EDInMemoryThreadCollection)initWithQuery:(id)query mailboxTypeResolver:(id)resolver dataSource:(id)source delgate:(id)delgate logClient:(id)client limitedCache:(BOOL)cache inMemoryThreadClass:(Class)class;
 - (EDInMemoryThreadCollectionDataSource)dataSource;
 - (EDInMemoryThreadCollectionDelegate)delegate;
-- (id)_cachedInMemoryThreadForConversationID:(uint64_t)a1;
-- (id)_createInMemoryThreadForConversationID:(id)a1;
-- (id)_createInMemoryThreadForConversationID:(void *)a3 messages:(int)a4 cacheResults:;
-- (id)_inMemoryThreadsForObjectIDs:(char)a3 cacheResults:;
-- (id)_messagesByConversationIDForMessages:(void *)a1;
-- (id)_updateThreadProxy:(_BYTE *)a3 threadIsEmpty:(void *)a4 thread:;
-- (id)inMemoryThreadForConversationID:(int64_t)a3;
+- (id)_cachedInMemoryThreadForConversationID:(uint64_t)d;
+- (id)_createInMemoryThreadForConversationID:(id)d;
+- (id)_createInMemoryThreadForConversationID:(void *)d messages:(int)messages cacheResults:;
+- (id)_inMemoryThreadsForObjectIDs:(char)ds cacheResults:;
+- (id)_messagesByConversationIDForMessages:(void *)messages;
+- (id)_updateThreadProxy:(_BYTE *)proxy threadIsEmpty:(void *)empty thread:;
+- (id)inMemoryThreadForConversationID:(int64_t)d;
 - (id)itemIDs;
-- (id)messageListItemForObjectID:(id)a3 error:(id *)a4;
-- (id)messagesForThread:(id)a3;
-- (id)sectionIdentifierForThreadObjectID:(id)a3;
-- (id)threadsAndMessagesForObjectIDs:(id)a3;
-- (os_unfair_lock_s)_removeThreadProxies:(char)a3 forMove:;
-- (uint64_t)_didMergeInThreads:(uint64_t)a1;
+- (id)messageListItemForObjectID:(id)d error:(id *)error;
+- (id)messagesForThread:(id)thread;
+- (id)sectionIdentifierForThreadObjectID:(id)d;
+- (id)threadsAndMessagesForObjectIDs:(id)ds;
+- (os_unfair_lock_s)_removeThreadProxies:(char)proxies forMove:;
+- (uint64_t)_didMergeInThreads:(uint64_t)threads;
 - (uint64_t)_hasLoaded;
-- (uint64_t)_mergeInThreads:(void *)a3 searchInfo:(unsigned int)a4 forMove:;
-- (uint64_t)_messageListItemChangeAffectsSorting:(void *)a1;
-- (uint64_t)_updateCurrentOldestThreadWithThreadIfApplicable:(void *)a3 forMailbox:;
-- (uint64_t)_updateOldestThreadsForMailboxes:(void *)a1;
+- (uint64_t)_mergeInThreads:(void *)threads searchInfo:(unsigned int)info forMove:;
+- (uint64_t)_messageListItemChangeAffectsSorting:(void *)sorting;
+- (uint64_t)_updateCurrentOldestThreadWithThreadIfApplicable:(void *)applicable forMailbox:;
+- (uint64_t)_updateOldestThreadsForMailboxes:(void *)mailboxes;
 - (void)_notifyObserverOfOldestThreadsByMailboxObjectIDs;
 - (void)_threadsWereDeleted;
 - (void)clearInMemoryThreadCache;
-- (void)conversationIDDidChangeForMessages:(id)a3 fromConversationID:(int64_t)a4;
-- (void)conversationNotificationLevelDidChangeForConversation:(int64_t)a3 conversationID:(int64_t)a4;
-- (void)enumerateObjectIDsInBatchesOfSize:(unint64_t)a3 block:(id)a4;
+- (void)conversationIDDidChangeForMessages:(id)messages fromConversationID:(int64_t)d;
+- (void)conversationNotificationLevelDidChangeForConversation:(int64_t)conversation conversationID:(int64_t)d;
+- (void)enumerateObjectIDsInBatchesOfSize:(unint64_t)size block:(id)block;
 - (void)initializeOldestThreadsByMailbox;
-- (void)messagesWereAdded:(id)a3 searchInfo:(id)a4;
-- (void)messagesWereChanged:(id)a3 forKeyPaths:(id)a4 deleted:(BOOL)a5;
+- (void)messagesWereAdded:(id)added searchInfo:(id)info;
+- (void)messagesWereChanged:(id)changed forKeyPaths:(id)paths deleted:(BOOL)deleted;
 - (void)notifyObserverOfOldestThreadsByMailboxObjectIDs;
-- (void)objectIDDidChangeForMessage:(id)a3 oldObjectID:(id)a4 oldConversationID:(int64_t)a5;
+- (void)objectIDDidChangeForMessage:(id)message oldObjectID:(id)d oldConversationID:(int64_t)iD;
 @end
 
 @implementation EDInMemoryThreadCollection
 
-- (EDInMemoryThreadCollection)initWithQuery:(id)a3 mailboxTypeResolver:(id)a4 dataSource:(id)a5 delgate:(id)a6 logClient:(id)a7 limitedCache:(BOOL)a8 inMemoryThreadClass:(Class)a9
+- (EDInMemoryThreadCollection)initWithQuery:(id)query mailboxTypeResolver:(id)resolver dataSource:(id)source delgate:(id)delgate logClient:(id)client limitedCache:(BOOL)cache inMemoryThreadClass:(Class)class
 {
-  v16 = a3;
-  v60 = a4;
-  obj = a5;
-  v58 = a6;
-  v57 = a7;
-  if (([(objc_class *)a9 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  queryCopy = query;
+  resolverCopy = resolver;
+  obj = source;
+  delgateCopy = delgate;
+  clientCopy = client;
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    v56 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v56 handleFailureInMethod:a2 object:self file:@"EDInMemoryThreadCollection.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"[inMemoryThreadClass isSubclassOfClass:EDInMemoryThread.class]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDInMemoryThreadCollection.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"[inMemoryThreadClass isSubclassOfClass:EDInMemoryThread.class]"}];
   }
 
   v61.receiver = self;
@@ -56,20 +56,20 @@
   v17 = [(EDInMemoryThreadCollection *)&v61 init];
   if (v17)
   {
-    v18 = [v16 copy];
+    v18 = [queryCopy copy];
     query = v17->_query;
     v17->_query = v18;
 
     v20 = MEMORY[0x1E699ADA0];
-    v21 = [v16 predicate];
-    v22 = [v20 threadScopeForPredicate:v21 withMailboxTypeResolver:v60];
+    predicate = [queryCopy predicate];
+    v22 = [v20 threadScopeForPredicate:predicate withMailboxTypeResolver:resolverCopy];
     threadScope = v17->_threadScope;
     v17->_threadScope = v22;
 
-    objc_storeStrong(&v17->_mailboxTypeResolver, a4);
+    objc_storeStrong(&v17->_mailboxTypeResolver, resolver);
     objc_storeWeak(&v17->_dataSource, obj);
-    objc_storeWeak(&v17->_delegate, v58);
-    objc_storeStrong(&v17->_logClient, a7);
+    objc_storeWeak(&v17->_delegate, delgateCopy);
+    objc_storeStrong(&v17->_logClient, client);
     v17->_threadsLock._os_unfair_lock_opaque = 0;
     v24 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     conversationIDs = v17->_conversationIDs;
@@ -80,10 +80,10 @@
     v17->_threadsByConversationID = v26;
 
     v28 = MEMORY[0x1E699ADA0];
-    v29 = [(EMQuery *)v17->_query sortDescriptors];
-    v17->_dateSortOrder = [v28 dateSortOrderFromSortDescriptors:v29];
+    sortDescriptors = [(EMQuery *)v17->_query sortDescriptors];
+    v17->_dateSortOrder = [v28 dateSortOrderFromSortDescriptors:sortDescriptors];
 
-    v17->_limitedCache = a8;
+    v17->_limitedCache = cache;
     v30 = objc_alloc(MEMORY[0x1E699B7F0]);
     v31 = objc_alloc_init(_EDInMemoryThreadCollectionOldestThreadsState);
     v32 = [v30 initWithObject:v31];
@@ -105,7 +105,7 @@
     inMemoryThreadCache = v17->_inMemoryThreadCache;
     v17->_inMemoryThreadCache = v36;
 
-    objc_storeStrong(&v17->_inMemoryThreadClass, a9);
+    objc_storeStrong(&v17->_inMemoryThreadClass, class);
     if (!v17->_limitedCache || (-[EDInMemoryThreadCollection query](v17, "query"), v38 = objc_claimAutoreleasedReturnValue(), v39 = [v38 queryOptions], v38, (v39 & 0x20) != 0))
     {
       v40 = objc_opt_new();
@@ -113,23 +113,23 @@
       v17->_inMemoryThreadsByConversationID = v40;
     }
 
-    v42 = [(EDInMemoryThreadCollection *)v17 query];
-    v43 = [v42 queryOptions];
+    query = [(EDInMemoryThreadCollection *)v17 query];
+    queryOptions = [query queryOptions];
 
-    if (v43)
+    if (queryOptions)
     {
       v44 = objc_opt_new();
       mailboxesByConversationID = v17->_mailboxesByConversationID;
       v17->_mailboxesByConversationID = v44;
     }
 
-    v46 = [EDSectionQueryItemHelper sectionQueryItemHelperWithQuery:v16];
+    v46 = [EDSectionQueryItemHelper sectionQueryItemHelperWithQuery:queryCopy];
     sectionQueryHelper = v17->_sectionQueryHelper;
     v17->_sectionQueryHelper = v46;
 
     v48 = objc_opt_class();
-    v49 = [v16 sortDescriptors];
-    v50 = [v48 _comparatorForInThreadProxiesWithSortDescriptors:v49];
+    sortDescriptors2 = [queryCopy sortDescriptors];
+    v50 = [v48 _comparatorForInThreadProxiesWithSortDescriptors:sortDescriptors2];
 
     v51 = [(EDSectionQueryItemHelper *)v17->_sectionQueryHelper comparatorForItemComparator:v50];
     v52 = v51;
@@ -146,17 +146,17 @@
   return v17;
 }
 
-+ (id)_comparatorForInThreadProxiesWithSortDescriptors:(id)a3
++ (id)_comparatorForInThreadProxiesWithSortDescriptors:(id)descriptors
 {
-  v5 = a3;
+  descriptorsCopy = descriptors;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__EDInMemoryThreadCollection__comparatorForInThreadProxiesWithSortDescriptors___block_invoke;
   aBlock[3] = &unk_1E8252710;
-  v10 = v5;
-  v11 = a1;
+  v10 = descriptorsCopy;
+  selfCopy = self;
   v12 = a2;
-  v6 = v5;
+  v6 = descriptorsCopy;
   v7 = _Block_copy(aBlock);
 
   return v7;
@@ -203,11 +203,11 @@ LABEL_3:
   return v11;
 }
 
-+ (uint64_t)_comparisonForSortDescriptor:(void *)a3 value1:(void *)a4 value2:
++ (uint64_t)_comparisonForSortDescriptor:(void *)descriptor value1:(void *)value1 value2:
 {
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  descriptorCopy = descriptor;
+  value1Copy = value1;
   objc_opt_self();
   v24 = 0;
   v25 = &v24;
@@ -216,7 +216,7 @@ LABEL_3:
   v9 = [v6 key];
   if ([v9 isEqualToString:*MEMORY[0x1E699A9A0]])
   {
-    v10 = [v7 compare:v8 options:65];
+    v10 = [descriptorCopy compare:value1Copy options:65];
 LABEL_5:
     v25[3] = v10;
     goto LABEL_6;
@@ -225,18 +225,18 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v7 localizedCaseInsensitiveCompare:v8];
+    v10 = [descriptorCopy localizedCaseInsensitiveCompare:value1Copy];
     goto LABEL_5;
   }
 
   if (([v9 isEqualToString:*MEMORY[0x1E699A9C0]] & 1) == 0 && !objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E699A988]))
   {
-    v10 = [v7 compare:v8];
+    v10 = [descriptorCopy compare:value1Copy];
     goto LABEL_5;
   }
 
-  v14 = v7;
-  v15 = v8;
+  v14 = descriptorCopy;
+  v15 = value1Copy;
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __73__EDInMemoryThreadCollection__comparisonForSortDescriptor_value1_value2___block_invoke;
@@ -255,9 +255,9 @@ LABEL_5:
   }
 
 LABEL_6:
-  v11 = [v6 ascending];
+  ascending = [v6 ascending];
   v12 = v25[3];
-  if ((v11 & 1) == 0 && v12)
+  if ((ascending & 1) == 0 && v12)
   {
     if (v12 == -1)
     {
@@ -327,21 +327,21 @@ void __73__EDInMemoryThreadCollection__comparisonForSortDescriptor_value1_value2
   }
 }
 
-- (void)enumerateObjectIDsInBatchesOfSize:(unint64_t)a3 block:(id)a4
+- (void)enumerateObjectIDsInBatchesOfSize:(unint64_t)size block:(id)block
 {
-  v6 = a4;
-  v7 = [(EDInMemoryThreadCollection *)self delegate];
-  [v7 assertCorrectSchedulerForCollection:self];
+  blockCopy = block;
+  delegate = [(EDInMemoryThreadCollection *)self delegate];
+  [delegate assertCorrectSchedulerForCollection:self];
 
-  v8 = [(NSMutableOrderedSet *)self->_conversationIDs array];
+  array = [(NSMutableOrderedSet *)self->_conversationIDs array];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__EDInMemoryThreadCollection_enumerateObjectIDsInBatchesOfSize_block___block_invoke;
   v10[3] = &unk_1E8252788;
   v10[4] = self;
-  v9 = v6;
+  v9 = blockCopy;
   v11 = v9;
-  [v8 ef_enumerateObjectsInBatchesOfSize:a3 block:v10];
+  [array ef_enumerateObjectsInBatchesOfSize:size block:v10];
 }
 
 void __70__EDInMemoryThreadCollection_enumerateObjectIDsInBatchesOfSize_block___block_invoke(uint64_t a1, void *a2)
@@ -367,16 +367,16 @@ id __70__EDInMemoryThreadCollection_enumerateObjectIDsInBatchesOfSize_block___bl
   return v3;
 }
 
-- (id)_messagesByConversationIDForMessages:(void *)a1
+- (id)_messagesByConversationIDForMessages:(void *)messages
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (messages)
   {
-    a1 = [v3 ef_groupBy:&__block_literal_global_31];
+    messages = [v3 ef_groupBy:&__block_literal_global_31];
   }
 
-  return a1;
+  return messages;
 }
 
 id __67__EDInMemoryThreadCollection__messagesByConversationIDForMessages___block_invoke(uint64_t a1, void *a2)
@@ -387,14 +387,14 @@ id __67__EDInMemoryThreadCollection__messagesByConversationIDForMessages___block
   return v3;
 }
 
-- (id)_inMemoryThreadsForObjectIDs:(char)a3 cacheResults:
+- (id)_inMemoryThreadsForObjectIDs:(char)ds cacheResults:
 {
   v39 = *MEMORY[0x1E69E9840];
   v23 = a2;
-  if (a1)
+  if (self)
   {
     v5 = objc_opt_new();
-    v22 = a3;
+    dsCopy = ds;
     v6 = objc_opt_new();
     v30 = 0u;
     v31 = 0u;
@@ -415,7 +415,7 @@ id __67__EDInMemoryThreadCollection__messagesByConversationIDForMessages___block
           }
 
           v11 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(*(*(&v28 + 1) + 8 * i), "conversationID")}];
-          v12 = [(EDInMemoryThreadCollection *)a1 _cachedInMemoryThreadForConversationID:v11];
+          v12 = [(EDInMemoryThreadCollection *)self _cachedInMemoryThreadForConversationID:v11];
           if (v12)
           {
             [v5 addObject:v12];
@@ -435,40 +435,40 @@ id __67__EDInMemoryThreadCollection__messagesByConversationIDForMessages___block
 
     if ([v6 count])
     {
-      v13 = [a1 logClient];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      logClient = [self logClient];
+      if (os_log_type_enabled(logClient, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v33 = a1;
+        selfCopy3 = self;
         v34 = 2114;
         v35 = v6;
-        _os_log_impl(&dword_1C61EF000, v13, OS_LOG_TYPE_DEFAULT, "%p: Fetching messages for %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_1C61EF000, logClient, OS_LOG_TYPE_DEFAULT, "%p: Fetching messages for %{public}@", buf, 0x16u);
       }
 
-      v14 = [a1 dataSource];
-      v15 = [v14 collection:a1 messagesInConversationIDs:v6 limit:0x7FFFFFFFFFFFFFFFLL];
+      dataSource = [self dataSource];
+      v15 = [dataSource collection:self messagesInConversationIDs:v6 limit:0x7FFFFFFFFFFFFFFFLL];
 
-      v16 = [(EDInMemoryThreadCollection *)a1 _messagesByConversationIDForMessages:v15];
+      v16 = [(EDInMemoryThreadCollection *)self _messagesByConversationIDForMessages:v15];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __72__EDInMemoryThreadCollection__inMemoryThreadsForObjectIDs_cacheResults___block_invoke;
       v24[3] = &unk_1E82527B0;
       v25 = v5;
-      v26 = a1;
-      v27 = v22;
+      selfCopy2 = self;
+      v27 = dsCopy;
       [v16 enumerateKeysAndObjectsUsingBlock:v24];
-      v17 = [a1 logClient];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      logClient2 = [self logClient];
+      if (os_log_type_enabled(logClient2, OS_LOG_TYPE_DEFAULT))
       {
         v18 = [v15 count];
         v19 = [v16 count];
         *buf = 134218496;
-        v33 = a1;
+        selfCopy3 = self;
         v34 = 2048;
         v35 = v18;
         v36 = 2048;
         v37 = v19;
-        _os_log_impl(&dword_1C61EF000, v17, OS_LOG_TYPE_DEFAULT, "%p: Fetched %lu messages for %lu threads", buf, 0x20u);
+        _os_log_impl(&dword_1C61EF000, logClient2, OS_LOG_TYPE_DEFAULT, "%p: Fetched %lu messages for %lu threads", buf, 0x20u);
       }
     }
   }
@@ -483,47 +483,47 @@ id __67__EDInMemoryThreadCollection__messagesByConversationIDForMessages___block
   return v5;
 }
 
-- (id)_cachedInMemoryThreadForConversationID:(uint64_t)a1
+- (id)_cachedInMemoryThreadForConversationID:(uint64_t)d
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (d)
   {
     if (![v3 integerValue])
     {
-      v5 = [a1 logClient];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      logClient = [d logClient];
+      if (os_log_type_enabled(logClient, OS_LOG_TYPE_ERROR))
       {
-        [(EDInMemoryThreadCollection *)v4 _cachedInMemoryThreadForConversationID:v5];
+        [(EDInMemoryThreadCollection *)v4 _cachedInMemoryThreadForConversationID:logClient];
       }
     }
 
-    if (*(a1 + 24))
+    if (*(d + 24))
     {
-      os_unfair_lock_lock((a1 + 56));
-      v6 = [*(a1 + 24) objectForKeyedSubscript:v4];
-      os_unfair_lock_unlock((a1 + 56));
+      os_unfair_lock_lock((d + 56));
+      v6 = [*(d + 24) objectForKeyedSubscript:v4];
+      os_unfair_lock_unlock((d + 56));
       if (v6)
       {
         goto LABEL_12;
       }
 
-      v7 = [a1 logClient];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      logClient2 = [d logClient];
+      if (os_log_type_enabled(logClient2, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 134218242;
-        v11 = a1;
+        dCopy = d;
         v12 = 2112;
         v13 = v4;
-        _os_log_impl(&dword_1C61EF000, v7, OS_LOG_TYPE_DEFAULT, "%p: Thread with conversation ID: %@ is not present in _inMemoryThreadsByConversationID.", &v10, 0x16u);
+        _os_log_impl(&dword_1C61EF000, logClient2, OS_LOG_TYPE_DEFAULT, "%p: Thread with conversation ID: %@ is not present in _inMemoryThreadsByConversationID.", &v10, 0x16u);
       }
     }
 
     else
     {
-      v7 = [a1 inMemoryThreadCache];
-      v6 = [v7 cachedObjectForKey:v4];
+      logClient2 = [d inMemoryThreadCache];
+      v6 = [logClient2 cachedObjectForKey:v4];
     }
   }
 
@@ -548,29 +548,29 @@ void __72__EDInMemoryThreadCollection__inMemoryThreadsForObjectIDs_cacheResults_
   [v6 ef_addOptionalObject:v7];
 }
 
-- (id)_createInMemoryThreadForConversationID:(void *)a3 messages:(int)a4 cacheResults:
+- (id)_createInMemoryThreadForConversationID:(void *)d messages:(int)messages cacheResults:
 {
-  v7 = a3;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
-    v8 = objc_alloc([a1 inMemoryThreadClass]);
-    v9 = [a1 query];
-    v10 = [a1 threadScope];
-    v11 = [v8 initWithMessages:v7 originatingQuery:v9 threadScope:v10];
+    v8 = objc_alloc([self inMemoryThreadClass]);
+    query = [self query];
+    threadScope = [self threadScope];
+    v11 = [v8 initWithMessages:dCopy originatingQuery:query threadScope:threadScope];
 
-    if (v11 && a4)
+    if (v11 && messages)
     {
-      v12 = [a1 inMemoryThreadCache];
+      inMemoryThreadCache = [self inMemoryThreadCache];
       v13 = [MEMORY[0x1E696AD98] numberWithLongLong:a2];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __91__EDInMemoryThreadCollection__createInMemoryThreadForConversationID_messages_cacheResults___block_invoke;
       v17[3] = &unk_1E8252820;
-      v17[4] = a1;
+      v17[4] = self;
       v19 = a2;
       v14 = v11;
       v18 = v14;
-      v15 = [v12 objectForKey:v13 generator:v17];
+      v15 = [inMemoryThreadCache objectForKey:v13 generator:v17];
 
       v11 = v14;
     }
@@ -584,46 +584,46 @@ void __72__EDInMemoryThreadCollection__inMemoryThreadsForObjectIDs_cacheResults_
   return v11;
 }
 
-- (id)messageListItemForObjectID:(id)a3 error:(id *)a4
+- (id)messageListItemForObjectID:(id)d error:(id *)error
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
-      v21 = 0;
+      messageListItem = 0;
       goto LABEL_28;
     }
 
 LABEL_26:
-    v26 = [MEMORY[0x1E696ABC0] em_itemNotFoundErrorWithItemID:v6];
-    v21 = 0;
+    v26 = [MEMORY[0x1E696ABC0] em_itemNotFoundErrorWithItemID:dCopy];
+    messageListItem = 0;
     goto LABEL_27;
   }
 
-  v7 = [v6 conversationID];
-  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:v7];
+  conversationID = [dCopy conversationID];
+  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:conversationID];
   v9 = [(EDInMemoryThreadCollection *)self _cachedInMemoryThreadForConversationID:v8];
-  v10 = [(EDInMemoryThreadCollection *)self query];
-  v11 = [v10 queryOptions];
+  query = [(EDInMemoryThreadCollection *)self query];
+  queryOptions = [query queryOptions];
 
-  if (v9 || (v11 & 0x20) != 0)
+  if (v9 || (queryOptions & 0x20) != 0)
   {
     if (!v9)
     {
       goto LABEL_23;
     }
 
-    v20 = [(EDInMemoryThreadCollection *)self logClient];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    logClient = [(EDInMemoryThreadCollection *)self logClient];
+    if (os_log_type_enabled(logClient, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v31 = self;
+      selfCopy = self;
       v32 = 2114;
       v33 = v8;
-      _os_log_impl(&dword_1C61EF000, v20, OS_LOG_TYPE_DEFAULT, "%p: Fetched messageListItem for %{public}@ from cache", buf, 0x16u);
+      _os_log_impl(&dword_1C61EF000, logClient, OS_LOG_TYPE_DEFAULT, "%p: Fetched messageListItem for %{public}@ from cache", buf, 0x16u);
     }
   }
 
@@ -633,8 +633,8 @@ LABEL_26:
     v12 = [(EFMutableOrderedDictionary *)self->_threadsByConversationID indexOfKey:v8];
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v34[0] = v6;
-      v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
+      v34[0] = dCopy;
+      logClient = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
     }
 
     else
@@ -665,19 +665,19 @@ LABEL_26:
 
       v18 = [v14 initWithIndexesInRange:{v15, v17 + v16}];
       v19 = [(EFMutableOrderedDictionary *)self->_threadsByConversationID objectsAtIndexes:v18];
-      v20 = [v19 ef_mapSelector:sel_objectID];
+      logClient = [v19 ef_mapSelector:sel_objectID];
     }
 
     os_unfair_lock_unlock(&self->_threadsLock);
-    if ([v20 count])
+    if ([logClient count])
     {
-      v22 = [(EDInMemoryThreadCollection *)self _inMemoryThreadsForObjectIDs:v20 cacheResults:v12 != 0x7FFFFFFFFFFFFFFFLL];
+      0x7FFFFFFFFFFFFFFFLL = [(EDInMemoryThreadCollection *)self _inMemoryThreadsForObjectIDs:logClient cacheResults:v12 != 0x7FFFFFFFFFFFFFFFLL];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __63__EDInMemoryThreadCollection_messageListItemForObjectID_error___block_invoke;
       v29[3] = &__block_descriptor_40_e26_B16__0__EDInMemoryThread_8l;
-      v29[4] = v7;
-      v9 = [v22 ef_firstObjectPassingTest:v29];
+      v29[4] = conversationID;
+      v9 = [0x7FFFFFFFFFFFFFFFLL ef_firstObjectPassingTest:v29];
     }
 
     else
@@ -687,32 +687,32 @@ LABEL_26:
   }
 
 LABEL_23:
-  v21 = [v9 messageListItem];
+  messageListItem = [v9 messageListItem];
   os_unfair_lock_lock(&self->_threadsLock);
   v23 = [(EFMutableOrderedDictionary *)self->_threadsByConversationID objectForKeyedSubscript:v8];
-  v24 = [v9 thread];
-  v25 = [(EDInMemoryThreadCollection *)self query];
-  [v23 updateFromThread:v24 addingAdditionalInformation:1 query:v25];
+  thread = [v9 thread];
+  query2 = [(EDInMemoryThreadCollection *)self query];
+  [v23 updateFromThread:thread addingAdditionalInformation:1 query:query2];
 
   os_unfair_lock_unlock(&self->_threadsLock);
-  if (!a4)
+  if (!error)
   {
     goto LABEL_28;
   }
 
-  if (!v21)
+  if (!messageListItem)
   {
     goto LABEL_26;
   }
 
   v26 = 0;
 LABEL_27:
-  *a4 = v26;
+  *error = v26;
 LABEL_28:
 
   v27 = *MEMORY[0x1E69E9840];
 
-  return v21;
+  return messageListItem;
 }
 
 BOOL __63__EDInMemoryThreadCollection_messageListItemForObjectID_error___block_invoke(uint64_t a1, void *a2)
@@ -723,10 +723,10 @@ BOOL __63__EDInMemoryThreadCollection_messageListItemForObjectID_error___block_i
   return v4;
 }
 
-- (id)threadsAndMessagesForObjectIDs:(id)a3
+- (id)threadsAndMessagesForObjectIDs:(id)ds
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(EDInMemoryThreadCollection *)self _inMemoryThreadsForObjectIDs:a3 cacheResults:0];
+  v3 = [(EDInMemoryThreadCollection *)self _inMemoryThreadsForObjectIDs:ds cacheResults:0];
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v16 = 0u;
   v17 = 0u;
@@ -747,9 +747,9 @@ BOOL __63__EDInMemoryThreadCollection_messageListItemForObjectID_error___block_i
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 messages];
-        v11 = [v9 thread];
-        [v4 setObject:v10 forKeyedSubscript:v11];
+        messages = [v9 messages];
+        thread = [v9 thread];
+        [v4 setObject:messages forKeyedSubscript:thread];
       }
 
       v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -763,29 +763,29 @@ BOOL __63__EDInMemoryThreadCollection_messageListItemForObjectID_error___block_i
   return v4;
 }
 
-- (id)messagesForThread:(id)a3
+- (id)messagesForThread:(id)thread
 {
-  v4 = a3;
-  v5 = -[EDInMemoryThreadCollection inMemoryThreadForConversationID:](self, "inMemoryThreadForConversationID:", [v4 conversationID]);
-  v6 = [v5 messages];
+  threadCopy = thread;
+  v5 = -[EDInMemoryThreadCollection inMemoryThreadForConversationID:](self, "inMemoryThreadForConversationID:", [threadCopy conversationID]);
+  messages = [v5 messages];
 
-  return v6;
+  return messages;
 }
 
-- (id)inMemoryThreadForConversationID:(int64_t)a3
+- (id)inMemoryThreadForConversationID:(int64_t)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!d)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"EDInMemoryThreadCollection.m" lineNumber:294 description:@"Got a conversationID of 0"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDInMemoryThreadCollection.m" lineNumber:294 description:@"Got a conversationID of 0"];
   }
 
   if (self->_inMemoryThreadsByConversationID)
   {
     os_unfair_lock_lock(&self->_threadsLock);
     inMemoryThreadsByConversationID = self->_inMemoryThreadsByConversationID;
-    v6 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
     v7 = [(NSMutableDictionary *)inMemoryThreadsByConversationID objectForKeyedSubscript:v6];
 
     os_unfair_lock_unlock(&self->_threadsLock);
@@ -794,28 +794,28 @@ BOOL __63__EDInMemoryThreadCollection_messageListItemForObjectID_error___block_i
       goto LABEL_9;
     }
 
-    v8 = [(EDInMemoryThreadCollection *)self logClient];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    logClient = [(EDInMemoryThreadCollection *)self logClient];
+    if (os_log_type_enabled(logClient, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v16 = self;
+      selfCopy = self;
       v17 = 2050;
-      v18 = a3;
-      _os_log_impl(&dword_1C61EF000, v8, OS_LOG_TYPE_DEFAULT, "%p: Thread with conversation ID: %{public}lld is not present in _inMemoryThreadsByConversationID.", buf, 0x16u);
+      dCopy = d;
+      _os_log_impl(&dword_1C61EF000, logClient, OS_LOG_TYPE_DEFAULT, "%p: Thread with conversation ID: %{public}lld is not present in _inMemoryThreadsByConversationID.", buf, 0x16u);
     }
   }
 
   else
   {
-    v8 = [(EDInMemoryThreadCollection *)self inMemoryThreadCache];
-    v9 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    logClient = [(EDInMemoryThreadCollection *)self inMemoryThreadCache];
+    v9 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __62__EDInMemoryThreadCollection_inMemoryThreadForConversationID___block_invoke;
     v14[3] = &unk_1E82527F8;
     v14[4] = self;
-    v14[5] = a3;
-    v7 = [v8 objectForKey:v9 generator:v14];
+    v14[5] = d;
+    v7 = [logClient objectForKey:v9 generator:v14];
   }
 
 LABEL_9:
@@ -846,48 +846,48 @@ id __62__EDInMemoryThreadCollection_inMemoryThreadForConversationID___block_invo
   return v3;
 }
 
-- (id)_createInMemoryThreadForConversationID:(id)a1
+- (id)_createInMemoryThreadForConversationID:(id)d
 {
-  v2 = a1;
+  dCopy = d;
   v18[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (d)
   {
-    v4 = [a1 dataSource];
+    dataSource = [d dataSource];
     v5 = [MEMORY[0x1E696AD98] numberWithLongLong:a2];
     v18[0] = v5;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-    v7 = [v4 collection:v2 messagesInConversationIDs:v6 limit:0x7FFFFFFFFFFFFFFFLL];
+    v7 = [dataSource collection:dCopy messagesInConversationIDs:v6 limit:0x7FFFFFFFFFFFFFFFLL];
 
     if (![v7 count])
     {
-      v8 = [v2 logClient];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      logClient = [dCopy logClient];
+      if (os_log_type_enabled(logClient, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 134218240;
-        v15 = v2;
+        v15 = dCopy;
         v16 = 2050;
         v17 = a2;
-        _os_log_impl(&dword_1C61EF000, v8, OS_LOG_TYPE_DEFAULT, "%p: Could not find any messages for conversation ID: %{public}lld", &v14, 0x16u);
+        _os_log_impl(&dword_1C61EF000, logClient, OS_LOG_TYPE_DEFAULT, "%p: Could not find any messages for conversation ID: %{public}lld", &v14, 0x16u);
       }
     }
 
     if ([v7 count])
     {
-      v9 = objc_alloc([v2 inMemoryThreadClass]);
-      v10 = [v2 query];
-      v11 = [v2 threadScope];
-      v2 = [v9 initWithMessages:v7 originatingQuery:v10 threadScope:v11];
+      v9 = objc_alloc([dCopy inMemoryThreadClass]);
+      query = [dCopy query];
+      threadScope = [dCopy threadScope];
+      dCopy = [v9 initWithMessages:v7 originatingQuery:query threadScope:threadScope];
     }
 
     else
     {
-      v2 = 0;
+      dCopy = 0;
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return dCopy;
 }
 
 id __91__EDInMemoryThreadCollection__createInMemoryThreadForConversationID_messages_cacheResults___block_invoke(uint64_t a1)
@@ -912,36 +912,36 @@ id __91__EDInMemoryThreadCollection__createInMemoryThreadForConversationID_messa
   return v6;
 }
 
-- (os_unfair_lock_s)_removeThreadProxies:(char)a3 forMove:
+- (os_unfair_lock_s)_removeThreadProxies:(char)proxies forMove:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
-    v7 = [v5 array];
-    v8 = [v7 ef_map:&__block_literal_global_52];
+    array = [v5 array];
+    v8 = [array ef_map:&__block_literal_global_52];
 
-    v9 = [(os_unfair_lock_s *)a1 delegate];
-    [v9 assertCorrectSchedulerForCollection:a1];
+    delegate = [(os_unfair_lock_s *)self delegate];
+    [delegate assertCorrectSchedulerForCollection:self];
 
-    [*&a1[2]._os_unfair_lock_opaque removeObjectsInArray:v8];
-    if (a3)
+    [*&self[2]._os_unfair_lock_opaque removeObjectsInArray:v8];
+    if (proxies)
     {
-      a1 = 0;
+      self = 0;
     }
 
     else
     {
-      [*&a1[12]._os_unfair_lock_opaque removeIDs:v8];
-      os_unfair_lock_lock(a1 + 14);
-      [*&a1[4]._os_unfair_lock_opaque removeObjectsForKeys:v8];
-      [*&a1[8]._os_unfair_lock_opaque removeObjectsForKeys:v8];
-      os_unfair_lock_unlock(a1 + 14);
-      a1 = [(EDInMemoryThreadCollection *)a1 _threadsWereDeleted];
+      [*&self[12]._os_unfair_lock_opaque removeIDs:v8];
+      os_unfair_lock_lock(self + 14);
+      [*&self[4]._os_unfair_lock_opaque removeObjectsForKeys:v8];
+      [*&self[8]._os_unfair_lock_opaque removeObjectsForKeys:v8];
+      os_unfair_lock_unlock(self + 14);
+      self = [(EDInMemoryThreadCollection *)self _threadsWereDeleted];
     }
   }
 
-  return a1;
+  return self;
 }
 
 id __59__EDInMemoryThreadCollection__removeThreadProxies_forMove___block_invoke(uint64_t a1, void *a2)
@@ -954,10 +954,10 @@ id __59__EDInMemoryThreadCollection__removeThreadProxies_forMove___block_invoke(
 
 - (void)_threadsWereDeleted
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if ([(EDInMemoryThreadCollection *)a1 _hasLoaded])
+    if ([(EDInMemoryThreadCollection *)self _hasLoaded])
     {
       v5 = 0;
       v6 = &v5;
@@ -965,22 +965,22 @@ id __59__EDInMemoryThreadCollection__removeThreadProxies_forMove___block_invoke(
       v8 = __Block_byref_object_copy__13;
       v9 = __Block_byref_object_dispose__13;
       v10 = [MEMORY[0x1E695DFA8] set];
-      v2 = v1[5];
+      v2 = selfCopy[5];
       v4[0] = MEMORY[0x1E69E9820];
       v4[1] = 3221225472;
       v4[2] = __49__EDInMemoryThreadCollection__threadsWereDeleted__block_invoke;
       v4[3] = &unk_1E8252890;
-      v4[4] = v1;
+      v4[4] = selfCopy;
       v4[5] = &v5;
       [v2 performWhileLocked:v4];
       if ([v6[5] count])
       {
-        v1 = [(EDInMemoryThreadCollection *)v1 _updateOldestThreadsForMailboxes:?];
+        selfCopy = [(EDInMemoryThreadCollection *)selfCopy _updateOldestThreadsForMailboxes:?];
       }
 
       else
       {
-        v1 = 0;
+        selfCopy = 0;
       }
 
       _Block_object_dispose(&v5, 8);
@@ -992,18 +992,18 @@ id __59__EDInMemoryThreadCollection__removeThreadProxies_forMove___block_invoke(
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)_hasLoaded
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
     v7 = 0x2020000000;
     v8 = 0;
-    v1 = *(a1 + 40);
+    v1 = *(self + 40);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __40__EDInMemoryThreadCollection__hasLoaded__block_invoke;
@@ -1059,28 +1059,28 @@ void __49__EDInMemoryThreadCollection__threadsWereDeleted__block_invoke_2(uint64
   os_unfair_lock_unlock(v6 + 14);
 }
 
-- (uint64_t)_updateOldestThreadsForMailboxes:(void *)a1
+- (uint64_t)_updateOldestThreadsForMailboxes:(void *)mailboxes
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (mailboxes)
   {
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
     v20 = 0;
     v5 = [v3 mutableCopy];
-    v6 = [a1 dateSortOrder] == 1;
-    v7 = [a1 dateSortOrder] != 0;
-    v8 = [a1 delegate];
-    [v8 assertCorrectSchedulerForCollection:a1];
+    v6 = [mailboxes dateSortOrder] == 1;
+    v7 = [mailboxes dateSortOrder] != 0;
+    delegate = [mailboxes delegate];
+    [delegate assertCorrectSchedulerForCollection:mailboxes];
 
-    v9 = a1[1];
+    v9 = mailboxes[1];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __63__EDInMemoryThreadCollection__updateOldestThreadsForMailboxes___block_invoke;
     v13[3] = &unk_1E82528B8;
-    v13[4] = a1;
+    v13[4] = mailboxes;
     v10 = v5;
     v14 = v10;
     v15 = &v17;
@@ -1088,7 +1088,7 @@ void __49__EDInMemoryThreadCollection__threadsWereDeleted__block_invoke_2(uint64
     [v9 enumerateObjectsWithOptions:2 * v6 usingBlock:v13];
     if (*(v18 + 24) == 1)
     {
-      [(EDInMemoryThreadCollection *)a1 _notifyObserverOfOldestThreadsByMailboxObjectIDs];
+      [(EDInMemoryThreadCollection *)mailboxes _notifyObserverOfOldestThreadsByMailboxObjectIDs];
       v11 = *(v18 + 24);
     }
 
@@ -1164,12 +1164,12 @@ void __63__EDInMemoryThreadCollection__updateOldestThreadsForMailboxes___block_i
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_updateCurrentOldestThreadWithThreadIfApplicable:(void *)a3 forMailbox:
+- (uint64_t)_updateCurrentOldestThreadWithThreadIfApplicable:(void *)applicable forMailbox:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  applicableCopy = applicable;
+  v7 = applicableCopy;
+  if (self)
   {
     v22 = 0;
     v23 = &v22;
@@ -1177,13 +1177,13 @@ void __63__EDInMemoryThreadCollection__updateOldestThreadsForMailboxes___block_i
     v25 = __Block_byref_object_copy__13;
     v26 = __Block_byref_object_dispose__13;
     v27 = 0;
-    v8 = *(a1 + 40);
+    v8 = *(self + 40);
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __90__EDInMemoryThreadCollection__updateCurrentOldestThreadWithThreadIfApplicable_forMailbox___block_invoke;
     v19[3] = &unk_1E8252978;
     v21 = &v22;
-    v9 = v6;
+    v9 = applicableCopy;
     v20 = v9;
     [v8 performWhileLocked:v19];
     if (([v5 isEqual:v23[5]] & 1) != 0 || v23[5] && (objc_msgSend(v5, "date"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23[5], "date"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "compare:", v11), v11, v10, v12 != -1))
@@ -1193,7 +1193,7 @@ void __63__EDInMemoryThreadCollection__updateOldestThreadsForMailboxes___block_i
 
     else
     {
-      v14 = *(a1 + 40);
+      v14 = *(self + 40);
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __90__EDInMemoryThreadCollection__updateCurrentOldestThreadWithThreadIfApplicable_forMailbox___block_invoke_2;
@@ -1218,7 +1218,7 @@ void __63__EDInMemoryThreadCollection__updateOldestThreadsForMailboxes___block_i
 
 - (void)_notifyObserverOfOldestThreadsByMailboxObjectIDs
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -1226,15 +1226,15 @@ void __63__EDInMemoryThreadCollection__updateOldestThreadsForMailboxes___block_i
     v8 = __Block_byref_object_copy__13;
     v9 = __Block_byref_object_dispose__13;
     v10 = 0;
-    v2 = a1[5];
+    v2 = self[5];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __78__EDInMemoryThreadCollection__notifyObserverOfOldestThreadsByMailboxObjectIDs__block_invoke;
     v4[3] = &unk_1E8252900;
     v4[4] = &v5;
     [v2 performWhileLocked:v4];
-    v3 = [a1 delegate];
-    [v3 collection:a1 notifyOfOldestThreadsByMailboxObjectIDs:v6[5]];
+    delegate = [self delegate];
+    [delegate collection:self notifyOfOldestThreadsByMailboxObjectIDs:v6[5]];
 
     _Block_object_dispose(&v5, 8);
   }
@@ -1242,8 +1242,8 @@ void __63__EDInMemoryThreadCollection__updateOldestThreadsForMailboxes___block_i
 
 - (void)notifyObserverOfOldestThreadsByMailboxObjectIDs
 {
-  v3 = [(EDInMemoryThreadCollection *)self delegate];
-  [v3 assertCorrectSchedulerForCollection:self];
+  delegate = [(EDInMemoryThreadCollection *)self delegate];
+  [delegate assertCorrectSchedulerForCollection:self];
 
   [(EDInMemoryThreadCollection *)self _notifyObserverOfOldestThreadsByMailboxObjectIDs];
 }
@@ -1267,13 +1267,13 @@ id __78__EDInMemoryThreadCollection__notifyObserverOfOldestThreadsByMailboxObjec
 
 - (void)initializeOldestThreadsByMailbox
 {
-  v4 = [(EDInMemoryThreadCollection *)self delegate];
-  [v4 assertCorrectSchedulerForCollection:self];
+  delegate = [(EDInMemoryThreadCollection *)self delegate];
+  [delegate assertCorrectSchedulerForCollection:self];
 
-  v5 = [(EDInMemoryThreadCollection *)self query];
-  v6 = [v5 queryOptions];
+  query = [(EDInMemoryThreadCollection *)self query];
+  queryOptions = [query queryOptions];
 
-  if (v6)
+  if (queryOptions)
   {
     oldestThreadsByMailboxObjectIDs = self->_oldestThreadsByMailboxObjectIDs;
     v12[0] = MEMORY[0x1E69E9820];
@@ -1283,8 +1283,8 @@ id __78__EDInMemoryThreadCollection__notifyObserverOfOldestThreadsByMailboxObjec
     v12[4] = self;
     v12[5] = a2;
     [(EFLocked *)oldestThreadsByMailboxObjectIDs performWhileLocked:v12];
-    v8 = [(EDInMemoryThreadCollection *)self dataSource];
-    v9 = [v8 mailboxesInCollection:self];
+    dataSource = [(EDInMemoryThreadCollection *)self dataSource];
+    v9 = [dataSource mailboxesInCollection:self];
     [(EDInMemoryThreadCollection *)self _updateOldestThreadsForMailboxes:v9];
 
     v10 = self->_oldestThreadsByMailboxObjectIDs;
@@ -1350,18 +1350,18 @@ void __90__EDInMemoryThreadCollection__updateCurrentOldestThreadWithThreadIfAppl
 
 - (void)clearInMemoryThreadCache
 {
-  v2 = [(EDInMemoryThreadCollection *)self inMemoryThreadCache];
-  [v2 removeAllObjects];
+  inMemoryThreadCache = [(EDInMemoryThreadCollection *)self inMemoryThreadCache];
+  [inMemoryThreadCache removeAllObjects];
 }
 
-- (void)messagesWereAdded:(id)a3 searchInfo:(id)a4
+- (void)messagesWereAdded:(id)added searchInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(EDInMemoryThreadCollection *)self delegate];
-  [v9 assertCorrectSchedulerForCollection:self];
+  addedCopy = added;
+  infoCopy = info;
+  delegate = [(EDInMemoryThreadCollection *)self delegate];
+  [delegate assertCorrectSchedulerForCollection:self];
 
-  v10 = [(EDInMemoryThreadCollection *)self _messagesByConversationIDForMessages:v7];
+  v10 = [(EDInMemoryThreadCollection *)self _messagesByConversationIDForMessages:addedCopy];
   v20 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v11 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -1378,17 +1378,17 @@ void __90__EDInMemoryThreadCollection__updateCurrentOldestThreadWithThreadIfAppl
   v15 = v20;
   v24 = v15;
   [v10 enumerateKeysAndObjectsUsingBlock:v21];
-  v16 = [(EDInMemoryThreadCollection *)self delegate];
-  [v16 prepareToSendUpdatesInCollection:self];
+  delegate2 = [(EDInMemoryThreadCollection *)self delegate];
+  [delegate2 prepareToSendUpdatesInCollection:self];
 
-  v17 = [(EDInMemoryThreadCollection *)self delegate];
-  v18 = [v17 collection:self reportChanges:v14];
+  delegate3 = [(EDInMemoryThreadCollection *)self delegate];
+  v18 = [delegate3 collection:self reportChanges:v14];
 
-  LODWORD(v17) = [(EDInMemoryThreadCollection *)self _mergeInThreads:v13 searchInfo:v8 forMove:1u];
-  if (([(EDInMemoryThreadCollection *)self _mergeInThreads:v15 searchInfo:v8 forMove:0]| v17 | v18))
+  LODWORD(delegate3) = [(EDInMemoryThreadCollection *)self _mergeInThreads:v13 searchInfo:infoCopy forMove:1u];
+  if (([(EDInMemoryThreadCollection *)self _mergeInThreads:v15 searchInfo:infoCopy forMove:0]| delegate3 | v18))
   {
-    v19 = [(EDInMemoryThreadCollection *)self delegate];
-    [v19 didSendUpdatesInCollection:self];
+    delegate4 = [(EDInMemoryThreadCollection *)self delegate];
+    [delegate4 didSendUpdatesInCollection:self];
   }
 }
 
@@ -1561,20 +1561,20 @@ void __59__EDInMemoryThreadCollection_messagesWereAdded_searchInfo___block_invok
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_messageListItemChangeAffectsSorting:(void *)a1
+- (uint64_t)_messageListItemChangeAffectsSorting:(void *)sorting
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (sorting)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [a1 query];
-    v5 = [v4 sortDescriptors];
+    query = [sorting query];
+    sortDescriptors = [query sortDescriptors];
 
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v6 = [sortDescriptors countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = *v14;
@@ -1584,7 +1584,7 @@ void __59__EDInMemoryThreadCollection_messagesWereAdded_searchInfo___block_invok
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(sortDescriptors);
           }
 
           v9 = [*(*(&v13 + 1) + 8 * i) key];
@@ -1597,7 +1597,7 @@ void __59__EDInMemoryThreadCollection_messagesWereAdded_searchInfo___block_invok
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [sortDescriptors countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v6)
         {
           continue;
@@ -1619,43 +1619,43 @@ LABEL_12:
   return v6;
 }
 
-- (id)_updateThreadProxy:(_BYTE *)a3 threadIsEmpty:(void *)a4 thread:
+- (id)_updateThreadProxy:(_BYTE *)proxy threadIsEmpty:(void *)empty thread:
 {
   v20 = *MEMORY[0x1E69E9840];
   v7 = a2;
   v8 = v7;
-  if (a1)
+  if (self)
   {
-    v9 = [a1 inMemoryThreadForConversationID:{objc_msgSend(v7, "conversationID")}];
+    v9 = [self inMemoryThreadForConversationID:{objc_msgSend(v7, "conversationID")}];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 thread];
-      v12 = [v8 calculateChangeFromThread:v11];
+      thread = [v9 thread];
+      v12 = [v8 calculateChangeFromThread:thread];
 
-      v13 = [v10 thread];
-      v14 = [a1 query];
-      [v8 updateFromThread:v13 addingAdditionalInformation:0 query:v14];
+      thread2 = [v10 thread];
+      query = [self query];
+      [v8 updateFromThread:thread2 addingAdditionalInformation:0 query:query];
 
-      if (a4)
+      if (empty)
       {
         v15 = v10;
-        *a4 = v10;
+        *empty = v10;
       }
     }
 
     else
     {
-      *a3 = 1;
-      if (a4)
+      *proxy = 1;
+      if (empty)
       {
-        *a4 = 0;
+        *empty = 0;
       }
 
-      v16 = [a1 logClient];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      logClient = [self logClient];
+      if (os_log_type_enabled(logClient, OS_LOG_TYPE_DEFAULT))
       {
-        -[EDInMemoryThreadCollection _updateThreadProxy:threadIsEmpty:thread:].cold.1(a1, v19, [v8 conversationID], v16);
+        -[EDInMemoryThreadCollection _updateThreadProxy:threadIsEmpty:thread:].cold.1(self, v19, [v8 conversationID], logClient);
       }
 
       v12 = 0;
@@ -1672,22 +1672,22 @@ LABEL_12:
   return v12;
 }
 
-- (uint64_t)_mergeInThreads:(void *)a3 searchInfo:(unsigned int)a4 forMove:
+- (uint64_t)_mergeInThreads:(void *)threads searchInfo:(unsigned int)info forMove:
 {
   v74 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v49 = a3;
+  threadsCopy = threads;
   v55 = v6;
-  if (!a1 || ![v6 count])
+  if (!self || ![v6 count])
   {
     v33 = 0;
     goto LABEL_47;
   }
 
   v60 = 0;
-  if (a4)
+  if (info)
   {
-    v60 = [(EDInMemoryThreadCollection *)a1 _removeThreadProxies:v6 forMove:1];
+    v60 = [(EDInMemoryThreadCollection *)self _removeThreadProxies:v6 forMove:1];
   }
 
   if (![v6 count])
@@ -1695,16 +1695,16 @@ LABEL_12:
     goto LABEL_46;
   }
 
-  v54 = [a1 comparator];
+  comparator = [self comparator];
   [v6 sortUsingComparator:?];
-  v7 = [v6 array];
-  v47 = [v7 copy];
+  array = [v6 array];
+  v47 = [array copy];
 
-  v8 = [v6 firstObject];
-  v9 = [a1 delegate];
-  [v9 assertCorrectSchedulerForCollection:a1];
+  firstObject = [v6 firstObject];
+  delegate = [self delegate];
+  [delegate assertCorrectSchedulerForCollection:self];
 
-  if (!v8)
+  if (!firstObject)
   {
     v14 = 0;
     goto LABEL_36;
@@ -1714,43 +1714,43 @@ LABEL_12:
   v52 = 0;
   *&v10 = 134219266;
   v46 = v10;
-  while (v11 < [*(a1 + 8) count])
+  while (v11 < [*(self + 8) count])
   {
-    v12 = [*(a1 + 8) objectAtIndexedSubscript:v11];
-    os_unfair_lock_lock((a1 + 56));
+    v12 = [*(self + 8) objectAtIndexedSubscript:v11];
+    os_unfair_lock_lock((self + 56));
     v51 = v12;
-    v13 = [*(a1 + 16) objectForKeyedSubscript:v12];
-    os_unfair_lock_unlock((a1 + 56));
+    v13 = [*(self + 16) objectForKeyedSubscript:v12];
+    os_unfair_lock_unlock((self + 56));
     v14 = v13;
-    if ((v54)[2](v54, v13, v8) == 1)
+    if ((comparator)[2](comparator, v13, firstObject) == 1)
     {
-      v8 = v8;
-      v50 = v8;
+      firstObject = firstObject;
+      v50 = firstObject;
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v16 = v8;
+      v16 = firstObject;
       while (1)
       {
         v17 = v16;
         v18 = v11;
-        v16 = v8;
+        v16 = firstObject;
 
-        v19 = [v16 objectID];
-        [v15 addObject:v19];
+        objectID = [v16 objectID];
+        [v15 addObject:objectID];
 
         v20 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v16, "conversationID")}];
-        [*(a1 + 8) insertObject:v20 atIndex:v18];
-        os_unfair_lock_lock((a1 + 56));
-        [*(a1 + 16) setOrInsertObject:v16 forKey:v20 atIndex:v18];
-        os_unfair_lock_unlock((a1 + 56));
+        [*(self + 8) insertObject:v20 atIndex:v18];
+        os_unfair_lock_lock((self + 56));
+        [*(self + 16) setOrInsertObject:v16 forKey:v20 atIndex:v18];
+        os_unfair_lock_unlock((self + 56));
         [v55 removeObjectAtIndex:0];
-        v8 = [v55 firstObject];
+        firstObject = [v55 firstObject];
 
-        if (!v8)
+        if (!firstObject)
         {
           break;
         }
 
-        v21 = (v54)[2](v54, v14, v8);
+        v21 = (comparator)[2](comparator, v14, firstObject);
 
         v11 = v18 + 1;
         if (v21 != 1)
@@ -1760,23 +1760,23 @@ LABEL_12:
       }
 
 LABEL_15:
-      v22 = [v14 objectID];
-      if (v52 && (v54)[2](v54, v50, v52) != 1 || (v54)[2](v54, v16, v14) != -1)
+      objectID2 = [v14 objectID];
+      if (v52 && (comparator)[2](comparator, v50, v52) != 1 || (comparator)[2](comparator, v16, v14) != -1)
       {
         if ([v15 count] == 1)
         {
-          v23 = [a1 logClient];
-          if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
+          logClient = [self logClient];
+          if (os_log_type_enabled(logClient, OS_LOG_TYPE_FAULT))
           {
             *buf = 134218754;
-            v63 = a1;
+            selfCopy4 = self;
             v64 = 2114;
             v65 = v50;
             v66 = 2114;
             v67 = v52;
             v68 = 2114;
             v69 = v14;
-            v24 = v23;
+            v24 = logClient;
             v25 = "%p: Merged in 1 new thread out of order! %{public}@ between existing threads %{public}@ and %{public}@";
             v26 = 42;
             goto LABEL_23;
@@ -1785,12 +1785,12 @@ LABEL_15:
 
         else
         {
-          v23 = [a1 logClient];
-          if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
+          logClient = [self logClient];
+          if (os_log_type_enabled(logClient, OS_LOG_TYPE_FAULT))
           {
             v27 = [v15 count];
             *buf = v46;
-            v63 = a1;
+            selfCopy4 = self;
             v64 = 2048;
             v65 = v27;
             v66 = 2114;
@@ -1801,7 +1801,7 @@ LABEL_15:
             v71 = v52;
             v72 = 2114;
             v73 = v14;
-            v24 = v23;
+            v24 = logClient;
             v25 = "%p: Merged in %lu new threads out of order! %{public}@ to %{public}@ between existing threads %{public}@ and %{public}@";
             v26 = 62;
 LABEL_23:
@@ -1811,8 +1811,8 @@ LABEL_23:
 
 LABEL_30:
 
-        v32 = [a1 delegate];
-        [v32 collection:a1 didMergeInThreadsForMove:a4 newObjectIDs:v15 existingObjectID:v22 searchInfo:v49 hasChanges:&v60];
+        delegate2 = [self delegate];
+        [delegate2 collection:self didMergeInThreadsForMove:info newObjectIDs:v15 existingObjectID:objectID2 searchInfo:threadsCopy hasChanges:&v60];
 
         v11 = v18 + 1;
         goto LABEL_31;
@@ -1820,36 +1820,36 @@ LABEL_30:
 
       if ([v15 count] == 1)
       {
-        v23 = [a1 logClient];
-        if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+        logClient = [self logClient];
+        if (!os_log_type_enabled(logClient, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_30;
         }
 
         *buf = 134218754;
-        v63 = a1;
+        selfCopy4 = self;
         v64 = 2114;
         v65 = v50;
         v66 = 2114;
         v67 = v52;
         v68 = 2114;
         v69 = v14;
-        v28 = v23;
+        v28 = logClient;
         v29 = "%p: Merged in 1 new thread %{public}@ between existing threads %{public}@ and %{public}@";
         v30 = 42;
       }
 
       else
       {
-        v23 = [a1 logClient];
-        if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+        logClient = [self logClient];
+        if (!os_log_type_enabled(logClient, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_30;
         }
 
         v31 = [v15 count];
         *buf = v46;
-        v63 = a1;
+        selfCopy4 = self;
         v64 = 2048;
         v65 = v31;
         v66 = 2114;
@@ -1860,7 +1860,7 @@ LABEL_30:
         v71 = v52;
         v72 = 2114;
         v73 = v14;
-        v28 = v23;
+        v28 = logClient;
         v29 = "%p: Merged in %lu new threads %{public}@ to %{public}@ between existing threads %{public}@ and %{public}@";
         v30 = 62;
       }
@@ -1873,7 +1873,7 @@ LABEL_31:
 
     ++v11;
     v52 = v14;
-    if (!v8)
+    if (!firstObject)
     {
       goto LABEL_36;
     }
@@ -1897,7 +1897,7 @@ LABEL_36:
       do
       {
         v38 = 0;
-        v39 = v8;
+        v39 = firstObject;
         do
         {
           if (*v57 != v37)
@@ -1905,19 +1905,19 @@ LABEL_36:
             objc_enumerationMutation(v35);
           }
 
-          v8 = *(*(&v56 + 1) + 8 * v38);
+          firstObject = *(*(&v56 + 1) + 8 * v38);
 
-          v40 = [v8 objectID];
-          [v34 addObject:v40];
+          objectID3 = [firstObject objectID];
+          [v34 addObject:objectID3];
 
-          v41 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v8, "conversationID")}];
-          [*(a1 + 8) addObject:v41];
-          os_unfair_lock_lock((a1 + 56));
-          [*(a1 + 16) setOrAddObject:v8 forKey:v41];
-          os_unfair_lock_unlock((a1 + 56));
+          v41 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(firstObject, "conversationID")}];
+          [*(self + 8) addObject:v41];
+          os_unfair_lock_lock((self + 56));
+          [*(self + 16) setOrAddObject:firstObject forKey:v41];
+          os_unfair_lock_unlock((self + 56));
 
           ++v38;
-          v39 = v8;
+          v39 = firstObject;
         }
 
         while (v36 != v38);
@@ -1927,14 +1927,14 @@ LABEL_36:
       while (v36);
     }
 
-    v42 = [a1 delegate];
-    [v42 collection:a1 didMergeInThreadsForMove:a4 newObjectIDs:v34 existingObjectID:0 searchInfo:v49 hasChanges:&v60];
+    delegate3 = [self delegate];
+    [delegate3 collection:self didMergeInThreadsForMove:info newObjectIDs:v34 existingObjectID:0 searchInfo:threadsCopy hasChanges:&v60];
 
-    v8 = 0;
+    firstObject = 0;
     v14 = v53;
   }
 
-  v43 = [(EDInMemoryThreadCollection *)a1 _didMergeInThreads:v47];
+  v43 = [(EDInMemoryThreadCollection *)self _didMergeInThreads:v47];
   v60 = (v43 | v60) & 1;
 
 LABEL_46:
@@ -1945,14 +1945,14 @@ LABEL_47:
   return v33 & 1;
 }
 
-- (void)messagesWereChanged:(id)a3 forKeyPaths:(id)a4 deleted:(BOOL)a5
+- (void)messagesWereChanged:(id)changed forKeyPaths:(id)paths deleted:(BOOL)deleted
 {
-  v28 = a3;
-  v25 = a4;
-  v9 = [(EDInMemoryThreadCollection *)self delegate];
-  [v9 assertCorrectSchedulerForCollection:self];
+  changedCopy = changed;
+  pathsCopy = paths;
+  delegate = [(EDInMemoryThreadCollection *)self delegate];
+  [delegate assertCorrectSchedulerForCollection:self];
 
-  v10 = [(EDInMemoryThreadCollection *)self _messagesByConversationIDForMessages:v28];
+  v10 = [(EDInMemoryThreadCollection *)self _messagesByConversationIDForMessages:changedCopy];
   v24 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v27 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v26 = objc_alloc_init(MEMORY[0x1E695DFA0]);
@@ -1962,8 +1962,8 @@ LABEL_47:
   v29[2] = __70__EDInMemoryThreadCollection_messagesWereChanged_forKeyPaths_deleted___block_invoke;
   v29[3] = &unk_1E8252A38;
   v29[4] = self;
-  v36 = a5;
-  v12 = v25;
+  deletedCopy = deleted;
+  v12 = pathsCopy;
   v30 = v12;
   v35 = a2;
   v13 = v24;
@@ -1975,34 +1975,34 @@ LABEL_47:
   v16 = v26;
   v34 = v16;
   [v10 enumerateKeysAndObjectsUsingBlock:v29];
-  v17 = [(EDInMemoryThreadCollection *)self delegate];
-  [v17 prepareToSendUpdatesInCollection:self];
+  delegate2 = [(EDInMemoryThreadCollection *)self delegate];
+  [delegate2 prepareToSendUpdatesInCollection:self];
 
-  if ([v13 count] && !a5)
+  if ([v13 count] && !deleted)
   {
-    v18 = [(EDInMemoryThreadCollection *)self logClient];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    logClient = [(EDInMemoryThreadCollection *)self logClient];
+    if (os_log_type_enabled(logClient, OS_LOG_TYPE_ERROR))
     {
-      [EDInMemoryThreadCollection messagesWereChanged:v28 forKeyPaths:v18 deleted:?];
+      [EDInMemoryThreadCollection messagesWereChanged:changedCopy forKeyPaths:logClient deleted:?];
     }
   }
 
-  v19 = [(EDInMemoryThreadCollection *)self delegate];
-  v20 = [v19 collection:self reportDeletes:v13];
+  delegate3 = [(EDInMemoryThreadCollection *)self delegate];
+  v20 = [delegate3 collection:self reportDeletes:v13];
 
   if (v20)
   {
     [(EDInMemoryThreadCollection *)self removeThreadProxies:v13 forMove:0];
   }
 
-  v21 = [(EDInMemoryThreadCollection *)self delegate];
-  v22 = [v21 collection:self reportChanges:v15];
+  delegate4 = [(EDInMemoryThreadCollection *)self delegate];
+  v22 = [delegate4 collection:self reportChanges:v15];
 
-  LODWORD(v21) = [(EDInMemoryThreadCollection *)self _mergeInThreads:v14 searchInfo:0 forMove:1u];
-  if (([(EDInMemoryThreadCollection *)self _mergeInThreads:v16 searchInfo:0 forMove:0]| v21 | v22 | v20))
+  LODWORD(delegate4) = [(EDInMemoryThreadCollection *)self _mergeInThreads:v14 searchInfo:0 forMove:1u];
+  if (([(EDInMemoryThreadCollection *)self _mergeInThreads:v16 searchInfo:0 forMove:0]| delegate4 | v22 | v20))
   {
-    v23 = [(EDInMemoryThreadCollection *)self delegate];
-    [v23 didSendUpdatesInCollection:self];
+    delegate5 = [(EDInMemoryThreadCollection *)self delegate];
+    [delegate5 didSendUpdatesInCollection:self];
   }
 }
 
@@ -2328,45 +2328,45 @@ id __70__EDInMemoryThreadCollection_messagesWereChanged_forKeyPaths_deleted___bl
   return v2;
 }
 
-- (void)objectIDDidChangeForMessage:(id)a3 oldObjectID:(id)a4 oldConversationID:(int64_t)a5
+- (void)objectIDDidChangeForMessage:(id)message oldObjectID:(id)d oldConversationID:(int64_t)iD
 {
-  v8 = a3;
-  v50 = a4;
-  v9 = [(EDInMemoryThreadCollection *)self delegate];
-  [v9 assertCorrectSchedulerForCollection:self];
+  messageCopy = message;
+  dCopy = d;
+  delegate = [(EDInMemoryThreadCollection *)self delegate];
+  [delegate assertCorrectSchedulerForCollection:self];
 
-  v10 = [(EDInMemoryThreadCollection *)self delegate];
-  [v10 prepareToSendUpdatesInCollection:self];
+  delegate2 = [(EDInMemoryThreadCollection *)self delegate];
+  [delegate2 prepareToSendUpdatesInCollection:self];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __88__EDInMemoryThreadCollection_objectIDDidChangeForMessage_oldObjectID_oldConversationID___block_invoke;
   aBlock[3] = &unk_1E8252A60;
   aBlock[4] = self;
-  v11 = v50;
+  v11 = dCopy;
   v57 = v11;
   v12 = _Block_copy(aBlock);
-  if ([v8 conversationID] == a5)
+  if ([messageCopy conversationID] == iD)
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithLongLong:a5];
+    v13 = [MEMORY[0x1E696AD98] numberWithLongLong:iD];
     v14 = [(EDInMemoryThreadCollection *)self _cachedInMemoryThreadForConversationID:v13];
 
     os_unfair_lock_lock(&self->_threadsLock);
     threadsByConversationID = self->_threadsByConversationID;
-    v16 = [MEMORY[0x1E696AD98] numberWithLongLong:a5];
+    v16 = [MEMORY[0x1E696AD98] numberWithLongLong:iD];
     v17 = [(EFMutableOrderedDictionary *)threadsByConversationID objectForKeyedSubscript:v16];
 
     os_unfair_lock_unlock(&self->_threadsLock);
     if (v14)
     {
-      v18 = [v14 updateMessage:v8 fromOldObjectID:v11];
-      v19 = [v14 thread];
-      v20 = [(EDInMemoryThreadCollection *)self query];
-      [v17 updateFromThread:v19 addingAdditionalInformation:0 query:v20];
+      v18 = [v14 updateMessage:messageCopy fromOldObjectID:v11];
+      thread = [v14 thread];
+      query = [(EDInMemoryThreadCollection *)self query];
+      [v17 updateFromThread:thread addingAdditionalInformation:0 query:query];
 
-      v21 = [v14 thread];
-      v22 = [v21 objectID];
-      v12[2](v12, v18, v22);
+      thread2 = [v14 thread];
+      objectID = [thread2 objectID];
+      v12[2](v12, v18, objectID);
     }
 
     else
@@ -2382,57 +2382,57 @@ id __70__EDInMemoryThreadCollection_messagesWereChanged_forKeyPaths_deleted___bl
         v14 = 0;
       }
 
-      v34 = [v17 objectID];
-      v12[2](v12, v18, v34);
+      objectID2 = [v17 objectID];
+      v12[2](v12, v18, objectID2);
     }
 
     sectionQueryHelper = self->_sectionQueryHelper;
-    v36 = [v14 thread];
-    [(EDSectionQueryItemHelper *)sectionQueryHelper updateSectionForItem:v36];
+    thread3 = [v14 thread];
+    [(EDSectionQueryItemHelper *)sectionQueryHelper updateSectionForItem:thread3];
 
-    v37 = [(EDInMemoryThreadCollection *)self delegate];
-    v38 = [v8 objectID];
-    [v37 collection:self notifyReplacedExistingObjectID:v11 newObjectID:v38];
+    delegate3 = [(EDInMemoryThreadCollection *)self delegate];
+    objectID3 = [messageCopy objectID];
+    [delegate3 collection:self notifyReplacedExistingObjectID:v11 newObjectID:objectID3];
   }
 
   else
   {
-    v23 = [MEMORY[0x1E696AD98] numberWithLongLong:a5];
+    v23 = [MEMORY[0x1E696AD98] numberWithLongLong:iD];
     v14 = [(EDInMemoryThreadCollection *)self _cachedInMemoryThreadForConversationID:v23];
 
     os_unfair_lock_lock(&self->_threadsLock);
     v24 = self->_threadsByConversationID;
-    v25 = [MEMORY[0x1E696AD98] numberWithLongLong:a5];
+    v25 = [MEMORY[0x1E696AD98] numberWithLongLong:iD];
     v17 = [(EFMutableOrderedDictionary *)v24 objectForKeyedSubscript:v25];
 
     os_unfair_lock_unlock(&self->_threadsLock);
     if (v14)
     {
-      v26 = [v14 messages];
+      messages = [v14 messages];
       v54[0] = MEMORY[0x1E69E9820];
       v54[1] = 3221225472;
       v54[2] = __88__EDInMemoryThreadCollection_objectIDDidChangeForMessage_oldObjectID_oldConversationID___block_invoke_69;
       v54[3] = &unk_1E8250858;
       v55 = v11;
-      v27 = [v26 ef_filter:v54];
+      v27 = [messages ef_filter:v54];
 
       v53 = 0;
       v49 = [v14 removeMessages:v27 threadIsEmpty:&v53];
       if (v53 == 1)
       {
 
-        v28 = [(EDInMemoryThreadCollection *)self inMemoryThreadCache];
-        v29 = [MEMORY[0x1E696AD98] numberWithLongLong:a5];
-        [v28 removeObjectForKey:v29];
+        inMemoryThreadCache = [(EDInMemoryThreadCollection *)self inMemoryThreadCache];
+        v29 = [MEMORY[0x1E696AD98] numberWithLongLong:iD];
+        [inMemoryThreadCache removeObjectForKey:v29];
 
         v30 = v49;
-        v31 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithObjects:{v17, 0}];
-        v32 = [(EDInMemoryThreadCollection *)self delegate];
-        LODWORD(v29) = [v32 collection:self reportDeletes:v31];
+        thread5 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithObjects:{v17, 0}];
+        delegate4 = [(EDInMemoryThreadCollection *)self delegate];
+        LODWORD(v29) = [delegate4 collection:self reportDeletes:thread5];
 
         if (v29)
         {
-          [(EDInMemoryThreadCollection *)self removeThreadProxies:v31 forMove:0];
+          [(EDInMemoryThreadCollection *)self removeThreadProxies:thread5 forMove:0];
         }
 
         v14 = 0;
@@ -2440,14 +2440,14 @@ id __70__EDInMemoryThreadCollection_messagesWereChanged_forKeyPaths_deleted___bl
 
       else
       {
-        v44 = [v14 thread];
-        v45 = [(EDInMemoryThreadCollection *)self query];
-        [v17 updateFromThread:v44 addingAdditionalInformation:0 query:v45];
+        thread4 = [v14 thread];
+        query2 = [(EDInMemoryThreadCollection *)self query];
+        [v17 updateFromThread:thread4 addingAdditionalInformation:0 query:query2];
 
-        v31 = [v14 thread];
-        v46 = [v31 objectID];
+        thread5 = [v14 thread];
+        objectID4 = [thread5 objectID];
         v30 = v49;
-        v12[2](v12, v49, v46);
+        v12[2](v12, v49, objectID4);
       }
     }
 
@@ -2461,13 +2461,13 @@ id __70__EDInMemoryThreadCollection_messagesWereChanged_forKeyPaths_deleted___bl
       if (v53 == 1)
       {
 
-        v41 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithObjects:{v17, 0}];
-        v42 = [(EDInMemoryThreadCollection *)self delegate];
-        v43 = [v42 collection:self reportDeletes:v41];
+        objectID5 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithObjects:{v17, 0}];
+        delegate5 = [(EDInMemoryThreadCollection *)self delegate];
+        v43 = [delegate5 collection:self reportDeletes:objectID5];
 
         if (v43)
         {
-          [(EDInMemoryThreadCollection *)self removeThreadProxies:v41 forMove:0];
+          [(EDInMemoryThreadCollection *)self removeThreadProxies:objectID5 forMove:0];
         }
 
         v14 = 0;
@@ -2475,8 +2475,8 @@ id __70__EDInMemoryThreadCollection_messagesWereChanged_forKeyPaths_deleted___bl
 
       else
       {
-        v41 = [v17 objectID];
-        v12[2](v12, v39, v41);
+        objectID5 = [v17 objectID];
+        v12[2](v12, v39, objectID5);
       }
     }
 
@@ -2486,12 +2486,12 @@ id __70__EDInMemoryThreadCollection_messagesWereChanged_forKeyPaths_deleted___bl
     }
 
     v47 = self->_sectionQueryHelper;
-    v37 = [v14 thread];
-    [(EDSectionQueryItemHelper *)v47 updateSectionForItem:v37];
+    delegate3 = [v14 thread];
+    [(EDSectionQueryItemHelper *)v47 updateSectionForItem:delegate3];
   }
 
-  v48 = [(EDInMemoryThreadCollection *)self delegate];
-  [v48 didSendUpdatesInCollection:self];
+  delegate6 = [(EDInMemoryThreadCollection *)self delegate];
+  [delegate6 didSendUpdatesInCollection:self];
 }
 
 void __88__EDInMemoryThreadCollection_objectIDDidChangeForMessage_oldObjectID_oldConversationID___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2534,45 +2534,45 @@ uint64_t __88__EDInMemoryThreadCollection_objectIDDidChangeForMessage_oldObjectI
   return v4;
 }
 
-- (void)conversationIDDidChangeForMessages:(id)a3 fromConversationID:(int64_t)a4
+- (void)conversationIDDidChangeForMessages:(id)messages fromConversationID:(int64_t)d
 {
-  v6 = a3;
-  v7 = [(EDInMemoryThreadCollection *)self delegate];
-  [v7 assertCorrectSchedulerForCollection:self];
+  messagesCopy = messages;
+  delegate = [(EDInMemoryThreadCollection *)self delegate];
+  [delegate assertCorrectSchedulerForCollection:self];
 
   v56 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [(EDInMemoryThreadCollection *)self delegate];
-  [v8 prepareToSendUpdatesInCollection:self];
+  delegate2 = [(EDInMemoryThreadCollection *)self delegate];
+  [delegate2 prepareToSendUpdatesInCollection:self];
 
   v54 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-  v9 = [v6 firstObject];
-  v10 = [v9 conversationID];
+  firstObject = [messagesCopy firstObject];
+  conversationID = [firstObject conversationID];
 
-  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:v10];
+  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:conversationID];
   v12 = [(EDInMemoryThreadCollection *)self _cachedInMemoryThreadForConversationID:v11];
 
   os_unfair_lock_lock(&self->_threadsLock);
   threadsByConversationID = self->_threadsByConversationID;
-  v14 = [MEMORY[0x1E696AD98] numberWithLongLong:v10];
+  v14 = [MEMORY[0x1E696AD98] numberWithLongLong:conversationID];
   v55 = [(EFMutableOrderedDictionary *)threadsByConversationID objectForKeyedSubscript:v14];
 
   os_unfair_lock_unlock(&self->_threadsLock);
   if (v12)
   {
-    v15 = [v12 addMessages:v6];
-    v16 = [v12 thread];
-    v17 = [(EDInMemoryThreadCollection *)self query];
-    [(EDSortableThreadProxy *)v55 updateFromThread:v16 addingAdditionalInformation:0 query:v17];
+    v15 = [v12 addMessages:messagesCopy];
+    thread = [v12 thread];
+    query = [(EDInMemoryThreadCollection *)self query];
+    [(EDSortableThreadProxy *)v55 updateFromThread:thread addingAdditionalInformation:0 query:query];
 
     if (v15)
     {
-      v18 = [v12 thread];
-      v19 = [v18 objectID];
-      [v56 setObject:v15 forKeyedSubscript:v19];
+      thread2 = [v12 thread];
+      objectID = [thread2 objectID];
+      [v56 setObject:v15 forKeyedSubscript:objectID];
 
       sectionQueryHelper = self->_sectionQueryHelper;
-      v21 = [v12 thread];
-      LODWORD(sectionQueryHelper) = [(EDSectionQueryItemHelper *)sectionQueryHelper updateSectionForItem:v21];
+      thread3 = [v12 thread];
+      LODWORD(sectionQueryHelper) = [(EDSectionQueryItemHelper *)sectionQueryHelper updateSectionForItem:thread3];
 
       if (sectionQueryHelper)
       {
@@ -2594,12 +2594,12 @@ LABEL_9:
     v12 = v60;
     if (v15)
     {
-      v22 = [(EDSortableThreadProxy *)v55 objectID];
-      [v56 setObject:v15 forKeyedSubscript:v22];
+      objectID2 = [(EDSortableThreadProxy *)v55 objectID];
+      [v56 setObject:v15 forKeyedSubscript:objectID2];
 
       v23 = self->_sectionQueryHelper;
-      v24 = [v12 thread];
-      LODWORD(v23) = [(EDSectionQueryItemHelper *)v23 updateSectionForItem:v24];
+      thread4 = [v12 thread];
+      LODWORD(v23) = [(EDSectionQueryItemHelper *)v23 updateSectionForItem:thread4];
 
       if (v23)
       {
@@ -2611,48 +2611,48 @@ LABEL_9:
   }
 
   v41 = objc_alloc([(EDInMemoryThreadCollection *)self inMemoryThreadClass]);
-  v42 = [(EDInMemoryThreadCollection *)self query];
-  v43 = [(EDInMemoryThreadCollection *)self threadScope];
-  v12 = [v41 initWithMessages:v6 originatingQuery:v42 threadScope:v43];
+  query2 = [(EDInMemoryThreadCollection *)self query];
+  threadScope = [(EDInMemoryThreadCollection *)self threadScope];
+  v12 = [v41 initWithMessages:messagesCopy originatingQuery:query2 threadScope:threadScope];
 
   v44 = [EDSortableThreadProxy alloc];
-  v45 = [v12 thread];
-  v46 = [(EDInMemoryThreadCollection *)self query];
-  v55 = [(EDSortableThreadProxy *)v44 initWithThread:v45 originatingQuery:v46];
+  thread5 = [v12 thread];
+  query3 = [(EDInMemoryThreadCollection *)self query];
+  v55 = [(EDSortableThreadProxy *)v44 initWithThread:thread5 originatingQuery:query3];
 
   v47 = self->_sectionQueryHelper;
-  v48 = [v12 thread];
-  [(EDSectionQueryItemHelper *)v47 updateSectionForItem:v48];
+  thread6 = [v12 thread];
+  [(EDSectionQueryItemHelper *)v47 updateSectionForItem:thread6];
 
   v49 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithObjects:{v55, 0}];
   v25 = [(EDInMemoryThreadCollection *)self _mergeInThreads:v49 searchInfo:0 forMove:0];
 
 LABEL_10:
-  v26 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
+  v26 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v27 = [(EDInMemoryThreadCollection *)self _cachedInMemoryThreadForConversationID:v26];
 
   os_unfair_lock_lock(&self->_threadsLock);
   v28 = self->_threadsByConversationID;
-  v29 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
+  v29 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v30 = [(EFMutableOrderedDictionary *)v28 objectForKeyedSubscript:v29];
 
   os_unfair_lock_unlock(&self->_threadsLock);
   v61 = 0;
   if (v27)
   {
-    v31 = [v27 removeMessages:v6 threadIsEmpty:&v61];
+    v31 = [v27 removeMessages:messagesCopy threadIsEmpty:&v61];
     if (v61 == 1)
     {
-      v32 = [(EDInMemoryThreadCollection *)self inMemoryThreadCache];
-      v33 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
-      [v32 removeObjectForKey:v33];
+      inMemoryThreadCache = [(EDInMemoryThreadCollection *)self inMemoryThreadCache];
+      v33 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
+      [inMemoryThreadCache removeObjectForKey:v33];
     }
 
     else
     {
-      v34 = [v27 thread];
-      v35 = [(EDInMemoryThreadCollection *)self query];
-      [v30 updateFromThread:v34 addingAdditionalInformation:0 query:v35];
+      thread7 = [v27 thread];
+      query4 = [(EDInMemoryThreadCollection *)self query];
+      [v30 updateFromThread:thread7 addingAdditionalInformation:0 query:query4];
     }
   }
 
@@ -2673,8 +2673,8 @@ LABEL_10:
   if (v61 == 1)
   {
     v36 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithObjects:{v30, 0}];
-    v37 = [(EDInMemoryThreadCollection *)self delegate];
-    v25 |= [v37 collection:self reportDeletes:v36];
+    delegate3 = [(EDInMemoryThreadCollection *)self delegate];
+    v25 |= [delegate3 collection:self reportDeletes:v36];
 
     if (v25)
     {
@@ -2684,12 +2684,12 @@ LABEL_10:
 
   else if (v31)
   {
-    v38 = [v30 objectID];
-    [v56 setObject:v31 forKeyedSubscript:v38];
+    objectID3 = [v30 objectID];
+    [v56 setObject:v31 forKeyedSubscript:objectID3];
 
     v39 = self->_sectionQueryHelper;
-    v40 = [v27 thread];
-    LODWORD(v39) = [(EDSectionQueryItemHelper *)v39 updateSectionForItem:v40];
+    thread8 = [v27 thread];
+    LODWORD(v39) = [(EDSectionQueryItemHelper *)v39 updateSectionForItem:thread8];
 
     if (v39)
     {
@@ -2706,13 +2706,13 @@ LABEL_25:
   v50 = v54;
   v58 = v50;
   [v56 enumerateKeysAndObjectsUsingBlock:v57];
-  v51 = [(EDInMemoryThreadCollection *)self delegate];
-  v52 = [v51 collection:self reportChanges:v56];
+  delegate4 = [(EDInMemoryThreadCollection *)self delegate];
+  v52 = [delegate4 collection:self reportChanges:v56];
 
   if (([(EDInMemoryThreadCollection *)self _mergeInThreads:v50 searchInfo:0 forMove:1u]| v52 | v25))
   {
-    v53 = [(EDInMemoryThreadCollection *)self delegate];
-    [v53 didSendUpdatesInCollection:self];
+    delegate5 = [(EDInMemoryThreadCollection *)self delegate];
+    [delegate5 didSendUpdatesInCollection:self];
   }
 }
 
@@ -2732,52 +2732,52 @@ void __84__EDInMemoryThreadCollection_conversationIDDidChangeForMessages_fromCon
   }
 }
 
-- (void)conversationNotificationLevelDidChangeForConversation:(int64_t)a3 conversationID:(int64_t)a4
+- (void)conversationNotificationLevelDidChangeForConversation:(int64_t)conversation conversationID:(int64_t)d
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v7 = [(EDInMemoryThreadCollection *)self delegate];
-  [v7 assertCorrectSchedulerForCollection:self];
+  delegate = [(EDInMemoryThreadCollection *)self delegate];
+  [delegate assertCorrectSchedulerForCollection:self];
 
   os_unfair_lock_lock(&self->_threadsLock);
   threadsByConversationID = self->_threadsByConversationID;
-  v9 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
+  v9 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v10 = [(EFMutableOrderedDictionary *)threadsByConversationID objectForKeyedSubscript:v9];
 
   os_unfair_lock_unlock(&self->_threadsLock);
   if (v10)
   {
     v11 = objc_alloc_init(MEMORY[0x1E699AD98]);
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:conversation];
     [v11 setConversationNotificationLevel:v12];
 
-    v13 = [(EDInMemoryThreadCollection *)self delegate];
-    [v13 prepareToSendUpdatesInCollection:self];
+    delegate2 = [(EDInMemoryThreadCollection *)self delegate];
+    [delegate2 prepareToSendUpdatesInCollection:self];
 
-    v14 = [(EDInMemoryThreadCollection *)self delegate];
-    v15 = [v10 objectID];
-    v19 = v15;
+    delegate3 = [(EDInMemoryThreadCollection *)self delegate];
+    objectID = [v10 objectID];
+    v19 = objectID;
     v20[0] = v11;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-    [v14 collection:self reportChanges:v16];
+    [delegate3 collection:self reportChanges:v16];
 
-    v17 = [(EDInMemoryThreadCollection *)self delegate];
-    [v17 didSendUpdatesInCollection:self];
+    delegate4 = [(EDInMemoryThreadCollection *)self delegate];
+    [delegate4 didSendUpdatesInCollection:self];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_didMergeInThreads:(uint64_t)a1
+- (uint64_t)_didMergeInThreads:(uint64_t)threads
 {
   v3 = a2;
-  if (a1)
+  if (threads)
   {
-    if (([(EDInMemoryThreadCollection *)a1 _hasLoaded]& 1) != 0)
+    if (([(EDInMemoryThreadCollection *)threads _hasLoaded]& 1) != 0)
     {
-      v4 = [a1 dateSortOrder] == 1;
-      v5 = [a1 dateSortOrder] != 0;
-      v6 = [a1 dataSource];
-      v7 = [v6 mailboxesInCollection:a1];
+      v4 = [threads dateSortOrder] == 1;
+      v5 = [threads dateSortOrder] != 0;
+      dataSource = [threads dataSource];
+      v7 = [dataSource mailboxesInCollection:threads];
       v8 = [v7 mutableCopy];
 
       v15 = 0;
@@ -2788,7 +2788,7 @@ void __84__EDInMemoryThreadCollection_conversationIDDidChangeForMessages_fromCon
       v11[1] = 3221225472;
       v11[2] = __49__EDInMemoryThreadCollection__didMergeInThreads___block_invoke;
       v11[3] = &unk_1E8252AB0;
-      v11[4] = a1;
+      v11[4] = threads;
       v13 = &v15;
       v14 = v5;
       v9 = v8;
@@ -2796,13 +2796,13 @@ void __84__EDInMemoryThreadCollection_conversationIDDidChangeForMessages_fromCon
       [v3 enumerateObjectsWithOptions:2 * v4 usingBlock:v11];
       if (*(v16 + 24) == 1)
       {
-        [(EDInMemoryThreadCollection *)a1 _notifyObserverOfOldestThreadsByMailboxObjectIDs];
-        LOBYTE(a1) = *(v16 + 24);
+        [(EDInMemoryThreadCollection *)threads _notifyObserverOfOldestThreadsByMailboxObjectIDs];
+        LOBYTE(threads) = *(v16 + 24);
       }
 
       else
       {
-        LOBYTE(a1) = 0;
+        LOBYTE(threads) = 0;
       }
 
       _Block_object_dispose(&v15, 8);
@@ -2810,11 +2810,11 @@ void __84__EDInMemoryThreadCollection_conversationIDDidChangeForMessages_fromCon
 
     else
     {
-      LOBYTE(a1) = 0;
+      LOBYTE(threads) = 0;
     }
   }
 
-  return a1 & 1;
+  return threads & 1;
 }
 
 void __40__EDInMemoryThreadCollection__hasLoaded__block_invoke(uint64_t a1, void *a2)
@@ -2890,11 +2890,11 @@ void __49__EDInMemoryThreadCollection__didMergeInThreads___block_invoke(uint64_t
 
 - (id)itemIDs
 {
-  v3 = [(EDInMemoryThreadCollection *)self delegate];
-  [v3 assertCorrectSchedulerForCollection:self];
+  delegate = [(EDInMemoryThreadCollection *)self delegate];
+  [delegate assertCorrectSchedulerForCollection:self];
 
-  v4 = [(NSMutableOrderedSet *)self->_conversationIDs array];
-  v5 = [v4 ef_compactMap:&__block_literal_global_77_0];
+  array = [(NSMutableOrderedSet *)self->_conversationIDs array];
+  v5 = [array ef_compactMap:&__block_literal_global_77_0];
 
   return v5;
 }
@@ -2907,11 +2907,11 @@ id __37__EDInMemoryThreadCollection_itemIDs__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (id)sectionIdentifierForThreadObjectID:(id)a3
+- (id)sectionIdentifierForThreadObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   sectionQueryHelper = self->_sectionQueryHelper;
-  v6 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v4, "conversationID")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(dCopy, "conversationID")}];
   v7 = [(EDSectionQueryItemHelper *)sectionQueryHelper sectionIdentifierForID:v6];
 
   return v7;

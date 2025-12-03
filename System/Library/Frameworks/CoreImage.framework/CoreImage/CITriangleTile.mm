@@ -143,7 +143,7 @@
   v49 = v39 * v54;
   v50 = -(v38 * v39);
   v40 = [CIVector vectorWithX:v32 Y:v35 Z:(v31 - v32) W:(v34 - v35)];
-  v41 = [(CITriangleTile *)self _CITriangleTile];
+  _CITriangleTile = [(CITriangleTile *)self _CITriangleTile];
   v42 = *MEMORY[0x1E695F040];
   v43 = *(MEMORY[0x1E695F040] + 8);
   v45 = *(MEMORY[0x1E695F040] + 16);
@@ -159,7 +159,7 @@
   v56[1] = inputCenter;
   v56[2] = [CIVector vectorWithX:v49 Y:v51 Z:v50 W:v53];
   v56[3] = [CIVector vectorWithX:v37 Y:v22 Z:v38 W:v54];
-  return [v41 applyWithExtent:v55 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v56, 4), v42, v43, v45, v44}];
+  return [_CITriangleTile applyWithExtent:v55 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v56, 4), v42, v43, v45, v44}];
 }
 
 double __29__CITriangleTile_outputImage__block_invoke(uint64_t a1)

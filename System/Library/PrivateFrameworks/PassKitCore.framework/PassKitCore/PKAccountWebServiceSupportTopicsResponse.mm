@@ -1,23 +1,23 @@
 @interface PKAccountWebServiceSupportTopicsResponse
-- (PKAccountWebServiceSupportTopicsResponse)initWithData:(id)a3;
+- (PKAccountWebServiceSupportTopicsResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceSupportTopicsResponse
 
-- (PKAccountWebServiceSupportTopicsResponse)initWithData:(id)a3
+- (PKAccountWebServiceSupportTopicsResponse)initWithData:(id)data
 {
   v25 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = PKAccountWebServiceSupportTopicsResponse;
-  v3 = [(PKWebServiceResponse *)&v23 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v23 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 PKArrayForKey:@"topics"];
+      v6 = [jSONObject PKArrayForKey:@"topics"];
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v19 = 0u;
       v20 = 0u;

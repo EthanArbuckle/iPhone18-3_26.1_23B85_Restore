@@ -1,15 +1,15 @@
 @interface _UISceneHostingClientActionHandler
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation _UISceneHostingClientActionHandler
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 objectsPassingTest:&__block_literal_global_258];
+  actionsCopy = actions;
+  iSceneCopy = iScene;
+  v10 = [actionsCopy objectsPassingTest:&__block_literal_global_258];
   if ([v10 count])
   {
     objc_opt_class();
@@ -27,7 +27,7 @@
           *buf = 138413058;
           v30 = v22;
           v31 = 2048;
-          v32 = self;
+          selfCopy = self;
           v33 = 2048;
           v34 = [v10 count];
           v35 = 2112;
@@ -36,7 +36,7 @@
         }
       }
 
-      v12 = v9;
+      v12 = iSceneCopy;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
@@ -67,7 +67,7 @@
     }
   }
 
-  v18 = [v8 mutableCopy];
+  v18 = [actionsCopy mutableCopy];
   [v18 minusSet:v10];
 
   return v18;

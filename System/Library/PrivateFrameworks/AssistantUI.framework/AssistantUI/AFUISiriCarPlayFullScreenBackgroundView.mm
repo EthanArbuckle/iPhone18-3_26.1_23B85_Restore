@@ -1,16 +1,16 @@
 @interface AFUISiriCarPlayFullScreenBackgroundView
-- (AFUISiriCarPlayFullScreenBackgroundView)initWithFrame:(CGRect)a3;
+- (AFUISiriCarPlayFullScreenBackgroundView)initWithFrame:(CGRect)frame;
 - (void)_setupAuraBackdropViews;
-- (void)updateVisibility:(BOOL)a3;
+- (void)updateVisibility:(BOOL)visibility;
 @end
 
 @implementation AFUISiriCarPlayFullScreenBackgroundView
 
-- (AFUISiriCarPlayFullScreenBackgroundView)initWithFrame:(CGRect)a3
+- (AFUISiriCarPlayFullScreenBackgroundView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AFUISiriCarPlayFullScreenBackgroundView;
-  v3 = [(AFUISiriCarPlayFullScreenBackgroundView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AFUISiriCarPlayFullScreenBackgroundView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -51,53 +51,53 @@
   [(UIVisualEffectView *)self->_effectView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(AFUISiriCarPlayFullScreenBackgroundView *)self addSubview:self->_effectView];
   v32 = MEMORY[0x277CCAAD0];
-  v47 = [(UIImageView *)self->_auraView topAnchor];
-  v46 = [(AFUISiriCarPlayFullScreenBackgroundView *)self topAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  topAnchor = [(UIImageView *)self->_auraView topAnchor];
+  topAnchor2 = [(AFUISiriCarPlayFullScreenBackgroundView *)self topAnchor];
+  v45 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v51[0] = v45;
-  v44 = [(UIImageView *)self->_auraView leadingAnchor];
-  v43 = [(AFUISiriCarPlayFullScreenBackgroundView *)self leadingAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  leadingAnchor = [(UIImageView *)self->_auraView leadingAnchor];
+  leadingAnchor2 = [(AFUISiriCarPlayFullScreenBackgroundView *)self leadingAnchor];
+  v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v51[1] = v42;
-  v41 = [(UIImageView *)self->_auraView trailingAnchor];
-  v40 = [(AFUISiriCarPlayFullScreenBackgroundView *)self trailingAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  trailingAnchor = [(UIImageView *)self->_auraView trailingAnchor];
+  trailingAnchor2 = [(AFUISiriCarPlayFullScreenBackgroundView *)self trailingAnchor];
+  v39 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v51[2] = v39;
-  v38 = [(UIImageView *)self->_auraView bottomAnchor];
-  v37 = [(AFUISiriCarPlayFullScreenBackgroundView *)self bottomAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  bottomAnchor = [(UIImageView *)self->_auraView bottomAnchor];
+  bottomAnchor2 = [(AFUISiriCarPlayFullScreenBackgroundView *)self bottomAnchor];
+  v36 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v51[3] = v36;
-  v35 = [(UIView *)self->_backgroundView topAnchor];
-  v34 = [(AFUISiriCarPlayFullScreenBackgroundView *)self topAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  topAnchor3 = [(UIView *)self->_backgroundView topAnchor];
+  topAnchor4 = [(AFUISiriCarPlayFullScreenBackgroundView *)self topAnchor];
+  v33 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v51[4] = v33;
-  v31 = [(UIView *)self->_backgroundView leadingAnchor];
-  v30 = [(AFUISiriCarPlayFullScreenBackgroundView *)self leadingAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  leadingAnchor3 = [(UIView *)self->_backgroundView leadingAnchor];
+  leadingAnchor4 = [(AFUISiriCarPlayFullScreenBackgroundView *)self leadingAnchor];
+  v29 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v51[5] = v29;
-  v28 = [(UIView *)self->_backgroundView trailingAnchor];
-  v27 = [(AFUISiriCarPlayFullScreenBackgroundView *)self trailingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  trailingAnchor3 = [(UIView *)self->_backgroundView trailingAnchor];
+  trailingAnchor4 = [(AFUISiriCarPlayFullScreenBackgroundView *)self trailingAnchor];
+  v26 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v51[6] = v26;
-  v25 = [(UIView *)self->_backgroundView bottomAnchor];
-  v24 = [(AFUISiriCarPlayFullScreenBackgroundView *)self bottomAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  bottomAnchor3 = [(UIView *)self->_backgroundView bottomAnchor];
+  bottomAnchor4 = [(AFUISiriCarPlayFullScreenBackgroundView *)self bottomAnchor];
+  v23 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v51[7] = v23;
-  v22 = [(UIVisualEffectView *)self->_effectView topAnchor];
-  v21 = [(AFUISiriCarPlayFullScreenBackgroundView *)self topAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  topAnchor5 = [(UIVisualEffectView *)self->_effectView topAnchor];
+  topAnchor6 = [(AFUISiriCarPlayFullScreenBackgroundView *)self topAnchor];
+  v20 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v51[8] = v20;
-  v10 = [(UIVisualEffectView *)self->_effectView leadingAnchor];
-  v11 = [(AFUISiriCarPlayFullScreenBackgroundView *)self leadingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  leadingAnchor5 = [(UIVisualEffectView *)self->_effectView leadingAnchor];
+  leadingAnchor6 = [(AFUISiriCarPlayFullScreenBackgroundView *)self leadingAnchor];
+  v12 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v51[9] = v12;
-  v13 = [(UIVisualEffectView *)self->_effectView trailingAnchor];
-  v14 = [(AFUISiriCarPlayFullScreenBackgroundView *)self trailingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  trailingAnchor5 = [(UIVisualEffectView *)self->_effectView trailingAnchor];
+  trailingAnchor6 = [(AFUISiriCarPlayFullScreenBackgroundView *)self trailingAnchor];
+  v15 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v51[10] = v15;
-  v16 = [(UIVisualEffectView *)self->_effectView bottomAnchor];
-  v17 = [(AFUISiriCarPlayFullScreenBackgroundView *)self bottomAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  bottomAnchor5 = [(UIVisualEffectView *)self->_effectView bottomAnchor];
+  bottomAnchor6 = [(AFUISiriCarPlayFullScreenBackgroundView *)self bottomAnchor];
+  v18 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v51[11] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:12];
   [v32 activateConstraints:v19];
@@ -119,12 +119,12 @@ id __66__AFUISiriCarPlayFullScreenBackgroundView__setupAuraBackdropViews__block_
   return v2;
 }
 
-- (void)updateVisibility:(BOOL)a3
+- (void)updateVisibility:(BOOL)visibility
 {
-  v3 = a3;
+  visibilityCopy = visibility;
   auraView = self->_auraView;
   v6 = 0.300000012;
-  if (a3)
+  if (visibility)
   {
     v7 = 1.0;
   }
@@ -137,17 +137,17 @@ id __66__AFUISiriCarPlayFullScreenBackgroundView__setupAuraBackdropViews__block_
 
   [(UIImageView *)auraView setAlpha:v6];
   [(UIView *)self->_backgroundView setAlpha:v7];
-  v10 = [MEMORY[0x277CBEB18] array];
-  if (v3)
+  array = [MEMORY[0x277CBEB18] array];
+  if (visibilityCopy)
   {
     v8 = [MEMORY[0x277D75358] colorEffectSaturate:3.0];
-    [v10 addObject:v8];
+    [array addObject:v8];
 
     v9 = [MEMORY[0x277D75210] effectWithBlurRadius:22.5];
-    [v10 addObject:v9];
+    [array addObject:v9];
   }
 
-  [(UIVisualEffectView *)self->_effectView setBackgroundEffects:v10];
+  [(UIVisualEffectView *)self->_effectView setBackgroundEffects:array];
 }
 
 @end

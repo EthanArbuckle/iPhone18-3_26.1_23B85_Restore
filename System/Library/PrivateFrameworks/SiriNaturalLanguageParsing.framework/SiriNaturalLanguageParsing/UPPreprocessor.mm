@@ -1,15 +1,15 @@
 @interface UPPreprocessor
-+ (vector<nl_featurization::span_matching::MatchedSpan,)buildMatchedSpanListFromQuerySpans:(id)a2;
-- (UPPreprocessor)initWithLocale:(id)a3 featurizer:(const AbstractFeaturizer *)a4;
-- (id)preprocess:(id)a3 error:(id *)a4;
++ (vector<nl_featurization::span_matching::MatchedSpan,)buildMatchedSpanListFromQuerySpans:(id)spans;
+- (UPPreprocessor)initWithLocale:(id)locale featurizer:(const AbstractFeaturizer *)featurizer;
+- (id)preprocess:(id)preprocess error:(id *)error;
 @end
 
 @implementation UPPreprocessor
 
-- (id)preprocess:(id)a3 error:(id *)a4
+- (id)preprocess:(id)preprocess error:(id *)error
 {
   v135 = *MEMORY[0x277D85DE8];
-  v86 = a3;
+  preprocessCopy = preprocess;
   v5 = SNLPOSLoggerForCategory(7);
   v6 = os_signpost_id_generate(v5);
 
@@ -28,12 +28,12 @@
     _os_log_impl(&dword_22284A000, v9, OS_LOG_TYPE_DEFAULT, "BEGIN UaaP Preprocessing", buf, 2u);
   }
 
-  v10 = [(NSLocale *)self->_locale localeIdentifier];
-  v11 = v10;
-  std::string::basic_string[abi:ne200100]<0>(&v120, [v10 UTF8String]);
-  v12 = [v86 utterance];
-  v13 = v12;
-  std::string::basic_string[abi:ne200100]<0>(buf, [v12 UTF8String]);
+  localeIdentifier = [(NSLocale *)self->_locale localeIdentifier];
+  v11 = localeIdentifier;
+  std::string::basic_string[abi:ne200100]<0>(&v120, [localeIdentifier UTF8String]);
+  utterance = [preprocessCopy utterance];
+  v13 = utterance;
+  std::string::basic_string[abi:ne200100]<0>(buf, [utterance UTF8String]);
   if ((v94.__r_.__value_.__r.__words[0] & 0x8000000000000000) == 0)
   {
     v14 = buf;
@@ -60,20 +60,20 @@
     operator delete(*buf);
   }
 
-  v87 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v118 = 0u;
   v119 = 0u;
   v116 = 0u;
   v117 = 0u;
-  v16 = [v86 tokens];
-  v17 = [v16 countByEnumeratingWithState:&v116 objects:v134 count:16];
+  tokens = [preprocessCopy tokens];
+  v17 = [tokens countByEnumeratingWithState:&v116 objects:v134 count:16];
   if (!v17)
   {
 LABEL_22:
 
     memset(v115, 0, 24);
-    v24 = [v86 tokens];
-    v25 = [v24 count];
+    tokens2 = [preprocessCopy tokens];
+    v25 = [tokens2 count];
     if (0xAAAAAAAAAAAAAAABLL * ((*&v115[1] - *&v115[0]) >> 4) < v25)
     {
       if (v25 <= 0x555555555555555)
@@ -89,12 +89,12 @@ LABEL_22:
     v114 = 0u;
     v111 = 0u;
     v112 = 0u;
-    v26 = [v86 tokens];
-    v27 = [v26 countByEnumeratingWithState:&v111 objects:v131 count:16];
+    tokens3 = [preprocessCopy tokens];
+    v27 = [tokens3 countByEnumeratingWithState:&v111 objects:v131 count:16];
     if (v27)
     {
       v28 = *v112;
-      obj = v26;
+      obj = tokens3;
       do
       {
         for (i = 0; i != v27; ++i)
@@ -107,9 +107,9 @@ LABEL_22:
           v30 = *(*(&v111 + 1) + 8 * i);
           *buf = [v30 begin];
           *&buf[8] = [v30 end];
-          v31 = [v30 value];
-          v32 = v31;
-          std::string::basic_string[abi:ne200100]<0>(__p, [v31 UTF8String]);
+          value = [v30 value];
+          v32 = value;
+          std::string::basic_string[abi:ne200100]<0>(__p, [value UTF8String]);
           if (v106 >= 0)
           {
             v33 = __p;
@@ -210,7 +210,7 @@ LABEL_22:
           }
         }
 
-        v26 = obj;
+        tokens3 = obj;
         v27 = [obj countByEnumeratingWithState:&v111 objects:v131 count:16];
       }
 
@@ -218,10 +218,10 @@ LABEL_22:
     }
 
     v45 = objc_opt_class();
-    v46 = [v86 spans];
+    spans = [preprocessCopy spans];
     if (v45)
     {
-      [v45 buildMatchedSpanListFromQuerySpans:v46];
+      [v45 buildMatchedSpanListFromQuerySpans:spans];
     }
 
     else
@@ -370,11 +370,11 @@ LABEL_22:
         while (v59 != v85);
       }
 
-      v66 = [v87 firstObject];
-      v67 = [v66 getDimension];
+      firstObject = [array firstObject];
+      getDimension = [firstObject getDimension];
 
       *buf = 0;
-      std::vector<float>::vector[abi:ne200100](&v127, v67 * v83);
+      std::vector<float>::vector[abi:ne200100](&v127, getDimension * v83);
       if (v82 != v81)
       {
         v68 = 0;
@@ -391,17 +391,17 @@ LABEL_22:
 
         do
         {
-          v71 = [v87 objectAtIndexedSubscript:v69];
-          v72 = [v71 getCoordinates];
+          v71 = [array objectAtIndexedSubscript:v69];
+          getCoordinates = [v71 getCoordinates];
 
-          if (v67)
+          if (getDimension)
           {
             v73 = 0;
             v74 = v68;
-            v75 = v67;
+            v75 = getDimension;
             do
             {
-              v76 = [v72 objectAtIndexedSubscript:v73];
+              v76 = [getCoordinates objectAtIndexedSubscript:v73];
               [v76 floatValue];
               *(v127 + v74) = v77;
 
@@ -414,7 +414,7 @@ LABEL_22:
           }
 
           ++v69;
-          v68 += 4 * v67;
+          v68 += 4 * getDimension;
         }
 
         while (v69 != v70);
@@ -432,7 +432,7 @@ LABEL_22:
 
       v123 = (0xAAAAAAAAAAAAAAABLL * ((v100 - v99) >> 4));
       v124 = 1;
-      v125 = v67;
+      v125 = getDimension;
       memset(v92, 0, sizeof(v92));
       std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long const*,unsigned long const*>(v92, &v123, &v126, 3uLL);
     }
@@ -449,24 +449,24 @@ LABEL_16:
   {
     if (*v117 != v18)
     {
-      objc_enumerationMutation(v16);
+      objc_enumerationMutation(tokens);
     }
 
     v20 = *(*(&v116 + 1) + 8 * v19);
-    v21 = [v86 embeddingsByToken];
-    v22 = [v21 objectForKeyedSubscript:v20];
-    v23 = [v22 firstObject];
+    embeddingsByToken = [preprocessCopy embeddingsByToken];
+    v22 = [embeddingsByToken objectForKeyedSubscript:v20];
+    firstObject2 = [v22 firstObject];
 
-    if (!v23)
+    if (!firstObject2)
     {
       break;
     }
 
-    [v87 addObject:v23];
+    [array addObject:firstObject2];
 
     if (v17 == ++v19)
     {
-      v17 = [v16 countByEnumeratingWithState:&v116 objects:v134 count:16];
+      v17 = [tokens countByEnumeratingWithState:&v116 objects:v134 count:16];
       if (!v17)
       {
         goto LABEL_22;
@@ -477,14 +477,14 @@ LABEL_16:
   }
 
   v47 = MEMORY[0x277CCACA8];
-  v48 = [v20 value];
-  v49 = [v47 stringWithFormat:@"No embeddings are associated with token %@", v48];
+  value2 = [v20 value];
+  v49 = [v47 stringWithFormat:@"No embeddings are associated with token %@", value2];
 
   v50 = MEMORY[0x277CCA9B8];
   v132 = *MEMORY[0x277CCA450];
   v133 = v49;
   v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v133 forKeys:&v132 count:1];
-  *a4 = [v50 errorWithDomain:@"com.apple.uaapcustomluframework" code:10 userInfo:v51];
+  *error = [v50 errorWithDomain:@"com.apple.uaapcustomluframework" code:10 userInfo:v51];
 
   if (SHIBYTE(v122.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -501,23 +501,23 @@ LABEL_16:
   return 0;
 }
 
-- (UPPreprocessor)initWithLocale:(id)a3 featurizer:(const AbstractFeaturizer *)a4
+- (UPPreprocessor)initWithLocale:(id)locale featurizer:(const AbstractFeaturizer *)featurizer
 {
-  v7 = a3;
+  localeCopy = locale;
   v11.receiver = self;
   v11.super_class = UPPreprocessor;
   v8 = [(UPPreprocessor *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_locale, a3);
-    v9->__featurizer = a4;
+    objc_storeStrong(&v8->_locale, locale);
+    v9->__featurizer = featurizer;
   }
 
   return v9;
 }
 
-+ (vector<nl_featurization::span_matching::MatchedSpan,)buildMatchedSpanListFromQuerySpans:(id)a2
++ (vector<nl_featurization::span_matching::MatchedSpan,)buildMatchedSpanListFromQuerySpans:(id)spans
 {
   v54 = *MEMORY[0x277D85DE8];
   v5 = a4;
@@ -547,9 +547,9 @@ LABEL_16:
         v11 = *(*(&v46 + 1) + 8 * i);
         if ([v11 type] == 2)
         {
-          v12 = [v11 category];
-          v13 = v12;
-          std::string::basic_string[abi:ne200100]<0>(&buf, [v12 UTF8String]);
+          category = [v11 category];
+          v13 = category;
+          std::string::basic_string[abi:ne200100]<0>(&buf, [category UTF8String]);
           if ((SBYTE7(v52) & 0x80u) == 0)
           {
             p_buf = &buf;
@@ -580,9 +580,9 @@ LABEL_16:
           if (v44)
           {
             LODWORD(v40) = [v11 range];
-            v16 = [v11 range];
+            range = [v11 range];
             [v11 range];
-            HIDWORD(v40) = v17 + v16;
+            HIDWORD(v40) = v17 + range;
             if (SHIBYTE(v45.__r_.__value_.__r.__words[2]) < 0)
             {
               std::basic_string<char16_t>::__init_copy_ctor_external(&__p, v45.__r_.__value_.__l.__data_, v45.__r_.__value_.__l.__size_);
@@ -689,9 +689,9 @@ LABEL_16:
             v18 = SNLPOSLoggerForCategory(3);
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
             {
-              v19 = [v11 category];
+              category2 = [v11 category];
               LODWORD(buf) = 138412290;
-              *(&buf + 4) = v19;
+              *(&buf + 4) = category2;
               _os_log_impl(&dword_22284A000, v18, OS_LOG_TYPE_DEBUG, "Warning: discarding data detector matching span with unknown category %@", &buf, 0xCu);
             }
           }

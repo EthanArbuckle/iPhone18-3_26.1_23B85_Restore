@@ -1,6 +1,6 @@
 @interface RS3DMarker
 - (RS3DMarker)init;
-- (RS3DMarker)initWithDictionary:(id)a3;
+- (RS3DMarker)initWithDictionary:(id)dictionary;
 - (__n128)quad;
 - (id)dictionaryRepresentation;
 @end
@@ -9,10 +9,10 @@
 
 - (__n128)quad
 {
-  result = *(a1 + 32);
-  v2 = *(a1 + 48);
-  v3 = *(a1 + 64);
-  v4 = *(a1 + 80);
+  result = *(self + 32);
+  v2 = *(self + 48);
+  v3 = *(self + 64);
+  v4 = *(self + 80);
   return result;
 }
 
@@ -45,15 +45,15 @@
   return v24;
 }
 
-- (RS3DMarker)initWithDictionary:(id)a3
+- (RS3DMarker)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = RS3DMarker;
   v6 = [(RS3DMarker *)&v32 init];
   if (v6)
   {
-    v7 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"quad");
+    v7 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v5, @"quad");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,7 +96,7 @@
           if (v13 == 4)
           {
 
-            v21 = objc_msgSend_objectForKeyedSubscript_(v4, v20, @"score");
+            v21 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v20, @"score");
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -120,7 +120,7 @@
 
             *(v6 + 2) = v26;
 
-            v28 = objc_msgSend_objectForKeyedSubscript_(v4, v27, @"normal");
+            v28 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v27, @"normal");
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {

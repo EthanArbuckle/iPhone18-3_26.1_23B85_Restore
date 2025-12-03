@@ -10,7 +10,7 @@
 
 - (id)hourHandConfiguration
 {
-  v2 = [(CLKUIAnalogHandsView *)self device];
+  device = [(CLKUIAnalogHandsView *)self device];
   v22 = 0;
   v20 = 0u;
   v21 = 0u;
@@ -29,8 +29,8 @@
   v6 = 0u;
   v7 = 0u;
   v5 = 0u;
-  ___LayoutConstants_block_invoke_68(v2, &v5);
-  v3 = [off_27877BEE0 defaultHourConfigurationForDevice:v2];
+  ___LayoutConstants_block_invoke_68(device, &v5);
+  v3 = [off_27877BEE0 defaultHourConfigurationForDevice:device];
   [v3 setHandWidth:*&v5];
   [v3 setHandLength:*(&v5 + 1)];
   [v3 setPegRadius:*&v6];
@@ -50,14 +50,14 @@
 {
   v4.receiver = self;
   v4.super_class = NTKDualTimeAnalogHandsView;
-  v2 = [(CLKUIAnalogHandsView *)&v4 createHourHandView];
+  createHourHandView = [(CLKUIAnalogHandsView *)&v4 createHourHandView];
 
-  return v2;
+  return createHourHandView;
 }
 
 - (id)minuteHandConfiguration
 {
-  v3 = [(CLKUIAnalogHandsView *)self device];
+  device = [(CLKUIAnalogHandsView *)self device];
   v19 = 0;
   v17 = 0u;
   v18 = 0u;
@@ -71,9 +71,9 @@
   v10 = 0u;
   v8 = 0u;
   memset(v7, 0, sizeof(v7));
-  ___LayoutConstants_block_invoke_68(v3, v7);
-  v4 = [(CLKUIAnalogHandsView *)self device];
-  v5 = [off_27877BEE0 defaultMinuteConfigurationForDevice:v4];
+  ___LayoutConstants_block_invoke_68(device, v7);
+  device2 = [(CLKUIAnalogHandsView *)self device];
+  v5 = [off_27877BEE0 defaultMinuteConfigurationForDevice:device2];
 
   [v5 setHandWidth:*&v8];
   [v5 setHandLength:*(&v8 + 1)];
@@ -94,14 +94,14 @@
 {
   v4.receiver = self;
   v4.super_class = NTKDualTimeAnalogHandsView;
-  v2 = [(CLKUIAnalogHandsView *)&v4 createMinuteHandView];
+  createMinuteHandView = [(CLKUIAnalogHandsView *)&v4 createMinuteHandView];
 
-  return v2;
+  return createMinuteHandView;
 }
 
 - (id)secondHandConfiguration
 {
-  v3 = [(CLKUIAnalogHandsView *)self device];
+  device = [(CLKUIAnalogHandsView *)self device];
   v13 = 0.0;
   v11 = 0u;
   v12 = 0u;
@@ -109,9 +109,9 @@
   v10 = 0u;
   v8 = 0u;
   memset(v7, 0, sizeof(v7));
-  ___LayoutConstants_block_invoke_68(v3, v7);
-  v4 = [(CLKUIAnalogHandsView *)self device];
-  v5 = [off_27877BEE0 defaultSecondConfigurationForDevice:v4];
+  ___LayoutConstants_block_invoke_68(device, v7);
+  device2 = [(CLKUIAnalogHandsView *)self device];
+  v5 = [off_27877BEE0 defaultSecondConfigurationForDevice:device2];
 
   [v5 setHandWidth:*&v8];
   [v5 setHandLength:*(&v8 + 1)];

@@ -1,9 +1,9 @@
 @interface ISAnimatedImageTimer
 + (id)sharedTimer;
 - (ISAnimatedImageTimer)init;
-- (void)_animationTimerFired:(id)a3;
-- (void)_fireTimerWithInterval:(double)a3;
-- (void)_setTimestamp:(double)a3;
+- (void)_animationTimerFired:(id)fired;
+- (void)_fireTimerWithInterval:(double)interval;
+- (void)_setTimestamp:(double)timestamp;
 - (void)_updateDisplayLink;
 - (void)dealloc;
 - (void)hasObserversDidChange;
@@ -11,23 +11,23 @@
 
 @implementation ISAnimatedImageTimer
 
-- (void)_animationTimerFired:(id)a3
+- (void)_animationTimerFired:(id)fired
 {
-  [a3 timestamp];
+  [fired timestamp];
 
   [(ISAnimatedImageTimer *)self _fireTimerWithInterval:?];
 }
 
-- (void)_setTimestamp:(double)a3
+- (void)_setTimestamp:(double)timestamp
 {
-  if (self->_timestamp != a3)
+  if (self->_timestamp != timestamp)
   {
-    self->_timestamp = a3;
+    self->_timestamp = timestamp;
     [(ISObservable *)self signalChange:1];
   }
 }
 
-- (void)_fireTimerWithInterval:(double)a3
+- (void)_fireTimerWithInterval:(double)interval
 {
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
@@ -35,7 +35,7 @@
     v6[1] = 3221225472;
     v6[2] = __47__ISAnimatedImageTimer__fireTimerWithInterval___block_invoke;
     v6[3] = &__block_descriptor_40_e30_v16__0__ISAnimatedImageTimer_8l;
-    *&v6[4] = a3;
+    *&v6[4] = interval;
     [(ISObservable *)self performChanges:v6];
   }
 
@@ -46,7 +46,7 @@
     block[2] = __47__ISAnimatedImageTimer__fireTimerWithInterval___block_invoke_2;
     block[3] = &unk_279A2A410;
     block[4] = self;
-    *&block[5] = a3;
+    *&block[5] = interval;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }

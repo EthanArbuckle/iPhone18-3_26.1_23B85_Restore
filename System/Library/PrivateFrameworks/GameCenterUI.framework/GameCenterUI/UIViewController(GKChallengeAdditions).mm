@@ -12,43 +12,43 @@
   v31 = v4;
   if ((*MEMORY[0x277D0C258] & 1) == 0)
   {
-    v15 = [MEMORY[0x277D75418] currentDevice];
-    v16 = [v15 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v4 = v31;
-    if (v16 != 1 || *v5 == 1 && (*MEMORY[0x277D0C8F0] & 1) == 0)
+    if (userInterfaceIdiom != 1 || *v5 == 1 && (*MEMORY[0x277D0C8F0] & 1) == 0)
     {
-      v6 = [[GKNavigationController alloc] initWithRootViewController:v31];
-      v17 = [(GKNavigationController *)v6 navigationBar];
-      v18 = [MEMORY[0x277D0C8C8] sharedTheme];
-      [v17 _gkApplyTheme:v18 navbarStyle:1];
+      view = [[GKNavigationController alloc] initWithRootViewController:v31];
+      navigationBar = [(GKNavigationController *)view navigationBar];
+      mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+      [navigationBar _gkApplyTheme:mEMORY[0x277D0C8C8] navbarStyle:1];
 
-      v19 = [MEMORY[0x277D75418] currentDevice];
-      v20 = [v19 userInterfaceIdiom];
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-      if (v20 == 1)
+      if (userInterfaceIdiom2 == 1)
       {
-        [(GKNavigationController *)v6 setModalPresentationStyle:16];
-        v21 = [MEMORY[0x277D0C8C8] sharedTheme];
-        [v21 formSheetSize];
-        [(GKNavigationController *)v6 setFormSheetSize:?];
+        [(GKNavigationController *)view setModalPresentationStyle:16];
+        mEMORY[0x277D0C8C8]2 = [MEMORY[0x277D0C8C8] sharedTheme];
+        [mEMORY[0x277D0C8C8]2 formSheetSize];
+        [(GKNavigationController *)view setFormSheetSize:?];
       }
 
-      [a1 setWantsFullScreenLayout:1];
-      v22 = [a1 _popoverController];
-      v23 = [v22 delegate];
-      if (v23)
+      [self setWantsFullScreenLayout:1];
+      _popoverController = [self _popoverController];
+      delegate = [_popoverController delegate];
+      if (delegate)
       {
-        v24 = v23;
-        v25 = [a1 _popoverController];
-        v26 = [v25 delegate];
+        v24 = delegate;
+        _popoverController2 = [self _popoverController];
+        delegate2 = [_popoverController2 delegate];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v28 = [a1 _popoverController];
-          v29 = [v28 delegate];
+          _popoverController3 = [self _popoverController];
+          delegate3 = [_popoverController3 delegate];
 
           goto LABEL_18;
         }
@@ -58,34 +58,34 @@
       {
       }
 
-      v29 = [a1 navigationController];
+      delegate3 = [self navigationController];
 LABEL_18:
-      [v29 presentViewController:v6 animated:1 completion:&__block_literal_global_145];
+      [delegate3 presentViewController:view animated:1 completion:&__block_literal_global_145];
       if (objc_opt_respondsToSelector())
       {
-        [v29 dismissPopoverAnimated:0];
+        [delegate3 dismissPopoverAnimated:0];
       }
 
       else
       {
-        v30 = [a1 _popoverController];
-        [v30 dismissPopoverAnimated:0];
+        _popoverController4 = [self _popoverController];
+        [_popoverController4 dismissPopoverAnimated:0];
       }
 
       goto LABEL_21;
     }
   }
 
-  v6 = [v4 view];
-  [(GKNavigationController *)v6 setBackgroundColor:0];
-  [(GKNavigationController *)v6 setOpaque:0];
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  view = [v4 view];
+  [(GKNavigationController *)view setBackgroundColor:0];
+  [(GKNavigationController *)view setOpaque:0];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-  if (v8 == 1)
+  if (userInterfaceIdiom3 == 1)
   {
-    v9 = [MEMORY[0x277D759A0] mainScreen];
-    [v9 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v11 = v10;
     v13 = v12;
 
@@ -102,8 +102,8 @@ LABEL_18:
   }
 
   [v31 setPreferredContentSize:{v14, 440.0}];
-  v29 = [a1 navigationController];
-  [v29 pushViewController:v31 animated:1];
+  delegate3 = [self navigationController];
+  [delegate3 pushViewController:v31 animated:1];
 LABEL_21:
 }
 
@@ -123,7 +123,7 @@ LABEL_21:
   v18[1] = 3221225472;
   v18[2] = __113__UIViewController_GKChallengeAdditions___gkPresentSendDialogForChallenge_selectPlayers_defaultMessage_complete___block_invoke;
   v18[3] = &unk_27966B5F0;
-  v18[4] = a1;
+  v18[4] = self;
   v18[5] = v19;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -131,7 +131,7 @@ LABEL_21:
   v15[3] = &unk_27966B618;
   v17 = v19;
   v14 = v13;
-  v15[4] = a1;
+  v15[4] = self;
   v16 = v14;
   [GKChallengeComposeController composeAndSendFlowForChallenge:v10 selectPlayers:v11 defaultMessage:v12 forcePicker:0 readyHandler:v18 completionHandler:v15];
 

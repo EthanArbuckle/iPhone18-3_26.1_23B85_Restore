@@ -1,41 +1,41 @@
 @interface EMSender
-- (BOOL)isEqual:(id)a3;
-- (EMSender)initWithCoder:(id)a3;
-- (EMSender)initWithDatabaseID:(int64_t)a3 addresses:(id)a4 contactIdentifier:(id)a5 bucket:(int64_t)a6;
+- (BOOL)isEqual:(id)equal;
+- (EMSender)initWithCoder:(id)coder;
+- (EMSender)initWithDatabaseID:(int64_t)d addresses:(id)addresses contactIdentifier:(id)identifier bucket:(int64_t)bucket;
 - (NSString)displayName;
-- (id)_bestDisplayNameFromDisplayNames:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compare:(id)a3;
-- (void)addAddress:(id)a3;
+- (id)_bestDisplayNameFromDisplayNames:(id)names;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compare:(id)compare;
+- (void)addAddress:(id)address;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeAddress:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeAddress:(id)address;
 @end
 
 @implementation EMSender
 
-- (EMSender)initWithDatabaseID:(int64_t)a3 addresses:(id)a4 contactIdentifier:(id)a5 bucket:(int64_t)a6
+- (EMSender)initWithDatabaseID:(int64_t)d addresses:(id)addresses contactIdentifier:(id)identifier bucket:(int64_t)bucket
 {
-  v10 = a4;
-  v11 = a5;
+  addressesCopy = addresses;
+  identifierCopy = identifier;
   v21.receiver = self;
   v21.super_class = EMSender;
   v12 = [(EMSender *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    v12->_databaseID = a3;
+    v12->_databaseID = d;
     v14 = objc_alloc(MEMORY[0x1E699B7F0]);
-    v15 = [v10 mutableCopy];
+    v15 = [addressesCopy mutableCopy];
     v16 = [v14 initWithObject:v15];
     addresses = v13->_addresses;
     v13->_addresses = v16;
 
-    v18 = [v11 copy];
+    v18 = [identifierCopy copy];
     contactIdentifier = v13->_contactIdentifier;
     v13->_contactIdentifier = v18;
 
-    v13->_bucket = a6;
+    v13->_bucket = bucket;
   }
 
   return v13;
@@ -49,19 +49,19 @@
   [(EMSender *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if (([(EMSender *)v4 isMemberOfClass:objc_opt_class()]& 1) != 0)
+  else if (([(EMSender *)equalCopy isMemberOfClass:objc_opt_class()]& 1) != 0)
   {
-    v5 = v4;
-    v6 = [(EMSender *)self databaseID];
-    v7 = v6 == [(EMSender *)v5 databaseID];
+    v5 = equalCopy;
+    databaseID = [(EMSender *)self databaseID];
+    v7 = databaseID == [(EMSender *)v5 databaseID];
   }
 
   else
@@ -72,28 +72,28 @@
   return v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(EMSender *)self displayName];
-  v6 = [v4 displayName];
-  v7 = [v5 localizedStandardCompare:v6];
+  compareCopy = compare;
+  displayName = [(EMSender *)self displayName];
+  displayName2 = [compareCopy displayName];
+  v7 = [displayName localizedStandardCompare:displayName2];
 
   if (!v7)
   {
-    v8 = [(EMSender *)self addresses];
-    v9 = [v4 addresses];
-    v10 = [v8 count];
-    if (v10 >= [v9 count])
+    addresses = [(EMSender *)self addresses];
+    addresses2 = [compareCopy addresses];
+    v10 = [addresses count];
+    if (v10 >= [addresses2 count])
     {
-      v11 = [v8 count];
-      if (v11 <= [v9 count])
+      v11 = [addresses count];
+      if (v11 <= [addresses2 count])
       {
-        v12 = [v8 firstObject];
-        v13 = [v12 stringValue];
-        v14 = [v9 firstObject];
-        v15 = [v14 stringValue];
-        v7 = [v13 localizedStandardCompare:v15];
+        firstObject = [addresses firstObject];
+        stringValue = [firstObject stringValue];
+        firstObject2 = [addresses2 firstObject];
+        stringValue2 = [firstObject2 stringValue];
+        v7 = [stringValue localizedStandardCompare:stringValue2];
       }
 
       else
@@ -111,36 +111,36 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(EMSender *)self databaseID];
-  v6 = [(EMSender *)self addresses];
-  v7 = [(EMSender *)self contactIdentifier];
-  v8 = [v4 initWithDatabaseID:v5 addresses:v6 contactIdentifier:v7 bucket:{-[EMSender bucket](self, "bucket")}];
+  databaseID = [(EMSender *)self databaseID];
+  addresses = [(EMSender *)self addresses];
+  contactIdentifier = [(EMSender *)self contactIdentifier];
+  v8 = [v4 initWithDatabaseID:databaseID addresses:addresses contactIdentifier:contactIdentifier bucket:{-[EMSender bucket](self, "bucket")}];
 
   return v8;
 }
 
-- (EMSender)initWithCoder:(id)a3
+- (EMSender)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = EMSender;
   v5 = [(EMSender *)&v18 init];
   if (v5)
   {
-    v5->_databaseID = [v4 decodeInt64ForKey:@"EFPropertyKey_databaseID"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_contactIdentifier"];
+    v5->_databaseID = [coderCopy decodeInt64ForKey:@"EFPropertyKey_databaseID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_contactIdentifier"];
     contactIdentifier = v5->_contactIdentifier;
     v5->_contactIdentifier = v6;
 
-    v5->_bucket = [v4 decodeIntegerForKey:@"EFPropertyKey_bucket"];
+    v5->_bucket = [coderCopy decodeIntegerForKey:@"EFPropertyKey_bucket"];
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"EFPropertyKey_addresses"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"EFPropertyKey_addresses"];
 
     v13 = objc_alloc(MEMORY[0x1E699B7F0]);
     v14 = [v12 mutableCopy];
@@ -152,42 +152,42 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeInt64:-[EMSender databaseID](self forKey:{"databaseID"), @"EFPropertyKey_databaseID"}];
-  v4 = [(EMSender *)self addresses];
-  [v6 encodeObject:v4 forKey:@"EFPropertyKey_addresses"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[EMSender databaseID](self forKey:{"databaseID"), @"EFPropertyKey_databaseID"}];
+  addresses = [(EMSender *)self addresses];
+  [coderCopy encodeObject:addresses forKey:@"EFPropertyKey_addresses"];
 
-  v5 = [(EMSender *)self contactIdentifier];
-  [v6 encodeObject:v5 forKey:@"EFPropertyKey_contactIdentifier"];
+  contactIdentifier = [(EMSender *)self contactIdentifier];
+  [coderCopy encodeObject:contactIdentifier forKey:@"EFPropertyKey_contactIdentifier"];
 
-  [v6 encodeInteger:-[EMSender bucket](self forKey:{"bucket"), @"EFPropertyKey_bucket"}];
+  [coderCopy encodeInteger:-[EMSender bucket](self forKey:{"bucket"), @"EFPropertyKey_bucket"}];
 }
 
-- (void)addAddress:(id)a3
+- (void)addAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   addresses = self->_addresses;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __23__EMSender_addAddress___block_invoke;
   v7[3] = &unk_1E826FA18;
-  v8 = v4;
-  v6 = v4;
+  v8 = addressCopy;
+  v6 = addressCopy;
   [(EFLocked *)addresses performWhileLocked:v7];
 }
 
-- (void)removeAddress:(id)a3
+- (void)removeAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   addresses = self->_addresses;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __26__EMSender_removeAddress___block_invoke;
   v7[3] = &unk_1E826FA18;
-  v8 = v4;
-  v6 = v4;
+  v8 = addressCopy;
+  v6 = addressCopy;
   [(EFLocked *)addresses performWhileLocked:v7];
 }
 
@@ -197,24 +197,24 @@
   v3 = EFAtomicObjectLoad();
   if (!v3)
   {
-    v4 = [(EMSender *)self addresses];
-    v17 = [v4 ef_compactMap:&__block_literal_global_48];
+    addresses = [(EMSender *)self addresses];
+    v17 = [addresses ef_compactMap:&__block_literal_global_48];
     v5 = [objc_alloc(MEMORY[0x1E696AB50]) initWithArray:v17];
-    v6 = [v5 ef_mostCommonObjects];
-    v7 = [v6 count];
+    ef_mostCommonObjects = [v5 ef_mostCommonObjects];
+    v7 = [ef_mostCommonObjects count];
     if (v7)
     {
       if (v7 == 1)
       {
-        [v6 firstObject];
+        [ef_mostCommonObjects firstObject];
       }
 
       else
       {
-        [(EMSender *)self _bestDisplayNameFromDisplayNames:v6];
+        [(EMSender *)self _bestDisplayNameFromDisplayNames:ef_mostCommonObjects];
       }
-      v13 = ;
-      if (!v13)
+      simpleAddress = ;
+      if (!simpleAddress)
       {
 LABEL_17:
         v3 = 0;
@@ -230,7 +230,7 @@ LABEL_20:
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v8 = v4;
+      v8 = addresses;
       v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v9)
       {
@@ -244,10 +244,10 @@ LABEL_20:
               objc_enumerationMutation(v8);
             }
 
-            v12 = [*(*(&v18 + 1) + 8 * i) emailAddressValue];
-            v13 = [v12 simpleAddress];
+            emailAddressValue = [*(*(&v18 + 1) + 8 * i) emailAddressValue];
+            simpleAddress = [emailAddressValue simpleAddress];
 
-            if (v13)
+            if (simpleAddress)
             {
 
               goto LABEL_19;
@@ -264,10 +264,10 @@ LABEL_20:
         }
       }
 
-      v14 = [v8 firstObject];
-      v13 = [v14 stringValue];
+      firstObject = [v8 firstObject];
+      simpleAddress = [firstObject stringValue];
 
-      if (!v13)
+      if (!simpleAddress)
       {
         goto LABEL_17;
       }
@@ -293,16 +293,16 @@ id __23__EMSender_displayName__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (id)_bestDisplayNameFromDisplayNames:(id)a3
+- (id)_bestDisplayNameFromDisplayNames:(id)names
 {
   v41 = *MEMORY[0x1E69E9840];
-  v25 = a3;
+  namesCopy = names;
   v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v25;
+  obj = namesCopy;
   v3 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v3)
   {
@@ -322,38 +322,38 @@ id __23__EMSender_displayName__block_invoke(uint64_t a1, void *a2)
 
         v5 = *(*(&v35 + 1) + 8 * i);
         v6 = [MEMORY[0x1E6996790] componentsFromString:v5];
-        v7 = [v6 givenName];
-        v8 = v7;
-        v9 = v7 != 0;
-        if (!v34 || v7)
+        givenName = [v6 givenName];
+        v8 = givenName;
+        v9 = givenName != 0;
+        if (!v34 || givenName)
         {
-          v10 = [v6 familyName];
-          v11 = v10;
-          v30 = v10 != 0;
-          if (!v31 || v10)
+          familyName = [v6 familyName];
+          v11 = familyName;
+          v30 = familyName != 0;
+          if (!v31 || familyName)
           {
             v27 = v9;
-            v12 = [v6 namePrefix];
+            namePrefix = [v6 namePrefix];
 
-            v13 = [v6 middleName];
+            middleName = [v6 middleName];
 
-            v14 = [v6 nameSuffix];
+            nameSuffix = [v6 nameSuffix];
 
-            v15 = [v6 nickname];
-            v16 = v15;
-            v17 = v12 != 0;
+            nickname = [v6 nickname];
+            v16 = nickname;
+            v17 = namePrefix != 0;
             v18 = 1;
-            if (v12)
+            if (namePrefix)
             {
               v18 = 2;
             }
 
-            if (v13)
+            if (middleName)
             {
               v17 = v18;
             }
 
-            if (v14)
+            if (nameSuffix)
             {
               v19 = v17 + 1;
             }
@@ -392,7 +392,7 @@ id __23__EMSender_displayName__block_invoke(uint64_t a1, void *a2)
 
   if ([v26 count] == 1)
   {
-    v20 = [v26 firstObject];
+    firstObject = [v26 firstObject];
   }
 
   else
@@ -402,12 +402,12 @@ id __23__EMSender_displayName__block_invoke(uint64_t a1, void *a2)
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
     [v26 sortUsingDescriptors:v22];
 
-    v20 = [v26 firstObject];
+    firstObject = [v26 firstObject];
   }
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v20;
+  return firstObject;
 }
 
 @end

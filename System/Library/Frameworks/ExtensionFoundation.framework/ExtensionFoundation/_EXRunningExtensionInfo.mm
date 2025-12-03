@@ -41,31 +41,31 @@
   v2 = [(_EXRunningExtensionInfo *)&v20 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
+    bundleRecordForCurrentProcess = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
-      v5 = [v4 bundleIdentifier];
+      v4 = bundleRecordForCurrentProcess;
+      bundleIdentifier = [v4 bundleIdentifier];
       bundleIdentifier = v2->_bundleIdentifier;
-      v2->_bundleIdentifier = v5;
+      v2->_bundleIdentifier = bundleIdentifier;
 
-      v7 = [v4 containingBundleRecord];
-      v8 = [v7 bundleIdentifier];
+      containingBundleRecord = [v4 containingBundleRecord];
+      bundleIdentifier2 = [containingBundleRecord bundleIdentifier];
       containerBundleIdentifier = v2->_containerBundleIdentifier;
-      v2->_containerBundleIdentifier = v8;
+      v2->_containerBundleIdentifier = bundleIdentifier2;
 
-      v10 = [v4 extensionPointRecord];
+      extensionPointRecord = [v4 extensionPointRecord];
 
-      v11 = [v10 SDKDictionary];
-      v12 = [v11 objectForKey:@"NSExtension" ofClass:objc_opt_class()];
+      sDKDictionary = [extensionPointRecord SDKDictionary];
+      v12 = [sDKDictionary objectForKey:@"NSExtension" ofClass:objc_opt_class()];
 
       v13 = [v12 _EX_stringForKey:@"NSExtensionContainingViewControllerClass"];
       containingViewControllerClassName = v2->_containingViewControllerClassName;
       v2->_containingViewControllerClassName = v13;
 
-      v15 = [v10 SDKDictionary];
-      v16 = [v15 objectForKey:@"XPCService" ofClass:objc_opt_class()];
+      sDKDictionary2 = [extensionPointRecord SDKDictionary];
+      v16 = [sDKDictionary2 objectForKey:@"XPCService" ofClass:objc_opt_class()];
 
       v17 = [v16 _EX_stringForKey:@"RunLoopType"];
       runLoopType = v2->_runLoopType;
@@ -74,7 +74,7 @@
 
     else
     {
-      v10 = v2;
+      extensionPointRecord = v2;
       v2 = 0;
     }
   }

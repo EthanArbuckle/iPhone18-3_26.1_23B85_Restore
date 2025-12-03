@@ -1,26 +1,26 @@
 @interface PFMetadataTypeVerifier
 - (PFMetadataTypeVerifier)init;
-- (id)_coerceValue:(id)a3 toClass:(Class)a4 forKey:(id)a5;
+- (id)_coerceValue:(id)value toClass:(Class)class forKey:(id)key;
 - (id)_expectedAVMetadataIdentifierTypes;
 - (id)_expectedImageArrayPropertyTypes;
 - (id)_expectedImageDictionaryPropertyTypes;
-- (id)_verifiedValue:(id)a3 forKey:(id)a4 expectedTypes:(id)a5;
-- (id)valueAtIndex:(unint64_t)a3 forKey:(id)a4 fromArray:(id)a5;
-- (id)valueForAVMetadataIdentifier:(id)a3 fromAVMetadataItems:(id)a4;
-- (id)valueForKey:(id)a3 fromProperties:(id)a4;
-- (id)valueForKey:(id)a3 keySpace:(id)a4 fromAVMetadataItems:(id)a5;
-- (id)valueForKeyPath:(id)a3 fromProperties:(id)a4;
-- (id)valueForKeyPath:(id)a3 index:(unint64_t)a4 fromProperties:(id)a5;
+- (id)_verifiedValue:(id)value forKey:(id)key expectedTypes:(id)types;
+- (id)valueAtIndex:(unint64_t)index forKey:(id)key fromArray:(id)array;
+- (id)valueForAVMetadataIdentifier:(id)identifier fromAVMetadataItems:(id)items;
+- (id)valueForKey:(id)key fromProperties:(id)properties;
+- (id)valueForKey:(id)key keySpace:(id)space fromAVMetadataItems:(id)items;
+- (id)valueForKeyPath:(id)path fromProperties:(id)properties;
+- (id)valueForKeyPath:(id)path index:(unint64_t)index fromProperties:(id)properties;
 @end
 
 @implementation PFMetadataTypeVerifier
 
-- (id)_coerceValue:(id)a3 toClass:(Class)a4 forKey:(id)a5
+- (id)_coerceValue:(id)value toClass:(Class)class forKey:(id)key
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if (!v7)
+  valueCopy = value;
+  keyCopy = key;
+  if (!valueCopy)
   {
 LABEL_20:
     v11 = 0;
@@ -28,10 +28,10 @@ LABEL_20:
   }
 
   v9 = objc_opt_class();
-  if ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v24[0] = v7;
-    v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
+    v24[0] = valueCopy;
+    stringValue = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
     goto LABEL_4;
   }
 
@@ -39,9 +39,9 @@ LABEL_20:
   v14 = objc_opt_class();
   if (v13)
   {
-    if ([(objc_class *)a4 isSubclassOfClass:v14])
+    if ([(objc_class *)class isSubclassOfClass:v14])
     {
-      v10 = PFStringFromDate(v7);
+      stringValue = PFStringFromDate(valueCopy);
       goto LABEL_4;
     }
 
@@ -52,9 +52,9 @@ LABEL_18:
       v18 = 138543874;
       v19 = v9;
       v20 = 2114;
-      v21 = a4;
+      classCopy2 = class;
       v22 = 2114;
-      v23 = v8;
+      v23 = keyCopy;
       _os_log_error_impl(&dword_1B35C1000, v16, OS_LOG_TYPE_ERROR, "Cannot coerce from %{public}@ expected type %{public}@ for key %{public}@.", &v18, 0x20u);
     }
 
@@ -63,15 +63,15 @@ LABEL_18:
 
   if (![v9 isSubclassOfClass:v14])
   {
-    if (![v9 isSubclassOfClass:objc_opt_class()] || !-[objc_class isSubclassOfClass:](a4, "isSubclassOfClass:", objc_opt_class()))
+    if (![v9 isSubclassOfClass:objc_opt_class()] || !-[objc_class isSubclassOfClass:](class, "isSubclassOfClass:", objc_opt_class()))
     {
       goto LABEL_18;
     }
 
-    v10 = [v7 stringValue];
+    stringValue = [valueCopy stringValue];
 LABEL_4:
-    v11 = v10;
-    if (v10)
+    v11 = stringValue;
+    if (stringValue)
     {
       goto LABEL_5;
     }
@@ -79,20 +79,20 @@ LABEL_4:
     goto LABEL_18;
   }
 
-  if ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v10 = PFDateFromString(v7);
+    stringValue = PFDateFromString(valueCopy);
     goto LABEL_4;
   }
 
-  if (![(objc_class *)a4 isSubclassOfClass:objc_opt_class()])
+  if (![(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   v15 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   [v15 setNumberStyle:1];
-  v11 = [v15 numberFromString:v7];
+  v11 = [v15 numberFromString:valueCopy];
 
   if (!v11)
   {
@@ -106,9 +106,9 @@ LABEL_5:
     v18 = 138543874;
     v19 = v9;
     v20 = 2114;
-    v21 = a4;
+    classCopy2 = class;
     v22 = 2114;
-    v23 = v8;
+    v23 = keyCopy;
     _os_log_debug_impl(&dword_1B35C1000, v12, OS_LOG_TYPE_DEBUG, "Coerced from %{public}@ to expected type %{public}@ for key %{public}@", &v18, 0x20u);
   }
 
@@ -117,39 +117,39 @@ LABEL_21:
   return v11;
 }
 
-- (id)_verifiedValue:(id)a3 forKey:(id)a4 expectedTypes:(id)a5
+- (id)_verifiedValue:(id)value forKey:(id)key expectedTypes:(id)types
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  valueCopy = value;
+  keyCopy = key;
+  typesCopy = types;
+  v11 = typesCopy;
   v12 = 0;
-  if (v8 && v9)
+  if (valueCopy && keyCopy)
   {
-    v13 = [v10 objectForKeyedSubscript:v9];
+    v13 = [typesCopy objectForKeyedSubscript:keyCopy];
     if (![v13 count])
     {
       v14 = metadataLog;
       if (os_log_type_enabled(metadataLog, OS_LOG_TYPE_FAULT))
       {
         *buf = 138543362;
-        v39 = v9;
+        v39 = keyCopy;
         _os_log_fault_impl(&dword_1B35C1000, v14, OS_LOG_TYPE_FAULT, "PFMETADATA VALIDATION: key (%{public}@) with no expected types", buf, 0xCu);
       }
     }
 
-    v15 = [v13 firstObject];
+    firstObject = [v13 firstObject];
     isKindOfClass = objc_opt_isKindOfClass();
-    v17 = v8;
-    v8 = v17;
+    v17 = valueCopy;
+    valueCopy = v17;
     v18 = v17;
     if (isKindOfClass)
     {
       goto LABEL_25;
     }
 
-    v8 = v17;
+    valueCopy = v17;
     if ([v13 count] >= 2)
     {
       v19 = [v13 subarrayWithRange:{1, objc_msgSend(v13, "count") - 1}];
@@ -165,7 +165,7 @@ LABEL_21:
         v22 = 0;
         v23 = *v35;
         v32 = v17;
-        v8 = v17;
+        valueCopy = v17;
         do
         {
           for (i = 0; i != v21; ++i)
@@ -177,14 +177,14 @@ LABEL_21:
 
             if (objc_opt_isKindOfClass())
             {
-              if (v15 != objc_opt_class())
+              if (firstObject != objc_opt_class())
               {
-                v25 = [(PFMetadataTypeVerifier *)self _coerceValue:v8 toClass:v15 forKey:v9];
+                v25 = [(PFMetadataTypeVerifier *)self _coerceValue:valueCopy toClass:firstObject forKey:keyCopy];
 
-                v8 = v25;
+                valueCopy = v25;
               }
 
-              v22 = v8 != 0;
+              v22 = valueCopy != 0;
             }
           }
 
@@ -193,7 +193,7 @@ LABEL_21:
 
         while (v21);
 
-        v18 = v8;
+        v18 = valueCopy;
         v11 = v33;
         v17 = v32;
         if (v22)
@@ -205,7 +205,7 @@ LABEL_21:
       else
       {
 
-        v8 = v17;
+        valueCopy = v17;
       }
     }
 
@@ -217,7 +217,7 @@ LABEL_21:
       v30 = v29;
       v31 = [v13 componentsJoinedByString:{@", "}];
       *buf = 138543874;
-      v39 = v9;
+      v39 = keyCopy;
       v40 = 2114;
       v41 = v29;
       v42 = 2114;
@@ -233,14 +233,14 @@ LABEL_25:
   return v12;
 }
 
-- (id)valueAtIndex:(unint64_t)a3 forKey:(id)a4 fromArray:(id)a5
+- (id)valueAtIndex:(unint64_t)index forKey:(id)key fromArray:(id)array
 {
-  v8 = a4;
-  v9 = a5;
-  if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v9 count] - 1 >= a3)
+  keyCopy = key;
+  arrayCopy = array;
+  if (keyCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [arrayCopy count] - 1 >= index)
   {
-    v12 = [v9 objectAtIndexedSubscript:a3];
-    v10 = [(PFMetadataTypeVerifier *)self _verifiedValue:v12 forKey:v8 expectedTypes:self->_expectedImageArrayPropertyTypes];
+    v12 = [arrayCopy objectAtIndexedSubscript:index];
+    v10 = [(PFMetadataTypeVerifier *)self _verifiedValue:v12 forKey:keyCopy expectedTypes:self->_expectedImageArrayPropertyTypes];
   }
 
   else
@@ -251,14 +251,14 @@ LABEL_25:
   return v10;
 }
 
-- (id)valueForKey:(id)a3 keySpace:(id)a4 fromAVMetadataItems:(id)a5
+- (id)valueForKey:(id)key keySpace:(id)space fromAVMetadataItems:(id)items
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  keyCopy = key;
+  spaceCopy = space;
+  if (spaceCopy)
   {
-    v10 = [MEMORY[0x1E6987FE0] metadataItemsFromArray:a5 withKey:v8 keySpace:v9];
+    v10 = [MEMORY[0x1E6987FE0] metadataItemsFromArray:items withKey:keyCopy keySpace:spaceCopy];
     if ([v10 count] >= 2)
     {
       v11 = metadataLog;
@@ -267,20 +267,20 @@ LABEL_25:
         v12 = v11;
         v13 = [v10 componentsJoinedByString:{@", "}];
         v19 = 138543874;
-        v20 = v9;
+        v20 = spaceCopy;
         v21 = 2114;
-        v22 = v8;
+        v22 = keyCopy;
         v23 = 2114;
         v24 = v13;
         _os_log_impl(&dword_1B35C1000, v12, OS_LOG_TYPE_INFO, "Found multiple metadata items for %{public}@/%{public}@. Using the first one out of: %{public}@", &v19, 0x20u);
       }
     }
 
-    v14 = [v10 firstObject];
-    v15 = [v14 value];
+    firstObject = [v10 firstObject];
+    value = [firstObject value];
 
-    v16 = [(NSDictionary *)self->_expectedAVMetadataKeyKeySpaceTypes objectForKeyedSubscript:v9];
-    v17 = [(PFMetadataTypeVerifier *)self _verifiedValue:v15 forKey:v8 expectedTypes:v16];
+    v16 = [(NSDictionary *)self->_expectedAVMetadataKeyKeySpaceTypes objectForKeyedSubscript:spaceCopy];
+    v17 = [(PFMetadataTypeVerifier *)self _verifiedValue:value forKey:keyCopy expectedTypes:v16];
   }
 
   else
@@ -291,14 +291,14 @@ LABEL_25:
   return v17;
 }
 
-- (id)valueForAVMetadataIdentifier:(id)a3 fromAVMetadataItems:(id)a4
+- (id)valueForAVMetadataIdentifier:(id)identifier fromAVMetadataItems:(id)items
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = 0;
-  if (v6 && a4)
+  if (identifierCopy && items)
   {
-    v8 = [MEMORY[0x1E6987FE0] metadataItemsFromArray:a4 filteredByIdentifier:v6];
+    v8 = [MEMORY[0x1E6987FE0] metadataItemsFromArray:items filteredByIdentifier:identifierCopy];
     if ([v8 count] >= 2)
     {
       v9 = metadataLog;
@@ -308,29 +308,29 @@ LABEL_25:
         v14 = 134349570;
         v15 = [v8 count];
         v16 = 2114;
-        v17 = v6;
+        v17 = identifierCopy;
         v18 = 2112;
         v19 = v8;
         _os_log_impl(&dword_1B35C1000, v10, OS_LOG_TYPE_INFO, "Found multiple metadata items (%{public}lu) for %{public}@. Using the first one out of: %@", &v14, 0x20u);
       }
     }
 
-    v11 = [v8 firstObject];
-    v12 = [v11 value];
+    firstObject = [v8 firstObject];
+    value = [firstObject value];
 
-    v7 = [(PFMetadataTypeVerifier *)self _verifiedValue:v12 forKey:v6 expectedTypes:self->_expectedAVMetadataIdentifierTypes];
+    v7 = [(PFMetadataTypeVerifier *)self _verifiedValue:value forKey:identifierCopy expectedTypes:self->_expectedAVMetadataIdentifierTypes];
   }
 
   return v7;
 }
 
-- (id)valueForKeyPath:(id)a3 index:(unint64_t)a4 fromProperties:(id)a5
+- (id)valueForKeyPath:(id)path index:(unint64_t)index fromProperties:(id)properties
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  pathCopy = path;
+  propertiesCopy = properties;
+  if (pathCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v10 = [(PFMetadataTypeVerifier *)self valueForKeyPath:v8 fromProperties:v9];
+    v10 = [(PFMetadataTypeVerifier *)self valueForKeyPath:pathCopy fromProperties:propertiesCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -344,12 +344,12 @@ LABEL_25:
 
     v12 = v11;
 
-    v13 = [v8 componentsSeparatedByString:@"."];
-    v14 = [v13 lastObject];
+    v13 = [pathCopy componentsSeparatedByString:@"."];
+    lastObject = [v13 lastObject];
 
-    v15 = [v12 objectAtIndexedSubscript:a4];
+    v15 = [v12 objectAtIndexedSubscript:index];
 
-    v16 = [(PFMetadataTypeVerifier *)self _verifiedValue:v15 forKey:v14 expectedTypes:self->_expectedImageArrayPropertyTypes];
+    v16 = [(PFMetadataTypeVerifier *)self _verifiedValue:v15 forKey:lastObject expectedTypes:self->_expectedImageArrayPropertyTypes];
   }
 
   else
@@ -360,15 +360,15 @@ LABEL_25:
   return v16;
 }
 
-- (id)valueForKeyPath:(id)a3 fromProperties:(id)a4
+- (id)valueForKeyPath:(id)path fromProperties:(id)properties
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  pathCopy = path;
+  propertiesCopy = properties;
+  if (pathCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [v6 componentsSeparatedByString:@"."];
-    v9 = v7;
+    v8 = [pathCopy componentsSeparatedByString:@"."];
+    v9 = propertiesCopy;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -413,14 +413,14 @@ LABEL_25:
   return v9;
 }
 
-- (id)valueForKey:(id)a3 fromProperties:(id)a4
+- (id)valueForKey:(id)key fromProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  keyCopy = key;
+  propertiesCopy = properties;
+  if (keyCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [v7 objectForKeyedSubscript:v6];
-    v9 = [(PFMetadataTypeVerifier *)self _verifiedValue:v8 forKey:v6 expectedTypes:self->_expectedImageDictionaryPropertyTypes];
+    v8 = [propertiesCopy objectForKeyedSubscript:keyCopy];
+    v9 = [(PFMetadataTypeVerifier *)self _verifiedValue:v8 forKey:keyCopy expectedTypes:self->_expectedImageDictionaryPropertyTypes];
   }
 
   else
@@ -1572,21 +1572,21 @@ void __58__PFMetadataTypeVerifier__expectedImageArrayPropertyTypes__block_invoke
   v3 = v2;
   if (v2)
   {
-    v4 = [(PFMetadataTypeVerifier *)v2 _expectedImageDictionaryPropertyTypes];
+    _expectedImageDictionaryPropertyTypes = [(PFMetadataTypeVerifier *)v2 _expectedImageDictionaryPropertyTypes];
     expectedImageDictionaryPropertyTypes = v3->_expectedImageDictionaryPropertyTypes;
-    v3->_expectedImageDictionaryPropertyTypes = v4;
+    v3->_expectedImageDictionaryPropertyTypes = _expectedImageDictionaryPropertyTypes;
 
-    v6 = [(PFMetadataTypeVerifier *)v3 _expectedImageArrayPropertyTypes];
+    _expectedImageArrayPropertyTypes = [(PFMetadataTypeVerifier *)v3 _expectedImageArrayPropertyTypes];
     expectedImageArrayPropertyTypes = v3->_expectedImageArrayPropertyTypes;
-    v3->_expectedImageArrayPropertyTypes = v6;
+    v3->_expectedImageArrayPropertyTypes = _expectedImageArrayPropertyTypes;
 
-    v8 = [(PFMetadataTypeVerifier *)v3 _expectedAVMetadataIdentifierTypes];
+    _expectedAVMetadataIdentifierTypes = [(PFMetadataTypeVerifier *)v3 _expectedAVMetadataIdentifierTypes];
     expectedAVMetadataIdentifierTypes = v3->_expectedAVMetadataIdentifierTypes;
-    v3->_expectedAVMetadataIdentifierTypes = v8;
+    v3->_expectedAVMetadataIdentifierTypes = _expectedAVMetadataIdentifierTypes;
 
-    v10 = [(PFMetadataTypeVerifier *)v3 _expectedAVMetadataKeyKeySpaceTypes];
+    _expectedAVMetadataKeyKeySpaceTypes = [(PFMetadataTypeVerifier *)v3 _expectedAVMetadataKeyKeySpaceTypes];
     expectedAVMetadataKeyKeySpaceTypes = v3->_expectedAVMetadataKeyKeySpaceTypes;
-    v3->_expectedAVMetadataKeyKeySpaceTypes = v10;
+    v3->_expectedAVMetadataKeyKeySpaceTypes = _expectedAVMetadataKeyKeySpaceTypes;
   }
 
   return v3;

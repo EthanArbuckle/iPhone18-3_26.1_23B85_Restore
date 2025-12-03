@@ -1,21 +1,21 @@
 @interface DRSRequestStats
-+ (id)descriptionStringForChildStats:(id)a3;
-- (BOOL)addRequest:(id)a3;
-- (DRSRequestStats)initWithDescriptionString:(id)a3;
-- (id)_debugDescription:(unint64_t)a3;
++ (id)descriptionStringForChildStats:(id)stats;
+- (BOOL)addRequest:(id)request;
+- (DRSRequestStats)initWithDescriptionString:(id)string;
+- (id)_debugDescription:(unint64_t)description;
 - (unint64_t)logSizeBytes;
 - (unint64_t)requestCount;
-- (void)_addChildRequest:(id)a3;
+- (void)_addChildRequest:(id)request;
 @end
 
 @implementation DRSRequestStats
 
-+ (id)descriptionStringForChildStats:(id)a3
++ (id)descriptionStringForChildStats:(id)stats
 {
-  v4 = a3;
-  if ([a1 childStatsClass])
+  statsCopy = stats;
+  if ([self childStatsClass])
   {
-    v5 = [objc_msgSend(a1 "childStatsClass")];
+    v5 = [objc_msgSend(self "childStatsClass")];
   }
 
   else
@@ -26,9 +26,9 @@
   return v5;
 }
 
-- (DRSRequestStats)initWithDescriptionString:(id)a3
+- (DRSRequestStats)initWithDescriptionString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v12.receiver = self;
   v12.super_class = DRSRequestStats;
   v6 = [(DRSRequestStats *)&v12 init];
@@ -38,7 +38,7 @@
     requests = v6->__requests;
     v6->__requests = v7;
 
-    objc_storeStrong(&v6->_descriptionString, a3);
+    objc_storeStrong(&v6->_descriptionString, string);
     if ([objc_opt_class() childStatsClass])
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -52,8 +52,8 @@
 
 - (unint64_t)requestCount
 {
-  v2 = [(DRSRequestStats *)self requests];
-  v3 = [v2 count];
+  requests = [(DRSRequestStats *)self requests];
+  v3 = [requests count];
 
   return v3;
 }
@@ -65,8 +65,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(DRSRequestStats *)self requests];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  requests = [(DRSRequestStats *)self requests];
+  v3 = [requests countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -78,13 +78,13 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(requests);
         }
 
         v5 += [*(*(&v10 + 1) + 8 * i) totalLogSizeBytes];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [requests countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -99,64 +99,64 @@
   return v5;
 }
 
-- (void)_addChildRequest:(id)a3
+- (void)_addChildRequest:(id)request
 {
-  v8 = a3;
+  requestCopy = request;
   if ([objc_opt_class() childStatsClass])
   {
-    v4 = [objc_opt_class() descriptionStringForChildStats:v8];
-    v5 = [(DRSRequestStats *)self childStats];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    v4 = [objc_opt_class() descriptionStringForChildStats:requestCopy];
+    childStats = [(DRSRequestStats *)self childStats];
+    v6 = [childStats objectForKeyedSubscript:v4];
 
     if (!v6)
     {
       v6 = [objc_alloc(objc_msgSend(objc_opt_class() "childStatsClass"))];
-      v7 = [(DRSRequestStats *)self _childStats];
-      [v7 setObject:v6 forKeyedSubscript:v4];
+      _childStats = [(DRSRequestStats *)self _childStats];
+      [_childStats setObject:v6 forKeyedSubscript:v4];
     }
 
-    [v6 addRequest:v8];
+    [v6 addRequest:requestCopy];
   }
 }
 
-- (BOOL)addRequest:(id)a3
+- (BOOL)addRequest:(id)request
 {
-  v4 = a3;
-  v5 = [objc_opt_class() descriptionStringForRequest:v4];
-  v6 = [(DRSRequestStats *)self descriptionString];
-  v7 = [v5 isEqualToString:v6];
+  requestCopy = request;
+  v5 = [objc_opt_class() descriptionStringForRequest:requestCopy];
+  descriptionString = [(DRSRequestStats *)self descriptionString];
+  v7 = [v5 isEqualToString:descriptionString];
 
   if (v7)
   {
-    v8 = [(DRSRequestStats *)self requests];
-    [v8 addObject:v4];
+    requests = [(DRSRequestStats *)self requests];
+    [requests addObject:requestCopy];
 
-    [(DRSRequestStats *)self _addChildRequest:v4];
+    [(DRSRequestStats *)self _addChildRequest:requestCopy];
   }
 
   return v7;
 }
 
-- (id)_debugDescription:(unint64_t)a3
+- (id)_debugDescription:(unint64_t)description
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = [&stru_2847F1D58 mutableCopy];
-  if (a3)
+  if (description)
   {
-    v6 = a3;
+    descriptionCopy = description;
     do
     {
       [v5 appendString:@"\t"];
-      --v6;
+      --descriptionCopy;
     }
 
-    while (v6);
+    while (descriptionCopy);
   }
 
   v7 = MEMORY[0x277CCAB68];
-  v8 = [objc_opt_class() keyName];
-  v9 = [(DRSRequestStats *)self descriptionString];
-  v10 = [v7 stringWithFormat:@"%@: %@:\tCount: %llu, Total log size: %lluB\n", v8, v9, -[DRSRequestStats requestCount](self, "requestCount"), -[DRSRequestStats logSizeBytes](self, "logSizeBytes")];
+  keyName = [objc_opt_class() keyName];
+  descriptionString = [(DRSRequestStats *)self descriptionString];
+  v10 = [v7 stringWithFormat:@"%@: %@:\tCount: %llu, Total log size: %lluB\n", keyName, descriptionString, -[DRSRequestStats requestCount](self, "requestCount"), -[DRSRequestStats logSizeBytes](self, "logSizeBytes")];
 
   if ([objc_opt_class() childStatsClass])
   {
@@ -165,10 +165,10 @@
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v12 = [(DRSRequestStats *)self childStats];
-    v13 = [v12 allValues];
+    childStats = [(DRSRequestStats *)self childStats];
+    allValues = [childStats allValues];
 
-    v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v14 = [allValues countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v14)
     {
       v15 = v14;
@@ -179,14 +179,14 @@
         {
           if (*v23 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allValues);
           }
 
-          v18 = [*(*(&v22 + 1) + 8 * i) _debugDescription:a3 + 1];
+          v18 = [*(*(&v22 + 1) + 8 * i) _debugDescription:description + 1];
           [v11 appendString:v18];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v15 = [allValues countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v15);

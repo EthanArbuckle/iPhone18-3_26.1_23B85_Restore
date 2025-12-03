@@ -1,57 +1,57 @@
 @interface CNContactAddFavoriteAction
-- (CNContactAddFavoriteAction)initWithContact:(id)a3 propertyItems:(id)a4 favorites:(id)a5;
+- (CNContactAddFavoriteAction)initWithContact:(id)contact propertyItems:(id)items favorites:(id)favorites;
 - (id)actionsController;
-- (id)menuProviderForContextMenuInteraction:(id)a3;
-- (void)_saveFavorite:(id)a3;
-- (void)didSelectActionItem:(id)a3;
-- (void)favoritesEntryPicker:(id)a3 didPickEntry:(id)a4 dismissPicker:(BOOL)a5;
-- (void)favoritesEntryPicker:(id)a3 didUpdateWithMenu:(id)a4;
+- (id)menuProviderForContextMenuInteraction:(id)interaction;
+- (void)_saveFavorite:(id)favorite;
+- (void)didSelectActionItem:(id)item;
+- (void)favoritesEntryPicker:(id)picker didPickEntry:(id)entry dismissPicker:(BOOL)dismissPicker;
+- (void)favoritesEntryPicker:(id)picker didUpdateWithMenu:(id)menu;
 @end
 
 @implementation CNContactAddFavoriteAction
 
-- (void)_saveFavorite:(id)a3
+- (void)_saveFavorite:(id)favorite
 {
   v53[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v49 = self;
-  v5 = [(CNContactAddFavoriteAction *)self favorites];
-  v51 = [v4 contactProperty];
-  v50 = [v51 contact];
-  v6 = [v4 contactProperty];
-  v7 = [v6 key];
-  v8 = [v4 contactProperty];
-  v9 = [v8 identifier];
-  v10 = [v4 actionType];
-  v11 = [v4 bundleIdentifier];
-  v12 = [v5 entriesForContact:v50 propertyKey:v7 labeledValueIdentifier:v9 actionType:v10 bundleIdentifier:v11];
+  favoriteCopy = favorite;
+  selfCopy = self;
+  favorites = [(CNContactAddFavoriteAction *)self favorites];
+  contactProperty = [favoriteCopy contactProperty];
+  contact = [contactProperty contact];
+  contactProperty2 = [favoriteCopy contactProperty];
+  v7 = [contactProperty2 key];
+  contactProperty3 = [favoriteCopy contactProperty];
+  identifier = [contactProperty3 identifier];
+  actionType = [favoriteCopy actionType];
+  bundleIdentifier = [favoriteCopy bundleIdentifier];
+  v12 = [favorites entriesForContact:contact propertyKey:v7 labeledValueIdentifier:identifier actionType:actionType bundleIdentifier:bundleIdentifier];
   v13 = [v12 count];
 
-  v14 = v5;
+  v14 = favorites;
   if (v13)
   {
     goto LABEL_30;
   }
 
-  [v5 addEntry:v4];
-  [v5 save];
-  v15 = [v4 actionType];
+  [favorites addEntry:favoriteCopy];
+  [favorites save];
+  actionType2 = [favoriteCopy actionType];
   v16 = *MEMORY[0x1E695C150];
-  v17 = v15 | *MEMORY[0x1E695C150];
+  v17 = actionType2 | *MEMORY[0x1E695C150];
   v18 = v17 != 0;
   if (v17)
   {
-    v6 = [v4 actionType];
-    if (([v6 isEqual:v16] & 1) == 0)
+    contactProperty2 = [favoriteCopy actionType];
+    if (([contactProperty2 isEqual:v16] & 1) == 0)
     {
 
       goto LABEL_13;
     }
   }
 
-  v19 = [v4 bundleIdentifier];
+  bundleIdentifier2 = [favoriteCopy bundleIdentifier];
   v20 = *MEMORY[0x1E695C140];
-  if (!(v19 | *MEMORY[0x1E695C140]))
+  if (!(bundleIdentifier2 | *MEMORY[0x1E695C140]))
   {
     if (v18)
     {
@@ -60,9 +60,9 @@
     goto LABEL_12;
   }
 
-  v21 = v19;
-  v22 = [v4 bundleIdentifier];
-  v23 = [v22 isEqual:v20];
+  v21 = bundleIdentifier2;
+  bundleIdentifier3 = [favoriteCopy bundleIdentifier];
+  v23 = [bundleIdentifier3 isEqual:v20];
 
   if (!v18)
   {
@@ -72,20 +72,20 @@
     }
 
 LABEL_13:
-    v25 = [v4 actionType];
+    actionType3 = [favoriteCopy actionType];
     v26 = *MEMORY[0x1E695C1B8];
     v27 = MEMORY[0x1E695C118];
-    v28 = v25 | *MEMORY[0x1E695C1B8];
+    v28 = actionType3 | *MEMORY[0x1E695C1B8];
     v29 = v28 != 0;
-    if (v28 && ([v4 actionType], v6 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v6, "isEqual:", v26) & 1) == 0))
+    if (v28 && ([favoriteCopy actionType], contactProperty2 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(contactProperty2, "isEqual:", v26) & 1) == 0))
     {
     }
 
     else
     {
-      v30 = [v4 bundleIdentifier];
+      bundleIdentifier4 = [favoriteCopy bundleIdentifier];
       v31 = *v27;
-      if (!(v30 | *v27))
+      if (!(bundleIdentifier4 | *v27))
       {
         if (v29)
         {
@@ -94,9 +94,9 @@ LABEL_13:
         goto LABEL_23;
       }
 
-      v32 = v30;
-      v33 = [v4 bundleIdentifier];
-      v34 = [v33 isEqual:v31];
+      v32 = bundleIdentifier4;
+      bundleIdentifier5 = [favoriteCopy bundleIdentifier];
+      v34 = [bundleIdentifier5 isEqual:v31];
 
       if (v29)
       {
@@ -118,12 +118,12 @@ LABEL_23:
     }
 
 LABEL_31:
-    v42 = [v4 actionType];
-    v43 = (v42 | v16) != 0;
-    if (v42 | v16)
+    actionType4 = [favoriteCopy actionType];
+    v43 = (actionType4 | v16) != 0;
+    if (actionType4 | v16)
     {
-      v6 = [v4 actionType];
-      if (([v6 isEqual:v16] & 1) == 0)
+      contactProperty2 = [favoriteCopy actionType];
+      if (([contactProperty2 isEqual:v16] & 1) == 0)
       {
 
         v35 = 0;
@@ -131,23 +131,23 @@ LABEL_31:
       }
     }
 
-    v44 = [v4 bundleIdentifier];
+    bundleIdentifier6 = [favoriteCopy bundleIdentifier];
     v45 = *v27;
-    if (!(v44 | *v27))
+    if (!(bundleIdentifier6 | *v27))
     {
-      v36 = v49;
-      if (v42 | v16)
+      v36 = selfCopy;
+      if (actionType4 | v16)
       {
       }
 
       goto LABEL_41;
     }
 
-    v46 = v44;
-    v47 = [v4 bundleIdentifier];
-    v48 = [v47 isEqual:v45];
+    v46 = bundleIdentifier6;
+    bundleIdentifier7 = [favoriteCopy bundleIdentifier];
+    v48 = [bundleIdentifier7 isEqual:v45];
 
-    v36 = v49;
+    v36 = selfCopy;
     if (v43)
     {
 
@@ -179,7 +179,7 @@ LABEL_12:
 LABEL_24:
   v35 = v24;
 LABEL_25:
-  v36 = v49;
+  v36 = selfCopy;
 LABEL_26:
   v37 = +[CNUIDataCollector sharedCollector];
   v38 = v37;
@@ -197,98 +197,98 @@ LABEL_26:
     [v37 logContactActionType:CNUIContactActionTypeAddToFavorites attributes:0];
   }
 
-  v41 = [(CNContactAction *)v36 delegate];
-  [v41 actionDidFinish:v36];
+  delegate = [(CNContactAction *)v36 delegate];
+  [delegate actionDidFinish:v36];
 
 LABEL_30:
 }
 
-- (void)favoritesEntryPicker:(id)a3 didUpdateWithMenu:(id)a4
+- (void)favoritesEntryPicker:(id)picker didUpdateWithMenu:(id)menu
 {
-  v8 = a4;
-  if ([v8 count])
+  menuCopy = menu;
+  if ([menuCopy count])
   {
-    v5 = [(CNContactAction *)self delegate];
+    delegate = [(CNContactAction *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(CNContactAction *)self delegate];
-      [v7 action:self didUpdateWithMenu:v8];
+      delegate2 = [(CNContactAction *)self delegate];
+      [delegate2 action:self didUpdateWithMenu:menuCopy];
     }
   }
 }
 
-- (void)favoritesEntryPicker:(id)a3 didPickEntry:(id)a4 dismissPicker:(BOOL)a5
+- (void)favoritesEntryPicker:(id)picker didPickEntry:(id)entry dismissPicker:(BOOL)dismissPicker
 {
-  v5 = a5;
-  v7 = a4;
-  if (v5)
+  dismissPickerCopy = dismissPicker;
+  entryCopy = entry;
+  if (dismissPickerCopy)
   {
     [(CNContactAddFavoriteAction *)self setFavoritesEntryPicker:0];
   }
 
-  [(CNContactAddFavoriteAction *)self _saveFavorite:v7];
+  [(CNContactAddFavoriteAction *)self _saveFavorite:entryCopy];
 }
 
-- (void)didSelectActionItem:(id)a3
+- (void)didSelectActionItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CNContactAddFavoriteAction *)self favoritesEntryPicker];
-  [v5 didSelectActionItem:v4];
+  itemCopy = item;
+  favoritesEntryPicker = [(CNContactAddFavoriteAction *)self favoritesEntryPicker];
+  [favoritesEntryPicker didSelectActionItem:itemCopy];
 }
 
 - (id)actionsController
 {
-  v3 = [(CNContactAddFavoriteAction *)self favoritesEntryPicker];
+  favoritesEntryPicker = [(CNContactAddFavoriteAction *)self favoritesEntryPicker];
 
-  if (!v3)
+  if (!favoritesEntryPicker)
   {
     v4 = [CNUIFavoritesEntryPicker alloc];
-    v5 = [(CNContactAction *)self contact];
-    v6 = [(CNUIFavoritesEntryPicker *)v4 initWithContact:v5];
+    contact = [(CNContactAction *)self contact];
+    v6 = [(CNUIFavoritesEntryPicker *)v4 initWithContact:contact];
     [(CNContactAddFavoriteAction *)self setFavoritesEntryPicker:v6];
 
-    v7 = [(CNContactAddFavoriteAction *)self favoritesEntryPicker];
-    [v7 setDelegate:self];
+    favoritesEntryPicker2 = [(CNContactAddFavoriteAction *)self favoritesEntryPicker];
+    [favoritesEntryPicker2 setDelegate:self];
 
-    v8 = [(CNContactAddFavoriteAction *)self favoritesEntryPicker];
-    [v8 setUpActionsController];
+    favoritesEntryPicker3 = [(CNContactAddFavoriteAction *)self favoritesEntryPicker];
+    [favoritesEntryPicker3 setUpActionsController];
   }
 
-  v9 = [(CNContactAddFavoriteAction *)self favoritesEntryPicker];
-  v10 = [v9 actionsController];
+  favoritesEntryPicker4 = [(CNContactAddFavoriteAction *)self favoritesEntryPicker];
+  actionsController = [favoritesEntryPicker4 actionsController];
 
-  return v10;
+  return actionsController;
 }
 
-- (id)menuProviderForContextMenuInteraction:(id)a3
+- (id)menuProviderForContextMenuInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   v5 = [CNUIFavoritesEntryPicker alloc];
-  v6 = [(CNContactAction *)self contact];
-  v7 = [(CNUIFavoritesEntryPicker *)v5 initWithContact:v6];
+  contact = [(CNContactAction *)self contact];
+  v7 = [(CNUIFavoritesEntryPicker *)v5 initWithContact:contact];
   [(CNContactAddFavoriteAction *)self setFavoritesEntryPicker:v7];
 
-  v8 = [(CNContactAddFavoriteAction *)self favoritesEntryPicker];
-  [v8 setDelegate:self];
+  favoritesEntryPicker = [(CNContactAddFavoriteAction *)self favoritesEntryPicker];
+  [favoritesEntryPicker setDelegate:self];
 
-  v9 = [(CNContactAddFavoriteAction *)self favoritesEntryPicker];
-  v10 = [v9 menuProviderForContextMenuInteraction:v4];
+  favoritesEntryPicker2 = [(CNContactAddFavoriteAction *)self favoritesEntryPicker];
+  v10 = [favoritesEntryPicker2 menuProviderForContextMenuInteraction:interactionCopy];
 
   return v10;
 }
 
-- (CNContactAddFavoriteAction)initWithContact:(id)a3 propertyItems:(id)a4 favorites:(id)a5
+- (CNContactAddFavoriteAction)initWithContact:(id)contact propertyItems:(id)items favorites:(id)favorites
 {
-  v9 = a5;
+  favoritesCopy = favorites;
   v13.receiver = self;
   v13.super_class = CNContactAddFavoriteAction;
-  v10 = [(CNPropertyAction *)&v13 initWithContact:a3 propertyItems:a4];
+  v10 = [(CNPropertyAction *)&v13 initWithContact:contact propertyItems:items];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_favorites, a5);
+    objc_storeStrong(&v10->_favorites, favorites);
   }
 
   return v11;

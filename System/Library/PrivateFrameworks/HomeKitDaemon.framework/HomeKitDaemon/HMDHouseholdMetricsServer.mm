@@ -1,13 +1,13 @@
 @interface HMDHouseholdMetricsServer
 + (id)logCategory;
-- (BOOL)evaluateMetricResponsesForSubmission:(id)a3;
+- (BOOL)evaluateMetricResponsesForSubmission:(id)submission;
 - (HMDHouseholdMetricsDataSource)dataSource;
 - (HMDHouseholdMetricsLogEventProviding)householdMetricsProvider;
 - (HMDHouseholdMetricsMessaging)remoteMessageDispatcher;
-- (HMDHouseholdMetricsServer)initWithDataSource:(id)a3 logEventSubmitter:(id)a4 householdMetricsProvider:(id)a5 remoteMessageDispatcher:(id)a6 logEventFactories:(id)a7 workQueue:(id)a8;
+- (HMDHouseholdMetricsServer)initWithDataSource:(id)source logEventSubmitter:(id)submitter householdMetricsProvider:(id)provider remoteMessageDispatcher:(id)dispatcher logEventFactories:(id)factories workQueue:(id)queue;
 - (HMMLogEventSubmitting)logEventSubmitter;
-- (void)runHouseholdMetricsDataCollectionAssociatedToDate:(id)a3 forceSubmit:(BOOL)a4;
-- (void)sendHouseholdMetricsCollectionRequestToDevices:(id)a3 forHomeWithUUID:(id)a4 associatedToDate:(id)a5 completion:(id)a6;
+- (void)runHouseholdMetricsDataCollectionAssociatedToDate:(id)date forceSubmit:(BOOL)submit;
+- (void)sendHouseholdMetricsCollectionRequestToDevices:(id)devices forHomeWithUUID:(id)d associatedToDate:(id)date completion:(id)completion;
 @end
 
 @implementation HMDHouseholdMetricsServer
@@ -40,18 +40,18 @@
   return WeakRetained;
 }
 
-- (void)runHouseholdMetricsDataCollectionAssociatedToDate:(id)a3 forceSubmit:(BOOL)a4
+- (void)runHouseholdMetricsDataCollectionAssociatedToDate:(id)date forceSubmit:(BOOL)submit
 {
   v56 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v5 = [(HMDHouseholdMetricsServer *)self householdMetricsProvider];
-  v6 = [(HMDHouseholdMetricsServer *)self dataSource];
-  v33 = self;
-  v36 = [(HMDHouseholdMetricsServer *)self logEventSubmitter];
-  if (v5 && v6 && v36)
+  dateCopy = date;
+  householdMetricsProvider = [(HMDHouseholdMetricsServer *)self householdMetricsProvider];
+  dataSource = [(HMDHouseholdMetricsServer *)self dataSource];
+  selfCopy = self;
+  logEventSubmitter = [(HMDHouseholdMetricsServer *)self logEventSubmitter];
+  if (householdMetricsProvider && dataSource && logEventSubmitter)
   {
-    v32 = v5;
-    [v6 homeDataSources];
+    v32 = householdMetricsProvider;
+    [dataSource homeDataSources];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
@@ -65,7 +65,7 @@
     v8 = v7;
     v9 = *v46;
     v37 = *v46;
-    v38 = v6;
+    v38 = dataSource;
     while (1)
     {
       v10 = 0;
@@ -81,13 +81,13 @@
         if ([v11 isCurrentDevicePrimaryResident])
         {
           v41 = v11;
-          v12 = [v6 devicesOnCurrentAccount];
-          v13 = [MEMORY[0x277CBEB18] array];
+          devicesOnCurrentAccount = [dataSource devicesOnCurrentAccount];
+          array = [MEMORY[0x277CBEB18] array];
           v49 = 0u;
           v50 = 0u;
           v51 = 0u;
           v52 = 0u;
-          v14 = v12;
+          v14 = devicesOnCurrentAccount;
           v15 = [v14 countByEnumeratingWithState:&v49 objects:v55 count:16];
           if (!v15)
           {
@@ -106,23 +106,23 @@
               }
 
               v19 = *(*(&v49 + 1) + 8 * i);
-              v20 = [v19 productInfo];
-              if ([v20 productPlatform] == 4)
+              productInfo = [v19 productInfo];
+              if ([productInfo productPlatform] == 4)
               {
               }
 
               else
               {
-                v21 = [v19 productInfo];
-                v22 = [v21 productPlatform];
+                productInfo2 = [v19 productInfo];
+                productPlatform = [productInfo2 productPlatform];
 
-                if (v22 != 2)
+                if (productPlatform != 2)
                 {
                   continue;
                 }
               }
 
-              [v13 addObject:v19];
+              [array addObject:v19];
             }
 
             v16 = [v14 countByEnumeratingWithState:&v49 objects:v55 count:16];
@@ -130,9 +130,9 @@
             {
 LABEL_21:
 
-              v23 = [v13 copy];
+              v23 = [array copy];
               v9 = v37;
-              v6 = v38;
+              dataSource = v38;
               v8 = v39;
               v11 = v41;
               if (v23)
@@ -145,36 +145,36 @@ LABEL_21:
           }
         }
 
-        v25 = [v11 enabledResidents];
-        v26 = [v25 count];
+        enabledResidents = [v11 enabledResidents];
+        v26 = [enabledResidents count];
 
         if (!v26)
         {
           if ([v11 isOwnerUser])
           {
-            v27 = [v6 currentDevice];
-            v28 = [v27 productInfo];
-            v29 = [v28 productClass];
+            currentDevice = [dataSource currentDevice];
+            productInfo3 = [currentDevice productInfo];
+            productClass = [productInfo3 productClass];
 
-            if (v29 == 1)
+            if (productClass == 1)
             {
-              v30 = [v6 currentDevice];
-              v53 = v30;
+              currentDevice2 = [dataSource currentDevice];
+              v53 = currentDevice2;
               v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v53 count:1];
 
               if (v23)
               {
 LABEL_22:
-                v24 = [v11 uuid];
+                uuid = [v11 uuid];
                 v42[0] = MEMORY[0x277D85DD0];
                 v42[1] = 3221225472;
                 v42[2] = __91__HMDHouseholdMetricsServer_runHouseholdMetricsDataCollectionAssociatedToDate_forceSubmit___block_invoke;
                 v42[3] = &unk_27866F718;
-                v44 = a4;
-                v42[4] = v33;
+                submitCopy = submit;
+                v42[4] = selfCopy;
                 v42[5] = v11;
-                v43 = v36;
-                [(HMDHouseholdMetricsServer *)v33 sendHouseholdMetricsCollectionRequestToDevices:v23 forHomeWithUUID:v24 associatedToDate:v35 completion:v42];
+                v43 = logEventSubmitter;
+                [(HMDHouseholdMetricsServer *)selfCopy sendHouseholdMetricsCollectionRequestToDevices:v23 forHomeWithUUID:uuid associatedToDate:dateCopy completion:v42];
               }
             }
           }
@@ -190,7 +190,7 @@ LABEL_27:
       {
 LABEL_29:
 
-        v5 = v32;
+        householdMetricsProvider = v32;
         break;
       }
     }
@@ -334,34 +334,34 @@ void __91__HMDHouseholdMetricsServer_runHouseholdMetricsDataCollectionAssociated
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendHouseholdMetricsCollectionRequestToDevices:(id)a3 forHomeWithUUID:(id)a4 associatedToDate:(id)a5 completion:(id)a6
+- (void)sendHouseholdMetricsCollectionRequestToDevices:(id)devices forHomeWithUUID:(id)d associatedToDate:(id)date completion:(id)completion
 {
   v63 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDHouseholdMetricsServer *)self householdMetricsProvider];
-  v15 = [(HMDHouseholdMetricsServer *)self remoteMessageDispatcher];
-  v16 = v15;
-  if (v14 && v15)
+  devicesCopy = devices;
+  dCopy = d;
+  dateCopy = date;
+  completionCopy = completion;
+  householdMetricsProvider = [(HMDHouseholdMetricsServer *)self householdMetricsProvider];
+  remoteMessageDispatcher = [(HMDHouseholdMetricsServer *)self remoteMessageDispatcher];
+  v16 = remoteMessageDispatcher;
+  if (householdMetricsProvider && remoteMessageDispatcher)
   {
-    v33 = v13;
+    v33 = completionCopy;
     group = dispatch_group_create();
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v34 = v10;
-    obj = v10;
+    v34 = devicesCopy;
+    obj = devicesCopy;
     v35 = v16;
     v41 = [obj countByEnumeratingWithState:&v50 objects:v62 count:16];
     if (v41)
     {
       v18 = *v51;
-      v37 = v17;
-      v38 = self;
+      v37 = dictionary;
+      selfCopy = self;
       v36 = *v51;
       do
       {
@@ -375,34 +375,34 @@ void __91__HMDHouseholdMetricsServer_runHouseholdMetricsDataCollectionAssociated
           v20 = *(*(&v50 + 1) + 8 * i);
           if ([v20 isCurrentDevice])
           {
-            v21 = [v14 householdMetricsForHomeWithUUID:v11 associatedWithDate:v12];
+            v21 = [householdMetricsProvider householdMetricsForHomeWithUUID:dCopy associatedWithDate:dateCopy];
             v48[0] = MEMORY[0x277D85DD0];
             v48[1] = 3221225472;
             v48[2] = __120__HMDHouseholdMetricsServer_sendHouseholdMetricsCollectionRequestToDevices_forHomeWithUUID_associatedToDate_completion___block_invoke;
             v48[3] = &unk_278688218;
             v48[4] = self;
-            v49 = v17;
+            v49 = dictionary;
             [v21 enumerateKeysAndObjectsUsingBlock:v48];
           }
 
           else
           {
             v60[0] = @"homeUUID";
-            v22 = [v11 UUIDString];
+            uUIDString = [dCopy UUIDString];
             v60[1] = @"date";
-            v61[0] = v22;
-            v61[1] = v12;
+            v61[0] = uUIDString;
+            v61[1] = dateCopy;
             v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v61 forKeys:v60 count:2];
 
             v23 = objc_autoreleasePoolPush();
-            v24 = self;
+            selfCopy2 = self;
             v25 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
             {
               HMFGetLogIdentifier();
-              v26 = v14;
-              v27 = v12;
-              v29 = v28 = v11;
+              v26 = householdMetricsProvider;
+              v27 = dateCopy;
+              v29 = v28 = dCopy;
               *buf = 138543874;
               v55 = v29;
               v56 = 2112;
@@ -411,9 +411,9 @@ void __91__HMDHouseholdMetricsServer_runHouseholdMetricsDataCollectionAssociated
               v59 = v21;
               _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_DEBUG, "%{public}@Sending household metrics request to device=%@, payload=%@", buf, 0x20u);
 
-              v11 = v28;
-              v12 = v27;
-              v14 = v26;
+              dCopy = v28;
+              dateCopy = v27;
+              householdMetricsProvider = v26;
               v16 = v35;
             }
 
@@ -423,14 +423,14 @@ void __91__HMDHouseholdMetricsServer_runHouseholdMetricsDataCollectionAssociated
             v45[1] = 3221225472;
             v45[2] = __120__HMDHouseholdMetricsServer_sendHouseholdMetricsCollectionRequestToDevices_forHomeWithUUID_associatedToDate_completion___block_invoke_3;
             v45[3] = &unk_27867E7E8;
-            v45[4] = v24;
+            v45[4] = selfCopy2;
             v45[5] = v20;
-            v17 = v37;
+            dictionary = v37;
             v46 = v37;
             v47 = group;
             [v16 sendMessage:@"HMDHouseholdMetricsHomeDataLogEventRequest" toDevice:v20 withPayload:v21 responseHandler:v45];
 
-            self = v38;
+            self = selfCopy;
             v18 = v36;
           }
         }
@@ -441,20 +441,20 @@ void __91__HMDHouseholdMetricsServer_runHouseholdMetricsDataCollectionAssociated
       while (v41);
     }
 
-    v30 = [(HMDHouseholdMetricsServer *)self workQueue];
+    workQueue = [(HMDHouseholdMetricsServer *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __120__HMDHouseholdMetricsServer_sendHouseholdMetricsCollectionRequestToDevices_forHomeWithUUID_associatedToDate_completion___block_invoke_2;
     block[3] = &unk_278689F98;
     block[4] = self;
-    v43 = v17;
-    v13 = v33;
+    v43 = dictionary;
+    completionCopy = v33;
     v44 = v33;
-    v31 = v17;
-    dispatch_group_notify(group, v30, block);
+    v31 = dictionary;
+    dispatch_group_notify(group, workQueue, block);
 
     v16 = v35;
-    v10 = v34;
+    devicesCopy = v34;
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -583,10 +583,10 @@ void __120__HMDHouseholdMetricsServer_sendHouseholdMetricsCollectionRequestToDev
   }
 }
 
-- (BOOL)evaluateMetricResponsesForSubmission:(id)a3
+- (BOOL)evaluateMetricResponsesForSubmission:(id)submission
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:@"householdData"];
+  v4 = [submission objectForKeyedSubscript:@"householdData"];
   v5 = v4;
   if (v4)
   {
@@ -666,26 +666,26 @@ LABEL_19:
   return v14;
 }
 
-- (HMDHouseholdMetricsServer)initWithDataSource:(id)a3 logEventSubmitter:(id)a4 householdMetricsProvider:(id)a5 remoteMessageDispatcher:(id)a6 logEventFactories:(id)a7 workQueue:(id)a8
+- (HMDHouseholdMetricsServer)initWithDataSource:(id)source logEventSubmitter:(id)submitter householdMetricsProvider:(id)provider remoteMessageDispatcher:(id)dispatcher logEventFactories:(id)factories workQueue:(id)queue
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  sourceCopy = source;
+  submitterCopy = submitter;
+  providerCopy = provider;
+  dispatcherCopy = dispatcher;
+  factoriesCopy = factories;
+  queueCopy = queue;
   v23.receiver = self;
   v23.super_class = HMDHouseholdMetricsServer;
   v20 = [(HMDHouseholdMetricsServer *)&v23 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeWeak(&v20->_dataSource, v14);
-    objc_storeWeak(&v21->_logEventSubmitter, v15);
-    objc_storeWeak(&v21->_householdMetricsProvider, v16);
-    objc_storeWeak(&v21->_remoteMessageDispatcher, v17);
-    objc_storeStrong(&v21->_logEventFactories, a7);
-    objc_storeStrong(&v21->_workQueue, a8);
+    objc_storeWeak(&v20->_dataSource, sourceCopy);
+    objc_storeWeak(&v21->_logEventSubmitter, submitterCopy);
+    objc_storeWeak(&v21->_householdMetricsProvider, providerCopy);
+    objc_storeWeak(&v21->_remoteMessageDispatcher, dispatcherCopy);
+    objc_storeStrong(&v21->_logEventFactories, factories);
+    objc_storeStrong(&v21->_workQueue, queue);
   }
 
   return v21;

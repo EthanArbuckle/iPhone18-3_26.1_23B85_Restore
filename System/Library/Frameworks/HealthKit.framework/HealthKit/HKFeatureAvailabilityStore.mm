@@ -1,65 +1,65 @@
 @interface HKFeatureAvailabilityStore
 + (id)taskIdentifier;
-- (BOOL)_synchronouslyStartObservingWithError:(id *)a3;
-- (HKFeatureAvailabilityStore)initWithFeatureIdentifier:(id)a3 healthStore:(id)a4;
-- (id)canCompleteOnboardingForCountryCode:(id)a3 error:(id *)a4;
-- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)a3;
-- (id)featureAvailabilityRequirementsWithError:(id *)a3;
-- (id)featureOnboardingRecordWithError:(id *)a3;
-- (id)isCurrentOnboardingVersionCompletedWithError:(id *)a3;
-- (id)isFeatureCapabilitySupportedOnActivePairedDeviceWithError:(id *)a3;
-- (id)onboardedCountryCodeSupportedStateWithError:(id *)a3;
-- (id)onboardingEligibilityForCountryCode:(id)a3 error:(id *)a4;
-- (id)pairedFeatureAttributesWithError:(id *)a3;
-- (id)regionAvailabilityWithError:(id *)a3;
+- (BOOL)_synchronouslyStartObservingWithError:(id *)error;
+- (HKFeatureAvailabilityStore)initWithFeatureIdentifier:(id)identifier healthStore:(id)store;
+- (id)canCompleteOnboardingForCountryCode:(id)code error:(id *)error;
+- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)error;
+- (id)featureAvailabilityRequirementsWithError:(id *)error;
+- (id)featureOnboardingRecordWithError:(id *)error;
+- (id)isCurrentOnboardingVersionCompletedWithError:(id *)error;
+- (id)isFeatureCapabilitySupportedOnActivePairedDeviceWithError:(id *)error;
+- (id)onboardedCountryCodeSupportedStateWithError:(id *)error;
+- (id)onboardingEligibilityForCountryCode:(id)code error:(id *)error;
+- (id)pairedFeatureAttributesWithError:(id *)error;
+- (id)regionAvailabilityWithError:(id *)error;
 - (void)_handleAutomaticProxyReconnection;
 - (void)_notifyObserversForOnboardingCompletionUpdate;
 - (void)_notifyObserversForSettingsUpdate;
-- (void)_startObservingWithActivationHandler:(id)a3;
+- (void)_startObservingWithActivationHandler:(id)handler;
 - (void)client_featureAvailabilityExtensionDidUpdateOnboardingCompletion;
 - (void)client_featureAvailabilityProvidingDidUpdateSettings;
-- (void)getFeatureOnboardingRecordWithCompletion:(id)a3;
-- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)a3;
-- (void)registerObserver:(id)a3 queue:(id)a4 activationHandler:(id)a5;
-- (void)removeFeatureSettingValueForKey:(id)a3 completion:(id)a4;
-- (void)resetOnboardingWithCompletion:(id)a3;
-- (void)saveOnboardingCompletion:(id)a3 settings:(id)a4 completion:(id)a5;
-- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)a3 countryCodeProvenance:(int64_t)a4 date:(id)a5 settings:(id)a6 completion:(id)a7;
-- (void)setFeatureSettingData:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setFeatureSettingNumber:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setFeatureSettingString:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)unregisterObserver:(id)a3;
+- (void)getFeatureOnboardingRecordWithCompletion:(id)completion;
+- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)completion;
+- (void)registerObserver:(id)observer queue:(id)queue activationHandler:(id)handler;
+- (void)removeFeatureSettingValueForKey:(id)key completion:(id)completion;
+- (void)resetOnboardingWithCompletion:(id)completion;
+- (void)saveOnboardingCompletion:(id)completion settings:(id)settings completion:(id)a5;
+- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)code countryCodeProvenance:(int64_t)provenance date:(id)date settings:(id)settings completion:(id)completion;
+- (void)setFeatureSettingData:(id)data forKey:(id)key completion:(id)completion;
+- (void)setFeatureSettingNumber:(id)number forKey:(id)key completion:(id)completion;
+- (void)setFeatureSettingString:(id)string forKey:(id)key completion:(id)completion;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HKFeatureAvailabilityStore
 
-- (HKFeatureAvailabilityStore)initWithFeatureIdentifier:(id)a3 healthStore:(id)a4
+- (HKFeatureAvailabilityStore)initWithFeatureIdentifier:(id)identifier healthStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  storeCopy = store;
   v23.receiver = self;
   v23.super_class = HKFeatureAvailabilityStore;
   v9 = [(HKFeatureAvailabilityStore *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_featureIdentifier, a3);
+    objc_storeStrong(&v9->_featureIdentifier, identifier);
     v11 = [HKObserverSet alloc];
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"HKFeatureAvailabilityStore:%@", v7];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"HKFeatureAvailabilityStore:%@", identifierCopy];
     v13 = HKLogInfrastructure();
-    v14 = [(HKObserverSet *)v11 initWithName:v12 loggingCategory:v13];
+    v14 = [(HKObserverSet *)v11 initWithName:identifierCopy loggingCategory:v13];
     observers = v10->_observers;
     v10->_observers = v14;
 
     v16 = [HKTaskServerProxyProvider alloc];
-    v17 = [objc_opt_class() taskIdentifier];
-    v18 = [MEMORY[0x1E696AFB0] UUID];
-    v19 = [(HKTaskServerProxyProvider *)v16 initWithHealthStore:v8 taskIdentifier:v17 exportedObject:v10 taskUUID:v18];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v19 = [(HKTaskServerProxyProvider *)v16 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v10 taskUUID:uUID];
     proxyProvider = v10->_proxyProvider;
     v10->_proxyProvider = v19;
 
     [(HKProxyProvider *)v10->_proxyProvider setShouldRetryOnInterruption:0];
-    v21 = [[HKFeatureAvailabilityStoreServerConfiguration alloc] initWithFeatureIdentifier:v7];
+    v21 = [[HKFeatureAvailabilityStoreServerConfiguration alloc] initWithFeatureIdentifier:identifierCopy];
     [(HKTaskServerProxyProvider *)v10->_proxyProvider setTaskConfiguration:v21];
   }
 
@@ -73,7 +73,7 @@
   return NSStringFromClass(v2);
 }
 
-- (id)featureOnboardingRecordWithError:(id *)a3
+- (id)featureOnboardingRecordWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -104,10 +104,10 @@
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -148,9 +148,9 @@ void __63__HKFeatureAvailabilityStore_featureOnboardingRecordWithError___block_i
   *(v9 + 40) = v6;
 }
 
-- (void)getFeatureOnboardingRecordWithCompletion:(id)a3
+- (void)getFeatureOnboardingRecordWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -166,7 +166,7 @@ void __63__HKFeatureAvailabilityStore_featureOnboardingRecordWithError___block_i
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
 }
 
-- (id)isFeatureCapabilitySupportedOnActivePairedDeviceWithError:(id *)a3
+- (id)isFeatureCapabilitySupportedOnActivePairedDeviceWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -197,10 +197,10 @@ void __63__HKFeatureAvailabilityStore_featureOnboardingRecordWithError___block_i
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -241,9 +241,9 @@ void __88__HKFeatureAvailabilityStore_isFeatureCapabilitySupportedOnActivePaired
   *(v9 + 40) = v6;
 }
 
-- (id)canCompleteOnboardingForCountryCode:(id)a3 error:(id *)a4
+- (id)canCompleteOnboardingForCountryCode:(id)code error:(id *)error
 {
-  v6 = a3;
+  codeCopy = code;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -261,7 +261,7 @@ void __88__HKFeatureAvailabilityStore_isFeatureCapabilitySupportedOnActivePaired
   v15[1] = 3221225472;
   v15[2] = __72__HKFeatureAvailabilityStore_canCompleteOnboardingForCountryCode_error___block_invoke;
   v15[3] = &unk_1E7381BB8;
-  v8 = v6;
+  v8 = codeCopy;
   v16 = v8;
   v17 = &v25;
   v18 = &v19;
@@ -275,10 +275,10 @@ void __88__HKFeatureAvailabilityStore_isFeatureCapabilitySupportedOnActivePaired
   v10 = v9;
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       v11 = v9;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -320,9 +320,9 @@ void __72__HKFeatureAvailabilityStore_canCompleteOnboardingForCountryCode_error_
   *(v9 + 40) = v6;
 }
 
-- (id)onboardingEligibilityForCountryCode:(id)a3 error:(id *)a4
+- (id)onboardingEligibilityForCountryCode:(id)code error:(id *)error
 {
-  v6 = a3;
+  codeCopy = code;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -340,7 +340,7 @@ void __72__HKFeatureAvailabilityStore_canCompleteOnboardingForCountryCode_error_
   v15[1] = 3221225472;
   v15[2] = __72__HKFeatureAvailabilityStore_onboardingEligibilityForCountryCode_error___block_invoke;
   v15[3] = &unk_1E7381BB8;
-  v8 = v6;
+  v8 = codeCopy;
   v16 = v8;
   v17 = &v25;
   v18 = &v19;
@@ -354,10 +354,10 @@ void __72__HKFeatureAvailabilityStore_canCompleteOnboardingForCountryCode_error_
   v10 = v9;
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       v11 = v9;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -399,7 +399,7 @@ void __72__HKFeatureAvailabilityStore_onboardingEligibilityForCountryCode_error_
   *(v9 + 40) = v6;
 }
 
-- (id)onboardedCountryCodeSupportedStateWithError:(id *)a3
+- (id)onboardedCountryCodeSupportedStateWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -430,10 +430,10 @@ void __72__HKFeatureAvailabilityStore_onboardingEligibilityForCountryCode_error_
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -474,7 +474,7 @@ void __74__HKFeatureAvailabilityStore_onboardedCountryCodeSupportedStateWithErro
   *(v9 + 40) = v6;
 }
 
-- (id)isCurrentOnboardingVersionCompletedWithError:(id *)a3
+- (id)isCurrentOnboardingVersionCompletedWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -505,10 +505,10 @@ void __74__HKFeatureAvailabilityStore_onboardedCountryCodeSupportedStateWithErro
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -549,9 +549,9 @@ void __75__HKFeatureAvailabilityStore_isCurrentOnboardingVersionCompletedWithErr
   *(v9 + 40) = v6;
 }
 
-- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)a3
+- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -567,7 +567,7 @@ void __75__HKFeatureAvailabilityStore_isCurrentOnboardingVersionCompletedWithErr
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
 }
 
-- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)a3
+- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -598,10 +598,10 @@ void __75__HKFeatureAvailabilityStore_isCurrentOnboardingVersionCompletedWithErr
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -642,7 +642,7 @@ void __84__HKFeatureAvailabilityStore_earliestDateLowestOnboardingVersionComplet
   *(v9 + 40) = v6;
 }
 
-- (id)pairedFeatureAttributesWithError:(id *)a3
+- (id)pairedFeatureAttributesWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -673,10 +673,10 @@ void __84__HKFeatureAvailabilityStore_earliestDateLowestOnboardingVersionComplet
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -717,7 +717,7 @@ void __63__HKFeatureAvailabilityStore_pairedFeatureAttributesWithError___block_i
   *(v9 + 40) = v6;
 }
 
-- (id)featureAvailabilityRequirementsWithError:(id *)a3
+- (id)featureAvailabilityRequirementsWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -748,10 +748,10 @@ void __63__HKFeatureAvailabilityStore_pairedFeatureAttributesWithError___block_i
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -792,7 +792,7 @@ void __71__HKFeatureAvailabilityStore_featureAvailabilityRequirementsWithError__
   *(v9 + 40) = v6;
 }
 
-- (id)regionAvailabilityWithError:(id *)a3
+- (id)regionAvailabilityWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -823,10 +823,10 @@ void __71__HKFeatureAvailabilityStore_featureAvailabilityRequirementsWithError__
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -867,11 +867,11 @@ void __58__HKFeatureAvailabilityStore_regionAvailabilityWithError___block_invoke
   *(v9 + 40) = v6;
 }
 
-- (void)registerObserver:(id)a3 queue:(id)a4 activationHandler:(id)a5
+- (void)registerObserver:(id)observer queue:(id)queue activationHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a5];
+  observerCopy = observer;
+  queueCopy = queue;
+  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:handler];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -885,7 +885,7 @@ void __58__HKFeatureAvailabilityStore_regionAvailabilityWithError___block_invoke
   v13[4] = self;
   v12 = v10;
   v14 = v12;
-  [(HKObserverSet *)observers registerObserver:v8 queue:v9 runIfFirstObserver:v13];
+  [(HKObserverSet *)observers registerObserver:observerCopy queue:queueCopy runIfFirstObserver:v13];
   if ((v17[3] & 1) == 0)
   {
     (*(v12 + 2))(v12, 1, 0);
@@ -916,7 +916,7 @@ void __71__HKFeatureAvailabilityStore_registerObserver_queue_activationHandler__
   [WeakRetained _handleAutomaticProxyReconnection];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x1E69E9820];
@@ -924,7 +924,7 @@ void __71__HKFeatureAvailabilityStore_registerObserver_queue_activationHandler__
   v4[2] = __49__HKFeatureAvailabilityStore_unregisterObserver___block_invoke;
   v4[3] = &unk_1E7376780;
   v4[4] = self;
-  [(HKObserverSet *)observers unregisterObserver:a3 runIfLastObserver:v4];
+  [(HKObserverSet *)observers unregisterObserver:observer runIfLastObserver:v4];
 }
 
 uint64_t __49__HKFeatureAvailabilityStore_unregisterObserver___block_invoke(uint64_t a1)
@@ -951,15 +951,15 @@ void __49__HKFeatureAvailabilityStore_unregisterObserver___block_invoke_3(uint64
   }
 }
 
-- (void)_startObservingWithActivationHandler:(id)a3
+- (void)_startObservingWithActivationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __67__HKFeatureAvailabilityStore__startObservingWithActivationHandler___block_invoke;
   v9[3] = &unk_1E7381B90;
-  v10 = v4;
+  v10 = handlerCopy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__HKFeatureAvailabilityStore__startObservingWithActivationHandler___block_invoke_2;
@@ -983,7 +983,7 @@ void __67__HKFeatureAvailabilityStore__startObservingWithActivationHandler___blo
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)_synchronouslyStartObservingWithError:(id *)a3
+- (BOOL)_synchronouslyStartObservingWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -1013,10 +1013,10 @@ void __67__HKFeatureAvailabilityStore__startObservingWithActivationHandler___blo
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -1071,7 +1071,7 @@ void __68__HKFeatureAvailabilityStore__synchronouslyStartObservingWithError___bl
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19197B000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received notification of successful server reconnection", buf, 0xCu);
     }
 
@@ -1097,7 +1097,7 @@ void __68__HKFeatureAvailabilityStore__synchronouslyStartObservingWithError___bl
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19197B000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received server notification of onboarding completion update", &v5, 0xCu);
   }
 
@@ -1113,7 +1113,7 @@ void __68__HKFeatureAvailabilityStore__synchronouslyStartObservingWithError___bl
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19197B000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received server notification of settings update", &v5, 0xCu);
   }
 
@@ -1130,7 +1130,7 @@ void __68__HKFeatureAvailabilityStore__synchronouslyStartObservingWithError___bl
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[HKObserverSet count](self->_observers, "count")}];
     *buf = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v4;
     _os_log_impl(&dword_19197B000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notifying %@ observers of onboarding completion update", buf, 0x16u);
@@ -1155,7 +1155,7 @@ void __68__HKFeatureAvailabilityStore__synchronouslyStartObservingWithError___bl
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[HKObserverSet count](self->_observers, "count")}];
     *buf = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v4;
     _os_log_impl(&dword_19197B000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notifying %@ observers of settings update", buf, 0x16u);
@@ -1180,21 +1180,21 @@ void __63__HKFeatureAvailabilityStore__notifyObserversForSettingsUpdate__block_i
   }
 }
 
-- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)a3 countryCodeProvenance:(int64_t)a4 date:(id)a5 settings:(id)a6 completion:(id)a7
+- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)code countryCodeProvenance:(int64_t)provenance date:(id)date settings:(id)settings completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a7];
+  codeCopy = code;
+  dateCopy = date;
+  settingsCopy = settings;
+  v15 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __128__HKFeatureAvailabilityStore_setCurrentOnboardingVersionCompletedForCountryCode_countryCodeProvenance_date_settings_completion___block_invoke;
   v23[3] = &unk_1E7381CC8;
-  v24 = v12;
-  v25 = v13;
-  v28 = a4;
-  v26 = v14;
+  v24 = codeCopy;
+  v25 = dateCopy;
+  provenanceCopy = provenance;
+  v26 = settingsCopy;
   v27 = v15;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -1202,24 +1202,24 @@ void __63__HKFeatureAvailabilityStore__notifyObserversForSettingsUpdate__block_i
   v21[3] = &unk_1E7376960;
   v22 = v27;
   v17 = v27;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v18 = settingsCopy;
+  v19 = dateCopy;
+  v20 = codeCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v23 errorHandler:v21];
 }
 
-- (void)saveOnboardingCompletion:(id)a3 settings:(id)a4 completion:(id)a5
+- (void)saveOnboardingCompletion:(id)completion settings:(id)settings completion:(id)a5
 {
-  v8 = a3;
-  v9 = a4;
+  completionCopy = completion;
+  settingsCopy = settings;
   v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a5];
   proxyProvider = self->_proxyProvider;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __75__HKFeatureAvailabilityStore_saveOnboardingCompletion_settings_completion___block_invoke;
   v17[3] = &unk_1E7381CF0;
-  v18 = v8;
-  v19 = v9;
+  v18 = completionCopy;
+  v19 = settingsCopy;
   v20 = v10;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -1227,23 +1227,23 @@ void __63__HKFeatureAvailabilityStore__notifyObserversForSettingsUpdate__block_i
   v15[3] = &unk_1E7376960;
   v16 = v20;
   v12 = v20;
-  v13 = v9;
-  v14 = v8;
+  v13 = settingsCopy;
+  v14 = completionCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v17 errorHandler:v15];
 }
 
-- (void)setFeatureSettingData:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingData:(id)data forKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a5];
+  dataCopy = data;
+  keyCopy = key;
+  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __70__HKFeatureAvailabilityStore_setFeatureSettingData_forKey_completion___block_invoke;
   v17[3] = &unk_1E7381CF0;
-  v18 = v8;
-  v19 = v9;
+  v18 = dataCopy;
+  v19 = keyCopy;
   v20 = v10;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -1251,23 +1251,23 @@ void __63__HKFeatureAvailabilityStore__notifyObserversForSettingsUpdate__block_i
   v15[3] = &unk_1E7376960;
   v16 = v20;
   v12 = v20;
-  v13 = v9;
-  v14 = v8;
+  v13 = keyCopy;
+  v14 = dataCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v17 errorHandler:v15];
 }
 
-- (void)setFeatureSettingString:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingString:(id)string forKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a5];
+  stringCopy = string;
+  keyCopy = key;
+  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __72__HKFeatureAvailabilityStore_setFeatureSettingString_forKey_completion___block_invoke;
   v17[3] = &unk_1E7381CF0;
-  v18 = v8;
-  v19 = v9;
+  v18 = stringCopy;
+  v19 = keyCopy;
   v20 = v10;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -1275,23 +1275,23 @@ void __63__HKFeatureAvailabilityStore__notifyObserversForSettingsUpdate__block_i
   v15[3] = &unk_1E7376960;
   v16 = v20;
   v12 = v20;
-  v13 = v9;
-  v14 = v8;
+  v13 = keyCopy;
+  v14 = stringCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v17 errorHandler:v15];
 }
 
-- (void)setFeatureSettingNumber:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingNumber:(id)number forKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a5];
+  numberCopy = number;
+  keyCopy = key;
+  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __72__HKFeatureAvailabilityStore_setFeatureSettingNumber_forKey_completion___block_invoke;
   v17[3] = &unk_1E7381CF0;
-  v18 = v8;
-  v19 = v9;
+  v18 = numberCopy;
+  v19 = keyCopy;
   v20 = v10;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -1299,21 +1299,21 @@ void __63__HKFeatureAvailabilityStore__notifyObserversForSettingsUpdate__block_i
   v15[3] = &unk_1E7376960;
   v16 = v20;
   v12 = v20;
-  v13 = v9;
-  v14 = v8;
+  v13 = keyCopy;
+  v14 = numberCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v17 errorHandler:v15];
 }
 
-- (void)removeFeatureSettingValueForKey:(id)a3 completion:(id)a4
+- (void)removeFeatureSettingValueForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  keyCopy = key;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__HKFeatureAvailabilityStore_removeFeatureSettingValueForKey_completion___block_invoke;
   v13[3] = &unk_1E7381D18;
-  v14 = v6;
+  v14 = keyCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -1321,13 +1321,13 @@ void __63__HKFeatureAvailabilityStore__notifyObserversForSettingsUpdate__block_i
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = keyCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)resetOnboardingWithCompletion:(id)a3
+- (void)resetOnboardingWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;

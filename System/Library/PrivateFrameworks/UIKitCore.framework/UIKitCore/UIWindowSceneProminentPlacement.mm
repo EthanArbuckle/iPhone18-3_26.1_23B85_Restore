@@ -1,11 +1,11 @@
 @interface UIWindowSceneProminentPlacement
 + (UIWindowSceneProminentPlacement)prominentPlacement;
 + (id)_largeProminentPlacement;
-- (BOOL)isEqual:(id)a3;
-- (id)_createConfigurationWithError:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_createConfigurationWithError:(id *)error;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation UIWindowSceneProminentPlacement
@@ -25,20 +25,20 @@
 
 + (UIWindowSceneProminentPlacement)prominentPlacement
 {
-  v2 = [[a1 alloc] _init];
+  _init = [[self alloc] _init];
 
-  return v2;
+  return _init;
 }
 
 + (id)_largeProminentPlacement
 {
-  v2 = [a1 prominentPlacement];
-  [v2 _setPrefersLargeSize:1];
+  prominentPlacement = [self prominentPlacement];
+  [prominentPlacement _setPrefersLargeSize:1];
 
-  return v2;
+  return prominentPlacement;
 }
 
-- (id)_createConfigurationWithError:(id *)a3
+- (id)_createConfigurationWithError:(id *)error
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DEC40]);
   [v4 setPrefersLargeSize:{-[UIWindowSceneProminentPlacement _prefersLargeSize](self, "_prefersLargeSize")}];
@@ -46,24 +46,24 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = UIWindowSceneProminentPlacement;
-  v4 = [(UIWindowScenePlacement *)&v6 copyWithZone:a3];
+  v4 = [(UIWindowScenePlacement *)&v6 copyWithZone:zone];
   [v4 _setPrefersLargeSize:{-[UIWindowSceneProminentPlacement _prefersLargeSize](self, "_prefersLargeSize")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = UIWindowSceneProminentPlacement;
-  if ([(UIWindowScenePlacement *)&v8 isEqual:v4])
+  if ([(UIWindowScenePlacement *)&v8 isEqual:equalCopy])
   {
-    v5 = [(UIWindowSceneProminentPlacement *)self _prefersLargeSize];
-    v6 = v5 ^ [v4 _prefersLargeSize] ^ 1;
+    _prefersLargeSize = [(UIWindowSceneProminentPlacement *)self _prefersLargeSize];
+    v6 = _prefersLargeSize ^ [equalCopy _prefersLargeSize] ^ 1;
   }
 
   else
@@ -74,11 +74,11 @@
   return v6;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v5.receiver = self;
   v5.super_class = UIWindowSceneProminentPlacement;
-  v3 = [(UIWindowScenePlacement *)&v5 descriptionBuilderWithMultilinePrefix:a3];
+  v3 = [(UIWindowScenePlacement *)&v5 descriptionBuilderWithMultilinePrefix:prefix];
 
   return v3;
 }

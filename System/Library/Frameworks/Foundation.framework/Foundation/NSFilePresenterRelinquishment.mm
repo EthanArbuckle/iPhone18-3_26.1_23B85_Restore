@@ -1,13 +1,13 @@
 @interface NSFilePresenterRelinquishment
-- (BOOL)_locked_addRelinquishReply:(id)a3;
-- (void)_locked_addPrerelinquishReply:(id)a3;
+- (BOOL)_locked_addRelinquishReply:(id)reply;
+- (void)_locked_addPrerelinquishReply:(id)reply;
 - (void)dealloc;
 - (void)didRelinquish;
-- (void)performRelinquishmentToAccessClaimIfNecessary:(id)a3 usingBlock:(id)a4 withReply:(id)a5;
-- (void)performRemoteDeletePrerelinquishmentIfNecessaryUsingBlock:(id)a3 withReply:(id)a4;
+- (void)performRelinquishmentToAccessClaimIfNecessary:(id)necessary usingBlock:(id)block withReply:(id)reply;
+- (void)performRemoteDeletePrerelinquishmentIfNecessaryUsingBlock:(id)block withReply:(id)reply;
 - (void)removeAllBlockingAccessClaimIDs;
-- (void)removeBlockingAccessClaimID:(id)a3 thenContinue:(id)a4;
-- (void)setReacquirer:(id)a3;
+- (void)removeBlockingAccessClaimID:(id)d thenContinue:(id)continue;
+- (void)setReacquirer:(id)reacquirer;
 @end
 
 @implementation NSFilePresenterRelinquishment
@@ -21,7 +21,7 @@
   [(NSFilePresenterRelinquishment *)&v3 dealloc];
 }
 
-- (void)performRemoteDeletePrerelinquishmentIfNecessaryUsingBlock:(id)a3 withReply:(id)a4
+- (void)performRemoteDeletePrerelinquishmentIfNecessaryUsingBlock:(id)block withReply:(id)reply
 {
   v16 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
@@ -44,7 +44,7 @@
     else if (!v8)
     {
 LABEL_4:
-      [(NSFilePresenterRelinquishment *)self _locked_addPrerelinquishReply:a4];
+      [(NSFilePresenterRelinquishment *)self _locked_addPrerelinquishReply:reply];
       os_unfair_lock_unlock(&self->_lock);
       return;
     }
@@ -65,12 +65,12 @@ LABEL_4:
     v14[1] = 3221225472;
     v14[2] = __101__NSFilePresenterRelinquishment_performRemoteDeletePrerelinquishmentIfNecessaryUsingBlock_withReply___block_invoke;
     v14[3] = &unk_1E69F40C0;
-    v14[4] = a4;
+    v14[4] = reply;
     v12 = [(NSFilePresenterRelinquishment *)self _locked_addRelinquishReply:v14];
     os_unfair_lock_unlock(&self->_lock);
     if (!v12)
     {
-      (*(a4 + 2))(a4, 1);
+      (*(reply + 2))(reply, 1);
     }
   }
 
@@ -95,8 +95,8 @@ LABEL_4:
     v13[2] = __101__NSFilePresenterRelinquishment_performRemoteDeletePrerelinquishmentIfNecessaryUsingBlock_withReply___block_invoke_9;
     v13[3] = &unk_1E69F90A8;
     v13[4] = self;
-    v13[5] = a4;
-    (*(a3 + 2))(a3, v13);
+    v13[5] = reply;
+    (*(block + 2))(block, v13);
   }
 }
 
@@ -140,7 +140,7 @@ void __101__NSFilePresenterRelinquishment_performRemoteDeletePrerelinquishmentIf
   }
 }
 
-- (void)performRelinquishmentToAccessClaimIfNecessary:(id)a3 usingBlock:(id)a4 withReply:(id)a5
+- (void)performRelinquishmentToAccessClaimIfNecessary:(id)necessary usingBlock:(id)block withReply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
@@ -150,7 +150,7 @@ void __101__NSFilePresenterRelinquishment_performRemoteDeletePrerelinquishmentIf
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543362;
-      v20 = a3;
+      necessaryCopy3 = necessary;
       _os_log_debug_impl(&dword_18075C000, v10, OS_LOG_TYPE_DEBUG, "Deferring relinquishment to %{public}@ because of pre-relinquishment in progress", buf, 0xCu);
     }
 
@@ -159,9 +159,9 @@ void __101__NSFilePresenterRelinquishment_performRemoteDeletePrerelinquishmentIf
     v18[2] = __100__NSFilePresenterRelinquishment_performRelinquishmentToAccessClaimIfNecessary_usingBlock_withReply___block_invoke;
     v18[3] = &unk_1E69F9E10;
     v18[4] = self;
-    v18[5] = a3;
-    v18[6] = a4;
-    v18[7] = a5;
+    v18[5] = necessary;
+    v18[6] = block;
+    v18[7] = reply;
     [(NSFilePresenterRelinquishment *)self _locked_addPrerelinquishReply:v18];
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -176,7 +176,7 @@ void __101__NSFilePresenterRelinquishment_performRemoteDeletePrerelinquishmentIf
       self->_blockingAccessClaimIDs = blockingAccessClaimIDs;
     }
 
-    [(NSCountedSet *)blockingAccessClaimIDs addObject:a3];
+    [(NSCountedSet *)blockingAccessClaimIDs addObject:necessary];
     v13 = _NSFCPresenterLog();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG);
     if (v11)
@@ -184,15 +184,15 @@ void __101__NSFilePresenterRelinquishment_performRemoteDeletePrerelinquishmentIf
       if (v14)
       {
         *buf = 138543362;
-        v20 = a3;
+        necessaryCopy3 = necessary;
         _os_log_debug_impl(&dword_18075C000, v13, OS_LOG_TYPE_DEBUG, "Not explicitly asking presenter to relinquish to claim %{public}@ because it has already relinquished", buf, 0xCu);
       }
 
-      v15 = [(NSFilePresenterRelinquishment *)self _locked_addRelinquishReply:a5];
+      v15 = [(NSFilePresenterRelinquishment *)self _locked_addRelinquishReply:reply];
       os_unfair_lock_unlock(&self->_lock);
       if (!v15)
       {
-        (*(a5 + 2))(a5);
+        (*(reply + 2))(reply);
       }
     }
 
@@ -201,7 +201,7 @@ void __101__NSFilePresenterRelinquishment_performRemoteDeletePrerelinquishmentIf
       if (v14)
       {
         *buf = 138543362;
-        v20 = a3;
+        necessaryCopy3 = necessary;
         _os_log_debug_impl(&dword_18075C000, v13, OS_LOG_TYPE_DEBUG, "Starting relinquishment to claim %{public}@", buf, 0xCu);
       }
 
@@ -211,11 +211,11 @@ void __101__NSFilePresenterRelinquishment_performRemoteDeletePrerelinquishmentIf
       }
 
       self->_relinquishReplies = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v16 = [(NSFilePresenterRelinquishment *)self _locked_addRelinquishReply:a5];
+      v16 = [(NSFilePresenterRelinquishment *)self _locked_addRelinquishReply:reply];
       os_unfair_lock_unlock(&self->_lock);
       if (!v16)
       {
-        (*(a5 + 2))(a5);
+        (*(reply + 2))(reply);
       }
 
       v17[0] = MEMORY[0x1E69E9820];
@@ -223,18 +223,18 @@ void __101__NSFilePresenterRelinquishment_performRemoteDeletePrerelinquishmentIf
       v17[2] = __100__NSFilePresenterRelinquishment_performRelinquishmentToAccessClaimIfNecessary_usingBlock_withReply___block_invoke_15;
       v17[3] = &unk_1E69F2C00;
       v17[4] = self;
-      (*(a4 + 2))(a4, v17);
+      (*(block + 2))(block, v17);
     }
   }
 }
 
-- (void)setReacquirer:(id)a3
+- (void)setReacquirer:(id)reacquirer
 {
   v7 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
   if ([(NSCountedSet *)self->_blockingAccessClaimIDs count])
   {
-    self->_reacquirer = [a3 copy];
+    self->_reacquirer = [reacquirer copy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -249,15 +249,15 @@ void __101__NSFilePresenterRelinquishment_performRemoteDeletePrerelinquishmentIf
       _os_log_debug_impl(&dword_18075C000, v5, OS_LOG_TYPE_DEBUG, "Reacquiring immediately, because there are no more claims", v6, 2u);
     }
 
-    (*(a3 + 2))(a3, &__block_literal_global_81);
+    (*(reacquirer + 2))(reacquirer, &__block_literal_global_81);
   }
 }
 
-- (void)removeBlockingAccessClaimID:(id)a3 thenContinue:(id)a4
+- (void)removeBlockingAccessClaimID:(id)d thenContinue:(id)continue
 {
   v10 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  [(NSCountedSet *)self->_blockingAccessClaimIDs removeObject:a3];
+  [(NSCountedSet *)self->_blockingAccessClaimIDs removeObject:d];
   if ([(NSCountedSet *)self->_blockingAccessClaimIDs count])
   {
     goto LABEL_2;
@@ -275,14 +275,14 @@ void __101__NSFilePresenterRelinquishment_performRemoteDeletePrerelinquishmentIf
   {
 LABEL_2:
     os_unfair_lock_unlock(&self->_lock);
-    (*(a4 + 2))(a4);
+    (*(continue + 2))(continue);
   }
 
   else
   {
     self->_reacquirer = 0;
     os_unfair_lock_unlock(&self->_lock);
-    reacquirer[2](reacquirer, a4);
+    reacquirer[2](reacquirer, continue);
   }
 }
 
@@ -317,20 +317,20 @@ LABEL_2:
   }
 }
 
-- (BOOL)_locked_addRelinquishReply:(id)a3
+- (BOOL)_locked_addRelinquishReply:(id)reply
 {
   os_unfair_lock_assert_owner(&self->_lock);
   relinquishReplies = self->_relinquishReplies;
   if (relinquishReplies)
   {
-    v6 = [a3 copy];
+    v6 = [reply copy];
     [(NSMutableArray *)self->_relinquishReplies addObject:v6];
   }
 
   return relinquishReplies != 0;
 }
 
-- (void)_locked_addPrerelinquishReply:(id)a3
+- (void)_locked_addPrerelinquishReply:(id)reply
 {
   os_unfair_lock_assert_owner(&self->_lock);
   if (!self->_blockingPrerelinquishReplies)
@@ -338,7 +338,7 @@ LABEL_2:
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSFilePresenterRelinquishment.m" description:226, @"addPrerelinquishReply called, but we're not in the middle of prerelinquishing"];
   }
 
-  v6 = [a3 copy];
+  v6 = [reply copy];
   [(NSMutableArray *)self->_blockingPrerelinquishReplies addObject:v6];
 }
 

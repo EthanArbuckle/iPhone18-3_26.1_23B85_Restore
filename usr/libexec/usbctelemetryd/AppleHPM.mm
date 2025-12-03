@@ -1,6 +1,6 @@
 @interface AppleHPM
-+ (id)createWithBusService:(unsigned int)a3 andLogger:(id)a4;
-- (id)initializeWithHPMDeviceService:(unsigned int)a3 andHPMInterfaceService:(unsigned int)a4 andLogger:(id)a5 atRid:(unsigned __int8)a6;
++ (id)createWithBusService:(unsigned int)service andLogger:(id)logger;
+- (id)initializeWithHPMDeviceService:(unsigned int)service andHPMInterfaceService:(unsigned int)interfaceService andLogger:(id)logger atRid:(unsigned __int8)rid;
 - (int)collectAllAnalytics;
 - (int)getAppLoaded;
 - (int)getFWVersion;
@@ -10,13 +10,13 @@
 
 @implementation AppleHPM
 
-+ (id)createWithBusService:(unsigned int)a3 andLogger:(id)a4
++ (id)createWithBusService:(unsigned int)service andLogger:(id)logger
 {
-  v5 = a4;
+  loggerCopy = logger;
   v6 = IOServiceMatching("AppleTCController");
   v7 = IOServiceMatching("AppleHPMDevice");
   valuePtr = 0;
-  CFProperty = IORegistryEntryCreateCFProperty(a3, @"RID", kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(service, @"RID", kCFAllocatorDefault, 0);
   if (CFProperty)
   {
     v9 = CFProperty;
@@ -25,7 +25,7 @@
   }
 
   child = 0;
-  IORegistryEntryGetChildEntry(a3, "IOService", &child);
+  IORegistryEntryGetChildEntry(service, "IOService", &child);
   v10 = child;
   if (child)
   {
@@ -92,7 +92,7 @@ LABEL_16:
         v19 = off_100004118;
 LABEL_25:
         v20 = objc_alloc(*v19);
-        v16 = [v20 initializeWithHPMDeviceService:v11 andHPMInterfaceService:v15 andLogger:v5 atRid:valuePtr];
+        v16 = [v20 initializeWithHPMDeviceService:v11 andHPMInterfaceService:v15 andLogger:loggerCopy atRid:valuePtr];
 
         goto LABEL_27;
       }
@@ -104,7 +104,7 @@ LABEL_25:
       }
     }
 
-    else if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    else if (os_log_type_enabled(loggerCopy, OS_LOG_TYPE_ERROR))
     {
       sub_100001A64();
     }
@@ -117,35 +117,35 @@ LABEL_27:
   return v16;
 }
 
-- (id)initializeWithHPMDeviceService:(unsigned int)a3 andHPMInterfaceService:(unsigned int)a4 andLogger:(id)a5 atRid:(unsigned __int8)a6
+- (id)initializeWithHPMDeviceService:(unsigned int)service andHPMInterfaceService:(unsigned int)interfaceService andLogger:(id)logger atRid:(unsigned __int8)rid
 {
-  v6 = a6;
+  ridCopy = rid;
   v10 = objc_alloc_init(NSMutableDictionary);
   analyticsDict = self->_analyticsDict;
   self->_analyticsDict = v10;
 
   if (self->_analyticsDict)
   {
-    self->appleHPMInterfaceService = a4;
-    self->appleHPMDeviceService = a3;
-    self->_rid = v6;
-    v12 = self;
+    self->appleHPMInterfaceService = interfaceService;
+    self->appleHPMDeviceService = service;
+    self->_rid = ridCopy;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (int)collectAllAnalytics
 {
-  v3 = [(AppleHPM *)self getMode];
-  v4 = [(AppleHPM *)self getAppLoaded]| v3;
-  v5 = [(AppleHPM *)self getFWVersion];
-  v6 = v4 | v5 | [(AppleHPM *)self getBootFlags];
+  getMode = [(AppleHPM *)self getMode];
+  v4 = [(AppleHPM *)self getAppLoaded]| getMode;
+  getFWVersion = [(AppleHPM *)self getFWVersion];
+  v6 = v4 | getFWVersion | [(AppleHPM *)self getBootFlags];
   if (v6 | [(AppleHPM *)self getHealthCheck])
   {
     return -536870212;

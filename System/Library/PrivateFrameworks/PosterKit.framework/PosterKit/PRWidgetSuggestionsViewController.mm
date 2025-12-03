@@ -1,35 +1,35 @@
 @interface PRWidgetSuggestionsViewController
-- (PRWidgetSuggestionsViewController)initWithSuggestionSets:(id)a3 listLayoutProvider:(id)a4 iconViewProvider:(id)a5 widgetDragHandler:(id)a6 usingSidebarLayout:(BOOL)a7;
+- (PRWidgetSuggestionsViewController)initWithSuggestionSets:(id)sets listLayoutProvider:(id)provider iconViewProvider:(id)viewProvider widgetDragHandler:(id)handler usingSidebarLayout:(BOOL)layout;
 - (PRWidgetSuggestionsViewControllerDelegate)delegate;
-- (id)_galleryItemForComplicationDescriptor:(id)a3 iconImageHidden:(BOOL)a4;
-- (id)complicationDescriptorForItemAtIndexPath:(id)a3;
-- (void)_configureWidgetCell:(id)a3 forItem:(id)a4 atIndexPath:(id)a5;
-- (void)iconTapped:(id)a3;
+- (id)_galleryItemForComplicationDescriptor:(id)descriptor iconImageHidden:(BOOL)hidden;
+- (id)complicationDescriptorForItemAtIndexPath:(id)path;
+- (void)_configureWidgetCell:(id)cell forItem:(id)item atIndexPath:(id)path;
+- (void)iconTapped:(id)tapped;
 - (void)loadView;
 - (void)viewDidLoad;
 @end
 
 @implementation PRWidgetSuggestionsViewController
 
-- (PRWidgetSuggestionsViewController)initWithSuggestionSets:(id)a3 listLayoutProvider:(id)a4 iconViewProvider:(id)a5 widgetDragHandler:(id)a6 usingSidebarLayout:(BOOL)a7
+- (PRWidgetSuggestionsViewController)initWithSuggestionSets:(id)sets listLayoutProvider:(id)provider iconViewProvider:(id)viewProvider widgetDragHandler:(id)handler usingSidebarLayout:(BOOL)layout
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  setsCopy = sets;
+  providerCopy = provider;
+  viewProviderCopy = viewProvider;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = PRWidgetSuggestionsViewController;
   v16 = [(PRWidgetSuggestionsViewController *)&v20 init];
   if (v16)
   {
-    v17 = [v12 bs_compactMap:&__block_literal_global_3];
+    v17 = [setsCopy bs_compactMap:&__block_literal_global_3];
     suggestionSets = v16->_suggestionSets;
     v16->_suggestionSets = v17;
 
-    objc_storeStrong(&v16->_listLayoutProvider, a4);
-    objc_storeStrong(&v16->_iconViewProvider, a5);
-    objc_storeStrong(&v16->_widgetDragHandler, a6);
-    v16->_usingSidebarLayout = a7;
+    objc_storeStrong(&v16->_listLayoutProvider, provider);
+    objc_storeStrong(&v16->_iconViewProvider, viewProvider);
+    objc_storeStrong(&v16->_widgetDragHandler, handler);
+    v16->_usingSidebarLayout = layout;
   }
 
   return v16;
@@ -128,14 +128,14 @@ LABEL_9:
   v21[3] = &unk_1E78432B0;
   objc_copyWeak(&v22, &location);
   v5 = [v3 registrationWithCellClass:v4 configurationHandler:v21];
-  v6 = [(PRWidgetSuggestionsView *)self->_widgetSuggestionsView collectionView];
-  [v6 setDelegate:self];
+  collectionView = [(PRWidgetSuggestionsView *)self->_widgetSuggestionsView collectionView];
+  [collectionView setDelegate:self];
   v7 = objc_alloc(MEMORY[0x1E69DC820]);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __48__PRWidgetSuggestionsViewController_viewDidLoad__block_invoke_2;
   v18[3] = &unk_1E78432D8;
-  v8 = v6;
+  v8 = collectionView;
   v19 = v8;
   v9 = v5;
   v20 = v9;
@@ -145,13 +145,13 @@ LABEL_9:
 
   v12 = objc_alloc_init(MEMORY[0x1E69955A0]);
   v13 = [(NSArray *)self->_suggestionSets bs_map:&__block_literal_global_17];
-  v14 = [v13 bs_flatten];
+  bs_flatten = [v13 bs_flatten];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __48__PRWidgetSuggestionsViewController_viewDidLoad__block_invoke_4;
   v17[3] = &unk_1E7843320;
   v17[4] = self;
-  v15 = [v14 bs_map:v17];
+  v15 = [bs_flatten bs_map:v17];
 
   v24[0] = @"PRWidgetSuggestionsSectionIdentifier";
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
@@ -204,80 +204,80 @@ id __48__PRWidgetSuggestionsViewController_viewDidLoad__block_invoke_2(uint64_t 
   return v12;
 }
 
-- (id)_galleryItemForComplicationDescriptor:(id)a3 iconImageHidden:(BOOL)a4
+- (id)_galleryItemForComplicationDescriptor:(id)descriptor iconImageHidden:(BOOL)hidden
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 widget];
+  hiddenCopy = hidden;
+  descriptorCopy = descriptor;
+  widget = [descriptorCopy widget];
   v7 = [PRComplicationDescriptor alloc];
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  v9 = [v8 UUIDString];
-  v10 = [(PRComplicationDescriptor *)v7 initWithUniqueIdentifier:v9 widget:v6];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v10 = [(PRComplicationDescriptor *)v7 initWithUniqueIdentifier:uUIDString widget:widget];
 
-  v11 = [v5 suggestedComplication];
+  suggestedComplication = [descriptorCopy suggestedComplication];
 
-  [(PRComplicationDescriptor *)v10 setSuggestedComplication:v11];
+  [(PRComplicationDescriptor *)v10 setSuggestedComplication:suggestedComplication];
   v12 = [PRComplicationGalleryWidgetItem alloc];
   v13 = PRSharedWidgetExtensionProvider();
-  v14 = [v13 widgetDescriptorForWidget:v6];
-  v15 = [v14 displayName];
-  v16 = [(PRComplicationGalleryWidgetItem *)v12 initWithDisplayName:v15 selected:0 iconImageHidden:v4 descriptor:v10];
+  v14 = [v13 widgetDescriptorForWidget:widget];
+  displayName = [v14 displayName];
+  v16 = [(PRComplicationGalleryWidgetItem *)v12 initWithDisplayName:displayName selected:0 iconImageHidden:hiddenCopy descriptor:v10];
 
   return v16;
 }
 
-- (void)_configureWidgetCell:(id)a3 forItem:(id)a4 atIndexPath:(id)a5
+- (void)_configureWidgetCell:(id)cell forItem:(id)item atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 descriptor];
-  v11 = [v10 widget];
+  cellCopy = cell;
+  pathCopy = path;
+  descriptor = [item descriptor];
+  widget = [descriptor widget];
 
   v12 = PRSharedWidgetExtensionProvider();
-  v32 = [v12 widgetDescriptorForWidget:v11];
+  v32 = [v12 widgetDescriptorForWidget:widget];
 
   v13 = objc_alloc(MEMORY[0x1E69D40F0]);
-  v14 = [(PRWidgetSuggestionsViewController *)self listLayoutProvider];
-  v15 = [(PRWidgetSuggestionsViewController *)self iconViewProvider];
-  v16 = [v13 initWithGalleryItem:v32 titleAndSubtitleVisible:0 listLayoutProvider:v14 iconViewProvider:v15];
+  listLayoutProvider = [(PRWidgetSuggestionsViewController *)self listLayoutProvider];
+  iconViewProvider = [(PRWidgetSuggestionsViewController *)self iconViewProvider];
+  v16 = [v13 initWithGalleryItem:v32 titleAndSubtitleVisible:0 listLayoutProvider:listLayoutProvider iconViewProvider:iconViewProvider];
 
-  [v16 setSelectedSizeClass:{objc_msgSend(v11, "family")}];
+  [v16 setSelectedSizeClass:{objc_msgSend(widget, "family")}];
   [v16 setDelegate:self];
   [v16 setUsesAmbientScaleFactorForRemovableBackgroundItems:0];
-  v17 = [v16 wrapperView];
-  [v17 setBackgroundType:0];
+  wrapperView = [v16 wrapperView];
+  [wrapperView setBackgroundType:0];
 
-  v18 = [v16 wrapperView];
-  [v18 setCornerRadius:PRWidgetPlatterCornerRadius()];
+  wrapperView2 = [v16 wrapperView];
+  [wrapperView2 setCornerRadius:PRWidgetPlatterCornerRadius()];
 
-  [v8 setWidgetWrapperViewController:v16];
+  [cellCopy setWidgetWrapperViewController:v16];
   v19 = +[PRWidgetMetricsProvider sharedInstance];
-  v20 = [v19 systemMetricsForWidget:v11];
+  v20 = [v19 systemMetricsForWidget:widget];
 
-  v21 = [(PRWidgetSuggestionsViewController *)self traitCollection];
-  [v21 displayScale];
+  traitCollection = [(PRWidgetSuggestionsViewController *)self traitCollection];
+  [traitCollection displayScale];
   v23 = v22;
 
   [v20 _effectiveSizePixelAlignedForDisplayScale:v23];
-  [v8 setContentSize:?];
-  v24 = [(PRWidgetSuggestionsView *)self->_widgetSuggestionsView collectionView];
-  v25 = [v11 extensionIdentity];
-  v26 = [v25 extensionBundleIdentifier];
+  [cellCopy setContentSize:?];
+  collectionView = [(PRWidgetSuggestionsView *)self->_widgetSuggestionsView collectionView];
+  extensionIdentity = [widget extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __78__PRWidgetSuggestionsViewController__configureWidgetCell_forItem_atIndexPath___block_invoke;
   v33[3] = &unk_1E7843348;
-  v34 = v24;
-  v35 = v8;
-  v36 = v9;
-  v27 = v9;
-  v28 = v8;
-  v29 = v24;
-  [PRComplicationGalleryIconProvider loadIconImageForExtensionBundleIdentifier:v26 atWidth:v33 completion:20.0];
+  v34 = collectionView;
+  v35 = cellCopy;
+  v36 = pathCopy;
+  v27 = pathCopy;
+  v28 = cellCopy;
+  v29 = collectionView;
+  [PRComplicationGalleryIconProvider loadIconImageForExtensionBundleIdentifier:extensionBundleIdentifier atWidth:v33 completion:20.0];
 
-  v30 = [v16 view];
-  v31 = [v30 superview];
-  [(PRWidgetSuggestionsViewController *)self bs_addChildViewController:v16 withSuperview:v31];
+  view = [v16 view];
+  superview = [view superview];
+  [(PRWidgetSuggestionsViewController *)self bs_addChildViewController:v16 withSuperview:superview];
 }
 
 void __78__PRWidgetSuggestionsViewController__configureWidgetCell_forItem_atIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -292,23 +292,23 @@ void __78__PRWidgetSuggestionsViewController__configureWidgetCell_forItem_atInde
   }
 }
 
-- (id)complicationDescriptorForItemAtIndexPath:(id)a3
+- (id)complicationDescriptorForItemAtIndexPath:(id)path
 {
-  v3 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:a3];
-  v4 = [v3 descriptor];
+  v3 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:path];
+  descriptor = [v3 descriptor];
 
-  return v4;
+  return descriptor;
 }
 
-- (void)iconTapped:(id)a3
+- (void)iconTapped:(id)tapped
 {
-  v4 = [a3 wrapperView];
-  v6 = [v4 contentView];
+  wrapperView = [tapped wrapperView];
+  contentView = [wrapperView contentView];
 
-  if (v6)
+  if (contentView)
   {
-    v5 = [(PRWidgetSuggestionsViewController *)self delegate];
-    [v5 widgetSuggestionsViewController:self didSelectWidgetIconView:v6];
+    delegate = [(PRWidgetSuggestionsViewController *)self delegate];
+    [delegate widgetSuggestionsViewController:self didSelectWidgetIconView:contentView];
   }
 }
 

@@ -1,37 +1,37 @@
 @interface KTLoggableData
-- (BOOL)verifySignatureWithAccountKey:(id)a3 error:(id *)a4;
-- (void)computeHashesForSalt:(id)a3;
+- (BOOL)verifySignatureWithAccountKey:(id)key error:(id *)error;
+- (void)computeHashesForSalt:(id)salt;
 @end
 
 @implementation KTLoggableData
 
-- (void)computeHashesForSalt:(id)a3
+- (void)computeHashesForSalt:(id)salt
 {
-  v9 = a3;
-  v4 = [(KTLoggableData *)self deviceID];
+  saltCopy = salt;
+  deviceID = [(KTLoggableData *)self deviceID];
 
-  if (v4)
+  if (deviceID)
   {
-    v5 = [(KTLoggableData *)self deviceID];
-    v6 = [v5 kt_sha256WithSalt:v9];
+    deviceID2 = [(KTLoggableData *)self deviceID];
+    v6 = [deviceID2 kt_sha256WithSalt:saltCopy];
     [(KTLoggableData *)self setDeviceIdHash:v6];
   }
 
-  v7 = [(KTLoggableData *)self clientData];
-  v8 = [v7 kt_sha256WithSalt:v9];
+  clientData = [(KTLoggableData *)self clientData];
+  v8 = [clientData kt_sha256WithSalt:saltCopy];
   [(KTLoggableData *)self setClientDataHash:v8];
 }
 
-- (BOOL)verifySignatureWithAccountKey:(id)a3 error:(id *)a4
+- (BOOL)verifySignatureWithAccountKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = [(KTLoggableData *)self clientData];
-  if (v7 && (v8 = v7, [(KTLoggableData *)self signature], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
+  keyCopy = key;
+  clientData = [(KTLoggableData *)self clientData];
+  if (clientData && (v8 = clientData, [(KTLoggableData *)self signature], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
   {
-    v10 = [(KTLoggableData *)self clientData];
-    v11 = [(KTLoggableData *)self signature];
+    clientData2 = [(KTLoggableData *)self clientData];
+    signature = [(KTLoggableData *)self signature];
     v45 = 0;
-    v12 = [KTAccountKeyServer verifyData:v10 signature:v11 accountPublicKeyInfo:v6 error:&v45];
+    v12 = [KTAccountKeyServer verifyData:clientData2 signature:signature accountPublicKeyInfo:keyCopy error:&v45];
     v13 = v45;
 
     if (v12)
@@ -50,24 +50,24 @@
       if (os_log_type_enabled(qword_10039CAB0, OS_LOG_TYPE_ERROR))
       {
         log = v31;
-        v44 = [(KTLoggableData *)self deviceID];
-        v42 = [v44 kt_hexString];
-        v32 = [(KTLoggableData *)self ktCapable];
-        v33 = [(KTLoggableData *)self clientData];
-        v34 = [v33 kt_hexString];
-        v35 = [v6 kt_hexString];
-        v36 = [(KTLoggableData *)self signature];
-        v37 = [v36 kt_hexString];
+        deviceID = [(KTLoggableData *)self deviceID];
+        kt_hexString = [deviceID kt_hexString];
+        ktCapable = [(KTLoggableData *)self ktCapable];
+        clientData3 = [(KTLoggableData *)self clientData];
+        kt_hexString2 = [clientData3 kt_hexString];
+        kt_hexString3 = [keyCopy kt_hexString];
+        signature2 = [(KTLoggableData *)self signature];
+        kt_hexString4 = [signature2 kt_hexString];
         *buf = 138413314;
-        v47 = v42;
+        v47 = kt_hexString;
         v48 = 1024;
-        v49 = v32;
+        v49 = ktCapable;
         v50 = 2112;
-        v51 = v34;
+        v51 = kt_hexString2;
         v52 = 2112;
-        v53 = v35;
+        v53 = kt_hexString3;
         v54 = 2112;
-        v55 = v37;
+        v55 = kt_hexString4;
         _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_ERROR, "failed to verify signature for deviceID %@, ktCapable %d, client data %@ key: %@ signature: %@", buf, 0x30u);
       }
 
@@ -87,11 +87,11 @@
       }
 
       v14 = 0;
-      if (a4 && v38)
+      if (error && v38)
       {
         v40 = v38;
         v14 = 0;
-        *a4 = v38;
+        *error = v38;
       }
 
       v13 = v38;
@@ -101,22 +101,22 @@
   else
   {
     v15 = +[NSMutableDictionary dictionary];
-    v16 = [(KTLoggableData *)self deviceID];
-    v17 = [v16 kt_hexString];
-    [v15 setObject:v17 forKeyedSubscript:@"deviceID"];
+    deviceID2 = [(KTLoggableData *)self deviceID];
+    kt_hexString5 = [deviceID2 kt_hexString];
+    [v15 setObject:kt_hexString5 forKeyedSubscript:@"deviceID"];
 
-    v18 = [(KTLoggableData *)self product];
-    [v15 setObject:v18 forKeyedSubscript:@"product"];
+    product = [(KTLoggableData *)self product];
+    [v15 setObject:product forKeyedSubscript:@"product"];
 
-    v19 = [(KTLoggableData *)self build];
-    [v15 setObject:v19 forKeyedSubscript:@"build"];
+    build = [(KTLoggableData *)self build];
+    [v15 setObject:build forKeyedSubscript:@"build"];
 
     v20 = [NSNumber numberWithBool:[(KTLoggableData *)self ktCapable]];
     [v15 setObject:v20 forKeyedSubscript:@"ktCapable"];
 
-    v21 = [(KTLoggableData *)self clientData];
+    clientData4 = [(KTLoggableData *)self clientData];
 
-    if (v21)
+    if (clientData4)
     {
       v22 = -286;
     }
@@ -136,24 +136,24 @@
     if (os_log_type_enabled(qword_10039CAB0, OS_LOG_TYPE_DEFAULT))
     {
       v24 = v23;
-      v25 = [(KTLoggableData *)self deviceID];
-      v26 = [v25 kt_hexString];
-      v27 = [(KTLoggableData *)self ktCapable];
-      v28 = [(KTLoggableData *)self clientData];
-      v29 = [v28 kt_hexString];
+      deviceID3 = [(KTLoggableData *)self deviceID];
+      kt_hexString6 = [deviceID3 kt_hexString];
+      ktCapable2 = [(KTLoggableData *)self ktCapable];
+      clientData5 = [(KTLoggableData *)self clientData];
+      kt_hexString7 = [clientData5 kt_hexString];
       *buf = 138412802;
-      v47 = v26;
+      v47 = kt_hexString6;
       v48 = 1024;
-      v49 = v27;
+      v49 = ktCapable2;
       v50 = 2112;
-      v51 = v29;
+      v51 = kt_hexString7;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "no signature for deviceId %@, ktCapable %d, client data %@", buf, 0x1Cu);
     }
 
-    if (a4 && v13)
+    if (error && v13)
     {
       v30 = v13;
-      *a4 = v13;
+      *error = v13;
     }
 
     v14 = 0;

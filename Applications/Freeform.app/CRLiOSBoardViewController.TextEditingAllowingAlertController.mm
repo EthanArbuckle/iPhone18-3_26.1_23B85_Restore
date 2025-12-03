@@ -1,38 +1,38 @@
 @interface CRLiOSBoardViewController.TextEditingAllowingAlertController
-- (_TtCC8Freeform25CRLiOSBoardViewController34TextEditingAllowingAlertController)initWithCoder:(id)a3;
-- (_TtCC8Freeform25CRLiOSBoardViewController34TextEditingAllowingAlertController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtCC8Freeform25CRLiOSBoardViewController34TextEditingAllowingAlertController)initWithCoder:(id)coder;
+- (_TtCC8Freeform25CRLiOSBoardViewController34TextEditingAllowingAlertController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation CRLiOSBoardViewController.TextEditingAllowingAlertController
 
-- (_TtCC8Freeform25CRLiOSBoardViewController34TextEditingAllowingAlertController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtCC8Freeform25CRLiOSBoardViewController34TextEditingAllowingAlertController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = _s34TextEditingAllowingAlertControllerCMa();
-  v9 = [(CRLiOSBoardViewController.TextEditingAllowingAlertController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(CRLiOSBoardViewController.TextEditingAllowingAlertController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtCC8Freeform25CRLiOSBoardViewController34TextEditingAllowingAlertController)initWithCoder:(id)a3
+- (_TtCC8Freeform25CRLiOSBoardViewController34TextEditingAllowingAlertController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = _s34TextEditingAllowingAlertControllerCMa();
-  v4 = a3;
-  v5 = [(CRLiOSBoardViewController.TextEditingAllowingAlertController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CRLiOSBoardViewController.TextEditingAllowingAlertController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,24 +1,24 @@
 @interface WRM_SymptomsService
 - (BOOL)createNetworkSymptomsFeed;
-- (BOOL)getNetworkFullScoreFromSF:(int)a3;
-- (BOOL)getNetworkUsageAdviceFromSF:(int)a3;
-- (BOOL)isConnectedLinkGood:(BOOL)a3;
-- (BOOL)isCurrentAttachPointHasChanged:(id)a3;
-- (BOOL)scorecardForIKETunnel:(id)a3 isInstant:(BOOL)a4;
-- (BOOL)watchpointForIKETunnel:(id)a3 onThreshold:(unsigned int)a4;
+- (BOOL)getNetworkFullScoreFromSF:(int)f;
+- (BOOL)getNetworkUsageAdviceFromSF:(int)f;
+- (BOOL)isConnectedLinkGood:(BOOL)good;
+- (BOOL)isCurrentAttachPointHasChanged:(id)changed;
+- (BOOL)scorecardForIKETunnel:(id)tunnel isInstant:(BOOL)instant;
+- (BOOL)watchpointForIKETunnel:(id)tunnel onThreshold:(unsigned int)threshold;
 - (WRM_SymptomsService)init;
 - (double)evaluateNetworkBandwidth;
-- (double)getAgeOfMetricDictionary:(id)a3;
-- (double)getMetricFromDictionary:(id)a3 :(int)a4;
-- (int)mapSFNetworkAdvisoryToNetworkScore:(int)a3;
+- (double)getAgeOfMetricDictionary:(id)dictionary;
+- (double)getMetricFromDictionary:(id)dictionary :(int)a4;
+- (int)mapSFNetworkAdvisoryToNetworkScore:(int)score;
 - (void)dealloc;
-- (void)displayIKEMetrics:(id)a3;
-- (void)notifyIRATManager:(int64_t)a3;
-- (void)notifyWifiCallState:(BOOL)a3;
+- (void)displayIKEMetrics:(id)metrics;
+- (void)notifyIRATManager:(int64_t)manager;
+- (void)notifyWifiCallState:(BOOL)state;
 - (void)resetSFContext;
-- (void)startBrokenBackHaulTimer:(id)a3;
-- (void)updateDPDMetrics:(BOOL)a3;
-- (void)updateSIPMetrics:(BOOL)a3;
+- (void)startBrokenBackHaulTimer:(id)timer;
+- (void)updateDPDMetrics:(BOOL)metrics;
+- (void)updateSIPMetrics:(BOOL)metrics;
 - (void)watchTcpConnectionFallBack;
 @end
 
@@ -72,7 +72,7 @@
   return v3;
 }
 
-- (void)startBrokenBackHaulTimer:(id)a3
+- (void)startBrokenBackHaulTimer:(id)timer
 {
   [WCM_Logging logLevel:17 message:@"iRAT: startBrokenBackHaulTimer started."];
   mBrokenBackhaulDetectionTimer = self->mBrokenBackhaulDetectionTimer;
@@ -88,7 +88,7 @@
   v6[2] = sub_100155194;
   v6[3] = &unk_1002422E8;
   v6[4] = self;
-  self->mBrokenBackhaulDetectionTimer = [[WRM_Timer alloc] initWithFireTimeIntervalSinceNow:a3 queue:v6 block:120.0];
+  self->mBrokenBackhaulDetectionTimer = [[WRM_Timer alloc] initWithFireTimeIntervalSinceNow:timer queue:v6 block:120.0];
   [WCM_Logging logLevel:17 message:@"iRAT: startBrokenBackHaulTimer end."];
 }
 
@@ -141,17 +141,17 @@
   [(WRM_SymptomsService *)&v9 dealloc];
 }
 
-- (double)getAgeOfMetricDictionary:(id)a3
+- (double)getAgeOfMetricDictionary:(id)dictionary
 {
   v3 = 0.0;
-  if (a3)
+  if (dictionary)
   {
-    if ([a3 count])
+    if ([dictionary count])
     {
-      v5 = [a3 allValues];
-      if ([v5 count])
+      allValues = [dictionary allValues];
+      if ([allValues count])
       {
-        v6 = [v5 objectAtIndex:0];
+        v6 = [allValues objectAtIndex:0];
         if (v6)
         {
           v7 = v6;
@@ -169,14 +169,14 @@
   return v3;
 }
 
-- (BOOL)isCurrentAttachPointHasChanged:(id)a3
+- (BOOL)isCurrentAttachPointHasChanged:(id)changed
 {
-  if (a3)
+  if (changed)
   {
-    v5 = [a3 count];
+    v5 = [changed count];
     if (v5)
     {
-      v5 = [objc_msgSend(a3 "allValues")];
+      v5 = [objc_msgSend(changed "allValues")];
       if (v5)
       {
         v6 = v5;
@@ -213,20 +213,20 @@
   return v5;
 }
 
-- (double)getMetricFromDictionary:(id)a3 :(int)a4
+- (double)getMetricFromDictionary:(id)dictionary :(int)a4
 {
   v4 = -1.0;
-  if (!a3)
+  if (!dictionary)
   {
     return v4;
   }
 
-  if (![a3 count])
+  if (![dictionary count])
   {
     return v4;
   }
 
-  v7 = [objc_msgSend(a3 "allValues")];
+  v7 = [objc_msgSend(dictionary "allValues")];
   if (!v7)
   {
     return v4;
@@ -373,11 +373,11 @@ LABEL_3:
   return v2;
 }
 
-- (BOOL)getNetworkUsageAdviceFromSF:(int)a3
+- (BOOL)getNetworkUsageAdviceFromSF:(int)f
 {
-  if (a3)
+  if (f)
   {
-    if (a3 != 1)
+    if (f != 1)
     {
       [WCM_Logging logLevel:16 message:@"%s. Unsupported network type %s.", "[WRM_SymptomsService getNetworkUsageAdviceFromSF:]", "WRM_NETWORK_TYPE_INVALID!!!"];
       LOBYTE(v7) = 0;
@@ -403,7 +403,7 @@ LABEL_3:
   v11[1] = 3221225472;
   v11[2] = sub_100155BF4;
   v11[3] = &unk_100242310;
-  v12 = a3;
+  fCopy = f;
   v11[4] = self;
   v7 = [(NetworkPerformanceFeed *)mNetworkPerfFeed usageConsultOn:v5 onlyRelativeToReferencePoint:0 reply:v11];
   if (v7)
@@ -418,12 +418,12 @@ LABEL_3:
   }
 
   v9 = "WRM_NETWORK_TYPE_INVALID!!!";
-  if (a3 == 1)
+  if (f == 1)
   {
     v9 = "CELLULAR";
   }
 
-  if (!a3)
+  if (!f)
   {
     v9 = "WIFI";
   }
@@ -432,9 +432,9 @@ LABEL_3:
   return v7;
 }
 
-- (BOOL)getNetworkFullScoreFromSF:(int)a3
+- (BOOL)getNetworkFullScoreFromSF:(int)f
 {
-  if (a3 == 1)
+  if (f == 1)
   {
     v8 = "CELLULAR";
 LABEL_9:
@@ -443,7 +443,7 @@ LABEL_9:
     return v6;
   }
 
-  if (a3)
+  if (f)
   {
     v8 = "WRM_NETWORK_TYPE_INVALID!!!";
     goto LABEL_9;
@@ -478,9 +478,9 @@ LABEL_9:
   return v6;
 }
 
-- (int)mapSFNetworkAdvisoryToNetworkScore:(int)a3
+- (int)mapSFNetworkAdvisoryToNetworkScore:(int)score
 {
-  if (a3 == 7)
+  if (score == 7)
   {
     v3 = 3;
   }
@@ -490,7 +490,7 @@ LABEL_9:
     v3 = -100;
   }
 
-  if (a3 == 6)
+  if (score == 6)
   {
     v4 = 2;
   }
@@ -500,7 +500,7 @@ LABEL_9:
     v4 = v3;
   }
 
-  if (a3 == 5)
+  if (score == 5)
   {
     v5 = 1;
   }
@@ -510,7 +510,7 @@ LABEL_9:
     v5 = v4;
   }
 
-  if ((a3 - 3) >= 2)
+  if ((score - 3) >= 2)
   {
     v6 = v5;
   }
@@ -520,7 +520,7 @@ LABEL_9:
     v6 = 0;
   }
 
-  if ((a3 & 0xFFFFFFFD) != 0)
+  if ((score & 0xFFFFFFFD) != 0)
   {
     return v6;
   }
@@ -531,9 +531,9 @@ LABEL_9:
   }
 }
 
-- (void)notifyWifiCallState:(BOOL)a3
+- (void)notifyWifiCallState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = @"iRAT: Sending WiFiCallOnSymtomps.";
   }
@@ -558,12 +558,12 @@ LABEL_9:
   }
 }
 
-- (void)displayIKEMetrics:(id)a3
+- (void)displayIKEMetrics:(id)metrics
 {
-  if (a3 && [a3 count])
+  if (metrics && [metrics count])
   {
-    v4 = [a3 objectForKeyedSubscript:kSymptomAnalyticsServiceFlowInstant];
-    v5 = [a3 objectForKeyedSubscript:kSymptomAnalyticsServiceFlowHistorical];
+    v4 = [metrics objectForKeyedSubscript:kSymptomAnalyticsServiceFlowInstant];
+    v5 = [metrics objectForKeyedSubscript:kSymptomAnalyticsServiceFlowHistorical];
     if (v4)
     {
       v5 = v4;
@@ -601,23 +601,23 @@ LABEL_9:
   return self->mNetworkThroughput;
 }
 
-- (BOOL)scorecardForIKETunnel:(id)a3 isInstant:(BOOL)a4
+- (BOOL)scorecardForIKETunnel:(id)tunnel isInstant:(BOOL)instant
 {
-  v4 = a4;
+  instantCopy = instant;
   v6 = kSymptomAnalyticsServiceFlowTagIKE;
   v7 = kSymptomAnalyticsServiceFlowTag;
-  if (!a3)
+  if (!tunnel)
   {
-    a3 = +[NSNull null];
+    tunnel = +[NSNull null];
   }
 
   v8 = &kSymptomAnalyticsServiceFlowInstant;
-  if (!v4)
+  if (!instantCopy)
   {
     v8 = &kSymptomAnalyticsServiceFlowHistorical;
   }
 
-  v9 = [NSDictionary dictionaryWithObjectsAndKeys:v6, v7, a3, *v8, 0];
+  v9 = [NSDictionary dictionaryWithObjectsAndKeys:v6, v7, tunnel, *v8, 0];
   mNetworkPerfFeed = self->mNetworkPerfFeed;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -637,7 +637,7 @@ LABEL_9:
   return 1;
 }
 
-- (BOOL)watchpointForIKETunnel:(id)a3 onThreshold:(unsigned int)a4
+- (BOOL)watchpointForIKETunnel:(id)tunnel onThreshold:(unsigned int)threshold
 {
   v7 = [NSDictionary dictionaryWithObjectsAndKeys:kSymptomAnalyticsServiceFlowTagIKE, kSymptomAnalyticsServiceFlowTag, 0];
   mNetworkPerfFeed = self->mNetworkPerfFeed;
@@ -646,7 +646,7 @@ LABEL_9:
   v10[2] = sub_1001569E4;
   v10[3] = &unk_1002423A0;
   v10[4] = self;
-  if (([(NetworkPerformanceFeed *)mNetworkPerfFeed watchpointOn:1 forIdentifier:a3 andKey:kPerformanceFlowTxReTxPackets onThreshold:v7 withOptions:v10 uponHit:a4]& 1) == 0)
+  if (([(NetworkPerformanceFeed *)mNetworkPerfFeed watchpointOn:1 forIdentifier:tunnel andKey:kPerformanceFlowTxReTxPackets onThreshold:v7 withOptions:v10 uponHit:threshold]& 1) == 0)
   {
     [WCM_Logging logLevel:20 message:@"iRAT: Failed to issue watchpoint request."];
   }
@@ -664,7 +664,7 @@ LABEL_9:
   self->mCurrentVarRTT = 0.0;
 }
 
-- (BOOL)isConnectedLinkGood:(BOOL)a3
+- (BOOL)isConnectedLinkGood:(BOOL)good
 {
   [WCM_Logging logLevel:20 message:@"isConnectedLinkGood called"];
   if ([(WRM_SymptomsService *)self isWiFiNotUsableForIMSCall])
@@ -689,10 +689,10 @@ LABEL_9:
   return v6;
 }
 
-- (void)notifyIRATManager:(int64_t)a3
+- (void)notifyIRATManager:(int64_t)manager
 {
   v4 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_int64(v4, "kWRMM_IKEv2_RTT_UPDATE", a3);
+  xpc_dictionary_set_int64(v4, "kWRMM_IKEv2_RTT_UPDATE", manager);
   *keys = *off_1002423E0;
   values[0] = xpc_uint64_create(0x3EAuLL);
   values[1] = v4;
@@ -710,19 +710,19 @@ LABEL_9:
   xpc_release(v4);
 }
 
-- (void)updateSIPMetrics:(BOOL)a3
+- (void)updateSIPMetrics:(BOOL)metrics
 {
-  self->mSIPTimeOutOverWiFiDetected = a3;
-  if (a3)
+  self->mSIPTimeOutOverWiFiDetected = metrics;
+  if (metrics)
   {
     ++self->mSIPTimeoutCount;
   }
 }
 
-- (void)updateDPDMetrics:(BOOL)a3
+- (void)updateDPDMetrics:(BOOL)metrics
 {
-  self->mWiFiIPsecTunnelDisconnected = a3;
-  if (a3)
+  self->mWiFiIPsecTunnelDisconnected = metrics;
+  if (metrics)
   {
     ++self->mDPDFailureCount;
   }

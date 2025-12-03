@@ -15,19 +15,19 @@
   aBlock[3] = &unk_1E8233480;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(MPCModelGenericAVItemMediaRedownloadOperation *)self assetLoadProperties];
-  v5 = [(MPCModelGenericAVItemMediaRedownloadOperation *)self requestContext];
-  if (v5)
+  assetLoadProperties = [(MPCModelGenericAVItemMediaRedownloadOperation *)self assetLoadProperties];
+  requestContext = [(MPCModelGenericAVItemMediaRedownloadOperation *)self requestContext];
+  if (requestContext)
   {
-    v6 = [v4 storeAsset];
-    v7 = [v6 redownloadParameters];
-    if (![v7 length])
+    storeAsset = [assetLoadProperties storeAsset];
+    redownloadParameters = [storeAsset redownloadParameters];
+    if (![redownloadParameters length])
     {
       v18 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v51 = self;
+        selfCopy6 = self;
         _os_log_impl(&dword_1C5C61000, v18, OS_LOG_TYPE_ERROR, "[AL] - %{public}@: Missing redownload parameters.", buf, 0xCu);
       }
 
@@ -36,27 +36,27 @@
       goto LABEL_33;
     }
 
-    v8 = [v6 endpointType];
-    v9 = v8 == 2;
+    endpointType = [storeAsset endpointType];
+    v9 = endpointType == 2;
     v10 = 0x1E69E4458;
-    if (v8 != 2)
+    if (endpointType != 2)
     {
       v10 = 0x1E69E4530;
     }
 
-    v42 = [objc_alloc(*v10) initWithRequestContext:v5 redownloadParametersString:v7];
+    v42 = [objc_alloc(*v10) initWithRequestContext:requestContext redownloadParametersString:redownloadParameters];
     [v42 setUsePrioritizedURLSession:1];
     v11 = objc_alloc_init(MEMORY[0x1E6970998]);
-    [v11 setAccountID:{objc_msgSend(v4, "accountID")}];
-    [v11 setDelegatedAccountID:{objc_msgSend(v4, "delegatedAccountID")}];
+    [v11 setAccountID:{objc_msgSend(assetLoadProperties, "accountID")}];
+    [v11 setDelegatedAccountID:{objc_msgSend(assetLoadProperties, "delegatedAccountID")}];
     [v11 setRequestType:v9];
-    [v11 setRedownloadParameters:v7];
-    v12 = [MEMORY[0x1E6970990] sharedCache];
-    v13 = [v12 cachedResponseForRequest:v11];
+    [v11 setRedownloadParameters:redownloadParameters];
+    mEMORY[0x1E6970990] = [MEMORY[0x1E6970990] sharedCache];
+    v13 = [mEMORY[0x1E6970990] cachedResponseForRequest:v11];
     v14 = v13;
     if (v13)
     {
-      v13 = [MPCModelGenericAVItemAssetLoadResult assetLoadResultWithStoreAssetPlaybackResponse:v13 assetLoadProperties:v4 source:3 error:0];
+      v13 = [MPCModelGenericAVItemAssetLoadResult assetLoadResultWithStoreAssetPlaybackResponse:v13 assetLoadProperties:assetLoadProperties source:3 error:0];
     }
 
     v41 = v13;
@@ -66,7 +66,7 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v51 = self;
+        selfCopy6 = self;
         v52 = 2114;
         v53 = v14;
         _os_log_impl(&dword_1C5C61000, v15, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: Using existing cached playback response: %{public}@", buf, 0x16u);
@@ -78,38 +78,38 @@
     }
 
     v39 = v14;
-    v40 = v12;
-    v20 = [MEMORY[0x1E69E4420] currentDeviceInfo];
-    if ([v20 isAudioAccessory])
+    v40 = mEMORY[0x1E6970990];
+    currentDeviceInfo = [MEMORY[0x1E69E4420] currentDeviceInfo];
+    if ([currentDeviceInfo isAudioAccessory])
     {
     }
 
     else
     {
-      v21 = [MEMORY[0x1E69E4420] currentDeviceInfo];
-      v22 = [v21 isAppleTV];
+      currentDeviceInfo2 = [MEMORY[0x1E69E4420] currentDeviceInfo];
+      isAppleTV = [currentDeviceInfo2 isAppleTV];
 
-      if (!v22)
+      if (!isAppleTV)
       {
 LABEL_29:
-        v29 = [MEMORY[0x1E69E4428] sharedMonitor];
-        v30 = [v29 isRemoteServerLikelyReachable];
+        mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+        isRemoteServerLikelyReachable = [mEMORY[0x1E69E4428] isRemoteServerLikelyReachable];
 
-        if ((v30 & 1) == 0)
+        if ((isRemoteServerLikelyReachable & 1) == 0)
         {
           v35 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
           v14 = v39;
           if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543362;
-            v51 = self;
+            selfCopy6 = self;
             _os_log_impl(&dword_1C5C61000, v35, OS_LOG_TYPE_ERROR, "[AL] - %{public}@: Skipping redownload asset request [offline]", buf, 0xCu);
           }
 
           v36 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:56 debugDescription:@"No network connection"];
           (*(v3 + 2))(v3, 0, 0, v36);
 
-          v12 = v40;
+          mEMORY[0x1E6970990] = v40;
           goto LABEL_37;
         }
 
@@ -118,7 +118,7 @@ LABEL_29:
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v51 = self;
+          selfCopy6 = self;
           _os_log_impl(&dword_1C5C61000, v31, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: Performing media redownload request...", buf, 0xCu);
         }
 
@@ -136,7 +136,7 @@ LABEL_29:
         v43[2] = __56__MPCModelGenericAVItemMediaRedownloadOperation_execute__block_invoke_2;
         v43[3] = &unk_1E8233458;
         v43[4] = self;
-        v44 = v4;
+        v44 = assetLoadProperties;
         v45 = v11;
         v46 = v3;
         v34 = v11;
@@ -150,23 +150,23 @@ LABEL_39:
       }
     }
 
-    v23 = [v4 itemIdentifiers];
-    v24 = [v23 universalStore];
-    v25 = [v24 subscriptionAdamID];
+    itemIdentifiers = [assetLoadProperties itemIdentifiers];
+    universalStore = [itemIdentifiers universalStore];
+    subscriptionAdamID = [universalStore subscriptionAdamID];
 
-    if (v25)
+    if (subscriptionAdamID)
     {
       v26 = objc_alloc_init(MEMORY[0x1E6970998]);
-      [v26 setAccountID:{objc_msgSend(v4, "accountID")}];
-      [v26 setDelegatedAccountID:{objc_msgSend(v4, "delegatedAccountID")}];
-      [v26 setStoreSubscriptionAdamID:v25];
+      [v26 setAccountID:{objc_msgSend(assetLoadProperties, "accountID")}];
+      [v26 setDelegatedAccountID:{objc_msgSend(assetLoadProperties, "delegatedAccountID")}];
+      [v26 setStoreSubscriptionAdamID:subscriptionAdamID];
       [v26 setRequestType:2];
-      v12 = v40;
+      mEMORY[0x1E6970990] = v40;
       v27 = [v40 cachedResponseForRequest:v26];
       v38 = v27;
       if (v27)
       {
-        v28 = [MPCModelGenericAVItemAssetLoadResult assetLoadResultWithStoreAssetPlaybackResponse:v27 assetLoadProperties:v4 source:3 error:0];
+        v28 = [MPCModelGenericAVItemAssetLoadResult assetLoadResultWithStoreAssetPlaybackResponse:v27 assetLoadProperties:assetLoadProperties source:3 error:0];
       }
 
       else
@@ -180,7 +180,7 @@ LABEL_39:
         if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v51 = self;
+          selfCopy6 = self;
           v52 = 2114;
           v53 = v39;
           _os_log_impl(&dword_1C5C61000, log, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: Using existing subscription cached playback response despite redownload request: %{public}@", buf, 0x16u);
@@ -203,12 +203,12 @@ LABEL_38:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v51 = self;
+    selfCopy6 = self;
     _os_log_impl(&dword_1C5C61000, v17, OS_LOG_TYPE_ERROR, "[AL] - %{public}@: Missing store request context.", buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:26 debugDescription:@"Missing store request context"];
-  (*(v3 + 2))(v3, 0, 0, v6);
+  storeAsset = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:26 debugDescription:@"Missing store request context"];
+  (*(v3 + 2))(v3, 0, 0, storeAsset);
 LABEL_40:
 }
 

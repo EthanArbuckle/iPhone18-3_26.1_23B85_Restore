@@ -1,28 +1,28 @@
 @interface _DPXPCRecorder
-- (_DPXPCRecorder)initWithKey:(id)a3;
-- (void)handleReturn:(BOOL)a3 forSelector:(id)a4 key:(id)a5 values:(id)a6 error:(id)a7;
-- (void)recordBitValues:(id)a3;
-- (void)recordBitValues:(id)a3 metadata:(id)a4;
-- (void)recordBitVectors:(id)a3;
-- (void)recordBitVectors:(id)a3 metadata:(id)a4;
-- (void)recordFloatVectors:(id)a3;
-- (void)recordFloatVectors:(id)a3 metadata:(id)a4;
-- (void)recordNumbers:(id)a3;
-- (void)recordNumbers:(id)a3 metadata:(id)a4;
-- (void)recordNumbersVectors:(id)a3;
-- (void)recordNumbersVectors:(id)a3 metadata:(id)a4;
-- (void)recordStrings:(id)a3;
-- (void)recordStrings:(id)a3 metadata:(id)a4;
-- (void)recordWords:(id)a3;
+- (_DPXPCRecorder)initWithKey:(id)key;
+- (void)handleReturn:(BOOL)return forSelector:(id)selector key:(id)key values:(id)values error:(id)error;
+- (void)recordBitValues:(id)values;
+- (void)recordBitValues:(id)values metadata:(id)metadata;
+- (void)recordBitVectors:(id)vectors;
+- (void)recordBitVectors:(id)vectors metadata:(id)metadata;
+- (void)recordFloatVectors:(id)vectors;
+- (void)recordFloatVectors:(id)vectors metadata:(id)metadata;
+- (void)recordNumbers:(id)numbers;
+- (void)recordNumbers:(id)numbers metadata:(id)metadata;
+- (void)recordNumbersVectors:(id)vectors;
+- (void)recordNumbersVectors:(id)vectors metadata:(id)metadata;
+- (void)recordStrings:(id)strings;
+- (void)recordStrings:(id)strings metadata:(id)metadata;
+- (void)recordWords:(id)words;
 @end
 
 @implementation _DPXPCRecorder
 
-- (_DPXPCRecorder)initWithKey:(id)a3
+- (_DPXPCRecorder)initWithKey:(id)key
 {
   v7.receiver = self;
   v7.super_class = _DPXPCRecorder;
-  v3 = [(_DPDataRecorder *)&v7 initWithKey:a3];
+  v3 = [(_DPDataRecorder *)&v7 initWithKey:key];
   if (v3)
   {
     v4 = +[_DPDaemonConnection daemonConnection];
@@ -33,27 +33,27 @@
   return v3;
 }
 
-- (void)handleReturn:(BOOL)a3 forSelector:(id)a4 key:(id)a5 values:(id)a6 error:(id)a7
+- (void)handleReturn:(BOOL)return forSelector:(id)selector key:(id)key values:(id)values error:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  selectorCopy = selector;
+  keyCopy = key;
+  valuesCopy = values;
+  errorCopy = error;
   v15 = +[_DPLog framework];
   v16 = v15;
-  if (a3)
+  if (return)
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       v19 = 138413058;
       v20 = objc_opt_class();
       v21 = 2112;
-      v22 = v11;
+      v22 = selectorCopy;
       v23 = 2112;
-      v24 = v12;
+      v24 = keyCopy;
       v25 = 2112;
-      v26 = v13;
+      v26 = valuesCopy;
       v17 = v20;
       _os_log_debug_impl(&dword_22622D000, v16, OS_LOG_TYPE_DEBUG, "%@ : %@ : forKey: %@ : values: %@", &v19, 0x2Au);
 LABEL_7:
@@ -65,11 +65,11 @@ LABEL_7:
     v19 = 138413058;
     v20 = objc_opt_class();
     v21 = 2112;
-    v22 = v11;
+    v22 = selectorCopy;
     v23 = 2112;
-    v24 = v12;
+    v24 = keyCopy;
     v25 = 2112;
-    v26 = v14;
+    v26 = errorCopy;
     v17 = v20;
     _os_log_error_impl(&dword_22622D000, v16, OS_LOG_TYPE_ERROR, "%@ : %@ : forKey: %@ : error %@", &v19, 0x2Au);
     goto LABEL_7;
@@ -78,269 +78,269 @@ LABEL_7:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordNumbers:(id)a3
+- (void)recordNumbers:(id)numbers
 {
-  v5 = a3;
+  numbersCopy = numbers;
   v14.receiver = self;
   v14.super_class = _DPXPCRecorder;
-  v6 = [(_DPDataRecorder *)&v14 keyName];
+  keyName = [(_DPDataRecorder *)&v14 keyName];
   connection = self->_connection;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __32___DPXPCRecorder_recordNumbers___block_invoke;
   v10[3] = &unk_27858B4C0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v5;
+  v11 = keyName;
+  v12 = numbersCopy;
   v13 = a2;
-  v8 = v5;
-  v9 = v6;
+  v8 = numbersCopy;
+  v9 = keyName;
   [(_DPDaemonConnection *)connection recordNumbers:v8 forKey:v9 withReply:v10];
 }
 
-- (void)recordNumbers:(id)a3 metadata:(id)a4
+- (void)recordNumbers:(id)numbers metadata:(id)metadata
 {
-  v7 = a3;
+  numbersCopy = numbers;
   v17.receiver = self;
   v17.super_class = _DPXPCRecorder;
-  v8 = a4;
-  v9 = [(_DPDataRecorder *)&v17 keyName];
+  metadataCopy = metadata;
+  keyName = [(_DPDataRecorder *)&v17 keyName];
   connection = self->_connection;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __41___DPXPCRecorder_recordNumbers_metadata___block_invoke;
   v13[3] = &unk_27858B4C0;
   v13[4] = self;
-  v14 = v9;
-  v15 = v7;
+  v14 = keyName;
+  v15 = numbersCopy;
   v16 = a2;
-  v11 = v7;
-  v12 = v9;
-  [(_DPDaemonConnection *)connection recordNumbers:v11 metadata:v8 forKey:v12 withReply:v13];
+  v11 = numbersCopy;
+  v12 = keyName;
+  [(_DPDaemonConnection *)connection recordNumbers:v11 metadata:metadataCopy forKey:v12 withReply:v13];
 }
 
-- (void)recordNumbersVectors:(id)a3
+- (void)recordNumbersVectors:(id)vectors
 {
-  v5 = a3;
+  vectorsCopy = vectors;
   v14.receiver = self;
   v14.super_class = _DPXPCRecorder;
-  v6 = [(_DPDataRecorder *)&v14 keyName];
+  keyName = [(_DPDataRecorder *)&v14 keyName];
   connection = self->_connection;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __39___DPXPCRecorder_recordNumbersVectors___block_invoke;
   v10[3] = &unk_27858B4C0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v5;
+  v11 = keyName;
+  v12 = vectorsCopy;
   v13 = a2;
-  v8 = v5;
-  v9 = v6;
+  v8 = vectorsCopy;
+  v9 = keyName;
   [(_DPDaemonConnection *)connection recordNumbersVectors:v8 forKey:v9 withReply:v10];
 }
 
-- (void)recordNumbersVectors:(id)a3 metadata:(id)a4
+- (void)recordNumbersVectors:(id)vectors metadata:(id)metadata
 {
-  v7 = a3;
+  vectorsCopy = vectors;
   v17.receiver = self;
   v17.super_class = _DPXPCRecorder;
-  v8 = a4;
-  v9 = [(_DPDataRecorder *)&v17 keyName];
+  metadataCopy = metadata;
+  keyName = [(_DPDataRecorder *)&v17 keyName];
   connection = self->_connection;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __48___DPXPCRecorder_recordNumbersVectors_metadata___block_invoke;
   v13[3] = &unk_27858B4C0;
   v13[4] = self;
-  v14 = v9;
-  v15 = v7;
+  v14 = keyName;
+  v15 = vectorsCopy;
   v16 = a2;
-  v11 = v7;
-  v12 = v9;
-  [(_DPDaemonConnection *)connection recordNumbersVectors:v11 metadata:v8 forKey:v12 withReply:v13];
+  v11 = vectorsCopy;
+  v12 = keyName;
+  [(_DPDaemonConnection *)connection recordNumbersVectors:v11 metadata:metadataCopy forKey:v12 withReply:v13];
 }
 
-- (void)recordBitValues:(id)a3
+- (void)recordBitValues:(id)values
 {
-  v5 = a3;
+  valuesCopy = values;
   v14.receiver = self;
   v14.super_class = _DPXPCRecorder;
-  v6 = [(_DPDataRecorder *)&v14 keyName];
+  keyName = [(_DPDataRecorder *)&v14 keyName];
   connection = self->_connection;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __34___DPXPCRecorder_recordBitValues___block_invoke;
   v10[3] = &unk_27858B4C0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v5;
+  v11 = keyName;
+  v12 = valuesCopy;
   v13 = a2;
-  v8 = v5;
-  v9 = v6;
+  v8 = valuesCopy;
+  v9 = keyName;
   [(_DPDaemonConnection *)connection recordBitValues:v8 forKey:v9 withReply:v10];
 }
 
-- (void)recordBitValues:(id)a3 metadata:(id)a4
+- (void)recordBitValues:(id)values metadata:(id)metadata
 {
-  v7 = a3;
+  valuesCopy = values;
   v17.receiver = self;
   v17.super_class = _DPXPCRecorder;
-  v8 = a4;
-  v9 = [(_DPDataRecorder *)&v17 keyName];
+  metadataCopy = metadata;
+  keyName = [(_DPDataRecorder *)&v17 keyName];
   connection = self->_connection;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __43___DPXPCRecorder_recordBitValues_metadata___block_invoke;
   v13[3] = &unk_27858B4C0;
   v13[4] = self;
-  v14 = v9;
-  v15 = v7;
+  v14 = keyName;
+  v15 = valuesCopy;
   v16 = a2;
-  v11 = v7;
-  v12 = v9;
-  [(_DPDaemonConnection *)connection recordBitValues:v11 metadata:v8 forKey:v12 withReply:v13];
+  v11 = valuesCopy;
+  v12 = keyName;
+  [(_DPDaemonConnection *)connection recordBitValues:v11 metadata:metadataCopy forKey:v12 withReply:v13];
 }
 
-- (void)recordBitVectors:(id)a3
+- (void)recordBitVectors:(id)vectors
 {
-  v5 = a3;
+  vectorsCopy = vectors;
   v14.receiver = self;
   v14.super_class = _DPXPCRecorder;
-  v6 = [(_DPDataRecorder *)&v14 keyName];
+  keyName = [(_DPDataRecorder *)&v14 keyName];
   connection = self->_connection;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __35___DPXPCRecorder_recordBitVectors___block_invoke;
   v10[3] = &unk_27858B4C0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v5;
+  v11 = keyName;
+  v12 = vectorsCopy;
   v13 = a2;
-  v8 = v5;
-  v9 = v6;
+  v8 = vectorsCopy;
+  v9 = keyName;
   [(_DPDaemonConnection *)connection recordBitVectors:v8 forKey:v9 withReply:v10];
 }
 
-- (void)recordBitVectors:(id)a3 metadata:(id)a4
+- (void)recordBitVectors:(id)vectors metadata:(id)metadata
 {
-  v7 = a3;
+  vectorsCopy = vectors;
   v17.receiver = self;
   v17.super_class = _DPXPCRecorder;
-  v8 = a4;
-  v9 = [(_DPDataRecorder *)&v17 keyName];
+  metadataCopy = metadata;
+  keyName = [(_DPDataRecorder *)&v17 keyName];
   connection = self->_connection;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __44___DPXPCRecorder_recordBitVectors_metadata___block_invoke;
   v13[3] = &unk_27858B4C0;
   v13[4] = self;
-  v14 = v9;
-  v15 = v7;
+  v14 = keyName;
+  v15 = vectorsCopy;
   v16 = a2;
-  v11 = v7;
-  v12 = v9;
-  [(_DPDaemonConnection *)connection recordBitVectors:v11 metadata:v8 forKey:v12 withReply:v13];
+  v11 = vectorsCopy;
+  v12 = keyName;
+  [(_DPDaemonConnection *)connection recordBitVectors:v11 metadata:metadataCopy forKey:v12 withReply:v13];
 }
 
-- (void)recordFloatVectors:(id)a3
+- (void)recordFloatVectors:(id)vectors
 {
-  v5 = a3;
+  vectorsCopy = vectors;
   v14.receiver = self;
   v14.super_class = _DPXPCRecorder;
-  v6 = [(_DPDataRecorder *)&v14 keyName];
+  keyName = [(_DPDataRecorder *)&v14 keyName];
   connection = self->_connection;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __37___DPXPCRecorder_recordFloatVectors___block_invoke;
   v10[3] = &unk_27858B4C0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v5;
+  v11 = keyName;
+  v12 = vectorsCopy;
   v13 = a2;
-  v8 = v5;
-  v9 = v6;
+  v8 = vectorsCopy;
+  v9 = keyName;
   [(_DPDaemonConnection *)connection recordFloatVectors:v8 forKey:v9 withReply:v10];
 }
 
-- (void)recordFloatVectors:(id)a3 metadata:(id)a4
+- (void)recordFloatVectors:(id)vectors metadata:(id)metadata
 {
-  v7 = a3;
+  vectorsCopy = vectors;
   v17.receiver = self;
   v17.super_class = _DPXPCRecorder;
-  v8 = a4;
-  v9 = [(_DPDataRecorder *)&v17 keyName];
+  metadataCopy = metadata;
+  keyName = [(_DPDataRecorder *)&v17 keyName];
   connection = self->_connection;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __46___DPXPCRecorder_recordFloatVectors_metadata___block_invoke;
   v13[3] = &unk_27858B4C0;
   v13[4] = self;
-  v14 = v9;
-  v15 = v7;
+  v14 = keyName;
+  v15 = vectorsCopy;
   v16 = a2;
-  v11 = v7;
-  v12 = v9;
-  [(_DPDaemonConnection *)connection recordFloatVectors:v11 metadata:v8 forKey:v12 withReply:v13];
+  v11 = vectorsCopy;
+  v12 = keyName;
+  [(_DPDaemonConnection *)connection recordFloatVectors:v11 metadata:metadataCopy forKey:v12 withReply:v13];
 }
 
-- (void)recordStrings:(id)a3
+- (void)recordStrings:(id)strings
 {
-  v5 = a3;
+  stringsCopy = strings;
   v14.receiver = self;
   v14.super_class = _DPXPCRecorder;
-  v6 = [(_DPDataRecorder *)&v14 keyName];
+  keyName = [(_DPDataRecorder *)&v14 keyName];
   connection = self->_connection;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __32___DPXPCRecorder_recordStrings___block_invoke;
   v10[3] = &unk_27858B4C0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v5;
+  v11 = keyName;
+  v12 = stringsCopy;
   v13 = a2;
-  v8 = v5;
-  v9 = v6;
+  v8 = stringsCopy;
+  v9 = keyName;
   [(_DPDaemonConnection *)connection recordStrings:v8 forKey:v9 withReply:v10];
 }
 
-- (void)recordStrings:(id)a3 metadata:(id)a4
+- (void)recordStrings:(id)strings metadata:(id)metadata
 {
-  v7 = a3;
+  stringsCopy = strings;
   v17.receiver = self;
   v17.super_class = _DPXPCRecorder;
-  v8 = a4;
-  v9 = [(_DPDataRecorder *)&v17 keyName];
+  metadataCopy = metadata;
+  keyName = [(_DPDataRecorder *)&v17 keyName];
   connection = self->_connection;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __41___DPXPCRecorder_recordStrings_metadata___block_invoke;
   v13[3] = &unk_27858B4C0;
   v13[4] = self;
-  v14 = v9;
-  v15 = v7;
+  v14 = keyName;
+  v15 = stringsCopy;
   v16 = a2;
-  v11 = v7;
-  v12 = v9;
-  [(_DPDaemonConnection *)connection recordStrings:v11 metadata:v8 forKey:v12 withReply:v13];
+  v11 = stringsCopy;
+  v12 = keyName;
+  [(_DPDaemonConnection *)connection recordStrings:v11 metadata:metadataCopy forKey:v12 withReply:v13];
 }
 
-- (void)recordWords:(id)a3
+- (void)recordWords:(id)words
 {
-  v5 = a3;
+  wordsCopy = words;
   v14.receiver = self;
   v14.super_class = _DPXPCRecorder;
-  v6 = [(_DPDataRecorder *)&v14 keyName];
+  keyName = [(_DPDataRecorder *)&v14 keyName];
   connection = self->_connection;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __30___DPXPCRecorder_recordWords___block_invoke;
   v10[3] = &unk_27858B4C0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v5;
+  v11 = keyName;
+  v12 = wordsCopy;
   v13 = a2;
-  v8 = v5;
-  v9 = v6;
+  v8 = wordsCopy;
+  v9 = keyName;
   [(_DPDaemonConnection *)connection recordWords:v8 forKey:v9 withReply:v10];
 }
 

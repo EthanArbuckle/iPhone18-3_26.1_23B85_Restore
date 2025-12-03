@@ -1,34 +1,34 @@
 @interface HAPDataStreamTransportSupportedConfiguration
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPDataStreamTransportSupportedConfiguration)init;
-- (HAPDataStreamTransportSupportedConfiguration)initWithConfigurations:(id)a3;
+- (HAPDataStreamTransportSupportedConfiguration)initWithConfigurations:(id)configurations;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPDataStreamTransportSupportedConfiguration
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPDataStreamTransportSupportedConfiguration);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPDataStreamTransportSupportedConfiguration *)v6 parseFromData:v5 error:&v11];
+    [(HAPDataStreamTransportSupportedConfiguration *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -48,15 +48,15 @@
   return [(HAPDataStreamTransportSupportedConfiguration *)&v3 init];
 }
 
-- (HAPDataStreamTransportSupportedConfiguration)initWithConfigurations:(id)a3
+- (HAPDataStreamTransportSupportedConfiguration)initWithConfigurations:(id)configurations
 {
-  v4 = a3;
+  configurationsCopy = configurations;
   v9.receiver = self;
   v9.super_class = HAPDataStreamTransportSupportedConfiguration;
   v5 = [(HAPDataStreamTransportSupportedConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [configurationsCopy mutableCopy];
     configurations = v5->_configurations;
     v5->_configurations = v6;
   }
@@ -64,11 +64,11 @@
   return v5;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   v9 = +[NSMutableArray array];
   if (v8 < 1)
   {
@@ -81,7 +81,7 @@ LABEL_18:
   else
   {
     v10 = 0;
-    v11 = v7 + v8;
+    v11 = bytes + v8;
     while (1)
     {
       v24 = 0;
@@ -110,7 +110,7 @@ LABEL_18:
       if (v24 == 1)
       {
         v21 = v10;
-        v13 = sub_100021B74(1, v7, v11, v22, &v21);
+        v13 = sub_100021B74(1, bytes, v11, v22, &v21);
         v14 = v21;
 
         if (!v14)
@@ -127,7 +127,7 @@ LABEL_18:
         v10 = v14;
       }
 
-      v7 = v22[0];
+      bytes = v22[0];
       if (v22[0] >= v11)
       {
         if (!v10)
@@ -136,11 +136,11 @@ LABEL_18:
         }
 
 LABEL_13:
-        if (a4)
+        if (error)
         {
           v16 = v10;
           v17 = 0;
-          *a4 = v10;
+          *error = v10;
           goto LABEL_20;
         }
 
@@ -148,10 +148,10 @@ LABEL_13:
       }
     }
 
-    if (a4)
+    if (error)
     {
       sub_100041618(Next);
-      *a4 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_20;
     }
 
@@ -164,7 +164,7 @@ LABEL_20:
   return v17;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v50 = 0u;
   v51 = 0u;
@@ -192,8 +192,8 @@ LABEL_20:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [(HAPDataStreamTransportSupportedConfiguration *)self configurations];
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  configurations = [(HAPDataStreamTransportSupportedConfiguration *)self configurations];
+  v6 = [configurations countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (!v6)
   {
 LABEL_17:
@@ -206,14 +206,14 @@ LABEL_17:
   v7 = v6;
   v8 = *v27;
   v9 = 1;
-  v24 = a3;
+  errorCopy = error;
   while (1)
   {
     v10 = 0;
 LABEL_4:
     if (*v27 != v8)
     {
-      objc_enumerationMutation(v5);
+      objc_enumerationMutation(configurations);
     }
 
     v11 = *(*(&v26 + 1) + 8 * v10);
@@ -225,11 +225,11 @@ LABEL_4:
         v21 = v12;
 LABEL_19:
 
-        if (v24)
+        if (errorCopy)
         {
           sub_100041618(v21);
           v20 = 0;
-          *v24 = v19 = 0;
+          *errorCopy = v19 = 0;
           goto LABEL_23;
         }
 
@@ -239,25 +239,25 @@ LABEL_19:
     }
 
     v25 = 0;
-    v13 = [v11 serializeWithError:{&v25, v24}];
+    v13 = [v11 serializeWithError:{&v25, errorCopy}];
     v14 = v25;
     if (v14)
     {
       break;
     }
 
-    v15 = [v13 bytes];
-    v16 = [v13 length] + v15;
+    bytes = [v13 bytes];
+    v16 = [v13 length] + bytes;
     do
     {
-      if (v16 - v15 >= 255)
+      if (v16 - bytes >= 255)
       {
         v17 = 255;
       }
 
       else
       {
-        v17 = v16 - v15;
+        v17 = v16 - bytes;
       }
 
       v18 = TLV8BufferAppend();
@@ -268,10 +268,10 @@ LABEL_19:
         goto LABEL_19;
       }
 
-      v15 += v17;
+      bytes += v17;
     }
 
-    while (v15 < v16);
+    while (bytes < v16);
 
     v9 = 0;
     if (++v10 != v7)
@@ -279,7 +279,7 @@ LABEL_19:
       goto LABEL_4;
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v7 = [configurations countByEnumeratingWithState:&v26 objects:v30 count:16];
     v9 = 0;
     if (!v7)
     {
@@ -289,7 +289,7 @@ LABEL_19:
 
   v20 = v14;
 
-  if (!v24)
+  if (!errorCopy)
   {
 LABEL_22:
     v19 = 0;
@@ -298,26 +298,26 @@ LABEL_22:
 
   v23 = v20;
   v19 = 0;
-  *v24 = v20;
+  *errorCopy = v20;
 LABEL_23:
   TLV8BufferFree();
 
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPDataStreamTransportSupportedConfiguration allocWithZone:a3];
-  v5 = [(HAPDataStreamTransportSupportedConfiguration *)self configurations];
-  v6 = [(HAPDataStreamTransportSupportedConfiguration *)v4 initWithConfigurations:v5];
+  v4 = [HAPDataStreamTransportSupportedConfiguration allocWithZone:zone];
+  configurations = [(HAPDataStreamTransportSupportedConfiguration *)self configurations];
+  v6 = [(HAPDataStreamTransportSupportedConfiguration *)v4 initWithConfigurations:configurations];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -327,19 +327,19 @@ LABEL_23:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HAPDataStreamTransportSupportedConfiguration *)self configurations];
-      v7 = [(HAPDataStreamTransportSupportedConfiguration *)v5 configurations];
-      if (v6 == v7)
+      v5 = equalCopy;
+      configurations = [(HAPDataStreamTransportSupportedConfiguration *)self configurations];
+      configurations2 = [(HAPDataStreamTransportSupportedConfiguration *)v5 configurations];
+      if (configurations == configurations2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(HAPDataStreamTransportSupportedConfiguration *)self configurations];
-        v9 = [(HAPDataStreamTransportSupportedConfiguration *)v5 configurations];
-        v10 = [v8 isEqual:v9];
+        configurations3 = [(HAPDataStreamTransportSupportedConfiguration *)self configurations];
+        configurations4 = [(HAPDataStreamTransportSupportedConfiguration *)v5 configurations];
+        v10 = [configurations3 isEqual:configurations4];
       }
     }
 
@@ -354,8 +354,8 @@ LABEL_23:
 
 - (NSString)description
 {
-  v2 = [(HAPDataStreamTransportSupportedConfiguration *)self configurations];
-  v3 = [NSString stringWithFormat:@"<HAPDataStreamTransportSupportedConfiguration configurations=%@>", v2];
+  configurations = [(HAPDataStreamTransportSupportedConfiguration *)self configurations];
+  v3 = [NSString stringWithFormat:@"<HAPDataStreamTransportSupportedConfiguration configurations=%@>", configurations];
 
   return v3;
 }

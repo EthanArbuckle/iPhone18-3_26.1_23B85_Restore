@@ -1,13 +1,13 @@
 @interface AudioEffectsManager
 - (AudioEffectsManager)init;
-- (BOOL)updateAutomaticMicMode:(BOOL)a3;
-- (BOOL)updateMicMode:(int64_t)a3;
+- (BOOL)updateAutomaticMicMode:(BOOL)mode;
+- (BOOL)updateMicMode:(int64_t)mode;
 - (id)getUnavailableString;
 - (void)dealloc;
-- (void)handleAVControlCenterNotification:(id)a3;
+- (void)handleAVControlCenterNotification:(id)notification;
 - (void)setupMicModeNotifications;
 - (void)setupWithoutSensorData;
-- (void)updateCurrentApplicationWithContext:(id)a3;
+- (void)updateCurrentApplicationWithContext:(id)context;
 - (void)updateMicModeStates;
 - (void)updateVisuals;
 @end
@@ -60,7 +60,7 @@
     v8 = 1024;
     v9 = 57;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -171,9 +171,9 @@
   }
 }
 
-- (void)handleAVControlCenterNotification:(id)a3
+- (void)handleAVControlCenterNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -183,17 +183,17 @@
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", buf, 0x12u);
   }
 
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:AVControlCenterModulesNotificationBundleIdentifierKey];
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:AVControlCenterModulesNotificationBundleIdentifierKey];
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_8B3C;
   block[3] = &unk_2CC00;
   v10 = v6;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = notificationCopy;
+  v7 = notificationCopy;
   v8 = v6;
   dispatch_async(&_dispatch_main_q, block);
 }
@@ -221,9 +221,9 @@
   }
 }
 
-- (void)updateCurrentApplicationWithContext:(id)a3
+- (void)updateCurrentApplicationWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -233,16 +233,16 @@
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", buf, 0x12u);
   }
 
-  v5 = [v4 sensorActivityDataForActiveSensorType:1];
-  v6 = [v4 sensorActivityDataForActiveSensorType:0];
-  if (v5)
+  sensorActivityDataEligibleForInactiveMicModeSelection = [contextCopy sensorActivityDataForActiveSensorType:1];
+  v6 = [contextCopy sensorActivityDataForActiveSensorType:0];
+  if (sensorActivityDataEligibleForInactiveMicModeSelection)
   {
     goto LABEL_14;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 sensorActivityDataEligibleForInactiveMicModeSelection];
+    sensorActivityDataEligibleForInactiveMicModeSelection = [contextCopy sensorActivityDataEligibleForInactiveMicModeSelection];
     if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446722;
@@ -250,17 +250,17 @@
       *&buf[12] = 1024;
       *&buf[14] = 169;
       *&buf[18] = 2112;
-      *&buf[20] = v5;
+      *&buf[20] = sensorActivityDataEligibleForInactiveMicModeSelection;
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Inactive mic mode selection - replacing applicationMicData with %@", buf, 0x1Cu);
     }
 
-    if (v5)
+    if (sensorActivityDataEligibleForInactiveMicModeSelection)
     {
       goto LABEL_14;
     }
   }
 
-  v5 = [v4 mutedMicrophoneSensorActivityData];
+  sensorActivityDataEligibleForInactiveMicModeSelection = [contextCopy mutedMicrophoneSensorActivityData];
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -268,19 +268,19 @@
     *&buf[12] = 1024;
     *&buf[14] = 174;
     *&buf[18] = 2112;
-    *&buf[20] = v5;
+    *&buf[20] = sensorActivityDataEligibleForInactiveMicModeSelection;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Muted microphone - replacing applicationMicData with %@", buf, 0x1Cu);
   }
 
-  if (v5)
+  if (sensorActivityDataEligibleForInactiveMicModeSelection)
   {
 LABEL_14:
-    v7 = [v5 displayName];
+    displayName = [sensorActivityDataEligibleForInactiveMicModeSelection displayName];
     displayName = self->_displayName;
-    self->_displayName = v7;
+    self->_displayName = displayName;
 
-    v9 = [v5 bundleIdentifier];
-    if ([v9 isEqualToString:@"com.apple.TelephonyUtilities"])
+    bundleIdentifier = [sensorActivityDataEligibleForInactiveMicModeSelection bundleIdentifier];
+    if ([bundleIdentifier isEqualToString:@"com.apple.TelephonyUtilities"])
     {
       bundleIdentifier = self->_bundleIdentifier;
       self->_bundleIdentifier = @"com.apple.facetime";
@@ -288,42 +288,42 @@ LABEL_14:
 
     else
     {
-      bundleIdentifier = [v5 bundleIdentifier];
+      bundleIdentifier = [sensorActivityDataEligibleForInactiveMicModeSelection bundleIdentifier];
       if ([bundleIdentifier isEqualToString:@"com.apple.facetime"])
       {
-        v11 = self->_bundleIdentifier;
+        bundleIdentifier2 = self->_bundleIdentifier;
         self->_bundleIdentifier = @"com.apple.facetime";
       }
 
       else
       {
-        v11 = [v5 bundleIdentifier];
-        if ([v11 isEqualToString:@"com.apple.mediaserverd"])
+        bundleIdentifier2 = [sensorActivityDataEligibleForInactiveMicModeSelection bundleIdentifier];
+        if ([bundleIdentifier2 isEqualToString:@"com.apple.mediaserverd"])
         {
-          v12 = self->_bundleIdentifier;
+          bundleIdentifier3 = self->_bundleIdentifier;
           self->_bundleIdentifier = @"com.apple.facetime";
         }
 
         else
         {
-          v12 = [v5 bundleIdentifier];
-          if ([v12 isEqualToString:@"com.apple.avconferenced"])
+          bundleIdentifier3 = [sensorActivityDataEligibleForInactiveMicModeSelection bundleIdentifier];
+          if ([bundleIdentifier3 isEqualToString:@"com.apple.avconferenced"])
           {
-            v13 = @"com.apple.facetime";
+            bundleIdentifier4 = @"com.apple.facetime";
           }
 
           else
           {
-            v13 = [v5 bundleIdentifier];
+            bundleIdentifier4 = [sensorActivityDataEligibleForInactiveMicModeSelection bundleIdentifier];
           }
 
           v20 = self->_bundleIdentifier;
-          self->_bundleIdentifier = &v13->isa;
+          self->_bundleIdentifier = &bundleIdentifier4->isa;
         }
       }
     }
 
-    if ([v5 usedRecently])
+    if ([sensorActivityDataEligibleForInactiveMicModeSelection usedRecently])
     {
       self->_audioEffectsEnabled = 0;
     }
@@ -336,14 +336,14 @@ LABEL_14:
     goto LABEL_37;
   }
 
-  v14 = [v6 bundleIdentifier];
-  if ([v14 isEqualToString:@"com.apple.TelephonyUtilities"])
+  bundleIdentifier5 = [v6 bundleIdentifier];
+  if ([bundleIdentifier5 isEqualToString:@"com.apple.TelephonyUtilities"])
   {
     goto LABEL_27;
   }
 
-  v15 = [v6 bundleIdentifier];
-  if ([v15 isEqualToString:@"com.apple.facetime"])
+  bundleIdentifier6 = [v6 bundleIdentifier];
+  if ([bundleIdentifier6 isEqualToString:@"com.apple.facetime"])
   {
 LABEL_26:
 
@@ -351,15 +351,15 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v16 = [v6 bundleIdentifier];
-  if ([v16 isEqualToString:@"com.apple.mediaserverd"])
+  bundleIdentifier7 = [v6 bundleIdentifier];
+  if ([bundleIdentifier7 isEqualToString:@"com.apple.mediaserverd"])
   {
 
     goto LABEL_26;
   }
 
-  v27 = [v6 bundleIdentifier];
-  v28 = [v27 isEqualToString:@"com.apple.avconferenced"];
+  bundleIdentifier8 = [v6 bundleIdentifier];
+  v28 = [bundleIdentifier8 isEqualToString:@"com.apple.avconferenced"];
 
   if ((v28 & 1) == 0)
   {
@@ -386,15 +386,15 @@ LABEL_27:
   }
 
 LABEL_28:
-  v17 = [v6 displayName];
+  displayName2 = [v6 displayName];
   v18 = self->_displayName;
-  self->_displayName = v17;
+  self->_displayName = displayName2;
 
   v19 = self->_bundleIdentifier;
   self->_bundleIdentifier = @"com.apple.facetime";
 
 LABEL_29:
-  v5 = 0;
+  sensorActivityDataEligibleForInactiveMicModeSelection = 0;
 LABEL_37:
   v21 = self->_bundleIdentifier;
   if (v21)
@@ -437,7 +437,7 @@ LABEL_37:
   self->_includeMicModesModule = v26;
 }
 
-- (BOOL)updateMicMode:(int64_t)a3
+- (BOOL)updateMicMode:(int64_t)mode
 {
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -447,9 +447,9 @@ LABEL_37:
     v18 = 1024;
     v19 = 216;
     v20 = 2048;
-    v21 = currentMicMode;
+    modeCopy2 = currentMicMode;
     v22 = 2048;
-    v23 = a3;
+    modeCopy = mode;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d currentMode=%ld, newMode=%ld", buf, 0x26u);
   }
 
@@ -471,7 +471,7 @@ LABEL_6:
         objc_enumerationMutation(v6);
       }
 
-      if ([*(*(&v11 + 1) + 8 * v9) longValue] == a3)
+      if ([*(*(&v11 + 1) + 8 * v9) longValue] == mode)
       {
         break;
       }
@@ -501,7 +501,7 @@ LABEL_6:
       v18 = 1024;
       v19 = 231;
       v20 = 2048;
-      v21 = a3;
+      modeCopy2 = mode;
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d setting micMode=%ld", buf, 0x1Cu);
     }
 
@@ -517,9 +517,9 @@ LABEL_12:
   }
 }
 
-- (BOOL)updateAutomaticMicMode:(BOOL)a3
+- (BOOL)updateAutomaticMicMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     automaticMicModeEnabled = self->_automaticMicModeEnabled;
@@ -530,11 +530,11 @@ LABEL_12:
     v11 = 1024;
     v12 = automaticMicModeEnabled;
     v13 = 1024;
-    v14 = v3;
+    v14 = modeCopy;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d automaticMicModeEnabled=%d, newValue=%d", &v7, 0x1Eu);
   }
 
-  if (self->_automaticMicModeEnabled == v3 || !self->_bundleIdentifier)
+  if (self->_automaticMicModeEnabled == modeCopy || !self->_bundleIdentifier)
   {
     return 0;
   }

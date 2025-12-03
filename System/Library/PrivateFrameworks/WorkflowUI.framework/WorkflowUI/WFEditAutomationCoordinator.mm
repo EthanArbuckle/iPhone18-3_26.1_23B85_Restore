@@ -1,18 +1,18 @@
 @interface WFEditAutomationCoordinator
-- (WFEditAutomationCoordinator)initWithDatabase:(id)a3 triggerRecord:(id)a4 triggerIdentifier:(id)a5 workflowReference:(id)a6;
+- (WFEditAutomationCoordinator)initWithDatabase:(id)database triggerRecord:(id)record triggerIdentifier:(id)identifier workflowReference:(id)reference;
 - (WFEditAutomationCoordinatorDelegate)delegate;
 - (id)start;
-- (void)automationSummaryViewController:(id)a3 editTrigger:(id)a4;
-- (void)automationSummaryViewController:(id)a3 editWorkflow:(id)a4;
-- (void)automationSummaryViewControllerChooseShortcut:(id)a3;
+- (void)automationSummaryViewController:(id)controller editTrigger:(id)trigger;
+- (void)automationSummaryViewController:(id)controller editWorkflow:(id)workflow;
+- (void)automationSummaryViewControllerChooseShortcut:(id)shortcut;
 - (void)cancel;
-- (void)composeViewControllerRequestsDismissal:(id)a3;
+- (void)composeViewControllerRequestsDismissal:(id)dismissal;
 - (void)finish;
-- (void)triggerConfigurationViewController:(id)a3 didFinishWithTrigger:(id)a4;
-- (void)triggerConfigurationViewControllerDidCancel:(id)a3;
-- (void)triggerSuggestionViewControllerDidFinish:(id)a3 actions:(id)a4 editable:(BOOL)a5 selectedEntryMetadata:(id)a6;
-- (void)triggerSuggestionViewControllerDidFinish:(id)a3 reference:(id)a4 selectedEntryMetadata:(id)a5;
-- (void)updateUIForShowingViewController:(id)a3;
+- (void)triggerConfigurationViewController:(id)controller didFinishWithTrigger:(id)trigger;
+- (void)triggerConfigurationViewControllerDidCancel:(id)cancel;
+- (void)triggerSuggestionViewControllerDidFinish:(id)finish actions:(id)actions editable:(BOOL)editable selectedEntryMetadata:(id)metadata;
+- (void)triggerSuggestionViewControllerDidFinish:(id)finish reference:(id)reference selectedEntryMetadata:(id)metadata;
+- (void)updateUIForShowingViewController:(id)controller;
 @end
 
 @implementation WFEditAutomationCoordinator
@@ -24,59 +24,59 @@
   return WeakRetained;
 }
 
-- (void)updateUIForShowingViewController:(id)a3
+- (void)updateUIForShowingViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(WFEditAutomationCoordinator *)self automationSummaryViewController];
+  controllerCopy = controller;
+  automationSummaryViewController = [(WFEditAutomationCoordinator *)self automationSummaryViewController];
 
-  if (v5 == v4)
+  if (automationSummaryViewController == controllerCopy)
   {
-    v6 = [(WFEditAutomationCoordinator *)self trigger];
-    v7 = [v6 serializedData];
-    v8 = [(WFEditAutomationCoordinator *)self triggerRecord];
-    [v8 setTriggerData:v7];
+    trigger = [(WFEditAutomationCoordinator *)self trigger];
+    serializedData = [trigger serializedData];
+    triggerRecord = [(WFEditAutomationCoordinator *)self triggerRecord];
+    [triggerRecord setTriggerData:serializedData];
 
-    v9 = [(WFEditAutomationCoordinator *)self automationSummaryViewController];
-    [v9 updateUI];
+    automationSummaryViewController2 = [(WFEditAutomationCoordinator *)self automationSummaryViewController];
+    [automationSummaryViewController2 updateUI];
   }
 }
 
-- (void)composeViewControllerRequestsDismissal:(id)a3
+- (void)composeViewControllerRequestsDismissal:(id)dismissal
 {
-  v4 = [(WFEditAutomationCoordinator *)self triggerManager];
-  v5 = [(WFEditAutomationCoordinator *)self triggerIdentifier];
-  v6 = [(WFEditAutomationCoordinator *)self workflowReference];
+  triggerManager = [(WFEditAutomationCoordinator *)self triggerManager];
+  triggerIdentifier = [(WFEditAutomationCoordinator *)self triggerIdentifier];
+  workflowReference = [(WFEditAutomationCoordinator *)self workflowReference];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__WFEditAutomationCoordinator_composeViewControllerRequestsDismissal___block_invoke;
   v7[3] = &unk_279EE8710;
   v7[4] = self;
-  [v4 associateWorkflowToTriggerID:v5 deletingExistingReference:0 notifyDaemon:1 workflowReference:v6 completion:v7];
+  [triggerManager associateWorkflowToTriggerID:triggerIdentifier deletingExistingReference:0 notifyDaemon:1 workflowReference:workflowReference completion:v7];
 }
 
-- (void)triggerSuggestionViewControllerDidFinish:(id)a3 reference:(id)a4 selectedEntryMetadata:(id)a5
+- (void)triggerSuggestionViewControllerDidFinish:(id)finish reference:(id)reference selectedEntryMetadata:(id)metadata
 {
-  v7 = a4;
-  v8 = a5;
-  [(WFEditAutomationCoordinator *)self setWorkflowReference:v7];
-  v9 = [(WFEditAutomationCoordinator *)self triggerRecord];
-  [v9 setEditableShortcut:0];
+  referenceCopy = reference;
+  metadataCopy = metadata;
+  [(WFEditAutomationCoordinator *)self setWorkflowReference:referenceCopy];
+  triggerRecord = [(WFEditAutomationCoordinator *)self triggerRecord];
+  [triggerRecord setEditableShortcut:0];
 
-  v10 = [(WFEditAutomationCoordinator *)self triggerRecord];
-  [v10 setSelectedEntryMetadata:v8];
+  triggerRecord2 = [(WFEditAutomationCoordinator *)self triggerRecord];
+  [triggerRecord2 setSelectedEntryMetadata:metadataCopy];
 
-  v11 = [(WFEditAutomationCoordinator *)self triggerManager];
-  v12 = [(WFEditAutomationCoordinator *)self triggerIdentifier];
-  v13 = [(WFEditAutomationCoordinator *)self editingWorkflow];
-  v14 = [v13 hiddenFromLibraryAndSync];
+  triggerManager = [(WFEditAutomationCoordinator *)self triggerManager];
+  triggerIdentifier = [(WFEditAutomationCoordinator *)self triggerIdentifier];
+  editingWorkflow = [(WFEditAutomationCoordinator *)self editingWorkflow];
+  hiddenFromLibraryAndSync = [editingWorkflow hiddenFromLibraryAndSync];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __104__WFEditAutomationCoordinator_triggerSuggestionViewControllerDidFinish_reference_selectedEntryMetadata___block_invoke;
   v16[3] = &unk_279EE87F8;
-  v17 = v7;
-  v18 = self;
-  v15 = v7;
-  [v11 associateWorkflowToTriggerID:v12 deletingExistingReference:v14 notifyDaemon:1 workflowReference:v15 completion:v16];
+  v17 = referenceCopy;
+  selfCopy = self;
+  v15 = referenceCopy;
+  [triggerManager associateWorkflowToTriggerID:triggerIdentifier deletingExistingReference:hiddenFromLibraryAndSync notifyDaemon:1 workflowReference:v15 completion:v16];
 }
 
 void __104__WFEditAutomationCoordinator_triggerSuggestionViewControllerDidFinish_reference_selectedEntryMetadata___block_invoke(uint64_t a1, char a2, void *a3)
@@ -102,37 +102,37 @@ void __104__WFEditAutomationCoordinator_triggerSuggestionViewControllerDidFinish
   [*(a1 + 40) finish];
 }
 
-- (void)triggerSuggestionViewControllerDidFinish:(id)a3 actions:(id)a4 editable:(BOOL)a5 selectedEntryMetadata:(id)a6
+- (void)triggerSuggestionViewControllerDidFinish:(id)finish actions:(id)actions editable:(BOOL)editable selectedEntryMetadata:(id)metadata
 {
-  v7 = a5;
+  editableCopy = editable;
   v43 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a6;
-  v11 = [(WFEditAutomationCoordinator *)self editingWorkflow];
-  v12 = [v11 hiddenFromLibraryAndSync];
+  actionsCopy = actions;
+  metadataCopy = metadata;
+  editingWorkflow = [(WFEditAutomationCoordinator *)self editingWorkflow];
+  hiddenFromLibraryAndSync = [editingWorkflow hiddenFromLibraryAndSync];
 
   v13 = objc_alloc_init(MEMORY[0x277D7CA60]);
   v14 = MEMORY[0x277CCACA8];
-  v15 = [MEMORY[0x277CCAD78] UUID];
-  v16 = [v15 UUIDString];
-  v17 = [v14 stringWithFormat:@"Automation %@", v16];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v17 = [v14 stringWithFormat:@"Automation %@", uUIDString];
   [v13 setName:v17];
 
-  v18 = [v13 record];
-  [v18 setHiddenFromLibraryAndSync:1];
+  record = [v13 record];
+  [record setHiddenFromLibraryAndSync:1];
 
-  if ([v9 count])
+  if ([actionsCopy count])
   {
-    [v13 insertActions:v9 atIndex:0];
+    [v13 insertActions:actionsCopy atIndex:0];
   }
 
   v19 = objc_alloc(MEMORY[0x277D7CA68]);
-  v20 = [v13 record];
-  v21 = [v19 initWithRecord:v20];
+  record2 = [v13 record];
+  v21 = [v19 initWithRecord:record2];
 
-  v22 = [(WFEditAutomationCoordinator *)self database];
+  database = [(WFEditAutomationCoordinator *)self database];
   v38 = 0;
-  v23 = [v22 createWorkflowWithOptions:v21 error:&v38];
+  v23 = [database createWorkflowWithOptions:v21 error:&v38];
   v24 = v38;
 
   if (!v23)
@@ -150,92 +150,92 @@ void __104__WFEditAutomationCoordinator_triggerSuggestionViewControllerDidFinish
 
   [(WFEditAutomationCoordinator *)self setWorkflowReference:v23];
   [(WFEditAutomationCoordinator *)self setEditingWorkflow:v13];
-  v26 = [(WFEditAutomationCoordinator *)self triggerRecord];
-  [v26 setSelectedEntryMetadata:v10];
+  triggerRecord = [(WFEditAutomationCoordinator *)self triggerRecord];
+  [triggerRecord setSelectedEntryMetadata:metadataCopy];
 
-  v27 = [(WFEditAutomationCoordinator *)self triggerRecord];
-  [v27 setEditableShortcut:v7];
+  triggerRecord2 = [(WFEditAutomationCoordinator *)self triggerRecord];
+  [triggerRecord2 setEditableShortcut:editableCopy];
 
-  if (v7)
+  if (editableCopy)
   {
     v28 = [WFComposeViewController alloc];
-    v29 = [(WFEditAutomationCoordinator *)self trigger];
-    v30 = [v29 localizedDescriptionWithConfigurationSummary];
-    v31 = [(WFComposeViewController *)v28 initForTriggerEditingWithWorkflow:v13 triggerConfigurationDescription:v30];
+    trigger = [(WFEditAutomationCoordinator *)self trigger];
+    localizedDescriptionWithConfigurationSummary = [trigger localizedDescriptionWithConfigurationSummary];
+    v31 = [(WFComposeViewController *)v28 initForTriggerEditingWithWorkflow:v13 triggerConfigurationDescription:localizedDescriptionWithConfigurationSummary];
 
     [v31 setDelegate:self];
-    v32 = [v31 navigationItem];
-    [v32 setLargeTitleDisplayMode:2];
+    navigationItem = [v31 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
 
-    v33 = [(WFEditAutomationCoordinator *)self navigationController];
-    [v33 pushViewController:v31 animated:1];
+    navigationController = [(WFEditAutomationCoordinator *)self navigationController];
+    [navigationController pushViewController:v31 animated:1];
   }
 
   else
   {
-    v34 = [(WFEditAutomationCoordinator *)self triggerManager];
-    v35 = [(WFEditAutomationCoordinator *)self triggerIdentifier];
-    v36 = [(WFEditAutomationCoordinator *)self workflowReference];
+    triggerManager = [(WFEditAutomationCoordinator *)self triggerManager];
+    triggerIdentifier = [(WFEditAutomationCoordinator *)self triggerIdentifier];
+    workflowReference = [(WFEditAutomationCoordinator *)self workflowReference];
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __111__WFEditAutomationCoordinator_triggerSuggestionViewControllerDidFinish_actions_editable_selectedEntryMetadata___block_invoke;
     v37[3] = &unk_279EE8710;
     v37[4] = self;
-    [v34 associateWorkflowToTriggerID:v35 deletingExistingReference:v12 notifyDaemon:1 workflowReference:v36 completion:v37];
+    [triggerManager associateWorkflowToTriggerID:triggerIdentifier deletingExistingReference:hiddenFromLibraryAndSync notifyDaemon:1 workflowReference:workflowReference completion:v37];
   }
 }
 
-- (void)triggerConfigurationViewControllerDidCancel:(id)a3
+- (void)triggerConfigurationViewControllerDidCancel:(id)cancel
 {
-  v4 = [(WFEditAutomationCoordinator *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(WFEditAutomationCoordinator *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)triggerConfigurationViewController:(id)a3 didFinishWithTrigger:(id)a4
+- (void)triggerConfigurationViewController:(id)controller didFinishWithTrigger:(id)trigger
 {
-  v6 = a3;
-  v7 = [a4 serializedData];
-  v8 = [(WFEditAutomationCoordinator *)self triggerRecord];
-  [v8 setTriggerData:v7];
+  controllerCopy = controller;
+  serializedData = [trigger serializedData];
+  triggerRecord = [(WFEditAutomationCoordinator *)self triggerRecord];
+  [triggerRecord setTriggerData:serializedData];
 
-  LODWORD(v7) = [v6 runImmediately];
-  v9 = [(WFEditAutomationCoordinator *)self triggerRecord];
-  [v9 setShouldPrompt:v7 ^ 1];
+  LODWORD(serializedData) = [controllerCopy runImmediately];
+  triggerRecord2 = [(WFEditAutomationCoordinator *)self triggerRecord];
+  [triggerRecord2 setShouldPrompt:serializedData ^ 1];
 
-  v10 = [v6 shouldNotify];
-  v11 = [(WFEditAutomationCoordinator *)self triggerRecord];
-  [v11 setShouldNotify:v10];
+  shouldNotify = [controllerCopy shouldNotify];
+  triggerRecord3 = [(WFEditAutomationCoordinator *)self triggerRecord];
+  [triggerRecord3 setShouldNotify:shouldNotify];
 
-  v12 = [v6 shouldRecur];
-  v13 = [(WFEditAutomationCoordinator *)self triggerRecord];
-  [v13 setShouldRecur:v12];
+  shouldRecur = [controllerCopy shouldRecur];
+  triggerRecord4 = [(WFEditAutomationCoordinator *)self triggerRecord];
+  [triggerRecord4 setShouldRecur:shouldRecur];
 
   [(WFEditAutomationCoordinator *)self finish];
 }
 
-- (void)automationSummaryViewControllerChooseShortcut:(id)a3
+- (void)automationSummaryViewControllerChooseShortcut:(id)shortcut
 {
   v4 = [WFTriggerSuggestionViewController alloc];
-  v5 = [(WFEditAutomationCoordinator *)self trigger];
-  v8 = [(WFTriggerSuggestionViewController *)v4 initWithTrigger:v5 selectedEntryMetadataData:0 selectedReference:0];
+  trigger = [(WFEditAutomationCoordinator *)self trigger];
+  v8 = [(WFTriggerSuggestionViewController *)v4 initWithTrigger:trigger selectedEntryMetadataData:0 selectedReference:0];
 
-  v6 = [(WFTriggerSuggestionViewController *)v8 navigationItem];
-  [v6 setLargeTitleDisplayMode:1];
+  navigationItem = [(WFTriggerSuggestionViewController *)v8 navigationItem];
+  [navigationItem setLargeTitleDisplayMode:1];
 
   [(WFTriggerSuggestionViewController *)v8 setDelegate:self];
-  v7 = [(WFEditAutomationCoordinator *)self navigationController];
-  [v7 pushViewController:v8 animated:1];
+  navigationController = [(WFEditAutomationCoordinator *)self navigationController];
+  [navigationController pushViewController:v8 animated:1];
 }
 
-- (void)automationSummaryViewController:(id)a3 editWorkflow:(id)a4
+- (void)automationSummaryViewController:(id)controller editWorkflow:(id)workflow
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  controllerCopy = controller;
+  workflowCopy = workflow;
+  if (!workflowCopy)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"WFEditAutomationCoordinator.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"workflow"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFEditAutomationCoordinator.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"workflow"}];
   }
 
   v9 = getWFTriggersLogObject();
@@ -244,22 +244,22 @@ void __104__WFEditAutomationCoordinator_triggerSuggestionViewControllerDidFinish
     *buf = 136315394;
     v26 = "[WFEditAutomationCoordinator automationSummaryViewController:editWorkflow:]";
     v27 = 2112;
-    v28 = v8;
+    v28 = workflowCopy;
     _os_log_impl(&dword_274719000, v9, OS_LOG_TYPE_DEBUG, "%s will edit workflow: %@", buf, 0x16u);
   }
 
-  v10 = [(WFEditAutomationCoordinator *)self triggerRecord];
-  v11 = [v10 editableShortcut];
+  triggerRecord = [(WFEditAutomationCoordinator *)self triggerRecord];
+  editableShortcut = [triggerRecord editableShortcut];
 
-  if (v11)
+  if (editableShortcut)
   {
     v12 = [WFComposeViewController alloc];
-    v13 = [(WFEditAutomationCoordinator *)self trigger];
-    v14 = [v13 localizedDescriptionWithConfigurationSummary];
-    v15 = [(WFComposeViewController *)v12 initForTriggerEditingWithWorkflow:v8 triggerConfigurationDescription:v14];
+    trigger = [(WFEditAutomationCoordinator *)self trigger];
+    localizedDescriptionWithConfigurationSummary = [trigger localizedDescriptionWithConfigurationSummary];
+    v15 = [(WFComposeViewController *)v12 initForTriggerEditingWithWorkflow:workflowCopy triggerConfigurationDescription:localizedDescriptionWithConfigurationSummary];
 
-    v16 = [(WFTriggerSuggestionViewController *)v15 navigationItem];
-    [v16 setLargeTitleDisplayMode:2];
+    navigationItem = [(WFTriggerSuggestionViewController *)v15 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
 
     [(WFTriggerSuggestionViewController *)v15 setDelegate:self];
     [(WFTriggerSuggestionViewController *)v15 setModalInPresentation:1];
@@ -268,31 +268,31 @@ void __104__WFEditAutomationCoordinator_triggerSuggestionViewControllerDidFinish
   else
   {
     v17 = [WFTriggerSuggestionViewController alloc];
-    v18 = [(WFEditAutomationCoordinator *)self trigger];
-    v19 = [(WFEditAutomationCoordinator *)self triggerRecord];
-    v20 = [v19 selectedEntryMetadata];
-    v21 = [(WFEditAutomationCoordinator *)self workflowReference];
-    v15 = [(WFTriggerSuggestionViewController *)v17 initWithTrigger:v18 selectedEntryMetadataData:v20 selectedReference:v21];
+    trigger2 = [(WFEditAutomationCoordinator *)self trigger];
+    triggerRecord2 = [(WFEditAutomationCoordinator *)self triggerRecord];
+    selectedEntryMetadata = [triggerRecord2 selectedEntryMetadata];
+    workflowReference = [(WFEditAutomationCoordinator *)self workflowReference];
+    v15 = [(WFTriggerSuggestionViewController *)v17 initWithTrigger:trigger2 selectedEntryMetadataData:selectedEntryMetadata selectedReference:workflowReference];
 
-    v22 = [(WFTriggerSuggestionViewController *)v15 navigationItem];
-    [v22 setLargeTitleDisplayMode:1];
+    navigationItem2 = [(WFTriggerSuggestionViewController *)v15 navigationItem];
+    [navigationItem2 setLargeTitleDisplayMode:1];
 
     [(WFTriggerSuggestionViewController *)v15 setDelegate:self];
   }
 
-  v23 = [(WFEditAutomationCoordinator *)self navigationController];
-  [v23 pushViewController:v15 animated:1];
+  navigationController = [(WFEditAutomationCoordinator *)self navigationController];
+  [navigationController pushViewController:v15 animated:1];
 }
 
-- (void)automationSummaryViewController:(id)a3 editTrigger:(id)a4
+- (void)automationSummaryViewController:(id)controller editTrigger:(id)trigger
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  controllerCopy = controller;
+  triggerCopy = trigger;
+  if (!triggerCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFEditAutomationCoordinator.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"triggerRecord"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFEditAutomationCoordinator.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"triggerRecord"}];
   }
 
   v9 = getWFTriggersLogObject();
@@ -301,27 +301,27 @@ void __104__WFEditAutomationCoordinator_triggerSuggestionViewControllerDidFinish
     *buf = 136315394;
     v19 = "[WFEditAutomationCoordinator automationSummaryViewController:editTrigger:]";
     v20 = 2112;
-    v21 = v8;
+    v21 = triggerCopy;
     _os_log_impl(&dword_274719000, v9, OS_LOG_TYPE_DEBUG, "%s WFEditAutomationCoordinator will edit trigger: %@", buf, 0x16u);
   }
 
-  v10 = [(WFEditAutomationCoordinator *)self trigger];
+  trigger = [(WFEditAutomationCoordinator *)self trigger];
   v11 = [WFTriggerConfigurationViewController viewControllerClassForTriggerClass:objc_opt_class()];
 
   v12 = [v11 alloc];
-  v13 = [(WFEditAutomationCoordinator *)self trigger];
-  v14 = [v12 initWithTrigger:v13 mode:1];
+  trigger2 = [(WFEditAutomationCoordinator *)self trigger];
+  v14 = [v12 initWithTrigger:trigger2 mode:1];
 
   [v14 setDelegate:self];
-  [v14 setRunImmediately:{objc_msgSend(v8, "shouldPrompt") ^ 1}];
-  [v14 setShouldNotify:{objc_msgSend(v8, "shouldNotify")}];
-  [v14 setShouldRecur:{objc_msgSend(v8, "shouldRecur")}];
-  v15 = [v14 navigationItem];
-  [v15 setLargeTitleDisplayMode:2];
+  [v14 setRunImmediately:{objc_msgSend(triggerCopy, "shouldPrompt") ^ 1}];
+  [v14 setShouldNotify:{objc_msgSend(triggerCopy, "shouldNotify")}];
+  [v14 setShouldRecur:{objc_msgSend(triggerCopy, "shouldRecur")}];
+  navigationItem = [v14 navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
-  [v14 setRunImmediately:{objc_msgSend(v8, "shouldPrompt") ^ 1}];
-  v16 = [(WFEditAutomationCoordinator *)self navigationController];
-  [v16 pushViewController:v14 animated:1];
+  [v14 setRunImmediately:{objc_msgSend(triggerCopy, "shouldPrompt") ^ 1}];
+  navigationController = [(WFEditAutomationCoordinator *)self navigationController];
+  [navigationController pushViewController:v14 animated:1];
 }
 
 - (void)cancel
@@ -335,8 +335,8 @@ void __104__WFEditAutomationCoordinator_triggerSuggestionViewControllerDidFinish
     _os_log_impl(&dword_274719000, v3, OS_LOG_TYPE_DEBUG, "%s WFEditAutomationCoordinator is cancelling", &v5, 0xCu);
   }
 
-  v4 = [(WFEditAutomationCoordinator *)self delegate];
-  [v4 editAutomationCoordinatorDidCancel:self];
+  delegate = [(WFEditAutomationCoordinator *)self delegate];
+  [delegate editAutomationCoordinatorDidCancel:self];
 }
 
 - (void)finish
@@ -351,15 +351,15 @@ void __104__WFEditAutomationCoordinator_triggerSuggestionViewControllerDidFinish
   }
 
   [(WFEditAutomationCoordinator *)self setEditingWorkflow:0];
-  v4 = [(WFEditAutomationCoordinator *)self triggerManager];
-  v5 = [(WFEditAutomationCoordinator *)self triggerRecord];
-  v6 = [(WFEditAutomationCoordinator *)self triggerIdentifier];
+  triggerManager = [(WFEditAutomationCoordinator *)self triggerManager];
+  triggerRecord = [(WFEditAutomationCoordinator *)self triggerRecord];
+  triggerIdentifier = [(WFEditAutomationCoordinator *)self triggerIdentifier];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__WFEditAutomationCoordinator_finish__block_invoke;
   v7[3] = &unk_279EE8710;
   v7[4] = self;
-  [v4 updateConfiguredTrigger:v5 triggerID:v6 notifyDaemon:1 completion:v7];
+  [triggerManager updateConfiguredTrigger:triggerRecord triggerID:triggerIdentifier notifyDaemon:1 completion:v7];
 }
 
 void __37__WFEditAutomationCoordinator_finish__block_invoke(uint64_t a1, char a2, void *a3)
@@ -404,51 +404,51 @@ void __37__WFEditAutomationCoordinator_finish__block_invoke_192(uint64_t a1)
     _os_log_impl(&dword_274719000, v4, OS_LOG_TYPE_DEBUG, "%s WFEditAutomationCoordinator is starting", buf, 0xCu);
   }
 
-  v5 = [(WFEditAutomationCoordinator *)self delegate];
+  delegate = [(WFEditAutomationCoordinator *)self delegate];
 
-  if (!v5)
+  if (!delegate)
   {
-    v42 = [MEMORY[0x277CCA890] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"WFEditAutomationCoordinator.m" lineNumber:64 description:@"Delegate must be set before starting this coordinator"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFEditAutomationCoordinator.m" lineNumber:64 description:@"Delegate must be set before starting this coordinator"];
   }
 
-  v6 = [(WFEditAutomationCoordinator *)self database];
-  v7 = [(WFEditAutomationCoordinator *)self workflowReference];
+  database = [(WFEditAutomationCoordinator *)self database];
+  workflowReference = [(WFEditAutomationCoordinator *)self workflowReference];
   v44 = 0;
-  v8 = [v6 recordWithDescriptor:v7 error:&v44];
+  v8 = [database recordWithDescriptor:workflowReference error:&v44];
   v9 = v44;
 
   if (v8)
   {
     v10 = MEMORY[0x277D7CA60];
-    v11 = [(WFEditAutomationCoordinator *)self workflowReference];
-    v12 = [(WFEditAutomationCoordinator *)self database];
+    workflowReference2 = [(WFEditAutomationCoordinator *)self workflowReference];
+    database2 = [(WFEditAutomationCoordinator *)self database];
     v43 = v9;
-    v13 = [v10 workflowWithReference:v11 database:v12 error:&v43];
+    v13 = [v10 workflowWithReference:workflowReference2 database:database2 error:&v43];
     v14 = v43;
 
     [(WFEditAutomationCoordinator *)self setEditingWorkflow:v13];
-    v15 = [(WFEditAutomationCoordinator *)self editingWorkflow];
+    editingWorkflow = [(WFEditAutomationCoordinator *)self editingWorkflow];
 
-    if (!v15)
+    if (!editingWorkflow)
     {
-      v16 = getWFTriggersLogObject();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      triggerData = getWFTriggersLogObject();
+      if (os_log_type_enabled(triggerData, OS_LOG_TYPE_ERROR))
       {
-        v17 = [(WFEditAutomationCoordinator *)self database];
-        v18 = [(WFEditAutomationCoordinator *)self workflowReference];
+        database3 = [(WFEditAutomationCoordinator *)self database];
+        workflowReference3 = [(WFEditAutomationCoordinator *)self workflowReference];
         *buf = 136315906;
         v46 = "[WFEditAutomationCoordinator start]";
         v47 = 2112;
-        v48 = v17;
+        v48 = database3;
         v49 = 2112;
-        v50 = v18;
+        v50 = workflowReference3;
         v51 = 2114;
         v52 = v14;
-        _os_log_impl(&dword_274719000, v16, OS_LOG_TYPE_ERROR, "%s Failed to get workflow from database (%@) for reference (%@): %{public}@", buf, 0x2Au);
+        _os_log_impl(&dword_274719000, triggerData, OS_LOG_TYPE_ERROR, "%s Failed to get workflow from database (%@) for reference (%@): %{public}@", buf, 0x2Au);
       }
 
-      v19 = 0;
+      navigationController3 = 0;
       goto LABEL_18;
     }
   }
@@ -458,45 +458,45 @@ void __37__WFEditAutomationCoordinator_finish__block_invoke_192(uint64_t a1)
     v14 = v9;
   }
 
-  v20 = [(WFEditAutomationCoordinator *)self triggerRecord];
-  v16 = [v20 triggerData];
+  triggerRecord = [(WFEditAutomationCoordinator *)self triggerRecord];
+  triggerData = [triggerRecord triggerData];
 
-  if (-[NSObject length](v16, "length") && ([MEMORY[0x277D7C970] triggerWithSerializedData:v16], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (-[NSObject length](triggerData, "length") && ([MEMORY[0x277D7C970] triggerWithSerializedData:triggerData], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v22 = v21;
     [(WFEditAutomationCoordinator *)self setTrigger:v21];
     v23 = [WFAutomationSummaryViewController alloc];
-    v24 = [(WFEditAutomationCoordinator *)self triggerRecord];
-    v25 = [(WFEditAutomationCoordinator *)self triggerIdentifier];
-    v26 = [(WFEditAutomationCoordinator *)self editingWorkflow];
-    v27 = [(WFAutomationSummaryViewController *)v23 initWithTrigger:v24 triggerIdentifier:v25 workflow:v26 mode:1];
+    triggerRecord2 = [(WFEditAutomationCoordinator *)self triggerRecord];
+    triggerIdentifier = [(WFEditAutomationCoordinator *)self triggerIdentifier];
+    editingWorkflow2 = [(WFEditAutomationCoordinator *)self editingWorkflow];
+    v27 = [(WFAutomationSummaryViewController *)v23 initWithTrigger:triggerRecord2 triggerIdentifier:triggerIdentifier workflow:editingWorkflow2 mode:1];
     [(WFEditAutomationCoordinator *)self setAutomationSummaryViewController:v27];
 
-    v28 = [(WFEditAutomationCoordinator *)self automationSummaryViewController];
-    [v28 setDelegate:self];
+    automationSummaryViewController = [(WFEditAutomationCoordinator *)self automationSummaryViewController];
+    [automationSummaryViewController setDelegate:self];
 
     v29 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancel];
-    v30 = [(WFEditAutomationCoordinator *)self automationSummaryViewController];
-    v31 = [v30 navigationItem];
-    [v31 setLeftBarButtonItem:v29];
+    automationSummaryViewController2 = [(WFEditAutomationCoordinator *)self automationSummaryViewController];
+    navigationItem = [automationSummaryViewController2 navigationItem];
+    [navigationItem setLeftBarButtonItem:v29];
 
-    v32 = [(WFEditAutomationCoordinator *)self automationSummaryViewController];
-    v33 = [v32 navigationItem];
-    [v33 setLargeTitleDisplayMode:2];
+    automationSummaryViewController3 = [(WFEditAutomationCoordinator *)self automationSummaryViewController];
+    navigationItem2 = [automationSummaryViewController3 navigationItem];
+    [navigationItem2 setLargeTitleDisplayMode:2];
 
     v34 = objc_alloc(MEMORY[0x277D757A0]);
-    v35 = [(WFEditAutomationCoordinator *)self automationSummaryViewController];
-    v36 = [v34 initWithRootViewController:v35];
+    automationSummaryViewController4 = [(WFEditAutomationCoordinator *)self automationSummaryViewController];
+    v36 = [v34 initWithRootViewController:automationSummaryViewController4];
     [(WFEditAutomationCoordinator *)self setNavigationController:v36];
 
-    v37 = [(WFEditAutomationCoordinator *)self navigationController];
-    [v37 setDelegate:self];
+    navigationController = [(WFEditAutomationCoordinator *)self navigationController];
+    [navigationController setDelegate:self];
 
-    v38 = [(WFEditAutomationCoordinator *)self navigationController];
-    v39 = [v38 navigationBar];
-    [v39 setPrefersLargeTitles:1];
+    navigationController2 = [(WFEditAutomationCoordinator *)self navigationController];
+    navigationBar = [navigationController2 navigationBar];
+    [navigationBar setPrefersLargeTitles:1];
 
-    v19 = [(WFEditAutomationCoordinator *)self navigationController];
+    navigationController3 = [(WFEditAutomationCoordinator *)self navigationController];
   }
 
   else
@@ -504,33 +504,33 @@ void __37__WFEditAutomationCoordinator_finish__block_invoke_192(uint64_t a1)
     v22 = getWFTriggersLogObject();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      v40 = [v16 length];
+      v40 = [triggerData length];
       *buf = 136315650;
       v46 = "[WFEditAutomationCoordinator start]";
       v47 = 2112;
-      v48 = v16;
+      v48 = triggerData;
       v49 = 2050;
       v50 = v40;
       _os_log_impl(&dword_274719000, v22, OS_LOG_TYPE_ERROR, "%s Failed to deserialize WFTrigger from data (%@) (length=%{public}lu)", buf, 0x20u);
     }
 
-    v19 = 0;
+    navigationController3 = 0;
   }
 
 LABEL_18:
 
-  return v19;
+  return navigationController3;
 }
 
-- (WFEditAutomationCoordinator)initWithDatabase:(id)a3 triggerRecord:(id)a4 triggerIdentifier:(id)a5 workflowReference:(id)a6
+- (WFEditAutomationCoordinator)initWithDatabase:(id)database triggerRecord:(id)record triggerIdentifier:(id)identifier workflowReference:(id)reference
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  databaseCopy = database;
+  recordCopy = record;
+  identifierCopy = identifier;
+  referenceCopy = reference;
+  if (databaseCopy)
   {
-    if (v13)
+    if (recordCopy)
     {
       goto LABEL_3;
     }
@@ -538,17 +538,17 @@ LABEL_18:
 
   else
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"WFEditAutomationCoordinator.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"database"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFEditAutomationCoordinator.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"database"}];
 
-    if (v13)
+    if (recordCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v25 = [MEMORY[0x277CCA890] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"WFEditAutomationCoordinator.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"triggerRecord"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFEditAutomationCoordinator.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"triggerRecord"}];
 
 LABEL_3:
   v26.receiver = self;
@@ -557,17 +557,17 @@ LABEL_3:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_database, a3);
-    v18 = [objc_alloc(MEMORY[0x277D7C988]) initWithDatabase:v12];
+    objc_storeStrong(&v16->_database, database);
+    v18 = [objc_alloc(MEMORY[0x277D7C988]) initWithDatabase:databaseCopy];
     triggerManager = v17->_triggerManager;
     v17->_triggerManager = v18;
 
-    objc_storeStrong(&v17->_triggerRecord, a4);
-    v20 = [v14 copy];
+    objc_storeStrong(&v17->_triggerRecord, record);
+    v20 = [identifierCopy copy];
     triggerIdentifier = v17->_triggerIdentifier;
     v17->_triggerIdentifier = v20;
 
-    objc_storeStrong(&v17->_workflowReference, a6);
+    objc_storeStrong(&v17->_workflowReference, reference);
     v22 = v17;
   }
 

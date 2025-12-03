@@ -1,11 +1,11 @@
 @interface ENUITCCUtilities
 + (BOOL)hasExposureNotificationAppsFromTCC;
-+ (BOOL)isExposureNotificationEnabledForBundleIdentifier:(id)a3;
++ (BOOL)isExposureNotificationEnabledForBundleIdentifier:(id)identifier;
 + (BOOL)isExposureNotificationFeatureActive;
 + (BOOL)isExposureNotificationsEnabledFromTCC;
 + (NSArray)enabledExposureNotificationApps;
-+ (__CFBundle)copyTCCBundleForBundleIdentifier:(id)a3;
-+ (void)setExposureNotificationEnabled:(BOOL)a3 forBundleIdentifier:(id)a4;
++ (__CFBundle)copyTCCBundleForBundleIdentifier:(id)identifier;
++ (void)setExposureNotificationEnabled:(BOOL)enabled forBundleIdentifier:(id)identifier;
 @end
 
 @implementation ENUITCCUtilities
@@ -43,20 +43,20 @@
 + (BOOL)isExposureNotificationFeatureActive
 {
   v3 = +[ENUITCCUtilities isExposureNotificationsEnabledFromTCC];
-  v4 = [a1 enabledExposureNotificationApps];
-  v5 = v4;
+  enabledExposureNotificationApps = [self enabledExposureNotificationApps];
+  v5 = enabledExposureNotificationApps;
   if (v3)
   {
-    LOBYTE(v3) = [v4 count] != 0;
+    LOBYTE(v3) = [enabledExposureNotificationApps count] != 0;
   }
 
   return v3;
 }
 
-+ (BOOL)isExposureNotificationEnabledForBundleIdentifier:(id)a3
++ (BOOL)isExposureNotificationEnabledForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v13 = 0u;
     v14 = 0u;
@@ -81,7 +81,7 @@
           if (v9)
           {
             Identifier = CFBundleGetIdentifier(v9);
-            if (CFEqual(v3, Identifier))
+            if (CFEqual(identifierCopy, Identifier))
             {
               v11 = [v8 objectForKey:kTCCInfoGranted];
               LOBYTE(v5) = [v11 BOOLValue];
@@ -112,9 +112,9 @@ LABEL_14:
   return v5;
 }
 
-+ (void)setExposureNotificationEnabled:(BOOL)a3 forBundleIdentifier:(id)a4
++ (void)setExposureNotificationEnabled:(BOOL)enabled forBundleIdentifier:(id)identifier
 {
-  v4 = [a1 copyTCCBundleForBundleIdentifier:a4];
+  v4 = [self copyTCCBundleForBundleIdentifier:identifier];
   if (v4)
   {
     v5 = v4;
@@ -124,9 +124,9 @@ LABEL_14:
   }
 }
 
-+ (__CFBundle)copyTCCBundleForBundleIdentifier:(id)a3
++ (__CFBundle)copyTCCBundleForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -152,7 +152,7 @@ LABEL_14:
         {
           v10 = v9;
           Identifier = CFBundleGetIdentifier(v9);
-          if (CFEqual(v3, Identifier))
+          if (CFEqual(identifierCopy, Identifier))
           {
             CFRetain(v10);
             goto LABEL_12;

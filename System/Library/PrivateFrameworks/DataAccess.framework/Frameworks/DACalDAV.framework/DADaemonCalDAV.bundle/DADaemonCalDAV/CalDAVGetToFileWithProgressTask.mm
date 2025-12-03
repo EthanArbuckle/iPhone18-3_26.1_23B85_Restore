@@ -1,22 +1,22 @@
 @interface CalDAVGetToFileWithProgressTask
 - (MobileCalDAVAttachmentDownloader)downloader;
 - (id)additionalHeaderValues;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
 @end
 
 @implementation CalDAVGetToFileWithProgressTask
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  dataCopy = data;
+  taskCopy = task;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_downloader);
-  [WeakRetained _didShowProgressDownloadedByteCount:{-[CalDAVGetToFileWithProgressTask totalBytesReceived](self, "totalBytesReceived") + objc_msgSend(v8, "length")}];
+  [WeakRetained _didShowProgressDownloadedByteCount:{-[CalDAVGetToFileWithProgressTask totalBytesReceived](self, "totalBytesReceived") + objc_msgSend(dataCopy, "length")}];
 
   v12.receiver = self;
   v12.super_class = CalDAVGetToFileWithProgressTask;
-  [(CalDAVGetToFileWithProgressTask *)&v12 URLSession:v10 dataTask:v9 didReceiveData:v8];
+  [(CalDAVGetToFileWithProgressTask *)&v12 URLSession:sessionCopy dataTask:taskCopy didReceiveData:dataCopy];
 }
 
 - (id)additionalHeaderValues
@@ -24,15 +24,15 @@
   v3 = objc_opt_new();
   v8.receiver = self;
   v8.super_class = CalDAVGetToFileWithProgressTask;
-  v4 = [(CalDAVGetToFileWithProgressTask *)&v8 additionalHeaderValues];
-  [v3 addEntriesFromDictionary:v4];
+  additionalHeaderValues = [(CalDAVGetToFileWithProgressTask *)&v8 additionalHeaderValues];
+  [v3 addEntriesFromDictionary:additionalHeaderValues];
 
-  v5 = [(CalDAVGetToFileWithProgressTask *)self previousETag];
+  previousETag = [(CalDAVGetToFileWithProgressTask *)self previousETag];
 
-  if (v5)
+  if (previousETag)
   {
-    v6 = [(CalDAVGetToFileWithProgressTask *)self previousETag];
-    [v3 setObject:v6 forKeyedSubscript:CoreDAVHTTPHeader_IfNoneMatch];
+    previousETag2 = [(CalDAVGetToFileWithProgressTask *)self previousETag];
+    [v3 setObject:previousETag2 forKeyedSubscript:CoreDAVHTTPHeader_IfNoneMatch];
   }
 
   return v3;

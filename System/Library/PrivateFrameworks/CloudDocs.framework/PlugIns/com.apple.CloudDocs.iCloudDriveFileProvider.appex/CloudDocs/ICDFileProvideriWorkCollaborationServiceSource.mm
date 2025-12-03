@@ -1,20 +1,20 @@
 @interface ICDFileProvideriWorkCollaborationServiceSource
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (ICDFileProvideriWorkCollaborationServiceSource)initWithFileProviderExtension:(id)a3 itemIdentifier:(id)a4 operationQueue:(id)a5;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (ICDFileProvideriWorkCollaborationServiceSource)initWithFileProviderExtension:(id)extension itemIdentifier:(id)identifier operationQueue:(id)queue;
 @end
 
 @implementation ICDFileProvideriWorkCollaborationServiceSource
 
-- (ICDFileProvideriWorkCollaborationServiceSource)initWithFileProviderExtension:(id)a3 itemIdentifier:(id)a4 operationQueue:(id)a5
+- (ICDFileProvideriWorkCollaborationServiceSource)initWithFileProviderExtension:(id)extension itemIdentifier:(id)identifier operationQueue:(id)queue
 {
-  v9 = a3;
+  extensionCopy = extension;
   v15.receiver = self;
   v15.super_class = ICDFileProvideriWorkCollaborationServiceSource;
-  v10 = [(BaseFileProvideriWorkCollaborationServiceSource *)&v15 initWithItemIdentifier:a4 operationQueue:a5];
+  v10 = [(BaseFileProvideriWorkCollaborationServiceSource *)&v15 initWithItemIdentifier:identifier operationQueue:queue];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_fileProviderExtension, a3);
+    objc_storeStrong(&v10->_fileProviderExtension, extension);
     v12 = [NSHashTable hashTableWithOptions:0];
     listeners = v11->_listeners;
     v11->_listeners = v12;
@@ -23,38 +23,38 @@
   return v11;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BaseFileProvideriWorkCollaboration];
-  [v7 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
   v9 = [ICDFileProvideriWorkCollaborationProxy alloc];
   fileProviderExtension = self->_fileProviderExtension;
-  v11 = [(BaseFileProvideriWorkCollaborationServiceSource *)self itemIdentifier];
-  v12 = [(BaseFileProvideriWorkCollaborationServiceSource *)self operationQueue];
-  v13 = [(ICDFileProvideriWorkCollaborationProxy *)v9 initWithFileProviderExtension:fileProviderExtension itemIdentifier:v11 operationQueue:v12];
-  [v7 setExportedObject:v13];
+  itemIdentifier = [(BaseFileProvideriWorkCollaborationServiceSource *)self itemIdentifier];
+  operationQueue = [(BaseFileProvideriWorkCollaborationServiceSource *)self operationQueue];
+  v13 = [(ICDFileProvideriWorkCollaborationProxy *)v9 initWithFileProviderExtension:fileProviderExtension itemIdentifier:itemIdentifier operationQueue:operationQueue];
+  [connectionCopy setExportedObject:v13];
 
-  v14 = self;
-  objc_sync_enter(v14);
-  [(NSHashTable *)v14->_listeners removeObject:v6];
-  objc_sync_exit(v14);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_listeners removeObject:listenerCopy];
+  objc_sync_exit(selfCopy);
 
-  objc_initWeak(&location, v7);
+  objc_initWeak(&location, connectionCopy);
   v15 = +[UMUserManager sharedManager];
-  v16 = [v15 br_currentPersonaID];
+  br_currentPersonaID = [v15 br_currentPersonaID];
 
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_10001A524;
   v24[3] = &unk_100044880;
-  v17 = v16;
+  v17 = br_currentPersonaID;
   v25 = v17;
-  v18 = v6;
+  v18 = listenerCopy;
   v26 = v18;
-  [v7 setInvalidationHandler:v24];
+  [connectionCopy setInvalidationHandler:v24];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10001A964;
@@ -62,8 +62,8 @@
   v19 = v17;
   v22 = v19;
   objc_copyWeak(&v23, &location);
-  [v7 setInterruptionHandler:v21];
-  [v7 resume];
+  [connectionCopy setInterruptionHandler:v21];
+  [connectionCopy resume];
   objc_destroyWeak(&v23);
 
   objc_destroyWeak(&location);

@@ -1,23 +1,23 @@
 @interface _MFFontToFontDescriptorTransformer
-- (id)transformValue:(id)a3 inverse:(BOOL)a4;
+- (id)transformValue:(id)value inverse:(BOOL)inverse;
 @end
 
 @implementation _MFFontToFontDescriptorTransformer
 
-- (id)transformValue:(id)a3 inverse:(BOOL)a4
+- (id)transformValue:(id)value inverse:(BOOL)inverse
 {
-  v4 = a4;
-  v5 = a3;
-  if (v5)
+  inverseCopy = inverse;
+  valueCopy = value;
+  if (valueCopy)
   {
-    if (v4)
+    if (inverseCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [MEMORY[0x1E69DB878] fontWithDescriptor:v5 size:0.0];
+        fontDescriptor = [MEMORY[0x1E69DB878] fontWithDescriptor:valueCopy size:0.0];
 LABEL_7:
-        v7 = v6;
+        v7 = fontDescriptor;
         goto LABEL_9;
       }
     }
@@ -27,7 +27,7 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [v5 fontDescriptor];
+        fontDescriptor = [valueCopy fontDescriptor];
         goto LABEL_7;
       }
     }

@@ -1,47 +1,47 @@
 @interface TelephonyStateRelay
 + (TelephonyStateRelay)sharedInstance;
-+ (id)deriveDataIcon:(unint64_t)a3 stewieState:(id)a4;
-+ (void)setError:(id *)a3 code:(int64_t)a4 message:(id)a5;
-- (BOOL)getAirplaneModeActive:(id *)a3;
-- (BOOL)getInterfaceCostExpensive:(id)a3 error:(id *)a4;
-- (BOOL)getIsSatelliteProvisioned:(id)a3 error:(id *)a4;
-- (BOOL)getLowDataMode:(id)a3 error:(id *)a4;
-- (BOOL)isCallActiveOnContextOtherThan:(id)a3;
++ (id)deriveDataIcon:(unint64_t)icon stewieState:(id)state;
++ (void)setError:(id *)error code:(int64_t)code message:(id)message;
+- (BOOL)getAirplaneModeActive:(id *)active;
+- (BOOL)getInterfaceCostExpensive:(id)expensive error:(id *)error;
+- (BOOL)getIsSatelliteProvisioned:(id)provisioned error:(id *)error;
+- (BOOL)getLowDataMode:(id)mode error:(id *)error;
+- (BOOL)isCallActiveOnContextOtherThan:(id)than;
 - (BOOL)isMultiSim;
 - (CTXPCServiceSubscriptionContext)lastDataSimContext;
 - (NSString)lastDataSimRegistrationStatus;
 - (TelephonyStateRelay)init;
 - (id).cxx_construct;
-- (id)copyCTRegistrationStatus:(id)a3 error:(id *)a4;
+- (id)copyCTRegistrationStatus:(id)status error:(id *)error;
 - (id)fetchDataSimRegistrationStatus;
-- (id)findDelegateEntryByDelegate:(id)a3;
-- (id)getCTSignalStrengthInfo:(id)a3 error:(id *)a4;
-- (id)getHomeCarrierMCC:(id)a3 error:(id *)a4;
-- (id)getHomeCarrierMNC:(id)a3 error:(id *)a4;
+- (id)findDelegateEntryByDelegate:(id)delegate;
+- (id)getCTSignalStrengthInfo:(id)info error:(id *)error;
+- (id)getHomeCarrierMCC:(id)c error:(id *)error;
+- (id)getHomeCarrierMNC:(id)c error:(id *)error;
 - (id)getTelephonyClientInstance;
-- (void)addTelephonyStateDelegate:(id)a3 withQueue:(dispatch_queue_s *)a4;
+- (void)addTelephonyStateDelegate:(id)delegate withQueue:(dispatch_queue_s *)queue;
 - (void)airplaneModeStatusChanged;
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4;
-- (void)context:(id)a3 capabilitiesChanged:(id)a4;
-- (void)ctServerCellularTransmitStateNotification:(__CFDictionary *)a3;
-- (void)ctServerRadioStateChangedNotification:(__CFDictionary *)a3;
-- (void)currentDataSimChanged:(id)a3;
+- (void)cellMonitorUpdate:(id)update info:(id)info;
+- (void)context:(id)context capabilitiesChanged:(id)changed;
+- (void)ctServerCellularTransmitStateNotification:(__CFDictionary *)notification;
+- (void)ctServerRadioStateChangedNotification:(__CFDictionary *)notification;
+- (void)currentDataSimChanged:(id)changed;
 - (void)dealloc;
-- (void)displayStatusChanged:(id)a3 status:(id)a4;
-- (void)getAirplaneModeStatus:(id)a3;
-- (void)getRadioAccessTechnology:(id)a3 delegate:(id)a4;
-- (void)getRadioStateForDelegate:(id)a3;
-- (void)getSatelliteRegistrationStatus:(id)a3 delegate:(id)a4;
-- (void)handleContextUpdated:(id)a3 forKey:(int)a4 withState:(id)a5;
-- (void)handleCurrentDataSimChanged:(id)a3;
-- (void)handlePlmnChanged:(id)a3 plmn:(id)a4;
-- (void)handleRadioAccessTechnologyChanged:(id)a3 info:(id)a4;
-- (void)handleRegistrationStatusChanged:(id)a3;
-- (void)handleSignalStrengthChangedExternal:(id)a3 info:(id)a4;
+- (void)displayStatusChanged:(id)changed status:(id)status;
+- (void)getAirplaneModeStatus:(id)status;
+- (void)getRadioAccessTechnology:(id)technology delegate:(id)delegate;
+- (void)getRadioStateForDelegate:(id)delegate;
+- (void)getSatelliteRegistrationStatus:(id)status delegate:(id)delegate;
+- (void)handleContextUpdated:(id)updated forKey:(int)key withState:(id)state;
+- (void)handleCurrentDataSimChanged:(id)changed;
+- (void)handlePlmnChanged:(id)changed plmn:(id)plmn;
+- (void)handleRadioAccessTechnologyChanged:(id)changed info:(id)info;
+- (void)handleRegistrationStatusChanged:(id)changed;
+- (void)handleSignalStrengthChangedExternal:(id)external info:(id)info;
 - (void)handleTUCallCenterCallStatusChangedNotification;
 - (void)registerAirplaneModeCallbacks;
-- (void)removeTelephonyStateDelegate:(id)a3;
-- (void)signalStrengthChanged:(id)a3 info:(id)a4;
+- (void)removeTelephonyStateDelegate:(id)delegate;
+- (void)signalStrengthChanged:(id)changed info:(id)info;
 - (void)subscriptionInfoDidChange;
 @end
 
@@ -53,7 +53,7 @@
   block[1] = 3221225472;
   block[2] = sub_10007D1A8;
   block[3] = &unk_1002AB480;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002D8390 != -1)
   {
     dispatch_once(&qword_1002D8390, block);
@@ -89,9 +89,9 @@
     v3->_delegates = v4;
 
     v3->_telephonyClientQueue = dispatch_queue_create("com.apple.wirelessinsightsd.TelephonyStateRelay.CallbackQueue", 0);
-    v6 = [(TelephonyStateRelay *)v3 getTelephonyClientInstance];
+    getTelephonyClientInstance = [(TelephonyStateRelay *)v3 getTelephonyClientInstance];
     coreTelephonyClient = v3->_coreTelephonyClient;
-    v3->_coreTelephonyClient = v6;
+    v3->_coreTelephonyClient = getTelephonyClientInstance;
 
     v8 = [[CTStewieStateMonitor alloc] initWithDelegate:v3 queue:v3->_telephonyClientQueue];
     stewieStateMonitor = v3->_stewieStateMonitor;
@@ -189,13 +189,13 @@
   [(TelephonyStateRelay *)&v4 dealloc];
 }
 
-- (void)addTelephonyStateDelegate:(id)a3 withQueue:(dispatch_queue_s *)a4
+- (void)addTelephonyStateDelegate:(id)delegate withQueue:(dispatch_queue_s *)queue
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  delegateCopy = delegate;
+  v7 = delegateCopy;
+  if (delegateCopy)
   {
-    if (a4)
+    if (queue)
     {
       telephonyClientQueue = self->_telephonyClientQueue;
       if (telephonyClientQueue)
@@ -204,20 +204,20 @@
         block[1] = 3221225472;
         block[2] = sub_10007D93C;
         block[3] = &unk_1002AB848;
-        v11 = self;
-        v12 = a4;
-        v10 = v6;
+        selfCopy = self;
+        queueCopy = queue;
+        v10 = delegateCopy;
         dispatch_async(telephonyClientQueue, block);
       }
     }
   }
 }
 
-- (void)removeTelephonyStateDelegate:(id)a3
+- (void)removeTelephonyStateDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  delegateCopy = delegate;
+  v5 = delegateCopy;
+  if (delegateCopy)
   {
     telephonyClientQueue = self->_telephonyClientQueue;
     if (telephonyClientQueue)
@@ -227,7 +227,7 @@
       v7[2] = sub_10007DA6C;
       v7[3] = &unk_1002AD7E0;
       v7[4] = self;
-      v8 = v4;
+      v8 = delegateCopy;
       dispatch_async(telephonyClientQueue, v7);
     }
   }
@@ -291,9 +291,9 @@
           v9 = *(qword_1002DBE98 + 48);
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
           {
-            v10 = [v8 localizedDescription];
+            localizedDescription = [v8 localizedDescription];
             *buf = 138412290;
-            v16 = v10;
+            v16 = localizedDescription;
             _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "TelephonyStateRelay:#N Unable to fetch airplane mode status: %@", buf, 0xCu);
           }
 
@@ -323,7 +323,7 @@
   }
 }
 
-- (BOOL)getAirplaneModeActive:(id *)a3
+- (BOOL)getAirplaneModeActive:(id *)active
 {
   if (self->_airplaneModePrefs.fRef)
   {
@@ -340,11 +340,11 @@
         v8 = CFGetTypeID(Value);
         if (v8 == CFBooleanGetTypeID())
         {
-          v9 = [Value BOOLValue];
+          bOOLValue = [Value BOOLValue];
 
 LABEL_12:
           CFRelease(v6);
-          return v9;
+          return bOOLValue;
         }
 
         CFRelease(Value);
@@ -356,89 +356,89 @@ LABEL_12:
         v10 = @"Could not retrieve airplane mode preference";
       }
 
-      [TelephonyStateRelay setError:a3 code:0 message:v10];
-      v9 = 0;
+      [TelephonyStateRelay setError:active code:0 message:v10];
+      bOOLValue = 0;
       goto LABEL_12;
     }
 
-    [TelephonyStateRelay setError:a3 code:0 message:@"Could not allocate preference name"];
+    [TelephonyStateRelay setError:active code:0 message:@"Could not allocate preference name"];
   }
 
   else
   {
-    [TelephonyStateRelay setError:a3 code:0 message:@"Airplane mode preferences not set, cannot fetch status"];
+    [TelephonyStateRelay setError:active code:0 message:@"Airplane mode preferences not set, cannot fetch status"];
   }
 
   return 0;
 }
 
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4
+- (void)cellMonitorUpdate:(id)update info:(id)info
 {
-  v7 = a3;
-  v6 = a4;
-  [(TelephonyStateRelay *)self handleCellMonitorUpdate:v7 info:v6];
-  [(TelephonyStateRelay *)self handleRadioAccessTechnologyChanged:v7 info:v6];
+  updateCopy = update;
+  infoCopy = info;
+  [(TelephonyStateRelay *)self handleCellMonitorUpdate:updateCopy info:infoCopy];
+  [(TelephonyStateRelay *)self handleRadioAccessTechnologyChanged:updateCopy info:infoCopy];
 }
 
-- (void)signalStrengthChanged:(id)a3 info:(id)a4
+- (void)signalStrengthChanged:(id)changed info:(id)info
 {
-  v7 = a3;
-  v6 = a4;
-  [(TelephonyStateRelay *)self handleSignalStrengthChanged:v7 info:v6];
-  [(TelephonyStateRelay *)self handleSignalStrengthChangedExternal:v7 info:v6];
+  changedCopy = changed;
+  infoCopy = info;
+  [(TelephonyStateRelay *)self handleSignalStrengthChanged:changedCopy info:infoCopy];
+  [(TelephonyStateRelay *)self handleSignalStrengthChangedExternal:changedCopy info:infoCopy];
 }
 
-- (void)currentDataSimChanged:(id)a3
+- (void)currentDataSimChanged:(id)changed
 {
-  v5 = a3;
+  changedCopy = changed;
   os_unfair_lock_lock(&self->_lock);
-  if (([(CTXPCServiceSubscriptionContext *)self->_lastDataSimContext isEqual:v5]& 1) == 0)
+  if (([(CTXPCServiceSubscriptionContext *)self->_lastDataSimContext isEqual:changedCopy]& 1) == 0)
   {
     v6 = *(qword_1002DBE98 + 48);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v5 uuid];
+      uuid = [changedCopy uuid];
       isMultiSim = self->_isMultiSim;
       v9 = 138412546;
-      v10 = v7;
+      v10 = uuid;
       v11 = 1024;
       v12 = isMultiSim;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "TelephonyStateRelay:#I Data context changed to %@: _isMultiSim: %{BOOL}d", &v9, 0x12u);
     }
 
-    objc_storeStrong(&self->_lastDataSimContext, a3);
+    objc_storeStrong(&self->_lastDataSimContext, changed);
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  [(TelephonyStateRelay *)self handleCurrentDataSimChanged:v5];
+  [(TelephonyStateRelay *)self handleCurrentDataSimChanged:changedCopy];
 }
 
-- (void)displayStatusChanged:(id)a3 status:(id)a4
+- (void)displayStatusChanged:(id)changed status:(id)status
 {
-  v7 = a3;
-  v6 = a4;
-  [(TelephonyStateRelay *)self handleDisplayStatusChanged:v7 displayStatus:v6];
-  [(TelephonyStateRelay *)self handleRegistrationStatusChanged:v7];
-  -[TelephonyStateRelay handleSatelliteRegistrationStatusForContext:changedTo:](self, "handleSatelliteRegistrationStatusForContext:changedTo:", v7, [v6 isSatelliteSystem]);
+  changedCopy = changed;
+  statusCopy = status;
+  [(TelephonyStateRelay *)self handleDisplayStatusChanged:changedCopy displayStatus:statusCopy];
+  [(TelephonyStateRelay *)self handleRegistrationStatusChanged:changedCopy];
+  -[TelephonyStateRelay handleSatelliteRegistrationStatusForContext:changedTo:](self, "handleSatelliteRegistrationStatusForContext:changedTo:", changedCopy, [statusCopy isSatelliteSystem]);
 }
 
-- (void)context:(id)a3 capabilitiesChanged:(id)a4
+- (void)context:(id)context capabilitiesChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  changedCopy = changed;
   if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
   {
-    v8 = [v6 uuid];
-    sub_100201AD4(v8, v7, &v11);
+    uuid = [contextCopy uuid];
+    sub_100201AD4(uuid, changedCopy, &v11);
   }
 
-  v9 = [v7 valueForKey:kCTCapabilitySatellite];
+  v9 = [changedCopy valueForKey:kCTCapabilitySatellite];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v10 = [v9 valueForKey:kCTCapabilityStatus];
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      [(TelephonyStateRelay *)self handleSatelliteCapabilityChanged:v6 info:v10];
+      [(TelephonyStateRelay *)self handleSatelliteCapabilityChanged:contextCopy info:v10];
     }
 
     else if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
@@ -460,11 +460,11 @@ LABEL_12:
   [(TelephonyStateRelay *)self handleSubscriptionInfoChanged];
 }
 
-- (void)ctServerRadioStateChangedNotification:(__CFDictionary *)a3
+- (void)ctServerRadioStateChangedNotification:(__CFDictionary *)notification
 {
-  if (a3)
+  if (notification)
   {
-    v4 = CFDictionaryGetValue(a3, kCTRadioStateKey);
+    v4 = CFDictionaryGetValue(notification, kCTRadioStateKey);
     if (v4)
     {
       if (![(NSNumber *)self->_radioState isEqualToNumber:v4])
@@ -486,11 +486,11 @@ LABEL_12:
   }
 }
 
-- (void)ctServerCellularTransmitStateNotification:(__CFDictionary *)a3
+- (void)ctServerCellularTransmitStateNotification:(__CFDictionary *)notification
 {
-  if (a3)
+  if (notification)
   {
-    v4 = CFDictionaryGetValue(a3, kKeyCTCellularTransmitState);
+    v4 = CFDictionaryGetValue(notification, kKeyCTCellularTransmitState);
     if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v5 = v4;
@@ -513,21 +513,21 @@ LABEL_12:
   }
 }
 
-- (id)getCTSignalStrengthInfo:(id)a3 error:(id *)a4
+- (id)getCTSignalStrengthInfo:(id)info error:(id *)error
 {
-  v4 = [(CoreTelephonyClient *)self->_coreTelephonyClient getSignalStrengthInfo:a3 error:a4];
+  v4 = [(CoreTelephonyClient *)self->_coreTelephonyClient getSignalStrengthInfo:info error:error];
 
   return v4;
 }
 
-- (id)copyCTRegistrationStatus:(id)a3 error:(id *)a4
+- (id)copyCTRegistrationStatus:(id)status error:(id *)error
 {
-  v6 = a3;
-  v7 = [(TelephonyStateRelay *)self coreTelephonyClient];
-  v8 = [v7 copyRegistrationStatus:v6 error:a4];
+  statusCopy = status;
+  coreTelephonyClient = [(TelephonyStateRelay *)self coreTelephonyClient];
+  v8 = [coreTelephonyClient copyRegistrationStatus:statusCopy error:error];
 
   os_unfair_lock_lock(&self->_lock);
-  if ([(CTXPCServiceSubscriptionContext *)self->_lastDataSimContext isEqual:v6])
+  if ([(CTXPCServiceSubscriptionContext *)self->_lastDataSimContext isEqual:statusCopy])
   {
     objc_storeStrong(&self->_lastDataSimRegistrationStatus, v8);
   }
@@ -537,20 +537,20 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)getLowDataMode:(id)a3 error:(id *)a4
+- (BOOL)getLowDataMode:(id)mode error:(id *)error
 {
-  v6 = [CTServiceDescriptor descriptorWithSubscriptionContext:a3];
-  LOBYTE(a4) = [(CoreTelephonyClient *)self->_coreTelephonyClient lowDataMode:v6 error:a4];
+  v6 = [CTServiceDescriptor descriptorWithSubscriptionContext:mode];
+  LOBYTE(error) = [(CoreTelephonyClient *)self->_coreTelephonyClient lowDataMode:v6 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)getInterfaceCostExpensive:(id)a3 error:(id *)a4
+- (BOOL)getInterfaceCostExpensive:(id)expensive error:(id *)error
 {
-  v6 = [CTServiceDescriptor descriptorWithSubscriptionContext:a3];
-  LOBYTE(a4) = [(CoreTelephonyClient *)self->_coreTelephonyClient interfaceCostExpensive:v6 error:a4];
+  v6 = [CTServiceDescriptor descriptorWithSubscriptionContext:expensive];
+  LOBYTE(error) = [(CoreTelephonyClient *)self->_coreTelephonyClient interfaceCostExpensive:v6 error:error];
 
-  return a4;
+  return error;
 }
 
 - (NSString)lastDataSimRegistrationStatus
@@ -607,108 +607,108 @@ LABEL_6:
   return v7;
 }
 
-- (void)getRadioStateForDelegate:(id)a3
+- (void)getRadioStateForDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   telephonyClientQueue = self->_telephonyClientQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007EB6C;
   v7[3] = &unk_1002AD7E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(telephonyClientQueue, v7);
 }
 
-- (void)getRadioAccessTechnology:(id)a3 delegate:(id)a4
+- (void)getRadioAccessTechnology:(id)technology delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  technologyCopy = technology;
+  delegateCopy = delegate;
   telephonyClientQueue = self->_telephonyClientQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007ED90;
   block[3] = &unk_1002AD808;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = technologyCopy;
+  selfCopy = self;
+  v14 = delegateCopy;
+  v9 = delegateCopy;
+  v10 = technologyCopy;
   dispatch_async(telephonyClientQueue, block);
 }
 
-- (void)getSatelliteRegistrationStatus:(id)a3 delegate:(id)a4
+- (void)getSatelliteRegistrationStatus:(id)status delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  delegateCopy = delegate;
   telephonyClientQueue = self->_telephonyClientQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007F04C;
   block[3] = &unk_1002AD808;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = statusCopy;
+  selfCopy = self;
+  v14 = delegateCopy;
+  v9 = delegateCopy;
+  v10 = statusCopy;
   dispatch_async(telephonyClientQueue, block);
 }
 
-- (void)getAirplaneModeStatus:(id)a3
+- (void)getAirplaneModeStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   telephonyClientQueue = self->_telephonyClientQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007F2A4;
   v7[3] = &unk_1002AD7E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = statusCopy;
+  v6 = statusCopy;
   dispatch_async(telephonyClientQueue, v7);
 }
 
-- (BOOL)getIsSatelliteProvisioned:(id)a3 error:(id *)a4
+- (BOOL)getIsSatelliteProvisioned:(id)provisioned error:(id *)error
 {
   v6 = 0;
-  *a4 = [(CoreTelephonyClient *)self->_coreTelephonyClient context:a3 getCapability:kCTCapabilitySatellite status:&v6 with:0];
+  *error = [(CoreTelephonyClient *)self->_coreTelephonyClient context:provisioned getCapability:kCTCapabilitySatellite status:&v6 with:0];
   return v6;
 }
 
-- (id)getHomeCarrierMCC:(id)a3 error:(id *)a4
+- (id)getHomeCarrierMCC:(id)c error:(id *)error
 {
-  v4 = [(CoreTelephonyClient *)self->_coreTelephonyClient copyMobileSubscriberCountryCode:a3 error:a4];
+  v4 = [(CoreTelephonyClient *)self->_coreTelephonyClient copyMobileSubscriberCountryCode:c error:error];
 
   return v4;
 }
 
-- (id)getHomeCarrierMNC:(id)a3 error:(id *)a4
+- (id)getHomeCarrierMNC:(id)c error:(id *)error
 {
-  v4 = [(CoreTelephonyClient *)self->_coreTelephonyClient copyMobileSubscriberNetworkCode:a3 error:a4];
+  v4 = [(CoreTelephonyClient *)self->_coreTelephonyClient copyMobileSubscriberNetworkCode:c error:error];
 
   return v4;
 }
 
-- (void)handleCurrentDataSimChanged:(id)a3
+- (void)handleCurrentDataSimChanged:(id)changed
 {
-  v5 = a3;
-  v4 = [(TelephonyStateRelay *)self fetchDataSimRegistrationStatus];
-  [(TelephonyStateRelay *)self handleContextUpdated:v5 forKey:3 withState:0];
+  changedCopy = changed;
+  fetchDataSimRegistrationStatus = [(TelephonyStateRelay *)self fetchDataSimRegistrationStatus];
+  [(TelephonyStateRelay *)self handleContextUpdated:changedCopy forKey:3 withState:0];
 }
 
-- (void)handleRegistrationStatusChanged:(id)a3
+- (void)handleRegistrationStatusChanged:(id)changed
 {
-  v4 = a3;
-  if (v4)
+  changedCopy = changed;
+  if (changedCopy)
   {
-    v5 = [(TelephonyStateRelay *)self coreTelephonyClient];
+    coreTelephonyClient = [(TelephonyStateRelay *)self coreTelephonyClient];
     v14 = 0;
-    v6 = [v5 copyRegistrationStatus:v4 error:&v14];
+    v6 = [coreTelephonyClient copyRegistrationStatus:changedCopy error:&v14];
     v7 = v14;
 
     os_unfair_lock_lock(&self->_lock);
-    if ([(CTXPCServiceSubscriptionContext *)self->_lastDataSimContext isEqual:v4])
+    if ([(CTXPCServiceSubscriptionContext *)self->_lastDataSimContext isEqual:changedCopy])
     {
       objc_storeStrong(&self->_lastDataSimRegistrationStatus, v6);
     }
@@ -719,8 +719,8 @@ LABEL_6:
     {
       if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_ERROR))
       {
-        v11 = [v7 localizedDescription];
-        sub_100201C64(v11, buf, v8);
+        localizedDescription = [v7 localizedDescription];
+        sub_100201C64(localizedDescription, buf, v8);
       }
     }
 
@@ -728,10 +728,10 @@ LABEL_6:
     {
       if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
       {
-        v12 = [v4 uuid];
+        uuid = [changedCopy uuid];
         isMultiSim = self->_isMultiSim;
         *buf = 138412802;
-        v16 = v12;
+        v16 = uuid;
         v17 = 2112;
         v18 = v6;
         v19 = 1024;
@@ -739,7 +739,7 @@ LABEL_6:
         _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "TelephonyStateRelay:#D Registration status change for context %@: %@, _isMultiSim: %{BOOL}d", buf, 0x1Cu);
       }
 
-      if (+[WISTelephonyUtils isRegistrationDisplayStatusOutOfService:](WISTelephonyUtils, "isRegistrationDisplayStatusOutOfService:", v6) && ([v4 uuid], v9 = objc_claimAutoreleasedReturnValue(), v10 = -[TelephonyStateRelay isCallActiveOnContextOtherThan:](self, "isCallActiveOnContextOtherThan:", v9), v9, v10))
+      if (+[WISTelephonyUtils isRegistrationDisplayStatusOutOfService:](WISTelephonyUtils, "isRegistrationDisplayStatusOutOfService:", v6) && ([changedCopy uuid], v9 = objc_claimAutoreleasedReturnValue(), v10 = -[TelephonyStateRelay isCallActiveOnContextOtherThan:](self, "isCallActiveOnContextOtherThan:", v9), v9, v10))
       {
         if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
         {
@@ -749,18 +749,18 @@ LABEL_6:
 
       else
       {
-        [(TelephonyStateRelay *)self handleContextUpdated:v4 forKey:8 withState:v6];
+        [(TelephonyStateRelay *)self handleContextUpdated:changedCopy forKey:8 withState:v6];
       }
     }
   }
 }
 
-- (void)handleSignalStrengthChangedExternal:(id)a3 info:(id)a4
+- (void)handleSignalStrengthChangedExternal:(id)external info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uuid];
-  v9 = [(TelephonyStateRelay *)self isCallActiveOnContextOtherThan:v8];
+  externalCopy = external;
+  infoCopy = info;
+  uuid = [externalCopy uuid];
+  v9 = [(TelephonyStateRelay *)self isCallActiveOnContextOtherThan:uuid];
 
   if (v9)
   {
@@ -772,21 +772,21 @@ LABEL_6:
 
   else
   {
-    [(TelephonyStateRelay *)self handleContextUpdated:v6 forKey:18 withState:v7];
+    [(TelephonyStateRelay *)self handleContextUpdated:externalCopy forKey:18 withState:infoCopy];
   }
 }
 
-- (void)handlePlmnChanged:(id)a3 plmn:(id)a4
+- (void)handlePlmnChanged:(id)changed plmn:(id)plmn
 {
-  v7 = a4;
-  v6 = [CTXPCServiceSubscriptionContext contextWithServiceDescriptor:a3];
-  [(TelephonyStateRelay *)self handleContextUpdated:v6 forKey:2 withState:v7];
+  plmnCopy = plmn;
+  v6 = [CTXPCServiceSubscriptionContext contextWithServiceDescriptor:changed];
+  [(TelephonyStateRelay *)self handleContextUpdated:v6 forKey:2 withState:plmnCopy];
 }
 
-- (void)handleRadioAccessTechnologyChanged:(id)a3 info:(id)a4
+- (void)handleRadioAccessTechnologyChanged:(id)changed info:(id)info
 {
-  v6 = a3;
-  v7 = [WISTelephonyUtils getServingCellInfo:a4];
+  changedCopy = changed;
+  v7 = [WISTelephonyUtils getServingCellInfo:info];
   v20 = 0;
   v8 = [WISTelephonyUtils getRATFromCellInfo:v7 error:&v20];
   v9 = v20;
@@ -805,17 +805,17 @@ LABEL_6:
     v11 = *(qword_1002DBE98 + 48);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v9 localizedDescription];
+      localizedDescription = [v9 localizedDescription];
       *buf = 138412290;
-      v22 = v12;
+      v22 = localizedDescription;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "TelephonyStateRelay:#N Error while fetching RAT: %@", buf, 0xCu);
     }
   }
 
   else
   {
-    v13 = [v6 slotID];
-    if (v13 == 1)
+    slotID = [changedCopy slotID];
+    if (slotID == 1)
     {
       p_currentRadioAccessTechnology = &self->_currentRadioAccessTechnology;
       v18 = [(NSMutableArray *)self->_currentRadioAccessTechnology objectAtIndexedSubscript:0];
@@ -830,10 +830,10 @@ LABEL_6:
 
     else
     {
-      if (v13 != 2)
+      if (slotID != 2)
       {
 LABEL_15:
-        [(TelephonyStateRelay *)self handleContextUpdated:v6 forKey:9 withState:v8];
+        [(TelephonyStateRelay *)self handleContextUpdated:changedCopy forKey:9 withState:v8];
         goto LABEL_16;
       }
 
@@ -864,8 +864,8 @@ LABEL_16:
     v5 = *(qword_1002DBE98 + 48);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [v4 localizedDescription];
-      sub_100201D18(v6, v9, v5);
+      localizedDescription = [v4 localizedDescription];
+      sub_100201D18(localizedDescription, v9, v5);
     }
   }
 
@@ -877,10 +877,10 @@ LABEL_16:
   }
 }
 
-+ (id)deriveDataIcon:(unint64_t)a3 stewieState:(id)a4
++ (id)deriveDataIcon:(unint64_t)icon stewieState:(id)state
 {
-  v5 = a4;
-  if ([v5 displayStewieInStatusBar] && (objc_msgSend(v5, "displayInactiveSOSInStatusBar") & 1) != 0)
+  stateCopy = state;
+  if ([stateCopy displayStewieInStatusBar] && (objc_msgSend(stateCopy, "displayInactiveSOSInStatusBar") & 1) != 0)
   {
     v6 = "SOS over Satellite";
 LABEL_8:
@@ -888,19 +888,19 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v5 displayStewieInStatusBar])
+  if ([stateCopy displayStewieInStatusBar])
   {
     v6 = "Satellite";
     goto LABEL_8;
   }
 
-  if ([v5 displayInactiveSOSInStatusBar])
+  if ([stateCopy displayInactiveSOSInStatusBar])
   {
     v6 = "SOS";
     goto LABEL_8;
   }
 
-  v7 = [WISSystemStatusSimulacrum WISSSDataConnectionTypeToString:a3];
+  v7 = [WISSystemStatusSimulacrum WISSSDataConnectionTypeToString:icon];
 LABEL_9:
   v8 = v7;
 
@@ -914,9 +914,9 @@ LABEL_9:
     return 0;
   }
 
-  v2 = [(TelephonyStateRelay *)self coreTelephonyClient];
+  coreTelephonyClient = [(TelephonyStateRelay *)self coreTelephonyClient];
   v11 = 0;
-  v3 = [v2 getSubscriptionInfoWithError:&v11];
+  v3 = [coreTelephonyClient getSubscriptionInfoWithError:&v11];
   v4 = v11;
 
   if (v4 || !v3)
@@ -924,8 +924,8 @@ LABEL_9:
     v8 = *(qword_1002DBE98 + 48);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v4 localizedDescription];
-      sub_100201D64(v9, v12, v8);
+      localizedDescription = [v4 localizedDescription];
+      sub_100201D64(localizedDescription, v12, v8);
     }
 
     v7 = 0;
@@ -933,10 +933,10 @@ LABEL_9:
 
   else
   {
-    v5 = [v3 subscriptionsInUse];
-    if (v5)
+    subscriptionsInUse = [v3 subscriptionsInUse];
+    if (subscriptionsInUse)
     {
-      v6 = [WISTelephonyUtils sanitizedSubscriptions:v5];
+      v6 = [WISTelephonyUtils sanitizedSubscriptions:subscriptionsInUse];
       v7 = [v6 count] > 1;
     }
 
@@ -954,10 +954,10 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)isCallActiveOnContextOtherThan:(id)a3
+- (BOOL)isCallActiveOnContextOtherThan:(id)than
 {
-  v4 = a3;
-  v5 = v4;
+  thanCopy = than;
+  v5 = thanCopy;
   if (self->_isMultiSim)
   {
     tuCallCenter = self->_tuCallCenter;
@@ -965,7 +965,7 @@ LABEL_9:
     v9[1] = 3221225472;
     v9[2] = sub_1000802D0;
     v9[3] = &unk_1002AD830;
-    v10 = v4;
+    v10 = thanCopy;
     v7 = [(TUCallCenter *)tuCallCenter anyCallPassesTest:v9];
     if (v7 && os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
     {
@@ -981,10 +981,10 @@ LABEL_9:
   return v7;
 }
 
-- (void)handleContextUpdated:(id)a3 forKey:(int)a4 withState:(id)a5
+- (void)handleContextUpdated:(id)updated forKey:(int)key withState:(id)state
 {
-  v8 = a3;
-  v9 = a5;
+  updatedCopy = updated;
+  stateCopy = state;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -1004,16 +1004,16 @@ LABEL_9:
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 queue];
+        queue = [v13 queue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_1000805BC;
         block[3] = &unk_1002AD858;
         block[4] = v13;
-        v17 = v8;
-        v19 = a4;
-        v18 = v9;
-        dispatch_async(v14, block);
+        v17 = updatedCopy;
+        keyCopy = key;
+        v18 = stateCopy;
+        dispatch_async(queue, block);
       }
 
       v10 = [(NSMutableSet *)obj countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -1023,9 +1023,9 @@ LABEL_9:
   }
 }
 
-- (id)findDelegateEntryByDelegate:(id)a3
+- (id)findDelegateEntryByDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1045,7 +1045,7 @@ LABEL_9:
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v9 matchesDelegate:{v4, v11}])
+        if ([v9 matchesDelegate:{delegateCopy, v11}])
         {
           v6 = v9;
           goto LABEL_11;
@@ -1067,13 +1067,13 @@ LABEL_11:
   return v6;
 }
 
-+ (void)setError:(id *)a3 code:(int64_t)a4 message:(id)a5
++ (void)setError:(id *)error code:(int64_t)code message:(id)message
 {
-  v9 = a5;
+  messageCopy = message;
   v7 = +[NSMutableDictionary dictionary];
-  [v7 setValue:v9 forKey:NSLocalizedDescriptionKey];
+  [v7 setValue:messageCopy forKey:NSLocalizedDescriptionKey];
   v8 = [NSString stringWithUTF8String:"TelephonyStateRelay"];
-  *a3 = [NSError errorWithDomain:v8 code:a4 userInfo:v7];
+  *error = [NSError errorWithDomain:v8 code:code userInfo:v7];
 }
 
 - (id).cxx_construct

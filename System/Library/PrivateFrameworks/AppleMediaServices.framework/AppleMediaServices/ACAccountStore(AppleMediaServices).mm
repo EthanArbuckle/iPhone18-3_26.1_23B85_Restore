@@ -50,27 +50,27 @@
 
 - (id)ams_activeiTunesAccount
 {
-  v2 = [a1 ams_mediaType];
-  if ([v2 isEqualToString:AMSAccountMediaTypeAppStoreBeta])
+  ams_mediaType = [self ams_mediaType];
+  if ([ams_mediaType isEqualToString:AMSAccountMediaTypeAppStoreBeta])
   {
-    v3 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-    v4 = [v3 ams_activeiTunesAccount];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
 
-    v5 = [v4 ams_altDSID];
-    v6 = [v4 ams_DSID];
-    v7 = [v4 username];
-    v8 = [a1 ams_iTunesAccountWithAltDSID:v5 DSID:v6 username:v7];
+    ams_altDSID = [ams_activeiTunesAccount ams_altDSID];
+    ams_DSID = [ams_activeiTunesAccount ams_DSID];
+    username = [ams_activeiTunesAccount username];
+    v8 = [self ams_iTunesAccountWithAltDSID:ams_altDSID DSID:ams_DSID username:username];
   }
 
   else
   {
-    v9 = [a1 ams_iTunesAccounts];
+    ams_iTunesAccounts = [self ams_iTunesAccounts];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __61__ACAccountStore_AppleMediaServices__ams_activeiTunesAccount__block_invoke;
     v11[3] = &unk_1E73B2FB0;
-    v12 = v2;
-    v8 = [v9 ams_firstObjectPassingTest:v11];
+    v12 = ams_mediaType;
+    v8 = [ams_iTunesAccounts ams_firstObjectPassingTest:v11];
   }
 
   return v8;
@@ -80,11 +80,11 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v2 = objc_opt_class();
-  v3 = [a1 ams_mediaType];
-  v4 = [v2 ams_accountTypeIdentifierForMediaType:v3];
+  ams_mediaType = [self ams_mediaType];
+  v4 = [v2 ams_accountTypeIdentifierForMediaType:ams_mediaType];
 
   v15 = 0;
-  v5 = [a1 _ams_accountsWithAccountTypeIdentifier:v4 options:1 classification:1 error:&v15];
+  v5 = [self _ams_accountsWithAccountTypeIdentifier:v4 options:1 classification:1 error:&v15];
   v6 = v15;
   v7 = v5;
   if (!v5)
@@ -95,8 +95,8 @@
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_opt_class();
       v11 = v10;
@@ -105,7 +105,7 @@
       v17 = v10;
       v18 = 2114;
       v19 = v12;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch the iTunes accounts. error = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch the iTunes accounts. error = %{public}@", buf, 0x16u);
     }
 
     v7 = MEMORY[0x1E695E0F0];
@@ -118,8 +118,8 @@
 
 - (id)ams_fetchLocaliTunesAccount
 {
-  v2 = [a1 ams_mediaType];
-  v3 = [a1 ams_localiTunesAccountForAccountMediaType:v2];
+  ams_mediaType = [self ams_mediaType];
+  v3 = [self ams_localiTunesAccountForAccountMediaType:ams_mediaType];
 
   return v3;
 }
@@ -140,8 +140,8 @@
       v5 = +[AMSLogConfig sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v7 = AMSLogKey();
       v8 = MEMORY[0x1E696AEC0];
@@ -149,25 +149,25 @@
       v10 = v9;
       if (v7)
       {
-        a1 = AMSLogKey();
-        [v8 stringWithFormat:@"%@: [%@] ", v10, a1];
+        self = AMSLogKey();
+        [v8 stringWithFormat:@"%@: [%@] ", v10, self];
       }
 
       else
       {
         [v8 stringWithFormat:@"%@: ", v9];
       }
-      v11 = ;
+      selfCopy = ;
       v12 = AMSLogableError(v4);
       *buf = 138543618;
-      v16 = v11;
+      v16 = selfCopy;
       v17 = 2114;
       v18 = v12;
-      _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_ERROR, "%{public}@Failed to determine if we should shield sign-in or create flows. Error: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Failed to determine if we should shield sign-in or create flows. Error: %{public}@", buf, 0x16u);
       if (v7)
       {
 
-        v11 = a1;
+        selfCopy = self;
       }
     }
   }
@@ -179,17 +179,17 @@
 {
   v36 = *MEMORY[0x1E69E9840];
   v2 = objc_opt_class();
-  v3 = [a1 ams_mediaType];
-  v4 = [v2 ams_accountTypeIdentifierForMediaType:v3];
+  ams_mediaType = [self ams_mediaType];
+  v4 = [v2 ams_accountTypeIdentifierForMediaType:ams_mediaType];
 
   if (v4)
   {
     v29 = 0;
-    v5 = [a1 _ams_accountsWithAccountTypeIdentifier:v4 options:1 classification:0 error:&v29];
+    oSLogObject3 = [self _ams_accountsWithAccountTypeIdentifier:v4 options:1 classification:0 error:&v29];
     v6 = v29;
-    if (v5)
+    if (oSLogObject3)
     {
-      v7 = [v5 ams_firstObjectPassingTest:&__block_literal_global_0];
+      v7 = [oSLogObject3 ams_firstObjectPassingTest:&__block_literal_global_0];
       if (v7)
       {
         v8 = v7;
@@ -198,8 +198,8 @@
 
       else
       {
-        v18 = [a1 ams_mediaType];
-        v19 = [a1 ams_localiTunesAccountForAccountMediaType:v18];
+        ams_mediaType2 = [self ams_mediaType];
+        v19 = [self ams_localiTunesAccountForAccountMediaType:ams_mediaType2];
         v28 = v6;
         v20 = [v19 resultWithError:&v28];
         v21 = v28;
@@ -212,8 +212,8 @@
             v22 = +[AMSLogConfig sharedConfig];
           }
 
-          v23 = [v22 OSLogObject];
-          if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+          oSLogObject = [v22 OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
           {
             v24 = objc_opt_class();
             v25 = AMSLogKey();
@@ -224,7 +224,7 @@
             v33 = v25;
             v34 = 2114;
             v35 = v26;
-            _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create/fetch the local account. error = %{public}@", buf, 0x20u);
+            _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create/fetch the local account. error = %{public}@", buf, 0x20u);
           }
         }
 
@@ -244,8 +244,8 @@
         v9 = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v9 OSLogObject];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v9 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v15 = objc_opt_class();
         v16 = AMSLogKey();
@@ -256,7 +256,7 @@
         v33 = v16;
         v34 = 2114;
         v35 = v17;
-        _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create/fetch the local account. error = %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create/fetch the local account. error = %{public}@", buf, 0x20u);
       }
 
       v13 = 0;
@@ -271,19 +271,19 @@
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v5 = [v6 OSLogObject];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
-      v12 = [a1 ams_mediaType];
+      ams_mediaType3 = [self ams_mediaType];
       *buf = 138543874;
       v31 = v10;
       v32 = 2114;
       v33 = v11;
       v34 = 2114;
-      v35 = v12;
-      _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create/fetch the local account. Invalid media type. mediaType = %{public}@", buf, 0x20u);
+      v35 = ams_mediaType3;
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create/fetch the local account. Invalid media type. mediaType = %{public}@", buf, 0x20u);
     }
 
     v13 = 0;
@@ -294,33 +294,33 @@
 
 - (void)ams_isActiveAccountCombined
 {
-  v2 = [a1 ams_activeiCloudAccount];
-  v3 = [a1 ams_activeiTunesAccount];
-  v4 = [v2 ams_DSID];
-  if (v4)
+  ams_activeiCloudAccount = [self ams_activeiCloudAccount];
+  ams_activeiTunesAccount = [self ams_activeiTunesAccount];
+  ams_DSID = [ams_activeiCloudAccount ams_DSID];
+  if (ams_DSID)
   {
-    v5 = [v3 ams_DSID];
+    ams_DSID2 = [ams_activeiTunesAccount ams_DSID];
 
-    if (v5)
+    if (ams_DSID2)
     {
-      v6 = [v2 ams_DSID];
-      v7 = [v3 ams_DSID];
-      v4 = [v6 isEqualToNumber:v7];
+      ams_DSID3 = [ams_activeiCloudAccount ams_DSID];
+      ams_DSID4 = [ams_activeiTunesAccount ams_DSID];
+      ams_DSID = [ams_DSID3 isEqualToNumber:ams_DSID4];
     }
 
     else
     {
-      v4 = 0;
+      ams_DSID = 0;
     }
   }
 
-  return v4;
+  return ams_DSID;
 }
 
 + (id)ams_sharedAccountStoreForClient:()AppleMediaServices
 {
-  v4 = [a3 accountMediaType];
-  v5 = [a1 ams_sharedAccountStoreForMediaType:v4];
+  accountMediaType = [a3 accountMediaType];
+  v5 = [self ams_sharedAccountStoreForMediaType:accountMediaType];
 
   return v5;
 }
@@ -337,7 +337,7 @@
   {
     if (v4)
     {
-      v5 = [AMSAccountStoreCache accountStoreForMediaType:v4];
+      _ams_defaultAccountStore = [AMSAccountStoreCache accountStoreForMediaType:v4];
 
       goto LABEL_9;
     }
@@ -347,10 +347,10 @@
   {
   }
 
-  v5 = [a1 _ams_defaultAccountStore];
+  _ams_defaultAccountStore = [self _ams_defaultAccountStore];
 LABEL_9:
 
-  return v5;
+  return _ams_defaultAccountStore;
 }
 
 - (id)ams_accountWithAltDSID:()AppleMediaServices DSID:username:accountTypeIdentifier:
@@ -360,7 +360,7 @@ LABEL_9:
   v11 = a4;
   v12 = a5;
   v26 = 0;
-  v13 = [a1 _ams_accountsWithAccountTypeIdentifier:a6 options:1 classification:0 error:&v26];
+  v13 = [self _ams_accountsWithAccountTypeIdentifier:a6 options:1 classification:0 error:&v26];
   v14 = v26;
   if (v13)
   {
@@ -384,8 +384,8 @@ LABEL_9:
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v17 = [v16 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v18 = objc_opt_class();
       v19 = AMSLogKey();
@@ -398,7 +398,7 @@ LABEL_9:
       v32 = v11;
       v33 = 2114;
       v34 = v20;
-      _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch account with DSID %{public}@: %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch account with DSID %{public}@: %{public}@", buf, 0x2Au);
     }
 
     v15 = 0;
@@ -412,13 +412,13 @@ LABEL_9:
   v4 = a3;
   if ([v4 isEqualToString:AMSAccountMediaTypeAppStoreBeta])
   {
-    v5 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-    v6 = [v5 ams_activeiTunesAccountForMediaType:AMSAccountMediaTypeProduction];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    v6 = [ams_sharedAccountStore ams_activeiTunesAccountForMediaType:AMSAccountMediaTypeProduction];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __74__ACAccountStore_AppleMediaServices__ams_activeiTunesAccountForMediaType___block_invoke;
     v12[3] = &unk_1E73B3000;
-    v12[4] = a1;
+    v12[4] = self;
     v13 = v4;
     v7 = v4;
     v8 = [v6 thenWithBlock:v12];
@@ -426,13 +426,13 @@ LABEL_9:
 
   else
   {
-    v6 = [a1 ams_iTunesAccountsForMediaType:v4];
+    v6 = [self ams_iTunesAccountsForMediaType:v4];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __74__ACAccountStore_AppleMediaServices__ams_activeiTunesAccountForMediaType___block_invoke_2;
     v10[3] = &unk_1E73B3028;
     v11 = v4;
-    v5 = v4;
+    ams_sharedAccountStore = v4;
     v8 = [v6 thenWithBlock:v10];
     v7 = v11;
   }
@@ -449,8 +449,8 @@ LABEL_9:
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v7 = AMSLogKey();
     v8 = MEMORY[0x1E696AEC0];
@@ -470,7 +470,7 @@ LABEL_9:
     v11 = ;
     *buf = 138543362;
     v21 = v11;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEBUG, "%{public}@Fetching active iCloud account", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@Fetching active iCloud account", buf, 0xCu);
     if (v7)
     {
 
@@ -483,11 +483,11 @@ LABEL_9:
   v17[1] = 3221225472;
   v17[2] = __66__ACAccountStore_AppleMediaServices__ams_fetchActiveiCloudAccount__block_invoke;
   v17[3] = &unk_1E73B3050;
-  v17[4] = a1;
+  v17[4] = self;
   v19 = a2;
   v13 = v12;
   v18 = v13;
-  [a1 aa_primaryAppleAccountWithCompletion:v17];
+  [self aa_primaryAppleAccountWithCompletion:v17];
   v14 = v18;
   v15 = v13;
 
@@ -496,7 +496,7 @@ LABEL_9:
 
 - (id)ams_fetchGrandSlamTokenForAccount:()AppleMediaServices withIdentifier:error:
 {
-  v6 = [a1 ams_fetchGrandSlamTokenForAccount:? withIdentifier:?];
+  v6 = [self ams_fetchGrandSlamTokenForAccount:? withIdentifier:?];
   v7 = [v6 resultWithError:a5];
 
   return v7;
@@ -507,8 +507,8 @@ LABEL_9:
   v6 = a3;
   v7 = a4;
   v8 = v6;
-  v9 = [v8 ams_altDSID];
-  v10 = [a1 aida_accountForAltDSID:v9];
+  ams_altDSID = [v8 ams_altDSID];
+  v10 = [self aida_accountForAltDSID:ams_altDSID];
 
   if (!v10)
   {
@@ -521,10 +521,10 @@ LABEL_9:
 
   v11 = objc_autoreleasePoolPush();
   v32 = 0;
-  v12 = [a1 credentialForAccount:v10 serviceID:v7 error:&v32];
+  v12 = [self credentialForAccount:v10 serviceID:v7 error:&v32];
   v13 = v32;
-  v14 = [v12 token];
-  v15 = [v14 copy];
+  token = [v12 token];
+  v15 = [token copy];
 
   objc_autoreleasePoolPop(v11);
   if (v13)
@@ -556,7 +556,7 @@ LABEL_9:
 
 - (id)ams_cookiesForURL:()AppleMediaServices
 {
-  v3 = [a1 ams_cookiesForURL:a3 bag:0];
+  v3 = [self ams_cookiesForURL:a3 bag:0];
   v4 = [v3 resultWithError:0];
 
   return v4;
@@ -566,9 +566,9 @@ LABEL_9:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 ams_fetchLocaliTunesAccount];
-  v9 = [a1 ams_mediaType];
-  v10 = [a1 ams_activeiTunesAccountForMediaType:v9];
+  ams_fetchLocaliTunesAccount = [self ams_fetchLocaliTunesAccount];
+  ams_mediaType = [self ams_mediaType];
+  v10 = [self ams_activeiTunesAccountForMediaType:ams_mediaType];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -579,7 +579,7 @@ LABEL_9:
   v11 = v7;
   v12 = v6;
   v13 = _Block_copy(aBlock);
-  v14 = [v8 thenWithBlock:v13];
+  v14 = [ams_fetchLocaliTunesAccount thenWithBlock:v13];
   v15 = [v10 thenWithBlock:v13];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -603,8 +603,8 @@ LABEL_9:
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v12 = AMSLogKey();
     v13 = MEMORY[0x1E696AEC0];
@@ -638,7 +638,7 @@ LABEL_9:
     v43 = v18;
     v44 = 2114;
     v45 = v20;
-    _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEBUG, "%{public}@Searching for iTunes account for account: %{public}@ | mediaType = %{public}@ | createIfNeeded = %{public}@", buf, 0x2Au);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@Searching for iTunes account for account: %{public}@ | mediaType = %{public}@ | createIfNeeded = %{public}@", buf, 0x2Au);
     if (v12)
     {
 
@@ -654,8 +654,8 @@ LABEL_9:
       v21 = +[AMSLogConfig sharedConfig];
     }
 
-    v22 = [v21 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v21 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       v23 = AMSLogKey();
       v24 = MEMORY[0x1E696AEC0];
@@ -663,25 +663,25 @@ LABEL_9:
       v26 = v25;
       if (v23)
       {
-        a1 = AMSLogKey();
-        [v24 stringWithFormat:@"%@: [%@] ", v26, a1];
+        self = AMSLogKey();
+        [v24 stringWithFormat:@"%@: [%@] ", v26, self];
       }
 
       else
       {
         [v24 stringWithFormat:@"%@: ", v25];
       }
-      v27 = ;
+      selfCopy = ;
       v33 = AMSHashIfNeeded(v8);
       *buf = 138543618;
-      v39 = v27;
+      v39 = selfCopy;
       v40 = 2114;
       v41 = v33;
-      _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_DEBUG, "%{public}@The account is already an iTunes account, returning. account = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, "%{public}@The account is already an iTunes account, returning. account = %{public}@", buf, 0x16u);
       if (v23)
       {
 
-        v27 = a1;
+        selfCopy = self;
       }
     }
 
@@ -690,10 +690,10 @@ LABEL_9:
 
   else
   {
-    v28 = [v8 ams_altDSID];
-    v29 = [v8 ams_DSID];
-    v30 = [v8 username];
-    v31 = [a1 ams_iTunesAccountWithAltDSID:v28 DSID:v29 username:v30 forMediaType:v9];
+    ams_altDSID = [v8 ams_altDSID];
+    ams_DSID = [v8 ams_DSID];
+    username = [v8 username];
+    v31 = [self ams_iTunesAccountWithAltDSID:ams_altDSID DSID:ams_DSID username:username forMediaType:v9];
 
     if (a5)
     {
@@ -701,7 +701,7 @@ LABEL_9:
       v36[1] = 3221225472;
       v36[2] = __94__ACAccountStore_AppleMediaServices__ams_iTunesAccountForAccount_forMediaType_createIfNeeded___block_invoke;
       v36[3] = &unk_1E73B30C8;
-      v36[4] = a1;
+      v36[4] = self;
       v37 = v8;
       v32 = [v31 catchWithBlock:v36];
     }
@@ -720,11 +720,11 @@ LABEL_9:
   v25 = *MEMORY[0x1E69E9840];
   v4 = a3;
   v5 = objc_opt_class();
-  v6 = [a1 ams_mediaType];
-  v7 = [v5 ams_accountTypeIdentifierForMediaType:v6];
+  ams_mediaType = [self ams_mediaType];
+  v7 = [v5 ams_accountTypeIdentifierForMediaType:ams_mediaType];
 
   v20 = 0;
-  v8 = [a1 _ams_accountsWithAccountTypeIdentifier:v7 options:1 classification:0 error:&v20];
+  v8 = [self _ams_accountsWithAccountTypeIdentifier:v7 options:1 classification:0 error:&v20];
   v9 = v20;
   if (!v8)
   {
@@ -734,8 +734,8 @@ LABEL_9:
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
       v13 = v12;
@@ -744,7 +744,7 @@ LABEL_9:
       v22 = v12;
       v23 = 2114;
       v24 = v14;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch the iTunes accounts. error = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch the iTunes accounts. error = %{public}@", buf, 0x16u);
     }
   }
 
@@ -766,7 +766,7 @@ LABEL_9:
   v10 = a5;
   if (v8)
   {
-    v11 = [a1 ams_iTunesAccountWithAltDSID:v8];
+    v11 = [self ams_iTunesAccountWithAltDSID:v8];
     if (!v9)
     {
       goto LABEL_7;
@@ -784,13 +784,13 @@ LABEL_9:
 
   if (!v11)
   {
-    v11 = [a1 ams_iTunesAccountWithDSID:v9];
+    v11 = [self ams_iTunesAccountWithDSID:v9];
   }
 
 LABEL_7:
   if (v10 && !v11)
   {
-    v11 = [a1 ams_iTunesAccountWithUsername:v10];
+    v11 = [self ams_iTunesAccountWithUsername:v10];
   }
 
   return v11;
@@ -801,7 +801,7 @@ LABEL_7:
   v12 = a3;
   v13 = a4;
   v14 = a5;
-  v15 = [a1 ams_iTunesAccountsForMediaType:a7 classification:a6];
+  v15 = [self ams_iTunesAccountsForMediaType:a7 classification:a6];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __109__ACAccountStore_AppleMediaServices__ams_iTunesAccountWithAltDSID_DSID_username_classification_forMediaType___block_invoke;
@@ -822,11 +822,11 @@ LABEL_7:
   v25 = *MEMORY[0x1E69E9840];
   v4 = a3;
   v5 = objc_opt_class();
-  v6 = [a1 ams_mediaType];
-  v7 = [v5 ams_accountTypeIdentifierForMediaType:v6];
+  ams_mediaType = [self ams_mediaType];
+  v7 = [v5 ams_accountTypeIdentifierForMediaType:ams_mediaType];
 
   v20 = 0;
-  v8 = [a1 _ams_accountsWithAccountTypeIdentifier:v7 options:1 classification:0 error:&v20];
+  v8 = [self _ams_accountsWithAccountTypeIdentifier:v7 options:1 classification:0 error:&v20];
   v9 = v20;
   if (!v8)
   {
@@ -836,8 +836,8 @@ LABEL_7:
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
       v13 = v12;
@@ -846,7 +846,7 @@ LABEL_7:
       v22 = v12;
       v23 = 2114;
       v24 = v14;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch the iTunes accounts. error = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch the iTunes accounts. error = %{public}@", buf, 0x16u);
     }
   }
 
@@ -864,7 +864,7 @@ LABEL_7:
 - (id)ams_iTunesAccountWithDSID:()AppleMediaServices forMediaType:
 {
   v6 = a3;
-  v7 = [a1 ams_iTunesAccountsForMediaType:a4];
+  v7 = [self ams_iTunesAccountsForMediaType:a4];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__ACAccountStore_AppleMediaServices__ams_iTunesAccountWithDSID_forMediaType___block_invoke;
@@ -888,11 +888,11 @@ LABEL_7:
   else
   {
     v6 = objc_opt_class();
-    v7 = [a1 ams_mediaType];
-    v8 = [v6 ams_accountTypeIdentifierForMediaType:v7];
+    ams_mediaType = [self ams_mediaType];
+    v8 = [v6 ams_accountTypeIdentifierForMediaType:ams_mediaType];
 
     v19 = 0;
-    v9 = [a1 _ams_accountsWithAccountTypeIdentifier:v8 options:1 classification:0 error:&v19];
+    v9 = [self _ams_accountsWithAccountTypeIdentifier:v8 options:1 classification:0 error:&v19];
     v10 = v19;
     if (!v9)
     {
@@ -902,8 +902,8 @@ LABEL_7:
         v11 = +[AMSLogConfig sharedConfig];
       }
 
-      v12 = [v11 OSLogObject];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v11 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v13 = objc_opt_class();
         v14 = v13;
@@ -912,7 +912,7 @@ LABEL_7:
         v21 = v13;
         v22 = 2114;
         v23 = v15;
-        _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch the iTunes accounts. error = %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch the iTunes accounts. error = %{public}@", buf, 0x16u);
       }
     }
 
@@ -939,7 +939,7 @@ LABEL_7:
 
   else
   {
-    v8 = [a1 ams_iTunesAccountsForMediaType:v7];
+    v8 = [self ams_iTunesAccountsForMediaType:v7];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __81__ACAccountStore_AppleMediaServices__ams_iTunesAccountWithUsername_forMediaType___block_invoke;
@@ -959,13 +959,13 @@ LABEL_7:
   v11 = 3221225472;
   v12 = __76__ACAccountStore_AppleMediaServices__ams_mediaAccountForHomeWithIdentifier___block_invoke;
   v13 = &unk_1E73B32F0;
-  v14 = a1;
+  selfCopy = self;
   v15 = v4;
   v6 = v4;
   [(AMSPromise *)v5 addErrorBlock:&v10];
   v7 = [AMSMultiUserService proxyObject:v10];
-  v8 = [(AMSPromise *)v5 completionHandlerAdapter];
-  [v7 iTunesAccountForHomeWithIdentifier:v6 completion:v8];
+  completionHandlerAdapter = [(AMSPromise *)v5 completionHandlerAdapter];
+  [v7 iTunesAccountForHomeWithIdentifier:v6 completion:completionHandlerAdapter];
 
   return v5;
 }
@@ -982,7 +982,7 @@ LABEL_7:
     v4 = 0;
   }
 
-  return [a1 ams_saveAccount:a3 withOptions:v4];
+  return [self ams_saveAccount:a3 withOptions:v4];
 }
 
 - (AMSBinaryPromise)ams_setiTunesAccount:()AppleMediaServices forHomeWithIdentifier:
@@ -991,10 +991,10 @@ LABEL_7:
   v7 = a4;
   v8 = objc_alloc_init(AMSBinaryPromise);
   v9 = +[AMSMultiUserService proxyObjectAsync];
-  v10 = [(AMSBinaryPromise *)v8 completionHandlerAdapter];
-  [v9 setiTunesAccount:v6 forHomeWithIdentifier:v7 completion:v10];
+  completionHandlerAdapter = [(AMSBinaryPromise *)v8 completionHandlerAdapter];
+  [v9 setiTunesAccount:v6 forHomeWithIdentifier:v7 completion:completionHandlerAdapter];
 
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __81__ACAccountStore_AppleMediaServices__ams_setiTunesAccount_forHomeWithIdentifier___block_invoke;
@@ -1018,20 +1018,20 @@ LABEL_7:
   v7 = a4;
   if (v6)
   {
-    v8 = [MEMORY[0x1E695DF70] array];
-    if (!v7 || ([a1 _addUserCookiesForResponse:v6 account:v7], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "addObject:", v9), v9, (objc_msgSend(v7, "ams_isEphemeralAccount") & 1) == 0))
+    array = [MEMORY[0x1E695DF70] array];
+    if (!v7 || ([self _addUserCookiesForResponse:v6 account:v7], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(array, "addObject:", v9), v9, (objc_msgSend(v7, "ams_isEphemeralAccount") & 1) == 0))
     {
-      v10 = [a1 _addGlobalCookiesForResponse:v6];
-      [v8 addObject:v10];
+      v10 = [self _addGlobalCookiesForResponse:v6];
+      [array addObject:v10];
     }
 
-    v11 = [AMSBinaryPromise promiseWithAll:v8];
+    v11 = [AMSBinaryPromise promiseWithAll:array];
   }
 
   else
   {
-    v8 = AMSError(2, @"Expected non-nil response", 0, 0);
-    v11 = [AMSBinaryPromise promiseWithError:v8];
+    array = AMSError(2, @"Expected non-nil response", 0, 0);
+    v11 = [AMSBinaryPromise promiseWithError:array];
   }
 
   v12 = v11;
@@ -1042,15 +1042,15 @@ LABEL_7:
 - (id)ams_addCookiesForResult:()AppleMediaServices account:
 {
   v6 = a4;
-  v7 = [a3 response];
+  response = [a3 response];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = response;
 
     if (v8)
     {
-      v9 = [a1 ams_addCookiesForResponse:v8 account:v6];
+      v9 = [self ams_addCookiesForResponse:v8 account:v6];
       goto LABEL_6;
     }
   }
@@ -1076,8 +1076,8 @@ LABEL_6:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [a1 ams_alliTunesAccounts];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  ams_alliTunesAccounts = [self ams_alliTunesAccounts];
+  v8 = [ams_alliTunesAccounts countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1089,13 +1089,13 @@ LABEL_6:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(ams_alliTunesAccounts);
         }
 
         v11 = v11 & [*(*(&v14 + 1) + 8 * i) ams_removeCookiesMatchingProperties:v6 error:a4];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [ams_alliTunesAccounts countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -1114,7 +1114,7 @@ LABEL_6:
   v4 = a3;
   v5 = [objc_opt_class() ams_accountTypeIdentifierForMediaType:v4];
 
-  v6 = [a1 _ams_fetchAccountTypeWithAccountTypeIdentifier:v5];
+  v6 = [self _ams_fetchAccountTypeWithAccountTypeIdentifier:v5];
 
   return v6;
 }
@@ -1124,24 +1124,24 @@ LABEL_6:
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 ams_mediaType];
-    v6 = [a1 ams_localiTunesAccountForAccountMediaType:v5];
+    ams_mediaType = [self ams_mediaType];
+    v6 = [self ams_localiTunesAccountForAccountMediaType:ams_mediaType];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __67__ACAccountStore_AppleMediaServices___addGlobalCookiesForResponse___block_invoke;
     v11[3] = &unk_1E73B3140;
     v12 = v4;
     v7 = [v6 continueWithBlock:v11];
-    v8 = [v7 binaryPromiseAdapter];
+    binaryPromiseAdapter = [v7 binaryPromiseAdapter];
   }
 
   else
   {
     v9 = AMSError(2, @"Expected response to be non-nil", 0, 0);
-    v8 = [AMSBinaryPromise promiseWithError:v9];
+    binaryPromiseAdapter = [AMSBinaryPromise promiseWithError:v9];
   }
 
-  return v8;
+  return binaryPromiseAdapter;
 }
 
 - (id)_addUserCookiesForResponse:()AppleMediaServices account:
@@ -1165,9 +1165,9 @@ LABEL_6:
   v26 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [v7 accountType];
-  v9 = [v8 identifier];
-  v10 = [v9 isEqualToString:v6];
+  accountType = [v7 accountType];
+  identifier = [accountType identifier];
+  v10 = [identifier isEqualToString:v6];
 
   if (v10)
   {
@@ -1176,10 +1176,10 @@ LABEL_6:
 
   else
   {
-    v12 = [v7 ams_altDSID];
-    v13 = [v7 ams_DSID];
-    v14 = [v7 username];
-    v11 = [a1 ams_accountWithAltDSID:v12 DSID:v13 username:v14 accountTypeIdentifier:v6];
+    ams_altDSID = [v7 ams_altDSID];
+    ams_DSID = [v7 ams_DSID];
+    username = [v7 username];
+    v11 = [self ams_accountWithAltDSID:ams_altDSID DSID:ams_DSID username:username accountTypeIdentifier:v6];
 
     if (!v11)
     {
@@ -1189,18 +1189,18 @@ LABEL_6:
         v15 = +[AMSLogConfig sharedConfig];
       }
 
-      v16 = [v15 OSLogObject];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+      oSLogObject = [v15 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
       {
         v17 = objc_opt_class();
-        v18 = [v7 hashedDescription];
+        hashedDescription = [v7 hashedDescription];
         v20 = 138543874;
         v21 = v17;
         v22 = 2114;
         v23 = v6;
         v24 = 2114;
-        v25 = v18;
-        _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_DEBUG, "%{public}@: Failed to find a corresponding account. accountTypeIdentifier = %{public}@ | account = %{public}@", &v20, 0x20u);
+        v25 = hashedDescription;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: Failed to find a corresponding account. accountTypeIdentifier = %{public}@ | account = %{public}@", &v20, 0x20u);
       }
 
       v11 = 0;
@@ -1249,13 +1249,13 @@ LABEL_6:
 
 - (id)_fetchLocaliTunesAccountForAccountType:()AppleMediaServices shouldUpdateStorefront:
 {
-  v6 = AMSiTunesAccountsForAccountTypeAndClassification(a1, a3, 0);
+  v6 = AMSiTunesAccountsForAccountTypeAndClassification(self, a3, 0);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __100__ACAccountStore_AppleMediaServices___fetchLocaliTunesAccountForAccountType_shouldUpdateStorefront___block_invoke;
   v9[3] = &unk_1E73B31B8;
   v10 = a4;
-  v9[4] = a1;
+  v9[4] = self;
   v7 = [v6 thenWithBlock:v9];
 
   return v7;
@@ -1264,7 +1264,7 @@ LABEL_6:
 - (id)_fetchLocalAccountForAccountType:()AppleMediaServices error:
 {
   v13 = 0;
-  v5 = AMSAccountsWithAccountTypeAndClassification(a1, a3, 1, 1, &v13);
+  v5 = AMSAccountsWithAccountTypeAndClassification(self, a3, 1, 1, &v13);
   v6 = v13;
   v7 = v6;
   if (v5)
@@ -1303,27 +1303,27 @@ LABEL_6:
   v4 = a3;
   if ([v4 ams_isLocalAccount])
   {
-    v5 = [a1 ams_mediaType];
-    if (v5)
+    ams_mediaType = [self ams_mediaType];
+    if (ams_mediaType)
     {
-      v6 = [a1 ams_activeiTunesAccountForMediaType:v5];
+      v6 = [self ams_activeiTunesAccountForMediaType:ams_mediaType];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __70__ACAccountStore_AppleMediaServices___updateStorefrontInLocalAccount___block_invoke;
       v27[3] = &unk_1E73B3000;
       v7 = v4;
       v28 = v7;
-      v29 = a1;
+      selfCopy = self;
       v8 = [v6 thenWithBlock:v27];
 
       v21 = MEMORY[0x1E69E9820];
       v22 = 3221225472;
       v23 = __70__ACAccountStore_AppleMediaServices___updateStorefrontInLocalAccount___block_invoke_159;
       v24 = &unk_1E73B32F0;
-      v25 = a1;
+      selfCopy2 = self;
       v26 = v7;
       [v8 addErrorBlock:&v21];
-      v9 = [v8 binaryPromiseAdapter];
+      binaryPromiseAdapter = [v8 binaryPromiseAdapter];
 
       v10 = v28;
     }
@@ -1336,8 +1336,8 @@ LABEL_6:
         v16 = +[AMSLogConfig sharedConfig];
       }
 
-      v17 = [v16 OSLogObject];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v16 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v18 = objc_opt_class();
         v19 = AMSLogKey();
@@ -1345,11 +1345,11 @@ LABEL_6:
         v31 = v18;
         v32 = 2114;
         v33 = v19;
-        _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch media type for storefront sync.", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch media type for storefront sync.", buf, 0x16u);
       }
 
       v10 = AMSError(0, @"Aborted attempt to sync storefront to local account", @"Failed to fetch the mediaType for the provided account", 0);
-      v9 = [AMSBinaryPromise promiseWithError:v10];
+      binaryPromiseAdapter = [AMSBinaryPromise promiseWithError:v10];
     }
   }
 
@@ -1361,8 +1361,8 @@ LABEL_6:
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
       v14 = AMSLogKey();
@@ -1373,14 +1373,14 @@ LABEL_6:
       v33 = v14;
       v34 = 2114;
       v35 = v15;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Storefront sync attempted on a non-local account. account = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Storefront sync attempted on a non-local account. account = %{public}@", buf, 0x20u);
     }
 
-    v5 = AMSError(2, @"Aborted attempt to sync storefront to local account", @"The provided account is not a local account", 0);
-    v9 = [AMSBinaryPromise promiseWithError:v5];
+    ams_mediaType = AMSError(2, @"Aborted attempt to sync storefront to local account", @"The provided account is not a local account", 0);
+    binaryPromiseAdapter = [AMSBinaryPromise promiseWithError:ams_mediaType];
   }
 
-  return v9;
+  return binaryPromiseAdapter;
 }
 
 + (id)_multiUserTokenForIdentifier:()AppleMediaServices
@@ -1412,8 +1412,8 @@ LABEL_6:
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+    oSLogObject = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v16 = objc_opt_class();
       v17 = AMSLogKey();
@@ -1423,7 +1423,7 @@ LABEL_6:
       v23 = v17;
       v24 = 2114;
       v25 = v3;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] No multi-user token stored for %{public}@.", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] No multi-user token stored for %{public}@.", buf, 0x20u);
     }
 
     goto LABEL_17;
@@ -1438,8 +1438,8 @@ LABEL_6:
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
       v13 = AMSLogKey();
@@ -1451,7 +1451,7 @@ LABEL_6:
       v25 = v3;
       v26 = 1024;
       v27 = v8;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch the multi-user token for %{public}@. error = %d", buf, 0x26u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch the multi-user token for %{public}@. error = %d", buf, 0x26u);
     }
 
 LABEL_17:
@@ -1470,7 +1470,7 @@ LABEL_19:
 
 - (id)ams_iTunesAccountForHomeWithIdentifier:()AppleMediaServices error:
 {
-  v5 = [a1 ams_mediaAccountForHomeWithIdentifier:?];
+  v5 = [self ams_mediaAccountForHomeWithIdentifier:?];
   v6 = [v5 resultWithError:a4];
 
   return v6;
@@ -1482,7 +1482,7 @@ LABEL_19:
   v5 = a3;
   v6 = [[v4 alloc] initWithUUIDString:v5];
 
-  v7 = [a1 ams_iTunesAccountWithHomeUserIdentifier:v6];
+  v7 = [self ams_iTunesAccountWithHomeUserIdentifier:v6];
 
   return v7;
 }
@@ -1490,14 +1490,14 @@ LABEL_19:
 - (id)ams_iTunesSandboxAccounts
 {
   v0 = [MEMORY[0x1E6959A48] ams_sharedAccountStoreForMediaType:AMSAccountMediaTypeAppStoreSandbox];
-  v1 = [v0 ams_iTunesAccounts];
+  ams_iTunesAccounts = [v0 ams_iTunesAccounts];
 
-  return v1;
+  return ams_iTunesAccounts;
 }
 
 - (uint64_t)ams_addCookiesForResponse:()AppleMediaServices account:error:
 {
-  v6 = [a1 ams_addCookiesForResponse:? account:?];
+  v6 = [self ams_addCookiesForResponse:? account:?];
   v7 = [v6 resultWithError:a5];
 
   return v7;
@@ -1505,7 +1505,7 @@ LABEL_19:
 
 - (uint64_t)ams_addCookiesForResult:()AppleMediaServices account:error:
 {
-  v6 = [a1 ams_addCookiesForResult:? account:?];
+  v6 = [self ams_addCookiesForResult:? account:?];
   v7 = [v6 resultWithError:a5];
 
   return v7;
@@ -1513,7 +1513,7 @@ LABEL_19:
 
 - (uint64_t)ams_addCookiesForResponse:()AppleMediaServices request:account:error:
 {
-  v7 = [a1 ams_addCookiesForResponse:a3 account:a5];
+  v7 = [self ams_addCookiesForResponse:a3 account:a5];
   v8 = [v7 resultWithError:a6];
 
   return v8;

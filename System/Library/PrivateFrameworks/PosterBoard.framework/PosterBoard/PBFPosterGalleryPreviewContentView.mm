@@ -1,23 +1,23 @@
 @interface PBFPosterGalleryPreviewContentView
 - (BOOL)_shouldShowAsStack;
 - (CGRect)previewImageFrame;
-- (PBFPosterGalleryPreviewContentView)initWithFrame:(CGRect)a3;
+- (PBFPosterGalleryPreviewContentView)initWithFrame:(CGRect)frame;
 - (void)_createHiddenViewsIfNeeded;
 - (void)_updateHiddenImages;
 - (void)layoutSubviews;
-- (void)prepareForFullScreenTransitionWithContentView:(id)a3;
+- (void)prepareForFullScreenTransitionWithContentView:(id)view;
 - (void)prepareForReuse;
-- (void)setPosterPreviewView:(id)a3;
-- (void)updatePreview:(id)a3 posterPreviewView:(id)a4 layoutOrientation:(int64_t)a5 index:(unint64_t)a6;
+- (void)setPosterPreviewView:(id)view;
+- (void)updatePreview:(id)preview posterPreviewView:(id)view layoutOrientation:(int64_t)orientation index:(unint64_t)index;
 @end
 
 @implementation PBFPosterGalleryPreviewContentView
 
-- (PBFPosterGalleryPreviewContentView)initWithFrame:(CGRect)a3
+- (PBFPosterGalleryPreviewContentView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = PBFPosterGalleryPreviewContentView;
-  v3 = [(PBFPosterGalleryPreviewContentView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PBFPosterGalleryPreviewContentView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [PBFPosterGalleryViewSpec specForScreen:0];
@@ -30,8 +30,8 @@
     if ((PUIFeatureEnabled() & 1) == 0)
     {
       v7 = v3->_contentContainerView;
-      v8 = [v4 contentContainerBackgroundColor];
-      [(UIView *)v7 setBackgroundColor:v8];
+      contentContainerBackgroundColor = [v4 contentContainerBackgroundColor];
+      [(UIView *)v7 setBackgroundColor:contentContainerBackgroundColor];
     }
 
     [(PBFPosterGalleryPreviewContentView *)v3 addSubview:v3->_contentContainerView];
@@ -53,17 +53,17 @@
   self->_index = 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)updatePreview:(id)a3 posterPreviewView:(id)a4 layoutOrientation:(int64_t)a5 index:(unint64_t)a6
+- (void)updatePreview:(id)preview posterPreviewView:(id)view layoutOrientation:(int64_t)orientation index:(unint64_t)index
 {
-  v17 = a3;
-  v11 = a4;
-  if (self->_posterPreview != v17 || !BSEqualObjects() || self->_layoutOrientation != a5 || self->_index != a6)
+  previewCopy = preview;
+  viewCopy = view;
+  if (self->_posterPreview != previewCopy || !BSEqualObjects() || self->_layoutOrientation != orientation || self->_index != index)
   {
-    self->_index = a6;
-    objc_storeStrong(&self->_posterPreview, a3);
-    v12 = [(PBFPosterPreview *)v17 type];
+    self->_index = index;
+    objc_storeStrong(&self->_posterPreview, preview);
+    type = [(PBFPosterPreview *)previewCopy type];
     previewType = self->_previewType;
-    self->_previewType = v12;
+    self->_previewType = type;
 
     if (self->_previewType == PBFPreviewTypeHero && PUIFeatureEnabled())
     {
@@ -74,12 +74,12 @@
     {
       v14 = [PBFPosterGalleryViewSpec specForScreen:0];
       contentContainerView = self->_contentContainerView;
-      v16 = [v14 contentContainerBackgroundColor];
-      [(UIView *)contentContainerView setBackgroundColor:v16];
+      contentContainerBackgroundColor = [v14 contentContainerBackgroundColor];
+      [(UIView *)contentContainerView setBackgroundColor:contentContainerBackgroundColor];
     }
 
-    [(PBFPosterGalleryPreviewContentView *)self setPosterPreviewView:v11];
-    self->_layoutOrientation = a5;
+    [(PBFPosterGalleryPreviewContentView *)self setPosterPreviewView:viewCopy];
+    self->_layoutOrientation = orientation;
     [(PBFPosterGalleryPreviewContentView *)self _createHiddenViewsIfNeeded];
     [(PBFPosterGalleryPreviewContentView *)self invalidateIntrinsicContentSize];
     [(PBFPosterGalleryPreviewContentView *)self setNeedsLayout];
@@ -98,17 +98,17 @@
   {
     v10 = v3;
     v11 = v4;
-    v12 = [(PBFPosterGalleryPreviewContentView *)self traitCollection];
-    [v12 displayScale];
+    traitCollection = [(PBFPosterGalleryPreviewContentView *)self traitCollection];
+    [traitCollection displayScale];
 
-    v13 = [(PBFPosterGalleryPreviewContentView *)self _shouldShowAsStack];
+    _shouldShowAsStack = [(PBFPosterGalleryPreviewContentView *)self _shouldShowAsStack];
     previewType = self->_previewType;
     v15 = PBFPreviewTypeHero;
     v16 = v11;
     v17 = v10;
     v18 = v8;
     v19 = v6;
-    if (v13)
+    if (_shouldShowAsStack)
     {
       UIRectRoundToScale();
       v19 = v20;
@@ -117,9 +117,9 @@
       v16 = v23;
     }
 
-    v24 = [(PBFPosterGalleryPreviewContentView *)self window];
-    v25 = [v24 screen];
-    v26 = [PBFPosterGalleryViewSpec specForScreen:v25];
+    window = [(PBFPosterGalleryPreviewContentView *)self window];
+    screen = [window screen];
+    v26 = [PBFPosterGalleryViewSpec specForScreen:screen];
 
     [v26 posterCornerRadius];
     v34 = v27;
@@ -135,7 +135,7 @@
       [(UIView *)self->_contentContainerView bringSubviewToFront:?];
     }
 
-    if (v13)
+    if (_shouldShowAsStack)
     {
       [(UIImageView *)self->_frontHiddenImageView setFrame:v6, v8, v10, v11];
       UIRectRoundToScale();
@@ -167,15 +167,15 @@ LABEL_14:
   }
 }
 
-- (void)setPosterPreviewView:(id)a3
+- (void)setPosterPreviewView:(id)view
 {
-  v5 = a3;
-  if (self->_posterPreviewView != v5)
+  viewCopy = view;
+  if (self->_posterPreviewView != viewCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_posterPreviewView, a3);
-    v6 = [(UIView *)v11 accessibilityIdentifier];
-    [(PBFPosterGalleryPreviewContentView *)self setAccessibilityIdentifier:v6];
+    v11 = viewCopy;
+    objc_storeStrong(&self->_posterPreviewView, view);
+    accessibilityIdentifier = [(UIView *)v11 accessibilityIdentifier];
+    [(PBFPosterGalleryPreviewContentView *)self setAccessibilityIdentifier:accessibilityIdentifier];
 
     portalView = self->_portalView;
     if (portalView)
@@ -210,14 +210,14 @@ LABEL_14:
   MEMORY[0x2821F9730]();
 }
 
-- (void)prepareForFullScreenTransitionWithContentView:(id)a3
+- (void)prepareForFullScreenTransitionWithContentView:(id)view
 {
-  objc_storeStrong(&self->_fullScreenTransitionView, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_fullScreenTransitionView, view);
+  viewCopy = view;
   fullScreenTransitionView = self->_fullScreenTransitionView;
   [(UIView *)self->_contentContainerView bounds];
   [(UIView *)fullScreenTransitionView setFrame:?];
-  [(UIView *)self->_contentContainerView addSubview:v6];
+  [(UIView *)self->_contentContainerView addSubview:viewCopy];
 }
 
 - (CGRect)previewImageFrame
@@ -247,9 +247,9 @@ LABEL_14:
 {
   if ([(PBFPosterGalleryPreviewContentView *)self _shouldShowAsStack])
   {
-    v3 = [(PBFPosterGalleryPreviewContentView *)self window];
-    v4 = [v3 screen];
-    v13 = [PBFPosterGalleryViewSpec specForScreen:v4];
+    window = [(PBFPosterGalleryPreviewContentView *)self window];
+    screen = [window screen];
+    v13 = [PBFPosterGalleryViewSpec specForScreen:screen];
 
     if (!self->_frontHiddenImageView)
     {

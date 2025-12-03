@@ -9,7 +9,7 @@
 - (id)hmbOPACKDataFromDictionaryWithError:()HMB
 {
   v7 = 0;
-  v4 = MEMORY[0x231885660](a1, 8, &v7);
+  v4 = MEMORY[0x231885660](self, 8, &v7);
   v5 = v4;
   if (a3 && !v4)
   {
@@ -22,7 +22,7 @@
 - (id)hmbDescription
 {
   v2 = [@"{" mutableCopy];
-  v3 = [a1 na_map:&__block_literal_global_208];
+  v3 = [self na_map:&__block_literal_global_208];
   v4 = [v3 componentsJoinedByString:{@", "}];
   [v2 appendString:v4];
 

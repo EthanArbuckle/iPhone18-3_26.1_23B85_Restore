@@ -1,5 +1,5 @@
 @interface NSUnitMass
-+ (id)_measurementWithNaturalScale:(id)a3 system:(unint64_t)a4;
++ (id)_measurementWithNaturalScale:(id)scale system:(unint64_t)system;
 + (void)initialize;
 @end
 
@@ -7,23 +7,23 @@
 
 + (void)initialize
 {
-  if (NSUnitMass == a1)
+  if (NSUnitMass == self)
   {
     objc_opt_class();
   }
 }
 
-+ (id)_measurementWithNaturalScale:(id)a3 system:(unint64_t)a4
++ (id)_measurementWithNaturalScale:(id)scale system:(unint64_t)system
 {
-  v4 = a3;
-  if (a4 == 2)
+  scaleCopy = scale;
+  if (system == 2)
   {
-    if (([objc_msgSend(a3 "unit")] & 1) == 0)
+    if (([objc_msgSend(scale "unit")] & 1) == 0)
     {
-      v4 = [v4 measurementByConvertingToUnit:{+[NSUnitMass poundsMass](NSUnitMass, "poundsMass")}];
+      scaleCopy = [scaleCopy measurementByConvertingToUnit:{+[NSUnitMass poundsMass](NSUnitMass, "poundsMass")}];
     }
 
-    [v4 doubleValue];
+    [scaleCopy doubleValue];
     if (v8 >= 1000.0)
     {
       v6 = +[NSUnitMass shortTons];
@@ -36,46 +36,46 @@
       goto LABEL_19;
     }
 
-    return v4;
+    return scaleCopy;
   }
 
-  if (a4 == 1)
+  if (system == 1)
   {
-    if (([objc_msgSend(a3 "unit")] & 1) == 0)
+    if (([objc_msgSend(scale "unit")] & 1) == 0)
     {
-      v4 = [v4 measurementByConvertingToUnit:{+[NSUnitMass stones](NSUnitMass, "stones")}];
+      scaleCopy = [scaleCopy measurementByConvertingToUnit:{+[NSUnitMass stones](NSUnitMass, "stones")}];
     }
 
-    [v4 doubleValue];
+    [scaleCopy doubleValue];
     if (v7 <= 0.25)
     {
       v6 = +[NSUnitMass ouncesTroy];
       goto LABEL_19;
     }
 
-    return v4;
+    return scaleCopy;
   }
 
-  if (a4)
+  if (system)
   {
-    return v4;
+    return scaleCopy;
   }
 
-  if (([objc_msgSend(a3 "unit")] & 1) == 0)
+  if (([objc_msgSend(scale "unit")] & 1) == 0)
   {
-    v4 = [v4 measurementByConvertingToUnit:{+[NSUnitMass baseUnit](NSUnitMass, "baseUnit")}];
+    scaleCopy = [scaleCopy measurementByConvertingToUnit:{+[NSUnitMass baseUnit](NSUnitMass, "baseUnit")}];
   }
 
-  [v4 doubleValue];
+  [scaleCopy doubleValue];
   if (v5 > 0.001)
   {
-    return v4;
+    return scaleCopy;
   }
 
   v6 = +[NSUnitMass grams];
 LABEL_19:
 
-  return [v4 measurementByConvertingToUnit:v6];
+  return [scaleCopy measurementByConvertingToUnit:v6];
 }
 
 @end

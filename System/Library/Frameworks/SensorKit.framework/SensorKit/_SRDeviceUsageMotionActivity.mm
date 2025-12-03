@@ -1,36 +1,36 @@
 @interface _SRDeviceUsageMotionActivity
-+ (id)motionActivityWithActivityType:(int64_t)a3 duration:(double)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)motionActivityWithActivityType:(int64_t)type duration:(double)duration;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_SRDeviceUsageMotionActivity)initWithCoder:(id)a3;
+- (_SRDeviceUsageMotionActivity)initWithCoder:(id)coder;
 - (id)sr_dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SRDeviceUsageMotionActivity
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeInteger:-[_SRDeviceUsageMotionActivity motionActivityType](self forKey:{"motionActivityType"), @"motionActivityType"}];
+  [coder encodeInteger:-[_SRDeviceUsageMotionActivity motionActivityType](self forKey:{"motionActivityType"), @"motionActivityType"}];
   [(_SRDeviceUsageMotionActivity *)self duration];
 
-  [a3 encodeDouble:@"duration" forKey:?];
+  [coder encodeDouble:@"duration" forKey:?];
 }
 
-- (_SRDeviceUsageMotionActivity)initWithCoder:(id)a3
+- (_SRDeviceUsageMotionActivity)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeIntegerForKey:@"motionActivityType"];
-  [a3 decodeDoubleForKey:@"duration"];
+  v6 = [coder decodeIntegerForKey:@"motionActivityType"];
+  [coder decodeDoubleForKey:@"duration"];
   v8 = v7;
 
   result = objc_alloc_init(_SRDeviceUsageMotionActivity);
@@ -39,11 +39,11 @@
   return result;
 }
 
-+ (id)motionActivityWithActivityType:(int64_t)a3 duration:(double)a4
++ (id)motionActivityWithActivityType:(int64_t)type duration:(double)duration
 {
   v6 = objc_alloc_init(_SRDeviceUsageMotionActivity);
-  [(_SRDeviceUsageMotionActivity *)v6 setMotionActivityType:a3];
-  [(_SRDeviceUsageMotionActivity *)v6 setDuration:a4];
+  [(_SRDeviceUsageMotionActivity *)v6 setMotionActivityType:type];
+  [(_SRDeviceUsageMotionActivity *)v6 setDuration:duration];
 
   return v6;
 }
@@ -53,14 +53,14 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_SRDeviceUsageMotionActivity *)self motionActivityType];
+  motionActivityType = [(_SRDeviceUsageMotionActivity *)self motionActivityType];
   [(_SRDeviceUsageMotionActivity *)self duration];
-  return [v3 stringWithFormat:@"%@ {activityType: %ld, duration: %f}", v5, v6, v7];
+  return [v3 stringWithFormat:@"%@ {activityType: %ld, duration: %f}", v5, motionActivityType, v7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -72,13 +72,13 @@
   }
 
   motionActivityType = self->_motionActivityType;
-  if (motionActivityType != [a3 motionActivityType])
+  if (motionActivityType != [equal motionActivityType])
   {
     return 0;
   }
 
   duration = self->_duration;
-  [a3 duration];
+  [equal duration];
   return duration == v7;
 }
 

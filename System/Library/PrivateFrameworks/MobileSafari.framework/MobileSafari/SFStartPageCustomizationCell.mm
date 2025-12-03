@@ -1,18 +1,18 @@
 @interface SFStartPageCustomizationCell
-- (SFStartPageCustomizationCell)initWithFrame:(CGRect)a3;
+- (SFStartPageCustomizationCell)initWithFrame:(CGRect)frame;
 - (SFStartPageCustomizationCellDelegate)delegate;
-- (void)setAccessories:(id)a3;
-- (void)setOn:(BOOL)a3;
-- (void)valueDidChange:(id)a3;
+- (void)setAccessories:(id)accessories;
+- (void)setOn:(BOOL)on;
+- (void)valueDidChange:(id)change;
 @end
 
 @implementation SFStartPageCustomizationCell
 
-- (SFStartPageCustomizationCell)initWithFrame:(CGRect)a3
+- (SFStartPageCustomizationCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SFStartPageCustomizationCell;
-  v3 = [(SFStartPageCustomizationCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFStartPageCustomizationCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
@@ -27,20 +27,20 @@
   return v3;
 }
 
-- (void)setOn:(BOOL)a3
+- (void)setOn:(BOOL)on
 {
-  v3 = a3;
+  onCopy = on;
   v4 = self->_switch;
-  v5 = [MEMORY[0x1E69DD250] areAnimationsEnabled];
+  areAnimationsEnabled = [MEMORY[0x1E69DD250] areAnimationsEnabled];
 
-  [(UISwitch *)v4 setOn:v3 animated:v5];
+  [(UISwitch *)v4 setOn:onCopy animated:areAnimationsEnabled];
 }
 
-- (void)setAccessories:(id)a3
+- (void)setAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
-  v6 = [v4 count];
+  accessoriesCopy = accessories;
+  v5 = [accessoriesCopy mutableCopy];
+  v6 = [accessoriesCopy count];
 
   if (v6)
   {
@@ -59,7 +59,7 @@
   [(SFStartPageCustomizationCell *)&v9 setAccessories:v5];
 }
 
-- (void)valueDidChange:(id)a3
+- (void)valueDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())

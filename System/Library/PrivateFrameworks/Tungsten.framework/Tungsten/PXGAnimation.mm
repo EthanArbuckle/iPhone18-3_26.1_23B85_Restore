@@ -1,6 +1,6 @@
 @interface PXGAnimation
 - (PXGAnimation)init;
-- (PXGAnimation)initWithLayout:(id)a3;
+- (PXGAnimation)initWithLayout:(id)layout;
 - (PXGAnimationDelegate)delegate;
 - (PXGLayout)layout;
 - (PXGTransition)transition;
@@ -27,8 +27,8 @@
 
 - (void)noteDidComplete
 {
-  v3 = [(PXGAnimation *)self layout];
-  [v3 animationDidComplete:self];
+  layout = [(PXGAnimation *)self layout];
+  [layout animationDidComplete:self];
 }
 
 - (PXGAnimationDelegate)delegate
@@ -56,9 +56,9 @@
     v6 = v5;
     [(PXGAnimation *)self duration];
     v8 = v7;
-    v9 = [(PXGAnimation *)self numberOfOscillations];
+    numberOfOscillations = [(PXGAnimation *)self numberOfOscillations];
     [(PXGAnimation *)self maximumDistance];
-    v11 = PXGDampedSpringMinimumDuration(v9, v6, v8, v10);
+    v11 = PXGDampedSpringMinimumDuration(numberOfOscillations, v6, v8, v10);
     if (v4 < v11)
     {
       return v11;
@@ -91,25 +91,25 @@
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
   v12 = objc_loadWeakRetained(&self->_layout);
-  v13 = [(PXGAnimation *)self delegate];
+  delegate = [(PXGAnimation *)self delegate];
   v14 = objc_opt_class();
   v15 = NSStringFromClass(v14);
-  v16 = [(PXGAnimation *)self delegate];
-  v17 = [v20 stringWithFormat:@"<%@: %p duration = %.2f; doubleSided = %@; scope = %ld; transition = %@; layout = <%@: %p>; delegate = <%@: %p>>", v19, self, *&duration, v6, scope, WeakRetained, v11, v12, v15, v16];;
+  delegate2 = [(PXGAnimation *)self delegate];
+  v17 = [v20 stringWithFormat:@"<%@: %p duration = %.2f; doubleSided = %@; scope = %ld; transition = %@; layout = <%@: %p>; delegate = <%@: %p>>", v19, self, *&duration, v6, scope, WeakRetained, v11, v12, v15, delegate2];;
 
   return v17;
 }
 
-- (PXGAnimation)initWithLayout:(id)a3
+- (PXGAnimation)initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v8.receiver = self;
   v8.super_class = PXGAnimation;
   v5 = [(PXGAnimation *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_layout, v4);
+    objc_storeWeak(&v5->_layout, layoutCopy);
     v6->_duration = 2.0;
     v6->_dampingRatio = 1.0;
     *&v6->_curve = xmmword_21AE2D3E0;
@@ -122,8 +122,8 @@
 
 - (PXGAnimation)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGAnimation.m" lineNumber:20 description:{@"%s is not available as initializer", "-[PXGAnimation init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAnimation.m" lineNumber:20 description:{@"%s is not available as initializer", "-[PXGAnimation init]"}];
 
   abort();
 }

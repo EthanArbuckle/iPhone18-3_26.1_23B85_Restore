@@ -1,6 +1,6 @@
 @interface WXStyleSheet
 + (id)styleTypeEnumMap;
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 + (void)styleTypeEnumMap;
 @end
 
@@ -29,44 +29,44 @@ void __32__WXStyleSheet_styleTypeEnumMap__block_invoke()
   +[WXStyleSheet styleTypeEnumMap]::sStyleTypeEnumMap = v0;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v45 = a4;
-  v8 = a5;
-  v9 = [v8 WXMainNamespace];
-  v10 = OCXFindChild(a3, v9, "docDefaults");
+  toCopy = to;
+  stateCopy = state;
+  wXMainNamespace = [stateCopy WXMainNamespace];
+  v10 = OCXFindChild(from, wXMainNamespace, "docDefaults");
 
-  v11 = [v8 WXMainNamespace];
-  Child = OCXFindChild(a3, v11, "style");
+  wXMainNamespace2 = [stateCopy WXMainNamespace];
+  Child = OCXFindChild(from, wXMainNamespace2, "style");
 
   while (Child)
   {
-    v13 = [v8 WXMainNamespace];
-    v14 = CXDefaultStringAttribute(Child, v13, "styleId", 0);
+    wXMainNamespace3 = [stateCopy WXMainNamespace];
+    v14 = CXDefaultStringAttribute(Child, wXMainNamespace3, "styleId", 0);
 
     if (v14)
     {
       v48 = 1;
-      v15 = [a1 styleTypeEnumMap];
-      readEnumProperty<WDStyleType>(Child, "type", v15, &v48);
+      styleTypeEnumMap = [self styleTypeEnumMap];
+      readEnumProperty<WDStyleType>(Child, "type", styleTypeEnumMap, &v48);
 
-      v16 = [v45 createStyleWithId:v14 type:v48];
-      [WXStyle readFrom:Child to:v16 defaults:v10 state:v8];
+      v16 = [toCopy createStyleWithId:v14 type:v48];
+      [WXStyle readFrom:Child to:v16 defaults:v10 state:stateCopy];
     }
 
-    v17 = [v8 WXMainNamespace];
-    Child = OCXFindNextChild(Child, v17, "style");
+    wXMainNamespace4 = [stateCopy WXMainNamespace];
+    Child = OCXFindNextChild(Child, wXMainNamespace4, "style");
   }
 
-  v18 = [v8 WXMainNamespace];
-  v19 = OCXFindChild(a3, v18, "style");
+  wXMainNamespace5 = [stateCopy WXMainNamespace];
+  v19 = OCXFindChild(from, wXMainNamespace5, "style");
 
   if (v19)
   {
     while (1)
     {
-      v20 = [v8 WXMainNamespace];
-      v21 = CXDefaultStringAttribute(v19, v20, "styleId", 0);
+      wXMainNamespace6 = [stateCopy WXMainNamespace];
+      v21 = CXDefaultStringAttribute(v19, wXMainNamespace6, "styleId", 0);
 
       if (v21)
       {
@@ -74,8 +74,8 @@ void __32__WXStyleSheet_styleTypeEnumMap__block_invoke()
       }
 
 LABEL_28:
-      v44 = [v8 WXMainNamespace];
-      v19 = OCXFindNextChild(v19, v44, "style");
+      wXMainNamespace7 = [stateCopy WXMainNamespace];
+      v19 = OCXFindNextChild(v19, wXMainNamespace7, "style");
 
       if (!v19)
       {
@@ -83,16 +83,16 @@ LABEL_28:
       }
     }
 
-    v22 = [v45 styleWithId:v21];
-    v23 = [v8 WXMainNamespace];
-    v24 = OCXFindChild(v19, v23, "basedOn");
+    v22 = [toCopy styleWithId:v21];
+    wXMainNamespace8 = [stateCopy WXMainNamespace];
+    v24 = OCXFindChild(v19, wXMainNamespace8, "basedOn");
 
     if (!v24)
     {
 LABEL_17:
       v34 = v22;
-      v35 = [v8 WXMainNamespace];
-      v36 = OCXFindChild(v19, v35, "next");
+      wXMainNamespace9 = [stateCopy WXMainNamespace];
+      v36 = OCXFindChild(v19, wXMainNamespace9, "next");
 
       v37 = v34;
       if (!v36)
@@ -103,9 +103,9 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      v38 = [v8 WXMainNamespace];
+      wXMainNamespace10 = [stateCopy WXMainNamespace];
       v46 = 0;
-      v39 = CXOptionalStringAttribute(v36, v38, "val", &v46);
+      v39 = CXOptionalStringAttribute(v36, wXMainNamespace10, "val", &v46);
       v40 = v46;
       v41 = v40;
       if (v40)
@@ -130,8 +130,8 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v37 = [v45 styleWithId:v41];
-        v38 = v34;
+        v37 = [toCopy styleWithId:v41];
+        wXMainNamespace10 = v34;
       }
 
       else
@@ -142,9 +142,9 @@ LABEL_26:
       goto LABEL_26;
     }
 
-    v25 = [v8 WXMainNamespace];
+    wXMainNamespace11 = [stateCopy WXMainNamespace];
     v47 = 0;
-    v26 = CXOptionalStringAttribute(v24, v25, "val", &v47);
+    v26 = CXOptionalStringAttribute(v24, wXMainNamespace11, "val", &v47);
     v27 = v47;
     v28 = v27;
     if (v27)
@@ -168,15 +168,15 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v25 = [v45 styleWithId:v28];
-      [v22 setBaseStyle:v25];
-      v31 = [v8 WXMainNamespace];
-      v32 = OCXFindChild(a3, v31, "tblPr");
+      wXMainNamespace11 = [toCopy styleWithId:v28];
+      [v22 setBaseStyle:wXMainNamespace11];
+      wXMainNamespace12 = [stateCopy WXMainNamespace];
+      v32 = OCXFindChild(from, wXMainNamespace12, "tblPr");
 
       if (v32)
       {
-        v33 = [v22 tableProperties];
-        [v33 setBaseStyle:v25];
+        tableProperties = [v22 tableProperties];
+        [tableProperties setBaseStyle:wXMainNamespace11];
       }
     }
 

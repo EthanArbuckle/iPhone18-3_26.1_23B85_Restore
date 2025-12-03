@@ -1,30 +1,30 @@
 @interface MPCAudioSpectrumAnalyzer
 - (BOOL)_shouldAttachAudioTap;
-- (MPCAudioSpectrumAnalyzer)initWithPlaybackEngine:(id)a3 refreshRate:(id)a4;
+- (MPCAudioSpectrumAnalyzer)initWithPlaybackEngine:(id)engine refreshRate:(id)rate;
 - (MPCPlaybackEngine)playbackEngine;
-- (void)_analyzeAudioData:(void *)a3 numberOfFrames:(unsigned int)a4;
-- (void)_analyzeSamples:(AudioBufferList *)a3 numberFrames:(int64_t)a4;
+- (void)_analyzeAudioData:(void *)data numberOfFrames:(unsigned int)frames;
+- (void)_analyzeSamples:(AudioBufferList *)samples numberFrames:(int64_t)frames;
 - (void)_createAudioTap;
 - (void)_createProcessTap;
 - (void)_createQueueTap;
 - (void)_destroyAudioTap;
-- (void)_prepareTap:(opaqueMTAudioProcessingTap *)a3 maxFrames:(int64_t)a4 processingFormat:(const AudioStreamBasicDescription *)a5;
+- (void)_prepareTap:(opaqueMTAudioProcessingTap *)tap maxFrames:(int64_t)frames processingFormat:(const AudioStreamBasicDescription *)format;
 - (void)_resetObservers;
-- (void)configurePlayerItem:(id)a3;
+- (void)configurePlayerItem:(id)item;
 - (void)dealloc;
-- (void)engine:(id)a3 didChangeToState:(unint64_t)a4;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)engine:(id)engine didChangeToState:(unint64_t)state;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation MPCAudioSpectrumAnalyzer
 
 - (void)_createAudioTap
 {
-  v3 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  v4 = [v3 isProcessTapEnabled];
+  standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+  isProcessTapEnabled = [standardUserDefaults isProcessTapEnabled];
 
-  if (v4)
+  if (isProcessTapEnabled)
   {
 
     [(MPCAudioSpectrumAnalyzer *)self _createProcessTap];
@@ -44,9 +44,9 @@
   self->_processAudioTap = v3;
 
   v5 = [_MPCAudioSpectrumAnalyzerStorage alloc];
-  v6 = [(MPCProcessAudioTap *)self->_processAudioTap numberOfFrames];
+  numberOfFrames = [(MPCProcessAudioTap *)self->_processAudioTap numberOfFrames];
   *&v7 = [(MPCProcessAudioTap *)self->_processAudioTap sampleRate];
-  v8 = [(_MPCAudioSpectrumAnalyzerStorage *)v5 initWithMaximumNumberOfFrames:v6 sampleRate:v7];
+  v8 = [(_MPCAudioSpectrumAnalyzerStorage *)v5 initWithMaximumNumberOfFrames:numberOfFrames sampleRate:v7];
   [(MPCAudioSpectrumAnalyzer *)self setStorage:v8];
 
   WeakRetained = objc_loadWeakRetained(&self->_playbackEngine);
@@ -60,23 +60,23 @@
   return WeakRetained;
 }
 
-- (void)_prepareTap:(opaqueMTAudioProcessingTap *)a3 maxFrames:(int64_t)a4 processingFormat:(const AudioStreamBasicDescription *)a5
+- (void)_prepareTap:(opaqueMTAudioProcessingTap *)tap maxFrames:(int64_t)frames processingFormat:(const AudioStreamBasicDescription *)format
 {
-  v7 = self;
-  objc_sync_enter(v7);
-  v16 = [(MPCAudioSpectrumAnalyzer *)v7 storage];
-  objc_sync_exit(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  storage = [(MPCAudioSpectrumAnalyzer *)selfCopy storage];
+  objc_sync_exit(selfCopy);
 
-  mSampleRate = a5->mSampleRate;
-  [v16 sampleRate];
+  mSampleRate = format->mSampleRate;
+  [storage sampleRate];
   v10 = v9;
-  if ([v16 maxNumberOfFrames] < a4 || vabds_f32(v10, mSampleRate) >= 0.00000011921)
+  if ([storage maxNumberOfFrames] < frames || vabds_f32(v10, mSampleRate) >= 0.00000011921)
   {
     v12 = [_MPCAudioSpectrumAnalyzerStorage alloc];
     *&v13 = mSampleRate;
-    v14 = [(_MPCAudioSpectrumAnalyzerStorage *)v12 initWithMaximumNumberOfFrames:a4 sampleRate:v13];
+    v14 = [(_MPCAudioSpectrumAnalyzerStorage *)v12 initWithMaximumNumberOfFrames:frames sampleRate:v13];
 
-    v15 = v7;
+    v15 = selfCopy;
     objc_sync_enter(v15);
     [(MPCAudioSpectrumAnalyzer *)v15 setStorage:v14];
     objc_sync_exit(v15);
@@ -86,27 +86,27 @@
 
   else
   {
-    v11 = v16;
+    v11 = storage;
   }
 }
 
-- (void)_analyzeAudioData:(void *)a3 numberOfFrames:(unsigned int)a4
+- (void)_analyzeAudioData:(void *)data numberOfFrames:(unsigned int)frames
 {
-  v4 = *&a4;
+  v4 = *&frames;
   v15 = *MEMORY[0x1E69E9840];
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(MPCAudioSpectrumAnalyzer *)v6 observers];
-  v8 = [v7 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = [(MPCAudioSpectrumAnalyzer *)selfCopy observers];
+  v8 = [observers copy];
 
-  v9 = [(MPCAudioSpectrumAnalyzer *)v6 storage];
-  objc_sync_exit(v6);
+  storage = [(MPCAudioSpectrumAnalyzer *)selfCopy storage];
+  objc_sync_exit(selfCopy);
 
   if ([v8 count])
   {
-    if ([v9 maxNumberOfFrames] >= v4)
+    if ([storage maxNumberOfFrames] >= v4)
     {
-      [v9 analyzeAudioData:a3 numberFrames:v4 observers:v8];
+      [storage analyzeAudioData:data numberFrames:v4 observers:v8];
     }
 
     else
@@ -117,29 +117,29 @@
         v11 = 134218240;
         v12 = v4;
         v13 = 2048;
-        v14 = [v9 maxNumberOfFrames];
+        maxNumberOfFrames = [storage maxNumberOfFrames];
         _os_log_impl(&dword_1C5C61000, v10, OS_LOG_TYPE_ERROR, "[AP] - Audio tap reported audio samples before we had an appropriately sized buffer (numberOfFrames:%ld storageBufferSize:%ld)", &v11, 0x16u);
       }
     }
   }
 }
 
-- (void)_analyzeSamples:(AudioBufferList *)a3 numberFrames:(int64_t)a4
+- (void)_analyzeSamples:(AudioBufferList *)samples numberFrames:(int64_t)frames
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(MPCAudioSpectrumAnalyzer *)v6 observers];
-  v8 = [v7 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = [(MPCAudioSpectrumAnalyzer *)selfCopy observers];
+  v8 = [observers copy];
 
-  v9 = [(MPCAudioSpectrumAnalyzer *)v6 storage];
-  objc_sync_exit(v6);
+  storage = [(MPCAudioSpectrumAnalyzer *)selfCopy storage];
+  objc_sync_exit(selfCopy);
 
   if ([v8 count])
   {
-    if ([v9 maxNumberOfFrames] >= a4)
+    if ([storage maxNumberOfFrames] >= frames)
     {
-      [v9 analyzeFrequencies:a3 numberFrames:a4 observers:v8];
+      [storage analyzeFrequencies:samples numberFrames:frames observers:v8];
     }
 
     else
@@ -148,9 +148,9 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v11 = 134218240;
-        v12 = a4;
+        framesCopy = frames;
         v13 = 2048;
-        v14 = [v9 maxNumberOfFrames];
+        maxNumberOfFrames = [storage maxNumberOfFrames];
         _os_log_impl(&dword_1C5C61000, v10, OS_LOG_TYPE_ERROR, "[AP] - Audio tap reported audio buffer list samples before we had an appropriately sized buffer (numberOfFrames:%ld storageBufferSize:%ld)", &v11, 0x16u);
       }
     }
@@ -182,11 +182,11 @@
 
 - (BOOL)_shouldAttachAudioTap
 {
-  v2 = [MEMORY[0x1E6970490] systemRoute];
-  v3 = [v2 isDeviceRoute];
-  v4 = [v2 isAirPlayingToDevice] ^ 1;
+  systemRoute = [MEMORY[0x1E6970490] systemRoute];
+  isDeviceRoute = [systemRoute isDeviceRoute];
+  v4 = [systemRoute isAirPlayingToDevice] ^ 1;
 
-  return v3 & v4;
+  return isDeviceRoute & v4;
 }
 
 - (void)_resetObservers
@@ -223,75 +223,75 @@
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableArray *)v4->_observers removeObject:v6];
-  if (![(NSMutableArray *)v4->_observers count])
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_observers removeObject:observerCopy];
+  if (![(NSMutableArray *)selfCopy->_observers count])
   {
-    v5 = [(MPCAudioSpectrumAnalyzer *)v4 processAudioTap];
-    [v5 stop];
+    processAudioTap = [(MPCAudioSpectrumAnalyzer *)selfCopy processAudioTap];
+    [processAudioTap stop];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v10 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v10;
-  observers = v4->_observers;
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = observerCopy;
+  observers = selfCopy->_observers;
   if (!observers)
   {
     v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-    v8 = v4->_observers;
-    v4->_observers = v7;
+    v8 = selfCopy->_observers;
+    selfCopy->_observers = v7;
 
-    observers = v4->_observers;
-    v5 = v10;
+    observers = selfCopy->_observers;
+    v5 = observerCopy;
   }
 
   [(NSMutableArray *)observers addObject:v5];
-  v9 = [(MPCAudioSpectrumAnalyzer *)v4 processAudioTap];
-  [v9 start];
+  processAudioTap = [(MPCAudioSpectrumAnalyzer *)selfCopy processAudioTap];
+  [processAudioTap start];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)engine:(id)a3 didChangeToState:(unint64_t)a4
+- (void)engine:(id)engine didChangeToState:(unint64_t)state
 {
-  v10 = a3;
-  if (a4 == 1)
+  engineCopy = engine;
+  if (state == 1)
   {
-    v6 = [(MPCAudioSpectrumAnalyzer *)self observers];
-    v7 = [v6 count];
+    observers = [(MPCAudioSpectrumAnalyzer *)self observers];
+    v7 = [observers count];
 
     if (v7)
     {
-      v8 = [(MPCAudioSpectrumAnalyzer *)self processAudioTap];
-      [v8 start];
+      processAudioTap = [(MPCAudioSpectrumAnalyzer *)self processAudioTap];
+      [processAudioTap start];
     }
   }
 
-  else if (a4 - 2 <= 2)
+  else if (state - 2 <= 2)
   {
-    v9 = [(MPCAudioSpectrumAnalyzer *)self processAudioTap];
-    [v9 stop];
+    processAudioTap2 = [(MPCAudioSpectrumAnalyzer *)self processAudioTap];
+    [processAudioTap2 stop];
 
     [(MPCAudioSpectrumAnalyzer *)self _resetObservers];
   }
 }
 
-- (void)configurePlayerItem:(id)a3
+- (void)configurePlayerItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if ([(MPCAudioSpectrumAnalyzer *)self _shouldAttachAudioTap])
   {
-    [v4 setAudioTapProcessor:self->_audioProcessingTap];
+    [itemCopy setAudioTapProcessor:self->_audioProcessingTap];
   }
 }
 
@@ -304,18 +304,18 @@
   [(MPCAudioSpectrumAnalyzer *)&v3 dealloc];
 }
 
-- (MPCAudioSpectrumAnalyzer)initWithPlaybackEngine:(id)a3 refreshRate:(id)a4
+- (MPCAudioSpectrumAnalyzer)initWithPlaybackEngine:(id)engine refreshRate:(id)rate
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  rateCopy = rate;
   v13.receiver = self;
   v13.super_class = MPCAudioSpectrumAnalyzer;
   v8 = [(MPCAudioSpectrumAnalyzer *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_playbackEngine, v6);
-    objc_storeStrong(&v9->_refreshRate, a4);
+    objc_storeWeak(&v8->_playbackEngine, engineCopy);
+    objc_storeStrong(&v9->_refreshRate, rate);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __63__MPCAudioSpectrumAnalyzer_initWithPlaybackEngine_refreshRate___block_invoke;

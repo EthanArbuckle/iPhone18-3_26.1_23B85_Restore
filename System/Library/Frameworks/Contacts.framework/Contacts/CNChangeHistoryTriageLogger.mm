@@ -3,30 +3,30 @@
 + (CNChangeHistoryTriageLogger)saveLogger;
 + (OS_os_log)log;
 - (CNChangeHistoryTriageLogger)init;
-- (CNChangeHistoryTriageLogger)initWithOSLog:(id)a3 defaultLogType:(unsigned __int8)a4 destructiveLogType:(unsigned __int8)a5;
+- (CNChangeHistoryTriageLogger)initWithOSLog:(id)log defaultLogType:(unsigned __int8)type destructiveLogType:(unsigned __int8)logType;
 - (void)didExecuteSaveRequest;
-- (void)didFetchHistoryEvents:(id)a3 anchor:(id)a4;
-- (void)didFetchHistoryEventsCount:(int64_t)a3 anchor:(id)a4 truncated:(BOOL)a5;
-- (void)fetchDidFailToTranslateWithError:(id)a3;
-- (void)fetchDidFailWithError:(id)a3;
-- (void)visitAddContactEvent:(id)a3;
-- (void)visitAddGroupEvent:(id)a3;
-- (void)visitAddMemberToGroupEvent:(id)a3;
-- (void)visitAddSubgroupToGroupEvent:(id)a3;
-- (void)visitDeleteContactEvent:(id)a3;
-- (void)visitDeleteGroupEvent:(id)a3;
-- (void)visitDifferentMeCardEvent:(id)a3;
-- (void)visitDropEverythingEvent:(id)a3;
-- (void)visitLinkContactsEvent:(id)a3;
-- (void)visitPreferredContactForImageEvent:(id)a3;
-- (void)visitPreferredContactForNameEvent:(id)a3;
-- (void)visitRemoveMemberFromGroupEvent:(id)a3;
-- (void)visitRemoveSubgroupFromGroupEvent:(id)a3;
-- (void)visitUnlinkContactEvent:(id)a3;
-- (void)visitUpdateContactEvent:(id)a3;
-- (void)visitUpdateGroupEvent:(id)a3;
+- (void)didFetchHistoryEvents:(id)events anchor:(id)anchor;
+- (void)didFetchHistoryEventsCount:(int64_t)count anchor:(id)anchor truncated:(BOOL)truncated;
+- (void)fetchDidFailToTranslateWithError:(id)error;
+- (void)fetchDidFailWithError:(id)error;
+- (void)visitAddContactEvent:(id)event;
+- (void)visitAddGroupEvent:(id)event;
+- (void)visitAddMemberToGroupEvent:(id)event;
+- (void)visitAddSubgroupToGroupEvent:(id)event;
+- (void)visitDeleteContactEvent:(id)event;
+- (void)visitDeleteGroupEvent:(id)event;
+- (void)visitDifferentMeCardEvent:(id)event;
+- (void)visitDropEverythingEvent:(id)event;
+- (void)visitLinkContactsEvent:(id)event;
+- (void)visitPreferredContactForImageEvent:(id)event;
+- (void)visitPreferredContactForNameEvent:(id)event;
+- (void)visitRemoveMemberFromGroupEvent:(id)event;
+- (void)visitRemoveSubgroupFromGroupEvent:(id)event;
+- (void)visitUnlinkContactEvent:(id)event;
+- (void)visitUpdateContactEvent:(id)event;
+- (void)visitUpdateGroupEvent:(id)event;
 - (void)willExecuteSaveRequest;
-- (void)willFetchHistoryWithRequest:(id)a3;
+- (void)willFetchHistoryWithRequest:(id)request;
 @end
 
 @implementation CNChangeHistoryTriageLogger
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = __41__CNChangeHistoryTriageLogger_saveLogger__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (saveLogger_cn_once_token_0 != -1)
   {
     dispatch_once(&saveLogger_cn_once_token_0, block);
@@ -63,7 +63,7 @@ void __41__CNChangeHistoryTriageLogger_saveLogger__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __42__CNChangeHistoryTriageLogger_fetchLogger__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (fetchLogger_cn_once_token_1 != -1)
   {
     dispatch_once(&fetchLogger_cn_once_token_1, block);
@@ -112,18 +112,18 @@ uint64_t __34__CNChangeHistoryTriageLogger_log__block_invoke()
   return v4;
 }
 
-- (CNChangeHistoryTriageLogger)initWithOSLog:(id)a3 defaultLogType:(unsigned __int8)a4 destructiveLogType:(unsigned __int8)a5
+- (CNChangeHistoryTriageLogger)initWithOSLog:(id)log defaultLogType:(unsigned __int8)type destructiveLogType:(unsigned __int8)logType
 {
-  v9 = a3;
+  logCopy = log;
   v14.receiver = self;
   v14.super_class = CNChangeHistoryTriageLogger;
   v10 = [(CNChangeHistoryTriageLogger *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_os_log, a3);
-    v11->_defaultLogType = a4;
-    v11->_destructiveLogType = a5;
+    objc_storeStrong(&v10->_os_log, log);
+    v11->_defaultLogType = type;
+    v11->_destructiveLogType = logType;
     v12 = v11;
   }
 
@@ -152,13 +152,13 @@ uint64_t __34__CNChangeHistoryTriageLogger_log__block_invoke()
   }
 }
 
-- (void)willFetchHistoryWithRequest:(id)a3
+- (void)willFetchHistoryWithRequest:(id)request
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 startingToken];
+  requestCopy = request;
+  startingToken = [requestCopy startingToken];
 
-  if (!v5)
+  if (!startingToken)
   {
     os_log = self->_os_log;
     if (!os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
@@ -173,8 +173,8 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v6 = [v4 startingToken];
-  v7 = [v6 length];
+  startingToken2 = [requestCopy startingToken];
+  v7 = [startingToken2 length];
 
   if (!v7)
   {
@@ -190,9 +190,9 @@ LABEL_10:
   }
 
   v8 = [CNChangeHistoryAnchor alloc];
-  v9 = [v4 startingToken];
+  startingToken3 = [requestCopy startingToken];
   v16 = 0;
-  v10 = [(CNChangeHistoryAnchor *)v8 initWithHistoryToken:v9 error:&v16];
+  v10 = [(CNChangeHistoryAnchor *)v8 initWithHistoryToken:startingToken3 error:&v16];
   v11 = v16;
 
   v12 = self->_os_log;
@@ -209,17 +209,17 @@ LABEL_10:
 
   else if (os_log_type_enabled(self->_os_log, OS_LOG_TYPE_ERROR))
   {
-    [(CNChangeHistoryTriageLogger *)v11 willFetchHistoryWithRequest:v12, v4];
+    [(CNChangeHistoryTriageLogger *)v11 willFetchHistoryWithRequest:v12, requestCopy];
   }
 
 LABEL_14:
 }
 
-- (void)didFetchHistoryEvents:(id)a3 anchor:(id)a4
+- (void)didFetchHistoryEvents:(id)events anchor:(id)anchor
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  anchorCopy = anchor;
   os_log = self->_os_log;
   defaultLogType = self->_defaultLogType;
   if (os_log_type_enabled(os_log, defaultLogType))
@@ -232,7 +232,7 @@ LABEL_14:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = v6;
+  v10 = eventsCopy;
   v11 = [v10 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v11)
   {
@@ -261,54 +261,54 @@ LABEL_14:
   if (os_log_type_enabled(v15, v16))
   {
     *buf = 138543362;
-    v22 = v7;
+    v22 = anchorCopy;
     _os_log_impl(&dword_1954A0000, v15, v16, "Latest change anchor: %{public}@", buf, 0xCu);
   }
 }
 
-- (void)didFetchHistoryEventsCount:(int64_t)a3 anchor:(id)a4 truncated:(BOOL)a5
+- (void)didFetchHistoryEventsCount:(int64_t)count anchor:(id)anchor truncated:(BOOL)truncated
 {
-  v5 = a5;
+  truncatedCopy = truncated;
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  anchorCopy = anchor;
   os_log = self->_os_log;
   defaultLogType = self->_defaultLogType;
   if (os_log_type_enabled(os_log, defaultLogType))
   {
     v11 = MEMORY[0x1E696AD98];
     v12 = os_log;
-    v13 = [v11 numberWithBool:v5];
+    v13 = [v11 numberWithBool:truncatedCopy];
     v14 = 134349570;
-    v15 = a3;
+    countCopy = count;
     v16 = 2114;
-    v17 = v8;
+    v17 = anchorCopy;
     v18 = 2114;
     v19 = v13;
     _os_log_impl(&dword_1954A0000, v12, defaultLogType, "Did fetch history events count: %{public}lu, latest change anchor: %{public}@, truncated: %{public}@", &v14, 0x20u);
   }
 }
 
-- (void)fetchDidFailWithError:(id)a3
+- (void)fetchDidFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   os_log = self->_os_log;
   if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
   {
-    [(CNChangeHistoryTriageLogger *)v4 fetchDidFailWithError:?];
+    [(CNChangeHistoryTriageLogger *)errorCopy fetchDidFailWithError:?];
   }
 }
 
-- (void)fetchDidFailToTranslateWithError:(id)a3
+- (void)fetchDidFailToTranslateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   os_log = self->_os_log;
   if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
   {
-    [(CNChangeHistoryTriageLogger *)v4 fetchDidFailToTranslateWithError:?];
+    [(CNChangeHistoryTriageLogger *)errorCopy fetchDidFailToTranslateWithError:?];
   }
 }
 
-- (void)visitDropEverythingEvent:(id)a3
+- (void)visitDropEverythingEvent:(id)event
 {
   os_log = self->_os_log;
   destructiveLogType = self->_destructiveLogType;
@@ -319,27 +319,27 @@ LABEL_14:
   }
 }
 
-- (void)visitAddContactEvent:(id)a3
+- (void)visitAddContactEvent:(id)event
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 containerIdentifier];
+  eventCopy = event;
+  containerIdentifier = [eventCopy containerIdentifier];
 
   os_log = self->_os_log;
   defaultLogType = self->_defaultLogType;
   v8 = os_log_type_enabled(os_log, defaultLogType);
-  if (v5)
+  if (containerIdentifier)
   {
     if (v8)
     {
       v9 = os_log;
-      v10 = [v4 contact];
-      v11 = [v10 identifier];
-      v12 = [v4 containerIdentifier];
+      contact = [eventCopy contact];
+      identifier = [contact identifier];
+      containerIdentifier2 = [eventCopy containerIdentifier];
       v13 = 138543618;
-      v14 = v11;
+      v14 = identifier;
       v15 = 2114;
-      v16 = v12;
+      v16 = containerIdentifier2;
       _os_log_impl(&dword_1954A0000, v9, defaultLogType, " - Add %{public}@ (container: %{public}@", &v13, 0x16u);
 
 LABEL_6:
@@ -349,16 +349,16 @@ LABEL_6:
   else if (v8)
   {
     v9 = os_log;
-    v10 = [v4 contact];
-    v11 = [v10 identifier];
+    contact = [eventCopy contact];
+    identifier = [contact identifier];
     v13 = 138543362;
-    v14 = v11;
+    v14 = identifier;
     _os_log_impl(&dword_1954A0000, v9, defaultLogType, " - Add %{public}@", &v13, 0xCu);
     goto LABEL_6;
   }
 }
 
-- (void)visitUpdateContactEvent:(id)a3
+- (void)visitUpdateContactEvent:(id)event
 {
   v11 = *MEMORY[0x1E69E9840];
   os_log = self->_os_log;
@@ -366,15 +366,15 @@ LABEL_6:
   if (os_log_type_enabled(os_log, defaultLogType))
   {
     v6 = os_log;
-    v7 = [a3 contact];
-    v8 = [v7 identifier];
+    contact = [event contact];
+    identifier = [contact identifier];
     v9 = 138543362;
-    v10 = v8;
+    v10 = identifier;
     _os_log_impl(&dword_1954A0000, v6, defaultLogType, " - Update %{public}@", &v9, 0xCu);
   }
 }
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
   v10 = *MEMORY[0x1E69E9840];
   os_log = self->_os_log;
@@ -382,34 +382,34 @@ LABEL_6:
   if (os_log_type_enabled(os_log, destructiveLogType))
   {
     v6 = os_log;
-    v7 = [a3 contactIdentifier];
+    contactIdentifier = [event contactIdentifier];
     v8 = 138543362;
-    v9 = v7;
+    v9 = contactIdentifier;
     _os_log_impl(&dword_1954A0000, v6, destructiveLogType, " - Delete %{public}@", &v8, 0xCu);
   }
 }
 
-- (void)visitAddGroupEvent:(id)a3
+- (void)visitAddGroupEvent:(id)event
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 containerIdentifier];
+  eventCopy = event;
+  containerIdentifier = [eventCopy containerIdentifier];
 
   os_log = self->_os_log;
   defaultLogType = self->_defaultLogType;
   v8 = os_log_type_enabled(os_log, defaultLogType);
-  if (v5)
+  if (containerIdentifier)
   {
     if (v8)
     {
       v9 = os_log;
-      v10 = [v4 group];
-      v11 = [v10 identifier];
-      v12 = [v4 containerIdentifier];
+      group = [eventCopy group];
+      identifier = [group identifier];
+      containerIdentifier2 = [eventCopy containerIdentifier];
       v13 = 138543618;
-      v14 = v11;
+      v14 = identifier;
       v15 = 2114;
-      v16 = v12;
+      v16 = containerIdentifier2;
       _os_log_impl(&dword_1954A0000, v9, defaultLogType, " - Add %{public}@ (container: %{public}@", &v13, 0x16u);
 
 LABEL_6:
@@ -419,16 +419,16 @@ LABEL_6:
   else if (v8)
   {
     v9 = os_log;
-    v10 = [v4 group];
-    v11 = [v10 identifier];
+    group = [eventCopy group];
+    identifier = [group identifier];
     v13 = 138543362;
-    v14 = v11;
+    v14 = identifier;
     _os_log_impl(&dword_1954A0000, v9, defaultLogType, " - Add %{public}@", &v13, 0xCu);
     goto LABEL_6;
   }
 }
 
-- (void)visitUpdateGroupEvent:(id)a3
+- (void)visitUpdateGroupEvent:(id)event
 {
   v11 = *MEMORY[0x1E69E9840];
   os_log = self->_os_log;
@@ -436,15 +436,15 @@ LABEL_6:
   if (os_log_type_enabled(os_log, defaultLogType))
   {
     v6 = os_log;
-    v7 = [a3 group];
-    v8 = [v7 identifier];
+    group = [event group];
+    identifier = [group identifier];
     v9 = 138543362;
-    v10 = v8;
+    v10 = identifier;
     _os_log_impl(&dword_1954A0000, v6, defaultLogType, " - Update %{public}@", &v9, 0xCu);
   }
 }
 
-- (void)visitDeleteGroupEvent:(id)a3
+- (void)visitDeleteGroupEvent:(id)event
 {
   v10 = *MEMORY[0x1E69E9840];
   os_log = self->_os_log;
@@ -452,14 +452,14 @@ LABEL_6:
   if (os_log_type_enabled(os_log, destructiveLogType))
   {
     v6 = os_log;
-    v7 = [a3 groupIdentifier];
+    groupIdentifier = [event groupIdentifier];
     v8 = 138543362;
-    v9 = v7;
+    v9 = groupIdentifier;
     _os_log_impl(&dword_1954A0000, v6, destructiveLogType, " - Delete %{public}@", &v8, 0xCu);
   }
 }
 
-- (void)visitAddMemberToGroupEvent:(id)a3
+- (void)visitAddMemberToGroupEvent:(id)event
 {
   v16 = *MEMORY[0x1E69E9840];
   os_log = self->_os_log;
@@ -467,21 +467,21 @@ LABEL_6:
   if (os_log_type_enabled(os_log, defaultLogType))
   {
     v6 = os_log;
-    v7 = a3;
-    v8 = [v7 member];
-    v9 = [v8 identifier];
-    v10 = [v7 group];
+    eventCopy = event;
+    member = [eventCopy member];
+    identifier = [member identifier];
+    group = [eventCopy group];
 
-    v11 = [v10 identifier];
+    identifier2 = [group identifier];
     v12 = 138543618;
-    v13 = v9;
+    v13 = identifier;
     v14 = 2114;
-    v15 = v11;
+    v15 = identifier2;
     _os_log_impl(&dword_1954A0000, v6, defaultLogType, " - Add %{public}@ to %{public}@", &v12, 0x16u);
   }
 }
 
-- (void)visitRemoveMemberFromGroupEvent:(id)a3
+- (void)visitRemoveMemberFromGroupEvent:(id)event
 {
   v16 = *MEMORY[0x1E69E9840];
   os_log = self->_os_log;
@@ -489,21 +489,21 @@ LABEL_6:
   if (os_log_type_enabled(os_log, defaultLogType))
   {
     v6 = os_log;
-    v7 = a3;
-    v8 = [v7 member];
-    v9 = [v8 identifier];
-    v10 = [v7 group];
+    eventCopy = event;
+    member = [eventCopy member];
+    identifier = [member identifier];
+    group = [eventCopy group];
 
-    v11 = [v10 identifier];
+    identifier2 = [group identifier];
     v12 = 138543618;
-    v13 = v9;
+    v13 = identifier;
     v14 = 2114;
-    v15 = v11;
+    v15 = identifier2;
     _os_log_impl(&dword_1954A0000, v6, defaultLogType, " - Remove %{public}@ from %{public}@", &v12, 0x16u);
   }
 }
 
-- (void)visitAddSubgroupToGroupEvent:(id)a3
+- (void)visitAddSubgroupToGroupEvent:(id)event
 {
   v16 = *MEMORY[0x1E69E9840];
   os_log = self->_os_log;
@@ -511,21 +511,21 @@ LABEL_6:
   if (os_log_type_enabled(os_log, defaultLogType))
   {
     v6 = os_log;
-    v7 = a3;
-    v8 = [v7 subgroup];
-    v9 = [v8 identifier];
-    v10 = [v7 group];
+    eventCopy = event;
+    subgroup = [eventCopy subgroup];
+    identifier = [subgroup identifier];
+    group = [eventCopy group];
 
-    v11 = [v10 identifier];
+    identifier2 = [group identifier];
     v12 = 138543618;
-    v13 = v9;
+    v13 = identifier;
     v14 = 2114;
-    v15 = v11;
+    v15 = identifier2;
     _os_log_impl(&dword_1954A0000, v6, defaultLogType, " - Add %{public}@ to %{public}@", &v12, 0x16u);
   }
 }
 
-- (void)visitRemoveSubgroupFromGroupEvent:(id)a3
+- (void)visitRemoveSubgroupFromGroupEvent:(id)event
 {
   v16 = *MEMORY[0x1E69E9840];
   os_log = self->_os_log;
@@ -533,21 +533,21 @@ LABEL_6:
   if (os_log_type_enabled(os_log, defaultLogType))
   {
     v6 = os_log;
-    v7 = a3;
-    v8 = [v7 subgroup];
-    v9 = [v8 identifier];
-    v10 = [v7 group];
+    eventCopy = event;
+    subgroup = [eventCopy subgroup];
+    identifier = [subgroup identifier];
+    group = [eventCopy group];
 
-    v11 = [v10 identifier];
+    identifier2 = [group identifier];
     v12 = 138543618;
-    v13 = v9;
+    v13 = identifier;
     v14 = 2114;
-    v15 = v11;
+    v15 = identifier2;
     _os_log_impl(&dword_1954A0000, v6, defaultLogType, " - Remove %{public}@ from %{public}@", &v12, 0x16u);
   }
 }
 
-- (void)visitLinkContactsEvent:(id)a3
+- (void)visitLinkContactsEvent:(id)event
 {
   v16 = *MEMORY[0x1E69E9840];
   os_log = self->_os_log;
@@ -555,21 +555,21 @@ LABEL_6:
   if (os_log_type_enabled(os_log, defaultLogType))
   {
     v6 = os_log;
-    v7 = a3;
-    v8 = [v7 fromContact];
-    v9 = [v8 identifier];
-    v10 = [v7 toContact];
+    eventCopy = event;
+    fromContact = [eventCopy fromContact];
+    identifier = [fromContact identifier];
+    toContact = [eventCopy toContact];
 
-    v11 = [v10 identifier];
+    identifier2 = [toContact identifier];
     v12 = 138543618;
-    v13 = v9;
+    v13 = identifier;
     v14 = 2114;
-    v15 = v11;
+    v15 = identifier2;
     _os_log_impl(&dword_1954A0000, v6, defaultLogType, " - Link %{public}@ with %{public}@", &v12, 0x16u);
   }
 }
 
-- (void)visitUnlinkContactEvent:(id)a3
+- (void)visitUnlinkContactEvent:(id)event
 {
   v11 = *MEMORY[0x1E69E9840];
   os_log = self->_os_log;
@@ -577,15 +577,15 @@ LABEL_6:
   if (os_log_type_enabled(os_log, defaultLogType))
   {
     v6 = os_log;
-    v7 = [a3 contact];
-    v8 = [v7 identifier];
+    contact = [event contact];
+    identifier = [contact identifier];
     v9 = 138543362;
-    v10 = v8;
+    v10 = identifier;
     _os_log_impl(&dword_1954A0000, v6, defaultLogType, " - Unlink %{public}@", &v9, 0xCu);
   }
 }
 
-- (void)visitPreferredContactForNameEvent:(id)a3
+- (void)visitPreferredContactForNameEvent:(id)event
 {
   v11 = *MEMORY[0x1E69E9840];
   os_log = self->_os_log;
@@ -593,15 +593,15 @@ LABEL_6:
   if (os_log_type_enabled(os_log, defaultLogType))
   {
     v6 = os_log;
-    v7 = [a3 preferredContact];
-    v8 = [v7 identifier];
+    preferredContact = [event preferredContact];
+    identifier = [preferredContact identifier];
     v9 = 138543362;
-    v10 = v8;
+    v10 = identifier;
     _os_log_impl(&dword_1954A0000, v6, defaultLogType, " - Prefer %{public}@ for name", &v9, 0xCu);
   }
 }
 
-- (void)visitPreferredContactForImageEvent:(id)a3
+- (void)visitPreferredContactForImageEvent:(id)event
 {
   v11 = *MEMORY[0x1E69E9840];
   os_log = self->_os_log;
@@ -609,15 +609,15 @@ LABEL_6:
   if (os_log_type_enabled(os_log, defaultLogType))
   {
     v6 = os_log;
-    v7 = [a3 preferredContact];
-    v8 = [v7 identifier];
+    preferredContact = [event preferredContact];
+    identifier = [preferredContact identifier];
     v9 = 138543362;
-    v10 = v8;
+    v10 = identifier;
     _os_log_impl(&dword_1954A0000, v6, defaultLogType, " - Prefer %{public}@ for images", &v9, 0xCu);
   }
 }
 
-- (void)visitDifferentMeCardEvent:(id)a3
+- (void)visitDifferentMeCardEvent:(id)event
 {
   v10 = *MEMORY[0x1E69E9840];
   os_log = self->_os_log;
@@ -625,9 +625,9 @@ LABEL_6:
   if (os_log_type_enabled(os_log, destructiveLogType))
   {
     v6 = os_log;
-    v7 = [a3 contactIdentifier];
+    contactIdentifier = [event contactIdentifier];
     v8 = 138543362;
-    v9 = v7;
+    v9 = contactIdentifier;
     _os_log_impl(&dword_1954A0000, v6, destructiveLogType, " - Set Me Card to %{public}@", &v8, 0xCu);
   }
 }

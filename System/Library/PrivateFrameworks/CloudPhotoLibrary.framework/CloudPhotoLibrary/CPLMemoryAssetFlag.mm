@@ -1,31 +1,31 @@
 @interface CPLMemoryAssetFlag
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsCustomUserAsset:(BOOL)a3;
-- (void)setHasIsExtendedCurated:(BOOL)a3;
-- (void)setHasIsKeyAsset:(BOOL)a3;
-- (void)setHasIsMovieCurated:(BOOL)a3;
-- (void)setHasIsRepresentative:(BOOL)a3;
-- (void)setHasIsUserCurated:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsCustomUserAsset:(BOOL)asset;
+- (void)setHasIsExtendedCurated:(BOOL)curated;
+- (void)setHasIsKeyAsset:(BOOL)asset;
+- (void)setHasIsMovieCurated:(BOOL)curated;
+- (void)setHasIsRepresentative:(BOOL)representative;
+- (void)setHasIsUserCurated:(BOOL)curated;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CPLMemoryAssetFlag
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4[16];
+  fromCopy = from;
+  v5 = fromCopy[16];
   if ((v5 & 0x20) != 0)
   {
-    self->_isRepresentative = v4[13];
+    self->_isRepresentative = fromCopy[13];
     *&self->_has |= 0x20u;
-    v5 = v4[16];
+    v5 = fromCopy[16];
     if (!v5)
     {
 LABEL_3:
@@ -38,14 +38,14 @@ LABEL_3:
     }
   }
 
-  else if (!v4[16])
+  else if (!fromCopy[16])
   {
     goto LABEL_3;
   }
 
-  self->_isCurated = v4[8];
+  self->_isCurated = fromCopy[8];
   *&self->_has |= 1u;
-  v5 = v4[16];
+  v5 = fromCopy[16];
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -58,9 +58,9 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_isMovieCurated = v4[12];
+  self->_isMovieCurated = fromCopy[12];
   *&self->_has |= 0x10u;
-  v5 = v4[16];
+  v5 = fromCopy[16];
   if ((v5 & 8) == 0)
   {
 LABEL_5:
@@ -73,9 +73,9 @@ LABEL_5:
   }
 
 LABEL_15:
-  self->_isKeyAsset = v4[11];
+  self->_isKeyAsset = fromCopy[11];
   *&self->_has |= 8u;
-  v5 = v4[16];
+  v5 = fromCopy[16];
   if ((v5 & 4) == 0)
   {
 LABEL_6:
@@ -88,9 +88,9 @@ LABEL_6:
   }
 
 LABEL_16:
-  self->_isExtendedCurated = v4[10];
+  self->_isExtendedCurated = fromCopy[10];
   *&self->_has |= 4u;
-  v5 = v4[16];
+  v5 = fromCopy[16];
   if ((v5 & 0x40) == 0)
   {
 LABEL_7:
@@ -103,12 +103,12 @@ LABEL_7:
   }
 
 LABEL_17:
-  self->_isUserCurated = v4[14];
+  self->_isUserCurated = fromCopy[14];
   *&self->_has |= 0x40u;
-  if ((v4[16] & 2) != 0)
+  if ((fromCopy[16] & 2) != 0)
   {
 LABEL_8:
-    self->_isCustomUserAsset = v4[9];
+    self->_isCustomUserAsset = fromCopy[9];
     *&self->_has |= 2u;
   }
 
@@ -211,152 +211,152 @@ LABEL_8:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((v4[16] & 0x20) == 0)
+    if ((equalCopy[16] & 0x20) == 0)
     {
       goto LABEL_56;
     }
 
-    v6 = v4[13];
+    v6 = equalCopy[13];
     if (self->_isRepresentative)
     {
-      if ((v4[13] & 1) == 0)
+      if ((equalCopy[13] & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (v4[13])
+    else if (equalCopy[13])
     {
       goto LABEL_56;
     }
   }
 
-  else if ((v4[16] & 0x20) != 0)
+  else if ((equalCopy[16] & 0x20) != 0)
   {
     goto LABEL_56;
   }
 
   if (*&self->_has)
   {
-    if ((v4[16] & 1) == 0)
+    if ((equalCopy[16] & 1) == 0)
     {
       goto LABEL_56;
     }
 
-    v7 = v4[8];
+    v7 = equalCopy[8];
     if (self->_isCurated)
     {
-      if ((v4[8] & 1) == 0)
+      if ((equalCopy[8] & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (v4[8])
+    else if (equalCopy[8])
     {
       goto LABEL_56;
     }
   }
 
-  else if (v4[16])
+  else if (equalCopy[16])
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((v4[16] & 0x10) == 0)
+    if ((equalCopy[16] & 0x10) == 0)
     {
       goto LABEL_56;
     }
 
-    v8 = v4[12];
+    v8 = equalCopy[12];
     if (self->_isMovieCurated)
     {
-      if ((v4[12] & 1) == 0)
+      if ((equalCopy[12] & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (v4[12])
+    else if (equalCopy[12])
     {
       goto LABEL_56;
     }
   }
 
-  else if ((v4[16] & 0x10) != 0)
+  else if ((equalCopy[16] & 0x10) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((v4[16] & 8) == 0)
+    if ((equalCopy[16] & 8) == 0)
     {
       goto LABEL_56;
     }
 
-    v9 = v4[11];
+    v9 = equalCopy[11];
     if (self->_isKeyAsset)
     {
-      if ((v4[11] & 1) == 0)
+      if ((equalCopy[11] & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (v4[11])
+    else if (equalCopy[11])
     {
       goto LABEL_56;
     }
   }
 
-  else if ((v4[16] & 8) != 0)
+  else if ((equalCopy[16] & 8) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((v4[16] & 4) == 0)
+    if ((equalCopy[16] & 4) == 0)
     {
       goto LABEL_56;
     }
 
-    v10 = v4[10];
+    v10 = equalCopy[10];
     if (self->_isExtendedCurated)
     {
-      if ((v4[10] & 1) == 0)
+      if ((equalCopy[10] & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (v4[10])
+    else if (equalCopy[10])
     {
       goto LABEL_56;
     }
   }
 
-  else if ((v4[16] & 4) != 0)
+  else if ((equalCopy[16] & 4) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 0x40) == 0)
   {
-    if ((v4[16] & 0x40) == 0)
+    if ((equalCopy[16] & 0x40) == 0)
     {
       goto LABEL_14;
     }
@@ -366,40 +366,40 @@ LABEL_56:
     goto LABEL_57;
   }
 
-  if ((v4[16] & 0x40) == 0)
+  if ((equalCopy[16] & 0x40) == 0)
   {
     goto LABEL_56;
   }
 
-  v11 = v4[14];
+  v11 = equalCopy[14];
   if (self->_isUserCurated)
   {
-    if ((v4[14] & 1) == 0)
+    if ((equalCopy[14] & 1) == 0)
     {
       goto LABEL_56;
     }
   }
 
-  else if (v4[14])
+  else if (equalCopy[14])
   {
     goto LABEL_56;
   }
 
 LABEL_14:
-  v5 = (v4[16] & 2) == 0;
+  v5 = (equalCopy[16] & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[16] & 2) != 0)
+    if ((equalCopy[16] & 2) != 0)
     {
       if (self->_isCustomUserAsset)
       {
-        if (v4[9])
+        if (equalCopy[9])
         {
           goto LABEL_58;
         }
       }
 
-      else if (!v4[9])
+      else if (!equalCopy[9])
       {
 LABEL_58:
         v5 = 1;
@@ -415,9 +415,9 @@ LABEL_57:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -514,14 +514,14 @@ LABEL_8:
   return result;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    v4[13] = self->_isRepresentative;
-    v4[16] |= 0x20u;
+    toCopy[13] = self->_isRepresentative;
+    toCopy[16] |= 0x20u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -540,8 +540,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[8] = self->_isCurated;
-  v4[16] |= 1u;
+  toCopy[8] = self->_isCurated;
+  toCopy[16] |= 1u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -555,8 +555,8 @@ LABEL_4:
   }
 
 LABEL_14:
-  v4[12] = self->_isMovieCurated;
-  v4[16] |= 0x10u;
+  toCopy[12] = self->_isMovieCurated;
+  toCopy[16] |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -570,8 +570,8 @@ LABEL_5:
   }
 
 LABEL_15:
-  v4[11] = self->_isKeyAsset;
-  v4[16] |= 8u;
+  toCopy[11] = self->_isKeyAsset;
+  toCopy[16] |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -585,8 +585,8 @@ LABEL_6:
   }
 
 LABEL_16:
-  v4[10] = self->_isExtendedCurated;
-  v4[16] |= 4u;
+  toCopy[10] = self->_isExtendedCurated;
+  toCopy[16] |= 4u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -600,21 +600,21 @@ LABEL_7:
   }
 
 LABEL_17:
-  v4[14] = self->_isUserCurated;
-  v4[16] |= 0x40u;
+  toCopy[14] = self->_isUserCurated;
+  toCopy[16] |= 0x40u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_8:
-    v4[9] = self->_isCustomUserAsset;
-    v4[16] |= 2u;
+    toCopy[9] = self->_isCustomUserAsset;
+    toCopy[16] |= 2u;
   }
 
 LABEL_9:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -712,12 +712,12 @@ LABEL_9:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_isRepresentative];
-    [v3 setObject:v7 forKey:@"isRepresentative"];
+    [dictionary setObject:v7 forKey:@"isRepresentative"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -738,7 +738,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_isCurated];
-  [v3 setObject:v8 forKey:@"isCurated"];
+  [dictionary setObject:v8 forKey:@"isCurated"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -754,7 +754,7 @@ LABEL_4:
 
 LABEL_14:
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_isMovieCurated];
-  [v3 setObject:v9 forKey:@"isMovieCurated"];
+  [dictionary setObject:v9 forKey:@"isMovieCurated"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -770,7 +770,7 @@ LABEL_5:
 
 LABEL_15:
   v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_isKeyAsset];
-  [v3 setObject:v10 forKey:@"isKeyAsset"];
+  [dictionary setObject:v10 forKey:@"isKeyAsset"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -786,7 +786,7 @@ LABEL_6:
 
 LABEL_16:
   v11 = [MEMORY[0x1E696AD98] numberWithBool:self->_isExtendedCurated];
-  [v3 setObject:v11 forKey:@"isExtendedCurated"];
+  [dictionary setObject:v11 forKey:@"isExtendedCurated"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -802,18 +802,18 @@ LABEL_7:
 
 LABEL_17:
   v12 = [MEMORY[0x1E696AD98] numberWithBool:self->_isUserCurated];
-  [v3 setObject:v12 forKey:@"isUserCurated"];
+  [dictionary setObject:v12 forKey:@"isUserCurated"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_8:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_isCustomUserAsset];
-    [v3 setObject:v5 forKey:@"isCustomUserAsset"];
+    [dictionary setObject:v5 forKey:@"isCustomUserAsset"];
   }
 
 LABEL_9:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -822,15 +822,15 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = CPLMemoryAssetFlag;
   v4 = [(CPLMemoryAssetFlag *)&v8 description];
-  v5 = [(CPLMemoryAssetFlag *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(CPLMemoryAssetFlag *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasIsCustomUserAsset:(BOOL)a3
+- (void)setHasIsCustomUserAsset:(BOOL)asset
 {
-  if (a3)
+  if (asset)
   {
     v3 = 2;
   }
@@ -843,9 +843,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsUserCurated:(BOOL)a3
+- (void)setHasIsUserCurated:(BOOL)curated
 {
-  if (a3)
+  if (curated)
   {
     v3 = 64;
   }
@@ -858,9 +858,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasIsExtendedCurated:(BOOL)a3
+- (void)setHasIsExtendedCurated:(BOOL)curated
 {
-  if (a3)
+  if (curated)
   {
     v3 = 4;
   }
@@ -873,9 +873,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsKeyAsset:(BOOL)a3
+- (void)setHasIsKeyAsset:(BOOL)asset
 {
-  if (a3)
+  if (asset)
   {
     v3 = 8;
   }
@@ -888,9 +888,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsMovieCurated:(BOOL)a3
+- (void)setHasIsMovieCurated:(BOOL)curated
 {
-  if (a3)
+  if (curated)
   {
     v3 = 16;
   }
@@ -903,9 +903,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasIsRepresentative:(BOOL)a3
+- (void)setHasIsRepresentative:(BOOL)representative
 {
-  if (a3)
+  if (representative)
   {
     v3 = 32;
   }

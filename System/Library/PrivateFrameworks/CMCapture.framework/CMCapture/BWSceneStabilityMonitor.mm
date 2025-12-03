@@ -2,10 +2,10 @@
 - (BWSceneStabilityMonitor)init;
 - (_BYTE)_updateAFStatusFromMetadata:(_BYTE *)result;
 - (uint64_t)_calculateStabilityWithAEMatrixFromMetadata:(uint64_t)result;
-- (uint64_t)_calculateStabilityWithSceneMotionForPixelBuffer:(uint64_t)a1 pts:(CVPixelBufferRef)pixelBuffer;
+- (uint64_t)_calculateStabilityWithSceneMotionForPixelBuffer:(uint64_t)buffer pts:(CVPixelBufferRef)pixelBuffer;
 - (void)_resetAEMatrixStorage;
 - (void)_resetPixelSumStorage;
-- (void)calculateStabilityWithPixelBuffer:(__CVBuffer *)a3 pts:(id *)a4 metadataDictionary:(id)a5 forceSceneMotion:(BOOL)a6;
+- (void)calculateStabilityWithPixelBuffer:(__CVBuffer *)buffer pts:(id *)pts metadataDictionary:(id)dictionary forceSceneMotion:(BOOL)motion;
 - (void)dealloc;
 - (void)reset;
 @end
@@ -47,50 +47,50 @@
 
 - (void)_resetPixelSumStorage
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 136);
+    v2 = *(self + 136);
     if (v2)
     {
-      *(a1 + 136) = 0;
+      *(self + 136) = 0;
       free(v2);
     }
 
-    v3 = *(a1 + 144);
+    v3 = *(self + 144);
     if (v3)
     {
-      *(a1 + 144) = 0;
+      *(self + 144) = 0;
       free(v3);
     }
 
-    *(a1 + 152) = 0;
-    *(a1 + 156) = 0;
-    *(a1 + 112) = 0;
-    *(a1 + 120) = 0;
+    *(self + 152) = 0;
+    *(self + 156) = 0;
+    *(self + 112) = 0;
+    *(self + 120) = 0;
   }
 }
 
 - (void)_resetAEMatrixStorage
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 80);
+    v2 = *(self + 80);
     if (v2)
     {
-      *(a1 + 80) = 0;
+      *(self + 80) = 0;
       free(v2);
     }
 
-    v3 = *(a1 + 88);
+    v3 = *(self + 88);
     if (v3)
     {
-      *(a1 + 88) = 0;
+      *(self + 88) = 0;
       free(v3);
     }
 
-    *(a1 + 108) = 0;
-    *(a1 + 96) = 0;
-    *(a1 + 104) = 0;
+    *(self + 108) = 0;
+    *(self + 96) = 0;
+    *(self + 104) = 0;
   }
 }
 
@@ -102,17 +102,17 @@
   [(BWSceneStabilityMonitor *)&v3 dealloc];
 }
 
-- (void)calculateStabilityWithPixelBuffer:(__CVBuffer *)a3 pts:(id *)a4 metadataDictionary:(id)a5 forceSceneMotion:(BOOL)a6
+- (void)calculateStabilityWithPixelBuffer:(__CVBuffer *)buffer pts:(id *)pts metadataDictionary:(id)dictionary forceSceneMotion:(BOOL)motion
 {
-  v6 = a6;
-  v11 = [(BWSceneStabilityMonitor *)self _calculateStabilityWithAEMatrixFromMetadata:a5];
+  motionCopy = motion;
+  v11 = [(BWSceneStabilityMonitor *)self _calculateStabilityWithAEMatrixFromMetadata:dictionary];
   memset(&v25, 0, sizeof(v25));
-  lhs = *a4;
+  lhs = *pts;
   lastPTS = self->_pixelSumStorage.lastPTS;
   CMTimeSubtract(&v25, &lhs, &lastPTS);
   if (v11)
   {
-    if (!v6)
+    if (!motionCopy)
     {
       v12 = 0;
 LABEL_12:
@@ -126,14 +126,14 @@ LABEL_12:
   {
     CMTimeMakeWithSeconds(&lhs, 0.1, 1000);
     lastPTS = v25;
-    if (CMTimeCompare(&lastPTS, &lhs) <= 0 && !v6)
+    if (CMTimeCompare(&lastPTS, &lhs) <= 0 && !motionCopy)
     {
       v12 = 0;
       goto LABEL_7;
     }
   }
 
-  v12 = [BWSceneStabilityMonitor _calculateStabilityWithSceneMotionForPixelBuffer:a3 pts:?];
+  v12 = [BWSceneStabilityMonitor _calculateStabilityWithSceneMotionForPixelBuffer:buffer pts:?];
   if ((v11 & v12) == 1)
   {
     sceneStable = self->_aeMatrixStorage.sceneStable && self->_pixelSumStorage.sceneStable;
@@ -184,8 +184,8 @@ LABEL_18:
     }
 
     v18 = self + v17;
-    v19 = *&a4->var0;
-    *(v18 + 2) = a4->var3;
+    v19 = *&pts->var0;
+    *(v18 + 2) = pts->var3;
     *v18 = v19;
     v20 = MEMORY[0x1E6960C70];
     v21 = self + v16;
@@ -202,7 +202,7 @@ LABEL_18:
 
   *&self->_sceneMotionOffsetX = v22;
   self->_processedSceneMotion = v12;
-  [(BWSceneStabilityMonitor *)self _updateAFStatusFromMetadata:a5];
+  [(BWSceneStabilityMonitor *)self _updateAFStatusFromMetadata:dictionary];
 }
 
 - (uint64_t)_calculateStabilityWithAEMatrixFromMetadata:(uint64_t)result
@@ -219,7 +219,7 @@ LABEL_18:
         v26 = 0;
         v4 = malloc_type_malloc(0x200uLL, 0x1000040BDFB0063uLL);
         bzero(v4, 0x200uLL);
-        v5 = [v3 bytes];
+        bytes = [v3 bytes];
         v6 = 0;
         v7 = v4;
         do
@@ -228,7 +228,7 @@ LABEL_18:
           v9 = v7;
           do
           {
-            v10 = *v5++;
+            v10 = *bytes++;
             v9->i16[0] = v10;
             v9 = (v9 + 2);
             --v8;
@@ -323,10 +323,10 @@ LABEL_18:
   return result;
 }
 
-- (uint64_t)_calculateStabilityWithSceneMotionForPixelBuffer:(uint64_t)a1 pts:(CVPixelBufferRef)pixelBuffer
+- (uint64_t)_calculateStabilityWithSceneMotionForPixelBuffer:(uint64_t)buffer pts:(CVPixelBufferRef)pixelBuffer
 {
   result = 0;
-  if (!a1 || !pixelBuffer)
+  if (!buffer || !pixelBuffer)
   {
     return result;
   }
@@ -339,11 +339,11 @@ LABEL_18:
   v12 = v11;
   v13 = v9;
   v14 = v11;
-  if (*(a1 + 128) != __PAIR64__(v9, v11))
+  if (*(buffer + 128) != __PAIR64__(v9, v11))
   {
-    [(BWSceneStabilityMonitor *)a1 _resetPixelSumStorage];
-    *(a1 + 128) = v14;
-    *(a1 + 132) = v13;
+    [(BWSceneStabilityMonitor *)buffer _resetPixelSumStorage];
+    *(buffer + 128) = v14;
+    *(buffer + 132) = v13;
   }
 
   v31 = 0;
@@ -358,53 +358,53 @@ LABEL_18:
 
   else
   {
-    v21 = *(a1 + 136);
+    v21 = *(buffer + 136);
     if (!v21)
     {
 LABEL_16:
-      v30 = *(a1 + 144);
+      v30 = *(buffer + 144);
       if (v30)
       {
-        *(a1 + 144) = 0;
+        *(buffer + 144) = 0;
         free(v30);
       }
 
-      *(a1 + 136) = v15;
-      *(a1 + 144) = v16;
+      *(buffer + 136) = v15;
+      *(buffer + 144) = v16;
       return 1;
     }
 
-    if (!*(a1 + 144))
+    if (!*(buffer + 144))
     {
 LABEL_15:
-      *(a1 + 136) = 0;
+      *(buffer + 136) = 0;
       free(v21);
       goto LABEL_16;
     }
 
-    if (!OUTLINED_FUNCTION_1_124(v15, v21, v14, v17, v18, v19, &v32, v20, &v31) && !OUTLINED_FUNCTION_1_124(v16, *(a1 + 144), v13, v22, v23, v24, &v32 + 1, v25, &v31 + 1))
+    if (!OUTLINED_FUNCTION_1_124(v15, v21, v14, v17, v18, v19, &v32, v20, &v31) && !OUTLINED_FUNCTION_1_124(v16, *(buffer + 144), v13, v22, v23, v24, &v32 + 1, v25, &v31 + 1))
     {
       v26 = v32;
-      *(a1 + 112) = HIDWORD(v32);
-      *(a1 + 116) = v26;
+      *(buffer + 112) = HIDWORD(v32);
+      *(buffer + 116) = v26;
       v28 = *(&v31 + 1);
       v27 = *&v31;
-      *(a1 + 120) = HIDWORD(v31);
-      *(a1 + 124) = v27;
+      *(buffer + 120) = HIDWORD(v31);
+      *(buffer + 124) = v27;
       v29 = v28 > 0.1;
       if (v27 <= 0.1)
       {
         v29 = 0;
       }
 
-      *(a1 + 152) = v29;
+      *(buffer + 152) = v29;
       if (v28 < v27)
       {
         v27 = v28;
       }
 
-      *(a1 + 156) = v27;
-      v21 = *(a1 + 136);
+      *(buffer + 156) = v27;
+      v21 = *(buffer + 136);
       if (!v21)
       {
         goto LABEL_16;

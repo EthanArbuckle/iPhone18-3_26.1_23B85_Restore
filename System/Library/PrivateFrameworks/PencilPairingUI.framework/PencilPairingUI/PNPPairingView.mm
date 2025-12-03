@@ -1,20 +1,20 @@
 @interface PNPPairingView
-- (CGAffineTransform)_pencilTransformForState:(SEL)a3 deviceState:(unint64_t)a4;
-- (CGSize)_intrinsicContentSizeForState:(unint64_t)a3 deviceState:(id)a4;
-- (CGSize)_pencilSizeForState:(unint64_t)a3;
+- (CGAffineTransform)_pencilTransformForState:(SEL)state deviceState:(unint64_t)deviceState;
+- (CGSize)_intrinsicContentSizeForState:(unint64_t)state deviceState:(id)deviceState;
+- (CGSize)_pencilSizeForState:(unint64_t)state;
 - (CGSize)intrinsicContentSize;
-- (PNPPairingView)initWithFrame:(CGRect)a3;
+- (PNPPairingView)initWithFrame:(CGRect)frame;
 - (PNPPairingViewDelegate)delegate;
-- (id)backgroundColorForWizardController:(id)a3;
+- (id)backgroundColorForWizardController:(id)controller;
 - (void)layoutSubviews;
-- (void)setChargingStatusView:(id)a3;
-- (void)setDeviceState:(id)a3;
-- (void)setShowWizardContents:(BOOL)a3;
-- (void)setState:(unint64_t)a3;
+- (void)setChargingStatusView:(id)view;
+- (void)setDeviceState:(id)state;
+- (void)setShowWizardContents:(BOOL)contents;
+- (void)setState:(unint64_t)state;
 - (void)transitionToWizard;
 - (void)unhideWizardIfNecessary;
 - (void)wizardTransitionFinished;
-- (void)wizardViewRequestsDismiss:(id)a3;
+- (void)wizardViewRequestsDismiss:(id)dismiss;
 @end
 
 @implementation PNPPairingView
@@ -22,29 +22,29 @@
 - (void)layoutSubviews
 {
   pencilView = self->_pencilView;
-  v4 = [(PNPPairingView *)self deviceState];
-  [(PNPPencilView *)pencilView setDeviceState:v4];
+  deviceState = [(PNPPairingView *)self deviceState];
+  [(PNPPencilView *)pencilView setDeviceState:deviceState];
 
   [(PNPPairingView *)self bounds];
   v5 = MEMORY[0x277CBF3A0];
   v6 = *MEMORY[0x277CBF3A0];
   v7 = *(MEMORY[0x277CBF3A0] + 8);
-  v8 = [(PNPPairingView *)self deviceState];
-  [(PNPPairingView *)self _intrinsicContentSizeForState:1 deviceState:v8];
+  deviceState2 = [(PNPPairingView *)self deviceState];
+  [(PNPPairingView *)self _intrinsicContentSizeForState:1 deviceState:deviceState2];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(PNPWizardViewController *)self->_wizardViewController view];
-  [v13 setFrame:{v6, v7, v10, v12}];
+  view = [(PNPWizardViewController *)self->_wizardViewController view];
+  [view setFrame:{v6, v7, v10, v12}];
 
-  v14 = [(PNPPairingView *)self state];
-  v15 = [(PNPPairingView *)self deviceState];
-  if (v14 == 1 || (v16 = 1.0, [(PNPPairingView *)self showsChargingStatusView]))
+  state = [(PNPPairingView *)self state];
+  deviceState3 = [(PNPPairingView *)self deviceState];
+  if (state == 1 || (v16 = 1.0, [(PNPPairingView *)self showsChargingStatusView]))
   {
     v16 = 0.0;
   }
 
-  if (v14)
+  if (state)
   {
     if (self->_finishedWizardTransition)
     {
@@ -56,13 +56,13 @@
 
     else
     {
-      [(PNPPairingView *)self _pencilSizeForState:v14];
+      [(PNPPairingView *)self _pencilSizeForState:state];
       v26 = v25;
       v28 = v27;
       x = self->_pencilSpinningRect.origin.x;
       y = self->_pencilSpinningRect.origin.y;
-      v31 = [(PNPWizardViewController *)self->_wizardViewController view];
-      [(PNPPairingView *)self convertRect:v31 fromView:x, y, v26, v28];
+      view2 = [(PNPWizardViewController *)self->_wizardViewController view];
+      [(PNPPairingView *)self convertRect:view2 fromView:x, y, v26, v28];
       v20 = v32;
       v19 = v33;
       v17 = v34;
@@ -84,9 +84,9 @@
     self->_pencilSpinningRect.size.height = v24;
   }
 
-  [(PNPPencilView *)self->_pencilView setSpinning:v14 == 0];
+  [(PNPPencilView *)self->_pencilView setSpinning:state == 0];
   [(PNPPencilView *)self->_pencilView setAlpha:v16];
-  v36 = [(PNPWizardViewController *)self->_wizardViewController view];
+  view3 = [(PNPWizardViewController *)self->_wizardViewController view];
   if ([(PNPPairingView *)self showsChargingStatusView])
   {
     v37 = 0.0;
@@ -97,7 +97,7 @@
     v37 = 1.0;
   }
 
-  [v36 setAlpha:v37];
+  [view3 setAlpha:v37];
 
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
@@ -109,10 +109,10 @@
   [(PNPPencilView *)v38 setTransform:v53];
   [(PNPPencilView *)self->_pencilView setFrame:v20, v19, v17, v18];
   v40 = self->_pencilView;
-  [(PNPPairingView *)self _pencilTransformForState:v14 deviceState:v15];
+  [(PNPPairingView *)self _pencilTransformForState:state deviceState:deviceState3];
   [(PNPPencilView *)v40 setTransform:v53];
   [MEMORY[0x277CD9FF0] commit];
-  v41 = [(PNPPairingView *)self chargingStatusView];
+  chargingStatusView = [(PNPPairingView *)self chargingStatusView];
   if ([(PNPPairingView *)self showsChargingStatusView])
   {
     v42 = 1.0;
@@ -123,10 +123,10 @@
     v42 = 0.0;
   }
 
-  [v41 setAlpha:v42];
+  [chargingStatusView setAlpha:v42];
 
-  v43 = [(PNPPairingView *)self chargingStatusView];
-  [v43 intrinsicContentSize];
+  chargingStatusView2 = [(PNPPairingView *)self chargingStatusView];
+  [chargingStatusView2 intrinsicContentSize];
 
   [(PNPPairingView *)self bounds];
   UIRectCenteredIntegralRect();
@@ -134,13 +134,13 @@
   v47 = v46;
   v49 = v48;
   v51 = v50;
-  v52 = [(PNPPairingView *)self chargingStatusView];
-  [v52 setFrame:{v45, v47, v49, v51}];
+  chargingStatusView3 = [(PNPPairingView *)self chargingStatusView];
+  [chargingStatusView3 setFrame:{v45, v47, v49, v51}];
 }
 
-- (CGSize)_intrinsicContentSizeForState:(unint64_t)a3 deviceState:(id)a4
+- (CGSize)_intrinsicContentSizeForState:(unint64_t)state deviceState:(id)deviceState
 {
-  if (a3)
+  if (state)
   {
     v5 = objc_opt_class();
 
@@ -151,7 +151,7 @@
   {
     pencilView = self->_pencilView;
 
-    [(PNPPencilView *)pencilView comfortableContainingSizeForDeviceState:a4];
+    [(PNPPencilView *)pencilView comfortableContainingSizeForDeviceState:deviceState];
   }
 
   result.height = v7;
@@ -170,9 +170,9 @@
 
   else
   {
-    v6 = [(PNPPairingView *)self state];
-    v7 = [(PNPPairingView *)self deviceState];
-    [(PNPPairingView *)self _intrinsicContentSizeForState:v6 deviceState:v7];
+    state = [(PNPPairingView *)self state];
+    deviceState = [(PNPPairingView *)self deviceState];
+    [(PNPPairingView *)self _intrinsicContentSizeForState:state deviceState:deviceState];
     v9 = v8;
     v11 = v10;
 
@@ -185,12 +185,12 @@
   return result;
 }
 
-- (CGSize)_pencilSizeForState:(unint64_t)a3
+- (CGSize)_pencilSizeForState:(unint64_t)state
 {
-  if (a3)
+  if (state)
   {
-    v4 = [(PNPWizardViewController *)self->_wizardViewController view];
-    [v4 frame];
+    view = [(PNPWizardViewController *)self->_wizardViewController view];
+    [view frame];
     v6 = v5 + self->_pencilSpinningRect.origin.x * -2.0;
     [(PNPPencilView *)self->_pencilView intrinsicContentSize];
     v8 = v7 + -20.0;
@@ -199,8 +199,8 @@
   else
   {
     pencilView = self->_pencilView;
-    v4 = objc_opt_new();
-    [(PNPPencilView *)pencilView intrinsicSizeForDeviceState:v4];
+    view = objc_opt_new();
+    [(PNPPencilView *)pencilView intrinsicSizeForDeviceState:view];
     v6 = v10;
     v8 = v11;
   }
@@ -212,11 +212,11 @@
   return result;
 }
 
-- (CGAffineTransform)_pencilTransformForState:(SEL)a3 deviceState:(unint64_t)a4
+- (CGAffineTransform)_pencilTransformForState:(SEL)state deviceState:(unint64_t)deviceState
 {
   pencilView = a5;
   v9 = pencilView;
-  if (a4 == 1 && self->_finishedWizardTransition)
+  if (deviceState == 1 && self->_finishedWizardTransition)
   {
     v10 = MEMORY[0x277CBF2C0];
     v11 = *(MEMORY[0x277CBF2C0] + 16);
@@ -246,91 +246,91 @@
   return MEMORY[0x2821F96F8](pencilView, v9);
 }
 
-- (void)setDeviceState:(id)a3
+- (void)setDeviceState:(id)state
 {
-  objc_storeStrong(&self->_deviceState, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_deviceState, state);
+  stateCopy = state;
   pencilView = self->_pencilView;
-  v7 = [(PNPPairingView *)self deviceState];
-  [(PNPPencilView *)pencilView setDeviceState:v7];
+  deviceState = [(PNPPairingView *)self deviceState];
+  [(PNPPencilView *)pencilView setDeviceState:deviceState];
 
   [(PNPWizardViewController *)self->_wizardViewController deviceStateDidChange];
-  v8 = [(PNPPairingView *)self delegate];
-  [v8 intrinsicContentSizeDidChangeForView:self];
+  delegate = [(PNPPairingView *)self delegate];
+  [delegate intrinsicContentSizeDidChangeForView:self];
 
   [(PNPPairingView *)self setNeedsLayout];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
-    v5 = [(PNPPairingView *)self delegate];
-    [v5 intrinsicContentSizeDidChangeForView:self];
+    self->_state = state;
+    delegate = [(PNPPairingView *)self delegate];
+    [delegate intrinsicContentSizeDidChangeForView:self];
 
     [(PNPPairingView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowWizardContents:(BOOL)a3
+- (void)setShowWizardContents:(BOOL)contents
 {
-  if (self->_showWizardContents != a3)
+  if (self->_showWizardContents != contents)
   {
-    self->_showWizardContents = a3;
+    self->_showWizardContents = contents;
     [(PNPPairingView *)self setNeedsLayout];
   }
 }
 
 - (void)transitionToWizard
 {
-  v3 = [(PNPPairingView *)self pencilView];
-  [v3 setAlpha:0.0];
+  pencilView = [(PNPPairingView *)self pencilView];
+  [pencilView setAlpha:0.0];
 
   [(PNPPairingView *)self unhideWizardIfNecessary];
 }
 
 - (void)unhideWizardIfNecessary
 {
-  v3 = [(PNPWizardViewController *)self->_wizardViewController view];
-  [v3 setHidden:0];
+  view = [(PNPWizardViewController *)self->_wizardViewController view];
+  [view setHidden:0];
 
-  v4 = [(PNPWizardViewController *)self->_wizardViewController view];
-  [v4 setAlpha:1.0];
+  view2 = [(PNPWizardViewController *)self->_wizardViewController view];
+  [view2 setAlpha:1.0];
 }
 
 - (void)wizardTransitionFinished
 {
   self->_finishedWizardTransition = 1;
-  v3 = [(PNPPairingView *)self pencilView];
-  [v3 cleanupSpinningResources];
+  pencilView = [(PNPPairingView *)self pencilView];
+  [pencilView cleanupSpinningResources];
 
   [(PNPPairingView *)self setNeedsLayout];
 }
 
-- (void)wizardViewRequestsDismiss:(id)a3
+- (void)wizardViewRequestsDismiss:(id)dismiss
 {
-  v4 = [(PNPPairingView *)self delegate];
-  [v4 viewRequestsDismiss:self];
+  delegate = [(PNPPairingView *)self delegate];
+  [delegate viewRequestsDismiss:self];
 }
 
-- (id)backgroundColorForWizardController:(id)a3
+- (id)backgroundColorForWizardController:(id)controller
 {
-  v3 = [(PNPPairingView *)self superview];
-  v4 = [v3 backgroundColor];
+  superview = [(PNPPairingView *)self superview];
+  backgroundColor = [superview backgroundColor];
 
-  return v4;
+  return backgroundColor;
 }
 
-- (void)setChargingStatusView:(id)a3
+- (void)setChargingStatusView:(id)view
 {
-  v6 = a3;
-  v5 = [(PNPPairingView *)self chargingStatusView];
+  viewCopy = view;
+  chargingStatusView = [(PNPPairingView *)self chargingStatusView];
 
-  if (v5 != v6)
+  if (chargingStatusView != viewCopy)
   {
     [(PNPChargingStatusView *)self->_chargingStatusView removeFromSuperview];
-    objc_storeStrong(&self->_chargingStatusView, a3);
+    objc_storeStrong(&self->_chargingStatusView, view);
     if (self->_chargingStatusView)
     {
       [(PNPPairingView *)self addSubview:?];
@@ -339,11 +339,11 @@
   }
 }
 
-- (PNPPairingView)initWithFrame:(CGRect)a3
+- (PNPPairingView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = PNPPairingView;
-  v3 = [(PNPPairingView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PNPPairingView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = [[PNPPencilView alloc] initWithVariant:0];
   pencilView = v3->_pencilView;
   v3->_pencilView = v4;
@@ -354,17 +354,17 @@
   v3->_wizardViewController = v6;
 
   [(PNPWizardViewController *)v3->_wizardViewController setWizardDelegate:v3];
-  v8 = [(PNPWizardViewController *)v3->_wizardViewController view];
-  [v8 setAlpha:0.0];
+  view = [(PNPWizardViewController *)v3->_wizardViewController view];
+  [view setAlpha:0.0];
 
-  v9 = [(PNPWizardViewController *)v3->_wizardViewController view];
-  [v9 setHidden:1];
+  view2 = [(PNPWizardViewController *)v3->_wizardViewController view];
+  [view2 setHidden:1];
 
-  v10 = [(PNPWizardViewController *)v3->_wizardViewController view];
-  [v10 setFrame:{0.0, 0.0, 176.0, 176.0}];
+  view3 = [(PNPWizardViewController *)v3->_wizardViewController view];
+  [view3 setFrame:{0.0, 0.0, 176.0, 176.0}];
 
-  v11 = [(PNPWizardViewController *)v3->_wizardViewController view];
-  [(PNPPairingView *)v3 addSubview:v11];
+  view4 = [(PNPWizardViewController *)v3->_wizardViewController view];
+  [(PNPPairingView *)v3 addSubview:view4];
 
   return v3;
 }

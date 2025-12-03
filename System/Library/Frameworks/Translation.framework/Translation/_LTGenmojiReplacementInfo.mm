@@ -1,20 +1,20 @@
 @interface _LTGenmojiReplacementInfo
-- (_LTGenmojiReplacementInfo)initWithOriginalRange:(_NSRange)a3 replacementRange:(_NSRange)a4 requestID:(id)a5 originalSubstring:(id)a6 placeholderString:(id)a7;
+- (_LTGenmojiReplacementInfo)initWithOriginalRange:(_NSRange)range replacementRange:(_NSRange)replacementRange requestID:(id)d originalSubstring:(id)substring placeholderString:(id)string;
 - (_NSRange)originalRange;
 - (_NSRange)replacementRange;
 @end
 
 @implementation _LTGenmojiReplacementInfo
 
-- (_LTGenmojiReplacementInfo)initWithOriginalRange:(_NSRange)a3 replacementRange:(_NSRange)a4 requestID:(id)a5 originalSubstring:(id)a6 placeholderString:(id)a7
+- (_LTGenmojiReplacementInfo)initWithOriginalRange:(_NSRange)range replacementRange:(_NSRange)replacementRange requestID:(id)d originalSubstring:(id)substring placeholderString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a3.length;
-  v11 = a3.location;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  length = replacementRange.length;
+  location = replacementRange.location;
+  v10 = range.length;
+  v11 = range.location;
+  dCopy = d;
+  substringCopy = substring;
+  stringCopy = string;
   v26.receiver = self;
   v26.super_class = _LTGenmojiReplacementInfo;
   v16 = [(_LTGenmojiReplacementInfo *)&v26 init];
@@ -25,15 +25,15 @@
     v16->_originalRange.length = v10;
     v16->_replacementRange.location = location;
     v16->_replacementRange.length = length;
-    v18 = [v13 copy];
+    v18 = [dCopy copy];
     requestUniqueID = v17->_requestUniqueID;
     v17->_requestUniqueID = v18;
 
-    v20 = [v14 copy];
+    v20 = [substringCopy copy];
     originalSubstring = v17->_originalSubstring;
     v17->_originalSubstring = v20;
 
-    v22 = [v15 copy];
+    v22 = [stringCopy copy];
     placeholderString = v17->_placeholderString;
     v17->_placeholderString = v22;
 

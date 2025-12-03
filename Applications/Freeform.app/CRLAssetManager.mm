@@ -1,13 +1,13 @@
 @interface CRLAssetManager
-+ (id)readonlyAssetFromData:(id)a3 filename:(id)a4;
-+ (id)readonlyAssetFromURL:(id)a3;
++ (id)readonlyAssetFromData:(id)data filename:(id)filename;
++ (id)readonlyAssetFromURL:(id)l;
 - (_TtC8Freeform15CRLAssetManager)init;
-- (void)removeAllDownloadObserversWithIdentifier:(id)a3;
+- (void)removeAllDownloadObserversWithIdentifier:(id)identifier;
 @end
 
 @implementation CRLAssetManager
 
-+ (id)readonlyAssetFromURL:(id)a3
++ (id)readonlyAssetFromURL:(id)l
 {
   v3 = type metadata accessor for URL();
   v4 = *(v3 - 8);
@@ -20,10 +20,10 @@
   return v7;
 }
 
-+ (id)readonlyAssetFromData:(id)a3 filename:(id)a4
++ (id)readonlyAssetFromData:(id)data filename:(id)filename
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  filenameCopy = filename;
   v7 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
 
@@ -50,7 +50,7 @@
   return v16;
 }
 
-- (void)removeAllDownloadObserversWithIdentifier:(id)a3
+- (void)removeAllDownloadObserversWithIdentifier:(id)identifier
 {
   v4 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v4 - 8);
@@ -76,7 +76,7 @@
     *(v18 + 3) = 0;
     *(v18 + 4) = v15;
     (*(v8 + 32))(&v18[v17], v10, v7);
-    v19 = self;
+    selfCopy = self;
     sub_10064191C(0, 0, v6, &unk_1014773B0, v18);
   }
 

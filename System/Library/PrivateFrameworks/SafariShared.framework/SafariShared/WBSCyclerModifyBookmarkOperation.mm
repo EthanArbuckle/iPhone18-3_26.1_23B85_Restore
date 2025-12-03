@@ -1,32 +1,32 @@
 @interface WBSCyclerModifyBookmarkOperation
-- (void)_changeTitleOfBookmark:(id)a3 withContext:(id)a4 completionHandler:(id)a5;
-- (void)_changeURLOfBookmark:(id)a3 withContext:(id)a4 completionHandler:(id)a5;
-- (void)executeWithContext:(id)a3 completionHandler:(id)a4;
+- (void)_changeTitleOfBookmark:(id)bookmark withContext:(id)context completionHandler:(id)handler;
+- (void)_changeURLOfBookmark:(id)bookmark withContext:(id)context completionHandler:(id)handler;
+- (void)executeWithContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation WBSCyclerModifyBookmarkOperation
 
-- (void)executeWithContext:(id)a3 completionHandler:(id)a4
+- (void)executeWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 randomValidStrictDescendantOfTopLevelItem];
-  if (v8)
+  contextCopy = context;
+  handlerCopy = handler;
+  randomValidStrictDescendantOfTopLevelItem = [contextCopy randomValidStrictDescendantOfTopLevelItem];
+  if (randomValidStrictDescendantOfTopLevelItem)
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __73__WBSCyclerModifyBookmarkOperation_executeWithContext_completionHandler___block_invoke;
     v24[3] = &unk_1E7FC51C0;
     v24[4] = self;
-    v10 = v8;
+    v10 = randomValidStrictDescendantOfTopLevelItem;
     v25 = v10;
-    v11 = v6;
+    v11 = contextCopy;
     v26 = v11;
-    v12 = v7;
+    v12 = handlerCopy;
     v27 = v12;
     v13 = MEMORY[0x1BFB13CE0](v24);
-    [v9 addObject:v13];
+    [array addObject:v13];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -35,63 +35,63 @@
       v17 = 3221225472;
       v18 = __73__WBSCyclerModifyBookmarkOperation_executeWithContext_completionHandler___block_invoke_2;
       v19 = &unk_1E7FC51C0;
-      v20 = self;
+      selfCopy = self;
       v21 = v10;
       v22 = v11;
       v23 = v12;
       v14 = MEMORY[0x1BFB13CE0](&v16);
-      [v9 addObject:{v14, v16, v17, v18, v19, v20}];
+      [array addObject:{v14, v16, v17, v18, v19, selfCopy}];
     }
 
-    v15 = [WBSCyclerRandomnessUtilities randomElementOfArray:v9];
+    v15 = [WBSCyclerRandomnessUtilities randomElementOfArray:array];
     v15[2]();
   }
 
   else
   {
-    v9 = [v6 topLevelItem];
-    (*(v7 + 2))(v7, v9);
+    array = [contextCopy topLevelItem];
+    (*(handlerCopy + 2))(handlerCopy, array);
   }
 }
 
-- (void)_changeTitleOfBookmark:(id)a3 withContext:(id)a4 completionHandler:(id)a5
+- (void)_changeTitleOfBookmark:(id)bookmark withContext:(id)context completionHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 randomItemTitle];
-  v11 = [v7 uniqueIdentifier];
+  bookmarkCopy = bookmark;
+  handlerCopy = handler;
+  contextCopy = context;
+  randomItemTitle = [contextCopy randomItemTitle];
+  uniqueIdentifier = [bookmarkCopy uniqueIdentifier];
   v12 = WBS_LOG_CHANNEL_PREFIXCycler();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = v12;
-    v14 = [v7 title];
+    title = [bookmarkCopy title];
     *buf = 138543874;
-    v27 = v11;
+    v27 = uniqueIdentifier;
     v28 = 2114;
-    v29 = v14;
+    v29 = title;
     v30 = 2114;
-    v31 = v10;
+    v31 = randomItemTitle;
     _os_log_impl(&dword_1BB6F3000, v13, OS_LOG_TYPE_INFO, "Changing title of bookmark (identifier: %{public}@) from %{public}@ to %{public}@", buf, 0x20u);
   }
 
-  v15 = [v9 topLevelItem];
-  v16 = [v9 testTarget];
+  topLevelItem = [contextCopy topLevelItem];
+  testTarget = [contextCopy testTarget];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __89__WBSCyclerModifyBookmarkOperation__changeTitleOfBookmark_withContext_completionHandler___block_invoke;
   v21[3] = &unk_1E7FC5038;
-  v22 = v15;
-  v23 = v11;
-  v24 = v10;
-  v25 = v8;
-  v17 = v10;
-  v18 = v11;
-  v19 = v15;
-  v20 = v8;
-  [v16 setTitle:v17 forBookmarkWithIdentifier:v18 reply:v21];
+  v22 = topLevelItem;
+  v23 = uniqueIdentifier;
+  v24 = randomItemTitle;
+  v25 = handlerCopy;
+  v17 = randomItemTitle;
+  v18 = uniqueIdentifier;
+  v19 = topLevelItem;
+  v20 = handlerCopy;
+  [testTarget setTitle:v17 forBookmarkWithIdentifier:v18 reply:v21];
 }
 
 void __89__WBSCyclerModifyBookmarkOperation__changeTitleOfBookmark_withContext_completionHandler___block_invoke(uint64_t a1, char a2)
@@ -112,21 +112,21 @@ void __89__WBSCyclerModifyBookmarkOperation__changeTitleOfBookmark_withContext_c
   }
 }
 
-- (void)_changeURLOfBookmark:(id)a3 withContext:(id)a4 completionHandler:(id)a5
+- (void)_changeURLOfBookmark:(id)bookmark withContext:(id)context completionHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  bookmarkCopy = bookmark;
+  handlerCopy = handler;
+  contextCopy = context;
   v10 = +[WBSCyclerRandomnessUtilities randomURL];
-  v11 = [v7 uniqueIdentifier];
+  uniqueIdentifier = [bookmarkCopy uniqueIdentifier];
   v12 = WBS_LOG_CHANNEL_PREFIXCycler();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = v12;
-    v14 = [v7 url];
+    v14 = [bookmarkCopy url];
     *buf = 138543874;
-    v27 = v11;
+    v27 = uniqueIdentifier;
     v28 = 2114;
     v29 = v14;
     v30 = 2114;
@@ -134,22 +134,22 @@ void __89__WBSCyclerModifyBookmarkOperation__changeTitleOfBookmark_withContext_c
     _os_log_impl(&dword_1BB6F3000, v13, OS_LOG_TYPE_INFO, "Changing URL of bookmark (identifier: %{public}@) from %{public}@ to %{public}@", buf, 0x20u);
   }
 
-  v15 = [v9 topLevelItem];
-  v16 = [v9 testTarget];
+  topLevelItem = [contextCopy topLevelItem];
+  testTarget = [contextCopy testTarget];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __87__WBSCyclerModifyBookmarkOperation__changeURLOfBookmark_withContext_completionHandler___block_invoke;
   v21[3] = &unk_1E7FC5038;
-  v22 = v15;
-  v23 = v11;
+  v22 = topLevelItem;
+  v23 = uniqueIdentifier;
   v24 = v10;
-  v25 = v8;
+  v25 = handlerCopy;
   v17 = v10;
-  v18 = v11;
-  v19 = v15;
-  v20 = v8;
-  [v16 setURL:v17 forBookmarkWithIdentifier:v18 reply:v21];
+  v18 = uniqueIdentifier;
+  v19 = topLevelItem;
+  v20 = handlerCopy;
+  [testTarget setURL:v17 forBookmarkWithIdentifier:v18 reply:v21];
 }
 
 void __87__WBSCyclerModifyBookmarkOperation__changeURLOfBookmark_withContext_completionHandler___block_invoke(uint64_t a1, char a2)

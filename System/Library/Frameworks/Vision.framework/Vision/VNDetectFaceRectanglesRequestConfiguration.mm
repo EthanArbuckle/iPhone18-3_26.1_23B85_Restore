@@ -1,15 +1,15 @@
 @interface VNDetectFaceRectanglesRequestConfiguration
-- (VNDetectFaceRectanglesRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNDetectFaceRectanglesRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNDetectFaceRectanglesRequestConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = VNDetectFaceRectanglesRequestConfiguration;
-  v4 = [(VNImageBasedRequestConfiguration *)&v7 copyWithZone:a3];
+  v4 = [(VNImageBasedRequestConfiguration *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -26,11 +26,11 @@
   return v5;
 }
 
-- (VNDetectFaceRectanglesRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNDetectFaceRectanglesRequestConfiguration)initWithRequestClass:(Class)class
 {
   v10.receiver = self;
   v10.super_class = VNDetectFaceRectanglesRequestConfiguration;
-  v3 = [(VNImageBasedRequestConfiguration *)&v10 initWithRequestClass:a3];
+  v3 = [(VNImageBasedRequestConfiguration *)&v10 initWithRequestClass:class];
   v4 = v3;
   if (v3)
   {

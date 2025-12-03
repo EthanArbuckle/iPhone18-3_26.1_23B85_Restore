@@ -8,26 +8,26 @@
 {
   [(MapsAppTest *)self setupForVKTest];
   [(MapsAppTestRoute *)self registerGEOSubtestsForRouting];
-  v3 = [(MapsAppTest *)self options];
-  [v3 _mapstest_jumpPoint];
+  options = [(MapsAppTest *)self options];
+  [options _mapstest_jumpPoint];
   v5 = v4;
   v7 = v6;
   v9 = v8;
 
-  v10 = [(MapsAppTest *)self options];
-  [v10 _mapstest_pitch];
+  options2 = [(MapsAppTest *)self options];
+  [options2 _mapstest_pitch];
   v12 = v11;
 
-  v13 = [(MapsAppTest *)self options];
-  [v13 _mapstest_yaw];
+  options3 = [(MapsAppTest *)self options];
+  [options3 _mapstest_yaw];
   v15 = v14;
 
-  v16 = [(MapsAppTest *)self options];
-  v17 = [v16 _mapstest_mapType];
+  options4 = [(MapsAppTest *)self options];
+  _mapstest_mapType = [options4 _mapstest_mapType];
 
-  [(MapsAppTest *)self switchToMapType:v17];
-  v18 = [(MapsAppTest *)self mainVKMapView];
-  [v18 _mapstest_jumpToCoords:1 pitch:v5 yaw:v7 altitudeIsRegionSize:{v9, v12, v15}];
+  [(MapsAppTest *)self switchToMapType:_mapstest_mapType];
+  mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+  [mainVKMapView _mapstest_jumpToCoords:1 pitch:v5 yaw:v7 altitudeIsRegionSize:{v9, v12, v15}];
 
   objc_initWeak(&location, self);
   v20[0] = _NSConcreteStackBlock;

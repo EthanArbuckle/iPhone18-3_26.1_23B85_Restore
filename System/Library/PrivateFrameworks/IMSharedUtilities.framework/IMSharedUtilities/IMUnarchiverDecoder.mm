@@ -1,21 +1,21 @@
 @interface IMUnarchiverDecoder
-+ (id)_decodeEncodedData:(id)a3 ofClass:(Class)a4 includesAllowlistedClasses:(id)a5;
-+ (id)decodeEncodedDataSecurely:(id)a3 ofClass:(Class)a4 includesAllowlistedClasses:(id)a5;
++ (id)_decodeEncodedData:(id)data ofClass:(Class)class includesAllowlistedClasses:(id)classes;
++ (id)decodeEncodedDataSecurely:(id)securely ofClass:(Class)class includesAllowlistedClasses:(id)classes;
 @end
 
 @implementation IMUnarchiverDecoder
 
-+ (id)_decodeEncodedData:(id)a3 ofClass:(Class)a4 includesAllowlistedClasses:(id)a5
++ (id)_decodeEncodedData:(id)data ofClass:(Class)class includesAllowlistedClasses:(id)classes
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a5;
+  dataCopy = data;
+  classesCopy = classes;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v6, "length")}];
+      v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "length")}];
       *buf = 138412290;
       v24 = v9;
       _os_log_impl(&dword_1A85E5000, v8, OS_LOG_TYPE_INFO, "Decoding data of length %@", buf, 0xCu);
@@ -23,7 +23,7 @@
   }
 
   v22 = 0;
-  v10 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v6 error:&v22];
+  v10 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:dataCopy error:&v22];
   v11 = v22;
   if (objc_opt_respondsToSelector())
   {
@@ -41,7 +41,7 @@
   }
 
   [v10 setDecodingFailurePolicy:0];
-  v13 = [v10 decodeObjectOfClasses:v7 forKey:*MEMORY[0x1E696A508]];
+  v13 = [v10 decodeObjectOfClasses:classesCopy forKey:*MEMORY[0x1E696A508]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -83,11 +83,11 @@
   return v14;
 }
 
-+ (id)decodeEncodedDataSecurely:(id)a3 ofClass:(Class)a4 includesAllowlistedClasses:(id)a5
++ (id)decodeEncodedDataSecurely:(id)securely ofClass:(Class)class includesAllowlistedClasses:(id)classes
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [IMUnarchiverDecoder _decodeEncodedData:v7 ofClass:a4 includesAllowlistedClasses:v8];
+  securelyCopy = securely;
+  classesCopy = classes;
+  v9 = [IMUnarchiverDecoder _decodeEncodedData:securelyCopy ofClass:class includesAllowlistedClasses:classesCopy];
 
   return v9;
 }

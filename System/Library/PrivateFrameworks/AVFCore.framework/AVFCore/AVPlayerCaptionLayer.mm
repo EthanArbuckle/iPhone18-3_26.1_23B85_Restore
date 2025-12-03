@@ -1,29 +1,29 @@
 @interface AVPlayerCaptionLayer
-+ (id)captionLayerWithPlayer:(id)a3;
++ (id)captionLayerWithPlayer:(id)player;
 - (AVPlayer)player;
 - (AVPlayerCaptionLayer)init;
 - (BOOL)_showInterstitialInstead;
 - (NSEdgeInsets)captionContentInsets;
 - (id)_interstitialLayer;
-- (void)_setShowInterstitialInstead:(BOOL)a3;
-- (void)_startObservingPlayer:(id)a3;
-- (void)_stopObservingPlayer:(id)a3;
+- (void)_setShowInterstitialInstead:(BOOL)instead;
+- (void)_startObservingPlayer:(id)player;
+- (void)_stopObservingPlayer:(id)player;
 - (void)dealloc;
 - (void)layoutSublayers;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setBounds:(CGRect)a3;
-- (void)setCaptionContentInsets:(NSEdgeInsets)a3;
-- (void)setInsetsOptions:(id)a3;
-- (void)setPlayer:(id)a3;
-- (void)setValue:(id)a3 forKeyPath:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCaptionContentInsets:(NSEdgeInsets)insets;
+- (void)setInsetsOptions:(id)options;
+- (void)setPlayer:(id)player;
+- (void)setValue:(id)value forKeyPath:(id)path;
 @end
 
 @implementation AVPlayerCaptionLayer
 
-+ (id)captionLayerWithPlayer:(id)a3
++ (id)captionLayerWithPlayer:(id)player
 {
   v4 = objc_alloc_init(AVPlayerCaptionLayer);
-  [(AVPlayerCaptionLayer *)v4 setPlayer:a3];
+  [(AVPlayerCaptionLayer *)v4 setPlayer:player];
   return v4;
 }
 
@@ -114,12 +114,12 @@ void __39__AVPlayerCaptionLayer_layoutSublayers__block_invoke_2(uint64_t a1)
   v4 = *(*(*(a1 + 40) + 8) + 40);
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(AVPlayerCaptionLayer *)self bounds];
   v10.origin.x = x;
   v10.origin.y = y;
@@ -159,10 +159,10 @@ void __39__AVPlayerCaptionLayer_layoutSublayers__block_invoke_2(uint64_t a1)
   [(AVPlayerCaptionLayer *)&v5 dealloc];
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
   player = self->_player;
-  if (player != a3)
+  if (player != player)
   {
     [(AVPlayer *)player _removePlayerCaptionLayer:self];
     serialQueue = self->_serialQueue;
@@ -171,7 +171,7 @@ void __39__AVPlayerCaptionLayer_layoutSublayers__block_invoke_2(uint64_t a1)
     v8[2] = __34__AVPlayerCaptionLayer_setPlayer___block_invoke;
     v8[3] = &unk_1E7460DF0;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = player;
     dispatch_sync(serialQueue, v8);
     v7 = self->_player;
     if (v7)
@@ -236,27 +236,27 @@ id __30__AVPlayerCaptionLayer_player__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_startObservingPlayer:(id)a3
+- (void)_startObservingPlayer:(id)player
 {
   if (self->_player)
   {
     if (!self->_playerBeingObserved)
     {
-      self->_playerBeingObserved = a3;
+      self->_playerBeingObserved = player;
       v5 = +[AVKVODispatcher sharedKVODispatcher];
       v6 = [MEMORY[0x1E695DFA8] set];
-      [v6 addObject:{objc_msgSend(v5, "startObservingObject:weakObserver:forTwoPartKeyPath:options:context:", a3, self, AVTwoPartKeyPathMake(@"currentItem", @"nonForcedSubtitleDisplayEnabled", 5, AVPlayerLayerPlayerItemSubtitleDisplayEnabledObserverContext)}];
-      [v6 addObject:{objc_msgSend(v5, "startObservingObject:weakObserver:forKeyPath:options:context:", a3, self, @"isDisplayingClosedCaptions", 5, AVPlayerLayerDisplayingClosedCaptionsChangedObserverContext)}];
+      [v6 addObject:{objc_msgSend(v5, "startObservingObject:weakObserver:forTwoPartKeyPath:options:context:", player, self, AVTwoPartKeyPathMake(@"currentItem", @"nonForcedSubtitleDisplayEnabled", 5, AVPlayerLayerPlayerItemSubtitleDisplayEnabledObserverContext)}];
+      [v6 addObject:{objc_msgSend(v5, "startObservingObject:weakObserver:forKeyPath:options:context:", player, self, @"isDisplayingClosedCaptions", 5, AVPlayerLayerDisplayingClosedCaptionsChangedObserverContext)}];
 
       self->_KVOInvokers = [v6 copy];
     }
   }
 }
 
-- (void)_stopObservingPlayer:(id)a3
+- (void)_stopObservingPlayer:(id)player
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (player)
   {
     playerBeingObserved = self->_playerBeingObserved;
     if (playerBeingObserved)
@@ -296,9 +296,9 @@ id __30__AVPlayerCaptionLayer_player__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setValue:(id)a3 forKeyPath:(id)a4
+- (void)setValue:(id)value forKeyPath:(id)path
 {
-  if (([a4 isEqualToString:@"separatedOptions"] & 1) != 0 || objc_msgSend(a4, "isEqualToString:", @"styleOptions"))
+  if (([path isEqualToString:@"separatedOptions"] & 1) != 0 || objc_msgSend(path, "isEqualToString:", @"styleOptions"))
   {
     configurationQueue = self->_configurationQueue;
     v9[0] = MEMORY[0x1E69E9820];
@@ -306,8 +306,8 @@ id __30__AVPlayerCaptionLayer_player__block_invoke(uint64_t a1)
     v9[2] = __44__AVPlayerCaptionLayer_setValue_forKeyPath___block_invoke;
     v9[3] = &unk_1E7460E90;
     v9[4] = self;
-    v9[5] = a3;
-    v9[6] = a4;
+    v9[5] = value;
+    v9[6] = path;
     AVSerializeOnQueueAsyncIfNecessary(configurationQueue, v9);
   }
 
@@ -315,7 +315,7 @@ id __30__AVPlayerCaptionLayer_player__block_invoke(uint64_t a1)
   {
     v8.receiver = self;
     v8.super_class = AVPlayerCaptionLayer;
-    [(AVPlayerCaptionLayer *)&v8 setValue:a3 forKeyPath:a4];
+    [(AVPlayerCaptionLayer *)&v8 setValue:value forKeyPath:path];
   }
 }
 
@@ -336,25 +336,25 @@ uint64_t __44__AVPlayerCaptionLayer_setValue_forKeyPath___block_invoke(uint64_t 
   return [objc_msgSend(*(a1 + 32) "player")];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (AVPlayerLayerPlayerItemSubtitleDisplayEnabledObserverContext == a6)
+  if (AVPlayerLayerPlayerItemSubtitleDisplayEnabledObserverContext == context)
   {
-    v8 = [a5 objectForKey:*MEMORY[0x1E696A4F0]];
+    v8 = [change objectForKey:*MEMORY[0x1E696A4F0]];
     if (v8)
     {
       v9 = v8;
       if (v8 != [MEMORY[0x1E695DFB0] null])
       {
-        v10 = [v9 BOOLValue];
+        bOOLValue = [v9 BOOLValue];
         configurationQueue = self->_configurationQueue;
         v19[0] = MEMORY[0x1E69E9820];
         v19[1] = 3221225472;
         v19[2] = __71__AVPlayerCaptionLayer_observeValueForKeyPath_ofObject_change_context___block_invoke;
         v19[3] = &unk_1E7460E18;
         v19[4] = self;
-        v19[5] = a4;
-        v20 = v10;
+        v19[5] = object;
+        v20 = bOOLValue;
         v12 = v19;
 LABEL_10:
         AVSerializeOnQueueAsyncIfNecessary(configurationQueue, v12);
@@ -364,29 +364,29 @@ LABEL_10:
 
   else
   {
-    if (AVPlayerLayerDisplayingClosedCaptionsChangedObserverContext != a6)
+    if (AVPlayerLayerDisplayingClosedCaptionsChangedObserverContext != context)
     {
       v16.receiver = self;
       v16.super_class = AVPlayerCaptionLayer;
-      [(AVPlayerCaptionLayer *)&v16 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+      [(AVPlayerCaptionLayer *)&v16 observeValueForKeyPath:path ofObject:object change:change context:?];
       return;
     }
 
-    v13 = [a5 objectForKey:*MEMORY[0x1E696A4F0]];
+    v13 = [change objectForKey:*MEMORY[0x1E696A4F0]];
     if (v13)
     {
       v14 = v13;
       if (v13 != [MEMORY[0x1E695DFB0] null])
       {
-        v15 = [v14 BOOLValue];
+        bOOLValue2 = [v14 BOOLValue];
         configurationQueue = self->_configurationQueue;
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = __71__AVPlayerCaptionLayer_observeValueForKeyPath_ofObject_change_context___block_invoke_2;
         v17[3] = &unk_1E7460E18;
         v17[4] = self;
-        v17[5] = a4;
-        v18 = v15;
+        v17[5] = object;
+        v18 = bOOLValue2;
         v12 = v17;
         goto LABEL_10;
       }
@@ -437,12 +437,12 @@ void *__71__AVPlayerCaptionLayer_observeValueForKeyPath_ofObject_change_context_
   return result;
 }
 
-- (void)setCaptionContentInsets:(NSEdgeInsets)a3
+- (void)setCaptionContentInsets:(NSEdgeInsets)insets
 {
-  *&v11 = a3.top;
-  *(&v11 + 1) = *&a3.left;
-  *&v12 = a3.bottom;
-  *(&v12 + 1) = *&a3.right;
+  *&v11 = insets.top;
+  *(&v11 + 1) = *&insets.left;
+  *&v12 = insets.bottom;
+  *(&v12 + 1) = *&insets.right;
   v4 = v12;
   *&self->_legibleContentInsets.top = v11;
   *&self->_legibleContentInsets.bottom = v4;
@@ -571,7 +571,7 @@ id __42__AVPlayerCaptionLayer__interstitialLayer__block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (void)_setShowInterstitialInstead:(BOOL)a3
+- (void)_setShowInterstitialInstead:(BOOL)instead
 {
   v10 = 0;
   v11 = &v10;
@@ -584,7 +584,7 @@ id __42__AVPlayerCaptionLayer__interstitialLayer__block_invoke_2(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __52__AVPlayerCaptionLayer__setShowInterstitialInstead___block_invoke;
   block[3] = &unk_1E7462948;
-  v9 = a3;
+  insteadCopy = instead;
   block[4] = self;
   block[5] = &v10;
   dispatch_sync(serialQueue, block);
@@ -594,7 +594,7 @@ id __42__AVPlayerCaptionLayer__interstitialLayer__block_invoke_2(uint64_t a1)
     v6[1] = 3221225472;
     v6[2] = __52__AVPlayerCaptionLayer__setShowInterstitialInstead___block_invoke_2;
     v6[3] = &unk_1E7462948;
-    v7 = a3;
+    insteadCopy2 = instead;
     v6[4] = self;
     v6[5] = &v10;
     AVSerializeOnQueueAsyncIfNecessary(MEMORY[0x1E69E96A0], v6);
@@ -636,34 +636,34 @@ void __52__AVPlayerCaptionLayer__setShowInterstitialInstead___block_invoke_2(uin
   v3 = *(*(*(a1 + 40) + 8) + 40);
 }
 
-- (void)setInsetsOptions:(id)a3
+- (void)setInsetsOptions:(id)options
 {
-  self->_insetsOptions = [a3 copy];
-  v5 = [a3 allowsHorizontalTextWrap];
-  v6 = [a3 allowsHorizontalTextRepositioning];
-  v7 = [a3 allowsVerticalTextWrap];
-  v8 = [a3 allowsVerticalTextRepositioning];
+  self->_insetsOptions = [options copy];
+  allowsHorizontalTextWrap = [options allowsHorizontalTextWrap];
+  allowsHorizontalTextRepositioning = [options allowsHorizontalTextRepositioning];
+  allowsVerticalTextWrap = [options allowsVerticalTextWrap];
+  allowsVerticalTextRepositioning = [options allowsVerticalTextRepositioning];
   v9 = 0x1000000;
-  if (!v8)
+  if (!allowsVerticalTextRepositioning)
   {
     v9 = 0;
   }
 
   v10 = 0x10000;
-  if (!v7)
+  if (!allowsVerticalTextWrap)
   {
     v10 = 0;
   }
 
   v11 = 256;
-  if (!v6)
+  if (!allowsHorizontalTextRepositioning)
   {
     v11 = 0;
   }
 
   subtitleLayer = self->_subtitleLayer;
 
-  [(FigSubtitleCALayer *)subtitleLayer setCaptionsAvoidanceOptions:v11 | v5 | v10 | v9];
+  [(FigSubtitleCALayer *)subtitleLayer setCaptionsAvoidanceOptions:v11 | allowsHorizontalTextWrap | v10 | v9];
 }
 
 @end

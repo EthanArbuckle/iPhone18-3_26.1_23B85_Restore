@@ -1,16 +1,16 @@
 @interface BBMaskedSet
-- (BBMaskedSet)initWithMaskBits:(unint64_t)a3;
+- (BBMaskedSet)initWithMaskBits:(unint64_t)bits;
 - (id)allObjects;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)objectsForMask:(unint64_t)a3;
-- (void)_executeUsingMask:(unint64_t)a3 block:(id)a4;
-- (void)addObject:(id)a3 withMask:(unint64_t)a4;
-- (void)removeObject:(id)a3;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)objectsForMask:(unint64_t)mask;
+- (void)_executeUsingMask:(unint64_t)mask block:(id)block;
+- (void)addObject:(id)object withMask:(unint64_t)mask;
+- (void)removeObject:(id)object;
 @end
 
 @implementation BBMaskedSet
 
-- (BBMaskedSet)initWithMaskBits:(unint64_t)a3
+- (BBMaskedSet)initWithMaskBits:(unint64_t)bits
 {
   v11.receiver = self;
   v11.super_class = BBMaskedSet;
@@ -18,8 +18,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_maskBits = a3;
-    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:a3];
+    v4->_maskBits = bits;
+    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:bits];
     [(BBMaskedSet *)v5 setMaskObjectSets:v6];
 
     if (v5->_maskBits)
@@ -41,22 +41,22 @@
   return v5;
 }
 
-- (void)addObject:(id)a3 withMask:(unint64_t)a4
+- (void)addObject:(id)object withMask:(unint64_t)mask
 {
-  v6 = a3;
+  objectCopy = object;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __34__BBMaskedSet_addObject_withMask___block_invoke;
   v8[3] = &unk_278D2B7C0;
-  v9 = v6;
-  v7 = v6;
-  [(BBMaskedSet *)self _executeUsingMask:a4 block:v8];
+  v9 = objectCopy;
+  v7 = objectCopy;
+  [(BBMaskedSet *)self _executeUsingMask:mask block:v8];
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -77,7 +77,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) removeObject:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) removeObject:{objectCopy, v11}];
       }
 
       while (v7 != v9);
@@ -128,7 +128,7 @@
   return v9;
 }
 
-- (id)objectsForMask:(unint64_t)a3
+- (id)objectsForMask:(unint64_t)mask
 {
   v5 = [MEMORY[0x277CBEB58] set];
   v9[0] = MEMORY[0x277D85DD0];
@@ -137,38 +137,38 @@
   v9[3] = &unk_278D2B7C0;
   v10 = v5;
   v6 = v5;
-  [(BBMaskedSet *)self _executeUsingMask:a3 block:v9];
+  [(BBMaskedSet *)self _executeUsingMask:mask block:v9];
   v7 = [v6 copy];
 
   return v7;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v3 = [(NSMutableArray *)self->_maskObjectSets objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->_maskObjectSets objectAtIndex:index];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (void)_executeUsingMask:(unint64_t)a3 block:(id)a4
+- (void)_executeUsingMask:(unint64_t)mask block:(id)block
 {
-  v10 = a4;
+  blockCopy = block;
   maskBits = self->_maskBits;
   if (maskBits)
   {
     for (i = 0; i < maskBits; ++i)
     {
       v8 = 1 << i;
-      if (v8 > a3)
+      if (v8 > mask)
       {
         break;
       }
 
-      if ((v8 & a3) != 0)
+      if ((v8 & mask) != 0)
       {
         v9 = [(NSMutableArray *)self->_maskObjectSets objectAtIndex:i];
-        v10[2](v10, v9);
+        blockCopy[2](blockCopy, v9);
 
         maskBits = self->_maskBits;
       }

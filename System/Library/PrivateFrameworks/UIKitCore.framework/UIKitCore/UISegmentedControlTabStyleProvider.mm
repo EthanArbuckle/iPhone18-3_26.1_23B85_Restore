@@ -1,15 +1,15 @@
 @interface UISegmentedControlTabStyleProvider
-- (id)fontColorForSegment:(id)a3 enabled:(BOOL)a4 selected:(BOOL)a5 state:(unint64_t)a6;
+- (id)fontColorForSegment:(id)segment enabled:(BOOL)enabled selected:(BOOL)selected state:(unint64_t)state;
 @end
 
 @implementation UISegmentedControlTabStyleProvider
 
-- (id)fontColorForSegment:(id)a3 enabled:(BOOL)a4 selected:(BOOL)a5 state:(unint64_t)a6
+- (id)fontColorForSegment:(id)segment enabled:(BOOL)enabled selected:(BOOL)selected state:(unint64_t)state
 {
-  if (a5)
+  if (selected)
   {
-    v6 = [a3 traitCollection];
-    if ([v6 userInterfaceStyle] == 1)
+    traitCollection = [segment traitCollection];
+    if ([traitCollection userInterfaceStyle] == 1)
     {
       +[UIColor tintColor];
     }
@@ -23,7 +23,7 @@
 
   else
   {
-    v7 = [UIColor secondaryLabelColor:a3];
+    v7 = [UIColor secondaryLabelColor:segment];
   }
 
   return v7;

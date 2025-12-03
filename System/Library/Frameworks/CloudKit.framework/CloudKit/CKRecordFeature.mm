@@ -1,23 +1,23 @@
 @interface CKRecordFeature
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKRecordFeature
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKRecordFeature.hash.getter();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CKRecordFeature.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CKRecordFeature.encode(with:)(coderCopy);
 }
 
 @end

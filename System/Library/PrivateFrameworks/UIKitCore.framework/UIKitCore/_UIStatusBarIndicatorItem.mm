@@ -1,9 +1,9 @@
 @interface _UIStatusBarIndicatorItem
-- (BOOL)shouldUpdateIndicatorForIdentifier:(id)a3;
+- (BOOL)shouldUpdateIndicatorForIdentifier:(id)identifier;
 - (_UIStatusBarImageView)imageView;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (id)dependentEntryKeys;
-- (id)imageForUpdate:(id)a3;
+- (id)imageForUpdate:(id)update;
 - (void)_create_imageView;
 @end
 
@@ -12,17 +12,17 @@
 - (id)dependentEntryKeys
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(_UIStatusBarIndicatorItem *)self indicatorEntryKey];
-  v4 = [v2 setWithObject:v3];
+  indicatorEntryKey = [(_UIStatusBarIndicatorItem *)self indicatorEntryKey];
+  v4 = [v2 setWithObject:indicatorEntryKey];
 
   return v4;
 }
 
-- (id)imageForUpdate:(id)a3
+- (id)imageForUpdate:(id)update
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIStatusBarIndicatorItem *)self systemImageNameForUpdate:v4];
+  updateCopy = update;
+  v5 = [(_UIStatusBarIndicatorItem *)self systemImageNameForUpdate:updateCopy];
   if (v5)
   {
     v6 = v5;
@@ -38,7 +38,7 @@
       }
     }
 
-    if ([(_UIStatusBarIndicatorItem *)self useMultiColorSystemImageForUpdate:v4])
+    if ([(_UIStatusBarIndicatorItem *)self useMultiColorSystemImageForUpdate:updateCopy])
     {
       v9 = [v7 imageWithRenderingMode:1];
 
@@ -48,12 +48,12 @@
 
   else
   {
-    v6 = [(_UIStatusBarIndicatorItem *)self imageNameForUpdate:v4];
+    v6 = [(_UIStatusBarIndicatorItem *)self imageNameForUpdate:updateCopy];
     if (v6)
     {
       v10 = +[_UIStatusBarImageProvider sharedProvider];
-      v11 = [v4 styleAttributes];
-      v12 = [v10 imageNamed:v6 styleAttributes:v11];
+      styleAttributes = [updateCopy styleAttributes];
+      v12 = [v10 imageNamed:v6 styleAttributes:styleAttributes];
 
       if ([(_UIStatusBarIndicatorItem *)self isTemplateImage])
       {
@@ -78,9 +78,9 @@
 
   if ([(_UIStatusBarIndicatorItem *)self flipsForRightToLeftLayoutDirection])
   {
-    v15 = [v7 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [v7 imageFlippedForRightToLeftLayoutDirection];
 
-    v7 = v15;
+    v7 = imageFlippedForRightToLeftLayoutDirection;
   }
 
   return v7;
@@ -106,46 +106,46 @@
   self->_imageView = v4;
 }
 
-- (BOOL)shouldUpdateIndicatorForIdentifier:(id)a3
+- (BOOL)shouldUpdateIndicatorForIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [objc_opt_class() defaultDisplayIdentifier];
+  identifierCopy = identifier;
+  defaultDisplayIdentifier = [objc_opt_class() defaultDisplayIdentifier];
 
-  return v4 == v3;
+  return defaultDisplayIdentifier == identifierCopy;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v25.receiver = self;
   v25.super_class = _UIStatusBarIndicatorItem;
-  v8 = [(_UIStatusBarItem *)&v25 applyUpdate:v6 toDisplayItem:v7];
-  v9 = [v7 identifier];
-  if (![(_UIStatusBarIndicatorItem *)self shouldUpdateIndicatorForIdentifier:v9])
+  v8 = [(_UIStatusBarItem *)&v25 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  identifier = [itemCopy identifier];
+  if (![(_UIStatusBarIndicatorItem *)self shouldUpdateIndicatorForIdentifier:identifier])
   {
     goto LABEL_19;
   }
 
-  v10 = [v7 isEnabled];
+  isEnabled = [itemCopy isEnabled];
 
-  if (!v10)
+  if (!isEnabled)
   {
     goto LABEL_20;
   }
 
   v11 = [objc_opt_class() instanceMethodForSelector:sel_imageForUpdate_];
   v12 = [_UIStatusBarIndicatorItem instanceMethodForSelector:sel_imageForUpdate_];
-  v13 = [v6 styleAttributes];
-  v9 = [v13 imageNamePrefixes];
+  styleAttributes = [updateCopy styleAttributes];
+  identifier = [styleAttributes imageNamePrefixes];
 
-  if ([v6 dataChanged] & 1) != 0 || v11 != v12 && (objc_msgSend(v6, "styleAttributesChanged"))
+  if ([updateCopy dataChanged] & 1) != 0 || v11 != v12 && (objc_msgSend(updateCopy, "styleAttributesChanged"))
   {
     goto LABEL_12;
   }
 
   currentImageNamePrefixes = self->_currentImageNamePrefixes;
-  v15 = v9;
+  v15 = identifier;
   v16 = currentImageNamePrefixes;
   v17 = v16;
   if (v15 == v16)
@@ -164,20 +164,20 @@
   if ((v18 & 1) == 0)
   {
 LABEL_12:
-    [(_UIStatusBarIndicatorItem *)self setCurrentImageNamePrefixes:v9];
-    v15 = [(_UIStatusBarIndicatorItem *)self imageForUpdate:v6];
+    [(_UIStatusBarIndicatorItem *)self setCurrentImageNamePrefixes:identifier];
+    v15 = [(_UIStatusBarIndicatorItem *)self imageForUpdate:updateCopy];
     if (!v15)
     {
-      [v7 setEnabled:0];
+      [itemCopy setEnabled:0];
 LABEL_18:
 
       goto LABEL_19;
     }
 
-    v19 = [v7 identifier];
-    v17 = [(_UIStatusBarIndicatorItem *)self imageViewForIdentifier:v19];
+    identifier2 = [itemCopy identifier];
+    v17 = [(_UIStatusBarIndicatorItem *)self imageViewForIdentifier:identifier2];
 
-    if ([(_UIStatusBarIndicatorItem *)self crossfadeForUpdate:v6])
+    if ([(_UIStatusBarIndicatorItem *)self crossfadeForUpdate:updateCopy])
     {
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
@@ -200,7 +200,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v9 = v15;
+  identifier = v15;
 LABEL_19:
 
 LABEL_20:

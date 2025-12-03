@@ -1,21 +1,21 @@
 @interface NCLocationUpdateComplicationDelegate
-- (id)_endOfDayForDate:(id)a3;
+- (id)_endOfDayForDate:(id)date;
 - (id)_getActivationStartDate;
-- (id)startLocationUpdatesWithHandler:(id)a3;
-- (void)_complicationDeactivationTimerFired:(id)a3;
+- (id)startLocationUpdatesWithHandler:(id)handler;
+- (void)_complicationDeactivationTimerFired:(id)fired;
 - (void)_invalidateActivationTimer;
-- (void)_setupDeactivationTimerWithStartDate:(id)a3;
+- (void)_setupDeactivationTimerWithStartDate:(id)date;
 - (void)activateWaypointComplication;
 - (void)deactivateWaypointComplication;
 @end
 
 @implementation NCLocationUpdateComplicationDelegate
 
-- (id)startLocationUpdatesWithHandler:(id)a3
+- (id)startLocationUpdatesWithHandler:(id)handler
 {
   v9.receiver = self;
   v9.super_class = NCLocationUpdateComplicationDelegate;
-  v4 = [(NCLocationUpdateBaseDelegate *)&v9 startLocationUpdatesWithHandler:a3];
+  v4 = [(NCLocationUpdateBaseDelegate *)&v9 startLocationUpdatesWithHandler:handler];
   objc_msgSend_activateWaypointComplication(self, v5, v6, v7);
 
   return v4;
@@ -131,17 +131,17 @@
   }
 }
 
-- (void)_setupDeactivationTimerWithStartDate:(id)a3
+- (void)_setupDeactivationTimerWithStartDate:(id)date
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = NCLogForCategory(7uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 136315394;
     v24 = "[NCLocationUpdateComplicationDelegate _setupDeactivationTimerWithStartDate:]";
     v25 = 2112;
-    v26 = v4;
+    v26 = dateCopy;
     _os_log_impl(&dword_23BD26000, v5, OS_LOG_TYPE_DEFAULT, "%s setting up deactivation timer with activation start date %@", &v23, 0x16u);
   }
 
@@ -151,7 +151,7 @@
   }
 
   v9 = objc_alloc(MEMORY[0x277D3A180]);
-  v12 = objc_msgSend__endOfDayForDate_(self, v10, v4, v11);
+  v12 = objc_msgSend__endOfDayForDate_(self, v10, dateCopy, v11);
   v14 = objc_msgSend_initWithFireDate_serviceIdentifier_target_selector_userInfo_(v9, v13, v12, @"com.apple.NanoCompass.waypoint.activationTimeout", self, sel__complicationDeactivationTimerFired_, 0);
   waypointComplicationDeactivationTimer = self->_waypointComplicationDeactivationTimer;
   self->_waypointComplicationDeactivationTimer = v14;
@@ -161,12 +161,12 @@
   objc_msgSend_scheduleInQueue_(self->_waypointComplicationDeactivationTimer, v21, MEMORY[0x277D85CD0], v22);
 }
 
-- (id)_endOfDayForDate:(id)a3
+- (id)_endOfDayForDate:(id)date
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
+  dateCopy = date;
   v8 = objc_msgSend_currentCalendar(v3, v5, v6, v7);
-  v10 = objc_msgSend_components_fromDate_(v8, v9, 28, v4);
+  v10 = objc_msgSend_components_fromDate_(v8, v9, 28, dateCopy);
 
   objc_msgSend_setHour_(v10, v11, 23, v12);
   objc_msgSend_setMinute_(v10, v13, 59, v14);
@@ -185,7 +185,7 @@
   return v8;
 }
 
-- (void)_complicationDeactivationTimerFired:(id)a3
+- (void)_complicationDeactivationTimerFired:(id)fired
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = NCLogForCategory(7uLL);

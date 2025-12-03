@@ -15,68 +15,68 @@
 
 - (uint64_t)remoteDisallowsIDSRacing
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 hmf_BOOLForKey:@"HMD.remoteDisallowsIDSRacing"];
+  userInfo = [self userInfo];
+  v2 = [userInfo hmf_BOOLForKey:@"HMD.remoteDisallowsIDSRacing"];
 
   return v2;
 }
 
 - (id)remoteSenderContext
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"HMD.remoteSenderContext"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"HMD.remoteSenderContext"];
 
   return v2;
 }
 
 - (uint64_t)remoteResponseRestriction
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 hmf_numberForKey:@"HMD.remoteTransportResponseRestriction"];
+  userInfo = [self userInfo];
+  v2 = [userInfo hmf_numberForKey:@"HMD.remoteTransportResponseRestriction"];
 
   if (v2)
   {
-    v3 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v3 = -1;
+    unsignedIntegerValue = -1;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)remoteRestriction
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 hmf_numberForKey:@"HMD.remoteTransportRestriction"];
+  userInfo = [self userInfo];
+  v2 = [userInfo hmf_numberForKey:@"HMD.remoteTransportRestriction"];
 
   if (v2)
   {
-    v3 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v3 = -1;
+    unsignedIntegerValue = -1;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (id)remoteToID
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 hmf_stringForKey:@"kRemoteMessageIDSToIDKey"];
+  userInfo = [self userInfo];
+  v2 = [userInfo hmf_stringForKey:@"kRemoteMessageIDSToIDKey"];
 
   return v2;
 }
 
 - (id)remoteUserPairingIdentity
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"kIDSMessageSourceUserKey"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"kIDSMessageSourceUserKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -91,18 +91,18 @@
 
   v4 = v3;
 
-  v5 = [v4 pairingIdentity];
+  pairingIdentity = [v4 pairingIdentity];
 
-  return v5;
+  return pairingIdentity;
 }
 
 - (id)remoteSourceDevice
 {
-  v1 = [a1 destination];
+  destination = [self destination];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = v1;
+    v2 = destination;
   }
 
   else
@@ -112,20 +112,20 @@
 
   v3 = v2;
 
-  v4 = [v3 device];
+  device = [v3 device];
 
-  return v4;
+  return device;
 }
 
 - (void)remoteSourceID
 {
-  v2 = [a1 userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"kIDSMessageSourceIDKey"];
+  userInfo = [self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"kIDSMessageSourceIDKey"];
 
   if (!v3)
   {
-    v4 = [a1 messagePayload];
-    v3 = [v4 objectForKeyedSubscript:@"kIDSMessageSourceIDKey"];
+    messagePayload = [self messagePayload];
+    v3 = [messagePayload objectForKeyedSubscript:@"kIDSMessageSourceIDKey"];
   }
 
   v5 = v3;
@@ -147,16 +147,16 @@
 
 - (uint64_t)isSecureRemote
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 hmf_BOOLForKey:@"HMD.remoteSecure"];
+  userInfo = [self userInfo];
+  v2 = [userInfo hmf_BOOLForKey:@"HMD.remoteSecure"];
 
   return v2;
 }
 
 - (uint64_t)isRemote
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 hmf_BOOLForKey:@"HMD.remote"];
+  userInfo = [self userInfo];
+  v2 = [userInfo hmf_BOOLForKey:@"HMD.remote"];
 
   return v2;
 }

@@ -1,541 +1,541 @@
 @interface KmlKeySharingSession
-- (void)acceptSharingInvitation:(id)a3 withIdentifier:(id)a4 fromMailboxIdentifier:(id)a5 passcode:(id)a6 productPlanIdentifier:(id)a7 completionHandler:(id)a8;
-- (void)acceptSharingInvitationWithIdentifier:(id)a3 passcode:(id)a4 productPlanIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)authorizeSharingInvitationIdentifier:(id)a3 auth:(id)a4 completionHandler:(id)a5;
-- (void)cancelSharingInvitation:(id)a3 completionHandler:(id)a4;
-- (void)createSharingInvitationsForKeyIdentifier:(id)a3 friendIdentifier:(id)a4 auth:(id)a5 ourBindingAttestation:(id)a6 config:(id)a7 completionHandler:(id)a8;
-- (void)createSilentSharingInvitationWithGroupIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getPreTrackRequestForInvitationWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getPreTrackRequestForKeyWithIdentifier:(id)a3 callback:(id)a4;
-- (void)getSecondFactorRequestForConfigs:(id)a3 completionHandler:(id)a4;
-- (void)handleCrossPlatformParseInvitationStatus:(id)a3;
-- (void)handleCrossPlatformSigningRequest:(id)a3 status:(id)a4 keyInformation:(id)a5;
-- (void)handleExchangeStartedWithFriendKey:(id)a3 status:(id)a4;
-- (void)handleFriendSideKeySharingCancelResult:(id)a3;
-- (void)handleInitiatorMessage:(id)a3 forInvitationIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)handleInitiatorMessageResult:(id)a3;
-- (void)handleOwnerCrossPlatformInvitations:(id)a3 withError:(id)a4;
-- (void)handleOwnerKeySharingCancelStatus:(id)a3;
-- (void)handleOwnerKeySharingInvitations:(id)a3 withError:(id)a4;
-- (void)handleRecipientMessage:(id)a3 forInvitationIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)handleRecipientMessageResult:(id)a3;
-- (void)ppidRequestForInvitationWithIdentifier:(id)a3 fromMailboxIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)readerInformationForInvitationWithIdentifier:(id)a3 fromMailboxIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)requestBindingAttestationDataForKeyWithIdentifier:(id)a3 callback:(id)a4;
-- (void)requestInviteWithConfig:(id)a3 completionHandler:(id)a4;
-- (void)retryPasscode:(id)a3 forInvitationIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)retryPasscode:(id)a3 forKeyIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)sendSharingInviteForKeyIdentifier:(id)a3 toIdsIdentifier:(id)a4 auth:(id)a5 config:(id)a6 completionHandler:(id)a7;
-- (void)sendSilentSharingInviteForKeyIdentifier:(id)a3 config:(id)a4 groupIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)setBindingAttestation:(id)a3 forKeyWithIdentifier:(id)a4 callback:(id)a5;
-- (void)setMailboxIdentifier:(id)a3 forOwnerKeyIdentifier:(id)a4 forInvitationIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)setProductPlanIdentifier:(id)a3 forInvitationIdentifier:(id)a4 completion:(id)a5;
-- (void)startShareAcceptanceFlowWithInvitation:(id)a3 completionHandler:(id)a4;
-- (void)startShareAcceptanceFlowWithInvitation:(id)a3 fromMailboxIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)updateSharingAnalyticsWithConfig:(id)a3 completionHandler:(id)a4;
+- (void)acceptSharingInvitation:(id)invitation withIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier passcode:(id)passcode productPlanIdentifier:(id)planIdentifier completionHandler:(id)handler;
+- (void)acceptSharingInvitationWithIdentifier:(id)identifier passcode:(id)passcode productPlanIdentifier:(id)planIdentifier completionHandler:(id)handler;
+- (void)authorizeSharingInvitationIdentifier:(id)identifier auth:(id)auth completionHandler:(id)handler;
+- (void)cancelSharingInvitation:(id)invitation completionHandler:(id)handler;
+- (void)createSharingInvitationsForKeyIdentifier:(id)identifier friendIdentifier:(id)friendIdentifier auth:(id)auth ourBindingAttestation:(id)attestation config:(id)config completionHandler:(id)handler;
+- (void)createSilentSharingInvitationWithGroupIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getPreTrackRequestForInvitationWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getPreTrackRequestForKeyWithIdentifier:(id)identifier callback:(id)callback;
+- (void)getSecondFactorRequestForConfigs:(id)configs completionHandler:(id)handler;
+- (void)handleCrossPlatformParseInvitationStatus:(id)status;
+- (void)handleCrossPlatformSigningRequest:(id)request status:(id)status keyInformation:(id)information;
+- (void)handleExchangeStartedWithFriendKey:(id)key status:(id)status;
+- (void)handleFriendSideKeySharingCancelResult:(id)result;
+- (void)handleInitiatorMessage:(id)message forInvitationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)handleInitiatorMessageResult:(id)result;
+- (void)handleOwnerCrossPlatformInvitations:(id)invitations withError:(id)error;
+- (void)handleOwnerKeySharingCancelStatus:(id)status;
+- (void)handleOwnerKeySharingInvitations:(id)invitations withError:(id)error;
+- (void)handleRecipientMessage:(id)message forInvitationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)handleRecipientMessageResult:(id)result;
+- (void)ppidRequestForInvitationWithIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier completionHandler:(id)handler;
+- (void)readerInformationForInvitationWithIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier completionHandler:(id)handler;
+- (void)requestBindingAttestationDataForKeyWithIdentifier:(id)identifier callback:(id)callback;
+- (void)requestInviteWithConfig:(id)config completionHandler:(id)handler;
+- (void)retryPasscode:(id)passcode forInvitationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)retryPasscode:(id)passcode forKeyIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)sendSharingInviteForKeyIdentifier:(id)identifier toIdsIdentifier:(id)idsIdentifier auth:(id)auth config:(id)config completionHandler:(id)handler;
+- (void)sendSilentSharingInviteForKeyIdentifier:(id)identifier config:(id)config groupIdentifier:(id)groupIdentifier completionHandler:(id)handler;
+- (void)setBindingAttestation:(id)attestation forKeyWithIdentifier:(id)identifier callback:(id)callback;
+- (void)setMailboxIdentifier:(id)identifier forOwnerKeyIdentifier:(id)keyIdentifier forInvitationIdentifier:(id)invitationIdentifier completionHandler:(id)handler;
+- (void)setProductPlanIdentifier:(id)identifier forInvitationIdentifier:(id)invitationIdentifier completion:(id)completion;
+- (void)startShareAcceptanceFlowWithInvitation:(id)invitation completionHandler:(id)handler;
+- (void)startShareAcceptanceFlowWithInvitation:(id)invitation fromMailboxIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)updateSharingAnalyticsWithConfig:(id)config completionHandler:(id)handler;
 @end
 
 @implementation KmlKeySharingSession
 
-- (void)sendSharingInviteForKeyIdentifier:(id)a3 toIdsIdentifier:(id)a4 auth:(id)a5 config:(id)a6 completionHandler:(id)a7
+- (void)sendSharingInviteForKeyIdentifier:(id)identifier toIdsIdentifier:(id)idsIdentifier auth:(id)auth config:(id)config completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  idsIdentifierCopy = idsIdentifier;
+  authCopy = auth;
+  configCopy = config;
+  handlerCopy = handler;
   v17 = sub_1003CC87C(&self->super.super.isa);
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100382BE0;
   v23[3] = &unk_1004D2018;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = identifierCopy;
+  v25 = idsIdentifierCopy;
+  v26 = authCopy;
+  v27 = configCopy;
+  v28 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = configCopy;
+  v20 = authCopy;
+  v21 = idsIdentifierCopy;
+  v22 = identifierCopy;
   dispatch_async(v17, v23);
 }
 
-- (void)sendSilentSharingInviteForKeyIdentifier:(id)a3 config:(id)a4 groupIdentifier:(id)a5 completionHandler:(id)a6
+- (void)sendSilentSharingInviteForKeyIdentifier:(id)identifier config:(id)config groupIdentifier:(id)groupIdentifier completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  configCopy = config;
+  groupIdentifierCopy = groupIdentifier;
+  handlerCopy = handler;
   v12 = sub_1003CC87C(&self->super.super.isa);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100382EE0;
   v16[3] = &unk_1004C09E0;
   v16[4] = self;
-  v17 = v10;
-  v18 = v9;
-  v19 = v11;
-  v13 = v11;
-  v14 = v9;
-  v15 = v10;
+  v17 = groupIdentifierCopy;
+  v18 = configCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = configCopy;
+  v15 = groupIdentifierCopy;
   dispatch_async(v12, v16);
 }
 
-- (void)authorizeSharingInvitationIdentifier:(id)a3 auth:(id)a4 completionHandler:(id)a5
+- (void)authorizeSharingInvitationIdentifier:(id)identifier auth:(id)auth completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = sub_1003CC87C(&self->super.super.isa);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100383184;
   block[3] = &unk_1004C1188;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(v7, block);
 }
 
-- (void)cancelSharingInvitation:(id)a3 completionHandler:(id)a4
+- (void)cancelSharingInvitation:(id)invitation completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  invitationCopy = invitation;
+  handlerCopy = handler;
   v8 = sub_1003CC87C(&self->super.super.isa);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10038332C;
   block[3] = &unk_1004C0F68;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = invitationCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = invitationCopy;
   dispatch_async(v8, block);
 }
 
-- (void)acceptSharingInvitationWithIdentifier:(id)a3 passcode:(id)a4 productPlanIdentifier:(id)a5 completionHandler:(id)a6
+- (void)acceptSharingInvitationWithIdentifier:(id)identifier passcode:(id)passcode productPlanIdentifier:(id)planIdentifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  passcodeCopy = passcode;
+  planIdentifierCopy = planIdentifier;
+  handlerCopy = handler;
   v14 = sub_1003CC87C(&self->super.super.isa);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1003836FC;
   block[3] = &unk_1004D2040;
-  v22 = v12;
-  v23 = v13;
+  v22 = planIdentifierCopy;
+  v23 = handlerCopy;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = v13;
+  v20 = identifierCopy;
+  v21 = passcodeCopy;
+  v15 = planIdentifierCopy;
+  v16 = passcodeCopy;
+  v17 = identifierCopy;
+  v18 = handlerCopy;
   dispatch_async(v14, block);
 }
 
-- (void)requestInviteWithConfig:(id)a3 completionHandler:(id)a4
+- (void)requestInviteWithConfig:(id)config completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  handlerCopy = handler;
   v8 = sub_1003CC87C(&self->super.super.isa);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1003838FC;
   block[3] = &unk_1004C0F68;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = configCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = configCopy;
   dispatch_async(v8, block);
 }
 
-- (void)createSharingInvitationsForKeyIdentifier:(id)a3 friendIdentifier:(id)a4 auth:(id)a5 ourBindingAttestation:(id)a6 config:(id)a7 completionHandler:(id)a8
+- (void)createSharingInvitationsForKeyIdentifier:(id)identifier friendIdentifier:(id)friendIdentifier auth:(id)auth ourBindingAttestation:(id)attestation config:(id)config completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  identifierCopy = identifier;
+  friendIdentifierCopy = friendIdentifier;
+  authCopy = auth;
+  attestationCopy = attestation;
+  configCopy = config;
+  handlerCopy = handler;
   v20 = sub_1003CC87C(&self->super.super.isa);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100383BA0;
   block[3] = &unk_1004D2068;
   block[4] = self;
-  v28 = v14;
-  v29 = v15;
-  v30 = v16;
-  v31 = v17;
-  v32 = v18;
-  v33 = v19;
-  v21 = v19;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  v25 = v15;
-  v26 = v14;
+  v28 = identifierCopy;
+  v29 = friendIdentifierCopy;
+  v30 = authCopy;
+  v31 = attestationCopy;
+  v32 = configCopy;
+  v33 = handlerCopy;
+  v21 = handlerCopy;
+  v22 = configCopy;
+  v23 = attestationCopy;
+  v24 = authCopy;
+  v25 = friendIdentifierCopy;
+  v26 = identifierCopy;
   dispatch_async(v20, block);
 }
 
-- (void)createSilentSharingInvitationWithGroupIdentifier:(id)a3 completionHandler:(id)a4
+- (void)createSilentSharingInvitationWithGroupIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = sub_1003CC87C(&self->super.super.isa);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100383E78;
   block[3] = &unk_1004C0F68;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
   dispatch_async(v8, block);
 }
 
-- (void)setMailboxIdentifier:(id)a3 forOwnerKeyIdentifier:(id)a4 forInvitationIdentifier:(id)a5 completionHandler:(id)a6
+- (void)setMailboxIdentifier:(id)identifier forOwnerKeyIdentifier:(id)keyIdentifier forInvitationIdentifier:(id)invitationIdentifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  keyIdentifierCopy = keyIdentifier;
+  invitationIdentifierCopy = invitationIdentifier;
+  handlerCopy = handler;
   v14 = sub_1003CC87C(&self->super.super.isa);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100384288;
   block[3] = &unk_1004C09B8;
-  v20 = v12;
-  v21 = v10;
-  v22 = self;
-  v23 = v11;
-  v24 = v13;
-  v15 = v13;
-  v16 = v11;
-  v17 = v10;
-  v18 = v12;
+  v20 = invitationIdentifierCopy;
+  v21 = identifierCopy;
+  selfCopy = self;
+  v23 = keyIdentifierCopy;
+  v24 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = keyIdentifierCopy;
+  v17 = identifierCopy;
+  v18 = invitationIdentifierCopy;
   dispatch_async(v14, block);
 }
 
-- (void)acceptSharingInvitation:(id)a3 withIdentifier:(id)a4 fromMailboxIdentifier:(id)a5 passcode:(id)a6 productPlanIdentifier:(id)a7 completionHandler:(id)a8
+- (void)acceptSharingInvitation:(id)invitation withIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier passcode:(id)passcode productPlanIdentifier:(id)planIdentifier completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  invitationCopy = invitation;
+  identifierCopy = identifier;
+  mailboxIdentifierCopy = mailboxIdentifier;
+  passcodeCopy = passcode;
+  planIdentifierCopy = planIdentifier;
+  handlerCopy = handler;
   v20 = sub_1003CC87C(&self->super.super.isa);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100384668;
   block[3] = &unk_1004D2090;
-  v28 = v15;
-  v29 = v16;
-  v30 = v14;
-  v31 = self;
-  v33 = v18;
-  v34 = v19;
-  v32 = v17;
-  v21 = v18;
-  v22 = v17;
-  v23 = v19;
-  v24 = v14;
-  v25 = v16;
-  v26 = v15;
+  v28 = identifierCopy;
+  v29 = mailboxIdentifierCopy;
+  v30 = invitationCopy;
+  selfCopy = self;
+  v33 = planIdentifierCopy;
+  v34 = handlerCopy;
+  v32 = passcodeCopy;
+  v21 = planIdentifierCopy;
+  v22 = passcodeCopy;
+  v23 = handlerCopy;
+  v24 = invitationCopy;
+  v25 = mailboxIdentifierCopy;
+  v26 = identifierCopy;
   dispatch_async(v20, block);
 }
 
-- (void)startShareAcceptanceFlowWithInvitation:(id)a3 fromMailboxIdentifier:(id)a4 completionHandler:(id)a5
+- (void)startShareAcceptanceFlowWithInvitation:(id)invitation fromMailboxIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  invitationCopy = invitation;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = sub_1003CC87C(&self->super.super.isa);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100384A94;
   v15[3] = &unk_1004C2548;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = identifierCopy;
+  selfCopy = self;
+  v18 = invitationCopy;
+  v19 = handlerCopy;
+  v12 = invitationCopy;
+  v13 = handlerCopy;
+  v14 = identifierCopy;
   dispatch_async(v11, v15);
 }
 
-- (void)startShareAcceptanceFlowWithInvitation:(id)a3 completionHandler:(id)a4
+- (void)startShareAcceptanceFlowWithInvitation:(id)invitation completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  invitationCopy = invitation;
+  handlerCopy = handler;
   v8 = sub_1003CC87C(&self->super.super.isa);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100384CA8;
   block[3] = &unk_1004C0F68;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = invitationCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = invitationCopy;
   dispatch_async(v8, block);
 }
 
-- (void)handleRecipientMessage:(id)a3 forInvitationIdentifier:(id)a4 completionHandler:(id)a5
+- (void)handleRecipientMessage:(id)message forInvitationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = sub_1003CC87C(&self->super.super.isa);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100384F2C;
   v15[3] = &unk_1004C2548;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = identifierCopy;
+  selfCopy = self;
+  v18 = messageCopy;
+  v19 = handlerCopy;
+  v12 = messageCopy;
+  v13 = handlerCopy;
+  v14 = identifierCopy;
   dispatch_async(v11, v15);
 }
 
-- (void)handleInitiatorMessage:(id)a3 forInvitationIdentifier:(id)a4 completionHandler:(id)a5
+- (void)handleInitiatorMessage:(id)message forInvitationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = sub_1003CC87C(&self->super.super.isa);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100385264;
   v15[3] = &unk_1004C2548;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = identifierCopy;
+  selfCopy = self;
+  v18 = messageCopy;
+  v19 = handlerCopy;
+  v12 = messageCopy;
+  v13 = handlerCopy;
+  v14 = identifierCopy;
   dispatch_async(v11, v15);
 }
 
-- (void)requestBindingAttestationDataForKeyWithIdentifier:(id)a3 callback:(id)a4
+- (void)requestBindingAttestationDataForKeyWithIdentifier:(id)identifier callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v8 = sub_1003CC87C(&self->super.super.isa);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100385570;
   block[3] = &unk_1004C0F68;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  selfCopy = self;
+  v14 = callbackCopy;
+  v9 = callbackCopy;
+  v10 = identifierCopy;
   dispatch_async(v8, block);
 }
 
-- (void)setBindingAttestation:(id)a3 forKeyWithIdentifier:(id)a4 callback:(id)a5
+- (void)setBindingAttestation:(id)attestation forKeyWithIdentifier:(id)identifier callback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  attestationCopy = attestation;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v11 = sub_1003CC87C(&self->super.super.isa);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10038586C;
   v15[3] = &unk_1004C09E0;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = identifierCopy;
+  selfCopy = self;
+  v18 = attestationCopy;
+  v19 = callbackCopy;
+  v12 = callbackCopy;
+  v13 = attestationCopy;
+  v14 = identifierCopy;
   dispatch_async(v11, v15);
 }
 
-- (void)getPreTrackRequestForInvitationWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getPreTrackRequestForInvitationWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = sub_1003CC87C(&self->super.super.isa);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100385B24;
   block[3] = &unk_1004C0F68;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
   dispatch_async(v8, block);
 }
 
-- (void)getPreTrackRequestForKeyWithIdentifier:(id)a3 callback:(id)a4
+- (void)getPreTrackRequestForKeyWithIdentifier:(id)identifier callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v8 = sub_1003CC87C(&self->super.super.isa);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100385DFC;
   block[3] = &unk_1004C0F68;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  selfCopy = self;
+  v14 = callbackCopy;
+  v9 = callbackCopy;
+  v10 = identifierCopy;
   dispatch_async(v8, block);
 }
 
-- (void)ppidRequestForInvitationWithIdentifier:(id)a3 fromMailboxIdentifier:(id)a4 completionHandler:(id)a5
+- (void)ppidRequestForInvitationWithIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  mailboxIdentifierCopy = mailboxIdentifier;
+  handlerCopy = handler;
   v11 = sub_1003CC87C(&self->super.super.isa);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1003860F8;
   v15[3] = &unk_1004C09E0;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = identifierCopy;
+  v17 = mailboxIdentifierCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = mailboxIdentifierCopy;
+  v14 = identifierCopy;
   dispatch_async(v11, v15);
 }
 
-- (void)setProductPlanIdentifier:(id)a3 forInvitationIdentifier:(id)a4 completion:(id)a5
+- (void)setProductPlanIdentifier:(id)identifier forInvitationIdentifier:(id)invitationIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  invitationIdentifierCopy = invitationIdentifier;
+  completionCopy = completion;
   v11 = sub_1003CC87C(&self->super.super.isa);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100386474;
   v15[3] = &unk_1004C09E0;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = invitationIdentifierCopy;
+  selfCopy = self;
+  v18 = identifierCopy;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = identifierCopy;
+  v14 = invitationIdentifierCopy;
   dispatch_async(v11, v15);
 }
 
-- (void)readerInformationForInvitationWithIdentifier:(id)a3 fromMailboxIdentifier:(id)a4 completionHandler:(id)a5
+- (void)readerInformationForInvitationWithIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  mailboxIdentifierCopy = mailboxIdentifier;
+  handlerCopy = handler;
   v11 = sub_1003CC87C(&self->super.super.isa);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100386758;
   v15[3] = &unk_1004C09E0;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = identifierCopy;
+  v17 = mailboxIdentifierCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = mailboxIdentifierCopy;
+  v14 = identifierCopy;
   dispatch_async(v11, v15);
 }
 
-- (void)getSecondFactorRequestForConfigs:(id)a3 completionHandler:(id)a4
+- (void)getSecondFactorRequestForConfigs:(id)configs completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configsCopy = configs;
+  handlerCopy = handler;
   v8 = sub_1003CC87C(&self->super.super.isa);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100386A9C;
   block[3] = &unk_1004C0F68;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = configsCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = configsCopy;
   dispatch_async(v8, block);
 }
 
-- (void)retryPasscode:(id)a3 forInvitationIdentifier:(id)a4 completionHandler:(id)a5
+- (void)retryPasscode:(id)passcode forInvitationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  passcodeCopy = passcode;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = sub_1003CC87C(&self->super.super.isa);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100386F50;
   v15[3] = &unk_1004C09E0;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = passcodeCopy;
+  v17 = identifierCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = identifierCopy;
+  v14 = passcodeCopy;
   dispatch_async(v11, v15);
 }
 
-- (void)retryPasscode:(id)a3 forKeyIdentifier:(id)a4 completionHandler:(id)a5
+- (void)retryPasscode:(id)passcode forKeyIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  passcodeCopy = passcode;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = sub_1003CC87C(&self->super.super.isa);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100387294;
   v15[3] = &unk_1004C09E0;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = passcodeCopy;
+  v17 = identifierCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = identifierCopy;
+  v14 = passcodeCopy;
   dispatch_async(v11, v15);
 }
 
-- (void)updateSharingAnalyticsWithConfig:(id)a3 completionHandler:(id)a4
+- (void)updateSharingAnalyticsWithConfig:(id)config completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  handlerCopy = handler;
   v8 = sub_1003CC87C(&self->super.super.isa);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10038755C;
   block[3] = &unk_1004C0F68;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = configCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = configCopy;
   dispatch_async(v8, block);
 }
 
-- (void)handleOwnerKeySharingCancelStatus:(id)a3
+- (void)handleOwnerKeySharingCancelStatus:(id)status
 {
-  v3 = a3;
+  statusCopy = status;
   v4 = KmlLogger();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -554,15 +554,15 @@
     v8 = 1024;
     v9 = 588;
     v10 = 2112;
-    v11 = v3;
+    v11 = statusCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s : %i : Ignoring this callback with status : %@", &v6, 0x1Cu);
   }
 }
 
-- (void)handleOwnerKeySharingInvitations:(id)a3 withError:(id)a4
+- (void)handleOwnerKeySharingInvitations:(id)invitations withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  invitationsCopy = invitations;
+  errorCopy = error;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -571,9 +571,9 @@
     v17 = 1024;
     v18 = 593;
     v19 = 2112;
-    v20 = v6;
+    v20 = invitationsCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s : %i : invitations: %@, error %@", buf, 0x26u);
   }
 
@@ -583,17 +583,17 @@
   block[2] = sub_100387DFC;
   block[3] = &unk_1004C24A8;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = invitationsCopy;
+  v14 = errorCopy;
+  v10 = errorCopy;
+  v11 = invitationsCopy;
   dispatch_async(v9, block);
 }
 
-- (void)handleOwnerCrossPlatformInvitations:(id)a3 withError:(id)a4
+- (void)handleOwnerCrossPlatformInvitations:(id)invitations withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  invitationsCopy = invitations;
+  errorCopy = error;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -602,7 +602,7 @@
     v17 = 1024;
     v18 = 612;
     v19 = 2112;
-    v20 = v7;
+    v20 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s : %i : error - %@", buf, 0x1Cu);
   }
 
@@ -612,17 +612,17 @@
   block[2] = sub_100388064;
   block[3] = &unk_1004C24A8;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = invitationsCopy;
+  v14 = errorCopy;
+  v10 = errorCopy;
+  v11 = invitationsCopy;
   dispatch_async(v9, block);
 }
 
-- (void)handleExchangeStartedWithFriendKey:(id)a3 status:(id)a4
+- (void)handleExchangeStartedWithFriendKey:(id)key status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  statusCopy = status;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -631,7 +631,7 @@
     v17 = 1024;
     v18 = 625;
     v19 = 2112;
-    v20 = v7;
+    v20 = statusCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s : %i : %@", buf, 0x1Cu);
   }
 
@@ -641,16 +641,16 @@
   block[2] = sub_100388208;
   block[3] = &unk_1004C24A8;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = keyCopy;
+  v14 = statusCopy;
+  v10 = statusCopy;
+  v11 = keyCopy;
   dispatch_async(v9, block);
 }
 
-- (void)handleFriendSideKeySharingCancelResult:(id)a3
+- (void)handleFriendSideKeySharingCancelResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -659,7 +659,7 @@
     v12 = 1024;
     v13 = 635;
     v14 = 2112;
-    v15 = v4;
+    v15 = resultCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s : %i : %@", buf, 0x1Cu);
   }
 
@@ -669,16 +669,16 @@
   v8[2] = sub_100388388;
   v8[3] = &unk_1004C22F0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = resultCopy;
+  v7 = resultCopy;
   dispatch_async(v6, v8);
 }
 
-- (void)handleCrossPlatformSigningRequest:(id)a3 status:(id)a4 keyInformation:(id)a5
+- (void)handleCrossPlatformSigningRequest:(id)request status:(id)status keyInformation:(id)information
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  statusCopy = status;
+  informationCopy = information;
   v11 = KmlLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -687,7 +687,7 @@
     v22 = 1024;
     v23 = 645;
     v24 = 2112;
-    v25 = v9;
+    v25 = statusCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s : %i : %@", buf, 0x1Cu);
   }
 
@@ -697,18 +697,18 @@
   v16[2] = sub_100388544;
   v16[3] = &unk_1004D1B40;
   v16[4] = self;
-  v17 = v8;
-  v18 = v10;
-  v19 = v9;
-  v13 = v9;
-  v14 = v10;
-  v15 = v8;
+  v17 = requestCopy;
+  v18 = informationCopy;
+  v19 = statusCopy;
+  v13 = statusCopy;
+  v14 = informationCopy;
+  v15 = requestCopy;
   dispatch_async(v12, v16);
 }
 
-- (void)handleCrossPlatformParseInvitationStatus:(id)a3
+- (void)handleCrossPlatformParseInvitationStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -717,7 +717,7 @@
     v12 = 1024;
     v13 = 655;
     v14 = 2112;
-    v15 = v4;
+    v15 = statusCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s : %i : %@", buf, 0x1Cu);
   }
 
@@ -727,14 +727,14 @@
   v8[2] = sub_1003886C8;
   v8[3] = &unk_1004C22F0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = statusCopy;
+  v7 = statusCopy;
   dispatch_async(v6, v8);
 }
 
-- (void)handleRecipientMessageResult:(id)a3
+- (void)handleRecipientMessageResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -743,7 +743,7 @@
     v12 = 1024;
     v13 = 665;
     v14 = 2112;
-    v15 = v4;
+    v15 = resultCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s : %i : %@", buf, 0x1Cu);
   }
 
@@ -753,14 +753,14 @@
   v8[2] = sub_100388848;
   v8[3] = &unk_1004C22F0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = resultCopy;
+  v7 = resultCopy;
   dispatch_async(v6, v8);
 }
 
-- (void)handleInitiatorMessageResult:(id)a3
+- (void)handleInitiatorMessageResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -769,7 +769,7 @@
     v12 = 1024;
     v13 = 677;
     v14 = 2112;
-    v15 = v4;
+    v15 = resultCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s : %i : %@", buf, 0x1Cu);
   }
 
@@ -779,8 +779,8 @@
   v8[2] = sub_1003889C8;
   v8[3] = &unk_1004C22F0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = resultCopy;
+  v7 = resultCopy;
   dispatch_async(v6, v8);
 }
 

@@ -80,10 +80,10 @@ void __65__WBSSafariBookmarksSyncAgentConnection__setUpConnectionIfNeeded__block
 - (WBSSafariBookmarksSyncAgentProtocol)remoteObjectProxy
 {
   [(WBSSafariBookmarksSyncAgentConnection *)self _setUpConnectionIfNeeded];
-  v3 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  if ([v3 conformsToProtocol:&unk_1F30A1300])
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  if ([remoteObjectProxy conformsToProtocol:&unk_1F30A1300])
   {
-    v4 = v3;
+    v4 = remoteObjectProxy;
   }
 
   else

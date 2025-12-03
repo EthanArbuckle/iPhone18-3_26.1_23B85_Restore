@@ -1,16 +1,16 @@
 @interface PLURL
 - (BOOL)startAccessingSecurityScopedResource;
-- (id)replacementObjectForCoder:(id)a3;
+- (id)replacementObjectForCoder:(id)coder;
 - (void)dealloc;
 - (void)stopAccessingSecurityScopedResource;
 @end
 
 @implementation PLURL
 
-- (id)replacementObjectForCoder:(id)a3
+- (id)replacementObjectForCoder:(id)coder
 {
-  v3 = [(PLURL *)self absoluteString];
-  v4 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v3];
+  absoluteString = [(PLURL *)self absoluteString];
+  v4 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:absoluteString];
 
   return v4;
 }

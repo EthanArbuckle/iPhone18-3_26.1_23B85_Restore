@@ -1,14 +1,14 @@
 @interface SKGNameNode
-+ (id)nameWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4;
-- (SKGNameNode)initWithName:(id)a3;
++ (id)nameWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph;
+- (SKGNameNode)initWithName:(id)name;
 @end
 
 @implementation SKGNameNode
 
-+ (id)nameWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4
++ (id)nameWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
-  v5 = [a4 graph];
-  v6 = [v5 nodeForIdentifier:a3];
+  graph = [graph graph];
+  v6 = [graph nodeForIdentifier:identifier];
 
   v7 = [SKGNameNode alloc];
   v8 = [v6 propertyForKey:@"value"];
@@ -17,11 +17,11 @@
   return v9;
 }
 
-- (SKGNameNode)initWithName:(id)a3
+- (SKGNameNode)initWithName:(id)name
 {
   v4.receiver = self;
   v4.super_class = SKGNameNode;
-  return [(SKGNode *)&v4 initWithValue:a3];
+  return [(SKGNode *)&v4 initWithValue:name];
 }
 
 @end

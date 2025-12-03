@@ -1,31 +1,31 @@
 @interface SignpostReporterObjectFilter
-- (BOOL)_objectPassesStringFilter:(id)a3;
-- (BOOL)shouldReportSignpostObject:(id)a3 classificationOut:(unint64_t *)a4;
+- (BOOL)_objectPassesStringFilter:(id)filter;
+- (BOOL)shouldReportSignpostObject:(id)object classificationOut:(unint64_t *)out;
 - (SignpostReporterObjectFilter)init;
-- (SignpostReporterObjectFilter)initWithPlatform:(unint64_t)a3;
+- (SignpostReporterObjectFilter)initWithPlatform:(unint64_t)platform;
 - (id)_init;
-- (void)incrementTotalForObject:(id)a3 classification:(unint64_t)a4;
+- (void)incrementTotalForObject:(id)object classification:(unint64_t)classification;
 @end
 
 @implementation SignpostReporterObjectFilter
 
-- (BOOL)_objectPassesStringFilter:(id)a3
+- (BOOL)_objectPassesStringFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   if ([(SignpostReporterObjectFilter *)self platform]!= 1)
   {
     goto LABEL_5;
   }
 
-  v5 = [v4 subsystem];
-  v6 = [v4 category];
-  v7 = [v4 name];
+  subsystem = [filterCopy subsystem];
+  category = [filterCopy category];
+  name = [filterCopy name];
   v8 = IsPerfLoggingInterval();
 
   if (v8)
   {
-    v9 = [v4 string1Value];
-    v10 = [v4 string2Value];
+    string1Value = [filterCopy string1Value];
+    string2Value = [filterCopy string2Value];
     v11 = PassesPerfLoggingAllowlist();
 
     if (!v11)
@@ -49,9 +49,9 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v13 = [v4 string1Name];
+  string1Name = [filterCopy string1Name];
 
-  if (v13)
+  if (string1Name)
   {
     v14 = v12;
   }
@@ -61,9 +61,9 @@ LABEL_19:
     v14 = 1;
   }
 
-  if ((v14 & 1) == 0 && (sub_10000325C(v4, [(SignpostReporterObjectFilter *)self platform]) & 1) == 0)
+  if ((v14 & 1) == 0 && (sub_10000325C(filterCopy, [(SignpostReporterObjectFilter *)self platform]) & 1) == 0)
   {
-    v15 = [v4 string1Value];
+    string1Value2 = [filterCopy string1Value];
     [(SignpostReporterObjectFilter *)self platform];
     v16 = StringPassesSignpostReporterStringAllowlist();
 
@@ -75,9 +75,9 @@ LABEL_21:
     }
   }
 
-  v17 = [v4 string2Name];
+  string2Name = [filterCopy string2Name];
 
-  if (v17)
+  if (string2Name)
   {
     v18 = v12;
   }
@@ -92,12 +92,12 @@ LABEL_21:
     goto LABEL_19;
   }
 
-  if (sub_1000035F0(v4))
+  if (sub_1000035F0(filterCopy))
   {
     goto LABEL_19;
   }
 
-  v19 = [v4 string2Value];
+  string2Value2 = [filterCopy string2Value];
   [(SignpostReporterObjectFilter *)self platform];
   v20 = StringPassesSignpostReporterStringAllowlist();
 
@@ -111,24 +111,24 @@ LABEL_20:
   return v20;
 }
 
-- (BOOL)shouldReportSignpostObject:(id)a3 classificationOut:(unint64_t *)a4
+- (BOOL)shouldReportSignpostObject:(id)object classificationOut:(unint64_t *)out
 {
-  v6 = a3;
-  if ([v6 canGenerateCoreAnalyticsPayload])
+  objectCopy = object;
+  if ([objectCopy canGenerateCoreAnalyticsPayload])
   {
-    if ([v6 telemetryEnabled])
+    if ([objectCopy telemetryEnabled])
     {
-      [v6 durationSeconds];
+      [objectCopy durationSeconds];
       if (v7 >= 0.0)
       {
-        if ([(SignpostReporterObjectFilter *)self _objectPassesStringFilter:v6])
+        if ([(SignpostReporterObjectFilter *)self _objectPassesStringFilter:objectCopy])
         {
-          v11 = [(SignpostReporterObjectFilter *)self scnFilter];
-          if (v11)
+          scnFilter = [(SignpostReporterObjectFilter *)self scnFilter];
+          if (scnFilter)
           {
-            v12 = v11;
-            v13 = [(SignpostReporterObjectFilter *)self scnFilter];
-            v8 = [v13 shouldReportObject:v6];
+            v12 = scnFilter;
+            scnFilter2 = [(SignpostReporterObjectFilter *)self scnFilter];
+            v8 = [scnFilter2 shouldReportObject:objectCopy];
 
             if (v8)
             {
@@ -175,12 +175,12 @@ LABEL_20:
     v9 = 5;
   }
 
-  if (a4)
+  if (out)
   {
-    *a4 = v9;
+    *out = v9;
   }
 
-  [(SignpostReporterObjectFilter *)self incrementTotalForObject:v6 classification:v9];
+  [(SignpostReporterObjectFilter *)self incrementTotalForObject:objectCopy classification:v9];
 
   return v8 & 1;
 }
@@ -230,65 +230,65 @@ LABEL_20:
 
 - (SignpostReporterObjectFilter)init
 {
-  v2 = [(SignpostReporterObjectFilter *)self _init];
-  if (v2)
+  _init = [(SignpostReporterObjectFilter *)self _init];
+  if (_init)
   {
-    v2->_platform = sub_100001DD0();
-    v3 = sub_100002450([(SignpostReporterObjectFilter *)v2 platform]);
-    scnFilter = v2->_scnFilter;
-    v2->_scnFilter = v3;
+    _init->_platform = sub_100001DD0();
+    v3 = sub_100002450([(SignpostReporterObjectFilter *)_init platform]);
+    scnFilter = _init->_scnFilter;
+    _init->_scnFilter = v3;
   }
 
-  return v2;
+  return _init;
 }
 
-- (SignpostReporterObjectFilter)initWithPlatform:(unint64_t)a3
+- (SignpostReporterObjectFilter)initWithPlatform:(unint64_t)platform
 {
-  if (a3)
+  if (platform)
   {
-    v4 = [(SignpostReporterObjectFilter *)self _init];
-    v5 = v4;
-    if (v4)
+    _init = [(SignpostReporterObjectFilter *)self _init];
+    v5 = _init;
+    if (_init)
     {
-      v4[1] = a3;
-      v6 = sub_100002450([v4 platform]);
+      _init[1] = platform;
+      v6 = sub_100002450([_init platform]);
       v7 = v5[16];
       v5[16] = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)incrementTotalForObject:(id)a3 classification:(unint64_t)a4
+- (void)incrementTotalForObject:(id)object classification:(unint64_t)classification
 {
-  v13 = a3;
-  v6 = [v13 subsystem];
-  v7 = [v13 category];
-  v8 = [(SignpostReporterObjectFilter *)self allInspectedSignpostObjectsAggregation];
-  [v8 incrementSubsystem:v6 category:v7];
+  objectCopy = object;
+  subsystem = [objectCopy subsystem];
+  category = [objectCopy category];
+  allInspectedSignpostObjectsAggregation = [(SignpostReporterObjectFilter *)self allInspectedSignpostObjectsAggregation];
+  [allInspectedSignpostObjectsAggregation incrementSubsystem:subsystem category:category];
 
   v9 = 0;
-  if (a4 > 2)
+  if (classification > 2)
   {
-    switch(a4)
+    switch(classification)
     {
       case 3uLL:
-        v10 = [(SignpostReporterObjectFilter *)self telemetryNotReportedDurationThresholdAggregation];
+        telemetryNotReportedDurationThresholdAggregation = [(SignpostReporterObjectFilter *)self telemetryNotReportedDurationThresholdAggregation];
         break;
       case 4uLL:
-        v10 = [(SignpostReporterObjectFilter *)self telemetryNotReportedFailedSCFilterAggregation];
+        telemetryNotReportedDurationThresholdAggregation = [(SignpostReporterObjectFilter *)self telemetryNotReportedFailedSCFilterAggregation];
         break;
       case 5uLL:
-        v10 = [(SignpostReporterObjectFilter *)self telemetryNotReportedClassNotSupportedAggregation];
+        telemetryNotReportedDurationThresholdAggregation = [(SignpostReporterObjectFilter *)self telemetryNotReportedClassNotSupportedAggregation];
         break;
       default:
         goto LABEL_16;
@@ -297,30 +297,30 @@ LABEL_20:
     goto LABEL_14;
   }
 
-  if (!a4)
+  if (!classification)
   {
-    v10 = [(SignpostReporterObjectFilter *)self telemetryDisabledAggregation];
+    telemetryNotReportedDurationThresholdAggregation = [(SignpostReporterObjectFilter *)self telemetryDisabledAggregation];
 LABEL_14:
-    v11 = v10;
+    telemetryReportedAggregation = telemetryNotReportedDurationThresholdAggregation;
     v9 = 0;
     goto LABEL_15;
   }
 
-  if (a4 != 1)
+  if (classification != 1)
   {
-    if (a4 != 2)
+    if (classification != 2)
     {
       goto LABEL_16;
     }
 
-    v10 = [(SignpostReporterObjectFilter *)self telemetryNotReportedFailedStringAllowlistAggregation];
+    telemetryNotReportedDurationThresholdAggregation = [(SignpostReporterObjectFilter *)self telemetryNotReportedFailedStringAllowlistAggregation];
     goto LABEL_14;
   }
 
-  v11 = [(SignpostReporterObjectFilter *)self telemetryReportedAggregation];
+  telemetryReportedAggregation = [(SignpostReporterObjectFilter *)self telemetryReportedAggregation];
   v9 = 1;
 LABEL_15:
-  [v11 incrementSubsystem:v6 category:v7];
+  [telemetryReportedAggregation incrementSubsystem:subsystem category:category];
 
 LABEL_16:
   objc_opt_class();
@@ -361,8 +361,8 @@ LABEL_16:
         if (v9)
         {
           ++self->_totalReportedEventCount;
-          v12 = [(SignpostReporterObjectFilter *)self telemetryReportedEventsAggregation];
-          [v12 incrementSubsystem:v6 category:v7];
+          telemetryReportedEventsAggregation = [(SignpostReporterObjectFilter *)self telemetryReportedEventsAggregation];
+          [telemetryReportedEventsAggregation incrementSubsystem:subsystem category:category];
         }
 
         else

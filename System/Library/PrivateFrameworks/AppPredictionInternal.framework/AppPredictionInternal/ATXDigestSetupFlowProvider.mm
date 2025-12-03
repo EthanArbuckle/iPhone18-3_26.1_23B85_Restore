@@ -1,9 +1,9 @@
 @interface ATXDigestSetupFlowProvider
 - (ATXDigestSetupFlowProvider)init;
-- (ATXDigestSetupFlowProvider)initWithDatastore:(id)a3;
-- (id)appsSortedByNumOfNotificationsGivenNumOfDays:(unint64_t)a3;
-- (unint64_t)numDaysSinceTimestamp:(double)a3;
-- (void)addRemainingAppsWithNoNotificationVolume:(id)a3;
+- (ATXDigestSetupFlowProvider)initWithDatastore:(id)datastore;
+- (id)appsSortedByNumOfNotificationsGivenNumOfDays:(unint64_t)days;
+- (unint64_t)numDaysSinceTimestamp:(double)timestamp;
+- (void)addRemainingAppsWithNoNotificationVolume:(id)volume;
 @end
 
 @implementation ATXDigestSetupFlowProvider
@@ -16,16 +16,16 @@
   return v4;
 }
 
-- (ATXDigestSetupFlowProvider)initWithDatastore:(id)a3
+- (ATXDigestSetupFlowProvider)initWithDatastore:(id)datastore
 {
-  v5 = a3;
+  datastoreCopy = datastore;
   v9.receiver = self;
   v9.super_class = ATXDigestSetupFlowProvider;
   v6 = [(ATXDigestSetupFlowProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_datastore, a3);
+    objc_storeStrong(&v6->_datastore, datastore);
     v7->_containsMessageAndTimeSensitiveData = 1;
     v7->_numDaysOfData = 0;
   }
@@ -33,13 +33,13 @@
   return v7;
 }
 
-- (id)appsSortedByNumOfNotificationsGivenNumOfDays:(unint64_t)a3
+- (id)appsSortedByNumOfNotificationsGivenNumOfDays:(unint64_t)days
 {
   v20 = *MEMORY[0x277D85DE8];
   [(ATXNotificationAndSuggestionDatastore *)self->_datastore receiveTimeStampOfFirstNotification];
   v6 = v5;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-  v8 = v7 - (86400 * a3);
+  v8 = v7 - (86400 * days);
   v9 = __atxlog_handle_notification_management();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
   if (v6 == 0.0)
@@ -82,31 +82,31 @@
   return v14;
 }
 
-- (unint64_t)numDaysSinceTimestamp:(double)a3
+- (unint64_t)numDaysSinceTimestamp:(double)timestamp
 {
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:a3];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:timestamp];
   v6 = [MEMORY[0x277CBEAA8] now];
-  v7 = [v4 components:16 fromDate:v5 toDate:v6 options:2];
+  v7 = [currentCalendar components:16 fromDate:v5 toDate:v6 options:2];
 
   v8 = [v7 day];
   return v8 + 1;
 }
 
-- (void)addRemainingAppsWithNoNotificationVolume:(id)a3
+- (void)addRemainingAppsWithNoNotificationVolume:(id)volume
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  volumeCopy = volume;
   v4 = +[_ATXAppIconState sharedInstance];
   v5 = MEMORY[0x277CBEB58];
-  v6 = [v4 allAppsKnownToSpringBoard];
-  v7 = [v5 setWithArray:v6];
+  allAppsKnownToSpringBoard = [v4 allAppsKnownToSpringBoard];
+  v7 = [v5 setWithArray:allAppsKnownToSpringBoard];
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v8 = v3;
+  v8 = volumeCopy;
   v9 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v9)
   {
@@ -122,13 +122,13 @@
         }
 
         v13 = *(*(&v31 + 1) + 8 * i);
-        v14 = [v13 bundleId];
-        v15 = [v7 containsObject:v14];
+        bundleId = [v13 bundleId];
+        v15 = [v7 containsObject:bundleId];
 
         if (v15)
         {
-          v16 = [v13 bundleId];
-          [v7 removeObject:v16];
+          bundleId2 = [v13 bundleId];
+          [v7 removeObject:bundleId2];
         }
       }
 

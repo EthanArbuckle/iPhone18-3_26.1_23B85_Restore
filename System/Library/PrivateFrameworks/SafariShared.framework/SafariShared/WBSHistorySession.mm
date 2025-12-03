@@ -1,31 +1,31 @@
 @interface WBSHistorySession
 + (id)currentSession;
 - (BOOL)isCurrentSession;
-- (BOOL)isEqual:(id)a3;
-- (WBSHistorySession)initWithSessionStartDate:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WBSHistorySession)initWithSessionStartDate:(id)date;
 @end
 
 @implementation WBSHistorySession
 
 + (id)currentSession
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = currentSessionStartDate();
   v4 = [v2 initWithSessionStartDate:v3];
 
   return v4;
 }
 
-- (WBSHistorySession)initWithSessionStartDate:(id)a3
+- (WBSHistorySession)initWithSessionStartDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v10.receiver = self;
   v10.super_class = WBSHistorySession;
   v6 = [(WBSHistorySession *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_startDate, a3);
+    objc_storeStrong(&v6->_startDate, date);
     v8 = v7;
   }
 
@@ -41,10 +41,10 @@
   return startDate;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -55,8 +55,8 @@
     if (objc_opt_isKindOfClass())
     {
       startDate = self->_startDate;
-      v6 = [(WBSHistorySession *)v4 startDate];
-      v7 = [(NSDate *)startDate isEqualToDate:v6];
+      startDate = [(WBSHistorySession *)equalCopy startDate];
+      v7 = [(NSDate *)startDate isEqualToDate:startDate];
     }
 
     else

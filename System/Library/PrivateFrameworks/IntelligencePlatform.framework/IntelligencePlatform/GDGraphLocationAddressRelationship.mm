@@ -1,55 +1,55 @@
 @interface GDGraphLocationAddressRelationship
-- (GDGraphLocationAddressRelationship)initWithStreetField:(id)a3 subLocalityField:(id)a4 cityField:(id)a5 subAdministrativeAreaField:(id)a6 stateField:(id)a7 postalCodeField:(id)a8 countryField:(id)a9 isoCountryCodeField:(id)a10 inferredSemanticLabelField:(id)a11 allStreetField:(id)a12 allSubLocalityField:(id)a13 allCityField:(id)a14 allSubAdministrativeAreaField:(id)a15 allStateField:(id)a16 allPostalCodeField:(id)a17 allCountryField:(id)a18 allIsoCountryCodeField:(id)a19 allInferredSemanticLabelField:(id)a20;
+- (GDGraphLocationAddressRelationship)initWithStreetField:(id)field subLocalityField:(id)localityField cityField:(id)cityField subAdministrativeAreaField:(id)areaField stateField:(id)stateField postalCodeField:(id)codeField countryField:(id)countryField isoCountryCodeField:(id)self0 inferredSemanticLabelField:(id)self1 allStreetField:(id)self2 allSubLocalityField:(id)self3 allCityField:(id)self4 allSubAdministrativeAreaField:(id)self5 allStateField:(id)self6 allPostalCodeField:(id)self7 allCountryField:(id)self8 allIsoCountryCodeField:(id)self9 allInferredSemanticLabelField:(id)semanticLabelField;
 @end
 
 @implementation GDGraphLocationAddressRelationship
 
-- (GDGraphLocationAddressRelationship)initWithStreetField:(id)a3 subLocalityField:(id)a4 cityField:(id)a5 subAdministrativeAreaField:(id)a6 stateField:(id)a7 postalCodeField:(id)a8 countryField:(id)a9 isoCountryCodeField:(id)a10 inferredSemanticLabelField:(id)a11 allStreetField:(id)a12 allSubLocalityField:(id)a13 allCityField:(id)a14 allSubAdministrativeAreaField:(id)a15 allStateField:(id)a16 allPostalCodeField:(id)a17 allCountryField:(id)a18 allIsoCountryCodeField:(id)a19 allInferredSemanticLabelField:(id)a20
+- (GDGraphLocationAddressRelationship)initWithStreetField:(id)field subLocalityField:(id)localityField cityField:(id)cityField subAdministrativeAreaField:(id)areaField stateField:(id)stateField postalCodeField:(id)codeField countryField:(id)countryField isoCountryCodeField:(id)self0 inferredSemanticLabelField:(id)self1 allStreetField:(id)self2 allSubLocalityField:(id)self3 allCityField:(id)self4 allSubAdministrativeAreaField:(id)self5 allStateField:(id)self6 allPostalCodeField:(id)self7 allCountryField:(id)self8 allIsoCountryCodeField:(id)self9 allInferredSemanticLabelField:(id)semanticLabelField
 {
-  v49 = a3;
-  v35 = a4;
-  v48 = a4;
-  v36 = a5;
-  v47 = a5;
-  v46 = a6;
-  v45 = a7;
-  v44 = a8;
-  v43 = a9;
-  v42 = a10;
-  v41 = a11;
-  v40 = a12;
-  v25 = a13;
-  v26 = a14;
-  v27 = a15;
-  v28 = a16;
-  v29 = a17;
-  v39 = a18;
-  v38 = a19;
-  v30 = a20;
+  fieldCopy = field;
+  localityFieldCopy = localityField;
+  localityFieldCopy2 = localityField;
+  cityFieldCopy = cityField;
+  cityFieldCopy2 = cityField;
+  areaFieldCopy = areaField;
+  stateFieldCopy = stateField;
+  codeFieldCopy = codeField;
+  countryFieldCopy = countryField;
+  countryCodeFieldCopy = countryCodeField;
+  labelFieldCopy = labelField;
+  streetFieldCopy = streetField;
+  subLocalityFieldCopy = subLocalityField;
+  allCityFieldCopy = allCityField;
+  administrativeAreaFieldCopy = administrativeAreaField;
+  allStateFieldCopy = allStateField;
+  postalCodeFieldCopy = postalCodeField;
+  allCountryFieldCopy = allCountryField;
+  isoCountryCodeFieldCopy = isoCountryCodeField;
+  semanticLabelFieldCopy = semanticLabelField;
   v50.receiver = self;
   v50.super_class = GDGraphLocationAddressRelationship;
   v31 = [(GDGraphLocationAddressRelationship *)&v50 init];
   v32 = v31;
   if (v31)
   {
-    objc_storeStrong(&v31->_street, a3);
-    objc_storeStrong(&v32->_subLocality, v35);
-    objc_storeStrong(&v32->_city, v36);
-    objc_storeStrong(&v32->_subAdministrativeArea, a6);
-    objc_storeStrong(&v32->_state, a7);
-    objc_storeStrong(&v32->_postalCode, a8);
-    objc_storeStrong(&v32->_country, a9);
-    objc_storeStrong(&v32->_isoCountryCode, a10);
-    objc_storeStrong(&v32->_inferredSemanticLabel, a11);
-    objc_storeStrong(&v32->_allStreet, a12);
-    objc_storeStrong(&v32->_allSubLocality, a13);
-    objc_storeStrong(&v32->_allCity, a14);
-    objc_storeStrong(&v32->_allSubAdministrativeArea, a15);
-    objc_storeStrong(&v32->_allState, a16);
-    objc_storeStrong(&v32->_allPostalCode, a17);
-    objc_storeStrong(&v32->_allCountry, a18);
-    objc_storeStrong(&v32->_allIsoCountryCode, a19);
-    objc_storeStrong(&v32->_allInferredSemanticLabel, a20);
+    objc_storeStrong(&v31->_street, field);
+    objc_storeStrong(&v32->_subLocality, localityFieldCopy);
+    objc_storeStrong(&v32->_city, cityFieldCopy);
+    objc_storeStrong(&v32->_subAdministrativeArea, areaField);
+    objc_storeStrong(&v32->_state, stateField);
+    objc_storeStrong(&v32->_postalCode, codeField);
+    objc_storeStrong(&v32->_country, countryField);
+    objc_storeStrong(&v32->_isoCountryCode, countryCodeField);
+    objc_storeStrong(&v32->_inferredSemanticLabel, labelField);
+    objc_storeStrong(&v32->_allStreet, streetField);
+    objc_storeStrong(&v32->_allSubLocality, subLocalityField);
+    objc_storeStrong(&v32->_allCity, allCityField);
+    objc_storeStrong(&v32->_allSubAdministrativeArea, administrativeAreaField);
+    objc_storeStrong(&v32->_allState, allStateField);
+    objc_storeStrong(&v32->_allPostalCode, postalCodeField);
+    objc_storeStrong(&v32->_allCountry, allCountryField);
+    objc_storeStrong(&v32->_allIsoCountryCode, isoCountryCodeField);
+    objc_storeStrong(&v32->_allInferredSemanticLabel, semanticLabelField);
   }
 
   return v32;

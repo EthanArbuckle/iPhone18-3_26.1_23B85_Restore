@@ -1,6 +1,6 @@
 @interface COSManualPairingHeader
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (COSManualPairingHeader)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (COSManualPairingHeader)initWithFrame:(CGRect)frame;
 - (id)deviceListTitleName;
 - (id)pairingInstructionAttributedString;
 - (void)layoutSubviews;
@@ -8,15 +8,15 @@
 
 @implementation COSManualPairingHeader
 
-- (COSManualPairingHeader)initWithFrame:(CGRect)a3
+- (COSManualPairingHeader)initWithFrame:(CGRect)frame
 {
   v30.receiver = self;
   v30.super_class = COSManualPairingHeader;
-  v3 = [(COSManualPairingHeader *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(COSManualPairingHeader *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(COSManualPairingHeader *)v3 pairingInstructionAttributedString];
+    pairingInstructionAttributedString = [(COSManualPairingHeader *)v3 pairingInstructionAttributedString];
     v6 = [UILabel alloc];
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
@@ -34,7 +34,7 @@
     [(UILabel *)v14 setTextColor:v15];
 
     [(UILabel *)v4->_headerLabel setNumberOfLines:0];
-    [(UILabel *)v4->_headerLabel setAttributedText:v5];
+    [(UILabel *)v4->_headerLabel setAttributedText:pairingInstructionAttributedString];
     [(COSManualPairingHeader *)v4 addSubview:v4->_headerLabel];
     v16 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     devices = v4->_devices;
@@ -55,14 +55,14 @@
     [(UILabel *)v4->_devices setNumberOfLines:0];
     [(UILabel *)v4->_devices setTextAlignment:4];
     v24 = v4->_devices;
-    v25 = [(COSManualPairingHeader *)v4 deviceListTitleName];
-    [(UILabel *)v24 setText:v25];
+    deviceListTitleName = [(COSManualPairingHeader *)v4 deviceListTitleName];
+    [(UILabel *)v24 setText:deviceListTitleName];
 
     [(COSManualPairingHeader *)v4 addSubview:v4->_devices];
-    v26 = [UIApp bridgeController];
-    v27 = [UIApp setupController];
-    v28 = [v27 activationManager];
-    [v26 setRuiDelegate:v28];
+    bridgeController = [UIApp bridgeController];
+    setupController = [UIApp setupController];
+    activationManager = [setupController activationManager];
+    [bridgeController setRuiDelegate:activationManager];
   }
 
   return v4;
@@ -106,10 +106,10 @@
   [(UILabel *)self->_devices setFrame:v14, CGRectGetMaxY(v18) + 30.0, v11, v13];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UILabel *)self->_headerLabel sizeThatFits:a3.width, 1.79769313e308];
+  width = fits.width;
+  [(UILabel *)self->_headerLabel sizeThatFits:fits.width, 1.79769313e308];
   [(UILabel *)self->_devices sizeThatFits:width, 1.79769313e308];
   UIRoundToViewScale();
   v6 = v5;

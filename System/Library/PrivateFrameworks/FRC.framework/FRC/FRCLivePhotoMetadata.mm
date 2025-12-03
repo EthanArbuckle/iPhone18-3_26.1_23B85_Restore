@@ -1,13 +1,13 @@
 @interface FRCLivePhotoMetadata
-- (void)setTime:(id *)a3;
+- (void)setTime:(id *)time;
 @end
 
 @implementation FRCLivePhotoMetadata
 
-- (void)setTime:(id *)a3
+- (void)setTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_time.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_time.epoch = time->var3;
   *&self->_time.value = v3;
 }
 

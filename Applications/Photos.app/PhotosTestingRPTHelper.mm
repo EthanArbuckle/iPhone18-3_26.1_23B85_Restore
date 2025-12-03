@@ -1,47 +1,47 @@
 @interface PhotosTestingRPTHelper
-+ (BOOL)_contentStartFromEndFromOptions:(id)a3;
++ (BOOL)_contentStartFromEndFromOptions:(id)options;
 + (BOOL)isRPTAvailable;
-+ (BOOL)shouldUseRPTScrollingForRPTOptions:(id)a3;
-+ (double)_pagesFromOptions:(id)a3;
-+ (id)_paramsArrayByParams:(id)a3 iterations:(int64_t)a4;
-+ (id)_shareSheetScrollTestParamsWithScrollBounds:(CGRect)a3 pages:(double)a4 iterations:(int64_t)a5 completionHandler:(id)a6;
-+ (id)gesturePerformerForTestWithName:(id)a3 options:(id)a4;
-+ (int64_t)_RPTOppositeOfDirection:(int64_t)a3;
-+ (int64_t)_RPTScrollDirectionForContentFromEnd:(BOOL)a3 scrollVertical:(BOOL)a4;
-+ (int64_t)_iterationsFromOptions:(id)a3;
-+ (int64_t)_speedFromTestName:(id)a3;
-+ (int64_t)_swipeCountFromOptions:(id)a3;
-+ (unint64_t)_axisFromOptions:(id)a3;
-+ (void)_configSwipeParams:(id)a3 forSpeed:(int64_t)a4 returnTrip:(BOOL)a5;
-+ (void)runTestWithName:(id)a3 RPTOptions:(id)a4 scrollBounds:(CGRect)a5 completionHandler:(id)a6;
-+ (void)runTestWithName:(id)a3 RPTOptions:(id)a4 scrollView:(id)a5 completionHandler:(id)a6;
++ (BOOL)shouldUseRPTScrollingForRPTOptions:(id)options;
++ (double)_pagesFromOptions:(id)options;
++ (id)_paramsArrayByParams:(id)params iterations:(int64_t)iterations;
++ (id)_shareSheetScrollTestParamsWithScrollBounds:(CGRect)bounds pages:(double)pages iterations:(int64_t)iterations completionHandler:(id)handler;
++ (id)gesturePerformerForTestWithName:(id)name options:(id)options;
++ (int64_t)_RPTOppositeOfDirection:(int64_t)direction;
++ (int64_t)_RPTScrollDirectionForContentFromEnd:(BOOL)end scrollVertical:(BOOL)vertical;
++ (int64_t)_iterationsFromOptions:(id)options;
++ (int64_t)_speedFromTestName:(id)name;
++ (int64_t)_swipeCountFromOptions:(id)options;
++ (unint64_t)_axisFromOptions:(id)options;
++ (void)_configSwipeParams:(id)params forSpeed:(int64_t)speed returnTrip:(BOOL)trip;
++ (void)runTestWithName:(id)name RPTOptions:(id)options scrollBounds:(CGRect)bounds completionHandler:(id)handler;
++ (void)runTestWithName:(id)name RPTOptions:(id)options scrollView:(id)view completionHandler:(id)handler;
 @end
 
 @implementation PhotosTestingRPTHelper
 
-+ (id)gesturePerformerForTestWithName:(id)a3 options:(id)a4
++ (id)gesturePerformerForTestWithName:(id)name options:(id)options
 {
-  v7 = a4;
-  v8 = a3;
-  if (([a1 isRPTAvailable] & 1) == 0)
+  optionsCopy = options;
+  nameCopy = name;
+  if (([self isRPTAvailable] & 1) == 0)
   {
     v11 = +[NSAssertionHandler currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PhotosTestingRPTHelper.m" lineNumber:397 description:{@"Invalid parameter not satisfying: %@", @"self.isRPTAvailable"}];
+    [v11 handleFailureInMethod:a2 object:self file:@"PhotosTestingRPTHelper.m" lineNumber:397 description:{@"Invalid parameter not satisfying: %@", @"self.isRPTAvailable"}];
   }
 
-  v9 = [[_PhotosTestingRPTGesturePerformer alloc] initWithTestName:v8 testOptions:v7];
+  v9 = [[_PhotosTestingRPTGesturePerformer alloc] initWithTestName:nameCopy testOptions:optionsCopy];
 
   return v9;
 }
 
-+ (int64_t)_RPTScrollDirectionForContentFromEnd:(BOOL)a3 scrollVertical:(BOOL)a4
++ (int64_t)_RPTScrollDirectionForContentFromEnd:(BOOL)end scrollVertical:(BOOL)vertical
 {
-  if (a4)
+  if (vertical)
   {
-    return !a3;
+    return !end;
   }
 
-  if (a3)
+  if (end)
   {
     v4 = 3;
   }
@@ -52,49 +52,49 @@
   }
 
   v6 = +[UIScreen px_mainScreen];
-  v7 = [v6 traitCollection];
-  v8 = [v7 layoutDirection];
+  traitCollection = [v6 traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if (v8 != 1)
+  if (layoutDirection != 1)
   {
     return v4;
   }
 
-  return [a1 _RPTOppositeOfDirection:v4];
+  return [self _RPTOppositeOfDirection:v4];
 }
 
-+ (int64_t)_RPTOppositeOfDirection:(int64_t)a3
++ (int64_t)_RPTOppositeOfDirection:(int64_t)direction
 {
-  if (a3 > 3)
+  if (direction > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_100049258[a3];
+    return qword_100049258[direction];
   }
 }
 
-+ (int64_t)_iterationsFromOptions:(id)a3
++ (int64_t)_iterationsFromOptions:(id)options
 {
-  v3 = [a3 objectForKeyedSubscript:@"iterations"];
-  v4 = [v3 integerValue];
+  v3 = [options objectForKeyedSubscript:@"iterations"];
+  integerValue = [v3 integerValue];
 
-  if (v4 <= 1)
+  if (integerValue <= 1)
   {
     return 1;
   }
 
   else
   {
-    return v4;
+    return integerValue;
   }
 }
 
-+ (double)_pagesFromOptions:(id)a3
++ (double)_pagesFromOptions:(id)options
 {
-  v3 = [a3 objectForKeyedSubscript:@"pages"];
+  v3 = [options objectForKeyedSubscript:@"pages"];
   [v3 floatValue];
   v5 = v4;
   v6 = v4;
@@ -108,25 +108,25 @@
   return result;
 }
 
-+ (int64_t)_swipeCountFromOptions:(id)a3
++ (int64_t)_swipeCountFromOptions:(id)options
 {
-  v3 = [a3 objectForKeyedSubscript:@"RPT_SwipeCount"];
-  v4 = [v3 integerValue];
+  v3 = [options objectForKeyedSubscript:@"RPT_SwipeCount"];
+  integerValue = [v3 integerValue];
 
-  return v4 & ~(v4 >> 63);
+  return integerValue & ~(integerValue >> 63);
 }
 
-+ (BOOL)_contentStartFromEndFromOptions:(id)a3
++ (BOOL)_contentStartFromEndFromOptions:(id)options
 {
-  v3 = [a3 objectForKeyedSubscript:@"RPT_ContentStartPos"];
+  v3 = [options objectForKeyedSubscript:@"RPT_ContentStartPos"];
   v4 = [v3 isEqualToString:@"begin"];
 
   return v4 ^ 1;
 }
 
-+ (unint64_t)_axisFromOptions:(id)a3
++ (unint64_t)_axisFromOptions:(id)options
 {
-  v3 = [a3 objectForKeyedSubscript:@"RPT_Axis"];
+  v3 = [options objectForKeyedSubscript:@"RPT_Axis"];
   if ([v3 isEqualToString:@"horizontal"])
   {
     v4 = 1;
@@ -140,11 +140,11 @@
   return v4;
 }
 
-+ (int64_t)_speedFromTestName:(id)a3
++ (int64_t)_speedFromTestName:(id)name
 {
-  v3 = a3;
-  v4 = [v3 lowercaseString];
-  v5 = [v4 containsString:@"slow"];
+  nameCopy = name;
+  lowercaseString = [nameCopy lowercaseString];
+  v5 = [lowercaseString containsString:@"slow"];
 
   if (v5)
   {
@@ -153,8 +153,8 @@
 
   else
   {
-    v7 = [v3 lowercaseString];
-    v8 = [v7 containsString:@"fast"];
+    lowercaseString2 = [nameCopy lowercaseString];
+    v8 = [lowercaseString2 containsString:@"fast"];
 
     if (v8)
     {
@@ -170,24 +170,24 @@
   return v6;
 }
 
-+ (void)_configSwipeParams:(id)a3 forSpeed:(int64_t)a4 returnTrip:(BOOL)a5
++ (void)_configSwipeParams:(id)params forSpeed:(int64_t)speed returnTrip:(BOOL)trip
 {
-  v5 = a5;
-  v7 = a3;
-  switch(a4)
+  tripCopy = trip;
+  paramsCopy = params;
+  switch(speed)
   {
     case 2:
-      v8 = !v5;
+      v8 = !tripCopy;
       v9 = 16;
       v10 = 12;
       goto LABEL_7;
     case 1:
-      v8 = !v5;
+      v8 = !tripCopy;
       v9 = 10;
       v10 = 8;
       goto LABEL_7;
     case 0:
-      v8 = !v5;
+      v8 = !tripCopy;
       v9 = 8;
       v10 = 6;
 LABEL_7:
@@ -201,41 +201,41 @@ LABEL_7:
         v11 = v10;
       }
 
-      v13 = v7;
-      [v7 setSwipeCount:v11];
-      v12 = [PXGesturePerformer swipeSpeedFactor:a4];
+      v13 = paramsCopy;
+      [paramsCopy setSwipeCount:v11];
+      v12 = [PXGesturePerformer swipeSpeedFactor:speed];
       [v13 setSwipeSpeedFactor:v12];
 
-      v7 = v13;
+      paramsCopy = v13;
       break;
   }
 }
 
-+ (id)_paramsArrayByParams:(id)a3 iterations:(int64_t)a4
++ (id)_paramsArrayByParams:(id)params iterations:(int64_t)iterations
 {
-  v5 = a3;
+  paramsCopy = params;
   v6 = objc_alloc_init(NSMutableArray);
-  if (a4 >= 1)
+  if (iterations >= 1)
   {
     do
     {
-      [v6 addObjectsFromArray:v5];
-      --a4;
+      [v6 addObjectsFromArray:paramsCopy];
+      --iterations;
     }
 
-    while (a4);
+    while (iterations);
   }
 
   return v6;
 }
 
-+ (id)_shareSheetScrollTestParamsWithScrollBounds:(CGRect)a3 pages:(double)a4 iterations:(int64_t)a5 completionHandler:(id)a6
++ (id)_shareSheetScrollTestParamsWithScrollBounds:(CGRect)bounds pages:(double)pages iterations:(int64_t)iterations completionHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a6;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  handlerCopy = handler;
   v23.origin.x = x;
   v23.origin.y = y;
   v23.size.width = width;
@@ -245,53 +245,53 @@ LABEL_7:
   [v13 setShouldFlick:0];
   v21 = v13;
   v14 = [NSArray arrayWithObjects:&v21 count:1];
-  v15 = [a1 _paramsArrayByParams:v14 iterations:a5];
+  v15 = [self _paramsArrayByParams:v14 iterations:iterations];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100038BC4;
   v19[3] = &unk_10005C078;
-  v20 = v12;
-  v16 = v12;
+  v20 = handlerCopy;
+  v16 = handlerCopy;
   v17 = [RPTGroupScrollTestParameters newWithTestName:0 parameters:v15 completionHandler:v19];
 
   return v17;
 }
 
-+ (void)runTestWithName:(id)a3 RPTOptions:(id)a4 scrollBounds:(CGRect)a5 completionHandler:(id)a6
++ (void)runTestWithName:(id)name RPTOptions:(id)options scrollBounds:(CGRect)bounds completionHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3;
-  v14 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  nameCopy = name;
+  optionsCopy = options;
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_10003942C;
   v30[3] = &unk_10005C078;
-  v15 = a6;
-  v31 = v15;
+  handlerCopy = handler;
+  v31 = handlerCopy;
   v16 = objc_retainBlock(v30);
-  if ([a1 isRPTAvailable])
+  if ([self isRPTAvailable])
   {
-    v29 = v13;
-    v17 = [a1 _speedFromTestName:v13];
-    v18 = [a1 _axisFromOptions:v14];
-    [a1 _pagesFromOptions:v14];
+    v29 = nameCopy;
+    v17 = [self _speedFromTestName:nameCopy];
+    v18 = [self _axisFromOptions:optionsCopy];
+    [self _pagesFromOptions:optionsCopy];
     v20 = v19;
-    v21 = [a1 _iterationsFromOptions:v14];
-    v22 = [a1 _contentStartFromEndFromOptions:v14];
-    v23 = [a1 _swipeCountFromOptions:v14];
-    v24 = [v14 objectForKeyedSubscript:@"RPT_Style"];
+    v21 = [self _iterationsFromOptions:optionsCopy];
+    v22 = [self _contentStartFromEndFromOptions:optionsCopy];
+    v23 = [self _swipeCountFromOptions:optionsCopy];
+    v24 = [optionsCopy objectForKeyedSubscript:@"RPT_Style"];
     if ([v24 isEqualToString:@"swipe"])
     {
-      v25 = [a1 _swipeTestParamsWithScrollBounds:v22 contentFromEnd:v18 axis:v17 speed:v23 swipeCount:v21 iterations:v15 completionHandler:{x, y, width, height}];
+      v25 = [self _swipeTestParamsWithScrollBounds:v22 contentFromEnd:v18 axis:v17 speed:v23 swipeCount:v21 iterations:handlerCopy completionHandler:{x, y, width, height}];
     }
 
     else if ([v24 isEqualToString:@"oscillation"])
     {
-      v25 = [a1 _oscillationScrollTestParamsWithScrollBounds:v22 contentFromEnd:v18 axis:v17 speed:v21 pages:v15 iterations:x completionHandler:{y, width, height, v20}];
+      v25 = [self _oscillationScrollTestParamsWithScrollBounds:v22 contentFromEnd:v18 axis:v17 speed:v21 pages:handlerCopy iterations:x completionHandler:{y, width, height, v20}];
     }
 
     else
@@ -301,13 +301,13 @@ LABEL_7:
         goto LABEL_13;
       }
 
-      v25 = [a1 _shareSheetScrollTestParamsWithScrollBounds:v21 pages:v15 iterations:x completionHandler:{y, width, height, v20}];
+      v25 = [self _shareSheetScrollTestParamsWithScrollBounds:v21 pages:handlerCopy iterations:x completionHandler:{y, width, height, v20}];
     }
 
     v27 = v25;
     if (v25)
     {
-      v13 = v29;
+      nameCopy = v29;
       [v25 setTestName:v29];
       [RPTTestRunner runTestWithParameters:v27];
 
@@ -317,13 +317,13 @@ LABEL_16:
 
 LABEL_13:
     v28 = PLPPTGetLog();
-    v13 = v29;
+    nameCopy = v29;
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       v33 = v29;
       v34 = 2112;
-      v35 = v14;
+      v35 = optionsCopy;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Failed to generate RPT scroll test (%@) for test params, options is: %@", buf, 0x16u);
     }
 
@@ -342,18 +342,18 @@ LABEL_13:
 LABEL_17:
 }
 
-+ (void)runTestWithName:(id)a3 RPTOptions:(id)a4 scrollView:(id)a5 completionHandler:(id)a6
++ (void)runTestWithName:(id)name RPTOptions:(id)options scrollView:(id)view completionHandler:(id)handler
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
+  handlerCopy = handler;
+  optionsCopy = options;
+  nameCopy = name;
   RPTGetBoundsForView();
-  [a1 runTestWithName:v11 RPTOptions:v10 scrollBounds:v9 completionHandler:?];
+  [self runTestWithName:nameCopy RPTOptions:optionsCopy scrollBounds:handlerCopy completionHandler:?];
 }
 
-+ (BOOL)shouldUseRPTScrollingForRPTOptions:(id)a3
++ (BOOL)shouldUseRPTScrollingForRPTOptions:(id)options
 {
-  v3 = [a3 objectForKeyedSubscript:@"RPT_Style"];
+  v3 = [options objectForKeyedSubscript:@"RPT_Style"];
   v4 = ([v3 isEqualToString:@"swipe"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"oscillation") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"shareSheet");
 
   return v4;

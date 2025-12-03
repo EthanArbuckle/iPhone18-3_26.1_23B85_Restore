@@ -1,20 +1,20 @@
 @interface TTRIReminderTitleTextView
 - (BOOL)canBecomeFocused;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (NSString)accessibilityValue;
 - (UITextInputDelegate)inputDelegate;
 - (void)beginSelectionChange;
-- (void)convertTextToHashtag:(id)a3;
+- (void)convertTextToHashtag:(id)hashtag;
 - (void)deleteBackward;
 - (void)endSelectionChange;
-- (void)insertTextSuggestion:(id)a3;
+- (void)insertTextSuggestion:(id)suggestion;
 - (void)layoutSubviews;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)setInputDelegate:(id)a3;
-- (void)toggleBoldface:(id)a3;
-- (void)toggleItalics:(id)a3;
-- (void)toggleUnderline:(id)a3;
-- (void)validateCommand:(id)a3;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)setInputDelegate:(id)delegate;
+- (void)toggleBoldface:(id)boldface;
+- (void)toggleItalics:(id)italics;
+- (void)toggleUnderline:(id)underline;
+- (void)validateCommand:(id)command;
 @end
 
 @implementation TTRIReminderTitleTextView
@@ -23,18 +23,18 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for TTRIReminderTitleTextView();
-  v2 = [(TTRIReminderTitleTextView *)&v4 inputDelegate];
+  inputDelegate = [(TTRIReminderTitleTextView *)&v4 inputDelegate];
 
-  return v2;
+  return inputDelegate;
 }
 
-- (void)setInputDelegate:(id)a3
+- (void)setInputDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for TTRIReminderTitleTextView();
   swift_unknownObjectRetain();
   v4 = v5.receiver;
-  [(TTRIReminderTitleTextView *)&v5 setInputDelegate:a3];
+  [(TTRIReminderTitleTextView *)&v5 setInputDelegate:delegate];
   sub_21D6C6CB4();
   swift_unknownObjectRelease();
 }
@@ -62,18 +62,18 @@
   }
 }
 
-- (void)insertTextSuggestion:(id)a3
+- (void)insertTextSuggestion:(id)suggestion
 {
-  v5 = a3;
-  v6 = self;
-  sub_21D6C71A8(a3);
+  suggestionCopy = suggestion;
+  selfCopy = self;
+  sub_21D6C71A8(suggestion);
 }
 
-- (void)toggleBoldface:(id)a3
+- (void)toggleBoldface:(id)boldface
 {
-  if (a3)
+  if (boldface)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_21DBFBC1C();
     swift_unknownObjectRelease();
@@ -83,7 +83,7 @@
   {
     v11 = 0u;
     v12 = 0u;
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = [(TTRIReminderTitleTextView *)self selectedRange:v11];
@@ -107,11 +107,11 @@
   sub_21D0CF7E0(&v11, &qword_27CE5C690);
 }
 
-- (void)toggleItalics:(id)a3
+- (void)toggleItalics:(id)italics
 {
-  if (a3)
+  if (italics)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_21DBFBC1C();
     swift_unknownObjectRelease();
@@ -121,7 +121,7 @@
   {
     v11 = 0u;
     v12 = 0u;
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = [(TTRIReminderTitleTextView *)self selectedRange:v11];
@@ -145,11 +145,11 @@
   sub_21D0CF7E0(&v11, &qword_27CE5C690);
 }
 
-- (void)toggleUnderline:(id)a3
+- (void)toggleUnderline:(id)underline
 {
-  if (a3)
+  if (underline)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_21DBFBC1C();
     swift_unknownObjectRelease();
@@ -159,7 +159,7 @@
   {
     v11 = 0u;
     v12 = 0u;
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = [(TTRIReminderTitleTextView *)self selectedRange:v11];
@@ -183,11 +183,11 @@
   sub_21D0CF7E0(&v11, &qword_27CE5C690);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_21DBFBC1C();
     swift_unknownObjectRelease();
@@ -196,20 +196,20 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_21D6C7D64(a3, v10);
+  v8 = sub_21D6C7D64(action, v10);
 
   sub_21D0CF7E0(v10, &qword_27CE5C690);
   return v8 & 1;
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  sub_21D6C8338(v4);
+  commandCopy = command;
+  selfCopy = self;
+  sub_21D6C8338(commandCopy);
 }
 
 - (void)beginSelectionChange
@@ -240,18 +240,18 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D6C85A0();
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   sub_21D0D8CF0(0, &unk_27CE60080);
   sub_21D6AEE84();
   v6 = sub_21DBFAAAC();
-  v7 = self;
-  v8 = a4;
-  if (![(TTRIReminderTitleTextView *)v7 delegate])
+  selfCopy = self;
+  eventCopy = event;
+  if (![(TTRIReminderTitleTextView *)selfCopy delegate])
   {
     goto LABEL_8;
   }
@@ -264,16 +264,16 @@
     goto LABEL_8;
   }
 
-  v11 = (*(v10 + 88))(v7, v6, ObjectType, v10);
+  v11 = (*(v10 + 88))(selfCopy, v6, ObjectType, v10);
   swift_unknownObjectRelease();
   if ((v11 & 1) == 0)
   {
 LABEL_8:
     v12 = sub_21DBFAA9C();
 
-    v13.receiver = v7;
+    v13.receiver = selfCopy;
     v13.super_class = type metadata accessor for TTRIReminderTitleTextView();
-    [(TTRIReminderTitleTextView *)&v13 pressesBegan:v12 withEvent:v8];
+    [(TTRIReminderTitleTextView *)&v13 pressesBegan:v12 withEvent:eventCopy];
 
     return;
   }
@@ -281,11 +281,11 @@ LABEL_8:
 
 - (NSString)accessibilityValue
 {
-  v2 = self;
-  v3 = [(TTRIReminderTitleTextView *)v2 text];
-  if (v3)
+  selfCopy = self;
+  text = [(TTRIReminderTitleTextView *)selfCopy text];
+  if (text)
   {
-    v4 = v3;
+    v4 = text;
     sub_21DBFA16C();
 
     v5 = sub_21DBFA12C();
@@ -302,8 +302,8 @@ LABEL_8:
 
 - (BOOL)canBecomeFocused
 {
-  v2 = self;
-  if ([(TTRIReminderTitleTextView *)v2 isEditing])
+  selfCopy = self;
+  if ([(TTRIReminderTitleTextView *)selfCopy isEditing])
   {
 
     return 1;
@@ -323,11 +323,11 @@ LABEL_8:
   }
 }
 
-- (void)convertTextToHashtag:(id)a3
+- (void)convertTextToHashtag:(id)hashtag
 {
-  if (a3)
+  if (hashtag)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_21DBFBC1C();
     swift_unknownObjectRelease();
@@ -337,7 +337,7 @@ LABEL_8:
   {
     v11 = 0u;
     v12 = 0u;
-    v5 = self;
+    selfCopy2 = self;
   }
 
   if ([(TTRIReminderTitleTextView *)self delegate:v11])
@@ -347,8 +347,8 @@ LABEL_8:
     if (v7)
     {
       v8 = v7;
-      v9 = [(TTRIReminderTitleTextView *)self selectedRange];
-      (*(v8 + 40))(self, v9, v10, ObjectType, v8);
+      selectedRange = [(TTRIReminderTitleTextView *)self selectedRange];
+      (*(v8 + 40))(self, selectedRange, v10, ObjectType, v8);
     }
 
     swift_unknownObjectRelease();

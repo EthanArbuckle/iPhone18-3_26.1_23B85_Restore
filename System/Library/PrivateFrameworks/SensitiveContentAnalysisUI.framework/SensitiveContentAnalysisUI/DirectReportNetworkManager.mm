@@ -1,19 +1,19 @@
 @interface DirectReportNetworkManager
-- (void)URLSession:(NSURLSession *)a3 didReceiveChallenge:(NSURLAuthenticationChallenge *)a4 completionHandler:(id)a5;
+- (void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(id)handler;
 @end
 
 @implementation DirectReportNetworkManager
 
-- (void)URLSession:(NSURLSession *)a3 didReceiveChallenge:(NSURLAuthenticationChallenge *)a4 completionHandler:(id)a5
+- (void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBCDBB20, &qword_1BC75F0D0);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = session;
+  v14[3] = challenge;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_1BC75BE10();
@@ -28,9 +28,9 @@
   v17[3] = 0;
   v17[4] = &unk_1BC76DB40;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  sessionCopy = session;
+  challengeCopy = challenge;
+  selfCopy = self;
   sub_1BC6AD080(0, 0, v12, &unk_1BC76DB50, v17);
 }
 

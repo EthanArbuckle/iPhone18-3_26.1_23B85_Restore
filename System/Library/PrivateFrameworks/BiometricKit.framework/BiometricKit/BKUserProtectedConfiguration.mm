@@ -1,22 +1,22 @@
 @interface BKUserProtectedConfiguration
-- (BKUserProtectedConfiguration)initWithDictionary:(id)a3 effective:(BOOL)a4;
+- (BKUserProtectedConfiguration)initWithDictionary:(id)dictionary effective:(BOOL)effective;
 - (id)description;
 - (id)dictionary;
 @end
 
 @implementation BKUserProtectedConfiguration
 
-- (BKUserProtectedConfiguration)initWithDictionary:(id)a3 effective:(BOOL)a4
+- (BKUserProtectedConfiguration)initWithDictionary:(id)dictionary effective:(BOOL)effective
 {
-  v4 = a4;
-  v6 = a3;
+  effectiveCopy = effective;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = BKUserProtectedConfiguration;
   v7 = [(BKUserProtectedConfiguration *)&v28 init];
   v8 = v7;
-  if (v6 && v7)
+  if (dictionaryCopy && v7)
   {
-    if (v4)
+    if (effectiveCopy)
     {
       v9 = @"BKUserCfgEffectiveTouchIDUnlockEnabled";
     }
@@ -26,7 +26,7 @@
       v9 = @"BKUserCfgTouchIDUnlockEnabled";
     }
 
-    if (v4)
+    if (effectiveCopy)
     {
       v10 = @"BKUserCfgEffectiveTouchIDIdentificationEnabled";
     }
@@ -36,7 +36,7 @@
       v10 = @"BKUserCfgTouchIDIdentificationEnabled";
     }
 
-    if (v4)
+    if (effectiveCopy)
     {
       v11 = @"BKUserCfgEffectiveTouchIDLoginEnabled";
     }
@@ -46,7 +46,7 @@
       v11 = @"BKUserCfgTouchIDLoginEnabled";
     }
 
-    if (v4)
+    if (effectiveCopy)
     {
       v12 = @"BKUserCfgEffectiveTouchIDApplePayEnabled";
     }
@@ -56,7 +56,7 @@
       v12 = @"BKUserCfgTouchIDApplePayEnabled";
     }
 
-    if (v4)
+    if (effectiveCopy)
     {
       v13 = @"BKUserCfgEffectiveAttentionDetectionEnabled";
     }
@@ -66,7 +66,7 @@
       v13 = @"BKUserCfgAttentionDetectionEnabled";
     }
 
-    if (v4)
+    if (effectiveCopy)
     {
       v14 = @"BKUserCfgEffectivePeriocularMatchEnabled";
     }
@@ -76,27 +76,27 @@
       v14 = @"BKUserCfgPeriocularMatchEnabled";
     }
 
-    v15 = [v6 objectForKeyedSubscript:v9];
+    v15 = [dictionaryCopy objectForKeyedSubscript:v9];
     unlockEnabled = v8->_unlockEnabled;
     v8->_unlockEnabled = v15;
 
-    v17 = [v6 objectForKeyedSubscript:v10];
+    v17 = [dictionaryCopy objectForKeyedSubscript:v10];
     identificationEnabled = v8->_identificationEnabled;
     v8->_identificationEnabled = v17;
 
-    v19 = [v6 objectForKeyedSubscript:v11];
+    v19 = [dictionaryCopy objectForKeyedSubscript:v11];
     loginEnabled = v8->_loginEnabled;
     v8->_loginEnabled = v19;
 
-    v21 = [v6 objectForKeyedSubscript:v12];
+    v21 = [dictionaryCopy objectForKeyedSubscript:v12];
     applePayEnabled = v8->_applePayEnabled;
     v8->_applePayEnabled = v21;
 
-    v23 = [v6 objectForKeyedSubscript:v13];
+    v23 = [dictionaryCopy objectForKeyedSubscript:v13];
     attentionDetectionEnabled = v8->_attentionDetectionEnabled;
     v8->_attentionDetectionEnabled = v23;
 
-    v25 = [v6 objectForKeyedSubscript:v14];
+    v25 = [dictionaryCopy objectForKeyedSubscript:v14];
     periocularFaceIDMatchEnabled = v8->_periocularFaceIDMatchEnabled;
     v8->_periocularFaceIDMatchEnabled = v25;
   }
@@ -106,12 +106,12 @@
 
 - (id)dictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   unlockEnabled = self->_unlockEnabled;
   if (unlockEnabled)
   {
-    [v3 setObject:unlockEnabled forKey:@"BKUserCfgTouchIDUnlockEnabled"];
+    [dictionary setObject:unlockEnabled forKey:@"BKUserCfgTouchIDUnlockEnabled"];
   }
 
   identificationEnabled = self->_identificationEnabled;

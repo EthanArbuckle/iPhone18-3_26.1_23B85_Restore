@@ -1,17 +1,17 @@
 @interface UIKBResizingOffsetKeyplaneTransformation
-+ (id)transformKeyplane:(id)a3 withTransformationContext:(id)a4;
++ (id)transformKeyplane:(id)keyplane withTransformationContext:(id)context;
 @end
 
 @implementation UIKBResizingOffsetKeyplaneTransformation
 
-+ (id)transformKeyplane:(id)a3 withTransformationContext:(id)a4
++ (id)transformKeyplane:(id)keyplane withTransformationContext:(id)context
 {
   v71[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 visualStyling] & 0xFF0000;
-  v8 = [v5 visualStyling] & 0xFF0000;
-  [v6 resizingOffset];
+  keyplaneCopy = keyplane;
+  contextCopy = context;
+  v7 = [keyplaneCopy visualStyling] & 0xFF0000;
+  v8 = [keyplaneCopy visualStyling] & 0xFF0000;
+  [contextCopy resizingOffset];
   if (v9 >= -170.0)
   {
     v10 = v9;
@@ -42,66 +42,66 @@
 
     v12 = v11;
     _Block_object_dispose(&v60, 8);
-    v13 = [v11 activeInstance];
-    v14 = [v13 candidateController];
-    [v14 candidateBarHeight];
+    activeInstance = [v11 activeInstance];
+    candidateController = [activeInstance candidateController];
+    [candidateController candidateBarHeight];
     v10 = v10 + v15;
   }
 
-  [v5 resizingOffset];
+  [keyplaneCopy resizingOffset];
   v17 = v16;
-  v18 = [v6 screenTraits];
-  [v18 orientation];
+  screenTraits = [contextCopy screenTraits];
+  [screenTraits orientation];
 
-  v19 = [v6 screenTraits];
-  v20 = [v19 screen];
-  [v20 scale];
+  screenTraits2 = [contextCopy screenTraits];
+  screen = [screenTraits2 screen];
+  [screen scale];
   v22 = v21;
 
-  [v5 numberOfRows];
+  [keyplaneCopy numberOfRows];
   v23 = v10 - v17;
   if (v23 != 0.0)
   {
-    [v5 setResizingOffset:v10];
+    [keyplaneCopy setResizingOffset:v10];
     v52 = v7;
-    v53 = v6;
+    v53 = contextCopy;
     if (v7 == 589824)
     {
-      v25 = [v5 firstCachedKeyWithName:@"Handwriting-Input"];
-      v24 = v25;
+      v25 = [keyplaneCopy firstCachedKeyWithName:@"Handwriting-Input"];
+      keys2 = v25;
       if (v25)
       {
         v71[0] = v25;
         v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:1];
-        [v5 resizeKeys:v26 withOffset:0.0 scale:{v23, v22}];
+        [keyplaneCopy resizeKeys:v26 withOffset:0.0 scale:{v23, v22}];
       }
 
-      v29 = [v5 keysForDisplayRowAtIndex:2];
-      [v5 repositionKeys:v29 withOffset:0.0 scale:{v23, v22}];
+      v29 = [keyplaneCopy keysForDisplayRowAtIndex:2];
+      [keyplaneCopy repositionKeys:v29 withOffset:0.0 scale:{v23, v22}];
     }
 
     else if (v8 == 2490368)
     {
-      v27 = [v5 firstCachedKeyWithName:@"Emoji-InputView-Key"];
-      v24 = v27;
+      v27 = [keyplaneCopy firstCachedKeyWithName:@"Emoji-InputView-Key"];
+      keys2 = v27;
       if (v27)
       {
         v70 = v27;
         v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v70 count:1];
-        [v5 resizeKeys:v28 withOffset:0.0 scale:{v23, v22}];
+        [keyplaneCopy resizeKeys:v28 withOffset:0.0 scale:{v23, v22}];
       }
 
-      v30 = [v5 keys];
-      v31 = [v30 mutableCopy];
+      keys = [keyplaneCopy keys];
+      v31 = [keys mutableCopy];
 
-      [v31 removeObject:v24];
-      [v5 repositionKeys:v31 withOffset:0.0 scale:{v23, v22}];
+      [v31 removeObject:keys2];
+      [keyplaneCopy repositionKeys:v31 withOffset:0.0 scale:{v23, v22}];
     }
 
     else
     {
-      v24 = [v5 keys];
-      [v5 repositionKeys:v24 withOffset:0.0 scale:{v23, v22}];
+      keys2 = [keyplaneCopy keys];
+      [keyplaneCopy repositionKeys:keys2 withOffset:0.0 scale:{v23, v22}];
     }
 
     v32 = [MEMORY[0x1E69DCB78] operatorWithScale:v22];
@@ -109,9 +109,9 @@
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v54 = v5;
-    v33 = [v5 subtrees];
-    v34 = [v33 countByEnumeratingWithState:&v55 objects:v69 count:16];
+    v54 = keyplaneCopy;
+    subtrees = [keyplaneCopy subtrees];
+    v34 = [subtrees countByEnumeratingWithState:&v55 objects:v69 count:16];
     if (v34)
     {
       v35 = v34;
@@ -122,38 +122,38 @@
         {
           if (*v56 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(subtrees);
           }
 
           v38 = *(*(&v55 + 1) + 8 * i);
           if ([v38 type] == 3)
           {
-            v39 = [v38 shape];
-            v68 = v39;
+            shape = [v38 shape];
+            v68 = shape;
             v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v68 count:1];
             v41 = [v32 shapesByResizingShapes:v40 withOffset:{0.0, v23}];
-            v42 = [v41 firstObject];
-            [v38 setShape:v42];
+            firstObject = [v41 firstObject];
+            [v38 setShape:firstObject];
           }
         }
 
-        v35 = [v33 countByEnumeratingWithState:&v55 objects:v69 count:16];
+        v35 = [subtrees countByEnumeratingWithState:&v55 objects:v69 count:16];
       }
 
       while (v35);
     }
 
-    v5 = v54;
+    keyplaneCopy = v54;
     [v54 setObject:0 forProperty:@"KBunionFrame"];
     [v54 setObject:0 forProperty:@"KBunionPaddedFrame"];
 
     v7 = v52;
-    v6 = v53;
+    contextCopy = v53;
   }
 
   if (v7 == 589824)
   {
-    v43 = [v5 firstCachedKeyWithName:@"Candidate-Selection"];
+    v43 = [keyplaneCopy firstCachedKeyWithName:@"Candidate-Selection"];
     v44 = v43;
     if (v43)
     {
@@ -162,15 +162,15 @@
       {
         v67 = v44;
         v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v67 count:1];
-        [v5 insetKeys:v45 withInsets:11.0 scale:{0.0, 0.0, 0.0, v22}];
+        [keyplaneCopy insetKeys:v45 withInsets:11.0 scale:{0.0, 0.0, 0.0, v22}];
 
         v66 = v44;
         v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v66 count:1];
-        [v5 resizeKeys:v46 withOffset:0.0 scale:{11.0, v22}];
+        [keyplaneCopy resizeKeys:v46 withOffset:0.0 scale:{11.0, v22}];
       }
     }
 
-    v47 = [v5 firstCachedKeyWithName:@"Delete-Key"];
+    v47 = [keyplaneCopy firstCachedKeyWithName:@"Delete-Key"];
     v48 = v47;
     if (v47)
     {
@@ -179,16 +179,16 @@
       {
         v65 = v48;
         v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v65 count:1];
-        [v5 insetKeys:v49 withInsets:11.0 scale:{0.0, 0.0, 0.0, v22}];
+        [keyplaneCopy insetKeys:v49 withInsets:11.0 scale:{0.0, 0.0, 0.0, v22}];
 
         v64 = v48;
         v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v64 count:1];
-        [v5 resizeKeys:v50 withOffset:0.0 scale:{11.0, v22}];
+        [keyplaneCopy resizeKeys:v50 withOffset:0.0 scale:{11.0, v22}];
       }
     }
   }
 
-  return v5;
+  return keyplaneCopy;
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface PDCRemoteAssetPreviewController
-- (id)imageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5;
-- (id)imagesWithTargetSize:(CGSize)a3 contentMode:(int64_t)a4 maximumCount:(unint64_t)a5;
+- (id)imageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode;
+- (id)imagesWithTargetSize:(CGSize)size contentMode:(int64_t)mode maximumCount:(unint64_t)count;
 @end
 
 @implementation PDCRemoteAssetPreviewController
 
-- (id)imageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5
+- (id)imageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -27,12 +27,12 @@
   v18 = &v22;
   v11 = v9;
   v16 = v11;
-  v12 = v8;
+  v12 = assetCopy;
   v17 = v12;
   v19 = width;
   v20 = height;
-  v21 = a5;
-  [v10 requestImageForAsset:v12 targetSize:a5 contentMode:v11 options:v15 resultHandler:{width, height}];
+  modeCopy = mode;
+  [v10 requestImageForAsset:v12 targetSize:mode contentMode:v11 options:v15 resultHandler:{width, height}];
 
   v13 = v23[5];
   _Block_object_dispose(&v22, 8);
@@ -40,26 +40,26 @@
   return v13;
 }
 
-- (id)imagesWithTargetSize:(CGSize)a3 contentMode:(int64_t)a4 maximumCount:(unint64_t)a5
+- (id)imagesWithTargetSize:(CGSize)size contentMode:(int64_t)mode maximumCount:(unint64_t)count
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = [(PDCRemoteAssetPreviewController *)self assetLocalIdentifiers];
+  height = size.height;
+  width = size.width;
+  assetLocalIdentifiers = [(PDCRemoteAssetPreviewController *)self assetLocalIdentifiers];
   v11 = objc_alloc_init(PHPhotoLibraryManager);
-  v12 = [(PDCRemoteAssetPreviewController *)self photoLibraryURL];
+  photoLibraryURL = [(PDCRemoteAssetPreviewController *)self photoLibraryURL];
   v31 = 0;
-  v13 = [v11 openPhotoLibraryWithURL:v12 options:0 error:&v31];
+  v13 = [v11 openPhotoLibraryWithURL:photoLibraryURL options:0 error:&v31];
   v14 = v31;
 
-  v15 = [NSMutableArray arrayWithCapacity:a5];
+  v15 = [NSMutableArray arrayWithCapacity:count];
   if (v13)
   {
     v24 = v14;
     v25 = v11;
     v16 = [PHFetchOptions fetchOptionsWithInclusiveDefaultsForPhotoLibrary:v13];
-    [v16 setFetchLimit:a5];
-    v26 = v10;
-    v17 = [PHAsset fetchAssetsWithLocalIdentifiers:v10 options:v16];
+    [v16 setFetchLimit:count];
+    v26 = assetLocalIdentifiers;
+    v17 = [PHAsset fetchAssetsWithLocalIdentifiers:assetLocalIdentifiers options:v16];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -78,10 +78,10 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [(PDCRemoteAssetPreviewController *)self imageForAsset:*(*(&v27 + 1) + 8 * i) targetSize:a4 contentMode:width, height];
-          if (v22)
+          height = [(PDCRemoteAssetPreviewController *)self imageForAsset:*(*(&v27 + 1) + 8 * i) targetSize:mode contentMode:width, height];
+          if (height)
           {
-            [v15 addObject:v22];
+            [v15 addObject:height];
           }
         }
 
@@ -92,7 +92,7 @@
     }
 
     v11 = v25;
-    v10 = v26;
+    assetLocalIdentifiers = v26;
     v14 = v24;
   }
 

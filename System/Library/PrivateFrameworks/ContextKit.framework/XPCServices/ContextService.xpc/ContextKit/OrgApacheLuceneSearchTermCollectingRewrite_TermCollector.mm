@@ -1,16 +1,16 @@
 @interface OrgApacheLuceneSearchTermCollectingRewrite_TermCollector
 - (OrgApacheLuceneSearchTermCollectingRewrite_TermCollector)init;
 - (void)dealloc;
-- (void)setReaderContextWithOrgApacheLuceneIndexIndexReaderContext:(id)a3 withOrgApacheLuceneIndexLeafReaderContext:(id)a4;
+- (void)setReaderContextWithOrgApacheLuceneIndexIndexReaderContext:(id)context withOrgApacheLuceneIndexLeafReaderContext:(id)readerContext;
 @end
 
 @implementation OrgApacheLuceneSearchTermCollectingRewrite_TermCollector
 
-- (void)setReaderContextWithOrgApacheLuceneIndexIndexReaderContext:(id)a3 withOrgApacheLuceneIndexLeafReaderContext:(id)a4
+- (void)setReaderContextWithOrgApacheLuceneIndexIndexReaderContext:(id)context withOrgApacheLuceneIndexLeafReaderContext:(id)readerContext
 {
-  JreStrongAssign(&self->readerContext_, a4);
+  JreStrongAssign(&self->readerContext_, readerContext);
 
-  JreStrongAssign(&self->topReaderContext_, a3);
+  JreStrongAssign(&self->topReaderContext_, context);
 }
 
 - (OrgApacheLuceneSearchTermCollectingRewrite_TermCollector)init

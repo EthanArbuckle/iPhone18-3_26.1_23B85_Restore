@@ -1,30 +1,30 @@
 @interface IMCollaborationNoticeDeduplicationResult
-+ (id)resultWithDeduplicated:(id)a3 duplicates:(id)a4;
-- (IMCollaborationNoticeDeduplicationResult)initWithDeduplicated:(id)a3 duplicates:(id)a4;
++ (id)resultWithDeduplicated:(id)deduplicated duplicates:(id)duplicates;
+- (IMCollaborationNoticeDeduplicationResult)initWithDeduplicated:(id)deduplicated duplicates:(id)duplicates;
 - (id)description;
 @end
 
 @implementation IMCollaborationNoticeDeduplicationResult
 
-+ (id)resultWithDeduplicated:(id)a3 duplicates:(id)a4
++ (id)resultWithDeduplicated:(id)deduplicated duplicates:(id)duplicates
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithDeduplicated:v7 duplicates:v6];
+  duplicatesCopy = duplicates;
+  deduplicatedCopy = deduplicated;
+  v8 = [[self alloc] initWithDeduplicated:deduplicatedCopy duplicates:duplicatesCopy];
 
   return v8;
 }
 
-- (IMCollaborationNoticeDeduplicationResult)initWithDeduplicated:(id)a3 duplicates:(id)a4
+- (IMCollaborationNoticeDeduplicationResult)initWithDeduplicated:(id)deduplicated duplicates:(id)duplicates
 {
-  v6 = a3;
-  v7 = a4;
+  deduplicatedCopy = deduplicated;
+  duplicatesCopy = duplicates;
   v17.receiver = self;
   v17.super_class = IMCollaborationNoticeDeduplicationResult;
   v8 = [(IMCollaborationNoticeDeduplicationResult *)&v17 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [deduplicatedCopy copy];
     v10 = v9;
     v11 = MEMORY[0x1E695E0F0];
     if (v9)
@@ -39,7 +39,7 @@
 
     objc_storeStrong(&v8->_deduplicatedNotices, v12);
 
-    v13 = [v7 copy];
+    v13 = [duplicatesCopy copy];
     v14 = v13;
     if (v13)
     {
@@ -61,10 +61,10 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IMCollaborationNoticeDeduplicationResult *)self deduplicatedNotices];
-  v6 = [v5 count];
-  v7 = [(IMCollaborationNoticeDeduplicationResult *)self duplicateNotices];
-  v8 = [v3 stringWithFormat:@"<%@: %p> deduplicated:%lu duplicates:%lu", v4, self, v6, objc_msgSend(v7, "count")];
+  deduplicatedNotices = [(IMCollaborationNoticeDeduplicationResult *)self deduplicatedNotices];
+  v6 = [deduplicatedNotices count];
+  duplicateNotices = [(IMCollaborationNoticeDeduplicationResult *)self duplicateNotices];
+  v8 = [v3 stringWithFormat:@"<%@: %p> deduplicated:%lu duplicates:%lu", v4, self, v6, objc_msgSend(duplicateNotices, "count")];
 
   return v8;
 }

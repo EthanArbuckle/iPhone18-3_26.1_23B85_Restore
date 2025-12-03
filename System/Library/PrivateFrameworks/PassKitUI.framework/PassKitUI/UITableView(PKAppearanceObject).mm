@@ -7,50 +7,50 @@
 
 - (id)pk_childrenForAppearance
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  v3 = [a1 tableHeaderView];
+  array = [MEMORY[0x1E695DF70] array];
+  tableHeaderView = [self tableHeaderView];
 
-  if (v3)
+  if (tableHeaderView)
   {
-    v4 = [a1 tableHeaderView];
-    [v2 addObject:v4];
+    tableHeaderView2 = [self tableHeaderView];
+    [array addObject:tableHeaderView2];
   }
 
-  v5 = [a1 tableFooterView];
+  tableFooterView = [self tableFooterView];
 
-  if (v5)
+  if (tableFooterView)
   {
-    v6 = [a1 tableFooterView];
-    [v2 addObject:v6];
+    tableFooterView2 = [self tableFooterView];
+    [array addObject:tableFooterView2];
   }
 
-  v7 = [a1 visibleCells];
-  [v2 addObjectsFromArray:v7];
+  visibleCells = [self visibleCells];
+  [array addObjectsFromArray:visibleCells];
 
-  return v2;
+  return array;
 }
 
 - (uint64_t)pk_applyAppearance:()PKAppearanceObject
 {
   v4 = a3;
-  v5 = [v4 backgroundColor];
-  [a1 setBackgroundColor:v5];
+  backgroundColor = [v4 backgroundColor];
+  [self setBackgroundColor:backgroundColor];
 
-  v6 = [a1 backgroundView];
-  v7 = [v4 backgroundColor];
-  [v6 setBackgroundColor:v7];
+  backgroundView = [self backgroundView];
+  backgroundColor2 = [v4 backgroundColor];
+  [backgroundView setBackgroundColor:backgroundColor2];
 
-  v8 = [v4 tableViewSeparatorColor];
-  [a1 setSeparatorColor:v8];
+  tableViewSeparatorColor = [v4 tableViewSeparatorColor];
+  [self setSeparatorColor:tableViewSeparatorColor];
 
-  v9 = [v4 tintColor];
-  [a1 setSectionIndexColor:v9];
+  tintColor = [v4 tintColor];
+  [self setSectionIndexColor:tintColor];
 
-  v10 = [v4 foregroundColor];
-  [a1 setSectionIndexBackgroundColor:v10];
+  foregroundColor = [v4 foregroundColor];
+  [self setSectionIndexBackgroundColor:foregroundColor];
 
-  LODWORD(v10) = [v4 hasDarkAppearance];
-  if (v10)
+  LODWORD(foregroundColor) = [v4 hasDarkAppearance];
+  if (foregroundColor)
   {
     v11 = 2;
   }
@@ -60,7 +60,7 @@
     v11 = 0;
   }
 
-  return [a1 setIndicatorStyle:v11];
+  return [self setIndicatorStyle:v11];
 }
 
 @end

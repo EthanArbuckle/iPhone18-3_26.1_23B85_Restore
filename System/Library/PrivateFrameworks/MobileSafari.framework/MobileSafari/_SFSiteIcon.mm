@@ -1,9 +1,9 @@
 @interface _SFSiteIcon
 + (CGSize)defaultSize;
 + (CGSize)minimumAcceptableSizeForDownloadedIcon;
-+ (CGSize)sizeForIconSize:(int64_t)a3;
-+ (double)fontPointSizeForIconSize:(int64_t)a3;
-+ (double)labelWidthForIconSize:(int64_t)a3;
++ (CGSize)sizeForIconSize:(int64_t)size;
++ (double)fontPointSizeForIconSize:(int64_t)size;
++ (double)labelWidthForIconSize:(int64_t)size;
 + (id)defaultGlyph;
 + (id)precompositedDefaultIcon;
 + (int64_t)_defaultIconSize;
@@ -26,9 +26,9 @@
 
 + (CGSize)defaultSize
 {
-  v3 = [a1 _defaultIconSize];
+  _defaultIconSize = [self _defaultIconSize];
 
-  [a1 sizeForIconSize:v3];
+  [self sizeForIconSize:_defaultIconSize];
   result.height = v5;
   result.width = v4;
   return result;
@@ -43,15 +43,15 @@
   return result;
 }
 
-+ (CGSize)sizeForIconSize:(int64_t)a3
++ (CGSize)sizeForIconSize:(int64_t)size
 {
   v3 = 32.0;
-  if (a3 == 1)
+  if (size == 1)
   {
     v3 = 60.0;
   }
 
-  if (a3 == 2)
+  if (size == 2)
   {
     v3 = 76.0;
   }
@@ -62,15 +62,15 @@
   return result;
 }
 
-+ (double)fontPointSizeForIconSize:(int64_t)a3
++ (double)fontPointSizeForIconSize:(int64_t)size
 {
   result = 37.0;
-  if (a3 != 1)
+  if (size != 1)
   {
     result = 18.0;
   }
 
-  if (a3 == 2)
+  if (size == 2)
   {
     return 44.0;
   }
@@ -78,15 +78,15 @@
   return result;
 }
 
-+ (double)labelWidthForIconSize:(int64_t)a3
++ (double)labelWidthForIconSize:(int64_t)size
 {
   result = 46.0;
-  if (a3 != 1)
+  if (size != 1)
   {
     result = 22.0;
   }
 
-  if (a3 == 2)
+  if (size == 2)
   {
     return 56.0;
   }
@@ -96,11 +96,11 @@
 
 + (id)defaultGlyph
 {
-  [a1 fontPointSizeForIconSize:{objc_msgSend(a1, "_defaultIconSize")}];
+  [self fontPointSizeForIconSize:{objc_msgSend(self, "_defaultIconSize")}];
   v2 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:3 weight:2 scale:?];
   v3 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"safari" withConfiguration:v2];
-  v4 = [MEMORY[0x1E69DC888] whiteColor];
-  v5 = [v3 flattenedImageWithColor:v4];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v5 = [v3 flattenedImageWithColor:whiteColor];
 
   v6 = [v5 imageWithRenderingMode:1];
 
@@ -113,7 +113,7 @@
   block[1] = 3221225472;
   block[2] = __39___SFSiteIcon_precompositedDefaultIcon__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (precompositedDefaultIcon_onceToken != -1)
   {
     dispatch_once(&precompositedDefaultIcon_onceToken, block);

@@ -1,13 +1,13 @@
 @interface SourceEntityRepresentation
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 - (id)serialize;
 @end
 
 @implementation SourceEntityRepresentation
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = sub_1C4EF9A68();
   v7 = v6;
 
@@ -20,7 +20,7 @@
 
 - (id)serialize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SourceEntityRepresentation.serialize()();
   v5 = v4;
 

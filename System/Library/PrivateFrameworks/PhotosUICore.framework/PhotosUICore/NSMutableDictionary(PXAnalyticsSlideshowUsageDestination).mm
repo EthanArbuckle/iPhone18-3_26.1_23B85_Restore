@@ -8,11 +8,11 @@
 {
   v9 = a3;
   v6 = a4;
-  v7 = [a1 objectForKeyedSubscript:v9];
+  v7 = [self objectForKeyedSubscript:v9];
   if (v7)
   {
     v8 = v6[2](v6, v7);
-    [a1 setObject:v8 forKeyedSubscript:v9];
+    [self setObject:v8 forKeyedSubscript:v9];
   }
 }
 

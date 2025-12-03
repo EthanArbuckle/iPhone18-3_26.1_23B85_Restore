@@ -1,11 +1,11 @@
 @interface SESecureCaptureOpenApplicationAfterTransitionCompletionAction
 - (NSSet)launchActions;
 - (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)init;
-- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithCoder:(id)a3;
-- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithInfo:(id)a3 responder:(id)a4;
-- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithInfo:(id)a3 timeout:(double)a4 forResponseOnQueue:(id)a5 withHandler:(id)a6;
-- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithUserActivity:(id)a3 responder:(id)a4;
-- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithXPCDictionary:(id)a3;
+- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithCoder:(id)coder;
+- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithInfo:(id)info responder:(id)responder;
+- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithInfo:(id)info timeout:(double)timeout forResponseOnQueue:(id)queue withHandler:(id)handler;
+- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithUserActivity:(id)activity responder:(id)responder;
+- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation SESecureCaptureOpenApplicationAfterTransitionCompletionAction
@@ -17,19 +17,19 @@
   return [(SESecureCaptureOpenApplicationAfterTransitionCompletionAction *)&v3 initWithInfo:0 responder:0];
 }
 
-- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithUserActivity:(id)a3 responder:(id)a4
+- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithUserActivity:(id)activity responder:(id)responder
 {
-  v5 = a3;
-  v6 = a4;
-  return SESecureCaptureOpenApplicationAfterTransitionCompletionAction.init(userActivity:responder:)(v5, a4);
+  activityCopy = activity;
+  responderCopy = responder;
+  return SESecureCaptureOpenApplicationAfterTransitionCompletionAction.init(userActivity:responder:)(activityCopy, responder);
 }
 
-- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithCoder:(id)a3
+- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SESecureCaptureOpenApplicationAfterTransitionCompletionAction;
-  v3 = a3;
-  v4 = [(SESecureCaptureOpenApplicationAfterTransitionCompletionAction *)&v6 initWithCoder:v3];
+  coderCopy = coder;
+  v4 = [(SESecureCaptureOpenApplicationAfterTransitionCompletionAction *)&v6 initWithCoder:coderCopy];
 
   if (v4)
   {
@@ -38,12 +38,12 @@
   return v4;
 }
 
-- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithXPCDictionary:(id)a3
+- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithXPCDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = SESecureCaptureOpenApplicationAfterTransitionCompletionAction;
   swift_unknownObjectRetain();
-  v4 = [(SESecureCaptureOpenApplicationAfterTransitionCompletionAction *)&v6 initWithXPCDictionary:a3];
+  v4 = [(SESecureCaptureOpenApplicationAfterTransitionCompletionAction *)&v6 initWithXPCDictionary:dictionary];
   swift_unknownObjectRelease();
   if (v4)
   {
@@ -54,7 +54,7 @@
 
 - (NSSet)launchActions
 {
-  v2 = self;
+  selfCopy = self;
   SESecureCaptureOpenApplicationAfterTransitionCompletionAction.launchActions.getter();
 
   sub_264EFB608(0, &unk_27FFBDAD0, 0x277CF0B58);
@@ -64,14 +64,14 @@
   return v3;
 }
 
-- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithInfo:(id)a3 responder:(id)a4
+- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithInfo:(id)info responder:(id)responder
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithInfo:(id)a3 timeout:(double)a4 forResponseOnQueue:(id)a5 withHandler:(id)a6
+- (SESecureCaptureOpenApplicationAfterTransitionCompletionAction)initWithInfo:(id)info timeout:(double)timeout forResponseOnQueue:(id)queue withHandler:(id)handler
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,7 +1,7 @@
 @interface GCSettingsRootController
 - (GCSettingsRootController)init;
-- (void)displayContentController:(id)a3;
-- (void)hideContentController:(id)a3;
+- (void)displayContentController:(id)controller;
+- (void)hideContentController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -31,51 +31,51 @@
   [(GCSettingsRootController *)self displayContentController:v3];
 }
 
-- (void)displayContentController:(id)a3
+- (void)displayContentController:(id)controller
 {
-  v4 = a3;
-  [(GCSettingsRootController *)self addChildViewController:v4];
-  v5 = [v4 view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  controllerCopy = controller;
+  [(GCSettingsRootController *)self addChildViewController:controllerCopy];
+  view = [controllerCopy view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(GCSettingsRootController *)self view];
-  v7 = [v4 view];
-  [v6 addSubview:v7];
+  view2 = [(GCSettingsRootController *)self view];
+  view3 = [controllerCopy view];
+  [view2 addSubview:view3];
 
-  v21 = [v4 view];
-  v20 = [(GCSettingsRootController *)self view];
-  v19 = [NSLayoutConstraint constraintWithItem:v21 attribute:3 relatedBy:0 toItem:v20 attribute:3 multiplier:1.0 constant:0.0];
+  view4 = [controllerCopy view];
+  view5 = [(GCSettingsRootController *)self view];
+  v19 = [NSLayoutConstraint constraintWithItem:view4 attribute:3 relatedBy:0 toItem:view5 attribute:3 multiplier:1.0 constant:0.0];
   v22[0] = v19;
-  v18 = [v4 view];
-  v17 = [(GCSettingsRootController *)self view];
-  v8 = [NSLayoutConstraint constraintWithItem:v18 attribute:5 relatedBy:0 toItem:v17 attribute:5 multiplier:1.0 constant:0.0];
+  view6 = [controllerCopy view];
+  view7 = [(GCSettingsRootController *)self view];
+  v8 = [NSLayoutConstraint constraintWithItem:view6 attribute:5 relatedBy:0 toItem:view7 attribute:5 multiplier:1.0 constant:0.0];
   v22[1] = v8;
-  v9 = [(GCSettingsRootController *)self view];
-  v10 = [v4 view];
-  v11 = [NSLayoutConstraint constraintWithItem:v9 attribute:4 relatedBy:0 toItem:v10 attribute:4 multiplier:1.0 constant:0.0];
+  view8 = [(GCSettingsRootController *)self view];
+  view9 = [controllerCopy view];
+  v11 = [NSLayoutConstraint constraintWithItem:view8 attribute:4 relatedBy:0 toItem:view9 attribute:4 multiplier:1.0 constant:0.0];
   v22[2] = v11;
-  v12 = [(GCSettingsRootController *)self view];
-  v13 = [v4 view];
-  v14 = [NSLayoutConstraint constraintWithItem:v12 attribute:6 relatedBy:0 toItem:v13 attribute:6 multiplier:1.0 constant:0.0];
+  view10 = [(GCSettingsRootController *)self view];
+  view11 = [controllerCopy view];
+  v14 = [NSLayoutConstraint constraintWithItem:view10 attribute:6 relatedBy:0 toItem:view11 attribute:6 multiplier:1.0 constant:0.0];
   v22[3] = v14;
   v15 = [NSArray arrayWithObjects:v22 count:4];
   activeConstraints = self->_activeConstraints;
   self->_activeConstraints = v15;
 
   [NSLayoutConstraint activateConstraints:self->_activeConstraints];
-  [v4 didMoveToParentViewController:self];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
-- (void)hideContentController:(id)a3
+- (void)hideContentController:(id)controller
 {
   activeConstraints = self->_activeConstraints;
-  v5 = a3;
+  controllerCopy = controller;
   [NSLayoutConstraint deactivateConstraints:activeConstraints];
-  [v5 willMoveToParentViewController:0];
-  v4 = [v5 view];
-  [v4 removeFromSuperview];
+  [controllerCopy willMoveToParentViewController:0];
+  view = [controllerCopy view];
+  [view removeFromSuperview];
 
-  [v5 removeFromParentViewController];
+  [controllerCopy removeFromParentViewController];
 }
 
 @end

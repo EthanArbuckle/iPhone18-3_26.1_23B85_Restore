@@ -1,6 +1,6 @@
 @interface LocalCategoryViewController
-- (_TtC10StickerKit27LocalCategoryViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC10StickerKit27LocalCategoryViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -9,25 +9,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A6A3298();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_19A6A5788();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A6A42F0();
 }
 
-- (_TtC10StickerKit27LocalCategoryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10StickerKit27LocalCategoryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_19A7AB014();
     v7 = v6;
@@ -39,8 +39,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return LocalCategoryViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return LocalCategoryViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

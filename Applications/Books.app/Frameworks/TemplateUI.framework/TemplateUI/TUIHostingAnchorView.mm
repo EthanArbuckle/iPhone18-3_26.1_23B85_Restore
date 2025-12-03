@@ -1,7 +1,7 @@
 @interface TUIHostingAnchorView
-+ (id)renderModelIdentifier:(id)a3 submodel:(id)a4 hostingIdentifier:(id)a5 hostingProperties:(id)a6;
-- (void)_updateVisible:(BOOL)a3;
-- (void)applyLayoutAttributes:(id)a3;
++ (id)renderModelIdentifier:(id)identifier submodel:(id)submodel hostingIdentifier:(id)hostingIdentifier hostingProperties:(id)properties;
+- (void)_updateVisible:(BOOL)visible;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)setNeedsHostingUpdate;
 - (void)viewDidEndDisplay;
@@ -9,13 +9,13 @@
 
 @implementation TUIHostingAnchorView
 
-+ (id)renderModelIdentifier:(id)a3 submodel:(id)a4 hostingIdentifier:(id)a5 hostingProperties:(id)a6
++ (id)renderModelIdentifier:(id)identifier submodel:(id)submodel hostingIdentifier:(id)hostingIdentifier hostingProperties:(id)properties
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[_TUIHostingAnchorRenderModel alloc] initWithIdentifier:v12 submodel:v11 hostingIdentifier:v10 hostingProperties:v9];
+  propertiesCopy = properties;
+  hostingIdentifierCopy = hostingIdentifier;
+  submodelCopy = submodel;
+  identifierCopy = identifier;
+  v13 = [[_TUIHostingAnchorRenderModel alloc] initWithIdentifier:identifierCopy submodel:submodelCopy hostingIdentifier:hostingIdentifierCopy hostingProperties:propertiesCopy];
 
   return v13;
 }
@@ -29,32 +29,32 @@
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v12.receiver = self;
   v12.super_class = TUIHostingAnchorView;
-  [(TUIContainerView *)&v12 applyLayoutAttributes:a3];
-  v4 = [(TUIReusableBaseView *)self layoutAttributes];
-  v5 = [v4 renderModel];
+  [(TUIContainerView *)&v12 applyLayoutAttributes:attributes];
+  layoutAttributes = [(TUIReusableBaseView *)self layoutAttributes];
+  renderModel = [layoutAttributes renderModel];
 
-  v6 = [v5 hostingIdentifier];
-  v7 = [v5 hostingProperties];
+  hostingIdentifier = [renderModel hostingIdentifier];
+  hostingProperties = [renderModel hostingProperties];
   hostingIdentifier = self->_hostingIdentifier;
-  if (hostingIdentifier != v6 && ![(TUIHostingIdentifier *)hostingIdentifier isEqual:v6]|| (hostingProperties = self->_hostingProperties, hostingProperties != v7) && ![(TUIHostingProperties *)hostingProperties isEqual:v7])
+  if (hostingIdentifier != hostingIdentifier && ![(TUIHostingIdentifier *)hostingIdentifier isEqual:hostingIdentifier]|| (hostingProperties = self->_hostingProperties, hostingProperties != hostingProperties) && ![(TUIHostingProperties *)hostingProperties isEqual:hostingProperties])
   {
-    v10 = [(TUIReusableBaseView *)self feedControllerHost];
-    v11 = [v10 hostingController];
+    feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+    hostingController = [feedControllerHost hostingController];
 
     if (self->_hostingIdentifier)
     {
-      [v11 removeProviderObserver:self forIdentifier:?];
+      [hostingController removeProviderObserver:self forIdentifier:?];
     }
 
-    objc_storeStrong(&self->_hostingIdentifier, v6);
-    objc_storeStrong(&self->_hostingProperties, v7);
+    objc_storeStrong(&self->_hostingIdentifier, hostingIdentifier);
+    objc_storeStrong(&self->_hostingProperties, hostingProperties);
     if (self->_hostingIdentifier)
     {
-      [v11 addProviderObserver:self forIdentifier:?];
+      [hostingController addProviderObserver:self forIdentifier:?];
     }
 
     [(TUIHostingAnchorView *)self setNeedsHostingUpdate];
@@ -63,22 +63,22 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(TUIReusableBaseView *)self feedControllerHost];
-  v4 = [v3 hostingController];
+  feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+  hostingController = [feedControllerHost hostingController];
 
   if (!self->_visibilityCancellable)
   {
     v5 = +[TUIVisibilityOptions modalAnchorOptions];
     objc_initWeak(&location, self);
     self->_flags.visible = 0;
-    v6 = [(TUIReusableBaseView *)self feedControllerHost];
-    v7 = [v6 viewVisibilityController];
+    feedControllerHost2 = [(TUIReusableBaseView *)self feedControllerHost];
+    viewVisibilityController = [feedControllerHost2 viewVisibilityController];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_7FF9C;
     v13[3] = &unk_2604B0;
     objc_copyWeak(&v14, &location);
-    v8 = [v7 observeView:self options:v5 block:v13];
+    v8 = [viewVisibilityController observeView:self options:v5 block:v13];
     visibilityCancellable = self->_visibilityCancellable;
     self->_visibilityCancellable = v8;
 
@@ -89,19 +89,19 @@
   if (self->_flags.needsHostingUpdate)
   {
     self->_flags.needsHostingUpdate = 0;
-    v10 = [v4 viewStateForIdentifier:self->_hostingIdentifier];
+    v10 = [hostingController viewStateForIdentifier:self->_hostingIdentifier];
     hostedViewState = self->_hostedViewState;
     if (hostedViewState != v10)
     {
       if (hostedViewState)
       {
-        [v4 runDisappearanceTransitionForViewState:?];
+        [hostingController runDisappearanceTransitionForViewState:?];
       }
 
       objc_storeStrong(&self->_hostedViewState, v10);
       if (self->_hostedViewState && self->_flags.visible)
       {
-        [v4 runAppearanceTransitionForViewState:? superview:?];
+        [hostingController runAppearanceTransitionForViewState:? superview:?];
       }
     }
   }
@@ -111,22 +111,22 @@
   [(TUIContainerView *)&v12 layoutSubviews];
 }
 
-- (void)_updateVisible:(BOOL)a3
+- (void)_updateVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = [(TUIReusableBaseView *)self feedControllerHost];
-  v7 = [v5 hostingController];
+  visibleCopy = visible;
+  feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+  hostingController = [feedControllerHost hostingController];
 
-  self->_flags.visible = v3;
+  self->_flags.visible = visibleCopy;
   hostedViewState = self->_hostedViewState;
-  if (v3)
+  if (visibleCopy)
   {
-    [v7 runAppearanceTransitionForViewState:hostedViewState superview:self];
+    [hostingController runAppearanceTransitionForViewState:hostedViewState superview:self];
   }
 
   else
   {
-    [v7 runDisappearanceTransitionForViewState:hostedViewState];
+    [hostingController runDisappearanceTransitionForViewState:hostedViewState];
   }
 }
 
@@ -135,8 +135,8 @@
   v9.receiver = self;
   v9.super_class = TUIHostingAnchorView;
   [(TUIContainerView *)&v9 viewDidEndDisplay];
-  v3 = [(TUIReusableBaseView *)self feedControllerHost];
-  v4 = [v3 hostingController];
+  feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+  hostingController = [feedControllerHost hostingController];
 
   visibilityCancellable = self->_visibilityCancellable;
   self->_visibilityCancellable = 0;
@@ -144,7 +144,7 @@
   self->_flags.visible = 0;
   if (self->_hostedViewState)
   {
-    [v4 didEndDisplayForViewState:?];
+    [hostingController didEndDisplayForViewState:?];
     hostedViewState = self->_hostedViewState;
     self->_hostedViewState = 0;
 

@@ -1,9 +1,9 @@
 @interface HUAssociatedServiceTypeOptionCell
 - (id)colorForCurrentState;
 - (void)prepareForReuse;
-- (void)setChecked:(BOOL)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setSuggestion:(BOOL)a3;
+- (void)setChecked:(BOOL)checked;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setSuggestion:(BOOL)suggestion;
 @end
 
 @implementation HUAssociatedServiceTypeOptionCell
@@ -17,10 +17,10 @@
   [(HUAssociatedServiceTypeOptionCell *)&v3 prepareForReuse];
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  self->_checked = a3;
-  if (a3)
+  self->_checked = checked;
+  if (checked)
   {
     v3 = 3;
   }
@@ -33,35 +33,35 @@
   [(HUAssociatedServiceTypeOptionCell *)self setAccessoryType:v3];
 }
 
-- (void)setSuggestion:(BOOL)a3
+- (void)setSuggestion:(BOOL)suggestion
 {
-  self->_suggestion = a3;
-  v5 = [(HUAssociatedServiceTypeOptionCell *)self colorForCurrentState];
-  v4 = [(HUAssociatedServiceTypeOptionCell *)self textLabel];
-  [v4 setTextColor:v5];
+  self->_suggestion = suggestion;
+  colorForCurrentState = [(HUAssociatedServiceTypeOptionCell *)self colorForCurrentState];
+  textLabel = [(HUAssociatedServiceTypeOptionCell *)self textLabel];
+  [textLabel setTextColor:colorForCurrentState];
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  self->_disabled = a3;
-  v5 = [(HUAssociatedServiceTypeOptionCell *)self colorForCurrentState];
-  v4 = [(HUAssociatedServiceTypeOptionCell *)self textLabel];
-  [v4 setTextColor:v5];
+  self->_disabled = disabled;
+  colorForCurrentState = [(HUAssociatedServiceTypeOptionCell *)self colorForCurrentState];
+  textLabel = [(HUAssociatedServiceTypeOptionCell *)self textLabel];
+  [textLabel setTextColor:colorForCurrentState];
 }
 
 - (id)colorForCurrentState
 {
   if ([(HUAssociatedServiceTypeOptionCell *)self isDisabled]|| [(HUAssociatedServiceTypeOptionCell *)self isSuggestion])
   {
-    v3 = [MEMORY[0x277D75348] systemGrayColor];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
   }
 
   else
   {
-    v3 = [MEMORY[0x277D75348] labelColor];
+    systemGrayColor = [MEMORY[0x277D75348] labelColor];
   }
 
-  return v3;
+  return systemGrayColor;
 }
 
 @end

@@ -16,16 +16,16 @@
 
 - (NSURL)libraryPath
 {
-  v2 = [(NTKPrideSwatchMappedImageCachePathProvider *)self defaultPath];
-  v3 = [v2 URLByAppendingPathComponent:@"Library"];
+  defaultPath = [(NTKPrideSwatchMappedImageCachePathProvider *)self defaultPath];
+  v3 = [defaultPath URLByAppendingPathComponent:@"Library"];
 
   return v3;
 }
 
 - (NSURL)cachesPath
 {
-  v2 = [(NTKPrideSwatchMappedImageCachePathProvider *)self libraryPath];
-  v3 = [v2 URLByAppendingPathComponent:@"Caches"];
+  libraryPath = [(NTKPrideSwatchMappedImageCachePathProvider *)self libraryPath];
+  v3 = [libraryPath URLByAppendingPathComponent:@"Caches"];
 
   return v3;
 }

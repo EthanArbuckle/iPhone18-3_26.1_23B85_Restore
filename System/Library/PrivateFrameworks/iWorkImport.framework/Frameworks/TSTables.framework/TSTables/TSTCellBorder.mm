@@ -3,20 +3,20 @@
 + (id)cellBorderForResettingAllStrokes;
 + (id)cellDiffProperties;
 - (BOOL)hasContent;
-- (BOOL)hasEqualStrokes:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromMessage:(const void *)a3 unarchiver:(id)a4;
-- (id)objectByRemovingPropertiesInMap:(id)a3 addingPropertiesInMap:(id)a4 updateInverseResetPropertyMap:(id)a5 updateInverseSetPropertyMap:(id)a6;
+- (BOOL)hasEqualStrokes:(id)strokes;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromMessage:(const void *)message unarchiver:(id)unarchiver;
+- (id)objectByRemovingPropertiesInMap:(id)map addingPropertiesInMap:(id)inMap updateInverseResetPropertyMap:(id)propertyMap updateInverseSetPropertyMap:(id)setPropertyMap;
 - (void)_clearBottomStroke;
 - (void)_clearLeftStroke;
 - (void)_clearRightStroke;
 - (void)_clearTopStroke;
-- (void)applyToCell:(id)a3;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
-- (void)setBottomStroke:(id)a3 order:(int)a4;
-- (void)setLeftStroke:(id)a3 order:(int)a4;
-- (void)setRightStroke:(id)a3 order:(int)a4;
-- (void)setTopStroke:(id)a3 order:(int)a4;
+- (void)applyToCell:(id)cell;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
+- (void)setBottomStroke:(id)stroke order:(int)order;
+- (void)setLeftStroke:(id)stroke order:(int)order;
+- (void)setRightStroke:(id)stroke order:(int)order;
+- (void)setTopStroke:(id)stroke order:(int)order;
 @end
 
 @implementation TSTCellBorder
@@ -39,31 +39,31 @@
   return v5;
 }
 
-- (void)setTopStroke:(id)a3 order:(int)a4
+- (void)setTopStroke:(id)stroke order:(int)order
 {
-  objc_storeStrong(&self->_topStroke, a3);
-  self->_topStrokeOrder = a4;
+  objc_storeStrong(&self->_topStroke, stroke);
+  self->_topStrokeOrder = order;
   *&self->_definedTopStroke = 257;
 }
 
-- (void)setLeftStroke:(id)a3 order:(int)a4
+- (void)setLeftStroke:(id)stroke order:(int)order
 {
-  objc_storeStrong(&self->_leftStroke, a3);
-  self->_leftStrokeOrder = a4;
+  objc_storeStrong(&self->_leftStroke, stroke);
+  self->_leftStrokeOrder = order;
   *&self->_definedLeftStroke = 257;
 }
 
-- (void)setBottomStroke:(id)a3 order:(int)a4
+- (void)setBottomStroke:(id)stroke order:(int)order
 {
-  objc_storeStrong(&self->_bottomStroke, a3);
-  self->_bottomStrokeOrder = a4;
+  objc_storeStrong(&self->_bottomStroke, stroke);
+  self->_bottomStrokeOrder = order;
   *&self->_definedBottomStroke = 257;
 }
 
-- (void)setRightStroke:(id)a3 order:(int)a4
+- (void)setRightStroke:(id)stroke order:(int)order
 {
-  objc_storeStrong(&self->_rightStroke, a3);
-  self->_rightStrokeOrder = a4;
+  objc_storeStrong(&self->_rightStroke, stroke);
+  self->_rightStrokeOrder = order;
   *&self->_definedRightStroke = 257;
 }
 
@@ -103,9 +103,9 @@
   *&self->_definedRightStroke = 0;
 }
 
-- (void)applyToCell:(id)a3
+- (void)applyToCell:(id)cell
 {
-  v53 = objc_msgSend_cellBorder(a3, a2, a3, v3, v4);
+  v53 = objc_msgSend_cellBorder(cell, a2, cell, v3, v4);
   if (!v53)
   {
     v10 = MEMORY[0x277D81150];
@@ -212,9 +212,9 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v6 = objc_msgSend_allocWithZone_(TSTCellBorder, a2, a3, v3, v4);
+  v6 = objc_msgSend_allocWithZone_(TSTCellBorder, a2, zone, v3, v4);
   v15 = objc_msgSend_init(v6, v7, v8, v9, v10);
   if (self->_definedTopStroke)
   {
@@ -247,65 +247,65 @@
   return v15;
 }
 
-- (id)initFromMessage:(const void *)a3 unarchiver:(id)a4
+- (id)initFromMessage:(const void *)message unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v13 = objc_msgSend_init(self, v7, v8, v9, v10);
   if (v13)
   {
-    v14 = *(a3 + 4);
+    v14 = *(message + 4);
     if ((v14 & 0x10) != 0)
     {
       if (v14)
       {
-        v15 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v11, *(a3 + 3), v6, v12);
+        v15 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v11, *(message + 3), unarchiverCopy, v12);
         v16 = *(v13 + 8);
         *(v13 + 8) = v15;
       }
 
-      *(v13 + 16) = *(a3 + 14);
+      *(v13 + 16) = *(message + 14);
       *(v13 + 68) = 257;
-      v14 = *(a3 + 4);
+      v14 = *(message + 4);
     }
 
     if ((v14 & 0x80) != 0)
     {
       if ((v14 & 8) != 0)
       {
-        v17 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v11, *(a3 + 6), v6, v12);
+        v17 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v11, *(message + 6), unarchiverCopy, v12);
         v18 = *(v13 + 56);
         *(v13 + 56) = v17;
       }
 
-      *(v13 + 64) = *(a3 + 17);
+      *(v13 + 64) = *(message + 17);
       *(v13 + 74) = 257;
-      v14 = *(a3 + 4);
+      v14 = *(message + 4);
     }
 
     if ((v14 & 0x40) != 0)
     {
       if ((v14 & 4) != 0)
       {
-        v19 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v11, *(a3 + 5), v6, v12);
+        v19 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v11, *(message + 5), unarchiverCopy, v12);
         v20 = *(v13 + 40);
         *(v13 + 40) = v19;
       }
 
-      *(v13 + 48) = *(a3 + 16);
+      *(v13 + 48) = *(message + 16);
       *(v13 + 72) = 257;
-      v14 = *(a3 + 4);
+      v14 = *(message + 4);
     }
 
     if ((v14 & 0x20) != 0)
     {
       if ((v14 & 2) != 0)
       {
-        v21 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v11, *(a3 + 4), v6, v12);
+        v21 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v11, *(message + 4), unarchiverCopy, v12);
         v22 = *(v13 + 24);
         *(v13 + 24) = v21;
       }
 
-      *(v13 + 32) = *(a3 + 15);
+      *(v13 + 32) = *(message + 15);
       *(v13 + 70) = 257;
     }
   }
@@ -313,34 +313,34 @@
   return v13;
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
-  v34 = a4;
+  archiverCopy = archiver;
   if (self->_definedTopStroke)
   {
     if (self->_topStroke)
     {
       v12 = objc_msgSend_topStroke(self, v6, v7, v8, v9);
-      *(a3 + 4) |= 1u;
-      v13 = *(a3 + 3);
+      *(message + 4) |= 1u;
+      v13 = *(message + 3);
       if (!v13)
       {
-        v14 = *(a3 + 1);
+        v14 = *(message + 1);
         if (v14)
         {
           v14 = *(v14 & 0xFFFFFFFFFFFFFFFELL);
         }
 
         v13 = MEMORY[0x223DA0290](v14);
-        *(a3 + 3) = v13;
+        *(message + 3) = v13;
       }
 
-      objc_msgSend_saveToArchive_archiver_(v12, v10, v13, v34, v11);
+      objc_msgSend_saveToArchive_archiver_(v12, v10, v13, archiverCopy, v11);
     }
 
     v15 = objc_msgSend_topStrokeOrder(self, v6, v7, v8, v9);
-    *(a3 + 4) |= 0x10u;
-    *(a3 + 14) = v15;
+    *(message + 4) |= 0x10u;
+    *(message + 14) = v15;
   }
 
   if (self->_definedLeftStroke)
@@ -348,26 +348,26 @@
     if (self->_leftStroke)
     {
       v18 = objc_msgSend_leftStroke(self, v6, v7, v8, v9);
-      *(a3 + 4) |= 8u;
-      v19 = *(a3 + 6);
+      *(message + 4) |= 8u;
+      v19 = *(message + 6);
       if (!v19)
       {
-        v20 = *(a3 + 1);
+        v20 = *(message + 1);
         if (v20)
         {
           v20 = *(v20 & 0xFFFFFFFFFFFFFFFELL);
         }
 
         v19 = MEMORY[0x223DA0290](v20);
-        *(a3 + 6) = v19;
+        *(message + 6) = v19;
       }
 
-      objc_msgSend_saveToArchive_archiver_(v18, v16, v19, v34, v17);
+      objc_msgSend_saveToArchive_archiver_(v18, v16, v19, archiverCopy, v17);
     }
 
     v21 = objc_msgSend_leftStrokeOrder(self, v6, v7, v8, v9);
-    *(a3 + 4) |= 0x80u;
-    *(a3 + 17) = v21;
+    *(message + 4) |= 0x80u;
+    *(message + 17) = v21;
   }
 
   if (self->_definedBottomStroke)
@@ -375,26 +375,26 @@
     if (self->_bottomStroke)
     {
       v24 = objc_msgSend_bottomStroke(self, v6, v7, v8, v9);
-      *(a3 + 4) |= 4u;
-      v25 = *(a3 + 5);
+      *(message + 4) |= 4u;
+      v25 = *(message + 5);
       if (!v25)
       {
-        v26 = *(a3 + 1);
+        v26 = *(message + 1);
         if (v26)
         {
           v26 = *(v26 & 0xFFFFFFFFFFFFFFFELL);
         }
 
         v25 = MEMORY[0x223DA0290](v26);
-        *(a3 + 5) = v25;
+        *(message + 5) = v25;
       }
 
-      objc_msgSend_saveToArchive_archiver_(v24, v22, v25, v34, v23);
+      objc_msgSend_saveToArchive_archiver_(v24, v22, v25, archiverCopy, v23);
     }
 
     v27 = objc_msgSend_bottomStrokeOrder(self, v6, v7, v8, v9);
-    *(a3 + 4) |= 0x40u;
-    *(a3 + 16) = v27;
+    *(message + 4) |= 0x40u;
+    *(message + 16) = v27;
   }
 
   if (self->_definedRightStroke)
@@ -402,26 +402,26 @@
     if (self->_rightStroke)
     {
       v30 = objc_msgSend_rightStroke(self, v6, v7, v8, v9);
-      *(a3 + 4) |= 2u;
-      v31 = *(a3 + 4);
+      *(message + 4) |= 2u;
+      v31 = *(message + 4);
       if (!v31)
       {
-        v32 = *(a3 + 1);
+        v32 = *(message + 1);
         if (v32)
         {
           v32 = *(v32 & 0xFFFFFFFFFFFFFFFELL);
         }
 
         v31 = MEMORY[0x223DA0290](v32);
-        *(a3 + 4) = v31;
+        *(message + 4) = v31;
       }
 
-      objc_msgSend_saveToArchive_archiver_(v30, v28, v31, v34, v29);
+      objc_msgSend_saveToArchive_archiver_(v30, v28, v31, archiverCopy, v29);
     }
 
     v33 = objc_msgSend_rightStrokeOrder(self, v6, v7, v8, v9);
-    *(a3 + 4) |= 0x20u;
-    *(a3 + 15) = v33;
+    *(message + 4) |= 0x20u;
+    *(message + 15) = v33;
   }
 }
 
@@ -437,11 +437,11 @@
   return v3;
 }
 
-- (id)objectByRemovingPropertiesInMap:(id)a3 addingPropertiesInMap:(id)a4 updateInverseResetPropertyMap:(id)a5 updateInverseSetPropertyMap:(id)a6
+- (id)objectByRemovingPropertiesInMap:(id)map addingPropertiesInMap:(id)inMap updateInverseResetPropertyMap:(id)propertyMap updateInverseSetPropertyMap:(id)setPropertyMap
 {
-  v9 = a4;
-  v10 = a6;
-  v17 = objc_msgSend_objectForProperty_(a3, v11, 912, v12, v13);
+  inMapCopy = inMap;
+  setPropertyMapCopy = setPropertyMap;
+  v17 = objc_msgSend_objectForProperty_(map, v11, 912, v12, v13);
   if (v17)
   {
     v18 = MEMORY[0x277D81150];
@@ -452,7 +452,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
-  v29 = objc_msgSend_objectForProperty_(v9, v14, 912, v15, v16);
+  v29 = objc_msgSend_objectForProperty_(inMapCopy, v14, 912, v15, v16);
   v34 = objc_msgSend_cellBorder(TSTCellBorder, v30, v31, v32, v33);
   if (objc_msgSend_definedTopStroke(v29, v35, v36, v37, v38))
   {
@@ -482,16 +482,16 @@
     objc_msgSend_setRightStroke_order_(v34, v85, v79, v84, v86);
   }
 
-  objc_msgSend_setObject_forProperty_(v10, v75, v34, 912, v78);
+  objc_msgSend_setObject_forProperty_(setPropertyMapCopy, v75, v34, 912, v78);
 
   return v29;
 }
 
-- (BOOL)hasEqualStrokes:(id)a3
+- (BOOL)hasEqualStrokes:(id)strokes
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4 && (definedTopStroke = self->_definedTopStroke, definedTopStroke == objc_msgSend_definedTopStroke(v4, v5, v6, v7, v8)) && (definedLeftStroke = self->_definedLeftStroke, definedLeftStroke == objc_msgSend_definedLeftStroke(v9, v11, v12, v13, v14)) && (definedBottomStroke = self->_definedBottomStroke, definedBottomStroke == objc_msgSend_definedBottomStroke(v9, v16, v17, v18, v19)) && (definedRightStroke = self->_definedRightStroke, definedRightStroke == objc_msgSend_definedRightStroke(v9, v21, v22, v23, v24)) && (!self->_definedTopStroke || (topStroke = self->_topStroke, objc_msgSend_topStroke(v9, v26, v27, v28, v29), v31 = objc_claimAutoreleasedReturnValue(), LOBYTE(topStroke) = objc_msgSend_isEqual_(topStroke, v32, v31, v33, v34), v31, (topStroke & 1) != 0)) && (!self->_definedLeftStroke || (leftStroke = self->_leftStroke, objc_msgSend_leftStroke(v9, v26, v27, v28, v29), v36 = objc_claimAutoreleasedReturnValue(), LOBYTE(leftStroke) = objc_msgSend_isEqual_(leftStroke, v37, v36, v38, v39), v36, (leftStroke & 1) != 0)) && (!self->_definedRightStroke || (rightStroke = self->_rightStroke, objc_msgSend_rightStroke(v9, v26, v27, v28, v29), v41 = objc_claimAutoreleasedReturnValue(), LOBYTE(rightStroke) = objc_msgSend_isEqual_(rightStroke, v42, v41, v43, v44), v41, (rightStroke & 1) != 0)))
+  strokesCopy = strokes;
+  v9 = strokesCopy;
+  if (strokesCopy && (definedTopStroke = self->_definedTopStroke, definedTopStroke == objc_msgSend_definedTopStroke(strokesCopy, v5, v6, v7, v8)) && (definedLeftStroke = self->_definedLeftStroke, definedLeftStroke == objc_msgSend_definedLeftStroke(v9, v11, v12, v13, v14)) && (definedBottomStroke = self->_definedBottomStroke, definedBottomStroke == objc_msgSend_definedBottomStroke(v9, v16, v17, v18, v19)) && (definedRightStroke = self->_definedRightStroke, definedRightStroke == objc_msgSend_definedRightStroke(v9, v21, v22, v23, v24)) && (!self->_definedTopStroke || (topStroke = self->_topStroke, objc_msgSend_topStroke(v9, v26, v27, v28, v29), v31 = objc_claimAutoreleasedReturnValue(), LOBYTE(topStroke) = objc_msgSend_isEqual_(topStroke, v32, v31, v33, v34), v31, (topStroke & 1) != 0)) && (!self->_definedLeftStroke || (leftStroke = self->_leftStroke, objc_msgSend_leftStroke(v9, v26, v27, v28, v29), v36 = objc_claimAutoreleasedReturnValue(), LOBYTE(leftStroke) = objc_msgSend_isEqual_(leftStroke, v37, v36, v38, v39), v36, (leftStroke & 1) != 0)) && (!self->_definedRightStroke || (rightStroke = self->_rightStroke, objc_msgSend_rightStroke(v9, v26, v27, v28, v29), v41 = objc_claimAutoreleasedReturnValue(), LOBYTE(rightStroke) = objc_msgSend_isEqual_(rightStroke, v42, v41, v43, v44), v41, (rightStroke & 1) != 0)))
   {
     if (self->_definedBottomStroke)
     {

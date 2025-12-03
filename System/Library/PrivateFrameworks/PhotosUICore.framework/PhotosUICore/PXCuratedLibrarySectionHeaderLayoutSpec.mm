@@ -1,13 +1,13 @@
 @interface PXCuratedLibrarySectionHeaderLayoutSpec
 - ($7A74DE1ADD4D9428579EDAA94466197A)cornerRadius;
-- (PXCuratedLibrarySectionHeaderLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 variant:(int64_t)a5;
-- (UIEdgeInsets)adjustedContentPadding:(UIEdgeInsets)a3;
+- (PXCuratedLibrarySectionHeaderLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options variant:(int64_t)variant;
+- (UIEdgeInsets)adjustedContentPadding:(UIEdgeInsets)padding;
 - (UIEdgeInsets)contentPadding;
 - (UIEdgeInsets)curatedLibraryEdgeToEdgeContentDefaultPadding;
 - (UIEdgeInsets)padding;
 - (UIEdgeInsets)titlePadding;
 - (double)maximumTitleSubtitleHeight;
-- (void)setCornerRadius:(id)a3;
+- (void)setCornerRadius:(id)radius;
 @end
 
 @implementation PXCuratedLibrarySectionHeaderLayoutSpec
@@ -40,8 +40,8 @@
 
 - (double)maximumTitleSubtitleHeight
 {
-  v2 = [(PXCuratedLibrarySectionHeaderLayoutSpec *)self titleSubtitleLabelSpec];
-  [v2 maximumTitleSubtitleHeight];
+  titleSubtitleLabelSpec = [(PXCuratedLibrarySectionHeaderLayoutSpec *)self titleSubtitleLabelSpec];
+  [titleSubtitleLabelSpec maximumTitleSubtitleHeight];
   v4 = v3;
 
   return v4;
@@ -73,7 +73,7 @@
   return result;
 }
 
-- (void)setCornerRadius:(id)a3
+- (void)setCornerRadius:(id)radius
 {
   self->_cornerRadius.var0.var0.topLeft = v3;
   self->_cornerRadius.var0.var0.topRight = v4;
@@ -88,12 +88,12 @@
   return result;
 }
 
-- (UIEdgeInsets)adjustedContentPadding:(UIEdgeInsets)a3
+- (UIEdgeInsets)adjustedContentPadding:(UIEdgeInsets)padding
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
   if ([(PXCuratedLibrarySectionHeaderLayoutSpec *)self ellipsisButtonSpecialTreatment]&& [(PXCuratedLibrarySectionHeaderLayoutSpec *)self isFloating]&& [(PXCuratedLibrarySectionHeaderLayoutSpec *)self sizeClass]== 1 && [(PXCuratedLibrarySectionHeaderLayoutSpec *)self layoutOrientation]== 2)
   {
     [(PXCuratedLibrarySectionHeaderLayoutSpec *)self safeAreaInsets];
@@ -111,16 +111,16 @@
   return result;
 }
 
-- (PXCuratedLibrarySectionHeaderLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 variant:(int64_t)a5
+- (PXCuratedLibrarySectionHeaderLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options variant:(int64_t)variant
 {
-  v8 = a3;
+  collectionCopy = collection;
   v11.receiver = self;
   v11.super_class = PXCuratedLibrarySectionHeaderLayoutSpec;
-  v9 = [(PXCuratedLibrarySectionHeaderLayoutSpec *)&v11 initWithExtendedTraitCollection:v8 options:a4];
+  v9 = [(PXCuratedLibrarySectionHeaderLayoutSpec *)&v11 initWithExtendedTraitCollection:collectionCopy options:options];
   if (v9)
   {
-    v9->_variant = a5;
-    [v8 contentSizeCategory];
+    v9->_variant = variant;
+    [collectionCopy contentSizeCategory];
     PXPreferredContentSizeCategoryIsAccessibility();
   }
 

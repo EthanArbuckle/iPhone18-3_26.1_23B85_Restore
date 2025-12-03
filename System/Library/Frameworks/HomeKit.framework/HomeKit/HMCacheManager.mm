@@ -1,13 +1,13 @@
 @interface HMCacheManager
-- (HMCacheManager)initWithTimerFactory:(id)a3 persistentCache:(id)a4;
-- (id)_cacheWithName:(id)a3;
-- (id)_loadCacheNamed:(id)a3;
-- (id)cacheWithName:(id)a3;
-- (void)_saveCache:(id)a3;
-- (void)cacheDidUpdate:(id)a3;
-- (void)cacheWithName:(id)a3 completion:(id)a4;
+- (HMCacheManager)initWithTimerFactory:(id)factory persistentCache:(id)cache;
+- (id)_cacheWithName:(id)name;
+- (id)_loadCacheNamed:(id)named;
+- (id)cacheWithName:(id)name;
+- (void)_saveCache:(id)cache;
+- (void)cacheDidUpdate:(id)update;
+- (void)cacheWithName:(id)name completion:(id)completion;
 - (void)forceFlushToDisk;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMCacheManager
@@ -15,8 +15,8 @@
 - (void)forceFlushToDisk
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(HMCacheManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMCacheManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   os_unfair_lock_lock_with_options();
   v4 = [(NSMutableDictionary *)self->_pendingWrites copy];
@@ -57,101 +57,101 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMCacheManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  workQueue = [(HMCacheManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMCacheManager *)self writeDebounceTimer];
+  writeDebounceTimer = [(HMCacheManager *)self writeDebounceTimer];
 
-  if (v6 == v4)
+  if (writeDebounceTimer == fireCopy)
   {
 
     [(HMCacheManager *)self forceFlushToDisk];
   }
 }
 
-- (void)cacheDidUpdate:(id)a3
+- (void)cacheDidUpdate:(id)update
 {
-  v7 = a3;
+  updateCopy = update;
   os_unfair_lock_lock_with_options();
   pendingWrites = self->_pendingWrites;
-  v5 = [v7 name];
-  [(NSMutableDictionary *)pendingWrites setObject:v7 forKeyedSubscript:v5];
+  name = [updateCopy name];
+  [(NSMutableDictionary *)pendingWrites setObject:updateCopy forKeyedSubscript:name];
 
   os_unfair_lock_unlock(&self->_lock);
-  v6 = [(HMCacheManager *)self writeDebounceTimer];
-  [v6 resume];
+  writeDebounceTimer = [(HMCacheManager *)self writeDebounceTimer];
+  [writeDebounceTimer resume];
 }
 
-- (id)_loadCacheNamed:(id)a3
+- (id)_loadCacheNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(HMCacheManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  namedCopy = named;
+  workQueue = [(HMCacheManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMCacheManager *)self persistentCache];
-  v7 = [v6 loadCachedObjectsForCacheWithName:v4];
+  persistentCache = [(HMCacheManager *)self persistentCache];
+  v7 = [persistentCache loadCachedObjectsForCacheWithName:namedCopy];
 
-  v8 = [[HMCache alloc] initWithCachedObjects:v7 name:v4];
+  v8 = [[HMCache alloc] initWithCachedObjects:v7 name:namedCopy];
 
   return v8;
 }
 
-- (void)_saveCache:(id)a3
+- (void)_saveCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(HMCacheManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  cacheCopy = cache;
+  workQueue = [(HMCacheManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v8 = [(HMCacheManager *)self persistentCache];
-  v6 = [v4 cachedObjects];
-  v7 = [v4 name];
+  persistentCache = [(HMCacheManager *)self persistentCache];
+  cachedObjects = [cacheCopy cachedObjects];
+  name = [cacheCopy name];
 
-  [v8 storeCachedObjects:v6 forCacheName:v7];
+  [persistentCache storeCachedObjects:cachedObjects forCacheName:name];
 }
 
-- (id)_cacheWithName:(id)a3
+- (id)_cacheWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(HMCacheManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  nameCopy = name;
+  workQueue = [(HMCacheManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   os_unfair_lock_lock_with_options();
-  v6 = [(NSMapTable *)self->_cacheMap objectForKey:v4];
+  v6 = [(NSMapTable *)self->_cacheMap objectForKey:nameCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (!v6)
   {
-    v6 = [(HMCacheManager *)self _loadCacheNamed:v4];
+    v6 = [(HMCacheManager *)self _loadCacheNamed:nameCopy];
     [v6 setDelegate:self];
     os_unfair_lock_lock_with_options();
-    [(NSMapTable *)self->_cacheMap setObject:v6 forKey:v4];
+    [(NSMapTable *)self->_cacheMap setObject:v6 forKey:nameCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
   return v6;
 }
 
-- (id)cacheWithName:(id)a3
+- (id)cacheWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v5 = [(HMCacheManager *)self workQueue];
+  workQueue = [(HMCacheManager *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __32__HMCacheManager_cacheWithName___block_invoke;
   block[3] = &unk_1E7547B90;
-  v10 = v4;
+  v10 = nameCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = nameCopy;
+  dispatch_sync(workQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -169,21 +169,21 @@ uint64_t __32__HMCacheManager_cacheWithName___block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)cacheWithName:(id)a3 completion:(id)a4
+- (void)cacheWithName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMCacheManager *)self workQueue];
+  nameCopy = name;
+  completionCopy = completion;
+  workQueue = [(HMCacheManager *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__HMCacheManager_cacheWithName_completion___block_invoke;
   block[3] = &unk_1E754E0F8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = nameCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = nameCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __43__HMCacheManager_cacheWithName_completion___block_invoke(uint64_t a1)
@@ -192,10 +192,10 @@ void __43__HMCacheManager_cacheWithName_completion___block_invoke(uint64_t a1)
   (*(*(a1 + 48) + 16))();
 }
 
-- (HMCacheManager)initWithTimerFactory:(id)a3 persistentCache:(id)a4
+- (HMCacheManager)initWithTimerFactory:(id)factory persistentCache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
+  factoryCopy = factory;
+  cacheCopy = cache;
   v22.receiver = self;
   v22.super_class = HMCacheManager;
   v8 = [(HMCacheManager *)&v22 init];
@@ -203,23 +203,23 @@ void __43__HMCacheManager_cacheWithName_completion___block_invoke(uint64_t a1)
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    v10 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     cacheMap = v9->_cacheMap;
-    v9->_cacheMap = v10;
+    v9->_cacheMap = strongToWeakObjectsMapTable;
 
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     pendingWrites = v9->_pendingWrites;
-    v9->_pendingWrites = v12;
+    v9->_pendingWrites = dictionary;
 
     v14 = HMDispatchQueueNameString(v9, @"WorkQueue");
-    v15 = [v14 UTF8String];
+    uTF8String = [v14 UTF8String];
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v17 = dispatch_queue_create(v15, v16);
+    v17 = dispatch_queue_create(uTF8String, v16);
     workQueue = v9->_workQueue;
     v9->_workQueue = v17;
 
-    objc_storeStrong(&v9->_persistentCache, a4);
-    v19 = v6[2](v6);
+    objc_storeStrong(&v9->_persistentCache, cache);
+    v19 = factoryCopy[2](factoryCopy);
     writeDebounceTimer = v9->_writeDebounceTimer;
     v9->_writeDebounceTimer = v19;
 

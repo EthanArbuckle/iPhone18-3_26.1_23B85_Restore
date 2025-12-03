@@ -1,11 +1,11 @@
 @interface VoiceOverLiveRecognitionActivitiesController
 - (VoiceOverLiveRecognitionActivitiesController)init;
 - (id)specifiers;
-- (void)_addButtonTapped:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_addButtonTapped:(id)tapped;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation VoiceOverLiveRecognitionActivitiesController
@@ -30,22 +30,22 @@
   v7.super_class = VoiceOverLiveRecognitionActivitiesController;
   [(VoiceOverLiveRecognitionActivitiesController *)&v7 viewDidLoad];
   v3 = settingsLocString(@"VO_LIVE_RECOGNITION_ACTIVITIES", @"VoiceOverSettings");
-  v4 = [(VoiceOverLiveRecognitionActivitiesController *)self navigationItem];
-  [v4 setTitle:v3];
+  navigationItem = [(VoiceOverLiveRecognitionActivitiesController *)self navigationItem];
+  [navigationItem setTitle:v3];
 
   v5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:4 target:self action:"_addButtonTapped:"];
-  v6 = [(VoiceOverLiveRecognitionActivitiesController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem2 = [(VoiceOverLiveRecognitionActivitiesController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = VoiceOverLiveRecognitionActivitiesController;
-  [(VoiceOverLiveRecognitionActivitiesController *)&v5 viewWillAppear:a3];
+  [(VoiceOverLiveRecognitionActivitiesController *)&v5 viewWillAppear:appear];
   [(VoiceOverLiveRecognitionActivitiesController *)self reloadSpecifiers];
-  v4 = [(VoiceOverLiveRecognitionActivitiesController *)self navigationController];
-  [v4 setToolbarHidden:0 animated:1];
+  navigationController = [(VoiceOverLiveRecognitionActivitiesController *)self navigationController];
+  [navigationController setToolbarHidden:0 animated:1];
 }
 
 - (id)specifiers
@@ -58,14 +58,14 @@
     v5 = [PSSpecifier groupSpecifierWithID:@"ActivitiesGroup"];
     [v4 addObject:v5];
     v6 = +[AXSettings sharedInstance];
-    v7 = [v6 liveRecognitionActivities];
-    v8 = [v7 allKeys];
+    liveRecognitionActivities = [v6 liveRecognitionActivities];
+    allKeys = [liveRecognitionActivities allKeys];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = v8;
+    v9 = allKeys;
     v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
@@ -107,44 +107,44 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v18.receiver = self;
   v18.super_class = VoiceOverLiveRecognitionActivitiesController;
-  v6 = a4;
-  v7 = a3;
-  [(VoiceOverLiveRecognitionActivitiesController *)&v18 tableView:v7 didSelectRowAtIndexPath:v6];
-  v8 = [v7 cellForRowAtIndexPath:{v6, v18.receiver, v18.super_class}];
+  pathCopy = path;
+  viewCopy = view;
+  [(VoiceOverLiveRecognitionActivitiesController *)&v18 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [viewCopy cellForRowAtIndexPath:{pathCopy, v18.receiver, v18.super_class}];
 
-  v9 = [v8 specifier];
-  v10 = [v9 propertyForKey:@"Activity"];
+  specifier = [v8 specifier];
+  v10 = [specifier propertyForKey:@"Activity"];
   if (v10)
   {
     v11 = objc_alloc_init(VoiceOverLiveRecognitionCustomizeActivityController);
     [(VoiceOverLiveRecognitionCustomizeActivityController *)v11 setEditingActivityName:v10];
     v12 = +[AXSettings sharedInstance];
-    v13 = [v12 liveRecognitionActivities];
-    v14 = [v13 objectForKeyedSubscript:v10];
+    liveRecognitionActivities = [v12 liveRecognitionActivities];
+    v14 = [liveRecognitionActivities objectForKeyedSubscript:v10];
     [(VoiceOverLiveRecognitionCustomizeActivityController *)v11 setEditingActivity:v14];
 
     v15 = +[AXSettings sharedInstance];
-    v16 = [v15 liveRecognitionActivities];
-    v17 = [v16 allKeys];
-    [(VoiceOverLiveRecognitionCustomizeActivityController *)v11 setCurrentActivities:v17];
+    liveRecognitionActivities2 = [v15 liveRecognitionActivities];
+    allKeys = [liveRecognitionActivities2 allKeys];
+    [(VoiceOverLiveRecognitionCustomizeActivityController *)v11 setCurrentActivities:allKeys];
 
     [(VoiceOverLiveRecognitionActivitiesController *)self showController:v11];
   }
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v12 = [(VoiceOverLiveRecognitionActivitiesController *)self specifierAtIndexPath:a5];
+    v12 = [(VoiceOverLiveRecognitionActivitiesController *)self specifierAtIndexPath:path];
     v7 = [v12 propertyForKey:@"Activity"];
     v8 = +[AXSettings sharedInstance];
-    v9 = [v8 liveRecognitionActivities];
-    v10 = [v9 mutableCopy];
+    liveRecognitionActivities = [v8 liveRecognitionActivities];
+    v10 = [liveRecognitionActivities mutableCopy];
 
     [v10 removeObjectForKey:v7];
     v11 = +[AXSettings sharedInstance];
@@ -154,16 +154,16 @@
   }
 }
 
-- (void)_addButtonTapped:(id)a3
+- (void)_addButtonTapped:(id)tapped
 {
   v8 = objc_alloc_init(VoiceOverLiveRecognitionCustomizeActivityController);
   v4 = objc_alloc_init(AXVOLiveRecognitionActivity);
   [(VoiceOverLiveRecognitionCustomizeActivityController *)v8 setEditingActivity:v4];
 
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 liveRecognitionActivities];
-  v7 = [v6 allKeys];
-  [(VoiceOverLiveRecognitionCustomizeActivityController *)v8 setCurrentActivities:v7];
+  liveRecognitionActivities = [v5 liveRecognitionActivities];
+  allKeys = [liveRecognitionActivities allKeys];
+  [(VoiceOverLiveRecognitionCustomizeActivityController *)v8 setCurrentActivities:allKeys];
 
   [(VoiceOverLiveRecognitionActivitiesController *)self showController:v8];
 }

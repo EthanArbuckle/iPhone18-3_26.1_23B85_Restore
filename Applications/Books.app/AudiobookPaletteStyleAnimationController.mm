@@ -1,17 +1,17 @@
 @interface AudiobookPaletteStyleAnimationController
-+ (id)paletteStyleOpenAnimatorWithInteraction:(id)a3 traits:(id)a4 forceFullSlide:(BOOL)a5;
++ (id)paletteStyleOpenAnimatorWithInteraction:(id)interaction traits:(id)traits forceFullSlide:(BOOL)slide;
 - (_TtC5Books40AudiobookPaletteStyleAnimationController)init;
-- (id)interruptibleAnimatorForTransition:(id)a3;
-- (void)animationEnded:(BOOL)a3;
+- (id)interruptibleAnimatorForTransition:(id)transition;
+- (void)animationEnded:(BOOL)ended;
 @end
 
 @implementation AudiobookPaletteStyleAnimationController
 
-+ (id)paletteStyleOpenAnimatorWithInteraction:(id)a3 traits:(id)a4 forceFullSlide:(BOOL)a5
++ (id)paletteStyleOpenAnimatorWithInteraction:(id)interaction traits:(id)traits forceFullSlide:(BOOL)slide
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = _s5Books40AudiobookPaletteStyleAnimationControllerC07paletteD12OpenAnimator11interaction6traits14forceFullSlideSo08_UISheeteF0CAA0C23PresentationInteractionCSg_So17UITraitCollectionCSgSbtFZ_0(a3, a4, a5);
+  interactionCopy = interaction;
+  traitsCopy = traits;
+  v10 = _s5Books40AudiobookPaletteStyleAnimationControllerC07paletteD12OpenAnimator11interaction6traits14forceFullSlideSo08_UISheeteF0CAA0C23PresentationInteractionCSg_So17UITraitCollectionCSgSbtFZ_0(interaction, traits, slide);
 
   return v10;
 }
@@ -23,28 +23,28 @@
   return result;
 }
 
-- (id)interruptibleAnimatorForTransition:(id)a3
+- (id)interruptibleAnimatorForTransition:(id)transition
 {
   v5 = self->_UISheetAnimationController_opaque[OBJC_IVAR____TtC5Books40AudiobookPaletteStyleAnimationController_isPrepared];
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   if ((v5 & 1) == 0)
   {
-    sub_10025A040(a3);
+    sub_10025A040(transition);
   }
 
-  v9.receiver = v6;
+  v9.receiver = selfCopy;
   v9.super_class = type metadata accessor for AudiobookPaletteStyleAnimationController();
-  v7 = [(AudiobookPaletteStyleAnimationController *)&v9 interruptibleAnimatorForTransition:a3];
+  v7 = [(AudiobookPaletteStyleAnimationController *)&v9 interruptibleAnimatorForTransition:transition];
   swift_unknownObjectRelease();
 
   return v7;
 }
 
-- (void)animationEnded:(BOOL)a3
+- (void)animationEnded:(BOOL)ended
 {
-  v4 = self;
-  AudiobookPaletteStyleAnimationController.animationEnded(_:)(a3);
+  selfCopy = self;
+  AudiobookPaletteStyleAnimationController.animationEnded(_:)(ended);
 }
 
 @end

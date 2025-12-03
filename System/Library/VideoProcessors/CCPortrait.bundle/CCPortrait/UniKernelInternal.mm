@@ -1,30 +1,30 @@
 @interface UniKernelInternal
-- (UniKernelInternal)initWithName:(id)a3 library:(id)a4 constants:(id)a5;
-- (UniKernelInternal)initWithName:(id)a3 metalContext:(id)a4 coreImageLibrary:(id)a5 constants:(id)a6;
-- (id)_dictToConstants:(id)a3 functionConstants:(id)a4 name:(id)a5;
+- (UniKernelInternal)initWithName:(id)name library:(id)library constants:(id)constants;
+- (UniKernelInternal)initWithName:(id)name metalContext:(id)context coreImageLibrary:(id)library constants:(id)constants;
+- (id)_dictToConstants:(id)constants functionConstants:(id)functionConstants name:(id)name;
 @end
 
 @implementation UniKernelInternal
 
-- (id)_dictToConstants:(id)a3 functionConstants:(id)a4 name:(id)a5
+- (id)_dictToConstants:(id)constants functionConstants:(id)functionConstants name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v120 = a5;
-  if (v7)
+  constantsCopy = constants;
+  functionConstantsCopy = functionConstants;
+  nameCopy = name;
+  if (constantsCopy)
   {
     v9 = objc_alloc_init(MEMORY[0x29EDBB5A8]);
     v10 = MEMORY[0x29EDB8E00];
-    v119 = v7;
-    v13 = objc_msgSend_count(v7, v11, v12);
+    v119 = constantsCopy;
+    v13 = objc_msgSend_count(constantsCopy, v11, v12);
     v15 = objc_msgSend_dictionaryWithCapacity_(v10, v14, v13);
     v18 = objc_msgSend_set(MEMORY[0x29EDB8E20], v16, v17);
     v151 = 0u;
     v152 = 0u;
     v153 = 0u;
     v154 = 0u;
-    v117 = v8;
-    v19 = v8;
+    v117 = functionConstantsCopy;
+    v19 = functionConstantsCopy;
     v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v19, v20, &v151, v150, 16);
     if (v21)
     {
@@ -220,7 +220,7 @@
             v77 = uni_logger_compile();
             if (os_log_type_enabled(v77, OS_LOG_TYPE_ERROR))
             {
-              v100 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v78, @"%@ is not a valid function constant for %@", v57, v120);
+              v100 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v78, @"%@ is not a valid function constant for %@", v57, nameCopy);
               v101 = v100;
               v104 = objc_msgSend_UTF8String(v101, v102, v103);
               *buf = 136315138;
@@ -243,7 +243,7 @@
     v105 = v18;
     v107 = objc_msgSend_countByEnumeratingWithState_objects_count_(v105, v106, &v132, v131, 16);
     v109 = v105;
-    v8 = v117;
+    functionConstantsCopy = v117;
     if (v107)
     {
       v110 = v107;
@@ -263,7 +263,7 @@
             v109 = uni_logger_compile();
             if (os_log_type_enabled(v109, OS_LOG_TYPE_ERROR))
             {
-              sub_2956CE368(v120, v105);
+              sub_2956CE368(nameCopy, v105);
             }
 
             goto LABEL_65;
@@ -288,7 +288,7 @@ LABEL_65:
     v130[1] = v15;
     v113 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x29EDB8D80], v114, v130, 2);
 
-    v7 = v119;
+    constantsCopy = v119;
   }
 
   else
@@ -299,12 +299,12 @@ LABEL_65:
   return v113;
 }
 
-- (UniKernelInternal)initWithName:(id)a3 metalContext:(id)a4 coreImageLibrary:(id)a5 constants:(id)a6
+- (UniKernelInternal)initWithName:(id)name metalContext:(id)context coreImageLibrary:(id)library constants:(id)constants
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  contextCopy = context;
+  libraryCopy = library;
+  constantsCopy = constants;
   v53.receiver = self;
   v53.super_class = UniKernelInternal;
   v14 = [(UniKernelInternal *)&v53 init];
@@ -319,11 +319,11 @@ LABEL_65:
     goto LABEL_19;
   }
 
-  v50 = v12;
-  v19 = objc_msgSend_library(v11, v17, v18);
-  v21 = objc_msgSend_newFunctionWithName_(v19, v20, v10);
+  v50 = libraryCopy;
+  v19 = objc_msgSend_library(contextCopy, v17, v18);
+  v21 = objc_msgSend_newFunctionWithName_(v19, v20, nameCopy);
 
-  if (!v13)
+  if (!constantsCopy)
   {
     objc_msgSend_setConstants_(v14, v22, 0);
     goto LABEL_7;
@@ -339,9 +339,9 @@ LABEL_7:
   }
 
   v27 = objc_msgSend_functionConstantsDictionary(v21, v25, v26);
-  v29 = objc_msgSend__dictToConstants_functionConstants_name_(v14, v28, v13, v27, v10);
+  v29 = objc_msgSend__dictToConstants_functionConstants_name_(v14, v28, constantsCopy, v27, nameCopy);
 
-  objc_msgSend_setConstants_(v14, v30, v13);
+  objc_msgSend_setConstants_(v14, v30, constantsCopy);
   if (!v29)
   {
 LABEL_8:
@@ -360,12 +360,12 @@ LABEL_9:
 
   if (v50)
   {
-    v34 = objc_msgSend_kernelWithFunctionName_constants_(v50, v25, v10, v33);
+    v34 = objc_msgSend_kernelWithFunctionName_constants_(v50, v25, nameCopy, v33);
     objc_msgSend_setCk_(v14, v35, v34);
   }
 
   v51 = 0;
-  v36 = objc_msgSend_computePipelineStateFor_constants_additionnalPipelineOptions_reflection_(v11, v25, v10, v31, 3, &v51);
+  v36 = objc_msgSend_computePipelineStateFor_constants_additionnalPipelineOptions_reflection_(contextCopy, v25, nameCopy, v31, 3, &v51);
   objc_msgSend_setMk_(v14, v37, v36);
 
   v40 = objc_msgSend_mk(v14, v38, v39);
@@ -394,22 +394,22 @@ LABEL_9:
     v14 = 0;
   }
 
-  v12 = v50;
+  libraryCopy = v50;
 LABEL_19:
   os_activity_scope_leave(&state);
 
   return v14;
 }
 
-- (UniKernelInternal)initWithName:(id)a3 library:(id)a4 constants:(id)a5
+- (UniKernelInternal)initWithName:(id)name library:(id)library constants:(id)constants
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v13 = objc_msgSend_metalContext(v9, v11, v12);
-  v16 = objc_msgSend_coreImageLibrary(v9, v14, v15);
+  constantsCopy = constants;
+  libraryCopy = library;
+  nameCopy = name;
+  v13 = objc_msgSend_metalContext(libraryCopy, v11, v12);
+  v16 = objc_msgSend_coreImageLibrary(libraryCopy, v14, v15);
 
-  v18 = objc_msgSend_initWithName_metalContext_coreImageLibrary_constants_(self, v17, v10, v13, v16, v8);
+  v18 = objc_msgSend_initWithName_metalContext_coreImageLibrary_constants_(self, v17, nameCopy, v13, v16, constantsCopy);
   return v18;
 }
 

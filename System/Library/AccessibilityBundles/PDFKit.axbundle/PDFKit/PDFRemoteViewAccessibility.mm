@@ -1,26 +1,26 @@
 @interface PDFRemoteViewAccessibility
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation PDFRemoteViewAccessibility
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v39 = *MEMORY[0x29EDCA608];
-  v7 = a4;
+  eventCopy = event;
   v37 = 0;
   objc_opt_class();
   v8 = __UIAccessibilityCastAsClass();
-  v9 = [v8 superview];
+  superview = [v8 superview];
   [v8 frame];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v10 = [v9 subviews];
-  v11 = [v10 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  subviews = [superview subviews];
+  v11 = [subviews countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v11)
   {
     v12 = v11;
@@ -31,7 +31,7 @@ LABEL_3:
     {
       if (*v34 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(subviews);
       }
 
       v15 = *(*(&v33 + 1) + 8 * v14);
@@ -43,7 +43,7 @@ LABEL_3:
 
       if (v12 == ++v14)
       {
-        v12 = [v10 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v12 = [subviews countByEnumeratingWithState:&v33 objects:v38 count:16];
         if (v12)
         {
           goto LABEL_3;
@@ -59,7 +59,7 @@ LABEL_3:
     v21 = v20;
     v23 = v22;
 
-    if (!v9)
+    if (!superview)
     {
       goto LABEL_14;
     }
@@ -69,10 +69,10 @@ LABEL_3:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v9 convertPoint:v8 fromView:{x, y}];
+        [superview convertPoint:v8 fromView:{x, y}];
         v25 = v24;
         v27 = v26;
-        [v9 convertRect:v8 fromView:{v17, v19, v21, v23}];
+        [superview convertRect:v8 fromView:{v17, v19, v21, v23}];
         v41.x = v25;
         v41.y = v27;
         if (CGRectContainsPoint(v42, v41))
@@ -81,17 +81,17 @@ LABEL_3:
         }
       }
 
-      v28 = [v9 superview];
+      v9Superview = [superview superview];
 
-      v9 = v28;
-      if (!v28)
+      superview = v9Superview;
+      if (!v9Superview)
       {
         goto LABEL_14;
       }
     }
 
-    v31 = [(PDFRemoteViewAccessibility *)self accessibilityElements];
-    v29 = [v31 lastObject];
+    accessibilityElements = [(PDFRemoteViewAccessibility *)self accessibilityElements];
+    lastObject = [accessibilityElements lastObject];
   }
 
   else
@@ -101,10 +101,10 @@ LABEL_9:
 LABEL_14:
     v32.receiver = self;
     v32.super_class = PDFRemoteViewAccessibility;
-    v29 = [(PDFRemoteViewAccessibility *)&v32 _accessibilityHitTest:v7 withEvent:x, y];
+    lastObject = [(PDFRemoteViewAccessibility *)&v32 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
-  return v29;
+  return lastObject;
 }
 
 @end

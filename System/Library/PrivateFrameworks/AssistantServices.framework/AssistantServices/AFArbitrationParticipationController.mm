@@ -4,13 +4,13 @@
 - (void)_publishFeedbackArbitrationRecord;
 - (void)_publishFeedbackArbitrationRecordForNearMiss;
 - (void)_resetSettingsConnection;
-- (void)_updateUserFeedbackParticipationAllAdvertisements:(id)a3 session:(id)a4 ownRecord:(id)a5 won:(BOOL)a6 triggerType:(id)a7 lastActivationTime:(double)a8 requestStartDate:(id)a9 voiceTriggerDate:(id)a10 scoreBoosters:(id)a11 deviceClass:(unsigned __int8)a12;
-- (void)arbitrationDidUpdateWithContext:(id)a3 session:(id)a4 completion:(id)a5;
-- (void)arbitrationEndedAdvertising:(id)a3;
-- (void)arbitrationEndedTask:(id)a3;
-- (void)arbitrationSessionWillStart:(id)a3;
+- (void)_updateUserFeedbackParticipationAllAdvertisements:(id)advertisements session:(id)session ownRecord:(id)record won:(BOOL)won triggerType:(id)type lastActivationTime:(double)time requestStartDate:(id)date voiceTriggerDate:(id)self0 scoreBoosters:(id)self1 deviceClass:(unsigned __int8)self2;
+- (void)arbitrationDidUpdateWithContext:(id)context session:(id)session completion:(id)completion;
+- (void)arbitrationEndedAdvertising:(id)advertising;
+- (void)arbitrationEndedTask:(id)task;
+- (void)arbitrationSessionWillStart:(id)start;
 - (void)dealloc;
-- (void)requestWillPresentUsefulUserResult:(id)a3;
+- (void)requestWillPresentUsefulUserResult:(id)result;
 @end
 
 @implementation AFArbitrationParticipationController
@@ -24,25 +24,25 @@
   }
 }
 
-- (void)_updateUserFeedbackParticipationAllAdvertisements:(id)a3 session:(id)a4 ownRecord:(id)a5 won:(BOOL)a6 triggerType:(id)a7 lastActivationTime:(double)a8 requestStartDate:(id)a9 voiceTriggerDate:(id)a10 scoreBoosters:(id)a11 deviceClass:(unsigned __int8)a12
+- (void)_updateUserFeedbackParticipationAllAdvertisements:(id)advertisements session:(id)session ownRecord:(id)record won:(BOOL)won triggerType:(id)type lastActivationTime:(double)time requestStartDate:(id)date voiceTriggerDate:(id)self0 scoreBoosters:(id)self1 deviceClass:(unsigned __int8)self2
 {
-  v92 = a6;
+  wonCopy = won;
   v119[1] = *MEMORY[0x1E69E9840];
-  v97 = a3;
-  v18 = a4;
-  v19 = a5;
-  v96 = a7;
-  v98 = a9;
-  v99 = a10;
-  v20 = a11;
-  v95 = v18;
-  v21 = [v18 sessionId];
-  v100 = [v21 UUIDString];
+  advertisementsCopy = advertisements;
+  sessionCopy = session;
+  recordCopy = record;
+  typeCopy = type;
+  dateCopy = date;
+  triggerDateCopy = triggerDate;
+  boostersCopy = boosters;
+  v95 = sessionCopy;
+  sessionId = [sessionCopy sessionId];
+  uUIDString = [sessionId UUIDString];
 
-  v22 = v100;
-  if ([v100 length])
+  v22 = uUIDString;
+  if ([uUIDString length])
   {
-    v23 = [(NSMutableDictionary *)self->_participationsForUserFeedback objectForKeyedSubscript:v100];
+    v23 = [(NSMutableDictionary *)self->_participationsForUserFeedback objectForKeyedSubscript:uUIDString];
     if (!v23)
     {
       v52 = AFSiriLogContextConnection;
@@ -51,7 +51,7 @@
         *buf = 136315394;
         *&buf[4] = "[AFArbitrationParticipationController _updateUserFeedbackParticipationAllAdvertisements:session:ownRecord:won:triggerType:lastActivationTime:requestStartDate:voiceTriggerDate:scoreBoosters:deviceClass:]";
         *&buf[12] = 2112;
-        *&buf[14] = v100;
+        *&buf[14] = uUIDString;
         _os_log_debug_impl(&dword_1912FE000, v52, OS_LOG_TYPE_DEBUG, "%s #myriad #feedback unable to find SCDAFParticipation with myriad sessionId: %@", buf, 0x16u);
         v52 = AFSiriLogContextConnection;
       }
@@ -69,21 +69,21 @@
       goto LABEL_64;
     }
 
-    [v23 setRawGoodnessScore:{objc_msgSend(v19, "rawAudioGoodnessScore")}];
-    [v23 setRequestStartDate:v98];
-    if (v99)
+    [v23 setRawGoodnessScore:{objc_msgSend(recordCopy, "rawAudioGoodnessScore")}];
+    [v23 setRequestStartDate:dateCopy];
+    if (triggerDateCopy)
     {
       [v23 setVoiceTriggerDate:?];
     }
 
-    [v23 setCdaId:v100];
+    [v23 setCdaId:uUIDString];
     if (objc_opt_respondsToSelector())
     {
-      [v23 performSelector:sel_setTriggerType_ withObject:v96];
+      [v23 performSelector:sel_setTriggerType_ withObject:typeCopy];
     }
 
-    v24 = [MEMORY[0x1E695DF00] date];
-    [v24 timeIntervalSinceDate:v99];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:triggerDateCopy];
     v26 = v25;
 
     if (v26 > 0.0 && (objc_opt_respondsToSelector() & 1) != 0)
@@ -93,13 +93,13 @@
     }
 
     v28 = 0.0;
-    if (a8 > 0.0)
+    if (time > 0.0)
     {
-      v29 = [MEMORY[0x1E696AE30] processInfo];
-      [v29 systemUptime];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      [processInfo systemUptime];
       v31 = v30;
 
-      v28 = (v31 - a8) * 1000.0;
+      v28 = (v31 - time) * 1000.0;
     }
 
     if (objc_opt_respondsToSelector())
@@ -108,7 +108,7 @@
       [v23 performSelector:sel_setTimeSinceLastWinInMilliseconds_ withObject:v32];
     }
 
-    if (v92)
+    if (wonCopy)
     {
       v33 = 3;
     }
@@ -120,30 +120,30 @@
 
     [v23 setResult:v33];
     v34 = objc_alloc_init(MEMORY[0x1E69CE3B0]);
-    v35 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(v19, "userConfidence")}];
+    v35 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(recordCopy, "userConfidence")}];
     [v34 setConfidence:{objc_msgSend(v35, "integerValue")}];
 
-    v36 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(v19, "goodness")}];
+    v36 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(recordCopy, "goodness")}];
     [v34 setGoodnessScore:{objc_msgSend(v36, "integerValue")}];
 
-    v37 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(v19, "pHash")}];
+    v37 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(recordCopy, "pHash")}];
     [v34 setAdvertHash:v37];
 
-    v38 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(v19, "deviceClass")}];
+    v38 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(recordCopy, "deviceClass")}];
     [v34 setDeviceClass:{objc_msgSend(v38, "integerValue")}];
 
-    v39 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(v19, "tieBreaker")}];
+    v39 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(recordCopy, "tieBreaker")}];
     [v34 setTieBreaker:{objc_msgSend(v39, "integerValue")}];
 
-    v40 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(v19, "productType")}];
+    v40 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(recordCopy, "productType")}];
     [v34 setProductType:{objc_msgSend(v40, "integerValue")}];
 
-    v41 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(v19, "deviceGroup")}];
+    v41 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(recordCopy, "deviceGroup")}];
     [v34 setDeviceGroup:{objc_msgSend(v41, "integerValue")}];
 
     if (objc_opt_respondsToSelector())
     {
-      v42 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(v19, "deviceGroup")}];
+      v42 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(recordCopy, "deviceGroup")}];
       [v34 performSelector:sel_setDeviceGroupWithNumber_ withObject:v42];
     }
 
@@ -158,30 +158,30 @@
       [v43 setEnclosureColor:v45];
     }
 
-    v94 = [MEMORY[0x1E695DF58] currentLocale];
-    if (v94)
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    if (currentLocale)
     {
-      v46 = [v94 countryCode];
-      if (v46)
+      countryCode = [currentLocale countryCode];
+      if (countryCode)
       {
         v47 = MEMORY[0x1E696AEC0];
-        v48 = [v94 languageCode];
-        v49 = [v94 countryCode];
-        v50 = [v47 stringWithFormat:@"%@_%@", v48, v49];
+        languageCode = [currentLocale languageCode];
+        countryCode2 = [currentLocale countryCode];
+        languageCode2 = [v47 stringWithFormat:@"%@_%@", languageCode, countryCode2];
       }
 
       else
       {
-        v50 = [v94 languageCode];
+        languageCode2 = [currentLocale languageCode];
       }
 
-      if ([v50 length])
+      if ([languageCode2 length])
       {
-        [v43 setLocale:v50];
+        [v43 setLocale:languageCode2];
       }
     }
 
-    v54 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:a12];
+    v54 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:class];
     v119[0] = v54;
     v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v119 count:1];
     [v43 setDeviceClass:v55];
@@ -203,7 +203,7 @@
     *&buf[16] = 0x3032000000;
     v115 = __Block_byref_object_copy__38907;
     v116 = __Block_byref_object_dispose__38908;
-    if (v92)
+    if (wonCopy)
     {
       v58 = v34;
     }
@@ -220,16 +220,16 @@
     v107[3] = __Block_byref_object_copy__38907;
     v107[4] = __Block_byref_object_dispose__38908;
     v108 = 0;
-    v93 = v97;
-    v59 = [MEMORY[0x1E695DF70] array];
+    v93 = advertisementsCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v101[0] = MEMORY[0x1E69E9820];
     v101[1] = 3221225472;
     v101[2] = __203__AFArbitrationParticipationController__updateUserFeedbackParticipationAllAdvertisements_session_ownRecord_won_triggerType_lastActivationTime_requestStartDate_voiceTriggerDate_scoreBoosters_deviceClass___block_invoke;
     v101[3] = &unk_1E7347A40;
-    v102 = v19;
+    v102 = recordCopy;
     v89 = v34;
     v103 = v89;
-    v90 = v59;
+    v90 = array;
     v104 = v90;
     v105 = buf;
     v106 = v107;
@@ -245,28 +245,28 @@
       *v110 = 136315394;
       v111 = "[AFArbitrationParticipationController _updateUserFeedbackParticipationAllAdvertisements:session:ownRecord:won:triggerType:lastActivationTime:requestStartDate:voiceTriggerDate:scoreBoosters:deviceClass:]";
       v112 = 2112;
-      v113 = v20;
+      v113 = boostersCopy;
       _os_log_debug_impl(&dword_1912FE000, v60, OS_LOG_TYPE_DEBUG, "%s #myriad #feedback scoreBoosters from myriadInstrumentation: %@", v110, 0x16u);
-      if (v20)
+      if (boostersCopy)
       {
         goto LABEL_43;
       }
     }
 
-    else if (v20)
+    else if (boostersCopy)
     {
 LABEL_43:
-      if ([v20 isTrump])
+      if ([boostersCopy isTrump])
       {
-        v61 = [v20 trumpReason];
-        if (v61 - 1 >= 8)
+        trumpReason = [boostersCopy trumpReason];
+        if (trumpReason - 1 >= 8)
         {
           v62 = 0;
         }
 
         else
         {
-          v62 = v61;
+          v62 = trumpReason;
         }
       }
 
@@ -280,92 +280,92 @@ LABEL_43:
       v64 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v109 count:1];
       [v23 setTrumpReasons:v64];
 
-      v65 = [MEMORY[0x1E695DF70] array];
-      if ([v20 deviceBoost])
+      array2 = [MEMORY[0x1E695DF70] array];
+      if ([boostersCopy deviceBoost])
       {
         v66 = objc_alloc_init(MEMORY[0x1E69CE3B8]);
         [v66 setKind:0];
         [v66 setType:0];
-        v67 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v20, "deviceBoost")}];
+        v67 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(boostersCopy, "deviceBoost")}];
         [v67 floatValue];
         [v66 setBoostValue:v68];
 
-        [v65 addObject:v66];
+        [array2 addObject:v66];
       }
 
-      if ([v20 recentAlarmBoost])
+      if ([boostersCopy recentAlarmBoost])
       {
         v69 = objc_alloc_init(MEMORY[0x1E69CE3B8]);
         [v69 setKind:6];
         [v69 setType:0];
-        v70 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v20, "recentAlarmBoost")}];
+        v70 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(boostersCopy, "recentAlarmBoost")}];
         [v70 floatValue];
         [v69 setBoostValue:v71];
 
-        [v65 addObject:v69];
+        [array2 addObject:v69];
       }
 
-      if ([v20 recentMotionBoost])
+      if ([boostersCopy recentMotionBoost])
       {
         v72 = objc_alloc_init(MEMORY[0x1E69CE3B8]);
         [v72 setKind:4];
         [v72 setType:0];
-        v73 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v20, "recentMotionBoost")}];
+        v73 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(boostersCopy, "recentMotionBoost")}];
         [v73 floatValue];
         [v72 setBoostValue:v74];
 
-        [v65 addObject:v72];
+        [array2 addObject:v72];
       }
 
-      if ([v20 recentUnlockBoost])
+      if ([boostersCopy recentUnlockBoost])
       {
         v75 = objc_alloc_init(MEMORY[0x1E69CE3B8]);
         [v75 setKind:1];
         [v75 setType:0];
-        v76 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v20, "recentUnlockBoost")}];
+        v76 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(boostersCopy, "recentUnlockBoost")}];
         [v76 floatValue];
         [v75 setBoostValue:v77];
 
-        [v65 addObject:v75];
+        [array2 addObject:v75];
       }
 
-      if ([v20 recentPlaybackBoost])
+      if ([boostersCopy recentPlaybackBoost])
       {
         v78 = objc_alloc_init(MEMORY[0x1E69CE3B8]);
         [v78 setKind:5];
         [v78 setType:0];
-        v79 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v20, "recentPlaybackBoost")}];
+        v79 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(boostersCopy, "recentPlaybackBoost")}];
         [v79 floatValue];
         [v78 setBoostValue:v80];
 
-        [v65 addObject:v78];
+        [array2 addObject:v78];
       }
 
-      if ([v20 recentSiriRequestBoost])
+      if ([boostersCopy recentSiriRequestBoost])
       {
         v81 = objc_alloc_init(MEMORY[0x1E69CE3B8]);
         [v81 setKind:3];
         [v81 setType:0];
-        v82 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v20, "recentSiriRequestBoost")}];
+        v82 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(boostersCopy, "recentSiriRequestBoost")}];
         [v82 floatValue];
         [v81 setBoostValue:v83];
 
-        [v65 addObject:v81];
+        [array2 addObject:v81];
       }
 
-      if ([v20 recentRaiseToWakeBoost])
+      if ([boostersCopy recentRaiseToWakeBoost])
       {
         v84 = objc_alloc_init(MEMORY[0x1E69CE3B8]);
         [v84 setKind:2];
         [v84 setType:0];
-        v85 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v20, "recentRaiseToWakeBoost")}];
+        v85 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(boostersCopy, "recentRaiseToWakeBoost")}];
         [v85 floatValue];
         [v84 setBoostValue:v86];
 
-        [v65 addObject:v84];
+        [array2 addObject:v84];
       }
 
-      v87 = [MEMORY[0x1E695DEC8] arrayWithArray:v65];
+      v87 = [MEMORY[0x1E695DEC8] arrayWithArray:array2];
       [v23 setBoosts:v87];
     }
 
@@ -375,7 +375,7 @@ LABEL_43:
     _Block_object_dispose(buf, 8);
 
 LABEL_64:
-    v22 = v100;
+    v22 = uUIDString;
     goto LABEL_65;
   }
 
@@ -440,7 +440,7 @@ void __203__AFArbitrationParticipationController__updateUserFeedbackParticipatio
 - (void)_publishFeedbackArbitrationRecord
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableDictionary *)self->_participationsForUserFeedback allValues];
+  allValues = [(NSMutableDictionary *)self->_participationsForUserFeedback allValues];
   if (!self->_participationsPublished)
   {
     v4 = objc_opt_new();
@@ -455,7 +455,7 @@ void __203__AFArbitrationParticipationController__updateUserFeedbackParticipatio
     *buf = 136315394;
     v11 = "[AFArbitrationParticipationController _publishFeedbackArbitrationRecord]";
     v12 = 2048;
-    v13 = [v3 count];
+    v13 = [allValues count];
     _os_log_debug_impl(&dword_1912FE000, v8, OS_LOG_TYPE_DEBUG, "%s #myriad #feedback action: publishing %lu pariticipations", buf, 0x16u);
   }
 
@@ -464,7 +464,7 @@ void __203__AFArbitrationParticipationController__updateUserFeedbackParticipatio
   v9[2] = __73__AFArbitrationParticipationController__publishFeedbackArbitrationRecord__block_invoke;
   v9[3] = &unk_1E7347A18;
   v9[4] = self;
-  [v3 enumerateObjectsUsingBlock:v9];
+  [allValues enumerateObjectsUsingBlock:v9];
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -550,27 +550,27 @@ LABEL_13:
     [v4 setEnclosureColor:v6];
   }
 
-  v7 = [MEMORY[0x1E695DF58] currentLocale];
-  v8 = v7;
-  if (v7)
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v8 = currentLocale;
+  if (currentLocale)
   {
-    v9 = [v7 countryCode];
-    if (v9)
+    countryCode = [currentLocale countryCode];
+    if (countryCode)
     {
       v10 = MEMORY[0x1E696AEC0];
-      v11 = [v8 languageCode];
-      v12 = [v8 countryCode];
-      v13 = [v10 stringWithFormat:@"%@_%@", v11, v12];
+      languageCode = [v8 languageCode];
+      countryCode2 = [v8 countryCode];
+      languageCode2 = [v10 stringWithFormat:@"%@_%@", languageCode, countryCode2];
     }
 
     else
     {
-      v13 = [v8 languageCode];
+      languageCode2 = [v8 languageCode];
     }
 
-    if ([v13 length])
+    if ([languageCode2 length])
     {
-      [v4 setLocale:v13];
+      [v4 setLocale:languageCode2];
     }
   }
 
@@ -599,13 +599,13 @@ LABEL_13:
     _os_log_debug_impl(&dword_1912FE000, v19, OS_LOG_TYPE_DEBUG, "%s #myriad #feedback", buf, 0xCu);
   }
 
-  v20 = [(AFArbitrationParticipationController *)self settingsConnection];
-  [v20 publishFeedbackArbitrationParticipation:v3];
+  settingsConnection = [(AFArbitrationParticipationController *)self settingsConnection];
+  [settingsConnection publishFeedbackArbitrationParticipation:v3];
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestWillPresentUsefulUserResult:(id)a3
+- (void)requestWillPresentUsefulUserResult:(id)result
 {
   if (+[AFFeatureFlags isCrossDeviceArbitrationFeedbackEnabled])
   {
@@ -635,7 +635,7 @@ uint64_t __75__AFArbitrationParticipationController_requestWillPresentUsefulUser
   return result;
 }
 
-- (void)arbitrationEndedTask:(id)a3
+- (void)arbitrationEndedTask:(id)task
 {
   if (+[AFFeatureFlags isCrossDeviceArbitrationFeedbackEnabled])
   {
@@ -665,7 +665,7 @@ uint64_t __61__AFArbitrationParticipationController_arbitrationEndedTask___block
   return result;
 }
 
-- (void)arbitrationEndedAdvertising:(id)a3
+- (void)arbitrationEndedAdvertising:(id)advertising
 {
   if (+[AFFeatureFlags isCrossDeviceArbitrationFeedbackEnabled])
   {
@@ -695,11 +695,11 @@ uint64_t __68__AFArbitrationParticipationController_arbitrationEndedAdvertising_
   return result;
 }
 
-- (void)arbitrationDidUpdateWithContext:(id)a3 session:(id)a4 completion:(id)a5
+- (void)arbitrationDidUpdateWithContext:(id)context session:(id)session completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  sessionCopy = session;
+  completionCopy = completion;
   if (+[AFFeatureFlags isCrossDeviceArbitrationFeedbackEnabled])
   {
     queue = self->_queue;
@@ -708,9 +708,9 @@ uint64_t __68__AFArbitrationParticipationController_arbitrationEndedAdvertising_
     v12[2] = __91__AFArbitrationParticipationController_arbitrationDidUpdateWithContext_session_completion___block_invoke;
     v12[3] = &unk_1E73479F0;
     v12[4] = self;
-    v13 = v8;
-    v14 = v9;
-    v15 = v10;
+    v13 = contextCopy;
+    v14 = sessionCopy;
+    v15 = completionCopy;
     dispatch_async(queue, v12);
   }
 }
@@ -745,9 +745,9 @@ uint64_t __91__AFArbitrationParticipationController_arbitrationDidUpdateWithCont
   return result;
 }
 
-- (void)arbitrationSessionWillStart:(id)a3
+- (void)arbitrationSessionWillStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   if (+[AFFeatureFlags isCrossDeviceArbitrationFeedbackEnabled])
   {
     queue = self->_queue;
@@ -756,7 +756,7 @@ uint64_t __91__AFArbitrationParticipationController_arbitrationDidUpdateWithCont
     v6[2] = __68__AFArbitrationParticipationController_arbitrationSessionWillStart___block_invoke;
     v6[3] = &unk_1E7349860;
     v6[4] = self;
-    v7 = v4;
+    v7 = startCopy;
     dispatch_async(queue, v6);
   }
 }

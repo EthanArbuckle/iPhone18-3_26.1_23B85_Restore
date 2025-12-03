@@ -1,20 +1,20 @@
 @interface RTBackgroundInertialOdometryManager
 + (id)vendedClasses;
-- (RTBackgroundInertialOdometryManager)initWithBackgroundInertialOdometryStore:(id)a3;
-- (void)_addBackgroundInertialOdometrySamples:(id)a3 handler:(id)a4;
-- (void)_fetchBackgroundInertialOdometrySamplesWithOptions:(id)a3 handler:(id)a4;
-- (void)addBackgroundInertialOdometrySamples:(id)a3 handler:(id)a4;
-- (void)fetchBackgroundInertialOdometrySamplesWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchEnumerableObjectsWithOptions:(id)a3 offset:(unint64_t)a4 handler:(id)a5;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
+- (RTBackgroundInertialOdometryManager)initWithBackgroundInertialOdometryStore:(id)store;
+- (void)_addBackgroundInertialOdometrySamples:(id)samples handler:(id)handler;
+- (void)_fetchBackgroundInertialOdometrySamplesWithOptions:(id)options handler:(id)handler;
+- (void)addBackgroundInertialOdometrySamples:(id)samples handler:(id)handler;
+- (void)fetchBackgroundInertialOdometrySamplesWithOptions:(id)options handler:(id)handler;
+- (void)fetchEnumerableObjectsWithOptions:(id)options offset:(unint64_t)offset handler:(id)handler;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
 @end
 
 @implementation RTBackgroundInertialOdometryManager
 
-- (RTBackgroundInertialOdometryManager)initWithBackgroundInertialOdometryStore:(id)a3
+- (RTBackgroundInertialOdometryManager)initWithBackgroundInertialOdometryStore:(id)store
 {
-  v5 = a3;
-  if (v5)
+  storeCopy = store;
+  if (storeCopy)
   {
     v11.receiver = self;
     v11.super_class = RTBackgroundInertialOdometryManager;
@@ -22,11 +22,11 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_inertialOdometryStore, a3);
+      objc_storeStrong(&v6->_inertialOdometryStore, store);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -38,29 +38,29 @@
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inertialOdometryStore", buf, 2u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)_fetchBackgroundInertialOdometrySamplesWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchBackgroundInertialOdometrySamplesWithOptions:(id)options handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RTBackgroundInertialOdometryManager *)self inertialOdometryStore];
-  [v8 fetchStoredBackgroundInertialOdometrySamplesWithOptions:v7 handler:v6];
+  handlerCopy = handler;
+  optionsCopy = options;
+  inertialOdometryStore = [(RTBackgroundInertialOdometryManager *)self inertialOdometryStore];
+  [inertialOdometryStore fetchStoredBackgroundInertialOdometrySamplesWithOptions:optionsCopy handler:handlerCopy];
 }
 
-- (void)fetchBackgroundInertialOdometrySamplesWithOptions:(id)a3 handler:(id)a4
+- (void)fetchBackgroundInertialOdometrySamplesWithOptions:(id)options handler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  optionsCopy = options;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (optionsCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -93,38 +93,38 @@ LABEL_7:
   }
 
 LABEL_10:
-  v11 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __97__RTBackgroundInertialOdometryManager_fetchBackgroundInertialOdometrySamplesWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v15 = v6;
+  v15 = optionsCopy;
   v16 = v8;
   v12 = v8;
-  v13 = v6;
-  dispatch_async(v11, block);
+  v13 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_addBackgroundInertialOdometrySamples:(id)a3 handler:(id)a4
+- (void)_addBackgroundInertialOdometrySamples:(id)samples handler:(id)handler
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count])
+  samplesCopy = samples;
+  handlerCopy = handler;
+  if ([samplesCopy count])
   {
-    v9 = [(RTBackgroundInertialOdometryManager *)self inertialOdometryStore];
+    inertialOdometryStore = [(RTBackgroundInertialOdometryManager *)self inertialOdometryStore];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __85__RTBackgroundInertialOdometryManager__addBackgroundInertialOdometrySamples_handler___block_invoke;
     v14[3] = &unk_2788C56C0;
     v14[4] = self;
     v16 = a2;
-    v15 = v8;
-    [v9 storeWritableObjects:v7 handler:v14];
+    v15 = handlerCopy;
+    [inertialOdometryStore storeWritableObjects:samplesCopy handler:v14];
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
     v10 = MEMORY[0x277CCA9B8];
     v11 = *MEMORY[0x277D01448];
@@ -132,7 +132,7 @@ LABEL_10:
     v18[0] = @"requires valid inertial odometry samples.";
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v13 = [v10 errorWithDomain:v11 code:7 userInfo:v12];
-    (*(v8 + 2))(v8, v13);
+    (*(handlerCopy + 2))(handlerCopy, v13);
   }
 }
 
@@ -165,15 +165,15 @@ void __85__RTBackgroundInertialOdometryManager__addBackgroundInertialOdometrySam
   }
 }
 
-- (void)addBackgroundInertialOdometrySamples:(id)a3 handler:(id)a4
+- (void)addBackgroundInertialOdometrySamples:(id)samples handler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  samplesCopy = samples;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (samplesCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -206,18 +206,18 @@ LABEL_7:
   }
 
 LABEL_10:
-  v12 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __84__RTBackgroundInertialOdometryManager_addBackgroundInertialOdometrySamples_handler___block_invoke;
   v15[3] = &unk_2788C4C20;
-  v16 = v7;
-  v17 = self;
+  v16 = samplesCopy;
+  selfCopy = self;
   v18 = v9;
   v19 = a2;
   v13 = v9;
-  v14 = v7;
-  dispatch_async(v12, v15);
+  v14 = samplesCopy;
+  dispatch_async(queue, v15);
 }
 
 uint64_t __84__RTBackgroundInertialOdometryManager_addBackgroundInertialOdometrySamples_handler___block_invoke(uint64_t a1)
@@ -261,23 +261,23 @@ void __84__RTBackgroundInertialOdometryManager_addBackgroundInertialOdometrySamp
   }
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  completionCopy = completion;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__RTBackgroundInertialOdometryManager_performPurgeOfType_referenceDate_completion___block_invoke;
   block[3] = &unk_2788C47A8;
-  v17 = v10;
-  v18 = a3;
-  v15 = v9;
-  v16 = self;
+  v17 = completionCopy;
+  typeCopy = type;
+  v15 = dateCopy;
+  selfCopy = self;
   v19 = a2;
-  v12 = v10;
-  v13 = v9;
-  dispatch_async(v11, block);
+  v12 = completionCopy;
+  v13 = dateCopy;
+  dispatch_async(queue, block);
 }
 
 void __83__RTBackgroundInertialOdometryManager_performPurgeOfType_referenceDate_completion___block_invoke(uint64_t a1)
@@ -339,22 +339,22 @@ void __83__RTBackgroundInertialOdometryManager_performPurgeOfType_referenceDate_
   return v2;
 }
 
-- (void)fetchEnumerableObjectsWithOptions:(id)a3 offset:(unint64_t)a4 handler:(id)a5
+- (void)fetchEnumerableObjectsWithOptions:(id)options offset:(unint64_t)offset handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v10 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __88__RTBackgroundInertialOdometryManager_fetchEnumerableObjectsWithOptions_offset_handler___block_invoke;
     v12[3] = &unk_2788C6940;
-    v13 = v8;
-    v14 = self;
-    v15 = v9;
-    v16 = a4;
-    dispatch_async(v10, v12);
+    v13 = optionsCopy;
+    selfCopy = self;
+    v15 = handlerCopy;
+    offsetCopy = offset;
+    dispatch_async(queue, v12);
 
     v11 = v13;
   }

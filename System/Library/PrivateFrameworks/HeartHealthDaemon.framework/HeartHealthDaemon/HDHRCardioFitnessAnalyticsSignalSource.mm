@@ -1,35 +1,35 @@
 @interface HDHRCardioFitnessAnalyticsSignalSource
-- (HDHRCardioFitnessAnalyticsSignalSource)initWithProfile:(id)a3;
-- (id)_birthDateComponentsWithError:(id *)a3;
-- (id)_classificationStringForCardioFitnessValue:(double)a3 age:(int64_t)a4 biologicalSex:(int64_t)a5;
-- (id)_latestCardioFitnessValueWithError:(id *)a3;
-- (id)biologicalSexStringWithError:(id *)a3;
-- (id)latestClassificationWithIsOnboarded:(BOOL)a3 error:(id *)a4;
-- (int64_t)_biologicalSexWithError:(id *)a3;
-- (int64_t)bucketedAgeWithError:(id *)a3;
+- (HDHRCardioFitnessAnalyticsSignalSource)initWithProfile:(id)profile;
+- (id)_birthDateComponentsWithError:(id *)error;
+- (id)_classificationStringForCardioFitnessValue:(double)value age:(int64_t)age biologicalSex:(int64_t)sex;
+- (id)_latestCardioFitnessValueWithError:(id *)error;
+- (id)biologicalSexStringWithError:(id *)error;
+- (id)latestClassificationWithIsOnboarded:(BOOL)onboarded error:(id *)error;
+- (int64_t)_biologicalSexWithError:(id *)error;
+- (int64_t)bucketedAgeWithError:(id *)error;
 @end
 
 @implementation HDHRCardioFitnessAnalyticsSignalSource
 
-- (HDHRCardioFitnessAnalyticsSignalSource)initWithProfile:(id)a3
+- (HDHRCardioFitnessAnalyticsSignalSource)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = HDHRCardioFitnessAnalyticsSignalSource;
   v5 = [(HDHRCardioFitnessAnalyticsSignalSource *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
 }
 
-- (int64_t)bucketedAgeWithError:(id *)a3
+- (int64_t)bucketedAgeWithError:(id *)error
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [(HDHRCardioFitnessAnalyticsSignalSource *)self _birthDateComponentsWithError:a3];
+  v4 = [(HDHRCardioFitnessAnalyticsSignalSource *)self _birthDateComponentsWithError:error];
   if (v4)
   {
     v5 = [(HKHRCardioFitnessAnalyticsSignalSource *)self bucketedAgeForDateOfBirthComponents:v4];
@@ -42,7 +42,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_229486000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@]: No date of birth components, returning invalid value", &v9, 0xCu);
     }
 
@@ -53,17 +53,17 @@
   return v5;
 }
 
-- (id)biologicalSexStringWithError:(id *)a3
+- (id)biologicalSexStringWithError:(id *)error
 {
-  v4 = [(HDHRCardioFitnessAnalyticsSignalSource *)self _biologicalSexWithError:a3];
+  v4 = [(HDHRCardioFitnessAnalyticsSignalSource *)self _biologicalSexWithError:error];
 
   return [(HKHRCardioFitnessAnalyticsSignalSource *)self biologicalSexStringForBiologicalSex:v4];
 }
 
-- (id)latestClassificationWithIsOnboarded:(BOOL)a3 error:(id *)a4
+- (id)latestClassificationWithIsOnboarded:(BOOL)onboarded error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (onboarded)
   {
     v27 = 0;
     v6 = [(HDHRCardioFitnessAnalyticsSignalSource *)self _birthDateComponentsWithError:&v27];
@@ -78,11 +78,11 @@
         [HDHRCardioFitnessAnalyticsSignalSource latestClassificationWithIsOnboarded:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v10 = v8;
         v11 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -94,17 +94,17 @@
 
     else if (v6)
     {
-      v14 = [(HDHRCardioFitnessAnalyticsSignalSource *)self _biologicalSexWithError:a4];
+      v14 = [(HDHRCardioFitnessAnalyticsSignalSource *)self _biologicalSexWithError:error];
       v26 = 0;
       v15 = [(HDHRCardioFitnessAnalyticsSignalSource *)self _latestCardioFitnessValueWithError:&v26];
       v8 = v26;
       if (v8)
       {
-        if (a4)
+        if (error)
         {
           v16 = v8;
           v11 = 0;
-          *a4 = v8;
+          *error = v8;
         }
 
         else
@@ -116,12 +116,12 @@
 
       else if (v15)
       {
-        v17 = [v15 startDate];
-        v18 = [v6 hk_ageWithCurrentDate:v17];
+        startDate = [v15 startDate];
+        v18 = [v6 hk_ageWithCurrentDate:startDate];
 
-        v19 = [v15 quantity];
+        quantity = [v15 quantity];
         v20 = [MEMORY[0x277CCDAB0] unitFromString:@"ml/kg*min"];
-        [v19 doubleValueForUnit:v20];
+        [quantity doubleValueForUnit:v20];
         v22 = v21;
 
         v11 = [(HDHRCardioFitnessAnalyticsSignalSource *)self _classificationStringForCardioFitnessValue:v18 age:v14 biologicalSex:v22];
@@ -169,7 +169,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v29 = self;
+      selfCopy = self;
       _os_log_impl(&dword_229486000, v6, OS_LOG_TYPE_INFO, "[%{public}@] User is not onboarded, will not report classifciation", buf, 0xCu);
     }
 
@@ -182,7 +182,7 @@ LABEL_29:
   return v11;
 }
 
-- (id)_latestCardioFitnessValueWithError:(id *)a3
+- (id)_latestCardioFitnessValueWithError:(id *)error
 {
   v5 = MEMORY[0x277D10848];
   v6 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCC98]];
@@ -200,11 +200,11 @@ LABEL_29:
       [HDHRCardioFitnessAnalyticsSignalSource _latestCardioFitnessValueWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v11 = v9;
       v12 = 0;
-      *a3 = v9;
+      *error = v9;
     }
 
     else
@@ -222,21 +222,21 @@ LABEL_29:
   return v12;
 }
 
-- (id)_classificationStringForCardioFitnessValue:(double)a3 age:(int64_t)a4 biologicalSex:(int64_t)a5
+- (id)_classificationStringForCardioFitnessValue:(double)value age:(int64_t)age biologicalSex:(int64_t)sex
 {
-  v5 = [MEMORY[0x277CCD0A8] cardioFitnessLevelForVO2Max:a5 biologicalSex:a4 age:a3];
+  v5 = [MEMORY[0x277CCD0A8] cardioFitnessLevelForVO2Max:sex biologicalSex:age age:value];
   v6 = MEMORY[0x277CCD0A8];
 
   return [v6 analyticsStringForLevel:v5];
 }
 
-- (id)_birthDateComponentsWithError:(id *)a3
+- (id)_birthDateComponentsWithError:(id *)error
 {
   v5 = [MEMORY[0x277CCD0D0] characteristicTypeForIdentifier:*MEMORY[0x277CCBB18]];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [WeakRetained userCharacteristicsManager];
+  userCharacteristicsManager = [WeakRetained userCharacteristicsManager];
   v14 = 0;
-  v8 = [v7 userCharacteristicForType:v5 error:&v14];
+  v8 = [userCharacteristicsManager userCharacteristicForType:v5 error:&v14];
   v9 = v14;
 
   if (v9)
@@ -248,11 +248,11 @@ LABEL_29:
       [HDHRCardioFitnessAnalyticsSignalSource _birthDateComponentsWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v11 = v9;
       v12 = 0;
-      *a3 = v9;
+      *error = v9;
     }
 
     else
@@ -270,21 +270,21 @@ LABEL_29:
   return v12;
 }
 
-- (int64_t)_biologicalSexWithError:(id *)a3
+- (int64_t)_biologicalSexWithError:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CCD0D0] characteristicTypeForIdentifier:*MEMORY[0x277CCBB08]];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [WeakRetained userCharacteristicsManager];
+  userCharacteristicsManager = [WeakRetained userCharacteristicsManager];
   v16 = 0;
-  v8 = [v7 userCharacteristicForType:v5 error:&v16];
+  v8 = [userCharacteristicsManager userCharacteristicForType:v5 error:&v16];
   v9 = v16;
 
   if (!v9)
   {
     if (v8)
     {
-      v12 = [v8 integerValue];
+      integerValue = [v8 integerValue];
       goto LABEL_13;
     }
 
@@ -293,12 +293,12 @@ LABEL_29:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_229486000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@]: No biological sex number, returning not set", buf, 0xCu);
     }
 
 LABEL_12:
-    v12 = 0;
+    integerValue = 0;
     goto LABEL_13;
   }
 
@@ -309,19 +309,19 @@ LABEL_12:
     [HDHRCardioFitnessAnalyticsSignalSource _biologicalSexWithError:];
   }
 
-  if (!a3)
+  if (!error)
   {
     _HKLogDroppedError();
     goto LABEL_12;
   }
 
   v11 = v9;
-  v12 = 0;
-  *a3 = v9;
+  integerValue = 0;
+  *error = v9;
 LABEL_13:
 
   v14 = *MEMORY[0x277D85DE8];
-  return v12;
+  return integerValue;
 }
 
 - (void)latestClassificationWithIsOnboarded:error:.cold.1()

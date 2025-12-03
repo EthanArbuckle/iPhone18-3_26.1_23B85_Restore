@@ -1,33 +1,33 @@
 @interface GTMTLReplayActivityMessage
-- (GTMTLReplayActivityMessage)initWithMessage:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (GTMTLReplayActivityMessage)initWithMessage:(id)message;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)jsonObject;
 - (id)summary;
-- (void)outputToLog:(id)a3;
+- (void)outputToLog:(id)log;
 @end
 
 @implementation GTMTLReplayActivityMessage
 
-- (void)outputToLog:(id)a3
+- (void)outputToLog:(id)log
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (os_log_type_enabled(a3, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     message = self->_message;
-    v6 = a3;
+    logCopy = log;
     LODWORD(message) = [(GTTransportMessage_replayer *)message serial];
     activityType = self->super._activityType;
-    v8 = [(GTTransportMessage_replayer *)self->_message kind];
-    v9 = [(GTTransportMessage_replayer *)self->_message attributes];
+    kind = [(GTTransportMessage_replayer *)self->_message kind];
+    attributes = [(GTTransportMessage_replayer *)self->_message attributes];
     v11[0] = 67109890;
     v11[1] = message;
     v12 = 2114;
     v13 = activityType;
     v14 = 1024;
-    v15 = v8;
+    v15 = kind;
     v16 = 2114;
-    v17 = v9;
-    _os_log_impl(&dword_24D764000, v6, OS_LOG_TYPE_INFO, "%u. %{public}@(%u):\t%{public}@", v11, 0x22u);
+    v17 = attributes;
+    _os_log_impl(&dword_24D764000, logCopy, OS_LOG_TYPE_INFO, "%u. %{public}@(%u):\t%{public}@", v11, 0x22u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -36,19 +36,19 @@
 - (id)jsonObject
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v3 = [(GTTransportMessage_replayer *)self->_message payload];
-  v4 = [v3 base64EncodedStringWithOptions:1];
+  payload = [(GTTransportMessage_replayer *)self->_message payload];
+  v4 = [payload base64EncodedStringWithOptions:1];
 
   v5 = MEMORY[0x277CCAAA0];
-  v6 = [(GTTransportMessage_replayer *)self->_message attributes];
-  if ([v5 isValidJSONObject:v6])
+  attributes = [(GTTransportMessage_replayer *)self->_message attributes];
+  if ([v5 isValidJSONObject:attributes])
   {
-    v7 = [(GTTransportMessage_replayer *)self->_message attributes];
+    attributes2 = [(GTTransportMessage_replayer *)self->_message attributes];
   }
 
   else
   {
-    v7 = 0;
+    attributes2 = 0;
   }
 
   v21[0] = self->super._activityType;
@@ -61,21 +61,21 @@
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[GTTransportMessage_replayer serial](self->_message, "serial")}];
   v19[1] = v8;
   v18[2] = @"attributes";
-  v9 = v7;
-  if (!v7)
+  null = attributes2;
+  if (!attributes2)
   {
-    v9 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v19[2] = v9;
+  v19[2] = null;
   v18[3] = @"payload";
-  v10 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v10 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v19[3] = v10;
+  v19[3] = null2;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:4];
   v21[1] = v11;
   v20[2] = @"activityStartTime";
@@ -88,7 +88,7 @@
 
   if (v4)
   {
-    if (v7)
+    if (attributes2)
     {
       goto LABEL_10;
     }
@@ -97,7 +97,7 @@
   else
   {
 
-    if (v7)
+    if (attributes2)
     {
       goto LABEL_10;
     }
@@ -112,12 +112,12 @@ LABEL_10:
 - (id)summary
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(GTTransportMessage_replayer *)self->_message kind];
-  if (v3 <= 1791)
+  kind = [(GTTransportMessage_replayer *)self->_message kind];
+  if (kind <= 1791)
   {
-    if (v3 > 1029)
+    if (kind > 1029)
     {
-      switch(v3)
+      switch(kind)
       {
         case 1536:
           v4 = "kDYMessageInferiorLaunched";
@@ -168,7 +168,7 @@ LABEL_10:
           v4 = "kDYMessageGuestAppMTLDevicesInfo";
           break;
         default:
-          if (v3 != 1030)
+          if (kind != 1030)
           {
             goto LABEL_60;
           }
@@ -180,13 +180,13 @@ LABEL_10:
       goto LABEL_122;
     }
 
-    if (v3 > 266)
+    if (kind > 266)
     {
-      if (v3 > 1024)
+      if (kind > 1024)
       {
-        if (v3 <= 1026)
+        if (kind <= 1026)
         {
-          if (v3 == 1025)
+          if (kind == 1025)
           {
             v4 = "kDYMessageFetchResourceList";
           }
@@ -197,12 +197,12 @@ LABEL_10:
           }
         }
 
-        else if (v3 == 1027)
+        else if (kind == 1027)
         {
           v4 = "kDYMessageFetchState";
         }
 
-        else if (v3 == 1028)
+        else if (kind == 1028)
         {
           v4 = "kDYMessageUpdateResourceObject";
         }
@@ -215,15 +215,15 @@ LABEL_10:
         goto LABEL_122;
       }
 
-      if (v3 <= 511)
+      if (kind <= 511)
       {
-        if (v3 == 267)
+        if (kind == 267)
         {
           v4 = "kDYMessageCaptureSentAllMetadata";
           goto LABEL_122;
         }
 
-        if (v3 == 271)
+        if (kind == 271)
         {
           v4 = "kDYMessageCaptureDataChunk";
           goto LABEL_122;
@@ -232,7 +232,7 @@ LABEL_10:
 
       else
       {
-        switch(v3)
+        switch(kind)
         {
           case 512:
             v4 = "kDYMessageBreakpoint";
@@ -249,11 +249,11 @@ LABEL_10:
 
     else
     {
-      if (v3 > 261)
+      if (kind > 261)
       {
-        if (v3 <= 263)
+        if (kind <= 263)
         {
-          if (v3 == 262)
+          if (kind == 262)
           {
             v4 = "kDYMessageCaptureDataReferenceCounts";
           }
@@ -264,12 +264,12 @@ LABEL_10:
           }
         }
 
-        else if (v3 == 264)
+        else if (kind == 264)
         {
           v4 = "kDYMessageCaptureActivateSession";
         }
 
-        else if (v3 == 265)
+        else if (kind == 265)
         {
           v4 = "kDYMessageCaptureInvalidateSession";
         }
@@ -282,15 +282,15 @@ LABEL_10:
         goto LABEL_122;
       }
 
-      if (v3 <= 257)
+      if (kind <= 257)
       {
-        if (v3 == 256)
+        if (kind == 256)
         {
           v4 = "kDYMessageCaptureStart";
           goto LABEL_122;
         }
 
-        if (v3 == 257)
+        if (kind == 257)
         {
           v4 = "kDYMessageCaptureStarted";
           goto LABEL_122;
@@ -299,7 +299,7 @@ LABEL_10:
 
       else
       {
-        switch(v3)
+        switch(kind)
         {
           case 258:
             v4 = "kDYMessageCaptureData";
@@ -320,13 +320,13 @@ LABEL_60:
     goto LABEL_122;
   }
 
-  if (v3 <= 4095)
+  if (kind <= 4095)
   {
-    if (v3 <= 2303)
+    if (kind <= 2303)
     {
-      if (v3 <= 1793)
+      if (kind <= 1793)
       {
-        if (v3 == 1792)
+        if (kind == 1792)
         {
           v4 = "kDYMessageTraceBufferedFstreamData";
         }
@@ -339,7 +339,7 @@ LABEL_60:
         goto LABEL_122;
       }
 
-      switch(v3)
+      switch(kind)
       {
         case 1794:
           v4 = "kDYMessageTraceOverridesConfiguration";
@@ -355,14 +355,14 @@ LABEL_60:
 
     else
     {
-      if (v3 <= 2306)
+      if (kind <= 2306)
       {
-        if (v3 == 2304)
+        if (kind == 2304)
         {
           v4 = "kDYMessageFSStreamInitializeTransfer";
         }
 
-        else if (v3 == 2305)
+        else if (kind == 2305)
         {
           v4 = "kDYMessageFSStreamInitializeTransferAck";
         }
@@ -375,7 +375,7 @@ LABEL_60:
         goto LABEL_122;
       }
 
-      switch(v3)
+      switch(kind)
       {
         case 2307:
           v4 = "kDYMessageFSStreamFinishedSending";
@@ -392,7 +392,7 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  switch(v3)
+  switch(kind)
   {
     case 4096:
       v4 = "kDYMessageReplayerAppReady";
@@ -484,14 +484,14 @@ LABEL_60:
       v4 = "kGTMessageReplayerResourcesUsedForFunctionIndex";
       break;
     default:
-      if (v3 == 4353)
+      if (kind == 4353)
       {
         v4 = "kGTMessageDiagnosticsReceivedData";
       }
 
       else
       {
-        if (v3 != 4865)
+        if (kind != 4865)
         {
           goto LABEL_60;
         }
@@ -509,11 +509,11 @@ LABEL_122:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = GTMTLReplayActivityMessage;
-  v4 = [(GTMTLReplayActivity *)&v7 copyWithZone:a3];
+  v4 = [(GTMTLReplayActivity *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -523,16 +523,16 @@ LABEL_122:
   return v5;
 }
 
-- (GTMTLReplayActivityMessage)initWithMessage:(id)a3
+- (GTMTLReplayActivityMessage)initWithMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v9.receiver = self;
   v9.super_class = GTMTLReplayActivityMessage;
   v6 = [(GTMTLReplayActivity *)&v9 initWithType:@"message"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_message, a3);
+    objc_storeStrong(&v6->_message, message);
   }
 
   return v7;

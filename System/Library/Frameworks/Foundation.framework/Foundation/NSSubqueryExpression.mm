@@ -1,25 +1,25 @@
 @interface NSSubqueryExpression
-- (BOOL)isEqual:(id)a3;
-- (NSSubqueryExpression)initWithCoder:(id)a3;
-- (NSSubqueryExpression)initWithExpression:(id)a3 usingIteratorExpression:(id)a4 predicate:(id)a5;
-- (NSSubqueryExpression)initWithExpression:(id)a3 usingIteratorVariable:(id)a4 predicate:(id)a5;
-- (id)_expressionWithSubstitutionVariables:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)expressionValueWithObject:(id)a3 context:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (NSSubqueryExpression)initWithCoder:(id)coder;
+- (NSSubqueryExpression)initWithExpression:(id)expression usingIteratorExpression:(id)iteratorExpression predicate:(id)predicate;
+- (NSSubqueryExpression)initWithExpression:(id)expression usingIteratorVariable:(id)variable predicate:(id)predicate;
+- (id)_expressionWithSubstitutionVariables:(id)variables;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)expressionValueWithObject:(id)object context:(id)context;
 - (id)variable;
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4;
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags;
 - (void)allowEvaluation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSSubqueryExpression
 
 - (id)variable
 {
-  v2 = [(NSSubqueryExpression *)self variableExpression];
+  variableExpression = [(NSSubqueryExpression *)self variableExpression];
 
-  return [v2 variable];
+  return [variableExpression variable];
 }
 
 - (void)allowEvaluation
@@ -42,59 +42,59 @@
   [(NSSubqueryExpression *)&v3 dealloc];
 }
 
-- (NSSubqueryExpression)initWithExpression:(id)a3 usingIteratorVariable:(id)a4 predicate:(id)a5
+- (NSSubqueryExpression)initWithExpression:(id)expression usingIteratorVariable:(id)variable predicate:(id)predicate
 {
-  if (!a4 || !a5)
+  if (!variable || !predicate)
   {
     [(NSSubqueryExpression *)self dealloc];
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSSubqueryExpression must be initialized with non-nil variable name and expression." userInfo:0]);
   }
 
-  v8 = [[NSVariableExpression alloc] initWithObject:a4];
-  v9 = [(NSSubqueryExpression *)self initWithExpression:a3 usingIteratorExpression:v8 predicate:a5];
+  v8 = [[NSVariableExpression alloc] initWithObject:variable];
+  v9 = [(NSSubqueryExpression *)self initWithExpression:expression usingIteratorExpression:v8 predicate:predicate];
 
   return v9;
 }
 
-- (NSSubqueryExpression)initWithExpression:(id)a3 usingIteratorExpression:(id)a4 predicate:(id)a5
+- (NSSubqueryExpression)initWithExpression:(id)expression usingIteratorExpression:(id)iteratorExpression predicate:(id)predicate
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = NSSubqueryExpression;
   v8 = [(NSExpression *)&v11 initWithExpressionType:13];
   v9 = v8;
-  if (!a4 || !a5)
+  if (!iteratorExpression || !predicate)
   {
     [(NSSubqueryExpression *)v8 dealloc];
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSSubqueryExpression must be initialized with non-nil variable name and expression." userInfo:0]);
   }
 
-  v8->_collection = a3;
-  v9->_variableExpression = a4;
-  v9->_subpredicate = a5;
+  v8->_collection = expression;
+  v9->_variableExpression = iteratorExpression;
+  v9->_subpredicate = predicate;
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v5.receiver = self;
   v5.super_class = NSSubqueryExpression;
-  [(NSExpression *)&v5 encodeWithCoder:a3];
-  [a3 encodeObject:-[NSSubqueryExpression collection](self forKey:{"collection"), @"NSExpression"}];
-  [a3 encodeObject:-[NSSubqueryExpression variable](self forKey:{"variable"), @"NSVariable"}];
-  [a3 encodeObject:-[NSSubqueryExpression predicate](self forKey:{"predicate"), @"NSSubpredicate"}];
+  [(NSExpression *)&v5 encodeWithCoder:coder];
+  [coder encodeObject:-[NSSubqueryExpression collection](self forKey:{"collection"), @"NSExpression"}];
+  [coder encodeObject:-[NSSubqueryExpression variable](self forKey:{"variable"), @"NSVariable"}];
+  [coder encodeObject:-[NSSubqueryExpression predicate](self forKey:{"predicate"), @"NSSubpredicate"}];
 }
 
-- (NSSubqueryExpression)initWithCoder:(id)a3
+- (NSSubqueryExpression)initWithCoder:(id)coder
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be decoded by non-keyed archivers" userInfo:0]);
@@ -102,14 +102,14 @@
 
   v15.receiver = self;
   v15.super_class = NSSubqueryExpression;
-  v5 = [(NSExpression *)&v15 initWithCoder:a3];
+  v5 = [(NSExpression *)&v15 initWithCoder:coder];
   if (v5)
   {
-    v6 = [a3 allowedClasses];
-    v7 = v6;
-    if (v6)
+    allowedClasses = [coder allowedClasses];
+    v7 = allowedClasses;
+    if (allowedClasses)
     {
-      v8 = [v6 mutableCopy];
+      v8 = [allowedClasses mutableCopy];
       [v8 unionSet:{+[_NSPredicateUtilities _expressionClassesForSecureCoding](_NSPredicateUtilities, "_expressionClassesForSecureCoding")}];
       v9 = [v7 mutableCopy];
       [v9 unionSet:{+[_NSPredicateUtilities _predicateClassesForSecureCoding](_NSPredicateUtilities, "_predicateClassesForSecureCoding")}];
@@ -121,12 +121,12 @@
       v9 = +[_NSPredicateUtilities _predicateClassesForSecureCoding];
     }
 
-    v5->_collection = [a3 decodeObjectOfClasses:v8 forKey:@"NSExpression"];
-    v10 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSVariable"];
+    v5->_collection = [coder decodeObjectOfClasses:v8 forKey:@"NSExpression"];
+    v10 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSVariable"];
     v11 = [[NSVariableExpression alloc] initWithObject:v10];
     v5->_variableExpression = &v11->super;
     *&v11->super._expressionFlags |= 1u;
-    v5->_subpredicate = [a3 decodeObjectOfClasses:v9 forKey:@"NSSubpredicate"];
+    v5->_subpredicate = [coder decodeObjectOfClasses:v9 forKey:@"NSSubpredicate"];
     if (objc_opt_isKindOfClass())
     {
       if (objc_opt_isKindOfClass())
@@ -177,7 +177,7 @@ LABEL_15:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [(NSExpression *)self->_collection copy];
   v5 = [(NSExpression *)self->_variableExpression copy];
@@ -187,20 +187,20 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if ((objc_opt_isKindOfClass() & 1) == 0 || ![-[NSSubqueryExpression variable](self "variable")])
   {
     return 0;
   }
 
-  v5 = [(NSSubqueryExpression *)self predicate];
-  v6 = [a3 predicate];
+  predicate = [(NSSubqueryExpression *)self predicate];
+  predicate2 = [equal predicate];
 
-  return [v5 isEqual:v6];
+  return [predicate isEqual:predicate2];
 }
 
-- (id)expressionValueWithObject:(id)a3 context:(id)a4
+- (id)expressionValueWithObject:(id)object context:(id)context
 {
   v25 = *MEMORY[0x1E69E9840];
   if (![(NSExpression *)self _allowsEvaluation])
@@ -217,14 +217,14 @@ LABEL_15:
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Can't perform collection evaluate with non-collection object." userInfo:0]);
     }
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v9 = v7;
-    v10 = [a4 objectForKey:{-[NSSubqueryExpression variable](self, "variable")}];
+    v10 = [context objectForKey:{-[NSSubqueryExpression variable](self, "variable")}];
     v11 = v10;
-    v12 = a4;
-    if (!a4)
+    contextCopy = context;
+    if (!context)
     {
-      v12 = [MEMORY[0x1E695DF90] dictionary];
+      contextCopy = [MEMORY[0x1E695DF90] dictionary];
     }
 
     v18 = v10;
@@ -246,10 +246,10 @@ LABEL_15:
           }
 
           v16 = *(*(&v21 + 1) + 8 * i);
-          [v12 setObject:v16 forKey:{-[NSSubqueryExpression variable](self, "variable")}];
+          [contextCopy setObject:v16 forKey:{-[NSSubqueryExpression variable](self, "variable")}];
           if ([-[NSSubqueryExpression predicate](self "predicate")])
           {
-            [v8 addObject:v16];
+            [array addObject:v16];
           }
         }
 
@@ -261,18 +261,18 @@ LABEL_15:
 
     if (v18)
     {
-      [a4 setObject:v18 forKey:{-[NSSubqueryExpression variable](self, "variable")}];
+      [context setObject:v18 forKey:{-[NSSubqueryExpression variable](self, "variable")}];
     }
 
     else
     {
-      [a4 removeObjectForKey:{-[NSSubqueryExpression variable](self, "variable")}];
+      [context removeObjectForKey:{-[NSSubqueryExpression variable](self, "variable")}];
     }
   }
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
   if (v19)
@@ -280,33 +280,33 @@ LABEL_15:
     [(_NSPerformanceMeter *)v19 invalidate];
   }
 
-  return v8;
+  return array;
 }
 
-- (id)_expressionWithSubstitutionVariables:(id)a3
+- (id)_expressionWithSubstitutionVariables:(id)variables
 {
-  if (!a3)
+  if (!variables)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot substitute a nil substitution dictionary." userInfo:0]);
   }
 
-  v3 = [objc_alloc(objc_opt_class()) initWithExpression:objc_msgSend(-[NSSubqueryExpression collection](self usingIteratorExpression:"collection") predicate:{"_expressionWithSubstitutionVariables:", a3), objc_msgSend(-[NSSubqueryExpression variableExpression](self, "variableExpression"), "_expressionWithSubstitutionVariables:", a3), objc_msgSend(-[NSSubqueryExpression predicate](self, "predicate"), "predicateWithSubstitutionVariables:", a3)}];
+  v3 = [objc_alloc(objc_opt_class()) initWithExpression:objc_msgSend(-[NSSubqueryExpression collection](self usingIteratorExpression:"collection") predicate:{"_expressionWithSubstitutionVariables:", variables), objc_msgSend(-[NSSubqueryExpression variableExpression](self, "variableExpression"), "_expressionWithSubstitutionVariables:", variables), objc_msgSend(-[NSSubqueryExpression predicate](self, "predicate"), "predicateWithSubstitutionVariables:", variables)}];
 
   return v3;
 }
 
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags
 {
-  if (a4)
+  if (flags)
   {
-    if ((a4 & 4) != 0)
+    if ((flags & 4) != 0)
     {
-      [a3 visitPredicateExpression:self];
+      [visitor visitPredicateExpression:self];
       [-[NSSubqueryExpression collection](self "collection")];
       [-[NSSubqueryExpression variableExpression](self "variableExpression")];
-      v7 = [(NSSubqueryExpression *)self predicate];
+      predicate = [(NSSubqueryExpression *)self predicate];
 
-      [v7 acceptVisitor:a3 flags:a4];
+      [predicate acceptVisitor:visitor flags:flags];
     }
 
     else
@@ -315,7 +315,7 @@ LABEL_15:
       [-[NSSubqueryExpression variableExpression](self "variableExpression")];
       [-[NSSubqueryExpression predicate](self "predicate")];
 
-      [a3 visitPredicateExpression:self];
+      [visitor visitPredicateExpression:self];
     }
   }
 }

@@ -69,10 +69,10 @@
   v14 = [v11 localizedStringForKey:v13 value:&stru_1F04268F8 table:@"ChatKitFormats-Collaboration"];
   v15 = [v10 localizedStringWithFormat:v14, a3, a5];
 
-  v16 = [MEMORY[0x1E69DC668] sharedApplication];
-  v17 = [v16 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v17 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v18 = @"\u200F";
   }
@@ -143,10 +143,10 @@
   v14 = [v11 localizedStringForKey:v13 value:&stru_1F04268F8 table:@"ChatKitFormats-Collaboration"];
   v15 = [v10 localizedStringWithFormat:v14, a3, a5];
 
-  v16 = [MEMORY[0x1E69DC668] sharedApplication];
-  v17 = [v16 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v17 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v18 = @"\u200F";
   }
@@ -217,10 +217,10 @@
   v14 = [v11 localizedStringForKey:v13 value:&stru_1F04268F8 table:@"ChatKitFormats-Collaboration"];
   v15 = [v10 localizedStringWithFormat:v14, a3, a5];
 
-  v16 = [MEMORY[0x1E69DC668] sharedApplication];
-  v17 = [v16 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v17 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v18 = @"\u200F";
   }
@@ -291,10 +291,10 @@
   v14 = [v11 localizedStringForKey:v13 value:&stru_1F04268F8 table:@"ChatKitFormats-Collaboration"];
   v15 = [v10 localizedStringWithFormat:v14, a3, a5];
 
-  v16 = [MEMORY[0x1E69DC668] sharedApplication];
-  v17 = [v16 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v17 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v18 = @"\u200F";
   }
@@ -365,10 +365,10 @@
   v14 = [v11 localizedStringForKey:v13 value:&stru_1F04268F8 table:@"ChatKitFormats-Collaboration"];
   v15 = [v10 localizedStringWithFormat:v14, a3, a5];
 
-  v16 = [MEMORY[0x1E69DC668] sharedApplication];
-  v17 = [v16 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v17 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v18 = @"\u200F";
   }
@@ -439,10 +439,10 @@
   v14 = [v11 localizedStringForKey:v13 value:&stru_1F04268F8 table:@"ChatKitFormats-Collaboration"];
   v15 = [v10 localizedStringWithFormat:v14, a3, a5];
 
-  v16 = [MEMORY[0x1E69DC668] sharedApplication];
-  v17 = [v16 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v17 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v18 = @"\u200F";
   }
@@ -513,10 +513,10 @@
   v14 = [v11 localizedStringForKey:v13 value:&stru_1F04268F8 table:@"ChatKitFormats-Collaboration"];
   v15 = [v10 localizedStringWithFormat:v14, a3, a5];
 
-  v16 = [MEMORY[0x1E69DC668] sharedApplication];
-  v17 = [v16 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v17 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v18 = @"\u200F";
   }
@@ -587,10 +587,10 @@
   v14 = [v11 localizedStringForKey:v13 value:&stru_1F04268F8 table:@"ChatKitFormats-Collaboration"];
   v15 = [v10 localizedStringWithFormat:v14, a3, a5];
 
-  v16 = [MEMORY[0x1E69DC668] sharedApplication];
-  v17 = [v16 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v17 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v18 = @"\u200F";
   }
@@ -661,10 +661,10 @@
   v14 = [v11 localizedStringForKey:v13 value:&stru_1F04268F8 table:@"ChatKitFormats-Collaboration"];
   v15 = [v10 localizedStringWithFormat:v14, a3, a5];
 
-  v16 = [MEMORY[0x1E69DC668] sharedApplication];
-  v17 = [v16 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v17 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v18 = @"\u200F";
   }
@@ -692,14 +692,14 @@
       {
         if (!v16)
         {
-          v17 = [a1 ck_localizedDeletedStringWithNumberOfPeople:a3 UTType:v15 numberOfFiles:a5];
+          v17 = [self ck_localizedDeletedStringWithNumberOfPeople:a3 UTType:v15 numberOfFiles:a5];
           goto LABEL_47;
         }
       }
 
       else if (!v16)
       {
-        v17 = [a1 ck_localizedRenamedStringWithNumberOfPeople:a3 UTType:v15 numberOfFiles:a5];
+        v17 = [self ck_localizedRenamedStringWithNumberOfPeople:a3 UTType:v15 numberOfFiles:a5];
         goto LABEL_47;
       }
 
@@ -711,7 +711,7 @@
       case 7:
         if (!v16)
         {
-          v17 = [a1 ck_localizedMovedStringWithNumberOfPeople:a3 UTType:v15 numberOfFiles:a5];
+          v17 = [self ck_localizedMovedStringWithNumberOfPeople:a3 UTType:v15 numberOfFiles:a5];
           goto LABEL_47;
         }
 
@@ -719,7 +719,7 @@
       case 8:
         if (!v16)
         {
-          v17 = [a1 ck_localizedAddPeopleStringWithNumberOfPeople:a3 UTType:v15 numberOfFiles:a5];
+          v17 = [self ck_localizedAddPeopleStringWithNumberOfPeople:a3 UTType:v15 numberOfFiles:a5];
           goto LABEL_47;
         }
 
@@ -731,7 +731,7 @@
       case 9:
         if (!v16)
         {
-          v17 = [a1 ck_localizedRemovePeopleStringWithNumberOfPeople:a3 UTType:v15 numberOfFiles:a5];
+          v17 = [self ck_localizedRemovePeopleStringWithNumberOfPeople:a3 UTType:v15 numberOfFiles:a5];
           goto LABEL_47;
         }
 
@@ -759,12 +759,12 @@ LABEL_34:
         goto LABEL_30;
       }
 
-      v22 = a1;
+      selfCopy2 = self;
       v23 = a3;
       v24 = v15;
       v25 = a5;
 LABEL_41:
-      v17 = [v22 ck_localizedUpdateStringWithNumberOfPeople:v23 UTType:v24 numberOfFiles:v25];
+      v17 = [selfCopy2 ck_localizedUpdateStringWithNumberOfPeople:v23 UTType:v24 numberOfFiles:v25];
       goto LABEL_47;
     }
 
@@ -772,7 +772,7 @@ LABEL_41:
     {
       if (!v16)
       {
-        v17 = [a1 ck_localizedEditStringWithNumberOfPeople:a3 UTType:v15 numberOfFiles:a5];
+        v17 = [self ck_localizedEditStringWithNumberOfPeople:a3 UTType:v15 numberOfFiles:a5];
         goto LABEL_47;
       }
 
@@ -784,7 +784,7 @@ LABEL_41:
     }
 
 LABEL_40:
-    v22 = a1;
+    selfCopy2 = self;
     v23 = a3;
     v24 = v15;
     v25 = a6;
@@ -795,7 +795,7 @@ LABEL_40:
   {
     if (!v16)
     {
-      v17 = [a1 ck_localizedCommentedPeopleStringWithNumberOfPeople:a3 UTType:v15 numberOfFiles:a5];
+      v17 = [self ck_localizedCommentedPeopleStringWithNumberOfPeople:a3 UTType:v15 numberOfFiles:a5];
       goto LABEL_47;
     }
 
@@ -825,10 +825,10 @@ LABEL_30:
     [v26 localizedStringWithFormat:v27, a6, v14];
     v28 = LABEL_36:;
 
-    v29 = [MEMORY[0x1E69DC668] sharedApplication];
-    v30 = [v29 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v30 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v31 = @"\u200F";
     }
@@ -843,7 +843,7 @@ LABEL_30:
     goto LABEL_48;
   }
 
-  v17 = [a1 ck_localizedCreatedStringWithNumberOfPeople:a3 UTType:v15 numberOfFiles:a5];
+  v17 = [self ck_localizedCreatedStringWithNumberOfPeople:a3 UTType:v15 numberOfFiles:a5];
 LABEL_47:
   v32 = v17;
 LABEL_48:

@@ -1,8 +1,8 @@
 @interface HKRPWatchAppInstallability
 - (BOOL)shouldInstallWatchApp;
 - (HKRPWatchAppInstallability)init;
-- (HKRPWatchAppInstallability)initWithDataSource:(id)a3;
-- (HKRPWatchAppInstallability)initWithDevice:(id)a3;
+- (HKRPWatchAppInstallability)initWithDataSource:(id)source;
+- (HKRPWatchAppInstallability)initWithDevice:(id)device;
 @end
 
 @implementation HKRPWatchAppInstallability
@@ -15,25 +15,25 @@
   return v4;
 }
 
-- (HKRPWatchAppInstallability)initWithDevice:(id)a3
+- (HKRPWatchAppInstallability)initWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = [[_HKRPWatchAppInstallabilityDataSource alloc] initWithDevice:v4];
+  deviceCopy = device;
+  v5 = [[_HKRPWatchAppInstallabilityDataSource alloc] initWithDevice:deviceCopy];
 
   v6 = [(HKRPWatchAppInstallability *)self initWithDataSource:v5];
   return v6;
 }
 
-- (HKRPWatchAppInstallability)initWithDataSource:(id)a3
+- (HKRPWatchAppInstallability)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = HKRPWatchAppInstallability;
   v6 = [(HKRPWatchAppInstallability *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v7;
@@ -79,12 +79,12 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = [(HKRPWatchAppInstallabilityDataSource *)self->_dataSource isDeviceSupported];
-  v10 = [(HKRPWatchAppInstallabilityDataSource *)self->_dataSource shouldForceAppInstall];
+  isDeviceSupported = [(HKRPWatchAppInstallabilityDataSource *)self->_dataSource isDeviceSupported];
+  shouldForceAppInstall = [(HKRPWatchAppInstallabilityDataSource *)self->_dataSource shouldForceAppInstall];
   _HKInitializeLogging();
   v3 = HKLogRespiratoryCategory();
   v11 = os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT);
-  if ((v9 & 1) == 0 && (v10 & 1) == 0)
+  if ((isDeviceSupported & 1) == 0 && (shouldForceAppInstall & 1) == 0)
   {
     if (!v11)
     {

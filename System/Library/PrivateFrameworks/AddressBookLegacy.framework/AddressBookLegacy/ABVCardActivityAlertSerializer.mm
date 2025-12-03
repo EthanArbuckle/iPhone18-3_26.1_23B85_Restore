@@ -1,15 +1,15 @@
 @interface ABVCardActivityAlertSerializer
-+ (id)serializeDictionary:(id)a3;
-+ (id)serializeString:(id)a3;
++ (id)serializeDictionary:(id)dictionary;
++ (id)serializeString:(id)string;
 @end
 
 @implementation ABVCardActivityAlertSerializer
 
-+ (id)serializeDictionary:(id)a3
++ (id)serializeDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AD60] string];
-  v6 = [objc_msgSend(a3 "allKeys")];
+  string = [MEMORY[0x1E696AD60] string];
+  v6 = [objc_msgSend(dictionary "allKeys")];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -29,20 +29,20 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [a3 objectForKey:v11];
+        v12 = [dictionary objectForKey:v11];
         if (v11)
         {
           v13 = v12;
           if (([v11 isEqualToString:&stru_1F2FE2718] & 1) == 0 && v13 && (objc_msgSend(v13, "isEqualToString:", &stru_1F2FE2718) & 1) == 0)
           {
-            if ([v5 length])
+            if ([string length])
             {
-              [v5 appendString:{@"\\, "}];
+              [string appendString:{@"\\, "}];
             }
 
-            [v5 appendString:{objc_msgSend(a1, "serializeString:", v11)}];
-            [v5 appendString:@"="];
-            [v5 appendString:{objc_msgSend(a1, "serializeString:", v13)}];
+            [string appendString:{objc_msgSend(self, "serializeString:", v11)}];
+            [string appendString:@"="];
+            [string appendString:{objc_msgSend(self, "serializeString:", v13)}];
           }
         }
       }
@@ -53,24 +53,24 @@
     while (v8);
   }
 
-  return v5;
+  return string;
 }
 
-+ (id)serializeString:(id)a3
++ (id)serializeString:(id)string
 {
   v4 = off_1E7CCAAD8;
   if (![ABVCardActivityAlertQuotingSerializationStrategy strategyWouldAlterString:?])
   {
     v4 = off_1E7CCAAD0;
-    if (![ABVCardActivityAlertEscapingSerializationStrategy strategyWouldAlterString:a3])
+    if (![ABVCardActivityAlertEscapingSerializationStrategy strategyWouldAlterString:string])
     {
-      return a3;
+      return string;
     }
   }
 
   v5 = *v4;
 
-  return [(__objc2_class *)v5 serializeString:a3];
+  return [(__objc2_class *)v5 serializeString:string];
 }
 
 @end

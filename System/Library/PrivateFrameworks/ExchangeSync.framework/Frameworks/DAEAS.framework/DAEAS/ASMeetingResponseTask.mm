@@ -1,24 +1,24 @@
 @interface ASMeetingResponseTask
-- (ASMeetingResponseTask)initWithResponseItems:(id)a3;
-- (BOOL)getTopLevelToken:(char *)a3 outStatusCodePage:(char *)a4 outStatusToken:(char *)a5;
-- (BOOL)processContext:(id)a3;
+- (ASMeetingResponseTask)initWithResponseItems:(id)items;
+- (BOOL)getTopLevelToken:(char *)token outStatusCodePage:(char *)page outStatusToken:(char *)statusToken;
+- (BOOL)processContext:(id)context;
 - (id)requestBody;
-- (int64_t)taskStatusForExchangeStatus:(int)a3;
-- (void)finishWithError:(id)a3;
+- (int64_t)taskStatusForExchangeStatus:(int)status;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation ASMeetingResponseTask
 
-- (ASMeetingResponseTask)initWithResponseItems:(id)a3
+- (ASMeetingResponseTask)initWithResponseItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = ASMeetingResponseTask;
   v6 = [(ASTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_responseItems, a3);
+    objc_storeStrong(&v6->_responseItems, items);
   }
 
   return v7;
@@ -52,50 +52,50 @@
         v7 = *(*(&v37 + 1) + 8 * i);
         [v3 openTag:9];
         [v3 appendTag:12 withIntContent:{objc_msgSend(v7, "meetingResponse")}];
-        v8 = [v7 deliveryItemFolderId];
-        [v3 appendTag:6 withStringContent:v8];
+        deliveryItemFolderId = [v7 deliveryItemFolderId];
+        [v3 appendTag:6 withStringContent:deliveryItemFolderId];
 
-        v9 = [v7 deliveryItemServerId];
-        [v3 appendTag:8 withStringContent:v9];
+        deliveryItemServerId = [v7 deliveryItemServerId];
+        [v3 appendTag:8 withStringContent:deliveryItemServerId];
 
-        v10 = [v7 instanceDate];
-        if (v10)
+        instanceDate = [v7 instanceDate];
+        if (instanceDate)
         {
-          v11 = v10;
-          v12 = [(ASTask *)self taskManager];
-          v13 = [v12 account];
-          v14 = [v13 protocol];
-          v15 = [v14 useEventIdsInMeetingResponse];
+          v11 = instanceDate;
+          taskManager = [(ASTask *)self taskManager];
+          account = [taskManager account];
+          protocol = [account protocol];
+          useEventIdsInMeetingResponse = [protocol useEventIdsInMeetingResponse];
 
-          if (v15)
+          if (useEventIdsInMeetingResponse)
           {
-            v16 = [v7 instanceDate];
-            v17 = [v16 activeSyncString];
-            [v3 appendTag:14 withStringContent:v17];
+            instanceDate2 = [v7 instanceDate];
+            activeSyncString = [instanceDate2 activeSyncString];
+            [v3 appendTag:14 withStringContent:activeSyncString];
           }
         }
 
-        v18 = [(ASTask *)self taskManager];
-        v19 = [v18 protocol];
+        taskManager2 = [(ASTask *)self taskManager];
+        protocol2 = [taskManager2 protocol];
 
-        if ([v19 includeCommentInMeetingResponse] && objc_msgSend(v7, "responseRequested"))
+        if ([protocol2 includeCommentInMeetingResponse] && objc_msgSend(v7, "responseRequested"))
         {
-          v20 = [v7 comment];
-          if (v20)
+          comment = [v7 comment];
+          if (comment)
           {
           }
 
           else
           {
-            v27 = [v7 proposedStartTime];
-            if (!v27)
+            proposedStartTime = [v7 proposedStartTime];
+            if (!proposedStartTime)
             {
               goto LABEL_24;
             }
 
-            v28 = v27;
-            v29 = [v7 proposedEndTime];
-            if (!v29)
+            v28 = proposedStartTime;
+            proposedEndTime = [v7 proposedEndTime];
+            if (!proposedEndTime)
             {
 
 LABEL_24:
@@ -103,39 +103,39 @@ LABEL_24:
               goto LABEL_25;
             }
 
-            v30 = v29;
-            v31 = [v7 meetingResponse];
+            v30 = proposedEndTime;
+            meetingResponse = [v7 meetingResponse];
 
-            if (v31 == 1)
+            if (meetingResponse == 1)
             {
               goto LABEL_24;
             }
           }
 
           [v3 openTag:18];
-          v21 = [v7 comment];
+          comment2 = [v7 comment];
 
-          if (v21)
+          if (comment2)
           {
             [v3 switchToCodePage:17];
             [v3 openTag:10];
             [v3 appendTag:6 withIntContent:1];
-            v22 = [v7 comment];
-            [v3 appendTag:11 withStringContent:v22];
+            comment3 = [v7 comment];
+            [v3 appendTag:11 withStringContent:comment3];
 
             [v3 closeTag:10];
             [v3 switchToCodePage:8];
           }
 
-          if ([v19 supportsProposeNewTime] && objc_msgSend(v7, "meetingResponse") != 1)
+          if ([protocol2 supportsProposeNewTime] && objc_msgSend(v7, "meetingResponse") != 1)
           {
-            v23 = [v7 proposedStartTime];
-            v24 = [v23 activeSyncStringWithoutSeparators];
-            [v3 appendTag:16 withStringContent:v24];
+            proposedStartTime2 = [v7 proposedStartTime];
+            activeSyncStringWithoutSeparators = [proposedStartTime2 activeSyncStringWithoutSeparators];
+            [v3 appendTag:16 withStringContent:activeSyncStringWithoutSeparators];
 
-            v25 = [v7 proposedEndTime];
-            v26 = [v25 activeSyncStringWithoutSeparators];
-            [v3 appendTag:17 withStringContent:v26];
+            proposedEndTime2 = [v7 proposedEndTime];
+            activeSyncStringWithoutSeparators2 = [proposedEndTime2 activeSyncStringWithoutSeparators];
+            [v3 appendTag:17 withStringContent:activeSyncStringWithoutSeparators2];
           }
 
           [v3 closeTag:18];
@@ -152,46 +152,46 @@ LABEL_25:
   }
 
   [v3 closeTag:7];
-  v32 = [v3 data];
+  data = [v3 data];
 
   v33 = *MEMORY[0x277D85DE8];
 
-  return v32;
+  return data;
 }
 
-- (BOOL)getTopLevelToken:(char *)a3 outStatusCodePage:(char *)a4 outStatusToken:(char *)a5
+- (BOOL)getTopLevelToken:(char *)token outStatusCodePage:(char *)page outStatusToken:(char *)statusToken
 {
-  *a4 = 8;
-  *a3 = 7;
-  *a5 = 11;
+  *page = 8;
+  *token = 7;
+  *statusToken = 11;
   return 1;
 }
 
-- (BOOL)processContext:(id)a3
+- (BOOL)processContext:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTask *)self currentlyParsingItem];
+  contextCopy = context;
+  currentlyParsingItem = [(ASTask *)self currentlyParsingItem];
 
-  if (!v5)
+  if (!currentlyParsingItem)
   {
     if (!self->super._haveSwitchedCodePage)
     {
-      if (![v4 hasNumberOfTokensRemaining:2])
+      if (![contextCopy hasNumberOfTokensRemaining:2])
       {
         goto LABEL_17;
       }
 
-      if ([v4 currentByte])
+      if ([contextCopy currentByte])
       {
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to meeting response code page"];
-        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASMeetingResponseTask.m", 129, objc_msgSend(v4, "curOffset")];
+        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASMeetingResponseTask.m", 129, objc_msgSend(contextCopy, "curOffset")];
         v13 = DALoggingwithCategory();
         v14 = *(MEMORY[0x277D03988] + 3);
         if (os_log_type_enabled(v13, v14))
         {
           *buf = 134217984;
-          v23 = [v4 curOffset];
+          curOffset = [contextCopy curOffset];
           _os_log_impl(&dword_24A0AC000, v13, v14, "Failure at index %lld:", buf, 0xCu);
         }
 
@@ -202,21 +202,21 @@ LABEL_25:
         }
 
         *buf = 138412290;
-        v23 = v11;
+        curOffset = v11;
         goto LABEL_28;
       }
 
-      [v4 advanceOffsetByAmount:1];
-      if ([v4 currentByte] != 8)
+      [contextCopy advanceOffsetByAmount:1];
+      if ([contextCopy currentByte] != 8)
       {
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to meeting response code page"];
-        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASMeetingResponseTask.m", 129, objc_msgSend(v4, "curOffset")];
+        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASMeetingResponseTask.m", 129, objc_msgSend(contextCopy, "curOffset")];
         v18 = DALoggingwithCategory();
         v14 = *(MEMORY[0x277D03988] + 3);
         if (os_log_type_enabled(v18, v14))
         {
           *buf = 134217984;
-          v23 = [v4 curOffset];
+          curOffset = [contextCopy curOffset];
           _os_log_impl(&dword_24A0AC000, v18, v14, "Failure at index %lld:", buf, 0xCu);
         }
 
@@ -227,12 +227,12 @@ LABEL_25:
         }
 
         *buf = 138412290;
-        v23 = v11;
+        curOffset = v11;
         goto LABEL_28;
       }
 
-      [v4 advanceOffsetByAmount:1];
-      [v4 setCodePage:8];
+      [contextCopy advanceOffsetByAmount:1];
+      [contextCopy setCodePage:8];
       self->super._haveSwitchedCodePage = 1;
     }
 
@@ -245,25 +245,25 @@ LABEL_7:
       goto LABEL_2;
     }
 
-    if (![v4 hasNumberOfTokensRemaining:1])
+    if (![contextCopy hasNumberOfTokensRemaining:1])
     {
       goto LABEL_17;
     }
 
-    if (([v4 currentByte] & 0x3F) == 7)
+    if (([contextCopy currentByte] & 0x3F) == 7)
     {
       self->super._haveParsedCommand = 1;
       goto LABEL_7;
     }
 
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected meeting response response"];
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASMeetingResponseTask.m", 130, objc_msgSend(v4, "curOffset")];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASMeetingResponseTask.m", 130, objc_msgSend(contextCopy, "curOffset")];
     v17 = DALoggingwithCategory();
     v14 = *(MEMORY[0x277D03988] + 3);
     if (os_log_type_enabled(v17, v14))
     {
       *buf = 134217984;
-      v23 = [v4 curOffset];
+      curOffset = [contextCopy curOffset];
       _os_log_impl(&dword_24A0AC000, v17, v14, "Failure at index %lld:", buf, 0xCu);
     }
 
@@ -272,26 +272,26 @@ LABEL_7:
     {
 LABEL_29:
 
-      [v4 setParseErrorReason:v12];
+      [contextCopy setParseErrorReason:v12];
 LABEL_30:
-      v19 = [v4 parseErrorReason];
-      v16 = v19 == 0;
+      parseErrorReason = [contextCopy parseErrorReason];
+      v16 = parseErrorReason == 0;
 
       goto LABEL_31;
     }
 
     *buf = 138412290;
-    v23 = v11;
+    curOffset = v11;
 LABEL_28:
     _os_log_impl(&dword_24A0AC000, v15, v14, "failure reason was %@", buf, 0xCu);
     goto LABEL_29;
   }
 
 LABEL_2:
-  v6 = [(ASTask *)self currentlyParsingItem];
-  v7 = [(ASTask *)self taskManager];
-  v8 = [v7 account];
-  [v6 parseASParseContext:v4 root:0 parent:0 callbackDict:0 streamCallbackDict:0 account:v8];
+  currentlyParsingItem2 = [(ASTask *)self currentlyParsingItem];
+  taskManager = [(ASTask *)self taskManager];
+  account = [taskManager account];
+  [currentlyParsingItem2 parseASParseContext:contextCopy root:0 parent:0 callbackDict:0 streamCallbackDict:0 account:account];
 
   currentlyParsingItem = self->super._currentlyParsingItem;
   if (currentlyParsingItem && [(ASItem *)currentlyParsingItem parsingState]>= 2)
@@ -307,12 +307,12 @@ LABEL_31:
   return v16;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v103 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTask *)self taskStatusForError:v4];
-  if (v4)
+  errorCopy = error;
+  v5 = [(ASTask *)self taskStatusForError:errorCopy];
+  if (errorCopy)
   {
     v6 = DALoggingwithCategory();
     v7 = v6;
@@ -322,8 +322,8 @@ LABEL_31:
       if (os_log_type_enabled(v6, v22))
       {
         *buf = 138412290;
-        v95 = objc_opt_class();
-        v23 = v95;
+        selfCopy = objc_opt_class();
+        v23 = selfCopy;
         _os_log_impl(&dword_24A0AC000, v7, v22, "%@ cancelled", buf, 0xCu);
       }
 
@@ -336,10 +336,10 @@ LABEL_31:
       if (os_log_type_enabled(v6, v8))
       {
         *buf = 138412546;
-        v95 = objc_opt_class();
+        selfCopy = objc_opt_class();
         v96 = 2112;
-        v97 = v4;
-        v9 = v95;
+        v97 = errorCopy;
+        v9 = selfCopy;
         _os_log_impl(&dword_24A0AC000, v7, v8, "%@ failed: %@", buf, 0x16u);
       }
     }
@@ -347,9 +347,9 @@ LABEL_31:
     goto LABEL_66;
   }
 
-  v10 = [(ASTask *)self currentlyParsingItem];
-  v7 = v10;
-  if (!v10 || [v10 parsingState]!= 2)
+  currentlyParsingItem = [(ASTask *)self currentlyParsingItem];
+  v7 = currentlyParsingItem;
+  if (!currentlyParsingItem || [currentlyParsingItem parsingState]!= 2)
   {
     v5 = 1;
     v16 = DALoggingwithCategory();
@@ -357,7 +357,7 @@ LABEL_31:
     if (os_log_type_enabled(v16, v21))
     {
       *buf = 138412290;
-      v95 = self;
+      selfCopy = self;
       _os_log_impl(&dword_24A0AC000, v16, v21, "%@ Parse error: no meeting response response!", buf, 0xCu);
       v5 = 1;
     }
@@ -370,51 +370,51 @@ LABEL_31:
   if (os_log_type_enabled(v11, v12))
   {
     *buf = 138412546;
-    v95 = objc_opt_class();
+    selfCopy = objc_opt_class();
     v96 = 2112;
     v97 = v7;
-    v13 = v95;
+    v13 = selfCopy;
     _os_log_impl(&dword_24A0AC000, v11, v12, "%@ Parsed response of %@", buf, 0x16u);
   }
 
   if ([(NSArray *)self->_responseItems count]== 1)
   {
-    v14 = [v7 singularResponses];
-    v15 = [v14 count];
+    singularResponses = [v7 singularResponses];
+    v15 = [singularResponses count];
 
     if (v15 == 1)
     {
       v16 = [(NSArray *)self->_responseItems objectAtIndexedSubscript:0];
-      v17 = [v7 singularResponses];
-      v18 = [v17 objectAtIndexedSubscript:0];
+      singularResponses2 = [v7 singularResponses];
+      v18 = [singularResponses2 objectAtIndexedSubscript:0];
 
-      v19 = [v18 eventId];
-      [v16 setCalEventServerId:v19];
+      eventId = [v18 eventId];
+      [v16 setCalEventServerId:eventId];
 
-      v20 = [v18 status];
-      -[NSObject setStatus:](v16, "setStatus:", -[ASMeetingResponseTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [v20 intValue]));
+      status = [v18 status];
+      -[NSObject setStatus:](v16, "setStatus:", -[ASMeetingResponseTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [status intValue]));
 
       goto LABEL_65;
     }
   }
 
-  v24 = [v7 singularResponses];
-  v16 = [v24 count];
+  singularResponses3 = [v7 singularResponses];
+  v16 = [singularResponses3 count];
 
   if (v16)
   {
-    v25 = [v7 singularResponses];
-    v16 = [v25 objectAtIndexedSubscript:0];
+    singularResponses4 = [v7 singularResponses];
+    v16 = [singularResponses4 objectAtIndexedSubscript:0];
   }
 
-  v26 = [v7 singularResponses];
-  if ([v26 count] == 1)
+  singularResponses5 = [v7 singularResponses];
+  if ([singularResponses5 count] == 1)
   {
-    v27 = [v16 status];
+    status2 = [v16 status];
     v28 = v5;
-    v29 = [v27 intValue];
+    intValue = [status2 intValue];
 
-    if (v29 == 4)
+    if (intValue == 4)
     {
       v30 = DALoggingwithCategory();
       v31 = *(MEMORY[0x277D03988] + 3);
@@ -445,11 +445,11 @@ LABEL_31:
             }
 
             v37 = *(*(&v90 + 1) + 8 * i);
-            v38 = [v16 eventId];
-            [v37 setCalEventServerId:v38];
+            eventId2 = [v16 eventId];
+            [v37 setCalEventServerId:eventId2];
 
-            v39 = [v16 status];
-            [v37 setStatus:{-[ASMeetingResponseTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", objc_msgSend(v39, "intValue"))}];
+            status3 = [v16 status];
+            [v37 setStatus:{-[ASMeetingResponseTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", objc_msgSend(status3, "intValue"))}];
           }
 
           v33 = [(NSArray *)obj countByEnumeratingWithState:&v90 objects:v102 count:16];
@@ -474,8 +474,8 @@ LABEL_31:
   v89 = 0u;
   v87 = 0u;
   v86 = 0u;
-  v73 = [v7 singularResponses];
-  v74 = [v73 countByEnumeratingWithState:&v86 objects:v101 count:16];
+  singularResponses6 = [v7 singularResponses];
+  v74 = [singularResponses6 countByEnumeratingWithState:&v86 objects:v101 count:16];
   if (!v74)
   {
     goto LABEL_60;
@@ -484,7 +484,7 @@ LABEL_31:
   v71 = v5;
   v72 = v7;
   v75 = *v87;
-  v76 = self;
+  selfCopy2 = self;
   while (2)
   {
     v40 = 0;
@@ -492,7 +492,7 @@ LABEL_31:
     {
       if (*v87 != v75)
       {
-        objc_enumerationMutation(v73);
+        objc_enumerationMutation(singularResponses6);
       }
 
       v77 = v40;
@@ -510,23 +510,23 @@ LABEL_56:
 LABEL_57:
         v60 = DALoggingwithCategory();
         v61 = *(MEMORY[0x277D03988] + 3);
-        self = v76;
+        self = selfCopy2;
         v7 = v72;
         if (os_log_type_enabled(v60, v61))
         {
-          responseItems = v76->_responseItems;
-          v63 = [v72 singularResponses];
+          responseItems = selfCopy2->_responseItems;
+          singularResponses7 = [v72 singularResponses];
           *buf = 138412546;
-          v95 = responseItems;
+          selfCopy = responseItems;
           v96 = 2112;
-          v97 = v63;
+          v97 = singularResponses7;
           _os_log_impl(&dword_24A0AC000, v60, v61, "Got a meeting response for something I didn't respond to?.  Sent responses %@, responses-to-the-responses %@", buf, 0x16u);
 
           v7 = v72;
         }
 
         v5 = 1;
-        v4 = 0;
+        errorCopy = 0;
         goto LABEL_60;
       }
 
@@ -542,31 +542,31 @@ LABEL_40:
         }
 
         v47 = *(*(&v82 + 1) + 8 * v46);
-        v48 = [v47 deliveryItemServerId];
-        v49 = [v41 requestId];
-        v50 = [v48 isEqualToString:v49];
+        deliveryItemServerId = [v47 deliveryItemServerId];
+        requestId = [v41 requestId];
+        v50 = [deliveryItemServerId isEqualToString:requestId];
 
         if (!v50)
         {
           goto LABEL_47;
         }
 
-        v51 = [v41 instanceId];
+        instanceId = [v41 instanceId];
 
-        if (!v51)
+        if (!instanceId)
         {
           v56 = v47;
           goto LABEL_52;
         }
 
         v52 = MEMORY[0x277CBEAA8];
-        v53 = [v41 instanceId];
-        v54 = [v52 dateWithActiveSyncString:v53];
+        instanceId2 = [v41 instanceId];
+        v54 = [v52 dateWithActiveSyncString:instanceId2];
 
-        v55 = [v47 instanceDate];
-        LODWORD(v53) = [v54 isEqualToDate:v55];
+        instanceDate = [v47 instanceDate];
+        LODWORD(instanceId2) = [v54 isEqualToDate:instanceDate];
 
-        if (v53)
+        if (instanceId2)
         {
           break;
         }
@@ -592,19 +592,19 @@ LABEL_52:
         goto LABEL_57;
       }
 
-      v58 = [v41 eventId];
-      [v47 setCalEventServerId:v58];
+      eventId3 = [v41 eventId];
+      [v47 setCalEventServerId:eventId3];
 
-      v59 = [v41 status];
-      self = v76;
-      [v47 setStatus:{-[ASMeetingResponseTask taskStatusForExchangeStatus:](v76, "taskStatusForExchangeStatus:", objc_msgSend(v59, "intValue"))}];
+      status4 = [v41 status];
+      self = selfCopy2;
+      [v47 setStatus:{-[ASMeetingResponseTask taskStatusForExchangeStatus:](selfCopy2, "taskStatusForExchangeStatus:", objc_msgSend(status4, "intValue"))}];
 
       [(NSArray *)v42 removeObject:v47];
       v40 = v77 + 1;
     }
 
     while (v77 + 1 != v74);
-    v74 = [v73 countByEnumeratingWithState:&v86 objects:v101 count:16];
+    v74 = [singularResponses6 countByEnumeratingWithState:&v86 objects:v101 count:16];
     if (v74)
     {
       continue;
@@ -613,7 +613,7 @@ LABEL_52:
     break;
   }
 
-  v4 = 0;
+  errorCopy = 0;
   v7 = v72;
   v5 = v71;
 LABEL_60:
@@ -627,14 +627,14 @@ LABEL_60:
       v66 = v7;
       v67 = [(NSArray *)obj count];
       v68 = self->_responseItems;
-      v69 = [v66 singularResponses];
+      singularResponses8 = [v66 singularResponses];
       *buf = 134218498;
-      v95 = v67;
+      selfCopy = v67;
       v7 = v66;
       v96 = 2112;
       v97 = v68;
       v98 = 2112;
-      v99 = v69;
+      v99 = singularResponses8;
       _os_log_impl(&dword_24A0AC000, v64, v65, "No response for %lu meeting responses.  Sent responses %@, responses-to-the-responses %@", buf, 0x20u);
     }
 
@@ -646,7 +646,7 @@ LABEL_64:
 LABEL_65:
 LABEL_66:
 
-  if (![(ASTask *)self attemptRetryWithStatus:v5 error:v4])
+  if (![(ASTask *)self attemptRetryWithStatus:v5 error:errorCopy])
   {
     v79[0] = MEMORY[0x277D85DD0];
     v79[1] = 3221225472;
@@ -654,7 +654,7 @@ LABEL_66:
     v79[3] = &unk_278FC7B68;
     v79[4] = self;
     v81 = v5;
-    v80 = v4;
+    v80 = errorCopy;
     [(ASTask *)self finishWithError:v80 afterDelegateCallout:v79];
   }
 
@@ -669,10 +669,10 @@ void __41__ASMeetingResponseTask_finishWithError___block_invoke(void *a1)
   [WeakRetained meetingResponseTask:a1[4] completedWithStatus:a1[6] error:a1[5]];
 }
 
-- (int64_t)taskStatusForExchangeStatus:(int)a3
+- (int64_t)taskStatusForExchangeStatus:(int)status
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3 >= 5)
+  if (status >= 5)
   {
     v5 = DALoggingwithCategory();
     v6 = *(MEMORY[0x277D03988] + 3);
@@ -683,7 +683,7 @@ void __41__ASMeetingResponseTask_finishWithError___block_invoke(void *a1)
       v10 = 138412546;
       v11 = v8;
       v12 = 1024;
-      v13 = a3;
+      statusCopy = status;
       _os_log_impl(&dword_24A0AC000, v5, v6, "%@: Unknown status code (%d)", &v10, 0x12u);
     }
 
@@ -692,7 +692,7 @@ void __41__ASMeetingResponseTask_finishWithError___block_invoke(void *a1)
 
   else
   {
-    result = qword_24A14DB60[a3];
+    result = qword_24A14DB60[status];
   }
 
   v9 = *MEMORY[0x277D85DE8];

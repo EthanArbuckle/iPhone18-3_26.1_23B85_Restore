@@ -1,9 +1,9 @@
 @interface LinkConfigurationCell
 - (NSString)accessibilityLabel;
-- (void)_linkViewMetadataDidBecomeComplete:(id)a3;
+- (void)_linkViewMetadataDidBecomeComplete:(id)complete;
 - (void)layoutSubviews;
-- (void)linkViewNeedsResize:(id)a3;
-- (void)setAccessibilityLabel:(id)a3;
+- (void)linkViewNeedsResize:(id)resize;
+- (void)setAccessibilityLabel:(id)label;
 @end
 
 @implementation LinkConfigurationCell
@@ -29,14 +29,14 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  _objc_retain(a3);
+  _objc_retain(label);
   _objc_retain(self);
-  if (a3)
+  if (label)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    _objc_release(a3);
+    _objc_release(label);
   }
 
   sub_1002C760C();
@@ -50,22 +50,22 @@
   _objc_release(self);
 }
 
-- (void)linkViewNeedsResize:(id)a3
+- (void)linkViewNeedsResize:(id)resize
 {
-  _objc_retain(a3);
+  _objc_retain(resize);
   _objc_retain(self);
   sub_100346584();
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(resize);
 }
 
-- (void)_linkViewMetadataDidBecomeComplete:(id)a3
+- (void)_linkViewMetadataDidBecomeComplete:(id)complete
 {
-  _objc_retain(a3);
+  _objc_retain(complete);
   _objc_retain(self);
   sub_100346584();
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(complete);
 }
 
 @end

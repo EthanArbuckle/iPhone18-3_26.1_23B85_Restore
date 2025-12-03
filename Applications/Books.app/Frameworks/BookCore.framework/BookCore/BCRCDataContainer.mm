@@ -4,12 +4,12 @@
 - (BCRCDataContainer)init;
 - (BOOL)configurationLoaded;
 - (NSDictionary)configs;
-- (void)configurationManager:(id)a3 namespaceDataDidUpdateFrom:(id)a4 to:(id)a5;
+- (void)configurationManager:(id)manager namespaceDataDidUpdateFrom:(id)from to:(id)to;
 - (void)deployStagedDataIfNeeded;
-- (void)registerOnConfigChange:(id)a3;
-- (void)setOverrideObject:(id)a3 forKey:(id)a4;
-- (void)setTreatmentData:(id)a3;
-- (void)unregisterOnConfigChange:(id)a3;
+- (void)registerOnConfigChange:(id)change;
+- (void)setOverrideObject:(id)object forKey:(id)key;
+- (void)setTreatmentData:(id)data;
+- (void)unregisterOnConfigChange:(id)change;
 @end
 
 @implementation BCRCDataContainer
@@ -29,9 +29,9 @@
 - (BCRCDataContainer)init
 {
   ObjectType = swift_getObjectType();
-  v3 = [objc_opt_self() sharedInstance];
+  sharedInstance = [objc_opt_self() sharedInstance];
   v4 = objc_allocWithZone(ObjectType);
-  v5 = sub_1B414C(v3);
+  v5 = sub_1B414C(sharedInstance);
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v5;
@@ -39,15 +39,15 @@
 
 - (BOOL)configurationLoaded
 {
-  v2 = [objc_opt_self() sharedInstance];
-  v3 = [v2 configurationLoaded];
+  sharedInstance = [objc_opt_self() sharedInstance];
+  configurationLoaded = [sharedInstance configurationLoaded];
 
-  return v3;
+  return configurationLoaded;
 }
 
 - (void)deployStagedDataIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   RCDataContainer.deployStagedDataIfNeeded()();
 }
 
@@ -58,18 +58,18 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setTreatmentData:(id)a3
+- (void)setTreatmentData:(id)data
 {
   v5 = OBJC_IVAR___BCRCDataContainer_treatmentData;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = data;
+  dataCopy = data;
 }
 
 - (NSDictionary)configs
 {
-  v2 = self;
+  selfCopy = self;
   RCDataContainer.configs.getter();
 
   v3.super.isa = sub_1EEE44().super.isa;
@@ -77,10 +77,10 @@
   return v3.super.isa;
 }
 
-- (void)registerOnConfigChange:(id)a3
+- (void)registerOnConfigChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_1EF0B4();
   if (qword_33F938 != -1)
   {
@@ -88,23 +88,23 @@
   }
 
   sub_1EEAA4();
-  [objc_allocWithZone(JSManagedValue) initWithValue:v4];
+  [objc_allocWithZone(JSManagedValue) initWithValue:changeCopy];
   sub_18AFC0(&qword_340DB8);
   sub_1EEAC4();
 }
 
-- (void)unregisterOnConfigChange:(id)a3
+- (void)unregisterOnConfigChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
   sub_18AFC0(&qword_340DB8);
   sub_1EEAC4();
 }
 
-- (void)setOverrideObject:(id)a3 forKey:(id)a4
+- (void)setOverrideObject:(id)object forKey:(id)key
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  keyCopy = key;
+  selfCopy = self;
   sub_1EF444();
   swift_unknownObjectRelease();
   v8 = sub_1EEF04();
@@ -113,20 +113,20 @@
   v11 = sub_1B91B0();
   sub_1BA890(v12, v8, v10, &v11);
 
-  *(&v7->super.isa + OBJC_IVAR___BCRCDataContainer____lazy_storage___overrides) = v11;
+  *(&selfCopy->super.isa + OBJC_IVAR___BCRCDataContainer____lazy_storage___overrides) = v11;
 
   sub_1B774C();
 
   sub_18E310(v12);
 }
 
-- (void)configurationManager:(id)a3 namespaceDataDidUpdateFrom:(id)a4 to:(id)a5
+- (void)configurationManager:(id)manager namespaceDataDidUpdateFrom:(id)from to:(id)to
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1BD658(v10);
+  managerCopy = manager;
+  fromCopy = from;
+  toCopy = to;
+  selfCopy = self;
+  sub_1BD658(toCopy);
 }
 
 @end

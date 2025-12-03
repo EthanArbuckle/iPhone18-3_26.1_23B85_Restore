@@ -1,30 +1,30 @@
 @interface NSATSGlyphStorage
-+ (NSATSGlyphStorage)allocWithZone:(_NSZone *)a3;
-- (__CTGlyphStorage)createCopy:(id)a3;
-- (const)_createEllipsisRunWithStringRange:(uint64_t)a3 attributes:;
++ (NSATSGlyphStorage)allocWithZone:(_NSZone *)zone;
+- (__CTGlyphStorage)createCopy:(id)copy;
+- (const)_createEllipsisRunWithStringRange:(uint64_t)range attributes:;
 - (const)_flushCachedObjects;
-- (double)_widthForStringRange:(uint64_t)a3;
-- (uint64_t)_collectElasticRangeSurroundingCharacterAtIndex:(uint64_t)a3 minimumCharacterIndex:;
+- (double)_widthForStringRange:(uint64_t)range;
+- (uint64_t)_collectElasticRangeSurroundingCharacterAtIndex:(uint64_t)index minimumCharacterIndex:;
 - (uint64_t)createCTTypesetter;
 - (void)_invalidate;
 - (void)_resolvePositionalStakeGlyphsForLineFragment:lineFragmentRect:minPosition:maxPosition:maxLineFragmentWidth:breakHint:;
-- (void)childGlyphStorageWithCharacterRange:(uint64_t)a3;
+- (void)childGlyphStorageWithCharacterRange:(uint64_t)range;
 - (void)dealloc;
 - (void)disposeGlyphStack;
 - (void)finalize;
-- (void)getCustomAdvance:(CGSize *)a3 forIndex:(int64_t)a4;
-- (void)initGlyphStack:(int64_t)a3;
-- (void)insertGlyphs:(id)a3;
-- (void)moveGlyphsTo:(int64_t)a3 from:(id)a4;
-- (void)popGlyph:(int64_t)a3;
-- (void)pushGlyph:(int64_t)a3;
+- (void)getCustomAdvance:(CGSize *)advance forIndex:(int64_t)index;
+- (void)initGlyphStack:(int64_t)stack;
+- (void)insertGlyphs:(id)glyphs;
+- (void)moveGlyphsTo:(int64_t)to from:(id)from;
+- (void)popGlyph:(int64_t)glyph;
+- (void)pushGlyph:(int64_t)glyph;
 - (void)release;
-- (void)setAbsorbedCount:(int64_t)a3 forIndex:(int64_t)a4;
-- (void)setAdvance:(CGSize)a3 forIndex:(int64_t)a4;
-- (void)setGlyphID:(unsigned __int16)a3 forIndex:(int64_t)a4;
+- (void)setAbsorbedCount:(int64_t)count forIndex:(int64_t)index;
+- (void)setAdvance:(CGSize)advance forIndex:(int64_t)index;
+- (void)setGlyphID:(unsigned __int16)d forIndex:(int64_t)index;
 - (void)setGlyphRange:characterRange:;
-- (void)setStringIndex:(int64_t)a3 forIndex:(int64_t)a4;
-- (void)swapGlyph:(int64_t)a3 withIndex:(int64_t)a4;
+- (void)setStringIndex:(int64_t)index forIndex:(int64_t)forIndex;
+- (void)swapGlyph:(int64_t)glyph withIndex:(int64_t)index;
 @end
 
 @implementation NSATSGlyphStorage
@@ -246,20 +246,20 @@
 
 - (void)_invalidate
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[9];
+    v2 = self[9];
     if (v2)
     {
       CFArrayRemoveAllValues(v2);
     }
 
-    a1[19] = 0;
-    v3 = a1[20];
+    self[19] = 0;
+    v3 = self[20];
     if (v3)
     {
       CFRelease(v3);
-      a1[20] = 0;
+      self[20] = 0;
     }
   }
 }
@@ -284,7 +284,7 @@
   return result;
 }
 
-+ (NSATSGlyphStorage)allocWithZone:(_NSZone *)a3
++ (NSATSGlyphStorage)allocWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock_with_options();
   v5 = dword_1ED4DF2CC;
@@ -292,9 +292,9 @@
   {
     os_unfair_lock_unlock(&stru_1ED4DF2C8);
 LABEL_5:
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___NSATSGlyphStorage;
-    return objc_msgSendSuper2(&v8, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v8, sel_allocWithZone_, zone);
   }
 
   --dword_1ED4DF2CC;
@@ -310,8 +310,8 @@ LABEL_5:
 
 - (void)release
 {
-  dword_1ED4DF2CC = a1 + 1;
-  *&_MergedGlobals_1[8 * a1 + 40] = a2;
+  dword_1ED4DF2CC = self + 1;
+  *&_MergedGlobals_1[8 * self + 40] = a2;
   v2 = a2[8];
   a2[8] = 0;
   v3 = a2[9];
@@ -339,45 +339,45 @@ LABEL_5:
   }
 }
 
-- (double)_widthForStringRange:(uint64_t)a3
+- (double)_widthForStringRange:(uint64_t)range
 {
   v3 = 0.0;
-  if (a1 && a3)
+  if (self && range)
   {
-    v5 = a2 - *(a1 + 128);
-    v6 = *(a1 + 144);
-    if (v5 + a3 >= v6)
+    v5 = a2 - *(self + 128);
+    v6 = *(self + 144);
+    if (v5 + range >= v6)
     {
-      v7 = *(a1 + 144);
+      v7 = *(self + 144);
     }
 
     else
     {
-      v7 = v5 + a3;
+      v7 = v5 + range;
     }
 
     if (v5 >= v6)
     {
-      v8 = *(a1 + 144);
+      v8 = *(self + 144);
     }
 
     else
     {
-      v8 = a2 - *(a1 + 128);
+      v8 = a2 - *(self + 128);
     }
 
-    v9 = *(a1 + 224);
+    v9 = *(self + 224);
     if ((v9 & 0x10) != 0)
     {
       if ((v9 & 4) != 0)
       {
-        Count = CFArrayGetCount(*(a1 + 72));
+        Count = CFArrayGetCount(*(self + 72));
         if (Count >= 1)
         {
           v38 = Count;
           for (i = 0; i != v38; ++i)
           {
-            ValueAtIndex = CFArrayGetValueAtIndex(*(a1 + 72), i);
+            ValueAtIndex = CFArrayGetValueAtIndex(*(self + 72), i);
             StringRange = CTRunGetStringRange(ValueAtIndex);
             if (v7 <= StringRange.location)
             {
@@ -403,20 +403,20 @@ LABEL_5:
 
       else
       {
-        v14 = *(a1 + 88);
-        v15 = &v14[13 * *(a1 + 96)];
-        v16 = *(a1 + 200);
+        v14 = *(self + 88);
+        v15 = &v14[13 * *(self + 96)];
+        v16 = *(self + 200);
         if (v16)
         {
-          if (*(a1 + 208) > v8)
+          if (*(self + 208) > v8)
           {
             v16 = 0;
           }
 
           else
           {
-            v14 = *(a1 + 200);
-            v16 = *(a1 + 208);
+            v14 = *(self + 200);
+            v16 = *(self + 208);
           }
         }
 
@@ -427,7 +427,7 @@ LABEL_5:
           {
             if ((v14 + 13) >= v15)
             {
-              v18 = (a1 + *MEMORY[0x1E6965608]);
+              v18 = (self + *MEMORY[0x1E6965608]);
             }
 
             else
@@ -435,13 +435,13 @@ LABEL_5:
               v18 = v14 + 16;
             }
 
-            v19 = *(a1 + *MEMORY[0x1E6965600]);
+            v19 = *(self + *MEMORY[0x1E6965600]);
             v20 = v14[3];
             v21 = (v19 + 16 * v20);
             v22 = v19 + 16 * *v18;
-            v23 = *(a1 + *MEMORY[0x1E6965620]);
+            v23 = *(self + *MEMORY[0x1E6965620]);
             v24 = (v23 + 8 * v20);
-            v25 = *(a1 + *MEMORY[0x1E69655F8]);
+            v25 = *(self + *MEMORY[0x1E69655F8]);
             v26 = (v25 + 8 * v20);
             if (v25)
             {
@@ -457,14 +457,14 @@ LABEL_5:
             {
               if ((v9 & 0x40) != 0)
               {
-                if (*(a1 + *MEMORY[0x1E6965608]) >= *(a1 + 120))
+                if (*(self + *MEMORY[0x1E6965608]) >= *(self + 120))
                 {
                   v28 = 0;
                 }
 
                 else
                 {
-                  v28 = *(a1 + 216);
+                  v28 = *(self + 216);
                 }
 
                 v22 -= 16 * v28;
@@ -484,7 +484,7 @@ LABEL_5:
 
               if ((v14 + 13) >= v15)
               {
-                v30 = (a1 + *MEMORY[0x1E6965608]);
+                v30 = (self + *MEMORY[0x1E6965608]);
               }
 
               else
@@ -554,7 +554,7 @@ LABEL_52:
 
     else if (v8 < v7)
     {
-      v10 = *(a1 + *MEMORY[0x1E6965600]);
+      v10 = *(self + *MEMORY[0x1E6965600]);
       v11 = v10 + 16 * v7;
       v12 = (v10 + 16 * v8);
       do
@@ -653,10 +653,10 @@ LABEL_52:
   [(NSATSGlyphStorage *)&v9 finalize];
 }
 
-- (__CTGlyphStorage)createCopy:(id)a3
+- (__CTGlyphStorage)createCopy:(id)copy
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = copy.var1;
+  var0 = copy.var0;
   if (self->_parent)
   {
     parent = self->_parent;
@@ -669,29 +669,29 @@ LABEL_52:
 
   if ((*&self->_gFlags & 0x10) == 0)
   {
-    v56 = self->_characterRange.location + a3.var0;
-    v57 = a3.var1;
-    v54 = a3.var1;
-    v55 = self->_glyphRange.location + a3.var0;
-    v7 = a3.var1;
+    v56 = self->_characterRange.location + copy.var0;
+    v57 = copy.var1;
+    v54 = copy.var1;
+    v55 = self->_glyphRange.location + copy.var0;
+    v7 = copy.var1;
     goto LABEL_28;
   }
 
   v8 = *(&self->super.super.isa + *MEMORY[0x1E6965620]);
-  v9 = (v8 + 8 * a3.var0);
+  v9 = (v8 + 8 * copy.var0);
   v10 = *v9;
-  v11 = a3.var0 + a3.var1 - 1;
+  v11 = copy.var0 + copy.var1 - 1;
   v12 = (v8 + 8 * v11);
   v14 = *v12;
   v15 = *(&self->super.super.isa + *MEMORY[0x1E6965618]);
-  if ((*(v15 + 4 * a3.var0) & 0x200000) == 0)
+  if ((*(v15 + 4 * copy.var0) & 0x200000) == 0)
   {
     goto LABEL_12;
   }
 
-  if (a3.var1 >= 1)
+  if (copy.var1 >= 1)
   {
-    v16 = v8 + 8 * (a3.var0 + a3.var1);
+    v16 = v8 + 8 * (copy.var0 + copy.var1);
     v17 = v9;
     do
     {
@@ -705,7 +705,7 @@ LABEL_52:
 
     while (v17 < v16);
 LABEL_12:
-    if ((*(v15 + 4 * v11) & 0x200000) != 0 && a3.var1 >= 1)
+    if ((*(v15 + 4 * v11) & 0x200000) != 0 && copy.var1 >= 1)
     {
       do
       {
@@ -740,13 +740,13 @@ LABEL_12:
 
   v7 = v24 + 1;
   location = parent->_characterRange.location;
-  v25 = a3.var0 == v10 && v7 == a3.var1;
+  v25 = copy.var0 == v10 && v7 == copy.var1;
   v56 = v10 + location;
   if (v25)
   {
-    v54 = a3.var1;
-    v55 = self->_glyphRange.location + a3.var0;
-    v57 = a3.var1;
+    v54 = copy.var1;
+    v55 = self->_glyphRange.location + copy.var0;
+    v57 = copy.var1;
   }
 
   else
@@ -872,7 +872,7 @@ LABEL_28:
   return CFRetain(v50);
 }
 
-- (void)getCustomAdvance:(CGSize *)a3 forIndex:(int64_t)a4
+- (void)getCustomAdvance:(CGSize *)advance forIndex:(int64_t)index
 {
   runs = self->_runs;
   v8 = &runs[self->_numRuns];
@@ -889,31 +889,31 @@ LABEL_28:
     ++v9;
   }
 
-  while (var3 <= a4);
-  [v10[-1].var1 advancementForGlyph:(*(&self->super.super.isa + *MEMORY[0x1E6965610]))[a4]];
-  v13 = (*(&self->super.super.isa + *MEMORY[0x1E6965600]))[2 * a4 + 1];
-  a3->width = v12 * v10[-1].var6;
-  a3->height = v13;
+  while (var3 <= index);
+  [v10[-1].var1 advancementForGlyph:(*(&self->super.super.isa + *MEMORY[0x1E6965610]))[index]];
+  v13 = (*(&self->super.super.isa + *MEMORY[0x1E6965600]))[2 * index + 1];
+  advance->width = v12 * v10[-1].var6;
+  advance->height = v13;
 }
 
-- (void)setGlyphID:(unsigned __int16)a3 forIndex:(int64_t)a4
+- (void)setGlyphID:(unsigned __int16)d forIndex:(int64_t)index
 {
-  (*(&self->super.super.isa + *MEMORY[0x1E6965610]))[a4] = a3;
-  (*(&self->super.super.isa + *MEMORY[0x1E6965618]))[a4] |= 0x40000u;
+  (*(&self->super.super.isa + *MEMORY[0x1E6965610]))[index] = d;
+  (*(&self->super.super.isa + *MEMORY[0x1E6965618]))[index] |= 0x40000u;
   *&self->_gFlags |= 1u;
 }
 
-- (void)setAdvance:(CGSize)a3 forIndex:(int64_t)a4
+- (void)setAdvance:(CGSize)advance forIndex:(int64_t)index
 {
-  v4 = (*(&self->super.super.isa + *MEMORY[0x1E6965600]) + 16 * a4);
-  if (v4->width != a3.width || v4->height != a3.height)
+  v4 = (*(&self->super.super.isa + *MEMORY[0x1E6965600]) + 16 * index);
+  if (v4->width != advance.width || v4->height != advance.height)
   {
-    *v4 = a3;
-    (*(&self->super.super.isa + *MEMORY[0x1E6965618]))[a4] |= 0x80000u;
+    *v4 = advance;
+    (*(&self->super.super.isa + *MEMORY[0x1E6965618]))[index] |= 0x80000u;
   }
 }
 
-- (void)setAbsorbedCount:(int64_t)a3 forIndex:(int64_t)a4
+- (void)setAbsorbedCount:(int64_t)count forIndex:(int64_t)index
 {
   v7 = *MEMORY[0x1E69655F8];
   v8 = *(&self->super.super.isa + v7);
@@ -923,40 +923,40 @@ LABEL_28:
     *(&self->super.super.isa + v7) = v8;
   }
 
-  *(v8 + a4) = a3;
+  *(v8 + index) = count;
 }
 
-- (void)setStringIndex:(int64_t)a3 forIndex:(int64_t)a4
+- (void)setStringIndex:(int64_t)index forIndex:(int64_t)forIndex
 {
   v4 = *MEMORY[0x1E6965620];
   v5 = *(&self->super.super.isa + v4);
   v6 = *MEMORY[0x1E6965618];
-  if (*(v5 + 8 * a4) != a3)
+  if (*(v5 + 8 * forIndex) != index)
   {
-    *(v5 + 8 * a4) = a3;
+    *(v5 + 8 * forIndex) = index;
     v7 = *(&self->super.super.isa + v6);
-    v8 = *(v7 + 4 * a4);
+    v8 = *(v7 + 4 * forIndex);
     if ((v8 & 0x20300) == 0)
     {
-      *(v7 + 4 * a4) = v8 | 0x40000;
+      *(v7 + 4 * forIndex) = v8 | 0x40000;
     }
   }
 
   *&self->_gFlags |= 0x30u;
   v9 = *(&self->super.super.isa + v6);
-  v10 = (v9 + 4 * a4);
+  v10 = (v9 + 4 * forIndex);
   if ((*v10 & 0x220000) == 0x20000)
   {
     v11 = *(&self->super.super.isa + v4);
-    v12 = v11 + 8 * a4;
-    if (!a4 || *(v12 - 8) != a3)
+    v12 = v11 + 8 * forIndex;
+    if (!forIndex || *(v12 - 8) != index)
     {
       v13 = *(&self->super.super.isa + *MEMORY[0x1E6965608]);
-      if (v13 == a4 + 1 || *(v11 + 8 * (a4 + 1)) != a3)
+      if (v13 == forIndex + 1 || *(v11 + 8 * (forIndex + 1)) != index)
       {
         v14 = v11 + 8 * v13;
         v15 = v12 + 8;
-        v16 = 8 * a4;
+        v16 = 8 * forIndex;
         if (v15 >= v14)
         {
 LABEL_17:
@@ -965,7 +965,7 @@ LABEL_17:
           {
             v22 = *(v21 + v16);
             v16 -= 8;
-            if (v22 == a3)
+            if (v22 == index)
             {
               if (!v9)
               {
@@ -981,14 +981,14 @@ LABEL_17:
         else
         {
           v17 = *(&self->super.super.isa + *MEMORY[0x1E69655F8]);
-          v18 = (v17 + 8 * a4);
+          v18 = (v17 + 8 * forIndex);
           if (!v17)
           {
             v18 = 0;
           }
 
           v19 = v16 + 8;
-          while (*(v11 + v19) < a3)
+          while (*(v11 + v19) < index)
           {
             if (v18)
             {
@@ -1003,7 +1003,7 @@ LABEL_17:
             }
           }
 
-          v23 = (v9 + 4 * a4);
+          v23 = (v9 + 4 * forIndex);
           v10 = (v9 + (v19 >> 1));
 LABEL_24:
           while (v23 <= v10)
@@ -1016,45 +1016,45 @@ LABEL_24:
   }
 }
 
-- (void)swapGlyph:(int64_t)a3 withIndex:(int64_t)a4
+- (void)swapGlyph:(int64_t)glyph withIndex:(int64_t)index
 {
   v4 = *(&self->super.super.isa + *MEMORY[0x1E6965610]);
-  v5 = *(v4 + 2 * a3);
-  *(v4 + 2 * a3) = *(v4 + 2 * a4);
-  *(v4 + 2 * a4) = v5;
+  v5 = *(v4 + 2 * glyph);
+  *(v4 + 2 * glyph) = *(v4 + 2 * index);
+  *(v4 + 2 * index) = v5;
   v6 = *MEMORY[0x1E6965600];
   v7 = *(&self->super.super.isa + v6);
-  v8 = *(v7 + 16 * a3);
-  *(v7 + 16 * a3) = *(v7 + 16 * a4);
-  (*(&self->super.super.isa + v6))[a4] = v8;
+  v8 = *(v7 + 16 * glyph);
+  *(v7 + 16 * glyph) = *(v7 + 16 * index);
+  (*(&self->super.super.isa + v6))[index] = v8;
   v9 = *(&self->super.super.isa + *MEMORY[0x1E6965618]);
-  LODWORD(v7) = *(v9 + 4 * a3);
-  *(v9 + 4 * a3) = *(v9 + 4 * a4);
-  *(v9 + 4 * a4) = v7;
+  LODWORD(v7) = *(v9 + 4 * glyph);
+  *(v9 + 4 * glyph) = *(v9 + 4 * index);
+  *(v9 + 4 * index) = v7;
   v10 = *(&self->super.super.isa + *MEMORY[0x1E6965620]);
-  v11 = *(v10 + 8 * a3);
-  *(v10 + 8 * a3) = *(v10 + 8 * a4);
-  *(v10 + 8 * a4) = v11;
+  v11 = *(v10 + 8 * glyph);
+  *(v10 + 8 * glyph) = *(v10 + 8 * index);
+  *(v10 + 8 * index) = v11;
   v12 = *(&self->super.super.isa + *MEMORY[0x1E69655F8]);
   if (v12)
   {
-    v13 = *(v12 + 8 * a3);
-    *(v12 + 8 * a3) = *(v12 + 8 * a4);
-    *(v12 + 8 * a4) = v13;
+    v13 = *(v12 + 8 * glyph);
+    *(v12 + 8 * glyph) = *(v12 + 8 * index);
+    *(v12 + 8 * index) = v13;
   }
 
   *&self->_gFlags |= 0x30u;
 }
 
-- (void)moveGlyphsTo:(int64_t)a3 from:(id)a4
+- (void)moveGlyphsTo:(int64_t)to from:(id)from
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = from.var1;
+  var0 = from.var0;
   v8 = MEMORY[0x1E6965618];
-  if (self->_stack && a4.var1 >= 1)
+  if (self->_stack && from.var1 >= 1)
   {
-    v9 = (*(&self->super.super.isa + *MEMORY[0x1E6965618]) + 4 * a4.var0);
-    v10 = &v9[a4.var1];
+    v9 = (*(&self->super.super.isa + *MEMORY[0x1E6965618]) + 4 * from.var0);
+    v10 = &v9[from.var1];
     do
     {
       *v9++ |= 0x200000u;
@@ -1063,34 +1063,34 @@ LABEL_24:
     while (v9 < v10);
   }
 
-  memmove(*(&self->super.super.isa + *MEMORY[0x1E6965610]) + 2 * a3, *(&self->super.super.isa + *MEMORY[0x1E6965610]) + 2 * a4.var0, 2 * a4.var1);
-  memmove(*(&self->super.super.isa + *MEMORY[0x1E6965600]) + 16 * a3, *(&self->super.super.isa + *MEMORY[0x1E6965600]) + 16 * var0, 16 * var1);
-  memmove(*(&self->super.super.isa + *v8) + 4 * a3, *(&self->super.super.isa + *v8) + 4 * var0, 4 * var1);
+  memmove(*(&self->super.super.isa + *MEMORY[0x1E6965610]) + 2 * to, *(&self->super.super.isa + *MEMORY[0x1E6965610]) + 2 * from.var0, 2 * from.var1);
+  memmove(*(&self->super.super.isa + *MEMORY[0x1E6965600]) + 16 * to, *(&self->super.super.isa + *MEMORY[0x1E6965600]) + 16 * var0, 16 * var1);
+  memmove(*(&self->super.super.isa + *v8) + 4 * to, *(&self->super.super.isa + *v8) + 4 * var0, 4 * var1);
   v11 = 8 * var1;
-  memmove(*(&self->super.super.isa + *MEMORY[0x1E6965620]) + 8 * a3, *(&self->super.super.isa + *MEMORY[0x1E6965620]) + 8 * var0, v11);
+  memmove(*(&self->super.super.isa + *MEMORY[0x1E6965620]) + 8 * to, *(&self->super.super.isa + *MEMORY[0x1E6965620]) + 8 * var0, v11);
   v12 = *(&self->super.super.isa + *MEMORY[0x1E69655F8]);
   if (v12)
   {
-    memmove((v12 + 8 * a3), (v12 + 8 * var0), v11);
+    memmove((v12 + 8 * to), (v12 + 8 * var0), v11);
   }
 
   *&self->_gFlags |= 0x10u;
 }
 
-- (void)insertGlyphs:(id)a3
+- (void)insertGlyphs:(id)glyphs
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = glyphs.var1;
+  var0 = glyphs.var0;
   v6 = *MEMORY[0x1E6965608];
   v7 = *(&self->super.super.isa + v6);
-  v8 = a3.var0 + 1;
-  *(&self->super.super.isa + v6) = (v7 + a3.var1);
-  v9 = v7 - (a3.var0 + 1);
-  if (v7 + a3.var1 <= self->_bufferSize)
+  v8 = glyphs.var0 + 1;
+  *(&self->super.super.isa + v6) = (v7 + glyphs.var1);
+  v9 = v7 - (glyphs.var0 + 1);
+  if (v7 + glyphs.var1 <= self->_bufferSize)
   {
     v25 = *MEMORY[0x1E6965610];
     v26 = *(&self->super.super.isa + *MEMORY[0x1E6965610]) + 2 * v8;
-    memmove(&v26[2 * a3.var1], v26, 2 * v9);
+    memmove(&v26[2 * glyphs.var1], v26, 2 * v9);
     LODWORD(v20) = *MEMORY[0x1E6965600];
     v27 = *(&self->super.super.isa + *MEMORY[0x1E6965600]) + 16 * v8;
     memmove(&v27[16 * var1], v27, 16 * v9);
@@ -1108,7 +1108,7 @@ LABEL_24:
 
   else
   {
-    v37 = a3.var0;
+    v37 = glyphs.var0;
     v10 = [(NSATSGlyphStorage *)self zone];
     zone = v10;
     v11 = *(&self->super.super.isa + v6);
@@ -1188,41 +1188,41 @@ LABEL_24:
   *&self->_gFlags |= 0x11u;
 }
 
-- (void)initGlyphStack:(int64_t)a3
+- (void)initGlyphStack:(int64_t)stack
 {
   if (self->_stack)
   {
     NSZoneFree([(NSATSGlyphStorage *)self zone], self->_stack);
   }
 
-  v5 = NSZoneMalloc([(NSATSGlyphStorage *)self zone], (48 * a3) | 8);
+  v5 = NSZoneMalloc([(NSATSGlyphStorage *)self zone], (48 * stack) | 8);
   self->_stack = v5;
   v5->var0 = 0;
 }
 
-- (void)pushGlyph:(int64_t)a3
+- (void)pushGlyph:(int64_t)glyph
 {
   stack = self->_stack;
   if (stack)
   {
     v4 = stack + 6 * stack->var0++;
-    v4->var1[0].var0 = (*(&self->super.super.isa + *MEMORY[0x1E6965610]))[a3];
+    v4->var1[0].var0 = (*(&self->super.super.isa + *MEMORY[0x1E6965610]))[glyph];
     var1 = v4->var1;
-    var1->var1 = (*(&self->super.super.isa + *MEMORY[0x1E6965600]))[a3];
+    var1->var1 = (*(&self->super.super.isa + *MEMORY[0x1E6965600]))[glyph];
     v6 = MEMORY[0x1E6965620];
-    var1->var2 = (*(&self->super.super.isa + *MEMORY[0x1E6965618]))[a3] | 0x200000;
-    var1->var3 = (*(&self->super.super.isa + *v6))[a3];
+    var1->var2 = (*(&self->super.super.isa + *MEMORY[0x1E6965618]))[glyph] | 0x200000;
+    var1->var3 = (*(&self->super.super.isa + *v6))[glyph];
     v7 = *(&self->super.super.isa + *MEMORY[0x1E69655F8]);
     if (v7)
     {
-      v7 = *(v7 + 8 * a3);
+      v7 = *(v7 + 8 * glyph);
     }
 
     var1->var4 = v7;
   }
 }
 
-- (void)popGlyph:(int64_t)a3
+- (void)popGlyph:(int64_t)glyph
 {
   stack = self->_stack;
   if (stack)
@@ -1232,14 +1232,14 @@ LABEL_24:
     v5 = v4 - 5;
     v7 = MEMORY[0x1E6965610];
     --stack->var0;
-    (*(&self->super.super.isa + *v7))[a3] = v6;
-    (*(&self->super.super.isa + *MEMORY[0x1E6965600]))[a3] = *&v5->var1[0].var0;
-    (*(&self->super.super.isa + *MEMORY[0x1E6965618]))[a3] = LODWORD(v5->var1[0].var1.height);
-    (*(&self->super.super.isa + *MEMORY[0x1E6965620]))[a3] = *&v5->var1[0].var2;
+    (*(&self->super.super.isa + *v7))[glyph] = v6;
+    (*(&self->super.super.isa + *MEMORY[0x1E6965600]))[glyph] = *&v5->var1[0].var0;
+    (*(&self->super.super.isa + *MEMORY[0x1E6965618]))[glyph] = LODWORD(v5->var1[0].var1.height);
+    (*(&self->super.super.isa + *MEMORY[0x1E6965620]))[glyph] = *&v5->var1[0].var2;
     v8 = *(&self->super.super.isa + *MEMORY[0x1E69655F8]);
     if (v8)
     {
-      *(v8 + 8 * a3) = v5->var1[0].var3;
+      *(v8 + 8 * glyph) = v5->var1[0].var3;
     }
 
     *&self->_gFlags |= 0x30u;
@@ -1266,7 +1266,7 @@ LABEL_24:
     v7 = v2;
     v8 = v1;
     v266 = v0;
-    v222 = [*(v0 + 80) _getATSTypesetterGuts];
+    _getATSTypesetterGuts = [*(v0 + 80) _getATSTypesetterGuts];
     __NSATSGlyphStorageInitBuffer(v266, v8, v7, v6, v5, v7);
     v17 = [OUTLINED_FUNCTION_8_0(v9 v10];
     v18 = *(v267 + 128);
@@ -1454,23 +1454,23 @@ LABEL_34:
           goto LABEL_51;
         }
 
-        v81 = [*v56 objectForKey:@"NSFont"];
+        verticalFont = [*v56 objectForKey:@"NSFont"];
         if ([objc_msgSend(v80 objectForKey:{@"CTVerticalForms", "BOOLValue"}])
         {
-          v81 = [v81 verticalFont];
+          verticalFont = [verticalFont verticalFont];
         }
 
-        if (!v81)
+        if (!verticalFont)
         {
 LABEL_51:
-          v81 = NSDefaultFont();
+          verticalFont = NSDefaultFont();
         }
 
-        *(v56 + 8) = v81;
+        *(v56 + 8) = verticalFont;
         *(v56 + 96) &= ~0x80u;
-        if ([v81 isEqual:v81])
+        if ([verticalFont isEqual:verticalFont])
         {
-          v81 = *(v56 + 8);
+          verticalFont = *(v56 + 8);
           if (!v78)
           {
             goto LABEL_59;
@@ -1479,7 +1479,7 @@ LABEL_51:
 
         else
         {
-          *(v56 + 8) = v81;
+          *(v56 + 8) = verticalFont;
           *(v56 + 96) |= 0x80u;
           if (!v78)
           {
@@ -1487,46 +1487,46 @@ LABEL_51:
           }
         }
 
-        v82 = [v81 verticalFont];
-        if (v82)
+        v81VerticalFont = [verticalFont verticalFont];
+        if (v81VerticalFont)
         {
-          v81 = v82;
+          verticalFont = v81VerticalFont;
         }
 
-        *(v56 + 8) = v81;
+        *(v56 + 8) = verticalFont;
 LABEL_59:
-        *(v56 + 8) = [*(v270 + 80) substituteFontForFont:v81];
+        *(v56 + 8) = [*(v270 + 80) substituteFontForFont:verticalFont];
         v83 = *v56;
         if (!*v56)
         {
           goto LABEL_66;
         }
 
-        if (!v201 || (v84 = [*v56 objectForKey:_NSOriginalFontAttributeName]) == 0)
+        if (!v201 || (verticalFont2 = [*v56 objectForKey:_NSOriginalFontAttributeName]) == 0)
         {
-          v84 = [v83 objectForKey:@"NSFont"];
+          verticalFont2 = [v83 objectForKey:@"NSFont"];
         }
 
         if ([objc_msgSend(v83 objectForKey:{@"CTVerticalForms", "BOOLValue"}])
         {
-          v84 = [v84 verticalFont];
+          verticalFont2 = [verticalFont2 verticalFont];
         }
 
-        if (!v84)
+        if (!verticalFont2)
         {
 LABEL_66:
-          v84 = NSDefaultFont();
+          verticalFont2 = NSDefaultFont();
         }
 
-        v85 = v84;
+        v84VerticalFont = verticalFont2;
         if (v78)
         {
-          v85 = [v84 verticalFont];
+          v84VerticalFont = [verticalFont2 verticalFont];
         }
 
-        if (v85)
+        if (v84VerticalFont)
         {
-          v84 = v85;
+          verticalFont2 = v84VerticalFont;
         }
 
         if (([*(v270 + 80) usesFontLeading] & 1) == 0)
@@ -1534,12 +1534,12 @@ LABEL_66:
           [*(v270 + 80) paragraphSeparatorGlyphRange];
         }
 
-        [v84 _defaultLineHeightForUILayout];
+        [verticalFont2 _defaultLineHeightForUILayout];
         *(v56 + 32) = v86 + 0.0;
-        [v84 ascender];
+        [verticalFont2 ascender];
         *(v56 + 40) = v87;
         *(v56 + 56) = 0;
-        if (v230 && ([v84 isVertical] & 1) == 0)
+        if (v230 && ([verticalFont2 isVertical] & 1) == 0)
         {
           v88 = *(v56 + 32);
           v89 = ceil(v88 * 0.5);
@@ -1660,11 +1660,11 @@ LABEL_99:
           v107 = 0;
         }
 
-        v108 = [OUTLINED_FUNCTION_39(*(v56 + 96) & 0xFFFFFFBF | v107) _kernOverride];
-        *(v56 + 96) = *(v56 + 96) & 0xFFFFFFDF | (32 * (v108 != 0));
-        if (v108)
+        _kernOverride = [OUTLINED_FUNCTION_39(*(v56 + 96) & 0xFFFFFFBF | v107) _kernOverride];
+        *(v56 + 96) = *(v56 + 96) & 0xFFFFFFDF | (32 * (_kernOverride != 0));
+        if (_kernOverride)
         {
-          [v108 doubleValue];
+          [_kernOverride doubleValue];
           if (v109 == 0.0)
           {
             *(v56 + 96) |= 0x10u;
@@ -1775,12 +1775,12 @@ LABEL_99:
           goto LABEL_141;
         }
 
-        v110 = [v253 attachmentCell];
+        attachmentCell = [v253 attachmentCell];
         v111 = *(v56 + 96);
         *(v56 + 96) = v111 | 1;
-        if (v110)
+        if (attachmentCell)
         {
-          v112 = v110;
+          v112 = attachmentCell;
           if ((objc_opt_respondsToSelector() & 1) == 0)
           {
             [v112 cellSize];
@@ -1913,31 +1913,31 @@ LABEL_146:
   OUTLINED_FUNCTION_13();
 }
 
-- (void)childGlyphStorageWithCharacterRange:(uint64_t)a3
+- (void)childGlyphStorageWithCharacterRange:(uint64_t)range
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if ((*(a1 + 224) & 0x10) != 0)
+  if ((*(self + 224) & 0x10) != 0)
   {
-    [*(a1 + 80) glyphRangeForCharacterRange:a2 actualCharacterRange:{a3, 0}];
+    [*(self + 80) glyphRangeForCharacterRange:a2 actualCharacterRange:{range, 0}];
   }
 
-  v4 = +[NSATSGlyphStorage allocWithZone:](NSATSGlyphStorage, "allocWithZone:", [a1 zone]);
-  v5 = *(a1 + 80);
+  v4 = +[NSATSGlyphStorage allocWithZone:](NSATSGlyphStorage, "allocWithZone:", [self zone]);
+  v5 = *(self + 80);
   v10.receiver = v4;
   v10.super_class = NSATSGlyphStorage;
   v6 = objc_msgSendSuper2(&v10, sel_init);
   v6[10] = v5;
-  v6[19] = a1;
+  v6[19] = self;
   [NSATSGlyphStorage setGlyphRange:characterRange:];
-  Mutable = *(a1 + 160);
+  Mutable = *(self + 160);
   if (!Mutable)
   {
     Mutable = CFSetCreateMutable(0, 0, MEMORY[0x1E695E9F8]);
-    *(a1 + 160) = Mutable;
+    *(self + 160) = Mutable;
   }
 
   CFSetAddValue(Mutable, v6);
@@ -1956,12 +1956,12 @@ LABEL_146:
   return v6;
 }
 
-- (const)_createEllipsisRunWithStringRange:(uint64_t)a3 attributes:
+- (const)_createEllipsisRunWithStringRange:(uint64_t)range attributes:
 {
-  MutableRunsWithStorageAndOptions = a1;
-  if (a1)
+  MutableRunsWithStorageAndOptions = self;
+  if (self)
   {
-    v6 = OUTLINED_FUNCTION_11_0([a1 zone]);
+    v6 = OUTLINED_FUNCTION_11_0([self zone]);
     if (v6)
     {
       v7 = *(MutableRunsWithStorageAndOptions + 80);
@@ -1986,8 +1986,8 @@ LABEL_146:
     glyphs = 0;
     *(v9 + 152) = MutableRunsWithStorageAndOptions;
     v12 = *(MutableRunsWithStorageAndOptions + 128);
-    v13 = [*(MutableRunsWithStorageAndOptions + 80) glyphRangeForCharacterRange:v12 + a2 actualCharacterRange:{a3, 0}];
-    __NSATSGlyphStorageInitBuffer(v9, v13, v14, v12 + a2, a3, 1);
+    v13 = [*(MutableRunsWithStorageAndOptions + 80) glyphRangeForCharacterRange:v12 + a2 actualCharacterRange:{range, 0}];
+    __NSATSGlyphStorageInitBuffer(v9, v13, v14, v12 + a2, range, 1);
     if (v11 >= 1)
     {
       v15 = 0;
@@ -2016,7 +2016,7 @@ LABEL_146:
 
     memcpy(v17, v10, 0x68uLL);
     v18 = *(v9 + 88);
-    *(v18 + 16) = a3;
+    *(v18 + 16) = range;
     *(v18 + 24) = 0;
     v19 = *(MEMORY[0x1E696AA80] + 16);
     *(v18 + 64) = *MEMORY[0x1E696AA80];
@@ -2071,7 +2071,7 @@ LABEL_146:
       v35 = *(v9 + *v34);
     }
 
-    *v35 = a3 - 1;
+    *v35 = range - 1;
     *(v9 + 224) |= 1u;
     *(v9 + 224) |= 8u;
     Mutable = *(MutableRunsWithStorageAndOptions + 160);
@@ -2127,16 +2127,16 @@ LABEL_146:
   v15 = v3;
   v16 = v1;
   v17 = v0;
-  v185 = [*(v0 + 80) currentTextContainer];
+  currentTextContainer = [*(v0 + 80) currentTextContainer];
   theArray = CTLineGetGlyphRuns(v16);
   Count = CFArrayGetCount(theArray);
   v212 = 0;
   v211 = 0;
   [*(v17 + 80) lineFragmentPadding];
   v20 = v19;
-  v21 = [*(v17 + 80) _baseWritingDirection];
+  _baseWritingDirection = [*(v17 + 80) _baseWritingDirection];
   v22 = v10 != 0;
-  v23 = [*(v17 + 80) applicationFrameworkContext];
+  applicationFrameworkContext = [*(v17 + 80) applicationFrameworkContext];
   memset(v213, 0, 128);
   bzero(buffer, 0xB8uLL);
   if ((*(v17 + 224) & 2) == 0)
@@ -2146,9 +2146,9 @@ LABEL_146:
 
   v166 = v10;
   v196 = v17;
-  v24 = v21 == 1;
+  v24 = _baseWritingDirection == 1;
   *&v170 = v20;
-  if (v21 == 1)
+  if (_baseWritingDirection == 1)
   {
     v25 = -1;
   }
@@ -2158,7 +2158,7 @@ LABEL_146:
     v25 = 1;
   }
 
-  if (v21 == 1)
+  if (_baseWritingDirection == 1)
   {
     v26 = v15 + v20 * -2.0 - v12;
   }
@@ -2209,12 +2209,12 @@ LABEL_146:
   if (Count >= 1)
   {
     v177 = v28;
-    v163 = v23;
+    v163 = applicationFrameworkContext;
     HIDWORD(v192) = v22;
     *&v164 = v13;
     v165 = v16;
     v31 = 0;
-    v32 = v21;
+    v32 = _baseWritingDirection;
     v33 = 0;
     v201 = 0;
     v188 = 0;
@@ -2322,7 +2322,7 @@ LABEL_146:
             if (v66)
             {
               v67 = v66;
-              v68 = [v66 attachmentCell];
+              attachmentCell = [v66 attachmentCell];
               [v67 lineLayoutPadding];
               v70 = v69;
               v217.origin.x = v186;
@@ -2334,9 +2334,9 @@ LABEL_146:
               x = v218.origin.x;
               width = v218.size.width;
               height = v218.size.height;
-              if (v68)
+              if (attachmentCell)
               {
-                OUTLINED_FUNCTION_14(v71, v72, v73, v74, v75, v76, v77, v78, v218.origin.x, v218.origin.y, v218.size.width, v218.size.height, v79, v80, v81, v82, v160, v161, v162, v163, v164, v165, v166, v167, v168, v169, *&v170, v171, *&v172, v173, *&v174, *&v175, v176, v177, *&v178, v179, *&v180, *&v181, *&v182, *&v183, v184, v185, *&v186, *&v187, v188, v189, v191, v192, v193, v194, v195, v196, theArray, v198, v199);
+                OUTLINED_FUNCTION_14(_allocatesTextContainer, v72, v73, v74, v75, v76, v77, v78, v218.origin.x, v218.origin.y, v218.size.width, v218.size.height, v79, v80, v81, v82, v160, v161, v162, v163, v164, v165, v166, v167, v168, v169, *&v170, v171, *&v172, v173, *&v174, *&v175, v176, v177, *&v178, v179, *&v180, *&v181, *&v182, *&v183, v184, currentTextContainer, *&v186, *&v187, v188, v189, v191, v192, v193, v194, v195, v196, theArray, v198, v199);
                 v86 = OUTLINED_FUNCTION_38();
                 [v87 cellFrameForTextContainer:v86 proposedLineFragment:? glyphPosition:? characterIndex:?];
                 OUTLINED_FUNCTION_2_0();
@@ -2347,16 +2347,16 @@ LABEL_146:
               else
               {
                 Count = v198;
-                if (!v185)
+                if (!currentTextContainer)
                 {
-                  v71 = [v67 _allocatesTextContainer];
-                  if (v71)
+                  _allocatesTextContainer = [v67 _allocatesTextContainer];
+                  if (_allocatesTextContainer)
                   {
-                    v71 = [*(v39 + 80) _textContainerForAttachmentProtocol];
+                    _allocatesTextContainer = [*(v39 + 80) _textContainerForAttachmentProtocol];
                   }
                 }
 
-                OUTLINED_FUNCTION_14(v71, v72, v73, v74, v75, v76, v77, v78, v218.origin.x, v218.origin.y, v218.size.width, v218.size.height, v79, v80, v81, v82, v160, v161, v162, v163, v164, v165, v166, v167, v168, v169, *&v170, v171, *&v172, v173, *&v174, *&v175, v176, v177, *&v178, v179, *&v180, *&v181, *&v182, *&v183, v184, v185, *&v186, *&v187, v188, v189, v191, v192, v193, v194, v195, v196, theArray, v198, v199);
+                OUTLINED_FUNCTION_14(_allocatesTextContainer, v72, v73, v74, v75, v76, v77, v78, v218.origin.x, v218.origin.y, v218.size.width, v218.size.height, v79, v80, v81, v82, v160, v161, v162, v163, v164, v165, v166, v167, v168, v169, *&v170, v171, *&v172, v173, *&v174, *&v175, v176, v177, *&v178, v179, *&v180, *&v181, *&v182, *&v183, v184, currentTextContainer, *&v186, *&v187, v188, v189, v191, v192, v193, v194, v195, v196, theArray, v198, v199);
                 OUTLINED_FUNCTION_34();
                 v134 = OUTLINED_FUNCTION_38();
                 v179 = v135;
@@ -2369,10 +2369,10 @@ LABEL_146:
                   {
                     if ([objc_msgSend(v67 "image")])
                     {
-                      v137 = [v67 image];
-                      [v137 size];
+                      image = [v67 image];
+                      [image size];
                       v220.origin.x = OUTLINED_FUNCTION_5_0();
-                      if (CGRectEqualToRect(v220, v224) && [v137 willProvideAdaptedImageForPresentation])
+                      if (CGRectEqualToRect(v220, v224) && [image willProvideAdaptedImageForPresentation])
                       {
                         v138 = OUTLINED_FUNCTION_5_0();
                         [v139 attachmentBoundsForAttributes:v138 location:? textContainer:? proposedLineFragment:? position:?];
@@ -2508,7 +2508,7 @@ LABEL_223:
                 *(v31 + 72) = height;
                 *(v31 + 80) = x;
                 *(v31 + 88) = width;
-                OUTLINED_FUNCTION_21(v147, v148, v149, v150, v151, v152, v153, v154, v160, v161, v162, v163, v164, v165, v166, v167, v168, v169, v170, v171, *&v172, v173, *&v174, *&v175, v176, v177, *&v178, v179, *&v180, *&v181, *&v182, *&v183, v184, v185, *&v186, *&v187, v188, v189, v190, v192, v193, v194, v195, v196, theArray, v198, v199, v200);
+                OUTLINED_FUNCTION_21(v147, v148, v149, v150, v151, v152, v153, v154, v160, v161, v162, v163, v164, v165, v166, v167, v168, v169, v170, v171, *&v172, v173, *&v174, *&v175, v176, v177, *&v178, v179, *&v180, *&v181, *&v182, *&v183, v184, currentTextContainer, *&v186, *&v187, v188, v189, v190, v192, v193, v194, v195, v196, theArray, v198, v199, v200);
                 v184 = v155;
                 *v52 = x;
               }
@@ -2555,7 +2555,7 @@ LABEL_159:
 LABEL_160:
             if ((*(v31 + 96) & 2) != 0)
             {
-              OUTLINED_FUNCTION_21(Status, v54, v55, v56, v57, v58, v59, v60, v160, v161, v162, v163, v164, v165, v166, v167, v168, v169, v170, v171, *&v172, v173, *&v174, *&v175, v176, v177, *&v178, v179, *&v180, *&v181, *&v182, *&v183, v184, v185, *&v186, *&v187, v188, v189, v190, v192, v193, v194, v195, v196, theArray, v198, v199, v200);
+              OUTLINED_FUNCTION_21(Status, v54, v55, v56, v57, v58, v59, v60, v160, v161, v162, v163, v164, v165, v166, v167, v168, v169, v170, v171, *&v172, v173, *&v174, *&v175, v176, v177, *&v178, v179, *&v180, *&v181, *&v182, *&v183, v184, currentTextContainer, *&v186, *&v187, v188, v189, v190, v192, v193, v194, v195, v196, theArray, v198, v199, v200);
               v26 = v103;
               v184 = v133;
             }
@@ -2675,7 +2675,7 @@ LABEL_104:
                 v121 = v26;
               }
 
-              Status = [v118 boundingBoxForControlGlyphAtIndex:v120 forTextContainer:v185 proposedLineFragment:*(v39 + 128) + v119 glyphPosition:v186 characterIndex:{v187, v15, v14, v186 + v121, v187}];
+              Status = [v118 boundingBoxForControlGlyphAtIndex:v120 forTextContainer:currentTextContainer proposedLineFragment:*(v39 + 128) + v119 glyphPosition:v186 characterIndex:{v187, v15, v14, v186 + v121, v187}];
               v95 = v119;
               v105 = v203;
               v111 = 0;
@@ -2760,15 +2760,15 @@ LABEL_88:
               {
                 [Status location];
                 v109 = v113 - v26;
-                v114 = [v112 alignment];
-                if (v114 == 3)
+                alignment = [v112 alignment];
+                if (alignment == 3)
                 {
                   v115 = 0;
                 }
 
                 else
                 {
-                  v115 = v114;
+                  v115 = alignment;
                 }
 
                 Status = [objc_msgSend(v112 "options")];
@@ -2960,10 +2960,10 @@ LABEL_213:
   OUTLINED_FUNCTION_13();
 }
 
-- (uint64_t)_collectElasticRangeSurroundingCharacterAtIndex:(uint64_t)a3 minimumCharacterIndex:
+- (uint64_t)_collectElasticRangeSurroundingCharacterAtIndex:(uint64_t)index minimumCharacterIndex:
 {
   v107[16] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -3015,7 +3015,7 @@ LABEL_13:
     }
 
 LABEL_14:
-    v18 = [OUTLINED_FUNCTION_24() glyphRangeForCharacterRange:a3 actualCharacterRange:{v3 - a3, 0}];
+    v18 = [OUTLINED_FUNCTION_24() glyphRangeForCharacterRange:index actualCharacterRange:{v3 - index, 0}];
     v20 = v18 + v19;
     if (v18 < v18 + v19)
     {
@@ -3033,7 +3033,7 @@ LABEL_14:
 LABEL_22:
         if (v21 >= v20)
         {
-          return a3;
+          return index;
         }
       }
 
@@ -3048,12 +3048,12 @@ LABEL_22:
       return v107[v23 - 1] + 1;
     }
 
-    return a3;
+    return index;
   }
 
   v25 = *(v4 + 128);
   v26 = v3 - v25;
-  v27 = a3 - v25;
+  v27 = index - v25;
   v28 = MEMORY[0x1E6965618];
   if ((*(v4 + 224) & 0x10) == 0)
   {

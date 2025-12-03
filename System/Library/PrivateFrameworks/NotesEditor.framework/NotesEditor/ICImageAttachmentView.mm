@@ -18,18 +18,18 @@
 - (void)didMoveToWindow;
 - (void)didScrollOutOfVisibleRange;
 - (void)didUpdatePreviewImages;
-- (void)imageDidLoad:(id)a3 shouldFade:(BOOL)a4;
+- (void)imageDidLoad:(id)load shouldFade:(BOOL)fade;
 - (void)prepareForPrinting;
 - (void)refreshLoadingImage;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlightColor:(id)a3;
-- (void)setShowLoadingImage:(BOOL)a3;
-- (void)setupBorderForLayer:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlightColor:(id)color;
+- (void)setShowLoadingImage:(BOOL)image;
+- (void)setupBorderForLayer:(id)layer;
 - (void)setupEventHandling;
 - (void)setupImagePlaceholder;
 - (void)setupImagePlaceholderIfNecessary;
-- (void)sharedInit:(BOOL)a3;
-- (void)updateImageInView:(BOOL)a3;
+- (void)sharedInit:(BOOL)init;
+- (void)updateImageInView:(BOOL)view;
 - (void)updateImageInViewIfNecessary;
 - (void)updateImageSize;
 @end
@@ -45,11 +45,11 @@
 
 - (void)setupImagePlaceholder
 {
-  v3 = [objc_opt_class() ICLoadingPlaceholderBackgroundColor];
-  [(ICImageAttachmentView *)self setIc_backgroundColor:v3];
+  iCLoadingPlaceholderBackgroundColor = [objc_opt_class() ICLoadingPlaceholderBackgroundColor];
+  [(ICImageAttachmentView *)self setIc_backgroundColor:iCLoadingPlaceholderBackgroundColor];
 
-  v4 = [(ICImageAttachmentView *)self imageLayer];
-  [(ICImageAttachmentView *)self setupBorderForLayer:v4];
+  imageLayer = [(ICImageAttachmentView *)self imageLayer];
+  [(ICImageAttachmentView *)self setupBorderForLayer:imageLayer];
 
   [(ICImageAttachmentView *)self setShouldShowLoadingImage:1];
 
@@ -58,24 +58,24 @@
 
 + (id)ICLoadingPlaceholderBackgroundColor
 {
-  v2 = [MEMORY[0x277D75348] ic_systemGray5Color];
-  v3 = [v2 ic_resolvedColorForNoteEditor];
+  ic_systemGray5Color = [MEMORY[0x277D75348] ic_systemGray5Color];
+  ic_resolvedColorForNoteEditor = [ic_systemGray5Color ic_resolvedColorForNoteEditor];
 
-  return v3;
+  return ic_resolvedColorForNoteEditor;
 }
 
 - (BOOL)showLoadingImage
 {
-  v2 = [(ICImageAttachmentView *)self loadingImageView];
-  v3 = v2 != 0;
+  loadingImageView = [(ICImageAttachmentView *)self loadingImageView];
+  v3 = loadingImageView != 0;
 
   return v3;
 }
 
 - (BOOL)isThumbnailView
 {
-  v2 = [(ICImageAttachmentView *)self attachment];
-  v3 = [v2 preferredViewSize] == 1;
+  attachment = [(ICImageAttachmentView *)self attachment];
+  v3 = [attachment preferredViewSize] == 1;
 
   return v3;
 }
@@ -97,15 +97,15 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(ICImageAttachmentView *)self imageLayer];
-  [(ICImageAttachmentView *)self setupBorderForLayer:v11];
+  imageLayer = [(ICImageAttachmentView *)self imageLayer];
+  [(ICImageAttachmentView *)self setupBorderForLayer:imageLayer];
 
   IsTextKit2Enabled = ICInternalSettingsIsTextKit2Enabled();
-  v13 = [(ICImageAttachmentView *)self imageLayer];
-  v14 = v13;
+  imageLayer2 = [(ICImageAttachmentView *)self imageLayer];
+  v14 = imageLayer2;
   if (IsTextKit2Enabled)
   {
-    [v13 setFrame:{v4, v6, v8, v10}];
+    [imageLayer2 setFrame:{v4, v6, v8, v10}];
 
     v15 = MEMORY[0x277CD9FF0];
 
@@ -113,18 +113,18 @@
     return;
   }
 
-  [v13 frame];
+  [imageLayer2 frame];
   if (TSDNearlyEqualSizes())
   {
-    v16 = [(ICImageAttachmentView *)self imageLayer];
-    [v16 frame];
+    imageLayer3 = [(ICImageAttachmentView *)self imageLayer];
+    [imageLayer3 frame];
     v18 = v17;
     v20 = v19;
     v21 = *MEMORY[0x277CBF3A8];
     v22 = *(MEMORY[0x277CBF3A8] + 8);
 
-    v23 = [(ICImageAttachmentView *)self imageLayer];
-    [v23 setFrame:{v4, v6, v8, v10}];
+    imageLayer4 = [(ICImageAttachmentView *)self imageLayer];
+    [imageLayer4 setFrame:{v4, v6, v8, v10}];
 
     [MEMORY[0x277CD9FF0] commit];
     if (v18 != v21 || v20 != v22)
@@ -136,8 +136,8 @@
   else
   {
 
-    v25 = [(ICImageAttachmentView *)self imageLayer];
-    [v25 setFrame:{v4, v6, v8, v10}];
+    imageLayer5 = [(ICImageAttachmentView *)self imageLayer];
+    [imageLayer5 setFrame:{v4, v6, v8, v10}];
 
     [MEMORY[0x277CD9FF0] commit];
   }
@@ -164,9 +164,9 @@
   {
     if (ICInternalSettingsIsTextKit2Enabled())
     {
-      v11 = [(ICImageAttachmentView *)self textAttachment];
-      v12 = [(ICAttachmentView *)self textContainer];
-      [v11 attachmentSizeForTextContainer:v12];
+      textAttachment = [(ICImageAttachmentView *)self textAttachment];
+      textContainer = [(ICAttachmentView *)self textContainer];
+      [textAttachment attachmentSizeForTextContainer:textContainer];
       v14 = v13;
       v16 = v15;
     }
@@ -208,8 +208,8 @@
 {
   if (![(ICImageAttachmentView *)self isThumbnailView])
   {
-    v3 = [(ICImageAttachmentView *)self attachment];
-    [v3 sizeWidth];
+    attachment = [(ICImageAttachmentView *)self attachment];
+    [attachment sizeWidth];
     if (v4 <= 0.0)
     {
       v7 = 0;
@@ -217,8 +217,8 @@
 
     else
     {
-      v5 = [(ICImageAttachmentView *)self attachment];
-      [v5 sizeHeight];
+      attachment2 = [(ICImageAttachmentView *)self attachment];
+      [attachment2 sizeHeight];
       v7 = v6 > 0.0;
     }
 
@@ -230,9 +230,9 @@
 
 - (void)updateImageInViewIfNecessary
 {
-  v3 = [(ICImageAttachmentView *)self imageLoadingCancelBlock];
+  imageLoadingCancelBlock = [(ICImageAttachmentView *)self imageLoadingCancelBlock];
 
-  if (v3)
+  if (imageLoadingCancelBlock)
   {
 
     [(ICImageAttachmentView *)self setShouldTryToReloadImageIfLoadingFails:1];
@@ -247,10 +247,10 @@
 
 - (void)setupImagePlaceholderIfNecessary
 {
-  v3 = [(ICImageAttachmentView *)self imageLayer];
-  v4 = [v3 contents];
+  imageLayer = [(ICImageAttachmentView *)self imageLayer];
+  contents = [imageLayer contents];
 
-  if (!v4)
+  if (!contents)
   {
 
     [(ICImageAttachmentView *)self setupImagePlaceholder];
@@ -259,10 +259,10 @@
 
 + (id)ICLoadingPlaceholderIconColor
 {
-  v2 = [MEMORY[0x277D75348] systemGrayColor];
-  v3 = [v2 ic_resolvedColorForNoteEditor];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  ic_resolvedColorForNoteEditor = [systemGrayColor ic_resolvedColorForNoteEditor];
 
-  return v3;
+  return ic_resolvedColorForNoteEditor;
 }
 
 - (CGSize)imageSize
@@ -281,13 +281,13 @@
   [v3 setFromValue:&unk_28277E640];
   [v3 setToValue:&unk_28277E650];
   [v3 setDuration:0.1];
-  v4 = [(ICImageAttachmentView *)self imageLayer];
-  [v4 addAnimation:v3 forKey:@"opacity"];
+  imageLayer = [(ICImageAttachmentView *)self imageLayer];
+  [imageLayer addAnimation:v3 forKey:@"opacity"];
 
   [(ICImageAttachmentView *)self setShowLoadingImage:0];
-  v5 = [(ICImageAttachmentView *)self ic_backgroundColor];
+  ic_backgroundColor = [(ICImageAttachmentView *)self ic_backgroundColor];
 
-  if (v5)
+  if (ic_backgroundColor)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -311,28 +311,28 @@ void __44__ICImageAttachmentView_animateImageArrival__block_invoke(uint64_t a1)
 
 - (void)didMoveToWindow
 {
-  v3 = [(ICImageAttachmentView *)self window];
-  v4 = [v3 screen];
+  window = [(ICImageAttachmentView *)self window];
+  screen = [window screen];
 
-  if (v4)
+  if (screen)
   {
-    v9 = [(ICImageAttachmentView *)self window];
-    v5 = [v9 screen];
-    [v5 scale];
+    window2 = [(ICImageAttachmentView *)self window];
+    screen2 = [window2 screen];
+    [screen2 scale];
     v7 = v6;
-    v8 = [(ICImageAttachmentView *)self imageLayer];
-    [v8 setContentsScale:v7];
+    imageLayer = [(ICImageAttachmentView *)self imageLayer];
+    [imageLayer setContentsScale:v7];
   }
 }
 
-- (void)sharedInit:(BOOL)a3
+- (void)sharedInit:(BOOL)init
 {
   v19.receiver = self;
   v19.super_class = ICImageAttachmentView;
-  [(ICAttachmentView *)&v19 sharedInit:a3];
-  v4 = [(ICImageAttachmentView *)self imageLayer];
+  [(ICAttachmentView *)&v19 sharedInit:init];
+  imageLayer = [(ICImageAttachmentView *)self imageLayer];
 
-  if (!v4)
+  if (!imageLayer)
   {
     v5 = objc_alloc_init(MEMORY[0x277CD9ED0]);
     [(ICImageAttachmentView *)self setImageLayer:v5];
@@ -342,18 +342,18 @@ void __44__ICImageAttachmentView_animateImageArrival__block_invoke(uint64_t a1)
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(ICImageAttachmentView *)self imageLayer];
-    [v14 setFrame:{v7, v9, v11, v13}];
+    imageLayer2 = [(ICImageAttachmentView *)self imageLayer];
+    [imageLayer2 setFrame:{v7, v9, v11, v13}];
 
-    v15 = [(ICImageAttachmentView *)self imageLayer];
-    [v15 setMasksToBounds:1];
+    imageLayer3 = [(ICImageAttachmentView *)self imageLayer];
+    [imageLayer3 setMasksToBounds:1];
 
-    v16 = [(ICImageAttachmentView *)self imageLayer];
-    [v16 setAllowsEdgeAntialiasing:0];
+    imageLayer4 = [(ICImageAttachmentView *)self imageLayer];
+    [imageLayer4 setAllowsEdgeAntialiasing:0];
 
-    v17 = [(ICImageAttachmentView *)self layer];
-    v18 = [(ICImageAttachmentView *)self imageLayer];
-    [v17 addSublayer:v18];
+    layer = [(ICImageAttachmentView *)self layer];
+    imageLayer5 = [(ICImageAttachmentView *)self imageLayer];
+    [layer addSublayer:imageLayer5];
 
     [(ICImageAttachmentView *)self setClipsToBounds:1];
   }
@@ -376,8 +376,8 @@ void __44__ICImageAttachmentView_animateImageArrival__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICImageAttachmentView;
@@ -403,69 +403,69 @@ void __44__ICImageAttachmentView_animateImageArrival__block_invoke(uint64_t a1)
 
 - (void)didScrollOutOfVisibleRange
 {
-  v3 = [(ICImageAttachmentView *)self imageLoadingCancelBlock];
+  imageLoadingCancelBlock = [(ICImageAttachmentView *)self imageLoadingCancelBlock];
 
-  if (v3)
+  if (imageLoadingCancelBlock)
   {
-    v4 = [(ICImageAttachmentView *)self imageLoadingCancelBlock];
-    v4[2]();
+    imageLoadingCancelBlock2 = [(ICImageAttachmentView *)self imageLoadingCancelBlock];
+    imageLoadingCancelBlock2[2]();
 
     [(ICImageAttachmentView *)self setImageLoadingCancelBlock:0];
   }
 
-  v5 = [(ICImageAttachmentView *)self imageLayer];
-  [v5 setContents:0];
+  imageLayer = [(ICImageAttachmentView *)self imageLayer];
+  [imageLayer setContents:0];
 }
 
 - (BOOL)cancelDidScrollIntoVisibleRange
 {
-  v3 = [(ICImageAttachmentView *)self imageLoadingCancelBlock];
-  if (v3)
+  imageLoadingCancelBlock = [(ICImageAttachmentView *)self imageLoadingCancelBlock];
+  if (imageLoadingCancelBlock)
   {
-    v4 = v3;
-    v5 = [(ICImageAttachmentView *)self imageLayer];
-    v6 = [v5 contents];
+    v4 = imageLoadingCancelBlock;
+    imageLayer = [(ICImageAttachmentView *)self imageLayer];
+    contents = [imageLayer contents];
 
-    if (v6)
+    if (contents)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(imageLoadingCancelBlock) = 0;
     }
 
     else
     {
-      v7 = [(ICImageAttachmentView *)self imageLoadingCancelBlock];
-      v7[2]();
+      imageLoadingCancelBlock2 = [(ICImageAttachmentView *)self imageLoadingCancelBlock];
+      imageLoadingCancelBlock2[2]();
 
       [(ICImageAttachmentView *)self setImageLoadingCancelBlock:0];
-      LOBYTE(v3) = 1;
+      LOBYTE(imageLoadingCancelBlock) = 1;
     }
   }
 
-  return v3;
+  return imageLoadingCancelBlock;
 }
 
 - (void)prepareForPrinting
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 attachment];
-  v4 = [v3 ic_loggingDescription];
+  attachment = [self attachment];
+  ic_loggingDescription = [attachment ic_loggingDescription];
   v5 = 138412290;
-  v6 = v4;
+  v6 = ic_loggingDescription;
   _os_log_error_impl(&dword_2151A1000, a2, OS_LOG_TYPE_ERROR, "Unexpected nil image for attachment (%@)", &v5, 0xCu);
 }
 
-- (void)setupBorderForLayer:(id)a3
+- (void)setupBorderForLayer:(id)layer
 {
   v10 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v4 = [(ICImageAttachmentView *)self highlightColor];
+  layerCopy = layer;
+  highlightColor = [(ICImageAttachmentView *)self highlightColor];
 
-  if (v4)
+  if (highlightColor)
   {
-    v5 = [(ICImageAttachmentView *)self highlightColor];
-    [v8 setBorderColor:{objc_msgSend(v5, "CGColor")}];
+    highlightColor2 = [(ICImageAttachmentView *)self highlightColor];
+    [layerCopy setBorderColor:{objc_msgSend(highlightColor2, "CGColor")}];
 
-    [v8 setBorderWidth:*MEMORY[0x277D364B0]];
+    [layerCopy setBorderWidth:*MEMORY[0x277D364B0]];
   }
 
   else
@@ -473,28 +473,28 @@ void __44__ICImageAttachmentView_animateImageArrival__block_invoke(uint64_t a1)
     DeviceGray = CGColorSpaceCreateDeviceGray();
     *components = xmmword_2154BC0A0;
     v7 = CGColorCreate(DeviceGray, components);
-    [v8 setBorderColor:v7];
+    [layerCopy setBorderColor:v7];
     [(ICImageAttachmentView *)self ic_hairlineWidth];
-    [v8 setBorderWidth:?];
+    [layerCopy setBorderWidth:?];
 
     CGColorRelease(v7);
     CGColorSpaceRelease(DeviceGray);
   }
 }
 
-- (void)updateImageInView:(BOOL)a3
+- (void)updateImageInView:(BOOL)view
 {
   [(ICImageAttachmentView *)self setImageLoadingCancelBlock:0];
-  v5 = [(ICImageAttachmentView *)self attachment];
-  [v5 sizeWidth];
+  attachment = [(ICImageAttachmentView *)self attachment];
+  [attachment sizeWidth];
   if (v6 == 0.0)
   {
 
     goto LABEL_5;
   }
 
-  v7 = [(ICImageAttachmentView *)self attachment];
-  [v7 sizeHeight];
+  attachment2 = [(ICImageAttachmentView *)self attachment];
+  [attachment2 sizeHeight];
   v9 = v8;
 
   if (v9 == 0.0)
@@ -503,51 +503,51 @@ LABEL_5:
     [(ICImageAttachmentView *)self setShouldUpdateLayoutInImageDidLoad:1];
   }
 
-  v10 = [(ICAttachmentView *)self forManualRendering];
-  v11 = [(ICImageAttachmentView *)self attachment];
-  v12 = v11;
-  if (v10)
+  forManualRendering = [(ICAttachmentView *)self forManualRendering];
+  attachment3 = [(ICImageAttachmentView *)self attachment];
+  v12 = attachment3;
+  if (forManualRendering)
   {
-    v37 = [v11 image];
+    image = [attachment3 image];
 
-    [(ICImageAttachmentView *)self imageDidLoad:v37 shouldFade:0];
+    [(ICImageAttachmentView *)self imageDidLoad:image shouldFade:0];
 
     return;
   }
 
-  [v11 intrinsicContentSize];
+  [attachment3 intrinsicContentSize];
   v14 = v13;
   v16 = v15;
 
   [MEMORY[0x277D36950] defaultAttachmentThumbnailViewHeight];
   v18 = v17;
-  v19 = [(ICImageAttachmentView *)self textAttachment];
-  if (([v19 supportsMultiplePresentationSizes] & 1) == 0)
+  textAttachment = [(ICImageAttachmentView *)self textAttachment];
+  if (([textAttachment supportsMultiplePresentationSizes] & 1) == 0)
   {
 
 LABEL_18:
-    v35 = [(ICImageAttachmentView *)self attachment];
+    attachment4 = [(ICImageAttachmentView *)self attachment];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __43__ICImageAttachmentView_updateImageInView___block_invoke_3;
     v39[3] = &unk_2781AD878;
     v39[4] = self;
-    v40 = a3;
+    viewCopy = view;
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __43__ICImageAttachmentView_updateImageInView___block_invoke_5;
     v38[3] = &unk_2781ABCF8;
     v38[4] = self;
-    v36 = [v35 loadImage:v39 aboutToLoadHandler:v38 forceFullSizeImage:0];
+    v36 = [attachment4 loadImage:v39 aboutToLoadHandler:v38 forceFullSizeImage:0];
     [(ICImageAttachmentView *)self setImageLoadingCancelBlock:v36];
 
     return;
   }
 
-  v20 = [(ICImageAttachmentView *)self attachment];
-  v21 = [v20 preferredViewSize];
+  attachment5 = [(ICImageAttachmentView *)self attachment];
+  preferredViewSize = [attachment5 preferredViewSize];
 
-  if (v21 != 1 || v14 <= v18 || v16 <= v18)
+  if (preferredViewSize != 1 || v14 <= v18 || v16 <= v18)
   {
     goto LABEL_18;
   }
@@ -560,29 +560,29 @@ LABEL_18:
   aBlock[2] = __43__ICImageAttachmentView_updateImageInView___block_invoke;
   aBlock[3] = &unk_2781AD828;
   objc_copyWeak(&v43, location);
-  v44 = a3;
+  viewCopy2 = view;
   v24 = _Block_copy(aBlock);
   v25 = objc_alloc_init(MEMORY[0x277D35FE0]);
   [(ICImageAttachmentView *)self ic_backingScaleFactor];
   v27 = v26;
-  v28 = [(ICImageAttachmentView *)self attachment];
+  attachment6 = [(ICImageAttachmentView *)self attachment];
   if (v27 < 1.0)
   {
     v27 = 1.0;
   }
 
-  v29 = [(ICImageAttachmentView *)self ic_appearanceInfo];
-  v30 = [(ICImageAttachmentView *)self attachment];
-  v31 = [v30 identifier];
-  v32 = [(ICImageAttachmentView *)self attachment];
-  v33 = [v32 attachmentModel];
-  v34 = [v33 genericBrickThumbnailCreator];
+  ic_appearanceInfo = [(ICImageAttachmentView *)self ic_appearanceInfo];
+  attachment7 = [(ICImageAttachmentView *)self attachment];
+  identifier = [attachment7 identifier];
+  attachment8 = [(ICImageAttachmentView *)self attachment];
+  attachmentModel = [attachment8 attachmentModel];
+  genericBrickThumbnailCreator = [attachmentModel genericBrickThumbnailCreator];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __43__ICImageAttachmentView_updateImageInView___block_invoke_2;
   v41[3] = &unk_2781ABCF8;
   v41[4] = self;
-  [v28 fetchThumbnailImageWithMinSize:v29 scale:v25 appearanceInfo:v31 cache:0 cacheKey:v24 processingBlock:v34 completionBlock:v23 fallbackBlock:v23 aboutToLoadHandler:{v27, v41}];
+  [attachment6 fetchThumbnailImageWithMinSize:ic_appearanceInfo scale:v25 appearanceInfo:identifier cache:0 cacheKey:v24 processingBlock:genericBrickThumbnailCreator completionBlock:v23 fallbackBlock:v23 aboutToLoadHandler:{v27, v41}];
 
   objc_destroyWeak(&v43);
   objc_destroyWeak(location);
@@ -634,72 +634,72 @@ uint64_t __43__ICImageAttachmentView_updateImageInView___block_invoke_4(uint64_t
   return [v2 imageDidLoad:v3 shouldFade:v4 & 1];
 }
 
-- (void)imageDidLoad:(id)a3 shouldFade:(BOOL)a4
+- (void)imageDidLoad:(id)load shouldFade:(BOOL)fade
 {
-  v4 = a4;
+  fadeCopy = fade;
   v78[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  loadCopy = load;
   [(ICImageAttachmentView *)self setImageLoadingCancelBlock:0];
   [(ICImageAttachmentView *)self imageSize];
-  if (v6)
+  if (loadCopy)
   {
     [(ICImageAttachmentView *)self setShouldTryToReloadImageIfLoadingFails:0];
     if ([(ICImageAttachmentView *)self shouldUpdateLayoutInImageDidLoad])
     {
       [(ICImageAttachmentView *)self setShouldUpdateLayoutInImageDidLoad:0];
-      v9 = [(ICImageAttachmentView *)self attachment];
-      v10 = [v9 note];
-      v11 = [(ICImageAttachmentView *)self attachment];
-      v12 = [v10 rangeForAttachment:v11];
+      attachment = [(ICImageAttachmentView *)self attachment];
+      note = [attachment note];
+      attachment2 = [(ICImageAttachmentView *)self attachment];
+      v12 = [note rangeForAttachment:attachment2];
       v14 = v13;
 
-      LODWORD(v9) = ICInternalSettingsIsTextKit2Enabled();
-      v15 = [(ICAttachmentView *)self textView];
-      v16 = v15;
-      if (v9)
+      LODWORD(attachment) = ICInternalSettingsIsTextKit2Enabled();
+      textView = [(ICAttachmentView *)self textView];
+      v16 = textView;
+      if (attachment)
       {
-        v17 = [v15 textLayoutManager];
-        v18 = [v17 ic_textRangeForRange:{v12, v14}];
+        textLayoutManager = [textView textLayoutManager];
+        textView3 = [textLayoutManager ic_textRangeForRange:{v12, v14}];
 
-        v19 = [(ICAttachmentView *)self textView];
-        v20 = [v19 textLayoutManager];
-        [v20 invalidateLayoutForRange:v18];
+        textView2 = [(ICAttachmentView *)self textView];
+        textLayoutManager2 = [textView2 textLayoutManager];
+        [textLayoutManager2 invalidateLayoutForRange:textView3];
       }
 
       else
       {
-        v52 = [v15 layoutManager];
-        [v52 invalidateLayoutForCharacterRange:v12 actualCharacterRange:{v14, 0}];
+        layoutManager = [textView layoutManager];
+        [layoutManager invalidateLayoutForCharacterRange:v12 actualCharacterRange:{v14, 0}];
 
-        v18 = [(ICAttachmentView *)self textView];
-        v19 = [v18 layoutManager];
-        [v19 invalidateDisplayForCharacterRange:{v12, v14}];
+        textView3 = [(ICAttachmentView *)self textView];
+        textView2 = [textView3 layoutManager];
+        [textView2 invalidateDisplayForCharacterRange:{v12, v14}];
       }
     }
 
-    [(ICImageAttachmentView *)self setImage:v6];
-    v53 = [v6 ic_CGImage];
-    v54 = [(ICImageAttachmentView *)self imageLayer];
-    [v54 setContents:v53];
+    [(ICImageAttachmentView *)self setImage:loadCopy];
+    ic_CGImage = [loadCopy ic_CGImage];
+    imageLayer = [(ICImageAttachmentView *)self imageLayer];
+    [imageLayer setContents:ic_CGImage];
 
-    v55 = [v6 imageOrientation];
-    if (v55 <= 3)
+    imageOrientation = [loadCopy imageOrientation];
+    if (imageOrientation <= 3)
     {
-      if (v55 == 1)
+      if (imageOrientation == 1)
       {
         v69 = 0uLL;
         v59 = xmmword_2154BC070;
         goto LABEL_44;
       }
 
-      if (v55 == 2)
+      if (imageOrientation == 2)
       {
         v69 = 0uLL;
         v58 = xmmword_2154BC080;
         goto LABEL_48;
       }
 
-      if (v55 != 3)
+      if (imageOrientation != 3)
       {
 LABEL_42:
         v66 = *MEMORY[0x277CBF2C0];
@@ -708,11 +708,11 @@ LABEL_42:
 LABEL_50:
         [MEMORY[0x277CD9FF0] begin];
         [MEMORY[0x277CD9FF0] setDisableActions:1];
-        v60 = [(ICImageAttachmentView *)self imageLayer];
+        imageLayer2 = [(ICImageAttachmentView *)self imageLayer];
         *buf = v66;
         *&buf[16] = v68;
         v76 = v69;
-        [v60 setAffineTransform:buf];
+        [imageLayer2 setAffineTransform:buf];
 
         [MEMORY[0x277CD9FF0] commit];
         goto LABEL_51;
@@ -724,9 +724,9 @@ LABEL_50:
 
     else
     {
-      if (v55 <= 5)
+      if (imageOrientation <= 5)
       {
-        if (v55 != 4)
+        if (imageOrientation != 4)
         {
           v69 = 0uLL;
           v68 = xmmword_2154BC070;
@@ -744,9 +744,9 @@ LABEL_44:
         goto LABEL_49;
       }
 
-      if (v55 != 6)
+      if (imageOrientation != 6)
       {
-        if (v55 == 7)
+        if (imageOrientation == 7)
         {
           v69 = 0uLL;
           v58 = xmmword_2154BC060;
@@ -783,43 +783,43 @@ LABEL_48:
     [ICImageAttachmentView imageDidLoad:v23 shouldFade:?];
   }
 
-  v24 = [(ICImageAttachmentView *)self attachment];
-  v25 = [v24 media];
-  v64 = v4;
-  if (([v25 hasFile] & 1) == 0)
+  attachment3 = [(ICImageAttachmentView *)self attachment];
+  media = [attachment3 media];
+  v64 = fadeCopy;
+  if (([media hasFile] & 1) == 0)
   {
-    v26 = [(ICImageAttachmentView *)self attachment];
-    v27 = [v26 media];
-    v28 = [v27 generationManager];
-    v29 = [v28 containerURL];
+    attachment4 = [(ICImageAttachmentView *)self attachment];
+    media2 = [attachment4 media];
+    generationManager = [media2 generationManager];
+    containerURL = [generationManager containerURL];
 
-    if (!v29)
+    if (!containerURL)
     {
       goto LABEL_25;
     }
 
-    v30 = [MEMORY[0x277CCAA00] defaultManager];
-    v67 = self;
-    v31 = [(ICImageAttachmentView *)self attachment];
-    v32 = [v31 media];
-    v33 = [v32 generationManager];
-    v34 = [v33 containerURL];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    selfCopy = self;
+    attachment5 = [(ICImageAttachmentView *)self attachment];
+    media3 = [attachment5 media];
+    generationManager2 = [media3 generationManager];
+    containerURL2 = [generationManager2 containerURL];
     v35 = *MEMORY[0x277CBE868];
     v78[0] = *MEMORY[0x277CBE868];
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v78 count:1];
-    v37 = [v30 enumeratorAtURL:v34 includingPropertiesForKeys:v36 options:0 errorHandler:0];
+    v37 = [defaultManager enumeratorAtURL:containerURL2 includingPropertiesForKeys:v36 options:0 errorHandler:0];
 
     v73 = 0u;
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v25 = v37;
-    v38 = [v25 countByEnumeratingWithState:&v71 objects:v77 count:16];
+    media = v37;
+    v38 = [media countByEnumeratingWithState:&v71 objects:v77 count:16];
     if (v38)
     {
       v39 = v38;
       v40 = *v72;
-      v65 = v25;
+      v65 = media;
       do
       {
         v41 = 0;
@@ -827,7 +827,7 @@ LABEL_48:
         {
           if (*v72 != v40)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(media);
           }
 
           v42 = *(*(&v71 + 1) + 8 * v41);
@@ -840,16 +840,16 @@ LABEL_48:
             v46 = os_log_create("com.apple.notes", "UI");
             if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
             {
-              v47 = [(ICImageAttachmentView *)v67 attachment];
-              v48 = [v47 media];
-              v49 = [v48 shortLoggingDescription];
+              attachment6 = [(ICImageAttachmentView *)selfCopy attachment];
+              media4 = [attachment6 media];
+              shortLoggingDescription = [media4 shortLoggingDescription];
               *buf = 138412546;
-              *&buf[4] = v49;
+              *&buf[4] = shortLoggingDescription;
               *&buf[12] = 2112;
               *&buf[14] = v42;
               _os_log_error_impl(&dword_2151A1000, v46, OS_LOG_TYPE_ERROR, "ICImageAttachmentView - media %@ claims not to have file, but found orphaned resource in container: %@", buf, 0x16u);
 
-              v25 = v65;
+              media = v65;
             }
           }
 
@@ -857,15 +857,15 @@ LABEL_48:
         }
 
         while (v39 != v41);
-        v39 = [v25 countByEnumeratingWithState:&v71 objects:v77 count:16];
+        v39 = [media countByEnumeratingWithState:&v71 objects:v77 count:16];
       }
 
       while (v39);
     }
 
-    v24 = v25;
-    v6 = 0;
-    self = v67;
+    attachment3 = media;
+    loadCopy = 0;
+    self = selfCopy;
   }
 
 LABEL_25:
@@ -876,19 +876,19 @@ LABEL_25:
 
   [(ICImageAttachmentView *)self setShouldTryToReloadImageIfLoadingFails:0];
   [(ICImageAttachmentView *)self setImage:0];
-  v50 = [0 ic_CGImage];
-  v51 = [(ICImageAttachmentView *)self imageLayer];
-  [v51 setContents:v50];
+  ic_CGImage2 = [0 ic_CGImage];
+  imageLayer3 = [(ICImageAttachmentView *)self imageLayer];
+  [imageLayer3 setContents:ic_CGImage2];
 
-  v4 = v64;
+  fadeCopy = v64;
 LABEL_51:
-  v61 = [(ICImageAttachmentView *)self imageContentsGravity];
-  v62 = [(ICImageAttachmentView *)self imageLayer];
-  [v62 setContentsGravity:v61];
+  imageContentsGravity = [(ICImageAttachmentView *)self imageContentsGravity];
+  imageLayer4 = [(ICImageAttachmentView *)self imageLayer];
+  [imageLayer4 setContentsGravity:imageContentsGravity];
 
-  if (v6)
+  if (loadCopy)
   {
-    if (v4 && ([(ICImageAttachmentView *)self ic_backgroundColor], v63 = objc_claimAutoreleasedReturnValue(), v63, v63))
+    if (fadeCopy && ([(ICImageAttachmentView *)self ic_backgroundColor], v63 = objc_claimAutoreleasedReturnValue(), v63, v63))
     {
       [(ICImageAttachmentView *)self animateImageArrival];
     }
@@ -909,61 +909,61 @@ LABEL_51:
 LABEL_58:
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = ICImageAttachmentView;
-  [(ICImageAttachmentView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(ICImageAttachmentView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(ICImageAttachmentView *)self updateImageSize];
   [(ICImageAttachmentView *)self refreshLoadingImage];
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = ICImageAttachmentView;
-  [(ICImageAttachmentView *)&v5 setHighlightColor:a3];
-  v4 = [(ICImageAttachmentView *)self imageLayer];
-  [(ICImageAttachmentView *)self setupBorderForLayer:v4];
+  [(ICImageAttachmentView *)&v5 setHighlightColor:color];
+  imageLayer = [(ICImageAttachmentView *)self imageLayer];
+  [(ICImageAttachmentView *)self setupBorderForLayer:imageLayer];
 }
 
-- (void)setShowLoadingImage:(BOOL)a3
+- (void)setShowLoadingImage:(BOOL)image
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (image)
   {
-    v4 = [(ICImageAttachmentView *)self showLoadingImage];
+    showLoadingImage = [(ICImageAttachmentView *)self showLoadingImage];
     v5 = MEMORY[0x277D755B8];
-    v6 = [(ICImageAttachmentView *)self attachment];
-    v7 = [v6 attachmentModel];
-    v8 = [v7 placeholderImageSystemName];
+    attachment = [(ICImageAttachmentView *)self attachment];
+    attachmentModel = [attachment attachmentModel];
+    placeholderImageSystemName = [attachmentModel placeholderImageSystemName];
     [objc_opt_class() ICLoadingPlaceholderIconSize];
-    v9 = [v5 ic_systemImageNamed:v8 pointSize:?];
+    v9 = [v5 ic_systemImageNamed:placeholderImageSystemName pointSize:?];
 
-    if (!v4)
+    if (!showLoadingImage)
     {
       v10 = objc_alloc_init(MEMORY[0x277D755E8]);
       [v10 setContentMode:4];
-      v11 = [objc_opt_class() ICLoadingPlaceholderIconColor];
-      [v10 setTintColor:v11];
+      iCLoadingPlaceholderIconColor = [objc_opt_class() ICLoadingPlaceholderIconColor];
+      [v10 setTintColor:iCLoadingPlaceholderIconColor];
 
       [v10 setImage:v9];
       [(ICImageAttachmentView *)self setLoadingImageView:v10];
-      v12 = [(ICImageAttachmentView *)self loadingImageView];
-      [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+      loadingImageView = [(ICImageAttachmentView *)self loadingImageView];
+      [loadingImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v13 = [(ICImageAttachmentView *)self loadingImageView];
-      [(ICImageAttachmentView *)self addSubview:v13];
+      loadingImageView2 = [(ICImageAttachmentView *)self loadingImageView];
+      [(ICImageAttachmentView *)self addSubview:loadingImageView2];
 
       v24 = @"loadingImage";
-      v14 = [(ICImageAttachmentView *)self loadingImageView];
-      v25[0] = v14;
+      loadingImageView3 = [(ICImageAttachmentView *)self loadingImageView];
+      v25[0] = loadingImageView3;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
 
       v16 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-[loadingImage]-|" options:0 metrics:0 views:v15];
       v17 = MEMORY[0x277CCAAD0];
-      v18 = [(ICImageAttachmentView *)self loadingImageView];
-      v19 = [v17 constraintWithItem:v18 attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
+      loadingImageView4 = [(ICImageAttachmentView *)self loadingImageView];
+      v19 = [v17 constraintWithItem:loadingImageView4 attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
 
       v20 = MEMORY[0x277CCAAD0];
       v21 = [v16 arrayByAddingObject:v19];
@@ -974,12 +974,12 @@ LABEL_58:
   else
   {
     [(ICImageAttachmentView *)self setShouldShowLoadingImage:?];
-    v22 = [(ICImageAttachmentView *)self loadingImageView];
+    loadingImageView5 = [(ICImageAttachmentView *)self loadingImageView];
 
-    if (v22)
+    if (loadingImageView5)
     {
-      v23 = [(ICImageAttachmentView *)self loadingImageView];
-      [v23 removeFromSuperview];
+      loadingImageView6 = [(ICImageAttachmentView *)self loadingImageView];
+      [loadingImageView6 removeFromSuperview];
 
       [(ICImageAttachmentView *)self setLoadingImageView:0];
     }
@@ -995,18 +995,18 @@ LABEL_58:
 
 - (id)icaxHintString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Double tap to view full-screen" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Double tap to view full-screen" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"image attachment" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"image attachment" value:&stru_282757698 table:0];
 
-  v7 = [(ICAttachmentView *)self icaxAttachmentViewTypeDescription];
+  icaxAttachmentViewTypeDescription = [(ICAttachmentView *)self icaxAttachmentViewTypeDescription];
   v5 = __ICAccessibilityStringForVariables();
 
   return v5;
@@ -1015,11 +1015,11 @@ LABEL_58:
 - (id)accessibilityUserInputLabels
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"Image" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"Image" value:&stru_282757698 table:0];
   v8[0] = v4;
-  v5 = [(ICImageAttachmentView *)self accessibilityLabel];
-  v8[1] = v5;
+  accessibilityLabel = [(ICImageAttachmentView *)self accessibilityLabel];
+  v8[1] = accessibilityLabel;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
 
   return v6;

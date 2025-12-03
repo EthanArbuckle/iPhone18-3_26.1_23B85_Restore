@@ -3,12 +3,12 @@
 - (CGRect)bounds;
 - (double)_alignedContentMarginGivenMargin:(double)result;
 - (double)_rowSpacing;
-- (void)_setSectionContentInsetFollowsLayoutMargins:(BOOL)a3;
+- (void)_setSectionContentInsetFollowsLayoutMargins:(BOOL)margins;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)performBatchUpdates:(id)a3 completion:(id)a4;
+- (void)performBatchUpdates:(id)updates completion:(id)completion;
 - (void)safeAreaInsetsDidChange;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation UpdateCoalescingTableView
@@ -20,19 +20,19 @@
   return [(UpdateCoalescingTableView *)&v3 _sectionContentInsetFollowsLayoutMargins];
 }
 
-- (void)_setSectionContentInsetFollowsLayoutMargins:(BOOL)a3
+- (void)_setSectionContentInsetFollowsLayoutMargins:(BOOL)margins
 {
-  v3 = a3;
-  v4 = self;
-  if ([(UpdateCoalescingTableView *)v4 _sectionContentInsetFollowsLayoutMargins]== v3)
+  marginsCopy = margins;
+  selfCopy = self;
+  if ([(UpdateCoalescingTableView *)selfCopy _sectionContentInsetFollowsLayoutMargins]== marginsCopy)
   {
   }
 
   else
   {
-    v5.receiver = v4;
+    v5.receiver = selfCopy;
     v5.super_class = type metadata accessor for UpdateCoalescingTableView();
-    [(UpdateCoalescingTableView *)&v5 _setSectionContentInsetFollowsLayoutMargins:v3];
+    [(UpdateCoalescingTableView *)&v5 _setSectionContentInsetFollowsLayoutMargins:marginsCopy];
   }
 }
 
@@ -48,25 +48,25 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   UpdateCoalescingTableView.bounds.setter(x, y, width, height);
 }
 
 - (void)layoutMarginsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   UpdateCoalescingTableView.layoutMarginsDidChange()(&selRef_layoutMarginsDidChange);
 }
 
 - (void)safeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   UpdateCoalescingTableView.layoutMarginsDidChange()(&selRef_safeAreaInsetsDidChange);
 }
 
@@ -105,10 +105,10 @@
   UpdateCoalescingTableView.updateContent()();
 }
 
-- (void)performBatchUpdates:(id)a3 completion:(id)a4
+- (void)performBatchUpdates:(id)updates completion:(id)completion
 {
-  v6 = _Block_copy(a3);
-  v7 = _Block_copy(a4);
+  v6 = _Block_copy(updates);
+  v7 = _Block_copy(completion);
   v8 = v7;
   if (v6)
   {
@@ -137,7 +137,7 @@ LABEL_3:
   v11 = 0;
   v10 = 0;
 LABEL_6:
-  v12 = self;
+  selfCopy = self;
   UpdateCoalescingTableView.performBatchUpdates(_:completion:)(v6, v9, v11, v10);
   outlined consume of (@escaping @callee_guaranteed (@guaranteed NSFileWrapper?) -> (@owned NSFileWrapper, @error @owned Error))?(v11);
   outlined consume of (@escaping @callee_guaranteed (@guaranteed NSFileWrapper?) -> (@owned NSFileWrapper, @error @owned Error))?(v6);

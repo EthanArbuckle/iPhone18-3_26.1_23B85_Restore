@@ -1,14 +1,14 @@
 @interface ATSessionTask
 - (ATSession)session;
-- (ATSessionTask)initWithCoder:(id)a3;
-- (ATSessionTask)initWithDataClass:(id)a3;
+- (ATSessionTask)initWithCoder:(id)coder;
+- (ATSessionTask)initWithDataClass:(id)class;
 - (double)duration;
 - (id)baseClassRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)_start;
 - (void)cancel;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATSessionTask
@@ -32,49 +32,49 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(ATSessionTask *)self sessionTaskIdentifier];
-  [v4 setSessionTaskIdentifier:v5];
+  sessionTaskIdentifier = [(ATSessionTask *)self sessionTaskIdentifier];
+  [v4 setSessionTaskIdentifier:sessionTaskIdentifier];
 
-  v6 = [(ATSessionTask *)self localizedDescription];
-  [v4 setLocalizedDescription:v6];
+  localizedDescription = [(ATSessionTask *)self localizedDescription];
+  [v4 setLocalizedDescription:localizedDescription];
 
-  v7 = [(ATSessionTask *)self sessionGroupingKey];
-  [v4 setSessionGroupingKey:v7];
+  sessionGroupingKey = [(ATSessionTask *)self sessionGroupingKey];
+  [v4 setSessionGroupingKey:sessionGroupingKey];
 
-  v8 = [(ATSessionTask *)self dataClass];
-  [v4 setDataClass:v8];
+  dataClass = [(ATSessionTask *)self dataClass];
+  [v4 setDataClass:dataClass];
 
   [(ATSessionTask *)self progress];
   [v4 setProgress:?];
   [v4 setTotalItemCount:{-[ATSessionTask totalItemCount](self, "totalItemCount")}];
   [v4 setCompletedItemCount:{-[ATSessionTask completedItemCount](self, "completedItemCount")}];
-  v9 = [(ATSessionTask *)self currentItemDescriptions];
-  [v4 setCurrentItemDescriptions:v9];
+  currentItemDescriptions = [(ATSessionTask *)self currentItemDescriptions];
+  [v4 setCurrentItemDescriptions:currentItemDescriptions];
 
-  v10 = [(ATSessionTask *)self currentItems];
-  [v4 setCurrentItems:v10];
+  currentItems = [(ATSessionTask *)self currentItems];
+  [v4 setCurrentItems:currentItems];
 
-  v11 = [(ATSessionTask *)self recentlyFailedAssets];
-  [v4 setRecentlyFailedAssets:v11];
+  recentlyFailedAssets = [(ATSessionTask *)self recentlyFailedAssets];
+  [v4 setRecentlyFailedAssets:recentlyFailedAssets];
 
-  v12 = [(ATSessionTask *)self properties];
-  [v4 setProperties:v12];
+  properties = [(ATSessionTask *)self properties];
+  [v4 setProperties:properties];
 
   [v4 setRunning:{-[ATSessionTask isRunning](self, "isRunning")}];
   [v4 setFinished:{-[ATSessionTask isFinished](self, "isFinished")}];
   [v4 setCancelled:{-[ATSessionTask isCancelled](self, "isCancelled")}];
   [v4 setSuspended:{-[ATSessionTask isSuspended](self, "isSuspended")}];
-  v13 = [(ATSessionTask *)self error];
-  [v4 setError:v13];
+  error = [(ATSessionTask *)self error];
+  [v4 setError:error];
 
-  v14 = [(ATSessionTask *)self totalBytesTransferred];
-  [v4 setTotalBytesTransferred:v14];
+  totalBytesTransferred = [(ATSessionTask *)self totalBytesTransferred];
+  [v4 setTotalBytesTransferred:totalBytesTransferred];
 
-  v15 = [(ATSessionTask *)self totalBytesToTransfer];
-  [v4 setTotalBytesToTransfer:v15];
+  totalBytesToTransfer = [(ATSessionTask *)self totalBytesToTransfer];
+  [v4 setTotalBytesToTransfer:totalBytesToTransfer];
 
   [(ATSessionTask *)self startTime];
   [v4 setStartTime:?];
@@ -83,87 +83,87 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v16 = a3;
-  v4 = [(ATSessionTask *)self sessionTaskIdentifier];
-  [v16 encodeObject:v4 forKey:@"sessionTaskIdentifier"];
+  coderCopy = coder;
+  sessionTaskIdentifier = [(ATSessionTask *)self sessionTaskIdentifier];
+  [coderCopy encodeObject:sessionTaskIdentifier forKey:@"sessionTaskIdentifier"];
 
-  v5 = [(ATSessionTask *)self localizedDescription];
-  [v16 encodeObject:v5 forKey:@"localizedDescription"];
+  localizedDescription = [(ATSessionTask *)self localizedDescription];
+  [coderCopy encodeObject:localizedDescription forKey:@"localizedDescription"];
 
-  v6 = [(ATSessionTask *)self sessionGroupingKey];
-  [v16 encodeObject:v6 forKey:@"sessionGroupingKey"];
+  sessionGroupingKey = [(ATSessionTask *)self sessionGroupingKey];
+  [coderCopy encodeObject:sessionGroupingKey forKey:@"sessionGroupingKey"];
 
-  v7 = [(ATSessionTask *)self dataClass];
-  [v16 encodeObject:v7 forKey:@"dataClass"];
+  dataClass = [(ATSessionTask *)self dataClass];
+  [coderCopy encodeObject:dataClass forKey:@"dataClass"];
 
   [(ATSessionTask *)self progress];
-  [v16 encodeDouble:@"progress" forKey:?];
-  [v16 encodeInteger:-[ATSessionTask totalItemCount](self forKey:{"totalItemCount"), @"totalItemCount"}];
-  [v16 encodeInteger:-[ATSessionTask completedItemCount](self forKey:{"completedItemCount"), @"completedItemCount"}];
-  v8 = [(ATSessionTask *)self currentItemDescriptions];
-  [v16 encodeObject:v8 forKey:@"currentItemDescriptions"];
+  [coderCopy encodeDouble:@"progress" forKey:?];
+  [coderCopy encodeInteger:-[ATSessionTask totalItemCount](self forKey:{"totalItemCount"), @"totalItemCount"}];
+  [coderCopy encodeInteger:-[ATSessionTask completedItemCount](self forKey:{"completedItemCount"), @"completedItemCount"}];
+  currentItemDescriptions = [(ATSessionTask *)self currentItemDescriptions];
+  [coderCopy encodeObject:currentItemDescriptions forKey:@"currentItemDescriptions"];
 
-  v9 = [(ATSessionTask *)self currentItems];
-  [v16 encodeObject:v9 forKey:@"currentItems"];
+  currentItems = [(ATSessionTask *)self currentItems];
+  [coderCopy encodeObject:currentItems forKey:@"currentItems"];
 
-  v10 = [(ATSessionTask *)self recentlyFailedAssets];
-  [v16 encodeObject:v10 forKey:@"recentlyFailedAssets"];
+  recentlyFailedAssets = [(ATSessionTask *)self recentlyFailedAssets];
+  [coderCopy encodeObject:recentlyFailedAssets forKey:@"recentlyFailedAssets"];
 
-  v11 = [(ATSessionTask *)self properties];
-  [v16 encodeObject:v11 forKey:@"properties"];
+  properties = [(ATSessionTask *)self properties];
+  [coderCopy encodeObject:properties forKey:@"properties"];
 
-  [v16 encodeBool:-[ATSessionTask isRunning](self forKey:{"isRunning"), @"running"}];
-  [v16 encodeBool:-[ATSessionTask isFinished](self forKey:{"isFinished"), @"finished"}];
-  [v16 encodeBool:-[ATSessionTask isCancelled](self forKey:{"isCancelled"), @"cancelled"}];
-  [v16 encodeBool:-[ATSessionTask isSuspended](self forKey:{"isSuspended"), @"suspended"}];
-  v12 = [(ATSessionTask *)self error];
-  v13 = [v12 msv_errorByRemovingUnsafeUserInfo];
-  [v16 encodeObject:v13 forKey:@"error"];
+  [coderCopy encodeBool:-[ATSessionTask isRunning](self forKey:{"isRunning"), @"running"}];
+  [coderCopy encodeBool:-[ATSessionTask isFinished](self forKey:{"isFinished"), @"finished"}];
+  [coderCopy encodeBool:-[ATSessionTask isCancelled](self forKey:{"isCancelled"), @"cancelled"}];
+  [coderCopy encodeBool:-[ATSessionTask isSuspended](self forKey:{"isSuspended"), @"suspended"}];
+  error = [(ATSessionTask *)self error];
+  msv_errorByRemovingUnsafeUserInfo = [error msv_errorByRemovingUnsafeUserInfo];
+  [coderCopy encodeObject:msv_errorByRemovingUnsafeUserInfo forKey:@"error"];
 
-  v14 = [(ATSessionTask *)self totalBytesToTransfer];
-  [v16 encodeInt64:objc_msgSend(v14 forKey:{"longLongValue"), @"totalBytesToTransfer"}];
+  totalBytesToTransfer = [(ATSessionTask *)self totalBytesToTransfer];
+  [coderCopy encodeInt64:objc_msgSend(totalBytesToTransfer forKey:{"longLongValue"), @"totalBytesToTransfer"}];
 
-  v15 = [(ATSessionTask *)self totalBytesTransferred];
-  [v16 encodeInt64:objc_msgSend(v15 forKey:{"longLongValue"), @"totalBytesTransferred"}];
+  totalBytesTransferred = [(ATSessionTask *)self totalBytesTransferred];
+  [coderCopy encodeInt64:objc_msgSend(totalBytesTransferred forKey:{"longLongValue"), @"totalBytesTransferred"}];
 
   [(ATSessionTask *)self startTime];
-  [v16 encodeDouble:@"startTime" forKey:?];
+  [coderCopy encodeDouble:@"startTime" forKey:?];
   [(ATSessionTask *)self finishTime];
-  [v16 encodeDouble:@"finishTime" forKey:?];
+  [coderCopy encodeDouble:@"finishTime" forKey:?];
 }
 
-- (ATSessionTask)initWithCoder:(id)a3
+- (ATSessionTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ATSessionTask *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionTaskIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionTaskIdentifier"];
     sessionTaskIdentifier = v5->_sessionTaskIdentifier;
     v5->_sessionTaskIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
     localizedDescription = v5->_localizedDescription;
     v5->_localizedDescription = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionGroupingKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionGroupingKey"];
     sessionGroupingKey = v5->_sessionGroupingKey;
     v5->_sessionGroupingKey = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataClass"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataClass"];
     dataClass = v5->_dataClass;
     v5->_dataClass = v12;
 
-    [v4 decodeDoubleForKey:@"progress"];
+    [coderCopy decodeDoubleForKey:@"progress"];
     v5->_progress = v14;
-    v5->_totalItemCount = [v4 decodeIntegerForKey:@"totalItemCount"];
-    v5->_completedItemCount = [v4 decodeIntegerForKey:@"completedItemCount"];
+    v5->_totalItemCount = [coderCopy decodeIntegerForKey:@"totalItemCount"];
+    v5->_completedItemCount = [coderCopy decodeIntegerForKey:@"completedItemCount"];
     v15 = MEMORY[0x277CBEB98];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"currentItemDescriptions"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"currentItemDescriptions"];
     currentItemDescriptions = v5->_currentItemDescriptions;
     v5->_currentItemDescriptions = v18;
 
@@ -173,7 +173,7 @@
     v23 = objc_opt_class();
     v24 = objc_opt_class();
     v25 = [v20 setWithObjects:{v21, v22, v23, v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"currentItems"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"currentItems"];
     currentItems = v5->_currentItems;
     v5->_currentItems = v26;
 
@@ -184,7 +184,7 @@
     v32 = objc_opt_class();
     v33 = objc_opt_class();
     v34 = [v28 setWithObjects:{v29, v30, v31, v32, v33, objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"recentlyFailedAssets"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"recentlyFailedAssets"];
     recentlyFailedAssets = v5->_recentlyFailedAssets;
     v5->_recentlyFailedAssets = v35;
 
@@ -193,29 +193,29 @@
     v39 = objc_opt_class();
     v40 = objc_opt_class();
     v41 = [v37 setWithObjects:{v38, v39, v40, objc_opt_class(), 0}];
-    v42 = [v4 decodeObjectOfClasses:v41 forKey:@"properties"];
+    v42 = [coderCopy decodeObjectOfClasses:v41 forKey:@"properties"];
     properties = v5->_properties;
     v5->_properties = v42;
 
-    v5->_running = [v4 decodeBoolForKey:@"running"];
-    v5->_finished = [v4 decodeBoolForKey:@"finished"];
-    v5->_cancelled = [v4 decodeBoolForKey:@"cancelled"];
-    v5->_suspended = [v4 decodeBoolForKey:@"suspended"];
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v5->_running = [coderCopy decodeBoolForKey:@"running"];
+    v5->_finished = [coderCopy decodeBoolForKey:@"finished"];
+    v5->_cancelled = [coderCopy decodeBoolForKey:@"cancelled"];
+    v5->_suspended = [coderCopy decodeBoolForKey:@"suspended"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     error = v5->_error;
     v5->_error = v44;
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalBytesToTransfer"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalBytesToTransfer"];
     totalBytesToTransfer = v5->_totalBytesToTransfer;
     v5->_totalBytesToTransfer = v46;
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalBytesTransferred"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalBytesTransferred"];
     totalBytesTransferred = v5->_totalBytesTransferred;
     v5->_totalBytesTransferred = v48;
 
-    [v4 decodeDoubleForKey:@"startTime"];
+    [coderCopy decodeDoubleForKey:@"startTime"];
     v5->_startTime = v50;
-    [v4 decodeDoubleForKey:@"finishTime"];
+    [coderCopy decodeDoubleForKey:@"finishTime"];
     v5->_finishTime = v51;
   }
 
@@ -226,17 +226,17 @@
 {
   v16 = MEMORY[0x277CCACA8];
   v15 = objc_opt_class();
-  v3 = [(ATSessionTask *)self sessionTaskIdentifier];
-  v4 = [(ATSessionTask *)self sessionGroupingKey];
-  v5 = [(ATSessionTask *)self isRunning];
-  v6 = [(ATSessionTask *)self isFinished];
-  v7 = [(ATSessionTask *)self isCancelled];
-  v8 = [(ATSessionTask *)self isSuspended];
-  v9 = [(ATSessionTask *)self dataClass];
-  v10 = [(ATSessionTask *)self completedItemCount];
-  v11 = [(ATSessionTask *)self totalItemCount];
+  sessionTaskIdentifier = [(ATSessionTask *)self sessionTaskIdentifier];
+  sessionGroupingKey = [(ATSessionTask *)self sessionGroupingKey];
+  isRunning = [(ATSessionTask *)self isRunning];
+  isFinished = [(ATSessionTask *)self isFinished];
+  isCancelled = [(ATSessionTask *)self isCancelled];
+  isSuspended = [(ATSessionTask *)self isSuspended];
+  dataClass = [(ATSessionTask *)self dataClass];
+  completedItemCount = [(ATSessionTask *)self completedItemCount];
+  totalItemCount = [(ATSessionTask *)self totalItemCount];
   [(ATSessionTask *)self progress];
-  v13 = [v16 stringWithFormat:@"<%@ %@ %@: running=%d finished=%d cancelled=%d suspended=%d dataClass=%@ %d/%d %d%%>", v15, v3, v4, v5, v6, v7, v8, v9, v10, v11, (v12 * 100.0)];
+  v13 = [v16 stringWithFormat:@"<%@ %@ %@: running=%d finished=%d cancelled=%d suspended=%d dataClass=%@ %d/%d %d%%>", v15, sessionTaskIdentifier, sessionGroupingKey, isRunning, isFinished, isCancelled, isSuspended, dataClass, completedItemCount, totalItemCount, (v12 * 100.0)];
 
   return v13;
 }
@@ -244,46 +244,46 @@
 - (id)baseClassRepresentation
 {
   v3 = objc_alloc_init(ATSessionTask);
-  v4 = [(ATSessionTask *)self sessionTaskIdentifier];
-  [(ATSessionTask *)v3 setSessionTaskIdentifier:v4];
+  sessionTaskIdentifier = [(ATSessionTask *)self sessionTaskIdentifier];
+  [(ATSessionTask *)v3 setSessionTaskIdentifier:sessionTaskIdentifier];
 
-  v5 = [(ATSessionTask *)self sessionGroupingKey];
-  [(ATSessionTask *)v3 setSessionGroupingKey:v5];
+  sessionGroupingKey = [(ATSessionTask *)self sessionGroupingKey];
+  [(ATSessionTask *)v3 setSessionGroupingKey:sessionGroupingKey];
 
-  v6 = [(ATSessionTask *)self localizedDescription];
-  [(ATSessionTask *)v3 setLocalizedDescription:v6];
+  localizedDescription = [(ATSessionTask *)self localizedDescription];
+  [(ATSessionTask *)v3 setLocalizedDescription:localizedDescription];
 
-  v7 = [(ATSessionTask *)self dataClass];
-  [(ATSessionTask *)v3 setDataClass:v7];
+  dataClass = [(ATSessionTask *)self dataClass];
+  [(ATSessionTask *)v3 setDataClass:dataClass];
 
   [(ATSessionTask *)self progress];
   [(ATSessionTask *)v3 setProgress:?];
   [(ATSessionTask *)v3 setTotalItemCount:[(ATSessionTask *)self totalItemCount]];
   [(ATSessionTask *)v3 setCompletedItemCount:[(ATSessionTask *)self completedItemCount]];
-  v8 = [(ATSessionTask *)self currentItemDescriptions];
-  [(ATSessionTask *)v3 setCurrentItemDescriptions:v8];
+  currentItemDescriptions = [(ATSessionTask *)self currentItemDescriptions];
+  [(ATSessionTask *)v3 setCurrentItemDescriptions:currentItemDescriptions];
 
-  v9 = [(ATSessionTask *)self currentItems];
-  [(ATSessionTask *)v3 setCurrentItems:v9];
+  currentItems = [(ATSessionTask *)self currentItems];
+  [(ATSessionTask *)v3 setCurrentItems:currentItems];
 
-  v10 = [(ATSessionTask *)self recentlyFailedAssets];
-  [(ATSessionTask *)v3 setRecentlyFailedAssets:v10];
+  recentlyFailedAssets = [(ATSessionTask *)self recentlyFailedAssets];
+  [(ATSessionTask *)v3 setRecentlyFailedAssets:recentlyFailedAssets];
 
-  v11 = [(ATSessionTask *)self properties];
-  [(ATSessionTask *)v3 setProperties:v11];
+  properties = [(ATSessionTask *)self properties];
+  [(ATSessionTask *)v3 setProperties:properties];
 
   [(ATSessionTask *)v3 setRunning:[(ATSessionTask *)self isRunning]];
   [(ATSessionTask *)v3 setFinished:[(ATSessionTask *)self isFinished]];
   [(ATSessionTask *)v3 setCancelled:[(ATSessionTask *)self isCancelled]];
   [(ATSessionTask *)v3 setSuspended:[(ATSessionTask *)self isSuspended]];
-  v12 = [(ATSessionTask *)self error];
-  [(ATSessionTask *)v3 setError:v12];
+  error = [(ATSessionTask *)self error];
+  [(ATSessionTask *)v3 setError:error];
 
-  v13 = [(ATSessionTask *)self totalBytesTransferred];
-  [(ATSessionTask *)v3 setTotalBytesTransferred:v13];
+  totalBytesTransferred = [(ATSessionTask *)self totalBytesTransferred];
+  [(ATSessionTask *)v3 setTotalBytesTransferred:totalBytesTransferred];
 
-  v14 = [(ATSessionTask *)self totalBytesToTransfer];
-  [(ATSessionTask *)v3 setTotalBytesToTransfer:v14];
+  totalBytesToTransfer = [(ATSessionTask *)self totalBytesToTransfer];
+  [(ATSessionTask *)v3 setTotalBytesToTransfer:totalBytesToTransfer];
 
   [(ATSessionTask *)self startTime];
   [(ATSessionTask *)v3 setStartTime:?];
@@ -317,20 +317,20 @@
   [(ATSessionTask *)self setFinished:1];
 }
 
-- (ATSessionTask)initWithDataClass:(id)a3
+- (ATSessionTask)initWithDataClass:(id)class
 {
-  v5 = a3;
+  classCopy = class;
   v15.receiver = self;
   v15.super_class = ATSessionTask;
   v6 = [(ATSessionTask *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataClass, a3);
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
+    objc_storeStrong(&v6->_dataClass, class);
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     sessionTaskIdentifier = v7->_sessionTaskIdentifier;
-    v7->_sessionTaskIdentifier = v9;
+    v7->_sessionTaskIdentifier = uUIDString;
 
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);

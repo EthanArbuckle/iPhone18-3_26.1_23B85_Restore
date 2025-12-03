@@ -1,21 +1,21 @@
 @interface MADVectorDatabaseUtilities
-+ (BOOL)_shouldPerformImageEmbeddingDeepSyncWithPhotoLibrary:(id)a3 threshold:(double)a4 imageVSKAssetCount:(unint64_t *)a5;
-+ (BOOL)_shouldPerformVideoEmbeddingDeepSyncWithPhotoLibrary:(id)a3 threshold:(double)a4 videoVSKAssetCount:(unint64_t *)a5;
-+ (id)_assetsWithoutValidVideoEmbeddingVersionInPhotoLibrary:(id)a3 withinProcessedAssetsInVDB:(id)a4;
-+ (id)_createVideoVSKAssetWithLocalIdentifier:(id)a3 analysisHeader:(id)a4 analysisResults:(id)a5;
-+ (int)_deepSyncImageEmbeddingsWithPhotoLibrary:(id)a3 imageVSKAssetCount:(unint64_t)a4 cancelBlock:(id)a5;
-+ (int)_deepSyncVideoEmbeddingsWithPhotoLibrary:(id)a3 videoVSKAssetCount:(unint64_t)a4 cancelBlock:(id)a5;
-+ (int)_handleAssetsMissingVideoEmbedding:(id)a3 photoLibrary:(id)a4 cancelBlock:(id)a5;
-+ (int)_resetVersionForAssetsMissingImageEmbedding:(id)a3 photoLibrary:(id)a4;
-+ (int)syncWithPhotoLibrary:(id)a3 ignoreExpiration:(BOOL)a4 threshold:(double)a5 cancelBlock:(id)a6;
++ (BOOL)_shouldPerformImageEmbeddingDeepSyncWithPhotoLibrary:(id)library threshold:(double)threshold imageVSKAssetCount:(unint64_t *)count;
++ (BOOL)_shouldPerformVideoEmbeddingDeepSyncWithPhotoLibrary:(id)library threshold:(double)threshold videoVSKAssetCount:(unint64_t *)count;
++ (id)_assetsWithoutValidVideoEmbeddingVersionInPhotoLibrary:(id)library withinProcessedAssetsInVDB:(id)b;
++ (id)_createVideoVSKAssetWithLocalIdentifier:(id)identifier analysisHeader:(id)header analysisResults:(id)results;
++ (int)_deepSyncImageEmbeddingsWithPhotoLibrary:(id)library imageVSKAssetCount:(unint64_t)count cancelBlock:(id)block;
++ (int)_deepSyncVideoEmbeddingsWithPhotoLibrary:(id)library videoVSKAssetCount:(unint64_t)count cancelBlock:(id)block;
++ (int)_handleAssetsMissingVideoEmbedding:(id)embedding photoLibrary:(id)library cancelBlock:(id)block;
++ (int)_resetVersionForAssetsMissingImageEmbedding:(id)embedding photoLibrary:(id)library;
++ (int)syncWithPhotoLibrary:(id)library ignoreExpiration:(BOOL)expiration threshold:(double)threshold cancelBlock:(id)block;
 @end
 
 @implementation MADVectorDatabaseUtilities
 
-+ (BOOL)_shouldPerformImageEmbeddingDeepSyncWithPhotoLibrary:(id)a3 threshold:(double)a4 imageVSKAssetCount:(unint64_t *)a5
++ (BOOL)_shouldPerformImageEmbeddingDeepSyncWithPhotoLibrary:(id)library threshold:(double)threshold imageVSKAssetCount:(unint64_t *)count
 {
-  v7 = a3;
-  v8 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedImageEmbeddingVersionProviderWithPhotoLibrary:v7];
+  libraryCopy = library;
+  v8 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedImageEmbeddingVersionProviderWithPhotoLibrary:libraryCopy];
   v9 = mach_absolute_time();
   v10 = VCPSignPostLog();
   v11 = os_signpost_id_generate(v10);
@@ -29,7 +29,7 @@
   }
 
   v36 = 0;
-  v14 = [v7 countOfProcessedAssetsForMediaProcessingTaskID:17 priority:0 algorithmVersion:v8 sceneConfidenceThreshold:&v36 error:0.0];
+  v14 = [libraryCopy countOfProcessedAssetsForMediaProcessingTaskID:17 priority:0 algorithmVersion:v8 sceneConfidenceThreshold:&v36 error:0.0];
   v15 = v36;
   v16 = VCPSignPostLog();
   v17 = v16;
@@ -65,7 +65,7 @@
 
   else
   {
-    v34 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:v7];
+    v34 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:libraryCopy];
     v20 = mach_absolute_time();
     v21 = VCPSignPostLog();
     v22 = os_signpost_id_generate(v21);
@@ -115,9 +115,9 @@
 
     else
     {
-      if (a5)
+      if (count)
       {
-        *a5 = v25;
+        *count = v25;
       }
 
       v29 = 0.0;
@@ -156,28 +156,28 @@
           v43 = 2048;
           v44 = v29 * 100.0;
           v45 = 2048;
-          v46 = a4 * 100.0;
+          v46 = threshold * 100.0;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v32, "%@ vdb-assets: %ld, photos-assets: %ld -> difference: %.2f%% (threshold: %.2f%%)", buf, 0x34u);
         }
       }
 
-      v19 = v29 > a4;
+      v19 = v29 > threshold;
     }
   }
 
   return v19;
 }
 
-+ (int)_resetVersionForAssetsMissingImageEmbedding:(id)a3 photoLibrary:(id)a4
++ (int)_resetVersionForAssetsMissingImageEmbedding:(id)embedding photoLibrary:(id)library
 {
-  v42 = a3;
-  v40 = a4;
+  embeddingCopy = embedding;
+  libraryCopy = library;
   v41 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:?];
   if (v41)
   {
-    v5 = [v42 count];
+    v5 = [embeddingCopy count];
     v52 = 0;
-    v39 = [v41 fetchAssetsWithLocalIdentifiers:v42 embeddingType:1 error:&v52];
+    v39 = [v41 fetchAssetsWithLocalIdentifiers:embeddingCopy embeddingType:1 error:&v52];
     v38 = v52;
     if (v38)
     {
@@ -243,8 +243,8 @@
                 objc_enumerationMutation(v12);
               }
 
-              v16 = [*(*(&v48 + 1) + 8 * i) mad_photosLocalIdentifier];
-              [v11 addObject:v16];
+              mad_photosLocalIdentifier = [*(*(&v48 + 1) + 8 * i) mad_photosLocalIdentifier];
+              [v11 addObject:mad_photosLocalIdentifier];
             }
 
             v13 = [v12 countByEnumeratingWithState:&v48 objects:v54 count:16];
@@ -258,7 +258,7 @@
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v18 = v42;
+        v18 = embeddingCopy;
         v19 = [v18 countByEnumeratingWithState:&v44 objects:v53 count:16];
         if (v19)
         {
@@ -326,7 +326,7 @@
           }
 
           v43 = 0;
-          v31 = [v40 resetStateForMediaProcessingTaskID:17 assetIdentifiers:v17 resetOptions:1024 error:&v43];
+          v31 = [libraryCopy resetStateForMediaProcessingTaskID:17 assetIdentifiers:v17 resetOptions:1024 error:&v43];
           v32 = v43;
           v33 = VCPSignPostLog();
           v34 = v33;
@@ -396,10 +396,10 @@
   return v7;
 }
 
-+ (int)_deepSyncImageEmbeddingsWithPhotoLibrary:(id)a3 imageVSKAssetCount:(unint64_t)a4 cancelBlock:(id)a5
++ (int)_deepSyncImageEmbeddingsWithPhotoLibrary:(id)library imageVSKAssetCount:(unint64_t)count cancelBlock:(id)block
 {
-  v99 = a3;
-  v108 = a5;
+  libraryCopy = library;
+  blockCopy = block;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v6 = &_os_log_default;
@@ -412,7 +412,7 @@
     }
   }
 
-  v101 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:v99];
+  v101 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:libraryCopy];
   if (!v101)
   {
     if (MediaAnalysisLogLevel() >= 3)
@@ -430,7 +430,7 @@
     goto LABEL_87;
   }
 
-  if (!v108 || !v108[2]())
+  if (!blockCopy || !blockCopy[2]())
   {
     v10 = +[VCPWatchdog sharedWatchdog];
     [v10 pet];
@@ -459,8 +459,8 @@
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v15, OS_SIGNPOST_INTERVAL_BEGIN, spid, "MADVSKDBUtil_ImageDeepSync_VSKLoop", "", buf, 2u);
     }
 
-    v97 = [PHAsset vcp_fetchOptionsForLibrary:v99 forTaskID:1];
-    if (a4)
+    v97 = [PHAsset vcp_fetchOptionsForLibrary:libraryCopy forTaskID:1];
+    if (count)
     {
       v17 = 0;
       v109 = 0;
@@ -474,7 +474,7 @@
       while (1)
       {
         context = objc_autoreleasePoolPush();
-        if (v108 && v108[2]())
+        if (blockCopy && blockCopy[2]())
         {
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
           {
@@ -546,8 +546,8 @@
                     objc_enumerationMutation(v24);
                   }
 
-                  v28 = [*(*(&v122 + 1) + 8 * i) mad_photosLocalIdentifier];
-                  [v21 addObject:v28];
+                  mad_photosLocalIdentifier = [*(*(&v122 + 1) + 8 * i) mad_photosLocalIdentifier];
+                  [v21 addObject:mad_photosLocalIdentifier];
                 }
 
                 v25 = [v24 countByEnumeratingWithState:&v122 objects:v134 count:16];
@@ -580,13 +580,13 @@
               {
                 v33 = objc_autoreleasePoolPush();
                 v34 = [v113 objectAtIndexedSubscript:j];
-                v35 = [v34 mediaAnalysisProperties];
-                v36 = v111 > [v35 imageEmbeddingVersion];
+                mediaAnalysisProperties = [v34 mediaAnalysisProperties];
+                v36 = v111 > [mediaAnalysisProperties imageEmbeddingVersion];
 
                 if (!v36)
                 {
-                  v37 = [v34 localIdentifier];
-                  [v31 addObject:v37];
+                  localIdentifier = [v34 localIdentifier];
+                  [v31 addObject:localIdentifier];
                 }
 
                 objc_autoreleasePoolPop(v33);
@@ -695,7 +695,7 @@
         }
 
         v109 += 1000;
-        if (v109 >= a4)
+        if (v109 >= count)
         {
           goto LABEL_89;
         }
@@ -718,7 +718,7 @@ LABEL_89:
       VCPPerformance_LogMeasurement();
     }
 
-    if (v108 && v108[2]())
+    if (blockCopy && blockCopy[2]())
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
@@ -762,7 +762,7 @@ LABEL_89:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v59, OS_SIGNPOST_INTERVAL_BEGIN, v110, "MADVSKDBUtil_ImageDeepSync_PhotosLoop", "", buf, 2u);
     }
 
-    v112 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedImageEmbeddingVersionProviderWithPhotoLibrary:v99];
+    v112 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedImageEmbeddingVersionProviderWithPhotoLibrary:libraryCopy];
     v60 = mach_absolute_time();
     v61 = VCPSignPostLog();
     v62 = os_signpost_id_generate(v61);
@@ -776,7 +776,7 @@ LABEL_89:
     }
 
     v116 = 0;
-    v65 = [v99 fetchProcessedAssetsForMediaProcessingTaskID:17 priority:0 algorithmVersion:v112 sceneConfidenceThreshold:&v116 error:0.0];
+    v65 = [libraryCopy fetchProcessedAssetsForMediaProcessingTaskID:17 priority:0 algorithmVersion:v112 sceneConfidenceThreshold:&v116 error:0.0];
     v114 = v116;
     v66 = VCPSignPostLog();
     v67 = v66;
@@ -873,24 +873,24 @@ LABEL_160:
     {
       v74 = objc_autoreleasePoolPush();
       v75 = [v65 objectAtIndexedSubscript:v72];
-      v76 = [v75 mediaAnalysisProperties];
-      v77 = [v76 imageEmbeddingVersion];
+      mediaAnalysisProperties2 = [v75 mediaAnalysisProperties];
+      imageEmbeddingVersion = [mediaAnalysisProperties2 imageEmbeddingVersion];
 
-      if (v73 > v77)
+      if (v73 > imageEmbeddingVersion)
       {
         break;
       }
 
       v81 = [v65 objectAtIndexedSubscript:v72];
-      v82 = [v81 localIdentifier];
-      [v115 addObject:v82];
+      localIdentifier2 = [v81 localIdentifier];
+      [v115 addObject:localIdentifier2];
 
       if ([v115 count] <= 0x3E7 && v69 - 1 != v72)
       {
         goto LABEL_144;
       }
 
-      if (v108 && v108[2]())
+      if (blockCopy && blockCopy[2]())
       {
         if (MediaAnalysisLogLevel() < 3)
         {
@@ -917,7 +917,7 @@ LABEL_131:
       v84 = +[VCPWatchdog sharedWatchdog];
       [v84 pet];
 
-      v85 = [objc_opt_class() _resetVersionForAssetsMissingImageEmbedding:v115 photoLibrary:v99];
+      v85 = [objc_opt_class() _resetVersionForAssetsMissingImageEmbedding:v115 photoLibrary:libraryCopy];
       if (!v85)
       {
         [v115 removeAllObjects];
@@ -951,13 +951,13 @@ LABEL_145:
     v78 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, v107))
     {
-      v79 = [v75 localIdentifier];
+      localIdentifier3 = [v75 localIdentifier];
       *buf = 138413058;
       v128 = @"[VSKDBUtil][DeepSync|ImageEmbedding]";
       v129 = 2112;
-      v130 = v79;
+      v130 = localIdentifier3;
       v131 = 1024;
-      LODWORD(v132[0]) = v77;
+      LODWORD(v132[0]) = imageEmbeddingVersion;
       WORD2(v132[0]) = 1024;
       *(v132 + 6) = v73;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v107, "%@[%@] Asset imageEmbeddingVersion %d < forward compatible version (%d)", buf, 0x22u);
@@ -986,10 +986,10 @@ LABEL_163:
   return v102;
 }
 
-+ (BOOL)_shouldPerformVideoEmbeddingDeepSyncWithPhotoLibrary:(id)a3 threshold:(double)a4 videoVSKAssetCount:(unint64_t *)a5
++ (BOOL)_shouldPerformVideoEmbeddingDeepSyncWithPhotoLibrary:(id)library threshold:(double)threshold videoVSKAssetCount:(unint64_t *)count
 {
-  v7 = a3;
-  v8 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedVideoEmbeddingVersionProviderWithPhotoLibrary:v7];
+  libraryCopy = library;
+  v8 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedVideoEmbeddingVersionProviderWithPhotoLibrary:libraryCopy];
   v9 = mach_absolute_time();
   v10 = VCPSignPostLog();
   v11 = os_signpost_id_generate(v10);
@@ -1003,7 +1003,7 @@ LABEL_163:
   }
 
   v61 = 0;
-  v14 = [v7 countOfProcessedAssetsForMediaProcessingTaskID:1 priority:0 algorithmVersion:v8 sceneConfidenceThreshold:&v61 error:0.0];
+  v14 = [libraryCopy countOfProcessedAssetsForMediaProcessingTaskID:1 priority:0 algorithmVersion:v8 sceneConfidenceThreshold:&v61 error:0.0];
   v15 = v61;
   v16 = VCPSignPostLog();
   v17 = v16;
@@ -1021,7 +1021,7 @@ LABEL_163:
 
   if (!v15)
   {
-    v59 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:v7];
+    v59 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:libraryCopy];
     if (v59)
     {
       v20 = mach_absolute_time();
@@ -1108,12 +1108,12 @@ LABEL_163:
           v68 = 2048;
           v69 = v31 * 100.0;
           v70 = 2048;
-          v71 = a4 * 100.0;
+          v71 = threshold * 100.0;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v34, "%@ vdb-assets: %ld, photos-assets: %ld -> difference: %.2f%% (threshold: %.2f%%)", buf, 0x34u);
         }
       }
 
-      if (v31 > a4)
+      if (v31 > threshold)
       {
 LABEL_43:
         v15 = 0;
@@ -1137,9 +1137,9 @@ LABEL_44:
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v40, OS_SIGNPOST_INTERVAL_BEGIN, v38, "MADVSKDBUtil_VideoDeepSync_MAAssetCount_CoreData", "", buf, 2u);
         }
 
-        v41 = [v7 mad_fetchRequest];
+        mad_fetchRequest = [libraryCopy mad_fetchRequest];
         v42 = [NSSet setWithObject:&off_100294BA8];
-        v43 = [v41 fetchAnalysesWithLocalIdentifiers:0 predicate:0 resultTypes:v42];
+        v43 = [mad_fetchRequest fetchAnalysesWithLocalIdentifiers:0 predicate:0 resultTypes:v42];
 
         v44 = [v43 count];
         v45 = VCPSignPostLog();
@@ -1158,7 +1158,7 @@ LABEL_44:
         goto LABEL_63;
       }
 
-      v43 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v7];
+      v43 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
       if (v43)
       {
         v47 = mach_absolute_time();
@@ -1192,9 +1192,9 @@ LABEL_63:
         VCPPerformance_LogMeasurement();
 LABEL_64:
 
-        if (a5)
+        if (count)
         {
-          *a5 = v25;
+          *count = v25;
         }
 
         v54 = 0.0;
@@ -1233,13 +1233,13 @@ LABEL_64:
             v68 = 2048;
             v69 = v54 * 100.0;
             v70 = 2048;
-            v71 = a4 * 100.0;
+            v71 = threshold * 100.0;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v57, "%@ vdb-assets: %ld, madb-assets: %ld -> difference: %.2f%% (threshold: %.2f%%)", buf, 0x34u);
           }
         }
 
         v15 = 0;
-        v19 = v54 > a4 && v25 > v44;
+        v19 = v54 > threshold && v25 > v44;
         goto LABEL_44;
       }
 
@@ -1300,12 +1300,12 @@ LABEL_45:
   return v19;
 }
 
-+ (id)_createVideoVSKAssetWithLocalIdentifier:(id)a3 analysisHeader:(id)a4 analysisResults:(id)a5
++ (id)_createVideoVSKAssetWithLocalIdentifier:(id)identifier analysisHeader:(id)header analysisResults:(id)results
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v9)
+  identifierCopy = identifier;
+  headerCopy = header;
+  resultsCopy = results;
+  if (!resultsCopy)
   {
     if (MediaAnalysisLogLevel() < 6)
     {
@@ -1321,16 +1321,16 @@ LABEL_45:
     *buf = 138412546;
     v23 = @"[VSKDBUtil][DeepSync|VideoEmbedding]";
     v24 = 2112;
-    v25 = v7;
+    v25 = identifierCopy;
     v13 = "%@[%@] Asset has no analysis results in MA DB";
     v14 = v16;
     v15 = 22;
     goto LABEL_9;
   }
 
-  v10 = [v8 vcp_version];
+  vcp_version = [headerCopy vcp_version];
   v11 = MediaAnalysisEmbeddingForwardCompatibleVersion;
-  if (v10 < MediaAnalysisEmbeddingForwardCompatibleVersion)
+  if (vcp_version < MediaAnalysisEmbeddingForwardCompatibleVersion)
   {
     if (MediaAnalysisLogLevel() < 6)
     {
@@ -1346,9 +1346,9 @@ LABEL_45:
     *buf = 138413058;
     v23 = @"[VSKDBUtil][DeepSync|VideoEmbedding]";
     v24 = 2112;
-    v25 = v7;
+    v25 = identifierCopy;
     v26 = 1024;
-    LODWORD(v27[0]) = [v8 vcp_version];
+    LODWORD(v27[0]) = [headerCopy vcp_version];
     WORD2(v27[0]) = 1024;
     *(v27 + 6) = v11;
     v13 = "%@[%@] Asset analysis version %d < forward compatible version (%d)";
@@ -1362,7 +1362,7 @@ LABEL_10:
   }
 
   v21 = 0;
-  v17 = [VSKAsset mad_videoAssetWithLocalIdentifier:v7 mediaAnalysisResults:v9 error:&v21];
+  v17 = [VSKAsset mad_videoAssetWithLocalIdentifier:identifierCopy mediaAnalysisResults:resultsCopy error:&v21];
   v18 = v21;
   if (!v17 && MediaAnalysisLogLevel() >= 6)
   {
@@ -1372,7 +1372,7 @@ LABEL_10:
       *buf = 138412802;
       v23 = @"[VSKDBUtil][DeepSync|VideoEmbedding]";
       v24 = 2112;
-      v25 = v7;
+      v25 = identifierCopy;
       v26 = 2112;
       v27[0] = v18;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v19, "%@[%@] Failed to create VSKAsset: %@", buf, 0x20u);
@@ -1384,16 +1384,16 @@ LABEL_16:
   return v17;
 }
 
-+ (int)_handleAssetsMissingVideoEmbedding:(id)a3 photoLibrary:(id)a4 cancelBlock:(id)a5
++ (int)_handleAssetsMissingVideoEmbedding:(id)embedding photoLibrary:(id)library cancelBlock:(id)block
 {
-  v82 = a3;
-  v7 = a4;
-  v83 = a5;
-  v78 = v7;
-  v81 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v7];
+  embeddingCopy = embedding;
+  libraryCopy = library;
+  blockCopy = block;
+  v78 = libraryCopy;
+  v81 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
   if (v81)
   {
-    v77 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:v7];
+    v77 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:libraryCopy];
     if (!v77)
     {
       if (MediaAnalysisLogLevel() >= 3)
@@ -1411,17 +1411,17 @@ LABEL_16:
       goto LABEL_89;
     }
 
-    v8 = [v82 count];
+    v8 = [embeddingCopy count];
     if (+[MADManagedPhotosAsset isMACDReadEnabled])
     {
-      v9 = [v7 mad_fetchRequest];
-      v79 = [v9 fetchAnalysesWithLocalIdentifiers:v82 predicate:0];
+      mad_fetchRequest = [libraryCopy mad_fetchRequest];
+      v79 = [mad_fetchRequest fetchAnalysesWithLocalIdentifiers:embeddingCopy predicate:0];
     }
 
     else
     {
       v79 = +[NSMutableDictionary dictionary];
-      [v81 queryHeadersForAssets:v82 analyses:?];
+      [v81 queryHeadersForAssets:embeddingCopy analyses:?];
     }
 
     v13 = [v79 count];
@@ -1442,14 +1442,14 @@ LABEL_16:
 
     if (+[MADManagedPhotosAsset isMACDReadEnabled])
     {
-      v15 = [v7 mad_fetchRequest];
-      v80 = [v15 fetchAnalysesWithLocalIdentifiers:v82 predicate:0];
+      mad_fetchRequest2 = [libraryCopy mad_fetchRequest];
+      v80 = [mad_fetchRequest2 fetchAnalysesWithLocalIdentifiers:embeddingCopy predicate:0];
     }
 
     else
     {
       v96 = 0;
-      v11 = [v81 queryAnalysisResultsForAssets:v82 results:&v96];
+      v11 = [v81 queryAnalysisResultsForAssets:embeddingCopy results:&v96];
       v80 = v96;
       if (v11)
       {
@@ -1486,7 +1486,7 @@ LABEL_16:
       }
     }
 
-    if (v83 && v83[2]())
+    if (blockCopy && blockCopy[2]())
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
@@ -1507,7 +1507,7 @@ LABEL_16:
     [v20 pet];
 
     v95 = 0;
-    v73 = [v77 fetchAssetsWithLocalIdentifiers:v82 embeddingType:2 error:&v95];
+    v73 = [v77 fetchAssetsWithLocalIdentifiers:embeddingCopy embeddingType:2 error:&v95];
     v71 = v95;
     if (v71)
     {
@@ -1516,7 +1516,7 @@ LABEL_16:
         v21 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v21))
         {
-          v22 = [v82 count];
+          v22 = [embeddingCopy count];
           *buf = 138412802;
           v100 = @"[VSKDBUtil][DeepSync|VideoEmbedding]";
           v101 = 2048;
@@ -1566,8 +1566,8 @@ LABEL_16:
             objc_enumerationMutation(v26);
           }
 
-          v30 = [*(*(&v91 + 1) + 8 * i) mad_photosLocalIdentifier];
-          [v25 addObject:v30];
+          mad_photosLocalIdentifier = [*(*(&v91 + 1) + 8 * i) mad_photosLocalIdentifier];
+          [v25 addObject:mad_photosLocalIdentifier];
         }
 
         v27 = [v26 countByEnumeratingWithState:&v91 objects:v98 count:16];
@@ -1583,7 +1583,7 @@ LABEL_16:
     v90 = 0u;
     v87 = 0u;
     v88 = 0u;
-    v31 = v82;
+    v31 = embeddingCopy;
     obj = v31;
     v32 = [v31 countByEnumeratingWithState:&v87 objects:v97 count:16];
     if (v32)
@@ -1605,7 +1605,7 @@ LABEL_16:
 
           v36 = *(*(&v87 + 1) + 8 * j);
           v37 = objc_autoreleasePoolPush();
-          if (v83 && v83[2]())
+          if (blockCopy && blockCopy[2]())
           {
             if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
             {
@@ -1876,14 +1876,14 @@ LABEL_90:
   return v11;
 }
 
-+ (id)_assetsWithoutValidVideoEmbeddingVersionInPhotoLibrary:(id)a3 withinProcessedAssetsInVDB:(id)a4
++ (id)_assetsWithoutValidVideoEmbeddingVersionInPhotoLibrary:(id)library withinProcessedAssetsInVDB:(id)b
 {
-  v5 = a3;
-  v6 = a4;
-  v25 = v5;
-  v27 = v6;
-  v26 = [PHAsset vcp_fetchOptionsForLibrary:v5 forTaskID:1];
-  v28 = [PHAsset fetchAssetsWithLocalIdentifiers:v6 options:v26];
+  libraryCopy = library;
+  bCopy = b;
+  v25 = libraryCopy;
+  v27 = bCopy;
+  v26 = [PHAsset vcp_fetchOptionsForLibrary:libraryCopy forTaskID:1];
+  v28 = [PHAsset fetchAssetsWithLocalIdentifiers:bCopy options:v26];
   v7 = [v28 count];
   if (MediaAnalysisLogLevel() >= 6)
   {
@@ -1895,7 +1895,7 @@ LABEL_90:
       v36 = 2048;
       v37 = v7;
       v38 = 2048;
-      v39 = [v6 count];
+      v39 = [bCopy count];
       _os_log_impl(&_mh_execute_header, &_os_log_default, v8, "%@ Fetched %lu corresponding assets from Photos out of %lu assets from VSKDB", buf, 0x20u);
     }
   }
@@ -1907,13 +1907,13 @@ LABEL_90:
   {
     v12 = objc_autoreleasePoolPush();
     v13 = [v28 objectAtIndexedSubscript:v10];
-    v14 = [v13 mediaAnalysisProperties];
-    v15 = v11 > [v14 videoEmbeddingVersion];
+    mediaAnalysisProperties = [v13 mediaAnalysisProperties];
+    v15 = v11 > [mediaAnalysisProperties videoEmbeddingVersion];
 
     if (!v15)
     {
-      v16 = [v13 localIdentifier];
-      [v9 addObject:v16];
+      localIdentifier = [v13 localIdentifier];
+      [v9 addObject:localIdentifier];
     }
 
     objc_autoreleasePoolPop(v12);
@@ -1965,10 +1965,10 @@ LABEL_90:
   return v17;
 }
 
-+ (int)_deepSyncVideoEmbeddingsWithPhotoLibrary:(id)a3 videoVSKAssetCount:(unint64_t)a4 cancelBlock:(id)a5
++ (int)_deepSyncVideoEmbeddingsWithPhotoLibrary:(id)library videoVSKAssetCount:(unint64_t)count cancelBlock:(id)block
 {
-  v99 = a3;
-  v100 = a5;
+  libraryCopy = library;
+  blockCopy = block;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v6 = &_os_log_default;
@@ -1981,10 +1981,10 @@ LABEL_90:
     }
   }
 
-  v97 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:v99];
+  v97 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:libraryCopy];
   if (v97)
   {
-    v93 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v99];
+    v93 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
     if (!v93)
     {
       if (MediaAnalysisLogLevel() >= 3)
@@ -2002,7 +2002,7 @@ LABEL_90:
       goto LABEL_41;
     }
 
-    if (v100 && v100[2]())
+    if (blockCopy && blockCopy[2]())
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
@@ -2050,7 +2050,7 @@ LABEL_142:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_INTERVAL_BEGIN, spid, "MADVSKDBUtil_VideoDeepSync_PhotosLoop", "", buf, 2u);
     }
 
-    v87 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedVideoEmbeddingVersionProviderWithPhotoLibrary:v99];
+    v87 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedVideoEmbeddingVersionProviderWithPhotoLibrary:libraryCopy];
     v17 = mach_absolute_time();
     v18 = VCPSignPostLog();
     v19 = os_signpost_id_generate(v18);
@@ -2064,7 +2064,7 @@ LABEL_142:
     }
 
     v107 = 0;
-    v95 = [v99 fetchProcessedAssetsForMediaProcessingTaskID:1 priority:0 algorithmVersion:v87 sceneConfidenceThreshold:&v107 error:0.0];
+    v95 = [libraryCopy fetchProcessedAssetsForMediaProcessingTaskID:1 priority:0 algorithmVersion:v87 sceneConfidenceThreshold:&v107 error:0.0];
     v90 = v107;
     v22 = VCPSignPostLog();
     v23 = v22;
@@ -2134,7 +2134,7 @@ LABEL_71:
         VCPPerformance_LogMeasurement();
       }
 
-      if (v100 && v100[2]())
+      if (blockCopy && blockCopy[2]())
       {
         if (MediaAnalysisLogLevel() >= 3)
         {
@@ -2179,7 +2179,7 @@ LABEL_71:
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v51, OS_SIGNPOST_INTERVAL_BEGIN, v83, "MADVSKDBUtil_VideoDeepSync_VSKLoop", "", buf, 2u);
         }
 
-        if (a4)
+        if (count)
         {
           v53 = 0;
           v54 = VCPLogToOSLogType[3];
@@ -2192,7 +2192,7 @@ LABEL_71:
           {
             v56 = v55;
             v57 = objc_autoreleasePoolPush();
-            if (v100 && v100[2]())
+            if (blockCopy && blockCopy[2]())
             {
               if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(v55, v54))
               {
@@ -2263,8 +2263,8 @@ LABEL_71:
                         objc_enumerationMutation(v63);
                       }
 
-                      v67 = [*(*(&v102 + 1) + 8 * i) mad_photosLocalIdentifier];
-                      [v60 addObject:v67];
+                      mad_photosLocalIdentifier = [*(*(&v102 + 1) + 8 * i) mad_photosLocalIdentifier];
+                      [v60 addObject:mad_photosLocalIdentifier];
                     }
 
                     v64 = [v63 countByEnumeratingWithState:&v102 objects:v108 count:16];
@@ -2273,7 +2273,7 @@ LABEL_71:
                   while (v64);
                 }
 
-                v68 = [objc_opt_class() _assetsWithoutValidVideoEmbeddingVersionInPhotoLibrary:v99 withinProcessedAssetsInVDB:v60];
+                v68 = [objc_opt_class() _assetsWithoutValidVideoEmbeddingVersionInPhotoLibrary:libraryCopy withinProcessedAssetsInVDB:v60];
                 if ([v68 count])
                 {
                   if (MediaAnalysisLogLevel() >= 5)
@@ -2338,7 +2338,7 @@ LABEL_71:
             }
 
             v53 += 1000;
-            if (v53 >= a4)
+            if (v53 >= count)
             {
               goto LABEL_130;
             }
@@ -2392,7 +2392,7 @@ LABEL_140:
     {
       v32 = v31;
       v33 = objc_autoreleasePoolPush();
-      if (!v100 || !v100[2]())
+      if (!blockCopy || !blockCopy[2]())
       {
         break;
       }
@@ -2432,23 +2432,23 @@ LABEL_68:
     [v36 pet];
 
     v31 = [v95 objectAtIndexedSubscript:v29];
-    v37 = [v31 mediaAnalysisProperties];
-    v38 = [v37 videoEmbeddingVersion];
+    mediaAnalysisProperties = [v31 mediaAnalysisProperties];
+    videoEmbeddingVersion = [mediaAnalysisProperties videoEmbeddingVersion];
 
-    if (v30 > v38)
+    if (v30 > videoEmbeddingVersion)
     {
       if (MediaAnalysisLogLevel() >= 7)
       {
         v39 = v32;
         if (os_log_type_enabled(v32, v88))
         {
-          v40 = [v31 localIdentifier];
+          localIdentifier = [v31 localIdentifier];
           *buf = 138413058;
           v110 = @"[VSKDBUtil][DeepSync|VideoEmbedding]";
           v111 = 2112;
-          v112 = v40;
+          v112 = localIdentifier;
           v113 = 1024;
-          LODWORD(v114[0]) = v38;
+          LODWORD(v114[0]) = videoEmbeddingVersion;
           WORD2(v114[0]) = 1024;
           *(v114 + 6) = v30;
           _os_log_impl(&_mh_execute_header, v32, v88, "%@[%@] Asset videoEmbeddingVersion %d < forward compatible version (%d)", buf, 0x22u);
@@ -2459,12 +2459,12 @@ LABEL_68:
       goto LABEL_67;
     }
 
-    v41 = [v31 localIdentifier];
-    [v94 addObject:v41];
+    localIdentifier2 = [v31 localIdentifier];
+    [v94 addObject:localIdentifier2];
 
     if ([v94 count] > 0x3E7 || v26 == 1)
     {
-      v42 = [objc_opt_class() _handleAssetsMissingVideoEmbedding:v94 photoLibrary:v99 cancelBlock:v100];
+      v42 = [objc_opt_class() _handleAssetsMissingVideoEmbedding:v94 photoLibrary:libraryCopy cancelBlock:blockCopy];
       if (v42)
       {
         v35 = 1;
@@ -2499,11 +2499,11 @@ LABEL_143:
   return v98;
 }
 
-+ (int)syncWithPhotoLibrary:(id)a3 ignoreExpiration:(BOOL)a4 threshold:(double)a5 cancelBlock:(id)a6
++ (int)syncWithPhotoLibrary:(id)library ignoreExpiration:(BOOL)expiration threshold:(double)threshold cancelBlock:(id)block
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = a6;
+  expirationCopy = expiration;
+  libraryCopy = library;
+  blockCopy = block;
   if ((+[VCPVideoCNNAnalyzer isMUBackboneEnabled]& 1) != 0)
   {
     if (MediaAnalysisLogLevel() >= 6)
@@ -2517,7 +2517,7 @@ LABEL_143:
       }
     }
 
-    v12 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v9];
+    v12 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
     if (!v12)
     {
       if (MediaAnalysisLogLevel() >= 3)
@@ -2531,14 +2531,14 @@ LABEL_143:
         }
       }
 
-      v16 = -18;
+      code = -18;
       goto LABEL_121;
     }
 
     if (+[MADManagedKeyValueStore isMACDReadEnabled])
     {
-      v13 = [v9 mad_fetchRequest];
-      v14 = [v13 dataStoreValueForKey:@"VectorDatabaseDeepSyncTimestamp"];
+      mad_fetchRequest = [libraryCopy mad_fetchRequest];
+      v14 = [mad_fetchRequest dataStoreValueForKey:@"VectorDatabaseDeepSyncTimestamp"];
     }
 
     else
@@ -2557,7 +2557,7 @@ LABEL_143:
     }
     v61 = ;
     [v61 timeIntervalSinceNow];
-    v19 = v18 >= -2592000.0 || v8;
+    v19 = v18 >= -2592000.0 || expirationCopy;
     if (v19)
     {
       if (MediaAnalysisLogLevel() >= 6)
@@ -2570,7 +2570,7 @@ LABEL_143:
           v68 = @"[VSKDBUtil][Sync]";
           v69 = 2112;
           v70 = v61;
-          if (v8)
+          if (expirationCopy)
           {
             v21 = @"YES";
           }
@@ -2602,7 +2602,7 @@ LABEL_32:
       }
     }
 
-    if (v10 && v10[2](v10))
+    if (blockCopy && blockCopy[2](blockCopy))
     {
       if (MediaAnalysisLogLevel() < 3)
       {
@@ -2621,7 +2621,7 @@ LABEL_32:
 LABEL_67:
       _os_log_impl(&_mh_execute_header, &_os_log_default, v26, v27, buf, 0xCu);
 LABEL_68:
-      v16 = -128;
+      code = -128;
 LABEL_120:
 
 LABEL_121:
@@ -2632,11 +2632,11 @@ LABEL_121:
     [v28 pet];
 
     v66 = 0;
-    if (v19 && ![objc_opt_class() _shouldPerformImageEmbeddingDeepSyncWithPhotoLibrary:v9 threshold:&v66 imageVSKAssetCount:a5])
+    if (v19 && ![objc_opt_class() _shouldPerformImageEmbeddingDeepSyncWithPhotoLibrary:libraryCopy threshold:&v66 imageVSKAssetCount:threshold])
     {
       v30 = 0;
       v29 = 0;
-      if (!v10)
+      if (!blockCopy)
       {
         goto LABEL_47;
       }
@@ -2644,15 +2644,15 @@ LABEL_121:
 
     else
     {
-      v29 = [objc_opt_class() _deepSyncImageEmbeddingsWithPhotoLibrary:v9 imageVSKAssetCount:v66 cancelBlock:v10];
+      v29 = [objc_opt_class() _deepSyncImageEmbeddingsWithPhotoLibrary:libraryCopy imageVSKAssetCount:v66 cancelBlock:blockCopy];
       v30 = 1;
-      if (!v10)
+      if (!blockCopy)
       {
         goto LABEL_47;
       }
     }
 
-    if (v10[2](v10))
+    if (blockCopy[2](blockCopy))
     {
       if (MediaAnalysisLogLevel() < 3)
       {
@@ -2676,7 +2676,7 @@ LABEL_47:
     [v31 pet];
 
     v65 = 0;
-    if (v19 && ![objc_opt_class() _shouldPerformVideoEmbeddingDeepSyncWithPhotoLibrary:v9 threshold:&v65 videoVSKAssetCount:a5])
+    if (v19 && ![objc_opt_class() _shouldPerformVideoEmbeddingDeepSyncWithPhotoLibrary:libraryCopy threshold:&v65 videoVSKAssetCount:threshold])
     {
       v33 = 0;
       v32 = 0;
@@ -2684,7 +2684,7 @@ LABEL_47:
 
     else
     {
-      v32 = [objc_opt_class() _deepSyncVideoEmbeddingsWithPhotoLibrary:v9 videoVSKAssetCount:v65 cancelBlock:v10];
+      v32 = [objc_opt_class() _deepSyncVideoEmbeddingsWithPhotoLibrary:libraryCopy videoVSKAssetCount:v65 cancelBlock:blockCopy];
       v33 = 1;
     }
 
@@ -2713,7 +2713,7 @@ LABEL_47:
       goto LABEL_59;
     }
 
-    if (v10 && v10[2](v10))
+    if (blockCopy && blockCopy[2](blockCopy))
     {
       if (MediaAnalysisLogLevel() < 3)
       {
@@ -2747,12 +2747,12 @@ LABEL_47:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v39, OS_SIGNPOST_INTERVAL_BEGIN, spid, "MADVSKDBUtil_DeepSync_VSKRebuild", "", buf, 2u);
     }
 
-    v40 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:v9];
+    v40 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:libraryCopy];
     v41 = v40;
     if (v40)
     {
-      v16 = [v40 rebuildWithForce:1 cancelBlock:v10 extendTimeoutBlock:&stru_100286FE0 totalEmbeddingCount:0];
-      if (!v16)
+      code = [v40 rebuildWithForce:1 cancelBlock:blockCopy extendTimeoutBlock:&stru_100286FE0 totalEmbeddingCount:0];
+      if (!code)
       {
         v53 = VCPSignPostLog();
         v54 = v53;
@@ -2805,12 +2805,12 @@ LABEL_114:
 
             if (v29)
             {
-              v16 = v29;
+              code = v29;
             }
 
             else
             {
-              v16 = v32;
+              code = v32;
             }
 
             goto LABEL_120;
@@ -2839,7 +2839,7 @@ LABEL_114:
           v63[3] = &unk_100283AD0;
           v64 = v44;
           v62 = 0;
-          v46 = [v9 mad_performAnalysisDataStoreChanges:v63 error:&v62];
+          v46 = [libraryCopy mad_performAnalysisDataStoreChanges:v63 error:&v62];
           v47 = v62;
           v48 = v47;
           if (v46)
@@ -2849,7 +2849,7 @@ LABEL_113:
             goto LABEL_114;
           }
 
-          v16 = [v47 code];
+          code = [v47 code];
           if (MediaAnalysisLogLevel() >= 3)
           {
             v55 = VCPLogToOSLogType[3];
@@ -2868,8 +2868,8 @@ LABEL_113:
         {
           [v44 timeIntervalSinceReferenceDate];
           v50 = [v12 setValue:v49 forKey:@"VectorDatabaseDeepSyncTimestamp"];
-          v16 = [v12 commit];
-          if (v16)
+          code = [v12 commit];
+          if (code)
           {
             if (MediaAnalysisLogLevel() >= 3)
             {
@@ -2901,7 +2901,7 @@ LABEL_113:
               }
             }
 
-            v16 = v50;
+            code = v50;
           }
         }
 
@@ -2933,7 +2933,7 @@ LABEL_113:
         }
       }
 
-      v16 = -18;
+      code = -18;
     }
 
     goto LABEL_120;
@@ -2950,10 +2950,10 @@ LABEL_113:
     }
   }
 
-  v16 = 0;
+  code = 0;
 LABEL_122:
 
-  return v16;
+  return code;
 }
 
 @end

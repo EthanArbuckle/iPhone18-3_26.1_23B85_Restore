@@ -105,17 +105,17 @@ LABEL_10:
   psiDatabaseForUnitTests = self->_psiDatabaseForUnitTests;
   if (psiDatabaseForUnitTests)
   {
-    v3 = psiDatabaseForUnitTests;
+    unverifiedPsiSearchIndex = psiDatabaseForUnitTests;
   }
 
   else
   {
-    v4 = [(PHSearchIndexEntityQueryOptions *)self photoLibrary];
-    v5 = [v4 searchIndex];
-    v3 = [v5 unverifiedPsiSearchIndex];
+    photoLibrary = [(PHSearchIndexEntityQueryOptions *)self photoLibrary];
+    searchIndex = [photoLibrary searchIndex];
+    unverifiedPsiSearchIndex = [searchIndex unverifiedPsiSearchIndex];
   }
 
-  return v3;
+  return unverifiedPsiSearchIndex;
 }
 
 - (PHPhotoLibrary)photoLibrary

@@ -1,17 +1,17 @@
 @interface NPTOSyncResponse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)statusAsString:(int)a3;
-- (int)StringAsStatus:(id)a3;
+- (id)statusAsString:(int)string;
+- (int)StringAsStatus:(id)status;
 - (int)status;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHasExternalPowerSourceConnected:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasHasExternalPowerSourceConnected:(BOOL)connected;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPTOSyncResponse
@@ -29,35 +29,35 @@
   }
 }
 
-- (id)statusAsString:(int)a3
+- (id)statusAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_10008B6B8[a3];
+    v4 = off_10008B6B8[string];
   }
 
   return v4;
 }
 
-- (int)StringAsStatus:(id)a3
+- (int)StringAsStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ClientReady"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"ClientReady"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NotEnoughSpaceAvailable"])
+  else if ([statusCopy isEqualToString:@"NotEnoughSpaceAvailable"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LowPowerModeEnabled"])
+  else if ([statusCopy isEqualToString:@"LowPowerModeEnabled"])
   {
     v4 = 2;
   }
@@ -70,9 +70,9 @@
   return v4;
 }
 
-- (void)setHasHasExternalPowerSourceConnected:(BOOL)a3
+- (void)setHasHasExternalPowerSourceConnected:(BOOL)connected
 {
-  if (a3)
+  if (connected)
   {
     v3 = 2;
   }
@@ -90,8 +90,8 @@
   v7.receiver = self;
   v7.super_class = NPTOSyncResponse;
   v3 = [(NPTOSyncResponse *)&v7 description];
-  v4 = [(NPTOSyncResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NPTOSyncResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -102,8 +102,8 @@
   library = self->_library;
   if (library)
   {
-    v5 = [(NPTOLibrary *)library dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"library"];
+    dictionaryRepresentation = [(NPTOLibrary *)library dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"library"];
   }
 
   has = self->_has;
@@ -134,14 +134,14 @@
   return v3;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -152,18 +152,18 @@
       while (1)
       {
         LOBYTE(v32[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v32 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v32 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v32[0] & 0x7F) << v6;
@@ -181,9 +181,9 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -198,18 +198,18 @@ LABEL_15:
         while (1)
         {
           LOBYTE(v32[0]) = 0;
-          v26 = [a3 position] + 1;
-          if (v26 >= [a3 position] && (v27 = objc_msgSend(a3, "position") + 1, v27 <= objc_msgSend(a3, "length")))
+          v26 = [from position] + 1;
+          if (v26 >= [from position] && (v27 = objc_msgSend(from, "position") + 1, v27 <= objc_msgSend(from, "length")))
           {
-            v28 = [a3 data];
-            [v28 getBytes:v32 range:{objc_msgSend(a3, "position"), 1}];
+            data2 = [from data];
+            [data2 getBytes:v32 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v25 |= (v32[0] & 0x7F) << v23;
@@ -227,7 +227,7 @@ LABEL_15:
           }
         }
 
-        v29 = (v25 != 0) & ~[a3 hasError];
+        v29 = (v25 != 0) & ~[from hasError];
 LABEL_48:
         self->_hasExternalPowerSourceConnected = v29;
       }
@@ -241,18 +241,18 @@ LABEL_48:
         while (1)
         {
           LOBYTE(v32[0]) = 0;
-          v19 = [a3 position] + 1;
-          if (v19 >= [a3 position] && (v20 = objc_msgSend(a3, "position") + 1, v20 <= objc_msgSend(a3, "length")))
+          v19 = [from position] + 1;
+          if (v19 >= [from position] && (v20 = objc_msgSend(from, "position") + 1, v20 <= objc_msgSend(from, "length")))
           {
-            v21 = [a3 data];
-            [v21 getBytes:v32 range:{objc_msgSend(a3, "position"), 1}];
+            data3 = [from data];
+            [data3 getBytes:v32 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v18 |= (v32[0] & 0x7F) << v16;
@@ -270,7 +270,7 @@ LABEL_48:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v22 = 0;
         }
@@ -290,7 +290,7 @@ LABEL_46:
         objc_storeStrong(&self->_library, v15);
         v32[0] = 0;
         v32[1] = 0;
-        if (!PBReaderPlaceMark() || !NPTOLibraryReadFrom(v15, a3))
+        if (!PBReaderPlaceMark() || !NPTOLibraryReadFrom(v15, from))
         {
 
           return 0;
@@ -304,69 +304,69 @@ LABEL_46:
         return 0;
       }
 
-      v30 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v30 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_library)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_library)
   {
-    v6 = v4;
-    [v4 setLibrary:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setLibrary:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 4) = self->_status;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 4) = self->_status;
+    *(toCopy + 24) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 20) = self->_hasExternalPowerSourceConnected;
-    *(v4 + 24) |= 2u;
+    *(toCopy + 20) = self->_hasExternalPowerSourceConnected;
+    *(toCopy + 24) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NPTOLibrary *)self->_library copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NPTOLibrary *)self->_library copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -387,16 +387,16 @@ LABEL_46:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   library = self->_library;
-  if (library | *(v4 + 1))
+  if (library | *(equalCopy + 1))
   {
     if (![(NPTOLibrary *)library isEqual:?])
     {
@@ -406,21 +406,21 @@ LABEL_46:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_status != *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_status != *(equalCopy + 4))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_11;
   }
 
-  v6 = (*(v4 + 24) & 2) == 0;
+  v6 = (*(equalCopy + 24) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0)
+    if ((*(equalCopy + 24) & 2) == 0)
     {
 LABEL_11:
       v6 = 0;
@@ -429,13 +429,13 @@ LABEL_11:
 
     if (self->_hasExternalPowerSourceConnected)
     {
-      if ((*(v4 + 20) & 1) == 0)
+      if ((*(equalCopy + 20) & 1) == 0)
       {
         goto LABEL_11;
       }
     }
 
-    else if (*(v4 + 20))
+    else if (*(equalCopy + 20))
     {
       goto LABEL_11;
     }
@@ -475,11 +475,11 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   library = self->_library;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (library)
   {
     if (!v6)
@@ -487,7 +487,7 @@ LABEL_3:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     [(NPTOLibrary *)library mergeFrom:?];
   }
 
@@ -498,23 +498,23 @@ LABEL_3:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     [(NPTOSyncResponse *)self setLibrary:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  v7 = *(v4 + 24);
+  v7 = *(fromCopy + 24);
   if (v7)
   {
-    self->_status = *(v4 + 4);
+    self->_status = *(fromCopy + 4);
     *&self->_has |= 1u;
-    v7 = *(v4 + 24);
+    v7 = *(fromCopy + 24);
   }
 
   if ((v7 & 2) != 0)
   {
-    self->_hasExternalPowerSourceConnected = *(v4 + 20);
+    self->_hasExternalPowerSourceConnected = *(fromCopy + 20);
     *&self->_has |= 2u;
   }
 

@@ -1,47 +1,47 @@
 @interface FMServingCell
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)gci;
-- (id)init:(id)a3 subscriptionID:(id)a4 radioAccessTechnology:(id)a5 cellID:(id)a6 mnc:(id)a7 mcc:(id)a8 bandInfo:(id)a9 tacOrLac:(id)a10 arfcnOrUarfcn:(id)a11 bandwidth:(id)a12 pci:(id)a13 deploymentType:(id)a14;
+- (id)init:(id)init subscriptionID:(id)d radioAccessTechnology:(id)technology cellID:(id)iD mnc:(id)mnc mcc:(id)mcc bandInfo:(id)info tacOrLac:(id)self0 arfcnOrUarfcn:(id)self1 bandwidth:(id)self2 pci:(id)self3 deploymentType:(id)self4;
 - (unint64_t)hash;
 @end
 
 @implementation FMServingCell
 
-- (id)init:(id)a3 subscriptionID:(id)a4 radioAccessTechnology:(id)a5 cellID:(id)a6 mnc:(id)a7 mcc:(id)a8 bandInfo:(id)a9 tacOrLac:(id)a10 arfcnOrUarfcn:(id)a11 bandwidth:(id)a12 pci:(id)a13 deploymentType:(id)a14
+- (id)init:(id)init subscriptionID:(id)d radioAccessTechnology:(id)technology cellID:(id)iD mnc:(id)mnc mcc:(id)mcc bandInfo:(id)info tacOrLac:(id)self0 arfcnOrUarfcn:(id)self1 bandwidth:(id)self2 pci:(id)self3 deploymentType:(id)self4
 {
-  v38 = a3;
-  v28 = a4;
-  v37 = a4;
-  v36 = a5;
-  v29 = a6;
-  v35 = a6;
-  v34 = a7;
-  v33 = a8;
-  v32 = a9;
-  v31 = a10;
-  v19 = a11;
-  v20 = a12;
-  v21 = a13;
-  v22 = a14;
+  initCopy = init;
+  dCopy = d;
+  dCopy2 = d;
+  technologyCopy = technology;
+  iDCopy = iD;
+  iDCopy2 = iD;
+  mncCopy = mnc;
+  mccCopy = mcc;
+  infoCopy = info;
+  lacCopy = lac;
+  uarfcnCopy = uarfcn;
+  bandwidthCopy = bandwidth;
+  pciCopy = pci;
+  typeCopy = type;
   v39.receiver = self;
   v39.super_class = FMServingCell;
   v23 = [(FMServingCell *)&v39 init];
   p_isa = &v23->super.isa;
   if (v23)
   {
-    objc_storeStrong(&v23->_timestamp, a3);
-    objc_storeStrong(p_isa + 2, v28);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, v29);
-    objc_storeStrong(p_isa + 5, a7);
-    objc_storeStrong(p_isa + 6, a8);
-    objc_storeStrong(p_isa + 7, a9);
-    objc_storeStrong(p_isa + 8, a10);
-    objc_storeStrong(p_isa + 9, a11);
-    objc_storeStrong(p_isa + 10, a12);
-    objc_storeStrong(p_isa + 11, a13);
-    objc_storeStrong(p_isa + 12, a14);
+    objc_storeStrong(&v23->_timestamp, init);
+    objc_storeStrong(p_isa + 2, dCopy);
+    objc_storeStrong(p_isa + 3, technology);
+    objc_storeStrong(p_isa + 4, iDCopy);
+    objc_storeStrong(p_isa + 5, mnc);
+    objc_storeStrong(p_isa + 6, mcc);
+    objc_storeStrong(p_isa + 7, info);
+    objc_storeStrong(p_isa + 8, lac);
+    objc_storeStrong(p_isa + 9, uarfcn);
+    objc_storeStrong(p_isa + 10, bandwidth);
+    objc_storeStrong(p_isa + 11, pci);
+    objc_storeStrong(p_isa + 12, type);
     v25 = p_isa;
   }
 
@@ -50,19 +50,19 @@
 
 - (id)description
 {
-  v15 = [(FMServingCell *)self timestamp];
-  v3 = [(FMServingCell *)self subscriptionID];
-  v14 = [(FMServingCell *)self radioAccessTechnology];
-  v16 = [(FMServingCell *)self cellID];
+  timestamp = [(FMServingCell *)self timestamp];
+  subscriptionID = [(FMServingCell *)self subscriptionID];
+  radioAccessTechnology = [(FMServingCell *)self radioAccessTechnology];
+  cellID = [(FMServingCell *)self cellID];
   v4 = [(FMServingCell *)self mnc];
   v5 = [(FMServingCell *)self mcc];
-  v6 = [(FMServingCell *)self bandInfo];
-  v7 = [(FMServingCell *)self tacOrLac];
-  v13 = [(FMServingCell *)self arfcnOrUarfcn];
-  v12 = [(FMServingCell *)self bandwidth];
+  bandInfo = [(FMServingCell *)self bandInfo];
+  tacOrLac = [(FMServingCell *)self tacOrLac];
+  arfcnOrUarfcn = [(FMServingCell *)self arfcnOrUarfcn];
+  bandwidth = [(FMServingCell *)self bandwidth];
   v8 = [(FMServingCell *)self pci];
-  v9 = [(FMServingCell *)self deploymentType];
-  v10 = [NSString stringWithFormat:@"timestamp %@, subscriptionID %@, radioAccessTechnology %@, cellID %@, mnc %@, mcc %@, bandInfo %@, tacOrLac %@, arfcnOrUarfcn %@, bandwidth %@, pci %@, deploymentType %@", v15, v3, v14, v16, v4, v5, v6, v7, v13, v12, v8, v9];
+  deploymentType = [(FMServingCell *)self deploymentType];
+  v10 = [NSString stringWithFormat:@"timestamp %@, subscriptionID %@, radioAccessTechnology %@, cellID %@, mnc %@, mcc %@, bandInfo %@, tacOrLac %@, arfcnOrUarfcn %@, bandwidth %@, pci %@, deploymentType %@", timestamp, subscriptionID, radioAccessTechnology, cellID, v4, v5, bandInfo, tacOrLac, arfcnOrUarfcn, bandwidth, v8, deploymentType];
 
   return v10;
 }
@@ -70,28 +70,28 @@
 - (id)gci
 {
   v3 = [(FMServingCell *)self mcc];
-  v4 = [v3 stringValue];
+  stringValue = [v3 stringValue];
   v5 = [(FMServingCell *)self mnc];
-  v6 = [v5 stringValue];
-  v7 = [(FMServingCell *)self tacOrLac];
-  v8 = [v7 stringValue];
-  v9 = [(FMServingCell *)self cellID];
-  v10 = [v9 stringValue];
-  v11 = [NSString stringWithFormat:@"%@.%@.%@.%@", v4, v6, v8, v10];
+  stringValue2 = [v5 stringValue];
+  tacOrLac = [(FMServingCell *)self tacOrLac];
+  stringValue3 = [tacOrLac stringValue];
+  cellID = [(FMServingCell *)self cellID];
+  stringValue4 = [cellID stringValue];
+  v11 = [NSString stringWithFormat:@"%@.%@.%@.%@", stringValue, stringValue2, stringValue3, stringValue4];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(FMServingCell *)self subscriptionID];
-    v7 = [v5 subscriptionID];
-    if (![v6 isEqualToNumber:v7])
+    v5 = equalCopy;
+    subscriptionID = [(FMServingCell *)self subscriptionID];
+    subscriptionID2 = [v5 subscriptionID];
+    if (![subscriptionID isEqualToNumber:subscriptionID2])
     {
       v13 = 0;
 LABEL_38:
@@ -99,9 +99,9 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v8 = [(FMServingCell *)self radioAccessTechnology];
-    v9 = [v5 radioAccessTechnology];
-    if (![v8 isEqualToString:v9])
+    radioAccessTechnology = [(FMServingCell *)self radioAccessTechnology];
+    radioAccessTechnology2 = [v5 radioAccessTechnology];
+    if (![radioAccessTechnology isEqualToString:radioAccessTechnology2])
     {
       v13 = 0;
 LABEL_37:
@@ -109,9 +109,9 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v10 = [(FMServingCell *)self cellID];
-    v11 = [v5 cellID];
-    if (![v10 isEqualToNumber:v11])
+    cellID = [(FMServingCell *)self cellID];
+    cellID2 = [v5 cellID];
+    if (![cellID isEqualToNumber:cellID2])
     {
       v13 = 0;
 LABEL_36:
@@ -139,9 +139,9 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    v42 = [(FMServingCell *)self bandInfo];
-    v41 = [v5 bandInfo];
-    if (![v42 isEqualToNumber:?])
+    bandInfo = [(FMServingCell *)self bandInfo];
+    bandInfo2 = [v5 bandInfo];
+    if (![bandInfo isEqualToNumber:?])
     {
       v13 = 0;
 LABEL_33:
@@ -149,9 +149,9 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    v40 = [(FMServingCell *)self tacOrLac];
-    v39 = [v5 tacOrLac];
-    if (![v40 isEqualToNumber:?])
+    tacOrLac = [(FMServingCell *)self tacOrLac];
+    tacOrLac2 = [v5 tacOrLac];
+    if (![tacOrLac isEqualToNumber:?])
     {
       v13 = 0;
 LABEL_32:
@@ -159,9 +159,9 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    v38 = [(FMServingCell *)self arfcnOrUarfcn];
-    v37 = [v5 arfcnOrUarfcn];
-    if (![v38 isEqualToNumber:?])
+    arfcnOrUarfcn = [(FMServingCell *)self arfcnOrUarfcn];
+    arfcnOrUarfcn2 = [v5 arfcnOrUarfcn];
+    if (![arfcnOrUarfcn isEqualToNumber:?])
     {
       v13 = 0;
 LABEL_31:
@@ -169,16 +169,16 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v36 = [(FMServingCell *)self bandwidth];
-    if (v36)
+    bandwidth = [(FMServingCell *)self bandwidth];
+    if (bandwidth)
     {
-      v34 = [v5 bandwidth];
-      if (v34)
+      bandwidth2 = [v5 bandwidth];
+      if (bandwidth2)
       {
-        v33 = [(FMServingCell *)self bandwidth];
-        v31 = [v5 bandwidth];
+        bandwidth3 = [(FMServingCell *)self bandwidth];
+        bandwidth4 = [v5 bandwidth];
         v35 = 1;
-        if ([v33 isEqualToNumber:v31])
+        if ([bandwidth3 isEqualToNumber:bandwidth4])
         {
           goto LABEL_42;
         }
@@ -186,7 +186,7 @@ LABEL_31:
 
       else
       {
-        v34 = 0;
+        bandwidth2 = 0;
         v35 = 0;
       }
     }
@@ -196,15 +196,15 @@ LABEL_31:
       v35 = 0;
     }
 
-    v14 = [(FMServingCell *)self bandwidth];
-    if (v14)
+    bandwidth5 = [(FMServingCell *)self bandwidth];
+    if (bandwidth5)
     {
 
       v13 = 0;
       if (!v35)
       {
 LABEL_28:
-        if (v36)
+        if (bandwidth)
         {
         }
 
@@ -216,8 +216,8 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v16 = [v5 bandwidth];
-    if (v16)
+    bandwidth6 = [v5 bandwidth];
+    if (bandwidth6)
     {
 
       v13 = 0;
@@ -272,15 +272,15 @@ LABEL_52:
 
     v25 = 1;
 LABEL_54:
-    v26 = [(FMServingCell *)self deploymentType];
-    if (v26)
+    deploymentType = [(FMServingCell *)self deploymentType];
+    if (deploymentType)
     {
-      v23 = [v5 deploymentType];
-      if (v23)
+      deploymentType2 = [v5 deploymentType];
+      if (deploymentType2)
       {
-        v22 = [(FMServingCell *)self deploymentType];
-        v21 = [v5 deploymentType];
-        if ([v22 isEqualToNumber:v21])
+        deploymentType3 = [(FMServingCell *)self deploymentType];
+        deploymentType4 = [v5 deploymentType];
+        if ([deploymentType3 isEqualToNumber:deploymentType4])
         {
 
           if (v25)
@@ -318,7 +318,7 @@ LABEL_69:
 
       else
       {
-        v23 = 0;
+        deploymentType2 = 0;
         v24 = 0;
       }
     }
@@ -328,8 +328,8 @@ LABEL_69:
       v24 = 0;
     }
 
-    v19 = [(FMServingCell *)self deploymentType];
-    if (v19)
+    deploymentType5 = [(FMServingCell *)self deploymentType];
+    if (deploymentType5)
     {
 
       v13 = 0;
@@ -341,13 +341,13 @@ LABEL_69:
 
     else
     {
-      v20 = [v5 deploymentType];
-      v13 = v20 == 0;
+      deploymentType6 = [v5 deploymentType];
+      v13 = deploymentType6 == 0;
 
       if ((v24 & 1) == 0)
       {
 LABEL_65:
-        if (v26)
+        if (deploymentType)
         {
         }
 
@@ -376,14 +376,14 @@ LABEL_39:
 
 - (unint64_t)hash
 {
-  v3 = [(FMServingCell *)self subscriptionID];
-  v4 = [v3 hash];
+  subscriptionID = [(FMServingCell *)self subscriptionID];
+  v4 = [subscriptionID hash];
 
-  v5 = [(FMServingCell *)self radioAccessTechnology];
-  v6 = [v5 hash];
+  radioAccessTechnology = [(FMServingCell *)self radioAccessTechnology];
+  v6 = [radioAccessTechnology hash];
 
-  v7 = [(FMServingCell *)self cellID];
-  v8 = [v7 hash];
+  cellID = [(FMServingCell *)self cellID];
+  v8 = [cellID hash];
 
   v9 = [(FMServingCell *)self mnc];
   v10 = [v9 hash];
@@ -391,23 +391,23 @@ LABEL_39:
   v11 = [(FMServingCell *)self mcc];
   v12 = [v11 hash];
 
-  v13 = [(FMServingCell *)self bandInfo];
-  v34 = [v13 hash];
+  bandInfo = [(FMServingCell *)self bandInfo];
+  v34 = [bandInfo hash];
   v35 = v12;
   v36 = v10;
   v14 = v6;
 
-  v15 = [(FMServingCell *)self tacOrLac];
-  v16 = [v15 hash];
+  tacOrLac = [(FMServingCell *)self tacOrLac];
+  v16 = [tacOrLac hash];
 
-  v17 = [(FMServingCell *)self arfcnOrUarfcn];
-  v18 = [v17 hash];
+  arfcnOrUarfcn = [(FMServingCell *)self arfcnOrUarfcn];
+  v18 = [arfcnOrUarfcn hash];
 
-  v19 = [(FMServingCell *)self bandwidth];
-  if (v19)
+  bandwidth = [(FMServingCell *)self bandwidth];
+  if (bandwidth)
   {
-    v20 = [(FMServingCell *)self bandwidth];
-    v21 = [v20 hash];
+    bandwidth2 = [(FMServingCell *)self bandwidth];
+    v21 = [bandwidth2 hash];
   }
 
   else
@@ -427,11 +427,11 @@ LABEL_39:
     v24 = 0;
   }
 
-  v25 = [(FMServingCell *)self deploymentType];
-  if (v25)
+  deploymentType = [(FMServingCell *)self deploymentType];
+  if (deploymentType)
   {
-    v26 = [(FMServingCell *)self deploymentType];
-    v27 = [v26 hash];
+    deploymentType2 = [(FMServingCell *)self deploymentType];
+    v27 = [deploymentType2 hash];
   }
 
   else

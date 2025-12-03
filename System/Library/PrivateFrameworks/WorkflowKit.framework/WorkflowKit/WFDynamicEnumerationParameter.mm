@@ -4,36 +4,36 @@
 - (BOOL)dataSourceSupportsSynchronousFetchingOfDefaultSerializedRepresentation;
 - (BOOL)isAsynchronous;
 - (BOOL)loadsDefaultStateAsynchronously;
-- (BOOL)parameterStateIsValid:(id)a3;
+- (BOOL)parameterStateIsValid:(id)valid;
 - (BOOL)shouldAlwaysReloadPossibleStates;
 - (INObjectCollection)possibleStatesCollection;
 - (NSArray)possibleStates;
 - (NSError)possibleStatesLoadingError;
 - (WFDynamicEnumerationDataSource)dataSource;
-- (WFDynamicEnumerationParameter)initWithDefinition:(id)a3;
-- (id)accessoryColorForPossibleState:(id)a3;
-- (id)accessoryIconForPossibleState:(id)a3;
-- (id)accessoryImageForPossibleState:(id)a3;
+- (WFDynamicEnumerationParameter)initWithDefinition:(id)definition;
+- (id)accessoryColorForPossibleState:(id)state;
+- (id)accessoryIconForPossibleState:(id)state;
+- (id)accessoryImageForPossibleState:(id)state;
 - (id)defaultSerializedRepresentation;
-- (id)localizedLabelForPossibleState:(id)a3;
-- (id)localizedSubtitleLabelForPossibleState:(id)a3;
+- (id)localizedLabelForPossibleState:(id)state;
+- (id)localizedSubtitleLabelForPossibleState:(id)state;
 - (id)possibleStatesForLocalization;
 - (unint64_t)possibleStatesLoadingState;
 - (void)clearPossibleStates;
-- (void)createDialogRequestWithAttribution:(id)a3 defaultState:(id)a4 prompt:(id)a5 completionHandler:(id)a6;
+- (void)createDialogRequestWithAttribution:(id)attribution defaultState:(id)state prompt:(id)prompt completionHandler:(id)handler;
 - (void)defaultSerializedRepresentationDidChange;
-- (void)loadDefaultSerializedRepresentationWithCompletionHandler:(id)a3;
-- (void)loadPossibleStatesWithCompletionHandler:(id)a3;
+- (void)loadDefaultSerializedRepresentationWithCompletionHandler:(id)handler;
+- (void)loadPossibleStatesWithCompletionHandler:(id)handler;
 - (void)loadSynchronousPossibleStates;
-- (void)lock_setPossibleStatesCollection:(id)a3;
+- (void)lock_setPossibleStatesCollection:(id)collection;
 - (void)possibleStatesDidChange;
 - (void)reloadPossibleStates;
-- (void)setDataSource:(id)a3;
-- (void)setPossibleStates:(id)a3;
-- (void)setPossibleStatesCollection:(id)a3;
-- (void)setPossibleStatesFromRemoteSource:(id)a3;
-- (void)wf_loadStatesWithSearchTerm:(id)a3 completionHandler:(id)a4;
-- (void)wf_reloadFromAttributesDidChangeWithCompletionHandler:(id)a3;
+- (void)setDataSource:(id)source;
+- (void)setPossibleStates:(id)states;
+- (void)setPossibleStatesCollection:(id)collection;
+- (void)setPossibleStatesFromRemoteSource:(id)source;
+- (void)wf_loadStatesWithSearchTerm:(id)term completionHandler:(id)handler;
+- (void)wf_reloadFromAttributesDidChangeWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFDynamicEnumerationParameter
@@ -55,24 +55,24 @@
 
 - (id)defaultSerializedRepresentation
 {
-  v3 = [(WFDynamicEnumerationParameter *)self defaultValueLoadingState];
-  if (v3 - 2 < 2)
+  defaultValueLoadingState = [(WFDynamicEnumerationParameter *)self defaultValueLoadingState];
+  if (defaultValueLoadingState - 2 < 2)
   {
     defaultSerializedRepresentation = self->_defaultSerializedRepresentation;
 LABEL_3:
-    v5 = defaultSerializedRepresentation;
+    defaultSerializedRepresentation = defaultSerializedRepresentation;
     goto LABEL_10;
   }
 
-  if (v3)
+  if (defaultValueLoadingState)
   {
     goto LABEL_9;
   }
 
   if ([(WFDynamicEnumerationParameter *)self dataSourceSupportsSynchronousFetchingOfDefaultSerializedRepresentation])
   {
-    v6 = [(WFDynamicEnumerationParameter *)self dataSource];
-    v7 = [v6 defaultSerializedRepresentationForEnumeration:self];
+    dataSource = [(WFDynamicEnumerationParameter *)self dataSource];
+    v7 = [dataSource defaultSerializedRepresentationForEnumeration:self];
     v8 = self->_defaultSerializedRepresentation;
     self->_defaultSerializedRepresentation = v7;
 
@@ -85,28 +85,28 @@ LABEL_3:
   {
     [(WFDynamicEnumerationParameter *)self loadDefaultSerializedRepresentationWithCompletionHandler:0];
 LABEL_9:
-    v5 = 0;
+    defaultSerializedRepresentation = 0;
     goto LABEL_10;
   }
 
   v10.receiver = self;
   v10.super_class = WFDynamicEnumerationParameter;
-  v5 = [(WFParameter *)&v10 defaultSerializedRepresentation];
+  defaultSerializedRepresentation = [(WFParameter *)&v10 defaultSerializedRepresentation];
 LABEL_10:
 
-  return v5;
+  return defaultSerializedRepresentation;
 }
 
 - (BOOL)dataSourceSupportsSynchronousFetchingOfDefaultSerializedRepresentation
 {
-  v3 = [(WFDynamicEnumerationParameter *)self dataSource];
+  dataSource = [(WFDynamicEnumerationParameter *)self dataSource];
   v4 = objc_opt_respondsToSelector();
 
-  v5 = [(WFDynamicEnumerationParameter *)self dataSource];
-  v6 = v5;
+  dataSource2 = [(WFDynamicEnumerationParameter *)self dataSource];
+  v6 = dataSource2;
   if (v4)
   {
-    v7 = [v5 shouldLoadDefaultStateAsynchronouslyForEnumeration:self] ^ 1;
+    v7 = [dataSource2 shouldLoadDefaultStateAsynchronouslyForEnumeration:self] ^ 1;
   }
 
   else
@@ -126,14 +126,14 @@ LABEL_10:
 
 - (BOOL)dataSourceSupportsAsynchronousFetchingOfDefaultSerializedRepresentation
 {
-  v3 = [(WFDynamicEnumerationParameter *)self dataSource];
+  dataSource = [(WFDynamicEnumerationParameter *)self dataSource];
   v4 = objc_opt_respondsToSelector();
 
-  v5 = [(WFDynamicEnumerationParameter *)self dataSource];
-  v6 = v5;
+  dataSource2 = [(WFDynamicEnumerationParameter *)self dataSource];
+  v6 = dataSource2;
   if (v4)
   {
-    v7 = [v5 shouldLoadDefaultStateAsynchronouslyForEnumeration:self];
+    v7 = [dataSource2 shouldLoadDefaultStateAsynchronouslyForEnumeration:self];
   }
 
   else
@@ -156,17 +156,17 @@ LABEL_10:
   return [(WFDynamicEnumerationParameter *)self dataSourceSupportsAsynchronousFetchingOfDefaultSerializedRepresentation];
 }
 
-- (void)createDialogRequestWithAttribution:(id)a3 defaultState:(id)a4 prompt:(id)a5 completionHandler:(id)a6
+- (void)createDialogRequestWithAttribution:(id)attribution defaultState:(id)state prompt:(id)prompt completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  attributionCopy = attribution;
+  stateCopy = state;
+  promptCopy = prompt;
+  handlerCopy = handler;
   if (-[WFDynamicEnumerationParameter possibleStatesLoadingState](self, "possibleStatesLoadingState") == 3 && (-[WFDynamicEnumerationParameter possibleStates](self, "possibleStates"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 count], v14, v15))
   {
     v22.receiver = self;
     v22.super_class = WFDynamicEnumerationParameter;
-    [(WFEnumerationParameter *)&v22 createDialogRequestWithAttribution:v10 defaultState:v11 prompt:v12 completionHandler:v13];
+    [(WFEnumerationParameter *)&v22 createDialogRequestWithAttribution:attributionCopy defaultState:stateCopy prompt:promptCopy completionHandler:handlerCopy];
   }
 
   else
@@ -175,11 +175,11 @@ LABEL_10:
     v16[1] = 3221225472;
     v16[2] = __106__WFDynamicEnumerationParameter_createDialogRequestWithAttribution_defaultState_prompt_completionHandler___block_invoke;
     v16[3] = &unk_1E83767B8;
-    v17 = v10;
-    v18 = v11;
-    v19 = v12;
-    v20 = self;
-    v21 = v13;
+    v17 = attributionCopy;
+    v18 = stateCopy;
+    v19 = promptCopy;
+    selfCopy = self;
+    v21 = handlerCopy;
     [(WFDynamicEnumerationParameter *)self loadPossibleStatesWithCompletionHandler:v16];
   }
 }
@@ -197,7 +197,7 @@ id __106__WFDynamicEnumerationParameter_createDialogRequestWithAttribution_defau
 
 - (BOOL)shouldAlwaysReloadPossibleStates
 {
-  v3 = [(WFDynamicEnumerationParameter *)self dataSource];
+  dataSource = [(WFDynamicEnumerationParameter *)self dataSource];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -205,15 +205,15 @@ id __106__WFDynamicEnumerationParameter_createDialogRequestWithAttribution_defau
     return 0;
   }
 
-  v5 = [(WFDynamicEnumerationParameter *)self dataSource];
-  v6 = [v5 enumerationShouldAlwaysReloadPossibleStates:self];
+  dataSource2 = [(WFDynamicEnumerationParameter *)self dataSource];
+  v6 = [dataSource2 enumerationShouldAlwaysReloadPossibleStates:self];
 
   return v6;
 }
 
 - (BOOL)isAsynchronous
 {
-  v2 = [(WFDynamicEnumerationParameter *)self dataSource];
+  dataSource = [(WFDynamicEnumerationParameter *)self dataSource];
   v3 = objc_opt_respondsToSelector();
 
   return v3 & 1;
@@ -234,14 +234,14 @@ id __106__WFDynamicEnumerationParameter_createDialogRequestWithAttribution_defau
 {
   if (![(WFDynamicEnumerationParameter *)self isAsynchronous])
   {
-    v3 = [(WFDynamicEnumerationParameter *)self dataSource];
+    dataSource = [(WFDynamicEnumerationParameter *)self dataSource];
     v4 = objc_opt_respondsToSelector();
 
-    v5 = [(WFDynamicEnumerationParameter *)self dataSource];
-    v6 = v5;
+    dataSource2 = [(WFDynamicEnumerationParameter *)self dataSource];
+    v6 = dataSource2;
     if (v4)
     {
-      v7 = [v5 possibleStatesForEnumeration:self];
+      v7 = [dataSource2 possibleStatesForEnumeration:self];
 
       if (v7)
       {
@@ -270,8 +270,8 @@ id __106__WFDynamicEnumerationParameter_createDialogRequestWithAttribution_defau
 
       if (v9)
       {
-        v10 = [(WFDynamicEnumerationParameter *)self dataSource];
-        v14 = [v10 loadPossibleStatesForEnumeration:self];
+        dataSource3 = [(WFDynamicEnumerationParameter *)self dataSource];
+        v14 = [dataSource3 loadPossibleStatesForEnumeration:self];
 
         os_unfair_lock_lock(&self->_possibleStatesLock);
         [(WFDynamicEnumerationParameter *)self lock_setPossibleStatesCollection:v14];
@@ -281,15 +281,15 @@ id __106__WFDynamicEnumerationParameter_createDialogRequestWithAttribution_defau
   }
 }
 
-- (void)loadPossibleStatesWithCompletionHandler:(id)a3
+- (void)loadPossibleStatesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(WFDynamicEnumerationParameter *)self isAsynchronous])
   {
     if ([(WFDynamicEnumerationParameter *)self possibleStatesLoadingState]== 1)
     {
-      v5 = [(WFDynamicEnumerationParameter *)self possibleStatesLoadingError];
-      v4[2](v4, v5);
+      possibleStatesLoadingError = [(WFDynamicEnumerationParameter *)self possibleStatesLoadingError];
+      handlerCopy[2](handlerCopy, possibleStatesLoadingError);
     }
 
     else
@@ -298,20 +298,20 @@ id __106__WFDynamicEnumerationParameter_createDialogRequestWithAttribution_defau
       os_unfair_lock_lock(&self->_possibleStatesLock);
       self->_possibleStatesLoadingState = 1;
       os_unfair_lock_unlock(&self->_possibleStatesLock);
-      v6 = [(WFDynamicEnumerationParameter *)self dataSource];
+      dataSource = [(WFDynamicEnumerationParameter *)self dataSource];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __73__WFDynamicEnumerationParameter_loadPossibleStatesWithCompletionHandler___block_invoke;
       v7[3] = &unk_1E837D448;
       v7[4] = self;
-      v8 = v4;
-      [v6 loadPossibleStatesForEnumeration:self searchTerm:0 completionHandler:v7];
+      v8 = handlerCopy;
+      [dataSource loadPossibleStatesForEnumeration:self searchTerm:0 completionHandler:v7];
     }
   }
 
   else
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
@@ -368,7 +368,7 @@ LABEL_9:
 
   os_unfair_lock_unlock(&self->_possibleStatesLock);
   [(WFDynamicEnumerationParameter *)self loadSynchronousPossibleStates];
-  v4 = [(WFDynamicEnumerationParameter *)self dataSource];
+  dataSource = [(WFDynamicEnumerationParameter *)self dataSource];
   if (objc_opt_respondsToSelector())
   {
 
@@ -382,7 +382,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = [(WFDynamicEnumerationParameter *)self dataSource];
+  dataSource2 = [(WFDynamicEnumerationParameter *)self dataSource];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
@@ -396,16 +396,16 @@ LABEL_10:
   return v5;
 }
 
-- (id)accessoryColorForPossibleState:(id)a3
+- (id)accessoryColorForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = [(WFDynamicEnumerationParameter *)self dataSource];
+  stateCopy = state;
+  dataSource = [(WFDynamicEnumerationParameter *)self dataSource];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WFDynamicEnumerationParameter *)self dataSource];
-    v8 = [v7 enumeration:self accessoryColorForPossibleState:v4];
+    dataSource2 = [(WFDynamicEnumerationParameter *)self dataSource];
+    v8 = [dataSource2 enumeration:self accessoryColorForPossibleState:stateCopy];
   }
 
   else
@@ -416,15 +416,15 @@ LABEL_10:
   return v8;
 }
 
-- (void)loadDefaultSerializedRepresentationWithCompletionHandler:(id)a3
+- (void)loadDefaultSerializedRepresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(WFDynamicEnumerationParameter *)self defaultValueLoadingState]== 2 || [(WFDynamicEnumerationParameter *)self defaultValueLoadingState]== 3 || ![(WFDynamicEnumerationParameter *)self loadsDefaultStateAsynchronously])
   {
-    if (v4)
+    if (handlerCopy)
     {
-      v8 = [(WFDynamicEnumerationParameter *)self defaultSerializedRepresentation];
-      v4[2](v4, v8, 0);
+      defaultSerializedRepresentation = [(WFDynamicEnumerationParameter *)self defaultSerializedRepresentation];
+      handlerCopy[2](handlerCopy, defaultSerializedRepresentation, 0);
     }
   }
 
@@ -436,7 +436,7 @@ LABEL_10:
     v15[3] = __Block_byref_object_copy__21068;
     v15[4] = __Block_byref_object_dispose__21069;
     v16 = 0;
-    v5 = [v4 copy];
+    v5 = [handlerCopy copy];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __90__WFDynamicEnumerationParameter_loadDefaultSerializedRepresentationWithCompletionHandler___block_invoke;
@@ -453,19 +453,19 @@ LABEL_10:
 
     else
     {
-      v9 = [(WFDynamicEnumerationParameter *)self defaultStateLoadingGroup];
-      dispatch_group_enter(v9);
+      defaultStateLoadingGroup = [(WFDynamicEnumerationParameter *)self defaultStateLoadingGroup];
+      dispatch_group_enter(defaultStateLoadingGroup);
 
       [(WFDynamicEnumerationParameter *)self setDefaultValueLoadingState:1];
       v7[2](v7);
-      v10 = [(WFDynamicEnumerationParameter *)self dataSource];
+      dataSource = [(WFDynamicEnumerationParameter *)self dataSource];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __90__WFDynamicEnumerationParameter_loadDefaultSerializedRepresentationWithCompletionHandler___block_invoke_3;
       v11[3] = &unk_1E8376790;
       v11[4] = self;
       v11[5] = v15;
-      [v10 loadDefaultSerializedRepresentationForEnumeration:self completionHandler:v11];
+      [dataSource loadDefaultSerializedRepresentationForEnumeration:self completionHandler:v11];
     }
 
     _Block_object_dispose(v15, 8);
@@ -590,108 +590,108 @@ void __90__WFDynamicEnumerationParameter_loadDefaultSerializedRepresentationWith
   (*(v2 + 16))(v2, v3, *(*(*(a1 + 48) + 8) + 40));
 }
 
-- (id)accessoryIconForPossibleState:(id)a3
+- (id)accessoryIconForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = [(WFDynamicEnumerationParameter *)self dataSource];
+  stateCopy = state;
+  dataSource = [(WFDynamicEnumerationParameter *)self dataSource];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WFDynamicEnumerationParameter *)self dataSource];
-    v8 = [v7 enumeration:self accessoryIconForPossibleState:v4];
+    dataSource2 = [(WFDynamicEnumerationParameter *)self dataSource];
+    v8 = [dataSource2 enumeration:self accessoryIconForPossibleState:stateCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = WFDynamicEnumerationParameter;
-    v8 = [(WFEnumerationParameter *)&v10 accessoryIconForPossibleState:v4];
+    v8 = [(WFEnumerationParameter *)&v10 accessoryIconForPossibleState:stateCopy];
   }
 
   return v8;
 }
 
-- (id)accessoryImageForPossibleState:(id)a3
+- (id)accessoryImageForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = [(WFDynamicEnumerationParameter *)self dataSource];
+  stateCopy = state;
+  dataSource = [(WFDynamicEnumerationParameter *)self dataSource];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WFDynamicEnumerationParameter *)self dataSource];
-    v8 = [v7 enumeration:self accessoryImageForPossibleState:v4];
+    dataSource2 = [(WFDynamicEnumerationParameter *)self dataSource];
+    v8 = [dataSource2 enumeration:self accessoryImageForPossibleState:stateCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = WFDynamicEnumerationParameter;
-    v8 = [(WFEnumerationParameter *)&v10 accessoryImageForPossibleState:v4];
+    v8 = [(WFEnumerationParameter *)&v10 accessoryImageForPossibleState:stateCopy];
   }
 
   return v8;
 }
 
-- (id)localizedSubtitleLabelForPossibleState:(id)a3
+- (id)localizedSubtitleLabelForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = [(WFDynamicEnumerationParameter *)self dataSource];
+  stateCopy = state;
+  dataSource = [(WFDynamicEnumerationParameter *)self dataSource];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WFDynamicEnumerationParameter *)self dataSource];
-    v8 = [v7 enumeration:self localizedSubtitleLabelForPossibleState:v4];
+    dataSource2 = [(WFDynamicEnumerationParameter *)self dataSource];
+    v8 = [dataSource2 enumeration:self localizedSubtitleLabelForPossibleState:stateCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = WFDynamicEnumerationParameter;
-    v8 = [(WFEnumerationParameter *)&v10 localizedSubtitleLabelForPossibleState:v4];
+    v8 = [(WFEnumerationParameter *)&v10 localizedSubtitleLabelForPossibleState:stateCopy];
   }
 
   return v8;
 }
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = [(WFDynamicEnumerationParameter *)self dataSource];
-  v6 = [v5 enumeration:self localizedLabelForPossibleState:v4];
+  stateCopy = state;
+  dataSource = [(WFDynamicEnumerationParameter *)self dataSource];
+  v6 = [dataSource enumeration:self localizedLabelForPossibleState:stateCopy];
 
   return v6;
 }
 
 - (id)possibleStatesForLocalization
 {
-  v3 = [(WFDynamicEnumerationParameter *)self dataSource];
+  dataSource = [(WFDynamicEnumerationParameter *)self dataSource];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) != 0 && (-[WFDynamicEnumerationParameter dataSource](self, "dataSource"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 enumerationShouldProvideValuesForParameterSummaryLocalization:self], v5, !v6))
   {
-    v7 = MEMORY[0x1E695E0F0];
+    possibleStatesForLocalization = MEMORY[0x1E695E0F0];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = WFDynamicEnumerationParameter;
-    v7 = [(WFEnumerationParameter *)&v9 possibleStatesForLocalization];
+    possibleStatesForLocalization = [(WFEnumerationParameter *)&v9 possibleStatesForLocalization];
   }
 
-  return v7;
+  return possibleStatesForLocalization;
 }
 
-- (void)setPossibleStatesFromRemoteSource:(id)a3
+- (void)setPossibleStatesFromRemoteSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   os_unfair_lock_assert_not_owner(&self->_possibleStatesLock);
   os_unfair_lock_lock(&self->_possibleStatesLock);
   possibleStates = self->_possibleStates;
-  self->_possibleStates = v4;
+  self->_possibleStates = sourceCopy;
 
   self->_possibleStatesLoadingState = 3;
 
@@ -708,37 +708,37 @@ void __90__WFDynamicEnumerationParameter_loadDefaultSerializedRepresentationWith
   return v3;
 }
 
-- (void)lock_setPossibleStatesCollection:(id)a3
+- (void)lock_setPossibleStatesCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   os_unfair_lock_assert_owner(&self->_possibleStatesLock);
   possibleStatesCollection = self->_possibleStatesCollection;
-  self->_possibleStatesCollection = v4;
-  v8 = v4;
+  self->_possibleStatesCollection = collectionCopy;
+  v8 = collectionCopy;
 
-  v6 = [(INObjectCollection *)v8 allItems];
+  allItems = [(INObjectCollection *)v8 allItems];
   possibleStates = self->_possibleStates;
-  self->_possibleStates = v6;
+  self->_possibleStates = allItems;
 }
 
-- (void)setPossibleStatesCollection:(id)a3
+- (void)setPossibleStatesCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   os_unfair_lock_assert_not_owner(&self->_possibleStatesLock);
   os_unfair_lock_lock(&self->_possibleStatesLock);
-  [(WFDynamicEnumerationParameter *)self lock_setPossibleStatesCollection:v4];
+  [(WFDynamicEnumerationParameter *)self lock_setPossibleStatesCollection:collectionCopy];
 
   os_unfair_lock_unlock(&self->_possibleStatesLock);
 
   [(WFDynamicEnumerationParameter *)self possibleStatesDidChange];
 }
 
-- (void)setPossibleStates:(id)a3
+- (void)setPossibleStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   os_unfair_lock_assert_not_owner(&self->_possibleStatesLock);
   os_unfair_lock_lock(&self->_possibleStatesLock);
-  v5 = [v4 copy];
+  v5 = [statesCopy copy];
 
   possibleStates = self->_possibleStates;
   self->_possibleStates = v5;
@@ -802,14 +802,14 @@ void __53__WFDynamicEnumerationParameter_reloadPossibleStates__block_invoke(uint
   return v3;
 }
 
-- (BOOL)parameterStateIsValid:(id)a3
+- (BOOL)parameterStateIsValid:(id)valid
 {
-  v4 = a3;
+  validCopy = valid;
   if ([(WFDynamicEnumerationParameter *)self possibleStatesLoadingState]== 2)
   {
     v7.receiver = self;
     v7.super_class = WFDynamicEnumerationParameter;
-    v5 = [(WFEnumerationParameter *)&v7 parameterStateIsValid:v4];
+    v5 = [(WFEnumerationParameter *)&v7 parameterStateIsValid:validCopy];
   }
 
   else
@@ -831,13 +831,13 @@ void __53__WFDynamicEnumerationParameter_reloadPossibleStates__block_invoke(uint
 
 - (BOOL)allowsMultipleValues
 {
-  v3 = [(WFDynamicEnumerationParameter *)self dataSource];
+  dataSource = [(WFDynamicEnumerationParameter *)self dataSource];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFDynamicEnumerationParameter *)self dataSource];
-    v6 = [v5 enumerationAllowsMultipleValues:self];
+    dataSource2 = [(WFDynamicEnumerationParameter *)self dataSource];
+    v6 = [dataSource2 enumerationAllowsMultipleValues:self];
 
     return v6;
   }
@@ -850,13 +850,13 @@ void __53__WFDynamicEnumerationParameter_reloadPossibleStates__block_invoke(uint
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v6 = [WeakRetained isEqual:v4];
+  v6 = [WeakRetained isEqual:sourceCopy];
 
-  objc_storeWeak(&self->_dataSource, v4);
+  objc_storeWeak(&self->_dataSource, sourceCopy);
   if ((v6 & 1) == 0)
   {
     [(WFDynamicEnumerationParameter *)self clearPossibleStates];
@@ -868,11 +868,11 @@ void __53__WFDynamicEnumerationParameter_reloadPossibleStates__block_invoke(uint
   }
 }
 
-- (WFDynamicEnumerationParameter)initWithDefinition:(id)a3
+- (WFDynamicEnumerationParameter)initWithDefinition:(id)definition
 {
   v9.receiver = self;
   v9.super_class = WFDynamicEnumerationParameter;
-  v3 = [(WFEnumerationParameter *)&v9 initWithDefinition:a3];
+  v3 = [(WFEnumerationParameter *)&v9 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {
@@ -888,19 +888,19 @@ void __53__WFDynamicEnumerationParameter_reloadPossibleStates__block_invoke(uint
   return v4;
 }
 
-- (void)wf_reloadFromAttributesDidChangeWithCompletionHandler:(id)a3
+- (void)wf_reloadFromAttributesDidChangeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFDynamicEnumerationParameter *)self possibleStates];
+  handlerCopy = handler;
+  possibleStates = [(WFDynamicEnumerationParameter *)self possibleStates];
 
-  if (v5)
+  if (possibleStates)
   {
     v6 = objc_alloc(MEMORY[0x1E696E918]);
-    v7 = [(WFDynamicEnumerationParameter *)self possibleStates];
-    v8 = v7;
-    if (v7)
+    possibleStates2 = [(WFDynamicEnumerationParameter *)self possibleStates];
+    v8 = possibleStates2;
+    if (possibleStates2)
     {
-      v9 = v7;
+      v9 = possibleStates2;
     }
 
     else
@@ -915,22 +915,22 @@ void __53__WFDynamicEnumerationParameter_reloadPossibleStates__block_invoke(uint
     v12[2] = __106__WFDynamicEnumerationParameter_WFParameterPicker__wf_reloadFromAttributesDidChangeWithCompletionHandler___block_invoke;
     v12[3] = &unk_1E837E1F8;
     v13 = v10;
-    v14 = v4;
+    v14 = handlerCopy;
     v11 = v10;
     dispatch_async(MEMORY[0x1E69E96A0], v12);
   }
 }
 
-- (void)wf_loadStatesWithSearchTerm:(id)a3 completionHandler:(id)a4
+- (void)wf_loadStatesWithSearchTerm:(id)term completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __98__WFDynamicEnumerationParameter_WFParameterPicker__wf_loadStatesWithSearchTerm_completionHandler___block_invoke;
   v7[3] = &unk_1E837FA10;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WFDynamicEnumerationParameter *)self loadPossibleStatesWithCompletionHandler:v7];
 }
 

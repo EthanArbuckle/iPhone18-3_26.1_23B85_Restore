@@ -5,7 +5,7 @@
 - (BOOL)isCumulative;
 - (BOOL)isRemovedOnCompletion;
 - (BOOL)usesSceneTimeBase;
-- (SCN_CAKeyframeAnimation)initWithCoder:(id)a3;
+- (SCN_CAKeyframeAnimation)initWithCoder:(id)coder;
 - (double)duration;
 - (double)fadeInDuration;
 - (double)fadeOutDuration;
@@ -16,7 +16,7 @@
 - (id)animationEvents;
 - (id)biasValues;
 - (id)continuityValues;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)fillMode;
 - (id)keyPath;
@@ -28,31 +28,31 @@
 - (void)_clearC3DCache;
 - (void)_convertToCA;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAdditive:(BOOL)a3;
-- (void)setAnimationEvents:(id)a3;
-- (void)setAutoreverses:(BOOL)a3;
-- (void)setBiasValues:(id)a3;
-- (void)setC3dAnimation:(__C3DKeyframedAnimation *)a3;
-- (void)setCommitsOnCompletion:(BOOL)a3;
-- (void)setContinuityValues:(id)a3;
-- (void)setCumulative:(BOOL)a3;
-- (void)setDuration:(double)a3;
-- (void)setFadeInDuration:(double)a3;
-- (void)setFadeOutDuration:(double)a3;
-- (void)setFillMode:(id)a3;
-- (void)setKeyPath:(id)a3;
-- (void)setKeyTimes:(id)a3;
-- (void)setRemovedOnCompletion:(BOOL)a3;
-- (void)setRepeatCount:(float)a3;
-- (void)setRepeatDuration:(double)a3;
-- (void)setSpeed:(float)a3;
-- (void)setTensionValues:(id)a3;
-- (void)setTimeOffset:(double)a3;
-- (void)setTimingFunction:(id)a3;
-- (void)setTimingFunctions:(id)a3;
-- (void)setUsesSceneTimeBase:(BOOL)a3;
-- (void)setValues:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAdditive:(BOOL)additive;
+- (void)setAnimationEvents:(id)events;
+- (void)setAutoreverses:(BOOL)autoreverses;
+- (void)setBiasValues:(id)values;
+- (void)setC3dAnimation:(__C3DKeyframedAnimation *)animation;
+- (void)setCommitsOnCompletion:(BOOL)completion;
+- (void)setContinuityValues:(id)values;
+- (void)setCumulative:(BOOL)cumulative;
+- (void)setDuration:(double)duration;
+- (void)setFadeInDuration:(double)duration;
+- (void)setFadeOutDuration:(double)duration;
+- (void)setFillMode:(id)mode;
+- (void)setKeyPath:(id)path;
+- (void)setKeyTimes:(id)times;
+- (void)setRemovedOnCompletion:(BOOL)completion;
+- (void)setRepeatCount:(float)count;
+- (void)setRepeatDuration:(double)duration;
+- (void)setSpeed:(float)speed;
+- (void)setTensionValues:(id)values;
+- (void)setTimeOffset:(double)offset;
+- (void)setTimingFunction:(id)function;
+- (void)setTimingFunctions:(id)functions;
+- (void)setUsesSceneTimeBase:(BOOL)base;
+- (void)setValues:(id)values;
 @end
 
 @implementation SCN_CAKeyframeAnimation
@@ -126,7 +126,7 @@
       }
 
       v32 = v4;
-      v33 = self;
+      selfCopy = self;
       v17 = 0;
       do
       {
@@ -152,7 +152,7 @@
     if (!KeyCount)
     {
 LABEL_22:
-      [(SCN_CAKeyframeAnimation *)self setKeyTimes:v8, v23, v32, v33, __dst, v35, v36, v37];
+      [(SCN_CAKeyframeAnimation *)self setKeyTimes:v8, v23, v32, selfCopy, __dst, v35, v36, v37];
       [(SCN_CAKeyframeAnimation *)self setValues:v9];
       [(SCN_CAKeyframeAnimation *)self setContinuityValues:0];
       [(SCN_CAKeyframeAnimation *)self setTensionValues:0];
@@ -161,7 +161,7 @@ LABEL_22:
       [(SCN_CAKeyframeAnimation *)self setDuration:C3DKeyframeControllerGetDuration(Controller)];
       CAPropertyAnimationSetupWithSCNAnimation(self, v4);
 LABEL_24:
-      [(SCN_CAKeyframeAnimation *)self setC3dAnimation:v4, v32, v33];
+      [(SCN_CAKeyframeAnimation *)self setC3dAnimation:v4, v32, selfCopy];
       CFRelease(v4);
       return;
     }
@@ -224,7 +224,7 @@ LABEL_17:
   return [(SCN_CAKeyframeAnimation *)&v4 values];
 }
 
-- (void)setValues:(id)a3
+- (void)setValues:(id)values
 {
   if (self->_c3dAnimation)
   {
@@ -233,7 +233,7 @@ LABEL_17:
 
   v5.receiver = self;
   v5.super_class = SCN_CAKeyframeAnimation;
-  [(SCN_CAKeyframeAnimation *)&v5 setValues:a3];
+  [(SCN_CAKeyframeAnimation *)&v5 setValues:values];
 }
 
 - (id)keyTimes
@@ -248,7 +248,7 @@ LABEL_17:
   return [(SCN_CAKeyframeAnimation *)&v4 keyTimes];
 }
 
-- (void)setKeyTimes:(id)a3
+- (void)setKeyTimes:(id)times
 {
   if (self->_c3dAnimation)
   {
@@ -257,7 +257,7 @@ LABEL_17:
 
   v5.receiver = self;
   v5.super_class = SCN_CAKeyframeAnimation;
-  [(SCN_CAKeyframeAnimation *)&v5 setKeyTimes:a3];
+  [(SCN_CAKeyframeAnimation *)&v5 setKeyTimes:times];
 }
 
 - (id)timingFunctions
@@ -272,7 +272,7 @@ LABEL_17:
   return [(SCN_CAKeyframeAnimation *)&v4 timingFunctions];
 }
 
-- (void)setTimingFunctions:(id)a3
+- (void)setTimingFunctions:(id)functions
 {
   if (self->_c3dAnimation)
   {
@@ -281,7 +281,7 @@ LABEL_17:
 
   v5.receiver = self;
   v5.super_class = SCN_CAKeyframeAnimation;
-  [(SCN_CAKeyframeAnimation *)&v5 setTimingFunctions:a3];
+  [(SCN_CAKeyframeAnimation *)&v5 setTimingFunctions:functions];
 }
 
 - (id)tensionValues
@@ -296,7 +296,7 @@ LABEL_17:
   return [(SCN_CAKeyframeAnimation *)&v4 tensionValues];
 }
 
-- (void)setTensionValues:(id)a3
+- (void)setTensionValues:(id)values
 {
   if (self->_c3dAnimation)
   {
@@ -305,7 +305,7 @@ LABEL_17:
 
   v5.receiver = self;
   v5.super_class = SCN_CAKeyframeAnimation;
-  [(SCN_CAKeyframeAnimation *)&v5 setTensionValues:a3];
+  [(SCN_CAKeyframeAnimation *)&v5 setTensionValues:values];
 }
 
 - (id)continuityValues
@@ -320,7 +320,7 @@ LABEL_17:
   return [(SCN_CAKeyframeAnimation *)&v4 continuityValues];
 }
 
-- (void)setContinuityValues:(id)a3
+- (void)setContinuityValues:(id)values
 {
   if (self->_c3dAnimation)
   {
@@ -329,7 +329,7 @@ LABEL_17:
 
   v5.receiver = self;
   v5.super_class = SCN_CAKeyframeAnimation;
-  [(SCN_CAKeyframeAnimation *)&v5 setContinuityValues:a3];
+  [(SCN_CAKeyframeAnimation *)&v5 setContinuityValues:values];
 }
 
 - (id)biasValues
@@ -344,7 +344,7 @@ LABEL_17:
   return [(SCN_CAKeyframeAnimation *)&v4 biasValues];
 }
 
-- (void)setBiasValues:(id)a3
+- (void)setBiasValues:(id)values
 {
   if (self->_c3dAnimation)
   {
@@ -353,16 +353,16 @@ LABEL_17:
 
   v5.receiver = self;
   v5.super_class = SCN_CAKeyframeAnimation;
-  [(SCN_CAKeyframeAnimation *)&v5 setBiasValues:a3];
+  [(SCN_CAKeyframeAnimation *)&v5 setBiasValues:values];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_caReady || !self->_c3dAnimation)
   {
     v7.receiver = self;
     v7.super_class = SCN_CAKeyframeAnimation;
-    return [(SCN_CAKeyframeAnimation *)&v7 copyWithZone:a3];
+    return [(SCN_CAKeyframeAnimation *)&v7 copyWithZone:zone];
   }
 
   else
@@ -395,10 +395,10 @@ LABEL_17:
   }
 }
 
-- (void)setC3dAnimation:(__C3DKeyframedAnimation *)a3
+- (void)setC3dAnimation:(__C3DKeyframedAnimation *)animation
 {
   c3dAnimation = self->_c3dAnimation;
-  if (c3dAnimation != a3)
+  if (c3dAnimation != animation)
   {
     if (c3dAnimation)
     {
@@ -406,9 +406,9 @@ LABEL_17:
       self->_c3dAnimation = 0;
     }
 
-    if (a3)
+    if (animation)
     {
-      v6 = CFRetain(a3);
+      v6 = CFRetain(animation);
     }
 
     else
@@ -420,7 +420,7 @@ LABEL_17:
   }
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   caReady = self->_caReady;
   c3dAnimation = self->_c3dAnimation;
@@ -428,8 +428,8 @@ LABEL_17:
   {
     if (c3dAnimation)
     {
-      v7 = a3;
-      C3DAnimationSetDuration(c3dAnimation, v7);
+      durationCopy = duration;
+      C3DAnimationSetDuration(c3dAnimation, durationCopy);
     }
 
     goto LABEL_8;
@@ -440,13 +440,13 @@ LABEL_17:
 LABEL_8:
     v9.receiver = self;
     v9.super_class = SCN_CAKeyframeAnimation;
-    [(SCN_CAKeyframeAnimation *)&v9 setDuration:a3];
+    [(SCN_CAKeyframeAnimation *)&v9 setDuration:duration];
     return;
   }
 
-  v8 = a3;
+  durationCopy2 = duration;
 
-  C3DAnimationSetDuration(c3dAnimation, v8);
+  C3DAnimationSetDuration(c3dAnimation, durationCopy2);
 }
 
 - (double)duration
@@ -462,14 +462,14 @@ LABEL_8:
   return result;
 }
 
-- (void)setKeyPath:(id)a3
+- (void)setKeyPath:(id)path
 {
   if (!self->_c3dAnimation)
   {
     goto LABEL_5;
   }
 
-  v5 = C3DCreatePathComponentsFromString(a3);
+  v5 = C3DCreatePathComponentsFromString(path);
   C3DAnimationSetKeyPath(self->_c3dAnimation, v5);
   if (v5)
   {
@@ -481,7 +481,7 @@ LABEL_8:
 LABEL_5:
     v6.receiver = self;
     v6.super_class = SCN_CAKeyframeAnimation;
-    [(SCN_CAKeyframeAnimation *)&v6 setKeyPath:a3];
+    [(SCN_CAKeyframeAnimation *)&v6 setKeyPath:path];
   }
 }
 
@@ -503,19 +503,19 @@ LABEL_5:
   }
 }
 
-- (void)setRepeatCount:(float)a3
+- (void)setRepeatCount:(float)count
 {
   c3dAnimation = self->_c3dAnimation;
   if (c3dAnimation)
   {
-    C3DAnimationSetRepeatCount(c3dAnimation, a3);
+    C3DAnimationSetRepeatCount(c3dAnimation, count);
   }
 
   if (self->_caReady)
   {
     v7.receiver = self;
     v7.super_class = SCN_CAKeyframeAnimation;
-    *&v6 = a3;
+    *&v6 = count;
     [(SCN_CAKeyframeAnimation *)&v7 setRepeatCount:v6];
   }
 }
@@ -541,7 +541,7 @@ LABEL_5:
   return result;
 }
 
-- (void)setRepeatDuration:(double)a3
+- (void)setRepeatDuration:(double)duration
 {
   if (self->_c3dAnimation)
   {
@@ -550,7 +550,7 @@ LABEL_5:
 
   v5.receiver = self;
   v5.super_class = SCN_CAKeyframeAnimation;
-  [(SCN_CAKeyframeAnimation *)&v5 setRepeatDuration:a3];
+  [(SCN_CAKeyframeAnimation *)&v5 setRepeatDuration:duration];
 }
 
 - (double)repeatDuration
@@ -566,16 +566,16 @@ LABEL_5:
   return result;
 }
 
-- (void)setAutoreverses:(BOOL)a3
+- (void)setAutoreverses:(BOOL)autoreverses
 {
-  v3 = a3;
+  autoreversesCopy = autoreverses;
   caReady = self->_caReady;
   c3dAnimation = self->_c3dAnimation;
   if (caReady)
   {
     if (c3dAnimation)
     {
-      C3DAnimationSetAutoreverses(c3dAnimation, a3);
+      C3DAnimationSetAutoreverses(c3dAnimation, autoreverses);
     }
 
     goto LABEL_8;
@@ -586,11 +586,11 @@ LABEL_5:
 LABEL_8:
     v7.receiver = self;
     v7.super_class = SCN_CAKeyframeAnimation;
-    [(SCN_CAKeyframeAnimation *)&v7 setAutoreverses:v3];
+    [(SCN_CAKeyframeAnimation *)&v7 setAutoreverses:autoreversesCopy];
     return;
   }
 
-  C3DAnimationSetAutoreverses(c3dAnimation, a3);
+  C3DAnimationSetAutoreverses(c3dAnimation, autoreverses);
 }
 
 - (BOOL)autoreverses
@@ -612,7 +612,7 @@ LABEL_8:
   }
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
   caReady = self->_caReady;
   c3dAnimation = self->_c3dAnimation;
@@ -620,7 +620,7 @@ LABEL_8:
   {
     if (c3dAnimation)
     {
-      C3DAnimationSetTimeOffset(c3dAnimation, a3);
+      C3DAnimationSetTimeOffset(c3dAnimation, offset);
     }
 
     goto LABEL_8;
@@ -631,11 +631,11 @@ LABEL_8:
 LABEL_8:
     v7.receiver = self;
     v7.super_class = SCN_CAKeyframeAnimation;
-    [(SCN_CAKeyframeAnimation *)&v7 setTimeOffset:a3];
+    [(SCN_CAKeyframeAnimation *)&v7 setTimeOffset:offset];
     return;
   }
 
-  C3DAnimationSetTimeOffset(c3dAnimation, a3);
+  C3DAnimationSetTimeOffset(c3dAnimation, offset);
 }
 
 - (double)timeOffset
@@ -659,7 +659,7 @@ LABEL_8:
   return result;
 }
 
-- (void)setSpeed:(float)a3
+- (void)setSpeed:(float)speed
 {
   caReady = self->_caReady;
   c3dAnimation = self->_c3dAnimation;
@@ -667,7 +667,7 @@ LABEL_8:
   {
     if (c3dAnimation)
     {
-      C3DAnimationSetSpeed(c3dAnimation, a3);
+      C3DAnimationSetSpeed(c3dAnimation, speed);
     }
 
     goto LABEL_8;
@@ -678,12 +678,12 @@ LABEL_8:
 LABEL_8:
     v8.receiver = self;
     v8.super_class = SCN_CAKeyframeAnimation;
-    *&v7 = a3;
+    *&v7 = speed;
     [(SCN_CAKeyframeAnimation *)&v8 setSpeed:v7];
     return;
   }
 
-  C3DAnimationSetSpeed(c3dAnimation, a3);
+  C3DAnimationSetSpeed(c3dAnimation, speed);
 }
 
 - (float)speed
@@ -707,7 +707,7 @@ LABEL_8:
   return result;
 }
 
-- (void)setFadeInDuration:(double)a3
+- (void)setFadeInDuration:(double)duration
 {
   caReady = self->_caReady;
   c3dAnimation = self->_c3dAnimation;
@@ -715,8 +715,8 @@ LABEL_8:
   {
     if (c3dAnimation)
     {
-      v7 = a3;
-      C3DAnimationSetFadeInDuration(c3dAnimation, v7);
+      durationCopy = duration;
+      C3DAnimationSetFadeInDuration(c3dAnimation, durationCopy);
     }
 
     goto LABEL_8;
@@ -727,13 +727,13 @@ LABEL_8:
 LABEL_8:
     v9.receiver = self;
     v9.super_class = SCN_CAKeyframeAnimation;
-    [(CAAnimation *)&v9 setFadeInDuration:a3];
+    [(CAAnimation *)&v9 setFadeInDuration:duration];
     return;
   }
 
-  v8 = a3;
+  durationCopy2 = duration;
 
-  C3DAnimationSetFadeInDuration(c3dAnimation, v8);
+  C3DAnimationSetFadeInDuration(c3dAnimation, durationCopy2);
 }
 
 - (double)fadeInDuration
@@ -749,7 +749,7 @@ LABEL_8:
   return result;
 }
 
-- (void)setFadeOutDuration:(double)a3
+- (void)setFadeOutDuration:(double)duration
 {
   caReady = self->_caReady;
   c3dAnimation = self->_c3dAnimation;
@@ -757,8 +757,8 @@ LABEL_8:
   {
     if (c3dAnimation)
     {
-      v7 = a3;
-      C3DAnimationSetFadeOutDuration(c3dAnimation, v7);
+      durationCopy = duration;
+      C3DAnimationSetFadeOutDuration(c3dAnimation, durationCopy);
     }
 
     goto LABEL_8;
@@ -769,13 +769,13 @@ LABEL_8:
 LABEL_8:
     v9.receiver = self;
     v9.super_class = SCN_CAKeyframeAnimation;
-    [(CAAnimation *)&v9 setFadeOutDuration:a3];
+    [(CAAnimation *)&v9 setFadeOutDuration:duration];
     return;
   }
 
-  v8 = a3;
+  durationCopy2 = duration;
 
-  C3DAnimationSetFadeOutDuration(c3dAnimation, v8);
+  C3DAnimationSetFadeOutDuration(c3dAnimation, durationCopy2);
 }
 
 - (double)fadeOutDuration
@@ -791,16 +791,16 @@ LABEL_8:
   return result;
 }
 
-- (void)setRemovedOnCompletion:(BOOL)a3
+- (void)setRemovedOnCompletion:(BOOL)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   caReady = self->_caReady;
   c3dAnimation = self->_c3dAnimation;
   if (caReady)
   {
     if (c3dAnimation)
     {
-      C3DAnimationSetRemoveOnCompletion(c3dAnimation, a3);
+      C3DAnimationSetRemoveOnCompletion(c3dAnimation, completion);
     }
 
     goto LABEL_8;
@@ -811,11 +811,11 @@ LABEL_8:
 LABEL_8:
     v7.receiver = self;
     v7.super_class = SCN_CAKeyframeAnimation;
-    [(SCN_CAKeyframeAnimation *)&v7 setRemovedOnCompletion:v3];
+    [(SCN_CAKeyframeAnimation *)&v7 setRemovedOnCompletion:completionCopy];
     return;
   }
 
-  C3DAnimationSetRemoveOnCompletion(c3dAnimation, a3);
+  C3DAnimationSetRemoveOnCompletion(c3dAnimation, completion);
 }
 
 - (BOOL)isRemovedOnCompletion
@@ -837,16 +837,16 @@ LABEL_8:
   }
 }
 
-- (void)setCommitsOnCompletion:(BOOL)a3
+- (void)setCommitsOnCompletion:(BOOL)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   caReady = self->_caReady;
   c3dAnimation = self->_c3dAnimation;
   if (caReady)
   {
     if (c3dAnimation)
     {
-      C3DAnimationSetCommitWhenDone(c3dAnimation, a3);
+      C3DAnimationSetCommitWhenDone(c3dAnimation, completion);
     }
 
     goto LABEL_8;
@@ -857,11 +857,11 @@ LABEL_8:
 LABEL_8:
     v7.receiver = self;
     v7.super_class = SCN_CAKeyframeAnimation;
-    [(CAAnimation *)&v7 setCommitsOnCompletion:v3];
+    [(CAAnimation *)&v7 setCommitsOnCompletion:completionCopy];
     return;
   }
 
-  C3DAnimationSetCommitWhenDone(c3dAnimation, a3);
+  C3DAnimationSetCommitWhenDone(c3dAnimation, completion);
 }
 
 - (BOOL)commitsOnCompletion
@@ -883,16 +883,16 @@ LABEL_8:
   }
 }
 
-- (void)setUsesSceneTimeBase:(BOOL)a3
+- (void)setUsesSceneTimeBase:(BOOL)base
 {
-  v3 = a3;
+  baseCopy = base;
   caReady = self->_caReady;
   c3dAnimation = self->_c3dAnimation;
   if (caReady)
   {
     if (c3dAnimation)
     {
-      C3DAnimationSetIsSceneTimeBased(c3dAnimation, a3);
+      C3DAnimationSetIsSceneTimeBased(c3dAnimation, base);
     }
 
     goto LABEL_8;
@@ -903,11 +903,11 @@ LABEL_8:
 LABEL_8:
     v7.receiver = self;
     v7.super_class = SCN_CAKeyframeAnimation;
-    [(CAAnimation *)&v7 setUsesSceneTimeBase:v3];
+    [(CAAnimation *)&v7 setUsesSceneTimeBase:baseCopy];
     return;
   }
 
-  C3DAnimationSetIsSceneTimeBased(c3dAnimation, a3);
+  C3DAnimationSetIsSceneTimeBased(c3dAnimation, base);
 }
 
 - (BOOL)usesSceneTimeBase
@@ -929,14 +929,14 @@ LABEL_8:
   }
 }
 
-- (void)setFillMode:(id)a3
+- (void)setFillMode:(id)mode
 {
   c3dAnimation = self->_c3dAnimation;
   if (self->_caReady)
   {
     if (c3dAnimation)
     {
-      v6 = _CAToC3DFillMode(a3);
+      v6 = _CAToC3DFillMode(mode);
       C3DAnimationSetFillModeMask(c3dAnimation, v6);
     }
 
@@ -948,11 +948,11 @@ LABEL_8:
 LABEL_8:
     v8.receiver = self;
     v8.super_class = SCN_CAKeyframeAnimation;
-    [(SCN_CAKeyframeAnimation *)&v8 setFillMode:a3];
+    [(SCN_CAKeyframeAnimation *)&v8 setFillMode:mode];
     return;
   }
 
-  v7 = _CAToC3DFillMode(a3);
+  v7 = _CAToC3DFillMode(mode);
 
   C3DAnimationSetFillModeMask(c3dAnimation, v7);
 }
@@ -974,14 +974,14 @@ LABEL_8:
   }
 }
 
-- (void)setAnimationEvents:(id)a3
+- (void)setAnimationEvents:(id)events
 {
   c3dAnimation = self->_c3dAnimation;
   if (self->_caReady)
   {
     if (c3dAnimation)
     {
-      v6 = _CAToC3DAnimationEvents(a3);
+      v6 = _CAToC3DAnimationEvents(events);
       C3DAnimationSetAnimationEvents(c3dAnimation, v6);
     }
 
@@ -991,7 +991,7 @@ LABEL_8:
   if (!c3dAnimation)
   {
 LABEL_8:
-    v8 = [a3 copy];
+    v8 = [events copy];
     v9.receiver = self;
     v9.super_class = SCN_CAKeyframeAnimation;
     [(CAAnimation *)&v9 setAnimationEvents:v8];
@@ -999,7 +999,7 @@ LABEL_8:
     return;
   }
 
-  v7 = _CAToC3DAnimationEvents(a3);
+  v7 = _CAToC3DAnimationEvents(events);
 
   C3DAnimationSetAnimationEvents(c3dAnimation, v7);
 }
@@ -1021,14 +1021,14 @@ LABEL_8:
   }
 }
 
-- (void)setTimingFunction:(id)a3
+- (void)setTimingFunction:(id)function
 {
   c3dAnimation = self->_c3dAnimation;
   if (self->_caReady)
   {
     if (c3dAnimation)
     {
-      v6 = C3DTimingFunctionFromCAMediaTimingFunction(a3);
+      v6 = C3DTimingFunctionFromCAMediaTimingFunction(function);
       C3DAnimationSetTimingFunction(c3dAnimation, v6);
     }
 
@@ -1040,11 +1040,11 @@ LABEL_8:
 LABEL_8:
     v8.receiver = self;
     v8.super_class = SCN_CAKeyframeAnimation;
-    [(SCN_CAKeyframeAnimation *)&v8 setTimingFunction:a3];
+    [(SCN_CAKeyframeAnimation *)&v8 setTimingFunction:function];
     return;
   }
 
-  v7 = C3DTimingFunctionFromCAMediaTimingFunction(a3);
+  v7 = C3DTimingFunctionFromCAMediaTimingFunction(function);
 
   C3DAnimationSetTimingFunction(c3dAnimation, v7);
 }
@@ -1071,16 +1071,16 @@ LABEL_8:
   return result;
 }
 
-- (void)setAdditive:(BOOL)a3
+- (void)setAdditive:(BOOL)additive
 {
-  v3 = a3;
+  additiveCopy = additive;
   caReady = self->_caReady;
   c3dAnimation = self->_c3dAnimation;
   if (caReady)
   {
     if (c3dAnimation)
     {
-      C3DAnimationSetAdditive(c3dAnimation, a3);
+      C3DAnimationSetAdditive(c3dAnimation, additive);
     }
 
     goto LABEL_8;
@@ -1091,11 +1091,11 @@ LABEL_8:
 LABEL_8:
     v7.receiver = self;
     v7.super_class = SCN_CAKeyframeAnimation;
-    [(SCN_CAKeyframeAnimation *)&v7 setAdditive:v3];
+    [(SCN_CAKeyframeAnimation *)&v7 setAdditive:additiveCopy];
     return;
   }
 
-  C3DAnimationSetAdditive(c3dAnimation, a3);
+  C3DAnimationSetAdditive(c3dAnimation, additive);
 }
 
 - (BOOL)isAdditive
@@ -1117,16 +1117,16 @@ LABEL_8:
   }
 }
 
-- (void)setCumulative:(BOOL)a3
+- (void)setCumulative:(BOOL)cumulative
 {
-  v3 = a3;
+  cumulativeCopy = cumulative;
   caReady = self->_caReady;
   c3dAnimation = self->_c3dAnimation;
   if (caReady)
   {
     if (c3dAnimation)
     {
-      C3DAnimationSetCumulative(c3dAnimation, a3);
+      C3DAnimationSetCumulative(c3dAnimation, cumulative);
     }
 
     goto LABEL_8;
@@ -1137,11 +1137,11 @@ LABEL_8:
 LABEL_8:
     v7.receiver = self;
     v7.super_class = SCN_CAKeyframeAnimation;
-    [(SCN_CAKeyframeAnimation *)&v7 setCumulative:v3];
+    [(SCN_CAKeyframeAnimation *)&v7 setCumulative:cumulativeCopy];
     return;
   }
 
-  C3DAnimationSetCumulative(c3dAnimation, a3);
+  C3DAnimationSetCumulative(c3dAnimation, cumulative);
 }
 
 - (BOOL)isCumulative
@@ -1163,41 +1163,41 @@ LABEL_8:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   c3dAnimation = self->_c3dAnimation;
   if (c3dAnimation || (c3dAnimation = CAAnimationToC3DAnimation(self, 0)) != 0)
   {
     v6 = C3DCopyPropertyList(c3dAnimation, 0, 0, 0);
-    [a3 encodeObject:v6 forKey:@"c3dAnimation"];
+    [coder encodeObject:v6 forKey:@"c3dAnimation"];
   }
 
   [(SCN_CAKeyframeAnimation *)self duration];
-  [a3 encodeDouble:@"duration" forKey:?];
-  [a3 encodeObject:-[SCN_CAKeyframeAnimation keyPath](self forKey:{"keyPath"), @"keyPath"}];
-  [a3 encodeBool:-[SCN_CAKeyframeAnimation isCumulative](self forKey:{"isCumulative"), @"cumulative"}];
-  [a3 encodeBool:-[SCN_CAKeyframeAnimation isAdditive](self forKey:{"isAdditive"), @"additive"}];
-  [a3 encodeObject:-[SCN_CAKeyframeAnimation timingFunction](self forKey:{"timingFunction"), @"timingFunction"}];
-  [a3 encodeObject:-[SCN_CAKeyframeAnimation fillMode](self forKey:{"fillMode"), @"fillMode"}];
-  [a3 encodeBool:-[SCN_CAKeyframeAnimation usesSceneTimeBase](self forKey:{"usesSceneTimeBase"), @"usesSceneTimeBase"}];
-  [a3 encodeBool:-[SCN_CAKeyframeAnimation commitsOnCompletion](self forKey:{"commitsOnCompletion"), @"commitsOnCompletion"}];
-  [a3 encodeBool:-[SCN_CAKeyframeAnimation isRemovedOnCompletion](self forKey:{"isRemovedOnCompletion"), @"removedOnCompletion"}];
-  [a3 encodeBool:-[SCN_CAKeyframeAnimation autoreverses](self forKey:{"autoreverses"), @"autoreverses"}];
+  [coder encodeDouble:@"duration" forKey:?];
+  [coder encodeObject:-[SCN_CAKeyframeAnimation keyPath](self forKey:{"keyPath"), @"keyPath"}];
+  [coder encodeBool:-[SCN_CAKeyframeAnimation isCumulative](self forKey:{"isCumulative"), @"cumulative"}];
+  [coder encodeBool:-[SCN_CAKeyframeAnimation isAdditive](self forKey:{"isAdditive"), @"additive"}];
+  [coder encodeObject:-[SCN_CAKeyframeAnimation timingFunction](self forKey:{"timingFunction"), @"timingFunction"}];
+  [coder encodeObject:-[SCN_CAKeyframeAnimation fillMode](self forKey:{"fillMode"), @"fillMode"}];
+  [coder encodeBool:-[SCN_CAKeyframeAnimation usesSceneTimeBase](self forKey:{"usesSceneTimeBase"), @"usesSceneTimeBase"}];
+  [coder encodeBool:-[SCN_CAKeyframeAnimation commitsOnCompletion](self forKey:{"commitsOnCompletion"), @"commitsOnCompletion"}];
+  [coder encodeBool:-[SCN_CAKeyframeAnimation isRemovedOnCompletion](self forKey:{"isRemovedOnCompletion"), @"removedOnCompletion"}];
+  [coder encodeBool:-[SCN_CAKeyframeAnimation autoreverses](self forKey:{"autoreverses"), @"autoreverses"}];
   [(SCN_CAKeyframeAnimation *)self fadeInDuration];
-  [a3 encodeDouble:@"fadeInDuration" forKey:?];
+  [coder encodeDouble:@"fadeInDuration" forKey:?];
   [(SCN_CAKeyframeAnimation *)self fadeOutDuration];
-  [a3 encodeDouble:@"fadeOutDuration" forKey:?];
+  [coder encodeDouble:@"fadeOutDuration" forKey:?];
   [(SCN_CAKeyframeAnimation *)self speed];
-  [a3 encodeDouble:@"speed" forKey:v7];
+  [coder encodeDouble:@"speed" forKey:v7];
   [(SCN_CAKeyframeAnimation *)self timeOffset];
-  [a3 encodeDouble:@"timeOffset" forKey:?];
+  [coder encodeDouble:@"timeOffset" forKey:?];
   [(SCN_CAKeyframeAnimation *)self repeatCount];
   v9 = v8;
 
-  [a3 encodeDouble:@"repeatCount" forKey:v9];
+  [coder encodeDouble:@"repeatCount" forKey:v9];
 }
 
-- (SCN_CAKeyframeAnimation)initWithCoder:(id)a3
+- (SCN_CAKeyframeAnimation)initWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = SCN_CAKeyframeAnimation;
@@ -1206,7 +1206,7 @@ LABEL_8:
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    v6 = [a3 decodeObjectOfClasses:SCNPlistClasses() forKey:@"c3dAnimation"];
+    v6 = [coder decodeObjectOfClasses:SCNPlistClasses() forKey:@"c3dAnimation"];
     v7 = C3DKeyframedAnimationCreate();
     if (C3DInitWithPropertyList(v7, v6, 0, 0))
     {
@@ -1216,27 +1216,27 @@ LABEL_8:
         CFRelease(v7);
       }
 
-      -[SCN_CAKeyframeAnimation setKeyPath:](v4, "setKeyPath:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"keyPath"]);
-      [a3 decodeDoubleForKey:@"duration"];
+      -[SCN_CAKeyframeAnimation setKeyPath:](v4, "setKeyPath:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"keyPath"]);
+      [coder decodeDoubleForKey:@"duration"];
       [(SCN_CAKeyframeAnimation *)v4 setDuration:?];
-      -[SCN_CAKeyframeAnimation setCumulative:](v4, "setCumulative:", [a3 decodeBoolForKey:@"cumulative"]);
-      -[SCN_CAKeyframeAnimation setAdditive:](v4, "setAdditive:", [a3 decodeBoolForKey:@"additive"]);
-      -[SCN_CAKeyframeAnimation setTimingFunction:](v4, "setTimingFunction:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"timingFunction"]);
-      -[SCN_CAKeyframeAnimation setFillMode:](v4, "setFillMode:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"fillMode"]);
-      -[SCN_CAKeyframeAnimation setUsesSceneTimeBase:](v4, "setUsesSceneTimeBase:", [a3 decodeBoolForKey:@"usesSceneTimeBase"]);
-      -[SCN_CAKeyframeAnimation setCommitsOnCompletion:](v4, "setCommitsOnCompletion:", [a3 decodeBoolForKey:@"commitsOnCompletion"]);
-      -[SCN_CAKeyframeAnimation setRemovedOnCompletion:](v4, "setRemovedOnCompletion:", [a3 decodeBoolForKey:@"removedOnCompletion"]);
-      -[SCN_CAKeyframeAnimation setAutoreverses:](v4, "setAutoreverses:", [a3 decodeBoolForKey:@"autoreverses"]);
-      [a3 decodeDoubleForKey:@"fadeInDuration"];
+      -[SCN_CAKeyframeAnimation setCumulative:](v4, "setCumulative:", [coder decodeBoolForKey:@"cumulative"]);
+      -[SCN_CAKeyframeAnimation setAdditive:](v4, "setAdditive:", [coder decodeBoolForKey:@"additive"]);
+      -[SCN_CAKeyframeAnimation setTimingFunction:](v4, "setTimingFunction:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"timingFunction"]);
+      -[SCN_CAKeyframeAnimation setFillMode:](v4, "setFillMode:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"fillMode"]);
+      -[SCN_CAKeyframeAnimation setUsesSceneTimeBase:](v4, "setUsesSceneTimeBase:", [coder decodeBoolForKey:@"usesSceneTimeBase"]);
+      -[SCN_CAKeyframeAnimation setCommitsOnCompletion:](v4, "setCommitsOnCompletion:", [coder decodeBoolForKey:@"commitsOnCompletion"]);
+      -[SCN_CAKeyframeAnimation setRemovedOnCompletion:](v4, "setRemovedOnCompletion:", [coder decodeBoolForKey:@"removedOnCompletion"]);
+      -[SCN_CAKeyframeAnimation setAutoreverses:](v4, "setAutoreverses:", [coder decodeBoolForKey:@"autoreverses"]);
+      [coder decodeDoubleForKey:@"fadeInDuration"];
       [(SCN_CAKeyframeAnimation *)v4 setFadeInDuration:?];
-      [a3 decodeDoubleForKey:@"fadeOutDuration"];
+      [coder decodeDoubleForKey:@"fadeOutDuration"];
       [(SCN_CAKeyframeAnimation *)v4 setFadeOutDuration:?];
-      [a3 decodeDoubleForKey:@"speed"];
+      [coder decodeDoubleForKey:@"speed"];
       *&v8 = v8;
       [(SCN_CAKeyframeAnimation *)v4 setSpeed:v8];
-      [a3 decodeDoubleForKey:@"timeOffset"];
+      [coder decodeDoubleForKey:@"timeOffset"];
       [(SCN_CAKeyframeAnimation *)v4 setTimeOffset:?];
-      [a3 decodeDoubleForKey:@"repeatCount"];
+      [coder decodeDoubleForKey:@"repeatCount"];
       *&v9 = v9;
       [(SCN_CAKeyframeAnimation *)v4 setRepeatCount:v9];
       [SCNTransaction setImmediateMode:v5];

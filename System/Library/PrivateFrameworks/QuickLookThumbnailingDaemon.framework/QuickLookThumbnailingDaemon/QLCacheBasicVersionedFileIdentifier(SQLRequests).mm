@@ -10,16 +10,16 @@
 {
   v4 = a3;
   v5 = MEMORY[0x277CCAAB0];
-  v6 = [a1 version];
+  version = [self version];
   v12 = 0;
-  v7 = [v5 archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v12];
+  v7 = [v5 archivedDataWithRootObject:version requiringSecureCoding:1 error:&v12];
 
-  v8 = [a1 fileIdentifier];
+  fileIdentifier = [self fileIdentifier];
   v9 = [v4 prepareStatement:{"INSERT INTO basic_files (fileId, fsid, version) VALUES (?, ?, ?)"}];
   if (v9)
   {
-    v10 = __ROR8__([v8 fsid], 32);
-    [v4 bindUnsignedLongLong:objc_msgSend(v8 atIndex:"fileId") inStatement:{1, v9}];
+    v10 = __ROR8__([fileIdentifier fsid], 32);
+    [v4 bindUnsignedLongLong:objc_msgSend(fileIdentifier atIndex:"fileId") inStatement:{1, v9}];
     [v4 bindUnsignedLongLong:v10 atIndex:2 inStatement:v9];
     [v4 bindObject:v7 atIndex:3 inStatement:v9];
   }
@@ -31,16 +31,16 @@
 {
   v6 = a4;
   v7 = MEMORY[0x277CCAAB0];
-  v8 = [a1 version];
+  version = [self version];
   v15 = 0;
-  v9 = [v7 archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v15];
+  v9 = [v7 archivedDataWithRootObject:version requiringSecureCoding:1 error:&v15];
 
   v10 = [v6 prepareStatement:{"UPDATE basic_files SET fileId=?, fsid=?, version=? WHERE rowid=?"}];
-  v11 = [a1 fileIdentifier];
-  v12 = v11;
+  fileIdentifier = [self fileIdentifier];
+  v12 = fileIdentifier;
   if (v10)
   {
-    v13 = __ROR8__([v11 fsid], 32);
+    v13 = __ROR8__([fileIdentifier fsid], 32);
     [v6 bindUnsignedLongLong:objc_msgSend(v12 atIndex:"fileId") inStatement:{1, v10}];
     [v6 bindUnsignedLongLong:v13 atIndex:2 inStatement:v10];
     [v6 bindObject:v9 atIndex:3 inStatement:v10];
@@ -69,7 +69,7 @@
   }
 
   v12 = [objc_alloc(MEMORY[0x277CDAA80]) initWithFileId:v7 fsid:{__ROR8__(v8, 32)}];
-  v13 = [a1 initWithFileIdentifier:v12 version:v10];
+  v13 = [self initWithFileIdentifier:v12 version:v10];
 
   return v13;
 }

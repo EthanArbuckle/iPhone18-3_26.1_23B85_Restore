@@ -1,6 +1,6 @@
 @interface MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct
 - (MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -36,26 +36,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct);
-  v5 = [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)self duration];
-  [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)v4 setDuration:v5];
+  duration = [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)self duration];
+  [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)v4 setDuration:duration];
 
-  v6 = [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)self oneShot];
-  [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)v4 setOneShot:v6];
+  oneShot = [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)self oneShot];
+  [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)v4 setOneShot:oneShot];
 
-  v7 = [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)self emergencyBoost];
-  [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)v4 setEmergencyBoost:v7];
+  emergencyBoost = [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)self emergencyBoost];
+  [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)v4 setEmergencyBoost:emergencyBoost];
 
-  v8 = [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)self temporarySetpoint];
-  [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)v4 setTemporarySetpoint:v8];
+  temporarySetpoint = [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)self temporarySetpoint];
+  [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)v4 setTemporarySetpoint:temporarySetpoint];
 
-  v9 = [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)self targetPercentage];
-  [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)v4 setTargetPercentage:v9];
+  targetPercentage = [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)self targetPercentage];
+  [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)v4 setTargetPercentage:targetPercentage];
 
-  v10 = [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)self targetReheat];
-  [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)v4 setTargetReheat:v10];
+  targetReheat = [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)self targetReheat];
+  [(MTRWaterHeaterManagementClusterWaterHeaterBoostInfoStruct *)v4 setTargetReheat:targetReheat];
 
   return v4;
 }

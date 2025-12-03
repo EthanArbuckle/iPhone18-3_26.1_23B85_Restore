@@ -10,11 +10,11 @@
 + (BOOL)wantsEnablement
 {
   v2 = +[HTPrefs sharedPrefs];
-  v3 = [v2 pdseAppLaunchPeriodDays];
+  pdseAppLaunchPeriodDays = [v2 pdseAppLaunchPeriodDays];
   v4 = sub_10000BE10(@"PDSEAppLaunch");
-  LOBYTE(v3) = sub_10000BB68(v3, 1, v4);
+  LOBYTE(pdseAppLaunchPeriodDays) = sub_10000BB68(pdseAppLaunchPeriodDays, 1, v4);
 
-  return v3;
+  return pdseAppLaunchPeriodDays;
 }
 
 + (BOOL)willEnableDiagnostics

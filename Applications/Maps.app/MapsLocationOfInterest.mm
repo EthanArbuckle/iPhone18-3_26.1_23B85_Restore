@@ -1,14 +1,14 @@
 @interface MapsLocationOfInterest
-+ (void)fetchLocationOfInterestWithIdentifier:(id)a3 completion:(id)a4;
++ (void)fetchLocationOfInterestWithIdentifier:(id)identifier completion:(id)completion;
 - (BOOL)isFrequentLocation;
-- (MapsLocationOfInterest)initWithLocationOfInterest:(id)a3 geoMapItem:(id)a4;
-- (MapsLocationOfInterest)initWithLocationOfInterestType:(int64_t)a3 mapItem:(id)a4;
-- (MapsLocationOfInterest)initWithMapsFavoriteItem:(id)a3;
-- (MapsLocationOfInterest)initWithMapsSuggestionEntry:(id)a3;
+- (MapsLocationOfInterest)initWithLocationOfInterest:(id)interest geoMapItem:(id)item;
+- (MapsLocationOfInterest)initWithLocationOfInterestType:(int64_t)type mapItem:(id)item;
+- (MapsLocationOfInterest)initWithMapsFavoriteItem:(id)item;
+- (MapsLocationOfInterest)initWithMapsSuggestionEntry:(id)entry;
 - (NSString)name;
 - (id)description;
 - (void)_updateMapItemName;
-- (void)_updateMapItemWithGeoMapItem:(id)a3;
+- (void)_updateMapItemWithGeoMapItem:(id)item;
 @end
 
 @implementation MapsLocationOfInterest
@@ -16,19 +16,19 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(MapsLocationOfInterest *)self name];
-  v5 = [(MapsLocationOfInterest *)self mapItem];
-  v6 = [v5 name];
-  v7 = [(MapsLocationOfInterest *)self identifier];
-  v8 = [NSString stringWithFormat:@"<%@ %p: name='%@', mapItem='%@', loi=%@>", v3, self, v4, v6, v7];
+  name = [(MapsLocationOfInterest *)self name];
+  mapItem = [(MapsLocationOfInterest *)self mapItem];
+  name2 = [mapItem name];
+  identifier = [(MapsLocationOfInterest *)self identifier];
+  v8 = [NSString stringWithFormat:@"<%@ %p: name='%@', mapItem='%@', loi=%@>", v3, self, name, name2, identifier];
 
   return v8;
 }
 
 - (BOOL)isFrequentLocation
 {
-  v2 = [(MapsLocationOfInterest *)self identifier];
-  v3 = v2 != 0;
+  identifier = [(MapsLocationOfInterest *)self identifier];
+  v3 = identifier != 0;
 
   return v3;
 }
@@ -36,34 +36,34 @@
 - (NSString)name
 {
   [(MapsLocationOfInterest *)self type];
-  v3 = [(MapsLocationOfInterest *)self customLabel];
+  customLabel = [(MapsLocationOfInterest *)self customLabel];
   v4 = MapsSuggestionsRoutineLocalizedLabelLOIType();
 
   if ([v4 length])
   {
-    v5 = v4;
+    name = v4;
   }
 
   else
   {
-    v5 = [(MKMapItem *)self->_mapItem name];
+    name = [(MKMapItem *)self->_mapItem name];
   }
 
-  v6 = v5;
+  v6 = name;
 
   return v6;
 }
 
-- (void)_updateMapItemWithGeoMapItem:(id)a3
+- (void)_updateMapItemWithGeoMapItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v27 = v4;
+    v27 = itemCopy;
     [(MapsLocationOfInterest *)self willChangeValueForKey:@"mapItem"];
-    v5 = [v27 _clientAttributes];
+    _clientAttributes = [v27 _clientAttributes];
 
-    if (v5)
+    if (_clientAttributes)
     {
       v6 = v27;
     }
@@ -77,23 +77,23 @@
     }
 
     v28 = v6;
-    v9 = [v6 _clientAttributes];
-    v10 = [v9 routineAttributes];
+    _clientAttributes2 = [v6 _clientAttributes];
+    routineAttributes = [_clientAttributes2 routineAttributes];
 
-    if (!v10)
+    if (!routineAttributes)
     {
       v11 = objc_alloc_init(GEOMapItemRoutineAttributes);
-      v12 = [v28 _clientAttributes];
-      [v12 setRoutineAttributes:v11];
+      _clientAttributes3 = [v28 _clientAttributes];
+      [_clientAttributes3 setRoutineAttributes:v11];
     }
 
     identifier = self->_identifier;
     v14 = v28;
     if (identifier)
     {
-      v15 = [v28 _clientAttributes];
-      v16 = [v15 routineAttributes];
-      [v16 setLoiIdentifier:identifier];
+      _clientAttributes4 = [v28 _clientAttributes];
+      routineAttributes2 = [_clientAttributes4 routineAttributes];
+      [routineAttributes2 setLoiIdentifier:identifier];
 
       v14 = v28;
     }
@@ -109,24 +109,24 @@
       v18 = 0;
     }
 
-    v19 = [v14 _clientAttributes];
-    v20 = [v19 routineAttributes];
-    [v20 setLoiType:v18];
+    _clientAttributes5 = [v14 _clientAttributes];
+    routineAttributes3 = [_clientAttributes5 routineAttributes];
+    [routineAttributes3 setLoiType:v18];
 
     v21 = [[MKMapItem alloc] initWithGeoMapItem:v28 isPlaceHolderPlace:0];
     mapItem = self->_mapItem;
     self->_mapItem = v21;
 
-    v23 = [(MapsLocationOfInterest *)self name];
-    if (v23)
+    name = [(MapsLocationOfInterest *)self name];
+    if (name)
     {
       [(MapsLocationOfInterest *)self willChangeValueForKey:@"name"];
-      v24 = [(MKMapItem *)self->_mapItem name];
-      v25 = [v24 copy];
+      name2 = [(MKMapItem *)self->_mapItem name];
+      v25 = [name2 copy];
       originalName = self->_originalName;
       self->_originalName = v25;
 
-      [(MKMapItem *)self->_mapItem setName:v23];
+      [(MKMapItem *)self->_mapItem setName:name];
       [(MapsLocationOfInterest *)self didChangeValueForKey:@"name"];
     }
 
@@ -136,82 +136,82 @@
 
 - (void)_updateMapItemName
 {
-  v3 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  [(MapsLocationOfInterest *)self _updateMapItemWithGeoMapItem:v3];
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  [(MapsLocationOfInterest *)self _updateMapItemWithGeoMapItem:_geoMapItem];
 }
 
-- (MapsLocationOfInterest)initWithMapsFavoriteItem:(id)a3
+- (MapsLocationOfInterest)initWithMapsFavoriteItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 mkMapItem];
-  if (v5)
+  itemCopy = item;
+  mkMapItem = [itemCopy mkMapItem];
+  if (mkMapItem)
   {
     v17.receiver = self;
     v17.super_class = MapsLocationOfInterest;
     v6 = [(MapsLocationOfInterest *)&v17 init];
     if (v6)
     {
-      v7 = [v4 type];
-      if (v7 > 6)
+      type = [itemCopy type];
+      if (type > 6)
       {
         v8 = 0;
       }
 
       else
       {
-        v8 = qword_101215500[v7];
+        v8 = qword_101215500[type];
       }
 
       v6->_type = v8;
       v10 = [NSUUID alloc];
-      v11 = [v4 identifier];
-      v12 = [v10 initWithUUIDString:v11];
+      identifier = [itemCopy identifier];
+      v12 = [v10 initWithUUIDString:identifier];
       identifier = v6->_identifier;
       v6->_identifier = v12;
 
-      v14 = [v4 customName];
+      customName = [itemCopy customName];
       customLabel = v6->_customLabel;
-      v6->_customLabel = v14;
+      v6->_customLabel = customName;
 
-      objc_storeStrong(&v6->_mapItem, v5);
+      objc_storeStrong(&v6->_mapItem, mkMapItem);
       [(MapsLocationOfInterest *)v6 _updateMapItemName];
     }
 
     self = v6;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (MapsLocationOfInterest)initWithMapsSuggestionEntry:(id)a3
+- (MapsLocationOfInterest)initWithMapsSuggestionEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 MKMapItem];
-  if (v5)
+  entryCopy = entry;
+  mKMapItem = [entryCopy MKMapItem];
+  if (mKMapItem)
   {
     v17.receiver = self;
     v17.super_class = MapsLocationOfInterest;
     v6 = [(MapsLocationOfInterest *)&v17 init];
     if (v6)
     {
-      v7 = [v4 type];
-      if (v7 == 1)
+      type = [entryCopy type];
+      if (type == 1)
       {
         v8 = 0;
       }
 
-      else if (v7 == 19)
+      else if (type == 19)
       {
         v8 = 2;
       }
 
-      else if (v7 == 2)
+      else if (type == 2)
       {
         v8 = 1;
       }
@@ -223,91 +223,91 @@
 
       v6->_type = v8;
       v10 = [NSUUID alloc];
-      v11 = [v4 uniqueIdentifier];
-      v12 = [v10 initWithUUIDString:v11];
+      uniqueIdentifier = [entryCopy uniqueIdentifier];
+      v12 = [v10 initWithUUIDString:uniqueIdentifier];
       identifier = v6->_identifier;
       v6->_identifier = v12;
 
-      v14 = [v4 stringForKey:@"MapsSuggestionsCoreRoutineCustomLabel"];
+      v14 = [entryCopy stringForKey:@"MapsSuggestionsCoreRoutineCustomLabel"];
       customLabel = v6->_customLabel;
       v6->_customLabel = v14;
 
-      objc_storeStrong(&v6->_mapItem, v5);
+      objc_storeStrong(&v6->_mapItem, mKMapItem);
       [(MapsLocationOfInterest *)v6 _updateMapItemName];
     }
 
     self = v6;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (MapsLocationOfInterest)initWithLocationOfInterest:(id)a3 geoMapItem:(id)a4
+- (MapsLocationOfInterest)initWithLocationOfInterest:(id)interest geoMapItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  interestCopy = interest;
+  itemCopy = item;
   v14.receiver = self;
   v14.super_class = MapsLocationOfInterest;
   v8 = [(MapsLocationOfInterest *)&v14 init];
   if (v8)
   {
-    v8->_type = [v6 type];
-    v9 = [v6 identifierUUID];
+    v8->_type = [interestCopy type];
+    identifierUUID = [interestCopy identifierUUID];
     identifier = v8->_identifier;
-    v8->_identifier = v9;
+    v8->_identifier = identifierUUID;
 
-    v11 = [v6 customLabel];
+    customLabel = [interestCopy customLabel];
     customLabel = v8->_customLabel;
-    v8->_customLabel = v11;
+    v8->_customLabel = customLabel;
 
-    [(MapsLocationOfInterest *)v8 _updateMapItemWithGeoMapItem:v7];
+    [(MapsLocationOfInterest *)v8 _updateMapItemWithGeoMapItem:itemCopy];
   }
 
   return v8;
 }
 
-- (MapsLocationOfInterest)initWithLocationOfInterestType:(int64_t)a3 mapItem:(id)a4
+- (MapsLocationOfInterest)initWithLocationOfInterestType:(int64_t)type mapItem:(id)item
 {
-  v6 = a4;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = MapsLocationOfInterest;
   v7 = [(MapsLocationOfInterest *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 _geoMapItem];
-    [(MapsLocationOfInterest *)v8 _updateMapItemWithGeoMapItem:v9];
+    v7->_type = type;
+    _geoMapItem = [itemCopy _geoMapItem];
+    [(MapsLocationOfInterest *)v8 _updateMapItemWithGeoMapItem:_geoMapItem];
   }
 
   return v8;
 }
 
-+ (void)fetchLocationOfInterestWithIdentifier:(id)a3 completion:(id)a4
++ (void)fetchLocationOfInterestWithIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (identifierCopy && completionCopy)
   {
     v8 = [[MapsSuggestionsSelfBuildingResourceDepot alloc] initWithName:@"MapsLocationOfInterestResourceDepot"];
-    v9 = [v8 oneRoutine];
-    v10 = [v8 oneNetworkRequester];
+    oneRoutine = [v8 oneRoutine];
+    oneNetworkRequester = [v8 oneNetworkRequester];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100BBF988;
     v12[3] = &unk_10164C8F0;
-    v13 = v5;
-    v14 = v10;
+    v13 = identifierCopy;
+    v14 = oneNetworkRequester;
     v15 = v7;
-    v11 = v10;
-    [v9 fetchLocationOfInterestWithIdentifier:v13 withHandler:v12];
+    v11 = oneNetworkRequester;
+    [oneRoutine fetchLocationOfInterestWithIdentifier:v13 withHandler:v12];
   }
 }
 

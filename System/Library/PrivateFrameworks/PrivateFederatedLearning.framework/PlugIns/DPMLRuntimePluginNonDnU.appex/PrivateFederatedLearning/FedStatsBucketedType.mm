@@ -1,22 +1,22 @@
 @interface FedStatsBucketedType
-+ (id)createFromDict:(id)a3 possibleError:(id *)a4;
-- (FedStatsBucketedType)initWithBucketBoundaries:(id)a3;
-- (FedStatsBucketedType)initWithMinValue:(id)a3 maxValue:(id)a4 bucketCount:(id)a5;
-- (id)decodeFromIndex:(id)a3 possibleError:(id *)a4;
-- (id)encodeToIndex:(id)a3 possibleError:(id *)a4;
-- (id)indexToInterval:(id)a3;
-- (id)sampleForIndex:(unint64_t)a3;
++ (id)createFromDict:(id)dict possibleError:(id *)error;
+- (FedStatsBucketedType)initWithBucketBoundaries:(id)boundaries;
+- (FedStatsBucketedType)initWithMinValue:(id)value maxValue:(id)maxValue bucketCount:(id)count;
+- (id)decodeFromIndex:(id)index possibleError:(id *)error;
+- (id)encodeToIndex:(id)index possibleError:(id *)error;
+- (id)indexToInterval:(id)interval;
+- (id)sampleForIndex:(unint64_t)index;
 - (unint64_t)classCount;
 @end
 
 @implementation FedStatsBucketedType
 
-- (FedStatsBucketedType)initWithBucketBoundaries:(id)a3
+- (FedStatsBucketedType)initWithBucketBoundaries:(id)boundaries
 {
-  v4 = a3;
+  boundariesCopy = boundaries;
   v13.receiver = self;
   v13.super_class = FedStatsBucketedType;
-  v5 = -[FedStatsBoundedULongType initWithBound:](&v13, "initWithBound:", [v4 count]);
+  v5 = -[FedStatsBoundedULongType initWithBound:](&v13, "initWithBound:", [boundariesCopy count]);
   v6 = v5;
   if (v5)
   {
@@ -29,7 +29,7 @@
     bucketCount = v6->_bucketCount;
     v6->_bucketCount = 0;
 
-    v10 = [NSArray arrayWithArray:v4];
+    v10 = [NSArray arrayWithArray:boundariesCopy];
     bucketBoundaries = v6->_bucketBoundaries;
     v6->_bucketBoundaries = v10;
 
@@ -39,25 +39,25 @@
   return v6;
 }
 
-- (FedStatsBucketedType)initWithMinValue:(id)a3 maxValue:(id)a4 bucketCount:(id)a5
+- (FedStatsBucketedType)initWithMinValue:(id)value maxValue:(id)maxValue bucketCount:(id)count
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  valueCopy = value;
+  maxValueCopy = maxValue;
+  countCopy = count;
   v24.receiver = self;
   v24.super_class = FedStatsBucketedType;
-  v12 = -[FedStatsBoundedULongType initWithBound:](&v24, "initWithBound:", [v11 unsignedLongValue] + 1);
+  v12 = -[FedStatsBoundedULongType initWithBound:](&v24, "initWithBound:", [countCopy unsignedLongValue] + 1);
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_minValue, a3);
-    objc_storeStrong(&v13->_maxValue, a4);
-    objc_storeStrong(&v13->_bucketCount, a5);
-    [v10 floatValue];
+    objc_storeStrong(&v12->_minValue, value);
+    objc_storeStrong(&v13->_maxValue, maxValue);
+    objc_storeStrong(&v13->_bucketCount, count);
+    [maxValueCopy floatValue];
     v15 = v14;
-    [v9 floatValue];
+    [valueCopy floatValue];
     v17 = v15 - v16;
-    [v11 floatValue];
+    [countCopy floatValue];
     *&v19 = v17 / v18;
     v20 = [NSNumber numberWithFloat:v19];
     stepSize = v13->_stepSize;
@@ -72,13 +72,13 @@
   return v13;
 }
 
-+ (id)createFromDict:(id)a3 possibleError:(id *)a4
++ (id)createFromDict:(id)dict possibleError:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 objectForKey:@"bucketBoundaries"];
-  v8 = [v6 objectForKey:@"minValue"];
-  v9 = [v6 objectForKey:@"maxValue"];
-  v10 = [v6 objectForKey:@"bucketCount"];
+  dictCopy = dict;
+  v7 = [dictCopy objectForKey:@"bucketBoundaries"];
+  v8 = [dictCopy objectForKey:@"minValue"];
+  v9 = [dictCopy objectForKey:@"maxValue"];
+  v10 = [dictCopy objectForKey:@"bucketCount"];
   v11 = v10;
   if (v8)
   {
@@ -93,7 +93,7 @@
   v14 = v12 || v10 == 0;
   if ((v7 != 0) != v14)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_37;
     }
@@ -101,19 +101,19 @@
     v15 = [NSString stringWithFormat:@"You can either have %@ or the triple (%@, %@, %@) as keys, not all", @"bucketBoundaries", @"minValue", @"maxValue", @"bucketCount"];
     v16 = 301;
 LABEL_35:
-    *a4 = [FedStatsError errorWithCode:v16 description:v15];
+    *error = [FedStatsError errorWithCode:v16 description:v15];
 
 LABEL_36:
-    a4 = 0;
+    error = 0;
     goto LABEL_37;
   }
 
   if (!v7)
   {
     [v10 floatValue];
-    if (v24 != [v11 intValue] || (v42 = a1, v25 = objc_msgSend(v11, "unsignedIntValue"), v25 != objc_msgSend(v11, "intValue")) || !objc_msgSend(v11, "unsignedIntValue"))
+    if (v24 != [v11 intValue] || (v42 = self, v25 = objc_msgSend(v11, "unsignedIntValue"), v25 != objc_msgSend(v11, "intValue")) || !objc_msgSend(v11, "unsignedIntValue"))
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_37;
       }
@@ -136,8 +136,8 @@ LABEL_36:
     goto LABEL_45;
   }
 
-  v41 = a1;
-  v43 = a4;
+  selfCopy = self;
+  errorCopy = error;
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
@@ -161,13 +161,13 @@ LABEL_36:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (v43)
+          if (errorCopy)
           {
             v23 = [NSString stringWithFormat:@"The item %@ in the list for %@ is not a number", v22, @"bucketBoundaries"];
-            *v43 = [FedStatsError errorWithCode:302 description:v23];
+            *errorCopy = [FedStatsError errorWithCode:302 description:v23];
           }
 
-          a4 = 0;
+          error = 0;
           goto LABEL_37;
         }
       }
@@ -184,8 +184,8 @@ LABEL_36:
 
   if ([v17 count] < 2)
   {
-    a4 = v43;
-    if (!v43)
+    error = errorCopy;
+    if (!errorCopy)
     {
       goto LABEL_37;
     }
@@ -194,13 +194,13 @@ LABEL_36:
     goto LABEL_49;
   }
 
-  a4 = v43;
+  error = errorCopy;
   if ([v17 count] < 2)
   {
 LABEL_44:
-    v29 = [[v41 alloc] initWithBucketBoundaries:v17];
+    v29 = [[selfCopy alloc] initWithBucketBoundaries:v17];
 LABEL_45:
-    a4 = v29;
+    error = v29;
     goto LABEL_37;
   }
 
@@ -227,25 +227,25 @@ LABEL_45:
     }
   }
 
-  if (v43)
+  if (errorCopy)
   {
     [NSString stringWithFormat:@"The entries for %@ must be monotonically increasing", @"bucketBoundaries", v40];
     v39 = LABEL_49:;
-    *a4 = [FedStatsError errorWithCode:302 description:v39];
+    *error = [FedStatsError errorWithCode:302 description:v39];
 
     goto LABEL_36;
   }
 
 LABEL_37:
 
-  return a4;
+  return error;
 }
 
-- (id)encodeToIndex:(id)a3 possibleError:(id *)a4
+- (id)encodeToIndex:(id)index possibleError:(id *)error
 {
-  v6 = a3;
+  indexCopy = index;
   v7 = +[NSNull null];
-  v8 = [v6 isEqual:v7];
+  v8 = [indexCopy isEqual:v7];
 
   if (v8)
   {
@@ -255,13 +255,13 @@ LABEL_37:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v18 = @"The encoder can only work with a number type";
       v19 = 401;
 LABEL_11:
       [FedStatsError errorWithCode:v19 description:v18];
-      *a4 = v9 = 0;
+      *error = v9 = 0;
       goto LABEL_32;
     }
 
@@ -270,13 +270,13 @@ LABEL_19:
     goto LABEL_32;
   }
 
-  [v6 floatValue];
+  [indexCopy floatValue];
   v11 = v10;
   if ([(FedStatsBucketedType *)self version]== 1)
   {
-    v12 = [(FedStatsBucketedType *)self bucketBoundaries];
-    v13 = [v12 firstObject];
-    [v13 floatValue];
+    bucketBoundaries = [(FedStatsBucketedType *)self bucketBoundaries];
+    firstObject = [bucketBoundaries firstObject];
+    [firstObject floatValue];
     if (v11 < v14)
     {
 LABEL_8:
@@ -286,38 +286,38 @@ LABEL_2:
       goto LABEL_32;
     }
 
-    v15 = [(FedStatsBucketedType *)self bucketBoundaries];
-    v16 = [v15 lastObject];
-    [v16 floatValue];
+    bucketBoundaries2 = [(FedStatsBucketedType *)self bucketBoundaries];
+    lastObject = [bucketBoundaries2 lastObject];
+    [lastObject floatValue];
     if (v11 > v17)
     {
 
       goto LABEL_8;
     }
 
-    v27 = [(FedStatsBucketedType *)self bucketBoundaries];
-    v28 = [v27 lastObject];
-    [v28 floatValue];
+    bucketBoundaries3 = [(FedStatsBucketedType *)self bucketBoundaries];
+    lastObject2 = [bucketBoundaries3 lastObject];
+    [lastObject2 floatValue];
     v30 = v29;
 
     if (v11 == v30)
     {
-      v31 = [(FedStatsBucketedType *)self bucketBoundaries];
-      v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v31 count] - 1);
+      bucketBoundaries4 = [(FedStatsBucketedType *)self bucketBoundaries];
+      v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bucketBoundaries4 count] - 1);
 
       goto LABEL_32;
     }
 
-    v36 = [(FedStatsBucketedType *)self bucketBoundaries];
-    v37 = [v36 count] - 1;
+    bucketBoundaries5 = [(FedStatsBucketedType *)self bucketBoundaries];
+    v37 = [bucketBoundaries5 count] - 1;
 
     if (v37 >= 2)
     {
       v38 = 0;
       do
       {
-        v39 = [(FedStatsBucketedType *)self bucketBoundaries];
-        v40 = [v39 objectAtIndex:&v37[v38] >> 1];
+        bucketBoundaries6 = [(FedStatsBucketedType *)self bucketBoundaries];
+        v40 = [bucketBoundaries6 objectAtIndex:&v37[v38] >> 1];
         [v40 floatValue];
         v42 = v41;
 
@@ -341,7 +341,7 @@ LABEL_2:
 
   if ([(FedStatsBucketedType *)self version]!= 2)
   {
-    if (a4)
+    if (error)
     {
       v18 = @"The encoder is malformed";
       v19 = 900;
@@ -351,12 +351,12 @@ LABEL_2:
     goto LABEL_19;
   }
 
-  v20 = [(FedStatsBucketedType *)self minValue];
-  [v20 floatValue];
+  minValue = [(FedStatsBucketedType *)self minValue];
+  [minValue floatValue];
   v22 = v21;
 
-  v23 = [(FedStatsBucketedType *)self maxValue];
-  [v23 floatValue];
+  maxValue = [(FedStatsBucketedType *)self maxValue];
+  [maxValue floatValue];
   v25 = v24;
 
   v9 = &off_100034308;
@@ -364,19 +364,19 @@ LABEL_2:
   {
     if (v11 == v25)
     {
-      v26 = [(FedStatsBucketedType *)self bucketCount];
+      bucketCount = [(FedStatsBucketedType *)self bucketCount];
 LABEL_31:
-      v9 = v26;
+      v9 = bucketCount;
       goto LABEL_32;
     }
 
-    v32 = [(FedStatsBucketedType *)self stepSize];
-    [v32 floatValue];
+    stepSize = [(FedStatsBucketedType *)self stepSize];
+    [stepSize floatValue];
     v34 = ((v11 - v22) / v33);
 
     v35 = (v34 + 1);
 LABEL_30:
-    v26 = [NSNumber numberWithUnsignedLong:v35];
+    bucketCount = [NSNumber numberWithUnsignedLong:v35];
     goto LABEL_31;
   }
 
@@ -385,18 +385,18 @@ LABEL_32:
   return v9;
 }
 
-- (id)decodeFromIndex:(id)a3 possibleError:(id *)a4
+- (id)decodeFromIndex:(id)index possibleError:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  indexCopy = index;
+  v7 = indexCopy;
+  if (!indexCopy)
   {
-    if (a4)
+    if (error)
     {
       v11 = @"The decoder can only work with a number type";
 LABEL_9:
       [FedStatsError errorWithCode:500 description:v11];
-      *a4 = v10 = 0;
+      *error = v10 = 0;
       goto LABEL_12;
     }
 
@@ -405,10 +405,10 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  v8 = [v6 unsignedLongValue];
-  if (v8 >= [(FedStatsBucketedType *)self classCount])
+  unsignedLongValue = [indexCopy unsignedLongValue];
+  if (unsignedLongValue >= [(FedStatsBucketedType *)self classCount])
   {
-    if (a4)
+    if (error)
     {
       v11 = @"The decoder requires a number less than the class count";
       goto LABEL_9;
@@ -417,10 +417,10 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v9 = [v7 unsignedLongValue];
-  if (v9)
+  unsignedLongValue2 = [v7 unsignedLongValue];
+  if (unsignedLongValue2)
   {
-    v10 = [(FedStatsBucketedType *)self sampleForIndex:v9];
+    v10 = [(FedStatsBucketedType *)self sampleForIndex:unsignedLongValue2];
   }
 
   else
@@ -433,18 +433,18 @@ LABEL_12:
   return v10;
 }
 
-- (id)indexToInterval:(id)a3
+- (id)indexToInterval:(id)interval
 {
-  v4 = a3;
-  if (v4)
+  intervalCopy = interval;
+  if (intervalCopy)
   {
     if ([(FedStatsBucketedType *)self version]== 1)
     {
-      v5 = [(FedStatsBucketedType *)self bucketBoundaries];
-      v6 = [v5 objectAtIndex:{objc_msgSend(v4, "unsignedLongValue") - 1}];
-      v22[0] = v6;
-      v7 = [(FedStatsBucketedType *)self bucketBoundaries];
-      v8 = [v7 objectAtIndex:{objc_msgSend(v4, "unsignedLongValue")}];
+      bucketBoundaries = [(FedStatsBucketedType *)self bucketBoundaries];
+      stepSize2 = [bucketBoundaries objectAtIndex:{objc_msgSend(intervalCopy, "unsignedLongValue") - 1}];
+      v22[0] = stepSize2;
+      bucketBoundaries2 = [(FedStatsBucketedType *)self bucketBoundaries];
+      v8 = [bucketBoundaries2 objectAtIndex:{objc_msgSend(intervalCopy, "unsignedLongValue")}];
       v22[1] = v8;
       v9 = [NSArray arrayWithObjects:v22 count:2];
 
@@ -454,22 +454,22 @@ LABEL_6:
 
     if ([(FedStatsBucketedType *)self version]== 2)
     {
-      v10 = [(FedStatsBucketedType *)self minValue];
-      [v10 floatValue];
+      minValue = [(FedStatsBucketedType *)self minValue];
+      [minValue floatValue];
       v12 = v11;
-      v13 = ([v4 unsignedLongValue] - 1);
-      v14 = [(FedStatsBucketedType *)self stepSize];
-      [v14 floatValue];
+      v13 = ([intervalCopy unsignedLongValue] - 1);
+      stepSize = [(FedStatsBucketedType *)self stepSize];
+      [stepSize floatValue];
       v16 = v12 + (v13 * v15);
 
       *&v17 = v16;
-      v5 = [NSNumber numberWithFloat:v17];
-      v21[0] = v5;
-      v6 = [(FedStatsBucketedType *)self stepSize];
-      [v6 floatValue];
+      bucketBoundaries = [NSNumber numberWithFloat:v17];
+      v21[0] = bucketBoundaries;
+      stepSize2 = [(FedStatsBucketedType *)self stepSize];
+      [stepSize2 floatValue];
       *&v19 = v16 + v18;
-      v7 = [NSNumber numberWithFloat:v19];
-      v21[1] = v7;
+      bucketBoundaries2 = [NSNumber numberWithFloat:v19];
+      v21[1] = bucketBoundaries2;
       v9 = [NSArray arrayWithObjects:v21 count:2];
       goto LABEL_6;
     }
@@ -483,47 +483,47 @@ LABEL_8:
 
 - (unint64_t)classCount
 {
-  v3 = [(FedStatsBucketedType *)self version];
-  if (v3 == 2)
+  version = [(FedStatsBucketedType *)self version];
+  if (version == 2)
   {
-    v4 = [(FedStatsBucketedType *)self bucketCount];
-    v5 = [v4 unsignedIntValue] + 1;
+    bucketCount = [(FedStatsBucketedType *)self bucketCount];
+    v5 = [bucketCount unsignedIntValue] + 1;
   }
 
   else
   {
-    if (v3 != 1)
+    if (version != 1)
     {
       return 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v4 = [(FedStatsBucketedType *)self bucketBoundaries];
-    v5 = [v4 count];
+    bucketCount = [(FedStatsBucketedType *)self bucketBoundaries];
+    v5 = [bucketCount count];
   }
 
   return v5;
 }
 
-- (id)sampleForIndex:(unint64_t)a3
+- (id)sampleForIndex:(unint64_t)index
 {
-  v5 = [(FedStatsBucketedType *)self version];
-  if (v5 == 1)
+  version = [(FedStatsBucketedType *)self version];
+  if (version == 1)
   {
-    v12 = [(FedStatsBucketedType *)self bucketBoundaries];
-    v6 = v12;
-    if (!a3)
+    bucketBoundaries = [(FedStatsBucketedType *)self bucketBoundaries];
+    minValue = bucketBoundaries;
+    if (!index)
     {
-      v9 = [v12 lastObject];
-      [v9 floatValue];
+      lastObject = [bucketBoundaries lastObject];
+      [lastObject floatValue];
       *&v11 = *&v11 + 1.0;
       goto LABEL_10;
     }
 
-    v13 = [v12 objectAtIndex:a3 - 1];
+    v13 = [bucketBoundaries objectAtIndex:index - 1];
     [v13 floatValue];
     v15 = v14;
-    v16 = [(FedStatsBucketedType *)self bucketBoundaries];
-    v17 = [v16 objectAtIndex:a3];
+    bucketBoundaries2 = [(FedStatsBucketedType *)self bucketBoundaries];
+    v17 = [bucketBoundaries2 objectAtIndex:index];
     [v17 floatValue];
     *&v19 = (v15 + v18) * 0.5;
     v20 = [NSNumber numberWithFloat:v19];
@@ -531,20 +531,20 @@ LABEL_8:
 
   else
   {
-    if (v5 != 2)
+    if (version != 2)
     {
       v20 = 0;
       goto LABEL_12;
     }
 
-    if (a3)
+    if (index)
     {
-      v6 = [(FedStatsBucketedType *)self minValue];
-      [v6 floatValue];
+      minValue = [(FedStatsBucketedType *)self minValue];
+      [minValue floatValue];
       v8 = v7;
-      v9 = [(FedStatsBucketedType *)self stepSize];
-      [v9 floatValue];
-      v11 = v8 + (a3 + -0.5) * v10;
+      lastObject = [(FedStatsBucketedType *)self stepSize];
+      [lastObject floatValue];
+      v11 = v8 + (index + -0.5) * v10;
       *&v11 = v11;
 LABEL_10:
       v20 = [NSNumber numberWithFloat:v11];
@@ -552,8 +552,8 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v6 = [(FedStatsBucketedType *)self maxValue];
-    [v6 floatValue];
+    minValue = [(FedStatsBucketedType *)self maxValue];
+    [minValue floatValue];
     *&v22 = v21 + 1.0;
     v20 = [NSNumber numberWithFloat:v22];
   }

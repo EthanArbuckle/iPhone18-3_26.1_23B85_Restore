@@ -1,7 +1,7 @@
 @interface _UIScrollViewFPSHUDGraphView
 - (_UIScrollViewFPSHUDGraphView)init;
-- (void)drawRect:(CGRect)a3;
-- (void)setColorForFramerate:(unsigned int)a3 context:(CGContext *)a4;
+- (void)drawRect:(CGRect)rect;
+- (void)setColorForFramerate:(unsigned int)framerate context:(CGContext *)context;
 @end
 
 @implementation _UIScrollViewFPSHUDGraphView
@@ -20,19 +20,19 @@
   return v2;
 }
 
-- (void)setColorForFramerate:(unsigned int)a3 context:(CGContext *)a4
+- (void)setColorForFramerate:(unsigned int)framerate context:(CGContext *)context
 {
-  if (a3 > 0x1E)
+  if (framerate > 0x1E)
   {
-    if (a3 > 0x30)
+    if (framerate > 0x30)
     {
-      if (a3 > 0x3C)
+      if (framerate > 0x3C)
       {
-        if (a3 > 0x50)
+        if (framerate > 0x50)
         {
-          if (a3 > 0x78)
+          if (framerate > 0x78)
           {
-            if (a3 == 301)
+            if (framerate == 301)
             {
               v4 = 1.0;
               v5 = 1.0;
@@ -41,7 +41,7 @@
 
             else
             {
-              if (a3 != 300)
+              if (framerate != 300)
               {
                 return;
               }
@@ -91,12 +91,12 @@
     v6 = 0.82;
   }
 
-  CGContextSetRGBFillColor(a4, v4, v5, v6, 1.0);
+  CGContextSetRGBFillColor(context, v4, v5, v6, 1.0);
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(UIView *)self bounds:a3.origin.x];
+  [(UIView *)self bounds:rect.origin.x];
   v5 = v4;
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)

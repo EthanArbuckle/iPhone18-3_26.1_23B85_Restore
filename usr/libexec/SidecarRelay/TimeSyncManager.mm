@@ -1,13 +1,13 @@
 @interface TimeSyncManager
-- (void)interruptedConnectionForClockManager:(id)a3;
+- (void)interruptedConnectionForClockManager:(id)manager;
 @end
 
 @implementation TimeSyncManager
 
-- (void)interruptedConnectionForClockManager:(id)a3
+- (void)interruptedConnectionForClockManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_10006E6F0();
 }
 

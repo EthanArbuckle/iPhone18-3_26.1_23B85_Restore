@@ -53,11 +53,11 @@
     }
 
     v3 = +[CLKDevice currentDevice];
-    v4 = [v3 isRunningNapiliGMOrLater];
+    isRunningNapiliGMOrLater = [v3 isRunningNapiliGMOrLater];
 
     v5 = _NTKLoggingObjectForDomain();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (isRunningNapiliGMOrLater)
     {
       if (v6)
       {

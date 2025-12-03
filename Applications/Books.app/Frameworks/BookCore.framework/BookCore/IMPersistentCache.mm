@@ -1,46 +1,46 @@
 @interface IMPersistentCache
-- (BOOL)_createStorageForDb:(id)a3;
-- (BOOL)_insertCGImage:(CGImage *)a3 forKey:(id)a4;
-- (BOOL)_insertCGImage:(CGImage *)a3 forKey:(id)a4 mimeType:(id)a5 scale:(double)a6 properties:(id)a7;
-- (BOOL)_unknownKeysContainsObject:(id)a3;
-- (BOOL)hasItemForKey:(id)a3;
-- (BOOL)insertCGImage:(CGImage *)a3 forKey:(id)a4 mimeType:(id)a5 scale:(double)a6 properties:(id)a7;
-- (BOOL)insertCGImages:(id)a3 forKey:(id)a4 mimeType:(id)a5 baseSize:(CGSize)a6 properties:(id)a7;
-- (CGImage)_copyCGImageForRow:(id)a3 size:(CGSize *)a4 resourceSize:(int64_t *)a5 scale:(double *)a6;
-- (CGImage)copyCGImageForKey:(id)a3 resourceSize:(int64_t *)a4 scale:(double *)a5;
-- (IMPersistentCache)initWithPath:(id)a3 maxSize:(unint64_t)a4;
-- (id)CGImagesForKey:(id)a3 size:(CGSize *)a4 resourceSize:(int64_t *)a5;
-- (id)dataForKey:(id)a3;
-- (id)dataForKey:(id)a3 mimeType:(id)a4;
-- (id)deleteItemsForMimeType:(id)a3;
-- (id)firstImageKeyWithRootKey:(id)a3;
-- (id)itemsForMimeType:(id)a3;
-- (id)metadataForKey:(id)a3;
+- (BOOL)_createStorageForDb:(id)db;
+- (BOOL)_insertCGImage:(CGImage *)image forKey:(id)key;
+- (BOOL)_insertCGImage:(CGImage *)image forKey:(id)key mimeType:(id)type scale:(double)scale properties:(id)properties;
+- (BOOL)_unknownKeysContainsObject:(id)object;
+- (BOOL)hasItemForKey:(id)key;
+- (BOOL)insertCGImage:(CGImage *)image forKey:(id)key mimeType:(id)type scale:(double)scale properties:(id)properties;
+- (BOOL)insertCGImages:(id)images forKey:(id)key mimeType:(id)type baseSize:(CGSize)size properties:(id)properties;
+- (CGImage)_copyCGImageForRow:(id)row size:(CGSize *)size resourceSize:(int64_t *)resourceSize scale:(double *)scale;
+- (CGImage)copyCGImageForKey:(id)key resourceSize:(int64_t *)size scale:(double *)scale;
+- (IMPersistentCache)initWithPath:(id)path maxSize:(unint64_t)size;
+- (id)CGImagesForKey:(id)key size:(CGSize *)size resourceSize:(int64_t *)resourceSize;
+- (id)dataForKey:(id)key;
+- (id)dataForKey:(id)key mimeType:(id)type;
+- (id)deleteItemsForMimeType:(id)type;
+- (id)firstImageKeyWithRootKey:(id)key;
+- (id)itemsForMimeType:(id)type;
+- (id)metadataForKey:(id)key;
 - (int64_t)version;
 - (unint64_t)_loadCacheSize;
-- (unint64_t)resourceSizeForKey:(id)a3;
-- (void)_LRUCleanupForMimeType:(id)a3;
-- (void)_accessedIdsAddObject:(id)a3;
+- (unint64_t)resourceSizeForKey:(id)key;
+- (void)_LRUCleanupForMimeType:(id)type;
+- (void)_accessedIdsAddObject:(id)object;
 - (void)_accessedIdsRemoveAllObjects;
-- (void)_adjustCacheSizeBy:(int64_t)a3;
-- (void)_createCacheTable:(id)a3;
-- (void)_saveCacheSize:(int64_t)a3;
-- (void)_unknownKeysAddObject:(id)a3;
-- (void)_unknownKeysRemoveObject:(id)a3;
-- (void)_updateCaches:(id)a3;
+- (void)_adjustCacheSizeBy:(int64_t)by;
+- (void)_createCacheTable:(id)table;
+- (void)_saveCacheSize:(int64_t)size;
+- (void)_unknownKeysAddObject:(id)object;
+- (void)_unknownKeysRemoveObject:(id)object;
+- (void)_updateCaches:(id)caches;
 - (void)clear;
-- (void)deleteItemForKey:(id)a3;
-- (void)deleteItemsWithAllKeysContaining:(id)a3;
-- (void)deleteItemsWithKeyLike:(id)a3;
-- (void)insertData:(id)a3 forKey:(id)a4 mimeType:(id)a5;
-- (void)replaceDataForKey:(id)a3 withData:(id)a4 mimeType:(id)a5;
+- (void)deleteItemForKey:(id)key;
+- (void)deleteItemsWithAllKeysContaining:(id)containing;
+- (void)deleteItemsWithKeyLike:(id)like;
+- (void)insertData:(id)data forKey:(id)key mimeType:(id)type;
+- (void)replaceDataForKey:(id)key withData:(id)data mimeType:(id)type;
 @end
 
 @implementation IMPersistentCache
 
-- (IMPersistentCache)initWithPath:(id)a3 maxSize:(unint64_t)a4
+- (IMPersistentCache)initWithPath:(id)path maxSize:(unint64_t)size
 {
-  v6 = a3;
+  pathCopy = path;
   v43.receiver = self;
   v43.super_class = IMPersistentCache;
   v7 = [(IMPersistentCache *)&v43 init];
@@ -50,7 +50,7 @@
     goto LABEL_18;
   }
 
-  v7->_maxSize = a4;
+  v7->_maxSize = size;
   v9 = objc_opt_new();
   accessedIds = v8->_accessedIds;
   v8->_accessedIds = v9;
@@ -61,8 +61,8 @@
   [v11 registerDefaults:v13];
 
   v14 = +[NSProcessInfo processInfo];
-  v15 = [v14 environment];
-  v16 = [v15 objectForKey:@"RemoveImageCacheFiles"];
+  environment = [v14 environment];
+  v16 = [environment objectForKey:@"RemoveImageCacheFiles"];
   if ([v16 BOOLValue])
   {
   }
@@ -78,11 +78,11 @@
   }
 
   v18 = objc_alloc_init(NSFileManager);
-  [v18 removeItemAtPath:v6 error:0];
+  [v18 removeItemAtPath:pathCopy error:0];
   [v11 setBool:0 forKey:@"RemoveImageCacheFiles"];
 
 LABEL_6:
-  v19 = [[IMDatabaseHandle alloc] initWithPath:v6];
+  v19 = [[IMDatabaseHandle alloc] initWithPath:pathCopy];
   db = v8->_db;
   v8->_db = v19;
 
@@ -92,8 +92,8 @@ LABEL_6:
 
   if (![(IMAdminTable *)v8->_adminTable hasDatabaseVersion])
   {
-    v23 = [(IMDatabaseHandle *)v8->_db tableNames];
-    v24 = [v23 valueForKey:@"name"];
+    tableNames = [(IMDatabaseHandle *)v8->_db tableNames];
+    v24 = [tableNames valueForKey:@"name"];
     v25 = [v24 containsObject:@"items"];
 
     if (v25)
@@ -108,9 +108,9 @@ LABEL_6:
     v8->_db = 0;
 
     v27 = +[NSFileManager defaultManager];
-    [v27 removeItemAtPath:v6 error:0];
+    [v27 removeItemAtPath:pathCopy error:0];
 
-    v28 = [[IMDatabaseHandle alloc] initWithPath:v6];
+    v28 = [[IMDatabaseHandle alloc] initWithPath:pathCopy];
     v29 = v8->_db;
     v8->_db = v28;
 
@@ -147,7 +147,7 @@ LABEL_6:
   v35 = +[NSDate date];
   [(IMAdminTable *)v34 setLastAccessDate:v35];
 
-  if (a4)
+  if (size)
   {
     v36 = [NSTimer alloc];
     v37 = [NSDate dateWithTimeIntervalSinceNow:2.0];
@@ -165,22 +165,22 @@ LABEL_18:
   return v8;
 }
 
-- (void)_createCacheTable:(id)a3
+- (void)_createCacheTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v5 = [NSString stringWithFormat:@"create table if not exists items (pk %@, key %@, accessDate %@, width %@, height %@, bpc %@, bpp %@, bpr %@, scale %@, mimeType %@, resourceSize %@, resourceData %@)", @"integer primary key", @"text", @"date", @"integer", @"integer", @"integer", @"integer", @"integer", @"float", @"text", @"integer", @"blob"];
-  [v4 addObject:v5];
-  [v4 addObject:@"create index if not exists items_key_index on items (key)"];
+  [tableCopy addObject:v5];
+  [tableCopy addObject:@"create index if not exists items_key_index on items (key)"];
 
   [(IMAdminTable *)self->_adminTable setDatabaseVersion:2];
 }
 
-- (BOOL)_createStorageForDb:(id)a3
+- (BOOL)_createStorageForDb:(id)db
 {
-  v4 = a3;
+  dbCopy = db;
   v5 = objc_opt_new();
-  v6 = [(IMAdminTable *)self->_adminTable databaseVersion];
-  if (v6 == 1)
+  databaseVersion = [(IMAdminTable *)self->_adminTable databaseVersion];
+  if (databaseVersion == 1)
   {
     v7 = [NSString stringWithFormat:@"alter table items add column scale %@", @"integer"];
     [v5 addObject:v7];
@@ -195,12 +195,12 @@ LABEL_18:
     [(IMAdminTable *)self->_adminTable setDatabaseVersion:2];
   }
 
-  else if (!v6)
+  else if (!databaseVersion)
   {
     [(IMPersistentCache *)self _createCacheTable:v5];
   }
 
-  [v4 runStatement:@"pragma page_size=32768" arguments:0];
+  [dbCopy runStatement:@"pragma page_size=32768" arguments:0];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -220,7 +220,7 @@ LABEL_18:
           objc_enumerationMutation(v12);
         }
 
-        [v4 runStatement:*(*(&v17 + 1) + 8 * v15) arguments:0];
+        [dbCopy runStatement:*(*(&v17 + 1) + 8 * v15) arguments:0];
         v15 = v15 + 1;
       }
 
@@ -231,67 +231,67 @@ LABEL_18:
     while (v13);
   }
 
-  [v4 runStatement:@"pragma journal_mode=WAL" arguments:0];
-  [v4 runStatement:@"pragma synchronous=normal" arguments:0];
+  [dbCopy runStatement:@"pragma journal_mode=WAL" arguments:0];
+  [dbCopy runStatement:@"pragma synchronous=normal" arguments:0];
 
   return 1;
 }
 
-- (void)insertData:(id)a3 forKey:(id)a4 mimeType:(id)a5
+- (void)insertData:(id)data forKey:(id)key mimeType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  keyCopy = key;
+  typeCopy = type;
   v11 = [NSString stringWithFormat:@"insert into items (key, accessDate, mimeType, resourceSize, resourceData) values (?, ?, ?, ?, ?)"];
   v12 = +[NSDate date];
-  v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 length]);
-  v14 = [NSArray arrayWithObjects:v9, v12, v10, v13, v8, 0];
+  v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [dataCopy length]);
+  v14 = [NSArray arrayWithObjects:keyCopy, v12, typeCopy, v13, dataCopy, 0];
 
   if ([(IMDatabaseHandle *)self->_db runStatement:v11 arguments:v14])
   {
-    -[IMPersistentCache _adjustCacheSizeBy:](self, "_adjustCacheSizeBy:", [v8 length]);
-    [(IMPersistentCache *)self _unknownKeysRemoveObject:v9];
+    -[IMPersistentCache _adjustCacheSizeBy:](self, "_adjustCacheSizeBy:", [dataCopy length]);
+    [(IMPersistentCache *)self _unknownKeysRemoveObject:keyCopy];
   }
 }
 
-- (BOOL)_insertCGImage:(CGImage *)a3 forKey:(id)a4 mimeType:(id)a5 scale:(double)a6 properties:(id)a7
+- (BOOL)_insertCGImage:(CGImage *)image forKey:(id)key mimeType:(id)type scale:(double)scale properties:(id)properties
 {
-  v28 = a4;
-  v12 = a5;
-  v26 = a7;
+  keyCopy = key;
+  typeCopy = type;
+  propertiesCopy = properties;
   v13 = objc_alloc_init(NSMutableData);
-  if ([v12 isEqualToString:@"image/jpeg"])
+  if ([typeCopy isEqualToString:@"image/jpeg"])
   {
-    v14 = kUTTypeJPEG;
+    identifier = kUTTypeJPEG;
   }
 
   else
   {
-    v14 = [UTTypePNG identifier];
+    identifier = [UTTypePNG identifier];
   }
 
-  v15 = CGImageDestinationCreateWithData(v13, v14, 1uLL, 0);
+  v15 = CGImageDestinationCreateWithData(v13, identifier, 1uLL, 0);
   if (v15)
   {
     v16 = v15;
-    CGImageDestinationAddImage(v15, a3, v26);
+    CGImageDestinationAddImage(v15, image, propertiesCopy);
     CGImageDestinationFinalize(v16);
     CFRelease(v16);
   }
 
-  v27 = [NSNumber numberWithInteger:CGImageGetWidth(a3)];
-  v17 = [NSNumber numberWithInteger:CGImageGetHeight(a3)];
+  v27 = [NSNumber numberWithInteger:CGImageGetWidth(image)];
+  v17 = [NSNumber numberWithInteger:CGImageGetHeight(image)];
   v18 = [NSString stringWithFormat:@"insert into items (key, accessDate, width, height, scale, mimeType, resourceSize, resourceData) values (?, ?, ?, ?, ?, ?, ?, ?)"];
   v19 = +[NSDate date];
-  *&v20 = a6;
+  *&v20 = scale;
   v21 = [NSNumber numberWithFloat:v20];
   v22 = [NSNumber numberWithInteger:[(__CFData *)v13 length]];
-  v23 = [NSArray arrayWithObjects:v28, v19, v27, v17, v21, v12, v22, v13, 0];
+  v23 = [NSArray arrayWithObjects:keyCopy, v19, v27, v17, v21, typeCopy, v22, v13, 0];
 
   if ([(IMDatabaseHandle *)self->_db runStatement:v18 arguments:v23])
   {
     [(IMPersistentCache *)self _adjustCacheSizeBy:[(__CFData *)v13 length]];
-    [(IMPersistentCache *)self _unknownKeysRemoveObject:v28];
+    [(IMPersistentCache *)self _unknownKeysRemoveObject:keyCopy];
     v24 = 1;
   }
 
@@ -303,19 +303,19 @@ LABEL_18:
   return v24;
 }
 
-- (BOOL)insertCGImage:(CGImage *)a3 forKey:(id)a4 mimeType:(id)a5 scale:(double)a6 properties:(id)a7
+- (BOOL)insertCGImage:(CGImage *)image forKey:(id)key mimeType:(id)type scale:(double)scale properties:(id)properties
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (([v13 isEqualToString:@"image/jpeg"] & 1) != 0 || objc_msgSend(v13, "isEqualToString:", @"image/png"))
+  keyCopy = key;
+  typeCopy = type;
+  propertiesCopy = properties;
+  if (([typeCopy isEqualToString:@"image/jpeg"] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"image/png"))
   {
-    v15 = [(IMPersistentCache *)self _insertCGImage:a3 forKey:v12 mimeType:v13 scale:v14 properties:a6];
+    v15 = [(IMPersistentCache *)self _insertCGImage:image forKey:keyCopy mimeType:typeCopy scale:propertiesCopy properties:scale];
   }
 
   else
   {
-    v15 = [(IMPersistentCache *)self _insertCGImage:a3 forKey:v12];
+    v15 = [(IMPersistentCache *)self _insertCGImage:image forKey:keyCopy];
   }
 
   v16 = v15;
@@ -323,12 +323,12 @@ LABEL_18:
   return v16;
 }
 
-- (BOOL)_insertCGImage:(CGImage *)a3 forKey:(id)a4
+- (BOOL)_insertCGImage:(CGImage *)image forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
   v10 = ((14 * Width) & 0xE) + 2 * Width;
   v11 = v10 * Height;
   v12 = malloc_type_calloc(1uLL, v10 * Height, 0x12CB1BDCuLL);
@@ -354,11 +354,11 @@ LABEL_7:
   v33.origin.y = 0.0;
   v33.size.width = Width;
   v33.size.height = Height;
-  CGContextDrawImage(v15, v33, a3);
+  CGContextDrawImage(v15, v33, image);
   Data = CGBitmapContextGetData(v15);
   if (Data)
   {
-    v30 = self;
+    selfCopy = self;
     v32 = [[NSData alloc] initWithBytes:Data length:v11];
     v31 = [NSString stringWithFormat:@"insert into items (key, accessDate, width, height, bpc, bpp, bpr, mimeType, resourceSize, resourceData) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"];
     v29 = [NSArray alloc];
@@ -371,12 +371,12 @@ LABEL_7:
     v23 = [NSNumber numberWithInteger:v11];
     v28 = v15;
     v24 = v17;
-    v25 = [v29 initWithObjects:{v6, v17, v18, v19, v20, v21, v22, @"image/argb1555", v23, v32, 0}];
+    v25 = [v29 initWithObjects:{keyCopy, v17, v18, v19, v20, v21, v22, @"image/argb1555", v23, v32, 0}];
 
-    if ([(IMDatabaseHandle *)v30->_db runStatement:v31 arguments:v25])
+    if ([(IMDatabaseHandle *)selfCopy->_db runStatement:v31 arguments:v25])
     {
-      -[IMPersistentCache _adjustCacheSizeBy:](v30, "_adjustCacheSizeBy:", [v32 length]);
-      [(IMPersistentCache *)v30 _unknownKeysRemoveObject:v6];
+      -[IMPersistentCache _adjustCacheSizeBy:](selfCopy, "_adjustCacheSizeBy:", [v32 length]);
+      [(IMPersistentCache *)selfCopy _unknownKeysRemoveObject:keyCopy];
       v26 = 1;
     }
 
@@ -400,37 +400,37 @@ LABEL_12:
   return v26;
 }
 
-- (CGImage)_copyCGImageForRow:(id)a3 size:(CGSize *)a4 resourceSize:(int64_t *)a5 scale:(double *)a6
+- (CGImage)_copyCGImageForRow:(id)row size:(CGSize *)size resourceSize:(int64_t *)resourceSize scale:(double *)scale
 {
-  v10 = a3;
-  if ([v10 count])
+  rowCopy = row;
+  if ([rowCopy count])
   {
-    v11 = [v10 objectAtIndex:0];
+    v11 = [rowCopy objectAtIndex:0];
     [(IMPersistentCache *)self _accessedIdsAddObject:v11];
 
-    v12 = [v10 objectAtIndex:9];
+    v12 = [rowCopy objectAtIndex:9];
     if (v12)
     {
-      v13 = [v10 objectAtIndex:1];
-      v36 = [v13 integerValue];
+      v13 = [rowCopy objectAtIndex:1];
+      integerValue = [v13 integerValue];
 
-      v14 = [v10 objectAtIndex:2];
-      v37 = [v14 integerValue];
+      v14 = [rowCopy objectAtIndex:2];
+      integerValue2 = [v14 integerValue];
 
-      v15 = [v10 objectAtIndex:3];
+      v15 = [rowCopy objectAtIndex:3];
       bitsPerComponent = [v15 integerValue];
 
-      v16 = [v10 objectAtIndex:4];
-      v17 = [v16 integerValue];
+      v16 = [rowCopy objectAtIndex:4];
+      integerValue3 = [v16 integerValue];
 
-      v18 = [v10 objectAtIndex:5];
-      v19 = [v18 integerValue];
+      v18 = [rowCopy objectAtIndex:5];
+      integerValue4 = [v18 integerValue];
 
-      v20 = [v10 objectAtIndex:6];
+      v20 = [rowCopy objectAtIndex:6];
       [v20 floatValue];
       v22 = v21;
 
-      v23 = [v10 objectAtIndex:7];
+      v23 = [rowCopy objectAtIndex:7];
       v24 = +[NSNull null];
       if ([v23 isEqual:v24])
       {
@@ -439,7 +439,7 @@ LABEL_12:
 
       else
       {
-        v25 = [v10 objectAtIndex:7];
+        v25 = [rowCopy objectAtIndex:7];
       }
 
       v27 = v12;
@@ -447,21 +447,21 @@ LABEL_12:
       if ([v25 isEqualToString:@"image/argb1555"])
       {
         DeviceRGB = CGColorSpaceCreateDeviceRGB();
-        v30 = 8 * v17;
-        v31 = v36;
-        v26 = CGImageCreate(v36, v37, bitsPerComponent, v30, v19, DeviceRGB, 0x1006u, v28, 0, 0, kCGRenderingIntentDefault);
+        v30 = 8 * integerValue3;
+        v31 = integerValue;
+        v26 = CGImageCreate(integerValue, integerValue2, bitsPerComponent, v30, integerValue4, DeviceRGB, 0x1006u, v28, 0, 0, kCGRenderingIntentDefault);
         CGColorSpaceRelease(DeviceRGB);
       }
 
       else if ([v25 isEqualToString:@"image/jpeg"])
       {
         v26 = CGImageCreateWithJPEGDataProvider(v28, 0, 1, kCGRenderingIntentDefault);
-        v31 = v36;
+        v31 = integerValue;
       }
 
       else
       {
-        v31 = v36;
+        v31 = integerValue;
         if ([v25 isEqualToString:@"image/png"])
         {
           v26 = CGImageCreateWithPNGDataProvider(v28, 0, 1, kCGRenderingIntentDefault);
@@ -475,21 +475,21 @@ LABEL_12:
 
       v32 = v22;
       CGDataProviderRelease(v28);
-      if (a4)
+      if (size)
       {
-        a4->width = v31 / v32;
-        a4->height = v37 / v32;
+        size->width = v31 / v32;
+        size->height = integerValue2 / v32;
       }
 
-      if (a6)
+      if (scale)
       {
-        *a6 = v32;
+        *scale = v32;
       }
 
-      if (a5)
+      if (resourceSize)
       {
-        v33 = [v10 objectAtIndex:8];
-        *a5 = [v33 integerValue];
+        v33 = [rowCopy objectAtIndex:8];
+        *resourceSize = [v33 integerValue];
       }
     }
 
@@ -507,12 +507,12 @@ LABEL_12:
   return v26;
 }
 
-- (CGImage)copyCGImageForKey:(id)a3 resourceSize:(int64_t *)a4 scale:(double *)a5
+- (CGImage)copyCGImageForKey:(id)key resourceSize:(int64_t *)size scale:(double *)scale
 {
-  v8 = a3;
-  if (v8)
+  keyCopy = key;
+  if (keyCopy)
   {
-    if ([(IMPersistentCache *)self _unknownKeysContainsObject:v8])
+    if ([(IMPersistentCache *)self _unknownKeysContainsObject:keyCopy])
     {
       v9 = 0;
     }
@@ -520,19 +520,19 @@ LABEL_12:
     else
     {
       db = self->_db;
-      v12 = [NSArray arrayWithObject:v8];
+      v12 = [NSArray arrayWithObject:keyCopy];
       v9 = [(IMDatabaseHandle *)db arrayForQuery:@"select pk arguments:width rawRows:height, bpc, bpp, bpr, scale, mimeType, resourceSize, resourcedata from items where key = ? limit 1", v12, 1];
     }
 
     if ([v9 count])
     {
       v13 = [v9 objectAtIndex:0];
-      v10 = [(IMPersistentCache *)self _copyCGImageForRow:v13 size:0 resourceSize:a4 scale:a5];
+      v10 = [(IMPersistentCache *)self _copyCGImageForRow:v13 size:0 resourceSize:size scale:scale];
     }
 
     else
     {
-      [(IMPersistentCache *)self _unknownKeysAddObject:v8];
+      [(IMPersistentCache *)self _unknownKeysAddObject:keyCopy];
       v10 = 0;
     }
   }
@@ -545,21 +545,21 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)insertCGImages:(id)a3 forKey:(id)a4 mimeType:(id)a5 baseSize:(CGSize)a6 properties:(id)a7
+- (BOOL)insertCGImages:(id)images forKey:(id)key mimeType:(id)type baseSize:(CGSize)size properties:(id)properties
 {
-  width = a6.width;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v31 = v12;
-  if (([v14 isEqualToString:@"image/jpeg"] & 1) != 0 || objc_msgSend(v14, "isEqualToString:", @"image/png"))
+  width = size.width;
+  imagesCopy = images;
+  keyCopy = key;
+  typeCopy = type;
+  propertiesCopy = properties;
+  v31 = imagesCopy;
+  if (([typeCopy isEqualToString:@"image/jpeg"] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"image/png"))
   {
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v16 = v12;
+    v16 = imagesCopy;
     v17 = [v16 countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v17)
     {
@@ -591,7 +591,7 @@ LABEL_12:
             v24 = 1.0;
           }
 
-          v19 |= [(IMPersistentCache *)self _insertCGImage:v22 forKey:v13 mimeType:v14 scale:v15 properties:v24];
+          v19 |= [(IMPersistentCache *)self _insertCGImage:v22 forKey:keyCopy mimeType:typeCopy scale:propertiesCopy properties:v24];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v36 objects:v41 count:16];
@@ -610,7 +610,7 @@ LABEL_24:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v25 = v12;
+  v25 = imagesCopy;
   v26 = [v25 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (!v26)
   {
@@ -629,7 +629,7 @@ LABEL_24:
         objc_enumerationMutation(v25);
       }
 
-      v19 |= [(IMPersistentCache *)self _insertCGImage:*(*(&v32 + 1) + 8 * j) forKey:v13];
+      v19 |= [(IMPersistentCache *)self _insertCGImage:*(*(&v32 + 1) + 8 * j) forKey:keyCopy];
     }
 
     v27 = [v25 countByEnumeratingWithState:&v32 objects:v40 count:16];
@@ -641,12 +641,12 @@ LABEL_25:
   return v19 & 1;
 }
 
-- (id)CGImagesForKey:(id)a3 size:(CGSize *)a4 resourceSize:(int64_t *)a5
+- (id)CGImagesForKey:(id)key size:(CGSize *)size resourceSize:(int64_t *)resourceSize
 {
-  v6 = a3;
-  if (v6)
+  keyCopy = key;
+  if (keyCopy)
   {
-    if ([(IMPersistentCache *)self _unknownKeysContainsObject:v6])
+    if ([(IMPersistentCache *)self _unknownKeysContainsObject:keyCopy])
     {
       v7 = 0;
     }
@@ -654,14 +654,14 @@ LABEL_25:
     else
     {
       db = self->_db;
-      v10 = [NSArray arrayWithObject:v6];
+      v10 = [NSArray arrayWithObject:keyCopy];
       v7 = [(IMDatabaseHandle *)db arrayForQuery:@"select pk arguments:width rawRows:height, bpc, bpp, bpr, scale, mimeType, resourceSize, resourcedata from items where key = ?", v10, 1];
     }
 
     if ([v7 count])
     {
       v27 = v7;
-      v28 = v6;
+      v28 = keyCopy;
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
@@ -701,7 +701,7 @@ LABEL_9:
 
           else if ((v21 != 2.0) | (v15 ^ 1) & 1)
           {
-            v22 = [(IMPersistentCache *)self _copyCGImageForRow:v18 size:a4 resourceSize:a5 scale:0];
+            v22 = [(IMPersistentCache *)self _copyCGImageForRow:v18 size:size resourceSize:resourceSize scale:0];
             if (v22)
             {
               v23 = v22;
@@ -738,12 +738,12 @@ LABEL_9:
       }
 
       v7 = v27;
-      v6 = v28;
+      keyCopy = v28;
     }
 
     else
     {
-      [(IMPersistentCache *)self _unknownKeysAddObject:v6];
+      [(IMPersistentCache *)self _unknownKeysAddObject:keyCopy];
       v8 = 0;
     }
   }
@@ -756,41 +756,41 @@ LABEL_9:
   return v8;
 }
 
-- (id)firstImageKeyWithRootKey:(id)a3
+- (id)firstImageKeyWithRootKey:(id)key
 {
-  v4 = a3;
-  v5 = [[NSString alloc] initWithFormat:@"%%%@%%", v4];
+  keyCopy = key;
+  keyCopy = [[NSString alloc] initWithFormat:@"%%%@%%", keyCopy];
 
   db = self->_db;
-  v7 = [NSArray arrayWithObject:v5];
+  v7 = [NSArray arrayWithObject:keyCopy];
   v8 = [(IMDatabaseHandle *)db arrayForQuery:@"select key from items where key like ? order by width desc limit 1" arguments:v7 rawRows:1];
 
   if ([v8 count])
   {
-    v9 = [v8 firstObject];
-    v10 = [v9 firstObject];
+    firstObject = [v8 firstObject];
+    v9FirstObject = [firstObject firstObject];
   }
 
   else
   {
-    v10 = 0;
+    v9FirstObject = 0;
   }
 
-  return v10;
+  return v9FirstObject;
 }
 
-- (id)itemsForMimeType:(id)a3
+- (id)itemsForMimeType:(id)type
 {
   db = self->_db;
-  v4 = [NSArray arrayWithObject:a3];
+  v4 = [NSArray arrayWithObject:type];
   v5 = [(IMDatabaseHandle *)db arrayForQuery:@"select * from items where mimeType = ?" arguments:v4 rawRows:0];
 
   return v5;
 }
 
-- (id)deleteItemsForMimeType:(id)a3
+- (id)deleteItemsForMimeType:(id)type
 {
-  v4 = [a3 stringByAppendingString:@"%%"];
+  v4 = [type stringByAppendingString:@"%%"];
   db = self->_db;
   v6 = [NSArray arrayWithObject:v4];
   [(IMDatabaseHandle *)db runStatement:@"delete from items where mimeType like ?" arguments:v6];
@@ -799,39 +799,39 @@ LABEL_9:
   return 0;
 }
 
-- (BOOL)hasItemForKey:(id)a3
+- (BOOL)hasItemForKey:(id)key
 {
-  v4 = a3;
-  if ([(IMPersistentCache *)self _unknownKeysContainsObject:v4])
+  keyCopy = key;
+  if ([(IMPersistentCache *)self _unknownKeysContainsObject:keyCopy])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [[NSArray alloc] initWithObjects:{v4, 0}];
+    v6 = [[NSArray alloc] initWithObjects:{keyCopy, 0}];
     v7 = [(IMDatabaseHandle *)self->_db arrayForQuery:@"select pk from items where key = ? limit 1" arguments:v6 rawRows:1];
     v8 = [v7 count];
     v5 = v8 != 0;
     if (!v8)
     {
-      [(IMPersistentCache *)self _unknownKeysAddObject:v4];
+      [(IMPersistentCache *)self _unknownKeysAddObject:keyCopy];
     }
   }
 
   return v5;
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v6 = 0;
     goto LABEL_13;
   }
 
-  if ([(IMPersistentCache *)self _unknownKeysContainsObject:v4])
+  if ([(IMPersistentCache *)self _unknownKeysContainsObject:keyCopy])
   {
     v5 = 0;
   }
@@ -839,13 +839,13 @@ LABEL_9:
   else
   {
     db = self->_db;
-    v8 = [NSArray arrayWithObject:v4];
+    v8 = [NSArray arrayWithObject:keyCopy];
     v5 = [(IMDatabaseHandle *)db arrayForQuery:@"select pk arguments:resourcedata from items where key = ? limit 1" rawRows:v8, 1];
   }
 
   if (![v5 count])
   {
-    [(IMPersistentCache *)self _unknownKeysAddObject:v4];
+    [(IMPersistentCache *)self _unknownKeysAddObject:keyCopy];
 LABEL_11:
     v6 = 0;
     goto LABEL_12;
@@ -869,13 +869,13 @@ LABEL_13:
   return v6;
 }
 
-- (void)deleteItemForKey:(id)a3
+- (void)deleteItemForKey:(id)key
 {
-  v4 = a3;
-  if ([(IMPersistentCache *)self hasItemForKey:v4])
+  keyCopy = key;
+  if ([(IMPersistentCache *)self hasItemForKey:keyCopy])
   {
     db = self->_db;
-    v6 = [NSArray arrayWithObject:v4];
+    v6 = [NSArray arrayWithObject:keyCopy];
     v7 = [(IMDatabaseHandle *)db arrayForQuery:@"select resourceSize from items where key = ?" arguments:v6 rawRows:1];
 
     if ([v7 count])
@@ -884,17 +884,17 @@ LABEL_13:
       if ([v8 count])
       {
         v9 = [v8 objectAtIndex:0];
-        v10 = [v9 integerValue];
+        integerValue = [v9 integerValue];
 
-        if (v10 >= 1)
+        if (integerValue >= 1)
         {
           v11 = self->_db;
-          v12 = [NSArray arrayWithObject:v4];
+          v12 = [NSArray arrayWithObject:keyCopy];
           LODWORD(v11) = [(IMDatabaseHandle *)v11 runStatement:@"delete from items where key = ?" arguments:v12];
 
           if (v11)
           {
-            [(IMPersistentCache *)self _adjustCacheSizeBy:-v10];
+            [(IMPersistentCache *)self _adjustCacheSizeBy:-integerValue];
           }
         }
       }
@@ -902,23 +902,23 @@ LABEL_13:
   }
 }
 
-- (void)deleteItemsWithKeyLike:(id)a3
+- (void)deleteItemsWithKeyLike:(id)like
 {
-  v5 = a3;
-  if ([v5 length])
+  likeCopy = like;
+  if ([likeCopy length])
   {
-    v4 = [NSArray arrayWithObject:v5];
+    v4 = [NSArray arrayWithObject:likeCopy];
     [(IMPersistentCache *)self deleteItemsWithAllKeysContaining:v4];
   }
 }
 
-- (void)deleteItemsWithAllKeysContaining:(id)a3
+- (void)deleteItemsWithAllKeysContaining:(id)containing
 {
-  v3 = a3;
-  if ([v3 count])
+  containingCopy = containing;
+  if ([containingCopy count])
   {
-    v27 = v3;
-    if ([v3 count])
+    v27 = containingCopy;
+    if ([containingCopy count])
     {
       v4 = 0;
       v5 = &stru_2D2930;
@@ -973,12 +973,12 @@ LABEL_13:
             if ([v14 count] == &dword_0 + 2)
             {
               v15 = [v14 objectAtIndex:0];
-              v16 = [v15 integerValue];
+              integerValue = [v15 integerValue];
 
               v17 = [v14 objectAtIndex:1];
               [v8 addObject:v17];
 
-              v10 += v16;
+              v10 += integerValue;
             }
           }
 
@@ -994,8 +994,8 @@ LABEL_13:
         v19 = [NSString stringWithFormat:@"delete from items where pk in %@", v18];
 
         db = self->_db;
-        v21 = [v8 allObjects];
-        v22 = [(IMDatabaseHandle *)db runStatement:v19 arguments:v21];
+        allObjects = [v8 allObjects];
+        v22 = [(IMDatabaseHandle *)db runStatement:v19 arguments:allObjects];
 
         if (v10)
         {
@@ -1024,30 +1024,30 @@ LABEL_13:
       v19 = v24;
     }
 
-    v3 = v27;
+    containingCopy = v27;
   }
 }
 
-- (void)replaceDataForKey:(id)a3 withData:(id)a4 mimeType:(id)a5
+- (void)replaceDataForKey:(id)key withData:(id)data mimeType:(id)type
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(IMPersistentCache *)self deleteItemForKey:v10];
-  [(IMPersistentCache *)self insertData:v9 forKey:v10 mimeType:v8];
+  typeCopy = type;
+  dataCopy = data;
+  keyCopy = key;
+  [(IMPersistentCache *)self deleteItemForKey:keyCopy];
+  [(IMPersistentCache *)self insertData:dataCopy forKey:keyCopy mimeType:typeCopy];
 }
 
-- (id)dataForKey:(id)a3 mimeType:(id)a4
+- (id)dataForKey:(id)key mimeType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  keyCopy = key;
+  typeCopy = type;
+  if (!keyCopy)
   {
     v9 = 0;
     goto LABEL_13;
   }
 
-  if ([(IMPersistentCache *)self _unknownKeysContainsObject:v6])
+  if ([(IMPersistentCache *)self _unknownKeysContainsObject:keyCopy])
   {
     v8 = 0;
   }
@@ -1055,13 +1055,13 @@ LABEL_13:
   else
   {
     db = self->_db;
-    v11 = [NSArray arrayWithObjects:v6, v7, 0];
+    v11 = [NSArray arrayWithObjects:keyCopy, typeCopy, 0];
     v8 = [(IMDatabaseHandle *)db arrayForQuery:@"select pk arguments:resourcedata from items where key = ? and mimeType = ? limit 1" rawRows:v11, 1];
   }
 
   if (![v8 count])
   {
-    [(IMPersistentCache *)self _unknownKeysAddObject:v6];
+    [(IMPersistentCache *)self _unknownKeysAddObject:keyCopy];
 LABEL_11:
     v9 = 0;
     goto LABEL_12;
@@ -1085,43 +1085,43 @@ LABEL_13:
   return v9;
 }
 
-- (unint64_t)resourceSizeForKey:(id)a3
+- (unint64_t)resourceSizeForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
     db = self->_db;
-    v6 = [NSArray arrayWithObject:v4];
+    v6 = [NSArray arrayWithObject:keyCopy];
     v7 = [(IMDatabaseHandle *)db arrayForQuery:@"select resourceSize from items where key = ?" arguments:v6 rawRows:1];
 
     if (v7)
     {
-      v8 = [v7 firstObject];
-      v9 = v8;
-      if (v8)
+      firstObject = [v7 firstObject];
+      v9 = firstObject;
+      if (firstObject)
       {
-        v10 = [v8 firstObject];
-        v11 = [v10 unsignedIntegerValue];
+        v8FirstObject = [firstObject firstObject];
+        unsignedIntegerValue = [v8FirstObject unsignedIntegerValue];
       }
 
       else
       {
-        v11 = 0x7FFFFFFFFFFFFFFFLL;
+        unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
       }
     }
 
     else
     {
-      v11 = 0x7FFFFFFFFFFFFFFFLL;
+      unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
   else
   {
-    v11 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v11;
+  return unsignedIntegerValue;
 }
 
 - (void)clear
@@ -1137,48 +1137,48 @@ LABEL_13:
   }
 }
 
-- (id)metadataForKey:(id)a3
+- (id)metadataForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   db = self->_db;
-  v6 = [NSArray arrayWithObject:v4];
+  v6 = [NSArray arrayWithObject:keyCopy];
   v7 = [(IMDatabaseHandle *)db arrayForQuery:@"select key arguments:accessDate rawRows:width, height, mimeType, scale, resourceSize from items where key = ?", v6, 0];
 
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
-- (void)_adjustCacheSizeBy:(int64_t)a3
+- (void)_adjustCacheSizeBy:(int64_t)by
 {
   os_unfair_lock_lock(&self->_cacheSizeLock);
-  v5 = self->_cacheSize + a3;
+  v5 = self->_cacheSize + by;
   self->_cacheSize = v5;
   os_unfair_lock_unlock(&self->_cacheSizeLock);
 
   [(IMPersistentCache *)self _saveCacheSize:v5];
 }
 
-- (void)_saveCacheSize:(int64_t)a3
+- (void)_saveCacheSize:(int64_t)size
 {
   adminTable = self->_adminTable;
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:size];
   [(IMAdminTable *)adminTable setProperty:v4 forKey:@"cacheSize" domain:@"statistics"];
 }
 
 - (unint64_t)_loadCacheSize
 {
   v2 = [(IMAdminTable *)self->_adminTable numberValueForKey:@"cacheSize" domain:@"statistics"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)_LRUCleanupForMimeType:(id)a3
+- (void)_LRUCleanupForMimeType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = [NSDate dateWithTimeIntervalSinceNow:-86400.0];
-  v23 = [v4 stringByAppendingString:@"%%"];
+  v23 = [typeCopy stringByAppendingString:@"%%"];
 
   context = objc_autoreleasePoolPush();
   v6 = @"select pk, accessDate, resourceSize from items where mimeType like ?";
@@ -1204,22 +1204,22 @@ LABEL_13:
   os_unfair_lock_lock(&self->_cacheSizeLock);
   cacheSize = self->_cacheSize;
   os_unfair_lock_unlock(&self->_cacheSizeLock);
-  v9 = [v24 objectEnumerator];
-  v10 = [v9 nextObject];
-  if (v10)
+  objectEnumerator = [v24 objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
     do
     {
-      v11 = [v10 objectForKey:@"accessDate"];
+      v11 = [nextObject objectForKey:@"accessDate"];
       v12 = [v11 compare:v5];
 
       if (v12 == -1)
       {
-        v13 = [v10 objectForKey:@"resourceSize"];
-        v14 = [v13 integerValue];
+        v13 = [nextObject objectForKey:@"resourceSize"];
+        integerValue = [v13 integerValue];
 
-        v15 = [v10 objectForKey:@"pk"];
-        cacheSize -= v14;
+        v15 = [nextObject objectForKey:@"pk"];
+        cacheSize -= integerValue;
         [v26 addObject:v15];
 
         if (cacheSize < self->_maxSize)
@@ -1228,12 +1228,12 @@ LABEL_13:
         }
       }
 
-      v16 = [v9 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v10 = v16;
+      nextObject = nextObject2;
     }
 
-    while (v16);
+    while (nextObject2);
   }
 
   if ([v26 count])
@@ -1242,8 +1242,8 @@ LABEL_13:
     v18 = [NSString stringWithFormat:@"delete from items where pk in %@", v17];
 
     db = self->_db;
-    v20 = [v26 allObjects];
-    LODWORD(db) = [(IMDatabaseHandle *)db runStatement:v18 arguments:v20];
+    allObjects = [v26 allObjects];
+    LODWORD(db) = [(IMDatabaseHandle *)db runStatement:v18 arguments:allObjects];
 
     [(IMDatabaseHandle *)self->_db runStatement:@"vacuum" arguments:0];
     if (db)
@@ -1258,9 +1258,9 @@ LABEL_13:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)_updateCaches:(id)a3
+- (void)_updateCaches:(id)caches
 {
-  v4 = a3;
+  cachesCopy = caches;
   os_unfair_lock_lock(&self->_accessedIdsLock);
   v5 = [(NSMutableSet *)self->_accessedIds copy];
   os_unfair_lock_unlock(&self->_accessedIdsLock);
@@ -1272,8 +1272,8 @@ LABEL_13:
     v8 = +[NSDate date];
     v9 = [NSMutableArray arrayWithObject:v8];
 
-    v10 = [v5 allObjects];
-    [v9 addObjectsFromArray:v10];
+    allObjects = [v5 allObjects];
+    [v9 addObjectsFromArray:allObjects];
 
     if ([(IMDatabaseHandle *)self->_db runStatement:v7 arguments:v9])
     {
@@ -1293,35 +1293,35 @@ LABEL_13:
 - (int64_t)version
 {
   v2 = [(IMAdminTable *)self->_adminTable numberValueForKey:@"version" domain:@"database"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (BOOL)_unknownKeysContainsObject:(id)a3
+- (BOOL)_unknownKeysContainsObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_unknownKeysLock);
-  v5 = [(NSMutableSet *)self->_unknownKeys containsObject:v4];
+  v5 = [(NSMutableSet *)self->_unknownKeys containsObject:objectCopy];
 
   os_unfair_lock_unlock(&self->_unknownKeysLock);
   return v5;
 }
 
-- (void)_unknownKeysRemoveObject:(id)a3
+- (void)_unknownKeysRemoveObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_unknownKeysLock);
-  [(NSMutableSet *)self->_unknownKeys removeObject:v4];
+  [(NSMutableSet *)self->_unknownKeys removeObject:objectCopy];
 
   os_unfair_lock_unlock(&self->_unknownKeysLock);
 }
 
-- (void)_unknownKeysAddObject:(id)a3
+- (void)_unknownKeysAddObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_unknownKeysLock);
-  [(NSMutableSet *)self->_unknownKeys addObject:v4];
+  [(NSMutableSet *)self->_unknownKeys addObject:objectCopy];
 
   os_unfair_lock_unlock(&self->_unknownKeysLock);
 }
@@ -1334,11 +1334,11 @@ LABEL_13:
   os_unfair_lock_unlock(&self->_accessedIdsLock);
 }
 
-- (void)_accessedIdsAddObject:(id)a3
+- (void)_accessedIdsAddObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_accessedIdsLock);
-  [(NSMutableSet *)self->_accessedIds addObject:v4];
+  [(NSMutableSet *)self->_accessedIds addObject:objectCopy];
 
   os_unfair_lock_unlock(&self->_accessedIdsLock);
 }

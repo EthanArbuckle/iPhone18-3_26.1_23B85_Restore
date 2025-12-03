@@ -1,21 +1,21 @@
 @interface _ARSessionMetricsDefaultReporter
-- (void)postDarwinNotification:(id)a3;
-- (void)sendEvent:(id)a3 dictionary:(id)a4;
+- (void)postDarwinNotification:(id)notification;
+- (void)sendEvent:(id)event dictionary:(id)dictionary;
 @end
 
 @implementation _ARSessionMetricsDefaultReporter
 
-- (void)postDarwinNotification:(id)a3
+- (void)postDarwinNotification:(id)notification
 {
-  name = a3;
+  name = notification;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, name, 0, 0, 1u);
 }
 
-- (void)sendEvent:(id)a3 dictionary:(id)a4
+- (void)sendEvent:(id)event dictionary:(id)dictionary
 {
-  v6 = a3;
-  v5 = a4;
+  eventCopy = event;
+  dictionaryCopy = dictionary;
   if (![ARKitUserDefaults BOOLForKey:@"com.apple.arkit.session.disableSessionMetricsReporting"])
   {
     AnalyticsSendEventLazy();

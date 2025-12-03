@@ -1,14 +1,14 @@
 @interface CAMIdleController
 - (BOOL)_isIdleTimerIndefinitelyDisabled;
 - (CAMIdleController)init;
-- (void)_delayIdleTimerByTimeInterval:(double)a3;
-- (void)_delayIdleTimerByTimeIntervalUnlessIndefinitelyDisabled:(double)a3;
+- (void)_delayIdleTimerByTimeInterval:(double)interval;
+- (void)_delayIdleTimerByTimeIntervalUnlessIndefinitelyDisabled:(double)disabled;
 - (void)_immediatelyEnableApplicationIdleTimer;
 - (void)_indefinitelyDisableApplicationIdleTimer;
 - (void)_teardownEnableIdleTimer;
 - (void)dealloc;
 - (void)startUpdatingIdleTimer;
-- (void)stillImageRequestDidStopCapturingStillImage:(id)a3;
+- (void)stillImageRequestDidStopCapturingStillImage:(id)image;
 - (void)stopUpdatingIdleTimer;
 @end
 
@@ -41,11 +41,11 @@
 
 - (BOOL)_isIdleTimerIndefinitelyDisabled
 {
-  v2 = [(CAMIdleController *)self _enableIdleTimer];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 isIdleTimerDisabled];
+  _enableIdleTimer = [(CAMIdleController *)self _enableIdleTimer];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  isIdleTimerDisabled = [mEMORY[0x1E69DC668] isIdleTimerDisabled];
 
-  return (v2 == 0) & v4;
+  return (_enableIdleTimer == 0) & isIdleTimerDisabled;
 }
 
 - (void)dealloc
@@ -63,10 +63,10 @@
   [(CAMIdleController *)self _setUpdatingIdleTimer:0];
 }
 
-- (void)stillImageRequestDidStopCapturingStillImage:(id)a3
+- (void)stillImageRequestDidStopCapturingStillImage:(id)image
 {
-  v4 = [a3 textAnalysisIdentifier];
-  if (v4)
+  textAnalysisIdentifier = [image textAnalysisIdentifier];
+  if (textAnalysisIdentifier)
   {
     v5 = 30.0;
   }
@@ -79,25 +79,25 @@
   [(CAMIdleController *)self _delayIdleTimerByTimeIntervalUnlessIndefinitelyDisabled:v5];
 }
 
-- (void)_delayIdleTimerByTimeIntervalUnlessIndefinitelyDisabled:(double)a3
+- (void)_delayIdleTimerByTimeIntervalUnlessIndefinitelyDisabled:(double)disabled
 {
   if (![(CAMIdleController *)self _isIdleTimerIndefinitelyDisabled])
   {
 
-    [(CAMIdleController *)self _delayIdleTimerByTimeInterval:a3];
+    [(CAMIdleController *)self _delayIdleTimerByTimeInterval:disabled];
   }
 }
 
-- (void)_delayIdleTimerByTimeInterval:(double)a3
+- (void)_delayIdleTimerByTimeInterval:(double)interval
 {
   v18 = *MEMORY[0x1E69E9840];
   if ([(CAMIdleController *)self isUpdatingIdleTimer])
   {
-    v5 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v5 setIdleTimerDisabled:1];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] setIdleTimerDisabled:1];
 
-    v6 = [(CAMIdleController *)self _enableIdleTimer];
-    [v6 invalidate];
+    _enableIdleTimer = [(CAMIdleController *)self _enableIdleTimer];
+    [_enableIdleTimer invalidate];
     objc_initWeak(&location, self);
     v7 = MEMORY[0x1E695DFF0];
     v10 = MEMORY[0x1E69E9820];
@@ -105,13 +105,13 @@
     v12 = __51__CAMIdleController__delayIdleTimerByTimeInterval___block_invoke;
     v13 = &unk_1E76F7B88;
     objc_copyWeak(&v14, &location);
-    v8 = [v7 scheduledTimerWithTimeInterval:0 repeats:&v10 block:a3];
+    v8 = [v7 scheduledTimerWithTimeInterval:0 repeats:&v10 block:interval];
     [(CAMIdleController *)self _setEnableIdleTimer:v8, v10, v11, v12, v13];
     v9 = os_log_create("com.apple.camera", "IdleController");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v17 = a3;
+      intervalCopy = interval;
       _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "Delaying application idle timer by %f seconds", buf, 0xCu);
     }
 
@@ -128,8 +128,8 @@ void __51__CAMIdleController__delayIdleTimerByTimeInterval___block_invoke(uint64
 
 - (void)_teardownEnableIdleTimer
 {
-  v3 = [(CAMIdleController *)self _enableIdleTimer];
-  [v3 invalidate];
+  _enableIdleTimer = [(CAMIdleController *)self _enableIdleTimer];
+  [_enableIdleTimer invalidate];
 
   [(CAMIdleController *)self _setEnableIdleTimer:0];
 }
@@ -139,8 +139,8 @@ void __51__CAMIdleController__delayIdleTimerByTimeInterval___block_invoke(uint64
   if ([(CAMIdleController *)self isUpdatingIdleTimer])
   {
     [(CAMIdleController *)self _teardownEnableIdleTimer];
-    v3 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v3 setIdleTimerDisabled:0];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] setIdleTimerDisabled:0];
 
     v4 = os_log_create("com.apple.camera", "IdleController");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -156,8 +156,8 @@ void __51__CAMIdleController__delayIdleTimerByTimeInterval___block_invoke(uint64
   if ([(CAMIdleController *)self isUpdatingIdleTimer])
   {
     [(CAMIdleController *)self _teardownEnableIdleTimer];
-    v3 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v3 setIdleTimerDisabled:1];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] setIdleTimerDisabled:1];
 
     v4 = os_log_create("com.apple.camera", "IdleController");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

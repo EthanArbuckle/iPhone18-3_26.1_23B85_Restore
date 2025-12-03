@@ -1,74 +1,74 @@
 @interface ATXShortcutsEditorSessionMetadata
-- (ATXShortcutsEditorSessionMetadata)initWithCoder:(id)a3;
-- (ATXShortcutsEditorSessionMetadata)initWithNumStepsInShortcutAtStart:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXShortcutsEditorSessionMetadata:(id)a3;
+- (ATXShortcutsEditorSessionMetadata)initWithCoder:(id)coder;
+- (ATXShortcutsEditorSessionMetadata)initWithNumStepsInShortcutAtStart:(unint64_t)start;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXShortcutsEditorSessionMetadata:(id)metadata;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXShortcutsEditorSessionMetadata
 
-- (ATXShortcutsEditorSessionMetadata)initWithNumStepsInShortcutAtStart:(unint64_t)a3
+- (ATXShortcutsEditorSessionMetadata)initWithNumStepsInShortcutAtStart:(unint64_t)start
 {
   v5.receiver = self;
   v5.super_class = ATXShortcutsEditorSessionMetadata;
   result = [(ATXShortcutsEditorSessionMetadata *)&v5 init];
   if (result)
   {
-    result->_numStepsInShortcutAtStart = a3;
+    result->_numStepsInShortcutAtStart = start;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   numStepsInShortcutAtStart = self->_numStepsInShortcutAtStart;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedInteger:numStepsInShortcutAtStart];
-  [v6 encodeObject:v7 forKey:@"numStepsInShortcutAtStart"];
+  [coderCopy encodeObject:v7 forKey:@"numStepsInShortcutAtStart"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_numStepsInShortcutAtEnd];
-  [v6 encodeObject:v8 forKey:@"numStepsInShortcutAtEnd"];
+  [coderCopy encodeObject:v8 forKey:@"numStepsInShortcutAtEnd"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_stepWasManuallyAdded];
-  [v6 encodeObject:v9 forKey:@"stepWasManuallyAdded"];
+  [coderCopy encodeObject:v9 forKey:@"stepWasManuallyAdded"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_isLastSession];
-  [v6 encodeObject:v10 forKey:@"isLastSession"];
+  [coderCopy encodeObject:v10 forKey:@"isLastSession"];
 }
 
-- (ATXShortcutsEditorSessionMetadata)initWithCoder:(id)a3
+- (ATXShortcutsEditorSessionMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E69C5D78];
   v6 = objc_opt_class();
   v7 = __atxlog_handle_feedback();
-  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"numStepsInShortcutAtStart" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.ATXFeedbackSessionMetadata" errorCode:-1 logHandle:v7];
+  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"numStepsInShortcutAtStart" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.ATXFeedbackSessionMetadata" errorCode:-1 logHandle:v7];
 
-  if (v8 || ([v4 error], v22 = objc_claimAutoreleasedReturnValue(), v22, !v22))
+  if (v8 || ([coderCopy error], v22 = objc_claimAutoreleasedReturnValue(), v22, !v22))
   {
     v9 = MEMORY[0x1E69C5D78];
     v10 = objc_opt_class();
     v11 = __atxlog_handle_feedback();
-    v12 = [v9 robustDecodeObjectOfClass:v10 forKey:@"numStepsInShortcutAtEnd" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.ATXFeedbackSessionMetadata" errorCode:-1 logHandle:v11];
+    v12 = [v9 robustDecodeObjectOfClass:v10 forKey:@"numStepsInShortcutAtEnd" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.ATXFeedbackSessionMetadata" errorCode:-1 logHandle:v11];
 
     if (!v12)
     {
-      v23 = [v4 error];
+      error = [coderCopy error];
 
-      if (v23)
+      if (error)
       {
         v16 = __atxlog_handle_feedback();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
         {
-          [ATXShortcutsEditorSessionMetadata initWithCoder:v4];
+          [ATXShortcutsEditorSessionMetadata initWithCoder:coderCopy];
         }
 
-        v21 = 0;
+        selfCopy = 0;
         goto LABEL_23;
       }
     }
@@ -76,22 +76,22 @@
     v13 = MEMORY[0x1E69C5D78];
     v14 = objc_opt_class();
     v15 = __atxlog_handle_feedback();
-    v16 = [v13 robustDecodeObjectOfClass:v14 forKey:@"stepWasManuallyAdded" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.ATXFeedbackSessionMetadata" errorCode:-1 logHandle:v15];
+    v16 = [v13 robustDecodeObjectOfClass:v14 forKey:@"stepWasManuallyAdded" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.ATXFeedbackSessionMetadata" errorCode:-1 logHandle:v15];
 
-    if (v16 || ([v4 error], v24 = objc_claimAutoreleasedReturnValue(), v24, !v24))
+    if (v16 || ([coderCopy error], v24 = objc_claimAutoreleasedReturnValue(), v24, !v24))
     {
       v17 = MEMORY[0x1E69C5D78];
       v18 = objc_opt_class();
       v19 = __atxlog_handle_feedback();
-      v20 = [v17 robustDecodeObjectOfClass:v18 forKey:@"isLastSession" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.ATXFeedbackSessionMetadata" errorCode:-1 logHandle:v19];
+      v20 = [v17 robustDecodeObjectOfClass:v18 forKey:@"isLastSession" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.ATXFeedbackSessionMetadata" errorCode:-1 logHandle:v19];
 
-      if (v20 || ([v4 error], v25 = objc_claimAutoreleasedReturnValue(), v25, !v25))
+      if (v20 || ([coderCopy error], v25 = objc_claimAutoreleasedReturnValue(), v25, !v25))
       {
         self = -[ATXShortcutsEditorSessionMetadata initWithNumStepsInShortcutAtStart:](self, "initWithNumStepsInShortcutAtStart:", [v8 unsignedIntegerValue]);
         [(ATXShortcutsEditorSessionMetadata *)self setNumStepsInShortcutAtEnd:[v12 unsignedIntegerValue]];
         [(ATXShortcutsEditorSessionMetadata *)self setStepWasManuallyAdded:[v16 BOOLValue]];
         [(ATXShortcutsEditorSessionMetadata *)self setIsLastSession:[v20 BOOLValue]];
-        v21 = self;
+        selfCopy = self;
 LABEL_22:
 
 LABEL_23:
@@ -101,7 +101,7 @@ LABEL_23:
       v26 = __atxlog_handle_feedback();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
       {
-        [ATXShortcutsEditorSessionMetadata initWithCoder:v4];
+        [ATXShortcutsEditorSessionMetadata initWithCoder:coderCopy];
       }
     }
 
@@ -110,24 +110,24 @@ LABEL_23:
       v20 = __atxlog_handle_feedback();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
-        [ATXShortcutsEditorSessionMetadata initWithCoder:v4];
+        [ATXShortcutsEditorSessionMetadata initWithCoder:coderCopy];
       }
     }
 
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_22;
   }
 
   v12 = __atxlog_handle_feedback();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
   {
-    [ATXShortcutsEditorSessionMetadata initWithCoder:v4];
+    [ATXShortcutsEditorSessionMetadata initWithCoder:coderCopy];
   }
 
-  v21 = 0;
+  selfCopy = 0;
 LABEL_24:
 
-  return v21;
+  return selfCopy;
 }
 
 - (unint64_t)hash
@@ -137,27 +137,27 @@ LABEL_24:
   return self->_isLastSession - v3 + 32 * v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXShortcutsEditorSessionMetadata *)self isEqualToATXShortcutsEditorSessionMetadata:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXShortcutsEditorSessionMetadata *)self isEqualToATXShortcutsEditorSessionMetadata:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXShortcutsEditorSessionMetadata:(id)a3
+- (BOOL)isEqualToATXShortcutsEditorSessionMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = *&self->_numStepsInShortcutAtStart == *(v4 + 1) && self->_stepWasManuallyAdded == v4[8] && self->_isLastSession == v4[9];
+  metadataCopy = metadata;
+  v5 = *&self->_numStepsInShortcutAtStart == *(metadataCopy + 1) && self->_stepWasManuallyAdded == metadataCopy[8] && self->_isLastSession == metadataCopy[9];
 
   return v5;
 }

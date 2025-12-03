@@ -1,33 +1,33 @@
 @interface ATXLayoutGenerator
-+ (id)sortLayouts:(id)a3;
-- (ATXLayoutGenerator)initWithRankedSuggestions:(id)a3 layoutsToConsider:(id)a4 hyperParameters:(id)a5 suggestionDeduplicator:(id)a6;
-- (double)marginalScoreForSuggestion:(id)a3 topRankingSuggestion:(id)a4;
-- (double)weightForConfidenceCategory:(int64_t)a3;
-- (id)generateGreedySuggestionLayoutForUILayoutType:(int64_t)a3 layoutTypesForRankedSuggestions:(id)a4 isSuggestionsWidgetLayout:(BOOL)a5;
++ (id)sortLayouts:(id)layouts;
+- (ATXLayoutGenerator)initWithRankedSuggestions:(id)suggestions layoutsToConsider:(id)consider hyperParameters:(id)parameters suggestionDeduplicator:(id)deduplicator;
+- (double)marginalScoreForSuggestion:(id)suggestion topRankingSuggestion:(id)rankingSuggestion;
+- (double)weightForConfidenceCategory:(int64_t)category;
+- (id)generateGreedySuggestionLayoutForUILayoutType:(int64_t)type layoutTypesForRankedSuggestions:(id)suggestions isSuggestionsWidgetLayout:(BOOL)layout;
 - (id)generateLayoutToSuggestionDictionary;
 - (id)generateValidLayouts;
-- (id)uuidOfHighestConfidenceSuggestionFromRankedSuggestions:(id)a3 uiLayoutType:(int64_t)a4;
-- (void)scoreLayout:(id)a3;
+- (id)uuidOfHighestConfidenceSuggestionFromRankedSuggestions:(id)suggestions uiLayoutType:(int64_t)type;
+- (void)scoreLayout:(id)layout;
 @end
 
 @implementation ATXLayoutGenerator
 
-- (ATXLayoutGenerator)initWithRankedSuggestions:(id)a3 layoutsToConsider:(id)a4 hyperParameters:(id)a5 suggestionDeduplicator:(id)a6
+- (ATXLayoutGenerator)initWithRankedSuggestions:(id)suggestions layoutsToConsider:(id)consider hyperParameters:(id)parameters suggestionDeduplicator:(id)deduplicator
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  suggestionsCopy = suggestions;
+  considerCopy = consider;
+  parametersCopy = parameters;
+  deduplicatorCopy = deduplicator;
   v18.receiver = self;
   v18.super_class = ATXLayoutGenerator;
   v15 = [(ATXLayoutGenerator *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_rankedSuggestions, a3);
-    objc_storeStrong(&v16->_layoutsToConsider, a4);
-    objc_storeStrong(&v16->_hyperParameters, a5);
-    objc_storeStrong(&v16->_deduplicator, a6);
+    objc_storeStrong(&v15->_rankedSuggestions, suggestions);
+    objc_storeStrong(&v16->_layoutsToConsider, consider);
+    objc_storeStrong(&v16->_hyperParameters, parameters);
+    objc_storeStrong(&v16->_deduplicator, deduplicator);
   }
 
   return v16;
@@ -37,7 +37,7 @@
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(ATXLayoutGenerator *)self generateLayoutToSuggestionDictionary];
+  generateLayoutToSuggestionDictionary = [(ATXLayoutGenerator *)self generateLayoutToSuggestionDictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -58,13 +58,13 @@
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = -[ATXLayoutGenerator generateGreedySuggestionLayoutForUILayoutType:layoutTypesForRankedSuggestions:isSuggestionsWidgetLayout:](self, "generateGreedySuggestionLayoutForUILayoutType:layoutTypesForRankedSuggestions:isSuggestionsWidgetLayout:", [v10 integerValue], v4, 1);
+        v11 = -[ATXLayoutGenerator generateGreedySuggestionLayoutForUILayoutType:layoutTypesForRankedSuggestions:isSuggestionsWidgetLayout:](self, "generateGreedySuggestionLayoutForUILayoutType:layoutTypesForRankedSuggestions:isSuggestionsWidgetLayout:", [v10 integerValue], generateLayoutToSuggestionDictionary, 1);
         if (v11)
         {
           [v3 addObject:v11];
         }
 
-        v12 = -[ATXLayoutGenerator generateGreedySuggestionLayoutForUILayoutType:layoutTypesForRankedSuggestions:isSuggestionsWidgetLayout:](self, "generateGreedySuggestionLayoutForUILayoutType:layoutTypesForRankedSuggestions:isSuggestionsWidgetLayout:", [v10 integerValue], v4, 0);
+        v12 = -[ATXLayoutGenerator generateGreedySuggestionLayoutForUILayoutType:layoutTypesForRankedSuggestions:isSuggestionsWidgetLayout:](self, "generateGreedySuggestionLayoutForUILayoutType:layoutTypesForRankedSuggestions:isSuggestionsWidgetLayout:", [v10 integerValue], generateLayoutToSuggestionDictionary, 0);
         if (v12)
         {
           [v3 addObject:v12];
@@ -113,10 +113,10 @@
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v6 = [v5 uiSpecification];
-        v7 = [v6 preferredLayoutConfigs];
+        uiSpecification = [v5 uiSpecification];
+        preferredLayoutConfigs = [uiSpecification preferredLayoutConfigs];
 
-        v8 = [v7 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        v8 = [preferredLayoutConfigs countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v8)
         {
           v9 = v8;
@@ -127,7 +127,7 @@
             {
               if (*v27 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(preferredLayoutConfigs);
               }
 
               v12 = *(*(&v26 + 1) + 8 * i);
@@ -146,7 +146,7 @@
               [v18 addObject:v5];
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v9 = [preferredLayoutConfigs countByEnumeratingWithState:&v26 objects:v34 count:16];
           }
 
           while (v9);
@@ -168,15 +168,15 @@
   return v19;
 }
 
-- (id)generateGreedySuggestionLayoutForUILayoutType:(int64_t)a3 layoutTypesForRankedSuggestions:(id)a4 isSuggestionsWidgetLayout:(BOOL)a5
+- (id)generateGreedySuggestionLayoutForUILayoutType:(int64_t)type layoutTypesForRankedSuggestions:(id)suggestions isSuggestionsWidgetLayout:(BOOL)layout
 {
-  v82 = a5;
+  layoutCopy = layout;
   v107 = *MEMORY[0x1E69E9840];
-  v77 = a4;
+  suggestionsCopy = suggestions;
   v6 = 0x1E86A3000uLL;
-  v78 = [ATXSuggestionLayout minSuggestionLayoutTypesForUILayoutType:a3];
-  v90 = a3;
-  v91 = [ATXSuggestionLayout maxSuggestionLayoutTypesForUILayoutType:a3];
+  v78 = [ATXSuggestionLayout minSuggestionLayoutTypesForUILayoutType:type];
+  typeCopy = type;
+  v91 = [ATXSuggestionLayout maxSuggestionLayoutTypesForUILayoutType:type];
   v89 = objc_opt_new();
   v7 = 1;
   v8 = 0x1E696A000uLL;
@@ -184,19 +184,19 @@
   do
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
-    v10 = [v77 objectForKeyedSubscript:v9];
+    v10 = [suggestionsCopy objectForKeyedSubscript:v9];
     v11 = [v10 count];
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
     v13 = [v78 objectForKeyedSubscript:v12];
-    v14 = [v13 unsignedIntegerValue];
+    unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-    if (v11 < v14)
+    if (v11 < unsignedIntegerValue)
     {
       v46 = __atxlog_handle_blending();
       v17 = v92;
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
       {
-        v47 = [ATXSuggestionLayout stringFromUILayoutType:v90];
+        v47 = [ATXSuggestionLayout stringFromUILayoutType:typeCopy];
         *buf = 138412290;
         v102 = v47;
         _os_log_impl(&dword_1DEFC4000, v46, OS_LOG_TYPE_DEFAULT, "Blending: Don't have enough suggestions to create UI layout %@", buf, 0xCu);
@@ -227,7 +227,7 @@
     v19 = v18;
     v87 = 0;
     v20 = *v98;
-    v21 = !v82;
+    v21 = !layoutCopy;
     v86 = 1;
     v79 = *v98;
     while (1)
@@ -243,10 +243,10 @@
 
         v23 = *(*(&v97 + 1) + 8 * v22);
         v24 = objc_autoreleasePoolPush();
-        v85 = [v23 isValidForSuggestionsWidget];
-        if (!v85 || v82)
+        isValidForSuggestionsWidget = [v23 isValidForSuggestionsWidget];
+        if (!isValidForSuggestionsWidget || layoutCopy)
         {
-          if ((v85 | v21) != 1)
+          if ((isValidForSuggestionsWidget | v21) != 1)
           {
             goto LABEL_39;
           }
@@ -258,10 +258,10 @@ LABEL_15:
           v96 = 0u;
           v93 = 0u;
           v94 = 0u;
-          v26 = [v23 uiSpecification];
-          v27 = [v26 preferredLayoutConfigs];
+          uiSpecification = [v23 uiSpecification];
+          preferredLayoutConfigs = [uiSpecification preferredLayoutConfigs];
 
-          v28 = [v27 countByEnumeratingWithState:&v93 objects:v105 count:16];
+          v28 = [preferredLayoutConfigs countByEnumeratingWithState:&v93 objects:v105 count:16];
           if (!v28)
           {
             goto LABEL_38;
@@ -275,32 +275,32 @@ LABEL_15:
 LABEL_18:
             if (*v94 != v30)
             {
-              objc_enumerationMutation(v27);
+              objc_enumerationMutation(preferredLayoutConfigs);
             }
 
             v32 = [*(v8 + 3480) numberWithInteger:{objc_msgSend(*(*(&v93 + 1) + 8 * v31), "applicableLayoutType")}];
             v33 = [v17 objectForKeyedSubscript:v32];
             v34 = [v33 count];
             v35 = [v91 objectForKeyedSubscript:v32];
-            v36 = [v35 unsignedIntegerValue];
+            unsignedIntegerValue2 = [v35 unsignedIntegerValue];
 
-            if (v34 >= v36)
+            if (v34 >= unsignedIntegerValue2)
             {
               goto LABEL_35;
             }
 
-            v37 = [v23 executableSpecification];
-            if (![v37 executableType])
+            executableSpecification = [v23 executableSpecification];
+            if (![executableSpecification executableType])
             {
               goto LABEL_24;
             }
 
-            v38 = [v23 executableSpecification];
-            if ([v38 executableType] == 3)
+            executableSpecification2 = [v23 executableSpecification];
+            if ([executableSpecification2 executableType] == 3)
             {
 
 LABEL_24:
-              v39 = v90;
+              v39 = typeCopy;
 LABEL_25:
               if ((v39 > 0x10 || ((1 << v39) & 0x10428) == 0) && ![ATXSuggestionLayout isCompositeLayout:?])
               {
@@ -312,11 +312,11 @@ LABEL_35:
 
             else
             {
-              v44 = [v23 executableSpecification];
-              v45 = [v44 executableType];
+              executableSpecification3 = [v23 executableSpecification];
+              executableType = [executableSpecification3 executableType];
 
-              v39 = v90;
-              if (v45 == 4)
+              v39 = typeCopy;
+              if (executableType == 4)
               {
                 goto LABEL_25;
               }
@@ -340,9 +340,9 @@ LABEL_35:
               [v41 addObject:v23];
 
               [v89 addObject:v23];
-              v86 &= v85;
-              v42 = [v23 scoreSpecification];
-              v43 = [v42 suggestedConfidenceCategory] > 2;
+              v86 &= isValidForSuggestionsWidget;
+              scoreSpecification = [v23 scoreSpecification];
+              v43 = [scoreSpecification suggestedConfidenceCategory] > 2;
 
               v87 |= v43;
             }
@@ -352,7 +352,7 @@ LABEL_36:
 
             if (v29 == ++v31)
             {
-              v29 = [v27 countByEnumeratingWithState:&v93 objects:v105 count:16];
+              v29 = [preferredLayoutConfigs countByEnumeratingWithState:&v93 objects:v105 count:16];
               if (!v29)
               {
 LABEL_38:
@@ -360,7 +360,7 @@ LABEL_38:
                 v6 = 0x1E86A3000;
                 v20 = v79;
                 v19 = v80;
-                v21 = !v82;
+                v21 = !layoutCopy;
                 v24 = v83;
                 v22 = v84;
                 goto LABEL_39;
@@ -373,8 +373,8 @@ LABEL_38:
           }
         }
 
-        v25 = [*(v6 + 2600) isCompositeLayout:v90];
-        if (v85 | v21) == 1 && (v25)
+        v25 = [*(v6 + 2600) isCompositeLayout:typeCopy];
+        if (isValidForSuggestionsWidget | v21) == 1 && (v25)
         {
           goto LABEL_15;
         }
@@ -405,9 +405,9 @@ LABEL_46:
     v54 = [v52 count];
     v55 = [*(v53 + 3480) numberWithUnsignedInteger:i];
     v56 = [v91 objectForKeyedSubscript:v55];
-    v57 = [v56 unsignedIntegerValue];
+    unsignedIntegerValue3 = [v56 unsignedIntegerValue];
 
-    if (v54 > v57)
+    if (v54 > unsignedIntegerValue3)
     {
       goto LABEL_54;
     }
@@ -417,9 +417,9 @@ LABEL_46:
     v60 = [v59 count];
     v61 = [*(v53 + 3480) numberWithUnsignedInteger:i];
     v62 = [v78 objectForKeyedSubscript:v61];
-    v63 = [v62 unsignedIntegerValue];
+    unsignedIntegerValue4 = [v62 unsignedIntegerValue];
 
-    if (v60 < v63)
+    if (v60 < unsignedIntegerValue4)
     {
 LABEL_54:
       v48 = 0;
@@ -438,19 +438,19 @@ LABEL_54:
   v69 = [v17 objectForKeyedSubscript:&unk_1F5A41218];
   v70 = [v17 objectForKeyedSubscript:&unk_1F5A41230];
   v71 = [v17 objectForKeyedSubscript:&unk_1F5A41248];
-  v48 = [v64 initWithLayoutType:v90 oneByOneSuggestions:v65 oneByTwoSuggestions:v66 twoByTwoSuggestions:v67 oneByFourSuggestions:v68 twoByFourSuggestions:v69 fourByFourSuggestions:v70 fourByEightSuggestions:v71];
+  v48 = [v64 initWithLayoutType:typeCopy oneByOneSuggestions:v65 oneByTwoSuggestions:v66 twoByTwoSuggestions:v67 oneByFourSuggestions:v68 twoByFourSuggestions:v69 fourByFourSuggestions:v70 fourByEightSuggestions:v71];
 
   [v48 setIsValidForSuggestionsWidget:v86 & 1];
   [v48 setConfidenceWarrantsSnappingOrNPlusOne:v87 & 1];
   v49 = v89;
-  v72 = [(ATXLayoutGenerator *)self uuidOfHighestConfidenceSuggestionFromRankedSuggestions:v89 uiLayoutType:v90];
+  v72 = [(ATXLayoutGenerator *)self uuidOfHighestConfidenceSuggestionFromRankedSuggestions:v89 uiLayoutType:typeCopy];
   [v48 setUuidOfHighestConfidenceSuggestion:v72];
 
   [(ATXLayoutGenerator *)self scoreLayout:v48];
   v46 = __atxlog_handle_blending();
   if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
   {
-    v73 = [ATXSuggestionLayout stringFromUILayoutType:v90];
+    v73 = [ATXSuggestionLayout stringFromUILayoutType:typeCopy];
     [v48 layoutScore];
     *buf = 138412546;
     v102 = v73;
@@ -468,23 +468,23 @@ LABEL_55:
   return v48;
 }
 
-- (id)uuidOfHighestConfidenceSuggestionFromRankedSuggestions:(id)a3 uiLayoutType:(int64_t)a4
+- (id)uuidOfHighestConfidenceSuggestionFromRankedSuggestions:(id)suggestions uiLayoutType:(int64_t)type
 {
-  v6 = a3;
-  if ([v6 count])
+  suggestionsCopy = suggestions;
+  if ([suggestionsCopy count])
   {
-    if (a4)
+    if (type)
     {
-      v7 = [v6 firstObject];
-      v8 = [(ATXSuggestionReranker *)v7 uuid];
+      firstObject = [suggestionsCopy firstObject];
+      uuid = [(ATXSuggestionReranker *)firstObject uuid];
     }
 
     else
     {
-      v7 = [[ATXSuggestionReranker alloc] initWithProactiveSuggestions:v6 hyperParameters:self->_hyperParameters];
-      v10 = [(ATXSuggestionReranker *)v7 rerankedSuggestions];
-      v11 = [v10 firstObject];
-      v8 = [v11 uuid];
+      firstObject = [[ATXSuggestionReranker alloc] initWithProactiveSuggestions:suggestionsCopy hyperParameters:self->_hyperParameters];
+      rerankedSuggestions = [(ATXSuggestionReranker *)firstObject rerankedSuggestions];
+      firstObject2 = [rerankedSuggestions firstObject];
+      uuid = [firstObject2 uuid];
     }
   }
 
@@ -496,40 +496,40 @@ LABEL_55:
       [ATXLayoutGenerator uuidOfHighestConfidenceSuggestionFromRankedSuggestions:v9 uiLayoutType:?];
     }
 
-    v8 = objc_opt_new();
+    uuid = objc_opt_new();
   }
 
-  return v8;
+  return uuid;
 }
 
-- (void)scoreLayout:(id)a3
+- (void)scoreLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(NSArray *)self->_rankedSuggestions firstObject];
-  if (v5)
+  layoutCopy = layout;
+  firstObject = [(NSArray *)self->_rankedSuggestions firstObject];
+  if (firstObject)
   {
-    v6 = +[ATXSuggestionLayout minSuggestionLayoutTypesForUILayoutType:](ATXSuggestionLayout, "minSuggestionLayoutTypesForUILayoutType:", [v4 layoutType]);
+    v6 = +[ATXSuggestionLayout minSuggestionLayoutTypesForUILayoutType:](ATXSuggestionLayout, "minSuggestionLayoutTypesForUILayoutType:", [layoutCopy layoutType]);
     v7 = [v6 objectForKeyedSubscript:&unk_1F5A411B8];
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-    if (v8)
+    if (unsignedIntegerValue)
     {
       v9 = 0;
       v10 = 0.0;
       do
       {
-        v11 = [v4 oneByOneSuggestions];
-        v12 = [v11 objectAtIndexedSubscript:v9];
+        oneByOneSuggestions = [layoutCopy oneByOneSuggestions];
+        v12 = [oneByOneSuggestions objectAtIndexedSubscript:v9];
 
-        [(ATXLayoutGenerator *)self marginalScoreForSuggestion:v12 topRankingSuggestion:v5];
+        [(ATXLayoutGenerator *)self marginalScoreForSuggestion:v12 topRankingSuggestion:firstObject];
         v10 = v10 + v13;
 
         ++v9;
         v14 = [v6 objectForKeyedSubscript:&unk_1F5A411B8];
-        v15 = [v14 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v14 unsignedIntegerValue];
       }
 
-      while (v9 < v15);
+      while (v9 < unsignedIntegerValue2);
     }
 
     else
@@ -538,94 +538,94 @@ LABEL_55:
     }
 
     v17 = [v6 objectForKeyedSubscript:&unk_1F5A411D0];
-    v18 = [v17 unsignedIntegerValue];
+    unsignedIntegerValue3 = [v17 unsignedIntegerValue];
 
-    if (v18)
+    if (unsignedIntegerValue3)
     {
       v19 = 0;
       do
       {
-        v20 = [v4 oneByTwoSuggestions];
-        v21 = [v20 objectAtIndexedSubscript:v19];
+        oneByTwoSuggestions = [layoutCopy oneByTwoSuggestions];
+        v21 = [oneByTwoSuggestions objectAtIndexedSubscript:v19];
 
-        [(ATXLayoutGenerator *)self marginalScoreForSuggestion:v21 topRankingSuggestion:v5];
+        [(ATXLayoutGenerator *)self marginalScoreForSuggestion:v21 topRankingSuggestion:firstObject];
         v10 = v10 + v22;
 
         ++v19;
         v23 = [v6 objectForKeyedSubscript:&unk_1F5A411D0];
-        v24 = [v23 unsignedIntegerValue];
+        unsignedIntegerValue4 = [v23 unsignedIntegerValue];
       }
 
-      while (v19 < v24);
+      while (v19 < unsignedIntegerValue4);
     }
 
     v25 = [v6 objectForKeyedSubscript:&unk_1F5A411E8];
-    v26 = [v25 unsignedIntegerValue];
+    unsignedIntegerValue5 = [v25 unsignedIntegerValue];
 
-    if (v26)
+    if (unsignedIntegerValue5)
     {
       v27 = 0;
       do
       {
-        v28 = [v4 twoByTwoSuggestions];
-        v29 = [v28 objectAtIndexedSubscript:v27];
+        twoByTwoSuggestions = [layoutCopy twoByTwoSuggestions];
+        v29 = [twoByTwoSuggestions objectAtIndexedSubscript:v27];
 
-        [(ATXLayoutGenerator *)self marginalScoreForSuggestion:v29 topRankingSuggestion:v5];
+        [(ATXLayoutGenerator *)self marginalScoreForSuggestion:v29 topRankingSuggestion:firstObject];
         v10 = v10 + v30;
 
         ++v27;
         v31 = [v6 objectForKeyedSubscript:&unk_1F5A411E8];
-        v32 = [v31 unsignedIntegerValue];
+        unsignedIntegerValue6 = [v31 unsignedIntegerValue];
       }
 
-      while (v27 < v32);
+      while (v27 < unsignedIntegerValue6);
     }
 
     v33 = [v6 objectForKeyedSubscript:&unk_1F5A41200];
-    v34 = [v33 unsignedIntegerValue];
+    unsignedIntegerValue7 = [v33 unsignedIntegerValue];
 
-    if (v34)
+    if (unsignedIntegerValue7)
     {
       v35 = 0;
       do
       {
-        v36 = [v4 oneByFourSuggestions];
-        v37 = [v36 objectAtIndexedSubscript:v35];
+        oneByFourSuggestions = [layoutCopy oneByFourSuggestions];
+        v37 = [oneByFourSuggestions objectAtIndexedSubscript:v35];
 
-        [(ATXLayoutGenerator *)self marginalScoreForSuggestion:v37 topRankingSuggestion:v5];
+        [(ATXLayoutGenerator *)self marginalScoreForSuggestion:v37 topRankingSuggestion:firstObject];
         v10 = v10 + v38;
 
         ++v35;
         v39 = [v6 objectForKeyedSubscript:&unk_1F5A41200];
-        v40 = [v39 unsignedIntegerValue];
+        unsignedIntegerValue8 = [v39 unsignedIntegerValue];
       }
 
-      while (v35 < v40);
+      while (v35 < unsignedIntegerValue8);
     }
 
     v41 = [v6 objectForKeyedSubscript:&unk_1F5A41218];
-    v42 = [v41 unsignedIntegerValue];
+    unsignedIntegerValue9 = [v41 unsignedIntegerValue];
 
-    if (v42)
+    if (unsignedIntegerValue9)
     {
       v43 = 0;
       do
       {
-        v44 = [v4 twoByFourSuggestions];
-        v45 = [v44 objectAtIndexedSubscript:v43];
+        twoByFourSuggestions = [layoutCopy twoByFourSuggestions];
+        v45 = [twoByFourSuggestions objectAtIndexedSubscript:v43];
 
-        [(ATXLayoutGenerator *)self marginalScoreForSuggestion:v45 topRankingSuggestion:v5];
+        [(ATXLayoutGenerator *)self marginalScoreForSuggestion:v45 topRankingSuggestion:firstObject];
         v10 = v10 + v46;
 
         ++v43;
         v47 = [v6 objectForKeyedSubscript:&unk_1F5A41218];
-        v48 = [v47 unsignedIntegerValue];
+        unsignedIntegerValue10 = [v47 unsignedIntegerValue];
       }
 
-      while (v43 < v48);
+      while (v43 < unsignedIntegerValue10);
     }
 
-    [v4 setLayoutScore:v10];
+    [layoutCopy setLayoutScore:v10];
   }
 
   else
@@ -638,15 +638,15 @@ LABEL_55:
   }
 }
 
-- (double)marginalScoreForSuggestion:(id)a3 topRankingSuggestion:(id)a4
+- (double)marginalScoreForSuggestion:(id)suggestion topRankingSuggestion:(id)rankingSuggestion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 scoreSpecification];
-  -[ATXLayoutGenerator weightForConfidenceCategory:](self, "weightForConfidenceCategory:", [v8 suggestedConfidenceCategory]);
+  rankingSuggestionCopy = rankingSuggestion;
+  suggestionCopy = suggestion;
+  scoreSpecification = [suggestionCopy scoreSpecification];
+  -[ATXLayoutGenerator weightForConfidenceCategory:](self, "weightForConfidenceCategory:", [scoreSpecification suggestedConfidenceCategory]);
   v10 = v9 + 0.0;
 
-  LODWORD(self) = [v7 isEqual:v6];
+  LODWORD(self) = [suggestionCopy isEqual:rankingSuggestionCopy];
   result = v10 + 1000.0;
   if (!self)
   {
@@ -656,28 +656,28 @@ LABEL_55:
   return result;
 }
 
-- (double)weightForConfidenceCategory:(int64_t)a3
+- (double)weightForConfidenceCategory:(int64_t)category
 {
-  if (a3 > 3)
+  if (category > 3)
   {
     return 100.0;
   }
 
   else
   {
-    return dbl_1DF03AAF0[a3];
+    return dbl_1DF03AAF0[category];
   }
 }
 
-+ (id)sortLayouts:(id)a3
++ (id)sortLayouts:(id)layouts
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEB0];
-  v4 = a3;
+  layoutsCopy = layouts;
   v5 = [v3 sortDescriptorWithKey:@"self.layoutScore" ascending:0];
   v10[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v7 = [v4 sortedArrayUsingDescriptors:v6];
+  v7 = [layoutsCopy sortedArrayUsingDescriptors:v6];
 
   v8 = *MEMORY[0x1E69E9840];
 

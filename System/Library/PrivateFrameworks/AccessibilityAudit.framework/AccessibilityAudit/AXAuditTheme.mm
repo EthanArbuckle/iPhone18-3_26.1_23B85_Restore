@@ -1,8 +1,8 @@
 @interface AXAuditTheme
 + (id)sharedTheme;
-- (double)borderWidthForHighlightStyle:(unint64_t)a3;
-- (id)backgroundColorForHighlightStyle:(unint64_t)a3;
-- (id)borderColorForHighlightStyle:(unint64_t)a3;
+- (double)borderWidthForHighlightStyle:(unint64_t)style;
+- (id)backgroundColorForHighlightStyle:(unint64_t)style;
+- (id)borderColorForHighlightStyle:(unint64_t)style;
 @end
 
 @implementation AXAuditTheme
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __27__AXAuditTheme_sharedTheme__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedTheme_onceToken != -1)
   {
     dispatch_once(&sharedTheme_onceToken, block);
@@ -32,12 +32,12 @@ uint64_t __27__AXAuditTheme_sharedTheme__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)backgroundColorForHighlightStyle:(unint64_t)a3
+- (id)backgroundColorForHighlightStyle:(unint64_t)style
 {
-  v4 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:1.0 alpha:0.75];
-  if (a3 > 3)
+  systemGreenColor2 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:1.0 alpha:0.75];
+  if (style > 3)
   {
-    switch(a3)
+    switch(style)
     {
       case 4uLL:
         v7 = MEMORY[0x277D75348];
@@ -67,39 +67,39 @@ uint64_t __27__AXAuditTheme_sharedTheme__block_invoke(uint64_t a1)
     v6 = [v7 colorWithRed:v8 green:v9 blue:v10 alpha:v11];
   }
 
-  else if (a3 - 1 >= 2)
+  else if (style - 1 >= 2)
   {
-    if (a3 != 3)
+    if (style != 3)
     {
       goto LABEL_14;
     }
 
-    v12 = [MEMORY[0x277D75348] systemGreenColor];
-    v6 = [v12 colorWithAlphaComponent:0.2];
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+    v6 = [systemGreenColor colorWithAlphaComponent:0.2];
 
-    v4 = v12;
+    systemGreenColor2 = systemGreenColor;
   }
 
   else
   {
     v5 = [MEMORY[0x277D75348] colorWithRed:0.298039216 green:0.850980392 blue:0.392156863 alpha:0.25];
 
-    v4 = [MEMORY[0x277D75348] systemGreenColor];
-    v6 = [v4 colorWithAlphaComponent:0.1];
+    systemGreenColor2 = [MEMORY[0x277D75348] systemGreenColor];
+    v6 = [systemGreenColor2 colorWithAlphaComponent:0.1];
   }
 
-  v4 = v6;
+  systemGreenColor2 = v6;
 LABEL_14:
 
-  return v4;
+  return systemGreenColor2;
 }
 
-- (id)borderColorForHighlightStyle:(unint64_t)a3
+- (id)borderColorForHighlightStyle:(unint64_t)style
 {
   v4 = [MEMORY[0x277D75348] colorWithRed:0.0 green:1.0 blue:0.0 alpha:0.75];
-  if (a3 > 3)
+  if (style > 3)
   {
-    switch(a3)
+    switch(style)
     {
       case 4uLL:
         v7 = MEMORY[0x277D75348];
@@ -128,15 +128,15 @@ LABEL_14:
 
   else
   {
-    if (a3 - 1 >= 3)
+    if (style - 1 >= 3)
     {
       goto LABEL_12;
     }
 
-    v5 = [MEMORY[0x277D75348] systemGreenColor];
-    v6 = [v5 colorWithAlphaComponent:0.4];
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+    v6 = [systemGreenColor colorWithAlphaComponent:0.4];
 
-    v4 = v5;
+    v4 = systemGreenColor;
   }
 
   v4 = v6;
@@ -145,12 +145,12 @@ LABEL_12:
   return v4;
 }
 
-- (double)borderWidthForHighlightStyle:(unint64_t)a3
+- (double)borderWidthForHighlightStyle:(unint64_t)style
 {
   result = 1.0;
-  if (a3 - 3 <= 3)
+  if (style - 3 <= 3)
   {
-    return dbl_23D725CA8[a3 - 3];
+    return dbl_23D725CA8[style - 3];
   }
 
   return result;

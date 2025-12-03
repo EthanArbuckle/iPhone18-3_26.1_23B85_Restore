@@ -1,42 +1,42 @@
 @interface CAMDrawerFlashButton
-- (BOOL)isMenuItemSelected:(id)a3;
+- (BOOL)isMenuItemSelected:(id)selected;
 - (BOOL)shouldShowSlashForCurrentState;
 - (id)imageNameForAXHUD;
 - (id)imageNameForCurrentState;
 - (id)imageSymbolColorConfiguration;
 - (id)loadMenuItems;
-- (void)didSelectMenuItem:(id)a3;
-- (void)setFlashMode:(int64_t)a3 animated:(BOOL)a4;
-- (void)setFlashUnavailable:(BOOL)a3;
+- (void)didSelectMenuItem:(id)item;
+- (void)setFlashMode:(int64_t)mode animated:(BOOL)animated;
+- (void)setFlashUnavailable:(BOOL)unavailable;
 @end
 
 @implementation CAMDrawerFlashButton
 
-- (void)setFlashMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setFlashMode:(int64_t)mode animated:(BOOL)animated
 {
-  if (self->_flashMode != a3)
+  if (self->_flashMode != mode)
   {
-    self->_flashMode = a3;
-    [(CAMControlDrawerButton *)self updateImageAnimated:a4];
+    self->_flashMode = mode;
+    [(CAMControlDrawerButton *)self updateImageAnimated:animated];
 
     [(CAMControlDrawerMenuButton *)self updateLabelsIfNeeded];
   }
 }
 
-- (BOOL)isMenuItemSelected:(id)a3
+- (BOOL)isMenuItemSelected:(id)selected
 {
-  v4 = [a3 value];
-  v5 = [v4 integerValue];
-  LOBYTE(self) = v5 == [(CAMDrawerFlashButton *)self flashMode];
+  value = [selected value];
+  integerValue = [value integerValue];
+  LOBYTE(self) = integerValue == [(CAMDrawerFlashButton *)self flashMode];
 
   return self;
 }
 
-- (void)setFlashUnavailable:(BOOL)a3
+- (void)setFlashUnavailable:(BOOL)unavailable
 {
-  if (self->_flashUnavailable != a3)
+  if (self->_flashUnavailable != unavailable)
   {
-    self->_flashUnavailable = a3;
+    self->_flashUnavailable = unavailable;
     [(CAMControlDrawerButton *)self updateImage];
   }
 }
@@ -67,18 +67,18 @@
   return v14;
 }
 
-- (void)didSelectMenuItem:(id)a3
+- (void)didSelectMenuItem:(id)item
 {
-  v7 = a3;
+  itemCopy = item;
   if (![(CAMDrawerFlashButton *)self isFlashUnavailable])
   {
-    v4 = [(CAMDrawerFlashButton *)self flashMode];
-    v5 = [v7 value];
-    v6 = [v5 integerValue];
+    flashMode = [(CAMDrawerFlashButton *)self flashMode];
+    value = [itemCopy value];
+    integerValue = [value integerValue];
 
-    if (v6 != v4)
+    if (integerValue != flashMode)
     {
-      [(CAMDrawerFlashButton *)self setFlashMode:v6 animated:1];
+      [(CAMDrawerFlashButton *)self setFlashMode:integerValue animated:1];
       [(CAMDrawerFlashButton *)self sendActionsForControlEvents:4096];
     }
   }
@@ -103,15 +103,15 @@
 {
   if ([(CAMDrawerFlashButton *)self shouldShowSlashForCurrentState])
   {
-    v3 = @"bolt.slash.fill";
+    imageNameForCurrentState = @"bolt.slash.fill";
   }
 
   else
   {
-    v3 = [(CAMDrawerFlashButton *)self imageNameForCurrentState];
+    imageNameForCurrentState = [(CAMDrawerFlashButton *)self imageNameForCurrentState];
   }
 
-  return v3;
+  return imageNameForCurrentState;
 }
 
 - (id)imageSymbolColorConfiguration
@@ -120,8 +120,8 @@
   if ([(CAMDrawerFlashButton *)self isFlashUnavailable])
   {
     v2 = MEMORY[0x1E69DCAD8];
-    v3 = [MEMORY[0x1E69DC888] systemYellowColor];
-    v8[0] = v3;
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    v8[0] = systemYellowColor;
     v4 = [MEMORY[0x1E69DC888] colorWithWhite:0.5 alpha:1.0];
     v8[1] = v4;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];

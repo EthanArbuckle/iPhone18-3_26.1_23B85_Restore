@@ -1,41 +1,41 @@
 @interface PKDashboardPaymentTransactionItemPresenter
-- (BOOL)_shouldShowIconForTransactionSource:(id)a3 transaction:(id)a4 context:(unint64_t)a5;
-- (BOOL)canSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
-- (BOOL)hideSeparatorForItem:(id)a3 inCollectionView:(id)a4;
+- (BOOL)_shouldShowIconForTransactionSource:(id)source transaction:(id)transaction context:(unint64_t)context;
+- (BOOL)canSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (BOOL)hideSeparatorForItem:(id)item inCollectionView:(id)view;
 - (CGSize)_imageSize;
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
-- (PKDashboardPaymentTransactionItemPresenter)initWithContext:(unint64_t)a3 detailViewStyle:(int64_t)a4 avatarViewDelegate:(id)a5;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
+- (PKDashboardPaymentTransactionItemPresenter)initWithContext:(unint64_t)context detailViewStyle:(int64_t)style avatarViewDelegate:(id)delegate;
 - (PKDashboardPaymentTransactionItemPresenterDelegate)delegate;
 - (id)_contactKeysToFetch;
 - (id)appleCardImage;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
 - (id)dailyCashImage;
 - (id)savingsInterestImage;
-- (id)searchHistoryStringForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
-- (id)separatorInsetsForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
-- (void)_applyRewardsInfo:(id)a3 isFeaturedTransaction:(BOOL)a4 fromTransaction:(id)a5 hideBadgeBackground:(BOOL *)a6;
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6;
-- (void)_updateAvatarOnTransactionCell:(id)a3 withTransaction:(id)a4 contact:(id)a5;
-- (void)_updatePrimaryLabelOnTransactionCell:(id)a3 withPeerPaymentCounterpartHandle:(id)a4 contact:(id)a5 transaction:(id)a6;
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7;
-- (void)prefetchForItem:(id)a3 inCollectionView:(id)a4;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
+- (id)searchHistoryStringForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (id)separatorInsetsForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (void)_applyRewardsInfo:(id)info isFeaturedTransaction:(BOOL)transaction fromTransaction:(id)fromTransaction hideBadgeBackground:(BOOL *)background;
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path;
+- (void)_updateAvatarOnTransactionCell:(id)cell withTransaction:(id)transaction contact:(id)contact;
+- (void)_updatePrimaryLabelOnTransactionCell:(id)cell withPeerPaymentCounterpartHandle:(id)handle contact:(id)contact transaction:(id)transaction;
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present;
+- (void)prefetchForItem:(id)item inCollectionView:(id)view;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
 @end
 
 @implementation PKDashboardPaymentTransactionItemPresenter
 
-- (PKDashboardPaymentTransactionItemPresenter)initWithContext:(unint64_t)a3 detailViewStyle:(int64_t)a4 avatarViewDelegate:(id)a5
+- (PKDashboardPaymentTransactionItemPresenter)initWithContext:(unint64_t)context detailViewStyle:(int64_t)style avatarViewDelegate:(id)delegate
 {
-  v8 = a5;
+  delegateCopy = delegate;
   v34.receiver = self;
   v34.super_class = PKDashboardPaymentTransactionItemPresenter;
   v9 = [(PKDashboardPaymentTransactionItemPresenter *)&v34 init];
   v10 = v9;
   if (v9)
   {
-    v9->_context = a3;
-    objc_storeWeak(&v9->_avatarViewDelegate, v8);
+    v9->_context = context;
+    objc_storeWeak(&v9->_avatarViewDelegate, delegateCopy);
     v11 = [PKPaymentTransactionCollectionViewCell alloc];
     v12 = [(PKPaymentTransactionCollectionViewCell *)v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     sampleCell = v10->_sampleCell;
@@ -47,8 +47,8 @@
 
     v16 = objc_alloc_init(MEMORY[0x1E695CE18]);
     v17 = objc_alloc(MEMORY[0x1E69B8740]);
-    v18 = [(PKDashboardPaymentTransactionItemPresenter *)v10 _contactKeysToFetch];
-    v19 = [v17 initWithContactStore:v16 keysToFetch:v18];
+    _contactKeysToFetch = [(PKDashboardPaymentTransactionItemPresenter *)v10 _contactKeysToFetch];
+    v19 = [v17 initWithContactStore:v16 keysToFetch:_contactKeysToFetch];
     contactResolver = v10->_contactResolver;
     v10->_contactResolver = v19;
 
@@ -56,17 +56,17 @@
     iconGenerator = v10->_iconGenerator;
     v10->_iconGenerator = v21;
 
-    v23 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
     dataProvider = v10->_dataProvider;
-    v10->_dataProvider = v23;
+    v10->_dataProvider = defaultDataProvider;
 
-    v25 = [MEMORY[0x1E69B9020] sharedService];
-    v26 = [[PKPaymentTransactionDetailsFactory alloc] initWithContactResolver:v10->_contactResolver peerPaymentWebService:v25 paymentServiceDataProvider:v10->_dataProvider detailViewStyle:a4 context:v10->_context];
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+    v26 = [[PKPaymentTransactionDetailsFactory alloc] initWithContactResolver:v10->_contactResolver peerPaymentWebService:mEMORY[0x1E69B9020] paymentServiceDataProvider:v10->_dataProvider detailViewStyle:style context:v10->_context];
     transactionDetailsFactory = v10->_transactionDetailsFactory;
     v10->_transactionDetailsFactory = v26;
 
-    v28 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-    v10->_useAccessibilityLayout = UIContentSizeCategoryIsAccessibilityCategory(v28);
+    preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+    v10->_useAccessibilityLayout = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     v29 = objc_alloc_init(PKPeerPaymentCounterpartImageResolver);
     counterpartImageResolver = v10->_counterpartImageResolver;
@@ -86,12 +86,12 @@
   v2 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:0];
   v10[0] = v2;
   v3 = _MergedGlobals_621();
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = -[objc_class descriptorForRequiredKeysWithThreeDTouchEnabled:](v3, "descriptorForRequiredKeysWithThreeDTouchEnabled:", [v4 _supportsForceTouch]);
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v5 = -[objc_class descriptorForRequiredKeysWithThreeDTouchEnabled:](v3, "descriptorForRequiredKeysWithThreeDTouchEnabled:", [currentDevice _supportsForceTouch]);
   v10[1] = v5;
-  v6 = [off_1EE98A6A0() descriptorForRequiredKeys];
+  descriptorForRequiredKeys = [off_1EE98A6A0() descriptorForRequiredKeys];
   v7 = *MEMORY[0x1E695C208];
-  v10[2] = v6;
+  v10[2] = descriptorForRequiredKeys;
   v10[3] = v7;
   v10[4] = *MEMORY[0x1E695C330];
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:5];
@@ -109,51 +109,51 @@
   return v2;
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  v7 = a4;
-  if (a3)
+  toTraitCopy = toTrait;
+  if (trait)
   {
-    if (v7)
+    if (toTraitCopy)
     {
-      v15 = v7;
-      v8 = [a3 preferredContentSizeCategory];
-      v9 = [v15 preferredContentSizeCategory];
-      v10 = UIContentSizeCategoryCompareToCategory(v8, v9);
+      v15 = toTraitCopy;
+      preferredContentSizeCategory = [trait preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [v15 preferredContentSizeCategory];
+      v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
 
-      v7 = v15;
+      toTraitCopy = v15;
       if (v10)
       {
-        v11 = [v15 preferredContentSizeCategory];
-        self->_useAccessibilityLayout = UIContentSizeCategoryCompareToCategory(v11, *MEMORY[0x1E69DDC50]) == NSOrderedDescending;
+        preferredContentSizeCategory3 = [v15 preferredContentSizeCategory];
+        self->_useAccessibilityLayout = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory3, *MEMORY[0x1E69DDC50]) == NSOrderedDescending;
 
         v12 = [PKPaymentTransactionCollectionViewCell alloc];
         v13 = [(PKPaymentTransactionCollectionViewCell *)v12 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
         sampleCell = self->_sampleCell;
         self->_sampleCell = v13;
 
-        v7 = v15;
+        toTraitCopy = v15;
       }
     }
   }
 }
 
-- (BOOL)canSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (BOOL)canSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v5 = [a3 transaction];
-  v6 = [v5 transactionType] != 12;
+  transaction = [item transaction];
+  v6 = [transaction transactionType] != 12;
 
   return v6;
 }
 
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present
 {
   v46[4] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a6;
-  v10 = v8;
-  v11 = [v10 transaction];
-  if ([v11 transactionType] == 15)
+  itemCopy = item;
+  controllerCopy = controller;
+  v10 = itemCopy;
+  transaction = [v10 transaction];
+  if ([transaction transactionType] == 15)
   {
     v12 = MEMORY[0x1E69B8540];
     v13 = *MEMORY[0x1E69BB6F8];
@@ -174,60 +174,60 @@
     [v12 subject:v13 sendEvent:v19];
   }
 
-  v20 = [v10 transactionSourceCollection];
-  v21 = [v10 familyCollection];
-  v22 = [v10 account];
-  v23 = [v10 accountUserCollection];
-  v44 = [v10 physicalCards];
-  v43 = v23;
-  if (([v11 peerPaymentType] & 0xFFFFFFFFFFFFFFFELL) == 4)
+  transactionSourceCollection = [v10 transactionSourceCollection];
+  familyCollection = [v10 familyCollection];
+  account = [v10 account];
+  accountUserCollection = [v10 accountUserCollection];
+  physicalCards = [v10 physicalCards];
+  v43 = accountUserCollection;
+  if (([transaction peerPaymentType] & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
-    v24 = [v11 recurringPeerPayment];
+    recurringPeerPayment = [transaction recurringPeerPayment];
     v25 = objc_alloc(MEMORY[0x1E69B8F28]);
-    v26 = [MEMORY[0x1E69B9020] sharedService];
-    v27 = [v25 initWithPeerPaymentWebService:v26];
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+    v27 = [v25 initWithPeerPaymentWebService:mEMORY[0x1E69B9020]];
 
-    v28 = [v27 account];
-    WeakRetained = [v28 recurringPaymentsFeatureDescriptor];
+    account2 = [v27 account];
+    WeakRetained = [account2 recurringPaymentsFeatureDescriptor];
 
     v30 = [PKPeerPaymentRecurringPaymentDetailViewController alloc];
-    [v24 recipientAddress];
-    v42 = v11;
-    v31 = v9;
-    v32 = v22;
-    v33 = v21;
-    v35 = v34 = v20;
-    v36 = [(PKPeerPaymentRecurringPaymentDetailViewController *)v30 initWithRecurringPayment:v24 recipientAddress:v35 mode:2 context:0 peerPaymentController:v27 remoteMessagesComposer:0];
+    [recurringPeerPayment recipientAddress];
+    v42 = transaction;
+    v31 = controllerCopy;
+    v32 = account;
+    v33 = familyCollection;
+    v35 = v34 = transactionSourceCollection;
+    v36 = [(PKPeerPaymentRecurringPaymentDetailViewController *)v30 initWithRecurringPayment:recurringPeerPayment recipientAddress:v35 mode:2 context:0 peerPaymentController:v27 remoteMessagesComposer:0];
 
-    v37 = [WeakRetained minimumAmount];
-    [(PKPeerPaymentRecurringPaymentDetailViewController *)v36 setMinimumAmount:v37];
+    minimumAmount = [WeakRetained minimumAmount];
+    [(PKPeerPaymentRecurringPaymentDetailViewController *)v36 setMinimumAmount:minimumAmount];
 
-    v38 = [WeakRetained maximumAmount];
-    [(PKPeerPaymentRecurringPaymentDetailViewController *)v36 setMaximumAmount:v38];
+    maximumAmount = [WeakRetained maximumAmount];
+    [(PKPeerPaymentRecurringPaymentDetailViewController *)v36 setMaximumAmount:maximumAmount];
 
-    v20 = v34;
-    v21 = v33;
-    v22 = v32;
-    v9 = v31;
-    v11 = v42;
-    [v9 pushViewController:v36 animated:1];
+    transactionSourceCollection = v34;
+    familyCollection = v33;
+    account = v32;
+    controllerCopy = v31;
+    transaction = v42;
+    [controllerCopy pushViewController:v36 animated:1];
   }
 
   else
   {
-    v24 = [v10 bankConnectInstitution];
+    recurringPeerPayment = [v10 bankConnectInstitution];
     transactionDetailsFactory = self->_transactionDetailsFactory;
-    v40 = [v10 group];
-    v27 = [(PKPaymentTransactionDetailsFactory *)transactionDetailsFactory viewControllerForTransaction:v11 sourceCollection:v20 familyCollection:v21 account:v22 accountUserCollection:v23 bankConnectInstitution:v24 physicalCards:v44 group:v40 navigationController:v9];
+    group = [v10 group];
+    v27 = [(PKPaymentTransactionDetailsFactory *)transactionDetailsFactory viewControllerForTransaction:transaction sourceCollection:transactionSourceCollection familyCollection:familyCollection account:account accountUserCollection:accountUserCollection bankConnectInstitution:recurringPeerPayment physicalCards:physicalCards group:group navigationController:controllerCopy];
 
-    if ([v9 pk_settings_useStateDrivenNavigation])
+    if ([controllerCopy pk_settings_useStateDrivenNavigation])
     {
-      [v9 pk_settings_pushViewController:v27];
+      [controllerCopy pk_settings_pushViewController:v27];
     }
 
     else
     {
-      [v9 pushViewController:v27 animated:1];
+      [controllerCopy pushViewController:v27 animated:1];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -235,31 +235,31 @@
   }
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 dequeueReusableCellWithReuseIdentifier:@"transactionItemPresenter" forIndexPath:v8];
-  [(PKDashboardPaymentTransactionItemPresenter *)self _configureCell:v11 forItem:v10 inCollectionView:v9 forIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"transactionItemPresenter" forIndexPath:pathCopy];
+  [(PKDashboardPaymentTransactionItemPresenter *)self _configureCell:v11 forItem:itemCopy inCollectionView:viewCopy forIndexPath:pathCopy];
 
   return v11;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = [v8 transaction];
-  v10 = [v8 transactionSourceCollection];
-  v11 = [v9 transactionSourceIdentifier];
-  v47 = v10;
-  v12 = [v10 transactionSourceForTransactionSourceIdentifier:v11];
+  itemCopy = item;
+  transaction = [itemCopy transaction];
+  transactionSourceCollection = [itemCopy transactionSourceCollection];
+  transactionSourceIdentifier = [transaction transactionSourceIdentifier];
+  v47 = transactionSourceCollection;
+  v12 = [transactionSourceCollection transactionSourceForTransactionSourceIdentifier:transactionSourceIdentifier];
 
-  v13 = [(PKPaymentDefaultDataProvider *)self->_dataProvider deviceName];
-  v14 = v13;
-  if (v13)
+  deviceName = [(PKPaymentDefaultDataProvider *)self->_dataProvider deviceName];
+  v14 = deviceName;
+  if (deviceName)
   {
-    v15 = v13;
+    v15 = deviceName;
   }
 
   else
@@ -269,25 +269,25 @@
 
   v16 = v15;
 
-  v45 = [v8 familyCollection];
-  v17 = [v45 familyMemberForTransactionSource:v12];
+  familyCollection = [itemCopy familyCollection];
+  v17 = [familyCollection familyMemberForTransactionSource:v12];
   v18 = MEMORY[0x1E69B8EB8];
-  v19 = [v8 secondaryTransactionSource];
-  v20 = [v8 account];
+  secondaryTransactionSource = [itemCopy secondaryTransactionSource];
+  account = [itemCopy account];
   context = self->_context;
-  LOBYTE(v42) = [v8 shouldDisplayTransactionSource];
+  LOBYTE(v42) = [itemCopy shouldDisplayTransactionSource];
   v44 = v17;
   v46 = v16;
-  v22 = [v18 presentationInformationForTransaction:v9 transactionSource:v12 secondaryTransactionSource:v19 familyMember:v17 account:v20 deviceName:v16 context:context shouldDisplayTransactionSource:v42];
+  v22 = [v18 presentationInformationForTransaction:transaction transactionSource:v12 secondaryTransactionSource:secondaryTransactionSource familyMember:v17 account:account deviceName:v16 context:context shouldDisplayTransactionSource:v42];
 
-  v23 = [v22 valueString];
+  valueString = [v22 valueString];
   v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v43 = v24;
-  if ([v23 length])
+  if ([valueString length])
   {
     v25 = objc_alloc(MEMORY[0x1E696AAB0]);
     v26 = [v24 copy];
-    v27 = [v25 initWithString:v23 attributes:v26];
+    v27 = [v25 initWithString:valueString attributes:v26];
   }
 
   else
@@ -295,33 +295,33 @@
     v27 = 0;
   }
 
-  v28 = [(PKDashboardPaymentTransactionItemPresenter *)self _shouldShowIconForTransactionSource:v12 transaction:v9 context:self->_context];
-  -[PKDashboardPaymentTransactionItemPresenter _applyRewardsInfo:isFeaturedTransaction:fromTransaction:hideBadgeBackground:](self, "_applyRewardsInfo:isFeaturedTransaction:fromTransaction:hideBadgeBackground:", v22, [v8 isFeaturedTransaction], v9, 0);
-  v29 = [(PKPaymentTransactionCollectionViewCell *)self->_sampleCell transactionView];
-  v30 = [v22 primaryString];
-  [v29 setPrimaryString:v30];
+  v28 = [(PKDashboardPaymentTransactionItemPresenter *)self _shouldShowIconForTransactionSource:v12 transaction:transaction context:self->_context];
+  -[PKDashboardPaymentTransactionItemPresenter _applyRewardsInfo:isFeaturedTransaction:fromTransaction:hideBadgeBackground:](self, "_applyRewardsInfo:isFeaturedTransaction:fromTransaction:hideBadgeBackground:", v22, [itemCopy isFeaturedTransaction], transaction, 0);
+  transactionView = [(PKPaymentTransactionCollectionViewCell *)self->_sampleCell transactionView];
+  primaryString = [v22 primaryString];
+  [transactionView setPrimaryString:primaryString];
 
-  v31 = [v22 secondaryString];
-  [v29 setSecondaryString:v31];
+  secondaryString = [v22 secondaryString];
+  [transactionView setSecondaryString:secondaryString];
 
-  v32 = [v22 tertiaryString];
-  [v29 setTertiaryString:v32];
+  tertiaryString = [v22 tertiaryString];
+  [transactionView setTertiaryString:tertiaryString];
 
-  [v29 setTransactionValueAttributedText:v27];
-  if (self->_context - 3 > 1 || ([v9 transactionStatus] & 0xFFFFFFFFFFFFFFF7) != 0)
+  [transactionView setTransactionValueAttributedText:v27];
+  if (self->_context - 3 > 1 || ([transaction transactionStatus] & 0xFFFFFFFFFFFFFFF7) != 0)
   {
-    v33 = [v22 badgeString];
-    [v29 setBadgeString:v33];
+    badgeString = [v22 badgeString];
+    [transactionView setBadgeString:badgeString];
   }
 
   else
   {
-    [v29 setTransactionValueAttributedText:0];
+    [transactionView setTransactionValueAttributedText:0];
   }
 
-  [v29 setShowsDisclosureView:{objc_msgSend(v22, "shouldShowDisclosure")}];
-  v34 = [v22 secondaryBadgeSymbol];
-  [v29 setSecondaryBadgeSymbol:v34];
+  [transactionView setShowsDisclosureView:{objc_msgSend(v22, "shouldShowDisclosure")}];
+  secondaryBadgeSymbol = [v22 secondaryBadgeSymbol];
+  [transactionView setSecondaryBadgeSymbol:secondaryBadgeSymbol];
 
   if (v28)
   {
@@ -333,8 +333,8 @@
     emptyImage = 0;
   }
 
-  [v29 setPrimaryImage:emptyImage];
-  [(PKPaymentTransactionCollectionViewCell *)self->_sampleCell sizeThatFits:a5, 3.40282347e38];
+  [transactionView setPrimaryImage:emptyImage];
+  [(PKPaymentTransactionCollectionViewCell *)self->_sampleCell sizeThatFits:width, 3.40282347e38];
   v37 = v36;
   v39 = v38;
 
@@ -345,31 +345,31 @@
   return result;
 }
 
-- (void)prefetchForItem:(id)a3 inCollectionView:(id)a4
+- (void)prefetchForItem:(id)item inCollectionView:(id)view
 {
-  v5 = a3;
-  v11 = [v5 transaction];
-  v6 = [v5 transactionSourceCollection];
+  itemCopy = item;
+  transaction = [itemCopy transaction];
+  transactionSourceCollection = [itemCopy transactionSourceCollection];
 
-  v7 = [v11 transactionSourceIdentifier];
-  v8 = [v6 transactionSourceForTransactionSourceIdentifier:v7];
+  transactionSourceIdentifier = [transaction transactionSourceIdentifier];
+  v8 = [transactionSourceCollection transactionSourceForTransactionSourceIdentifier:transactionSourceIdentifier];
 
-  if ([(PKDashboardPaymentTransactionItemPresenter *)self _shouldShowIconForTransactionSource:v8 transaction:v11 context:self->_context])
+  if ([(PKDashboardPaymentTransactionItemPresenter *)self _shouldShowIconForTransactionSource:v8 transaction:transaction context:self->_context])
   {
     iconGenerator = self->_iconGenerator;
     [(PKDashboardPaymentTransactionItemPresenter *)self _imageSize];
-    v10 = [(PKPaymentTransactionIconGenerator *)iconGenerator iconForTransaction:v11 size:0 ignoreLogoURL:1 requestType:&__block_literal_global_121 iconHandler:?];
+    v10 = [(PKPaymentTransactionIconGenerator *)iconGenerator iconForTransaction:transaction size:0 ignoreLogoURL:1 requestType:&__block_literal_global_121 iconHandler:?];
   }
 }
 
-- (BOOL)hideSeparatorForItem:(id)a3 inCollectionView:(id)a4
+- (BOOL)hideSeparatorForItem:(id)item inCollectionView:(id)view
 {
-  v4 = a3;
-  if ([v4 isFeaturedTransaction])
+  itemCopy = item;
+  if ([itemCopy isFeaturedTransaction])
   {
-    v5 = [v4 transaction];
-    v6 = [v5 preferredLocation];
-    v7 = v6 != 0;
+    transaction = [itemCopy transaction];
+    preferredLocation = [transaction preferredLocation];
+    v7 = preferredLocation != 0;
   }
 
   else
@@ -380,17 +380,17 @@
   return v7;
 }
 
-- (id)separatorInsetsForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)separatorInsetsForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 transaction];
-  v10 = [v7 transactionSourceCollection];
-  v11 = [v9 transactionSourceIdentifier];
-  v12 = [v10 transactionSourceForTransactionSourceIdentifier:v11];
+  itemCopy = item;
+  viewCopy = view;
+  transaction = [itemCopy transaction];
+  transactionSourceCollection = [itemCopy transactionSourceCollection];
+  transactionSourceIdentifier = [transaction transactionSourceIdentifier];
+  v12 = [transactionSourceCollection transactionSourceForTransactionSourceIdentifier:transactionSourceIdentifier];
 
-  LOBYTE(v11) = [(PKDashboardPaymentTransactionItemPresenter *)self hideSeparatorForItem:v7 inCollectionView:v8];
-  if ((v11 & 1) == 0 && [(PKDashboardPaymentTransactionItemPresenter *)self _shouldShowIconForTransactionSource:v12 transaction:v9 context:self->_context]&& _UISolariumFeatureFlagEnabled())
+  LOBYTE(transactionSourceIdentifier) = [(PKDashboardPaymentTransactionItemPresenter *)self hideSeparatorForItem:itemCopy inCollectionView:viewCopy];
+  if ((transactionSourceIdentifier & 1) == 0 && [(PKDashboardPaymentTransactionItemPresenter *)self _shouldShowIconForTransactionSource:v12 transaction:transaction context:self->_context]&& _UISolariumFeatureFlagEnabled())
   {
     v13 = [MEMORY[0x1E696B098] valueWithDirectionalEdgeInsets:{0.0, 67.0, 0.0, 16.0}];
   }
@@ -403,48 +403,48 @@
   return v13;
 }
 
-- (BOOL)_shouldShowIconForTransactionSource:(id)a3 transaction:(id)a4 context:(unint64_t)a5
+- (BOOL)_shouldShowIconForTransactionSource:(id)source transaction:(id)transaction context:(unint64_t)context
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 isBankConnectTransaction])
+  sourceCopy = source;
+  transactionCopy = transaction;
+  if ([transactionCopy isBankConnectTransaction])
   {
-    if ([v9 transactionType] == 11)
+    if ([transactionCopy transactionType] == 11)
     {
-      [v9 accountType];
+      [transactionCopy accountType];
     }
 
     goto LABEL_17;
   }
 
-  if (v8)
+  if (sourceCopy)
   {
     goto LABEL_5;
   }
 
-  v11 = [v9 accountType];
-  if ((v11 - 2) >= 3)
+  accountType = [transactionCopy accountType];
+  if ((accountType - 2) >= 3)
   {
-    if (v11 != 1)
+    if (accountType != 1)
     {
 LABEL_5:
       v10 = 0;
       goto LABEL_15;
     }
 
-    v12 = [v9 peerPaymentType] - 7;
-    v10 = a5 != 1 || v12 < 0xFFFFFFFFFFFFFFFCLL;
+    v12 = [transactionCopy peerPaymentType] - 7;
+    v10 = context != 1 || v12 < 0xFFFFFFFFFFFFFFFCLL;
   }
 
   else
   {
-    v10 = a5 != 1;
+    v10 = context != 1;
   }
 
 LABEL_15:
-  if ([v9 transactionType] == 11)
+  if ([transactionCopy transactionType] == 11)
   {
-    if ([v9 accountType] == 3 || v10)
+    if ([transactionCopy accountType] == 3 || v10)
     {
 LABEL_17:
       v14 = 1;
@@ -457,34 +457,34 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v15 = [v8 type];
-  if ((v15 - 1) >= 3)
+  type = [sourceCopy type];
+  if ((type - 1) >= 3)
   {
-    if (v15)
+    if (type)
     {
       LOBYTE(v16) = 0;
     }
 
     else
     {
-      v17 = [v8 paymentPass];
-      v18 = [MEMORY[0x1E69B8EF8] sharedService];
-      v19 = [v18 context];
-      v20 = [v19 configuration];
+      paymentPass = [sourceCopy paymentPass];
+      mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+      context = [mEMORY[0x1E69B8EF8] context];
+      configuration = [context configuration];
 
-      v21 = [v17 issuerCountryCode];
-      v22 = [v20 paymentTransactionIconsEnabledForRegion:v21];
+      issuerCountryCode = [paymentPass issuerCountryCode];
+      v22 = [configuration paymentTransactionIconsEnabledForRegion:issuerCountryCode];
 
-      v23 = [v17 cardType] == 1;
-      v24 = [v17 associatedAccountServiceAccountIdentifier];
-      if (v24 || ([v17 hasAssociatedPeerPaymentAccount] & 1) != 0 || (objc_msgSend(v17, "isStoredValuePass") & 1) != 0)
+      v23 = [paymentPass cardType] == 1;
+      associatedAccountServiceAccountIdentifier = [paymentPass associatedAccountServiceAccountIdentifier];
+      if (associatedAccountServiceAccountIdentifier || ([paymentPass hasAssociatedPeerPaymentAccount] & 1) != 0 || (objc_msgSend(paymentPass, "isStoredValuePass") & 1) != 0)
       {
         LOBYTE(v16) = 1;
       }
 
       else
       {
-        v16 = [v17 isIdentityPass] | v23 & v22;
+        v16 = [paymentPass isIdentityPass] | v23 & v22;
       }
     }
   }
@@ -500,49 +500,49 @@ LABEL_29:
   return v14;
 }
 
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path
 {
-  v10 = a3;
-  v99 = a4;
-  v11 = a5;
-  v12 = a6;
-  v98 = v10;
-  if (v10)
+  cellCopy = cell;
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  v98 = cellCopy;
+  if (cellCopy)
   {
-    v94 = v12;
-    v13 = [v99 transaction];
-    v96 = [v13 identifier];
-    [v10 setIdentifier:?];
-    [v10 setDeletable:{objc_msgSend(v13, "isDeletable")}];
-    v14 = [v99 transactionSourceCollection];
-    v15 = [v13 transactionSourceIdentifier];
-    v16 = [v14 transactionSourceForTransactionSourceIdentifier:v15];
+    v94 = pathCopy;
+    transaction = [itemCopy transaction];
+    identifier = [transaction identifier];
+    [cellCopy setIdentifier:?];
+    [cellCopy setDeletable:{objc_msgSend(transaction, "isDeletable")}];
+    transactionSourceCollection = [itemCopy transactionSourceCollection];
+    transactionSourceIdentifier = [transaction transactionSourceIdentifier];
+    v16 = [transactionSourceCollection transactionSourceForTransactionSourceIdentifier:transactionSourceIdentifier];
 
-    v97 = v16;
+    anyObject = v16;
     if (!v16)
     {
-      v17 = [v14 transactionSources];
-      v18 = [v17 count];
+      transactionSources = [transactionSourceCollection transactionSources];
+      v18 = [transactionSources count];
 
       if (v18 == 1)
       {
-        v19 = [v14 transactionSources];
-        v97 = [v19 anyObject];
+        transactionSources2 = [transactionSourceCollection transactionSources];
+        anyObject = [transactionSources2 anyObject];
       }
 
       else
       {
-        v97 = 0;
+        anyObject = 0;
       }
     }
 
-    v20 = [(PKPaymentDefaultDataProvider *)self->_dataProvider deviceName];
-    v21 = v20;
-    v95 = v11;
-    v93 = v14;
-    if (v20)
+    deviceName = [(PKPaymentDefaultDataProvider *)self->_dataProvider deviceName];
+    v21 = deviceName;
+    v95 = viewCopy;
+    v93 = transactionSourceCollection;
+    if (deviceName)
     {
-      v22 = v20;
+      v22 = deviceName;
     }
 
     else
@@ -552,59 +552,59 @@ LABEL_29:
 
     v23 = v22;
 
-    v91 = [v99 familyCollection];
-    v24 = [v91 familyMemberForTransactionSource:v97];
+    familyCollection = [itemCopy familyCollection];
+    v24 = [familyCollection familyMemberForTransactionSource:anyObject];
     v25 = MEMORY[0x1E69B8EB8];
-    v26 = [v99 secondaryTransactionSource];
-    v27 = [v99 account];
+    secondaryTransactionSource = [itemCopy secondaryTransactionSource];
+    account = [itemCopy account];
     context = self->_context;
-    LOBYTE(v82) = [v99 shouldDisplayTransactionSource];
+    LOBYTE(v82) = [itemCopy shouldDisplayTransactionSource];
     v90 = v24;
     v92 = v23;
-    v29 = [v25 presentationInformationForTransaction:v13 transactionSource:v97 secondaryTransactionSource:v26 familyMember:v24 account:v27 deviceName:v23 context:context shouldDisplayTransactionSource:v82];
+    v29 = [v25 presentationInformationForTransaction:transaction transactionSource:anyObject secondaryTransactionSource:secondaryTransactionSource familyMember:v24 account:account deviceName:v23 context:context shouldDisplayTransactionSource:v82];
 
-    v30 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     if ([v29 shouldGrayValue])
     {
-      v31 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     }
 
     else
     {
-      v31 = 0;
+      secondaryLabelColor = 0;
     }
 
-    v32 = [v29 valueString];
+    valueString = [v29 valueString];
     v33 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v34 = v33;
-    v89 = v30;
-    if (v31)
+    v89 = labelColor;
+    if (secondaryLabelColor)
     {
-      v35 = v31;
+      v35 = secondaryLabelColor;
     }
 
     else
     {
-      v35 = v30;
+      v35 = labelColor;
     }
 
     [v33 setObject:v35 forKeyedSubscript:*MEMORY[0x1E69DB650]];
-    v36 = [MEMORY[0x1E69DC888] clearColor];
-    [v34 setObject:v36 forKeyedSubscript:*MEMORY[0x1E69DB600]];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v34 setObject:clearColor forKeyedSubscript:*MEMORY[0x1E69DB600]];
 
     if ([v29 shouldStrikeValue])
     {
       [v34 setObject:&unk_1F3CC7748 forKeyedSubscript:*MEMORY[0x1E69DB6B8]];
     }
 
-    v88 = v31;
-    v86 = v32;
+    v88 = secondaryLabelColor;
+    v86 = valueString;
     v87 = v34;
-    if ([v32 length])
+    if ([valueString length])
     {
       v37 = objc_alloc(MEMORY[0x1E696AAB0]);
       v38 = [v34 copy];
-      v39 = [v37 initWithString:v32 attributes:v38];
+      v39 = [v37 initWithString:valueString attributes:v38];
     }
 
     else
@@ -613,33 +613,33 @@ LABEL_29:
     }
 
     v123[0] = 0;
-    -[PKDashboardPaymentTransactionItemPresenter _applyRewardsInfo:isFeaturedTransaction:fromTransaction:hideBadgeBackground:](self, "_applyRewardsInfo:isFeaturedTransaction:fromTransaction:hideBadgeBackground:", v29, [v99 isFeaturedTransaction], v13, v123);
-    v40 = [v98 transactionView];
-    v41 = [v29 primaryString];
-    [v40 setPrimaryString:v41];
+    -[PKDashboardPaymentTransactionItemPresenter _applyRewardsInfo:isFeaturedTransaction:fromTransaction:hideBadgeBackground:](self, "_applyRewardsInfo:isFeaturedTransaction:fromTransaction:hideBadgeBackground:", v29, [itemCopy isFeaturedTransaction], transaction, v123);
+    transactionView = [v98 transactionView];
+    primaryString = [v29 primaryString];
+    [transactionView setPrimaryString:primaryString];
 
-    v42 = [v29 secondaryString];
-    [v40 setSecondaryString:v42];
+    secondaryString = [v29 secondaryString];
+    [transactionView setSecondaryString:secondaryString];
 
-    v43 = [v29 tertiaryString];
-    [v40 setTertiaryString:v43];
+    tertiaryString = [v29 tertiaryString];
+    [transactionView setTertiaryString:tertiaryString];
 
-    [v40 setTransactionValueAttributedText:v39];
-    if (self->_context - 3 > 1 || ([v13 transactionStatus] & 0xFFFFFFFFFFFFFFF7) != 0)
+    [transactionView setTransactionValueAttributedText:v39];
+    if (self->_context - 3 > 1 || ([transaction transactionStatus] & 0xFFFFFFFFFFFFFFF7) != 0)
     {
-      v44 = [v29 badgeString];
-      [v40 setBadgeString:v44];
+      badgeString = [v29 badgeString];
+      [transactionView setBadgeString:badgeString];
     }
 
     else
     {
-      [v40 setTransactionValueAttributedText:0];
+      [transactionView setTransactionValueAttributedText:0];
     }
 
-    [v40 setHideBadgeBackground:v123[0]];
-    [v40 setShowsDisclosureView:{objc_msgSend(v29, "shouldShowDisclosure")}];
-    v85 = [v29 secondaryBadgeSymbol];
-    [v40 setSecondaryBadgeSymbol:?];
+    [transactionView setHideBadgeBackground:v123[0]];
+    [transactionView setShowsDisclosureView:{objc_msgSend(v29, "shouldShowDisclosure")}];
+    secondaryBadgeSymbol = [v29 secondaryBadgeSymbol];
+    [transactionView setSecondaryBadgeSymbol:?];
     if ([v29 destructiveSecondaryString])
     {
       [MEMORY[0x1E69DC888] systemRedColor];
@@ -650,22 +650,22 @@ LABEL_29:
       [MEMORY[0x1E69DC888] secondaryLabelColor];
     }
     v45 = ;
-    [v40 setSecondaryColor:v45];
+    [transactionView setSecondaryColor:v45];
 
-    v46 = [v29 preferredTransactionCategory];
-    if (v46)
+    preferredTransactionCategory = [v29 preferredTransactionCategory];
+    if (preferredTransactionCategory)
     {
-      v47 = v46;
+      v47 = preferredTransactionCategory;
       preferredTransactionCategoryImageCache = self->_preferredTransactionCategoryImageCache;
-      [MEMORY[0x1E696AD98] numberWithInteger:v46];
+      [MEMORY[0x1E696AD98] numberWithInteger:preferredTransactionCategory];
       v50 = v49 = v39;
       v51 = [(NSCache *)preferredTransactionCategoryImageCache objectForKey:v50];
 
       v39 = v49;
       if (!v51)
       {
-        v52 = [v98 traitCollection];
-        PKTransactionCategoryImageSizeForTraitCollection(v52);
+        traitCollection = [v98 traitCollection];
+        PKTransactionCategoryImageSizeForTraitCollection(traitCollection);
         PKUIScreenScale();
         v51 = PKMapsIconForMerchantCategory();
 
@@ -683,18 +683,18 @@ LABEL_29:
       v51 = 0;
     }
 
-    [v40 setTransactionCategoryImage:v51];
-    [PKAppIntentUIUtilities annotateView:v40 withEntityForTransaction:v13];
-    v55 = [(PKDashboardPaymentTransactionItemPresenter *)self _shouldShowIconForTransactionSource:v97 transaction:v13 context:self->_context];
-    v56 = [v13 transactionType];
-    if (v56 == 3)
+    [transactionView setTransactionCategoryImage:v51];
+    [PKAppIntentUIUtilities annotateView:transactionView withEntityForTransaction:transaction];
+    v55 = [(PKDashboardPaymentTransactionItemPresenter *)self _shouldShowIconForTransactionSource:anyObject transaction:transaction context:self->_context];
+    transactionType = [transaction transactionType];
+    if (transactionType == 3)
     {
-      v57 = [v13 peerPaymentCounterpartHandle];
-      [v40 setShowsAvatarView:v55];
-      [v40 setPrimaryImage:0];
-      v84 = [v13 peerPaymentCounterpartImageRecordIdentifier];
-      v11 = v95;
-      if ([v13 peerPaymentPaymentMode] == 2 && (objc_msgSend(MEMORY[0x1E69DCA40], "metricsForTextStyle:", *MEMORY[0x1E69DDD08]), v58 = objc_claimAutoreleasedReturnValue(), v59 = v39, v60 = MEMORY[0x1E69DCAD8], objc_msgSend(v58, "scaledValueForValue:", 9.0), objc_msgSend(v60, "configurationWithPointSize:weight:", 2), v61 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v40, "setSecondaryBadgeSymbolConfiguration:", v61), v61, v39 = v59, v11 = v95, v58, v55) && v84)
+      peerPaymentCounterpartHandle = [transaction peerPaymentCounterpartHandle];
+      [transactionView setShowsAvatarView:v55];
+      [transactionView setPrimaryImage:0];
+      peerPaymentCounterpartImageRecordIdentifier = [transaction peerPaymentCounterpartImageRecordIdentifier];
+      viewCopy = v95;
+      if ([transaction peerPaymentPaymentMode] == 2 && (objc_msgSend(MEMORY[0x1E69DCA40], "metricsForTextStyle:", *MEMORY[0x1E69DDD08]), v58 = objc_claimAutoreleasedReturnValue(), v59 = v39, v60 = MEMORY[0x1E69DCAD8], objc_msgSend(v58, "scaledValueForValue:", 9.0), objc_msgSend(v60, "configurationWithPointSize:weight:", 2), v61 = objc_claimAutoreleasedReturnValue(), objc_msgSend(transactionView, "setSecondaryBadgeSymbolConfiguration:", v61), v61, v39 = v59, viewCopy = v95, v58, v55) && peerPaymentCounterpartImageRecordIdentifier)
       {
         objc_initWeak(&location, self);
         aBlock[0] = MEMORY[0x1E69E9820];
@@ -704,12 +704,12 @@ LABEL_29:
         objc_copyWeak(&v121, &location);
         v62 = v98;
         v118 = v62;
-        v119 = v13;
-        v120 = v57;
+        v119 = transaction;
+        v120 = peerPaymentCounterpartHandle;
         v63 = _Block_copy(aBlock);
-        if ([(PKPeerPaymentCounterpartImageResolver *)self->_counterpartImageResolver hasCachedImageDataForIdentifier:v84])
+        if ([(PKPeerPaymentCounterpartImageResolver *)self->_counterpartImageResolver hasCachedImageDataForIdentifier:peerPaymentCounterpartImageRecordIdentifier])
         {
-          v64 = [(PKPeerPaymentCounterpartImageResolver *)self->_counterpartImageResolver counterpartImageDataForIdentifier:v84];
+          v64 = [(PKPeerPaymentCounterpartImageResolver *)self->_counterpartImageResolver counterpartImageDataForIdentifier:peerPaymentCounterpartImageRecordIdentifier];
           v63[2](v63, v64);
         }
 
@@ -721,9 +721,9 @@ LABEL_29:
           v113[2] = __99__PKDashboardPaymentTransactionItemPresenter__configureCell_forItem_inCollectionView_forIndexPath___block_invoke_2;
           v113[3] = &unk_1E8017E48;
           v114 = v62;
-          v115 = v96;
+          v115 = identifier;
           v116 = v63;
-          [(PKPeerPaymentCounterpartImageResolver *)counterpartImageResolver counterpartImageDataForIdentifier:v84 completion:v113];
+          [(PKPeerPaymentCounterpartImageResolver *)counterpartImageResolver counterpartImageDataForIdentifier:peerPaymentCounterpartImageRecordIdentifier completion:v113];
 
           v64 = v114;
         }
@@ -732,15 +732,15 @@ LABEL_29:
         objc_destroyWeak(&location);
       }
 
-      else if ([(PKContactResolver *)self->_contactResolver hasCachedResultForHandle:v57])
+      else if ([(PKContactResolver *)self->_contactResolver hasCachedResultForHandle:peerPaymentCounterpartHandle])
       {
-        v71 = [(PKContactResolver *)self->_contactResolver contactForHandle:v57];
+        v71 = [(PKContactResolver *)self->_contactResolver contactForHandle:peerPaymentCounterpartHandle];
         if (v55)
         {
-          [(PKDashboardPaymentTransactionItemPresenter *)self _updateAvatarOnTransactionCell:v98 withTransaction:v13 contact:v71];
+          [(PKDashboardPaymentTransactionItemPresenter *)self _updateAvatarOnTransactionCell:v98 withTransaction:transaction contact:v71];
         }
 
-        [(PKDashboardPaymentTransactionItemPresenter *)self _updatePrimaryLabelOnTransactionCell:v98 withPeerPaymentCounterpartHandle:v57 contact:v71 transaction:v13];
+        [(PKDashboardPaymentTransactionItemPresenter *)self _updatePrimaryLabelOnTransactionCell:v98 withPeerPaymentCounterpartHandle:peerPaymentCounterpartHandle contact:v71 transaction:transaction];
       }
 
       else
@@ -753,37 +753,37 @@ LABEL_29:
         v106[3] = &unk_1E801A800;
         objc_copyWeak(&v111, &location);
         v107 = v98;
-        v108 = v96;
+        v108 = identifier;
         v112 = v55;
-        v109 = v13;
-        v110 = v57;
+        v109 = transaction;
+        v110 = peerPaymentCounterpartHandle;
         [(PKContactResolver *)contactResolver contactForHandle:v110 withCompletion:v106];
 
         objc_destroyWeak(&v111);
         objc_destroyWeak(&location);
       }
 
-      v78 = [MEMORY[0x1E69DC938] currentDevice];
-      v79 = [v78 _supportsForceTouch];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      _supportsForceTouch = [currentDevice _supportsForceTouch];
 
-      if (v79)
+      if (_supportsForceTouch)
       {
-        v80 = [v40 avatarView];
-        [v80 setUserInteractionEnabled:1];
+        avatarView = [transactionView avatarView];
+        [avatarView setUserInteractionEnabled:1];
         WeakRetained = objc_loadWeakRetained(&self->_avatarViewDelegate);
-        [v80 setDelegate:WeakRetained];
-        [v80 setForcePressView:v80];
+        [avatarView setDelegate:WeakRetained];
+        [avatarView setForcePressView:avatarView];
       }
 
       goto LABEL_64;
     }
 
-    v65 = v56;
-    [v40 setShowsAvatarView:0];
-    v11 = v95;
+    v65 = transactionType;
+    [transactionView setShowsAvatarView:0];
+    viewCopy = v95;
     if (!v55)
     {
-      v72 = v40;
+      v72 = transactionView;
       emptyImage = 0;
 LABEL_63:
       [v72 setPrimaryImage:emptyImage];
@@ -806,10 +806,10 @@ LABEL_63:
         v100[3] = &unk_1E801A828;
         objc_copyWeak(&v105, &location);
         v101 = v98;
-        v102 = v96;
+        v102 = identifier;
         v103 = v95;
-        v104 = v40;
-        v70 = [(PKPaymentTransactionIconGenerator *)iconGenerator iconForTransaction:v13 size:0 ignoreLogoURL:0 requestType:v100 iconHandler:v75, v76];
+        v104 = transactionView;
+        v70 = [(PKPaymentTransactionIconGenerator *)iconGenerator iconForTransaction:transaction size:0 ignoreLogoURL:0 requestType:v100 iconHandler:v75, v76];
 
         objc_destroyWeak(&v105);
         objc_destroyWeak(&location);
@@ -823,7 +823,7 @@ LABEL_63:
       {
         if (((1 << v68) & 0x18) != 0)
         {
-          v69 = [(PKDashboardPaymentTransactionItemPresenter *)self dailyCashImage];
+          dailyCashImage = [(PKDashboardPaymentTransactionItemPresenter *)self dailyCashImage];
           goto LABEL_42;
         }
 
@@ -831,25 +831,25 @@ LABEL_63:
         {
           if (v65 == 11)
           {
-            v69 = [(PKDashboardPaymentTransactionItemPresenter *)self savingsInterestImage];
+            dailyCashImage = [(PKDashboardPaymentTransactionItemPresenter *)self savingsInterestImage];
 LABEL_42:
-            v70 = v69;
-            if (!v69)
+            v70 = dailyCashImage;
+            if (!dailyCashImage)
             {
               goto LABEL_62;
             }
 
 LABEL_52:
-            [v40 setPrimaryImage:v70 animated:0];
+            [transactionView setPrimaryImage:v70 animated:0];
 
 LABEL_64:
-            v12 = v94;
+            pathCopy = v94;
             goto LABEL_65;
           }
 
           if (v65 == 10)
           {
-            v69 = [(PKDashboardPaymentTransactionItemPresenter *)self appleCardImage];
+            dailyCashImage = [(PKDashboardPaymentTransactionItemPresenter *)self appleCardImage];
             goto LABEL_42;
           }
         }
@@ -858,7 +858,7 @@ LABEL_64:
 
 LABEL_62:
     emptyImage = self->_emptyImage;
-    v72 = v40;
+    v72 = transactionView;
     goto LABEL_63;
   }
 
@@ -1092,33 +1092,33 @@ LABEL_11:
 LABEL_13:
 }
 
-- (void)_applyRewardsInfo:(id)a3 isFeaturedTransaction:(BOOL)a4 fromTransaction:(id)a5 hideBadgeBackground:(BOOL *)a6
+- (void)_applyRewardsInfo:(id)info isFeaturedTransaction:(BOOL)transaction fromTransaction:(id)fromTransaction hideBadgeBackground:(BOOL *)background
 {
-  v8 = a4;
+  transactionCopy = transaction;
   v55 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  if (([v10 destructiveSecondaryString] & 1) == 0 && self->_context == 1 && v8)
+  infoCopy = info;
+  fromTransactionCopy = fromTransaction;
+  if (([infoCopy destructiveSecondaryString] & 1) == 0 && self->_context == 1 && transactionCopy)
   {
-    v13 = [v11 rewards];
-    v14 = [v13 rewardsItems];
-    v15 = [v14 count];
+    rewards = [fromTransactionCopy rewards];
+    rewardsItems = [rewards rewardsItems];
+    v15 = [rewardsItems count];
 
     if (v15)
     {
-      v16 = [v11 rewards];
-      v48 = [v16 totalEligibleValueForUnit:1];
-      v49 = [v16 totalEligibleValueForUnit:2];
-      v46 = [v16 promotionalRewardsItems];
-      v45 = [v46 count];
+      rewards2 = [fromTransactionCopy rewards];
+      v48 = [rewards2 totalEligibleValueForUnit:1];
+      v49 = [rewards2 totalEligibleValueForUnit:2];
+      promotionalRewardsItems = [rewards2 promotionalRewardsItems];
+      v45 = [promotionalRewardsItems count];
       v17 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v50 = 0u;
       v51 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v47 = v16;
-      v18 = [v16 rewardsItems];
-      v19 = [v18 countByEnumeratingWithState:&v50 objects:v54 count:16];
+      v47 = rewards2;
+      rewardsItems2 = [rewards2 rewardsItems];
+      v19 = [rewardsItems2 countByEnumeratingWithState:&v50 objects:v54 count:16];
       if (v19)
       {
         v20 = v19;
@@ -1130,14 +1130,14 @@ LABEL_13:
           {
             if (*v51 != v22)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(rewardsItems2);
             }
 
             v24 = *(*(&v50 + 1) + 8 * i);
-            v25 = [v24 state];
-            if (v25 != 3)
+            state = [v24 state];
+            if (state != 3)
             {
-              v21 |= v25 == 1;
+              v21 |= state == 1;
               if ([v24 eligibleValueUnit] == 2)
               {
                 [v17 addObject:v24];
@@ -1145,7 +1145,7 @@ LABEL_13:
             }
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v50 objects:v54 count:16];
+          v20 = [rewardsItems2 countByEnumeratingWithState:&v50 objects:v54 count:16];
         }
 
         while (v20);
@@ -1157,38 +1157,38 @@ LABEL_13:
       }
 
       v26 = v48;
-      v27 = [v48 pk_isZeroNumber];
-      v28 = [(NSDecimalNumber *)v49 pk_isZeroNumber];
-      if ((v27 & 1) == 0 && v28)
+      pk_isZeroNumber = [v48 pk_isZeroNumber];
+      pk_isZeroNumber2 = [(NSDecimalNumber *)v49 pk_isZeroNumber];
+      if ((pk_isZeroNumber & 1) == 0 && pk_isZeroNumber2)
       {
-        v43 = PKFormattedStringMinimalFractionDigitsFromNumber();
+        minimalFormattedStringValue = PKFormattedStringMinimalFractionDigitsFromNumber();
         v32 = PKLocalizedFeatureString();
 
         goto LABEL_28;
       }
 
-      if (((v28 | v27) & 1) == 0)
+      if (((pk_isZeroNumber2 | pk_isZeroNumber) & 1) == 0)
       {
         v29 = v47;
         v32 = PKLocalizedFeatureString();
-        v33 = v46;
-        if (!a6)
+        v33 = promotionalRewardsItems;
+        if (!background)
         {
 LABEL_43:
-          v39 = [v11 rewardsTotalCurrencyAmount];
-          if (v39 && [v11 transactionType] != 1)
+          rewardsTotalCurrencyAmount = [fromTransactionCopy rewardsTotalCurrencyAmount];
+          if (rewardsTotalCurrencyAmount && [fromTransactionCopy transactionType] != 1)
           {
-            v41 = [v11 transactionStatus];
+            transactionStatus = [fromTransactionCopy transactionStatus];
 
-            if (v41 == 3)
+            if (transactionStatus == 3)
             {
               v40 = 0;
               goto LABEL_47;
             }
 
-            v39 = [v11 rewardsTotalCurrencyAmount];
-            v42 = [v39 formattedStringValue];
-            v40 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, v42);
+            rewardsTotalCurrencyAmount = [fromTransactionCopy rewardsTotalCurrencyAmount];
+            formattedStringValue = [rewardsTotalCurrencyAmount formattedStringValue];
+            v40 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, formattedStringValue);
           }
 
           else
@@ -1197,25 +1197,25 @@ LABEL_43:
           }
 
 LABEL_47:
-          [v10 setSecondaryBadgeSymbol:0];
-          [v10 setBadgeString:v40];
-          [v10 setSecondaryString:v32];
+          [infoCopy setSecondaryBadgeSymbol:0];
+          [infoCopy setBadgeString:v40];
+          [infoCopy setSecondaryString:v32];
 
           goto LABEL_48;
         }
 
 LABEL_42:
-        *a6 = 1;
+        *background = 1;
         goto LABEL_43;
       }
 
-      if (v28)
+      if (pk_isZeroNumber2)
       {
         v32 = 0;
 LABEL_28:
-        v33 = v46;
+        v33 = promotionalRewardsItems;
         v29 = v47;
-        if (!a6)
+        if (!background)
         {
           goto LABEL_43;
         }
@@ -1223,51 +1223,51 @@ LABEL_28:
         goto LABEL_42;
       }
 
-      v30 = [v11 rewardsTotalCurrencyCode];
+      rewardsTotalCurrencyCode = [fromTransactionCopy rewardsTotalCurrencyCode];
       v29 = v47;
-      if (v30)
+      if (rewardsTotalCurrencyCode)
       {
-        v31 = PKCurrencyAmountCreate(v49, v30);
+        v31 = PKCurrencyAmountCreate(v49, rewardsTotalCurrencyCode);
       }
 
       else
       {
-        v34 = [v11 currencyCode];
-        v31 = PKCurrencyAmountCreate(v49, v34);
+        currencyCode = [fromTransactionCopy currencyCode];
+        v31 = PKCurrencyAmountCreate(v49, currencyCode);
       }
 
       if ([v17 count] == 1)
       {
-        v35 = [v17 anyObject];
+        anyObject = [v17 anyObject];
       }
 
       else
       {
-        v35 = 0;
+        anyObject = 0;
       }
 
       v36 = v31;
-      v44 = v35;
-      v37 = [v35 promotionName];
-      v38 = [v37 pk_stringIfNotEmpty];
+      v44 = anyObject;
+      promotionName = [anyObject promotionName];
+      pk_stringIfNotEmpty = [promotionName pk_stringIfNotEmpty];
 
       if (v21)
       {
         if (v45)
         {
-          v33 = v46;
-          if (v38)
+          v33 = promotionalRewardsItems;
+          if (pk_stringIfNotEmpty)
           {
             goto LABEL_40;
           }
 
 LABEL_53:
-          v43 = [v31 minimalFormattedStringValue];
+          minimalFormattedStringValue = [v31 minimalFormattedStringValue];
           v32 = PKLocalizedFeatureString();
 
 LABEL_54:
           v26 = v48;
-          if (!a6)
+          if (!background)
           {
             goto LABEL_43;
           }
@@ -1278,11 +1278,11 @@ LABEL_54:
 
       else if (v45)
       {
-        v33 = v46;
-        if (v38)
+        v33 = promotionalRewardsItems;
+        if (pk_stringIfNotEmpty)
         {
 LABEL_40:
-          v43 = v38;
+          minimalFormattedStringValue = pk_stringIfNotEmpty;
           v32 = PKLocalizedFeatureString();
           goto LABEL_54;
         }
@@ -1290,10 +1290,10 @@ LABEL_40:
         goto LABEL_53;
       }
 
-      v43 = [v31 minimalFormattedStringValue];
+      minimalFormattedStringValue = [v31 minimalFormattedStringValue];
       v32 = PKLocalizedFeatureString();
 
-      v33 = v46;
+      v33 = promotionalRewardsItems;
       goto LABEL_54;
     }
   }
@@ -1301,51 +1301,51 @@ LABEL_40:
 LABEL_48:
 }
 
-- (void)_updateAvatarOnTransactionCell:(id)a3 withTransaction:(id)a4 contact:(id)a5
+- (void)_updateAvatarOnTransactionCell:(id)cell withTransaction:(id)transaction contact:(id)contact
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = [a3 transactionView];
-  v8 = [v7 avatarView];
+  contactCopy = contact;
+  transactionView = [cell transactionView];
+  avatarView = [transactionView avatarView];
 
-  if (v6)
+  if (contactCopy)
   {
-    v13[0] = v6;
+    v13[0] = contactCopy;
     v9 = MEMORY[0x1E695DEC8];
     v10 = v13;
   }
 
   else
   {
-    v6 = objc_alloc_init(MEMORY[0x1E695CF18]);
-    [v6 setContactType:0];
-    v12 = v6;
+    contactCopy = objc_alloc_init(MEMORY[0x1E695CF18]);
+    [contactCopy setContactType:0];
+    v12 = contactCopy;
     v9 = MEMORY[0x1E695DEC8];
     v10 = &v12;
   }
 
   v11 = [v9 arrayWithObjects:v10 count:1];
 
-  [v8 setContacts:v11];
+  [avatarView setContacts:v11];
 }
 
-- (void)_updatePrimaryLabelOnTransactionCell:(id)a3 withPeerPaymentCounterpartHandle:(id)a4 contact:(id)a5 transaction:(id)a6
+- (void)_updatePrimaryLabelOnTransactionCell:(id)cell withPeerPaymentCounterpartHandle:(id)handle contact:(id)contact transaction:(id)transaction
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
+  cellCopy = cell;
+  handleCopy = handle;
+  contactCopy = contact;
   if (!self->_context)
   {
-    v12 = v10;
-    if ([a6 peerPaymentPaymentMode] != 2)
+    v12 = handleCopy;
+    if ([transaction peerPaymentPaymentMode] != 2)
     {
-      v13 = [MEMORY[0x1E69B8F30] displayNameForCounterpartHandle:v12 contact:v11];
+      v13 = [MEMORY[0x1E69B8F30] displayNameForCounterpartHandle:v12 contact:contactCopy];
 
       v12 = v13;
     }
 
-    v14 = [v15 transactionView];
-    [v14 setPrimaryString:v12];
+    transactionView = [cellCopy transactionView];
+    [transactionView setPrimaryString:v12];
   }
 }
 
@@ -1421,13 +1421,13 @@ LABEL_48:
   return savingsInterestImage;
 }
 
-- (id)searchHistoryStringForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)searchHistoryStringForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v5 = [a4 cellForItemAtIndexPath:a5];
-  v6 = [v5 transactionView];
-  v7 = [v6 primaryString];
+  v5 = [view cellForItemAtIndexPath:path];
+  transactionView = [v5 transactionView];
+  primaryString = [transactionView primaryString];
 
-  return v7;
+  return primaryString;
 }
 
 - (PKDashboardPaymentTransactionItemPresenterDelegate)delegate

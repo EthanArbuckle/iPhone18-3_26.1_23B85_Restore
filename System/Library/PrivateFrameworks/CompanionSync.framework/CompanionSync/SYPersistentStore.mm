@@ -1,24 +1,24 @@
 @interface SYPersistentStore
-+ (BOOL)_tableEmpty:(id)a3 db:(sqlite3 *)a4;
-+ (id)_loadOrCreatePeerIDForDB:(sqlite3 *)a3;
-+ (id)sharedPersistentStoreForService:(id)a3;
-- (BOOL)_LOCKED_storeSequenceNumberSet:(id)a3 forPeerID:(id)a4 db:(sqlite3 *)a5 error:(id *)a6;
-- (BOOL)_inTransaction:(BOOL)a3 do:(id)a4;
-- (BOOL)_openDBAtPath:(id)a3;
++ (BOOL)_tableEmpty:(id)empty db:(sqlite3 *)db;
++ (id)_loadOrCreatePeerIDForDB:(sqlite3 *)b;
++ (id)sharedPersistentStoreForService:(id)service;
+- (BOOL)_LOCKED_storeSequenceNumberSet:(id)set forPeerID:(id)d db:(sqlite3 *)db error:(id *)error;
+- (BOOL)_inTransaction:(BOOL)transaction do:(id)do;
+- (BOOL)_openDBAtPath:(id)path;
 - (BOOL)canStartNewSyncSession;
 - (BOOL)completedSync;
 - (BOOL)currentSyncSendComplete;
-- (BOOL)ignoringFullSyncWithID:(id)a3;
+- (BOOL)ignoringFullSyncWithID:(id)d;
 - (BOOL)inFullSync;
 - (BOOL)isPerformingDeltaSync;
 - (BOOL)lastSyncFailed;
-- (BOOL)logChanges:(id)a3 error:(id *)a4;
-- (BOOL)logSyncCompletionToRemoteVersion:(unint64_t)a3;
-- (BOOL)objectChanged:(id)a3 sinceVersion:(unint64_t)a4;
-- (BOOL)reassignCurrentSyncID:(id)a3;
-- (BOOL)sequenceNumberIsDuplicate:(unint64_t)a3 forPeer:(id)a4;
-- (BOOL)setLastSequenceNumber:(unint64_t)a3 fromPeer:(id)a4 error:(id *)a5;
-- (BOOL)shouldIgnoreMessageID:(id)a3;
+- (BOOL)logChanges:(id)changes error:(id *)error;
+- (BOOL)logSyncCompletionToRemoteVersion:(unint64_t)version;
+- (BOOL)objectChanged:(id)changed sinceVersion:(unint64_t)version;
+- (BOOL)reassignCurrentSyncID:(id)d;
+- (BOOL)sequenceNumberIsDuplicate:(unint64_t)duplicate forPeer:(id)peer;
+- (BOOL)setLastSequenceNumber:(unint64_t)number fromPeer:(id)peer error:(id *)error;
+- (BOOL)shouldIgnoreMessageID:(id)d;
 - (NSDate)lastMessageReceived;
 - (NSDate)overflowResyncTime;
 - (NSDictionary)fullSyncIDSOptions;
@@ -29,51 +29,51 @@
 - (NSString)peerID;
 - (NSString)vectorClockJSON;
 - (NSString)waitingForSyncEndID;
-- (SYPersistentStore)initWithPath:(id)a3 loggingFacility:(__CFString *)a4 changeTrackingEnabled:(BOOL)a5;
-- (SYPersistentStore)initWithSharedDatabase:(id)a3;
+- (SYPersistentStore)initWithPath:(id)path loggingFacility:(__CFString *)facility changeTrackingEnabled:(BOOL)enabled;
+- (SYPersistentStore)initWithSharedDatabase:(id)database;
 - (double)durationOfLastFullSync;
-- (id)_decodeIndexSet:(id)a3;
-- (id)_encodeIndexSet:(id)a3;
-- (id)_sequenceNumberSetForPeerID:(id)a3 inDB:(sqlite3 *)a4;
+- (id)_decodeIndexSet:(id)set;
+- (id)_encodeIndexSet:(id)set;
+- (id)_sequenceNumberSetForPeerID:(id)d inDB:(sqlite3 *)b;
 - (id)dbPath;
 - (id)lastDBErrorInfo;
 - (int)_getSchemaVersion;
-- (unint64_t)_lastSequenceNumberForPeerID_LOCKED:(id)a3 db:(sqlite3 *)a4;
+- (unint64_t)_lastSequenceNumberForPeerID_LOCKED:(id)d db:(sqlite3 *)db;
 - (unint64_t)_oldestVersion;
 - (unint64_t)changeCount;
 - (unint64_t)currentLocalVersion;
 - (unint64_t)lastSeenRemoteVersion;
-- (unint64_t)lastSequenceNumberForPeerID:(id)a3;
+- (unint64_t)lastSequenceNumberForPeerID:(id)d;
 - (unint64_t)nextSequenceNumber;
 - (void)_cacheTTL;
 - (void)_convertTimestamps;
 - (void)_fixPeerInfo;
 - (void)_getSchemaVersion;
-- (void)_loadIgnoreList_LOCKED:(sqlite3 *)a3;
-- (void)_saveIgnoreList_LOCKED:(sqlite3 *)a3;
+- (void)_loadIgnoreList_LOCKED:(sqlite3 *)d;
+- (void)_saveIgnoreList_LOCKED:(sqlite3 *)d;
 - (void)_setupSharedDB;
-- (void)_storeSequenceNumberSet:(id)a3 forPeerID:(id)a4;
+- (void)_storeSequenceNumberSet:(id)set forPeerID:(id)d;
 - (void)_verifyInTransactionForFullSync;
-- (void)_withDB:(id)a3;
-- (void)addMessageIDsToIgnore:(id)a3;
-- (void)changeTrackingToggled:(BOOL)a3;
+- (void)_withDB:(id)b;
+- (void)addMessageIDsToIgnore:(id)ignore;
+- (void)changeTrackingToggled:(BOOL)toggled;
 - (void)clearAllChanges;
 - (void)dealloc;
-- (void)enterFullSyncWithID:(id)a3 ignoring:(BOOL)a4;
-- (void)exitFullSyncWithID:(id)a3 error:(id)a4;
-- (void)removeMessageIDFromIgnoreList:(id)a3;
-- (void)resetSequenceNumber:(unint64_t)a3;
-- (void)resetSequenceNumbersForPeer:(id)a3;
-- (void)sendCompletedForSyncWithID:(id)a3;
-- (void)setCompletedSync:(BOOL)a3;
-- (void)setFullSyncIDSOptions:(id)a3;
-- (void)setFullSyncUserInfo:(id)a3;
-- (void)setLastMessageReceived:(id)a3;
-- (void)setOverflowResyncTime:(id)a3;
-- (void)setPerformingDeltaSync:(BOOL)a3;
-- (void)setTimeToLive:(double)a3;
-- (void)setVectorClockJSON:(id)a3;
-- (void)setWaitingForSyncEndID:(id)a3;
+- (void)enterFullSyncWithID:(id)d ignoring:(BOOL)ignoring;
+- (void)exitFullSyncWithID:(id)d error:(id)error;
+- (void)removeMessageIDFromIgnoreList:(id)list;
+- (void)resetSequenceNumber:(unint64_t)number;
+- (void)resetSequenceNumbersForPeer:(id)peer;
+- (void)sendCompletedForSyncWithID:(id)d;
+- (void)setCompletedSync:(BOOL)sync;
+- (void)setFullSyncIDSOptions:(id)options;
+- (void)setFullSyncUserInfo:(id)info;
+- (void)setLastMessageReceived:(id)received;
+- (void)setOverflowResyncTime:(id)time;
+- (void)setPerformingDeltaSync:(BOOL)sync;
+- (void)setTimeToLive:(double)live;
+- (void)setVectorClockJSON:(id)n;
+- (void)setWaitingForSyncEndID:(id)d;
 @end
 
 @implementation SYPersistentStore
@@ -95,21 +95,21 @@
   return peerID;
 }
 
-+ (id)sharedPersistentStoreForService:(id)a3
++ (id)sharedPersistentStoreForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   if (sharedPersistentStoreForService__onceToken != -1)
   {
     +[SYPersistentStore sharedPersistentStoreForService:];
   }
 
   os_unfair_lock_lock(&sharedPersistentStoreForService____mapLock);
-  v5 = [sharedPersistentStoreForService____map objectForKey:v4];
+  v5 = [sharedPersistentStoreForService____map objectForKey:serviceCopy];
   if (!v5)
   {
-    v6 = [_SYSharedServiceDB sharedInstanceForServiceName:v4];
-    v5 = [[a1 alloc] initWithSharedDatabase:v6];
-    [sharedPersistentStoreForService____map setObject:v5 forKey:v4];
+    v6 = [_SYSharedServiceDB sharedInstanceForServiceName:serviceCopy];
+    v5 = [[self alloc] initWithSharedDatabase:v6];
+    [sharedPersistentStoreForService____map setObject:v5 forKey:serviceCopy];
   }
 
   os_unfair_lock_unlock(&sharedPersistentStoreForService____mapLock);
@@ -137,9 +137,9 @@ void __53__SYPersistentStore_sharedPersistentStoreForService___block_invoke_2(ui
   os_unfair_lock_unlock(&sharedPersistentStoreForService____mapLock);
 }
 
-- (SYPersistentStore)initWithSharedDatabase:(id)a3
+- (SYPersistentStore)initWithSharedDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v12.receiver = self;
   v12.super_class = SYPersistentStore;
   v6 = [(SYPersistentStore *)&v12 init];
@@ -147,7 +147,7 @@ void __53__SYPersistentStore_sharedPersistentStoreForService___block_invoke_2(ui
   if (v6)
   {
     v6->_changeTrackingEnabled = 1;
-    objc_storeStrong(&v6->_sharedDB, a3);
+    objc_storeStrong(&v6->_sharedDB, database);
     [(SYPersistentStore *)v7 setUnfinishedSyncTimeout:30.0];
     v8 = objc_opt_new();
     peerSeqnoSets = v7->_peerSeqnoSets;
@@ -161,9 +161,9 @@ void __53__SYPersistentStore_sharedPersistentStoreForService___block_invoke_2(ui
   return v7;
 }
 
-- (SYPersistentStore)initWithPath:(id)a3 loggingFacility:(__CFString *)a4 changeTrackingEnabled:(BOOL)a5
+- (SYPersistentStore)initWithPath:(id)path loggingFacility:(__CFString *)facility changeTrackingEnabled:(BOOL)enabled
 {
-  v8 = a3;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = SYPersistentStore;
   v9 = [(SYPersistentStore *)&v20 init];
@@ -173,10 +173,10 @@ void __53__SYPersistentStore_sharedPersistentStoreForService___block_invoke_2(ui
     goto LABEL_6;
   }
 
-  v9->_changeTrackingEnabled = a5;
-  if (a4)
+  v9->_changeTrackingEnabled = enabled;
+  if (facility)
   {
-    v9->_loggingFacility = CFRetain(a4);
+    v9->_loggingFacility = CFRetain(facility);
   }
 
   v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -184,8 +184,8 @@ void __53__SYPersistentStore_sharedPersistentStoreForService___block_invoke_2(ui
   syncQ = v10->_syncQ;
   v10->_syncQ = v12;
 
-  v14 = [v8 stringByStandardizingPath];
-  v15 = [(SYPersistentStore *)v10 _openDBAtPath:v14];
+  stringByStandardizingPath = [pathCopy stringByStandardizingPath];
+  v15 = [(SYPersistentStore *)v10 _openDBAtPath:stringByStandardizingPath];
 
   if (v15)
   {
@@ -450,14 +450,14 @@ sqlite3_stmt *__28__SYPersistentStore_dealloc__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (BOOL)_tableEmpty:(id)a3 db:(sqlite3 *)a4
++ (BOOL)_tableEmpty:(id)empty db:(sqlite3 *)db
 {
-  v5 = a3;
+  emptyCopy = empty;
   ppStmt = 0;
-  v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT COUNT(*) FROM %@", v5];
-  v7 = [v6 UTF8String];
-  v8 = strlen(v7);
-  v9 = sqlite3_prepare_v2(a4, v7, v8, &ppStmt, 0);
+  emptyCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT COUNT(*) FROM %@", emptyCopy];
+  uTF8String = [emptyCopy UTF8String];
+  v8 = strlen(uTF8String);
+  v9 = sqlite3_prepare_v2(db, uTF8String, v8, &ppStmt, 0);
   if (v9)
   {
     v10 = v9;
@@ -470,7 +470,7 @@ sqlite3_stmt *__28__SYPersistentStore_dealloc__block_invoke(uint64_t a1)
 
       if (os_log_type_enabled(qword_1EDE73430, OS_LOG_TYPE_ERROR))
       {
-        [SYPersistentStore _tableEmpty:v5 db:?];
+        [SYPersistentStore _tableEmpty:emptyCopy db:?];
       }
 
       v10 = 1;
@@ -497,7 +497,7 @@ sqlite3_stmt *__28__SYPersistentStore_dealloc__block_invoke(uint64_t a1)
 
         if (os_log_type_enabled(qword_1EDE73430, OS_LOG_TYPE_ERROR))
         {
-          [SYPersistentStore _tableEmpty:v5 db:?];
+          [SYPersistentStore _tableEmpty:emptyCopy db:?];
         }
 
         v10 = 1;
@@ -510,35 +510,35 @@ sqlite3_stmt *__28__SYPersistentStore_dealloc__block_invoke(uint64_t a1)
   return v10;
 }
 
-+ (id)_loadOrCreatePeerIDForDB:(sqlite3 *)a3
++ (id)_loadOrCreatePeerIDForDB:(sqlite3 *)b
 {
-  if ([a1 _tableEmpty:@"syncstate" db:a3])
+  if ([self _tableEmpty:@"syncstate" db:b])
   {
     v4 = objc_opt_new();
-    v5 = [v4 UUIDString];
+    uUIDString = [v4 UUIDString];
 
-    ExecuteSQL_0(a3, "INSERT INTO syncstate (remoteversion, tstamp, peer_id) VALUES (0, datetime('now'), '%s')", [v5 UTF8String]);
+    ExecuteSQL_0(b, "INSERT INTO syncstate (remoteversion, tstamp, peer_id) VALUES (0, datetime('now'), '%s')", [uUIDString UTF8String]);
   }
 
   else
   {
     ppStmt = 0;
-    sqlite3_prepare_v2(a3, "SELECT peer_id FROM syncstate LIMIT 1", 37, &ppStmt, 0);
+    sqlite3_prepare_v2(b, "SELECT peer_id FROM syncstate LIMIT 1", 37, &ppStmt, 0);
     sqlite3_step(ppStmt);
-    v5 = ReadString(ppStmt);
+    uUIDString = ReadString(ppStmt);
     sqlite3_reset(ppStmt);
     sqlite3_finalize(ppStmt);
-    if (![v5 length])
+    if (![uUIDString length])
     {
       v6 = objc_opt_new();
-      v7 = [v6 UUIDString];
+      uUIDString2 = [v6 UUIDString];
 
-      ExecuteSQL_0(a3, "UPDATE syncstate SET peer_id='%s'", [v7 UTF8String]);
-      v5 = v7;
+      ExecuteSQL_0(b, "UPDATE syncstate SET peer_id='%s'", [uUIDString2 UTF8String]);
+      uUIDString = uUIDString2;
     }
   }
 
-  return v5;
+  return uUIDString;
 }
 
 - (int)_getSchemaVersion
@@ -596,13 +596,13 @@ sqlite3_stmt *__28__SYPersistentStore_dealloc__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (BOOL)_openDBAtPath:(id)a3
+- (BOOL)_openDBAtPath:(id)path
 {
   v26[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 stringByDeletingLastPathComponent];
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 fileExistsAtPath:v4];
+  pathCopy = path;
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:pathCopy];
 
   if ((v7 & 1) == 0)
   {
@@ -614,13 +614,13 @@ sqlite3_stmt *__28__SYPersistentStore_dealloc__block_invoke(uint64_t a1)
     v25[2] = *MEMORY[0x1E696A370];
     v26[2] = &unk_1F5AE26B0;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:3];
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    [v10 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:v9 error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager2 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:v9 error:0];
   }
 
-  if (!sqlite3_open_v2([v4 fileSystemRepresentation], &self->_db, 4194310, 0) && self->_db)
+  if (!sqlite3_open_v2([pathCopy fileSystemRepresentation], &self->_db, 4194310, 0) && self->_db)
   {
-    v13 = [v4 copy];
+    v13 = [pathCopy copy];
     path = self->_path;
     self->_path = v13;
 
@@ -628,18 +628,18 @@ sqlite3_stmt *__28__SYPersistentStore_dealloc__block_invoke(uint64_t a1)
     sqlite3_busy_timeout(self->_db, 60000);
     sqlite3_extended_result_codes(self->_db, 1);
     sqlite3_wal_checkpoint_v2(self->_db, 0, 3, 0, 0);
-    v15 = [(SYPersistentStore *)self _getSchemaVersion];
-    v16 = v15;
-    v17 = v15 - 1;
-    if (v15 > 5)
+    _getSchemaVersion = [(SYPersistentStore *)self _getSchemaVersion];
+    v16 = _getSchemaVersion;
+    v17 = _getSchemaVersion - 1;
+    if (_getSchemaVersion > 5)
     {
-      if (v15 > 8)
+      if (_getSchemaVersion > 8)
       {
-        if (v15 != 9)
+        if (_getSchemaVersion != 9)
         {
-          if (v15 != 10)
+          if (_getSchemaVersion != 10)
           {
-            if (v15 != 11)
+            if (_getSchemaVersion != 11)
             {
 LABEL_56:
               v20 = [SYPersistentStore _loadOrCreatePeerIDForDB:self->_db];
@@ -730,9 +730,9 @@ LABEL_38:
         goto LABEL_39;
       }
 
-      if (v15 != 6)
+      if (_getSchemaVersion != 6)
       {
-        if (v15 != 7)
+        if (_getSchemaVersion != 7)
         {
           goto LABEL_37;
         }
@@ -754,11 +754,11 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    if (v15 > 2)
+    if (_getSchemaVersion > 2)
     {
-      if (v15 != 3)
+      if (_getSchemaVersion != 3)
       {
-        if (v15 != 4)
+        if (_getSchemaVersion != 4)
         {
           goto LABEL_34;
         }
@@ -789,11 +789,11 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    if (v15)
+    if (_getSchemaVersion)
     {
-      if (v15 != 1)
+      if (_getSchemaVersion != 1)
       {
-        if (v15 != 2)
+        if (_getSchemaVersion != 2)
         {
           goto LABEL_56;
         }
@@ -825,7 +825,7 @@ LABEL_31:
 
   if (os_log_type_enabled(qword_1EDE73430, OS_LOG_TYPE_ERROR))
   {
-    [SYPersistentStore _openDBAtPath:v4];
+    [SYPersistentStore _openDBAtPath:pathCopy];
   }
 
   v11 = self->_db;
@@ -920,13 +920,13 @@ LABEL_5:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_withDB:(id)a3
+- (void)_withDB:(id)b
 {
-  v4 = a3;
+  bCopy = b;
   sharedDB = self->_sharedDB;
   if (sharedDB)
   {
-    [(_SYSharedServiceDB *)sharedDB withDBRef:v4];
+    [(_SYSharedServiceDB *)sharedDB withDBRef:bCopy];
   }
 
   else
@@ -938,28 +938,28 @@ LABEL_5:
     block[2] = __29__SYPersistentStore__withDB___block_invoke;
     block[3] = &unk_1E86CA950;
     v10 = v6;
-    v11 = v4;
+    v11 = bCopy;
     block[4] = self;
     v8 = v6;
     dispatch_sync(syncQ, block);
   }
 }
 
-- (BOOL)_inTransaction:(BOOL)a3 do:(id)a4
+- (BOOL)_inTransaction:(BOOL)transaction do:(id)do
 {
-  v4 = a3;
-  v6 = a4;
+  transactionCopy = transaction;
+  doCopy = do;
   sharedDB = self->_sharedDB;
   if (sharedDB)
   {
-    if (v4)
+    if (transactionCopy)
     {
-      v8 = [(_SYSharedServiceDB *)sharedDB inExclusiveTransaction:v6];
+      v8 = [(_SYSharedServiceDB *)sharedDB inExclusiveTransaction:doCopy];
     }
 
     else
     {
-      v8 = [(_SYSharedServiceDB *)sharedDB inTransaction:v6];
+      v8 = [(_SYSharedServiceDB *)sharedDB inTransaction:doCopy];
     }
 
     v12 = v8;
@@ -977,11 +977,11 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = __39__SYPersistentStore__inTransaction_do___block_invoke;
     block[3] = &unk_1E86CAC40;
-    v18 = v4;
+    v18 = transactionCopy;
     block[4] = self;
     v17 = &v19;
     v15 = v9;
-    v16 = v6;
+    v16 = doCopy;
     v11 = v9;
     dispatch_sync(syncQ, block);
     v12 = *(v20 + 24);
@@ -1212,9 +1212,9 @@ LABEL_46:
   return v3;
 }
 
-- (id)_encodeIndexSet:(id)a3
+- (id)_encodeIndexSet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   v4 = objc_opt_new();
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -1222,7 +1222,7 @@ LABEL_46:
   v8[3] = &unk_1E86CAC88;
   v9 = v4;
   v5 = v4;
-  [v3 enumerateRangesUsingBlock:v8];
+  [setCopy enumerateRangesUsingBlock:v8];
 
   v6 = [v5 componentsJoinedByString:{@", "}];
 
@@ -1236,18 +1236,18 @@ void __37__SYPersistentStore__encodeIndexSet___block_invoke(uint64_t a1, NSRange
   [v2 addObject:v3];
 }
 
-- (id)_decodeIndexSet:(id)a3
+- (id)_decodeIndexSet:(id)set
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  setCopy = set;
   v4 = objc_opt_new();
-  if ([v3 length])
+  if ([setCopy length])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [v3 componentsSeparatedByString:{@", ", 0}];
+    v5 = [setCopy componentsSeparatedByString:{@", ", 0}];
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -1282,10 +1282,10 @@ void __37__SYPersistentStore__encodeIndexSet___block_invoke(uint64_t a1, NSRange
   return v4;
 }
 
-- (id)_sequenceNumberSetForPeerID:(id)a3 inDB:(sqlite3 *)a4
+- (id)_sequenceNumberSetForPeerID:(id)d inDB:(sqlite3 *)b
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_peerSeqnoSets objectForKeyedSubscript:v6];
+  dCopy = d;
+  v7 = [(NSMutableDictionary *)self->_peerSeqnoSets objectForKeyedSubscript:dCopy];
   if (v7)
   {
     v8 = v7;
@@ -1295,7 +1295,7 @@ void __37__SYPersistentStore__encodeIndexSet___block_invoke(uint64_t a1, NSRange
   {
     v9 = objc_opt_new();
     ppStmt = 0;
-    if (sqlite3_prepare_v2(a4, "SELECT seqno_set FROM peer_info WHERE peerID=?", -1, &ppStmt, 0))
+    if (sqlite3_prepare_v2(b, "SELECT seqno_set FROM peer_info WHERE peerID=?", -1, &ppStmt, 0))
     {
       if (_sync_log_facilities_pred != -1)
       {
@@ -1310,7 +1310,7 @@ void __37__SYPersistentStore__encodeIndexSet___block_invoke(uint64_t a1, NSRange
 
     else
     {
-      BindString_0(ppStmt, 1, v6);
+      BindString_0(ppStmt, 1, dCopy);
       if (sqlite3_step(ppStmt) == 100)
       {
         v10 = ReadString(ppStmt);
@@ -1319,7 +1319,7 @@ void __37__SYPersistentStore__encodeIndexSet___block_invoke(uint64_t a1, NSRange
       }
 
       sqlite3_finalize(ppStmt);
-      [(NSMutableDictionary *)self->_peerSeqnoSets setObject:v9 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_peerSeqnoSets setObject:v9 forKeyedSubscript:dCopy];
     }
 
     v8 = v9;
@@ -1330,12 +1330,12 @@ void __37__SYPersistentStore__encodeIndexSet___block_invoke(uint64_t a1, NSRange
   return v12;
 }
 
-- (BOOL)_LOCKED_storeSequenceNumberSet:(id)a3 forPeerID:(id)a4 db:(sqlite3 *)a5 error:(id *)a6
+- (BOOL)_LOCKED_storeSequenceNumberSet:(id)set forPeerID:(id)d db:(sqlite3 *)db error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  setCopy = set;
+  dCopy = d;
   p_setPeerSeqNoSet = &self->_setPeerSeqNoSet;
-  if (!self->_setPeerSeqNoSet && sqlite3_prepare_v2(a5, "UPDATE peer_info SET seqno_set=? WHERE peerID=?", -1, &self->_setPeerSeqNoSet, 0))
+  if (!self->_setPeerSeqNoSet && sqlite3_prepare_v2(db, "UPDATE peer_info SET seqno_set=? WHERE peerID=?", -1, &self->_setPeerSeqNoSet, 0))
   {
     if (_sync_log_facilities_pred != -1)
     {
@@ -1351,9 +1351,9 @@ void __37__SYPersistentStore__encodeIndexSet___block_invoke(uint64_t a1, NSRange
     goto LABEL_19;
   }
 
-  if (v10)
+  if (setCopy)
   {
-    v13 = [(SYPersistentStore *)self _encodeIndexSet:v10];
+    v13 = [(SYPersistentStore *)self _encodeIndexSet:setCopy];
   }
 
   else
@@ -1363,7 +1363,7 @@ void __37__SYPersistentStore__encodeIndexSet___block_invoke(uint64_t a1, NSRange
 
   v14 = 1;
   BindString_0(*p_setPeerSeqNoSet, 1, v13);
-  BindString_0(*p_setPeerSeqNoSet, 2, v11);
+  BindString_0(*p_setPeerSeqNoSet, 2, dCopy);
   v15 = sqlite3_step(*p_setPeerSeqNoSet);
   if ((v15 - 100) >= 2 && v15 != 0)
   {
@@ -1376,17 +1376,17 @@ void __37__SYPersistentStore__encodeIndexSet___block_invoke(uint64_t a1, NSRange
     if (os_log_type_enabled(qword_1EDE73430, OS_LOG_TYPE_ERROR))
     {
       __40__NMSWindowData__syncTransaction_block___block_invoke_cold_2();
-      if (a6)
+      if (error)
       {
         goto LABEL_24;
       }
     }
 
-    else if (a6)
+    else if (error)
     {
 LABEL_24:
       NSErrorFromSQLiteError(v18);
-      *a6 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_16;
     }
 
@@ -1396,28 +1396,28 @@ LABEL_24:
 LABEL_16:
   sqlite3_reset(*p_setPeerSeqNoSet);
   sqlite3_clear_bindings(*p_setPeerSeqNoSet);
-  if (!v10)
+  if (!setCopy)
   {
-    [(NSMutableDictionary *)self->_peerSeqnoSets removeObjectForKey:v11];
+    [(NSMutableDictionary *)self->_peerSeqnoSets removeObjectForKey:dCopy];
   }
 
 LABEL_19:
   return v14;
 }
 
-- (void)_storeSequenceNumberSet:(id)a3 forPeerID:(id)a4
+- (void)_storeSequenceNumberSet:(id)set forPeerID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  setCopy = set;
+  dCopy = d;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__SYPersistentStore__storeSequenceNumberSet_forPeerID___block_invoke;
   v10[3] = &unk_1E86CACB0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = setCopy;
+  v12 = dCopy;
+  v8 = dCopy;
+  v9 = setCopy;
   [(SYPersistentStore *)self _withDB:v10];
 }
 
@@ -1449,13 +1449,13 @@ uint64_t __30__SYPersistentStore__cacheTTL__block_invoke(uint64_t a1, sqlite3 *d
   return sqlite3_finalize(ppStmt);
 }
 
-- (void)resetSequenceNumber:(unint64_t)a3
+- (void)resetSequenceNumber:(unint64_t)number
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __41__SYPersistentStore_resetSequenceNumber___block_invoke;
   v3[3] = &__block_descriptor_40_e18_v16__0__sqlite3__8l;
-  v3[4] = a3;
+  v3[4] = number;
   [(SYPersistentStore *)self _withDB:v3];
 }
 
@@ -1542,12 +1542,12 @@ uint64_t __39__SYPersistentStore_nextSequenceNumber__block_invoke(uint64_t a1, s
   return result;
 }
 
-- (BOOL)setLastSequenceNumber:(unint64_t)a3 fromPeer:(id)a4 error:(id *)a5
+- (BOOL)setLastSequenceNumber:(unint64_t)number fromPeer:(id)peer error:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = v8;
-  if (a3)
+  peerCopy = peer;
+  v9 = peerCopy;
+  if (number)
   {
     v26 = 0;
     v27 = &v26;
@@ -1564,21 +1564,21 @@ uint64_t __39__SYPersistentStore_nextSequenceNumber__block_invoke(uint64_t a1, s
     v15[2] = __58__SYPersistentStore_setLastSequenceNumber_fromPeer_error___block_invoke;
     v15[3] = &unk_1E86CACF8;
     v15[4] = self;
-    v16 = v8;
+    v16 = peerCopy;
     v17 = &v20;
     v18 = &v26;
-    v19 = a3;
+    numberCopy = number;
     [(SYPersistentStore *)self _withDB:v15];
-    if (a5)
+    if (error)
     {
       v10 = v21[5];
       if (v10)
       {
-        *a5 = v10;
+        *error = v10;
       }
     }
 
-    LOBYTE(a5) = *(v27 + 24);
+    LOBYTE(error) = *(v27 + 24);
 
     _Block_object_dispose(&v20, 8);
     _Block_object_dispose(&v26, 8);
@@ -1596,20 +1596,20 @@ uint64_t __39__SYPersistentStore_nextSequenceNumber__block_invoke(uint64_t a1, s
       [SYPersistentStore setLastSequenceNumber:fromPeer:error:];
     }
 
-    if (a5)
+    if (error)
     {
       v11 = objc_alloc(MEMORY[0x1E696ABC0]);
       v30 = *MEMORY[0x1E696A578];
       v31[0] = @"Cannot store sequence number == 0; that value is invalid";
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
-      *a5 = [v11 initWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v12];
+      *error = [v11 initWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v12];
 
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return a5 & 1;
+  return error & 1;
 }
 
 void __58__SYPersistentStore_setLastSequenceNumber_fromPeer_error___block_invoke(uint64_t a1, sqlite3 *db)
@@ -1745,9 +1745,9 @@ LABEL_23:
   }
 }
 
-- (unint64_t)_lastSequenceNumberForPeerID_LOCKED:(id)a3 db:(sqlite3 *)a4
+- (unint64_t)_lastSequenceNumberForPeerID_LOCKED:(id)d db:(sqlite3 *)db
 {
-  v6 = a3;
+  dCopy = d;
   if (self->_db)
   {
     dispatch_assert_queue_V2(self->_syncQ);
@@ -1759,7 +1759,7 @@ LABEL_23:
   if (getPeerSeqNo)
   {
 LABEL_4:
-    BindString_0(v7, 1, v6);
+    BindString_0(v7, 1, dCopy);
     v10 = sqlite3_step(*p_getPeerSeqNo);
     if (v10 == 101)
     {
@@ -1801,7 +1801,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!sqlite3_prepare_v2(a4, "SELECT last_seqno FROM peer_info WHERE peerID=?", -1, p_getPeerSeqNo, 0))
+  if (!sqlite3_prepare_v2(db, "SELECT last_seqno FROM peer_info WHERE peerID=?", -1, p_getPeerSeqNo, 0))
   {
     v7 = *p_getPeerSeqNo;
     goto LABEL_4;
@@ -1823,9 +1823,9 @@ LABEL_23:
   return v11;
 }
 
-- (unint64_t)lastSequenceNumberForPeerID:(id)a3
+- (unint64_t)lastSequenceNumberForPeerID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1836,7 +1836,7 @@ LABEL_23:
   v8[3] = &unk_1E86CAD20;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = dCopy;
   v9 = v5;
   [(SYPersistentStore *)self _withDB:v8];
   v6 = v12[3];
@@ -1852,9 +1852,9 @@ uint64_t __49__SYPersistentStore_lastSequenceNumberForPeerID___block_invoke(uint
   return result;
 }
 
-- (BOOL)sequenceNumberIsDuplicate:(unint64_t)a3 forPeer:(id)a4
+- (BOOL)sequenceNumberIsDuplicate:(unint64_t)duplicate forPeer:(id)peer
 {
-  v6 = a4;
+  peerCopy = peer;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1864,15 +1864,15 @@ uint64_t __49__SYPersistentStore_lastSequenceNumberForPeerID___block_invoke(uint
   v9[2] = __55__SYPersistentStore_sequenceNumberIsDuplicate_forPeer___block_invoke;
   v9[3] = &unk_1E86CAD48;
   v9[4] = self;
-  v7 = v6;
+  v7 = peerCopy;
   v11 = &v13;
-  v12 = a3;
+  duplicateCopy = duplicate;
   v10 = v7;
   [(SYPersistentStore *)self _withDB:v9];
-  LOBYTE(a3) = *(v14 + 24);
+  LOBYTE(duplicate) = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
-  return a3;
+  return duplicate;
 }
 
 void __55__SYPersistentStore_sequenceNumberIsDuplicate_forPeer___block_invoke(uint64_t a1, uint64_t a2)
@@ -1884,15 +1884,15 @@ void __55__SYPersistentStore_sequenceNumberIsDuplicate_forPeer___block_invoke(ui
   }
 }
 
-- (void)resetSequenceNumbersForPeer:(id)a3
+- (void)resetSequenceNumbersForPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__SYPersistentStore_resetSequenceNumbersForPeer___block_invoke;
   v6[3] = &unk_1E86C9ED8;
-  v7 = v4;
-  v5 = v4;
+  v7 = peerCopy;
+  v5 = peerCopy;
   [(SYPersistentStore *)self _withDB:v6];
 }
 
@@ -1958,13 +1958,13 @@ void __42__SYPersistentStore_isPerformingDeltaSync__block_invoke(uint64_t a1, sq
   }
 }
 
-- (void)setPerformingDeltaSync:(BOOL)a3
+- (void)setPerformingDeltaSync:(BOOL)sync
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __44__SYPersistentStore_setPerformingDeltaSync___block_invoke;
   v3[3] = &__block_descriptor_33_e18_v16__0__sqlite3__8l;
-  v4 = a3;
+  syncCopy = sync;
   [(SYPersistentStore *)self _withDB:v3];
 }
 
@@ -1985,11 +1985,11 @@ void __44__SYPersistentStore_setPerformingDeltaSync___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_loadIgnoreList_LOCKED:(sqlite3 *)a3
+- (void)_loadIgnoreList_LOCKED:(sqlite3 *)d
 {
   v5 = objc_autoreleasePoolPush();
   ppStmt = 0;
-  if (sqlite3_prepare_v2(a3, "SELECT ignored_message_id_set FROM syncstate LIMIT 1", -1, &ppStmt, 0))
+  if (sqlite3_prepare_v2(d, "SELECT ignored_message_id_set FROM syncstate LIMIT 1", -1, &ppStmt, 0))
   {
     if (_sync_log_facilities_pred != -1)
     {
@@ -2037,13 +2037,13 @@ void __44__SYPersistentStore_setPerformingDeltaSync___block_invoke(uint64_t a1, 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)_saveIgnoreList_LOCKED:(sqlite3 *)a3
+- (void)_saveIgnoreList_LOCKED:(sqlite3 *)d
 {
   v5 = objc_autoreleasePoolPush();
   if ([(NSMutableSet *)self->_ignoringMessageIDs count])
   {
-    v6 = [(NSMutableSet *)self->_ignoringMessageIDs allObjects];
-    v7 = [v6 componentsJoinedByString:{@", "}];
+    allObjects = [(NSMutableSet *)self->_ignoringMessageIDs allObjects];
+    v7 = [allObjects componentsJoinedByString:{@", "}];
 
     v8 = 0;
   }
@@ -2053,7 +2053,7 @@ void __44__SYPersistentStore_setPerformingDeltaSync___block_invoke(uint64_t a1, 
     v8 = &stru_1F5ACC660;
   }
 
-  v9 = ExecuteSQL_0(a3, "UPDATE syncstate SET ignored_message_id_set=%s", [(__CFString *)v8 UTF8String]);
+  v9 = ExecuteSQL_0(d, "UPDATE syncstate SET ignored_message_id_set=%s", [(__CFString *)v8 UTF8String]);
   if (v9 && v9 != 101)
   {
     if (_sync_log_facilities_pred != -1)
@@ -2070,16 +2070,16 @@ void __44__SYPersistentStore_setPerformingDeltaSync___block_invoke(uint64_t a1, 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)addMessageIDsToIgnore:(id)a3
+- (void)addMessageIDsToIgnore:(id)ignore
 {
-  v4 = a3;
+  ignoreCopy = ignore;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__SYPersistentStore_addMessageIDsToIgnore___block_invoke;
   v6[3] = &unk_1E86CABC0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = ignoreCopy;
+  v5 = ignoreCopy;
   [(SYPersistentStore *)self _withDB:v6];
 }
 
@@ -2106,9 +2106,9 @@ uint64_t __43__SYPersistentStore_addMessageIDsToIgnore___block_invoke(uint64_t a
   return result;
 }
 
-- (BOOL)shouldIgnoreMessageID:(id)a3
+- (BOOL)shouldIgnoreMessageID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -2119,7 +2119,7 @@ uint64_t __43__SYPersistentStore_addMessageIDsToIgnore___block_invoke(uint64_t a
   v7[3] = &unk_1E86CAD90;
   v7[4] = self;
   v9 = &v10;
-  v5 = v4;
+  v5 = dCopy;
   v8 = v5;
   [(SYPersistentStore *)self _withDB:v7];
   LOBYTE(self) = *(v11 + 24);
@@ -2143,16 +2143,16 @@ uint64_t __43__SYPersistentStore_shouldIgnoreMessageID___block_invoke(void *a1, 
   return result;
 }
 
-- (void)removeMessageIDFromIgnoreList:(id)a3
+- (void)removeMessageIDFromIgnoreList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__SYPersistentStore_removeMessageIDFromIgnoreList___block_invoke;
   v6[3] = &unk_1E86CABC0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = listCopy;
+  v5 = listCopy;
   [(SYPersistentStore *)self _withDB:v6];
 }
 
@@ -2179,14 +2179,14 @@ uint64_t __51__SYPersistentStore_removeMessageIDFromIgnoreList___block_invoke(ui
   return result;
 }
 
-- (void)setTimeToLive:(double)a3
+- (void)setTimeToLive:(double)live
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __35__SYPersistentStore_setTimeToLive___block_invoke;
   v3[3] = &unk_1E86CADB8;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = live;
   [(SYPersistentStore *)self _withDB:v3];
 }
 
@@ -2345,16 +2345,16 @@ void __36__SYPersistentStore_vectorClockJSON__block_invoke(uint64_t a1, sqlite3 
   }
 }
 
-- (void)setVectorClockJSON:(id)a3
+- (void)setVectorClockJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__SYPersistentStore_setVectorClockJSON___block_invoke;
   v6[3] = &unk_1E86CABC0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = nCopy;
+  v5 = nCopy;
   [(SYPersistentStore *)self _withDB:v6];
 }
 
@@ -2471,15 +2471,15 @@ void __39__SYPersistentStore_overflowResyncTime__block_invoke(uint64_t a1, sqlit
   }
 }
 
-- (void)setOverflowResyncTime:(id)a3
+- (void)setOverflowResyncTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__SYPersistentStore_setOverflowResyncTime___block_invoke;
   v6[3] = &unk_1E86C9ED8;
-  v7 = v4;
-  v5 = v4;
+  v7 = timeCopy;
+  v5 = timeCopy;
   [(SYPersistentStore *)self _withDB:v6];
 }
 
@@ -2589,15 +2589,15 @@ void __40__SYPersistentStore_lastMessageReceived__block_invoke(uint64_t a1, sqli
   }
 }
 
-- (void)setLastMessageReceived:(id)a3
+- (void)setLastMessageReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__SYPersistentStore_setLastMessageReceived___block_invoke;
   v6[3] = &unk_1E86C9ED8;
-  v7 = v4;
-  v5 = v4;
+  v7 = receivedCopy;
+  v5 = receivedCopy;
   [(SYPersistentStore *)self _withDB:v6];
 }
 
@@ -2710,9 +2710,9 @@ LABEL_2:
   }
 }
 
-- (void)enterFullSyncWithID:(id)a3 ignoring:(BOOL)a4
+- (void)enterFullSyncWithID:(id)d ignoring:(BOOL)ignoring
 {
-  v6 = a3;
+  dCopy = d;
   if (!self->_transaction)
   {
     if (_sync_log_facilities_pred != -1)
@@ -2735,9 +2735,9 @@ LABEL_2:
   v10[2] = __50__SYPersistentStore_enterFullSyncWithID_ignoring___block_invoke;
   v10[3] = &unk_1E86CADE0;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v9 = v6;
+  v11 = dCopy;
+  ignoringCopy = ignoring;
+  v9 = dCopy;
   [(SYPersistentStore *)self _withDB:v10];
 }
 
@@ -2787,13 +2787,13 @@ LABEL_2:
   }
 }
 
-- (void)exitFullSyncWithID:(id)a3 error:(id)a4
+- (void)exitFullSyncWithID:(id)d error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  errorCopy = error;
+  if (errorCopy)
   {
-    v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:0];
+    v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:errorCopy requiringSecureCoding:1 error:0];
   }
 
   else
@@ -2806,11 +2806,11 @@ LABEL_2:
   v13[2] = __46__SYPersistentStore_exitFullSyncWithID_error___block_invoke;
   v13[3] = &unk_1E86CAE08;
   v13[4] = self;
-  v9 = v7;
+  v9 = errorCopy;
   v14 = v9;
   v10 = v8;
   v15 = v10;
-  v11 = v6;
+  v11 = dCopy;
   v16 = v11;
   [(SYPersistentStore *)self _withDB:v13];
   if (self->_transaction)
@@ -2890,9 +2890,9 @@ LABEL_2:
   }
 }
 
-- (BOOL)reassignCurrentSyncID:(id)a3
+- (BOOL)reassignCurrentSyncID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (!self->_transaction)
   {
     if (_sync_log_facilities_pred != -1)
@@ -2921,7 +2921,7 @@ LABEL_2:
   v10[2] = __43__SYPersistentStore_reassignCurrentSyncID___block_invoke;
   v10[3] = &unk_1E86CAE30;
   v12 = buf;
-  v8 = v4;
+  v8 = dCopy;
   v11 = v8;
   [(SYPersistentStore *)self _withDB:v10];
 
@@ -2971,9 +2971,9 @@ void __43__SYPersistentStore_reassignCurrentSyncID___block_invoke(uint64_t a1, s
   }
 }
 
-- (BOOL)ignoringFullSyncWithID:(id)a3
+- (BOOL)ignoringFullSyncWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -2983,7 +2983,7 @@ void __43__SYPersistentStore_reassignCurrentSyncID___block_invoke(uint64_t a1, s
   v7[2] = __44__SYPersistentStore_ignoringFullSyncWithID___block_invoke;
   v7[3] = &unk_1E86CAE58;
   v7[4] = self;
-  v5 = v4;
+  v5 = dCopy;
   v8 = v5;
   v9 = &v10;
   [(SYPersistentStore *)self _withDB:v7];
@@ -3043,16 +3043,16 @@ LABEL_2:
   }
 }
 
-- (void)sendCompletedForSyncWithID:(id)a3
+- (void)sendCompletedForSyncWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__SYPersistentStore_sendCompletedForSyncWithID___block_invoke;
   v6[3] = &unk_1E86CABC0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(SYPersistentStore *)self _withDB:v6];
 }
 
@@ -3614,16 +3614,16 @@ LABEL_2:
   }
 }
 
-- (void)setWaitingForSyncEndID:(id)a3
+- (void)setWaitingForSyncEndID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__SYPersistentStore_setWaitingForSyncEndID___block_invoke;
   v6[3] = &unk_1E86CABC0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(SYPersistentStore *)self _withDB:v6];
 }
 
@@ -3745,16 +3745,16 @@ LABEL_2:
   }
 }
 
-- (void)setFullSyncUserInfo:(id)a3
+- (void)setFullSyncUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__SYPersistentStore_setFullSyncUserInfo___block_invoke;
   v6[3] = &unk_1E86CABC0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = infoCopy;
+  v5 = infoCopy;
   [(SYPersistentStore *)self _withDB:v6];
 }
 
@@ -3871,16 +3871,16 @@ LABEL_2:
   }
 }
 
-- (void)setFullSyncIDSOptions:(id)a3
+- (void)setFullSyncIDSOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__SYPersistentStore_setFullSyncIDSOptions___block_invoke;
   v6[3] = &unk_1E86CABC0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = optionsCopy;
+  v5 = optionsCopy;
   [(SYPersistentStore *)self _withDB:v6];
 }
 
@@ -3992,14 +3992,14 @@ LABEL_2:
   }
 }
 
-- (void)setCompletedSync:(BOOL)a3
+- (void)setCompletedSync:(BOOL)sync
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __38__SYPersistentStore_setCompletedSync___block_invoke;
   v3[3] = &unk_1E86CAE80;
   v3[4] = self;
-  v4 = a3;
+  syncCopy = sync;
   [(SYPersistentStore *)self _withDB:v3];
 }
 
@@ -4245,17 +4245,17 @@ sqlite3_stmt *__42__SYPersistentStore_lastSeenRemoteVersion__block_invoke(uint64
   return result;
 }
 
-- (BOOL)logChanges:(id)a3 error:(id *)a4
+- (BOOL)logChanges:(id)changes error:(id *)error
 {
-  v6 = a3;
+  changesCopy = changes;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __38__SYPersistentStore_logChanges_error___block_invoke;
   v10[3] = &unk_1E86CAEA8;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v7 = v6;
+  v11 = changesCopy;
+  errorCopy = error;
+  v7 = changesCopy;
   v8 = [(SYPersistentStore *)self _inTransaction:1 do:v10];
   [(SYPersistentStore *)self setCachedChangedSyncIDsVersion:0];
 
@@ -4356,7 +4356,7 @@ LABEL_14:
   return v19;
 }
 
-- (BOOL)logSyncCompletionToRemoteVersion:(unint64_t)a3
+- (BOOL)logSyncCompletionToRemoteVersion:(unint64_t)version
 {
   v6 = 0;
   v7 = &v6;
@@ -4367,7 +4367,7 @@ LABEL_14:
   v5[2] = __54__SYPersistentStore_logSyncCompletionToRemoteVersion___block_invoke;
   v5[3] = &unk_1E86CAED0;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = version;
   v5[4] = self;
   [(SYPersistentStore *)self _withDB:v5];
   v3 = *(v7 + 24);
@@ -4474,14 +4474,14 @@ LABEL_2:
   }
 }
 
-- (BOOL)objectChanged:(id)a3 sinceVersion:(unint64_t)a4
+- (BOOL)objectChanged:(id)changed sinceVersion:(unint64_t)version
 {
-  v6 = a3;
-  if ([(SYPersistentStore *)self cachedChangedSyncIDsVersion]!= a4 || ([(SYPersistentStore *)self cachedChangedSyncIDs], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
+  changedCopy = changed;
+  if ([(SYPersistentStore *)self cachedChangedSyncIDsVersion]!= version || ([(SYPersistentStore *)self cachedChangedSyncIDs], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
-    v8 = [(SYPersistentStore *)self currentLocalVersion];
-    v9 = [(SYPersistentStore *)self _oldestVersion];
-    v11 = v8 < a4 && v9 > a4 + 1;
+    currentLocalVersion = [(SYPersistentStore *)self currentLocalVersion];
+    _oldestVersion = [(SYPersistentStore *)self _oldestVersion];
+    v11 = currentLocalVersion < version && _oldestVersion > version + 1;
     [(SYPersistentStore *)self setCachedVersionStale:v11];
     v12 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     if (![(SYPersistentStore *)self cachedVersionStale])
@@ -4491,13 +4491,13 @@ LABEL_2:
       v17[2] = __48__SYPersistentStore_objectChanged_sinceVersion___block_invoke;
       v17[3] = &unk_1E86CAEF8;
       v17[4] = self;
-      v19 = a4;
+      versionCopy = version;
       v18 = v12;
       [(SYPersistentStore *)self _withDB:v17];
     }
 
     [(SYPersistentStore *)self setCachedChangedSyncIDs:v12];
-    [(SYPersistentStore *)self setCachedChangedSyncIDsVersion:a4];
+    [(SYPersistentStore *)self setCachedChangedSyncIDsVersion:version];
   }
 
   if ([(SYPersistentStore *)self cachedVersionStale])
@@ -4507,9 +4507,9 @@ LABEL_2:
 
   else
   {
-    v14 = [(SYPersistentStore *)self cachedChangedSyncIDs];
-    v15 = [v6 syncId];
-    v13 = [v14 containsObject:v15];
+    cachedChangedSyncIDs = [(SYPersistentStore *)self cachedChangedSyncIDs];
+    syncId = [changedCopy syncId];
+    v13 = [cachedChangedSyncIDs containsObject:syncId];
   }
 
   return v13;
@@ -4584,12 +4584,12 @@ void __36__SYPersistentStore_clearAllChanges__block_invoke(uint64_t a1, sqlite3 
   }
 }
 
-- (void)changeTrackingToggled:(BOOL)a3
+- (void)changeTrackingToggled:(BOOL)toggled
 {
-  if (self->_changeTrackingEnabled != a3)
+  if (self->_changeTrackingEnabled != toggled)
   {
-    self->_changeTrackingEnabled = a3;
-    if (!a3)
+    self->_changeTrackingEnabled = toggled;
+    if (!toggled)
     {
       [(SYPersistentStore *)self _withDB:&__block_literal_global_153];
     }
@@ -4643,7 +4643,7 @@ void __52__SYPersistentStore_UnitTestHelper__lastDBErrorInfo__block_invoke(uint6
 {
   if (self->_sharedDB)
   {
-    v2 = [(_SYSharedServiceDB *)self->_sharedDB _dbPath];
+    _dbPath = [(_SYSharedServiceDB *)self->_sharedDB _dbPath];
   }
 
   else
@@ -4660,11 +4660,11 @@ void __52__SYPersistentStore_UnitTestHelper__lastDBErrorInfo__block_invoke(uint6
     v4[3] = &unk_1E86C9F28;
     v4[4] = &v5;
     [(SYPersistentStore *)self _withDB:v4];
-    v2 = v6[5];
+    _dbPath = v6[5];
     _Block_object_dispose(&v5, 8);
   }
 
-  return v2;
+  return _dbPath;
 }
 
 const char *__43__SYPersistentStore_UnitTestHelper__dbPath__block_invoke(uint64_t a1, sqlite3 *db)

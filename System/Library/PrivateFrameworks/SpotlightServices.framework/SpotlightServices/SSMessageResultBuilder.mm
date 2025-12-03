@@ -1,5 +1,5 @@
 @interface SSMessageResultBuilder
-- (SSMessageResultBuilder)initWithResult:(id)a3;
+- (SSMessageResultBuilder)initWithResult:(id)result;
 - (id)buildAttachmentSummary;
 - (id)buildAttachmentThumbnail;
 - (id)buildCompactCardSection;
@@ -11,26 +11,26 @@
 
 @implementation SSMessageResultBuilder
 
-- (SSMessageResultBuilder)initWithResult:(id)a3
+- (SSMessageResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v38.receiver = self;
   v38.super_class = SSMessageResultBuilder;
-  v5 = [(SSResultBuilder *)&v38 initWithResult:v4];
+  v5 = [(SSResultBuilder *)&v38 initWithResult:resultCopy];
   v6 = v5;
   if (v5)
   {
     v36 = v5;
-    v7 = [v4 valueForAttribute:*MEMORY[0x1E6963C98] withType:objc_opt_class()];
-    v37 = [v4 valueForAttribute:*MEMORY[0x1E6963CA0] withType:objc_opt_class()];
-    v8 = [v4 valueForAttribute:*MEMORY[0x1E6963CA8] withType:objc_opt_class()];
-    v33 = [v4 valueForAttribute:*MEMORY[0x1E6963D18] withType:objc_opt_class()];
-    v34 = [v4 valueForAttribute:*MEMORY[0x1E6963D00] withType:objc_opt_class()];
-    v32 = [v4 valueForAttribute:*MEMORY[0x1E69649F8] withType:objc_opt_class()];
-    v35 = [v4 valueForAttribute:*MEMORY[0x1E6963CF8] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x1E6963C98] withType:objc_opt_class()];
+    v37 = [resultCopy valueForAttribute:*MEMORY[0x1E6963CA0] withType:objc_opt_class()];
+    v8 = [resultCopy valueForAttribute:*MEMORY[0x1E6963CA8] withType:objc_opt_class()];
+    v33 = [resultCopy valueForAttribute:*MEMORY[0x1E6963D18] withType:objc_opt_class()];
+    v34 = [resultCopy valueForAttribute:*MEMORY[0x1E6963D00] withType:objc_opt_class()];
+    v32 = [resultCopy valueForAttribute:*MEMORY[0x1E69649F8] withType:objc_opt_class()];
+    v35 = [resultCopy valueForAttribute:*MEMORY[0x1E6963CF8] withType:objc_opt_class()];
     v6 = v36;
-    v9 = [v4 valueForAttribute:*MEMORY[0x1E69649E8] withType:objc_opt_class()];
-    v10 = [v7 firstObject];
+    v9 = [resultCopy valueForAttribute:*MEMORY[0x1E69649E8] withType:objc_opt_class()];
+    firstObject = [v7 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
 
     [(SSMessageResultBuilder *)v36 setAttachmentNames:v11];
 
-    v12 = [v37 firstObject];
+    firstObject2 = [v37 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,7 +58,7 @@
 
     [(SSMessageResultBuilder *)v36 setAttachmentPaths:v13];
 
-    v14 = [v8 firstObject];
+    firstObject3 = [v8 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,13 +72,13 @@
 
     [(SSMessageResultBuilder *)v36 setAttachmentTypes:v15];
 
-    v16 = [v4 valueForAttribute:*MEMORY[0x1E6963F48] withType:objc_opt_class()];
+    v16 = [resultCopy valueForAttribute:*MEMORY[0x1E6963F48] withType:objc_opt_class()];
     [(SSMessageResultBuilder *)v36 setGroupDisplayName:v16];
 
-    v17 = [v4 valueForAttribute:*MEMORY[0x1E69643E8] withType:objc_opt_class()];
+    v17 = [resultCopy valueForAttribute:*MEMORY[0x1E69643E8] withType:objc_opt_class()];
     [(SSMessageResultBuilder *)v36 setGroupPhotoPath:v17];
 
-    v18 = [v4 valueForAttribute:*MEMORY[0x1E6964B18] withType:objc_opt_class()];
+    v18 = [resultCopy valueForAttribute:*MEMORY[0x1E6964B18] withType:objc_opt_class()];
     [(SSMessageResultBuilder *)v36 setMessage:v18];
 
     v19 = isMacOS();
@@ -88,10 +88,10 @@
       v20 = MEMORY[0x1E6964C48];
     }
 
-    v21 = [v4 valueForAttribute:*v20 withType:objc_opt_class()];
+    v21 = [resultCopy valueForAttribute:*v20 withType:objc_opt_class()];
     [(SSMessageResultBuilder *)v36 setMessageId:v21];
 
-    v22 = [v33 firstObject];
+    firstObject4 = [v33 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,7 +105,7 @@
 
     [(SSMessageResultBuilder *)v36 setSenders:v23];
 
-    v24 = [v32 firstObject];
+    firstObject5 = [v32 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -119,10 +119,10 @@
 
     [(SSMessageResultBuilder *)v36 setRecipients:v25];
 
-    v26 = [v4 valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
+    v26 = [resultCopy valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
     [(SSMessageResultBuilder *)v36 setSendDate:v26];
 
-    v27 = [v35 firstObject];
+    firstObject6 = [v35 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -136,7 +136,7 @@
 
     [(SSMessageResultBuilder *)v36 setSenderContactIds:v28];
 
-    v29 = [v9 firstObject];
+    firstObject7 = [v9 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -158,77 +158,77 @@
 {
   v10.receiver = self;
   v10.super_class = SSMessageResultBuilder;
-  v3 = [(SSResultBuilder *)&v10 buildInlineCardSection];
+  buildInlineCardSection = [(SSResultBuilder *)&v10 buildInlineCardSection];
   v4 = MEMORY[0x1E69CA0F0];
-  v5 = [(SSMessageResultBuilder *)self sendDate];
-  v6 = [SSDateFormatManager dynamicCompactStringFromDate:v5];
+  sendDate = [(SSMessageResultBuilder *)self sendDate];
+  v6 = [SSDateFormatManager dynamicCompactStringFromDate:sendDate];
   v7 = [v4 textWithString:v6];
-  [v3 setSecondaryTitle:v7];
+  [buildInlineCardSection setSecondaryTitle:v7];
 
-  [v3 setIsSecondaryTitleDetached:1];
-  v8 = [(SSMessageResultBuilder *)self buildAttachmentThumbnail];
-  [v3 setTrailingThumbnail:v8];
+  [buildInlineCardSection setIsSecondaryTitleDetached:1];
+  buildAttachmentThumbnail = [(SSMessageResultBuilder *)self buildAttachmentThumbnail];
+  [buildInlineCardSection setTrailingThumbnail:buildAttachmentThumbnail];
 
-  return v3;
+  return buildInlineCardSection;
 }
 
 - (id)buildDescriptions
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SSResultBuilder *)self coreSpotlightId];
-  v5 = isMessagesAttachmentCoreSpotlightId(v3, v4);
+  coreSpotlightId = [(SSResultBuilder *)self coreSpotlightId];
+  v5 = isMessagesAttachmentCoreSpotlightId(coreSpotlightId, v4);
 
   if (v5)
   {
-    v6 = [(SSMessageResultBuilder *)self attachmentPaths];
-    v7 = [v6 firstObject];
-    v8 = [v7 lastPathComponent];
+    attachmentPaths = [(SSMessageResultBuilder *)self attachmentPaths];
+    firstObject = [attachmentPaths firstObject];
+    lastPathComponent = [firstObject lastPathComponent];
 
-    v9 = v8;
+    v9 = lastPathComponent;
     if (v9)
     {
-      v10 = v9;
+      message = v9;
       v11 = 0;
       goto LABEL_12;
     }
   }
 
-  v10 = [(SSMessageResultBuilder *)self message];
-  if (!v10)
+  message = [(SSMessageResultBuilder *)self message];
+  if (!message)
   {
     goto LABEL_11;
   }
 
-  v12 = [(SSMessageResultBuilder *)self message];
-  v13 = [(SSResultBuilder *)self matchedStrings];
-  v14 = [v13 firstObject];
-  v15 = [v12 isEqual:v14];
+  message2 = [(SSMessageResultBuilder *)self message];
+  matchedStrings = [(SSResultBuilder *)self matchedStrings];
+  firstObject2 = [matchedStrings firstObject];
+  v15 = [message2 isEqual:firstObject2];
 
   if (!v15)
   {
 LABEL_10:
-    v10 = 0;
+    message = 0;
 LABEL_11:
     v11 = 1;
 LABEL_12:
-    v20 = [(SSResultBuilder *)self result];
-    v21 = [v20 formattedSnippet];
-    if (v21)
+    result = [(SSResultBuilder *)self result];
+    formattedSnippet = [result formattedSnippet];
+    if (formattedSnippet)
     {
-      v22 = v21;
-      v23 = [(SSResultBuilder *)self result];
-      v24 = [v23 formattedSnippet];
-      v25 = [v24 formattedTextPieces];
-      v26 = [v25 count];
+      v22 = formattedSnippet;
+      result2 = [(SSResultBuilder *)self result];
+      formattedSnippet2 = [result2 formattedSnippet];
+      formattedTextPieces = [formattedSnippet2 formattedTextPieces];
+      v26 = [formattedTextPieces count];
 
       if (v26)
       {
-        v27 = [(SSResultBuilder *)self result];
-        v28 = [v27 formattedSnippet];
-        v33 = v28;
+        result3 = [(SSResultBuilder *)self result];
+        formattedSnippet3 = [result3 formattedSnippet];
+        v33 = formattedSnippet3;
         v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
 
-        v19 = v10;
+        message3 = message;
 LABEL_21:
 
         goto LABEL_22;
@@ -239,32 +239,32 @@ LABEL_21:
     {
     }
 
-    v19 = v10;
+    message3 = message;
     if (v11)
     {
-      v19 = [(SSMessageResultBuilder *)self message];
+      message3 = [(SSMessageResultBuilder *)self message];
     }
 
-    if (!v19)
+    if (!message3)
     {
-      v19 = [(SSMessageResultBuilder *)self buildAttachmentSummary];
-      if (!v19)
+      message3 = [(SSMessageResultBuilder *)self buildAttachmentSummary];
+      if (!message3)
       {
         v18 = 0;
         goto LABEL_22;
       }
     }
 
-    v27 = [MEMORY[0x1E69CA3A0] textWithString:v19];
-    v32 = v27;
+    result3 = [MEMORY[0x1E69CA3A0] textWithString:message3];
+    v32 = result3;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
     goto LABEL_21;
   }
 
   v16 = [(SSResultBuilder *)self buildHighlightedMatchedTextWithTitle:0 headTruncation:1];
-  v17 = [v16 formattedTextPieces];
+  formattedTextPieces2 = [v16 formattedTextPieces];
 
-  if (!v17)
+  if (!formattedTextPieces2)
   {
 
     goto LABEL_10;
@@ -274,13 +274,13 @@ LABEL_21:
   v11 = 1;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
 
-  v10 = 0;
+  message = 0;
   if (!v18)
   {
     goto LABEL_12;
   }
 
-  v19 = 0;
+  message3 = 0;
 LABEL_22:
   v29 = v18;
 
@@ -296,9 +296,9 @@ LABEL_22:
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v55 = self;
-  v3 = [(SSMessageResultBuilder *)self attachmentTypes];
-  v4 = [v3 countByEnumeratingWithState:&v67 objects:v72 count:16];
+  selfCopy = self;
+  attachmentTypes = [(SSMessageResultBuilder *)self attachmentTypes];
+  v4 = [attachmentTypes countByEnumeratingWithState:&v67 objects:v72 count:16];
   if (v4)
   {
     v5 = v4;
@@ -327,7 +327,7 @@ LABEL_22:
       {
         if (*v68 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(attachmentTypes);
         }
 
         v12 = [MEMORY[0x1E6982C40] typeWithIdentifier:*(*(&v67 + 1) + 8 * v11)];
@@ -353,12 +353,12 @@ LABEL_22:
                 {
                   if ([v12 conformsToType:v57])
                   {
-                    v56 = [(SSMessageResultBuilder *)v55 attachmentTypes];
-                    if ([v56 count] == 1)
+                    attachmentTypes2 = [(SSMessageResultBuilder *)selfCopy attachmentTypes];
+                    if ([attachmentTypes2 count] == 1)
                     {
-                      v51 = [(SSMessageResultBuilder *)v55 senders];
-                      v49 = [v51 firstObject];
-                      v50 = [v49 length];
+                      senders = [(SSMessageResultBuilder *)selfCopy senders];
+                      firstObject = [senders firstObject];
+                      v50 = [firstObject length];
 
                       v14 = v52;
                       if (v50)
@@ -366,9 +366,9 @@ LABEL_22:
                         v36 = MEMORY[0x1E696AEC0];
                         v37 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
                         v38 = [v37 localizedStringForKey:@"SHARED_WATCHFACE_NOTIFICATION" value:&stru_1F556FE60 table:@"SpotlightServices"];
-                        v39 = [(SSMessageResultBuilder *)v55 senders];
-                        v40 = [v39 firstObject];
-                        v41 = [v36 localizedStringWithFormat:v38, v40];
+                        senders2 = [(SSMessageResultBuilder *)selfCopy senders];
+                        firstObject2 = [senders2 firstObject];
+                        v41 = [v36 localizedStringWithFormat:v38, firstObject2];
 
                         goto LABEL_36;
                       }
@@ -415,7 +415,7 @@ LABEL_22:
       }
 
       while (v5 != v11);
-      v21 = [v3 countByEnumeratingWithState:&v67 objects:v72 count:16];
+      v21 = [attachmentTypes countByEnumeratingWithState:&v67 objects:v72 count:16];
       v5 = v21;
     }
 
@@ -436,8 +436,8 @@ LABEL_22:
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v3 = v62;
-    v27 = [v3 countByEnumeratingWithState:&v63 objects:v71 count:16];
+    attachmentTypes = v62;
+    v27 = [attachmentTypes countByEnumeratingWithState:&v63 objects:v71 count:16];
     if (v27)
     {
       v28 = v27;
@@ -449,11 +449,11 @@ LABEL_22:
         {
           if (*v64 != v29)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(attachmentTypes);
           }
 
           v32 = *(*(&v63 + 1) + 8 * i);
-          v33 = [v3 countForObject:v32];
+          v33 = [attachmentTypes countForObject:v32];
           if ((v30 & 1) == 0)
           {
             [v41 appendString:{@", "}];
@@ -466,7 +466,7 @@ LABEL_22:
           v30 = 0;
         }
 
-        v28 = [v3 countByEnumeratingWithState:&v63 objects:v71 count:16];
+        v28 = [attachmentTypes countByEnumeratingWithState:&v63 objects:v71 count:16];
         v30 = 0;
       }
 
@@ -489,27 +489,27 @@ LABEL_36:
 - (id)buildThumbnail
 {
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
-  v4 = [(SSMessageResultBuilder *)self senderContactIds];
-  v5 = [v3 initWithArray:v4];
+  senderContactIds = [(SSMessageResultBuilder *)self senderContactIds];
+  v5 = [v3 initWithArray:senderContactIds];
 
-  v6 = [(SSMessageResultBuilder *)self recipientContactIds];
-  v7 = [v6 count];
+  recipientContactIds = [(SSMessageResultBuilder *)self recipientContactIds];
+  v7 = [recipientContactIds count];
 
   if (v7 >= 2)
   {
-    v8 = [(SSMessageResultBuilder *)self recipientContactIds];
-    [v5 addObjectsFromArray:v8];
+    recipientContactIds2 = [(SSMessageResultBuilder *)self recipientContactIds];
+    [v5 addObjectsFromArray:recipientContactIds2];
   }
 
-  v9 = [(SSMessageResultBuilder *)self groupPhotoPath];
+  groupPhotoPath = [(SSMessageResultBuilder *)self groupPhotoPath];
 
-  if (v9)
+  if (groupPhotoPath)
   {
     v10 = objc_opt_new();
     [v10 setCornerRoundingStyle:4];
     v11 = MEMORY[0x1E695DFF8];
-    v12 = [(SSMessageResultBuilder *)self groupPhotoPath];
-    v13 = [v11 fileURLWithPath:v12 isDirectory:0];
+    groupPhotoPath2 = [(SSMessageResultBuilder *)self groupPhotoPath];
+    v13 = [v11 fileURLWithPath:groupPhotoPath2 isDirectory:0];
     [v10 setUrlValue:v13];
   }
 
@@ -525,37 +525,37 @@ LABEL_36:
 
 - (id)buildAttachmentThumbnail
 {
-  v3 = [(SSMessageResultBuilder *)self attachmentTypes];
-  if ([v3 count])
+  attachmentTypes = [(SSMessageResultBuilder *)self attachmentTypes];
+  if ([attachmentTypes count])
   {
     v4 = 0;
     v5 = *MEMORY[0x1E6982CD8];
     v6 = *MEMORY[0x1E6982E30];
     while (1)
     {
-      v7 = [(SSMessageResultBuilder *)self attachmentNames];
-      v8 = [v7 count];
+      attachmentNames = [(SSMessageResultBuilder *)self attachmentNames];
+      v8 = [attachmentNames count];
 
       if (v4 >= v8)
       {
         break;
       }
 
-      v9 = [(SSMessageResultBuilder *)self attachmentTypes];
-      v3 = [v9 objectAtIndexedSubscript:v4];
+      attachmentTypes2 = [(SSMessageResultBuilder *)self attachmentTypes];
+      attachmentTypes = [attachmentTypes2 objectAtIndexedSubscript:v4];
 
-      v10 = [MEMORY[0x1E6982C40] typeWithIdentifier:v3];
+      v10 = [MEMORY[0x1E6982C40] typeWithIdentifier:attachmentTypes];
       if (([v10 conformsToType:v5] & 1) != 0 || objc_msgSend(v10, "conformsToType:", v6))
       {
-        v12 = [(SSMessageResultBuilder *)self attachmentNames];
-        v11 = [v12 objectAtIndexedSubscript:v4];
+        attachmentNames2 = [(SSMessageResultBuilder *)self attachmentNames];
+        v11 = [attachmentNames2 objectAtIndexedSubscript:v4];
 
         goto LABEL_9;
       }
 
       ++v4;
-      v3 = [(SSMessageResultBuilder *)self attachmentTypes];
-      if (v4 >= [v3 count])
+      attachmentTypes = [(SSMessageResultBuilder *)self attachmentTypes];
+      if (v4 >= [attachmentTypes count])
       {
         goto LABEL_7;
       }
@@ -591,60 +591,60 @@ LABEL_9:
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69CA3A0];
-  v4 = [(SSMessageResultBuilder *)self sendDate];
-  v5 = [SSDateFormatManager dynamicCompactStringFromDate:v4];
+  sendDate = [(SSMessageResultBuilder *)self sendDate];
+  v5 = [SSDateFormatManager dynamicCompactStringFromDate:sendDate];
   v6 = [v3 textWithString:v5];
   v14[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
 
   v13.receiver = self;
   v13.super_class = SSMessageResultBuilder;
-  v8 = [(SSResultBuilder *)&v13 buildCompactCardSection];
-  v9 = [v8 descriptions];
-  v10 = [v7 arrayByAddingObjectsFromArray:v9];
-  [v8 setDescriptions:v10];
+  buildCompactCardSection = [(SSResultBuilder *)&v13 buildCompactCardSection];
+  descriptions = [buildCompactCardSection descriptions];
+  v10 = [v7 arrayByAddingObjectsFromArray:descriptions];
+  [buildCompactCardSection setDescriptions:v10];
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return buildCompactCardSection;
 }
 
 - (id)buildTitle
 {
-  v3 = [(SSMessageResultBuilder *)self groupDisplayName];
-  if (v3)
+  groupDisplayName = [(SSMessageResultBuilder *)self groupDisplayName];
+  if (groupDisplayName)
   {
-    v4 = v3;
+    firstObject = groupDisplayName;
   }
 
   else
   {
-    v5 = [(SSMessageResultBuilder *)self senders];
-    if (!v5 || (v6 = v5, -[SSMessageResultBuilder senders](self, "senders"), v7 = objc_claimAutoreleasedReturnValue(), [v7 firstObject], v4 = objc_claimAutoreleasedReturnValue(), v7, v6, !v4))
+    senders = [(SSMessageResultBuilder *)self senders];
+    if (!senders || (v6 = senders, -[SSMessageResultBuilder senders](self, "senders"), v7 = objc_claimAutoreleasedReturnValue(), [v7 firstObject], firstObject = objc_claimAutoreleasedReturnValue(), v7, v6, !firstObject))
     {
-      v8 = [(SSMessageResultBuilder *)self recipients];
-      if (v8)
+      recipients = [(SSMessageResultBuilder *)self recipients];
+      if (recipients)
       {
-        v9 = [(SSMessageResultBuilder *)self recipients];
-        v4 = [v9 firstObject];
+        recipients2 = [(SSMessageResultBuilder *)self recipients];
+        firstObject = [recipients2 firstObject];
       }
 
       else
       {
-        v4 = 0;
+        firstObject = 0;
       }
     }
   }
 
-  if (MEMORY[0x1DA744E10](v4))
+  if (MEMORY[0x1DA744E10](firstObject))
   {
-    v10 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v4];
-    v11 = [v10 formattedStringValue];
+    v10 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:firstObject];
+    formattedStringValue = [v10 formattedStringValue];
 
-    v4 = v11;
+    firstObject = formattedStringValue;
   }
 
-  v12 = [MEMORY[0x1E69CA3A0] textWithString:v4];
+  v12 = [MEMORY[0x1E69CA3A0] textWithString:firstObject];
 
   return v12;
 }

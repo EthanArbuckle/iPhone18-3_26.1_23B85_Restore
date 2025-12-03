@@ -1,12 +1,12 @@
 @interface LIGHTHOUSE_BITACORA_PROTOLighthouseLedgerLighthousePluginEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LIGHTHOUSE_BITACORA_PROTOLighthouseLedgerLighthousePluginEvent
@@ -69,104 +69,104 @@
   return v10;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_trialIdentifiers)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_contextID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_performTaskStatus)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_performTrialTaskStatus)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_stop)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   trialIdentifiers = self->_trialIdentifiers;
-  v13 = v4;
+  v13 = toCopy;
   if (trialIdentifiers)
   {
-    objc_msgSend_setTrialIdentifiers_(v4, v5, trialIdentifiers, v6, v7);
-    v4 = v13;
+    objc_msgSend_setTrialIdentifiers_(toCopy, v5, trialIdentifiers, v6, v7);
+    toCopy = v13;
   }
 
   contextID = self->_contextID;
   if (contextID)
   {
     objc_msgSend_setContextID_(v13, v5, contextID, v6, v7);
-    v4 = v13;
+    toCopy = v13;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_timestamp;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 1) = *&self->_timestamp;
+    *(toCopy + 56) |= 1u;
   }
 
   performTaskStatus = self->_performTaskStatus;
   if (performTaskStatus)
   {
     objc_msgSend_setPerformTaskStatus_(v13, v5, performTaskStatus, v6, v7);
-    v4 = v13;
+    toCopy = v13;
   }
 
   performTrialTaskStatus = self->_performTrialTaskStatus;
   if (performTrialTaskStatus)
   {
     objc_msgSend_setPerformTrialTaskStatus_(v13, v5, performTrialTaskStatus, v6, v7);
-    v4 = v13;
+    toCopy = v13;
   }
 
   stop = self->_stop;
   if (stop)
   {
     objc_msgSend_setStop_(v13, v5, stop, v6, v7);
-    v4 = v13;
+    toCopy = v13;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v9 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8);
+  v9 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8);
   v14 = objc_msgSend_init(v9, v10, v11, v12, v13);
-  v18 = objc_msgSend_copyWithZone_(self->_trialIdentifiers, v15, a3, v16, v17);
+  v18 = objc_msgSend_copyWithZone_(self->_trialIdentifiers, v15, zone, v16, v17);
   v19 = *(v14 + 48);
   *(v14 + 48) = v18;
 
-  v23 = objc_msgSend_copyWithZone_(self->_contextID, v20, a3, v21, v22);
+  v23 = objc_msgSend_copyWithZone_(self->_contextID, v20, zone, v21, v22);
   v24 = *(v14 + 16);
   *(v14 + 16) = v23;
 
@@ -176,32 +176,32 @@
     *(v14 + 56) |= 1u;
   }
 
-  v28 = objc_msgSend_copyWithZone_(self->_performTaskStatus, v25, a3, v26, v27);
+  v28 = objc_msgSend_copyWithZone_(self->_performTaskStatus, v25, zone, v26, v27);
   v29 = *(v14 + 24);
   *(v14 + 24) = v28;
 
-  v33 = objc_msgSend_copyWithZone_(self->_performTrialTaskStatus, v30, a3, v31, v32);
+  v33 = objc_msgSend_copyWithZone_(self->_performTrialTaskStatus, v30, zone, v31, v32);
   v34 = *(v14 + 32);
   *(v14 + 32) = v33;
 
-  v38 = objc_msgSend_copyWithZone_(self->_stop, v35, a3, v36, v37);
+  v38 = objc_msgSend_copyWithZone_(self->_stop, v35, zone, v36, v37);
   v39 = *(v14 + 40);
   *(v14 + 40) = v38;
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5, v7, v8))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5, v7, v8))
   {
     goto LABEL_17;
   }
 
   trialIdentifiers = self->_trialIdentifiers;
-  v13 = v4[6];
+  v13 = equalCopy[6];
   if (trialIdentifiers | v13)
   {
     if (!objc_msgSend_isEqual_(trialIdentifiers, v9, v13, v10, v11))
@@ -211,7 +211,7 @@
   }
 
   contextID = self->_contextID;
-  v15 = v4[2];
+  v15 = equalCopy[2];
   if (contextID | v15)
   {
     if (!objc_msgSend_isEqual_(contextID, v9, v15, v10, v11))
@@ -220,16 +220,16 @@
     }
   }
 
-  v16 = *(v4 + 56);
+  v16 = *(equalCopy + 56);
   if (*&self->_has)
   {
-    if ((v4[7] & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((equalCopy[7] & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_17;
     }
   }
 
-  else if (v4[7])
+  else if (equalCopy[7])
   {
 LABEL_17:
     isEqual = 0;
@@ -237,14 +237,14 @@ LABEL_17:
   }
 
   performTaskStatus = self->_performTaskStatus;
-  v18 = v4[3];
+  v18 = equalCopy[3];
   if (performTaskStatus | v18 && !objc_msgSend_isEqual_(performTaskStatus, v9, v18, v10, v11))
   {
     goto LABEL_17;
   }
 
   performTrialTaskStatus = self->_performTrialTaskStatus;
-  v20 = v4[4];
+  v20 = equalCopy[4];
   if (performTrialTaskStatus | v20)
   {
     if (!objc_msgSend_isEqual_(performTrialTaskStatus, v9, v20, v10, v11))
@@ -254,7 +254,7 @@ LABEL_17:
   }
 
   stop = self->_stop;
-  v22 = v4[5];
+  v22 = equalCopy[5];
   if (stop | v22)
   {
     isEqual = objc_msgSend_isEqual_(stop, v9, v22, v10, v11);
@@ -312,12 +312,12 @@ LABEL_18:
   return v22 ^ v27 ^ objc_msgSend_hash(self->_stop, v28, v29, v30, v31);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   trialIdentifiers = self->_trialIdentifiers;
-  v8 = *(v4 + 6);
-  v16 = v4;
+  v8 = *(fromCopy + 6);
+  v16 = fromCopy;
   if (trialIdentifiers)
   {
     if (!v8)
@@ -325,7 +325,7 @@ LABEL_18:
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(trialIdentifiers, v4, v8, v5, v6);
+    objc_msgSend_mergeFrom_(trialIdentifiers, fromCopy, v8, v5, v6);
   }
 
   else
@@ -335,26 +335,26 @@ LABEL_18:
       goto LABEL_7;
     }
 
-    objc_msgSend_setTrialIdentifiers_(self, v4, v8, v5, v6);
+    objc_msgSend_setTrialIdentifiers_(self, fromCopy, v8, v5, v6);
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_7:
-  v9 = *(v4 + 2);
+  v9 = *(fromCopy + 2);
   if (v9)
   {
-    objc_msgSend_setContextID_(self, v4, v9, v5, v6);
-    v4 = v16;
+    objc_msgSend_setContextID_(self, fromCopy, v9, v5, v6);
+    fromCopy = v16;
   }
 
-  if (*(v4 + 56))
+  if (*(fromCopy + 56))
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
   performTaskStatus = self->_performTaskStatus;
-  v11 = *(v4 + 3);
+  v11 = *(fromCopy + 3);
   if (performTaskStatus)
   {
     if (!v11)
@@ -362,7 +362,7 @@ LABEL_7:
       goto LABEL_17;
     }
 
-    objc_msgSend_mergeFrom_(performTaskStatus, v4, v11, v5, v6);
+    objc_msgSend_mergeFrom_(performTaskStatus, fromCopy, v11, v5, v6);
   }
 
   else
@@ -372,13 +372,13 @@ LABEL_7:
       goto LABEL_17;
     }
 
-    objc_msgSend_setPerformTaskStatus_(self, v4, v11, v5, v6);
+    objc_msgSend_setPerformTaskStatus_(self, fromCopy, v11, v5, v6);
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_17:
   performTrialTaskStatus = self->_performTrialTaskStatus;
-  v13 = *(v4 + 4);
+  v13 = *(fromCopy + 4);
   if (performTrialTaskStatus)
   {
     if (!v13)
@@ -386,7 +386,7 @@ LABEL_17:
       goto LABEL_23;
     }
 
-    objc_msgSend_mergeFrom_(performTrialTaskStatus, v4, v13, v5, v6);
+    objc_msgSend_mergeFrom_(performTrialTaskStatus, fromCopy, v13, v5, v6);
   }
 
   else
@@ -396,24 +396,24 @@ LABEL_17:
       goto LABEL_23;
     }
 
-    objc_msgSend_setPerformTrialTaskStatus_(self, v4, v13, v5, v6);
+    objc_msgSend_setPerformTrialTaskStatus_(self, fromCopy, v13, v5, v6);
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_23:
   stop = self->_stop;
-  v15 = *(v4 + 5);
+  v15 = *(fromCopy + 5);
   if (stop)
   {
     if (v15)
     {
-      objc_msgSend_mergeFrom_(stop, v4, v15, v5, v6);
+      objc_msgSend_mergeFrom_(stop, fromCopy, v15, v5, v6);
     }
   }
 
   else if (v15)
   {
-    objc_msgSend_setStop_(self, v4, v15, v5, v6);
+    objc_msgSend_setStop_(self, fromCopy, v15, v5, v6);
   }
 
   MEMORY[0x2821F96F8]();

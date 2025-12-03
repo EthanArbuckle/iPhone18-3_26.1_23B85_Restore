@@ -1,9 +1,9 @@
 @interface SBKeyboardFocusTarget
-+ (id)targetForFBScene:(id)a3;
-+ (id)targetForSBWindowScene:(id)a3;
-+ (id)targetForSceneIdentityToken:(id)a3 pid:(int)a4;
-- (BOOL)isEqual:(id)a3;
-- (_DWORD)_initWithSceneIdentityToken:(int)a3 pid:;
++ (id)targetForFBScene:(id)scene;
++ (id)targetForSBWindowScene:(id)scene;
++ (id)targetForSceneIdentityToken:(id)token pid:(int)pid;
+- (BOOL)isEqual:(id)equal;
+- (_DWORD)_initWithSceneIdentityToken:(int)token pid:;
 - (id)deferringTarget;
 - (id)deferringToken;
 - (id)focusChange;
@@ -14,12 +14,12 @@
 
 - (id)deferringTarget
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x277CF0748]);
-    [v2 setPid:*(a1 + 16)];
-    v3 = [(SBKeyboardFocusTarget *)a1 deferringToken];
-    [v2 setToken:v3];
+    [v2 setPid:*(self + 16)];
+    deferringToken = [(SBKeyboardFocusTarget *)self deferringToken];
+    [v2 setToken:deferringToken];
   }
 
   else
@@ -32,11 +32,11 @@
 
 - (id)deferringToken
 {
-  if (a1 && (v1 = *(a1 + 8)) != 0)
+  if (self && (v1 = *(self + 8)) != 0)
   {
     v2 = MEMORY[0x277CF0650];
-    v3 = [v1 stringRepresentation];
-    v4 = [v2 tokenForString:v3];
+    stringRepresentation = [v1 stringRepresentation];
+    v4 = [v2 tokenForString:stringRepresentation];
   }
 
   else
@@ -47,52 +47,52 @@
   return v4;
 }
 
-- (_DWORD)_initWithSceneIdentityToken:(int)a3 pid:
+- (_DWORD)_initWithSceneIdentityToken:(int)token pid:
 {
   v6 = a2;
-  if (a1)
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = SBKeyboardFocusTarget;
     v7 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v7;
+    self = v7;
     if (v7)
     {
-      if (a3 <= 0)
+      if (token <= 0)
       {
         [SBKeyboardFocusTarget _initWithSceneIdentityToken:v7 pid:?];
       }
 
       objc_storeStrong(v7 + 1, a2);
-      a1[4] = a3;
+      self[4] = token;
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)targetForSceneIdentityToken:(id)a3 pid:(int)a4
++ (id)targetForSceneIdentityToken:(id)token pid:(int)pid
 {
-  v5 = a3;
-  v6 = [[SBKeyboardFocusTarget alloc] _initWithSceneIdentityToken:v5 pid:a4];
+  tokenCopy = token;
+  v6 = [[SBKeyboardFocusTarget alloc] _initWithSceneIdentityToken:tokenCopy pid:pid];
 
   return v6;
 }
 
-+ (id)targetForFBScene:(id)a3
++ (id)targetForFBScene:(id)scene
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  sceneCopy = scene;
+  v4 = sceneCopy;
+  if (sceneCopy)
   {
-    v5 = [v3 clientHandle];
-    v6 = [v5 processHandle];
-    v7 = [v6 pid];
+    clientHandle = [sceneCopy clientHandle];
+    processHandle = [clientHandle processHandle];
+    v7 = [processHandle pid];
 
     if (v7 > 0)
     {
-      v8 = [v4 identityToken];
-      v9 = [SBKeyboardFocusTarget targetForSceneIdentityToken:v8 pid:v7];
+      identityToken = [v4 identityToken];
+      v9 = [SBKeyboardFocusTarget targetForSceneIdentityToken:identityToken pid:v7];
 
       goto LABEL_8;
     }
@@ -110,14 +110,14 @@ LABEL_8:
   return v9;
 }
 
-+ (id)targetForSBWindowScene:(id)a3
++ (id)targetForSBWindowScene:(id)scene
 {
-  if (a3)
+  if (scene)
   {
-    v4 = [a3 _FBSScene];
-    v5 = [v4 identityToken];
+    _FBSScene = [scene _FBSScene];
+    identityToken = [_FBSScene identityToken];
 
-    v6 = [a1 targetForSceneIdentityToken:v5 pid:getpid()];
+    v6 = [self targetForSceneIdentityToken:identityToken pid:getpid()];
   }
 
   else
@@ -135,13 +135,13 @@ LABEL_8:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (BSEqualObjects())
     {
       v6 = v5[4] == self->_pid;

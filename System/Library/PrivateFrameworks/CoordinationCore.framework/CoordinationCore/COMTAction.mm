@@ -1,27 +1,27 @@
 @interface COMTAction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (COMTAction)init;
-- (COMTAction)initWithCoder:(id)a3;
+- (COMTAction)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COMTAction
 
 - (COMTAction)init
 {
-  v3 = [MEMORY[0x277CCAD78] UUID];
-  v4 = [v3 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   actionIdentifier = self->_actionIdentifier;
-  self->_actionIdentifier = v4;
+  self->_actionIdentifier = uUIDString;
 
   return self;
 }
 
-- (COMTAction)initWithCoder:(id)a3
+- (COMTAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AI"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AI"];
 
   v6 = [v5 copy];
   actionIdentifier = self->_actionIdentifier;
@@ -40,17 +40,17 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(COMTAction *)self actionIdentifier];
-  [v4 encodeObject:v5 forKey:@"AI"];
+  coderCopy = coder;
+  actionIdentifier = [(COMTAction *)self actionIdentifier];
+  [coderCopy encodeObject:actionIdentifier forKey:@"AI"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -60,9 +60,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(COMTAction *)self actionIdentifier];
-      v6 = [(COMTAction *)v4 actionIdentifier];
-      v7 = [v5 isEqual:v6];
+      actionIdentifier = [(COMTAction *)self actionIdentifier];
+      actionIdentifier2 = [(COMTAction *)equalCopy actionIdentifier];
+      v7 = [actionIdentifier isEqual:actionIdentifier2];
     }
 
     else

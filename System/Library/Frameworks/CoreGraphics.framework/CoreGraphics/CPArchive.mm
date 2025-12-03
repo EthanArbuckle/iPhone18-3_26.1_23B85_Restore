@@ -3,7 +3,7 @@
 - (id)html;
 - (id)plainText;
 - (id)webArchiveData;
-- (void)addSelection:(CGPDFSelection *)a3;
+- (void)addSelection:(CGPDFSelection *)selection;
 - (void)dealloc;
 - (void)dispose;
 - (void)finalize;
@@ -764,11 +764,11 @@ LABEL_44:
   return self->plainText;
 }
 
-- (void)addSelection:(CGPDFSelection *)a3
+- (void)addSelection:(CGPDFSelection *)selection
 {
-  if (a3)
+  if (selection)
   {
-    CFArrayAppendValue(self->selections, a3);
+    CFArrayAppendValue(self->selections, selection);
     htmlString = self->htmlString;
     if (htmlString)
     {

@@ -1,19 +1,19 @@
 @interface RemoteInjectionAgent
-- (RemoteInjectionAgent)initWithTask:(unsigned int)a3;
-- (id)injectLibrary:(id)a3 withFunctionPayload:(id)a4 sandboxExtensions:(id)a5 callingFunction:(id)a6 arguments:(id)a7;
+- (RemoteInjectionAgent)initWithTask:(unsigned int)task;
+- (id)injectLibrary:(id)library withFunctionPayload:(id)payload sandboxExtensions:(id)extensions callingFunction:(id)function arguments:(id)arguments;
 - (void)dealloc;
 @end
 
 @implementation RemoteInjectionAgent
 
-- (RemoteInjectionAgent)initWithTask:(unsigned int)a3
+- (RemoteInjectionAgent)initWithTask:(unsigned int)task
 {
   v5.receiver = self;
   v5.super_class = RemoteInjectionAgent;
   result = [(RemoteInjectionAgent *)&v5 init];
   if (result)
   {
-    result->_targetTask = a3;
+    result->_targetTask = task;
   }
 
   return result;
@@ -33,13 +33,13 @@
   [(RemoteInjectionAgent *)&v4 dealloc];
 }
 
-- (id)injectLibrary:(id)a3 withFunctionPayload:(id)a4 sandboxExtensions:(id)a5 callingFunction:(id)a6 arguments:(id)a7
+- (id)injectLibrary:(id)library withFunctionPayload:(id)payload sandboxExtensions:(id)extensions callingFunction:(id)function arguments:(id)arguments
 {
-  v36 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  libraryCopy = library;
+  payloadCopy = payload;
+  extensionsCopy = extensions;
+  functionCopy = function;
+  argumentsCopy = arguments;
   if (self->_targetTask + 1 <= 1)
   {
     v29 = __stderrp;
@@ -50,16 +50,16 @@
     exit(4);
   }
 
-  v16 = v15;
-  v32 = [v12 bytes];
+  v16 = argumentsCopy;
+  bytes = [payloadCopy bytes];
   v17 = objc_opt_new();
   v18 = v17;
-  if (v13)
+  if (extensionsCopy)
   {
-    [v17 addObjectsFromArray:v13];
+    [v17 addObjectsFromArray:extensionsCopy];
   }
 
-  v35 = v12;
+  v35 = payloadCopy;
   if (v16)
   {
     [v18 addObjectsFromArray:v16];
@@ -77,17 +77,17 @@
   [v18 enumerateObjectsUsingBlock:v39];
   v22 = objc_opt_new();
   targetTask = self->_targetTask;
-  v24 = [v36 UTF8String];
-  v34 = v14;
-  v25 = [v14 UTF8String];
-  v26 = [v13 count];
+  uTF8String = [libraryCopy UTF8String];
+  v34 = functionCopy;
+  uTF8String2 = [functionCopy UTF8String];
+  v26 = [extensionsCopy count];
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
   v37[2] = sub_100001260;
   v37[3] = &unk_100008348;
   v27 = v22;
   v38 = v27;
-  LOBYTE(targetTask) = sub_100001A00(targetTask, v32, v24, v25, v20, v21, v26, v37);
+  LOBYTE(targetTask) = sub_100001A00(targetTask, bytes, uTF8String, uTF8String2, v20, v21, v26, v37);
   free(v21);
   if ((targetTask & 1) == 0)
   {

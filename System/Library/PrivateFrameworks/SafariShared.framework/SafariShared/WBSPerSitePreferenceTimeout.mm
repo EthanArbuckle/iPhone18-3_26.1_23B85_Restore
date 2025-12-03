@@ -1,29 +1,29 @@
 @interface WBSPerSitePreferenceTimeout
-+ (id)timeoutWithInterval:(double)a3 fallbackValue:(id)a4;
-- (WBSPerSitePreferenceTimeout)initWithInterval:(double)a3 fallbackValue:(id)a4;
++ (id)timeoutWithInterval:(double)interval fallbackValue:(id)value;
+- (WBSPerSitePreferenceTimeout)initWithInterval:(double)interval fallbackValue:(id)value;
 @end
 
 @implementation WBSPerSitePreferenceTimeout
 
-+ (id)timeoutWithInterval:(double)a3 fallbackValue:(id)a4
++ (id)timeoutWithInterval:(double)interval fallbackValue:(id)value
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithInterval:v6 fallbackValue:a3];
+  valueCopy = value;
+  v7 = [[self alloc] initWithInterval:valueCopy fallbackValue:interval];
 
   return v7;
 }
 
-- (WBSPerSitePreferenceTimeout)initWithInterval:(double)a3 fallbackValue:(id)a4
+- (WBSPerSitePreferenceTimeout)initWithInterval:(double)interval fallbackValue:(id)value
 {
-  v7 = a4;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = WBSPerSitePreferenceTimeout;
   v8 = [(WBSPerSitePreferenceTimeout *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    v8->_interval = a3;
-    objc_storeStrong(&v8->_fallbackValue, a4);
+    v8->_interval = interval;
+    objc_storeStrong(&v8->_fallbackValue, value);
     v10 = v9;
   }
 

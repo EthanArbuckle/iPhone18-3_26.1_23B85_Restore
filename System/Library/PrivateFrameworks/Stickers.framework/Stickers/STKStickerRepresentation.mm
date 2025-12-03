@@ -1,6 +1,6 @@
 @interface STKStickerRepresentation
 - (BOOL)isAnimated;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPreferred;
 - (CGSize)size;
 - (NSData)data;
@@ -9,11 +9,11 @@
 - (STKStickerRepresentation)init;
 - (int64_t)byteCount;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setByteCount:(int64_t)a3;
-- (void)setData:(id)a3;
-- (void)setIsPreferred:(BOOL)a3;
-- (void)setRole:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setByteCount:(int64_t)count;
+- (void)setData:(id)data;
+- (void)setIsPreferred:(BOOL)preferred;
+- (void)setRole:(id)role;
 @end
 
 @implementation STKStickerRepresentation
@@ -31,10 +31,10 @@
   return v5;
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v4 = a3;
-  v8 = self;
+  dataCopy = data;
+  selfCopy = self;
   v5 = sub_1B8A237C4();
   v7 = v6;
 
@@ -48,11 +48,11 @@
   return *(self + v3);
 }
 
-- (void)setByteCount:(int64_t)a3
+- (void)setByteCount:(int64_t)count
 {
   v5 = OBJC_IVAR___STKStickerRepresentation_byteCount;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = count;
 }
 
 - (CGSize)size
@@ -76,7 +76,7 @@
   return v5;
 }
 
-- (void)setRole:(id)a3
+- (void)setRole:(id)role
 {
   v4 = sub_1B8A23F24();
   v6 = v5;
@@ -94,11 +94,11 @@
   return *(self + v3);
 }
 
-- (void)setIsPreferred:(BOOL)a3
+- (void)setIsPreferred:(BOOL)preferred
 {
   v5 = OBJC_IVAR___STKStickerRepresentation_isPreferred;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = preferred;
 }
 
 - (BOOL)isAnimated
@@ -118,11 +118,11 @@
   return v4 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1B8A244A4();
     swift_unknownObjectRelease();
@@ -131,7 +131,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1B8A152AC(v8);
@@ -142,22 +142,22 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B8A238E4();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B8A16060(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B8A16060(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B8A1644C();
 
   v3 = sub_1B8A23EF4();

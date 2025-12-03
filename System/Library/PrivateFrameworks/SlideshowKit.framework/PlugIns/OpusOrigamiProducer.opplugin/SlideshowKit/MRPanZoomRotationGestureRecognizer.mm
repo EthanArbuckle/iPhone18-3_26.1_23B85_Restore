@@ -1,24 +1,24 @@
 @interface MRPanZoomRotationGestureRecognizer
-- (MRPanZoomRotationGestureRecognizer)initWithRenderer:(id)a3 endAction:(id)a4 direction:(unsigned __int8)a5 andSender:(id)a6;
-- (MRPanZoomRotationGestureRecognizer)initWithRenderer:(id)a3 masterAction:(id)a4 direction:(unsigned __int8)a5 andSender:(id)a6;
-- (MRPanZoomRotationGestureRecognizer)initWithRenderer:(id)a3 startAction:(id)a4 direction:(unsigned __int8)a5 andSender:(id)a6;
-- (void)_addSpecificObjectToAction:(id)a3;
+- (MRPanZoomRotationGestureRecognizer)initWithRenderer:(id)renderer endAction:(id)action direction:(unsigned __int8)direction andSender:(id)sender;
+- (MRPanZoomRotationGestureRecognizer)initWithRenderer:(id)renderer masterAction:(id)action direction:(unsigned __int8)direction andSender:(id)sender;
+- (MRPanZoomRotationGestureRecognizer)initWithRenderer:(id)renderer startAction:(id)action direction:(unsigned __int8)direction andSender:(id)sender;
+- (void)_addSpecificObjectToAction:(id)action;
 - (void)dealloc;
 - (void)recognize;
-- (void)touchEnded:(id)a3;
-- (void)touchMoved:(id)a3;
+- (void)touchEnded:(id)ended;
+- (void)touchMoved:(id)moved;
 @end
 
 @implementation MRPanZoomRotationGestureRecognizer
 
-- (MRPanZoomRotationGestureRecognizer)initWithRenderer:(id)a3 startAction:(id)a4 direction:(unsigned __int8)a5 andSender:(id)a6
+- (MRPanZoomRotationGestureRecognizer)initWithRenderer:(id)renderer startAction:(id)action direction:(unsigned __int8)direction andSender:(id)sender
 {
   v8.receiver = self;
   v8.super_class = MRPanZoomRotationGestureRecognizer;
-  result = [(MRGestureRecognizer *)&v8 initWithRenderer:a3 startAction:a4 andSender:a6];
+  result = [(MRGestureRecognizer *)&v8 initWithRenderer:renderer startAction:action andSender:sender];
   if (result)
   {
-    result->_direction = a5;
+    result->_direction = direction;
     result->_trackingBoxRadius = -10.0;
     result->_progressThreshold = 1.0;
     result->_velocityThreshold = 300.0;
@@ -27,51 +27,51 @@
   return result;
 }
 
-- (MRPanZoomRotationGestureRecognizer)initWithRenderer:(id)a3 endAction:(id)a4 direction:(unsigned __int8)a5 andSender:(id)a6
+- (MRPanZoomRotationGestureRecognizer)initWithRenderer:(id)renderer endAction:(id)action direction:(unsigned __int8)direction andSender:(id)sender
 {
   v11.receiver = self;
   v11.super_class = MRPanZoomRotationGestureRecognizer;
-  v8 = [(MRGestureRecognizer *)&v11 initWithRenderer:a3 startAction:0 andSender:a6];
+  v8 = [(MRGestureRecognizer *)&v11 initWithRenderer:renderer startAction:0 andSender:sender];
   v9 = v8;
   if (v8)
   {
-    v8->_direction = a5;
-    [(MRGestureRecognizer *)v8 setEndAction:a4];
+    v8->_direction = direction;
+    [(MRGestureRecognizer *)v8 setEndAction:action];
   }
 
   return v9;
 }
 
-- (MRPanZoomRotationGestureRecognizer)initWithRenderer:(id)a3 masterAction:(id)a4 direction:(unsigned __int8)a5 andSender:(id)a6
+- (MRPanZoomRotationGestureRecognizer)initWithRenderer:(id)renderer masterAction:(id)action direction:(unsigned __int8)direction andSender:(id)sender
 {
   v23.receiver = self;
   v23.super_class = MRPanZoomRotationGestureRecognizer;
-  v8 = [(MRGestureRecognizer *)&v23 initWithRenderer:a3 startAction:0 andSender:a6];
+  v8 = [(MRGestureRecognizer *)&v23 initWithRenderer:renderer startAction:0 andSender:sender];
   v9 = v8;
   if (v8)
   {
-    v8->_direction = a5;
+    v8->_direction = direction;
     v8->_isMaster = 1;
-    v10 = [a4 attributes];
-    v11 = [v10 objectForKey:@"type"];
+    attributes = [action attributes];
+    v11 = [attributes objectForKey:@"type"];
     v9->_type = v11;
     if ([(NSString *)v11 isEqualToString:@"panTransition"])
     {
-      v12 = [objc_msgSend(a4 "attributes")];
+      v12 = [objc_msgSend(action "attributes")];
       v13 = objc_alloc_init(MCActionTrigger);
-      v14 = [v12 objectForKey:@"targetIDInPage"];
-      if (!v14)
+      targetObjectID = [v12 objectForKey:@"targetIDInPage"];
+      if (!targetObjectID)
       {
-        v14 = [a4 targetObjectID];
+        targetObjectID = [action targetObjectID];
       }
 
-      [(MCAction *)v13 setTargetObjectID:v14];
+      [(MCAction *)v13 setTargetObjectID:targetObjectID];
       -[MCActionTrigger setActionKey:](v13, "setActionKey:", [v12 objectForKey:@"actionKey"]);
       v15 = [[MRAction alloc] initWithAction:v13 inRenderer:v9->super._renderer];
       v9->super._automaticStartAction = v15;
       [(MRAction *)v15 setSender:v9->super._sender];
 
-      v16 = [v10 objectForKey:@"progressFactor"];
+      v16 = [attributes objectForKey:@"progressFactor"];
       if (v16)
       {
         [v16 floatValue];
@@ -92,20 +92,20 @@
 
     if ([(NSString *)v9->_type isEqualToString:@"effectPan"])
     {
-      v9->super._automaticStartAction = -[MRAction initWithSelector:sender:andTargetPath:inRenderer:]([MRAction alloc], "initWithSelector:sender:andTargetPath:inRenderer:", "pzrStart:", v9->super._sender, [a4 targetObjectID], v9->super._renderer);
+      v9->super._automaticStartAction = -[MRAction initWithSelector:sender:andTargetPath:inRenderer:]([MRAction alloc], "initWithSelector:sender:andTargetPath:inRenderer:", "pzrStart:", v9->super._sender, [action targetObjectID], v9->super._renderer);
       v19 = &selRef_pzrCancel_;
       v20 = &selRef_pzrEnd_;
       v21 = &selRef_pzrUpdate_;
 LABEL_13:
-      v9->super._automaticUpdateAction = -[MRAction initWithSelector:sender:andTargetPath:inRenderer:]([MRAction alloc], "initWithSelector:sender:andTargetPath:inRenderer:", *v21, v9->super._sender, [a4 targetObjectID], v9->super._renderer);
-      v9->super._automaticEndAction = -[MRAction initWithSelector:sender:andTargetPath:inRenderer:]([MRAction alloc], "initWithSelector:sender:andTargetPath:inRenderer:", *v20, v9->super._sender, [a4 targetObjectID], v9->super._renderer);
-      v9->super._automaticCancelAction = -[MRAction initWithSelector:sender:andTargetPath:inRenderer:]([MRAction alloc], "initWithSelector:sender:andTargetPath:inRenderer:", *v19, v9->super._sender, [a4 targetObjectID], v9->super._renderer);
+      v9->super._automaticUpdateAction = -[MRAction initWithSelector:sender:andTargetPath:inRenderer:]([MRAction alloc], "initWithSelector:sender:andTargetPath:inRenderer:", *v21, v9->super._sender, [action targetObjectID], v9->super._renderer);
+      v9->super._automaticEndAction = -[MRAction initWithSelector:sender:andTargetPath:inRenderer:]([MRAction alloc], "initWithSelector:sender:andTargetPath:inRenderer:", *v20, v9->super._sender, [action targetObjectID], v9->super._renderer);
+      v9->super._automaticCancelAction = -[MRAction initWithSelector:sender:andTargetPath:inRenderer:]([MRAction alloc], "initWithSelector:sender:andTargetPath:inRenderer:", *v19, v9->super._sender, [action targetObjectID], v9->super._renderer);
       return v9;
     }
 
     if ([(NSString *)v9->_type isEqualToString:@"fastScrub"])
     {
-      v9->super._automaticStartAction = -[MRAction initWithSelector:sender:andTargetPath:inRenderer:]([MRAction alloc], "initWithSelector:sender:andTargetPath:inRenderer:", "fastScrubStart:", v9->super._sender, [a4 targetObjectID], v9->super._renderer);
+      v9->super._automaticStartAction = -[MRAction initWithSelector:sender:andTargetPath:inRenderer:]([MRAction alloc], "initWithSelector:sender:andTargetPath:inRenderer:", "fastScrubStart:", v9->super._sender, [action targetObjectID], v9->super._renderer);
       v19 = &selRef_fastScrubCancel_;
       v20 = &selRef_fastScrubEnd_;
       v21 = &selRef_fastScrubUpdate_;
@@ -124,11 +124,11 @@ LABEL_13:
   [(MRPanZoomRotationGestureRecognizer *)&v3 dealloc];
 }
 
-- (void)touchMoved:(id)a3
+- (void)touchMoved:(id)moved
 {
   v63.receiver = self;
   v63.super_class = MRPanZoomRotationGestureRecognizer;
-  [(MRGestureRecognizer *)&v63 touchMoved:a3];
+  [(MRGestureRecognizer *)&v63 touchMoved:moved];
   state = self->super._state;
   if ((state & 0x11) != 0)
   {
@@ -211,8 +211,8 @@ LABEL_13:
     v39 = v38 | v36 | v33;
     if ([(MRGestureRecognizer *)self requiredTouchCount])
     {
-      v40 = [(MRGestureRecognizer *)self requiredTouchCount];
-      v41 = [(MRTouchSet *)self->super._touchSet countOfActiveTouches]!= v40;
+      requiredTouchCount = [(MRGestureRecognizer *)self requiredTouchCount];
+      v41 = [(MRTouchSet *)self->super._touchSet countOfActiveTouches]!= requiredTouchCount;
     }
 
     else
@@ -319,7 +319,7 @@ LABEL_13:
   }
 }
 
-- (void)touchEnded:(id)a3
+- (void)touchEnded:(id)ended
 {
   if ((self->super._state & 4) != 0)
   {
@@ -331,7 +331,7 @@ LABEL_13:
 LABEL_8:
     v6.receiver = self;
     v6.super_class = MRPanZoomRotationGestureRecognizer;
-    [(MRGestureRecognizer *)&v6 touchEnded:a3];
+    [(MRGestureRecognizer *)&v6 touchEnded:ended];
     return;
   }
 
@@ -367,10 +367,10 @@ LABEL_8:
   [(MRGestureRecognizer *)self _sendStartActions];
 }
 
-- (void)_addSpecificObjectToAction:(id)a3
+- (void)_addSpecificObjectToAction:(id)action
 {
   v29 = objc_alloc_init(MRGesturePanZoomRotation);
-  [a3 time];
+  [action time];
   v29->time = v5;
   *&v29->x = self->super._centroidLocation;
   v29->deltaX = self->super._centroidLocation.x - self->super._centroidStartLocation.x;
@@ -398,7 +398,7 @@ LABEL_8:
   v29->direction = self->_direction;
   v29->countOfTouches = [(NSSet *)[(MRTouchSet *)self->super._touchSet touches] count];
   v29->okToAnimate = 1;
-  [a3 setSpecificObject:?];
+  [action setSpecificObject:?];
   trackingBoxRadius = self->_trackingBoxRadius;
   if (trackingBoxRadius <= 0.0)
   {
@@ -429,24 +429,24 @@ LABEL_8:
     }
   }
 
-  if ([a3 mcAction])
+  if ([action mcAction])
   {
-    v17 = [a3 states];
+    states = [action states];
     x = v29->x;
     *&x = x;
-    [v17 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", x), @"_pzrX"}];
+    [states setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", x), @"_pzrX"}];
     y = v29->y;
     *&y = y;
-    [v17 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", y), @"_pzrY"}];
+    [states setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", y), @"_pzrY"}];
     direction = self->_direction;
     if ((direction & 3) != 0)
     {
       deltaX = v29->deltaX;
       *&deltaX = deltaX;
-      [v17 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", deltaX), @"_pzrDeltaX"}];
+      [states setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", deltaX), @"_pzrDeltaX"}];
       speedX = v29->speedX;
       *&speedX = speedX;
-      [v17 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", speedX), @"_pzrSpeedX"}];
+      [states setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", speedX), @"_pzrSpeedX"}];
       direction = self->_direction;
     }
 
@@ -454,10 +454,10 @@ LABEL_8:
     {
       deltaY = v29->deltaY;
       *&deltaY = deltaY;
-      [v17 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", deltaY), @"_pzrDeltaY"}];
+      [states setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", deltaY), @"_pzrDeltaY"}];
       speedY = v29->speedY;
       *&speedY = speedY;
-      [v17 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", speedY), @"_pzrSpeedY"}];
+      [states setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", speedY), @"_pzrSpeedY"}];
       direction = self->_direction;
     }
 
@@ -465,10 +465,10 @@ LABEL_8:
     {
       scale = v29->scale;
       *&scale = scale;
-      [v17 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", scale), @"_pzrScale"}];
+      [states setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", scale), @"_pzrScale"}];
       speedScale = v29->speedScale;
       *&speedScale = speedScale;
-      [v17 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", speedScale), @"_pzrSpeedScale"}];
+      [states setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", speedScale), @"_pzrSpeedScale"}];
       direction = self->_direction;
     }
 
@@ -476,10 +476,10 @@ LABEL_8:
     {
       rotation = v29->rotation;
       *&rotation = rotation;
-      [v17 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", rotation), @"_pzrRotation"}];
+      [states setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", rotation), @"_pzrRotation"}];
       speedRotation = v29->speedRotation;
       *&speedRotation = speedRotation;
-      [v17 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", speedRotation), @"_pzrSpeedRotation"}];
+      [states setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", speedRotation), @"_pzrSpeedRotation"}];
     }
   }
 }

@@ -1,8 +1,8 @@
 @interface CLKUIBezierPathStepperProvider
 - (CLKUIBezierPathStepperProvider)init;
 - (void)_calculateNorthOffset;
-- (void)pointAtOffset:(double)a3 outPoint:(CGPoint *)a4 outTangent:(CGVector *)a5;
-- (void)setPath:(id)a3;
+- (void)pointAtOffset:(double)offset outPoint:(CGPoint *)point outTangent:(CGVector *)tangent;
+- (void)setPath:(id)path;
 @end
 
 @implementation CLKUIBezierPathStepperProvider
@@ -25,14 +25,14 @@
   return v2;
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   p_path = &self->_path;
-  if (self->_path != v5)
+  if (self->_path != pathCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_path, a3);
+    v8 = pathCopy;
+    objc_storeStrong(p_path, path);
     [(CLKUIBezierPathStepper *)self->_pathStepper setPath:v8];
     [(CLKUIBezierPathStepper *)self->_pathStepper totalLength];
     self->_pathLength = v7;
@@ -148,10 +148,10 @@ LABEL_10:
   *(*(a1[5] + 8) + 24) = v9;
 }
 
-- (void)pointAtOffset:(double)a3 outPoint:(CGPoint *)a4 outTangent:(CGVector *)a5
+- (void)pointAtOffset:(double)offset outPoint:(CGPoint *)point outTangent:(CGVector *)tangent
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v7 = self->_offsetNorth + a3;
+  v7 = self->_offsetNorth + offset;
   if (v7 > 1.0)
   {
     v7 = v7 + -1.0;
@@ -163,15 +163,15 @@ LABEL_10:
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   v11 = [(CLKUIBezierPathStepper *)pathStepper mapOffsetsToPathPositions:v10];
 
-  v12 = [v11 firstObject];
-  [v12 tangent];
+  firstObject = [v11 firstObject];
+  [firstObject tangent];
   v14 = v13;
   v16 = v15;
-  [v12 point];
-  a4->x = v17;
-  a4->y = v18;
-  a5->dx = v14;
-  a5->dy = v16;
+  [firstObject point];
+  point->x = v17;
+  point->y = v18;
+  tangent->dx = v14;
+  tangent->dy = v16;
 }
 
 @end

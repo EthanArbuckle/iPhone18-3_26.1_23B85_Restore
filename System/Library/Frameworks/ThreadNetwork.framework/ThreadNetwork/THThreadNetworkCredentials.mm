@@ -1,99 +1,99 @@
 @interface THThreadNetworkCredentials
-- (THThreadNetworkCredentials)initWithCoder:(id)a3;
-- (THThreadNetworkCredentials)initWithMasterKey:(id)a3 passPhrase:(id)a4 PSKc:(id)a5 channel:(unsigned __int8)a6 PANID:(id)a7 userInfo:(id)a8 credentialDataSet:(id)a9 isActiveDevice:(BOOL)a10;
-- (void)encodeWithCoder:(id)a3;
+- (THThreadNetworkCredentials)initWithCoder:(id)coder;
+- (THThreadNetworkCredentials)initWithMasterKey:(id)key passPhrase:(id)phrase PSKc:(id)kc channel:(unsigned __int8)channel PANID:(id)d userInfo:(id)info credentialDataSet:(id)set isActiveDevice:(BOOL)self0;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation THThreadNetworkCredentials
 
-- (THThreadNetworkCredentials)initWithMasterKey:(id)a3 passPhrase:(id)a4 PSKc:(id)a5 channel:(unsigned __int8)a6 PANID:(id)a7 userInfo:(id)a8 credentialDataSet:(id)a9 isActiveDevice:(BOOL)a10
+- (THThreadNetworkCredentials)initWithMasterKey:(id)key passPhrase:(id)phrase PSKc:(id)kc channel:(unsigned __int8)channel PANID:(id)d userInfo:(id)info credentialDataSet:(id)set isActiveDevice:(BOOL)self0
 {
-  v16 = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a7;
-  v17 = a8;
-  v18 = a9;
+  keyCopy = key;
+  phraseCopy = phrase;
+  kcCopy = kc;
+  dCopy = d;
+  infoCopy = info;
+  setCopy = set;
   v26.receiver = self;
   v26.super_class = THThreadNetworkCredentials;
   v19 = [(THThreadNetworkCredentials *)&v26 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_masterKey, a3);
-    objc_storeStrong(&v20->_passPhrase, a4);
-    objc_storeStrong(&v20->_PSKc, a5);
-    v20->_channel = a6;
-    objc_storeStrong(&v20->_PANID, a7);
-    objc_storeStrong(&v20->_userInfo, a8);
-    objc_storeStrong(&v20->_credentialsDataSet, a9);
-    v20->_isActiveDevice = a10;
+    objc_storeStrong(&v19->_masterKey, key);
+    objc_storeStrong(&v20->_passPhrase, phrase);
+    objc_storeStrong(&v20->_PSKc, kc);
+    v20->_channel = channel;
+    objc_storeStrong(&v20->_PANID, d);
+    objc_storeStrong(&v20->_userInfo, info);
+    objc_storeStrong(&v20->_credentialsDataSet, set);
+    v20->_isActiveDevice = device;
   }
 
   return v20;
 }
 
-- (THThreadNetworkCredentials)initWithCoder:(id)a3
+- (THThreadNetworkCredentials)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mk"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"psk"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pp"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ch"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"panid"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"info"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dscreds"];
-  v12 = [v4 decodeBoolForKey:@"active"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mk"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"psk"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pp"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ch"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"panid"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"info"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dscreds"];
+  v12 = [coderCopy decodeBoolForKey:@"active"];
 
   if (v8)
   {
-    v13 = [v8 charValue];
+    charValue = [v8 charValue];
   }
 
   else
   {
-    v13 = -1;
+    charValue = -1;
   }
 
   LOBYTE(v16) = v12;
-  v14 = [(THThreadNetworkCredentials *)self initWithMasterKey:v5 passPhrase:v7 PSKc:v6 channel:v13 PANID:v9 userInfo:v10 credentialDataSet:v11 isActiveDevice:v16];
+  v14 = [(THThreadNetworkCredentials *)self initWithMasterKey:v5 passPhrase:v7 PSKc:v6 channel:charValue PANID:v9 userInfo:v10 credentialDataSet:v11 isActiveDevice:v16];
 
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(THThreadNetworkCredentials *)self masterKey];
-  [v11 encodeObject:v4 forKey:@"mk"];
+  coderCopy = coder;
+  masterKey = [(THThreadNetworkCredentials *)self masterKey];
+  [coderCopy encodeObject:masterKey forKey:@"mk"];
 
-  v5 = [(THThreadNetworkCredentials *)self PSKc];
-  [v11 encodeObject:v5 forKey:@"psk"];
+  pSKc = [(THThreadNetworkCredentials *)self PSKc];
+  [coderCopy encodeObject:pSKc forKey:@"psk"];
 
-  v6 = [(THThreadNetworkCredentials *)self passPhrase];
-  [v11 encodeObject:v6 forKey:@"pp"];
+  passPhrase = [(THThreadNetworkCredentials *)self passPhrase];
+  [coderCopy encodeObject:passPhrase forKey:@"pp"];
 
   if ([(THThreadNetworkCredentials *)self channel]== 255)
   {
-    [v11 encodeObject:0 forKey:@"ch"];
+    [coderCopy encodeObject:0 forKey:@"ch"];
   }
 
   else
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{-[THThreadNetworkCredentials channel](self, "channel")}];
-    [v11 encodeObject:v7 forKey:@"ch"];
+    [coderCopy encodeObject:v7 forKey:@"ch"];
   }
 
-  v8 = [(THThreadNetworkCredentials *)self PANID];
-  [v11 encodeObject:v8 forKey:@"panid"];
+  pANID = [(THThreadNetworkCredentials *)self PANID];
+  [coderCopy encodeObject:pANID forKey:@"panid"];
 
-  v9 = [(THThreadNetworkCredentials *)self userInfo];
-  [v11 encodeObject:v9 forKey:@"info"];
+  userInfo = [(THThreadNetworkCredentials *)self userInfo];
+  [coderCopy encodeObject:userInfo forKey:@"info"];
 
-  v10 = [(THThreadNetworkCredentials *)self credentialsDataSet];
-  [v11 encodeObject:v10 forKey:@"dscreds"];
+  credentialsDataSet = [(THThreadNetworkCredentials *)self credentialsDataSet];
+  [coderCopy encodeObject:credentialsDataSet forKey:@"dscreds"];
 
-  [v11 encodeBool:-[THThreadNetworkCredentials isActiveDevice](self forKey:{"isActiveDevice"), @"active"}];
+  [coderCopy encodeBool:-[THThreadNetworkCredentials isActiveDevice](self forKey:{"isActiveDevice"), @"active"}];
 }
 
 @end

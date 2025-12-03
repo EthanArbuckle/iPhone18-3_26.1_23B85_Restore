@@ -1,31 +1,31 @@
 @interface SKTexture
 + (SKTexture)textureNoiseWithSmoothness:(CGFloat)smoothness size:(CGSize)size grayscale:(BOOL)grayscale;
 + (SKTexture)textureVectorNoiseWithSmoothness:(CGFloat)smoothness size:(CGSize)size;
-+ (SKTexture)textureWithCGImage:(CGImage *)a3 pointSize:(CGSize)a4;
++ (SKTexture)textureWithCGImage:(CGImage *)image pointSize:(CGSize)size;
 + (SKTexture)textureWithData:(NSData *)pixelData size:(CGSize)size;
 + (SKTexture)textureWithData:(NSData *)pixelData size:(CGSize)size flipped:(BOOL)flipped;
 + (SKTexture)textureWithData:(NSData *)pixelData size:(CGSize)size rowLength:(unsigned int)rowLength alignment:(unsigned int)alignment;
-+ (SKTexture)textureWithIOSurfaceID:(unsigned int)a3 width:(unsigned int)a4 height:(unsigned int)a5 format:(unsigned int)a6;
++ (SKTexture)textureWithIOSurfaceID:(unsigned int)d width:(unsigned int)width height:(unsigned int)height format:(unsigned int)format;
 + (SKTexture)textureWithImage:(UIImage *)image;
 + (SKTexture)textureWithImageNamed:(NSString *)name;
-+ (SKTexture)textureWithImageNamed:(id)a3 rect:(CGRect)a4;
-+ (SKTexture)textureWithImagePath:(id)a3;
-+ (SKTexture)textureWithMetalTexture:(id)a3;
++ (SKTexture)textureWithImageNamed:(id)named rect:(CGRect)rect;
++ (SKTexture)textureWithImagePath:(id)path;
++ (SKTexture)textureWithMetalTexture:(id)texture;
 + (SKTexture)textureWithRect:(CGRect)rect inTexture:(SKTexture *)texture;
 + (id)_cachedTextureNames;
-+ (id)_textureByTransferingData:(char *)a3 size:(CGSize)a4;
-+ (id)_textureByTransferingData:(char *)a3 size:(CGSize)a4 rowLength:(unsigned int)a5 alignment:(unsigned int)a6;
-+ (id)_textureWithGLTextureId:(unsigned int)a3 size:(CGSize)a4;
-+ (id)_textureWithImageNamed:(id)a3;
-+ (id)compressedTextureWithData:(id)a3;
-+ (id)compressedTextureWithData:(id)a3 size:(CGSize)a4 bitsPerPixel:(unsigned int)a5 hasAlpha:(BOOL)a6;
-+ (id)lookupTextureCacheForName:(id)a3;
++ (id)_textureByTransferingData:(char *)data size:(CGSize)size;
++ (id)_textureByTransferingData:(char *)data size:(CGSize)size rowLength:(unsigned int)length alignment:(unsigned int)alignment;
++ (id)_textureWithGLTextureId:(unsigned int)id size:(CGSize)size;
++ (id)_textureWithImageNamed:(id)named;
++ (id)compressedTextureWithData:(id)data;
++ (id)compressedTextureWithData:(id)data size:(CGSize)size bitsPerPixel:(unsigned int)pixel hasAlpha:(BOOL)alpha;
++ (id)lookupTextureCacheForName:(id)name;
 + (id)preloadQueue;
-+ (void)_reloadTextureCacheForImageNamed:(id)a3;
++ (void)_reloadTextureCacheForImageNamed:(id)named;
 + (void)preloadTextures:(NSArray *)textures withCompletionHandler:(void *)completionHandler;
-- (BOOL)isEqualToTexture:(id)a3;
-- (BOOL)loadImageDataFromPVRData:(id)a3;
-- (BOOL)loadImageDataFromPVRGZData:(id)a3;
+- (BOOL)isEqualToTexture:(id)texture;
+- (BOOL)loadImageDataFromPVRData:(id)data;
+- (BOOL)loadImageDataFromPVRGZData:(id)data;
 - (CGImage)_newTextureFromGLCache;
 - (CGPoint)cropOffset;
 - (CGPoint)cropScale;
@@ -34,42 +34,42 @@
 - (CGSize)pixelSize;
 - (CGSize)size;
 - (SKTexture)init;
-- (SKTexture)initWithBackingTetxure:(shared_ptr<jet_texture>)a3;
-- (SKTexture)initWithBackingTetxure:(shared_ptr<jet_texture>)a3 logicalWidth:(float)a4 height:(float)a5;
-- (SKTexture)initWithCoder:(id)a3;
-- (SKTexture)initWithImageNamed:(id)a3;
-- (SKTexture)initWithImagePath:(id)a3;
+- (SKTexture)initWithBackingTetxure:(shared_ptr<jet_texture>)tetxure;
+- (SKTexture)initWithBackingTetxure:(shared_ptr<jet_texture>)tetxure logicalWidth:(float)width height:(float)height;
+- (SKTexture)initWithCoder:(id)coder;
+- (SKTexture)initWithImageNamed:(id)named;
+- (SKTexture)initWithImagePath:(id)path;
 - (SKTexture)textureByApplyingCIFilter:(CIFilter *)filter;
 - (SKTextureFilteringMode)filteringMode;
 - (id)_copyImageData;
-- (id)_generateNormalMap:(double)a3 contrast:(double)a4 multiPass:(unint64_t)a5;
-- (id)_initWithGLTextureId:(unsigned int)a3 size:(CGSize)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_generateNormalMap:(double)map contrast:(double)contrast multiPass:(unint64_t)pass;
+- (id)_initWithGLTextureId:(unsigned int)id size:(CGSize)size;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)metalTexture;
-- (int)_convert_jet_texture_format_to_ci_format:(unsigned int)a3;
+- (int)_convert_jet_texture_format_to_ci_format:(unsigned int)_convert_jet_texture_format_to_ci_format;
 - (int)glTextureId;
 - (int)wrapMode;
 - (shared_ptr<jet_texture>)_backingTexture;
 - (void)_ensureImageData;
-- (void)_savePngFromGLCache:(id)a3;
+- (void)_savePngFromGLCache:(id)cache;
 - (void)commonInit;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)initTextureCacheWithImageData;
 - (void)loadImageData;
-- (void)loadImageDataFromCGImage:(CGImage *)a3 pointsSize:(CGSize)a4;
+- (void)loadImageDataFromCGImage:(CGImage *)image pointsSize:(CGSize)size;
 - (void)preloadWithCompletionHandler:(void *)completionHandler;
 - (void)setFilteringMode:(SKTextureFilteringMode)filteringMode;
-- (void)setTextureDimension:(const CGSize *)a3 withPixelSize:(const CGSize *)a4;
-- (void)setWrapMode:(int)a3;
+- (void)setTextureDimension:(const CGSize *)dimension withPixelSize:(const CGSize *)size;
+- (void)setWrapMode:(int)mode;
 @end
 
 @implementation SKTexture
 
-+ (id)lookupTextureCacheForName:(id)a3
++ (id)lookupTextureCacheForName:(id)name
 {
-  v3 = [_textureTable objectForKey:a3];
+  v3 = [_textureTable objectForKey:name];
 
   return v3;
 }
@@ -136,7 +136,7 @@ void __23__SKTexture_commonInit__block_invoke()
   _textureTable = v3;
 }
 
-- (void)setTextureDimension:(const CGSize *)a3 withPixelSize:(const CGSize *)a4
+- (void)setTextureDimension:(const CGSize *)dimension withPixelSize:(const CGSize *)size
 {
   textureSyncQueue = self->_textureSyncQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -144,8 +144,8 @@ void __23__SKTexture_commonInit__block_invoke()
   block[2] = __47__SKTexture_setTextureDimension_withPixelSize___block_invoke;
   block[3] = &unk_278310050;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = dimension;
+  block[6] = size;
   dispatch_sync(textureSyncQueue, block);
 }
 
@@ -160,24 +160,24 @@ uint64_t __47__SKTexture_setTextureDimension_withPixelSize___block_invoke(uint64
   return [v5 setPixelSize:{v3, v4}];
 }
 
-- (BOOL)loadImageDataFromPVRGZData:(id)a3
+- (BOOL)loadImageDataFromPVRGZData:(id)data
 {
-  v4 = [a3 gzipInflate];
-  LOBYTE(self) = [(SKTexture *)self loadImageDataFromPVRData:v4];
+  gzipInflate = [data gzipInflate];
+  LOBYTE(self) = [(SKTexture *)self loadImageDataFromPVRData:gzipInflate];
 
   return self;
 }
 
-- (BOOL)loadImageDataFromPVRData:(id)a3
+- (BOOL)loadImageDataFromPVRData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 bytes];
-  v6 = v5;
-  if (*(v5 + 44) == 559044176)
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v6 = bytes;
+  if (*(bytes + 44) == 559044176)
   {
-    v7 = *(v5 + 20);
+    v7 = *(bytes + 20);
     v8 = malloc_type_malloc(v7, 0x100004077774924uLL);
-    memcpy(v8, ([v4 bytes] + 52), v7);
+    memcpy(v8, ([dataCopy bytes] + 52), v7);
     v9 = *(v6 + 4);
     v10 = v9.u32[1];
     v11 = v9.i32[0];
@@ -194,8 +194,8 @@ uint64_t __47__SKTexture_setTextureDimension_withPixelSize___block_invoke(uint64
     [(SKTextureCache *)self->_textureCache setIsPOT:v13];
     [(SKTextureCache *)self->_textureCache setHasAlpha:*(v6 + 40) != 0];
     [(SKTextureCache *)self->_textureCache setPixelSize:v10, v11];
-    v16 = [(NSString *)self->_imgName lowercaseString];
-    v17 = [v16 rangeOfString:@"@2x"];
+    lowercaseString = [(NSString *)self->_imgName lowercaseString];
+    v17 = [lowercaseString rangeOfString:@"@2x"];
 
     if (v17 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -282,15 +282,15 @@ LABEL_29:
   return v15;
 }
 
-- (void)loadImageDataFromCGImage:(CGImage *)a3 pointsSize:(CGSize)a4
+- (void)loadImageDataFromCGImage:(CGImage *)image pointsSize:(CGSize)size
 {
-  if (a3)
+  if (image)
   {
-    height = a4.height;
-    width = a4.width;
-    AlphaInfo = CGImageGetAlphaInfo(a3);
-    v9 = CGImageGetWidth(a3);
-    v10 = CGImageGetHeight(a3);
+    height = size.height;
+    width = size.width;
+    AlphaInfo = CGImageGetAlphaInfo(image);
+    v9 = CGImageGetWidth(image);
+    v10 = CGImageGetHeight(image);
     v12 = v10;
     v13 = v9 * v10;
     if ((v13 & 0xFFFFFFFF00000000) != 0)
@@ -317,7 +317,7 @@ LABEL_29:
     }
 
     [(SKTextureCache *)self->_textureCache setIsPOT:v15];
-    if (SKGetShouldUseExtendedRangeColor() && (ColorSpace = CGImageGetColorSpace(a3), SKColorSpaceIsWideGamut(ColorSpace)))
+    if (SKGetShouldUseExtendedRangeColor() && (ColorSpace = CGImageGetColorSpace(image), SKColorSpaceIsWideGamut(ColorSpace)))
     {
       v17 = malloc_type_malloc(16 * v13, 0x100004077774924uLL);
       DeviceRGB = CGColorSpaceCreateWithName(*MEMORY[0x277CBF430]);
@@ -345,7 +345,7 @@ LABEL_29:
     v31.origin.y = 0.0;
     v31.size.width = v9;
     v31.size.height = v12;
-    CGContextDrawImage(v19, v31, a3);
+    CGContextDrawImage(v19, v31, image);
     [(SKTextureCache *)self->_textureCache setHasAlpha:(AlphaInfo > kCGImageAlphaNoneSkipFirst) | (0x1Eu >> AlphaInfo) & 1];
     CGContextRelease(v19);
     [(SKTextureCache *)self->_textureCache setPixelSize:v9, v12];
@@ -465,7 +465,7 @@ void __25__SKTexture_preloadQueue__block_invoke()
   v23 = completionHandler;
   v7 = [(NSArray *)v6 count];
   v8 = dispatch_group_create();
-  v9 = [a1 preloadQueue];
+  preloadQueue = [self preloadQueue];
   if (v7)
   {
     v10 = 0;
@@ -516,7 +516,7 @@ void __25__SKTexture_preloadQueue__block_invoke()
         block[3] = &unk_2783100A0;
         v27 = v19;
         v20 = v19;
-        dispatch_group_async(v8, v9, block);
+        dispatch_group_async(v8, preloadQueue, block);
       }
 
       v21 = v7 >= v15;
@@ -539,7 +539,7 @@ void __25__SKTexture_preloadQueue__block_invoke()
   v24[3] = &unk_2783100C8;
   v25 = v23;
   v22 = v23;
-  dispatch_group_notify(v8, v9, v24);
+  dispatch_group_notify(v8, preloadQueue, v24);
 }
 
 void __51__SKTexture_preloadTextures_withCompletionHandler___block_invoke(uint64_t a1)
@@ -1036,9 +1036,9 @@ LABEL_9:
   return 0;
 }
 
-- (SKTexture)initWithImageNamed:(id)a3
+- (SKTexture)initWithImageNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v15.receiver = self;
   v15.super_class = SKTexture;
   v5 = [(SKTexture *)&v15 init];
@@ -1046,7 +1046,7 @@ LABEL_9:
   if (v5)
   {
     [(SKTexture *)v5 commonInit];
-    v7 = [v4 copy];
+    v7 = [namedCopy copy];
     imgName = v6->_imgName;
     v6->_imgName = v7;
 
@@ -1091,9 +1091,9 @@ LABEL_7:
   return v3;
 }
 
-- (SKTexture)initWithImagePath:(id)a3
+- (SKTexture)initWithImagePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = SKTexture;
   v5 = [(SKTexture *)&v10 init];
@@ -1102,7 +1102,7 @@ LABEL_7:
   {
     [(SKTexture *)v5 commonInit];
     v6->_isPath = 1;
-    v7 = [v4 copy];
+    v7 = [pathCopy copy];
     imgName = v6->_imgName;
     v6->_imgName = v7;
   }
@@ -1110,9 +1110,9 @@ LABEL_7:
   return v6;
 }
 
-- (SKTexture)initWithCoder:(id)a3
+- (SKTexture)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v54.receiver = self;
   v54.super_class = SKTexture;
   v5 = [(SKTexture *)&v54 init];
@@ -1123,27 +1123,27 @@ LABEL_7:
   }
 
   [(SKTexture *)v5 commonInit];
-  *(v6 + 12) = [v4 decodeBoolForKey:@"_isData"];
+  *(v6 + 12) = [coderCopy decodeBoolForKey:@"_isData"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v4;
-    v8 = [v7 searchPaths];
+    v7 = coderCopy;
+    searchPaths = [v7 searchPaths];
     v9 = *(v6 + 24);
-    *(v6 + 24) = v8;
+    *(v6 + 24) = searchPaths;
   }
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_originalAtlasName"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_originalAtlasName"];
   v11 = *(v6 + 168);
   *(v6 + 168) = v10;
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_subTextureName"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_subTextureName"];
   v13 = *(v6 + 176);
   *(v6 + 176) = v12;
 
   if (*(v6 + 168) && *(v6 + 176))
   {
-    if (![v4 decodeBoolForKey:@"_isCapture"])
+    if (![coderCopy decodeBoolForKey:@"_isCapture"])
     {
       v28 = [SKTextureAtlas atlasNamed:*(v6 + 168)];
       v53 = [v28 textureNamed:*(v6 + 176)];
@@ -1152,62 +1152,62 @@ LABEL_7:
       goto LABEL_10;
     }
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_originalTexture"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_originalTexture"];
     v15 = *(v6 + 152);
     *(v6 + 152) = v14;
 
-    v16 = [*(v6 + 152) _textureCache];
+    _textureCache = [*(v6 + 152) _textureCache];
     v17 = *(v6 + 184);
-    *(v6 + 184) = v16;
+    *(v6 + 184) = _textureCache;
 
-    *(v6 + 11) = [v4 decodeBoolForKey:@"_isPath"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_imgName"];
+    *(v6 + 11) = [coderCopy decodeBoolForKey:@"_isPath"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_imgName"];
     v19 = *(v6 + 16);
     *(v6 + 16) = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_textRect"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_textRect"];
     [v20 CGRectValue];
     *(v6 + 32) = v21;
     *(v6 + 40) = v22;
     *(v6 + 48) = v23;
     *(v6 + 56) = v24;
 
-    *(v6 + 97) = [v4 decodeBoolForKey:@"_isRotated"];
-    *(v6 + 98) = [v4 decodeBoolForKey:@"_isFlipped"];
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_cropOffset"];
+    *(v6 + 97) = [coderCopy decodeBoolForKey:@"_isRotated"];
+    *(v6 + 98) = [coderCopy decodeBoolForKey:@"_isFlipped"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_cropOffset"];
     [v25 CGPointValue];
     *(v6 + 120) = v26;
     *(v6 + 128) = v27;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_cropScale"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_cropScale"];
     [v28 CGPointValue];
   }
 
   else
   {
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_pixelSize"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_pixelSize"];
     [v31 CGSizeValue];
     [*(v6 + 184) setPixelSize:?];
 
-    *(v6 + 11) = [v4 decodeBoolForKey:@"_isPath"];
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_imgName"];
+    *(v6 + 11) = [coderCopy decodeBoolForKey:@"_isPath"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_imgName"];
     v33 = *(v6 + 16);
     *(v6 + 16) = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_textRect"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_textRect"];
     [v34 CGRectValue];
     *(v6 + 32) = v35;
     *(v6 + 40) = v36;
     *(v6 + 48) = v37;
     *(v6 + 56) = v38;
 
-    *(v6 + 97) = [v4 decodeBoolForKey:@"_isRotated"];
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_cropOffset"];
+    *(v6 + 97) = [coderCopy decodeBoolForKey:@"_isRotated"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_cropOffset"];
     [v39 CGPointValue];
     *(v6 + 120) = v40;
     *(v6 + 128) = v41;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_cropScale"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_cropScale"];
     [v28 CGPointValue];
   }
 
@@ -1218,71 +1218,71 @@ LABEL_10:
   if (*(v6 + 12) == 1)
   {
     [*(v6 + 184) setState:1];
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_pixelSize"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_pixelSize"];
     [v42 CGSizeValue];
     [*(v6 + 184) setPixelSize:?];
 
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_size"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_size"];
     [v43 CGSizeValue];
     [*(v6 + 184) setSize:?];
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_textRect"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_textRect"];
     [v44 CGRectValue];
     *(v6 + 32) = v45;
     *(v6 + 40) = v46;
     *(v6 + 48) = v47;
     *(v6 + 56) = v48;
 
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_imageData"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_imageData"];
     v50 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:v49];
-    v51 = [v50 CGImage];
+    cGImage = [v50 CGImage];
     [*(v6 + 184) size];
-    [v6 loadImageDataFromCGImage:v51 pointsSize:?];
+    [v6 loadImageDataFromCGImage:cGImage pointsSize:?];
   }
 
-  *(v6 + 96) = [v4 decodeBoolForKey:@"_disableAlpha"];
-  [v6 setFilteringMode:{objc_msgSend(v4, "decodeIntForKey:", @"_filteringMode"}];
+  *(v6 + 96) = [coderCopy decodeBoolForKey:@"_disableAlpha"];
+  [v6 setFilteringMode:{objc_msgSend(coderCopy, "decodeIntForKey:", @"_filteringMode"}];
 LABEL_13:
 
   return v6;
 }
 
-- (BOOL)isEqualToTexture:(id)a3
+- (BOOL)isEqualToTexture:(id)texture
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  textureCopy = texture;
+  v5 = textureCopy;
+  if (self == textureCopy)
   {
     goto LABEL_33;
   }
 
-  if (self->_isPath != v4->_isPath)
+  if (self->_isPath != textureCopy->_isPath)
   {
     goto LABEL_20;
   }
 
-  if (self->_performFullCapture != v4->_performFullCapture)
+  if (self->_performFullCapture != textureCopy->_performFullCapture)
   {
     goto LABEL_20;
   }
 
-  if (self->_disableAlpha != v4->_disableAlpha)
+  if (self->_disableAlpha != textureCopy->_disableAlpha)
   {
     goto LABEL_20;
   }
 
-  if (self->_isRotated != v4->_isRotated)
+  if (self->_isRotated != textureCopy->_isRotated)
   {
     goto LABEL_20;
   }
 
-  if (self->_isFlipped != v4->_isFlipped)
+  if (self->_isFlipped != textureCopy->_isFlipped)
   {
     goto LABEL_20;
   }
 
-  v6 = [(SKTexture *)self filteringMode];
-  if (v6 != [(SKTexture *)v5 filteringMode])
+  filteringMode = [(SKTexture *)self filteringMode];
+  if (filteringMode != [(SKTexture *)v5 filteringMode])
   {
     goto LABEL_20;
   }
@@ -1410,9 +1410,9 @@ LABEL_33:
   }
 
 LABEL_32:
-  v22 = [(SKTexture *)self _copyImageData];
-  v23 = [(SKTexture *)v5 _copyImageData];
-  v24 = [v22 isEqual:v23];
+  _copyImageData = [(SKTexture *)self _copyImageData];
+  _copyImageData2 = [(SKTexture *)v5 _copyImageData];
+  v24 = [_copyImageData isEqual:_copyImageData2];
 
   if (v24)
   {
@@ -1426,82 +1426,82 @@ LABEL_34:
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  [v13 encodeObject:self->_originalAtlasName forKey:@"_originalAtlasName"];
-  [v13 encodeObject:self->_subTextureName forKey:@"_subTextureName"];
-  [v13 encodeBool:self->_isPath forKey:@"_isPath"];
-  [v13 encodeBool:-[SKTexture performFullCapture](self forKey:{"performFullCapture"), @"_isCapture"}];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_originalAtlasName forKey:@"_originalAtlasName"];
+  [coderCopy encodeObject:self->_subTextureName forKey:@"_subTextureName"];
+  [coderCopy encodeBool:self->_isPath forKey:@"_isPath"];
+  [coderCopy encodeBool:-[SKTexture performFullCapture](self forKey:{"performFullCapture"), @"_isCapture"}];
   if ([(SKTexture *)self performFullCapture])
   {
     originalTexture = self->_originalTexture;
     if (originalTexture)
     {
-      [v13 encodeObject:originalTexture forKey:@"_originalTexture"];
+      [coderCopy encodeObject:originalTexture forKey:@"_originalTexture"];
       goto LABEL_8;
     }
 
-    [v13 encodeBool:1 forKey:@"_isData"];
-    v5 = [(SKTexture *)self _copyImageData];
-    [v13 encodeObject:v5 forKey:@"_imageData"];
+    [coderCopy encodeBool:1 forKey:@"_isData"];
+    _copyImageData = [(SKTexture *)self _copyImageData];
+    [coderCopy encodeObject:_copyImageData forKey:@"_imageData"];
   }
 
   else
   {
-    [v13 encodeBool:self->_isData forKey:@"_isData"];
+    [coderCopy encodeBool:self->_isData forKey:@"_isData"];
     if (!self->_isData)
     {
       goto LABEL_8;
     }
 
-    v5 = [(SKTexture *)self _copyImageData];
-    [v13 encodeObject:v5 forKey:@"_imageData"];
+    _copyImageData = [(SKTexture *)self _copyImageData];
+    [coderCopy encodeObject:_copyImageData forKey:@"_imageData"];
   }
 
 LABEL_8:
-  [v13 encodeObject:self->_imgName forKey:@"_imgName"];
-  [v13 encodeBool:self->_disableAlpha forKey:@"_disableAlpha"];
+  [coderCopy encodeObject:self->_imgName forKey:@"_imgName"];
+  [coderCopy encodeBool:self->_disableAlpha forKey:@"_disableAlpha"];
   v6 = MEMORY[0x277CCAE60];
   [(SKTextureCache *)self->_textureCache size];
   v7 = [v6 valueWithCGSize:?];
-  [v13 encodeObject:v7 forKey:@"_size"];
+  [coderCopy encodeObject:v7 forKey:@"_size"];
 
   v8 = MEMORY[0x277CCAE60];
   [(SKTextureCache *)self->_textureCache pixelSize];
   v9 = [v8 valueWithCGSize:?];
-  [v13 encodeObject:v9 forKey:@"_pixelSize"];
+  [coderCopy encodeObject:v9 forKey:@"_pixelSize"];
 
   v10 = [MEMORY[0x277CCAE60] valueWithCGRect:{self->_textRect.origin.x, self->_textRect.origin.y, self->_textRect.size.width, self->_textRect.size.height}];
-  [v13 encodeObject:v10 forKey:@"_textRect"];
+  [coderCopy encodeObject:v10 forKey:@"_textRect"];
 
   v11 = [MEMORY[0x277CCAE60] valueWithCGPoint:{self->_cropOffset.x, self->_cropOffset.y}];
-  [v13 encodeObject:v11 forKey:@"_cropOffset"];
+  [coderCopy encodeObject:v11 forKey:@"_cropOffset"];
 
   v12 = [MEMORY[0x277CCAE60] valueWithCGPoint:{self->_cropScale.x, self->_cropScale.y}];
-  [v13 encodeObject:v12 forKey:@"_cropScale"];
+  [coderCopy encodeObject:v12 forKey:@"_cropScale"];
 
-  [v13 encodeBool:self->_isRotated forKey:@"_isRotated"];
-  [v13 encodeBool:self->_isFlipped forKey:@"_isFlipped"];
-  [v13 encodeInteger:-[SKTexture filteringMode](self forKey:{"filteringMode"), @"_filteringMode"}];
+  [coderCopy encodeBool:self->_isRotated forKey:@"_isRotated"];
+  [coderCopy encodeBool:self->_isFlipped forKey:@"_isFlipped"];
+  [coderCopy encodeInteger:-[SKTexture filteringMode](self forKey:{"filteringMode"), @"_filteringMode"}];
 }
 
 + (SKTexture)textureWithImageNamed:(NSString *)name
 {
   v4 = name;
-  v5 = [[a1 alloc] initWithImageNamed:v4];
+  v5 = [[self alloc] initWithImageNamed:v4];
 
   return v5;
 }
 
-+ (SKTexture)textureWithImageNamed:(id)a3 rect:(CGRect)a4
++ (SKTexture)textureWithImageNamed:(id)named rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithImageNamed:v9];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  namedCopy = named;
+  v10 = [[self alloc] initWithImageNamed:namedCopy];
   v10[4] = x;
   v10[5] = y;
   v10[6] = width;
@@ -1510,9 +1510,9 @@ LABEL_8:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSString *)self->_imgName copy];
   v6 = *(v4 + 16);
   *(v4 + 16) = v5;
@@ -1551,7 +1551,7 @@ LABEL_8:
     [v11 raise:*MEMORY[0x277CBE660] format:{@"Invalid size specified (should be positive): %@", v12}];
   }
 
-  v13 = objc_alloc_init(a1);
+  v13 = objc_alloc_init(self);
   v14 = [(NSString *)v10->_imgName copy];
   v15 = *(v13 + 2);
   *(v13 + 2) = v14;
@@ -1597,9 +1597,9 @@ LABEL_8:
     v8 = fmax(v7, 0.0);
     if (v8 != 0.0)
     {
-      v5 = objc_alloc_init(a1);
+      v5 = objc_alloc_init(self);
       [v5[23] setPixelData:{malloc_type_malloc(vcvtd_n_u64_f64(v6 * v8, 2uLL), 0x100004077774924uLL)}];
-      v9 = [v5[23] pixelData];
+      pixelData = [v5[23] pixelData];
       __exp10(smoothness * -2.0 + 3.0);
       if (v7 > 0.0)
       {
@@ -1614,7 +1614,7 @@ LABEL_8:
             do
             {
               srdnoise3();
-              v14 = (v9 + vcvtd_n_s64_f64(v12 + v11 * v6, 2uLL));
+              v14 = (pixelData + vcvtd_n_s64_f64(v12 + v11 * v6, 2uLL));
               *v14 = (((0.0 * 0.10206) + 0.5) * 255.0);
               v14[1] = (((0.0 * 0.10206) + 0.5) * 255.0);
               v14[2] = (((0.0 * 0.10206) + 0.5) * 255.0);
@@ -1675,9 +1675,9 @@ LABEL_8:
     v9 = fmax(v8, 0.0);
     if (v9 != 0.0)
     {
-      v6 = objc_alloc_init(a1);
+      v6 = objc_alloc_init(self);
       [v6[23] setPixelData:{malloc_type_malloc(vcvtd_n_u64_f64(v7 * v9, 2uLL), 0x100004077774924uLL)}];
-      v11 = [v6[23] pixelData];
+      pixelData = [v6[23] pixelData];
       __exp10(smoothness * -2.0 + 3.0);
       if (v8 > 0.0)
       {
@@ -1719,7 +1719,7 @@ LABEL_8:
               v22.i64[0] = 0x3F0000003F000000;
               v22.i64[1] = 0x3F0000003F000000;
               *v22.f32 = vmovn_s32(vcvtq_s32_f32(vmulq_f32(vmlaq_f32(v22, v22, v17), v33)));
-              *(v11 + vcvtd_n_s64_f64(v14 + v13 * v7, 2uLL)) = vuzp1_s8(*v22.f32, *v22.f32).u32[0];
+              *(pixelData + vcvtd_n_s64_f64(v14 + v13 * v7, 2uLL)) = vuzp1_s8(*v22.f32, *v22.f32).u32[0];
               v14 = v15++;
             }
 
@@ -1766,13 +1766,13 @@ LABEL_8:
   return v6;
 }
 
-+ (SKTexture)textureWithCGImage:(CGImage *)a3 pointSize:(CGSize)a4
++ (SKTexture)textureWithCGImage:(CGImage *)image pointSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = objc_alloc_init(a1);
+  height = size.height;
+  width = size.width;
+  v7 = objc_alloc_init(self);
   v7[12] = 1;
-  [v7 loadImageDataFromCGImage:a3 pointsSize:{width, height}];
+  [v7 loadImageDataFromCGImage:image pointsSize:{width, height}];
 
   return v7;
 }
@@ -1780,9 +1780,9 @@ LABEL_8:
 + (SKTexture)textureWithImage:(UIImage *)image
 {
   v4 = image;
-  v5 = [(UIImage *)v4 CGImage];
+  cGImage = [(UIImage *)v4 CGImage];
   [(UIImage *)v4 size];
-  v6 = [a1 textureWithCGImage:v5 pointSize:?];
+  v6 = [self textureWithCGImage:cGImage pointSize:?];
 
   return v6;
 }
@@ -1795,7 +1795,7 @@ LABEL_8:
   v6 = 0;
   if (v5 && width > 0.0 && height > 0.0)
   {
-    v6 = objc_alloc_init(a1);
+    v6 = objc_alloc_init(self);
     v7.f64[0] = height;
     v7.f64[1] = width;
     v8 = vcvtq_u64_f64(vrndpq_f64(v7));
@@ -1847,7 +1847,7 @@ LABEL_8:
   {
     if (flipped)
     {
-      v8 = objc_alloc_init(a1);
+      v8 = objc_alloc_init(self);
       v9.f64[0] = height;
       v9.f64[1] = width;
       v10 = vcvtq_u64_f64(vrndpq_f64(v9));
@@ -1856,13 +1856,13 @@ LABEL_8:
       v22 = v10;
       v12 = v10.i32[1];
       [v8[23] setPixelData:{malloc_type_malloc((4 * v10.i32[0] * v10.i32[1]), 0x100004077774924uLL)}];
-      v13 = [(NSData *)v7 bytes];
-      v14 = [v8[23] pixelData];
+      bytes = [(NSData *)v7 bytes];
+      pixelData = [v8[23] pixelData];
       if (v11)
       {
-        v15 = v14;
+        v15 = pixelData;
         v16 = (4 * v12);
-        v17 = (v13 + (v16 * (v11 + 0x3FFFFFFF)));
+        v17 = (bytes + (v16 * (v11 + 0x3FFFFFFF)));
         v18 = v11;
         do
         {
@@ -1898,7 +1898,7 @@ LABEL_8:
 
     else
     {
-      v8 = [a1 textureWithData:v7 size:{width, height}];
+      v8 = [self textureWithData:v7 size:{width, height}];
     }
   }
 
@@ -1913,7 +1913,7 @@ LABEL_8:
   v10 = 0;
   if (v9 && width > 0.0 && height > 0.0)
   {
-    v10 = objc_alloc_init(a1);
+    v10 = objc_alloc_init(self);
     v11.f64[0] = height;
     v11.f64[1] = width;
     v12 = vcvtq_u64_f64(vrndpq_f64(v11));
@@ -1979,7 +1979,7 @@ LABEL_8:
   [(SKTexture *)self textureRect];
   v8 = v7;
   v10 = v9;
-  v11 = [(SKTexture *)self isRotated];
+  isRotated = [(SKTexture *)self isRotated];
   v12 = v4 * v8;
   [(SKTexture *)self cropScale];
   v14 = v13;
@@ -1987,13 +1987,13 @@ LABEL_8:
   v17 = v6 * v10;
   [(SKTexture *)self cropScale];
   v20 = v17 / v19;
-  if (!v11)
+  if (!isRotated)
   {
     v20 = v12 / v14;
   }
 
   v21 = v17 / v18;
-  if (v11)
+  if (isRotated)
   {
     v21 = v12 / v16;
   }
@@ -2007,12 +2007,12 @@ LABEL_8:
 {
   v4 = filter;
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = self;
-  [(SKTexture *)v6 _ensureImageData];
+  selfCopy = self;
+  [(SKTexture *)selfCopy _ensureImageData];
   v7 = [(CIFilter *)v4 copy];
-  [(SKTextureCache *)v6->_textureCache pixelSize];
+  [(SKTextureCache *)selfCopy->_textureCache pixelSize];
   v9 = v8;
-  [(SKTextureCache *)v6->_textureCache pixelSize];
+  [(SKTextureCache *)selfCopy->_textureCache pixelSize];
   if (v4)
   {
     v11 = v10;
@@ -2052,15 +2052,15 @@ LABEL_8:
   objc_storeStrong(v5 + 19, self);
   [v5[23] setState:1];
   [v5[23] setPixelSize:{v18, v20}];
-  [(SKTextureCache *)v6->_textureCache size];
+  [(SKTextureCache *)selfCopy->_textureCache size];
   v26 = v25;
-  [(SKTextureCache *)v6->_textureCache pixelSize];
+  [(SKTextureCache *)selfCopy->_textureCache pixelSize];
   v28 = v27;
   [v5[23] pixelSize];
   v30 = v29;
-  [(SKTextureCache *)v6->_textureCache size];
+  [(SKTextureCache *)selfCopy->_textureCache size];
   v32 = v31;
-  [(SKTextureCache *)v6->_textureCache pixelSize];
+  [(SKTextureCache *)selfCopy->_textureCache pixelSize];
   v34 = v33;
   [v5[23] pixelSize];
   [v5[23] setSize:{v26 / v28 * v30, v32 / v34 * v35}];
@@ -2079,16 +2079,16 @@ LABEL_8:
   subTextureName = self->_subTextureName;
   if (subTextureName)
   {
-    v5 = subTextureName;
+    lastPathComponent = subTextureName;
 LABEL_7:
-    v3 = v5;
+    v3 = lastPathComponent;
     goto LABEL_8;
   }
 
   imgName = self->_imgName;
   if (imgName)
   {
-    v5 = [(NSString *)imgName lastPathComponent];
+    lastPathComponent = [(NSString *)imgName lastPathComponent];
     goto LABEL_7;
   }
 
@@ -2096,10 +2096,10 @@ LABEL_7:
   if (filter)
   {
     v14 = MEMORY[0x277CCACA8];
-    v15 = [(CIFilter *)filter name];
-    v16 = [(SKTexture *)self->_originalTexture imageNameOrPath];
-    v17 = [v16 lastPathComponent];
-    v18 = [v14 stringWithFormat:@"<%@(%@)>", v15, v17];
+    name = [(CIFilter *)filter name];
+    imageNameOrPath = [(SKTexture *)self->_originalTexture imageNameOrPath];
+    lastPathComponent2 = [imageNameOrPath lastPathComponent];
+    v18 = [v14 stringWithFormat:@"<%@(%@)>", name, lastPathComponent2];
 
     v3 = v18;
   }
@@ -2129,9 +2129,9 @@ LABEL_8:
   }
 }
 
-- (void)setWrapMode:(int)a3
+- (void)setWrapMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   [(SKTexture *)self _ensureImageData];
   if ([(SKTextureCache *)self->_textureCache wrapMode]!= v3)
   {
@@ -2181,12 +2181,12 @@ LABEL_8:
   [(SKTexture *)&v5 dealloc];
 }
 
-+ (id)_textureWithImageNamed:(id)a3
++ (id)_textureWithImageNamed:(id)named
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  namedCopy = named;
+  v5 = objc_alloc_init(self);
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v7 = [v6 pathForResource:v4 ofType:0];
+  v7 = [v6 pathForResource:namedCopy ofType:0];
   v8 = v5[2];
   v5[2] = v7;
 
@@ -2222,17 +2222,17 @@ LABEL_8:
   return result;
 }
 
-- (SKTexture)initWithBackingTetxure:(shared_ptr<jet_texture>)a3
+- (SKTexture)initWithBackingTetxure:(shared_ptr<jet_texture>)tetxure
 {
-  ptr = a3.__ptr_;
-  v5 = *a3.__ptr_;
-  v6 = *(a3.__ptr_ + 1);
-  v13 = *a3.__ptr_;
+  ptr = tetxure.__ptr_;
+  v5 = *tetxure.__ptr_;
+  v6 = *(tetxure.__ptr_ + 1);
+  v13 = *tetxure.__ptr_;
   v14 = v6;
   if (v6)
   {
     atomic_fetch_add_explicit(&v6->__shared_owners_, 1uLL, memory_order_relaxed);
-    v5 = *a3.__ptr_;
+    v5 = *tetxure.__ptr_;
   }
 
   v7 = (**v5)(v5, a2);
@@ -2248,10 +2248,10 @@ LABEL_8:
   return v11;
 }
 
-- (SKTexture)initWithBackingTetxure:(shared_ptr<jet_texture>)a3 logicalWidth:(float)a4 height:(float)a5
+- (SKTexture)initWithBackingTetxure:(shared_ptr<jet_texture>)tetxure logicalWidth:(float)width height:(float)height
 {
-  ptr = a3.__ptr_;
-  v8 = [(SKTexture *)self init:a3.__ptr_];
+  ptr = tetxure.__ptr_;
+  v8 = [(SKTexture *)self init:tetxure.__ptr_];
   v9 = v8;
   if (v8)
   {
@@ -2274,7 +2274,7 @@ LABEL_8:
     v10->_imgName = 0;
 
     [(SKTextureCache *)v10->_textureCache setPixelSize:v11, v13];
-    [(SKTextureCache *)v10->_textureCache setSize:a4, a5];
+    [(SKTextureCache *)v10->_textureCache setSize:width, height];
     [(SKTextureCache *)v10->_textureCache setState:1];
     textureCache = v10->_textureCache;
     v18 = *(ptr + 1);
@@ -2441,7 +2441,7 @@ void __38__SKTexture_Internal___backingTexture__block_invoke_2(uint64_t a1, void
   [(SKTexture *)self textureRect];
   v8 = v7;
   v10 = v9;
-  v11 = [(SKTexture *)self isRotated];
+  isRotated = [(SKTexture *)self isRotated];
   v12 = v4 * v8;
   [(SKTexture *)self cropScale];
   v14 = v13;
@@ -2450,7 +2450,7 @@ void __38__SKTexture_Internal___backingTexture__block_invoke_2(uint64_t a1, void
   [(SKTexture *)self cropScale];
   v19 = v17 / v18;
   v21 = v17 / v20;
-  if (v11)
+  if (isRotated)
   {
     v21 = v12 / v16;
   }
@@ -2467,9 +2467,9 @@ void __38__SKTexture_Internal___backingTexture__block_invoke_2(uint64_t a1, void
   return result;
 }
 
-+ (void)_reloadTextureCacheForImageNamed:(id)a3
++ (void)_reloadTextureCacheForImageNamed:(id)named
 {
-  v3 = [_textureTable objectForKey:a3];
+  v3 = [_textureTable objectForKey:named];
   if (v3)
   {
     [v3 _reset];
@@ -2478,20 +2478,20 @@ void __38__SKTexture_Internal___backingTexture__block_invoke_2(uint64_t a1, void
 
 + (id)_cachedTextureNames
 {
-  v2 = [_textureTable keyEnumerator];
+  keyEnumerator = [_textureTable keyEnumerator];
   v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(_textureTable, "count")}];
   v4 = 0;
   while (1)
   {
-    v5 = [v2 nextObject];
+    nextObject = [keyEnumerator nextObject];
 
-    if (!v5)
+    if (!nextObject)
     {
       break;
     }
 
-    v4 = v5;
-    [v3 addObject:v5];
+    v4 = nextObject;
+    [v3 addObject:nextObject];
   }
 
   return v3;
@@ -2504,27 +2504,27 @@ void __38__SKTexture_Internal___backingTexture__block_invoke_2(uint64_t a1, void
     self = self->_originalTexture;
   }
 
-  v2 = [(SKTexture *)self _createCGImage];
-  v3 = [MEMORY[0x277D755B8] imageWithCGImage:v2];
+  _createCGImage = [(SKTexture *)self _createCGImage];
+  v3 = [MEMORY[0x277D755B8] imageWithCGImage:_createCGImage];
   v4 = UIImagePNGRepresentation(v3);
-  CGImageRelease(v2);
+  CGImageRelease(_createCGImage);
 
   return v4;
 }
 
-+ (id)compressedTextureWithData:(id)a3
++ (id)compressedTextureWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 bytes];
-  if (v5[11] == 559044176)
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  if (bytes[11] == 559044176)
   {
-    v6 = objc_alloc_init(a1);
-    v7 = v5[5];
+    v6 = objc_alloc_init(self);
+    v7 = bytes[5];
     [v6[23] setPixelData:{malloc_type_malloc(v7, 0x100004077774924uLL)}];
-    memcpy([v6[23] pixelData], (objc_msgSend(v4, "bytes") + 52), v7);
-    v8 = v5[1];
-    LODWORD(v7) = v5[2];
-    [v6[23] setHasAlpha:v5[10] != 0];
+    memcpy([v6[23] pixelData], (objc_msgSend(dataCopy, "bytes") + 52), v7);
+    v8 = bytes[1];
+    LODWORD(v7) = bytes[2];
+    [v6[23] setHasAlpha:bytes[10] != 0];
     [v6[23] setPixelSize:{v7, v8}];
     [v6[23] setSize:{v7, v8}];
     *(v6 + 12) = 1;
@@ -2535,27 +2535,27 @@ void __38__SKTexture_Internal___backingTexture__block_invoke_2(uint64_t a1, void
   return 0;
 }
 
-+ (id)compressedTextureWithData:(id)a3 size:(CGSize)a4 bitsPerPixel:(unsigned int)a5 hasAlpha:(BOOL)a6
++ (id)compressedTextureWithData:(id)data size:(CGSize)size bitsPerPixel:(unsigned int)pixel hasAlpha:(BOOL)alpha
 {
-  v6 = a6;
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  if (v11 && width > 0.0 && height > 0.0 && (a5 == 4 || a5 == 2))
+  alphaCopy = alpha;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  if (dataCopy && width > 0.0 && height > 0.0 && (pixel == 4 || pixel == 2))
   {
-    v12 = objc_alloc_init(a1);
+    v12 = objc_alloc_init(self);
     v13 = ceil(width);
     v14 = ceil(height);
     v15 = 3.0;
-    if (v6)
+    if (alphaCopy)
     {
       v15 = 4.0;
     }
 
-    v16 = (v15 * (v13 * v14 * a5)) >> 3;
+    v16 = (v15 * (v13 * v14 * pixel)) >> 3;
     [v12[23] setPixelData:{malloc_type_malloc(v16, 0x100004077774924uLL)}];
-    memcpy([v12[23] pixelData], objc_msgSend(v11, "bytes"), v16);
-    [v12[23] setHasAlpha:v6];
+    memcpy([v12[23] pixelData], objc_msgSend(dataCopy, "bytes"), v16);
+    [v12[23] setHasAlpha:alphaCopy];
     [v12[23] setPixelSize:{v13, v14}];
     [v12[23] setSize:{v13, v14}];
     *(v12 + 12) = 1;
@@ -2566,13 +2566,13 @@ void __38__SKTexture_Internal___backingTexture__block_invoke_2(uint64_t a1, void
   return 0;
 }
 
-- (id)_generateNormalMap:(double)a3 contrast:(double)a4 multiPass:(unint64_t)a5
+- (id)_generateNormalMap:(double)map contrast:(double)contrast multiPass:(unint64_t)pass
 {
-  v9 = [(SKTexture *)self _createCGImage];
-  v10 = v9;
-  if (v9)
+  _createCGImage = [(SKTexture *)self _createCGImage];
+  v10 = _createCGImage;
+  if (_createCGImage)
   {
-    Width = CGImageGetWidth(v9);
+    Width = CGImageGetWidth(_createCGImage);
     Height = CGImageGetHeight(v10);
     v13 = Height;
     v14 = Height;
@@ -2594,7 +2594,7 @@ void __38__SKTexture_Internal___backingTexture__block_invoke_2(uint64_t a1, void
     CGContextDrawImage(v17, v22, v10);
     CGContextRelease(v17);
     CGImageRelease(v10);
-    if (SKGenerateNormalMapWithMultiSampling(Width, v13, v15, a5, a3, a4))
+    if (SKGenerateNormalMapWithMultiSampling(Width, v13, v15, pass, map, contrast))
     {
       v18 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v15 length:4 * Width * v14];
       v10 = [SKTexture textureWithData:v18 size:Width, v14];
@@ -2611,27 +2611,27 @@ void __38__SKTexture_Internal___backingTexture__block_invoke_2(uint64_t a1, void
   return v10;
 }
 
-+ (SKTexture)textureWithImagePath:(id)a3
++ (SKTexture)textureWithImagePath:(id)path
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithImagePath:v4];
+  pathCopy = path;
+  v5 = [[self alloc] initWithImagePath:pathCopy];
 
   return v5;
 }
 
-+ (id)_textureByTransferingData:(char *)a3 size:(CGSize)a4
++ (id)_textureByTransferingData:(char *)data size:(CGSize)size
 {
   v4 = 0;
-  if (a3)
+  if (data)
   {
-    width = a4.width;
-    if (a4.width > 0.0)
+    width = size.width;
+    if (size.width > 0.0)
     {
-      height = a4.height;
-      if (a4.height > 0.0)
+      height = size.height;
+      if (size.height > 0.0)
       {
-        v4 = objc_alloc_init(a1);
-        [v4[23] setPixelData:a3];
+        v4 = objc_alloc_init(self);
+        [v4[23] setPixelData:data];
         [v4[23] setHasAlpha:1];
         v8 = ceil(width);
         v9 = ceil(height);
@@ -2646,19 +2646,19 @@ void __38__SKTexture_Internal___backingTexture__block_invoke_2(uint64_t a1, void
   return v4;
 }
 
-+ (id)_textureByTransferingData:(char *)a3 size:(CGSize)a4 rowLength:(unsigned int)a5 alignment:(unsigned int)a6
++ (id)_textureByTransferingData:(char *)data size:(CGSize)size rowLength:(unsigned int)length alignment:(unsigned int)alignment
 {
   v6 = 0;
-  if (a3)
+  if (data)
   {
-    width = a4.width;
-    if (a4.width > 0.0)
+    width = size.width;
+    if (size.width > 0.0)
     {
-      height = a4.height;
-      if (a4.height > 0.0)
+      height = size.height;
+      if (size.height > 0.0)
       {
-        v6 = objc_alloc_init(a1);
-        [v6[23] setPixelData:a3];
+        v6 = objc_alloc_init(self);
+        [v6[23] setPixelData:data];
         v12 = ceil(width);
         v13 = ceil(height);
         v14 = v13;
@@ -2688,8 +2688,8 @@ void __38__SKTexture_Internal___backingTexture__block_invoke_2(uint64_t a1, void
         [v6[23] setSize:{v12, v13}];
         *(v6 + 12) = 1;
         [v6[23] setState:1];
-        *(v6 + 34) = a6;
-        *(v6 + 35) = a5;
+        *(v6 + 34) = alignment;
+        *(v6 + 35) = length;
       }
     }
   }
@@ -2697,17 +2697,17 @@ void __38__SKTexture_Internal___backingTexture__block_invoke_2(uint64_t a1, void
   return v6;
 }
 
-+ (id)_textureWithGLTextureId:(unsigned int)a3 size:(CGSize)a4
++ (id)_textureWithGLTextureId:(unsigned int)id size:(CGSize)size
 {
-  v4 = [[a1 alloc] _initWithGLTextureId:*&a3 size:{a4.width, a4.height}];
+  v4 = [[self alloc] _initWithGLTextureId:*&id size:{size.width, size.height}];
 
   return v4;
 }
 
-- (id)_initWithGLTextureId:(unsigned int)a3 size:(CGSize)a4
+- (id)_initWithGLTextureId:(unsigned int)id size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v6 = [(SKTexture *)self init];
   v7 = v6;
   if (v6)
@@ -2816,7 +2816,7 @@ void __33__SKTexture_Private__glTextureId__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-+ (SKTexture)textureWithIOSurfaceID:(unsigned int)a3 width:(unsigned int)a4 height:(unsigned int)a5 format:(unsigned int)a6
++ (SKTexture)textureWithIOSurfaceID:(unsigned int)d width:(unsigned int)width height:(unsigned int)height format:(unsigned int)format
 {
   v17 = 0;
   v18 = &v17;
@@ -2831,10 +2831,10 @@ void __33__SKTexture_Private__glTextureId__block_invoke(uint64_t a1, void *a2)
   v12[2] = __65__SKTexture_Private__textureWithIOSurfaceID_width_height_format___block_invoke;
   v12[3] = &unk_278310160;
   v12[4] = &v17;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  dCopy = d;
+  widthCopy = width;
+  heightCopy = height;
+  formatCopy = format;
   SKCPerformResourceOperation(v12);
   if (v18[6])
   {
@@ -2868,9 +2868,9 @@ void __33__SKTexture_Private__glTextureId__block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-+ (SKTexture)textureWithMetalTexture:(id)a3
++ (SKTexture)textureWithMetalTexture:(id)texture
 {
-  v3 = a3;
+  textureCopy = texture;
   v14 = 0;
   v15 = &v14;
   v16 = 0x4012000000;
@@ -2884,7 +2884,7 @@ void __33__SKTexture_Private__glTextureId__block_invoke(uint64_t a1, void *a2)
   v11[2] = __46__SKTexture_Private__textureWithMetalTexture___block_invoke;
   v11[3] = &unk_278310188;
   v13 = &v14;
-  v4 = v3;
+  v4 = textureCopy;
   v12 = v4;
   SKCPerformResourceOperation(v11);
   if (v15[6])
@@ -3018,16 +3018,16 @@ void __34__SKTexture_Private__metalTexture__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (int)_convert_jet_texture_format_to_ci_format:(unsigned int)a3
+- (int)_convert_jet_texture_format_to_ci_format:(unsigned int)_convert_jet_texture_format_to_ci_format
 {
-  if (a3 - 1 > 0xD)
+  if (_convert_jet_texture_format_to_ci_format - 1 > 0xD)
   {
     v3 = MEMORY[0x277CBF9C8];
   }
 
   else
   {
-    v3 = qword_2783101C8[a3 - 1];
+    v3 = qword_2783101C8[_convert_jet_texture_format_to_ci_format - 1];
   }
 
   return *v3;
@@ -3083,7 +3083,7 @@ void __34__SKTexture_Private__metalTexture__block_invoke(uint64_t a1, void *a2)
     v14 = jet_texture::get_bytes_per_element(v90);
     v15 = v14;
     v66 = (v10 - v82) * (v83 - v9);
-    v69 = self;
+    selfCopy = self;
     v16 = v6;
     if (self->_isFlipped)
     {
@@ -3220,10 +3220,10 @@ void __34__SKTexture_Private__metalTexture__block_invoke(uint64_t a1, void *a2)
     v41 = [MEMORY[0x277CBEA90] dataWithBytes:v88 length:jet_texture::get_bytes_per_element(v90) * v66];
     v42 = MEMORY[0x277CBF758];
     v43 = jet_texture::get_bytes_per_element(v90);
-    v44 = [v42 imageWithBitmapData:v41 bytesPerRow:v43 * v68 size:-[SKTexture _convert_jet_texture_format_to_ci_format:](v69 format:"_convert_jet_texture_format_to_ci_format:" colorSpace:{(*(*v90 + 32))(v90)), DeviceRGB, v68, v67}];
-    v45 = [MEMORY[0x277CBF740] context];
+    v44 = [v42 imageWithBitmapData:v41 bytesPerRow:v43 * v68 size:-[SKTexture _convert_jet_texture_format_to_ci_format:](selfCopy format:"_convert_jet_texture_format_to_ci_format:" colorSpace:{(*(*v90 + 32))(v90)), DeviceRGB, v68, v67}];
+    context = [MEMORY[0x277CBF740] context];
     [v44 extent];
-    Image = [v45 createCGImage:v44 fromRect:?];
+    Image = [context createCGImage:v44 fromRect:?];
     CGColorSpaceRelease(DeviceRGB);
     free(v16);
     free(v88);
@@ -3234,7 +3234,7 @@ void __34__SKTexture_Private__metalTexture__block_invoke(uint64_t a1, void *a2)
       BitsPerComponent = CGImageGetBitsPerComponent(Image);
       BitsPerPixel = CGImageGetBitsPerPixel(Image);
       BytesPerRow = CGImageGetBytesPerRow(Image);
-      [(SKTexture *)v69 pixelSize];
+      [(SKTexture *)selfCopy pixelSize];
       v53 = Width;
       v54 = Height;
       v55 = BitsPerPixel;
@@ -3254,8 +3254,8 @@ void __34__SKTexture_Private__metalTexture__block_invoke(uint64_t a1, void *a2)
         v92.size.width = v59;
         v92.size.height = v61;
         CGContextClearRect(v64, v92);
-        v93.origin.x = v69->_cropOffset.x * v53 + (v59 - v53) * 0.5;
-        v93.origin.y = v69->_cropOffset.y * v54 + (v61 - v54) * 0.5;
+        v93.origin.x = selfCopy->_cropOffset.x * v53 + (v59 - v53) * 0.5;
+        v93.origin.y = selfCopy->_cropOffset.y * v54 + (v61 - v54) * 0.5;
         v93.size.width = v53;
         v93.size.height = v54;
         CGContextDrawImage(v64, v93, Image);
@@ -3280,14 +3280,14 @@ void __34__SKTexture_Private__metalTexture__block_invoke(uint64_t a1, void *a2)
   return Image;
 }
 
-- (void)_savePngFromGLCache:(id)a3
+- (void)_savePngFromGLCache:(id)cache
 {
-  v7 = a3;
-  v4 = [(SKTexture *)self _createCGImage];
-  v5 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:v4];
+  cacheCopy = cache;
+  _createCGImage = [(SKTexture *)self _createCGImage];
+  v5 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:_createCGImage];
   v6 = UIImagePNGRepresentation(v5);
-  [v6 writeToFile:v7 atomically:1];
-  CGImageRelease(v4);
+  [v6 writeToFile:cacheCopy atomically:1];
+  CGImageRelease(_createCGImage);
 }
 
 @end

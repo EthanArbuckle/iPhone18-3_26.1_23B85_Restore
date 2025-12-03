@@ -1,5 +1,5 @@
 @interface PBEffectsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityShouldHitTestLayers;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityElements;
@@ -7,21 +7,21 @@
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_setUpEffectLayers;
 - (void)dealloc;
-- (void)toggleEffectsMode:(id)a3;
+- (void)toggleEffectsMode:(id)mode;
 @end
 
 @implementation PBEffectsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PBEffectsView" hasInstanceVariable:@"_currentMode" withType:"q"];
-  [v3 validateClass:@"PBEffectsView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PBEffectsView" hasInstanceMethod:@"_setUpEffectLayers" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PBEffectsView" hasInstanceMethod:@"toggleEffectsMode:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PBEffectsView" hasInstanceVariable:@"_nineUpLayers" withType:"NSArray"];
-  [v3 validateClass:@"PBEffectsView" hasInstanceVariable:@"_filters" withType:"NSArray"];
-  [v3 validateClass:@"PBEffectsController" hasInstanceMethod:@"_currentDevicePosition" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PBEffectsView" hasInstanceVariable:@"_currentMode" withType:"q"];
+  [validationsCopy validateClass:@"PBEffectsView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PBEffectsView" hasInstanceMethod:@"_setUpEffectLayers" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PBEffectsView" hasInstanceMethod:@"toggleEffectsMode:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PBEffectsView" hasInstanceVariable:@"_nineUpLayers" withType:"NSArray"];
+  [validationsCopy validateClass:@"PBEffectsView" hasInstanceVariable:@"_filters" withType:"NSArray"];
+  [validationsCopy validateClass:@"PBEffectsController" hasInstanceMethod:@"_currentDevicePosition" withFullSignature:{"q", 0}];
 }
 
 - (id)accessibilityLabel
@@ -67,9 +67,9 @@ LABEL_9:
 - (id)accessibilityElements
 {
   v3 = [(PBEffectsViewAccessibility *)self safeValueForKey:@"_currentMode"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if (v4)
+  if (intValue)
   {
     v5 = [(PBEffectsViewAccessibility *)self safeValueForKey:@"_nineUpLayers"];
     if ([v5 count] != 9)
@@ -77,10 +77,10 @@ LABEL_9:
       _AXAssert();
     }
 
-    v6 = [MEMORY[0x29EDC7938] sharedApplication];
-    v7 = [v6 statusBarOrientation];
+    mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
+    statusBarOrientation = [mEMORY[0x29EDC7938] statusBarOrientation];
 
-    if ((v7 - 3) <= 1 && [v5 count] == 9)
+    if ((statusBarOrientation - 3) <= 1 && [v5 count] == 9)
     {
       v8 = [v5 sortedArrayUsingSelector:sel_accessibilityCompareGeometry_];
     }
@@ -109,11 +109,11 @@ LABEL_9:
   return v3;
 }
 
-- (void)toggleEffectsMode:(id)a3
+- (void)toggleEffectsMode:(id)mode
 {
   v3.receiver = self;
   v3.super_class = PBEffectsViewAccessibility;
-  [(PBEffectsViewAccessibility *)&v3 toggleEffectsMode:a3];
+  [(PBEffectsViewAccessibility *)&v3 toggleEffectsMode:mode];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
 }
 
@@ -171,7 +171,7 @@ LABEL_9:
     v6[2] = __72__PBEffectsViewAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
     v6[3] = &unk_29F2E48E0;
     v7 = v4;
-    v8 = self;
+    selfCopy = self;
     [v3 enumerateObjectsUsingBlock:v6];
   }
 

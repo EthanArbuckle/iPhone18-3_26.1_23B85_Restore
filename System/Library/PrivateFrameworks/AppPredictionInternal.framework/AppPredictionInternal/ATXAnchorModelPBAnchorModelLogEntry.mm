@@ -1,90 +1,90 @@
 @interface ATXAnchorModelPBAnchorModelLogEntry
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addNegativeActions:(id)a3;
-- (void)addNegativeAppLaunches:(id)a3;
-- (void)addPositiveActions:(id)a3;
-- (void)addPositiveAppLaunches:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addNegativeActions:(id)actions;
+- (void)addNegativeAppLaunches:(id)launches;
+- (void)addPositiveActions:(id)actions;
+- (void)addPositiveAppLaunches:(id)launches;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXAnchorModelPBAnchorModelLogEntry
 
-- (void)addPositiveAppLaunches:(id)a3
+- (void)addPositiveAppLaunches:(id)launches
 {
-  v4 = a3;
+  launchesCopy = launches;
   positiveAppLaunches = self->_positiveAppLaunches;
-  v8 = v4;
+  v8 = launchesCopy;
   if (!positiveAppLaunches)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_positiveAppLaunches;
     self->_positiveAppLaunches = v6;
 
-    v4 = v8;
+    launchesCopy = v8;
     positiveAppLaunches = self->_positiveAppLaunches;
   }
 
-  [(NSMutableArray *)positiveAppLaunches addObject:v4];
+  [(NSMutableArray *)positiveAppLaunches addObject:launchesCopy];
 }
 
-- (void)addPositiveActions:(id)a3
+- (void)addPositiveActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   positiveActions = self->_positiveActions;
-  v8 = v4;
+  v8 = actionsCopy;
   if (!positiveActions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_positiveActions;
     self->_positiveActions = v6;
 
-    v4 = v8;
+    actionsCopy = v8;
     positiveActions = self->_positiveActions;
   }
 
-  [(NSMutableArray *)positiveActions addObject:v4];
+  [(NSMutableArray *)positiveActions addObject:actionsCopy];
 }
 
-- (void)addNegativeAppLaunches:(id)a3
+- (void)addNegativeAppLaunches:(id)launches
 {
-  v4 = a3;
+  launchesCopy = launches;
   negativeAppLaunches = self->_negativeAppLaunches;
-  v8 = v4;
+  v8 = launchesCopy;
   if (!negativeAppLaunches)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_negativeAppLaunches;
     self->_negativeAppLaunches = v6;
 
-    v4 = v8;
+    launchesCopy = v8;
     negativeAppLaunches = self->_negativeAppLaunches;
   }
 
-  [(NSMutableArray *)negativeAppLaunches addObject:v4];
+  [(NSMutableArray *)negativeAppLaunches addObject:launchesCopy];
 }
 
-- (void)addNegativeActions:(id)a3
+- (void)addNegativeActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   negativeActions = self->_negativeActions;
-  v8 = v4;
+  v8 = actionsCopy;
   if (!negativeActions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_negativeActions;
     self->_negativeActions = v6;
 
-    v4 = v8;
+    actionsCopy = v8;
     negativeActions = self->_negativeActions;
   }
 
-  [(NSMutableArray *)negativeActions addObject:v4];
+  [(NSMutableArray *)negativeActions addObject:actionsCopy];
 }
 
 - (id)description
@@ -93,8 +93,8 @@
   v8.receiver = self;
   v8.super_class = ATXAnchorModelPBAnchorModelLogEntry;
   v4 = [(ATXAnchorModelPBAnchorModelLogEntry *)&v8 description];
-  v5 = [(ATXAnchorModelPBAnchorModelLogEntry *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXAnchorModelPBAnchorModelLogEntry *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -102,19 +102,19 @@
 - (id)dictionaryRepresentation
 {
   v58 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   userId = self->_userId;
   if (userId)
   {
-    [v3 setObject:userId forKey:@"userId"];
+    [dictionary setObject:userId forKey:@"userId"];
   }
 
   anchor = self->_anchor;
   if (anchor)
   {
-    v7 = [(ATXAnchorModelPBAnchorMetadata *)anchor dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"anchor"];
+    dictionaryRepresentation = [(ATXAnchorModelPBAnchorMetadata *)anchor dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"anchor"];
   }
 
   if ([(NSMutableArray *)self->_positiveAppLaunches count])
@@ -139,8 +139,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v50 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation2 = [*(*(&v50 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation2];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v50 objects:v57 count:16];
@@ -174,8 +174,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v46 + 1) + 8 * j) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation3 = [*(*(&v46 + 1) + 8 * j) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation3];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v46 objects:v56 count:16];
@@ -209,8 +209,8 @@
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v42 + 1) + 8 * k) dictionaryRepresentation];
-          [v22 addObject:v28];
+          dictionaryRepresentation4 = [*(*(&v42 + 1) + 8 * k) dictionaryRepresentation];
+          [v22 addObject:dictionaryRepresentation4];
         }
 
         v25 = [(NSMutableArray *)v23 countByEnumeratingWithState:&v42 objects:v55 count:16];
@@ -244,8 +244,8 @@
             objc_enumerationMutation(v30);
           }
 
-          v35 = [*(*(&v38 + 1) + 8 * m) dictionaryRepresentation];
-          [v29 addObject:v35];
+          dictionaryRepresentation5 = [*(*(&v38 + 1) + 8 * m) dictionaryRepresentation];
+          [v29 addObject:dictionaryRepresentation5];
         }
 
         v32 = [(NSMutableArray *)v30 countByEnumeratingWithState:&v38 objects:v54 count:16];
@@ -262,10 +262,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_userId)
   {
     PBDataWriterWriteStringField();
@@ -407,89 +407,89 @@
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v20 = a3;
+  toCopy = to;
   if (self->_userId)
   {
-    [v20 setUserId:?];
+    [toCopy setUserId:?];
   }
 
   if (self->_anchor)
   {
-    [v20 setAnchor:?];
+    [toCopy setAnchor:?];
   }
 
   if ([(ATXAnchorModelPBAnchorModelLogEntry *)self positiveAppLaunchesCount])
   {
-    [v20 clearPositiveAppLaunches];
-    v4 = [(ATXAnchorModelPBAnchorModelLogEntry *)self positiveAppLaunchesCount];
-    if (v4)
+    [toCopy clearPositiveAppLaunches];
+    positiveAppLaunchesCount = [(ATXAnchorModelPBAnchorModelLogEntry *)self positiveAppLaunchesCount];
+    if (positiveAppLaunchesCount)
     {
-      v5 = v4;
+      v5 = positiveAppLaunchesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ATXAnchorModelPBAnchorModelLogEntry *)self positiveAppLaunchesAtIndex:i];
-        [v20 addPositiveAppLaunches:v7];
+        [toCopy addPositiveAppLaunches:v7];
       }
     }
   }
 
   if ([(ATXAnchorModelPBAnchorModelLogEntry *)self positiveActionsCount])
   {
-    [v20 clearPositiveActions];
-    v8 = [(ATXAnchorModelPBAnchorModelLogEntry *)self positiveActionsCount];
-    if (v8)
+    [toCopy clearPositiveActions];
+    positiveActionsCount = [(ATXAnchorModelPBAnchorModelLogEntry *)self positiveActionsCount];
+    if (positiveActionsCount)
     {
-      v9 = v8;
+      v9 = positiveActionsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(ATXAnchorModelPBAnchorModelLogEntry *)self positiveActionsAtIndex:j];
-        [v20 addPositiveActions:v11];
+        [toCopy addPositiveActions:v11];
       }
     }
   }
 
   if ([(ATXAnchorModelPBAnchorModelLogEntry *)self negativeAppLaunchesCount])
   {
-    [v20 clearNegativeAppLaunches];
-    v12 = [(ATXAnchorModelPBAnchorModelLogEntry *)self negativeAppLaunchesCount];
-    if (v12)
+    [toCopy clearNegativeAppLaunches];
+    negativeAppLaunchesCount = [(ATXAnchorModelPBAnchorModelLogEntry *)self negativeAppLaunchesCount];
+    if (negativeAppLaunchesCount)
     {
-      v13 = v12;
+      v13 = negativeAppLaunchesCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(ATXAnchorModelPBAnchorModelLogEntry *)self negativeAppLaunchesAtIndex:k];
-        [v20 addNegativeAppLaunches:v15];
+        [toCopy addNegativeAppLaunches:v15];
       }
     }
   }
 
   if ([(ATXAnchorModelPBAnchorModelLogEntry *)self negativeActionsCount])
   {
-    [v20 clearNegativeActions];
-    v16 = [(ATXAnchorModelPBAnchorModelLogEntry *)self negativeActionsCount];
-    if (v16)
+    [toCopy clearNegativeActions];
+    negativeActionsCount = [(ATXAnchorModelPBAnchorModelLogEntry *)self negativeActionsCount];
+    if (negativeActionsCount)
     {
-      v17 = v16;
+      v17 = negativeActionsCount;
       for (m = 0; m != v17; ++m)
       {
         v19 = [(ATXAnchorModelPBAnchorModelLogEntry *)self negativeActionsAtIndex:m];
-        [v20 addNegativeActions:v19];
+        [toCopy addNegativeActions:v19];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v56 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_userId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_userId copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
-  v8 = [(ATXAnchorModelPBAnchorMetadata *)self->_anchor copyWithZone:a3];
+  v8 = [(ATXAnchorModelPBAnchorMetadata *)self->_anchor copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
@@ -513,7 +513,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v48 + 1) + 8 * v14) copyWithZone:a3];
+        v15 = [*(*(&v48 + 1) + 8 * v14) copyWithZone:zone];
         [v5 addPositiveAppLaunches:v15];
 
         ++v14;
@@ -546,7 +546,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v44 + 1) + 8 * v20) copyWithZone:a3];
+        v21 = [*(*(&v44 + 1) + 8 * v20) copyWithZone:zone];
         [v5 addPositiveActions:v21];
 
         ++v20;
@@ -579,7 +579,7 @@
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v40 + 1) + 8 * v26) copyWithZone:a3];
+        v27 = [*(*(&v40 + 1) + 8 * v26) copyWithZone:zone];
         [v5 addNegativeAppLaunches:v27];
 
         ++v26;
@@ -612,7 +612,7 @@
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v36 + 1) + 8 * v32) copyWithZone:{a3, v36}];
+        v33 = [*(*(&v36 + 1) + 8 * v32) copyWithZone:{zone, v36}];
         [v5 addNegativeActions:v33];
 
         ++v32;
@@ -629,13 +629,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((userId = self->_userId, !(userId | v4[6])) || -[NSString isEqual:](userId, "isEqual:")) && ((anchor = self->_anchor, !(anchor | v4[1])) || -[ATXAnchorModelPBAnchorMetadata isEqual:](anchor, "isEqual:")) && ((positiveAppLaunches = self->_positiveAppLaunches, !(positiveAppLaunches | v4[5])) || -[NSMutableArray isEqual:](positiveAppLaunches, "isEqual:")) && ((positiveActions = self->_positiveActions, !(positiveActions | v4[4])) || -[NSMutableArray isEqual:](positiveActions, "isEqual:")) && ((negativeAppLaunches = self->_negativeAppLaunches, !(negativeAppLaunches | v4[3])) || -[NSMutableArray isEqual:](negativeAppLaunches, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((userId = self->_userId, !(userId | equalCopy[6])) || -[NSString isEqual:](userId, "isEqual:")) && ((anchor = self->_anchor, !(anchor | equalCopy[1])) || -[ATXAnchorModelPBAnchorMetadata isEqual:](anchor, "isEqual:")) && ((positiveAppLaunches = self->_positiveAppLaunches, !(positiveAppLaunches | equalCopy[5])) || -[NSMutableArray isEqual:](positiveAppLaunches, "isEqual:")) && ((positiveActions = self->_positiveActions, !(positiveActions | equalCopy[4])) || -[NSMutableArray isEqual:](positiveActions, "isEqual:")) && ((negativeAppLaunches = self->_negativeAppLaunches, !(negativeAppLaunches | equalCopy[3])) || -[NSMutableArray isEqual:](negativeAppLaunches, "isEqual:")))
   {
     negativeActions = self->_negativeActions;
-    if (negativeActions | v4[2])
+    if (negativeActions | equalCopy[2])
     {
       v11 = [(NSMutableArray *)negativeActions isEqual:?];
     }
@@ -664,17 +664,17 @@
   return v6 ^ v7 ^ [(NSMutableArray *)self->_negativeActions hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 6))
+  fromCopy = from;
+  if (*(fromCopy + 6))
   {
     [(ATXAnchorModelPBAnchorModelLogEntry *)self setUserId:?];
   }
 
   anchor = self->_anchor;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (anchor)
   {
     if (v6)
@@ -692,7 +692,7 @@
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v7 = *(v4 + 5);
+  v7 = *(fromCopy + 5);
   v8 = [v7 countByEnumeratingWithState:&v40 objects:v47 count:16];
   if (v8)
   {
@@ -720,7 +720,7 @@
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v12 = *(v4 + 4);
+  v12 = *(fromCopy + 4);
   v13 = [v12 countByEnumeratingWithState:&v36 objects:v46 count:16];
   if (v13)
   {
@@ -748,7 +748,7 @@
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v17 = *(v4 + 3);
+  v17 = *(fromCopy + 3);
   v18 = [v17 countByEnumeratingWithState:&v32 objects:v45 count:16];
   if (v18)
   {
@@ -776,7 +776,7 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v22 = *(v4 + 2);
+  v22 = *(fromCopy + 2);
   v23 = [v22 countByEnumeratingWithState:&v28 objects:v44 count:16];
   if (v23)
   {

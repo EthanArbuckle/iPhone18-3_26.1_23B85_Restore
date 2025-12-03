@@ -1,22 +1,22 @@
 @interface SUUICarouselPageSectionAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityDescendantElementAtIndexPathIsValid:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityDescendantElementAtIndexPathIsValid:(id)valid;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityUpdateValidIndices;
 - (void)_fireCycleTimer;
-- (void)willAppearInContext:(id)a3;
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)willAppearInContext:(id)context;
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SUUICarouselPageSectionAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUICarouselPageSection" hasInstanceMethod:@"_carouselCollectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUICarouselPageSection" hasInstanceVariable:@"_modelObjects" withType:"NSArray"];
-  [v3 validateClass:@"SUUICarouselPageSection" hasInstanceMethod:@"willAppearInContext:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SUUICarouselPageSection" hasInstanceMethod:@"willTransitionToSize: withTransitionCoordinator:" withFullSignature:{"v", "{CGSize=dd}", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUICarouselPageSection" hasInstanceMethod:@"_carouselCollectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUICarouselPageSection" hasInstanceVariable:@"_modelObjects" withType:"NSArray"];
+  [validationsCopy validateClass:@"SUUICarouselPageSection" hasInstanceMethod:@"willAppearInContext:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SUUICarouselPageSection" hasInstanceMethod:@"willTransitionToSize: withTransitionCoordinator:" withFullSignature:{"v", "{CGSize=dd}", "@", 0}];
 }
 
 - (void)_fireCycleTimer
@@ -29,19 +29,19 @@
   }
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = SUUICarouselPageSectionAccessibility;
-  [(SUUICarouselPageSectionAccessibility *)&v4 willAppearInContext:a3];
+  [(SUUICarouselPageSectionAccessibility *)&v4 willAppearInContext:context];
   [(SUUICarouselPageSectionAccessibility *)self _accessibilityUpdateValidIndices];
 }
 
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = SUUICarouselPageSectionAccessibility;
-  [(SUUICarouselPageSectionAccessibility *)&v5 willTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(SUUICarouselPageSectionAccessibility *)&v5 willTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(SUUICarouselPageSectionAccessibility *)self _accessibilityUpdateValidIndices];
 }
 
@@ -79,12 +79,12 @@
   }
 }
 
-- (BOOL)_accessibilityDescendantElementAtIndexPathIsValid:(id)a3
+- (BOOL)_accessibilityDescendantElementAtIndexPathIsValid:(id)valid
 {
-  v4 = a3;
+  validCopy = valid;
   v5 = [(SUUICarouselPageSectionAccessibility *)self _accessibilityValueForKey:@"kAXStartingIndexPath"];
   v6 = v5;
-  if (v5 && (v7 = [v5 section], v7 == objc_msgSend(v4, "section")))
+  if (v5 && (v7 = [v5 section], v7 == objc_msgSend(validCopy, "section")))
   {
     v8 = [(SUUICarouselPageSectionAccessibility *)self safeValueForKey:@"_modelObjects"];
     v16 = 0;
@@ -97,12 +97,12 @@
     v10 = v17[3];
 
     _Block_object_dispose(&v16, 8);
-    v11 = [v4 item];
+    item = [validCopy item];
     v13 = 0;
-    if (v11 >= [v6 item] || objc_msgSend(v4, "item") < v10)
+    if (item >= [v6 item] || objc_msgSend(validCopy, "item") < v10)
     {
-      v12 = [v4 item];
-      if (v12 < [v6 item] + v10 || objc_msgSend(v4, "item") < v10)
+      item2 = [validCopy item];
+      if (item2 < [v6 item] + v10 || objc_msgSend(validCopy, "item") < v10)
       {
         v13 = 1;
       }

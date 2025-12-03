@@ -1,54 +1,54 @@
 @interface BWStillImageCaptureTimeMachineFrameInfo
-+ (id)infoWithTimeMachineIndex:(int)a3 mainFlags:(unint64_t)a4 sifrFlags:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (BWStillImageCaptureTimeMachineFrameInfo)initWithCoder:(id)a3;
-- (BWStillImageCaptureTimeMachineFrameInfo)initWithTimeMachineIndex:(int)a3 mainFlags:(unint64_t)a4 sifrFlags:(unint64_t)a5;
++ (id)infoWithTimeMachineIndex:(int)index mainFlags:(unint64_t)flags sifrFlags:(unint64_t)sifrFlags;
+- (BOOL)isEqual:(id)equal;
+- (BWStillImageCaptureTimeMachineFrameInfo)initWithCoder:(id)coder;
+- (BWStillImageCaptureTimeMachineFrameInfo)initWithTimeMachineIndex:(int)index mainFlags:(unint64_t)flags sifrFlags:(unint64_t)sifrFlags;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BWStillImageCaptureTimeMachineFrameInfo
 
-- (BWStillImageCaptureTimeMachineFrameInfo)initWithTimeMachineIndex:(int)a3 mainFlags:(unint64_t)a4 sifrFlags:(unint64_t)a5
+- (BWStillImageCaptureTimeMachineFrameInfo)initWithTimeMachineIndex:(int)index mainFlags:(unint64_t)flags sifrFlags:(unint64_t)sifrFlags
 {
   v7.receiver = self;
   v7.super_class = BWStillImageCaptureTimeMachineFrameInfo;
-  result = [(BWStillImageCaptureFrameInfo *)&v7 initWithMainFlags:a4 sifrFlags:a5];
+  result = [(BWStillImageCaptureFrameInfo *)&v7 initWithMainFlags:flags sifrFlags:sifrFlags];
   if (result)
   {
-    result->_timeMachineIndex = a3;
+    result->_timeMachineIndex = index;
   }
 
   return result;
 }
 
-+ (id)infoWithTimeMachineIndex:(int)a3 mainFlags:(unint64_t)a4 sifrFlags:(unint64_t)a5
++ (id)infoWithTimeMachineIndex:(int)index mainFlags:(unint64_t)flags sifrFlags:(unint64_t)sifrFlags
 {
-  v5 = [[a1 alloc] initWithTimeMachineIndex:*&a3 mainFlags:a4 sifrFlags:a5];
+  v5 = [[self alloc] initWithTimeMachineIndex:*&index mainFlags:flags sifrFlags:sifrFlags];
 
   return v5;
 }
 
-- (BWStillImageCaptureTimeMachineFrameInfo)initWithCoder:(id)a3
+- (BWStillImageCaptureTimeMachineFrameInfo)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BWStillImageCaptureTimeMachineFrameInfo;
   v4 = [(BWStillImageCaptureFrameInfo *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->_timeMachineIndex = [a3 decodeInt32ForKey:@"timeMachineIndex"];
+    v4->_timeMachineIndex = [coder decodeInt32ForKey:@"timeMachineIndex"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = BWStillImageCaptureTimeMachineFrameInfo;
   [(BWStillImageCaptureFrameInfo *)&v5 encodeWithCoder:?];
-  [a3 encodeInt32:self->_timeMachineIndex forKey:@"timeMachineIndex"];
+  [coder encodeInt32:self->_timeMachineIndex forKey:@"timeMachineIndex"];
 }
 
 - (id)description
@@ -67,9 +67,9 @@
   return [(BWStillImageCaptureFrameInfo *)&v3 hash]^ self->_timeMachineIndex;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
   }
@@ -86,14 +86,14 @@
 
     v11.receiver = self;
     v11.super_class = BWStillImageCaptureTimeMachineFrameInfo;
-    v7 = [(BWStillImageCaptureFrameInfo *)&v11 isEqual:a3];
+    v7 = [(BWStillImageCaptureFrameInfo *)&v11 isEqual:equal];
     if (!v7)
     {
       return v7;
     }
 
     timeMachineIndex = self->_timeMachineIndex;
-    if (timeMachineIndex != [a3 timeMachineIndex])
+    if (timeMachineIndex != [equal timeMachineIndex])
     {
 LABEL_6:
       LOBYTE(v7) = 0;
@@ -101,7 +101,7 @@ LABEL_6:
     }
 
     isNoLongErrorRecoveryFrame = self->_isNoLongErrorRecoveryFrame;
-    LOBYTE(v7) = isNoLongErrorRecoveryFrame == [a3 isNoLongErrorRecoveryFrame];
+    LOBYTE(v7) = isNoLongErrorRecoveryFrame == [equal isNoLongErrorRecoveryFrame];
   }
 
   return v7;

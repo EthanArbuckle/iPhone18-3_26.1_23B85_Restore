@@ -1,22 +1,22 @@
 @interface SGTextMessage
-+ (BOOL)isSent:(id)a3;
++ (BOOL)isSent:(id)sent;
 + (id)_nicknameCustomKey;
 + (id)_photoPathCustomKey;
-- (SGTextMessage)initWithMessageDictionary:(id)a3;
-- (SGTextMessage)initWithMessagesContentEvent:(id)a3 contentProtection:(id)a4;
-- (SGTextMessage)initWithSearchableItem:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SGTextMessage)initWithMessageDictionary:(id)dictionary;
+- (SGTextMessage)initWithMessagesContentEvent:(id)event contentProtection:(id)protection;
+- (SGTextMessage)initWithSearchableItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)spotlightBundleIdentifier;
 - (id)spotlightDomainIdentifier;
 @end
 
 @implementation SGTextMessage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = SGTextMessage;
-  v4 = [(SGMessage *)&v6 copyWithZone:a3];
+  v4 = [(SGMessage *)&v6 copyWithZone:zone];
   [v4 setSender:self->_sender];
   [v4 setRecipients:self->_recipients];
   [v4 setConversationIdentifier:self->_conversationIdentifier];
@@ -30,10 +30,10 @@
   v17 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = SGTextMessage;
-  v4 = [(SGMessage *)&v14 spotlightDomainIdentifier];
-  if (v4 || ([(SGTextMessage *)self conversationIdentifier], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  spotlightDomainIdentifier = [(SGMessage *)&v14 spotlightDomainIdentifier];
+  if (spotlightDomainIdentifier || ([(SGTextMessage *)self conversationIdentifier], (spotlightDomainIdentifier = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = v4;
+    v5 = spotlightDomainIdentifier;
   }
 
   else
@@ -41,9 +41,9 @@
     v9 = sgLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      v13 = [(SGMessage *)self spotlightUniqueIdentifier];
+      spotlightUniqueIdentifier = [(SGMessage *)self spotlightUniqueIdentifier];
       *buf = 138412290;
-      v16 = v13;
+      v16 = spotlightUniqueIdentifier;
       _os_log_fault_impl(&dword_231E60000, v9, OS_LOG_TYPE_FAULT, "Cannot get domain identifier for text message %@", buf, 0xCu);
     }
 
@@ -53,13 +53,13 @@
     }
 
     v10 = objc_alloc(MEMORY[0x277CCACA8]);
-    v11 = [(SGMessage *)self uniqueIdentifier];
-    v5 = [v10 initWithFormat:@"SGMissingDomainIdentifier.uniqueIdentifierFallback.%@", v11];
+    uniqueIdentifier = [(SGMessage *)self uniqueIdentifier];
+    v5 = [v10 initWithFormat:@"SGMissingDomainIdentifier.uniqueIdentifierFallback.%@", uniqueIdentifier];
 
     if (!v5)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"SGTextMessage.m" lineNumber:247 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SGTextMessage.m" lineNumber:247 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
     }
   }
 
@@ -74,11 +74,11 @@
 {
   v7.receiver = self;
   v7.super_class = SGTextMessage;
-  v2 = [(SGMessage *)&v7 spotlightBundleIdentifier];
-  v3 = v2;
-  if (v2)
+  spotlightBundleIdentifier = [(SGMessage *)&v7 spotlightBundleIdentifier];
+  v3 = spotlightBundleIdentifier;
+  if (spotlightBundleIdentifier)
   {
-    v4 = v2;
+    v4 = spotlightBundleIdentifier;
   }
 
   else
@@ -91,22 +91,22 @@
   return v4;
 }
 
-- (SGTextMessage)initWithMessageDictionary:(id)a3
+- (SGTextMessage)initWithMessageDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SGTextMessage;
-  v5 = [(SGMessage *)&v12 initWithMessageDictionary:v4];
+  v5 = [(SGMessage *)&v12 initWithMessageDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"conversationIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"conversationIdentifier"];
     conversationIdentifier = v5->_conversationIdentifier;
     v5->_conversationIdentifier = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"senderIsAccountOwner"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"senderIsAccountOwner"];
     v5->_senderIsAccountOwner = [v8 BOOLValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"sender"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"sender"];
     sender = v5->_sender;
     v5->_sender = v9;
   }
@@ -114,36 +114,36 @@
   return v5;
 }
 
-- (SGTextMessage)initWithMessagesContentEvent:(id)a3 contentProtection:(id)a4
+- (SGTextMessage)initWithMessagesContentEvent:(id)event contentProtection:(id)protection
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  eventCopy = event;
   v38.receiver = self;
   v38.super_class = SGTextMessage;
-  v7 = [(SGMessage *)&v38 initWithMessagesContentEvent:v6 contentProtection:a4];
+  v7 = [(SGMessage *)&v38 initWithMessagesContentEvent:eventCopy contentProtection:protection];
   if (v7)
   {
-    v8 = [v6 content];
-    [(SGMessage *)v7 setTextContent:v8];
+    content = [eventCopy content];
+    [(SGMessage *)v7 setTextContent:content];
 
-    v9 = [v6 fromHandle];
-    v10 = [v9 name];
-    v11 = [v9 handle];
-    v12 = [v9 name];
-    v13 = [v11 containsString:v12];
+    fromHandle = [eventCopy fromHandle];
+    name = [fromHandle name];
+    handle = [fromHandle handle];
+    name2 = [fromHandle name];
+    v13 = [handle containsString:name2];
 
     if (v13)
     {
 
-      v10 = 0;
+      name = 0;
     }
 
     v14 = objc_alloc(MEMORY[0x277CC3450]);
-    v15 = [v9 handle];
-    v39[0] = v15;
+    handle2 = [fromHandle handle];
+    v39[0] = handle2;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
-    v17 = [v9 handleType];
-    v18 = [v14 initWithDisplayName:v10 handles:v16 handleIdentifier:v17];
+    handleType = [fromHandle handleType];
+    v18 = [v14 initWithDisplayName:name handles:v16 handleIdentifier:handleType];
 
     sender = v7->_sender;
     v7->_sender = v18;
@@ -151,23 +151,23 @@
 
     v7->_senderIsAccountOwner = 0;
     [(SGMessage *)v7 setIsSent:0];
-    v21 = [v6 accountHandles];
-    v22 = [v9 handle];
-    LODWORD(v17) = [v21 containsObject:v22];
+    accountHandles = [eventCopy accountHandles];
+    handle3 = [fromHandle handle];
+    LODWORD(handleType) = [accountHandles containsObject:handle3];
 
-    if (v17)
+    if (handleType)
     {
       v7->_senderIsAccountOwner = 1;
       [(SGMessage *)v7 setIsSent:1];
     }
 
-    v23 = [v9 handleType];
-    v24 = [v23 isEqual:*MEMORY[0x277CBD038]];
+    handleType2 = [fromHandle handleType];
+    v24 = [handleType2 isEqual:*MEMORY[0x277CBD038]];
 
     if (v24)
     {
-      v25 = [v9 handle];
-      v26 = [v25 hasPrefix:@"urn:biz:"];
+      handle4 = [fromHandle handle];
+      v26 = [handle4 hasPrefix:@"urn:biz:"];
 
       if (v26)
       {
@@ -175,65 +175,65 @@
       }
     }
 
-    v27 = [v6 accountIdentifier];
+    accountIdentifier = [eventCopy accountIdentifier];
     conversationIdentifier = v7->_conversationIdentifier;
-    v7->_conversationIdentifier = v27;
+    v7->_conversationIdentifier = accountIdentifier;
 
-    v29 = [v6 attachment];
-    v30 = [v29 filename];
+    attachment = [eventCopy attachment];
+    filename = [attachment filename];
     attachmentFilename = v7->_attachmentFilename;
-    v7->_attachmentFilename = v30;
+    v7->_attachmentFilename = filename;
 
-    v32 = [v6 suggestedPhotoPath];
+    suggestedPhotoPath = [eventCopy suggestedPhotoPath];
     photoPath = v7->_photoPath;
-    v7->_photoPath = v32;
+    v7->_photoPath = suggestedPhotoPath;
 
-    v34 = [v6 suggestedNickname];
+    suggestedNickname = [eventCopy suggestedNickname];
     nickname = v7->_nickname;
-    v7->_nickname = v34;
+    v7->_nickname = suggestedNickname;
   }
 
   v36 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (SGTextMessage)initWithSearchableItem:(id)a3
+- (SGTextMessage)initWithSearchableItem:(id)item
 {
   v66 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 domainIdentifier];
+  itemCopy = item;
+  domainIdentifier = [itemCopy domainIdentifier];
 
-  if (!v6)
+  if (!domainIdentifier)
   {
-    v54 = [MEMORY[0x277CCA890] currentHandler];
-    [v54 handleFailureInMethod:a2 object:self file:@"SGTextMessage.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"searchableItem.domainIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGTextMessage.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"searchableItem.domainIdentifier"}];
   }
 
   v64.receiver = self;
   v64.super_class = SGTextMessage;
-  v7 = [(SGMessage *)&v64 initWithSearchableItem:v5];
+  v7 = [(SGMessage *)&v64 initWithSearchableItem:itemCopy];
   if (v7)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = [v5 attributeSet];
-    v10 = [v9 authors];
-    if ([v10 count])
+    attributeSet = [itemCopy attributeSet];
+    authors = [attributeSet authors];
+    if ([authors count])
     {
-      v56 = v10;
-      v11 = [v10 objectAtIndexedSubscript:0];
+      v56 = authors;
+      v11 = [authors objectAtIndexedSubscript:0];
       v12 = MEMORY[0x277D41E30];
-      v13 = [v11 handles];
-      v14 = [v12 sanitizeHandles:v13];
+      handles = [v11 handles];
+      v14 = [v12 sanitizeHandles:handles];
 
-      v15 = [v11 displayName];
+      displayName = [v11 displayName];
       v57 = v8;
-      v58 = v5;
-      if (v15)
+      v58 = itemCopy;
+      if (displayName)
       {
-        v16 = v15;
-        v17 = v9;
-        v18 = [v11 displayName];
-        v19 = [v14 containsObject:v18];
+        v16 = displayName;
+        v17 = attributeSet;
+        displayName2 = [v11 displayName];
+        v19 = [v14 containsObject:displayName2];
 
         if (v19)
         {
@@ -245,8 +245,8 @@
           }
 
           v21 = objc_alloc(MEMORY[0x277CC3450]);
-          v22 = [v11 handleIdentifier];
-          v23 = [v21 initWithDisplayName:0 handles:v14 handleIdentifier:v22];
+          handleIdentifier = [v11 handleIdentifier];
+          v23 = [v21 initWithDisplayName:0 handles:v14 handleIdentifier:handleIdentifier];
 
           v11 = v23;
         }
@@ -254,14 +254,14 @@
 
       else
       {
-        v17 = v9;
+        v17 = attributeSet;
       }
 
       v24 = v7;
       [(SGTextMessage *)v7 setSender:v11];
       v55 = v11;
-      v25 = [v11 handleIdentifier];
-      v26 = [v25 isEqual:*MEMORY[0x277CBD038]];
+      handleIdentifier2 = [v11 handleIdentifier];
+      v26 = [handleIdentifier2 isEqual:*MEMORY[0x277CBD038]];
 
       v61 = 0u;
       v62 = 0u;
@@ -283,8 +283,8 @@
             }
 
             v32 = *(*(&v59 + 1) + 8 * i);
-            v33 = [v17 accountHandles];
-            v34 = [v33 containsObject:v32];
+            accountHandles = [v17 accountHandles];
+            v34 = [accountHandles containsObject:v32];
 
             if (v34)
             {
@@ -306,39 +306,39 @@
 
       v7 = v24;
       v8 = v57;
-      v5 = v58;
-      v9 = v17;
-      v10 = v56;
+      itemCopy = v58;
+      attributeSet = v17;
+      authors = v56;
     }
 
-    v35 = [v9 primaryRecipients];
-    [(SGTextMessage *)v7 setRecipients:v35];
+    primaryRecipients = [attributeSet primaryRecipients];
+    [(SGTextMessage *)v7 setRecipients:primaryRecipients];
 
-    v36 = [v5 domainIdentifier];
-    v37 = [v36 isEqualToString:@"attachmentDomain"];
+    domainIdentifier2 = [itemCopy domainIdentifier];
+    v37 = [domainIdentifier2 isEqualToString:@"attachmentDomain"];
 
     if (v37)
     {
-      v38 = [v9 accountIdentifier];
-      [(SGTextMessage *)v7 setConversationIdentifier:v38];
+      accountIdentifier = [attributeSet accountIdentifier];
+      [(SGTextMessage *)v7 setConversationIdentifier:accountIdentifier];
 
-      v39 = [v9 contentURL];
-      v40 = [v39 lastPathComponent];
+      contentURL = [attributeSet contentURL];
+      lastPathComponent = [contentURL lastPathComponent];
       attachmentFilename = v7->_attachmentFilename;
-      v7->_attachmentFilename = v40;
+      v7->_attachmentFilename = lastPathComponent;
     }
 
     else
     {
-      v39 = [v5 domainIdentifier];
-      [(SGTextMessage *)v7 setConversationIdentifier:v39];
+      contentURL = [itemCopy domainIdentifier];
+      [(SGTextMessage *)v7 setConversationIdentifier:contentURL];
     }
 
-    v42 = [objc_opt_class() _photoPathCustomKey];
-    if (v42)
+    _photoPathCustomKey = [objc_opt_class() _photoPathCustomKey];
+    if (_photoPathCustomKey)
     {
-      v43 = [v5 attributeSet];
-      v44 = [v43 valueForCustomKey:v42];
+      attributeSet2 = [itemCopy attributeSet];
+      v44 = [attributeSet2 valueForCustomKey:_photoPathCustomKey];
 
       if (v44)
       {
@@ -353,11 +353,11 @@
       }
     }
 
-    v45 = [objc_opt_class() _nicknameCustomKey];
-    if (v45)
+    _nicknameCustomKey = [objc_opt_class() _nicknameCustomKey];
+    if (_nicknameCustomKey)
     {
-      v46 = [v5 attributeSet];
-      v47 = [v46 valueForCustomKey:v45];
+      attributeSet3 = [itemCopy attributeSet];
+      v47 = [attributeSet3 valueForCustomKey:_nicknameCustomKey];
 
       if (v47)
       {
@@ -372,20 +372,20 @@
       }
     }
 
-    v48 = [v5 attributeSet];
-    v49 = [v48 isPotentialEventMessage];
-    v50 = v49;
-    if (!v49)
+    attributeSet4 = [itemCopy attributeSet];
+    isPotentialEventMessage = [attributeSet4 isPotentialEventMessage];
+    v50 = isPotentialEventMessage;
+    if (!isPotentialEventMessage)
     {
-      v49 = MEMORY[0x277CBEC28];
+      isPotentialEventMessage = MEMORY[0x277CBEC28];
     }
 
-    v7->_isPotentialEventMessage = [v49 BOOLValue];
+    v7->_isPotentialEventMessage = [isPotentialEventMessage BOOLValue];
 
     if (objc_opt_respondsToSelector())
     {
-      v51 = [v9 messageType];
-      v7->_tapBack = [v51 isEqualToString:@"tpbck"];
+      messageType = [attributeSet messageType];
+      v7->_tapBack = [messageType isEqualToString:@"tpbck"];
     }
 
     else
@@ -400,21 +400,21 @@
   return v7;
 }
 
-+ (BOOL)isSent:(id)a3
++ (BOOL)isSent:(id)sent
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [a3 attributeSet];
-  v4 = [v3 authors];
-  if ([v4 count])
+  attributeSet = [sent attributeSet];
+  authors = [attributeSet authors];
+  if ([authors count])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [v4 firstObject];
-    v6 = [v5 handles];
+    firstObject = [authors firstObject];
+    handles = [firstObject handles];
 
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [handles countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = *v15;
@@ -424,12 +424,12 @@
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(handles);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v3 accountHandles];
-          LOBYTE(v10) = [v11 containsObject:v10];
+          accountHandles = [attributeSet accountHandles];
+          LOBYTE(v10) = [accountHandles containsObject:v10];
 
           if (v10)
           {
@@ -438,7 +438,7 @@
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [handles countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v7)
         {
           continue;

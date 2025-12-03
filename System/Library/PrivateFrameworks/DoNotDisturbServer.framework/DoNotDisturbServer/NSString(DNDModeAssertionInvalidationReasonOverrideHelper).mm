@@ -26,12 +26,12 @@
 
 - (uint64_t)dnds_invalidationReasonOverrideValue
 {
-  if ([a1 isEqualToString:@"lifetime-expired"])
+  if ([self isEqualToString:@"lifetime-expired"])
   {
     return 1;
   }
 
-  if ([a1 isEqualToString:@"user-changed-state"])
+  if ([self isEqualToString:@"user-changed-state"])
   {
     return 2;
   }

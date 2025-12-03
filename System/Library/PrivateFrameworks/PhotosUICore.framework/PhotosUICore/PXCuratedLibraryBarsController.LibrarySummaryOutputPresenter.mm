@@ -1,7 +1,7 @@
 @interface PXCuratedLibraryBarsController.LibrarySummaryOutputPresenter
 - (NSString)title;
 - (_TtCE12PhotosUICoreCSo30PXCuratedLibraryBarsControllerP33_04793EA4CCDB9CADD5EFC766B5CE4AAD29LibrarySummaryOutputPresenter)init;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PXCuratedLibraryBarsController.LibrarySummaryOutputPresenter
@@ -30,9 +30,9 @@
   return 0;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_1A524C674();
     v6 = v5;
@@ -44,7 +44,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1A3C9807C(v4, v6);
 }
 

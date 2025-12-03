@@ -1,11 +1,11 @@
 @interface MPMediaCompoundPredicate
-+ (id)predicateMatchingPredicates:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MPMediaCompoundPredicate)initWithCoder:(id)a3;
-- (MPMediaCompoundPredicate)initWithPredicates:(id)a3;
-- (MPMediaCompoundPredicate)initWithProtobufferDecodableObject:(id)a3 library:(id)a4;
-- (id)_ML3PredicateForEntityTypeSelector:(SEL)a3;
-- (id)protobufferEncodableObjectFromLibrary:(id)a3;
++ (id)predicateMatchingPredicates:(id)predicates;
+- (BOOL)isEqual:(id)equal;
+- (MPMediaCompoundPredicate)initWithCoder:(id)coder;
+- (MPMediaCompoundPredicate)initWithPredicates:(id)predicates;
+- (MPMediaCompoundPredicate)initWithProtobufferDecodableObject:(id)object library:(id)library;
+- (id)_ML3PredicateForEntityTypeSelector:(SEL)selector;
+- (id)protobufferEncodableObjectFromLibrary:(id)library;
 - (unint64_t)hash;
 @end
 
@@ -19,7 +19,7 @@
   return [(NSArray *)self->_predicates hash]^ v3;
 }
 
-- (id)_ML3PredicateForEntityTypeSelector:(SEL)a3
+- (id)_ML3PredicateForEntityTypeSelector:(SEL)selector
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -30,7 +30,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4[2](v4, a3);
+    v5 = v4[2](v4, selector);
     if ([v5 count])
     {
       v6 = 0x1E69B3428;
@@ -47,7 +47,7 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4[2](v4, a3);
+    v5 = v4[2](v4, selector);
     if ([v5 count])
     {
       v6 = 0x1E69B3430;
@@ -111,10 +111,10 @@ id __77__MPMediaCompoundPredicate_ML3Additions___ML3PredicateForEntityTypeSelect
   return v4;
 }
 
-- (id)protobufferEncodableObjectFromLibrary:(id)a3
+- (id)protobufferEncodableObjectFromLibrary:(id)library
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   v5 = objc_alloc_init(MPPCompoundPredicate);
   v14 = 0u;
   v15 = 0u;
@@ -135,7 +135,7 @@ id __77__MPMediaCompoundPredicate_ML3Additions___ML3PredicateForEntityTypeSelect
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) protobufferEncodableObjectFromLibrary:{v4, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * i) protobufferEncodableObjectFromLibrary:{libraryCopy, v14}];
         [(MPPCompoundPredicate *)v5 addPredicates:v11];
       }
 
@@ -152,16 +152,16 @@ id __77__MPMediaCompoundPredicate_ML3Additions___ML3PredicateForEntityTypeSelect
   return v12;
 }
 
-- (MPMediaCompoundPredicate)initWithProtobufferDecodableObject:(id)a3 library:(id)a4
+- (MPMediaCompoundPredicate)initWithProtobufferDecodableObject:(id)object library:(id)library
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  libraryCopy = library;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"MPMediaQuery.m" lineNumber:1660 description:{@"Cannot decode object of type %@", objc_opt_class()}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaQuery.m" lineNumber:1660 description:{@"Cannot decode object of type %@", objc_opt_class()}];
   }
 
   v25.receiver = self;
@@ -169,14 +169,14 @@ id __77__MPMediaCompoundPredicate_ML3Additions___ML3PredicateForEntityTypeSelect
   v9 = [(MPMediaCompoundPredicate *)&v25 init];
   if (v9)
   {
-    v10 = [v7 compoundPredicate];
-    v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "predicatesCount")}];
+    compoundPredicate = [objectCopy compoundPredicate];
+    v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(compoundPredicate, "predicatesCount")}];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = [v10 predicates];
-    v13 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    predicates = [compoundPredicate predicates];
+    v13 = [predicates countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v13)
     {
       v14 = v13;
@@ -188,17 +188,17 @@ id __77__MPMediaCompoundPredicate_ML3Additions___ML3PredicateForEntityTypeSelect
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(predicates);
           }
 
-          v17 = MPPCreateMediaPredicateFromProtocolPredicateAndLibrary(*(*(&v21 + 1) + 8 * v16), v8);
+          v17 = MPPCreateMediaPredicateFromProtocolPredicateAndLibrary(*(*(&v21 + 1) + 8 * v16), libraryCopy);
           [(NSArray *)v11 addObject:v17];
 
           ++v16;
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v14 = [predicates countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v14);
@@ -211,14 +211,14 @@ id __77__MPMediaCompoundPredicate_ML3Additions___ML3PredicateForEntityTypeSelect
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = MPMediaCompoundPredicate;
-  if ([(MPMediaCompoundPredicate *)&v7 isEqual:v4])
+  if ([(MPMediaCompoundPredicate *)&v7 isEqual:equalCopy])
   {
-    v5 = [v4[1] isEqual:self->_predicates];
+    v5 = [equalCopy[1] isEqual:self->_predicates];
   }
 
   else
@@ -229,10 +229,10 @@ id __77__MPMediaCompoundPredicate_ML3Additions___ML3PredicateForEntityTypeSelect
   return v5;
 }
 
-- (MPMediaCompoundPredicate)initWithCoder:(id)a3
+- (MPMediaCompoundPredicate)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = MPMediaCompoundPredicate;
   v5 = [(MPMediaCompoundPredicate *)&v20 init];
@@ -240,7 +240,7 @@ id __77__MPMediaCompoundPredicate_ML3Additions___ML3PredicateForEntityTypeSelect
   {
     v6 = MSVPropertyListDataClasses();
     v7 = [v6 setByAddingObject:objc_opt_class()];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"MPPredicates"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"MPPredicates"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -297,15 +297,15 @@ LABEL_11:
   return v5;
 }
 
-- (MPMediaCompoundPredicate)initWithPredicates:(id)a3
+- (MPMediaCompoundPredicate)initWithPredicates:(id)predicates
 {
-  v4 = a3;
+  predicatesCopy = predicates;
   v9.receiver = self;
   v9.super_class = MPMediaCompoundPredicate;
   v5 = [(MPMediaCompoundPredicate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [predicatesCopy copy];
     predicates = v5->_predicates;
     v5->_predicates = v6;
   }
@@ -313,10 +313,10 @@ LABEL_11:
   return v5;
 }
 
-+ (id)predicateMatchingPredicates:(id)a3
++ (id)predicateMatchingPredicates:(id)predicates
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithPredicates:v3];
+  predicatesCopy = predicates;
+  v4 = [objc_alloc(objc_opt_class()) initWithPredicates:predicatesCopy];
 
   return v4;
 }

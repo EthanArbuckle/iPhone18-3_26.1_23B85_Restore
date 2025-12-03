@@ -1,12 +1,12 @@
 @interface ATXPOICategoryEventAggregator
-- (id)groupVisitsFromPublisher:(id)a3 startTimestamp:(double)a4 endTimestamp:(double)a5;
+- (id)groupVisitsFromPublisher:(id)publisher startTimestamp:(double)timestamp endTimestamp:(double)endTimestamp;
 @end
 
 @implementation ATXPOICategoryEventAggregator
 
-- (id)groupVisitsFromPublisher:(id)a3 startTimestamp:(double)a4 endTimestamp:(double)a5
+- (id)groupVisitsFromPublisher:(id)publisher startTimestamp:(double)timestamp endTimestamp:(double)endTimestamp
 {
-  v7 = a3;
+  publisherCopy = publisher;
   v8 = objc_opt_new();
   v9 = [[ATXPOICategoryEnterAndExitEvents alloc] initWithCategoryEvents:0 exitEvent:0];
   v27 = 0;
@@ -19,9 +19,9 @@
   v26[1] = 3221225472;
   v26[2] = __86__ATXPOICategoryEventAggregator_groupVisitsFromPublisher_startTimestamp_endTimestamp___block_invoke;
   v26[3] = &__block_descriptor_48_e22_B16__0__BMStoreEvent_8l;
-  *&v26[4] = a4;
-  *&v26[5] = a5;
-  v10 = [v7 filterWithIsIncluded:v26];
+  *&v26[4] = timestamp;
+  *&v26[5] = endTimestamp;
+  v10 = [publisherCopy filterWithIsIncluded:v26];
   v11 = [v10 scanWithInitial:v9 nextPartialResult:&__block_literal_global_18];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -35,8 +35,8 @@
   v21[2] = __86__ATXPOICategoryEventAggregator_groupVisitsFromPublisher_startTimestamp_endTimestamp___block_invoke_3;
   v21[3] = &unk_279AB8E48;
   v22 = v8;
-  v23 = a4;
-  v24 = a5;
+  timestampCopy = timestamp;
+  endTimestampCopy = endTimestamp;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __86__ATXPOICategoryEventAggregator_groupVisitsFromPublisher_startTimestamp_endTimestamp___block_invoke_19;

@@ -1,17 +1,17 @@
 @interface MSRestoreModelCategoryForAllMessagesTriageAction
-- (MSRestoreModelCategoryForAllMessagesTriageAction)initWithMessageRepository:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5;
+- (MSRestoreModelCategoryForAllMessagesTriageAction)initWithMessageRepository:(id)repository origin:(int64_t)origin actor:(int64_t)actor;
 - (id)_changeAction;
 @end
 
 @implementation MSRestoreModelCategoryForAllMessagesTriageAction
 
-- (MSRestoreModelCategoryForAllMessagesTriageAction)initWithMessageRepository:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5
+- (MSRestoreModelCategoryForAllMessagesTriageAction)initWithMessageRepository:(id)repository origin:(int64_t)origin actor:(int64_t)actor
 {
-  v8 = a3;
-  [(MSRestoreModelCategoryForAllMessagesTriageAction *)self setMessageRepository:v8];
+  repositoryCopy = repository;
+  [(MSRestoreModelCategoryForAllMessagesTriageAction *)self setMessageRepository:repositoryCopy];
   v11.receiver = self;
   v11.super_class = MSRestoreModelCategoryForAllMessagesTriageAction;
-  v9 = [(MSTriageAction *)&v11 initWithOrigin:a4 actor:a5];
+  v9 = [(MSTriageAction *)&v11 initWithOrigin:origin actor:actor];
 
   return v9;
 }

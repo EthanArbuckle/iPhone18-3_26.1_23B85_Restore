@@ -1,16 +1,16 @@
 @interface TVWorkoutPlanAlternativesViewController
-- (_TtC9SeymourUI39TVWorkoutPlanAlternativesViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI39TVWorkoutPlanAlternativesViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC9SeymourUI39TVWorkoutPlanAlternativesViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI39TVWorkoutPlanAlternativesViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation TVWorkoutPlanAlternativesViewController
 
-- (_TtC9SeymourUI39TVWorkoutPlanAlternativesViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI39TVWorkoutPlanAlternativesViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI39TVWorkoutPlanAlternativesViewController_visibility) = 1;
   v4 = OBJC_IVAR____TtC9SeymourUI39TVWorkoutPlanAlternativesViewController_lastFocusedIndexPath;
@@ -25,23 +25,23 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   TVWorkoutPlanAlternativesViewController.viewDidLoad()();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   TVWorkoutPlanAlternativesViewController.viewDidLayoutSubviews()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(TVWorkoutPlanAlternativesViewController *)&v5 viewDidAppear:v3];
+  [(TVWorkoutPlanAlternativesViewController *)&v5 viewDidAppear:appearCopy];
   type metadata accessor for TVWorkoutPlanAlternativesPageDataProvider();
   sub_20B8001B8(&qword_27C766058, type metadata accessor for TVWorkoutPlanAlternativesPageDataProvider);
   sub_20C138C54();
@@ -50,25 +50,25 @@
   sub_20C139364();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  TVWorkoutPlanAlternativesViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  TVWorkoutPlanAlternativesViewController.viewWillDisappear(_:)(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(TVWorkoutPlanAlternativesViewController *)&v5 viewDidDisappear:v3];
+  [(TVWorkoutPlanAlternativesViewController *)&v5 viewDidDisappear:disappearCopy];
   sub_20B8001B8(&qword_27C766060, type metadata accessor for TVWorkoutPlanAlternativesViewController);
   sub_20B8001B8(&unk_27C766068, type metadata accessor for TVWorkoutPlanAlternativesViewController);
   sub_20C139374();
 }
 
-- (_TtC9SeymourUI39TVWorkoutPlanAlternativesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI39TVWorkoutPlanAlternativesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

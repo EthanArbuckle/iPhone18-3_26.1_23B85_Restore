@@ -1,46 +1,46 @@
 @interface PUOneUpChromeViewController
 - (BOOL)isVideoTimelineControlInteracting;
-- (BOOL)shouldAllowGestureToBeginAt:(id)a3;
-- (CGRect)oneUpActionsControllerPopoverSourceRectIn:(id)a3 actionType:(unint64_t)a4;
+- (BOOL)shouldAllowGestureToBeginAt:(id)at;
+- (CGRect)oneUpActionsControllerPopoverSourceRectIn:(id)in actionType:(unint64_t)type;
 - (NSArray)additionalInternalOneUpMenuElements;
-- (PUOneUpChromeViewController)initWithBrowsingSession:(id)a3 actionsController:(id)a4;
+- (PUOneUpChromeViewController)initWithBrowsingSession:(id)session actionsController:(id)controller;
 - (PUOneUpChromeViewControllerDelegate)delegate;
 - (UIColor)backgroundColorOverride;
 - (UIEdgeInsets)additionalActionInfoEdgeInsets;
 - (UIEdgeInsets)contentDecorationAdditionalInsets;
 - (UIEdgeInsets)contentGuideInsets;
-- (UIEdgeInsets)contentGuideInsetsForViewSize:(CGSize)a3;
-- (UIEdgeInsets)toolbarInsetsForViewSize:(CGSize)a3;
+- (UIEdgeInsets)contentGuideInsetsForViewSize:(CGSize)size;
+- (UIEdgeInsets)toolbarInsetsForViewSize:(CGSize)size;
 - (UIView)ppt_scrubberView;
 - (UIView)view;
 - (double)horizontalGuideInset;
 - (id)chromeVisibilityAnimationDurationProvider;
-- (id)oneUpActionsControllerPopoverSourceViewWithActionType:(unint64_t)a3;
+- (id)oneUpActionsControllerPopoverSourceViewWithActionType:(unint64_t)type;
 - (void)invalidateIsDeviceUnlocked;
-- (void)setAdditionalActionInfoEdgeInsets:(UIEdgeInsets)a3;
-- (void)setAirplayInfoWithShouldShowAirPlayButton:(BOOL)a3 isDisplayingContentOnSecondScreen:(BOOL)a4;
-- (void)setBackgroundColorOverride:(id)a3;
-- (void)setBottomSafeAreaInset:(double)a3;
-- (void)setChromeVisibilityAnimationDurationProvider:(id)a3;
-- (void)setContentDecorationAdditionalInsets:(UIEdgeInsets)a3;
-- (void)setContentGuideInsets:(UIEdgeInsets)a3;
-- (void)setDelegate:(id)a3;
-- (void)setIsRotating:(BOOL)a3;
-- (void)setTopSafeAreaInset:(double)a3;
-- (void)updateDismissalStateWithIsInteractivelyDismissing:(BOOL)a3 dismissalProgress:(double)a4;
+- (void)setAdditionalActionInfoEdgeInsets:(UIEdgeInsets)insets;
+- (void)setAirplayInfoWithShouldShowAirPlayButton:(BOOL)button isDisplayingContentOnSecondScreen:(BOOL)screen;
+- (void)setBackgroundColorOverride:(id)override;
+- (void)setBottomSafeAreaInset:(double)inset;
+- (void)setChromeVisibilityAnimationDurationProvider:(id)provider;
+- (void)setContentDecorationAdditionalInsets:(UIEdgeInsets)insets;
+- (void)setContentGuideInsets:(UIEdgeInsets)insets;
+- (void)setDelegate:(id)delegate;
+- (void)setIsRotating:(BOOL)rotating;
+- (void)setTopSafeAreaInset:(double)inset;
+- (void)updateDismissalStateWithIsInteractivelyDismissing:(BOOL)dismissing dismissalProgress:(double)progress;
 - (void)updateIsDeviceLocked;
 - (void)updateIsDeviceUnlockedIfNeeded;
 - (void)updatePresentingViewController;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withCoordinator:(id)coordinator;
 @end
 
 @implementation PUOneUpChromeViewController
 
-- (PUOneUpChromeViewController)initWithBrowsingSession:(id)a3 actionsController:(id)a4
+- (PUOneUpChromeViewController)initWithBrowsingSession:(id)session actionsController:(id)controller
 {
-  v4 = a3;
+  sessionCopy = session;
   swift_unknownObjectRetain();
   OneUpChromeViewController.init(browsingSession:actionsController:)();
   return result;
@@ -48,7 +48,7 @@
 
 - (UIView)ppt_scrubberView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B37405CC();
 
   return v3;
@@ -56,7 +56,7 @@
 
 - (double)horizontalGuideInset
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B374069C();
 
   return v3;
@@ -64,7 +64,7 @@
 
 - (id)chromeVisibilityAnimationDurationProvider
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B3740788();
   v5 = v4;
 
@@ -82,73 +82,73 @@
   return v3;
 }
 
-- (void)setChromeVisibilityAnimationDurationProvider:(id)a3
+- (void)setChromeVisibilityAnimationDurationProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   if (v4)
   {
     *(swift_allocObject() + 16) = v4;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_1B37408A4();
 }
 
 - (void)invalidateIsDeviceUnlocked
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37409A8();
 }
 
 - (void)updateIsDeviceUnlockedIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3740A18();
 }
 
-- (void)setIsRotating:(BOOL)a3
+- (void)setIsRotating:(BOOL)rotating
 {
-  v4 = self;
-  sub_1B3740B08(a3);
+  selfCopy = self;
+  sub_1B3740B08(rotating);
 }
 
-- (void)setTopSafeAreaInset:(double)a3
+- (void)setTopSafeAreaInset:(double)inset
 {
-  v4 = self;
-  sub_1B3740BE0(a3);
+  selfCopy = self;
+  sub_1B3740BE0(inset);
 }
 
-- (void)setBottomSafeAreaInset:(double)a3
+- (void)setBottomSafeAreaInset:(double)inset
 {
-  v4 = self;
-  sub_1B3740CB8(a3);
+  selfCopy = self;
+  sub_1B3740CB8(inset);
 }
 
 - (void)updateIsDeviceLocked
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3741468();
 }
 
-- (BOOL)shouldAllowGestureToBeginAt:(id)a3
+- (BOOL)shouldAllowGestureToBeginAt:(id)at
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_1B374158C(a3);
+  selfCopy = self;
+  v6 = sub_1B374158C(at);
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-- (void)updateDismissalStateWithIsInteractivelyDismissing:(BOOL)a3 dismissalProgress:(double)a4
+- (void)updateDismissalStateWithIsInteractivelyDismissing:(BOOL)dismissing dismissalProgress:(double)progress
 {
-  v6 = self;
-  sub_1B3741648(a3, a4);
+  selfCopy = self;
+  sub_1B3741648(dismissing, progress);
 }
 
-- (void)setAirplayInfoWithShouldShowAirPlayButton:(BOOL)a3 isDisplayingContentOnSecondScreen:(BOOL)a4
+- (void)setAirplayInfoWithShouldShowAirPlayButton:(BOOL)button isDisplayingContentOnSecondScreen:(BOOL)screen
 {
-  v4 = self;
+  selfCopy = self;
   sub_1B3741850();
 }
 
@@ -159,25 +159,25 @@
   return v2;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  OneUpChromeViewController.viewWillTransition(to:with:)(a4);
+  selfCopy = self;
+  OneUpChromeViewController.viewWillTransition(to:with:)(coordinator);
   swift_unknownObjectRelease();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   OneUpChromeViewController.viewWillLayoutSubviews()();
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v5 = a3;
-  v6 = self;
-  OneUpChromeViewController.viewDidMove(to:shouldAppearOrDisappear:)(v6, 0);
+  windowCopy = window;
+  selfCopy = self;
+  OneUpChromeViewController.viewDidMove(to:shouldAppearOrDisappear:)(selfCopy, 0);
 }
 
 - (PUOneUpChromeViewControllerDelegate)delegate
@@ -187,10 +187,10 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   OneUpChromeViewController.delegate.setter();
 }
 
@@ -204,13 +204,13 @@
   return result;
 }
 
-- (void)setContentGuideInsets:(UIEdgeInsets)a3
+- (void)setContentGuideInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = self;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  selfCopy = self;
   sub_1B3744DFC(&OBJC_IVAR___PUOneUpChromeViewController_contentGuideInsets, top, left, bottom, right);
 }
 
@@ -221,11 +221,11 @@
   return v2;
 }
 
-- (void)setBackgroundColorOverride:(id)a3
+- (void)setBackgroundColorOverride:(id)override
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B3744B50(a3);
+  overrideCopy = override;
+  selfCopy = self;
+  sub_1B3744B50(override);
 }
 
 - (UIEdgeInsets)contentDecorationAdditionalInsets
@@ -238,13 +238,13 @@
   return result;
 }
 
-- (void)setContentDecorationAdditionalInsets:(UIEdgeInsets)a3
+- (void)setContentDecorationAdditionalInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = self;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  selfCopy = self;
   sub_1B3744DFC(&OBJC_IVAR___PUOneUpChromeViewController_contentDecorationAdditionalInsets, top, left, bottom, right);
 }
 
@@ -258,19 +258,19 @@
   return result;
 }
 
-- (void)setAdditionalActionInfoEdgeInsets:(UIEdgeInsets)a3
+- (void)setAdditionalActionInfoEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = self;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  selfCopy = self;
   sub_1B3744DFC(&OBJC_IVAR___PUOneUpChromeViewController_additionalActionInfoEdgeInsets, top, left, bottom, right);
 }
 
 - (BOOL)isVideoTimelineControlInteracting
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B3745138();
 
   return v3 & 1;
@@ -278,11 +278,11 @@
 
 - (void)updatePresentingViewController
 {
-  v2 = self;
+  selfCopy = self;
   OneUpChromeViewController.updatePresentingViewController()();
 }
 
-- (UIEdgeInsets)contentGuideInsetsForViewSize:(CGSize)a3
+- (UIEdgeInsets)contentGuideInsetsForViewSize:(CGSize)size
 {
   sub_1B37463F8(self, a2, sub_1B37455D8);
   result.right = v6;
@@ -292,7 +292,7 @@
   return result;
 }
 
-- (UIEdgeInsets)toolbarInsetsForViewSize:(CGSize)a3
+- (UIEdgeInsets)toolbarInsetsForViewSize:(CGSize)size
 {
   sub_1B37463F8(self, a2, sub_1B3745FB8);
   result.right = v6;
@@ -304,7 +304,7 @@
 
 - (NSArray)additionalInternalOneUpMenuElements
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3746A58();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB8525A0);
@@ -313,16 +313,16 @@
   return v3;
 }
 
-- (id)oneUpActionsControllerPopoverSourceViewWithActionType:(unint64_t)a3
+- (id)oneUpActionsControllerPopoverSourceViewWithActionType:(unint64_t)type
 {
-  v3 = self;
+  selfCopy = self;
   OneUpChromeViewController.oneUpActionsControllerPopoverSourceView(actionType:)();
   v5 = v4;
 
   return v5;
 }
 
-- (CGRect)oneUpActionsControllerPopoverSourceRectIn:(id)a3 actionType:(unint64_t)a4
+- (CGRect)oneUpActionsControllerPopoverSourceRectIn:(id)in actionType:(unint64_t)type
 {
   v4 = OneUpChromeViewController.oneUpActionsControllerPopoverSourceRect(in:actionType:)();
   result.size.height = v7;

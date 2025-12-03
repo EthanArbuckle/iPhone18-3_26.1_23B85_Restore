@@ -2,26 +2,26 @@
 - (BOOL)isClassroomAutomaticClassJoiningForced;
 - (BOOL)isClassroomRequestPermissionToLeaveClassesForced;
 - (BOOL)isClassroomUnpromptedScreenObservationForced;
-- (BOOL)isFeatureForced:(id)a3;
-- (BOOL)isRoleEnabled:(id)a3;
-- (CRKFeatureDataStore_MCX)initWithMCXPrimitives:(id)a3;
+- (BOOL)isFeatureForced:(id)forced;
+- (BOOL)isRoleEnabled:(id)enabled;
+- (CRKFeatureDataStore_MCX)initWithMCXPrimitives:(id)primitives;
 - (NSSet)activeClassroomRoles;
-- (id)keyForFeature:(id)a3 configurationUUID:(id)a4 ask:(BOOL)a5;
-- (unint64_t)BOOLRestrictionForFeature:(id)a3;
-- (unint64_t)effectiveValueForSetting:(id)a3 configurationUUID:(id)a4 outAsk:(BOOL *)a5;
-- (void)addActiveClassroomRole:(id)a3;
-- (void)removeActiveClassroomRole:(id)a3;
+- (id)keyForFeature:(id)feature configurationUUID:(id)d ask:(BOOL)ask;
+- (unint64_t)BOOLRestrictionForFeature:(id)feature;
+- (unint64_t)effectiveValueForSetting:(id)setting configurationUUID:(id)d outAsk:(BOOL *)ask;
+- (void)addActiveClassroomRole:(id)role;
+- (void)removeActiveClassroomRole:(id)role;
 - (void)removeDuplicateEntriesFromStoredClassroomRoles;
-- (void)setActiveClassroomRoles:(id)a3;
-- (void)setBoolValue:(BOOL)a3 ask:(BOOL)a4 forSetting:(id)a5 configurationUUID:(id)a6;
-- (void)setRole:(id)a3 enabled:(BOOL)a4;
+- (void)setActiveClassroomRoles:(id)roles;
+- (void)setBoolValue:(BOOL)value ask:(BOOL)ask forSetting:(id)setting configurationUUID:(id)d;
+- (void)setRole:(id)role enabled:(BOOL)enabled;
 @end
 
 @implementation CRKFeatureDataStore_MCX
 
-- (CRKFeatureDataStore_MCX)initWithMCXPrimitives:(id)a3
+- (CRKFeatureDataStore_MCX)initWithMCXPrimitives:(id)primitives
 {
-  v5 = a3;
+  primitivesCopy = primitives;
   v10.receiver = self;
   v10.super_class = CRKFeatureDataStore_MCX;
   v6 = [(CRKFeatureDataStore_MCX *)&v10 init];
@@ -31,23 +31,23 @@
     heuristicsManager = v6->_heuristicsManager;
     v6->_heuristicsManager = v7;
 
-    objc_storeStrong(&v6->_MCXPrimitives, a3);
+    objc_storeStrong(&v6->_MCXPrimitives, primitives);
     [(CRKFeatureDataStore_MCX *)v6 removeDuplicateEntriesFromStoredClassroomRoles];
   }
 
   return v6;
 }
 
-- (unint64_t)BOOLRestrictionForFeature:(id)a3
+- (unint64_t)BOOLRestrictionForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(CRKFeatureDataStore_MCX *)self isFeatureForced:v4];
-  v6 = [(CRKFeatureDataStore_MCX *)self heuristicsManager];
-  LODWORD(v5) = [v6 applyIsForcedHeuristicsToFeature:v4 isForced:v5];
+  featureCopy = feature;
+  v5 = [(CRKFeatureDataStore_MCX *)self isFeatureForced:featureCopy];
+  heuristicsManager = [(CRKFeatureDataStore_MCX *)self heuristicsManager];
+  LODWORD(v5) = [heuristicsManager applyIsForcedHeuristicsToFeature:featureCopy isForced:v5];
 
   if (v5)
   {
-    v7 = [(CRKFeatureDataStore_MCX *)self effectiveValueForSetting:v4 configurationUUID:0 outAsk:0];
+    v7 = [(CRKFeatureDataStore_MCX *)self effectiveValueForSetting:featureCopy configurationUUID:0 outAsk:0];
   }
 
   else
@@ -58,15 +58,15 @@
   return v7;
 }
 
-- (unint64_t)effectiveValueForSetting:(id)a3 configurationUUID:(id)a4 outAsk:(BOOL *)a5
+- (unint64_t)effectiveValueForSetting:(id)setting configurationUUID:(id)d outAsk:(BOOL *)ask
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  settingCopy = setting;
+  dCopy = d;
+  if (ask)
   {
-    v10 = [(CRKFeatureDataStore_MCX *)self keyForFeature:v8 configurationUUID:v9 ask:1];
-    v11 = [(CRKFeatureDataStore_MCX *)self MCXPrimitives];
-    v12 = [v11 numberForKey:v10];
+    v10 = [(CRKFeatureDataStore_MCX *)self keyForFeature:settingCopy configurationUUID:dCopy ask:1];
+    mCXPrimitives = [(CRKFeatureDataStore_MCX *)self MCXPrimitives];
+    v12 = [mCXPrimitives numberForKey:v10];
 
     v13 = [MEMORY[0x277CCABB0] crk_featureBoolTypeFromNumber:v12];
     if (v13)
@@ -76,44 +76,44 @@
 
     else
     {
-      v14 = [CRKFeatureDataStoreDefaults_MCX defaultAskValueForFeature:v8];
+      v14 = [CRKFeatureDataStoreDefaults_MCX defaultAskValueForFeature:settingCopy];
     }
 
-    *a5 = v14;
+    *ask = v14;
   }
 
-  v15 = [(CRKFeatureDataStore_MCX *)self keyForFeature:v8 configurationUUID:v9 ask:0];
-  v16 = [(CRKFeatureDataStore_MCX *)self MCXPrimitives];
-  v17 = [v16 numberForKey:v15];
+  v15 = [(CRKFeatureDataStore_MCX *)self keyForFeature:settingCopy configurationUUID:dCopy ask:0];
+  mCXPrimitives2 = [(CRKFeatureDataStore_MCX *)self MCXPrimitives];
+  v17 = [mCXPrimitives2 numberForKey:v15];
 
   v18 = [MEMORY[0x277CCABB0] crk_featureBoolTypeFromNumber:v17];
   if (!v18)
   {
-    v18 = [CRKFeatureDataStoreDefaults_MCX defaultValueForFeature:v8];
+    v18 = [CRKFeatureDataStoreDefaults_MCX defaultValueForFeature:settingCopy];
   }
 
-  v19 = [(CRKFeatureDataStore_MCX *)self heuristicsManager];
-  v20 = [v19 applyHeuristicsToFeature:v8 BOOLType:v18];
+  heuristicsManager = [(CRKFeatureDataStore_MCX *)self heuristicsManager];
+  v20 = [heuristicsManager applyHeuristicsToFeature:settingCopy BOOLType:v18];
 
   return v20;
 }
 
-- (void)setBoolValue:(BOOL)a3 ask:(BOOL)a4 forSetting:(id)a5 configurationUUID:(id)a6
+- (void)setBoolValue:(BOOL)value ask:(BOOL)ask forSetting:(id)setting configurationUUID:(id)d
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = a6;
-  v11 = a5;
-  v17 = [(CRKFeatureDataStore_MCX *)self keyForFeature:v11 configurationUUID:v10 ask:0];
-  v12 = [(CRKFeatureDataStore_MCX *)self MCXPrimitives];
-  v13 = [MEMORY[0x277CCABB0] numberWithBool:v8];
-  [v12 setNumber:v13 forKey:v17];
+  askCopy = ask;
+  valueCopy = value;
+  dCopy = d;
+  settingCopy = setting;
+  v17 = [(CRKFeatureDataStore_MCX *)self keyForFeature:settingCopy configurationUUID:dCopy ask:0];
+  mCXPrimitives = [(CRKFeatureDataStore_MCX *)self MCXPrimitives];
+  v13 = [MEMORY[0x277CCABB0] numberWithBool:valueCopy];
+  [mCXPrimitives setNumber:v13 forKey:v17];
 
-  v14 = [(CRKFeatureDataStore_MCX *)self keyForFeature:v11 configurationUUID:v10 ask:1];
+  v14 = [(CRKFeatureDataStore_MCX *)self keyForFeature:settingCopy configurationUUID:dCopy ask:1];
 
-  v15 = [(CRKFeatureDataStore_MCX *)self MCXPrimitives];
-  v16 = [MEMORY[0x277CCABB0] numberWithBool:v7];
-  [v15 setNumber:v16 forKey:v14];
+  mCXPrimitives2 = [(CRKFeatureDataStore_MCX *)self MCXPrimitives];
+  v16 = [MEMORY[0x277CCABB0] numberWithBool:askCopy];
+  [mCXPrimitives2 setNumber:v16 forKey:v14];
 }
 
 - (BOOL)isClassroomUnpromptedScreenObservationForced
@@ -142,9 +142,9 @@
 
 - (NSSet)activeClassroomRoles
 {
-  v2 = [(CRKFeatureDataStore_MCX *)self MCXPrimitives];
+  mCXPrimitives = [(CRKFeatureDataStore_MCX *)self MCXPrimitives];
   v3 = +[CRKRestrictions classroomRoles];
-  v4 = [v2 arrayForKey:v3];
+  v4 = [mCXPrimitives arrayForKey:v3];
   v5 = v4;
   v6 = MEMORY[0x277CBEBF8];
   if (v4)
@@ -159,76 +159,76 @@
   return v8;
 }
 
-- (BOOL)isFeatureForced:(id)a3
+- (BOOL)isFeatureForced:(id)forced
 {
-  v4 = a3;
-  v5 = [(CRKFeatureDataStore_MCX *)self MCXPrimitives];
-  v6 = [v5 isKeyUserModifiable:v4];
+  forcedCopy = forced;
+  mCXPrimitives = [(CRKFeatureDataStore_MCX *)self MCXPrimitives];
+  v6 = [mCXPrimitives isKeyUserModifiable:forcedCopy];
 
   return v6 ^ 1;
 }
 
-- (void)setActiveClassroomRoles:(id)a3
+- (void)setActiveClassroomRoles:(id)roles
 {
-  v7 = a3;
-  if ([v7 count])
+  rolesCopy = roles;
+  if ([rolesCopy count])
   {
-    v4 = [v7 allObjects];
+    allObjects = [rolesCopy allObjects];
   }
 
   else
   {
-    v4 = 0;
+    allObjects = 0;
   }
 
-  v5 = [(CRKFeatureDataStore_MCX *)self MCXPrimitives];
+  mCXPrimitives = [(CRKFeatureDataStore_MCX *)self MCXPrimitives];
   v6 = +[CRKRestrictions classroomRoles];
-  [v5 setArray:v4 forKey:v6];
+  [mCXPrimitives setArray:allObjects forKey:v6];
 }
 
-- (void)addActiveClassroomRole:(id)a3
+- (void)addActiveClassroomRole:(id)role
 {
-  v4 = a3;
-  v5 = [(CRKFeatureDataStore_MCX *)self activeClassroomRoles];
-  v6 = [v5 mutableCopy];
+  roleCopy = role;
+  activeClassroomRoles = [(CRKFeatureDataStore_MCX *)self activeClassroomRoles];
+  v6 = [activeClassroomRoles mutableCopy];
 
-  [v6 addObject:v4];
+  [v6 addObject:roleCopy];
   [(CRKFeatureDataStore_MCX *)self setActiveClassroomRoles:v6];
 }
 
-- (void)removeActiveClassroomRole:(id)a3
+- (void)removeActiveClassroomRole:(id)role
 {
-  v4 = a3;
-  v5 = [(CRKFeatureDataStore_MCX *)self activeClassroomRoles];
-  v6 = [v5 mutableCopy];
+  roleCopy = role;
+  activeClassroomRoles = [(CRKFeatureDataStore_MCX *)self activeClassroomRoles];
+  v6 = [activeClassroomRoles mutableCopy];
 
-  [v6 removeObject:v4];
+  [v6 removeObject:roleCopy];
   [(CRKFeatureDataStore_MCX *)self setActiveClassroomRoles:v6];
 }
 
-- (BOOL)isRoleEnabled:(id)a3
+- (BOOL)isRoleEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(CRKFeatureDataStore_MCX *)self activeClassroomRoles];
-  v6 = [v5 containsObject:v4];
+  enabledCopy = enabled;
+  activeClassroomRoles = [(CRKFeatureDataStore_MCX *)self activeClassroomRoles];
+  v6 = [activeClassroomRoles containsObject:enabledCopy];
 
   return v6;
 }
 
-- (void)setRole:(id)a3 enabled:(BOOL)a4
+- (void)setRole:(id)role enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v8 = a3;
-  v6 = [(CRKFeatureDataStore_MCX *)self activeClassroomRoles];
-  v7 = [v6 containsObject:v8];
-  if (v4)
+  enabledCopy = enabled;
+  roleCopy = role;
+  activeClassroomRoles = [(CRKFeatureDataStore_MCX *)self activeClassroomRoles];
+  v7 = [activeClassroomRoles containsObject:roleCopy];
+  if (enabledCopy)
   {
     if (v7)
     {
       goto LABEL_7;
     }
 
-    [(CRKFeatureDataStore_MCX *)self addActiveClassroomRole:v8];
+    [(CRKFeatureDataStore_MCX *)self addActiveClassroomRole:roleCopy];
   }
 
   else
@@ -238,28 +238,28 @@
       goto LABEL_7;
     }
 
-    [(CRKFeatureDataStore_MCX *)self removeActiveClassroomRole:v8];
+    [(CRKFeatureDataStore_MCX *)self removeActiveClassroomRole:roleCopy];
   }
 
   notify_post([@"CRKStudentEnrollmentStatusDidChangeNotification" UTF8String]);
 LABEL_7:
 }
 
-- (id)keyForFeature:(id)a3 configurationUUID:(id)a4 ask:(BOOL)a5
+- (id)keyForFeature:(id)feature configurationUUID:(id)d ask:(BOOL)ask
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
+  askCopy = ask;
+  dCopy = d;
+  featureCopy = feature;
   v9 = objc_opt_new();
-  [v9 appendString:v8];
+  [v9 appendString:featureCopy];
 
-  if ([v7 length])
+  if ([dCopy length])
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"-", v7];
-    [v9 appendString:v10];
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"-", dCopy];
+    [v9 appendString:dCopy];
   }
 
-  if (v5)
+  if (askCopy)
   {
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ask", @"-"];
     [v9 appendString:v11];
@@ -270,8 +270,8 @@ LABEL_7:
 
 - (void)removeDuplicateEntriesFromStoredClassroomRoles
 {
-  v3 = [(CRKFeatureDataStore_MCX *)self activeClassroomRoles];
-  [(CRKFeatureDataStore_MCX *)self setActiveClassroomRoles:v3];
+  activeClassroomRoles = [(CRKFeatureDataStore_MCX *)self activeClassroomRoles];
+  [(CRKFeatureDataStore_MCX *)self setActiveClassroomRoles:activeClassroomRoles];
 }
 
 @end

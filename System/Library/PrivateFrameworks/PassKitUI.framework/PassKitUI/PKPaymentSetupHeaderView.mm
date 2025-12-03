@@ -1,19 +1,19 @@
 @interface PKPaymentSetupHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPaymentSetupHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPaymentSetupHeaderView)initWithFrame:(CGRect)frame;
 - (double)_leadingPadding;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PKPaymentSetupHeaderView
 
-- (PKPaymentSetupHeaderView)initWithFrame:(CGRect)a3
+- (PKPaymentSetupHeaderView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PKPaymentSetupHeaderView;
-  v3 = [(PKPaymentSetupHeaderView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaymentSetupHeaderView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -30,10 +30,10 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(PKPaymentSetupHeaderView *)self _leadingPadding];
   [(UILabel *)self->_label sizeThatFits:width + v6 * -2.0, height];
   v8 = v7 + 10.0;
@@ -65,19 +65,19 @@
   [(UILabel *)self->_label setText:0];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
-  [(UILabel *)self->_label setText:v5];
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
+  [(UILabel *)self->_label setText:titleCopy];
 
   [(PKPaymentSetupHeaderView *)self setNeedsLayout];
 }
 
 - (double)_leadingPadding
 {
-  v2 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  [v2 directionalLayoutMargins];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  [valueCellConfiguration directionalLayoutMargins];
   v4 = v3;
 
   return v4;

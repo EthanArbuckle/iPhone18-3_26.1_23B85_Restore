@@ -1,23 +1,23 @@
 @interface SHLocalDataFetcher
-- (void)clusterDataAtURL:(id)a3 forLocation:(id)a4 date:(id)a5 completionHandler:(id)a6;
+- (void)clusterDataAtURL:(id)l forLocation:(id)location date:(id)date completionHandler:(id)handler;
 @end
 
 @implementation SHLocalDataFetcher
 
-- (void)clusterDataAtURL:(id)a3 forLocation:(id)a4 date:(id)a5 completionHandler:(id)a6
+- (void)clusterDataAtURL:(id)l forLocation:(id)location date:(id)date completionHandler:(id)handler
 {
-  v16 = a3;
-  v8 = a5;
+  lCopy = l;
+  dateCopy = date;
   v9 = MEMORY[0x277CBEA90];
-  v10 = a6;
-  v11 = [v9 dataWithContentsOfURL:v16];
+  handlerCopy = handler;
+  v11 = [v9 dataWithContentsOfURL:lCopy];
   if (v11)
   {
     v12 = [SHDataFetcherFileInfo alloc];
-    v13 = [v16 lastPathComponent];
-    v14 = [(SHDataFetcherFileInfo *)v12 initWithData:v11 suggestedFileName:v13];
+    lastPathComponent = [lCopy lastPathComponent];
+    v14 = [(SHDataFetcherFileInfo *)v12 initWithData:v11 suggestedFileName:lastPathComponent];
 
-    [(SHDataFetcherFileInfo *)v14 setCreationDate:v8];
+    [(SHDataFetcherFileInfo *)v14 setCreationDate:dateCopy];
     v15 = 0;
   }
 
@@ -27,7 +27,7 @@
     v14 = 0;
   }
 
-  v10[2](v10, v14, v15);
+  handlerCopy[2](handlerCopy, v14, v15);
 }
 
 @end

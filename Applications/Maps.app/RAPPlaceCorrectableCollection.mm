@@ -2,15 +2,15 @@
 - (BOOL)isEdited;
 - (NSArray)values;
 - (NSString)localizedTitle;
-- (RAPPlaceCorrectableCollection)initWithKind:(int64_t)a3 originalValues:(id)a4 maxCount:(unint64_t)a5;
+- (RAPPlaceCorrectableCollection)initWithKind:(int64_t)kind originalValues:(id)values maxCount:(unint64_t)count;
 - (id)addedObjects;
 - (id)removedObjects;
 - (void)_invokeChangeHandlers;
-- (void)addObject:(id)a3;
-- (void)addObserver:(id)a3 changeHandler:(id)a4;
-- (void)clearAndReplaceObjects:(id)a3;
-- (void)removeObject:(id)a3;
-- (void)removeObjectAtIndex:(unint64_t)a3;
+- (void)addObject:(id)object;
+- (void)addObserver:(id)observer changeHandler:(id)handler;
+- (void)clearAndReplaceObjects:(id)objects;
+- (void)removeObject:(id)object;
+- (void)removeObjectAtIndex:(unint64_t)index;
 - (void)revertCorrections;
 @end
 
@@ -43,10 +43,10 @@
   return v2;
 }
 
-- (void)clearAndReplaceObjects:(id)a3
+- (void)clearAndReplaceObjects:(id)objects
 {
-  v4 = a3;
-  v5 = [[NSMutableArray alloc] initWithArray:v4];
+  objectsCopy = objects;
+  v5 = [[NSMutableArray alloc] initWithArray:objectsCopy];
 
   mutableValues = self->_mutableValues;
   self->_mutableValues = v5;
@@ -59,9 +59,9 @@
   v3 = [[NSMutableSet alloc] initWithArray:self->_originalValues];
   v4 = [[NSSet alloc] initWithArray:self->_mutableValues];
   [v3 minusSet:v4];
-  v5 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
-  return v5;
+  return allObjects;
 }
 
 - (id)addedObjects
@@ -69,57 +69,57 @@
   v3 = [[NSMutableSet alloc] initWithArray:self->_mutableValues];
   v4 = [[NSSet alloc] initWithArray:self->_originalValues];
   [v3 minusSet:v4];
-  v5 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
-  return v5;
+  return allObjects;
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if ([(NSMutableArray *)self->_mutableValues containsObject:?])
   {
-    [(NSMutableArray *)self->_mutableValues removeObject:v4];
+    [(NSMutableArray *)self->_mutableValues removeObject:objectCopy];
     [(RAPPlaceCorrectableCollection *)self _invokeChangeHandlers];
   }
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_mutableValues count]> a3)
+  if ([(NSMutableArray *)self->_mutableValues count]> index)
   {
-    [(NSMutableArray *)self->_mutableValues removeObjectAtIndex:a3];
+    [(NSMutableArray *)self->_mutableValues removeObjectAtIndex:index];
 
     [(RAPPlaceCorrectableCollection *)self _invokeChangeHandlers];
   }
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if (([(NSMutableArray *)self->_mutableValues containsObject:?]& 1) == 0)
   {
-    [(NSMutableArray *)self->_mutableValues addObject:v4];
+    [(NSMutableArray *)self->_mutableValues addObject:objectCopy];
     [(RAPPlaceCorrectableCollection *)self _invokeChangeHandlers];
   }
 }
 
-- (RAPPlaceCorrectableCollection)initWithKind:(int64_t)a3 originalValues:(id)a4 maxCount:(unint64_t)a5
+- (RAPPlaceCorrectableCollection)initWithKind:(int64_t)kind originalValues:(id)values maxCount:(unint64_t)count
 {
-  v8 = a4;
+  valuesCopy = values;
   v16.receiver = self;
   v16.super_class = RAPPlaceCorrectableCollection;
   v9 = [(RAPPlaceCorrectableCollection *)&v16 init];
   v10 = v9;
-  if (!v8)
+  if (!valuesCopy)
   {
-    v8 = &__NSArray0__struct;
+    valuesCopy = &__NSArray0__struct;
   }
 
   if (v9)
   {
-    v9->_kind = a3;
-    v11 = [v8 copy];
+    v9->_kind = kind;
+    v11 = [valuesCopy copy];
     originalValues = v10->_originalValues;
     v10->_originalValues = v11;
 
@@ -127,7 +127,7 @@
     mutableValues = v10->_mutableValues;
     v10->_mutableValues = v13;
 
-    v10->_maxCount = a5;
+    v10->_maxCount = count;
   }
 
   return v10;
@@ -138,10 +138,10 @@
   localizedTitle = self->_localizedTitle;
   if (!localizedTitle)
   {
-    v4 = [(RAPPlaceCorrectableCollection *)self kind];
-    if (v4 <= 0x15 && ((0x30FFFFu >> v4) & 1) != 0)
+    kind = [(RAPPlaceCorrectableCollection *)self kind];
+    if (kind <= 0x15 && ((0x30FFFFu >> kind) & 1) != 0)
     {
-      v5 = off_101624FB0[v4];
+      v5 = off_101624FB0[kind];
       v6 = +[NSBundle mainBundle];
       v7 = [v6 localizedStringForKey:v5 value:@"localized string not found" table:0];
     }
@@ -166,8 +166,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMapTable *)self->_observers keyEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  keyEnumerator = [(NSMapTable *)self->_observers keyEnumerator];
+  v4 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -178,7 +178,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -186,17 +186,17 @@
         (v9)[2](v9, self, v8);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)addObserver:(id)a3 changeHandler:(id)a4
+- (void)addObserver:(id)observer changeHandler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  handlerCopy = handler;
   observers = self->_observers;
   if (!observers)
   {
@@ -207,8 +207,8 @@
     observers = self->_observers;
   }
 
-  v10 = [v6 copy];
-  [(NSMapTable *)observers setObject:v10 forKey:v11];
+  v10 = [handlerCopy copy];
+  [(NSMapTable *)observers setObject:v10 forKey:observerCopy];
 }
 
 @end

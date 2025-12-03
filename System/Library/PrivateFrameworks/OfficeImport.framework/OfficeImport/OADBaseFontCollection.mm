@@ -1,71 +1,71 @@
 @interface OADBaseFontCollection
 - (BOOL)isEmpty;
-- (BOOL)isEqualToBaseFontCollection:(id)a3;
-- (id)baseFontForId:(int)a3;
-- (void)setBaseFont:(id)a3 forId:(int)a4;
+- (BOOL)isEqualToBaseFontCollection:(id)collection;
+- (id)baseFontForId:(int)id;
+- (void)setBaseFont:(id)font forId:(int)id;
 @end
 
 @implementation OADBaseFontCollection
 
-- (id)baseFontForId:(int)a3
+- (id)baseFontForId:(int)id
 {
-  if (a3 == 2)
+  if (id == 2)
   {
-    v3 = [(OADBaseFontCollection *)self complexScriptFont];
+    complexScriptFont = [(OADBaseFontCollection *)self complexScriptFont];
   }
 
-  else if (a3 == 1)
+  else if (id == 1)
   {
-    v3 = [(OADBaseFontCollection *)self eastAsianFont];
+    complexScriptFont = [(OADBaseFontCollection *)self eastAsianFont];
   }
 
-  else if (a3)
+  else if (id)
   {
-    v3 = 0;
+    complexScriptFont = 0;
   }
 
   else
   {
-    v3 = [(OADBaseFontCollection *)self latinFont];
+    complexScriptFont = [(OADBaseFontCollection *)self latinFont];
   }
 
-  return v3;
+  return complexScriptFont;
 }
 
-- (void)setBaseFont:(id)a3 forId:(int)a4
+- (void)setBaseFont:(id)font forId:(int)id
 {
-  v6 = a3;
-  v7 = v6;
-  switch(a4)
+  fontCopy = font;
+  v7 = fontCopy;
+  switch(id)
   {
     case 2:
-      [(OADBaseFontCollection *)self setComplexScriptFont:v6];
+      [(OADBaseFontCollection *)self setComplexScriptFont:fontCopy];
       break;
     case 1:
-      [(OADBaseFontCollection *)self setEastAsianFont:v6];
+      [(OADBaseFontCollection *)self setEastAsianFont:fontCopy];
       break;
     case 0:
-      [(OADBaseFontCollection *)self setLatinFont:v6];
+      [(OADBaseFontCollection *)self setLatinFont:fontCopy];
       break;
   }
 }
 
-- (BOOL)isEqualToBaseFontCollection:(id)a3
+- (BOOL)isEqualToBaseFontCollection:(id)collection
 {
-  v4 = a3;
-  if (v4)
+  collectionCopy = collection;
+  if (collectionCopy)
   {
-    v5 = [(OADBaseFontCollection *)self latinFont];
-    v6 = [v4 latinFont];
-    if (TCObjectEqual(v5, v6))
+    latinFont = [(OADBaseFontCollection *)self latinFont];
+    latinFont2 = [collectionCopy latinFont];
+    if (TCObjectEqual(latinFont, latinFont2))
     {
-      v7 = [(OADBaseFontCollection *)self eastAsianFont];
-      v8 = [v4 eastAsianFont];
-      if (TCObjectEqual(v7, v8))
+      eastAsianFont = [(OADBaseFontCollection *)self eastAsianFont];
+      eastAsianFont2 = [collectionCopy eastAsianFont];
+      if (TCObjectEqual(eastAsianFont, eastAsianFont2))
       {
-        v9 = [(OADBaseFontCollection *)self complexScriptFont];
-        v10 = [v4 complexScriptFont];
-        v11 = TCObjectEqual(v9, v10);
+        complexScriptFont = [(OADBaseFontCollection *)self complexScriptFont];
+        complexScriptFont2 = [collectionCopy complexScriptFont];
+        v11 = TCObjectEqual(complexScriptFont, complexScriptFont2);
       }
 
       else
@@ -90,24 +90,24 @@
 
 - (BOOL)isEmpty
 {
-  v3 = [(OADBaseFontCollection *)self latinFont];
-  if (v3)
+  latinFont = [(OADBaseFontCollection *)self latinFont];
+  if (latinFont)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(OADBaseFontCollection *)self eastAsianFont];
-    if (v5)
+    eastAsianFont = [(OADBaseFontCollection *)self eastAsianFont];
+    if (eastAsianFont)
     {
       v4 = 0;
     }
 
     else
     {
-      v6 = [(OADBaseFontCollection *)self complexScriptFont];
-      v4 = v6 == 0;
+      complexScriptFont = [(OADBaseFontCollection *)self complexScriptFont];
+      v4 = complexScriptFont == 0;
     }
   }
 

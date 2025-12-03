@@ -1,39 +1,39 @@
 @interface SignpostIntervalMetrics
-- (SignpostIntervalMetrics)initWithBeginSnapshot:(id)a3 endSnapshot:(id)a4 animationInterval:(id)a5;
+- (SignpostIntervalMetrics)initWithBeginSnapshot:(id)snapshot endSnapshot:(id)endSnapshot animationInterval:(id)interval;
 - (id)getMetricDictionary;
-- (void)updateSummary:(id)a3 endSnapshot:(id)a4 animationInterval:(id)a5;
+- (void)updateSummary:(id)summary endSnapshot:(id)snapshot animationInterval:(id)interval;
 @end
 
 @implementation SignpostIntervalMetrics
 
-- (SignpostIntervalMetrics)initWithBeginSnapshot:(id)a3 endSnapshot:(id)a4 animationInterval:(id)a5
+- (SignpostIntervalMetrics)initWithBeginSnapshot:(id)snapshot endSnapshot:(id)endSnapshot animationInterval:(id)interval
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  snapshotCopy = snapshot;
+  endSnapshotCopy = endSnapshot;
+  intervalCopy = interval;
   v53.receiver = self;
   v53.super_class = SignpostIntervalMetrics;
   v11 = [(SignpostIntervalMetrics *)&v53 init];
   if (v11)
   {
-    v12 = [v8 metrics];
-    v13 = [v9 metrics];
-    v14 = v13;
-    if (v12 && v13)
+    metrics = [snapshotCopy metrics];
+    metrics2 = [endSnapshotCopy metrics];
+    v14 = metrics2;
+    if (metrics && metrics2)
     {
-      v15 = [v13 cpuTimeNsec];
-      [v15 doubleValue];
+      cpuTimeNsec = [metrics2 cpuTimeNsec];
+      [cpuTimeNsec doubleValue];
       v17 = v16;
-      v18 = [v12 cpuTimeNsec];
-      [v18 doubleValue];
+      cpuTimeNsec2 = [metrics cpuTimeNsec];
+      [cpuTimeNsec2 doubleValue];
       v11->cpuTimeSec = (v17 - v19) / 1000000000.0;
 
-      v20 = [v14 dirtyMemoryLifetimePeakKB];
-      [v20 doubleValue];
+      dirtyMemoryLifetimePeakKB = [v14 dirtyMemoryLifetimePeakKB];
+      [dirtyMemoryLifetimePeakKB doubleValue];
       v22 = v21;
 
-      v23 = [v12 dirtyMemoryLifetimePeakKB];
-      [v23 doubleValue];
+      dirtyMemoryLifetimePeakKB2 = [metrics dirtyMemoryLifetimePeakKB];
+      [dirtyMemoryLifetimePeakKB2 doubleValue];
       v25 = v24;
 
       if (v22 >= v25)
@@ -47,25 +47,25 @@
       }
 
       v11->peakMemoryKB = v26;
-      v27 = [v14 dirtyMemoryKB];
-      [v27 doubleValue];
+      dirtyMemoryKB = [v14 dirtyMemoryKB];
+      [dirtyMemoryKB doubleValue];
       v29 = v28;
-      v30 = [v12 dirtyMemoryKB];
-      [v30 doubleValue];
+      dirtyMemoryKB2 = [metrics dirtyMemoryKB];
+      [dirtyMemoryKB2 doubleValue];
       v11->averageMemoryKB = (v29 + v31) * 0.5;
 
-      v32 = [v14 storageDirtiedKB];
-      [v32 doubleValue];
+      storageDirtiedKB = [v14 storageDirtiedKB];
+      [storageDirtiedKB doubleValue];
       v34 = v33;
-      v35 = [v12 storageDirtiedKB];
-      [v35 doubleValue];
+      storageDirtiedKB2 = [metrics storageDirtiedKB];
+      [storageDirtiedKB2 doubleValue];
       v11->diskLogicalWritesKB = v34 - v36;
 
-      v37 = [v12 cpuInstructionsKI];
-      if (!v37 || (v38 = v37, [v14 cpuInstructionsKI], v39 = objc_claimAutoreleasedReturnValue(), v39, v38, !v39))
+      cpuInstructionsKI = [metrics cpuInstructionsKI];
+      if (!cpuInstructionsKI || (v38 = cpuInstructionsKI, [v14 cpuInstructionsKI], v39 = objc_claimAutoreleasedReturnValue(), v39, v38, !v39))
       {
         v11->cpuInstructionsKI = 0.0;
-        if (v10)
+        if (intervalCopy)
         {
           goto LABEL_11;
         }
@@ -73,34 +73,34 @@
         goto LABEL_13;
       }
 
-      v40 = [v14 cpuInstructionsKI];
-      [v40 doubleValue];
+      cpuInstructionsKI2 = [v14 cpuInstructionsKI];
+      [cpuInstructionsKI2 doubleValue];
       v42 = v41;
-      v43 = [v12 cpuInstructionsKI];
-      [v43 doubleValue];
+      cpuInstructionsKI3 = [metrics cpuInstructionsKI];
+      [cpuInstructionsKI3 doubleValue];
       v11->cpuInstructionsKI = v42 - v44;
     }
 
-    if (v10)
+    if (intervalCopy)
     {
 LABEL_11:
-      v45 = [v10 glitches];
+      glitches = [intervalCopy glitches];
       v51[0] = _NSConcreteStackBlock;
       v51[1] = 3221225472;
       v51[2] = sub_100001790;
       v51[3] = &unk_100014430;
       v46 = v11;
       v52 = v46;
-      [v45 enumerateObjectsUsingBlock:v51];
+      [glitches enumerateObjectsUsingBlock:v51];
 
-      [v10 durationSeconds];
+      [intervalCopy durationSeconds];
       v46[7] = (v47 * 1000.0);
 
 LABEL_14:
       *&v11->countInstances = xmmword_10000E2B0;
-      [v8 startMs];
+      [snapshotCopy startMs];
       v11->prevStartMs = v48;
-      [v9 endMs];
+      [endSnapshotCopy endMs];
       v11->prevEndMs = v49;
 
       goto LABEL_15;
@@ -117,38 +117,38 @@ LABEL_15:
   return v11;
 }
 
-- (void)updateSummary:(id)a3 endSnapshot:(id)a4 animationInterval:(id)a5
+- (void)updateSummary:(id)summary endSnapshot:(id)snapshot animationInterval:(id)interval
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 metrics];
-  v12 = [v9 metrics];
-  v13 = v12;
+  summaryCopy = summary;
+  snapshotCopy = snapshot;
+  intervalCopy = interval;
+  metrics = [summaryCopy metrics];
+  metrics2 = [snapshotCopy metrics];
+  v13 = metrics2;
   ++self->countInstances;
-  if (v11 && v12)
+  if (metrics && metrics2)
   {
-    v14 = [v12 dirtyMemoryKB];
-    [v14 doubleValue];
+    dirtyMemoryKB = [metrics2 dirtyMemoryKB];
+    [dirtyMemoryKB doubleValue];
     v16 = v15;
-    v17 = [v11 dirtyMemoryKB];
-    [v17 doubleValue];
+    dirtyMemoryKB2 = [metrics dirtyMemoryKB];
+    [dirtyMemoryKB2 doubleValue];
     v19 = (v16 + v18) * 0.5;
 
-    v20 = [v13 cpuTimeNsec];
-    [v20 doubleValue];
+    cpuTimeNsec = [v13 cpuTimeNsec];
+    [cpuTimeNsec doubleValue];
     v22 = v21;
-    v23 = [v11 cpuTimeNsec];
-    [v23 doubleValue];
+    cpuTimeNsec2 = [metrics cpuTimeNsec];
+    [cpuTimeNsec2 doubleValue];
     self->cpuTimeSec = self->cpuTimeSec + (v22 - v24) / 1000000000.0;
 
     peakMemoryKB = self->peakMemoryKB;
-    v26 = [v13 dirtyMemoryLifetimePeakKB];
-    [v26 doubleValue];
+    dirtyMemoryLifetimePeakKB = [v13 dirtyMemoryLifetimePeakKB];
+    [dirtyMemoryLifetimePeakKB doubleValue];
     v28 = v27;
 
-    v29 = [v11 dirtyMemoryLifetimePeakKB];
-    [v29 doubleValue];
+    dirtyMemoryLifetimePeakKB2 = [metrics dirtyMemoryLifetimePeakKB];
+    [dirtyMemoryLifetimePeakKB2 doubleValue];
     v31 = v30;
 
     if (v28 >= v31)
@@ -169,41 +169,41 @@ LABEL_15:
     v33 = self->averageMemoryKB + (v19 - self->averageMemoryKB) / self->countInstances;
     self->peakMemoryKB = v32;
     self->averageMemoryKB = v33;
-    v34 = [v13 storageDirtiedKB];
-    [v34 doubleValue];
+    storageDirtiedKB = [v13 storageDirtiedKB];
+    [storageDirtiedKB doubleValue];
     v36 = v35;
-    v37 = [v11 storageDirtiedKB];
-    [v37 doubleValue];
+    storageDirtiedKB2 = [metrics storageDirtiedKB];
+    [storageDirtiedKB2 doubleValue];
     self->diskLogicalWritesKB = self->diskLogicalWritesKB + v36 - v38;
   }
 
-  if (v10)
+  if (intervalCopy)
   {
-    v39 = [v10 glitches];
+    glitches = [intervalCopy glitches];
     v48[0] = _NSConcreteStackBlock;
     v48[1] = 3221225472;
     v48[2] = sub_100001ABC;
     v48[3] = &unk_100014430;
     v48[4] = self;
-    [v39 enumerateObjectsUsingBlock:v48];
+    [glitches enumerateObjectsUsingBlock:v48];
 
-    [v10 durationSeconds];
+    [intervalCopy durationSeconds];
     self->animationDuration = self->animationDuration + (v40 * 1000.0);
   }
 
   prevStartMs = self->prevStartMs;
-  [v8 startMs];
+  [summaryCopy startMs];
   if (prevStartMs <= v42)
   {
     prevEndMs = self->prevEndMs;
-    [v8 startMs];
+    [summaryCopy startMs];
     if (prevEndMs > v45)
     {
       ++self->countIntervalOverlaps;
     }
 
     v46 = self->prevEndMs;
-    [v9 endMs];
+    [snapshotCopy endMs];
     if (v46 >= v43)
     {
       v43 = v46;
@@ -212,11 +212,11 @@ LABEL_15:
 
   else
   {
-    [v9 endMs];
+    [snapshotCopy endMs];
   }
 
   self->prevEndMs = v43;
-  [v8 startMs];
+  [summaryCopy startMs];
   self->prevStartMs = v47;
 }
 

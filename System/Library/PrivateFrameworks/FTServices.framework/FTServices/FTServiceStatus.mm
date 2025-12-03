@@ -55,13 +55,13 @@
 - (void)_reload
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(FTServiceStatus *)self supportedServicesFlags];
-  v4 = [(FTServiceStatus *)self _noCache_supportedServicesFlags];
-  [(FTServiceStatus *)self setSupportedServicesFlags:v4];
-  v5 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  supportedServicesFlags = [(FTServiceStatus *)self supportedServicesFlags];
+  _noCache_supportedServicesFlags = [(FTServiceStatus *)self _noCache_supportedServicesFlags];
+  [(FTServiceStatus *)self setSupportedServicesFlags:_noCache_supportedServicesFlags];
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (_noCache_supportedServicesFlags)
     {
       v6 = @"YES";
     }
@@ -71,7 +71,7 @@
       v6 = @"NO";
     }
 
-    if ((v4 & 2) != 0)
+    if ((_noCache_supportedServicesFlags & 2) != 0)
     {
       v7 = @"YES";
     }
@@ -81,7 +81,7 @@
       v7 = @"NO";
     }
 
-    if ((v4 & 4) != 0)
+    if ((_noCache_supportedServicesFlags & 4) != 0)
     {
       v8 = @"YES";
     }
@@ -98,14 +98,14 @@
     v15 = 2112;
     v16 = v8;
     v17 = 2048;
-    v18 = [(FTServiceStatus *)self supportedServicesFlags];
-    _os_log_impl(&dword_195925000, v5, OS_LOG_TYPE_DEFAULT, "Updating supported service status { iMessageSupported: %@, faceTimeAudioSupported: %@, faceTimeMultiwaySupported: %@, supportedServicesFlags: %llu }", &v11, 0x2Au);
+    supportedServicesFlags2 = [(FTServiceStatus *)self supportedServicesFlags];
+    _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Updating supported service status { iMessageSupported: %@, faceTimeAudioSupported: %@, faceTimeMultiwaySupported: %@, supportedServicesFlags: %llu }", &v11, 0x2Au);
   }
 
-  if ((((v3 ^ v4) & 1) != 0 || ((v3 >> 1) & 1) != ((v4 >> 1) & 1) || ((v3 >> 2) & 1) != ((v4 >> 2) & 1)) && ![(FTServiceStatus *)self blockPost])
+  if ((((supportedServicesFlags ^ _noCache_supportedServicesFlags) & 1) != 0 || ((supportedServicesFlags >> 1) & 1) != ((_noCache_supportedServicesFlags >> 1) & 1) || ((supportedServicesFlags >> 2) & 1) != ((_noCache_supportedServicesFlags >> 2) & 1)) && ![(FTServiceStatus *)self blockPost])
   {
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 __mainThreadPostNotificationName:@"FTServiceStatusDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter __mainThreadPostNotificationName:@"FTServiceStatusDidChangeNotification" object:0];
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -128,9 +128,9 @@
 
 - (void)_removeObservers
 {
-  v2 = [(FTServiceStatus *)self supportedServicesToken];
+  supportedServicesToken = [(FTServiceStatus *)self supportedServicesToken];
 
-  notify_cancel(v2);
+  notify_cancel(supportedServicesToken);
 }
 
 @end

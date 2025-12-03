@@ -1,5 +1,5 @@
 @interface _SCDAGoodnessScoreOverrideStateMutation
-- (_SCDAGoodnessScoreOverrideStateMutation)initWithBase:(id)a3;
+- (_SCDAGoodnessScoreOverrideStateMutation)initWithBase:(id)base;
 - (id)getReason;
 - (int64_t)getOverrideOption;
 @end
@@ -10,15 +10,15 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_reason;
+    reason = self->_reason;
   }
 
   else
   {
-    v2 = [(SCDAGoodnessScoreOverrideState *)self->_base reason];
+    reason = [(SCDAGoodnessScoreOverrideState *)self->_base reason];
   }
 
-  return v2;
+  return reason;
 }
 
 - (int64_t)getOverrideOption
@@ -34,16 +34,16 @@
   }
 }
 
-- (_SCDAGoodnessScoreOverrideStateMutation)initWithBase:(id)a3
+- (_SCDAGoodnessScoreOverrideStateMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _SCDAGoodnessScoreOverrideStateMutation;
   v6 = [(_SCDAGoodnessScoreOverrideStateMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

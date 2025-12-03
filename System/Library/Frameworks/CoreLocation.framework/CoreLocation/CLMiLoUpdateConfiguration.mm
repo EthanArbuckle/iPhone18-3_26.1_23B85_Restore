@@ -1,35 +1,35 @@
 @interface CLMiLoUpdateConfiguration
-- (CLMiLoUpdateConfiguration)initWithCoder:(id)a3;
-- (CLMiLoUpdateConfiguration)initWithIsLowLatency:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLMiLoUpdateConfiguration)initWithCoder:(id)coder;
+- (CLMiLoUpdateConfiguration)initWithIsLowLatency:(BOOL)latency;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CLMiLoUpdateConfiguration
 
-- (CLMiLoUpdateConfiguration)initWithIsLowLatency:(BOOL)a3
+- (CLMiLoUpdateConfiguration)initWithIsLowLatency:(BOOL)latency
 {
   v5.receiver = self;
   v5.super_class = CLMiLoUpdateConfiguration;
   result = [(CLMiLoUpdateConfiguration *)&v5 init];
   if (result)
   {
-    result->_isLowLatency = a3;
+    result->_isLowLatency = latency;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   isLowLatency = self->_isLowLatency;
 
   return MEMORY[0x1EEE66B58](v4, sel_initWithIsLowLatency_);
 }
 
-- (CLMiLoUpdateConfiguration)initWithCoder:(id)a3
+- (CLMiLoUpdateConfiguration)initWithCoder:(id)coder
 {
-  [a3 decodeBoolForKey:@"kCLMiLoConnectionCodingKeySessionIsLowLatency"];
+  [coder decodeBoolForKey:@"kCLMiLoConnectionCodingKeySessionIsLowLatency"];
 
   return MEMORY[0x1EEE66B58](self, sel_initWithIsLowLatency_);
 }

@@ -1,14 +1,14 @@
 @interface SSVMediaSocialPostExternalDestination
-- (SSVMediaSocialPostExternalDestination)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSVMediaSocialPostExternalDestination)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 @end
 
 @implementation SSVMediaSocialPostExternalDestination
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setAccessToken:self->_accessToken];
   [v4 setPageAccessToken:self->_pageAccessToken];
   [v4 setPageIdentifier:self->_pageIdentifier];
@@ -16,11 +16,11 @@
   return v4;
 }
 
-- (SSVMediaSocialPostExternalDestination)initWithXPCEncoding:(id)a3
+- (SSVMediaSocialPostExternalDestination)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v6 = [(SSVMediaSocialPostExternalDestination *)self init];
     if (!v6)

@@ -1,27 +1,27 @@
 @interface ICCertificateCache
 + (ICCertificateCache)shared;
 - (ICCertificateCache)init;
-- (void)enqueueCertificateRequest:(id)a3 isSAP:(BOOL)a4 withCompletionHandler:(id)a5;
-- (void)getDataForCertificateRequest:(id)a3 isSAP:(BOOL)a4 withCompletionHandler:(id)a5;
+- (void)enqueueCertificateRequest:(id)request isSAP:(BOOL)p withCompletionHandler:(id)handler;
+- (void)getDataForCertificateRequest:(id)request isSAP:(BOOL)p withCompletionHandler:(id)handler;
 @end
 
 @implementation ICCertificateCache
 
-- (void)enqueueCertificateRequest:(id)a3 isSAP:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)enqueueCertificateRequest:(id)request isSAP:(BOOL)p withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
   v10 = +[ICURLSessionManager highPrioritySession];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__ICCertificateCache_enqueueCertificateRequest_isSAP_withCompletionHandler___block_invoke;
   v13[3] = &unk_1E7BF9CD8;
-  v17 = a4;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  pCopy = p;
+  v14 = requestCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = requestCopy;
   [v10 enqueueDataRequest:v12 withCompletionHandler:v13];
 }
 
@@ -159,34 +159,34 @@ LABEL_25:
   }
 }
 
-- (void)getDataForCertificateRequest:(id)a3 isSAP:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)getDataForCertificateRequest:(id)request isSAP:(BOOL)p withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  pCopy = p;
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 urlRequest];
-  v11 = [v10 URL];
-  v12 = [v11 absoluteString];
+  requestCopy = request;
+  handlerCopy = handler;
+  urlRequest = [requestCopy urlRequest];
+  v11 = [urlRequest URL];
+  absoluteString = [v11 absoluteString];
 
-  v13 = [(NSCache *)self->_cache objectForKey:v12];
+  v13 = [(NSCache *)self->_cache objectForKey:absoluteString];
   if (v13)
   {
     v14 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [v13 expirationDate];
+      expirationDate = [v13 expirationDate];
       *buf = 138543874;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
-      v24 = v12;
+      v24 = absoluteString;
       v25 = 2114;
-      v26 = v15;
+      v26 = expirationDate;
       _os_log_impl(&dword_1B4491000, v14, OS_LOG_TYPE_INFO, "[%{public}@]: Returning cached certificate data for URL: %{public}@, expiration: %{public}@", buf, 0x20u);
     }
 
-    v16 = [v13 data];
-    v9[2](v9, v16, 0);
+    data = [v13 data];
+    handlerCopy[2](handlerCopy, data, 0);
 
     if ([v13 isExpired])
     {
@@ -196,15 +196,15 @@ LABEL_25:
       block[2] = __79__ICCertificateCache_getDataForCertificateRequest_isSAP_withCompletionHandler___block_invoke;
       block[3] = &unk_1E7BF9CB0;
       block[4] = self;
-      v19 = v8;
-      v20 = v6;
+      v19 = requestCopy;
+      v20 = pCopy;
       dispatch_after(v17, MEMORY[0x1E69E96A0], block);
     }
   }
 
   else
   {
-    [(ICCertificateCache *)self enqueueCertificateRequest:v8 isSAP:v6 withCompletionHandler:v9];
+    [(ICCertificateCache *)self enqueueCertificateRequest:requestCopy isSAP:pCopy withCompletionHandler:handlerCopy];
   }
 }
 

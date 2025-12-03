@@ -1,23 +1,23 @@
 @interface TRIAssetIdFactorName
-+ (id)nameWithAssetId:(id)a3 factorName:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToName:(id)a3;
-- (TRIAssetIdFactorName)initWithAssetId:(id)a3 factorName:(id)a4;
-- (id)copyWithReplacementAssetId:(id)a3;
-- (id)copyWithReplacementFactorName:(id)a3;
++ (id)nameWithAssetId:(id)id factorName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToName:(id)name;
+- (TRIAssetIdFactorName)initWithAssetId:(id)id factorName:(id)name;
+- (id)copyWithReplacementAssetId:(id)id;
+- (id)copyWithReplacementFactorName:(id)name;
 - (id)description;
 @end
 
 @implementation TRIAssetIdFactorName
 
-- (TRIAssetIdFactorName)initWithAssetId:(id)a3 factorName:(id)a4
+- (TRIAssetIdFactorName)initWithAssetId:(id)id factorName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  idCopy = id;
+  nameCopy = name;
+  if (!idCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:2447 description:{@"Invalid parameter not satisfying: %@", @"assetId != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:2447 description:{@"Invalid parameter not satisfying: %@", @"assetId != nil"}];
   }
 
   v14.receiver = self;
@@ -26,50 +26,50 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_assetId, a3);
-    objc_storeStrong(&v11->_factorName, a4);
+    objc_storeStrong(&v10->_assetId, id);
+    objc_storeStrong(&v11->_factorName, name);
   }
 
   return v11;
 }
 
-+ (id)nameWithAssetId:(id)a3 factorName:(id)a4
++ (id)nameWithAssetId:(id)id factorName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithAssetId:v7 factorName:v6];
+  nameCopy = name;
+  idCopy = id;
+  v8 = [[self alloc] initWithAssetId:idCopy factorName:nameCopy];
 
   return v8;
 }
 
-- (id)copyWithReplacementAssetId:(id)a3
+- (id)copyWithReplacementAssetId:(id)id
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithAssetId:v4 factorName:self->_factorName];
+  idCopy = id;
+  v5 = [objc_alloc(objc_opt_class()) initWithAssetId:idCopy factorName:self->_factorName];
 
   return v5;
 }
 
-- (id)copyWithReplacementFactorName:(id)a3
+- (id)copyWithReplacementFactorName:(id)name
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithAssetId:self->_assetId factorName:v4];
+  nameCopy = name;
+  v5 = [objc_alloc(objc_opt_class()) initWithAssetId:self->_assetId factorName:nameCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToName:(id)a3
+- (BOOL)isEqualToName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (!nameCopy)
   {
     goto LABEL_8;
   }
 
   v6 = self->_assetId == 0;
-  v7 = [v4 assetId];
-  v8 = v7 != 0;
+  assetId = [nameCopy assetId];
+  v8 = assetId != 0;
 
   if (v6 == v8)
   {
@@ -79,8 +79,8 @@
   assetId = self->_assetId;
   if (assetId)
   {
-    v10 = [v5 assetId];
-    v11 = [(TRIAssetId *)assetId isEqual:v10];
+    assetId2 = [v5 assetId];
+    v11 = [(TRIAssetId *)assetId isEqual:assetId2];
 
     if (!v11)
     {
@@ -89,8 +89,8 @@
   }
 
   v12 = self->_factorName == 0;
-  v13 = [v5 factorName];
-  v14 = v13 != 0;
+  factorName = [v5 factorName];
+  v14 = factorName != 0;
 
   if (v12 == v14)
   {
@@ -103,8 +103,8 @@ LABEL_8:
     factorName = self->_factorName;
     if (factorName)
     {
-      v16 = [v5 factorName];
-      v17 = [(NSString *)factorName isEqual:v16];
+      factorName2 = [v5 factorName];
+      v17 = [(NSString *)factorName isEqual:factorName2];
     }
 
     else
@@ -116,18 +116,18 @@ LABEL_8:
   return v17 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIAssetIdFactorName *)self isEqualToName:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIAssetIdFactorName *)self isEqualToName:v5];
   }
 
   return v6;

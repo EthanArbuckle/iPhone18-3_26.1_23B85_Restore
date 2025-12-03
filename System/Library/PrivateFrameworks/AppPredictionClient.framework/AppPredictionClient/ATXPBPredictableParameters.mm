@@ -1,32 +1,32 @@
 @interface ATXPBPredictableParameters
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addParameterKeys:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParameterKeys:(id)keys;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBPredictableParameters
 
-- (void)addParameterKeys:(id)a3
+- (void)addParameterKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   parameterKeys = self->_parameterKeys;
-  v8 = v4;
+  v8 = keysCopy;
   if (!parameterKeys)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_parameterKeys;
     self->_parameterKeys = v6;
 
-    v4 = v8;
+    keysCopy = v8;
     parameterKeys = self->_parameterKeys;
   }
 
-  [(NSMutableArray *)parameterKeys addObject:v4];
+  [(NSMutableArray *)parameterKeys addObject:keysCopy];
 }
 
 - (id)description
@@ -35,29 +35,29 @@
   v8.receiver = self;
   v8.super_class = ATXPBPredictableParameters;
   v4 = [(ATXPBPredictableParameters *)&v8 description];
-  v5 = [(ATXPBPredictableParameters *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBPredictableParameters *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   parameterKeys = self->_parameterKeys;
   if (parameterKeys)
   {
-    [v3 setObject:parameterKeys forKey:@"parameterKeys"];
+    [dictionary setObject:parameterKeys forKey:@"parameterKeys"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -90,29 +90,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(ATXPBPredictableParameters *)self parameterKeysCount])
   {
-    [v8 clearParameterKeys];
-    v4 = [(ATXPBPredictableParameters *)self parameterKeysCount];
-    if (v4)
+    [toCopy clearParameterKeys];
+    parameterKeysCount = [(ATXPBPredictableParameters *)self parameterKeysCount];
+    if (parameterKeysCount)
     {
-      v5 = v4;
+      v5 = parameterKeysCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ATXPBPredictableParameters *)self parameterKeysAtIndex:i];
-        [v8 addParameterKeys:v7];
+        [toCopy addParameterKeys:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -133,7 +133,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addParameterKeys:v11];
 
         ++v10;
@@ -149,13 +149,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     parameterKeys = self->_parameterKeys;
-    if (parameterKeys | v4[1])
+    if (parameterKeys | equalCopy[1])
     {
       v6 = [(NSMutableArray *)parameterKeys isEqual:?];
     }
@@ -174,14 +174,14 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {

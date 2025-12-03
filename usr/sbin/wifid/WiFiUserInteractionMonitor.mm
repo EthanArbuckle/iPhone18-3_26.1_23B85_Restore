@@ -1,13 +1,13 @@
 @interface WiFiUserInteractionMonitor
-+ (BOOL)checkIfMatchesHomeBundleIds:(id)a3;
-+ (BOOL)checkIfMatchesNonNetworkingBundleIds:(id)a3;
++ (BOOL)checkIfMatchesHomeBundleIds:(id)ids;
++ (BOOL)checkIfMatchesNonNetworkingBundleIds:(id)ids;
 + (id)sharedInstance;
-- (BOOL)_canTrigger11axPerfStudyForFlowNamed:(id)a3 withProperties:(unint64_t)a4 andClassification:(unsigned int)a5;
-- (BOOL)_isCellularDataAllowedForApp:(id)a3;
+- (BOOL)_canTrigger11axPerfStudyForFlowNamed:(id)named withProperties:(unint64_t)properties andClassification:(unsigned int)classification;
+- (BOOL)_isCellularDataAllowedForApp:(id)app;
 - (BOOL)canTrigger11axPerfStudyForBackgroundFlows;
 - (BOOL)canTrigger11axPerfStudyForForegroundFlows;
-- (BOOL)getCellularData:(id)a3;
-- (BOOL)hasRealTimeAppProperty:(id)a3;
+- (BOOL)getCellularData:(id)data;
+- (BOOL)hasRealTimeAppProperty:(id)property;
 - (BOOL)isAVConferenceActive;
 - (BOOL)isAnyCallInProgress;
 - (BOOL)isAskToJoinAllowed;
@@ -20,13 +20,13 @@
 - (BOOL)isInHomeScreen;
 - (BOOL)isInNonNetworkingApp;
 - (BOOL)isInitialSetupCompleted;
-- (BOOL)isLowQualityNetwork:(__WiFiNetwork *)a3;
+- (BOOL)isLowQualityNetwork:(__WiFiNetwork *)network;
 - (BOOL)isNearbyDeviceRecommendationAllowed;
 - (BOOL)isNetworkRecommendationAllowed;
 - (BOOL)isNetworkingAppInForeground;
 - (BOOL)isPersonalHotspotRecommendationAllowed;
-- (BOOL)isPriorityNetwork:(__WiFiNetwork *)a3;
-- (BOOL)isPublicNetwork:(__WiFiNetwork *)a3;
+- (BOOL)isPriorityNetwork:(__WiFiNetwork *)network;
+- (BOOL)isPublicNetwork:(__WiFiNetwork *)network;
 - (BOOL)isRealTimeAppActive;
 - (BOOL)isSetupCompleted;
 - (BOOL)isWiFiCallInProgress;
@@ -39,18 +39,18 @@
 - (void)_updateCallState;
 - (void)dealloc;
 - (void)dumpOverrideNetworkState;
-- (void)navigationListener:(id)a3 didChangeNavigationState:(unint64_t)a4 transportType:(int)a5;
-- (void)registerStateChangeCallback:(id)a3 withCallbackContext:(void *)a4;
+- (void)navigationListener:(id)listener didChangeNavigationState:(unint64_t)state transportType:(int)type;
+- (void)registerStateChangeCallback:(id)callback withCallbackContext:(void *)context;
 - (void)resetBackgroundApps;
 - (void)resetOverrideNetworkStates;
 - (void)resetOverrideStates;
 - (void)runPeriodicTasks;
-- (void)setApplicationRunningState:(BOOL)a3 foregroundState:(BOOL)a4 andNetworkingState:(BOOL)a5 forBundleId:(id)a6;
-- (void)setOverrideApplicationState:(unint64_t)a3;
-- (void)startMonitoringInterface:(id)a3;
-- (void)unregisterStateChangeCallback:(void *)a3;
+- (void)setApplicationRunningState:(BOOL)state foregroundState:(BOOL)foregroundState andNetworkingState:(BOOL)networkingState forBundleId:(id)id;
+- (void)setOverrideApplicationState:(unint64_t)state;
+- (void)startMonitoringInterface:(id)interface;
+- (void)unregisterStateChangeCallback:(void *)callback;
 - (void)updateLastRecommendedNetworkJoinTimestamp;
-- (void)updateOverrideNetworkState:(id)a3 overrideValue:(unint64_t)a4;
+- (void)updateOverrideNetworkState:(id)state overrideValue:(unint64_t)value;
 @end
 
 @implementation WiFiUserInteractionMonitor
@@ -76,9 +76,9 @@
     v4 = off_100298C40;
     if (off_100298C40)
     {
-      v5 = [(WiFiUserInteractionMonitor *)self setupCompleted];
+      setupCompleted = [(WiFiUserInteractionMonitor *)self setupCompleted];
       v6 = "not completed";
-      if (v5)
+      if (setupCompleted)
       {
         v6 = "completed";
       }
@@ -119,17 +119,17 @@ LABEL_17:
 
   else
   {
-    v7 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-    [v7 lock];
+    appTrackerLock = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+    [appTrackerLock lock];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
-    v9 = [v8 allObjects];
+    runningForegroundApps = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
+    allObjects = [runningForegroundApps allObjects];
 
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v10 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
       v11 = v10;
@@ -140,19 +140,19 @@ LABEL_17:
         {
           if (*v18 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allObjects);
           }
 
           if ([(WiFiUserInteractionMonitor *)self hasRealTimeAppProperty:*(*(&v17 + 1) + 8 * i)])
           {
-            v15 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-            [v15 unlock];
+            appTrackerLock2 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+            [appTrackerLock2 unlock];
 
             goto LABEL_17;
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v11 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v11)
         {
           continue;
@@ -162,8 +162,8 @@ LABEL_17:
       }
     }
 
-    v14 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-    [v14 unlock];
+    appTrackerLock3 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+    [appTrackerLock3 unlock];
 
     LOBYTE(v4) = [(WiFiUserInteractionMonitor *)self _isSymptomTrackingRtTrafficForFlowNamed:@"foreground" withProperties:[(WiFiUserInteractionMonitor *)self symptomForegroundFlowProperties] andClassification:[(WiFiUserInteractionMonitor *)self symptomForegroundFlowClassification]];
   }
@@ -178,28 +178,28 @@ LABEL_17:
     return 1;
   }
 
-  v4 = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
-  v5 = [v4 isActive];
+  rtTrafficAgent = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
+  isActive = [rtTrafficAgent isActive];
 
-  return v5;
+  return isActive;
 }
 
 - (unint64_t)_applicationNotifyState
 {
-  v3 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-  [v3 lock];
+  appTrackerLock = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+  [appTrackerLock lock];
 
-  v4 = [(WiFiUserInteractionMonitor *)self runningNetworkingApps];
-  v5 = [NSMutableSet setWithSet:v4];
+  runningNetworkingApps = [(WiFiUserInteractionMonitor *)self runningNetworkingApps];
+  v5 = [NSMutableSet setWithSet:runningNetworkingApps];
 
-  v6 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
-  [v5 minusSet:v6];
+  runningForegroundApps = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
+  [v5 minusSet:runningForegroundApps];
 
-  v7 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
-  v8 = [v7 count];
+  runningForegroundApps2 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
+  v8 = [runningForegroundApps2 count];
 
-  v9 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-  [v9 unlock];
+  appTrackerLock2 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+  [appTrackerLock2 unlock];
 
   v10 = ![(WiFiUserInteractionMonitor *)self isDeviceLocked]&& ![(WiFiUserInteractionMonitor *)self navigating]&& [(WiFiUserInteractionMonitor *)self isDisplayOn]&& (![(WiFiUserInteractionMonitor *)self isInNonNetworkingApp]&& v8 || [(WiFiUserInteractionMonitor *)self wasRecommendedNetworkRecentlyJoined]);
   if ([v5 count])
@@ -228,13 +228,13 @@ LABEL_17:
     else
     {
       [(WiFiUserInteractionMonitor *)self setWifiUserNotifyPending:1];
-      v4 = [(WiFiUserInteractionMonitor *)self notifyQueue];
+      notifyQueue = [(WiFiUserInteractionMonitor *)self notifyQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100006424;
       block[3] = &unk_10025E9B8;
       block[4] = self;
-      dispatch_async(v4, block);
+      dispatch_async(notifyQueue, block);
     }
   }
 
@@ -321,45 +321,45 @@ LABEL_9:
 
 - (BOOL)isCellularInexpensive5G
 {
-  v2 = self;
+  selfCopy = self;
   if ([(WiFiUserInteractionMonitor *)self overrideApplicationState])
   {
     v3 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: using overridden inexpensive cellular state as 0x%llx", "-[WiFiUserInteractionMonitor isCellularInexpensive5G]", -[WiFiUserInteractionMonitor overrideApplicationState](v2, "overrideApplicationState")}];
+      [off_100298C40 WFLog:3 message:{"%s: using overridden inexpensive cellular state as 0x%llx", "-[WiFiUserInteractionMonitor isCellularInexpensive5G]", -[WiFiUserInteractionMonitor overrideApplicationState](selfCopy, "overrideApplicationState")}];
     }
 
     objc_autoreleasePoolPop(v3);
-    return ([(WiFiUserInteractionMonitor *)v2 overrideApplicationState]>> 7) & 1;
+    return ([(WiFiUserInteractionMonitor *)selfCopy overrideApplicationState]>> 7) & 1;
   }
 
   else
   {
-    v4 = [(WiFiUserInteractionMonitor *)v2 cellularDataStatusMap];
+    cellularDataStatusMap = [(WiFiUserInteractionMonitor *)selfCopy cellularDataStatusMap];
 
-    if (v4)
+    if (cellularDataStatusMap)
     {
-      v5 = [(WiFiUserInteractionMonitor *)v2 cellularInterfaceName];
-      if (sub_100006D8C(v5))
+      cellularInterfaceName = [(WiFiUserInteractionMonitor *)selfCopy cellularInterfaceName];
+      if (sub_100006D8C(cellularInterfaceName))
       {
-        LOBYTE(v2) = 0;
+        LOBYTE(selfCopy) = 0;
       }
 
       else
       {
-        v6 = [(WiFiUserInteractionMonitor *)v2 cellularDataStatusMap];
-        LOBYTE(v2) = [v6 containsObject:@"WiFiCellularDataStatus5GAvailable"];
+        cellularDataStatusMap2 = [(WiFiUserInteractionMonitor *)selfCopy cellularDataStatusMap];
+        LOBYTE(selfCopy) = [cellularDataStatusMap2 containsObject:@"WiFiCellularDataStatus5GAvailable"];
       }
     }
 
     else
     {
-      LOBYTE(v2) = 0;
+      LOBYTE(selfCopy) = 0;
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isInNonNetworkingApp
@@ -369,20 +369,20 @@ LABEL_9:
     return 1;
   }
 
-  v3 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-  [v3 lock];
+  appTrackerLock = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+  [appTrackerLock lock];
 
-  v4 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
-  if (v4)
+  runningForegroundApps = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
+  if (runningForegroundApps)
   {
-    v5 = v4;
-    v6 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
-    v7 = [v6 count];
+    v5 = runningForegroundApps;
+    runningForegroundApps2 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
+    v7 = [runningForegroundApps2 count];
 
     if (v7)
     {
-      v8 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
-      v9 = [v8 allObjects];
+      runningForegroundApps3 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
+      allObjects = [runningForegroundApps3 allObjects];
 
       v12 = sub_1000075E0(v10, v11);
       if (v12)
@@ -395,7 +395,7 @@ LABEL_9:
           {
             if (MEMORY[0] != v14)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allObjects);
             }
 
             v16 = *(8 * i);
@@ -434,8 +434,8 @@ LABEL_9:
 
   v20 = 1;
 LABEL_18:
-  v21 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-  [v21 unlock];
+  appTrackerLock2 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+  [appTrackerLock2 unlock];
 
   return v20;
 }
@@ -456,11 +456,11 @@ LABEL_18:
 
   else
   {
-    v5 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-    [v5 lock];
+    appTrackerLock = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+    [appTrackerLock lock];
 
-    v6 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
-    v7 = [v6 count];
+    runningForegroundApps = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
+    v7 = [runningForegroundApps count];
 
     if (v7)
     {
@@ -468,10 +468,10 @@ LABEL_18:
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v8 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
-      v9 = [v8 allObjects];
+      runningForegroundApps2 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
+      allObjects = [runningForegroundApps2 allObjects];
 
-      v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v10)
       {
         v11 = v10;
@@ -482,20 +482,20 @@ LABEL_18:
           {
             if (*v19 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allObjects);
             }
 
             if (![WiFiUserInteractionMonitor checkIfMatchesHomeBundleIds:*(*(&v18 + 1) + 8 * i)])
             {
-              v14 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-              [v14 unlock];
+              appTrackerLock2 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+              [appTrackerLock2 unlock];
 
               LOBYTE(v4) = 0;
               return v4;
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v11 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v11)
           {
             continue;
@@ -517,8 +517,8 @@ LABEL_18:
       objc_autoreleasePoolPop(v15);
     }
 
-    v16 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-    [v16 unlock];
+    appTrackerLock3 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+    [appTrackerLock3 unlock];
 
     LOBYTE(v4) = 1;
   }
@@ -542,27 +542,27 @@ LABEL_18:
 
   else if ([(WiFiUserInteractionMonitor *)self isInHomeScreen]|| [(WiFiUserInteractionMonitor *)self isInNonNetworkingApp])
   {
-    LOBYTE(v4) = 0;
+    LOBYTE(appTrackerLock2) = 0;
   }
 
   else
   {
-    v5 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-    [v5 lock];
+    appTrackerLock = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+    [appTrackerLock lock];
 
-    v6 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
-    v7 = [NSMutableSet setWithSet:v6];
+    runningForegroundApps = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
+    v7 = [NSMutableSet setWithSet:runningForegroundApps];
 
-    v8 = [(WiFiUserInteractionMonitor *)self runningNetworkingApps];
-    [v7 intersectSet:v8];
+    runningNetworkingApps = [(WiFiUserInteractionMonitor *)self runningNetworkingApps];
+    [v7 intersectSet:runningNetworkingApps];
 
-    v4 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-    [v4 unlock];
+    appTrackerLock2 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+    [appTrackerLock2 unlock];
 
-    LOBYTE(v4) = [v7 count] != 0;
+    LOBYTE(appTrackerLock2) = [v7 count] != 0;
   }
 
-  return v4;
+  return appTrackerLock2;
 }
 
 - (BOOL)isPersonalHotspotRecommendationAllowed
@@ -618,12 +618,12 @@ LABEL_8:
 
 - (BOOL)isCellularDataUsable
 {
-  v3 = [(WiFiUserInteractionMonitor *)self cellularDataStatusMap];
+  cellularDataStatusMap = [(WiFiUserInteractionMonitor *)self cellularDataStatusMap];
 
-  if (v3)
+  if (cellularDataStatusMap)
   {
-    v4 = [(WiFiUserInteractionMonitor *)self cellularDataStatusMap];
-    v5 = [v4 containsObject:@"WiFiCellularDataStatusNoLTE"] ^ 1;
+    cellularDataStatusMap2 = [(WiFiUserInteractionMonitor *)self cellularDataStatusMap];
+    v5 = [cellularDataStatusMap2 containsObject:@"WiFiCellularDataStatusNoLTE"] ^ 1;
   }
 
   else
@@ -637,22 +637,22 @@ LABEL_8:
 - (void)runPeriodicTasks
 {
   v3 = +[NSDate date];
-  v4 = [(WiFiUserInteractionMonitor *)self periodicTasksLastRanAt];
-  [v3 timeIntervalSinceDate:v4];
+  periodicTasksLastRanAt = [(WiFiUserInteractionMonitor *)self periodicTasksLastRanAt];
+  [v3 timeIntervalSinceDate:periodicTasksLastRanAt];
   v6 = v5;
 
-  v7 = [(WiFiUserInteractionMonitor *)self periodicTasksLastRanAt];
+  periodicTasksLastRanAt2 = [(WiFiUserInteractionMonitor *)self periodicTasksLastRanAt];
 
-  v8 = [(WiFiUserInteractionMonitor *)self periodicTasksLastRanAt];
+  periodicTasksLastRanAt3 = [(WiFiUserInteractionMonitor *)self periodicTasksLastRanAt];
 
-  if (!v8 || v6 >= 5.0)
+  if (!periodicTasksLastRanAt3 || v6 >= 5.0)
   {
     [(WiFiUserInteractionMonitor *)self setPeriodicTasksLastRanAt:v3];
     if (self->_ctServerConnectionRef)
     {
-      v9 = [(WiFiUserInteractionMonitor *)self cellularInterfaceName];
+      cellularInterfaceName = [(WiFiUserInteractionMonitor *)self cellularInterfaceName];
 
-      if (v9)
+      if (cellularInterfaceName)
       {
         v53 = 0;
         getifaddrs(&v53);
@@ -673,21 +673,21 @@ LABEL_8:
                 {
                   if (ifa_addr->sa_family == 18)
                   {
-                    v15 = [(WiFiUserInteractionMonitor *)self cellularInterfaceName];
-                    v16 = strcmp(ifa_name, [v15 UTF8String]);
+                    cellularInterfaceName2 = [(WiFiUserInteractionMonitor *)self cellularInterfaceName];
+                    v16 = strcmp(ifa_name, [cellularInterfaceName2 UTF8String]);
 
                     if (!v16)
                     {
                       ifa_data = v10->ifa_data;
                     }
 
-                    v17 = [(WiFiUserInteractionMonitor *)self monitoredInterfaceNames];
-                    if ([v17 count])
+                    monitoredInterfaceNames = [(WiFiUserInteractionMonitor *)self monitoredInterfaceNames];
+                    if ([monitoredInterfaceNames count])
                     {
                       __s1a = v10->ifa_name;
-                      v18 = [(WiFiUserInteractionMonitor *)self monitoredInterfaceNames];
-                      v19 = [v18 allObjects];
-                      v20 = [v19 objectAtIndexedSubscript:0];
+                      monitoredInterfaceNames2 = [(WiFiUserInteractionMonitor *)self monitoredInterfaceNames];
+                      allObjects = [monitoredInterfaceNames2 allObjects];
+                      v20 = [allObjects objectAtIndexedSubscript:0];
                       LODWORD(__s1a) = strcmp(__s1a, [v20 UTF8String]);
 
                       if (!__s1a)
@@ -712,9 +712,9 @@ LABEL_8:
           {
             v21 = (ifa_data[11] + ifa_data[10]);
             v22 = (ifa_data[7] + ifa_data[5]);
-            v23 = [(WiFiUserInteractionMonitor *)self cellularIfTotalBytes];
-            v24 = [(WiFiUserInteractionMonitor *)self cellularIfTotalPackets];
-            if (!v7)
+            cellularIfTotalBytes = [(WiFiUserInteractionMonitor *)self cellularIfTotalBytes];
+            cellularIfTotalPackets = [(WiFiUserInteractionMonitor *)self cellularIfTotalPackets];
+            if (!periodicTasksLastRanAt2)
             {
               [(WiFiUserInteractionMonitor *)self setCellularIfTotalBytes:v21];
               [(WiFiUserInteractionMonitor *)self setCellularIfTotalPackets:v22];
@@ -726,8 +726,8 @@ LABEL_8:
               goto LABEL_38;
             }
 
-            v25 = v24;
-            v26 = v21 - v23;
+            v25 = cellularIfTotalPackets;
+            v26 = v21 - cellularIfTotalBytes;
             if ([(WiFiUserInteractionMonitor *)self cellularIfTotalBytes]< v21)
             {
               [(WiFiUserInteractionMonitor *)self setCellularL3MBPS:v26 / v6 * 0.000000953674316];
@@ -763,30 +763,30 @@ LABEL_8:
 LABEL_30:
             v29 = (v12[11] + v12[10]);
             v30 = (v12[7] + v12[5]);
-            v31 = [(WiFiUserInteractionMonitor *)self wifiIfTotalBytes];
-            v32 = [(WiFiUserInteractionMonitor *)self wifiIfTotalPackets];
+            wifiIfTotalBytes = [(WiFiUserInteractionMonitor *)self wifiIfTotalBytes];
+            wifiIfTotalPackets = [(WiFiUserInteractionMonitor *)self wifiIfTotalPackets];
             __s1 = v12[10];
-            v33 = [(WiFiUserInteractionMonitor *)self wifiIfTotalInputBytes];
+            wifiIfTotalInputBytes = [(WiFiUserInteractionMonitor *)self wifiIfTotalInputBytes];
             v49 = v12[11];
-            v50 = v33;
-            v34 = [(WiFiUserInteractionMonitor *)self wifiIfTotalOutputBytes];
+            v50 = wifiIfTotalInputBytes;
+            wifiIfTotalOutputBytes = [(WiFiUserInteractionMonitor *)self wifiIfTotalOutputBytes];
             v47 = v12[5];
-            v48 = v34;
-            v35 = [(WiFiUserInteractionMonitor *)self wifiIfTotalInputPackets];
+            v48 = wifiIfTotalOutputBytes;
+            wifiIfTotalInputPackets = [(WiFiUserInteractionMonitor *)self wifiIfTotalInputPackets];
             v46 = v12[7];
-            v36 = [(WiFiUserInteractionMonitor *)self wifiIfTotalOutputPackets];
+            wifiIfTotalOutputPackets = [(WiFiUserInteractionMonitor *)self wifiIfTotalOutputPackets];
             [(WiFiUserInteractionMonitor *)self setWifiIfTotalInputBytes:v12[10]];
             [(WiFiUserInteractionMonitor *)self setWifiIfTotalOutputBytes:v12[11]];
             [(WiFiUserInteractionMonitor *)self setWifiIfTotalInputPackets:v12[5]];
             [(WiFiUserInteractionMonitor *)self setWifiIfTotalOutputPackets:v12[7]];
-            if (!v7)
+            if (!periodicTasksLastRanAt2)
             {
               [(WiFiUserInteractionMonitor *)self setWifiIfTotalBytes:v29];
               [(WiFiUserInteractionMonitor *)self setWifiIfTotalPackets:v30];
               goto LABEL_42;
             }
 
-            v37 = v29 - v31;
+            v37 = v29 - wifiIfTotalBytes;
             if ([(WiFiUserInteractionMonitor *)self wifiIfTotalBytes]< v29)
             {
               [(WiFiUserInteractionMonitor *)self setWifiL3MBPS:v37 / v6 * 0.000000953674316];
@@ -795,14 +795,14 @@ LABEL_30:
             [(WiFiUserInteractionMonitor *)self setWifiIfTotalBytes:v29];
             if ([(WiFiUserInteractionMonitor *)self wifiIfTotalPackets]< v30)
             {
-              [(WiFiUserInteractionMonitor *)self setWifiL3PPS:((v30 - v32) / v6)];
+              [(WiFiUserInteractionMonitor *)self setWifiL3PPS:((v30 - wifiIfTotalPackets) / v6)];
             }
 
             [(WiFiUserInteractionMonitor *)self setWifiIfTotalPackets:v30];
             v38 = objc_autoreleasePoolPush();
             if (off_100298C40)
             {
-              [off_100298C40 WFLog:3 message:{"%s: WiFi data did %llu(input:%llu output:%llu) bytes, %llu(input:%llu output:%llu) packets over %.3f seconds", "-[WiFiUserInteractionMonitor runPeriodicTasks]", v37, &__s1[-v50], v49 - v48, v30 - v32, v47 - v35, v46 - v36, *&v6}];
+              [off_100298C40 WFLog:3 message:{"%s: WiFi data did %llu(input:%llu output:%llu) bytes, %llu(input:%llu output:%llu) packets over %.3f seconds", "-[WiFiUserInteractionMonitor runPeriodicTasks]", v37, &__s1[-v50], v49 - v48, v30 - wifiIfTotalPackets, v47 - wifiIfTotalInputPackets, v46 - wifiIfTotalOutputPackets, *&v6}];
             }
 
 LABEL_40:
@@ -830,24 +830,24 @@ LABEL_43:
 
 - (BOOL)isAVConferenceActive
 {
-  v2 = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
-  v3 = [v2 isActive];
+  rtTrafficAgent = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
+  isActive = [rtTrafficAgent isActive];
 
-  return v3;
+  return isActive;
 }
 
 - (void)_updateCallState
 {
-  v2 = self;
+  selfCopy = self;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v3 = [(WiFiUserInteractionMonitor *)self callObserver];
-  v4 = [v3 calls];
+  callObserver = [(WiFiUserInteractionMonitor *)self callObserver];
+  calls = [callObserver calls];
 
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v52 objects:v58 count:16];
+  obj = calls;
+  v5 = [calls countByEnumeratingWithState:&v52 objects:v58 count:16];
   if (v5)
   {
     v6 = v5;
@@ -856,7 +856,7 @@ LABEL_43:
     v8 = 0;
     v9 = *v53;
     v36 = *v53;
-    v37 = v2;
+    v37 = selfCopy;
     do
     {
       v10 = 0;
@@ -877,14 +877,14 @@ LABEL_43:
           }
 
           objc_autoreleasePoolPop(v11);
-          v12 = [TUCallCenter callCenterWithQueue:v2->_internalQueue];
+          v12 = [TUCallCenter callCenterWithQueue:selfCopy->_internalQueue];
           v48 = 0u;
           v49 = 0u;
           v50 = 0u;
           v51 = 0u;
           v41 = v12;
-          v43 = [v12 currentAudioAndVideoCalls];
-          v13 = [v43 countByEnumeratingWithState:&v48 objects:v57 count:16];
+          currentAudioAndVideoCalls = [v12 currentAudioAndVideoCalls];
+          v13 = [currentAudioAndVideoCalls countByEnumeratingWithState:&v48 objects:v57 count:16];
           if (v13)
           {
             v14 = v13;
@@ -896,19 +896,19 @@ LABEL_43:
               {
                 if (*v49 != v15)
                 {
-                  objc_enumerationMutation(v43);
+                  objc_enumerationMutation(currentAudioAndVideoCalls);
                 }
 
                 v17 = *(*(&v48 + 1) + 8 * i);
-                v18 = [v17 providerContext];
+                providerContext = [v17 providerContext];
                 v19 = objc_autoreleasePoolPush();
                 if (off_100298C40)
                 {
-                  [off_100298C40 WFLog:3 message:{"%s: call context %@", "-[WiFiUserInteractionMonitor _updateCallState]", v18}];
+                  [off_100298C40 WFLog:3 message:{"%s: call context %@", "-[WiFiUserInteractionMonitor _updateCallState]", providerContext}];
                 }
 
                 objc_autoreleasePoolPop(v19);
-                v20 = [v18 objectForKey:@"kCallSubType"];
+                v20 = [providerContext objectForKey:@"kCallSubType"];
                 if ([v20 isEqualToString:@"kCallSubTypeWifi"])
                 {
                   v21 = objc_autoreleasePoolPush();
@@ -933,11 +933,11 @@ LABEL_43:
                   LODWORD(v42) = 1;
                 }
 
-                v23 = [v17 isHostedOnCurrentDevice];
+                isHostedOnCurrentDevice = [v17 isHostedOnCurrentDevice];
                 v24 = objc_autoreleasePoolPush();
                 if (off_100298C40)
                 {
-                  if (v23)
+                  if (isHostedOnCurrentDevice)
                   {
                     v25 = "%s: Call is hosted on this device";
                   }
@@ -950,17 +950,17 @@ LABEL_43:
                   [off_100298C40 WFLog:3 message:{v25, "-[WiFiUserInteractionMonitor _updateCallState]"}];
                 }
 
-                v7 |= v23;
+                v7 |= isHostedOnCurrentDevice;
                 objc_autoreleasePoolPop(v24);
               }
 
-              v14 = [v43 countByEnumeratingWithState:&v48 objects:v57 count:16];
+              v14 = [currentAudioAndVideoCalls countByEnumeratingWithState:&v48 objects:v57 count:16];
             }
 
             while (v14);
             v8 = 1;
             v9 = v36;
-            v2 = v37;
+            selfCopy = v37;
             v6 = v38;
             v10 = v40;
           }
@@ -983,7 +983,7 @@ LABEL_43:
     v8 = 0;
   }
 
-  if ([(WiFiUserInteractionMonitor *)v2 anyCallInProgress])
+  if ([(WiFiUserInteractionMonitor *)selfCopy anyCallInProgress])
   {
     v26 = v42;
     if ((v8 & 1) == 0)
@@ -1004,28 +1004,28 @@ LABEL_43:
     v26 = v42;
   }
 
-  v28 = v8 ^ [(WiFiUserInteractionMonitor *)v2 anyCallInProgress];
+  v28 = v8 ^ [(WiFiUserInteractionMonitor *)selfCopy anyCallInProgress];
   if (v28)
   {
-    [(WiFiUserInteractionMonitor *)v2 setAnyCallInProgress:v8 & 1];
+    [(WiFiUserInteractionMonitor *)selfCopy setAnyCallInProgress:v8 & 1];
   }
 
-  if ((BYTE4(v42) & 1) != [(WiFiUserInteractionMonitor *)v2 wifiCallInProgress])
+  if ((BYTE4(v42) & 1) != [(WiFiUserInteractionMonitor *)selfCopy wifiCallInProgress])
   {
-    [(WiFiUserInteractionMonitor *)v2 setWifiCallInProgress:?];
+    [(WiFiUserInteractionMonitor *)selfCopy setWifiCallInProgress:?];
     v28 = 1;
   }
 
-  if ((v7 ^ [(WiFiUserInteractionMonitor *)v2 callHostedOnThisDevice]))
+  if ((v7 ^ [(WiFiUserInteractionMonitor *)selfCopy callHostedOnThisDevice]))
   {
-    [(WiFiUserInteractionMonitor *)v2 setCallHostedOnThisDevice:v7 & 1];
-    if ((v26 & 1) == [(WiFiUserInteractionMonitor *)v2 cellCallInProgress])
+    [(WiFiUserInteractionMonitor *)selfCopy setCallHostedOnThisDevice:v7 & 1];
+    if ((v26 & 1) == [(WiFiUserInteractionMonitor *)selfCopy cellCallInProgress])
     {
       goto LABEL_53;
     }
   }
 
-  else if (((v26 ^ [(WiFiUserInteractionMonitor *)v2 cellCallInProgress]) & 1) == 0)
+  else if (((v26 ^ [(WiFiUserInteractionMonitor *)selfCopy cellCallInProgress]) & 1) == 0)
   {
     if ((v28 & 1) == 0)
     {
@@ -1035,14 +1035,14 @@ LABEL_43:
     goto LABEL_53;
   }
 
-  [(WiFiUserInteractionMonitor *)v2 setCellCallInProgress:v26 & 1];
+  [(WiFiUserInteractionMonitor *)selfCopy setCellCallInProgress:v26 & 1];
 LABEL_53:
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v29 = [(WiFiUserInteractionMonitor *)v2 clients];
-  v30 = [v29 countByEnumeratingWithState:&v44 objects:v56 count:16];
+  clients = [(WiFiUserInteractionMonitor *)selfCopy clients];
+  v30 = [clients countByEnumeratingWithState:&v44 objects:v56 count:16];
   if (v30)
   {
     v31 = v30;
@@ -1053,15 +1053,15 @@ LABEL_53:
       {
         if (*v45 != v32)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(clients);
         }
 
         v34 = *(*(&v44 + 1) + 8 * j);
-        v35 = [v34 callback];
-        (v35)[2](v35, [v34 context], 2);
+        callback = [v34 callback];
+        (callback)[2](callback, [v34 context], 2);
       }
 
-      v31 = [v29 countByEnumeratingWithState:&v44 objects:v56 count:16];
+      v31 = [clients countByEnumeratingWithState:&v44 objects:v56 count:16];
     }
 
     while (v31);
@@ -1070,11 +1070,11 @@ LABEL_53:
 
 - (void)dealloc
 {
-  v3 = [(WiFiUserInteractionMonitor *)self managedEventDispatchPort];
+  managedEventDispatchPort = [(WiFiUserInteractionMonitor *)self managedEventDispatchPort];
 
-  if (v3)
+  if (managedEventDispatchPort)
   {
-    v4 = [(WiFiUserInteractionMonitor *)self managedEventDispatchPort];
+    managedEventDispatchPort2 = [(WiFiUserInteractionMonitor *)self managedEventDispatchPort];
     dispatch_mach_cancel();
   }
 
@@ -1084,12 +1084,12 @@ LABEL_53:
     [(WiFiUserInteractionMonitor *)self setManagedEventNotifyToken:0];
   }
 
-  v5 = [(WiFiUserInteractionMonitor *)self callObserver];
+  callObserver = [(WiFiUserInteractionMonitor *)self callObserver];
 
-  if (v5)
+  if (callObserver)
   {
-    v6 = [(WiFiUserInteractionMonitor *)self callObserver];
-    [v6 setDelegate:0 queue:0];
+    callObserver2 = [(WiFiUserInteractionMonitor *)self callObserver];
+    [callObserver2 setDelegate:0 queue:0];
 
     [(WiFiUserInteractionMonitor *)self setCallObserver:0];
   }
@@ -1098,10 +1098,10 @@ LABEL_53:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [(WiFiUserInteractionMonitor *)self monitoredInterfaceNames];
-  v8 = [v7 allObjects];
+  monitoredInterfaceNames = [(WiFiUserInteractionMonitor *)self monitoredInterfaceNames];
+  allObjects = [monitoredInterfaceNames allObjects];
 
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v9 = [allObjects countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1113,40 +1113,40 @@ LABEL_53:
       {
         if (*v26 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allObjects);
         }
 
         v13 = *(*(&v25 + 1) + 8 * v12);
-        v14 = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
+        rtTrafficAgent = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
 
-        if (v14)
+        if (rtTrafficAgent)
         {
-          v15 = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
-          v16 = [v15 registration];
-          [v16 removeNetworkAgentFromInterfaceNamed:v13];
+          rtTrafficAgent2 = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
+          registration = [rtTrafficAgent2 registration];
+          [registration removeNetworkAgentFromInterfaceNamed:v13];
         }
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v10);
   }
 
-  v17 = [(WiFiUserInteractionMonitor *)self monitoredInterfaceNames];
-  [v17 removeAllObjects];
+  monitoredInterfaceNames2 = [(WiFiUserInteractionMonitor *)self monitoredInterfaceNames];
+  [monitoredInterfaceNames2 removeAllObjects];
 
   v18 = +[NSNotificationCenter defaultCenter];
   [v18 removeObserver:self];
 
-  v19 = [(WiFiUserInteractionMonitor *)self clients];
-  [v19 removeAllObjects];
+  clients = [(WiFiUserInteractionMonitor *)self clients];
+  [clients removeAllObjects];
 
-  v20 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
-  [v20 removeAllObjects];
+  overrideNetworkState = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
+  [overrideNetworkState removeAllObjects];
 
   ctServerConnectionRef = self->_ctServerConnectionRef;
   if (ctServerConnectionRef)
@@ -1154,12 +1154,12 @@ LABEL_53:
     CFRelease(ctServerConnectionRef);
   }
 
-  v22 = [(WiFiUserInteractionMonitor *)self lastRecommendedNetworkTimestampExpirationTimer];
+  lastRecommendedNetworkTimestampExpirationTimer = [(WiFiUserInteractionMonitor *)self lastRecommendedNetworkTimestampExpirationTimer];
 
-  if (v22)
+  if (lastRecommendedNetworkTimestampExpirationTimer)
   {
-    v23 = [(WiFiUserInteractionMonitor *)self lastRecommendedNetworkTimestampExpirationTimer];
-    dispatch_source_cancel(v23);
+    lastRecommendedNetworkTimestampExpirationTimer2 = [(WiFiUserInteractionMonitor *)self lastRecommendedNetworkTimestampExpirationTimer];
+    dispatch_source_cancel(lastRecommendedNetworkTimestampExpirationTimer2);
   }
 
   v24.receiver = self;
@@ -1167,61 +1167,61 @@ LABEL_53:
   [(WiFiUserInteractionMonitor *)&v24 dealloc];
 }
 
-- (void)startMonitoringInterface:(id)a3
+- (void)startMonitoringInterface:(id)interface
 {
-  v10 = a3;
-  if (v10)
+  interfaceCopy = interface;
+  if (interfaceCopy)
   {
-    v4 = [(WiFiUserInteractionMonitor *)self monitoredInterfaceNames];
-    v5 = [v4 containsObject:v10];
+    monitoredInterfaceNames = [(WiFiUserInteractionMonitor *)self monitoredInterfaceNames];
+    v5 = [monitoredInterfaceNames containsObject:interfaceCopy];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [(WiFiUserInteractionMonitor *)self monitoredInterfaceNames];
-      [v6 addObject:v10];
+      monitoredInterfaceNames2 = [(WiFiUserInteractionMonitor *)self monitoredInterfaceNames];
+      [monitoredInterfaceNames2 addObject:interfaceCopy];
 
-      v7 = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
+      rtTrafficAgent = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
 
-      if (v7)
+      if (rtTrafficAgent)
       {
-        v8 = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
-        v9 = [v8 registration];
-        [v9 addNetworkAgentToInterfaceNamed:v10];
+        rtTrafficAgent2 = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
+        registration = [rtTrafficAgent2 registration];
+        [registration addNetworkAgentToInterfaceNamed:interfaceCopy];
       }
     }
   }
 }
 
-- (void)registerStateChangeCallback:(id)a3 withCallbackContext:(void *)a4
+- (void)registerStateChangeCallback:(id)callback withCallbackContext:(void *)context
 {
-  v11 = a3;
+  callbackCopy = callback;
   v6 = objc_autoreleasePoolPush();
   v7 = off_100298C40;
   if (off_100298C40)
   {
-    v8 = objc_retainBlock(v11);
-    [v7 WFLog:3 message:{"%s: callback %@, context %@", "-[WiFiUserInteractionMonitor registerStateChangeCallback:withCallbackContext:]", v8, a4}];
+    v8 = objc_retainBlock(callbackCopy);
+    [v7 WFLog:3 message:{"%s: callback %@, context %@", "-[WiFiUserInteractionMonitor registerStateChangeCallback:withCallbackContext:]", v8, context}];
   }
 
   objc_autoreleasePoolPop(v6);
   v9 = objc_alloc_init(WiFiUserInteractionMonitorClient);
-  [(WiFiUserInteractionMonitorClient *)v9 setCallback:v11];
-  [(WiFiUserInteractionMonitorClient *)v9 setContext:a4];
-  v10 = [(WiFiUserInteractionMonitor *)self clients];
-  [v10 addObject:v9];
+  [(WiFiUserInteractionMonitorClient *)v9 setCallback:callbackCopy];
+  [(WiFiUserInteractionMonitorClient *)v9 setContext:context];
+  clients = [(WiFiUserInteractionMonitor *)self clients];
+  [clients addObject:v9];
 }
 
-- (void)unregisterStateChangeCallback:(void *)a3
+- (void)unregisterStateChangeCallback:(void *)callback
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(WiFiUserInteractionMonitor *)self clients];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  clients = [(WiFiUserInteractionMonitor *)self clients];
+  v6 = [clients countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (!v6)
   {
-    v8 = v5;
+    v8 = clients;
     goto LABEL_13;
   }
 
@@ -1234,11 +1234,11 @@ LABEL_53:
     {
       if (*v15 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(clients);
       }
 
       v11 = *(*(&v14 + 1) + 8 * i);
-      if ([v11 context] == a3)
+      if ([v11 context] == callback)
       {
         v12 = v11;
 
@@ -1246,65 +1246,65 @@ LABEL_53:
       }
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [clients countByEnumeratingWithState:&v14 objects:v18 count:16];
   }
 
   while (v7);
 
   if (v8)
   {
-    v13 = [(WiFiUserInteractionMonitor *)self clients];
-    [v13 removeObject:v8];
+    clients2 = [(WiFiUserInteractionMonitor *)self clients];
+    [clients2 removeObject:v8];
 
 LABEL_13:
   }
 }
 
-- (void)setApplicationRunningState:(BOOL)a3 foregroundState:(BOOL)a4 andNetworkingState:(BOOL)a5 forBundleId:(id)a6
+- (void)setApplicationRunningState:(BOOL)state foregroundState:(BOOL)foregroundState andNetworkingState:(BOOL)networkingState forBundleId:(id)id
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = a6;
-  if (!v10)
+  networkingStateCopy = networkingState;
+  foregroundStateCopy = foregroundState;
+  idCopy = id;
+  if (!idCopy)
   {
     goto LABEL_25;
   }
 
-  v11 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-  [v11 lock];
+  appTrackerLock = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+  [appTrackerLock lock];
 
   v12 = objc_autoreleasePoolPush();
-  if (a3)
+  if (state)
   {
-    if (v7)
+    if (foregroundStateCopy)
     {
       if (off_100298C40)
       {
-        [off_100298C40 WFLog:3 message:{"%s: %@ entered foreground", "-[WiFiUserInteractionMonitor setApplicationRunningState:foregroundState:andNetworkingState:forBundleId:]", v10}];
+        [off_100298C40 WFLog:3 message:{"%s: %@ entered foreground", "-[WiFiUserInteractionMonitor setApplicationRunningState:foregroundState:andNetworkingState:forBundleId:]", idCopy}];
       }
 
       objc_autoreleasePoolPop(v12);
-      v13 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
-      [v13 addObject:v10];
+      runningForegroundApps = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
+      [runningForegroundApps addObject:idCopy];
     }
 
     else
     {
       if (off_100298C40)
       {
-        [off_100298C40 WFLog:3 message:{"%s: %@ entered background", "-[WiFiUserInteractionMonitor setApplicationRunningState:foregroundState:andNetworkingState:forBundleId:]", v10}];
+        [off_100298C40 WFLog:3 message:{"%s: %@ entered background", "-[WiFiUserInteractionMonitor setApplicationRunningState:foregroundState:andNetworkingState:forBundleId:]", idCopy}];
       }
 
       objc_autoreleasePoolPop(v12);
-      v13 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
-      [v13 removeObject:v10];
+      runningForegroundApps = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
+      [runningForegroundApps removeObject:idCopy];
     }
 
-    v15 = [(WiFiUserInteractionMonitor *)self runningNetworkingApps];
-    v16 = v15;
-    if (v6)
+    runningNetworkingApps = [(WiFiUserInteractionMonitor *)self runningNetworkingApps];
+    v16 = runningNetworkingApps;
+    if (networkingStateCopy)
     {
-      [v15 addObject:v10];
+      [runningNetworkingApps addObject:idCopy];
       goto LABEL_16;
     }
   }
@@ -1313,32 +1313,32 @@ LABEL_13:
   {
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: %@ exited", "-[WiFiUserInteractionMonitor setApplicationRunningState:foregroundState:andNetworkingState:forBundleId:]", v10}];
+      [off_100298C40 WFLog:3 message:{"%s: %@ exited", "-[WiFiUserInteractionMonitor setApplicationRunningState:foregroundState:andNetworkingState:forBundleId:]", idCopy}];
     }
 
     objc_autoreleasePoolPop(v12);
-    v14 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
-    [v14 removeObject:v10];
+    runningForegroundApps2 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
+    [runningForegroundApps2 removeObject:idCopy];
 
-    v15 = [(WiFiUserInteractionMonitor *)self runningNetworkingApps];
-    v16 = v15;
+    runningNetworkingApps = [(WiFiUserInteractionMonitor *)self runningNetworkingApps];
+    v16 = runningNetworkingApps;
   }
 
-  [v15 removeObject:v10];
+  [runningNetworkingApps removeObject:idCopy];
 LABEL_16:
 
-  v17 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-  [v17 unlock];
+  appTrackerLock2 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+  [appTrackerLock2 unlock];
 
   [(WiFiUserInteractionMonitor *)self _notifyCaptiveWithApplicationState];
-  if ([(WiFiUserInteractionMonitor *)self hasRealTimeAppProperty:v10])
+  if ([(WiFiUserInteractionMonitor *)self hasRealTimeAppProperty:idCopy])
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v18 = [(WiFiUserInteractionMonitor *)self clients];
-    v19 = [v18 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    clients = [(WiFiUserInteractionMonitor *)self clients];
+    v19 = [clients countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v19)
     {
       v20 = v19;
@@ -1349,15 +1349,15 @@ LABEL_16:
         {
           if (*v26 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(clients);
           }
 
           v23 = *(*(&v25 + 1) + 8 * i);
-          v24 = [v23 callback];
-          (v24)[2](v24, [v23 context], 8);
+          callback = [v23 callback];
+          (callback)[2](callback, [v23 context], 8);
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v20 = [clients countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v20);
@@ -1367,29 +1367,29 @@ LABEL_16:
 LABEL_25:
 }
 
-- (void)updateOverrideNetworkState:(id)a3 overrideValue:(unint64_t)a4
+- (void)updateOverrideNetworkState:(id)state overrideValue:(unint64_t)value
 {
-  v10 = a3;
-  NSLog(@"updateOverrideNetworkState: ssid %@ state 0x%llx\n", v10, a4);
-  v6 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
-  v7 = v6;
-  if (a4)
+  stateCopy = state;
+  NSLog(@"updateOverrideNetworkState: ssid %@ state 0x%llx\n", stateCopy, value);
+  overrideNetworkState = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
+  overrideNetworkState2 = overrideNetworkState;
+  if (value)
   {
-    v8 = [NSNumber numberWithUnsignedLongLong:a4];
-    [v7 setObject:v8 forKey:v10];
+    v8 = [NSNumber numberWithUnsignedLongLong:value];
+    [overrideNetworkState2 setObject:v8 forKey:stateCopy];
   }
 
   else
   {
-    v9 = [v6 objectForKeyedSubscript:v10];
+    v9 = [overrideNetworkState objectForKeyedSubscript:stateCopy];
 
     if (!v9)
     {
       goto LABEL_6;
     }
 
-    v7 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
-    [v7 removeObjectForKey:v10];
+    overrideNetworkState2 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
+    [overrideNetworkState2 removeObjectForKey:stateCopy];
   }
 
 LABEL_6:
@@ -1404,12 +1404,12 @@ LABEL_6:
 
 - (void)resetOverrideNetworkStates
 {
-  v3 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
+  overrideNetworkState = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
 
-  if (v3)
+  if (overrideNetworkState)
   {
-    v4 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
-    [v4 removeAllObjects];
+    overrideNetworkState2 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
+    [overrideNetworkState2 removeAllObjects];
 
     v5 = +[NSMutableDictionary dictionary];
     [(WiFiUserInteractionMonitor *)self setOverrideNetworkState:v5];
@@ -1418,143 +1418,143 @@ LABEL_6:
 
 - (void)dumpOverrideNetworkState
 {
-  v3 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
+  overrideNetworkState = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
 
-  if (v3)
+  if (overrideNetworkState)
   {
-    v4 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
-    NSLog(@"%s: overrideNetworkState %@\n", "[WiFiUserInteractionMonitor dumpOverrideNetworkState]", v4);
+    overrideNetworkState2 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
+    NSLog(@"%s: overrideNetworkState %@\n", "[WiFiUserInteractionMonitor dumpOverrideNetworkState]", overrideNetworkState2);
   }
 }
 
 - (void)resetBackgroundApps
 {
-  v3 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-  [v3 lock];
+  appTrackerLock = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+  [appTrackerLock lock];
 
-  v4 = [(WiFiUserInteractionMonitor *)self runningNetworkingApps];
-  [v4 removeAllObjects];
+  runningNetworkingApps = [(WiFiUserInteractionMonitor *)self runningNetworkingApps];
+  [runningNetworkingApps removeAllObjects];
 
-  v5 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-  [v5 unlock];
+  appTrackerLock2 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+  [appTrackerLock2 unlock];
 }
 
-- (BOOL)isPriorityNetwork:(__WiFiNetwork *)a3
+- (BOOL)isPriorityNetwork:(__WiFiNetwork *)network
 {
-  v5 = sub_10000A878(a3);
-  v6 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
-  if (!v6)
+  v5 = sub_10000A878(network);
+  overrideNetworkState = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
+  if (!overrideNetworkState)
   {
     goto LABEL_6;
   }
 
-  v7 = v6;
-  v8 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
-  v9 = [v8 objectForKey:v5];
+  v7 = overrideNetworkState;
+  overrideNetworkState2 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
+  v9 = [overrideNetworkState2 objectForKey:v5];
 
   if (v9)
   {
-    v10 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
-    v11 = [v10 objectForKey:v5];
-    v12 = [v11 unsignedLongLongValue];
+    overrideNetworkState3 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
+    v11 = [overrideNetworkState3 objectForKey:v5];
+    unsignedLongLongValue = [v11 unsignedLongLongValue];
 
     v13 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: using overridden isPriorityNetwork state as 0x%llx", "-[WiFiUserInteractionMonitor isPriorityNetwork:]", v12}];
+      [off_100298C40 WFLog:3 message:{"%s: using overridden isPriorityNetwork state as 0x%llx", "-[WiFiUserInteractionMonitor isPriorityNetwork:]", unsignedLongLongValue}];
     }
 
     objc_autoreleasePoolPop(v13);
-    v14 = v12 & 1;
+    v14 = unsignedLongLongValue & 1;
   }
 
   else
   {
 LABEL_6:
-    v15 = sub_10001B368(a3);
+    v15 = sub_10001B368(network);
     v16 = v15;
-    v14 = v15 && ([v15 networkOfInterestHomeState] == 1 || objc_msgSend(v16, "networkOfInterestHomeState") == 3 || objc_msgSend(v16, "networkOfInterestWorkState") == 1) || sub_1000A365C(a3);
+    v14 = v15 && ([v15 networkOfInterestHomeState] == 1 || objc_msgSend(v16, "networkOfInterestHomeState") == 3 || objc_msgSend(v16, "networkOfInterestWorkState") == 1) || sub_1000A365C(network);
   }
 
   return v14;
 }
 
-- (BOOL)isPublicNetwork:(__WiFiNetwork *)a3
+- (BOOL)isPublicNetwork:(__WiFiNetwork *)network
 {
-  v3 = a3;
-  v5 = sub_10000A878(a3);
-  v6 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
-  if (!v6)
+  networkCopy = network;
+  v5 = sub_10000A878(network);
+  overrideNetworkState = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
+  if (!overrideNetworkState)
   {
     goto LABEL_6;
   }
 
-  v7 = v6;
-  v8 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
-  v9 = [v8 objectForKey:v5];
+  v7 = overrideNetworkState;
+  overrideNetworkState2 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
+  v9 = [overrideNetworkState2 objectForKey:v5];
 
   if (v9)
   {
-    v10 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
-    v11 = [v10 objectForKey:v5];
-    v12 = [v11 unsignedLongLongValue];
+    overrideNetworkState3 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
+    v11 = [overrideNetworkState3 objectForKey:v5];
+    unsignedLongLongValue = [v11 unsignedLongLongValue];
 
     v13 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: using overridden isPublicNetwork state as 0x%llx", "-[WiFiUserInteractionMonitor isPublicNetwork:]", v12}];
+      [off_100298C40 WFLog:3 message:{"%s: using overridden isPublicNetwork state as 0x%llx", "-[WiFiUserInteractionMonitor isPublicNetwork:]", unsignedLongLongValue}];
     }
 
     objc_autoreleasePoolPop(v13);
-    v3 = ((v12 >> 1) & 1);
+    networkCopy = ((unsignedLongLongValue >> 1) & 1);
   }
 
   else
   {
 LABEL_6:
-    LOBYTE(v3) = sub_1000A37CC(v3) != 0;
+    LOBYTE(networkCopy) = sub_1000A37CC(networkCopy) != 0;
   }
 
-  return v3;
+  return networkCopy;
 }
 
-- (BOOL)isLowQualityNetwork:(__WiFiNetwork *)a3
+- (BOOL)isLowQualityNetwork:(__WiFiNetwork *)network
 {
-  v3 = a3;
-  v5 = sub_10000A878(a3);
-  v6 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
-  if (!v6)
+  networkCopy = network;
+  v5 = sub_10000A878(network);
+  overrideNetworkState = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
+  if (!overrideNetworkState)
   {
     goto LABEL_6;
   }
 
-  v7 = v6;
-  v8 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
-  v9 = [v8 objectForKey:v5];
+  v7 = overrideNetworkState;
+  overrideNetworkState2 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
+  v9 = [overrideNetworkState2 objectForKey:v5];
 
   if (v9)
   {
-    v10 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
-    v11 = [v10 objectForKey:v5];
-    v12 = [v11 unsignedLongLongValue];
+    overrideNetworkState3 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
+    v11 = [overrideNetworkState3 objectForKey:v5];
+    unsignedLongLongValue = [v11 unsignedLongLongValue];
 
     v13 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: using overridden isLowQualityNetwork state as 0x%llx", "-[WiFiUserInteractionMonitor isLowQualityNetwork:]", v12}];
+      [off_100298C40 WFLog:3 message:{"%s: using overridden isLowQualityNetwork state as 0x%llx", "-[WiFiUserInteractionMonitor isLowQualityNetwork:]", unsignedLongLongValue}];
     }
 
     objc_autoreleasePoolPop(v13);
-    v3 = (v12 >> 2) & 1;
+    networkCopy = (unsignedLongLongValue >> 2) & 1;
   }
 
   else
   {
 LABEL_6:
-    LOBYTE(v3) = sub_1000A3814(v3);
+    LOBYTE(networkCopy) = sub_1000A3814(networkCopy);
   }
 
-  return v3;
+  return networkCopy;
 }
 
 - (BOOL)isInitialSetupCompleted
@@ -1576,9 +1576,9 @@ LABEL_6:
     v5 = off_100298C40;
     if (off_100298C40)
     {
-      v6 = [(WiFiUserInteractionMonitor *)self initialSetupCompleted];
+      initialSetupCompleted = [(WiFiUserInteractionMonitor *)self initialSetupCompleted];
       v7 = "not completed";
-      if (v6)
+      if (initialSetupCompleted)
       {
         v7 = "completed";
       }
@@ -1680,9 +1680,9 @@ LABEL_8:
   return 1;
 }
 
-+ (BOOL)checkIfMatchesHomeBundleIds:(id)a3
++ (BOOL)checkIfMatchesHomeBundleIds:(id)ids
 {
-  v3 = a3;
+  idsCopy = ids;
   +[WiFiUserInteractionMonitor getHomeBundleIds];
   v11 = 0u;
   v12 = 0u;
@@ -1702,8 +1702,8 @@ LABEL_8:
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v3 lowercaseString];
-        LOBYTE(v8) = [v9 containsString:v8];
+        lowercaseString = [idsCopy lowercaseString];
+        LOBYTE(v8) = [lowercaseString containsString:v8];
 
         if (v8)
         {
@@ -1727,9 +1727,9 @@ LABEL_11:
   return v5;
 }
 
-+ (BOOL)checkIfMatchesNonNetworkingBundleIds:(id)a3
++ (BOOL)checkIfMatchesNonNetworkingBundleIds:(id)ids
 {
-  v3 = a3;
+  idsCopy = ids;
   +[WiFiUserInteractionMonitor getKnownNonNetworkingBundleIds];
   v11 = 0u;
   v12 = 0u;
@@ -1750,7 +1750,7 @@ LABEL_3:
       }
 
       v9 = 1;
-      if ([v3 rangeOfString:*(*(&v11 + 1) + 8 * v8) options:{1, v11}] != 0x7FFFFFFFFFFFFFFFLL)
+      if ([idsCopy rangeOfString:*(*(&v11 + 1) + 8 * v8) options:{1, v11}] != 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
       }
@@ -1777,34 +1777,34 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)hasRealTimeAppProperty:(id)a3
+- (BOOL)hasRealTimeAppProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   if (![(WiFiUserInteractionMonitor *)self isSetupCompleted])
   {
     goto LABEL_14;
   }
 
-  v5 = [(WiFiUserInteractionMonitor *)self isFirstUserUnlocked];
-  v6 = 0;
-  if (v4 && v5)
+  isFirstUserUnlocked = [(WiFiUserInteractionMonitor *)self isFirstUserUnlocked];
+  bOOLValue = 0;
+  if (propertyCopy && isFirstUserUnlocked)
   {
-    v7 = [(WiFiUserInteractionMonitor *)self appAttributeLock];
-    [v7 lock];
+    appAttributeLock = [(WiFiUserInteractionMonitor *)self appAttributeLock];
+    [appAttributeLock lock];
 
-    v8 = [(WiFiUserInteractionMonitor *)self appAttributes];
-    v9 = [v8 objectForKey:v4];
+    appAttributes = [(WiFiUserInteractionMonitor *)self appAttributes];
+    v9 = [appAttributes objectForKey:propertyCopy];
 
     if (objc_opt_class())
     {
-      v10 = [(WiFiUserInteractionMonitor *)self pendingAppAttributeQueries];
-      v11 = [v10 containsObject:v4];
+      pendingAppAttributeQueries = [(WiFiUserInteractionMonitor *)self pendingAppAttributeQueries];
+      v11 = [pendingAppAttributeQueries containsObject:propertyCopy];
 
       v12 = 0;
       if ((v11 & 1) == 0 && !v9)
       {
-        v13 = [(WiFiUserInteractionMonitor *)self pendingAppAttributeQueries];
-        [v13 addObject:v4];
+        pendingAppAttributeQueries2 = [(WiFiUserInteractionMonitor *)self pendingAppAttributeQueries];
+        [pendingAppAttributeQueries2 addObject:propertyCopy];
 
         v12 = 1;
       }
@@ -1815,12 +1815,12 @@ LABEL_9:
       v12 = 0;
     }
 
-    v14 = [(WiFiUserInteractionMonitor *)self appAttributeLock];
-    [v14 unlock];
+    appAttributeLock2 = [(WiFiUserInteractionMonitor *)self appAttributeLock];
+    [appAttributeLock2 unlock];
 
     if (v9)
     {
-      v6 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
 LABEL_13:
 
       goto LABEL_15;
@@ -1828,27 +1828,27 @@ LABEL_13:
 
     if (v12)
     {
-      v15 = [(WiFiUserInteractionMonitor *)self internalQueue];
+      internalQueue = [(WiFiUserInteractionMonitor *)self internalQueue];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_10011D3DC;
       v17[3] = &unk_10025EB00;
-      v18 = v4;
-      v19 = self;
-      dispatch_async(v15, v17);
+      v18 = propertyCopy;
+      selfCopy = self;
+      dispatch_async(internalQueue, v17);
 
-      v6 = 0;
+      bOOLValue = 0;
       v9 = v18;
       goto LABEL_13;
     }
 
 LABEL_14:
-    v6 = 0;
+    bOOLValue = 0;
   }
 
 LABEL_15:
 
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)isAnyCallInProgress
@@ -1858,19 +1858,19 @@ LABEL_15:
     return 1;
   }
 
-  v4 = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
-  v5 = [v4 isActive];
+  rtTrafficAgent = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
+  isActive = [rtTrafficAgent isActive];
 
-  return v5;
+  return isActive;
 }
 
 - (BOOL)isCoPresenceActive
 {
-  v3 = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
-  if ([v3 avcMinJB])
+  rtTrafficAgent = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
+  if ([rtTrafficAgent avcMinJB])
   {
-    v4 = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
-    v5 = [v4 avcMinJB] < 0x15;
+    rtTrafficAgent2 = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
+    v5 = [rtTrafficAgent2 avcMinJB] < 0x15;
   }
 
   else
@@ -1893,31 +1893,31 @@ LABEL_15:
 
 - (BOOL)canTrigger11axPerfStudyForForegroundFlows
 {
-  v3 = [(WiFiUserInteractionMonitor *)self symptomForegroundFlowProperties];
-  v4 = [(WiFiUserInteractionMonitor *)self symptomForegroundFlowClassification];
+  symptomForegroundFlowProperties = [(WiFiUserInteractionMonitor *)self symptomForegroundFlowProperties];
+  symptomForegroundFlowClassification = [(WiFiUserInteractionMonitor *)self symptomForegroundFlowClassification];
 
-  return [(WiFiUserInteractionMonitor *)self _canTrigger11axPerfStudyForFlowNamed:@"foreground" withProperties:v3 andClassification:v4];
+  return [(WiFiUserInteractionMonitor *)self _canTrigger11axPerfStudyForFlowNamed:@"foreground" withProperties:symptomForegroundFlowProperties andClassification:symptomForegroundFlowClassification];
 }
 
 - (BOOL)canTrigger11axPerfStudyForBackgroundFlows
 {
-  v3 = [(WiFiUserInteractionMonitor *)self symptomBackgroundFlowProperties];
-  v4 = [(WiFiUserInteractionMonitor *)self symptomBackgroundFlowClassification];
+  symptomBackgroundFlowProperties = [(WiFiUserInteractionMonitor *)self symptomBackgroundFlowProperties];
+  symptomBackgroundFlowClassification = [(WiFiUserInteractionMonitor *)self symptomBackgroundFlowClassification];
 
-  return [(WiFiUserInteractionMonitor *)self _canTrigger11axPerfStudyForFlowNamed:@"background" withProperties:v3 andClassification:v4];
+  return [(WiFiUserInteractionMonitor *)self _canTrigger11axPerfStudyForFlowNamed:@"background" withProperties:symptomBackgroundFlowProperties andClassification:symptomBackgroundFlowClassification];
 }
 
 - (BOOL)wasRecommendedNetworkRecentlyJoined
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   +[NSDate timeIntervalSinceReferenceDate];
   v4 = v3;
-  v5 = [(WiFiUserInteractionMonitor *)v2 lastRecommendedNetworkTimestamp];
-  [v5 timeIntervalSinceReferenceDate];
+  lastRecommendedNetworkTimestamp = [(WiFiUserInteractionMonitor *)selfCopy lastRecommendedNetworkTimestamp];
+  [lastRecommendedNetworkTimestamp timeIntervalSinceReferenceDate];
   v7 = v4 - v6 < 30.0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v7;
 }
 
@@ -1928,8 +1928,8 @@ LABEL_15:
   v3 = +[NSDate date];
   [(WiFiUserInteractionMonitor *)obj setLastRecommendedNetworkTimestamp:v3];
 
-  v4 = [(WiFiUserInteractionMonitor *)obj lastRecommendedNetworkTimestamp];
-  v5 = [v4 dateByAddingTimeInterval:30.0];
+  lastRecommendedNetworkTimestamp = [(WiFiUserInteractionMonitor *)obj lastRecommendedNetworkTimestamp];
+  v5 = [lastRecommendedNetworkTimestamp dateByAddingTimeInterval:30.0];
 
   [v5 timeIntervalSinceNow];
   if (v6 * 1000000000.0 < 9.22337204e18)
@@ -1938,9 +1938,9 @@ LABEL_15:
     v2 = (v7 * 1000000000.0);
   }
 
-  v8 = [(WiFiUserInteractionMonitor *)obj lastRecommendedNetworkTimestampExpirationTimer];
+  lastRecommendedNetworkTimestampExpirationTimer = [(WiFiUserInteractionMonitor *)obj lastRecommendedNetworkTimestampExpirationTimer];
   v9 = dispatch_walltime(0, v2);
-  dispatch_source_set_timer(v8, v9, 0xFFFFFFFFFFFFFFFFLL, 0);
+  dispatch_source_set_timer(lastRecommendedNetworkTimestampExpirationTimer, v9, 0xFFFFFFFFFFFFFFFFLL, 0);
 
   v10 = objc_autoreleasePoolPush();
   if (off_100298C40)
@@ -1954,23 +1954,23 @@ LABEL_15:
   objc_sync_exit(obj);
 }
 
-- (BOOL)_canTrigger11axPerfStudyForFlowNamed:(id)a3 withProperties:(unint64_t)a4 andClassification:(unsigned int)a5
+- (BOOL)_canTrigger11axPerfStudyForFlowNamed:(id)named withProperties:(unint64_t)properties andClassification:(unsigned int)classification
 {
-  v5 = a5;
-  v7 = a3;
-  if ((v5 & 0x1F) != 0)
+  classificationCopy = classification;
+  namedCopy = named;
+  if ((classificationCopy & 0x1F) != 0)
   {
     v8 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: app-aware flow:%@ latency:0x%x jitter:0x%x lossTolerance:0x%x duration:0x%x requiredBandwidth:0x%x preferredBandwidth:0x%x", "-[WiFiUserInteractionMonitor _canTrigger11axPerfStudyForFlowNamed:withProperties:andClassification:]", v7, a4, (a4 >> 1), (a4 >> 2), (a4 >> 3), (a4 >> 4), (a4 >> 5)}];
+      [off_100298C40 WFLog:3 message:{"%s: app-aware flow:%@ latency:0x%x jitter:0x%x lossTolerance:0x%x duration:0x%x requiredBandwidth:0x%x preferredBandwidth:0x%x", "-[WiFiUserInteractionMonitor _canTrigger11axPerfStudyForFlowNamed:withProperties:andClassification:]", namedCopy, properties, (properties >> 1), (properties >> 2), (properties >> 3), (properties >> 4), (properties >> 5)}];
     }
 
     objc_autoreleasePoolPop(v8);
-    v9 = ((a4 >> 2) & 1) + ((a4 >> 3) & 1);
-    v10 = v9 + ((a4 >> 1) & 1);
-    v11 = v9 + ((a4 >> 4) & 1);
-    v13 = v10 > 2 || v11 > 2 || ((a4 >> 4) & 0xC0) != 0;
+    v9 = ((properties >> 2) & 1) + ((properties >> 3) & 1);
+    v10 = v9 + ((properties >> 1) & 1);
+    v11 = v9 + ((properties >> 4) & 1);
+    v13 = v10 > 2 || v11 > 2 || ((properties >> 4) & 0xC0) != 0;
   }
 
   else
@@ -1990,8 +1990,8 @@ LABEL_15:
   v7 = NSStringFromClass(v6);
   [v3 setObject:v5 forKeyedSubscript:v7];
 
-  v8 = [(WiFiUserInteractionMonitor *)self appAwareDetails];
-  [v3 setObject:v8 forKeyedSubscript:@"AppAwareDetails"];
+  appAwareDetails = [(WiFiUserInteractionMonitor *)self appAwareDetails];
+  [v3 setObject:appAwareDetails forKeyedSubscript:@"AppAwareDetails"];
 
   v9 = [NSString stringWithFormat:@"0x%llx", [(WiFiUserInteractionMonitor *)self symptomForegroundFlowProperties]];
   [v3 setObject:v9 forKeyedSubscript:@"ForegroundFlows"];
@@ -2005,20 +2005,20 @@ LABEL_15:
   v12 = [NSString stringWithFormat:@"0x%x", [(WiFiUserInteractionMonitor *)self symptomBackgroundFlowClassification]];
   [v3 setObject:v12 forKeyedSubscript:@"BackgroundClassification"];
 
-  v13 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-  [v13 lock];
+  appTrackerLock = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+  [appTrackerLock lock];
 
-  v14 = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
-  [v3 setObject:v14 forKeyedSubscript:@"ForegroundApps"];
+  runningForegroundApps = [(WiFiUserInteractionMonitor *)self runningForegroundApps];
+  [v3 setObject:runningForegroundApps forKeyedSubscript:@"ForegroundApps"];
 
-  v15 = [(WiFiUserInteractionMonitor *)self runningNetworkingApps];
-  [v3 setObject:v15 forKeyedSubscript:@"NetworkingApps"];
+  runningNetworkingApps = [(WiFiUserInteractionMonitor *)self runningNetworkingApps];
+  [v3 setObject:runningNetworkingApps forKeyedSubscript:@"NetworkingApps"];
 
-  v16 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
-  [v16 unlock];
+  appTrackerLock2 = [(WiFiUserInteractionMonitor *)self appTrackerLock];
+  [appTrackerLock2 unlock];
 
-  v17 = [(WiFiUserInteractionMonitor *)self monitoredInterfaceNames];
-  [v3 setObject:v17 forKeyedSubscript:@"InterfaceNames"];
+  monitoredInterfaceNames = [(WiFiUserInteractionMonitor *)self monitoredInterfaceNames];
+  [v3 setObject:monitoredInterfaceNames forKeyedSubscript:@"InterfaceNames"];
 
   if ([(WiFiUserInteractionMonitor *)self isSetupCompleted])
   {
@@ -2119,8 +2119,8 @@ LABEL_15:
   }
 
   [v3 setObject:v26 forKeyedSubscript:@"IsRealTimeAppActive"];
-  v27 = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
-  if ([v27 isActive])
+  rtTrafficAgent = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
+  if ([rtTrafficAgent isActive])
   {
     v28 = @"YES";
   }
@@ -2132,8 +2132,8 @@ LABEL_15:
 
   [v3 setObject:v28 forKeyedSubscript:@"IsAVConferenceActive"];
 
-  v29 = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
-  v30 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llums", [v29 avcMinJB]);
+  rtTrafficAgent2 = [(WiFiUserInteractionMonitor *)self rtTrafficAgent];
+  v30 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llums", [rtTrafficAgent2 avcMinJB]);
   [v3 setObject:v30 forKeyedSubscript:@"AVCMinJitterBuffer"];
 
   if ([(WiFiUserInteractionMonitor *)self isCoPresenceActive])
@@ -2180,8 +2180,8 @@ LABEL_15:
   }
 
   [v3 setObject:v34 forKeyedSubscript:@"IsCellularInexpensive5G"];
-  v35 = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
-  v36 = [v35 description];
+  overrideNetworkState = [(WiFiUserInteractionMonitor *)self overrideNetworkState];
+  v36 = [overrideNetworkState description];
   [v3 setObject:v36 forKeyedSubscript:@"overrideNetworkState"];
 
   if ([(WiFiUserInteractionMonitor *)self isAskToJoinAllowed])
@@ -2214,17 +2214,17 @@ LABEL_15:
   v42 = [NSString stringWithFormat:@"%.2fMBps/%llupps", v41, [(WiFiUserInteractionMonitor *)self wifiL3PPS]];
   [v3 setObject:v42 forKeyedSubscript:@"WiFiUsage"];
 
-  v43 = [(WiFiUserInteractionMonitor *)self lastRecommendedNetworkTimestamp];
-  v44 = [NSString stringWithFormat:@"%@", v43];
+  lastRecommendedNetworkTimestamp = [(WiFiUserInteractionMonitor *)self lastRecommendedNetworkTimestamp];
+  v44 = [NSString stringWithFormat:@"%@", lastRecommendedNetworkTimestamp];
   [v3 setObject:v44 forKeyedSubscript:@"LastRecommendedNetworkTimestamp"];
 
   return v3;
 }
 
-- (BOOL)getCellularData:(id)a3
+- (BOOL)getCellularData:(id)data
 {
-  v4 = a3;
-  if (!v4)
+  dataCopy = data;
+  if (!dataCopy)
   {
     sub_1001B0060();
     goto LABEL_17;
@@ -2236,9 +2236,9 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v5 = [(WiFiUserInteractionMonitor *)self cellularInterfaceName];
+  cellularInterfaceName = [(WiFiUserInteractionMonitor *)self cellularInterfaceName];
 
-  if (!v5)
+  if (!cellularInterfaceName)
   {
     sub_1001AFFB0();
     goto LABEL_17;
@@ -2266,8 +2266,8 @@ LABEL_17:
         {
           if (ifa_addr->sa_family == 18)
           {
-            v9 = [(WiFiUserInteractionMonitor *)self cellularInterfaceName];
-            v10 = strcmp(ifa_name, [v9 UTF8String]);
+            cellularInterfaceName2 = [(WiFiUserInteractionMonitor *)self cellularInterfaceName];
+            v10 = strcmp(ifa_name, [cellularInterfaceName2 UTF8String]);
 
             if (!v10)
             {
@@ -2288,16 +2288,16 @@ LABEL_17:
 
   ifa_data = v6->ifa_data;
   v13 = [[NSNumber alloc] initWithUnsignedInt:ifa_data[10]];
-  [v4 setObject:v13 forKeyedSubscript:@"CellularDataInBytes"];
+  [dataCopy setObject:v13 forKeyedSubscript:@"CellularDataInBytes"];
 
   v14 = [[NSNumber alloc] initWithUnsignedInt:ifa_data[11]];
-  [v4 setObject:v14 forKeyedSubscript:@"CellularDataOutBytes"];
+  [dataCopy setObject:v14 forKeyedSubscript:@"CellularDataOutBytes"];
 
   v15 = [[NSNumber alloc] initWithUnsignedInt:ifa_data[5]];
-  [v4 setObject:v15 forKeyedSubscript:@"CellularDataInPackets"];
+  [dataCopy setObject:v15 forKeyedSubscript:@"CellularDataInPackets"];
 
   v16 = [[NSNumber alloc] initWithUnsignedInt:ifa_data[7]];
-  [v4 setObject:v16 forKeyedSubscript:@"CellularDataOutPackets"];
+  [dataCopy setObject:v16 forKeyedSubscript:@"CellularDataOutPackets"];
 
   v11 = 1;
 LABEL_12:
@@ -2309,36 +2309,36 @@ LABEL_18:
 
 - (NSString)description
 {
-  v2 = [(WiFiUserInteractionMonitor *)self _stateInfo];
-  v3 = [v2 description];
+  _stateInfo = [(WiFiUserInteractionMonitor *)self _stateInfo];
+  v3 = [_stateInfo description];
 
   return v3;
 }
 
-- (void)navigationListener:(id)a3 didChangeNavigationState:(unint64_t)a4 transportType:(int)a5
+- (void)navigationListener:(id)listener didChangeNavigationState:(unint64_t)state transportType:(int)type
 {
-  v9 = a3;
-  if ((a4 == 2) != [(WiFiUserInteractionMonitor *)self navigating])
+  listenerCopy = listener;
+  if ((state == 2) != [(WiFiUserInteractionMonitor *)self navigating])
   {
-    if (a4 == 2)
+    if (state == 2)
     {
-      v7 = 0;
+      navigating = 0;
     }
 
     else
     {
-      v7 = [(WiFiUserInteractionMonitor *)self navigating];
+      navigating = [(WiFiUserInteractionMonitor *)self navigating];
     }
 
     v8 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: navigating %d", "-[WiFiUserInteractionMonitor navigationListener:didChangeNavigationState:transportType:]", a4 == 2}];
+      [off_100298C40 WFLog:3 message:{"%s: navigating %d", "-[WiFiUserInteractionMonitor navigationListener:didChangeNavigationState:transportType:]", state == 2}];
     }
 
     objc_autoreleasePoolPop(v8);
-    [(WiFiUserInteractionMonitor *)self setNavigating:a4 == 2];
-    if (v7)
+    [(WiFiUserInteractionMonitor *)self setNavigating:state == 2];
+    if (navigating)
     {
       [(WiFiUserInteractionMonitor *)self _notifyCaptiveWithApplicationState];
     }
@@ -2360,9 +2360,9 @@ LABEL_18:
   objc_claimAutoreleasedReturnValue();
   [sub_1000084A8() setClients:?];
 
-  v7 = [(WiFiUserInteractionMonitor *)v6 clients];
+  clients = [(WiFiUserInteractionMonitor *)v6 clients];
 
-  if (!v7)
+  if (!clients)
   {
     goto LABEL_30;
   }
@@ -2371,9 +2371,9 @@ LABEL_18:
   dispatch_queue_create("com.apple.wifid.WiFiUserInteractionMonitor", v8);
   [sub_10000DBE0() setInternalQueue:?];
 
-  v9 = [(WiFiUserInteractionMonitor *)v6 internalQueue];
+  internalQueue = [(WiFiUserInteractionMonitor *)v6 internalQueue];
 
-  if (!v9)
+  if (!internalQueue)
   {
     goto LABEL_30;
   }
@@ -2382,9 +2382,9 @@ LABEL_18:
   dispatch_queue_create("com.apple.wifid.WiFiUserInteractionMonitor-notify", v10);
   [sub_10000DBE0() setNotifyQueue:?];
 
-  v11 = [(WiFiUserInteractionMonitor *)v6 notifyQueue];
+  notifyQueue = [(WiFiUserInteractionMonitor *)v6 notifyQueue];
 
-  if (!v11)
+  if (!notifyQueue)
   {
     goto LABEL_30;
   }
@@ -2393,9 +2393,9 @@ LABEL_18:
   objc_claimAutoreleasedReturnValue();
   [sub_1000084A8() setMonitoredInterfaceNames:?];
 
-  v12 = [(WiFiUserInteractionMonitor *)v6 monitoredInterfaceNames];
+  monitoredInterfaceNames = [(WiFiUserInteractionMonitor *)v6 monitoredInterfaceNames];
 
-  if (!v12)
+  if (!monitoredInterfaceNames)
   {
     goto LABEL_30;
   }
@@ -2414,18 +2414,18 @@ LABEL_18:
       goto LABEL_30;
     }
 
-    v13 = [(WiFiUserInteractionMonitor *)v6 internalQueue];
+    internalQueue2 = [(WiFiUserInteractionMonitor *)v6 internalQueue];
     dispatch_mach_create_f();
     [sub_10000DBE0() setManagedEventDispatchPort:?];
 
-    v14 = [(WiFiUserInteractionMonitor *)v6 managedEventDispatchPort];
+    managedEventDispatchPort = [(WiFiUserInteractionMonitor *)v6 managedEventDispatchPort];
 
-    if (!v14)
+    if (!managedEventDispatchPort)
     {
       goto LABEL_30;
     }
 
-    v12 = [(WiFiUserInteractionMonitor *)v6 managedEventDispatchPort];
+    monitoredInterfaceNames = [(WiFiUserInteractionMonitor *)v6 managedEventDispatchPort];
     [(WiFiUserInteractionMonitor *)v6 managedEventNotifyPort];
     dispatch_mach_connect();
   }
@@ -2434,34 +2434,34 @@ LABEL_18:
   [[WiFiUserInteractionMonitorNetworkAgent alloc] initWithUUID:@"A2CB4344-1CC7-47EF-8D25-FB68B047620F" andDescription:@"APPLE80211KEY_REAL_TIME_MEDIA_TRAFFIC_UUID"];
   [sub_1000084A8() setRtTrafficAgent:?];
 
-  v15 = [(WiFiUserInteractionMonitor *)v6 rtTrafficAgent];
+  rtTrafficAgent = [(WiFiUserInteractionMonitor *)v6 rtTrafficAgent];
 
-  if (!v15)
+  if (!rtTrafficAgent)
   {
 LABEL_30:
     v29 = 0;
     goto LABEL_25;
   }
 
-  v16 = [(WiFiUserInteractionMonitor *)v6 rtTrafficAgent];
-  [v16 registerStateChangeCallback:&stru_1002634B0 withCallbackContext:v6];
+  rtTrafficAgent2 = [(WiFiUserInteractionMonitor *)v6 rtTrafficAgent];
+  [rtTrafficAgent2 registerStateChangeCallback:&stru_1002634B0 withCallbackContext:v6];
 
   notify_register_check("com.apple.airport.userNotification", &dword_100298B70);
   [sub_100024FB4() setNavigating:?];
-  v17 = &xpc_dictionary_set_uint64_ptr;
+  navigationListener2 = &xpc_dictionary_set_uint64_ptr;
   if (!objc_opt_class())
   {
     goto LABEL_14;
   }
 
   v18 = [GEONavigationListener alloc];
-  v19 = [(WiFiUserInteractionMonitor *)v6 internalQueue];
-  [v18 initWithQueue:v19];
+  internalQueue3 = [(WiFiUserInteractionMonitor *)v6 internalQueue];
+  [v18 initWithQueue:internalQueue3];
   [sub_1000084A8() setNavigationListener:?];
 
-  v20 = [(WiFiUserInteractionMonitor *)v6 navigationListener];
+  navigationListener = [(WiFiUserInteractionMonitor *)v6 navigationListener];
 
-  if (!v20)
+  if (!navigationListener)
   {
     v33 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -2473,19 +2473,19 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v17 = [(WiFiUserInteractionMonitor *)v6 navigationListener];
-  [v17 setDelegate:v6];
+  navigationListener2 = [(WiFiUserInteractionMonitor *)v6 navigationListener];
+  [navigationListener2 setDelegate:v6];
 
 LABEL_14:
   if (objc_opt_class() && NSClassFromString(@"CXCallObserver"))
   {
-    v17 = [(WiFiUserInteractionMonitor *)v6 internalQueue];
+    navigationListener2 = [(WiFiUserInteractionMonitor *)v6 internalQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10011B978;
     block[3] = &unk_10025E9B8;
     v41 = v6;
-    dispatch_async(v17, block);
+    dispatch_async(navigationListener2, block);
   }
 
   +[NSMutableSet set];
@@ -2512,13 +2512,13 @@ LABEL_14:
   if (&__CTServerConnectionCreateWithIdentifier)
   {
     v6->_ctServerConnectionRef = _CTServerConnectionCreateWithIdentifier();
-    v17 = objc_autoreleasePoolPush();
+    navigationListener2 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
       [off_100298C40 WFLog:3 message:{"%s: created a CT server connection %p", "-[WiFiUserInteractionMonitor _initPrivate]", v6->_ctServerConnectionRef}];
     }
 
-    objc_autoreleasePoolPop(v17);
+    objc_autoreleasePoolPop(navigationListener2);
   }
 
   [(WiFiUserInteractionMonitor *)v6 setCellularL3MBPS:0.0];
@@ -2561,28 +2561,28 @@ LABEL_14:
   v38 = v5;
   notify_register_dispatch("com.apple.system.console_mode_changed", &v6->_gameNotifyToken, internalQueue, handler);
 
-  v25 = [(WiFiUserInteractionMonitor *)v24 internalQueue];
-  v26 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v25);
+  internalQueue4 = [(WiFiUserInteractionMonitor *)v24 internalQueue];
+  v26 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, internalQueue4);
   [(WiFiUserInteractionMonitor *)v24 setLastRecommendedNetworkTimestampExpirationTimer:v26];
 
-  v27 = [(WiFiUserInteractionMonitor *)v24 lastRecommendedNetworkTimestampExpirationTimer];
+  lastRecommendedNetworkTimestampExpirationTimer = [(WiFiUserInteractionMonitor *)v24 lastRecommendedNetworkTimestampExpirationTimer];
 
-  if (v27)
+  if (lastRecommendedNetworkTimestampExpirationTimer)
   {
-    v28 = [(WiFiUserInteractionMonitor *)v24 lastRecommendedNetworkTimestampExpirationTimer];
+    lastRecommendedNetworkTimestampExpirationTimer2 = [(WiFiUserInteractionMonitor *)v24 lastRecommendedNetworkTimestampExpirationTimer];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_10011BC54;
     v34[3] = &unk_10025E9B8;
     v29 = v24;
     v35 = v29;
-    dispatch_source_set_event_handler(v28, v34);
+    dispatch_source_set_event_handler(lastRecommendedNetworkTimestampExpirationTimer2, v34);
 
-    v30 = [(WiFiUserInteractionMonitor *)v29 lastRecommendedNetworkTimestampExpirationTimer];
-    dispatch_source_set_timer(v30, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
+    lastRecommendedNetworkTimestampExpirationTimer3 = [(WiFiUserInteractionMonitor *)v29 lastRecommendedNetworkTimestampExpirationTimer];
+    dispatch_source_set_timer(lastRecommendedNetworkTimestampExpirationTimer3, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
 
-    v31 = [(WiFiUserInteractionMonitor *)v29 lastRecommendedNetworkTimestampExpirationTimer];
-    dispatch_resume(v31);
+    lastRecommendedNetworkTimestampExpirationTimer4 = [(WiFiUserInteractionMonitor *)v29 lastRecommendedNetworkTimestampExpirationTimer];
+    dispatch_resume(lastRecommendedNetworkTimestampExpirationTimer4);
 
     v6 = v35;
   }
@@ -2598,18 +2598,18 @@ LABEL_25:
   return v29;
 }
 
-- (void)setOverrideApplicationState:(unint64_t)a3
+- (void)setOverrideApplicationState:(unint64_t)state
 {
-  if ([(WiFiUserInteractionMonitor *)self overrideApplicationState]!= a3)
+  if ([(WiFiUserInteractionMonitor *)self overrideApplicationState]!= state)
   {
     v5 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: setting override state to %llu", "-[WiFiUserInteractionMonitor setOverrideApplicationState:]", a3}];
+      [off_100298C40 WFLog:3 message:{"%s: setting override state to %llu", "-[WiFiUserInteractionMonitor setOverrideApplicationState:]", state}];
     }
 
     objc_autoreleasePoolPop(v5);
-    self->_overrideApplicationState = a3;
+    self->_overrideApplicationState = state;
 
     [(WiFiUserInteractionMonitor *)self _notifyCaptiveWithApplicationState];
   }
@@ -2617,38 +2617,38 @@ LABEL_25:
 
 - (BOOL)isCellularDataDisabledByUser
 {
-  v3 = [(WiFiUserInteractionMonitor *)self cellularDataStatusMap];
+  cellularDataStatusMap = [(WiFiUserInteractionMonitor *)self cellularDataStatusMap];
 
-  if (!v3)
+  if (!cellularDataStatusMap)
   {
     return 0;
   }
 
-  v4 = [(WiFiUserInteractionMonitor *)self cellularDataStatusMap];
-  v5 = [v4 containsObject:@"WiFiCellularDataStatusDisabledByUser"];
+  cellularDataStatusMap2 = [(WiFiUserInteractionMonitor *)self cellularDataStatusMap];
+  v5 = [cellularDataStatusMap2 containsObject:@"WiFiCellularDataStatusDisabledByUser"];
 
   return v5;
 }
 
 - (BOOL)isCellularDataAttachedAndActive
 {
-  v3 = [(WiFiUserInteractionMonitor *)self cellularDataStatusMap];
+  cellularDataStatusMap = [(WiFiUserInteractionMonitor *)self cellularDataStatusMap];
 
-  if (!v3)
+  if (!cellularDataStatusMap)
   {
     return 0;
   }
 
-  v4 = [(WiFiUserInteractionMonitor *)self cellularDataStatusMap];
-  v5 = [v4 containsObject:@"WiFiCellularDataStatusAttachedAndActive"];
+  cellularDataStatusMap2 = [(WiFiUserInteractionMonitor *)self cellularDataStatusMap];
+  v5 = [cellularDataStatusMap2 containsObject:@"WiFiCellularDataStatusAttachedAndActive"];
 
   return v5;
 }
 
-- (BOOL)_isCellularDataAllowedForApp:(id)a3
+- (BOOL)_isCellularDataAllowedForApp:(id)app
 {
-  v4 = a3;
-  if (v4 && self->_ctServerConnectionRef)
+  appCopy = app;
+  if (appCopy && self->_ctServerConnectionRef)
   {
     _CTServerConnectionCopyCellularUsagePolicy();
   }

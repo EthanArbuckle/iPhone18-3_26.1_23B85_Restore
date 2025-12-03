@@ -1,20 +1,20 @@
 @interface PSUIDataUsageCategorySpecifier
 - (PSBillingPeriodSource)billingPeriodSource;
 - (PSListController)hostController;
-- (PSUIDataUsageCategorySpecifier)initWithAppType:(unint64_t)a3 usageType:(unint64_t)a4 subSpecifiers:(id)a5;
+- (PSUIDataUsageCategorySpecifier)initWithAppType:(unint64_t)type usageType:(unint64_t)usageType subSpecifiers:(id)specifiers;
 - (id)dataUsageString;
 - (unint64_t)dataUsage;
-- (void)showDataUsageCategoryListController:(id)a3;
-- (void)showHiddenApps:(id)a3;
+- (void)showDataUsageCategoryListController:(id)controller;
+- (void)showHiddenApps:(id)apps;
 @end
 
 @implementation PSUIDataUsageCategorySpecifier
 
-- (PSUIDataUsageCategorySpecifier)initWithAppType:(unint64_t)a3 usageType:(unint64_t)a4 subSpecifiers:(id)a5
+- (PSUIDataUsageCategorySpecifier)initWithAppType:(unint64_t)type usageType:(unint64_t)usageType subSpecifiers:(id)specifiers
 {
-  v8 = a5;
-  v9 = a3 - 1;
-  if (a3 - 1 > 4)
+  specifiersCopy = specifiers;
+  v9 = type - 1;
+  if (type - 1 > 4)
   {
     v13 = 0;
     v11 = 0;
@@ -34,11 +34,11 @@
   v15 = v14;
   if (v14)
   {
-    v14->_appType = a3;
-    v14->_usageType = a4;
-    v16 = [MEMORY[0x277D4D860] sharedInstance];
+    v14->_appType = type;
+    v14->_usageType = usageType;
+    mEMORY[0x277D4D860] = [MEMORY[0x277D4D860] sharedInstance];
     statisticsCache = v15->_statisticsCache;
-    v15->_statisticsCache = v16;
+    v15->_statisticsCache = mEMORY[0x277D4D860];
 
     [(PSUIDataUsageCategorySpecifier *)v15 setTarget:v15];
     *(&v15->super.super.isa + *MEMORY[0x277D3FCA8]) = sel_dataUsageString;
@@ -49,7 +49,7 @@
 
     else
     {
-      if ([v8 count])
+      if ([specifiersCopy count])
       {
         v18 = 2;
       }
@@ -60,19 +60,19 @@
       }
 
       [(PSUIDataUsageCategorySpecifier *)v15 setCellType:v18];
-      if ([v8 count])
+      if ([specifiersCopy count])
       {
         v19 = objc_opt_class();
 LABEL_13:
         [(PSUIDataUsageCategorySpecifier *)v15 setDetailControllerClass:v19];
-        if (v15->_appType == 5 && [v8 count])
+        if (v15->_appType == 5 && [specifiersCopy count])
         {
           v20 = &selRef_showHiddenApps_;
         }
 
         else
         {
-          if (![v8 count] || v15->_appType == 1)
+          if (![specifiersCopy count] || v15->_appType == 1)
           {
             goto LABEL_20;
           }
@@ -86,7 +86,7 @@ LABEL_20:
         v21 = MEMORY[0x277CBEC38];
         [(PSUIDataUsageCategorySpecifier *)v15 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D40020]];
         [(PSUIDataUsageCategorySpecifier *)v15 setProperty:v21 forKey:*MEMORY[0x277D40018]];
-        [(PSUIDataUsageCategorySpecifier *)v15 setSubcategorySpecifiers:v8];
+        [(PSUIDataUsageCategorySpecifier *)v15 setSubcategorySpecifiers:specifiersCopy];
         goto LABEL_21;
       }
     }
@@ -103,62 +103,62 @@ LABEL_21:
 - (unint64_t)dataUsage
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUIDataUsageCategorySpecifier *)self billingPeriodSource];
-  v4 = v3;
+  billingPeriodSource = [(PSUIDataUsageCategorySpecifier *)self billingPeriodSource];
+  v4 = billingPeriodSource;
   appType = self->_appType;
   if (appType <= 2)
   {
     if (appType == 1)
     {
       statisticsCache = self->_statisticsCache;
-      if (v3)
+      if (billingPeriodSource)
       {
-        v15 = [v3 selectedPeriod];
+        selectedPeriod = [billingPeriodSource selectedPeriod];
       }
 
       else
       {
-        v15 = 0;
+        selectedPeriod = 0;
       }
 
-      v19 = [(PSDataUsageStatisticsCache *)statisticsCache totalUninstalledAppUsageForPeriod:v15];
+      v19 = [(PSDataUsageStatisticsCache *)statisticsCache totalUninstalledAppUsageForPeriod:selectedPeriod];
       goto LABEL_28;
     }
 
     if (appType == 2)
     {
       v8 = self->_statisticsCache;
-      if (v3)
+      if (billingPeriodSource)
       {
-        v9 = [v3 selectedPeriod];
+        selectedPeriod2 = [billingPeriodSource selectedPeriod];
       }
 
       else
       {
-        v9 = 0;
+        selectedPeriod2 = 0;
       }
 
-      v17 = [(PSDataUsageStatisticsCache *)v8 totalWatchOnlyAppUsageForPeriod:v9];
+      v17 = [(PSDataUsageStatisticsCache *)v8 totalWatchOnlyAppUsageForPeriod:selectedPeriod2];
 LABEL_31:
       usageType = self->_usageType;
-      v21 = [v17 native];
-      v22 = v21;
+      native = [v17 native];
+      v22 = native;
       if (usageType == 1)
       {
-        v23 = [v21 satellite];
-        v24 = [v17 proxied];
-        v18 = [v24 satellite] + v23;
+        satellite = [native satellite];
+        proxied = [v17 proxied];
+        v18 = [proxied satellite] + satellite;
       }
 
       else
       {
-        v25 = [v21 cellularHome];
-        v24 = [v17 native];
-        v26 = [v24 cellularRoaming] + v25;
-        v27 = [v17 proxied];
-        v28 = [v27 cellularHome];
-        v29 = [v17 proxied];
-        v18 = v26 + v28 + [v29 cellularRoaming];
+        cellularHome = [native cellularHome];
+        proxied = [v17 native];
+        v26 = [proxied cellularRoaming] + cellularHome;
+        proxied2 = [v17 proxied];
+        cellularHome2 = [proxied2 cellularHome];
+        proxied3 = [v17 proxied];
+        v18 = v26 + cellularHome2 + [proxied3 cellularRoaming];
       }
 
       if (self->_appType == 3)
@@ -166,20 +166,20 @@ LABEL_31:
         v30 = self->_statisticsCache;
         if (v4)
         {
-          v31 = [v4 selectedPeriod];
+          selectedPeriod3 = [v4 selectedPeriod];
         }
 
         else
         {
-          v31 = 0;
+          selectedPeriod3 = 0;
         }
 
-        v32 = [(PSDataUsageStatisticsCache *)v30 totalHotspotClientUsageForPeriod:v31];
-        v33 = [(PSUIDataUsageCategorySpecifier *)self getLogger];
-        v34 = v33;
+        v32 = [(PSDataUsageStatisticsCache *)v30 totalHotspotClientUsageForPeriod:selectedPeriod3];
+        getLogger = [(PSUIDataUsageCategorySpecifier *)self getLogger];
+        v34 = getLogger;
         if (v18 >= v32)
         {
-          if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(getLogger, OS_LOG_TYPE_INFO))
           {
             *buf = 134218240;
             v39 = v32;
@@ -193,7 +193,7 @@ LABEL_31:
 
         else
         {
-          if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
+          if (os_log_type_enabled(getLogger, OS_LOG_TYPE_FAULT))
           {
             *buf = 134218240;
             v39 = v32;
@@ -214,59 +214,59 @@ LABEL_31:
     {
       case 3:
         v10 = self->_statisticsCache;
-        if (v3)
+        if (billingPeriodSource)
         {
-          v11 = [v3 selectedPeriod];
+          selectedPeriod4 = [billingPeriodSource selectedPeriod];
         }
 
         else
         {
-          v11 = 0;
+          selectedPeriod4 = 0;
         }
 
-        v19 = [(PSDataUsageStatisticsCache *)v10 totalSystemServicesUsageForPeriod:v11];
+        v19 = [(PSDataUsageStatisticsCache *)v10 totalSystemServicesUsageForPeriod:selectedPeriod4];
         goto LABEL_28;
       case 4:
         v12 = self->_statisticsCache;
-        if (v3)
+        if (billingPeriodSource)
         {
-          v13 = [v3 selectedPeriod];
+          selectedPeriod5 = [billingPeriodSource selectedPeriod];
         }
 
         else
         {
-          v13 = 0;
+          selectedPeriod5 = 0;
         }
 
-        v18 = [(PSDataUsageStatisticsCache *)v12 totalHotspotClientUsageForPeriod:v13];
+        v18 = [(PSDataUsageStatisticsCache *)v12 totalHotspotClientUsageForPeriod:selectedPeriod5];
         v17 = 0;
         goto LABEL_45;
       case 5:
         v6 = self->_statisticsCache;
-        if (v3)
+        if (billingPeriodSource)
         {
-          v7 = [v3 selectedPeriod];
+          selectedPeriod6 = [billingPeriodSource selectedPeriod];
         }
 
         else
         {
-          v7 = 0;
+          selectedPeriod6 = 0;
         }
 
-        v19 = [(PSDataUsageStatisticsCache *)v6 totalHiddenAppUsageForPeriod:v7];
+        v19 = [(PSDataUsageStatisticsCache *)v6 totalHiddenAppUsageForPeriod:selectedPeriod6];
 LABEL_28:
         v17 = v19;
         goto LABEL_31;
     }
   }
 
-  v16 = [(PSUIDataUsageCategorySpecifier *)self getLogger];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+  getLogger2 = [(PSUIDataUsageCategorySpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
   {
     v37 = self->_appType;
     *buf = 134217984;
     v39 = v37;
-    _os_log_error_impl(&dword_2658DE000, v16, OS_LOG_TYPE_ERROR, "Unhandled usage category %lu", buf, 0xCu);
+    _os_log_error_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_ERROR, "Unhandled usage category %lu", buf, 0xCu);
   }
 
   v17 = 0;
@@ -279,10 +279,10 @@ LABEL_45:
 
 - (id)dataUsageString
 {
-  v2 = [(PSUIDataUsageCategorySpecifier *)self dataUsage];
-  if (v2)
+  dataUsage = [(PSUIDataUsageCategorySpecifier *)self dataUsage];
+  if (dataUsage)
   {
-    v3 = [MEMORY[0x277D4D878] usageSizeString:v2];
+    v3 = [MEMORY[0x277D4D878] usageSizeString:dataUsage];
   }
 
   else
@@ -305,9 +305,9 @@ LABEL_45:
   return v4;
 }
 
-- (void)showHiddenApps:(id)a3
+- (void)showHiddenApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   WeakRetained = objc_loadWeakRetained(&self->_hostController);
 
   if (WeakRetained)
@@ -330,23 +330,23 @@ LABEL_45:
 
     v7 = v6;
     _Block_object_dispose(&v16, 8);
-    v8 = [v6 sharedGuard];
+    sharedGuard = [v6 sharedGuard];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __49__PSUIDataUsageCategorySpecifier_showHiddenApps___block_invoke;
     v9[3] = &unk_279BAA348;
     v9[4] = self;
-    v10 = v4;
-    [v8 authenticateUnconditionallyWithCompletion:v9];
+    v10 = appsCopy;
+    [sharedGuard authenticateUnconditionallyWithCompletion:v9];
   }
 
   else
   {
-    v8 = [(PSUIDataUsageCategorySpecifier *)self getLogger];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    sharedGuard = [(PSUIDataUsageCategorySpecifier *)self getLogger];
+    if (os_log_type_enabled(sharedGuard, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2658DE000, v8, OS_LOG_TYPE_ERROR, "Host controller not found, cannot drill down to Hidden Apps.", buf, 2u);
+      _os_log_error_impl(&dword_2658DE000, sharedGuard, OS_LOG_TYPE_ERROR, "Host controller not found, cannot drill down to Hidden Apps.", buf, 2u);
     }
   }
 }
@@ -399,9 +399,9 @@ void __49__PSUIDataUsageCategorySpecifier_showHiddenApps___block_invoke_2(uint64
   }
 }
 
-- (void)showDataUsageCategoryListController:(id)a3
+- (void)showDataUsageCategoryListController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_hostController);
 
   if (WeakRetained)
@@ -411,17 +411,17 @@ void __49__PSUIDataUsageCategorySpecifier_showHiddenApps___block_invoke_2(uint64
     block[2] = __70__PSUIDataUsageCategorySpecifier_showDataUsageCategoryListController___block_invoke;
     block[3] = &unk_279BA9D30;
     block[4] = self;
-    v9 = v4;
+    v9 = controllerCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
   else
   {
-    v6 = [(PSUIDataUsageCategorySpecifier *)self getLogger];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    getLogger = [(PSUIDataUsageCategorySpecifier *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       *v7 = 0;
-      _os_log_error_impl(&dword_2658DE000, v6, OS_LOG_TYPE_ERROR, "Host controller not found, cannot drill down to Hidden Apps.", v7, 2u);
+      _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Host controller not found, cannot drill down to Hidden Apps.", v7, 2u);
     }
   }
 }

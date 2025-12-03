@@ -1,33 +1,33 @@
 @interface CNContactListActionExecutor
-- (BOOL)showEditAuthorizationPaneForAction:(id)a3 withActionType:(int64_t)a4;
-- (CNContactListActionExecutor)initWithUndoManager:(id)a3;
-- (void)editAuthorizationController:(id)a3 authorizationDidFinishWithResult:(int64_t)a4;
-- (void)executeAction:(id)a3;
-- (void)executeUndoableAction:(id)a3;
-- (void)showEditAuthorizationPane:(id)a3 animated:(BOOL)a4 forAction:(id)a5;
-- (void)undoAction:(id)a3;
+- (BOOL)showEditAuthorizationPaneForAction:(id)action withActionType:(int64_t)type;
+- (CNContactListActionExecutor)initWithUndoManager:(id)manager;
+- (void)editAuthorizationController:(id)controller authorizationDidFinishWithResult:(int64_t)result;
+- (void)executeAction:(id)action;
+- (void)executeUndoableAction:(id)action;
+- (void)showEditAuthorizationPane:(id)pane animated:(BOOL)animated forAction:(id)action;
+- (void)undoAction:(id)action;
 @end
 
 @implementation CNContactListActionExecutor
 
-- (void)editAuthorizationController:(id)a3 authorizationDidFinishWithResult:(int64_t)a4
+- (void)editAuthorizationController:(id)controller authorizationDidFinishWithResult:(int64_t)result
 {
   [(CNContactListActionExecutor *)self setEditAuthorizationController:0];
-  if (a4 != 2)
+  if (result != 2)
   {
     return;
   }
 
-  v6 = [(CNContactListActionExecutor *)self authorizationContext];
-  v7 = [v6 type];
+  authorizationContext = [(CNContactListActionExecutor *)self authorizationContext];
+  type = [authorizationContext type];
 
-  if (v7 == 2)
+  if (type == 2)
   {
-    v10 = [(CNContactListActionExecutor *)self authorizationContext];
-    v11 = [v10 action];
-    if ([v11 conformsToProtocol:&unk_1F0D8D1C0])
+    authorizationContext2 = [(CNContactListActionExecutor *)self authorizationContext];
+    action = [authorizationContext2 action];
+    if ([action conformsToProtocol:&unk_1F0D8D1C0])
     {
-      v12 = v11;
+      v12 = action;
     }
 
     else
@@ -35,21 +35,21 @@
       v12 = 0;
     }
 
-    v8 = v12;
+    authorizationContext3 = v12;
 
-    if (v8)
+    if (authorizationContext3)
     {
-      [v8 performUndoAction];
+      [authorizationContext3 performUndoAction];
     }
 
     goto LABEL_11;
   }
 
-  if (v7 == 1)
+  if (type == 1)
   {
-    v8 = [(CNContactListActionExecutor *)self authorizationContext];
-    v9 = [v8 action];
-    [v9 performAction];
+    authorizationContext3 = [(CNContactListActionExecutor *)self authorizationContext];
+    action2 = [authorizationContext3 action];
+    [action2 performAction];
 
 LABEL_11:
   }
@@ -57,94 +57,94 @@ LABEL_11:
   [(CNContactListActionExecutor *)self setAuthorizationContext:0];
 }
 
-- (void)showEditAuthorizationPane:(id)a3 animated:(BOOL)a4 forAction:(id)a5
+- (void)showEditAuthorizationPane:(id)pane animated:(BOOL)animated forAction:(id)action
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  animatedCopy = animated;
+  actionCopy = action;
+  paneCopy = pane;
   v10 = objc_alloc_init(CNUIEditAuthorizationController);
   [(CNContactListActionExecutor *)self setEditAuthorizationController:v10];
 
-  v11 = [(CNContactListActionExecutor *)self editAuthorizationController];
-  [v11 setDelegate:self];
+  editAuthorizationController = [(CNContactListActionExecutor *)self editAuthorizationController];
+  [editAuthorizationController setDelegate:self];
 
-  v12 = [(CNContactListActionExecutor *)self editAuthorizationController];
-  [v12 setSender:v9];
+  editAuthorizationController2 = [(CNContactListActionExecutor *)self editAuthorizationController];
+  [editAuthorizationController2 setSender:paneCopy];
 
-  v13 = [(CNContactListActionExecutor *)self editAuthorizationController];
-  [v13 setAnimated:v5];
+  editAuthorizationController3 = [(CNContactListActionExecutor *)self editAuthorizationController];
+  [editAuthorizationController3 setAnimated:animatedCopy];
 
-  v14 = [v8 delegate];
+  delegate = [actionCopy delegate];
 
-  v15 = [v14 presentingViewControllerForActions];
-  v16 = [(CNContactListActionExecutor *)self editAuthorizationController];
-  [v16 setGuardedViewController:v15];
+  presentingViewControllerForActions = [delegate presentingViewControllerForActions];
+  editAuthorizationController4 = [(CNContactListActionExecutor *)self editAuthorizationController];
+  [editAuthorizationController4 setGuardedViewController:presentingViewControllerForActions];
 
-  v17 = [(CNContactListActionExecutor *)self editAuthorizationController];
-  [v17 presentAuthorizationUI];
+  editAuthorizationController5 = [(CNContactListActionExecutor *)self editAuthorizationController];
+  [editAuthorizationController5 presentAuthorizationUI];
 }
 
-- (BOOL)showEditAuthorizationPaneForAction:(id)a3 withActionType:(int64_t)a4
+- (BOOL)showEditAuthorizationPaneForAction:(id)action withActionType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [v6 editRequiresAuthorization];
-  if (v7)
+  actionCopy = action;
+  editRequiresAuthorization = [actionCopy editRequiresAuthorization];
+  if (editRequiresAuthorization)
   {
     v8 = objc_alloc_init(CNContactListActionAuthorizationContext);
     [(CNContactListActionExecutor *)self setAuthorizationContext:v8];
 
-    v9 = [(CNContactListActionExecutor *)self authorizationContext];
-    [v9 setAction:v6];
+    authorizationContext = [(CNContactListActionExecutor *)self authorizationContext];
+    [authorizationContext setAction:actionCopy];
 
-    v10 = [(CNContactListActionExecutor *)self authorizationContext];
-    [v10 setType:a4];
+    authorizationContext2 = [(CNContactListActionExecutor *)self authorizationContext];
+    [authorizationContext2 setType:type];
 
-    [(CNContactListActionExecutor *)self showEditAuthorizationPane:self animated:1 forAction:v6];
+    [(CNContactListActionExecutor *)self showEditAuthorizationPane:self animated:1 forAction:actionCopy];
   }
 
-  return v7;
+  return editRequiresAuthorization;
 }
 
-- (void)undoAction:(id)a3
+- (void)undoAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if (![CNContactListActionExecutor showEditAuthorizationPaneForAction:"showEditAuthorizationPaneForAction:withActionType:" withActionType:?])
   {
-    [v4 performUndoAction];
+    [actionCopy performUndoAction];
   }
 }
 
-- (void)executeUndoableAction:(id)a3
+- (void)executeUndoableAction:(id)action
 {
-  v5 = a3;
-  v4 = [(CNContactListActionExecutor *)self undoManager];
-  [v4 registerUndoWithTarget:self selector:sel_undoAction_ object:v5];
+  actionCopy = action;
+  undoManager = [(CNContactListActionExecutor *)self undoManager];
+  [undoManager registerUndoWithTarget:self selector:sel_undoAction_ object:actionCopy];
 
-  if (![(CNContactListActionExecutor *)self showEditAuthorizationPaneForAction:v5 withActionType:1])
+  if (![(CNContactListActionExecutor *)self showEditAuthorizationPaneForAction:actionCopy withActionType:1])
   {
-    [v5 performAction];
+    [actionCopy performAction];
   }
 }
 
-- (void)executeAction:(id)a3
+- (void)executeAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if (![CNContactListActionExecutor showEditAuthorizationPaneForAction:"showEditAuthorizationPaneForAction:withActionType:" withActionType:?])
   {
-    [v4 performAction];
+    [actionCopy performAction];
   }
 }
 
-- (CNContactListActionExecutor)initWithUndoManager:(id)a3
+- (CNContactListActionExecutor)initWithUndoManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = CNContactListActionExecutor;
   v6 = [(CNContactListActionExecutor *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_undoManager, a3);
+    objc_storeStrong(&v6->_undoManager, manager);
     v8 = v7;
   }
 

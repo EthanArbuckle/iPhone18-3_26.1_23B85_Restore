@@ -20,12 +20,12 @@
 
 - (id)navDisplayAddress
 {
-  v2 = [a1 geoMapItem];
+  geoMapItem = [self geoMapItem];
 
-  if (v2)
+  if (geoMapItem)
   {
-    v3 = [a1 geoMapItem];
-    v4 = navDisplayAddressForMapItem(v3, 0);
+    geoMapItem2 = [self geoMapItem];
+    v4 = navDisplayAddressForMapItem(geoMapItem2, 0);
   }
 
   else
@@ -38,84 +38,84 @@
 
 - (id)humanDescriptionWithAddressAndLatLng
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  v3 = [a1 navDisplayName];
-  v4 = [a1 geoMapItem];
-  if (v4 && (v5 = v4, [a1 geoMapItem], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "contactAddressType"), v6, v5, v7))
+  array = [MEMORY[0x1E695DF70] array];
+  navDisplayName = [self navDisplayName];
+  geoMapItem = [self geoMapItem];
+  if (geoMapItem && (v5 = geoMapItem, [self geoMapItem], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "contactAddressType"), v6, v5, v7))
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [a1 navDisplayNameWithSpecialContacts:0];
-    v10 = [a1 navDisplayNameWithSpecialContacts:1];
+    v9 = [self navDisplayNameWithSpecialContacts:0];
+    v10 = [self navDisplayNameWithSpecialContacts:1];
     v11 = [v8 stringWithFormat:@"%@ (%@)", v9, v10];
-    [v2 addObject:v11];
+    [array addObject:v11];
   }
 
-  else if (v3)
+  else if (navDisplayName)
   {
-    [v2 addObject:v3];
+    [array addObject:navDisplayName];
   }
 
-  v12 = [a1 navDisplayAddress];
-  if (v12)
+  navDisplayAddress = [self navDisplayAddress];
+  if (navDisplayAddress)
   {
-    [v2 addObject:v12];
+    [array addObject:navDisplayAddress];
   }
 
   v13 = MEMORY[0x1E696AEC0];
-  v14 = [a1 latLng];
-  [v14 lat];
+  latLng = [self latLng];
+  [latLng lat];
   v16 = v15;
-  v17 = [a1 latLng];
-  [v17 lng];
+  latLng2 = [self latLng];
+  [latLng2 lng];
   v19 = [v13 stringWithFormat:@"%.6f, %.6f", v16, v18];
-  [v2 addObject:v19];
+  [array addObject:v19];
 
-  v20 = [v2 componentsJoinedByString:@" | "];
+  v20 = [array componentsJoinedByString:@" | "];
 
   return v20;
 }
 
 - (id)humanDescriptionWithLatLng
 {
-  v2 = [a1 geoMapItem];
+  geoMapItem = [self geoMapItem];
 
-  if (v2)
+  if (geoMapItem)
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [a1 navDisplayNameWithSpecialContacts:0];
-    v5 = [a1 latLng];
-    [v5 lat];
+    v4 = [self navDisplayNameWithSpecialContacts:0];
+    latLng = [self latLng];
+    [latLng lat];
     v7 = v6;
-    v8 = [a1 latLng];
-    [v8 lng];
-    v10 = [v3 stringWithFormat:@"%@ <%f, %f>", v4, v7, v9];
+    latLng2 = [self latLng];
+    [latLng2 lng];
+    humanDescription = [v3 stringWithFormat:@"%@ <%f, %f>", v4, v7, v9];
   }
 
   else
   {
-    v10 = [a1 humanDescription];
+    humanDescription = [self humanDescription];
   }
 
-  return v10;
+  return humanDescription;
 }
 
 - (id)humanDescription
 {
-  v2 = [a1 geoMapItem];
+  geoMapItem = [self geoMapItem];
 
-  if (v2)
+  if (geoMapItem)
   {
-    v3 = [a1 navDisplayNameWithSpecialContacts:0];
+    v3 = [self navDisplayNameWithSpecialContacts:0];
   }
 
-  else if ([a1 hasLatLng])
+  else if ([self hasLatLng])
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [a1 latLng];
-    [v5 lat];
+    latLng = [self latLng];
+    [latLng lat];
     v7 = v6;
-    v8 = [a1 latLng];
-    [v8 lng];
+    latLng2 = [self latLng];
+    [latLng2 lng];
     v3 = [v4 stringWithFormat:@"(%f, %f)", v7, v9];
   }
 
@@ -129,49 +129,49 @@
 
 - (id)_spokenPlaceName
 {
-  v2 = [a1 geoMapItem];
-  v3 = [a1 localeIdentifier];
-  v4 = [v2 spokenNameForLocale:v3];
+  geoMapItem = [self geoMapItem];
+  localeIdentifier = [self localeIdentifier];
+  v4 = [geoMapItem spokenNameForLocale:localeIdentifier];
 
   if ([v4 length])
   {
-    v5 = [v4 _navigation_stringByMarkingAsNormalText];
+    _navigation_stringByMarkingAsNormalText = [v4 _navigation_stringByMarkingAsNormalText];
     goto LABEL_7;
   }
 
   if ([MEMORY[0x1E69A1D18] canSpeakWrittenPlaceNames])
   {
-    v5 = [a1 name];
-    if ([v5 length])
+    _navigation_stringByMarkingAsNormalText = [self name];
+    if ([_navigation_stringByMarkingAsNormalText length])
     {
       goto LABEL_7;
     }
   }
 
-  v5 = 0;
+  _navigation_stringByMarkingAsNormalText = 0;
 LABEL_7:
 
-  return v5;
+  return _navigation_stringByMarkingAsNormalText;
 }
 
 - (id)navAnnouncementAddressAndSubstituteType:()MNExtras
 {
-  v5 = [a1 geoMapItem];
-  if (v5)
+  geoMapItem = [self geoMapItem];
+  if (geoMapItem)
   {
-    v6 = [a1 localeIdentifier];
-    v7 = [v5 _spokenAddressForLocale:v6];
+    localeIdentifier = [self localeIdentifier];
+    navDisplayAddress = [geoMapItem _spokenAddressForLocale:localeIdentifier];
 
-    if ([v7 length])
+    if ([navDisplayAddress length])
     {
       if (a3)
       {
         *a3 = 2;
       }
 
-      v8 = [v7 _navigation_stringByMarkingAsNormalText];
+      _navigation_stringByMarkingAsNormalText = [navDisplayAddress _navigation_stringByMarkingAsNormalText];
 LABEL_12:
-      v9 = v8;
+      v9 = _navigation_stringByMarkingAsNormalText;
 
       goto LABEL_16;
     }
@@ -179,15 +179,15 @@ LABEL_12:
 
   if ([MEMORY[0x1E69A1D18] canSpeakWrittenAddresses])
   {
-    v7 = [a1 navDisplayAddress];
-    if ([v7 length])
+    navDisplayAddress = [self navDisplayAddress];
+    if ([navDisplayAddress length])
     {
       if (a3)
       {
         *a3 = 2;
       }
 
-      v8 = [v7 _navigation_stringByMarkingAsAddress];
+      _navigation_stringByMarkingAsNormalText = [navDisplayAddress _navigation_stringByMarkingAsAddress];
       goto LABEL_12;
     }
   }
@@ -205,12 +205,12 @@ LABEL_16:
 
 - (id)navAnnouncementNameAndSubstituteType:()MNExtras
 {
-  v5 = [a1 geoMapItem];
-  v6 = v5;
-  if (v5)
+  geoMapItem = [self geoMapItem];
+  v6 = geoMapItem;
+  if (geoMapItem)
   {
-    v7 = [v5 contactSpokenName];
-    if ([v7 length])
+    contactSpokenName = [geoMapItem contactSpokenName];
+    if ([contactSpokenName length])
     {
       if (a3)
       {
@@ -221,42 +221,42 @@ LABEL_16:
     }
   }
 
-  v8 = [a1 _spokenPlaceName];
-  if ([v8 length])
+  _spokenPlaceName = [self _spokenPlaceName];
+  if ([_spokenPlaceName length])
   {
     if (a3)
     {
       *a3 = 4;
     }
 
-    v7 = v8;
+    contactSpokenName = _spokenPlaceName;
   }
 
   else
   {
-    v7 = 0;
+    contactSpokenName = 0;
   }
 
 LABEL_12:
 
-  return v7;
+  return contactSpokenName;
 }
 
 - (id)localeIdentifier
 {
-  v0 = [MEMORY[0x1E696AE30] processInfo];
-  v1 = [v0 _navigation_isNavd];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  _navigation_isNavd = [processInfo _navigation_isNavd];
 
-  if (v1)
+  if (_navigation_isNavd)
   {
-    v2 = +[MNUserOptionsEngine sharedInstance];
-    [v2 currentVoiceLanguage];
+    currentLocale = +[MNUserOptionsEngine sharedInstance];
+    [currentLocale currentVoiceLanguage];
   }
 
   else
   {
-    v2 = [MEMORY[0x1E695DF58] currentLocale];
-    [v2 localeIdentifier];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [currentLocale localeIdentifier];
   }
   v3 = ;
 
@@ -265,42 +265,42 @@ LABEL_12:
 
 - (id)navDisplayNameWithSpecialContacts:()MNExtras substituteType:
 {
-  v7 = [a1 geoMapItem];
+  geoMapItem = [self geoMapItem];
 
-  if (v7)
+  if (geoMapItem)
   {
-    v8 = [a1 geoMapItem];
-    v9 = navDisplayNameForMapItem(v8, a3, a4);
+    geoMapItem2 = [self geoMapItem];
+    name = navDisplayNameForMapItem(geoMapItem2, a3, a4);
   }
 
   else
   {
-    v9 = [a1 name];
+    name = [self name];
   }
 
-  return v9;
+  return name;
 }
 
 - (id)navDisplayNameWithSpecialContacts:()MNExtras
 {
-  v4 = [a1 geoMapItem];
-  v5 = navDisplayNameForMapItem(v4, a3, 0);
+  geoMapItem = [self geoMapItem];
+  v5 = navDisplayNameForMapItem(geoMapItem, a3, 0);
 
   return v5;
 }
 
 - (id)navDisplayNameAndSubstituteType:()MNExtras
 {
-  v5 = [a1 geoMapItem];
+  geoMapItem = [self geoMapItem];
 
-  if (v5)
+  if (geoMapItem)
   {
-    [a1 navDisplayNameWithSpecialContacts:1 substituteType:a3];
+    [self navDisplayNameWithSpecialContacts:1 substituteType:a3];
   }
 
   else
   {
-    [a1 name];
+    [self name];
   }
   v6 = ;
 
@@ -309,21 +309,21 @@ LABEL_12:
 
 - (id)navDisplayAddressAndSubstituteType:()MNExtras
 {
-  v4 = [a1 geoMapItem];
-  v5 = navDisplayAddressForMapItem(v4, a3);
+  geoMapItem = [self geoMapItem];
+  v5 = navDisplayAddressForMapItem(geoMapItem, a3);
 
   return v5;
 }
 
 - (id)directionsListAddress
 {
-  v2 = [a1 geoMapItem];
+  geoMapItem = [self geoMapItem];
 
-  if (v2)
+  if (geoMapItem)
   {
-    v3 = [a1 geoMapItem];
-    v4 = [v3 addressObject];
-    v5 = [v4 fullAddressWithMultiline:0];
+    geoMapItem2 = [self geoMapItem];
+    addressObject = [geoMapItem2 addressObject];
+    v5 = [addressObject fullAddressWithMultiline:0];
   }
 
   else
@@ -337,20 +337,20 @@ LABEL_12:
 - (id)bestSpokenName
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [a1 waypointCategory];
-  v3 = 0;
-  if (v2 <= 6)
+  waypointCategory = [self waypointCategory];
+  contactSpokenName = 0;
+  if (waypointCategory <= 6)
   {
-    if ((v2 - 1) >= 5)
+    if ((waypointCategory - 1) >= 5)
     {
-      if (v2)
+      if (waypointCategory)
       {
-        if (v2 != 6)
+        if (waypointCategory != 6)
         {
           goto LABEL_15;
         }
 
-        v4 = [a1 _spokenPlaceName];
+        _spokenPlaceName = [self _spokenPlaceName];
         goto LABEL_14;
       }
 
@@ -358,20 +358,20 @@ LABEL_12:
     }
 
 LABEL_7:
-    v5 = [a1 geoMapItem];
-    v3 = [v5 contactSpokenName];
+    geoMapItem = [self geoMapItem];
+    contactSpokenName = [geoMapItem contactSpokenName];
 
     goto LABEL_15;
   }
 
-  if ((v2 - 9) < 4)
+  if ((waypointCategory - 9) < 4)
   {
     goto LABEL_7;
   }
 
-  if (v2 != 7)
+  if (waypointCategory != 7)
   {
-    if (v2 != 8)
+    if (waypointCategory != 8)
     {
       goto LABEL_15;
     }
@@ -389,50 +389,50 @@ LABEL_10:
       _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_ERROR, "*** Assertion failure in %s, %s:%d: Hit an unreachable code path", &v9, 0x1Cu);
     }
 
-    v4 = [a1 navAnnouncementName];
+    _spokenPlaceName = [self navAnnouncementName];
     goto LABEL_14;
   }
 
-  v4 = [a1 navAnnouncementAddress];
+  _spokenPlaceName = [self navAnnouncementAddress];
 LABEL_14:
-  v3 = v4;
+  contactSpokenName = _spokenPlaceName;
 LABEL_15:
   v7 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return contactSpokenName;
 }
 
 - (id)bestDisplayName:()MNExtras
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = [a1 waypointCategory];
-  if (v5 > 0xC)
+  waypointCategory = [self waypointCategory];
+  if (waypointCategory > 0xC)
   {
     goto LABEL_11;
   }
 
-  if (((1 << v5) & 0x1646) != 0)
+  if (((1 << waypointCategory) & 0x1646) != 0)
   {
 LABEL_3:
-    v6 = [a1 navDisplayName];
+    navDisplayName = [self navDisplayName];
     goto LABEL_6;
   }
 
-  if (((1 << v5) & 0x838) != 0)
+  if (((1 << waypointCategory) & 0x838) != 0)
   {
-    v6 = [a1 navDisplayNameWithSpecialContacts:a3];
+    navDisplayName = [self navDisplayNameWithSpecialContacts:a3];
     goto LABEL_6;
   }
 
-  if (v5 == 7)
+  if (waypointCategory == 7)
   {
-    v6 = [a1 navDisplayAddress];
+    navDisplayName = [self navDisplayAddress];
   }
 
   else
   {
 LABEL_11:
-    if (!v5)
+    if (!waypointCategory)
     {
       v9 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -449,13 +449,13 @@ LABEL_11:
       goto LABEL_3;
     }
 
-    v6 = 0;
+    navDisplayName = 0;
   }
 
 LABEL_6:
   v7 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return navDisplayName;
 }
 
 @end

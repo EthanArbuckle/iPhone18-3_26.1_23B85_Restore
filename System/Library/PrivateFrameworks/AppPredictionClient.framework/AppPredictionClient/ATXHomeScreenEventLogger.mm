@@ -1,60 +1,60 @@
 @interface ATXHomeScreenEventLogger
-- (ATXHomeScreenEventLogger)initWithHomeScreenConfigCache:(id)a3 biomeUIStream:(id)a4 PETEventTracker:(id)a5 defaults:(id)a6;
+- (ATXHomeScreenEventLogger)initWithHomeScreenConfigCache:(id)cache biomeUIStream:(id)stream PETEventTracker:(id)tracker defaults:(id)defaults;
 - (ATXHomeScreenEventLoggerDelegate)delegate;
-- (id)_homeScreenEventWithDate:(id)a3 eventTypeString:(id)a4 stackIdentifier:(id)a5 stackKind:(unint64_t)a6 stackLocation:(unint64_t)a7 reason:(id)a8 widget:(id)a9 blendingCacheIdentifier:(id)a10 metadata:(id)a11;
-- (id)_pageIndexGivenWidgetUniqueId:(id)a3 stackIdToStackDataDictionary:(id)a4 widgetIdToStackIdDictionary:(id)a5;
-- (unint64_t)_stackKindGivenWidgetUniqueId:(id)a3 stackIdToStackDataDictionary:(id)a4 widgetIdToStackIdDictionary:(id)a5;
-- (unint64_t)_stackLocationGivenWidgetUniqueId:(id)a3 stackIdToStackDataDictionary:(id)a4 widgetIdToStackIdDictionary:(id)a5;
-- (void)_handleRemovedSuggestedWidgetsIfNecessary:(id)a3;
-- (void)_logAppLaunchOverallCaptureRateFromAppPredictionPanelWithTappedWidget:(id)a3 suggestion:(id)a4;
-- (void)_logAppPanelLaunchRatioWithTappedWidget:(id)a3;
-- (void)_logCaptureRateDiversionIfAppPredictionPanelExistsWithTappedWidget:(id)a3;
-- (void)_logCaptureRateForAppPredictionPanelWithEngagedSuggestion:(id)a3 isSuggestionsWidget:(BOOL)a4 widgetIdentifier:(id)a5;
-- (void)_logProactiveWidgetEvent:(int)a3 suggestionIdentifiers:(id)a4 widget:(id)a5 blendingCacheId:(id)a6 date:(id)a7;
-- (void)_logRemovalDateOfDefaultTVWidgetIfApplicable:(id)a3 configDiffer:(id)a4;
-- (void)_logSupplementaryActionInContextMenu:(unint64_t)a3 stackId:(id)a4 widget:(id)a5 prediction:(id)a6;
-- (void)_populateCachedIconState:(id)a3;
-- (void)_populateStackKindAndLocation:(id)a3;
-- (void)_populateSuggestedPageMetadata:(id)a3 forPage:(id)a4;
-- (void)_sendEventToBiomeWithDate:(id)a3 eventType:(int)a4 stackIdentifier:(id)a5 stackKind:(unint64_t)a6 stackLocation:(unint64_t)a7 reason:(id)a8 widget:(id)a9 blendingCacheIdentifier:(id)a10 metadata:(id)a11;
+- (id)_homeScreenEventWithDate:(id)date eventTypeString:(id)string stackIdentifier:(id)identifier stackKind:(unint64_t)kind stackLocation:(unint64_t)location reason:(id)reason widget:(id)widget blendingCacheIdentifier:(id)self0 metadata:(id)self1;
+- (id)_pageIndexGivenWidgetUniqueId:(id)id stackIdToStackDataDictionary:(id)dictionary widgetIdToStackIdDictionary:(id)idDictionary;
+- (unint64_t)_stackKindGivenWidgetUniqueId:(id)id stackIdToStackDataDictionary:(id)dictionary widgetIdToStackIdDictionary:(id)idDictionary;
+- (unint64_t)_stackLocationGivenWidgetUniqueId:(id)id stackIdToStackDataDictionary:(id)dictionary widgetIdToStackIdDictionary:(id)idDictionary;
+- (void)_handleRemovedSuggestedWidgetsIfNecessary:(id)necessary;
+- (void)_logAppLaunchOverallCaptureRateFromAppPredictionPanelWithTappedWidget:(id)widget suggestion:(id)suggestion;
+- (void)_logAppPanelLaunchRatioWithTappedWidget:(id)widget;
+- (void)_logCaptureRateDiversionIfAppPredictionPanelExistsWithTappedWidget:(id)widget;
+- (void)_logCaptureRateForAppPredictionPanelWithEngagedSuggestion:(id)suggestion isSuggestionsWidget:(BOOL)widget widgetIdentifier:(id)identifier;
+- (void)_logProactiveWidgetEvent:(int)event suggestionIdentifiers:(id)identifiers widget:(id)widget blendingCacheId:(id)id date:(id)date;
+- (void)_logRemovalDateOfDefaultTVWidgetIfApplicable:(id)applicable configDiffer:(id)differ;
+- (void)_logSupplementaryActionInContextMenu:(unint64_t)menu stackId:(id)id widget:(id)widget prediction:(id)prediction;
+- (void)_populateCachedIconState:(id)state;
+- (void)_populateStackKindAndLocation:(id)location;
+- (void)_populateSuggestedPageMetadata:(id)metadata forPage:(id)page;
+- (void)_sendEventToBiomeWithDate:(id)date eventType:(int)type stackIdentifier:(id)identifier stackKind:(unint64_t)kind stackLocation:(unint64_t)location reason:(id)reason widget:(id)widget blendingCacheIdentifier:(id)self0 metadata:(id)self1;
 - (void)_updateCurrentConfigurationsAndLogDiff;
-- (void)logContextMenuDismissOnceForSuggestion:(id)a3 widget:(id)a4 blendingCacheId:(id)a5;
-- (void)logContextMenuNeverShowAgainForSuggestion:(id)a3 widget:(id)a4 blendingCacheId:(id)a5;
+- (void)logContextMenuDismissOnceForSuggestion:(id)suggestion widget:(id)widget blendingCacheId:(id)id;
+- (void)logContextMenuNeverShowAgainForSuggestion:(id)suggestion widget:(id)widget blendingCacheId:(id)id;
 - (void)logDeviceLock;
 - (void)logDeviceUnlock;
-- (void)logDidTapSuggestion:(id)a3 widget:(id)a4 blendingCacheId:(id)a5;
-- (void)logHomeScreenDidDisappearWithReason:(id)a3;
-- (void)logHomeScreenPageDidAppear:(unint64_t)a3 topWidgetsByStackIdentifier:(id)a4 prediction:(id)a5;
-- (void)logSpecialPageDidAppear:(unint64_t)a3 widgetsByStackId:(id)a4 prediction:(id)a5;
-- (void)logSpecialPageDidDisappear:(unint64_t)a3;
-- (void)logStackDidAppear:(id)a3 topWidget:(id)a4 prediction:(id)a5;
-- (void)logStackDidDisappear:(id)a3 topWidget:(id)a4 prediction:(id)a5;
-- (void)logStackDidTap:(id)a3 engagedUrl:(id)a4 widgetOnTop:(id)a5 prediction:(id)a6;
-- (void)logStackStatusDidChange:(id)a3 widgetOnTop:(id)a4 reason:(unint64_t)a5 prediction:(id)a6;
-- (void)logStackVisibilityChanged:(id)a3 visibleRect:(CGRect)a4 topWidget:(id)a5 prediction:(id)a6;
-- (void)logSuggestionsDidAppear:(id)a3 widget:(id)a4 blendingCacheId:(id)a5;
-- (void)logSuggestionsDidDisappear:(id)a3 widget:(id)a4 blendingCacheId:(id)a5;
-- (void)logUserDidAcceptWidgetOnboardingSuggestion:(id)a3;
-- (void)logUserDidAddApp:(id)a3 page:(id)a4;
-- (void)logUserDidAddPinnedWidget:(id)a3 page:(id)a4 defaultsComparator:(id)a5;
-- (void)logUserDidAddWidgetToStack:(id)a3 stackIdentifier:(id)a4 isSuggestion:(BOOL)a5;
-- (void)logUserDidChangeStackConfiguration:(id)a3;
-- (void)logUserDidCreateStack:(id)a3 page:(id)a4 isSuggestion:(BOOL)a5;
-- (void)logUserDidDeletePinnedWidget:(id)a3 stackLocation:(unint64_t)a4 page:(id)a5;
-- (void)logUserDidDeleteStack:(id)a3 stackKind:(unint64_t)a4 stackLocation:(unint64_t)a5 page:(id)a6;
-- (void)logUserDidDeleteWidgetOnStack:(id)a3 stackIdentifier:(id)a4 stackKind:(unint64_t)a5 stackLocation:(unint64_t)a6;
+- (void)logDidTapSuggestion:(id)suggestion widget:(id)widget blendingCacheId:(id)id;
+- (void)logHomeScreenDidDisappearWithReason:(id)reason;
+- (void)logHomeScreenPageDidAppear:(unint64_t)appear topWidgetsByStackIdentifier:(id)identifier prediction:(id)prediction;
+- (void)logSpecialPageDidAppear:(unint64_t)appear widgetsByStackId:(id)id prediction:(id)prediction;
+- (void)logSpecialPageDidDisappear:(unint64_t)disappear;
+- (void)logStackDidAppear:(id)appear topWidget:(id)widget prediction:(id)prediction;
+- (void)logStackDidDisappear:(id)disappear topWidget:(id)widget prediction:(id)prediction;
+- (void)logStackDidTap:(id)tap engagedUrl:(id)url widgetOnTop:(id)top prediction:(id)prediction;
+- (void)logStackStatusDidChange:(id)change widgetOnTop:(id)top reason:(unint64_t)reason prediction:(id)prediction;
+- (void)logStackVisibilityChanged:(id)changed visibleRect:(CGRect)rect topWidget:(id)widget prediction:(id)prediction;
+- (void)logSuggestionsDidAppear:(id)appear widget:(id)widget blendingCacheId:(id)id;
+- (void)logSuggestionsDidDisappear:(id)disappear widget:(id)widget blendingCacheId:(id)id;
+- (void)logUserDidAcceptWidgetOnboardingSuggestion:(id)suggestion;
+- (void)logUserDidAddApp:(id)app page:(id)page;
+- (void)logUserDidAddPinnedWidget:(id)widget page:(id)page defaultsComparator:(id)comparator;
+- (void)logUserDidAddWidgetToStack:(id)stack stackIdentifier:(id)identifier isSuggestion:(BOOL)suggestion;
+- (void)logUserDidChangeStackConfiguration:(id)configuration;
+- (void)logUserDidCreateStack:(id)stack page:(id)page isSuggestion:(BOOL)suggestion;
+- (void)logUserDidDeletePinnedWidget:(id)widget stackLocation:(unint64_t)location page:(id)page;
+- (void)logUserDidDeleteStack:(id)stack stackKind:(unint64_t)kind stackLocation:(unint64_t)location page:(id)page;
+- (void)logUserDidDeleteWidgetOnStack:(id)stack stackIdentifier:(id)identifier stackKind:(unint64_t)kind stackLocation:(unint64_t)location;
 - (void)logUserDidEnterEditModeForWidgetOnboarding;
-- (void)logUserDidRejectWidgetOnboardingSuggestion:(id)a3;
-- (void)logUserDidRemoveApp:(id)a3 page:(id)a4;
+- (void)logUserDidRejectWidgetOnboardingSuggestion:(id)suggestion;
+- (void)logUserDidRemoveApp:(id)app page:(id)page;
 - (void)logUserDidStartWidgetOnboarding;
-- (void)logWidgetDidAppear:(id)a3 blendingCacheId:(id)a4;
-- (void)logWidgetDidAppear:(id)a3 stackId:(id)a4 prediction:(id)a5;
-- (void)logWidgetDidDisappear:(id)a3 blendingCacheId:(id)a4;
-- (void)logWidgetDidDisappear:(id)a3 stackId:(id)a4 prediction:(id)a5;
-- (void)logWidgetInsertionDidFailInStack:(id)a3 prediction:(id)a4;
-- (void)logWidgetOccluded:(id)a3 blendingCacheId:(id)a4;
-- (void)logWidgetUnoccluded:(id)a3 blendingCacheId:(id)a4;
-- (void)notifySuggestedWidgetsToStacksChanged:(id)a3;
+- (void)logWidgetDidAppear:(id)appear blendingCacheId:(id)id;
+- (void)logWidgetDidAppear:(id)appear stackId:(id)id prediction:(id)prediction;
+- (void)logWidgetDidDisappear:(id)disappear blendingCacheId:(id)id;
+- (void)logWidgetDidDisappear:(id)disappear stackId:(id)id prediction:(id)prediction;
+- (void)logWidgetInsertionDidFailInStack:(id)stack prediction:(id)prediction;
+- (void)logWidgetOccluded:(id)occluded blendingCacheId:(id)id;
+- (void)logWidgetUnoccluded:(id)unoccluded blendingCacheId:(id)id;
+- (void)notifySuggestedWidgetsToStacksChanged:(id)changed;
 @end
 
 @implementation ATXHomeScreenEventLogger
@@ -485,28 +485,28 @@ LABEL_86:
 LABEL_87:
 }
 
-- (ATXHomeScreenEventLogger)initWithHomeScreenConfigCache:(id)a3 biomeUIStream:(id)a4 PETEventTracker:(id)a5 defaults:(id)a6
+- (ATXHomeScreenEventLogger)initWithHomeScreenConfigCache:(id)cache biomeUIStream:(id)stream PETEventTracker:(id)tracker defaults:(id)defaults
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  cacheCopy = cache;
+  streamCopy = stream;
+  trackerCopy = tracker;
+  defaultsCopy = defaults;
   v44.receiver = self;
   v44.super_class = ATXHomeScreenEventLogger;
   v15 = [(ATXHomeScreenEventLogger *)&v44 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_homeScreenConfigCache, a3);
-    objc_storeStrong(&v16->_biomeUIStream, a4);
+    objc_storeStrong(&v15->_homeScreenConfigCache, cache);
+    objc_storeStrong(&v16->_biomeUIStream, stream);
     v17 = BiomeLibrary();
-    v18 = [v17 Discoverability];
-    v19 = [v18 Signals];
+    discoverability = [v17 Discoverability];
+    signals = [discoverability Signals];
     discoverabilitySignalsStream = v16->_discoverabilitySignalsStream;
-    v16->_discoverabilitySignalsStream = v19;
+    v16->_discoverabilitySignalsStream = signals;
 
-    objc_storeStrong(&v16->_tracker, a5);
-    objc_storeStrong(&v16->_defaults, a6);
+    objc_storeStrong(&v16->_tracker, tracker);
+    objc_storeStrong(&v16->_defaults, defaults);
     v21 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v22 = dispatch_queue_create("com.apple.proactive.ATXHomeScreenEventLogger", v21);
     queue = v16->_queue;
@@ -546,7 +546,7 @@ LABEL_87:
     block[2] = __97__ATXHomeScreenEventLogger_initWithHomeScreenConfigCache_biomeUIStream_PETEventTracker_defaults___block_invoke_2;
     block[3] = &unk_1E80C0958;
     v40 = v34;
-    v41 = v11;
+    v41 = cacheCopy;
     dispatch_async(v37, block);
   }
 
@@ -623,17 +623,17 @@ void __97__ATXHomeScreenEventLogger_initWithHomeScreenConfigCache_biomeUIStream_
   [*(a1 + 32) _populateStackKindAndLocation:*(*(a1 + 32) + 24)];
 }
 
-- (void)notifySuggestedWidgetsToStacksChanged:(id)a3
+- (void)notifySuggestedWidgetsToStacksChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__ATXHomeScreenEventLogger_notifySuggestedWidgetsToStacksChanged___block_invoke;
   v7[3] = &unk_1E80C0958;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(queue, v7);
 }
 
@@ -650,17 +650,17 @@ uint64_t __66__ATXHomeScreenEventLogger_notifySuggestedWidgetsToStacksChanged___
   return [v3 addEntriesFromDictionary:v2];
 }
 
-- (void)_populateCachedIconState:(id)a3
+- (void)_populateCachedIconState:(id)state
 {
   bundleIdToSBPageNumber = self->_bundleIdToSBPageNumber;
-  v5 = a3;
+  stateCopy = state;
   [(NSMutableDictionary *)bundleIdToSBPageNumber removeAllObjects];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__ATXHomeScreenEventLogger__populateCachedIconState___block_invoke;
   v6[3] = &unk_1E80C4700;
   v6[4] = self;
-  [v5 enumerateObjectsUsingBlock:v6];
+  [stateCopy enumerateObjectsUsingBlock:v6];
 }
 
 void __53__ATXHomeScreenEventLogger__populateCachedIconState___block_invoke(uint64_t a1, void *a2)
@@ -688,9 +688,9 @@ void __53__ATXHomeScreenEventLogger__populateCachedIconState___block_invoke_2(ui
   [v6 setObject:v8 forKeyedSubscript:v7];
 }
 
-- (void)_populateStackKindAndLocation:(id)a3
+- (void)_populateStackKindAndLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   [(NSMutableDictionary *)self->_stackIdToCachedStackData removeAllObjects];
   *&self->_hasAppPanelOnHomeScreen = 0;
   v9 = 0;
@@ -703,7 +703,7 @@ void __53__ATXHomeScreenEventLogger__populateCachedIconState___block_invoke_2(ui
   v8[3] = &unk_1E80C4728;
   v8[4] = self;
   v8[5] = &v9;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [locationCopy enumerateObjectsUsingBlock:v8];
   if (*(v10 + 24) == 1)
   {
     v5 = *MEMORY[0x1E698B040];
@@ -948,31 +948,31 @@ void __58__ATXHomeScreenEventLogger__populateStackKindAndLocation___block_invoke
   }
 }
 
-- (void)_logRemovalDateOfDefaultTVWidgetIfApplicable:(id)a3 configDiffer:(id)a4
+- (void)_logRemovalDateOfDefaultTVWidgetIfApplicable:(id)applicable configDiffer:(id)differ
 {
-  v16 = a3;
-  v6 = a4;
+  applicableCopy = applicable;
+  differCopy = differ;
   if (![MEMORY[0x1E69C5CF8] isiPad])
   {
     goto LABEL_10;
   }
 
-  v7 = [v16 extensionBundleId];
-  if (([v7 isEqualToString:@"com.apple.tv.TVWidgetExtension"] & 1) == 0)
+  extensionBundleId = [applicableCopy extensionBundleId];
+  if (([extensionBundleId isEqualToString:@"com.apple.tv.TVWidgetExtension"] & 1) == 0)
   {
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v8 = [v16 widgetKind];
-  if (([v8 isEqualToString:@"com.apple.tv"] & 1) == 0)
+  widgetKind = [applicableCopy widgetKind];
+  if (([widgetKind isEqualToString:@"com.apple.tv"] & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
-  v9 = [v16 size];
+  v9 = [applicableCopy size];
 
   if (v9 == 4 && ([(NSUserDefaults *)self->_defaults integerForKey:*MEMORY[0x1E698AFB8]]& 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
@@ -984,9 +984,9 @@ LABEL_9:
 
     else
     {
-      v12 = [v16 extensionBundleId];
-      v13 = [v16 widgetKind];
-      v14 = [v6 currentConfigContainsWidgetWithBundleId:v12 kind:v13 size:{objc_msgSend(v16, "size")}];
+      extensionBundleId2 = [applicableCopy extensionBundleId];
+      widgetKind2 = [applicableCopy widgetKind];
+      v14 = [differCopy currentConfigContainsWidgetWithBundleId:extensionBundleId2 kind:widgetKind2 size:{objc_msgSend(applicableCopy, "size")}];
 
       if ((v14 & 1) == 0)
       {
@@ -1000,10 +1000,10 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_handleRemovedSuggestedWidgetsIfNecessary:(id)a3
+- (void)_handleRemovedSuggestedWidgetsIfNecessary:(id)necessary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = [a3 _pas_filteredArrayWithTest:&__block_literal_global_77];
+  v4 = [necessary _pas_filteredArrayWithTest:&__block_literal_global_77];
   if ([v4 count])
   {
     v5 = *MEMORY[0x1E698B048];
@@ -1073,11 +1073,11 @@ uint64_t __70__ATXHomeScreenEventLogger__handleRemovedSuggestedWidgetsIfNecessar
   return v3;
 }
 
-- (id)_pageIndexGivenWidgetUniqueId:(id)a3 stackIdToStackDataDictionary:(id)a4 widgetIdToStackIdDictionary:(id)a5
+- (id)_pageIndexGivenWidgetUniqueId:(id)id stackIdToStackDataDictionary:(id)dictionary widgetIdToStackIdDictionary:(id)idDictionary
 {
-  v7 = a4;
-  v8 = [a5 objectForKeyedSubscript:a3];
-  if (v8 && ([v7 objectForKeyedSubscript:v8], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  dictionaryCopy = dictionary;
+  v8 = [idDictionary objectForKeyedSubscript:id];
+  if (v8 && ([dictionaryCopy objectForKeyedSubscript:v8], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:*(v9 + 32)];
@@ -1091,11 +1091,11 @@ uint64_t __70__ATXHomeScreenEventLogger__handleRemovedSuggestedWidgetsIfNecessar
   return v11;
 }
 
-- (unint64_t)_stackKindGivenWidgetUniqueId:(id)a3 stackIdToStackDataDictionary:(id)a4 widgetIdToStackIdDictionary:(id)a5
+- (unint64_t)_stackKindGivenWidgetUniqueId:(id)id stackIdToStackDataDictionary:(id)dictionary widgetIdToStackIdDictionary:(id)idDictionary
 {
-  v7 = a4;
-  v8 = [a5 objectForKeyedSubscript:a3];
-  if (v8 && ([v7 objectForKeyedSubscript:v8], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  dictionaryCopy = dictionary;
+  v8 = [idDictionary objectForKeyedSubscript:id];
+  if (v8 && ([dictionaryCopy objectForKeyedSubscript:v8], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9[1];
   }
@@ -1108,11 +1108,11 @@ uint64_t __70__ATXHomeScreenEventLogger__handleRemovedSuggestedWidgetsIfNecessar
   return v10;
 }
 
-- (unint64_t)_stackLocationGivenWidgetUniqueId:(id)a3 stackIdToStackDataDictionary:(id)a4 widgetIdToStackIdDictionary:(id)a5
+- (unint64_t)_stackLocationGivenWidgetUniqueId:(id)id stackIdToStackDataDictionary:(id)dictionary widgetIdToStackIdDictionary:(id)idDictionary
 {
-  v7 = a4;
-  v8 = [a5 objectForKeyedSubscript:a3];
-  if (v8 && ([v7 objectForKeyedSubscript:v8], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  dictionaryCopy = dictionary;
+  v8 = [idDictionary objectForKeyedSubscript:id];
+  if (v8 && ([dictionaryCopy objectForKeyedSubscript:v8], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9[2];
   }
@@ -1125,72 +1125,72 @@ uint64_t __70__ATXHomeScreenEventLogger__handleRemovedSuggestedWidgetsIfNecessar
   return v10;
 }
 
-- (id)_homeScreenEventWithDate:(id)a3 eventTypeString:(id)a4 stackIdentifier:(id)a5 stackKind:(unint64_t)a6 stackLocation:(unint64_t)a7 reason:(id)a8 widget:(id)a9 blendingCacheIdentifier:(id)a10 metadata:(id)a11
+- (id)_homeScreenEventWithDate:(id)date eventTypeString:(id)string stackIdentifier:(id)identifier stackKind:(unint64_t)kind stackLocation:(unint64_t)location reason:(id)reason widget:(id)widget blendingCacheIdentifier:(id)self0 metadata:(id)self1
 {
-  v17 = a9;
-  v33 = a10;
-  v18 = a11;
-  v19 = a8;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
+  widgetCopy = widget;
+  cacheIdentifierCopy = cacheIdentifier;
+  metadataCopy = metadata;
+  reasonCopy = reason;
+  identifierCopy = identifier;
+  stringCopy = string;
+  dateCopy = date;
   v23 = objc_opt_new();
-  [v23 setDate:v22];
+  [v23 setDate:dateCopy];
 
-  [v23 setEventTypeString:v21];
-  [v23 setStackId:v20];
+  [v23 setEventTypeString:stringCopy];
+  [v23 setStackId:identifierCopy];
 
-  [v23 setStackKind:a6];
-  [v23 setStackLocation:a7];
-  [v23 setReason:v19];
+  [v23 setStackKind:kind];
+  [v23 setStackLocation:location];
+  [v23 setReason:reasonCopy];
 
-  if (v17)
+  if (widgetCopy)
   {
-    v24 = [v17 extensionBundleId];
-    [v23 setWidgetBundleId:v24];
+    extensionBundleId = [widgetCopy extensionBundleId];
+    [v23 setWidgetBundleId:extensionBundleId];
 
-    v25 = [v17 intent];
-    v26 = [v25 intentDescription];
-    if (v26)
+    intent = [widgetCopy intent];
+    intentDescription = [intent intentDescription];
+    if (intentDescription)
     {
-      [v23 setIntentDescription:v26];
+      [v23 setIntentDescription:intentDescription];
     }
 
     else
     {
-      v27 = [v17 intent];
-      v28 = [v27 description];
+      intent2 = [widgetCopy intent];
+      v28 = [intent2 description];
       [v23 setIntentDescription:v28];
     }
 
-    v29 = [v17 widgetUniqueId];
-    [v23 setWidgetUniqueId:v29];
+    widgetUniqueId = [widgetCopy widgetUniqueId];
+    [v23 setWidgetUniqueId:widgetUniqueId];
 
-    v30 = [v17 widgetKind];
-    [v23 setWidgetKind:v30];
+    widgetKind = [widgetCopy widgetKind];
+    [v23 setWidgetKind:widgetKind];
 
-    [v23 setWidgetSize:{objc_msgSend(v17, "size")}];
-    v31 = [v17 appBundleId];
-    [v23 setAppBundleId:v31];
+    [v23 setWidgetSize:{objc_msgSend(widgetCopy, "size")}];
+    appBundleId = [widgetCopy appBundleId];
+    [v23 setAppBundleId:appBundleId];
 
-    [v23 setIsSuggestedWidget:{objc_msgSend(v17, "isSuggestedWidget")}];
+    [v23 setIsSuggestedWidget:{objc_msgSend(widgetCopy, "isSuggestedWidget")}];
   }
 
-  [v23 setBlendingCacheId:v33];
-  [v23 setMetadata:v18];
+  [v23 setBlendingCacheId:cacheIdentifierCopy];
+  [v23 setMetadata:metadataCopy];
 
   return v23;
 }
 
-- (void)_sendEventToBiomeWithDate:(id)a3 eventType:(int)a4 stackIdentifier:(id)a5 stackKind:(unint64_t)a6 stackLocation:(unint64_t)a7 reason:(id)a8 widget:(id)a9 blendingCacheIdentifier:(id)a10 metadata:(id)a11
+- (void)_sendEventToBiomeWithDate:(id)date eventType:(int)type stackIdentifier:(id)identifier stackKind:(unint64_t)kind stackLocation:(unint64_t)location reason:(id)reason widget:(id)widget blendingCacheIdentifier:(id)self0 metadata:(id)self1
 {
-  v15 = *&a4;
-  v26 = a3;
-  v17 = a5;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
+  v15 = *&type;
+  dateCopy = date;
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  widgetCopy = widget;
+  cacheIdentifierCopy = cacheIdentifier;
+  metadataCopy = metadata;
   if (v15 >= 0x17)
   {
     v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v15];
@@ -1201,21 +1201,21 @@ uint64_t __70__ATXHomeScreenEventLogger__handleRemovedSuggestedWidgetsIfNecessar
     v22 = off_1E80C4858[v15];
   }
 
-  v23 = [(ATXHomeScreenEventLogger *)self _homeScreenEventWithDate:v26 eventTypeString:v22 stackIdentifier:v17 stackKind:a6 stackLocation:a7 reason:v18 widget:v19 blendingCacheIdentifier:v20 metadata:v21];
+  v23 = [(ATXHomeScreenEventLogger *)self _homeScreenEventWithDate:dateCopy eventTypeString:v22 stackIdentifier:identifierCopy stackKind:kind stackLocation:location reason:reasonCopy widget:widgetCopy blendingCacheIdentifier:cacheIdentifierCopy metadata:metadataCopy];
 
   biomeUIStream = self->_biomeUIStream;
   v25 = [ATXUIEvent uiEventWithHomeScreenEvent:v23];
   [(ATXUniversalBiomeUIStream *)biomeUIStream donateGenericUIEvent:v25];
 }
 
-- (void)_logProactiveWidgetEvent:(int)a3 suggestionIdentifiers:(id)a4 widget:(id)a5 blendingCacheId:(id)a6 date:(id)a7
+- (void)_logProactiveWidgetEvent:(int)event suggestionIdentifiers:(id)identifiers widget:(id)widget blendingCacheId:(id)id date:(id)date
 {
-  v10 = *&a3;
-  v24 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if (v13)
+  v10 = *&event;
+  identifiersCopy = identifiers;
+  widgetCopy = widget;
+  idCopy = id;
+  dateCopy = date;
+  if (idCopy)
   {
     if (v10 >= 0xA)
     {
@@ -1227,35 +1227,35 @@ uint64_t __70__ATXHomeScreenEventLogger__handleRemovedSuggestedWidgetsIfNecessar
       v15 = off_1E80C4910[v10];
     }
 
-    v16 = [v12 widgetUniqueId];
-    v17 = [(ATXHomeScreenEventLogger *)self _stackIdentifierGivenWidgetUniqueId:v16];
-    v18 = [v12 widgetUniqueId];
-    v19 = [(ATXHomeScreenEventLogger *)self _stackKindGivenWidgetUniqueId:v18];
-    v20 = [v12 widgetUniqueId];
-    v21 = [(ATXHomeScreenEventLogger *)self _homeScreenEventWithDate:v14 eventTypeString:v15 stackIdentifier:v17 stackKind:v19 stackLocation:[(ATXHomeScreenEventLogger *)self _stackLocationGivenWidgetUniqueId:v20] reason:0 widget:v12 blendingCacheIdentifier:v13 metadata:0];
+    widgetUniqueId = [widgetCopy widgetUniqueId];
+    v17 = [(ATXHomeScreenEventLogger *)self _stackIdentifierGivenWidgetUniqueId:widgetUniqueId];
+    widgetUniqueId2 = [widgetCopy widgetUniqueId];
+    v19 = [(ATXHomeScreenEventLogger *)self _stackKindGivenWidgetUniqueId:widgetUniqueId2];
+    widgetUniqueId3 = [widgetCopy widgetUniqueId];
+    v21 = [(ATXHomeScreenEventLogger *)self _homeScreenEventWithDate:dateCopy eventTypeString:v15 stackIdentifier:v17 stackKind:v19 stackLocation:[(ATXHomeScreenEventLogger *)self _stackLocationGivenWidgetUniqueId:widgetUniqueId3] reason:0 widget:widgetCopy blendingCacheIdentifier:idCopy metadata:0];
 
-    [v21 setSuggestionIds:v24];
+    [v21 setSuggestionIds:identifiersCopy];
     biomeUIStream = self->_biomeUIStream;
     v23 = [ATXUIEvent uiEventWithHomeScreenEvent:v21];
     [(ATXUniversalBiomeUIStream *)biomeUIStream donateGenericUIEvent:v23];
   }
 }
 
-- (void)_logCaptureRateForAppPredictionPanelWithEngagedSuggestion:(id)a3 isSuggestionsWidget:(BOOL)a4 widgetIdentifier:(id)a5
+- (void)_logCaptureRateForAppPredictionPanelWithEngagedSuggestion:(id)suggestion isSuggestionsWidget:(BOOL)widget widgetIdentifier:(id)identifier
 {
   if (self->_hasAppPanelOnHomeScreen)
   {
-    v5 = a4;
-    v8 = a5;
-    v9 = [a3 executableSpecification];
-    v10 = [v9 executableType];
+    widgetCopy = widget;
+    identifierCopy = identifier;
+    executableSpecification = [suggestion executableSpecification];
+    executableType = [executableSpecification executableType];
 
-    v11 = [(ATXHomeScreenEventLogger *)self _stackLocationGivenWidgetUniqueId:v8];
+    v11 = [(ATXHomeScreenEventLogger *)self _stackLocationGivenWidgetUniqueId:identifierCopy];
     if ((ATXStackLocationIsTodayPage(v11) & 1) == 0)
     {
-      if (v5)
+      if (widgetCopy)
       {
-        if (v10 == 2)
+        if (executableType == 2)
         {
           tracker = self->_tracker;
           v13 = 5001;
@@ -1263,7 +1263,7 @@ uint64_t __70__ATXHomeScreenEventLogger__handleRemovedSuggestedWidgetsIfNecessar
 
         else
         {
-          if (v10 != 1)
+          if (executableType != 1)
           {
             return;
           }
@@ -1285,27 +1285,27 @@ uint64_t __70__ATXHomeScreenEventLogger__handleRemovedSuggestedWidgetsIfNecessar
   }
 }
 
-- (void)_logCaptureRateDiversionIfAppPredictionPanelExistsWithTappedWidget:(id)a3
+- (void)_logCaptureRateDiversionIfAppPredictionPanelExistsWithTappedWidget:(id)widget
 {
-  v10 = a3;
-  v4 = [v10 widgetUniqueId];
+  widgetCopy = widget;
+  widgetUniqueId = [widgetCopy widgetUniqueId];
 
-  if (v4)
+  if (widgetUniqueId)
   {
-    v5 = [v10 extensionBundleId];
-    if ([v5 isEqualToString:*MEMORY[0x1E698AFC0]])
+    extensionBundleId = [widgetCopy extensionBundleId];
+    if ([extensionBundleId isEqualToString:*MEMORY[0x1E698AFC0]])
     {
     }
 
     else
     {
-      v6 = [v10 extensionBundleId];
-      v7 = [v6 isEqualToString:@"com.apple.proactive.appprediction.panel"];
+      extensionBundleId2 = [widgetCopy extensionBundleId];
+      v7 = [extensionBundleId2 isEqualToString:@"com.apple.proactive.appprediction.panel"];
 
       if ((v7 & 1) == 0)
       {
-        v8 = [v10 widgetUniqueId];
-        v9 = [(ATXHomeScreenEventLogger *)self _stackLocationGivenWidgetUniqueId:v8];
+        widgetUniqueId2 = [widgetCopy widgetUniqueId];
+        v9 = [(ATXHomeScreenEventLogger *)self _stackLocationGivenWidgetUniqueId:widgetUniqueId2];
 
         if (self->_hasAppPanelOnHomeScreen && (ATXStackLocationIsTodayPage(v9) & 1) == 0)
         {
@@ -1316,15 +1316,15 @@ uint64_t __70__ATXHomeScreenEventLogger__handleRemovedSuggestedWidgetsIfNecessar
   }
 }
 
-- (void)_logAppLaunchOverallCaptureRateFromAppPredictionPanelWithTappedWidget:(id)a3 suggestion:(id)a4
+- (void)_logAppLaunchOverallCaptureRateFromAppPredictionPanelWithTappedWidget:(id)widget suggestion:(id)suggestion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 widgetUniqueId];
-  v9 = [(ATXHomeScreenEventLogger *)self _stackLocationGivenWidgetUniqueId:v8];
+  widgetCopy = widget;
+  suggestionCopy = suggestion;
+  widgetUniqueId = [widgetCopy widgetUniqueId];
+  v9 = [(ATXHomeScreenEventLogger *)self _stackLocationGivenWidgetUniqueId:widgetUniqueId];
 
-  v10 = [v6 extensionBundleId];
-  v11 = [v10 isEqualToString:*MEMORY[0x1E698AFC0]];
+  extensionBundleId = [widgetCopy extensionBundleId];
+  v11 = [extensionBundleId isEqualToString:*MEMORY[0x1E698AFC0]];
 
   if (v11)
   {
@@ -1334,8 +1334,8 @@ uint64_t __70__ATXHomeScreenEventLogger__handleRemovedSuggestedWidgetsIfNecessar
 
   else
   {
-    v14 = [v6 extensionBundleId];
-    v15 = [v14 isEqualToString:@"com.apple.proactive.appprediction.panel"];
+    extensionBundleId2 = [widgetCopy extensionBundleId];
+    v15 = [extensionBundleId2 isEqualToString:@"com.apple.proactive.appprediction.panel"];
 
     if (!v15)
     {
@@ -1356,42 +1356,42 @@ uint64_t __70__ATXHomeScreenEventLogger__handleRemovedSuggestedWidgetsIfNecessar
     v16 = v13 + 1;
   }
 
-  v17 = [v7 bundleIdExecutableObject];
-  if (v17)
+  bundleIdExecutableObject = [suggestionCopy bundleIdExecutableObject];
+  if (bundleIdExecutableObject)
   {
-    v18 = v17;
+    bundleId = bundleIdExecutableObject;
   }
 
   else
   {
-    v19 = [v7 atxActionExecutableObject];
-    v18 = [v19 bundleId];
+    atxActionExecutableObject = [suggestionCopy atxActionExecutableObject];
+    bundleId = [atxActionExecutableObject bundleId];
 
-    if (!v18)
+    if (!bundleId)
     {
       goto LABEL_22;
     }
   }
 
-  v20 = [(NSMutableDictionary *)self->_bundleIdToSBPageNumber objectForKeyedSubscript:v18];
+  v20 = [(NSMutableDictionary *)self->_bundleIdToSBPageNumber objectForKeyedSubscript:bundleId];
   v21 = v20;
   if (v20)
   {
-    v22 = [v20 unsignedIntegerValue];
-    if (v22 >= 6)
+    unsignedIntegerValue = [v20 unsignedIntegerValue];
+    if (unsignedIntegerValue >= 6)
     {
       v23 = 8;
     }
 
     else
     {
-      v23 = (v22 + 2);
+      v23 = (unsignedIntegerValue + 2);
     }
   }
 
   else
   {
-    v23 = [(NSSet *)self->_dockAppSet containsObject:v18];
+    v23 = [(NSSet *)self->_dockAppSet containsObject:bundleId];
   }
 
   v24 = objc_opt_new();
@@ -1405,15 +1405,15 @@ uint64_t __70__ATXHomeScreenEventLogger__handleRemovedSuggestedWidgetsIfNecessar
   v28 = v27;
   if (v27)
   {
-    v29 = [v27 BOOLValue];
+    bOOLValue = [v27 BOOLValue];
   }
 
   else
   {
-    v29 = 1;
+    bOOLValue = 1;
   }
 
-  [v24 setAppLibraryEnabled:v29];
+  [v24 setAppLibraryEnabled:bOOLValue];
   [v24 setAppPredictionPanelTodayEnabled:self->_hasAppPanelOnLoH];
   [v24 setAppPredictionPanelEnabled:self->_hasAppPanelOnHomeScreen];
   [v24 setSuggestionsWidgetEnabled:self->_hasSuggestionWidgetOnHomeScreen];
@@ -1428,46 +1428,46 @@ uint64_t __70__ATXHomeScreenEventLogger__handleRemovedSuggestedWidgetsIfNecessar
 LABEL_22:
 }
 
-- (void)_logAppPanelLaunchRatioWithTappedWidget:(id)a3
+- (void)_logAppPanelLaunchRatioWithTappedWidget:(id)widget
 {
-  v10 = a3;
-  v4 = [v10 extensionBundleId];
-  v5 = [v4 isEqualToString:@"com.apple.proactive.appprediction.panel"];
+  widgetCopy = widget;
+  extensionBundleId = [widgetCopy extensionBundleId];
+  v5 = [extensionBundleId isEqualToString:@"com.apple.proactive.appprediction.panel"];
 
-  v6 = v10;
+  v6 = widgetCopy;
   if (v5)
   {
-    v7 = [v10 widgetUniqueId];
-    v8 = [(ATXHomeScreenEventLogger *)self _pageIndexGivenWidgetUniqueId:v7];
+    widgetUniqueId = [widgetCopy widgetUniqueId];
+    v8 = [(ATXHomeScreenEventLogger *)self _pageIndexGivenWidgetUniqueId:widgetUniqueId];
 
     if (v8)
     {
-      v9 = [v8 unsignedIntegerValue];
-      if (v9 < 0x4E20)
+      unsignedIntegerValue = [v8 unsignedIntegerValue];
+      if (unsignedIntegerValue < 0x4E20)
       {
-        [ATXAppPanelLaunchRatioLogger logAppPanelAppLaunchWithSBPageIndex:v9];
+        [ATXAppPanelLaunchRatioLogger logAppPanelAppLaunchWithSBPageIndex:unsignedIntegerValue];
       }
     }
 
-    v6 = v10;
+    v6 = widgetCopy;
   }
 }
 
-- (void)logHomeScreenPageDidAppear:(unint64_t)a3 topWidgetsByStackIdentifier:(id)a4 prediction:(id)a5
+- (void)logHomeScreenPageDidAppear:(unint64_t)appear topWidgetsByStackIdentifier:(id)identifier prediction:(id)prediction
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  predictionCopy = prediction;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __94__ATXHomeScreenEventLogger_logHomeScreenPageDidAppear_topWidgetsByStackIdentifier_prediction___block_invoke;
   v13[3] = &unk_1E80C2DC0;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = identifierCopy;
+  selfCopy = self;
+  v16 = predictionCopy;
+  appearCopy = appear;
+  v11 = predictionCopy;
+  v12 = identifierCopy;
   dispatch_async(queue, v13);
 }
 
@@ -1490,17 +1490,17 @@ void __94__ATXHomeScreenEventLogger_logHomeScreenPageDidAppear_topWidgetsByStack
   [v5 _sendEventToBiomeWithDate:v6 eventType:1 stackIdentifier:0 stackKind:0 stackLocation:0 reason:0 widget:0 blendingCacheIdentifier:v7 metadata:v3];
 }
 
-- (void)logHomeScreenDidDisappearWithReason:(id)a3
+- (void)logHomeScreenDidDisappearWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__ATXHomeScreenEventLogger_logHomeScreenDidDisappearWithReason___block_invoke;
   v7[3] = &unk_1E80C0958;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = reasonCopy;
+  selfCopy = self;
+  v6 = reasonCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1517,21 +1517,21 @@ void __64__ATXHomeScreenEventLogger_logHomeScreenDidDisappearWithReason___block_
   [v3 _sendEventToBiomeWithDate:v4 eventType:1 stackIdentifier:0 stackKind:0 stackLocation:0 reason:*(a1 + 32) widget:0 blendingCacheIdentifier:0 metadata:0];
 }
 
-- (void)logSpecialPageDidAppear:(unint64_t)a3 widgetsByStackId:(id)a4 prediction:(id)a5
+- (void)logSpecialPageDidAppear:(unint64_t)appear widgetsByStackId:(id)id prediction:(id)prediction
 {
-  v8 = a4;
-  v9 = a5;
+  idCopy = id;
+  predictionCopy = prediction;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __80__ATXHomeScreenEventLogger_logSpecialPageDidAppear_widgetsByStackId_prediction___block_invoke;
   v13[3] = &unk_1E80C2DC0;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = idCopy;
+  selfCopy = self;
+  v16 = predictionCopy;
+  appearCopy = appear;
+  v11 = predictionCopy;
+  v12 = idCopy;
   dispatch_async(queue, v13);
 }
 
@@ -1554,7 +1554,7 @@ void __80__ATXHomeScreenEventLogger_logSpecialPageDidAppear_widgetsByStackId_pre
   [v5 _sendEventToBiomeWithDate:v6 eventType:12 stackIdentifier:0 stackKind:0 stackLocation:0 reason:0 widget:0 blendingCacheIdentifier:v7 metadata:v3];
 }
 
-- (void)logSpecialPageDidDisappear:(unint64_t)a3
+- (void)logSpecialPageDidDisappear:(unint64_t)disappear
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1562,7 +1562,7 @@ void __80__ATXHomeScreenEventLogger_logSpecialPageDidAppear_widgetsByStackId_pre
   v4[2] = __55__ATXHomeScreenEventLogger_logSpecialPageDidDisappear___block_invoke;
   v4[3] = &unk_1E80C4798;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = disappear;
   dispatch_async(queue, v4);
 }
 
@@ -1583,23 +1583,23 @@ void __55__ATXHomeScreenEventLogger_logSpecialPageDidDisappear___block_invoke(ui
   [v5 _sendEventToBiomeWithDate:v6 eventType:13 stackIdentifier:0 stackKind:0 stackLocation:0 reason:0 widget:0 blendingCacheIdentifier:0 metadata:v3];
 }
 
-- (void)logWidgetDidAppear:(id)a3 stackId:(id)a4 prediction:(id)a5
+- (void)logWidgetDidAppear:(id)appear stackId:(id)id prediction:(id)prediction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  appearCopy = appear;
+  idCopy = id;
+  predictionCopy = prediction;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __66__ATXHomeScreenEventLogger_logWidgetDidAppear_stackId_prediction___block_invoke;
   v15[3] = &unk_1E80C3B48;
-  v16 = v9;
-  v17 = v8;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = idCopy;
+  v17 = appearCopy;
+  selfCopy = self;
+  v19 = predictionCopy;
+  v12 = predictionCopy;
+  v13 = appearCopy;
+  v14 = idCopy;
   dispatch_async(queue, v15);
 }
 
@@ -1637,23 +1637,23 @@ void __66__ATXHomeScreenEventLogger_logWidgetDidAppear_stackId_prediction___bloc
   [v6 _sendEventToBiomeWithDate:v7 eventType:14 stackIdentifier:v9 stackKind:v11 stackLocation:v14 reason:0 widget:v15 blendingCacheIdentifier:v16 metadata:0];
 }
 
-- (void)logWidgetDidDisappear:(id)a3 stackId:(id)a4 prediction:(id)a5
+- (void)logWidgetDidDisappear:(id)disappear stackId:(id)id prediction:(id)prediction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  disappearCopy = disappear;
+  idCopy = id;
+  predictionCopy = prediction;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __69__ATXHomeScreenEventLogger_logWidgetDidDisappear_stackId_prediction___block_invoke;
   v15[3] = &unk_1E80C3B48;
-  v16 = v9;
-  v17 = v8;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = idCopy;
+  v17 = disappearCopy;
+  selfCopy = self;
+  v19 = predictionCopy;
+  v12 = predictionCopy;
+  v13 = disappearCopy;
+  v14 = idCopy;
   dispatch_async(queue, v15);
 }
 
@@ -1691,47 +1691,47 @@ void __69__ATXHomeScreenEventLogger_logWidgetDidDisappear_stackId_prediction___b
   [v6 _sendEventToBiomeWithDate:v7 eventType:15 stackIdentifier:v9 stackKind:v11 stackLocation:v14 reason:0 widget:v15 blendingCacheIdentifier:v16 metadata:0];
 }
 
-- (void)logStackDidAppear:(id)a3 topWidget:(id)a4 prediction:(id)a5
+- (void)logStackDidAppear:(id)appear topWidget:(id)widget prediction:(id)prediction
 {
-  if (a4)
+  if (widget)
   {
-    [(ATXHomeScreenEventLogger *)self logWidgetDidAppear:a4 stackId:a3 prediction:a5];
+    [(ATXHomeScreenEventLogger *)self logWidgetDidAppear:widget stackId:appear prediction:prediction];
   }
 }
 
-- (void)logStackDidDisappear:(id)a3 topWidget:(id)a4 prediction:(id)a5
+- (void)logStackDidDisappear:(id)disappear topWidget:(id)widget prediction:(id)prediction
 {
-  if (a4)
+  if (widget)
   {
-    [(ATXHomeScreenEventLogger *)self logWidgetDidDisappear:a4 stackId:a3 prediction:a5];
+    [(ATXHomeScreenEventLogger *)self logWidgetDidDisappear:widget stackId:disappear prediction:prediction];
   }
 }
 
-- (void)logStackVisibilityChanged:(id)a3 visibleRect:(CGRect)a4 topWidget:(id)a5 prediction:(id)a6
+- (void)logStackVisibilityChanged:(id)changed visibleRect:(CGRect)rect topWidget:(id)widget prediction:(id)prediction
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  changedCopy = changed;
+  widgetCopy = widget;
+  predictionCopy = prediction;
   queue = self->_queue;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __87__ATXHomeScreenEventLogger_logStackVisibilityChanged_visibleRect_topWidget_prediction___block_invoke;
   v20[3] = &unk_1E80C47C0;
-  v21 = v13;
-  v22 = v14;
+  v21 = changedCopy;
+  v22 = widgetCopy;
   v25 = x;
   v26 = y;
   v27 = width;
   v28 = height;
-  v23 = self;
-  v24 = v15;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
+  selfCopy = self;
+  v24 = predictionCopy;
+  v17 = predictionCopy;
+  v18 = widgetCopy;
+  v19 = changedCopy;
   dispatch_async(queue, v20);
 }
 
@@ -1773,24 +1773,24 @@ void __87__ATXHomeScreenEventLogger_logStackVisibilityChanged_visibleRect_topWid
   [v8 _sendEventToBiomeWithDate:v9 eventType:20 stackIdentifier:v11 stackKind:v13 stackLocation:v16 reason:0 widget:v17 blendingCacheIdentifier:v18 metadata:v6];
 }
 
-- (void)logStackStatusDidChange:(id)a3 widgetOnTop:(id)a4 reason:(unint64_t)a5 prediction:(id)a6
+- (void)logStackStatusDidChange:(id)change widgetOnTop:(id)top reason:(unint64_t)reason prediction:(id)prediction
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  changeCopy = change;
+  topCopy = top;
+  predictionCopy = prediction;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__ATXHomeScreenEventLogger_logStackStatusDidChange_widgetOnTop_reason_prediction___block_invoke;
   block[3] = &unk_1E80C47E8;
-  v21 = self;
-  v22 = a5;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  selfCopy = self;
+  reasonCopy = reason;
+  v18 = changeCopy;
+  v19 = topCopy;
+  v20 = predictionCopy;
+  v14 = predictionCopy;
+  v15 = topCopy;
+  v16 = changeCopy;
   dispatch_async(queue, block);
 }
 
@@ -1850,26 +1850,26 @@ void __82__ATXHomeScreenEventLogger_logStackStatusDidChange_widgetOnTop_reason_p
   [v20 _sendEventToBiomeWithDate:v9 eventType:3 stackIdentifier:v11 stackKind:v13 stackLocation:v16 reason:v17 widget:v18 blendingCacheIdentifier:v19 metadata:v8];
 }
 
-- (void)logStackDidTap:(id)a3 engagedUrl:(id)a4 widgetOnTop:(id)a5 prediction:(id)a6
+- (void)logStackDidTap:(id)tap engagedUrl:(id)url widgetOnTop:(id)top prediction:(id)prediction
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  tapCopy = tap;
+  urlCopy = url;
+  topCopy = top;
+  predictionCopy = prediction;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__ATXHomeScreenEventLogger_logStackDidTap_engagedUrl_widgetOnTop_prediction___block_invoke;
   block[3] = &unk_1E80C4230;
-  v20 = v10;
-  v21 = v12;
-  v22 = self;
-  v23 = v11;
-  v24 = v13;
-  v15 = v13;
-  v16 = v11;
-  v17 = v12;
-  v18 = v10;
+  v20 = tapCopy;
+  v21 = topCopy;
+  selfCopy = self;
+  v23 = urlCopy;
+  v24 = predictionCopy;
+  v15 = predictionCopy;
+  v16 = urlCopy;
+  v17 = topCopy;
+  v18 = tapCopy;
   dispatch_async(queue, block);
 }
 
@@ -1898,24 +1898,24 @@ void __77__ATXHomeScreenEventLogger_logStackDidTap_engagedUrl_widgetOnTop_predic
   [v4 _sendEventToBiomeWithDate:v5 eventType:4 stackIdentifier:v7 stackKind:v9 stackLocation:v12 reason:0 widget:v13 blendingCacheIdentifier:v14 metadata:v3];
 }
 
-- (void)_logSupplementaryActionInContextMenu:(unint64_t)a3 stackId:(id)a4 widget:(id)a5 prediction:(id)a6
+- (void)_logSupplementaryActionInContextMenu:(unint64_t)menu stackId:(id)id widget:(id)widget prediction:(id)prediction
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  idCopy = id;
+  widgetCopy = widget;
+  predictionCopy = prediction;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __91__ATXHomeScreenEventLogger__logSupplementaryActionInContextMenu_stackId_widget_prediction___block_invoke;
   block[3] = &unk_1E80C47E8;
-  v18 = v10;
-  v19 = v11;
-  v21 = v12;
-  v22 = a3;
-  v20 = self;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = idCopy;
+  v19 = widgetCopy;
+  v21 = predictionCopy;
+  menuCopy = menu;
+  selfCopy = self;
+  v14 = predictionCopy;
+  v15 = widgetCopy;
+  v16 = idCopy;
   dispatch_async(queue, block);
 }
 
@@ -1942,17 +1942,17 @@ void __91__ATXHomeScreenEventLogger__logSupplementaryActionInContextMenu_stackId
   [v3 _sendEventToBiomeWithDate:v4 eventType:6 stackIdentifier:v6 stackKind:v8 stackLocation:v11 reason:v12 widget:v13 blendingCacheIdentifier:v14 metadata:0];
 }
 
-- (void)logUserDidChangeStackConfiguration:(id)a3
+- (void)logUserDidChangeStackConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__ATXHomeScreenEventLogger_logUserDidChangeStackConfiguration___block_invoke;
   v7[3] = &unk_1E80C0958;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = configurationCopy;
+  selfCopy = self;
+  v6 = configurationCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1969,23 +1969,23 @@ void __63__ATXHomeScreenEventLogger_logUserDidChangeStackConfiguration___block_i
   [v3 _sendEventToBiomeWithDate:v4 eventType:7 stackIdentifier:*(a1 + 32) stackKind:0 stackLocation:0 reason:0 widget:0 blendingCacheIdentifier:0 metadata:0];
 }
 
-- (void)logUserDidAddPinnedWidget:(id)a3 page:(id)a4 defaultsComparator:(id)a5
+- (void)logUserDidAddPinnedWidget:(id)widget page:(id)page defaultsComparator:(id)comparator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  widgetCopy = widget;
+  pageCopy = page;
+  comparatorCopy = comparator;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __78__ATXHomeScreenEventLogger_logUserDidAddPinnedWidget_page_defaultsComparator___block_invoke;
   v15[3] = &unk_1E80C3B48;
-  v16 = v8;
-  v17 = v10;
-  v18 = self;
-  v19 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = widgetCopy;
+  v17 = comparatorCopy;
+  selfCopy = self;
+  v19 = pageCopy;
+  v12 = pageCopy;
+  v13 = comparatorCopy;
+  v14 = widgetCopy;
   dispatch_async(queue, v15);
 }
 
@@ -2036,21 +2036,21 @@ void __78__ATXHomeScreenEventLogger_logUserDidAddPinnedWidget_page_defaultsCompa
   [v21 logWidgetAddedFeaturesInCoreAnalytics:v12 rankOfWidgetInGallery:v6 galleryItems:v22];
 }
 
-- (void)logUserDidDeletePinnedWidget:(id)a3 stackLocation:(unint64_t)a4 page:(id)a5
+- (void)logUserDidDeletePinnedWidget:(id)widget stackLocation:(unint64_t)location page:(id)page
 {
-  v8 = a3;
-  v9 = a5;
+  widgetCopy = widget;
+  pageCopy = page;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__ATXHomeScreenEventLogger_logUserDidDeletePinnedWidget_stackLocation_page___block_invoke;
   v13[3] = &unk_1E80C2DC0;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = widgetCopy;
+  selfCopy = self;
+  v16 = pageCopy;
+  locationCopy = location;
+  v11 = pageCopy;
+  v12 = widgetCopy;
   dispatch_async(queue, v13);
 }
 
@@ -2078,20 +2078,20 @@ void __76__ATXHomeScreenEventLogger_logUserDidDeletePinnedWidget_stackLocation_p
   [v6 _sendEventToBiomeWithDate:v7 eventType:11 stackIdentifier:0 stackKind:1 stackLocation:*(a1 + 56) reason:0 widget:*(a1 + 32) blendingCacheIdentifier:0 metadata:v5];
 }
 
-- (void)logUserDidAddApp:(id)a3 page:(id)a4
+- (void)logUserDidAddApp:(id)app page:(id)page
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  pageCopy = page;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__ATXHomeScreenEventLogger_logUserDidAddApp_page___block_invoke;
   block[3] = &unk_1E80C1728;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = appCopy;
+  selfCopy = self;
+  v14 = pageCopy;
+  v9 = pageCopy;
+  v10 = appCopy;
   dispatch_async(queue, block);
 }
 
@@ -2113,20 +2113,20 @@ void __50__ATXHomeScreenEventLogger_logUserDidAddApp_page___block_invoke(uint64_
   }
 }
 
-- (void)logUserDidRemoveApp:(id)a3 page:(id)a4
+- (void)logUserDidRemoveApp:(id)app page:(id)page
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  pageCopy = page;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__ATXHomeScreenEventLogger_logUserDidRemoveApp_page___block_invoke;
   block[3] = &unk_1E80C1728;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = appCopy;
+  selfCopy = self;
+  v14 = pageCopy;
+  v9 = pageCopy;
+  v10 = appCopy;
   dispatch_async(queue, block);
 }
 
@@ -2148,21 +2148,21 @@ void __53__ATXHomeScreenEventLogger_logUserDidRemoveApp_page___block_invoke(uint
   }
 }
 
-- (void)logUserDidAddWidgetToStack:(id)a3 stackIdentifier:(id)a4 isSuggestion:(BOOL)a5
+- (void)logUserDidAddWidgetToStack:(id)stack stackIdentifier:(id)identifier isSuggestion:(BOOL)suggestion
 {
-  v8 = a3;
-  v9 = a4;
+  stackCopy = stack;
+  identifierCopy = identifier;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __84__ATXHomeScreenEventLogger_logUserDidAddWidgetToStack_stackIdentifier_isSuggestion___block_invoke;
   v13[3] = &unk_1E80C4810;
-  v17 = a5;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  suggestionCopy = suggestion;
+  v14 = stackCopy;
+  selfCopy = self;
+  v16 = identifierCopy;
+  v11 = identifierCopy;
+  v12 = stackCopy;
   dispatch_async(queue, v13);
 }
 
@@ -2207,22 +2207,22 @@ void __84__ATXHomeScreenEventLogger_logUserDidAddWidgetToStack_stackIdentifier_i
   [v20 sendEvent:v19];
 }
 
-- (void)logUserDidDeleteWidgetOnStack:(id)a3 stackIdentifier:(id)a4 stackKind:(unint64_t)a5 stackLocation:(unint64_t)a6
+- (void)logUserDidDeleteWidgetOnStack:(id)stack stackIdentifier:(id)identifier stackKind:(unint64_t)kind stackLocation:(unint64_t)location
 {
-  v10 = a3;
-  v11 = a4;
+  stackCopy = stack;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __98__ATXHomeScreenEventLogger_logUserDidDeleteWidgetOnStack_stackIdentifier_stackKind_stackLocation___block_invoke;
   block[3] = &unk_1E80C2EA8;
-  v16 = v10;
-  v17 = self;
-  v18 = v11;
-  v19 = a5;
-  v20 = a6;
-  v13 = v11;
-  v14 = v10;
+  v16 = stackCopy;
+  selfCopy = self;
+  v18 = identifierCopy;
+  kindCopy = kind;
+  locationCopy = location;
+  v13 = identifierCopy;
+  v14 = stackCopy;
   dispatch_async(queue, block);
 }
 
@@ -2248,12 +2248,12 @@ void __98__ATXHomeScreenEventLogger_logUserDidDeleteWidgetOnStack_stackIdentifie
   [v5 _sendEventToBiomeWithDate:v6 eventType:19 stackIdentifier:a1[6] stackKind:a1[7] stackLocation:a1[8] reason:0 widget:a1[4] blendingCacheIdentifier:0 metadata:0];
 }
 
-- (void)_populateSuggestedPageMetadata:(id)a3 forPage:(id)a4
+- (void)_populateSuggestedPageMetadata:(id)metadata forPage:(id)page
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6)
+  metadataCopy = metadata;
+  pageCopy = page;
+  v7 = pageCopy;
+  if (!pageCopy)
   {
     v9 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -2264,19 +2264,19 @@ void __98__ATXHomeScreenEventLogger_logUserDidDeleteWidgetOnStack_stackIdentifie
     goto LABEL_10;
   }
 
-  if ([v6 pageIndex] != 20000)
+  if ([pageCopy pageIndex] != 20000)
   {
-    v8 = [v7 uniqueIdentifier];
+    uniqueIdentifier = [v7 uniqueIdentifier];
 
-    if (v8)
+    if (uniqueIdentifier)
     {
       v9 = objc_opt_new();
-      v10 = [v7 uniqueIdentifier];
-      v11 = [v9 suggestedPageTypeWithIdentifier:v10];
+      uniqueIdentifier2 = [v7 uniqueIdentifier];
+      v11 = [v9 suggestedPageTypeWithIdentifier:uniqueIdentifier2];
 
       if (v11)
       {
-        [v5 setSuggestedPageType:v11];
+        [metadataCopy setSuggestedPageType:v11];
       }
     }
 
@@ -2293,21 +2293,21 @@ LABEL_10:
   }
 }
 
-- (void)logUserDidCreateStack:(id)a3 page:(id)a4 isSuggestion:(BOOL)a5
+- (void)logUserDidCreateStack:(id)stack page:(id)page isSuggestion:(BOOL)suggestion
 {
-  v8 = a3;
-  v9 = a4;
+  stackCopy = stack;
+  pageCopy = page;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __68__ATXHomeScreenEventLogger_logUserDidCreateStack_page_isSuggestion___block_invoke;
   v13[3] = &unk_1E80C4810;
-  v17 = a5;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  suggestionCopy = suggestion;
+  v14 = stackCopy;
+  selfCopy = self;
+  v16 = pageCopy;
+  v11 = pageCopy;
+  v12 = stackCopy;
   dispatch_async(queue, v13);
 }
 
@@ -2349,22 +2349,22 @@ void __68__ATXHomeScreenEventLogger_logUserDidCreateStack_page_isSuggestion___bl
   [v19 _sendEventToBiomeWithDate:v18 eventType:16 stackIdentifier:v8 stackKind:v13 stackLocation:objc_msgSend(v14 reason:"_stackLocationGivenWidgetUniqueId:" widget:v17) blendingCacheIdentifier:0 metadata:{0, 0, v4}];
 }
 
-- (void)logUserDidDeleteStack:(id)a3 stackKind:(unint64_t)a4 stackLocation:(unint64_t)a5 page:(id)a6
+- (void)logUserDidDeleteStack:(id)stack stackKind:(unint64_t)kind stackLocation:(unint64_t)location page:(id)page
 {
-  v10 = a3;
-  v11 = a6;
+  stackCopy = stack;
+  pageCopy = page;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__ATXHomeScreenEventLogger_logUserDidDeleteStack_stackKind_stackLocation_page___block_invoke;
   block[3] = &unk_1E80C2EA8;
-  v16 = v10;
-  v17 = self;
-  v18 = v11;
-  v19 = a4;
-  v20 = a5;
-  v13 = v11;
-  v14 = v10;
+  v16 = stackCopy;
+  selfCopy = self;
+  v18 = pageCopy;
+  kindCopy = kind;
+  locationCopy = location;
+  v13 = pageCopy;
+  v14 = stackCopy;
   dispatch_async(queue, block);
 }
 
@@ -2422,20 +2422,20 @@ void __41__ATXHomeScreenEventLogger_logDeviceLock__block_invoke(uint64_t a1)
   [v3 _sendEventToBiomeWithDate:v4 eventType:8 stackIdentifier:0 stackKind:0 stackLocation:0 reason:0 widget:0 blendingCacheIdentifier:0 metadata:0];
 }
 
-- (void)logWidgetDidAppear:(id)a3 blendingCacheId:(id)a4
+- (void)logWidgetDidAppear:(id)appear blendingCacheId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  appearCopy = appear;
+  idCopy = id;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__ATXHomeScreenEventLogger_logWidgetDidAppear_blendingCacheId___block_invoke;
   block[3] = &unk_1E80C1728;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = appearCopy;
+  v13 = idCopy;
+  v9 = idCopy;
+  v10 = appearCopy;
   dispatch_async(queue, block);
 }
 
@@ -2448,20 +2448,20 @@ void __63__ATXHomeScreenEventLogger_logWidgetDidAppear_blendingCacheId___block_i
   [v1 _logProactiveWidgetEvent:4 suggestionIdentifiers:0 widget:v2 blendingCacheId:v3 date:v4];
 }
 
-- (void)logWidgetDidDisappear:(id)a3 blendingCacheId:(id)a4
+- (void)logWidgetDidDisappear:(id)disappear blendingCacheId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  disappearCopy = disappear;
+  idCopy = id;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__ATXHomeScreenEventLogger_logWidgetDidDisappear_blendingCacheId___block_invoke;
   block[3] = &unk_1E80C1728;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = disappearCopy;
+  v13 = idCopy;
+  v9 = idCopy;
+  v10 = disappearCopy;
   dispatch_async(queue, block);
 }
 
@@ -2474,23 +2474,23 @@ void __66__ATXHomeScreenEventLogger_logWidgetDidDisappear_blendingCacheId___bloc
   [v1 _logProactiveWidgetEvent:5 suggestionIdentifiers:0 widget:v2 blendingCacheId:v3 date:v4];
 }
 
-- (void)logSuggestionsDidAppear:(id)a3 widget:(id)a4 blendingCacheId:(id)a5
+- (void)logSuggestionsDidAppear:(id)appear widget:(id)widget blendingCacheId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  appearCopy = appear;
+  widgetCopy = widget;
+  idCopy = id;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __75__ATXHomeScreenEventLogger_logSuggestionsDidAppear_widget_blendingCacheId___block_invoke;
   v15[3] = &unk_1E80C3B48;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = appearCopy;
+  v17 = widgetCopy;
+  v18 = idCopy;
+  v12 = idCopy;
+  v13 = widgetCopy;
+  v14 = appearCopy;
   dispatch_async(queue, v15);
 }
 
@@ -2504,23 +2504,23 @@ void __75__ATXHomeScreenEventLogger_logSuggestionsDidAppear_widget_blendingCache
   [v1 _logProactiveWidgetEvent:6 suggestionIdentifiers:v2 widget:v3 blendingCacheId:v4 date:v5];
 }
 
-- (void)logSuggestionsDidDisappear:(id)a3 widget:(id)a4 blendingCacheId:(id)a5
+- (void)logSuggestionsDidDisappear:(id)disappear widget:(id)widget blendingCacheId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  disappearCopy = disappear;
+  widgetCopy = widget;
+  idCopy = id;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __78__ATXHomeScreenEventLogger_logSuggestionsDidDisappear_widget_blendingCacheId___block_invoke;
   v15[3] = &unk_1E80C3B48;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = disappearCopy;
+  v17 = widgetCopy;
+  v18 = idCopy;
+  v12 = idCopy;
+  v13 = widgetCopy;
+  v14 = disappearCopy;
   dispatch_async(queue, v15);
 }
 
@@ -2534,20 +2534,20 @@ void __78__ATXHomeScreenEventLogger_logSuggestionsDidDisappear_widget_blendingCa
   [v1 _logProactiveWidgetEvent:7 suggestionIdentifiers:v2 widget:v3 blendingCacheId:v4 date:v5];
 }
 
-- (void)logWidgetOccluded:(id)a3 blendingCacheId:(id)a4
+- (void)logWidgetOccluded:(id)occluded blendingCacheId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  occludedCopy = occluded;
+  idCopy = id;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__ATXHomeScreenEventLogger_logWidgetOccluded_blendingCacheId___block_invoke;
   block[3] = &unk_1E80C1728;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = occludedCopy;
+  v13 = idCopy;
+  v9 = idCopy;
+  v10 = occludedCopy;
   dispatch_async(queue, block);
 }
 
@@ -2560,20 +2560,20 @@ void __62__ATXHomeScreenEventLogger_logWidgetOccluded_blendingCacheId___block_in
   [v1 _logProactiveWidgetEvent:8 suggestionIdentifiers:0 widget:v2 blendingCacheId:v3 date:v4];
 }
 
-- (void)logWidgetUnoccluded:(id)a3 blendingCacheId:(id)a4
+- (void)logWidgetUnoccluded:(id)unoccluded blendingCacheId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  unoccludedCopy = unoccluded;
+  idCopy = id;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__ATXHomeScreenEventLogger_logWidgetUnoccluded_blendingCacheId___block_invoke;
   block[3] = &unk_1E80C1728;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = unoccludedCopy;
+  v13 = idCopy;
+  v9 = idCopy;
+  v10 = unoccludedCopy;
   dispatch_async(queue, block);
 }
 
@@ -2586,23 +2586,23 @@ void __64__ATXHomeScreenEventLogger_logWidgetUnoccluded_blendingCacheId___block_
   [v1 _logProactiveWidgetEvent:9 suggestionIdentifiers:0 widget:v2 blendingCacheId:v3 date:v4];
 }
 
-- (void)logDidTapSuggestion:(id)a3 widget:(id)a4 blendingCacheId:(id)a5
+- (void)logDidTapSuggestion:(id)suggestion widget:(id)widget blendingCacheId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  suggestionCopy = suggestion;
+  widgetCopy = widget;
+  idCopy = id;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __71__ATXHomeScreenEventLogger_logDidTapSuggestion_widget_blendingCacheId___block_invoke;
   v15[3] = &unk_1E80C3B48;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = suggestionCopy;
+  v17 = widgetCopy;
+  v18 = idCopy;
+  v12 = idCopy;
+  v13 = widgetCopy;
+  v14 = suggestionCopy;
   dispatch_async(queue, v15);
 }
 
@@ -2653,23 +2653,23 @@ void __71__ATXHomeScreenEventLogger_logDidTapSuggestion_widget_blendingCacheId__
   [*(a1 + 32) _logAppPanelLaunchRatioWithTappedWidget:*(a1 + 48)];
 }
 
-- (void)logContextMenuDismissOnceForSuggestion:(id)a3 widget:(id)a4 blendingCacheId:(id)a5
+- (void)logContextMenuDismissOnceForSuggestion:(id)suggestion widget:(id)widget blendingCacheId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  suggestionCopy = suggestion;
+  widgetCopy = widget;
+  idCopy = id;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __90__ATXHomeScreenEventLogger_logContextMenuDismissOnceForSuggestion_widget_blendingCacheId___block_invoke;
   v15[3] = &unk_1E80C3B48;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = suggestionCopy;
+  v17 = widgetCopy;
+  v18 = idCopy;
+  v12 = idCopy;
+  v13 = widgetCopy;
+  v14 = suggestionCopy;
   dispatch_async(queue, v15);
 }
 
@@ -2714,23 +2714,23 @@ uint64_t __90__ATXHomeScreenEventLogger_logContextMenuDismissOnceForSuggestion_w
   return [ATXContextMenuFeedbackTracker logContextMenuFeedbackForDismissOnceWithSuggestion:*(a1 + 40) consumerSubType:v10 tracker:*(*(a1 + 32) + 96)];
 }
 
-- (void)logContextMenuNeverShowAgainForSuggestion:(id)a3 widget:(id)a4 blendingCacheId:(id)a5
+- (void)logContextMenuNeverShowAgainForSuggestion:(id)suggestion widget:(id)widget blendingCacheId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  suggestionCopy = suggestion;
+  widgetCopy = widget;
+  idCopy = id;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __93__ATXHomeScreenEventLogger_logContextMenuNeverShowAgainForSuggestion_widget_blendingCacheId___block_invoke;
   v15[3] = &unk_1E80C3B48;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = suggestionCopy;
+  v17 = widgetCopy;
+  v18 = idCopy;
+  v12 = idCopy;
+  v13 = widgetCopy;
+  v14 = suggestionCopy;
   dispatch_async(queue, v15);
 }
 
@@ -2775,7 +2775,7 @@ uint64_t __93__ATXHomeScreenEventLogger_logContextMenuNeverShowAgainForSuggestio
   return [ATXContextMenuFeedbackTracker logContextMenuFeedbackForNeverShowAgainWithSuggestion:*(a1 + 40) consumerSubType:v10 tracker:*(*(a1 + 32) + 96)];
 }
 
-- (void)logWidgetInsertionDidFailInStack:(id)a3 prediction:(id)a4
+- (void)logWidgetInsertionDidFailInStack:(id)stack prediction:(id)prediction
 {
   v4 = __atxlog_handle_default();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -2828,7 +2828,7 @@ void __59__ATXHomeScreenEventLogger_logUserDidStartWidgetOnboarding__block_invok
   [*(*(a1 + 32) + 104) setBool:v6 forKey:*MEMORY[0x1E698B070]];
 }
 
-- (void)logUserDidAcceptWidgetOnboardingSuggestion:(id)a3
+- (void)logUserDidAcceptWidgetOnboardingSuggestion:(id)suggestion
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -2839,7 +2839,7 @@ void __59__ATXHomeScreenEventLogger_logUserDidStartWidgetOnboarding__block_invok
   dispatch_async(queue, block);
 }
 
-- (void)logUserDidRejectWidgetOnboardingSuggestion:(id)a3
+- (void)logUserDidRejectWidgetOnboardingSuggestion:(id)suggestion
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];

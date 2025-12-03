@@ -1,16 +1,16 @@
 @interface FSItemGetAttributesRequest
-- (BOOL)isAttributeWanted:(int64_t)a3;
+- (BOOL)isAttributeWanted:(int64_t)wanted;
 - (FSItemGetAttributesRequest)init;
-- (FSItemGetAttributesRequest)initWithCoder:(id)a3;
-- (FSItemGetAttributesRequest)initWithWantedLIAttributes:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (FSItemGetAttributesRequest)initWithCoder:(id)coder;
+- (FSItemGetAttributesRequest)initWithWantedLIAttributes:(unint64_t)attributes;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FSItemGetAttributesRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -18,12 +18,12 @@
     objc_exception_throw(v4);
   }
 
-  [v5 encodeInt64:self->_wantedAttributes forKey:@"FSItemAttrWanted"];
+  [coderCopy encodeInt64:self->_wantedAttributes forKey:@"FSItemAttrWanted"];
 }
 
-- (FSItemGetAttributesRequest)initWithCoder:(id)a3
+- (FSItemGetAttributesRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -31,7 +31,7 @@
     objc_exception_throw(v6);
   }
 
-  self->_wantedAttributes = [v4 decodeInt64ForKey:@"FSItemAttrWanted"];
+  self->_wantedAttributes = [coderCopy decodeInt64ForKey:@"FSItemAttrWanted"];
 
   return self;
 }
@@ -49,61 +49,61 @@
   return result;
 }
 
-- (FSItemGetAttributesRequest)initWithWantedLIAttributes:(unint64_t)a3
+- (FSItemGetAttributesRequest)initWithWantedLIAttributes:(unint64_t)attributes
 {
   v5.receiver = self;
   v5.super_class = FSItemGetAttributesRequest;
   result = [(FSItemGetAttributesRequest *)&v5 init];
   if (result)
   {
-    result->_wantedAttributes = a3;
+    result->_wantedAttributes = attributes;
   }
 
   return result;
 }
 
-- (BOOL)isAttributeWanted:(int64_t)a3
+- (BOOL)isAttributeWanted:(int64_t)wanted
 {
   result = 0;
-  if (a3 <= 511)
+  if (wanted <= 511)
   {
-    if ((a3 - 1) <= 0x3F && ((1 << (a3 - 1)) & 0x800000008000808BLL) != 0 || a3 == 128 || a3 == 256)
+    if ((wanted - 1) <= 0x3F && ((1 << (wanted - 1)) & 0x800000008000808BLL) != 0 || wanted == 128 || wanted == 256)
     {
-      return (self->_wantedAttributes & a3) != 0;
+      return (self->_wantedAttributes & wanted) != 0;
     }
   }
 
-  else if (a3 >= 0x4000)
+  else if (wanted >= 0x4000)
   {
-    if (a3 < 0x10000)
+    if (wanted < 0x10000)
     {
-      if (a3 == 0x4000 || a3 == 0x8000)
+      if (wanted == 0x4000 || wanted == 0x8000)
       {
-        return (self->_wantedAttributes & a3) != 0;
+        return (self->_wantedAttributes & wanted) != 0;
       }
     }
 
-    else if (a3 == 0x10000 || a3 == 0x4000000000000000 || a3 == 0x20000)
+    else if (wanted == 0x10000 || wanted == 0x4000000000000000 || wanted == 0x20000)
     {
-      return (self->_wantedAttributes & a3) != 0;
+      return (self->_wantedAttributes & wanted) != 0;
     }
   }
 
   else
   {
-    if (a3 > 2047)
+    if (wanted > 2047)
     {
-      if (a3 != 2048 && a3 != 4096 && a3 != 0x2000)
+      if (wanted != 2048 && wanted != 4096 && wanted != 0x2000)
       {
         return result;
       }
 
-      return (self->_wantedAttributes & a3) != 0;
+      return (self->_wantedAttributes & wanted) != 0;
     }
 
-    if (a3 == 512 || a3 == 1024)
+    if (wanted == 512 || wanted == 1024)
     {
-      return (self->_wantedAttributes & a3) != 0;
+      return (self->_wantedAttributes & wanted) != 0;
     }
   }
 

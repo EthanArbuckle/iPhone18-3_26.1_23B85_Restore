@@ -1,20 +1,20 @@
 @interface AMSUIWebRestrictedFeatureAction
-- (AMSUIWebRestrictedFeatureAction)initWithJSObject:(id)a3 context:(id)a4;
-- (id)_featureWithIdentifier:(id)a3;
+- (AMSUIWebRestrictedFeatureAction)initWithJSObject:(id)object context:(id)context;
+- (id)_featureWithIdentifier:(id)identifier;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebRestrictedFeatureAction
 
-- (AMSUIWebRestrictedFeatureAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebRestrictedFeatureAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = AMSUIWebRestrictedFeatureAction;
-  v7 = [(AMSUIWebAction *)&v15 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v15 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"enabled"];
+    v8 = [objectCopy objectForKeyedSubscript:@"enabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
     enabled = v7->_enabled;
     v7->_enabled = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"identifier"];
+    v11 = [objectCopy objectForKeyedSubscript:@"identifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,26 +53,26 @@
   v29 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = AMSUIWebRestrictedFeatureAction;
-  v3 = [(AMSUIWebAction *)&v20 runAction];
-  v4 = [(AMSUIWebRestrictedFeatureAction *)self identifier];
-  v5 = [(AMSUIWebRestrictedFeatureAction *)self _featureWithIdentifier:v4];
+  runAction = [(AMSUIWebAction *)&v20 runAction];
+  identifier = [(AMSUIWebRestrictedFeatureAction *)self identifier];
+  v5 = [(AMSUIWebRestrictedFeatureAction *)self _featureWithIdentifier:identifier];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v7 = [(AMSUIWebRestrictedFeatureAction *)self enabled];
-    if (v7)
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    enabled = [(AMSUIWebRestrictedFeatureAction *)self enabled];
+    if (enabled)
     {
       if (([MEMORY[0x1E698CAC8] BOOLForEntitlement:@"com.apple.managedconfiguration.profiled-access"] & 1) == 0)
       {
-        v8 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-        if (!v8)
+        mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+        if (!mEMORY[0x1E698C968])
         {
-          v8 = [MEMORY[0x1E698C968] sharedConfig];
+          mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
         }
 
-        v9 = [v8 OSLogObject];
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+        oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v10 = objc_opt_class();
           v11 = AMSLogKey();
@@ -82,19 +82,19 @@
           v26 = v11;
           v27 = 2114;
           v28 = @"com.apple.managedconfiguration.profiled-access";
-          _os_log_impl(&dword_1BB036000, v9, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Missing %{public}@ entitlement", buf, 0x20u);
+          _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Missing %{public}@ entitlement", buf, 0x20u);
         }
       }
 
-      [v6 setBoolValue:objc_msgSend(v7 forSetting:{"BOOLValue"), v5}];
+      [mEMORY[0x1E69ADFB8] setBoolValue:objc_msgSend(enabled forSetting:{"BOOLValue"), v5}];
     }
 
     v12 = MEMORY[0x1E698CAD0];
     v21[0] = @"locked";
-    v13 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v6, "isBoolSettingLockedDownByRestrictions:", v5)}];
+    v13 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(mEMORY[0x1E69ADFB8], "isBoolSettingLockedDownByRestrictions:", v5)}];
     v21[1] = @"state";
     v22[0] = v13;
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v6, "effectiveBoolValueForSetting:", v5)}];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(mEMORY[0x1E69ADFB8], "effectiveBoolValueForSetting:", v5)}];
     v22[1] = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
     v16 = [v12 promiseWithResult:v15];
@@ -103,8 +103,8 @@
   else
   {
     v17 = MEMORY[0x1E698CAD0];
-    v6 = [(AMSUIWebRestrictedFeatureAction *)self _unknownIdentifierError];
-    v16 = [v17 promiseWithError:v6];
+    mEMORY[0x1E69ADFB8] = [(AMSUIWebRestrictedFeatureAction *)self _unknownIdentifierError];
+    v16 = [v17 promiseWithError:mEMORY[0x1E69ADFB8]];
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -112,16 +112,16 @@
   return v16;
 }
 
-- (id)_featureWithIdentifier:(id)a3
+- (id)_featureWithIdentifier:(id)identifier
 {
   v3 = _featureWithIdentifier__ams_once_token___COUNTER__;
-  v4 = a3;
+  identifierCopy = identifier;
   if (v3 != -1)
   {
     [AMSUIWebRestrictedFeatureAction _featureWithIdentifier:];
   }
 
-  v5 = [_featureWithIdentifier__ams_once_object___COUNTER__ objectForKey:v4];
+  v5 = [_featureWithIdentifier__ams_once_object___COUNTER__ objectForKey:identifierCopy];
 
   return v5;
 }

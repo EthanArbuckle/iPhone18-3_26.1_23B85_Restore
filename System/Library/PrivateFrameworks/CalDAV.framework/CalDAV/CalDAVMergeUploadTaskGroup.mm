@@ -1,5 +1,5 @@
 @interface CalDAVMergeUploadTaskGroup
-- (CalDAVMergeUploadTaskGroup)initWithCalendar:(id)a3 principal:(id)a4 accountInfoProvider:(id)a5 taskManager:(id)a6;
+- (CalDAVMergeUploadTaskGroup)initWithCalendar:(id)calendar principal:(id)principal accountInfoProvider:(id)provider taskManager:(id)manager;
 - (void)_performBulkUpload;
 - (void)_performRegularUpload;
 - (void)cancelTaskGroup;
@@ -9,18 +9,18 @@
 
 @implementation CalDAVMergeUploadTaskGroup
 
-- (CalDAVMergeUploadTaskGroup)initWithCalendar:(id)a3 principal:(id)a4 accountInfoProvider:(id)a5 taskManager:(id)a6
+- (CalDAVMergeUploadTaskGroup)initWithCalendar:(id)calendar principal:(id)principal accountInfoProvider:(id)provider taskManager:(id)manager
 {
-  v11 = a3;
-  v12 = a4;
+  calendarCopy = calendar;
+  principalCopy = principal;
   v16.receiver = self;
   v16.super_class = CalDAVMergeUploadTaskGroup;
-  v13 = [(CoreDAVTaskGroup *)&v16 initWithAccountInfoProvider:a5 taskManager:a6];
+  v13 = [(CoreDAVTaskGroup *)&v16 initWithAccountInfoProvider:provider taskManager:manager];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_calendar, a3);
-    objc_storeStrong(&v14->_principal, a4);
+    objc_storeStrong(&v13->_calendar, calendar);
+    objc_storeStrong(&v14->_principal, principal);
   }
 
   return v14;
@@ -37,75 +37,75 @@
 - (void)_performBulkUpload
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CFDC18] sharedLogging];
+  mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
   WeakRetained = objc_loadWeakRetained((&self->super.super.isa + *MEMORY[0x277CFDD48]));
-  v5 = [v3 logHandleForAccountInfoProvider:WeakRetained];
+  v5 = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:WeakRetained];
 
   if (v5)
   {
     v6 = v5;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [(CalDAVCalendar *)self->_calendar uuidsToAddActions];
-      v8 = [v7 count];
-      v9 = [(CalDAVCalendar *)self->_calendar hrefsToModDeleteActions];
-      v10 = [v9 count];
-      v11 = [(CalDAVCalendar *)self->_calendar calendarURL];
+      uuidsToAddActions = [(CalDAVCalendar *)self->_calendar uuidsToAddActions];
+      v8 = [uuidsToAddActions count];
+      hrefsToModDeleteActions = [(CalDAVCalendar *)self->_calendar hrefsToModDeleteActions];
+      v10 = [hrefsToModDeleteActions count];
+      calendarURL = [(CalDAVCalendar *)self->_calendar calendarURL];
       *buf = 134218498;
       v36 = v8;
       v37 = 2048;
       v38 = v10;
       v39 = 2112;
-      v40 = v11;
+      v40 = calendarURL;
       _os_log_impl(&dword_242742000, v6, OS_LOG_TYPE_INFO, "Performing a bulk upload of %lu/%lu items to the server at %@", buf, 0x20u);
     }
   }
 
-  v12 = [(CalDAVCalendar *)self->_calendar bulkRequests];
-  v30 = [v12 objectForKey:*MEMORY[0x277CFDF70]];
+  bulkRequests = [(CalDAVCalendar *)self->_calendar bulkRequests];
+  v30 = [bulkRequests objectForKey:*MEMORY[0x277CFDF70]];
 
   v13 = [v30 objectForKey:*MEMORY[0x277CFDF78]];
-  v14 = [v13 integerValue];
+  integerValue = [v13 integerValue];
 
   v15 = [v30 objectForKey:*MEMORY[0x277CFDF80]];
-  v16 = [v15 integerValue];
+  integerValue2 = [v15 integerValue];
 
-  v17 = [(CalDAVCalendar *)self->_calendar ctag];
+  ctag = [(CalDAVCalendar *)self->_calendar ctag];
   if (self->_shouldTrySyncTokenForBulkUpload)
   {
-    v18 = [(CalDAVCalendar *)self->_calendar syncToken];
+    syncToken = [(CalDAVCalendar *)self->_calendar syncToken];
 
-    v17 = v18;
+    ctag = syncToken;
   }
 
   v19 = [CalDAVBulkUploadTaskGroup alloc];
-  v20 = [(CalDAVCalendar *)self->_calendar calendarURL];
-  v21 = [(CalDAVCalendar *)self->_calendar uuidsToAddActions];
-  v22 = [(CalDAVCalendar *)self->_calendar hrefsToModDeleteActions];
+  calendarURL2 = [(CalDAVCalendar *)self->_calendar calendarURL];
+  uuidsToAddActions2 = [(CalDAVCalendar *)self->_calendar uuidsToAddActions];
+  hrefsToModDeleteActions2 = [(CalDAVCalendar *)self->_calendar hrefsToModDeleteActions];
   principal = self->_principal;
-  v24 = [(CoreDAVTaskGroup *)self taskManager];
-  v25 = [(CalDAVBulkUploadTaskGroup *)v19 initWithFolderURL:v20 checkCTag:v17 uuidsToAddActions:v21 hrefsToModDeleteActions:v22 context:0 accountInfoProvider:principal taskManager:v24];
+  taskManager = [(CoreDAVTaskGroup *)self taskManager];
+  v25 = [(CalDAVBulkUploadTaskGroup *)v19 initWithFolderURL:calendarURL2 checkCTag:ctag uuidsToAddActions:uuidsToAddActions2 hrefsToModDeleteActions:hrefsToModDeleteActions2 context:0 accountInfoProvider:principal taskManager:taskManager];
   uploadTaskGroup = self->_uploadTaskGroup;
   self->_uploadTaskGroup = v25;
 
-  if (v14)
+  if (integerValue)
   {
-    if (v14 >= 25)
+    if (integerValue >= 25)
     {
       v27 = 25;
     }
 
     else
     {
-      v27 = v14;
+      v27 = integerValue;
     }
 
     [(CoreDAVBulkUploadTaskGroup *)self->_uploadTaskGroup setMultiPutBatchMaxNumResources:v27];
   }
 
-  if (v16)
+  if (integerValue2)
   {
-    [(CoreDAVBulkUploadTaskGroup *)self->_uploadTaskGroup setMultiPutBatchMaxSize:v16];
+    [(CoreDAVBulkUploadTaskGroup *)self->_uploadTaskGroup setMultiPutBatchMaxSize:integerValue2];
   }
 
   objc_initWeak(buf, self);
@@ -116,8 +116,8 @@
   v31[3] = &unk_278D66918;
   objc_copyWeak(&v32, &location);
   objc_copyWeak(&v33, buf);
-  v28 = [(CalDAVMergeUploadTaskGroup *)self uploadTaskGroup];
-  [v28 setCompletionBlock:v31];
+  uploadTaskGroup = [(CalDAVMergeUploadTaskGroup *)self uploadTaskGroup];
+  [uploadTaskGroup setCompletionBlock:v31];
 
   [(CoreDAVBulkUploadTaskGroup *)self->_uploadTaskGroup startTaskGroup];
   objc_destroyWeak(&v33);
@@ -282,31 +282,31 @@ void __48__CalDAVMergeUploadTaskGroup__performBulkUpload__block_invoke_3(uint64_
 {
   v41 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v4 = [MEMORY[0x277CFDC18] sharedLogging];
+  mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
   WeakRetained = objc_loadWeakRetained((&self->super.super.isa + *MEMORY[0x277CFDD48]));
-  v6 = [v4 logHandleForAccountInfoProvider:WeakRetained];
+  v6 = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:WeakRetained];
 
   if (v6)
   {
     v7 = v6;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [(CalDAVCalendar *)self->_calendar uuidsToAddActions];
-      v9 = [v8 count];
-      v10 = [(CalDAVCalendar *)self->_calendar hrefsToModDeleteActions];
-      v11 = [v10 count];
-      v12 = [(CalDAVCalendar *)self->_calendar calendarURL];
+      uuidsToAddActions = [(CalDAVCalendar *)self->_calendar uuidsToAddActions];
+      v9 = [uuidsToAddActions count];
+      hrefsToModDeleteActions = [(CalDAVCalendar *)self->_calendar hrefsToModDeleteActions];
+      v11 = [hrefsToModDeleteActions count];
+      calendarURL = [(CalDAVCalendar *)self->_calendar calendarURL];
       *buf = 134218498;
       v36 = v9;
       v37 = 2048;
       v38 = v11;
       v39 = 2112;
-      v40 = v12;
+      v40 = calendarURL;
       _os_log_impl(&dword_242742000, v7, OS_LOG_TYPE_INFO, "Performing PUT uploads of %lu/%lu items to the server at %@", buf, 0x20u);
     }
   }
 
-  v13 = [(CalDAVCalendar *)self->_calendar uuidsToAddActions];
+  uuidsToAddActions2 = [(CalDAVCalendar *)self->_calendar uuidsToAddActions];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __51__CalDAVMergeUploadTaskGroup__performRegularUpload__block_invoke;
@@ -314,9 +314,9 @@ void __48__CalDAVMergeUploadTaskGroup__performBulkUpload__block_invoke_3(uint64_
   v32[4] = self;
   v14 = v3;
   v33 = v14;
-  [v13 enumerateKeysAndObjectsUsingBlock:v32];
+  [uuidsToAddActions2 enumerateKeysAndObjectsUsingBlock:v32];
 
-  v15 = [(CalDAVCalendar *)self->_calendar hrefsToModDeleteActions];
+  hrefsToModDeleteActions2 = [(CalDAVCalendar *)self->_calendar hrefsToModDeleteActions];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __51__CalDAVMergeUploadTaskGroup__performRegularUpload__block_invoke_3;
@@ -324,7 +324,7 @@ void __48__CalDAVMergeUploadTaskGroup__performBulkUpload__block_invoke_3(uint64_
   v30[4] = self;
   v16 = v14;
   v31 = v16;
-  [v15 enumerateKeysAndObjectsUsingBlock:v30];
+  [hrefsToModDeleteActions2 enumerateKeysAndObjectsUsingBlock:v30];
 
   v28 = 0u;
   v29 = 0u;
@@ -348,8 +348,8 @@ void __48__CalDAVMergeUploadTaskGroup__performBulkUpload__block_invoke_3(uint64_
         }
 
         v23 = *(*(&v26 + 1) + 8 * v22);
-        v24 = [(CoreDAVTaskGroup *)self taskManager];
-        [v24 submitQueuedCoreDAVTask:v23];
+        taskManager = [(CoreDAVTaskGroup *)self taskManager];
+        [taskManager submitQueuedCoreDAVTask:v23];
 
         [*(&self->super.super.isa + *v21) addObject:v23];
         ++v22;
@@ -494,13 +494,13 @@ void __51__CalDAVMergeUploadTaskGroup__performRegularUpload__block_invoke_4(uint
 
 - (void)startTaskGroup
 {
-  v3 = [(CalDAVCalendar *)self->_calendar uuidsToAddActions];
-  if ([v3 count])
+  uuidsToAddActions = [(CalDAVCalendar *)self->_calendar uuidsToAddActions];
+  if ([uuidsToAddActions count])
   {
 
 LABEL_4:
-    v6 = [(CalDAVCalendar *)self->_calendar bulkRequests];
-    v10 = [v6 objectForKey:*MEMORY[0x277CFDF70]];
+    bulkRequests = [(CalDAVCalendar *)self->_calendar bulkRequests];
+    v10 = [bulkRequests objectForKey:*MEMORY[0x277CFDF70]];
 
     if (v10)
     {
@@ -515,17 +515,17 @@ LABEL_4:
     return;
   }
 
-  v4 = [(CalDAVCalendar *)self->_calendar hrefsToModDeleteActions];
-  v5 = [v4 count];
+  hrefsToModDeleteActions = [(CalDAVCalendar *)self->_calendar hrefsToModDeleteActions];
+  v5 = [hrefsToModDeleteActions count];
 
   if (v5)
   {
     goto LABEL_4;
   }
 
-  v7 = [MEMORY[0x277CFDC18] sharedLogging];
+  mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
   WeakRetained = objc_loadWeakRetained((&self->super.super.isa + *MEMORY[0x277CFDD48]));
-  v9 = [v7 logHandleForAccountInfoProvider:WeakRetained];
+  v9 = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:WeakRetained];
 
   if (v9 && os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {

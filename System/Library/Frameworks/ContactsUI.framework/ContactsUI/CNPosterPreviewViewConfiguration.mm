@@ -1,16 +1,16 @@
 @interface CNPosterPreviewViewConfiguration
-+ (id)configurationForExistingPosterConfiguration:(id)a3 displayName:(id)a4;
-+ (id)configurationForNewPosterWithPhotoAssetID:(id)a3 backgroundColor:(id)a4 displayName:(id)a5 isEditingSNaP:(BOOL)a6;
-+ (id)configurationForNewPosterWithPhotoAssetID:(id)a3 backgroundColor:(id)a4 displayName:(id)a5 isEditingSNaP:(BOOL)a6 monogramText:(id)a7;
-+ (id)configurationForPosterArchiveData:(id)a3 displayName:(id)a4;
++ (id)configurationForExistingPosterConfiguration:(id)configuration displayName:(id)name;
++ (id)configurationForNewPosterWithPhotoAssetID:(id)d backgroundColor:(id)color displayName:(id)name isEditingSNaP:(BOOL)p;
++ (id)configurationForNewPosterWithPhotoAssetID:(id)d backgroundColor:(id)color displayName:(id)name isEditingSNaP:(BOOL)p monogramText:(id)text;
++ (id)configurationForPosterArchiveData:(id)data displayName:(id)name;
 - (_TtC10ContactsUI32CNPosterPreviewViewConfiguration)init;
 @end
 
 @implementation CNPosterPreviewViewConfiguration
 
-+ (id)configurationForNewPosterWithPhotoAssetID:(id)a3 backgroundColor:(id)a4 displayName:(id)a5 isEditingSNaP:(BOOL)a6
++ (id)configurationForNewPosterWithPhotoAssetID:(id)d backgroundColor:(id)color displayName:(id)name isEditingSNaP:(BOOL)p
 {
-  if (a3)
+  if (d)
   {
     v8 = sub_199DF9F8C();
     v10 = v9;
@@ -24,15 +24,15 @@
 
   v11 = sub_199DF9F8C();
   v13 = v12;
-  v14 = a4;
-  v15 = sub_199B7C1E4(v8, v10, a4, v11, v13, a6);
+  colorCopy = color;
+  v15 = sub_199B7C1E4(v8, v10, color, v11, v13, p);
 
   return v15;
 }
 
-+ (id)configurationForNewPosterWithPhotoAssetID:(id)a3 backgroundColor:(id)a4 displayName:(id)a5 isEditingSNaP:(BOOL)a6 monogramText:(id)a7
++ (id)configurationForNewPosterWithPhotoAssetID:(id)d backgroundColor:(id)color displayName:(id)name isEditingSNaP:(BOOL)p monogramText:(id)text
 {
-  if (a3)
+  if (d)
   {
     v10 = sub_199DF9F8C();
     v12 = v11;
@@ -46,10 +46,10 @@
 
   v13 = sub_199DF9F8C();
   v15 = v14;
-  if (a7)
+  if (text)
   {
     v16 = sub_199DF9F8C();
-    a7 = v17;
+    text = v17;
   }
 
   else
@@ -57,13 +57,13 @@
     v16 = 0;
   }
 
-  v18 = a4;
-  v19 = sub_199B7C2D8(v10, v12, a4, v13, v15, a6, v16, a7);
+  colorCopy = color;
+  v19 = sub_199B7C2D8(v10, v12, color, v13, v15, p, v16, text);
 
   return v19;
 }
 
-+ (id)configurationForExistingPosterConfiguration:(id)a3 displayName:(id)a4
++ (id)configurationForExistingPosterConfiguration:(id)configuration displayName:(id)name
 {
   v4 = sub_199DF9F8C();
   v6 = v5;
@@ -74,10 +74,10 @@
   return v8;
 }
 
-+ (id)configurationForPosterArchiveData:(id)a3 displayName:(id)a4
++ (id)configurationForPosterArchiveData:(id)data displayName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  nameCopy = name;
   v7 = sub_199DF71FC();
   v9 = v8;
 

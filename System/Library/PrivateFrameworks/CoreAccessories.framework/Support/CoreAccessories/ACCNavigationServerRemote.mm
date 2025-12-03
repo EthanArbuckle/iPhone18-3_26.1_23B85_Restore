@@ -1,20 +1,20 @@
 @interface ACCNavigationServerRemote
-- (ACCNavigationServerRemote)initWithXPCConnection:(id)a3;
+- (ACCNavigationServerRemote)initWithXPCConnection:(id)connection;
 - (void)dealloc;
-- (void)initConnection:(id)a3;
-- (void)notifyOfProvider:(id)a3;
-- (void)objectDetection:(id)a3 startComponentIdList:(id)a4 objectTypes:(id)a5;
-- (void)objectDetection:(id)a3 stopComponentIdList:(id)a4;
-- (void)routeGuidance:(id)a3 laneGuidanceInfo:(id)a4 componentIdList:(id)a5;
-- (void)routeGuidance:(id)a3 maneuverUpdateInfo:(id)a4 componentIdList:(id)a5;
-- (void)routeGuidance:(id)a3 updateInfo:(id)a4 componentIdList:(id)a5;
+- (void)initConnection:(id)connection;
+- (void)notifyOfProvider:(id)provider;
+- (void)objectDetection:(id)detection startComponentIdList:(id)list objectTypes:(id)types;
+- (void)objectDetection:(id)detection stopComponentIdList:(id)list;
+- (void)routeGuidance:(id)guidance laneGuidanceInfo:(id)info componentIdList:(id)list;
+- (void)routeGuidance:(id)guidance maneuverUpdateInfo:(id)info componentIdList:(id)list;
+- (void)routeGuidance:(id)guidance updateInfo:(id)info componentIdList:(id)list;
 @end
 
 @implementation ACCNavigationServerRemote
 
-- (ACCNavigationServerRemote)initWithXPCConnection:(id)a3
+- (ACCNavigationServerRemote)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v6 = gNumLogObjects < 5;
@@ -44,7 +44,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v14 = [v5 hash];
+    v14 = [connectionCopy hash];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[#Navigation] initWithXPCConnection: XPCConnection=%lu", buf, 0xCu);
   }
 
@@ -54,9 +54,9 @@
   v10 = v9;
   if (v9)
   {
-    if (v5)
+    if (connectionCopy)
     {
-      objc_storeStrong(&v9->_XPCConnection, a3);
+      objc_storeStrong(&v9->_XPCConnection, connection);
     }
 
     else
@@ -79,14 +79,14 @@
   [(ACCNavigationServerRemote *)&v4 dealloc];
 }
 
-- (void)initConnection:(id)a3
+- (void)initConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = +[ACCNavigationServer sharedServer];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(ACCNavigationServerRemote *)self XPCConnection];
-    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:v6] != 0;
+    xPCConnection = [(ACCNavigationServerRemote *)self XPCConnection];
+    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:xPCConnection] != 0;
   }
 
   else
@@ -155,12 +155,12 @@
     [v13 sendUpdatedSubscriberList];
   }
 
-  v4[2](v4, v7);
+  connectionCopy[2](connectionCopy, v7);
 }
 
-- (void)notifyOfProvider:(id)a3
+- (void)notifyOfProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -189,19 +189,19 @@
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCNavigationServerRemote *)v4 notifyOfProvider:v7];
+    [(ACCNavigationServerRemote *)providerCopy notifyOfProvider:v7];
   }
 
   v8 = +[ACCNavigationServer sharedServer];
-  v9 = [(ACCNavigationServerRemote *)self XPCConnection];
-  [v8 notifyOfProvider:v4 connection:v9];
+  xPCConnection = [(ACCNavigationServerRemote *)self XPCConnection];
+  [v8 notifyOfProvider:providerCopy connection:xPCConnection];
 }
 
-- (void)routeGuidance:(id)a3 updateInfo:(id)a4 componentIdList:(id)a5
+- (void)routeGuidance:(id)guidance updateInfo:(id)info componentIdList:(id)list
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  guidanceCopy = guidance;
+  infoCopy = info;
+  listCopy = list;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 5;
@@ -231,22 +231,22 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = 138412802;
-    v14 = v7;
+    v14 = guidanceCopy;
     v15 = 2112;
-    v16 = v8;
+    v16 = infoCopy;
     v17 = 2112;
-    v18 = v9;
+    v18 = listCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[#Navigation] Navigation routeGuidance: accessoryUID %@, updateInfo=%@, componentIdList=%@", &v13, 0x20u);
   }
 
-  platform_navigation_routeGuidanceUpdateHandler(v7, v9, v8);
+  platform_navigation_routeGuidanceUpdateHandler(guidanceCopy, listCopy, infoCopy);
 }
 
-- (void)routeGuidance:(id)a3 maneuverUpdateInfo:(id)a4 componentIdList:(id)a5
+- (void)routeGuidance:(id)guidance maneuverUpdateInfo:(id)info componentIdList:(id)list
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  guidanceCopy = guidance;
+  infoCopy = info;
+  listCopy = list;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 5;
@@ -276,22 +276,22 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = 138412802;
-    v14 = v7;
+    v14 = guidanceCopy;
     v15 = 2112;
-    v16 = v8;
+    v16 = infoCopy;
     v17 = 2112;
-    v18 = v9;
+    v18 = listCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[#Navigation] Navigation routeGuidance: accessoryUID %@, maneuverUpdateInfo=%@, componentIdList=%@", &v13, 0x20u);
   }
 
-  platform_navigation_routeGuidanceManeuverUpdateHandler(v7, v9, v8);
+  platform_navigation_routeGuidanceManeuverUpdateHandler(guidanceCopy, listCopy, infoCopy);
 }
 
-- (void)routeGuidance:(id)a3 laneGuidanceInfo:(id)a4 componentIdList:(id)a5
+- (void)routeGuidance:(id)guidance laneGuidanceInfo:(id)info componentIdList:(id)list
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  guidanceCopy = guidance;
+  infoCopy = info;
+  listCopy = list;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 5;
@@ -321,22 +321,22 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = 138412802;
-    v14 = v7;
+    v14 = guidanceCopy;
     v15 = 2112;
-    v16 = v8;
+    v16 = infoCopy;
     v17 = 2112;
-    v18 = v9;
+    v18 = listCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[#Navigation] Navigation routeGuidance: accessoryUID %@, laneGuidanceInfo=%@, componentIdList=%@", &v13, 0x20u);
   }
 
-  platform_navigation_laneGuidanceInfoUpdateHandler(v7, v9, v8);
+  platform_navigation_laneGuidanceInfoUpdateHandler(guidanceCopy, listCopy, infoCopy);
 }
 
-- (void)objectDetection:(id)a3 startComponentIdList:(id)a4 objectTypes:(id)a5
+- (void)objectDetection:(id)detection startComponentIdList:(id)list objectTypes:(id)types
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  detectionCopy = detection;
+  listCopy = list;
+  typesCopy = types;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 5;
@@ -366,21 +366,21 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = 138412802;
-    v14 = v7;
+    v14 = detectionCopy;
     v15 = 2112;
-    v16 = v8;
+    v16 = listCopy;
     v17 = 2112;
-    v18 = v9;
+    v18 = typesCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[#Navigation] Navigation objectDetection: accessoryUID %@, startComponentIdList: componentIdList %@, objectTypeList %@", &v13, 0x20u);
   }
 
-  platform_navigation_startObjectDetectionHandler(v7, v8, v9);
+  platform_navigation_startObjectDetectionHandler(detectionCopy, listCopy, typesCopy);
 }
 
-- (void)objectDetection:(id)a3 stopComponentIdList:(id)a4
+- (void)objectDetection:(id)detection stopComponentIdList:(id)list
 {
-  v5 = a3;
-  v6 = a4;
+  detectionCopy = detection;
+  listCopy = list;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 5;
@@ -410,13 +410,13 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = 138412546;
-    v11 = v5;
+    v11 = detectionCopy;
     v12 = 2112;
-    v13 = v6;
+    v13 = listCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[#Navigation] Navigation objectDetection: accessoryUID %@, stopComponentIdList: componentIdList %@", &v10, 0x16u);
   }
 
-  platform_navigation_stopObjectDetectionHandler(v5, v6);
+  platform_navigation_stopObjectDetectionHandler(detectionCopy, listCopy);
 }
 
 - (void)notifyOfProvider:(uint64_t)a1 .cold.2(uint64_t a1, NSObject *a2)

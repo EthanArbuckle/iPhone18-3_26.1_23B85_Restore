@@ -1,39 +1,39 @@
 @interface PALocationAccess
-- (PALocationAccess)initWithProto:(id)a3;
-- (PALocationAccess)initWithProtoData:(id)a3;
+- (PALocationAccess)initWithProto:(id)proto;
+- (PALocationAccess)initWithProtoData:(id)data;
 - (id)proto;
 @end
 
 @implementation PALocationAccess
 
-- (PALocationAccess)initWithProto:(id)a3
+- (PALocationAccess)initWithProto:(id)proto
 {
-  v4 = a3;
+  protoCopy = proto;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 access];
+    access = [protoCopy access];
     v8.receiver = self;
     v8.super_class = PALocationAccess;
-    self = [(PAAccess *)&v8 initWithProto:v5];
+    self = [(PAAccess *)&v8 initWithProto:access];
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (PALocationAccess)initWithProtoData:(id)a3
+- (PALocationAccess)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[PAPBLocationAccess alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[PAPBLocationAccess alloc] initWithData:dataCopy];
 
     v6 = [(PALocationAccess *)self initWithProto:v5];
     self = v6;
@@ -52,10 +52,10 @@
   v3 = objc_opt_new();
   v7.receiver = self;
   v7.super_class = PALocationAccess;
-  v4 = [(PAAccess *)&v7 proto];
-  if (v4)
+  proto = [(PAAccess *)&v7 proto];
+  if (proto)
   {
-    [v3 setAccess:v4];
+    [v3 setAccess:proto];
     v5 = v3;
   }
 

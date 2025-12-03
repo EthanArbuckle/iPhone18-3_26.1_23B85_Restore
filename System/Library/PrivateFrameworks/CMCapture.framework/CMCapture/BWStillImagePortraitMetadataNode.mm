@@ -1,18 +1,18 @@
 @interface BWStillImagePortraitMetadataNode
-- (BWStillImagePortraitMetadataNode)initWithNodeConfiguration:(id)a3 sdofRenderingVersion:(int)a4 sensorConfigurationsByPortType:(id)a5 defaultPortType:(id)a6 defaultZoomFactor:(float)a7;
-- (uint64_t)_attachPortraitLightingEffectMetadataToDepthMetadata:(uint64_t)result portType:(void *)a2;
+- (BWStillImagePortraitMetadataNode)initWithNodeConfiguration:(id)configuration sdofRenderingVersion:(int)version sensorConfigurationsByPortType:(id)type defaultPortType:(id)portType defaultZoomFactor:(float)factor;
+- (uint64_t)_attachPortraitLightingEffectMetadataToDepthMetadata:(uint64_t)result portType:(void *)type;
 - (uint64_t)_loadSDOFRenderingBundle;
-- (uint64_t)_loadSDOFRenderingTuningParametersForPortType:(float)a3 zoomFactorForPortType:;
+- (uint64_t)_loadSDOFRenderingTuningParametersForPortType:(float)type zoomFactorForPortType:;
 - (uint64_t)prepareForCurrentConfigurationToBecomeLive;
 - (void)dealloc;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWStillImagePortraitMetadataNode
 
-- (BWStillImagePortraitMetadataNode)initWithNodeConfiguration:(id)a3 sdofRenderingVersion:(int)a4 sensorConfigurationsByPortType:(id)a5 defaultPortType:(id)a6 defaultZoomFactor:(float)a7
+- (BWStillImagePortraitMetadataNode)initWithNodeConfiguration:(id)configuration sdofRenderingVersion:(int)version sensorConfigurationsByPortType:(id)type defaultPortType:(id)portType defaultZoomFactor:(float)factor
 {
   v20.receiver = self;
   v20.super_class = BWStillImagePortraitMetadataNode;
@@ -23,7 +23,7 @@
     return v13;
   }
 
-  if (!a4)
+  if (!version)
   {
     [BWStillImagePortraitMetadataNode initWithNodeConfiguration:sdofRenderingVersion:sensorConfigurationsByPortType:defaultPortType:defaultZoomFactor:];
 LABEL_11:
@@ -31,20 +31,20 @@ LABEL_11:
     return 0;
   }
 
-  if (!a5)
+  if (!type)
   {
     [BWStillImagePortraitMetadataNode initWithNodeConfiguration:sdofRenderingVersion:sensorConfigurationsByPortType:defaultPortType:defaultZoomFactor:];
     goto LABEL_11;
   }
 
   [(BWNode *)v12 setSupportsLiveReconfiguration:1];
-  v13->_sdofRenderingVersion = a4;
-  v13->_sensorConfigurationsByPortType = a5;
-  v13->_defaultPortType = a6;
-  v13->_defaultZoomFactor = a7;
+  v13->_sdofRenderingVersion = version;
+  v13->_sensorConfigurationsByPortType = type;
+  v13->_defaultPortType = portType;
+  v13->_defaultZoomFactor = factor;
   if (FigCapturePlatformSupportsUniversalCompression())
   {
-    v14 = FigCapturePixelFormatsByAddingCompressedVariants(&unk_1F22497F8, [a3 maxLossyCompressionLevel]);
+    v14 = FigCapturePixelFormatsByAddingCompressedVariants(&unk_1F22497F8, [configuration maxLossyCompressionLevel]);
   }
 
   else
@@ -77,21 +77,21 @@ LABEL_11:
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  if ([a5 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     output = self->super._output;
 
-    [(BWNodeOutput *)output setFormat:a3];
+    [(BWNodeOutput *)output setFormat:format];
   }
 
   else
   {
-    [a5 isEqualToString:@"Depth"];
+    [key isEqualToString:@"Depth"];
     v10.receiver = self;
     v10.super_class = BWStillImagePortraitMetadataNode;
-    [(BWNode *)&v10 didSelectFormat:a3 forInput:a4 forAttachedMediaKey:a5];
+    [(BWNode *)&v10 didSelectFormat:format forInput:input forAttachedMediaKey:key];
   }
 }
 
@@ -108,10 +108,10 @@ LABEL_11:
 
 - (uint64_t)_loadSDOFRenderingBundle
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = *(a1 + 128);
+    v2 = *(self + 128);
     if (v2 >= 5)
     {
       v3 = 5;
@@ -125,9 +125,9 @@ LABEL_11:
     v4 = BWLoadProcessorBundle(@"SDOFRendering", v3);
     if (v4)
     {
-      *(v1 + 160) = [v4 classNamed:@"FigSDOFRenderingTuningParameters"];
-      v1 = [(BWStillImagePortraitMetadataNode *)v1 _loadSDOFRenderingTuningParametersForPortType:*(v1 + 152) zoomFactorForPortType:?];
-      if (v1)
+      *(selfCopy + 160) = [v4 classNamed:@"FigSDOFRenderingTuningParameters"];
+      selfCopy = [(BWStillImagePortraitMetadataNode *)selfCopy _loadSDOFRenderingTuningParametersForPortType:*(selfCopy + 152) zoomFactorForPortType:?];
+      if (selfCopy)
       {
         fig_log_get_emitter();
         OUTLINED_FUNCTION_1_6();
@@ -141,28 +141,28 @@ LABEL_11:
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  if (BWSampleBufferGetAttachedMedia(a3, @"Depth"))
+  if (BWSampleBufferGetAttachedMedia(buffer, @"Depth"))
   {
     v6 = *off_1E798D2B8;
-    v7 = [CMGetAttachment(a3 *off_1E798D2B8];
+    v7 = [CMGetAttachment(buffer *off_1E798D2B8];
     if (!v7)
     {
       goto LABEL_28;
     }
 
-    v8 = CMGetAttachment(a3, @"StillSettings", 0);
+    v8 = CMGetAttachment(buffer, @"StillSettings", 0);
     if (!v8)
     {
       goto LABEL_28;
     }
 
     v9 = v8;
-    v10 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+    v10 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
     if ([(NSDictionary *)self->_sensorConfigurationsByPortType count]< 2)
     {
       defaultPortType = self->_defaultPortType;
@@ -173,7 +173,7 @@ LABEL_11:
       defaultPortType = [v10 objectForKeyedSubscript:*off_1E798B540];
     }
 
-    v12 = BWPixelBufferDimensionsFromSampleBuffer(a3);
+    v12 = BWPixelBufferDimensionsFromSampleBuffer(buffer);
     v26 = *MEMORY[0x1E695F050];
     v27 = *(MEMORY[0x1E695F050] + 16);
     if (!FigCFDictionaryGetCGRectIfPresent())
@@ -223,15 +223,15 @@ LABEL_11:
     v24 = v19 >= v20 ? v19 : v20;
     if ([(NSString *)defaultPortType isEqualToString:self->_currentPortType]&& v24 == self->_currentZoomFactorForSDOFRenderingParameters || ![(BWStillImagePortraitMetadataNode *)self _loadSDOFRenderingTuningParametersForPortType:v24 zoomFactorForPortType:?])
     {
-      BWPortraitUtilitiesAttachLumaNoiseLevelToSampleBuffer(a3, self->_sdofRenderingParameters);
-      BWPortraitUtilitiesAttachSyntheticFocusRectangleToSampleBuffer(a3);
-      [v7 setObject:-[FigSDOFRenderingTuningParameters encodeParametersForSampleBuffer:captureType:](self->_sdofRenderingTuningParameters forKeyedSubscript:{"encodeParametersForSampleBuffer:captureType:", a3, objc_msgSend(objc_msgSend(v9, "captureSettings"), "captureType") == 11), *off_1E798CEF0}];
+      BWPortraitUtilitiesAttachLumaNoiseLevelToSampleBuffer(buffer, self->_sdofRenderingParameters);
+      BWPortraitUtilitiesAttachSyntheticFocusRectangleToSampleBuffer(buffer);
+      [v7 setObject:-[FigSDOFRenderingTuningParameters encodeParametersForSampleBuffer:captureType:](self->_sdofRenderingTuningParameters forKeyedSubscript:{"encodeParametersForSampleBuffer:captureType:", buffer, objc_msgSend(objc_msgSend(v9, "captureSettings"), "captureType") == 11), *off_1E798CEF0}];
       v25 = MEMORY[0x1E696AD98];
       [(FigSDOFRenderingTuningParameters *)self->_sdofRenderingTuningParameters simulatedAperture];
       [v7 setObject:objc_msgSend(v25 forKeyedSubscript:{"numberWithFloat:"), *off_1E798CEF8}];
       [BWStillImagePortraitMetadataNode _attachPortraitLightingEffectMetadataToDepthMetadata:v7 portType:?];
-      CMSetAttachment(a3, v6, v7, 1u);
-      CMSetAttachment(a3, *off_1E798D368, [MEMORY[0x1E696AD98] numberWithInt:self->_sdofRenderingVersion], 1u);
+      CMSetAttachment(buffer, v6, v7, 1u);
+      CMSetAttachment(buffer, *off_1E798D368, [MEMORY[0x1E696AD98] numberWithInt:self->_sdofRenderingVersion], 1u);
       [objc_msgSend(v9 "requestedSettings")];
     }
 
@@ -249,10 +249,10 @@ LABEL_28:
     v7 = 0;
   }
 
-  [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+  [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
 }
 
-- (uint64_t)_loadSDOFRenderingTuningParametersForPortType:(float)a3 zoomFactorForPortType:
+- (uint64_t)_loadSDOFRenderingTuningParametersForPortType:(float)type zoomFactorForPortType:
 {
   if (result)
   {
@@ -265,7 +265,7 @@ LABEL_28:
     *(v5 + 184) = 0;
     *(v5 + 192) = 0;
     v7 = [objc_msgSend(*(v5 + 136) objectForKeyedSubscript:{a2), "sensorIDDictionary"}];
-    *&v8 = a3;
+    *&v8 = type;
     v9 = [FigCaptureCameraParameters sdofTuningParametersForSensorIDDictionary:v7 zoomFactor:v8];
     *(v5 + 184) = v9;
     if (v9 && (v10 = [objc_alloc(*(v5 + 160)) initWithTuningDictionary:*(v5 + 184)], (*(v5 + 192) = v10) != 0))
@@ -273,7 +273,7 @@ LABEL_28:
       v11 = a2;
       result = 0;
       *(v5 + 168) = v11;
-      *(v5 + 176) = a3;
+      *(v5 + 176) = type;
     }
 
     else
@@ -285,7 +285,7 @@ LABEL_28:
   return result;
 }
 
-- (uint64_t)_attachPortraitLightingEffectMetadataToDepthMetadata:(uint64_t)result portType:(void *)a2
+- (uint64_t)_attachPortraitLightingEffectMetadataToDepthMetadata:(uint64_t)result portType:(void *)type
 {
   if (result)
   {
@@ -295,7 +295,7 @@ LABEL_28:
       v4 = [MEMORY[0x1E696AD98] numberWithDouble:?];
       v5 = *off_1E798D220;
 
-      return [a2 setObject:v4 forKeyedSubscript:v5];
+      return [type setObject:v4 forKeyedSubscript:v5];
     }
   }
 

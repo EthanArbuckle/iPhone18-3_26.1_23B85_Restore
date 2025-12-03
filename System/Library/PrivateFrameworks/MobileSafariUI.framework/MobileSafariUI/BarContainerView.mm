@@ -1,6 +1,6 @@
 @interface BarContainerView
-- (BarContainerView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BarContainerView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)didMoveToSuperview;
 @end
 
@@ -13,11 +13,11 @@
   [(BarContainerView *)&v2 didMoveToSuperview];
 }
 
-- (BarContainerView)initWithFrame:(CGRect)a3
+- (BarContainerView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = BarContainerView;
-  v3 = [(BarContainerView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BarContainerView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277CBEB58] set];
@@ -30,12 +30,12 @@
   return v3;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  eventCopy = event;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -75,7 +75,7 @@
         if (!CGRectIsEmpty(v38))
         {
           [(BarContainerView *)self convertPoint:v13 toView:x, y];
-          v26 = [v13 hitTest:v7 withEvent:?];
+          v26 = [v13 hitTest:eventCopy withEvent:?];
           if (v26)
           {
             v27 = v26;
@@ -97,7 +97,7 @@
 
   v29.receiver = self;
   v29.super_class = BarContainerView;
-  v27 = [(BarContainerView *)&v29 hitTest:v7 withEvent:x, y];
+  v27 = [(BarContainerView *)&v29 hitTest:eventCopy withEvent:x, y];
 LABEL_12:
 
   return v27;

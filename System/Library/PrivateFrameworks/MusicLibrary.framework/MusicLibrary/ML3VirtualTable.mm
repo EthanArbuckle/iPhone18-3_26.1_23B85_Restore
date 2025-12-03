@@ -1,12 +1,12 @@
 @interface ML3VirtualTable
-- (BOOL)registerWithConnection:(id)a3;
+- (BOOL)registerWithConnection:(id)connection;
 - (BOOL)unregister;
-- (ML3VirtualTable)initWithDatabaseTable:(id)a3;
+- (ML3VirtualTable)initWithDatabaseTable:(id)table;
 - (ML3VirtualTableDelegate)delegate;
 - (id).cxx_construct;
 - (shared_ptr<ML3VirtualTableDataSource>)dataSource;
 - (void)dealloc;
-- (void)setDataSource:(shared_ptr<ML3VirtualTableDataSource>)a3;
+- (void)setDataSource:(shared_ptr<ML3VirtualTableDataSource>)source;
 @end
 
 @implementation ML3VirtualTable
@@ -25,10 +25,10 @@
   return WeakRetained;
 }
 
-- (void)setDataSource:(shared_ptr<ML3VirtualTableDataSource>)a3
+- (void)setDataSource:(shared_ptr<ML3VirtualTableDataSource>)source
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *source.__ptr_;
+  v3 = *(source.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -81,8 +81,8 @@
     }
 
     v7 = self->_connection;
-    v8 = [(ML3DatabaseModule *)self->_module name];
-    [(ML3DatabaseConnection *)v7 removeModuleNamed:v8];
+    name = [(ML3DatabaseModule *)self->_module name];
+    [(ML3DatabaseConnection *)v7 removeModuleNamed:name];
 
     module = self->_module;
     self->_module = 0;
@@ -94,17 +94,17 @@
   return connection;
 }
 
-- (BOOL)registerWithConnection:(id)a3
+- (BOOL)registerWithConnection:(id)connection
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  connectionCopy = connection;
   p_connection = &self->_connection;
   if (self->_connection)
   {
     [(ML3VirtualTable *)self unregister];
   }
 
-  objc_storeStrong(&self->_connection, a3);
+  objc_storeStrong(&self->_connection, connection);
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_module_%u", self->_virtualTableName, arc4random()];
   v8 = [[ML3DatabaseModule alloc] initWithName:v7 moduleMethods:&__virtualTableSQLiteModule];
   module = self->_module;
@@ -168,24 +168,24 @@
   [(ML3VirtualTable *)&v3 dealloc];
 }
 
-- (ML3VirtualTable)initWithDatabaseTable:(id)a3
+- (ML3VirtualTable)initWithDatabaseTable:(id)table
 {
-  v6 = a3;
+  tableCopy = table;
   v14.receiver = self;
   v14.super_class = ML3VirtualTable;
   v7 = [(ML3VirtualTable *)&v14 init];
   if (v7)
   {
-    if (!v6)
+    if (!tableCopy)
     {
-      v13 = [MEMORY[0x277CCA890] currentHandler];
-      [v13 handleFailureInMethod:a2 object:v7 file:@"ML3VirtualTable.mm" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"databaseTable != nil"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"ML3VirtualTable.mm" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"databaseTable != nil"}];
     }
 
-    objc_storeStrong(&v7->_databaseTable, a3);
+    objc_storeStrong(&v7->_databaseTable, table);
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(ML3DatabaseTable *)v7->_databaseTable name];
-    v10 = [v8 stringWithFormat:@"virtual_%@", v9];
+    name = [(ML3DatabaseTable *)v7->_databaseTable name];
+    v10 = [v8 stringWithFormat:@"virtual_%@", name];
     virtualTableName = v7->_virtualTableName;
     v7->_virtualTableName = v10;
   }

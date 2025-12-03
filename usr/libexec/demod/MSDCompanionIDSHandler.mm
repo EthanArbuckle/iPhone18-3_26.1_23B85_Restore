@@ -1,6 +1,6 @@
 @interface MSDCompanionIDSHandler
-- (void)handleHeartbeat:(id)a3;
-- (void)handlePairedWatchCommandResponse:(id)a3;
+- (void)handleHeartbeat:(id)heartbeat;
+- (void)handlePairedWatchCommandResponse:(id)response;
 - (void)start;
 @end
 
@@ -11,31 +11,31 @@
   v10.receiver = self;
   v10.super_class = MSDCompanionIDSHandler;
   [(MSDIDSHandler *)&v10 start];
-  v3 = [(MSDIDSHandler *)self idsService];
-  [v3 setProtobufAction:"handleHeartbeat:" forIncomingRequestsOfType:5];
+  idsService = [(MSDIDSHandler *)self idsService];
+  [idsService setProtobufAction:"handleHeartbeat:" forIncomingRequestsOfType:5];
 
-  v4 = [(MSDIDSHandler *)self idsService];
-  [v4 setProtobufAction:"handlePairedWatchCommandResponse:" forIncomingResponsesOfType:0];
+  idsService2 = [(MSDIDSHandler *)self idsService];
+  [idsService2 setProtobufAction:"handlePairedWatchCommandResponse:" forIncomingResponsesOfType:0];
 
-  v5 = [(MSDIDSHandler *)self idsService];
-  [v5 setProtobufAction:"handlePairedWatchCommandResponse:" forIncomingResponsesOfType:1];
+  idsService3 = [(MSDIDSHandler *)self idsService];
+  [idsService3 setProtobufAction:"handlePairedWatchCommandResponse:" forIncomingResponsesOfType:1];
 
-  v6 = [(MSDIDSHandler *)self idsService];
-  [v6 setProtobufAction:"handlePairedWatchCommandResponse:" forIncomingResponsesOfType:2];
+  idsService4 = [(MSDIDSHandler *)self idsService];
+  [idsService4 setProtobufAction:"handlePairedWatchCommandResponse:" forIncomingResponsesOfType:2];
 
-  v7 = [(MSDIDSHandler *)self idsService];
-  [v7 setProtobufAction:"handlePairedWatchCommandResponse:" forIncomingResponsesOfType:3];
+  idsService5 = [(MSDIDSHandler *)self idsService];
+  [idsService5 setProtobufAction:"handlePairedWatchCommandResponse:" forIncomingResponsesOfType:3];
 
-  v8 = [(MSDIDSHandler *)self idsService];
-  v9 = [(MSDIDSHandler *)self idsServiceQueue];
-  [v8 addDelegate:self queue:v9];
+  idsService6 = [(MSDIDSHandler *)self idsService];
+  idsServiceQueue = [(MSDIDSHandler *)self idsServiceQueue];
+  [idsService6 addDelegate:self queue:idsServiceQueue];
 }
 
-- (void)handleHeartbeat:(id)a3
+- (void)handleHeartbeat:(id)heartbeat
 {
-  v3 = [a3 data];
+  data = [heartbeat data];
   v7 = 0;
-  v4 = [NSJSONSerialization JSONObjectWithData:v3 options:0 error:&v7];
+  v4 = [NSJSONSerialization JSONObjectWithData:data options:0 error:&v7];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -44,47 +44,47 @@
   }
 }
 
-- (void)handlePairedWatchCommandResponse:(id)a3
+- (void)handlePairedWatchCommandResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 data];
+  responseCopy = response;
+  data = [responseCopy data];
   v17 = 0;
-  v6 = [NSJSONSerialization JSONObjectWithData:v5 options:0 error:&v17];
+  v6 = [NSJSONSerialization JSONObjectWithData:data options:0 error:&v17];
   v7 = v17;
-  v8 = [v4 type];
+  type = [responseCopy type];
   v9 = [v6 objectForKey:@"RequestResult"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v4 context];
+  context = [responseCopy context];
 
-  v12 = [v11 incomingResponseIdentifier];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
-  v13 = [(MSDIDSHandler *)self responseHandlers];
-  v14 = [v13 objectForKey:v12];
+  responseHandlers = [(MSDIDSHandler *)self responseHandlers];
+  v14 = [responseHandlers objectForKey:incomingResponseIdentifier];
 
-  v15 = sub_100063A54();
-  v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
+  responseHandlers2 = sub_100063A54();
+  v16 = os_log_type_enabled(responseHandlers2, OS_LOG_TYPE_DEFAULT);
   if (v14)
   {
     if (v16)
     {
       *buf = 134218242;
-      v19 = v8;
+      v19 = type;
       v20 = 2114;
-      v21 = v12;
-      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Received ACK for type: %ld identifier: %{public}@", buf, 0x16u);
+      v21 = incomingResponseIdentifier;
+      _os_log_impl(&_mh_execute_header, responseHandlers2, OS_LOG_TYPE_DEFAULT, "Received ACK for type: %ld identifier: %{public}@", buf, 0x16u);
     }
 
-    (v14)[2](v14, v10);
-    v15 = [(MSDIDSHandler *)self responseHandlers];
-    [v15 removeObjectForKey:v12];
+    (v14)[2](v14, bOOLValue);
+    responseHandlers2 = [(MSDIDSHandler *)self responseHandlers];
+    [responseHandlers2 removeObjectForKey:incomingResponseIdentifier];
   }
 
   else if (v16)
   {
     *buf = 138543362;
-    v19 = v12;
-    _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Received ACK for unknown request identifier: %{public}@", buf, 0xCu);
+    v19 = incomingResponseIdentifier;
+    _os_log_impl(&_mh_execute_header, responseHandlers2, OS_LOG_TYPE_DEFAULT, "Received ACK for unknown request identifier: %{public}@", buf, 0xCu);
   }
 }
 

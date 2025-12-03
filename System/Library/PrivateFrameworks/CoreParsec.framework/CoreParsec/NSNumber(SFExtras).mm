@@ -7,21 +7,21 @@
 
 - (uint64_t)sf_asTopHit
 {
-  v1 = [a1 unsignedIntegerValue];
-  if (v1 == 2)
+  unsignedIntegerValue = [self unsignedIntegerValue];
+  if (unsignedIntegerValue == 2)
   {
     return 2;
   }
 
   else
   {
-    return v1 == 1;
+    return unsignedIntegerValue == 1;
   }
 }
 
 - (uint64_t)sf_asRowAlignment
 {
-  result = [a1 integerValue];
+  result = [self integerValue];
   if ((result + 1) >= 3)
   {
     return 0;

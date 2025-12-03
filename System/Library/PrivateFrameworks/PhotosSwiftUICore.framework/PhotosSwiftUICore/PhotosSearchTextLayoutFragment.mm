@@ -1,24 +1,24 @@
 @interface PhotosSearchTextLayoutFragment
-- (_TtC17PhotosSwiftUICoreP33_C1804BBFE1C0AEF33B5596BB912C852330PhotosSearchTextLayoutFragment)initWithTextElement:(id)a3 range:(id)a4;
-- (void)drawAtPoint:(CGPoint)a3 inContext:(CGContext *)a4;
+- (_TtC17PhotosSwiftUICoreP33_C1804BBFE1C0AEF33B5596BB912C852330PhotosSearchTextLayoutFragment)initWithTextElement:(id)element range:(id)range;
+- (void)drawAtPoint:(CGPoint)point inContext:(CGContext *)context;
 @end
 
 @implementation PhotosSearchTextLayoutFragment
 
-- (void)drawAtPoint:(CGPoint)a3 inContext:(CGContext *)a4
+- (void)drawAtPoint:(CGPoint)point inContext:(CGContext *)context
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
-  sub_1C1180394(v7, x, y);
+  y = point.y;
+  x = point.x;
+  contextCopy = context;
+  selfCopy = self;
+  sub_1C1180394(contextCopy, x, y);
 }
 
-- (_TtC17PhotosSwiftUICoreP33_C1804BBFE1C0AEF33B5596BB912C852330PhotosSearchTextLayoutFragment)initWithTextElement:(id)a3 range:(id)a4
+- (_TtC17PhotosSwiftUICoreP33_C1804BBFE1C0AEF33B5596BB912C852330PhotosSearchTextLayoutFragment)initWithTextElement:(id)element range:(id)range
 {
-  v5 = a3;
-  v6 = a4;
-  return sub_1C1180788(v5, a4);
+  elementCopy = element;
+  rangeCopy = range;
+  return sub_1C1180788(elementCopy, range);
 }
 
 @end

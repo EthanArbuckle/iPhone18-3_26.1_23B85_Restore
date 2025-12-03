@@ -1,20 +1,20 @@
 @interface PKAccountLocation
-- (BOOL)isEqual:(id)a3;
-- (PKAccountLocation)initWithApp:(unint64_t)a3 page:(unint64_t)a4;
-- (PKAccountLocation)initWithCoder:(id)a3;
-- (PKAccountLocation)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountLocation)initWithApp:(unint64_t)app page:(unint64_t)page;
+- (PKAccountLocation)initWithCoder:(id)coder;
+- (PKAccountLocation)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountLocation
 
-- (PKAccountLocation)initWithDictionary:(id)a3
+- (PKAccountLocation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKStringForKey:@"app"];
-  v6 = [v4 PKStringForKey:@"source"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKStringForKey:@"app"];
+  v6 = [dictionaryCopy PKStringForKey:@"source"];
 
   v7 = v5;
   v8 = v7;
@@ -112,32 +112,32 @@ LABEL_29:
   return v33;
 }
 
-- (PKAccountLocation)initWithApp:(unint64_t)a3 page:(unint64_t)a4
+- (PKAccountLocation)initWithApp:(unint64_t)app page:(unint64_t)page
 {
   v7.receiver = self;
   v7.super_class = PKAccountLocation;
   result = [(PKAccountLocation *)&v7 init];
   if (result)
   {
-    result->_app = a3;
-    result->_page = a4;
+    result->_app = app;
+    result->_page = page;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_app == v5->_app && self->_page == v5->_page;
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_app == v5->_app && self->_page == v5->_page;
   }
 
   return v6;
@@ -154,32 +154,32 @@ LABEL_29:
   return v3;
 }
 
-- (PKAccountLocation)initWithCoder:(id)a3
+- (PKAccountLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKAccountLocation;
   v5 = [(PKAccountLocation *)&v7 init];
   if (v5)
   {
-    v5->_app = [v4 decodeIntegerForKey:@"app"];
-    v5->_page = [v4 decodeIntegerForKey:@"source"];
+    v5->_app = [coderCopy decodeIntegerForKey:@"app"];
+    v5->_page = [coderCopy decodeIntegerForKey:@"source"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   app = self->_app;
-  v5 = a3;
-  [v5 encodeInteger:app forKey:@"app"];
-  [v5 encodeInteger:self->_page forKey:@"source"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:app forKey:@"app"];
+  [coderCopy encodeInteger:self->_page forKey:@"source"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_opt_class() allocWithZone:a3];
+  result = [objc_opt_class() allocWithZone:zone];
   *(result + 1) = self->_app;
   *(result + 2) = self->_page;
   return result;

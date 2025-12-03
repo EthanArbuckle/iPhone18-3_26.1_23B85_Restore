@@ -7,7 +7,7 @@
 
 - (void)hardwareStateDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100595D3C();
 }
 

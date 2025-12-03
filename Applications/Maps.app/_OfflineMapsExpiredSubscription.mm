@@ -1,27 +1,27 @@
 @interface _OfflineMapsExpiredSubscription
-- (BOOL)isEqual:(id)a3;
-- (_OfflineMapsExpiredSubscription)initWithSubscription:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_OfflineMapsExpiredSubscription)initWithSubscription:(id)subscription;
 - (unint64_t)hash;
 @end
 
 @implementation _OfflineMapsExpiredSubscription
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(_OfflineMapsExpiredSubscription *)v5 subscription];
-    v7 = [v6 identifier];
-    v8 = [(_OfflineMapsExpiredSubscription *)self subscription];
-    v9 = [v8 identifier];
-    v10 = [v7 isEqual:v9];
+    subscription = [(_OfflineMapsExpiredSubscription *)v5 subscription];
+    identifier = [subscription identifier];
+    subscription2 = [(_OfflineMapsExpiredSubscription *)self subscription];
+    identifier2 = [subscription2 identifier];
+    v10 = [identifier isEqual:identifier2];
   }
 
   else
@@ -34,22 +34,22 @@
 
 - (unint64_t)hash
 {
-  v2 = [(GEOMapDataSubscription *)self->_subscription identifier];
-  v3 = [v2 hash];
+  identifier = [(GEOMapDataSubscription *)self->_subscription identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (_OfflineMapsExpiredSubscription)initWithSubscription:(id)a3
+- (_OfflineMapsExpiredSubscription)initWithSubscription:(id)subscription
 {
-  v5 = a3;
+  subscriptionCopy = subscription;
   v10.receiver = self;
   v10.super_class = _OfflineMapsExpiredSubscription;
   v6 = [(_OfflineMapsExpiredSubscription *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subscription, a3);
+    objc_storeStrong(&v6->_subscription, subscription);
     v8 = v7;
   }
 

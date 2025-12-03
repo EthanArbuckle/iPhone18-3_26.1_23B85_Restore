@@ -1,12 +1,12 @@
 @interface WGDataSourceManager
 + (id)__sharedInstance;
-+ (void)requestSharedDataSourceManager:(id)a3;
-- (void)_begin:(id)a3;
-- (void)_start:(id)a3;
-- (void)_stop:(id)a3;
-- (void)addWidgetDataSourceChangeHandler:(id)a3 forIdentifier:(id)a4;
-- (void)childDataSourceManagerDataSourcesDidChange:(id)a3;
-- (void)removeChangeHandlersWithIdentifier:(id)a3;
++ (void)requestSharedDataSourceManager:(id)manager;
+- (void)_begin:(id)_begin;
+- (void)_start:(id)_start;
+- (void)_stop:(id)_stop;
+- (void)addWidgetDataSourceChangeHandler:(id)handler forIdentifier:(id)identifier;
+- (void)childDataSourceManagerDataSourcesDidChange:(id)change;
+- (void)removeChangeHandlersWithIdentifier:(id)identifier;
 @end
 
 @implementation WGDataSourceManager
@@ -32,32 +32,32 @@ uint64_t __39__WGDataSourceManager___sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (void)requestSharedDataSourceManager:(id)a3
++ (void)requestSharedDataSourceManager:(id)manager
 {
-  v4 = a3;
-  if (v4)
+  managerCopy = manager;
+  if (managerCopy)
   {
-    v5 = [a1 __sharedInstance];
+    __sharedInstance = [self __sharedInstance];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __54__WGDataSourceManager_requestSharedDataSourceManager___block_invoke;
     v7[3] = &unk_279ED0F70;
-    v8 = v5;
-    v9 = v4;
-    v6 = v5;
+    v8 = __sharedInstance;
+    v9 = managerCopy;
+    v6 = __sharedInstance;
     [v6 _begin:v7];
   }
 }
 
-- (void)_begin:(id)a3
+- (void)_begin:(id)_begin
 {
-  v4 = a3;
-  v5 = v4;
+  _beginCopy = _begin;
+  v5 = _beginCopy;
   if (self->_didBegin)
   {
-    if (v4)
+    if (_beginCopy)
     {
-      (*(v4 + 2))(v4);
+      (*(_beginCopy + 2))(_beginCopy);
     }
   }
 
@@ -111,58 +111,58 @@ uint64_t __30__WGDataSourceManager__begin___block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (void)_start:(id)a3
+- (void)_start:(id)_start
 {
-  if (a3)
+  if (_start)
   {
-    (*(a3 + 2))(a3);
+    (*(_start + 2))(_start);
   }
 }
 
-- (void)_stop:(id)a3
+- (void)_stop:(id)_stop
 {
-  if (a3)
+  if (_stop)
   {
-    (*(a3 + 2))(a3);
+    (*(_stop + 2))(_stop);
   }
 }
 
-- (void)addWidgetDataSourceChangeHandler:(id)a3 forIdentifier:(id)a4
+- (void)addWidgetDataSourceChangeHandler:(id)handler forIdentifier:(id)identifier
 {
-  if (a3 && a4)
+  if (handler && identifier)
   {
     identifiersToWidgetChangeHandlers = self->_identifiersToWidgetChangeHandlers;
-    v7 = a4;
-    v8 = a3;
-    v9 = [v8 copy];
-    [(NSMutableDictionary *)identifiersToWidgetChangeHandlers setObject:v9 forKey:v7];
+    identifierCopy = identifier;
+    handlerCopy = handler;
+    v9 = [handlerCopy copy];
+    [(NSMutableDictionary *)identifiersToWidgetChangeHandlers setObject:v9 forKey:identifierCopy];
 
-    v10 = [(WGWidgetDataSourceManager *)self->_widgetDataSourceManager dataSources];
-    (*(v8 + 2))(v8, v10);
+    dataSources = [(WGWidgetDataSourceManager *)self->_widgetDataSourceManager dataSources];
+    (*(handlerCopy + 2))(handlerCopy, dataSources);
   }
 }
 
-- (void)removeChangeHandlersWithIdentifier:(id)a3
+- (void)removeChangeHandlersWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     [(NSMutableDictionary *)self->_identifiersToWidgetChangeHandlers removeObjectForKey:?];
   }
 }
 
-- (void)childDataSourceManagerDataSourcesDidChange:(id)a3
+- (void)childDataSourceManagerDataSourcesDidChange:(id)change
 {
   v16 = *MEMORY[0x277D85DE8];
   widgetDataSourceManager = self->_widgetDataSourceManager;
-  if (widgetDataSourceManager == a3)
+  if (widgetDataSourceManager == change)
   {
-    v5 = [(WGWidgetDataSourceManager *)widgetDataSourceManager dataSources];
+    dataSources = [(WGWidgetDataSourceManager *)widgetDataSourceManager dataSources];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(NSMutableDictionary *)self->_identifiersToWidgetChangeHandlers allValues];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allValues = [(NSMutableDictionary *)self->_identifiersToWidgetChangeHandlers allValues];
+    v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -174,14 +174,14 @@ uint64_t __30__WGDataSourceManager__begin___block_invoke_3(uint64_t a1)
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
           (*(*(*(&v11 + 1) + 8 * v10++) + 16))();
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);

@@ -42,10 +42,10 @@
           objc_enumerationMutation(serviceRefList);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) pointerValue];
-        if (v8)
+        pointerValue = [*(*(&v11 + 1) + 8 * i) pointerValue];
+        if (pointerValue)
         {
-          DNSServiceRefDeallocate(v8);
+          DNSServiceRefDeallocate(pointerValue);
         }
       }
 

@@ -1,33 +1,33 @@
 @interface WFAddToMediaLibraryContextualAction
-- (BOOL)isEqual:(id)a3;
-- (WFAddToMediaLibraryContextualAction)initWithCoder:(id)a3;
-- (WFAddToMediaLibraryContextualAction)initWithMediaItemDescriptor:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFAddToMediaLibraryContextualAction)initWithCoder:(id)coder;
+- (WFAddToMediaLibraryContextualAction)initWithMediaItemDescriptor:(id)descriptor;
 - (id)_staticDisplayStringForDecoding;
 - (id)uniqueIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFAddToMediaLibraryContextualAction
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WFAddToMediaLibraryContextualAction;
-  v4 = a3;
-  [(WFContextualAction *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_mediaItemDescriptor forKey:{@"mediaItemDescriptor", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(WFContextualAction *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_mediaItemDescriptor forKey:{@"mediaItemDescriptor", v5.receiver, v5.super_class}];
 }
 
-- (WFAddToMediaLibraryContextualAction)initWithCoder:(id)a3
+- (WFAddToMediaLibraryContextualAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = WFAddToMediaLibraryContextualAction;
-  v5 = [(WFContextualAction *)&v9 initWithCoder:v4];
+  v5 = [(WFContextualAction *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaItemDescriptor"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaItemDescriptor"];
     if (v6)
     {
       objc_storeStrong(&v5->_mediaItemDescriptor, v6);
@@ -52,27 +52,27 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = WFLocalizedString(@"Add %@ to Library");
-  v5 = [(WFAddToMediaLibraryContextualAction *)self mediaItemDescriptor];
-  v6 = [v5 name];
-  v7 = [v3 stringWithFormat:v4, v6];
+  mediaItemDescriptor = [(WFAddToMediaLibraryContextualAction *)self mediaItemDescriptor];
+  name = [mediaItemDescriptor name];
+  v7 = [v3 stringWithFormat:v4, name];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = WFAddToMediaLibraryContextualAction;
-  if ([(WFContextualAction *)&v13 isEqual:v4])
+  if ([(WFContextualAction *)&v13 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v6 = [v5 mediaItemDescriptor];
-      v7 = [(WFAddToMediaLibraryContextualAction *)self mediaItemDescriptor];
-      v8 = v6;
-      v9 = v7;
+      mediaItemDescriptor = [v5 mediaItemDescriptor];
+      mediaItemDescriptor2 = [(WFAddToMediaLibraryContextualAction *)self mediaItemDescriptor];
+      v8 = mediaItemDescriptor;
+      v9 = mediaItemDescriptor2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -109,8 +109,8 @@
   v9.receiver = self;
   v9.super_class = WFAddToMediaLibraryContextualAction;
   v4 = [v3 combineInteger:{-[WFContextualAction hash](&v9, sel_hash)}];
-  v5 = [(WFAddToMediaLibraryContextualAction *)self mediaItemDescriptor];
-  v6 = [v3 combine:v5];
+  mediaItemDescriptor = [(WFAddToMediaLibraryContextualAction *)self mediaItemDescriptor];
+  v6 = [v3 combine:mediaItemDescriptor];
 
   v7 = [v3 finalize];
   return v7;
@@ -119,12 +119,12 @@
 - (id)uniqueIdentifier
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [(WFContextualAction *)self identifier];
-  v11[0] = v3;
-  v4 = [(WFAddToMediaLibraryContextualAction *)self mediaItemDescriptor];
-  v5 = [v4 playbackStoreId];
-  v6 = [v5 stringValue];
-  v11[1] = v6;
+  identifier = [(WFContextualAction *)self identifier];
+  v11[0] = identifier;
+  mediaItemDescriptor = [(WFAddToMediaLibraryContextualAction *)self mediaItemDescriptor];
+  playbackStoreId = [mediaItemDescriptor playbackStoreId];
+  stringValue = [playbackStoreId stringValue];
+  v11[1] = stringValue;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
 
   v8 = [v7 componentsJoinedByString:@"."];
@@ -134,28 +134,28 @@
   return v8;
 }
 
-- (WFAddToMediaLibraryContextualAction)initWithMediaItemDescriptor:(id)a3
+- (WFAddToMediaLibraryContextualAction)initWithMediaItemDescriptor:(id)descriptor
 {
-  v6 = a3;
-  if (!v6)
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFAddToMediaLibraryContextualAction.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"descriptor"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFAddToMediaLibraryContextualAction.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"descriptor"}];
   }
 
   v7 = MEMORY[0x1E696AEC0];
   v8 = WFLocalizedString(@"Add %@ to Library");
-  v9 = [v6 name];
-  v10 = [v7 stringWithFormat:v8, v9];
+  name = [descriptorCopy name];
+  v10 = [v7 stringWithFormat:v8, name];
 
   v11 = WFLocalizedString(@"Add to Library");
-  v12 = [v6 name];
+  name2 = [descriptorCopy name];
   v13 = [WFContextualActionIcon iconWithSystemName:@"music.note.list"];
-  v14 = [(WFContextualAction *)self initWithIdentifier:@"is.workflow.actions.addtoplaylist" wfActionIdentifier:@"is.workflow.actions.addtoplaylist" associatedAppBundleIdentifier:@"com.apple.Music" parameters:MEMORY[0x1E695E0F0] displayString:v10 title:v11 subtitle:v12 icon:v13];
+  v14 = [(WFContextualAction *)self initWithIdentifier:@"is.workflow.actions.addtoplaylist" wfActionIdentifier:@"is.workflow.actions.addtoplaylist" associatedAppBundleIdentifier:@"com.apple.Music" parameters:MEMORY[0x1E695E0F0] displayString:v10 title:v11 subtitle:name2 icon:v13];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_mediaItemDescriptor, a3);
+    objc_storeStrong(&v14->_mediaItemDescriptor, descriptor);
     v15 = v14;
   }
 

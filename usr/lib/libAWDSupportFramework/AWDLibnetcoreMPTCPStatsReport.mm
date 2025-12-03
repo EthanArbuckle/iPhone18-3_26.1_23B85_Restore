@@ -1,48 +1,48 @@
 @interface AWDLibnetcoreMPTCPStatsReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMptcpAggregateAttempt:(BOOL)a3;
-- (void)setHasMptcpAggregateCellBytes:(BOOL)a3;
-- (void)setHasMptcpBackToWiFi:(BOOL)a3;
-- (void)setHasMptcpCellDenied:(BOOL)a3;
-- (void)setHasMptcpCellProxy:(BOOL)a3;
-- (void)setHasMptcpFirstPartyAggregateAttempt:(BOOL)a3;
-- (void)setHasMptcpFirstPartyHandoverAttempt:(BOOL)a3;
-- (void)setHasMptcpFirstPartyInteractiveAttempt:(BOOL)a3;
-- (void)setHasMptcpHandoverAllBytes:(BOOL)a3;
-- (void)setHasMptcpHandoverAttempts:(BOOL)a3;
-- (void)setHasMptcpHandoverCellBytes:(BOOL)a3;
-- (void)setHasMptcpHandoverCellSubflowFromWiFi:(BOOL)a3;
-- (void)setHasMptcpHandoverWiFiSubflowFromCell:(BOOL)a3;
-- (void)setHasMptcpHandshakeAggregateSuccess:(BOOL)a3;
-- (void)setHasMptcpHandshakeAggregateSuccessFirstParty:(BOOL)a3;
-- (void)setHasMptcpHandshakeHandoverSuccessCell:(BOOL)a3;
-- (void)setHasMptcpHandshakeHandoverSuccessCellFirstParty:(BOOL)a3;
-- (void)setHasMptcpHandshakeHandoverSuccessWiFi:(BOOL)a3;
-- (void)setHasMptcpHandshakeHandoverSuccessWiFiFirstParty:(BOOL)a3;
-- (void)setHasMptcpHandshakeInteractiveSuccess:(BOOL)a3;
-- (void)setHasMptcpHandshakeInteractiveSuccessFirstParty:(BOOL)a3;
-- (void)setHasMptcpHeuristicFallback:(BOOL)a3;
-- (void)setHasMptcpHeuristicFallbackFirstParty:(BOOL)a3;
-- (void)setHasMptcpInteractiveAllBytes:(BOOL)a3;
-- (void)setHasMptcpInteractiveAttempt:(BOOL)a3;
-- (void)setHasMptcpInteractiveCellBytes:(BOOL)a3;
-- (void)setHasMptcpInteractiveCellUsage:(BOOL)a3;
-- (void)setHasMptcpTriggeredCell:(BOOL)a3;
-- (void)setHasMptcpWiFiProxy:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMptcpAggregateAttempt:(BOOL)attempt;
+- (void)setHasMptcpAggregateCellBytes:(BOOL)bytes;
+- (void)setHasMptcpBackToWiFi:(BOOL)fi;
+- (void)setHasMptcpCellDenied:(BOOL)denied;
+- (void)setHasMptcpCellProxy:(BOOL)proxy;
+- (void)setHasMptcpFirstPartyAggregateAttempt:(BOOL)attempt;
+- (void)setHasMptcpFirstPartyHandoverAttempt:(BOOL)attempt;
+- (void)setHasMptcpFirstPartyInteractiveAttempt:(BOOL)attempt;
+- (void)setHasMptcpHandoverAllBytes:(BOOL)bytes;
+- (void)setHasMptcpHandoverAttempts:(BOOL)attempts;
+- (void)setHasMptcpHandoverCellBytes:(BOOL)bytes;
+- (void)setHasMptcpHandoverCellSubflowFromWiFi:(BOOL)fi;
+- (void)setHasMptcpHandoverWiFiSubflowFromCell:(BOOL)cell;
+- (void)setHasMptcpHandshakeAggregateSuccess:(BOOL)success;
+- (void)setHasMptcpHandshakeAggregateSuccessFirstParty:(BOOL)party;
+- (void)setHasMptcpHandshakeHandoverSuccessCell:(BOOL)cell;
+- (void)setHasMptcpHandshakeHandoverSuccessCellFirstParty:(BOOL)party;
+- (void)setHasMptcpHandshakeHandoverSuccessWiFi:(BOOL)fi;
+- (void)setHasMptcpHandshakeHandoverSuccessWiFiFirstParty:(BOOL)party;
+- (void)setHasMptcpHandshakeInteractiveSuccess:(BOOL)success;
+- (void)setHasMptcpHandshakeInteractiveSuccessFirstParty:(BOOL)party;
+- (void)setHasMptcpHeuristicFallback:(BOOL)fallback;
+- (void)setHasMptcpHeuristicFallbackFirstParty:(BOOL)party;
+- (void)setHasMptcpInteractiveAllBytes:(BOOL)bytes;
+- (void)setHasMptcpInteractiveAttempt:(BOOL)attempt;
+- (void)setHasMptcpInteractiveCellBytes:(BOOL)bytes;
+- (void)setHasMptcpInteractiveCellUsage:(BOOL)usage;
+- (void)setHasMptcpTriggeredCell:(BOOL)cell;
+- (void)setHasMptcpWiFiProxy:(BOOL)proxy;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDLibnetcoreMPTCPStatsReport
 
-- (void)setHasMptcpHandoverAttempts:(BOOL)a3
+- (void)setHasMptcpHandoverAttempts:(BOOL)attempts
 {
-  if (a3)
+  if (attempts)
   {
     v3 = 1024;
   }
@@ -55,9 +55,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasMptcpInteractiveAttempt:(BOOL)a3
+- (void)setHasMptcpInteractiveAttempt:(BOOL)attempt
 {
-  if (a3)
+  if (attempt)
   {
     v3 = 0x2000000;
   }
@@ -70,9 +70,9 @@
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasMptcpAggregateAttempt:(BOOL)a3
+- (void)setHasMptcpAggregateAttempt:(BOOL)attempt
 {
-  if (a3)
+  if (attempt)
   {
     v3 = 2;
   }
@@ -85,9 +85,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasMptcpFirstPartyHandoverAttempt:(BOOL)a3
+- (void)setHasMptcpFirstPartyHandoverAttempt:(BOOL)attempt
 {
-  if (a3)
+  if (attempt)
   {
     v3 = 128;
   }
@@ -100,9 +100,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasMptcpFirstPartyInteractiveAttempt:(BOOL)a3
+- (void)setHasMptcpFirstPartyInteractiveAttempt:(BOOL)attempt
 {
-  if (a3)
+  if (attempt)
   {
     v3 = 256;
   }
@@ -115,9 +115,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasMptcpFirstPartyAggregateAttempt:(BOOL)a3
+- (void)setHasMptcpFirstPartyAggregateAttempt:(BOOL)attempt
 {
-  if (a3)
+  if (attempt)
   {
     v3 = 64;
   }
@@ -130,9 +130,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasMptcpHeuristicFallback:(BOOL)a3
+- (void)setHasMptcpHeuristicFallback:(BOOL)fallback
 {
-  if (a3)
+  if (fallback)
   {
     v3 = 0x400000;
   }
@@ -145,9 +145,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasMptcpHeuristicFallbackFirstParty:(BOOL)a3
+- (void)setHasMptcpHeuristicFallbackFirstParty:(BOOL)party
 {
-  if (a3)
+  if (party)
   {
     v3 = 0x800000;
   }
@@ -160,9 +160,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasMptcpHandshakeHandoverSuccessWiFi:(BOOL)a3
+- (void)setHasMptcpHandshakeHandoverSuccessWiFi:(BOOL)fi
 {
-  if (a3)
+  if (fi)
   {
     v3 = 0x40000;
   }
@@ -175,9 +175,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasMptcpHandshakeHandoverSuccessCell:(BOOL)a3
+- (void)setHasMptcpHandshakeHandoverSuccessCell:(BOOL)cell
 {
-  if (a3)
+  if (cell)
   {
     v3 = 0x10000;
   }
@@ -190,9 +190,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasMptcpHandshakeInteractiveSuccess:(BOOL)a3
+- (void)setHasMptcpHandshakeInteractiveSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 0x100000;
   }
@@ -205,9 +205,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasMptcpHandshakeAggregateSuccess:(BOOL)a3
+- (void)setHasMptcpHandshakeAggregateSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 0x4000;
   }
@@ -220,9 +220,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasMptcpHandshakeHandoverSuccessWiFiFirstParty:(BOOL)a3
+- (void)setHasMptcpHandshakeHandoverSuccessWiFiFirstParty:(BOOL)party
 {
-  if (a3)
+  if (party)
   {
     v3 = 0x80000;
   }
@@ -235,9 +235,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasMptcpHandshakeHandoverSuccessCellFirstParty:(BOOL)a3
+- (void)setHasMptcpHandshakeHandoverSuccessCellFirstParty:(BOOL)party
 {
-  if (a3)
+  if (party)
   {
     v3 = 0x20000;
   }
@@ -250,9 +250,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasMptcpHandshakeInteractiveSuccessFirstParty:(BOOL)a3
+- (void)setHasMptcpHandshakeInteractiveSuccessFirstParty:(BOOL)party
 {
-  if (a3)
+  if (party)
   {
     v3 = 0x200000;
   }
@@ -265,9 +265,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasMptcpHandshakeAggregateSuccessFirstParty:(BOOL)a3
+- (void)setHasMptcpHandshakeAggregateSuccessFirstParty:(BOOL)party
 {
-  if (a3)
+  if (party)
   {
     v3 = 0x8000;
   }
@@ -280,9 +280,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasMptcpHandoverCellSubflowFromWiFi:(BOOL)a3
+- (void)setHasMptcpHandoverCellSubflowFromWiFi:(BOOL)fi
 {
-  if (a3)
+  if (fi)
   {
     v3 = 4096;
   }
@@ -295,9 +295,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasMptcpHandoverWiFiSubflowFromCell:(BOOL)a3
+- (void)setHasMptcpHandoverWiFiSubflowFromCell:(BOOL)cell
 {
-  if (a3)
+  if (cell)
   {
     v3 = 0x2000;
   }
@@ -310,9 +310,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasMptcpInteractiveCellUsage:(BOOL)a3
+- (void)setHasMptcpInteractiveCellUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 0x8000000;
   }
@@ -325,9 +325,9 @@
   self->_has = (*&self->_has & 0xF7FFFFFF | v3);
 }
 
-- (void)setHasMptcpHandoverCellBytes:(BOOL)a3
+- (void)setHasMptcpHandoverCellBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 2048;
   }
@@ -340,9 +340,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasMptcpInteractiveCellBytes:(BOOL)a3
+- (void)setHasMptcpInteractiveCellBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 0x4000000;
   }
@@ -355,9 +355,9 @@
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasMptcpAggregateCellBytes:(BOOL)a3
+- (void)setHasMptcpAggregateCellBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 4;
   }
@@ -370,9 +370,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasMptcpHandoverAllBytes:(BOOL)a3
+- (void)setHasMptcpHandoverAllBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 512;
   }
@@ -385,9 +385,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasMptcpInteractiveAllBytes:(BOOL)a3
+- (void)setHasMptcpInteractiveAllBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 0x1000000;
   }
@@ -400,9 +400,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasMptcpBackToWiFi:(BOOL)a3
+- (void)setHasMptcpBackToWiFi:(BOOL)fi
 {
-  if (a3)
+  if (fi)
   {
     v3 = 8;
   }
@@ -415,9 +415,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasMptcpCellDenied:(BOOL)a3
+- (void)setHasMptcpCellDenied:(BOOL)denied
 {
-  if (a3)
+  if (denied)
   {
     v3 = 16;
   }
@@ -430,9 +430,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasMptcpCellProxy:(BOOL)a3
+- (void)setHasMptcpCellProxy:(BOOL)proxy
 {
-  if (a3)
+  if (proxy)
   {
     v3 = 32;
   }
@@ -445,9 +445,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasMptcpWiFiProxy:(BOOL)a3
+- (void)setHasMptcpWiFiProxy:(BOOL)proxy
 {
-  if (a3)
+  if (proxy)
   {
     v3 = 0x20000000;
   }
@@ -460,9 +460,9 @@
   self->_has = (*&self->_has & 0xDFFFFFFF | v3);
 }
 
-- (void)setHasMptcpTriggeredCell:(BOOL)a3
+- (void)setHasMptcpTriggeredCell:(BOOL)cell
 {
-  if (a3)
+  if (cell)
   {
     v3 = 0x10000000;
   }
@@ -484,11 +484,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((*&has & 0x400) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandoverAttempts), @"mptcpHandoverAttempts"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandoverAttempts), @"mptcpHandoverAttempts"}];
     has = self->_has;
     if ((*&has & 0x2000000) == 0)
     {
@@ -507,7 +507,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpInteractiveAttempt), @"mptcpInteractiveAttempt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpInteractiveAttempt), @"mptcpInteractiveAttempt"}];
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -521,7 +521,7 @@ LABEL_4:
   }
 
 LABEL_35:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpAggregateAttempt), @"mptcpAggregateAttempt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpAggregateAttempt), @"mptcpAggregateAttempt"}];
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -535,7 +535,7 @@ LABEL_5:
   }
 
 LABEL_36:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpFirstPartyHandoverAttempt), @"mptcpFirstPartyHandoverAttempt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpFirstPartyHandoverAttempt), @"mptcpFirstPartyHandoverAttempt"}];
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -549,7 +549,7 @@ LABEL_6:
   }
 
 LABEL_37:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpFirstPartyInteractiveAttempt), @"mptcpFirstPartyInteractiveAttempt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpFirstPartyInteractiveAttempt), @"mptcpFirstPartyInteractiveAttempt"}];
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -563,7 +563,7 @@ LABEL_7:
   }
 
 LABEL_38:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpFirstPartyAggregateAttempt), @"mptcpFirstPartyAggregateAttempt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpFirstPartyAggregateAttempt), @"mptcpFirstPartyAggregateAttempt"}];
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -577,7 +577,7 @@ LABEL_8:
   }
 
 LABEL_39:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHeuristicFallback), @"mptcpHeuristicFallback"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHeuristicFallback), @"mptcpHeuristicFallback"}];
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -591,7 +591,7 @@ LABEL_9:
   }
 
 LABEL_40:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHeuristicFallbackFirstParty), @"mptcpHeuristicFallbackFirstParty"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHeuristicFallbackFirstParty), @"mptcpHeuristicFallbackFirstParty"}];
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -605,7 +605,7 @@ LABEL_10:
   }
 
 LABEL_41:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandshakeHandoverSuccessWiFi), @"mptcpHandshakeHandoverSuccessWiFi"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandshakeHandoverSuccessWiFi), @"mptcpHandshakeHandoverSuccessWiFi"}];
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -619,7 +619,7 @@ LABEL_11:
   }
 
 LABEL_42:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandshakeHandoverSuccessCell), @"mptcpHandshakeHandoverSuccessCell"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandshakeHandoverSuccessCell), @"mptcpHandshakeHandoverSuccessCell"}];
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -633,7 +633,7 @@ LABEL_12:
   }
 
 LABEL_43:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandshakeInteractiveSuccess), @"mptcpHandshakeInteractiveSuccess"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandshakeInteractiveSuccess), @"mptcpHandshakeInteractiveSuccess"}];
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -647,7 +647,7 @@ LABEL_13:
   }
 
 LABEL_44:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandshakeAggregateSuccess), @"mptcpHandshakeAggregateSuccess"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandshakeAggregateSuccess), @"mptcpHandshakeAggregateSuccess"}];
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -661,7 +661,7 @@ LABEL_14:
   }
 
 LABEL_45:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandshakeHandoverSuccessWiFiFirstParty), @"mptcpHandshakeHandoverSuccessWiFiFirstParty"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandshakeHandoverSuccessWiFiFirstParty), @"mptcpHandshakeHandoverSuccessWiFiFirstParty"}];
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -675,7 +675,7 @@ LABEL_15:
   }
 
 LABEL_46:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandshakeHandoverSuccessCellFirstParty), @"mptcpHandshakeHandoverSuccessCellFirstParty"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandshakeHandoverSuccessCellFirstParty), @"mptcpHandshakeHandoverSuccessCellFirstParty"}];
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -689,7 +689,7 @@ LABEL_16:
   }
 
 LABEL_47:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandshakeInteractiveSuccessFirstParty), @"mptcpHandshakeInteractiveSuccessFirstParty"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandshakeInteractiveSuccessFirstParty), @"mptcpHandshakeInteractiveSuccessFirstParty"}];
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -703,7 +703,7 @@ LABEL_17:
   }
 
 LABEL_48:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandshakeAggregateSuccessFirstParty), @"mptcpHandshakeAggregateSuccessFirstParty"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandshakeAggregateSuccessFirstParty), @"mptcpHandshakeAggregateSuccessFirstParty"}];
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -717,7 +717,7 @@ LABEL_18:
   }
 
 LABEL_49:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandoverCellSubflowFromWiFi), @"mptcpHandoverCellSubflowFromWiFi"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandoverCellSubflowFromWiFi), @"mptcpHandoverCellSubflowFromWiFi"}];
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -731,7 +731,7 @@ LABEL_19:
   }
 
 LABEL_50:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandoverWiFiSubflowFromCell), @"mptcpHandoverWiFiSubflowFromCell"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandoverWiFiSubflowFromCell), @"mptcpHandoverWiFiSubflowFromCell"}];
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -745,7 +745,7 @@ LABEL_20:
   }
 
 LABEL_51:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpInteractiveCellUsage), @"mptcpInteractiveCellUsage"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpInteractiveCellUsage), @"mptcpInteractiveCellUsage"}];
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -759,7 +759,7 @@ LABEL_21:
   }
 
 LABEL_52:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandoverCellBytes), @"mptcpHandoverCellBytes"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandoverCellBytes), @"mptcpHandoverCellBytes"}];
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -773,7 +773,7 @@ LABEL_22:
   }
 
 LABEL_53:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpInteractiveCellBytes), @"mptcpInteractiveCellBytes"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpInteractiveCellBytes), @"mptcpInteractiveCellBytes"}];
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -787,7 +787,7 @@ LABEL_23:
   }
 
 LABEL_54:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpAggregateCellBytes), @"mptcpAggregateCellBytes"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpAggregateCellBytes), @"mptcpAggregateCellBytes"}];
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -801,7 +801,7 @@ LABEL_24:
   }
 
 LABEL_55:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandoverAllBytes), @"mptcpHandoverAllBytes"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpHandoverAllBytes), @"mptcpHandoverAllBytes"}];
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -815,7 +815,7 @@ LABEL_25:
   }
 
 LABEL_56:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpInteractiveAllBytes), @"mptcpInteractiveAllBytes"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpInteractiveAllBytes), @"mptcpInteractiveAllBytes"}];
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -829,7 +829,7 @@ LABEL_26:
   }
 
 LABEL_57:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpAggregateAllBytes), @"mptcpAggregateAllBytes"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpAggregateAllBytes), @"mptcpAggregateAllBytes"}];
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -843,7 +843,7 @@ LABEL_27:
   }
 
 LABEL_58:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpBackToWiFi), @"mptcpBackToWiFi"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpBackToWiFi), @"mptcpBackToWiFi"}];
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -857,7 +857,7 @@ LABEL_28:
   }
 
 LABEL_59:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpCellDenied), @"mptcpCellDenied"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpCellDenied), @"mptcpCellDenied"}];
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -868,17 +868,17 @@ LABEL_29:
     }
 
 LABEL_61:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpWiFiProxy), @"mptcpWiFiProxy"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpWiFiProxy), @"mptcpWiFiProxy"}];
     if ((*&self->_has & 0x10000000) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_31;
   }
 
 LABEL_60:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpCellProxy), @"mptcpCellProxy"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpCellProxy), @"mptcpCellProxy"}];
   has = self->_has;
   if ((*&has & 0x20000000) != 0)
   {
@@ -889,13 +889,13 @@ LABEL_30:
   if ((*&has & 0x10000000) != 0)
   {
 LABEL_31:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpTriggeredCell), @"mptcpTriggeredCell"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_mptcpTriggeredCell), @"mptcpTriggeredCell"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x400) != 0)
@@ -1338,13 +1338,13 @@ LABEL_61:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x400) != 0)
   {
-    *(a3 + 11) = self->_mptcpHandoverAttempts;
-    *(a3 + 62) |= 0x400u;
+    *(to + 11) = self->_mptcpHandoverAttempts;
+    *(to + 62) |= 0x400u;
     has = self->_has;
     if ((*&has & 0x2000000) == 0)
     {
@@ -1363,8 +1363,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 26) = self->_mptcpInteractiveAttempt;
-  *(a3 + 62) |= 0x2000000u;
+  *(to + 26) = self->_mptcpInteractiveAttempt;
+  *(to + 62) |= 0x2000000u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1378,8 +1378,8 @@ LABEL_4:
   }
 
 LABEL_34:
-  *(a3 + 2) = self->_mptcpAggregateAttempt;
-  *(a3 + 62) |= 2u;
+  *(to + 2) = self->_mptcpAggregateAttempt;
+  *(to + 62) |= 2u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1393,8 +1393,8 @@ LABEL_5:
   }
 
 LABEL_35:
-  *(a3 + 8) = self->_mptcpFirstPartyHandoverAttempt;
-  *(a3 + 62) |= 0x80u;
+  *(to + 8) = self->_mptcpFirstPartyHandoverAttempt;
+  *(to + 62) |= 0x80u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1408,8 +1408,8 @@ LABEL_6:
   }
 
 LABEL_36:
-  *(a3 + 9) = self->_mptcpFirstPartyInteractiveAttempt;
-  *(a3 + 62) |= 0x100u;
+  *(to + 9) = self->_mptcpFirstPartyInteractiveAttempt;
+  *(to + 62) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1423,8 +1423,8 @@ LABEL_7:
   }
 
 LABEL_37:
-  *(a3 + 7) = self->_mptcpFirstPartyAggregateAttempt;
-  *(a3 + 62) |= 0x40u;
+  *(to + 7) = self->_mptcpFirstPartyAggregateAttempt;
+  *(to + 62) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -1438,8 +1438,8 @@ LABEL_8:
   }
 
 LABEL_38:
-  *(a3 + 23) = self->_mptcpHeuristicFallback;
-  *(a3 + 62) |= 0x400000u;
+  *(to + 23) = self->_mptcpHeuristicFallback;
+  *(to + 62) |= 0x400000u;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -1453,8 +1453,8 @@ LABEL_9:
   }
 
 LABEL_39:
-  *(a3 + 24) = self->_mptcpHeuristicFallbackFirstParty;
-  *(a3 + 62) |= 0x800000u;
+  *(to + 24) = self->_mptcpHeuristicFallbackFirstParty;
+  *(to + 62) |= 0x800000u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1468,8 +1468,8 @@ LABEL_10:
   }
 
 LABEL_40:
-  *(a3 + 19) = self->_mptcpHandshakeHandoverSuccessWiFi;
-  *(a3 + 62) |= 0x40000u;
+  *(to + 19) = self->_mptcpHandshakeHandoverSuccessWiFi;
+  *(to + 62) |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1483,8 +1483,8 @@ LABEL_11:
   }
 
 LABEL_41:
-  *(a3 + 17) = self->_mptcpHandshakeHandoverSuccessCell;
-  *(a3 + 62) |= 0x10000u;
+  *(to + 17) = self->_mptcpHandshakeHandoverSuccessCell;
+  *(to + 62) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -1498,8 +1498,8 @@ LABEL_12:
   }
 
 LABEL_42:
-  *(a3 + 21) = self->_mptcpHandshakeInteractiveSuccess;
-  *(a3 + 62) |= 0x100000u;
+  *(to + 21) = self->_mptcpHandshakeInteractiveSuccess;
+  *(to + 62) |= 0x100000u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1513,8 +1513,8 @@ LABEL_13:
   }
 
 LABEL_43:
-  *(a3 + 15) = self->_mptcpHandshakeAggregateSuccess;
-  *(a3 + 62) |= 0x4000u;
+  *(to + 15) = self->_mptcpHandshakeAggregateSuccess;
+  *(to + 62) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1528,8 +1528,8 @@ LABEL_14:
   }
 
 LABEL_44:
-  *(a3 + 20) = self->_mptcpHandshakeHandoverSuccessWiFiFirstParty;
-  *(a3 + 62) |= 0x80000u;
+  *(to + 20) = self->_mptcpHandshakeHandoverSuccessWiFiFirstParty;
+  *(to + 62) |= 0x80000u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1543,8 +1543,8 @@ LABEL_15:
   }
 
 LABEL_45:
-  *(a3 + 18) = self->_mptcpHandshakeHandoverSuccessCellFirstParty;
-  *(a3 + 62) |= 0x20000u;
+  *(to + 18) = self->_mptcpHandshakeHandoverSuccessCellFirstParty;
+  *(to + 62) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -1558,8 +1558,8 @@ LABEL_16:
   }
 
 LABEL_46:
-  *(a3 + 22) = self->_mptcpHandshakeInteractiveSuccessFirstParty;
-  *(a3 + 62) |= 0x200000u;
+  *(to + 22) = self->_mptcpHandshakeInteractiveSuccessFirstParty;
+  *(to + 62) |= 0x200000u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1573,8 +1573,8 @@ LABEL_17:
   }
 
 LABEL_47:
-  *(a3 + 16) = self->_mptcpHandshakeAggregateSuccessFirstParty;
-  *(a3 + 62) |= 0x8000u;
+  *(to + 16) = self->_mptcpHandshakeAggregateSuccessFirstParty;
+  *(to + 62) |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1588,8 +1588,8 @@ LABEL_18:
   }
 
 LABEL_48:
-  *(a3 + 13) = self->_mptcpHandoverCellSubflowFromWiFi;
-  *(a3 + 62) |= 0x1000u;
+  *(to + 13) = self->_mptcpHandoverCellSubflowFromWiFi;
+  *(to + 62) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1603,8 +1603,8 @@ LABEL_19:
   }
 
 LABEL_49:
-  *(a3 + 14) = self->_mptcpHandoverWiFiSubflowFromCell;
-  *(a3 + 62) |= 0x2000u;
+  *(to + 14) = self->_mptcpHandoverWiFiSubflowFromCell;
+  *(to + 62) |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -1618,8 +1618,8 @@ LABEL_20:
   }
 
 LABEL_50:
-  *(a3 + 28) = self->_mptcpInteractiveCellUsage;
-  *(a3 + 62) |= 0x8000000u;
+  *(to + 28) = self->_mptcpInteractiveCellUsage;
+  *(to + 62) |= 0x8000000u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1633,8 +1633,8 @@ LABEL_21:
   }
 
 LABEL_51:
-  *(a3 + 12) = self->_mptcpHandoverCellBytes;
-  *(a3 + 62) |= 0x800u;
+  *(to + 12) = self->_mptcpHandoverCellBytes;
+  *(to + 62) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -1648,8 +1648,8 @@ LABEL_22:
   }
 
 LABEL_52:
-  *(a3 + 27) = self->_mptcpInteractiveCellBytes;
-  *(a3 + 62) |= 0x4000000u;
+  *(to + 27) = self->_mptcpInteractiveCellBytes;
+  *(to + 62) |= 0x4000000u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1663,8 +1663,8 @@ LABEL_23:
   }
 
 LABEL_53:
-  *(a3 + 3) = self->_mptcpAggregateCellBytes;
-  *(a3 + 62) |= 4u;
+  *(to + 3) = self->_mptcpAggregateCellBytes;
+  *(to + 62) |= 4u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1678,8 +1678,8 @@ LABEL_24:
   }
 
 LABEL_54:
-  *(a3 + 10) = self->_mptcpHandoverAllBytes;
-  *(a3 + 62) |= 0x200u;
+  *(to + 10) = self->_mptcpHandoverAllBytes;
+  *(to + 62) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -1693,8 +1693,8 @@ LABEL_25:
   }
 
 LABEL_55:
-  *(a3 + 25) = self->_mptcpInteractiveAllBytes;
-  *(a3 + 62) |= 0x1000000u;
+  *(to + 25) = self->_mptcpInteractiveAllBytes;
+  *(to + 62) |= 0x1000000u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1708,8 +1708,8 @@ LABEL_26:
   }
 
 LABEL_56:
-  *(a3 + 1) = self->_mptcpAggregateAllBytes;
-  *(a3 + 62) |= 1u;
+  *(to + 1) = self->_mptcpAggregateAllBytes;
+  *(to + 62) |= 1u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1723,8 +1723,8 @@ LABEL_27:
   }
 
 LABEL_57:
-  *(a3 + 4) = self->_mptcpBackToWiFi;
-  *(a3 + 62) |= 8u;
+  *(to + 4) = self->_mptcpBackToWiFi;
+  *(to + 62) |= 8u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1738,8 +1738,8 @@ LABEL_28:
   }
 
 LABEL_58:
-  *(a3 + 5) = self->_mptcpCellDenied;
-  *(a3 + 62) |= 0x10u;
+  *(to + 5) = self->_mptcpCellDenied;
+  *(to + 62) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1753,8 +1753,8 @@ LABEL_29:
   }
 
 LABEL_59:
-  *(a3 + 6) = self->_mptcpCellProxy;
-  *(a3 + 62) |= 0x20u;
+  *(to + 6) = self->_mptcpCellProxy;
+  *(to + 62) |= 0x20u;
   has = self->_has;
   if ((*&has & 0x20000000) == 0)
   {
@@ -1765,23 +1765,23 @@ LABEL_30:
     }
 
 LABEL_61:
-    *(a3 + 29) = self->_mptcpTriggeredCell;
-    *(a3 + 62) |= 0x10000000u;
+    *(to + 29) = self->_mptcpTriggeredCell;
+    *(to + 62) |= 0x10000000u;
     return;
   }
 
 LABEL_60:
-  *(a3 + 30) = self->_mptcpWiFiProxy;
-  *(a3 + 62) |= 0x20000000u;
+  *(to + 30) = self->_mptcpWiFiProxy;
+  *(to + 62) |= 0x20000000u;
   if ((*&self->_has & 0x10000000) != 0)
   {
     goto LABEL_61;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((*&has & 0x400) != 0)
   {
@@ -2223,16 +2223,16 @@ LABEL_31:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 62);
+    v7 = *(equal + 62);
     if ((*&has & 0x400) != 0)
     {
-      if ((v7 & 0x400) == 0 || self->_mptcpHandoverAttempts != *(a3 + 11))
+      if ((v7 & 0x400) == 0 || self->_mptcpHandoverAttempts != *(equal + 11))
       {
         goto LABEL_151;
       }
@@ -2247,7 +2247,7 @@ LABEL_151:
 
     if ((*&has & 0x2000000) != 0)
     {
-      if ((v7 & 0x2000000) == 0 || self->_mptcpInteractiveAttempt != *(a3 + 26))
+      if ((v7 & 0x2000000) == 0 || self->_mptcpInteractiveAttempt != *(equal + 26))
       {
         goto LABEL_151;
       }
@@ -2260,7 +2260,7 @@ LABEL_151:
 
     if ((*&has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_mptcpAggregateAttempt != *(a3 + 2))
+      if ((v7 & 2) == 0 || self->_mptcpAggregateAttempt != *(equal + 2))
       {
         goto LABEL_151;
       }
@@ -2273,7 +2273,7 @@ LABEL_151:
 
     if ((*&has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_mptcpFirstPartyHandoverAttempt != *(a3 + 8))
+      if ((v7 & 0x80) == 0 || self->_mptcpFirstPartyHandoverAttempt != *(equal + 8))
       {
         goto LABEL_151;
       }
@@ -2286,7 +2286,7 @@ LABEL_151:
 
     if ((*&has & 0x100) != 0)
     {
-      if ((v7 & 0x100) == 0 || self->_mptcpFirstPartyInteractiveAttempt != *(a3 + 9))
+      if ((v7 & 0x100) == 0 || self->_mptcpFirstPartyInteractiveAttempt != *(equal + 9))
       {
         goto LABEL_151;
       }
@@ -2299,7 +2299,7 @@ LABEL_151:
 
     if ((*&has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_mptcpFirstPartyAggregateAttempt != *(a3 + 7))
+      if ((v7 & 0x40) == 0 || self->_mptcpFirstPartyAggregateAttempt != *(equal + 7))
       {
         goto LABEL_151;
       }
@@ -2312,7 +2312,7 @@ LABEL_151:
 
     if ((*&has & 0x400000) != 0)
     {
-      if ((v7 & 0x400000) == 0 || self->_mptcpHeuristicFallback != *(a3 + 23))
+      if ((v7 & 0x400000) == 0 || self->_mptcpHeuristicFallback != *(equal + 23))
       {
         goto LABEL_151;
       }
@@ -2325,7 +2325,7 @@ LABEL_151:
 
     if ((*&has & 0x800000) != 0)
     {
-      if ((v7 & 0x800000) == 0 || self->_mptcpHeuristicFallbackFirstParty != *(a3 + 24))
+      if ((v7 & 0x800000) == 0 || self->_mptcpHeuristicFallbackFirstParty != *(equal + 24))
       {
         goto LABEL_151;
       }
@@ -2338,7 +2338,7 @@ LABEL_151:
 
     if ((*&has & 0x40000) != 0)
     {
-      if ((v7 & 0x40000) == 0 || self->_mptcpHandshakeHandoverSuccessWiFi != *(a3 + 19))
+      if ((v7 & 0x40000) == 0 || self->_mptcpHandshakeHandoverSuccessWiFi != *(equal + 19))
       {
         goto LABEL_151;
       }
@@ -2351,7 +2351,7 @@ LABEL_151:
 
     if ((*&has & 0x10000) != 0)
     {
-      if ((v7 & 0x10000) == 0 || self->_mptcpHandshakeHandoverSuccessCell != *(a3 + 17))
+      if ((v7 & 0x10000) == 0 || self->_mptcpHandshakeHandoverSuccessCell != *(equal + 17))
       {
         goto LABEL_151;
       }
@@ -2364,7 +2364,7 @@ LABEL_151:
 
     if ((*&has & 0x100000) != 0)
     {
-      if ((v7 & 0x100000) == 0 || self->_mptcpHandshakeInteractiveSuccess != *(a3 + 21))
+      if ((v7 & 0x100000) == 0 || self->_mptcpHandshakeInteractiveSuccess != *(equal + 21))
       {
         goto LABEL_151;
       }
@@ -2377,7 +2377,7 @@ LABEL_151:
 
     if ((*&has & 0x4000) != 0)
     {
-      if ((v7 & 0x4000) == 0 || self->_mptcpHandshakeAggregateSuccess != *(a3 + 15))
+      if ((v7 & 0x4000) == 0 || self->_mptcpHandshakeAggregateSuccess != *(equal + 15))
       {
         goto LABEL_151;
       }
@@ -2390,7 +2390,7 @@ LABEL_151:
 
     if ((*&has & 0x80000) != 0)
     {
-      if ((v7 & 0x80000) == 0 || self->_mptcpHandshakeHandoverSuccessWiFiFirstParty != *(a3 + 20))
+      if ((v7 & 0x80000) == 0 || self->_mptcpHandshakeHandoverSuccessWiFiFirstParty != *(equal + 20))
       {
         goto LABEL_151;
       }
@@ -2403,7 +2403,7 @@ LABEL_151:
 
     if ((*&has & 0x20000) != 0)
     {
-      if ((v7 & 0x20000) == 0 || self->_mptcpHandshakeHandoverSuccessCellFirstParty != *(a3 + 18))
+      if ((v7 & 0x20000) == 0 || self->_mptcpHandshakeHandoverSuccessCellFirstParty != *(equal + 18))
       {
         goto LABEL_151;
       }
@@ -2416,7 +2416,7 @@ LABEL_151:
 
     if ((*&has & 0x200000) != 0)
     {
-      if ((v7 & 0x200000) == 0 || self->_mptcpHandshakeInteractiveSuccessFirstParty != *(a3 + 22))
+      if ((v7 & 0x200000) == 0 || self->_mptcpHandshakeInteractiveSuccessFirstParty != *(equal + 22))
       {
         goto LABEL_151;
       }
@@ -2429,7 +2429,7 @@ LABEL_151:
 
     if ((*&has & 0x8000) != 0)
     {
-      if ((v7 & 0x8000) == 0 || self->_mptcpHandshakeAggregateSuccessFirstParty != *(a3 + 16))
+      if ((v7 & 0x8000) == 0 || self->_mptcpHandshakeAggregateSuccessFirstParty != *(equal + 16))
       {
         goto LABEL_151;
       }
@@ -2442,7 +2442,7 @@ LABEL_151:
 
     if ((*&has & 0x1000) != 0)
     {
-      if ((v7 & 0x1000) == 0 || self->_mptcpHandoverCellSubflowFromWiFi != *(a3 + 13))
+      if ((v7 & 0x1000) == 0 || self->_mptcpHandoverCellSubflowFromWiFi != *(equal + 13))
       {
         goto LABEL_151;
       }
@@ -2455,7 +2455,7 @@ LABEL_151:
 
     if ((*&has & 0x2000) != 0)
     {
-      if ((v7 & 0x2000) == 0 || self->_mptcpHandoverWiFiSubflowFromCell != *(a3 + 14))
+      if ((v7 & 0x2000) == 0 || self->_mptcpHandoverWiFiSubflowFromCell != *(equal + 14))
       {
         goto LABEL_151;
       }
@@ -2468,7 +2468,7 @@ LABEL_151:
 
     if ((*&has & 0x8000000) != 0)
     {
-      if ((v7 & 0x8000000) == 0 || self->_mptcpInteractiveCellUsage != *(a3 + 28))
+      if ((v7 & 0x8000000) == 0 || self->_mptcpInteractiveCellUsage != *(equal + 28))
       {
         goto LABEL_151;
       }
@@ -2481,7 +2481,7 @@ LABEL_151:
 
     if ((*&has & 0x800) != 0)
     {
-      if ((v7 & 0x800) == 0 || self->_mptcpHandoverCellBytes != *(a3 + 12))
+      if ((v7 & 0x800) == 0 || self->_mptcpHandoverCellBytes != *(equal + 12))
       {
         goto LABEL_151;
       }
@@ -2494,7 +2494,7 @@ LABEL_151:
 
     if ((*&has & 0x4000000) != 0)
     {
-      if ((v7 & 0x4000000) == 0 || self->_mptcpInteractiveCellBytes != *(a3 + 27))
+      if ((v7 & 0x4000000) == 0 || self->_mptcpInteractiveCellBytes != *(equal + 27))
       {
         goto LABEL_151;
       }
@@ -2507,7 +2507,7 @@ LABEL_151:
 
     if ((*&has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_mptcpAggregateCellBytes != *(a3 + 3))
+      if ((v7 & 4) == 0 || self->_mptcpAggregateCellBytes != *(equal + 3))
       {
         goto LABEL_151;
       }
@@ -2520,7 +2520,7 @@ LABEL_151:
 
     if ((*&has & 0x200) != 0)
     {
-      if ((v7 & 0x200) == 0 || self->_mptcpHandoverAllBytes != *(a3 + 10))
+      if ((v7 & 0x200) == 0 || self->_mptcpHandoverAllBytes != *(equal + 10))
       {
         goto LABEL_151;
       }
@@ -2533,7 +2533,7 @@ LABEL_151:
 
     if ((*&has & 0x1000000) != 0)
     {
-      if ((v7 & 0x1000000) == 0 || self->_mptcpInteractiveAllBytes != *(a3 + 25))
+      if ((v7 & 0x1000000) == 0 || self->_mptcpInteractiveAllBytes != *(equal + 25))
       {
         goto LABEL_151;
       }
@@ -2546,7 +2546,7 @@ LABEL_151:
 
     if (*&has)
     {
-      if ((v7 & 1) == 0 || self->_mptcpAggregateAllBytes != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_mptcpAggregateAllBytes != *(equal + 1))
       {
         goto LABEL_151;
       }
@@ -2559,7 +2559,7 @@ LABEL_151:
 
     if ((*&has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_mptcpBackToWiFi != *(a3 + 4))
+      if ((v7 & 8) == 0 || self->_mptcpBackToWiFi != *(equal + 4))
       {
         goto LABEL_151;
       }
@@ -2572,7 +2572,7 @@ LABEL_151:
 
     if ((*&has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_mptcpCellDenied != *(a3 + 5))
+      if ((v7 & 0x10) == 0 || self->_mptcpCellDenied != *(equal + 5))
       {
         goto LABEL_151;
       }
@@ -2585,7 +2585,7 @@ LABEL_151:
 
     if ((*&has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_mptcpCellProxy != *(a3 + 6))
+      if ((v7 & 0x20) == 0 || self->_mptcpCellProxy != *(equal + 6))
       {
         goto LABEL_151;
       }
@@ -2598,7 +2598,7 @@ LABEL_151:
 
     if ((*&has & 0x20000000) != 0)
     {
-      if ((v7 & 0x20000000) == 0 || self->_mptcpWiFiProxy != *(a3 + 30))
+      if ((v7 & 0x20000000) == 0 || self->_mptcpWiFiProxy != *(equal + 30))
       {
         goto LABEL_151;
       }
@@ -2612,7 +2612,7 @@ LABEL_151:
     LOBYTE(v5) = (v7 & 0x10000000) == 0;
     if ((*&has & 0x10000000) != 0)
     {
-      if ((v7 & 0x10000000) == 0 || self->_mptcpTriggeredCell != *(a3 + 29))
+      if ((v7 & 0x10000000) == 0 || self->_mptcpTriggeredCell != *(equal + 29))
       {
         goto LABEL_151;
       }
@@ -3043,14 +3043,14 @@ LABEL_31:
   return v32 ^ v33 ^ v31 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x400) != 0)
   {
-    self->_mptcpHandoverAttempts = *(a3 + 11);
+    self->_mptcpHandoverAttempts = *(from + 11);
     *&self->_has |= 0x400u;
-    v3 = *(a3 + 62);
+    v3 = *(from + 62);
     if ((v3 & 0x2000000) == 0)
     {
 LABEL_3:
@@ -3068,9 +3068,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_mptcpInteractiveAttempt = *(a3 + 26);
+  self->_mptcpInteractiveAttempt = *(from + 26);
   *&self->_has |= 0x2000000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 2) == 0)
   {
 LABEL_4:
@@ -3083,9 +3083,9 @@ LABEL_4:
   }
 
 LABEL_34:
-  self->_mptcpAggregateAttempt = *(a3 + 2);
+  self->_mptcpAggregateAttempt = *(from + 2);
   *&self->_has |= 2u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x80) == 0)
   {
 LABEL_5:
@@ -3098,9 +3098,9 @@ LABEL_5:
   }
 
 LABEL_35:
-  self->_mptcpFirstPartyHandoverAttempt = *(a3 + 8);
+  self->_mptcpFirstPartyHandoverAttempt = *(from + 8);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x100) == 0)
   {
 LABEL_6:
@@ -3113,9 +3113,9 @@ LABEL_6:
   }
 
 LABEL_36:
-  self->_mptcpFirstPartyInteractiveAttempt = *(a3 + 9);
+  self->_mptcpFirstPartyInteractiveAttempt = *(from + 9);
   *&self->_has |= 0x100u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x40) == 0)
   {
 LABEL_7:
@@ -3128,9 +3128,9 @@ LABEL_7:
   }
 
 LABEL_37:
-  self->_mptcpFirstPartyAggregateAttempt = *(a3 + 7);
+  self->_mptcpFirstPartyAggregateAttempt = *(from + 7);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x400000) == 0)
   {
 LABEL_8:
@@ -3143,9 +3143,9 @@ LABEL_8:
   }
 
 LABEL_38:
-  self->_mptcpHeuristicFallback = *(a3 + 23);
+  self->_mptcpHeuristicFallback = *(from + 23);
   *&self->_has |= 0x400000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x800000) == 0)
   {
 LABEL_9:
@@ -3158,9 +3158,9 @@ LABEL_9:
   }
 
 LABEL_39:
-  self->_mptcpHeuristicFallbackFirstParty = *(a3 + 24);
+  self->_mptcpHeuristicFallbackFirstParty = *(from + 24);
   *&self->_has |= 0x800000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x40000) == 0)
   {
 LABEL_10:
@@ -3173,9 +3173,9 @@ LABEL_10:
   }
 
 LABEL_40:
-  self->_mptcpHandshakeHandoverSuccessWiFi = *(a3 + 19);
+  self->_mptcpHandshakeHandoverSuccessWiFi = *(from + 19);
   *&self->_has |= 0x40000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x10000) == 0)
   {
 LABEL_11:
@@ -3188,9 +3188,9 @@ LABEL_11:
   }
 
 LABEL_41:
-  self->_mptcpHandshakeHandoverSuccessCell = *(a3 + 17);
+  self->_mptcpHandshakeHandoverSuccessCell = *(from + 17);
   *&self->_has |= 0x10000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x100000) == 0)
   {
 LABEL_12:
@@ -3203,9 +3203,9 @@ LABEL_12:
   }
 
 LABEL_42:
-  self->_mptcpHandshakeInteractiveSuccess = *(a3 + 21);
+  self->_mptcpHandshakeInteractiveSuccess = *(from + 21);
   *&self->_has |= 0x100000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x4000) == 0)
   {
 LABEL_13:
@@ -3218,9 +3218,9 @@ LABEL_13:
   }
 
 LABEL_43:
-  self->_mptcpHandshakeAggregateSuccess = *(a3 + 15);
+  self->_mptcpHandshakeAggregateSuccess = *(from + 15);
   *&self->_has |= 0x4000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x80000) == 0)
   {
 LABEL_14:
@@ -3233,9 +3233,9 @@ LABEL_14:
   }
 
 LABEL_44:
-  self->_mptcpHandshakeHandoverSuccessWiFiFirstParty = *(a3 + 20);
+  self->_mptcpHandshakeHandoverSuccessWiFiFirstParty = *(from + 20);
   *&self->_has |= 0x80000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x20000) == 0)
   {
 LABEL_15:
@@ -3248,9 +3248,9 @@ LABEL_15:
   }
 
 LABEL_45:
-  self->_mptcpHandshakeHandoverSuccessCellFirstParty = *(a3 + 18);
+  self->_mptcpHandshakeHandoverSuccessCellFirstParty = *(from + 18);
   *&self->_has |= 0x20000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x200000) == 0)
   {
 LABEL_16:
@@ -3263,9 +3263,9 @@ LABEL_16:
   }
 
 LABEL_46:
-  self->_mptcpHandshakeInteractiveSuccessFirstParty = *(a3 + 22);
+  self->_mptcpHandshakeInteractiveSuccessFirstParty = *(from + 22);
   *&self->_has |= 0x200000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x8000) == 0)
   {
 LABEL_17:
@@ -3278,9 +3278,9 @@ LABEL_17:
   }
 
 LABEL_47:
-  self->_mptcpHandshakeAggregateSuccessFirstParty = *(a3 + 16);
+  self->_mptcpHandshakeAggregateSuccessFirstParty = *(from + 16);
   *&self->_has |= 0x8000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x1000) == 0)
   {
 LABEL_18:
@@ -3293,9 +3293,9 @@ LABEL_18:
   }
 
 LABEL_48:
-  self->_mptcpHandoverCellSubflowFromWiFi = *(a3 + 13);
+  self->_mptcpHandoverCellSubflowFromWiFi = *(from + 13);
   *&self->_has |= 0x1000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x2000) == 0)
   {
 LABEL_19:
@@ -3308,9 +3308,9 @@ LABEL_19:
   }
 
 LABEL_49:
-  self->_mptcpHandoverWiFiSubflowFromCell = *(a3 + 14);
+  self->_mptcpHandoverWiFiSubflowFromCell = *(from + 14);
   *&self->_has |= 0x2000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x8000000) == 0)
   {
 LABEL_20:
@@ -3323,9 +3323,9 @@ LABEL_20:
   }
 
 LABEL_50:
-  self->_mptcpInteractiveCellUsage = *(a3 + 28);
+  self->_mptcpInteractiveCellUsage = *(from + 28);
   *&self->_has |= 0x8000000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x800) == 0)
   {
 LABEL_21:
@@ -3338,9 +3338,9 @@ LABEL_21:
   }
 
 LABEL_51:
-  self->_mptcpHandoverCellBytes = *(a3 + 12);
+  self->_mptcpHandoverCellBytes = *(from + 12);
   *&self->_has |= 0x800u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x4000000) == 0)
   {
 LABEL_22:
@@ -3353,9 +3353,9 @@ LABEL_22:
   }
 
 LABEL_52:
-  self->_mptcpInteractiveCellBytes = *(a3 + 27);
+  self->_mptcpInteractiveCellBytes = *(from + 27);
   *&self->_has |= 0x4000000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 4) == 0)
   {
 LABEL_23:
@@ -3368,9 +3368,9 @@ LABEL_23:
   }
 
 LABEL_53:
-  self->_mptcpAggregateCellBytes = *(a3 + 3);
+  self->_mptcpAggregateCellBytes = *(from + 3);
   *&self->_has |= 4u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x200) == 0)
   {
 LABEL_24:
@@ -3383,9 +3383,9 @@ LABEL_24:
   }
 
 LABEL_54:
-  self->_mptcpHandoverAllBytes = *(a3 + 10);
+  self->_mptcpHandoverAllBytes = *(from + 10);
   *&self->_has |= 0x200u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x1000000) == 0)
   {
 LABEL_25:
@@ -3398,9 +3398,9 @@ LABEL_25:
   }
 
 LABEL_55:
-  self->_mptcpInteractiveAllBytes = *(a3 + 25);
+  self->_mptcpInteractiveAllBytes = *(from + 25);
   *&self->_has |= 0x1000000u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 1) == 0)
   {
 LABEL_26:
@@ -3413,9 +3413,9 @@ LABEL_26:
   }
 
 LABEL_56:
-  self->_mptcpAggregateAllBytes = *(a3 + 1);
+  self->_mptcpAggregateAllBytes = *(from + 1);
   *&self->_has |= 1u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 8) == 0)
   {
 LABEL_27:
@@ -3428,9 +3428,9 @@ LABEL_27:
   }
 
 LABEL_57:
-  self->_mptcpBackToWiFi = *(a3 + 4);
+  self->_mptcpBackToWiFi = *(from + 4);
   *&self->_has |= 8u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x10) == 0)
   {
 LABEL_28:
@@ -3443,9 +3443,9 @@ LABEL_28:
   }
 
 LABEL_58:
-  self->_mptcpCellDenied = *(a3 + 5);
+  self->_mptcpCellDenied = *(from + 5);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x20) == 0)
   {
 LABEL_29:
@@ -3458,9 +3458,9 @@ LABEL_29:
   }
 
 LABEL_59:
-  self->_mptcpCellProxy = *(a3 + 6);
+  self->_mptcpCellProxy = *(from + 6);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 62);
+  v3 = *(from + 62);
   if ((v3 & 0x20000000) == 0)
   {
 LABEL_30:
@@ -3470,15 +3470,15 @@ LABEL_30:
     }
 
 LABEL_61:
-    self->_mptcpTriggeredCell = *(a3 + 29);
+    self->_mptcpTriggeredCell = *(from + 29);
     *&self->_has |= 0x10000000u;
     return;
   }
 
 LABEL_60:
-  self->_mptcpWiFiProxy = *(a3 + 30);
+  self->_mptcpWiFiProxy = *(from + 30);
   *&self->_has |= 0x20000000u;
-  if ((*(a3 + 62) & 0x10000000) != 0)
+  if ((*(from + 62) & 0x10000000) != 0)
   {
     goto LABEL_61;
   }

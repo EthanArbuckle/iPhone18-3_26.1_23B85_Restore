@@ -1,101 +1,101 @@
 @interface PKNewPaymentCredentialProvisioningViewController
 - (BOOL)isComplete;
-- (PKNewPaymentCredentialProvisioningViewController)initWithProvisioningController:(id)a3 webService:(id)a4 context:(int64_t)a5 paymentCredential:(id)a6 setupProduct:(id)a7 allowsManualEntry:(BOOL)a8 reporter:(id)a9;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (PKNewPaymentCredentialProvisioningViewController)initWithProvisioningController:(id)controller webService:(id)service context:(int64_t)context paymentCredential:(id)credential setupProduct:(id)product allowsManualEntry:(BOOL)entry reporter:(id)reporter;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_defaultHeaderViewSubTitleForLocalCredential;
 - (id)_defaultHeaderViewSubTitleForLocalCredentialTransfer;
 - (id)_remoteExistingCredentialDefaultHeaderViewSubTitle;
 - (id)defaultHeaderViewSubTitle;
 - (id)defaultHeaderViewTitle;
 - (id)readonlyFieldIdentifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
 - (id)visibleFieldIdentifiers;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_createPassSnapshotFromPaymentPass:(id)a3 completion:(id)a4;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_createPassSnapshotFromPaymentPass:(id)pass completion:(id)completion;
 - (void)_skipCard;
 - (void)_updatePassSnapshotHeader;
-- (void)addDifferentCard:(id)a3;
+- (void)addDifferentCard:(id)card;
 - (void)dealloc;
-- (void)didTransitionTo:(int64_t)a3 loading:(BOOL)a4;
+- (void)didTransitionTo:(int64_t)to loading:(BOOL)loading;
 - (void)didUpdateFieldModel;
-- (void)handleNextButtonTapped:(id)a3;
+- (void)handleNextButtonTapped:(id)tapped;
 - (void)loadView;
-- (void)paymentPassUpdatedOnCredential:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
-- (void)showWithProvisioningError:(id)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)paymentPassUpdatedOnCredential:(id)credential;
+- (void)preflightWithCompletion:(id)completion;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
+- (void)showWithProvisioningError:(id)error;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKNewPaymentCredentialProvisioningViewController
 
-- (PKNewPaymentCredentialProvisioningViewController)initWithProvisioningController:(id)a3 webService:(id)a4 context:(int64_t)a5 paymentCredential:(id)a6 setupProduct:(id)a7 allowsManualEntry:(BOOL)a8 reporter:(id)a9
+- (PKNewPaymentCredentialProvisioningViewController)initWithProvisioningController:(id)controller webService:(id)service context:(int64_t)context paymentCredential:(id)credential setupProduct:(id)product allowsManualEntry:(BOOL)entry reporter:(id)reporter
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v61 = a7;
-  v62 = a9;
+  controllerCopy = controller;
+  serviceCopy = service;
+  credentialCopy = credential;
+  productCopy = product;
+  reporterCopy = reporter;
   v63.receiver = self;
   v63.super_class = PKNewPaymentCredentialProvisioningViewController;
-  v18 = [(PKPaymentSetupProvisioningFieldsViewController *)&v63 initWithProvisioningController:v15 context:a5 setupDelegate:0];
+  v18 = [(PKPaymentSetupProvisioningFieldsViewController *)&v63 initWithProvisioningController:controllerCopy context:context setupDelegate:0];
   v19 = v18;
   if (!v18)
   {
     goto LABEL_58;
   }
 
-  objc_storeStrong(&v18->_provisioningController, a3);
-  objc_storeStrong(&v19->_webService, a4);
-  [v15 addDelegate:v19];
-  objc_storeStrong(&v19->_setupProduct, a7);
-  objc_storeStrong(&v19->_paymentCredential, a6);
+  objc_storeStrong(&v18->_provisioningController, controller);
+  objc_storeStrong(&v19->_webService, service);
+  [controllerCopy addDelegate:v19];
+  objc_storeStrong(&v19->_setupProduct, product);
+  objc_storeStrong(&v19->_paymentCredential, credential);
   v20 = 1;
   v19->_displayType = 1;
-  v19->_allowsManualEntry = a8;
-  objc_storeStrong(&v19->_reporter, a9);
+  v19->_allowsManualEntry = entry;
+  objc_storeStrong(&v19->_reporter, reporter);
   IsSetupAssistant = PKPaymentSetupContextIsSetupAssistant();
   IsExpressSetupAssistant = PKPaymentSetupContextIsExpressSetupAssistant();
-  if (([v17 isHomeKeyCredential] & 1) == 0)
+  if (([credentialCopy isHomeKeyCredential] & 1) == 0)
   {
-    if ([v17 isShareableCredential] & 1) != 0 || (objc_msgSend(v17, "isDigitalIssuanceProductCredential") & 1) != 0 || (objc_msgSend(v17, "isFPANCredential") & 1) != 0 || (objc_msgSend(v17, "isPrecursorCredential") & 1) != 0 || (objc_msgSend(v17, "isRemoteCredential"))
+    if ([credentialCopy isShareableCredential] & 1) != 0 || (objc_msgSend(credentialCopy, "isDigitalIssuanceProductCredential") & 1) != 0 || (objc_msgSend(credentialCopy, "isFPANCredential") & 1) != 0 || (objc_msgSend(credentialCopy, "isPrecursorCredential") & 1) != 0 || (objc_msgSend(credentialCopy, "isRemoteCredential"))
     {
       v20 = 1;
     }
 
     else
     {
-      v20 = [v17 couldSupportSuperEasyProvisioning] & IsSetupAssistant | IsExpressSetupAssistant;
+      v20 = [credentialCopy couldSupportSuperEasyProvisioning] & IsSetupAssistant | IsExpressSetupAssistant;
     }
   }
 
-  v23 = v17;
+  v23 = credentialCopy;
   v19->_shouldAutoProvision = v20 & 1;
-  v24 = [(PKPaymentCredential *)v19->_paymentCredential isRemoteCredential];
+  isRemoteCredential = [(PKPaymentCredential *)v19->_paymentCredential isRemoteCredential];
   paymentCredential = v19->_paymentCredential;
-  if (v24)
+  if (isRemoteCredential)
   {
-    v26 = [(PKPaymentCredential *)paymentCredential remoteCredential];
-    v27 = [v26 metadata];
-    v28 = [v27 count];
+    remoteCredential = [(PKPaymentCredential *)paymentCredential remoteCredential];
+    metadata = [remoteCredential metadata];
+    v28 = [metadata count];
 
     if (v28)
     {
       v19->_displayType = 2;
     }
 
-    IsExpressSetupAssistant = [v26 remoteCredential];
-    v29 = [IsExpressSetupAssistant status];
+    IsExpressSetupAssistant = [remoteCredential remoteCredential];
+    status = [IsExpressSetupAssistant status];
 
-    if (v29 <= 1)
+    if (status <= 1)
     {
-      if ((v29 + 1) >= 2)
+      if ((status + 1) >= 2)
       {
-        if (v29 == 1)
+        if (status == 1)
         {
           if ([(PKPaymentCredential *)v19->_paymentCredential credentialType]== 135)
           {
@@ -114,15 +114,15 @@
       }
     }
 
-    else if ((v29 - 3) >= 2)
+    else if ((status - 3) >= 2)
     {
-      if (v29 == 5)
+      if (status == 5)
       {
         v30 = 2;
         goto LABEL_45;
       }
 
-      if (v29 == 2)
+      if (status == 2)
       {
         v30 = 3;
 LABEL_45:
@@ -153,15 +153,15 @@ LABEL_46:
       goto LABEL_22;
     }
 
-    v33 = [(PKPaymentCredential *)v19->_paymentCredential isLocalPassCredential];
+    isLocalPassCredential = [(PKPaymentCredential *)v19->_paymentCredential isLocalPassCredential];
     v34 = v19->_paymentCredential;
-    if (v33)
+    if (isLocalPassCredential)
     {
-      v35 = [(PKPaymentCredential *)v34 localPassCredential];
-      IsExpressSetupAssistant = [v35 paymentPass];
-      v36 = [IsExpressSetupAssistant requiresTransferSerialNumberBasedProvisioning];
+      localPassCredential = [(PKPaymentCredential *)v34 localPassCredential];
+      IsExpressSetupAssistant = [localPassCredential paymentPass];
+      requiresTransferSerialNumberBasedProvisioning = [IsExpressSetupAssistant requiresTransferSerialNumberBasedProvisioning];
 
-      if (!v36)
+      if (!requiresTransferSerialNumberBasedProvisioning)
       {
         v19->_credentialProvisioningType = 0;
         goto LABEL_47;
@@ -171,12 +171,12 @@ LABEL_46:
       goto LABEL_19;
     }
 
-    v37 = [(PKPaymentCredential *)v34 isDigitalIssuanceProductCredential];
+    isDigitalIssuanceProductCredential = [(PKPaymentCredential *)v34 isDigitalIssuanceProductCredential];
     v38 = v19->_paymentCredential;
-    if (v37)
+    if (isDigitalIssuanceProductCredential)
     {
-      v39 = [(PKPaymentCredential *)v38 digitalIssuanceProductCredential];
-      IsExpressSetupAssistant = [v39 metadata];
+      digitalIssuanceProductCredential = [(PKPaymentCredential *)v38 digitalIssuanceProductCredential];
+      IsExpressSetupAssistant = [digitalIssuanceProductCredential metadata];
       v40 = [IsExpressSetupAssistant count];
 
       if (v40)
@@ -188,22 +188,22 @@ LABEL_46:
       goto LABEL_73;
     }
 
-    v41 = [(PKPaymentCredential *)v38 isPurchasedProductCredential];
+    isPurchasedProductCredential = [(PKPaymentCredential *)v38 isPurchasedProductCredential];
     v42 = v19->_paymentCredential;
-    if (v41)
+    if (isPurchasedProductCredential)
     {
-      v39 = [(PKPaymentCredential *)v42 purchasedProductCredential];
-      v43 = [v39 purchase];
-      v44 = [v43 state];
+      digitalIssuanceProductCredential = [(PKPaymentCredential *)v42 purchasedProductCredential];
+      purchase = [digitalIssuanceProductCredential purchase];
+      state = [purchase state];
       v45 = 8;
-      if (v44 == 3)
+      if (state == 3)
       {
         v45 = 9;
       }
 
       v19->_credentialProvisioningType = v45;
 
-      IsExpressSetupAssistant = [v39 metadata];
+      IsExpressSetupAssistant = [digitalIssuanceProductCredential metadata];
       v46 = [IsExpressSetupAssistant count];
 
       if (v46)
@@ -249,9 +249,9 @@ LABEL_22:
       v19->_credentialProvisioningType = 10;
       v19->_displayType = 2;
       IsExpressSetupAssistant = [(PKPaymentCredential *)v19->_paymentCredential issuerProvisioningExtensionCredential];
-      v39 = [IsExpressSetupAssistant entry];
+      digitalIssuanceProductCredential = [IsExpressSetupAssistant entry];
 
-      v56 = CGImageRetain([v39 art]);
+      v56 = CGImageRetain([digitalIssuanceProductCredential art]);
       if (v56)
       {
         IsExpressSetupAssistant = v56;
@@ -278,8 +278,8 @@ LABEL_19:
   v19->_credentialProvisioningType = v31;
   v19->_displayType = 0;
 LABEL_47:
-  v48 = [*(&v19->super.super.super.super.super.super.isa + v59) configuration];
-  if ([v48 type] == 9 || -[PKPaymentCredential credentialType](v19->_paymentCredential, "credentialType") == 123)
+  configuration = [*(&v19->super.super.super.super.super.super.isa + v59) configuration];
+  if ([configuration type] == 9 || -[PKPaymentCredential credentialType](v19->_paymentCredential, "credentialType") == 123)
   {
 
 LABEL_50:
@@ -288,11 +288,11 @@ LABEL_50:
   }
 
   IsExpressSetupAssistant = [(PKPaymentCredential *)v19->_paymentCredential issuerProvisioningExtensionCredential];
-  v53 = [IsExpressSetupAssistant entry];
-  v54 = [v53 addRequestConfiguration];
-  v55 = [v54 isPaymentAccount];
+  entry = [IsExpressSetupAssistant entry];
+  addRequestConfiguration = [entry addRequestConfiguration];
+  isPaymentAccount = [addRequestConfiguration isPaymentAccount];
 
-  if (v55)
+  if (isPaymentAccount)
   {
     goto LABEL_50;
   }
@@ -308,24 +308,24 @@ LABEL_51:
   v19->_category = v49;
 LABEL_52:
   [(PKPaymentSetupProvisioningFieldsViewController *)v19 setIgnoreProgressDescriptionUpdates:1];
-  v50 = [(PKPaymentCredential *)v19->_paymentCredential underlyingPaymentPass];
-  if (v50)
+  underlyingPaymentPass = [(PKPaymentCredential *)v19->_paymentCredential underlyingPaymentPass];
+  if (underlyingPaymentPass)
   {
-    [v62 setPass:v50];
+    [reporterCopy setPass:underlyingPaymentPass];
   }
 
   else
   {
-    v51 = [(PKPaymentCredential *)v19->_paymentCredential cardType];
-    if (v51 <= 4)
+    cardType = [(PKPaymentCredential *)v19->_paymentCredential cardType];
+    if (cardType <= 4)
     {
-      IsExpressSetupAssistant = **(&unk_1E80220A0 + v51);
+      IsExpressSetupAssistant = **(&unk_1E80220A0 + cardType);
     }
 
-    [v62 setProductType:IsExpressSetupAssistant subtype:0];
+    [reporterCopy setProductType:IsExpressSetupAssistant subtype:0];
   }
 
-  v17 = v23;
+  credentialCopy = v23;
 LABEL_58:
 
   return v19;
@@ -352,24 +352,24 @@ LABEL_58:
 
   if (_UISolariumFeatureFlagEnabled())
   {
-    v4 = [(PKPaymentSetupTableViewController *)self dockView];
-    v5 = [v4 footerView];
+    dockView = [(PKPaymentSetupTableViewController *)self dockView];
+    footerView = [dockView footerView];
   }
 
   else
   {
-    v5 = [(PKPaymentSetupProvisioningFieldsViewController *)self footerView];
+    footerView = [(PKPaymentSetupProvisioningFieldsViewController *)self footerView];
   }
 
   if (credentialProvisioningType == 7 || self->_showSkipButton)
   {
-    v6 = [v5 skipCardButton];
-    [v6 addTarget:self action:sel__skipCard forControlEvents:0x2000];
+    skipCardButton = [footerView skipCardButton];
+    [skipCardButton addTarget:self action:sel__skipCard forControlEvents:0x2000];
 
     category = self->_category;
     if (category == 2)
     {
-      v8 = [v5 skipCardButton];
+      skipCardButton2 = [footerView skipCardButton];
       v10 = PKLocalizedAquamanString(&cfstr_AddAccountToWa.isa);
     }
 
@@ -377,7 +377,7 @@ LABEL_58:
     {
       if (category == 1)
       {
-        v8 = [v5 skipCardButton];
+        skipCardButton2 = [footerView skipCardButton];
         v9 = @"ADD_TO_WALLET_LATER_KEY";
       }
 
@@ -388,7 +388,7 @@ LABEL_58:
           goto LABEL_16;
         }
 
-        v8 = [v5 skipCardButton];
+        skipCardButton2 = [footerView skipCardButton];
         v9 = @"ADD_TO_WALLET_LATER";
       }
 
@@ -396,7 +396,7 @@ LABEL_58:
     }
 
     v11 = v10;
-    [v8 setTitle:v10 forState:0];
+    [skipCardButton2 setTitle:v10 forState:0];
   }
 
 LABEL_16:
@@ -435,9 +435,9 @@ LABEL_16:
 
   v15 = v14;
 LABEL_27:
-  v16 = [v5 manualEntryButton];
-  [v16 setTitle:v15 forState:0];
-  [v16 addTarget:self action:sel_addDifferentCard_ forControlEvents:0x2000];
+  manualEntryButton = [footerView manualEntryButton];
+  [manualEntryButton setTitle:v15 forState:0];
+  [manualEntryButton addTarget:self action:sel_addDifferentCard_ forControlEvents:0x2000];
 
 LABEL_28:
   if (self->_displayType == 2)
@@ -453,8 +453,8 @@ LABEL_28:
     }
 
     v18 = [PKPaymentCredentialMetadataTableController alloc];
-    v19 = [(PKPaymentCredential *)self->_paymentCredential metadata];
-    v20 = [(PKPaymentCredentialMetadataTableController *)v18 initWithMetadata:v19 setupContext:[(PKPaymentSetupTableViewController *)self context] cellStyle:v17];
+    metadata = [(PKPaymentCredential *)self->_paymentCredential metadata];
+    v20 = [(PKPaymentCredentialMetadataTableController *)v18 initWithMetadata:metadata setupContext:[(PKPaymentSetupTableViewController *)self context] cellStyle:v17];
     metadataController = self->_metadataController;
     self->_metadataController = v20;
   }
@@ -474,11 +474,11 @@ LABEL_28:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = PKNewPaymentCredentialProvisioningViewController;
-  [(PKPaymentSetupProvisioningFieldsViewController *)&v12 viewWillAppear:a3];
+  [(PKPaymentSetupProvisioningFieldsViewController *)&v12 viewWillAppear:appear];
   if (PKShowFakePaymentSetupFields())
   {
     v4 = PKLogFacilityTypeGetObject();
@@ -488,64 +488,64 @@ LABEL_28:
       _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "Showing fake payment setup fields", v11, 2u);
     }
 
-    v5 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
-    v6 = [MEMORY[0x1E69B8E38] fakePaymentSetupProvisioningFields];
-    [v5 updateWithPaymentSetupFields:v6];
+    fieldsModel = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
+    fakePaymentSetupProvisioningFields = [MEMORY[0x1E69B8E38] fakePaymentSetupProvisioningFields];
+    [fieldsModel updateWithPaymentSetupFields:fakePaymentSetupProvisioningFields];
   }
 
-  v7 = [(PKNewPaymentCredentialProvisioningViewController *)self isComplete];
-  [(PKPaymentSetupFieldsViewController *)self _setPrimaryButtonEnabled:v7];
+  isComplete = [(PKNewPaymentCredentialProvisioningViewController *)self isComplete];
+  [(PKPaymentSetupFieldsViewController *)self _setPrimaryButtonEnabled:isComplete];
   [(PKPaymentSetupFieldsViewController *)self noteFieldIdentifiersChangedAndUpdateHeaders];
   [(PKNewPaymentCredentialProvisioningViewController *)self _updatePassSnapshotHeader];
-  if (v7 && self->_shouldAutoProvision)
+  if (isComplete && self->_shouldAutoProvision)
   {
-    v8 = [(PKPaymentCredentialProvisioningViewControllerCoordinator *)self->_coordinator provisionedPass];
+    provisionedPass = [(PKPaymentCredentialProvisioningViewControllerCoordinator *)self->_coordinator provisionedPass];
 
-    if (!v8)
+    if (!provisionedPass)
     {
       [(PKNewPaymentCredentialProvisioningViewController *)self didTransitionTo:4 loading:1];
       coordinator = self->_coordinator;
-      v10 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
-      [(PKPaymentCredentialProvisioningViewControllerCoordinator *)coordinator continueWithFieldModel:v10];
+      fieldsModel2 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
+      [(PKPaymentCredentialProvisioningViewControllerCoordinator *)coordinator continueWithFieldModel:fieldsModel2];
     }
   }
 
   self->_shouldAutoProvision = 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKNewPaymentCredentialProvisioningViewController;
-  [(PKPaymentSetupFieldsViewController *)&v4 viewDidAppear:a3];
+  [(PKPaymentSetupFieldsViewController *)&v4 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKNewPaymentCredentialProvisioningViewController;
-  [(PKNewPaymentCredentialProvisioningViewController *)&v4 viewDidDisappear:a3];
+  [(PKNewPaymentCredentialProvisioningViewController *)&v4 viewDidDisappear:disappear];
   if ([(PKNewPaymentCredentialProvisioningViewController *)self isMovingFromParentViewController])
   {
     [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter resetProductTypes];
   }
 }
 
-- (void)addDifferentCard:(id)a3
+- (void)addDifferentCard:(id)card
 {
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportButtonPressed:1];
-  v4 = [(PKPaymentSetupProvisioningFieldsViewController *)self flowItemDelegate];
-  [v4 provisioningViewControllerDidSelectManualEntry:self];
+  flowItemDelegate = [(PKPaymentSetupProvisioningFieldsViewController *)self flowItemDelegate];
+  [flowItemDelegate provisioningViewControllerDidSelectManualEntry:self];
 }
 
-- (void)handleNextButtonTapped:(id)a3
+- (void)handleNextButtonTapped:(id)tapped
 {
   [(PKPaymentSetupProvisioningFieldsViewController *)self updateLocationAuthorization];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportButtonPressed:0];
   coordinator = self->_coordinator;
-  v5 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
-  [(PKPaymentCredentialProvisioningViewControllerCoordinator *)coordinator continueWithFieldModel:v5];
+  fieldsModel = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
+  [(PKPaymentCredentialProvisioningViewControllerCoordinator *)coordinator continueWithFieldModel:fieldsModel];
 }
 
 - (void)_skipCard
@@ -568,18 +568,18 @@ LABEL_28:
 
   else
   {
-    v5 = [(PKPaymentSetupProvisioningFieldsViewController *)self flowItemDelegate];
-    [v5 provisioningViewController:self didFinishWithSuccess:0];
+    flowItemDelegate = [(PKPaymentSetupProvisioningFieldsViewController *)self flowItemDelegate];
+    [flowItemDelegate provisioningViewController:self didFinishWithSuccess:0];
   }
 }
 
-- (void)_createPassSnapshotFromPaymentPass:(id)a3 completion:(id)a4
+- (void)_createPassSnapshotFromPaymentPass:(id)pass completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  passCopy = pass;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (passCopy)
     {
       objc_initWeak(location, self);
       v9[0] = MEMORY[0x1E69E9820];
@@ -587,8 +587,8 @@ LABEL_28:
       v9[2] = __98__PKNewPaymentCredentialProvisioningViewController__createPassSnapshotFromPaymentPass_completion___block_invoke;
       v9[3] = &unk_1E80111F8;
       objc_copyWeak(&v12, location);
-      v10 = v6;
-      v11 = v7;
+      v10 = passCopy;
+      v11 = completionCopy;
       [v10 loadImageSetAsync:0 preheat:1 withCompletion:v9];
 
       objc_destroyWeak(&v12);
@@ -604,7 +604,7 @@ LABEL_28:
         _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "No payment pass to generate snapshot", location, 2u);
       }
 
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -640,9 +640,9 @@ void __98__PKNewPaymentCredentialProvisioningViewController__createPassSnapshotF
 - (void)_updatePassSnapshotHeader
 {
   credentialProvisioningType = self->_credentialProvisioningType;
-  v4 = [(PKPaymentSetupFieldsViewController *)self headerView];
-  v5 = v4;
-  if (credentialProvisioningType != 12 && v4 != 0)
+  headerView = [(PKPaymentSetupFieldsViewController *)self headerView];
+  v5 = headerView;
+  if (credentialProvisioningType != 12 && headerView != 0)
   {
     PKUIGetMinScreenWidthType();
     passSnapshotPlaceHolder = self->_passSnapshotPlaceHolder;
@@ -666,32 +666,32 @@ void __98__PKNewPaymentCredentialProvisioningViewController__createPassSnapshotF
       }
 
       [v5 setImageViewImage:passSnapshotPlaceHolder withSize:0 animated:{130.0, 82.0}];
-      v11 = [(PKPaymentCredential *)self->_paymentCredential underlyingPaymentPass];
-      if (v11)
+      underlyingPaymentPass = [(PKPaymentCredential *)self->_paymentCredential underlyingPaymentPass];
+      if (underlyingPaymentPass)
       {
-        v12 = [(PKPaymentProvisioningController *)self->_provisioningController webService];
-        v13 = [v12 targetDevice];
+        webService = [(PKPaymentProvisioningController *)self->_provisioningController webService];
+        targetDevice = [webService targetDevice];
 
         v14 = MEMORY[0x1E69B8810];
-        v15 = [v13 secureElementIdentifiers];
-        v16 = [v14 cardArtConfigurationWithSEIDs:v15];
+        secureElementIdentifiers = [targetDevice secureElementIdentifiers];
+        v16 = [v14 cardArtConfigurationWithSEIDs:secureElementIdentifiers];
 
-        if ([v11 remoteAssetsDownloadedForConfiguration:v16])
+        if ([underlyingPaymentPass remoteAssetsDownloadedForConfiguration:v16])
         {
           v18[0] = MEMORY[0x1E69E9820];
           v18[1] = 3221225472;
           v18[2] = __77__PKNewPaymentCredentialProvisioningViewController__updatePassSnapshotHeader__block_invoke;
           v18[3] = &unk_1E8010A38;
           v18[4] = self;
-          [(PKNewPaymentCredentialProvisioningViewController *)self _createPassSnapshotFromPaymentPass:v11 completion:v18];
+          [(PKNewPaymentCredentialProvisioningViewController *)self _createPassSnapshotFromPaymentPass:underlyingPaymentPass completion:v18];
         }
       }
     }
 
     [v5 sizeToFit];
-    v17 = [(PKPaymentSetupTableViewController *)self tableView];
+    tableView = [(PKPaymentSetupTableViewController *)self tableView];
     [v5 bounds];
-    [v17 _tableHeaderHeightDidChangeToHeight:CGRectGetHeight(v19)];
+    [tableView _tableHeaderHeightDidChangeToHeight:CGRectGetHeight(v19)];
   }
 }
 
@@ -707,30 +707,30 @@ void __77__PKNewPaymentCredentialProvisioningViewController__updatePassSnapshotH
   }
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
   if (self->_metadataController)
   {
-    v5 = [(PKPaymentCredentialMetadataTableController *)self->_metadataController tableView:a3 contextMenuConfigurationForRowAtIndexPath:a4 point:a5.x, a5.y];
+    v5 = [(PKPaymentCredentialMetadataTableController *)self->_metadataController tableView:view contextMenuConfigurationForRowAtIndexPath:path point:point.x, point.y];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PKNewPaymentCredentialProvisioningViewController;
-    v5 = [(PKPaymentSetupTableViewController *)&v7 tableView:a3 contextMenuConfigurationForRowAtIndexPath:a4 point:a5.x, a5.y];
+    v5 = [(PKPaymentSetupTableViewController *)&v7 tableView:view contextMenuConfigurationForRowAtIndexPath:path point:point.x, point.y];
   }
 
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (self->_metadataController)
   {
     metadataController = self->_metadataController;
 
-    return [(PKPaymentCredentialMetadataTableController *)metadataController numberOfRowsInSection:a4];
+    return [(PKPaymentCredentialMetadataTableController *)metadataController numberOfRowsInSection:section];
   }
 
   else
@@ -739,17 +739,17 @@ void __77__PKNewPaymentCredentialProvisioningViewController__updatePassSnapshotH
     v10 = v5;
     v8.receiver = self;
     v8.super_class = PKNewPaymentCredentialProvisioningViewController;
-    return [(PKPaymentSetupFieldsViewController *)&v8 tableView:a3 numberOfRowsInSection:a4];
+    return [(PKPaymentSetupFieldsViewController *)&v8 tableView:view numberOfRowsInSection:section];
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   if (self->_metadataController)
   {
     metadataController = self->_metadataController;
 
-    [(PKPaymentCredentialMetadataTableController *)metadataController willDisplayCell:a4 forRowAtIndexPath:a5];
+    [(PKPaymentCredentialMetadataTableController *)metadataController willDisplayCell:cell forRowAtIndexPath:path];
   }
 
   else
@@ -758,11 +758,11 @@ void __77__PKNewPaymentCredentialProvisioningViewController__updatePassSnapshotH
     v10 = v6;
     v8.receiver = self;
     v8.super_class = PKNewPaymentCredentialProvisioningViewController;
-    [(PKPaymentSetupFieldsViewController *)&v8 tableView:a3 willDisplayCell:a4 forRowAtIndexPath:a5];
+    [(PKPaymentSetupFieldsViewController *)&v8 tableView:view willDisplayCell:cell forRowAtIndexPath:path];
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   if (self->_metadataController)
   {
@@ -773,26 +773,26 @@ void __77__PKNewPaymentCredentialProvisioningViewController__updatePassSnapshotH
   v9 = v5;
   v7.receiver = self;
   v7.super_class = PKNewPaymentCredentialProvisioningViewController;
-  [(PKPaymentSetupFieldsViewController *)&v7 tableView:a3 heightForRowAtIndexPath:a4];
+  [(PKPaymentSetupFieldsViewController *)&v7 tableView:view heightForRowAtIndexPath:path];
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   metadataController = self->_metadataController;
   if (metadataController)
   {
-    v6 = [(PKPaymentCredentialMetadataTableController *)metadataController cellForRowAtIndexPath:a4];
+    v6 = [(PKPaymentCredentialMetadataTableController *)metadataController cellForRowAtIndexPath:path];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = PKNewPaymentCredentialProvisioningViewController;
-    v6 = [(PKPaymentSetupFieldsViewController *)&v12 tableView:a3 cellForRowAtIndexPath:a4];
-    v7 = [v6 paymentSetupField];
-    v8 = [v7 identifier];
-    v9 = [v8 isEqualToString:*MEMORY[0x1E69BC1B8]];
+    v6 = [(PKPaymentSetupFieldsViewController *)&v12 tableView:view cellForRowAtIndexPath:path];
+    paymentSetupField = [v6 paymentSetupField];
+    identifier = [paymentSetupField identifier];
+    v9 = [identifier isEqualToString:*MEMORY[0x1E69BC1B8]];
 
     if (v9)
     {
@@ -805,10 +805,10 @@ void __77__PKNewPaymentCredentialProvisioningViewController__updatePassSnapshotH
   return v6;
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -819,49 +819,49 @@ void __77__PKNewPaymentCredentialProvisioningViewController__updatePassSnapshotH
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Preflighting: %{public}@", buf, 0xCu);
   }
 
-  v8 = [(PKPaymentCredential *)self->_paymentCredential localPassCredential];
-  v9 = [v8 paymentPass];
+  localPassCredential = [(PKPaymentCredential *)self->_paymentCredential localPassCredential];
+  paymentPass = [localPassCredential paymentPass];
 
-  v10 = [(PKPaymentCredential *)self->_paymentCredential isPurchasedProductCredential];
+  isPurchasedProductCredential = [(PKPaymentCredential *)self->_paymentCredential isPurchasedProductCredential];
   paymentCredential = self->_paymentCredential;
-  if (v10)
+  if (isPurchasedProductCredential)
   {
-    v12 = [(PKPaymentCredential *)paymentCredential purchasedProductCredential];
+    purchasedProductCredential = [(PKPaymentCredential *)paymentCredential purchasedProductCredential];
 LABEL_7:
-    v13 = v12;
-    v14 = [v12 product];
+    v13 = purchasedProductCredential;
+    product = [purchasedProductCredential product];
 
     goto LABEL_9;
   }
 
   if ([(PKPaymentCredential *)paymentCredential isDigitalIssuanceProductCredential])
   {
-    v12 = [(PKPaymentCredential *)self->_paymentCredential digitalIssuanceProductCredential];
+    purchasedProductCredential = [(PKPaymentCredential *)self->_paymentCredential digitalIssuanceProductCredential];
     goto LABEL_7;
   }
 
-  v14 = 0;
+  product = 0;
 LABEL_9:
   v15 = dispatch_group_create();
-  if ([v9 isTransitPass])
+  if ([paymentPass isTransitPass])
   {
-    v16 = [(PKPaymentWebService *)self->_webService targetDevice];
+    targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
     if (objc_opt_respondsToSelector())
     {
       dispatch_group_enter(v15);
-      v17 = [v9 uniqueID];
+      uniqueID = [paymentPass uniqueID];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __76__PKNewPaymentCredentialProvisioningViewController_preflightWithCompletion___block_invoke;
       v24[3] = &unk_1E8022060;
       v24[4] = self;
-      v25 = v9;
+      v25 = paymentPass;
       v26 = v15;
-      [v16 plansForPaymentPassWithUniqueIdentifier:v17 completion:v24];
+      [targetDevice plansForPaymentPassWithUniqueIdentifier:uniqueID completion:v24];
     }
   }
 
-  if (v14)
+  if (product)
   {
     dispatch_group_enter(v15);
     v22[0] = MEMORY[0x1E69E9820];
@@ -870,15 +870,15 @@ LABEL_9:
     v22[3] = &unk_1E8012968;
     v22[4] = self;
     v23 = v15;
-    v18 = [v14 digitalCardCachedImage:v22];
+    v18 = [product digitalCardCachedImage:v22];
   }
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __76__PKNewPaymentCredentialProvisioningViewController_preflightWithCompletion___block_invoke_3;
   v20[3] = &unk_1E8010B50;
-  v21 = v4;
-  v19 = v4;
+  v21 = completionCopy;
+  v19 = completionCopy;
   dispatch_group_notify(v15, MEMORY[0x1E69E96A0], v20);
 }
 
@@ -924,16 +924,16 @@ uint64_t __76__PKNewPaymentCredentialProvisioningViewController_preflightWithCom
 {
   if (self->_displayType == 1)
   {
-    v2 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
-    v3 = [v2 visibleSetupFieldIdentifiers];
+    fieldsModel = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
+    visibleSetupFieldIdentifiers = [fieldsModel visibleSetupFieldIdentifiers];
   }
 
   else
   {
-    v3 = 0;
+    visibleSetupFieldIdentifiers = 0;
   }
 
-  return v3;
+  return visibleSetupFieldIdentifiers;
 }
 
 - (id)readonlyFieldIdentifiers
@@ -978,11 +978,11 @@ uint64_t __76__PKNewPaymentCredentialProvisioningViewController_preflightWithCom
   [(PKPaymentSetupFieldsViewController *)self noteFieldIdentifiersChanged];
 }
 
-- (void)showWithProvisioningError:(id)a3
+- (void)showWithProvisioningError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   credentialProvisioningType = self->_credentialProvisioningType;
-  if (([v4 hasLocalizedTitleAndMessage] & 1) == 0)
+  if (([errorCopy hasLocalizedTitleAndMessage] & 1) == 0)
   {
     if (credentialProvisioningType == 13)
     {
@@ -1026,8 +1026,8 @@ uint64_t __76__PKNewPaymentCredentialProvisioningViewController_preflightWithCom
 
     v10 = v7;
 LABEL_12:
-    [v4 setLocalizedTitle:v6];
-    [v4 setLocalizedMessage:v10];
+    [errorCopy setLocalizedTitle:v6];
+    [errorCopy setLocalizedMessage:v10];
   }
 
   if (self->_hasRemainingCredentialsToProvision)
@@ -1105,7 +1105,7 @@ LABEL_27:
   v18[1] = 3221225472;
   v18[2] = __78__PKNewPaymentCredentialProvisioningViewController_showWithProvisioningError___block_invoke_3;
   v18[3] = &unk_1E8010970;
-  v16 = [MEMORY[0x1E69DC650] alertForErrorWithError:v4 acknowledgeButtonText:0 exitButtonText:v15 onAcknowledge:&__block_literal_global_215 onExit:v19 onTryAgain:v18];
+  v16 = [MEMORY[0x1E69DC650] alertForErrorWithError:errorCopy acknowledgeButtonText:0 exitButtonText:v15 onAcknowledge:&__block_literal_global_215 onExit:v19 onTryAgain:v18];
   [(PKNewPaymentCredentialProvisioningViewController *)self presentViewController:v16 animated:1 completion:0];
 }
 
@@ -1117,12 +1117,12 @@ void __78__PKNewPaymentCredentialProvisioningViewController_showWithProvisioning
   [v2 continueWithFieldModel:v3];
 }
 
-- (void)didTransitionTo:(int64_t)a3 loading:(BOOL)a4
+- (void)didTransitionTo:(int64_t)to loading:(BOOL)loading
 {
-  if (a4)
+  if (loading)
   {
     credentialProvisioningType = self->_credentialProvisioningType;
-    if ((a3 - 1) < 5)
+    if ((to - 1) < 5)
     {
       if (credentialProvisioningType - 1 <= 1)
       {
@@ -1134,10 +1134,10 @@ LABEL_6:
         v8 = PKLocalizedPaymentString(&v7->isa);
 LABEL_25:
         v14 = v24;
-        v10 = v8;
+        defaultHeaderViewSubTitle = v8;
 LABEL_43:
-        v25 = v14;
-        [(PKPaymentSetupFieldsViewController *)self showActivitySpinnerWithTitle:v14 subtitle:v10];
+        defaultHeaderViewTitle = v14;
+        [(PKPaymentSetupFieldsViewController *)self showActivitySpinnerWithTitle:v14 subtitle:defaultHeaderViewSubTitle];
         goto LABEL_44;
       }
 
@@ -1166,7 +1166,7 @@ LABEL_17:
         }
 
 LABEL_31:
-        v10 = 0;
+        defaultHeaderViewSubTitle = 0;
         v14 = 0;
         goto LABEL_43;
       }
@@ -1174,7 +1174,7 @@ LABEL_31:
       goto LABEL_37;
     }
 
-    if (a3 == 6)
+    if (to == 6)
     {
       if (credentialProvisioningType - 1 > 1)
       {
@@ -1188,11 +1188,11 @@ LABEL_31:
         {
 LABEL_37:
           v26 = PKLocalizedAquamanString(&cfstr_AddingAccount.isa);
-          v18 = [(PKPaymentCredential *)self->_paymentCredential longDescription];
-          v17 = v18;
-          if (v18)
+          longDescription = [(PKPaymentCredential *)self->_paymentCredential longDescription];
+          longDescription2 = longDescription;
+          if (longDescription)
           {
-            PKLocalizedAquamanString(&cfstr_ProgressSettin_0.isa, &stru_1F3BD5BF0.isa, v18);
+            PKLocalizedAquamanString(&cfstr_ProgressSettin_0.isa, &stru_1F3BD5BF0.isa, longDescription);
           }
 
           else
@@ -1206,8 +1206,8 @@ LABEL_37:
         if (v15 == 1)
         {
           v26 = PKLocalizedPaymentString(&cfstr_AddingKey.isa);
-          v17 = [(PKPaymentCredential *)self->_paymentCredential longDescription];
-          v19 = PKLocalizedPaymentString(&cfstr_SettupUpPass.isa, &stru_1F3BD5BF0.isa, v17);
+          longDescription2 = [(PKPaymentCredential *)self->_paymentCredential longDescription];
+          v19 = PKLocalizedPaymentString(&cfstr_SettupUpPass.isa, &stru_1F3BD5BF0.isa, longDescription2);
           goto LABEL_42;
         }
 
@@ -1229,7 +1229,7 @@ LABEL_37:
       goto LABEL_25;
     }
 
-    if (a3 != 7)
+    if (to != 7)
     {
       goto LABEL_31;
     }
@@ -1246,21 +1246,21 @@ LABEL_35:
           v26 = v16;
           if (!self->_category)
           {
-            v20 = [(PKPaymentProvisioningController *)self->_provisioningController webService];
-            v21 = [v20 targetDevice];
-            v22 = [v21 deviceName];
+            webService = [(PKPaymentProvisioningController *)self->_provisioningController webService];
+            targetDevice = [webService targetDevice];
+            deviceName = [targetDevice deviceName];
 
-            v17 = PKDeviceSpecificLocalizedStringKeyForKey(@"PROGRESS_DOWNLOADING_CARD", [v22 isEqualToString:@"Apple Watch"]);
+            longDescription2 = PKDeviceSpecificLocalizedStringKeyForKey(@"PROGRESS_DOWNLOADING_CARD", [deviceName isEqualToString:@"Apple Watch"]);
 
             goto LABEL_41;
           }
 
 LABEL_36:
-          v17 = @"PROGRESS_DOWNLOADING_CARD_IPHONE";
+          longDescription2 = @"PROGRESS_DOWNLOADING_CARD_IPHONE";
 LABEL_41:
-          v19 = PKCoreLocalizedString(&v17->isa);
+          v19 = PKCoreLocalizedString(&longDescription2->isa);
 LABEL_42:
-          v10 = v19;
+          defaultHeaderViewSubTitle = v19;
 
           v14 = v26;
           goto LABEL_43;
@@ -1292,11 +1292,11 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if (a3 != 8)
+  if (to != 8)
   {
-    v25 = [(PKNewPaymentCredentialProvisioningViewController *)self defaultHeaderViewTitle];
-    v10 = [(PKNewPaymentCredentialProvisioningViewController *)self defaultHeaderViewSubTitle];
-    [(PKPaymentSetupFieldsViewController *)self hideActivitySpinnerWithTitle:v25 subtitle:v10 animated:1];
+    defaultHeaderViewTitle = [(PKNewPaymentCredentialProvisioningViewController *)self defaultHeaderViewTitle];
+    defaultHeaderViewSubTitle = [(PKNewPaymentCredentialProvisioningViewController *)self defaultHeaderViewSubTitle];
+    [(PKPaymentSetupFieldsViewController *)self hideActivitySpinnerWithTitle:defaultHeaderViewTitle subtitle:defaultHeaderViewSubTitle animated:1];
 LABEL_44:
 
     goto LABEL_45;
@@ -1307,9 +1307,9 @@ LABEL_44:
     [(PKPaymentSetupFieldsViewController *)self setShowPrimaryButton:0];
   }
 
-  v25 = [(PKPaymentCredentialProvisioningViewControllerCoordinator *)self->_coordinator provisionedPass];
-  v9 = [v25 paymentPass];
-  [(PKPaymentSetupProvisioningFieldsViewController *)self showVerifiedUIForPass:v9];
+  defaultHeaderViewTitle = [(PKPaymentCredentialProvisioningViewControllerCoordinator *)self->_coordinator provisionedPass];
+  paymentPass = [defaultHeaderViewTitle paymentPass];
+  [(PKPaymentSetupProvisioningFieldsViewController *)self showVerifiedUIForPass:paymentPass];
 
   [(PKPaymentSetupFieldsViewController *)self setHidesBackButton:1 animated:1];
 LABEL_45:
@@ -1327,8 +1327,8 @@ LABEL_45:
       {
         if ([(PKTransitBalanceModel *)self->_transitBalanceModel hasDeviceBoundCommutePlans])
         {
-          v7 = [(PKPaymentCredential *)self->_paymentCredential localPassCredential];
-          v8 = [v7 paymentPass];
+          localPassCredential = [(PKPaymentCredential *)self->_paymentCredential localPassCredential];
+          paymentPass = [localPassCredential paymentPass];
 
           v3 = PKPassLocalizedStringWithFormat();
 
@@ -1418,12 +1418,12 @@ LABEL_26:
       goto LABEL_32;
     }
 
-    v9 = [(PKPaymentCredential *)self->_paymentCredential issuerProvisioningExtensionCredential];
-    v10 = [v9 entry];
-    v11 = [v10 addRequestConfiguration];
-    v12 = [v11 style];
+    issuerProvisioningExtensionCredential = [(PKPaymentCredential *)self->_paymentCredential issuerProvisioningExtensionCredential];
+    entry = [issuerProvisioningExtensionCredential entry];
+    addRequestConfiguration = [entry addRequestConfiguration];
+    style = [addRequestConfiguration style];
 
-    if (v12 == 1)
+    if (style == 1)
     {
       v6 = @"ISSUER_ADD_CARD_WALLET";
       goto LABEL_32;
@@ -1465,7 +1465,7 @@ LABEL_34:
 
 - (id)defaultHeaderViewSubTitle
 {
-  v3 = 0;
+  statusDescription = 0;
   credentialProvisioningType = self->_credentialProvisioningType;
   if (credentialProvisioningType <= 5)
   {
@@ -1480,20 +1480,20 @@ LABEL_34:
             goto LABEL_47;
           }
 
-          v5 = [(PKPaymentCredential *)self->_paymentCredential remoteCredential];
-          v6 = [v5 transferableFromDevices];
-          v7 = [v6 firstObject];
-          v8 = [v7 name];
+          remoteCredential = [(PKPaymentCredential *)self->_paymentCredential remoteCredential];
+          transferableFromDevices = [remoteCredential transferableFromDevices];
+          firstObject = [transferableFromDevices firstObject];
+          name = [firstObject name];
 
           [(PKPaymentSetupTableViewController *)self context];
           if (PKPaymentSetupContextIsBridge())
           {
-            if (v8)
+            if (name)
             {
-              PKLocalizedPaymentString(&cfstr_SettingsTransf_1.isa, &stru_1F3BD6370.isa, v8, v8);
+              PKLocalizedPaymentString(&cfstr_SettingsTransf_1.isa, &stru_1F3BD6370.isa, name, name);
               v16 = LABEL_32:;
 LABEL_45:
-              v3 = v16;
+              statusDescription = v16;
               goto LABEL_46;
             }
 
@@ -1503,17 +1503,17 @@ LABEL_44:
             goto LABEL_45;
           }
 
-          if (v8)
+          if (name)
           {
-            PKLocalizedPaymentString(&cfstr_SettingsTransf_3.isa, &stru_1F3BD6370.isa, v8, v8);
+            PKLocalizedPaymentString(&cfstr_SettingsTransf_3.isa, &stru_1F3BD6370.isa, name, name);
             goto LABEL_32;
           }
 
-          v19 = [(PKPaymentCredential *)self->_paymentCredential remoteCredential];
-          v9 = [v19 paymentPass];
+          remoteCredential2 = [(PKPaymentCredential *)self->_paymentCredential remoteCredential];
+          paymentPass = [remoteCredential2 paymentPass];
 
-          v20 = [v9 paymentApplications];
-          v21 = [v20 pk_hasObjectPassingTest:&__block_literal_global_282_1];
+          paymentApplications = [paymentPass paymentApplications];
+          v21 = [paymentApplications pk_hasObjectPassingTest:&__block_literal_global_282_1];
 
           if (v21)
           {
@@ -1526,22 +1526,22 @@ LABEL_44:
           }
           v10 = ;
 LABEL_16:
-          v3 = v10;
+          statusDescription = v10;
 
 LABEL_46:
           goto LABEL_47;
         }
 
-        v12 = [(PKNewPaymentCredentialProvisioningViewController *)self _defaultHeaderViewSubTitleForLocalCredentialTransfer];
+        _defaultHeaderViewSubTitleForLocalCredentialTransfer = [(PKNewPaymentCredentialProvisioningViewController *)self _defaultHeaderViewSubTitleForLocalCredentialTransfer];
       }
 
       else
       {
-        v12 = [(PKNewPaymentCredentialProvisioningViewController *)self _defaultHeaderViewSubTitleForLocalCredential];
+        _defaultHeaderViewSubTitleForLocalCredentialTransfer = [(PKNewPaymentCredentialProvisioningViewController *)self _defaultHeaderViewSubTitleForLocalCredential];
       }
 
 LABEL_23:
-      v3 = v12;
+      statusDescription = _defaultHeaderViewSubTitleForLocalCredentialTransfer;
       goto LABEL_47;
     }
 
@@ -1549,15 +1549,15 @@ LABEL_23:
     {
       if (credentialProvisioningType == 5)
       {
-        v11 = [(PKPaymentCredential *)self->_paymentCredential remoteCredential];
-        v3 = [v11 statusDescription];
+        remoteCredential3 = [(PKPaymentCredential *)self->_paymentCredential remoteCredential];
+        statusDescription = [remoteCredential3 statusDescription];
       }
 
       goto LABEL_47;
     }
 
 LABEL_22:
-    v12 = [(PKNewPaymentCredentialProvisioningViewController *)self _remoteExistingCredentialDefaultHeaderViewSubTitle];
+    _defaultHeaderViewSubTitleForLocalCredentialTransfer = [(PKNewPaymentCredentialProvisioningViewController *)self _remoteExistingCredentialDefaultHeaderViewSubTitle];
     goto LABEL_23;
   }
 
@@ -1567,7 +1567,7 @@ LABEL_22:
     {
       if (credentialProvisioningType == 13)
       {
-        v12 = PKLocalizedAppleBalanceString(&cfstr_AddCardBody.isa);
+        _defaultHeaderViewSubTitleForLocalCredentialTransfer = PKLocalizedAppleBalanceString(&cfstr_AddCardBody.isa);
         goto LABEL_23;
       }
 
@@ -1579,15 +1579,15 @@ LABEL_22:
 
     else if (credentialProvisioningType != 11)
     {
-      v8 = [(PKPaymentCredential *)self->_paymentCredential longDescription];
-      if (![v8 length])
+      name = [(PKPaymentCredential *)self->_paymentCredential longDescription];
+      if (![name length])
       {
         v16 = PKLocalizedVirtualCardString(&cfstr_ProvisioningAd_0.isa);
         goto LABEL_45;
       }
 
-      v9 = [(PKPaymentCredential *)self->_paymentCredential longDescription];
-      v10 = PKLocalizedVirtualCardString(&cfstr_ProvisioningAd.isa, &stru_1F3BD5BF0.isa, v9);
+      paymentPass = [(PKPaymentCredential *)self->_paymentCredential longDescription];
+      v10 = PKLocalizedVirtualCardString(&cfstr_ProvisioningAd.isa, &stru_1F3BD5BF0.isa, paymentPass);
       goto LABEL_16;
     }
 
@@ -1596,20 +1596,20 @@ LABEL_22:
 
   if ((credentialProvisioningType - 6) < 4)
   {
-    v3 = &stru_1F3BD7330;
+    statusDescription = &stru_1F3BD7330;
     goto LABEL_47;
   }
 
   if (credentialProvisioningType == 10)
   {
-    v13 = [(PKPaymentCredential *)self->_paymentCredential issuerProvisioningExtensionCredential];
-    v14 = [v13 entry];
-    v15 = [v14 addRequestConfiguration];
-    v8 = [v15 localizedDescription];
+    issuerProvisioningExtensionCredential = [(PKPaymentCredential *)self->_paymentCredential issuerProvisioningExtensionCredential];
+    entry = [issuerProvisioningExtensionCredential entry];
+    addRequestConfiguration = [entry addRequestConfiguration];
+    name = [addRequestConfiguration localizedDescription];
 
-    if ([v8 length])
+    if ([name length])
     {
-      PKLocalizedPaymentString(&cfstr_IssuerAddDescr_0.isa, &stru_1F3BD5BF0.isa, v8);
+      PKLocalizedPaymentString(&cfstr_IssuerAddDescr_0.isa, &stru_1F3BD5BF0.isa, name);
       goto LABEL_32;
     }
 
@@ -1629,7 +1629,7 @@ LABEL_22:
     {
       if (category)
       {
-        v3 = 0;
+        statusDescription = 0;
         goto LABEL_46;
       }
 
@@ -1641,7 +1641,7 @@ LABEL_22:
 
 LABEL_47:
 
-  return v3;
+  return statusDescription;
 }
 
 - (id)_remoteExistingCredentialDefaultHeaderViewSubTitle
@@ -1655,14 +1655,14 @@ LABEL_47:
   credentialProvisioningType = self->_credentialProvisioningType;
   [(PKPaymentSetupTableViewController *)self context];
   IsSetupAssistant = PKPaymentSetupContextIsSetupAssistant();
-  v5 = [(PKNewPaymentCredentialProvisioningViewController *)self visibleFieldIdentifiers];
-  v6 = [(PKNewPaymentCredentialProvisioningViewController *)self readonlyFieldIdentifiers];
-  v7 = [v5 pk_arrayByRemovingObjectsInArray:v6];
+  visibleFieldIdentifiers = [(PKNewPaymentCredentialProvisioningViewController *)self visibleFieldIdentifiers];
+  readonlyFieldIdentifiers = [(PKNewPaymentCredentialProvisioningViewController *)self readonlyFieldIdentifiers];
+  v7 = [visibleFieldIdentifiers pk_arrayByRemovingObjectsInArray:readonlyFieldIdentifiers];
 
-  v8 = [(PKPaymentCredential *)self->_paymentCredential state];
-  v9 = [v8 requirementsResponse];
-  v10 = [v9 requiredPaymentSetupFields];
-  v11 = [v10 count];
+  state = [(PKPaymentCredential *)self->_paymentCredential state];
+  requirementsResponse = [state requirementsResponse];
+  requiredPaymentSetupFields = [requirementsResponse requiredPaymentSetupFields];
+  v11 = [requiredPaymentSetupFields count];
 
   if ([v7 count] == 1 && objc_msgSend(v7, "containsObject:", *MEMORY[0x1E69BC1C8]))
   {
@@ -1748,8 +1748,8 @@ LABEL_47:
   {
     v25 = 0;
 LABEL_28:
-    v26 = [(PKPaymentCredential *)self->_paymentCredential longDescription];
-    if (v26)
+    longDescription = [(PKPaymentCredential *)self->_paymentCredential longDescription];
+    if (longDescription)
     {
       v17 = [(__CFString *)v17 stringByAppendingString:@"APPLE_PAY"];
       if (v25)
@@ -1764,7 +1764,7 @@ LABEL_28:
       v29 = self->_category;
       if (v29 < 2)
       {
-        v30 = PKLocalizedPaymentString(&v17->isa, &stru_1F3BD5BF0.isa, v26);
+        v30 = PKLocalizedPaymentString(&v17->isa, &stru_1F3BD5BF0.isa, longDescription);
 LABEL_41:
         v18 = v30;
 LABEL_43:
@@ -1774,7 +1774,7 @@ LABEL_43:
 
       if (v29 == 2)
       {
-        v30 = PKLocalizedAquamanString(&v17->isa, &stru_1F3BD5BF0.isa, v26);
+        v30 = PKLocalizedAquamanString(&v17->isa, &stru_1F3BD5BF0.isa, longDescription);
         goto LABEL_41;
       }
     }
@@ -1810,16 +1810,16 @@ LABEL_45:
 
 - (id)_defaultHeaderViewSubTitleForLocalCredentialTransfer
 {
-  v3 = [(PKPaymentCredential *)self->_paymentCredential localPassCredential];
-  v4 = [v3 paymentPass];
+  localPassCredential = [(PKPaymentCredential *)self->_paymentCredential localPassCredential];
+  paymentPass = [localPassCredential paymentPass];
 
-  v5 = [(PKTransitBalanceModel *)self->_transitBalanceModel hasDeviceBoundCommutePlans];
-  v6 = [v4 devicePrimaryPaymentApplication];
-  v7 = [v6 paymentNetworkIdentifier];
+  hasDeviceBoundCommutePlans = [(PKTransitBalanceModel *)self->_transitBalanceModel hasDeviceBoundCommutePlans];
+  devicePrimaryPaymentApplication = [paymentPass devicePrimaryPaymentApplication];
+  paymentNetworkIdentifier = [devicePrimaryPaymentApplication paymentNetworkIdentifier];
 
-  if ([v4 isRemotePass])
+  if ([paymentPass isRemotePass])
   {
-    if (v7 == 131)
+    if (paymentNetworkIdentifier == 131)
     {
       goto LABEL_5;
     }
@@ -1829,7 +1829,7 @@ LABEL_45:
 
   else
   {
-    if (v5)
+    if (hasDeviceBoundCommutePlans)
     {
 LABEL_5:
       v8 = PKPassLocalizedStringWithFormat();
@@ -1849,9 +1849,9 @@ LABEL_9:
 - (id)_defaultHeaderViewSubTitleForLocalCredential
 {
   [(PKPaymentCredential *)self->_paymentCredential credentialType];
-  v3 = [(PKNewPaymentCredentialProvisioningViewController *)self visibleFieldIdentifiers];
-  v4 = [(PKNewPaymentCredentialProvisioningViewController *)self readonlyFieldIdentifiers];
-  v5 = [v3 pk_arrayByRemovingObjectsInArray:v4];
+  visibleFieldIdentifiers = [(PKNewPaymentCredentialProvisioningViewController *)self visibleFieldIdentifiers];
+  readonlyFieldIdentifiers = [(PKNewPaymentCredentialProvisioningViewController *)self readonlyFieldIdentifiers];
+  v5 = [visibleFieldIdentifiers pk_arrayByRemovingObjectsInArray:readonlyFieldIdentifiers];
 
   if ([v5 count] == 1 && (objc_msgSend(v5, "containsObject:", *MEMORY[0x1E69BC1C8]) & 1) != 0)
   {
@@ -1863,7 +1863,7 @@ LABEL_9:
     v6 = @"VERIFY_AND_COMPLETE_LOCAL_PASS_INFO_APPLE_WATCH";
   }
 
-  else if ([v3 count])
+  else if ([visibleFieldIdentifiers count])
   {
     v6 = @"VERIFY_LOCAL_PASS_INFO_APPLE_WATCH";
   }
@@ -1879,20 +1879,20 @@ LABEL_9:
   return v8;
 }
 
-- (void)paymentPassUpdatedOnCredential:(id)a3
+- (void)paymentPassUpdatedOnCredential:(id)credential
 {
-  if ([a3 isEqual:self->_paymentCredential])
+  if ([credential isEqual:self->_paymentCredential])
   {
 
     [(PKNewPaymentCredentialProvisioningViewController *)self _updatePassSnapshotHeader];
   }
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  if (a3)
+  if (i)
   {
-    [(PKPaymentSetupFieldsViewController *)self endUserInteraction:a3];
+    [(PKPaymentSetupFieldsViewController *)self endUserInteraction:i];
   }
 }
 

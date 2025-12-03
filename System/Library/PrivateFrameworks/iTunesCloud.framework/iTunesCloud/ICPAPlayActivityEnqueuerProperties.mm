@@ -1,10 +1,10 @@
 @interface ICPAPlayActivityEnqueuerProperties
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICPAPlayActivityEnqueuerProperties
@@ -65,16 +65,16 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
   buildVersion = self->_buildVersion;
-  if (buildVersion | *(v4 + 2))
+  if (buildVersion | *(equalCopy + 2))
   {
     if (![(NSString *)buildVersion isEqual:?])
     {
@@ -83,7 +83,7 @@ LABEL_8:
   }
 
   deviceGUID = self->_deviceGUID;
-  if (deviceGUID | *(v4 + 3))
+  if (deviceGUID | *(equalCopy + 3))
   {
     if (![(NSString *)deviceGUID isEqual:?])
     {
@@ -92,7 +92,7 @@ LABEL_8:
   }
 
   deviceName = self->_deviceName;
-  if (deviceName | *(v4 + 4))
+  if (deviceName | *(equalCopy + 4))
   {
     if (![(NSString *)deviceName isEqual:?])
     {
@@ -101,7 +101,7 @@ LABEL_8:
   }
 
   timeZoneName = self->_timeZoneName;
-  if (timeZoneName | *(v4 + 7))
+  if (timeZoneName | *(equalCopy + 7))
   {
     if (![(NSString *)timeZoneName isEqual:?])
     {
@@ -110,61 +110,61 @@ LABEL_8:
   }
 
   has = self->_has;
-  v10 = *(v4 + 68);
+  v10 = *(equalCopy + 68);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 68) & 2) == 0 || self->_systemReleaseType != *(v4 + 12))
+    if ((*(equalCopy + 68) & 2) == 0 || self->_systemReleaseType != *(equalCopy + 12))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 68) & 2) != 0)
+  else if ((*(equalCopy + 68) & 2) != 0)
   {
     goto LABEL_35;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 68) & 8) == 0)
+    if ((*(equalCopy + 68) & 8) == 0)
     {
       goto LABEL_35;
     }
 
     if (self->_sBEnabled)
     {
-      if ((*(v4 + 65) & 1) == 0)
+      if ((*(equalCopy + 65) & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 65))
+    else if (*(equalCopy + 65))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 68) & 8) != 0)
+  else if ((*(equalCopy + 68) & 8) != 0)
   {
     goto LABEL_35;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_storeAccountID != *(v4 + 1))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_storeAccountID != *(equalCopy + 1))
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
     goto LABEL_35;
   }
 
   storeFrontID = self->_storeFrontID;
-  if (storeFrontID | *(v4 + 5))
+  if (storeFrontID | *(equalCopy + 5))
   {
     if (![(NSString *)storeFrontID isEqual:?])
     {
@@ -172,7 +172,7 @@ LABEL_8:
     }
 
     has = self->_has;
-    v10 = *(v4 + 68);
+    v10 = *(equalCopy + 68);
   }
 
   v12 = (v10 & 4) == 0;
@@ -182,13 +182,13 @@ LABEL_8:
     {
       if (self->_privateListeningEnabled)
       {
-        if (*(v4 + 64))
+        if (*(equalCopy + 64))
         {
           goto LABEL_38;
         }
       }
 
-      else if (!*(v4 + 64))
+      else if (!*(equalCopy + 64))
       {
 LABEL_38:
         v12 = 1;
@@ -205,22 +205,22 @@ LABEL_36:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_buildVersion copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_buildVersion copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_deviceGUID copyWithZone:a3];
+  v8 = [(NSString *)self->_deviceGUID copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_deviceName copyWithZone:a3];
+  v10 = [(NSString *)self->_deviceName copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(NSString *)self->_timeZoneName copyWithZone:a3];
+  v12 = [(NSString *)self->_timeZoneName copyWithZone:zone];
   v13 = *(v5 + 56);
   *(v5 + 56) = v12;
 
@@ -257,7 +257,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v15 = [(NSString *)self->_storeFrontID copyWithZone:a3];
+  v15 = [(NSString *)self->_storeFrontID copyWithZone:zone];
   v16 = *(v5 + 40);
   *(v5 + 40) = v15;
 
@@ -270,39 +270,39 @@ LABEL_5:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_buildVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceGUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_timeZoneName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -322,36 +322,36 @@ LABEL_11:
   }
 
   PBDataWriterWriteBOOLField();
-  v4 = v6;
+  toCopy = v6;
   if (*&self->_has)
   {
 LABEL_12:
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_13:
   if (self->_storeFrontID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   buildVersion = self->_buildVersion;
   if (buildVersion)
   {
-    [v3 setObject:buildVersion forKey:@"buildVersion"];
+    [dictionary setObject:buildVersion forKey:@"buildVersion"];
   }
 
   deviceGUID = self->_deviceGUID;
@@ -428,8 +428,8 @@ LABEL_13:
   v8.receiver = self;
   v8.super_class = ICPAPlayActivityEnqueuerProperties;
   v4 = [(ICPAPlayActivityEnqueuerProperties *)&v8 description];
-  v5 = [(ICPAPlayActivityEnqueuerProperties *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICPAPlayActivityEnqueuerProperties *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

@@ -1,6 +1,6 @@
 @interface CIImageProcessorInput
-- (CIImageProcessorInput)initWithSurface:(__IOSurface *)a3 texture:(void *)a4 digest:(unint64_t)a5 allowSRGB:(BOOL)a6 bounds:(CGRect)a7 onlyMetal:(BOOL)a8 context:(void *)a9;
-- (CIImageProcessorInput)initWithSurface:(__IOSurface *)a3 texture:(void *)a4 digest:(unint64_t)a5 allowSRGB:(BOOL)a6 bounds:(CGRect)a7 roiTileIndex:(unint64_t)a8 roiTileCount:(unint64_t)a9 onlyMetal:(BOOL)a10 context:(void *)a11;
+- (CIImageProcessorInput)initWithSurface:(__IOSurface *)surface texture:(void *)texture digest:(unint64_t)digest allowSRGB:(BOOL)b bounds:(CGRect)bounds onlyMetal:(BOOL)metal context:(void *)context;
+- (CIImageProcessorInput)initWithSurface:(__IOSurface *)surface texture:(void *)texture digest:(unint64_t)digest allowSRGB:(BOOL)b bounds:(CGRect)bounds roiTileIndex:(unint64_t)index roiTileCount:(unint64_t)count onlyMetal:(BOOL)self0 context:(void *)self1;
 - (MTLTexture)metalTexture;
 - (__IOSurface)surface;
 - (const)baseAddress;
@@ -10,11 +10,11 @@
 
 @implementation CIImageProcessorInput
 
-- (CIImageProcessorInput)initWithSurface:(__IOSurface *)a3 texture:(void *)a4 digest:(unint64_t)a5 allowSRGB:(BOOL)a6 bounds:(CGRect)a7 onlyMetal:(BOOL)a8 context:(void *)a9
+- (CIImageProcessorInput)initWithSurface:(__IOSurface *)surface texture:(void *)texture digest:(unint64_t)digest allowSRGB:(BOOL)b bounds:(CGRect)bounds onlyMetal:(BOOL)metal context:(void *)context
 {
   v10.receiver = self;
   v10.super_class = CIImageProcessorInput;
-  result = [(CIImageProcessorInOut *)&v10 initWithSurface:a3 texture:a4 digest:a5 allowSRGB:a6 bounds:a8 onlyMetal:a9 context:a7.origin.x, a7.origin.y, a7.size.width, a7.size.height];
+  result = [(CIImageProcessorInOut *)&v10 initWithSurface:surface texture:texture digest:digest allowSRGB:b bounds:metal onlyMetal:context context:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   if (result)
   {
     result->_roiTileIndex = 0;
@@ -24,13 +24,13 @@
   return result;
 }
 
-- (CIImageProcessorInput)initWithSurface:(__IOSurface *)a3 texture:(void *)a4 digest:(unint64_t)a5 allowSRGB:(BOOL)a6 bounds:(CGRect)a7 roiTileIndex:(unint64_t)a8 roiTileCount:(unint64_t)a9 onlyMetal:(BOOL)a10 context:(void *)a11
+- (CIImageProcessorInput)initWithSurface:(__IOSurface *)surface texture:(void *)texture digest:(unint64_t)digest allowSRGB:(BOOL)b bounds:(CGRect)bounds roiTileIndex:(unint64_t)index roiTileCount:(unint64_t)count onlyMetal:(BOOL)self0 context:(void *)self1
 {
-  result = [(CIImageProcessorInput *)self initWithSurface:a3 texture:a4 digest:a5 allowSRGB:a6 bounds:a10 onlyMetal:a11 context:a7.origin.x, a7.origin.y, a7.size.width, a7.size.height];
+  result = [(CIImageProcessorInput *)self initWithSurface:surface texture:texture digest:digest allowSRGB:b bounds:metal onlyMetal:context context:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   if (result)
   {
-    result->_roiTileIndex = a8;
-    result->_roiTileCount = a9;
+    result->_roiTileIndex = index;
+    result->_roiTileCount = count;
   }
 
   return result;

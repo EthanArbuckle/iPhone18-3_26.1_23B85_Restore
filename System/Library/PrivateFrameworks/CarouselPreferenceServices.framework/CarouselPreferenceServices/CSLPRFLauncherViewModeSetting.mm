@@ -3,7 +3,7 @@
 - (CSLPRFLauncherViewModeSettingDelegate)delegate;
 - (int64_t)launcherViewMode;
 - (unint64_t)launcherViewModeReason;
-- (void)setLauncherViewMode:(int64_t)a3 reason:(unint64_t)a4;
+- (void)setLauncherViewMode:(int64_t)mode reason:(unint64_t)reason;
 @end
 
 @implementation CSLPRFLauncherViewModeSetting
@@ -21,26 +21,26 @@ void __60__CSLPRFLauncherViewModeSetting_twoWaySyncSettingDidUpdate___block_invo
   [v1 launcherViewModeSettingChanged];
 }
 
-- (void)setLauncherViewMode:(int64_t)a3 reason:(unint64_t)a4
+- (void)setLauncherViewMode:(int64_t)mode reason:(unint64_t)reason
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = cslprf_dock_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(CSLPRFTwoWaySyncSetting *)self->_reasonSetting value];
+    value = [(CSLPRFTwoWaySyncSetting *)self->_reasonSetting value];
     v21 = 138412802;
     v22 = @"LauncherViewModeReason";
     v23 = 1024;
-    v24 = a4;
+    reasonCopy2 = reason;
     v25 = 1024;
-    v26 = [v8 integerValue];
+    integerValue = [value integerValue];
     _os_log_impl(&dword_22CE92000, v7, OS_LOG_TYPE_INFO, "setting %@ to %d was %d", &v21, 0x18u);
   }
 
-  v9 = [(CSLPRFTwoWaySyncSetting *)self->_reasonSetting value];
-  v10 = [v9 integerValue];
+  value2 = [(CSLPRFTwoWaySyncSetting *)self->_reasonSetting value];
+  integerValue2 = [value2 integerValue];
 
-  if (v10 != a4)
+  if (integerValue2 != reason)
   {
     v11 = cslprf_dock_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -48,34 +48,34 @@ void __60__CSLPRFLauncherViewModeSetting_twoWaySyncSettingDidUpdate___block_invo
       v21 = 138412546;
       v22 = @"LauncherViewModeReason";
       v23 = 1024;
-      v24 = a4;
+      reasonCopy2 = reason;
       _os_log_impl(&dword_22CE92000, v11, OS_LOG_TYPE_INFO, "setting %@ to %d", &v21, 0x12u);
     }
 
     reasonSetting = self->_reasonSetting;
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:reason];
     [(CSLPRFTwoWaySyncSetting *)reasonSetting setValue:v13];
   }
 
-  v14 = [(CSLPRFTwoWaySyncSetting *)self->_modeSetting value];
-  v15 = [v14 integerValue];
+  value3 = [(CSLPRFTwoWaySyncSetting *)self->_modeSetting value];
+  integerValue3 = [value3 integerValue];
 
-  if (v15 != a3)
+  if (integerValue3 != mode)
   {
     v16 = cslprf_dock_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v21 = 67109120;
-      LODWORD(v22) = a3;
+      LODWORD(v22) = mode;
       _os_log_impl(&dword_22CE92000, v16, OS_LOG_TYPE_INFO, "setting launcherViewMode to %d", &v21, 8u);
     }
 
     modeSetting = self->_modeSetting;
-    v18 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v18 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
     [(CSLPRFTwoWaySyncSetting *)modeSetting setValue:v18];
 
-    v19 = [(CSLPRFLauncherViewModeSetting *)self delegate];
-    [v19 launcherViewModeSettingChanged];
+    delegate = [(CSLPRFLauncherViewModeSetting *)self delegate];
+    [delegate launcherViewModeSettingChanged];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -83,44 +83,44 @@ void __60__CSLPRFLauncherViewModeSetting_twoWaySyncSettingDidUpdate___block_invo
 
 - (unint64_t)launcherViewModeReason
 {
-  v2 = [(CSLPRFTwoWaySyncSetting *)self->_reasonSetting value];
-  v3 = [v2 integerValue];
+  value = [(CSLPRFTwoWaySyncSetting *)self->_reasonSetting value];
+  integerValue = [value integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)launcherViewMode
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [(CSLPRFTwoWaySyncSetting *)self->_modeSetting value];
-  v3 = [v2 integerValue];
+  value = [(CSLPRFTwoWaySyncSetting *)self->_modeSetting value];
+  integerValue = [value integerValue];
   v4 = cslprf_dock_log();
   v5 = v4;
-  if ((v3 - 1) > 1)
+  if ((integerValue - 1) > 1)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412802;
       v9 = @"LauncherViewMode";
       v10 = 1024;
-      v11 = v3;
+      v11 = integerValue;
       v12 = 1024;
       v13 = 1;
       _os_log_error_impl(&dword_22CE92000, v5, OS_LOG_TYPE_ERROR, "value for %@ (%d) is out of range, substituting %d", &v8, 0x18u);
     }
 
-    v3 = 1;
+    integerValue = 1;
   }
 
   else if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v8 = 67109120;
-    LODWORD(v9) = v3;
+    LODWORD(v9) = integerValue;
     _os_log_debug_impl(&dword_22CE92000, v5, OS_LOG_TYPE_DEBUG, "launcherViewMode is %d", &v8, 8u);
   }
 
   v6 = *MEMORY[0x277D85DE8];
-  return v3;
+  return integerValue;
 }
 
 - (CSLPRFLauncherViewModeSetting)init

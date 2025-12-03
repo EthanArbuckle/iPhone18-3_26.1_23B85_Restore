@@ -1,28 +1,28 @@
 @interface HUNoInternetOnPhoneBannerItem
-- (HUNoInternetOnPhoneBannerItem)initWithHome:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUNoInternetOnPhoneBannerItem)initWithHome:(id)home;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUNoInternetOnPhoneBannerItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  if (a3)
+  if (options)
   {
     sub_20D567758();
   }
 
-  v4 = self;
+  selfCopy = self;
   v5 = sub_20D0B4420();
 
   return v5;
 }
 
-- (HUNoInternetOnPhoneBannerItem)initWithHome:(id)a3
+- (HUNoInternetOnPhoneBannerItem)initWithHome:(id)home
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for NoInternetOnPhoneBannerItem();
-  return [(HUBannerItem *)&v5 initWithHome:a3];
+  return [(HUBannerItem *)&v5 initWithHome:home];
 }
 
 @end

@@ -8,8 +8,8 @@
 
 - (void)willSwitchUser
 {
-  v2 = [(PLCloudPhotoLibraryUserSwitchHandler *)self sessionHandler];
-  if (v2)
+  sessionHandler = [(PLCloudPhotoLibraryUserSwitchHandler *)self sessionHandler];
+  if (sessionHandler)
   {
     v3 = [MEMORY[0x1E69DF090] taskWithName:@"CPLEnqueuePendingUploads" reason:@"Enqueing pending derivative generation and CPL uploads" forBundleID:@"com.apple.cloudphotod"];
     [v3 begin];
@@ -19,14 +19,14 @@
     v5[3] = &unk_1E75781E8;
     v6 = v3;
     v4 = v3;
-    [v2 endUserSessionWithCompletionHandler:v5];
+    [sessionHandler endUserSessionWithCompletionHandler:v5];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E69DF068] sharedManager];
-  [v3 unregisterStakeHolder:self status:0 reason:@"dealloc"];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  [mEMORY[0x1E69DF068] unregisterStakeHolder:self status:0 reason:@"dealloc"];
 
   v4.receiver = self;
   v4.super_class = PLCloudPhotoLibraryUserSwitchHandler;
@@ -37,8 +37,8 @@
 {
   if ((PLIsEDUMode() & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLCloudPhotoLibraryUserSwitchHandler.m" lineNumber:23 description:@"Should only be created in EDU mode"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCloudPhotoLibraryUserSwitchHandler.m" lineNumber:23 description:@"Should only be created in EDU mode"];
   }
 
   v8.receiver = self;
@@ -46,8 +46,8 @@
   v4 = [(PLCloudPhotoLibraryUserSwitchHandler *)&v8 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E69DF068] sharedManager];
-    [v5 registerUserSwitchStakeHolder:v4];
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    [mEMORY[0x1E69DF068] registerUserSwitchStakeHolder:v4];
   }
 
   return v4;

@@ -14,113 +14,113 @@
 
 - (id)_userPreferences
 {
-  v1 = [a1 _automobileOptions];
-  v2 = [v1 userPreferences];
+  _automobileOptions = [self _automobileOptions];
+  userPreferences = [_automobileOptions userPreferences];
 
-  if (!v2)
+  if (!userPreferences)
   {
     v3 = objc_alloc_init(MEMORY[0x1E69A2708]);
-    [v1 setUserPreferences:v3];
+    [_automobileOptions setUserPreferences:v3];
   }
 
-  v4 = [v1 userPreferences];
+  userPreferences2 = [_automobileOptions userPreferences];
 
-  return v4;
+  return userPreferences2;
 }
 
 - (id)_vehicleSpecifications
 {
-  v1 = [a1 _automobileOptions];
-  v2 = [v1 vehicleSpecifications];
+  _automobileOptions = [self _automobileOptions];
+  vehicleSpecifications = [_automobileOptions vehicleSpecifications];
 
-  if (!v2)
+  if (!vehicleSpecifications)
   {
     v3 = objc_alloc_init(MEMORY[0x1E69A2740]);
-    [v1 setVehicleSpecifications:v3];
+    [_automobileOptions setVehicleSpecifications:v3];
   }
 
-  v4 = [v1 vehicleSpecifications];
+  vehicleSpecifications2 = [_automobileOptions vehicleSpecifications];
 
-  return v4;
+  return vehicleSpecifications2;
 }
 
 - (uint64_t)_automobileOptions
 {
-  v2 = [a1 automobileOptions];
+  automobileOptions = [self automobileOptions];
 
-  if (!v2)
+  if (!automobileOptions)
   {
     v3 = objc_alloc_init(MEMORY[0x1E69A1B90]);
-    [a1 setAutomobileOptions:v3];
+    [self setAutomobileOptions:v3];
   }
 
-  return [a1 automobileOptions];
+  return [self automobileOptions];
 }
 
 - (id)anyDate
 {
-  [a1 timepoint];
+  [self timepoint];
 
   return 0;
 }
 
 - (id)arriveByDate
 {
-  [a1 timepoint];
+  [self timepoint];
   if (v4 == 1)
   {
-    v2 = [a1 anyDate];
+    anyDate = [self anyDate];
   }
 
   else
   {
-    v2 = 0;
+    anyDate = 0;
   }
 
-  return v2;
+  return anyDate;
 }
 
 - (id)departAtDate
 {
-  [a1 timepoint];
+  [self timepoint];
   if (v4)
   {
-    v2 = 0;
+    anyDate = 0;
   }
 
   else
   {
-    v2 = [a1 anyDate];
+    anyDate = [self anyDate];
   }
 
-  return v2;
+  return anyDate;
 }
 
 - (uint64_t)supportsTurnByTurnNavigation
 {
-  result = [a1 supportsDirections];
+  result = [self supportsDirections];
   if (result)
   {
-    v3 = [a1 phoneticLocaleIdentifier];
-    v4 = [v3 length];
+    phoneticLocaleIdentifier = [self phoneticLocaleIdentifier];
+    v4 = [phoneticLocaleIdentifier length];
 
     if (v4)
     {
-      result = [a1 includePhonetics];
+      result = [self includePhonetics];
       if (result)
       {
-        if ([a1 uiContextsCount])
+        if ([self uiContextsCount])
         {
           v5 = 0;
           while (1)
           {
-            v6 = [a1 uiContextAtIndex:v5];
+            v6 = [self uiContextAtIndex:v5];
             if ((v6 & 4) == 0)
             {
               break;
             }
 
-            if (++v5 >= [a1 uiContextsCount])
+            if (++v5 >= [self uiContextsCount])
             {
               return 1;
             }
@@ -147,27 +147,27 @@
 
 - (uint64_t)supportsDirections
 {
-  if ([a1 mainTransportType] == 4)
+  if ([self mainTransportType] == 4)
   {
     return 0;
   }
 
-  if (([a1 includeRoutingPathLeg] & 1) != 0 || (result = objc_msgSend(a1, "includeZilchPoints"), result))
+  if (([self includeRoutingPathLeg] & 1) != 0 || (result = objc_msgSend(self, "includeZilchPoints"), result))
   {
-    result = [a1 includeManeuverIcons];
+    result = [self includeManeuverIcons];
     if (result)
     {
-      result = [a1 uiContextsCount];
+      result = [self uiContextsCount];
       if (result)
       {
         v3 = 0;
         v4 = 0;
         do
         {
-          v3 |= 1 << ([a1 uiContextAtIndex:v4++] - 1);
+          v3 |= 1 << ([self uiContextAtIndex:v4++] - 1);
         }
 
-        while (v4 < [a1 uiContextsCount]);
+        while (v4 < [self uiContextsCount]);
         return (~v3 & 3) == 0;
       }
     }
@@ -179,8 +179,8 @@
 + (id)defaultRouteAttributesForTransportType:()MNExtras
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69A2500] defaultRouteAttributes];
-  [v4 setMainTransportType:a3];
+  defaultRouteAttributes = [MEMORY[0x1E69A2500] defaultRouteAttributes];
+  [defaultRouteAttributes setMainTransportType:a3];
   if (a3 == 1)
   {
     BOOL = 0;
@@ -193,16 +193,16 @@
     BOOL = GEOConfigGetBOOL();
   }
 
-  [v4 setIncludeRoutingPathLeg:BOOL];
-  v8 = [MEMORY[0x1E69A1CD8] sharedConfiguration];
-  v9 = [v8 currentCountrySupportsNavigation];
+  [defaultRouteAttributes setIncludeRoutingPathLeg:BOOL];
+  mEMORY[0x1E69A1CD8] = [MEMORY[0x1E69A1CD8] sharedConfiguration];
+  currentCountrySupportsNavigation = [mEMORY[0x1E69A1CD8] currentCountrySupportsNavigation];
 
-  if (v9)
+  if (currentCountrySupportsNavigation)
   {
-    v10 = [MEMORY[0x1E696AE30] processInfo];
-    v11 = [v10 _navigation_isNavd];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    _navigation_isNavd = [processInfo _navigation_isNavd];
 
-    if (v11)
+    if (_navigation_isNavd)
     {
       +[MNUserOptionsEngine sharedInstance];
     }
@@ -212,12 +212,12 @@
       +[MNNavigationService sharedService];
     }
     v12 = ;
-    v13 = [v12 currentVoiceLanguage];
-    [v4 setPhoneticLocaleIdentifier:v13];
+    currentVoiceLanguage = [v12 currentVoiceLanguage];
+    [defaultRouteAttributes setPhoneticLocaleIdentifier:currentVoiceLanguage];
 
-    v14 = [v4 phoneticLocaleIdentifier];
+    phoneticLocaleIdentifier = [defaultRouteAttributes phoneticLocaleIdentifier];
 
-    if (!v14)
+    if (!phoneticLocaleIdentifier)
     {
       v20 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -234,10 +234,10 @@
       }
     }
 
-    [v4 setIncludeContingencyRoutes:1];
-    [v4 setIncludePhonetics:1];
-    v15 = [MEMORY[0x1E695DF58] currentLocale];
-    [v4 setUseMetricThreshold:{objc_msgSend(v15, "_navigation_distanceUsesMetricSystem")}];
+    [defaultRouteAttributes setIncludeContingencyRoutes:1];
+    [defaultRouteAttributes setIncludePhonetics:1];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [defaultRouteAttributes setUseMetricThreshold:{objc_msgSend(currentLocale, "_navigation_distanceUsesMetricSystem")}];
 
     if ((a3 - 2) >= 2)
     {
@@ -251,7 +251,7 @@ LABEL_16:
           [v16 setRoutingBehavior:1];
         }
 
-        [v4 setTransitOptions:v16];
+        [defaultRouteAttributes setTransitOptions:v16];
         goto LABEL_25;
       }
 
@@ -261,7 +261,7 @@ LABEL_16:
       }
     }
 
-    [v4 addUiContext:4];
+    [defaultRouteAttributes addUiContext:4];
   }
 
   if (a3 > 1)
@@ -274,7 +274,7 @@ LABEL_16:
       [v16 setAvoidBusyRoads:0];
       v17 = objc_alloc_init(MEMORY[0x1E69A2768]);
       [v17 setWalkingUserPreferences:v16];
-      [v4 setWalkingOptions:v17];
+      [defaultRouteAttributes setWalkingOptions:v17];
     }
 
     else
@@ -290,7 +290,7 @@ LABEL_16:
       [v16 setAvoidBusyRoads:0];
       v17 = objc_alloc_init(MEMORY[0x1E69A1CE0]);
       [v17 setCyclingUserPreferences:v16];
-      [v4 setCyclingOptions:v17];
+      [defaultRouteAttributes setCyclingOptions:v17];
     }
   }
 
@@ -309,16 +309,16 @@ LABEL_16:
     v16 = objc_alloc_init(MEMORY[0x1E69A1B90]);
     [v16 setIncludeHistoricTravelTime:1];
     [v16 setTrafficType:3];
-    [v4 setAutomobileOptions:v16];
+    [defaultRouteAttributes setAutomobileOptions:v16];
   }
 
 LABEL_25:
 
 LABEL_26:
-  [v4 setRoutePointTypeForTransportType:a3];
+  [defaultRouteAttributes setRoutePointTypeForTransportType:a3];
   v18 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return defaultRouteAttributes;
 }
 
 @end

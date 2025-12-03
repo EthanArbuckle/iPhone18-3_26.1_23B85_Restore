@@ -1,59 +1,59 @@
 @interface EDFormulaHelper
-- (BOOL)isCurrentSheet:(id)a3;
-- (EDFormulaHelper)initWithWorkbook:(id)a3 worksheet:(id)a4 rowNumber:(int)a5 columnNumber:(int)a6;
-- (id)resolveTable:(id)a3;
-- (int)resolveFunctionName:(id)a3;
-- (unint64_t)createIndexWithType:(int)a3 firstSheetIndex:(unint64_t)a4 lastSheetIndex:(unint64_t)a5;
-- (unint64_t)resolveFirstSheet:(id)a3 lastSheet:(id)a4;
-- (unint64_t)resolveName:(id)a3;
-- (unint64_t)resolveSheet:(id)a3;
-- (unint64_t)resolveTableColumn:(id)a3 columnName:(id)a4;
-- (unint64_t)resolveTableToSheetId:(id)a3;
+- (BOOL)isCurrentSheet:(id)sheet;
+- (EDFormulaHelper)initWithWorkbook:(id)workbook worksheet:(id)worksheet rowNumber:(int)number columnNumber:(int)columnNumber;
+- (id)resolveTable:(id)table;
+- (int)resolveFunctionName:(id)name;
+- (unint64_t)createIndexWithType:(int)type firstSheetIndex:(unint64_t)index lastSheetIndex:(unint64_t)sheetIndex;
+- (unint64_t)resolveFirstSheet:(id)sheet lastSheet:(id)lastSheet;
+- (unint64_t)resolveName:(id)name;
+- (unint64_t)resolveSheet:(id)sheet;
+- (unint64_t)resolveTableColumn:(id)column columnName:(id)name;
+- (unint64_t)resolveTableToSheetId:(id)id;
 @end
 
 @implementation EDFormulaHelper
 
-- (EDFormulaHelper)initWithWorkbook:(id)a3 worksheet:(id)a4 rowNumber:(int)a5 columnNumber:(int)a6
+- (EDFormulaHelper)initWithWorkbook:(id)workbook worksheet:(id)worksheet rowNumber:(int)number columnNumber:(int)columnNumber
 {
-  v11 = a3;
-  v12 = a4;
+  workbookCopy = workbook;
+  worksheetCopy = worksheet;
   v18.receiver = self;
   v18.super_class = EDFormulaHelper;
   v13 = [(EDFormulaHelper *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->mWorkbook, a3);
-    objc_storeStrong(&v14->mWorksheet, a4);
-    v14->mRowNumber = a5;
-    v14->mColumnNumber = a6;
-    v15 = [v11 mappingContext];
+    objc_storeStrong(&v13->mWorkbook, workbook);
+    objc_storeStrong(&v14->mWorksheet, worksheet);
+    v14->mRowNumber = number;
+    v14->mColumnNumber = columnNumber;
+    mappingContext = [workbookCopy mappingContext];
     mMappingContext = v14->mMappingContext;
-    v14->mMappingContext = v15;
+    v14->mMappingContext = mappingContext;
   }
 
   return v14;
 }
 
-- (unint64_t)resolveName:(id)a3
+- (unint64_t)resolveName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [(EDWorkbook *)self->mWorkbook indexOfSheet:self->mWorksheet];
-  v6 = [(EDWorkbook *)self->mWorkbook resources];
-  v7 = [v6 names];
+  resources = [(EDWorkbook *)self->mWorkbook resources];
+  names = [resources names];
 
-  v8 = [v7 count];
+  v8 = [names count];
   if (v8)
   {
     v9 = 0;
     while (1)
     {
-      v10 = [v7 objectAtIndex:v9];
+      v10 = [names objectAtIndex:v9];
       v11 = v10;
       if (v10)
       {
-        v12 = [v10 nameString];
-        v13 = [v12 isEqualToString:v4];
+        nameString = [v10 nameString];
+        v13 = [nameString isEqualToString:nameCopy];
 
         if ((v13 & 1) != 0 && (![v11 sheetIndex] || v5 == objc_msgSend(v11, "sheetIndex")))
         {
@@ -77,14 +77,14 @@ LABEL_8:
   return v9;
 }
 
-- (unint64_t)resolveSheet:(id)a3
+- (unint64_t)resolveSheet:(id)sheet
 {
-  v4 = a3;
-  v5 = [(ECMappingContext *)self->mMappingContext mappedSheetIndexForSheetName:v4];
+  sheetCopy = sheet;
+  v5 = [(ECMappingContext *)self->mMappingContext mappedSheetIndexForSheetName:sheetCopy];
   if (v5 == -1)
   {
-    v6 = [(EDWorkbook *)self->mWorkbook workbookName];
-    v7 = [v4 isEqualToString:v6];
+    workbookName = [(EDWorkbook *)self->mWorkbook workbookName];
+    v7 = [sheetCopy isEqualToString:workbookName];
 
     if ((v7 & 1) == 0)
     {
@@ -101,11 +101,11 @@ LABEL_5:
   return v8;
 }
 
-- (unint64_t)resolveFirstSheet:(id)a3 lastSheet:(id)a4
+- (unint64_t)resolveFirstSheet:(id)sheet lastSheet:(id)lastSheet
 {
-  v6 = a4;
-  v7 = [(ECMappingContext *)self->mMappingContext mappedSheetIndexForSheetName:a3];
-  v8 = [(ECMappingContext *)self->mMappingContext mappedSheetIndexForSheetName:v6];
+  lastSheetCopy = lastSheet;
+  v7 = [(ECMappingContext *)self->mMappingContext mappedSheetIndexForSheetName:sheet];
+  v8 = [(ECMappingContext *)self->mMappingContext mappedSheetIndexForSheetName:lastSheetCopy];
   if (v7 == -1 || v8 == -1)
   {
     v10 = -1;
@@ -119,19 +119,19 @@ LABEL_5:
   return v10;
 }
 
-- (id)resolveTable:(id)a3
+- (id)resolveTable:(id)table
 {
-  v4 = a3;
-  if ([v4 length])
+  tableCopy = table;
+  if ([tableCopy length])
   {
-    v5 = [(EDWorkbook *)self->mWorkbook sheetCount];
-    if (v5)
+    sheetCount = [(EDWorkbook *)self->mWorkbook sheetCount];
+    if (sheetCount)
     {
       v6 = 0;
       while (1)
       {
-        v7 = [(EDWorksheet *)self->mWorksheet tables];
-        v8 = [v7 count];
+        tables = [(EDWorksheet *)self->mWorksheet tables];
+        v8 = [tables count];
 
         if (v8)
         {
@@ -139,7 +139,7 @@ LABEL_5:
         }
 
 LABEL_8:
-        if (++v6 == v5)
+        if (++v6 == sheetCount)
         {
           goto LABEL_17;
         }
@@ -148,11 +148,11 @@ LABEL_8:
       v9 = 0;
       while (1)
       {
-        v10 = [(EDWorksheet *)self->mWorksheet tables];
-        v11 = [v10 objectAtIndex:v9];
+        tables2 = [(EDWorksheet *)self->mWorksheet tables];
+        v11 = [tables2 objectAtIndex:v9];
 
-        v12 = [v11 name];
-        v13 = [v12 isEqualToString:v4];
+        name = [v11 name];
+        v13 = [name isEqualToString:tableCopy];
 
         if (v13)
         {
@@ -171,8 +171,8 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v14 = [(EDWorksheet *)self->mWorksheet tables];
-  v15 = [v14 count];
+  tables3 = [(EDWorksheet *)self->mWorksheet tables];
+  v15 = [tables3 count];
 
   if (!v15)
   {
@@ -182,17 +182,17 @@ LABEL_17:
   v16 = 0;
   while (1)
   {
-    v17 = [(EDWorksheet *)self->mWorksheet tables];
-    v11 = [v17 objectAtIndex:v16];
+    tables4 = [(EDWorksheet *)self->mWorksheet tables];
+    v11 = [tables4 objectAtIndex:v16];
 
-    v18 = [v11 tableRange];
-    v19 = [v18 firstColumn];
+    tableRange = [v11 tableRange];
+    firstColumn = [tableRange firstColumn];
     mColumnNumber = self->mColumnNumber;
-    if (v19 <= mColumnNumber && mColumnNumber <= [v18 lastColumn])
+    if (firstColumn <= mColumnNumber && mColumnNumber <= [tableRange lastColumn])
     {
-      v21 = [v18 firstRow];
+      firstRow = [tableRange firstRow];
       mRowNumber = self->mRowNumber;
-      if (v21 <= mRowNumber && mRowNumber <= [v18 lastRow])
+      if (firstRow <= mRowNumber && mRowNumber <= [tableRange lastRow])
       {
         break;
       }
@@ -209,31 +209,31 @@ LABEL_18:
   return v11;
 }
 
-- (unint64_t)resolveTableToSheetId:(id)a3
+- (unint64_t)resolveTableToSheetId:(id)id
 {
-  v4 = a3;
-  if (![v4 length])
+  idCopy = id;
+  if (![idCopy length])
   {
-    v7 = [(EDSheet *)self->mWorksheet name];
-    v12 = [v7 string];
-    v15 = [(EDFormulaHelper *)self resolveSheet:v12];
+    name = [(EDSheet *)self->mWorksheet name];
+    string = [name string];
+    v15 = [(EDFormulaHelper *)self resolveSheet:string];
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v5 = [(EDWorkbook *)self->mWorkbook sheetCount];
-  if (v5)
+  sheetCount = [(EDWorkbook *)self->mWorkbook sheetCount];
+  if (sheetCount)
   {
     v6 = 0;
     while (1)
     {
-      v7 = [(EDWorkbook *)self->mWorkbook sheetAtIndex:v6 loadIfNeeded:0];
+      name = [(EDWorkbook *)self->mWorkbook sheetAtIndex:v6 loadIfNeeded:0];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v7 tables];
-        v9 = [v8 count];
+        tables = [name tables];
+        v9 = [tables count];
 
         if (v9)
         {
@@ -243,7 +243,7 @@ LABEL_13:
 
 LABEL_9:
 
-      if (++v6 == v5)
+      if (++v6 == sheetCount)
       {
         goto LABEL_10;
       }
@@ -252,11 +252,11 @@ LABEL_9:
     v10 = 0;
     while (1)
     {
-      v11 = [v7 tables];
-      v12 = [v11 objectAtIndex:v10];
+      tables2 = [name tables];
+      string = [tables2 objectAtIndex:v10];
 
-      v13 = [v12 name];
-      v14 = [v13 isEqualToString:v4];
+      name2 = [string name];
+      v14 = [name2 isEqualToString:idCopy];
 
       if (v14)
       {
@@ -269,9 +269,9 @@ LABEL_9:
       }
     }
 
-    v16 = [v7 name];
-    v17 = [v16 string];
-    v15 = [(EDFormulaHelper *)self resolveSheet:v17];
+    v7Name = [name name];
+    string2 = [v7Name string];
+    v15 = [(EDFormulaHelper *)self resolveSheet:string2];
 
     goto LABEL_13;
   }
@@ -283,19 +283,19 @@ LABEL_14:
   return v15;
 }
 
-- (unint64_t)resolveTableColumn:(id)a3 columnName:(id)a4
+- (unint64_t)resolveTableColumn:(id)column columnName:(id)name
 {
-  v5 = a4;
-  v6 = [a3 tableColumns];
-  v7 = [v6 count];
+  nameCopy = name;
+  tableColumns = [column tableColumns];
+  v7 = [tableColumns count];
   if (v7)
   {
     v8 = 0;
     while (1)
     {
-      v9 = [v6 objectAtIndex:v8];
-      v10 = [v9 name];
-      v11 = [v10 isEqualToString:v5];
+      v9 = [tableColumns objectAtIndex:v8];
+      name = [v9 name];
+      v11 = [name isEqualToString:nameCopy];
 
       if (v11)
       {
@@ -318,21 +318,21 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)isCurrentSheet:(id)a3
+- (BOOL)isCurrentSheet:(id)sheet
 {
-  v4 = a3;
-  v5 = [(EDSheet *)self->mWorksheet name];
-  v6 = [v5 string];
-  v7 = [v6 isEqualToString:v4];
+  sheetCopy = sheet;
+  name = [(EDSheet *)self->mWorksheet name];
+  string = [name string];
+  v7 = [string isEqualToString:sheetCopy];
 
   return v7;
 }
 
-- (int)resolveFunctionName:(id)a3
+- (int)resolveFunctionName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   CsString::CsString(&v7);
-  CsString::append(&v7, [v3 cStringUsingEncoding:10], objc_msgSend(v3, "length"));
+  CsString::append(&v7, [nameCopy cStringUsingEncoding:10], objc_msgSend(nameCopy, "length"));
   if (v7.var1)
   {
     var1 = v7.var1;
@@ -349,12 +349,12 @@ LABEL_5:
   return v5;
 }
 
-- (unint64_t)createIndexWithType:(int)a3 firstSheetIndex:(unint64_t)a4 lastSheetIndex:(unint64_t)a5
+- (unint64_t)createIndexWithType:(int)type firstSheetIndex:(unint64_t)index lastSheetIndex:(unint64_t)sheetIndex
 {
-  v7 = *&a3;
-  v8 = [(EDWorkbook *)self->mWorkbook resources];
-  v9 = [v8 links];
-  v10 = [v9 addOrEquivalentLinkReferenceOfType:v7 firstSheetIndex:a4 lastSheetIndex:a5];
+  v7 = *&type;
+  resources = [(EDWorkbook *)self->mWorkbook resources];
+  links = [resources links];
+  v10 = [links addOrEquivalentLinkReferenceOfType:v7 firstSheetIndex:index lastSheetIndex:sheetIndex];
 
   return v10;
 }

@@ -1,16 +1,16 @@
 @interface _CDPSimpleModel
-- (_cdp_prediction_result)_newPredictionResultWithSeed:(unsigned int *)a3 seedLength:(unint64_t)a4 realSeedLength:(unint64_t)a5 maxTrainingEmailID:(unsigned int)a6;
+- (_cdp_prediction_result)_newPredictionResultWithSeed:(unsigned int *)seed seedLength:(unint64_t)length realSeedLength:(unint64_t)seedLength maxTrainingEmailID:(unsigned int)d;
 - (id)_testingIndices;
-- (unsigned)_newIdsForPeople:(id)a3 length:(unint64_t *)a4;
-- (void)_printEmailWithID:(unint64_t)a3;
-- (void)_printPrediction:(_cdp_prediction_result *)a3;
-- (void)_printUserWithID:(unint64_t)a3;
-- (void)_printUsers:(unsigned int *)a3 length:(unint64_t)a4;
+- (unsigned)_newIdsForPeople:(id)people length:(unint64_t *)length;
+- (void)_printEmailWithID:(unint64_t)d;
+- (void)_printPrediction:(_cdp_prediction_result *)prediction;
+- (void)_printUserWithID:(unint64_t)d;
+- (void)_printUsers:(unsigned int *)users length:(unint64_t)length;
 - (void)_reallocModel;
 - (void)dealloc;
-- (void)loadModel:(id)a3;
-- (void)makePredictionForGroup:(id)a3 clientType:(int64_t)a4 limit:(int64_t)a5 completionHandler:(id)a6;
-- (void)setLambda:(float)a3 w0:(float)a4;
+- (void)loadModel:(id)model;
+- (void)makePredictionForGroup:(id)group clientType:(int64_t)type limit:(int64_t)limit completionHandler:(id)handler;
+- (void)setLambda:(float)lambda w0:(float)w0;
 @end
 
 @implementation _CDPSimpleModel
@@ -67,16 +67,16 @@
   [(_CDPSimpleModel *)&v8 dealloc];
 }
 
-- (void)loadModel:(id)a3
+- (void)loadModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   self->_loaded = 1;
   *&self->_NEmail = xmmword_19190EC10;
   self->_timestamp = malloc_type_calloc(0x100uLL, 8uLL, 0x100004000313F17uLL);
   self->_userIsSender = malloc_type_calloc(self->_size, 1uLL, 0x100004077774924uLL);
   self->_userIsThreadInitiator = malloc_type_calloc(self->_size, 1uLL, 0x100004077774924uLL);
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:256];
-  v6 = [(_CDPSimpleModel *)self harvester];
+  harvester = [(_CDPSimpleModel *)self harvester];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __29___CDPSimpleModel_loadModel___block_invoke;
@@ -88,24 +88,24 @@
   v9[2] = __29___CDPSimpleModel_loadModel___block_invoke_2;
   v9[3] = &unk_1E7368518;
   v10 = v13;
-  v11 = v4;
+  v11 = modelCopy;
   v9[4] = self;
   v7 = v13;
-  v8 = v4;
-  [v6 loadWithLimit:2500 dataPointReader:v12 completion:v9];
+  v8 = modelCopy;
+  [harvester loadWithLimit:2500 dataPointReader:v12 completion:v9];
 }
 
-- (unsigned)_newIdsForPeople:(id)a3 length:(unint64_t *)a4
+- (unsigned)_newIdsForPeople:(id)people length:(unint64_t *)length
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = malloc_type_calloc([v6 count], 4uLL, 0x100004052888210uLL);
+  peopleCopy = people;
+  v7 = malloc_type_calloc([peopleCopy count], 4uLL, 0x100004052888210uLL);
   v8 = self->_people;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v6;
+  v9 = peopleCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -140,28 +140,28 @@
     v16 = 0;
   }
 
-  if (a4)
+  if (length)
   {
-    *a4 = v16;
+    *length = v16;
   }
 
   v17 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (void)setLambda:(float)a3 w0:(float)a4
+- (void)setLambda:(float)lambda w0:(float)w0
 {
-  self->_lambda = a3;
-  self->_w0 = a4;
+  self->_lambda = lambda;
+  self->_w0 = w0;
   self->_scoresAreDirty = 1;
 }
 
-- (_cdp_prediction_result)_newPredictionResultWithSeed:(unsigned int *)a3 seedLength:(unint64_t)a4 realSeedLength:(unint64_t)a5 maxTrainingEmailID:(unsigned int)a6
+- (_cdp_prediction_result)_newPredictionResultWithSeed:(unsigned int *)seed seedLength:(unint64_t)length realSeedLength:(unint64_t)seedLength maxTrainingEmailID:(unsigned int)d
 {
   v87 = *MEMORY[0x1E69E9840];
   if (self->_NEmail - 2501 >= 0xFFFFFFFFFFFFF63CLL)
   {
-    v79 = a5;
+    seedLengthCopy = seedLength;
     if (self->_scoresAreDirty)
     {
       v11 = 0;
@@ -189,10 +189,10 @@
     bzero(v86, 0x2710uLL);
     bzero(v85, 0x2710uLL);
     v82 = &v78;
-    v19 = &v78 - ((self->_NPeople * a4 + 15) & 0xFFFFFFFFFFFFFFF0);
-    bzero(v19, self->_NPeople * a4);
-    v20 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v21 = [v20 valueForKey:@"com.apple.coreduetd.people.social.min_seed_proportion"];
+    v19 = &v78 - ((self->_NPeople * length + 15) & 0xFFFFFFFFFFFFFFF0);
+    bzero(v19, self->_NPeople * length);
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v21 = [standardUserDefaults valueForKey:@"com.apple.coreduetd.people.social.min_seed_proportion"];
     v80 = v21;
     if (v21)
     {
@@ -205,12 +205,12 @@
       v23 = 0.5;
     }
 
-    v24 = [v20 objectForKey:@"com.apple.coreduetd.people.social.improved_scoring"];
+    v24 = [standardUserDefaults objectForKey:@"com.apple.coreduetd.people.social.improved_scoring"];
 
-    v81 = v20;
+    v81 = standardUserDefaults;
     if (v24)
     {
-      v83 = [v20 BOOLForKey:@"com.apple.coreduetd.people.social.improved_scoring"];
+      v83 = [standardUserDefaults BOOLForKey:@"com.apple.coreduetd.people.social.improved_scoring"];
     }
 
     else
@@ -220,20 +220,20 @@
 
     NEmail = self->_NEmail;
     timestamp = self->_timestamp;
-    if (NEmail <= a6)
+    if (NEmail <= d)
     {
       v27 = (timestamp + (((NEmail << 32) - 0x100000000) >> 29));
     }
 
     else
     {
-      v27 = &timestamp[a6];
+      v27 = &timestamp[d];
     }
 
     v28 = *v27;
     bzero(v84, 0x2710uLL);
     v29 = 1;
-    if (a4)
+    if (length)
     {
       v30 = 0;
       v31 = 0;
@@ -241,7 +241,7 @@
       people2EmailLength = self->_people2EmailLength;
       do
       {
-        v34 = a3[v30];
+        v34 = seed[v30];
         v35 = people2EmailLength[v34];
         if (v35 >= 1)
         {
@@ -250,7 +250,7 @@
           do
           {
             v38 = *v36;
-            if (*v36 <= a6 && timestamp[v38] >= v28 + ((self->_lambda * -13.288) * 86400.0))
+            if (*v36 <= d && timestamp[v38] >= v28 + ((self->_lambda * -13.288) * 86400.0))
             {
               v39 = v84[v38];
               v84[v38] = v39 + 1;
@@ -268,7 +268,7 @@
                   do
                   {
                     v42 = *v41++;
-                    v19[v30 + v42 * a4] = 1;
+                    v19[v30 + v42 * length] = 1;
                     --v40;
                   }
 
@@ -286,7 +286,7 @@
         ++v30;
       }
 
-      while (v30 != a4);
+      while (v30 != length);
       if (v31)
       {
         v43 = v28 / (self->_lambda * 86400.0);
@@ -375,30 +375,30 @@
       while (v57 != v44);
     }
 
-    v64 = [(_CDPSimpleModel *)self requireOutgoingInteraction];
+    requireOutgoingInteraction = [(_CDPSimpleModel *)self requireOutgoingInteraction];
     v65 = v81;
-    if (v64)
+    if (requireOutgoingInteraction)
     {
       v66 = self->_NPeople;
       if (v66)
       {
         v67 = 0;
-        v68 = v23 * v79;
+        v68 = v23 * seedLengthCopy;
         do
         {
-          if (a4)
+          if (length)
           {
             v69 = 0;
-            v70 = a4;
+            lengthCopy = length;
             v71 = v19;
             do
             {
               v72 = *v71++;
               v69 += v72;
-              --v70;
+              --lengthCopy;
             }
 
-            while (v70);
+            while (lengthCopy);
             v73 = v69;
           }
 
@@ -413,23 +413,23 @@
           }
 
           ++v67;
-          v19 += a4;
+          v19 += length;
         }
 
         while (v67 != v66);
       }
     }
 
-    if (a4 >= 1)
+    if (length >= 1)
     {
-      v74 = &a3[a4];
+      v74 = &seed[length];
       do
       {
-        v75 = *a3++;
+        v75 = *seed++;
         v6[v75].var1 = -1.0;
       }
 
-      while (a3 < v74);
+      while (seed < v74);
     }
   }
 
@@ -442,16 +442,16 @@
   return v6;
 }
 
-- (void)makePredictionForGroup:(id)a3 clientType:(int64_t)a4 limit:(int64_t)a5 completionHandler:(id)a6
+- (void)makePredictionForGroup:(id)group clientType:(int64_t)type limit:(int64_t)limit completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a6;
+  groupCopy = group;
+  handlerCopy = handler;
   v24 = 0;
-  v22 = [(_CDPSimpleModel *)self _newIdsForPeople:v9 length:&v24];
-  v23 = -[_CDPSimpleModel _newPredictionResultWithSeed:seedLength:realSeedLength:maxTrainingEmailID:](self, "_newPredictionResultWithSeed:seedLength:realSeedLength:maxTrainingEmailID:", v22, v24, [v9 count], LODWORD(self->_NEmail));
-  if (self->_NPeople >= a5)
+  v22 = [(_CDPSimpleModel *)self _newIdsForPeople:groupCopy length:&v24];
+  v23 = -[_CDPSimpleModel _newPredictionResultWithSeed:seedLength:realSeedLength:maxTrainingEmailID:](self, "_newPredictionResultWithSeed:seedLength:realSeedLength:maxTrainingEmailID:", v22, v24, [groupCopy count], LODWORD(self->_NEmail));
+  if (self->_NPeople >= limit)
   {
-    NPeople = a5;
+    NPeople = limit;
   }
 
   else
@@ -461,13 +461,13 @@
 
   v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:NPeople];
   v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:NPeople];
-  v15 = self->_NPeople;
-  if (v15 >= a5)
+  limitCopy = self->_NPeople;
+  if (limitCopy >= limit)
   {
-    v15 = a5;
+    limitCopy = limit;
   }
 
-  if (v15)
+  if (limitCopy)
   {
     v16 = 0;
     p_var1 = &v23->var1;
@@ -481,20 +481,20 @@
       [v13 addObject:v19];
 
       ++v16;
-      v20 = self->_NPeople;
-      if (v20 >= a5)
+      limitCopy2 = self->_NPeople;
+      if (limitCopy2 >= limit)
       {
-        v20 = a5;
+        limitCopy2 = limit;
       }
 
       ++p_var1;
     }
 
-    while (v20 > v16);
+    while (limitCopy2 > v16);
   }
 
   v21 = [[_CDPPredictionResult alloc] initWithMembers:v13 andScores:v12];
-  v10[2](v10, v21);
+  handlerCopy[2](handlerCopy, v21);
 
   free(v22);
   free(v23);
@@ -506,12 +506,12 @@
   testingIndices = self->_testingIndices;
   if (testingIndices)
   {
-    v4 = testingIndices;
+    indexSet = testingIndices;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     NEmail = self->_NEmail;
     if (NEmail > NEmail / 3)
     {
@@ -520,7 +520,7 @@
       {
         if (self->_userIsSender[v7] && self->_userIsThreadInitiator[v7] && self->_emailLength[v7] - 3 <= 7)
         {
-          [(NSIndexSet *)v4 addIndex:v7];
+          [(NSIndexSet *)indexSet addIndex:v7];
           NEmail = self->_NEmail;
         }
 
@@ -530,53 +530,53 @@
       while (NEmail > v7);
     }
 
-    objc_storeStrong(p_testingIndices, v4);
+    objc_storeStrong(p_testingIndices, indexSet);
   }
 
-  return v4;
+  return indexSet;
 }
 
-- (void)_printEmailWithID:(unint64_t)a3
+- (void)_printEmailWithID:(unint64_t)d
 {
   v7 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v7 setDateFormat:@"yyyy-MM-dd"];
-  v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:self->_timestamp[a3]];
+  v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:self->_timestamp[d]];
   v6 = [v7 stringFromDate:v5];
   printf("%s ", [v6 UTF8String]);
 
-  [(_CDPSimpleModel *)self _printUsers:self->_email[a3] length:self->_emailLength[a3]];
+  [(_CDPSimpleModel *)self _printUsers:self->_email[d] length:self->_emailLength[d]];
 }
 
-- (void)_printUsers:(unsigned int *)a3 length:(unint64_t)a4
+- (void)_printUsers:(unsigned int *)users length:(unint64_t)length
 {
-  if (a4 >= 1)
+  if (length >= 1)
   {
-    v5 = a3;
-    v7 = &a3[a4];
+    usersCopy = users;
+    v7 = &users[length];
     do
     {
-      v8 = *v5++;
+      v8 = *usersCopy++;
       v9 = [(NSArray *)self->_people objectAtIndexedSubscript:v8];
       printf("%s ", [v9 UTF8String]);
     }
 
-    while (v5 < v7);
+    while (usersCopy < v7);
   }
 
   putchar(10);
 }
 
-- (void)_printUserWithID:(unint64_t)a3
+- (void)_printUserWithID:(unint64_t)d
 {
-  v4 = [(NSArray *)self->_people objectAtIndexedSubscript:a3];
+  v4 = [(NSArray *)self->_people objectAtIndexedSubscript:d];
   v3 = v4;
   puts([v4 UTF8String]);
 }
 
-- (void)_printPrediction:(_cdp_prediction_result *)a3
+- (void)_printPrediction:(_cdp_prediction_result *)prediction
 {
   v5 = malloc_type_calloc(self->_NPeople, 0x10uLL, 0x1000040451B5BE8uLL);
-  memcpy(v5, a3, 16 * self->_NPeople);
+  memcpy(v5, prediction, 16 * self->_NPeople);
   qsort_b(v5, self->_NPeople, 0x10uLL, &__block_literal_global_38);
   for (i = 0; i != 80; i += 16)
   {

@@ -1,42 +1,42 @@
 @interface INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCalendarDayOfWeek:(BOOL)a3;
-- (void)setHasCalendarHourOfDay:(BOOL)a3;
-- (void)setHasCalendarMonthOfYear:(BOOL)a3;
-- (void)setHasCalendarWeekOfMonth:(BOOL)a3;
-- (void)setHasDeviceMotionState:(BOOL)a3;
-- (void)setHasDisambiguationReason:(BOOL)a3;
-- (void)setHasIsCarPlay:(BOOL)a3;
-- (void)setHasIsClientDaylight:(BOOL)a3;
-- (void)setHasIsClientNavigating:(BOOL)a3;
-- (void)setHasIsDeviceLockStatus:(BOOL)a3;
-- (void)setHasRawCountry:(BOOL)a3;
-- (void)setHasRawLanguage:(BOOL)a3;
-- (void)setHasRawLocale:(BOOL)a3;
-- (void)setHasRawRequestDeviceCategory:(BOOL)a3;
-- (void)setHasRawStateOrProvince:(BOOL)a3;
-- (void)setHasTimestampSec:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCalendarDayOfWeek:(BOOL)week;
+- (void)setHasCalendarHourOfDay:(BOOL)day;
+- (void)setHasCalendarMonthOfYear:(BOOL)year;
+- (void)setHasCalendarWeekOfMonth:(BOOL)month;
+- (void)setHasDeviceMotionState:(BOOL)state;
+- (void)setHasDisambiguationReason:(BOOL)reason;
+- (void)setHasIsCarPlay:(BOOL)play;
+- (void)setHasIsClientDaylight:(BOOL)daylight;
+- (void)setHasIsClientNavigating:(BOOL)navigating;
+- (void)setHasIsDeviceLockStatus:(BOOL)status;
+- (void)setHasRawCountry:(BOOL)country;
+- (void)setHasRawLanguage:(BOOL)language;
+- (void)setHasRawLocale:(BOOL)locale;
+- (void)setHasRawRequestDeviceCategory:(BOOL)category;
+- (void)setHasRawStateOrProvince:(BOOL)province;
+- (void)setHasTimestampSec:(BOOL)sec;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals
 
-- (INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v51.receiver = self;
   v51.super_class = INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals;
   v5 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)&v51 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"usecase"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"usecase"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,14 +44,14 @@
       [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)v5 setUsecase:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"choicesCount"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"choicesCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals setChoicesCount:](v5, "setChoicesCount:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"timestampSec"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"timestampSec"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,14 +59,14 @@
     }
 
     v45 = v8;
-    v10 = [v4 objectForKeyedSubscript:@"rawLanguage"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"rawLanguage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals setRawLanguage:](v5, "setRawLanguage:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"rawLocale"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"rawLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
     }
 
     v12 = v9;
-    v13 = [v4 objectForKeyedSubscript:@"rawStateOrProvince"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"rawStateOrProvince"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,14 +82,14 @@
     }
 
     v14 = v6;
-    v15 = [v4 objectForKeyedSubscript:@"rawCountry"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"rawCountry"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals setRawCountry:](v5, "setRawCountry:", [v15 intValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"rawRequestDeviceCategory"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"rawRequestDeviceCategory"];
     objc_opt_class();
     v50 = v16;
     if (objc_opt_isKindOfClass())
@@ -97,7 +97,7 @@
       -[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals setRawRequestDeviceCategory:](v5, "setRawRequestDeviceCategory:", [v16 intValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"calendarHourOfDay"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"calendarHourOfDay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,7 +105,7 @@
     }
 
     v39 = v17;
-    v18 = [v4 objectForKeyedSubscript:@"calendarDayOfWeek"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"calendarDayOfWeek"];
     objc_opt_class();
     v49 = v18;
     v19 = v14;
@@ -114,7 +114,7 @@
       -[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals setCalendarDayOfWeek:](v5, "setCalendarDayOfWeek:", [v49 intValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"calendarWeekOfMonth"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"calendarWeekOfMonth"];
     objc_opt_class();
     v48 = v20;
     v21 = v12;
@@ -123,7 +123,7 @@
       -[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals setCalendarWeekOfMonth:](v5, "setCalendarWeekOfMonth:", [v48 intValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"calendarMonthOfYear"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"calendarMonthOfYear"];
     objc_opt_class();
     v47 = v22;
     v23 = v10;
@@ -132,7 +132,7 @@
       -[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals setCalendarMonthOfYear:](v5, "setCalendarMonthOfYear:", [v47 intValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"isClientDaylight"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"isClientDaylight"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -140,7 +140,7 @@
     }
 
     v41 = v13;
-    v25 = [v4 objectForKeyedSubscript:@"isDeviceLockStatus"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"isDeviceLockStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -148,7 +148,7 @@
     }
 
     v40 = v15;
-    v26 = [v4 objectForKeyedSubscript:{@"deviceMotionState", v25}];
+    v26 = [dictionaryCopy objectForKeyedSubscript:{@"deviceMotionState", v25}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -156,7 +156,7 @@
     }
 
     v38 = v24;
-    v27 = [v4 objectForKeyedSubscript:@"isClientNavigating"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"isClientNavigating"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -164,7 +164,7 @@
     }
 
     v46 = v19;
-    v28 = [v4 objectForKeyedSubscript:@"isCarPlay"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"isCarPlay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -172,7 +172,7 @@
     }
 
     v44 = v21;
-    v29 = [v4 objectForKeyedSubscript:@"historicalDataCount"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"historicalDataCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -181,14 +181,14 @@
 
     v42 = v11;
     v43 = v23;
-    v30 = [v4 objectForKeyedSubscript:@"disambiguationReason"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"disambiguationReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals setDisambiguationReason:](v5, "setDisambiguationReason:", [v30 intValue]);
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"modelVersion"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -196,7 +196,7 @@
       [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)v5 setModelVersion:v32];
     }
 
-    v33 = [v4 objectForKeyedSubscript:@"trialTreatmentId"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"trialTreatmentId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -210,30 +210,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -246,13 +246,13 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   p_has = &self->_has;
   has = self->_has;
   if ((has & 0x100) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals calendarDayOfWeek](self, "calendarDayOfWeek")}];
-    [v3 setObject:v10 forKeyedSubscript:@"calendarDayOfWeek"];
+    [dictionary setObject:v10 forKeyedSubscript:@"calendarDayOfWeek"];
 
     has = *p_has;
     if ((*p_has & 0x80) == 0)
@@ -273,7 +273,7 @@ LABEL_3:
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals calendarHourOfDay](self, "calendarHourOfDay")}];
-  [v3 setObject:v11 forKeyedSubscript:@"calendarHourOfDay"];
+  [dictionary setObject:v11 forKeyedSubscript:@"calendarHourOfDay"];
 
   has = *p_has;
   if ((*p_has & 0x400) == 0)
@@ -289,7 +289,7 @@ LABEL_4:
 
 LABEL_13:
   v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals calendarMonthOfYear](self, "calendarMonthOfYear")}];
-  [v3 setObject:v12 forKeyedSubscript:@"calendarMonthOfYear"];
+  [dictionary setObject:v12 forKeyedSubscript:@"calendarMonthOfYear"];
 
   has = *p_has;
   if ((*p_has & 0x200) == 0)
@@ -305,7 +305,7 @@ LABEL_5:
 
 LABEL_14:
   v13 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals calendarWeekOfMonth](self, "calendarWeekOfMonth")}];
-  [v3 setObject:v13 forKeyedSubscript:@"calendarWeekOfMonth"];
+  [dictionary setObject:v13 forKeyedSubscript:@"calendarWeekOfMonth"];
 
   has = *p_has;
   if ((*p_has & 1) == 0)
@@ -321,13 +321,13 @@ LABEL_6:
 
 LABEL_15:
   v14 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals choicesCount](self, "choicesCount")}];
-  [v3 setObject:v14 forKeyedSubscript:@"choicesCount"];
+  [dictionary setObject:v14 forKeyedSubscript:@"choicesCount"];
 
   if ((*p_has & 0x2000) != 0)
   {
 LABEL_7:
     v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals deviceMotionState](self, "deviceMotionState")}];
-    [v3 setObject:v6 forKeyedSubscript:@"deviceMotionState"];
+    [dictionary setObject:v6 forKeyedSubscript:@"deviceMotionState"];
   }
 
 LABEL_8:
@@ -345,14 +345,14 @@ LABEL_8:
       v9 = off_1E78D8A68[v8];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"disambiguationReason"];
+    [dictionary setObject:v9 forKeyedSubscript:@"disambiguationReason"];
     v7 = *(&self->_has + 2);
   }
 
   if (v7)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals historicalDataCount](self, "historicalDataCount")}];
-    [v3 setObject:v15 forKeyedSubscript:@"historicalDataCount"];
+    [dictionary setObject:v15 forKeyedSubscript:@"historicalDataCount"];
   }
 
   v16 = *p_has;
@@ -367,14 +367,14 @@ LABEL_8:
   }
 
   v22 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals isCarPlay](self, "isCarPlay")}];
-  [v3 setObject:v22 forKeyedSubscript:@"isCarPlay"];
+  [dictionary setObject:v22 forKeyedSubscript:@"isCarPlay"];
 
   LOWORD(v16) = *p_has;
   if ((*p_has & 0x800) != 0)
   {
 LABEL_23:
     v17 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals isClientDaylight](self, "isClientDaylight")}];
-    [v3 setObject:v17 forKeyedSubscript:@"isClientDaylight"];
+    [dictionary setObject:v17 forKeyedSubscript:@"isClientDaylight"];
 
     LOWORD(v16) = *p_has;
   }
@@ -391,29 +391,29 @@ LABEL_24:
   }
 
   v21 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals isClientNavigating](self, "isClientNavigating")}];
-  [v3 setObject:v21 forKeyedSubscript:@"isClientNavigating"];
+  [dictionary setObject:v21 forKeyedSubscript:@"isClientNavigating"];
 
   if ((*p_has & 0x1000) != 0)
   {
 LABEL_26:
     v18 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals isDeviceLockStatus](self, "isDeviceLockStatus")}];
-    [v3 setObject:v18 forKeyedSubscript:@"isDeviceLockStatus"];
+    [dictionary setObject:v18 forKeyedSubscript:@"isDeviceLockStatus"];
   }
 
 LABEL_27:
   if (self->_modelVersion)
   {
-    v19 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self modelVersion];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    modelVersion = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self modelVersion];
+    dictionaryRepresentation = [modelVersion dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"modelVersion"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"modelVersion"];
     }
 
     else
     {
-      v23 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v23 forKeyedSubscript:@"modelVersion"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"modelVersion"];
     }
   }
 
@@ -421,7 +421,7 @@ LABEL_27:
   if ((*p_has & 0x20) != 0)
   {
     v28 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals rawCountry](self, "rawCountry")}];
-    [v3 setObject:v28 forKeyedSubscript:@"rawCountry"];
+    [dictionary setObject:v28 forKeyedSubscript:@"rawCountry"];
 
     v24 = *p_has;
     if ((*p_has & 4) == 0)
@@ -442,7 +442,7 @@ LABEL_38:
   }
 
   v29 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals rawLanguage](self, "rawLanguage")}];
-  [v3 setObject:v29 forKeyedSubscript:@"rawLanguage"];
+  [dictionary setObject:v29 forKeyedSubscript:@"rawLanguage"];
 
   v24 = *p_has;
   if ((*p_has & 8) == 0)
@@ -458,7 +458,7 @@ LABEL_39:
 
 LABEL_48:
   v30 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals rawLocale](self, "rawLocale")}];
-  [v3 setObject:v30 forKeyedSubscript:@"rawLocale"];
+  [dictionary setObject:v30 forKeyedSubscript:@"rawLocale"];
 
   v24 = *p_has;
   if ((*p_has & 0x40) == 0)
@@ -474,7 +474,7 @@ LABEL_40:
 
 LABEL_49:
   v31 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals rawRequestDeviceCategory](self, "rawRequestDeviceCategory")}];
-  [v3 setObject:v31 forKeyedSubscript:@"rawRequestDeviceCategory"];
+  [dictionary setObject:v31 forKeyedSubscript:@"rawRequestDeviceCategory"];
 
   v24 = *p_has;
   if ((*p_has & 0x10) == 0)
@@ -490,42 +490,42 @@ LABEL_41:
 
 LABEL_50:
   v32 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals rawStateOrProvince](self, "rawStateOrProvince")}];
-  [v3 setObject:v32 forKeyedSubscript:@"rawStateOrProvince"];
+  [dictionary setObject:v32 forKeyedSubscript:@"rawStateOrProvince"];
 
   if ((*p_has & 2) != 0)
   {
 LABEL_42:
     v25 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals timestampSec](self, "timestampSec")}];
-    [v3 setObject:v25 forKeyedSubscript:@"timestampSec"];
+    [dictionary setObject:v25 forKeyedSubscript:@"timestampSec"];
   }
 
 LABEL_43:
   if (self->_trialTreatmentId)
   {
-    v26 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self trialTreatmentId];
-    v27 = [v26 dictionaryRepresentation];
-    if (v27)
+    trialTreatmentId = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self trialTreatmentId];
+    dictionaryRepresentation2 = [trialTreatmentId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v27 forKeyedSubscript:@"trialTreatmentId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"trialTreatmentId"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"trialTreatmentId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"trialTreatmentId"];
     }
   }
 
   if (self->_usecase)
   {
-    v34 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self usecase];
-    v35 = [v34 copy];
-    [v3 setObject:v35 forKeyedSubscript:@"usecase"];
+    usecase = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self usecase];
+    v35 = [usecase copy];
+    [dictionary setObject:v35 forKeyedSubscript:@"usecase"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -777,28 +777,28 @@ LABEL_39:
   return v23 ^ v24 ^ [(SISchemaUUID *)self->_trialTreatmentId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_87;
   }
 
-  v5 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self usecase];
-  v6 = [v4 usecase];
-  if ((v5 != 0) == (v6 == 0))
+  usecase = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self usecase];
+  usecase2 = [equalCopy usecase];
+  if ((usecase != 0) == (usecase2 == 0))
   {
     goto LABEL_86;
   }
 
-  v7 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self usecase];
-  if (v7)
+  usecase3 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self usecase];
+  if (usecase3)
   {
-    v8 = v7;
-    v9 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self usecase];
-    v10 = [v4 usecase];
-    v11 = [v9 isEqual:v10];
+    v8 = usecase3;
+    usecase4 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self usecase];
+    usecase5 = [equalCopy usecase];
+    v11 = [usecase4 isEqual:usecase5];
 
     if (!v11)
     {
@@ -812,8 +812,8 @@ LABEL_39:
 
   p_has = &self->_has;
   has = self->_has;
-  v14 = v4 + 56;
-  v15 = v4[56];
+  v14 = equalCopy + 56;
+  v15 = equalCopy[56];
   if ((*&has & 1) != (v15 & 1))
   {
     goto LABEL_87;
@@ -822,7 +822,7 @@ LABEL_39:
   if (*&has)
   {
     choicesCount = self->_choicesCount;
-    if (choicesCount != [v4 choicesCount])
+    if (choicesCount != [equalCopy choicesCount])
     {
       goto LABEL_87;
     }
@@ -840,7 +840,7 @@ LABEL_39:
   if (v17)
   {
     timestampSec = self->_timestampSec;
-    if (timestampSec != [v4 timestampSec])
+    if (timestampSec != [equalCopy timestampSec])
     {
       goto LABEL_87;
     }
@@ -858,7 +858,7 @@ LABEL_39:
   if (v19)
   {
     rawLanguage = self->_rawLanguage;
-    if (rawLanguage != [v4 rawLanguage])
+    if (rawLanguage != [equalCopy rawLanguage])
     {
       goto LABEL_87;
     }
@@ -876,7 +876,7 @@ LABEL_39:
   if (v21)
   {
     rawLocale = self->_rawLocale;
-    if (rawLocale != [v4 rawLocale])
+    if (rawLocale != [equalCopy rawLocale])
     {
       goto LABEL_87;
     }
@@ -894,7 +894,7 @@ LABEL_39:
   if (v23)
   {
     rawStateOrProvince = self->_rawStateOrProvince;
-    if (rawStateOrProvince != [v4 rawStateOrProvince])
+    if (rawStateOrProvince != [equalCopy rawStateOrProvince])
     {
       goto LABEL_87;
     }
@@ -912,7 +912,7 @@ LABEL_39:
   if (v25)
   {
     rawCountry = self->_rawCountry;
-    if (rawCountry != [v4 rawCountry])
+    if (rawCountry != [equalCopy rawCountry])
     {
       goto LABEL_87;
     }
@@ -930,7 +930,7 @@ LABEL_39:
   if (v27)
   {
     rawRequestDeviceCategory = self->_rawRequestDeviceCategory;
-    if (rawRequestDeviceCategory != [v4 rawRequestDeviceCategory])
+    if (rawRequestDeviceCategory != [equalCopy rawRequestDeviceCategory])
     {
       goto LABEL_87;
     }
@@ -948,7 +948,7 @@ LABEL_39:
   if (v29)
   {
     calendarHourOfDay = self->_calendarHourOfDay;
-    if (calendarHourOfDay != [v4 calendarHourOfDay])
+    if (calendarHourOfDay != [equalCopy calendarHourOfDay])
     {
       goto LABEL_87;
     }
@@ -966,7 +966,7 @@ LABEL_39:
   if (v31)
   {
     calendarDayOfWeek = self->_calendarDayOfWeek;
-    if (calendarDayOfWeek != [v4 calendarDayOfWeek])
+    if (calendarDayOfWeek != [equalCopy calendarDayOfWeek])
     {
       goto LABEL_87;
     }
@@ -984,7 +984,7 @@ LABEL_39:
   if (v33)
   {
     calendarWeekOfMonth = self->_calendarWeekOfMonth;
-    if (calendarWeekOfMonth != [v4 calendarWeekOfMonth])
+    if (calendarWeekOfMonth != [equalCopy calendarWeekOfMonth])
     {
       goto LABEL_87;
     }
@@ -1002,7 +1002,7 @@ LABEL_39:
   if (v35)
   {
     calendarMonthOfYear = self->_calendarMonthOfYear;
-    if (calendarMonthOfYear != [v4 calendarMonthOfYear])
+    if (calendarMonthOfYear != [equalCopy calendarMonthOfYear])
     {
       goto LABEL_87;
     }
@@ -1020,7 +1020,7 @@ LABEL_39:
   if (v37)
   {
     isClientDaylight = self->_isClientDaylight;
-    if (isClientDaylight != [v4 isClientDaylight])
+    if (isClientDaylight != [equalCopy isClientDaylight])
     {
       goto LABEL_87;
     }
@@ -1038,7 +1038,7 @@ LABEL_39:
   if (v39)
   {
     isDeviceLockStatus = self->_isDeviceLockStatus;
-    if (isDeviceLockStatus != [v4 isDeviceLockStatus])
+    if (isDeviceLockStatus != [equalCopy isDeviceLockStatus])
     {
       goto LABEL_87;
     }
@@ -1056,7 +1056,7 @@ LABEL_39:
   if (v41)
   {
     deviceMotionState = self->_deviceMotionState;
-    if (deviceMotionState != [v4 deviceMotionState])
+    if (deviceMotionState != [equalCopy deviceMotionState])
     {
       goto LABEL_87;
     }
@@ -1074,7 +1074,7 @@ LABEL_39:
   if (v43)
   {
     isClientNavigating = self->_isClientNavigating;
-    if (isClientNavigating != [v4 isClientNavigating])
+    if (isClientNavigating != [equalCopy isClientNavigating])
     {
       goto LABEL_87;
     }
@@ -1091,14 +1091,14 @@ LABEL_39:
   if ((*&has & 0x8000) != 0)
   {
     isCarPlay = self->_isCarPlay;
-    if (isCarPlay != [v4 isCarPlay])
+    if (isCarPlay != [equalCopy isCarPlay])
     {
       goto LABEL_87;
     }
   }
 
   v46 = *(&self->_has + 2);
-  v47 = *(v4 + 114);
+  v47 = *(equalCopy + 114);
   if ((v46 & 1) != (v47 & 1))
   {
     goto LABEL_87;
@@ -1107,13 +1107,13 @@ LABEL_39:
   if (v46)
   {
     historicalDataCount = self->_historicalDataCount;
-    if (historicalDataCount != [v4 historicalDataCount])
+    if (historicalDataCount != [equalCopy historicalDataCount])
     {
       goto LABEL_87;
     }
 
     v46 = *(&self->_has + 2);
-    v47 = *(v4 + 114);
+    v47 = *(equalCopy + 114);
   }
 
   v49 = (v46 >> 1) & 1;
@@ -1125,26 +1125,26 @@ LABEL_39:
   if (v49)
   {
     disambiguationReason = self->_disambiguationReason;
-    if (disambiguationReason != [v4 disambiguationReason])
+    if (disambiguationReason != [equalCopy disambiguationReason])
     {
       goto LABEL_87;
     }
   }
 
-  v5 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self modelVersion];
-  v6 = [v4 modelVersion];
-  if ((v5 != 0) == (v6 == 0))
+  usecase = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self modelVersion];
+  usecase2 = [equalCopy modelVersion];
+  if ((usecase != 0) == (usecase2 == 0))
   {
     goto LABEL_86;
   }
 
-  v51 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self modelVersion];
-  if (v51)
+  modelVersion = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self modelVersion];
+  if (modelVersion)
   {
-    v52 = v51;
-    v53 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self modelVersion];
-    v54 = [v4 modelVersion];
-    v55 = [v53 isEqual:v54];
+    v52 = modelVersion;
+    modelVersion2 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self modelVersion];
+    modelVersion3 = [equalCopy modelVersion];
+    v55 = [modelVersion2 isEqual:modelVersion3];
 
     if (!v55)
     {
@@ -1156,17 +1156,17 @@ LABEL_39:
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self trialTreatmentId];
-  v6 = [v4 trialTreatmentId];
-  if ((v5 != 0) == (v6 == 0))
+  usecase = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self trialTreatmentId];
+  usecase2 = [equalCopy trialTreatmentId];
+  if ((usecase != 0) == (usecase2 == 0))
   {
 LABEL_86:
 
     goto LABEL_87;
   }
 
-  v56 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self trialTreatmentId];
-  if (!v56)
+  trialTreatmentId = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self trialTreatmentId];
+  if (!trialTreatmentId)
   {
 
 LABEL_90:
@@ -1174,10 +1174,10 @@ LABEL_90:
     goto LABEL_88;
   }
 
-  v57 = v56;
-  v58 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self trialTreatmentId];
-  v59 = [v4 trialTreatmentId];
-  v60 = [v58 isEqual:v59];
+  v57 = trialTreatmentId;
+  trialTreatmentId2 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self trialTreatmentId];
+  trialTreatmentId3 = [equalCopy trialTreatmentId];
+  v60 = [trialTreatmentId2 isEqual:trialTreatmentId3];
 
   if (v60)
   {
@@ -1191,12 +1191,12 @@ LABEL_88:
   return v61;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self usecase];
+  toCopy = to;
+  usecase = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self usecase];
 
-  if (v4)
+  if (usecase)
   {
     PBDataWriterWriteStringField();
   }
@@ -1427,29 +1427,29 @@ LABEL_19:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self modelVersion];
+  modelVersion = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self modelVersion];
 
-  if (v8)
+  if (modelVersion)
   {
-    v9 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self modelVersion];
+    modelVersion2 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self modelVersion];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self trialTreatmentId];
+  trialTreatmentId = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self trialTreatmentId];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (trialTreatmentId)
   {
-    v12 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self trialTreatmentId];
+    trialTreatmentId2 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self trialTreatmentId];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
-- (void)setHasDisambiguationReason:(BOOL)a3
+- (void)setHasDisambiguationReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 2;
   }
@@ -1462,9 +1462,9 @@ LABEL_19:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFD | v3;
 }
 
-- (void)setHasIsCarPlay:(BOOL)a3
+- (void)setHasIsCarPlay:(BOOL)play
 {
-  if (a3)
+  if (play)
   {
     v3 = 0x8000;
   }
@@ -1477,9 +1477,9 @@ LABEL_19:
   *&self->_has = v3 & 0x8000 | *&self->_has & 0x7FFF;
 }
 
-- (void)setHasIsClientNavigating:(BOOL)a3
+- (void)setHasIsClientNavigating:(BOOL)navigating
 {
-  if (a3)
+  if (navigating)
   {
     v3 = 0x4000;
   }
@@ -1492,9 +1492,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasDeviceMotionState:(BOOL)a3
+- (void)setHasDeviceMotionState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 0x2000;
   }
@@ -1507,9 +1507,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasIsDeviceLockStatus:(BOOL)a3
+- (void)setHasIsDeviceLockStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 4096;
   }
@@ -1522,9 +1522,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasIsClientDaylight:(BOOL)a3
+- (void)setHasIsClientDaylight:(BOOL)daylight
 {
-  if (a3)
+  if (daylight)
   {
     v3 = 2048;
   }
@@ -1537,9 +1537,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasCalendarMonthOfYear:(BOOL)a3
+- (void)setHasCalendarMonthOfYear:(BOOL)year
 {
-  if (a3)
+  if (year)
   {
     v3 = 1024;
   }
@@ -1552,9 +1552,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasCalendarWeekOfMonth:(BOOL)a3
+- (void)setHasCalendarWeekOfMonth:(BOOL)month
 {
-  if (a3)
+  if (month)
   {
     v3 = 512;
   }
@@ -1567,9 +1567,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasCalendarDayOfWeek:(BOOL)a3
+- (void)setHasCalendarDayOfWeek:(BOOL)week
 {
-  if (a3)
+  if (week)
   {
     v3 = 256;
   }
@@ -1582,9 +1582,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasCalendarHourOfDay:(BOOL)a3
+- (void)setHasCalendarHourOfDay:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 128;
   }
@@ -1597,9 +1597,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasRawRequestDeviceCategory:(BOOL)a3
+- (void)setHasRawRequestDeviceCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 64;
   }
@@ -1612,9 +1612,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasRawCountry:(BOOL)a3
+- (void)setHasRawCountry:(BOOL)country
 {
-  if (a3)
+  if (country)
   {
     v3 = 32;
   }
@@ -1627,9 +1627,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasRawStateOrProvince:(BOOL)a3
+- (void)setHasRawStateOrProvince:(BOOL)province
 {
-  if (a3)
+  if (province)
   {
     v3 = 16;
   }
@@ -1642,9 +1642,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasRawLocale:(BOOL)a3
+- (void)setHasRawLocale:(BOOL)locale
 {
-  if (a3)
+  if (locale)
   {
     v3 = 8;
   }
@@ -1657,9 +1657,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasRawLanguage:(BOOL)a3
+- (void)setHasRawLanguage:(BOOL)language
 {
-  if (a3)
+  if (language)
   {
     v3 = 4;
   }
@@ -1672,9 +1672,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasTimestampSec:(BOOL)a3
+- (void)setHasTimestampSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 2;
   }
@@ -1687,26 +1687,26 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self modelVersion];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  modelVersion = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self modelVersion];
+  v7 = [modelVersion applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self deleteModelVersion];
   }
 
-  v9 = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self trialTreatmentId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  trialTreatmentId = [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self trialTreatmentId];
+  v10 = [trialTreatmentId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(INFERENCESchemaINFERENCEPervasiveEntityResolutionCommonSignals *)self deleteTrialTreatmentId];
   }

@@ -32,50 +32,50 @@ uint64_t __34__VUIDebugDefaults_sharedInstance__block_invoke()
   v2 = [(VUIDebugDefaults *)&v37 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_debugUIEnabled = [v3 BOOLForKey:@"EnableDebugUI"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_debugUIEnabled = [standardUserDefaults BOOLForKey:@"EnableDebugUI"];
 
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_pagePerformanceEnabled = [v4 BOOLForKey:@"EnablePagePerformance"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_pagePerformanceEnabled = [standardUserDefaults2 BOOLForKey:@"EnablePagePerformance"];
 
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_metricsLoggingEnabled = [v5 BOOLForKey:@"EnableMetricsLogging"];
+    standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_metricsLoggingEnabled = [standardUserDefaults3 BOOLForKey:@"EnableMetricsLogging"];
 
-    v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_metricsExpandedLoggingEnabled = [v6 BOOLForKey:@"EnableMetricsExpandedLogging"];
+    standardUserDefaults4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_metricsExpandedLoggingEnabled = [standardUserDefaults4 BOOLForKey:@"EnableMetricsExpandedLogging"];
 
-    v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_metricsPageRenderLoggingEnabled = [v7 BOOLForKey:@"EnableMetricsPageRenderLogging"];
+    standardUserDefaults5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_metricsPageRenderLoggingEnabled = [standardUserDefaults5 BOOLForKey:@"EnableMetricsPageRenderLogging"];
 
-    v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_metricsLogLocationAndImpressions = [v8 BOOLForKey:@"EnableMetricsExpandedClickLogging"];
+    standardUserDefaults6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_metricsLogLocationAndImpressions = [standardUserDefaults6 BOOLForKey:@"EnableMetricsExpandedClickLogging"];
 
-    v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_enableDemoMode = [v9 BOOLForKey:@"EnableDemoMode"];
+    standardUserDefaults7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_enableDemoMode = [standardUserDefaults7 BOOLForKey:@"EnableDemoMode"];
 
-    v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_gdprFirstTimeFlowEnabled = [v10 BOOLForKey:@"ForceGDPRFirstTimeFlow"];
+    standardUserDefaults8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_gdprFirstTimeFlowEnabled = [standardUserDefaults8 BOOLForKey:@"ForceGDPRFirstTimeFlow"];
 
-    v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_gdprWhatsNewFlowEnabled = [v11 BOOLForKey:@"ForceGDPRWhatsNewFlow"];
+    standardUserDefaults9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_gdprWhatsNewFlowEnabled = [standardUserDefaults9 BOOLForKey:@"ForceGDPRWhatsNewFlow"];
 
-    v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_debugRefreshEventLogEnabled = [v12 BOOLForKey:@"EnableRefreshEventDebug"];
+    standardUserDefaults10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_debugRefreshEventLogEnabled = [standardUserDefaults10 BOOLForKey:@"EnableRefreshEventDebug"];
 
-    v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v14 = [v13 objectForKey:@"PlaybackURLOverrides"];
+    standardUserDefaults11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v14 = [standardUserDefaults11 objectForKey:@"PlaybackURLOverrides"];
     v2->_playbackOverridesEnabled = v14 != 0;
 
-    v15 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_hoverEffectDisabled = [v15 BOOLForKey:@"hoverEffectDisabled"];
+    standardUserDefaults12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_hoverEffectDisabled = [standardUserDefaults12 BOOLForKey:@"hoverEffectDisabled"];
 
-    v16 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v17 = [v16 objectForKey:@"vStackInForEachEnabled"];
+    standardUserDefaults13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v17 = [standardUserDefaults13 objectForKey:@"vStackInForEachEnabled"];
 
     if (v17)
     {
-      v18 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v2->_vStackInForEachEnabled = [v18 BOOLForKey:@"vStackInForEachEnabled"];
+      standardUserDefaults14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v2->_vStackInForEachEnabled = [standardUserDefaults14 BOOLForKey:@"vStackInForEachEnabled"];
     }
 
     else
@@ -83,32 +83,32 @@ uint64_t __34__VUIDebugDefaults_sharedInstance__block_invoke()
       v2->_vStackInForEachEnabled = 1;
     }
 
-    v19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_impressionTrackingDisabled = [v19 BOOLForKey:@"impressionTrackingDisabled"];
+    standardUserDefaults15 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_impressionTrackingDisabled = [standardUserDefaults15 BOOLForKey:@"impressionTrackingDisabled"];
 
-    v20 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_stackedTextUseTypeAsViewIdEnabled = [v20 BOOLForKey:@"stackedTextUseTypeAsViewIdEnabled"];
+    standardUserDefaults16 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_stackedTextUseTypeAsViewIdEnabled = [standardUserDefaults16 BOOLForKey:@"stackedTextUseTypeAsViewIdEnabled"];
 
-    v21 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_iTunesExtrasSwiftUIMock = [v21 BOOLForKey:@"iTunesExtrasSwiftUIMock"];
+    standardUserDefaults17 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_iTunesExtrasSwiftUIMock = [standardUserDefaults17 BOOLForKey:@"iTunesExtrasSwiftUIMock"];
 
-    v22 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_capellaDebuggerEnabled = [v22 BOOLForKey:@"EnableCapellaDebugger"];
+    standardUserDefaults18 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_capellaDebuggerEnabled = [standardUserDefaults18 BOOLForKey:@"EnableCapellaDebugger"];
 
-    v23 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_capellaMusicInfoEnabled = [v23 BOOLForKey:@"EnableCapellaMusicInfo"];
+    standardUserDefaults19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_capellaMusicInfoEnabled = [standardUserDefaults19 BOOLForKey:@"EnableCapellaMusicInfo"];
 
-    v24 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_performanceDebuggerEnabled = [v24 BOOLForKey:@"EnablePerformanceDebugger"];
+    standardUserDefaults20 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_performanceDebuggerEnabled = [standardUserDefaults20 BOOLForKey:@"EnablePerformanceDebugger"];
 
-    v25 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_performanceDebuggerVerboseEnabled = [v25 BOOLForKey:@"EnablePerformanceDebuggerVerbose"];
+    standardUserDefaults21 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_performanceDebuggerVerboseEnabled = [standardUserDefaults21 BOOLForKey:@"EnablePerformanceDebuggerVerbose"];
 
-    v26 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_useExperienceControllerForAllContent = [v26 BOOLForKey:@"UseExperienceControllerForAllContent"];
+    standardUserDefaults22 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_useExperienceControllerForAllContent = [standardUserDefaults22 BOOLForKey:@"UseExperienceControllerForAllContent"];
 
-    v27 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_overrideLastNLSQueryDate = [v27 integerForKey:@"OverrideLastNLSQueryDate"];
+    standardUserDefaults23 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_overrideLastNLSQueryDate = [standardUserDefaults23 integerForKey:@"OverrideLastNLSQueryDate"];
 
     v28 = VUICDefaultLogObject();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))

@@ -1,9 +1,9 @@
 @interface ACCPlatformPluginManager
 + (id)sharedManager;
 - (ACCPlatformPluginManager)init;
-- (id)initClass:(Class)a3;
-- (id)pluginInstanceWithProtocol:(id)a3 fallbackToTransportPlugins:(BOOL)a4;
-- (id)pluginInstancesWithProtocol:(id)a3 includeTransportPlugins:(BOOL)a4;
+- (id)initClass:(Class)class;
+- (id)pluginInstanceWithProtocol:(id)protocol fallbackToTransportPlugins:(BOOL)plugins;
+- (id)pluginInstancesWithProtocol:(id)protocol includeTransportPlugins:(BOOL)plugins;
 - (unint64_t)addPlatformPlugInBundleSearchPaths;
 - (unint64_t)initAllPlugIns;
 - (unint64_t)loadAllBundles;
@@ -135,7 +135,7 @@
 {
   v11.receiver = self;
   v11.super_class = ACCPlatformPluginManager;
-  v3 = [(ACCPluginManager *)&v11 initAllPlugIns];
+  initAllPlugIns = [(ACCPluginManager *)&v11 initAllPlugIns];
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 6;
@@ -165,7 +165,7 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v13 = v3;
+    v13 = initAllPlugIns;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Initialized %lu platform plugin(s)", buf, 0xCu);
   }
 
@@ -190,14 +190,14 @@
     [(ACCPlatformPluginManager *)self initAllPlugIns];
   }
 
-  return v3;
+  return initAllPlugIns;
 }
 
 - (unint64_t)startAllPlugIns
 {
   v7.receiver = self;
   v7.super_class = ACCPlatformPluginManager;
-  v2 = [(ACCPluginManager *)&v7 startAllPlugIns];
+  startAllPlugIns = [(ACCPluginManager *)&v7 startAllPlugIns];
   if (gLogObjects)
   {
     v3 = gNumLogObjects < 6;
@@ -227,18 +227,18 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v9 = v2;
+    v9 = startAllPlugIns;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Started %lu platform plugin(s)", buf, 0xCu);
   }
 
-  return v2;
+  return startAllPlugIns;
 }
 
 - (unint64_t)stopAllPlugIns
 {
   v7.receiver = self;
   v7.super_class = ACCPlatformPluginManager;
-  v2 = [(ACCPluginManager *)&v7 stopAllPlugIns];
+  stopAllPlugIns = [(ACCPluginManager *)&v7 stopAllPlugIns];
   if (gLogObjects)
   {
     v3 = gNumLogObjects < 6;
@@ -268,18 +268,18 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v9 = v2;
+    v9 = stopAllPlugIns;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Stopped %lu platform plugin(s)", buf, 0xCu);
   }
 
-  return v2;
+  return stopAllPlugIns;
 }
 
-- (id)pluginInstanceWithProtocol:(id)a3 fallbackToTransportPlugins:(BOOL)a4
+- (id)pluginInstanceWithProtocol:(id)protocol fallbackToTransportPlugins:(BOOL)plugins
 {
-  v4 = a4;
-  v6 = a3;
-  v29 = v6;
+  pluginsCopy = plugins;
+  protocolCopy = protocol;
+  v29 = protocolCopy;
   v7 = [NSArray arrayWithObjects:&v29 count:1];
   v8 = [(ACCPluginManager *)self pluginInstancesWithProtocols:v7 matchAny:0];
 
@@ -308,13 +308,13 @@
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [ACCPlatformPluginManager pluginInstanceWithProtocol:v6 fallbackToTransportPlugins:?];
+      [ACCPlatformPluginManager pluginInstanceWithProtocol:protocolCopy fallbackToTransportPlugins:?];
     }
 
     goto LABEL_36;
   }
 
-  if (v4)
+  if (pluginsCopy)
   {
     if (gLogObjects && gNumLogObjects >= 6)
     {
@@ -334,11 +334,11 @@
 
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [ACCPlatformPluginManager pluginInstanceWithProtocol:v6 fallbackToTransportPlugins:?];
+      [ACCPlatformPluginManager pluginInstanceWithProtocol:protocolCopy fallbackToTransportPlugins:?];
     }
 
     v12 = +[ACCTransportPluginManager sharedManager];
-    v28 = v6;
+    v28 = protocolCopy;
     v13 = [NSArray arrayWithObjects:&v28 count:1];
     v14 = [v12 pluginInstancesWithProtocols:v13 matchAny:0];
 
@@ -370,15 +370,15 @@
 
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
-          [ACCPlatformPluginManager pluginInstanceWithProtocol:v6 fallbackToTransportPlugins:?];
+          [ACCPlatformPluginManager pluginInstanceWithProtocol:protocolCopy fallbackToTransportPlugins:?];
         }
 
         v8 = v14;
 LABEL_36:
 
 LABEL_37:
-        v17 = [v8 anyObject];
-        if (v17)
+        anyObject = [v8 anyObject];
+        if (anyObject)
         {
           goto LABEL_49;
         }
@@ -414,10 +414,10 @@ LABEL_38:
 
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = NSStringFromProtocol(v6);
+    v20 = NSStringFromProtocol(protocolCopy);
     v21 = v20;
     v22 = "NO";
-    if (v4)
+    if (pluginsCopy)
     {
       v22 = "YES";
     }
@@ -429,38 +429,38 @@ LABEL_38:
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Couldn't find a platform/transport plugin conforming to protocol: %@ (fallbackToTransportPlugins: %s)", &v24, 0x16u);
   }
 
-  v17 = 0;
+  anyObject = 0;
 LABEL_49:
 
-  return v17;
+  return anyObject;
 }
 
-- (id)pluginInstancesWithProtocol:(id)a3 includeTransportPlugins:(BOOL)a4
+- (id)pluginInstancesWithProtocol:(id)protocol includeTransportPlugins:(BOOL)plugins
 {
-  v4 = a4;
-  v6 = a3;
+  pluginsCopy = plugins;
+  protocolCopy = protocol;
   v7 = +[NSMutableSet set];
-  v18 = v6;
+  v18 = protocolCopy;
   v8 = [NSArray arrayWithObjects:&v18 count:1];
   v9 = [(ACCPluginManager *)self pluginInstancesWithProtocols:v8 matchAny:0];
 
   if (v9)
   {
-    v10 = [v9 allObjects];
-    [v7 addObjectsFromArray:v10];
+    allObjects = [v9 allObjects];
+    [v7 addObjectsFromArray:allObjects];
   }
 
-  if (v4)
+  if (pluginsCopy)
   {
     v11 = +[ACCTransportPluginManager sharedManager];
-    v17 = v6;
+    v17 = protocolCopy;
     v12 = [NSArray arrayWithObjects:&v17 count:1];
     v13 = [v11 pluginInstancesWithProtocols:v12 matchAny:0];
 
     if (v13)
     {
-      v14 = [v13 allObjects];
-      [v7 addObjectsFromArray:v14];
+      allObjects2 = [v13 allObjects];
+      [v7 addObjectsFromArray:allObjects2];
     }
   }
 
@@ -477,9 +477,9 @@ LABEL_49:
   return v15;
 }
 
-- (id)initClass:(Class)a3
+- (id)initClass:(Class)class
 {
-  v4 = objc_alloc_init(a3);
+  v4 = objc_alloc_init(class);
 
   return v4;
 }
@@ -490,7 +490,7 @@ LABEL_49:
   block[1] = 3221225472;
   block[2] = __41__ACCPlatformPluginManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once_3 != -1)
   {
     dispatch_once(&sharedManager_once_3, block);
@@ -510,25 +510,25 @@ uint64_t __41__ACCPlatformPluginManager_sharedManager__block_invoke(uint64_t a1)
 
 - (void)addPlatformPlugInBundleSearchPaths
 {
-  v1 = [a1 pluginBundleSearchPaths];
+  pluginBundleSearchPaths = [self pluginBundleSearchPaths];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_6_8(&_mh_execute_header, v2, v3, "Added bundle search paths: %@", v4, v5, v6, v7, v8);
 }
 
 - (void)loadAllBundles
 {
-  a2->receiver = a1;
+  a2->receiver = self;
   a2->super_class = ACCPlatformPluginManager;
-  v2 = [(objc_super *)a2 pluginBundles];
+  pluginBundles = [(objc_super *)a2 pluginBundles];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_6_8(&_mh_execute_header, v3, v4, "ACCPlatformPluginManager.pluginBundles: %@", v5, v6, v7, v8, v9);
 }
 
 - (void)initAllPlugIns
 {
-  a2->receiver = a1;
+  a2->receiver = self;
   a2->super_class = ACCPlatformPluginManager;
-  v2 = [(objc_super *)a2 pluginInstances];
+  pluginInstances = [(objc_super *)a2 pluginInstances];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_6_8(&_mh_execute_header, v3, v4, "ACCPlatformPluginManager.pluginInstances: %@", v5, v6, v7, v8, v9);
 }

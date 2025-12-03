@@ -1,15 +1,15 @@
 @interface WFEvernoteTagsTagFieldParameter
 + (id)referencedActionResourceClasses;
-- (id)suggestedTagsForTagField:(id)a3;
-- (void)setActionResources:(id)a3;
-- (void)setEvernoteAccessResource:(id)a3;
+- (id)suggestedTagsForTagField:(id)field;
+- (void)setActionResources:(id)resources;
+- (void)setEvernoteAccessResource:(id)resource;
 - (void)updateTags;
 - (void)wasAddedToWorkflow;
 @end
 
 @implementation WFEvernoteTagsTagFieldParameter
 
-- (id)suggestedTagsForTagField:(id)a3
+- (id)suggestedTagsForTagField:(id)field
 {
   v3 = +[WFDiskCache workflowCache];
   v4 = MEMORY[0x277CBEB98];
@@ -25,13 +25,13 @@
 - (void)updateTags
 {
   v2 = +[WFEvernoteAccessResource evernoteSession];
-  v3 = [v2 isAuthenticated];
+  isAuthenticated = [v2 isAuthenticated];
 
-  if (v3)
+  if (isAuthenticated)
   {
     v5 = +[WFEvernoteAccessResource evernoteSession];
-    v4 = [v5 primaryNoteStore];
-    [v4 listTagsWithCompletion:&__block_literal_global_5268];
+    primaryNoteStore = [v5 primaryNoteStore];
+    [primaryNoteStore listTagsWithCompletion:&__block_literal_global_5268];
   }
 }
 
@@ -83,30 +83,30 @@ WFEvernoteTag *__45__WFEvernoteTagsTagFieldParameter_updateTags__block_invoke_2(
   [(WFDynamicTagFieldParameter *)self setDataSource:self];
 }
 
-- (void)setEvernoteAccessResource:(id)a3
+- (void)setEvernoteAccessResource:(id)resource
 {
-  v8 = a3;
+  resourceCopy = resource;
   v5 = MEMORY[0x277D7CF28];
   if (self->_evernoteAccessResource)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 removeObserver:self name:*v5 object:self->_evernoteAccessResource];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*v5 object:self->_evernoteAccessResource];
   }
 
-  objc_storeStrong(&self->_evernoteAccessResource, a3);
+  objc_storeStrong(&self->_evernoteAccessResource, resource);
   if (self->_evernoteAccessResource)
   {
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:self selector:sel_updateTags name:*v5 object:self->_evernoteAccessResource];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_updateTags name:*v5 object:self->_evernoteAccessResource];
   }
 }
 
-- (void)setActionResources:(id)a3
+- (void)setActionResources:(id)resources
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [a3 anyObject];
+  anyObject = [resources anyObject];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = anyObject;
   if (v6 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v8 = getWFGeneralLogObject();

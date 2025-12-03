@@ -1,8 +1,8 @@
 @interface _PUIPosterSnapshotSQLiteCacheAsyncImplementation
-- (BOOL)prepareCacheWithError:(id *)a3;
-- (id)cacheSnapshotBundle:(id)a3 options:(id)a4;
-- (id)discardSnapshotBundlesMatchingSQLPredicate:(id)a3;
-- (id)snapshotBundlesMatchingSQLPredicate:(id)a3 orderedBy:(id)a4 limit:(id)a5;
+- (BOOL)prepareCacheWithError:(id *)error;
+- (id)cacheSnapshotBundle:(id)bundle options:(id)options;
+- (id)discardSnapshotBundlesMatchingSQLPredicate:(id)predicate;
+- (id)snapshotBundlesMatchingSQLPredicate:(id)predicate orderedBy:(id)by limit:(id)limit;
 - (void)invalidate;
 @end
 
@@ -10,7 +10,7 @@
 
 - (void)invalidate
 {
-  v3 = [(_PUIPosterSnapshotSQLiteCacheImplementation *)self cacheQueue];
+  cacheQueue = [(_PUIPosterSnapshotSQLiteCacheImplementation *)self cacheQueue];
   BSDispatchQueueAssert();
 
   v4.receiver = self;
@@ -18,39 +18,39 @@
   [(_PUIPosterSnapshotSQLiteCacheImplementation *)&v4 invalidate];
 }
 
-- (BOOL)prepareCacheWithError:(id *)a3
+- (BOOL)prepareCacheWithError:(id *)error
 {
-  v5 = [(_PUIPosterSnapshotSQLiteCacheImplementation *)self cacheQueue];
+  cacheQueue = [(_PUIPosterSnapshotSQLiteCacheImplementation *)self cacheQueue];
   BSDispatchQueueAssert();
 
   v7.receiver = self;
   v7.super_class = _PUIPosterSnapshotSQLiteCacheAsyncImplementation;
-  return [(_PUIPosterSnapshotSQLiteCacheImplementation *)&v7 prepareCacheWithError:a3];
+  return [(_PUIPosterSnapshotSQLiteCacheImplementation *)&v7 prepareCacheWithError:error];
 }
 
-- (id)discardSnapshotBundlesMatchingSQLPredicate:(id)a3
+- (id)discardSnapshotBundlesMatchingSQLPredicate:(id)predicate
 {
   v5.receiver = self;
   v5.super_class = _PUIPosterSnapshotSQLiteCacheAsyncImplementation;
-  v3 = [(_PUIPosterSnapshotSQLiteCacheImplementation *)&v5 discardSnapshotBundlesMatchingSQLPredicate:a3];
+  v3 = [(_PUIPosterSnapshotSQLiteCacheImplementation *)&v5 discardSnapshotBundlesMatchingSQLPredicate:predicate];
 
   return v3;
 }
 
-- (id)cacheSnapshotBundle:(id)a3 options:(id)a4
+- (id)cacheSnapshotBundle:(id)bundle options:(id)options
 {
   v6.receiver = self;
   v6.super_class = _PUIPosterSnapshotSQLiteCacheAsyncImplementation;
-  v4 = [(_PUIPosterSnapshotSQLiteCacheImplementation *)&v6 cacheSnapshotBundle:a3 options:a4];
+  v4 = [(_PUIPosterSnapshotSQLiteCacheImplementation *)&v6 cacheSnapshotBundle:bundle options:options];
 
   return v4;
 }
 
-- (id)snapshotBundlesMatchingSQLPredicate:(id)a3 orderedBy:(id)a4 limit:(id)a5
+- (id)snapshotBundlesMatchingSQLPredicate:(id)predicate orderedBy:(id)by limit:(id)limit
 {
   v7.receiver = self;
   v7.super_class = _PUIPosterSnapshotSQLiteCacheAsyncImplementation;
-  v5 = [(_PUIPosterSnapshotSQLiteCacheImplementation *)&v7 snapshotBundlesMatchingSQLPredicate:a3 orderedBy:a4 limit:a5];
+  v5 = [(_PUIPosterSnapshotSQLiteCacheImplementation *)&v7 snapshotBundlesMatchingSQLPredicate:predicate orderedBy:by limit:limit];
 
   return v5;
 }

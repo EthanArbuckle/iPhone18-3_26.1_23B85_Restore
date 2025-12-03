@@ -1,21 +1,21 @@
 @interface SGMBundleIdsMissingEntitlement
 - (SGMBundleIdsMissingEntitlement)init;
-- (void)trackEventWithScalar:(unint64_t)a3 bundleId:(id)a4 entitlement:(id)a5;
+- (void)trackEventWithScalar:(unint64_t)scalar bundleId:(id)id entitlement:(id)entitlement;
 @end
 
 @implementation SGMBundleIdsMissingEntitlement
 
-- (void)trackEventWithScalar:(unint64_t)a3 bundleId:(id)a4 entitlement:(id)a5
+- (void)trackEventWithScalar:(unint64_t)scalar bundleId:(id)id entitlement:(id)entitlement
 {
   v13[2] = *MEMORY[0x1E69E9840];
   tracker = self->_tracker;
-  v13[0] = a4;
-  v13[1] = a5;
+  v13[0] = id;
+  v13[1] = entitlement;
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a5;
-  v10 = a4;
+  entitlementCopy = entitlement;
+  idCopy = id;
   v11 = [v8 arrayWithObjects:v13 count:2];
-  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v11 value:a3];
+  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v11 value:scalar];
 
   v12 = *MEMORY[0x1E69E9840];
 }

@@ -1,29 +1,29 @@
 @interface PXBasicTileUserData
-+ (PXBasicTileUserData)userDataWithViewSpec:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithViewSpec:(id)a3;
++ (PXBasicTileUserData)userDataWithViewSpec:(id)spec;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithViewSpec:(id)spec;
 - (unint64_t)hash;
 @end
 
 @implementation PXBasicTileUserData
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PXBasicTileUserData *)self viewSpec];
-    v7 = [v5 viewSpec];
-    if (v6 == v7)
+    v5 = equalCopy;
+    viewSpec = [(PXBasicTileUserData *)self viewSpec];
+    viewSpec2 = [v5 viewSpec];
+    if (viewSpec == viewSpec2)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [v6 isEqual:v7];
+      v8 = [viewSpec isEqual:viewSpec2];
     }
   }
 
@@ -37,31 +37,31 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PXBasicTileUserData *)self viewSpec];
-  v3 = [v2 hash];
+  viewSpec = [(PXBasicTileUserData *)self viewSpec];
+  v3 = [viewSpec hash];
 
   return v3;
 }
 
-- (id)_initWithViewSpec:(id)a3
+- (id)_initWithViewSpec:(id)spec
 {
-  v5 = a3;
+  specCopy = spec;
   v9.receiver = self;
   v9.super_class = PXBasicTileUserData;
   v6 = [(PXBasicTileUserData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewSpec, a3);
+    objc_storeStrong(&v6->_viewSpec, spec);
   }
 
   return v7;
 }
 
-+ (PXBasicTileUserData)userDataWithViewSpec:(id)a3
++ (PXBasicTileUserData)userDataWithViewSpec:(id)spec
 {
-  v3 = a3;
-  v4 = [[PXBasicTileUserData alloc] _initWithViewSpec:v3];
+  specCopy = spec;
+  v4 = [[PXBasicTileUserData alloc] _initWithViewSpec:specCopy];
 
   return v4;
 }

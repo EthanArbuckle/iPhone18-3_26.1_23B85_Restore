@@ -1,5 +1,5 @@
 @interface AMSUIDMobileGestalt
-+ (BOOL)hasCapabilities:(id)a3;
++ (BOOL)hasCapabilities:(id)capabilities;
 + (NSString)activePairedSystemVersion;
 @end
 
@@ -17,14 +17,14 @@
   return v3;
 }
 
-+ (BOOL)hasCapabilities:(id)a3
++ (BOOL)hasCapabilities:(id)capabilities
 {
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v35 count:16];
+  capabilitiesCopy = capabilities;
+  v4 = [capabilitiesCopy countByEnumeratingWithState:&v23 objects:v35 count:16];
   if (v4)
   {
     v6 = v4;
@@ -39,7 +39,7 @@
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(capabilitiesCopy);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
@@ -60,17 +60,17 @@
               v13 = +[AMSLogConfig sharedConfig];
             }
 
-            v14 = [v13 OSLogObject];
-            if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+            oSLogObject = [v13 OSLogObject];
+            if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
             {
-              v15 = v3;
+              v15 = capabilitiesCopy;
               v16 = v8;
               v17 = objc_opt_class();
               v18 = AMSLogKey();
               *buf = v21;
               v28 = v17;
               v8 = v16;
-              v3 = v15;
+              capabilitiesCopy = v15;
               v7 = v22;
               v29 = 2114;
               v30 = v18;
@@ -78,7 +78,7 @@
               v32 = v10;
               v33 = 1026;
               v34 = 0;
-              _os_log_impl(&dword_0, v14, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to obtain capability: %{public}@, %{public}d", buf, 0x26u);
+              _os_log_impl(&dword_0, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to obtain capability: %{public}@, %{public}d", buf, 0x26u);
             }
           }
 
@@ -90,7 +90,7 @@
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v23 objects:v35 count:16];
+      v6 = [capabilitiesCopy countByEnumeratingWithState:&v23 objects:v35 count:16];
       if (v6)
       {
         continue;

@@ -1,63 +1,63 @@
 @interface SBAccidentalActivationMitigationHostSession
-- (SBAccidentalActivationMitigationHostSession)initWithSuppressionManager:(id)a3;
-- (void)activateSessionForBundleIdentifier:(id)a3 duration:(double)a4 accidentalActivationMitigationSessionCancellationPolicyClassName:(id)a5;
-- (void)addObserver:(id)a3;
-- (void)idleTimerDidExpire:(id)a3;
-- (void)removeObserver:(id)a3;
+- (SBAccidentalActivationMitigationHostSession)initWithSuppressionManager:(id)manager;
+- (void)activateSessionForBundleIdentifier:(id)identifier duration:(double)duration accidentalActivationMitigationSessionCancellationPolicyClassName:(id)name;
+- (void)addObserver:(id)observer;
+- (void)idleTimerDidExpire:(id)expire;
+- (void)removeObserver:(id)observer;
 - (void)requestSessionCancellation;
 - (void)requestSessionMitigateEarly;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation SBAccidentalActivationMitigationHostSession
 
-- (SBAccidentalActivationMitigationHostSession)initWithSuppressionManager:(id)a3
+- (SBAccidentalActivationMitigationHostSession)initWithSuppressionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = SBAccidentalActivationMitigationHostSession;
   v6 = [(SBAccidentalActivationMitigationHostSession *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_suppressionManager, a3);
+    objc_storeStrong(&v6->_suppressionManager, manager);
   }
 
   return v7;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v9 = v4;
-    v5 = [(NSHashTable *)self->_observers containsObject:v4];
-    v4 = v9;
+    v9 = observerCopy;
+    v5 = [(NSHashTable *)self->_observers containsObject:observerCopy];
+    observerCopy = v9;
     if (!v5)
     {
       observers = self->_observers;
       if (!observers)
       {
-        v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         v8 = self->_observers;
-        self->_observers = v7;
+        self->_observers = weakObjectsHashTable;
 
         observers = self->_observers;
       }
 
       [(NSHashTable *)observers addObject:v9];
-      v4 = v9;
+      observerCopy = v9;
     }
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  if (v5)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    [(NSHashTable *)self->_observers removeObject:v5];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
   }
 
   if (![(NSHashTable *)self->_observers count])
@@ -67,14 +67,14 @@
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v52 = *MEMORY[0x277D85DE8];
   BSDispatchQueueAssertMain();
   state = self->_state;
-  if (state != a3)
+  if (state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
@@ -105,11 +105,11 @@
       while (v9);
     }
 
-    if (a3 <= 1)
+    if (state <= 1)
     {
-      if (a3)
+      if (state)
       {
-        if (a3 != 1)
+        if (state != 1)
         {
           return;
         }
@@ -126,7 +126,7 @@
           duration = self->_duration;
           v15 = NSStringFromSBCaptureButtonSuppressionState([(SBCaptureButtonSuppressionManager *)self->_suppressionManager suppressionState]);
           *buf = 138413058;
-          v42 = self;
+          selfCopy5 = self;
           v43 = 2112;
           v44 = v13;
           v45 = 2048;
@@ -136,9 +136,9 @@
           _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "[PostLaunchSuppression][AccidentalActivationMitigationSession] %@ did transition to state: %@; start timer with duration: %f due to mitigation session become active, VO=%@; screen is dimmed", buf, 0x2Au);
         }
 
-        v16 = [(SBAccidentalActivationMitigationHostSession *)self delegate];
+        delegate = [(SBAccidentalActivationMitigationHostSession *)self delegate];
         v36 = 0;
-        [v16 hostSessionDidRequestStartMitigation:self outIdleTimer:&v36];
+        [delegate hostSessionDidRequestStartMitigation:self outIdleTimer:&v36];
         v17 = v36;
 
         idleTimer = self->_idleTimer;
@@ -150,8 +150,8 @@
 
       else
       {
-        v24 = [MEMORY[0x277CCA890] currentHandler];
-        [v24 handleFailureInMethod:a2 object:self file:@"SBAccidentalActivationMitigationHostSession.m" lineNumber:70 description:@"Accidental activation mitigation session should never become initial again."];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SBAccidentalActivationMitigationHostSession.m" lineNumber:70 description:@"Accidental activation mitigation session should never become initial again."];
 
         v19 = SBLogCameraCaptureAccidentalActivationMitigationSession();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -159,7 +159,7 @@
           v25 = NSStringFromSBSAccidentalActivationMitigationSessionState();
           v26 = NSStringFromSBCaptureButtonSuppressionState([(SBCaptureButtonSuppressionManager *)self->_suppressionManager suppressionState]);
           *buf = 138412802;
-          v42 = self;
+          selfCopy5 = self;
           v43 = 2112;
           v44 = v25;
           v45 = 2112;
@@ -171,9 +171,9 @@
       goto LABEL_35;
     }
 
-    if (a3 != 2)
+    if (state != 2)
     {
-      if (a3 != 3)
+      if (state != 3)
       {
         return;
       }
@@ -189,7 +189,7 @@
         v21 = NSStringFromSBSAccidentalActivationMitigationSessionState();
         v22 = NSStringFromSBCaptureButtonSuppressionState([(SBCaptureButtonSuppressionManager *)self->_suppressionManager suppressionState]);
         *buf = 138412802;
-        v42 = self;
+        selfCopy5 = self;
         v43 = 2112;
         v44 = v21;
         v45 = 2112;
@@ -197,8 +197,8 @@
         _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_DEFAULT, "[PostLaunchSuppression][AccidentalActivationMitigationSession] %@ did transition to state: %@; stopping camera due to mitigation session ended, VO=%@; camera stopped, device dimmed and locked", buf, 0x20u);
       }
 
-      v23 = [(SBAccidentalActivationMitigationHostSession *)self delegate];
-      [v23 hostSessionDidRequestMitigateAccidentalActivation:self];
+      delegate2 = [(SBAccidentalActivationMitigationHostSession *)self delegate];
+      [delegate2 hostSessionDidRequestMitigateAccidentalActivation:self];
 
       [(SBIdleTimer *)self->_idleTimer removeIdleTimerObserver:self];
       v19 = self->_idleTimer;
@@ -221,16 +221,16 @@
       {
         v30 = NSStringFromSBSAccidentalActivationMitigationSessionState();
         v31 = NSStringFromSBAccidentalActivationMitigationSessionCancellationEventType([v19 eventType]);
-        v32 = [v19 eventReason];
+        eventReason = [v19 eventReason];
         v33 = NSStringFromSBCaptureButtonSuppressionState([(SBCaptureButtonSuppressionManager *)self->_suppressionManager suppressionState]);
         *buf = 138413314;
-        v42 = self;
+        selfCopy5 = self;
         v43 = 2112;
         v44 = v30;
         v45 = 2112;
         v46 = *&v31;
         v47 = 2112;
-        v48 = v32;
+        v48 = eventReason;
         v49 = 2112;
         v50 = v33;
         _os_log_impl(&dword_21ED4E000, v28, OS_LOG_TYPE_DEFAULT, "[PostLaunchSuppression][AccidentalActivationMitigationSession] %@ did transition to state: %@; cancelled due to event type: %@; reason: %@, VO=%@; screen is un-dimmed, camera running", buf, 0x34u);
@@ -244,7 +244,7 @@ LABEL_33:
       v30 = NSStringFromSBSAccidentalActivationMitigationSessionState();
       v31 = NSStringFromSBCaptureButtonSuppressionState([(SBCaptureButtonSuppressionManager *)self->_suppressionManager suppressionState]);
       *buf = 138412802;
-      v42 = self;
+      selfCopy5 = self;
       v43 = 2112;
       v44 = v30;
       v45 = 2112;
@@ -253,8 +253,8 @@ LABEL_33:
       goto LABEL_33;
     }
 
-    v34 = [(SBAccidentalActivationMitigationHostSession *)self delegate];
-    [v34 hostSessionDidRequestCancelMitigation:self];
+    delegate3 = [(SBAccidentalActivationMitigationHostSession *)self delegate];
+    [delegate3 hostSessionDidRequestCancelMitigation:self];
 
     [(SBIdleTimer *)self->_idleTimer removeIdleTimerObserver:self];
     v35 = self->_idleTimer;
@@ -264,16 +264,16 @@ LABEL_35:
   }
 }
 
-- (void)activateSessionForBundleIdentifier:(id)a3 duration:(double)a4 accidentalActivationMitigationSessionCancellationPolicyClassName:(id)a5
+- (void)activateSessionForBundleIdentifier:(id)identifier duration:(double)duration accidentalActivationMitigationSessionCancellationPolicyClassName:(id)name
 {
-  v14 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
   BSDispatchQueueAssertMain();
-  objc_storeStrong(&self->_bundleIdentifier, a3);
-  self->_duration = a4;
+  objc_storeStrong(&self->_bundleIdentifier, identifier);
+  self->_duration = duration;
   cancellationPolicyClassName = self->_cancellationPolicyClassName;
-  self->_cancellationPolicyClassName = v9;
-  v11 = v9;
+  self->_cancellationPolicyClassName = nameCopy;
+  v11 = nameCopy;
 
   self->_mitigatedEarly = 0;
   if (v11)
@@ -307,9 +307,9 @@ LABEL_35:
   [(SBAccidentalActivationMitigationHostSession *)self setState:3];
 }
 
-- (void)idleTimerDidExpire:(id)a3
+- (void)idleTimerDidExpire:(id)expire
 {
-  if (self->_idleTimer == a3 && [(SBAccidentalActivationMitigationHostSession *)self state]== 1)
+  if (self->_idleTimer == expire && [(SBAccidentalActivationMitigationHostSession *)self state]== 1)
   {
 
     [(SBAccidentalActivationMitigationHostSession *)self setState:3];

@@ -1,10 +1,10 @@
 @interface NSObject
-- (void)tamale_ARImageSensor_swizzled_captureOutput:(id)a3 willCapturePhotoForResolvedSettings:(id)a4;
+- (void)tamale_ARImageSensor_swizzled_captureOutput:(id)output willCapturePhotoForResolvedSettings:(id)settings;
 @end
 
 @implementation NSObject
 
-- (void)tamale_ARImageSensor_swizzled_captureOutput:(id)a3 willCapturePhotoForResolvedSettings:(id)a4
+- (void)tamale_ARImageSensor_swizzled_captureOutput:(id)output willCapturePhotoForResolvedSettings:(id)settings
 {
   v4 = objc_getAssociatedObject(self, self);
   if (v4)
@@ -12,9 +12,9 @@
     v7 = v4;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v7 delegate];
-      v6 = v5;
-      if (v5 && [v5 conformsToProtocol:&OBJC_PROTOCOL___ARImageSensorDelegate])
+      delegate = [v7 delegate];
+      v6 = delegate;
+      if (delegate && [delegate conformsToProtocol:&OBJC_PROTOCOL___ARImageSensorDelegate])
       {
         [v6 willCapturePhoto];
       }

@@ -1,96 +1,96 @@
 @interface IDSGFTMetricsLink
-- (void)linkConnectedWithProtocolStack:(id)a3;
-- (void)setChannelDataProtocolStack:(id)a3;
-- (void)setIPVersion:(unsigned __int8)a3;
-- (void)setIsLinkEngineLink:(BOOL)a3;
-- (void)setIsTLEEnabled:(BOOL)a3;
-- (void)setLinkType:(id)a3;
-- (void)setLocalRAT:(unsigned int)a3;
-- (void)setRelayProtocolStack:(id)a3;
-- (void)setRemoteRAT:(unsigned int)a3;
+- (void)linkConnectedWithProtocolStack:(id)stack;
+- (void)setChannelDataProtocolStack:(id)stack;
+- (void)setIPVersion:(unsigned __int8)version;
+- (void)setIsLinkEngineLink:(BOOL)link;
+- (void)setIsTLEEnabled:(BOOL)enabled;
+- (void)setLinkType:(id)type;
+- (void)setLocalRAT:(unsigned int)t;
+- (void)setRelayProtocolStack:(id)stack;
+- (void)setRemoteRAT:(unsigned int)t;
 @end
 
 @implementation IDSGFTMetricsLink
 
-- (void)setLinkType:(id)a3
+- (void)setLinkType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   os_unfair_lock_lock(&self->super._lock);
-  [(NSMutableDictionary *)self->super._attributes setObject:v4 forKeyedSubscript:@"t"];
+  [(NSMutableDictionary *)self->super._attributes setObject:typeCopy forKeyedSubscript:@"t"];
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setLocalRAT:(unsigned int)a3
+- (void)setLocalRAT:(unsigned int)t
 {
   os_unfair_lock_lock(&self->super._lock);
-  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:IDSRadioAccessTechnologyToString(a3)];
+  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:IDSRadioAccessTechnologyToString(t)];
   [(NSMutableDictionary *)self->super._attributes setObject:v5 forKeyedSubscript:@"lrat"];
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setRemoteRAT:(unsigned int)a3
+- (void)setRemoteRAT:(unsigned int)t
 {
   os_unfair_lock_lock(&self->super._lock);
-  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:IDSRadioAccessTechnologyToString(a3)];
+  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:IDSRadioAccessTechnologyToString(t)];
   [(NSMutableDictionary *)self->super._attributes setObject:v5 forKeyedSubscript:@"rrat"];
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setIPVersion:(unsigned __int8)a3
+- (void)setIPVersion:(unsigned __int8)version
 {
-  v3 = a3;
+  versionCopy = version;
   os_unfair_lock_lock(&self->super._lock);
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:versionCopy];
   [(NSMutableDictionary *)self->super._attributes setObject:v5 forKeyedSubscript:@"ipver"];
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setRelayProtocolStack:(id)a3
+- (void)setRelayProtocolStack:(id)stack
 {
-  v4 = a3;
+  stackCopy = stack;
   os_unfair_lock_lock(&self->super._lock);
-  [(NSMutableDictionary *)self->super._attributes setObject:v4 forKeyedSubscript:@"rps"];
+  [(NSMutableDictionary *)self->super._attributes setObject:stackCopy forKeyedSubscript:@"rps"];
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setChannelDataProtocolStack:(id)a3
+- (void)setChannelDataProtocolStack:(id)stack
 {
-  v4 = a3;
+  stackCopy = stack;
   os_unfair_lock_lock(&self->super._lock);
-  [(NSMutableDictionary *)self->super._attributes setObject:v4 forKeyedSubscript:@"cdps"];
+  [(NSMutableDictionary *)self->super._attributes setObject:stackCopy forKeyedSubscript:@"cdps"];
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setIsTLEEnabled:(BOOL)a3
+- (void)setIsTLEEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   os_unfair_lock_lock(&self->super._lock);
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   [(NSMutableDictionary *)self->super._attributes setObject:v5 forKeyedSubscript:@"tle"];
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setIsLinkEngineLink:(BOOL)a3
+- (void)setIsLinkEngineLink:(BOOL)link
 {
-  v3 = a3;
+  linkCopy = link;
   os_unfair_lock_lock(&self->super._lock);
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:linkCopy];
   [(NSMutableDictionary *)self->super._attributes setObject:v5 forKeyedSubscript:@"le"];
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)linkConnectedWithProtocolStack:(id)a3
+- (void)linkConnectedWithProtocolStack:(id)stack
 {
-  v4 = a3;
+  stackCopy = stack;
   [(IDSGFTMetricsReferencePoint *)self event:@"lc"];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"lc-%@", v4];
+  stackCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"lc-%@", stackCopy];
 
-  [(IDSGFTMetricsReferencePoint *)self event:v5];
+  [(IDSGFTMetricsReferencePoint *)self event:stackCopy];
 }
 
 @end

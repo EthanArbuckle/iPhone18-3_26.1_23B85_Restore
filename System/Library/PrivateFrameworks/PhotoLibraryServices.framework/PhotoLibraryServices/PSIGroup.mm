@@ -1,28 +1,28 @@
 @interface PSIGroup
-+ (void)_getTokenRanges:(_NSRange)a3[8] fromCompressedRanges:(unint64_t)a4[2];
-+ (void)getCompressedRanges:(unint64_t)a3[2] fromTokenRanges:(id *)a4 count:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
++ (void)_getTokenRanges:(_NSRange)ranges[8] fromCompressedRanges:(unint64_t)compressedRanges[2];
++ (void)getCompressedRanges:(unint64_t)ranges[2] fromTokenRanges:(id *)tokenRanges count:(int64_t)count;
+- (BOOL)isEqual:(id)equal;
 - (PSIGroup)init;
-- (PSIGroup)initWithContentString:(id)a3 normalizedString:(id)a4 lookupIdentifier:(id)a5 category:(signed __int16)a6 groupId:(unint64_t)a7 owningGroupId:(int64_t)a8 score:(double)a9;
-- (_NSRange)tokenRangeAtIndex:(unint64_t)a3;
+- (PSIGroup)initWithContentString:(id)string normalizedString:(id)normalizedString lookupIdentifier:(id)identifier category:(signed __int16)category groupId:(unint64_t)id owningGroupId:(int64_t)groupId score:(double)score;
+- (_NSRange)tokenRangeAtIndex:(unint64_t)index;
 - (id)_tokenRangesDescription;
 - (id)description;
 - (int)_assetIdsCount;
 - (int)_collectionIdsCount;
-- (int64_t)compareToGroup:(id)a3;
+- (int64_t)compareToGroup:(id)group;
 - (unint64_t)groupIdForObjectLookup;
 - (unint64_t)hash;
 - (void)_resetTokenRangesForContentString;
-- (void)_updateWithIntersectedAssetIds:(__CFArray *)a3;
-- (void)_updateWithIntersectedCollectionIds:(__CFArray *)a3;
+- (void)_updateWithIntersectedAssetIds:(__CFArray *)ids;
+- (void)_updateWithIntersectedCollectionIds:(__CFArray *)ids;
 - (void)dealloc;
 - (void)prepareForReuse;
-- (void)prepareFromFilenameStatement:(sqlite3_stmt *)a3;
-- (void)prepareFromStatement:(sqlite3_stmt *)a3;
+- (void)prepareFromFilenameStatement:(sqlite3_stmt *)statement;
+- (void)prepareFromStatement:(sqlite3_stmt *)statement;
 - (void)resetIntersectedIds;
-- (void)unionCollectionIdsWithGroup:(id)a3;
-- (void)unionIdsWithGroup:(id)a3;
-- (void)updateWithIntersectedIds:(__CFArray *)a3 searchResultType:(unint64_t)a4;
+- (void)unionCollectionIdsWithGroup:(id)group;
+- (void)unionIdsWithGroup:(id)group;
+- (void)updateWithIntersectedIds:(__CFArray *)ids searchResultType:(unint64_t)type;
 @end
 
 @implementation PSIGroup
@@ -45,55 +45,55 @@
   self->_intersectedCollectionIds = 0;
 }
 
-- (void)_updateWithIntersectedCollectionIds:(__CFArray *)a3
+- (void)_updateWithIntersectedCollectionIds:(__CFArray *)ids
 {
   if (self->_intersectedCollectionIds)
   {
 
-    [PLScopedSearchUtilities intersectSortedArray:&self->_intersectedCollectionIds withOtherSortedArray:a3 intersectionLimit:0];
+    [PLScopedSearchUtilities intersectSortedArray:&self->_intersectedCollectionIds withOtherSortedArray:ids intersectionLimit:0];
   }
 
   else
   {
-    self->_intersectedCollectionIds = CFArrayCreateCopy(0, a3);
+    self->_intersectedCollectionIds = CFArrayCreateCopy(0, ids);
   }
 }
 
-- (void)_updateWithIntersectedAssetIds:(__CFArray *)a3
+- (void)_updateWithIntersectedAssetIds:(__CFArray *)ids
 {
   if (self->_intersectedAssetIds)
   {
 
-    [PLScopedSearchUtilities intersectSortedArray:&self->_intersectedAssetIds withOtherSortedArray:a3 intersectionLimit:0];
+    [PLScopedSearchUtilities intersectSortedArray:&self->_intersectedAssetIds withOtherSortedArray:ids intersectionLimit:0];
   }
 
   else
   {
-    self->_intersectedAssetIds = CFArrayCreateCopy(0, a3);
+    self->_intersectedAssetIds = CFArrayCreateCopy(0, ids);
   }
 }
 
-- (void)updateWithIntersectedIds:(__CFArray *)a3 searchResultType:(unint64_t)a4
+- (void)updateWithIntersectedIds:(__CFArray *)ids searchResultType:(unint64_t)type
 {
-  if (a4)
+  if (type)
   {
-    if (a4)
+    if (type)
     {
 
-      [(PSIGroup *)self _updateWithIntersectedAssetIds:a3];
+      [(PSIGroup *)self _updateWithIntersectedAssetIds:ids];
     }
 
-    else if ((a4 & 2) != 0)
+    else if ((type & 2) != 0)
     {
 
-      [(PSIGroup *)self _updateWithIntersectedCollectionIds:a3];
+      [(PSIGroup *)self _updateWithIntersectedCollectionIds:ids];
     }
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PSIGroup.m" lineNumber:296 description:{@"Invalid parameter not satisfying: %@", @"searchResultType != (PLSearchResultTypeAsset & PLSearchResultTypeCollection)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PSIGroup.m" lineNumber:296 description:{@"Invalid parameter not satisfying: %@", @"searchResultType != (PLSearchResultTypeAsset & PLSearchResultTypeCollection)"}];
   }
 }
 
@@ -111,21 +111,21 @@
   self->_tokenRangesCount = 1;
 }
 
-- (void)unionIdsWithGroup:(id)a3
+- (void)unionIdsWithGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   assetIds = self->_assetIds;
-  v33 = v4;
-  v6 = [v4 assetIds];
+  v33 = groupCopy;
+  assetIds = [groupCopy assetIds];
   if (!assetIds || (Count = CFArrayGetCount(assetIds)) == 0)
   {
-    v18 = v6;
+    v18 = assetIds;
 LABEL_20:
     Mutable = CFRetain(v18);
     goto LABEL_21;
   }
 
-  if (!v6 || (v8 = Count, (v9 = CFArrayGetCount(v6)) == 0))
+  if (!assetIds || (v8 = Count, (v9 = CFArrayGetCount(assetIds)) == 0))
   {
     v18 = assetIds;
     goto LABEL_20;
@@ -138,7 +138,7 @@ LABEL_20:
   do
   {
     ValueAtIndex = CFArrayGetValueAtIndex(assetIds, v12);
-    v15 = CFArrayGetValueAtIndex(v6, v13);
+    v15 = CFArrayGetValueAtIndex(assetIds, v13);
     if (ValueAtIndex < v15)
     {
       v16 = ValueAtIndex;
@@ -168,20 +168,20 @@ LABEL_20:
   CFArrayAppendArray(Mutable, assetIds, v35);
   v36.length = v10 - v13;
   v36.location = v13;
-  CFArrayAppendArray(Mutable, v6, v36);
+  CFArrayAppendArray(Mutable, assetIds, v36);
 LABEL_21:
   [(PSIGroup *)self setAssetIds:CFAutorelease(Mutable)];
   collectionIds = self->_collectionIds;
-  v20 = [v33 collectionIds];
+  collectionIds = [v33 collectionIds];
   if (!collectionIds || (v21 = CFArrayGetCount(collectionIds)) == 0)
   {
-    v32 = v20;
+    v32 = collectionIds;
 LABEL_40:
     v25 = CFRetain(v32);
     goto LABEL_41;
   }
 
-  if (!v20 || (v22 = v21, (v23 = CFArrayGetCount(v20)) == 0))
+  if (!collectionIds || (v22 = v21, (v23 = CFArrayGetCount(collectionIds)) == 0))
   {
     v32 = collectionIds;
     goto LABEL_40;
@@ -194,7 +194,7 @@ LABEL_40:
   do
   {
     v28 = CFArrayGetValueAtIndex(collectionIds, v26);
-    v29 = CFArrayGetValueAtIndex(v20, v27);
+    v29 = CFArrayGetValueAtIndex(collectionIds, v27);
     if (v28 < v29)
     {
       v30 = v28;
@@ -224,24 +224,24 @@ LABEL_40:
   CFArrayAppendArray(v25, collectionIds, v37);
   v38.length = v24 - v27;
   v38.location = v27;
-  CFArrayAppendArray(v25, v20, v38);
+  CFArrayAppendArray(v25, collectionIds, v38);
 LABEL_41:
   [(PSIGroup *)self setCollectionIds:CFAutorelease(v25)];
 }
 
-- (void)unionCollectionIdsWithGroup:(id)a3
+- (void)unionCollectionIdsWithGroup:(id)group
 {
   collectionIds = self->_collectionIds;
-  v5 = [a3 collectionIds];
+  collectionIds = [group collectionIds];
   if (!collectionIds || (Count = CFArrayGetCount(collectionIds)) == 0)
   {
-    v17 = v5;
+    v17 = collectionIds;
 LABEL_20:
     Mutable = CFRetain(v17);
     goto LABEL_21;
   }
 
-  if (!v5 || (v7 = Count, (v8 = CFArrayGetCount(v5)) == 0))
+  if (!collectionIds || (v7 = Count, (v8 = CFArrayGetCount(collectionIds)) == 0))
   {
     v17 = collectionIds;
     goto LABEL_20;
@@ -254,7 +254,7 @@ LABEL_20:
   do
   {
     ValueAtIndex = CFArrayGetValueAtIndex(collectionIds, v11);
-    v14 = CFArrayGetValueAtIndex(v5, v12);
+    v14 = CFArrayGetValueAtIndex(collectionIds, v12);
     if (ValueAtIndex < v14)
     {
       v15 = ValueAtIndex;
@@ -284,7 +284,7 @@ LABEL_20:
   CFArrayAppendArray(Mutable, collectionIds, v20);
   v21.length = v9 - v12;
   v21.location = v12;
-  CFArrayAppendArray(Mutable, v5, v21);
+  CFArrayAppendArray(Mutable, collectionIds, v21);
 LABEL_21:
   v18 = CFAutorelease(Mutable);
 
@@ -303,18 +303,18 @@ LABEL_21:
   return *(&self->super.super.isa + *v4);
 }
 
-- (void)prepareFromFilenameStatement:(sqlite3_stmt *)a3
+- (void)prepareFromFilenameStatement:(sqlite3_stmt *)statement
 {
   v9.receiver = self;
   v9.super_class = PSIGroup;
   [(PSIReusableObject *)&v9 prepareFromStatement:?];
-  self->_groupId = sqlite3_column_int64(a3, 0);
+  self->_groupId = sqlite3_column_int64(statement, 0);
   self->_category = 2100;
   self->_owningGroupId = 0;
-  v5 = sqlite3_column_text(a3, 1);
-  v6 = sqlite3_column_text(a3, 2);
-  self->_compressedRanges[0] = sqlite3_column_int64(a3, 3);
-  self->_compressedRanges[1] = sqlite3_column_int64(a3, 4);
+  v5 = sqlite3_column_text(statement, 1);
+  v6 = sqlite3_column_text(statement, 2);
+  self->_compressedRanges[0] = sqlite3_column_int64(statement, 3);
+  self->_compressedRanges[1] = sqlite3_column_int64(statement, 4);
   CFStringAppendCString(self->_contentString, v5, 0x8000100u);
   CFStringAppendCString(self->_normalizedString, v6, 0x8000100u);
   [objc_opt_class() _getTokenRanges:self->_tokenRanges fromCompressedRanges:self->_compressedRanges];
@@ -333,23 +333,23 @@ LABEL_21:
 
   self->_tokenRangesCount = v7;
 LABEL_6:
-  [(PSIReusableObject *)self didPrepareFromStatement:a3];
+  [(PSIReusableObject *)self didPrepareFromStatement:statement];
 }
 
-- (void)prepareFromStatement:(sqlite3_stmt *)a3
+- (void)prepareFromStatement:(sqlite3_stmt *)statement
 {
   v10.receiver = self;
   v10.super_class = PSIGroup;
   [(PSIReusableObject *)&v10 prepareFromStatement:?];
-  self->_groupId = sqlite3_column_int64(a3, 0);
-  self->_category = sqlite3_column_int(a3, 1);
-  self->_owningGroupId = sqlite3_column_int64(a3, 2);
-  v5 = sqlite3_column_text(a3, 3);
-  v6 = sqlite3_column_text(a3, 4);
-  v7 = sqlite3_column_text(a3, 5);
-  self->_score = sqlite3_column_double(a3, 6);
-  self->_compressedRanges[0] = sqlite3_column_int64(a3, 7);
-  self->_compressedRanges[1] = sqlite3_column_int64(a3, 8);
+  self->_groupId = sqlite3_column_int64(statement, 0);
+  self->_category = sqlite3_column_int(statement, 1);
+  self->_owningGroupId = sqlite3_column_int64(statement, 2);
+  v5 = sqlite3_column_text(statement, 3);
+  v6 = sqlite3_column_text(statement, 4);
+  v7 = sqlite3_column_text(statement, 5);
+  self->_score = sqlite3_column_double(statement, 6);
+  self->_compressedRanges[0] = sqlite3_column_int64(statement, 7);
+  self->_compressedRanges[1] = sqlite3_column_int64(statement, 8);
   CFStringAppendCString(self->_contentString, v5, 0x8000100u);
   CFStringAppendCString(self->_normalizedString, v6, 0x8000100u);
   CFStringAppendCString(self->_lookupIdentifier, v7, 0x8000100u);
@@ -369,7 +369,7 @@ LABEL_6:
 
   self->_tokenRangesCount = v8;
 LABEL_6:
-  [(PSIReusableObject *)self didPrepareFromStatement:a3];
+  [(PSIReusableObject *)self didPrepareFromStatement:statement];
 }
 
 - (void)prepareForReuse
@@ -415,9 +415,9 @@ LABEL_6:
   self->_tokenRangesCount = 0;
 }
 
-- (_NSRange)tokenRangeAtIndex:(unint64_t)a3
+- (_NSRange)tokenRangeAtIndex:(unint64_t)index
 {
-  v3 = &self->_tokenRanges[a3];
+  v3 = &self->_tokenRanges[index];
   location = v3->location;
   length = v3->length;
   result.length = length;
@@ -425,16 +425,16 @@ LABEL_6:
   return result;
 }
 
-- (int64_t)compareToGroup:(id)a3
+- (int64_t)compareToGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   category = self->_category;
-  v6 = v4[96];
+  v6 = groupCopy[96];
   if (category >= v6)
   {
     if (category <= v6)
     {
-      v7 = [(NSMutableString *)self->_contentString compare:*(v4 + 2)];
+      v7 = [(NSMutableString *)self->_contentString compare:*(groupCopy + 2)];
     }
 
     else
@@ -458,10 +458,10 @@ LABEL_6:
   return self->_groupId ^ [(PSIGroup *)&v3 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -469,7 +469,7 @@ LABEL_6:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_groupId == v4->_groupId;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_groupId == equalCopy->_groupId;
   }
 
   return v5;
@@ -477,8 +477,8 @@ LABEL_6:
 
 - (id)_tokenRangesDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendString:@"token ranges: "];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendString:@"token ranges: "];
   if (self->_tokenRangesCount)
   {
     v4 = 0;
@@ -486,7 +486,7 @@ LABEL_6:
     do
     {
       v6 = NSStringFromRange(*(p_length - 1));
-      [v3 appendFormat:@"%@, ", v6];
+      [string appendFormat:@"%@, ", v6];
 
       ++v4;
       p_length += 2;
@@ -495,7 +495,7 @@ LABEL_6:
     while (v4 < self->_tokenRangesCount);
   }
 
-  return v3;
+  return string;
 }
 
 - (int)_collectionIdsCount
@@ -561,32 +561,32 @@ LABEL_6:
   [(PSIGroup *)&v7 dealloc];
 }
 
-- (PSIGroup)initWithContentString:(id)a3 normalizedString:(id)a4 lookupIdentifier:(id)a5 category:(signed __int16)a6 groupId:(unint64_t)a7 owningGroupId:(int64_t)a8 score:(double)a9
+- (PSIGroup)initWithContentString:(id)string normalizedString:(id)normalizedString lookupIdentifier:(id)identifier category:(signed __int16)category groupId:(unint64_t)id owningGroupId:(int64_t)groupId score:(double)score
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
+  stringCopy = string;
+  normalizedStringCopy = normalizedString;
+  identifierCopy = identifier;
   v27.receiver = self;
   v27.super_class = PSIGroup;
   v19 = [(PSIReusableObject *)&v27 init];
   if (v19)
   {
-    v20 = [v16 mutableCopy];
+    v20 = [stringCopy mutableCopy];
     contentString = v19->_contentString;
     v19->_contentString = v20;
 
-    v22 = [v17 mutableCopy];
+    v22 = [normalizedStringCopy mutableCopy];
     normalizedString = v19->_normalizedString;
     v19->_normalizedString = v22;
 
-    v24 = [v18 mutableCopy];
+    v24 = [identifierCopy mutableCopy];
     lookupIdentifier = v19->_lookupIdentifier;
     v19->_lookupIdentifier = v24;
 
-    v19->_category = a6;
-    v19->_groupId = a7;
-    v19->_owningGroupId = a8;
-    v19->_score = a9;
+    v19->_category = category;
+    v19->_groupId = id;
+    v19->_owningGroupId = groupId;
+    v19->_score = score;
     [(PSIGroup *)v19 _resetTokenRangesForContentString];
   }
 
@@ -617,37 +617,37 @@ LABEL_6:
   return v2;
 }
 
-+ (void)_getTokenRanges:(_NSRange)a3[8] fromCompressedRanges:(unint64_t)a4[2]
++ (void)_getTokenRanges:(_NSRange)ranges[8] fromCompressedRanges:(unint64_t)compressedRanges[2]
 {
   for (i = 0; i != 8; ++i)
   {
     v7 = lldiv(i, 4);
-    v8 = &a4[v7.quot];
+    v8 = &compressedRanges[v7.quot];
     v9 = vdupq_n_s64(16 * v7.rem);
     v10 = vld1q_dup_f64(v8);
     v11 = vandq_s8(vshlq_u64(xmmword_19C60AFE0, v9), v10);
     v9.i64[1] = (16 * v7.rem) | 8;
-    a3[i] = vshlq_u64(v11, vnegq_s64(v9));
+    ranges[i] = vshlq_u64(v11, vnegq_s64(v9));
   }
 }
 
-+ (void)getCompressedRanges:(unint64_t)a3[2] fromTokenRanges:(id *)a4 count:(int64_t)a5
++ (void)getCompressedRanges:(unint64_t)ranges[2] fromTokenRanges:(id *)tokenRanges count:(int64_t)count
 {
   v6 = 0;
-  if (a5 >= 8)
+  if (count >= 8)
   {
-    v7 = 8;
+    countCopy = 8;
   }
 
   else
   {
-    v7 = a5;
+    countCopy = count;
   }
 
-  p_var1 = &a4->var1;
+  p_var1 = &tokenRanges->var1;
   do
   {
-    if (v6 >= v7)
+    if (v6 >= countCopy)
     {
       v10 = 0;
       v9 = 0;
@@ -684,7 +684,7 @@ LABEL_6:
       v18 = v13;
     }
 
-    a3[v15.quot] |= v17 | (v18 << ((16 * LOBYTE(v15.rem)) | 8u));
+    ranges[v15.quot] |= v17 | (v18 << ((16 * LOBYTE(v15.rem)) | 8u));
     ++v6;
     p_var1 += 2;
   }

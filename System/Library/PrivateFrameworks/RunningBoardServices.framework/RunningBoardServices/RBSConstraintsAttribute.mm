@@ -1,9 +1,9 @@
 @interface RBSConstraintsAttribute
-+ (id)attributeWithConstraints:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (RBSConstraintsAttribute)initWithRBSXPCCoder:(id)a3;
++ (id)attributeWithConstraints:(unint64_t)constraints;
+- (BOOL)isEqual:(id)equal;
+- (RBSConstraintsAttribute)initWithRBSXPCCoder:(id)coder;
 - (id)description;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSConstraintsAttribute
@@ -17,16 +17,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = RBSConstraintsAttribute;
   v6 = 0;
-  if ([(RBSAttribute *)&v8 isEqual:v4])
+  if ([(RBSAttribute *)&v8 isEqual:equalCopy])
   {
-    v5 = [(RBSConstraintsAttribute *)self constraints];
-    if (v5 == [v4 constraints])
+    constraints = [(RBSConstraintsAttribute *)self constraints];
+    if (constraints == [equalCopy constraints])
     {
       v6 = 1;
     }
@@ -35,30 +35,30 @@
   return v6;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RBSConstraintsAttribute;
-  v4 = a3;
-  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:v4];
-  [v4 encodeUInt64:self->_constraints forKey:{@"_constraints", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:coderCopy];
+  [coderCopy encodeUInt64:self->_constraints forKey:{@"_constraints", v5.receiver, v5.super_class}];
 }
 
-- (RBSConstraintsAttribute)initWithRBSXPCCoder:(id)a3
+- (RBSConstraintsAttribute)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = RBSConstraintsAttribute;
-  v5 = [(RBSAttribute *)&v7 initWithRBSXPCCoder:v4];
+  v5 = [(RBSAttribute *)&v7 initWithRBSXPCCoder:coderCopy];
   if (v5)
   {
-    v5->_constraints = [v4 decodeUInt64ForKey:@"_constraints"];
+    v5->_constraints = [coderCopy decodeUInt64ForKey:@"_constraints"];
   }
 
   return v5;
 }
 
-+ (id)attributeWithConstraints:(unint64_t)a3
++ (id)attributeWithConstraints:(unint64_t)constraints
 {
   v4 = [RBSConstraintsAttribute alloc];
   if (v4)
@@ -68,7 +68,7 @@
     v4 = objc_msgSendSuper2(&v6, sel__init);
     if (v4)
     {
-      v4->_constraints = a3;
+      v4->_constraints = constraints;
     }
   }
 

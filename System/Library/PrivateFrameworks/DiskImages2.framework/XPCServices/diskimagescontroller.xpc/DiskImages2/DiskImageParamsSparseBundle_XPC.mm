@@ -7,10 +7,10 @@
 
 - (unique_ptr<DiskImage,)createSinkDiskImage
 {
-  v3 = [(DiskImageParamsXPC *)self backendXPC];
-  if (v3)
+  backendXPC = [(DiskImageParamsXPC *)self backendXPC];
+  if (backendXPC)
   {
-    [v3 backend];
+    [backendXPC backend];
     v4 = v6;
     v5 = v7;
   }
@@ -27,12 +27,12 @@
 
 - (unint64_t)numBlocks
 {
-  v3 = [(DiskImageParamsXPC *)self backendXPC];
-  v4 = v3;
-  if (v3)
+  backendXPC = [(DiskImageParamsXPC *)self backendXPC];
+  v4 = backendXPC;
+  if (backendXPC)
   {
-    [v3 backend];
-    v3 = v8;
+    [backendXPC backend];
+    backendXPC = v8;
   }
 
   else
@@ -40,14 +40,14 @@
     v9 = 0;
   }
 
-  v5 = (*(*v3 + 40))(v3);
-  v6 = [(DiskImageParamsXPC *)self blockSize];
+  v5 = (*(*backendXPC + 40))(backendXPC);
+  blockSize = [(DiskImageParamsXPC *)self blockSize];
   if (v9)
   {
     sub_10000367C(v9);
   }
 
-  return v5 / v6;
+  return v5 / blockSize;
 }
 
 @end

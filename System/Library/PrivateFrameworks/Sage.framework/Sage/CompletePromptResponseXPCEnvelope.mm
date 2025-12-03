@@ -1,14 +1,14 @@
 @interface CompletePromptResponseXPCEnvelope
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CompletePromptResponseXPCEnvelope
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CompletePromptResponseXPCEnvelope.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CompletePromptResponseXPCEnvelope.encode(with:)(coderCopy);
 }
 
 @end

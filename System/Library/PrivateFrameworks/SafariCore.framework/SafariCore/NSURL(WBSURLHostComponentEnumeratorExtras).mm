@@ -7,30 +7,30 @@
 
 - (id)safari_hostComponentsEnumerator
 {
-  v1 = [a1 host];
-  v2 = v1;
-  if (!v1)
+  host = [self host];
+  v2 = host;
+  if (!host)
   {
-    v1 = &stru_1F3064D08;
+    host = &stru_1F3064D08;
   }
 
-  v3 = [(__CFString *)v1 safari_hostComponentsEnumerator];
+  safari_hostComponentsEnumerator = [(__CFString *)host safari_hostComponentsEnumerator];
 
-  return v3;
+  return safari_hostComponentsEnumerator;
 }
 
 - (id)safari_hostDomainsEnumerator
 {
-  v1 = [a1 host];
-  v2 = v1;
-  if (!v1)
+  host = [self host];
+  v2 = host;
+  if (!host)
   {
-    v1 = &stru_1F3064D08;
+    host = &stru_1F3064D08;
   }
 
-  v3 = [(__CFString *)v1 safari_hostDomainsEnumerator];
+  safari_hostDomainsEnumerator = [(__CFString *)host safari_hostDomainsEnumerator];
 
-  return v3;
+  return safari_hostDomainsEnumerator;
 }
 
 @end

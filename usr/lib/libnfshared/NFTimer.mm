@@ -1,28 +1,28 @@
 @interface NFTimer
-- (NFTimer)initWithCallback:(id)a3 queue:(id)a4;
+- (NFTimer)initWithCallback:(id)callback queue:(id)queue;
 - (double)remainingTime;
 - (id)description;
-- (id)initSleepTimerWithCallback:(id)a3 queue:(id)a4;
+- (id)initSleepTimerWithCallback:(id)callback queue:(id)queue;
 - (void)dealloc;
-- (void)startTimer:(double)a3 leeway:(double)a4;
+- (void)startTimer:(double)timer leeway:(double)leeway;
 @end
 
 @implementation NFTimer
 
-- (NFTimer)initWithCallback:(id)a3 queue:(id)a4
+- (NFTimer)initWithCallback:(id)callback queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  callbackCopy = callback;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = NFTimer;
   v8 = [(NFTimer *)&v12 init];
   if (v8)
   {
-    v9 = dispatch_source_create(MEMORY[0x277D85D38], 1uLL, 0, v7);
+    v9 = dispatch_source_create(MEMORY[0x277D85D38], 1uLL, 0, queueCopy);
     v10 = *(v8 + 1);
     *(v8 + 1) = v9;
 
-    dispatch_source_set_event_handler(*(v8 + 1), v6);
+    dispatch_source_set_event_handler(*(v8 + 1), callbackCopy);
     dispatch_activate(*(v8 + 1));
     *(v8 + 24) = 0;
   }
@@ -30,20 +30,20 @@
   return v8;
 }
 
-- (id)initSleepTimerWithCallback:(id)a3 queue:(id)a4
+- (id)initSleepTimerWithCallback:(id)callback queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  callbackCopy = callback;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = NFTimer;
   v8 = [(NFTimer *)&v12 init];
   if (v8)
   {
-    v9 = dispatch_source_create(MEMORY[0x277D85D38], 2uLL, 0, v7);
+    v9 = dispatch_source_create(MEMORY[0x277D85D38], 2uLL, 0, queueCopy);
     v10 = *(v8 + 1);
     *(v8 + 1) = v9;
 
-    dispatch_source_set_event_handler(*(v8 + 1), v6);
+    dispatch_source_set_event_handler(*(v8 + 1), callbackCopy);
     dispatch_activate(*(v8 + 1));
     *(v8 + 24) = 1;
   }
@@ -59,7 +59,7 @@
   [(NFTimer *)&v3 dealloc];
 }
 
-- (void)startTimer:(double)a3 leeway:(double)a4
+- (void)startTimer:(double)timer leeway:(double)leeway
 {
   if (self->_monotonic)
   {
@@ -71,13 +71,13 @@
     v6 = 0;
   }
 
-  v7 = dispatch_time(v6, (a3 * 1000000000.0));
+  v7 = dispatch_time(v6, (timer * 1000000000.0));
   if (dispatch_time_to_nsec())
   {
     self->_popTimeInSeconds = 0;
   }
 
-  dispatch_source_set_timer(self->_src, v7, 0xFFFFFFFFFFFFFFFFLL, (a4 * 1000000000.0));
+  dispatch_source_set_timer(self->_src, v7, 0xFFFFFFFFFFFFFFFFLL, (leeway * 1000000000.0));
 }
 
 - (double)remainingTime

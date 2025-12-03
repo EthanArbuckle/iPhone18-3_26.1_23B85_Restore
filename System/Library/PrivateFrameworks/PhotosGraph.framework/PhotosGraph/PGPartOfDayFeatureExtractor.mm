@@ -1,10 +1,10 @@
 @interface PGPartOfDayFeatureExtractor
-- (PGPartOfDayFeatureExtractor)initWithError:(id *)a3;
+- (PGPartOfDayFeatureExtractor)initWithError:(id *)error;
 @end
 
 @implementation PGPartOfDayFeatureExtractor
 
-- (PGPartOfDayFeatureExtractor)initWithError:(id *)a3
+- (PGPartOfDayFeatureExtractor)initWithError:(id *)error
 {
   v12[5] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D275E0];

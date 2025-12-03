@@ -1,6 +1,6 @@
 @interface HKMedicalIDEmergencyContactRelationshipProvider
 - (HKMedicalIDEmergencyContactRelationshipProvider)init;
-- (id)localizedRelationshipAtIndex:(int64_t)a3;
+- (id)localizedRelationshipAtIndex:(int64_t)index;
 @end
 
 @implementation HKMedicalIDEmergencyContactRelationshipProvider
@@ -76,10 +76,10 @@
   return v3;
 }
 
-- (id)localizedRelationshipAtIndex:(int64_t)a3
+- (id)localizedRelationshipAtIndex:(int64_t)index
 {
   v3 = MEMORY[0x1E695CEE0];
-  v4 = [(NSArray *)self->_tokens objectAtIndexedSubscript:a3];
+  v4 = [(NSArray *)self->_tokens objectAtIndexedSubscript:index];
   v5 = [v3 localizedStringForLabel:v4];
 
   return v5;

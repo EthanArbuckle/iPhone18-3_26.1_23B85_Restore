@@ -1,19 +1,19 @@
 @interface RPNearbyInvitationServer
 - (RPNearbyInvitationServer)init;
-- (RPNearbyInvitationServer)initWithCoder:(id)a3;
+- (RPNearbyInvitationServer)initWithCoder:(id)coder;
 - (id)description;
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4;
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)activateWithCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)activateWithCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)nearbyInvitationReceivedEventID:(id)a3 event:(id)a4 options:(id)a5 sessionID:(id)a6;
-- (void)nearbyInvitationReceivedRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6 sessionID:(id)a7;
-- (void)nearbyInvitationSessionEndedWithID:(id)a3;
-- (void)nearbyInvitationSessionError:(id)a3 withID:(id)a4;
-- (void)nearbyInvitationStartServerSessionID:(id)a3 device:(id)a4 completion:(id)a5;
+- (void)nearbyInvitationReceivedEventID:(id)d event:(id)event options:(id)options sessionID:(id)iD;
+- (void)nearbyInvitationReceivedRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler sessionID:(id)iD;
+- (void)nearbyInvitationSessionEndedWithID:(id)d;
+- (void)nearbyInvitationSessionError:(id)error withID:(id)d;
+- (void)nearbyInvitationStartServerSessionID:(id)d device:(id)device completion:(id)completion;
 @end
 
 @implementation RPNearbyInvitationServer
@@ -33,9 +33,9 @@
   return v3;
 }
 
-- (RPNearbyInvitationServer)initWithCoder:(id)a3
+- (RPNearbyInvitationServer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = RPNearbyInvitationServer;
   v5 = [(RPNearbyInvitationServer *)&v10 init];
@@ -43,7 +43,7 @@
   if (v5)
   {
     objc_storeStrong(&v5->_dispatchQueue, MEMORY[0x1E69E96A0]);
-    v7 = v4;
+    v7 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -53,12 +53,12 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   serviceType = self->_serviceType;
   if (serviceType)
   {
-    [a3 encodeObject:serviceType forKey:@"srvTy"];
+    [coder encodeObject:serviceType forKey:@"srvTy"];
   }
 }
 
@@ -81,25 +81,25 @@
   return v4;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__RPNearbyInvitationServer_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E7C92E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  reactivateCopy = reactivate;
+  completionCopy = completion;
+  if (reactivateCopy)
   {
     if (gLogCategory_RPNearbyInvitationServer <= 30 && (gLogCategory_RPNearbyInvitationServer != -1 || _LogCategory_Initialize()))
     {
@@ -119,15 +119,15 @@ LABEL_10:
   v14[1] = 3221225472;
   v14[2] = __63__RPNearbyInvitationServer__activateWithCompletion_reactivate___block_invoke;
   v14[3] = &unk_1E7C92F88;
-  v16 = v4;
-  v8 = v6;
+  v16 = reactivateCopy;
+  v8 = completionCopy;
   v15 = v8;
   v9 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v14];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __63__RPNearbyInvitationServer__activateWithCompletion_reactivate___block_invoke_2;
   v11[3] = &unk_1E7C92F88;
-  v13 = v4;
+  v13 = reactivateCopy;
   v12 = v8;
   v10 = v8;
   [v9 nearbyInvitationActivateServer:self completion:v11];
@@ -369,19 +369,19 @@ uint64_t __38__RPNearbyInvitationServer_invalidate__block_invoke(uint64_t result
   }
 }
 
-- (void)nearbyInvitationStartServerSessionID:(id)a3 device:(id)a4 completion:(id)a5
+- (void)nearbyInvitationStartServerSessionID:(id)d device:(id)device completion:(id)completion
 {
-  v18 = a3;
-  v8 = a5;
+  dCopy = d;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
-  v10 = a4;
+  deviceCopy = device;
   dispatch_assert_queue_V2(dispatchQueue);
   v11 = objc_alloc_init(RPNearbyInvitationSession);
-  [(RPNearbyInvitationSession *)v11 setDestinationDevice:v10];
+  [(RPNearbyInvitationSession *)v11 setDestinationDevice:deviceCopy];
 
   [(RPNearbyInvitationSession *)v11 setDispatchQueue:self->_dispatchQueue];
   [(RPNearbyInvitationSession *)v11 setServer:self];
-  [(RPNearbyInvitationSession *)v11 setSessionID:v18];
+  [(RPNearbyInvitationSession *)v11 setSessionID:dCopy];
   [(RPNearbyInvitationSession *)v11 setXpcCnx:self->_xpcCnx];
   sessions = self->_sessions;
   if (!sessions)
@@ -393,26 +393,26 @@ uint64_t __38__RPNearbyInvitationServer_invalidate__block_invoke(uint64_t result
     sessions = self->_sessions;
   }
 
-  [(NSMutableDictionary *)sessions setObject:v11 forKeyedSubscript:v18];
+  [(NSMutableDictionary *)sessions setObject:v11 forKeyedSubscript:dCopy];
   v15 = _Block_copy(self->_sessionStartHandler);
   v16 = v15;
   if (v15)
   {
-    (*(v15 + 2))(v15, v11, v8);
+    (*(v15 + 2))(v15, v11, completionCopy);
   }
 
   else
   {
     v17 = RPErrorF();
-    v8[2](v8, v17);
+    completionCopy[2](completionCopy, v17);
   }
 }
 
-- (void)nearbyInvitationSessionEndedWithID:(id)a3
+- (void)nearbyInvitationSessionEndedWithID:(id)d
 {
-  v7 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:v7];
+  v4 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:dCopy];
   if (v4)
   {
     v5 = _Block_copy(self->_sessionEndedHandler);
@@ -422,24 +422,24 @@ uint64_t __38__RPNearbyInvitationServer_invalidate__block_invoke(uint64_t result
       (*(v5 + 2))(v5, v4, 0);
     }
 
-    [(NSMutableDictionary *)self->_sessions setObject:0 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_sessions setObject:0 forKeyedSubscript:dCopy];
   }
 }
 
-- (void)nearbyInvitationReceivedEventID:(id)a3 event:(id)a4 options:(id)a5 sessionID:(id)a6
+- (void)nearbyInvitationReceivedEventID:(id)d event:(id)event options:(id)options sessionID:(id)iD
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  dCopy = d;
+  eventCopy = event;
+  optionsCopy = options;
+  iDCopy = iD;
+  if (iDCopy)
   {
     dispatch_assert_queue_V2(self->_dispatchQueue);
-    v13 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:v12];
+    v13 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:iDCopy];
     v14 = v13;
     if (v13)
     {
-      [v13 nearbyInvitationReceivedEventID:v15 event:v10 options:v11 sessionID:v12];
+      [v13 nearbyInvitationReceivedEventID:dCopy event:eventCopy options:optionsCopy sessionID:iDCopy];
     }
   }
 
@@ -449,21 +449,21 @@ uint64_t __38__RPNearbyInvitationServer_invalidate__block_invoke(uint64_t result
   }
 }
 
-- (void)nearbyInvitationReceivedRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6 sessionID:(id)a7
+- (void)nearbyInvitationReceivedRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler sessionID:(id)iD
 {
-  v18 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v15)
+  dCopy = d;
+  requestCopy = request;
+  optionsCopy = options;
+  handlerCopy = handler;
+  iDCopy = iD;
+  if (iDCopy)
   {
     dispatch_assert_queue_V2(self->_dispatchQueue);
-    v16 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:v15];
+    v16 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:iDCopy];
     v17 = v16;
     if (v16)
     {
-      [v16 nearbyInvitationReceivedRequestID:v18 request:v12 options:v13 responseHandler:v14 sessionID:v15];
+      [v16 nearbyInvitationReceivedRequestID:dCopy request:requestCopy options:optionsCopy responseHandler:handlerCopy sessionID:iDCopy];
     }
   }
 
@@ -473,14 +473,14 @@ uint64_t __38__RPNearbyInvitationServer_invalidate__block_invoke(uint64_t result
   }
 }
 
-- (void)nearbyInvitationSessionError:(id)a3 withID:(id)a4
+- (void)nearbyInvitationSessionError:(id)error withID:(id)d
 {
-  v8 = a3;
-  v6 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:a4];
+  errorCopy = error;
+  v6 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:d];
   v7 = v6;
   if (v6)
   {
-    [v6 nearbyInvitationSessionError:v8];
+    [v6 nearbyInvitationSessionError:errorCopy];
   }
 }
 

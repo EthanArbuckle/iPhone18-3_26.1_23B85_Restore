@@ -1,16 +1,16 @@
 @interface PLBasebandMavLogMessage
-- (BOOL)parseData:(id)a3;
-- (PLBasebandMavLogMessage)initWithData:(id)a3;
+- (BOOL)parseData:(id)data;
+- (PLBasebandMavLogMessage)initWithData:(id)data;
 - (id)tooShortErrorString;
-- (void)logWithLogger:(id)a3;
+- (void)logWithLogger:(id)logger;
 @end
 
 @implementation PLBasebandMavLogMessage
 
-- (PLBasebandMavLogMessage)initWithData:(id)a3
+- (PLBasebandMavLogMessage)initWithData:(id)data
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -29,9 +29,9 @@
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBasebandMavLogMessage initWithData:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandMavLogMessage.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandMavLogMessage initWithData:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:22];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:22];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -45,9 +45,9 @@
 
   v18.receiver = self;
   v18.super_class = PLBasebandMavLogMessage;
-  v12 = [(PLBasebandMessage *)&v18 initWithData:v4];
+  v12 = [(PLBasebandMessage *)&v18 initWithData:dataCopy];
   v13 = v12;
-  if (!v12 || (v12->_header = 0, payload = v12->_payload, v12->_payload = 0, payload, v15 = 0, [(PLBasebandMavLogMessage *)v13 parseData:v4]))
+  if (!v12 || (v12->_header = 0, payload = v12->_payload, v12->_payload = 0, payload, v15 = 0, [(PLBasebandMavLogMessage *)v13 parseData:dataCopy]))
   {
     v15 = v13;
   }
@@ -63,10 +63,10 @@ uint64_t __40__PLBasebandMavLogMessage_initWithData___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)parseData:(id)a3
+- (BOOL)parseData:(id)data
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -85,9 +85,9 @@ uint64_t __40__PLBasebandMavLogMessage_initWithData___block_invoke(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBasebandMavLogMessage parseData:]", block, v25, v26, v27, v28];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandMavLogMessage.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandMavLogMessage parseData:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:35];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:35];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -99,13 +99,13 @@ uint64_t __40__PLBasebandMavLogMessage_initWithData___block_invoke(uint64_t a1)
     }
   }
 
-  v12 = [v4 bytes];
-  v13 = &v12[2 * (*v12 == 129)];
+  bytes = [dataCopy bytes];
+  v13 = &bytes[2 * (*bytes == 129)];
   [(PLBasebandMavLogMessage *)self setHeader:v13];
   v14 = v13 + 13;
   v15 = [(PLBasebandMavLogMessage *)self header][1];
   v16 = v15 - 12;
-  if (v15 >= 0xD && (v17 = &v14[v16 - [v4 bytes]], v17 <= objc_msgSend(v4, "length")))
+  if (v15 >= 0xD && (v17 = &v14[v16 - [dataCopy bytes]], v17 <= objc_msgSend(dataCopy, "length")))
   {
     v18 = [MEMORY[0x277CBEA90] dataWithBytes:v14 length:v16];
     [(PLBasebandMavLogMessage *)self setPayload:v18];
@@ -117,8 +117,8 @@ uint64_t __40__PLBasebandMavLogMessage_initWithData___block_invoke(uint64_t a1)
     v18 = PLLogCommon();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v22 = &v14[v16 - [v4 bytes]];
-      v23 = [v4 length];
+      v22 = &v14[v16 - [dataCopy bytes]];
+      v23 = [dataCopy length];
       *buf = 134218498;
       v30 = v22;
       v31 = 2048;
@@ -142,10 +142,10 @@ uint64_t __37__PLBasebandMavLogMessage_parseData___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)logWithLogger:(id)a3
+- (void)logWithLogger:(id)logger
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loggerCopy = logger;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -164,9 +164,9 @@ uint64_t __37__PLBasebandMavLogMessage_parseData___block_invoke(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBasebandMavLogMessage logWithLogger:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandMavLogMessage.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandMavLogMessage logWithLogger:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:67];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:67];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -180,7 +180,7 @@ uint64_t __37__PLBasebandMavLogMessage_parseData___block_invoke(uint64_t a1)
 
   v13.receiver = self;
   v13.super_class = PLBasebandMavLogMessage;
-  [(PLBasebandMessage *)&v13 logWithLogger:v4];
+  [(PLBasebandMessage *)&v13 logWithLogger:loggerCopy];
   [(PLBasebandMavLogMessage *)self header];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -221,9 +221,9 @@ uint64_t __49__PLBasebandMavLogMessage_stringForUnknownBytes___block_invoke(uint
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBasebandMavLogMessage tooShortErrorString]", block, v14, v15, v16, v17];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandMavLogMessage.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandMavLogMessage tooShortErrorString]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:125];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:125];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))

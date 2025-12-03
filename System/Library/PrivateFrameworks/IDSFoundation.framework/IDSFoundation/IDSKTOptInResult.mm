@@ -1,10 +1,10 @@
 @interface IDSKTOptInResult
 - (IDSKTOptInResult)init;
-- (IDSKTOptInResult)initWithCoder:(id)a3;
-- (IDSKTOptInResult)initWithSuccess:(BOOL)a3 optedInOutURIs:(id)a4 serverSMTByURI:(id)a5 error:(id)a6;
-- (IDSKTOptInResult)initWithSuccess:(BOOL)a3 serverProvidedSMT:(id)a4 error:(id)a5;
+- (IDSKTOptInResult)initWithCoder:(id)coder;
+- (IDSKTOptInResult)initWithSuccess:(BOOL)success optedInOutURIs:(id)is serverSMTByURI:(id)i error:(id)error;
+- (IDSKTOptInResult)initWithSuccess:(BOOL)success serverProvidedSMT:(id)t error:(id)error;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSKTOptInResult
@@ -28,19 +28,19 @@
   return v3;
 }
 
-- (IDSKTOptInResult)initWithSuccess:(BOOL)a3 serverProvidedSMT:(id)a4 error:(id)a5
+- (IDSKTOptInResult)initWithSuccess:(BOOL)success serverProvidedSMT:(id)t error:(id)error
 {
-  v9 = a4;
-  v10 = a5;
+  tCopy = t;
+  errorCopy = error;
   v18.receiver = self;
   v18.super_class = IDSKTOptInResult;
   v11 = [(IDSKTOptInResult *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    v11->_success = a3;
-    objc_storeStrong(&v11->_serverProvidedSMT, a4);
-    objc_storeStrong(&v12->_error, a5);
+    v11->_success = success;
+    objc_storeStrong(&v11->_serverProvidedSMT, t);
+    objc_storeStrong(&v12->_error, error);
     v13 = objc_alloc_init(MEMORY[0x1E695DEC8]);
     optedInOutURIs = v12->_optedInOutURIs;
     v12->_optedInOutURIs = v13;
@@ -53,21 +53,21 @@
   return v12;
 }
 
-- (IDSKTOptInResult)initWithSuccess:(BOOL)a3 optedInOutURIs:(id)a4 serverSMTByURI:(id)a5 error:(id)a6
+- (IDSKTOptInResult)initWithSuccess:(BOOL)success optedInOutURIs:(id)is serverSMTByURI:(id)i error:(id)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  isCopy = is;
+  iCopy = i;
+  errorCopy = error;
   v24.receiver = self;
   v24.super_class = IDSKTOptInResult;
   v13 = [(IDSKTOptInResult *)&v24 init];
   v14 = v13;
   if (v13)
   {
-    v13->_success = a3;
-    if (v10)
+    v13->_success = success;
+    if (isCopy)
     {
-      v15 = v10;
+      v15 = isCopy;
     }
 
     else
@@ -78,9 +78,9 @@
     optedInOutURIs = v14->_optedInOutURIs;
     v14->_optedInOutURIs = v15;
 
-    if (v11)
+    if (iCopy)
     {
-      v17 = v11;
+      v17 = iCopy;
     }
 
     else
@@ -94,41 +94,41 @@
     v19 = v14->_serverSMTByURI;
     if (v19)
     {
-      v20 = [(NSDictionary *)v19 allValues];
-      v21 = [v20 firstObject];
+      allValues = [(NSDictionary *)v19 allValues];
+      firstObject = [allValues firstObject];
       serverProvidedSMT = v14->_serverProvidedSMT;
-      v14->_serverProvidedSMT = v21;
+      v14->_serverProvidedSMT = firstObject;
     }
 
-    objc_storeStrong(&v14->_error, a6);
+    objc_storeStrong(&v14->_error, error);
   }
 
   return v14;
 }
 
-- (IDSKTOptInResult)initWithCoder:(id)a3
+- (IDSKTOptInResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = IDSKTOptInResult;
   v5 = [(IDSKTOptInResult *)&v16 init];
   if (v5)
   {
-    v5->_success = [v4 decodeBoolForKey:@"Success"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Error"];
+    v5->_success = [coderCopy decodeBoolForKey:@"Success"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Error"];
     error = v5->_error;
     v5->_error = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMT"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMT"];
     serverProvidedSMT = v5->_serverProvidedSMT;
     v5->_serverProvidedSMT = v8;
 
-    v10 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"OptInOutURIs"];
+    v10 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"OptInOutURIs"];
     optedInOutURIs = v5->_optedInOutURIs;
     v5->_optedInOutURIs = v10;
 
     v12 = objc_opt_class();
-    v13 = [v4 decodeDictionaryWithKeysOfClass:v12 objectsOfClass:objc_opt_class() forKey:@"ServerSMTsByURI"];
+    v13 = [coderCopy decodeDictionaryWithKeysOfClass:v12 objectsOfClass:objc_opt_class() forKey:@"ServerSMTsByURI"];
     serverSMTByURI = v5->_serverSMTByURI;
     v5->_serverSMTByURI = v13;
   }
@@ -136,15 +136,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   success = self->_success;
-  v5 = a3;
-  [v5 encodeBool:success forKey:@"Success"];
-  [v5 encodeObject:self->_error forKey:@"Error"];
-  [v5 encodeObject:self->_serverProvidedSMT forKey:@"SMT"];
-  [v5 encodeObject:self->_optedInOutURIs forKey:@"OptInOutURIs"];
-  [v5 encodeObject:self->_serverSMTByURI forKey:@"ServerSMTsByURI"];
+  coderCopy = coder;
+  [coderCopy encodeBool:success forKey:@"Success"];
+  [coderCopy encodeObject:self->_error forKey:@"Error"];
+  [coderCopy encodeObject:self->_serverProvidedSMT forKey:@"SMT"];
+  [coderCopy encodeObject:self->_optedInOutURIs forKey:@"OptInOutURIs"];
+  [coderCopy encodeObject:self->_serverSMTByURI forKey:@"ServerSMTsByURI"];
 }
 
 - (id)description

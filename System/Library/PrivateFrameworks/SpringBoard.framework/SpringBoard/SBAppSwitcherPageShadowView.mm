@@ -1,16 +1,16 @@
 @interface SBAppSwitcherPageShadowView
-- (SBAppSwitcherPageShadowView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
+- (SBAppSwitcherPageShadowView)initWithFrame:(CGRect)frame style:(int64_t)style;
 - (void)_applyPrototypeSettingsToConstants;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
 - (void)_updateShadowParameters;
 - (void)_updateShadowViews;
-- (void)setHighlightType:(unint64_t)a3;
-- (void)setShadowOffset:(double)a3;
-- (void)setShadowPath:(id)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setSwitcherCardScale:(double)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHighlightType:(unint64_t)type;
+- (void)setShadowOffset:(double)offset;
+- (void)setShadowPath:(id)path;
+- (void)setStyle:(int64_t)style;
+- (void)setSwitcherCardScale:(double)scale;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SBAppSwitcherPageShadowView
@@ -18,8 +18,8 @@
 - (void)_updateShadowParameters
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SBAppSwitcherPageShadowView *)self _diffuseShadowView];
-  v4 = [(SBAppSwitcherPageShadowView *)self _rimShadowView];
+  _diffuseShadowView = [(SBAppSwitcherPageShadowView *)self _diffuseShadowView];
+  _rimShadowView = [(SBAppSwitcherPageShadowView *)self _rimShadowView];
   highlightType = self->_highlightType;
   v6 = MEMORY[0x277CBF3A8];
   if (highlightType > 2)
@@ -39,34 +39,34 @@
 
   v12 = *v9;
   v11 = v9[1];
-  v13 = [v3 layer];
-  [v13 setShadowRadius:v7];
+  layer = [_diffuseShadowView layer];
+  [layer setShadowRadius:v7];
 
-  v14 = [v3 layer];
+  layer2 = [_diffuseShadowView layer];
   *&v15 = v10;
-  [v14 setShadowOpacity:v15];
+  [layer2 setShadowOpacity:v15];
 
-  v16 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
   shadowOffset = self->_shadowOffset;
-  if (v16 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     shadowOffset = -shadowOffset;
   }
 
   v18 = v12 * shadowOffset;
-  v19 = [v3 layer];
-  [v19 setShadowOffset:{v18, v11}];
+  layer3 = [_diffuseShadowView layer];
+  [layer3 setShadowOffset:{v18, v11}];
 
-  v20 = [v4 layer];
-  [v20 setShadowRadius:self->_rimShadowRadius];
+  layer4 = [_rimShadowView layer];
+  [layer4 setShadowRadius:self->_rimShadowRadius];
 
-  v21 = [v4 layer];
+  layer5 = [_rimShadowView layer];
   rimShadowOpacity = self->_rimShadowOpacity;
   *&rimShadowOpacity = rimShadowOpacity;
-  [v21 setShadowOpacity:rimShadowOpacity];
+  [layer5 setShadowOpacity:rimShadowOpacity];
 
-  v23 = [v4 layer];
-  [v23 setShadowOffset:{*v6, v6[1]}];
+  layer6 = [_rimShadowView layer];
+  [layer6 setShadowOffset:{*v6, v6[1]}];
 
   if (self->_style == 2 && (-[SBAppSwitcherPageShadowView traitCollection](self, "traitCollection"), v24 = objc_claimAutoreleasedReturnValue(), v25 = [v24 userInterfaceStyle], v24, v25 == 2))
   {
@@ -86,24 +86,24 @@
     v31 = [v27 valueWithCAColorMatrix:v36];
     [v26 setValue:v31 forKey:@"inputColorMatrix"];
 
-    v32 = [v3 layer];
+    layer7 = [_diffuseShadowView layer];
     v38[0] = v26;
     v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
-    [v32 setFilters:v33];
+    [layer7 setFilters:v33];
 
-    v34 = [v4 layer];
+    layer8 = [_rimShadowView layer];
     v37 = v26;
     v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
-    [v34 setFilters:v35];
+    [layer8 setFilters:v35];
   }
 
   else
   {
-    v29 = [v3 layer];
-    [v29 setFilters:0];
+    layer9 = [_diffuseShadowView layer];
+    [layer9 setFilters:0];
 
-    v30 = [v4 layer];
-    [v30 setFilters:0];
+    layer10 = [_rimShadowView layer];
+    [layer10 setFilters:0];
   }
 }
 
@@ -153,35 +153,35 @@
   v13 = self->_rimShadowView;
   if (v13)
   {
-    v14 = [(SBFView *)v13 layer];
-    [v14 setShadowPathIsBounds:self->_shadowPath == 0];
+    layer = [(SBFView *)v13 layer];
+    [layer setShadowPathIsBounds:self->_shadowPath == 0];
 
     if (self->_shadowPath)
     {
-      v15 = [(SBFView *)self->_rimShadowView layer];
-      [v15 setShadowPath:{-[UIBezierPath CGPath](self->_shadowPath, "CGPath")}];
+      layer2 = [(SBFView *)self->_rimShadowView layer];
+      [layer2 setShadowPath:{-[UIBezierPath CGPath](self->_shadowPath, "CGPath")}];
     }
   }
 
-  v16 = [(SBFView *)self->_diffuseShadowView layer];
-  [v16 setShadowPathIsBounds:self->_shadowPath == 0];
+  layer3 = [(SBFView *)self->_diffuseShadowView layer];
+  [layer3 setShadowPathIsBounds:self->_shadowPath == 0];
 
   if (self->_shadowPath)
   {
-    v17 = [(SBFView *)self->_diffuseShadowView layer];
-    [v17 setShadowPath:{-[UIBezierPath CGPath](self->_shadowPath, "CGPath")}];
+    layer4 = [(SBFView *)self->_diffuseShadowView layer];
+    [layer4 setShadowPath:{-[UIBezierPath CGPath](self->_shadowPath, "CGPath")}];
   }
 }
 
 - (void)_applyPrototypeSettingsToConstants
 {
-  v3 = [(SBAppSwitcherPageShadowView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(SBAppSwitcherPageShadowView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   [(SBMedusaSettings *)self->_medusaSettings rimShadowRadius];
   self->_rimShadowRadius = v5;
   medusaSettings = self->_medusaSettings;
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     [(SBMedusaSettings *)medusaSettings coronaRimShadowOpacity];
   }
@@ -212,16 +212,16 @@
       goto LABEL_11;
     }
 
-    v17 = [(SBAppSwitcherSettings *)self->_switcherSettings windowingSettings];
-    [v17 rimShadowOpacity];
+    windowingSettings = [(SBAppSwitcherSettings *)self->_switcherSettings windowingSettings];
+    [windowingSettings rimShadowOpacity];
     self->_rimShadowOpacity = v18;
-    [v17 rimShadowRadius];
+    [windowingSettings rimShadowRadius];
     self->_rimShadowRadius = v19;
-    [v17 diffuseShadowOpacity];
+    [windowingSettings diffuseShadowOpacity];
     self->_diffuseShadowOpacity = v20;
-    [v17 diffuseShadowRadius];
+    [windowingSettings diffuseShadowRadius];
     self->_diffuseShadowRadius = v21;
-    [v17 diffuseShadowOffset];
+    [windowingSettings diffuseShadowOffset];
     self->_diffuseShadowOffset.width = v22;
     self->_diffuseShadowOffset.height = v23;
     self->_diffuseShadowRadiusWhileTouched = self->_diffuseShadowRadius;
@@ -279,7 +279,7 @@ LABEL_11:
     [(SBMedusaSettings *)self->_medusaSettings diffuseShadowRadius];
     self->_diffuseShadowRadius = v34;
     v35 = self->_medusaSettings;
-    if (v4 == 2)
+    if (userInterfaceStyle == 2)
     {
       [(SBMedusaSettings *)v35 coronaDiffuseShadowOpacity];
     }
@@ -298,7 +298,7 @@ LABEL_11:
     [(SBMedusaSettings *)self->_medusaSettings diffuseShadowRadiusWhileTouched];
     self->_diffuseShadowRadiusWhileTouched = v42;
     v43 = self->_medusaSettings;
-    if (v4 == 2)
+    if (userInterfaceStyle == 2)
     {
       [(SBMedusaSettings *)v43 coronaDiffuseShadowOpacityWhileTouched];
     }
@@ -325,15 +325,15 @@ LABEL_21:
   self->_diffuseShadowOffsetWhileCursorHovered = vmlaq_n_f64(vmulq_n_f64(self->_diffuseShadowOffsetWhileTouched, v50), self->_diffuseShadowOffset, 1.0 - v50);
 }
 
-- (SBAppSwitcherPageShadowView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (SBAppSwitcherPageShadowView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v13.receiver = self;
   v13.super_class = SBAppSwitcherPageShadowView;
-  v5 = [(SBAppSwitcherPageShadowView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(SBAppSwitcherPageShadowView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_style = a4;
+    v5->_style = style;
     v5->_switcherCardScale = 1.0;
     v7 = +[SBAppSwitcherDomain rootSettings];
     switcherSettings = v6->_switcherSettings;
@@ -346,8 +346,8 @@ LABEL_21:
 
     [(PTSettings *)v6->_medusaSettings addKeyObserver:v6];
     [(SBFView *)v6 setAnimatedLayerProperties:&unk_28336DAE8];
-    v11 = [(SBAppSwitcherPageShadowView *)v6 layer];
-    [v11 setShadowPathIsBounds:1];
+    layer = [(SBAppSwitcherPageShadowView *)v6 layer];
+    [layer setShadowPathIsBounds:1];
 
     [(SBAppSwitcherPageShadowView *)v6 _updateShadowViews];
     [(SBAppSwitcherPageShadowView *)v6 _applyPrototypeSettingsToConstants];
@@ -357,36 +357,36 @@ LABEL_21:
   return v6;
 }
 
-- (void)setHighlightType:(unint64_t)a3
+- (void)setHighlightType:(unint64_t)type
 {
-  if (self->_highlightType != a3)
+  if (self->_highlightType != type)
   {
-    self->_highlightType = a3;
+    self->_highlightType = type;
     [(SBAppSwitcherPageShadowView *)self _updateShadowParameters];
   }
 }
 
-- (void)setSwitcherCardScale:(double)a3
+- (void)setSwitcherCardScale:(double)scale
 {
-  if (self->_switcherCardScale != a3)
+  if (self->_switcherCardScale != scale)
   {
-    self->_switcherCardScale = a3;
+    self->_switcherCardScale = scale;
     [(SBAppSwitcherPageShadowView *)self _applyPrototypeSettingsToConstants];
 
     [(SBAppSwitcherPageShadowView *)self _updateShadowParameters];
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (!a3)
+  if (!style)
   {
     [(SBAppSwitcherPageShadowView *)self setStyle:a2];
   }
 
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(SBAppSwitcherPageShadowView *)self _updateShadowViews];
     [(SBAppSwitcherPageShadowView *)self _applyPrototypeSettingsToConstants];
 
@@ -394,41 +394,41 @@ LABEL_21:
   }
 }
 
-- (void)setShadowOffset:(double)a3
+- (void)setShadowOffset:(double)offset
 {
-  if (self->_shadowOffset != a3)
+  if (self->_shadowOffset != offset)
   {
-    self->_shadowOffset = a3;
+    self->_shadowOffset = offset;
     [(SBAppSwitcherPageShadowView *)self _updateShadowParameters];
   }
 }
 
-- (void)setShadowPath:(id)a3
+- (void)setShadowPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_shadowPath, a3);
+    objc_storeStrong(&self->_shadowPath, path);
     [(SBAppSwitcherPageShadowView *)self _updateShadowViews];
   }
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = SBAppSwitcherPageShadowView;
   [(SBAppSwitcherPageShadowView *)&v5 _setContinuousCornerRadius:?];
-  [(SBFView *)self->_diffuseShadowView _setContinuousCornerRadius:a3];
-  [(SBFView *)self->_rimShadowView _setContinuousCornerRadius:a3];
+  [(SBFView *)self->_diffuseShadowView _setContinuousCornerRadius:radius];
+  [(SBFView *)self->_rimShadowView _setContinuousCornerRadius:radius];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [a3 userInterfaceStyle];
-  v5 = [(SBAppSwitcherPageShadowView *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  userInterfaceStyle = [change userInterfaceStyle];
+  traitCollection = [(SBAppSwitcherPageShadowView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v4 != v6)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(SBAppSwitcherPageShadowView *)self _applyPrototypeSettingsToConstants];
 
@@ -436,9 +436,9 @@ LABEL_21:
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_switcherSettings == a3 || self->_medusaSettings == a3)
+  if (self->_switcherSettings == settings || self->_medusaSettings == settings)
   {
     [(SBAppSwitcherPageShadowView *)self _applyPrototypeSettingsToConstants];
 

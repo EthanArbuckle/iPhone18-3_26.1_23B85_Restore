@@ -1,17 +1,17 @@
 @interface WFCellularSettings
 + (id)defaultSettings;
-- (BOOL)cellularDataEnabledWithError:(id *)a3;
-- (BOOL)isCellularDataCapableWithError:(id *)a3;
+- (BOOL)cellularDataEnabledWithError:(id *)error;
+- (BOOL)isCellularDataCapableWithError:(id *)error;
 - (WFCellularSettings)init;
 - (void)dealloc;
 @end
 
 @implementation WFCellularSettings
 
-- (BOOL)isCellularDataCapableWithError:(id *)a3
+- (BOOL)isCellularDataCapableWithError:(id *)error
 {
   v11 = 0;
-  v4 = [(WFCellularSettings *)self connection];
+  connection = [(WFCellularSettings *)self connection];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -33,10 +33,10 @@
   _Block_object_dispose(&v17, 8);
   if (v5)
   {
-    v7 = (v5)(v4, &v11, 0, 0);
-    if (a3)
+    v7 = (v5)(connection, &v11, 0, 0);
+    if (error)
     {
-      *a3 = WFNSErrorFromCTError(v7);
+      *error = WFNSErrorFromCTError(v7);
     }
 
     return v11 == 1;
@@ -44,9 +44,9 @@
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"CTError WF_CTServerConnectionGetCellularDataSettings(CTServerConnectionRef, Boolean *, Boolean *, Boolean *)"}];
-    [v9 handleFailureInFunction:v10 file:@"WFCellularSettings.m" lineNumber:19 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"WFCellularSettings.m" lineNumber:19 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -54,10 +54,10 @@
   return result;
 }
 
-- (BOOL)cellularDataEnabledWithError:(id *)a3
+- (BOOL)cellularDataEnabledWithError:(id *)error
 {
   v11 = 0;
-  v4 = [(WFCellularSettings *)self connection];
+  connection = [(WFCellularSettings *)self connection];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -79,16 +79,16 @@
   _Block_object_dispose(&v17, 8);
   if (v5)
   {
-    v7 = v5(v4, &v11);
-    *a3 = WFNSErrorFromCTError(v7);
+    v7 = v5(connection, &v11);
+    *error = WFNSErrorFromCTError(v7);
     return v11 == 1;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"CTError WF_CTServerConnectionGetCellularDataIsEnabled(CTServerConnectionRef, Boolean *)"}];
-    [v9 handleFailureInFunction:v10 file:@"WFCellularSettings.m" lineNumber:17 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"WFCellularSettings.m" lineNumber:17 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -150,9 +150,9 @@ LABEL_6:
     return v3;
   }
 
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"CTServerConnectionRef WF_CTServerConnectionCreateWithIdentifier(CFAllocatorRef, CFStringRef, CTServerConnectionCallback, _CTServerConnectionContext *)"}];
-  [v10 handleFailureInFunction:v11 file:@"WFCellularSettings.m" lineNumber:16 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v11 file:@"WFCellularSettings.m" lineNumber:16 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;

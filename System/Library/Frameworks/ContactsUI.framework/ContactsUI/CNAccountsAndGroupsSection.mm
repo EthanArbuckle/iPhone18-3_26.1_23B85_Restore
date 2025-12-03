@@ -1,5 +1,5 @@
 @interface CNAccountsAndGroupsSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)wantsSectionHeader;
 - (NSString)title;
 - (unint64_t)hash;
@@ -17,17 +17,17 @@
   else
   {
     v4 = *MEMORY[0x1E6996568];
-    v5 = [(CNAccountsAndGroupsSection *)self title];
-    v3 = (*(v4 + 16))(v4, v5) ^ 1;
+    title = [(CNAccountsAndGroupsSection *)self title];
+    v3 = (*(v4 + 16))(v4, title) ^ 1;
   }
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -35,11 +35,11 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([(CNAccountsAndGroupsSection *)v4 identifier], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([(CNAccountsAndGroupsSection *)equalCopy identifier], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
     {
-      v6 = [(CNAccountsAndGroupsSection *)v4 identifier];
-      v7 = [(CNAccountsAndGroupsSection *)self identifier];
-      v8 = [v6 isEqualToString:v7];
+      identifier = [(CNAccountsAndGroupsSection *)equalCopy identifier];
+      identifier2 = [(CNAccountsAndGroupsSection *)self identifier];
+      v8 = [identifier isEqualToString:identifier2];
     }
 
     else
@@ -53,11 +53,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CNAccountsAndGroupsSection *)self identifier];
-  if (v3)
+  identifier = [(CNAccountsAndGroupsSection *)self identifier];
+  if (identifier)
   {
-    v4 = [(CNAccountsAndGroupsSection *)self identifier];
-    v5 = [v4 hash];
+    identifier2 = [(CNAccountsAndGroupsSection *)self identifier];
+    v5 = [identifier2 hash];
   }
 
   else
@@ -74,12 +74,12 @@
 {
   if (!self->_title)
   {
-    v3 = [(CNAccountsAndGroupsSection *)self titleProvider];
+    titleProvider = [(CNAccountsAndGroupsSection *)self titleProvider];
 
-    if (v3)
+    if (titleProvider)
     {
-      v4 = [(CNAccountsAndGroupsSection *)self titleProvider];
-      v5 = v4[2]();
+      titleProvider2 = [(CNAccountsAndGroupsSection *)self titleProvider];
+      v5 = titleProvider2[2]();
       title = self->_title;
       self->_title = v5;
     }

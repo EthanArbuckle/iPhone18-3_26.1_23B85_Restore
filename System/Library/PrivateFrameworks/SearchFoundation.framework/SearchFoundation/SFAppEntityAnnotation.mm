@@ -1,38 +1,38 @@
 @interface SFAppEntityAnnotation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFAppEntityAnnotation)initWithCoder:(id)a3;
-- (SFAppEntityAnnotation)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFAppEntityAnnotation)initWithCoder:(id)coder;
+- (SFAppEntityAnnotation)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFAppEntityAnnotation
 
-- (SFAppEntityAnnotation)initWithProtobuf:(id)a3
+- (SFAppEntityAnnotation)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFAppEntityAnnotation;
   v5 = [(SFAppEntityAnnotation *)&v12 init];
   if (v5)
   {
-    v6 = [v4 typeIdentifer];
+    typeIdentifer = [protobufCopy typeIdentifer];
 
-    if (v6)
+    if (typeIdentifer)
     {
-      v7 = [v4 typeIdentifer];
-      [(SFAppEntityAnnotation *)v5 setTypeIdentifer:v7];
+      typeIdentifer2 = [protobufCopy typeIdentifer];
+      [(SFAppEntityAnnotation *)v5 setTypeIdentifer:typeIdentifer2];
     }
 
-    v8 = [v4 entityIdentifer];
+    entityIdentifer = [protobufCopy entityIdentifer];
 
-    if (v8)
+    if (entityIdentifer)
     {
-      v9 = [v4 entityIdentifer];
-      [(SFAppEntityAnnotation *)v5 setEntityIdentifer:v9];
+      entityIdentifer2 = [protobufCopy entityIdentifer];
+      [(SFAppEntityAnnotation *)v5 setEntityIdentifer:entityIdentifer2];
     }
 
     v10 = v5;
@@ -43,30 +43,30 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFAppEntityAnnotation *)self typeIdentifer];
-  v4 = [v3 hash];
-  v5 = [(SFAppEntityAnnotation *)self entityIdentifer];
-  v6 = [v5 hash];
+  typeIdentifer = [(SFAppEntityAnnotation *)self typeIdentifer];
+  v4 = [typeIdentifer hash];
+  entityIdentifer = [(SFAppEntityAnnotation *)self entityIdentifer];
+  v6 = [entityIdentifer hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFAppEntityAnnotation *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFAppEntityAnnotation *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFAppEntityAnnotation *)self typeIdentifer];
-      v8 = [(SFAppEntityAnnotation *)v6 typeIdentifer];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      typeIdentifer = [(SFAppEntityAnnotation *)self typeIdentifer];
+      typeIdentifer2 = [(SFAppEntityAnnotation *)v6 typeIdentifer];
+      if ((typeIdentifer != 0) == (typeIdentifer2 == 0))
       {
         v11 = 0;
 LABEL_19:
@@ -74,12 +74,12 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v9 = [(SFAppEntityAnnotation *)self typeIdentifer];
-      if (v9)
+      typeIdentifer3 = [(SFAppEntityAnnotation *)self typeIdentifer];
+      if (typeIdentifer3)
       {
-        v3 = [(SFAppEntityAnnotation *)self typeIdentifer];
-        v10 = [(SFAppEntityAnnotation *)v6 typeIdentifer];
-        if (![v3 isEqual:v10])
+        typeIdentifer4 = [(SFAppEntityAnnotation *)self typeIdentifer];
+        typeIdentifer5 = [(SFAppEntityAnnotation *)v6 typeIdentifer];
+        if (![typeIdentifer4 isEqual:typeIdentifer5])
         {
           v11 = 0;
 LABEL_17:
@@ -88,13 +88,13 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v21 = v10;
+        v21 = typeIdentifer5;
       }
 
-      v12 = [(SFAppEntityAnnotation *)self entityIdentifer];
-      v13 = [(SFAppEntityAnnotation *)v6 entityIdentifer];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      entityIdentifer = [(SFAppEntityAnnotation *)self entityIdentifer];
+      entityIdentifer2 = [(SFAppEntityAnnotation *)v6 entityIdentifer];
+      v14 = entityIdentifer2;
+      if ((entityIdentifer != 0) == (entityIdentifer2 == 0))
       {
 
         v11 = 0;
@@ -102,16 +102,16 @@ LABEL_18:
 
       else
       {
-        v15 = [(SFAppEntityAnnotation *)self entityIdentifer];
-        if (v15)
+        entityIdentifer3 = [(SFAppEntityAnnotation *)self entityIdentifer];
+        if (entityIdentifer3)
         {
-          v16 = v15;
-          v19 = [(SFAppEntityAnnotation *)self entityIdentifer];
+          v16 = entityIdentifer3;
+          entityIdentifer4 = [(SFAppEntityAnnotation *)self entityIdentifer];
           [(SFAppEntityAnnotation *)v6 entityIdentifer];
-          v17 = v20 = v3;
-          v11 = [v19 isEqual:v17];
+          v17 = v20 = typeIdentifer4;
+          v11 = [entityIdentifer4 isEqual:v17];
 
-          v3 = v20;
+          typeIdentifer4 = v20;
         }
 
         else
@@ -121,8 +121,8 @@ LABEL_18:
         }
       }
 
-      v10 = v21;
-      if (!v9)
+      typeIdentifer5 = v21;
+      if (!typeIdentifer3)
       {
         goto LABEL_18;
       }
@@ -138,15 +138,15 @@ LABEL_20:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFAppEntityAnnotation *)self typeIdentifer];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  typeIdentifer = [(SFAppEntityAnnotation *)self typeIdentifer];
+  v6 = [typeIdentifer copy];
   [v4 setTypeIdentifer:v6];
 
-  v7 = [(SFAppEntityAnnotation *)self entityIdentifer];
-  v8 = [v7 copy];
+  entityIdentifer = [(SFAppEntityAnnotation *)self entityIdentifer];
+  v8 = [entityIdentifer copy];
   [v4 setEntityIdentifer:v8];
 
   return v4;
@@ -155,31 +155,31 @@ LABEL_20:
 - (NSData)jsonData
 {
   v2 = [[_SFPBAppEntityAnnotation alloc] initWithFacade:self];
-  v3 = [(_SFPBAppEntityAnnotation *)v2 jsonData];
+  jsonData = [(_SFPBAppEntityAnnotation *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBAppEntityAnnotation alloc] initWithFacade:self];
-  v3 = [(_SFPBAppEntityAnnotation *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBAppEntityAnnotation *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBAppEntityAnnotation alloc] initWithFacade:self];
-  v5 = [(_SFPBAppEntityAnnotation *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBAppEntityAnnotation *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFAppEntityAnnotation)initWithCoder:(id)a3
+- (SFAppEntityAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBAppEntityAnnotation alloc] initWithData:v5];
   v7 = [(SFAppEntityAnnotation *)self initWithProtobuf:v6];

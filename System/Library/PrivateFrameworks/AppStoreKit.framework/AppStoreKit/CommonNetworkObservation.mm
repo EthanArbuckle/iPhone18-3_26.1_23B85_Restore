@@ -1,10 +1,10 @@
 @interface CommonNetworkObservation
-- (void)networkStateDidChange:(id)a3;
+- (void)networkStateDidChange:(id)change;
 @end
 
 @implementation CommonNetworkObservation
 
-- (void)networkStateDidChange:(id)a3
+- (void)networkStateDidChange:(id)change
 {
   v3 = sub_1E1AEF55C();
   v4 = *(v3 - 8);

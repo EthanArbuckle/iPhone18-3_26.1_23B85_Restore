@@ -1,13 +1,13 @@
 @interface _OSInactivityFeatureFactory
-+ (BOOL)extractLeftWatershed:(int *)a3 andRight:(int *)a4 fromFeatureName:(id)a5;
-+ (id)activityFeatureValueWithName:(id)a3 atDate:(id)a4 withActivityHistory:(id)a5 withContext:(id)a6;
-+ (id)filterInactiveEvents:(id)a3 beforeDate:(id)a4 whichHistorySubset:(id)a5 withHourBinWidth:(unint64_t)a6;
-+ (id)filteredDurationsFromIntervals:(id)a3 beforeDate:(id)a4 whichHistorySubset:(id)a5 withBinWidth:(unint64_t)a6;
-+ (id)handleSpecialHistoryAgnosticFeaturesWithName:(id)a3 atDate:(id)a4 withContext:(id)a5;
-+ (id)inputFeaturesWithNames:(id)a3 atDate:(id)a4 withIntervalHistory:(id)a5 withContext:(id)a6;
-+ (id)lockFeatureValueWithName:(id)a3 atDate:(id)a4 withLockHistory:(id)a5 withContext:(id)a6;
-+ (id)lockedEventsFromDataSourceUpToDate:(id)a3;
-+ (int)suffixNumberFromFeatureName:(id)a3;
++ (BOOL)extractLeftWatershed:(int *)watershed andRight:(int *)right fromFeatureName:(id)name;
++ (id)activityFeatureValueWithName:(id)name atDate:(id)date withActivityHistory:(id)history withContext:(id)context;
++ (id)filterInactiveEvents:(id)events beforeDate:(id)date whichHistorySubset:(id)subset withHourBinWidth:(unint64_t)width;
++ (id)filteredDurationsFromIntervals:(id)intervals beforeDate:(id)date whichHistorySubset:(id)subset withBinWidth:(unint64_t)width;
++ (id)handleSpecialHistoryAgnosticFeaturesWithName:(id)name atDate:(id)date withContext:(id)context;
++ (id)inputFeaturesWithNames:(id)names atDate:(id)date withIntervalHistory:(id)history withContext:(id)context;
++ (id)lockFeatureValueWithName:(id)name atDate:(id)date withLockHistory:(id)history withContext:(id)context;
++ (id)lockedEventsFromDataSourceUpToDate:(id)date;
++ (int)suffixNumberFromFeatureName:(id)name;
 + (void)initialize;
 @end
 
@@ -20,18 +20,18 @@
   _objc_release_x1();
 }
 
-+ (id)inputFeaturesWithNames:(id)a3 atDate:(id)a4 withIntervalHistory:(id)a5 withContext:(id)a6
++ (id)inputFeaturesWithNames:(id)names atDate:(id)date withIntervalHistory:(id)history withContext:(id)context
 {
-  v10 = a3;
-  v29 = a4;
-  v11 = a5;
-  v28 = a6;
+  namesCopy = names;
+  dateCopy = date;
+  historyCopy = history;
+  contextCopy = context;
   v12 = +[NSMutableDictionary dictionary];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v10;
+  obj = namesCopy;
   v13 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v13)
   {
@@ -54,14 +54,14 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v20 = [a1 lockFeatureValueWithName:v18 atDate:v29 withLockHistory:v11 withContext:v28];
+          v20 = [self lockFeatureValueWithName:v18 atDate:dateCopy withLockHistory:historyCopy withContext:contextCopy];
           goto LABEL_10;
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v20 = [a1 activityFeatureValueWithName:v18 atDate:v29 withActivityHistory:v11 withContext:v28];
+          v20 = [self activityFeatureValueWithName:v18 atDate:dateCopy withActivityHistory:historyCopy withContext:contextCopy];
 LABEL_10:
           v21 = v20;
           if (v20)
@@ -104,13 +104,13 @@ LABEL_14:
   return v23;
 }
 
-+ (id)lockFeatureValueWithName:(id)a3 atDate:(id)a4 withLockHistory:(id)a5 withContext:(id)a6
++ (id)lockFeatureValueWithName:(id)name atDate:(id)date withLockHistory:(id)history withContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  nameCopy = name;
+  dateCopy = date;
+  historyCopy = history;
+  contextCopy = context;
+  if (!nameCopy)
   {
     if (os_log_type_enabled(qword_1000B6980, OS_LOG_TYPE_ERROR))
     {
@@ -120,7 +120,7 @@ LABEL_14:
     goto LABEL_9;
   }
 
-  if (!v11)
+  if (!dateCopy)
   {
     if (os_log_type_enabled(qword_1000B6980, OS_LOG_TYPE_ERROR))
     {
@@ -132,11 +132,11 @@ LABEL_9:
     goto LABEL_33;
   }
 
-  v14 = [a1 handleSpecialHistoryAgnosticFeaturesWithName:v10 atDate:v11 withContext:v13];
+  v14 = [self handleSpecialHistoryAgnosticFeaturesWithName:nameCopy atDate:dateCopy withContext:contextCopy];
   v15 = v14;
   if (!v14)
   {
-    if (!v12 || ([v12 allIntervalsSortByStartAsc], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "count"), v17, !v18))
+    if (!historyCopy || ([historyCopy allIntervalsSortByStartAsc], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "count"), v17, !v18))
     {
       if (os_log_type_enabled(qword_1000B6980, OS_LOG_TYPE_ERROR))
       {
@@ -148,21 +148,21 @@ LABEL_9:
     }
 
     v19 = @"overlap";
-    if ([v10 containsString:@"overlap"])
+    if ([nameCopy containsString:@"overlap"])
     {
       v20 = 0;
     }
 
     else
     {
-      v19 = [OSIntelligenceUtilities prefixStringFromFeatureName:v10];
-      v20 = [a1 suffixNumberFromFeatureName:v10];
+      v19 = [OSIntelligenceUtilities prefixStringFromFeatureName:nameCopy];
+      v20 = [self suffixNumberFromFeatureName:nameCopy];
     }
 
-    v21 = [v12 getAllLockIntervalsEndingBefore:v11];
-    v22 = [a1 filteredDurationsFromIntervals:v21 beforeDate:v11 whichHistorySubset:v19 withBinWidth:v20];
+    v21 = [historyCopy getAllLockIntervalsEndingBefore:dateCopy];
+    v22 = [self filteredDurationsFromIntervals:v21 beforeDate:dateCopy whichHistorySubset:v19 withBinWidth:v20];
 
-    v23 = [OSIntelligenceUtilities extractPercentileOrQuantileNumberIfAnyFromFeatureName:v10];
+    v23 = [OSIntelligenceUtilities extractPercentileOrQuantileNumberIfAnyFromFeatureName:nameCopy];
     v24 = v23;
     if (v23)
     {
@@ -170,29 +170,29 @@ LABEL_9:
       [OSIntelligenceUtilities qthPercentileOf:v22 withQ:?];
     }
 
-    else if ([v10 containsString:@"dur_std"])
+    else if ([nameCopy containsString:@"dur_std"])
     {
       [OSIntelligenceUtilities standardDeviationOf:v22];
     }
 
-    else if ([v10 containsString:@"dur_avg"])
+    else if ([nameCopy containsString:@"dur_avg"])
     {
       [OSIntelligenceUtilities meanOf:v22];
     }
 
-    else if ([v10 containsString:@"dur_med"])
+    else if ([nameCopy containsString:@"dur_med"])
     {
       [OSIntelligenceUtilities medianOf:v22];
     }
 
-    else if ([v10 containsString:@"dur_mad"])
+    else if ([nameCopy containsString:@"dur_mad"])
     {
       [OSIntelligenceUtilities meanAbsoluteDeviationOf:v22];
     }
 
     else
     {
-      if (![v10 containsString:@"long_percent"])
+      if (![nameCopy containsString:@"long_percent"])
       {
         if (os_log_type_enabled(qword_1000B6980, OS_LOG_TYPE_ERROR))
         {
@@ -220,13 +220,13 @@ LABEL_33:
   return v16;
 }
 
-+ (id)activityFeatureValueWithName:(id)a3 atDate:(id)a4 withActivityHistory:(id)a5 withContext:(id)a6
++ (id)activityFeatureValueWithName:(id)name atDate:(id)date withActivityHistory:(id)history withContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  nameCopy = name;
+  dateCopy = date;
+  historyCopy = history;
+  contextCopy = context;
+  if (!nameCopy)
   {
     if (os_log_type_enabled(qword_1000B6980, OS_LOG_TYPE_ERROR))
     {
@@ -236,7 +236,7 @@ LABEL_33:
     goto LABEL_9;
   }
 
-  if (!v11)
+  if (!dateCopy)
   {
     if (os_log_type_enabled(qword_1000B6980, OS_LOG_TYPE_ERROR))
     {
@@ -248,11 +248,11 @@ LABEL_9:
     goto LABEL_52;
   }
 
-  v14 = [a1 handleSpecialHistoryAgnosticFeaturesWithName:v10 atDate:v11 withContext:v13];
+  v14 = [self handleSpecialHistoryAgnosticFeaturesWithName:nameCopy atDate:dateCopy withContext:contextCopy];
   v15 = v14;
   if (!v14)
   {
-    if (!v12)
+    if (!historyCopy)
     {
       if (os_log_type_enabled(qword_1000B6980, OS_LOG_TYPE_ERROR))
       {
@@ -263,16 +263,16 @@ LABEL_9:
       goto LABEL_51;
     }
 
-    v17 = [OSIntelligenceUtilities parseStrataTypeFromFeatureName:v10];
-    v18 = [v12 oldestIntervalInHistory];
-    v19 = [v18 startDate];
-    v20 = [OSIntelligenceUtilities datewiseDistanceBetweenDate:v11 andDate:v19];
+    v17 = [OSIntelligenceUtilities parseStrataTypeFromFeatureName:nameCopy];
+    oldestIntervalInHistory = [historyCopy oldestIntervalInHistory];
+    startDate = [oldestIntervalInHistory startDate];
+    v20 = [OSIntelligenceUtilities datewiseDistanceBetweenDate:dateCopy andDate:startDate];
 
-    v21 = [OSIntelligenceUtilities getDailyAnchorsForDate:v11 whichStrata:v17 withNrDaysHistory:v20];
-    if ([v10 containsString:@"dur_til_act"])
+    v21 = [OSIntelligenceUtilities getDailyAnchorsForDate:dateCopy whichStrata:v17 withNrDaysHistory:v20];
+    if ([nameCopy containsString:@"dur_til_act"])
     {
-      v22 = [v12 historicalTimesUntilNextActivityAtDate:v11 whichStrata:v17 useDecay:1];
-      v23 = [OSIntelligenceUtilities extractPercentileOrQuantileNumberIfAnyFromFeatureName:v10];
+      v22 = [historyCopy historicalTimesUntilNextActivityAtDate:dateCopy whichStrata:v17 useDecay:1];
+      v23 = [OSIntelligenceUtilities extractPercentileOrQuantileNumberIfAnyFromFeatureName:nameCopy];
       v24 = v23;
       if (v23)
       {
@@ -287,7 +287,7 @@ LABEL_50:
         goto LABEL_51;
       }
 
-      if ([v10 containsString:@"std"])
+      if ([nameCopy containsString:@"std"])
       {
         [OSIntelligenceUtilities standardDeviationOf:v22];
         goto LABEL_19;
@@ -297,11 +297,11 @@ LABEL_50:
     }
 
     v50 = 0;
-    if ([OSIntelligenceUtilities extractLeftWatershed:&v50 + 4 andRight:&v50 fromFeatureName:v10])
+    if ([OSIntelligenceUtilities extractLeftWatershed:&v50 + 4 andRight:&v50 fromFeatureName:nameCopy])
     {
       v43 = v15;
-      v44 = v13;
-      v42 = [v12 getPastSliceTimewiseNearDate:v11 whichStrata:v17 earlyBoundaryInSeconds:1 laterBoundaryInSeconds:(60 * HIDWORD(v50)) clipIntervals:(60 * v50)];
+      v44 = contextCopy;
+      v42 = [historyCopy getPastSliceTimewiseNearDate:dateCopy whichStrata:v17 earlyBoundaryInSeconds:1 laterBoundaryInSeconds:(60 * HIDWORD(v50)) clipIntervals:(60 * v50)];
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
@@ -324,8 +324,8 @@ LABEL_50:
             }
 
             v31 = (v50 - HIDWORD(v50)) / 60.0;
-            v32 = [OSIntelligenceUtilities datewiseDistanceBetweenDate:v11 andDate:*(*(&v46 + 1) + 8 * i), v42];
-            [v12 recommendedDecayDegree];
+            v32 = [OSIntelligenceUtilities datewiseDistanceBetweenDate:dateCopy andDate:*(*(&v46 + 1) + 8 * i), v42];
+            [historyCopy recommendedDecayDegree];
             [OSIntelligenceUtilities exponentialDecayByDateDistance:v32 withDegree:?];
             v29 = v29 + v31 * v33;
           }
@@ -342,14 +342,14 @@ LABEL_50:
       }
 
       v15 = v43;
-      v13 = v44;
+      contextCopy = v44;
       v34 = v42;
-      if ([v10 containsString:@"dur"])
+      if ([nameCopy containsString:@"dur"])
       {
-        [v12 recommendedDecayDegree];
-        [OSIntelligenceUtilities sumIntervalsWithDateDecay:v42 fromDate:v11 withDecayDegree:?];
+        [historyCopy recommendedDecayDegree];
+        [OSIntelligenceUtilities sumIntervalsWithDateDecay:v42 fromDate:dateCopy withDecayDegree:?];
         v36 = v35 / 3600.0;
-        if ([v10 hasSuffix:@"act"])
+        if ([nameCopy hasSuffix:@"act"])
         {
           v37 = v36;
 LABEL_37:
@@ -360,7 +360,7 @@ LABEL_45:
           goto LABEL_50;
         }
 
-        if ([v10 hasSuffix:@"r8"])
+        if ([nameCopy hasSuffix:@"r8"])
         {
           v37 = v36 / v29;
           if (v29 == 0.0)
@@ -373,12 +373,12 @@ LABEL_45:
       }
 
       v21 = v45;
-      if ([v10 containsString:{@"cnt", v42}])
+      if ([nameCopy containsString:{@"cnt", v42}])
       {
-        [v12 recommendedDecayDegree];
-        [OSIntelligenceUtilities countIntervalsWithDateDecay:v34 fromDate:v11 withDecayDegree:?];
+        [historyCopy recommendedDecayDegree];
+        [OSIntelligenceUtilities countIntervalsWithDateDecay:v34 fromDate:dateCopy withDecayDegree:?];
         v39 = v38;
-        if ([v10 hasSuffix:@"act"])
+        if ([nameCopy hasSuffix:@"act"])
         {
           v40 = v39;
 LABEL_44:
@@ -386,7 +386,7 @@ LABEL_44:
           goto LABEL_45;
         }
 
-        if ([v10 hasSuffix:@"r8"])
+        if ([nameCopy hasSuffix:@"r8"])
         {
           v40 = v39 / v29;
           if (v29 == 0.0)
@@ -416,30 +416,30 @@ LABEL_52:
   return v16;
 }
 
-+ (id)handleSpecialHistoryAgnosticFeaturesWithName:(id)a3 atDate:(id)a4 withContext:(id)a5
++ (id)handleSpecialHistoryAgnosticFeaturesWithName:(id)name atDate:(id)date withContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7)
+  nameCopy = name;
+  dateCopy = date;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (nameCopy)
   {
-    if (v9)
+    if (contextCopy)
     {
-      v11 = [v9 objectForKey:v7];
+      v11 = [contextCopy objectForKey:nameCopy];
 
       if (v11)
       {
-        v12 = [v10 objectForKey:v7];
+        v12 = [v10 objectForKey:nameCopy];
 LABEL_7:
         v13 = v12;
         goto LABEL_11;
       }
     }
 
-    if ([v7 isEqualToString:@"time_of_day"])
+    if ([nameCopy isEqualToString:@"time_of_day"])
     {
-      [OSIntelligenceUtilities timeOfDayWithDate:v8];
+      [OSIntelligenceUtilities timeOfDayWithDate:dateCopy];
       v12 = [NSNumber numberWithDouble:?];
       goto LABEL_7;
     }
@@ -456,36 +456,36 @@ LABEL_11:
   return v13;
 }
 
-+ (id)filteredDurationsFromIntervals:(id)a3 beforeDate:(id)a4 whichHistorySubset:(id)a5 withBinWidth:(unint64_t)a6
++ (id)filteredDurationsFromIntervals:(id)intervals beforeDate:(id)date whichHistorySubset:(id)subset withBinWidth:(unint64_t)width
 {
-  v10 = a4;
-  v11 = [a1 filterInactiveEvents:a3 beforeDate:v10 whichHistorySubset:a5 withHourBinWidth:a6];
-  v12 = [OSIntelligenceUtilities dynamicDurationsFromEvents:v11 withAnchorDate:v10 withUnit:3600.0 cappedAt:50400.0];
+  dateCopy = date;
+  v11 = [self filterInactiveEvents:intervals beforeDate:dateCopy whichHistorySubset:subset withHourBinWidth:width];
+  v12 = [OSIntelligenceUtilities dynamicDurationsFromEvents:v11 withAnchorDate:dateCopy withUnit:3600.0 cappedAt:50400.0];
 
   return v12;
 }
 
-+ (id)filterInactiveEvents:(id)a3 beforeDate:(id)a4 whichHistorySubset:(id)a5 withHourBinWidth:(unint64_t)a6
++ (id)filterInactiveEvents:(id)events beforeDate:(id)date whichHistorySubset:(id)subset withHourBinWidth:(unint64_t)width
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  eventsCopy = events;
+  dateCopy = date;
+  subsetCopy = subset;
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_10000C068;
   v30[3] = &unk_1000949F0;
-  v12 = v10;
+  v12 = dateCopy;
   v31 = v12;
   v13 = [NSPredicate predicateWithBlock:v30];
-  v14 = [v9 filteredArrayUsingPredicate:v13];
+  v14 = [eventsCopy filteredArrayUsingPredicate:v13];
 
-  if ([v11 isEqualToString:@"overlap"])
+  if ([subsetCopy isEqualToString:@"overlap"])
   {
     v15 = v14;
     goto LABEL_18;
   }
 
-  v16 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v9 startsBefore:v12 dynamicallyAroundDate:v12 withHourBinWidth:a6];
+  v16 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:v12 dynamicallyAroundDate:v12 withHourBinWidth:width];
   v17 = [NSMutableSet setWithArray:v14];
   [v17 addObjectsFromArray:v16];
   v18 = [NSSortDescriptor sortDescriptorWithKey:@"startDate" ascending:1];
@@ -493,38 +493,38 @@ LABEL_11:
   v19 = [NSArray arrayWithObjects:&v32 count:1];
   v20 = [v17 sortedArrayUsingDescriptors:v19];
 
-  if ([v11 isEqualToString:@"all"])
+  if ([subsetCopy isEqualToString:@"all"])
   {
     v21 = v20;
   }
 
-  else if ([v11 isEqualToString:@"recent"])
+  else if ([subsetCopy isEqualToString:@"recent"])
   {
     v21 = [OSIntelligenceUtilities filterEvents:v20 isRecentForDate:v12 goingDaysBack:3 useEndDate:0];
   }
 
-  else if ([v11 isEqualToString:@"woo"])
+  else if ([subsetCopy isEqualToString:@"woo"])
   {
     v21 = [OSIntelligenceUtilities filterEvents:v20 withSameWorkOrOffStatusAs:v12];
   }
 
-  else if ([v11 isEqualToString:@"dow"])
+  else if ([subsetCopy isEqualToString:@"dow"])
   {
-    v21 = [OSIntelligenceUtilities filterEvents:v20 startOnSameWeekdayAs:v12 withHourBinWidth:a6];
+    v21 = [OSIntelligenceUtilities filterEvents:v20 startOnSameWeekdayAs:v12 withHourBinWidth:width];
   }
 
   else
   {
-    if ([v11 isEqualToString:@"eligible"])
+    if ([subsetCopy isEqualToString:@"eligible"])
     {
       v22 = 600.0;
     }
 
     else
     {
-      if (![v11 isEqualToString:@"long"])
+      if (![subsetCopy isEqualToString:@"long"])
       {
-        if ([v11 isEqualToString:@"startafter"])
+        if ([subsetCopy isEqualToString:@"startafter"])
         {
           v25 = _NSConcreteStackBlock;
           v26 = 3221225472;
@@ -562,18 +562,18 @@ LABEL_18:
   return v15;
 }
 
-+ (id)lockedEventsFromDataSourceUpToDate:(id)a3
++ (id)lockedEventsFromDataSourceUpToDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[_OSLockHistory sharedInstance];
-  v5 = [v4 getAllLockIntervalsEndingBefore:v3];
+  v5 = [v4 getAllLockIntervalsEndingBefore:dateCopy];
 
   return v5;
 }
 
-+ (int)suffixNumberFromFeatureName:(id)a3
++ (int)suffixNumberFromFeatureName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v12 = 0;
   v4 = [NSRegularExpression regularExpressionWithPattern:@"_(\\d+)$" options:16 error:&v12];
   v5 = v12;
@@ -584,32 +584,32 @@ LABEL_18:
       sub_10005AB98();
     }
 
-    v6 = 0;
+    intValue = 0;
   }
 
   else
   {
-    v7 = [v4 firstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+    v7 = [v4 firstMatchInString:nameCopy options:0 range:{0, objc_msgSend(nameCopy, "length")}];
     if ([v7 numberOfRanges] >= 2)
     {
       v8 = [v7 rangeAtIndex:1];
-      v10 = [v3 substringWithRange:{v8, v9}];
-      v6 = [v10 intValue];
+      v10 = [nameCopy substringWithRange:{v8, v9}];
+      intValue = [v10 intValue];
     }
 
     else
     {
-      v6 = 0;
+      intValue = 0;
     }
   }
 
-  return v6;
+  return intValue;
 }
 
-+ (BOOL)extractLeftWatershed:(int *)a3 andRight:(int *)a4 fromFeatureName:(id)a5
++ (BOOL)extractLeftWatershed:(int *)watershed andRight:(int *)right fromFeatureName:(id)name
 {
-  v7 = a5;
-  if (v7)
+  nameCopy = name;
+  if (nameCopy)
   {
     v20 = 0;
     v8 = [NSRegularExpression regularExpressionWithPattern:@"\\((-?\\d+) options:(-?\\d+)\\)" error:0, &v20];
@@ -626,17 +626,17 @@ LABEL_18:
 
     else
     {
-      v11 = [v8 firstMatchInString:v7 options:0 range:{0, objc_msgSend(v7, "length")}];
-      v12 = [v11 numberOfRanges];
-      v10 = v12 > 2;
-      if (v12 >= 3)
+      v11 = [v8 firstMatchInString:nameCopy options:0 range:{0, objc_msgSend(nameCopy, "length")}];
+      numberOfRanges = [v11 numberOfRanges];
+      v10 = numberOfRanges > 2;
+      if (numberOfRanges >= 3)
       {
         v13 = [v11 rangeAtIndex:1];
-        v15 = [v7 substringWithRange:{v13, v14}];
+        v15 = [nameCopy substringWithRange:{v13, v14}];
         v16 = [v11 rangeAtIndex:2];
-        v18 = [v7 substringWithRange:{v16, v17}];
-        *a3 = [v15 intValue];
-        *a4 = [v18 intValue];
+        v18 = [nameCopy substringWithRange:{v16, v17}];
+        *watershed = [v15 intValue];
+        *right = [v18 intValue];
       }
     }
   }

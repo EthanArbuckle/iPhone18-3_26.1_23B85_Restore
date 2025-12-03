@@ -1,17 +1,17 @@
 @interface SBCalendarIconImageProvider
 + (NSString)significantTimeChangeNotificationName;
-+ (void)setSignificantTimeChangeNotificationName:(id)a3;
++ (void)setSignificantTimeChangeNotificationName:(id)name;
 - (SBCalendarIconImageProvider)init;
-- (SBCalendarIconImageProvider)initWithDateTimeController:(id)a3;
+- (SBCalendarIconImageProvider)initWithDateTimeController:(id)controller;
 - (SBCalendarIconImageProviderDelegate)delegate;
-- (id)iconImageWithInfo:(SBIconImageInfo *)a3;
-- (id)iconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5;
-- (id)iconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5;
+- (id)iconImageWithInfo:(SBIconImageInfo *)info;
+- (id)iconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options;
+- (id)iconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options;
 - (id)preparedISIcon;
-- (id)unmaskedIconImageWithInfo:(SBIconImageInfo *)a3;
+- (id)unmaskedIconImageWithInfo:(SBIconImageInfo *)info;
 - (void)_startListeningForSignificantTimeChanges;
 - (void)_stopListeningForSignificantTimeChanges;
-- (void)controller:(id)a3 didChangeOverrideDateFromDate:(id)a4;
+- (void)controller:(id)controller didChangeOverrideDateFromDate:(id)date;
 - (void)dealloc;
 - (void)reloadIconImage;
 @end
@@ -20,38 +20,38 @@
 
 - (id)preparedISIcon
 {
-  v2 = [(SBCalendarIconImageProvider *)self dateTimeController];
-  v3 = [v2 currentDate];
+  dateTimeController = [(SBCalendarIconImageProvider *)self dateTimeController];
+  currentDate = [dateTimeController currentDate];
 
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v5 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithDate:v3 calendar:v4 format:0];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v5 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithDate:currentDate calendar:currentCalendar format:0];
 
   return v5;
 }
 
 - (SBCalendarIconImageProvider)init
 {
-  v3 = [MEMORY[0x1E69D3FB8] sharedInstance];
-  v4 = [(SBCalendarIconImageProvider *)self initWithDateTimeController:v3];
+  mEMORY[0x1E69D3FB8] = [MEMORY[0x1E69D3FB8] sharedInstance];
+  v4 = [(SBCalendarIconImageProvider *)self initWithDateTimeController:mEMORY[0x1E69D3FB8]];
 
   return v4;
 }
 
-- (SBCalendarIconImageProvider)initWithDateTimeController:(id)a3
+- (SBCalendarIconImageProvider)initWithDateTimeController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = SBCalendarIconImageProvider;
   v6 = [(SBCalendarIconImageProvider *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dateTimeController, a3);
-    [v5 addObserver:v7];
-    v8 = [v5 overrideDate];
-    if (v8)
+    objc_storeStrong(&v6->_dateTimeController, controller);
+    [controllerCopy addObserver:v7];
+    overrideDate = [controllerCopy overrideDate];
+    if (overrideDate)
     {
-      [(SBCalendarIconImageProvider *)v7 controller:v5 didChangeOverrideDateFromDate:0];
+      [(SBCalendarIconImageProvider *)v7 controller:controllerCopy didChangeOverrideDateFromDate:0];
     }
 
     else
@@ -85,9 +85,9 @@
   }
 }
 
-+ (void)setSignificantTimeChangeNotificationName:(id)a3
++ (void)setSignificantTimeChangeNotificationName:(id)name
 {
-  v3 = [a3 copy];
+  v3 = [name copy];
   v4 = significantTimeChangeNotificationName;
   significantTimeChangeNotificationName = v3;
 
@@ -96,113 +96,113 @@
 
 - (void)reloadIconImage
 {
-  v3 = [(SBCalendarIconImageProvider *)self delegate];
-  [v3 calendarIconImageProviderHasChanged:self];
+  delegate = [(SBCalendarIconImageProvider *)self delegate];
+  [delegate calendarIconImageProviderHasChanged:self];
 }
 
 - (void)_startListeningForSignificantTimeChanges
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  v3 = [objc_opt_class() significantTimeChangeNotificationName];
-  [v4 addObserver:self selector:sel_reloadIconImage name:v3 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  significantTimeChangeNotificationName = [objc_opt_class() significantTimeChangeNotificationName];
+  [defaultCenter addObserver:self selector:sel_reloadIconImage name:significantTimeChangeNotificationName object:0];
 }
 
 - (void)_stopListeningForSignificantTimeChanges
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  v3 = [objc_opt_class() significantTimeChangeNotificationName];
-  [v4 removeObserver:self name:v3 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  significantTimeChangeNotificationName = [objc_opt_class() significantTimeChangeNotificationName];
+  [defaultCenter removeObserver:self name:significantTimeChangeNotificationName object:0];
 }
 
-- (id)iconImageWithInfo:(SBIconImageInfo *)a3
+- (id)iconImageWithInfo:(SBIconImageInfo *)info
 {
   v6 = v5;
   v7 = v4;
   v8 = v3;
   v10 = objc_autoreleasePoolPush();
-  v11 = [(SBCalendarIconImageProvider *)self preparedISIcon];
+  preparedISIcon = [(SBCalendarIconImageProvider *)self preparedISIcon];
   v12 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:v8 scale:{v7, v6}];
-  v13 = [v11 prepareImageForDescriptor:v12];
+  v13 = [preparedISIcon prepareImageForDescriptor:v12];
   v14 = MEMORY[0x1E69DCAB8];
-  v15 = [v13 CGImage];
+  cGImage = [v13 CGImage];
   [v13 scale];
-  v16 = [v14 imageWithCGImage:v15 scale:0 orientation:?];
+  v16 = [v14 imageWithCGImage:cGImage scale:0 orientation:?];
 
   objc_autoreleasePoolPop(v10);
 
   return v16;
 }
 
-- (id)unmaskedIconImageWithInfo:(SBIconImageInfo *)a3
+- (id)unmaskedIconImageWithInfo:(SBIconImageInfo *)info
 {
   v6 = v5;
   v7 = v4;
   v8 = v3;
   v10 = objc_autoreleasePoolPush();
-  v11 = [(SBCalendarIconImageProvider *)self preparedISIcon];
+  preparedISIcon = [(SBCalendarIconImageProvider *)self preparedISIcon];
   v12 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:v8 scale:{v7, v6}];
   [v12 setShouldApplyMask:0];
-  v13 = [v11 prepareImageForDescriptor:v12];
+  v13 = [preparedISIcon prepareImageForDescriptor:v12];
   v14 = MEMORY[0x1E69DCAB8];
-  v15 = [v13 CGImage];
+  cGImage = [v13 CGImage];
   [v13 scale];
-  v16 = [v14 imageWithCGImage:v15 scale:0 orientation:?];
+  v16 = [v14 imageWithCGImage:cGImage scale:0 orientation:?];
 
   objc_autoreleasePoolPop(v10);
 
   return v16;
 }
 
-- (id)iconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5
+- (id)iconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options
 {
-  v8 = a4;
+  collectionCopy = collection;
   v9 = v7;
   v10 = v6;
   v11 = v5;
-  v13 = a3;
+  infoCopy = info;
   v14 = objc_autoreleasePoolPush();
-  v15 = [(SBCalendarIconImageProvider *)self preparedISIcon];
+  preparedISIcon = [(SBCalendarIconImageProvider *)self preparedISIcon];
   v16 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:v11 scale:{v10, v9}];
-  v17 = SBHIconServicesOptionsForImageOptions(v8);
-  SBHModifyImageDescriptorWithTraitCollection(v16, v13, v17);
-  v18 = [v15 prepareImageForDescriptor:v16];
+  v17 = SBHIconServicesOptionsForImageOptions(collectionCopy);
+  SBHModifyImageDescriptorWithTraitCollection(v16, infoCopy, v17);
+  v18 = [preparedISIcon prepareImageForDescriptor:v16];
   v19 = MEMORY[0x1E69DCAB8];
-  v20 = [v18 CGImage];
+  cGImage = [v18 CGImage];
   [v18 scale];
-  v21 = [v19 imageWithCGImage:v20 scale:0 orientation:?];
+  v21 = [v19 imageWithCGImage:cGImage scale:0 orientation:?];
 
   objc_autoreleasePoolPop(v14);
 
   return v21;
 }
 
-- (id)iconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5
+- (id)iconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options
 {
-  v8 = a4;
+  collectionCopy = collection;
   v9 = v7;
   v10 = v6;
   v11 = v5;
-  v13 = a3;
+  infoCopy = info;
   v14 = objc_autoreleasePoolPush();
-  v15 = [(SBCalendarIconImageProvider *)self preparedISIcon];
+  preparedISIcon = [(SBCalendarIconImageProvider *)self preparedISIcon];
   v16 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:v11 scale:{v10, v9}];
-  v17 = SBHIconServicesOptionsForImageOptions(v8);
-  SBHModifyImageDescriptorWithTraitCollection(v16, v13, v17);
-  v18 = [v15 prepareImageForDescriptor:v16];
-  v19 = [v18 ICRIconLayer];
+  v17 = SBHIconServicesOptionsForImageOptions(collectionCopy);
+  SBHModifyImageDescriptorWithTraitCollection(v16, infoCopy, v17);
+  v18 = [preparedISIcon prepareImageForDescriptor:v16];
+  iCRIconLayer = [v18 ICRIconLayer];
 
   objc_autoreleasePoolPop(v14);
 
-  return v19;
+  return iCRIconLayer;
 }
 
-- (void)controller:(id)a3 didChangeOverrideDateFromDate:(id)a4
+- (void)controller:(id)controller didChangeOverrideDateFromDate:(id)date
 {
-  v6 = [a3 overrideDate];
-  v7 = v6;
-  if (a4 || !v6)
+  overrideDate = [controller overrideDate];
+  v7 = overrideDate;
+  if (date || !overrideDate)
   {
-    if (a4 && !v6)
+    if (date && !overrideDate)
     {
       [(SBCalendarIconImageProvider *)self _startListeningForSignificantTimeChanges];
     }

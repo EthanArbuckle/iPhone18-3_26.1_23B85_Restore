@@ -1,13 +1,13 @@
 @interface ATXMLActionProducer
 + (id)consumerSubTypesToUpdate;
-+ (id)predictionChunksForActionResults:(id)a3;
++ (id)predictionChunksForActionResults:(id)results;
 - (ATXMLActionProducer)init;
-- (id)consumerSubTypesToInvalidateForTTL:(double)a3 disabledConsumerSubTypes:(id)a4 shouldOverrideRefreshRateForDisabledConsumerSubTypes:(BOOL)a5;
-- (id)lockscreenActionsFromPredictions:(id)a3;
+- (id)consumerSubTypesToInvalidateForTTL:(double)l disabledConsumerSubTypes:(id)types shouldOverrideRefreshRateForDisabledConsumerSubTypes:(BOOL)subTypes;
+- (id)lockscreenActionsFromPredictions:(id)predictions;
 - (id)produceActions;
-- (void)invalidateCacheForConsumerSubTypes:(id)a3 featureCache:(id)a4;
+- (void)invalidateCacheForConsumerSubTypes:(id)types featureCache:(id)cache;
 - (void)updateBlendingLayerForAllConsumerSubTypes;
-- (void)updateBlendingLayerForConsumerSubType:(unsigned __int8)a3;
+- (void)updateBlendingLayerForConsumerSubType:(unsigned __int8)type;
 - (void)updateBlendingLayerForHomeScreen;
 @end
 
@@ -54,8 +54,8 @@
   v2 = [(ATXMLActionProducer *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CEBCB0] appPredictionDirectory];
-    v4 = [v3 stringByAppendingPathComponent:@"caches/ATXCacheFile"];
+    appPredictionDirectory = [MEMORY[0x277CEBCB0] appPredictionDirectory];
+    v4 = [appPredictionDirectory stringByAppendingPathComponent:@"caches/ATXCacheFile"];
     cacheBasePath = v2->_cacheBasePath;
     v2->_cacheBasePath = v4;
   }
@@ -117,20 +117,20 @@ void __76__ATXMLActionProducer__getActionsFromCacheForConsumerSubType_cacheFileD
   [*(a1 + 32) addObject:?];
 }
 
-- (id)consumerSubTypesToInvalidateForTTL:(double)a3 disabledConsumerSubTypes:(id)a4 shouldOverrideRefreshRateForDisabledConsumerSubTypes:(BOOL)a5
+- (id)consumerSubTypesToInvalidateForTTL:(double)l disabledConsumerSubTypes:(id)types shouldOverrideRefreshRateForDisabledConsumerSubTypes:(BOOL)subTypes
 {
-  v8 = a4;
-  v9 = [objc_opt_class() consumerSubTypesToUpdate];
+  typesCopy = types;
+  consumerSubTypesToUpdate = [objc_opt_class() consumerSubTypesToUpdate];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __136__ATXMLActionProducer_consumerSubTypesToInvalidateForTTL_disabledConsumerSubTypes_shouldOverrideRefreshRateForDisabledConsumerSubTypes___block_invoke;
   v13[3] = &unk_278598BF8;
-  v16 = a3;
-  v17 = a5;
-  v10 = v8;
+  lCopy = l;
+  subTypesCopy = subTypes;
+  v10 = typesCopy;
   v14 = v10;
-  v15 = self;
-  v11 = [v9 _pas_filteredArrayWithTest:v13];
+  selfCopy = self;
+  v11 = [consumerSubTypesToUpdate _pas_filteredArrayWithTest:v13];
 
   return v11;
 }
@@ -223,19 +223,19 @@ void __47__ATXMLActionProducer_consumerSubTypesToUpdate__block_invoke()
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidateCacheForConsumerSubTypes:(id)a3 featureCache:(id)a4
+- (void)invalidateCacheForConsumerSubTypes:(id)types featureCache:(id)cache
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  typesCopy = types;
   v19 = 0;
   v20 = 0;
   v21 = 0;
-  v7 = [ATXActionPredictions _actionPredictionCandidatesForCandidateBundleIdentifiers:0 candidateActiontypes:0 firstStageScoreLogger:0 secondStageScoreLogger:0 multiStageScoreLogger:0 featureCache:a4 remainingPredictionItems:&v19];
+  v7 = [ATXActionPredictions _actionPredictionCandidatesForCandidateBundleIdentifiers:0 candidateActiontypes:0 firstStageScoreLogger:0 secondStageScoreLogger:0 multiStageScoreLogger:0 featureCache:cache remainingPredictionItems:&v19];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = v6;
+  v8 = typesCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v9)
   {
@@ -250,10 +250,10 @@ void __47__ATXMLActionProducer_consumerSubTypesToUpdate__block_invoke()
           objc_enumerationMutation(v8);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) unsignedIntegerValue];
+        unsignedIntegerValue = [*(*(&v15 + 1) + 8 * v11) unsignedIntegerValue];
         memset(v14, 0, sizeof(v14));
         std::vector<ATXPredictionItem>::__init_with_size[abi:ne200100]<ATXPredictionItem*,ATXPredictionItem*>(v14, v19, v20, 0x13A524387AC82261 * ((v20 - v19) >> 3));
-        [(ATXMLActionProducer *)self invalidateCacheForConsumerSubType:v12 actionPredictionCandidates:v7 remainingPredictionItems:v14];
+        [(ATXMLActionProducer *)self invalidateCacheForConsumerSubType:unsignedIntegerValue actionPredictionCandidates:v7 remainingPredictionItems:v14];
         v22 = v14;
         std::vector<ATXPredictionItem>::__destroy_vector::operator()[abi:ne200100](&v22);
         ++v11;
@@ -272,16 +272,16 @@ void __47__ATXMLActionProducer_consumerSubTypesToUpdate__block_invoke()
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)predictionChunksForActionResults:(id)a3
++ (id)predictionChunksForActionResults:(id)results
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  resultsCopy = results;
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(resultsCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = resultsCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -296,13 +296,13 @@ void __47__ATXMLActionProducer_consumerSubTypesToUpdate__block_invoke()
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 scoredAction];
-        v11 = v10 == 0;
+        scoredAction = [v9 scoredAction];
+        v11 = scoredAction == 0;
 
         if (!v11)
         {
-          v12 = [v9 scoredAction];
-          [v4 addObject:v12];
+          scoredAction2 = [v9 scoredAction];
+          [v4 addObject:scoredAction2];
         }
       }
 
@@ -320,16 +320,16 @@ void __47__ATXMLActionProducer_consumerSubTypesToUpdate__block_invoke()
   return v14;
 }
 
-- (void)updateBlendingLayerForConsumerSubType:(unsigned __int8)a3
+- (void)updateBlendingLayerForConsumerSubType:(unsigned __int8)type
 {
-  if (a3 <= 37)
+  if (type <= 37)
   {
-    if (a3 == 21)
+    if (type == 21)
     {
       [(ATXMLActionProducer *)self updateBlendingLayerForSpotlight];
     }
 
-    else if (a3 == 22)
+    else if (type == 22)
     {
       [(ATXMLActionProducer *)self updateBlendingLayerForLockscreen];
     }
@@ -337,7 +337,7 @@ void __47__ATXMLActionProducer_consumerSubTypesToUpdate__block_invoke()
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case '1':
         [(ATXMLActionProducer *)self updateBlendingLayerForWatchAppSettings];
@@ -358,8 +358,8 @@ void __47__ATXMLActionProducer_consumerSubTypesToUpdate__block_invoke()
   {
     v5 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:11];
     v3 = [MEMORY[0x277CEB2F8] actionResponseForDeveloperModeWithClientId:? shouldShowRecentDonations:?];
-    v4 = [v3 proactiveSuggestions];
-    [ATXActionBlendingUpdater updateBlendingLayerWithRecentShortcuts:v4];
+    proactiveSuggestions = [v3 proactiveSuggestions];
+    [ATXActionBlendingUpdater updateBlendingLayerWithRecentShortcuts:proactiveSuggestions];
   }
 
   else
@@ -373,10 +373,10 @@ void __47__ATXMLActionProducer_consumerSubTypesToUpdate__block_invoke()
   }
 }
 
-- (id)lockscreenActionsFromPredictions:(id)a3
+- (id)lockscreenActionsFromPredictions:(id)predictions
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  predictionsCopy = predictions;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -396,17 +396,17 @@ void __47__ATXMLActionProducer_consumerSubTypesToUpdate__block_invoke()
   aBlock[4] = v22;
   aBlock[5] = &v24;
   v4 = _Block_copy(aBlock);
-  v5 = [v3 atx_actionsFromActionResults];
-  v6 = [ATXDisplayCacheLockscreenFilter indicesOfLockScreenActionsForActionPredictions:v5 criteria:v4];
-  v7 = [v5 objectsAtIndexes:v6];
+  atx_actionsFromActionResults = [predictionsCopy atx_actionsFromActionResults];
+  v6 = [ATXDisplayCacheLockscreenFilter indicesOfLockScreenActionsForActionPredictions:atx_actionsFromActionResults criteria:v4];
+  v7 = [atx_actionsFromActionResults objectsAtIndexes:v6];
   if ([v7 count])
   {
-    v8 = [v7 firstObject];
-    v9 = [v8 predictedItem];
-    if ([v9 isTVWhiteListedLongFormMedia])
+    firstObject = [v7 firstObject];
+    predictedItem = [firstObject predictedItem];
+    if ([predictedItem isTVWhiteListedLongFormMedia])
     {
-      v10 = [v25[5] predictedRouteInfo];
-      v11 = v10 == 0;
+      predictedRouteInfo = [v25[5] predictedRouteInfo];
+      v11 = predictedRouteInfo == 0;
 
       if (v11)
       {
@@ -414,36 +414,36 @@ LABEL_6:
         v16 = __atxlog_handle_blending();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [v8 predictedItem];
+          predictedItem2 = [firstObject predictedItem];
           *buf = 138412290;
-          v32 = v17;
+          v32 = predictedItem2;
           _os_log_impl(&dword_2263AA000, v16, OS_LOG_TYPE_DEFAULT, "lockscreen: Sending prediction to lockscreen: %@", buf, 0xCu);
         }
 
-        v30 = v8;
+        v30 = firstObject;
         v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
         goto LABEL_12;
       }
 
-      v12 = [v8 predictedItem];
-      v13 = [v25[5] predictedRouteInfo];
-      v9 = [v12 actionWithRouteInfo:v13];
+      predictedItem3 = [firstObject predictedItem];
+      predictedRouteInfo2 = [v25[5] predictedRouteInfo];
+      predictedItem = [predictedItem3 actionWithRouteInfo:predictedRouteInfo2];
 
       v14 = objc_alloc(MEMORY[0x277CEB7F0]);
-      [v8 score];
-      v15 = [v14 initWithPredictedItem:v9 score:?];
+      [firstObject score];
+      v15 = [v14 initWithPredictedItem:predictedItem score:?];
 
-      v8 = v15;
+      firstObject = v15;
     }
 
     goto LABEL_6;
   }
 
-  v8 = __atxlog_handle_blending();
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  firstObject = __atxlog_handle_blending();
+  if (os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "lockscreen: clearing suggestions because no suggestions received", buf, 2u);
+    _os_log_impl(&dword_2263AA000, firstObject, OS_LOG_TYPE_DEFAULT, "lockscreen: clearing suggestions because no suggestions received", buf, 2u);
   }
 
   v18 = MEMORY[0x277CBEBF8];

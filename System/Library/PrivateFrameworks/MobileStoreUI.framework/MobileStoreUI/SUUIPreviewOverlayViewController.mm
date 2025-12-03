@@ -1,30 +1,30 @@
 @interface SUUIPreviewOverlayViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (SUUIPreviewOverlayViewController)initWithDocument:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (SUUIPreviewOverlayViewController)initWithDocument:(id)document;
 - (double)_overlayWidth;
 - (id)_layoutCache;
-- (void)_tapAction:(id)a3;
+- (void)_tapAction:(id)action;
 - (void)dealloc;
-- (void)itemStateCenter:(id)a3 itemStatesChanged:(id)a4;
+- (void)itemStateCenter:(id)center itemStatesChanged:(id)changed;
 - (void)loadView;
 - (void)prepareOverlayView;
 - (void)reloadOverlayView;
-- (void)setBackgroundStyle:(int64_t)a3;
-- (void)showPreviewProgressWithStatus:(id)a3 animated:(BOOL)a4;
+- (void)setBackgroundStyle:(int64_t)style;
+- (void)showPreviewProgressWithStatus:(id)status animated:(BOOL)animated;
 @end
 
 @implementation SUUIPreviewOverlayViewController
 
-- (SUUIPreviewOverlayViewController)initWithDocument:(id)a3
+- (SUUIPreviewOverlayViewController)initWithDocument:(id)document
 {
-  v5 = a3;
+  documentCopy = document;
   v10.receiver = self;
   v10.super_class = SUUIPreviewOverlayViewController;
   v6 = [(SUUIPreviewOverlayViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_document, a3);
+    objc_storeStrong(&v6->_document, document);
     v8 = +[SUUIItemStateCenter defaultCenter];
     [v8 addObserver:v7];
   }
@@ -38,8 +38,8 @@
   [(SUUIViewElementLayoutContext *)self->_layoutContext setArtworkRequestDelegate:0];
   [(UITapGestureRecognizer *)self->_tapGestureRecognizer removeTarget:self action:0];
   [(UITapGestureRecognizer *)self->_tapGestureRecognizer setDelegate:0];
-  v3 = [(UITapGestureRecognizer *)self->_tapGestureRecognizer view];
-  [v3 removeGestureRecognizer:self->_tapGestureRecognizer];
+  view = [(UITapGestureRecognizer *)self->_tapGestureRecognizer view];
+  [view removeGestureRecognizer:self->_tapGestureRecognizer];
 
   v4 = +[SUUIItemStateCenter defaultCenter];
   [v4 removeObserver:self];
@@ -62,67 +62,67 @@
     [(SUUIViewElementLayoutContext *)v5 setAggregateValue:v6 forKey:0x286AF73C0];
 
     [(SUUIViewElementLayoutContext *)self->_layoutContext setArtworkRequestDelegate:self];
-    v7 = [(SUUIViewController *)self clientContext];
-    [(SUUIViewElementLayoutContext *)self->_layoutContext setClientContext:v7];
+    clientContext = [(SUUIViewController *)self clientContext];
+    [(SUUIViewElementLayoutContext *)self->_layoutContext setClientContext:clientContext];
     v8 = [SUUIResourceLoader alloc];
-    v9 = [(SUUIViewController *)self operationQueue];
-    v10 = [(SUUIResourceLoader *)v8 initWithOperationQueue:v9 clientContext:v7];
+    operationQueue = [(SUUIViewController *)self operationQueue];
+    v10 = [(SUUIResourceLoader *)v8 initWithOperationQueue:operationQueue clientContext:clientContext];
 
     [(SUUIViewElementLayoutContext *)self->_layoutContext setResourceLoader:v10];
     v11 = [SUUIViewElementTextLayoutCache alloc];
-    v12 = [(SUUIPreviewOverlayViewController *)self _layoutCache];
-    v13 = [(SUUIViewElementTextLayoutCache *)v11 initWithLayoutCache:v12];
+    _layoutCache = [(SUUIPreviewOverlayViewController *)self _layoutCache];
+    v13 = [(SUUIViewElementTextLayoutCache *)v11 initWithLayoutCache:_layoutCache];
 
     [(SUUIViewElementLayoutContext *)self->_layoutContext setLabelLayoutCache:v13];
   }
 
-  v16 = [(IKAppDocument *)self->_document templateElement];
-  v14 = [v16 previewLockup];
+  templateElement = [(IKAppDocument *)self->_document templateElement];
+  previewLockup = [templateElement previewLockup];
   [(SUUIPreviewOverlayViewController *)self _overlayWidth];
-  [SUUIHorizontalLockupView requestLayoutForViewElement:v14 width:self->_layoutContext context:?];
-  [SUUIHorizontalLockupView prefetchResourcesForViewElement:v14 reason:0 context:self->_layoutContext];
-  v15 = [(SUUIPreviewOverlayViewController *)self _layoutCache];
-  [v15 commitLayoutRequests];
+  [SUUIHorizontalLockupView requestLayoutForViewElement:previewLockup width:self->_layoutContext context:?];
+  [SUUIHorizontalLockupView prefetchResourcesForViewElement:previewLockup reason:0 context:self->_layoutContext];
+  _layoutCache2 = [(SUUIPreviewOverlayViewController *)self _layoutCache];
+  [_layoutCache2 commitLayoutRequests];
 }
 
 - (void)reloadOverlayView
 {
-  v3 = [(IKAppDocument *)self->_document templateElement];
-  v5 = [v3 previewLockup];
+  templateElement = [(IKAppDocument *)self->_document templateElement];
+  previewLockup = [templateElement previewLockup];
 
   lockupView = self->_lockupView;
   [(SUUIPreviewOverlayViewController *)self _overlayWidth];
-  [(SUUIHorizontalLockupView *)lockupView reloadWithViewElement:v5 width:self->_layoutContext context:?];
+  [(SUUIHorizontalLockupView *)lockupView reloadWithViewElement:previewLockup width:self->_layoutContext context:?];
 }
 
-- (void)setBackgroundStyle:(int64_t)a3
+- (void)setBackgroundStyle:(int64_t)style
 {
-  self->_backgroundStyle = a3;
+  self->_backgroundStyle = style;
   layoutContext = self->_layoutContext;
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:?];
   [(SUUIViewElementLayoutContext *)layoutContext setAggregateValue:v4 forKey:0x286AF73C0];
 }
 
-- (void)showPreviewProgressWithStatus:(id)a3 animated:(BOOL)a4
+- (void)showPreviewProgressWithStatus:(id)status animated:(BOOL)animated
 {
-  v4 = a4;
-  objc_storeStrong(&self->_previewStatus, a3);
-  v7 = a3;
-  [(SUUIHorizontalLockupView *)self->_lockupView showPreviewProgressWithStatus:v7 animated:v4];
+  animatedCopy = animated;
+  objc_storeStrong(&self->_previewStatus, status);
+  statusCopy = status;
+  [(SUUIHorizontalLockupView *)self->_lockupView showPreviewProgressWithStatus:statusCopy animated:animatedCopy];
 }
 
 - (void)loadView
 {
   [(SUUIPreviewOverlayViewController *)self _overlayWidth];
   v4 = v3;
-  v5 = [(IKAppDocument *)self->_document templateElement];
-  v17 = [v5 previewLockup];
+  templateElement = [(IKAppDocument *)self->_document templateElement];
+  previewLockup = [templateElement previewLockup];
 
   if (!self->_lockupView)
   {
     v6 = *MEMORY[0x277CBF3A0];
     v7 = *(MEMORY[0x277CBF3A0] + 8);
-    [SUUIHorizontalLockupView sizeThatFitsWidth:v17 viewElement:self->_layoutContext context:v4];
+    [SUUIHorizontalLockupView sizeThatFitsWidth:previewLockup viewElement:self->_layoutContext context:v4];
     if (v9 >= 44.0)
     {
       v10 = v9;
@@ -138,11 +138,11 @@
     self->_lockupView = v11;
 
     v13 = self->_lockupView;
-    v14 = [MEMORY[0x277D75348] clearColor];
-    [(SUUIHorizontalLockupView *)v13 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SUUIHorizontalLockupView *)v13 setBackgroundColor:clearColor];
 
     [(SUUIHorizontalLockupView *)self->_lockupView setContentInset:0.0, 15.0, 0.0, 15.0];
-    [(SUUIHorizontalLockupView *)self->_lockupView reloadWithViewElement:v17 width:self->_layoutContext context:v4];
+    [(SUUIHorizontalLockupView *)self->_lockupView reloadWithViewElement:previewLockup width:self->_layoutContext context:v4];
     [(SUUIHorizontalLockupView *)self->_lockupView showPreviewProgressWithStatus:self->_previewStatus animated:0];
     [(SUUIHorizontalLockupView *)self->_lockupView setUpdateLayoutOnButtonConfirmation:1];
   }
@@ -160,18 +160,18 @@
   [(SUUIPreviewOverlayViewController *)self setView:self->_lockupView];
 }
 
-- (void)itemStateCenter:(id)a3 itemStatesChanged:(id)a4
+- (void)itemStateCenter:(id)center itemStatesChanged:(id)changed
 {
-  v5 = a4;
-  v6 = v5;
+  changedCopy = changed;
+  v6 = changedCopy;
   if (self->_lockupView)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __70__SUUIPreviewOverlayViewController_itemStateCenter_itemStatesChanged___block_invoke;
     v7[3] = &unk_2798F5AF8;
-    v8 = v5;
-    v9 = self;
+    v8 = changedCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], v7);
   }
 }
@@ -210,26 +210,26 @@ void __70__SUUIPreviewOverlayViewController_itemStateCenter_itemStatesChanged___
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v4 = [a4 view];
+  view = [touch view];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return (isKindOfClass & 1) == 0;
 }
 
-- (void)_tapAction:(id)a3
+- (void)_tapAction:(id)action
 {
-  if ([a3 state] == 3)
+  if ([action state] == 3)
   {
-    v8 = [(IKAppDocument *)self->_document templateElement];
-    v4 = [v8 previewURLString];
-    if (v4)
+    templateElement = [(IKAppDocument *)self->_document templateElement];
+    previewURLString = [templateElement previewURLString];
+    if (previewURLString)
     {
-      v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v4];
-      v6 = [MEMORY[0x277D7FDA8] sessionManager];
-      v7 = [v6 endSessionForURL:v5];
+      v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:previewURLString];
+      sessionManager = [MEMORY[0x277D7FDA8] sessionManager];
+      v7 = [sessionManager endSessionForURL:v5];
 
       [v7 stop];
     }
@@ -254,16 +254,16 @@ void __70__SUUIPreviewOverlayViewController_itemStateCenter_itemStatesChanged___
 
 - (double)_overlayWidth
 {
-  v2 = [(SUUIViewController *)self clientContext];
-  v3 = SUUIUserInterfaceIdiom(v2);
+  clientContext = [(SUUIViewController *)self clientContext];
+  v3 = SUUIUserInterfaceIdiom(clientContext);
 
   if (v3 == 1)
   {
     return 290.0;
   }
 
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v7 = v6;
 
   return v7 + -30.0;

@@ -1,22 +1,22 @@
 @interface AMSPaymentAuthorizationDialogTask
-- (AMSPaymentAuthorizationDialogTask)initWithRequest:(id)a3 bag:(id)a4;
+- (AMSPaymentAuthorizationDialogTask)initWithRequest:(id)request bag:(id)bag;
 - (id)perform;
 @end
 
 @implementation AMSPaymentAuthorizationDialogTask
 
-- (AMSPaymentAuthorizationDialogTask)initWithRequest:(id)a3 bag:(id)a4
+- (AMSPaymentAuthorizationDialogTask)initWithRequest:(id)request bag:(id)bag
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  bagCopy = bag;
   v12.receiver = self;
   v12.super_class = AMSPaymentAuthorizationDialogTask;
   v9 = [(AMSTask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bag, a4);
-    objc_storeStrong(&v10->_request, a3);
+    objc_storeStrong(&v9->_bag, bag);
+    objc_storeStrong(&v10->_request, request);
   }
 
   return v10;

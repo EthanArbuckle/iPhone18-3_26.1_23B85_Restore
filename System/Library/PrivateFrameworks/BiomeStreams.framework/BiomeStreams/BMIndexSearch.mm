@@ -1,20 +1,20 @@
 @interface BMIndexSearch
-- (BMIndexSearch)initWithIndex:(id)a3 startFields:(id)a4 endFields:(id)a5 database:(id)a6;
-- (id)_buildSearchQueryWithStartTime:(double)a3 endTime:(double)a4 maxEvents:(unint64_t)a5 reversed:(BOOL)a6;
+- (BMIndexSearch)initWithIndex:(id)index startFields:(id)fields endFields:(id)endFields database:(id)database;
+- (id)_buildSearchQueryWithStartTime:(double)time endTime:(double)endTime maxEvents:(unint64_t)events reversed:(BOOL)reversed;
 - (id)description;
-- (id)performSearchWithError:(id *)a3;
+- (id)performSearchWithError:(id *)error;
 @end
 
 @implementation BMIndexSearch
 
-- (BMIndexSearch)initWithIndex:(id)a3 startFields:(id)a4 endFields:(id)a5 database:(id)a6
+- (BMIndexSearch)initWithIndex:(id)index startFields:(id)fields endFields:(id)endFields database:(id)database
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v12 count];
-  if (v15 != [v13 count])
+  indexCopy = index;
+  fieldsCopy = fields;
+  endFieldsCopy = endFields;
+  databaseCopy = database;
+  v15 = [fieldsCopy count];
+  if (v15 != [endFieldsCopy count])
   {
     [BMIndexSearch initWithIndex:a2 startFields:self endFields:? database:?];
   }
@@ -25,29 +25,29 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_index, a3);
-    objc_storeStrong(&v17->_startFields, a4);
-    objc_storeStrong(&v17->_endFields, a5);
-    objc_storeStrong(&v17->_database, a6);
+    objc_storeStrong(&v16->_index, index);
+    objc_storeStrong(&v17->_startFields, fields);
+    objc_storeStrong(&v17->_endFields, endFields);
+    objc_storeStrong(&v17->_database, database);
   }
 
   return v17;
 }
 
-- (id)_buildSearchQueryWithStartTime:(double)a3 endTime:(double)a4 maxEvents:(unint64_t)a5 reversed:(BOOL)a6
+- (id)_buildSearchQueryWithStartTime:(double)time endTime:(double)endTime maxEvents:(unint64_t)events reversed:(BOOL)reversed
 {
-  v6 = a6;
+  reversedCopy = reversed;
   v86 = *MEMORY[0x1E69E9840];
   v10 = objc_opt_new();
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v74 = self;
-  v11 = [(BMIndex *)self->_index schema];
-  v12 = [v11 columns];
+  selfCopy = self;
+  schema = [(BMIndex *)self->_index schema];
+  columns = [schema columns];
 
-  v13 = [v12 countByEnumeratingWithState:&v80 objects:v85 count:16];
+  v13 = [columns countByEnumeratingWithState:&v80 objects:v85 count:16];
   if (v13)
   {
     v14 = v13;
@@ -58,85 +58,85 @@
       {
         if (*v81 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(columns);
         }
 
         v17 = *(*(&v80 + 1) + 8 * i);
         v18 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v19 = [v17 name];
-        v20 = [v18 initWithFormat:@"%@", v19];
+        name = [v17 name];
+        v20 = [v18 initWithFormat:@"%@", name];
         [v10 addObject:v20];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v80 objects:v85 count:16];
+      v14 = [columns countByEnumeratingWithState:&v80 objects:v85 count:16];
     }
 
     while (v14);
   }
 
   v75 = objc_opt_new();
-  if ([(NSArray *)v74->_startFields count])
+  if ([(NSArray *)selfCopy->_startFields count])
   {
     v21 = 0;
     do
     {
-      v22 = [(NSArray *)v74->_startFields objectAtIndexedSubscript:v21];
-      v23 = [MEMORY[0x1E695DFB0] null];
+      v22 = [(NSArray *)selfCopy->_startFields objectAtIndexedSubscript:v21];
+      null = [MEMORY[0x1E695DFB0] null];
 
-      if (v22 != v23)
+      if (v22 != null)
       {
         v24 = MEMORY[0x1E696AEC0];
-        v25 = [(BMIndex *)v74->_index schema];
-        v26 = [v25 columns];
-        v27 = [v26 objectAtIndexedSubscript:v21];
-        v28 = [v27 name];
-        v29 = [v24 stringWithFormat:@"%@ >= ?", v28];
+        schema2 = [(BMIndex *)selfCopy->_index schema];
+        columns2 = [schema2 columns];
+        v27 = [columns2 objectAtIndexedSubscript:v21];
+        name2 = [v27 name];
+        v29 = [v24 stringWithFormat:@"%@ >= ?", name2];
         [v75 addObject:v29];
       }
 
-      v30 = [(NSArray *)v74->_endFields objectAtIndexedSubscript:v21];
-      v31 = [MEMORY[0x1E695DFB0] null];
+      v30 = [(NSArray *)selfCopy->_endFields objectAtIndexedSubscript:v21];
+      null2 = [MEMORY[0x1E695DFB0] null];
 
-      if (v30 != v31)
+      if (v30 != null2)
       {
         v32 = MEMORY[0x1E696AEC0];
-        v33 = [(BMIndex *)v74->_index schema];
-        v34 = [v33 columns];
-        v35 = [v34 objectAtIndexedSubscript:v21];
-        v36 = [v35 name];
-        v37 = [v32 stringWithFormat:@"%@ <= ?", v36];
+        schema3 = [(BMIndex *)selfCopy->_index schema];
+        columns3 = [schema3 columns];
+        v35 = [columns3 objectAtIndexedSubscript:v21];
+        name3 = [v35 name];
+        v37 = [v32 stringWithFormat:@"%@ <= ?", name3];
         [v75 addObject:v37];
       }
 
       ++v21;
     }
 
-    while ([(NSArray *)v74->_startFields count]> v21);
+    while ([(NSArray *)selfCopy->_startFields count]> v21);
   }
 
-  v38 = [MEMORY[0x1E695DF00] distantPast];
-  [v38 timeIntervalSinceReferenceDate];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  [distantPast timeIntervalSinceReferenceDate];
   v40 = v39;
 
-  if (v40 != a3)
+  if (v40 != time)
   {
     v41 = MEMORY[0x1E696AEC0];
     v42 = BMEventTimestampSQLColumn();
-    v43 = [v42 name];
-    v44 = [v41 stringWithFormat:@"%@ >= ?", v43];
+    name4 = [v42 name];
+    v44 = [v41 stringWithFormat:@"%@ >= ?", name4];
     [v75 addObject:v44];
   }
 
-  v45 = [MEMORY[0x1E695DF00] distantFuture];
-  [v45 timeIntervalSinceReferenceDate];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  [distantFuture timeIntervalSinceReferenceDate];
   v47 = v46;
 
-  if (v47 != a4)
+  if (v47 != endTime)
   {
     v48 = MEMORY[0x1E696AEC0];
     v49 = BMEventTimestampSQLColumn();
-    v50 = [v49 name];
-    v51 = [v48 stringWithFormat:@"%@ <= ?", v50];
+    name5 = [v49 name];
+    v51 = [v48 stringWithFormat:@"%@ <= ?", name5];
     [v75 addObject:v51];
   }
 
@@ -157,8 +157,8 @@
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v55 = [(BMIndex *)v74->_index fields];
-  v56 = [v55 countByEnumeratingWithState:&v76 objects:v84 count:16];
+  fields = [(BMIndex *)selfCopy->_index fields];
+  v56 = [fields countByEnumeratingWithState:&v76 objects:v84 count:16];
   if (v56)
   {
     v57 = v56;
@@ -169,14 +169,14 @@
       {
         if (*v77 != v58)
         {
-          objc_enumerationMutation(v55);
+          objc_enumerationMutation(fields);
         }
 
-        v60 = [*(*(&v76 + 1) + 8 * j) name];
-        v61 = v60;
-        if (v6)
+        name6 = [*(*(&v76 + 1) + 8 * j) name];
+        v61 = name6;
+        if (reversedCopy)
         {
-          v62 = [v60 stringByAppendingString:@" DESC"];
+          v62 = [name6 stringByAppendingString:@" DESC"];
 
           v61 = v62;
         }
@@ -184,7 +184,7 @@
         [v54 addObject:v61];
       }
 
-      v57 = [v55 countByEnumeratingWithState:&v76 objects:v84 count:16];
+      v57 = [fields countByEnumeratingWithState:&v76 objects:v84 count:16];
     }
 
     while (v57);
@@ -192,12 +192,12 @@
 
   v63 = MEMORY[0x1E696AEC0];
   v64 = [v10 componentsJoinedByString:{@", "}];
-  v65 = [(BMIndex *)v74->_index schema];
-  v66 = [v65 tableName];
+  schema4 = [(BMIndex *)selfCopy->_index schema];
+  tableName = [schema4 tableName];
   v67 = [v54 componentsJoinedByString:{@", "}];
-  v68 = [v63 stringWithFormat:@"SELECT %@ FROM %@ %@ ORDER BY %@", v64, v66, v72, v67];
+  v68 = [v63 stringWithFormat:@"SELECT %@ FROM %@ %@ ORDER BY %@", v64, tableName, v72, v67];
 
-  if (a5 != -1)
+  if (events != -1)
   {
     v69 = [v68 stringByAppendingString:@" LIMIT ?"];
 
@@ -209,14 +209,14 @@
   return v68;
 }
 
-- (id)performSearchWithError:(id *)a3
+- (id)performSearchWithError:(id *)error
 {
-  v5 = [MEMORY[0x1E695DF00] distantPast];
-  [v5 timeIntervalSinceReferenceDate];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  [distantPast timeIntervalSinceReferenceDate];
   v7 = v6;
-  v8 = [MEMORY[0x1E695DF00] distantFuture];
-  [v8 timeIntervalSinceReferenceDate];
-  v10 = [(BMIndexSearch *)self performSearchWithStartTime:-1 endTime:0 maxEvents:a3 reversed:v7 error:v9];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  [distantFuture timeIntervalSinceReferenceDate];
+  v10 = [(BMIndexSearch *)self performSearchWithStartTime:-1 endTime:0 maxEvents:error reversed:v7 error:v9];
 
   return v10;
 }

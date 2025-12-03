@@ -1,14 +1,14 @@
 @interface MBNotificationCenter
 + (id)sharedNotificationCenter;
 - (MBNotificationCenter)init;
-- (int)_tokenForName:(id)a3;
-- (unint64_t)_stateForToken:(int)a3;
-- (unint64_t)stateForNotification:(id)a3;
-- (void)_postNotification:(id)a3;
-- (void)_setState:(unint64_t)a3 forToken:(int)a4;
-- (void)postNotification:(id)a3;
-- (void)postNotification:(id)a3 ifStateChanged:(unint64_t)a4;
-- (void)setState:(unint64_t)a3 forNotification:(id)a4;
+- (int)_tokenForName:(id)name;
+- (unint64_t)_stateForToken:(int)token;
+- (unint64_t)stateForNotification:(id)notification;
+- (void)_postNotification:(id)notification;
+- (void)_setState:(unint64_t)state forToken:(int)token;
+- (void)postNotification:(id)notification;
+- (void)postNotification:(id)notification ifStateChanged:(unint64_t)changed;
+- (void)setState:(unint64_t)state forNotification:(id)notification;
 @end
 
 @implementation MBNotificationCenter
@@ -46,13 +46,13 @@
   return v2;
 }
 
-- (void)_postNotification:(id)a3
+- (void)_postNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   for (i = 1; ; i = 0)
   {
     v5 = i;
-    v6 = notify_post([v3 UTF8String]);
+    v6 = notify_post([notificationCopy UTF8String]);
     if (!v6)
     {
       break;
@@ -63,7 +63,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v10 = v3;
+      v10 = notificationCopy;
       v11 = 2048;
       v12 = v7;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "notify_post(%@) failed: %lu", buf, 0x16u);
@@ -77,9 +77,9 @@
   }
 }
 
-- (int)_tokenForName:(id)a3
+- (int)_tokenForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -94,7 +94,7 @@
   block[2] = sub_100097C78;
   block[3] = &unk_1000FDD50;
   block[4] = self;
-  v6 = v4;
+  v6 = nameCopy;
   v11 = v6;
   v12 = &v14;
   v13 = &v18;
@@ -113,13 +113,13 @@
   return v7;
 }
 
-- (unint64_t)_stateForToken:(int)a3
+- (unint64_t)_stateForToken:(int)token
 {
   for (i = 1; ; i = 0)
   {
     v5 = i;
     state64 = 0;
-    state = notify_get_state(a3, &state64);
+    state = notify_get_state(token, &state64);
     if (!state)
     {
       break;
@@ -144,12 +144,12 @@
   return state64;
 }
 
-- (void)_setState:(unint64_t)a3 forToken:(int)a4
+- (void)_setState:(unint64_t)state forToken:(int)token
 {
   for (i = 1; ; i = 0)
   {
     v7 = i;
-    v8 = notify_set_state(a4, a3);
+    v8 = notify_set_state(token, state);
     if (!v8)
     {
       break;
@@ -160,7 +160,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v12 = a3;
+      stateCopy = state;
       v13 = 2048;
       v14 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "notify_set_state(%llu) failed: %lu", buf, 0x16u);
@@ -174,64 +174,64 @@
   }
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Posting notification: %@", buf, 0xCu);
     _MBLog();
   }
 
-  [(MBNotificationCenter *)self _postNotification:v4];
+  [(MBNotificationCenter *)self _postNotification:notificationCopy];
 }
 
-- (unint64_t)stateForNotification:(id)a3
+- (unint64_t)stateForNotification:(id)notification
 {
-  v4 = [(MBNotificationCenter *)self _tokenForName:a3];
+  v4 = [(MBNotificationCenter *)self _tokenForName:notification];
 
   return [(MBNotificationCenter *)self _stateForToken:v4];
 }
 
-- (void)setState:(unint64_t)a3 forNotification:(id)a4
+- (void)setState:(unint64_t)state forNotification:(id)notification
 {
-  v6 = a4;
+  notificationCopy = notification;
   v7 = MBGetDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v9 = v6;
+    v9 = notificationCopy;
     v10 = 2048;
-    v11 = a3;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Setting notification state: %@ %llu", buf, 0x16u);
     _MBLog();
   }
 
-  [(MBNotificationCenter *)self _setState:a3 forToken:[(MBNotificationCenter *)self _tokenForName:v6]];
+  [(MBNotificationCenter *)self _setState:state forToken:[(MBNotificationCenter *)self _tokenForName:notificationCopy]];
 }
 
-- (void)postNotification:(id)a3 ifStateChanged:(unint64_t)a4
+- (void)postNotification:(id)notification ifStateChanged:(unint64_t)changed
 {
-  v6 = a3;
-  v7 = [(MBNotificationCenter *)self _tokenForName:v6];
-  if ([(MBNotificationCenter *)self _stateForToken:v7]!= a4)
+  notificationCopy = notification;
+  v7 = [(MBNotificationCenter *)self _tokenForName:notificationCopy];
+  if ([(MBNotificationCenter *)self _stateForToken:v7]!= changed)
   {
     v8 = MBGetDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v10 = v6;
+      v10 = notificationCopy;
       v11 = 2048;
-      v12 = a4;
+      changedCopy = changed;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Posting notification for state change: %@ %llu", buf, 0x16u);
       _MBLog();
     }
 
-    [(MBNotificationCenter *)self _setState:a4 forToken:v7];
-    [(MBNotificationCenter *)self _postNotification:v6];
+    [(MBNotificationCenter *)self _setState:changed forToken:v7];
+    [(MBNotificationCenter *)self _postNotification:notificationCopy];
   }
 }
 

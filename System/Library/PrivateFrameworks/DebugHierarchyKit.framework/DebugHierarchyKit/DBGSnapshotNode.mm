@@ -1,60 +1,60 @@
 @interface DBGSnapshotNode
-+ (DBGSnapshotNode)nodeWithIdentifier:(id)a3;
++ (DBGSnapshotNode)nodeWithIdentifier:(id)identifier;
 + (DBGSnapshotNode)nodeWithUniqueIdentifier;
-- (BOOL)hasPropertyWithName:(id)a3;
+- (BOOL)hasPropertyWithName:(id)name;
 - (DBGSnapshot)snapshot;
-- (DBGSnapshotNode)initWithIdentifier:(id)a3;
+- (DBGSnapshotNode)initWithIdentifier:(id)identifier;
 - (DBGSnapshotNode)parentNode;
 - (NSString)displayName;
-- (id)_describeTreeWithRoot:(id)a3 depth:(unint64_t)a4;
+- (id)_describeTreeWithRoot:(id)root depth:(unint64_t)depth;
 - (id)allProperties;
 - (id)debugDescription;
-- (id)debugDescriptionWithIndentationDepth:(unint64_t)a3 prefix:(id)a4 includeProperties:(BOOL)a5;
-- (id)groupWithID:(id)a3;
-- (id)propertiesMatchingPredicate:(id)a3;
-- (id)propertyWithName:(id)a3;
+- (id)debugDescriptionWithIndentationDepth:(unint64_t)depth prefix:(id)prefix includeProperties:(BOOL)properties;
+- (id)groupWithID:(id)d;
+- (id)propertiesMatchingPredicate:(id)predicate;
+- (id)propertyWithName:(id)name;
 - (id)rootLevelGroup;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)addAdditonalGroup:(id)a3;
-- (void)addProperties:(id)a3;
-- (void)addProperty:(id)a3;
-- (void)addPropertyObserver:(id)a3;
-- (void)didUpdateProperty:(id)a3;
-- (void)removePropertyObserver:(id)a3;
-- (void)setChildGroup:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (id)valueForUndefinedKey:(id)key;
+- (void)addAdditonalGroup:(id)group;
+- (void)addProperties:(id)properties;
+- (void)addProperty:(id)property;
+- (void)addPropertyObserver:(id)observer;
+- (void)didUpdateProperty:(id)property;
+- (void)removePropertyObserver:(id)observer;
+- (void)setChildGroup:(id)group;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation DBGSnapshotNode
 
-+ (DBGSnapshotNode)nodeWithIdentifier:(id)a3
++ (DBGSnapshotNode)nodeWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithIdentifier:identifierCopy];
 
   return v5;
 }
 
 + (DBGSnapshotNode)nodeWithUniqueIdentifier
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[NSUUID UUID];
-  v4 = [v3 UUIDString];
-  v5 = [v2 initWithIdentifier:v4];
+  uUIDString = [v3 UUIDString];
+  v5 = [v2 initWithIdentifier:uUIDString];
 
   return v5;
 }
 
-- (DBGSnapshotNode)initWithIdentifier:(id)a3
+- (DBGSnapshotNode)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = DBGSnapshotNode;
   v6 = [(DBGSnapshotNode *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v8 = +[NSMutableDictionary dictionary];
     mutableProperties = v7->_mutableProperties;
     v7->_mutableProperties = v8;
@@ -70,58 +70,58 @@
 
 - (NSString)displayName
 {
-  v3 = [(DBGSnapshotNode *)self runtimeType];
-  v4 = [v3 name];
-  v5 = [(DBGSnapshotNode *)self identifier];
-  v6 = [NSString stringWithFormat:@"%@ (%@)", v4, v5];
+  runtimeType = [(DBGSnapshotNode *)self runtimeType];
+  name = [runtimeType name];
+  identifier = [(DBGSnapshotNode *)self identifier];
+  v6 = [NSString stringWithFormat:@"%@ (%@)", name, identifier];
 
   return v6;
 }
 
-- (void)setChildGroup:(id)a3
+- (void)setChildGroup:(id)group
 {
-  objc_storeStrong(&self->_childGroup, a3);
-  v6 = a3;
-  v5 = [(DBGSnapshotNode *)self snapshot];
-  [(DBGSnapshotGroup *)self->_childGroup setSnapshot:v5];
+  objc_storeStrong(&self->_childGroup, group);
+  groupCopy = group;
+  snapshot = [(DBGSnapshotNode *)self snapshot];
+  [(DBGSnapshotGroup *)self->_childGroup setSnapshot:snapshot];
 
   [(DBGSnapshotGroup *)self->_childGroup setParentNode:self];
 }
 
-- (void)addAdditonalGroup:(id)a3
+- (void)addAdditonalGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(DBGSnapshotNode *)self snapshot];
-  [v4 setSnapshot:v5];
+  groupCopy = group;
+  snapshot = [(DBGSnapshotNode *)self snapshot];
+  [groupCopy setSnapshot:snapshot];
 
-  [v4 setParentNode:self];
-  v6 = [(DBGSnapshotNode *)self additionalGroups];
+  [groupCopy setParentNode:self];
+  additionalGroups = [(DBGSnapshotNode *)self additionalGroups];
 
-  if (v6)
+  if (additionalGroups)
   {
-    v7 = [(DBGSnapshotNode *)self additionalGroups];
-    v8 = [v7 arrayByAddingObject:v4];
+    additionalGroups2 = [(DBGSnapshotNode *)self additionalGroups];
+    v8 = [additionalGroups2 arrayByAddingObject:groupCopy];
     [(DBGSnapshotNode *)self setAdditionalGroups:v8];
   }
 
   else
   {
-    v9 = v4;
-    v7 = [NSArray arrayWithObjects:&v9 count:1];
-    [(DBGSnapshotNode *)self setAdditionalGroups:v7];
+    v9 = groupCopy;
+    additionalGroups2 = [NSArray arrayWithObjects:&v9 count:1];
+    [(DBGSnapshotNode *)self setAdditionalGroups:additionalGroups2];
   }
 }
 
-- (id)groupWithID:(id)a3
+- (id)groupWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(DBGSnapshotNode *)self childGroup];
-  v6 = [v5 groupingIdentifier];
-  v7 = [v6 isEqualToString:v4];
+  dCopy = d;
+  childGroup = [(DBGSnapshotNode *)self childGroup];
+  groupingIdentifier = [childGroup groupingIdentifier];
+  v7 = [groupingIdentifier isEqualToString:dCopy];
 
   if (v7)
   {
-    v8 = [(DBGSnapshotNode *)self childGroup];
+    childGroup2 = [(DBGSnapshotNode *)self childGroup];
   }
 
   else
@@ -130,33 +130,33 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [(DBGSnapshotNode *)self additionalGroups];
-    v8 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
-    if (v8)
+    additionalGroups = [(DBGSnapshotNode *)self additionalGroups];
+    childGroup2 = [additionalGroups countByEnumeratingWithState:&v16 objects:v20 count:16];
+    if (childGroup2)
     {
       v10 = *v17;
       while (2)
       {
-        for (i = 0; i != v8; i = i + 1)
+        for (i = 0; i != childGroup2; i = i + 1)
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(additionalGroups);
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          v13 = [v12 groupingIdentifier];
-          v14 = [v13 isEqualToString:v4];
+          groupingIdentifier2 = [v12 groupingIdentifier];
+          v14 = [groupingIdentifier2 isEqualToString:dCopy];
 
           if (v14)
           {
-            v8 = v12;
+            childGroup2 = v12;
             goto LABEL_13;
           }
         }
 
-        v8 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
-        if (v8)
+        childGroup2 = [additionalGroups countByEnumeratingWithState:&v16 objects:v20 count:16];
+        if (childGroup2)
         {
           continue;
         }
@@ -168,16 +168,16 @@
 LABEL_13:
   }
 
-  return v8;
+  return childGroup2;
 }
 
 - (id)allProperties
 {
-  v3 = [(DBGSnapshotNode *)self mutableProperties];
-  v4 = [v3 count];
-  v5 = [(DBGSnapshotNode *)self runtimeType];
-  v6 = [v5 instanceProperties];
-  v7 = [v6 count];
+  mutableProperties = [(DBGSnapshotNode *)self mutableProperties];
+  v4 = [mutableProperties count];
+  runtimeType = [(DBGSnapshotNode *)self runtimeType];
+  instanceProperties = [runtimeType instanceProperties];
+  v7 = [instanceProperties count];
 
   if (v4 != v7)
   {
@@ -185,11 +185,11 @@ LABEL_13:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = [(DBGSnapshotNode *)self runtimeType];
-    v9 = [v8 instanceProperties];
-    v10 = [v9 objectEnumerator];
+    runtimeType2 = [(DBGSnapshotNode *)self runtimeType];
+    instanceProperties2 = [runtimeType2 instanceProperties];
+    objectEnumerator = [instanceProperties2 objectEnumerator];
 
-    v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v11 = [objectEnumerator countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v11)
     {
       v12 = v11;
@@ -200,31 +200,31 @@ LABEL_13:
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          v15 = [*(*(&v20 + 1) + 8 * i) name];
-          v16 = [(DBGSnapshotNode *)self propertyWithName:v15];
+          name = [*(*(&v20 + 1) + 8 * i) name];
+          v16 = [(DBGSnapshotNode *)self propertyWithName:name];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v12 = [objectEnumerator countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v12);
     }
   }
 
-  v17 = [(DBGSnapshotNode *)self mutableProperties];
-  v18 = [v17 allValues];
+  mutableProperties2 = [(DBGSnapshotNode *)self mutableProperties];
+  allValues = [mutableProperties2 allValues];
 
-  return v18;
+  return allValues;
 }
 
-- (BOOL)hasPropertyWithName:(id)a3
+- (BOOL)hasPropertyWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(DBGSnapshotNode *)self mutableProperties];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  mutableProperties = [(DBGSnapshotNode *)self mutableProperties];
+  v6 = [mutableProperties objectForKeyedSubscript:nameCopy];
   if (v6)
   {
     v7 = 1;
@@ -232,24 +232,24 @@ LABEL_13:
 
   else
   {
-    v8 = [(DBGSnapshotNode *)self runtimeType];
-    v9 = [v8 propertyWithName:v4];
+    runtimeType = [(DBGSnapshotNode *)self runtimeType];
+    v9 = [runtimeType propertyWithName:nameCopy];
     v7 = v9 != 0;
   }
 
   return v7;
 }
 
-- (id)propertyWithName:(id)a3
+- (id)propertyWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(DBGSnapshotNode *)self mutableProperties];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  mutableProperties = [(DBGSnapshotNode *)self mutableProperties];
+  v6 = [mutableProperties objectForKeyedSubscript:nameCopy];
 
   if (!v6)
   {
-    v7 = [(DBGSnapshotNode *)self runtimeType];
-    v8 = [v7 propertyWithName:v4];
+    runtimeType = [(DBGSnapshotNode *)self runtimeType];
+    v8 = [runtimeType propertyWithName:nameCopy];
 
     if (v8)
     {
@@ -266,32 +266,32 @@ LABEL_13:
   return v6;
 }
 
-- (id)propertiesMatchingPredicate:(id)a3
+- (id)propertiesMatchingPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [(DBGSnapshotNode *)self allProperties];
-  v6 = [v5 filteredArrayUsingPredicate:v4];
+  predicateCopy = predicate;
+  allProperties = [(DBGSnapshotNode *)self allProperties];
+  v6 = [allProperties filteredArrayUsingPredicate:predicateCopy];
 
   return v6;
 }
 
-- (void)addProperty:(id)a3
+- (void)addProperty:(id)property
 {
-  v4 = a3;
-  [v4 setSnapshotNode:self];
-  v6 = [(DBGSnapshotNode *)self mutableProperties];
-  v5 = [v4 name];
-  [v6 setObject:v4 forKey:v5];
+  propertyCopy = property;
+  [propertyCopy setSnapshotNode:self];
+  mutableProperties = [(DBGSnapshotNode *)self mutableProperties];
+  name = [propertyCopy name];
+  [mutableProperties setObject:propertyCopy forKey:name];
 }
 
-- (void)addProperties:(id)a3
+- (void)addProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [propertiesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -303,7 +303,7 @@ LABEL_13:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(propertiesCopy);
         }
 
         [(DBGSnapshotNode *)self addProperty:*(*(&v9 + 1) + 8 * v8)];
@@ -311,41 +311,41 @@ LABEL_13:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [propertiesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v3 = [(DBGSnapshotNode *)self propertyWithName:a3];
-  v4 = [v3 value];
+  v3 = [(DBGSnapshotNode *)self propertyWithName:key];
+  value = [v3 value];
 
-  return v4;
+  return value;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(DBGSnapshotNode *)self propertyWithName:v6];
+  valueCopy = value;
+  keyCopy = key;
+  v7 = [(DBGSnapshotNode *)self propertyWithName:keyCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v7 setValue:v8 forKey:v6];
+    [v7 setValue:valueCopy forKey:keyCopy];
   }
 }
 
-- (void)didUpdateProperty:(id)a3
+- (void)didUpdateProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(DBGSnapshotNode *)self propertyObservers];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  propertyObservers = [(DBGSnapshotNode *)self propertyObservers];
+  v6 = [propertyObservers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -357,46 +357,46 @@ LABEL_13:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(propertyObservers);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) snapshotNode:self didUpdateProperty:v4];
+        [*(*(&v10 + 1) + 8 * v9) snapshotNode:self didUpdateProperty:propertyCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [propertyObservers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)addPropertyObserver:(id)a3
+- (void)addPropertyObserver:(id)observer
 {
-  v8 = a3;
-  v4 = [(DBGSnapshotNode *)self propertyObservers];
-  v5 = [v4 allObjects];
-  v6 = [v5 containsObject:v8];
+  observerCopy = observer;
+  propertyObservers = [(DBGSnapshotNode *)self propertyObservers];
+  allObjects = [propertyObservers allObjects];
+  v6 = [allObjects containsObject:observerCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(DBGSnapshotNode *)self propertyObservers];
-    [v7 addPointer:v8];
+    propertyObservers2 = [(DBGSnapshotNode *)self propertyObservers];
+    [propertyObservers2 addPointer:observerCopy];
   }
 }
 
-- (void)removePropertyObserver:(id)a3
+- (void)removePropertyObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBGSnapshotNode *)self propertyObservers];
-  v6 = [v5 allObjects];
-  v7 = [v6 indexOfObject:v4];
+  observerCopy = observer;
+  propertyObservers = [(DBGSnapshotNode *)self propertyObservers];
+  allObjects = [propertyObservers allObjects];
+  v7 = [allObjects indexOfObject:observerCopy];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(DBGSnapshotNode *)self propertyObservers];
-    [v8 removePointerAtIndex:v7];
+    propertyObservers2 = [(DBGSnapshotNode *)self propertyObservers];
+    [propertyObservers2 removePointerAtIndex:v7];
   }
 }
 
@@ -404,33 +404,33 @@ LABEL_13:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(DBGSnapshotNode *)self identifier];
-  v6 = [(DBGSnapshotNode *)self runtimeType];
-  v7 = [v6 name];
-  v8 = [(DBGSnapshotNode *)self visibility];
-  if ((v8 - 1) > 7)
+  identifier = [(DBGSnapshotNode *)self identifier];
+  runtimeType = [(DBGSnapshotNode *)self runtimeType];
+  name = [runtimeType name];
+  visibility = [(DBGSnapshotNode *)self visibility];
+  if ((visibility - 1) > 7)
   {
     v9 = @"Unsupported Visibility";
   }
 
   else
   {
-    v9 = *(&off_24338 + v8 - 1);
+    v9 = *(&off_24338 + visibility - 1);
   }
 
-  v10 = [NSString stringWithFormat:@"<%@: %p represents %@ (%@); visibility = %@>", v4, self, v5, v7, v9];;
+  v10 = [NSString stringWithFormat:@"<%@: %p represents %@ (%@); visibility = %@>", v4, self, identifier, name, v9];;
 
   return v10;
 }
 
-- (id)debugDescriptionWithIndentationDepth:(unint64_t)a3 prefix:(id)a4 includeProperties:(BOOL)a5
+- (id)debugDescriptionWithIndentationDepth:(unint64_t)depth prefix:(id)prefix includeProperties:(BOOL)properties
 {
-  v25 = a5;
-  v7 = a4;
-  v8 = [&stru_28750 stringByPaddingToLength:a3 withString:@"-" startingAtIndex:0];
-  if (v7)
+  propertiesCopy = properties;
+  prefixCopy = prefix;
+  v8 = [&stru_28750 stringByPaddingToLength:depth withString:@"-" startingAtIndex:0];
+  if (prefixCopy)
   {
-    v9 = v7;
+    v9 = prefixCopy;
   }
 
   else
@@ -438,13 +438,13 @@ LABEL_13:
     v9 = &stru_28750;
   }
 
-  v10 = v7;
-  v11 = [(DBGSnapshotNode *)self runtimeType];
-  v12 = [v11 name];
-  v13 = [(DBGSnapshotNode *)self identifier];
-  v14 = [NSString stringWithFormat:@"%@%@%@ represents %@ (%@)", v8, v9, self, v12, v13];
+  v10 = prefixCopy;
+  runtimeType = [(DBGSnapshotNode *)self runtimeType];
+  name = [runtimeType name];
+  identifier = [(DBGSnapshotNode *)self identifier];
+  v14 = [NSString stringWithFormat:@"%@%@%@ represents %@ (%@)", v8, v9, self, name, identifier];
 
-  if (v25)
+  if (propertiesCopy)
   {
     v24 = v8;
     v26 = v10;
@@ -452,10 +452,10 @@ LABEL_13:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v15 = [(DBGSnapshotNode *)self mutableProperties];
-    v16 = [v15 allValues];
+    mutableProperties = [(DBGSnapshotNode *)self mutableProperties];
+    allValues = [mutableProperties allValues];
 
-    v17 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    v17 = [allValues countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v17)
     {
       v18 = v17;
@@ -468,10 +468,10 @@ LABEL_13:
         {
           if (*v28 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(allValues);
           }
 
-          v22 = [(DBGSnapshotNode *)self _describeTreeWithRoot:*(*(&v27 + 1) + 8 * v20) depth:a3 + 1];
+          v22 = [(DBGSnapshotNode *)self _describeTreeWithRoot:*(*(&v27 + 1) + 8 * v20) depth:depth + 1];
           v14 = [NSString stringWithFormat:@"%@\n%@", v21, v22];
 
           v20 = v20 + 1;
@@ -479,7 +479,7 @@ LABEL_13:
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v18 = [allValues countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v18);
@@ -492,11 +492,11 @@ LABEL_13:
   return v14;
 }
 
-- (id)_describeTreeWithRoot:(id)a3 depth:(unint64_t)a4
+- (id)_describeTreeWithRoot:(id)root depth:(unint64_t)depth
 {
-  v6 = a3;
-  v7 = [&stru_28750 stringByPaddingToLength:a4 withString:@"-" startingAtIndex:0];
-  v8 = [v6 debugDescription];
+  rootCopy = root;
+  v7 = [&stru_28750 stringByPaddingToLength:depth withString:@"-" startingAtIndex:0];
+  v8 = [rootCopy debugDescription];
   v18 = v7;
   v9 = [NSString stringWithFormat:@"%@%@", v7, v8];
 
@@ -504,9 +504,9 @@ LABEL_13:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v19 = v6;
-  v10 = [v6 allSubproperties];
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v19 = rootCopy;
+  allSubproperties = [rootCopy allSubproperties];
+  v11 = [allSubproperties countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
     v12 = v11;
@@ -519,10 +519,10 @@ LABEL_13:
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allSubproperties);
         }
 
-        v16 = [(DBGSnapshotNode *)self _describeTreeWithRoot:*(*(&v20 + 1) + 8 * v14) depth:a4 + 1];
+        v16 = [(DBGSnapshotNode *)self _describeTreeWithRoot:*(*(&v20 + 1) + 8 * v14) depth:depth + 1];
         v9 = [NSString stringWithFormat:@"%@\n%@", v15, v16];
 
         v14 = v14 + 1;
@@ -530,7 +530,7 @@ LABEL_13:
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v12 = [allSubproperties countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v12);
@@ -541,11 +541,11 @@ LABEL_13:
 
 - (id)rootLevelGroup
 {
-  v2 = [(DBGSnapshotNode *)self parentNode];
-  v3 = [v2 childGroup];
-  v4 = [v3 rootLevelGroup];
+  parentNode = [(DBGSnapshotNode *)self parentNode];
+  childGroup = [parentNode childGroup];
+  rootLevelGroup = [childGroup rootLevelGroup];
 
-  return v4;
+  return rootLevelGroup;
 }
 
 - (DBGSnapshotNode)parentNode

@@ -6,24 +6,24 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  v6 = [objc_opt_class() localIdentifierColumnName];
-  v7 = [(MADManagedMomentsScheduledAsset *)self localIdentifier];
-  [v3 appendFormat:@"%@: %@, ", v6, v7];
+  localIdentifierColumnName = [objc_opt_class() localIdentifierColumnName];
+  localIdentifier = [(MADManagedMomentsScheduledAsset *)self localIdentifier];
+  [string appendFormat:@"%@: %@, ", localIdentifierColumnName, localIdentifier];
 
-  v8 = [objc_opt_class() taskIDColumnName];
+  taskIDColumnName = [objc_opt_class() taskIDColumnName];
   v9 = VCPTaskIDDescription([(MADManagedMomentsScheduledAsset *)self taskID]);
-  [v3 appendFormat:@"%@: %@, ", v8, v9];
+  [string appendFormat:@"%@: %@, ", taskIDColumnName, v9];
 
-  v10 = [objc_opt_class() requestDateColumnName];
-  v11 = [(MADManagedMomentsScheduledAsset *)self requestDate];
-  [v3 appendFormat:@"%@: %@>", v10, v11];
+  requestDateColumnName = [objc_opt_class() requestDateColumnName];
+  requestDate = [(MADManagedMomentsScheduledAsset *)self requestDate];
+  [string appendFormat:@"%@: %@>", requestDateColumnName, requestDate];
 
-  return v3;
+  return string;
 }
 
 @end

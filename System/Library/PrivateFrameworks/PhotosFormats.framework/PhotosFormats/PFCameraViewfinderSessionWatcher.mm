@@ -1,9 +1,9 @@
 @interface PFCameraViewfinderSessionWatcher
-- (PFCameraViewfinderSessionWatcher)initWithDispatchQueue:(id)a3 delegate:(id)a4;
+- (PFCameraViewfinderSessionWatcher)initWithDispatchQueue:(id)queue delegate:(id)delegate;
 - (PFCameraViewfinderSessionWatcherDelegate)delegate;
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidBegin:(id)a4;
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidEnd:(id)a4;
-- (void)cameraViewfinder:(id)a3 viewfinderSessionWillBegin:(id)a4;
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidBegin:(id)begin;
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidEnd:(id)end;
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionWillBegin:(id)begin;
 - (void)dealloc;
 - (void)stopWatching;
 @end
@@ -17,7 +17,7 @@
   return WeakRetained;
 }
 
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidEnd:(id)a4
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidEnd:(id)end
 {
   v11 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -49,7 +49,7 @@
   }
 }
 
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidBegin:(id)a4
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidBegin:(id)begin
 {
   v11 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -81,7 +81,7 @@
   }
 }
 
-- (void)cameraViewfinder:(id)a3 viewfinderSessionWillBegin:(id)a4
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionWillBegin:(id)begin
 {
   v15 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -158,10 +158,10 @@ void __80__PFCameraViewfinderSessionWatcher_cameraViewfinder_viewfinderSessionWi
   [(PFCameraViewfinderSessionWatcher *)&v3 dealloc];
 }
 
-- (PFCameraViewfinderSessionWatcher)initWithDispatchQueue:(id)a3 delegate:(id)a4
+- (PFCameraViewfinderSessionWatcher)initWithDispatchQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = PFCameraViewfinderSessionWatcher;
   v9 = [(PFCameraViewfinderSessionWatcher *)&v14 init];
@@ -170,13 +170,13 @@ void __80__PFCameraViewfinderSessionWatcher_cameraViewfinder_viewfinderSessionWi
   {
     atomic_store(0, &v9->_isCameraRunning);
     v9->_counter = 0;
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = [MEMORY[0x1E698F748] cameraViewfinder];
+    objc_storeStrong(&v9->_queue, queue);
+    cameraViewfinder = [MEMORY[0x1E698F748] cameraViewfinder];
     viewFinder = v10->_viewFinder;
-    v10->_viewFinder = v11;
+    v10->_viewFinder = cameraViewfinder;
 
-    [(FigCameraViewfinder *)v10->_viewFinder setDelegate:v10 queue:v7];
-    objc_storeWeak(&v10->_delegate, v8);
+    [(FigCameraViewfinder *)v10->_viewFinder setDelegate:v10 queue:queueCopy];
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;

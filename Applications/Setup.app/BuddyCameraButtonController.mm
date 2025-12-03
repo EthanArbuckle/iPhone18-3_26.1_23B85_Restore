@@ -4,20 +4,20 @@
 - (BYDeviceProvider)deviceProvider;
 - (BYRunState)runState;
 - (_TtP5Setup20IntelligenceProvider_)intelligenceProvider;
-- (void)cameraButtonViewControllerDidFinish:(id)a3;
+- (void)cameraButtonViewControllerDidFinish:(id)finish;
 - (void)controllerWasPopped;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)setBuddyPreferences:(id)a3;
-- (void)setSetupMethod:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)setBuddyPreferences:(id)preferences;
+- (void)setSetupMethod:(id)method;
 @end
 
 @implementation BuddyCameraButtonController
 
-- (void)setBuddyPreferences:(id)a3
+- (void)setBuddyPreferences:(id)preferences
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC5Setup27BuddyCameraButtonController_buddyPreferences);
-  *(&self->super.isa + OBJC_IVAR____TtC5Setup27BuddyCameraButtonController_buddyPreferences) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC5Setup27BuddyCameraButtonController_buddyPreferences) = preferences;
+  preferencesCopy = preferences;
 }
 
 - (BYDeviceProvider)deviceProvider
@@ -41,11 +41,11 @@
   return v2;
 }
 
-- (void)setSetupMethod:(id)a3
+- (void)setSetupMethod:(id)method
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC5Setup27BuddyCameraButtonController_setupMethod);
-  *(&self->super.isa + OBJC_IVAR____TtC5Setup27BuddyCameraButtonController_setupMethod) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC5Setup27BuddyCameraButtonController_setupMethod) = method;
+  methodCopy = method;
 }
 
 + (id)cloudConfigSkipKey
@@ -58,18 +58,18 @@
 
 - (BOOL)controllerNeedsToRun
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10001619C();
 
   return v3 & 1;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
   v5 = sub_100006410(&qword_1003A0110);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = type metadata accessor for TaskPriority();
@@ -80,20 +80,20 @@
   v11[4] = self;
   v11[5] = sub_100016ED0;
   v11[6] = v9;
-  v12 = self;
+  selfCopy = self;
   sub_100022A78(0, 0, v7, &unk_100297B90, v11);
 }
 
 - (void)controllerWasPopped
 {
-  v2 = self;
+  selfCopy = self;
   sub_100016BCC();
 }
 
-- (void)cameraButtonViewControllerDidFinish:(id)a3
+- (void)cameraButtonViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = self;
+  finishCopy = finish;
+  selfCopy = self;
   sub_100016E34();
 }
 

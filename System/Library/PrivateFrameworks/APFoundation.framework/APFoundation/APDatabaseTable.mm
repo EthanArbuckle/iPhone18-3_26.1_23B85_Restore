@@ -1,6 +1,6 @@
 @interface APDatabaseTable
 - (APDatabaseManager)manager;
-- (APDatabaseTable)initWithDatabaseManager:(id)a3;
+- (APDatabaseTable)initWithDatabaseManager:(id)manager;
 - (BOOL)_tableExists;
 - (Class)rowClass;
 - (NSString)tableName;
@@ -9,14 +9,14 @@
 
 @implementation APDatabaseTable
 
-- (APDatabaseTable)initWithDatabaseManager:(id)a3
+- (APDatabaseTable)initWithDatabaseManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = APDatabaseTable;
   v5 = [(APDatabaseTable *)&v12 init];
   v6 = v5;
-  if (v5 && (objc_storeWeak(&v5->_manager, v4), !objc_msgSend__tableExists(v6, v7, v8, v9)))
+  if (v5 && (objc_storeWeak(&v5->_manager, managerCopy), !objc_msgSend__tableExists(v6, v7, v8, v9)))
   {
     v10 = 0;
   }

@@ -1,13 +1,13 @@
 @interface PHRingView
-+ (id)_createRingImageWithSize:(CGSize)a3 strokeWidth:(double)a4 color:(id)a5;
++ (id)_createRingImageWithSize:(CGSize)size strokeWidth:(double)width color:(id)color;
 + (id)ringImageCache;
 - (CGSize)intrinsicContentSize;
 - (CGSize)ringSize;
-- (PHRingView)initWithFrame:(CGRect)a3 reuseIdentifier:(id)a4;
-- (id)ringImageWithSize:(CGSize)a3 strokeWidth:(double)a4 color:(id)a5 cacheIdentifier:(id)a6;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (PHRingView)initWithFrame:(CGRect)frame reuseIdentifier:(id)identifier;
+- (id)ringImageWithSize:(CGSize)size strokeWidth:(double)width color:(id)color cacheIdentifier:(id)identifier;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation PHRingView
@@ -24,35 +24,35 @@
   return v3;
 }
 
-- (id)ringImageWithSize:(CGSize)a3 strokeWidth:(double)a4 color:(id)a5 cacheIdentifier:(id)a6
+- (id)ringImageWithSize:(CGSize)size strokeWidth:(double)width color:(id)color cacheIdentifier:(id)identifier
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = a5;
-  v11 = a6;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
+  identifierCopy = identifier;
   v12 = +[PHRingView ringImageCache];
-  v13 = [v12 objectForKey:v11];
+  width = [v12 objectForKey:identifierCopy];
 
-  if (!v13)
+  if (!width)
   {
-    v13 = [PHRingView _createRingImageWithSize:v10 strokeWidth:width color:height, a4];
+    width = [PHRingView _createRingImageWithSize:colorCopy strokeWidth:width color:height, width];
     v14 = +[PHRingView ringImageCache];
-    [v14 setObject:v13 forKey:v11];
+    [v14 setObject:width forKey:identifierCopy];
   }
 
-  return v13;
+  return width;
 }
 
-+ (id)_createRingImageWithSize:(CGSize)a3 strokeWidth:(double)a4 color:(id)a5
++ (id)_createRingImageWithSize:(CGSize)size strokeWidth:(double)width color:(id)color
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a5;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
   v18.origin.x = 0.0;
   v18.origin.y = 0.0;
   v18.size.width = width;
   v18.size.height = height;
-  v19 = CGRectInset(v18, a4, a4);
+  v19 = CGRectInset(v18, width, width);
   x = v19.origin.x;
   y = v19.origin.y;
   v11 = v19.size.width;
@@ -60,32 +60,32 @@
   v19.origin.x = width;
   v19.origin.y = height;
   UIGraphicsBeginImageContextWithOptions(v19.origin, 0, 0.0);
-  v13 = [UIBezierPath bezierPathWithOvalInRect:0.0, 0.0, width, height];
+  height = [UIBezierPath bezierPathWithOvalInRect:0.0, 0.0, width, height];
   v14 = [UIBezierPath bezierPathWithOvalInRect:x, y, v11, v12];
-  [v13 appendPath:v14];
+  [height appendPath:v14];
 
-  [v13 setUsesEvenOddFillRule:1];
-  [v8 setFill];
+  [height setUsesEvenOddFillRule:1];
+  [colorCopy setFill];
 
-  [v13 fill];
+  [height fill];
   v15 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
   return v15;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->__selected != a3)
+  if (self->__selected != selected)
   {
-    v3 = a3;
+    selectedCopy = selected;
     +[CATransaction begin];
     LODWORD(v5) = 1043207291;
     v6 = [NSNumber numberWithFloat:v5];
     [CATransaction setValue:v6 forKey:kCATransactionAnimationDuration];
 
     v7 = 0.0;
-    if (v3)
+    if (selectedCopy)
     {
       [(CALayer *)self->_highlightDodgeLayer setOpacity:0.0];
       LODWORD(v7) = 1.0;
@@ -93,21 +93,21 @@
 
     [(CALayer *)self->_selectionLayer setOpacity:v7];
     +[CATransaction commit];
-    self->__selected = v3;
+    self->__selected = selectedCopy;
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->__highlighted != a3)
+  if (self->__highlighted != highlighted)
   {
-    v3 = a3;
+    highlightedCopy = highlighted;
     +[CATransaction begin];
     LODWORD(v5) = 1043207291;
     v6 = [NSNumber numberWithFloat:v5];
     [CATransaction setValue:v6 forKey:kCATransactionAnimationDuration];
 
-    if (v3)
+    if (highlightedCopy)
     {
       v7 = 1.0;
     }
@@ -121,24 +121,24 @@
     *&v8 = v7;
     [(CALayer *)self->_highlightLuminanceLayer setOpacity:v8];
     +[CATransaction commit];
-    self->__highlighted = v3;
+    self->__highlighted = highlightedCopy;
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v10.receiver = self;
   v10.super_class = PHRingView;
   [(PHRingView *)&v10 setUserInteractionEnabled:?];
-  if (self->__enabled != v3)
+  if (self->__enabled != enabledCopy)
   {
     +[CATransaction begin];
     LODWORD(v5) = 1043207291;
     v6 = [NSNumber numberWithFloat:v5];
     [CATransaction setValue:v6 forKey:kCATransactionAnimationDuration];
 
-    if (v3)
+    if (enabledCopy)
     {
       v8 = 1.0;
     }
@@ -153,34 +153,34 @@
     *&v9 = v8;
     [(CALayer *)self->_dodgeRingLayer setOpacity:v9];
     +[CATransaction commit];
-    self->__enabled = v3;
+    self->__enabled = enabledCopy;
   }
 }
 
-- (PHRingView)initWithFrame:(CGRect)a3 reuseIdentifier:(id)a4
+- (PHRingView)initWithFrame:(CGRect)frame reuseIdentifier:(id)identifier
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  identifierCopy = identifier;
   v46.receiver = self;
   v46.super_class = PHRingView;
-  v10 = [(PHRingView *)&v46 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(PHRingView *)&v46 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(PHRingView *)v10 setRingSize:width, height];
+    [(PHRingView *)height setRingSize:width, height];
     [(PHRingView *)v11 setUserInteractionEnabled:0];
     [(PHRingView *)v11 setOpaque:0];
     v12 = +[UIColor clearColor];
     [(PHRingView *)v11 setBackgroundColor:v12];
 
-    v13 = [(PHRingView *)v11 layer];
-    [v13 setAllowsGroupBlending:0];
+    layer = [(PHRingView *)v11 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v14 = [(PHRingView *)v11 layer];
-    [v14 setAllowsGroupOpacity:0];
+    layer2 = [(PHRingView *)v11 layer];
+    [layer2 setAllowsGroupOpacity:0];
 
     v11->__enabled = 1;
     v11->__selected = 0;
@@ -190,8 +190,8 @@
     v11->_luminanceRingLayer = v15;
 
     v17 = [UIColor colorWithWhite:1.0 alpha:0.0500000007];
-    v18 = [NSString stringWithFormat:@"%@-luminance", v9];
-    v19 = [(PHRingView *)v11 ringImageWithSize:v17 strokeWidth:v18 color:width cacheIdentifier:height, 1.5];
+    identifierCopy = [NSString stringWithFormat:@"%@-luminance", identifierCopy];
+    v19 = [(PHRingView *)v11 ringImageWithSize:v17 strokeWidth:identifierCopy color:width cacheIdentifier:height, 1.5];
     -[CALayer setContents:](v11->_luminanceRingLayer, "setContents:", [v19 CGImage]);
 
     v20 = kCAFilterPlusL;
@@ -199,16 +199,16 @@
     [(CALayer *)v11->_luminanceRingLayer setCompositingFilter:v21];
 
     [(CALayer *)v11->_luminanceRingLayer setFrame:0.0, 0.0, width, height];
-    v22 = [(PHRingView *)v11 layer];
-    [v22 addSublayer:v11->_luminanceRingLayer];
+    layer3 = [(PHRingView *)v11 layer];
+    [layer3 addSublayer:v11->_luminanceRingLayer];
 
     v23 = +[CALayer layer];
     dodgeRingLayer = v11->_dodgeRingLayer;
     v11->_dodgeRingLayer = v23;
 
     v25 = [UIColor colorWithWhite:0.600000024 alpha:1.0];
-    v26 = [NSString stringWithFormat:@"%@-dodge", v9];
-    v27 = [(PHRingView *)v11 ringImageWithSize:v25 strokeWidth:v26 color:width cacheIdentifier:height, 1.5];
+    identifierCopy2 = [NSString stringWithFormat:@"%@-dodge", identifierCopy];
+    v27 = [(PHRingView *)v11 ringImageWithSize:v25 strokeWidth:identifierCopy2 color:width cacheIdentifier:height, 1.5];
     -[CALayer setContents:](v11->_dodgeRingLayer, "setContents:", [v27 CGImage]);
 
     v28 = kCAFilterColorDodgeBlendMode;
@@ -216,8 +216,8 @@
     [(CALayer *)v11->_dodgeRingLayer setCompositingFilter:v29];
 
     [(CALayer *)v11->_dodgeRingLayer setFrame:0.0, 0.0, width, height];
-    v30 = [(PHRingView *)v11 layer];
-    [v30 addSublayer:v11->_dodgeRingLayer];
+    layer4 = [(PHRingView *)v11 layer];
+    [layer4 addSublayer:v11->_dodgeRingLayer];
 
     v31 = +[CALayer layer];
     highlightDodgeLayer = v11->_highlightDodgeLayer;
@@ -237,8 +237,8 @@
     [(CALayer *)v11->_highlightDodgeLayer setFrame:1.5, 1.5, v48.size.width, v48.size.height];
     [(CALayer *)v11->_highlightDodgeLayer setCornerRadius:(width + -1.5) * 0.5 + -0.5];
     [(CALayer *)v11->_highlightDodgeLayer setOpacity:0.0];
-    v35 = [(PHRingView *)v11 layer];
-    [v35 addSublayer:v11->_highlightDodgeLayer];
+    layer5 = [(PHRingView *)v11 layer];
+    [layer5 addSublayer:v11->_highlightDodgeLayer];
 
     v36 = +[CALayer layer];
     highlightLuminanceLayer = v11->_highlightLuminanceLayer;
@@ -255,8 +255,8 @@
     [(CALayer *)v11->_highlightDodgeLayer cornerRadius];
     [(CALayer *)v11->_highlightLuminanceLayer setCornerRadius:?];
     [(CALayer *)v11->_highlightLuminanceLayer setOpacity:0.0];
-    v40 = [(PHRingView *)v11 layer];
-    [v40 insertSublayer:v11->_highlightLuminanceLayer below:v11->_highlightDodgeLayer];
+    layer6 = [(PHRingView *)v11 layer];
+    [layer6 insertSublayer:v11->_highlightLuminanceLayer below:v11->_highlightDodgeLayer];
 
     v41 = +[CALayer layer];
     selectionLayer = v11->_selectionLayer;
@@ -268,8 +268,8 @@
     [(CALayer *)v11->_selectionLayer setFrame:0.0, 0.0, width, height];
     [(CALayer *)v11->_selectionLayer setCornerRadius:width * 0.5];
     [(CALayer *)v11->_selectionLayer setOpacity:0.0];
-    v44 = [(PHRingView *)v11 layer];
-    [v44 addSublayer:v11->_selectionLayer];
+    layer7 = [(PHRingView *)v11 layer];
+    [layer7 addSublayer:v11->_selectionLayer];
   }
 
   return v11;

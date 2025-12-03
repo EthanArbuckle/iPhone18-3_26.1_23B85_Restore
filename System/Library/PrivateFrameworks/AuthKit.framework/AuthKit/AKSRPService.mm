@@ -1,88 +1,88 @@
 @interface AKSRPService
-- (AKSRPService)initWithClient:(id)a3;
-- (AKSRPService)initWithClient:(id)a3 requestDispatcher:(id)a4;
-- (BOOL)_shouldClearCKForFailedMagicAuthWithError:(int64_t)a3 authContextHelper:(id)a4;
-- (id)_anisetteActionTargetForServerResponse:(id)a3 andContext:(id)a4;
-- (id)_authContext:(id)a3;
-- (void)_attemptUCRTHealingWithResponse:(id)a3;
-- (void)_continueSRPContractWithAuthURL:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_doURLSwitchWithServerResponse:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_handleError:(id)a3 withServerResponse:(id)a4 context:(id)a5 andCompletion:(id)a6;
-- (void)_healUCRTWithAppleID:(id)a3 passwordPET:(id)a4;
-- (void)_parseFailedServerResponse:(id)a3 withError:(id)a4 context:(id)a5 completion:(id)a6;
-- (void)_reprovisionAnisetteWithServerResponse:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_resyncAnisetteWithServerResponse:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)performSRPContractWithContext:(id)a3 completion:(id)a4;
+- (AKSRPService)initWithClient:(id)client;
+- (AKSRPService)initWithClient:(id)client requestDispatcher:(id)dispatcher;
+- (BOOL)_shouldClearCKForFailedMagicAuthWithError:(int64_t)error authContextHelper:(id)helper;
+- (id)_anisetteActionTargetForServerResponse:(id)response andContext:(id)context;
+- (id)_authContext:(id)context;
+- (void)_attemptUCRTHealingWithResponse:(id)response;
+- (void)_continueSRPContractWithAuthURL:(id)l context:(id)context completion:(id)completion;
+- (void)_doURLSwitchWithServerResponse:(id)response context:(id)context completion:(id)completion;
+- (void)_handleError:(id)error withServerResponse:(id)response context:(id)context andCompletion:(id)completion;
+- (void)_healUCRTWithAppleID:(id)d passwordPET:(id)t;
+- (void)_parseFailedServerResponse:(id)response withError:(id)error context:(id)context completion:(id)completion;
+- (void)_reprovisionAnisetteWithServerResponse:(id)response context:(id)context completion:(id)completion;
+- (void)_resyncAnisetteWithServerResponse:(id)response context:(id)context completion:(id)completion;
+- (void)performSRPContractWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKSRPService
 
-- (AKSRPService)initWithClient:(id)a3 requestDispatcher:(id)a4
+- (AKSRPService)initWithClient:(id)client requestDispatcher:(id)dispatcher
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v4 = v11;
-  v11 = 0;
+  objc_storeStrong(&v9, dispatcher);
+  v4 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v4;
   v8.super_class = AKSRPService;
-  v11 = [(AKSRPService *)&v8 init];
-  objc_storeStrong(&v11, v11);
-  if (v11)
+  selfCopy = [(AKSRPService *)&v8 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v11->_client, location[0]);
-    objc_storeStrong(&v11->_requestDispatcher, v9);
+    objc_storeStrong(&selfCopy->_client, location[0]);
+    objc_storeStrong(&selfCopy->_requestDispatcher, v9);
   }
 
-  v6 = _objc_retain(v11);
+  v6 = _objc_retain(selfCopy);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (AKSRPService)initWithClient:(id)a3
+- (AKSRPService)initWithClient:(id)client
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = v9;
+  objc_storeStrong(location, client);
+  v5 = selfCopy;
   v4 = location[0];
   v6 = +[AKRequestDispatcher sharedDispatcher];
-  v9 = 0;
-  v9 = [(AKSRPService *)v5 initWithClient:v4 requestDispatcher:?];
-  v7 = _objc_retain(v9);
+  selfCopy = 0;
+  selfCopy = [(AKSRPService *)v5 initWithClient:v4 requestDispatcher:?];
+  v7 = _objc_retain(selfCopy);
   _objc_release(v6);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (void)performSRPContractWithContext:(id)a3 completion:(id)a4
+- (void)performSRPContractWithContext:(id)context completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v7 = [location[0] altDSID];
+  objc_storeStrong(&v15, completion);
+  altDSID = [location[0] altDSID];
   v6 = [AKURLBag bagForAltDSID:?];
   v5 = AKURLBagKeyBasicAuthKey;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_100111898;
   v11 = &unk_100323998;
-  v12 = _objc_retain(v17);
+  v12 = _objc_retain(selfCopy);
   v13 = _objc_retain(location[0]);
   v14 = _objc_retain(v15);
   [v6 urlForKey:v5 completion:?];
   _objc_release(v6);
-  _objc_release(v7);
+  _objc_release(altDSID);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v12, 0);
@@ -90,16 +90,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_continueSRPContractWithAuthURL:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_continueSRPContractWithAuthURL:(id)l context:(id)context completion:(id)completion
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, context);
   v18 = 0;
-  objc_storeStrong(&v18, a5);
+  objc_storeStrong(&v18, completion);
   v9 = [AKSRPRequest alloc];
   v7 = location[0];
   v8 = v19;
@@ -108,10 +108,10 @@
   v12 = sub_100111C28;
   v13 = &unk_1003239C0;
   v16 = _objc_retain(v18);
-  v14 = _objc_retain(v21);
+  v14 = _objc_retain(selfCopy);
   v15 = _objc_retain(v19);
   v17 = [(AKSRPRequest *)v9 initWithURL:v7 contextHelper:v8 completionHandler:?];
-  [(AKRequestDispatcher *)v21->_requestDispatcher submitDispatchableRequest:v17];
+  [(AKRequestDispatcher *)selfCopy->_requestDispatcher submitDispatchableRequest:v17];
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v14, 0);
@@ -121,30 +121,30 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_attemptUCRTHealingWithResponse:(id)a3
+- (void)_attemptUCRTHealingWithResponse:(id)response
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [location[0] appleID];
-  v3 = [location[0] passwordEquivalentToken];
-  v4 = [v3 stringValue];
-  _objc_release(v3);
-  [(AKSRPService *)v7 _healUCRTWithAppleID:v5 passwordPET:v4];
-  objc_storeStrong(&v4, 0);
-  objc_storeStrong(&v5, 0);
+  objc_storeStrong(location, response);
+  appleID = [location[0] appleID];
+  passwordEquivalentToken = [location[0] passwordEquivalentToken];
+  stringValue = [passwordEquivalentToken stringValue];
+  _objc_release(passwordEquivalentToken);
+  [(AKSRPService *)selfCopy _healUCRTWithAppleID:appleID passwordPET:stringValue];
+  objc_storeStrong(&stringValue, 0);
+  objc_storeStrong(&appleID, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_healUCRTWithAppleID:(id)a3 passwordPET:(id)a4
+- (void)_healUCRTWithAppleID:(id)d passwordPET:(id)t
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, t);
   v14 = os_transaction_create();
   queue = dispatch_get_global_queue(21, 0);
   v6 = _NSConcreteStackBlock;
@@ -165,18 +165,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_parseFailedServerResponse:(id)a3 withError:(id)a4 context:(id)a5 completion:(id)a6
+- (void)_parseFailedServerResponse:(id)response withError:(id)error context:(id)context completion:(id)completion
 {
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v36 = 0;
-  objc_storeStrong(&v36, a4);
+  objc_storeStrong(&v36, error);
   v35 = 0;
-  objc_storeStrong(&v35, a5);
+  objc_storeStrong(&v35, context);
   v34 = 0;
-  objc_storeStrong(&v34, a6);
+  objc_storeStrong(&v34, completion);
   v33 = _AKLogSystem();
   v32 = OS_LOG_TYPE_ERROR;
   if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -188,7 +188,7 @@
   objc_storeStrong(&v33, 0);
   if ([location[0] isAnisetteResyncRequired])
   {
-    [(AKSRPService *)v38 _resyncAnisetteWithServerResponse:location[0] context:v35 completion:v34];
+    [(AKSRPService *)selfCopy _resyncAnisetteWithServerResponse:location[0] context:v35 completion:v34];
   }
 
   else if ([location[0] isAnisetteReprovisioningRequired])
@@ -198,14 +198,14 @@
     v16 = +[AKAnalyticsReporterRTC rtcAnalyticsReporter];
     [v16 sendEvent:v30];
     _objc_release(v16);
-    [(AKSRPService *)v38 _reprovisionAnisetteWithServerResponse:location[0] context:v35 completion:v34];
+    [(AKSRPService *)selfCopy _reprovisionAnisetteWithServerResponse:location[0] context:v35 completion:v34];
     objc_storeStrong(&v30, 0);
     objc_storeStrong(&v31, 0);
   }
 
   else if ([location[0] isURLSwitchingRequired])
   {
-    [(AKSRPService *)v38 _doURLSwitchWithServerResponse:location[0] context:v35 completion:v34];
+    [(AKSRPService *)selfCopy _doURLSwitchWithServerResponse:location[0] context:v35 completion:v34];
   }
 
   else if (([location[0] isRetryRequired] & 1) == 0 || objc_msgSend(v35, "retryAuth"))
@@ -229,14 +229,14 @@
     else if (v36 && [v36 code] == 6)
     {
       v10 = +[AKFeatureManager sharedManager];
-      v11 = 0;
+      isServerBackoff = 0;
       if ([v10 isServerBackoffEnabled])
       {
-        v11 = [location[0] isServerBackoff];
+        isServerBackoff = [location[0] isServerBackoff];
       }
 
       v6 = -7120;
-      if ((v11 & 1) == 0)
+      if ((isServerBackoff & 1) == 0)
       {
         v6 = -7005;
       }
@@ -264,7 +264,7 @@
 
         objc_storeStrong(&v22, 0);
         [v35 setRetryAuth:1];
-        [(AKSRPService *)v38 performSRPContractWithContext:v35 completion:v34];
+        [(AKSRPService *)selfCopy performSRPContractWithContext:v35 completion:v34];
       }
 
       objc_storeStrong(v23, 0);
@@ -272,7 +272,7 @@
 
     else
     {
-      [(AKSRPService *)v38 _handleError:v36 withServerResponse:location[0] context:v35 andCompletion:v34];
+      [(AKSRPService *)selfCopy _handleError:v36 withServerResponse:location[0] context:v35 andCompletion:v34];
     }
   }
 
@@ -290,7 +290,7 @@
 
     objc_storeStrong(&v29, 0);
     [v35 setRetryAuth:1];
-    [(AKSRPService *)v38 performSRPContractWithContext:v35 completion:v34];
+    [(AKSRPService *)selfCopy performSRPContractWithContext:v35 completion:v34];
   }
 
   objc_storeStrong(&v34, 0);
@@ -299,43 +299,43 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_anisetteActionTargetForServerResponse:(id)a3 andContext:(id)a4
+- (id)_anisetteActionTargetForServerResponse:(id)response andContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, context);
   if ([location[0] shouldProxyAnisetteAction])
   {
-    v6 = [v8 authContext];
-    v10 = [v6 proxiedDevice];
-    _objc_release(v6);
+    authContext = [v8 authContext];
+    proxiedDevice = [authContext proxiedDevice];
+    _objc_release(authContext);
   }
 
   else
   {
-    v10 = +[AKDevice currentDevice];
+    proxiedDevice = +[AKDevice currentDevice];
   }
 
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
-  v4 = v10;
+  v4 = proxiedDevice;
 
   return v4;
 }
 
-- (void)_resyncAnisetteWithServerResponse:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_resyncAnisetteWithServerResponse:(id)response context:(id)context completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, context);
   v28 = 0;
-  objc_storeStrong(&v28, a5);
+  objc_storeStrong(&v28, completion);
   v27 = _AKLogSystem();
   v26 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -347,25 +347,25 @@
   }
 
   objc_storeStrong(&v27, 0);
-  v24 = [(AKSRPService *)v31 _anisetteActionTargetForServerResponse:location[0] andContext:v29];
+  v24 = [(AKSRPService *)selfCopy _anisetteActionTargetForServerResponse:location[0] andContext:v29];
   v6 = [AKAnisetteProvisioningService alloc];
-  client = v31->_client;
-  v7 = [v29 authContext];
+  client = selfCopy->_client;
+  authContext = [v29 authContext];
   v23 = [(AKAnisetteProvisioningService *)v6 initWithClient:client authenticationContext:?];
-  _objc_release(v7);
+  _objc_release(authContext);
   v9 = v23;
-  v10 = [location[0] anisetteResyncData];
+  anisetteResyncData = [location[0] anisetteResyncData];
   v8 = v24;
   v15 = _NSConcreteStackBlock;
   v16 = -1073741824;
   v17 = 0;
   v18 = sub_100112B58;
   v19 = &unk_1003217F8;
-  v20 = _objc_retain(v31);
+  v20 = _objc_retain(selfCopy);
   v21 = _objc_retain(v29);
   v22 = _objc_retain(v28);
-  [(AKAnisetteProvisioningService *)v9 syncAnisetteWithSIMData:v10 device:v8 completion:&v15];
-  _objc_release(v10);
+  [(AKAnisetteProvisioningService *)v9 syncAnisetteWithSIMData:anisetteResyncData device:v8 completion:&v15];
+  _objc_release(anisetteResyncData);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(&v20, 0);
@@ -376,16 +376,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_reprovisionAnisetteWithServerResponse:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_reprovisionAnisetteWithServerResponse:(id)response context:(id)context completion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, context);
   v27 = 0;
-  objc_storeStrong(&v27, a5);
+  objc_storeStrong(&v27, completion);
   v26 = _AKLogSystem();
   v25 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -397,12 +397,12 @@
   }
 
   objc_storeStrong(&v26, 0);
-  v23 = [(AKSRPService *)v30 _anisetteActionTargetForServerResponse:location[0] andContext:v28];
+  v23 = [(AKSRPService *)selfCopy _anisetteActionTargetForServerResponse:location[0] andContext:v28];
   v6 = [AKAnisetteProvisioningService alloc];
-  client = v30->_client;
-  v7 = [v28 authContext];
+  client = selfCopy->_client;
+  authContext = [v28 authContext];
   v22 = [(AKAnisetteProvisioningService *)v6 initWithClient:client authenticationContext:?];
-  _objc_release(v7);
+  _objc_release(authContext);
   v9 = v22;
   v8 = v23;
   v14 = _NSConcreteStackBlock;
@@ -410,7 +410,7 @@
   v16 = 0;
   v17 = sub_100113178;
   v18 = &unk_1003217F8;
-  v19 = _objc_retain(v30);
+  v19 = _objc_retain(selfCopy);
   v20 = _objc_retain(v28);
   v21 = _objc_retain(v27);
   [(AKAnisetteProvisioningService *)v9 eraseAnisetteForDevice:v8 completion:&v14];
@@ -424,16 +424,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_doURLSwitchWithServerResponse:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_doURLSwitchWithServerResponse:(id)response context:(id)context completion:(id)completion
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, context);
   v32 = 0;
-  objc_storeStrong(&v32, a5);
+  objc_storeStrong(&v32, completion);
   v31 = _AKLogSystem();
   v30 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -445,25 +445,25 @@
   }
 
   objc_storeStrong(&v31, 0);
-  v12 = [location[0] urlSwitchingData];
-  _objc_release(v12);
-  if (v12)
+  urlSwitchingData = [location[0] urlSwitchingData];
+  _objc_release(urlSwitchingData);
+  if (urlSwitchingData)
   {
-    v7 = [v33 altDSID];
+    altDSID = [v33 altDSID];
     v6 = [AKURLBag bagForAltDSID:?];
-    v5 = [location[0] urlSwitchingData];
+    urlSwitchingData2 = [location[0] urlSwitchingData];
     v17 = _NSConcreteStackBlock;
     v18 = -1073741824;
     v19 = 0;
     v20 = sub_100113870;
     v21 = &unk_1003217F8;
-    v22 = _objc_retain(v35);
+    v22 = _objc_retain(selfCopy);
     v23 = _objc_retain(v33);
     v24 = _objc_retain(v32);
-    [v6 forceUpdateBagWithUrlSwitchData:v5 completion:&v17];
-    _objc_release(v5);
+    [v6 forceUpdateBagWithUrlSwitchData:urlSwitchingData2 completion:&v17];
+    _objc_release(urlSwitchingData2);
     _objc_release(v6);
-    _objc_release(v7);
+    _objc_release(altDSID);
     objc_storeStrong(&v24, 0);
     objc_storeStrong(&v23, 0);
     objc_storeStrong(&v22, 0);
@@ -495,19 +495,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_authContext:(id)a3
+- (id)_authContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v11 = 0;
-  v7 = [location[0] authContext];
+  authContext = [location[0] authContext];
   v9 = 0;
   isKindOfClass = 0;
-  if (v7)
+  if (authContext)
   {
-    v10 = [location[0] authContext];
+    authContext2 = [location[0] authContext];
     v9 = 1;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -515,15 +515,15 @@
 
   if (v9)
   {
-    _objc_release(v10);
+    _objc_release(authContext2);
   }
 
-  _objc_release(v7);
+  _objc_release(authContext);
   if (isKindOfClass)
   {
-    v3 = [location[0] authContext];
+    authContext3 = [location[0] authContext];
     v4 = v11;
-    v11 = v3;
+    v11 = authContext3;
     _objc_release(v4);
   }
 
@@ -534,55 +534,55 @@
   return v6;
 }
 
-- (void)_handleError:(id)a3 withServerResponse:(id)a4 context:(id)a5 andCompletion:(id)a6
+- (void)_handleError:(id)error withServerResponse:(id)response context:(id)context andCompletion:(id)completion
 {
-  v53 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v51 = 0;
-  objc_storeStrong(&v51, a4);
+  objc_storeStrong(&v51, response);
   v50 = 0;
-  objc_storeStrong(&v50, a5);
+  objc_storeStrong(&v50, context);
   v49 = 0;
-  objc_storeStrong(&v49, a6);
+  objc_storeStrong(&v49, completion);
   v48 = objc_alloc_init(NSMutableDictionary);
   v47 = objc_alloc_init(NSMutableDictionary);
-  v30 = [v51 errorMessage];
+  errorMessage = [v51 errorMessage];
   v45 = 0;
   v31 = 0;
-  if (v30)
+  if (errorMessage)
   {
-    v46 = [v51 errorMessageTitle];
+    errorMessageTitle = [v51 errorMessageTitle];
     v45 = 1;
-    v31 = v46 != 0;
+    v31 = errorMessageTitle != 0;
   }
 
   if (v45)
   {
-    _objc_release(v46);
+    _objc_release(errorMessageTitle);
   }
 
-  _objc_release(v30);
+  _objc_release(errorMessage);
   if (v31)
   {
-    v25 = [v51 errorMessageTitle];
+    errorMessageTitle2 = [v51 errorMessageTitle];
     [v47 setObject:? forKeyedSubscript:?];
-    _objc_release(v25);
-    v26 = [v51 errorMessage];
+    _objc_release(errorMessageTitle2);
+    errorMessage2 = [v51 errorMessage];
     [v47 setObject:? forKeyedSubscript:?];
-    _objc_release(v26);
+    _objc_release(errorMessage2);
   }
 
   else
   {
-    v24 = [v51 errorMessage];
-    _objc_release(v24);
-    if (v24)
+    errorMessage3 = [v51 errorMessage];
+    _objc_release(errorMessage3);
+    if (errorMessage3)
     {
-      v23 = [v51 errorMessage];
+      errorMessage4 = [v51 errorMessage];
       [v47 setObject:? forKeyedSubscript:?];
-      _objc_release(v23);
+      _objc_release(errorMessage4);
     }
   }
 
@@ -611,14 +611,14 @@
 
   if (location[0])
   {
-    v19 = [location[0] underlyingErrors];
+    underlyingErrors = [location[0] underlyingErrors];
     v20 = 0;
-    if (![v19 count])
+    if (![underlyingErrors count])
     {
       v20 = v44 != 0;
     }
 
-    _objc_release(v19);
+    _objc_release(underlyingErrors);
     if (v20)
     {
       v42 = objc_alloc_init(NSMutableDictionary);
@@ -661,26 +661,26 @@
   }
 
   v40 = 0;
-  v39 = [v50 authKitAccount];
-  if (v39)
+  authKitAccount = [v50 authKitAccount];
+  if (authKitAccount)
   {
     v38 = +[AKAccountManager sharedInstance];
-    v40 = [v38 isManagedAppleIDForAccount:v39];
+    v40 = [v38 isManagedAppleIDForAccount:authKitAccount];
     if (v40)
     {
-      v37 = [v38 managedOrganizationNameForAccount:v39];
-      v18 = [v50 client];
-      v36 = [v18 localizedAppName];
-      _objc_release(v18);
+      v37 = [v38 managedOrganizationNameForAccount:authKitAccount];
+      client = [v50 client];
+      localizedAppName = [client localizedAppName];
+      _objc_release(client);
       [v48 setObject:&__kCFBooleanTrue forKeyedSubscript:AKIsManagedAccountKey];
       if ([v37 length])
       {
         [v48 setObject:v37 forKeyedSubscript:AKManagedOrganizationNameKey];
       }
 
-      if ([v36 length])
+      if ([localizedAppName length])
       {
-        [v48 setObject:v36 forKeyedSubscript:AKManagedLocalizedAppNameKey];
+        [v48 setObject:localizedAppName forKeyedSubscript:AKManagedLocalizedAppNameKey];
       }
 
       if ([v51 errorCode] == -24019)
@@ -688,7 +688,7 @@
         v41 = -7027;
       }
 
-      objc_storeStrong(&v36, 0);
+      objc_storeStrong(&localizedAppName, 0);
       objc_storeStrong(&v37, 0);
     }
 
@@ -720,8 +720,8 @@
     _objc_release(v13);
   }
 
-  v34 = [(AKSRPService *)v53 _authContext:v50];
-  if ([v51 errorCode] == -22406 || objc_msgSend(v51, "errorCode") == -22407 || -[AKSRPService _shouldClearCKForFailedMagicAuthWithError:authContextHelper:](v53, "_shouldClearCKForFailedMagicAuthWithError:authContextHelper:", objc_msgSend(v51, "errorCode"), v50))
+  v34 = [(AKSRPService *)selfCopy _authContext:v50];
+  if ([v51 errorCode] == -22406 || objc_msgSend(v51, "errorCode") == -22407 || -[AKSRPService _shouldClearCKForFailedMagicAuthWithError:authContextHelper:](selfCopy, "_shouldClearCKForFailedMagicAuthWithError:authContextHelper:", objc_msgSend(v51, "errorCode"), v50))
   {
     [v50 clearContinuationTokenIfSupportedWithError:v35];
   }
@@ -730,23 +730,23 @@
   v17 = 0;
   if ([v51 errorCode] == -22446)
   {
-    v33 = [v50 passwordResetToken];
+    passwordResetToken = [v50 passwordResetToken];
     v32 = 1;
-    v17 = v33 != 0;
+    v17 = passwordResetToken != 0;
   }
 
   if (v32)
   {
-    _objc_release(v33);
+    _objc_release(passwordResetToken);
   }
 
   if (v17)
   {
     v16 = +[AKAccountManager sharedInstance];
-    v14 = v39;
-    v15 = [v34 telemetryFlowID];
+    v14 = authKitAccount;
+    telemetryFlowID = [v34 telemetryFlowID];
     [AKAccountManager removePasswordResetTokenForAccount:v16 telemetryFlowID:"removePasswordResetTokenForAccount:telemetryFlowID:error:" error:v14];
-    _objc_release(v15);
+    _objc_release(telemetryFlowID);
     _objc_release(v16);
   }
 
@@ -757,7 +757,7 @@
 
   objc_storeStrong(&v34, 0);
   objc_storeStrong(&v35, 0);
-  objc_storeStrong(&v39, 0);
+  objc_storeStrong(&authKitAccount, 0);
   objc_storeStrong(&v44, 0);
   objc_storeStrong(&v47, 0);
   objc_storeStrong(&v48, 0);
@@ -767,14 +767,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_shouldClearCKForFailedMagicAuthWithError:(int64_t)a3 authContextHelper:(id)a4
+- (BOOL)_shouldClearCKForFailedMagicAuthWithError:(int64_t)error authContextHelper:(id)helper
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  errorCopy = error;
   location = 0;
-  objc_storeStrong(&location, a4);
-  if (v13 == -22446 && (v7 = [location authContext], v8 = objc_msgSend(v7, "companionDevice"), _objc_release(v8), _objc_release(v7), v8))
+  objc_storeStrong(&location, helper);
+  if (errorCopy == -22446 && (v7 = [location authContext], v8 = objc_msgSend(v7, "companionDevice"), _objc_release(v8), _objc_release(v7), v8))
   {
     v11 = _AKLogSystem();
     v10 = OS_LOG_TYPE_DEFAULT;

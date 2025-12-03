@@ -10,29 +10,29 @@
 - (id)actionIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(CSSystemQuickAction *)self viewModel];
-  v4 = [v3 title];
-  v5 = [v2 stringWithFormat:@"CSSystemButtonQuickAction%@", v4];
+  viewModel = [(CSSystemQuickAction *)self viewModel];
+  title = [viewModel title];
+  v5 = [v2 stringWithFormat:@"CSSystemButtonQuickAction%@", title];
 
   return v5;
 }
 
 - (id)accessibilityIdentifier
 {
-  v3 = [(CSSystemQuickAction *)self viewModel];
-  v4 = [v3 accessibilityIdentifier];
+  viewModel = [(CSSystemQuickAction *)self viewModel];
+  accessibilityIdentifier = [viewModel accessibilityIdentifier];
 
-  if (v4)
+  if (accessibilityIdentifier)
   {
-    v5 = v4;
+    v5 = accessibilityIdentifier;
   }
 
   else
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(CSSystemQuickAction *)self controlIdentity];
-    v8 = [v7 kind];
-    v5 = [v6 stringWithFormat:@"system-orb-button-%@", v8];
+    controlIdentity = [(CSSystemQuickAction *)self controlIdentity];
+    kind = [controlIdentity kind];
+    v5 = [v6 stringWithFormat:@"system-orb-button-%@", kind];
   }
 
   return v5;
@@ -40,18 +40,18 @@
 
 - (BOOL)isSelected
 {
-  v2 = [(CSSystemButtonQuickAction *)self _buttonViewModel];
-  v3 = [v2 isAnimating];
+  _buttonViewModel = [(CSSystemButtonQuickAction *)self _buttonViewModel];
+  isAnimating = [_buttonViewModel isAnimating];
 
-  return v3;
+  return isAnimating;
 }
 
 - (id)_buttonViewModel
 {
-  v2 = [(CSSystemQuickAction *)self controlInstance];
-  v3 = [v2 viewModel];
+  controlInstance = [(CSSystemQuickAction *)self controlInstance];
+  viewModel = [controlInstance viewModel];
 
-  return v3;
+  return viewModel;
 }
 
 @end

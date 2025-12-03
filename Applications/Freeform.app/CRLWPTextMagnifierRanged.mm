@@ -6,30 +6,30 @@
 - (CGPoint)magnificationPoint;
 - (CGPoint)offset;
 - (CGPoint)terminalPoint;
-- (CRLWPTextMagnifierRanged)initWithFrame:(CGRect)a3;
+- (CRLWPTextMagnifierRanged)initWithFrame:(CGRect)frame;
 - (NSString)maskImageName;
 - (double)currentOffset;
-- (double)horizontalMovementAtTime:(double)a3;
+- (double)horizontalMovementAtTime:(double)time;
 - (id)overlayImageName;
 - (id)underlayImageName;
-- (void)beginMagnifyingTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6;
-- (void)drawMagnifierClippedCanvasLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)beginMagnifyingTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated;
+- (void)drawMagnifierClippedCanvasLayer:(id)layer inContext:(CGContext *)context;
 - (void)remove;
-- (void)setFrame:(CGRect)a3;
-- (void)setMagnificationPoint:(CGPoint)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setMagnificationPoint:(CGPoint)point;
 - (void)setNeedsDisplay;
-- (void)stopMagnifying:(BOOL)a3;
+- (void)stopMagnifying:(BOOL)magnifying;
 - (void)updateFrame;
 @end
 
 @implementation CRLWPTextMagnifierRanged
 
-- (CRLWPTextMagnifierRanged)initWithFrame:(CGRect)a3
+- (CRLWPTextMagnifierRanged)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v20.receiver = self;
   v20.super_class = CRLWPTextMagnifierRanged;
   v7 = [(CRLWPTextMagnifierRanged *)&v20 initWithFrame:?];
@@ -42,19 +42,19 @@
     weightedPoint = v7->_weightedPoint;
     v7->_weightedPoint = v9;
 
-    v11 = [(CRLWPTextMagnifierRanged *)v7 underlayImageName];
-    v12 = [UIImage imageNamed:v11];
+    underlayImageName = [(CRLWPTextMagnifierRanged *)v7 underlayImageName];
+    v12 = [UIImage imageNamed:underlayImageName];
 
     v13 = [[UIImageView alloc] initWithImage:v12];
     [(CRLWPTextMagnifierRanged *)v7 addSubview:v13];
-    v14 = [[CRLWPTextMagnifierRenderer alloc] initWithFrame:x, y, width, height];
+    height = [[CRLWPTextMagnifierRenderer alloc] initWithFrame:x, y, width, height];
     magnifierRenderer = v7->_magnifierRenderer;
-    v7->_magnifierRenderer = v14;
+    v7->_magnifierRenderer = height;
 
     [(CRLWPTextMagnifierRenderer *)v7->_magnifierRenderer setRendererDelegate:v7];
     [(CRLWPTextMagnifierRanged *)v7 addSubview:v7->_magnifierRenderer];
-    v16 = [(CRLWPTextMagnifierRanged *)v7 overlayImageName];
-    v17 = [UIImage imageNamed:v16];
+    overlayImageName = [(CRLWPTextMagnifierRanged *)v7 overlayImageName];
+    v17 = [UIImage imageNamed:overlayImageName];
 
     v18 = [[UIImageView alloc] initWithImage:v17];
     [(CRLWPTextMagnifierRanged *)v7 addSubview:v18];
@@ -63,7 +63,7 @@
   return v7;
 }
 
-- (double)horizontalMovementAtTime:(double)a3
+- (double)horizontalMovementAtTime:(double)time
 {
   [(CRLWPTextMagnifierTimeWeightedPoint *)self->_weightedPoint distanceCoveredInInterval:3.40282347e38];
   v5 = v4;
@@ -111,11 +111,11 @@
   return 0.0;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = CRLWPTextMagnifierRanged;
-  [(CRLWPTextMagnifierRanged *)&v5 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CRLWPTextMagnifierRanged *)&v5 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   magnifierRenderer = self->_magnifierRenderer;
   [(CRLWPTextMagnifierRanged *)self bounds];
   [(CRLWPTextMagnifierRenderer *)magnifierRenderer setFrame:?];
@@ -160,9 +160,9 @@
   [CRLAssertionHandler handleFailureInFunction:v3 file:v4 lineNumber:100 isFatal:0 description:"Abstract method"];
 }
 
-- (void)beginMagnifyingTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6
+- (void)beginMagnifyingTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated
 {
-  v25 = a3;
+  targetCopy = target;
   [(CRLWPTextMagnifierRanged *)self setTarget:?];
   [(CRLWPTextMagnifierTimeWeightedPoint *)self->_weightedPoint clearHistory];
   [(CRLWPTextMagnifierRanged *)self setAutoscrollDirections:0];
@@ -180,9 +180,9 @@
   [(UIWindow *)self->_hostWindow setBackgroundColor:v11];
 
   v12 = objc_opt_class();
-  v13 = [v25 interactiveCanvasController];
-  v14 = [v13 delegate];
-  v15 = sub_100014370(v12, v14);
+  interactiveCanvasController = [targetCopy interactiveCanvasController];
+  delegate = [interactiveCanvasController delegate];
+  v15 = sub_100014370(v12, delegate);
 
   v16 = -[CRLWPTextMagnifierCaretController initWithPreferredStatusBarStyle:]([CRLWPTextMagnifierCaretController alloc], "initWithPreferredStatusBarStyle:", [v15 preferredStatusBarStyle]);
   [(CRLWPTextMagnifierCaretController *)v16 setView:self];
@@ -197,7 +197,7 @@
   [(CRLWPTextMagnifierRanged *)self setFrame:v18, v20, v22, v24];
 }
 
-- (void)stopMagnifying:(BOOL)a3
+- (void)stopMagnifying:(BOOL)magnifying
 {
   +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -276,10 +276,10 @@
   return result;
 }
 
-- (void)setMagnificationPoint:(CGPoint)a3
+- (void)setMagnificationPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CRLWPTextMagnifierTimeWeightedPoint *)self->_weightedPoint addPoint:?];
   if (x != self->_magnificationPoint.x || y != self->_magnificationPoint.y)
   {
@@ -424,9 +424,9 @@
   return 1;
 }
 
-- (void)drawMagnifierClippedCanvasLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawMagnifierClippedCanvasLayer:(id)layer inContext:(CGContext *)context
 {
-  [CRLAssertionHandler _atomicIncrementAssertCount:a3];
+  [CRLAssertionHandler _atomicIncrementAssertCount:layer];
   if (qword_101AD5A10 != -1)
   {
     sub_101317DA4();

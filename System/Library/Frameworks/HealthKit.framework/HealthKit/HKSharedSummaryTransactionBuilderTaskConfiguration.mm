@@ -1,36 +1,36 @@
 @interface HKSharedSummaryTransactionBuilderTaskConfiguration
-- (HKSharedSummaryTransactionBuilderTaskConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKSharedSummaryTransactionBuilderTaskConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSharedSummaryTransactionBuilderTaskConfiguration
 
-- (HKSharedSummaryTransactionBuilderTaskConfiguration)initWithCoder:(id)a3
+- (HKSharedSummaryTransactionBuilderTaskConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HKSharedSummaryTransactionBuilderTaskConfiguration;
-  v5 = [(HKTaskConfiguration *)&v9 initWithCoder:v4];
+  v5 = [(HKTaskConfiguration *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionUUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionUUID"];
     transactionUUID = v5->_transactionUUID;
     v5->_transactionUUID = v6;
 
-    v5->_allowCommitted = [v4 decodeBoolForKey:@"allowCommitted"];
+    v5->_allowCommitted = [coderCopy decodeBoolForKey:@"allowCommitted"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKSharedSummaryTransactionBuilderTaskConfiguration;
-  v4 = a3;
-  [(HKTaskConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_transactionUUID forKey:{@"transactionUUID", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_allowCommitted forKey:@"allowCommitted"];
+  coderCopy = coder;
+  [(HKTaskConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_transactionUUID forKey:{@"transactionUUID", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_allowCommitted forKey:@"allowCommitted"];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface UGCProactiveCallToActionButtonView
-- (UGCProactiveCallToActionButtonView)initWithFrame:(CGRect)a3;
+- (UGCProactiveCallToActionButtonView)initWithFrame:(CGRect)frame;
 - (UGCProactiveCallToActionButtonViewDelegate)delegate;
 - (void)_didTapOnButton;
 - (void)_setupButton;
@@ -16,8 +16,8 @@
 
 - (void)_didTapOnButton
 {
-  v3 = [(UGCProactiveCallToActionButtonView *)self delegate];
-  [v3 proactiveCallToActionButtonViewTapped:self];
+  delegate = [(UGCProactiveCallToActionButtonView *)self delegate];
+  [delegate proactiveCallToActionButtonViewTapped:self];
 }
 
 - (void)_setupButton
@@ -39,11 +39,11 @@
   [NSLayoutConstraint _mapsui_activateLayouts:v8];
 }
 
-- (UGCProactiveCallToActionButtonView)initWithFrame:(CGRect)a3
+- (UGCProactiveCallToActionButtonView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UGCProactiveCallToActionButtonView;
-  v3 = [(UGCProactiveCallToActionButtonView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UGCProactiveCallToActionButtonView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

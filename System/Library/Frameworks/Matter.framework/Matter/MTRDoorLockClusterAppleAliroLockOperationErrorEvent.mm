@@ -1,6 +1,6 @@
 @interface MTRDoorLockClusterAppleAliroLockOperationErrorEvent
 - (MTRDoorLockClusterAppleAliroLockOperationErrorEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,23 +33,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterAppleAliroLockOperationErrorEvent);
-  v5 = [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)self lockOperationType];
-  [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)v4 setLockOperationType:v5];
+  lockOperationType = [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)self lockOperationType];
+  [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)v4 setLockOperationType:lockOperationType];
 
-  v6 = [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)self operationError];
-  [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)v4 setOperationError:v6];
+  operationError = [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)self operationError];
+  [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)v4 setOperationError:operationError];
 
-  v7 = [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)self userIndex];
-  [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)v4 setUserIndex:v7];
+  userIndex = [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)self userIndex];
+  [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)v4 setUserIndex:userIndex];
 
-  v8 = [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)self fabricIndex];
-  [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)v4 setFabricIndex:v8];
+  fabricIndex = [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)self fabricIndex];
+  [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)v4 setFabricIndex:fabricIndex];
 
-  v9 = [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)self credentials];
-  [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)v4 setCredentials:v9];
+  credentials = [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)self credentials];
+  [(MTRDoorLockClusterAppleAliroLockOperationErrorEvent *)v4 setCredentials:credentials];
 
   return v4;
 }

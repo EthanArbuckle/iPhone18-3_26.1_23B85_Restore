@@ -1,14 +1,14 @@
 @interface SYSystemPaperAnalytics
-+ (void)logActivationEvent:(id)a3;
-+ (void)logDismissEvent:(id)a3;
++ (void)logActivationEvent:(id)event;
++ (void)logDismissEvent:(id)event;
 @end
 
 @implementation SYSystemPaperAnalytics
 
-+ (void)logActivationEvent:(id)a3
++ (void)logActivationEvent:(id)event
 {
-  v4 = a3;
-  v3 = v4;
+  eventCopy = event;
+  v3 = eventCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -24,10 +24,10 @@ id __45__SYSystemPaperAnalytics_logActivationEvent___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (void)logDismissEvent:(id)a3
++ (void)logDismissEvent:(id)event
 {
-  v4 = a3;
-  v3 = v4;
+  eventCopy = event;
+  v3 = eventCopy;
   AnalyticsSendEventLazy();
 }
 

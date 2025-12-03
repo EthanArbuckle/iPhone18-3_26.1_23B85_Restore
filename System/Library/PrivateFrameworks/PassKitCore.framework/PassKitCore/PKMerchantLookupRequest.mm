@@ -1,24 +1,24 @@
 @interface PKMerchantLookupRequest
-- (PKMerchantLookupRequest)initWithSource:(id)a3;
-- (id)_brandFromMapItem:(id)a3;
-- (id)_merchantFromMapItem:(id)a3;
-- (void)_mapItemBrandWithMUID:(unint64_t)a3 completion:(id)a4;
-- (void)_mapsDataWithResponse:(id)a3 searchMapItem:(id)a4 completion:(id)a5;
-- (void)startLookupWithCompletion:(id)a3;
+- (PKMerchantLookupRequest)initWithSource:(id)source;
+- (id)_brandFromMapItem:(id)item;
+- (id)_merchantFromMapItem:(id)item;
+- (void)_mapItemBrandWithMUID:(unint64_t)d completion:(id)completion;
+- (void)_mapsDataWithResponse:(id)response searchMapItem:(id)item completion:(id)completion;
+- (void)startLookupWithCompletion:(id)completion;
 @end
 
 @implementation PKMerchantLookupRequest
 
-- (PKMerchantLookupRequest)initWithSource:(id)a3
+- (PKMerchantLookupRequest)initWithSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v13.receiver = self;
   v13.super_class = PKMerchantLookupRequest;
   v6 = [(PKMerchantLookupRequest *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_source, a3);
+    objc_storeStrong(&v6->_source, source);
     v8 = objc_alloc_init(getMKMapServiceClass[0]());
     service = v7->_service;
     v7->_service = v8;
@@ -31,41 +31,41 @@
   return v7;
 }
 
-- (void)startLookupWithCompletion:(id)a3
+- (void)startLookupWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(PKMerchantLookupRequestSource *)self->_source mapsMerchantLookupRequest];
-    v6 = [(PKMerchantLookupRequestSource *)self->_source mapsURL];
+    mapsMerchantLookupRequest = [(PKMerchantLookupRequestSource *)self->_source mapsMerchantLookupRequest];
+    mapsURL = [(PKMerchantLookupRequestSource *)self->_source mapsURL];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __53__PKMerchantLookupRequest_startLookupWithCompletion___block_invoke;
     aBlock[3] = &unk_1E79D8658;
-    v20 = v4;
+    v20 = completionCopy;
     v7 = _Block_copy(aBlock);
-    if (v5)
+    if (mapsMerchantLookupRequest)
     {
-      v8 = [v5 traits];
-      v9 = v8;
-      if (v8)
+      traits = [mapsMerchantLookupRequest traits];
+      v9 = traits;
+      if (traits)
       {
-        v10 = v8;
+        defaultTraits = traits;
       }
 
       else
       {
-        v10 = [(MKMapService *)self->_service defaultTraits];
+        defaultTraits = [(MKMapService *)self->_service defaultTraits];
       }
 
-      v11 = v10;
+      v11 = defaultTraits;
 
       [v11 setWantsBrandIcon:1];
       [v11 setSupportsBrandFallback:1];
       [v11 setIsSettlement:{-[PKMerchantLookupRequestSource isSettlement](self->_source, "isSettlement")}];
       [v11 setIsSettlement:{-[PKMerchantLookupRequestSource isRefund](self->_source, "isRefund")}];
       [v11 setContainsSensitiveData:{-[PKMerchantLookupRequestSource containsSensitiveData](self->_source, "containsSensitiveData")}];
-      v12 = [(MKMapService *)self->_service ticketForWalletMerchantLookupRequest:v5 traits:v11];
+      v12 = [(MKMapService *)self->_service ticketForWalletMerchantLookupRequest:mapsMerchantLookupRequest traits:v11];
       internalQueue = self->_internalQueue;
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
@@ -79,12 +79,12 @@
 
     else
     {
-      if (!v6 || [(PKMerchantLookupRequestSource *)self->_source type]!= 3)
+      if (!mapsURL || [(PKMerchantLookupRequestSource *)self->_source type]!= 3)
       {
         goto LABEL_13;
       }
 
-      v11 = [objc_alloc(_MergedGlobals_175()) initWithMapsURL:v6];
+      v11 = [objc_alloc(_MergedGlobals_175()) initWithMapsURL:mapsURL];
       if (!v11)
       {
 LABEL_12:
@@ -218,24 +218,24 @@ void __53__PKMerchantLookupRequest_startLookupWithCompletion___block_invoke_33(u
   }
 }
 
-- (void)_mapsDataWithResponse:(id)a3 searchMapItem:(id)a4 completion:(id)a5
+- (void)_mapsDataWithResponse:(id)response searchMapItem:(id)item completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10 && v8 | v9)
+  responseCopy = response;
+  itemCopy = item;
+  completionCopy = completion;
+  if (completionCopy && responseCopy | itemCopy)
   {
-    v38 = [v9 _geoMapItem];
-    if (v8)
+    _geoMapItem = [itemCopy _geoMapItem];
+    if (responseCopy)
     {
-      v11 = [v8 mapsCategoryIdentifier];
-      [v8 walletCategoryIdentifier];
+      mapsCategoryIdentifier = [responseCopy mapsCategoryIdentifier];
+      [responseCopy walletCategoryIdentifier];
     }
 
     else
     {
-      v11 = [v38 _mapsCategoryId];
-      [v38 _walletCategoryIdentifier];
+      mapsCategoryIdentifier = [_geoMapItem _mapsCategoryId];
+      [_geoMapItem _walletCategoryIdentifier];
     }
     v12 = ;
     v13 = PKMerchantCategoryFromString(v12);
@@ -245,49 +245,49 @@ void __53__PKMerchantLookupRequest_startLookupWithCompletion___block_invoke_33(u
     aBlock[2] = __74__PKMerchantLookupRequest__mapsDataWithResponse_searchMapItem_completion___block_invoke;
     aBlock[3] = &unk_1E79D86D0;
     v50 = v13;
-    v49 = v10;
+    v49 = completionCopy;
     v14 = _Block_copy(aBlock);
-    if (v8)
+    if (responseCopy)
     {
-      v15 = [v8 mapItem];
-      v16 = [v8 bestHeroImageForSize:1 allowSmaller:{1.79769313e308, 1.79769313e308}];
-      [v8 heroImageProviderName];
+      mapItem = [responseCopy mapItem];
+      v16 = [responseCopy bestHeroImageForSize:1 allowSmaller:{1.79769313e308, 1.79769313e308}];
+      [responseCopy heroImageProviderName];
     }
 
     else
     {
-      v15 = v9;
-      v16 = [v15 _bestWalletHeroImageForSize:1 allowSmaller:{1.79769313e308, 1.79769313e308}];
-      [v15 _walletHeroImageProviderName];
+      mapItem = itemCopy;
+      v16 = [mapItem _bestWalletHeroImageForSize:1 allowSmaller:{1.79769313e308, 1.79769313e308}];
+      [mapItem _walletHeroImageProviderName];
     }
     v17 = ;
-    if (!v15)
+    if (!mapItem)
     {
       (*(v14 + 2))(v14, 0, 0, 0, 0, 0);
       goto LABEL_27;
     }
 
     v37 = v16;
-    v36 = v11;
-    if ([v15 _isMapItemTypeBrand])
+    v36 = mapsCategoryIdentifier;
+    if ([mapItem _isMapItemTypeBrand])
     {
-      v18 = [(PKMerchantLookupRequest *)self _brandFromMapItem:v15];
+      v18 = [(PKMerchantLookupRequest *)self _brandFromMapItem:mapItem];
       [v18 setCategory:v13];
-      [v18 setDetailedCategory:v11];
-      if (v8)
+      [v18 setDetailedCategory:mapsCategoryIdentifier];
+      if (responseCopy)
       {
-        v19 = [v8 placeStyling];
-        if (!v19)
+        placeStyling = [responseCopy placeStyling];
+        if (!placeStyling)
         {
 LABEL_14:
           [v18 setHeroImageURL:v37];
           [v18 setHeroImageAttributionName:v17];
-          v21 = [MEMORY[0x1E695DF00] date];
-          [v18 setLastProcessedDate:v21];
+          date = [MEMORY[0x1E695DF00] date];
+          [v18 setLastProcessedDate:date];
 
           (*(v14 + 2))(v14, 1, 0, 0, v18, 0);
           v16 = v37;
-          v11 = v36;
+          mapsCategoryIdentifier = v36;
 LABEL_27:
 
           goto LABEL_28;
@@ -297,41 +297,41 @@ LABEL_27:
       else
       {
         v29 = objc_alloc(getMKWalletMerchantStylingInfoClass_0[0]());
-        v30 = [v38 _walletPlaceStyling];
-        v19 = [v29 initWithStyleAttributes:v30];
+        _walletPlaceStyling = [_geoMapItem _walletPlaceStyling];
+        placeStyling = [v29 initWithStyleAttributes:_walletPlaceStyling];
 
-        if (!v19)
+        if (!placeStyling)
         {
           goto LABEL_14;
         }
       }
 
-      v20 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v19 requiringSecureCoding:1 error:0];
+      v20 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:placeStyling requiringSecureCoding:1 error:0];
       [v18 setStylingInfoData:v20];
 
       goto LABEL_14;
     }
 
     v35 = v14;
-    v34 = [v15 placemark];
-    v22 = [(PKMerchantLookupRequest *)self _merchantFromMapItem:v15];
+    placemark = [mapItem placemark];
+    v22 = [(PKMerchantLookupRequest *)self _merchantFromMapItem:mapItem];
     [v22 setCategory:v13];
-    [v22 setDetailedCategory:v11];
-    if (v8)
+    [v22 setDetailedCategory:mapsCategoryIdentifier];
+    if (responseCopy)
     {
-      v23 = [v8 placeStyling];
-      if (!v23)
+      placeStyling2 = [responseCopy placeStyling];
+      if (!placeStyling2)
       {
 LABEL_19:
         [v22 setHeroImageURL:v37];
         [v22 setHeroImageAttributionName:v17];
-        v25 = [MEMORY[0x1E695DF00] date];
-        [v22 setLastProcessedDate:v25];
+        date2 = [MEMORY[0x1E695DF00] date];
+        [v22 setLastProcessedDate:date2];
 
-        v26 = [v15 _brandMUID];
-        if (v26)
+        _brandMUID = [mapItem _brandMUID];
+        if (_brandMUID)
         {
-          v27 = v26;
+          v27 = _brandMUID;
           v39[0] = MEMORY[0x1E69E9820];
           v39[1] = 3221225472;
           v39[2] = __74__PKMerchantLookupRequest__mapsDataWithResponse_searchMapItem_completion___block_invoke_2;
@@ -339,23 +339,23 @@ LABEL_19:
           v39[4] = self;
           v47 = v13;
           v40 = v36;
-          v41 = v8;
-          v42 = v38;
-          v43 = v15;
+          v41 = responseCopy;
+          v42 = _geoMapItem;
+          v43 = mapItem;
           v46 = v35;
-          v28 = v34;
-          v44 = v34;
+          v28 = placemark;
+          v44 = placemark;
           v45 = v22;
           [(PKMerchantLookupRequest *)self _mapItemBrandWithMUID:v27 completion:v39];
         }
 
         else
         {
-          v28 = v34;
-          (v35)[2](v35, 1, v34, v22, 0, 0);
+          v28 = placemark;
+          (v35)[2](v35, 1, placemark, v22, 0, 0);
         }
 
-        v11 = v36;
+        mapsCategoryIdentifier = v36;
         v16 = v37;
         v14 = v35;
         goto LABEL_27;
@@ -365,18 +365,18 @@ LABEL_19:
     else
     {
       v31 = objc_alloc(getMKWalletMerchantStylingInfoClass_0[0]());
-      [v38 _walletPlaceStyling];
+      [_geoMapItem _walletPlaceStyling];
       v32 = v33 = v17;
-      v23 = [v31 initWithStyleAttributes:v32];
+      placeStyling2 = [v31 initWithStyleAttributes:v32];
 
       v17 = v33;
-      if (!v23)
+      if (!placeStyling2)
       {
         goto LABEL_19;
       }
     }
 
-    v24 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v23 requiringSecureCoding:1 error:0];
+    v24 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:placeStyling2 requiringSecureCoding:1 error:0];
     [v22 setStylingInfoData:v24];
 
     goto LABEL_19;
@@ -465,14 +465,14 @@ LABEL_9:
   (*(*(a1 + 88) + 16))();
 }
 
-- (void)_mapItemBrandWithMUID:(unint64_t)a3 completion:(id)a4
+- (void)_mapItemBrandWithMUID:(unint64_t)d completion:(id)completion
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v7 = objc_alloc_init(_MergedGlobals_175());
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
     v13[0] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     [v7 _setMuids:v9];
@@ -483,7 +483,7 @@ LABEL_9:
     v11[2] = __60__PKMerchantLookupRequest__mapItemBrandWithMUID_completion___block_invoke;
     v11[3] = &unk_1E79D86A8;
     v11[4] = self;
-    v12 = v6;
+    v12 = completionCopy;
     [v10 startWithCompletionHandler:v11];
   }
 }
@@ -579,48 +579,48 @@ void __60__PKMerchantLookupRequest__mapItemBrandWithMUID_completion___block_invo
   }
 }
 
-- (id)_merchantFromMapItem:(id)a3
+- (id)_merchantFromMapItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(PKMapsMerchant);
-  -[PKMapsMerchant setIdentifier:](v4, "setIdentifier:", [v3 _muid]);
-  -[PKMapsMerchant setResultProviderIdentifier:](v4, "setResultProviderIdentifier:", [v3 _resultProviderID]);
-  v5 = [v3 name];
-  [(PKMapsMerchant *)v4 setName:v5];
+  -[PKMapsMerchant setIdentifier:](v4, "setIdentifier:", [itemCopy _muid]);
+  -[PKMapsMerchant setResultProviderIdentifier:](v4, "setResultProviderIdentifier:", [itemCopy _resultProviderID]);
+  name = [itemCopy name];
+  [(PKMapsMerchant *)v4 setName:name];
 
-  v6 = [v3 phoneNumber];
-  [(PKMapsMerchant *)v4 setPhoneNumber:v6];
+  phoneNumber = [itemCopy phoneNumber];
+  [(PKMapsMerchant *)v4 setPhoneNumber:phoneNumber];
 
-  v7 = [v3 url];
+  v7 = [itemCopy url];
   [(PKMapsMerchant *)v4 setURL:v7];
 
-  v8 = [v3 placemark];
+  placemark = [itemCopy placemark];
 
-  v9 = [v8 location];
-  [(PKMapsMerchant *)v4 setLocation:v9];
+  location = [placemark location];
+  [(PKMapsMerchant *)v4 setLocation:location];
 
-  v10 = [v8 postalAddress];
-  [(PKMapsMerchant *)v4 setPostalAddress:v10];
+  postalAddress = [placemark postalAddress];
+  [(PKMapsMerchant *)v4 setPostalAddress:postalAddress];
 
   return v4;
 }
 
-- (id)_brandFromMapItem:(id)a3
+- (id)_brandFromMapItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(PKMapsBrand);
-  -[PKMapsBrand setIdentifier:](v4, "setIdentifier:", [v3 _muid]);
-  -[PKMapsBrand setResultProviderIdentifier:](v4, "setResultProviderIdentifier:", [v3 _resultProviderID]);
-  v5 = [v3 name];
-  [(PKMapsBrand *)v4 setName:v5];
+  -[PKMapsBrand setIdentifier:](v4, "setIdentifier:", [itemCopy _muid]);
+  -[PKMapsBrand setResultProviderIdentifier:](v4, "setResultProviderIdentifier:", [itemCopy _resultProviderID]);
+  name = [itemCopy name];
+  [(PKMapsBrand *)v4 setName:name];
 
-  v6 = [v3 phoneNumber];
-  [(PKMapsBrand *)v4 setPhoneNumber:v6];
+  phoneNumber = [itemCopy phoneNumber];
+  [(PKMapsBrand *)v4 setPhoneNumber:phoneNumber];
 
-  v7 = [v3 url];
+  v7 = [itemCopy url];
   [(PKMapsBrand *)v4 setURL:v7];
 
-  v8 = [v3 _bestBrandIconURLForSize:1 allowSmaller:{500.0, 500.0}];
+  v8 = [itemCopy _bestBrandIconURLForSize:1 allowSmaller:{500.0, 500.0}];
 
   [(PKMapsBrand *)v4 setLogoURL:v8];
 

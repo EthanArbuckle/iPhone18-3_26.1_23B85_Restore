@@ -5,24 +5,24 @@
 - (BCCardSetNavigationSource)cardSetViewController;
 - (BCCardStackConfiguration)configuration;
 - (BCCardStackTransitioningCardContent)transitioningCardContent;
-- (BCCardViewController)initWithNavigationControllerClass:(Class)a3 cardSetData:(id)a4 distanceToExpand:(double)a5 configuration:(id)a6 cardSetViewController:(id)a7 delegate:(id)a8;
+- (BCCardViewController)initWithNavigationControllerClass:(Class)class cardSetData:(id)data distanceToExpand:(double)expand configuration:(id)configuration cardSetViewController:(id)controller delegate:(id)delegate;
 - (BCCardViewControllerDelegate)delegate;
 - (BOOL)accessibilityPerformEscape;
 - (BOOL)auxiliaryNavigationBarViewControllerCanCloseAsset;
 - (BOOL)expanded;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isCurrentCard;
 - (BOOL)itemPushedOnCard;
 - (BOOL)prefersStatusBarBackgroundHidden;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
 - (CGPoint)oldContentOffset;
 - (CGRect)cardStackTransitioningCardFinalFrame;
 - (CGRect)viewFrameBeforeAnimation;
 - (NSString)stringForReturnToRootBarItem;
-- (UIEdgeInsets)_scrollIndicatorInsetsForContentInset:(UIEdgeInsets)a3 unalteredContentInset:(UIEdgeInsets)a4;
-- (UIEdgeInsets)accessibilityVisibleContentInsetForCardViewControllerScrollView:(id)a3;
-- (UIEdgeInsets)cardContentViewController:(id)a3 contentInsetsForScrollingToRectWithContentInsets:(UIEdgeInsets)a4;
+- (UIEdgeInsets)_scrollIndicatorInsetsForContentInset:(UIEdgeInsets)inset unalteredContentInset:(UIEdgeInsets)contentInset;
+- (UIEdgeInsets)accessibilityVisibleContentInsetForCardViewControllerScrollView:(id)view;
+- (UIEdgeInsets)cardContentViewController:(id)controller contentInsetsForScrollingToRectWithContentInsets:(UIEdgeInsets)insets;
 - (UIEdgeInsets)contentInset;
 - (UIEdgeInsets)contentInsetForContent;
 - (UIScrollView)contentScrollView;
@@ -31,99 +31,99 @@
 - (double)auxiliaryNavigationBarHeight;
 - (double)cardStackTransitioningCardContentAlpha;
 - (id)_preferredTargetState;
-- (void)_adjustContentInsetForViewController:(id)a3;
-- (void)_adjustContentMarginsForViewController:(id)a3 isExpanded:(BOOL)a4;
-- (void)_applicationDidEnterBackgroundNotification:(id)a3;
-- (void)_applicationWillEnterForegroundNotification:(id)a3;
-- (void)_applyContentInsetToContentViewController:(id)a3;
+- (void)_adjustContentInsetForViewController:(id)controller;
+- (void)_adjustContentMarginsForViewController:(id)controller isExpanded:(BOOL)expanded;
+- (void)_applicationDidEnterBackgroundNotification:(id)notification;
+- (void)_applicationWillEnterForegroundNotification:(id)notification;
+- (void)_applyContentInsetToContentViewController:(id)controller;
 - (void)_configureAsExpanded;
-- (void)_observeScrollViewDidScroll:(id)a3;
-- (void)_setAuxiliaryNavigationBarViewAlpha:(double)a3;
-- (void)_setCurrentState:(id)a3 updateStatusBarIfNeeded:(BOOL)a4;
+- (void)_observeScrollViewDidScroll:(id)scroll;
+- (void)_setAuxiliaryNavigationBarViewAlpha:(double)alpha;
+- (void)_setCurrentState:(id)state updateStatusBarIfNeeded:(BOOL)needed;
 - (void)_setupGripperMenu;
 - (void)_updateCardFrames;
 - (void)_updateContentWithContentInset;
 - (void)_updateScrollViewContentInset;
-- (void)_updateViewController:(double)a3 scrollView:(double)a4 withContentInset:(double)a5 unalteredContentInset:(double)a6 contentInsetForScrollIndicatorInsets:(double)a7;
-- (void)_updateViewController:(id)a3 withContentInset:(UIEdgeInsets)a4 unalteredContentInset:(UIEdgeInsets)a5;
-- (void)accessibilityDidActivateGripperView:(id)a3;
-- (void)anchorAuxiliaryNavigationBarView:(id)a3 toView:(id)a4;
-- (void)anchorGripperView:(id)a3 toView:(id)a4;
-- (void)animationCompletedAtPosition:(int64_t)a3;
-- (void)attachAuxiliaryNavigationBarViewAnimated:(BOOL)a3;
+- (void)_updateViewController:(double)controller scrollView:(double)view withContentInset:(double)inset unalteredContentInset:(double)contentInset contentInsetForScrollIndicatorInsets:(double)insets;
+- (void)_updateViewController:(id)controller withContentInset:(UIEdgeInsets)inset unalteredContentInset:(UIEdgeInsets)contentInset;
+- (void)accessibilityDidActivateGripperView:(id)view;
+- (void)anchorAuxiliaryNavigationBarView:(id)view toView:(id)toView;
+- (void)anchorGripperView:(id)view toView:(id)toView;
+- (void)animationCompletedAtPosition:(int64_t)position;
+- (void)attachAuxiliaryNavigationBarViewAnimated:(BOOL)animated;
 - (void)auxiliaryNavigationBarViewControllerDidTapCloseAllCards;
 - (void)auxiliaryNavigationBarViewControllerDidTapCloseAsset;
-- (void)bcSafeAreaInsetsObservableViewController:(id)a3 safeAreaInsetsDidChange:(UIEdgeInsets)a4;
+- (void)bcSafeAreaInsetsObservableViewController:(id)controller safeAreaInsetsDidChange:(UIEdgeInsets)change;
 - (void)bc_analyticsVisibilityDidAppear;
 - (void)bc_analyticsVisibilityDidDisappear;
-- (void)cardContentViewController:(id)a3 initializeManagerWithScrollView:(id)a4;
+- (void)cardContentViewController:(id)controller initializeManagerWithScrollView:(id)view;
 - (void)cardSetPresentationTransitionDidComplete;
-- (void)cardStackTransitioningCardFinalize:(BOOL)a3;
-- (void)cardStackTransitioningCardPrepare:(BOOL)a3 extraXOffsetForAnimation:(double)a4;
-- (void)cardTapped:(id)a3;
-- (void)cardViewControllerScrollView:(id)a3 accessibilityWantsToScrollToOffset:(CGPoint)a4;
+- (void)cardStackTransitioningCardFinalize:(BOOL)finalize;
+- (void)cardStackTransitioningCardPrepare:(BOOL)prepare extraXOffsetForAnimation:(double)animation;
+- (void)cardTapped:(id)tapped;
+- (void)cardViewControllerScrollView:(id)view accessibilityWantsToScrollToOffset:(CGPoint)offset;
 - (void)clearSavedContentOffsets;
 - (void)configureCardTraitOverrides;
 - (void)configureChromeForContracted;
 - (void)configureChromeForExpanded;
-- (void)configureFeedProxyScrollView:(id)a3;
+- (void)configureFeedProxyScrollView:(id)view;
 - (void)dealloc;
-- (void)dismissPan:(id)a3;
+- (void)dismissPan:(id)pan;
 - (void)goContracted;
 - (void)goExpanded;
-- (void)gripperTapped:(id)a3;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)gripperTapped:(id)tapped;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)prepareForDismiss;
-- (void)resumeAndRebuildForReason:(id)a3;
-- (void)scrollToTop:(BOOL)a3;
+- (void)resumeAndRebuildForReason:(id)reason;
+- (void)scrollToTop:(BOOL)top;
 - (void)scrollViewDidChange;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewTapped:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setAnimator:(id)a3;
-- (void)setCardStackTransitioningCardContentAlpha:(double)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setContentViewController:(id)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setIsBubbleTipPresented:(BOOL)a3;
-- (void)setIsCurrentCard:(BOOL)a3;
-- (void)setScrimAlpha:(double)a3 animated:(BOOL)a4 duration:(double)a5;
-- (void)setupRootContentScrollView:(id)a3;
-- (void)suspendAndTeardownForReason:(id)a3;
-- (void)updateContentSize:(CGSize)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewTapped:(id)tapped;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setAnimator:(id)animator;
+- (void)setCardStackTransitioningCardContentAlpha:(double)alpha;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setContentViewController:(id)controller;
+- (void)setCornerRadius:(double)radius;
+- (void)setIsBubbleTipPresented:(BOOL)presented;
+- (void)setIsCurrentCard:(BOOL)card;
+- (void)setScrimAlpha:(double)alpha animated:(BOOL)animated duration:(double)duration;
+- (void)setupRootContentScrollView:(id)view;
+- (void)suspendAndTeardownForReason:(id)reason;
+- (void)updateContentSize:(CGSize)size;
 - (void)updateNavBarAlpha;
-- (void)updateNavBarAlphaForTransition:(double)a3;
+- (void)updateNavBarAlphaForTransition:(double)transition;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BCCardViewController
 
-- (BCCardViewController)initWithNavigationControllerClass:(Class)a3 cardSetData:(id)a4 distanceToExpand:(double)a5 configuration:(id)a6 cardSetViewController:(id)a7 delegate:(id)a8
+- (BCCardViewController)initWithNavigationControllerClass:(Class)class cardSetData:(id)data distanceToExpand:(double)expand configuration:(id)configuration cardSetViewController:(id)controller delegate:(id)delegate
 {
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  dataCopy = data;
+  configurationCopy = configuration;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = BCCardViewController;
   v18 = [(BCCardViewController *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_navigationControllerClass, a3);
-    objc_storeWeak(&v19->_cardSetData, v14);
-    v19->_distanceToExpand = a5;
-    objc_storeWeak(&v19->_configuration, v15);
-    objc_storeWeak(&v19->_cardSetViewController, v16);
-    objc_storeWeak(&v19->_delegate, v17);
+    objc_storeStrong(&v18->_navigationControllerClass, class);
+    objc_storeWeak(&v19->_cardSetData, dataCopy);
+    v19->_distanceToExpand = expand;
+    objc_storeWeak(&v19->_configuration, configurationCopy);
+    objc_storeWeak(&v19->_cardSetViewController, controllerCopy);
+    objc_storeWeak(&v19->_delegate, delegateCopy);
     ++qword_3420E0;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
@@ -147,66 +147,66 @@
   return v19;
 }
 
-- (void)_applicationWillEnterForegroundNotification:(id)a3
+- (void)_applicationWillEnterForegroundNotification:(id)notification
 {
-  v4 = [(BCCardViewController *)self viewState];
+  viewState = [(BCCardViewController *)self viewState];
 
-  if (v4)
+  if (viewState)
   {
-    v5 = [(BCCardViewController *)self view];
-    [v5 size];
+    view = [(BCCardViewController *)self view];
+    [view size];
     v7 = v6;
     v9 = v8;
-    v10 = [(BCCardViewController *)self viewState];
-    [v10 viewSize];
+    viewState2 = [(BCCardViewController *)self viewState];
+    [viewState2 viewSize];
     v12 = v11;
     v14 = v13;
 
     if (v7 == v12 && v9 == v14)
     {
-      v15 = [(BCCardViewController *)self viewState];
-      [v15 cardScrollViewContentOffset];
+      viewState3 = [(BCCardViewController *)self viewState];
+      [viewState3 cardScrollViewContentOffset];
       v17 = v16;
       v19 = v18;
-      v20 = [(BCCardViewController *)self scrollView];
-      [v20 setContentOffset:{v17, v19}];
+      scrollView = [(BCCardViewController *)self scrollView];
+      [scrollView setContentOffset:{v17, v19}];
 
-      v21 = [(BCCardViewController *)self viewState];
-      [v21 contentScrollViewContentOffset];
+      viewState4 = [(BCCardViewController *)self viewState];
+      [viewState4 contentScrollViewContentOffset];
       v23 = v22;
       v25 = v24;
-      v26 = [(BCCardViewController *)self contentScrollView];
-      [v26 setContentOffset:{v23, v25}];
+      contentScrollView = [(BCCardViewController *)self contentScrollView];
+      [contentScrollView setContentOffset:{v23, v25}];
     }
 
     [(BCCardViewController *)self setViewState:0];
   }
 }
 
-- (void)_applicationDidEnterBackgroundNotification:(id)a3
+- (void)_applicationDidEnterBackgroundNotification:(id)notification
 {
-  v22 = [(BCCardViewController *)self scrollView];
-  [v22 contentOffset];
+  scrollView = [(BCCardViewController *)self scrollView];
+  [scrollView contentOffset];
   if (v5 != CGPointZero.x || v4 != CGPointZero.y)
   {
-    v7 = [(BCCardViewController *)self viewState];
+    viewState = [(BCCardViewController *)self viewState];
 
-    if (v7)
+    if (viewState)
     {
       return;
     }
 
     v8 = [BCCardViewControllerViewState alloc];
-    v22 = [(BCCardViewController *)self scrollView];
-    [v22 contentOffset];
+    scrollView = [(BCCardViewController *)self scrollView];
+    [scrollView contentOffset];
     v10 = v9;
     v12 = v11;
-    v13 = [(BCCardViewController *)self contentScrollView];
-    [v13 contentOffset];
+    contentScrollView = [(BCCardViewController *)self contentScrollView];
+    [contentScrollView contentOffset];
     v15 = v14;
     v17 = v16;
-    v18 = [(BCCardViewController *)self view];
-    [v18 size];
+    view = [(BCCardViewController *)self view];
+    [view size];
     v21 = [(BCCardViewControllerViewState *)v8 initWithContentOffset:v10 contentScrollViewContentOffset:v12 viewSize:v15, v17, v19, v20];
     [(BCCardViewController *)self setViewState:v21];
   }
@@ -214,50 +214,50 @@
 
 - (BOOL)isCurrentCard
 {
-  v2 = [(BCCardViewController *)self glassView];
-  v3 = v2 == 0;
+  glassView = [(BCCardViewController *)self glassView];
+  v3 = glassView == 0;
 
   return v3;
 }
 
-- (void)setIsCurrentCard:(BOOL)a3
+- (void)setIsCurrentCard:(BOOL)card
 {
-  v3 = a3;
-  v5 = [(BCCardViewController *)self glassView];
+  cardCopy = card;
+  glassView = [(BCCardViewController *)self glassView];
 
-  if (v3)
+  if (cardCopy)
   {
-    if (v5)
+    if (glassView)
     {
-      v6 = [(BCCardViewController *)self glassView];
-      [v6 removeFromSuperview];
+      glassView2 = [(BCCardViewController *)self glassView];
+      [glassView2 removeFromSuperview];
 
       [(BCCardViewController *)self setGlassView:0];
     }
   }
 
-  else if (!v5)
+  else if (!glassView)
   {
     v7 = [UIView alloc];
-    v8 = [(BCCardViewController *)self cardView];
-    [v8 bounds];
+    cardView = [(BCCardViewController *)self cardView];
+    [cardView bounds];
     v9 = [v7 initWithFrame:?];
 
     [v9 setAutoresizingMask:18];
-    v10 = [(BCCardViewController *)self cardView];
-    [v10 addSubview:v9];
+    cardView2 = [(BCCardViewController *)self cardView];
+    [cardView2 addSubview:v9];
 
-    v11 = [(BCCardViewController *)self cardView];
-    [v11 bringSubviewToFront:v9];
+    cardView3 = [(BCCardViewController *)self cardView];
+    [cardView3 bringSubviewToFront:v9];
 
-    v12 = [(BCCardViewController *)self cardTapGestureRecognizer];
-    [v9 addGestureRecognizer:v12];
+    cardTapGestureRecognizer = [(BCCardViewController *)self cardTapGestureRecognizer];
+    [v9 addGestureRecognizer:cardTapGestureRecognizer];
 
     [(BCCardViewController *)self setGlassView:v9];
   }
 
-  v13 = [(BCCardViewController *)self cardNavigationController];
-  [v13 setIsCurrentCard:v3];
+  cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+  [cardNavigationController setIsCurrentCard:cardCopy];
 }
 
 - (void)dealloc
@@ -268,8 +268,8 @@
   v4 = objc_loadWeakRetained(&self->_contentScrollView);
   [v4 _removeScrollViewScrollObserver:self];
 
-  v5 = [(BCCardViewController *)self scrollView];
-  [v5 _removeScrollViewScrollObserver:self];
+  scrollView = [(BCCardViewController *)self scrollView];
+  [scrollView _removeScrollViewScrollObserver:self];
 
   v6 = +[NSNotificationCenter defaultCenter];
   [v6 removeObserver:self name:UIApplicationWillEnterForegroundNotification object:0];
@@ -285,31 +285,31 @@
   [(BCCardViewController *)&v7 dealloc];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  self->_cornerRadius = a3;
-  v5 = [(BCCardViewController *)self configuration];
-  [v5 cardContractedScale];
-  v7 = a3 / v6;
+  self->_cornerRadius = radius;
+  configuration = [(BCCardViewController *)self configuration];
+  [configuration cardContractedScale];
+  v7 = radius / v6;
 
-  v8 = [(BCCardViewController *)self blackScrimView];
-  [v8 bc_applyCornerRadius:v7];
+  blackScrimView = [(BCCardViewController *)self blackScrimView];
+  [blackScrimView bc_applyCornerRadius:v7];
 
-  v9 = [(BCCardViewController *)self whiteScrimView];
-  [v9 bc_applyCornerRadius:v7];
+  whiteScrimView = [(BCCardViewController *)self whiteScrimView];
+  [whiteScrimView bc_applyCornerRadius:v7];
 
-  v10 = [(BCCardViewController *)self cardView];
-  [v10 bc_applyCornerRadius:v7];
+  cardView = [(BCCardViewController *)self cardView];
+  [cardView bc_applyCornerRadius:v7];
 
-  v11 = [(BCCardViewController *)self contentContainerView];
-  [v11 bc_applyCornerRadius:v7];
+  contentContainerView = [(BCCardViewController *)self contentContainerView];
+  [contentContainerView bc_applyCornerRadius:v7];
 
   [(BCCardViewController *)self _updateShadowPath];
 }
 
-- (void)setAnimator:(id)a3
+- (void)setAnimator:(id)animator
 {
-  v4 = a3;
+  animatorCopy = animator;
   animator = self->_animator;
   if (animator && [(UIViewPropertyAnimator *)animator state]== &dword_0 + 1)
   {
@@ -324,14 +324,14 @@
   }
 
   v7 = self->_animator;
-  self->_animator = v4;
+  self->_animator = animatorCopy;
 }
 
 - (BOOL)itemPushedOnCard
 {
-  v2 = [(BCCardViewController *)self cardNavigationController];
-  v3 = [v2 childViewControllers];
-  v4 = [v3 count] > 1;
+  cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+  childViewControllers = [cardNavigationController childViewControllers];
+  v4 = [childViewControllers count] > 1;
 
   return v4;
 }
@@ -343,8 +343,8 @@
   [(BCCardViewController *)&v58 viewDidLoad];
   [(BCCardViewController *)self configureCardTraitOverrides];
   v3 = [BCCardViewControllerScrollView alloc];
-  v4 = [(BCCardViewController *)self view];
-  [v4 bounds];
+  view = [(BCCardViewController *)self view];
+  [view bounds];
   v5 = [(BCCardViewControllerScrollView *)v3 initWithFrame:?];
 
   [(BCCardViewControllerScrollView *)v5 setAutoresizingMask:18];
@@ -356,46 +356,46 @@
   [(BCCardViewControllerScrollView *)v5 setAlwaysBounceVertical:1];
   [(BCCardViewControllerScrollView *)v5 _setPocketsEnabled:0];
   objc_storeStrong(&self->_rootScrollView, v5);
-  v6 = [(BCCardViewController *)self view];
-  [v6 addSubview:v5];
+  view2 = [(BCCardViewController *)self view];
+  [view2 addSubview:v5];
 
   [(BCCardViewController *)self configureFeedProxyScrollView:v5];
   v7 = objc_alloc_init(UIView);
   [(BCCardViewController *)self setCardView:v7];
 
-  v8 = [(BCCardViewController *)self cardView];
-  [v8 setAutoresizingMask:18];
+  cardView = [(BCCardViewController *)self cardView];
+  [cardView setAutoresizingMask:18];
 
   v9 = +[UIColor clearColor];
-  v10 = [(BCCardViewController *)self cardView];
-  [v10 setBackgroundColor:v9];
+  cardView2 = [(BCCardViewController *)self cardView];
+  [cardView2 setBackgroundColor:v9];
 
   v11 = [UIColor colorWithWhite:1.0 alpha:0.1];
-  v12 = [v11 CGColor];
-  v13 = [(BCCardViewController *)self cardView];
-  v14 = [v13 layer];
-  [v14 setBorderColor:v12];
+  cGColor = [v11 CGColor];
+  cardView3 = [(BCCardViewController *)self cardView];
+  layer = [cardView3 layer];
+  [layer setBorderColor:cGColor];
 
   v15 = +[UIScreen mainScreen];
   [v15 scale];
   v17 = 1.0 / v16;
-  v18 = [(BCCardViewController *)self cardView];
-  v19 = [v18 layer];
-  [v19 setBorderWidth:v17];
+  cardView4 = [(BCCardViewController *)self cardView];
+  layer2 = [cardView4 layer];
+  [layer2 setBorderWidth:v17];
 
-  v20 = [(BCCardViewController *)self view];
-  v21 = [(BCCardViewController *)self cardView];
-  [v20 addSubview:v21];
+  view3 = [(BCCardViewController *)self view];
+  cardView5 = [(BCCardViewController *)self cardView];
+  [view3 addSubview:cardView5];
 
   v22 = objc_alloc_init(UIView);
   [(BCCardViewController *)self setContentContainerView:v22];
 
-  v23 = [(BCCardViewController *)self contentContainerView];
-  [v23 setAutoresizingMask:18];
+  contentContainerView = [(BCCardViewController *)self contentContainerView];
+  [contentContainerView setAutoresizingMask:18];
 
-  v24 = [(BCCardViewController *)self cardView];
-  v25 = [(BCCardViewController *)self contentContainerView];
-  [v24 addSubview:v25];
+  cardView6 = [(BCCardViewController *)self cardView];
+  contentContainerView2 = [(BCCardViewController *)self contentContainerView];
+  [cardView6 addSubview:contentContainerView2];
 
   navigationControllerClass = self->_navigationControllerClass;
   if (!navigationControllerClass)
@@ -406,39 +406,39 @@
   v27 = objc_alloc_init(navigationControllerClass);
   [(BCCardViewController *)self setCardNavigationController:v27];
 
-  v28 = [(BCCardViewController *)self cardNavigationController];
-  [v28 setDelegate:self];
+  cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+  [cardNavigationController setDelegate:self];
 
-  v29 = [(BCCardViewController *)self cardNavigationController];
-  [(BCCardViewController *)self addChildViewController:v29];
+  cardNavigationController2 = [(BCCardViewController *)self cardNavigationController];
+  [(BCCardViewController *)self addChildViewController:cardNavigationController2];
 
-  v30 = [(BCCardViewController *)self cardNavigationController];
-  v31 = [v30 view];
-  [v31 setAutoresizingMask:2];
+  cardNavigationController3 = [(BCCardViewController *)self cardNavigationController];
+  view4 = [cardNavigationController3 view];
+  [view4 setAutoresizingMask:2];
 
-  v32 = [(BCCardViewController *)self contentContainerView];
-  v33 = [(BCCardViewController *)self cardNavigationController];
-  v34 = [v33 view];
-  [v32 addSubview:v34];
+  contentContainerView3 = [(BCCardViewController *)self contentContainerView];
+  cardNavigationController4 = [(BCCardViewController *)self cardNavigationController];
+  view5 = [cardNavigationController4 view];
+  [contentContainerView3 addSubview:view5];
 
-  v35 = [(BCCardViewController *)self cardNavigationController];
-  [v35 didMoveToParentViewController:self];
+  cardNavigationController5 = [(BCCardViewController *)self cardNavigationController];
+  [cardNavigationController5 didMoveToParentViewController:self];
 
   [(BCCardViewController *)self _updateCardFrames];
-  v36 = [(BCCardViewController *)self view];
-  [v36 bounds];
+  view6 = [(BCCardViewController *)self view];
+  [view6 bounds];
   [(BCCardViewController *)self updateContentSize:v37, v38];
 
-  v39 = [(BCCardViewController *)self contentContainerView];
-  [v39 setClipsToBounds:1];
+  contentContainerView4 = [(BCCardViewController *)self contentContainerView];
+  [contentContainerView4 setClipsToBounds:1];
 
   [(BCCardViewController *)self setRoundedCorners:1];
   v40 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:"dismissPan:"];
   [v40 setDelegate:self];
   [(BCCardViewController *)self setDismissPanGestureRecognizer:v40];
-  v41 = [(BCCardViewController *)self cardNavigationController];
-  v42 = [v41 navigationBar];
-  [v42 addGestureRecognizer:v40];
+  cardNavigationController6 = [(BCCardViewController *)self cardNavigationController];
+  navigationBar = [cardNavigationController6 navigationBar];
+  [navigationBar addGestureRecognizer:v40];
 
   if (!self->_uppEnabled)
   {
@@ -447,68 +447,68 @@
     self->_gripperView = v43;
 
     [(BCCardGripperView *)self->_gripperView setAlpha:0.0];
-    v45 = [(BCCardGripperView *)self->_gripperView layer];
-    [v45 setZPosition:1000.0];
+    layer3 = [(BCCardGripperView *)self->_gripperView layer];
+    [layer3 setZPosition:1000.0];
 
     [(BCCardGripperView *)self->_gripperView _accessibilitySetSortPriority:999];
-    v46 = [(BCCardViewController *)self gripperView];
-    [v46 setAccessibilityDelegate:self];
+    gripperView = [(BCCardViewController *)self gripperView];
+    [gripperView setAccessibilityDelegate:self];
 
-    v47 = [(BCCardViewController *)self cardView];
-    v48 = [(BCCardViewController *)self gripperView];
-    [v47 addSubview:v48];
+    cardView7 = [(BCCardViewController *)self cardView];
+    gripperView2 = [(BCCardViewController *)self gripperView];
+    [cardView7 addSubview:gripperView2];
 
-    v49 = [(BCCardViewController *)self gripperView];
-    v50 = [(BCCardViewController *)self cardNavigationController];
-    v51 = [v50 view];
-    [(BCCardViewController *)self anchorGripperView:v49 toView:v51];
+    gripperView3 = [(BCCardViewController *)self gripperView];
+    cardNavigationController7 = [(BCCardViewController *)self cardNavigationController];
+    view7 = [cardNavigationController7 view];
+    [(BCCardViewController *)self anchorGripperView:gripperView3 toView:view7];
 
     v52 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"gripperTapped:"];
-    v53 = [(BCCardViewController *)self gripperView];
-    [v53 addGestureRecognizer:v52];
+    gripperView4 = [(BCCardViewController *)self gripperView];
+    [gripperView4 addGestureRecognizer:v52];
 
     [(BCCardViewController *)self _setupGripperMenu];
   }
 
   v54 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"scrollViewTapped:"];
   [v54 setDelegate:self];
-  v55 = [(BCCardViewController *)self scrollView];
-  [v55 addGestureRecognizer:v54];
+  scrollView = [(BCCardViewController *)self scrollView];
+  [scrollView addGestureRecognizer:v54];
 
   v56 = +[BCCardSetState contractedState];
   [(BCCardViewController *)self _setCurrentState:v56 updateStatusBarIfNeeded:0];
 
-  v57 = [(BCCardViewController *)self scrollView];
-  [v57 _addScrollViewScrollObserver:self];
+  scrollView2 = [(BCCardViewController *)self scrollView];
+  [scrollView2 _addScrollViewScrollObserver:self];
 
   [(BCCardViewController *)self _updateFromMetrics];
 }
 
-- (void)anchorGripperView:(id)a3 toView:(id)a4
+- (void)anchorGripperView:(id)view toView:(id)toView
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(BCCardViewController *)self configuration];
-  [v8 auxiliaryNavigationBarHorizontalInset];
+  toViewCopy = toView;
+  viewCopy = view;
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  configuration = [(BCCardViewController *)self configuration];
+  [configuration auxiliaryNavigationBarHorizontalInset];
   v10 = v9;
 
-  v11 = [(BCCardViewController *)self configuration];
-  [v11 auxiliaryNavigationBarVerticalInset];
+  configuration2 = [(BCCardViewController *)self configuration];
+  [configuration2 auxiliaryNavigationBarVerticalInset];
   v13 = v12;
 
-  v14 = [v7 topAnchor];
-  v15 = [v6 topAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:v13];
+  topAnchor = [viewCopy topAnchor];
+  topAnchor2 = [toViewCopy topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v13];
 
-  v17 = [v7 trailingAnchor];
-  v18 = [v6 trailingAnchor];
+  trailingAnchor = [viewCopy trailingAnchor];
+  trailingAnchor2 = [toViewCopy trailingAnchor];
 
-  v19 = [v17 constraintEqualToAnchor:v18 constant:-v10];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v10];
 
-  v20 = [(BCCardViewController *)self gripperView];
+  gripperView = [(BCCardViewController *)self gripperView];
 
-  if (v20 == v7)
+  if (gripperView == viewCopy)
   {
     [(BCCardViewController *)self setAuxiliaryNavigationBarTopConstraint:v16];
   }
@@ -523,63 +523,63 @@
 {
   if (self->_uppEnabled)
   {
-    v2 = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
-    v3 = [v2 view];
+    auxiliaryNavigationBarViewController = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
+    view = [auxiliaryNavigationBarViewController view];
   }
 
   else
   {
-    v3 = [(BCCardViewController *)self gripperView];
+    view = [(BCCardViewController *)self gripperView];
   }
 
-  return v3;
+  return view;
 }
 
 - (UIView)auxiliaryNavigationBarViewForAnimation
 {
-  v2 = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
-  v3 = [v2 animatableCopyView];
+  auxiliaryNavigationBarViewController = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
+  animatableCopyView = [auxiliaryNavigationBarViewController animatableCopyView];
 
-  return v3;
+  return animatableCopyView;
 }
 
-- (void)attachAuxiliaryNavigationBarViewAnimated:(BOOL)a3
+- (void)attachAuxiliaryNavigationBarViewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
-  v6 = v5;
-  if (v5)
+  animatedCopy = animated;
+  auxiliaryNavigationBarViewController = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
+  v6 = auxiliaryNavigationBarViewController;
+  if (auxiliaryNavigationBarViewController)
   {
-    v7 = [v5 parentViewController];
+    parentViewController = [auxiliaryNavigationBarViewController parentViewController];
 
-    if (!v7)
+    if (!parentViewController)
     {
       [(BCCardViewController *)self addChildViewController:v6];
-      v8 = [(BCCardViewController *)self contentContainerView];
-      v9 = [v6 view];
-      [v8 addSubview:v9];
+      contentContainerView = [(BCCardViewController *)self contentContainerView];
+      view = [v6 view];
+      [contentContainerView addSubview:view];
 
       [v6 didMoveToParentViewController:self];
-      v10 = [v6 view];
-      v11 = [(BCCardViewController *)self cardNavigationController];
-      v12 = [v11 view];
-      [(BCCardViewController *)self anchorAuxiliaryNavigationBarView:v10 toView:v12];
+      view2 = [v6 view];
+      cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+      view3 = [cardNavigationController view];
+      [(BCCardViewController *)self anchorAuxiliaryNavigationBarView:view2 toView:view3];
 
-      if (v3)
+      if (animatedCopy)
       {
-        v13 = [v6 view];
-        [v13 alpha];
+        view4 = [v6 view];
+        [view4 alpha];
         v15 = v14;
 
         if (v15 != 0.0)
         {
-          v16 = [v6 view];
-          [v16 alpha];
+          view5 = [v6 view];
+          [view5 alpha];
           v18 = v17;
 
           v19 = +[UIViewPropertyAnimator bc_swiftUIDefault];
-          v20 = [v6 view];
-          [v20 setAlpha:0.0];
+          view6 = [v6 view];
+          [view6 setAlpha:0.0];
 
           v21 = _NSConcreteStackBlock;
           v22 = 3221225472;
@@ -602,35 +602,35 @@
     return 0.0;
   }
 
-  v4 = [(BCCardViewController *)self cardNavigationController];
-  v5 = [v4 navigationBar];
-  [v5 defaultHeightForMetrics:0];
+  cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+  navigationBar = [cardNavigationController navigationBar];
+  [navigationBar defaultHeightForMetrics:0];
   v7 = v6;
 
   return v7;
 }
 
-- (void)anchorAuxiliaryNavigationBarView:(id)a3 toView:(id)a4
+- (void)anchorAuxiliaryNavigationBarView:(id)view toView:(id)toView
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [v7 topAnchor];
-  v9 = [v6 topAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  toViewCopy = toView;
+  viewCopy = view;
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  topAnchor = [viewCopy topAnchor];
+  topAnchor2 = [toViewCopy topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v11 = [v7 leadingAnchor];
-  v12 = [v6 leadingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  leadingAnchor = [viewCopy leadingAnchor];
+  leadingAnchor2 = [toViewCopy leadingAnchor];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v14 = [v7 trailingAnchor];
-  v15 = [v6 trailingAnchor];
+  trailingAnchor = [viewCopy trailingAnchor];
+  trailingAnchor2 = [toViewCopy trailingAnchor];
 
-  v16 = [v14 constraintEqualToAnchor:v15];
+  v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-  v17 = [(BCCardViewController *)self auxiliaryNavigationBarView];
+  auxiliaryNavigationBarView = [(BCCardViewController *)self auxiliaryNavigationBarView];
 
-  if (v17 == v7)
+  if (auxiliaryNavigationBarView == viewCopy)
   {
     [(BCCardViewController *)self setAuxiliaryNavigationBarTopConstraint:v10];
   }
@@ -642,7 +642,7 @@
   [NSLayoutConstraint activateConstraints:v18];
 }
 
-- (void)_setAuxiliaryNavigationBarViewAlpha:(double)a3
+- (void)_setAuxiliaryNavigationBarViewAlpha:(double)alpha
 {
   if (self->_uppEnabled)
   {
@@ -654,36 +654,36 @@
     [(BCCardViewController *)self gripperView];
   }
   v4 = ;
-  [v4 setAlpha:a3];
+  [v4 setAlpha:alpha];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = BCCardViewController;
-  [(BCCardViewController *)&v8 viewWillAppear:a3];
-  v4 = [(BCCardViewController *)self cardSetData];
-  if ([v4 covered])
+  [(BCCardViewController *)&v8 viewWillAppear:appear];
+  cardSetData = [(BCCardViewController *)self cardSetData];
+  if ([cardSetData covered])
   {
 
 LABEL_5:
-    v7 = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
-    [v7 setIsParentCardOccluded:1];
+    auxiliaryNavigationBarViewController = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
+    [auxiliaryNavigationBarViewController setIsParentCardOccluded:1];
     goto LABEL_6;
   }
 
-  v5 = [(BCCardViewController *)self isCurrentCard];
+  isCurrentCard = [(BCCardViewController *)self isCurrentCard];
 
-  if (!v5)
+  if (!isCurrentCard)
   {
     goto LABEL_5;
   }
 
-  v6 = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
-  [v6 setIsParentCardOccluded:0];
+  auxiliaryNavigationBarViewController2 = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
+  [auxiliaryNavigationBarViewController2 setIsParentCardOccluded:0];
 
-  v7 = [(BCCardViewController *)self topContentViewController];
-  [v7 didBecomeVisibleContentScrollView];
+  auxiliaryNavigationBarViewController = [(BCCardViewController *)self topContentViewController];
+  [auxiliaryNavigationBarViewController didBecomeVisibleContentScrollView];
 LABEL_6:
 }
 
@@ -692,16 +692,16 @@ LABEL_6:
   v7.receiver = self;
   v7.super_class = BCCardViewController;
   [(BCCardViewController *)&v7 bc_analyticsVisibilityDidAppear];
-  v3 = [(BCCardViewController *)self cardSetData];
-  if ([v3 covered])
+  cardSetData = [(BCCardViewController *)self cardSetData];
+  if ([cardSetData covered])
   {
   }
 
   else
   {
-    v4 = [(BCCardViewController *)self isCurrentCard];
+    isCurrentCard = [(BCCardViewController *)self isCurrentCard];
 
-    if (v4)
+    if (isCurrentCard)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -713,8 +713,8 @@ LABEL_6:
     }
   }
 
-  v5 = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
-  [v5 setIsParentCardOccluded:1];
+  auxiliaryNavigationBarViewController = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
+  [auxiliaryNavigationBarViewController setIsParentCardOccluded:1];
 }
 
 - (void)bc_analyticsVisibilityDidDisappear
@@ -722,33 +722,33 @@ LABEL_6:
   v4.receiver = self;
   v4.super_class = BCCardViewController;
   [(BCCardViewController *)&v4 bc_analyticsVisibilityDidDisappear];
-  v3 = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
-  [v3 setIsParentCardOccluded:1];
+  auxiliaryNavigationBarViewController = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
+  [auxiliaryNavigationBarViewController setIsParentCardOccluded:1];
 }
 
-- (void)scrollViewTapped:(id)a3
+- (void)scrollViewTapped:(id)tapped
 {
-  if ([a3 state] == &dword_0 + 3)
+  if ([tapped state] == &dword_0 + 3)
   {
-    v4 = [(BCCardViewController *)self delegate];
-    [v4 cardViewControllerDidTapScrollView:self];
+    delegate = [(BCCardViewController *)self delegate];
+    [delegate cardViewControllerDidTapScrollView:self];
   }
 }
 
-- (void)cardTapped:(id)a3
+- (void)cardTapped:(id)tapped
 {
-  if ([a3 state] == &dword_0 + 3)
+  if ([tapped state] == &dword_0 + 3)
   {
-    v4 = [(BCCardViewController *)self delegate];
-    [v4 cardViewControllerDidTapCard:self];
+    delegate = [(BCCardViewController *)self delegate];
+    [delegate cardViewControllerDidTapCard:self];
   }
 }
 
-- (void)dismissPan:(id)a3
+- (void)dismissPan:(id)pan
 {
-  v4 = a3;
-  v5 = [(BCCardViewController *)self currentState];
-  [v5 cardViewController:self dismissPan:v4 cardData:self];
+  panCopy = pan;
+  currentState = [(BCCardViewController *)self currentState];
+  [currentState cardViewController:self dismissPan:panCopy cardData:self];
 }
 
 - (void)_setupGripperMenu
@@ -766,19 +766,19 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (void)gripperTapped:(id)a3
+- (void)gripperTapped:(id)tapped
 {
-  if ([a3 state] == &dword_0 + 3)
+  if ([tapped state] == &dword_0 + 3)
   {
-    v4 = [(BCCardViewController *)self cardStackViewController];
-    [v4 popCardsAnimated:1 reason:1];
+    cardStackViewController = [(BCCardViewController *)self cardStackViewController];
+    [cardStackViewController popCardsAnimated:1 reason:1];
   }
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = [(BCCardViewController *)self cardStackViewController];
-  [v2 popCardsAnimated:1 reason:0];
+  cardStackViewController = [(BCCardViewController *)self cardStackViewController];
+  [cardStackViewController popCardsAnimated:1 reason:0];
 
   return 1;
 }
@@ -791,14 +791,14 @@ LABEL_6:
   [(BCCardViewController *)self _updateCardFrames];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = BCCardViewController;
-  v7 = a4;
-  [(BCCardViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(BCCardViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[4] = self;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -809,65 +809,65 @@ LABEL_6:
   v8[1] = 3221225472;
   v8[2] = sub_88E8;
   v8[3] = &unk_2C7CD0;
-  [v7 animateAlongsideTransition:v9 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:v9 completion:v8];
 }
 
 - (void)_updateCardFrames
 {
-  v3 = [(BCCardViewController *)self currentState];
+  currentState = [(BCCardViewController *)self currentState];
 
-  if (v3)
+  if (currentState)
   {
     if ([(BCCardViewController *)self dismissing])
     {
       goto LABEL_6;
     }
 
-    v4 = [(BCCardViewController *)self currentState];
+    currentState2 = [(BCCardViewController *)self currentState];
   }
 
   else
   {
-    v4 = +[BCCardSetState contractedState];
+    currentState2 = +[BCCardSetState contractedState];
   }
 
-  v5 = v4;
-  [v4 cardViewControllerUpdateCardSize:self];
+  v5 = currentState2;
+  [currentState2 cardViewControllerUpdateCardSize:self];
 
 LABEL_6:
-  v6 = [(BCCardViewController *)self cardView];
-  [v6 bounds];
+  cardView = [(BCCardViewController *)self cardView];
+  [cardView bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(BCCardViewController *)self contentContainerView];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  contentContainerView = [(BCCardViewController *)self contentContainerView];
+  [contentContainerView setFrame:{v8, v10, v12, v14}];
 
   [(BCCardViewController *)self _updateShadowPath];
 }
 
-- (void)updateContentSize:(CGSize)a3
+- (void)updateContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(BCCardViewController *)self currentState];
-  [v6 cardViewController:self updateContentSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  currentState = [(BCCardViewController *)self currentState];
+  [currentState cardViewController:self updateContentSize:{width, height}];
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
-  v34 = a3;
-  v4 = [(BCCardViewController *)self scrollView];
-  if (v4 == v34)
+  scrollCopy = scroll;
+  scrollView = [(BCCardViewController *)self scrollView];
+  if (scrollView == scrollCopy)
   {
   }
 
   else
   {
-    v5 = [(BCCardViewController *)self contentScrollView];
+    contentScrollView = [(BCCardViewController *)self contentScrollView];
 
-    if (v5 != v34)
+    if (contentScrollView != scrollCopy)
     {
       goto LABEL_14;
     }
@@ -883,13 +883,13 @@ LABEL_6:
     [(BCCardViewController *)self gripperView];
   }
   v6 = ;
-  v7 = [(BCCardViewController *)self currentState];
-  [v7 cardViewController:self positionAuxiliaryNavigationBarView:v6 cardDate:self];
+  currentState = [(BCCardViewController *)self currentState];
+  [currentState cardViewController:self positionAuxiliaryNavigationBarView:v6 cardDate:self];
 
   if (self->_uppEnabled)
   {
-    v8 = [(BCCardViewController *)self auxiliaryNavigationBarView];
-    [v8 alpha];
+    auxiliaryNavigationBarView = [(BCCardViewController *)self auxiliaryNavigationBarView];
+    [auxiliaryNavigationBarView alpha];
     if (v9 != 1.0)
     {
 LABEL_12:
@@ -897,14 +897,14 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v10 = [(BCCardViewController *)self cardNavigationController];
-    v11 = [v10 viewControllers];
-    v12 = [v11 count];
+    cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+    viewControllers = [cardNavigationController viewControllers];
+    v12 = [viewControllers count];
 
     if (v12 == &dword_0 + 1)
     {
-      v8 = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
-      [v8 cardViewController:self positionAuxiliaryNavigationBarBackgroundWithData:self];
+      auxiliaryNavigationBarView = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
+      [auxiliaryNavigationBarView cardViewController:self positionAuxiliaryNavigationBarBackgroundWithData:self];
       goto LABEL_12;
     }
   }
@@ -912,25 +912,25 @@ LABEL_12:
 LABEL_13:
 
 LABEL_14:
-  v13 = [(BCCardViewController *)self currentState];
-  v14 = [v13 ignoreContentOffsetForCardViewController:self];
+  currentState2 = [(BCCardViewController *)self currentState];
+  v14 = [currentState2 ignoreContentOffsetForCardViewController:self];
 
   if (v14)
   {
     goto LABEL_25;
   }
 
-  v15 = [(BCCardViewController *)self contentScrollView];
+  contentScrollView2 = [(BCCardViewController *)self contentScrollView];
 
-  if (v15 == v34)
+  if (contentScrollView2 == scrollCopy)
   {
-    v19 = [(BCCardViewController *)self currentState];
-    v20 = [(BCCardViewController *)self contentScrollView];
-    [v19 cardViewController:self cardScrollViewOffsetForContentScrollView:v20 cardData:self];
+    currentState3 = [(BCCardViewController *)self currentState];
+    contentScrollView3 = [(BCCardViewController *)self contentScrollView];
+    [currentState3 cardViewController:self cardScrollViewOffsetForContentScrollView:contentScrollView3 cardData:self];
     v22 = v21;
 
-    v23 = [(BCCardViewController *)self scrollView];
-    [v23 contentOffset];
+    scrollView2 = [(BCCardViewController *)self scrollView];
+    [scrollView2 contentOffset];
     v25 = v24;
     v27 = v26;
 
@@ -943,71 +943,71 @@ LABEL_14:
       goto LABEL_25;
     }
 
-    v31 = [(BCCardViewController *)self scrollView];
-    [v31 setContentOffset:{v25, v22}];
+    scrollView3 = [(BCCardViewController *)self scrollView];
+    [scrollView3 setContentOffset:{v25, v22}];
 
     goto LABEL_22;
   }
 
-  v16 = [(BCCardViewController *)self scrollView];
-  if (v16 != v34)
+  scrollView4 = [(BCCardViewController *)self scrollView];
+  if (scrollView4 != scrollCopy)
   {
 LABEL_24:
 
     goto LABEL_25;
   }
 
-  v17 = [(BCCardViewController *)self scrollView];
-  if ([v17 isDecelerating])
+  scrollView5 = [(BCCardViewController *)self scrollView];
+  if ([scrollView5 isDecelerating])
   {
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v18 = [(BCCardViewController *)self scrollView];
-  if ([v18 isDragging])
+  scrollView6 = [(BCCardViewController *)self scrollView];
+  if ([scrollView6 isDragging])
   {
 
     goto LABEL_23;
   }
 
-  v32 = [(BCCardViewController *)self cardSetData];
-  v33 = [v32 isInTransitionUpdateMode];
+  cardSetData = [(BCCardViewController *)self cardSetData];
+  isInTransitionUpdateMode = [cardSetData isInTransitionUpdateMode];
 
-  if ((v33 & 1) == 0)
+  if ((isInTransitionUpdateMode & 1) == 0)
   {
 LABEL_22:
-    v16 = [(BCCardViewController *)self currentState];
-    v17 = [(BCCardViewController *)self contentScrollView];
-    [v16 cardViewController:self repositionOffsetsWithContentScrollView:v17 cardData:self];
+    scrollView4 = [(BCCardViewController *)self currentState];
+    scrollView5 = [(BCCardViewController *)self contentScrollView];
+    [scrollView4 cardViewController:self repositionOffsetsWithContentScrollView:scrollView5 cardData:self];
     goto LABEL_23;
   }
 
 LABEL_25:
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a4;
-  v11 = a5;
-  if (off_33B7D0 == a6)
+  objectCopy = object;
+  changeCopy = change;
+  if (off_33B7D0 == context)
   {
-    if ([a3 isEqualToString:@"contentSize"])
+    if ([path isEqualToString:@"contentSize"])
     {
-      v12 = [(BCCardViewController *)self contentScrollView];
+      contentScrollView = [(BCCardViewController *)self contentScrollView];
 
-      if (v12 == v10)
+      if (contentScrollView == objectCopy)
       {
         objc_opt_class();
-        v13 = [v11 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+        v13 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
         v14 = BUDynamicCast();
 
         [v14 CGSizeValue];
         v16 = v15;
         v18 = v17;
         objc_opt_class();
-        v19 = [v11 objectForKeyedSubscript:NSKeyValueChangeOldKey];
+        v19 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeOldKey];
         v20 = BUDynamicCast();
 
         [v20 CGSizeValue];
@@ -1030,14 +1030,14 @@ LABEL_25:
   {
     v25.receiver = self;
     v25.super_class = BCCardViewController;
-    [(BCCardViewController *)&v25 observeValueForKeyPath:a3 ofObject:v10 change:v11 context:a6];
+    [(BCCardViewController *)&v25 observeValueForKeyPath:path ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
 - (BCCardContent)topContentViewController
 {
-  v2 = [(BCCardViewController *)self cardNavigationController];
-  v3 = [v2 topViewController];
+  cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+  topViewController = [cardNavigationController topViewController];
   objc_opt_class();
   v4 = BUClassAndProtocolCast();
 
@@ -1046,24 +1046,24 @@ LABEL_25:
 
 - (BCCardContent)bottomContentViewController
 {
-  v2 = [(BCCardViewController *)self cardNavigationController];
-  v3 = [v2 viewControllers];
-  v4 = [v3 firstObject];
+  cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+  viewControllers = [cardNavigationController viewControllers];
+  firstObject = [viewControllers firstObject];
   objc_opt_class();
   v5 = BUClassAndProtocolCast();
 
   return v5;
 }
 
-- (void)_applyContentInsetToContentViewController:(id)a3
+- (void)_applyContentInsetToContentViewController:(id)controller
 {
-  v15 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(BCCardViewController *)self cardNavigationController];
-    v5 = [v4 viewControllers];
-    v6 = [v5 firstObject];
-    if (v6 == v15)
+    cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+    viewControllers = [cardNavigationController viewControllers];
+    firstObject = [viewControllers firstObject];
+    if (firstObject == controllerCopy)
     {
       [(BCCardViewController *)self contentInset];
     }
@@ -1078,7 +1078,7 @@ LABEL_25:
     v13 = v9;
     v14 = v10;
 
-    [(BCCardViewController *)self _updateViewController:v15 withContentInset:v11 unalteredContentInset:v12, v13, v14, self->_unalteredContentInset.top, self->_unalteredContentInset.left, self->_unalteredContentInset.bottom, self->_unalteredContentInset.right];
+    [(BCCardViewController *)self _updateViewController:controllerCopy withContentInset:v11 unalteredContentInset:v12, v13, v14, self->_unalteredContentInset.top, self->_unalteredContentInset.left, self->_unalteredContentInset.bottom, self->_unalteredContentInset.right];
   }
 }
 
@@ -1088,10 +1088,10 @@ LABEL_25:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(BCCardViewController *)self cardNavigationController];
-  v4 = [v3 viewControllers];
+  cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+  viewControllers = [cardNavigationController viewControllers];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [viewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1103,7 +1103,7 @@ LABEL_25:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(viewControllers);
         }
 
         objc_opt_class();
@@ -1114,31 +1114,31 @@ LABEL_25:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [viewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  top = a3.top;
-  left = a3.left;
-  self->_unalteredContentInset = a3;
-  right = a3.right;
-  bottom = a3.bottom;
-  v4 = [(BCCardViewController *)self configuration];
-  v5 = [v4 cardsCanExpand];
+  top = inset.top;
+  left = inset.left;
+  self->_unalteredContentInset = inset;
+  right = inset.right;
+  bottom = inset.bottom;
+  configuration = [(BCCardViewController *)self configuration];
+  cardsCanExpand = [configuration cardsCanExpand];
 
-  if ((v5 & 1) == 0)
+  if ((cardsCanExpand & 1) == 0)
   {
-    v6 = [(BCCardViewController *)self cardSetViewController];
-    v7 = [v6 view];
-    v8 = [(BCCardViewController *)self cardSetViewController];
-    v9 = [v8 view];
-    [v9 bounds];
-    [v7 convertRect:0 toView:?];
+    cardSetViewController = [(BCCardViewController *)self cardSetViewController];
+    view = [cardSetViewController view];
+    cardSetViewController2 = [(BCCardViewController *)self cardSetViewController];
+    view2 = [cardSetViewController2 view];
+    [view2 bounds];
+    [view convertRect:0 toView:?];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -1149,8 +1149,8 @@ LABEL_25:
     v29.size.width = v15;
     v29.size.height = v17;
     MaxY = CGRectGetMaxY(v29);
-    v19 = [(BCCardViewController *)self cardView];
-    [v19 frame];
+    cardView = [(BCCardViewController *)self cardView];
+    [cardView frame];
     v20 = CGRectGetMaxY(v30);
 
     v21 = bottom;
@@ -1181,24 +1181,24 @@ LABEL_25:
   }
 }
 
-- (UIEdgeInsets)_scrollIndicatorInsetsForContentInset:(UIEdgeInsets)a3 unalteredContentInset:(UIEdgeInsets)a4
+- (UIEdgeInsets)_scrollIndicatorInsetsForContentInset:(UIEdgeInsets)inset unalteredContentInset:(UIEdgeInsets)contentInset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v9 = [(BCCardViewController *)self configuration];
-  v10 = [v9 cardsCanExpand];
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  configuration = [(BCCardViewController *)self configuration];
+  cardsCanExpand = [configuration cardsCanExpand];
 
-  if ((v10 & 1) == 0)
+  if ((cardsCanExpand & 1) == 0)
   {
-    v11 = [(BCCardViewController *)self cardSetViewController];
-    [v11 scaledContractedOffset];
+    cardSetViewController = [(BCCardViewController *)self cardSetViewController];
+    [cardSetViewController scaledContractedOffset];
 
     if (top == 0.0)
     {
-      v12 = [(BCCardViewController *)self configuration];
-      [v12 cardCornerRadius];
+      configuration2 = [(BCCardViewController *)self configuration];
+      [configuration2 cardCornerRadius];
     }
 
     UIEdgeInsetsReplace();
@@ -1219,35 +1219,35 @@ LABEL_25:
   return result;
 }
 
-- (void)_updateViewController:(id)a3 withContentInset:(UIEdgeInsets)a4 unalteredContentInset:(UIEdgeInsets)a5
+- (void)_updateViewController:(id)controller withContentInset:(UIEdgeInsets)inset unalteredContentInset:(UIEdgeInsets)contentInset
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  v9 = a4.right;
-  v10 = a4.bottom;
-  v11 = a4.left;
-  v12 = a4.top;
-  v14 = a3;
-  v15 = [v14 scrollView];
-  [(BCCardViewController *)self _updateViewController:v14 scrollView:v15 withContentInset:v12 unalteredContentInset:v11 contentInsetForScrollIndicatorInsets:v10, v9, top, left, bottom, right, *&v12, *&v11, *&v10, *&v9];
+  right = contentInset.right;
+  bottom = contentInset.bottom;
+  left = contentInset.left;
+  top = contentInset.top;
+  v9 = inset.right;
+  v10 = inset.bottom;
+  v11 = inset.left;
+  v12 = inset.top;
+  controllerCopy = controller;
+  scrollView = [controllerCopy scrollView];
+  [(BCCardViewController *)self _updateViewController:controllerCopy scrollView:scrollView withContentInset:v12 unalteredContentInset:v11 contentInsetForScrollIndicatorInsets:v10, v9, top, left, bottom, right, *&v12, *&v11, *&v10, *&v9];
 }
 
-- (void)_updateViewController:(double)a3 scrollView:(double)a4 withContentInset:(double)a5 unalteredContentInset:(double)a6 contentInsetForScrollIndicatorInsets:(double)a7
+- (void)_updateViewController:(double)controller scrollView:(double)view withContentInset:(double)inset unalteredContentInset:(double)contentInset contentInsetForScrollIndicatorInsets:(double)insets
 {
   v46 = a11;
   v26 = a12;
   if ([v46 prefersAdditionalSafeAreaInsetsForInsetting])
   {
-    v27 = a4 - BCCardAdditionalBottomInset();
+    v27 = view - BCCardAdditionalBottomInset();
     [v46 additionalSafeAreaInsets];
     v29 = v28;
     v31 = v30;
     v33 = v32;
     v35 = v34;
-    v36 = [v46 viewIfLoaded];
-    [v36 safeAreaInsets];
+    viewIfLoaded = [v46 viewIfLoaded];
+    [viewIfLoaded safeAreaInsets];
     v38 = v37 - v33;
 
     [v46 setAdditionalSafeAreaInsets:{v29, v31, v27 - v38, v35}];
@@ -1255,32 +1255,32 @@ LABEL_25:
 
   else
   {
-    v39 = [a1 scrollView];
-    v40 = v39;
-    if (v39 == v26)
+    scrollView = [self scrollView];
+    v40 = scrollView;
+    if (scrollView == v26)
     {
     }
 
     else
     {
-      v41 = [v26 contentInsetAdjustmentBehavior];
+      contentInsetAdjustmentBehavior = [v26 contentInsetAdjustmentBehavior];
 
-      if (v41 != &dword_0 + 2)
+      if (contentInsetAdjustmentBehavior != &dword_0 + 2)
       {
         [v26 setContentInsetAdjustmentBehavior:2];
       }
     }
 
-    [v26 setContentInset:{a2, a3, a4, a5}];
-    [a1 _scrollIndicatorInsetsForContentInset:a13 unalteredContentInset:{a14, a15, a16, a6, a7, a8, a9}];
+    [v26 setContentInset:{a2, controller, view, inset}];
+    [self _scrollIndicatorInsetsForContentInset:a13 unalteredContentInset:{a14, a15, a16, contentInset, insets, a8, a9}];
     [v26 setScrollIndicatorInsets:?];
   }
 }
 
 - (void)_updateScrollViewContentInset
 {
-  v3 = [(BCCardViewController *)self currentState];
-  if ([v3 useContentInsetForContentForScrollIndicatorInsets])
+  currentState = [(BCCardViewController *)self currentState];
+  if ([currentState useContentInsetForContentForScrollIndicatorInsets])
   {
     [(BCCardViewController *)self contentInsetForContent];
   }
@@ -1295,25 +1295,25 @@ LABEL_25:
   v10 = v6;
   v11 = v7;
 
-  v12 = [(BCCardViewController *)self scrollView];
+  scrollView = [(BCCardViewController *)self scrollView];
   [(BCCardViewController *)self contentInset];
-  [(BCCardViewController *)self _updateViewController:0 scrollView:v12 withContentInset:v8 unalteredContentInset:v9 contentInsetForScrollIndicatorInsets:v10, v11];
+  [(BCCardViewController *)self _updateViewController:0 scrollView:scrollView withContentInset:v8 unalteredContentInset:v9 contentInsetForScrollIndicatorInsets:v10, v11];
 }
 
-- (void)setupRootContentScrollView:(id)a3
+- (void)setupRootContentScrollView:(id)view
 {
-  v4 = a3;
-  [v4 setAlwaysBounceVertical:1];
-  [(BCCardViewController *)self setContentScrollView:v4];
+  viewCopy = view;
+  [viewCopy setAlwaysBounceVertical:1];
+  [(BCCardViewController *)self setContentScrollView:viewCopy];
 }
 
-- (void)setContentViewController:(id)a3
+- (void)setContentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (controllerCopy)
   {
-    v14 = v4;
+    v14 = controllerCopy;
     v6 = [NSArray arrayWithObjects:&v14 count:1];
   }
 
@@ -1322,18 +1322,18 @@ LABEL_25:
     v6 = &__NSArray0__struct;
   }
 
-  v7 = [(BCCardViewController *)self cardNavigationController];
-  [v7 setViewControllers:v6];
+  cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+  [cardNavigationController setViewControllers:v6];
 
   if (v5)
   {
   }
 
   [(BCCardViewController *)self _applyContentInsetToContentViewController:v5];
-  v8 = [v5 scrollView];
-  [(BCCardViewController *)self setupRootContentScrollView:v8];
-  v9 = [(BCCardViewController *)self cardNavigationController];
-  [v9 bc_updateNavBarVisibleWithTransitionCoordinator:0 duration:0.0];
+  scrollView = [v5 scrollView];
+  [(BCCardViewController *)self setupRootContentScrollView:scrollView];
+  cardNavigationController2 = [(BCCardViewController *)self cardNavigationController];
+  [cardNavigationController2 bc_updateNavBarVisibleWithTransitionCoordinator:0 duration:0.0];
 
   v10 = BUProtocolCast();
   [v10 setBcSafeAreaInsetsObserver:self];
@@ -1353,20 +1353,20 @@ LABEL_25:
 
 - (BCCardStackTransitioningCardContent)transitioningCardContent
 {
-  v2 = [(BCCardViewController *)self cardNavigationController];
-  v3 = [v2 im_firstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BCCardStackTransitioningCardContent];
+  cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+  v3 = [cardNavigationController im_firstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BCCardStackTransitioningCardContent];
 
   return v3;
 }
 
-- (void)setScrimAlpha:(double)a3 animated:(BOOL)a4 duration:(double)a5
+- (void)setScrimAlpha:(double)alpha animated:(BOOL)animated duration:(double)duration
 {
-  v6 = a4;
-  v9 = [(BCCardViewController *)self blackScrimView];
+  animatedCopy = animated;
+  blackScrimView = [(BCCardViewController *)self blackScrimView];
 
-  if (v9)
+  if (blackScrimView)
   {
-    if (v6)
+    if (animatedCopy)
     {
 LABEL_3:
       v24[0] = _NSConcreteStackBlock;
@@ -1374,62 +1374,62 @@ LABEL_3:
       v24[2] = sub_A0C0;
       v24[3] = &unk_2C7D18;
       v24[4] = self;
-      *&v24[5] = a3;
+      *&v24[5] = alpha;
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = sub_A114;
       v23[3] = &unk_2C7E08;
-      *&v23[5] = a3;
+      *&v23[5] = alpha;
       v23[4] = self;
-      [UIView animateWithDuration:v24 animations:v23 completion:a5];
+      [UIView animateWithDuration:v24 animations:v23 completion:duration];
       return;
     }
   }
 
   else
   {
-    if (a3 == 0.0)
+    if (alpha == 0.0)
     {
       return;
     }
 
     v10 = [UIView alloc];
-    v11 = [(BCCardViewController *)self cardView];
-    [v11 bounds];
+    cardView = [(BCCardViewController *)self cardView];
+    [cardView bounds];
     v12 = [v10 initWithFrame:?];
     [(BCCardViewController *)self setBlackScrimView:v12];
 
-    v13 = [(BCCardViewController *)self blackScrimView];
-    [v13 setAutoresizingMask:18];
+    blackScrimView2 = [(BCCardViewController *)self blackScrimView];
+    [blackScrimView2 setAutoresizingMask:18];
 
-    v14 = [(BCCardViewController *)self cardView];
-    v15 = [(BCCardViewController *)self blackScrimView];
-    [v14 addSubview:v15];
+    cardView2 = [(BCCardViewController *)self cardView];
+    blackScrimView3 = [(BCCardViewController *)self blackScrimView];
+    [cardView2 addSubview:blackScrimView3];
 
     v16 = +[UIColor blackColor];
-    v17 = [(BCCardViewController *)self blackScrimView];
-    [v17 setBackgroundColor:v16];
+    blackScrimView4 = [(BCCardViewController *)self blackScrimView];
+    [blackScrimView4 setBackgroundColor:v16];
 
-    v18 = [(BCCardViewController *)self blackScrimView];
-    [v18 setAlpha:0.0];
+    blackScrimView5 = [(BCCardViewController *)self blackScrimView];
+    [blackScrimView5 setAlpha:0.0];
 
-    v19 = [(BCCardViewController *)self blackScrimView];
-    v20 = [(BCCardViewController *)self contentContainerView];
-    [v19 bc_applyCornerRadiusFromView:v20];
+    blackScrimView6 = [(BCCardViewController *)self blackScrimView];
+    contentContainerView = [(BCCardViewController *)self contentContainerView];
+    [blackScrimView6 bc_applyCornerRadiusFromView:contentContainerView];
 
-    if (v6)
+    if (animatedCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v21 = [(BCCardViewController *)self blackScrimView];
-  [v21 setAlpha:a3];
+  blackScrimView7 = [(BCCardViewController *)self blackScrimView];
+  [blackScrimView7 setAlpha:alpha];
 
-  if (a3 == 0.0)
+  if (alpha == 0.0)
   {
-    v22 = [(BCCardViewController *)self blackScrimView];
-    [v22 removeFromSuperview];
+    blackScrimView8 = [(BCCardViewController *)self blackScrimView];
+    [blackScrimView8 removeFromSuperview];
 
     [(BCCardViewController *)self setBlackScrimView:0];
   }
@@ -1438,22 +1438,22 @@ LABEL_3:
 - (void)_configureAsExpanded
 {
   [(BCCardViewController *)self setRoundedCorners:0];
-  v3 = [(BCCardViewController *)self scrollView];
-  [v3 contentOffset];
+  scrollView = [(BCCardViewController *)self scrollView];
+  [scrollView contentOffset];
   v5 = v4;
   [(BCCardViewController *)self distanceToExpand];
   v7 = v6;
-  v8 = [(BCCardViewController *)self scrollView];
-  [v8 adjustedContentInset];
+  scrollView2 = [(BCCardViewController *)self scrollView];
+  [scrollView2 adjustedContentInset];
   v10 = v7 - v9;
-  v11 = [(BCCardViewController *)self scrollView];
-  [v11 setContentOffset:{v5, v10}];
+  scrollView3 = [(BCCardViewController *)self scrollView];
+  [scrollView3 setContentOffset:{v5, v10}];
 
   v12 = +[BCCardSetState expandedState];
   [(BCCardViewController *)self setCurrentState:v12];
 
-  v13 = [(BCCardViewController *)self currentState];
-  [v13 cardViewControllerAuxiliaryNavigationBarAlpha:self cardData:self];
+  currentState = [(BCCardViewController *)self currentState];
+  [currentState cardViewControllerAuxiliaryNavigationBarAlpha:self cardData:self];
   v15 = v14;
 
   [(BCCardViewController *)self _setAuxiliaryNavigationBarViewAlpha:v15];
@@ -1467,9 +1467,9 @@ LABEL_3:
   v5 = v4;
 
   [(BCCardViewController *)self _setAuxiliaryNavigationBarViewAlpha:v5];
-  v7 = [(BCCardViewController *)self cardNavigationController];
-  v6 = [v7 topViewController];
-  [(BCCardViewController *)self _adjustContentMarginsForViewController:v6 isExpanded:1];
+  cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+  topViewController = [cardNavigationController topViewController];
+  [(BCCardViewController *)self _adjustContentMarginsForViewController:topViewController isExpanded:1];
 }
 
 - (void)configureChromeForContracted
@@ -1480,35 +1480,35 @@ LABEL_3:
   v5 = v4;
 
   [(BCCardViewController *)self _setAuxiliaryNavigationBarViewAlpha:v5];
-  v7 = [(BCCardViewController *)self cardNavigationController];
-  v6 = [v7 topViewController];
-  [(BCCardViewController *)self _adjustContentMarginsForViewController:v6 isExpanded:0];
+  cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+  topViewController = [cardNavigationController topViewController];
+  [(BCCardViewController *)self _adjustContentMarginsForViewController:topViewController isExpanded:0];
 }
 
-- (void)_adjustContentMarginsForViewController:(id)a3 isExpanded:(BOOL)a4
+- (void)_adjustContentMarginsForViewController:(id)controller isExpanded:(BOOL)expanded
 {
-  v4 = a4;
-  v23 = a3;
+  expandedCopy = expanded;
+  controllerCopy = controller;
   if (isPad())
   {
-    v6 = [v23 navigationItem];
-    [v6 _minimumContentMargins];
+    navigationItem = [controllerCopy navigationItem];
+    [navigationItem _minimumContentMargins];
     v8 = v7;
     v10 = v9;
 
     v11 = 0.0;
     v12 = 0.0;
-    if (v4)
+    if (expandedCopy)
     {
-      v13 = [(BCCardViewController *)self cardStackViewController];
-      [v13 safeAreaInsetsFromWindowCorners];
+      cardStackViewController = [(BCCardViewController *)self cardStackViewController];
+      [cardStackViewController safeAreaInsetsFromWindowCorners];
       v15 = v14;
       v17 = v16;
 
-      v18 = [(BCCardViewController *)self view];
-      v19 = [v18 effectiveUserInterfaceLayoutDirection];
+      view = [(BCCardViewController *)self view];
+      effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
-      if (v19 == &dword_0 + 1)
+      if (effectiveUserInterfaceLayoutDirection == &dword_0 + 1)
       {
         v20 = v17;
       }
@@ -1518,7 +1518,7 @@ LABEL_3:
         v20 = v15;
       }
 
-      if (v19 == &dword_0 + 1)
+      if (effectiveUserInterfaceLayoutDirection == &dword_0 + 1)
       {
         v21 = v15;
       }
@@ -1549,29 +1549,29 @@ LABEL_3:
       }
     }
 
-    v22 = [v23 navigationItem];
-    [v22 _setMinimumContentMargins:{v8, v12, v10, v11}];
+    navigationItem2 = [controllerCopy navigationItem];
+    [navigationItem2 _setMinimumContentMargins:{v8, v12, v10, v11}];
   }
 }
 
 - (void)goExpanded
 {
-  v28 = [(BCCardViewController *)self currentState];
-  v3 = +[BCCardSetState expandedState];
-  if (v28 != v3)
+  currentState = [(BCCardViewController *)self currentState];
+  contentScrollView = +[BCCardSetState expandedState];
+  if (currentState != contentScrollView)
   {
-    v4 = [(BCCardViewController *)self currentState];
+    currentState2 = [(BCCardViewController *)self currentState];
     v5 = +[BCCardSetState pushedState];
 
-    if (v4 == v5)
+    if (currentState2 == v5)
     {
       return;
     }
 
-    v6 = [(BCCardViewController *)self cardSetViewController];
-    v7 = [v6 currentCardViewController];
+    cardSetViewController = [(BCCardViewController *)self cardSetViewController];
+    currentCardViewController = [cardSetViewController currentCardViewController];
 
-    if (v7 != self)
+    if (currentCardViewController != self)
     {
 
       [(BCCardViewController *)self _configureAsExpanded];
@@ -1581,56 +1581,56 @@ LABEL_3:
     v8 = +[BCCardSetState expandingState];
     [(BCCardViewController *)self setCurrentState:v8];
 
-    v9 = [(BCCardViewController *)self animator];
-    [v9 setFractionComplete:1.0];
+    animator = [(BCCardViewController *)self animator];
+    [animator setFractionComplete:1.0];
 
-    v10 = [(BCCardViewController *)self cardNavigationController];
-    v11 = [v10 viewControllers];
-    v12 = [v11 count];
+    cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+    viewControllers = [cardNavigationController viewControllers];
+    v12 = [viewControllers count];
 
     if (v12 == &dword_0 + 1)
     {
-      v13 = [(BCCardViewController *)self scrollView];
-      [v13 contentOffset];
+      scrollView = [(BCCardViewController *)self scrollView];
+      [scrollView contentOffset];
       v15 = v14;
-      v16 = [(BCCardViewController *)self cardSetViewController];
-      [v16 scaledContractedOffset];
+      cardSetViewController2 = [(BCCardViewController *)self cardSetViewController];
+      [cardSetViewController2 scaledContractedOffset];
       v18 = v17;
-      v19 = [(BCCardViewController *)self configuration];
-      [v19 cardExpandedTopOffset];
+      configuration = [(BCCardViewController *)self configuration];
+      [configuration cardExpandedTopOffset];
       v21 = v18 - v20;
-      v22 = [(BCCardViewController *)self scrollView];
-      [v22 adjustedContentInset];
+      scrollView2 = [(BCCardViewController *)self scrollView];
+      [scrollView2 adjustedContentInset];
       v24 = v21 - v23;
-      v25 = [(BCCardViewController *)self scrollView];
-      [v25 setContentOffset:{v15, v24}];
+      scrollView3 = [(BCCardViewController *)self scrollView];
+      [scrollView3 setContentOffset:{v15, v24}];
     }
 
-    v26 = [(BCCardViewController *)self animator];
-    [v26 stopAnimation:0];
+    animator2 = [(BCCardViewController *)self animator];
+    [animator2 stopAnimation:0];
 
-    v27 = [(BCCardViewController *)self animator];
-    [v27 finishAnimationAtPosition:0];
+    animator3 = [(BCCardViewController *)self animator];
+    [animator3 finishAnimationAtPosition:0];
 
-    v28 = [(BCCardViewController *)self currentState];
-    v3 = [(BCCardViewController *)self contentScrollView];
-    [v28 cardViewController:self repositionOffsetsWithContentScrollView:v3 cardData:self];
+    currentState = [(BCCardViewController *)self currentState];
+    contentScrollView = [(BCCardViewController *)self contentScrollView];
+    [currentState cardViewController:self repositionOffsetsWithContentScrollView:contentScrollView cardData:self];
   }
 }
 
 - (void)goContracted
 {
-  v3 = [(BCCardViewController *)self currentState];
+  currentState = [(BCCardViewController *)self currentState];
   v4 = +[BCCardSetState contractedState];
   v5 = v4;
-  if (v3 == v4)
+  if (currentState == v4)
   {
 
 LABEL_6:
-    v16 = [(BCCardViewController *)self configuration];
-    v17 = [v16 cardsCanExpand];
+    configuration = [(BCCardViewController *)self configuration];
+    cardsCanExpand = [configuration cardsCanExpand];
 
-    if (!v17)
+    if (!cardsCanExpand)
     {
       return;
     }
@@ -1638,48 +1638,48 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [(BCCardViewController *)self currentState];
+  currentState2 = [(BCCardViewController *)self currentState];
   v7 = +[BCCardSetState pushedContractedState];
 
-  if (v6 == v7)
+  if (currentState2 == v7)
   {
     goto LABEL_6;
   }
 
   y = CGPointZero.y;
-  v9 = [(BCCardViewController *)self scrollView];
-  [v9 setContentOffset:{CGPointZero.x, y}];
+  scrollView = [(BCCardViewController *)self scrollView];
+  [scrollView setContentOffset:{CGPointZero.x, y}];
 
   v10 = +[BCCardSetState contractingState];
   [(BCCardViewController *)self setCurrentState:v10];
 
-  v11 = [(BCCardViewController *)self animator];
-  [v11 setFractionComplete:1.0];
+  animator = [(BCCardViewController *)self animator];
+  [animator setFractionComplete:1.0];
 
-  v12 = [(BCCardViewController *)self animator];
-  [v12 stopAnimation:0];
+  animator2 = [(BCCardViewController *)self animator];
+  [animator2 stopAnimation:0];
 
-  v13 = [(BCCardViewController *)self animator];
-  [v13 finishAnimationAtPosition:0];
+  animator3 = [(BCCardViewController *)self animator];
+  [animator3 finishAnimationAtPosition:0];
 
-  v14 = [(BCCardViewController *)self configuration];
-  v15 = [v14 cardsCanExpand];
+  configuration2 = [(BCCardViewController *)self configuration];
+  cardsCanExpand2 = [configuration2 cardsCanExpand];
 
-  if ((v15 & 1) == 0)
+  if ((cardsCanExpand2 & 1) == 0)
   {
     return;
   }
 
 LABEL_7:
   [(BCCardViewController *)self clearSavedContentOffsets];
-  v24 = [(BCCardViewController *)self scrollView];
-  [v24 contentOffset];
+  scrollView2 = [(BCCardViewController *)self scrollView];
+  [scrollView2 contentOffset];
   v19 = v18;
-  v20 = [(BCCardViewController *)self scrollView];
-  [v20 adjustedContentInset];
+  scrollView3 = [(BCCardViewController *)self scrollView];
+  [scrollView3 adjustedContentInset];
   v22 = -v21;
-  v23 = [(BCCardViewController *)self scrollView];
-  [v23 setContentOffset:{v19, v22}];
+  scrollView4 = [(BCCardViewController *)self scrollView];
+  [scrollView4 setContentOffset:{v19, v22}];
 }
 
 - (void)cardSetPresentationTransitionDidComplete
@@ -1692,22 +1692,22 @@ LABEL_7:
   if (_UISolariumEnabled())
   {
     [(BCCardViewController *)self updateNavBarAlpha];
-    v3 = [(BCCardViewController *)self bottomContentViewController];
-    [v3 cardPresentationTransitionDidComplete:{-[BCCardViewController isCurrentCard](self, "isCurrentCard")}];
+    bottomContentViewController = [(BCCardViewController *)self bottomContentViewController];
+    [bottomContentViewController cardPresentationTransitionDidComplete:{-[BCCardViewController isCurrentCard](self, "isCurrentCard")}];
   }
 }
 
-- (void)suspendAndTeardownForReason:(id)a3
+- (void)suspendAndTeardownForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   [(BCCardViewController *)self setContentScrollView:0];
   v15 = 0u;
   v16 = 0u;
   v14 = 0u;
   v5 = [(BCCardViewController *)self cardNavigationController:0];
-  v6 = [v5 viewControllers];
+  viewControllers = [v5 viewControllers];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [viewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1719,21 +1719,21 @@ LABEL_7:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(viewControllers);
         }
 
         v11 = BUProtocolCast();
         v12 = v11;
         if (v11)
         {
-          [v11 suspendAndTeardownForReason:v4];
+          [v11 suspendAndTeardownForReason:reasonCopy];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [viewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -1743,16 +1743,16 @@ LABEL_7:
 - (void)clearSavedContentOffsets
 {
   y = CGPointZero.y;
-  v4 = [(BCCardViewController *)self scrollView];
-  [v4 setContentOffset:{CGPointZero.x, y}];
+  scrollView = [(BCCardViewController *)self scrollView];
+  [scrollView setContentOffset:{CGPointZero.x, y}];
 
   v14 = 0u;
   v15 = 0u;
   v13 = 0u;
   v5 = [(BCCardViewController *)self cardNavigationController:0];
-  v6 = [v5 viewControllers];
+  viewControllers = [v5 viewControllers];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [viewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1764,7 +1764,7 @@ LABEL_7:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(viewControllers);
         }
 
         v11 = BUProtocolCast();
@@ -1774,31 +1774,31 @@ LABEL_7:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [viewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)resumeAndRebuildForReason:(id)a3
+- (void)resumeAndRebuildForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(BCCardViewController *)self scrollView];
-  [v5 contentOffset];
+  reasonCopy = reason;
+  scrollView = [(BCCardViewController *)self scrollView];
+  [scrollView contentOffset];
   v7 = v6;
-  v8 = [(BCCardViewController *)self scrollView];
-  [v8 adjustedContentInset];
+  scrollView2 = [(BCCardViewController *)self scrollView];
+  [scrollView2 adjustedContentInset];
   v10 = v7 + v9;
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v11 = [(BCCardViewController *)self cardNavigationController];
-  v12 = [v11 viewControllers];
+  cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+  viewControllers = [cardNavigationController viewControllers];
 
-  v13 = [v12 countByEnumeratingWithState:&v41 objects:v45 count:16];
+  v13 = [viewControllers countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1809,33 +1809,33 @@ LABEL_7:
       {
         if (*v42 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(viewControllers);
         }
 
         v17 = BUProtocolCast();
-        v18 = [v17 resumeAndRebuildForReason:v4];
+        v18 = [v17 resumeAndRebuildForReason:reasonCopy];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v41 objects:v45 count:16];
+      v14 = [viewControllers countByEnumeratingWithState:&v41 objects:v45 count:16];
     }
 
     while (v14);
   }
 
-  v19 = [(BCCardViewController *)self scrollView];
-  [v19 contentOffset];
+  scrollView3 = [(BCCardViewController *)self scrollView];
+  [scrollView3 contentOffset];
   v21 = v20;
 
-  v22 = [(BCCardViewController *)self scrollView];
-  [v22 adjustedContentInset];
+  scrollView4 = [(BCCardViewController *)self scrollView];
+  [scrollView4 adjustedContentInset];
   v24 = v10 - v23;
 
-  v25 = [(BCCardViewController *)self scrollView];
-  [v25 setContentOffset:{v21, v24}];
+  scrollView5 = [(BCCardViewController *)self scrollView];
+  [scrollView5 setContentOffset:{v21, v24}];
 
-  v26 = [(BCCardViewController *)self cardNavigationController];
-  v27 = [v26 viewControllers];
-  v28 = [v27 firstObject];
+  cardNavigationController2 = [(BCCardViewController *)self cardNavigationController];
+  viewControllers2 = [cardNavigationController2 viewControllers];
+  firstObject = [viewControllers2 firstObject];
   objc_opt_class();
   v38 = &OBJC_PROTOCOL___BCCardContent;
   v29 = BUClassAndProtocolCast();
@@ -1851,22 +1851,22 @@ LABEL_7:
     [UIView performWithoutAnimation:v39, &OBJC_PROTOCOL___BCCardContent];
   }
 
-  v30 = [(BCCardViewController *)self cardNavigationController];
-  v31 = [v30 viewControllers];
-  v32 = [v31 count];
+  cardNavigationController3 = [(BCCardViewController *)self cardNavigationController];
+  viewControllers3 = [cardNavigationController3 viewControllers];
+  v32 = [viewControllers3 count];
 
   if (v32 >= 2)
   {
-    v33 = [(BCCardViewController *)self cardNavigationController];
-    v34 = [v33 viewControllers];
-    v35 = [v34 lastObject];
+    cardNavigationController4 = [(BCCardViewController *)self cardNavigationController];
+    viewControllers4 = [cardNavigationController4 viewControllers];
+    lastObject = [viewControllers4 lastObject];
     objc_opt_class();
     v36 = BUClassAndProtocolCast();
 
     if (v36)
     {
-      v37 = [v36 scrollView];
-      [(BCCardViewController *)self setContentScrollView:v37];
+      scrollView6 = [v36 scrollView];
+      [(BCCardViewController *)self setContentScrollView:scrollView6];
 
       [(BCCardViewController *)self _adjustContentInsetForViewController:v36];
       v29 = v36;
@@ -1879,50 +1879,50 @@ LABEL_7:
   }
 }
 
-- (void)scrollToTop:(BOOL)a3
+- (void)scrollToTop:(BOOL)top
 {
-  v3 = a3;
-  v5 = [(BCCardViewController *)self topContentViewController];
+  topCopy = top;
+  topContentViewController = [(BCCardViewController *)self topContentViewController];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(BCCardViewController *)self topContentViewController];
-    [v7 scrollToTopAnimated:v3];
+    topContentViewController2 = [(BCCardViewController *)self topContentViewController];
+    [topContentViewController2 scrollToTopAnimated:topCopy];
   }
 
   else
   {
-    v7 = [(BCCardViewController *)self currentState];
-    [v7 cardViewController:self scrollToTopAnimated:v3 cardData:self];
+    topContentViewController2 = [(BCCardViewController *)self currentState];
+    [topContentViewController2 cardViewController:self scrollToTopAnimated:topCopy cardData:self];
   }
 }
 
 - (void)prepareForDismiss
 {
-  v3 = [(BCCardViewController *)self currentState];
-  [v3 cardViewController:self willDismissWithCardData:self];
+  currentState = [(BCCardViewController *)self currentState];
+  [currentState cardViewController:self willDismissWithCardData:self];
 }
 
-- (void)cardViewControllerScrollView:(id)a3 accessibilityWantsToScrollToOffset:(CGPoint)a4
+- (void)cardViewControllerScrollView:(id)view accessibilityWantsToScrollToOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(BCCardViewController *)self currentState];
-  [v7 cardViewController:self accessibilityWantsToScrollToOffset:self cardData:{x, y}];
+  y = offset.y;
+  x = offset.x;
+  currentState = [(BCCardViewController *)self currentState];
+  [currentState cardViewController:self accessibilityWantsToScrollToOffset:self cardData:{x, y}];
 }
 
-- (UIEdgeInsets)accessibilityVisibleContentInsetForCardViewControllerScrollView:(id)a3
+- (UIEdgeInsets)accessibilityVisibleContentInsetForCardViewControllerScrollView:(id)view
 {
   [(BCCardViewController *)self contentInsetForContent];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(BCCardViewController *)self configuration];
-  v13 = [v12 cardsCanExpand];
+  configuration = [(BCCardViewController *)self configuration];
+  cardsCanExpand = [configuration cardsCanExpand];
 
-  if ((v13 & 1) == 0)
+  if ((cardsCanExpand & 1) == 0)
   {
     if (self->_uppEnabled)
     {
@@ -1934,15 +1934,15 @@ LABEL_7:
       [(BCCardViewController *)self gripperView];
     }
     v14 = ;
-    v15 = [(BCCardViewController *)self scrollView];
-    v16 = [v15 superview];
+    scrollView = [(BCCardViewController *)self scrollView];
+    superview = [scrollView superview];
     [v14 frame];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v25 = [v14 superview];
-    [v16 convertRect:v25 fromView:{v18, v20, v22, v24}];
+    superview2 = [v14 superview];
+    [superview convertRect:superview2 fromView:{v18, v20, v22, v24}];
     v27 = v26;
     v29 = v28;
     v31 = v30;
@@ -1966,27 +1966,27 @@ LABEL_7:
   return result;
 }
 
-- (void)accessibilityDidActivateGripperView:(id)a3
+- (void)accessibilityDidActivateGripperView:(id)view
 {
-  v4 = [(BCCardViewController *)self delegate];
-  [v4 cardViewControllerDidTapScrollView:self];
+  delegate = [(BCCardViewController *)self delegate];
+  [delegate cardViewControllerDidTapScrollView:self];
 }
 
-- (void)cardContentViewController:(id)a3 initializeManagerWithScrollView:(id)a4
+- (void)cardContentViewController:(id)controller initializeManagerWithScrollView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   [(BCCardViewController *)self contentInset];
-  [v5 safeAreaInsets];
+  [viewCopy safeAreaInsets];
   UIEdgeInsetsReplace();
   [(BCCardViewController *)self setContentInsetForContent:?];
-  [(BCCardViewController *)self setupRootContentScrollView:v5];
+  [(BCCardViewController *)self setupRootContentScrollView:viewCopy];
 }
 
-- (UIEdgeInsets)cardContentViewController:(id)a3 contentInsetsForScrollingToRectWithContentInsets:(UIEdgeInsets)a4
+- (UIEdgeInsets)cardContentViewController:(id)controller contentInsetsForScrollingToRectWithContentInsets:(UIEdgeInsets)insets
 {
-  [(BCCardViewController *)self contentInsetForContent:a3];
-  v5 = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
-  [v5 backgroundSafeAreaInsets];
+  [(BCCardViewController *)self contentInsetForContent:controller];
+  auxiliaryNavigationBarViewController = [(BCCardViewController *)self auxiliaryNavigationBarViewController];
+  [auxiliaryNavigationBarViewController backgroundSafeAreaInsets];
   UIEdgeInsetsReplace();
   v7 = v6;
   v9 = v8;
@@ -2004,7 +2004,7 @@ LABEL_7:
   return result;
 }
 
-- (void)bcSafeAreaInsetsObservableViewController:(id)a3 safeAreaInsetsDidChange:(UIEdgeInsets)a4
+- (void)bcSafeAreaInsetsObservableViewController:(id)controller safeAreaInsetsDidChange:(UIEdgeInsets)change
 {
   [(BCCardViewController *)self contentInset];
   UIEdgeInsetsReplace();
@@ -2013,14 +2013,14 @@ LABEL_7:
   v10 = v9;
   v12 = v11;
   [(BCCardViewController *)self setContentInsetForContent:?];
-  v13 = [(BCCardViewController *)self cardNavigationController];
-  v14 = [v13 viewControllers];
-  v15 = [v14 count];
+  cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+  viewControllers = [cardNavigationController viewControllers];
+  v15 = [viewControllers count];
 
   if (v15 >= 2)
   {
-    v16 = [(BCCardViewController *)self topContentViewController];
-    [(BCCardViewController *)self _updateViewController:v16 withContentInset:v6 unalteredContentInset:v8, v10, v12, self->_unalteredContentInset.top, self->_unalteredContentInset.left, self->_unalteredContentInset.bottom, self->_unalteredContentInset.right];
+    topContentViewController = [(BCCardViewController *)self topContentViewController];
+    [(BCCardViewController *)self _updateViewController:topContentViewController withContentInset:v6 unalteredContentInset:v8, v10, v12, self->_unalteredContentInset.top, self->_unalteredContentInset.left, self->_unalteredContentInset.bottom, self->_unalteredContentInset.right];
   }
 }
 
@@ -2036,74 +2036,74 @@ LABEL_7:
 
 - (double)cardStackTransitioningCardContentAlpha
 {
-  v2 = [(BCCardViewController *)self whiteScrimView];
-  [v2 alpha];
+  whiteScrimView = [(BCCardViewController *)self whiteScrimView];
+  [whiteScrimView alpha];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setCardStackTransitioningCardContentAlpha:(double)a3
+- (void)setCardStackTransitioningCardContentAlpha:(double)alpha
 {
-  v4 = [(BCCardViewController *)self whiteScrimView];
-  [v4 setAlpha:a3];
+  whiteScrimView = [(BCCardViewController *)self whiteScrimView];
+  [whiteScrimView setAlpha:alpha];
 }
 
-- (void)cardStackTransitioningCardPrepare:(BOOL)a3 extraXOffsetForAnimation:(double)a4
+- (void)cardStackTransitioningCardPrepare:(BOOL)prepare extraXOffsetForAnimation:(double)animation
 {
-  v6 = [(BCCardViewController *)self cardView];
-  [v6 frame];
+  cardView = [(BCCardViewController *)self cardView];
+  [cardView frame];
   [(BCCardViewController *)self setViewFrameBeforeAnimation:?];
 
-  [(BCCardViewController *)self setExtraXOffsetForAnimation:a4];
+  [(BCCardViewController *)self setExtraXOffsetForAnimation:animation];
   v7 = [UIView alloc];
-  v8 = [(BCCardViewController *)self cardView];
-  [v8 bounds];
+  cardView2 = [(BCCardViewController *)self cardView];
+  [cardView2 bounds];
   v9 = [v7 initWithFrame:?];
   [(BCCardViewController *)self setWhiteScrimView:v9];
 
-  v10 = [(BCCardViewController *)self cardView];
-  v11 = [(BCCardViewController *)self whiteScrimView];
-  [v10 addSubview:v11];
+  cardView3 = [(BCCardViewController *)self cardView];
+  whiteScrimView = [(BCCardViewController *)self whiteScrimView];
+  [cardView3 addSubview:whiteScrimView];
 
-  v12 = [(BCCardViewController *)self whiteScrimView];
-  [v12 setAlpha:0.0];
+  whiteScrimView2 = [(BCCardViewController *)self whiteScrimView];
+  [whiteScrimView2 setAlpha:0.0];
 
   v13 = +[UIColor bc_booksBackground];
-  v14 = [(BCCardViewController *)self whiteScrimView];
-  [v14 setBackgroundColor:v13];
+  whiteScrimView3 = [(BCCardViewController *)self whiteScrimView];
+  [whiteScrimView3 setBackgroundColor:v13];
 
-  v16 = [(BCCardViewController *)self whiteScrimView];
-  v15 = [(BCCardViewController *)self contentContainerView];
-  [v16 bc_applyCornerRadiusFromView:v15];
+  whiteScrimView4 = [(BCCardViewController *)self whiteScrimView];
+  contentContainerView = [(BCCardViewController *)self contentContainerView];
+  [whiteScrimView4 bc_applyCornerRadiusFromView:contentContainerView];
 }
 
-- (void)cardStackTransitioningCardFinalize:(BOOL)a3
+- (void)cardStackTransitioningCardFinalize:(BOOL)finalize
 {
-  [(BCCardViewController *)self setViewFrameBeforeAnimation:a3, CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-  v4 = [(BCCardViewController *)self whiteScrimView];
-  [v4 removeFromSuperview];
+  [(BCCardViewController *)self setViewFrameBeforeAnimation:finalize, CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+  whiteScrimView = [(BCCardViewController *)self whiteScrimView];
+  [whiteScrimView removeFromSuperview];
 
   [(BCCardViewController *)self setWhiteScrimView:0];
 }
 
 - (BOOL)expanded
 {
-  v3 = [(BCCardViewController *)self currentState];
+  currentState = [(BCCardViewController *)self currentState];
   v4 = +[BCCardSetState expandedState];
-  if (v3 == v4)
+  if (currentState == v4)
   {
     v8 = 1;
   }
 
   else
   {
-    v5 = [(BCCardViewController *)self configuration];
-    if ([v5 cardsCanExpand])
+    configuration = [(BCCardViewController *)self configuration];
+    if ([configuration cardsCanExpand])
     {
-      v6 = [(BCCardViewController *)self currentState];
+      currentState2 = [(BCCardViewController *)self currentState];
       v7 = +[BCCardSetState pushedState];
-      v8 = v6 == v7;
+      v8 = currentState2 == v7;
     }
 
     else
@@ -2115,19 +2115,19 @@ LABEL_7:
   return v8;
 }
 
-- (void)_setCurrentState:(id)a3 updateStatusBarIfNeeded:(BOOL)a4
+- (void)_setCurrentState:(id)state updateStatusBarIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v7 = a3;
+  neededCopy = needed;
+  stateCopy = state;
   currentState = self->_currentState;
-  if (currentState != v7)
+  if (currentState != stateCopy)
   {
-    v14 = v7;
-    [(BCCardSetState *)currentState willStopBeingCurrentStateCardViewController:self newState:v7 cardDate:self];
+    v14 = stateCopy;
+    [(BCCardSetState *)currentState willStopBeingCurrentStateCardViewController:self newState:stateCopy cardDate:self];
     v9 = self->_currentState;
-    objc_storeStrong(&self->_currentState, a3);
+    objc_storeStrong(&self->_currentState, state);
     [(BCCardSetState *)self->_currentState didBecomeCurrentStateCardViewController:self previousState:v9 cardData:self];
-    if (v4 && ![(BCCardSetState *)self->_currentState transitioning])
+    if (neededCopy && ![(BCCardSetState *)self->_currentState transitioning])
     {
       [(BCCardViewController *)self setNeedsStatusBarAppearanceUpdate];
       [(BCCardSetState *)self->_currentState cardViewControllerStatusBarBackgroundOpacity:self];
@@ -2136,60 +2136,60 @@ LABEL_7:
       [v12 setOpacity:v11];
     }
 
-    v13 = [(BCCardViewController *)self topContentViewController];
-    [v13 didSetCurrentCardState:v14];
+    topContentViewController = [(BCCardViewController *)self topContentViewController];
+    [topContentViewController didSetCurrentCardState:v14];
   }
 
   _objc_release_x1();
 }
 
-- (void)animationCompletedAtPosition:(int64_t)a3
+- (void)animationCompletedAtPosition:(int64_t)position
 {
   [(BCCardViewController *)self setAnimator:0];
-  v5 = [(BCCardViewController *)self currentState];
-  [v5 cardViewController:self animationCompletedAtPosition:a3 cardData:self];
+  currentState = [(BCCardViewController *)self currentState];
+  [currentState cardViewController:self animationCompletedAtPosition:position cardData:self];
 }
 
-- (void)_adjustContentInsetForViewController:(id)a3
+- (void)_adjustContentInsetForViewController:(id)controller
 {
-  v20 = a3;
+  controllerCopy = controller;
   [(BCCardViewController *)self contentInsetForContent];
   v5 = v4;
   v7 = v6;
   v9 = v8;
-  v10 = [(BCCardViewController *)self view];
-  v11 = [v10 window];
-  v12 = [v11 windowScene];
-  v13 = [v12 statusBarManager];
-  [v13 statusBarHeight];
+  view = [(BCCardViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  [statusBarManager statusBarHeight];
   v15 = v14;
-  v16 = [(BCCardViewController *)self cardNavigationController];
-  v17 = [v16 navigationBar];
-  [v17 frame];
+  cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+  navigationBar = [cardNavigationController navigationBar];
+  [navigationBar frame];
   v19 = v15 + v18;
 
   [(BCCardViewController *)self setContentInsetForContent:v19, v5, v7, v9];
-  [(BCCardViewController *)self _updateViewController:v20 withContentInset:v19 unalteredContentInset:v5, v7, v9, self->_unalteredContentInset.top, self->_unalteredContentInset.left, self->_unalteredContentInset.bottom, self->_unalteredContentInset.right];
+  [(BCCardViewController *)self _updateViewController:controllerCopy withContentInset:v19 unalteredContentInset:v5, v7, v9, self->_unalteredContentInset.top, self->_unalteredContentInset.left, self->_unalteredContentInset.bottom, self->_unalteredContentInset.right];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(BCCardViewController *)self dismissPanGestureRecognizer];
-  v6 = v5;
-  if (v5 == v4)
+  beginCopy = begin;
+  dismissPanGestureRecognizer = [(BCCardViewController *)self dismissPanGestureRecognizer];
+  v6 = dismissPanGestureRecognizer;
+  if (dismissPanGestureRecognizer == beginCopy)
   {
 
     goto LABEL_5;
   }
 
-  v7 = [(BCCardViewController *)self auxiliaryNavigationBarDismissPanGestureRecognizer];
+  auxiliaryNavigationBarDismissPanGestureRecognizer = [(BCCardViewController *)self auxiliaryNavigationBarDismissPanGestureRecognizer];
 
-  if (v7 == v4)
+  if (auxiliaryNavigationBarDismissPanGestureRecognizer == beginCopy)
   {
 LABEL_5:
-    v9 = [(BCCardViewController *)self currentState];
-    v8 = [v9 cardViewController:self dismissPanShouldBegin:v4 cardData:self];
+    currentState = [(BCCardViewController *)self currentState];
+    v8 = [currentState cardViewController:self dismissPanShouldBegin:beginCopy cardData:self];
 
     goto LABEL_6;
   }
@@ -2200,67 +2200,67 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BCCardViewController *)self dismissPanGestureRecognizer];
-  if (v8 == v6)
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  dismissPanGestureRecognizer = [(BCCardViewController *)self dismissPanGestureRecognizer];
+  if (dismissPanGestureRecognizer == recognizerCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    v9 = [(BCCardViewController *)self auxiliaryNavigationBarDismissPanGestureRecognizer];
+    auxiliaryNavigationBarDismissPanGestureRecognizer = [(BCCardViewController *)self auxiliaryNavigationBarDismissPanGestureRecognizer];
 
-    if (v9 == v6)
+    if (auxiliaryNavigationBarDismissPanGestureRecognizer == recognizerCopy)
     {
       v11 = 1;
       goto LABEL_7;
     }
 
-    v8 = [v7 view];
-    v10 = [(BCCardViewController *)self scrollView];
-    v11 = v8 == v10;
+    dismissPanGestureRecognizer = [touchCopy view];
+    scrollView = [(BCCardViewController *)self scrollView];
+    v11 = dismissPanGestureRecognizer == scrollView;
   }
 
 LABEL_7:
   return v11;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v6 = [(BCCardViewController *)self currentState];
-  v5 = [(BCCardViewController *)self contentScrollView];
-  [v6 cardViewController:self cardData:self scrollViewWillBeginDragging:v4 contentScrollView:v5];
+  draggingCopy = dragging;
+  currentState = [(BCCardViewController *)self currentState];
+  contentScrollView = [(BCCardViewController *)self contentScrollView];
+  [currentState cardViewController:self cardData:self scrollViewWillBeginDragging:draggingCopy contentScrollView:contentScrollView];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v10 = a3;
+  scrollCopy = scroll;
   if ([(BCCardViewController *)self settingContentOffset])
   {
-    v4 = 1;
+    covered = 1;
   }
 
   else
   {
-    v5 = [(BCCardViewController *)self cardSetData];
-    if ([v5 isInTransitionUpdateMode])
+    cardSetData = [(BCCardViewController *)self cardSetData];
+    if ([cardSetData isInTransitionUpdateMode])
     {
-      v4 = 1;
+      covered = 1;
     }
 
     else
     {
-      v6 = [(BCCardViewController *)self cardSetData];
-      v4 = [v6 covered];
+      cardSetData2 = [(BCCardViewController *)self cardSetData];
+      covered = [cardSetData2 covered];
     }
   }
 
-  if ([v10 isDragging] & 1) != 0 || (objc_msgSend(v10, "isDecelerating"))
+  if ([scrollCopy isDragging] & 1) != 0 || (objc_msgSend(scrollCopy, "isDecelerating"))
   {
     v7 = 0;
   }
@@ -2270,85 +2270,85 @@ LABEL_7:
     v7 = ![(BCCardViewController *)self scrollingToTop];
   }
 
-  if (((v4 | v7) & 1) == 0)
+  if (((covered | v7) & 1) == 0)
   {
-    v8 = [(BCCardViewController *)self currentState];
-    v9 = [(BCCardViewController *)self contentScrollView];
-    [v8 cardViewController:self cardData:self scrollViewDidScroll:v10 contentScrollView:v9];
+    currentState = [(BCCardViewController *)self currentState];
+    contentScrollView = [(BCCardViewController *)self contentScrollView];
+    [currentState cardViewController:self cardData:self scrollViewDidScroll:scrollCopy contentScrollView:contentScrollView];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = a4;
-  v6 = a3;
-  v8 = [(BCCardViewController *)self currentState];
-  v7 = [(BCCardViewController *)self contentScrollView];
-  [v8 cardViewController:self cardData:self scrollViewDidEndDragging:v6 willDecelerate:v4 contentScrollView:v7];
+  decelerateCopy = decelerate;
+  draggingCopy = dragging;
+  currentState = [(BCCardViewController *)self currentState];
+  contentScrollView = [(BCCardViewController *)self contentScrollView];
+  [currentState cardViewController:self cardData:self scrollViewDidEndDragging:draggingCopy willDecelerate:decelerateCopy contentScrollView:contentScrollView];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v6 = [(BCCardViewController *)self currentState];
-  v5 = [(BCCardViewController *)self contentScrollView];
-  [v6 cardViewController:self cardData:self scrollViewDidEndDecelerating:v4 contentScrollView:v5];
+  deceleratingCopy = decelerating;
+  currentState = [(BCCardViewController *)self currentState];
+  contentScrollView = [(BCCardViewController *)self contentScrollView];
+  [currentState cardViewController:self cardData:self scrollViewDidEndDecelerating:deceleratingCopy contentScrollView:contentScrollView];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v11 = [(BCCardViewController *)self currentState];
-  v10 = [(BCCardViewController *)self contentScrollView];
-  [v11 cardViewController:self cardData:self scrollViewWillEndDragging:v9 withVelocity:a5 targetContentOffset:v10 contentScrollView:{x, y}];
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  currentState = [(BCCardViewController *)self currentState];
+  contentScrollView = [(BCCardViewController *)self contentScrollView];
+  [currentState cardViewController:self cardData:self scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:contentScrollView contentScrollView:{x, y}];
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
-  v4 = [(BCCardViewController *)self cardStackViewController];
-  v5 = [v4 topCardSetViewController];
-  v6 = [(BCCardViewController *)self cardSetViewController];
+  cardStackViewController = [(BCCardViewController *)self cardStackViewController];
+  topCardSetViewController = [cardStackViewController topCardSetViewController];
+  cardSetViewController = [(BCCardViewController *)self cardSetViewController];
 
-  if (v5 == v6)
+  if (topCardSetViewController == cardSetViewController)
   {
     [(BCCardViewController *)self setScrollingToTop:1];
   }
 
-  return v5 == v6;
+  return topCardSetViewController == cardSetViewController;
 }
 
 - (BOOL)prefersStatusBarBackgroundHidden
 {
-  v2 = [(BCCardViewController *)self _preferredTargetState];
-  v3 = v2;
-  if (v2)
+  _preferredTargetState = [(BCCardViewController *)self _preferredTargetState];
+  v3 = _preferredTargetState;
+  if (_preferredTargetState)
   {
-    v4 = [v2 prefersStatusBarBackgroundHidden];
+    prefersStatusBarBackgroundHidden = [_preferredTargetState prefersStatusBarBackgroundHidden];
   }
 
   else
   {
-    v4 = 1;
+    prefersStatusBarBackgroundHidden = 1;
   }
 
-  return v4;
+  return prefersStatusBarBackgroundHidden;
 }
 
 - (id)_preferredTargetState
 {
-  v3 = [(BCCardViewController *)self cardNavigationController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 count];
+  cardNavigationController = [(BCCardViewController *)self cardNavigationController];
+  viewControllers = [cardNavigationController viewControllers];
+  v5 = [viewControllers count];
 
-  v6 = [(BCCardViewController *)self cardNavigationController];
-  v7 = [v6 transitionCoordinator];
-  v8 = [v7 viewControllerForKey:UITransitionContextFromViewControllerKey];
+  cardNavigationController2 = [(BCCardViewController *)self cardNavigationController];
+  transitionCoordinator = [cardNavigationController2 transitionCoordinator];
+  v8 = [transitionCoordinator viewControllerForKey:UITransitionContextFromViewControllerKey];
 
-  v9 = [(BCCardViewController *)self cardNavigationController];
-  v10 = [v9 viewControllers];
-  v11 = [v10 containsObject:v8];
+  cardNavigationController3 = [(BCCardViewController *)self cardNavigationController];
+  viewControllers2 = [cardNavigationController3 viewControllers];
+  v11 = [viewControllers2 containsObject:v8];
 
   if (v11)
   {
@@ -2362,8 +2362,8 @@ LABEL_7:
 
   if (v12)
   {
-    v15 = [(BCCardViewController *)self configuration];
-    if ([v15 cardsCanExpand])
+    configuration = [(BCCardViewController *)self configuration];
+    if ([configuration cardsCanExpand])
     {
       +[BCCardSetState pushedState];
     }
@@ -2392,10 +2392,10 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v16 = [(BCCardViewController *)self configuration];
-  v17 = [v16 cardsCanExpand];
+  configuration2 = [(BCCardViewController *)self configuration];
+  cardsCanExpand = [configuration2 cardsCanExpand];
 
-  if (v17)
+  if (cardsCanExpand)
   {
     if (![(BCCardViewController *)self bottomCardWasExpanded])
     {
@@ -2418,34 +2418,34 @@ LABEL_19:
   return v14;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 transitionCoordinator];
-  v10 = [(BCCardViewController *)self scrollView];
-  [v10 _stopScrollingAndZoomingAnimations];
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  transitionCoordinator = [controllerCopy transitionCoordinator];
+  scrollView = [(BCCardViewController *)self scrollView];
+  [scrollView _stopScrollingAndZoomingAnimations];
 
-  v11 = [(BCCardViewController *)self contentScrollView];
-  [v11 _stopScrollingAndZoomingAnimations];
+  contentScrollView = [(BCCardViewController *)self contentScrollView];
+  [contentScrollView _stopScrollingAndZoomingAnimations];
 
-  if (v9)
+  if (transitionCoordinator)
   {
-    v12 = [v7 viewControllers];
-    v31 = [v12 count];
+    viewControllers = [controllerCopy viewControllers];
+    v31 = [viewControllers count];
 
-    v13 = [v9 viewControllerForKey:UITransitionContextFromViewControllerKey];
-    v14 = [v9 viewControllerForKey:UITransitionContextToViewControllerKey];
-    v15 = [v7 viewControllers];
-    v16 = [v15 containsObject:v13];
+    v13 = [transitionCoordinator viewControllerForKey:UITransitionContextFromViewControllerKey];
+    v14 = [transitionCoordinator viewControllerForKey:UITransitionContextToViewControllerKey];
+    viewControllers2 = [controllerCopy viewControllers];
+    v16 = [viewControllers2 containsObject:v13];
 
-    v17 = [v7 viewControllers];
-    v18 = [v17 firstObject];
+    viewControllers3 = [controllerCopy viewControllers];
+    firstObject = [viewControllers3 firstObject];
 
     v30 = v16;
     if (v16)
     {
-      v29 = v13 == v18;
+      v29 = v13 == firstObject;
       objc_opt_class();
       v19 = BUClassAndProtocolCast();
       [(BCCardViewController *)self _adjustContentInsetForViewController:v19, &OBJC_PROTOCOL___BCCardContent];
@@ -2456,12 +2456,12 @@ LABEL_19:
     else
     {
       v29 = 0;
-      v20 = v14 == v18;
+      v20 = v14 == firstObject;
     }
 
-    v21 = [v9 isCancelled];
-    v22 = [(BCCardViewController *)self _preferredTargetState];
-    [v22 cardViewControllerAuxiliaryNavigationBarAlpha:self cardData:self];
+    isCancelled = [transitionCoordinator isCancelled];
+    _preferredTargetState = [(BCCardViewController *)self _preferredTargetState];
+    [_preferredTargetState cardViewControllerAuxiliaryNavigationBarAlpha:self cardData:self];
     v24 = v23;
     v49[0] = 0;
     v49[1] = v49;
@@ -2477,29 +2477,29 @@ LABEL_19:
     v39[4] = self;
     v45 = v24;
     v46 = v29;
-    v40 = v7;
+    v40 = controllerCopy;
     v47 = v20;
     v25 = v13;
     v41 = v25;
     v26 = v14;
     v42 = v26;
     v44 = v49;
-    v27 = v8;
+    v27 = viewControllerCopy;
     v43 = v27;
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_CFB0;
     v32[3] = &unk_2C7E80;
     v35 = v49;
-    v37 = v21;
+    v37 = isCancelled;
     objc_copyWeak(v36, &location);
     v38 = v30;
     v32[4] = self;
     v33 = v27;
-    v28 = v22;
+    v28 = _preferredTargetState;
     v34 = v28;
     v36[1] = v31;
-    [v9 animateAlongsideTransition:v39 completion:v32];
+    [transitionCoordinator animateAlongsideTransition:v39 completion:v32];
 
     objc_destroyWeak(v36);
     objc_destroyWeak(&location);
@@ -2508,29 +2508,29 @@ LABEL_19:
 
   else
   {
-    sub_1E4734(self, v8);
+    sub_1E4734(self, viewControllerCopy);
   }
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v23 = a3;
-  v6 = [v23 transitionCoordinator];
-  if (v6)
+  controllerCopy = controller;
+  transitionCoordinator = [controllerCopy transitionCoordinator];
+  if (transitionCoordinator)
   {
     goto LABEL_10;
   }
 
-  v7 = [(BCCardViewController *)self configuration];
-  if (![v7 cardsCanExpand])
+  configuration = [(BCCardViewController *)self configuration];
+  if (![configuration cardsCanExpand])
   {
 
     goto LABEL_6;
   }
 
-  v8 = [(BCCardViewController *)self expanded];
+  expanded = [(BCCardViewController *)self expanded];
 
-  if (!v8)
+  if (!expanded)
   {
 LABEL_6:
     v9 = [BCCardSetState cardViewControllerContractedState:self];
@@ -2544,23 +2544,23 @@ LABEL_7:
 
   if (!self->_hasNotifiedScrollViewChangeForCurrentContentSV)
   {
-    v11 = [(BCCardViewController *)self currentState];
+    currentState = [(BCCardViewController *)self currentState];
     WeakRetained = objc_loadWeakRetained(&self->_contentScrollView);
-    [v11 cardViewController:self contentScrollViewDidChange:WeakRetained cardData:self];
+    [currentState cardViewController:self contentScrollViewDidChange:WeakRetained cardData:self];
   }
 
-  v13 = [(BCCardViewController *)self currentState];
-  [v13 cardViewControllerAuxiliaryNavigationBarAlpha:self cardData:self];
+  currentState2 = [(BCCardViewController *)self currentState];
+  [currentState2 cardViewControllerAuxiliaryNavigationBarAlpha:self cardData:self];
   v15 = v14;
 
   [(BCCardViewController *)self _setAuxiliaryNavigationBarViewAlpha:v15];
 LABEL_10:
-  v16 = [(BCCardViewController *)self cardSetViewController];
-  v17 = [v16 edgePanGestureRecognizer];
-  if (v17)
+  cardSetViewController = [(BCCardViewController *)self cardSetViewController];
+  edgePanGestureRecognizer = [cardSetViewController edgePanGestureRecognizer];
+  if (edgePanGestureRecognizer)
   {
-    v18 = [v23 viewControllers];
-    v19 = [v18 count] < 3;
+    viewControllers = [controllerCopy viewControllers];
+    v19 = [viewControllers count] < 3;
   }
 
   else
@@ -2568,59 +2568,59 @@ LABEL_10:
     v19 = 0;
   }
 
-  v20 = [(BCCardViewController *)self cardSetViewController];
-  v21 = [v20 edgePanGestureRecognizer];
-  [v21 setEnabled:v19];
+  cardSetViewController2 = [(BCCardViewController *)self cardSetViewController];
+  edgePanGestureRecognizer2 = [cardSetViewController2 edgePanGestureRecognizer];
+  [edgePanGestureRecognizer2 setEnabled:v19];
 
-  v22 = [v23 interactivePopGestureRecognizer];
-  [v22 setEnabled:v19 ^ 1];
+  interactivePopGestureRecognizer = [controllerCopy interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setEnabled:v19 ^ 1];
 }
 
 - (void)scrollViewDidChange
 {
-  v3 = [(BCCardViewController *)self topContentViewController];
-  v4 = [v3 scrollView];
-  [(BCCardViewController *)self setContentScrollView:v4];
+  topContentViewController = [(BCCardViewController *)self topContentViewController];
+  scrollView = [topContentViewController scrollView];
+  [(BCCardViewController *)self setContentScrollView:scrollView];
 
   [(BCCardViewController *)self _updateCardFrames];
 }
 
 - (NSString)stringForReturnToRootBarItem
 {
-  v2 = [(BCCardViewController *)self presentingViewController];
-  v3 = [v2 im_ancestorViewControllerConformingToProtocol:&OBJC_PROTOCOL___BCRootBarStringForReturnToRootBarItemProviding];
+  presentingViewController = [(BCCardViewController *)self presentingViewController];
+  v3 = [presentingViewController im_ancestorViewControllerConformingToProtocol:&OBJC_PROTOCOL___BCRootBarStringForReturnToRootBarItemProviding];
 
-  v4 = [v3 bc_stringForReturnToRootBarItem];
+  bc_stringForReturnToRootBarItem = [v3 bc_stringForReturnToRootBarItem];
 
-  return v4;
+  return bc_stringForReturnToRootBarItem;
 }
 
 - (BOOL)auxiliaryNavigationBarViewControllerCanCloseAsset
 {
-  v2 = self;
-  v3 = [(BCCardViewController *)self delegate];
-  LOBYTE(v2) = [v3 cardViewControllerCanCloseAsset:v2];
+  selfCopy = self;
+  delegate = [(BCCardViewController *)self delegate];
+  LOBYTE(selfCopy) = [delegate cardViewControllerCanCloseAsset:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)auxiliaryNavigationBarViewControllerDidTapCloseAllCards
 {
-  v3 = [(BCCardViewController *)self delegate];
-  [v3 cardViewControllerDidTapCloseAllCards:self];
+  delegate = [(BCCardViewController *)self delegate];
+  [delegate cardViewControllerDidTapCloseAllCards:self];
 }
 
 - (void)auxiliaryNavigationBarViewControllerDidTapCloseAsset
 {
-  v3 = [(BCCardViewController *)self delegate];
-  [v3 cardViewControllerDidTapCloseAsset:self];
+  delegate = [(BCCardViewController *)self delegate];
+  [delegate cardViewControllerDidTapCloseAsset:self];
 }
 
-- (void)setIsBubbleTipPresented:(BOOL)a3
+- (void)setIsBubbleTipPresented:(BOOL)presented
 {
-  v3 = a3;
-  v4 = [(BCCardViewController *)self scrollView];
-  [v4 setScrollEnabled:!v3];
+  presentedCopy = presented;
+  scrollView = [(BCCardViewController *)self scrollView];
+  [scrollView setScrollEnabled:!presentedCopy];
 }
 
 - (CGPoint)oldContentOffset
@@ -2706,14 +2706,14 @@ LABEL_10:
   return result;
 }
 
-- (void)configureFeedProxyScrollView:(id)a3
+- (void)configureFeedProxyScrollView:(id)view
 {
   v5 = sub_1EEBD4();
   __chkstk_darwin(v5);
-  v6 = a3;
-  v7 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1EF0C4();
-  v8 = v6;
+  v8 = viewCopy;
   sub_1EEB74();
   sub_1EF0D4();
 }
@@ -2722,7 +2722,7 @@ LABEL_10:
 {
   v3 = sub_1EEBD4();
   __chkstk_darwin(v3);
-  v4 = self;
+  selfCopy = self;
   sub_1EF0C4();
   sub_1EEB94();
   sub_1EF0D4();
@@ -2731,15 +2731,15 @@ LABEL_10:
   sub_1EF0D4();
 }
 
-- (void)updateNavBarAlphaForTransition:(double)a3
+- (void)updateNavBarAlphaForTransition:(double)transition
 {
   v5 = sub_1EEBD4();
   __chkstk_darwin(v5);
-  v6 = self;
-  v7 = [(BCCardViewController *)v6 cardNavigationController];
-  v8 = [(UINavigationController *)v7 navigationBar];
+  selfCopy = self;
+  cardNavigationController = [(BCCardViewController *)selfCopy cardNavigationController];
+  navigationBar = [(UINavigationController *)cardNavigationController navigationBar];
 
-  [(UINavigationBar *)v8 setAlpha:a3];
+  [(UINavigationBar *)navigationBar setAlpha:transition];
   sub_1EF0C4();
   sub_1EEB84();
   sub_1EF0D4();
@@ -2747,7 +2747,7 @@ LABEL_10:
 
 - (void)updateNavBarAlpha
 {
-  v2 = self;
+  selfCopy = self;
   BCCardViewController.updateNavBarAlpha()();
 }
 

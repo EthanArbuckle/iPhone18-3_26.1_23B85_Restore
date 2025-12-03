@@ -1,6 +1,6 @@
 @interface TSTLocalStylesKey
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -15,9 +15,9 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v9 = TSUDynamicCast();
   if (v9)
@@ -79,7 +79,7 @@
   return v35;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TSTLocalStylesKey);
   v9 = objc_msgSend_cellStyle(self, v5, v6, v7, v8);

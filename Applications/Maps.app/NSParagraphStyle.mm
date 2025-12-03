@@ -1,23 +1,23 @@
 @interface NSParagraphStyle
-+ (id)_maps_paragraphStyleForHandlingExcessiveHeightString:(id)a3 lineHeightMultiplier:(double)a4 withHyphenationFactor:(float)a5;
++ (id)_maps_paragraphStyleForHandlingExcessiveHeightString:(id)string lineHeightMultiplier:(double)multiplier withHyphenationFactor:(float)factor;
 @end
 
 @implementation NSParagraphStyle
 
-+ (id)_maps_paragraphStyleForHandlingExcessiveHeightString:(id)a3 lineHeightMultiplier:(double)a4 withHyphenationFactor:(float)a5
++ (id)_maps_paragraphStyleForHandlingExcessiveHeightString:(id)string lineHeightMultiplier:(double)multiplier withHyphenationFactor:(float)factor
 {
-  v7 = a3;
+  stringCopy = string;
   v8 = +[NSMutableParagraphStyle defaultParagraphStyle];
   v9 = [v8 mutableCopy];
 
-  LODWORD(v8) = [v7 _maps_containsExcessiveHeightCharacters];
+  LODWORD(v8) = [stringCopy _maps_containsExcessiveHeightCharacters];
   if (v8)
   {
-    [v9 setLineHeightMultiple:a4];
+    [v9 setLineHeightMultiple:multiplier];
   }
 
   [v9 setLineBreakMode:4];
-  *&v10 = a5;
+  *&v10 = factor;
   [v9 setHyphenationFactor:v10];
   v11 = [v9 copy];
 

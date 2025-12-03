@@ -1,17 +1,17 @@
 @interface _LTInstallRequest
-- (_LTInstallRequest)initWithCoder:(id)a3;
-- (_LTInstallRequest)initWithLocales:(id)a3 useCellular:(BOOL)a4;
+- (_LTInstallRequest)initWithCoder:(id)coder;
+- (_LTInstallRequest)initWithLocales:(id)locales useCellular:(BOOL)cellular;
 - (_LTSpeechTranslationDelegate)delegate;
-- (void)_startInstallationWithService:(id)a3 done:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)languageInstallProgressed:(id)a3 error:(id)a4;
+- (void)_startInstallationWithService:(id)service done:(id)done;
+- (void)encodeWithCoder:(id)coder;
+- (void)languageInstallProgressed:(id)progressed error:(id)error;
 @end
 
 @implementation _LTInstallRequest
 
-- (_LTInstallRequest)initWithLocales:(id)a3 useCellular:(BOOL)a4
+- (_LTInstallRequest)initWithLocales:(id)locales useCellular:(BOOL)cellular
 {
-  v7 = a3;
+  localesCopy = locales;
   v13.receiver = self;
   v13.super_class = _LTInstallRequest;
   v8 = [(_LTInstallRequest *)&v13 init];
@@ -21,18 +21,18 @@
     queue = v8->_queue;
     v8->_queue = v9;
 
-    objc_storeStrong(&v8->_locales, a3);
-    v8->_useCellular = a4;
+    objc_storeStrong(&v8->_locales, locales);
+    v8->_useCellular = cellular;
     v11 = v8;
   }
 
   return v8;
 }
 
-- (_LTInstallRequest)initWithCoder:(id)a3
+- (_LTInstallRequest)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _LTInstallRequest;
   v5 = [(_LTInstallRequest *)&v13 init];
@@ -42,11 +42,11 @@
     v14[1] = objc_opt_class();
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
     v7 = [MEMORY[0x277CBEB98] setWithArray:v6];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"locales"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"locales"];
     locales = v5->_locales;
     v5->_locales = v8;
 
-    v5->_useCellular = [v4 decodeBoolForKey:@"useCellular"];
+    v5->_useCellular = [coderCopy decodeBoolForKey:@"useCellular"];
     v10 = v5;
   }
 
@@ -54,18 +54,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   locales = self->_locales;
-  v5 = a3;
-  [v5 encodeObject:locales forKey:@"locales"];
-  [v5 encodeBool:self->_useCellular forKey:@"useCellular"];
+  coderCopy = coder;
+  [coderCopy encodeObject:locales forKey:@"locales"];
+  [coderCopy encodeBool:self->_useCellular forKey:@"useCellular"];
 }
 
-- (void)_startInstallationWithService:(id)a3 done:(id)a4
+- (void)_startInstallationWithService:(id)service done:(id)done
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  doneCopy = done;
   v8 = _LTOSLogAssets();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -80,26 +80,26 @@
   block[2] = __56___LTInstallRequest__startInstallationWithService_done___block_invoke;
   block[3] = &unk_278B6CCE0;
   objc_copyWeak(&v15, buf);
-  v13 = v6;
-  v14 = v7;
-  v10 = v6;
-  v11 = v7;
+  v13 = serviceCopy;
+  v14 = doneCopy;
+  v10 = serviceCopy;
+  v11 = doneCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
 }
 
-- (void)languageInstallProgressed:(id)a3 error:(id)a4
+- (void)languageInstallProgressed:(id)progressed error:(id)error
 {
-  v10 = a3;
-  v6 = a4;
+  progressedCopy = progressed;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained languageInstallProgressed:v10 error:v6];
+  [WeakRetained languageInstallProgressed:progressedCopy error:errorCopy];
 
-  if (v10 && (progressHandler = self->_progressHandler) != 0)
+  if (progressedCopy && (progressHandler = self->_progressHandler) != 0)
   {
-    progressHandler[2](progressHandler, v10, v6);
+    progressHandler[2](progressHandler, progressedCopy, errorCopy);
   }
 
   else
@@ -107,7 +107,7 @@
     completionHandler = self->_completionHandler;
     if (completionHandler)
     {
-      completionHandler[2](completionHandler, v6);
+      completionHandler[2](completionHandler, errorCopy);
     }
   }
 }

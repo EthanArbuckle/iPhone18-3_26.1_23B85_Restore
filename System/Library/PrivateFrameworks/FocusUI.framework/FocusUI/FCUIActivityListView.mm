@@ -1,45 +1,45 @@
 @interface FCUIActivityListView
 - (BOOL)adjustForContentSizeCategoryChange;
 - (BOOL)adjustsFontForContentSizeCategory;
-- (BOOL)touchesShouldCancelInContentView:(id)a3;
-- (CGRect)_contentViewFrameForContentSize:(CGSize)a3 inBounds:(CGRect)a4;
-- (CGRect)_setContractedFrame:(CGRect)a3 viaResizeWithRepresentedActivity:(id)a4 transitionCoordinator:(id)a5;
-- (CGRect)_setContractedFrame:(CGRect)a3 viaScaleWithRepresentedActivity:(id)a4 transitionCoordinator:(id)a5;
-- (CGRect)_setExpandedFrame:(CGRect)a3 initialFrame:(CGRect)a4 representedActivity:(id)a5 anchorActivityView:(id)a6 collapsedSizeBlock:(id)a7 preludeBlock:(id)a8 activityViewAnimationBlock:(id)a9 transitionCoordinator:(id)a10;
-- (CGRect)_setExpandedFrame:(CGRect)a3 initialFrame:(CGRect)a4 viaResizeWithRepresentedActivity:(id)a5 transitionCoordinator:(id)a6;
-- (CGRect)_setExpandedFrame:(CGRect)a3 initialFrame:(CGRect)a4 viaScaleWithRepresentedActivity:(id)a5 transitionCoordinator:(id)a6;
-- (CGRect)setContractedFrame:(CGRect)a3 representedActivity:(id)a4 presentationStyle:(int64_t)a5 transitionCoordinator:(id)a6;
-- (CGRect)setExpandedFrame:(CGRect)a3 initialFrame:(CGRect)a4 representedActivity:(id)a5 presentationStyle:(int64_t)a6 transitionCoordinator:(id)a7;
-- (CGSize)_contentSizeForBounds:(CGRect)a3;
+- (BOOL)touchesShouldCancelInContentView:(id)view;
+- (CGRect)_contentViewFrameForContentSize:(CGSize)size inBounds:(CGRect)bounds;
+- (CGRect)_setContractedFrame:(CGRect)frame viaResizeWithRepresentedActivity:(id)activity transitionCoordinator:(id)coordinator;
+- (CGRect)_setContractedFrame:(CGRect)frame viaScaleWithRepresentedActivity:(id)activity transitionCoordinator:(id)coordinator;
+- (CGRect)_setExpandedFrame:(CGRect)frame initialFrame:(CGRect)initialFrame representedActivity:(id)activity anchorActivityView:(id)view collapsedSizeBlock:(id)block preludeBlock:(id)preludeBlock activityViewAnimationBlock:(id)animationBlock transitionCoordinator:(id)self0;
+- (CGRect)_setExpandedFrame:(CGRect)frame initialFrame:(CGRect)initialFrame viaResizeWithRepresentedActivity:(id)activity transitionCoordinator:(id)coordinator;
+- (CGRect)_setExpandedFrame:(CGRect)frame initialFrame:(CGRect)initialFrame viaScaleWithRepresentedActivity:(id)activity transitionCoordinator:(id)coordinator;
+- (CGRect)setContractedFrame:(CGRect)frame representedActivity:(id)activity presentationStyle:(int64_t)style transitionCoordinator:(id)coordinator;
+- (CGRect)setExpandedFrame:(CGRect)frame initialFrame:(CGRect)initialFrame representedActivity:(id)activity presentationStyle:(int64_t)style transitionCoordinator:(id)coordinator;
+- (CGSize)_contentSizeForBounds:(CGRect)bounds;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (FCUIActivityListView)initWithFrame:(CGRect)a3;
-- (id)_activityViewForRepresentedActivity:(id)a3;
-- (id)_orderedSubviewsIncludingHeader:(BOOL)a3 andFooter:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (FCUIActivityListView)initWithFrame:(CGRect)frame;
+- (id)_activityViewForRepresentedActivity:(id)activity;
+- (id)_orderedSubviewsIncludingHeader:(BOOL)header andFooter:(BOOL)footer;
 - (void)_configureContentViewIfNecessary;
 - (void)_invalidateContentSize;
 - (void)_recalculateContentSize;
 - (void)endIsolation;
-- (void)isolateActivityView:(id)a3 withInset:(UIEdgeInsets)a4;
+- (void)isolateActivityView:(id)view withInset:(UIEdgeInsets)inset;
 - (void)layoutSubviews;
 - (void)resetScrollForStaticPresentation;
-- (void)setActivityViews:(id)a3;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setExpandedActivityView:(id)a3 withTransitionCoordinator:(id)a4;
-- (void)setFooterPinnedToBottom:(BOOL)a3;
-- (void)setFooterView:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHeaderView:(id)a3;
+- (void)setActivityViews:(id)views;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setExpandedActivityView:(id)view withTransitionCoordinator:(id)coordinator;
+- (void)setFooterPinnedToBottom:(BOOL)bottom;
+- (void)setFooterView:(id)view;
+- (void)setFrame:(CGRect)frame;
+- (void)setHeaderView:(id)view;
 - (void)setNeedsLayout;
 @end
 
 @implementation FCUIActivityListView
 
-- (FCUIActivityListView)initWithFrame:(CGRect)a3
+- (FCUIActivityListView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = FCUIActivityListView;
-  v3 = [(FCUIActivityListView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FCUIActivityListView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -64,34 +64,34 @@
   [(FCUIActivityListView *)self _recalculateContentSize];
 }
 
-- (void)setActivityViews:(id)a3
+- (void)setActivityViews:(id)views
 {
-  v6 = a3;
-  v4 = [(FCUIActivityListView *)self activityViews];
+  viewsCopy = views;
+  activityViews = [(FCUIActivityListView *)self activityViews];
   v5 = BSEqualArrays();
 
   if ((v5 & 1) == 0)
   {
     [(FCUIActivityListView *)self _configureContentViewIfNecessary];
-    [(FCUIActivityListContentView *)self->_contentView setActivityViews:v6];
+    [(FCUIActivityListContentView *)self->_contentView setActivityViews:viewsCopy];
     [(FCUIActivityListView *)self _invalidateContentSize];
     [(FCUIActivityListContentView *)self->_contentView setNeedsLayout];
   }
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v7 = a3;
-  v4 = [(FCUIActivityListView *)self headerView];
+  viewCopy = view;
+  headerView = [(FCUIActivityListView *)self headerView];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    v6 = v7;
-    if (v7)
+    v6 = viewCopy;
+    if (viewCopy)
     {
       [(FCUIActivityListView *)self _configureContentViewIfNecessary];
-      v6 = v7;
+      v6 = viewCopy;
     }
 
     [(FCUIActivityListContentView *)self->_contentView setHeaderView:v6];
@@ -99,19 +99,19 @@
   }
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v7 = a3;
-  v4 = [(FCUIActivityListView *)self footerView];
+  viewCopy = view;
+  footerView = [(FCUIActivityListView *)self footerView];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    v6 = v7;
-    if (v7)
+    v6 = viewCopy;
+    if (viewCopy)
     {
       [(FCUIActivityListView *)self _configureContentViewIfNecessary];
-      v6 = v7;
+      v6 = viewCopy;
     }
 
     [(FCUIActivityListContentView *)self->_contentView setFooterView:v6];
@@ -119,30 +119,30 @@
   }
 }
 
-- (void)setFooterPinnedToBottom:(BOOL)a3
+- (void)setFooterPinnedToBottom:(BOOL)bottom
 {
-  if (self->_footerPinnedToBottom != a3)
+  if (self->_footerPinnedToBottom != bottom)
   {
-    self->_footerPinnedToBottom = a3;
+    self->_footerPinnedToBottom = bottom;
     [(FCUIActivityListContentView *)self->_contentView setFooterPinnedToBottom:?];
 
     [(FCUIActivityListView *)self _invalidateContentSize];
   }
 }
 
-- (CGRect)_setExpandedFrame:(CGRect)a3 initialFrame:(CGRect)a4 representedActivity:(id)a5 anchorActivityView:(id)a6 collapsedSizeBlock:(id)a7 preludeBlock:(id)a8 activityViewAnimationBlock:(id)a9 transitionCoordinator:(id)a10
+- (CGRect)_setExpandedFrame:(CGRect)frame initialFrame:(CGRect)initialFrame representedActivity:(id)activity anchorActivityView:(id)view collapsedSizeBlock:(id)block preludeBlock:(id)preludeBlock activityViewAnimationBlock:(id)animationBlock transitionCoordinator:(id)self0
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v130 = *MEMORY[0x277D85DE8];
-  v104 = a5;
-  v99 = a6;
-  v20 = a7;
-  v106 = a8;
-  v21 = a9;
-  v22 = a10;
+  activityCopy = activity;
+  viewCopy = view;
+  blockCopy = block;
+  preludeBlockCopy = preludeBlock;
+  animationBlockCopy = animationBlock;
+  coordinatorCopy = coordinator;
   [(FCUIActivityListView *)self _configureContentViewIfNecessary];
   contentView = self->_contentView;
   BSRectWithSize();
@@ -152,15 +152,15 @@
   BSRectWithSize();
   [(FCUIActivityListView *)self _contentViewFrameForContentSize:v25 inBounds:v27, v28, v29, v30, v31];
   v109 = [(FCUIActivityListContentView *)contentView subviewFramesInBounds:?];
-  v32 = [(FCUIActivityListContentView *)self->_contentView activityViews];
-  v107 = v22;
-  [v22 transitionDuration];
+  activityViews = [(FCUIActivityListContentView *)self->_contentView activityViews];
+  v107 = coordinatorCopy;
+  [coordinatorCopy transitionDuration];
   v34 = v33;
   v124 = 0u;
   v125 = 0u;
   v126 = 0u;
   v127 = 0u;
-  obj = v32;
+  obj = activityViews;
   v35 = [obj countByEnumeratingWithState:&v124 objects:v129 count:16];
   if (v35)
   {
@@ -204,30 +204,30 @@
   v122[1] = 3221225472;
   v122[2] = __175__FCUIActivityListView__setExpandedFrame_initialFrame_representedActivity_anchorActivityView_collapsedSizeBlock_preludeBlock_activityViewAnimationBlock_transitionCoordinator___block_invoke;
   v122[3] = &unk_27901A3D0;
-  v102 = v104;
+  v102 = activityCopy;
   v123 = v102;
   v42 = [obj bs_firstObjectPassingTest:v122];
   [(FCUIActivityListContentView *)self->_contentView setCompactActivityView:v42];
   v43 = [(FCUIActivityListView *)self _orderedSubviewsIncludingHeader:1 andFooter:1];
-  v44 = [(FCUIActivityListContentView *)self->_contentView footerView];
-  v45 = v44;
-  if (v44)
+  footerView = [(FCUIActivityListContentView *)self->_contentView footerView];
+  v45 = footerView;
+  if (footerView)
   {
     v46 = MEMORY[0x277D75D18];
     v120[0] = MEMORY[0x277D85DD0];
     v120[1] = 3221225472;
     v120[2] = __175__FCUIActivityListView__setExpandedFrame_initialFrame_representedActivity_anchorActivityView_collapsedSizeBlock_preludeBlock_activityViewAnimationBlock_transitionCoordinator___block_invoke_2;
     v120[3] = &unk_27901A470;
-    v121 = v44;
+    v121 = footerView;
     [v46 performWithoutAnimation:v120];
   }
 
   v98 = v45;
-  v105 = v20;
-  v47 = (*(v20 + 2))(v20);
+  v105 = blockCopy;
+  v47 = (*(blockCopy + 2))(blockCopy);
   v49 = v48;
   [(FCUIActivityListContentView *)self->_contentView setCollapsedSize:?];
-  v106[2](v47, v49);
+  preludeBlockCopy[2](v47, v49);
   [(FCUIActivityListView *)self setFrame:x, y, width, height];
   [(FCUIActivityListView *)self _recalculateContentSize];
   [(FCUIActivityListContentView *)self->_contentView setCollapsedSize:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
@@ -239,9 +239,9 @@
   *&aBlock[4] = v34;
   v50 = _Block_copy(aBlock);
   v101 = v42;
-  if (v99)
+  if (viewCopy)
   {
-    v51 = v99;
+    v51 = viewCopy;
   }
 
   else
@@ -298,7 +298,7 @@
           v79 = v78 - v53;
         }
 
-        v21[2](v21, v68, v79, v50, v71, v73, v75, v77, v56, v58, v60, v62);
+        animationBlockCopy[2](animationBlockCopy, v68, v79, v50, v71, v73, v75, v77, v56, v58, v60, v62);
       }
 
       v65 = [v63 countByEnumeratingWithState:&v115 objects:v128 count:16];
@@ -334,9 +334,9 @@
     [v107 animateAlongsideTransition:0 completion:v110];
   }
 
-  v85 = [v101 superview];
+  superview = [v101 superview];
   [v101 frame];
-  [v85 convertRect:0 toView:?];
+  [superview convertRect:0 toView:?];
   v87 = v86;
   v89 = v88;
   v91 = v90;
@@ -425,18 +425,18 @@ void __175__FCUIActivityListView__setExpandedFrame_initialFrame_representedActiv
   [v1 setFrame:?];
 }
 
-- (CGRect)_setExpandedFrame:(CGRect)a3 initialFrame:(CGRect)a4 viaScaleWithRepresentedActivity:(id)a5 transitionCoordinator:(id)a6
+- (CGRect)_setExpandedFrame:(CGRect)frame initialFrame:(CGRect)initialFrame viaScaleWithRepresentedActivity:(id)activity transitionCoordinator:(id)coordinator
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3.size.height;
-  v12 = a3.size.width;
-  v13 = a3.origin.y;
-  v14 = a3.origin.x;
-  v16 = a5;
-  v17 = a6;
+  height = initialFrame.size.height;
+  width = initialFrame.size.width;
+  y = initialFrame.origin.y;
+  x = initialFrame.origin.x;
+  v11 = frame.size.height;
+  v12 = frame.size.width;
+  v13 = frame.origin.y;
+  v14 = frame.origin.x;
+  activityCopy = activity;
+  coordinatorCopy = coordinator;
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x5010000000;
@@ -477,7 +477,7 @@ void __175__FCUIActivityListView__setExpandedFrame_initialFrame_representedActiv
   *&v30[9] = height;
   v30[4] = self;
   v30[5] = v33;
-  [(FCUIActivityListView *)self _setExpandedFrame:v16 initialFrame:0 representedActivity:v32 anchorActivityView:v31 collapsedSizeBlock:v30 preludeBlock:v17 activityViewAnimationBlock:v14 transitionCoordinator:v13, v12, v11, x, y, width, height];
+  [(FCUIActivityListView *)self _setExpandedFrame:activityCopy initialFrame:0 representedActivity:v32 anchorActivityView:v31 collapsedSizeBlock:v30 preludeBlock:coordinatorCopy activityViewAnimationBlock:v14 transitionCoordinator:v13, v12, v11, x, y, width, height];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -608,25 +608,25 @@ uint64_t __109__FCUIActivityListView__setExpandedFrame_initialFrame_viaScaleWith
   return [*(a1 + 32) setAlpha:1.0];
 }
 
-- (CGRect)_setExpandedFrame:(CGRect)a3 initialFrame:(CGRect)a4 viaResizeWithRepresentedActivity:(id)a5 transitionCoordinator:(id)a6
+- (CGRect)_setExpandedFrame:(CGRect)frame initialFrame:(CGRect)initialFrame viaResizeWithRepresentedActivity:(id)activity transitionCoordinator:(id)coordinator
 {
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __110__FCUIActivityListView__setExpandedFrame_initialFrame_viaResizeWithRepresentedActivity_transitionCoordinator___block_invoke;
   v14[3] = &__block_descriptor_64_e15__CGSize_dd_8__0l;
-  v15 = a4;
+  initialFrameCopy = initialFrame;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __110__FCUIActivityListView__setExpandedFrame_initialFrame_viaResizeWithRepresentedActivity_transitionCoordinator___block_invoke_2;
   v12[3] = &unk_27901A970;
   v12[4] = self;
-  v13 = a4;
+  initialFrameCopy2 = initialFrame;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __110__FCUIActivityListView__setExpandedFrame_initialFrame_viaResizeWithRepresentedActivity_transitionCoordinator___block_invoke_4;
   v10[3] = &__block_descriptor_64_e106_v96__0__UIView_8_CGRect__CGPoint_dd__CGSize_dd__16_CGRect__CGPoint_dd__CGSize_dd__48q80___v__ddq___v____88l;
-  v11 = a4;
-  [(FCUIActivityListView *)self _setExpandedFrame:a5 initialFrame:0 representedActivity:v14 anchorActivityView:v12 collapsedSizeBlock:v10 preludeBlock:a6 activityViewAnimationBlock:a3.origin.x transitionCoordinator:a3.origin.y, a3.size.width, a3.size.height];
+  initialFrameCopy3 = initialFrame;
+  [(FCUIActivityListView *)self _setExpandedFrame:activity initialFrame:0 representedActivity:v14 anchorActivityView:v12 collapsedSizeBlock:v10 preludeBlock:coordinator activityViewAnimationBlock:frame.origin.x transitionCoordinator:frame.origin.y, frame.size.width, frame.size.height];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -760,16 +760,16 @@ void __110__FCUIActivityListView__setExpandedFrame_initialFrame_viaResizeWithRep
   [v2 _modifyAnimationsWithPreferredFrameRateRange:1703937 updateReason:v9 animations:{*&v6, v7, v8}];
 }
 
-- (CGRect)setExpandedFrame:(CGRect)a3 initialFrame:(CGRect)a4 representedActivity:(id)a5 presentationStyle:(int64_t)a6 transitionCoordinator:(id)a7
+- (CGRect)setExpandedFrame:(CGRect)frame initialFrame:(CGRect)initialFrame representedActivity:(id)activity presentationStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
-  if (a6 == 1)
+  if (style == 1)
   {
-    [(FCUIActivityListView *)self _setExpandedFrame:a5 initialFrame:a7 viaScaleWithRepresentedActivity:a3.origin.x transitionCoordinator:a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+    [(FCUIActivityListView *)self _setExpandedFrame:activity initialFrame:coordinator viaScaleWithRepresentedActivity:frame.origin.x transitionCoordinator:frame.origin.y, frame.size.width, frame.size.height, initialFrame.origin.x, initialFrame.origin.y, initialFrame.size.width, initialFrame.size.height];
   }
 
   else
   {
-    [(FCUIActivityListView *)self _setExpandedFrame:a5 initialFrame:a7 viaResizeWithRepresentedActivity:a3.origin.x transitionCoordinator:a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+    [(FCUIActivityListView *)self _setExpandedFrame:activity initialFrame:coordinator viaResizeWithRepresentedActivity:frame.origin.x transitionCoordinator:frame.origin.y, frame.size.width, frame.size.height, initialFrame.origin.x, initialFrame.origin.y, initialFrame.size.width, initialFrame.size.height];
   }
 
   result.size.height = v10;
@@ -779,16 +779,16 @@ void __110__FCUIActivityListView__setExpandedFrame_initialFrame_viaResizeWithRep
   return result;
 }
 
-- (CGRect)setContractedFrame:(CGRect)a3 representedActivity:(id)a4 presentationStyle:(int64_t)a5 transitionCoordinator:(id)a6
+- (CGRect)setContractedFrame:(CGRect)frame representedActivity:(id)activity presentationStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
-  if (a5 == 1)
+  if (style == 1)
   {
-    [(FCUIActivityListView *)self _setContractedFrame:a4 viaScaleWithRepresentedActivity:a6 transitionCoordinator:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [(FCUIActivityListView *)self _setContractedFrame:activity viaScaleWithRepresentedActivity:coordinator transitionCoordinator:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   }
 
   else
   {
-    [(FCUIActivityListView *)self _setContractedFrame:a4 viaResizeWithRepresentedActivity:a6 transitionCoordinator:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [(FCUIActivityListView *)self _setContractedFrame:activity viaResizeWithRepresentedActivity:coordinator transitionCoordinator:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   }
 
   result.size.height = v9;
@@ -798,18 +798,18 @@ void __110__FCUIActivityListView__setExpandedFrame_initialFrame_viaResizeWithRep
   return result;
 }
 
-- (void)setExpandedActivityView:(id)a3 withTransitionCoordinator:(id)a4
+- (void)setExpandedActivityView:(id)view withTransitionCoordinator:(id)coordinator
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  coordinatorCopy = coordinator;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v25 = self;
-  v8 = [(FCUIActivityListView *)self activityViews];
-  v9 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  selfCopy = self;
+  activityViews = [(FCUIActivityListView *)self activityViews];
+  v9 = [activityViews countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v9)
   {
     v10 = v9;
@@ -823,7 +823,7 @@ void __110__FCUIActivityListView__setExpandedFrame_initialFrame_viaResizeWithRep
       {
         if (*v28 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(activityViews);
         }
 
         v14 = *(*(&v27 + 1) + 8 * v12);
@@ -841,23 +841,23 @@ void __110__FCUIActivityListView__setExpandedFrame_initialFrame_viaResizeWithRep
         v17 = v16;
         if (v16)
         {
-          [v16 setExpanded:v16 == v6 withTransitionCoordinator:v7];
+          [v16 setExpanded:v16 == viewCopy withTransitionCoordinator:coordinatorCopy];
           if ([v17 isExpanded])
           {
             if (objc_opt_respondsToSelector())
             {
               [v17 gestureRecognizerForExclusionRelationships];
-              v18 = v8;
-              v19 = v7;
+              v18 = activityViews;
+              v19 = coordinatorCopy;
               v20 = v13;
-              v22 = v21 = v6;
-              v23 = [(FCUIActivityListView *)v25 panGestureRecognizer];
-              [v22 requireGestureRecognizerToFail:v23];
+              v22 = v21 = viewCopy;
+              panGestureRecognizer = [(FCUIActivityListView *)selfCopy panGestureRecognizer];
+              [v22 requireGestureRecognizerToFail:panGestureRecognizer];
 
-              v6 = v21;
+              viewCopy = v21;
               v13 = v20;
-              v7 = v19;
-              v8 = v18;
+              coordinatorCopy = v19;
+              activityViews = v18;
               v11 = v24;
             }
           }
@@ -867,7 +867,7 @@ void __110__FCUIActivityListView__setExpandedFrame_initialFrame_viaResizeWithRep
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v10 = [activityViews countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v10);
@@ -877,8 +877,8 @@ void __110__FCUIActivityListView__setExpandedFrame_initialFrame_viaResizeWithRep
   v26[1] = 3221225472;
   v26[2] = __74__FCUIActivityListView_setExpandedActivityView_withTransitionCoordinator___block_invoke;
   v26[3] = &unk_27901A3F8;
-  v26[4] = v25;
-  [v7 animateAlongsideTransition:v26 completion:0];
+  v26[4] = selfCopy;
+  [coordinatorCopy animateAlongsideTransition:v26 completion:0];
 }
 
 uint64_t __74__FCUIActivityListView_setExpandedActivityView_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -889,16 +889,16 @@ uint64_t __74__FCUIActivityListView_setExpandedActivityView_withTransitionCoordi
   return [v2 layoutIfNeeded];
 }
 
-- (void)isolateActivityView:(id)a3 withInset:(UIEdgeInsets)a4
+- (void)isolateActivityView:(id)view withInset:(UIEdgeInsets)inset
 {
-  bottom = a4.bottom;
+  bottom = inset.bottom;
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(FCUIActivityListView *)self activityViews];
-  v9 = v8;
-  if (!self->_isolatedActivityView && [v8 containsObject:v7])
+  viewCopy = view;
+  activityViews = [(FCUIActivityListView *)self activityViews];
+  v9 = activityViews;
+  if (!self->_isolatedActivityView && [activityViews containsObject:viewCopy])
   {
-    objc_storeStrong(&self->_isolatedActivityView, a3);
+    objc_storeStrong(&self->_isolatedActivityView, view);
     [(FCUIActivityDisplaying *)self->_isolatedActivityView setContracted:1];
     [(FCUIActivityListView *)self setNeedsLayout];
     [(FCUIActivityListView *)self layoutIfNeeded];
@@ -967,8 +967,8 @@ uint64_t __74__FCUIActivityListView_setExpandedActivityView_withTransitionCoordi
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(FCUIActivityListView *)self activityViews];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    activityViews = [(FCUIActivityListView *)self activityViews];
+    v6 = [activityViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -980,14 +980,14 @@ uint64_t __74__FCUIActivityListView_setExpandedActivityView_withTransitionCoordi
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(activityViews);
           }
 
           [*(*(&v10 + 1) + 8 * v9++) setAlpha:1.0];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [activityViews countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -995,10 +995,10 @@ uint64_t __74__FCUIActivityListView_setExpandedActivityView_withTransitionCoordi
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(FCUIActivityListContentView *)self->_contentView sizeThatFits:a3.width, a3.height];
+  width = fits.width;
+  [(FCUIActivityListContentView *)self->_contentView sizeThatFits:fits.width, fits.height];
   if (width >= v4)
   {
     v4 = width;
@@ -1025,12 +1025,12 @@ uint64_t __74__FCUIActivityListView_setExpandedActivityView_withTransitionCoordi
   [(FCUIActivityListContentView *)self->_contentView setNeedsLayout];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(FCUIActivityListView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -1064,16 +1064,16 @@ uint64_t __74__FCUIActivityListView_setExpandedActivityView_withTransitionCoordi
   }
 }
 
-- (BOOL)touchesShouldCancelInContentView:(id)a3
+- (BOOL)touchesShouldCancelInContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v7.receiver = self;
   v7.super_class = FCUIActivityListView;
-  if ([(FCUIActivityListView *)&v7 touchesShouldCancelInContentView:v4])
+  if ([(FCUIActivityListView *)&v7 touchesShouldCancelInContentView:viewCopy])
   {
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 isMenuElement] ^ 1;
+      v5 = [viewCopy isMenuElement] ^ 1;
     }
 
     else
@@ -1098,29 +1098,29 @@ uint64_t __74__FCUIActivityListView_setExpandedActivityView_withTransitionCoordi
   return [(FCUIActivityListContentView *)contentView adjustsFontForContentSizeCategory];
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  v3 = a3;
+  categoryCopy = category;
   [(FCUIActivityListView *)self _configureContentViewIfNecessary];
   contentView = self->_contentView;
 
-  [(FCUIActivityListContentView *)contentView setAdjustsFontForContentSizeCategory:v3];
+  [(FCUIActivityListContentView *)contentView setAdjustsFontForContentSizeCategory:categoryCopy];
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [(FCUIActivityListView *)self adjustsFontForContentSizeCategory];
-  if (v3)
+  adjustsFontForContentSizeCategory = [(FCUIActivityListView *)self adjustsFontForContentSizeCategory];
+  if (adjustsFontForContentSizeCategory)
   {
-    v3 = [(FCUIActivityListContentView *)self->_contentView adjustForContentSizeCategoryChange];
-    if (v3)
+    adjustsFontForContentSizeCategory = [(FCUIActivityListContentView *)self->_contentView adjustForContentSizeCategoryChange];
+    if (adjustsFontForContentSizeCategory)
     {
       [(FCUIActivityListContentView *)self->_contentView setNeedsLayout];
-      LOBYTE(v3) = 1;
+      LOBYTE(adjustsFontForContentSizeCategory) = 1;
     }
   }
 
-  return v3;
+  return adjustsFontForContentSizeCategory;
 }
 
 - (void)_configureContentViewIfNecessary
@@ -1140,13 +1140,13 @@ uint64_t __74__FCUIActivityListView_setExpandedActivityView_withTransitionCoordi
   }
 }
 
-- (CGSize)_contentSizeForBounds:(CGRect)a3
+- (CGSize)_contentSizeForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(FCUIActivityListContentView *)self->_contentView sizeThatFits:a3.size.width, a3.size.height];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [(FCUIActivityListContentView *)self->_contentView sizeThatFits:bounds.size.width, bounds.size.height];
   v8 = v7;
   v12.origin.x = x;
   v12.origin.y = y;
@@ -1159,9 +1159,9 @@ uint64_t __74__FCUIActivityListView_setExpandedActivityView_withTransitionCoordi
   return result;
 }
 
-- (CGRect)_contentViewFrameForContentSize:(CGSize)a3 inBounds:(CGRect)a4
+- (CGRect)_contentViewFrameForContentSize:(CGSize)size inBounds:(CGRect)bounds
 {
-  CGRectGetHeight(a4);
+  CGRectGetHeight(bounds);
 
   BSRectWithSize();
   result.size.height = v7;
@@ -1227,17 +1227,17 @@ uint64_t __74__FCUIActivityListView_setExpandedActivityView_withTransitionCoordi
   [(FCUIActivityListView *)self setNeedsLayout];
 }
 
-- (id)_activityViewForRepresentedActivity:(id)a3
+- (id)_activityViewForRepresentedActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(FCUIActivityListContentView *)self->_contentView activityViews];
+  activityCopy = activity;
+  activityViews = [(FCUIActivityListContentView *)self->_contentView activityViews];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__FCUIActivityListView__activityViewForRepresentedActivity___block_invoke;
   v9[3] = &unk_27901A3D0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 bs_firstObjectPassingTest:v9];
+  v10 = activityCopy;
+  v6 = activityCopy;
+  v7 = [activityViews bs_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -1253,50 +1253,50 @@ uint64_t __60__FCUIActivityListView__activityViewForRepresentedActivity___block_
   return v6;
 }
 
-- (id)_orderedSubviewsIncludingHeader:(BOOL)a3 andFooter:(BOOL)a4
+- (id)_orderedSubviewsIncludingHeader:(BOOL)header andFooter:(BOOL)footer
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(FCUIActivityListContentView *)self->_contentView activityViews];
-  v8 = [v7 mutableCopy];
+  footerCopy = footer;
+  headerCopy = header;
+  activityViews = [(FCUIActivityListContentView *)self->_contentView activityViews];
+  v8 = [activityViews mutableCopy];
 
-  if (v5)
+  if (headerCopy)
   {
-    v9 = [(FCUIActivityListContentView *)self->_contentView headerView];
+    headerView = [(FCUIActivityListContentView *)self->_contentView headerView];
 
-    if (v9)
+    if (headerView)
     {
-      v10 = [(FCUIActivityListContentView *)self->_contentView headerView];
-      [v8 insertObject:v10 atIndex:0];
+      headerView2 = [(FCUIActivityListContentView *)self->_contentView headerView];
+      [v8 insertObject:headerView2 atIndex:0];
     }
   }
 
-  if (v4)
+  if (footerCopy)
   {
-    v11 = [(FCUIActivityListContentView *)self->_contentView footerView];
+    footerView = [(FCUIActivityListContentView *)self->_contentView footerView];
 
-    if (v11)
+    if (footerView)
     {
-      v12 = [(FCUIActivityListContentView *)self->_contentView footerView];
-      [v8 insertObject:v12 atIndex:0];
+      footerView2 = [(FCUIActivityListContentView *)self->_contentView footerView];
+      [v8 insertObject:footerView2 atIndex:0];
     }
   }
 
   return v8;
 }
 
-- (CGRect)_setContractedFrame:(CGRect)a3 viaScaleWithRepresentedActivity:(id)a4 transitionCoordinator:(id)a5
+- (CGRect)_setContractedFrame:(CGRect)frame viaScaleWithRepresentedActivity:(id)activity transitionCoordinator:(id)coordinator
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v54 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = [(FCUIActivityListView *)self _activityViewForRepresentedActivity:a4];
-  v13 = [v12 superview];
+  coordinatorCopy = coordinator;
+  v12 = [(FCUIActivityListView *)self _activityViewForRepresentedActivity:activity];
+  superview = [v12 superview];
   [v12 frame];
-  [v13 convertRect:0 toView:?];
+  [superview convertRect:0 toView:?];
   v39 = v15;
   v40 = v14;
   v37 = v17;
@@ -1354,7 +1354,7 @@ uint64_t __60__FCUIActivityListView__activityViewForRepresentedActivity___block_
 
         v31 = v30;
         BSRectWithSize();
-        [v31 willPresent:0 withTargetContainerBounds:v11 transitionCoordinator:?];
+        [v31 willPresent:0 withTargetContainerBounds:coordinatorCopy transitionCoordinator:?];
         [v29 frame];
         UIRectCenteredIntegralRectScale();
         [v29 setFrame:0];
@@ -1365,7 +1365,7 @@ uint64_t __60__FCUIActivityListView__activityViewForRepresentedActivity___block_
         v46[2] = __98__FCUIActivityListView__setContractedFrame_viaScaleWithRepresentedActivity_transitionCoordinator___block_invoke;
         v46[3] = &unk_27901A3F8;
         v46[4] = v29;
-        [v11 animateAlongsideTransition:0 completion:v46];
+        [coordinatorCopy animateAlongsideTransition:0 completion:v46];
       }
 
       v26 = [v24 countByEnumeratingWithState:&v48 objects:v53 count:16];
@@ -1375,7 +1375,7 @@ uint64_t __60__FCUIActivityListView__activityViewForRepresentedActivity___block_
   }
 
   [(FCUIActivityListContentView *)self->_contentView setContentDetached:1];
-  [v11 transitionDuration];
+  [coordinatorCopy transitionDuration];
   if (v32 <= 0.0)
   {
     [(FCUIActivityListContentView *)self->_contentView setContentDetached:0];
@@ -1388,7 +1388,7 @@ uint64_t __60__FCUIActivityListView__activityViewForRepresentedActivity___block_
     v45[2] = __98__FCUIActivityListView__setContractedFrame_viaScaleWithRepresentedActivity_transitionCoordinator___block_invoke_2;
     v45[3] = &unk_27901A3F8;
     v45[4] = self;
-    [v11 animateAlongsideTransition:0 completion:v45];
+    [coordinatorCopy animateAlongsideTransition:0 completion:v45];
   }
 
   v34 = v39;
@@ -1412,18 +1412,18 @@ uint64_t __98__FCUIActivityListView__setContractedFrame_viaScaleWithRepresentedA
   return [v1 setTransform:v4];
 }
 
-- (CGRect)_setContractedFrame:(CGRect)a3 viaResizeWithRepresentedActivity:(id)a4 transitionCoordinator:(id)a5
+- (CGRect)_setContractedFrame:(CGRect)frame viaResizeWithRepresentedActivity:(id)activity transitionCoordinator:(id)coordinator
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v40 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = [(FCUIActivityListView *)self _activityViewForRepresentedActivity:a4];
-  v13 = [v12 superview];
+  coordinatorCopy = coordinator;
+  v12 = [(FCUIActivityListView *)self _activityViewForRepresentedActivity:activity];
+  superview = [v12 superview];
   [v12 frame];
-  [v13 convertRect:0 toView:?];
+  [superview convertRect:0 toView:?];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -1435,8 +1435,8 @@ uint64_t __98__FCUIActivityListView__setContractedFrame_viaScaleWithRepresentedA
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v22 = [(FCUIActivityListContentView *)self->_contentView activityViews];
-  v23 = [v22 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  activityViews = [(FCUIActivityListContentView *)self->_contentView activityViews];
+  v23 = [activityViews countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v23)
   {
     v24 = v23;
@@ -1448,7 +1448,7 @@ uint64_t __98__FCUIActivityListView__setContractedFrame_viaScaleWithRepresentedA
       {
         if (*v36 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(activityViews);
         }
 
         v27 = *(*(&v35 + 1) + 8 * v26);
@@ -1464,13 +1464,13 @@ uint64_t __98__FCUIActivityListView__setContractedFrame_viaScaleWithRepresentedA
 
         v29 = v28;
         BSRectWithSize();
-        [v29 willPresent:0 withTargetContainerBounds:v11 transitionCoordinator:?];
+        [v29 willPresent:0 withTargetContainerBounds:coordinatorCopy transitionCoordinator:?];
 
         ++v26;
       }
 
       while (v24 != v26);
-      v24 = [v22 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v24 = [activityViews countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v24);

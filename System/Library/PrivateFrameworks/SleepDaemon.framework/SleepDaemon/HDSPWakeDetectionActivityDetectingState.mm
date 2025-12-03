@@ -6,12 +6,12 @@
 
 - (id)expirationDate
 {
-  v2 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v2 infoProvider];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
 
-  v4 = [v3 nextWakeUp];
+  nextWakeUp = [infoProvider nextWakeUp];
 
-  return v4;
+  return nextWakeUp;
 }
 
 @end

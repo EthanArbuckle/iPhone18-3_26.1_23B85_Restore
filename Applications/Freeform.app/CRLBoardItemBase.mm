@@ -11,13 +11,13 @@
 - (NSUUID)id;
 - (NSUUID)parentUUID;
 - (_TtC8Freeform16CRLBoardItemBase)init;
-- (id)getReferencedAssetIDsWithIncludeChildren:(BOOL)a3;
+- (id)getReferencedAssetIDsWithIncludeChildren:(BOOL)children;
 - (int64_t)hash;
-- (void)setAccessibilityDescription:(id)a3;
-- (void)setAspectRatioLocked:(BOOL)a3;
-- (void)setGeometry:(id)a3;
-- (void)setLocked:(BOOL)a3;
-- (void)setShadow:(id)a3;
+- (void)setAccessibilityDescription:(id)description;
+- (void)setAspectRatioLocked:(BOOL)locked;
+- (void)setGeometry:(id)geometry;
+- (void)setLocked:(BOOL)locked;
+- (void)setShadow:(id)shadow;
 @end
 
 @implementation CRLBoardItemBase
@@ -41,7 +41,7 @@
   __chkstk_darwin(v3 - 8);
   v5 = &v15 - v4;
   v6 = *(**&self->_TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 272);
-  v7 = self;
+  selfCopy = self;
 
   v6(v8);
 
@@ -62,46 +62,46 @@
 - (CRLCanvasInfoGeometry)geometry
 {
   v2 = *(**&self->_TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 296);
-  v3 = self;
+  selfCopy = self;
 
   v5 = v2(v4);
 
   return v5;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v4 = a3;
-  v5 = self;
-  sub_1009AF540(v4);
+  geometryCopy = geometry;
+  selfCopy = self;
+  sub_1009AF540(geometryCopy);
 }
 
 - (BOOL)locked
 {
   v2 = *(**&self->_TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 368);
-  v3 = self;
+  selfCopy = self;
 
   LOBYTE(v2) = v2(v4);
 
   return v2 & 1;
 }
 
-- (void)setLocked:(BOOL)a3
+- (void)setLocked:(BOOL)locked
 {
-  v3 = a3;
-  v8 = self;
-  if (sub_1011255D4(v8))
+  lockedCopy = locked;
+  selfCopy = self;
+  if (sub_1011255D4(selfCopy))
   {
     v4 = OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData;
-    v5 = *(**&v8->_TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 368);
+    v5 = *(**&selfCopy->_TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 368);
 
     LODWORD(v5) = v5(v6) & 1;
 
-    if (v5 != v3)
+    if (v5 != lockedCopy)
     {
-      v7 = *(**&v8->_TtC8Freeform12CRLBoardItem_opaque[v4] + 376);
+      v7 = *(**&selfCopy->_TtC8Freeform12CRLBoardItem_opaque[v4] + 376);
 
-      v7(v3);
+      v7(lockedCopy);
     }
   }
 }
@@ -109,7 +109,7 @@
 - (BOOL)canBeGrouped
 {
   v2 = *(**&self->_TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 368);
-  v3 = self;
+  selfCopy = self;
 
   LOBYTE(v2) = v2(v4);
 
@@ -119,29 +119,29 @@
 - (BOOL)aspectRatioLocked
 {
   v2 = *(**&self->_TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 392);
-  v3 = self;
+  selfCopy = self;
 
   LOBYTE(v2) = v2(v4);
 
   return v2 & 1;
 }
 
-- (void)setAspectRatioLocked:(BOOL)a3
+- (void)setAspectRatioLocked:(BOOL)locked
 {
-  v3 = a3;
-  v8 = self;
-  if (sub_1011255D4(v8))
+  lockedCopy = locked;
+  selfCopy = self;
+  if (sub_1011255D4(selfCopy))
   {
     v4 = OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData;
-    v5 = *(**&v8->_TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 392);
+    v5 = *(**&selfCopy->_TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 392);
 
     LODWORD(v5) = v5(v6) & 1;
 
-    if (v5 != v3)
+    if (v5 != lockedCopy)
     {
-      v7 = *(**&v8->_TtC8Freeform12CRLBoardItem_opaque[v4] + 400);
+      v7 = *(**&selfCopy->_TtC8Freeform12CRLBoardItem_opaque[v4] + 400);
 
-      v7(v3);
+      v7(lockedCopy);
     }
   }
 }
@@ -149,7 +149,7 @@
 - (NSString)accessibilityDescription
 {
   v2 = *(**&self->_TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 416);
-  v3 = self;
+  selfCopy = self;
 
   v2(v4);
 
@@ -158,42 +158,42 @@
   return v5;
 }
 
-- (void)setAccessibilityDescription:(id)a3
+- (void)setAccessibilityDescription:(id)description
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1009B02A4(v4, v6);
 }
 
 - (CRLShadow)shadow
 {
   v2 = *(**&self->_TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 440);
-  v3 = self;
+  selfCopy = self;
 
   v5 = v2(v4);
 
   return v5;
 }
 
-- (void)setShadow:(id)a3
+- (void)setShadow:(id)shadow
 {
-  v5 = a3;
-  v6 = self;
-  sub_1009B5F44(a3);
+  shadowCopy = shadow;
+  selfCopy = self;
+  sub_1009B5F44(shadow);
 }
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1009BD4E8();
 
   return v3;
 }
 
-- (id)getReferencedAssetIDsWithIncludeChildren:(BOOL)a3
+- (id)getReferencedAssetIDsWithIncludeChildren:(BOOL)children
 {
-  v3 = self;
+  selfCopy = self;
 
   sub_100743DF0();
 
@@ -206,7 +206,7 @@
 
 - (BOOL)isSupported
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1009AE78C();
 
   return v3;
@@ -214,7 +214,7 @@
 
 - (BOOL)needsDownload
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1009B07F4();
 
   return v3 & 1;
@@ -222,7 +222,7 @@
 
 - (NSArray)stringContentForSearch
 {
-  v2 = self;
+  selfCopy = self;
   sub_1009B4F54();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;

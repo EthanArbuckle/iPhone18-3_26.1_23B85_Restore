@@ -1,16 +1,16 @@
 @interface MapsSuggestionsNoOperationTitleFormatter
-- (BOOL)formatTitlesForEntry:(id)a3 eta:(id)a4;
+- (BOOL)formatTitlesForEntry:(id)entry eta:(id)eta;
 @end
 
 @implementation MapsSuggestionsNoOperationTitleFormatter
 
-- (BOOL)formatTitlesForEntry:(id)a3 eta:(id)a4
+- (BOOL)formatTitlesForEntry:(id)entry eta:(id)eta
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  entryCopy = entry;
+  etaCopy = eta;
+  v7 = etaCopy;
+  if (!entryCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -34,7 +34,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v6)
+  if (!etaCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))

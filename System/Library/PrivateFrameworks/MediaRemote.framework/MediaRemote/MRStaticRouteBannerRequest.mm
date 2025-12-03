@@ -1,75 +1,75 @@
 @interface MRStaticRouteBannerRequest
-- (MRStaticRouteBannerRequest)initWithCoder:(id)a3;
+- (MRStaticRouteBannerRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MRStaticRouteBannerRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MRStaticRouteBannerRequest *)self routeIdentifier];
-  [v4 encodeObject:v5 forKey:@"rid"];
+  coderCopy = coder;
+  routeIdentifier = [(MRStaticRouteBannerRequest *)self routeIdentifier];
+  [coderCopy encodeObject:routeIdentifier forKey:@"rid"];
 
-  v6 = [(MRStaticRouteBannerRequest *)self routeName];
-  [v4 encodeObject:v6 forKey:@"rn"];
+  routeName = [(MRStaticRouteBannerRequest *)self routeName];
+  [coderCopy encodeObject:routeName forKey:@"rn"];
 
-  v7 = [(MRStaticRouteBannerRequest *)self outputDeviceNames];
-  [v4 encodeObject:v7 forKey:@"rns"];
+  outputDeviceNames = [(MRStaticRouteBannerRequest *)self outputDeviceNames];
+  [coderCopy encodeObject:outputDeviceNames forKey:@"rns"];
 
-  v8 = [(MRStaticRouteBannerRequest *)self routeSymbolName];
-  [v4 encodeObject:v8 forKey:@"rsn"];
+  routeSymbolName = [(MRStaticRouteBannerRequest *)self routeSymbolName];
+  [coderCopy encodeObject:routeSymbolName forKey:@"rsn"];
 
-  v9 = [(MRStaticRouteBannerRequest *)self actionImageName];
-  [v4 encodeObject:v9 forKey:@"ain"];
+  actionImageName = [(MRStaticRouteBannerRequest *)self actionImageName];
+  [coderCopy encodeObject:actionImageName forKey:@"ain"];
 
-  v10 = [(MRStaticRouteBannerRequest *)self soloModelID];
-  [v4 encodeObject:v10 forKey:@"smid"];
+  soloModelID = [(MRStaticRouteBannerRequest *)self soloModelID];
+  [coderCopy encodeObject:soloModelID forKey:@"smid"];
 
-  v11 = [(MRStaticRouteBannerRequest *)self soloDeviceEnclosureColor];
-  [v4 encodeObject:v11 forKey:@"sdec"];
+  soloDeviceEnclosureColor = [(MRStaticRouteBannerRequest *)self soloDeviceEnclosureColor];
+  [coderCopy encodeObject:soloDeviceEnclosureColor forKey:@"sdec"];
 
-  v12 = [(MRStaticRouteBannerRequest *)self userSelectedDeviceNames];
-  [v4 encodeObject:v12 forKey:@"aseodns"];
+  userSelectedDeviceNames = [(MRStaticRouteBannerRequest *)self userSelectedDeviceNames];
+  [coderCopy encodeObject:userSelectedDeviceNames forKey:@"aseodns"];
 }
 
-- (MRStaticRouteBannerRequest)initWithCoder:(id)a3
+- (MRStaticRouteBannerRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = MRStaticRouteBannerRequest;
   v5 = [(MRStaticRouteBannerRequest *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rid"];
     [(MRStaticRouteBannerRequest *)v5 setRouteIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rn"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rn"];
     [(MRStaticRouteBannerRequest *)v5 setRouteName:v7];
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"rns"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"rns"];
     [(MRStaticRouteBannerRequest *)v5 setOutputDeviceNames:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rsn"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rsn"];
     [(MRStaticRouteBannerRequest *)v5 setRouteSymbolName:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ain"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ain"];
     [(MRStaticRouteBannerRequest *)v5 setActionImageName:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"smid"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"smid"];
     [(MRStaticRouteBannerRequest *)v5 setSoloModelID:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sdec"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sdec"];
     [(MRStaticRouteBannerRequest *)v5 setSoloDeviceEnclosureColor:v15];
 
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"aseodns"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"aseodns"];
     [(MRStaticRouteBannerRequest *)v5 setUserSelectedDeviceNames:v19];
   }
 
@@ -83,26 +83,26 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@ (%p): ", v5, self];
 
-  v7 = [(MRStaticRouteBannerRequest *)self routeIdentifier];
-  [v6 appendFormat:@" routeIdentifier: %@", v7];
+  routeIdentifier = [(MRStaticRouteBannerRequest *)self routeIdentifier];
+  [v6 appendFormat:@" routeIdentifier: %@", routeIdentifier];
 
-  v8 = [(MRStaticRouteBannerRequest *)self routeName];
-  [v6 appendFormat:@" routeName: %@", v8];
+  routeName = [(MRStaticRouteBannerRequest *)self routeName];
+  [v6 appendFormat:@" routeName: %@", routeName];
 
-  v9 = [(MRStaticRouteBannerRequest *)self outputDeviceNames];
-  [v6 appendFormat:@" routeNames: %@", v9];
+  outputDeviceNames = [(MRStaticRouteBannerRequest *)self outputDeviceNames];
+  [v6 appendFormat:@" routeNames: %@", outputDeviceNames];
 
-  v10 = [(MRStaticRouteBannerRequest *)self routeSymbolName];
-  [v6 appendFormat:@" routeSymbolName: %@", v10];
+  routeSymbolName = [(MRStaticRouteBannerRequest *)self routeSymbolName];
+  [v6 appendFormat:@" routeSymbolName: %@", routeSymbolName];
 
-  v11 = [(MRStaticRouteBannerRequest *)self actionImageName];
-  [v6 appendFormat:@" actionImageName: %@", v11];
+  actionImageName = [(MRStaticRouteBannerRequest *)self actionImageName];
+  [v6 appendFormat:@" actionImageName: %@", actionImageName];
 
-  v12 = [(MRStaticRouteBannerRequest *)self soloModelID];
-  [v6 appendFormat:@" soloModelID: %@", v12];
+  soloModelID = [(MRStaticRouteBannerRequest *)self soloModelID];
+  [v6 appendFormat:@" soloModelID: %@", soloModelID];
 
-  v13 = [(MRStaticRouteBannerRequest *)self soloDeviceEnclosureColor];
-  [v6 appendFormat:@" soloDeviceEnclosureColor: %@", v13];
+  soloDeviceEnclosureColor = [(MRStaticRouteBannerRequest *)self soloDeviceEnclosureColor];
+  [v6 appendFormat:@" soloDeviceEnclosureColor: %@", soloDeviceEnclosureColor];
 
   [v6 appendString:@">"];
 

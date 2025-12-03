@@ -1,12 +1,12 @@
 @interface VRXVisualResponseProvider
 + (void)preloadPlugins;
 - (VRXVisualResponseProvider)init;
-- (id)viewControllerForModel:(id)a3 mode:(int64_t)a4;
-- (id)viewControllerForSnippetModel:(id)a3 bundleName:(id)a4 mode:(int64_t)a5;
-- (id)viewForModel:(id)a3 mode:(int64_t)a4;
-- (id)viewForSnippetModel:(id)a3 bundleName:(id)a4 mode:(int64_t)a5;
+- (id)viewControllerForModel:(id)model mode:(int64_t)mode;
+- (id)viewControllerForSnippetModel:(id)model bundleName:(id)name mode:(int64_t)mode;
+- (id)viewForModel:(id)model mode:(int64_t)mode;
+- (id)viewForSnippetModel:(id)model bundleName:(id)name mode:(int64_t)mode;
 - (void)reset;
-- (void)viewControllerForModel:(id)a3 mode:(int64_t)a4 completion:(id)a5;
+- (void)viewControllerForModel:(id)model mode:(int64_t)mode completion:(id)completion;
 @end
 
 @implementation VRXVisualResponseProvider
@@ -34,56 +34,56 @@
   }
 }
 
-- (id)viewControllerForModel:(id)a3 mode:(int64_t)a4
+- (id)viewControllerForModel:(id)model mode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = [(VRXVisualResponseProvider *)self provider];
-  v8 = [v7 viewControllerForModel:v6 mode:a4];
+  modelCopy = model;
+  provider = [(VRXVisualResponseProvider *)self provider];
+  v8 = [provider viewControllerForModel:modelCopy mode:mode];
 
   return v8;
 }
 
-- (id)viewControllerForSnippetModel:(id)a3 bundleName:(id)a4 mode:(int64_t)a5
+- (id)viewControllerForSnippetModel:(id)model bundleName:(id)name mode:(int64_t)mode
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(VRXVisualResponseProvider *)self provider];
-  v11 = [v10 viewControllerForSnippetModel:v9 bundleName:v8 mode:a5];
+  nameCopy = name;
+  modelCopy = model;
+  provider = [(VRXVisualResponseProvider *)self provider];
+  v11 = [provider viewControllerForSnippetModel:modelCopy bundleName:nameCopy mode:mode];
 
   return v11;
 }
 
-- (void)viewControllerForModel:(id)a3 mode:(int64_t)a4 completion:(id)a5
+- (void)viewControllerForModel:(id)model mode:(int64_t)mode completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(VRXVisualResponseProvider *)self provider];
-  [v10 viewControllerFor:v9 mode:a4 completion:v8];
+  completionCopy = completion;
+  modelCopy = model;
+  provider = [(VRXVisualResponseProvider *)self provider];
+  [provider viewControllerFor:modelCopy mode:mode completion:completionCopy];
 }
 
-- (id)viewForModel:(id)a3 mode:(int64_t)a4
+- (id)viewForModel:(id)model mode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = [(VRXVisualResponseProvider *)self provider];
-  v8 = [v7 viewForModel:v6 mode:a4 overload:0];
+  modelCopy = model;
+  provider = [(VRXVisualResponseProvider *)self provider];
+  v8 = [provider viewForModel:modelCopy mode:mode overload:0];
 
   return v8;
 }
 
-- (id)viewForSnippetModel:(id)a3 bundleName:(id)a4 mode:(int64_t)a5
+- (id)viewForSnippetModel:(id)model bundleName:(id)name mode:(int64_t)mode
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(VRXVisualResponseProvider *)self provider];
-  v11 = [v10 viewForSnippetModel:v9 bundleName:v8 mode:a5];
+  nameCopy = name;
+  modelCopy = model;
+  provider = [(VRXVisualResponseProvider *)self provider];
+  v11 = [provider viewForSnippetModel:modelCopy bundleName:nameCopy mode:mode];
 
   return v11;
 }
 
 - (void)reset
 {
-  v2 = [(VRXVisualResponseProvider *)self provider];
-  [v2 reset];
+  provider = [(VRXVisualResponseProvider *)self provider];
+  [provider reset];
 }
 
 @end

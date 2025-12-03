@@ -5,13 +5,13 @@
 - (SAAuthorizationStatus)authorizationStatus;
 - (SACrashDetectionManager)init;
 - (id)delegate;
-- (void)_appDidBecomeActive:(id)a3;
-- (void)_callDelegateWithCrashEvent:(id)a3;
+- (void)_appDidBecomeActive:(id)active;
+- (void)_callDelegateWithCrashEvent:(id)event;
 - (void)authorizationStatus;
 - (void)init;
 - (void)requestAuthorizationWithCompletionHandler:(void *)handler;
 - (void)setDelegate:(id)delegate;
-- (void)updateMostRecentCrashDetectionEvent:(id)a3;
+- (void)updateMostRecentCrashDetectionEvent:(id)event;
 @end
 
 @implementation SACrashDetectionManager
@@ -46,19 +46,19 @@
 
     if ([objc_opt_class() isAvailable])
     {
-      v4 = [(SACrashDetectionManager *)v2 client];
-      [v4 setCrashDetectionClientDelegate:v2];
+      client = [(SACrashDetectionManager *)v2 client];
+      [client setCrashDetectionClientDelegate:v2];
 
-      v5 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v5 addObserver:v2 selector:sel__appDidBecomeActive_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v2 selector:sel__appDidBecomeActive_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
     }
 
     else
     {
-      v5 = sa_default_log();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      defaultCenter = sa_default_log();
+      if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_ERROR))
       {
-        [(SACrashDetectionManager *)v5 init:v6];
+        [(SACrashDetectionManager *)defaultCenter init:v6];
       }
     }
   }
@@ -105,14 +105,14 @@
     [SACrashDetectionManager setDelegate:];
   }
 
-  v5 = [objc_opt_class() isAvailable];
+  isAvailable = [objc_opt_class() isAvailable];
   v6 = sa_default_log();
-  v7 = v6;
-  if ((v5 & 1) == 0)
+  client = v6;
+  if ((isAvailable & 1) == 0)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(SACrashDetectionManager *)v7 setDelegate:v9, v10, v11, v12, v13, v14, v15];
+      [(SACrashDetectionManager *)client setDelegate:v9, v10, v11, v12, v13, v14, v15];
     }
 
     goto LABEL_10;
@@ -127,8 +127,8 @@
   if (WeakRetained != v4)
   {
     objc_storeWeak(&self->_delegate, v4);
-    v7 = [(SACrashDetectionManager *)self client];
-    [v7 requestMostRecentCrashDetectionEvent];
+    client = [(SACrashDetectionManager *)self client];
+    [client requestMostRecentCrashDetectionEvent];
 LABEL_10:
   }
 }
@@ -165,12 +165,12 @@ LABEL_16:
     }
 
     v16 = v6;
-    v17 = [MEMORY[0x277D75128] sharedApplication];
-    v18 = [v17 applicationState];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    applicationState = [mEMORY[0x277D75128] applicationState];
 
     v19 = sa_default_log();
     v20 = v19;
-    if (v18 == 2)
+    if (applicationState == 2)
     {
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -187,14 +187,14 @@ LABEL_16:
       [SACrashDetectionManager requestAuthorizationWithCompletionHandler:];
     }
 
-    v21 = [(SACrashDetectionManager *)self client];
+    client = [(SACrashDetectionManager *)self client];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __69__SACrashDetectionManager_requestAuthorizationWithCompletionHandler___block_invoke;
     v22[3] = &unk_278B67FF0;
     v22[4] = self;
     v23 = v4;
-    [v21 requestCrashDetectionAuthorization:v22];
+    [client requestCrashDetectionAuthorization:v22];
   }
 
   else
@@ -230,23 +230,23 @@ void __69__SACrashDetectionManager_requestAuthorizationWithCompletionHandler___b
 
 + (BOOL)availableOverrideSetting
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 valueForKey:@"SACrashDetectionManagerAvailable"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"SACrashDetectionManagerAvailable"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)_appDidBecomeActive:(id)a3
+- (void)_appDidBecomeActive:(id)active
 {
   v4 = sa_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -254,36 +254,36 @@ void __69__SACrashDetectionManager_requestAuthorizationWithCompletionHandler___b
     [SACrashDetectionManager _appDidBecomeActive:];
   }
 
-  v5 = [(SACrashDetectionManager *)self client];
-  [v5 requestMostRecentCrashDetectionEvent];
+  client = [(SACrashDetectionManager *)self client];
+  [client requestMostRecentCrashDetectionEvent];
 }
 
-- (void)_callDelegateWithCrashEvent:(id)a3
+- (void)_callDelegateWithCrashEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = sa_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SACrashDetectionManager _callDelegateWithCrashEvent:];
   }
 
-  v6 = [(SACrashDetectionManager *)self delegate];
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(SACrashDetectionManager *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 crashDetectionManager:self didDetectEvent:v4];
+    [delegate crashDetectionManager:self didDetectEvent:eventCopy];
   }
 }
 
-- (void)updateMostRecentCrashDetectionEvent:(id)a3
+- (void)updateMostRecentCrashDetectionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = sa_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SACrashDetectionManager updateMostRecentCrashDetectionEvent:];
   }
 
-  [(SACrashDetectionManager *)self _callDelegateWithCrashEvent:v4];
+  [(SACrashDetectionManager *)self _callDelegateWithCrashEvent:eventCopy];
 }
 
 - (id)delegate
@@ -296,7 +296,7 @@ void __69__SACrashDetectionManager_requestAuthorizationWithCompletionHandler___b
 + (void)isAvailable
 {
   OUTLINED_FUNCTION_3_1();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_5_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -304,14 +304,14 @@ void __69__SACrashDetectionManager_requestAuthorizationWithCompletionHandler___b
 - (void)init
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_4_0(&dword_23AA4D000, a1, a3, "%s - Manager is unavailable, all API calls will fail.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_4_0(&dword_23AA4D000, self, a3, "%s - Manager is unavailable, all API calls will fail.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
 - (void)authorizationStatus
 {
   OUTLINED_FUNCTION_3_1();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_5_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

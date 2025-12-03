@@ -1,8 +1,8 @@
 @interface _UIRemoteViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityActiveKeyboard;
 - (id)_accessibilityGetRemoteElementArray;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilityRemoteElementCommunicationQueue;
 - (id)_accessibilityResponderElement;
 - (id)accessibilityElements;
@@ -11,10 +11,10 @@
 - (uint64_t)_accessibilitySetRemoteMachPort:(uint64_t)result;
 - (uint64_t)_accessibilitySetRemoteViewPid:(uint64_t)result;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_accessibilitySetFocusOnElement:(BOOL)a3;
-- (void)_accessibilitySetRemoteElementArray:(uint64_t)a1;
+- (void)_accessibilitySetFocusOnElement:(BOOL)element;
+- (void)_accessibilitySetRemoteElementArray:(uint64_t)array;
 - (void)_accessibilitySetRemoteElementIfNecessary;
-- (void)_accessibilityTransmitRemoteUUIDToPid:(int)a3 machPort:(id)obj value:;
+- (void)_accessibilityTransmitRemoteUUIDToPid:(int)pid machPort:(id)obj value:;
 - (void)_accessibilityUnregisterRemoteView;
 - (void)dealloc;
 @end
@@ -23,7 +23,7 @@
 
 - (uint64_t)_accessibilityRemoteMachPort
 {
-  if (a1)
+  if (self)
   {
     return __UIAccessibilityGetAssociatedUnsignedInt();
   }
@@ -46,7 +46,7 @@
 
 - (uint64_t)_accessibilityRemoteViewPid
 {
-  if (a1)
+  if (self)
   {
     return __UIAccessibilityGetAssociatedInt();
   }
@@ -67,14 +67,14 @@
   return result;
 }
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UISizeTrackingView"];
   [location[0] validateClass:@"_UIRemoteView" hasInstanceMethod:@"hostedWindowHostingHandle" withFullSignature:{"@", 0}];
   [location[0] validateClass:@"_UIHostedWindowHostingHandle" hasInstanceVariable:@"_pid" withType:"i"];
@@ -83,9 +83,9 @@
 
 - (id)_accessibilityGetRemoteElementArray
 {
-  if (a1)
+  if (self)
   {
-    v2 = objc_getAssociatedObject(a1, &___UIRemoteViewAccessibility___accessibilityGetRemoteElementArray);
+    v2 = objc_getAssociatedObject(self, &___UIRemoteViewAccessibility___accessibilityGetRemoteElementArray);
   }
 
   else
@@ -96,12 +96,12 @@
   return v2;
 }
 
-- (void)_accessibilitySetRemoteElementArray:(uint64_t)a1
+- (void)_accessibilitySetRemoteElementArray:(uint64_t)array
 {
-  v3 = a1;
+  arrayCopy = array;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v3)
+  if (arrayCopy)
   {
     __UIAccessibilitySetAssociatedObject();
   }
@@ -111,7 +111,7 @@
 
 - (id)_accessibilityRemoteElementCommunicationQueue
 {
-  if (a1)
+  if (self)
   {
     v4 = &_accessibilityRemoteElementCommunicationQueue_onceToken;
     location = 0;
@@ -135,74 +135,74 @@
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(_UIRemoteViewAccessibility *)self _accessibilityUnregisterRemoteView];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = _UIRemoteViewAccessibility;
   [(_UIRemoteViewAccessibility *)&v2 dealloc];
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  v9 = a3;
-  v8 = self;
+  testCopy = test;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  if (([(_UIRemoteViewAccessibility *)v8 pointInside:location[0] withEvent:v9.x, v9.y]& 1) != 0)
+  objc_storeStrong(location, event);
+  if (([(_UIRemoteViewAccessibility *)selfCopy pointInside:location[0] withEvent:testCopy.x, testCopy.y]& 1) != 0)
   {
-    v6 = [(_UIRemoteViewAccessibility *)v8 accessibilityElements];
-    v10 = [v6 lastObject];
-    MEMORY[0x29EDC9740](v6);
+    accessibilityElements = [(_UIRemoteViewAccessibility *)selfCopy accessibilityElements];
+    lastObject = [accessibilityElements lastObject];
+    MEMORY[0x29EDC9740](accessibilityElements);
   }
 
   else
   {
-    v10 = 0;
+    lastObject = 0;
   }
 
   objc_storeStrong(location, 0);
-  v4 = v10;
+  v4 = lastObject;
 
   return v4;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = _UIRemoteViewAccessibility;
   [(_UIRemoteViewAccessibility *)&v2 _accessibilityLoadAccessibilityInformation];
-  [(_UIRemoteViewAccessibility *)v4 _accessibilitySetRemoteElementIfNecessary];
+  [(_UIRemoteViewAccessibility *)selfCopy _accessibilitySetRemoteElementIfNecessary];
 }
 
 - (void)_accessibilitySetRemoteElementIfNecessary
 {
   v75 = *MEMORY[0x29EDCA608];
-  v68 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     if (([MEMORY[0x29EDBA108] isMainThread] & 1) == 0)
     {
       _AXAssert();
     }
 
-    v67 = [(_UIRemoteViewAccessibility *)v68 _accessibilityGetRemoteElementArray];
-    if (!v67)
+    _accessibilityGetRemoteElementArray = [(_UIRemoteViewAccessibility *)selfCopy _accessibilityGetRemoteElementArray];
+    if (!_accessibilityGetRemoteElementArray)
     {
-      v39 = [v68 safeValueForKey:@"layer"];
-      v40 = [v39 contextId];
+      v39 = [selfCopy safeValueForKey:@"layer"];
+      contextId = [v39 contextId];
       MEMORY[0x29EDC9740](v39);
-      v66 = v40;
-      v65 = [(_UIRemoteViewAccessibility *)v68 _accessibilityRemoteViewPid];
-      v64 = [(_UIRemoteViewAccessibility *)v68 _accessibilityRemoteMachPort];
+      v66 = contextId;
+      _accessibilityRemoteViewPid = [(_UIRemoteViewAccessibility *)selfCopy _accessibilityRemoteViewPid];
+      _accessibilityRemoteMachPort = [(_UIRemoteViewAccessibility *)selfCopy _accessibilityRemoteMachPort];
       v62 = 0;
       v41 = 0;
-      if (!v65)
+      if (!_accessibilityRemoteViewPid)
       {
-        v37 = [v68 safeValueForKey:@"superview"];
+        v37 = [selfCopy safeValueForKey:@"superview"];
         v63 = v37;
         v38 = 1;
         v62 = 1;
@@ -218,12 +218,12 @@
 
       if (v36)
       {
-        v35 = [v68 safeValueForKey:@"hostedWindowHostingHandle"];
-        v65 = [v35 safeIntForKey:@"_pid"];
+        v35 = [selfCopy safeValueForKey:@"hostedWindowHostingHandle"];
+        _accessibilityRemoteViewPid = [v35 safeIntForKey:@"_pid"];
         MEMORY[0x29EDC9740](v35);
       }
 
-      if (v65)
+      if (_accessibilityRemoteViewPid)
       {
         v22 = MEMORY[0x29EDB8ED8];
         v55 = CFUUIDCreate(*MEMORY[0x29EDB8ED8]);
@@ -237,19 +237,19 @@
           v55 = 0;
         }
 
-        v53 = [objc_alloc(MEMORY[0x29EDBD800]) initWithUUID:v54 andRemotePid:v65 andContextId:v66];
+        v53 = [objc_alloc(MEMORY[0x29EDBD800]) initWithUUID:v54 andRemotePid:_accessibilityRemoteViewPid andContextId:v66];
         [v53 setOnClientSide:1];
-        [v53 setAccessibilityContainer:v68];
-        [v53 setMachPort:v64];
+        [v53 setAccessibilityContainer:selfCopy];
+        [v53 setMachPort:_accessibilityRemoteMachPort];
         v71 = v53;
         v2 = [MEMORY[0x29EDB8D80] arrayWithObjects:&v71 count:1];
-        v3 = v67;
-        v67 = v2;
+        v3 = _accessibilityGetRemoteElementArray;
+        _accessibilityGetRemoteElementArray = v2;
         MEMORY[0x29EDC9740](v3);
-        [(_UIRemoteViewAccessibility *)v68 _accessibilitySetRemoteElementArray:v67];
+        [(_UIRemoteViewAccessibility *)selfCopy _accessibilitySetRemoteElementArray:_accessibilityGetRemoteElementArray];
         v17 = MEMORY[0x29EDB8DC0];
         v16 = 0x29EDBA000uLL;
-        v21 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:v64];
+        v21 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:_accessibilityRemoteMachPort];
         v15 = MEMORY[0x29EDBA070];
         v20 = [MEMORY[0x29EDBA070] numberWithInt:getpid()];
         v19 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:v66];
@@ -266,13 +266,13 @@
           v12 = oslog;
           *v13 = v50;
           v14 = v70;
-          __os_log_helper_16_2_3_8_64_4_0_8_64(v70, v68, v65, v52);
+          __os_log_helper_16_2_3_8_64_4_0_8_64(v70, selfCopy, _accessibilityRemoteViewPid, v52);
           _os_log_impl(&dword_29C4D6000, v12, v13[0], "%@: transmitting UUID to remote side with pid: %d, value: %@", v14, 0x1Cu);
         }
 
         obj = 0;
         objc_storeStrong(&oslog, 0);
-        queue = [(_UIRemoteViewAccessibility *)v68 _accessibilityRemoteElementCommunicationQueue];
+        queue = [(_UIRemoteViewAccessibility *)selfCopy _accessibilityRemoteElementCommunicationQueue];
         block = &v42;
         v42 = MEMORY[0x29EDCA5F8];
         v43 = -1073741824;
@@ -280,9 +280,9 @@
         v45 = __71___UIRemoteViewAccessibility__accessibilitySetRemoteElementIfNecessary__block_invoke;
         v46 = &unk_29F30CF28;
         v9 = v47;
-        v47[0] = MEMORY[0x29EDC9748](v68);
-        v48 = v65;
-        v49 = v64;
+        v47[0] = MEMORY[0x29EDC9748](selfCopy);
+        v48 = _accessibilityRemoteViewPid;
+        v49 = _accessibilityRemoteMachPort;
         v8 = (block + 40);
         v10 = &v52;
         v47[1] = MEMORY[0x29EDC9748](v52);
@@ -297,7 +297,7 @@
 
       else if (_AXSApplicationAccessibilityEnabled())
       {
-        if ([v68 _accessibilityBoolValueForKey:@"AXDidRequestRemoteViewLoad"])
+        if ([selfCopy _accessibilityBoolValueForKey:@"AXDidRequestRemoteViewLoad"])
         {
           v59 = AXLogRemoteElement();
           v58 = OS_LOG_TYPE_INFO;
@@ -306,7 +306,7 @@
             v27 = v59;
             *v28 = v58;
             v29 = v73;
-            __os_log_helper_16_2_1_8_64(v73, v68);
+            __os_log_helper_16_2_1_8_64(v73, selfCopy);
             _os_log_impl(&dword_29C4D6000, v59, v58, "%@: no remote pid, but already requested a remote view load once", v73, 0xCu);
           }
 
@@ -315,7 +315,7 @@
 
         else
         {
-          [v68 _accessibilitySetBoolValue:1 forKey:@"AXDidRequestRemoteViewLoad"];
+          [selfCopy _accessibilitySetBoolValue:1 forKey:@"AXDidRequestRemoteViewLoad"];
           location = AXLogRemoteElement();
           v60 = OS_LOG_TYPE_INFO;
           if (os_log_type_enabled(location, OS_LOG_TYPE_INFO))
@@ -323,15 +323,15 @@
             log = location;
             *type = v60;
             buf = v74;
-            __os_log_helper_16_2_1_8_64(v74, v68);
+            __os_log_helper_16_2_1_8_64(v74, selfCopy);
             _os_log_impl(&dword_29C4D6000, location, v60, "%@: no remote pid set, so requesting that info from the remote view controller", v74, 0xCu);
           }
 
           v30 = 0;
           objc_storeStrong(&location, 0);
-          v31 = [MEMORY[0x29EDBA068] defaultCenter];
-          [v31 postNotificationName:@"AXRequestRemoteViewLoad" object:0];
-          MEMORY[0x29EDC9740](v31);
+          defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+          [defaultCenter postNotificationName:@"AXRequestRemoteViewLoad" object:0];
+          MEMORY[0x29EDC9740](defaultCenter);
         }
       }
 
@@ -344,7 +344,7 @@
           v24 = v57;
           *v25 = v56;
           v26 = v72;
-          __os_log_helper_16_2_1_8_64(v72, v68);
+          __os_log_helper_16_2_1_8_64(v72, selfCopy);
           _os_log_impl(&dword_29C4D6000, v57, v56, "%@: no remote pid, but AX is not enabled so there's no use trying to get that info yet", v72, 0xCu);
         }
 
@@ -352,7 +352,7 @@
       }
     }
 
-    objc_storeStrong(&v67, 0);
+    objc_storeStrong(&_accessibilityGetRemoteElementArray, 0);
   }
 }
 
@@ -361,12 +361,12 @@
   v5[2] = self;
   v5[1] = a2;
   v5[0] = [(_UIRemoteViewAccessibility *)self _accessibilityGetRemoteElementArray];
-  v4 = [v5[0] lastObject];
-  v3 = [v4 _accessibilityActiveKeyboard];
-  objc_storeStrong(&v4, 0);
+  lastObject = [v5[0] lastObject];
+  _accessibilityActiveKeyboard = [lastObject _accessibilityActiveKeyboard];
+  objc_storeStrong(&lastObject, 0);
   objc_storeStrong(v5, 0);
 
-  return v3;
+  return _accessibilityActiveKeyboard;
 }
 
 - (id)_accessibilityResponderElement
@@ -374,37 +374,37 @@
   v5[2] = self;
   v5[1] = a2;
   v5[0] = [(_UIRemoteViewAccessibility *)self _accessibilityGetRemoteElementArray];
-  v4 = [v5[0] lastObject];
-  v3 = [v4 _accessibilityResponderElement];
-  objc_storeStrong(&v4, 0);
+  lastObject = [v5[0] lastObject];
+  _accessibilityResponderElement = [lastObject _accessibilityResponderElement];
+  objc_storeStrong(&lastObject, 0);
   objc_storeStrong(v5, 0);
 
-  return v3;
+  return _accessibilityResponderElement;
 }
 
-- (void)_accessibilityTransmitRemoteUUIDToPid:(int)a3 machPort:(id)obj value:
+- (void)_accessibilityTransmitRemoteUUIDToPid:(int)pid machPort:(id)obj value:
 {
   v26 = *MEMORY[0x29EDCA608];
-  v24 = a1;
+  selfCopy = self;
   v23 = a2;
-  v22 = a3;
+  pidCopy = pid;
   location = 0;
   objc_storeStrong(&location, obj);
-  if (v24)
+  if (selfCopy)
   {
-    v7 = [(_UIRemoteViewAccessibility *)v24 _accessibilityRemoteElementCommunicationQueue];
-    dispatch_assert_queue_V2(v7);
-    MEMORY[0x29EDC9740](v7);
+    _accessibilityRemoteElementCommunicationQueue = [(_UIRemoteViewAccessibility *)selfCopy _accessibilityRemoteElementCommunicationQueue];
+    dispatch_assert_queue_V2(_accessibilityRemoteElementCommunicationQueue);
+    MEMORY[0x29EDC9740](_accessibilityRemoteElementCommunicationQueue);
     AppElementWithPid = _AXUIElementCreateAppElementWithPid();
     AXUIElementSetMessagingTimeout(AppElementWithPid, 1.0);
-    if (!v22)
+    if (!pidCopy)
     {
-      v22 = [*MEMORY[0x29EDC8008] _accessibilityMachPort];
+      pidCopy = [*MEMORY[0x29EDC8008] _accessibilityMachPort];
       v18 = AXLogRemoteElement();
       v17 = OS_LOG_TYPE_INFO;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        __os_log_helper_16_0_1_4_0(v25, v22);
+        __os_log_helper_16_0_1_4_0(v25, pidCopy);
         _os_log_impl(&dword_29C4D6000, v18, v17, "mach port was not initialized by the remote view controller, so using app's mach port %u", v25, 8u);
       }
 
@@ -422,7 +422,7 @@
     v11 = __83___UIRemoteViewAccessibility__accessibilityTransmitRemoteUUIDToPid_machPort_value___block_invoke;
     v12 = &unk_29F30DC40;
     v14 = v16;
-    v13[0] = MEMORY[0x29EDC9748](v24);
+    v13[0] = MEMORY[0x29EDC9748](selfCopy);
     v15 = v23;
     v13[1] = AppElementWithPid;
     dispatch_async(queue, &v8);
@@ -441,13 +441,13 @@
 
 - (id)accessibilityElements
 {
-  v5 = self;
+  selfCopy = self;
   v4[1] = a2;
   v4[0] = [(_UIRemoteViewAccessibility *)self _accessibilityGetRemoteElementArray];
   if (!v4[0])
   {
-    [(_UIRemoteViewAccessibility *)v5 _accessibilitySetRemoteElementIfNecessary];
-    v4[0] = [(_UIRemoteViewAccessibility *)v5 _accessibilityGetRemoteElementArray];
+    [(_UIRemoteViewAccessibility *)selfCopy _accessibilitySetRemoteElementIfNecessary];
+    v4[0] = [(_UIRemoteViewAccessibility *)selfCopy _accessibilityGetRemoteElementArray];
     MEMORY[0x29EDC9740](0);
   }
 
@@ -460,16 +460,16 @@
 - (void)_accessibilityUnregisterRemoteView
 {
   v47 = *MEMORY[0x29EDCA608];
-  v43 = self;
+  selfCopy = self;
   v42 = a2;
-  v41 = [(_UIRemoteViewAccessibility *)self _accessibilityRemoteViewPid];
-  v40 = [(_UIRemoteViewAccessibility *)v43 _accessibilityRemoteMachPort];
-  if (v41)
+  _accessibilityRemoteViewPid = [(_UIRemoteViewAccessibility *)self _accessibilityRemoteViewPid];
+  _accessibilityRemoteMachPort = [(_UIRemoteViewAccessibility *)selfCopy _accessibilityRemoteMachPort];
+  if (_accessibilityRemoteViewPid)
   {
-    v39 = [(_UIRemoteViewAccessibility *)v43 _accessibilityGetRemoteElementArray];
+    _accessibilityGetRemoteElementArray = [(_UIRemoteViewAccessibility *)selfCopy _accessibilityGetRemoteElementArray];
     v25 = __b;
     memset(__b, 0, sizeof(__b));
-    obj = MEMORY[0x29EDC9748](v39);
+    obj = MEMORY[0x29EDC9748](_accessibilityGetRemoteElementArray);
     v27 = [obj countByEnumeratingWithState:__b objects:v46 count:16];
     if (v27)
     {
@@ -491,13 +491,13 @@
         v12 = MEMORY[0x29EDBA070];
         v19 = [MEMORY[0x29EDBA070] numberWithInt:getpid()];
         v14 = *(v13 + 112);
-        v2 = [v38 contextId];
-        v18 = [v14 numberWithUnsignedInt:v2];
-        v17 = [v38 uuid];
+        contextId = [v38 contextId];
+        v18 = [v14 numberWithUnsignedInt:contextId];
+        uuid = [v38 uuid];
         v3 = *MEMORY[0x29EDB8EF8];
         v16 = &v5;
-        v36 = [v15 dictionaryWithObjectsAndKeys:{v19, @"ax-pid", v18, @"ax-context", v17, @"ax-uuid", v3, @"ax-register", 0}];
-        MEMORY[0x29EDC9740](v17);
+        v36 = [v15 dictionaryWithObjectsAndKeys:{v19, @"ax-pid", v18, @"ax-context", uuid, @"ax-uuid", v3, @"ax-register", 0}];
+        MEMORY[0x29EDC9740](uuid);
         MEMORY[0x29EDC9740](v18);
         MEMORY[0x29EDC9740](v19);
         v45 = &_accessibilityUnregisterRemoteView_onceToken;
@@ -517,11 +517,11 @@
         v30 = 0;
         v31 = __64___UIRemoteViewAccessibility__accessibilityUnregisterRemoteView__block_invoke_2;
         v32 = &unk_29F30C690;
-        v34 = v41;
+        v34 = _accessibilityRemoteViewPid;
         v9 = &v33;
         v10 = &v36;
         v33 = MEMORY[0x29EDC9748](v36);
-        v35 = v40;
+        v35 = _accessibilityRemoteMachPort;
         dispatch_async(queue, block);
         [v38 setAccessibilityContainer:v11];
         [v38 unregister];
@@ -544,16 +544,16 @@
 
     MEMORY[0x29EDC9740](obj);
     v6 = 0;
-    [(_UIRemoteViewAccessibility *)v43 _accessibilitySetRemoteElementArray:?];
-    objc_storeStrong(&v39, v6);
+    [(_UIRemoteViewAccessibility *)selfCopy _accessibilitySetRemoteElementArray:?];
+    objc_storeStrong(&_accessibilityGetRemoteElementArray, v6);
   }
 }
 
-- (void)_accessibilitySetFocusOnElement:(BOOL)a3
+- (void)_accessibilitySetFocusOnElement:(BOOL)element
 {
-  v3 = [(_UIRemoteViewAccessibility *)self accessibilityContainer];
-  [v3 _accessibilitySetFocusOnElement:a3];
-  MEMORY[0x29EDC9740](v3);
+  accessibilityContainer = [(_UIRemoteViewAccessibility *)self accessibilityContainer];
+  [accessibilityContainer _accessibilitySetFocusOnElement:element];
+  MEMORY[0x29EDC9740](accessibilityContainer);
 }
 
 @end

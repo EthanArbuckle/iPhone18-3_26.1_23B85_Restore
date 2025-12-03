@@ -1,34 +1,34 @@
 @interface MGGroupsQueryAgent
-- (MGGroupsQueryAgent)initWithDelegate:(id)a3;
+- (MGGroupsQueryAgent)initWithDelegate:(id)delegate;
 - (MGGroupsQueryAgentDelegate)delegate;
-- (id)outstandingQueryForIdentifier:(id)a3;
-- (void)_performQueryExchangeUsingGroups:(id)a3 currentIdentifier:(id)a4;
-- (void)_prepareWithGroups:(id)a3 currentIdentifier:(id)a4;
-- (void)_queryOperation:(id)a3 didFindGroups:(id)a4;
-- (void)_withLock:(id)a3;
-- (void)addOutstandingQuery:(id)a3;
-- (void)groupsMediator:(id)a3 didUpdateGroups:(id)a4;
-- (void)groupsMediatorRemoved:(id)a3;
-- (void)removeOutstandingQuery:(id)a3;
-- (void)setCurrentDeviceIdentifier:(id)a3;
-- (void)setCurrentIdentifier:(id)a3;
-- (void)setGroups:(id)a3;
-- (void)setGroupsByMediator:(id)a3;
+- (id)outstandingQueryForIdentifier:(id)identifier;
+- (void)_performQueryExchangeUsingGroups:(id)groups currentIdentifier:(id)identifier;
+- (void)_prepareWithGroups:(id)groups currentIdentifier:(id)identifier;
+- (void)_queryOperation:(id)operation didFindGroups:(id)groups;
+- (void)_withLock:(id)lock;
+- (void)addOutstandingQuery:(id)query;
+- (void)groupsMediator:(id)mediator didUpdateGroups:(id)groups;
+- (void)groupsMediatorRemoved:(id)removed;
+- (void)removeOutstandingQuery:(id)query;
+- (void)setCurrentDeviceIdentifier:(id)identifier;
+- (void)setCurrentIdentifier:(id)identifier;
+- (void)setGroups:(id)groups;
+- (void)setGroupsByMediator:(id)mediator;
 @end
 
 @implementation MGGroupsQueryAgent
 
-- (MGGroupsQueryAgent)initWithDelegate:(id)a3
+- (MGGroupsQueryAgent)initWithDelegate:(id)delegate
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v34.receiver = self;
   v34.super_class = MGGroupsQueryAgent;
   v5 = [(MGGroupsQueryAgent *)&v34 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = objc_alloc_init(MEMORY[0x277CCABD8]);
     queue = v6->_queue;
     v6->_queue = v7;
@@ -48,9 +48,9 @@
     operations = v6->_operations;
     v6->_operations = v16;
 
-    v18 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     mediators = v6->_mediators;
-    v6->_mediators = v18;
+    v6->_mediators = strongToWeakObjectsMapTable;
 
     v20 = objc_alloc_init(MEMORY[0x277CBEAC0]);
     mediatorsByGroup = v6->_mediatorsByGroup;
@@ -68,8 +68,8 @@
     containers = v6->_containers;
     v6->_containers = v26;
 
-    v28 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v29 = [v28 integerForKey:@"com.apple.media-groups.max-operations"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v29 = [standardUserDefaults integerForKey:@"com.apple.media-groups.max-operations"];
     if (v29 <= 5)
     {
       v30 = 5;
@@ -96,52 +96,52 @@
   return v6;
 }
 
-- (void)setGroups:(id)a3
+- (void)setGroups:(id)groups
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupsCopy = groups;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(MGGroupsQueryAgent *)self groups];
-  v6 = [v5 isEqualToDictionary:v4];
+  groups = [(MGGroupsQueryAgent *)self groups];
+  v6 = [groups isEqualToDictionary:groupsCopy];
 
   if (v6)
   {
-    v7 = v4;
+    v7 = groupsCopy;
   }
 
   else
   {
-    v7 = [v4 copy];
+    v7 = [groupsCopy copy];
 
     objc_storeStrong(&self->_groups, v7);
     v8 = MGLogForCategory(4);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134218240;
-      v12 = self;
+      selfCopy = self;
       v13 = 2048;
       v14 = v7;
       _os_log_impl(&dword_25863A000, v8, OS_LOG_TYPE_DEFAULT, "%p groups updated to %p", &v11, 0x16u);
     }
 
-    v9 = [(MGGroupsQueryAgent *)self currentIdentifier];
-    [(MGGroupsQueryAgent *)self _performQueryExchangeUsingGroups:v7 currentIdentifier:v9];
+    currentIdentifier = [(MGGroupsQueryAgent *)self currentIdentifier];
+    [(MGGroupsQueryAgent *)self _performQueryExchangeUsingGroups:v7 currentIdentifier:currentIdentifier];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setGroupsByMediator:(id)a3
+- (void)setGroupsByMediator:(id)mediator
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mediatorCopy = mediator;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(MGGroupsQueryAgent *)self groupsByMediator];
-  v6 = [v5 isEqualToDictionary:v4];
+  groupsByMediator = [(MGGroupsQueryAgent *)self groupsByMediator];
+  v6 = [groupsByMediator isEqualToDictionary:mediatorCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [v4 copy];
+    v7 = [mediatorCopy copy];
 
     v22 = v7;
     objc_storeStrong(&self->_groupsByMediator, v7);
@@ -151,15 +151,15 @@
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v10 = [(NSDictionary *)self->_groupsByMediator allKeys];
-    v11 = [v10 sortedArrayUsingComparator:&__block_literal_global];
+    allKeys = [(NSDictionary *)self->_groupsByMediator allKeys];
+    v11 = [allKeys sortedArrayUsingComparator:&__block_literal_global];
 
     obj = v11;
     v26 = [v11 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v26)
     {
       v24 = *v32;
-      v25 = self;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v26; ++i)
@@ -201,7 +201,7 @@
             while (v16);
           }
 
-          self = v25;
+          self = selfCopy;
         }
 
         v26 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
@@ -213,84 +213,84 @@
     [(MGGroupsQueryAgent *)self setMediatorsByGroup:v9];
     [(MGGroupsQueryAgent *)self setGroups:v8];
 
-    v4 = v22;
+    mediatorCopy = v22;
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentIdentifier:(id)a3
+- (void)setCurrentIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (self->_currentIdentifier == v4 || ([(MGGroupIdentifier *)v4 isEqual:?]& 1) != 0)
+  if (self->_currentIdentifier == identifierCopy || ([(MGGroupIdentifier *)identifierCopy isEqual:?]& 1) != 0)
   {
-    v5 = v4;
+    v5 = identifierCopy;
   }
 
   else
   {
-    v5 = [(MGGroupIdentifier *)v4 copy];
+    v5 = [(MGGroupIdentifier *)identifierCopy copy];
 
     objc_storeStrong(&self->_currentIdentifier, v5);
     v6 = MGLogForCategory(4);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134218240;
-      v10 = self;
+      selfCopy = self;
       v11 = 2048;
       v12 = v5;
       _os_log_impl(&dword_25863A000, v6, OS_LOG_TYPE_DEFAULT, "%p current identifier changed to %p", &v9, 0x16u);
     }
 
-    v7 = [(MGGroupsQueryAgent *)self groups];
-    [(MGGroupsQueryAgent *)self _performQueryExchangeUsingGroups:v7 currentIdentifier:v5];
+    groups = [(MGGroupsQueryAgent *)self groups];
+    [(MGGroupsQueryAgent *)self _performQueryExchangeUsingGroups:groups currentIdentifier:v5];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentDeviceIdentifier:(id)a3
+- (void)setCurrentDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__MGGroupsQueryAgent_setCurrentDeviceIdentifier___block_invoke;
   v6[3] = &unk_27989EE80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(MGGroupsQueryAgent *)self _withLock:v6];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_performQueryExchangeUsingGroups:(id)a3 currentIdentifier:(id)a4
+- (void)_performQueryExchangeUsingGroups:(id)groups currentIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  groupsCopy = groups;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
-  v8 = [(MGGroupsQueryAgent *)self queue];
-  [v8 cancelAllOperations];
+  queue = [(MGGroupsQueryAgent *)self queue];
+  [queue cancelAllOperations];
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __73__MGGroupsQueryAgent__performQueryExchangeUsingGroups_currentIdentifier___block_invoke;
   v11[3] = &unk_27989F120;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = groupsCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = identifierCopy;
   v13 = v10;
-  [v8 addBarrierBlock:v11];
+  [queue addBarrierBlock:v11];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -307,19 +307,19 @@ void __73__MGGroupsQueryAgent__performQueryExchangeUsingGroups_currentIdentifier
   }
 }
 
-- (void)_prepareWithGroups:(id)a3 currentIdentifier:(id)a4
+- (void)_prepareWithGroups:(id)groups currentIdentifier:(id)identifier
 {
   v124 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  groupsCopy = groups;
+  identifierCopy = identifier;
   v112[0] = MEMORY[0x277D85DD0];
   v112[1] = 3221225472;
   v112[2] = __59__MGGroupsQueryAgent__prepareWithGroups_currentIdentifier___block_invoke;
   v112[3] = &unk_27989F170;
   v112[4] = self;
-  v8 = v6;
+  v8 = groupsCopy;
   v113 = v8;
-  v9 = v7;
+  v9 = identifierCopy;
   v114 = v9;
   v10 = MEMORY[0x259C85F90](v112);
   if ((v10[2])())
@@ -328,7 +328,7 @@ void __73__MGGroupsQueryAgent__performQueryExchangeUsingGroups_currentIdentifier
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v121 = self;
+      selfCopy = self;
       v122 = 2048;
       v123 = v8;
       _os_log_impl(&dword_25863A000, v11, OS_LOG_TYPE_DEFAULT, "%p got an update after %p", buf, 0x16u);
@@ -337,23 +337,23 @@ void __73__MGGroupsQueryAgent__performQueryExchangeUsingGroups_currentIdentifier
 
   else
   {
-    v69 = self;
+    selfCopy2 = self;
     v76 = v9;
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v12 setObject:v8 forKey:@"ALL_GROUPS_MAP"];
-    v13 = [v8 allValues];
+    allValues = [v8 allValues];
     v75 = v12;
-    [v12 setObject:v13 forKey:@"ALL_GROUPS_LIST"];
-    v14 = [MEMORY[0x277D27470] type];
-    v119[0] = v14;
-    v15 = [MEMORY[0x277D274C0] type];
-    v119[1] = v15;
-    v16 = [MEMORY[0x277D274A8] type];
-    v119[2] = v16;
-    v17 = [MEMORY[0x277D27488] type];
-    v119[3] = v17;
-    v18 = [MEMORY[0x277D27498] type];
-    v119[4] = v18;
+    [v12 setObject:allValues forKey:@"ALL_GROUPS_LIST"];
+    type = [MEMORY[0x277D27470] type];
+    v119[0] = type;
+    type2 = [MEMORY[0x277D274C0] type];
+    v119[1] = type2;
+    type3 = [MEMORY[0x277D274A8] type];
+    v119[2] = type3;
+    type4 = [MEMORY[0x277D27488] type];
+    v119[3] = type4;
+    type5 = [MEMORY[0x277D27498] type];
+    v119[4] = type5;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v119 count:5];
 
     v110[0] = MEMORY[0x277D85DD0];
@@ -362,8 +362,8 @@ void __73__MGGroupsQueryAgent__performQueryExchangeUsingGroups_currentIdentifier
     v110[3] = &unk_27989F198;
     v20 = v19;
     v111 = v20;
-    v21 = [v13 indexesOfObjectsPassingTest:v110];
-    v22 = [v13 objectsAtIndexes:v21];
+    v21 = [allValues indexesOfObjectsPassingTest:v110];
+    v22 = [allValues objectsAtIndexes:v21];
 
     v108[0] = MEMORY[0x277D85DD0];
     v108[1] = 3221225472;
@@ -394,7 +394,7 @@ void __73__MGGroupsQueryAgent__performQueryExchangeUsingGroups_currentIdentifier
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
-        v121 = v69;
+        selfCopy = selfCopy2;
         v122 = 2048;
         v123 = v74;
         _os_log_impl(&dword_25863A000, v27, OS_LOG_TYPE_DEFAULT, "%p got a newer update after %p", buf, 0x16u);
@@ -437,13 +437,13 @@ void __73__MGGroupsQueryAgent__performQueryExchangeUsingGroups_currentIdentifier
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
                 v82 = v32;
-                v34 = [v33 identifier];
+                identifier = [v33 identifier];
                 v96 = 0u;
                 v97 = 0u;
                 v98 = 0u;
                 v99 = 0u;
-                v35 = [v33 memberIdentifiers];
-                v36 = [v35 countByEnumeratingWithState:&v96 objects:v117 count:16];
+                memberIdentifiers = [v33 memberIdentifiers];
+                v36 = [memberIdentifiers countByEnumeratingWithState:&v96 objects:v117 count:16];
                 if (v36)
                 {
                   v37 = v36;
@@ -454,7 +454,7 @@ void __73__MGGroupsQueryAgent__performQueryExchangeUsingGroups_currentIdentifier
                     {
                       if (*v97 != v38)
                       {
-                        objc_enumerationMutation(v35);
+                        objc_enumerationMutation(memberIdentifiers);
                       }
 
                       v40 = [v26 objectForKey:*(*(&v96 + 1) + 8 * i)];
@@ -462,7 +462,7 @@ void __73__MGGroupsQueryAgent__performQueryExchangeUsingGroups_currentIdentifier
                       v94[1] = 3221225472;
                       v94[2] = __59__MGGroupsQueryAgent__prepareWithGroups_currentIdentifier___block_invoke_29;
                       v94[3] = &unk_27989F210;
-                      v41 = v34;
+                      v41 = identifier;
                       v95 = v41;
                       v42 = [v40 objectsPassingTest:v94];
 
@@ -479,7 +479,7 @@ void __73__MGGroupsQueryAgent__performQueryExchangeUsingGroups_currentIdentifier
                       }
                     }
 
-                    v37 = [v35 countByEnumeratingWithState:&v96 objects:v117 count:16];
+                    v37 = [memberIdentifiers countByEnumeratingWithState:&v96 objects:v117 count:16];
                   }
 
                   while (v37);
@@ -506,38 +506,38 @@ void __73__MGGroupsQueryAgent__performQueryExchangeUsingGroups_currentIdentifier
       [v75 setObject:v26 forKey:@"CONTAINMENT_MAP"];
       if (v76 && ([v74 objectForKey:?], (v44 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v45 = v44;
+        null5 = v44;
         [v75 setObject:v44 forKey:@"CURRENT_SOLO_GROUP"];
         v115[0] = @"CURRENT_HOME";
         v46 = MEMORY[0x277CCAC30];
-        v81 = [MEMORY[0x277D27470] type];
-        v79 = [v46 predicateWithFormat:@"SELF.type == %@", v81];
+        type6 = [MEMORY[0x277D27470] type];
+        v79 = [v46 predicateWithFormat:@"SELF.type == %@", type6];
         v116[0] = v79;
         v115[1] = @"CURRENT_ROOM";
         v47 = MEMORY[0x277CCAC30];
-        v48 = [MEMORY[0x277D274A8] type];
-        v49 = [v47 predicateWithFormat:@"SELF.type == %@", v48];
+        type7 = [MEMORY[0x277D274A8] type];
+        v49 = [v47 predicateWithFormat:@"SELF.type == %@", type7];
         v116[1] = v49;
         v115[2] = @"CURRENT_MEDIA_SYSTEM";
         v50 = MEMORY[0x277CCAC30];
-        v51 = [MEMORY[0x277D27498] type];
-        v52 = [v50 predicateWithFormat:@"SELF.type == %@", v51];
+        type8 = [MEMORY[0x277D27498] type];
+        v52 = [v50 predicateWithFormat:@"SELF.type == %@", type8];
         v116[2] = v52;
         v115[3] = @"CURRENT_ZONE";
         v53 = MEMORY[0x277CCAC30];
-        v54 = [MEMORY[0x277D274C0] type];
-        v55 = [v53 predicateWithFormat:@"SELF.type == %@", v54];
+        type9 = [MEMORY[0x277D274C0] type];
+        v55 = [v53 predicateWithFormat:@"SELF.type == %@", type9];
         v116[3] = v55;
         v83 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v116 forKeys:v115 count:4];
 
         v56 = MEMORY[0x277CCAC30];
-        v57 = [v45 identifier];
-        v58 = [v56 predicateWithFormat:@"$CONTAINMENT_MAP[%@] != nil", v57];
+        identifier2 = [null5 identifier];
+        v58 = [v56 predicateWithFormat:@"$CONTAINMENT_MAP[%@] != nil", identifier2];
 
         v59 = MEMORY[0x277CCAC30];
         v11 = v75;
-        v60 = [v45 identifier];
-        v61 = [v59 predicateWithFormat:@"SUBQUERY($CONTAINMENT_MAP[%@], $container, SELF.identifier IN $container)[SIZE] > 0", v60];
+        identifier3 = [null5 identifier];
+        v61 = [v59 predicateWithFormat:@"SUBQUERY($CONTAINMENT_MAP[%@], $container, SELF.identifier IN $container)[SIZE] > 0", identifier3];
 
         v90[0] = MEMORY[0x277D85DD0];
         v90[1] = 3221225472;
@@ -553,20 +553,20 @@ void __73__MGGroupsQueryAgent__performQueryExchangeUsingGroups_currentIdentifier
 
       else
       {
-        v64 = [MEMORY[0x277CBEB68] null];
-        [v75 setObject:v64 forKey:@"CURRENT_SOLO_GROUP"];
+        null = [MEMORY[0x277CBEB68] null];
+        [v75 setObject:null forKey:@"CURRENT_SOLO_GROUP"];
 
-        v65 = [MEMORY[0x277CBEB68] null];
-        [v75 setObject:v65 forKey:@"CURRENT_HOME"];
+        null2 = [MEMORY[0x277CBEB68] null];
+        [v75 setObject:null2 forKey:@"CURRENT_HOME"];
 
-        v66 = [MEMORY[0x277CBEB68] null];
-        [v75 setObject:v66 forKey:@"CURRENT_ROOM"];
+        null3 = [MEMORY[0x277CBEB68] null];
+        [v75 setObject:null3 forKey:@"CURRENT_ROOM"];
 
-        v67 = [MEMORY[0x277CBEB68] null];
-        [v75 setObject:v67 forKey:@"CURRENT_MEDIA_SYSTEM"];
+        null4 = [MEMORY[0x277CBEB68] null];
+        [v75 setObject:null4 forKey:@"CURRENT_MEDIA_SYSTEM"];
 
-        v45 = [MEMORY[0x277CBEB68] null];
-        [v75 setObject:v45 forKey:@"CURRENT_ZONE"];
+        null5 = [MEMORY[0x277CBEB68] null];
+        [v75 setObject:null5 forKey:@"CURRENT_ZONE"];
       }
 
       v84[0] = MEMORY[0x277D85DD0];
@@ -574,12 +574,12 @@ void __73__MGGroupsQueryAgent__performQueryExchangeUsingGroups_currentIdentifier
       v84[2] = __59__MGGroupsQueryAgent__prepareWithGroups_currentIdentifier___block_invoke_3_64;
       v84[3] = &unk_27989F288;
       v85 = v74;
-      v86 = v69;
+      v86 = selfCopy2;
       v9 = v76;
       v87 = v76;
       v88 = v26;
       v89 = v11;
-      [(MGGroupsQueryAgent *)v69 _withLock:v84];
+      [(MGGroupsQueryAgent *)selfCopy2 _withLock:v84];
 
       v27 = v85;
     }
@@ -815,15 +815,15 @@ void __59__MGGroupsQueryAgent__prepareWithGroups_currentIdentifier___block_invok
   [*(a1 + 64) addOperation:v7];
 }
 
-- (void)_queryOperation:(id)a3 didFindGroups:(id)a4
+- (void)_queryOperation:(id)operation didFindGroups:(id)groups
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  groupsCopy = groups;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  v8 = [v6 query];
+  query = [operationCopy query];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -834,13 +834,13 @@ void __59__MGGroupsQueryAgent__prepareWithGroups_currentIdentifier___block_invok
   v14 = 3221225472;
   v15 = __52__MGGroupsQueryAgent__queryOperation_didFindGroups___block_invoke;
   v16 = &unk_27989F2B0;
-  v9 = v8;
+  v9 = query;
   v17 = v9;
   v21 = &v29;
-  v10 = v6;
+  v10 = operationCopy;
   v18 = v10;
-  v19 = self;
-  v11 = v7;
+  selfCopy = self;
+  v11 = groupsCopy;
   v20 = v11;
   v22 = &v23;
   [(MGGroupsQueryAgent *)self _withLock:&v13];
@@ -983,19 +983,19 @@ void __52__MGGroupsQueryAgent__queryOperation_didFindGroups___block_invoke(uint6
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addOutstandingQuery:(id)a3
+- (void)addOutstandingQuery:(id)query
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  queryCopy = query;
+  identifier = [queryCopy identifier];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__MGGroupsQueryAgent_addOutstandingQuery___block_invoke;
   v8[3] = &unk_27989F010;
   v8[4] = self;
-  v9 = v5;
-  v10 = v4;
-  v6 = v4;
-  v7 = v5;
+  v9 = identifier;
+  v10 = queryCopy;
+  v6 = queryCopy;
+  v7 = identifier;
   [(MGGroupsQueryAgent *)self _withLock:v8];
 }
 
@@ -1047,16 +1047,16 @@ void __42__MGGroupsQueryAgent_addOutstandingQuery___block_invoke(uint64_t a1)
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeOutstandingQuery:(id)a3
+- (void)removeOutstandingQuery:(id)query
 {
-  v4 = [a3 identifier];
+  identifier = [query identifier];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__MGGroupsQueryAgent_removeOutstandingQuery___block_invoke;
   v6[3] = &unk_27989EE80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifier;
+  v5 = identifier;
   [(MGGroupsQueryAgent *)self _withLock:v6];
 }
 
@@ -1109,9 +1109,9 @@ void __45__MGGroupsQueryAgent_removeOutstandingQuery___block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)outstandingQueryForIdentifier:(id)a3
+- (id)outstandingQueryForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1124,7 +1124,7 @@ void __45__MGGroupsQueryAgent_removeOutstandingQuery___block_invoke(uint64_t a1)
   v8[3] = &unk_27989EEF8;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = identifierCopy;
   v9 = v5;
   [(MGGroupsQueryAgent *)self _withLock:v8];
   v6 = v12[5];
@@ -1143,19 +1143,19 @@ void __52__MGGroupsQueryAgent_outstandingQueryForIdentifier___block_invoke(uint6
   *(v3 + 40) = v2;
 }
 
-- (void)groupsMediator:(id)a3 didUpdateGroups:(id)a4
+- (void)groupsMediator:(id)mediator didUpdateGroups:(id)groups
 {
-  v6 = a3;
-  v7 = a4;
+  mediatorCopy = mediator;
+  groupsCopy = groups;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__MGGroupsQueryAgent_groupsMediator_didUpdateGroups___block_invoke;
   v10[3] = &unk_27989F010;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = groupsCopy;
+  v12 = mediatorCopy;
+  v8 = mediatorCopy;
+  v9 = groupsCopy;
   [(MGGroupsQueryAgent *)self _withLock:v10];
 }
 
@@ -1190,16 +1190,16 @@ void __53__MGGroupsQueryAgent_groupsMediator_didUpdateGroups___block_invoke(uint
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)groupsMediatorRemoved:(id)a3
+- (void)groupsMediatorRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__MGGroupsQueryAgent_groupsMediatorRemoved___block_invoke;
   v6[3] = &unk_27989EE80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = removedCopy;
+  v5 = removedCopy;
   [(MGGroupsQueryAgent *)self _withLock:v6];
 }
 

@@ -1,22 +1,22 @@
 @interface MLSDaemon
-- (void)applicationEncryptWithUniqueClientIdentifier:(id)a3 groupName:(id)a4 withGroup:(id)a5 groupNameEncryptionContext:(id)a6 completion:(id)a7;
-- (void)createGroupWithUniqueClientIdentifier:(id)a3 identifier:(id)a4 otherMembers:(id)a5 groupCreationContext:(id)a6 completion:(id)a7;
-- (void)joinGroupWithUniqueClientIdentifier:(id)a3 identifier:(id)a4 otherMembers:(id)a5 welcome:(id)a6 groupCreationContext:(id)a7 completion:(id)a8;
-- (void)processIncomingWithUniqueClientIdentifier:(id)a3 message:(id)a4 incomingMessageContext:(id)a5 completion:(id)a6;
-- (void)selfKeyPackageWithUniqueClientIdentifier:(id)a3 completion:(id)a4;
-- (void)setupXPCConnectionWithClient:(id)a3 uniqueClientIdentifier:(id)a4 selfMember:(id)a5 completion:(id)a6;
-- (void)updateWithUniqueClientIdentifier:(id)a3 groupDetails:(id)a4 forGroup:(id)a5 completion:(id)a6;
+- (void)applicationEncryptWithUniqueClientIdentifier:(id)identifier groupName:(id)name withGroup:(id)group groupNameEncryptionContext:(id)context completion:(id)completion;
+- (void)createGroupWithUniqueClientIdentifier:(id)identifier identifier:(id)a4 otherMembers:(id)members groupCreationContext:(id)context completion:(id)completion;
+- (void)joinGroupWithUniqueClientIdentifier:(id)identifier identifier:(id)a4 otherMembers:(id)members welcome:(id)welcome groupCreationContext:(id)context completion:(id)completion;
+- (void)processIncomingWithUniqueClientIdentifier:(id)identifier message:(id)message incomingMessageContext:(id)context completion:(id)completion;
+- (void)selfKeyPackageWithUniqueClientIdentifier:(id)identifier completion:(id)completion;
+- (void)setupXPCConnectionWithClient:(id)client uniqueClientIdentifier:(id)identifier selfMember:(id)member completion:(id)completion;
+- (void)updateWithUniqueClientIdentifier:(id)identifier groupDetails:(id)details forGroup:(id)group completion:(id)completion;
 @end
 
 @implementation MLSDaemon
 
-- (void)setupXPCConnectionWithClient:(id)a3 uniqueClientIdentifier:(id)a4 selfMember:(id)a5 completion:(id)a6
+- (void)setupXPCConnectionWithClient:(id)client uniqueClientIdentifier:(id)identifier selfMember:(id)member completion:(id)completion
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   swift_unknownObjectRetain();
-  v11 = a4;
-  v12 = a5;
-  v19 = self;
+  identifierCopy = identifier;
+  memberCopy = member;
+  selfCopy = self;
   v13 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = v14;
 
@@ -24,18 +24,18 @@
   v18 = v17;
 
   *(swift_allocObject() + 16) = v10;
-  MLSDaemon.setupXPCConnection(client:uniqueClientIdentifier:selfMember:completion:)(a3, v13, v15, v16, v18);
+  MLSDaemon.setupXPCConnection(client:uniqueClientIdentifier:selfMember:completion:)(client, v13, v15, v16, v18);
 
   outlined consume of Data._Representation(v16, v18);
   outlined consume of Data._Representation(v13, v15);
   swift_unknownObjectRelease();
 }
 
-- (void)selfKeyPackageWithUniqueClientIdentifier:(id)a3 completion:(id)a4
+- (void)selfKeyPackageWithUniqueClientIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v11 = self;
+  v6 = _Block_copy(completion);
+  identifierCopy = identifier;
+  selfCopy = self;
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
 
@@ -45,14 +45,14 @@
   outlined consume of Data._Representation(v8, v10);
 }
 
-- (void)createGroupWithUniqueClientIdentifier:(id)a3 identifier:(id)a4 otherMembers:(id)a5 groupCreationContext:(id)a6 completion:(id)a7
+- (void)createGroupWithUniqueClientIdentifier:(id)identifier identifier:(id)a4 otherMembers:(id)members groupCreationContext:(id)context completion:(id)completion
 {
-  v12 = _Block_copy(a7);
-  v13 = a3;
+  v12 = _Block_copy(completion);
+  identifierCopy = identifier;
   v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v29 = self;
+  membersCopy = members;
+  contextCopy = context;
+  selfCopy = self;
   v17 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v19 = v18;
 
@@ -74,15 +74,15 @@
   outlined consume of Data._Representation(v17, v19);
 }
 
-- (void)joinGroupWithUniqueClientIdentifier:(id)a3 identifier:(id)a4 otherMembers:(id)a5 welcome:(id)a6 groupCreationContext:(id)a7 completion:(id)a8
+- (void)joinGroupWithUniqueClientIdentifier:(id)identifier identifier:(id)a4 otherMembers:(id)members welcome:(id)welcome groupCreationContext:(id)context completion:(id)completion
 {
-  v36 = _Block_copy(a8);
-  v14 = a3;
+  v36 = _Block_copy(completion);
+  identifierCopy = identifier;
   v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v37 = self;
+  membersCopy = members;
+  welcomeCopy = welcome;
+  contextCopy = context;
+  selfCopy = self;
   v19 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v21 = v20;
 
@@ -110,13 +110,13 @@
   outlined consume of Data._Representation(v19, v21);
 }
 
-- (void)updateWithUniqueClientIdentifier:(id)a3 groupDetails:(id)a4 forGroup:(id)a5 completion:(id)a6
+- (void)updateWithUniqueClientIdentifier:(id)identifier groupDetails:(id)details forGroup:(id)group completion:(id)completion
 {
-  v10 = _Block_copy(a6);
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v23 = self;
+  v10 = _Block_copy(completion);
+  identifierCopy = identifier;
+  detailsCopy = details;
+  groupCopy = group;
+  selfCopy = self;
   v14 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
 
@@ -133,14 +133,14 @@
   outlined consume of Data._Representation(v14, v16);
 }
 
-- (void)applicationEncryptWithUniqueClientIdentifier:(id)a3 groupName:(id)a4 withGroup:(id)a5 groupNameEncryptionContext:(id)a6 completion:(id)a7
+- (void)applicationEncryptWithUniqueClientIdentifier:(id)identifier groupName:(id)name withGroup:(id)group groupNameEncryptionContext:(id)context completion:(id)completion
 {
-  v12 = _Block_copy(a7);
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v29 = self;
+  v12 = _Block_copy(completion);
+  identifierCopy = identifier;
+  nameCopy = name;
+  groupCopy = group;
+  contextCopy = context;
+  selfCopy = self;
   v17 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v19 = v18;
 
@@ -161,13 +161,13 @@
   outlined consume of Data._Representation(v17, v19);
 }
 
-- (void)processIncomingWithUniqueClientIdentifier:(id)a3 message:(id)a4 incomingMessageContext:(id)a5 completion:(id)a6
+- (void)processIncomingWithUniqueClientIdentifier:(id)identifier message:(id)message incomingMessageContext:(id)context completion:(id)completion
 {
-  v10 = _Block_copy(a6);
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v23 = self;
+  v10 = _Block_copy(completion);
+  identifierCopy = identifier;
+  messageCopy = message;
+  contextCopy = context;
+  selfCopy = self;
   v14 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
 

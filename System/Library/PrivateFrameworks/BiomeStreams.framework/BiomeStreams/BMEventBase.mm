@@ -1,11 +1,11 @@
 @interface BMEventBase
-+ (id)convertValue:(id)a3 toType:(int64_t)a4;
++ (id)convertValue:(id)value toType:(int64_t)type;
 - (BMEventBase)init;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isValidWithContext:(id)a3 error:(id *)a4;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isValidWithContext:(id)context error:(id *)error;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (id)json;
-- (id)valueForKeyPath:(id)a3;
+- (id)valueForKeyPath:(id)path;
 @end
 
 @implementation BMEventBase
@@ -33,10 +33,10 @@
   return v3;
 }
 
-- (BOOL)isValidWithContext:(id)a3 error:(id *)a4
+- (BOOL)isValidWithContext:(id)context error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -57,7 +57,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v10 |= [*(*(&v16 + 1) + 8 * i) isValidWithContext:v6 error:{a4, v16}] ^ 1;
+        v10 |= [*(*(&v16 + 1) + 8 * i) isValidWithContext:contextCopy error:{error, v16}] ^ 1;
       }
 
       v9 = [(NSArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -76,10 +76,10 @@
   return v13 & 1;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -100,7 +100,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v10 |= [*(*(&v16 + 1) + 8 * i) isCompleteWithContext:v6 error:{a4, v16}] ^ 1;
+        v10 |= [*(*(&v16 + 1) + 8 * i) isCompleteWithContext:contextCopy error:{error, v16}] ^ 1;
       }
 
       v9 = [(NSArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -119,7 +119,7 @@
   return v13 & 1;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -167,10 +167,10 @@ LABEL_11:
   return v9;
 }
 
-- (id)valueForKeyPath:(id)a3
+- (id)valueForKeyPath:(id)path
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -191,10 +191,10 @@ LABEL_11:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        NSSelectorFromString(v4);
+        NSSelectorFromString(pathCopy);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [v10 valueForKey:v4];
+          v11 = [v10 valueForKey:pathCopy];
           if (v11)
           {
             v12 = v11;
@@ -216,7 +216,7 @@ LABEL_11:
 
   v15.receiver = self;
   v15.super_class = BMEventBase;
-  v12 = [(BMEventBase *)&v15 valueForKeyPath:v4];
+  v12 = [(BMEventBase *)&v15 valueForKeyPath:pathCopy];
 LABEL_12:
 
   v13 = *MEMORY[0x1E69E9840];
@@ -224,28 +224,28 @@ LABEL_12:
   return v12;
 }
 
-+ (id)convertValue:(id)a3 toType:(int64_t)a4
++ (id)convertValue:(id)value toType:(int64_t)type
 {
-  v7 = a3;
-  v8 = v7;
-  if (!v7)
+  valueCopy = value;
+  v8 = valueCopy;
+  if (!valueCopy)
   {
-    a1 = 0;
+    self = 0;
     goto LABEL_16;
   }
 
-  if (a4 <= 1)
+  if (type <= 1)
   {
-    if (!a4)
+    if (!type)
     {
-      v9 = v7;
+      v9 = valueCopy;
       goto LABEL_15;
     }
 
-    if (a4 == 1)
+    if (type == 1)
     {
       v10 = MEMORY[0x1E695DF00];
-      [v7 doubleValue];
+      [valueCopy doubleValue];
       v9 = [v10 dateWithTimeIntervalSinceReferenceDate:?];
       goto LABEL_15;
     }
@@ -253,11 +253,11 @@ LABEL_12:
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 2:
         v11 = MEMORY[0x1E695DF00];
-        [v7 doubleValue];
+        [valueCopy doubleValue];
         v9 = [v11 dateWithTimeIntervalSince1970:?];
         goto LABEL_15;
       case 3:
@@ -275,32 +275,32 @@ LABEL_12:
           goto LABEL_15;
         }
 
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:a2 object:a1 file:@"BMEventBase.m" lineNumber:190 description:{@"Unexpected UUID value: %@", v8}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"BMEventBase.m" lineNumber:190 description:{@"Unexpected UUID value: %@", v8}];
 
         goto LABEL_6;
       case 4:
 LABEL_6:
         v9 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v8];
 LABEL_15:
-        a1 = v9;
+        self = v9;
         goto LABEL_16;
     }
   }
 
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:a2 object:a1 file:@"BMEventBase.m" lineNumber:195 description:{@"Unknown converted type: %ld", a4}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"BMEventBase.m" lineNumber:195 description:{@"Unknown converted type: %ld", type}];
 
 LABEL_16:
 
-  return a1;
+  return self;
 }
 
 - (id)json
 {
-  v3 = [(BMEventBase *)self jsonDictionary];
+  jsonDictionary = [(BMEventBase *)self jsonDictionary];
   v11 = 0;
-  v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:0 error:&v11];
+  v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:jsonDictionary options:0 error:&v11];
   v5 = v11;
   v6 = v5;
   if (v4)

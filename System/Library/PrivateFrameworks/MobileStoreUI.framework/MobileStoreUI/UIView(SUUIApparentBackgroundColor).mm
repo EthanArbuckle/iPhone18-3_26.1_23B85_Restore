@@ -6,31 +6,31 @@
 
 - (id)suui_apparentBackgroundColor
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
     while (1)
     {
-      v2 = [v1 backgroundColor];
-      if ([v2 suui_isOpaque])
+      backgroundColor = [selfCopy backgroundColor];
+      if ([backgroundColor suui_isOpaque])
       {
-        v5 = v2;
+        v5 = backgroundColor;
         goto LABEL_8;
       }
 
       v3 = objc_alloc(MEMORY[0x277D75348]);
-      v4 = [v1 layer];
-      v5 = [v3 initWithCGColor:{objc_msgSend(v4, "backgroundColor")}];
+      layer = [selfCopy layer];
+      v5 = [v3 initWithCGColor:{objc_msgSend(layer, "backgroundColor")}];
 
       if ([v5 suui_isOpaque])
       {
         break;
       }
 
-      v6 = [v1 superview];
+      superview = [selfCopy superview];
 
-      v1 = v6;
-      if (!v6)
+      selfCopy = superview;
+      if (!superview)
       {
         goto LABEL_5;
       }

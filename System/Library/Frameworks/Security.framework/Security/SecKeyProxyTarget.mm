@@ -1,29 +1,29 @@
 @interface SecKeyProxyTarget
-- (SecKeyProxyTarget)initWithKey:(id)a3 certificate:(id)a4;
-- (void)getAlgorithmIDWithReply:(id)a3;
-- (void)getAttributesWithReply:(id)a3;
-- (void)getBlockSizeWithReply:(id)a3;
-- (void)getDescriptionWithReply:(id)a3;
-- (void)getExternalRepresentationWithReply:(id)a3;
-- (void)getPublicKey:(id)a3;
-- (void)performOperation:(int64_t)a3 mode:(int64_t)a4 algorithm:(id)a5 parameters:(id)a6 reply:(id)a7;
+- (SecKeyProxyTarget)initWithKey:(id)key certificate:(id)certificate;
+- (void)getAlgorithmIDWithReply:(id)reply;
+- (void)getAttributesWithReply:(id)reply;
+- (void)getBlockSizeWithReply:(id)reply;
+- (void)getDescriptionWithReply:(id)reply;
+- (void)getExternalRepresentationWithReply:(id)reply;
+- (void)getPublicKey:(id)key;
+- (void)performOperation:(int64_t)operation mode:(int64_t)mode algorithm:(id)algorithm parameters:(id)parameters reply:(id)reply;
 @end
 
 @implementation SecKeyProxyTarget
 
-- (void)performOperation:(int64_t)a3 mode:(int64_t)a4 algorithm:(id)a5 parameters:(id)a6 reply:(id)a7
+- (void)performOperation:(int64_t)operation mode:(int64_t)mode algorithm:(id)algorithm parameters:(id)parameters reply:(id)reply
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v26[0] = v12;
+  algorithmCopy = algorithm;
+  parametersCopy = parameters;
+  replyCopy = reply;
+  v26[0] = algorithmCopy;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
   v16 = [v15 mutableCopy];
 
-  if ([v13 count])
+  if ([parametersCopy count])
   {
-    v17 = [v13 objectAtIndexedSubscript:0];
+    v17 = [parametersCopy objectAtIndexedSubscript:0];
   }
 
   else
@@ -31,41 +31,41 @@
     v17 = 0;
   }
 
-  if ([v13 count] < 2)
+  if ([parametersCopy count] < 2)
   {
     v18 = 0;
   }
 
   else
   {
-    v18 = [v13 objectAtIndexedSubscript:1];
+    v18 = [parametersCopy objectAtIndexedSubscript:1];
   }
 
   v24 = 0;
   v23[0] = [(SecKeyProxyTarget *)self key];
-  v23[1] = a3;
+  v23[1] = operation;
   v23[2] = v16;
-  v23[3] = a4;
+  v23[3] = mode;
   v19 = SecKeyRunAlgorithmAndCopyResult(v23, v17, v18, &v24);
   v20 = v19;
   if (v19)
   {
     v25 = v19;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
-    v14[2](v14, v21, v24);
+    replyCopy[2](replyCopy, v21, v24);
   }
 
   else
   {
-    v14[2](v14, MEMORY[0x1E695E0F0], v24);
+    replyCopy[2](replyCopy, MEMORY[0x1E695E0F0], v24);
   }
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getPublicKey:(id)a3
+- (void)getPublicKey:(id)key
 {
-  v10 = a3;
+  keyCopy = key;
   publicKeyProxy = self->_publicKeyProxy;
   if (publicKeyProxy)
   {
@@ -82,26 +82,26 @@
 
     publicKeyProxy = self->_publicKeyProxy;
 LABEL_4:
-    v9 = [(SecKeyProxy *)publicKeyProxy endpoint];
-    v10[2](v10, v9);
+    endpoint = [(SecKeyProxy *)publicKeyProxy endpoint];
+    keyCopy[2](keyCopy, endpoint);
 
     goto LABEL_5;
   }
 
-  v10[2](v10, 0);
+  keyCopy[2](keyCopy, 0);
 LABEL_5:
 }
 
-- (void)getAlgorithmIDWithReply:(id)a3
+- (void)getAlgorithmIDWithReply:(id)reply
 {
-  v6 = a3;
+  replyCopy = reply;
   AlgorithmId = SecKeyGetAlgorithmId([(SecKeyProxyTarget *)self key]);
-  (*(a3 + 2))(v6, AlgorithmId);
+  (*(reply + 2))(replyCopy, AlgorithmId);
 }
 
-- (void)getDescriptionWithReply:(id)a3
+- (void)getDescriptionWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   v4 = CFCopyDescription([(SecKeyProxyTarget *)self key]);
   if ([(__CFString *)v4 hasPrefix:@"<SecKeyRef "]&& ([(__CFString *)v4 hasSuffix:@">"]& 1) != 0)
   {
@@ -122,20 +122,20 @@ LABEL_7:
   }
 
 LABEL_8:
-  v8[2](v8, v4);
+  replyCopy[2](replyCopy, v4);
 }
 
-- (void)getExternalRepresentationWithReply:(id)a3
+- (void)getExternalRepresentationWithReply:(id)reply
 {
   error = 0;
-  v4 = a3;
+  replyCopy = reply;
   v5 = SecKeyCopyExternalRepresentation([(SecKeyProxyTarget *)self key], &error);
-  v4[2](v4, v5, error);
+  replyCopy[2](replyCopy, v5, error);
 }
 
-- (void)getAttributesWithReply:(id)a3
+- (void)getAttributesWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = SecKeyCopyAttributes([(SecKeyProxyTarget *)self key]);
   v16 = [(__CFDictionary *)v5 mutableCopy];
 
@@ -148,12 +148,12 @@ LABEL_8:
   }
 
   v15 = [v16 copy];
-  v4[2](v4, v15);
+  replyCopy[2](replyCopy, v15);
 }
 
-- (void)getBlockSizeWithReply:(id)a3
+- (void)getBlockSizeWithReply:(id)reply
 {
-  v7 = a3;
+  replyCopy = reply;
   v4 = [(SecKeyProxyTarget *)self key];
   _SecKeyCheck(v4, "SecKeyGetBlockSize");
   v5 = *(*(v4 + 2) + 80);
@@ -167,21 +167,21 @@ LABEL_8:
     v6 = 0;
   }
 
-  v7[2](v7, v6);
+  replyCopy[2](replyCopy, v6);
 }
 
-- (SecKeyProxyTarget)initWithKey:(id)a3 certificate:(id)a4
+- (SecKeyProxyTarget)initWithKey:(id)key certificate:(id)certificate
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  certificateCopy = certificate;
   v12.receiver = self;
   v12.super_class = SecKeyProxyTarget;
   v9 = [(SecKeyProxyTarget *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_key, a3);
-    objc_storeStrong(&v10->_certificate, a4);
+    objc_storeStrong(&v9->_key, key);
+    objc_storeStrong(&v10->_certificate, certificate);
   }
 
   return v10;

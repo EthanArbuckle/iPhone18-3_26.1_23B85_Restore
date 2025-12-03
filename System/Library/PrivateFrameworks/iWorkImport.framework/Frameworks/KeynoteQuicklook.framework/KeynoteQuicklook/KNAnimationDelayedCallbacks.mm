@@ -1,11 +1,11 @@
 @interface KNAnimationDelayedCallbacks
 - (KNAnimationDelayedCallbacks)init;
-- (id)performBlock:(id)a3 afterDelay:(double)a4;
-- (id)performSelector:(SEL)a3 onTarget:(id)a4 withObject:(id)a5 afterDelay:(double)a6;
+- (id)performBlock:(id)block afterDelay:(double)delay;
+- (id)performSelector:(SEL)selector onTarget:(id)target withObject:(id)object afterDelay:(double)delay;
 - (void)cancelAllCallbacks;
-- (void)p_setupCallback:(id)a3;
+- (void)p_setupCallback:(id)callback;
 - (void)pauseAllCallbacks;
-- (void)removeCallback:(id)a3;
+- (void)removeCallback:(id)callback;
 - (void)resumeAllCallbacks;
 @end
 
@@ -20,51 +20,51 @@
   return self;
 }
 
-- (void)p_setupCallback:(id)a3
+- (void)p_setupCallback:(id)callback
 {
   delayedCallbacks = self->_delayedCallbacks;
-  v5 = a3;
-  objc_msgSend_addObject_(delayedCallbacks, v6, v5);
+  callbackCopy = callback;
+  objc_msgSend_addObject_(delayedCallbacks, v6, callbackCopy);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_275D7CF64;
   v10[3] = &unk_27A698508;
   v10[4] = self;
-  objc_msgSend_setCompletionHandler_(v5, v7, v10);
-  objc_msgSend_run(v5, v8, v9);
+  objc_msgSend_setCompletionHandler_(callbackCopy, v7, v10);
+  objc_msgSend_run(callbackCopy, v8, v9);
 }
 
-- (id)performBlock:(id)a3 afterDelay:(double)a4
+- (id)performBlock:(id)block afterDelay:(double)delay
 {
-  v6 = a3;
+  blockCopy = block;
   v7 = [KNAnimationDelayedCallback alloc];
-  v9 = objc_msgSend_initWithBlock_delay_(v7, v8, v6, a4);
+  v9 = objc_msgSend_initWithBlock_delay_(v7, v8, blockCopy, delay);
 
   objc_msgSend_p_setupCallback_(self, v10, v9);
 
   return v9;
 }
 
-- (id)performSelector:(SEL)a3 onTarget:(id)a4 withObject:(id)a5 afterDelay:(double)a6
+- (id)performSelector:(SEL)selector onTarget:(id)target withObject:(id)object afterDelay:(double)delay
 {
-  v10 = a5;
-  v11 = a4;
+  objectCopy = object;
+  targetCopy = target;
   v12 = [KNAnimationDelayedCallback alloc];
-  v14 = objc_msgSend_initWithTarget_selector_object_delay_(v12, v13, v11, a3, v10, a6);
+  v14 = objc_msgSend_initWithTarget_selector_object_delay_(v12, v13, targetCopy, selector, objectCopy, delay);
 
   objc_msgSend_p_setupCallback_(self, v15, v14);
 
   return v14;
 }
 
-- (void)removeCallback:(id)a3
+- (void)removeCallback:(id)callback
 {
-  v8 = a3;
-  objc_msgSend_cancel(v8, v4, v5);
+  callbackCopy = callback;
+  objc_msgSend_cancel(callbackCopy, v4, v5);
   delayedCallbacks = self->_delayedCallbacks;
   if (delayedCallbacks)
   {
-    objc_msgSend_removeObject_(delayedCallbacks, v6, v8);
+    objc_msgSend_removeObject_(delayedCallbacks, v6, callbackCopy);
   }
 }
 

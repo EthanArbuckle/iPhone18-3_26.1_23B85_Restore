@@ -1,16 +1,16 @@
 @interface MRDAutoConnectionControllerReason
-+ (id)reasonWithType:(unint64_t)a3 string:(id)a4;
++ (id)reasonWithType:(unint64_t)type string:(id)string;
 - (id)description;
 @end
 
 @implementation MRDAutoConnectionControllerReason
 
-+ (id)reasonWithType:(unint64_t)a3 string:(id)a4
++ (id)reasonWithType:(unint64_t)type string:(id)string
 {
-  v5 = a4;
+  stringCopy = string;
   v6 = objc_alloc_init(MRDAutoConnectionControllerReason);
-  [(MRDAutoConnectionControllerReason *)v6 setType:a3];
-  [(MRDAutoConnectionControllerReason *)v6 setString:v5];
+  [(MRDAutoConnectionControllerReason *)v6 setType:type];
+  [(MRDAutoConnectionControllerReason *)v6 setString:stringCopy];
 
   return v6;
 }

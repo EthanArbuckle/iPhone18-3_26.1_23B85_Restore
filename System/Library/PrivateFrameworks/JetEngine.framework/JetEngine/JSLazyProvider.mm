@@ -1,15 +1,15 @@
 @interface JSLazyProvider
 - (_TtC9JetEngine14JSLazyProvider)init;
-- (id)lazyDependencyFor:(id)a3;
+- (id)lazyDependencyFor:(id)for;
 @end
 
 @implementation JSLazyProvider
 
-- (id)lazyDependencyFor:(id)a3
+- (id)lazyDependencyFor:(id)for
 {
   v4 = sub_1AB460544();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1AB389C30(v4, v6);
 
   return v8;

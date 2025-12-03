@@ -12,25 +12,25 @@
   if (v5)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DD5E0]) initWithContentView:v5];
-    [a1 _setBottomPalette:v4];
+    [self _setBottomPalette:v4];
   }
 
   else
   {
-    [a1 _setBottomPalette:0];
+    [self _setBottomPalette:0];
   }
 }
 
 - (void)ts_setBottomPaletteMinimumHeight:()Bridge
 {
-  v3 = [a1 _bottomPalette];
-  [v3 setMinimumHeight:a2];
+  _bottomPalette = [self _bottomPalette];
+  [_bottomPalette setMinimumHeight:a2];
 }
 
 - (void)ts_setBottomPalettePreferredHeight:()Bridge
 {
-  v3 = [a1 _bottomPalette];
-  [v3 setPreferredHeight:a2];
+  _bottomPalette = [self _bottomPalette];
+  [_bottomPalette setPreferredHeight:a2];
 }
 
 @end

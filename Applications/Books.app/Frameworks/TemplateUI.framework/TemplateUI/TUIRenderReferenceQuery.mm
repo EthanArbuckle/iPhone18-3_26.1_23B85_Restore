@@ -1,37 +1,37 @@
 @interface TUIRenderReferenceQuery
-+ (id)queryWithUUID:(id)a3 uid:(id)a4 identifier:(id)a5;
-+ (id)queryWithUUID:(id)a3 uid:(id)a4 refId:(id)a5 refInstance:(id)a6;
++ (id)queryWithUUID:(id)d uid:(id)uid identifier:(id)identifier;
++ (id)queryWithUUID:(id)d uid:(id)uid refId:(id)id refInstance:(id)instance;
 @end
 
 @implementation TUIRenderReferenceQuery
 
-+ (id)queryWithUUID:(id)a3 uid:(id)a4 refId:(id)a5 refInstance:(id)a6
++ (id)queryWithUUID:(id)d uid:(id)uid refId:(id)id refInstance:(id)instance
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  instanceCopy = instance;
+  idCopy = id;
+  uidCopy = uid;
+  dCopy = d;
   v13 = objc_alloc_init(_TUIRenderReferenceQuery);
-  [(_TUIRenderReferenceQuery *)v13 setUUID:v12];
+  [(_TUIRenderReferenceQuery *)v13 setUUID:dCopy];
 
-  [(_TUIRenderReferenceQuery *)v13 setUid:v11];
-  [(_TUIRenderReferenceQuery *)v13 setRefId:v10];
+  [(_TUIRenderReferenceQuery *)v13 setUid:uidCopy];
+  [(_TUIRenderReferenceQuery *)v13 setRefId:idCopy];
 
-  [(_TUIRenderReferenceQuery *)v13 setRefInstance:v9];
+  [(_TUIRenderReferenceQuery *)v13 setRefInstance:instanceCopy];
 
   return v13;
 }
 
-+ (id)queryWithUUID:(id)a3 uid:(id)a4 identifier:(id)a5
++ (id)queryWithUUID:(id)d uid:(id)uid identifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  uidCopy = uid;
+  dCopy = d;
   v10 = objc_alloc_init(_TUIRenderIdentifierQuery);
-  [(_TUIRenderIdentifierQuery *)v10 setUUID:v9];
+  [(_TUIRenderIdentifierQuery *)v10 setUUID:dCopy];
 
-  [(_TUIRenderIdentifierQuery *)v10 setUid:v8];
-  [(_TUIRenderIdentifierQuery *)v10 setIdentifier:v7];
+  [(_TUIRenderIdentifierQuery *)v10 setUid:uidCopy];
+  [(_TUIRenderIdentifierQuery *)v10 setIdentifier:identifierCopy];
 
   return v10;
 }

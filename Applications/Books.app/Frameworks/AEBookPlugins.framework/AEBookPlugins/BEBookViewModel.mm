@@ -4,10 +4,10 @@
 - (NSArray)authors;
 - (NSArray)paginatableDocuments;
 - (NSString)documentUniqueID;
-- (id)documentFor:(int64_t)a3;
-- (void)setDocumentUniqueID:(id)a3;
-- (void)setPaginatableDocuments:(id)a3;
-- (void)setSample:(BOOL)a3;
+- (id)documentFor:(int64_t)for;
+- (void)setDocumentUniqueID:(id)d;
+- (void)setPaginatableDocuments:(id)documents;
+- (void)setSample:(BOOL)sample;
 @end
 
 @implementation BEBookViewModel
@@ -21,7 +21,7 @@
   return v2;
 }
 
-- (void)setDocumentUniqueID:(id)a3
+- (void)setDocumentUniqueID:(id)d
 {
   v4 = sub_1399A0();
   v6 = v5;
@@ -46,17 +46,17 @@
   return *(self + v3);
 }
 
-- (void)setSample:(BOOL)a3
+- (void)setSample:(BOOL)sample
 {
   v5 = OBJC_IVAR___BEBookViewModel_sample;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = sample;
 }
 
-- (id)documentFor:(int64_t)a3
+- (id)documentFor:(int64_t)for
 {
-  v4 = self;
-  v5 = sub_124168(a3);
+  selfCopy = self;
+  v5 = sub_124168(for);
 
   return v5;
 }
@@ -65,7 +65,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_139890();
 
   sub_11B940(&qword_22CC88);
@@ -74,13 +74,13 @@
   return v4.super.isa;
 }
 
-- (void)setPaginatableDocuments:(id)a3
+- (void)setPaginatableDocuments:(id)documents
 {
   sub_11B940(&qword_22CC88);
   sub_139A40();
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_1398A0();
 }
 

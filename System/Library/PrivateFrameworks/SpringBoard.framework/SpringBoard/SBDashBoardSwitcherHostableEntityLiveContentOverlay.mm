@@ -1,5 +1,5 @@
 @interface SBDashBoardSwitcherHostableEntityLiveContentOverlay
-- (SBDashBoardSwitcherHostableEntityLiveContentOverlay)initWithEntity:(id)a3 windowScene:(id)a4;
+- (SBDashBoardSwitcherHostableEntityLiveContentOverlay)initWithEntity:(id)entity windowScene:(id)scene;
 - (SBSwitcherLiveContentOverlayDelegate)delegate;
 - (UIRectCornerRadii)cornerRadii;
 - (UIView)contentOverlayView;
@@ -8,28 +8,28 @@
 - (id)_sceneIfExists;
 - (id)liveSceneIdentityToken;
 - (int64_t)preferredInterfaceOrientation;
-- (void)configureWithWorkspaceEntity:(id)a3 referenceFrame:(CGRect)a4 contentOrientation:(int64_t)a5 containerOrientation:(int64_t)a6 layoutRole:(int64_t)a7 sbsDisplayLayoutRole:(int64_t)a8 zOrderIndex:(int64_t)a9 spaceConfiguration:(int64_t)a10 floatingConfiguration:(int64_t)a11 hasClassicAppOrientationMismatch:(BOOL)a12 sizingPolicy:(int64_t)a13;
+- (void)configureWithWorkspaceEntity:(id)entity referenceFrame:(CGRect)frame contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation layoutRole:(int64_t)role sbsDisplayLayoutRole:(int64_t)layoutRole zOrderIndex:(int64_t)index spaceConfiguration:(int64_t)self0 floatingConfiguration:(int64_t)self1 hasClassicAppOrientationMismatch:(BOOL)self2 sizingPolicy:(int64_t)self3;
 - (void)invalidate;
-- (void)noteKeyboardFocusDidChangeToSceneID:(id)a3;
-- (void)setDisplayLayoutElementActive:(BOOL)a3;
-- (void)setLiveContentBlurEnabled:(BOOL)a3 duration:(double)a4 blurDelay:(double)a5 iconViewScale:(double)a6 began:(id)a7 completion:(id)a8;
-- (void)updateDisplayLayoutElementWithBuilder:(id)a3;
+- (void)noteKeyboardFocusDidChangeToSceneID:(id)d;
+- (void)setDisplayLayoutElementActive:(BOOL)active;
+- (void)setLiveContentBlurEnabled:(BOOL)enabled duration:(double)duration blurDelay:(double)delay iconViewScale:(double)scale began:(id)began completion:(id)completion;
+- (void)updateDisplayLayoutElementWithBuilder:(id)builder;
 @end
 
 @implementation SBDashBoardSwitcherHostableEntityLiveContentOverlay
 
-- (SBDashBoardSwitcherHostableEntityLiveContentOverlay)initWithEntity:(id)a3 windowScene:(id)a4
+- (SBDashBoardSwitcherHostableEntityLiveContentOverlay)initWithEntity:(id)entity windowScene:(id)scene
 {
-  v7 = a3;
-  v8 = a4;
+  entityCopy = entity;
+  sceneCopy = scene;
   v17.receiver = self;
   v17.super_class = SBDashBoardSwitcherHostableEntityLiveContentOverlay;
   v9 = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_entity, a3);
-    objc_storeWeak(&v10->_sbWindowScene, v8);
+    objc_storeStrong(&v9->_entity, entity);
+    objc_storeWeak(&v10->_sbWindowScene, sceneCopy);
     v11 = objc_alloc(MEMORY[0x277D66A50]);
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
@@ -41,33 +41,33 @@
   return v10;
 }
 
-- (void)updateDisplayLayoutElementWithBuilder:(id)a3
+- (void)updateDisplayLayoutElementWithBuilder:(id)builder
 {
   if (self->_displayLayoutElementAssertion)
   {
-    v5 = a3;
+    builderCopy = builder;
     WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
     if (!WeakRetained)
     {
       [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)a2 updateDisplayLayoutElementWithBuilder:?];
     }
 
-    v14 = [WeakRetained displayLayoutPublisher];
-    if (!v14)
+    builderCopy2 = [WeakRetained displayLayoutPublisher];
+    if (!builderCopy2)
     {
       [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)a2 updateDisplayLayoutElementWithBuilder:WeakRetained];
     }
 
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v14 transitionAssertionWithReason:v8];
+    v9 = [builderCopy2 transitionAssertionWithReason:v8];
 
     [(BSInvalidatable *)self->_displayLayoutElementAssertion invalidate];
     displayLayoutElementAssertion = self->_displayLayoutElementAssertion;
     self->_displayLayoutElementAssertion = 0;
 
-    v5[2](v5, self->_displayLayoutElement);
-    v11 = [v14 addElement:self->_displayLayoutElement];
+    builderCopy[2](builderCopy, self->_displayLayoutElement);
+    v11 = [builderCopy2 addElement:self->_displayLayoutElement];
     v12 = self->_displayLayoutElementAssertion;
     self->_displayLayoutElementAssertion = v11;
 
@@ -76,16 +76,16 @@
 
   else
   {
-    v13 = *(a3 + 2);
-    v14 = a3;
+    v13 = *(builder + 2);
+    builderCopy2 = builder;
     v13();
   }
 }
 
-- (void)setDisplayLayoutElementActive:(BOOL)a3
+- (void)setDisplayLayoutElementActive:(BOOL)active
 {
   displayLayoutElementAssertion = self->_displayLayoutElementAssertion;
-  if (a3)
+  if (active)
   {
     if (displayLayoutElementAssertion)
     {
@@ -98,23 +98,23 @@
       [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)a2 setDisplayLayoutElementActive:?];
     }
 
-    v14 = [WeakRetained displayLayoutPublisher];
-    if (!v14)
+    displayLayoutPublisher = [WeakRetained displayLayoutPublisher];
+    if (!displayLayoutPublisher)
     {
       [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)a2 setDisplayLayoutElementActive:WeakRetained];
     }
 
     displayLayoutElement = self->_displayLayoutElement;
-    v8 = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self contentOverlayView];
-    v9 = [v8 window];
-    [v9 level];
+    contentOverlayView = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self contentOverlayView];
+    window = [contentOverlayView window];
+    [window level];
     [(SBSDisplayLayoutElement *)displayLayoutElement setLevel:v10];
 
-    v11 = [v14 addElement:self->_displayLayoutElement];
+    v11 = [displayLayoutPublisher addElement:self->_displayLayoutElement];
     v12 = self->_displayLayoutElementAssertion;
     self->_displayLayoutElementAssertion = v11;
 
-    v13 = v14;
+    v13 = displayLayoutPublisher;
   }
 
   else
@@ -132,17 +132,17 @@
 
 - (UIView)contentOverlayView
 {
-  v2 = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self contentViewController];
-  v3 = [v2 view];
+  contentViewController = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self contentViewController];
+  view = [contentViewController view];
 
-  return v3;
+  return view;
 }
 
-- (void)noteKeyboardFocusDidChangeToSceneID:(id)a3
+- (void)noteKeyboardFocusDidChangeToSceneID:(id)d
 {
-  v4 = a3;
-  v5 = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self _hostedSceneID];
-  v6 = [v5 isEqualToString:v4];
+  dCopy = d;
+  _hostedSceneID = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self _hostedSceneID];
+  v6 = [_hostedSceneID isEqualToString:dCopy];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -152,19 +152,19 @@
   [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self updateDisplayLayoutElementWithBuilder:v7];
 }
 
-- (void)setLiveContentBlurEnabled:(BOOL)a3 duration:(double)a4 blurDelay:(double)a5 iconViewScale:(double)a6 began:(id)a7 completion:(id)a8
+- (void)setLiveContentBlurEnabled:(BOOL)enabled duration:(double)duration blurDelay:(double)delay iconViewScale:(double)scale began:(id)began completion:(id)completion
 {
-  v9 = *(a7 + 2);
-  v10 = a8;
-  v9(a7);
-  v10[2]();
+  v9 = *(began + 2);
+  completionCopy = completion;
+  v9(began);
+  completionCopy[2]();
 }
 
 - (int64_t)preferredInterfaceOrientation
 {
-  v2 = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self _sceneHandleIfExists];
+  _sceneHandleIfExists = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self _sceneHandleIfExists];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = _sceneHandleIfExists;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -187,53 +187,53 @@
 
   if (v6)
   {
-    v7 = [v6 currentInterfaceOrientation];
+    currentInterfaceOrientation = [v6 currentInterfaceOrientation];
   }
 
   else
   {
-    v7 = 0;
+    currentInterfaceOrientation = 0;
   }
 
-  return v7;
+  return currentInterfaceOrientation;
 }
 
 - (id)liveSceneIdentityToken
 {
-  v2 = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self _sceneIfExists];
-  if ([v2 isActive])
+  _sceneIfExists = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self _sceneIfExists];
+  if ([_sceneIfExists isActive])
   {
-    v3 = [v2 settings];
-    if ([v3 isForeground])
+    settings = [_sceneIfExists settings];
+    if ([settings isForeground])
     {
-      v4 = [v2 identityToken];
+      identityToken = [_sceneIfExists identityToken];
     }
 
     else
     {
-      v4 = 0;
+      identityToken = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    identityToken = 0;
   }
 
-  return v4;
+  return identityToken;
 }
 
-- (void)configureWithWorkspaceEntity:(id)a3 referenceFrame:(CGRect)a4 contentOrientation:(int64_t)a5 containerOrientation:(int64_t)a6 layoutRole:(int64_t)a7 sbsDisplayLayoutRole:(int64_t)a8 zOrderIndex:(int64_t)a9 spaceConfiguration:(int64_t)a10 floatingConfiguration:(int64_t)a11 hasClassicAppOrientationMismatch:(BOOL)a12 sizingPolicy:(int64_t)a13
+- (void)configureWithWorkspaceEntity:(id)entity referenceFrame:(CGRect)frame contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation layoutRole:(int64_t)role sbsDisplayLayoutRole:(int64_t)layoutRole zOrderIndex:(int64_t)index spaceConfiguration:(int64_t)self0 floatingConfiguration:(int64_t)self1 hasClassicAppOrientationMismatch:(BOOL)self2 sizingPolicy:(int64_t)self3
 {
-  v19 = [a3 dashBoardHostableEntity];
-  v14 = [v19 hostableEntity];
+  dashBoardHostableEntity = [entity dashBoardHostableEntity];
+  hostableEntity = [dashBoardHostableEntity hostableEntity];
   hostableEntity = self->_hostableEntity;
-  self->_hostableEntity = v14;
-  v16 = v14;
+  self->_hostableEntity = hostableEntity;
+  v16 = hostableEntity;
 
-  v17 = [(CSHostableEntity *)v16 hostingContainerViewController];
+  hostingContainerViewController = [(CSHostableEntity *)v16 hostingContainerViewController];
   contentViewController = self->_contentViewController;
-  self->_contentViewController = v17;
+  self->_contentViewController = hostingContainerViewController;
 }
 
 - (void)invalidate
@@ -252,44 +252,44 @@
 
 - (id)_hostedSceneID
 {
-  v3 = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self _sceneHandleIfExists];
-  v4 = [v3 sceneIdentifier];
+  _sceneHandleIfExists = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self _sceneHandleIfExists];
+  sceneIdentifier = [_sceneHandleIfExists sceneIdentifier];
 
-  if (!v4)
+  if (!sceneIdentifier)
   {
-    v5 = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self _hostedEntityViewController];
-    v6 = [v5 sceneForTraitsParticipant];
-    v4 = [v6 identifier];
+    _hostedEntityViewController = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self _hostedEntityViewController];
+    sceneForTraitsParticipant = [_hostedEntityViewController sceneForTraitsParticipant];
+    sceneIdentifier = [sceneForTraitsParticipant identifier];
   }
 
-  return v4;
+  return sceneIdentifier;
 }
 
 - (id)_sceneIfExists
 {
-  v3 = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self _sceneHandleIfExists];
-  v4 = [v3 sceneIfExists];
-  v5 = v4;
-  if (v4)
+  _sceneHandleIfExists = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self _sceneHandleIfExists];
+  sceneIfExists = [_sceneHandleIfExists sceneIfExists];
+  v5 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v6 = v4;
+    sceneForTraitsParticipant = sceneIfExists;
   }
 
   else
   {
-    v7 = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self _hostedEntityViewController];
-    v6 = [v7 sceneForTraitsParticipant];
+    _hostedEntityViewController = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self _hostedEntityViewController];
+    sceneForTraitsParticipant = [_hostedEntityViewController sceneForTraitsParticipant];
   }
 
-  return v6;
+  return sceneForTraitsParticipant;
 }
 
 - (id)_sceneHandleIfExists
 {
-  v2 = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self _hostedEntityViewController];
-  v3 = [v2 sceneHandleForTraitsParticipant];
+  _hostedEntityViewController = [(SBDashBoardSwitcherHostableEntityLiveContentOverlay *)self _hostedEntityViewController];
+  sceneHandleForTraitsParticipant = [_hostedEntityViewController sceneHandleForTraitsParticipant];
 
-  return v3;
+  return sceneHandleForTraitsParticipant;
 }
 
 - (SBSwitcherLiveContentOverlayDelegate)delegate

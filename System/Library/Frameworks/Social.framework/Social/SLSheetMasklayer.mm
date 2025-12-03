@@ -1,48 +1,48 @@
 @interface SLSheetMasklayer
-- (SLSheetMasklayer)initWithBackgroundColor:(id)a3 cornerRadius:(double)a4;
-- (void)animateSheetMaskFromOldSheetFrame:(CGRect)a3 toSheetFrame:(CGRect)a4 duration:(double)a5;
+- (SLSheetMasklayer)initWithBackgroundColor:(id)color cornerRadius:(double)radius;
+- (void)animateSheetMaskFromOldSheetFrame:(CGRect)frame toSheetFrame:(CGRect)sheetFrame duration:(double)duration;
 - (void)removeAllAnimations;
 - (void)removeSheetCutout;
 - (void)restoreSheetCutout;
-- (void)updateMaskWithBounds:(CGRect)a3 maskRect:(CGRect)a4;
+- (void)updateMaskWithBounds:(CGRect)bounds maskRect:(CGRect)rect;
 @end
 
 @implementation SLSheetMasklayer
 
-- (SLSheetMasklayer)initWithBackgroundColor:(id)a3 cornerRadius:(double)a4
+- (SLSheetMasklayer)initWithBackgroundColor:(id)color cornerRadius:(double)radius
 {
   v31[4] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  colorCopy = color;
   v30.receiver = self;
   v30.super_class = SLSheetMasklayer;
   v8 = [(SLSheetMasklayer *)&v30 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     topLayer = v8->_topLayer;
-    v8->_topLayer = v9;
+    v8->_topLayer = layer;
 
-    v11 = [MEMORY[0x1E6979398] layer];
+    layer2 = [MEMORY[0x1E6979398] layer];
     leftLayer = v8->_leftLayer;
-    v8->_leftLayer = v11;
+    v8->_leftLayer = layer2;
 
-    v13 = [MEMORY[0x1E6979398] layer];
+    layer3 = [MEMORY[0x1E6979398] layer];
     bottomLayer = v8->_bottomLayer;
-    v8->_bottomLayer = v13;
+    v8->_bottomLayer = layer3;
 
-    v15 = [MEMORY[0x1E6979398] layer];
+    layer4 = [MEMORY[0x1E6979398] layer];
     rightLayer = v8->_rightLayer;
-    v8->_rightLayer = v15;
+    v8->_rightLayer = layer4;
 
     v17 = +[_SLSheetMaskLayer layer];
     sheetMaskLayer = v8->_sheetMaskLayer;
     v8->_sheetMaskLayer = v17;
 
-    objc_storeStrong(&v8->_clipBackgroundColor, a3);
-    v8->_clipCornerRadius = a4;
-    objc_storeStrong(&v8->_backgroundColor, a3);
-    v19 = [MEMORY[0x1E69DC888] clearColor];
-    -[SLSheetMasklayer setBackgroundColor:](v8, "setBackgroundColor:", [v19 CGColor]);
+    objc_storeStrong(&v8->_clipBackgroundColor, color);
+    v8->_clipCornerRadius = radius;
+    objc_storeStrong(&v8->_backgroundColor, color);
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    -[SLSheetMasklayer setBackgroundColor:](v8, "setBackgroundColor:", [clearColor CGColor]);
 
     v31[0] = v8->_topLayer;
     v31[1] = v8->_leftLayer;
@@ -53,26 +53,26 @@
     v27[1] = 3221225472;
     v27[2] = __57__SLSheetMasklayer_initWithBackgroundColor_cornerRadius___block_invoke;
     v27[3] = &unk_1E8175F60;
-    v21 = v7;
+    v21 = colorCopy;
     v28 = v21;
     v22 = v8;
     v29 = v22;
     [v20 enumerateObjectsUsingBlock:v27];
 
-    v23 = [MEMORY[0x1E6979398] layer];
+    layer5 = [MEMORY[0x1E6979398] layer];
     v24 = v22[11];
-    v22[11] = v23;
+    v22[11] = layer5;
 
     [v22[11] removeAllAnimations];
     [v22[11] setBackgroundColor:{objc_msgSend(v21, "CGColor")}];
     [(_SLSheetMaskLayer *)v8->_sheetMaskLayer setBounds:0.0, 0.0, 200.0, 200.0];
-    v25 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v25 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     [(_SLSheetMaskLayer *)v8->_sheetMaskLayer setContentsScale:?];
 
     [(_SLSheetMaskLayer *)v8->_sheetMaskLayer setContentsCenter:0.5, 0.5, 0.100000001, 0.100000001];
     [(_SLSheetMaskLayer *)v8->_sheetMaskLayer setClipBackgroundColor:v21];
-    [(_SLSheetMaskLayer *)v8->_sheetMaskLayer setClipCornerRadius:a4];
+    [(_SLSheetMaskLayer *)v8->_sheetMaskLayer setClipCornerRadius:radius];
     [(_SLSheetMaskLayer *)v8->_sheetMaskLayer removeAllAnimations];
     [v22 addSublayer:v8->_sheetMaskLayer];
     [v22 removeAllAnimations];
@@ -123,7 +123,7 @@ void __57__SLSheetMasklayer_initWithBackgroundColor_cornerRadius___block_invoke(
   [(SLSheetMasklayer *)self addSublayer:sheetMaskLayer];
 }
 
-- (void)animateSheetMaskFromOldSheetFrame:(CGRect)a3 toSheetFrame:(CGRect)a4 duration:(double)a5
+- (void)animateSheetMaskFromOldSheetFrame:(CGRect)frame toSheetFrame:(CGRect)sheetFrame duration:(double)duration
 {
   v69[5] = *MEMORY[0x1E69E9840];
   [(SLSheetMasklayer *)self frame];
@@ -219,7 +219,7 @@ void __57__SLSheetMasklayer_initWithBackgroundColor_cornerRadius___block_invoke(
   v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:5];
 
   UIAnimationDragCoefficient();
-  v48 = v47 * a5;
+  v48 = v47 * duration;
   leftLayer = self->_leftLayer;
   v65[0] = self->_topLayer;
   v65[1] = leftLayer;
@@ -282,17 +282,17 @@ void __76__SLSheetMasklayer_animateSheetMaskFromOldSheetFrame_toSheetFrame_durat
   [v6 setBounds:?];
 }
 
-- (void)updateMaskWithBounds:(CGRect)a3 maskRect:(CGRect)a4
+- (void)updateMaskWithBounds:(CGRect)bounds maskRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  if (!CGRectIsNull(a4))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = bounds.size.height;
+  v9 = bounds.size.width;
+  v10 = bounds.origin.y;
+  v11 = bounds.origin.x;
+  if (!CGRectIsNull(rect))
   {
     v21.origin.x = v11;
     v21.origin.y = v10;

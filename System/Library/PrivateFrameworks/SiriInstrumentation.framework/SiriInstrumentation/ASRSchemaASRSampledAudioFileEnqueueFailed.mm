@@ -1,27 +1,27 @@
 @interface ASRSchemaASRSampledAudioFileEnqueueFailed
-- (ASRSchemaASRSampledAudioFileEnqueueFailed)initWithDictionary:(id)a3;
-- (ASRSchemaASRSampledAudioFileEnqueueFailed)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRSampledAudioFileEnqueueFailed)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRSampledAudioFileEnqueueFailed)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasUnderlyingErrorCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasUnderlyingErrorCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRSampledAudioFileEnqueueFailed
 
-- (ASRSchemaASRSampledAudioFileEnqueueFailed)initWithDictionary:(id)a3
+- (ASRSchemaASRSampledAudioFileEnqueueFailed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = ASRSchemaASRSampledAudioFileEnqueueFailed;
   v5 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"originalAsrId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"originalAsrId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,14 +29,14 @@
       [(ASRSchemaASRSampledAudioFileEnqueueFailed *)v5 setOriginalAsrId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"errorCode"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRSampledAudioFileEnqueueFailed setErrorCode:](v5, "setErrorCode:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"errorDomain"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"errorDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,14 +44,14 @@
       [(ASRSchemaASRSampledAudioFileEnqueueFailed *)v5 setErrorDomain:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"underlyingErrorCode"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"underlyingErrorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRSampledAudioFileEnqueueFailed setUnderlyingErrorCode:](v5, "setUnderlyingErrorCode:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"underlyingErrorDomain"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"underlyingErrorDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (ASRSchemaASRSampledAudioFileEnqueueFailed)initWithJSON:(id)a3
+- (ASRSchemaASRSampledAudioFileEnqueueFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,52 +101,52 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[ASRSchemaASRSampledAudioFileEnqueueFailed errorCode](self, "errorCode")}];
-    [v3 setObject:v4 forKeyedSubscript:@"errorCode"];
+    [dictionary setObject:v4 forKeyedSubscript:@"errorCode"];
   }
 
   if (self->_errorDomain)
   {
-    v5 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self errorDomain];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"errorDomain"];
+    errorDomain = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self errorDomain];
+    v6 = [errorDomain copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"errorDomain"];
   }
 
   if (self->_originalAsrId)
   {
-    v7 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self originalAsrId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    originalAsrId = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self originalAsrId];
+    dictionaryRepresentation = [originalAsrId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"originalAsrId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"originalAsrId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"originalAsrId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"originalAsrId"];
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[ASRSchemaASRSampledAudioFileEnqueueFailed underlyingErrorCode](self, "underlyingErrorCode")}];
-    [v3 setObject:v10 forKeyedSubscript:@"underlyingErrorCode"];
+    [dictionary setObject:v10 forKeyedSubscript:@"underlyingErrorCode"];
   }
 
   if (self->_underlyingErrorDomain)
   {
-    v11 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self underlyingErrorDomain];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"underlyingErrorDomain"];
+    underlyingErrorDomain = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self underlyingErrorDomain];
+    v12 = [underlyingErrorDomain copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"underlyingErrorDomain"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -176,28 +176,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ [(NSString *)self->_underlyingErrorDomain hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
-  v5 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self originalAsrId];
-  v6 = [v4 originalAsrId];
-  if ((v5 != 0) == (v6 == 0))
+  originalAsrId = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self originalAsrId];
+  originalAsrId2 = [equalCopy originalAsrId];
+  if ((originalAsrId != 0) == (originalAsrId2 == 0))
   {
     goto LABEL_22;
   }
 
-  v7 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self originalAsrId];
-  if (v7)
+  originalAsrId3 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self originalAsrId];
+  if (originalAsrId3)
   {
-    v8 = v7;
-    v9 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self originalAsrId];
-    v10 = [v4 originalAsrId];
-    v11 = [v9 isEqual:v10];
+    v8 = originalAsrId3;
+    originalAsrId4 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self originalAsrId];
+    originalAsrId5 = [equalCopy originalAsrId];
+    v11 = [originalAsrId4 isEqual:originalAsrId5];
 
     if (!v11)
     {
@@ -209,7 +209,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[48] & 1))
+  if ((*&self->_has & 1) != (equalCopy[48] & 1))
   {
     goto LABEL_23;
   }
@@ -217,26 +217,26 @@
   if (*&self->_has)
   {
     errorCode = self->_errorCode;
-    if (errorCode != [v4 errorCode])
+    if (errorCode != [equalCopy errorCode])
     {
       goto LABEL_23;
     }
   }
 
-  v5 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self errorDomain];
-  v6 = [v4 errorDomain];
-  if ((v5 != 0) == (v6 == 0))
+  originalAsrId = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self errorDomain];
+  originalAsrId2 = [equalCopy errorDomain];
+  if ((originalAsrId != 0) == (originalAsrId2 == 0))
   {
     goto LABEL_22;
   }
 
-  v13 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self errorDomain];
-  if (v13)
+  errorDomain = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self errorDomain];
+  if (errorDomain)
   {
-    v14 = v13;
-    v15 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self errorDomain];
-    v16 = [v4 errorDomain];
-    v17 = [v15 isEqual:v16];
+    v14 = errorDomain;
+    errorDomain2 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self errorDomain];
+    errorDomain3 = [equalCopy errorDomain];
+    v17 = [errorDomain2 isEqual:errorDomain3];
 
     if (!v17)
     {
@@ -249,7 +249,7 @@
   }
 
   v18 = (*&self->_has >> 1) & 1;
-  if (v18 != ((v4[48] >> 1) & 1))
+  if (v18 != ((equalCopy[48] >> 1) & 1))
   {
     goto LABEL_23;
   }
@@ -257,18 +257,18 @@
   if (v18)
   {
     underlyingErrorCode = self->_underlyingErrorCode;
-    if (underlyingErrorCode != [v4 underlyingErrorCode])
+    if (underlyingErrorCode != [equalCopy underlyingErrorCode])
     {
       goto LABEL_23;
     }
   }
 
-  v5 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self underlyingErrorDomain];
-  v6 = [v4 underlyingErrorDomain];
-  if ((v5 != 0) != (v6 == 0))
+  originalAsrId = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self underlyingErrorDomain];
+  originalAsrId2 = [equalCopy underlyingErrorDomain];
+  if ((originalAsrId != 0) != (originalAsrId2 == 0))
   {
-    v20 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self underlyingErrorDomain];
-    if (!v20)
+    underlyingErrorDomain = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self underlyingErrorDomain];
+    if (!underlyingErrorDomain)
     {
 
 LABEL_26:
@@ -276,10 +276,10 @@ LABEL_26:
       goto LABEL_24;
     }
 
-    v21 = v20;
-    v22 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self underlyingErrorDomain];
-    v23 = [v4 underlyingErrorDomain];
-    v24 = [v22 isEqual:v23];
+    v21 = underlyingErrorDomain;
+    underlyingErrorDomain2 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self underlyingErrorDomain];
+    underlyingErrorDomain3 = [equalCopy underlyingErrorDomain];
+    v24 = [underlyingErrorDomain2 isEqual:underlyingErrorDomain3];
 
     if (v24)
     {
@@ -299,14 +299,14 @@ LABEL_24:
   return v25;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self originalAsrId];
+  toCopy = to;
+  originalAsrId = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self originalAsrId];
 
-  if (v4)
+  if (originalAsrId)
   {
-    v5 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self originalAsrId];
+    originalAsrId2 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self originalAsrId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -315,9 +315,9 @@ LABEL_24:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self errorDomain];
+  errorDomain = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self errorDomain];
 
-  if (v6)
+  if (errorDomain)
   {
     PBDataWriterWriteStringField();
   }
@@ -327,19 +327,19 @@ LABEL_24:
     PBDataWriterWriteInt32Field();
   }
 
-  v7 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self underlyingErrorDomain];
+  underlyingErrorDomain = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self underlyingErrorDomain];
 
-  v8 = v9;
-  if (v7)
+  v8 = toCopy;
+  if (underlyingErrorDomain)
   {
     PBDataWriterWriteStringField();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 
-- (void)setHasUnderlyingErrorCode:(BOOL)a3
+- (void)setHasUnderlyingErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -352,17 +352,17 @@ LABEL_24:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ASRSchemaASRSampledAudioFileEnqueueFailed;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self originalAsrId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ASRSchemaASRSampledAudioFileEnqueueFailed *)self deleteOriginalAsrId];
   }

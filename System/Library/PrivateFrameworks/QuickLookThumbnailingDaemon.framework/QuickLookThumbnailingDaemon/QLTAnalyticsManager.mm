@@ -1,8 +1,8 @@
 @interface QLTAnalyticsManager
 + (id)sharedManager;
 - (id)_eventsQueue;
-- (void)_sendEvent:(id)a3;
-- (void)sendCacheSizeEventWithCacheSize:(unint64_t)a3;
+- (void)_sendEvent:(id)event;
+- (void)sendCacheSizeEventWithCacheSize:(unint64_t)size;
 @end
 
 @implementation QLTAnalyticsManager
@@ -29,18 +29,18 @@ void __35__QLTAnalyticsManager__eventsQueue__block_invoke()
   _eventsQueue__eventsSerialBackgroundQueue = v1;
 }
 
-- (void)_sendEvent:(id)a3
+- (void)_sendEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(QLTAnalyticsManager *)self _eventsQueue];
+  eventCopy = event;
+  _eventsQueue = [(QLTAnalyticsManager *)self _eventsQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __34__QLTAnalyticsManager__sendEvent___block_invoke;
   v8[3] = &unk_279ADD0A8;
-  v9 = v5;
+  v9 = eventCopy;
   v10 = a2;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v7 = eventCopy;
+  dispatch_async(_eventsQueue, v8);
 }
 
 void __34__QLTAnalyticsManager__sendEvent___block_invoke(uint64_t a1)
@@ -102,9 +102,9 @@ uint64_t __36__QLTAnalyticsManager_sharedManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)sendCacheSizeEventWithCacheSize:(unint64_t)a3
+- (void)sendCacheSizeEventWithCacheSize:(unint64_t)size
 {
-  v4 = [[QLTCacheSizeEvent alloc] initWithCacheSize:a3];
+  v4 = [[QLTCacheSizeEvent alloc] initWithCacheSize:size];
   [(QLTAnalyticsManager *)self _sendEvent:v4];
 }
 

@@ -1,28 +1,28 @@
 @interface ATXWatchFace
-- (ATXWatchFace)initWithCoder:(id)a3;
-- (ATXWatchFace)initWithStyle:(int64_t)a3 complications:(id)a4 selected:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXWatchFace:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ATXWatchFace)initWithCoder:(id)coder;
+- (ATXWatchFace)initWithStyle:(int64_t)style complications:(id)complications selected:(BOOL)selected;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXWatchFace:(id)face;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXWatchFace
 
-- (ATXWatchFace)initWithStyle:(int64_t)a3 complications:(id)a4 selected:(BOOL)a5
+- (ATXWatchFace)initWithStyle:(int64_t)style complications:(id)complications selected:(BOOL)selected
 {
-  v9 = a4;
+  complicationsCopy = complications;
   v13.receiver = self;
   v13.super_class = ATXWatchFace;
   v10 = [(ATXWatchFace *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_style = a3;
-    objc_storeStrong(&v10->_complications, a4);
-    v11->_selected = a5;
+    v10->_style = style;
+    objc_storeStrong(&v10->_complications, complications);
+    v11->_selected = selected;
   }
 
   return v11;
@@ -31,34 +31,34 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ATXWatchFace *)self style];
-  v5 = [(ATXWatchFace *)self complications];
-  v6 = [(ATXWatchFace *)self isSelected];
+  style = [(ATXWatchFace *)self style];
+  complications = [(ATXWatchFace *)self complications];
+  isSelected = [(ATXWatchFace *)self isSelected];
   v7 = @"NO";
-  if (v6)
+  if (isSelected)
   {
     v7 = @"YES";
   }
 
-  v8 = [v3 stringWithFormat:@"ATXWatchFace: style: %ld, complications: %@, selected: %@", v4, v5, v7];
+  v8 = [v3 stringWithFormat:@"ATXWatchFace: style: %ld, complications: %@, selected: %@", style, complications, v7];
 
   return v8;
 }
 
-- (ATXWatchFace)initWithCoder:(id)a3
+- (ATXWatchFace)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"style"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"style"];
   v6 = objc_autoreleasePoolPush();
   v7 = objc_alloc(MEMORY[0x1E695DFD8]);
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = [v7 initWithObjects:{v8, v9, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v6);
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"complications"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"complications"];
   v12 = [v11 _pas_filteredArrayWithTest:&__block_literal_global_66];
 
-  v13 = [v4 decodeBoolForKey:@"selected"];
+  v13 = [coderCopy decodeBoolForKey:@"selected"];
   if (v12)
   {
     v14 = v12;
@@ -83,54 +83,54 @@ uint64_t __30__ATXWatchFace_initWithCoder___block_invoke(uint64_t a1, void *a2)
   return isKindOfClass & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[ATXWatchFace style](self forKey:{"style"), @"style"}];
-  v4 = [(ATXWatchFace *)self complications];
-  [v5 encodeObject:v4 forKey:@"complications"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[ATXWatchFace style](self forKey:{"style"), @"style"}];
+  complications = [(ATXWatchFace *)self complications];
+  [coderCopy encodeObject:complications forKey:@"complications"];
 
-  [v5 encodeBool:-[ATXWatchFace isSelected](self forKey:{"isSelected"), @"selected"}];
+  [coderCopy encodeBool:-[ATXWatchFace isSelected](self forKey:{"isSelected"), @"selected"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(ATXWatchFace *)self style];
-  v6 = [(ATXWatchFace *)self complications];
-  v7 = [v4 initWithStyle:v5 complications:v6 selected:{-[ATXWatchFace isSelected](self, "isSelected")}];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  style = [(ATXWatchFace *)self style];
+  complications = [(ATXWatchFace *)self complications];
+  v7 = [v4 initWithStyle:style complications:complications selected:{-[ATXWatchFace isSelected](self, "isSelected")}];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXWatchFace *)self isEqualToATXWatchFace:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXWatchFace *)self isEqualToATXWatchFace:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXWatchFace:(id)a3
+- (BOOL)isEqualToATXWatchFace:(id)face
 {
-  v4 = a3;
-  if (self->_style != v4[2])
+  faceCopy = face;
+  if (self->_style != faceCopy[2])
   {
     goto LABEL_4;
   }
 
   v5 = self->_complications;
   v6 = v5;
-  if (v5 == v4[3])
+  if (v5 == faceCopy[3])
   {
 
     goto LABEL_6;
@@ -141,7 +141,7 @@ uint64_t __30__ATXWatchFace_initWithCoder___block_invoke(uint64_t a1, void *a2)
   if (v7)
   {
 LABEL_6:
-    v8 = self->_selected == *(v4 + 8);
+    v8 = self->_selected == *(faceCopy + 8);
     goto LABEL_7;
   }
 

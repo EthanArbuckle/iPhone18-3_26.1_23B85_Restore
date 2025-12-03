@@ -10,15 +10,15 @@
   {
     v5.receiver = self;
     v5.super_class = PSTouchIDPINController;
-    v3 = [(DevicePINController *)&v5 pinInstructionsPrompt];
+    pinInstructionsPrompt = [(DevicePINController *)&v5 pinInstructionsPrompt];
   }
 
   else
   {
-    v3 = PABS_LocalizedStringForPasscodeLock(@"ENTER_PASSCODE_SUBTITLE_TOUCHID");
+    pinInstructionsPrompt = PABS_LocalizedStringForPasscodeLock(@"ENTER_PASSCODE_SUBTITLE_TOUCHID");
   }
 
-  return v3;
+  return pinInstructionsPrompt;
 }
 
 @end

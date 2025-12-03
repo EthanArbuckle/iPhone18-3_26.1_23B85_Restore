@@ -1,36 +1,36 @@
 @interface MTLDebugRenderTargetAttachmentInfo
-- (BOOL)isEqual:(id)a3;
-- (MTLDebugRenderTargetAttachmentInfo)initWithDesc:(const MTLRenderPassAttachmentDescriptorPrivate *)a3 renderTargetArrayLength:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (MTLDebugRenderTargetAttachmentInfo)initWithDesc:(const MTLRenderPassAttachmentDescriptorPrivate *)desc renderTargetArrayLength:(unint64_t)length;
 - (_NSRange)baseSliceRangeOffset;
 - (_NSRange)resolveSliceRangeOffset;
-- (unint64_t)intersectsTexture:(id)a3;
+- (unint64_t)intersectsTexture:(id)texture;
 @end
 
 @implementation MTLDebugRenderTargetAttachmentInfo
 
-- (MTLDebugRenderTargetAttachmentInfo)initWithDesc:(const MTLRenderPassAttachmentDescriptorPrivate *)a3 renderTargetArrayLength:(unint64_t)a4
+- (MTLDebugRenderTargetAttachmentInfo)initWithDesc:(const MTLRenderPassAttachmentDescriptorPrivate *)desc renderTargetArrayLength:(unint64_t)length
 {
   v17.receiver = self;
   v17.super_class = MTLDebugRenderTargetAttachmentInfo;
   v6 = [(MTLDebugRenderTargetAttachmentInfo *)&v17 init];
-  var0 = a3->var0;
-  v6->_attachmentTexture = a3->var0;
-  v6->_renderTargetArrayLength = a4;
-  v6->_baseLevelOffset = a3->var1;
-  var2 = a3->var2;
-  v9 = [var0 parentTexture];
-  if (v9)
+  var0 = desc->var0;
+  v6->_attachmentTexture = desc->var0;
+  v6->_renderTargetArrayLength = length;
+  v6->_baseLevelOffset = desc->var1;
+  var2 = desc->var2;
+  parentTexture = [var0 parentTexture];
+  if (parentTexture)
   {
     do
     {
-      v10 = v9;
+      v10 = parentTexture;
       v6->_baseLevelOffset += [var0 parentRelativeLevel];
       var2 += [var0 parentRelativeSlice];
-      v9 = [v10 parentTexture];
+      parentTexture = [v10 parentTexture];
       var0 = v10;
     }
 
-    while (v9);
+    while (parentTexture);
   }
 
   else
@@ -39,34 +39,34 @@
   }
 
   v6->_baseTexture = v10;
-  if (a4 <= 1)
+  if (length <= 1)
   {
-    v11 = 1;
+    lengthCopy = 1;
   }
 
   else
   {
-    v11 = a4;
+    lengthCopy = length;
   }
 
   v6->_baseSliceRangeOffset.location = var2;
-  v6->_baseSliceRangeOffset.length = v11;
-  var11 = a3->var11;
-  v6->_resolveLevelOffset = a3->var12;
-  var13 = a3->var13;
-  v14 = [var11 parentTexture];
-  if (v14)
+  v6->_baseSliceRangeOffset.length = lengthCopy;
+  var11 = desc->var11;
+  v6->_resolveLevelOffset = desc->var12;
+  var13 = desc->var13;
+  parentTexture2 = [var11 parentTexture];
+  if (parentTexture2)
   {
     do
     {
-      v15 = v14;
+      v15 = parentTexture2;
       v6->_resolveLevelOffset += [var11 parentRelativeLevel];
       var13 += [var11 parentRelativeSlice];
-      v14 = [v15 parentTexture];
+      parentTexture2 = [v15 parentTexture];
       var11 = v15;
     }
 
-    while (v14);
+    while (parentTexture2);
   }
 
   else
@@ -76,55 +76,55 @@
 
   v6->_baseResolveTexture = v15;
   v6->_resolveSliceRangeOffset.location = var13;
-  v6->_resolveSliceRangeOffset.length = v11;
+  v6->_resolveSliceRangeOffset.length = lengthCopy;
   return v6;
 }
 
-- (unint64_t)intersectsTexture:(id)a3
+- (unint64_t)intersectsTexture:(id)texture
 {
-  v3 = a3;
-  v5 = [a3 parentTexture];
+  textureCopy = texture;
+  parentTexture = [texture parentTexture];
   v6 = 0;
   v7 = 0;
-  if (v5)
+  if (parentTexture)
   {
-    v8 = v3;
+    v8 = textureCopy;
     do
     {
-      v9 = v5;
+      v9 = parentTexture;
       v6 += [(MTLTexture *)v8 parentRelativeLevel];
       v7 += [(MTLTexture *)v8 parentRelativeSlice];
-      v5 = [(MTLTexture *)v9 parentTexture];
+      parentTexture = [(MTLTexture *)v9 parentTexture];
       v8 = v9;
     }
 
-    while (v5);
+    while (parentTexture);
   }
 
   else
   {
-    v9 = v3;
+    v9 = textureCopy;
   }
 
-  v10 = [(MTLTexture *)v3 mipmapLevelCount];
-  v11 = [(MTLTexture *)v3 arrayLength];
+  mipmapLevelCount = [(MTLTexture *)textureCopy mipmapLevelCount];
+  arrayLength = [(MTLTexture *)textureCopy arrayLength];
   if (self->_baseResolveTexture)
   {
-    for (i = v3; [(MTLTexture *)i parentTexture]; v3 = i)
+    for (i = textureCopy; [(MTLTexture *)i parentTexture]; textureCopy = i)
     {
-      i = [(MTLTexture *)v3 parentTexture];
+      i = [(MTLTexture *)textureCopy parentTexture];
     }
 
-    if (self->_baseResolveTexture == v3)
+    if (self->_baseResolveTexture == textureCopy)
     {
       resolveLevelOffset = self->_resolveLevelOffset;
       v15 = resolveLevelOffset >= v6;
       v14 = resolveLevelOffset - v6;
-      v15 = !v15 || v14 >= v10;
+      v15 = !v15 || v14 >= mipmapLevelCount;
       if (!v15)
       {
         v19.location = v7;
-        v19.length = v11;
+        v19.length = arrayLength;
         if (NSIntersectionRange(self[72], v19).length)
         {
           return 2;
@@ -138,10 +138,10 @@
     baseLevelOffset = self->_baseLevelOffset;
     v15 = baseLevelOffset >= v6;
     v18 = baseLevelOffset - v6;
-    if (v15 && v18 < v10)
+    if (v15 && v18 < mipmapLevelCount)
     {
       v20.location = v7;
-      v20.length = v11;
+      v20.length = arrayLength;
       if (NSIntersectionRange(self[56], v20).length)
       {
         return 1;
@@ -152,15 +152,15 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   objc_opt_class();
-  return (objc_opt_isKindOfClass() & 1) != 0 && self->_baseTexture == *(a3 + 3) && self->_baseLevelOffset == *(a3 + 5) && NSIntersectionRange(self[56], *(a3 + 56)).length != 0;
+  return (objc_opt_isKindOfClass() & 1) != 0 && self->_baseTexture == *(equal + 3) && self->_baseLevelOffset == *(equal + 5) && NSIntersectionRange(self[56], *(equal + 56)).length != 0;
 }
 
 - (_NSRange)baseSliceRangeOffset

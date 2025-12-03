@@ -1,27 +1,27 @@
 @interface SFClipLinkBanner
-+ (void)getClipLinkBannerForClipLink:(id)a3 openActionHandler:(id)a4 completionHandler:(id)a5;
++ (void)getClipLinkBannerForClipLink:(id)link openActionHandler:(id)handler completionHandler:(id)completionHandler;
 - (SFAppSuggestionBannerDelegate)delegate;
-- (id)_initWithClipLink:(id)a3 openActionHandler:(id)a4;
+- (id)_initWithClipLink:(id)link openActionHandler:(id)handler;
 - (id)overlayProvider;
 @end
 
 @implementation SFClipLinkBanner
 
-+ (void)getClipLinkBannerForClipLink:(id)a3 openActionHandler:(id)a4 completionHandler:(id)a5
++ (void)getClipLinkBannerForClipLink:(id)link openActionHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  linkCopy = link;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __85__SFClipLinkBanner_getClipLinkBannerForClipLink_openActionHandler_completionHandler___block_invoke;
   v13[3] = &unk_1E721DE60;
-  v14 = v7;
-  v15 = v9;
-  v16 = v8;
-  v10 = v8;
-  v11 = v9;
-  v12 = v7;
+  v14 = linkCopy;
+  v15 = completionHandlerCopy;
+  v16 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = completionHandlerCopy;
+  v12 = linkCopy;
   [v12 getClipAttributesWithCompletionHandler:v13];
 }
 
@@ -44,31 +44,31 @@ void __85__SFClipLinkBanner_getClipLinkBannerForClipLink_openActionHandler_compl
   }
 }
 
-- (id)_initWithClipLink:(id)a3 openActionHandler:(id)a4
+- (id)_initWithClipLink:(id)link openActionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  linkCopy = link;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = SFClipLinkBanner;
   v9 = [(SFLinkBanner *)&v19 init];
   p_isa = &v9->super.super.super.super.super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_clipLink, a3);
-    [p_isa setOpenActionHandler:v8];
-    v11 = [v7 clipName];
-    v12 = [p_isa titleLabel];
-    [v12 setText:v11];
+    objc_storeStrong(&v9->_clipLink, link);
+    [p_isa setOpenActionHandler:handlerCopy];
+    clipName = [linkCopy clipName];
+    titleLabel = [p_isa titleLabel];
+    [titleLabel setText:clipName];
 
-    v13 = [v7 icon];
-    v14 = [p_isa icon];
-    [v14 setImage:v13];
+    icon = [linkCopy icon];
+    icon2 = [p_isa icon];
+    [icon2 setImage:icon];
 
-    v15 = [p_isa[77] actionCaption];
-    [p_isa setMessageLabelText:v15];
+    actionCaption = [p_isa[77] actionCaption];
+    [p_isa setMessageLabelText:actionCaption];
 
-    v16 = [v7 actionTitle];
-    [p_isa setOpenButtonTitle:v16];
+    actionTitle = [linkCopy actionTitle];
+    [p_isa setOpenButtonTitle:actionTitle];
 
     v17 = p_isa;
   }
@@ -85,8 +85,8 @@ void __85__SFClipLinkBanner_getClipLinkBannerForClipLink_openActionHandler_compl
     {
       v4 = [SFOverlayProvider alloc];
       v5 = [(SFClipLink *)self->_clipLink url];
-      v6 = [(SFClipLink *)self->_clipLink bundleIdentifier];
-      v7 = [(SFOverlayProvider *)v4 initWithURL:v5 bundleIdentifier:v6];
+      bundleIdentifier = [(SFClipLink *)self->_clipLink bundleIdentifier];
+      v7 = [(SFOverlayProvider *)v4 initWithURL:v5 bundleIdentifier:bundleIdentifier];
       v8 = self->_overlayProvider;
       self->_overlayProvider = v7;
 

@@ -1,6 +1,6 @@
 @interface NPHCellularSetupBridgeBuddyUIPrincipalClass
 - (NPHCellularSetupBridgeBuddyUIPrincipalClass)init;
-- (void)miniFlowStepComplete:(id)a3;
+- (void)miniFlowStepComplete:(id)complete;
 @end
 
 @implementation NPHCellularSetupBridgeBuddyUIPrincipalClass
@@ -15,17 +15,17 @@
     v3 = [[NPHCellularSetupViewController alloc] initWithConfiguration:2];
     [(NPHCellularSetupBridgeBuddyUIPrincipalClass *)v2 setCellularSetupViewController:v3];
 
-    v4 = [(NPHCellularSetupBridgeBuddyUIPrincipalClass *)v2 cellularSetupViewController];
-    [v4 setMiniFlowDelegate:v2];
+    cellularSetupViewController = [(NPHCellularSetupBridgeBuddyUIPrincipalClass *)v2 cellularSetupViewController];
+    [cellularSetupViewController setMiniFlowDelegate:v2];
   }
 
   return v2;
 }
 
-- (void)miniFlowStepComplete:(id)a3
+- (void)miniFlowStepComplete:(id)complete
 {
-  v4 = [(NPHCellularSetupBridgeBuddyUIPrincipalClass *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(NPHCellularSetupBridgeBuddyUIPrincipalClass *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 @end

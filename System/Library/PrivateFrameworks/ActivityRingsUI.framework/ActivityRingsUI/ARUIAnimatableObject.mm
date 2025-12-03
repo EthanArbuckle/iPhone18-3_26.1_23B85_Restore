@@ -1,25 +1,25 @@
 @interface ARUIAnimatableObject
 - (BOOL)areAnimationsInProgress;
-- (id)_animatablePropertyForType:(unint64_t)a3;
-- (id)_newAnimatablePropertyForType:(unint64_t)a3;
-- (id)endingValueForPropertyType:(unint64_t)a3;
-- (void)addAnimation:(id)a3 forPropertyType:(unint64_t)a4;
-- (void)removeAllAnimationsForPropertyType:(unint64_t)a3;
-- (void)setValue:(id)a3 forPropertyType:(unint64_t)a4;
-- (void)update:(double)a3;
+- (id)_animatablePropertyForType:(unint64_t)type;
+- (id)_newAnimatablePropertyForType:(unint64_t)type;
+- (id)endingValueForPropertyType:(unint64_t)type;
+- (void)addAnimation:(id)animation forPropertyType:(unint64_t)type;
+- (void)removeAllAnimationsForPropertyType:(unint64_t)type;
+- (void)setValue:(id)value forPropertyType:(unint64_t)type;
+- (void)update:(double)update;
 @end
 
 @implementation ARUIAnimatableObject
 
-- (void)update:(double)a3
+- (void)update:(double)update
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSMutableDictionary *)self->_animatableProperties allValues];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->_animatableProperties allValues];
+  v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -31,31 +31,31 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) update:a3];
+        [*(*(&v9 + 1) + 8 * v8++) update:update];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setValue:(id)a3 forPropertyType:(unint64_t)a4
+- (void)setValue:(id)value forPropertyType:(unint64_t)type
 {
-  v6 = a3;
-  [(ARUIAnimatableObject *)self removeAllAnimationsForPropertyType:a4];
-  v7 = [(ARUIAnimatableObject *)self _animatablePropertyForType:a4];
-  [v7 setValueImmediate:v6];
+  valueCopy = value;
+  [(ARUIAnimatableObject *)self removeAllAnimationsForPropertyType:type];
+  v7 = [(ARUIAnimatableObject *)self _animatablePropertyForType:type];
+  [v7 setValueImmediate:valueCopy];
 }
 
-- (void)addAnimation:(id)a3 forPropertyType:(unint64_t)a4
+- (void)addAnimation:(id)animation forPropertyType:(unint64_t)type
 {
-  v11 = a3;
+  animationCopy = animation;
   if (!self->_animatableProperties)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -63,17 +63,17 @@
     self->_animatableProperties = v6;
   }
 
-  v8 = [(ARUIAnimatableObject *)self _animatablePropertyForType:a4];
-  v9 = [v8 endValue];
-  v10 = [v8 currentValue];
-  [v11 _setStartValue:v9];
-  [v11 _setCurrentValue:v10];
-  [v8 addPropertyAnimation:v11];
+  v8 = [(ARUIAnimatableObject *)self _animatablePropertyForType:type];
+  endValue = [v8 endValue];
+  currentValue = [v8 currentValue];
+  [animationCopy _setStartValue:endValue];
+  [animationCopy _setCurrentValue:currentValue];
+  [v8 addPropertyAnimation:animationCopy];
 }
 
-- (void)removeAllAnimationsForPropertyType:(unint64_t)a3
+- (void)removeAllAnimationsForPropertyType:(unint64_t)type
 {
-  v3 = [(ARUIAnimatableObject *)self _animatablePropertyForType:a3];
+  v3 = [(ARUIAnimatableObject *)self _animatablePropertyForType:type];
   [v3 removeAllPropertyAnimations];
 }
 
@@ -84,8 +84,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMutableDictionary *)self->_animatableProperties allValues];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allValues = [(NSMutableDictionary *)self->_animatableProperties allValues];
+  v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -95,7 +95,7 @@
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if (![*(*(&v7 + 1) + 8 * i) isFinishedAnimating])
@@ -105,7 +105,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -120,7 +120,7 @@ LABEL_11:
   return v3;
 }
 
-- (id)_animatablePropertyForType:(unint64_t)a3
+- (id)_animatablePropertyForType:(unint64_t)type
 {
   animatableProperties = self->_animatableProperties;
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -128,24 +128,24 @@ LABEL_11:
 
   if (!v7)
   {
-    v7 = [(ARUIAnimatableObject *)self _newAnimatablePropertyForType:a3];
+    v7 = [(ARUIAnimatableObject *)self _newAnimatablePropertyForType:type];
     v8 = self->_animatableProperties;
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
     [(NSMutableDictionary *)v8 setObject:v7 forKeyedSubscript:v9];
   }
 
   return v7;
 }
 
-- (id)endingValueForPropertyType:(unint64_t)a3
+- (id)endingValueForPropertyType:(unint64_t)type
 {
-  v3 = [(ARUIAnimatableObject *)self _animatablePropertyForType:a3];
-  v4 = [v3 endValue];
+  v3 = [(ARUIAnimatableObject *)self _animatablePropertyForType:type];
+  endValue = [v3 endValue];
 
-  return v4;
+  return endValue;
 }
 
-- (id)_newAnimatablePropertyForType:(unint64_t)a3
+- (id)_newAnimatablePropertyForType:(unint64_t)type
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

@@ -1,38 +1,38 @@
 @interface MFBarButtonItem
-- (MFBarButtonItem)initWithImage:(id)a3 disabledImage:(id)a4 style:(int64_t)a5 target:(id)a6 action:(SEL)a7;
-- (void)setEnabled:(BOOL)a3;
+- (MFBarButtonItem)initWithImage:(id)image disabledImage:(id)disabledImage style:(int64_t)style target:(id)target action:(SEL)action;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation MFBarButtonItem
 
-- (MFBarButtonItem)initWithImage:(id)a3 disabledImage:(id)a4 style:(int64_t)a5 target:(id)a6 action:(SEL)a7
+- (MFBarButtonItem)initWithImage:(id)image disabledImage:(id)disabledImage style:(int64_t)style target:(id)target action:(SEL)action
 {
-  v13 = a3;
-  v14 = a4;
+  imageCopy = image;
+  disabledImageCopy = disabledImage;
   v18.receiver = self;
   v18.super_class = MFBarButtonItem;
-  v15 = [(MFBarButtonItem *)&v18 initWithImage:v13 style:a5 target:a6 action:a7];
+  v15 = [(MFBarButtonItem *)&v18 initWithImage:imageCopy style:style target:target action:action];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_enabledImage, a3);
-    objc_storeStrong(&v16->_disabledImage, a4);
+    objc_storeStrong(&v15->_enabledImage, image);
+    objc_storeStrong(&v16->_disabledImage, disabledImage);
   }
 
   return v16;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7.receiver = self;
   v7.super_class = MFBarButtonItem;
   [(MFBarButtonItem *)&v7 setEnabled:?];
-  v5 = [(MFBarButtonItem *)self disabledImage];
+  disabledImage = [(MFBarButtonItem *)self disabledImage];
 
-  if (v5)
+  if (disabledImage)
   {
-    if (v3)
+    if (enabledCopy)
     {
       [(MFBarButtonItem *)self enabledImage];
     }

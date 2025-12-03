@@ -1,18 +1,18 @@
 @interface CHWorkoutCellImageLabelViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CHWorkoutCellImageLabelViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHWorkoutCellImageLabelView" hasSwiftField:@"achievementCount" withSwiftType:"Int"];
-  [v3 validateClass:@"CHWorkoutCellImageLabelView" hasSwiftFieldOfAnyClass:@"workoutImageView"];
-  [v3 validateClass:@"CHWorkoutCellImageLabelView" hasSwiftFieldOfAnyClass:@"labelStackView"];
-  [v3 validateClass:@"CHWorkoutCellImageLabelView" hasSwiftField:@"goalLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"CHWorkoutCellImageLabelView" hasSwiftFieldOfAnyClass:@"badgeCountLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHWorkoutCellImageLabelView" hasSwiftField:@"achievementCount" withSwiftType:"Int"];
+  [validationsCopy validateClass:@"CHWorkoutCellImageLabelView" hasSwiftFieldOfAnyClass:@"workoutImageView"];
+  [validationsCopy validateClass:@"CHWorkoutCellImageLabelView" hasSwiftFieldOfAnyClass:@"labelStackView"];
+  [validationsCopy validateClass:@"CHWorkoutCellImageLabelView" hasSwiftField:@"goalLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"CHWorkoutCellImageLabelView" hasSwiftFieldOfAnyClass:@"badgeCountLabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,13 +1,13 @@
 @interface OctagonControlServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation OctagonControlServer
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [v4 valueForEntitlement:@"com.apple.private.octagon"];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.private.octagon"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v5 BOOLValue])
   {
@@ -15,9 +15,9 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v14 = 67109376;
-      v15 = [v4 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       v16 = 1024;
-      LODWORD(v17) = [v4 effectiveUserIdentifier];
+      LODWORD(v17) = [connectionCopy effectiveUserIdentifier];
       _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "received connection from client pid %d (euid %u)", &v14, 0xEu);
     }
 
@@ -90,12 +90,12 @@
     [v7 setClasses:v8 forSelector:"trustedFullPeers:reply:" argumentIndex:1 ofReply:1];
     [v7 setClasses:v8 forSelector:"areRecoveryKeysDistrusted:reply:" argumentIndex:1 ofReply:1];
 
-    [v4 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
     v9 = +[OTManager manager];
-    v10 = [OctagonXPCEntitlementChecker createWithManager:v9 entitlementBearer:v4];
-    [v4 setExportedObject:v10];
+    v10 = [OctagonXPCEntitlementChecker createWithManager:v9 entitlementBearer:connectionCopy];
+    [connectionCopy setExportedObject:v10];
 
-    [v4 resume];
+    [connectionCopy resume];
     v11 = 1;
   }
 
@@ -105,7 +105,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 67109378;
-      v15 = [v4 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       v16 = 2112;
       v17 = @"com.apple.private.octagon";
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "octagon: Client pid: %d doesn't have entitlement: %@", &v14, 0x12u);

@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_SetDefaultFaceAnalysisVersion
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_SetDefaultFaceAnalysisVersion
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v97 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   if ([(PLModelMigrationActionCore *)self startingSchemaVersion]>> 3 <= 0x752u)
   {
     v7 = 5;
@@ -36,7 +36,7 @@
   [v10 setPredicate:v11];
   v12 = v53 + 5;
   obj = v53[5];
-  v13 = [v6 executeFetchRequest:v10 error:&obj];
+  v13 = [contextCopy executeFetchRequest:v10 error:&obj];
   objc_storeStrong(v12, obj);
   v14 = -[PLModelMigrationActionCore cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:](self, "cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:", [v13 count], 0);
   v15 = v14;
@@ -51,7 +51,7 @@
     v49 = &v58;
     v50 = v7;
     v47 = v14;
-    v16 = [v6 enumerateWithIncrementalSaveUsingObjects:v13 withBlock:v46];
+    v16 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v13 withBlock:v46];
     if (v16)
     {
       if (!v53[5])
@@ -63,8 +63,8 @@
 
         if (v18)
         {
-          v19 = [(PLModelMigrationActionCore *)self logger];
-          v20 = v19 == 0;
+          logger = [(PLModelMigrationActionCore *)self logger];
+          v20 = logger == 0;
 
           if (v20)
           {
@@ -146,8 +146,8 @@
 
     if (v25)
     {
-      v26 = [(PLModelMigrationActionCore *)self logger];
-      v27 = v26 == 0;
+      logger2 = [(PLModelMigrationActionCore *)self logger];
+      v27 = logger2 == 0;
 
       if (v27)
       {
@@ -222,9 +222,9 @@
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
-    *a4 = v53[5];
+    *error = v53[5];
   }
 
   v41 = v59[3];

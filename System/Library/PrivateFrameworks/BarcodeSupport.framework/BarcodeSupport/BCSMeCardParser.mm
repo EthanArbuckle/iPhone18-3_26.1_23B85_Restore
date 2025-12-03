@@ -1,19 +1,19 @@
 @interface BCSMeCardParser
-+ (id)parseString:(id)a3;
++ (id)parseString:(id)string;
 @end
 
 @implementation BCSMeCardParser
 
-+ (id)parseString:(id)a3
++ (id)parseString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
   if (v4)
   {
     [(BCSMeCardParser *)v4 parseString:v5, v6, v7, v8, v9, v10, v11];
   }
 
-  if ([v3 length] <= 6)
+  if ([stringCopy length] <= 6)
   {
     v12 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
     if (v12)
@@ -26,7 +26,7 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  if (([v3 _bcs_hasCaseInsensitivePrefix:@"MECARD:"] & 1) == 0)
+  if (([stringCopy _bcs_hasCaseInsensitivePrefix:@"MECARD:"] & 1) == 0)
   {
     v32 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
     if (v32)
@@ -37,7 +37,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v20 = [getCNContactVCardSerializationClass() contactsWithMECARDString:v3 error:0];
+  v20 = [getCNContactVCardSerializationClass() contactsWithMECARDString:stringCopy error:0];
   if ([v20 count])
   {
     v21 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
@@ -47,8 +47,8 @@ LABEL_13:
     }
 
     v29 = [BCSContactData alloc];
-    v30 = [v20 firstObject];
-    v31 = [(BCSContactData *)v29 initWithContact:v30];
+    firstObject = [v20 firstObject];
+    v31 = [(BCSContactData *)v29 initWithContact:firstObject];
   }
 
   else
@@ -58,7 +58,7 @@ LABEL_13:
       +[BCSMeCardParser parseString:];
     }
 
-    v31 = [[BCSInvalidParsedData alloc] initWithInvalidDataType:2 invalidContents:v3];
+    v31 = [[BCSInvalidParsedData alloc] initWithInvalidDataType:2 invalidContents:stringCopy];
   }
 
 LABEL_18:

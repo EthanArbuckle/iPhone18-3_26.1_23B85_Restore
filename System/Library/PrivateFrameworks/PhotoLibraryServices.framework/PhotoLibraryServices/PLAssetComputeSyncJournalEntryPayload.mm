@@ -4,12 +4,12 @@
 + (id)mediaAnalysisAttributesPropertiesDictionary;
 + (id)modelProperties;
 + (id)modelPropertiesDescription;
-+ (id)payloadAdapterForManagedObject:(id)a3;
++ (id)payloadAdapterForManagedObject:(id)object;
 + (id)payloadClassID;
 + (id)persistedPropertyNamesForEntityNames;
 + (id)sceneClassificationPropertiesDescription;
-+ (void)setShouldIncludeOCR:(BOOL)a3;
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5;
++ (void)setShouldIncludeOCR:(BOOL)r;
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property;
 - (int64_t)characterRecognitionVersion;
 - (int64_t)faceAnalysisVersion;
 - (int64_t)imageEmbeddingVersion;
@@ -18,7 +18,7 @@
 - (int64_t)textUnderstandingVersion;
 - (int64_t)videoEmbeddingVersion;
 - (int64_t)visualSearchVersion;
-- (void)applyPayloadProperty:(id)a3 toManagedObject:(id)a4 key:(id)a5 payloadAttributesToUpdate:(id)a6 payloadDictionary:(id)a7 info:(id)a8;
+- (void)applyPayloadProperty:(id)property toManagedObject:(id)object key:(id)key payloadAttributesToUpdate:(id)update payloadDictionary:(id)dictionary info:(id)info;
 @end
 
 @implementation PLAssetComputeSyncJournalEntryPayload
@@ -26,76 +26,76 @@
 - (int64_t)videoEmbeddingVersion
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"videoEmbeddingVersion"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)imageEmbeddingVersion
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"imageEmbeddingVersion"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)visualSearchVersion
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"vsAlgorithmVersion"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)textUnderstandingVersion
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"textUnderstandingVersion"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)characterRecognitionVersion
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"crAlgorithmVersion"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)mediaAnalysisVersion
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"mediaAnalysisVersion"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)faceAnalysisVersion
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"faceAnalysisVersion"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)sceneAnalysisVersion
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"sceneAnalysisVersion"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 parentProperty];
-  if ([v11 isEqualToKey:@"generatedAssetDescriptions"])
+  valueCopy = value;
+  dictionaryValueCopy = dictionaryValue;
+  propertyCopy = property;
+  parentProperty = [propertyCopy parentProperty];
+  if ([parentProperty isEqualToKey:@"generatedAssetDescriptions"])
   {
-    v12 = [v10 isEqualToKey:@"analysisVersion"];
+    v12 = [propertyCopy isEqualToKey:@"analysisVersion"];
 
     if (v12)
     {
@@ -107,9 +107,9 @@
   {
   }
 
-  if (([v10 isEqualToKey:@"mediaAnalysisVersion"] & 1) == 0 && (objc_msgSend(v10, "isEqualToKey:", @"mediaAnalysisImageVersion") & 1) == 0 && (objc_msgSend(v10, "isEqualToKey:", @"imageEmbeddingVersion") & 1) == 0 && !objc_msgSend(v10, "isEqualToKey:", @"videoEmbeddingVersion"))
+  if (([propertyCopy isEqualToKey:@"mediaAnalysisVersion"] & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToKey:", @"mediaAnalysisImageVersion") & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToKey:", @"imageEmbeddingVersion") & 1) == 0 && !objc_msgSend(propertyCopy, "isEqualToKey:", @"videoEmbeddingVersion"))
   {
-    if ([v10 isEqualToKey:@"imageCaptionVersion"] & 1) != 0 || (objc_msgSend(v10, "isEqualToKey:", @"videoCaptionVersion"))
+    if ([propertyCopy isEqualToKey:@"imageCaptionVersion"] & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToKey:", @"videoCaptionVersion"))
     {
       goto LABEL_11;
     }
@@ -117,12 +117,12 @@
 LABEL_14:
     v15.receiver = self;
     v15.super_class = PLAssetComputeSyncJournalEntryPayload;
-    v13 = [(PLManagedObjectJournalEntryPayload *)&v15 comparePayloadValue:v8 toObjectDictionaryValue:v9 forPayloadProperty:v10];
+    v13 = [(PLManagedObjectJournalEntryPayload *)&v15 comparePayloadValue:valueCopy toObjectDictionaryValue:dictionaryValueCopy forPayloadProperty:propertyCopy];
     goto LABEL_15;
   }
 
 LABEL_9:
-  if ([v9 integerValue] != 1 || !objc_msgSend(v8, "integerValue"))
+  if ([dictionaryValueCopy integerValue] != 1 || !objc_msgSend(valueCopy, "integerValue"))
   {
     goto LABEL_14;
   }
@@ -134,34 +134,34 @@ LABEL_15:
   return v13;
 }
 
-- (void)applyPayloadProperty:(id)a3 toManagedObject:(id)a4 key:(id)a5 payloadAttributesToUpdate:(id)a6 payloadDictionary:(id)a7 info:(id)a8
+- (void)applyPayloadProperty:(id)property toManagedObject:(id)object key:(id)key payloadAttributesToUpdate:(id)update payloadDictionary:(id)dictionary info:(id)info
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [v14 parentProperty];
-  v21 = [v20 isToManySubRelationship];
+  propertyCopy = property;
+  objectCopy = object;
+  keyCopy = key;
+  updateCopy = update;
+  dictionaryCopy = dictionary;
+  infoCopy = info;
+  parentProperty = [propertyCopy parentProperty];
+  isToManySubRelationship = [parentProperty isToManySubRelationship];
 
-  if (v21)
+  if (isToManySubRelationship)
   {
     v122.receiver = self;
     v122.super_class = PLAssetComputeSyncJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v122 applyPayloadProperty:v14 toManagedObject:v15 key:v16 payloadAttributesToUpdate:v17 payloadDictionary:v18 info:v19];
+    [(PLManagedObjectJournalEntryPayload *)&v122 applyPayloadProperty:propertyCopy toManagedObject:objectCopy key:keyCopy payloadAttributesToUpdate:updateCopy payloadDictionary:dictionaryCopy info:infoCopy];
     goto LABEL_9;
   }
 
-  if (([v14 isEqualToKey:@"sceneClassifications"] & 1) != 0 || objc_msgSend(v14, "isEqualToKey:", @"temporalSceneClassifications"))
+  if (([propertyCopy isEqualToKey:@"sceneClassifications"] & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToKey:", @"temporalSceneClassifications"))
   {
-    v22 = [v14 key];
-    v23 = [v18 objectForKeyedSubscript:v22];
+    v22 = [propertyCopy key];
+    v23 = [dictionaryCopy objectForKeyedSubscript:v22];
 
     if ([v23 count])
     {
-      v81 = v18;
-      v24 = v17;
+      v81 = dictionaryCopy;
+      v24 = updateCopy;
       v25 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v120[0] = MEMORY[0x1E69E9820];
       v120[1] = 3221225472;
@@ -170,10 +170,10 @@ LABEL_15:
       v121 = v25;
       v79 = v25;
       [v23 enumerateObjectsUsingBlock:v120];
-      v26 = [v15 valueForKey:v16];
-      v27 = self;
-      v28 = v19;
-      v29 = v15;
+      v26 = [objectCopy valueForKey:keyCopy];
+      selfCopy = self;
+      v28 = infoCopy;
+      v29 = objectCopy;
       v30 = [v26 mutableCopy];
 
       v31 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -188,60 +188,60 @@ LABEL_15:
       v110[1] = 3221225472;
       v110[2] = __131__PLAssetComputeSyncJournalEntryPayload_applyPayloadProperty_toManagedObject_key_payloadAttributesToUpdate_payloadDictionary_info___block_invoke_3;
       v110[3] = &unk_1E756D148;
-      v111 = v14;
+      v111 = propertyCopy;
       v33 = v29;
       v112 = v33;
-      v113 = v27;
+      v113 = selfCopy;
       v114 = v24;
       v115 = v28;
       v116 = v32;
       v117 = v30;
       v34 = v30;
-      v15 = v29;
-      v19 = v28;
+      objectCopy = v29;
+      infoCopy = v28;
       v35 = v34;
       v36 = v32;
       [v79 enumerateKeysAndObjectsUsingBlock:v110];
       v37 = v33;
-      v17 = v24;
-      v18 = v81;
-      [v37 setValue:v35 forKey:v16];
+      updateCopy = v24;
+      dictionaryCopy = v81;
+      [v37 setValue:v35 forKey:keyCopy];
     }
 
     goto LABEL_9;
   }
 
-  if (([v14 isEqualToKey:@"detectedFaces"] & 1) != 0 || objc_msgSend(v14, "isEqualToKey:", @"temporalDetectedFaces"))
+  if (([propertyCopy isEqualToKey:@"detectedFaces"] & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToKey:", @"temporalDetectedFaces"))
   {
-    v82 = v15;
-    v38 = v15;
-    v39 = [v38 managedObjectContext];
-    v40 = [v14 key];
-    v41 = [v18 objectForKeyedSubscript:v40];
+    v82 = objectCopy;
+    v38 = objectCopy;
+    managedObjectContext = [v38 managedObjectContext];
+    v40 = [propertyCopy key];
+    v41 = [dictionaryCopy objectForKeyedSubscript:v40];
 
     if ([v41 count])
     {
-      v78 = v39;
-      v80 = v17;
+      v78 = managedObjectContext;
+      v80 = updateCopy;
       v106 = 0;
       v107 = &v106;
       v108 = 0x2020000000;
       v109 = 0;
-      v42 = [v14 subRelationshipProperties];
+      subRelationshipProperties = [propertyCopy subRelationshipProperties];
       v102[0] = MEMORY[0x1E69E9820];
       v102[1] = 3221225472;
       v102[2] = __131__PLAssetComputeSyncJournalEntryPayload_applyPayloadProperty_toManagedObject_key_payloadAttributesToUpdate_payloadDictionary_info___block_invoke_7;
       v102[3] = &unk_1E756D170;
       v105 = &v106;
-      v43 = v19;
+      v43 = infoCopy;
       v103 = v43;
-      v104 = self;
-      [v42 enumerateKeysAndObjectsUsingBlock:v102];
+      selfCopy2 = self;
+      [subRelationshipProperties enumerateKeysAndObjectsUsingBlock:v102];
 
       if (v107[3])
       {
         v77 = v38;
-        v44 = [v14 isEqualToKey:@"temporalDetectedFaces"];
+        v44 = [propertyCopy isEqualToKey:@"temporalDetectedFaces"];
         v45 = objc_alloc_init(MEMORY[0x1E695DFA8]);
         v93[0] = MEMORY[0x1E69E9820];
         v93[1] = 3221225472;
@@ -254,12 +254,12 @@ LABEL_15:
         v101 = v44;
         v47 = v45;
         v96 = v47;
-        v97 = v14;
-        v98 = self;
+        v97 = propertyCopy;
+        selfCopy3 = self;
         v99 = v80;
         v100 = v43;
         [v41 enumerateObjectsUsingBlock:v93];
-        v48 = [v46 valueForKey:v16];
+        v48 = [v46 valueForKey:keyCopy];
         v49 = [v48 mutableCopy];
 
         v50 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -275,99 +275,99 @@ LABEL_15:
         [v49 enumerateObjectsUsingBlock:v89];
         [v49 unionSet:v51];
         [v49 minusSet:v52];
-        [v46 setValue:v49 forKey:v16];
+        [v46 setValue:v49 forKey:keyCopy];
 
         v38 = v77;
       }
 
       _Block_object_dispose(&v106, 8);
-      v17 = v80;
+      updateCopy = v80;
     }
 
     else
     {
     }
 
-    v15 = v82;
+    objectCopy = v82;
     goto LABEL_9;
   }
 
-  if ([v14 isEqualToKey:@"generatedAssetDescriptions"])
+  if ([propertyCopy isEqualToKey:@"generatedAssetDescriptions"])
   {
     payloadAttributes = self->super._payloadAttributes;
-    [v14 key];
-    v54 = v19;
-    v55 = v16;
-    v56 = v18;
-    v58 = v57 = v17;
+    [propertyCopy key];
+    v54 = infoCopy;
+    v55 = keyCopy;
+    v56 = dictionaryCopy;
+    v58 = v57 = updateCopy;
     v59 = [(NSMutableDictionary *)payloadAttributes objectForKeyedSubscript:v58];
 
-    v17 = v57;
-    v18 = v56;
-    v16 = v55;
-    v19 = v54;
+    updateCopy = v57;
+    dictionaryCopy = v56;
+    keyCopy = v55;
+    infoCopy = v54;
     v60 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v86[0] = MEMORY[0x1E69E9820];
     v86[1] = 3221225472;
     v86[2] = __131__PLAssetComputeSyncJournalEntryPayload_applyPayloadProperty_toManagedObject_key_payloadAttributesToUpdate_payloadDictionary_info___block_invoke_11;
     v86[3] = &unk_1E756D820;
-    v87 = v14;
+    v87 = propertyCopy;
     v88 = v60;
     v61 = v60;
     [v59 enumerateObjectsUsingBlock:v86];
-    [PLGeneratedAssetDescription setGeneratedAssetDescriptionForAsset:v15 fromDictionaries:v61];
+    [PLGeneratedAssetDescription setGeneratedAssetDescriptionForAsset:objectCopy fromDictionaries:v61];
 
     goto LABEL_9;
   }
 
-  if ([v14 isEqualToKey:@"mediaAnalysisVersion"] && -[PLAssetComputeSyncJournalEntryPayload mediaAnalysisVersion](self, "mediaAnalysisVersion") >= 1)
+  if ([propertyCopy isEqualToKey:@"mediaAnalysisVersion"] && -[PLAssetComputeSyncJournalEntryPayload mediaAnalysisVersion](self, "mediaAnalysisVersion") >= 1)
   {
-    [v15 setMediaAnalysisVersion:1];
+    [objectCopy setMediaAnalysisVersion:1];
     goto LABEL_9;
   }
 
-  if ([v14 isEqualToKey:@"mediaAnalysisImageVersion"])
+  if ([propertyCopy isEqualToKey:@"mediaAnalysisImageVersion"])
   {
-    v62 = [(PLAssetComputeSyncJournalEntryPayload *)self mediaAnalysisImageVersion];
-    v63 = self;
-    v64 = v19;
-    v65 = v16;
-    v66 = v18;
-    v67 = v17;
-    v68 = [v62 integerValue];
+    mediaAnalysisImageVersion = [(PLAssetComputeSyncJournalEntryPayload *)self mediaAnalysisImageVersion];
+    selfCopy4 = self;
+    v64 = infoCopy;
+    v65 = keyCopy;
+    v66 = dictionaryCopy;
+    v67 = updateCopy;
+    integerValue = [mediaAnalysisImageVersion integerValue];
 
-    v69 = v68 < 1;
-    v17 = v67;
-    v18 = v66;
-    v16 = v65;
-    v19 = v64;
-    self = v63;
+    v69 = integerValue < 1;
+    updateCopy = v67;
+    dictionaryCopy = v66;
+    keyCopy = v65;
+    infoCopy = v64;
+    self = selfCopy4;
     if (!v69)
     {
-      [v15 setMediaAnalysisImageVersion:1];
+      [objectCopy setMediaAnalysisImageVersion:1];
       goto LABEL_9;
     }
   }
 
-  if ([v14 isEqualToKey:@"imageEmbeddingVersion"] && -[PLAssetComputeSyncJournalEntryPayload imageEmbeddingVersion](self, "imageEmbeddingVersion") >= 1)
+  if ([propertyCopy isEqualToKey:@"imageEmbeddingVersion"] && -[PLAssetComputeSyncJournalEntryPayload imageEmbeddingVersion](self, "imageEmbeddingVersion") >= 1)
   {
-    [v15 setImageEmbeddingVersion:1];
+    [objectCopy setImageEmbeddingVersion:1];
     goto LABEL_9;
   }
 
-  if ([v14 isEqualToKey:@"videoEmbeddingVersion"] && -[PLAssetComputeSyncJournalEntryPayload videoEmbeddingVersion](self, "videoEmbeddingVersion") >= 1)
+  if ([propertyCopy isEqualToKey:@"videoEmbeddingVersion"] && -[PLAssetComputeSyncJournalEntryPayload videoEmbeddingVersion](self, "videoEmbeddingVersion") >= 1)
   {
-    [v15 setVideoEmbeddingVersion:1];
+    [objectCopy setVideoEmbeddingVersion:1];
     goto LABEL_9;
   }
 
-  if (([v14 isEqualToKey:@"imageCaptionVersion"] & 1) == 0 && (objc_msgSend(v14, "isEqualToKey:", @"videoCaptionVersion") & 1) == 0)
+  if (([propertyCopy isEqualToKey:@"imageCaptionVersion"] & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToKey:", @"videoCaptionVersion") & 1) == 0)
   {
-    if ([v14 isEqualToKey:@"sceneAnalysisVersion"])
+    if ([propertyCopy isEqualToKey:@"sceneAnalysisVersion"])
     {
-      v70 = v18;
-      v71 = v17;
-      v72 = v15;
+      v70 = dictionaryCopy;
+      v71 = updateCopy;
+      v72 = objectCopy;
       v73 = [v70 objectForKeyedSubscript:@"packedPreferredCropRect"];
 
       if (v73)
@@ -376,10 +376,10 @@ LABEL_15:
         v85[1] = PLAssetComputeSyncJournalEntryPayload;
         v74 = v85;
 LABEL_40:
-        v17 = v71;
-        [(objc_super *)v74 applyPayloadProperty:v14 toManagedObject:v72 key:v16 payloadAttributesToUpdate:v71 payloadDictionary:v70 info:v19];
+        updateCopy = v71;
+        [(objc_super *)v74 applyPayloadProperty:propertyCopy toManagedObject:v72 key:keyCopy payloadAttributesToUpdate:v71 payloadDictionary:v70 info:infoCopy];
 LABEL_45:
-        v18 = v70;
+        dictionaryCopy = v70;
 
         goto LABEL_9;
       }
@@ -389,17 +389,17 @@ LABEL_45:
 
     else
     {
-      if (![v14 isEqualToKey:@"sceneAnalysisTimestamp"])
+      if (![propertyCopy isEqualToKey:@"sceneAnalysisTimestamp"])
       {
         v83.receiver = self;
         v83.super_class = PLAssetComputeSyncJournalEntryPayload;
-        [(PLManagedObjectJournalEntryPayload *)&v83 applyPayloadProperty:v14 toManagedObject:v15 key:v16 payloadAttributesToUpdate:v17 payloadDictionary:v18 info:v19];
+        [(PLManagedObjectJournalEntryPayload *)&v83 applyPayloadProperty:propertyCopy toManagedObject:objectCopy key:keyCopy payloadAttributesToUpdate:updateCopy payloadDictionary:dictionaryCopy info:infoCopy];
         goto LABEL_9;
       }
 
-      v70 = v18;
-      v71 = v17;
-      v72 = v15;
+      v70 = dictionaryCopy;
+      v71 = updateCopy;
+      v72 = objectCopy;
       v75 = [v70 objectForKeyedSubscript:@"packedPreferredCropRect"];
 
       if (v75)
@@ -413,7 +413,7 @@ LABEL_45:
       [v72 setSceneAnalysisTimestamp:0];
     }
 
-    v17 = v71;
+    updateCopy = v71;
     goto LABEL_45;
   }
 
@@ -647,15 +647,15 @@ void __131__PLAssetComputeSyncJournalEntryPayload_applyPayloadProperty_toManaged
 
 + (id)payloadClassID
 {
-  v2 = [a1 entityName];
-  v3 = [v2 stringByAppendingString:@"ComputeSync"];
+  entityName = [self entityName];
+  v3 = [entityName stringByAppendingString:@"ComputeSync"];
 
   return v3;
 }
 
-+ (id)payloadAdapterForManagedObject:(id)a3
++ (id)payloadAdapterForManagedObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = off_1E755F578;
@@ -664,7 +664,7 @@ void __131__PLAssetComputeSyncJournalEntryPayload_applyPayloadProperty_toManaged
     v5 = off_1E755F580;
   }
 
-  v6 = [objc_alloc(*v5) initWithManagedObject:v3];
+  v6 = [objc_alloc(*v5) initWithManagedObject:objectCopy];
 
   return v6;
 }
@@ -675,7 +675,7 @@ void __131__PLAssetComputeSyncJournalEntryPayload_applyPayloadProperty_toManaged
   block[1] = 3221225472;
   block[2] = __77__PLAssetComputeSyncJournalEntryPayload_persistedPropertyNamesForEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (persistedPropertyNamesForEntityNames_onceToken_47501 != -1)
   {
     dispatch_once(&persistedPropertyNamesForEntityNames_onceToken_47501, block);
@@ -699,7 +699,7 @@ void __77__PLAssetComputeSyncJournalEntryPayload_persistedPropertyNamesForEntity
   block[1] = 3221225472;
   block[2] = __56__PLAssetComputeSyncJournalEntryPayload_modelProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (modelProperties_onceToken_47503 != -1)
   {
     dispatch_once(&modelProperties_onceToken_47503, block);
@@ -760,8 +760,8 @@ uint64_t __56__PLAssetComputeSyncJournalEntryPayload_modelProperties__block_invo
   v89[8] = v71;
   v88[9] = @"mediaAnalysisAttributes";
   v70 = +[PLMediaAnalysisAssetAttributes entityName];
-  v69 = [a1 mediaAnalysisAttributesPropertiesDictionary];
-  v68 = [PLJournalEntryPayloadProperty payloadPropertyWithKey:@"mediaAnalysisAttributes" subRelationshipProperties:v69 subRelationshipEntityName:v70 isToMany:0 isAdditionalEntityName:1 info:0];
+  mediaAnalysisAttributesPropertiesDictionary = [self mediaAnalysisAttributesPropertiesDictionary];
+  v68 = [PLJournalEntryPayloadProperty payloadPropertyWithKey:@"mediaAnalysisAttributes" subRelationshipProperties:mediaAnalysisAttributesPropertiesDictionary subRelationshipEntityName:v70 isToMany:0 isAdditionalEntityName:1 info:0];
   v89[9] = v68;
   v88[10] = @"computedAttributes";
   v50 = +[PLComputedAssetAttributes entityName];
@@ -851,13 +851,13 @@ uint64_t __56__PLAssetComputeSyncJournalEntryPayload_modelProperties__block_invo
   v85[4] = v35;
   v84[5] = @"sceneClassifications";
   v34 = +[PLSceneClassification entityName];
-  v33 = [a1 sceneClassificationPropertiesDescription];
-  v32 = [PLJournalEntryPayloadProperty payloadPropertyWithKey:@"sceneClassifications" subRelationshipProperties:v33 subRelationshipEntityName:v34 isToMany:1 isAdditionalEntityName:1 info:v45];
+  sceneClassificationPropertiesDescription = [self sceneClassificationPropertiesDescription];
+  v32 = [PLJournalEntryPayloadProperty payloadPropertyWithKey:@"sceneClassifications" subRelationshipProperties:sceneClassificationPropertiesDescription subRelationshipEntityName:v34 isToMany:1 isAdditionalEntityName:1 info:v45];
   v85[5] = v32;
   v84[6] = @"temporalSceneClassifications";
   v31 = +[PLSceneClassification entityName];
-  v30 = [a1 sceneClassificationPropertiesDescription];
-  v29 = [PLJournalEntryPayloadProperty payloadPropertyWithKey:@"temporalSceneClassifications" subRelationshipProperties:v30 subRelationshipEntityName:v31 isToMany:1 isAdditionalEntityName:1 info:v43];
+  sceneClassificationPropertiesDescription2 = [self sceneClassificationPropertiesDescription];
+  v29 = [PLJournalEntryPayloadProperty payloadPropertyWithKey:@"temporalSceneClassifications" subRelationshipProperties:sceneClassificationPropertiesDescription2 subRelationshipEntityName:v31 isToMany:1 isAdditionalEntityName:1 info:v43];
   v85[6] = v29;
   v84[7] = @"sceneprint";
   v24 = +[PLSceneprint entityName];
@@ -878,13 +878,13 @@ uint64_t __56__PLAssetComputeSyncJournalEntryPayload_modelProperties__block_invo
   v89[11] = v20;
   v88[12] = @"detectedFaces";
   v19 = +[PLDetectedFace entityName];
-  v18 = [a1 detectedFacePropertiesDescription];
-  v17 = [PLJournalEntryPayloadProperty payloadPropertyWithKey:@"detectedFaces" subRelationshipProperties:v18 subRelationshipEntityName:v19 isToMany:1 isAdditionalEntityName:1 info:0];
+  detectedFacePropertiesDescription = [self detectedFacePropertiesDescription];
+  v17 = [PLJournalEntryPayloadProperty payloadPropertyWithKey:@"detectedFaces" subRelationshipProperties:detectedFacePropertiesDescription subRelationshipEntityName:v19 isToMany:1 isAdditionalEntityName:1 info:0];
   v89[12] = v17;
   v88[13] = @"temporalDetectedFaces";
   v16 = +[PLDetectedFace entityName];
-  v6 = [a1 detectedFacePropertiesDescription];
-  v7 = [PLJournalEntryPayloadProperty payloadPropertyWithKey:@"temporalDetectedFaces" subRelationshipProperties:v6 subRelationshipEntityName:v16 isToMany:1 isAdditionalEntityName:1 info:v5];
+  detectedFacePropertiesDescription2 = [self detectedFacePropertiesDescription];
+  v7 = [PLJournalEntryPayloadProperty payloadPropertyWithKey:@"temporalDetectedFaces" subRelationshipProperties:detectedFacePropertiesDescription2 subRelationshipEntityName:v16 isToMany:1 isAdditionalEntityName:1 info:v5];
   v89[13] = v7;
   v88[14] = @"generatedAssetDescriptionNodes";
   v8 = +[PLGraphNode entityName];
@@ -1276,17 +1276,17 @@ uint64_t __56__PLAssetComputeSyncJournalEntryPayload_modelProperties__block_invo
   return v8;
 }
 
-+ (void)setShouldIncludeOCR:(BOOL)a3
++ (void)setShouldIncludeOCR:(BOOL)r
 {
-  if (MEMORY[0x19EAEE520](a1, a2))
+  if (MEMORY[0x19EAEE520](self, a2))
   {
-    shouldIncludeOCR = a3;
+    shouldIncludeOCR = r;
   }
 }
 
 + (BOOL)shouldIncludeOCR
 {
-  if (MEMORY[0x19EAEE520](a1, a2))
+  if (MEMORY[0x19EAEE520](self, a2))
   {
     return shouldIncludeOCR;
   }

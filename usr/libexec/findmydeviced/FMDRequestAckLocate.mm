@@ -1,28 +1,28 @@
 @interface FMDRequestAckLocate
-- (BOOL)canReplace:(id)a3;
-- (FMDRequestAckLocate)initWithAccount:(id)a3 locateCommand:(id)a4 ackURL:(id)a5 cmdStatusCode:(int64_t)a6 cmdStatusMessage:(id)a7;
+- (BOOL)canReplace:(id)replace;
+- (FMDRequestAckLocate)initWithAccount:(id)account locateCommand:(id)command ackURL:(id)l cmdStatusCode:(int64_t)code cmdStatusMessage:(id)message;
 - (id)requestBody;
 @end
 
 @implementation FMDRequestAckLocate
 
-- (FMDRequestAckLocate)initWithAccount:(id)a3 locateCommand:(id)a4 ackURL:(id)a5 cmdStatusCode:(int64_t)a6 cmdStatusMessage:(id)a7
+- (FMDRequestAckLocate)initWithAccount:(id)account locateCommand:(id)command ackURL:(id)l cmdStatusCode:(int64_t)code cmdStatusMessage:(id)message
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  accountCopy = account;
+  commandCopy = command;
+  lCopy = l;
+  messageCopy = message;
   v19.receiver = self;
   v19.super_class = FMDRequestAckLocate;
-  v16 = [(FMDRequest *)&v19 initWithAccount:v12];
+  v16 = [(FMDRequest *)&v19 initWithAccount:accountCopy];
   v17 = v16;
   if (v16)
   {
-    [(FMDRequestAckLocate *)v16 setAccount:v12];
-    [(FMDRequestAckLocate *)v17 setLocateCommand:v13];
-    [(FMDRequestAckLocate *)v17 setAckURL:v14];
-    [(FMDRequestAckLocate *)v17 setCmdStatusCode:a6];
-    [(FMDRequestAckLocate *)v17 setCmdStatusMsg:v15];
+    [(FMDRequestAckLocate *)v16 setAccount:accountCopy];
+    [(FMDRequestAckLocate *)v17 setLocateCommand:commandCopy];
+    [(FMDRequestAckLocate *)v17 setAckURL:lCopy];
+    [(FMDRequestAckLocate *)v17 setCmdStatusCode:code];
+    [(FMDRequestAckLocate *)v17 setCmdStatusMsg:messageCopy];
   }
 
   return v17;
@@ -32,58 +32,58 @@
 {
   v19.receiver = self;
   v19.super_class = FMDRequestAckLocate;
-  v3 = [(FMDRequest *)&v19 requestBody];
+  requestBody = [(FMDRequest *)&v19 requestBody];
   v4 = [NSNumber numberWithInteger:[(FMDRequestAckLocate *)self cmdStatusCode]];
-  [v3 setObject:v4 forKeyedSubscript:@"statusCode"];
+  [requestBody setObject:v4 forKeyedSubscript:@"statusCode"];
 
-  v5 = [(FMDRequestAckLocate *)self cmdStatusMsg];
+  cmdStatusMsg = [(FMDRequestAckLocate *)self cmdStatusMsg];
 
-  if (v5)
+  if (cmdStatusMsg)
   {
-    v6 = [(FMDRequestAckLocate *)self cmdStatusMsg];
-    [v3 setObject:v6 forKeyedSubscript:@"statusMessage"];
+    cmdStatusMsg2 = [(FMDRequestAckLocate *)self cmdStatusMsg];
+    [requestBody setObject:cmdStatusMsg2 forKeyedSubscript:@"statusMessage"];
   }
 
   v7 = +[NSMutableDictionary dictionary];
-  v8 = [(FMDRequestAckLocate *)self locateCommand];
-  v9 = [v8 objectForKeyedSubscript:@"id"];
+  locateCommand = [(FMDRequestAckLocate *)self locateCommand];
+  v9 = [locateCommand objectForKeyedSubscript:@"id"];
   [v7 fm_safelyMapKey:@"id" toObject:v9];
 
-  v10 = [(FMDRequestAckLocate *)self locateCommand];
-  v11 = [v10 objectForKeyedSubscript:@"enqueueTimestamp"];
+  locateCommand2 = [(FMDRequestAckLocate *)self locateCommand];
+  v11 = [locateCommand2 objectForKeyedSubscript:@"enqueueTimestamp"];
   [v7 fm_safelyMapKey:@"enqueueTimestamp" toObject:v11];
 
-  v12 = [(FMDRequestAckLocate *)self locateCommand];
-  v13 = [v12 objectForKeyedSubscript:@"responseTimeStamp"];
+  locateCommand3 = [(FMDRequestAckLocate *)self locateCommand];
+  v13 = [locateCommand3 objectForKeyedSubscript:@"responseTimeStamp"];
   [v7 fm_safelyMapKey:@"responseTimeStamp" toObject:v13];
 
-  v14 = [(FMDRequestAckLocate *)self locateCommand];
-  v15 = [v14 objectForKeyedSubscript:@"cmd"];
+  locateCommand4 = [(FMDRequestAckLocate *)self locateCommand];
+  v15 = [locateCommand4 objectForKeyedSubscript:@"cmd"];
   [v7 fm_safelyMapKey:@"cmd" toObject:v15];
 
-  v16 = [(FMDRequestAckLocate *)self locateCommand];
-  v17 = [v16 objectForKeyedSubscript:@"desiredAccuracy"];
+  locateCommand5 = [(FMDRequestAckLocate *)self locateCommand];
+  v17 = [locateCommand5 objectForKeyedSubscript:@"desiredAccuracy"];
   [v7 fm_safelyMapKey:@"desiredAccuracy" toObject:v17];
 
-  [v3 setObject:v7 forKeyedSubscript:@"cmdContext"];
+  [requestBody setObject:v7 forKeyedSubscript:@"cmdContext"];
 
-  return v3;
+  return requestBody;
 }
 
-- (BOOL)canReplace:(id)a3
+- (BOOL)canReplace:(id)replace
 {
-  v4 = a3;
+  replaceCopy = replace;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = replaceCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(FMDRequestAckLocate *)self locateCommand];
-      v7 = [v6 objectForKeyedSubscript:@"id"];
-      v8 = [v5 locateCommand];
-      v9 = [v8 objectForKeyedSubscript:@"id"];
+      locateCommand = [(FMDRequestAckLocate *)self locateCommand];
+      v7 = [locateCommand objectForKeyedSubscript:@"id"];
+      locateCommand2 = [v5 locateCommand];
+      v9 = [locateCommand2 objectForKeyedSubscript:@"id"];
       v10 = [v7 isEqualToString:v9];
     }
 

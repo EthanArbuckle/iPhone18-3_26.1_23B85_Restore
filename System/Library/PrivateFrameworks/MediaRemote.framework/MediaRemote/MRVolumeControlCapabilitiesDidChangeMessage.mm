@@ -8,27 +8,27 @@
 
 - (unsigned)capabilities
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 capabilities];
-  v4 = MRCapabilitiesFromProtobuf(v3);
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  capabilities = [underlyingCodableMessage capabilities];
+  v4 = MRCapabilitiesFromProtobuf(capabilities);
 
   return v4;
 }
 
 - (NSString)endpointUID
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 endpointUID];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  endpointUID = [underlyingCodableMessage endpointUID];
 
-  return v3;
+  return endpointUID;
 }
 
 - (NSString)outputDeviceUID
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 outputDeviceUID];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  outputDeviceUID = [underlyingCodableMessage outputDeviceUID];
 
-  return v3;
+  return outputDeviceUID;
 }
 
 @end

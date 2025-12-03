@@ -1,36 +1,36 @@
 @interface DTGPUAPSCounterSource
-- (BOOL)request:(unint64_t)a3 vendorFeatures:(id)a4;
-- (DTGPUAPSCounterSource)initWithSource:(id)a3 sourceGroup:(id)a4 selects:(id)a5 sourceIndex:(unsigned int)a6 profile:(unint64_t)a7;
+- (BOOL)request:(unint64_t)request vendorFeatures:(id)features;
+- (DTGPUAPSCounterSource)initWithSource:(id)source sourceGroup:(id)group selects:(id)selects sourceIndex:(unsigned int)index profile:(unint64_t)profile;
 - (id).cxx_construct;
 - (void)dealloc;
 - (void)pullAndDrainCounters;
-- (void)sampleAPS:(id)a3;
-- (void)sampleCounters:(unint64_t)a3 callback:(id)a4;
+- (void)sampleAPS:(id)s;
+- (void)sampleCounters:(unint64_t)counters callback:(id)callback;
 - (void)stop;
 @end
 
 @implementation DTGPUAPSCounterSource
 
-- (DTGPUAPSCounterSource)initWithSource:(id)a3 sourceGroup:(id)a4 selects:(id)a5 sourceIndex:(unsigned int)a6 profile:(unint64_t)a7
+- (DTGPUAPSCounterSource)initWithSource:(id)source sourceGroup:(id)group selects:(id)selects sourceIndex:(unsigned int)index profile:(unint64_t)profile
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  sourceCopy = source;
+  groupCopy = group;
+  selectsCopy = selects;
   v21.receiver = self;
   v21.super_class = DTGPUAPSCounterSource;
   v16 = [(DTGPUAPSCounterSource *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_source, a3);
-    objc_storeStrong(&v17->_sourceGroup, a4);
-    objc_storeStrong(&v17->_selects, a5);
-    v17->_sourceIndex = a6;
+    objc_storeStrong(&v16->_source, source);
+    objc_storeStrong(&v17->_sourceGroup, group);
+    objc_storeStrong(&v17->_selects, selects);
+    v17->_sourceIndex = index;
     v18 = objc_alloc_init(DTGPUAPSConfig);
     apsConfig = v17->_apsConfig;
     v17->_apsConfig = v18;
 
-    v17->_profile = a7;
+    v17->_profile = profile;
   }
 
   return v17;
@@ -44,17 +44,17 @@
   [(DTGPUAPSCounterSource *)&v3 dealloc];
 }
 
-- (BOOL)request:(unint64_t)a3 vendorFeatures:(id)a4
+- (BOOL)request:(unint64_t)request vendorFeatures:(id)features
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  featuresCopy = features;
   if (self->_source && self->_sourceGroup)
   {
     v6 = [MEMORY[0x277CBEB18] arrayWithArray:self->_selects];
-    v7 = [v5 objectForKeyedSubscript:@"ShaderProfiler"];
-    v8 = [v7 BOOLValue];
+    v7 = [featuresCopy objectForKeyedSubscript:@"ShaderProfiler"];
+    bOOLValue = [v7 BOOLValue];
 
-    if (v8)
+    if (bOOLValue)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -76,7 +76,7 @@
 
     [(DTGPUAPSConfig *)self->_apsConfig setCliqueTraceLevel:v9];
     [(DTGPUAPSConfig *)self->_apsConfig setNRingBuffers:[(GPURawCounterSource *)self->_source ringBufferNum]];
-    v11 = [v5 objectForKeyedSubscript:@"APSConfig"];
+    v11 = [featuresCopy objectForKeyedSubscript:@"APSConfig"];
     [(DTGPUAPSConfig *)self->_apsConfig readConfig:v11];
     if (self->_profile == 14)
     {
@@ -84,8 +84,8 @@
     }
 
     v12 = MEMORY[0x277D0AF30];
-    v13 = [(DTGPUAPSConfig *)self->_apsConfig grcTrigger];
-    v14 = [v12 selectWithName:@"KickAndStateTracing" options:v13];
+    grcTrigger = [(DTGPUAPSConfig *)self->_apsConfig grcTrigger];
+    v14 = [v12 selectWithName:@"KickAndStateTracing" options:grcTrigger];
     v33[0] = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
 
@@ -220,9 +220,9 @@
   }
 }
 
-- (void)sampleCounters:(unint64_t)a3 callback:(id)a4
+- (void)sampleCounters:(unint64_t)counters callback:(id)callback
 {
-  v5 = a4;
+  callbackCopy = callback;
   [(NSLock *)self->_pullLock lock];
   memset(v12, 0, sizeof(v12));
   sub_247FCD8A8(v12, self->_counterBuffers.__begin_, self->_counterBuffers.__end_, 0xAAAAAAAAAAAAAAABLL * ((self->_counterBuffers.__end_ - self->_counterBuffers.__begin_) >> 3));
@@ -240,7 +240,7 @@
   {
     v10 = (*(v12[0] + v8 + 8) - *(v12[0] + v8)) >> 3;
     sourceIndex = self->_sourceIndex;
-    v5[2](v5);
+    callbackCopy[2](callbackCopy);
     v8 += 24;
   }
 
@@ -248,9 +248,9 @@
   sub_247FCDB30(&v13);
 }
 
-- (void)sampleAPS:(id)a3
+- (void)sampleAPS:(id)s
 {
-  v4 = a3;
+  sCopy = s;
   [(NSLock *)self->_pullLock lock];
   memset(v9, 0, sizeof(v9));
   sub_247FCD8A8(v9, self->_counterBuffers.__begin_, self->_counterBuffers.__end_, 0xAAAAAAAAAAAAAAABLL * ((self->_counterBuffers.__end_ - self->_counterBuffers.__begin_) >> 3));
@@ -266,7 +266,7 @@
   v7 = 0;
   for (i = 0; i < [(GPURawCounterSource *)self->_source ringBufferNum]; ++i)
   {
-    (*(v4 + 2))(v4, *(v9[0] + v7), *(v9[0] + v7 + 8) - *(v9[0] + v7), 2, i, self->_sourceIndex);
+    (*(sCopy + 2))(sCopy, *(v9[0] + v7), *(v9[0] + v7 + 8) - *(v9[0] + v7), 2, i, self->_sourceIndex);
     v7 += 24;
   }
 

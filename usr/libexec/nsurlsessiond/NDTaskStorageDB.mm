@@ -1,58 +1,58 @@
 @interface NDTaskStorageDB
-+ (id)_preset_unarchiveObjectWithData:(id)a3;
++ (id)_preset_unarchiveObjectWithData:(id)data;
 + (id)nsurlsessiondPath;
-+ (void)removeItemAtPath:(id)a3;
-- (BOOL)_createDBSchemaForPath:(id)a3;
++ (void)removeItemAtPath:(id)path;
+- (BOOL)_createDBSchemaForPath:(id)path;
 - (BOOL)_onqueue_initDB;
 - (BOOL)handleSchemaVersionChange;
-- (BOOL)migrateSchemaToLatestVersion:(int64_t)a3;
+- (BOOL)migrateSchemaToLatestVersion:(int64_t)version;
 - (id)_getAllBundleIDsFromSessionTasks;
-- (id)_getAllSessionIDsForBundle:(id)a3;
-- (id)_getAllTasksFromDBForSession:(id)a3 sessionUUID:(id)a4;
-- (id)_getConfigurationForBundleID:(id)a3 sessionID:(id)a4;
-- (id)_getOptionsForBundleID:(id)a3 sessionID:(id)a4;
-- (id)_initDB:(id)a3;
-- (id)_onqueue_convertSqlRowToTaskInfoEntry:(sqlite3_stmt *)a3;
+- (id)_getAllSessionIDsForBundle:(id)bundle;
+- (id)_getAllTasksFromDBForSession:(id)session sessionUUID:(id)d;
+- (id)_getConfigurationForBundleID:(id)d sessionID:(id)iD;
+- (id)_getOptionsForBundleID:(id)d sessionID:(id)iD;
+- (id)_initDB:(id)b;
+- (id)_onqueue_convertSqlRowToTaskInfoEntry:(sqlite3_stmt *)entry;
 - (id)_onqueue_getAllBundleIDsFromSessionTasks;
-- (id)_onqueue_getAllSessionIDsForBundle:(id)a3;
-- (id)_onqueue_getConfigurationForBundleID:(id)a3 sessionID:(id)a4;
-- (id)_onqueue_getOptionsForBundleID:(id)a3 sessionID:(id)a4;
-- (id)_sqlBlobHelper:(sqlite3_stmt *)a3 forColumn:(int)a4;
+- (id)_onqueue_getAllSessionIDsForBundle:(id)bundle;
+- (id)_onqueue_getConfigurationForBundleID:(id)d sessionID:(id)iD;
+- (id)_onqueue_getOptionsForBundleID:(id)d sessionID:(id)iD;
+- (id)_sqlBlobHelper:(sqlite3_stmt *)helper forColumn:(int)column;
 - (void)_beginSqliteTransaction;
 - (void)_cleanupDB;
 - (void)_commitSqliteTransaction;
 - (void)_deleteAllDataInDB;
-- (void)_deleteAllSessionsForBundleID:(id)a3;
-- (void)_deleteAllTaskEntriesForSession:(id)a3 sessionUUID:(id)a4;
-- (void)_deleteSessionForBundleID:(id)a3 sessionID:(id)a4;
-- (void)_deleteTaskEntriesWithIdentifiers:(id)a3 forSession:(id)a4 sessionUUID:(id)a5;
-- (void)_onqueue_deleteAllSessionsForBundleID:(id)a3;
-- (void)_onqueue_deleteAllTaskEntriesForSession:(id)a3 sessionUUID:(id)a4;
-- (void)_onqueue_deleteEntryForTask:(unint64_t)a3 forSession:(id)a4 sessionUUID:(id)a5;
-- (void)_onqueue_deleteSessionForBundleID:(id)a3 sessionID:(id)a4;
+- (void)_deleteAllSessionsForBundleID:(id)d;
+- (void)_deleteAllTaskEntriesForSession:(id)session sessionUUID:(id)d;
+- (void)_deleteSessionForBundleID:(id)d sessionID:(id)iD;
+- (void)_deleteTaskEntriesWithIdentifiers:(id)identifiers forSession:(id)session sessionUUID:(id)d;
+- (void)_onqueue_deleteAllSessionsForBundleID:(id)d;
+- (void)_onqueue_deleteAllTaskEntriesForSession:(id)session sessionUUID:(id)d;
+- (void)_onqueue_deleteEntryForTask:(unint64_t)task forSession:(id)session sessionUUID:(id)d;
+- (void)_onqueue_deleteSessionForBundleID:(id)d sessionID:(id)iD;
 - (void)_onqueue_garbageCollect;
-- (void)_onqueue_insertOrUpdateAllEntriesForTask:(id)a3 sessionUUID:(id)a4;
-- (void)_onqueue_updateBytesPerSecondLimitForTask:(id)a3 sessionUUID:(id)a4;
-- (void)_onqueue_updateConfigurationForBundleID:(id)a3 sessionID:(id)a4 with:(id)a5;
-- (void)_onqueue_updateConfigurationForBundleID:(id)a3 sessionID:(id)a4 withData:(id)a5;
-- (void)_onqueue_updateCurrentRequestForTask:(id)a3 sessionUUID:(id)a4;
-- (void)_onqueue_updateDownloadFileURLForTask:(id)a3 sessionUUID:(id)a4;
-- (void)_onqueue_updateExpectedProgressTargetForTask:(id)a3 sessionUUID:(id)a4;
-- (void)_onqueue_updateLoadingPriorityForTask:(id)a3 sessionUUID:(id)a4;
-- (void)_onqueue_updateOptionsForBundleID:(id)a3 sessionID:(id)a4 with:(id)a5;
-- (void)_onqueue_updateOptionsForBundleID:(id)a3 sessionID:(id)a4 withData:(id)a5;
-- (void)_onqueue_updateRespondedToWillBeginDelayedRequestCallbackForTask:(id)a3 sessionUUID:(id)a4;
-- (void)_onqueue_updateResponseForTask:(id)a3 sessionUUID:(id)a4;
-- (void)_onqueue_updateResumableUploadDataForTask:(id)a3 sessionUUID:(id)a4;
-- (void)_onqueue_updateSetPriorityEntriesForTask:(id)a3 sessionUUID:(id)a4;
-- (void)_onqueue_updateShouldCancelOnDisconnectForTask:(id)a3 sessionUUID:(id)a4;
-- (void)_onqueue_updateSuspendPathEntriesForTask:(id)a3 sessionUUID:(id)a4;
-- (void)_onqueue_updateTLSSupportedProtocolVersionForTask:(id)a3 sessionUUID:(id)a4;
-- (void)_onqueue_updateTaskDescriptionForTask:(id)a3 sessionUUID:(id)a4;
-- (void)_updateConfigurationForBundleID:(id)a3 sessionID:(id)a4 with:(id)a5;
-- (void)_updateDBEntriesForTasksInSession:(id)a3 taskInfos:(id)a4 updates:(id)a5;
-- (void)_updateDBEntryForTask:(id)a3 updateType:(unint64_t)a4 sessionUUID:(id)a5;
-- (void)_updateOptionsForBundleID:(id)a3 sessionID:(id)a4 with:(id)a5;
+- (void)_onqueue_insertOrUpdateAllEntriesForTask:(id)task sessionUUID:(id)d;
+- (void)_onqueue_updateBytesPerSecondLimitForTask:(id)task sessionUUID:(id)d;
+- (void)_onqueue_updateConfigurationForBundleID:(id)d sessionID:(id)iD with:(id)with;
+- (void)_onqueue_updateConfigurationForBundleID:(id)d sessionID:(id)iD withData:(id)data;
+- (void)_onqueue_updateCurrentRequestForTask:(id)task sessionUUID:(id)d;
+- (void)_onqueue_updateDownloadFileURLForTask:(id)task sessionUUID:(id)d;
+- (void)_onqueue_updateExpectedProgressTargetForTask:(id)task sessionUUID:(id)d;
+- (void)_onqueue_updateLoadingPriorityForTask:(id)task sessionUUID:(id)d;
+- (void)_onqueue_updateOptionsForBundleID:(id)d sessionID:(id)iD with:(id)with;
+- (void)_onqueue_updateOptionsForBundleID:(id)d sessionID:(id)iD withData:(id)data;
+- (void)_onqueue_updateRespondedToWillBeginDelayedRequestCallbackForTask:(id)task sessionUUID:(id)d;
+- (void)_onqueue_updateResponseForTask:(id)task sessionUUID:(id)d;
+- (void)_onqueue_updateResumableUploadDataForTask:(id)task sessionUUID:(id)d;
+- (void)_onqueue_updateSetPriorityEntriesForTask:(id)task sessionUUID:(id)d;
+- (void)_onqueue_updateShouldCancelOnDisconnectForTask:(id)task sessionUUID:(id)d;
+- (void)_onqueue_updateSuspendPathEntriesForTask:(id)task sessionUUID:(id)d;
+- (void)_onqueue_updateTLSSupportedProtocolVersionForTask:(id)task sessionUUID:(id)d;
+- (void)_onqueue_updateTaskDescriptionForTask:(id)task sessionUUID:(id)d;
+- (void)_updateConfigurationForBundleID:(id)d sessionID:(id)iD with:(id)with;
+- (void)_updateDBEntriesForTasksInSession:(id)session taskInfos:(id)infos updates:(id)updates;
+- (void)_updateDBEntryForTask:(id)task updateType:(unint64_t)type sessionUUID:(id)d;
+- (void)_updateOptionsForBundleID:(id)d sessionID:(id)iD with:(id)with;
 @end
 
 @implementation NDTaskStorageDB
@@ -87,18 +87,18 @@
   }
 }
 
-- (void)_onqueue_updateOptionsForBundleID:(id)a3 sessionID:(id)a4 withData:(id)a5
+- (void)_onqueue_updateOptionsForBundleID:(id)d sessionID:(id)iD withData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  dataCopy = data;
   v11 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEBUG))
   {
     v33 = 138543618;
-    v34 = v8;
+    v34 = dCopy;
     v35 = 2112;
-    v36 = v9;
+    v36 = iDCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "_updateOptionsForBundleID: %{public}@ sessionID: %@ withData", &v33, 0x16u);
   }
 
@@ -112,9 +112,9 @@
       if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
       {
         v33 = 138543618;
-        v34 = v8;
+        v34 = dCopy;
         v35 = 2112;
-        v36 = v9;
+        v36 = iDCopy;
         v16 = "Failed to init the _insertOrUpdateSessionOptionsStmt statement for bundleID: %{public}@ sessionID: %@";
         v18 = v17;
         v19 = 22;
@@ -129,14 +129,14 @@ LABEL_14:
     insertOrUpdateSessionOptionsStmt = *p_insertOrUpdateSessionOptionsStmt;
   }
 
-  v14 = v8;
-  if (sqlite3_bind_text(insertOrUpdateSessionOptionsStmt, 1, [v8 UTF8String], -1, 0))
+  v14 = dCopy;
+  if (sqlite3_bind_text(insertOrUpdateSessionOptionsStmt, 1, [dCopy UTF8String], -1, 0))
   {
     v15 = qword_1000EB210;
     if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
     {
       v33 = 138543362;
-      v34 = v8;
+      v34 = dCopy;
       v16 = "Failed to bind bundleID (%{public}@) to the insert statement";
 LABEL_13:
       v18 = v15;
@@ -148,14 +148,14 @@ LABEL_13:
   else
   {
     v20 = *p_insertOrUpdateSessionOptionsStmt;
-    v21 = v9;
-    if (sqlite3_bind_text(v20, 2, [v9 UTF8String], -1, 0))
+    v21 = iDCopy;
+    if (sqlite3_bind_text(v20, 2, [iDCopy UTF8String], -1, 0))
     {
       v15 = qword_1000EB210;
       if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
       {
         v33 = 138412290;
-        v34 = v9;
+        v34 = iDCopy;
         v16 = "Failed to bind sessionID (%@) to the insert statement";
         goto LABEL_13;
       }
@@ -164,16 +164,16 @@ LABEL_13:
     else
     {
       v22 = *p_insertOrUpdateSessionOptionsStmt;
-      v23 = v10;
-      if (sqlite3_bind_blob(v22, 3, [v10 bytes], objc_msgSend(v10, "length"), 0xFFFFFFFFFFFFFFFFLL))
+      v23 = dataCopy;
+      if (sqlite3_bind_blob(v22, 3, [dataCopy bytes], objc_msgSend(dataCopy, "length"), 0xFFFFFFFFFFFFFFFFLL))
       {
         v24 = qword_1000EB210;
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          v30 = v10;
-          v31 = [v10 bytes];
+          v30 = dataCopy;
+          bytes = [dataCopy bytes];
           v33 = 138412290;
-          v34 = v31;
+          v34 = bytes;
           _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Failed to bind options blob (%@) to the insert statement", &v33, 0xCu);
         }
       }
@@ -181,8 +181,8 @@ LABEL_13:
       else
       {
         v25 = *p_insertOrUpdateSessionOptionsStmt;
-        v26 = v8;
-        if (sqlite3_bind_text(v25, 4, [v8 UTF8String], -1, 0))
+        v26 = dCopy;
+        if (sqlite3_bind_text(v25, 4, [dCopy UTF8String], -1, 0))
         {
           v15 = qword_1000EB210;
           if (!os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
@@ -191,14 +191,14 @@ LABEL_13:
           }
 
           v33 = 138543362;
-          v34 = v8;
+          v34 = dCopy;
           v16 = "Failed to bind bundleID (%{public}@) to the insert statement";
           goto LABEL_13;
         }
 
         v27 = *p_insertOrUpdateSessionOptionsStmt;
-        v28 = v9;
-        if (sqlite3_bind_text(v27, 5, [v9 UTF8String], -1, 0))
+        v28 = iDCopy;
+        if (sqlite3_bind_text(v27, 5, [iDCopy UTF8String], -1, 0))
         {
           v15 = qword_1000EB210;
           if (!os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
@@ -207,7 +207,7 @@ LABEL_13:
           }
 
           v33 = 138412290;
-          v34 = v9;
+          v34 = iDCopy;
           v16 = "Failed to bind sessionID (%@) to the insert statement";
           goto LABEL_13;
         }
@@ -219,9 +219,9 @@ LABEL_13:
           {
             v32 = sqlite3_errmsg(self->_dbConnection);
             v33 = 138543874;
-            v34 = v8;
+            v34 = dCopy;
             v35 = 2112;
-            v36 = v9;
+            v36 = iDCopy;
             v37 = 2080;
             v38 = v32;
             _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Failed to insert options with bundle ID %{public}@ and session ID %@ into db. Error = %s", &v33, 0x20u);
@@ -236,57 +236,57 @@ LABEL_13:
 LABEL_31:
 }
 
-- (void)_onqueue_updateOptionsForBundleID:(id)a3 sessionID:(id)a4 with:(id)a5
+- (void)_onqueue_updateOptionsForBundleID:(id)d sessionID:(id)iD with:(id)with
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  withCopy = with;
   v11 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEBUG))
   {
     v13 = 138543618;
-    v14 = v8;
+    v14 = dCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = iDCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "_updateOptionsForBundleID: %{public}@ sessionID: %@", &v13, 0x16u);
   }
 
-  v12 = [NSKeyedArchiver archivedDataWithRootObject:v10 requiringSecureCoding:1 error:0];
-  [(NDTaskStorageDB *)self _onqueue_updateOptionsForBundleID:v8 sessionID:v9 withData:v12];
+  v12 = [NSKeyedArchiver archivedDataWithRootObject:withCopy requiringSecureCoding:1 error:0];
+  [(NDTaskStorageDB *)self _onqueue_updateOptionsForBundleID:dCopy sessionID:iDCopy withData:v12];
 }
 
-- (void)_updateOptionsForBundleID:(id)a3 sessionID:(id)a4 with:(id)a5
+- (void)_updateOptionsForBundleID:(id)d sessionID:(id)iD with:(id)with
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  withCopy = with;
   workQueue = self->_workQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000100AC;
   v15[3] = &unk_1000D5370;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = iDCopy;
+  v18 = withCopy;
+  v12 = withCopy;
+  v13 = iDCopy;
+  v14 = dCopy;
   dispatch_sync(workQueue, v15);
 }
 
-- (void)_onqueue_updateConfigurationForBundleID:(id)a3 sessionID:(id)a4 withData:(id)a5
+- (void)_onqueue_updateConfigurationForBundleID:(id)d sessionID:(id)iD withData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  dataCopy = data;
   v11 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEBUG))
   {
     v33 = 138543618;
-    v34 = v8;
+    v34 = dCopy;
     v35 = 2112;
-    v36 = v9;
+    v36 = iDCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "_updateConfigurationForBundleID: %{public}@ sessionID: %@ withData", &v33, 0x16u);
   }
 
@@ -300,9 +300,9 @@ LABEL_31:
       if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
       {
         v33 = 138543618;
-        v34 = v8;
+        v34 = dCopy;
         v35 = 2112;
-        v36 = v9;
+        v36 = iDCopy;
         v16 = "Failed to init the _insertOrUpdateSessionConfigurationStmt statement for bundleID: %{public}@ sessionID: %@";
         v18 = v17;
         v19 = 22;
@@ -317,14 +317,14 @@ LABEL_14:
     insertOrUpdateSessionConfigurationStmt = *p_insertOrUpdateSessionConfigurationStmt;
   }
 
-  v14 = v8;
-  if (sqlite3_bind_text(insertOrUpdateSessionConfigurationStmt, 1, [v8 UTF8String], -1, 0))
+  v14 = dCopy;
+  if (sqlite3_bind_text(insertOrUpdateSessionConfigurationStmt, 1, [dCopy UTF8String], -1, 0))
   {
     v15 = qword_1000EB210;
     if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
     {
       v33 = 138543362;
-      v34 = v8;
+      v34 = dCopy;
       v16 = "Failed to bind bundleID (%{public}@) to the insert statement";
 LABEL_13:
       v18 = v15;
@@ -336,14 +336,14 @@ LABEL_13:
   else
   {
     v20 = *p_insertOrUpdateSessionConfigurationStmt;
-    v21 = v9;
-    if (sqlite3_bind_text(v20, 2, [v9 UTF8String], -1, 0))
+    v21 = iDCopy;
+    if (sqlite3_bind_text(v20, 2, [iDCopy UTF8String], -1, 0))
     {
       v15 = qword_1000EB210;
       if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
       {
         v33 = 138412290;
-        v34 = v9;
+        v34 = iDCopy;
         v16 = "Failed to bind sessionID (%@) to the insert statement";
         goto LABEL_13;
       }
@@ -352,16 +352,16 @@ LABEL_13:
     else
     {
       v22 = *p_insertOrUpdateSessionConfigurationStmt;
-      v23 = v10;
-      if (sqlite3_bind_blob(v22, 3, [v10 bytes], objc_msgSend(v10, "length"), 0xFFFFFFFFFFFFFFFFLL))
+      v23 = dataCopy;
+      if (sqlite3_bind_blob(v22, 3, [dataCopy bytes], objc_msgSend(dataCopy, "length"), 0xFFFFFFFFFFFFFFFFLL))
       {
         v24 = qword_1000EB210;
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          v30 = v10;
-          v31 = [v10 bytes];
+          v30 = dataCopy;
+          bytes = [dataCopy bytes];
           v33 = 138412290;
-          v34 = v31;
+          v34 = bytes;
           _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Failed to bind config blob (%@) to the insert statement", &v33, 0xCu);
         }
       }
@@ -369,8 +369,8 @@ LABEL_13:
       else
       {
         v25 = *p_insertOrUpdateSessionConfigurationStmt;
-        v26 = v8;
-        if (sqlite3_bind_text(v25, 4, [v8 UTF8String], -1, 0))
+        v26 = dCopy;
+        if (sqlite3_bind_text(v25, 4, [dCopy UTF8String], -1, 0))
         {
           v15 = qword_1000EB210;
           if (!os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
@@ -379,14 +379,14 @@ LABEL_13:
           }
 
           v33 = 138543362;
-          v34 = v8;
+          v34 = dCopy;
           v16 = "Failed to bind bundleID (%{public}@) to the insert statement";
           goto LABEL_13;
         }
 
         v27 = *p_insertOrUpdateSessionConfigurationStmt;
-        v28 = v9;
-        if (sqlite3_bind_text(v27, 5, [v9 UTF8String], -1, 0))
+        v28 = iDCopy;
+        if (sqlite3_bind_text(v27, 5, [iDCopy UTF8String], -1, 0))
         {
           v15 = qword_1000EB210;
           if (!os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
@@ -395,7 +395,7 @@ LABEL_13:
           }
 
           v33 = 138412290;
-          v34 = v9;
+          v34 = iDCopy;
           v16 = "Failed to bind sessionID (%@) to the insert statement";
           goto LABEL_13;
         }
@@ -407,9 +407,9 @@ LABEL_13:
           {
             v32 = sqlite3_errmsg(self->_dbConnection);
             v33 = 138543874;
-            v34 = v8;
+            v34 = dCopy;
             v35 = 2112;
-            v36 = v9;
+            v36 = iDCopy;
             v37 = 2080;
             v38 = v32;
             _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Failed to insert configuration with bundle ID %{public}@ and session ID %@ into db. Error = %s", &v33, 0x20u);
@@ -424,53 +424,53 @@ LABEL_13:
 LABEL_31:
 }
 
-- (void)_onqueue_updateConfigurationForBundleID:(id)a3 sessionID:(id)a4 with:(id)a5
+- (void)_onqueue_updateConfigurationForBundleID:(id)d sessionID:(id)iD with:(id)with
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  withCopy = with;
   v11 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEBUG))
   {
     v13 = 138543618;
-    v14 = v8;
+    v14 = dCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = iDCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "_updateConfigurationForBundleID: %{public}@ sessionID: %@", &v13, 0x16u);
   }
 
-  v12 = [NSKeyedArchiver archivedDataWithRootObject:v10 requiringSecureCoding:1 error:0];
-  [(NDTaskStorageDB *)self _onqueue_updateConfigurationForBundleID:v8 sessionID:v9 withData:v12];
+  v12 = [NSKeyedArchiver archivedDataWithRootObject:withCopy requiringSecureCoding:1 error:0];
+  [(NDTaskStorageDB *)self _onqueue_updateConfigurationForBundleID:dCopy sessionID:iDCopy withData:v12];
 }
 
-- (void)_updateConfigurationForBundleID:(id)a3 sessionID:(id)a4 with:(id)a5
+- (void)_updateConfigurationForBundleID:(id)d sessionID:(id)iD with:(id)with
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  withCopy = with;
   workQueue = self->_workQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10001080C;
   v15[3] = &unk_1000D5370;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = iDCopy;
+  v18 = withCopy;
+  v12 = withCopy;
+  v13 = iDCopy;
+  v14 = dCopy;
   dispatch_sync(workQueue, v15);
 }
 
-- (void)_onqueue_deleteAllSessionsForBundleID:(id)a3
+- (void)_onqueue_deleteAllSessionsForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEBUG))
   {
     v15 = 138543362;
-    v16 = v4;
+    v16 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "_deleteAllSessionsForBundleID: %{public}@", &v15, 0xCu);
   }
 
@@ -498,14 +498,14 @@ LABEL_31:
   {
     deleteAllSessionsForBundleIDStmt = *p_deleteAllSessionsForBundleIDStmt;
 LABEL_6:
-    v9 = v4;
-    if (sqlite3_bind_text(deleteAllSessionsForBundleIDStmt, 1, [v4 UTF8String], -1, 0))
+    v9 = dCopy;
+    if (sqlite3_bind_text(deleteAllSessionsForBundleIDStmt, 1, [dCopy UTF8String], -1, 0))
     {
       v10 = qword_1000EB210;
       if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
       {
         v15 = 138543362;
-        v16 = v4;
+        v16 = dCopy;
         v11 = "Failed to bind bundleID (%{public}@) to the delete statement";
 LABEL_14:
         _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, v11, &v15, 0xCu);
@@ -522,7 +522,7 @@ LABEL_14:
         {
           v14 = sqlite3_errmsg(self->_dbConnection);
           v15 = 138543618;
-          v16 = v4;
+          v16 = dCopy;
           v17 = 2080;
           v18 = v14;
           _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to execute session deletion for bundleID (%{public}@). Error = %s", &v15, 0x16u);
@@ -539,7 +539,7 @@ LABEL_14:
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
   {
     v15 = 138543362;
-    v16 = v4;
+    v16 = dCopy;
     v11 = "Failed to init the _deleteAllSessionsStmt statement for bundleID: %{public}@";
     goto LABEL_14;
   }
@@ -547,31 +547,31 @@ LABEL_14:
 LABEL_20:
 }
 
-- (void)_deleteAllSessionsForBundleID:(id)a3
+- (void)_deleteAllSessionsForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100010BD0;
   v7[3] = &unk_1000D6420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(workQueue, v7);
 }
 
-- (void)_onqueue_deleteSessionForBundleID:(id)a3 sessionID:(id)a4
+- (void)_onqueue_deleteSessionForBundleID:(id)d sessionID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEBUG))
   {
     v23 = 138543618;
-    v24 = v6;
+    v24 = dCopy;
     v25 = 2112;
-    v26 = v7;
+    v26 = iDCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_deleteSessionForBundleID: %{public}@ sessionID: %@", &v23, 0x16u);
   }
 
@@ -598,9 +598,9 @@ LABEL_20:
       if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
       {
         v23 = 138543618;
-        v24 = v6;
+        v24 = dCopy;
         v25 = 2112;
-        v26 = v7;
+        v26 = iDCopy;
         v14 = "Failed to init the _deleteSessionStmt statement for bundleID: %{public}@ sessionID: %@";
         v17 = v16;
         v18 = 22;
@@ -615,14 +615,14 @@ LABEL_19:
     deleteSessionStmt = *p_deleteSessionStmt;
   }
 
-  v12 = v6;
-  if (sqlite3_bind_text(deleteSessionStmt, 1, [v6 UTF8String], -1, 0))
+  v12 = dCopy;
+  if (sqlite3_bind_text(deleteSessionStmt, 1, [dCopy UTF8String], -1, 0))
   {
     v13 = qword_1000EB210;
     if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
     {
       v23 = 138543362;
-      v24 = v6;
+      v24 = dCopy;
       v14 = "Failed to bind bundleID (%{public}@) to the delete statement";
 LABEL_18:
       v17 = v13;
@@ -634,14 +634,14 @@ LABEL_18:
   else
   {
     v19 = *p_deleteSessionStmt;
-    v20 = v7;
-    if (sqlite3_bind_text(v19, 2, [v7 UTF8String], -1, 0))
+    v20 = iDCopy;
+    if (sqlite3_bind_text(v19, 2, [iDCopy UTF8String], -1, 0))
     {
       v13 = qword_1000EB210;
       if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
       {
         v23 = 138412290;
-        v24 = v7;
+        v24 = iDCopy;
         v14 = "Failed to bind sessionID (%@) to the delete statement";
         goto LABEL_18;
       }
@@ -656,9 +656,9 @@ LABEL_18:
         {
           v22 = sqlite3_errmsg(self->_dbConnection);
           v23 = 138543874;
-          v24 = v6;
+          v24 = dCopy;
           v25 = 2112;
-          v26 = v7;
+          v26 = iDCopy;
           v27 = 2080;
           v28 = v22;
           _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to execute session deletion for bundleID (%{public}@) and sessionID (%@). Error = %s", &v23, 0x20u);
@@ -672,34 +672,34 @@ LABEL_18:
 LABEL_11:
 }
 
-- (void)_deleteSessionForBundleID:(id)a3 sessionID:(id)a4
+- (void)_deleteSessionForBundleID:(id)d sessionID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100010FE8;
   block[3] = &unk_1000D6130;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = iDCopy;
+  v9 = iDCopy;
+  v10 = dCopy;
   dispatch_sync(workQueue, block);
 }
 
-- (id)_onqueue_getOptionsForBundleID:(id)a3 sessionID:(id)a4
+- (id)_onqueue_getOptionsForBundleID:(id)d sessionID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEBUG))
   {
     v24 = 138543618;
-    v25 = v6;
+    v25 = dCopy;
     v26 = 2112;
-    v27 = v7;
+    v27 = iDCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_getOptionsForBundleID: %{public}@ sessionID: %@", &v24, 0x16u);
   }
 
@@ -729,9 +729,9 @@ LABEL_11:
       }
 
       v24 = 138543618;
-      v25 = v6;
+      v25 = dCopy;
       v26 = 2112;
-      v27 = v7;
+      v27 = iDCopy;
       v14 = "Failed to init the _selectSessionOptionsStmt statement for bundleID: %{public}@ sessionID: %@";
 LABEL_18:
       v19 = v18;
@@ -744,14 +744,14 @@ LABEL_23:
     selectSessionOptionsStmt = *p_selectSessionOptionsStmt;
   }
 
-  v12 = v6;
-  if (sqlite3_bind_text(selectSessionOptionsStmt, 1, [v6 UTF8String], -1, 0))
+  v12 = dCopy;
+  if (sqlite3_bind_text(selectSessionOptionsStmt, 1, [dCopy UTF8String], -1, 0))
   {
     v13 = qword_1000EB210;
     if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
     {
       v24 = 138543362;
-      v25 = v6;
+      v25 = dCopy;
       v14 = "Failed to bind bundleID (%{public}@) to the select statement";
 LABEL_22:
       v19 = v13;
@@ -763,14 +763,14 @@ LABEL_22:
   }
 
   v21 = *p_selectSessionOptionsStmt;
-  v22 = v7;
-  if (sqlite3_bind_text(v21, 2, [v7 UTF8String], -1, 0))
+  v22 = iDCopy;
+  if (sqlite3_bind_text(v21, 2, [iDCopy UTF8String], -1, 0))
   {
     v13 = qword_1000EB210;
     if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
     {
       v24 = 138412290;
-      v25 = v7;
+      v25 = iDCopy;
       v14 = "Failed to bind sessionID (%@) to the select statement";
       goto LABEL_22;
     }
@@ -800,9 +800,9 @@ LABEL_11:
     }
 
     v24 = 138543618;
-    v25 = v6;
+    v25 = dCopy;
     v26 = 2112;
-    v27 = v7;
+    v27 = iDCopy;
     v14 = "Failed to retrieve any options data from DB for bundleID: %{public}@ and sessionID: %@";
     goto LABEL_18;
   }
@@ -814,10 +814,10 @@ LABEL_12:
   return v16;
 }
 
-- (id)_getOptionsForBundleID:(id)a3 sessionID:(id)a4
+- (id)_getOptionsForBundleID:(id)d sessionID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -830,11 +830,11 @@ LABEL_12:
   v13[2] = sub_1000114D4;
   v13[3] = &unk_1000D5F58;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = dCopy;
+  v15 = iDCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = iDCopy;
+  v10 = dCopy;
   dispatch_sync(workQueue, v13);
   v11 = v18[5];
 
@@ -843,17 +843,17 @@ LABEL_12:
   return v11;
 }
 
-- (id)_onqueue_getConfigurationForBundleID:(id)a3 sessionID:(id)a4
+- (id)_onqueue_getConfigurationForBundleID:(id)d sessionID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEBUG))
   {
     v24 = 138543618;
-    v25 = v6;
+    v25 = dCopy;
     v26 = 2112;
-    v27 = v7;
+    v27 = iDCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_getConfigurationForBundleID: %{public}@ sessionID: %@", &v24, 0x16u);
   }
 
@@ -883,9 +883,9 @@ LABEL_12:
       }
 
       v24 = 138543618;
-      v25 = v6;
+      v25 = dCopy;
       v26 = 2112;
-      v27 = v7;
+      v27 = iDCopy;
       v14 = "Failed to init the _selectSessionConfigurationStmt statement for bundleID: %{public}@ sessionID: %@";
 LABEL_18:
       v19 = v18;
@@ -898,14 +898,14 @@ LABEL_23:
     selectSessionConfigurationStmt = *p_selectSessionConfigurationStmt;
   }
 
-  v12 = v6;
-  if (sqlite3_bind_text(selectSessionConfigurationStmt, 1, [v6 UTF8String], -1, 0))
+  v12 = dCopy;
+  if (sqlite3_bind_text(selectSessionConfigurationStmt, 1, [dCopy UTF8String], -1, 0))
   {
     v13 = qword_1000EB210;
     if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
     {
       v24 = 138543362;
-      v25 = v6;
+      v25 = dCopy;
       v14 = "Failed to bind bundleID (%{public}@) to the select statement";
 LABEL_22:
       v19 = v13;
@@ -917,14 +917,14 @@ LABEL_22:
   }
 
   v21 = *p_selectSessionConfigurationStmt;
-  v22 = v7;
-  if (sqlite3_bind_text(v21, 2, [v7 UTF8String], -1, 0))
+  v22 = iDCopy;
+  if (sqlite3_bind_text(v21, 2, [iDCopy UTF8String], -1, 0))
   {
     v13 = qword_1000EB210;
     if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
     {
       v24 = 138412290;
-      v25 = v7;
+      v25 = iDCopy;
       v14 = "Failed to bind sessionID (%@) to the select statement";
       goto LABEL_22;
     }
@@ -954,9 +954,9 @@ LABEL_11:
     }
 
     v24 = 138543618;
-    v25 = v6;
+    v25 = dCopy;
     v26 = 2112;
-    v27 = v7;
+    v27 = iDCopy;
     v14 = "Failed to retrieve any configuration data from DB for bundleID: %{public}@ and sessionID: %@";
     goto LABEL_18;
   }
@@ -968,10 +968,10 @@ LABEL_12:
   return v16;
 }
 
-- (id)_getConfigurationForBundleID:(id)a3 sessionID:(id)a4
+- (id)_getConfigurationForBundleID:(id)d sessionID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -984,11 +984,11 @@ LABEL_12:
   v13[2] = sub_1000119E8;
   v13[3] = &unk_1000D5F58;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = dCopy;
+  v15 = iDCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = iDCopy;
+  v10 = dCopy;
   dispatch_sync(workQueue, v13);
   v11 = v18[5];
 
@@ -1086,16 +1086,16 @@ LABEL_17:
   return v3;
 }
 
-- (void)_deleteTaskEntriesWithIdentifiers:(id)a3 forSession:(id)a4 sessionUUID:(id)a5
+- (void)_deleteTaskEntriesWithIdentifiers:(id)identifiers forSession:(id)session sessionUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  sessionCopy = session;
+  dCopy = d;
   v11 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v21 = v10;
+    v21 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "_deleteEntriesWithIdentifiers for session %{public}@", buf, 0xCu);
   }
 
@@ -1105,25 +1105,25 @@ LABEL_17:
   v16[2] = sub_100011F7C;
   v16[3] = &unk_1000D5370;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v17 = identifiersCopy;
+  v18 = sessionCopy;
+  v19 = dCopy;
+  v13 = dCopy;
+  v14 = sessionCopy;
+  v15 = identifiersCopy;
   dispatch_sync(workQueue, v16);
 }
 
-- (void)_updateDBEntriesForTasksInSession:(id)a3 taskInfos:(id)a4 updates:(id)a5
+- (void)_updateDBEntriesForTasksInSession:(id)session taskInfos:(id)infos updates:(id)updates
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  infosCopy = infos;
+  updatesCopy = updates;
   v11 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v21 = v8;
+    v21 = sessionCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "_updateDBEntriesForTasks for session %{public}@", buf, 0xCu);
   }
 
@@ -1133,24 +1133,24 @@ LABEL_17:
   v16[2] = sub_100012224;
   v16[3] = &unk_1000D5370;
   v16[4] = self;
-  v17 = v10;
-  v18 = v9;
-  v19 = v8;
-  v13 = v8;
-  v14 = v9;
-  v15 = v10;
+  v17 = updatesCopy;
+  v18 = infosCopy;
+  v19 = sessionCopy;
+  v13 = sessionCopy;
+  v14 = infosCopy;
+  v15 = updatesCopy;
   dispatch_sync(workQueue, v16);
 }
 
-- (id)_onqueue_getAllSessionIDsForBundle:(id)a3
+- (id)_onqueue_getAllSessionIDsForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = +[NSMutableArray array];
   v6 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEBUG))
   {
     v19 = 138543362;
-    v20[0] = v4;
+    v20[0] = bundleCopy;
     _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "_getAllSessionIDsForBundle for bundleID %{public}@", &v19, 0xCu);
   }
 
@@ -1164,7 +1164,7 @@ LABEL_17:
       if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
       {
         v19 = 138543362;
-        v20[0] = v4;
+        v20[0] = bundleCopy;
         v11 = "Failed to init the _getAllSessionsStmt statement for session_tasks for bundle: %{public}@";
         goto LABEL_25;
       }
@@ -1177,14 +1177,14 @@ LABEL_9:
     getAllSessionsStmt = *p_getAllSessionsStmt;
   }
 
-  v9 = v4;
-  if (sqlite3_bind_text(getAllSessionsStmt, 1, [v4 UTF8String], -1, 0))
+  v9 = bundleCopy;
+  if (sqlite3_bind_text(getAllSessionsStmt, 1, [bundleCopy UTF8String], -1, 0))
   {
     v10 = qword_1000EB210;
     if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
     {
       v19 = 138543362;
-      v20[0] = v4;
+      v20[0] = bundleCopy;
       v11 = "Failed to bind bundleID (%{public}@) to the select statement";
 LABEL_25:
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, v11, &v19, 0xCu);
@@ -1217,7 +1217,7 @@ LABEL_25:
       v19 = 67109378;
       LODWORD(v20[0]) = v14;
       WORD2(v20[0]) = 2114;
-      *(v20 + 6) = v4;
+      *(v20 + 6) = bundleCopy;
       _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "_getAllSessionIDsForBundle entries: %d for bundle: %{public}@", &v19, 0x12u);
     }
 
@@ -1230,9 +1230,9 @@ LABEL_20:
   return v12;
 }
 
-- (id)_getAllSessionIDsForBundle:(id)a3
+- (id)_getAllSessionIDsForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1244,10 +1244,10 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = sub_100012864;
   block[3] = &unk_1000D6158;
-  v10 = v4;
+  v10 = bundleCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = bundleCopy;
   dispatch_sync(workQueue, block);
   v7 = v13[5];
 
@@ -1296,40 +1296,40 @@ LABEL_20:
   dispatch_sync(workQueue, block);
 }
 
-- (void)_deleteAllTaskEntriesForSession:(id)a3 sessionUUID:(id)a4
+- (void)_deleteAllTaskEntriesForSession:(id)session sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  dCopy = d;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100012DD0;
   block[3] = &unk_1000D6130;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sessionCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = sessionCopy;
   dispatch_sync(workQueue, block);
 }
 
-- (id)_getAllTasksFromDBForSession:(id)a3 sessionUUID:(id)a4
+- (id)_getAllTasksFromDBForSession:(id)session sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  dCopy = d;
   v8 = +[NSMutableArray array];
   workQueue = self->_workQueue;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100012EF0;
   v16[3] = &unk_1000D5370;
-  v17 = v7;
-  v18 = self;
-  v19 = v6;
+  v17 = dCopy;
+  selfCopy = self;
+  v19 = sessionCopy;
   v10 = v8;
   v20 = v10;
-  v11 = v6;
-  v12 = v7;
+  v11 = sessionCopy;
+  v12 = dCopy;
   dispatch_sync(workQueue, v16);
   v13 = v20;
   v14 = v10;
@@ -1337,78 +1337,78 @@ LABEL_20:
   return v10;
 }
 
-- (void)_updateDBEntryForTask:(id)a3 updateType:(unint64_t)a4 sessionUUID:(id)a5
+- (void)_updateDBEntryForTask:(id)task updateType:(unint64_t)type sessionUUID:(id)d
 {
-  v8 = a3;
-  v9 = a5;
+  taskCopy = task;
+  dCopy = d;
   v10 = qword_1000EB210;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v14 = 134218498;
-    v15 = [v8 identifier];
+    typeCopy2 = [taskCopy identifier];
     v16 = 2048;
-    v17 = a4;
+    typeCopy = type;
     v18 = 2114;
-    v19 = v9;
+    v19 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "_updateDBEntryForTask: %lu type %lu session: %{public}@", &v14, 0x20u);
   }
 
-  switch(a4)
+  switch(type)
   {
     case 0uLL:
-      [(NDTaskStorageDB *)self _onqueue_updateTaskDescriptionForTask:v8 sessionUUID:v9];
+      [(NDTaskStorageDB *)self _onqueue_updateTaskDescriptionForTask:taskCopy sessionUUID:dCopy];
       break;
     case 1uLL:
-      [(NDTaskStorageDB *)self _onqueue_updateResponseForTask:v8 sessionUUID:v9];
+      [(NDTaskStorageDB *)self _onqueue_updateResponseForTask:taskCopy sessionUUID:dCopy];
       break;
     case 2uLL:
-      [(NDTaskStorageDB *)self _onqueue_updateResumableUploadDataForTask:v8 sessionUUID:v9];
+      [(NDTaskStorageDB *)self _onqueue_updateResumableUploadDataForTask:taskCopy sessionUUID:dCopy];
       break;
     case 3uLL:
-      [(NDTaskStorageDB *)self _onqueue_updateDownloadFileURLForTask:v8 sessionUUID:v9];
+      [(NDTaskStorageDB *)self _onqueue_updateDownloadFileURLForTask:taskCopy sessionUUID:dCopy];
       break;
     case 4uLL:
-      [(NDTaskStorageDB *)self _onqueue_updateLoadingPriorityForTask:v8 sessionUUID:v9];
+      [(NDTaskStorageDB *)self _onqueue_updateLoadingPriorityForTask:taskCopy sessionUUID:dCopy];
       break;
     case 5uLL:
-      [(NDTaskStorageDB *)self _onqueue_updateBytesPerSecondLimitForTask:v8 sessionUUID:v9];
+      [(NDTaskStorageDB *)self _onqueue_updateBytesPerSecondLimitForTask:taskCopy sessionUUID:dCopy];
       break;
     case 6uLL:
-      [(NDTaskStorageDB *)self _onqueue_updateExpectedProgressTargetForTask:v8 sessionUUID:v9];
+      [(NDTaskStorageDB *)self _onqueue_updateExpectedProgressTargetForTask:taskCopy sessionUUID:dCopy];
       break;
     case 7uLL:
-      [(NDTaskStorageDB *)self _onqueue_updateTLSSupportedProtocolVersionForTask:v8 sessionUUID:v9];
+      [(NDTaskStorageDB *)self _onqueue_updateTLSSupportedProtocolVersionForTask:taskCopy sessionUUID:dCopy];
       break;
     case 8uLL:
-      [(NDTaskStorageDB *)self _onqueue_updateCurrentRequestForTask:v8 sessionUUID:v9];
+      [(NDTaskStorageDB *)self _onqueue_updateCurrentRequestForTask:taskCopy sessionUUID:dCopy];
       break;
     case 9uLL:
-      [(NDTaskStorageDB *)self _onqueue_updateRespondedToWillBeginDelayedRequestCallbackForTask:v8 sessionUUID:v9];
+      [(NDTaskStorageDB *)self _onqueue_updateRespondedToWillBeginDelayedRequestCallbackForTask:taskCopy sessionUUID:dCopy];
       break;
     case 0xAuLL:
-      [(NDTaskStorageDB *)self _onqueue_updateShouldCancelOnDisconnectForTask:v8 sessionUUID:v9];
+      [(NDTaskStorageDB *)self _onqueue_updateShouldCancelOnDisconnectForTask:taskCopy sessionUUID:dCopy];
       break;
     case 0xBuLL:
-      [(NDTaskStorageDB *)self _onqueue_updateSuspendPathEntriesForTask:v8 sessionUUID:v9];
+      [(NDTaskStorageDB *)self _onqueue_updateSuspendPathEntriesForTask:taskCopy sessionUUID:dCopy];
       break;
     case 0xCuLL:
-      [(NDTaskStorageDB *)self _onqueue_updateSetPriorityEntriesForTask:v8 sessionUUID:v9];
+      [(NDTaskStorageDB *)self _onqueue_updateSetPriorityEntriesForTask:taskCopy sessionUUID:dCopy];
       break;
     case 0xDuLL:
-      v12 = [v8 identifier];
-      v13 = [v8 sessionID];
-      [(NDTaskStorageDB *)self _onqueue_deleteEntryForTask:v12 forSession:v13 sessionUUID:v9];
+      identifier = [taskCopy identifier];
+      sessionID = [taskCopy sessionID];
+      [(NDTaskStorageDB *)self _onqueue_deleteEntryForTask:identifier forSession:sessionID sessionUUID:dCopy];
 
       break;
     case 0xEuLL:
-      [(NDTaskStorageDB *)self _onqueue_insertOrUpdateAllEntriesForTask:v8 sessionUUID:v9];
+      [(NDTaskStorageDB *)self _onqueue_insertOrUpdateAllEntriesForTask:taskCopy sessionUUID:dCopy];
       break;
     default:
       v11 = qword_1000EB210;
       if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
       {
         v14 = 134217984;
-        v15 = a4;
+        typeCopy2 = type;
         _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Invalid update type %lu", &v14, 0xCu);
       }
 
@@ -1416,14 +1416,14 @@ LABEL_20:
   }
 }
 
-- (id)_initDB:(id)a3
+- (id)_initDB:(id)b
 {
-  v5 = a3;
+  bCopy = b;
   v6 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v5;
+    *(&buf + 4) = bCopy;
     _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "_initDB at dir: %@", &buf, 0xCu);
   }
 
@@ -1433,7 +1433,7 @@ LABEL_20:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_dbDir, a3);
+    objc_storeStrong(&v7->_dbDir, b);
     v8->_dbConnection = 0;
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_attr_make_with_qos_class(v9, QOS_CLASS_UTILITY, 0);
@@ -1479,17 +1479,17 @@ LABEL_10:
   return v15;
 }
 
-- (void)_onqueue_updateSetPriorityEntriesForTask:(id)a3 sessionUUID:(id)a4
+- (void)_onqueue_updateSetPriorityEntriesForTask:(id)task sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  dCopy = d;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v26 = 134218242;
-    v27 = [v6 identifier];
+    identifier = [taskCopy identifier];
     v28 = 2114;
-    v29 = v7;
+    v29 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_onqueue_updateSetPriorityEntriesForTask: %lu for session: %{public}@", &v26, 0x16u);
   }
 
@@ -1515,14 +1515,14 @@ LABEL_10:
       updateSetPriorityEntriesForTaskStmt = *p_updateSetPriorityEntriesForTaskStmt;
     }
 
-    if (sqlite3_bind_int(updateSetPriorityEntriesForTaskStmt, 1, [v6 isDiscretionary]))
+    if (sqlite3_bind_int(updateSetPriorityEntriesForTaskStmt, 1, [taskCopy isDiscretionary]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v6 isDiscretionary];
+        isDiscretionary = [taskCopy isDiscretionary];
         v26 = 134217984;
-        v27 = v18;
+        identifier = isDiscretionary;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind discretionary (%lu) to the select statement", &v26, 0xCu);
       }
 
@@ -1531,28 +1531,28 @@ LABEL_32:
       goto LABEL_12;
     }
 
-    if (sqlite3_bind_int(*p_updateSetPriorityEntriesForTaskStmt, 2, [v6 basePriority]))
+    if (sqlite3_bind_int(*p_updateSetPriorityEntriesForTaskStmt, 2, [taskCopy basePriority]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v6 basePriority];
+        basePriority = [taskCopy basePriority];
         v26 = 134217984;
-        v27 = v19;
+        identifier = basePriority;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind basePriority (%lu) to the select statement", &v26, 0xCu);
       }
 
       goto LABEL_32;
     }
 
-    if (sqlite3_bind_int(*p_updateSetPriorityEntriesForTaskStmt, 3, [v6 basePrioritySetExplicitly]))
+    if (sqlite3_bind_int(*p_updateSetPriorityEntriesForTaskStmt, 3, [taskCopy basePrioritySetExplicitly]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v6 basePrioritySetExplicitly];
+        basePrioritySetExplicitly = [taskCopy basePrioritySetExplicitly];
         v26 = 134217984;
-        v27 = v21;
+        identifier = basePrioritySetExplicitly;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind basePrioritySetExplicitly (%lu) to the select statement", &v26, 0xCu);
       }
 
@@ -1560,32 +1560,32 @@ LABEL_32:
     }
 
     v15 = *p_updateSetPriorityEntriesForTaskStmt;
-    v16 = [v6 sessionID];
-    v17 = v16;
-    LOBYTE(v15) = sqlite3_bind_text(v15, 4, [v16 UTF8String], -1, 0) == 0;
+    sessionID = [taskCopy sessionID];
+    v17 = sessionID;
+    LOBYTE(v15) = sqlite3_bind_text(v15, 4, [sessionID UTF8String], -1, 0) == 0;
 
     if ((v15 & 1) == 0)
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v6 sessionID];
+        sessionID2 = [taskCopy sessionID];
         v26 = 138412290;
-        v27 = v22;
+        identifier = sessionID2;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind sessionID (%@) to the select statement", &v26, 0xCu);
       }
 
       goto LABEL_32;
     }
 
-    if (sqlite3_bind_int(*p_updateSetPriorityEntriesForTaskStmt, 5, [v6 identifier]))
+    if (sqlite3_bind_int(*p_updateSetPriorityEntriesForTaskStmt, 5, [taskCopy identifier]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v6 identifier];
+        identifier2 = [taskCopy identifier];
         v26 = 134217984;
-        v27 = v23;
+        identifier = identifier2;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind identifier (%lu) to the select statement", &v26, 0xCu);
       }
 
@@ -1597,10 +1597,10 @@ LABEL_32:
       v20 = qword_1000EB210;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v6 identifier];
+        identifier3 = [taskCopy identifier];
         v25 = sqlite3_errmsg(self->_dbConnection);
         v26 = 134218242;
-        v27 = v24;
+        identifier = identifier3;
         v28 = 2080;
         v29 = v25;
         _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Failed to update setPriority related entries for task %lu into db. Error= %s", &v26, 0x16u);
@@ -1623,17 +1623,17 @@ LABEL_32:
 LABEL_12:
 }
 
-- (void)_onqueue_updateSuspendPathEntriesForTask:(id)a3 sessionUUID:(id)a4
+- (void)_onqueue_updateSuspendPathEntriesForTask:(id)task sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  dCopy = d;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v25 = 134218242;
-    v26 = [v6 identifier];
+    identifier = [taskCopy identifier];
     v27 = 2114;
-    v28 = v7;
+    v28 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_onqueue_updateSuspendPathEntriesForTask: %lu for session %{public}@", &v25, 0x16u);
   }
 
@@ -1659,14 +1659,14 @@ LABEL_12:
       updateSuspendPathEntriesForTaskStmt = *p_updateSuspendPathEntriesForTaskStmt;
     }
 
-    if (sqlite3_bind_int64(updateSuspendPathEntriesForTaskStmt, 1, [v6 state]))
+    if (sqlite3_bind_int64(updateSuspendPathEntriesForTaskStmt, 1, [taskCopy state]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v6 state];
+        state = [taskCopy state];
         v25 = 134217984;
-        v26 = v18;
+        identifier = state;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind state (%lu) to the select statement", &v25, 0xCu);
       }
 
@@ -1675,14 +1675,14 @@ LABEL_28:
       goto LABEL_12;
     }
 
-    if (sqlite3_bind_int64(*p_updateSuspendPathEntriesForTaskStmt, 2, [v6 suspendCount]))
+    if (sqlite3_bind_int64(*p_updateSuspendPathEntriesForTaskStmt, 2, [taskCopy suspendCount]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v6 suspendCount];
+        suspendCount = [taskCopy suspendCount];
         v25 = 134217984;
-        v26 = v20;
+        identifier = suspendCount;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind suspendCount (%lu) to the select statement", &v25, 0xCu);
       }
 
@@ -1690,32 +1690,32 @@ LABEL_28:
     }
 
     v15 = *p_updateSuspendPathEntriesForTaskStmt;
-    v16 = [v6 sessionID];
-    v17 = v16;
-    LOBYTE(v15) = sqlite3_bind_text(v15, 3, [v16 UTF8String], -1, 0) == 0;
+    sessionID = [taskCopy sessionID];
+    v17 = sessionID;
+    LOBYTE(v15) = sqlite3_bind_text(v15, 3, [sessionID UTF8String], -1, 0) == 0;
 
     if ((v15 & 1) == 0)
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v6 sessionID];
+        sessionID2 = [taskCopy sessionID];
         v25 = 138412290;
-        v26 = v21;
+        identifier = sessionID2;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind sessionID (%@) to the select statement", &v25, 0xCu);
       }
 
       goto LABEL_28;
     }
 
-    if (sqlite3_bind_int(*p_updateSuspendPathEntriesForTaskStmt, 4, [v6 identifier]))
+    if (sqlite3_bind_int(*p_updateSuspendPathEntriesForTaskStmt, 4, [taskCopy identifier]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v6 identifier];
+        identifier2 = [taskCopy identifier];
         v25 = 134217984;
-        v26 = v22;
+        identifier = identifier2;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind identifier (%lu) to the select statement", &v25, 0xCu);
       }
 
@@ -1727,10 +1727,10 @@ LABEL_28:
       v19 = qword_1000EB210;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v6 identifier];
+        identifier3 = [taskCopy identifier];
         v24 = sqlite3_errmsg(self->_dbConnection);
         v25 = 134218242;
-        v26 = v23;
+        identifier = identifier3;
         v27 = 2080;
         v28 = v24;
         _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Failed to update suspend related entries for task %lu into db. Error= %s", &v25, 0x16u);
@@ -1753,17 +1753,17 @@ LABEL_28:
 LABEL_12:
 }
 
-- (void)_onqueue_updateDownloadFileURLForTask:(id)a3 sessionUUID:(id)a4
+- (void)_onqueue_updateDownloadFileURLForTask:(id)task sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  dCopy = d;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v27 = 134218242;
-    v28 = [v6 identifier];
+    identifier = [taskCopy identifier];
     v29 = 2114;
-    v30 = v7;
+    v30 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_onqueue_updateDownloadFileURLForTask: %lu for session: %{public}@", &v27, 0x16u);
   }
 
@@ -1783,8 +1783,8 @@ LABEL_12:
       goto LABEL_22;
     }
 
-    v11 = [v6 downloadFileURL];
-    v12 = [NSKeyedArchiver archivedDataWithRootObject:v11 requiringSecureCoding:1 error:0];
+    downloadFileURL = [taskCopy downloadFileURL];
+    v12 = [NSKeyedArchiver archivedDataWithRootObject:downloadFileURL requiringSecureCoding:1 error:0];
 
     v13 = *p_updateDownloadFileURLForTaskStmt;
     v14 = v12;
@@ -1793,9 +1793,9 @@ LABEL_12:
       v15 = qword_1000EB210;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [v6 downloadFileURL];
+        downloadFileURL2 = [taskCopy downloadFileURL];
         v27 = 138412290;
-        v28 = v16;
+        identifier = downloadFileURL2;
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Failed to bind downloadFileURL (%@) to the select statement", &v27, 0xCu);
       }
     }
@@ -1803,23 +1803,23 @@ LABEL_12:
     else
     {
       v19 = *p_updateDownloadFileURLForTaskStmt;
-      v20 = [v6 sessionID];
-      v21 = v20;
-      LOBYTE(v19) = sqlite3_bind_text(v19, 2, [v20 UTF8String], -1, 0) == 0;
+      sessionID = [taskCopy sessionID];
+      v21 = sessionID;
+      LOBYTE(v19) = sqlite3_bind_text(v19, 2, [sessionID UTF8String], -1, 0) == 0;
 
       if (v19)
       {
-        if (!sqlite3_bind_int(*p_updateDownloadFileURLForTaskStmt, 3, [v6 identifier]))
+        if (!sqlite3_bind_int(*p_updateDownloadFileURLForTaskStmt, 3, [taskCopy identifier]))
         {
           if (sqlite3_step(*p_updateDownloadFileURLForTaskStmt) != 101)
           {
             v23 = qword_1000EB210;
             if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
             {
-              v25 = [v6 identifier];
+              identifier2 = [taskCopy identifier];
               v26 = sqlite3_errmsg(self->_dbConnection);
               v27 = 134218242;
-              v28 = v25;
+              identifier = identifier2;
               v29 = 2080;
               v30 = v26;
               _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Failed to update downloadFileURL for task %lu into db. Error= %s", &v27, 0x16u);
@@ -1833,9 +1833,9 @@ LABEL_12:
         v15 = qword_1000EB210;
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          v24 = [v6 identifier];
+          identifier3 = [taskCopy identifier];
           v27 = 134217984;
-          v28 = v24;
+          identifier = identifier3;
           _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Failed to bind identifier (%lu) to the select statement", &v27, 0xCu);
         }
       }
@@ -1845,9 +1845,9 @@ LABEL_12:
         v15 = qword_1000EB210;
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          v22 = [v6 sessionID];
+          sessionID2 = [taskCopy sessionID];
           v27 = 138412290;
-          v28 = v22;
+          identifier = sessionID2;
           _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Failed to bind sessionID (%@) to the select statement", &v27, 0xCu);
         }
       }
@@ -1867,17 +1867,17 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)_onqueue_updateRespondedToWillBeginDelayedRequestCallbackForTask:(id)a3 sessionUUID:(id)a4
+- (void)_onqueue_updateRespondedToWillBeginDelayedRequestCallbackForTask:(id)task sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  dCopy = d;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v24 = 134218242;
-    v25 = [v6 identifier];
+    identifier = [taskCopy identifier];
     v26 = 2114;
-    v27 = v7;
+    v27 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_onqueue_updateRespondedToWillBeginDelayedRequestCallbackForTask: %lu for session: %{public}@", &v24, 0x16u);
   }
 
@@ -1903,14 +1903,14 @@ LABEL_22:
       updateRespondedToWillBeginDelayedRequestCallbackForTaskStmt = *p_updateRespondedToWillBeginDelayedRequestCallbackForTaskStmt;
     }
 
-    if (sqlite3_bind_int(updateRespondedToWillBeginDelayedRequestCallbackForTaskStmt, 1, [v6 respondedToWillBeginDelayedRequestCallback]))
+    if (sqlite3_bind_int(updateRespondedToWillBeginDelayedRequestCallbackForTaskStmt, 1, [taskCopy respondedToWillBeginDelayedRequestCallback]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v6 respondedToWillBeginDelayedRequestCallback];
+        respondedToWillBeginDelayedRequestCallback = [taskCopy respondedToWillBeginDelayedRequestCallback];
         v24 = 134217984;
-        v25 = v19;
+        identifier = respondedToWillBeginDelayedRequestCallback;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind identifier (%lu) to the select statement", &v24, 0xCu);
       }
 
@@ -1920,32 +1920,32 @@ LABEL_24:
     }
 
     v15 = *p_updateRespondedToWillBeginDelayedRequestCallbackForTaskStmt;
-    v16 = [v6 sessionID];
-    v17 = v16;
-    LOBYTE(v15) = sqlite3_bind_text(v15, 2, [v16 UTF8String], -1, 0) == 0;
+    sessionID = [taskCopy sessionID];
+    v17 = sessionID;
+    LOBYTE(v15) = sqlite3_bind_text(v15, 2, [sessionID UTF8String], -1, 0) == 0;
 
     if ((v15 & 1) == 0)
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v6 sessionID];
+        sessionID2 = [taskCopy sessionID];
         v24 = 138412290;
-        v25 = v20;
+        identifier = sessionID2;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind sessionID (%@) to the select statement", &v24, 0xCu);
       }
 
       goto LABEL_24;
     }
 
-    if (sqlite3_bind_int(*p_updateRespondedToWillBeginDelayedRequestCallbackForTaskStmt, 3, [v6 identifier]))
+    if (sqlite3_bind_int(*p_updateRespondedToWillBeginDelayedRequestCallbackForTaskStmt, 3, [taskCopy identifier]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v6 identifier];
+        identifier2 = [taskCopy identifier];
         v24 = 134217984;
-        v25 = v21;
+        identifier = identifier2;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind identifier (%lu) to the select statement", &v24, 0xCu);
       }
 
@@ -1957,10 +1957,10 @@ LABEL_24:
       v18 = qword_1000EB210;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v6 identifier];
+        identifier3 = [taskCopy identifier];
         v23 = sqlite3_errmsg(self->_dbConnection);
         v24 = 134218242;
-        v25 = v22;
+        identifier = identifier3;
         v26 = 2080;
         v27 = v23;
         _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Failed to update respondedToWillBeginDelayedRequestCallback for task %lu into db. Error= %s", &v24, 0x16u);
@@ -1983,15 +1983,15 @@ LABEL_24:
 LABEL_12:
 }
 
-- (void)_onqueue_deleteAllTaskEntriesForSession:(id)a3 sessionUUID:(id)a4
+- (void)_onqueue_deleteAllTaskEntriesForSession:(id)session sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  dCopy = d;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v23 = v7;
+    v23 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_onqueue_deleteAllTaskEntriesForSession session: %{public}@", buf, 0xCu);
   }
 
@@ -2032,14 +2032,14 @@ LABEL_23:
     deleteEntriesForSessionStmt = *p_deleteEntriesForSessionStmt;
   }
 
-  v12 = v6;
-  if (sqlite3_bind_text(deleteEntriesForSessionStmt, 1, [v6 UTF8String], -1, 0))
+  v12 = sessionCopy;
+  if (sqlite3_bind_text(deleteEntriesForSessionStmt, 1, [sessionCopy UTF8String], -1, 0))
   {
     v13 = qword_1000EB210;
     if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v23 = v7;
+      v23 = dCopy;
       v14 = "Failed to bind sessionID (%@) to the select statement";
 LABEL_22:
       v17 = v13;
@@ -2080,17 +2080,17 @@ LABEL_22:
 LABEL_11:
 }
 
-- (void)_onqueue_deleteEntryForTask:(unint64_t)a3 forSession:(id)a4 sessionUUID:(id)a5
+- (void)_onqueue_deleteEntryForTask:(unint64_t)task forSession:(id)session sessionUUID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  dCopy = d;
   v10 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEBUG))
   {
     v24 = 134218242;
-    v25 = a3;
+    taskCopy3 = task;
     v26 = 2114;
-    v27 = v9;
+    v27 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "_onqueue_deleteEntryForTaskWithIdentifier: %lu for session: %{public}@", &v24, 0x16u);
   }
 
@@ -2131,14 +2131,14 @@ LABEL_19:
     deleteEntryForTaskStmt = *p_deleteEntryForTaskStmt;
   }
 
-  v14 = v8;
-  if (sqlite3_bind_text(deleteEntryForTaskStmt, 1, [v8 UTF8String], -1, 0))
+  v14 = sessionCopy;
+  if (sqlite3_bind_text(deleteEntryForTaskStmt, 1, [sessionCopy UTF8String], -1, 0))
   {
     v15 = qword_1000EB210;
     if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
     {
       v24 = 138412290;
-      v25 = v9;
+      taskCopy3 = dCopy;
       v16 = "Failed to bind sessionID (%@) to the select statement";
       v17 = v15;
 LABEL_18:
@@ -2147,13 +2147,13 @@ LABEL_18:
     }
   }
 
-  else if (sqlite3_bind_int(*p_deleteEntryForTaskStmt, 2, a3))
+  else if (sqlite3_bind_int(*p_deleteEntryForTaskStmt, 2, task))
   {
     v21 = qword_1000EB210;
     if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
     {
       v24 = 134217984;
-      v25 = a3;
+      taskCopy3 = task;
       v16 = "Failed to bind identifier (%lu) to the delete statement";
       v17 = v21;
       goto LABEL_18;
@@ -2169,7 +2169,7 @@ LABEL_18:
       {
         v23 = sqlite3_errmsg(self->_dbConnection);
         v24 = 134218242;
-        v25 = a3;
+        taskCopy3 = task;
         v26 = 2080;
         v27 = v23;
         _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Failed to delete task with identifier %lu from db. Error= %s", &v24, 0x16u);
@@ -2182,17 +2182,17 @@ LABEL_18:
 LABEL_11:
 }
 
-- (void)_onqueue_updateExpectedProgressTargetForTask:(id)a3 sessionUUID:(id)a4
+- (void)_onqueue_updateExpectedProgressTargetForTask:(id)task sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  dCopy = d;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v24 = 134218242;
-    v25 = [v6 identifier];
+    identifier = [taskCopy identifier];
     v26 = 2114;
-    v27 = v7;
+    v27 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_onqueue_updateExpectedProgressTargetForTask: %lu for session: %{public}@", &v24, 0x16u);
   }
 
@@ -2218,14 +2218,14 @@ LABEL_11:
       updateExpectedProgressTargetForTaskStmt = *p_updateExpectedProgressTargetForTaskStmt;
     }
 
-    if (sqlite3_bind_int64(updateExpectedProgressTargetForTaskStmt, 1, [v6 expectedProgressTarget]))
+    if (sqlite3_bind_int64(updateExpectedProgressTargetForTaskStmt, 1, [taskCopy expectedProgressTarget]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v6 expectedProgressTarget];
+        expectedProgressTarget = [taskCopy expectedProgressTarget];
         v24 = 134217984;
-        v25 = v19;
+        identifier = expectedProgressTarget;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind expectedProgressTarget (%lu) to the select statement", &v24, 0xCu);
       }
 
@@ -2235,32 +2235,32 @@ LABEL_24:
     }
 
     v15 = *p_updateExpectedProgressTargetForTaskStmt;
-    v16 = [v6 sessionID];
-    v17 = v16;
-    LOBYTE(v15) = sqlite3_bind_text(v15, 2, [v16 UTF8String], -1, 0) == 0;
+    sessionID = [taskCopy sessionID];
+    v17 = sessionID;
+    LOBYTE(v15) = sqlite3_bind_text(v15, 2, [sessionID UTF8String], -1, 0) == 0;
 
     if ((v15 & 1) == 0)
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v6 sessionID];
+        sessionID2 = [taskCopy sessionID];
         v24 = 138412290;
-        v25 = v20;
+        identifier = sessionID2;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind sessionID (%@) to the select statement", &v24, 0xCu);
       }
 
       goto LABEL_24;
     }
 
-    if (sqlite3_bind_int(*p_updateExpectedProgressTargetForTaskStmt, 3, [v6 identifier]))
+    if (sqlite3_bind_int(*p_updateExpectedProgressTargetForTaskStmt, 3, [taskCopy identifier]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v6 identifier];
+        identifier2 = [taskCopy identifier];
         v24 = 134217984;
-        v25 = v21;
+        identifier = identifier2;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind identifier (%lu) to the select statement", &v24, 0xCu);
       }
 
@@ -2272,10 +2272,10 @@ LABEL_24:
       v18 = qword_1000EB210;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v6 identifier];
+        identifier3 = [taskCopy identifier];
         v23 = sqlite3_errmsg(self->_dbConnection);
         v24 = 134218242;
-        v25 = v22;
+        identifier = identifier3;
         v26 = 2080;
         v27 = v23;
         _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Failed to update expectedProgressTarget for task %lu into db. Error= %s", &v24, 0x16u);
@@ -2298,17 +2298,17 @@ LABEL_24:
 LABEL_12:
 }
 
-- (void)_onqueue_updateLoadingPriorityForTask:(id)a3 sessionUUID:(id)a4
+- (void)_onqueue_updateLoadingPriorityForTask:(id)task sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  dCopy = d;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v25 = 134218242;
-    v26 = [v6 identifier];
+    identifier = [taskCopy identifier];
     v27 = 2114;
-    v28 = v7;
+    v28 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_onqueue_updateLoadingPriorityForTask: %lu for session: %{public}@", &v25, 0x16u);
   }
 
@@ -2334,15 +2334,15 @@ LABEL_12:
       updateLoadingPriorityForTaskStmt = *p_updateLoadingPriorityForTaskStmt;
     }
 
-    [v6 loadingPriority];
+    [taskCopy loadingPriority];
     if (sqlite3_bind_double(updateLoadingPriorityForTaskStmt, 1, v12))
     {
       v13 = qword_1000EB210;
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [v6 loadingPriority];
+        [taskCopy loadingPriority];
         v25 = 134217984;
-        v26 = v20;
+        identifier = v20;
         _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to bind loadingPriority (%f) to the select statement", &v25, 0xCu);
       }
 
@@ -2352,32 +2352,32 @@ LABEL_24:
     }
 
     v16 = *p_updateLoadingPriorityForTaskStmt;
-    v17 = [v6 sessionID];
-    v18 = v17;
-    LOBYTE(v16) = sqlite3_bind_text(v16, 2, [v17 UTF8String], -1, 0) == 0;
+    sessionID = [taskCopy sessionID];
+    v18 = sessionID;
+    LOBYTE(v16) = sqlite3_bind_text(v16, 2, [sessionID UTF8String], -1, 0) == 0;
 
     if ((v16 & 1) == 0)
     {
       v13 = qword_1000EB210;
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v6 sessionID];
+        sessionID2 = [taskCopy sessionID];
         v25 = 138412290;
-        v26 = v21;
+        identifier = sessionID2;
         _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to bind sessionID (%@) to the select statement", &v25, 0xCu);
       }
 
       goto LABEL_24;
     }
 
-    if (sqlite3_bind_int(*p_updateLoadingPriorityForTaskStmt, 3, [v6 identifier]))
+    if (sqlite3_bind_int(*p_updateLoadingPriorityForTaskStmt, 3, [taskCopy identifier]))
     {
       v13 = qword_1000EB210;
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v6 identifier];
+        identifier2 = [taskCopy identifier];
         v25 = 134217984;
-        v26 = v22;
+        identifier = identifier2;
         _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to bind identifier (%lu) to the select statement", &v25, 0xCu);
       }
 
@@ -2389,10 +2389,10 @@ LABEL_24:
       v19 = qword_1000EB210;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v6 identifier];
+        identifier3 = [taskCopy identifier];
         v24 = sqlite3_errmsg(self->_dbConnection);
         v25 = 134218242;
-        v26 = v23;
+        identifier = identifier3;
         v27 = 2080;
         v28 = v24;
         _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Failed to update loadingPriority for task %lu into db. Error= %s", &v25, 0x16u);
@@ -2415,17 +2415,17 @@ LABEL_24:
 LABEL_12:
 }
 
-- (void)_onqueue_updateBytesPerSecondLimitForTask:(id)a3 sessionUUID:(id)a4
+- (void)_onqueue_updateBytesPerSecondLimitForTask:(id)task sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  dCopy = d;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v24 = 134218242;
-    v25 = [v6 identifier];
+    identifier = [taskCopy identifier];
     v26 = 2114;
-    v27 = v7;
+    v27 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_onqueue_updateBytesPerSecondLimitForTask: %lu for session: %{public}@", &v24, 0x16u);
   }
 
@@ -2451,14 +2451,14 @@ LABEL_12:
       updateBytesPerSecondLimitForTaskStmt = *p_updateBytesPerSecondLimitForTaskStmt;
     }
 
-    if (sqlite3_bind_int64(updateBytesPerSecondLimitForTaskStmt, 1, [v6 bytesPerSecondLimit]))
+    if (sqlite3_bind_int64(updateBytesPerSecondLimitForTaskStmt, 1, [taskCopy bytesPerSecondLimit]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v6 bytesPerSecondLimit];
+        bytesPerSecondLimit = [taskCopy bytesPerSecondLimit];
         v24 = 134217984;
-        v25 = v19;
+        identifier = bytesPerSecondLimit;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind bytesPerSecondLimit (%lu) to the select statement", &v24, 0xCu);
       }
 
@@ -2468,32 +2468,32 @@ LABEL_24:
     }
 
     v15 = *p_updateBytesPerSecondLimitForTaskStmt;
-    v16 = [v6 sessionID];
-    v17 = v16;
-    LOBYTE(v15) = sqlite3_bind_text(v15, 2, [v16 UTF8String], -1, 0) == 0;
+    sessionID = [taskCopy sessionID];
+    v17 = sessionID;
+    LOBYTE(v15) = sqlite3_bind_text(v15, 2, [sessionID UTF8String], -1, 0) == 0;
 
     if ((v15 & 1) == 0)
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v6 sessionID];
+        sessionID2 = [taskCopy sessionID];
         v24 = 138412290;
-        v25 = v20;
+        identifier = sessionID2;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind sessionID (%@) to the select statement", &v24, 0xCu);
       }
 
       goto LABEL_24;
     }
 
-    if (sqlite3_bind_int(*p_updateBytesPerSecondLimitForTaskStmt, 3, [v6 identifier]))
+    if (sqlite3_bind_int(*p_updateBytesPerSecondLimitForTaskStmt, 3, [taskCopy identifier]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v6 identifier];
+        identifier2 = [taskCopy identifier];
         v24 = 134217984;
-        v25 = v21;
+        identifier = identifier2;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind identifier (%lu) to the select statement", &v24, 0xCu);
       }
 
@@ -2505,10 +2505,10 @@ LABEL_24:
       v18 = qword_1000EB210;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v6 identifier];
+        identifier3 = [taskCopy identifier];
         v23 = sqlite3_errmsg(self->_dbConnection);
         v24 = 134218242;
-        v25 = v22;
+        identifier = identifier3;
         v26 = 2080;
         v27 = v23;
         _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Failed to update bytesPerSecondLimit for task %lu into db. Error= %s", &v24, 0x16u);
@@ -2531,17 +2531,17 @@ LABEL_24:
 LABEL_12:
 }
 
-- (void)_onqueue_updateTLSSupportedProtocolVersionForTask:(id)a3 sessionUUID:(id)a4
+- (void)_onqueue_updateTLSSupportedProtocolVersionForTask:(id)task sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  dCopy = d;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v25 = 134218242;
-    v26 = [v6 identifier];
+    identifier = [taskCopy identifier];
     v27 = 2114;
-    v28 = v7;
+    v28 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_onqueue_updateTLSSupportedProtocolVersionForTask: %lu, for session: %{public}@", &v25, 0x16u);
   }
 
@@ -2567,14 +2567,14 @@ LABEL_12:
       updateTLSSupportedProtocolVersionForTaskStmt = *p_updateTLSSupportedProtocolVersionForTaskStmt;
     }
 
-    if (sqlite3_bind_int(updateTLSSupportedProtocolVersionForTaskStmt, 1, [v6 _TLSMinimumSupportedProtocolVersion]))
+    if (sqlite3_bind_int(updateTLSSupportedProtocolVersionForTaskStmt, 1, [taskCopy _TLSMinimumSupportedProtocolVersion]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v6 _TLSMinimumSupportedProtocolVersion];
+        _TLSMinimumSupportedProtocolVersion = [taskCopy _TLSMinimumSupportedProtocolVersion];
         v25 = 134217984;
-        v26 = v18;
+        identifier = _TLSMinimumSupportedProtocolVersion;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind _TLSMinimumSupportedProtocolVersion (%lu) to the select statement", &v25, 0xCu);
       }
 
@@ -2583,14 +2583,14 @@ LABEL_28:
       goto LABEL_12;
     }
 
-    if (sqlite3_bind_int(*p_updateTLSSupportedProtocolVersionForTaskStmt, 2, [v6 _TLSMaximumSupportedProtocolVersion]))
+    if (sqlite3_bind_int(*p_updateTLSSupportedProtocolVersionForTaskStmt, 2, [taskCopy _TLSMaximumSupportedProtocolVersion]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v6 _TLSMaximumSupportedProtocolVersion];
+        _TLSMaximumSupportedProtocolVersion = [taskCopy _TLSMaximumSupportedProtocolVersion];
         v25 = 134217984;
-        v26 = v20;
+        identifier = _TLSMaximumSupportedProtocolVersion;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind _TLSMaximumSupportedProtocolVersion (%lu) to the select statement", &v25, 0xCu);
       }
 
@@ -2598,32 +2598,32 @@ LABEL_28:
     }
 
     v15 = *p_updateTLSSupportedProtocolVersionForTaskStmt;
-    v16 = [v6 sessionID];
-    v17 = v16;
-    LOBYTE(v15) = sqlite3_bind_text(v15, 3, [v16 UTF8String], -1, 0) == 0;
+    sessionID = [taskCopy sessionID];
+    v17 = sessionID;
+    LOBYTE(v15) = sqlite3_bind_text(v15, 3, [sessionID UTF8String], -1, 0) == 0;
 
     if ((v15 & 1) == 0)
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v6 sessionID];
+        sessionID2 = [taskCopy sessionID];
         v25 = 138412290;
-        v26 = v21;
+        identifier = sessionID2;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind sessionID (%@) to the select statement", &v25, 0xCu);
       }
 
       goto LABEL_28;
     }
 
-    if (sqlite3_bind_int(*p_updateTLSSupportedProtocolVersionForTaskStmt, 4, [v6 identifier]))
+    if (sqlite3_bind_int(*p_updateTLSSupportedProtocolVersionForTaskStmt, 4, [taskCopy identifier]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v6 identifier];
+        identifier2 = [taskCopy identifier];
         v25 = 134217984;
-        v26 = v22;
+        identifier = identifier2;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind identifier (%lu) to the select statement", &v25, 0xCu);
       }
 
@@ -2635,10 +2635,10 @@ LABEL_28:
       v19 = qword_1000EB210;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v6 identifier];
+        identifier3 = [taskCopy identifier];
         v24 = sqlite3_errmsg(self->_dbConnection);
         v25 = 134218242;
-        v26 = v23;
+        identifier = identifier3;
         v27 = 2080;
         v28 = v24;
         _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Failed to update TLSSupportedProtocolVersions for task %lu into db. Error= %s", &v25, 0x16u);
@@ -2661,17 +2661,17 @@ LABEL_28:
 LABEL_12:
 }
 
-- (void)_onqueue_updateCurrentRequestForTask:(id)a3 sessionUUID:(id)a4
+- (void)_onqueue_updateCurrentRequestForTask:(id)task sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  dCopy = d;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v27 = 134218242;
-    v28 = [v6 identifier];
+    identifier = [taskCopy identifier];
     v29 = 2114;
-    v30 = v7;
+    v30 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_onqueue_updateCurrentRequestForTask: %lu for session: %{public}@", &v27, 0x16u);
   }
 
@@ -2691,8 +2691,8 @@ LABEL_12:
       goto LABEL_28;
     }
 
-    v11 = [v6 currentRequest];
-    v12 = [NSKeyedArchiver archivedDataWithRootObject:v11 requiringSecureCoding:1 error:0];
+    currentRequest = [taskCopy currentRequest];
+    v12 = [NSKeyedArchiver archivedDataWithRootObject:currentRequest requiringSecureCoding:1 error:0];
 
     v13 = *p_updateCurrentRequestForTaskStmt;
     v14 = v12;
@@ -2709,23 +2709,23 @@ LABEL_12:
     else
     {
       v18 = *p_updateCurrentRequestForTaskStmt;
-      v19 = [v6 sessionID];
-      v20 = v19;
-      LOBYTE(v18) = sqlite3_bind_text(v18, 2, [v19 UTF8String], -1, 0) == 0;
+      sessionID = [taskCopy sessionID];
+      v20 = sessionID;
+      LOBYTE(v18) = sqlite3_bind_text(v18, 2, [sessionID UTF8String], -1, 0) == 0;
 
       if (v18)
       {
-        if (!sqlite3_bind_int(*p_updateCurrentRequestForTaskStmt, 3, [v6 identifier]))
+        if (!sqlite3_bind_int(*p_updateCurrentRequestForTaskStmt, 3, [taskCopy identifier]))
         {
           if (sqlite3_step(*p_updateCurrentRequestForTaskStmt) != 101)
           {
             v22 = qword_1000EB210;
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
             {
-              v25 = [v6 identifier];
+              identifier2 = [taskCopy identifier];
               v26 = sqlite3_errmsg(self->_dbConnection);
               v27 = 134218242;
-              v28 = v25;
+              identifier = identifier2;
               v29 = 2080;
               v30 = v26;
               _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Failed to update currentRequest for task %lu into db. Error= %s", &v27, 0x16u);
@@ -2739,9 +2739,9 @@ LABEL_12:
         v21 = qword_1000EB210;
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          v24 = [v6 identifier];
+          identifier3 = [taskCopy identifier];
           v27 = 134217984;
-          v28 = v24;
+          identifier = identifier3;
           _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to bind identifier (%lu) to the select statement", &v27, 0xCu);
         }
       }
@@ -2751,9 +2751,9 @@ LABEL_12:
         v21 = qword_1000EB210;
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          v23 = [v6 sessionID];
+          sessionID2 = [taskCopy sessionID];
           v27 = 138412290;
-          v28 = v23;
+          identifier = sessionID2;
           _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to bind sessionID (%@) to the select statement", &v27, 0xCu);
         }
       }
@@ -2774,17 +2774,17 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)_onqueue_updateShouldCancelOnDisconnectForTask:(id)a3 sessionUUID:(id)a4
+- (void)_onqueue_updateShouldCancelOnDisconnectForTask:(id)task sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  dCopy = d;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v24 = 134218242;
-    v25 = [v6 identifier];
+    identifier = [taskCopy identifier];
     v26 = 2114;
-    v27 = v7;
+    v27 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_onqueue_updateShouldCancelOnDisconnectForTask: %lu for session: %{public}@", &v24, 0x16u);
   }
 
@@ -2810,14 +2810,14 @@ LABEL_28:
       updateShouldCancelOnDisconnectForTaskStmt = *p_updateShouldCancelOnDisconnectForTaskStmt;
     }
 
-    if (sqlite3_bind_int(updateShouldCancelOnDisconnectForTaskStmt, 1, [v6 shouldCancelOnDisconnect]))
+    if (sqlite3_bind_int(updateShouldCancelOnDisconnectForTaskStmt, 1, [taskCopy shouldCancelOnDisconnect]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v6 shouldCancelOnDisconnect];
+        shouldCancelOnDisconnect = [taskCopy shouldCancelOnDisconnect];
         v24 = 134217984;
-        v25 = v19;
+        identifier = shouldCancelOnDisconnect;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind shouldCancelOnDisconnect (%lu) to the select statement", &v24, 0xCu);
       }
 
@@ -2827,32 +2827,32 @@ LABEL_24:
     }
 
     v15 = *p_updateShouldCancelOnDisconnectForTaskStmt;
-    v16 = [v6 sessionID];
-    v17 = v16;
-    LOBYTE(v15) = sqlite3_bind_text(v15, 2, [v16 UTF8String], -1, 0) == 0;
+    sessionID = [taskCopy sessionID];
+    v17 = sessionID;
+    LOBYTE(v15) = sqlite3_bind_text(v15, 2, [sessionID UTF8String], -1, 0) == 0;
 
     if ((v15 & 1) == 0)
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v6 sessionID];
+        sessionID2 = [taskCopy sessionID];
         v24 = 138412290;
-        v25 = v20;
+        identifier = sessionID2;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind sessionID (%@) to the select statement", &v24, 0xCu);
       }
 
       goto LABEL_24;
     }
 
-    if (sqlite3_bind_int(*p_updateShouldCancelOnDisconnectForTaskStmt, 3, [v6 identifier]))
+    if (sqlite3_bind_int(*p_updateShouldCancelOnDisconnectForTaskStmt, 3, [taskCopy identifier]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v6 identifier];
+        identifier2 = [taskCopy identifier];
         v24 = 134217984;
-        v25 = v21;
+        identifier = identifier2;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind identifier (%lu) to the select statement", &v24, 0xCu);
       }
 
@@ -2864,10 +2864,10 @@ LABEL_24:
       v18 = qword_1000EB210;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v6 identifier];
+        identifier3 = [taskCopy identifier];
         v23 = sqlite3_errmsg(self->_dbConnection);
         v24 = 134218242;
-        v25 = v22;
+        identifier = identifier3;
         v26 = 2080;
         v27 = v23;
         _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Failed to update shouldCancelOnDisconnect for task %lu into db. Error= %s", &v24, 0x16u);
@@ -2890,17 +2890,17 @@ LABEL_24:
 LABEL_12:
 }
 
-- (void)_onqueue_updateTaskDescriptionForTask:(id)a3 sessionUUID:(id)a4
+- (void)_onqueue_updateTaskDescriptionForTask:(id)task sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  dCopy = d;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v27 = 134218242;
-    v28 = [v6 identifier];
+    identifier = [taskCopy identifier];
     v29 = 2114;
-    v30 = v7;
+    v30 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_onqueue_updateTaskDescriptionForTask: %lu for session: %{public}@", &v27, 0x16u);
   }
 
@@ -2926,18 +2926,18 @@ LABEL_12:
       updateTaskDescriptionForTaskStmt = *p_updateTaskDescriptionForTaskStmt;
     }
 
-    v12 = [v6 taskDescription];
-    v13 = v12;
-    v14 = sqlite3_bind_text(updateTaskDescriptionForTaskStmt, 1, [v12 UTF8String], -1, 0) == 0;
+    taskDescription = [taskCopy taskDescription];
+    v13 = taskDescription;
+    v14 = sqlite3_bind_text(updateTaskDescriptionForTaskStmt, 1, [taskDescription UTF8String], -1, 0) == 0;
 
     if (!v14)
     {
       v15 = qword_1000EB210;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v6 taskDescription];
+        taskDescription2 = [taskCopy taskDescription];
         v27 = 138412290;
-        v28 = v22;
+        identifier = taskDescription2;
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Failed to bind taskDescription (%@) to the select statement", &v27, 0xCu);
       }
 
@@ -2947,32 +2947,32 @@ LABEL_24:
     }
 
     v18 = *p_updateTaskDescriptionForTaskStmt;
-    v19 = [v6 sessionID];
-    v20 = v19;
-    LOBYTE(v18) = sqlite3_bind_text(v18, 2, [v19 UTF8String], -1, 0) == 0;
+    sessionID = [taskCopy sessionID];
+    v20 = sessionID;
+    LOBYTE(v18) = sqlite3_bind_text(v18, 2, [sessionID UTF8String], -1, 0) == 0;
 
     if ((v18 & 1) == 0)
     {
       v15 = qword_1000EB210;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v6 sessionID];
+        sessionID2 = [taskCopy sessionID];
         v27 = 138412290;
-        v28 = v23;
+        identifier = sessionID2;
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Failed to bind sessionID (%@) to the select statement", &v27, 0xCu);
       }
 
       goto LABEL_24;
     }
 
-    if (sqlite3_bind_int(*p_updateTaskDescriptionForTaskStmt, 3, [v6 identifier]))
+    if (sqlite3_bind_int(*p_updateTaskDescriptionForTaskStmt, 3, [taskCopy identifier]))
     {
       v15 = qword_1000EB210;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v6 identifier];
+        identifier2 = [taskCopy identifier];
         v27 = 134217984;
-        v28 = v24;
+        identifier = identifier2;
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Failed to bind identifier (%lu) to the select statement", &v27, 0xCu);
       }
 
@@ -2984,10 +2984,10 @@ LABEL_24:
       v21 = qword_1000EB210;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v25 = [v6 identifier];
+        identifier3 = [taskCopy identifier];
         v26 = sqlite3_errmsg(self->_dbConnection);
         v27 = 134218242;
-        v28 = v25;
+        identifier = identifier3;
         v29 = 2080;
         v30 = v26;
         _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to update task description for task %lu into db. Error= %s", &v27, 0x16u);
@@ -3010,17 +3010,17 @@ LABEL_24:
 LABEL_12:
 }
 
-- (void)_onqueue_updateResumableUploadDataForTask:(id)a3 sessionUUID:(id)a4
+- (void)_onqueue_updateResumableUploadDataForTask:(id)task sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  dCopy = d;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v26 = 134218242;
-    v27 = [v6 identifier];
+    identifier = [taskCopy identifier];
     v28 = 2114;
-    v29 = v7;
+    v29 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_onqueue_updateResumableUploadDataForTask: %lu for session: %{public}@", &v26, 0x16u);
   }
 
@@ -3040,10 +3040,10 @@ LABEL_12:
       goto LABEL_28;
     }
 
-    v11 = [v6 resumableUploadData];
+    resumableUploadData = [taskCopy resumableUploadData];
     v12 = *p_updateResumableUploadDataForTaskStmt;
-    v13 = v11;
-    if (sqlite3_bind_blob(v12, 1, [v11 bytes], objc_msgSend(v11, "length"), 0xFFFFFFFFFFFFFFFFLL))
+    v13 = resumableUploadData;
+    if (sqlite3_bind_blob(v12, 1, [resumableUploadData bytes], objc_msgSend(resumableUploadData, "length"), 0xFFFFFFFFFFFFFFFFLL))
     {
       v14 = qword_1000EB210;
       if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
@@ -3056,23 +3056,23 @@ LABEL_12:
     else
     {
       v17 = *p_updateResumableUploadDataForTaskStmt;
-      v18 = [v6 sessionID];
-      v19 = v18;
-      LOBYTE(v17) = sqlite3_bind_text(v17, 2, [v18 UTF8String], -1, 0) == 0;
+      sessionID = [taskCopy sessionID];
+      v19 = sessionID;
+      LOBYTE(v17) = sqlite3_bind_text(v17, 2, [sessionID UTF8String], -1, 0) == 0;
 
       if (v17)
       {
-        if (!sqlite3_bind_int(*p_updateResumableUploadDataForTaskStmt, 3, [v6 identifier]))
+        if (!sqlite3_bind_int(*p_updateResumableUploadDataForTaskStmt, 3, [taskCopy identifier]))
         {
           if (sqlite3_step(*p_updateResumableUploadDataForTaskStmt) != 101)
           {
             v21 = qword_1000EB210;
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
             {
-              v24 = [v6 identifier];
+              identifier2 = [taskCopy identifier];
               v25 = sqlite3_errmsg(self->_dbConnection);
               v26 = 134218242;
-              v27 = v24;
+              identifier = identifier2;
               v28 = 2080;
               v29 = v25;
               _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to update resumableUploadData for task %lu into db. Error= %s", &v26, 0x16u);
@@ -3086,9 +3086,9 @@ LABEL_12:
         v20 = qword_1000EB210;
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          v23 = [v6 identifier];
+          identifier3 = [taskCopy identifier];
           v26 = 134217984;
-          v27 = v23;
+          identifier = identifier3;
           _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Failed to bind identifier (%lu) to the select statement", &v26, 0xCu);
         }
       }
@@ -3098,9 +3098,9 @@ LABEL_12:
         v20 = qword_1000EB210;
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          v22 = [v6 sessionID];
+          sessionID2 = [taskCopy sessionID];
           v26 = 138412290;
-          v27 = v22;
+          identifier = sessionID2;
           _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Failed to bind sessionID (%@) to the select statement", &v26, 0xCu);
         }
       }
@@ -3121,17 +3121,17 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)_onqueue_updateResponseForTask:(id)a3 sessionUUID:(id)a4
+- (void)_onqueue_updateResponseForTask:(id)task sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  dCopy = d;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v27 = 134218242;
-    v28 = [v6 identifier];
+    identifier = [taskCopy identifier];
     v29 = 2114;
-    v30 = v7;
+    v30 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_onqueue_updateResponseForTask: %lu for session: %{public}@", &v27, 0x16u);
   }
 
@@ -3151,8 +3151,8 @@ LABEL_28:
       goto LABEL_28;
     }
 
-    v11 = [v6 response];
-    v12 = [NSKeyedArchiver archivedDataWithRootObject:v11 requiringSecureCoding:1 error:0];
+    response = [taskCopy response];
+    v12 = [NSKeyedArchiver archivedDataWithRootObject:response requiringSecureCoding:1 error:0];
 
     v13 = *p_updateResponseForTaskStmt;
     v14 = v12;
@@ -3169,23 +3169,23 @@ LABEL_28:
     else
     {
       v18 = *p_updateResponseForTaskStmt;
-      v19 = [v6 sessionID];
-      v20 = v19;
-      LOBYTE(v18) = sqlite3_bind_text(v18, 2, [v19 UTF8String], -1, 0) == 0;
+      sessionID = [taskCopy sessionID];
+      v20 = sessionID;
+      LOBYTE(v18) = sqlite3_bind_text(v18, 2, [sessionID UTF8String], -1, 0) == 0;
 
       if (v18)
       {
-        if (!sqlite3_bind_int(*p_updateResponseForTaskStmt, 3, [v6 identifier]))
+        if (!sqlite3_bind_int(*p_updateResponseForTaskStmt, 3, [taskCopy identifier]))
         {
           if (sqlite3_step(*p_updateResponseForTaskStmt) != 101)
           {
             v22 = qword_1000EB210;
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
             {
-              v25 = [v6 identifier];
+              identifier2 = [taskCopy identifier];
               v26 = sqlite3_errmsg(self->_dbConnection);
               v27 = 134218242;
-              v28 = v25;
+              identifier = identifier2;
               v29 = 2080;
               v30 = v26;
               _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Failed to update response for task %lu into db. Error= %s", &v27, 0x16u);
@@ -3199,9 +3199,9 @@ LABEL_28:
         v21 = qword_1000EB210;
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          v24 = [v6 identifier];
+          identifier3 = [taskCopy identifier];
           v27 = 134217984;
-          v28 = v24;
+          identifier = identifier3;
           _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to bind identifier (%lu) to the select statement", &v27, 0xCu);
         }
       }
@@ -3211,9 +3211,9 @@ LABEL_28:
         v21 = qword_1000EB210;
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          v23 = [v6 sessionID];
+          sessionID2 = [taskCopy sessionID];
           v27 = 138412290;
-          v28 = v23;
+          identifier = sessionID2;
           _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to bind sessionID (%@) to the select statement", &v27, 0xCu);
         }
       }
@@ -3234,17 +3234,17 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)_onqueue_insertOrUpdateAllEntriesForTask:(id)a3 sessionUUID:(id)a4
+- (void)_onqueue_insertOrUpdateAllEntriesForTask:(id)task sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  dCopy = d;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218242;
-    v236 = [v6 identifier];
+    identifier = [taskCopy identifier];
     v237 = 2114;
-    v238 = v7;
+    v238 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "_onqueue_insertOrUpdateAllEntriesForTask: %lu for session: %{public}@", buf, 0x16u);
   }
 
@@ -3262,7 +3262,7 @@ LABEL_28:
         {
           v17 = sqlite3_errmsg(self->_dbConnection);
           *buf = 136315138;
-          v236 = v17;
+          identifier = v17;
           _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed init the insert statement for session_tasks db. Error = %s", buf, 0xCu);
         }
 
@@ -3272,14 +3272,14 @@ LABEL_28:
       insertOrUpdateAllEntriesStmt = *p_insertOrUpdateAllEntriesStmt;
     }
 
-    if (sqlite3_bind_int(insertOrUpdateAllEntriesStmt, 1, [v6 identifier]))
+    if (sqlite3_bind_int(insertOrUpdateAllEntriesStmt, 1, [taskCopy identifier]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v16 = [v6 identifier];
+        identifier2 = [taskCopy identifier];
         *buf = 134217984;
-        v236 = v16;
+        identifier = identifier2;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind identifier (%lu) to the select statement", buf, 0xCu);
       }
 
@@ -3288,14 +3288,14 @@ LABEL_37:
       goto LABEL_12;
     }
 
-    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 2, [v6 taskKind]))
+    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 2, [taskCopy taskKind]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v6 taskKind];
+        taskKind = [taskCopy taskKind];
         *buf = 134217984;
-        v236 = v18;
+        identifier = taskKind;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind taskKind (%lu) to the select statement", buf, 0xCu);
       }
 
@@ -3303,43 +3303,43 @@ LABEL_37:
     }
 
     v14 = *p_insertOrUpdateAllEntriesStmt;
-    [v6 creationTime];
+    [taskCopy creationTime];
     if (sqlite3_bind_double(v14, 3, v15))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [v6 creationTime];
+        [taskCopy creationTime];
         *buf = 134217984;
-        v236 = v22;
+        identifier = v22;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind creationTime (%f) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_37;
     }
 
-    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 4, [v6 state]))
+    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 4, [taskCopy state]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v27 = [v6 state];
+        state = [taskCopy state];
         *buf = 134217984;
-        v236 = v27;
+        identifier = state;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind state (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_37;
     }
 
-    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 5, [v6 suspendCount]))
+    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 5, [taskCopy suspendCount]))
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v35 = [v6 suspendCount];
+        suspendCount = [taskCopy suspendCount];
         *buf = 134217984;
-        v236 = v35;
+        identifier = suspendCount;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind suspendCount (%lu) to the select statement", buf, 0xCu);
       }
 
@@ -3347,26 +3347,26 @@ LABEL_37:
     }
 
     v19 = *p_insertOrUpdateAllEntriesStmt;
-    v20 = [v6 taskDescription];
-    v21 = v20;
-    LOBYTE(v19) = sqlite3_bind_text(v19, 6, [v20 UTF8String], -1, 0) == 0;
+    taskDescription = [taskCopy taskDescription];
+    v21 = taskDescription;
+    LOBYTE(v19) = sqlite3_bind_text(v19, 6, [taskDescription UTF8String], -1, 0) == 0;
 
     if ((v19 & 1) == 0)
     {
       v12 = qword_1000EB210;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v43 = [v6 taskDescription];
+        taskDescription2 = [taskCopy taskDescription];
         *buf = 138412290;
-        v236 = v43;
+        identifier = taskDescription2;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to bind taskDescription (%@) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_37;
     }
 
-    v23 = [v6 originalRequest];
-    v24 = v23 == 0;
+    originalRequest = [taskCopy originalRequest];
+    v24 = originalRequest == 0;
 
     if (v24)
     {
@@ -3375,8 +3375,8 @@ LABEL_37:
 
     else
     {
-      v25 = [v6 originalRequest];
-      v26 = [NSKeyedArchiver archivedDataWithRootObject:v25 requiringSecureCoding:1 error:0];
+      originalRequest2 = [taskCopy originalRequest];
+      v26 = [NSKeyedArchiver archivedDataWithRootObject:originalRequest2 requiringSecureCoding:1 error:0];
     }
 
     v28 = *p_insertOrUpdateAllEntriesStmt;
@@ -3393,8 +3393,8 @@ LABEL_37:
       goto LABEL_306;
     }
 
-    v31 = [v6 currentRequest];
-    v32 = v31 == 0;
+    currentRequest = [taskCopy currentRequest];
+    v32 = currentRequest == 0;
 
     if (v32)
     {
@@ -3403,8 +3403,8 @@ LABEL_37:
 
     else
     {
-      v33 = [v6 currentRequest];
-      v34 = [NSKeyedArchiver archivedDataWithRootObject:v33 requiringSecureCoding:1 error:0];
+      currentRequest2 = [taskCopy currentRequest];
+      v34 = [NSKeyedArchiver archivedDataWithRootObject:currentRequest2 requiringSecureCoding:1 error:0];
     }
 
     v36 = *p_insertOrUpdateAllEntriesStmt;
@@ -3421,8 +3421,8 @@ LABEL_37:
       goto LABEL_305;
     }
 
-    v39 = [v6 response];
-    v40 = v39 == 0;
+    response = [taskCopy response];
+    v40 = response == 0;
 
     if (v40)
     {
@@ -3431,8 +3431,8 @@ LABEL_37:
 
     else
     {
-      v41 = [v6 response];
-      v42 = [NSKeyedArchiver archivedDataWithRootObject:v41 requiringSecureCoding:1 error:0];
+      response2 = [taskCopy response];
+      v42 = [NSKeyedArchiver archivedDataWithRootObject:response2 requiringSecureCoding:1 error:0];
     }
 
     v44 = *p_insertOrUpdateAllEntriesStmt;
@@ -3450,8 +3450,8 @@ LABEL_37:
     }
 
     v47 = *p_insertOrUpdateAllEntriesStmt;
-    v48 = [v6 earliestBeginDate];
-    [v48 timeIntervalSince1970];
+    earliestBeginDate = [taskCopy earliestBeginDate];
+    [earliestBeginDate timeIntervalSince1970];
     LOBYTE(v47) = sqlite3_bind_double(v47, 10, v49) == 0;
 
     if ((v47 & 1) == 0)
@@ -3459,30 +3459,30 @@ LABEL_37:
       v50 = qword_1000EB210;
       if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
       {
-        v67 = [v6 earliestBeginDate];
-        [v67 timeIntervalSince1970];
+        earliestBeginDate2 = [taskCopy earliestBeginDate];
+        [earliestBeginDate2 timeIntervalSince1970];
         *buf = 134217984;
-        v236 = v68;
+        identifier = v68;
         _os_log_error_impl(&_mh_execute_header, v50, OS_LOG_TYPE_ERROR, "Failed to bind earlierBeginDate (%f) to the select statement", buf, 0xCu);
       }
     }
 
-    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 11, [v6 respondedToWillBeginDelayedRequestCallback]))
+    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 11, [taskCopy respondedToWillBeginDelayedRequestCallback]))
     {
       v51 = qword_1000EB210;
       if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
       {
-        v69 = [v6 respondedToWillBeginDelayedRequestCallback];
+        respondedToWillBeginDelayedRequestCallback = [taskCopy respondedToWillBeginDelayedRequestCallback];
         *buf = 134217984;
-        v236 = v69;
+        identifier = respondedToWillBeginDelayedRequestCallback;
         _os_log_error_impl(&_mh_execute_header, v51, OS_LOG_TYPE_ERROR, "Failed to bind identifier (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_304;
     }
 
-    v52 = [v6 error];
-    v53 = v52 == 0;
+    error = [taskCopy error];
+    v53 = error == 0;
 
     if (v53)
     {
@@ -3491,8 +3491,8 @@ LABEL_37:
 
     else
     {
-      v54 = [v6 error];
-      v233 = [NSKeyedArchiver archivedDataWithRootObject:v54 requiringSecureCoding:1 error:0];
+      error2 = [taskCopy error];
+      v233 = [NSKeyedArchiver archivedDataWithRootObject:error2 requiringSecureCoding:1 error:0];
     }
 
     v55 = *p_insertOrUpdateAllEntriesStmt;
@@ -3509,8 +3509,8 @@ LABEL_37:
       goto LABEL_303;
     }
 
-    v58 = [v6 retryError];
-    v59 = v58 == 0;
+    retryError = [taskCopy retryError];
+    v59 = retryError == 0;
 
     if (v59)
     {
@@ -3519,8 +3519,8 @@ LABEL_37:
 
     else
     {
-      v60 = [v6 retryError];
-      v232 = [NSKeyedArchiver archivedDataWithRootObject:v60 requiringSecureCoding:1 error:0];
+      retryError2 = [taskCopy retryError];
+      v232 = [NSKeyedArchiver archivedDataWithRootObject:retryError2 requiringSecureCoding:1 error:0];
     }
 
     v61 = *p_insertOrUpdateAllEntriesStmt;
@@ -3537,8 +3537,8 @@ LABEL_37:
       goto LABEL_302;
     }
 
-    v64 = [v6 fileURL];
-    v65 = v64 == 0;
+    fileURL = [taskCopy fileURL];
+    v65 = fileURL == 0;
 
     if (v65)
     {
@@ -3547,8 +3547,8 @@ LABEL_37:
 
     else
     {
-      v66 = [v6 fileURL];
-      v231 = [NSKeyedArchiver archivedDataWithRootObject:v66 requiringSecureCoding:1 error:0];
+      fileURL2 = [taskCopy fileURL];
+      v231 = [NSKeyedArchiver archivedDataWithRootObject:fileURL2 requiringSecureCoding:1 error:0];
     }
 
     v70 = *p_insertOrUpdateAllEntriesStmt;
@@ -3558,17 +3558,17 @@ LABEL_37:
       log = qword_1000EB210;
       if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
       {
-        v72 = [v6 fileURL];
+        fileURL3 = [taskCopy fileURL];
         *buf = 138412290;
-        v236 = v72;
+        identifier = fileURL3;
         _os_log_error_impl(&_mh_execute_header, log, OS_LOG_TYPE_ERROR, "Failed to bind fileURL (%@) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_301;
     }
 
-    v73 = [v6 downloadFileURL];
-    v74 = v73 == 0;
+    downloadFileURL = [taskCopy downloadFileURL];
+    v74 = downloadFileURL == 0;
 
     if (v74)
     {
@@ -3577,8 +3577,8 @@ LABEL_37:
 
     else
     {
-      v75 = [v6 downloadFileURL];
-      log = [NSKeyedArchiver archivedDataWithRootObject:v75 requiringSecureCoding:1 error:0];
+      downloadFileURL2 = [taskCopy downloadFileURL];
+      log = [NSKeyedArchiver archivedDataWithRootObject:downloadFileURL2 requiringSecureCoding:1 error:0];
     }
 
     v76 = *p_insertOrUpdateAllEntriesStmt;
@@ -3588,9 +3588,9 @@ LABEL_37:
       v78 = qword_1000EB210;
       if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
       {
-        v85 = [v6 downloadFileURL];
+        downloadFileURL3 = [taskCopy downloadFileURL];
         *buf = 138412290;
-        v236 = v85;
+        identifier = downloadFileURL3;
         _os_log_error_impl(&_mh_execute_header, v78, OS_LOG_TYPE_ERROR, "Failed to bind downloadFileURL (%@) to the select statement", buf, 0xCu);
       }
 
@@ -3609,18 +3609,18 @@ LABEL_306:
     }
 
     v79 = *p_insertOrUpdateAllEntriesStmt;
-    v80 = [v6 bundleID];
-    v81 = v80;
-    LOBYTE(v79) = sqlite3_bind_text(v79, 16, [v80 UTF8String], -1, 0) == 0;
+    bundleID = [taskCopy bundleID];
+    v81 = bundleID;
+    LOBYTE(v79) = sqlite3_bind_text(v79, 16, [bundleID UTF8String], -1, 0) == 0;
 
     if ((v79 & 1) == 0)
     {
       v78 = qword_1000EB210;
       if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
       {
-        v86 = [v6 bundleID];
+        bundleID2 = [taskCopy bundleID];
         *buf = 138543362;
-        v236 = v86;
+        identifier = bundleID2;
         _os_log_error_impl(&_mh_execute_header, v78, OS_LOG_TYPE_ERROR, "Failed to bind bundleID (%{public}@) to the select statement", buf, 0xCu);
       }
 
@@ -3628,110 +3628,110 @@ LABEL_306:
     }
 
     v82 = *p_insertOrUpdateAllEntriesStmt;
-    v83 = [v6 sessionID];
-    v84 = v83;
-    LOBYTE(v82) = sqlite3_bind_text(v82, 17, [v83 UTF8String], -1, 0) == 0;
+    sessionID = [taskCopy sessionID];
+    v84 = sessionID;
+    LOBYTE(v82) = sqlite3_bind_text(v82, 17, [sessionID UTF8String], -1, 0) == 0;
 
     if ((v82 & 1) == 0)
     {
       v78 = qword_1000EB210;
       if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
       {
-        v87 = [v6 sessionID];
+        sessionID2 = [taskCopy sessionID];
         *buf = 138412290;
-        v236 = v87;
+        identifier = sessionID2;
         _os_log_error_impl(&_mh_execute_header, v78, OS_LOG_TYPE_ERROR, "Failed to bind sessionID (%@) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_120;
     }
 
-    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 18, [v6 hasStarted]))
+    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 18, [taskCopy hasStarted]))
     {
       v78 = qword_1000EB210;
       if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
       {
-        v88 = [v6 hasStarted];
+        hasStarted = [taskCopy hasStarted];
         *buf = 134217984;
-        v236 = v88;
+        identifier = hasStarted;
         _os_log_error_impl(&_mh_execute_header, v78, OS_LOG_TYPE_ERROR, "Failed to bind creationTime (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_120;
     }
 
-    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 19, [v6 shouldCancelOnDisconnect]))
+    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 19, [taskCopy shouldCancelOnDisconnect]))
     {
       v78 = qword_1000EB210;
       if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
       {
-        v89 = [v6 shouldCancelOnDisconnect];
+        shouldCancelOnDisconnect = [taskCopy shouldCancelOnDisconnect];
         *buf = 134217984;
-        v236 = v89;
+        identifier = shouldCancelOnDisconnect;
         _os_log_error_impl(&_mh_execute_header, v78, OS_LOG_TYPE_ERROR, "Failed to bind shouldCancelOnDisconnect (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_120;
     }
 
-    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 20, [v6 basePriority]))
+    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 20, [taskCopy basePriority]))
     {
       v78 = qword_1000EB210;
       if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
       {
-        v90 = [v6 basePriority];
+        basePriority = [taskCopy basePriority];
         *buf = 134217984;
-        v236 = v90;
+        identifier = basePriority;
         _os_log_error_impl(&_mh_execute_header, v78, OS_LOG_TYPE_ERROR, "Failed to bind basePriority (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_120;
     }
 
-    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 21, [v6 basePrioritySetExplicitly]))
+    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 21, [taskCopy basePrioritySetExplicitly]))
     {
       v78 = qword_1000EB210;
       if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
       {
-        v93 = [v6 basePrioritySetExplicitly];
+        basePrioritySetExplicitly = [taskCopy basePrioritySetExplicitly];
         *buf = 134217984;
-        v236 = v93;
+        identifier = basePrioritySetExplicitly;
         _os_log_error_impl(&_mh_execute_header, v78, OS_LOG_TYPE_ERROR, "Failed to bind basePrioritySetExplicitly (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_120;
     }
 
-    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 22, [v6 isDiscretionary]))
+    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 22, [taskCopy isDiscretionary]))
     {
       v78 = qword_1000EB210;
       if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
       {
-        v98 = [v6 isDiscretionary];
+        isDiscretionary = [taskCopy isDiscretionary];
         *buf = 134217984;
-        v236 = v98;
+        identifier = isDiscretionary;
         _os_log_error_impl(&_mh_execute_header, v78, OS_LOG_TYPE_ERROR, "Failed to bind discretionary (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_120;
     }
 
-    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 23, [v6 discretionaryOverride]))
+    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 23, [taskCopy discretionaryOverride]))
     {
       v78 = qword_1000EB210;
       if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
       {
-        v99 = [v6 discretionaryOverride];
+        discretionaryOverride = [taskCopy discretionaryOverride];
         *buf = 134217984;
-        v236 = v99;
+        identifier = discretionaryOverride;
         _os_log_error_impl(&_mh_execute_header, v78, OS_LOG_TYPE_ERROR, "Failed to bind discretionaryOverride (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_120;
     }
 
-    v91 = [v6 uniqueIdentifier];
-    [v91 getUUIDBytes:v234];
+    uniqueIdentifier = [taskCopy uniqueIdentifier];
+    [uniqueIdentifier getUUIDBytes:v234];
 
     if (sqlite3_bind_blob(*p_insertOrUpdateAllEntriesStmt, 24, v234, 16, 0xFFFFFFFFFFFFFFFFLL))
     {
@@ -3746,18 +3746,18 @@ LABEL_306:
     }
 
     v94 = *p_insertOrUpdateAllEntriesStmt;
-    v95 = [v6 storagePartitionIdentifier];
-    v96 = v95;
-    LOBYTE(v94) = sqlite3_bind_text(v94, 25, [v95 UTF8String], -1, 0) == 0;
+    storagePartitionIdentifier = [taskCopy storagePartitionIdentifier];
+    v96 = storagePartitionIdentifier;
+    LOBYTE(v94) = sqlite3_bind_text(v94, 25, [storagePartitionIdentifier UTF8String], -1, 0) == 0;
 
     if ((v94 & 1) == 0)
     {
       v97 = qword_1000EB210;
       if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
       {
-        v100 = [v6 storagePartitionIdentifier];
+        storagePartitionIdentifier2 = [taskCopy storagePartitionIdentifier];
         *buf = 138412290;
-        v236 = v100;
+        identifier = storagePartitionIdentifier2;
         _os_log_error_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "Failed to bind storagePartitionIdentifier (%@) to the select statement", buf, 0xCu);
       }
 
@@ -3766,98 +3766,98 @@ LABEL_183:
       goto LABEL_301;
     }
 
-    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 26, [v6 countOfBytesClientExpectsToSend]))
+    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 26, [taskCopy countOfBytesClientExpectsToSend]))
     {
       v97 = qword_1000EB210;
       if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
       {
-        v101 = [v6 countOfBytesClientExpectsToSend];
+        countOfBytesClientExpectsToSend = [taskCopy countOfBytesClientExpectsToSend];
         *buf = 134217984;
-        v236 = v101;
+        identifier = countOfBytesClientExpectsToSend;
         _os_log_error_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "Failed to bind countOfBytesClientExpectsToSend (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_183;
     }
 
-    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 27, [v6 countOfBytesClientExpectsToReceive]))
+    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 27, [taskCopy countOfBytesClientExpectsToReceive]))
     {
       v97 = qword_1000EB210;
       if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
       {
-        v102 = [v6 countOfBytesClientExpectsToReceive];
+        countOfBytesClientExpectsToReceive = [taskCopy countOfBytesClientExpectsToReceive];
         *buf = 134217984;
-        v236 = v102;
+        identifier = countOfBytesClientExpectsToReceive;
         _os_log_error_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "Failed to bind countOfBytesClientExpectsToReceive (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_183;
     }
 
-    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 28, [v6 countOfBytesReceived]))
+    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 28, [taskCopy countOfBytesReceived]))
     {
       v97 = qword_1000EB210;
       if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
       {
-        v103 = [v6 countOfBytesReceived];
+        countOfBytesReceived = [taskCopy countOfBytesReceived];
         *buf = 134217984;
-        v236 = v103;
+        identifier = countOfBytesReceived;
         _os_log_error_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "Failed to bind countOfBytesReceived (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_183;
     }
 
-    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 29, [v6 countOfBytesSent]))
+    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 29, [taskCopy countOfBytesSent]))
     {
       v97 = qword_1000EB210;
       if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
       {
-        v104 = [v6 countOfBytesSent];
+        countOfBytesSent = [taskCopy countOfBytesSent];
         *buf = 134217984;
-        v236 = v104;
+        identifier = countOfBytesSent;
         _os_log_error_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "Failed to bind countOfBytesSent (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_183;
     }
 
-    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 30, [v6 countOfBytesExpectedToSend]))
+    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 30, [taskCopy countOfBytesExpectedToSend]))
     {
       v97 = qword_1000EB210;
       if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
       {
-        v108 = [v6 countOfBytesExpectedToSend];
+        countOfBytesExpectedToSend = [taskCopy countOfBytesExpectedToSend];
         *buf = 134217984;
-        v236 = v108;
+        identifier = countOfBytesExpectedToSend;
         _os_log_error_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "Failed to bind countOfBytesExpectedToSend (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_183;
     }
 
-    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 31, [v6 countOfBytesExpectedToReceive]))
+    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 31, [taskCopy countOfBytesExpectedToReceive]))
     {
       v97 = qword_1000EB210;
       if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
       {
-        v109 = [v6 countOfBytesExpectedToReceive];
+        countOfBytesExpectedToReceive = [taskCopy countOfBytesExpectedToReceive];
         *buf = 134217984;
-        v236 = v109;
+        identifier = countOfBytesExpectedToReceive;
         _os_log_error_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "Failed to bind countOfBytesExpectedToReceive (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_183;
     }
 
-    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 32, [v6 bytesPerSecondLimit]))
+    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 32, [taskCopy bytesPerSecondLimit]))
     {
       v97 = qword_1000EB210;
       if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
       {
-        v110 = [v6 bytesPerSecondLimit];
+        bytesPerSecondLimit = [taskCopy bytesPerSecondLimit];
         *buf = 134217984;
-        v236 = v110;
+        identifier = bytesPerSecondLimit;
         _os_log_error_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "Failed to bind bytesPerSecondLimit (%lu) to the select statement", buf, 0xCu);
       }
 
@@ -3865,110 +3865,110 @@ LABEL_183:
     }
 
     v105 = *p_insertOrUpdateAllEntriesStmt;
-    v106 = [v6 personaUniqueString];
-    v107 = v106;
-    LOBYTE(v105) = sqlite3_bind_text(v105, 33, [v106 UTF8String], -1, 0) == 0;
+    personaUniqueString = [taskCopy personaUniqueString];
+    v107 = personaUniqueString;
+    LOBYTE(v105) = sqlite3_bind_text(v105, 33, [personaUniqueString UTF8String], -1, 0) == 0;
 
     if ((v105 & 1) == 0)
     {
       v97 = qword_1000EB210;
       if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
       {
-        v111 = [v6 personaUniqueString];
+        personaUniqueString2 = [taskCopy personaUniqueString];
         *buf = 138412290;
-        v236 = v111;
+        identifier = personaUniqueString2;
         _os_log_error_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "Failed to bind personaUniqueString (%@) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_183;
     }
 
-    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 34, [v6 expectedProgressTarget]))
+    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 34, [taskCopy expectedProgressTarget]))
     {
       v97 = qword_1000EB210;
       if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
       {
-        v113 = [v6 expectedProgressTarget];
+        expectedProgressTarget = [taskCopy expectedProgressTarget];
         *buf = 134217984;
-        v236 = v113;
+        identifier = expectedProgressTarget;
         _os_log_error_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "Failed to bind expectedProgressTarget (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_183;
     }
 
-    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 35, [v6 mayBeDemotedToDiscretionary]))
+    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 35, [taskCopy mayBeDemotedToDiscretionary]))
     {
       v97 = qword_1000EB210;
       if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
       {
-        v114 = [v6 mayBeDemotedToDiscretionary];
+        mayBeDemotedToDiscretionary = [taskCopy mayBeDemotedToDiscretionary];
         *buf = 134217984;
-        v236 = v114;
+        identifier = mayBeDemotedToDiscretionary;
         _os_log_error_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "Failed to bind mayBeDemotedToDiscretionary (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_183;
     }
 
-    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 36, [v6 _TLSMinimumSupportedProtocolVersion]))
+    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 36, [taskCopy _TLSMinimumSupportedProtocolVersion]))
     {
       v97 = qword_1000EB210;
       if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
       {
-        v115 = [v6 _TLSMinimumSupportedProtocolVersion];
+        _TLSMinimumSupportedProtocolVersion = [taskCopy _TLSMinimumSupportedProtocolVersion];
         *buf = 134217984;
-        v236 = v115;
+        identifier = _TLSMinimumSupportedProtocolVersion;
         _os_log_error_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "Failed to bind _TLSMinimumSupportedProtocolVersion (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_183;
     }
 
-    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 37, [v6 _TLSMaximumSupportedProtocolVersion]))
+    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 37, [taskCopy _TLSMaximumSupportedProtocolVersion]))
     {
       v97 = qword_1000EB210;
       if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
       {
-        v112 = [v6 _TLSMaximumSupportedProtocolVersion];
+        _TLSMaximumSupportedProtocolVersion = [taskCopy _TLSMaximumSupportedProtocolVersion];
         *buf = 134217984;
-        v236 = v112;
+        identifier = _TLSMaximumSupportedProtocolVersion;
         _os_log_error_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "Failed to bind _TLSMaximumSupportedProtocolVersion (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_183;
     }
 
-    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 40, [v6 _updatedStreamingZipModificationDate]))
+    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 40, [taskCopy _updatedStreamingZipModificationDate]))
     {
       v97 = qword_1000EB210;
       if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
       {
-        v116 = [v6 _updatedStreamingZipModificationDate];
+        _updatedStreamingZipModificationDate = [taskCopy _updatedStreamingZipModificationDate];
         *buf = 134217984;
-        v236 = v116;
+        identifier = _updatedStreamingZipModificationDate;
         _os_log_error_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "Failed to bind _updatedStreamingZipModificationDate (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_183;
     }
 
-    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 41, [v6 startedUserInitiated]))
+    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 41, [taskCopy startedUserInitiated]))
     {
       v97 = qword_1000EB210;
       if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
       {
-        v117 = [v6 startedUserInitiated];
+        startedUserInitiated = [taskCopy startedUserInitiated];
         *buf = 134217984;
-        v236 = v117;
+        identifier = startedUserInitiated;
         _os_log_error_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "Failed to bind startedUserInitiated (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_183;
     }
 
-    v118 = [v6 additionalProperties];
-    v119 = v118 == 0;
+    additionalProperties = [taskCopy additionalProperties];
+    v119 = additionalProperties == 0;
 
     if (v119)
     {
@@ -3977,8 +3977,8 @@ LABEL_183:
 
     else
     {
-      v120 = [v6 additionalProperties];
-      v227 = [NSKeyedArchiver archivedDataWithRootObject:v120 requiringSecureCoding:1 error:0];
+      additionalProperties2 = [taskCopy additionalProperties];
+      v227 = [NSKeyedArchiver archivedDataWithRootObject:additionalProperties2 requiringSecureCoding:1 error:0];
     }
 
     v121 = *p_insertOrUpdateAllEntriesStmt;
@@ -3996,30 +3996,30 @@ LABEL_183:
     }
 
     v124 = *p_insertOrUpdateAllEntriesStmt;
-    v125 = [v6 pathToDownloadTaskFile];
-    v126 = v125;
-    LOBYTE(v124) = sqlite3_bind_text(v124, 43, [v125 UTF8String], -1, 0) == 0;
+    pathToDownloadTaskFile = [taskCopy pathToDownloadTaskFile];
+    v126 = pathToDownloadTaskFile;
+    LOBYTE(v124) = sqlite3_bind_text(v124, 43, [pathToDownloadTaskFile UTF8String], -1, 0) == 0;
 
     if ((v124 & 1) == 0)
     {
       v127 = qword_1000EB210;
       if (os_log_type_enabled(v127, OS_LOG_TYPE_ERROR))
       {
-        v128 = [v6 pathToDownloadTaskFile];
+        pathToDownloadTaskFile2 = [taskCopy pathToDownloadTaskFile];
         *buf = 138412290;
-        v236 = v128;
+        identifier = pathToDownloadTaskFile2;
         _os_log_error_impl(&_mh_execute_header, v127, OS_LOG_TYPE_ERROR, "Failed to bind pathToDownloadTaskFile (%@) to the select statement", buf, 0xCu);
       }
     }
 
-    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 44, [v6 retryCount]))
+    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 44, [taskCopy retryCount]))
     {
       v129 = qword_1000EB210;
       if (os_log_type_enabled(v129, OS_LOG_TYPE_ERROR))
       {
-        v130 = [v6 retryCount];
+        retryCount = [taskCopy retryCount];
         *buf = 134217984;
-        v236 = v130;
+        identifier = retryCount;
         _os_log_error_impl(&_mh_execute_header, v129, OS_LOG_TYPE_ERROR, "Failed to bind retryCount (%lu) to the select statement", buf, 0xCu);
       }
 
@@ -4030,37 +4030,37 @@ LABEL_300:
     }
 
     v131 = *p_insertOrUpdateAllEntriesStmt;
-    [v6 loadingPriority];
+    [taskCopy loadingPriority];
     if (sqlite3_bind_double(v131, 45, v132))
     {
       v129 = qword_1000EB210;
       if (os_log_type_enabled(v129, OS_LOG_TYPE_ERROR))
       {
-        [v6 loadingPriority];
+        [taskCopy loadingPriority];
         *buf = 134217984;
-        v236 = v133;
+        identifier = v133;
         _os_log_error_impl(&_mh_execute_header, v129, OS_LOG_TYPE_ERROR, "Failed to bind loadingPriority (%f) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_205;
     }
 
-    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 46, [v6 qos]))
+    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 46, [taskCopy qos]))
     {
       v129 = qword_1000EB210;
       if (os_log_type_enabled(v129, OS_LOG_TYPE_ERROR))
       {
-        v134 = [v6 qos];
+        v134 = [taskCopy qos];
         *buf = 134217984;
-        v236 = v134;
+        identifier = v134;
         _os_log_error_impl(&_mh_execute_header, v129, OS_LOG_TYPE_ERROR, "Failed to bind qos (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_205;
     }
 
-    v135 = [v6 _backgroundTrailers];
-    v136 = v135 == 0;
+    _backgroundTrailers = [taskCopy _backgroundTrailers];
+    v136 = _backgroundTrailers == 0;
 
     if (v136)
     {
@@ -4069,8 +4069,8 @@ LABEL_300:
 
     else
     {
-      v137 = [v6 _backgroundTrailers];
-      v219 = [NSKeyedArchiver archivedDataWithRootObject:v137 requiringSecureCoding:1 error:0];
+      _backgroundTrailers2 = [taskCopy _backgroundTrailers];
+      v219 = [NSKeyedArchiver archivedDataWithRootObject:_backgroundTrailers2 requiringSecureCoding:1 error:0];
     }
 
     v138 = *p_insertOrUpdateAllEntriesStmt;
@@ -4087,8 +4087,8 @@ LABEL_300:
       goto LABEL_299;
     }
 
-    v141 = [v6 taskMetrics];
-    v142 = v141 == 0;
+    taskMetrics = [taskCopy taskMetrics];
+    v142 = taskMetrics == 0;
 
     if (v142)
     {
@@ -4097,8 +4097,8 @@ LABEL_300:
 
     else
     {
-      v143 = [v6 taskMetrics];
-      v218 = [NSKeyedArchiver archivedDataWithRootObject:v143 requiringSecureCoding:1 error:0];
+      taskMetrics2 = [taskCopy taskMetrics];
+      v218 = [NSKeyedArchiver archivedDataWithRootObject:taskMetrics2 requiringSecureCoding:1 error:0];
     }
 
     v144 = *p_insertOrUpdateAllEntriesStmt;
@@ -4115,7 +4115,7 @@ LABEL_300:
       goto LABEL_298;
     }
 
-    v147 = [v6 URL];
+    v147 = [taskCopy URL];
     v148 = v147 == 0;
 
     if (v148)
@@ -4125,7 +4125,7 @@ LABEL_300:
 
     else
     {
-      v149 = [v6 URL];
+      v149 = [taskCopy URL];
       v220 = [NSKeyedArchiver archivedDataWithRootObject:v149 requiringSecureCoding:1 error:0];
     }
 
@@ -4136,17 +4136,17 @@ LABEL_300:
       v224 = qword_1000EB210;
       if (os_log_type_enabled(v224, OS_LOG_TYPE_ERROR))
       {
-        v152 = [v6 URL];
+        v152 = [taskCopy URL];
         *buf = 138412290;
-        v236 = v152;
+        identifier = v152;
         _os_log_error_impl(&_mh_execute_header, v224, OS_LOG_TYPE_ERROR, "Failed to bind URL (%@) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_297;
     }
 
-    v153 = [v6 destinationURL];
-    v154 = v153 == 0;
+    destinationURL = [taskCopy destinationURL];
+    v154 = destinationURL == 0;
 
     if (v154)
     {
@@ -4155,8 +4155,8 @@ LABEL_300:
 
     else
     {
-      v155 = [v6 destinationURL];
-      v224 = [NSKeyedArchiver archivedDataWithRootObject:v155 requiringSecureCoding:1 error:0];
+      destinationURL2 = [taskCopy destinationURL];
+      v224 = [NSKeyedArchiver archivedDataWithRootObject:destinationURL2 requiringSecureCoding:1 error:0];
     }
 
     v156 = *p_insertOrUpdateAllEntriesStmt;
@@ -4166,17 +4166,17 @@ LABEL_300:
       v223 = qword_1000EB210;
       if (os_log_type_enabled(v223, OS_LOG_TYPE_ERROR))
       {
-        v158 = [v6 destinationURL];
+        destinationURL3 = [taskCopy destinationURL];
         *buf = 138412290;
-        v236 = v158;
+        identifier = destinationURL3;
         _os_log_error_impl(&_mh_execute_header, v223, OS_LOG_TYPE_ERROR, "Failed to bind destinationURL (%@) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_296;
     }
 
-    v159 = [v6 options];
-    v160 = v159 == 0;
+    options = [taskCopy options];
+    v160 = options == 0;
 
     if (v160)
     {
@@ -4185,8 +4185,8 @@ LABEL_300:
 
     else
     {
-      v161 = [v6 options];
-      v223 = [NSPropertyListSerialization dataWithPropertyList:v161 format:200 options:0 error:0];
+      options2 = [taskCopy options];
+      v223 = [NSPropertyListSerialization dataWithPropertyList:options2 format:200 options:0 error:0];
     }
 
     v162 = *p_insertOrUpdateAllEntriesStmt;
@@ -4203,22 +4203,22 @@ LABEL_300:
       goto LABEL_296;
     }
 
-    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 52, [v6 initializedWithAVAsset]))
+    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 52, [taskCopy initializedWithAVAsset]))
     {
       v165 = qword_1000EB210;
       if (os_log_type_enabled(v165, OS_LOG_TYPE_ERROR))
       {
-        v166 = [v6 initializedWithAVAsset];
+        initializedWithAVAsset = [taskCopy initializedWithAVAsset];
         *buf = 134217984;
-        v236 = v166;
+        identifier = initializedWithAVAsset;
         _os_log_error_impl(&_mh_execute_header, v165, OS_LOG_TYPE_ERROR, "Failed to bind initializedWithAVAsset (%lu) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_296;
     }
 
-    v167 = [v6 temporaryDestinationURL];
-    v168 = v167 == 0;
+    temporaryDestinationURL = [taskCopy temporaryDestinationURL];
+    v168 = temporaryDestinationURL == 0;
 
     if (v168)
     {
@@ -4227,8 +4227,8 @@ LABEL_300:
 
     else
     {
-      v169 = [v6 temporaryDestinationURL];
-      v222 = [NSKeyedArchiver archivedDataWithRootObject:v169 requiringSecureCoding:1 error:0];
+      temporaryDestinationURL2 = [taskCopy temporaryDestinationURL];
+      v222 = [NSKeyedArchiver archivedDataWithRootObject:temporaryDestinationURL2 requiringSecureCoding:1 error:0];
     }
 
     v170 = *p_insertOrUpdateAllEntriesStmt;
@@ -4238,9 +4238,9 @@ LABEL_300:
       v172 = qword_1000EB210;
       if (os_log_type_enabled(v172, OS_LOG_TYPE_ERROR))
       {
-        v173 = [v6 temporaryDestinationURL];
+        temporaryDestinationURL3 = [taskCopy temporaryDestinationURL];
         *buf = 138412290;
-        v236 = v173;
+        identifier = temporaryDestinationURL3;
         _os_log_error_impl(&_mh_execute_header, v172, OS_LOG_TYPE_ERROR, "Failed to bind temporaryDestinationURL (%@) to the select statement", buf, 0xCu);
       }
 
@@ -4257,18 +4257,18 @@ LABEL_299:
     }
 
     v174 = *p_insertOrUpdateAllEntriesStmt;
-    v175 = [v6 assetTitle];
-    v176 = v175;
-    LOBYTE(v174) = sqlite3_bind_text(v174, 54, [v175 UTF8String], -1, 0) == 0;
+    assetTitle = [taskCopy assetTitle];
+    v176 = assetTitle;
+    LOBYTE(v174) = sqlite3_bind_text(v174, 54, [assetTitle UTF8String], -1, 0) == 0;
 
     if ((v174 & 1) == 0)
     {
       v172 = qword_1000EB210;
       if (os_log_type_enabled(v172, OS_LOG_TYPE_ERROR))
       {
-        v177 = [v6 assetTitle];
+        assetTitle2 = [taskCopy assetTitle];
         *buf = 138412290;
-        v236 = v177;
+        identifier = assetTitle2;
         _os_log_error_impl(&_mh_execute_header, v172, OS_LOG_TYPE_ERROR, "Failed to bind assetTitle (%@) to the select statement", buf, 0xCu);
       }
 
@@ -4276,13 +4276,13 @@ LABEL_299:
     }
 
     v225 = *p_insertOrUpdateAllEntriesStmt;
-    v228 = [v6 assetArtworkData];
-    v178 = v228;
-    v179 = [v228 bytes];
-    v180 = [v6 assetArtworkData];
-    LOBYTE(v179) = sqlite3_bind_blob(v225, 55, v179, [v180 length], 0xFFFFFFFFFFFFFFFFLL) == 0;
+    assetArtworkData = [taskCopy assetArtworkData];
+    v178 = assetArtworkData;
+    bytes = [assetArtworkData bytes];
+    assetArtworkData2 = [taskCopy assetArtworkData];
+    LOBYTE(bytes) = sqlite3_bind_blob(v225, 55, bytes, [assetArtworkData2 length], 0xFFFFFFFFFFFFFFFFLL) == 0;
 
-    if ((v179 & 1) == 0)
+    if ((bytes & 1) == 0)
     {
       v181 = qword_1000EB210;
       if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
@@ -4294,8 +4294,8 @@ LABEL_299:
       goto LABEL_295;
     }
 
-    v182 = [v6 AVAssetURL];
-    v183 = v182 == 0;
+    aVAssetURL = [taskCopy AVAssetURL];
+    v183 = aVAssetURL == 0;
 
     if (v183)
     {
@@ -4304,8 +4304,8 @@ LABEL_299:
 
     else
     {
-      v184 = [v6 AVAssetURL];
-      v226 = [NSKeyedArchiver archivedDataWithRootObject:v184 requiringSecureCoding:1 error:0];
+      aVAssetURL2 = [taskCopy AVAssetURL];
+      v226 = [NSKeyedArchiver archivedDataWithRootObject:aVAssetURL2 requiringSecureCoding:1 error:0];
     }
 
     v185 = *p_insertOrUpdateAllEntriesStmt;
@@ -4315,23 +4315,23 @@ LABEL_299:
       v229 = qword_1000EB210;
       if (os_log_type_enabled(v229, OS_LOG_TYPE_ERROR))
       {
-        v187 = [v6 AVAssetURL];
+        aVAssetURL3 = [taskCopy AVAssetURL];
         *buf = 138412290;
-        v236 = v187;
+        identifier = aVAssetURL3;
         _os_log_error_impl(&_mh_execute_header, v229, OS_LOG_TYPE_ERROR, "Failed to bind AVAssetURL (%@) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_294;
     }
 
-    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 57, [v6 AVAssetDownloadToken]))
+    if (sqlite3_bind_int64(*p_insertOrUpdateAllEntriesStmt, 57, [taskCopy AVAssetDownloadToken]))
     {
       v229 = qword_1000EB210;
       if (os_log_type_enabled(v229, OS_LOG_TYPE_ERROR))
       {
-        v188 = [v6 AVAssetDownloadToken];
+        aVAssetDownloadToken = [taskCopy AVAssetDownloadToken];
         *buf = 134217984;
-        v236 = v188;
+        identifier = aVAssetDownloadToken;
         v189 = "Failed to bind AVAssetDownloadToken (%lu) to the select statement";
 LABEL_269:
         v195 = v229;
@@ -4345,32 +4345,32 @@ LABEL_276:
     }
 
     v190 = *p_insertOrUpdateAllEntriesStmt;
-    v191 = [v6 avAssetDownloadChildDownloadSessionIdentifier];
-    v192 = v191;
-    LOBYTE(v190) = sqlite3_bind_text(v190, 58, [v191 UTF8String], -1, 0) == 0;
+    avAssetDownloadChildDownloadSessionIdentifier = [taskCopy avAssetDownloadChildDownloadSessionIdentifier];
+    v192 = avAssetDownloadChildDownloadSessionIdentifier;
+    LOBYTE(v190) = sqlite3_bind_text(v190, 58, [avAssetDownloadChildDownloadSessionIdentifier UTF8String], -1, 0) == 0;
 
     if ((v190 & 1) == 0)
     {
       v229 = qword_1000EB210;
       if (os_log_type_enabled(v229, OS_LOG_TYPE_ERROR))
       {
-        v193 = [v6 avAssetDownloadChildDownloadSessionIdentifier];
+        avAssetDownloadChildDownloadSessionIdentifier2 = [taskCopy avAssetDownloadChildDownloadSessionIdentifier];
         *buf = 138412290;
-        v236 = v193;
+        identifier = avAssetDownloadChildDownloadSessionIdentifier2;
         _os_log_error_impl(&_mh_execute_header, v229, OS_LOG_TYPE_ERROR, "Failed to bind avAssetDownloadChildDownloadSessionIdentifier (%@) to the select statement", buf, 0xCu);
       }
 
       goto LABEL_294;
     }
 
-    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 59, [v6 enableSPIDelegateCallbacks]))
+    if (sqlite3_bind_int(*p_insertOrUpdateAllEntriesStmt, 59, [taskCopy enableSPIDelegateCallbacks]))
     {
       v229 = qword_1000EB210;
       if (os_log_type_enabled(v229, OS_LOG_TYPE_ERROR))
       {
-        v194 = [v6 enableSPIDelegateCallbacks];
+        enableSPIDelegateCallbacks = [taskCopy enableSPIDelegateCallbacks];
         *buf = 134217984;
-        v236 = v194;
+        identifier = enableSPIDelegateCallbacks;
         v189 = "Failed to bind enableSPIDelegateCallbacks (%lu) to the select statement";
         goto LABEL_269;
       }
@@ -4380,8 +4380,8 @@ LABEL_294:
       goto LABEL_295;
     }
 
-    v197 = [v6 downloadConfig];
-    v198 = v197 == 0;
+    downloadConfig = [taskCopy downloadConfig];
+    v198 = downloadConfig == 0;
 
     if (v198)
     {
@@ -4390,8 +4390,8 @@ LABEL_294:
 
     else
     {
-      v199 = [v6 downloadConfig];
-      v229 = [NSKeyedArchiver archivedDataWithRootObject:v199 requiringSecureCoding:1 error:0];
+      downloadConfig2 = [taskCopy downloadConfig];
+      v229 = [NSKeyedArchiver archivedDataWithRootObject:downloadConfig2 requiringSecureCoding:1 error:0];
     }
 
     v200 = *p_insertOrUpdateAllEntriesStmt;
@@ -4411,10 +4411,10 @@ LABEL_294:
       goto LABEL_294;
     }
 
-    v203 = [v6 assetOptionsPlist];
-    v204 = v203 == 0;
+    assetOptionsPlist = [taskCopy assetOptionsPlist];
+    v204 = assetOptionsPlist == 0;
 
-    if (v204 || ([v6 assetOptionsPlist], v205 = objc_claimAutoreleasedReturnValue(), +[NSPropertyListSerialization dataWithPropertyList:format:options:error:](NSPropertyListSerialization, "dataWithPropertyList:format:options:error:", v205, 200, 0, 0), v221 = objc_claimAutoreleasedReturnValue(), v205, !v221))
+    if (v204 || ([taskCopy assetOptionsPlist], v205 = objc_claimAutoreleasedReturnValue(), +[NSPropertyListSerialization dataWithPropertyList:format:options:error:](NSPropertyListSerialization, "dataWithPropertyList:format:options:error:", v205, 200, 0, 0), v221 = objc_claimAutoreleasedReturnValue(), v205, !v221))
     {
       v221 = 0;
       v209 = 61;
@@ -4442,10 +4442,10 @@ LABEL_293:
     }
 
     v216 = v209;
-    v217 = [v6 resumableUploadData];
+    resumableUploadData = [taskCopy resumableUploadData];
     v210 = *p_insertOrUpdateAllEntriesStmt;
-    v211 = v217;
-    if (sqlite3_bind_blob(v210, v216, [v217 bytes], objc_msgSend(v217, "length"), 0xFFFFFFFFFFFFFFFFLL))
+    v211 = resumableUploadData;
+    if (sqlite3_bind_blob(v210, v216, [resumableUploadData bytes], objc_msgSend(resumableUploadData, "length"), 0xFFFFFFFFFFFFFFFFLL))
     {
       v212 = qword_1000EB210;
       if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
@@ -4462,10 +4462,10 @@ LABEL_293:
         v213 = qword_1000EB210;
         if (os_log_type_enabled(v213, OS_LOG_TYPE_ERROR))
         {
-          v214 = [v6 identifier];
+          identifier3 = [taskCopy identifier];
           v215 = sqlite3_errmsg(self->_dbConnection);
           *buf = 134218242;
-          v236 = v214;
+          identifier = identifier3;
           v237 = 2080;
           v238 = v215;
           _os_log_error_impl(&_mh_execute_header, v213, OS_LOG_TYPE_ERROR, "Failed to insert task %lu into db. Error= %s", buf, 0x16u);
@@ -4488,9 +4488,9 @@ LABEL_293:
 LABEL_12:
 }
 
-- (id)_onqueue_convertSqlRowToTaskInfoEntry:(sqlite3_stmt *)a3
+- (id)_onqueue_convertSqlRowToTaskInfoEntry:(sqlite3_stmt *)entry
 {
-  if (!a3)
+  if (!entry)
   {
     v5 = 0;
 LABEL_63:
@@ -4500,19 +4500,19 @@ LABEL_63:
   }
 
   v5 = objc_alloc_init(__NSCFURLSessionTaskInfo);
-  [v5 setIdentifier:{sqlite3_column_int(a3, 0)}];
-  [v5 setTaskKind:{sqlite3_column_int64(a3, 1)}];
-  [v5 setCreationTime:{sqlite3_column_double(a3, 2)}];
-  [v5 setState:{sqlite3_column_int64(a3, 3)}];
-  [v5 setSuspendCount:{sqlite3_column_int64(a3, 4)}];
-  v6 = sqlite3_column_text(a3, 5);
+  [v5 setIdentifier:{sqlite3_column_int(entry, 0)}];
+  [v5 setTaskKind:{sqlite3_column_int64(entry, 1)}];
+  [v5 setCreationTime:{sqlite3_column_double(entry, 2)}];
+  [v5 setState:{sqlite3_column_int64(entry, 3)}];
+  [v5 setSuspendCount:{sqlite3_column_int64(entry, 4)}];
+  v6 = sqlite3_column_text(entry, 5);
   if (v6)
   {
     v7 = [NSString stringWithUTF8String:v6];
     [v5 setTaskDescription:v7];
   }
 
-  v79 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:6];
+  v79 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:6];
   if ([v79 length] <= 0x20000)
   {
     if (v79)
@@ -4520,8 +4520,8 @@ LABEL_63:
       v8 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v79 error:0];
       [v5 setOriginalRequest:v8];
 
-      v9 = [v5 originalRequest];
-      v10 = [v9 _allProtocolProperties];
+      originalRequest = [v5 originalRequest];
+      _allProtocolProperties = [originalRequest _allProtocolProperties];
       v11 = estimatedPropertyListSize();
 
       if (v11 > 0x4000)
@@ -4533,22 +4533,22 @@ LABEL_63:
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Dropping oversized protocol properties on request", buf, 2u);
         }
 
-        v13 = [v5 originalRequest];
-        v14 = [v13 mutableCopy];
+        originalRequest2 = [v5 originalRequest];
+        v14 = [originalRequest2 mutableCopy];
 
         [v14 _removeAllProtocolProperties];
         [v5 setOriginalRequest:v14];
       }
     }
 
-    v78 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:7];
+    v78 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:7];
     if (v78)
     {
       v15 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v78 error:0];
       [v5 setCurrentRequest:v15];
 
-      v16 = [v5 currentRequest];
-      v17 = [v16 _allProtocolProperties];
+      currentRequest = [v5 currentRequest];
+      _allProtocolProperties2 = [currentRequest _allProtocolProperties];
       v18 = estimatedPropertyListSize();
 
       if (v18 > 0x4000)
@@ -4560,15 +4560,15 @@ LABEL_63:
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Dropping oversized protocol properties on request", v80, 2u);
         }
 
-        v20 = [v5 currentRequest];
-        v21 = [v20 mutableCopy];
+        currentRequest2 = [v5 currentRequest];
+        v21 = [currentRequest2 mutableCopy];
 
         [v21 _removeAllProtocolProperties];
         [v5 setCurrentRequest:v21];
       }
     }
 
-    v22 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:8];
+    v22 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:8];
     v67 = v22;
     if (v22)
     {
@@ -4576,96 +4576,96 @@ LABEL_63:
       [v5 setResponse:v23];
     }
 
-    if (sqlite3_column_double(a3, 9) != 0.0)
+    if (sqlite3_column_double(entry, 9) != 0.0)
     {
       v24 = [NSDate dateWithTimeIntervalSince1970:?];
       [v5 setEarliestBeginDate:v24];
     }
 
-    [v5 setRespondedToWillBeginDelayedRequestCallback:{sqlite3_column_int(a3, 10) != 0}];
-    v77 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:11];
+    [v5 setRespondedToWillBeginDelayedRequestCallback:{sqlite3_column_int(entry, 10) != 0}];
+    v77 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:11];
     if (v77)
     {
       v25 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v77 error:0];
       [v5 setError:v25];
     }
 
-    v76 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:12, v67];
+    v76 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:12, v67];
     if (v76)
     {
       v26 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v76 error:0];
       [v5 setRetryError:v26];
     }
 
-    v75 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:13];
+    v75 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:13];
     if (v75)
     {
       v27 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v75 error:0];
       [v5 setFileURL:v27];
     }
 
-    v74 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:14];
+    v74 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:14];
     if (v74)
     {
       v28 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v74 error:0];
       [v5 setDownloadFileURL:v28];
     }
 
-    v29 = sqlite3_column_text(a3, 15);
+    v29 = sqlite3_column_text(entry, 15);
     if (v29)
     {
       v30 = [NSString stringWithUTF8String:v29];
       [v5 setBundleID:v30];
     }
 
-    v31 = sqlite3_column_text(a3, 16);
+    v31 = sqlite3_column_text(entry, 16);
     if (v31)
     {
       v32 = [NSString stringWithUTF8String:v31];
       [v5 setSessionID:v32];
     }
 
-    [v5 setHasStarted:{sqlite3_column_int(a3, 17) != 0}];
-    [v5 setShouldCancelOnDisconnect:{sqlite3_column_int(a3, 18) != 0}];
-    [v5 setBasePriority:{sqlite3_column_int(a3, 19)}];
-    [v5 setBasePrioritySetExplicitly:{sqlite3_column_int(a3, 20) != 0}];
-    [v5 setDiscretionary:{sqlite3_column_int(a3, 21) != 0}];
-    [v5 setDiscretionaryOverride:{sqlite3_column_int(a3, 22)}];
-    v73 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:23];
+    [v5 setHasStarted:{sqlite3_column_int(entry, 17) != 0}];
+    [v5 setShouldCancelOnDisconnect:{sqlite3_column_int(entry, 18) != 0}];
+    [v5 setBasePriority:{sqlite3_column_int(entry, 19)}];
+    [v5 setBasePrioritySetExplicitly:{sqlite3_column_int(entry, 20) != 0}];
+    [v5 setDiscretionary:{sqlite3_column_int(entry, 21) != 0}];
+    [v5 setDiscretionaryOverride:{sqlite3_column_int(entry, 22)}];
+    v73 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:23];
     if (v73)
     {
       v33 = [[NSUUID alloc] initWithUUIDBytes:{objc_msgSend(v73, "bytes")}];
       [v5 setUniqueIdentifier:v33];
     }
 
-    v34 = sqlite3_column_text(a3, 24);
+    v34 = sqlite3_column_text(entry, 24);
     if (v34)
     {
       v35 = [NSString stringWithUTF8String:v34];
       [v5 setStoragePartitionIdentifier:v35];
     }
 
-    [v5 setCountOfBytesClientExpectsToSend:{sqlite3_column_int64(a3, 25)}];
-    [v5 setCountOfBytesClientExpectsToReceive:{sqlite3_column_int64(a3, 26)}];
-    [v5 setCountOfBytesReceived:{sqlite3_column_int64(a3, 27)}];
-    [v5 setCountOfBytesSent:{sqlite3_column_int64(a3, 28)}];
-    [v5 setCountOfBytesExpectedToSend:{sqlite3_column_int64(a3, 29)}];
-    [v5 setCountOfBytesExpectedToReceive:{sqlite3_column_int64(a3, 30)}];
-    [v5 setBytesPerSecondLimit:{sqlite3_column_int64(a3, 31)}];
-    v36 = sqlite3_column_text(a3, 32);
+    [v5 setCountOfBytesClientExpectsToSend:{sqlite3_column_int64(entry, 25)}];
+    [v5 setCountOfBytesClientExpectsToReceive:{sqlite3_column_int64(entry, 26)}];
+    [v5 setCountOfBytesReceived:{sqlite3_column_int64(entry, 27)}];
+    [v5 setCountOfBytesSent:{sqlite3_column_int64(entry, 28)}];
+    [v5 setCountOfBytesExpectedToSend:{sqlite3_column_int64(entry, 29)}];
+    [v5 setCountOfBytesExpectedToReceive:{sqlite3_column_int64(entry, 30)}];
+    [v5 setBytesPerSecondLimit:{sqlite3_column_int64(entry, 31)}];
+    v36 = sqlite3_column_text(entry, 32);
     if (v36)
     {
       v37 = [NSString stringWithUTF8String:v36];
       [v5 setPersonaUniqueString:v37];
     }
 
-    [v5 setExpectedProgressTarget:{sqlite3_column_int64(a3, 33)}];
-    [v5 setMayBeDemotedToDiscretionary:{sqlite3_column_int(a3, 34) != 0}];
-    [v5 set_TLSMinimumSupportedProtocolVersion:{sqlite3_column_int(a3, 35)}];
-    [v5 set_TLSMaximumSupportedProtocolVersion:{sqlite3_column_int(a3, 36)}];
-    [v5 set_updatedStreamingZipModificationDate:{sqlite3_column_int(a3, 39) != 0}];
-    [v5 setStartedUserInitiated:{sqlite3_column_int(a3, 40) != 0}];
-    v72 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:41];
+    [v5 setExpectedProgressTarget:{sqlite3_column_int64(entry, 33)}];
+    [v5 setMayBeDemotedToDiscretionary:{sqlite3_column_int(entry, 34) != 0}];
+    [v5 set_TLSMinimumSupportedProtocolVersion:{sqlite3_column_int(entry, 35)}];
+    [v5 set_TLSMaximumSupportedProtocolVersion:{sqlite3_column_int(entry, 36)}];
+    [v5 set_updatedStreamingZipModificationDate:{sqlite3_column_int(entry, 39) != 0}];
+    [v5 setStartedUserInitiated:{sqlite3_column_int(entry, 40) != 0}];
+    v72 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:41];
     if (v72)
     {
       v38 = +[__NSCFURLSessionXPC taskAdditionalPropertiesClasses];
@@ -4673,17 +4673,17 @@ LABEL_63:
       [v5 setAdditionalProperties:v39];
     }
 
-    v40 = sqlite3_column_text(a3, 42);
+    v40 = sqlite3_column_text(entry, 42);
     if (v40)
     {
       v41 = [NSString stringWithUTF8String:v40];
       [v5 setPathToDownloadTaskFile:v41];
     }
 
-    [v5 setRetryCount:{sqlite3_column_int(a3, 43)}];
-    [v5 setLoadingPriority:{sqlite3_column_double(a3, 44)}];
-    [v5 setQos:{sqlite3_column_int64(a3, 45)}];
-    v71 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:46];
+    [v5 setRetryCount:{sqlite3_column_int(entry, 43)}];
+    [v5 setLoadingPriority:{sqlite3_column_double(entry, 44)}];
+    [v5 setQos:{sqlite3_column_int64(entry, 45)}];
+    v71 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:46];
     if (v71)
     {
       v42 = objc_opt_class();
@@ -4691,80 +4691,80 @@ LABEL_63:
       [v5 set_backgroundTrailers:v43];
     }
 
-    v70 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:47];
+    v70 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:47];
     if (v70)
     {
       v44 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v70 error:0];
       [v5 setTaskMetrics:v44];
     }
 
-    v69 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:48];
+    v69 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:48];
     if (v69)
     {
       v45 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v69 error:0];
       [v5 setURL:v45];
     }
 
-    v46 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:49];
+    v46 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:49];
     if (v46)
     {
       v47 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v46 error:0];
       [v5 setDestinationURL:v47];
     }
 
-    v48 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:50];
+    v48 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:50];
     if (v48)
     {
       v49 = [NSPropertyListSerialization propertyListWithData:v48 options:0 format:0 error:0];
       [v5 setOptions:v49];
     }
 
-    [v5 setInitializedWithAVAsset:{sqlite3_column_int(a3, 51) != 0}];
-    v50 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:52];
+    [v5 setInitializedWithAVAsset:{sqlite3_column_int(entry, 51) != 0}];
+    v50 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:52];
     if (v50)
     {
       v51 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v50 error:0];
       [v5 setTemporaryDestinationURL:v51];
     }
 
-    v52 = sqlite3_column_text(a3, 53);
+    v52 = sqlite3_column_text(entry, 53);
     if (v52)
     {
       v53 = [NSString stringWithUTF8String:v52];
       [v5 setAssetTitle:v53];
     }
 
-    v54 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:54];
+    v54 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:54];
     [v5 setAssetArtworkData:v54];
 
-    v55 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:55];
+    v55 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:55];
     if (v55)
     {
       v56 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v55 error:0];
       [v5 setAVAssetURL:v56];
     }
 
-    [v5 setAVAssetDownloadToken:{sqlite3_column_int64(a3, 56)}];
-    v57 = sqlite3_column_text(a3, 57);
+    [v5 setAVAssetDownloadToken:{sqlite3_column_int64(entry, 56)}];
+    v57 = sqlite3_column_text(entry, 57);
     if (v57)
     {
       v58 = [NSString stringWithUTF8String:v57];
       [v5 setAvAssetDownloadChildDownloadSessionIdentifier:v58];
     }
 
-    [v5 setEnableSPIDelegateCallbacks:{sqlite3_column_int(a3, 58) != 0}];
-    v59 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:59];
+    [v5 setEnableSPIDelegateCallbacks:{sqlite3_column_int(entry, 58) != 0}];
+    v59 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:59];
     v60 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v59 error:0];
     [v5 setDownloadConfig:v60];
 
-    v61 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:60];
+    v61 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:60];
     if (v61)
     {
       v62 = [NSPropertyListSerialization propertyListWithData:v61 options:0 format:0 error:0];
       [v5 setAssetOptionsPlist:v62];
     }
 
-    v63 = [(NDTaskStorageDB *)self _sqlBlobHelper:a3 forColumn:61];
+    v63 = [(NDTaskStorageDB *)self _sqlBlobHelper:entry forColumn:61];
     [v5 setResumableUploadData:v63];
 
     goto LABEL_63;
@@ -4783,9 +4783,9 @@ LABEL_67:
   return v64;
 }
 
-- (id)_sqlBlobHelper:(sqlite3_stmt *)a3 forColumn:(int)a4
+- (id)_sqlBlobHelper:(sqlite3_stmt *)helper forColumn:(int)column
 {
-  v6 = sqlite3_column_bytes(a3, a4);
+  v6 = sqlite3_column_bytes(helper, column);
   if (v6 < 1)
   {
     v7 = 0;
@@ -4793,7 +4793,7 @@ LABEL_67:
 
   else
   {
-    v7 = [[NSData alloc] initWithBytes:sqlite3_column_blob(a3 length:{a4), v6}];
+    v7 = [[NSData alloc] initWithBytes:sqlite3_column_blob(helper length:{column), v6}];
   }
 
   return v7;
@@ -4808,26 +4808,26 @@ LABEL_67:
 
   else
   {
-    v2 = self;
+    selfCopy = self;
     dbInitializationStarted = self->_dbInitializationStarted;
     LOBYTE(self) = 1;
     if (!dbInitializationStarted)
     {
-      v2->_dbInitializationStarted = 1;
-      path = v2->_path;
+      selfCopy->_dbInitializationStarted = 1;
+      path = selfCopy->_path;
       if (!path)
       {
-        v5 = [(NSURL *)v2->_dbDir URLByAppendingPathComponent:@"tasks.sqlite" isDirectory:0];
-        v6 = v2->_path;
-        v2->_path = v5;
+        v5 = [(NSURL *)selfCopy->_dbDir URLByAppendingPathComponent:@"tasks.sqlite" isDirectory:0];
+        v6 = selfCopy->_path;
+        selfCopy->_path = v5;
 
-        path = v2->_path;
+        path = selfCopy->_path;
       }
 
-      if ([(NDTaskStorageDB *)v2 _createDBSchemaForPath:path])
+      if ([(NDTaskStorageDB *)selfCopy _createDBSchemaForPath:path])
       {
         LOBYTE(self) = 1;
-        v2->_dbInitialized = 1;
+        selfCopy->_dbInitialized = 1;
       }
 
       else
@@ -4836,7 +4836,7 @@ LABEL_67:
         LODWORD(self) = os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR);
         if (self)
         {
-          v8 = v2->_path;
+          v8 = selfCopy->_path;
           v10 = 138412290;
           v11 = v8;
           _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Unable to create persistent store for background tasks at location %@.", &v10, 0xCu);
@@ -4954,17 +4954,17 @@ LABEL_24:
   }
 }
 
-- (BOOL)_createDBSchemaForPath:(id)a3
+- (BOOL)_createDBSchemaForPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 fileSystemRepresentation];
-  v6 = v5;
-  if (v5)
+  pathCopy = path;
+  fileSystemRepresentation = [pathCopy fileSystemRepresentation];
+  v6 = fileSystemRepresentation;
+  if (fileSystemRepresentation)
   {
-    v7 = dirname_r(v5, errmsg);
+    v7 = dirname_r(fileSystemRepresentation, errmsg);
     v8 = statfs(v7, &v25);
     f_flags = v25.f_flags;
-    v10 = [v4 checkResourceIsReachableAndReturnError:0];
+    v10 = [pathCopy checkResourceIsReachableAndReturnError:0];
     if (((v8 != -1) & ((f_flags & 0x80) >> 7)) != 0)
     {
       v11 = 3145734;
@@ -4984,7 +4984,7 @@ LABEL_24:
     }
 
     v14 = [NSString stringWithFormat:@"%@%d", @"PRAGMA user_version = ", 3, 0];
-    v15 = [v14 UTF8String];
+    uTF8String = [v14 UTF8String];
 
     sqlite3_busy_timeout(self->_dbConnection, 1000);
     if (v10)
@@ -4997,9 +4997,9 @@ LABEL_33:
         v21 = qword_1000EB210;
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v4 absoluteString];
+          absoluteString = [pathCopy absoluteString];
           v25.f_bsize = 138412290;
-          *&v25.f_iosize = v22;
+          *&v25.f_iosize = absoluteString;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Opened db at path: %@", &v25, 0xCu);
         }
 
@@ -5037,7 +5037,7 @@ LABEL_38:
       {
         v20 = 1;
 LABEL_21:
-        if (sqlite3_exec(self->_dbConnection, v15, 0, 0, errmsg))
+        if (sqlite3_exec(self->_dbConnection, uTF8String, 0, 0, errmsg))
         {
           v18 = qword_1000EB210;
           if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
@@ -5149,7 +5149,7 @@ LABEL_36:
   return result;
 }
 
-- (BOOL)migrateSchemaToLatestVersion:(int64_t)a3
+- (BOOL)migrateSchemaToLatestVersion:(int64_t)version
 {
   errmsg = 0;
   dbConnection = self->_dbConnection;
@@ -5160,11 +5160,11 @@ LABEL_36:
   }
 
   v6 = 1;
-  if (a3 <= 1)
+  if (version <= 1)
   {
-    if (a3)
+    if (version)
     {
-      if (a3 != 1)
+      if (version != 1)
       {
         goto LABEL_41;
       }
@@ -5197,7 +5197,7 @@ LABEL_36:
     goto LABEL_18;
   }
 
-  if (a3 == 2)
+  if (version == 2)
   {
 LABEL_18:
     v9 = qword_1000EB210;
@@ -5226,14 +5226,14 @@ LABEL_18:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Getting all bundle IDs for migration", buf, 2u);
       }
 
-      v12 = [(NDTaskStorageDB *)self _onqueue_getAllBundleIDsFromSessionTasks];
+      _onqueue_getAllBundleIDsFromSessionTasks = [(NDTaskStorageDB *)self _onqueue_getAllBundleIDsFromSessionTasks];
       v31 = +[NSFileManager defaultManager];
       v13 = qword_1000EB210;
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [v12 count];
+        v14 = [_onqueue_getAllBundleIDsFromSessionTasks count];
         *buf = 134217984;
-        v36 = v14;
+        versionCopy3 = v14;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Got bundle IDs (%tu)", buf, 0xCu);
       }
 
@@ -5244,14 +5244,14 @@ LABEL_18:
       v32[4] = self;
       v15 = v31;
       v33 = v15;
-      [v12 enumerateObjectsUsingBlock:v32];
+      [_onqueue_getAllBundleIDsFromSessionTasks enumerateObjectsUsingBlock:v32];
       v16 = qword_1000EB210;
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         v17 = +[NDTaskStorageDB nsurlsessiondPath];
         v18 = [v17 stringByAppendingPathComponent:@"bundles.plist"];
         *buf = 138412290;
-        v36 = v18;
+        versionCopy3 = v18;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Removing item at path: %@", buf, 0xCu);
       }
 
@@ -5294,7 +5294,7 @@ LABEL_41:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v36 = a3;
+      versionCopy3 = version;
       v37 = 1024;
       v38 = 3;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Dropped db table session_tasks as migration from version %ld to %d failed", buf, 0x12u);
@@ -5313,7 +5313,7 @@ LABEL_41:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v36 = a3;
+      versionCopy3 = version;
       v37 = 1024;
       v38 = 3;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Dropped db table sessions as migration from version %ld to %d failed", buf, 0x12u);
@@ -5323,7 +5323,7 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  if (a3 != 3)
+  if (version != 3)
   {
     goto LABEL_41;
   }
@@ -5333,7 +5333,7 @@ LABEL_46:
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218496;
-    v36 = a3;
+    versionCopy3 = version;
     v37 = 1024;
     v38 = 3;
     v39 = 1024;
@@ -5353,12 +5353,12 @@ LABEL_46:
   return v4;
 }
 
-+ (void)removeItemAtPath:(id)a3
++ (void)removeItemAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSFileManager defaultManager];
   v9 = 0;
-  v5 = [v4 removeItemAtPath:v3 error:&v9];
+  v5 = [v4 removeItemAtPath:pathCopy error:&v9];
   v6 = v9;
 
   if ((v5 & 1) == 0)
@@ -5366,39 +5366,39 @@ LABEL_46:
     v7 = qword_1000EB210;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v6 code];
+      code = [v6 code];
       *buf = 138412802;
-      v11 = v3;
+      v11 = pathCopy;
       v12 = 2112;
       v13 = v6;
       v14 = 2048;
-      v15 = v8;
+      v15 = code;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Error removing item at path: %@, error: %@ [%ld]", buf, 0x20u);
     }
   }
 }
 
-+ (id)_preset_unarchiveObjectWithData:(id)a3
++ (id)_preset_unarchiveObjectWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   if (qword_1000EB110 != -1)
   {
     dispatch_once(&qword_1000EB110, &stru_1000D5160);
   }
 
   v9 = 0;
-  v4 = [NSKeyedUnarchiver unarchivedObjectOfClasses:qword_1000EB108 fromData:v3 error:&v9];
+  v4 = [NSKeyedUnarchiver unarchivedObjectOfClasses:qword_1000EB108 fromData:dataCopy error:&v9];
   v5 = v9;
   if (!v4)
   {
     v6 = qword_1000EB210;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v5 code];
+      code = [v5 code];
       *buf = 138412546;
       v11 = v5;
       v12 = 1024;
-      v13 = v8;
+      v13 = code;
       _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Failure trying to unarchive data with error: %@ [%d]", buf, 0x12u);
     }
   }

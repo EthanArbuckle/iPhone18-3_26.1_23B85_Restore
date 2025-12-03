@@ -1,14 +1,14 @@
 @interface CellularThroughputPrediction
 + (id)URLOfModelInThisBundle;
 - (CellularThroughputPrediction)init;
-- (CellularThroughputPrediction)initWithConfiguration:(id)a3 error:(id *)a4;
-- (CellularThroughputPrediction)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (CellularThroughputPrediction)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (CellularThroughputPrediction)initWithMLModel:(id)a3;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)predictionFromMaxOfActualLowBandwidth_d:(double)a3 cellSinr:(double)a4 cellNrRSRQ:(double)a5 cellLteRSRQ:(double)a6 cellNrRSRP:(double)a7 lqmScorecellular:(double)a8 cellChannelBW:(double)a9 cellNrSNR:(double)a10 cellRsrp:(double)a11 ratType:(double)a12 cellEstimatedBW:(double)a13 cellNsaEnabled:(double)a14 cellBandInfo:(double)a15 pActualLowBandwidth:(double)a16 NRType:(double)a17 error:(id *)a18;
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5;
+- (CellularThroughputPrediction)initWithConfiguration:(id)configuration error:(id *)error;
+- (CellularThroughputPrediction)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error;
+- (CellularThroughputPrediction)initWithContentsOfURL:(id)l error:(id *)error;
+- (CellularThroughputPrediction)initWithMLModel:(id)model;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
+- (id)predictionFromMaxOfActualLowBandwidth_d:(double)bandwidth_d cellSinr:(double)sinr cellNrRSRQ:(double)q cellLteRSRQ:(double)rQ cellNrRSRP:(double)p lqmScorecellular:(double)scorecellular cellChannelBW:(double)w cellNrSNR:(double)self0 cellRsrp:(double)self1 ratType:(double)self2 cellEstimatedBW:(double)self3 cellNsaEnabled:(double)self4 cellBandInfo:(double)self5 pActualLowBandwidth:(double)self6 NRType:(double)self7 error:(id *)self8;
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error;
 @end
 
 @implementation CellularThroughputPrediction
@@ -36,14 +36,14 @@
   return v4;
 }
 
-- (CellularThroughputPrediction)initWithMLModel:(id)a3
+- (CellularThroughputPrediction)initWithMLModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v10.receiver = self;
   v10.super_class = CellularThroughputPrediction;
   v6 = [(CellularThroughputPrediction *)&v10 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_model, a3), v7->_model))
+  if (v6 && (objc_storeStrong(&v6->_model, model), v7->_model))
   {
     v8 = v7;
   }
@@ -58,63 +58,63 @@
 
 - (CellularThroughputPrediction)init
 {
-  v3 = [objc_opt_class() URLOfModelInThisBundle];
-  v4 = [(CellularThroughputPrediction *)self initWithContentsOfURL:v3 error:0];
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v4 = [(CellularThroughputPrediction *)self initWithContentsOfURL:uRLOfModelInThisBundle error:0];
 
   return v4;
 }
 
-- (CellularThroughputPrediction)initWithConfiguration:(id)a3 error:(id *)a4
+- (CellularThroughputPrediction)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() URLOfModelInThisBundle];
-  v8 = [(CellularThroughputPrediction *)self initWithContentsOfURL:v7 configuration:v6 error:a4];
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v8 = [(CellularThroughputPrediction *)self initWithContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy error:error];
 
   return v8;
 }
 
-- (CellularThroughputPrediction)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (CellularThroughputPrediction)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [sub_1000ABBDC() modelWithContentsOfURL:v6 error:a4];
+  lCopy = l;
+  v7 = [sub_1000ABBDC() modelWithContentsOfURL:lCopy error:error];
 
   if (v7)
   {
     self = [(CellularThroughputPrediction *)self initWithMLModel:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (CellularThroughputPrediction)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5
+- (CellularThroughputPrediction)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [sub_1000ABBDC() modelWithContentsOfURL:v9 configuration:v8 error:a5];
+  configurationCopy = configuration;
+  lCopy = l;
+  v10 = [sub_1000ABBDC() modelWithContentsOfURL:lCopy configuration:configurationCopy error:error];
 
   if (v10)
   {
     self = [(CellularThroughputPrediction *)self initWithMLModel:v10];
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
-  v6 = a3;
+  featuresCopy = features;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -134,14 +134,14 @@
   v8 = v7;
   _Block_object_dispose(&v13, 8);
   v9 = objc_alloc_init(v7);
-  v10 = [(CellularThroughputPrediction *)self predictionFromFeatures:v6 options:v9 error:a4];
+  v10 = [(CellularThroughputPrediction *)self predictionFromFeatures:featuresCopy options:v9 error:error];
 
   return v10;
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
-  v5 = [(MLModel *)self->_model predictionFromFeatures:a3 options:a4 error:a5];
+  v5 = [(MLModel *)self->_model predictionFromFeatures:features options:options error:error];
   if (v5)
   {
     v6 = [CellularThroughputPredictionOutput alloc];
@@ -158,18 +158,18 @@
   return v8;
 }
 
-- (id)predictionFromMaxOfActualLowBandwidth_d:(double)a3 cellSinr:(double)a4 cellNrRSRQ:(double)a5 cellLteRSRQ:(double)a6 cellNrRSRP:(double)a7 lqmScorecellular:(double)a8 cellChannelBW:(double)a9 cellNrSNR:(double)a10 cellRsrp:(double)a11 ratType:(double)a12 cellEstimatedBW:(double)a13 cellNsaEnabled:(double)a14 cellBandInfo:(double)a15 pActualLowBandwidth:(double)a16 NRType:(double)a17 error:(id *)a18
+- (id)predictionFromMaxOfActualLowBandwidth_d:(double)bandwidth_d cellSinr:(double)sinr cellNrRSRQ:(double)q cellLteRSRQ:(double)rQ cellNrRSRP:(double)p lqmScorecellular:(double)scorecellular cellChannelBW:(double)w cellNrSNR:(double)self0 cellRsrp:(double)self1 ratType:(double)self2 cellEstimatedBW:(double)self3 cellNsaEnabled:(double)self4 cellBandInfo:(double)self5 pActualLowBandwidth:(double)self6 NRType:(double)self7 error:(id *)self8
 {
-  v20 = [[CellularThroughputPredictionInput alloc] initWithMaxOfActualLowBandwidth_d:a3 cellSinr:a4 cellNrRSRQ:a5 cellLteRSRQ:a6 cellNrRSRP:a7 lqmScorecellular:a8 cellChannelBW:a9 cellNrSNR:a10 cellRsrp:*&a11 ratType:*&a12 cellEstimatedBW:*&a13 cellNsaEnabled:*&a14 cellBandInfo:*&a15 pActualLowBandwidth:*&a16 NRType:*&a17];
-  v21 = [(CellularThroughputPrediction *)self predictionFromFeatures:v20 error:a18];
+  v20 = [[CellularThroughputPredictionInput alloc] initWithMaxOfActualLowBandwidth_d:bandwidth_d cellSinr:sinr cellNrRSRQ:q cellLteRSRQ:rQ cellNrRSRP:p lqmScorecellular:scorecellular cellChannelBW:w cellNrSNR:r cellRsrp:*&rsrp ratType:*&type cellEstimatedBW:*&bW cellNsaEnabled:*&enabled cellBandInfo:*&info pActualLowBandwidth:*&bandwidth NRType:*&rType];
+  v21 = [(CellularThroughputPrediction *)self predictionFromFeatures:v20 error:error];
 
   return v21;
 }
 
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  inputsCopy = inputs;
+  optionsCopy = options;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2050000000;
@@ -188,15 +188,15 @@
 
   v11 = v10;
   _Block_object_dispose(&v24, 8);
-  v12 = [[v10 alloc] initWithFeatureProviderArray:v8];
-  v13 = [(MLModel *)self->_model predictionsFromBatch:v12 options:v9 error:a5];
+  v12 = [[v10 alloc] initWithFeatureProviderArray:inputsCopy];
+  v13 = [(MLModel *)self->_model predictionsFromBatch:v12 options:optionsCopy error:error];
   v14 = v13;
   if (v13)
   {
     v15 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v13 count]);
     if ([v14 count] >= 1)
     {
-      v22 = v8;
+      v22 = inputsCopy;
       v16 = 0;
       do
       {
@@ -211,7 +211,7 @@
       }
 
       while (v16 < [v14 count]);
-      v8 = v22;
+      inputsCopy = v22;
     }
   }
 

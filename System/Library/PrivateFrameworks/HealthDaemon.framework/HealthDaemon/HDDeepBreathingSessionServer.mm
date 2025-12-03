@@ -1,29 +1,29 @@
 @interface HDDeepBreathingSessionServer
 + (id)requiredEntitlements;
-- (HDDeepBreathingSessionServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDDeepBreathingSessionServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_queue_deactivate;
 - (void)connectionInvalidated;
 - (void)dealloc;
-- (void)remote_endSessionWithEndReason:(int64_t)a3;
+- (void)remote_endSessionWithEndReason:(int64_t)reason;
 - (void)remote_startGuiding;
-- (void)remote_startSessionWithStartDate:(id)a3 completion:(id)a4;
+- (void)remote_startSessionWithStartDate:(id)date completion:(id)completion;
 @end
 
 @implementation HDDeepBreathingSessionServer
 
-- (HDDeepBreathingSessionServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDDeepBreathingSessionServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = HDDeepBreathingSessionServer;
-  v11 = [(HDStandardTaskServer *)&v17 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDStandardTaskServer *)&v17 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
     v12 = HKCreateSerialDispatchQueue();
     queue = v11->_queue;
     v11->_queue = v12;
 
-    v14 = [v10 copy];
+    v14 = [configurationCopy copy];
     sessionConfiguration = v11->_sessionConfiguration;
     v11->_sessionConfiguration = v14;
   }
@@ -63,7 +63,7 @@
 - (void)_queue_deactivate
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     _HKInitializeLogging();
     v2 = *MEMORY[0x277CCC2A8];
@@ -76,35 +76,35 @@
       _os_log_impl(&dword_228986000, v3, OS_LOG_TYPE_DEFAULT, "%@ deactivate", &v7, 0xCu);
     }
 
-    if (*(a1 + 64) == 1)
+    if (*(self + 64) == 1)
     {
-      *(a1 + 64) = 2;
-      [*(a1 + 48) invalidate];
-      v5 = *(a1 + 48);
-      *(a1 + 48) = 0;
+      *(self + 64) = 2;
+      [*(self + 48) invalidate];
+      v5 = *(self + 48);
+      *(self + 48) = 0;
     }
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_startSessionWithStartDate:(id)a3 completion:(id)a4
+- (void)remote_startSessionWithStartDate:(id)date completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   _HKInitializeLogging();
   v9 = MEMORY[0x277CCC2A8];
   v10 = *MEMORY[0x277CCC2A8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2A8], OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [(HDStandardTaskServer *)self taskUUID];
+    taskUUID = [(HDStandardTaskServer *)self taskUUID];
     sessionConfiguration = self->_sessionConfiguration;
     *buf = 138543874;
-    *&buf[4] = v12;
+    *&buf[4] = taskUUID;
     *&buf[12] = 2114;
-    *&buf[14] = v7;
+    *&buf[14] = dateCopy;
     *&buf[22] = 2112;
     v22 = sessionConfiguration;
     _os_log_impl(&dword_228986000, v11, OS_LOG_TYPE_DEFAULT, "start session %{public}@ with start date: %{public}@, configuration: %@", buf, 0x20u);
@@ -135,7 +135,7 @@
     }
   }
 
-  v8[2](v8, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
   _Block_object_dispose(buf, 8);
 
   v17 = *MEMORY[0x277D85DE8];
@@ -175,7 +175,7 @@ void __76__HDDeepBreathingSessionServer_remote_startSessionWithStartDate_complet
   }
 }
 
-- (void)remote_endSessionWithEndReason:(int64_t)a3
+- (void)remote_endSessionWithEndReason:(int64_t)reason
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -183,7 +183,7 @@ void __76__HDDeepBreathingSessionServer_remote_startSessionWithStartDate_complet
   v4[2] = __63__HDDeepBreathingSessionServer_remote_endSessionWithEndReason___block_invoke;
   v4[3] = &unk_2786138F8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reason;
   dispatch_async(queue, v4);
 }
 

@@ -1,6 +1,6 @@
 @interface BKCurrentBookProvider
 - (BKCurrentBookProvider)init;
-- (void)setSquareCover:(BOOL)a3;
+- (void)setSquareCover:(BOOL)cover;
 @end
 
 @implementation BKCurrentBookProvider
@@ -36,13 +36,13 @@
   return v2;
 }
 
-- (void)setSquareCover:(BOOL)a3
+- (void)setSquareCover:(BOOL)cover
 {
-  v3 = a3;
-  self->_squareCover = a3;
-  v5 = [(BKCurrentBookProvider *)self showSquareCover];
-  v4 = [NSNumber numberWithBool:v3];
-  [v5 updateValue:v4];
+  coverCopy = cover;
+  self->_squareCover = cover;
+  showSquareCover = [(BKCurrentBookProvider *)self showSquareCover];
+  v4 = [NSNumber numberWithBool:coverCopy];
+  [showSquareCover updateValue:v4];
 }
 
 @end

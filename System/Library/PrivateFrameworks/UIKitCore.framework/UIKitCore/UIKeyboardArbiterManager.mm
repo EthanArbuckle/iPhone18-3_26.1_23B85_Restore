@@ -4,10 +4,10 @@
 - (BOOL)remoteKeyboardUndocked;
 - (id)keyboardWindow;
 - (void)forceKeyboardAway;
-- (void)preserveKeyboardWithId:(id)a3;
-- (void)restoreKeyboardWithId:(id)a3;
-- (void)userSelectedApp:(id)a3 onCompletion:(id)a4;
-- (void)userSelectedProcessIdentifier:(int)a3 withSceneIdentity:(id)a4 onCompletion:(id)a5;
+- (void)preserveKeyboardWithId:(id)id;
+- (void)restoreKeyboardWithId:(id)id;
+- (void)userSelectedApp:(id)app onCompletion:(id)completion;
+- (void)userSelectedProcessIdentifier:(int)identifier withSceneIdentity:(id)identity onCompletion:(id)completion;
 @end
 
 @implementation UIKeyboardArbiterManager
@@ -27,9 +27,9 @@
 - (BOOL)remoteKeyboardUndocked
 {
   v2 = +[UIKeyboardArbiterManager arbiterClient];
-  v3 = [v2 remoteKeyboardUndocked];
+  remoteKeyboardUndocked = [v2 remoteKeyboardUndocked];
 
-  return v3;
+  return remoteKeyboardUndocked;
 }
 
 + (id)arbiterClient
@@ -40,8 +40,8 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:a2 object:a1 file:@"UIKeyboardArbiterManager.m" lineNumber:42 description:@"arbiterClient should be _UIKeyboardArbiterClientSpringBoard"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardArbiterManager.m" lineNumber:42 description:@"arbiterClient should be _UIKeyboardArbiterClientSpringBoard"];
     }
   }
 
@@ -64,16 +64,16 @@ void __48__UIKeyboardArbiterManager_sharedArbiterManager__block_invoke()
 {
   if (+[UIKeyboard inputUIOOP])
   {
-    v2 = 0;
+    keyboardWindow = 0;
   }
 
   else
   {
     v3 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
-    v2 = [v3 keyboardWindow];
+    keyboardWindow = [v3 keyboardWindow];
   }
 
-  return v2;
+  return keyboardWindow;
 }
 
 - (void)forceKeyboardAway
@@ -82,35 +82,35 @@ void __48__UIKeyboardArbiterManager_sharedArbiterManager__block_invoke()
   [v2 forceKeyboardAway];
 }
 
-- (void)preserveKeyboardWithId:(id)a3
+- (void)preserveKeyboardWithId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = +[UIKeyboardArbiterManager arbiterClient];
-  [v4 preserveKeyboardWithId:v3];
+  [v4 preserveKeyboardWithId:idCopy];
 }
 
-- (void)restoreKeyboardWithId:(id)a3
+- (void)restoreKeyboardWithId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = +[UIKeyboardArbiterManager arbiterClient];
-  [v4 restoreKeyboardWithId:v3];
+  [v4 restoreKeyboardWithId:idCopy];
 }
 
-- (void)userSelectedApp:(id)a3 onCompletion:(id)a4
+- (void)userSelectedApp:(id)app onCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  appCopy = app;
   v7 = +[UIKeyboardArbiterManager arbiterClient];
-  [v7 userSelectedApp:v6 onCompletion:v5];
+  [v7 userSelectedApp:appCopy onCompletion:completionCopy];
 }
 
-- (void)userSelectedProcessIdentifier:(int)a3 withSceneIdentity:(id)a4 onCompletion:(id)a5
+- (void)userSelectedProcessIdentifier:(int)identifier withSceneIdentity:(id)identity onCompletion:(id)completion
 {
-  v6 = *&a3;
-  v7 = a5;
-  v8 = a4;
+  v6 = *&identifier;
+  completionCopy = completion;
+  identityCopy = identity;
   v9 = +[UIKeyboardArbiterManager arbiterClient];
-  [v9 userSelectedProcessIdentifier:v6 withSceneIdentity:v8 onCompletion:v7];
+  [v9 userSelectedProcessIdentifier:v6 withSceneIdentity:identityCopy onCompletion:completionCopy];
 }
 
 @end

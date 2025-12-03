@@ -9,19 +9,19 @@
 - (NSDictionary)registrationState;
 - (void)_cleanupMachInfo;
 - (void)_entitlementStatusChanged;
-- (void)_handleCTServiceRequestName:(__CFString *)a3 userInfo:(__CFDictionary *)a4 contextInfo:(void *)a5;
-- (void)_updateEntitlementStatusUsingCTEntitlementsInfo:(__CFDictionary *)a3;
+- (void)_handleCTServiceRequestName:(__CFString *)name userInfo:(__CFDictionary *)info contextInfo:(void *)contextInfo;
+- (void)_updateEntitlementStatusUsingCTEntitlementsInfo:(__CFDictionary *)info;
 @end
 
 @implementation FTEntitlementSupport
 
 - (void)_cleanupMachInfo
 {
-  v3 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
-    _os_log_impl(&dword_195925000, v3, OS_LOG_TYPE_DEFAULT, " Cleaning up mach bits", v5, 2u);
+    _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, " Cleaning up mach bits", v5, 2u);
   }
 
   ctServerConnection = self->_ctServerConnection;
@@ -72,11 +72,11 @@
   }
 
   [(FTEntitlementSupport *)self _cleanupMachInfo];
-  v4 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_195925000, v4, OS_LOG_TYPE_DEFAULT, "Connecting to CT for requests", buf, 2u);
+    _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Connecting to CT for requests", buf, 2u);
   }
 
   v17 = 0;
@@ -117,11 +117,11 @@
 
   else
   {
-    v12 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    registration2 = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
     {
       *v14 = 0;
-      _os_log_impl(&dword_195925000, v12, OS_LOG_TYPE_DEFAULT, " ** Failed connection", v14, 2u);
+      _os_log_impl(&dword_195925000, registration2, OS_LOG_TYPE_DEFAULT, " ** Failed connection", v14, 2u);
     }
 
     [(FTEntitlementSupport *)self _cleanupMachInfo];
@@ -133,11 +133,11 @@
 - (BOOL)_registerForCTEntitlementNotifications
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_195925000, v3, OS_LOG_TYPE_DEFAULT, "Registering for CT entitlement requests", buf, 2u);
+    _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Registering for CT entitlement requests", buf, 2u);
   }
 
   v4 = *MEMORY[0x1E6965170];
@@ -146,8 +146,8 @@
   {
     ctServerConnection = self->_ctServerConnection;
     v7 = _CTServerConnectionVerifyCarrierEntitlements();
-    v8 = [MEMORY[0x1E69A6138] registration];
-    v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
+    registration2 = [MEMORY[0x1E69A6138] registration];
+    v9 = os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT);
     if (HIDWORD(v7))
     {
       if (!v9)
@@ -162,7 +162,7 @@ LABEL_20:
       v23 = 2048;
       v24 = v7 >> 32;
       v16 = " => Failed registration (domain: %ld error: %ld)";
-      v17 = v8;
+      v17 = registration2;
       v18 = 22;
 LABEL_19:
       _os_log_impl(&dword_195925000, v17, OS_LOG_TYPE_DEFAULT, v16, buf, v18);
@@ -172,43 +172,43 @@ LABEL_19:
     if (v9)
     {
       *buf = 0;
-      _os_log_impl(&dword_195925000, v8, OS_LOG_TYPE_DEFAULT, " => Registered for entitlements updates", buf, 2u);
+      _os_log_impl(&dword_195925000, registration2, OS_LOG_TYPE_DEFAULT, " => Registered for entitlements updates", buf, 2u);
     }
   }
 
-  v10 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  registration3 = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_195925000, v10, OS_LOG_TYPE_DEFAULT, "Retrieving initial CT carrier entitlements", buf, 2u);
+    _os_log_impl(&dword_195925000, registration3, OS_LOG_TYPE_DEFAULT, "Retrieving initial CT carrier entitlements", buf, 2u);
   }
 
   v11 = self->_ctServerConnection;
   CarrierEntitlements = _CTServerConnectionGetCarrierEntitlements();
   if (!HIDWORD(CarrierEntitlements))
   {
-    v8 = [MEMORY[0x1E69A6138] registration];
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    registration2 = [MEMORY[0x1E69A6138] registration];
+    if (!os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_20;
     }
 
     *buf = 0;
     v16 = " => Initial carrier CT entitlements dictionary was NULL";
-    v17 = v8;
+    v17 = registration2;
     v18 = 2;
     goto LABEL_19;
   }
 
   v14 = CarrierEntitlements;
-  v15 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  registration4 = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
     v22 = v14;
     v23 = 2048;
     v24 = v14 >> 32;
-    _os_log_impl(&dword_195925000, v15, OS_LOG_TYPE_DEFAULT, " => Failed to retrieve initial CT carrier entitlements (domain: %ld error: %ld)", buf, 0x16u);
+    _os_log_impl(&dword_195925000, registration4, OS_LOG_TYPE_DEFAULT, " => Failed to retrieve initial CT carrier entitlements (domain: %ld error: %ld)", buf, 0x16u);
   }
 
 LABEL_21:
@@ -220,27 +220,27 @@ LABEL_21:
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = +[FTDeviceSupport sharedInstance];
-  v4 = [v3 supportsNonWiFiFaceTime];
+  supportsNonWiFiFaceTime = [v3 supportsNonWiFiFaceTime];
 
-  if (v4)
+  if (supportsNonWiFiFaceTime)
   {
     v5 = +[FTUserConfiguration sharedInstance];
-    v6 = [v5 _nonWifiFaceTimeEntitled];
+    _nonWifiFaceTimeEntitled = [v5 _nonWifiFaceTimeEntitled];
 
-    if (v6)
+    if (_nonWifiFaceTimeEntitled)
     {
       result = 1;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      registration = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
       {
         entitlementStatus = self->_entitlementStatus;
         v12 = 138412290;
         v13 = entitlementStatus;
-        _os_log_impl(&dword_195925000, v9, OS_LOG_TYPE_DEFAULT, "Returning entitlement based on status: %@", &v12, 0xCu);
+        _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Returning entitlement based on status: %@", &v12, 0xCu);
       }
 
       result = CFEqual(self->_entitlementStatus, *MEMORY[0x1E6965180]) == 0;
@@ -249,11 +249,11 @@ LABEL_21:
 
   else
   {
-    v8 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    registration2 = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v12) = 0;
-      _os_log_impl(&dword_195925000, v8, OS_LOG_TYPE_DEFAULT, "This device does not support non WiFi facetime, thus we're not entitled", &v12, 2u);
+      _os_log_impl(&dword_195925000, registration2, OS_LOG_TYPE_DEFAULT, "This device does not support non WiFi facetime, thus we're not entitled", &v12, 2u);
     }
 
     result = 0;
@@ -266,36 +266,36 @@ LABEL_21:
 - (NSDictionary)registrationState
 {
   v2 = +[FTDeviceSupport sharedInstance];
-  v3 = [v2 registrationState];
+  registrationState = [v2 registrationState];
 
-  return v3;
+  return registrationState;
 }
 
 - (void)_entitlementStatusChanged
 {
-  v3 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
-    _os_log_impl(&dword_195925000, v3, OS_LOG_TYPE_DEFAULT, "Posting notification for entitlement status changed", v5, 2u);
+    _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Posting notification for entitlement status changed", v5, 2u);
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 __mainThreadPostNotificationName:@"__kFTEntitlementStatusChangedNotification" object:self userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter __mainThreadPostNotificationName:@"__kFTEntitlementStatusChangedNotification" object:self userInfo:0];
 }
 
-- (void)_updateEntitlementStatusUsingCTEntitlementsInfo:(__CFDictionary *)a3
+- (void)_updateEntitlementStatusUsingCTEntitlementsInfo:(__CFDictionary *)info
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = a3;
-    _os_log_impl(&dword_195925000, v5, OS_LOG_TYPE_DEFAULT, "Entitlement update: %@", &v14, 0xCu);
+    infoCopy = info;
+    _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Entitlement update: %@", &v14, 0xCu);
   }
 
-  if (a3)
+  if (info)
   {
     entitlementStatus = self->_entitlementStatus;
     if (entitlementStatus)
@@ -306,27 +306,27 @@ LABEL_21:
 
     if (*MEMORY[0x1E6965170])
     {
-      self->_entitlementStatus = CFDictionaryGetValue(a3, *MEMORY[0x1E6965170]);
+      self->_entitlementStatus = CFDictionaryGetValue(info, *MEMORY[0x1E6965170]);
     }
 
-    v7 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    registration2 = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
     {
       v8 = self->_entitlementStatus;
       v14 = 138412290;
-      v15 = v8;
-      _os_log_impl(&dword_195925000, v7, OS_LOG_TYPE_DEFAULT, "CT returned entitlement value: %@", &v14, 0xCu);
+      infoCopy = v8;
+      _os_log_impl(&dword_195925000, registration2, OS_LOG_TYPE_DEFAULT, "CT returned entitlement value: %@", &v14, 0xCu);
     }
 
     v9 = self->_entitlementStatus;
-    v10 = [MEMORY[0x1E69A6138] registration];
-    v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
+    registration3 = [MEMORY[0x1E69A6138] registration];
+    v11 = os_log_type_enabled(registration3, OS_LOG_TYPE_DEFAULT);
     if (v9)
     {
       if (v11)
       {
         LOWORD(v14) = 0;
-        _os_log_impl(&dword_195925000, v10, OS_LOG_TYPE_DEFAULT, " => saving it", &v14, 2u);
+        _os_log_impl(&dword_195925000, registration3, OS_LOG_TYPE_DEFAULT, " => saving it", &v14, 2u);
       }
 
       v12 = self->_entitlementStatus;
@@ -338,7 +338,7 @@ LABEL_17:
     if (v11)
     {
       LOWORD(v14) = 0;
-      _os_log_impl(&dword_195925000, v10, OS_LOG_TYPE_DEFAULT, " => empty value, defaulting to allowed", &v14, 2u);
+      _os_log_impl(&dword_195925000, registration3, OS_LOG_TYPE_DEFAULT, " => empty value, defaulting to allowed", &v14, 2u);
     }
 
     v12 = *MEMORY[0x1E6965178];
@@ -356,11 +356,11 @@ LABEL_18:
 - (BOOL)_reconnectCTServerConnectionIfNecessary
 {
   v10 = 0;
-  v3 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_195925000, v3, OS_LOG_TYPE_DEFAULT, "Reconnecting to CT if we can", buf, 2u);
+    _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Reconnecting to CT if we can", buf, 2u);
   }
 
   if ([(FTEntitlementSupport *)self _setupCTServerConnection])
@@ -373,11 +373,11 @@ LABEL_18:
     else
     {
       [(FTEntitlementSupport *)self _cleanupMachInfo];
-      v5 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+      registration2 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
       {
         *v8 = 0;
-        _os_log_impl(&dword_195925000, v5, OS_LOG_TYPE_DEFAULT, " => Watching for launch", v8, 2u);
+        _os_log_impl(&dword_195925000, registration2, OS_LOG_TYPE_DEFAULT, " => Watching for launch", v8, 2u);
       }
 
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -392,11 +392,11 @@ LABEL_18:
 {
   if (self->_ctServerConnection)
   {
-    v3 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       *v5 = 0;
-      _os_log_impl(&dword_195925000, v3, OS_LOG_TYPE_DEFAULT, "Disconnect CT server connection", v5, 2u);
+      _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Disconnect CT server connection", v5, 2u);
     }
 
     [(FTEntitlementSupport *)self _unregisterForCTEntitlementNotifications];
@@ -406,33 +406,33 @@ LABEL_18:
   return 1;
 }
 
-- (void)_handleCTServiceRequestName:(__CFString *)a3 userInfo:(__CFDictionary *)a4 contextInfo:(void *)a5
+- (void)_handleCTServiceRequestName:(__CFString *)name userInfo:(__CFDictionary *)info contextInfo:(void *)contextInfo
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (CFEqual(a3, *MEMORY[0x1E6965188]))
+  if (CFEqual(name, *MEMORY[0x1E6965188]))
   {
-    v8 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v13) = 0;
-      _os_log_impl(&dword_195925000, v8, OS_LOG_TYPE_DEFAULT, "Entitlement update", &v13, 2u);
+      _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Entitlement update", &v13, 2u);
     }
 
-    [(FTEntitlementSupport *)self _updateEntitlementStatusUsingCTEntitlementsInfo:a4];
+    [(FTEntitlementSupport *)self _updateEntitlementStatusUsingCTEntitlementsInfo:info];
     [(FTEntitlementSupport *)self _entitlementStatusChanged];
   }
 
   else
   {
-    v9 = CFEqual(a3, *MEMORY[0x1E6965260]);
-    v10 = [MEMORY[0x1E69A6138] registration];
-    v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
+    v9 = CFEqual(name, *MEMORY[0x1E6965260]);
+    registration2 = [MEMORY[0x1E69A6138] registration];
+    v11 = os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT);
     if (v9)
     {
       if (v11)
       {
         LOWORD(v13) = 0;
-        _os_log_impl(&dword_195925000, v10, OS_LOG_TYPE_DEFAULT, "** CT Mach port died", &v13, 2u);
+        _os_log_impl(&dword_195925000, registration2, OS_LOG_TYPE_DEFAULT, "** CT Mach port died", &v13, 2u);
       }
 
       [(FTEntitlementSupport *)self _disconnectCTServerConnection];
@@ -444,10 +444,10 @@ LABEL_18:
       if (v11)
       {
         v13 = 138412546;
-        v14 = a3;
+        nameCopy = name;
         v15 = 2112;
-        v16 = a4;
-        _os_log_impl(&dword_195925000, v10, OS_LOG_TYPE_DEFAULT, "Unhandled request type, name: %@   userInfo: %@", &v13, 0x16u);
+        infoCopy = info;
+        _os_log_impl(&dword_195925000, registration2, OS_LOG_TYPE_DEFAULT, "Unhandled request type, name: %@   userInfo: %@", &v13, 0x16u);
       }
     }
   }

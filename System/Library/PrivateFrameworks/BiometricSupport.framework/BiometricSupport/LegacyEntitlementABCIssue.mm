@@ -1,37 +1,37 @@
 @interface LegacyEntitlementABCIssue
-+ (void)reportClient:(id)a3 withProcessName:(id)a4 clientUUID:(id)a5 platform:(id)a6 forReporter:(id)a7;
++ (void)reportClient:(id)client withProcessName:(id)name clientUUID:(id)d platform:(id)platform forReporter:(id)reporter;
 - (id)context;
 - (id)tag;
 @end
 
 @implementation LegacyEntitlementABCIssue
 
-+ (void)reportClient:(id)a3 withProcessName:(id)a4 clientUUID:(id)a5 platform:(id)a6 forReporter:(id)a7
++ (void)reportClient:(id)client withProcessName:(id)name clientUUID:(id)d platform:(id)platform forReporter:(id)reporter
 {
-  v18 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"LegacyEntitlement/%@/%@", v18, v11];
-  v16 = [v14 issueForTag:v15];
+  clientCopy = client;
+  nameCopy = name;
+  dCopy = d;
+  platformCopy = platform;
+  reporterCopy = reporter;
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"LegacyEntitlement/%@/%@", clientCopy, nameCopy];
+  v16 = [reporterCopy issueForTag:nameCopy];
 
   if (!v16)
   {
-    v17 = [[LegacyEntitlementABCIssue alloc] initWithClient:v18 processName:v11 clientUUID:v12 platform:v13 forReporter:v14];
-    [v14 addIssue:v17];
+    v17 = [[LegacyEntitlementABCIssue alloc] initWithClient:clientCopy processName:nameCopy clientUUID:dCopy platform:platformCopy forReporter:reporterCopy];
+    [reporterCopy addIssue:v17];
     [(EntitlementABCIssue *)v17 report];
-    [v14 rescheduleTimer];
+    [reporterCopy rescheduleTimer];
   }
 }
 
 - (id)tag
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(EntitlementABCIssue *)self clientName];
-  v5 = [(EntitlementABCIssue *)self processName];
-  v6 = [(EntitlementABCIssue *)self clientUUID];
-  v7 = [v3 stringWithFormat:@"LegacyEntitlement/%@/%@/%@", v4, v5, v6];
+  clientName = [(EntitlementABCIssue *)self clientName];
+  processName = [(EntitlementABCIssue *)self processName];
+  clientUUID = [(EntitlementABCIssue *)self clientUUID];
+  v7 = [v3 stringWithFormat:@"LegacyEntitlement/%@/%@/%@", clientName, processName, clientUUID];
 
   return v7;
 }
@@ -39,11 +39,11 @@
 - (id)context
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(EntitlementABCIssue *)self clientName];
-  v5 = [(EntitlementABCIssue *)self processName];
-  v6 = [(EntitlementABCIssue *)self clientUUID];
-  v7 = [(EntitlementABCIssue *)self platform];
-  v8 = [v3 stringWithFormat:@"clientName=%@, processName=%@, clientUUID=%@, platform=%@, v=4", v4, v5, v6, v7];
+  clientName = [(EntitlementABCIssue *)self clientName];
+  processName = [(EntitlementABCIssue *)self processName];
+  clientUUID = [(EntitlementABCIssue *)self clientUUID];
+  platform = [(EntitlementABCIssue *)self platform];
+  v8 = [v3 stringWithFormat:@"clientName=%@, processName=%@, clientUUID=%@, platform=%@, v=4", clientName, processName, clientUUID, platform];
 
   return v8;
 }

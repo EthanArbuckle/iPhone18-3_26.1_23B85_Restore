@@ -1,23 +1,23 @@
 @interface ABSBundle
 - (ABSBundle)init;
-- (ABSBundle)initWithBackingBundle:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (Class)classNamed:(id)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (ABSBundle)initWithBackingBundle:(id)bundle;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (Class)classNamed:(id)named;
+- (id)forwardingTargetForSelector:(SEL)selector;
 @end
 
 @implementation ABSBundle
 
-- (ABSBundle)initWithBackingBundle:(id)a3
+- (ABSBundle)initWithBackingBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v10.receiver = self;
   v10.super_class = ABSBundle;
   v6 = [(ABSBundle *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingBundle, a3);
+    objc_storeStrong(&v6->_backingBundle, bundle);
     v8 = v7;
   }
 
@@ -32,43 +32,43 @@
   return v4;
 }
 
-- (Class)classNamed:(id)a3
+- (Class)classNamed:(id)named
 {
-  v4 = a3;
-  if ([v4 isEqual:@"ABAssistantManager"])
+  namedCopy = named;
+  if ([namedCopy isEqual:@"ABAssistantManager"])
   {
     v5 = objc_opt_class();
   }
 
   else
   {
-    v6 = [(ABSBundle *)self backingBundle];
-    v5 = [v6 classNamed:v4];
+    backingBundle = [(ABSBundle *)self backingBundle];
+    v5 = [backingBundle classNamed:namedCopy];
   }
 
   return v5;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  if (sel_isEqual(sel_classNamed_, a3))
+  if (sel_isEqual(sel_classNamed_, selector))
   {
     v7.receiver = self;
     v7.super_class = ABSBundle;
-    v5 = [(ABSBundle *)&v7 forwardingTargetForSelector:a3];
+    backingBundle = [(ABSBundle *)&v7 forwardingTargetForSelector:selector];
   }
 
   else
   {
-    v5 = [(ABSBundle *)self backingBundle];
+    backingBundle = [(ABSBundle *)self backingBundle];
   }
 
-  return v5;
+  return backingBundle;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v3 = [(ABSBundle *)self backingBundle];
+  backingBundle = [(ABSBundle *)self backingBundle];
   v4 = objc_opt_respondsToSelector();
 
   return v4 & 1;

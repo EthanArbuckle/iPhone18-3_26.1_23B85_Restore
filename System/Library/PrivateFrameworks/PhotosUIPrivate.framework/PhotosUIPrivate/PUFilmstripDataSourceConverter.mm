@@ -1,24 +1,24 @@
 @interface PUFilmstripDataSourceConverter
-- (BOOL)convertIndexPath:(id *)a3 tileKind:(id *)a4 fromDataSource:(id)a5 toDataSource:(id)a6;
+- (BOOL)convertIndexPath:(id *)path tileKind:(id *)kind fromDataSource:(id)source toDataSource:(id)dataSource;
 @end
 
 @implementation PUFilmstripDataSourceConverter
 
-- (BOOL)convertIndexPath:(id *)a3 tileKind:(id *)a4 fromDataSource:(id)a5 toDataSource:(id)a6
+- (BOOL)convertIndexPath:(id *)path tileKind:(id *)kind fromDataSource:(id)source toDataSource:(id)dataSource
 {
-  v9 = a5;
-  v10 = a6;
-  if ([*a4 isEqualToString:@"PUTileKindItemContentFilmStripIndicator"])
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
+  if ([*kind isEqualToString:@"PUTileKindItemContentFilmStripIndicator"])
   {
-    v11 = [v10 indicatorInfos];
-    v12 = [v11 count];
-    v13 = v12 >= [*a3 indexAtPosition:0];
+    indicatorInfos = [dataSourceCopy indicatorInfos];
+    v12 = [indicatorInfos count];
+    v13 = v12 >= [*path indexAtPosition:0];
   }
 
   else
   {
-    v14 = [v9 numberOfIndexes];
-    v13 = v14 == [v10 numberOfIndexes];
+    numberOfIndexes = [sourceCopy numberOfIndexes];
+    v13 = numberOfIndexes == [dataSourceCopy numberOfIndexes];
   }
 
   return v13;

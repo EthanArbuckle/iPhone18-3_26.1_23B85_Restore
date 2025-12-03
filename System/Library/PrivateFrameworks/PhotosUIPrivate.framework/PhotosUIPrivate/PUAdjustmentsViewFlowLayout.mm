@@ -1,14 +1,14 @@
 @interface PUAdjustmentsViewFlowLayout
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3;
-- (id)nearestIndexPathForVisibleItemAtPoint:(CGPoint)a3;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset;
+- (id)nearestIndexPathForVisibleItemAtPoint:(CGPoint)point;
 @end
 
 @implementation PUAdjustmentsViewFlowLayout
 
-- (id)nearestIndexPathForVisibleItemAtPoint:(CGPoint)a3
+- (id)nearestIndexPathForVisibleItemAtPoint:(CGPoint)point
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = [(PUAdjustmentsViewFlowLayout *)self collectionView:a3.x];
+  v4 = [(PUAdjustmentsViewFlowLayout *)self collectionView:point.x];
   [v4 bounds];
   v6 = v5;
   v8 = v7;
@@ -16,9 +16,9 @@
   v12 = v11;
 
   v13 = [(UICollectionViewFlowLayout *)self layoutAttributesForElementsInRect:v6, v8, v10, v12];
-  v14 = [v13 firstObject];
-  v15 = [v14 indexPath];
-  v16 = [(UICollectionViewFlowLayout *)self scrollDirection];
+  firstObject = [v13 firstObject];
+  indexPath = [firstObject indexPath];
+  scrollDirection = [(UICollectionViewFlowLayout *)self scrollDirection];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -41,7 +41,7 @@
 
         v23 = *(*(&v34 + 1) + 8 * i);
         [v23 frame];
-        if (v16 == 1)
+        if (scrollDirection == 1)
         {
           MidX = CGRectGetMidX(*&v24);
           v40.origin.x = v6;
@@ -64,10 +64,10 @@
         v30 = fabs(MidX - MidY);
         if (v30 < v21)
         {
-          v31 = [v23 indexPath];
+          indexPath2 = [v23 indexPath];
 
           v21 = v30;
-          v15 = v31;
+          indexPath = indexPath2;
         }
       }
 
@@ -77,24 +77,24 @@
     while (v19);
   }
 
-  v32 = v15;
-  return v15;
+  v32 = indexPath;
+  return indexPath;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v46 = *MEMORY[0x1E69E9840];
-  v6 = [(PUAdjustmentsViewFlowLayout *)self collectionView];
-  [v6 frame];
+  collectionView = [(PUAdjustmentsViewFlowLayout *)self collectionView];
+  [collectionView frame];
   v8 = v7;
-  v9 = [(PUAdjustmentsViewFlowLayout *)self collectionView];
-  [v9 frame];
+  collectionView2 = [(PUAdjustmentsViewFlowLayout *)self collectionView];
+  [collectionView2 frame];
   v11 = v10;
 
   v12 = [(UICollectionViewFlowLayout *)self layoutAttributesForElementsInRect:x, y, v8, v11];
-  v13 = [(UICollectionViewFlowLayout *)self scrollDirection];
+  scrollDirection = [(UICollectionViewFlowLayout *)self scrollDirection];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
@@ -118,7 +118,7 @@
 
         v21 = *(*(&v41 + 1) + 8 * i);
         [v21 frame];
-        if (v13 == 1)
+        if (scrollDirection == 1)
         {
           MidX = CGRectGetMidX(*&v22);
           v48.origin.x = x;
@@ -162,12 +162,12 @@
   [v17 frame];
   v31 = v30;
   v33 = v32;
-  v34 = [(PUAdjustmentsViewFlowLayout *)self collectionView];
-  [v34 contentInset];
+  collectionView3 = [(PUAdjustmentsViewFlowLayout *)self collectionView];
+  [collectionView3 contentInset];
   v36 = v35;
   v38 = v37;
 
-  if (v13 == 1)
+  if (scrollDirection == 1)
   {
     x = v31 - v38;
   }

@@ -1,14 +1,14 @@
 @interface OBTextBulletedListItem
-- (OBTextBulletedListItem)initWithTitle:(id)a3 description:(id)a4 image:(id)a5 accessoryButton:(id)a6;
+- (OBTextBulletedListItem)initWithTitle:(id)title description:(id)description image:(id)image accessoryButton:(id)button;
 @end
 
 @implementation OBTextBulletedListItem
 
-- (OBTextBulletedListItem)initWithTitle:(id)a3 description:(id)a4 image:(id)a5 accessoryButton:(id)a6
+- (OBTextBulletedListItem)initWithTitle:(id)title description:(id)description image:(id)image accessoryButton:(id)button
 {
   v7.receiver = self;
   v7.super_class = OBTextBulletedListItem;
-  return [(OBBulletedListItem *)&v7 initWithTitle:a3 description:a4 image:a5 tintColor:0 linkButton:a6];
+  return [(OBBulletedListItem *)&v7 initWithTitle:title description:description image:image tintColor:0 linkButton:button];
 }
 
 @end

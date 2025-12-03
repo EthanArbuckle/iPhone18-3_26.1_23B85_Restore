@@ -1,12 +1,12 @@
 @interface AEConcreteSystemNotificationPrimitives
-- (void)postSystemNotificationWithName:(id)a3;
+- (void)postSystemNotificationWithName:(id)name;
 @end
 
 @implementation AEConcreteSystemNotificationPrimitives
 
-- (void)postSystemNotificationWithName:(id)a3
+- (void)postSystemNotificationWithName:(id)name
 {
-  name = a3;
+  name = name;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, name, 0, 0, 1u);
 }

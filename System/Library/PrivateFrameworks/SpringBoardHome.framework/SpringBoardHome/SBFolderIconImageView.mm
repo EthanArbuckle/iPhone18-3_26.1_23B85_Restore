@@ -1,26 +1,26 @@
 @interface SBFolderIconImageView
 - (BOOL)canUpdateImage;
 - (BOOL)usesLayersForMiniIcons;
-- (CGRect)frameForMiniIconAtIndex:(unint64_t)a3;
-- (CGRect)frameForMiniIconAtIndexPath:(id)a3;
-- (CGRect)visibleImageRelativeFrameForMiniIconAtIndex:(unint64_t)a3;
+- (CGRect)frameForMiniIconAtIndex:(unint64_t)index;
+- (CGRect)frameForMiniIconAtIndexPath:(id)path;
+- (CGRect)visibleImageRelativeFrameForMiniIconAtIndex:(unint64_t)index;
 - (CGSize)_interiorGridSize;
 - (NSArray)currentPageIconCellViews;
-- (SBFolderIconImageView)initWithFrame:(CGRect)a3;
+- (SBFolderIconImageView)initWithFrame:(CGRect)frame;
 - (UIView)currentPageView;
 - (double)iconGridImageAlpha;
 - (id)_currentPageListModel;
 - (id)_folderIconImageCache;
 - (id)_leadingWrapperView;
 - (id)_trailingWrapperView;
-- (id)_wrapperViewDisplayingElement:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)_wrapperViewDisplayingElement:(id)element;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (id)pageElements;
 - (id)representedListLayout;
 - (id)snapshot;
 - (unint64_t)firstVisibleMiniIconIndex;
 - (unint64_t)visibleMiniIconCount;
-- (void)_performScrollingDirection:(int64_t)a3 targetPageIndex:(unint64_t)a4 targetPageScrollRow:(unint64_t)a5 newLeftElement:(id)a6 newRightElement:(id)a7 animated:(BOOL)a8;
+- (void)_performScrollingDirection:(int64_t)direction targetPageIndex:(unint64_t)index targetPageScrollRow:(unint64_t)row newLeftElement:(id)element newRightElement:(id)rightElement animated:(BOOL)animated;
 - (void)_setupGridViewsInCurrentConfiguration;
 - (void)_showLeadingMinigrid;
 - (void)_showLeftMinigrid;
@@ -28,37 +28,37 @@
 - (void)_showTrailingMinigrid;
 - (void)applyGlass;
 - (void)cleanupAfterFloatyFolderCrossfade;
-- (void)configureMiniGridView:(id)a3;
+- (void)configureMiniGridView:(id)view;
 - (void)dealloc;
-- (void)didAnimateListLayoutProviderChange:(id)a3 context:(id)a4;
-- (void)enumerateCurrentPageIconLayerViewsInGridView:(id)a3 usingBlock:(id)a4;
-- (void)enumerateCurrentPageIconLayerViewsUsingBlock:(id)a3;
-- (void)enumerateCurrentPageIconLayersUsingBlock:(id)a3;
-- (void)folderIcon:(id)a3 containedIconAccessoriesDidUpdate:(id)a4;
-- (void)folderIcon:(id)a3 containedIconLaunchEnabledDidChange:(id)a4;
-- (void)folderIconImageCache:(id)a3 didUpdateImagesForFolderIcon:(id)a4 imageAppearance:(id)a5;
-- (void)fulfillGridImageForPageElement:(id)a3;
-- (void)fulfillGridViewForPageElement:(id)a3;
+- (void)didAnimateListLayoutProviderChange:(id)change context:(id)context;
+- (void)enumerateCurrentPageIconLayerViewsInGridView:(id)view usingBlock:(id)block;
+- (void)enumerateCurrentPageIconLayerViewsUsingBlock:(id)block;
+- (void)enumerateCurrentPageIconLayersUsingBlock:(id)block;
+- (void)folderIcon:(id)icon containedIconAccessoriesDidUpdate:(id)update;
+- (void)folderIcon:(id)icon containedIconLaunchEnabledDidChange:(id)change;
+- (void)folderIconImageCache:(id)cache didUpdateImagesForFolderIcon:(id)icon imageAppearance:(id)appearance;
+- (void)fulfillGridImageForPageElement:(id)element;
+- (void)fulfillGridViewForPageElement:(id)element;
 - (void)iconImageInfoDidChange;
 - (void)iconViewFolderIconImageCacheDidChange;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)prepareToCrossfadeWithFloatyFolderView:(id)a3 allowFolderInteraction:(BOOL)a4;
-- (void)scrollToFirstGapAnimated:(BOOL)a3;
-- (void)scrollToGapOrTopIfFullOfPage:(unint64_t)a3 animated:(BOOL)a4;
-- (void)scrollToTopOfPage:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setAllowsGlassGroupingOnMiniGridViews:(BOOL)a3;
-- (void)setBackgroundAndIconGridImageAlpha:(double)a3;
-- (void)setContentVisibility:(unint64_t)a3;
-- (void)setDisplayedPageElements:(id)a3;
-- (void)setFloatyFolderCrossfadeFraction:(double)a3;
-- (void)setIcon:(id)a3 location:(id)a4 animated:(BOOL)a5;
-- (void)setIconGridImageAlpha:(double)a3;
-- (void)setIconView:(id)a3;
-- (void)setPageGridCornerRadius:(double)a3;
-- (void)updateImageAnimated:(BOOL)a3;
+- (void)prepareToCrossfadeWithFloatyFolderView:(id)view allowFolderInteraction:(BOOL)interaction;
+- (void)scrollToFirstGapAnimated:(BOOL)animated;
+- (void)scrollToGapOrTopIfFullOfPage:(unint64_t)page animated:(BOOL)animated;
+- (void)scrollToTopOfPage:(unint64_t)page animated:(BOOL)animated;
+- (void)setAllowsGlassGroupingOnMiniGridViews:(BOOL)views;
+- (void)setBackgroundAndIconGridImageAlpha:(double)alpha;
+- (void)setContentVisibility:(unint64_t)visibility;
+- (void)setDisplayedPageElements:(id)elements;
+- (void)setFloatyFolderCrossfadeFraction:(double)fraction;
+- (void)setIcon:(id)icon location:(id)location animated:(BOOL)animated;
+- (void)setIconGridImageAlpha:(double)alpha;
+- (void)setIconView:(id)view;
+- (void)setPageGridCornerRadius:(double)radius;
+- (void)updateImageAnimated:(BOOL)animated;
 - (void)updateOngoingAnimationState;
-- (void)willAnimateListLayoutProviderChange:(id)a3 context:(id)a4;
+- (void)willAnimateListLayoutProviderChange:(id)change context:(id)context;
 @end
 
 @implementation SBFolderIconImageView
@@ -88,9 +88,9 @@
 
 - (CGSize)_interiorGridSize
 {
-  v3 = [(SBFolderIconImageView *)self _iconGridImageClass];
-  v4 = [(SBFolderIconImageView *)self representedListLayout];
-  [(objc_class *)v3 sizeForLayout:v4];
+  _iconGridImageClass = [(SBFolderIconImageView *)self _iconGridImageClass];
+  representedListLayout = [(SBFolderIconImageView *)self representedListLayout];
+  [(objc_class *)_iconGridImageClass sizeForLayout:representedListLayout];
   v6 = v5;
   v8 = v7;
 
@@ -103,10 +103,10 @@
 
 - (id)representedListLayout
 {
-  v2 = [(SBIconImageView *)self iconView];
-  v3 = [v2 representedFolderIconLocation];
-  v4 = [v2 listLayoutProvider];
-  v5 = [v4 layoutForIconLocation:v3];
+  iconView = [(SBIconImageView *)self iconView];
+  representedFolderIconLocation = [iconView representedFolderIconLocation];
+  listLayoutProvider = [iconView listLayoutProvider];
+  v5 = [listLayoutProvider layoutForIconLocation:representedFolderIconLocation];
 
   return v5;
 }
@@ -115,61 +115,61 @@
 {
   v5.receiver = self;
   v5.super_class = SBFolderIconImageView;
-  v3 = [(SBIconImageView *)&v5 canUpdateImage];
-  if (v3)
+  canUpdateImage = [(SBIconImageView *)&v5 canUpdateImage];
+  if (canUpdateImage)
   {
-    LOBYTE(v3) = ![(SBFolderIconImageView *)self shouldAnimateIconImageInfoChange];
+    LOBYTE(canUpdateImage) = ![(SBFolderIconImageView *)self shouldAnimateIconImageInfoChange];
   }
 
-  return v3;
+  return canUpdateImage;
 }
 
 - (id)_folderIconImageCache
 {
-  v2 = [(SBIconImageView *)self iconView];
-  v3 = [v2 folderIconImageCache];
+  iconView = [(SBIconImageView *)self iconView];
+  folderIconImageCache = [iconView folderIconImageCache];
 
-  return v3;
+  return folderIconImageCache;
 }
 
 - (id)pageElements
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SBFolderIconImageView *)self _folderIcon];
-  v4 = [v3 folder];
-  v5 = [(SBIconImageView *)self iconView];
-  v6 = [v5 overrideImage];
-  if (v6)
+  _folderIcon = [(SBFolderIconImageView *)self _folderIcon];
+  folder = [_folderIcon folder];
+  iconView = [(SBIconImageView *)self iconView];
+  overrideImage = [iconView overrideImage];
+  if (overrideImage)
   {
-    v7 = objc_alloc_init(_SBFolderPageElement);
-    [(_SBFolderPageElement *)v7 setFolderIcon:v3];
-    [(_SBFolderPageElement *)v7 setImage:v6];
-    v48[0] = v7;
+    displayedPageElements = objc_alloc_init(_SBFolderPageElement);
+    [(_SBFolderPageElement *)displayedPageElements setFolderIcon:_folderIcon];
+    [(_SBFolderPageElement *)displayedPageElements setImage:overrideImage];
+    v48[0] = displayedPageElements;
     v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:1];
     goto LABEL_19;
   }
 
-  v35 = v5;
-  v7 = [(SBFolderIconImageView *)self displayedPageElements];
-  v39 = [(SBIconImageView *)self effectiveIconImageAppearance];
+  v35 = iconView;
+  displayedPageElements = [(SBFolderIconImageView *)self displayedPageElements];
+  effectiveIconImageAppearance = [(SBIconImageView *)self effectiveIconImageAppearance];
   [(SBIconImageView *)self iconImageInfo];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v4 listCount];
-  v40 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v16];
-  v38 = v16;
-  if (v16)
+  listCount = [folder listCount];
+  v40 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:listCount];
+  v38 = listCount;
+  if (listCount)
   {
     v17 = 0;
-    v36 = v3;
-    v37 = v4;
+    v36 = _folderIcon;
+    v37 = folder;
     while (1)
     {
-      v18 = [v4 listAtIndex:v17];
-      v19 = [v18 icons];
-      v20 = [v19 bs_compactMap:&__block_literal_global_27];
+      v18 = [folder listAtIndex:v17];
+      icons = [v18 icons];
+      v20 = [icons bs_compactMap:&__block_literal_global_27];
 
       v41[0] = MEMORY[0x1E69E9820];
       v41[1] = 3221225472;
@@ -177,13 +177,13 @@
       v41[3] = &unk_1E808B490;
       v21 = v20;
       v42 = v21;
-      v22 = v39;
+      v22 = effectiveIconImageAppearance;
       v43 = v22;
       v44 = v9;
       v45 = v11;
       v46 = v13;
       v47 = v15;
-      v23 = [(_SBFolderPageElement *)v7 bs_firstObjectPassingTest:v41];
+      v23 = [(_SBFolderPageElement *)displayedPageElements bs_firstObjectPassingTest:v41];
       v24 = v23;
       if (v23)
       {
@@ -198,21 +198,21 @@
       v26 = v25;
       [(_SBFolderPageElement *)v25 setGridImagePossible:1];
       [(_SBFolderPageElement *)v26 setPageIndex:v17];
-      [(_SBFolderPageElement *)v26 setFolderIcon:v3];
-      if (v7 && [(_SBFolderPageElement *)v7 count]> v17)
+      [(_SBFolderPageElement *)v26 setFolderIcon:_folderIcon];
+      if (displayedPageElements && [(_SBFolderPageElement *)displayedPageElements count]> v17)
       {
-        v27 = [(_SBFolderPageElement *)v7 objectAtIndex:v17];
-        v28 = [v27 visibleRow];
+        v27 = [(_SBFolderPageElement *)displayedPageElements objectAtIndex:v17];
+        visibleRow = [v27 visibleRow];
 
-        v3 = v36;
+        _folderIcon = v36;
       }
 
       else
       {
-        v28 = 0;
+        visibleRow = 0;
       }
 
-      [(_SBFolderPageElement *)v26 setVisibleRow:v28];
+      [(_SBFolderPageElement *)v26 setVisibleRow:visibleRow];
       [(_SBFolderPageElement *)v26 setIconIdentifiers:v21];
       [(_SBFolderPageElement *)v26 setIconImageInfo:v9, v11, v13, v15];
       if (!v24)
@@ -220,16 +220,16 @@
         goto LABEL_17;
       }
 
-      v29 = [v24 imageAppearance];
-      if ([v29 isEqual:v22])
+      imageAppearance = [v24 imageAppearance];
+      if ([imageAppearance isEqual:v22])
       {
         goto LABEL_16;
       }
 
-      v30 = [v24 gridView];
-      v31 = [v30 canUpdateIconTintColorFromImageAppearance:v22];
+      gridView = [v24 gridView];
+      v31 = [gridView canUpdateIconTintColorFromImageAppearance:v22];
 
-      v3 = v36;
+      _folderIcon = v36;
       if (v31)
       {
         break;
@@ -239,18 +239,18 @@ LABEL_17:
       [v40 addObject:v26];
 
       ++v17;
-      v4 = v37;
+      folder = v37;
       if (v38 == v17)
       {
         goto LABEL_18;
       }
     }
 
-    v29 = [v24 gridView];
-    v32 = [v22 tintColor];
-    [v29 setIconTintColor:v32];
+    imageAppearance = [v24 gridView];
+    tintColor = [v22 tintColor];
+    [imageAppearance setIconTintColor:tintColor];
 
-    v3 = v36;
+    _folderIcon = v36;
 LABEL_16:
 
     goto LABEL_17;
@@ -259,11 +259,11 @@ LABEL_16:
 LABEL_18:
   v33 = objc_alloc_init(_SBFolderPageElement);
   [(_SBFolderPageElement *)v33 setPageIndex:v38];
-  [(_SBFolderPageElement *)v33 setFolderIcon:v3];
+  [(_SBFolderPageElement *)v33 setFolderIcon:_folderIcon];
   [v40 addObject:v33];
 
-  v6 = 0;
-  v5 = v35;
+  overrideImage = 0;
+  iconView = v35;
 LABEL_19:
 
   return v40;
@@ -279,8 +279,8 @@ LABEL_19:
 
 - (void)applyGlass
 {
-  v3 = [(SBIconImageView *)self effectiveIconImageStyleConfiguration];
-  -[UIView sbh_applyFolderGlassWithGrouping:userInterfaceStyle:](self, "sbh_applyFolderGlassWithGrouping:userInterfaceStyle:", -[SBIconImageView allowsGlassGrouping](self, "allowsGlassGrouping"), [v3 iconGlassUserInterfaceStyle]);
+  effectiveIconImageStyleConfiguration = [(SBIconImageView *)self effectiveIconImageStyleConfiguration];
+  -[UIView sbh_applyFolderGlassWithGrouping:userInterfaceStyle:](self, "sbh_applyFolderGlassWithGrouping:userInterfaceStyle:", -[SBIconImageView allowsGlassGrouping](self, "allowsGlassGrouping"), [effectiveIconImageStyleConfiguration iconGlassUserInterfaceStyle]);
 }
 
 - (BOOL)usesLayersForMiniIcons
@@ -293,18 +293,18 @@ LABEL_19:
 
 - (unint64_t)firstVisibleMiniIconIndex
 {
-  v2 = [(SBFolderIconImageView *)self _currentPageElement];
-  v3 = [v2 firstVisibleMiniIconIndex];
+  _currentPageElement = [(SBFolderIconImageView *)self _currentPageElement];
+  firstVisibleMiniIconIndex = [_currentPageElement firstVisibleMiniIconIndex];
 
-  return v3;
+  return firstVisibleMiniIconIndex;
 }
 
 - (void)cleanupAfterFloatyFolderCrossfade
 {
   [(SBFolderIconImageView *)self _setAnimating:0];
   [(SBFolderIconImageView *)self setUserInteractionEnabled:0];
-  v3 = [(SBIconImageView *)self effectView];
-  [v3 setAlpha:1.0];
+  effectView = [(SBIconImageView *)self effectView];
+  [effectView setAlpha:1.0];
   [(SBIconImageView *)self setOverlayAlpha:1.0];
   crossfadeScalingView = self->_crossfadeScalingView;
   v5 = *(MEMORY[0x1E695EFD0] + 16);
@@ -314,10 +314,10 @@ LABEL_19:
   [(UIView *)crossfadeScalingView setTransform:v12];
   [(SBFloatyFolderView *)self->_crossfadeFolderView setBackgroundAlpha:1.0];
   [(SBFolderView *)self->_crossfadeFolderView returnScalingView];
-  v6 = [(SBIconImageView *)self iconView];
-  [v6 iconImageInfo];
+  iconView = [(SBIconImageView *)self iconView];
+  [iconView iconImageInfo];
   v8 = v7;
-  [v3 _setContinuousCornerRadius:v7];
+  [effectView _setContinuousCornerRadius:v7];
   [(SBFolderIconImageView *)self setPageGridCornerRadius:v8];
   crossfadeFolderView = self->_crossfadeFolderView;
   [(SBFloatyFolderView *)crossfadeFolderView cornerRadius];
@@ -329,11 +329,11 @@ LABEL_19:
   self->_crossfadeFolderView = 0;
 }
 
-- (SBFolderIconImageView)initWithFrame:(CGRect)a3
+- (SBFolderIconImageView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = SBFolderIconImageView;
-  v3 = [(SBIconImageView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBIconImageView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -365,26 +365,26 @@ LABEL_19:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
 
   v4.receiver = self;
   v4.super_class = SBFolderIconImageView;
   [(SBIconImageView *)&v4 dealloc];
 }
 
-- (void)updateImageAnimated:(BOOL)a3
+- (void)updateImageAnimated:(BOOL)animated
 {
   if ([(SBFolderIconImageView *)self canUpdateImage])
   {
-    v7 = [(SBFolderIconImageView *)self _folderIcon];
-    v4 = [v7 folder];
-    if (v7 && v4)
+    _folderIcon = [(SBFolderIconImageView *)self _folderIcon];
+    folder = [_folderIcon folder];
+    if (_folderIcon && folder)
     {
-      v5 = [(SBIconImageView *)self effectiveIconImageAppearance];
-      [(SBFolderIconImageView *)self setDisplayedImageAppearance:v5];
-      v6 = [(SBFolderIconImageView *)self pageElements];
-      [(SBFolderIconImageView *)self setDisplayedPageElements:v6];
+      effectiveIconImageAppearance = [(SBIconImageView *)self effectiveIconImageAppearance];
+      [(SBFolderIconImageView *)self setDisplayedImageAppearance:effectiveIconImageAppearance];
+      pageElements = [(SBFolderIconImageView *)self pageElements];
+      [(SBFolderIconImageView *)self setDisplayedPageElements:pageElements];
     }
   }
 }
@@ -424,25 +424,25 @@ LABEL_7:
   return v13;
 }
 
-- (void)willAnimateListLayoutProviderChange:(id)a3 context:(id)a4
+- (void)willAnimateListLayoutProviderChange:(id)change context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  contextCopy = context;
   v31.receiver = self;
   v31.super_class = SBFolderIconImageView;
-  [(SBIconImageView *)&v31 willAnimateListLayoutProviderChange:v6 context:v7];
+  [(SBIconImageView *)&v31 willAnimateListLayoutProviderChange:changeCopy context:contextCopy];
   [(SBFolderIconImageView *)self setShouldAnimateIconImageInfoChange:1];
   if ([objc_opt_class() allowsLayersForMiniIcons])
   {
-    v8 = [(SBIconImageView *)self location];
-    v9 = [v6 layoutForIconLocation:v8];
+    location = [(SBIconImageView *)self location];
+    v9 = [changeCopy layoutForIconLocation:location];
     v10 = SBHIconListLayoutFolderIconGridCellIconImageInfo(v9);
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(SBIconImageView *)self effectiveIconImageAppearance];
-    v18 = [(SBFolderIconImageView *)self cellIconImageOptions];
-    v19 = [(SBFolderIconImageView *)self _currentPageListModel];
+    effectiveIconImageAppearance = [(SBIconImageView *)self effectiveIconImageAppearance];
+    cellIconImageOptions = [(SBFolderIconImageView *)self cellIconImageOptions];
+    _currentPageListModel = [(SBFolderIconImageView *)self _currentPageListModel];
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
@@ -452,13 +452,13 @@ LABEL_7:
     v27 = v12;
     v28 = v14;
     v29 = v16;
-    v30 = v18;
-    v24 = v17;
+    v30 = cellIconImageOptions;
+    v24 = effectiveIconImageAppearance;
     v25 = v20;
     v21 = v20;
-    v22 = v17;
-    [v19 enumerateIconsUsingBlock:v23];
-    [v7 setObject:v21 forKey:@"SBFolderIconImageViewPrefetchAssertions"];
+    v22 = effectiveIconImageAppearance;
+    [_currentPageListModel enumerateIconsUsingBlock:v23];
+    [contextCopy setObject:v21 forKey:@"SBFolderIconImageViewPrefetchAssertions"];
   }
 }
 
@@ -476,11 +476,11 @@ uint64_t __69__SBFolderIconImageView_willAnimateListLayoutProviderChange_context
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)didAnimateListLayoutProviderChange:(id)a3 context:(id)a4
+- (void)didAnimateListLayoutProviderChange:(id)change context:(id)context
 {
   v8.receiver = self;
   v8.super_class = SBFolderIconImageView;
-  [(SBIconImageView *)&v8 didAnimateListLayoutProviderChange:a3 context:a4];
+  [(SBIconImageView *)&v8 didAnimateListLayoutProviderChange:change context:context];
   [(SBFolderIconImageView *)self setShouldAnimateIconImageInfoChange:0];
   pageGridContainer = self->_pageGridContainer;
   v6 = *(MEMORY[0x1E695EFD0] + 16);
@@ -546,8 +546,8 @@ uint64_t __47__SBFolderIconImageView_iconImageInfoDidChange__block_invoke(uint64
 
 - (void)prepareForReuse
 {
-  v3 = [(SBFolderIconImageView *)self layer];
-  [v3 setShouldRasterize:0];
+  layer = [(SBFolderIconImageView *)self layer];
+  [layer setShouldRasterize:0];
 
   [(SBFolderIconImageView *)self scrollToTopOfFirstPageAnimated:0];
   [(SBFolderIconImageView *)self setBackgroundAndIconGridImageAlpha:1.0];
@@ -563,21 +563,21 @@ uint64_t __47__SBFolderIconImageView_iconImageInfoDidChange__block_invoke(uint64
   v8.super_class = SBFolderIconImageView;
   [(SBIconImageView *)&v8 iconViewFolderIconImageCacheDidChange];
   [(SBFolderIconImageView *)self updateImageAnimated:0];
-  v3 = [(SBFolderIconImageView *)self _folderIconImageCache];
-  v4 = [(SBIconImageView *)self icon];
-  if (v4)
+  _folderIconImageCache = [(SBFolderIconImageView *)self _folderIconImageCache];
+  icon = [(SBIconImageView *)self icon];
+  if (icon)
   {
-    [v3 addObserver:self forFolderIcon:v4];
+    [_folderIconImageCache addObserver:self forFolderIcon:icon];
   }
 
   if (-[SBFolderIconImageView shouldAnimateIconImageInfoChange](self, "shouldAnimateIconImageInfoChange") && ([objc_opt_class() allowsLayersForMiniIcons] & 1) == 0)
   {
-    v5 = [(SBFolderIconImageView *)self pageElements];
-    v6 = [v5 firstObject];
-    v7 = [v6 image];
-    if (!v7)
+    pageElements = [(SBFolderIconImageView *)self pageElements];
+    firstObject = [pageElements firstObject];
+    image = [firstObject image];
+    if (!image)
     {
-      [(SBFolderIconImageView *)self fulfillGridImageForPageElement:v6];
+      [(SBFolderIconImageView *)self fulfillGridImageForPageElement:firstObject];
     }
   }
 }
@@ -598,13 +598,13 @@ uint64_t __47__SBFolderIconImageView_iconImageInfoDidChange__block_invoke(uint64
   v22.size.height = v10;
   if (v13 > CGRectGetHeight(v22))
   {
-    v14 = [(SBFolderIconImageView *)self traitCollection];
-    [v14 displayScale];
+    traitCollection = [(SBFolderIconImageView *)self traitCollection];
+    [traitCollection displayScale];
     v16 = v15;
 
     v17 = MEMORY[0x1E69DCAB8];
-    v18 = [v11 sbf_CGImageBackedImage];
-    v19 = [v17 imageWithCGImage:objc_msgSend(v18 scale:"CGImage") orientation:{0, v16}];
+    sbf_CGImageBackedImage = [v11 sbf_CGImageBackedImage];
+    v19 = [v17 imageWithCGImage:objc_msgSend(sbf_CGImageBackedImage scale:"CGImage") orientation:{0, v16}];
 
     v11 = v19;
   }
@@ -619,38 +619,38 @@ uint64_t __47__SBFolderIconImageView_iconImageInfoDidChange__block_invoke(uint64
   [(SBIconImageView *)&v2 updateOngoingAnimationState];
 }
 
-- (void)scrollToFirstGapAnimated:(BOOL)a3
+- (void)scrollToFirstGapAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(NSArray *)self->_pageElements count])
   {
     return;
   }
 
-  v24 = [(SBFolderIconImageView *)self _folderIcon];
-  v5 = [v24 folder];
-  v6 = [v5 _indexPathToRevealForJiggleMode];
+  _folderIcon = [(SBFolderIconImageView *)self _folderIcon];
+  folder = [_folderIcon folder];
+  _indexPathToRevealForJiggleMode = [folder _indexPathToRevealForJiggleMode];
 
-  v7 = SBFolderRelativeListIndex(v6);
-  if (v6)
+  v7 = SBFolderRelativeListIndex(_indexPathToRevealForJiggleMode);
+  if (_indexPathToRevealForJiggleMode)
   {
     v8 = v7;
     if (v7 != 0x7FFFFFFFFFFFFFFFLL && v7 < [(NSArray *)self->_pageElements count])
     {
       v9 = [(NSArray *)self->_pageElements objectAtIndex:v8];
-      v23 = [v9 firstVisibleRowForGap];
+      firstVisibleRowForGap = [v9 firstVisibleRowForGap];
       v10 = MEMORY[0x1E69DDA98];
-      v11 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+      userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
       currentPageIndex = self->_currentPageIndex;
       if (v8 >= currentPageIndex)
       {
         if (v8 <= currentPageIndex)
         {
-          v18 = [*v10 userInterfaceLayoutDirection];
+          userInterfaceLayoutDirection2 = [*v10 userInterfaceLayoutDirection];
           v19 = [(NSArray *)self->_pageElements objectAtIndex:self->_currentPageIndex];
           v14 = 0;
-          v20 = v18 == 0;
-          if (v18)
+          v20 = userInterfaceLayoutDirection2 == 0;
+          if (userInterfaceLayoutDirection2)
           {
             v16 = 0;
           }
@@ -673,7 +673,7 @@ uint64_t __47__SBFolderIconImageView_iconImageInfoDidChange__block_invoke(uint64
           goto LABEL_34;
         }
 
-        if (v11 == 1)
+        if (userInterfaceLayoutDirection == 1)
         {
           v13 = v8;
         }
@@ -683,7 +683,7 @@ uint64_t __47__SBFolderIconImageView_iconImageInfoDidChange__block_invoke(uint64
           v13 = self->_currentPageIndex;
         }
 
-        if (v11 == 1)
+        if (userInterfaceLayoutDirection == 1)
         {
           v14 = 1;
         }
@@ -693,7 +693,7 @@ uint64_t __47__SBFolderIconImageView_iconImageInfoDidChange__block_invoke(uint64
           v14 = 2;
         }
 
-        if (v11 == 1)
+        if (userInterfaceLayoutDirection == 1)
         {
           v15 = self->_currentPageIndex;
         }
@@ -706,7 +706,7 @@ uint64_t __47__SBFolderIconImageView_iconImageInfoDidChange__block_invoke(uint64
 
       else
       {
-        if (v11 == 1)
+        if (userInterfaceLayoutDirection == 1)
         {
           v13 = self->_currentPageIndex;
         }
@@ -716,7 +716,7 @@ uint64_t __47__SBFolderIconImageView_iconImageInfoDidChange__block_invoke(uint64
           v13 = v8;
         }
 
-        if (v11 == 1)
+        if (userInterfaceLayoutDirection == 1)
         {
           v14 = 2;
         }
@@ -726,7 +726,7 @@ uint64_t __47__SBFolderIconImageView_iconImageInfoDidChange__block_invoke(uint64
           v14 = 1;
         }
 
-        if (v11 == 1)
+        if (userInterfaceLayoutDirection == 1)
         {
           v15 = v8;
         }
@@ -742,45 +742,45 @@ uint64_t __47__SBFolderIconImageView_iconImageInfoDidChange__block_invoke(uint64
 LABEL_34:
       v21 = [(NSArray *)self->_pageElements objectAtIndex:self->_currentPageIndex];
       v22 = v21;
-      if (self->_currentPageIndex != v8 || [v21 visibleRow] != v23)
+      if (self->_currentPageIndex != v8 || [v21 visibleRow] != firstVisibleRowForGap)
       {
-        [(SBFolderIconImageView *)self _performScrollingDirection:v14 targetPageIndex:v8 targetPageScrollRow:v23 newLeftElement:v16 newRightElement:v17 animated:v3];
+        [(SBFolderIconImageView *)self _performScrollingDirection:v14 targetPageIndex:v8 targetPageScrollRow:firstVisibleRowForGap newLeftElement:v16 newRightElement:v17 animated:animatedCopy];
       }
     }
   }
 }
 
-- (void)scrollToTopOfPage:(unint64_t)a3 animated:(BOOL)a4
+- (void)scrollToTopOfPage:(unint64_t)page animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7 = [(NSArray *)self->_pageElements count];
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (page == 0x7FFFFFFFFFFFFFFFLL)
   {
     return;
   }
 
-  if (v7 <= a3)
+  if (v7 <= page)
   {
     return;
   }
 
-  if (self->_currentPageIndex == a3)
+  if (self->_currentPageIndex == page)
   {
-    v8 = [(NSArray *)self->_pageElements objectAtIndex:a3];
-    v9 = [v8 visibleRow];
+    v8 = [(NSArray *)self->_pageElements objectAtIndex:page];
+    visibleRow = [v8 visibleRow];
 
-    if (!v9)
+    if (!visibleRow)
     {
       return;
     }
   }
 
-  v10 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
-  v11 = v10;
+  userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+  v11 = userInterfaceLayoutDirection;
   currentPageIndex = self->_currentPageIndex;
-  if (currentPageIndex <= a3)
+  if (currentPageIndex <= page)
   {
-    if (currentPageIndex >= a3)
+    if (currentPageIndex >= page)
     {
       v17 = [(NSArray *)self->_pageElements objectAtIndex:?];
       v14 = 0;
@@ -808,17 +808,17 @@ LABEL_34:
       goto LABEL_33;
     }
 
-    if (v10 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
-      v13 = a3;
+      pageCopy3 = page;
     }
 
     else
     {
-      v13 = self->_currentPageIndex;
+      pageCopy3 = self->_currentPageIndex;
     }
 
-    if (v10 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v14 = 1;
     }
@@ -828,30 +828,30 @@ LABEL_34:
       v14 = 2;
     }
 
-    if (v10 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
-      v15 = self->_currentPageIndex;
+      pageCopy4 = self->_currentPageIndex;
     }
 
     else
     {
-      v15 = a3;
+      pageCopy4 = page;
     }
   }
 
   else
   {
-    if (v10 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
-      v13 = self->_currentPageIndex;
+      pageCopy3 = self->_currentPageIndex;
     }
 
     else
     {
-      v13 = a3;
+      pageCopy3 = page;
     }
 
-    if (v10 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v14 = 2;
     }
@@ -861,48 +861,48 @@ LABEL_34:
       v14 = 1;
     }
 
-    if (v10 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
-      v15 = a3;
+      pageCopy4 = page;
     }
 
     else
     {
-      v15 = self->_currentPageIndex;
+      pageCopy4 = self->_currentPageIndex;
     }
   }
 
-  v19 = [(NSArray *)self->_pageElements objectAtIndex:v13];
-  v16 = [(NSArray *)self->_pageElements objectAtIndex:v15];
+  v19 = [(NSArray *)self->_pageElements objectAtIndex:pageCopy3];
+  v16 = [(NSArray *)self->_pageElements objectAtIndex:pageCopy4];
 LABEL_33:
-  [(SBFolderIconImageView *)self _performScrollingDirection:v14 targetPageIndex:a3 targetPageScrollRow:0 newLeftElement:v19 newRightElement:v16 animated:v4];
+  [(SBFolderIconImageView *)self _performScrollingDirection:v14 targetPageIndex:page targetPageScrollRow:0 newLeftElement:v19 newRightElement:v16 animated:animatedCopy];
 }
 
-- (void)scrollToGapOrTopIfFullOfPage:(unint64_t)a3 animated:(BOOL)a4
+- (void)scrollToGapOrTopIfFullOfPage:(unint64_t)page animated:(BOOL)animated
 {
-  v4 = a4;
-  if ([(NSArray *)self->_pageElements count]> a3)
+  animatedCopy = animated;
+  if ([(NSArray *)self->_pageElements count]> page)
   {
-    v7 = [(SBFolderIconImageView *)self _folderIcon];
-    v8 = [v7 folder];
-    v9 = [v8 indexPathForFirstFreeSlotAvoidingFirstList:0];
+    _folderIcon = [(SBFolderIconImageView *)self _folderIcon];
+    folder = [_folderIcon folder];
+    v9 = [folder indexPathForFirstFreeSlotAvoidingFirstList:0];
 
-    if (SBFolderRelativeListIndex(v9) == a3)
+    if (SBFolderRelativeListIndex(v9) == page)
     {
-      v10 = [(NSArray *)self->_pageElements objectAtIndex:a3];
-      v11 = [v10 firstVisibleRowForGap];
+      v10 = [(NSArray *)self->_pageElements objectAtIndex:page];
+      firstVisibleRowForGap = [v10 firstVisibleRowForGap];
     }
 
     else
     {
-      v11 = 0;
+      firstVisibleRowForGap = 0;
     }
 
     currentPageIndex = self->_currentPageIndex;
-    if (currentPageIndex <= a3)
+    if (currentPageIndex <= page)
     {
       v17 = [(NSArray *)self->_pageElements objectAtIndex:self->_currentPageIndex];
-      if (currentPageIndex >= a3)
+      if (currentPageIndex >= page)
       {
         v13 = 0;
         v14 = 0;
@@ -910,39 +910,39 @@ LABEL_33:
 
       else
       {
-        v13 = [(NSArray *)self->_pageElements objectAtIndex:a3];
+        v13 = [(NSArray *)self->_pageElements objectAtIndex:page];
         v14 = 2;
       }
     }
 
     else
     {
-      v17 = [(NSArray *)self->_pageElements objectAtIndex:a3];
+      v17 = [(NSArray *)self->_pageElements objectAtIndex:page];
       v13 = [(NSArray *)self->_pageElements objectAtIndex:self->_currentPageIndex];
       v14 = 1;
     }
 
     v15 = [(NSArray *)self->_pageElements objectAtIndex:self->_currentPageIndex];
     v16 = v15;
-    if (self->_currentPageIndex != a3 || [v15 visibleRow] != v11)
+    if (self->_currentPageIndex != page || [v15 visibleRow] != firstVisibleRowForGap)
     {
-      [(SBFolderIconImageView *)self _performScrollingDirection:v14 targetPageIndex:a3 targetPageScrollRow:v11 newLeftElement:v17 newRightElement:v13 animated:v4];
+      [(SBFolderIconImageView *)self _performScrollingDirection:v14 targetPageIndex:page targetPageScrollRow:firstVisibleRowForGap newLeftElement:v17 newRightElement:v13 animated:animatedCopy];
     }
   }
 }
 
 - (unint64_t)visibleMiniIconCount
 {
-  v2 = [(SBFolderIconImageView *)self representedListLayout];
-  v3 = [v2 numberOfRowsForOrientation:1];
-  v4 = [v2 numberOfColumnsForOrientation:1] * v3;
+  representedListLayout = [(SBFolderIconImageView *)self representedListLayout];
+  v3 = [representedListLayout numberOfRowsForOrientation:1];
+  v4 = [representedListLayout numberOfColumnsForOrientation:1] * v3;
 
   return v4;
 }
 
-- (CGRect)frameForMiniIconAtIndex:(unint64_t)a3
+- (CGRect)frameForMiniIconAtIndex:(unint64_t)index
 {
-  v4 = [MEMORY[0x1E696AC88] indexPathWithIconIndex:a3 listIndex:self->_currentPageIndex];
+  v4 = [MEMORY[0x1E696AC88] indexPathWithIconIndex:index listIndex:self->_currentPageIndex];
   [(SBFolderIconImageView *)self frameForMiniIconAtIndexPath:v4];
   v6 = v5;
   v8 = v7;
@@ -960,9 +960,9 @@ LABEL_33:
   return result;
 }
 
-- (CGRect)visibleImageRelativeFrameForMiniIconAtIndex:(unint64_t)a3
+- (CGRect)visibleImageRelativeFrameForMiniIconAtIndex:(unint64_t)index
 {
-  [(SBFolderIconImageView *)self frameForMiniIconAtIndex:a3];
+  [(SBFolderIconImageView *)self frameForMiniIconAtIndex:index];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -979,12 +979,12 @@ LABEL_33:
   return result;
 }
 
-- (CGRect)frameForMiniIconAtIndexPath:(id)a3
+- (CGRect)frameForMiniIconAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   [(SBFolderIconImageView *)self layoutIfNeeded];
   v5 = [(NSArray *)self->_pageElements count];
-  if (v5 <= [v4 sbListIndex])
+  if (v5 <= [pathCopy sbListIndex])
   {
     v9 = *MEMORY[0x1E695F058];
     v10 = *(MEMORY[0x1E695F058] + 8);
@@ -994,19 +994,19 @@ LABEL_33:
 
   else
   {
-    v6 = [v4 sbIconIndex];
-    v7 = -[NSArray objectAtIndex:](self->_pageElements, "objectAtIndex:", [v4 sbListIndex]);
-    v8 = [v7 gridImage];
+    sbIconIndex = [pathCopy sbIconIndex];
+    v7 = -[NSArray objectAtIndex:](self->_pageElements, "objectAtIndex:", [pathCopy sbListIndex]);
+    gridImage = [v7 gridImage];
     v13 = objc_opt_class();
     v14 = [(SBFolderIconImageView *)self _wrapperViewDisplayingElement:v7];
-    v15 = [(SBFolderIconImageView *)self representedListLayout];
-    v16 = [(SBFolderIconImageView *)self firstVisibleMiniIconIndex];
-    v17 = [(SBFolderIconImageView *)self _folderIcon];
-    v18 = [v17 gridCellIndexForIconIndex:v6];
+    representedListLayout = [(SBFolderIconImageView *)self representedListLayout];
+    firstVisibleMiniIconIndex = [(SBFolderIconImageView *)self firstVisibleMiniIconIndex];
+    _folderIcon = [(SBFolderIconImageView *)self _folderIcon];
+    v18 = [_folderIcon gridCellIndexForIconIndex:sbIconIndex];
 
-    [v13 rectAtIndex:v16 inLayout:v15 maxCount:{objc_msgSend(v8, "numberOfCells")}];
+    [v13 rectAtIndex:firstVisibleMiniIconIndex inLayout:representedListLayout maxCount:{objc_msgSend(gridImage, "numberOfCells")}];
     v20 = v19;
-    [v13 rectAtIndex:v18 inLayout:v15 maxCount:{objc_msgSend(v8, "numberOfCells")}];
+    [v13 rectAtIndex:v18 inLayout:representedListLayout maxCount:{objc_msgSend(gridImage, "numberOfCells")}];
     v22 = v21;
     v11 = v23;
     v12 = v24;
@@ -1055,35 +1055,35 @@ LABEL_33:
   return result;
 }
 
-- (void)setIconGridImageAlpha:(double)a3
+- (void)setIconGridImageAlpha:(double)alpha
 {
   [(SBFolderIconGridViewing *)self->_leftWrapperView setAlpha:?];
   rightWrapperView = self->_rightWrapperView;
 
-  [(SBFolderIconGridViewing *)rightWrapperView setAlpha:a3];
+  [(SBFolderIconGridViewing *)rightWrapperView setAlpha:alpha];
 }
 
-- (void)setBackgroundAndIconGridImageAlpha:(double)a3
+- (void)setBackgroundAndIconGridImageAlpha:(double)alpha
 {
   [(SBFolderIconGridViewing *)self->_leftWrapperView setAlpha:?];
   rightWrapperView = self->_rightWrapperView;
 
-  [(SBFolderIconGridViewing *)rightWrapperView setAlpha:a3];
+  [(SBFolderIconGridViewing *)rightWrapperView setAlpha:alpha];
 }
 
-- (void)prepareToCrossfadeWithFloatyFolderView:(id)a3 allowFolderInteraction:(BOOL)a4
+- (void)prepareToCrossfadeWithFloatyFolderView:(id)view allowFolderInteraction:(BOOL)interaction
 {
-  v4 = a4;
-  v6 = a3;
+  interactionCopy = interaction;
+  viewCopy = view;
   [(SBFolderIconImageView *)self _setAnimating:1];
-  [(SBFolderIconImageView *)self setUserInteractionEnabled:v4];
+  [(SBFolderIconImageView *)self setUserInteractionEnabled:interactionCopy];
   crossfadeFolderView = self->_crossfadeFolderView;
-  self->_crossfadeFolderView = v6;
-  v8 = v6;
+  self->_crossfadeFolderView = viewCopy;
+  v8 = viewCopy;
 
-  v9 = [(SBFolderView *)v8 borrowScalingView];
+  borrowScalingView = [(SBFolderView *)v8 borrowScalingView];
   crossfadeScalingView = self->_crossfadeScalingView;
-  self->_crossfadeScalingView = v9;
+  self->_crossfadeScalingView = borrowScalingView;
 
   [(SBFolderIconImageView *)self insertSubview:self->_crossfadeScalingView atIndex:0];
   [(SBIconImageView *)self visibleBounds];
@@ -1098,28 +1098,28 @@ LABEL_33:
   [(SBFolderIconImageView *)self layoutIfNeeded];
 }
 
-- (void)setFloatyFolderCrossfadeFraction:(double)a3
+- (void)setFloatyFolderCrossfadeFraction:(double)fraction
 {
-  v15 = [(SBIconImageView *)self effectView];
-  [v15 setAlpha:1.0 - a3];
-  [(SBIconImageView *)self setOverlayAlpha:1.0 - a3];
-  [(SBFloatyFolderView *)self->_crossfadeFolderView setBackgroundAlpha:a3];
+  effectView = [(SBIconImageView *)self effectView];
+  [effectView setAlpha:1.0 - fraction];
+  [(SBIconImageView *)self setOverlayAlpha:1.0 - fraction];
+  [(SBFloatyFolderView *)self->_crossfadeFolderView setBackgroundAlpha:fraction];
   [(SBIconImageView *)self visibleBounds];
   v6 = v5;
   [(UIView *)self->_crossfadeScalingView bounds];
   v8 = v6 / v7;
-  v9 = [(SBIconImageView *)self iconView];
-  [v9 iconImageInfo];
+  iconView = [(SBIconImageView *)self iconView];
+  [iconView iconImageInfo];
   v11 = v10;
   [(SBFloatyFolderView *)self->_crossfadeFolderView cornerRadius];
   v13 = v12;
-  v14 = v8 * v12 * a3 + (1.0 - a3) * v11;
-  [v15 _setContinuousCornerRadius:v14];
+  v14 = v8 * v12 * fraction + (1.0 - fraction) * v11;
+  [effectView _setContinuousCornerRadius:v14];
   [(SBFolderIconImageView *)self setPageGridCornerRadius:v14];
-  [(SBFloatyFolderView *)self->_crossfadeFolderView setCornerRadius:v13 * a3 + (1.0 - a3) * (v11 / v8)];
+  [(SBFloatyFolderView *)self->_crossfadeFolderView setCornerRadius:v13 * fraction + (1.0 - fraction) * (v11 / v8)];
 }
 
-- (void)setContentVisibility:(unint64_t)a3
+- (void)setContentVisibility:(unint64_t)visibility
 {
   v17 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -1129,8 +1129,8 @@ LABEL_33:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(SBFolderIconImageView *)self displayedPageElements];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  displayedPageElements = [(SBFolderIconImageView *)self displayedPageElements];
+  v6 = [displayedPageElements countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1142,45 +1142,45 @@ LABEL_33:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(displayedPageElements);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) gridView];
-        [v10 setContentVisibility:a3];
+        gridView = [*(*(&v11 + 1) + 8 * v9) gridView];
+        [gridView setContentVisibility:visibility];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v7 = [displayedPageElements countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v7.receiver = self;
   v7.super_class = SBFolderIconImageView;
-  v4 = [(SBIconImageView *)&v7 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBIconImageView *)&v7 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendBool:self->_animating withName:@"animating"];
 
   return v4;
 }
 
-- (void)folderIconImageCache:(id)a3 didUpdateImagesForFolderIcon:(id)a4 imageAppearance:(id)a5
+- (void)folderIconImageCache:(id)cache didUpdateImagesForFolderIcon:(id)icon imageAppearance:(id)appearance
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v9)
+  cacheCopy = cache;
+  iconCopy = icon;
+  appearanceCopy = appearance;
+  if (!appearanceCopy)
   {
     goto LABEL_5;
   }
 
-  v10 = [(SBFolderIconImageView *)self displayedImageAppearance];
-  if (!v10 || [v9 isEqual:v10])
+  displayedImageAppearance = [(SBFolderIconImageView *)self displayedImageAppearance];
+  if (!displayedImageAppearance || [appearanceCopy isEqual:displayedImageAppearance])
   {
 
 LABEL_5:
@@ -1191,23 +1191,23 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)_performScrollingDirection:(int64_t)a3 targetPageIndex:(unint64_t)a4 targetPageScrollRow:(unint64_t)a5 newLeftElement:(id)a6 newRightElement:(id)a7 animated:(BOOL)a8
+- (void)_performScrollingDirection:(int64_t)direction targetPageIndex:(unint64_t)index targetPageScrollRow:(unint64_t)row newLeftElement:(id)element newRightElement:(id)rightElement animated:(BOOL)animated
 {
-  v8 = a8;
+  animatedCopy = animated;
   p_leftWrapperView = &self->_leftWrapperView;
   leftWrapperView = self->_leftWrapperView;
-  v16 = a7;
-  [(SBFolderIconGridViewing *)leftWrapperView setElement:a6];
+  rightElementCopy = rightElement;
+  [(SBFolderIconGridViewing *)leftWrapperView setElement:element];
   p_rightWrapperView = &self->_rightWrapperView;
-  [(SBFolderIconGridViewing *)self->_rightWrapperView setElement:v16];
+  [(SBFolderIconGridViewing *)self->_rightWrapperView setElement:rightElementCopy];
 
-  if (a3 == 1)
+  if (direction == 1)
   {
     [(SBFolderIconImageView *)self _showRightMinigrid];
     p_rightWrapperView = p_leftWrapperView;
 LABEL_5:
-    [(SBFolderIconGridViewing *)*p_rightWrapperView positionAtRow:a5];
-    if (v8)
+    [(SBFolderIconGridViewing *)*p_rightWrapperView positionAtRow:row];
+    if (animatedCopy)
     {
       v18 = 0.4;
     }
@@ -1220,13 +1220,13 @@ LABEL_5:
     goto LABEL_12;
   }
 
-  if (a3 == 2)
+  if (direction == 2)
   {
     [(SBFolderIconImageView *)self _showLeftMinigrid];
     goto LABEL_5;
   }
 
-  if (v8)
+  if (animatedCopy)
   {
     v18 = 0.4;
   }
@@ -1236,40 +1236,40 @@ LABEL_5:
     v18 = 0.0;
   }
 
-  if (!a3)
+  if (!direction)
   {
     v19 = 1;
     goto LABEL_15;
   }
 
 LABEL_12:
-  if (v8)
+  if (animatedCopy)
   {
     [(SBFolderIconImageView *)self _setAnimating:1];
     [(SBFolderIconImageView *)self setAllowsGlassGroupingOnMiniGridViews:0];
   }
 
-  [(SBFolderIconImageView *)self setShowingRightPage:a3 == 2];
+  [(SBFolderIconImageView *)self setShowingRightPage:direction == 2];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __128__SBFolderIconImageView__performScrollingDirection_targetPageIndex_targetPageScrollRow_newLeftElement_newRightElement_animated___block_invoke;
   v27[3] = &unk_1E8088CB8;
   v27[4] = self;
-  v27[5] = a3;
+  v27[5] = direction;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __128__SBFolderIconImageView__performScrollingDirection_targetPageIndex_targetPageScrollRow_newLeftElement_newRightElement_animated___block_invoke_2;
   v25[3] = &unk_1E808B508;
-  v26 = v8;
+  v26 = animatedCopy;
   v25[4] = self;
   [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v27 options:v25 animations:v18 completion:0.0];
   v19 = 0;
 LABEL_15:
   v20 = [(NSArray *)self->_pageElements objectAtIndex:self->_currentPageIndex];
-  v21 = [v20 visibleRow];
-  if (v19 && v21 != a5)
+  visibleRow = [v20 visibleRow];
+  if (v19 && visibleRow != row)
   {
-    if (v8)
+    if (animatedCopy)
     {
       [(SBFolderIconImageView *)self _setAnimating:1];
     }
@@ -1279,18 +1279,18 @@ LABEL_15:
     v24[2] = __128__SBFolderIconImageView__performScrollingDirection_targetPageIndex_targetPageScrollRow_newLeftElement_newRightElement_animated___block_invoke_3;
     v24[3] = &unk_1E8088CB8;
     v24[4] = self;
-    v24[5] = a5;
+    v24[5] = row;
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __128__SBFolderIconImageView__performScrollingDirection_targetPageIndex_targetPageScrollRow_newLeftElement_newRightElement_animated___block_invoke_4;
     v22[3] = &unk_1E808B508;
-    v23 = v8;
+    v23 = animatedCopy;
     v22[4] = self;
     [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v24 options:v22 animations:v18 completion:0.0];
   }
 
-  self->_currentPageIndex = a4;
-  if (!v8)
+  self->_currentPageIndex = index;
+  if (!animatedCopy)
   {
     [(SBFolderIconImageView *)self updateImageAnimated:0];
   }
@@ -1347,21 +1347,21 @@ uint64_t __128__SBFolderIconImageView__performScrollingDirection_targetPageIndex
   return result;
 }
 
-- (void)setAllowsGlassGroupingOnMiniGridViews:(BOOL)a3
+- (void)setAllowsGlassGroupingOnMiniGridViews:(BOOL)views
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__SBFolderIconImageView_setAllowsGlassGroupingOnMiniGridViews___block_invoke;
   aBlock[3] = &__block_descriptor_33_e31_v32__0__SBIcon_8__UIView_16_B24l;
-  v10 = a3;
+  viewsCopy = views;
   v4 = _Block_copy(aBlock);
-  v5 = [(SBFolderIconGridViewing *)self->_rightWrapperView element];
-  v6 = [v5 gridView];
-  [v6 enumerateIconsAndViewsUsingBlock:v4];
+  element = [(SBFolderIconGridViewing *)self->_rightWrapperView element];
+  gridView = [element gridView];
+  [gridView enumerateIconsAndViewsUsingBlock:v4];
 
-  v7 = [(SBFolderIconGridViewing *)self->_leftWrapperView element];
-  v8 = [v7 gridView];
-  [v8 enumerateIconsAndViewsUsingBlock:v4];
+  element2 = [(SBFolderIconGridViewing *)self->_leftWrapperView element];
+  gridView2 = [element2 gridView];
+  [gridView2 enumerateIconsAndViewsUsingBlock:v4];
 }
 
 void __63__SBFolderIconImageView_setAllowsGlassGroupingOnMiniGridViews___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1376,62 +1376,62 @@ void __63__SBFolderIconImageView_setAllowsGlassGroupingOnMiniGridViews___block_i
   }
 }
 
-- (void)setIconView:(id)a3
+- (void)setIconView:(id)view
 {
   v7.receiver = self;
   v7.super_class = SBFolderIconImageView;
-  v4 = a3;
-  [(SBIconImageView *)&v7 setIconView:v4];
-  [v4 iconImageInfo];
+  viewCopy = view;
+  [(SBIconImageView *)&v7 setIconView:viewCopy];
+  [viewCopy iconImageInfo];
   v6 = v5;
 
   [(SBFolderIconImageView *)self setPageGridCornerRadius:v6];
 }
 
-- (void)setIcon:(id)a3 location:(id)a4 animated:(BOOL)a5
+- (void)setIcon:(id)icon location:(id)location animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SBFolderIconImageView *)self _folderIcon];
-  v11 = [(SBFolderIconImageView *)self _folderIconImageCache];
-  v12 = v11;
-  if (v10)
+  animatedCopy = animated;
+  iconCopy = icon;
+  locationCopy = location;
+  _folderIcon = [(SBFolderIconImageView *)self _folderIcon];
+  _folderIconImageCache = [(SBFolderIconImageView *)self _folderIconImageCache];
+  v12 = _folderIconImageCache;
+  if (_folderIcon)
   {
-    [v11 removeObserver:self forFolderIcon:v10];
+    [_folderIconImageCache removeObserver:self forFolderIcon:_folderIcon];
   }
 
-  [v10 removeObserver:self];
+  [_folderIcon removeObserver:self];
   v13.receiver = self;
   v13.super_class = SBFolderIconImageView;
-  [(SBIconImageView *)&v13 setIcon:v8 location:v9 animated:v5];
+  [(SBIconImageView *)&v13 setIcon:iconCopy location:locationCopy animated:animatedCopy];
 
-  if (v8)
+  if (iconCopy)
   {
-    [v12 addObserver:self forFolderIcon:v8];
+    [v12 addObserver:self forFolderIcon:iconCopy];
   }
 
   if ([(SBFolderIconImageView *)self usesLayersForMiniIcons])
   {
-    [v8 addObserver:self];
+    [iconCopy addObserver:self];
   }
 }
 
 - (id)_currentPageListModel
 {
-  v2 = [(SBFolderIconImageView *)self _currentPageElement];
-  v3 = [v2 folderIcon];
-  v4 = [v3 folder];
-  v5 = [v4 listAtIndex:{objc_msgSend(v2, "pageIndex")}];
+  _currentPageElement = [(SBFolderIconImageView *)self _currentPageElement];
+  folderIcon = [_currentPageElement folderIcon];
+  folder = [folderIcon folder];
+  v5 = [folder listAtIndex:{objc_msgSend(_currentPageElement, "pageIndex")}];
 
   return v5;
 }
 
 - (UIView)currentPageView
 {
-  v3 = [(SBFolderIconImageView *)self isShowingRightPage];
+  isShowingRightPage = [(SBFolderIconImageView *)self isShowingRightPage];
   v4 = &OBJC_IVAR___SBFolderIconImageView__leftWrapperView;
-  if (v3)
+  if (isShowingRightPage)
   {
     v4 = &OBJC_IVAR___SBFolderIconImageView__rightWrapperView;
   }
@@ -1443,11 +1443,11 @@ void __63__SBFolderIconImageView_setAllowsGlassGroupingOnMiniGridViews___block_i
 
 - (NSArray)currentPageIconCellViews
 {
-  v2 = [(SBFolderIconImageView *)self _currentPageElement];
-  v3 = [v2 gridView];
-  v4 = [v3 subviews];
+  _currentPageElement = [(SBFolderIconImageView *)self _currentPageElement];
+  gridView = [_currentPageElement gridView];
+  subviews = [gridView subviews];
 
-  return v4;
+  return subviews;
 }
 
 - (void)_setupGridViewsInCurrentConfiguration
@@ -1470,9 +1470,9 @@ void __63__SBFolderIconImageView_setAllowsGlassGroupingOnMiniGridViews___block_i
     v7 = 0;
   }
 
-  v5 = [(SBFolderIconImageView *)self isShowingRightPage];
+  isShowingRightPage = [(SBFolderIconImageView *)self isShowingRightPage];
   leftWrapperView = self->_leftWrapperView;
-  if (v5)
+  if (isShowingRightPage)
   {
     [(SBFolderIconGridViewing *)leftWrapperView setElement:0];
     [(SBFolderIconGridViewing *)self->_rightWrapperView setElement:v7];
@@ -1487,11 +1487,11 @@ void __63__SBFolderIconImageView_setAllowsGlassGroupingOnMiniGridViews___block_i
   }
 }
 
-- (void)setDisplayedPageElements:(id)a3
+- (void)setDisplayedPageElements:(id)elements
 {
-  if (self->_pageElements != a3)
+  if (self->_pageElements != elements)
   {
-    v4 = [a3 copy];
+    v4 = [elements copy];
     pageElements = self->_pageElements;
     self->_pageElements = v4;
 
@@ -1503,9 +1503,9 @@ void __63__SBFolderIconImageView_setAllowsGlassGroupingOnMiniGridViews___block_i
 
 - (id)_leadingWrapperView
 {
-  v3 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
   v4 = &OBJC_IVAR___SBFolderIconImageView__leftWrapperView;
-  if (v3 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v4 = &OBJC_IVAR___SBFolderIconImageView__rightWrapperView;
   }
@@ -1517,9 +1517,9 @@ void __63__SBFolderIconImageView_setAllowsGlassGroupingOnMiniGridViews___block_i
 
 - (id)_trailingWrapperView
 {
-  v3 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
   v4 = &OBJC_IVAR___SBFolderIconImageView__rightWrapperView;
-  if (v3 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v4 = &OBJC_IVAR___SBFolderIconImageView__leftWrapperView;
   }
@@ -1529,13 +1529,13 @@ void __63__SBFolderIconImageView_setAllowsGlassGroupingOnMiniGridViews___block_i
   return v5;
 }
 
-- (id)_wrapperViewDisplayingElement:(id)a3
+- (id)_wrapperViewDisplayingElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   p_leftWrapperView = &self->_leftWrapperView;
-  v6 = [(SBFolderIconGridViewing *)self->_leftWrapperView element];
+  element = [(SBFolderIconGridViewing *)self->_leftWrapperView element];
 
-  if (v6 == v4 || (p_leftWrapperView = &self->_rightWrapperView, [(SBFolderIconGridViewing *)self->_rightWrapperView element], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 == v4))
+  if (element == elementCopy || (p_leftWrapperView = &self->_rightWrapperView, [(SBFolderIconGridViewing *)self->_rightWrapperView element], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 == elementCopy))
   {
     v8 = *p_leftWrapperView;
   }
@@ -1586,17 +1586,17 @@ void __63__SBFolderIconImageView_setAllowsGlassGroupingOnMiniGridViews___block_i
   }
 }
 
-- (void)fulfillGridImageForPageElement:(id)a3
+- (void)fulfillGridImageForPageElement:(id)element
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBFolderIconImageView *)self _folderIconImageCache];
-  v6 = [(SBFolderIconImageView *)self _folderIcon];
-  v7 = [(SBIconImageView *)self effectiveIconImageAppearance];
-  v8 = [v4 pageIndex];
-  if (v5)
+  elementCopy = element;
+  _folderIconImageCache = [(SBFolderIconImageView *)self _folderIconImageCache];
+  _folderIcon = [(SBFolderIconImageView *)self _folderIcon];
+  effectiveIconImageAppearance = [(SBIconImageView *)self effectiveIconImageAppearance];
+  pageIndex = [elementCopy pageIndex];
+  if (_folderIconImageCache)
   {
-    v9 = [v5 imageForPageAtIndex:v8 inFolderIcon:v6 imageAppearance:v7];
+    v9 = [_folderIconImageCache imageForPageAtIndex:pageIndex inFolderIcon:_folderIcon imageAppearance:effectiveIconImageAppearance];
     if (v9)
     {
       goto LABEL_11;
@@ -1606,47 +1606,47 @@ void __63__SBFolderIconImageView_setAllowsGlassGroupingOnMiniGridViews___block_i
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412802;
-      v14 = v5;
+      v14 = _folderIconImageCache;
       v15 = 2112;
-      v16 = v6;
+      v16 = _folderIcon;
       v17 = 2048;
-      v18 = v8;
+      v18 = pageIndex;
       _os_log_error_impl(&dword_1BEB18000, v10, OS_LOG_TYPE_ERROR, "Did not get a folder icon image from image cache: %@, folder icon: %@, page index: %lu", &v13, 0x20u);
     }
   }
 
-  v11 = [(SBFolderIconImageView *)self representedListLayout];
-  v9 = [SBFolderIconImageCache imageForPageAtIndex:v8 inFolderIcon:v6 imageAppearance:v7 listLayout:v11 gridCellImageProvider:0 pool:0];
+  representedListLayout = [(SBFolderIconImageView *)self representedListLayout];
+  v9 = [SBFolderIconImageCache imageForPageAtIndex:pageIndex inFolderIcon:_folderIcon imageAppearance:effectiveIconImageAppearance listLayout:representedListLayout gridCellImageProvider:0 pool:0];
   if (!v9)
   {
     v12 = SBLogIcon();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412802;
-      v14 = v6;
+      v14 = _folderIcon;
       v15 = 2048;
-      v16 = v8;
+      v16 = pageIndex;
       v17 = 2112;
-      v18 = v11;
+      v18 = representedListLayout;
       _os_log_error_impl(&dword_1BEB18000, v12, OS_LOG_TYPE_ERROR, "Did not get a folder icon image from cache-less constructor for folder icon: %@, page index: %lu, layout: %@", &v13, 0x20u);
     }
   }
 
 LABEL_11:
-  [v4 setGridImage:v9];
+  [elementCopy setGridImage:v9];
 }
 
-- (void)fulfillGridViewForPageElement:(id)a3
+- (void)fulfillGridViewForPageElement:(id)element
 {
-  v4 = a3;
-  v5 = [(SBFolderIconImageView *)self _folderIcon];
-  v6 = [(SBIconImageView *)self effectiveIconImageAppearance];
-  v7 = [v4 pageIndex];
-  v8 = [(SBFolderIconImageView *)self cellIconImageOptions];
-  v9 = [(SBFolderIconImageView *)self _folderIconImageCache];
-  v10 = [v9 miniGridViewForPageAtIndex:v7 inFolderIcon:v5 imageAppearance:v6 options:v8];
+  elementCopy = element;
+  _folderIcon = [(SBFolderIconImageView *)self _folderIcon];
+  effectiveIconImageAppearance = [(SBIconImageView *)self effectiveIconImageAppearance];
+  pageIndex = [elementCopy pageIndex];
+  cellIconImageOptions = [(SBFolderIconImageView *)self cellIconImageOptions];
+  _folderIconImageCache = [(SBFolderIconImageView *)self _folderIconImageCache];
+  v10 = [_folderIconImageCache miniGridViewForPageAtIndex:pageIndex inFolderIcon:_folderIcon imageAppearance:effectiveIconImageAppearance options:cellIconImageOptions];
   [(SBFolderIconImageView *)self configureMiniGridView:v10];
-  [v4 setGridView:v10];
+  [elementCopy setGridView:v10];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -1656,42 +1656,42 @@ LABEL_11:
   [(SBFolderIconImageView *)self enumerateCurrentPageIconLayerViewsInGridView:v10 usingBlock:v11];
 }
 
-- (void)configureMiniGridView:(id)a3
+- (void)configureMiniGridView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 layer];
-  [v5 setMinificationFilter:*MEMORY[0x1E6979D68]];
-  [v4 setContentVisibility:{-[SBIconImageView contentVisibility](self, "contentVisibility")}];
+  viewCopy = view;
+  layer = [viewCopy layer];
+  [layer setMinificationFilter:*MEMORY[0x1E6979D68]];
+  [viewCopy setContentVisibility:{-[SBIconImageView contentVisibility](self, "contentVisibility")}];
 }
 
-- (void)setPageGridCornerRadius:(double)a3
+- (void)setPageGridCornerRadius:(double)radius
 {
   [(SBFolderIconImageView *)self _setContinuousCornerRadius:?];
   pageGridContainer = self->_pageGridContainer;
 
-  [(UIView *)pageGridContainer _setContinuousCornerRadius:a3];
+  [(UIView *)pageGridContainer _setContinuousCornerRadius:radius];
 }
 
-- (void)enumerateCurrentPageIconLayerViewsUsingBlock:(id)a3
+- (void)enumerateCurrentPageIconLayerViewsUsingBlock:(id)block
 {
   pageElements = self->_pageElements;
   currentPageIndex = self->_currentPageIndex;
-  v6 = a3;
+  blockCopy = block;
   v8 = [(NSArray *)pageElements objectAtIndex:currentPageIndex];
-  v7 = [v8 gridView];
-  [(SBFolderIconImageView *)self enumerateCurrentPageIconLayerViewsInGridView:v7 usingBlock:v6];
+  gridView = [v8 gridView];
+  [(SBFolderIconImageView *)self enumerateCurrentPageIconLayerViewsInGridView:gridView usingBlock:blockCopy];
 }
 
-- (void)enumerateCurrentPageIconLayerViewsInGridView:(id)a3 usingBlock:(id)a4
+- (void)enumerateCurrentPageIconLayerViewsInGridView:(id)view usingBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __81__SBFolderIconImageView_enumerateCurrentPageIconLayerViewsInGridView_usingBlock___block_invoke;
   v7[3] = &unk_1E808B578;
-  v8 = v5;
-  v6 = v5;
-  [a3 enumerateIconsAndViewsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [view enumerateIconsAndViewsUsingBlock:v7];
 }
 
 void __81__SBFolderIconImageView_enumerateCurrentPageIconLayerViewsInGridView_usingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1706,15 +1706,15 @@ void __81__SBFolderIconImageView_enumerateCurrentPageIconLayerViewsInGridView_us
   }
 }
 
-- (void)enumerateCurrentPageIconLayersUsingBlock:(id)a3
+- (void)enumerateCurrentPageIconLayersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__SBFolderIconImageView_enumerateCurrentPageIconLayersUsingBlock___block_invoke;
   v6[3] = &unk_1E808B5A0;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(SBFolderIconImageView *)self enumerateCurrentPageIconLayerViewsUsingBlock:v6];
 }
 
@@ -1740,16 +1740,16 @@ void __66__SBFolderIconImageView_enumerateCurrentPageIconLayersUsingBlock___bloc
   }
 }
 
-- (void)folderIcon:(id)a3 containedIconAccessoriesDidUpdate:(id)a4
+- (void)folderIcon:(id)icon containedIconAccessoriesDidUpdate:(id)update
 {
-  [(SBFolderIconImageView *)self setDisplayedPageElements:0, a4];
+  [(SBFolderIconImageView *)self setDisplayedPageElements:0, update];
 
   [(SBFolderIconImageView *)self updateImageAnimated:0];
 }
 
-- (void)folderIcon:(id)a3 containedIconLaunchEnabledDidChange:(id)a4
+- (void)folderIcon:(id)icon containedIconLaunchEnabledDidChange:(id)change
 {
-  [(SBFolderIconImageView *)self setDisplayedPageElements:0, a4];
+  [(SBFolderIconImageView *)self setDisplayedPageElements:0, change];
 
   [(SBFolderIconImageView *)self updateImageAnimated:0];
 }

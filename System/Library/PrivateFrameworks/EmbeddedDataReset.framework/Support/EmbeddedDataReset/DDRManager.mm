@@ -4,12 +4,12 @@
 - (DDRUIPresenter)uiPresenter;
 - (NSXPCConnection)dataResetWorkerConnection;
 - (OS_dispatch_queue)queue;
-- (void)_obliterateDeviceWithMode:(int64_t)a3;
-- (void)finishResetOfMode:(int64_t)a3 withError:(id)a4;
+- (void)_obliterateDeviceWithMode:(int64_t)mode;
+- (void)finishResetOfMode:(int64_t)mode withError:(id)error;
 - (void)resetConnection;
-- (void)resetDataWithRequest:(id)a3 completion:(id)a4;
-- (void)resetWithMode:(int64_t)a3 didUpdateWithProgress:(double)a4;
-- (void)resetWithModeDidBegin:(int64_t)a3;
+- (void)resetDataWithRequest:(id)request completion:(id)completion;
+- (void)resetWithMode:(int64_t)mode didUpdateWithProgress:(double)progress;
+- (void)resetWithModeDidBegin:(int64_t)begin;
 @end
 
 @implementation DDRManager
@@ -100,8 +100,8 @@
     objc_copyWeak(&v15, buf);
     [(NSXPCConnection *)self->_dataResetWorkerConnection setInvalidationHandler:v14];
     [(NSXPCConnection *)self->_dataResetWorkerConnection resume];
-    v12 = [(NSXPCConnection *)self->_dataResetWorkerConnection remoteObjectProxy];
-    [v12 setObserving:1];
+    remoteObjectProxy = [(NSXPCConnection *)self->_dataResetWorkerConnection remoteObjectProxy];
+    [remoteObjectProxy setObserving:1];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&v17);
@@ -126,79 +126,79 @@
   self->_dataResetWorkerConnection = 0;
 }
 
-- (void)resetDataWithRequest:(id)a3 completion:(id)a4
+- (void)resetDataWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  -[DDRManager setMode:](self, "setMode:", [v6 mode]);
-  v8 = [(DDRManager *)self queue];
+  requestCopy = request;
+  completionCopy = completion;
+  -[DDRManager setMode:](self, "setMode:", [requestCopy mode]);
+  queue = [(DDRManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100003498;
   block[3] = &unk_10000C560;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = requestCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
+  dispatch_sync(queue, block);
 }
 
-- (void)finishResetOfMode:(int64_t)a3 withError:(id)a4
+- (void)finishResetOfMode:(int64_t)mode withError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v7 = sub_100002D58(2uLL);
-  v8 = v7;
-  if (v6)
+  layoutManager = v7;
+  if (errorCopy)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_10000496C(v6, v8);
+      sub_10000496C(errorCopy, layoutManager);
     }
 
-    v8 = [(DDRManager *)self layoutManager];
-    [v8 stopLayout];
+    layoutManager = [(DDRManager *)self layoutManager];
+    [layoutManager stopLayout];
   }
 
   else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Finishing data reset.", buf, 2u);
+    _os_log_impl(&_mh_execute_header, layoutManager, OS_LOG_TYPE_DEFAULT, "Finishing data reset.", buf, 2u);
   }
 
-  if (a3 > 3)
+  if (mode > 3)
   {
-    [(DDRManager *)self _obliterateDeviceWithMode:a3];
-    v10 = [(DDRManager *)self delegate];
-    [v10 resetWithModeDidFinish:a3 error:v6];
+    [(DDRManager *)self _obliterateDeviceWithMode:mode];
+    delegate = [(DDRManager *)self delegate];
+    [delegate resetWithModeDidFinish:mode error:errorCopy];
 
-    v9 = sub_100002D58(2uLL);
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    delegate2 = sub_100002D58(2uLL);
+    if (os_log_type_enabled(delegate2, OS_LOG_TYPE_DEFAULT))
     {
       *v11 = 0;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "resetWithMode did finish", v11, 2u);
+      _os_log_impl(&_mh_execute_header, delegate2, OS_LOG_TYPE_DEFAULT, "resetWithMode did finish", v11, 2u);
     }
   }
 
   else
   {
-    v9 = [(DDRManager *)self delegate];
-    [v9 resetWithModeDidFinish:a3 error:v6];
+    delegate2 = [(DDRManager *)self delegate];
+    [delegate2 resetWithModeDidFinish:mode error:errorCopy];
   }
 }
 
-- (void)_obliterateDeviceWithMode:(int64_t)a3
+- (void)_obliterateDeviceWithMode:(int64_t)mode
 {
   v5 = kObliterateDataPartition;
-  if (a3 != 4)
+  if (mode != 4)
   {
-    if (a3 == 6)
+    if (mode == 6)
     {
       v6 = &kObliterationTypeRRTS;
       goto LABEL_6;
     }
 
-    if (a3 == 5)
+    if (mode == 5)
     {
       v6 = &kObliterationTypeWipeAndBrick;
 LABEL_6:
@@ -209,34 +209,34 @@ LABEL_6:
     v7 = sub_100002D58(2uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_1000049E4(a3, v7);
+      sub_1000049E4(mode, v7);
     }
   }
 
 LABEL_10:
   v8 = objc_alloc_init(NSMutableDictionary);
-  v9 = [(DDRManager *)self reason];
+  reason = [(DDRManager *)self reason];
 
-  if (v9)
+  if (reason)
   {
-    v10 = [(DDRManager *)self reason];
-    [v8 setObject:v10 forKeyedSubscript:kObliterationMessageKey];
+    reason2 = [(DDRManager *)self reason];
+    [v8 setObject:reason2 forKeyedSubscript:kObliterationMessageKey];
   }
 
-  if (a3 == 6)
+  if (mode == 6)
   {
-    v11 = [(DDRManager *)self bootstrapToken];
-    [v8 setObject:v11 forKeyedSubscript:kRRTSBootStrapTokenKey];
+    bootstrapToken = [(DDRManager *)self bootstrapToken];
+    [v8 setObject:bootstrapToken forKeyedSubscript:kRRTSBootStrapTokenKey];
 
-    v12 = [(DDRManager *)self revertToSnapshotName];
-    [v8 setObject:v12 forKeyedSubscript:kRRTSRevertToSnapshotNameKey];
+    revertToSnapshotName = [(DDRManager *)self revertToSnapshotName];
+    [v8 setObject:revertToSnapshotName forKeyedSubscript:kRRTSRevertToSnapshotNameKey];
   }
 
   v13 = [NSNumber numberWithBool:[(DDRManager *)self disallowProximitySetup]];
   [v8 setObject:v13 forKeyedSubscript:kObliterationManagedDeviceWipeKey];
 
-  v14 = [(DDRManager *)self exclusionPaths];
-  [v8 setObject:v14 forKeyedSubscript:kObliterationExclusionPathsKey];
+  exclusionPaths = [(DDRManager *)self exclusionPaths];
+  [v8 setObject:exclusionPaths forKeyedSubscript:kObliterationExclusionPathsKey];
 
   v15 = sub_100002D58(2uLL);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -248,21 +248,21 @@ LABEL_10:
   [(DDRManager *)self doObliterateWithType:v5 showingProgress:1 options:v8];
 }
 
-- (void)resetWithMode:(int64_t)a3 didUpdateWithProgress:(double)a4
+- (void)resetWithMode:(int64_t)mode didUpdateWithProgress:(double)progress
 {
   v6 = sub_100002D58(2uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = a4;
+    progressCopy = progress;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Update progress:%lf", &v8, 0xCu);
   }
 
-  v7 = [(DDRManager *)self uiPresenter];
-  [v7 setProgress:a4];
+  uiPresenter = [(DDRManager *)self uiPresenter];
+  [uiPresenter setProgress:progress];
 }
 
-- (void)resetWithModeDidBegin:(int64_t)a3
+- (void)resetWithModeDidBegin:(int64_t)begin
 {
   v5 = sub_100002D58(2uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -271,8 +271,8 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Data reset manager calling delegate resetWithModeDidBegin", v7, 2u);
   }
 
-  v6 = [(DDRManager *)self delegate];
-  [v6 resetWithModeDidBegin:a3];
+  delegate = [(DDRManager *)self delegate];
+  [delegate resetWithModeDidBegin:begin];
 }
 
 - (DDRManagerDelegate)delegate

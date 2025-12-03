@@ -1,16 +1,16 @@
 @interface VCPANSTHandsDetector
-+ (id)anstHandsDetectorWithExtendRatio:(float)a3 options:(id)a4;
-- (VCPANSTHandsDetector)initWithExtendRatio:(float)a3 options:(id)a4;
-- (int)handsDetection:(__CVBuffer *)a3 rotationInDegrees:(id)a4 handsRegions:(id)a5 cancel:(id)a6;
++ (id)anstHandsDetectorWithExtendRatio:(float)ratio options:(id)options;
+- (VCPANSTHandsDetector)initWithExtendRatio:(float)ratio options:(id)options;
+- (int)handsDetection:(__CVBuffer *)detection rotationInDegrees:(id)degrees handsRegions:(id)regions cancel:(id)cancel;
 - (void)dealloc;
 @end
 
 @implementation VCPANSTHandsDetector
 
-- (VCPANSTHandsDetector)initWithExtendRatio:(float)a3 options:(id)a4
+- (VCPANSTHandsDetector)initWithExtendRatio:(float)ratio options:(id)options
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  optionsCopy = options;
   v23.receiver = self;
   v23.super_class = VCPANSTHandsDetector;
   v7 = [(VCPANSTHandsDetector *)&v23 init];
@@ -20,7 +20,7 @@
     v7->_useVisionCore = v8;
     if (v8)
     {
-      v9 = [[VCPCNNVisionCoreDetector alloc] initWithOptions:v6];
+      v9 = [[VCPCNNVisionCoreDetector alloc] initWithOptions:optionsCopy];
       visionCoreDetector = v7->_visionCoreDetector;
       v7->_visionCoreDetector = v9;
 
@@ -54,7 +54,7 @@
       v16 = v15;
       ma::Rotator::Rotator(v15, 90);
       v7->_rotator = v16;
-      v7->_extendRatio = a3;
+      v7->_extendRatio = ratio;
       v11 = v7;
       v17 = v7->_anstAlgorithm;
       if (v17)
@@ -77,7 +77,7 @@
     {
       v11 = 0;
       v7->_rotator = 0;
-      v7->_extendRatio = a3;
+      v7->_extendRatio = ratio;
     }
   }
 
@@ -91,12 +91,12 @@
   return v20;
 }
 
-+ (id)anstHandsDetectorWithExtendRatio:(float)a3 options:(id)a4
++ (id)anstHandsDetectorWithExtendRatio:(float)ratio options:(id)options
 {
-  v5 = a4;
+  optionsCopy = options;
   v6 = [VCPANSTHandsDetector alloc];
-  *&v7 = a3;
-  v8 = [(VCPANSTHandsDetector *)v6 initWithExtendRatio:v5 options:v7];
+  *&v7 = ratio;
+  v8 = [(VCPANSTHandsDetector *)v6 initWithExtendRatio:optionsCopy options:v7];
 
   return v8;
 }
@@ -115,14 +115,14 @@
   [(VCPANSTHandsDetector *)&v4 dealloc];
 }
 
-- (int)handsDetection:(__CVBuffer *)a3 rotationInDegrees:(id)a4 handsRegions:(id)a5 cancel:(id)a6
+- (int)handsDetection:(__CVBuffer *)detection rotationInDegrees:(id)degrees handsRegions:(id)regions cancel:(id)cancel
 {
   v107 = *MEMORY[0x1E69E9840];
-  v77 = a4;
-  v80 = a5;
-  v78 = a6;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  degreesCopy = degrees;
+  regionsCopy = regions;
+  cancelCopy = cancel;
+  Width = CVPixelBufferGetWidth(detection);
+  Height = CVPixelBufferGetHeight(detection);
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     extendRatio = self->_extendRatio;
@@ -132,7 +132,7 @@
   }
 
   cf = 0;
-  if (v78 && (v78[2]() & 1) != 0)
+  if (cancelCopy && (cancelCopy[2]() & 1) != 0)
   {
     v11 = 0.0;
     v76 = 0;
@@ -145,26 +145,26 @@
   {
     if (!self->_useVisionCore)
     {
-      if (v77)
+      if (degreesCopy)
       {
-        if ([v77 intValue] == 90)
+        if ([degreesCopy intValue] == 90)
         {
           v16 = 3;
         }
 
-        else if ([v77 intValue] == 270)
+        else if ([degreesCopy intValue] == 270)
         {
           v16 = 4;
         }
 
-        else if ([v77 intValue] == 180)
+        else if ([degreesCopy intValue] == 180)
         {
           v16 = 2;
         }
 
         else
         {
-          v16 = [v77 intValue] == 0;
+          v16 = [degreesCopy intValue] == 0;
         }
       }
 
@@ -176,21 +176,21 @@
       anstAlgorithm = self->_anstAlgorithm;
       v87 = 0;
       v18 = &v87;
-      v76 = [(ANSTISPAlgorithm *)anstAlgorithm resultForPixelBuffer:a3 orientation:v16 error:&v87];
+      v76 = [(ANSTISPAlgorithm *)anstAlgorithm resultForPixelBuffer:detection orientation:v16 error:&v87];
       v12 = 0;
       goto LABEL_39;
     }
 
-    if (v77)
+    if (degreesCopy)
     {
-      if ([v77 intValue] == 90)
+      if ([degreesCopy intValue] == 90)
       {
         v15 = 8;
 LABEL_36:
         visionCoreDetector = self->_visionCoreDetector;
         v88 = 0;
         v18 = &v88;
-        v12 = [(VCPCNNVisionCoreDetector *)visionCoreDetector resultForPixelBuffer:a3 orientation:v15 Error:&v88];
+        v12 = [(VCPCNNVisionCoreDetector *)visionCoreDetector resultForPixelBuffer:detection orientation:v15 Error:&v88];
         v76 = 0;
 LABEL_39:
         v20 = Height;
@@ -198,19 +198,19 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      if ([v77 intValue] == 270)
+      if ([degreesCopy intValue] == 270)
       {
         v15 = 6;
         goto LABEL_36;
       }
 
-      if ([v77 intValue] == 180)
+      if ([degreesCopy intValue] == 180)
       {
         v15 = 3;
         goto LABEL_36;
       }
 
-      [v77 intValue];
+      [degreesCopy intValue];
     }
 
     v15 = 1;
@@ -231,7 +231,7 @@ LABEL_11:
     operator new();
   }
 
-  v13 = ma::Rotator::Rotate(rotator, a3, &cf);
+  v13 = ma::Rotator::Rotate(rotator, detection, &cf);
   if (v13)
   {
     v11 = 0.0;
@@ -279,7 +279,7 @@ LABEL_40:
   else if (v12)
   {
     *&v26 = self->_extendRatio;
-    v13 = [(VCPCNNVisionCoreDetector *)self->_visionCoreDetector getHandsRegions:v80 fromVisionCorePostProcessingOutput:v12 imageWidth:v24 imageHeight:v20 extendRatio:Height >= Width portrait_mode:v26];
+    v13 = [(VCPCNNVisionCoreDetector *)self->_visionCoreDetector getHandsRegions:regionsCopy fromVisionCorePostProcessingOutput:v12 imageWidth:v24 imageHeight:v20 extendRatio:Height >= Width portrait_mode:v26];
     if (v13)
     {
       goto LABEL_46;
@@ -314,25 +314,25 @@ LABEL_40:
             }
 
             v33 = *(*(&v83 + 1) + 8 * i);
-            v34 = [v33 objectID];
-            v35 = [v33 groupID];
+            objectID = [v33 objectID];
+            groupID = [v33 groupID];
             [v33 boundingBox];
             v37 = v36;
             v39 = v38;
             v41 = v40;
             v43 = v42;
-            v44 = [v33 chirality];
-            if (v44 == 1)
+            chirality = [v33 chirality];
+            if (chirality == 1)
             {
               v45 = 0xFFFFFFFFLL;
             }
 
             else
             {
-              v45 = v44 == 2;
+              v45 = chirality == 2;
             }
 
-            v46 = [v33 confidence];
+            confidence = [v33 confidence];
             v47 = v41 * 0.5;
             v48 = v43 * 0.5;
             v49 = v37 + v47;
@@ -395,7 +395,7 @@ LABEL_40:
             }
 
             v62 = [VCPBoundingBox alloc];
-            *&v63 = v46;
+            *&v63 = confidence;
             *&v64 = v56;
             *&v65 = v57;
             *&v66 = v61;
@@ -422,15 +422,15 @@ LABEL_40:
               v100 = 1024;
               v101 = v45;
               v102 = 2048;
-              v103 = v34;
+              v103 = objectID;
               v104 = 2048;
-              v105 = v35;
+              v105 = groupID;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "VCPANSTHandsDetector: box (xyxy, chirality) = [%f, %f, %f, %f, %d] trackingID = %lu, groupID = %lu", buf, 0x44u);
             }
 
-            [(VCPBoundingBox *)v68 setTrackID:v34];
-            [(VCPBoundingBox *)v68 setGroupID:v35];
-            [v80 addObject:v68];
+            [(VCPBoundingBox *)v68 setTrackID:objectID];
+            [(VCPBoundingBox *)v68 setGroupID:groupID];
+            [regionsCopy addObject:v68];
           }
 
           v28 = [obj countByEnumeratingWithState:&v83 objects:v106 count:16];

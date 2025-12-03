@@ -1,8 +1,8 @@
 @interface NUHistogramRenderJob
-- (BOOL)complete:(id *)a3;
-- (BOOL)render:(id *)a3;
-- (NUHistogramRenderJob)initWithHistogramRequest:(id)a3;
-- (NUHistogramRenderJob)initWithRequest:(id)a3;
+- (BOOL)complete:(id *)complete;
+- (BOOL)render:(id *)render;
+- (NUHistogramRenderJob)initWithHistogramRequest:(id)request;
+- (NUHistogramRenderJob)initWithRequest:(id)request;
 - (id)cacheKey;
 - (id)result;
 - (void)cleanUp;
@@ -33,10 +33,10 @@
   return v2;
 }
 
-- (BOOL)complete:(id *)a3
+- (BOOL)complete:(id *)complete
 {
   v49 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!complete)
   {
     v19 = NUAssertLogger_22207();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -57,8 +57,8 @@
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v26;
         *&buf[12] = 2114;
@@ -69,8 +69,8 @@
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -88,15 +88,15 @@
     *&buf[16] = [(NURenderJob *)self imageSize];
     *&buf[24] = v6;
     v7 = [NURegion regionWithRect:buf];
-    v8 = [(NUHistogramRenderJob *)self histogramRequest];
+    histogramRequest = [(NUHistogramRenderJob *)self histogramRequest];
     v47 = 0u;
     v48 = 0u;
     memset(buf, 0, sizeof(buf));
-    v9 = [v8 parameters];
-    v10 = v9;
-    if (v9)
+    parameters = [histogramRequest parameters];
+    v10 = parameters;
+    if (parameters)
     {
-      [v9 colorMatrix];
+      [parameters colorMatrix];
     }
 
     else
@@ -128,9 +128,9 @@
     v13 = histogram != 0;
     if (!histogram)
     {
-      v16 = [(NURenderJob *)self request];
-      v17 = [v16 copy];
-      *a3 = [NUError errorWithCode:1 reason:@"Failed to compute histogram" object:v17 underlyingError:v41[5]];
+      request = [(NURenderJob *)self request];
+      v17 = [request copy];
+      *complete = [NUError errorWithCode:1 reason:@"Failed to compute histogram" object:v17 underlyingError:v41[5]];
     }
 
     _Block_object_dispose(&v40, 8);
@@ -138,9 +138,9 @@
 
   else
   {
-    v11 = [(NURenderJob *)self request];
-    v12 = [v11 copy];
-    *a3 = [NUError errorWithCode:1 reason:@"failed to render for histogram" object:v12 underlyingError:*a3];
+    request2 = [(NURenderJob *)self request];
+    v12 = [request2 copy];
+    *complete = [NUError errorWithCode:1 reason:@"failed to render for histogram" object:v12 underlyingError:*complete];
 
     return 0;
   }
@@ -169,10 +169,10 @@ void __33__NUHistogramRenderJob_complete___block_invoke(uint64_t a1, void *a2)
   *(v9 + 256) = v8;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v77 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!render)
   {
     v26 = NUAssertLogger_22207();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -193,8 +193,8 @@ void __33__NUHistogramRenderJob_complete___block_invoke(uint64_t a1, void *a2)
         v47 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v48 = MEMORY[0x1E696AF00];
         v49 = v47;
-        v50 = [v48 callStackSymbols];
-        v51 = [v50 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v48 callStackSymbols];
+        v51 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v47;
         *&buf[12] = 2114;
@@ -205,8 +205,8 @@ void __33__NUHistogramRenderJob_complete___block_invoke(uint64_t a1, void *a2)
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v32 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v32;
       _os_log_error_impl(&dword_1C0184000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -215,9 +215,9 @@ void __33__NUHistogramRenderJob_complete___block_invoke(uint64_t a1, void *a2)
     _NUAssertFailHandler("[NUHistogramRenderJob render:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUHistogramRenderJob.m", 77, @"Invalid parameter not satisfying: %s", v52, v53, v54, v55, "error != NULL");
   }
 
-  v5 = [(NUHistogramRenderJob *)self histogramRequest];
-  v6 = [v5 histogramCalculationColorSpace];
-  if ([v6 isHDR])
+  histogramRequest = [(NUHistogramRenderJob *)self histogramRequest];
+  histogramCalculationColorSpace = [histogramRequest histogramCalculationColorSpace];
+  if ([histogramCalculationColorSpace isHDR])
   {
     +[NUPixelFormat RGBAh];
   }
@@ -233,9 +233,9 @@ void __33__NUHistogramRenderJob_complete___block_invoke(uint64_t a1, void *a2)
   v76 = v8;
   v9 = [NURegion regionWithRect:buf];
   v10 = +[NUFactory sharedFactory];
-  v11 = [v10 surfaceStoragePool];
+  surfaceStoragePool = [v10 surfaceStoragePool];
   storagePool = self->_storagePool;
-  self->_storagePool = v11;
+  self->_storagePool = surfaceStoragePool;
 
   v13 = self->_storagePool;
   if (!v13)
@@ -259,8 +259,8 @@ void __33__NUHistogramRenderJob_complete___block_invoke(uint64_t a1, void *a2)
         v56 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v57 = MEMORY[0x1E696AF00];
         v58 = v56;
-        v59 = [v57 callStackSymbols];
-        v60 = [v59 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v57 callStackSymbols];
+        v60 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v56;
         *&buf[12] = 2114;
@@ -271,8 +271,8 @@ void __33__NUHistogramRenderJob_complete___block_invoke(uint64_t a1, void *a2)
 
     else if (v37)
     {
-      v38 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v39 = [v38 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v39 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v39;
       _os_log_error_impl(&dword_1C0184000, v36, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -281,8 +281,8 @@ void __33__NUHistogramRenderJob_complete___block_invoke(uint64_t a1, void *a2)
     _NUAssertFailHandler("[NUHistogramRenderJob render:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUHistogramRenderJob.m", 87, @"No storage pool", v61, v62, v63, v64, v74);
   }
 
-  v14 = [(NURenderJob *)self imageSize];
-  v16 = [(NUPurgeableStoragePool *)v13 newStorageWithSize:v14 format:v15, v7];
+  imageSize = [(NURenderJob *)self imageSize];
+  v16 = [(NUPurgeableStoragePool *)v13 newStorageWithSize:imageSize format:v15, v7];
   renderDestination = self->_renderDestination;
   self->_renderDestination = v16;
 
@@ -307,8 +307,8 @@ void __33__NUHistogramRenderJob_complete___block_invoke(uint64_t a1, void *a2)
         v65 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v66 = MEMORY[0x1E696AF00];
         v67 = v65;
-        v68 = [v66 callStackSymbols];
-        v69 = [v68 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v66 callStackSymbols];
+        v69 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v65;
         *&buf[12] = 2114;
@@ -319,8 +319,8 @@ void __33__NUHistogramRenderJob_complete___block_invoke(uint64_t a1, void *a2)
 
     else if (v44)
     {
-      v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v46 = [v45 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v46 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v46;
       _os_log_error_impl(&dword_1C0184000, v43, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -329,12 +329,12 @@ void __33__NUHistogramRenderJob_complete___block_invoke(uint64_t a1, void *a2)
     _NUAssertFailHandler("[NUHistogramRenderJob render:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUHistogramRenderJob.m", 93, @"No storage allocated", v70, v71, v72, v73, v74);
   }
 
-  v18 = [(NURenderJob *)self outputImage];
+  outputImage = [(NURenderJob *)self outputImage];
   v19 = self->_renderDestination;
-  v20 = [(NURenderJob *)self imageSize];
-  v22 = [(NURenderJob *)self renderImage:v18 into:v19 colorSpace:v6 roi:v9 imageSize:v20 error:v21, a3];
+  imageSize2 = [(NURenderJob *)self imageSize];
+  render = [(NURenderJob *)self renderImage:outputImage into:v19 colorSpace:histogramCalculationColorSpace roi:v9 imageSize:imageSize2 error:v21, render];
   renderTask = self->_renderTask;
-  self->_renderTask = v22;
+  self->_renderTask = render;
 
   v24 = self->_renderTask != 0;
   return v24;
@@ -343,18 +343,18 @@ void __33__NUHistogramRenderJob_complete___block_invoke(uint64_t a1, void *a2)
 - (id)cacheKey
 {
   v3 = objc_alloc_init(NUDigest);
-  v4 = [(NURenderJob *)self renderNode];
-  [v4 nu_updateDigest:v3];
+  renderNode = [(NURenderJob *)self renderNode];
+  [renderNode nu_updateDigest:v3];
 
-  v5 = [(NUHistogramRenderJob *)self histogramRequest];
-  v6 = [v5 histogramCalculationColorSpace];
-  [v6 nu_updateDigest:v3];
+  histogramRequest = [(NUHistogramRenderJob *)self histogramRequest];
+  histogramCalculationColorSpace = [histogramRequest histogramCalculationColorSpace];
+  [histogramCalculationColorSpace nu_updateDigest:v3];
 
-  v7 = [v5 parameters];
-  v8 = v7;
-  if (v7)
+  parameters = [histogramRequest parameters];
+  v8 = parameters;
+  if (parameters)
   {
-    [v7 colorMatrix];
+    [parameters colorMatrix];
   }
 
   else
@@ -364,15 +364,15 @@ void __33__NUHistogramRenderJob_complete___block_invoke(uint64_t a1, void *a2)
 
   [(NUDigest *)v3 addBytes:v11 length:64];
   [(NUDigest *)v3 finalize];
-  v9 = [(NUDigest *)v3 stringValue];
+  stringValue = [(NUDigest *)v3 stringValue];
 
-  return v9;
+  return stringValue;
 }
 
-- (NUHistogramRenderJob)initWithRequest:(id)a3
+- (NUHistogramRenderJob)initWithRequest:(id)request
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_22233);
@@ -416,8 +416,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -433,8 +433,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;
@@ -450,16 +450,16 @@ LABEL_14:
   _NUAssertFailHandler("[NUHistogramRenderJob initWithRequest:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUHistogramRenderJob.m", 41, @"Initializer not available: [%@ %@], use designated initializer instead.", v27, v28, v29, v30, v26);
 }
 
-- (NUHistogramRenderJob)initWithHistogramRequest:(id)a3
+- (NUHistogramRenderJob)initWithHistogramRequest:(id)request
 {
   v8.receiver = self;
   v8.super_class = NUHistogramRenderJob;
-  v3 = a3;
-  v4 = [(NURenderJob *)&v8 initWithRequest:v3];
-  v5 = [v3 scalePolicy];
+  requestCopy = request;
+  v4 = [(NURenderJob *)&v8 initWithRequest:requestCopy];
+  scalePolicy = [requestCopy scalePolicy];
 
   scalePolicy = v4->_scalePolicy;
-  v4->_scalePolicy = v5;
+  v4->_scalePolicy = scalePolicy;
 
   return v4;
 }

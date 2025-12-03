@@ -1,5 +1,5 @@
 @interface NEVPNConnectivitySession
-- (id)initWithConfiguration:(void *)a3 delegate:(void *)a4 queue:;
+- (id)initWithConfiguration:(void *)configuration delegate:(void *)delegate queue:;
 @end
 
 @implementation NEVPNConnectivitySession
@@ -20,64 +20,64 @@ uint64_t __56__NEVPNConnectivitySession_cancelWithCompletionHandler___block_invo
   return ne_session_cancel();
 }
 
-- (id)initWithConfiguration:(void *)a3 delegate:(void *)a4 queue:
+- (id)initWithConfiguration:(void *)configuration delegate:(void *)delegate queue:
 {
   v47[2] = *MEMORY[0x1E69E9840];
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1 && (v41.receiver = a1, v41.super_class = NEVPNConnectivitySession, v11 = objc_msgSendSuper2(&v41, sel_init), (v12 = v11) != 0))
+  configurationCopy = configuration;
+  delegateCopy = delegate;
+  if (self && (v41.receiver = self, v41.super_class = NEVPNConnectivitySession, v11 = objc_msgSendSuper2(&v41, sel_init), (v12 = v11) != 0))
   {
     objc_storeStrong(v11 + 1, a2);
-    objc_storeWeak(v12 + 3, v9);
-    objc_storeStrong(v12 + 5, a4);
+    objc_storeWeak(v12 + 3, configurationCopy);
+    objc_storeStrong(v12 + 5, delegate);
     v47[0] = 0;
     v47[1] = 0;
-    v13 = [v8 identifier];
-    [v13 getUUIDBytes:v47];
+    identifier = [v8 identifier];
+    [identifier getUUIDBytes:v47];
 
     v14 = [v8 VPN];
-    LODWORD(v13) = v14 == 0;
+    LODWORD(identifier) = v14 == 0;
 
-    if (v13)
+    if (identifier)
     {
-      v16 = [v8 appVPN];
-      v17 = v16 == 0;
+      appVPN = [v8 appVPN];
+      v17 = appVPN == 0;
 
       if (v17)
       {
-        v18 = [v8 alwaysOnVPN];
-        v19 = v18 == 0;
+        alwaysOnVPN = [v8 alwaysOnVPN];
+        v19 = alwaysOnVPN == 0;
 
         if (v19)
         {
-          v20 = [v8 pathController];
-          v21 = v20 == 0;
+          pathController = [v8 pathController];
+          v21 = pathController == 0;
 
           if (v21)
           {
-            v22 = [v8 contentFilter];
-            v23 = v22 == 0;
+            contentFilter = [v8 contentFilter];
+            v23 = contentFilter == 0;
 
             if (v23)
             {
-              v24 = [v8 dnsProxy];
-              v25 = v24 == 0;
+              dnsProxy = [v8 dnsProxy];
+              v25 = dnsProxy == 0;
 
               if (v25)
               {
-                v26 = [v8 dnsSettings];
-                v27 = v26 == 0;
+                dnsSettings = [v8 dnsSettings];
+                v27 = dnsSettings == 0;
 
                 if (v27)
                 {
-                  v28 = [v8 appPush];
-                  v29 = v28 == 0;
+                  appPush = [v8 appPush];
+                  v29 = appPush == 0;
 
                   if (v29)
                   {
-                    v30 = [v8 relay];
-                    v31 = v30 == 0;
+                    relay = [v8 relay];
+                    v31 = relay == 0;
 
                     if (v31)
                     {
@@ -111,13 +111,13 @@ uint64_t __56__NEVPNConnectivitySession_cancelWithCompletionHandler___block_invo
       v33 = ne_log_obj();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
-        v36 = [v8 name];
-        v37 = [v8 identifier];
+        name = [v8 name];
+        identifier2 = [v8 identifier];
         v38 = ne_session_type_to_string();
         *location = 138412802;
-        *&location[4] = v36;
+        *&location[4] = name;
         v43 = 2112;
-        v44 = v37;
+        v44 = identifier2;
         v45 = 2080;
         v46 = v38;
         _os_log_error_impl(&dword_1BA83C000, v33, OS_LOG_TYPE_ERROR, "Failed to create a ne_session for %@ (%@), session type %s", location, 0x20u);

@@ -1,24 +1,24 @@
 @interface HMDTimePeriodNotificationConditionDefaultSunsetSunriseProvider
-- (id)sunriseTimeForHome:(id)a3;
-- (id)sunsetTimeForHome:(id)a3;
+- (id)sunriseTimeForHome:(id)home;
+- (id)sunsetTimeForHome:(id)home;
 @end
 
 @implementation HMDTimePeriodNotificationConditionDefaultSunsetSunriseProvider
 
-- (id)sunsetTimeForHome:(id)a3
+- (id)sunsetTimeForHome:(id)home
 {
-  v3 = [a3 homeLocationHandler];
-  v4 = [v3 location];
-  v5 = [HMDLocation sunsetTimeForLocation:v4];
+  homeLocationHandler = [home homeLocationHandler];
+  location = [homeLocationHandler location];
+  v5 = [HMDLocation sunsetTimeForLocation:location];
 
   return v5;
 }
 
-- (id)sunriseTimeForHome:(id)a3
+- (id)sunriseTimeForHome:(id)home
 {
-  v3 = [a3 homeLocationHandler];
-  v4 = [v3 location];
-  v5 = [HMDLocation sunriseTimeForLocation:v4];
+  homeLocationHandler = [home homeLocationHandler];
+  location = [homeLocationHandler location];
+  v5 = [HMDLocation sunriseTimeForLocation:location];
 
   return v5;
 }

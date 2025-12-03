@@ -3,8 +3,8 @@
 - (BOOL)_contextRequiresSessionBasedAuthentication;
 - (BOOL)_contextShouldAllowMultipleBiometricFailures;
 - (BOOL)_contextShouldAllowPasscodeFallback;
-- (BOOL)_hasAuthenticationCapability:(id *)a3;
-- (BOOL)_monotonicTimeIsWithinAuthenticationGracePeriod:(double)a3;
+- (BOOL)_hasAuthenticationCapability:(id *)capability;
+- (BOOL)_monotonicTimeIsWithinAuthenticationGracePeriod:(double)period;
 - (BOOL)needsAuthentication;
 - (LAContext)authenticatedContext;
 - (_SFAuthenticationContext)init;
@@ -12,16 +12,16 @@
 - (id)_authenticationContext;
 - (void)_cancelOngoingAndPendingAuthentications;
 - (void)_cancelOngoingAuthentication;
-- (void)_evaluatePolicyForClient:(id)a3 userInitiated:(BOOL)a4 reply:(id)a5;
-- (void)_handleTouchIDEventWithParameters:(id)a3;
+- (void)_evaluatePolicyForClient:(id)client userInitiated:(BOOL)initiated reply:(id)reply;
+- (void)_handleTouchIDEventWithParameters:(id)parameters;
 - (void)_invalidateAuthentication;
-- (void)_processNextClientAwaitingAuthenticationUserInitiated:(BOOL)a3;
+- (void)_processNextClientAwaitingAuthenticationUserInitiated:(BOOL)initiated;
 - (void)applicationDidEnterBackground;
 - (void)applicationWillEnterForeground;
-- (void)authenticateForClient:(id)a3 userInitiated:(BOOL)a4 completion:(id)a5;
+- (void)authenticateForClient:(id)client userInitiated:(BOOL)initiated completion:(id)completion;
 - (void)dealloc;
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5;
-- (void)invalidateClient:(id)a3;
+- (void)event:(int64_t)event params:(id)params reply:(id)reply;
+- (void)invalidateClient:(id)client;
 - (void)preemptOngoingAuthenticationWithPasccodeAuthentication;
 @end
 
@@ -35,17 +35,17 @@
   if (v2)
   {
     objc_initWeak(&location, v2);
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     clients = v2->_clients;
-    v2->_clients = v3;
+    v2->_clients = weakObjectsHashTable;
 
-    v5 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     clientsAwaitingAuthentication = v2->_clientsAwaitingAuthentication;
-    v2->_clientsAwaitingAuthentication = v5;
+    v2->_clientsAwaitingAuthentication = orderedSet;
 
-    v7 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     clientsAwaitingAuthenticationToCompletionBlocks = v2->_clientsAwaitingAuthenticationToCompletionBlocks;
-    v2->_clientsAwaitingAuthenticationToCompletionBlocks = v7;
+    v2->_clientsAwaitingAuthenticationToCompletionBlocks = strongToStrongObjectsMapTable;
 
     v2->_authenticationGracePeriod = 160.0;
     v9 = MEMORY[0x1E69E96A0];
@@ -57,11 +57,11 @@
     objc_copyWeak(&v19, &location);
     notify_register_dispatch("com.apple.springboard.lockstate", &v2->_notificationToken, v9, &v15);
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v2 selector:sel_applicationDidEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_applicationDidEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v2 selector:sel_applicationWillEnterForeground name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_applicationWillEnterForeground name:*MEMORY[0x1E69DDBC0] object:0];
 
     v13 = v2;
     objc_destroyWeak(&v19);
@@ -116,21 +116,21 @@
   return v6;
 }
 
-- (BOOL)_monotonicTimeIsWithinAuthenticationGracePeriod:(double)a3
+- (BOOL)_monotonicTimeIsWithinAuthenticationGracePeriod:(double)period
 {
   v7.tv_sec = 0;
   v7.tv_nsec = 0;
   clock_gettime(_CLOCK_MONOTONIC, &v7);
-  v5 = v7.tv_nsec / 1000000000.0 + v7.tv_sec - a3;
+  v5 = v7.tv_nsec / 1000000000.0 + v7.tv_sec - period;
   return v5 >= 0.0 && v5 < self->_authenticationGracePeriod;
 }
 
-- (BOOL)_hasAuthenticationCapability:(id *)a3
+- (BOOL)_hasAuthenticationCapability:(id *)capability
 {
-  v4 = [(_SFAuthenticationContext *)self _authenticationContext];
-  LOBYTE(a3) = [v4 canEvaluatePolicy:2 error:a3];
+  _authenticationContext = [(_SFAuthenticationContext *)self _authenticationContext];
+  LOBYTE(capability) = [_authenticationContext canEvaluatePolicy:2 error:capability];
 
-  return a3;
+  return capability;
 }
 
 - (BOOL)needsAuthentication
@@ -196,32 +196,32 @@
   return v4;
 }
 
-- (void)_processNextClientAwaitingAuthenticationUserInitiated:(BOOL)a3
+- (void)_processNextClientAwaitingAuthenticationUserInitiated:(BOOL)initiated
 {
-  v3 = a3;
+  initiatedCopy = initiated;
   if ([(NSMutableOrderedSet *)self->_clientsAwaitingAuthentication count])
   {
-    v6 = [(NSMutableOrderedSet *)self->_clientsAwaitingAuthentication firstObject];
+    firstObject = [(NSMutableOrderedSet *)self->_clientsAwaitingAuthentication firstObject];
     [(NSMutableOrderedSet *)self->_clientsAwaitingAuthentication removeObjectAtIndex:0];
-    v5 = [(NSMapTable *)self->_clientsAwaitingAuthenticationToCompletionBlocks objectForKey:v6];
-    [(NSMapTable *)self->_clientsAwaitingAuthenticationToCompletionBlocks removeObjectForKey:v6];
-    [(_SFAuthenticationContext *)self authenticateForClient:v6 userInitiated:v3 completion:v5];
+    v5 = [(NSMapTable *)self->_clientsAwaitingAuthenticationToCompletionBlocks objectForKey:firstObject];
+    [(NSMapTable *)self->_clientsAwaitingAuthenticationToCompletionBlocks removeObjectForKey:firstObject];
+    [(_SFAuthenticationContext *)self authenticateForClient:firstObject userInitiated:initiatedCopy completion:v5];
   }
 }
 
-- (void)authenticateForClient:(id)a3 userInitiated:(BOOL)a4 completion:(id)a5
+- (void)authenticateForClient:(id)client userInitiated:(BOOL)initiated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  initiatedCopy = initiated;
+  clientCopy = client;
+  completionCopy = completion;
   v27 = 0;
   v10 = [(_SFAuthenticationContext *)self _hasAuthenticationCapability:&v27];
   v11 = v27;
   v12 = v11;
   if (!v10)
   {
-    v15 = [v11 code];
-    if (v15 == -5)
+    code = [v11 code];
+    if (code == -5)
     {
       v16 = 0;
     }
@@ -231,9 +231,9 @@
       v16 = v12;
     }
 
-    (v9)[2](v9, v15 == -5, v16);
+    (completionCopy)[2](completionCopy, code == -5, v16);
 LABEL_12:
-    [(_SFAuthenticationContext *)self _processNextClientAwaitingAuthenticationUserInitiated:v6];
+    [(_SFAuthenticationContext *)self _processNextClientAwaitingAuthenticationUserInitiated:initiatedCopy];
     goto LABEL_13;
   }
 
@@ -241,19 +241,19 @@ LABEL_12:
   {
     if ([(_SFAuthenticationContext *)self _contextRequiresSessionBasedAuthentication])
     {
-      [(NSHashTable *)self->_clients addObject:v8];
+      [(NSHashTable *)self->_clients addObject:clientCopy];
     }
 
-    v9[2](v9, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
     goto LABEL_12;
   }
 
   if (self->_currentClientBeingAuthenticated)
   {
-    [(NSMutableOrderedSet *)self->_clientsAwaitingAuthentication addObject:v8];
+    [(NSMutableOrderedSet *)self->_clientsAwaitingAuthentication addObject:clientCopy];
     clientsAwaitingAuthenticationToCompletionBlocks = self->_clientsAwaitingAuthenticationToCompletionBlocks;
-    v14 = _Block_copy(v9);
-    [(NSMapTable *)clientsAwaitingAuthenticationToCompletionBlocks setObject:v14 forKey:v8];
+    v14 = _Block_copy(completionCopy);
+    [(NSMapTable *)clientsAwaitingAuthenticationToCompletionBlocks setObject:v14 forKey:clientCopy];
   }
 
   else
@@ -269,10 +269,10 @@ LABEL_12:
     aBlock[2] = __75___SFAuthenticationContext_authenticateForClient_userInitiated_completion___block_invoke;
     aBlock[3] = &unk_1E8494708;
     aBlock[4] = self;
-    v18 = v8;
+    v18 = clientCopy;
     v24 = v18;
-    v25 = v9;
-    v26 = v6;
+    v25 = completionCopy;
+    v26 = initiatedCopy;
     v19 = _Block_copy(aBlock);
     v21[0] = 0;
     v21[1] = v21;
@@ -285,53 +285,53 @@ LABEL_12:
     v20[2] = __75___SFAuthenticationContext_authenticateForClient_userInitiated_completion___block_invoke_24;
     v20[3] = &unk_1E8494758;
     v20[4] = v21;
-    [(_SFAuthenticationContext *)self _evaluatePolicyForClient:v18 userInitiated:v6 reply:v20];
+    [(_SFAuthenticationContext *)self _evaluatePolicyForClient:v18 userInitiated:initiatedCopy reply:v20];
     _Block_object_dispose(v21, 8);
   }
 
 LABEL_13:
 }
 
-- (void)_evaluatePolicyForClient:(id)a3 userInitiated:(BOOL)a4 reply:(id)a5
+- (void)_evaluatePolicyForClient:(id)client userInitiated:(BOOL)initiated reply:(id)reply
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  objc_storeStrong(&self->_currentClientBeingAuthenticated, a3);
-  v11 = [(_SFAuthenticationContext *)self _authenticationContext];
-  v12 = [v9 authenticationMessageForContext:self];
-  v13 = [MEMORY[0x1E69C8880] isDTOMitigationEnabled];
-  v14 = [(_SFAuthenticationContext *)self _contextShouldAllowPasscodeFallback]| v6;
+  initiatedCopy = initiated;
+  clientCopy = client;
+  replyCopy = reply;
+  objc_storeStrong(&self->_currentClientBeingAuthenticated, client);
+  _authenticationContext = [(_SFAuthenticationContext *)self _authenticationContext];
+  v12 = [clientCopy authenticationMessageForContext:self];
+  isDTOMitigationEnabled = [MEMORY[0x1E69C8880] isDTOMitigationEnabled];
+  v14 = [(_SFAuthenticationContext *)self _contextShouldAllowPasscodeFallback]| initiatedCopy;
   v15 = 4;
   if (v14)
   {
     v15 = 2;
   }
 
-  if (v13)
+  if (isDTOMitigationEnabled)
   {
-    [v9 authenticationCustomUIProgressObserverForContext:{self, WBSAuthenticationPolicyForPasswordManager()}];
+    [clientCopy authenticationCustomUIProgressObserverForContext:{self, WBSAuthenticationPolicyForPasswordManager()}];
   }
 
   else
   {
-    [v9 authenticationCustomUIProgressObserverForContext:{self, v15}];
+    [clientCopy authenticationCustomUIProgressObserverForContext:{self, v15}];
   }
   v16 = ;
 
   if (v16)
   {
-    [v11 setUiDelegate:self];
+    [_authenticationContext setUiDelegate:self];
     *&self->_matchFound = 0;
     self->_numberOfBiometricAuthenticationFailures = 0;
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v18 = MEMORY[0x1E695E0F8];
-    [v17 setObject:MEMORY[0x1E695E0F8] forKeyedSubscript:&unk_1F50233B0];
-    [v17 setObject:v18 forKeyedSubscript:&unk_1F50233C8];
-    v19 = [MEMORY[0x1E695DF90] dictionary];
-    [v19 setObject:v17 forKeyedSubscript:&unk_1F50233E0];
-    [v19 setObject:&unk_1F50233F8 forKeyedSubscript:&unk_1F5023380];
-    [v19 setObject:&unk_1F5024148 forKeyedSubscript:&unk_1F5023410];
+    [dictionary setObject:MEMORY[0x1E695E0F8] forKeyedSubscript:&unk_1F50233B0];
+    [dictionary setObject:v18 forKeyedSubscript:&unk_1F50233C8];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary2 setObject:dictionary forKeyedSubscript:&unk_1F50233E0];
+    [dictionary2 setObject:&unk_1F50233F8 forKeyedSubscript:&unk_1F5023380];
+    [dictionary2 setObject:&unk_1F5024148 forKeyedSubscript:&unk_1F5023410];
     if (v12)
     {
       v20 = v12;
@@ -342,26 +342,26 @@ LABEL_13:
       v20 = &stru_1F4FE9E38;
     }
 
-    [v19 setObject:v20 forKeyedSubscript:&unk_1F5023350];
-    if (v13)
+    [dictionary2 setObject:v20 forKeyedSubscript:&unk_1F5023350];
+    if (isDTOMitigationEnabled)
     {
       v21 = [MEMORY[0x1E696AD98] numberWithBool:v14];
-      [v19 setObject:v21 forKeyedSubscript:&unk_1F5023308];
+      [dictionary2 setObject:v21 forKeyedSubscript:&unk_1F5023308];
     }
 
-    v22 = [MEMORY[0x1E696AAE8] mainBundle];
-    v23 = [v22 localizedInfoDictionary];
-    v24 = [v23 objectForKeyedSubscript:@"CFBundleDisplayName"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    localizedInfoDictionary = [mainBundle localizedInfoDictionary];
+    v24 = [localizedInfoDictionary objectForKeyedSubscript:@"CFBundleDisplayName"];
 
     if (v24)
     {
-      [v19 setObject:v24 forKeyedSubscript:&unk_1F5023428];
+      [dictionary2 setObject:v24 forKeyedSubscript:&unk_1F5023428];
     }
 
     else
     {
       v27 = _WBSLocalizedString();
-      [v19 setObject:v27 forKeyedSubscript:&unk_1F5023428];
+      [dictionary2 setObject:v27 forKeyedSubscript:&unk_1F5023428];
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -369,7 +369,7 @@ LABEL_13:
     aBlock[2] = __73___SFAuthenticationContext__evaluatePolicyForClient_userInitiated_reply___block_invoke_66;
     aBlock[3] = &unk_1E84947F8;
     aBlock[4] = self;
-    v32 = v10;
+    v32 = replyCopy;
     v28 = _Block_copy(aBlock);
     v34 = 0;
     v35 = &v34;
@@ -382,43 +382,43 @@ LABEL_13:
     v30[2] = __73___SFAuthenticationContext__evaluatePolicyForClient_userInitiated_reply___block_invoke_3;
     v30[3] = &unk_1E84947A8;
     v30[4] = &v34;
-    [v11 evaluatePolicy:v29 options:v19 reply:v30];
+    [_authenticationContext evaluatePolicy:v29 options:dictionary2 reply:v30];
     _Block_object_dispose(&v34, 8);
   }
 
   else
   {
-    [v11 setUiDelegate:0];
-    v17 = [MEMORY[0x1E695E0F8] mutableCopy];
-    if ((v13 & 1) == 0)
+    [_authenticationContext setUiDelegate:0];
+    dictionary = [MEMORY[0x1E695E0F8] mutableCopy];
+    if ((isDTOMitigationEnabled & 1) == 0)
     {
       v25 = [MEMORY[0x1E696AD98] numberWithBool:v14];
-      [v17 setObject:v25 forKeyedSubscript:&unk_1F5023308];
+      [dictionary setObject:v25 forKeyedSubscript:&unk_1F5023308];
     }
 
-    if ([v9 displayMessageAsTitleForContext:self])
+    if ([clientCopy displayMessageAsTitleForContext:self])
     {
-      [v17 setObject:v12 forKeyedSubscript:&unk_1F5023320];
-      v26 = [v9 passcodePromptForContext:self];
+      [dictionary setObject:v12 forKeyedSubscript:&unk_1F5023320];
+      v26 = [clientCopy passcodePromptForContext:self];
       if (v26)
       {
-        [v17 setObject:v26 forKeyedSubscript:&unk_1F5023338];
+        [dictionary setObject:v26 forKeyedSubscript:&unk_1F5023338];
       }
     }
 
     else
     {
-      [v17 setObject:v12 forKeyedSubscript:&unk_1F5023350];
+      [dictionary setObject:v12 forKeyedSubscript:&unk_1F5023350];
     }
 
-    if (![(_SFAuthenticationContext *)self _contextShouldAllowMultipleBiometricFailures]&& !v6)
+    if (![(_SFAuthenticationContext *)self _contextShouldAllowMultipleBiometricFailures]&& !initiatedCopy)
     {
-      [v17 setObject:&unk_1F5023368 forKeyedSubscript:&unk_1F5023380];
+      [dictionary setObject:&unk_1F5023368 forKeyedSubscript:&unk_1F5023380];
     }
 
-    if (!v6)
+    if (!initiatedCopy)
     {
-      [v17 setObject:MEMORY[0x1E695E118] forKeyedSubscript:&unk_1F5023398];
+      [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:&unk_1F5023398];
     }
 
     v34 = 0;
@@ -426,13 +426,13 @@ LABEL_13:
     v36 = 0x3032000000;
     v37 = __Block_byref_object_copy__7;
     v38 = __Block_byref_object_dispose__7;
-    v39 = _Block_copy(v10);
+    v39 = _Block_copy(replyCopy);
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __73___SFAuthenticationContext__evaluatePolicyForClient_userInitiated_reply___block_invoke;
     v33[3] = &unk_1E84947A8;
     v33[4] = &v34;
-    [v11 evaluatePolicy:v29 options:v17 reply:v33];
+    [_authenticationContext evaluatePolicy:v29 options:dictionary reply:v33];
     _Block_object_dispose(&v34, 8);
   }
 }
@@ -441,38 +441,38 @@ LABEL_13:
 {
   if (self->_currentClientBeingAuthenticated)
   {
-    v3 = [(_SFAuthenticationContext *)self _authenticationContext];
+    _authenticationContext = [(_SFAuthenticationContext *)self _authenticationContext];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __82___SFAuthenticationContext_preemptOngoingAuthenticationWithPasccodeAuthentication__block_invoke;
     v4[3] = &unk_1E8492CD0;
     v4[4] = self;
-    [v3 failProcessedEvent:1 failureError:0 reply:v4];
+    [_authenticationContext failProcessedEvent:1 failureError:0 reply:v4];
   }
 }
 
-- (void)invalidateClient:(id)a3
+- (void)invalidateClient:(id)client
 {
-  v4 = a3;
-  if ([(NSMutableOrderedSet *)self->_clientsAwaitingAuthentication containsObject:v4])
+  clientCopy = client;
+  if ([(NSMutableOrderedSet *)self->_clientsAwaitingAuthentication containsObject:clientCopy])
   {
-    v5 = [(NSMapTable *)self->_clientsAwaitingAuthenticationToCompletionBlocks objectForKey:v4];
-    [(NSMutableOrderedSet *)self->_clientsAwaitingAuthentication removeObject:v4];
-    [(NSMapTable *)self->_clientsAwaitingAuthenticationToCompletionBlocks removeObjectForKey:v4];
+    v5 = [(NSMapTable *)self->_clientsAwaitingAuthenticationToCompletionBlocks objectForKey:clientCopy];
+    [(NSMutableOrderedSet *)self->_clientsAwaitingAuthentication removeObject:clientCopy];
+    [(NSMapTable *)self->_clientsAwaitingAuthenticationToCompletionBlocks removeObjectForKey:clientCopy];
     if (v5)
     {
       v5[2](v5, 0, 0);
     }
   }
 
-  else if (self->_currentClientBeingAuthenticated == v4)
+  else if (self->_currentClientBeingAuthenticated == clientCopy)
   {
     [(_SFAuthenticationContext *)self _cancelOngoingAuthentication];
   }
 
-  else if ([(NSHashTable *)self->_clients containsObject:v4])
+  else if ([(NSHashTable *)self->_clients containsObject:clientCopy])
   {
-    [(NSHashTable *)self->_clients removeObject:v4];
+    [(NSHashTable *)self->_clients removeObject:clientCopy];
     if (![(NSHashTable *)self->_clients count])
     {
       v6.tv_sec = 0;
@@ -534,8 +534,8 @@ LABEL_13:
     self->_successfullyAuthenticated = 0;
     self->_lastApplicationBackgroundTime = 0.0;
     [(NSHashTable *)self->_clients removeAllObjects];
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 postNotificationName:@"AuthenticationContextDidInvalidateNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"AuthenticationContextDidInvalidateNotification" object:self];
   }
 }
 
@@ -593,35 +593,35 @@ LABEL_13:
     [v5 authenticationDidCancel:self completion:0];
   }
 
-  v3 = [(_SFAuthenticationContext *)self _authenticationContext];
-  [v3 invalidate];
+  _authenticationContext = [(_SFAuthenticationContext *)self _authenticationContext];
+  [_authenticationContext invalidate];
 
   context = self->_context;
   self->_context = 0;
 }
 
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5
+- (void)event:(int64_t)event params:(id)params reply:(id)reply
 {
-  v7 = a4;
-  v8 = v7;
-  if (a3 == 1)
+  paramsCopy = params;
+  v8 = paramsCopy;
+  if (event == 1)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __47___SFAuthenticationContext_event_params_reply___block_invoke;
     v9[3] = &unk_1E848F548;
     v9[4] = self;
-    v10 = v7;
+    v10 = paramsCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v9);
   }
 }
 
-- (void)_handleTouchIDEventWithParameters:(id)a3
+- (void)_handleTouchIDEventWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   if (!self->_matchFound)
   {
-    v12 = v4;
+    v12 = parametersCopy;
     v5 = [(_SFAuthenticationClient *)self->_currentClientBeingAuthenticated authenticationCustomUIProgressObserverForContext:self];
     v6 = [v12 objectForKeyedSubscript:&unk_1F50233B0];
     v7 = v6;
@@ -634,10 +634,10 @@ LABEL_13:
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 integerValue];
-      if (v10 > 2)
+      integerValue = [v8 integerValue];
+      if (integerValue > 2)
       {
-        switch(v10)
+        switch(integerValue)
         {
           case 3:
             self->_matchFound = 0;
@@ -667,9 +667,9 @@ LABEL_13:
         }
       }
 
-      else if (v10)
+      else if (integerValue)
       {
-        if (v10 == 1)
+        if (integerValue == 1)
         {
           if (objc_opt_respondsToSelector())
           {
@@ -677,7 +677,7 @@ LABEL_13:
           }
         }
 
-        else if (v10 == 2)
+        else if (integerValue == 2)
         {
           self->_matchFound = 1;
           self->_numberOfBiometricAuthenticationFailures = 0;
@@ -690,7 +690,7 @@ LABEL_13:
       }
     }
 
-    v4 = v12;
+    parametersCopy = v12;
   }
 }
 

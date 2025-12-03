@@ -1,17 +1,17 @@
 @interface HDPluginManager
 - (HDDaemon)daemon;
-- (HDPluginManager)initWithDaemon:(id)a3;
+- (HDPluginManager)initWithDaemon:(id)daemon;
 - (NSArray)allowablePluginDirectoryPaths;
 - (NSArray)notificationInstructionCriteriaClasses;
 - (id)_builtInPluginClasses;
-- (id)_createPluginsFromClasses:(id)a3;
+- (id)_createPluginsFromClasses:(id)classes;
 - (id)_internalPluginsDirectoryPaths;
 - (id)_pluginClasses;
 - (id)_pluginDirectoryPaths;
 - (id)_pluginsDirectoryPath;
-- (id)createExtensionsForDaemon:(id)a3;
-- (id)createExtensionsForProfile:(id)a3;
-- (id)pluginsConformingToProtocol:(id)a3;
+- (id)createExtensionsForDaemon:(id)daemon;
+- (id)createExtensionsForProfile:(id)profile;
+- (id)pluginsConformingToProtocol:(id)protocol;
 - (void)notifyPluginsOfDatabaseObliteration;
 @end
 
@@ -28,13 +28,13 @@
   return v2;
 }
 
-- (HDPluginManager)initWithDaemon:(id)a3
+- (HDPluginManager)initWithDaemon:(id)daemon
 {
-  v5 = a3;
-  if (!v5)
+  daemonCopy = daemon;
+  if (!daemonCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HDPluginManager.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"daemon != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDPluginManager.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"daemon != nil"}];
   }
 
   v13.receiver = self;
@@ -43,9 +43,9 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_daemon, v5);
-    v8 = [(HDPluginManager *)v7 _pluginClasses];
-    v9 = [(HDPluginManager *)v7 _createPluginsFromClasses:v8];
+    objc_storeWeak(&v6->_daemon, daemonCopy);
+    _pluginClasses = [(HDPluginManager *)v7 _pluginClasses];
+    v9 = [(HDPluginManager *)v7 _createPluginsFromClasses:_pluginClasses];
     plugins = v7->_plugins;
     v7->_plugins = v9;
   }
@@ -55,19 +55,19 @@
 
 - (id)_pluginsDirectoryPath
 {
-  if (a1)
+  if (self)
   {
-    a1 = [GSSystemRootDirectory() stringByAppendingPathComponent:@"/System/Library/Health/Plugins"];
+    self = [GSSystemRootDirectory() stringByAppendingPathComponent:@"/System/Library/Health/Plugins"];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_internalPluginsDirectoryPaths
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v1 = [GSSystemRootDirectory() stringByAppendingPathComponent:@"/AppleInternal/Library/Health/Plugins"];
     v5[0] = v1;
@@ -87,13 +87,13 @@
 - (id)_pluginDirectoryPaths
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(HDPluginManager *)self _pluginsDirectoryPath];
-  v5 = [v3 arrayWithObject:v4];
+  _pluginsDirectoryPath = [(HDPluginManager *)self _pluginsDirectoryPath];
+  v5 = [v3 arrayWithObject:_pluginsDirectoryPath];
 
   if ([MEMORY[0x277CCDD30] isAppleInternalInstall])
   {
-    v6 = [(HDPluginManager *)self _internalPluginsDirectoryPaths];
-    [v5 addObjectsFromArray:v6];
+    _internalPluginsDirectoryPaths = [(HDPluginManager *)self _internalPluginsDirectoryPaths];
+    [v5 addObjectsFromArray:_internalPluginsDirectoryPaths];
   }
 
   return v5;
@@ -102,11 +102,11 @@
 - (NSArray)allowablePluginDirectoryPaths
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(HDPluginManager *)self _pluginsDirectoryPath];
-  [v3 addObject:v4];
+  _pluginsDirectoryPath = [(HDPluginManager *)self _pluginsDirectoryPath];
+  [v3 addObject:_pluginsDirectoryPath];
 
-  v5 = [(HDPluginManager *)self _internalPluginsDirectoryPaths];
-  [v3 addObjectsFromArray:v5];
+  _internalPluginsDirectoryPaths = [(HDPluginManager *)self _internalPluginsDirectoryPaths];
+  [v3 addObjectsFromArray:_internalPluginsDirectoryPaths];
 
   v6 = [GSSystemRootDirectory() stringByAppendingPathComponent:*MEMORY[0x277CCC640]];
   [v3 addObject:v6];
@@ -118,9 +118,9 @@
 {
   v92 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(HDPluginManager *)self _builtInPluginClasses];
+  _builtInPluginClasses = [(HDPluginManager *)self _builtInPluginClasses];
   v51 = v3;
-  [v3 addObjectsFromArray:v4];
+  [v3 addObjectsFromArray:_builtInPluginClasses];
 
   v70 = 0u;
   v71 = 0u;
@@ -132,7 +132,7 @@
   {
     v5 = MEMORY[0x277CCC2B0];
     v52 = *v69;
-    v50 = self;
+    selfCopy = self;
     do
     {
       v6 = 0;
@@ -194,8 +194,8 @@
 
                   v16 = *(*(&v72 + 1) + 8 * v15);
                   v17 = objc_autoreleasePoolPush();
-                  v18 = [v16 pathExtension];
-                  v19 = [v18 isEqualToString:@"bundle"];
+                  pathExtension = [v16 pathExtension];
+                  v19 = [pathExtension isEqualToString:@"bundle"];
 
                   if (v19)
                   {
@@ -205,13 +205,13 @@
                     v23 = [objc_alloc(*(v13 + 2264)) initWithPath:v22];
                     if (v23)
                     {
-                      v24 = [MEMORY[0x277CCDD30] processHasLoadedUIKit];
+                      processHasLoadedUIKit = [MEMORY[0x277CCDD30] processHasLoadedUIKit];
                       v80 = 0;
                       v25 = [v23 loadAndReturnError:&v80];
                       v65 = v80;
                       if (v25)
                       {
-                        if ((v24 & 1) == 0)
+                        if ((processHasLoadedUIKit & 1) == 0)
                         {
                           if ([MEMORY[0x277CCDD30] processHasLoadedUIKit])
                           {
@@ -227,8 +227,8 @@
                         }
 
                         v61 = v21;
-                        v27 = [v23 principalClass];
-                        if (!v27)
+                        principalClass = [v23 principalClass];
+                        if (!principalClass)
                         {
                           _HKInitializeLogging();
                           v28 = *v5;
@@ -260,7 +260,7 @@
                                 objc_enumerationMutation(v30);
                               }
 
-                              if ([v27 conformsToProtocol:*(*(&v76 + 1) + 8 * i)])
+                              if ([principalClass conformsToProtocol:*(*(&v76 + 1) + 8 * i)])
                               {
                                 _HKInitializeLogging();
                                 v5 = v29;
@@ -272,7 +272,7 @@
                                   _os_log_debug_impl(&dword_228986000, v39, OS_LOG_TYPE_DEBUG, "Loaded bundle %{public}@", v83, 0xCu);
                                 }
 
-                                v36 = v27;
+                                v36 = principalClass;
 
                                 v13 = 0x277CCA000;
                                 v10 = v59;
@@ -299,9 +299,9 @@
                         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
                         {
                           v58 = @"<>";
-                          if (v27)
+                          if (principalClass)
                           {
-                            v58 = NSStringFromClass(v27);
+                            v58 = NSStringFromClass(principalClass);
                           }
 
                           v41 = [v30 hk_map:&__block_literal_global_138];
@@ -312,7 +312,7 @@
                           v87 = 2114;
                           v88 = v41;
                           _os_log_error_impl(&dword_228986000, v35, OS_LOG_TYPE_ERROR, "Error: failed to load bundle %{public}@: principal class %{public}@ doesn't conform to any of: %{public}@", v83, 0x20u);
-                          if (v27)
+                          if (principalClass)
                           {
                           }
                         }
@@ -375,7 +375,7 @@ LABEL_45:
               while (v42);
             }
 
-            self = v50;
+            self = selfCopy;
             v8 = v56;
             v6 = v57;
             v43 = v60;
@@ -431,21 +431,21 @@ LABEL_45:
   return v51;
 }
 
-- (id)_createPluginsFromClasses:(id)a3
+- (id)_createPluginsFromClasses:(id)classes
 {
-  v4 = a3;
-  v5 = [(HDPluginManager *)self daemon];
+  classesCopy = classes;
+  daemon = [(HDPluginManager *)self daemon];
   v6 = &unk_283CC56F8;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __45__HDPluginManager__createPluginsFromClasses___block_invoke;
   v11[3] = &unk_278624070;
-  v13 = v5;
+  v13 = daemon;
   v14 = sel_shouldLoadPluginForDaemon_;
   v12 = v6;
-  v7 = v5;
+  v7 = daemon;
   v8 = v6;
-  v9 = [v4 hk_map:v11];
+  v9 = [classesCopy hk_map:v11];
 
   return v9;
 }
@@ -481,10 +481,10 @@ LABEL_8:
   return v5;
 }
 
-- (id)createExtensionsForDaemon:(id)a3
+- (id)createExtensionsForDaemon:(id)daemon
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  daemonCopy = daemon;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v16 = 0u;
   v17 = 0u;
@@ -506,11 +506,11 @@ LABEL_8:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 extensionForHealthDaemon:{v4, v16}];
+        v12 = [v11 extensionForHealthDaemon:{daemonCopy, v16}];
         if (v12)
         {
-          v13 = [v11 pluginIdentifier];
-          [v5 setObject:v12 forKeyedSubscript:v13];
+          pluginIdentifier = [v11 pluginIdentifier];
+          [v5 setObject:v12 forKeyedSubscript:pluginIdentifier];
         }
       }
 
@@ -525,10 +525,10 @@ LABEL_8:
   return v5;
 }
 
-- (id)createExtensionsForProfile:(id)a3
+- (id)createExtensionsForProfile:(id)profile
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v16 = 0u;
   v17 = 0u;
@@ -550,11 +550,11 @@ LABEL_8:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 extensionForProfile:{v4, v16}];
+        v12 = [v11 extensionForProfile:{profileCopy, v16}];
         if (v12)
         {
-          v13 = [v11 pluginIdentifier];
-          [v5 setObject:v12 forKeyedSubscript:v13];
+          pluginIdentifier = [v11 pluginIdentifier];
+          [v5 setObject:v12 forKeyedSubscript:pluginIdentifier];
         }
       }
 
@@ -611,14 +611,14 @@ LABEL_8:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)pluginsConformingToProtocol:(id)a3
+- (id)pluginsConformingToProtocol:(id)protocol
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  protocolCopy = protocol;
   if (!self->_plugins)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HDPluginManager.m" lineNumber:155 description:@"Plugins not loaded when looking up plugins for protocol. Plugins should have been loaded during init; what happened?"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDPluginManager.m" lineNumber:155 description:@"Plugins not loaded when looking up plugins for protocol. Plugins should have been loaded during init; what happened?"];
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -642,10 +642,10 @@ LABEL_8:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        if ([v12 conformsToProtocol:{v5, v17}])
+        if ([v12 conformsToProtocol:{protocolCopy, v17}])
         {
-          v13 = [v12 pluginIdentifier];
-          [v6 setObject:v12 forKeyedSubscript:v13];
+          pluginIdentifier = [v12 pluginIdentifier];
+          [v6 setObject:v12 forKeyedSubscript:pluginIdentifier];
         }
       }
 
@@ -675,13 +675,13 @@ LABEL_8:
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
   v4 = [v3 mutableCopy];
   v5 = [(HDPluginManager *)self pluginsConformingToProtocol:&unk_283D714F8];
-  v6 = [v5 allValues];
+  allValues = [v5 allValues];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v6;
+  v7 = allValues;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -696,8 +696,8 @@ LABEL_8:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) notificationInstructionCriteriaClasses];
-        [v4 addObjectsFromArray:v12];
+        notificationInstructionCriteriaClasses = [*(*(&v16 + 1) + 8 * i) notificationInstructionCriteriaClasses];
+        [v4 addObjectsFromArray:notificationInstructionCriteriaClasses];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];

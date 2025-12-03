@@ -47,75 +47,75 @@
 + (id)entryEventPointDefinitions;
 + (void)load;
 - (BOOL)isAlsEnabled;
-- (BOOL)updateDisplayIOReportStats:(id)a3 logZeroFramesOnlyOnce:(BOOL)a4;
+- (BOOL)updateDisplayIOReportStats:(id)stats logZeroFramesOnlyOnce:(BOOL)once;
 - (PLDisplayAgent)init;
 - (__IOHIDEventSystemClient)setUpIOHIDTouchSystemClient;
-- (double)averageFrameRateFromIOMFBScanout:(id)a3;
-- (double)calculatePowerFromAPL:(double)a3 withAvgRed:(double)a4 withAvgGreen:(double)a5 withAvgBlue:(double)a6;
-- (double)uAmpsToDisplayPower:(double)a3;
+- (double)averageFrameRateFromIOMFBScanout:(id)scanout;
+- (double)calculatePowerFromAPL:(double)l withAvgRed:(double)red withAvgGreen:(double)green withAvgBlue:(double)blue;
+- (double)uAmpsToDisplayPower:(double)power;
 - (id)getIOMFBSubFrameMap;
-- (id)trimConditionsForEntryKey:(id)a3 forTrimDate:(id)a4;
-- (unint64_t)getBacklightEnabledTimestamp:(unsigned int)a3;
-- (void)__FrameBufferEventCallback:(__IOMobileFramebuffer *)a3;
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5;
+- (id)trimConditionsForEntryKey:(id)key forTrimDate:(id)date;
+- (unint64_t)getBacklightEnabledTimestamp:(unsigned int)timestamp;
+- (void)__FrameBufferEventCallback:(__IOMobileFramebuffer *)callback;
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event;
 - (void)cleanUpAFKInterfaces;
 - (void)clearDisplayAccountingEvents;
 - (void)dealloc;
-- (void)extractDataWithEntry:(id)a3 withColName:(id)a4 withDataArray:(id)a5;
-- (void)fillInBuiltinDisplayBrightnessParameters:(id)a3;
-- (void)handleAFKInterfaceMsg:(id)a3;
-- (void)handleBrightnessClientNotification:(id)a3 withValue:(id)a4;
+- (void)extractDataWithEntry:(id)entry withColName:(id)name withDataArray:(id)array;
+- (void)fillInBuiltinDisplayBrightnessParameters:(id)parameters;
+- (void)handleAFKInterfaceMsg:(id)msg;
+- (void)handleBrightnessClientNotification:(id)notification withValue:(id)value;
 - (void)handleSBC;
 - (void)init;
-- (void)initAODState:(int64_t)a3;
+- (void)initAODState:(int64_t)state;
 - (void)initOperatorDependancies;
 - (void)initTaskOperatorDependancies;
 - (void)log;
 - (void)logAODChange;
-- (void)logBlueLightDataWithDictionary:(id)a3;
-- (void)logBrightnessDataWithEntryKey:(id)a3 withColName:(id)a4 withValue:(id)a5;
+- (void)logBlueLightDataWithDictionary:(id)dictionary;
+- (void)logBrightnessDataWithEntryKey:(id)key withColName:(id)name withValue:(id)value;
 - (void)logDisplayAPL;
 - (void)logDisplayAZL;
-- (void)logDisplayEntry:(id)a3;
-- (void)logEventBackwardALSSamplesBeforeWake:(id)a3;
-- (void)logEventBackwardALSThreshold:(id)a3;
-- (void)logEventBackwardAmbientLight:(id)a3;
-- (void)logEventBackwardCurveUpdate:(id)a3;
-- (void)logEventBackwardRampInfo:(id)a3;
+- (void)logDisplayEntry:(id)entry;
+- (void)logEventBackwardALSSamplesBeforeWake:(id)wake;
+- (void)logEventBackwardALSThreshold:(id)threshold;
+- (void)logEventBackwardAmbientLight:(id)light;
+- (void)logEventBackwardCurveUpdate:(id)update;
+- (void)logEventBackwardRampInfo:(id)info;
 - (void)logEventBackwardTouch;
 - (void)logEventForwardALSEnabled;
-- (void)logEventForwardALSLux:(unint64_t)a3;
-- (void)logEventForwardALSUserPreferencesEntryWithLux:(id)a3;
+- (void)logEventForwardALSLux:(unint64_t)lux;
+- (void)logEventForwardALSUserPreferencesEntryWithLux:(id)lux;
 - (void)logEventForwardALSUserPreferencesWithCurrLux;
 - (void)logEventForwardColorAdaptationMode;
 - (void)logEventForwardDisplay;
 - (void)logEventForwardDisplayBacklight;
-- (void)logEventForwardDisplayWithRawData:(id)a3 withDate:(id)a4;
-- (void)logEventForwardExtendedALSUserPreferences:(id)a3;
-- (void)logEventForwardLuxStats:(id)a3;
+- (void)logEventForwardDisplayWithRawData:(id)data withDate:(id)date;
+- (void)logEventForwardExtendedALSUserPreferences:(id)preferences;
+- (void)logEventForwardLuxStats:(id)stats;
 - (void)logEventNonePanelStats;
 - (void)logEventPointDisplay;
 - (void)logEventPointDisplayBacklight;
-- (void)logEventPointDisplayBacklightWithState:(unint64_t)a3;
+- (void)logEventPointDisplayBacklightWithState:(unint64_t)state;
 - (void)logEventPointDisplayMIE;
-- (void)logEventPointKeyboardBrightness:(double)a3 withDate:(id)a4;
-- (void)logEventPointMultitouchWithPayload:(id)a3;
-- (void)logEventPointUserBrightnessCommitted:(double)a3;
-- (void)modelDisplayPower:(id)a3;
-- (void)modelDisplayPowerFromIOMFB:(id)a3;
-- (void)modelDynamicDisplayPower:(id)a3;
-- (void)modelDynamicDisplayPowerFromAPL:(id)a3;
-- (void)qualifyDisplayPower:(id)a3;
+- (void)logEventPointKeyboardBrightness:(double)brightness withDate:(id)date;
+- (void)logEventPointMultitouchWithPayload:(id)payload;
+- (void)logEventPointUserBrightnessCommitted:(double)committed;
+- (void)modelDisplayPower:(id)power;
+- (void)modelDisplayPowerFromIOMFB:(id)b;
+- (void)modelDynamicDisplayPower:(id)power;
+- (void)modelDynamicDisplayPowerFromAPL:(id)l;
+- (void)qualifyDisplayPower:(id)power;
 - (void)reArmCallback;
 - (void)reArmUAmpsCallback;
-- (void)updateLastForegroundAppAPL:(id)a3;
+- (void)updateLastForegroundAppAPL:(id)l;
 @end
 
 @implementation PLDisplayAgent
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLDisplayAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -150,33 +150,33 @@
     v26[0] = v20;
     v25[1] = *MEMORY[0x277D3F540];
     v21[0] = @"B_input";
-    v19 = [MEMORY[0x277D3F198] sharedInstance];
-    v18 = [v19 commonTypeDict_RealFormat];
-    v22[0] = v18;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
+    v22[0] = commonTypeDict_RealFormat;
     v21[1] = @"B_min";
-    v17 = [MEMORY[0x277D3F198] sharedInstance];
-    v16 = [v17 commonTypeDict_RealFormat];
-    v22[1] = v16;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat];
+    v22[1] = commonTypeDict_RealFormat2;
     v21[2] = @"I_input";
-    v15 = [MEMORY[0x277D3F198] sharedInstance];
-    v14 = [v15 commonTypeDict_RealFormat];
-    v22[2] = v14;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat];
+    v22[2] = commonTypeDict_RealFormat3;
     v21[3] = @"I_nominal";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_RealFormat];
-    v22[3] = v4;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat];
+    v22[3] = commonTypeDict_RealFormat4;
     v21[4] = @"I_threshold";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_RealFormat];
-    v22[4] = v6;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_RealFormat];
+    v22[4] = commonTypeDict_RealFormat5;
     v21[5] = @"Scalar";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_RealFormat];
-    v22[5] = v8;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_RealFormat];
+    v22[5] = commonTypeDict_RealFormat6;
     v21[6] = @"Slope";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_RealFormat];
-    v22[6] = v10;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_RealFormat];
+    v22[6] = commonTypeDict_RealFormat7;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:7];
     v26[1] = v11;
     v2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
@@ -234,13 +234,13 @@
     v17[1] = *MEMORY[0x277D3F540];
     v18[0] = v4;
     v13[0] = @"Block";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_StringFormat];
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
     v13[1] = @"Active";
-    v14[0] = v6;
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v14[1] = v8;
+    v14[0] = commonTypeDict_StringFormat;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v14[1] = commonTypeDict_IntegerFormat;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
     v18[1] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -312,42 +312,42 @@
       v38[0] = v19;
       v37[1] = *MEMORY[0x277D3F540];
       v33[0] = @"fingerNum";
-      v18 = [MEMORY[0x277D3F198] sharedInstance];
-      v26 = [v18 commonTypeDict_IntegerFormat];
-      v34[0] = v26;
+      mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+      v34[0] = commonTypeDict_IntegerFormat;
       v33[1] = @"peak";
-      v25 = [MEMORY[0x277D3F198] sharedInstance];
-      v24 = [v25 commonTypeDict_IntegerFormat];
-      v34[1] = v24;
+      mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+      v34[1] = commonTypeDict_IntegerFormat2;
       v33[2] = @"peakMillimetersFromEdge";
-      v23 = [MEMORY[0x277D3F198] sharedInstance];
-      v22 = [v23 commonTypeDict_RealFormat];
-      v34[2] = v22;
+      mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_RealFormat = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat];
+      v34[2] = commonTypeDict_RealFormat;
       v33[3] = @"peakProximity";
-      v21 = [MEMORY[0x277D3F198] sharedInstance];
-      v20 = [v21 commonTypeDict_RealFormat];
-      v34[3] = v20;
+      mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat];
+      v34[3] = commonTypeDict_RealFormat2;
       v33[4] = @"peakMajorRadius";
-      v3 = [MEMORY[0x277D3F198] sharedInstance];
-      v4 = [v3 commonTypeDict_RealFormat];
-      v34[4] = v4;
+      mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_RealFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_RealFormat];
+      v34[4] = commonTypeDict_RealFormat3;
       v33[5] = @"peakMinorRadius";
-      v5 = [MEMORY[0x277D3F198] sharedInstance];
-      v6 = [v5 commonTypeDict_RealFormat];
-      v34[5] = v6;
+      mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_RealFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_RealFormat];
+      v34[5] = commonTypeDict_RealFormat4;
       v33[6] = @"touchStartTime";
-      v7 = [MEMORY[0x277D3F198] sharedInstance];
-      v8 = [v7 commonTypeDict_RealFormat];
-      v34[6] = v8;
+      mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_RealFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_RealFormat];
+      v34[6] = commonTypeDict_RealFormat5;
       v33[7] = @"touchStopTime";
-      v9 = [MEMORY[0x277D3F198] sharedInstance];
-      v10 = [v9 commonTypeDict_RealFormat];
-      v34[7] = v10;
+      mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_RealFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_RealFormat];
+      v34[7] = commonTypeDict_RealFormat6;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:8];
       v38[1] = v11;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:2];
 
-      v13 = v18;
+      mEMORY[0x277D3F198]9 = mEMORY[0x277D3F198];
       v14 = v19;
     }
 
@@ -363,35 +363,35 @@
       v32[0] = v14;
       v31[1] = *MEMORY[0x277D3F540];
       v27[0] = @"fingerNum";
-      v13 = [MEMORY[0x277D3F198] sharedInstance];
-      v26 = [v13 commonTypeDict_IntegerFormat];
-      v28[0] = v26;
+      mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+      v28[0] = commonTypeDict_IntegerFormat;
       v27[1] = @"peakProximity";
-      v25 = [MEMORY[0x277D3F198] sharedInstance];
-      v24 = [v25 commonTypeDict_IntegerFormat];
-      v28[1] = v24;
+      mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+      v28[1] = commonTypeDict_IntegerFormat2;
       v27[2] = @"peakProximityMillimetersFromEdge";
-      v23 = [MEMORY[0x277D3F198] sharedInstance];
-      v22 = [v23 commonTypeDict_RealFormat];
-      v28[2] = v22;
+      mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_RealFormat = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat];
+      v28[2] = commonTypeDict_RealFormat;
       v27[3] = @"peakProximityMajorRadius";
-      v21 = [MEMORY[0x277D3F198] sharedInstance];
-      v20 = [v21 commonTypeDict_RealFormat];
-      v28[3] = v20;
+      mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat];
+      v28[3] = commonTypeDict_RealFormat2;
       v27[4] = @"peakProximityMinorRadius";
-      v3 = [MEMORY[0x277D3F198] sharedInstance];
-      v4 = [v3 commonTypeDict_RealFormat];
-      v28[4] = v4;
+      mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_RealFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_RealFormat];
+      v28[4] = commonTypeDict_RealFormat3;
       v27[5] = @"touchStartTime";
-      v5 = [MEMORY[0x277D3F198] sharedInstance];
-      v6 = [v5 commonTypeDict_RealFormat];
-      v28[5] = v6;
+      mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_RealFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_RealFormat];
+      v28[5] = commonTypeDict_RealFormat4;
       v27[6] = @"touchStopTime";
-      v7 = [MEMORY[0x277D3F198] sharedInstance];
-      v8 = [v7 commonTypeDict_RealFormat];
-      v28[6] = v8;
-      v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:7];
-      v32[1] = v9;
+      mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_RealFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_RealFormat];
+      v28[6] = commonTypeDict_RealFormat5;
+      mEMORY[0x277D3F198]8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:7];
+      v32[1] = mEMORY[0x277D3F198]8;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
     }
   }
@@ -418,9 +418,9 @@
     v14[0] = v2;
     v13[1] = *MEMORY[0x277D3F540];
     v9 = @"backlightEnabledTimestamp";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v10 = v4;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v10 = commonTypeDict_IntegerFormat;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v14[1] = v5;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -448,9 +448,9 @@
     v14[0] = v2;
     v13[1] = *MEMORY[0x277D3F540];
     v9 = @"KeyboardBrightness";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v10 = v4;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v10 = commonTypeDict_IntegerFormat;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v14[1] = v5;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -526,8 +526,8 @@
     v38 = v3;
     if (v3)
     {
-      v37 = [MEMORY[0x277D3F198] sharedInstance];
-      v5 = [v37 commonTypeDict_RealFormat];
+      mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
     }
 
     else
@@ -539,21 +539,21 @@
       v49[1] = @"%";
       v48[2] = *MEMORY[0x277D3F4E0];
       v49[2] = MEMORY[0x277CBEC38];
-      v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:3];
-      v37 = v5;
+      commonTypeDict_RealFormat = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:3];
+      mEMORY[0x277D3F198] = commonTypeDict_RealFormat;
     }
 
-    v30 = v5;
-    v51[0] = v5;
+    v30 = commonTypeDict_RealFormat;
+    v51[0] = commonTypeDict_RealFormat;
     v50[1] = @"SliderValue";
     v8 = +[PLDisplayAgent shouldLogFromDCP];
-    v9 = &unk_287146CA8;
+    mEMORY[0x277D3F198]6 = &unk_287146CA8;
     v10 = MEMORY[0x277D3F538];
     v36 = v8;
     if (v8)
     {
-      v35 = [MEMORY[0x277D3F198] sharedInstance];
-      v11 = [v35 commonTypeDict_IntegerFormat];
+      mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
     }
 
     else
@@ -563,22 +563,22 @@
       v46[1] = v12;
       v47[0] = &unk_287146CA8;
       v47[1] = &unk_28714D9D0;
-      v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:2];
-      v35 = v11;
+      commonTypeDict_IntegerFormat = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:2];
+      mEMORY[0x277D3F198]2 = commonTypeDict_IntegerFormat;
     }
 
-    v29 = v11;
-    v51[1] = v11;
+    v29 = commonTypeDict_IntegerFormat;
+    v51[1] = commonTypeDict_IntegerFormat;
     v50[2] = @"lux";
-    v34 = [MEMORY[0x277D3F198] sharedInstance];
-    v33 = [v34 commonTypeDict_IntegerFormat];
-    v51[2] = v33;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v51[2] = commonTypeDict_IntegerFormat2;
     v50[3] = @"iDAC";
     v32 = +[PLDisplayAgent shouldLogFromDCP];
     if (v32)
     {
-      v31 = [MEMORY[0x277D3F198] sharedInstance];
-      v13 = [v31 commonTypeDict_IntegerFormat];
+      mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
     }
 
     else
@@ -588,17 +588,17 @@
       v44[1] = v14;
       v45[0] = &unk_287146CA8;
       v45[1] = &unk_28714D9E8;
-      v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:2];
-      v31 = v13;
+      commonTypeDict_IntegerFormat3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:2];
+      mEMORY[0x277D3F198]4 = commonTypeDict_IntegerFormat3;
     }
 
-    v51[3] = v13;
+    v51[3] = commonTypeDict_IntegerFormat3;
     v50[4] = @"mNits";
     v15 = +[PLDisplayAgent shouldLogFromDCP];
     if (v15)
     {
-      v16 = [MEMORY[0x277D3F198] sharedInstance];
-      v17 = [v16 commonTypeDict_IntegerFormat];
+      mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
     }
 
     else
@@ -608,18 +608,18 @@
       v42[1] = v18;
       v43[0] = &unk_287146CA8;
       v43[1] = &unk_28714DA00;
-      v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:2];
-      v16 = v17;
+      commonTypeDict_IntegerFormat4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:2];
+      mEMORY[0x277D3F198]5 = commonTypeDict_IntegerFormat4;
     }
 
-    v19 = v17;
-    v51[4] = v17;
+    v19 = commonTypeDict_IntegerFormat4;
+    v51[4] = commonTypeDict_IntegerFormat4;
     v50[5] = @"uAmps";
     v20 = +[PLDisplayAgent shouldLogFromDCP];
     if (v20)
     {
-      v9 = [MEMORY[0x277D3F198] sharedInstance];
-      v21 = [v9 commonTypeDict_IntegerFormat];
+      mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+      commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
     }
 
     else
@@ -629,14 +629,14 @@
       v40[1] = v22;
       v41[0] = &unk_287146CA8;
       v41[1] = &unk_28714DA18;
-      v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:2];
+      commonTypeDict_IntegerFormat5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:2];
     }
 
-    v51[5] = v21;
+    v51[5] = commonTypeDict_IntegerFormat5;
     v50[6] = @"EDRHeadroom";
-    v23 = [MEMORY[0x277D3F198] sharedInstance];
-    v24 = [v23 commonTypeDict_IntegerFormat];
-    v51[6] = v24;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v51[6] = commonTypeDict_IntegerFormat6;
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:7];
     v55[1] = v25;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:v54 count:2];
@@ -644,7 +644,7 @@
     if (v20)
     {
 
-      v21 = v9;
+      commonTypeDict_IntegerFormat5 = mEMORY[0x277D3F198]6;
     }
 
     if (v15)
@@ -686,9 +686,9 @@
     v14[0] = v2;
     v13[1] = *MEMORY[0x277D3F540];
     v9 = @"DisplayPower";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_RealFormat];
-    v10 = v4;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
+    v10 = commonTypeDict_RealFormat;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v14[1] = v5;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -726,189 +726,189 @@
     v105[0] = v99;
     v104[1] = *MEMORY[0x277D3F540];
     v100[0] = @"E0a";
-    v98 = [MEMORY[0x277D3F198] sharedInstance];
-    v97 = [v98 commonTypeDict_IntegerFormat];
-    v101[0] = v97;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v101[0] = commonTypeDict_IntegerFormat;
     v100[1] = @"E0b";
-    v96 = [MEMORY[0x277D3F198] sharedInstance];
-    v95 = [v96 commonTypeDict_IntegerFormat];
-    v101[1] = v95;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v101[1] = commonTypeDict_IntegerFormat2;
     v100[2] = @"E1";
-    v94 = [MEMORY[0x277D3F198] sharedInstance];
-    v93 = [v94 commonTypeDict_IntegerFormat];
-    v101[2] = v93;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v101[2] = commonTypeDict_IntegerFormat3;
     v100[3] = @"E2";
-    v92 = [MEMORY[0x277D3F198] sharedInstance];
-    v91 = [v92 commonTypeDict_IntegerFormat];
-    v101[3] = v91;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v101[3] = commonTypeDict_IntegerFormat4;
     v100[4] = @"L0a";
-    v90 = [MEMORY[0x277D3F198] sharedInstance];
-    v89 = [v90 commonTypeDict_RealFormat];
-    v101[4] = v89;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat = [mEMORY[0x277D3F198]5 commonTypeDict_RealFormat];
+    v101[4] = commonTypeDict_RealFormat;
     v100[5] = @"L0b";
-    v88 = [MEMORY[0x277D3F198] sharedInstance];
-    v87 = [v88 commonTypeDict_RealFormat];
-    v101[5] = v87;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]6 commonTypeDict_RealFormat];
+    v101[5] = commonTypeDict_RealFormat2;
     v100[6] = @"L1";
-    v86 = [MEMORY[0x277D3F198] sharedInstance];
-    v85 = [v86 commonTypeDict_RealFormat];
-    v101[6] = v85;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat3 = [mEMORY[0x277D3F198]7 commonTypeDict_RealFormat];
+    v101[6] = commonTypeDict_RealFormat3;
     v100[7] = @"L2";
-    v84 = [MEMORY[0x277D3F198] sharedInstance];
-    v83 = [v84 commonTypeDict_RealFormat];
-    v101[7] = v83;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat4 = [mEMORY[0x277D3F198]8 commonTypeDict_RealFormat];
+    v101[7] = commonTypeDict_RealFormat4;
     v100[8] = @"S";
-    v82 = [MEMORY[0x277D3F198] sharedInstance];
-    v81 = [v82 commonTypeDict_RealFormat];
-    v101[8] = v81;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat5 = [mEMORY[0x277D3F198]9 commonTypeDict_RealFormat];
+    v101[8] = commonTypeDict_RealFormat5;
     v100[9] = @"version";
-    v80 = [MEMORY[0x277D3F198] sharedInstance];
-    v79 = [v80 commonTypeDict_IntegerFormat];
-    v101[9] = v79;
+    mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+    v101[9] = commonTypeDict_IntegerFormat5;
     v100[10] = @"Lux";
-    v78 = [MEMORY[0x277D3F198] sharedInstance];
-    v77 = [v78 commonTypeDict_IntegerFormat];
-    v101[10] = v77;
+    mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+    v101[10] = commonTypeDict_IntegerFormat6;
     v100[11] = @"thirdSlope";
-    v76 = [MEMORY[0x277D3F198] sharedInstance];
-    v75 = [v76 commonTypeDict_RealFormat];
-    v101[11] = v75;
+    mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat6 = [mEMORY[0x277D3F198]12 commonTypeDict_RealFormat];
+    v101[11] = commonTypeDict_RealFormat6;
     v100[12] = @"aabParamsUpdateOnly";
-    v74 = [MEMORY[0x277D3F198] sharedInstance];
-    v73 = [v74 commonTypeDict_BoolFormat];
-    v101[12] = v73;
+    mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]13 commonTypeDict_BoolFormat];
+    v101[12] = commonTypeDict_BoolFormat;
     v100[13] = @"auroraFactor";
-    v72 = [MEMORY[0x277D3F198] sharedInstance];
-    v71 = [v72 commonTypeDict_RealFormat];
-    v101[13] = v71;
+    mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat7 = [mEMORY[0x277D3F198]14 commonTypeDict_RealFormat];
+    v101[13] = commonTypeDict_RealFormat7;
     v100[14] = @"autobrightnessEnabled";
-    v70 = [MEMORY[0x277D3F198] sharedInstance];
-    v69 = [v70 commonTypeDict_BoolFormat];
-    v101[14] = v69;
+    mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]15 commonTypeDict_BoolFormat];
+    v101[14] = commonTypeDict_BoolFormat2;
     v100[15] = @"colorAdaptationStrength";
-    v68 = [MEMORY[0x277D3F198] sharedInstance];
-    v67 = [v68 commonTypeDict_RealFormat];
-    v101[15] = v67;
+    mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat8 = [mEMORY[0x277D3F198]16 commonTypeDict_RealFormat];
+    v101[15] = commonTypeDict_RealFormat8;
     v100[16] = @"colorAdaptationMode";
-    v66 = [MEMORY[0x277D3F198] sharedInstance];
-    v65 = [v66 commonTypeDict_IntegerFormat];
-    v101[16] = v65;
+    mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+    v101[16] = commonTypeDict_IntegerFormat7;
     v100[17] = @"cpmsMitigationLimitingBrightness";
-    v64 = [MEMORY[0x277D3F198] sharedInstance];
-    v63 = [v64 commonTypeDict_BoolFormat];
-    v101[17] = v63;
+    mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat3 = [mEMORY[0x277D3F198]18 commonTypeDict_BoolFormat];
+    v101[17] = commonTypeDict_BoolFormat3;
     v100[18] = @"darkThemeApplied";
-    v62 = [MEMORY[0x277D3F198] sharedInstance];
-    v61 = [v62 commonTypeDict_BoolFormat];
-    v101[18] = v61;
+    mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat4 = [mEMORY[0x277D3F198]19 commonTypeDict_BoolFormat];
+    v101[18] = commonTypeDict_BoolFormat4;
     v100[19] = @"delayedAPCE";
-    v60 = [MEMORY[0x277D3F198] sharedInstance];
-    v59 = [v60 commonTypeDict_IntegerFormat];
-    v101[19] = v59;
+    mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]20 commonTypeDict_IntegerFormat];
+    v101[19] = commonTypeDict_IntegerFormat8;
     v100[20] = @"delayedAPCEStatus";
-    v58 = [MEMORY[0x277D3F198] sharedInstance];
-    v57 = [v58 commonTypeDict_IntegerFormat];
-    v101[20] = v57;
+    mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+    v101[20] = commonTypeDict_IntegerFormat9;
     v100[21] = @"ecoModeEnabled";
-    v56 = [MEMORY[0x277D3F198] sharedInstance];
-    v55 = [v56 commonTypeDict_BoolFormat];
-    v101[21] = v55;
+    mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat5 = [mEMORY[0x277D3F198]22 commonTypeDict_BoolFormat];
+    v101[21] = commonTypeDict_BoolFormat5;
     v100[22] = @"ecoModeFactor";
-    v54 = [MEMORY[0x277D3F198] sharedInstance];
-    v53 = [v54 commonTypeDict_IntegerFormat];
-    v101[22] = v53;
+    mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]23 commonTypeDict_IntegerFormat];
+    v101[22] = commonTypeDict_IntegerFormat10;
     v100[23] = @"edrHeadroom";
-    v52 = [MEMORY[0x277D3F198] sharedInstance];
-    v51 = [v52 commonTypeDict_RealFormat];
-    v101[23] = v51;
+    mEMORY[0x277D3F198]24 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat9 = [mEMORY[0x277D3F198]24 commonTypeDict_RealFormat];
+    v101[23] = commonTypeDict_RealFormat9;
     v100[24] = @"landscapeOrientation";
-    v50 = [MEMORY[0x277D3F198] sharedInstance];
-    v49 = [v50 commonTypeDict_BoolFormat];
-    v101[24] = v49;
+    mEMORY[0x277D3F198]25 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat6 = [mEMORY[0x277D3F198]25 commonTypeDict_BoolFormat];
+    v101[24] = commonTypeDict_BoolFormat6;
     v100[25] = @"localTimestamp";
-    v48 = [MEMORY[0x277D3F198] sharedInstance];
-    v47 = [v48 commonTypeDict_DateFormat];
-    v101[25] = v47;
+    mEMORY[0x277D3F198]26 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_DateFormat = [mEMORY[0x277D3F198]26 commonTypeDict_DateFormat];
+    v101[25] = commonTypeDict_DateFormat;
     v100[26] = @"nits";
-    v46 = [MEMORY[0x277D3F198] sharedInstance];
-    v45 = [v46 commonTypeDict_RealFormat];
-    v101[26] = v45;
+    mEMORY[0x277D3F198]27 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat10 = [mEMORY[0x277D3F198]27 commonTypeDict_RealFormat];
+    v101[26] = commonTypeDict_RealFormat10;
     v100[27] = @"proxMitigationTriggered";
-    v44 = [MEMORY[0x277D3F198] sharedInstance];
-    v43 = [v44 commonTypeDict_BoolFormat];
-    v101[27] = v43;
+    mEMORY[0x277D3F198]28 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat7 = [mEMORY[0x277D3F198]28 commonTypeDict_BoolFormat];
+    v101[27] = commonTypeDict_BoolFormat7;
     v100[28] = @"rearLux";
-    v42 = [MEMORY[0x277D3F198] sharedInstance];
-    v41 = [v42 commonTypeDict_IntegerFormat];
-    v101[28] = v41;
+    mEMORY[0x277D3F198]29 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]29 commonTypeDict_IntegerFormat];
+    v101[28] = commonTypeDict_IntegerFormat11;
     v100[29] = @"rearLuxInUse";
-    v40 = [MEMORY[0x277D3F198] sharedInstance];
-    v39 = [v40 commonTypeDict_BoolFormat];
-    v101[29] = v39;
+    mEMORY[0x277D3F198]30 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat8 = [mEMORY[0x277D3F198]30 commonTypeDict_BoolFormat];
+    v101[29] = commonTypeDict_BoolFormat8;
     v100[30] = @"touchMitigationTriggered";
-    v38 = [MEMORY[0x277D3F198] sharedInstance];
-    v37 = [v38 commonTypeDict_BoolFormat];
-    v101[30] = v37;
+    mEMORY[0x277D3F198]31 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat9 = [mEMORY[0x277D3F198]31 commonTypeDict_BoolFormat];
+    v101[30] = commonTypeDict_BoolFormat9;
     v100[31] = @"trustedLux";
-    v36 = [MEMORY[0x277D3F198] sharedInstance];
-    v35 = [v36 commonTypeDict_IntegerFormat];
-    v101[31] = v35;
+    mEMORY[0x277D3F198]32 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]32 commonTypeDict_IntegerFormat];
+    v101[31] = commonTypeDict_IntegerFormat12;
     v100[32] = @"aabParamsUpdateReason";
-    v34 = [MEMORY[0x277D3F198] sharedInstance];
-    v33 = [v34 commonTypeDict_IntegerFormat];
-    v101[32] = v33;
+    mEMORY[0x277D3F198]33 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]33 commonTypeDict_IntegerFormat];
+    v101[32] = commonTypeDict_IntegerFormat13;
     v100[33] = @"inactiveLength";
-    v32 = [MEMORY[0x277D3F198] sharedInstance];
-    v31 = [v32 commonTypeDict_IntegerFormat];
-    v101[33] = v31;
+    mEMORY[0x277D3F198]34 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]34 commonTypeDict_IntegerFormat];
+    v101[33] = commonTypeDict_IntegerFormat14;
     v100[34] = @"inactiveStart";
-    v30 = [MEMORY[0x277D3F198] sharedInstance];
-    v29 = [v30 commonTypeDict_IntegerFormat];
-    v101[34] = v29;
+    mEMORY[0x277D3F198]35 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]35 commonTypeDict_IntegerFormat];
+    v101[34] = commonTypeDict_IntegerFormat15;
     v100[35] = @"alternativeE0a";
-    v28 = [MEMORY[0x277D3F198] sharedInstance];
-    v27 = [v28 commonTypeDict_IntegerFormat];
-    v101[35] = v27;
+    mEMORY[0x277D3F198]36 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]36 commonTypeDict_IntegerFormat];
+    v101[35] = commonTypeDict_IntegerFormat16;
     v100[36] = @"alternativeE0b";
-    v26 = [MEMORY[0x277D3F198] sharedInstance];
-    v25 = [v26 commonTypeDict_IntegerFormat];
-    v101[36] = v25;
+    mEMORY[0x277D3F198]37 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]37 commonTypeDict_IntegerFormat];
+    v101[36] = commonTypeDict_IntegerFormat17;
     v100[37] = @"alternativeE1";
-    v24 = [MEMORY[0x277D3F198] sharedInstance];
-    v23 = [v24 commonTypeDict_IntegerFormat];
-    v101[37] = v23;
+    mEMORY[0x277D3F198]38 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]38 commonTypeDict_IntegerFormat];
+    v101[37] = commonTypeDict_IntegerFormat18;
     v100[38] = @"alternativeE2";
-    v22 = [MEMORY[0x277D3F198] sharedInstance];
-    v21 = [v22 commonTypeDict_IntegerFormat];
-    v101[38] = v21;
+    mEMORY[0x277D3F198]39 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]39 commonTypeDict_IntegerFormat];
+    v101[38] = commonTypeDict_IntegerFormat19;
     v100[39] = @"alternativeL0a";
-    v20 = [MEMORY[0x277D3F198] sharedInstance];
-    v19 = [v20 commonTypeDict_IntegerFormat];
-    v101[39] = v19;
+    mEMORY[0x277D3F198]40 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat20 = [mEMORY[0x277D3F198]40 commonTypeDict_IntegerFormat];
+    v101[39] = commonTypeDict_IntegerFormat20;
     v100[40] = @"alternativeL0b";
-    v18 = [MEMORY[0x277D3F198] sharedInstance];
-    v17 = [v18 commonTypeDict_IntegerFormat];
-    v101[40] = v17;
+    mEMORY[0x277D3F198]41 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat21 = [mEMORY[0x277D3F198]41 commonTypeDict_IntegerFormat];
+    v101[40] = commonTypeDict_IntegerFormat21;
     v100[41] = @"alternativeL1";
-    v16 = [MEMORY[0x277D3F198] sharedInstance];
-    v15 = [v16 commonTypeDict_IntegerFormat];
-    v101[41] = v15;
+    mEMORY[0x277D3F198]42 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat22 = [mEMORY[0x277D3F198]42 commonTypeDict_IntegerFormat];
+    v101[41] = commonTypeDict_IntegerFormat22;
     v100[42] = @"alternativeL2";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_IntegerFormat];
-    v101[42] = v5;
+    mEMORY[0x277D3F198]43 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat23 = [mEMORY[0x277D3F198]43 commonTypeDict_IntegerFormat];
+    v101[42] = commonTypeDict_IntegerFormat23;
     v100[43] = @"alternativeThirdSlope";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_IntegerFormat];
-    v101[43] = v7;
+    mEMORY[0x277D3F198]44 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat24 = [mEMORY[0x277D3F198]44 commonTypeDict_IntegerFormat];
+    v101[43] = commonTypeDict_IntegerFormat24;
     v100[44] = @"nitsDelta";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_IntegerFormat];
-    v101[44] = v9;
+    mEMORY[0x277D3F198]45 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat25 = [mEMORY[0x277D3F198]45 commonTypeDict_IntegerFormat];
+    v101[44] = commonTypeDict_IntegerFormat25;
     v100[45] = @"nitsDeltaAlternative";
-    v10 = [MEMORY[0x277D3F198] sharedInstance];
-    v11 = [v10 commonTypeDict_IntegerFormat];
-    v101[45] = v11;
+    mEMORY[0x277D3F198]46 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat26 = [mEMORY[0x277D3F198]46 commonTypeDict_IntegerFormat];
+    v101[45] = commonTypeDict_IntegerFormat26;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v101 forKeys:v100 count:46];
     v105[1] = v12;
     v2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v105 forKeys:v104 count:2];
@@ -932,9 +932,9 @@
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"ALSEnabled";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_BoolFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v11 = commonTypeDict_BoolFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -956,9 +956,9 @@
     v14[0] = v2;
     v13[1] = *MEMORY[0x277D3F540];
     v9 = @"Power";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_RealFormat];
-    v10 = v4;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
+    v10 = commonTypeDict_RealFormat;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v14[1] = v5;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -989,9 +989,9 @@
     v15[0] = v3;
     v14[1] = *MEMORY[0x277D3F540];
     v10 = @"CAModeEnabled";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_BoolFormat];
-    v11 = v5;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+    v11 = commonTypeDict_BoolFormat;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
     v15[1] = v6;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -1019,17 +1019,17 @@
     v18[0] = v2;
     v17[1] = *MEMORY[0x277D3F540];
     v13[0] = @"BlueReductionEnabled";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_BoolFormat];
-    v14[0] = v4;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+    v14[0] = commonTypeDict_BoolFormat;
     v13[1] = @"BlueReductionMode";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v14[1] = v6;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v14[1] = commonTypeDict_IntegerFormat;
     v13[2] = @"BlueReductionSunScheduleAllowed";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_BoolFormat];
-    v14[2] = v8;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+    v14[2] = commonTypeDict_BoolFormat2;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
     v18[1] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -1057,25 +1057,25 @@
     v22[0] = v16;
     v21[1] = *MEMORY[0x277D3F540];
     v17[0] = @"cappedLuxForAAB";
-    v15 = [MEMORY[0x277D3F198] sharedInstance];
-    v14 = [v15 commonTypeDict_IntegerFormat];
-    v18[0] = v14;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v18[0] = commonTypeDict_IntegerFormat;
     v17[1] = @"frontNits";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_IntegerFormat];
-    v18[1] = v3;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v18[1] = commonTypeDict_IntegerFormat2;
     v17[2] = @"gainChanged";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_BoolFormat];
-    v18[2] = v5;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+    v18[2] = commonTypeDict_BoolFormat;
     v17[3] = @"rearNits";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_IntegerFormat];
-    v18[3] = v7;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v18[3] = commonTypeDict_IntegerFormat3;
     v17[4] = @"rearLux";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_IntegerFormat];
-    v18[4] = v9;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v18[4] = commonTypeDict_IntegerFormat4;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:5];
     v22[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
@@ -1286,501 +1286,501 @@
     v260[0] = v254;
     v259[1] = *MEMORY[0x277D3F540];
     v255[0] = @"DCBins_0";
-    v253 = [MEMORY[0x277D3F198] sharedInstance];
-    v252 = [v253 commonTypeDict_RealFormat];
-    v256[0] = v252;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
+    v256[0] = commonTypeDict_RealFormat;
     v255[1] = @"DCBins_1";
-    v251 = [MEMORY[0x277D3F198] sharedInstance];
-    v250 = [v251 commonTypeDict_RealFormat];
-    v256[1] = v250;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat];
+    v256[1] = commonTypeDict_RealFormat2;
     v255[2] = @"DCBins_2";
-    v249 = [MEMORY[0x277D3F198] sharedInstance];
-    v248 = [v249 commonTypeDict_RealFormat];
-    v256[2] = v248;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat];
+    v256[2] = commonTypeDict_RealFormat3;
     v255[3] = @"DCBins_3";
-    v247 = [MEMORY[0x277D3F198] sharedInstance];
-    v246 = [v247 commonTypeDict_RealFormat];
-    v256[3] = v246;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat];
+    v256[3] = commonTypeDict_RealFormat4;
     v255[4] = @"DCBins_4";
-    v245 = [MEMORY[0x277D3F198] sharedInstance];
-    v244 = [v245 commonTypeDict_RealFormat];
-    v256[4] = v244;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_RealFormat];
+    v256[4] = commonTypeDict_RealFormat5;
     v255[5] = @"DCBins_5";
-    v243 = [MEMORY[0x277D3F198] sharedInstance];
-    v242 = [v243 commonTypeDict_RealFormat];
-    v256[5] = v242;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_RealFormat];
+    v256[5] = commonTypeDict_RealFormat6;
     v255[6] = @"DCBins_6";
-    v241 = [MEMORY[0x277D3F198] sharedInstance];
-    v240 = [v241 commonTypeDict_RealFormat];
-    v256[6] = v240;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_RealFormat];
+    v256[6] = commonTypeDict_RealFormat7;
     v255[7] = @"DCBins_7";
-    v239 = [MEMORY[0x277D3F198] sharedInstance];
-    v238 = [v239 commonTypeDict_RealFormat];
-    v256[7] = v238;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_RealFormat];
+    v256[7] = commonTypeDict_RealFormat8;
     v255[8] = @"DCBins_8";
-    v237 = [MEMORY[0x277D3F198] sharedInstance];
-    v236 = [v237 commonTypeDict_RealFormat];
-    v256[8] = v236;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat9 = [mEMORY[0x277D3F198]9 commonTypeDict_RealFormat];
+    v256[8] = commonTypeDict_RealFormat9;
     v255[9] = @"DCBins_9";
-    v235 = [MEMORY[0x277D3F198] sharedInstance];
-    v234 = [v235 commonTypeDict_RealFormat];
-    v256[9] = v234;
+    mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat10 = [mEMORY[0x277D3F198]10 commonTypeDict_RealFormat];
+    v256[9] = commonTypeDict_RealFormat10;
     v255[10] = @"DCBins_10";
-    v233 = [MEMORY[0x277D3F198] sharedInstance];
-    v232 = [v233 commonTypeDict_RealFormat];
-    v256[10] = v232;
+    mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat11 = [mEMORY[0x277D3F198]11 commonTypeDict_RealFormat];
+    v256[10] = commonTypeDict_RealFormat11;
     v255[11] = @"DCBins_11";
-    v231 = [MEMORY[0x277D3F198] sharedInstance];
-    v230 = [v231 commonTypeDict_RealFormat];
-    v256[11] = v230;
+    mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat12 = [mEMORY[0x277D3F198]12 commonTypeDict_RealFormat];
+    v256[11] = commonTypeDict_RealFormat12;
     v255[12] = @"DCBins_12";
-    v229 = [MEMORY[0x277D3F198] sharedInstance];
-    v228 = [v229 commonTypeDict_RealFormat];
-    v256[12] = v228;
+    mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat13 = [mEMORY[0x277D3F198]13 commonTypeDict_RealFormat];
+    v256[12] = commonTypeDict_RealFormat13;
     v255[13] = @"DCBins_13";
-    v227 = [MEMORY[0x277D3F198] sharedInstance];
-    v226 = [v227 commonTypeDict_RealFormat];
-    v256[13] = v226;
+    mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat14 = [mEMORY[0x277D3F198]14 commonTypeDict_RealFormat];
+    v256[13] = commonTypeDict_RealFormat14;
     v255[14] = @"DCBins_14";
-    v225 = [MEMORY[0x277D3F198] sharedInstance];
-    v224 = [v225 commonTypeDict_RealFormat];
-    v256[14] = v224;
+    mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat15 = [mEMORY[0x277D3F198]15 commonTypeDict_RealFormat];
+    v256[14] = commonTypeDict_RealFormat15;
     v255[15] = @"DCBins_15";
-    v223 = [MEMORY[0x277D3F198] sharedInstance];
-    v222 = [v223 commonTypeDict_RealFormat];
-    v256[15] = v222;
+    mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat16 = [mEMORY[0x277D3F198]16 commonTypeDict_RealFormat];
+    v256[15] = commonTypeDict_RealFormat16;
     v255[16] = @"DCBins_16";
-    v221 = [MEMORY[0x277D3F198] sharedInstance];
-    v220 = [v221 commonTypeDict_RealFormat];
-    v256[16] = v220;
+    mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat17 = [mEMORY[0x277D3F198]17 commonTypeDict_RealFormat];
+    v256[16] = commonTypeDict_RealFormat17;
     v255[17] = @"ACBins_0";
-    v219 = [MEMORY[0x277D3F198] sharedInstance];
-    v218 = [v219 commonTypeDict_RealFormat];
-    v256[17] = v218;
+    mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat18 = [mEMORY[0x277D3F198]18 commonTypeDict_RealFormat];
+    v256[17] = commonTypeDict_RealFormat18;
     v255[18] = @"ACBins_1";
-    v217 = [MEMORY[0x277D3F198] sharedInstance];
-    v216 = [v217 commonTypeDict_RealFormat];
-    v256[18] = v216;
+    mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat19 = [mEMORY[0x277D3F198]19 commonTypeDict_RealFormat];
+    v256[18] = commonTypeDict_RealFormat19;
     v255[19] = @"ACBins_2";
-    v215 = [MEMORY[0x277D3F198] sharedInstance];
-    v214 = [v215 commonTypeDict_RealFormat];
-    v256[19] = v214;
+    mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat20 = [mEMORY[0x277D3F198]20 commonTypeDict_RealFormat];
+    v256[19] = commonTypeDict_RealFormat20;
     v255[20] = @"ACBins_3";
-    v213 = [MEMORY[0x277D3F198] sharedInstance];
-    v212 = [v213 commonTypeDict_RealFormat];
-    v256[20] = v212;
+    mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat21 = [mEMORY[0x277D3F198]21 commonTypeDict_RealFormat];
+    v256[20] = commonTypeDict_RealFormat21;
     v255[21] = @"ACBins_4";
-    v211 = [MEMORY[0x277D3F198] sharedInstance];
-    v210 = [v211 commonTypeDict_RealFormat];
-    v256[21] = v210;
+    mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat22 = [mEMORY[0x277D3F198]22 commonTypeDict_RealFormat];
+    v256[21] = commonTypeDict_RealFormat22;
     v255[22] = @"ACBins_5";
-    v209 = [MEMORY[0x277D3F198] sharedInstance];
-    v208 = [v209 commonTypeDict_RealFormat];
-    v256[22] = v208;
+    mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat23 = [mEMORY[0x277D3F198]23 commonTypeDict_RealFormat];
+    v256[22] = commonTypeDict_RealFormat23;
     v255[23] = @"ACBins_6";
-    v207 = [MEMORY[0x277D3F198] sharedInstance];
-    v206 = [v207 commonTypeDict_RealFormat];
-    v256[23] = v206;
+    mEMORY[0x277D3F198]24 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat24 = [mEMORY[0x277D3F198]24 commonTypeDict_RealFormat];
+    v256[23] = commonTypeDict_RealFormat24;
     v255[24] = @"ACBins_7";
-    v205 = [MEMORY[0x277D3F198] sharedInstance];
-    v204 = [v205 commonTypeDict_RealFormat];
-    v256[24] = v204;
+    mEMORY[0x277D3F198]25 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat25 = [mEMORY[0x277D3F198]25 commonTypeDict_RealFormat];
+    v256[24] = commonTypeDict_RealFormat25;
     v255[25] = @"ACBins_8";
-    v203 = [MEMORY[0x277D3F198] sharedInstance];
-    v202 = [v203 commonTypeDict_RealFormat];
-    v256[25] = v202;
+    mEMORY[0x277D3F198]26 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat26 = [mEMORY[0x277D3F198]26 commonTypeDict_RealFormat];
+    v256[25] = commonTypeDict_RealFormat26;
     v255[26] = @"ACBins_9";
-    v201 = [MEMORY[0x277D3F198] sharedInstance];
-    v200 = [v201 commonTypeDict_RealFormat];
-    v256[26] = v200;
+    mEMORY[0x277D3F198]27 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat27 = [mEMORY[0x277D3F198]27 commonTypeDict_RealFormat];
+    v256[26] = commonTypeDict_RealFormat27;
     v255[27] = @"ACBins_10";
-    v199 = [MEMORY[0x277D3F198] sharedInstance];
-    v198 = [v199 commonTypeDict_RealFormat];
-    v256[27] = v198;
+    mEMORY[0x277D3F198]28 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat28 = [mEMORY[0x277D3F198]28 commonTypeDict_RealFormat];
+    v256[27] = commonTypeDict_RealFormat28;
     v255[28] = @"ACBins_11";
-    v197 = [MEMORY[0x277D3F198] sharedInstance];
-    v196 = [v197 commonTypeDict_RealFormat];
-    v256[28] = v196;
+    mEMORY[0x277D3F198]29 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat29 = [mEMORY[0x277D3F198]29 commonTypeDict_RealFormat];
+    v256[28] = commonTypeDict_RealFormat29;
     v255[29] = @"ACBins_12";
-    v195 = [MEMORY[0x277D3F198] sharedInstance];
-    v194 = [v195 commonTypeDict_RealFormat];
-    v256[29] = v194;
+    mEMORY[0x277D3F198]30 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat30 = [mEMORY[0x277D3F198]30 commonTypeDict_RealFormat];
+    v256[29] = commonTypeDict_RealFormat30;
     v255[30] = @"ACBins_13";
-    v193 = [MEMORY[0x277D3F198] sharedInstance];
-    v192 = [v193 commonTypeDict_RealFormat];
-    v256[30] = v192;
+    mEMORY[0x277D3F198]31 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat31 = [mEMORY[0x277D3F198]31 commonTypeDict_RealFormat];
+    v256[30] = commonTypeDict_RealFormat31;
     v255[31] = @"ACBins_14";
-    v191 = [MEMORY[0x277D3F198] sharedInstance];
-    v190 = [v191 commonTypeDict_RealFormat];
-    v256[31] = v190;
+    mEMORY[0x277D3F198]32 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat32 = [mEMORY[0x277D3F198]32 commonTypeDict_RealFormat];
+    v256[31] = commonTypeDict_RealFormat32;
     v255[32] = @"ACBins_15";
-    v189 = [MEMORY[0x277D3F198] sharedInstance];
-    v188 = [v189 commonTypeDict_RealFormat];
-    v256[32] = v188;
+    mEMORY[0x277D3F198]33 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat33 = [mEMORY[0x277D3F198]33 commonTypeDict_RealFormat];
+    v256[32] = commonTypeDict_RealFormat33;
     v255[33] = @"ACBins_16";
-    v187 = [MEMORY[0x277D3F198] sharedInstance];
-    v186 = [v187 commonTypeDict_RealFormat];
-    v256[33] = v186;
+    mEMORY[0x277D3F198]34 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat34 = [mEMORY[0x277D3F198]34 commonTypeDict_RealFormat];
+    v256[33] = commonTypeDict_RealFormat34;
     v255[34] = @"ASBins_0";
-    v185 = [MEMORY[0x277D3F198] sharedInstance];
-    v184 = [v185 commonTypeDict_RealFormat];
-    v256[34] = v184;
+    mEMORY[0x277D3F198]35 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat35 = [mEMORY[0x277D3F198]35 commonTypeDict_RealFormat];
+    v256[34] = commonTypeDict_RealFormat35;
     v255[35] = @"ASBins_1";
-    v183 = [MEMORY[0x277D3F198] sharedInstance];
-    v182 = [v183 commonTypeDict_RealFormat];
-    v256[35] = v182;
+    mEMORY[0x277D3F198]36 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat36 = [mEMORY[0x277D3F198]36 commonTypeDict_RealFormat];
+    v256[35] = commonTypeDict_RealFormat36;
     v255[36] = @"ASBins_2";
-    v181 = [MEMORY[0x277D3F198] sharedInstance];
-    v180 = [v181 commonTypeDict_RealFormat];
-    v256[36] = v180;
+    mEMORY[0x277D3F198]37 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat37 = [mEMORY[0x277D3F198]37 commonTypeDict_RealFormat];
+    v256[36] = commonTypeDict_RealFormat37;
     v255[37] = @"ASBins_3";
-    v179 = [MEMORY[0x277D3F198] sharedInstance];
-    v178 = [v179 commonTypeDict_RealFormat];
-    v256[37] = v178;
+    mEMORY[0x277D3F198]38 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat38 = [mEMORY[0x277D3F198]38 commonTypeDict_RealFormat];
+    v256[37] = commonTypeDict_RealFormat38;
     v255[38] = @"ASBins_4";
-    v177 = [MEMORY[0x277D3F198] sharedInstance];
-    v176 = [v177 commonTypeDict_RealFormat];
-    v256[38] = v176;
+    mEMORY[0x277D3F198]39 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat39 = [mEMORY[0x277D3F198]39 commonTypeDict_RealFormat];
+    v256[38] = commonTypeDict_RealFormat39;
     v255[39] = @"ASBins_5";
-    v175 = [MEMORY[0x277D3F198] sharedInstance];
-    v174 = [v175 commonTypeDict_RealFormat];
-    v256[39] = v174;
+    mEMORY[0x277D3F198]40 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat40 = [mEMORY[0x277D3F198]40 commonTypeDict_RealFormat];
+    v256[39] = commonTypeDict_RealFormat40;
     v255[40] = @"ASBins_6";
-    v173 = [MEMORY[0x277D3F198] sharedInstance];
-    v172 = [v173 commonTypeDict_RealFormat];
-    v256[40] = v172;
+    mEMORY[0x277D3F198]41 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat41 = [mEMORY[0x277D3F198]41 commonTypeDict_RealFormat];
+    v256[40] = commonTypeDict_RealFormat41;
     v255[41] = @"ASBins_7";
-    v171 = [MEMORY[0x277D3F198] sharedInstance];
-    v170 = [v171 commonTypeDict_RealFormat];
-    v256[41] = v170;
+    mEMORY[0x277D3F198]42 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat42 = [mEMORY[0x277D3F198]42 commonTypeDict_RealFormat];
+    v256[41] = commonTypeDict_RealFormat42;
     v255[42] = @"ASBins_8";
-    v169 = [MEMORY[0x277D3F198] sharedInstance];
-    v168 = [v169 commonTypeDict_RealFormat];
-    v256[42] = v168;
+    mEMORY[0x277D3F198]43 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat43 = [mEMORY[0x277D3F198]43 commonTypeDict_RealFormat];
+    v256[42] = commonTypeDict_RealFormat43;
     v255[43] = @"ASBins_9";
-    v167 = [MEMORY[0x277D3F198] sharedInstance];
-    v166 = [v167 commonTypeDict_RealFormat];
-    v256[43] = v166;
+    mEMORY[0x277D3F198]44 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat44 = [mEMORY[0x277D3F198]44 commonTypeDict_RealFormat];
+    v256[43] = commonTypeDict_RealFormat44;
     v255[44] = @"ACABins_0";
-    v165 = [MEMORY[0x277D3F198] sharedInstance];
-    v164 = [v165 commonTypeDict_RealFormat];
-    v256[44] = v164;
+    mEMORY[0x277D3F198]45 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat45 = [mEMORY[0x277D3F198]45 commonTypeDict_RealFormat];
+    v256[44] = commonTypeDict_RealFormat45;
     v255[45] = @"ACABins_1";
-    v163 = [MEMORY[0x277D3F198] sharedInstance];
-    v162 = [v163 commonTypeDict_RealFormat];
-    v256[45] = v162;
+    mEMORY[0x277D3F198]46 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat46 = [mEMORY[0x277D3F198]46 commonTypeDict_RealFormat];
+    v256[45] = commonTypeDict_RealFormat46;
     v255[46] = @"ACABins_2";
-    v161 = [MEMORY[0x277D3F198] sharedInstance];
-    v160 = [v161 commonTypeDict_RealFormat];
-    v256[46] = v160;
+    mEMORY[0x277D3F198]47 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat47 = [mEMORY[0x277D3F198]47 commonTypeDict_RealFormat];
+    v256[46] = commonTypeDict_RealFormat47;
     v255[47] = @"ACABins_3";
-    v159 = [MEMORY[0x277D3F198] sharedInstance];
-    v158 = [v159 commonTypeDict_RealFormat];
-    v256[47] = v158;
+    mEMORY[0x277D3F198]48 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat48 = [mEMORY[0x277D3F198]48 commonTypeDict_RealFormat];
+    v256[47] = commonTypeDict_RealFormat48;
     v255[48] = @"ACABins_4";
-    v157 = [MEMORY[0x277D3F198] sharedInstance];
-    v156 = [v157 commonTypeDict_RealFormat];
-    v256[48] = v156;
+    mEMORY[0x277D3F198]49 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat49 = [mEMORY[0x277D3F198]49 commonTypeDict_RealFormat];
+    v256[48] = commonTypeDict_RealFormat49;
     v255[49] = @"ACABins_5";
-    v155 = [MEMORY[0x277D3F198] sharedInstance];
-    v154 = [v155 commonTypeDict_RealFormat];
-    v256[49] = v154;
+    mEMORY[0x277D3F198]50 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat50 = [mEMORY[0x277D3F198]50 commonTypeDict_RealFormat];
+    v256[49] = commonTypeDict_RealFormat50;
     v255[50] = @"ACABins_6";
-    v153 = [MEMORY[0x277D3F198] sharedInstance];
-    v152 = [v153 commonTypeDict_RealFormat];
-    v256[50] = v152;
+    mEMORY[0x277D3F198]51 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat51 = [mEMORY[0x277D3F198]51 commonTypeDict_RealFormat];
+    v256[50] = commonTypeDict_RealFormat51;
     v255[51] = @"ACABins_7";
-    v151 = [MEMORY[0x277D3F198] sharedInstance];
-    v150 = [v151 commonTypeDict_RealFormat];
-    v256[51] = v150;
+    mEMORY[0x277D3F198]52 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat52 = [mEMORY[0x277D3F198]52 commonTypeDict_RealFormat];
+    v256[51] = commonTypeDict_RealFormat52;
     v255[52] = @"ACABins_8";
-    v149 = [MEMORY[0x277D3F198] sharedInstance];
-    v148 = [v149 commonTypeDict_RealFormat];
-    v256[52] = v148;
+    mEMORY[0x277D3F198]53 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat53 = [mEMORY[0x277D3F198]53 commonTypeDict_RealFormat];
+    v256[52] = commonTypeDict_RealFormat53;
     v255[53] = @"ACABins_9";
-    v147 = [MEMORY[0x277D3F198] sharedInstance];
-    v146 = [v147 commonTypeDict_RealFormat];
-    v256[53] = v146;
+    mEMORY[0x277D3F198]54 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat54 = [mEMORY[0x277D3F198]54 commonTypeDict_RealFormat];
+    v256[53] = commonTypeDict_RealFormat54;
     v255[54] = @"ACABins_10";
-    v145 = [MEMORY[0x277D3F198] sharedInstance];
-    v144 = [v145 commonTypeDict_RealFormat];
-    v256[54] = v144;
+    mEMORY[0x277D3F198]55 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat55 = [mEMORY[0x277D3F198]55 commonTypeDict_RealFormat];
+    v256[54] = commonTypeDict_RealFormat55;
     v255[55] = @"ACABins_11";
-    v143 = [MEMORY[0x277D3F198] sharedInstance];
-    v142 = [v143 commonTypeDict_RealFormat];
-    v256[55] = v142;
+    mEMORY[0x277D3F198]56 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat56 = [mEMORY[0x277D3F198]56 commonTypeDict_RealFormat];
+    v256[55] = commonTypeDict_RealFormat56;
     v255[56] = @"ACABins_12";
-    v141 = [MEMORY[0x277D3F198] sharedInstance];
-    v140 = [v141 commonTypeDict_RealFormat];
-    v256[56] = v140;
+    mEMORY[0x277D3F198]57 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat57 = [mEMORY[0x277D3F198]57 commonTypeDict_RealFormat];
+    v256[56] = commonTypeDict_RealFormat57;
     v255[57] = @"ACABins_13";
-    v139 = [MEMORY[0x277D3F198] sharedInstance];
-    v138 = [v139 commonTypeDict_RealFormat];
-    v256[57] = v138;
+    mEMORY[0x277D3F198]58 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat58 = [mEMORY[0x277D3F198]58 commonTypeDict_RealFormat];
+    v256[57] = commonTypeDict_RealFormat58;
     v255[58] = @"ACABins_14";
-    v137 = [MEMORY[0x277D3F198] sharedInstance];
-    v136 = [v137 commonTypeDict_RealFormat];
-    v256[58] = v136;
+    mEMORY[0x277D3F198]59 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat59 = [mEMORY[0x277D3F198]59 commonTypeDict_RealFormat];
+    v256[58] = commonTypeDict_RealFormat59;
     v255[59] = @"ACABins_15";
-    v135 = [MEMORY[0x277D3F198] sharedInstance];
-    v134 = [v135 commonTypeDict_RealFormat];
-    v256[59] = v134;
+    mEMORY[0x277D3F198]60 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat60 = [mEMORY[0x277D3F198]60 commonTypeDict_RealFormat];
+    v256[59] = commonTypeDict_RealFormat60;
     v255[60] = @"ACABins_16";
-    v133 = [MEMORY[0x277D3F198] sharedInstance];
-    v132 = [v133 commonTypeDict_RealFormat];
-    v256[60] = v132;
+    mEMORY[0x277D3F198]61 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat61 = [mEMORY[0x277D3F198]61 commonTypeDict_RealFormat];
+    v256[60] = commonTypeDict_RealFormat61;
     v255[61] = @"ACABins_17";
-    v131 = [MEMORY[0x277D3F198] sharedInstance];
-    v130 = [v131 commonTypeDict_RealFormat];
-    v256[61] = v130;
+    mEMORY[0x277D3F198]62 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat62 = [mEMORY[0x277D3F198]62 commonTypeDict_RealFormat];
+    v256[61] = commonTypeDict_RealFormat62;
     v255[62] = @"ACABins_18";
-    v129 = [MEMORY[0x277D3F198] sharedInstance];
-    v128 = [v129 commonTypeDict_RealFormat];
-    v256[62] = v128;
+    mEMORY[0x277D3F198]63 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat63 = [mEMORY[0x277D3F198]63 commonTypeDict_RealFormat];
+    v256[62] = commonTypeDict_RealFormat63;
     v255[63] = @"ACABins_19";
-    v127 = [MEMORY[0x277D3F198] sharedInstance];
-    v126 = [v127 commonTypeDict_RealFormat];
-    v256[63] = v126;
+    mEMORY[0x277D3F198]64 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat64 = [mEMORY[0x277D3F198]64 commonTypeDict_RealFormat];
+    v256[63] = commonTypeDict_RealFormat64;
     v255[64] = @"ACABins_20";
-    v125 = [MEMORY[0x277D3F198] sharedInstance];
-    v124 = [v125 commonTypeDict_RealFormat];
-    v256[64] = v124;
+    mEMORY[0x277D3F198]65 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat65 = [mEMORY[0x277D3F198]65 commonTypeDict_RealFormat];
+    v256[64] = commonTypeDict_RealFormat65;
     v255[65] = @"ACABins_21";
-    v123 = [MEMORY[0x277D3F198] sharedInstance];
-    v122 = [v123 commonTypeDict_RealFormat];
-    v256[65] = v122;
+    mEMORY[0x277D3F198]66 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat66 = [mEMORY[0x277D3F198]66 commonTypeDict_RealFormat];
+    v256[65] = commonTypeDict_RealFormat66;
     v255[66] = @"ACABins_22";
-    v121 = [MEMORY[0x277D3F198] sharedInstance];
-    v120 = [v121 commonTypeDict_RealFormat];
-    v256[66] = v120;
+    mEMORY[0x277D3F198]67 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat67 = [mEMORY[0x277D3F198]67 commonTypeDict_RealFormat];
+    v256[66] = commonTypeDict_RealFormat67;
     v255[67] = @"ACABins_23";
-    v119 = [MEMORY[0x277D3F198] sharedInstance];
-    v118 = [v119 commonTypeDict_RealFormat];
-    v256[67] = v118;
+    mEMORY[0x277D3F198]68 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat68 = [mEMORY[0x277D3F198]68 commonTypeDict_RealFormat];
+    v256[67] = commonTypeDict_RealFormat68;
     v255[68] = @"ACABins_24";
-    v117 = [MEMORY[0x277D3F198] sharedInstance];
-    v116 = [v117 commonTypeDict_RealFormat];
-    v256[68] = v116;
+    mEMORY[0x277D3F198]69 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat69 = [mEMORY[0x277D3F198]69 commonTypeDict_RealFormat];
+    v256[68] = commonTypeDict_RealFormat69;
     v255[69] = @"ACABins_25";
-    v115 = [MEMORY[0x277D3F198] sharedInstance];
-    v114 = [v115 commonTypeDict_RealFormat];
-    v256[69] = v114;
+    mEMORY[0x277D3F198]70 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat70 = [mEMORY[0x277D3F198]70 commonTypeDict_RealFormat];
+    v256[69] = commonTypeDict_RealFormat70;
     v255[70] = @"ACABins_26";
-    v113 = [MEMORY[0x277D3F198] sharedInstance];
-    v112 = [v113 commonTypeDict_RealFormat];
-    v256[70] = v112;
+    mEMORY[0x277D3F198]71 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat71 = [mEMORY[0x277D3F198]71 commonTypeDict_RealFormat];
+    v256[70] = commonTypeDict_RealFormat71;
     v255[71] = @"ACABins_27";
-    v111 = [MEMORY[0x277D3F198] sharedInstance];
-    v110 = [v111 commonTypeDict_RealFormat];
-    v256[71] = v110;
+    mEMORY[0x277D3F198]72 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat72 = [mEMORY[0x277D3F198]72 commonTypeDict_RealFormat];
+    v256[71] = commonTypeDict_RealFormat72;
     v255[72] = @"ACABins_28";
-    v109 = [MEMORY[0x277D3F198] sharedInstance];
-    v108 = [v109 commonTypeDict_RealFormat];
-    v256[72] = v108;
+    mEMORY[0x277D3F198]73 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat73 = [mEMORY[0x277D3F198]73 commonTypeDict_RealFormat];
+    v256[72] = commonTypeDict_RealFormat73;
     v255[73] = @"ACABins_29";
-    v107 = [MEMORY[0x277D3F198] sharedInstance];
-    v106 = [v107 commonTypeDict_RealFormat];
-    v256[73] = v106;
+    mEMORY[0x277D3F198]74 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat74 = [mEMORY[0x277D3F198]74 commonTypeDict_RealFormat];
+    v256[73] = commonTypeDict_RealFormat74;
     v255[74] = @"ACABins_30";
-    v105 = [MEMORY[0x277D3F198] sharedInstance];
-    v104 = [v105 commonTypeDict_RealFormat];
-    v256[74] = v104;
+    mEMORY[0x277D3F198]75 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat75 = [mEMORY[0x277D3F198]75 commonTypeDict_RealFormat];
+    v256[74] = commonTypeDict_RealFormat75;
     v255[75] = @"ACABins_31";
-    v103 = [MEMORY[0x277D3F198] sharedInstance];
-    v102 = [v103 commonTypeDict_RealFormat];
-    v256[75] = v102;
+    mEMORY[0x277D3F198]76 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat76 = [mEMORY[0x277D3F198]76 commonTypeDict_RealFormat];
+    v256[75] = commonTypeDict_RealFormat76;
     v255[76] = @"ACABins_32";
-    v101 = [MEMORY[0x277D3F198] sharedInstance];
-    v100 = [v101 commonTypeDict_RealFormat];
-    v256[76] = v100;
+    mEMORY[0x277D3F198]77 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat77 = [mEMORY[0x277D3F198]77 commonTypeDict_RealFormat];
+    v256[76] = commonTypeDict_RealFormat77;
     v255[77] = @"ACABins_33";
-    v99 = [MEMORY[0x277D3F198] sharedInstance];
-    v98 = [v99 commonTypeDict_RealFormat];
-    v256[77] = v98;
+    mEMORY[0x277D3F198]78 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat78 = [mEMORY[0x277D3F198]78 commonTypeDict_RealFormat];
+    v256[77] = commonTypeDict_RealFormat78;
     v255[78] = @"ACABins_34";
-    v97 = [MEMORY[0x277D3F198] sharedInstance];
-    v96 = [v97 commonTypeDict_RealFormat];
-    v256[78] = v96;
+    mEMORY[0x277D3F198]79 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat79 = [mEMORY[0x277D3F198]79 commonTypeDict_RealFormat];
+    v256[78] = commonTypeDict_RealFormat79;
     v255[79] = @"ACABins_35";
-    v95 = [MEMORY[0x277D3F198] sharedInstance];
-    v94 = [v95 commonTypeDict_RealFormat];
-    v256[79] = v94;
+    mEMORY[0x277D3F198]80 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat80 = [mEMORY[0x277D3F198]80 commonTypeDict_RealFormat];
+    v256[79] = commonTypeDict_RealFormat80;
     v255[80] = @"ACABins_36";
-    v93 = [MEMORY[0x277D3F198] sharedInstance];
-    v92 = [v93 commonTypeDict_RealFormat];
-    v256[80] = v92;
+    mEMORY[0x277D3F198]81 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat81 = [mEMORY[0x277D3F198]81 commonTypeDict_RealFormat];
+    v256[80] = commonTypeDict_RealFormat81;
     v255[81] = @"ACABins_37";
-    v91 = [MEMORY[0x277D3F198] sharedInstance];
-    v90 = [v91 commonTypeDict_RealFormat];
-    v256[81] = v90;
+    mEMORY[0x277D3F198]82 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat82 = [mEMORY[0x277D3F198]82 commonTypeDict_RealFormat];
+    v256[81] = commonTypeDict_RealFormat82;
     v255[82] = @"ACABins_38";
-    v89 = [MEMORY[0x277D3F198] sharedInstance];
-    v88 = [v89 commonTypeDict_RealFormat];
-    v256[82] = v88;
+    mEMORY[0x277D3F198]83 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat83 = [mEMORY[0x277D3F198]83 commonTypeDict_RealFormat];
+    v256[82] = commonTypeDict_RealFormat83;
     v255[83] = @"ACABins_39";
-    v87 = [MEMORY[0x277D3F198] sharedInstance];
-    v86 = [v87 commonTypeDict_RealFormat];
-    v256[83] = v86;
+    mEMORY[0x277D3F198]84 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat84 = [mEMORY[0x277D3F198]84 commonTypeDict_RealFormat];
+    v256[83] = commonTypeDict_RealFormat84;
     v255[84] = @"ACABins_40";
-    v85 = [MEMORY[0x277D3F198] sharedInstance];
-    v84 = [v85 commonTypeDict_RealFormat];
-    v256[84] = v84;
+    mEMORY[0x277D3F198]85 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat85 = [mEMORY[0x277D3F198]85 commonTypeDict_RealFormat];
+    v256[84] = commonTypeDict_RealFormat85;
     v255[85] = @"ACABins_41";
-    v83 = [MEMORY[0x277D3F198] sharedInstance];
-    v82 = [v83 commonTypeDict_RealFormat];
-    v256[85] = v82;
+    mEMORY[0x277D3F198]86 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat86 = [mEMORY[0x277D3F198]86 commonTypeDict_RealFormat];
+    v256[85] = commonTypeDict_RealFormat86;
     v255[86] = @"ACABins_42";
-    v81 = [MEMORY[0x277D3F198] sharedInstance];
-    v80 = [v81 commonTypeDict_RealFormat];
-    v256[86] = v80;
+    mEMORY[0x277D3F198]87 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat87 = [mEMORY[0x277D3F198]87 commonTypeDict_RealFormat];
+    v256[86] = commonTypeDict_RealFormat87;
     v255[87] = @"ACABins_43";
-    v79 = [MEMORY[0x277D3F198] sharedInstance];
-    v78 = [v79 commonTypeDict_RealFormat];
-    v256[87] = v78;
+    mEMORY[0x277D3F198]88 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat88 = [mEMORY[0x277D3F198]88 commonTypeDict_RealFormat];
+    v256[87] = commonTypeDict_RealFormat88;
     v255[88] = @"ACABins_44";
-    v77 = [MEMORY[0x277D3F198] sharedInstance];
-    v76 = [v77 commonTypeDict_RealFormat];
-    v256[88] = v76;
+    mEMORY[0x277D3F198]89 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat89 = [mEMORY[0x277D3F198]89 commonTypeDict_RealFormat];
+    v256[88] = commonTypeDict_RealFormat89;
     v255[89] = @"ACABins_45";
-    v75 = [MEMORY[0x277D3F198] sharedInstance];
-    v74 = [v75 commonTypeDict_RealFormat];
-    v256[89] = v74;
+    mEMORY[0x277D3F198]90 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat90 = [mEMORY[0x277D3F198]90 commonTypeDict_RealFormat];
+    v256[89] = commonTypeDict_RealFormat90;
     v255[90] = @"ACTBins_0";
-    v73 = [MEMORY[0x277D3F198] sharedInstance];
-    v72 = [v73 commonTypeDict_IntegerFormat];
-    v256[90] = v72;
+    mEMORY[0x277D3F198]91 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]91 commonTypeDict_IntegerFormat];
+    v256[90] = commonTypeDict_IntegerFormat;
     v255[91] = @"ACTBins_1";
-    v71 = [MEMORY[0x277D3F198] sharedInstance];
-    v70 = [v71 commonTypeDict_IntegerFormat];
-    v256[91] = v70;
+    mEMORY[0x277D3F198]92 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]92 commonTypeDict_IntegerFormat];
+    v256[91] = commonTypeDict_IntegerFormat2;
     v255[92] = @"ACTBins_2";
-    v69 = [MEMORY[0x277D3F198] sharedInstance];
-    v68 = [v69 commonTypeDict_IntegerFormat];
-    v256[92] = v68;
+    mEMORY[0x277D3F198]93 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]93 commonTypeDict_IntegerFormat];
+    v256[92] = commonTypeDict_IntegerFormat3;
     v255[93] = @"ACTBins_3";
-    v67 = [MEMORY[0x277D3F198] sharedInstance];
-    v66 = [v67 commonTypeDict_IntegerFormat];
-    v256[93] = v66;
+    mEMORY[0x277D3F198]94 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]94 commonTypeDict_IntegerFormat];
+    v256[93] = commonTypeDict_IntegerFormat4;
     v255[94] = @"ACTBins_4";
-    v65 = [MEMORY[0x277D3F198] sharedInstance];
-    v64 = [v65 commonTypeDict_IntegerFormat];
-    v256[94] = v64;
+    mEMORY[0x277D3F198]95 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]95 commonTypeDict_IntegerFormat];
+    v256[94] = commonTypeDict_IntegerFormat5;
     v255[95] = @"ACTBins_5";
-    v63 = [MEMORY[0x277D3F198] sharedInstance];
-    v62 = [v63 commonTypeDict_IntegerFormat];
-    v256[95] = v62;
+    mEMORY[0x277D3F198]96 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]96 commonTypeDict_IntegerFormat];
+    v256[95] = commonTypeDict_IntegerFormat6;
     v255[96] = @"ACTBins_6";
-    v61 = [MEMORY[0x277D3F198] sharedInstance];
-    v60 = [v61 commonTypeDict_IntegerFormat];
-    v256[96] = v60;
+    mEMORY[0x277D3F198]97 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]97 commonTypeDict_IntegerFormat];
+    v256[96] = commonTypeDict_IntegerFormat7;
     v255[97] = @"ACTBins_7";
-    v59 = [MEMORY[0x277D3F198] sharedInstance];
-    v58 = [v59 commonTypeDict_IntegerFormat];
-    v256[97] = v58;
+    mEMORY[0x277D3F198]98 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]98 commonTypeDict_IntegerFormat];
+    v256[97] = commonTypeDict_IntegerFormat8;
     v255[98] = @"ACTBins_8";
-    v57 = [MEMORY[0x277D3F198] sharedInstance];
-    v56 = [v57 commonTypeDict_IntegerFormat];
-    v256[98] = v56;
+    mEMORY[0x277D3F198]99 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]99 commonTypeDict_IntegerFormat];
+    v256[98] = commonTypeDict_IntegerFormat9;
     v255[99] = @"ACTBins_9";
-    v55 = [MEMORY[0x277D3F198] sharedInstance];
-    v54 = [v55 commonTypeDict_IntegerFormat];
-    v256[99] = v54;
+    mEMORY[0x277D3F198]100 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]100 commonTypeDict_IntegerFormat];
+    v256[99] = commonTypeDict_IntegerFormat10;
     v255[100] = @"ACTBins_10";
-    v53 = [MEMORY[0x277D3F198] sharedInstance];
-    v52 = [v53 commonTypeDict_IntegerFormat];
-    v256[100] = v52;
+    mEMORY[0x277D3F198]101 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]101 commonTypeDict_IntegerFormat];
+    v256[100] = commonTypeDict_IntegerFormat11;
     v255[101] = @"ACTBins_11";
-    v51 = [MEMORY[0x277D3F198] sharedInstance];
-    v50 = [v51 commonTypeDict_IntegerFormat];
-    v256[101] = v50;
+    mEMORY[0x277D3F198]102 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]102 commonTypeDict_IntegerFormat];
+    v256[101] = commonTypeDict_IntegerFormat12;
     v255[102] = @"ACTBins_12";
-    v49 = [MEMORY[0x277D3F198] sharedInstance];
-    v48 = [v49 commonTypeDict_IntegerFormat];
-    v256[102] = v48;
+    mEMORY[0x277D3F198]103 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]103 commonTypeDict_IntegerFormat];
+    v256[102] = commonTypeDict_IntegerFormat13;
     v255[103] = @"ACTBins_13";
-    v47 = [MEMORY[0x277D3F198] sharedInstance];
-    v46 = [v47 commonTypeDict_IntegerFormat];
-    v256[103] = v46;
+    mEMORY[0x277D3F198]104 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]104 commonTypeDict_IntegerFormat];
+    v256[103] = commonTypeDict_IntegerFormat14;
     v255[104] = @"ACTBins_14";
-    v45 = [MEMORY[0x277D3F198] sharedInstance];
-    v44 = [v45 commonTypeDict_IntegerFormat];
-    v256[104] = v44;
+    mEMORY[0x277D3F198]105 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]105 commonTypeDict_IntegerFormat];
+    v256[104] = commonTypeDict_IntegerFormat15;
     v255[105] = @"ACTBins_15";
-    v43 = [MEMORY[0x277D3F198] sharedInstance];
-    v42 = [v43 commonTypeDict_IntegerFormat];
-    v256[105] = v42;
+    mEMORY[0x277D3F198]106 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]106 commonTypeDict_IntegerFormat];
+    v256[105] = commonTypeDict_IntegerFormat16;
     v255[106] = @"ACTBins_16";
-    v41 = [MEMORY[0x277D3F198] sharedInstance];
-    v40 = [v41 commonTypeDict_IntegerFormat];
-    v256[106] = v40;
+    mEMORY[0x277D3F198]107 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]107 commonTypeDict_IntegerFormat];
+    v256[106] = commonTypeDict_IntegerFormat17;
     v255[107] = @"DCTBins_0";
-    v39 = [MEMORY[0x277D3F198] sharedInstance];
-    v38 = [v39 commonTypeDict_IntegerFormat];
-    v256[107] = v38;
+    mEMORY[0x277D3F198]108 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]108 commonTypeDict_IntegerFormat];
+    v256[107] = commonTypeDict_IntegerFormat18;
     v255[108] = @"DCTBins_1";
-    v37 = [MEMORY[0x277D3F198] sharedInstance];
-    v36 = [v37 commonTypeDict_IntegerFormat];
-    v256[108] = v36;
+    mEMORY[0x277D3F198]109 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]109 commonTypeDict_IntegerFormat];
+    v256[108] = commonTypeDict_IntegerFormat19;
     v255[109] = @"DCTBins_2";
-    v35 = [MEMORY[0x277D3F198] sharedInstance];
-    v34 = [v35 commonTypeDict_IntegerFormat];
-    v256[109] = v34;
+    mEMORY[0x277D3F198]110 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat20 = [mEMORY[0x277D3F198]110 commonTypeDict_IntegerFormat];
+    v256[109] = commonTypeDict_IntegerFormat20;
     v255[110] = @"DCTBins_3";
-    v33 = [MEMORY[0x277D3F198] sharedInstance];
-    v32 = [v33 commonTypeDict_IntegerFormat];
-    v256[110] = v32;
+    mEMORY[0x277D3F198]111 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat21 = [mEMORY[0x277D3F198]111 commonTypeDict_IntegerFormat];
+    v256[110] = commonTypeDict_IntegerFormat21;
     v255[111] = @"DCTBins_4";
-    v31 = [MEMORY[0x277D3F198] sharedInstance];
-    v30 = [v31 commonTypeDict_IntegerFormat];
-    v256[111] = v30;
+    mEMORY[0x277D3F198]112 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat22 = [mEMORY[0x277D3F198]112 commonTypeDict_IntegerFormat];
+    v256[111] = commonTypeDict_IntegerFormat22;
     v255[112] = @"DCTBins_5";
-    v29 = [MEMORY[0x277D3F198] sharedInstance];
-    v28 = [v29 commonTypeDict_IntegerFormat];
-    v256[112] = v28;
+    mEMORY[0x277D3F198]113 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat23 = [mEMORY[0x277D3F198]113 commonTypeDict_IntegerFormat];
+    v256[112] = commonTypeDict_IntegerFormat23;
     v255[113] = @"DCTBins_6";
-    v27 = [MEMORY[0x277D3F198] sharedInstance];
-    v26 = [v27 commonTypeDict_IntegerFormat];
-    v256[113] = v26;
+    mEMORY[0x277D3F198]114 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat24 = [mEMORY[0x277D3F198]114 commonTypeDict_IntegerFormat];
+    v256[113] = commonTypeDict_IntegerFormat24;
     v255[114] = @"DCTBins_7";
-    v25 = [MEMORY[0x277D3F198] sharedInstance];
-    v24 = [v25 commonTypeDict_IntegerFormat];
-    v256[114] = v24;
+    mEMORY[0x277D3F198]115 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat25 = [mEMORY[0x277D3F198]115 commonTypeDict_IntegerFormat];
+    v256[114] = commonTypeDict_IntegerFormat25;
     v255[115] = @"DCTBins_8";
-    v23 = [MEMORY[0x277D3F198] sharedInstance];
-    v22 = [v23 commonTypeDict_IntegerFormat];
-    v256[115] = v22;
+    mEMORY[0x277D3F198]116 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat26 = [mEMORY[0x277D3F198]116 commonTypeDict_IntegerFormat];
+    v256[115] = commonTypeDict_IntegerFormat26;
     v255[116] = @"DCTBins_9";
-    v21 = [MEMORY[0x277D3F198] sharedInstance];
-    v20 = [v21 commonTypeDict_IntegerFormat];
-    v256[116] = v20;
+    mEMORY[0x277D3F198]117 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat27 = [mEMORY[0x277D3F198]117 commonTypeDict_IntegerFormat];
+    v256[116] = commonTypeDict_IntegerFormat27;
     v255[117] = @"DCTBins_10";
-    v19 = [MEMORY[0x277D3F198] sharedInstance];
-    v18 = [v19 commonTypeDict_IntegerFormat];
-    v256[117] = v18;
+    mEMORY[0x277D3F198]118 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat28 = [mEMORY[0x277D3F198]118 commonTypeDict_IntegerFormat];
+    v256[117] = commonTypeDict_IntegerFormat28;
     v255[118] = @"DCTBins_11";
-    v17 = [MEMORY[0x277D3F198] sharedInstance];
-    v16 = [v17 commonTypeDict_IntegerFormat];
-    v256[118] = v16;
+    mEMORY[0x277D3F198]119 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat29 = [mEMORY[0x277D3F198]119 commonTypeDict_IntegerFormat];
+    v256[118] = commonTypeDict_IntegerFormat29;
     v255[119] = @"DCTBins_12";
-    v15 = [MEMORY[0x277D3F198] sharedInstance];
-    v14 = [v15 commonTypeDict_IntegerFormat];
-    v256[119] = v14;
+    mEMORY[0x277D3F198]120 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat30 = [mEMORY[0x277D3F198]120 commonTypeDict_IntegerFormat];
+    v256[119] = commonTypeDict_IntegerFormat30;
     v255[120] = @"DCTBins_13";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_IntegerFormat];
-    v256[120] = v3;
+    mEMORY[0x277D3F198]121 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat31 = [mEMORY[0x277D3F198]121 commonTypeDict_IntegerFormat];
+    v256[120] = commonTypeDict_IntegerFormat31;
     v255[121] = @"DCTBins_14";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_IntegerFormat];
-    v256[121] = v5;
+    mEMORY[0x277D3F198]122 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat32 = [mEMORY[0x277D3F198]122 commonTypeDict_IntegerFormat];
+    v256[121] = commonTypeDict_IntegerFormat32;
     v255[122] = @"DCTBins_15";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_IntegerFormat];
-    v256[122] = v7;
+    mEMORY[0x277D3F198]123 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat33 = [mEMORY[0x277D3F198]123 commonTypeDict_IntegerFormat];
+    v256[122] = commonTypeDict_IntegerFormat33;
     v255[123] = @"DCTBins_16";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_IntegerFormat];
-    v256[123] = v9;
+    mEMORY[0x277D3F198]124 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat34 = [mEMORY[0x277D3F198]124 commonTypeDict_IntegerFormat];
+    v256[123] = commonTypeDict_IntegerFormat34;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v256 forKeys:v255 count:124];
     v260[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v260 forKeys:v259 count:2];
@@ -1808,21 +1808,21 @@
     v20[0] = v14;
     v19[1] = *MEMORY[0x277D3F540];
     v15[0] = @"AvgBacklightNits";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_RealFormat];
-    v16[0] = v3;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
+    v16[0] = commonTypeDict_RealFormat;
     v15[1] = @"AvgLogicalBrightnessNits";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_RealFormat];
-    v16[1] = v5;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat];
+    v16[1] = commonTypeDict_RealFormat2;
     v15[2] = @"BlueLightReductionOffTime";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_RealFormat];
-    v16[2] = v7;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat];
+    v16[2] = commonTypeDict_RealFormat3;
     v15[3] = @"BlueLightReductionOnTime";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_RealFormat];
-    v16[3] = v9;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat];
+    v16[3] = commonTypeDict_RealFormat4;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:4];
     v20[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
@@ -1850,97 +1850,97 @@
     v58[0] = v52;
     v57[1] = *MEMORY[0x277D3F540];
     v53[0] = @"AAP_NumberOfUpdates";
-    v51 = [MEMORY[0x277D3F198] sharedInstance];
-    v50 = [v51 commonTypeDict_IntegerFormat];
-    v54[0] = v50;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v54[0] = commonTypeDict_IntegerFormat;
     v53[1] = @"AAP_RampFrequency";
-    v49 = [MEMORY[0x277D3F198] sharedInstance];
-    v48 = [v49 commonTypeDict_IntegerFormat];
-    v54[1] = v48;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v54[1] = commonTypeDict_IntegerFormat2;
     v53[2] = @"AAP_RampLength";
-    v47 = [MEMORY[0x277D3F198] sharedInstance];
-    v46 = [v47 commonTypeDict_RealFormat];
-    v54[2] = v46;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat];
+    v54[2] = commonTypeDict_RealFormat;
     v53[3] = @"AAP_RampOrigin";
-    v45 = [MEMORY[0x277D3F198] sharedInstance];
-    v44 = [v45 commonTypeDict_RealFormat];
-    v54[3] = v44;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat];
+    v54[3] = commonTypeDict_RealFormat2;
     v53[4] = @"AAP_RampTarget";
-    v43 = [MEMORY[0x277D3F198] sharedInstance];
-    v42 = [v43 commonTypeDict_RealFormat];
-    v54[4] = v42;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_RealFormat];
+    v54[4] = commonTypeDict_RealFormat3;
     v53[5] = @"Colour_NumberOfUpdates";
-    v41 = [MEMORY[0x277D3F198] sharedInstance];
-    v40 = [v41 commonTypeDict_IntegerFormat];
-    v54[5] = v40;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v54[5] = commonTypeDict_IntegerFormat3;
     v53[6] = @"Colour_RampFrequency";
-    v39 = [MEMORY[0x277D3F198] sharedInstance];
-    v38 = [v39 commonTypeDict_IntegerFormat];
-    v54[6] = v38;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v54[6] = commonTypeDict_IntegerFormat4;
     v53[7] = @"Colour_RampLength";
-    v37 = [MEMORY[0x277D3F198] sharedInstance];
-    v36 = [v37 commonTypeDict_RealFormat];
-    v54[7] = v36;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat4 = [mEMORY[0x277D3F198]8 commonTypeDict_RealFormat];
+    v54[7] = commonTypeDict_RealFormat4;
     v53[8] = @"Colour_RampOrigin_X";
-    v35 = [MEMORY[0x277D3F198] sharedInstance];
-    v34 = [v35 commonTypeDict_RealFormat];
-    v54[8] = v34;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat5 = [mEMORY[0x277D3F198]9 commonTypeDict_RealFormat];
+    v54[8] = commonTypeDict_RealFormat5;
     v53[9] = @"Colour_RampOrigin_Y";
-    v33 = [MEMORY[0x277D3F198] sharedInstance];
-    v32 = [v33 commonTypeDict_RealFormat];
-    v54[9] = v32;
+    mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat6 = [mEMORY[0x277D3F198]10 commonTypeDict_RealFormat];
+    v54[9] = commonTypeDict_RealFormat6;
     v53[10] = @"Colour_RampTarget_X";
-    v31 = [MEMORY[0x277D3F198] sharedInstance];
-    v30 = [v31 commonTypeDict_RealFormat];
-    v54[10] = v30;
+    mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat7 = [mEMORY[0x277D3F198]11 commonTypeDict_RealFormat];
+    v54[10] = commonTypeDict_RealFormat7;
     v53[11] = @"Colour_RampTarget_Y";
-    v29 = [MEMORY[0x277D3F198] sharedInstance];
-    v28 = [v29 commonTypeDict_RealFormat];
-    v54[11] = v28;
+    mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat8 = [mEMORY[0x277D3F198]12 commonTypeDict_RealFormat];
+    v54[11] = commonTypeDict_RealFormat8;
     v53[12] = @"SDR_NumberOfUpdates";
-    v27 = [MEMORY[0x277D3F198] sharedInstance];
-    v26 = [v27 commonTypeDict_IntegerFormat];
-    v54[12] = v26;
+    mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+    v54[12] = commonTypeDict_IntegerFormat5;
     v53[13] = @"SDR_RampFrequency";
-    v25 = [MEMORY[0x277D3F198] sharedInstance];
-    v24 = [v25 commonTypeDict_IntegerFormat];
-    v54[13] = v24;
+    mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+    v54[13] = commonTypeDict_IntegerFormat6;
     v53[14] = @"SDR_RampLength";
-    v23 = [MEMORY[0x277D3F198] sharedInstance];
-    v22 = [v23 commonTypeDict_RealFormat];
-    v54[14] = v22;
+    mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat9 = [mEMORY[0x277D3F198]15 commonTypeDict_RealFormat];
+    v54[14] = commonTypeDict_RealFormat9;
     v53[15] = @"SDR_RampOrigin";
-    v21 = [MEMORY[0x277D3F198] sharedInstance];
-    v20 = [v21 commonTypeDict_RealFormat];
-    v54[15] = v20;
+    mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat10 = [mEMORY[0x277D3F198]16 commonTypeDict_RealFormat];
+    v54[15] = commonTypeDict_RealFormat10;
     v53[16] = @"SDR_RampTarget";
-    v19 = [MEMORY[0x277D3F198] sharedInstance];
-    v18 = [v19 commonTypeDict_RealFormat];
-    v54[16] = v18;
+    mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat11 = [mEMORY[0x277D3F198]17 commonTypeDict_RealFormat];
+    v54[16] = commonTypeDict_RealFormat11;
     v53[17] = @"EDR_NumberOfUpdates";
-    v17 = [MEMORY[0x277D3F198] sharedInstance];
-    v16 = [v17 commonTypeDict_IntegerFormat];
-    v54[17] = v16;
+    mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+    v54[17] = commonTypeDict_IntegerFormat7;
     v53[18] = @"EDR_RampFrequency";
-    v15 = [MEMORY[0x277D3F198] sharedInstance];
-    v14 = [v15 commonTypeDict_IntegerFormat];
-    v54[18] = v14;
+    mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]19 commonTypeDict_IntegerFormat];
+    v54[18] = commonTypeDict_IntegerFormat8;
     v53[19] = @"EDR_RampLength";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_RealFormat];
-    v54[19] = v3;
+    mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat12 = [mEMORY[0x277D3F198]20 commonTypeDict_RealFormat];
+    v54[19] = commonTypeDict_RealFormat12;
     v53[20] = @"EDR_RampOrigin";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_RealFormat];
-    v54[20] = v5;
+    mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat13 = [mEMORY[0x277D3F198]21 commonTypeDict_RealFormat];
+    v54[20] = commonTypeDict_RealFormat13;
     v53[21] = @"EDR_RampTarget";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_RealFormat];
-    v54[21] = v7;
+    mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat14 = [mEMORY[0x277D3F198]22 commonTypeDict_RealFormat];
+    v54[21] = commonTypeDict_RealFormat14;
     v53[22] = @"isFlipbookActive";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_IntegerFormat];
-    v54[22] = v9;
+    mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]23 commonTypeDict_IntegerFormat];
+    v54[22] = commonTypeDict_IntegerFormat9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:v53 count:23];
     v58[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:v57 count:2];
@@ -1968,17 +1968,17 @@
     v18[0] = v2;
     v17[1] = *MEMORY[0x277D3F540];
     v13[0] = @"lux";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v14[0] = v4;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v14[0] = commonTypeDict_IntegerFormat;
     v13[1] = @"nits";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v14[1] = v6;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v14[1] = commonTypeDict_IntegerFormat2;
     v13[2] = @"level";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v14[2] = v8;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v14[2] = commonTypeDict_IntegerFormat3;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
     v18[1] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -2006,21 +2006,21 @@
     v20[0] = v14;
     v19[1] = *MEMORY[0x277D3F540];
     v15[0] = @"WakeReason";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_StringFormat];
-    v16[0] = v3;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+    v16[0] = commonTypeDict_StringFormat;
     v15[1] = @"Lux";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_RealFormat];
-    v16[1] = v5;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat];
+    v16[1] = commonTypeDict_RealFormat;
     v15[2] = @"DimThreshold";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_RealFormat];
-    v16[2] = v7;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat];
+    v16[2] = commonTypeDict_RealFormat2;
     v15[3] = @"BrightenThreshold";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_RealFormat];
-    v16[3] = v9;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat];
+    v16[3] = commonTypeDict_RealFormat3;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:4];
     v20[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
@@ -2048,17 +2048,17 @@
     v18[0] = v2;
     v17[1] = *MEMORY[0x277D3F540];
     v13[0] = @"Lux";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_RealFormat];
-    v14[0] = v4;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
+    v14[0] = commonTypeDict_RealFormat;
     v13[1] = @"colorX";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_RealFormat];
-    v14[1] = v6;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat];
+    v14[1] = commonTypeDict_RealFormat2;
     v13[2] = @"colorY";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_RealFormat];
-    v14[2] = v8;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat];
+    v14[2] = commonTypeDict_RealFormat3;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
     v18[1] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -2086,17 +2086,17 @@
     v18[0] = v2;
     v17[1] = *MEMORY[0x277D3F540];
     v13[0] = @"Lux";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_RealFormat];
-    v14[0] = v4;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
+    v14[0] = commonTypeDict_RealFormat;
     v13[1] = @"colorX";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_RealFormat];
-    v14[1] = v6;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat];
+    v14[1] = commonTypeDict_RealFormat2;
     v13[2] = @"colorY";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_RealFormat];
-    v14[2] = v8;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat];
+    v14[2] = commonTypeDict_RealFormat3;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
     v18[1] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -2139,33 +2139,33 @@
     v29[0] = v23;
     v28[1] = *MEMORY[0x277D3F540];
     v24[0] = @"bundleID";
-    v22 = [MEMORY[0x277D3F198] sharedInstance];
-    v21 = [v22 commonTypeDict_StringFormat_withBundleID];
-    v25[0] = v21;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198] commonTypeDict_StringFormat_withBundleID];
+    v25[0] = commonTypeDict_StringFormat_withBundleID;
     v24[1] = @"AvgRed";
-    v20 = [MEMORY[0x277D3F198] sharedInstance];
-    v19 = [v20 commonTypeDict_IntegerFormat];
-    v25[1] = v19;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v25[1] = commonTypeDict_IntegerFormat;
     v24[2] = @"AvgGreen";
-    v18 = [MEMORY[0x277D3F198] sharedInstance];
-    v17 = [v18 commonTypeDict_IntegerFormat];
-    v25[2] = v17;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v25[2] = commonTypeDict_IntegerFormat2;
     v24[3] = @"AvgBlue";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v25[3] = v6;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v25[3] = commonTypeDict_IntegerFormat3;
     v24[4] = @"Frames";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v25[4] = v8;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v25[4] = commonTypeDict_IntegerFormat4;
     v24[5] = @"AvgPower";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_RealFormat];
-    v25[5] = v10;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat = [mEMORY[0x277D3F198]6 commonTypeDict_RealFormat];
+    v25[5] = commonTypeDict_RealFormat;
     v24[6] = @"AvgAPL";
-    v11 = [MEMORY[0x277D3F198] sharedInstance];
-    v12 = [v11 commonTypeDict_RealFormat];
-    v25[6] = v12;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_RealFormat];
+    v25[6] = commonTypeDict_RealFormat2;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:7];
     v29[1] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:2];
@@ -2196,25 +2196,25 @@
     v23[0] = v17;
     v22[1] = *MEMORY[0x277D3F540];
     v18[0] = @"AvgPower";
-    v16 = [MEMORY[0x277D3F198] sharedInstance];
-    v15 = [v16 commonTypeDict_IntegerFormat];
-    v19[0] = v15;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v19[0] = commonTypeDict_IntegerFormat;
     v18[1] = @"AZLAccum";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v19[1] = v4;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v19[1] = commonTypeDict_IntegerFormat2;
     v18[2] = @"NitsAccum";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v19[2] = v6;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v19[2] = commonTypeDict_IntegerFormat3;
     v18[3] = @"BLUpdateCount";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v19[3] = v8;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v19[3] = commonTypeDict_IntegerFormat4;
     v18[4] = @"BLFrameCount";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_IntegerFormat];
-    v19[4] = v10;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v19[4] = commonTypeDict_IntegerFormat5;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:5];
     v23[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
@@ -2245,33 +2245,33 @@
     v27[0] = v21;
     v26[1] = *MEMORY[0x277D3F540];
     v22[0] = @"PacketID";
-    v20 = [MEMORY[0x277D3F198] sharedInstance];
-    v19 = [v20 commonTypeDict_IntegerFormat];
-    v23[0] = v19;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v23[0] = commonTypeDict_IntegerFormat;
     v22[1] = @"VLED";
-    v18 = [MEMORY[0x277D3F198] sharedInstance];
-    v17 = [v18 commonTypeDict_IntegerFormat];
-    v23[1] = v17;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v23[1] = commonTypeDict_IntegerFormat2;
     v22[2] = @"MaxRowCurrent";
-    v16 = [MEMORY[0x277D3F198] sharedInstance];
-    v15 = [v16 commonTypeDict_IntegerFormat];
-    v23[2] = v15;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v23[2] = commonTypeDict_IntegerFormat3;
     v22[3] = @"NitsAccum";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v23[3] = v4;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v23[3] = commonTypeDict_IntegerFormat4;
     v22[4] = @"AverageCurrent";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v23[4] = v6;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v23[4] = commonTypeDict_IntegerFormat5;
     v22[5] = @"AZL";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v23[5] = v8;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v23[5] = commonTypeDict_IntegerFormat6;
     v22[6] = @"SystemNits";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_IntegerFormat];
-    v23[6] = v10;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v23[6] = commonTypeDict_IntegerFormat7;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:7];
     v27[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
@@ -2299,61 +2299,61 @@
     v40[0] = v34;
     v39[1] = *MEMORY[0x277D3F540];
     v35[0] = @"awake_count";
-    v33 = [MEMORY[0x277D3F198] sharedInstance];
-    v32 = [v33 commonTypeDict_IntegerFormat];
-    v36[0] = v32;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v36[0] = commonTypeDict_IntegerFormat;
     v35[1] = @"media_count";
-    v31 = [MEMORY[0x277D3F198] sharedInstance];
-    v30 = [v31 commonTypeDict_IntegerFormat];
-    v36[1] = v30;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v36[1] = commonTypeDict_IntegerFormat2;
     v35[2] = @"flipbook_count";
-    v29 = [MEMORY[0x277D3F198] sharedInstance];
-    v28 = [v29 commonTypeDict_IntegerFormat];
-    v36[2] = v28;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v36[2] = commonTypeDict_IntegerFormat3;
     v35[3] = @"flipbook_delay";
-    v27 = [MEMORY[0x277D3F198] sharedInstance];
-    v26 = [v27 commonTypeDict_IntegerFormat];
-    v36[3] = v26;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v36[3] = commonTypeDict_IntegerFormat4;
     v35[4] = @"media_scanout";
-    v25 = [MEMORY[0x277D3F198] sharedInstance];
-    v24 = [v25 commonTypeDict_IntegerFormat];
-    v36[4] = v24;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v36[4] = commonTypeDict_IntegerFormat5;
     v35[5] = @"ambient_count";
-    v23 = [MEMORY[0x277D3F198] sharedInstance];
-    v22 = [v23 commonTypeDict_IntegerFormat];
-    v36[5] = v22;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v36[5] = commonTypeDict_IntegerFormat6;
     v35[6] = @"prc_repeat_coun";
-    v21 = [MEMORY[0x277D3F198] sharedInstance];
-    v20 = [v21 commonTypeDict_IntegerFormat];
-    v36[6] = v20;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v36[6] = commonTypeDict_IntegerFormat7;
     v35[7] = @"pdc_repeat_coun";
-    v19 = [MEMORY[0x277D3F198] sharedInstance];
-    v18 = [v19 commonTypeDict_IntegerFormat];
-    v36[7] = v18;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+    v36[7] = commonTypeDict_IntegerFormat8;
     v35[8] = @"llm_count";
-    v17 = [MEMORY[0x277D3F198] sharedInstance];
-    v16 = [v17 commonTypeDict_IntegerFormat];
-    v36[8] = v16;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+    v36[8] = commonTypeDict_IntegerFormat9;
     v35[9] = @"apl_sum";
-    v15 = [MEMORY[0x277D3F198] sharedInstance];
-    v14 = [v15 commonTypeDict_IntegerFormat];
-    v36[9] = v14;
+    mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+    v36[9] = commonTypeDict_IntegerFormat10;
     v35[10] = @"apl_count";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_IntegerFormat];
-    v36[10] = v3;
+    mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+    v36[10] = commonTypeDict_IntegerFormat11;
     v35[11] = @"1hz_flipbook_frame_count";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_IntegerFormat];
-    v36[11] = v5;
+    mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+    v36[11] = commonTypeDict_IntegerFormat12;
     v35[12] = @"1hz_frame_miss_count";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_IntegerFormat];
-    v36[12] = v7;
+    mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+    v36[12] = commonTypeDict_IntegerFormat13;
     v35[13] = @"1hz_bic_accum_count";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_IntegerFormat];
-    v36[13] = v9;
+    mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+    v36[13] = commonTypeDict_IntegerFormat14;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:14];
     v40[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:v39 count:2];
@@ -2397,13 +2397,13 @@
     v22[0] = v2;
     v21[1] = *MEMORY[0x277D3F540];
     v17[0] = @"UserTouchCount";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat_aggregateFunction_sum];
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat_aggregateFunction_sum = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat_aggregateFunction_sum];
     v17[1] = @"UserTouchTime";
-    v18[0] = v4;
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_RealFormat_aggregateFunction_sum];
-    v18[1] = v6;
+    v18[0] = commonTypeDict_IntegerFormat_aggregateFunction_sum;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat_aggregateFunction_sum = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat_aggregateFunction_sum];
+    v18[1] = commonTypeDict_RealFormat_aggregateFunction_sum;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
     v22[1] = v7;
     v21[2] = *MEMORY[0x277D3F478];
@@ -2443,22 +2443,22 @@
   {
 LABEL_63:
     self = v4;
-    v3 = self;
+    selfCopy = self;
     goto LABEL_64;
   }
 
   if (_os_feature_enabled_impl() && [MEMORY[0x277D3F208] hasAOD])
   {
-    v5 = [MEMORY[0x277CF0880] sharedBacklight];
-    [v5 addObserver:v4];
+    mEMORY[0x277CF0880] = [MEMORY[0x277CF0880] sharedBacklight];
+    [mEMORY[0x277CF0880] addObserver:v4];
 
-    v6 = [(PLOperator *)v4 workQueue];
+    workQueue = [(PLOperator *)v4 workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __22__PLDisplayAgent_init__block_invoke;
     block[3] = &unk_279A5BDC0;
     v97 = v4;
-    dispatch_async(v6, block);
+    dispatch_async(workQueue, block);
   }
 
   v4->_alsOn = [(PLDisplayAgent *)v4 isAlsEnabled];
@@ -2534,9 +2534,9 @@ LABEL_15:
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"CBAdaptationClient init fail! Cannot get color adaptation information!"];
         v14 = MEMORY[0x277D3F178];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLDisplayAgent.m"];
-        v16 = [v15 lastPathComponent];
+        lastPathComponent = [v15 lastPathComponent];
         v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDisplayAgent init]"];
-        [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:1484];
+        [v14 logMessage:v13 fromFile:lastPathComponent fromFunction:v17 fromLineNumber:1484];
 
         v18 = PLLogCommon();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -2557,14 +2557,14 @@ LABEL_15:
   v4->_pendingBacklightEntry = v20;
 
   v22 = objc_alloc(MEMORY[0x277D3F250]);
-  v23 = [(PLOperator *)v4 workQueue];
+  workQueue2 = [(PLOperator *)v4 workQueue];
   v93[0] = MEMORY[0x277D85DD0];
   v93[1] = 3221225472;
   v93[2] = __22__PLDisplayAgent_init__block_invoke_1431;
   v93[3] = &unk_279A5D088;
   v24 = v4;
   v94 = v24;
-  v25 = [v22 initWithFireDate:0 withInterval:1 withTolerance:0 repeats:v23 withUserInfo:v93 withQueue:1.0 withBlock:0.0];
+  v25 = [v22 initWithFireDate:0 withInterval:1 withTolerance:0 repeats:workQueue2 withUserInfo:v93 withQueue:1.0 withBlock:0.0];
   v26 = v24[18];
   v24[18] = v25;
 
@@ -2591,9 +2591,9 @@ LABEL_15:
       v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"BrightnessSystemClient init fail!"];
       v31 = MEMORY[0x277D3F178];
       v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLDisplayAgent.m"];
-      v33 = [v32 lastPathComponent];
+      lastPathComponent2 = [v32 lastPathComponent];
       v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDisplayAgent init]"];
-      [v31 logMessage:v30 fromFile:v33 fromFunction:v34 fromLineNumber:1512];
+      [v31 logMessage:v30 fromFile:lastPathComponent2 fromFunction:v34 fromLineNumber:1512];
 
       v35 = PLLogCommon();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -2607,9 +2607,9 @@ LABEL_15:
 
   if ([v8 count])
   {
-    v36 = [v24 brightnessSystemClient];
+    brightnessSystemClient = [v24 brightnessSystemClient];
 
-    if (v36)
+    if (brightnessSystemClient)
     {
       v37 = v24[16];
       v90[0] = MEMORY[0x277D85DD0];
@@ -2621,8 +2621,8 @@ LABEL_15:
     }
   }
 
-  v38 = [v24 brightnessSystemClient];
-  v39 = [v38 copyPropertyForKey:@"CBSupportsFinalCommit"];
+  brightnessSystemClient2 = [v24 brightnessSystemClient];
+  v39 = [brightnessSystemClient2 copyPropertyForKey:@"CBSupportsFinalCommit"];
   [v24 setSupportsFinalBrightnessCommit:{objc_msgSend(v39, "BOOLValue")}];
 
   v40 = PLLogDisplay();
@@ -2640,8 +2640,8 @@ LABEL_15:
       _os_log_impl(&dword_25EE51000, v41, OS_LOG_TYPE_DEFAULT, "IO object: seting up notification", buf, 2u);
     }
 
-    v42 = [*(v7 + 2840) array];
-    [v24 setAfkEndpoints:v42];
+    array = [*(v7 + 2840) array];
+    [v24 setAfkEndpoints:array];
 
     v43 = objc_alloc(MEMORY[0x277D3F1C8]);
     v44 = *MEMORY[0x277D3F5F0];
@@ -2656,18 +2656,18 @@ LABEL_15:
     v45[10] = v46;
 
     v48 = objc_alloc(MEMORY[0x277D3F250]);
-    v49 = [v45 workQueue];
+    workQueue3 = [v45 workQueue];
     v86[0] = MEMORY[0x277D85DD0];
     v86[1] = 3221225472;
     v86[2] = __22__PLDisplayAgent_init__block_invoke_2_1452;
     v86[3] = &unk_279A5D088;
     v50 = v45;
     v87 = v50;
-    v51 = [v48 initWithFireDate:0 withInterval:1 withTolerance:0 repeats:v49 withUserInfo:v86 withQueue:10.0 withBlock:10.0];
+    v51 = [v48 initWithFireDate:0 withInterval:1 withTolerance:0 repeats:workQueue3 withUserInfo:v86 withQueue:10.0 withBlock:10.0];
     [v50 setDcpTimeoffsetCalibTimer:v51];
 
-    v52 = [v50 dcpTimeoffsetCalibTimer];
-    [v52 arm];
+    dcpTimeoffsetCalibTimer = [v50 dcpTimeoffsetCalibTimer];
+    [dcpTimeoffsetCalibTimer arm];
   }
 
   v53 = objc_alloc(MEMORY[0x277D3F1C8]);
@@ -2702,7 +2702,7 @@ LABEL_15:
   v80[2] = __22__PLDisplayAgent_init__block_invoke_2_1485;
   v80[3] = &unk_279A5E828;
   self = v54;
-  v81 = self;
+  selfCopy2 = self;
   v63 = [v61 initWithOperator:self forService:v62 withBlock:v80];
   iokitDisplay = self->_iokitDisplay;
   self->_iokitDisplay = v63;
@@ -2768,10 +2768,10 @@ LABEL_15:
   }
 
 LABEL_2:
-  v3 = 0;
+  selfCopy = 0;
 LABEL_64:
 
-  return v3;
+  return selfCopy;
 }
 
 void __22__PLDisplayAgent_init__block_invoke(uint64_t a1)
@@ -3150,18 +3150,18 @@ uint64_t __22__PLDisplayAgent_init__block_invoke_2_1485(uint64_t result, uint64_
           if (![MEMORY[0x277D3F180] taskMode] || (v6 = MEMORY[0x277D3F1A0], -[PLOperator className](self, "className"), v7 = objc_claimAutoreleasedReturnValue(), LODWORD(v6) = objc_msgSend(v6, "isEntryKeySetup:forOperatorName:", v5, v7), v7, v6))
           {
             v8 = [(PLOperator *)PLDisplayAgent entryKeyForType:v4 andName:@"AZLSnapshots"];
-            v9 = [(PLOperator *)self storage];
-            -[PLDisplayAgent setAZLSnapshotsEntries:](self, "setAZLSnapshotsEntries:", [v9 countOfEntriesForKey:v8]);
+            storage = [(PLOperator *)self storage];
+            -[PLDisplayAgent setAZLSnapshotsEntries:](self, "setAZLSnapshotsEntries:", [storage countOfEntriesForKey:v8]);
 
             v10 = objc_alloc(MEMORY[0x277D3F250]);
-            v11 = [MEMORY[0x277CBEAA8] date];
-            v12 = [(PLOperator *)self workQueue];
+            date = [MEMORY[0x277CBEAA8] date];
+            workQueue = [(PLOperator *)self workQueue];
             v14[0] = MEMORY[0x277D85DD0];
             v14[1] = 3221225472;
             v14[2] = __46__PLDisplayAgent_initTaskOperatorDependancies__block_invoke;
             v14[3] = &unk_279A5D088;
             v14[4] = self;
-            v13 = [v10 initWithFireDate:v11 withInterval:1 withTolerance:0 repeats:v12 withUserInfo:v14 withQueue:300.0 withBlock:0.0];
+            v13 = [v10 initWithFireDate:date withInterval:1 withTolerance:0 repeats:workQueue withUserInfo:v14 withQueue:300.0 withBlock:0.0];
             [(PLDisplayAgent *)self setAZLSnapshotsTimer:v13];
           }
         }
@@ -3451,12 +3451,12 @@ LABEL_9:
 LABEL_12:
 }
 
-- (void)fillInBuiltinDisplayBrightnessParameters:(id)a3
+- (void)fillInBuiltinDisplayBrightnessParameters:(id)parameters
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [v5 timeIntervalSince1970];
+  parametersCopy = parameters;
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [monotonicDate timeIntervalSince1970];
   v7 = v6;
 
   [(PLDisplayAgent *)self lastBuiltinDisplayTime];
@@ -3470,7 +3470,7 @@ LABEL_12:
       v11 = MEMORY[0x277CCABB0];
       [(PLDisplayAgent *)self lastBuiltinDisplayLux];
       v12 = [v11 numberWithDouble:?];
-      [v4 setObject:v12 forKeyedSubscript:@"lux"];
+      [parametersCopy setObject:v12 forKeyedSubscript:@"lux"];
 
       [(PLDisplayAgent *)self lastBuiltinDisplayBrightness];
       if (v13 >= 0.0)
@@ -3478,7 +3478,7 @@ LABEL_12:
         v14 = MEMORY[0x277CCABB0];
         [(PLDisplayAgent *)self lastBuiltinDisplayBrightness];
         v15 = [v14 numberWithDouble:?];
-        [v4 setObject:v15 forKeyedSubscript:@"Brightness"];
+        [parametersCopy setObject:v15 forKeyedSubscript:@"Brightness"];
       }
 
       [(PLDisplayAgent *)self lastBuiltinDisplaySliderValue];
@@ -3487,30 +3487,30 @@ LABEL_12:
         v17 = MEMORY[0x277CCABB0];
         [(PLDisplayAgent *)self lastBuiltinDisplaySliderValue];
         v18 = [v17 numberWithDouble:?];
-        [v4 setObject:v18 forKeyedSubscript:@"SliderValue"];
+        [parametersCopy setObject:v18 forKeyedSubscript:@"SliderValue"];
       }
 
       goto LABEL_23;
     }
   }
 
-  v19 = [(PLDisplayAgent *)self brightnessSystemClient];
-  v20 = [v19 copyPropertyForKey:@"TrustedLux"];
+  brightnessSystemClient = [(PLDisplayAgent *)self brightnessSystemClient];
+  v20 = [brightnessSystemClient copyPropertyForKey:@"TrustedLux"];
   [v20 doubleValue];
   [(PLDisplayAgent *)self setLastBuiltinDisplayLux:?];
 
-  v21 = [(PLDisplayAgent *)self brightnessSystemClient];
-  v22 = [v21 copyPropertyForKey:@"DisplayBrightnessMin"];
+  brightnessSystemClient2 = [(PLDisplayAgent *)self brightnessSystemClient];
+  v22 = [brightnessSystemClient2 copyPropertyForKey:@"DisplayBrightnessMin"];
   [v22 doubleValue];
   v24 = v23;
 
-  v25 = [(PLDisplayAgent *)self brightnessSystemClient];
-  v26 = [v25 copyPropertyForKey:@"DisplayBrightnessMax"];
+  brightnessSystemClient3 = [(PLDisplayAgent *)self brightnessSystemClient];
+  v26 = [brightnessSystemClient3 copyPropertyForKey:@"DisplayBrightnessMax"];
   [v26 doubleValue];
   v28 = v27;
 
-  v29 = [(PLDisplayAgent *)self brightnessSystemClient];
-  v30 = [v29 copyPropertyForKey:@"DisplayBrightness"];
+  brightnessSystemClient4 = [(PLDisplayAgent *)self brightnessSystemClient];
+  v30 = [brightnessSystemClient4 copyPropertyForKey:@"DisplayBrightness"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -3555,7 +3555,7 @@ LABEL_18:
   v36 = MEMORY[0x277CCABB0];
   [(PLDisplayAgent *)self lastBuiltinDisplayLux];
   v37 = [v36 numberWithDouble:?];
-  [v4 setObject:v37 forKeyedSubscript:@"lux"];
+  [parametersCopy setObject:v37 forKeyedSubscript:@"lux"];
 
   [(PLDisplayAgent *)self lastBuiltinDisplayBrightness];
   if (v38 >= 0.0)
@@ -3563,7 +3563,7 @@ LABEL_18:
     v39 = MEMORY[0x277CCABB0];
     [(PLDisplayAgent *)self lastBuiltinDisplayBrightness];
     v40 = [v39 numberWithDouble:?];
-    [v4 setObject:v40 forKeyedSubscript:@"Brightness"];
+    [parametersCopy setObject:v40 forKeyedSubscript:@"Brightness"];
   }
 
   [(PLDisplayAgent *)self lastBuiltinDisplaySliderValue];
@@ -3572,7 +3572,7 @@ LABEL_18:
     v42 = MEMORY[0x277CCABB0];
     [(PLDisplayAgent *)self lastBuiltinDisplaySliderValue];
     v43 = [v42 numberWithDouble:?];
-    [v4 setObject:v43 forKeyedSubscript:@"SliderValue"];
+    [parametersCopy setObject:v43 forKeyedSubscript:@"SliderValue"];
   }
 
 LABEL_23:
@@ -3582,13 +3582,13 @@ LABEL_23:
 - (void)cleanUpAFKInterfaces
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PLDisplayAgent *)self afkEndpoints];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  afkEndpoints = [(PLDisplayAgent *)self afkEndpoints];
+  v5 = [afkEndpoints countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3599,32 +3599,32 @@ LABEL_23:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(afkEndpoints);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if (([v9 valid] & 1) == 0)
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [afkEndpoints countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  v10 = [(PLDisplayAgent *)self afkEndpoints];
-  [v10 removeObjectsInArray:v3];
+  afkEndpoints2 = [(PLDisplayAgent *)self afkEndpoints];
+  [afkEndpoints2 removeObjectsInArray:array];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAFKInterfaceMsg:(id)a3
+- (void)handleAFKInterfaceMsg:(id)msg
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"timestamp"];
+  msgCopy = msg;
+  v5 = [msgCopy objectForKeyedSubscript:@"timestamp"];
   [v5 doubleValue];
   v7 = v6;
 
@@ -3641,16 +3641,16 @@ LABEL_23:
     [v9 dateWithTimeIntervalSince1970:v7 / 1000000.0 + v10];
   }
   v11 = ;
-  v12 = [(PLDisplayAgent *)self pendingBacklightEntry];
-  if (v12)
+  pendingBacklightEntry = [(PLDisplayAgent *)self pendingBacklightEntry];
+  if (pendingBacklightEntry)
   {
-    v13 = v12;
-    v14 = [(PLDisplayAgent *)self pendingBacklightEntryDate];
-    if (v14)
+    pendingBacklightEntry2 = pendingBacklightEntry;
+    pendingBacklightEntryDate = [(PLDisplayAgent *)self pendingBacklightEntryDate];
+    if (pendingBacklightEntryDate)
     {
-      v15 = v14;
-      v16 = [(PLDisplayAgent *)self pendingBacklightEntryDate];
-      [v11 timeIntervalSinceDate:v16];
+      v15 = pendingBacklightEntryDate;
+      pendingBacklightEntryDate2 = [(PLDisplayAgent *)self pendingBacklightEntryDate];
+      [v11 timeIntervalSinceDate:pendingBacklightEntryDate2];
       v18 = v17;
 
       if (v18 < 1.0)
@@ -3658,29 +3658,29 @@ LABEL_23:
         goto LABEL_9;
       }
 
-      v13 = [(PLDisplayAgent *)self pendingBacklightEntry];
-      v19 = [(PLDisplayAgent *)self pendingBacklightEntryDate];
-      [(PLDisplayAgent *)self logEventForwardDisplayWithRawData:v13 withDate:v19];
+      pendingBacklightEntry2 = [(PLDisplayAgent *)self pendingBacklightEntry];
+      pendingBacklightEntryDate3 = [(PLDisplayAgent *)self pendingBacklightEntryDate];
+      [(PLDisplayAgent *)self logEventForwardDisplayWithRawData:pendingBacklightEntry2 withDate:pendingBacklightEntryDate3];
     }
   }
 
 LABEL_9:
-  [(PLDisplayAgent *)self setPendingBacklightEntry:v4];
+  [(PLDisplayAgent *)self setPendingBacklightEntry:msgCopy];
   [(PLDisplayAgent *)self setPendingBacklightEntryDate:v11];
-  v20 = [(PLDisplayAgent *)self backlightFilterTimer];
-  v21 = [v20 timerActive];
+  backlightFilterTimer = [(PLDisplayAgent *)self backlightFilterTimer];
+  timerActive = [backlightFilterTimer timerActive];
 
-  if ((v21 & 1) == 0)
+  if ((timerActive & 1) == 0)
   {
     v22 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:1.0];
-    v23 = [(PLDisplayAgent *)self backlightFilterTimer];
-    [v23 setFireDate:v22];
+    backlightFilterTimer2 = [(PLDisplayAgent *)self backlightFilterTimer];
+    [backlightFilterTimer2 setFireDate:v22];
   }
 
-  v24 = [(PLDisplayAgent *)self dcpTimeoffsetCalibTimer];
-  v25 = [v24 timerActive];
+  dcpTimeoffsetCalibTimer = [(PLDisplayAgent *)self dcpTimeoffsetCalibTimer];
+  timerActive2 = [dcpTimeoffsetCalibTimer timerActive];
 
-  if ((v25 & 1) == 0)
+  if ((timerActive2 & 1) == 0)
   {
     v31 = 0;
     v32 = 0;
@@ -3692,24 +3692,24 @@ LABEL_9:
 
     [(PLDisplayAgent *)self setCurrMonoTimestamp:v28];
     v29 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:10.0];
-    v30 = [(PLDisplayAgent *)self dcpTimeoffsetCalibTimer];
-    [v30 setFireDate:v29];
+    dcpTimeoffsetCalibTimer2 = [(PLDisplayAgent *)self dcpTimeoffsetCalibTimer];
+    [dcpTimeoffsetCalibTimer2 setFireDate:v29];
   }
 }
 
-- (void)logEventPointMultitouchWithPayload:(id)a3
+- (void)logEventPointMultitouchWithPayload:(id)payload
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  payloadCopy = payload;
   v31 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"Multitouch"];
   v30 = objc_opt_new();
-  v29 = [MEMORY[0x277CBEAA8] monotonicDate];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v26 = v3;
-  obj = [v3 objectForKeyedSubscript:@"events"];
+  v26 = payloadCopy;
+  obj = [payloadCopy objectForKeyedSubscript:@"events"];
   v32 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v32)
   {
@@ -3725,7 +3725,7 @@ LABEL_9:
         }
 
         v5 = *(*(&v34 + 1) + 8 * v4);
-        v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v31 withDate:v29];
+        v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v31 withDate:monotonicDate];
         v7 = [v5 objectForKeyedSubscript:@"fingerNum"];
         [v6 setObject:v7 forKeyedSubscript:@"fingerNum"];
 
@@ -3815,8 +3815,8 @@ LABEL_9:
 
   if (_os_feature_enabled_impl() && [MEMORY[0x277D3F208] hasAOD])
   {
-    v4 = [MEMORY[0x277CF0880] sharedBacklight];
-    [v4 removeObserver:self];
+    mEMORY[0x277CF0880] = [MEMORY[0x277CF0880] sharedBacklight];
+    [mEMORY[0x277CF0880] removeObserver:self];
   }
 
   v5.receiver = self;
@@ -3826,15 +3826,15 @@ LABEL_9:
 
 - (BOOL)isAlsEnabled
 {
-  v2 = 1;
+  bOOLValue = 1;
   v3 = [MEMORY[0x277D3F180] objectForKey:@"BKEnableALS" forApplicationID:@"com.apple.backboardd" synchronize:1];
   v4 = v3;
   if (v3)
   {
-    v2 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)log
@@ -3849,12 +3849,12 @@ LABEL_9:
 
 - (void)logEventNonePanelStats
 {
-  v3 = [(PLDisplayAgent *)self brightnessSystemClient];
+  brightnessSystemClient = [(PLDisplayAgent *)self brightnessSystemClient];
 
-  if (v3 && ([MEMORY[0x277D3F208] isMac] & 1) == 0)
+  if (brightnessSystemClient && ([MEMORY[0x277D3F208] isMac] & 1) == 0)
   {
-    v4 = [(PLDisplayAgent *)self brightnessSystemClient];
-    v7 = [v4 copyPropertyForKey:@"BrightnessGlobalScalar"];
+    brightnessSystemClient2 = [(PLDisplayAgent *)self brightnessSystemClient];
+    v7 = [brightnessSystemClient2 copyPropertyForKey:@"BrightnessGlobalScalar"];
 
     if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
     {
@@ -3865,13 +3865,13 @@ LABEL_9:
   }
 }
 
-- (void)logDisplayEntry:(id)a3
+- (void)logDisplayEntry:(id)entry
 {
-  v4 = a3;
-  v6 = [v4 dictionary];
-  v5 = [v4 entryDate];
+  entryCopy = entry;
+  dictionary = [entryCopy dictionary];
+  entryDate = [entryCopy entryDate];
 
-  [(PLOperator *)self logForSubsystem:@"DisplayMetrics" category:@"DisplayState" data:v6 date:v5];
+  [(PLOperator *)self logForSubsystem:@"DisplayMetrics" category:@"DisplayState" data:dictionary date:entryDate];
 }
 
 - (void)logEventPointDisplay
@@ -3885,8 +3885,8 @@ LABEL_9:
 {
   if (!+[PLDisplayAgent shouldLogFromDCP]&& self->_iokitBacklight)
   {
-    v3 = [(PLDisplayAgent *)self iokitBacklight];
-    v5 = [v3 propertiesForKey:@"IOPowerManagement"];
+    iokitBacklight = [(PLDisplayAgent *)self iokitBacklight];
+    v5 = [iokitBacklight propertiesForKey:@"IOPowerManagement"];
 
     v4 = [v5 objectForKeyedSubscript:@"CurrentPowerState"];
     -[PLDisplayAgent logEventPointDisplayForBlock:isActive:](self, "logEventPointDisplayForBlock:isActive:", @"Backlight", [v4 BOOLValue]);
@@ -3897,8 +3897,8 @@ LABEL_9:
 {
   if (!+[PLDisplayAgent shouldLogFromDCP]&& self->_iokitDisplay)
   {
-    v3 = [(PLDisplayAgent *)self iokitDisplay];
-    v7 = [v3 propertiesForKey:@"IOMFB Debug Info"];
+    iokitDisplay = [(PLDisplayAgent *)self iokitDisplay];
+    v7 = [iokitDisplay propertiesForKey:@"IOMFB Debug Info"];
 
     v4 = [v7 objectForKeyedSubscript:@"MIE"];
 
@@ -3911,7 +3911,7 @@ LABEL_9:
   }
 }
 
-- (void)logEventPointDisplayBacklightWithState:(unint64_t)a3
+- (void)logEventPointDisplayBacklightWithState:(unint64_t)state
 {
   v5 = PLLogDisplay();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -3919,7 +3919,7 @@ LABEL_9:
     [PLDisplayAgent logEventPointDisplayBacklightWithState:];
   }
 
-  [(PLDisplayAgent *)self logEventPointDisplayForBlock:@"Backlight" isActive:a3 != 0];
+  [(PLDisplayAgent *)self logEventPointDisplayForBlock:@"Backlight" isActive:state != 0];
 }
 
 uint64_t __56__PLDisplayAgent_logEventPointDisplayForBlock_isActive___block_invoke(uint64_t a1)
@@ -3929,7 +3929,7 @@ uint64_t __56__PLDisplayAgent_logEventPointDisplayForBlock_isActive___block_invo
   return result;
 }
 
-- (void)initAODState:(int64_t)a3
+- (void)initAODState:(int64_t)state
 {
   v5 = PLLogDisplay();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -3937,13 +3937,13 @@ uint64_t __56__PLDisplayAgent_logEventPointDisplayForBlock_isActive___block_invo
     [PLDisplayAgent initAODState:];
   }
 
-  if (a3 <= 3)
+  if (state <= 3)
   {
-    [(PLDisplayAgent *)self logAODState:dword_25F023EE0[a3]];
+    [(PLDisplayAgent *)self logAODState:dword_25F023EE0[state]];
   }
 }
 
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event
 {
   if (_os_feature_enabled_impl())
   {
@@ -3954,7 +3954,7 @@ uint64_t __56__PLDisplayAgent_logEventPointDisplayForBlock_isActive___block_invo
       v7[2] = __62__PLDisplayAgent_backlight_didCompleteUpdateToState_forEvent___block_invoke;
       v7[3] = &unk_279A5C600;
       v7[4] = self;
-      v7[5] = a4;
+      v7[5] = state;
       dispatch_async(MEMORY[0x277D85CD0], v7);
     }
   }
@@ -4004,47 +4004,47 @@ LABEL_10:
 
 - (void)clearDisplayAccountingEvents
 {
-  v4 = [MEMORY[0x277CBEAA8] monotonicDate];
-  v2 = [MEMORY[0x277D3F0C0] sharedInstance];
-  [v2 createDistributionEventForwardWithDistributionID:1 withChildNodeNameToWeight:MEMORY[0x277CBEC10] withStartDate:v4];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+  [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:1 withChildNodeNameToWeight:MEMORY[0x277CBEC10] withStartDate:monotonicDate];
 
-  v3 = [MEMORY[0x277D3F0C0] sharedInstance];
-  [v3 createQualificationEventForwardWithQualificationID:2 withChildNodeNames:MEMORY[0x277CBEBF8] withStartDate:v4];
+  mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+  [mEMORY[0x277D3F0C0]2 createQualificationEventForwardWithQualificationID:2 withChildNodeNames:MEMORY[0x277CBEBF8] withStartDate:monotonicDate];
 }
 
-- (void)logEventPointUserBrightnessCommitted:(double)a3
+- (void)logEventPointUserBrightnessCommitted:(double)committed
 {
   if (+[PLDisplayAgent shouldLogUserBrightness])
   {
     v7 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"UserBrightness"];
     v5 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7];
-    v6 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    v6 = [MEMORY[0x277CCABB0] numberWithDouble:committed];
     [v5 setObject:v6 forKeyedSubscript:@"UserBrightness"];
 
     [(PLOperator *)self logEntry:v5];
   }
 }
 
-- (void)logEventPointKeyboardBrightness:(double)a3 withDate:(id)a4
+- (void)logEventPointKeyboardBrightness:(double)brightness withDate:(id)date
 {
-  v9 = a4;
+  dateCopy = date;
   if (+[PLDisplayAgent shouldLogKeyboardBrightness])
   {
     v6 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"KeyboardBrightness"];
     v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6];
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:(a3 * 100.0)];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:(brightness * 100.0)];
     [v7 setObject:v8 forKeyedSubscript:@"KeyboardBrightness"];
 
-    if (v9)
+    if (dateCopy)
     {
-      [v7 setEntryDate:v9];
+      [v7 setEntryDate:dateCopy];
     }
 
     [(PLOperator *)self logEntry:v7];
   }
 }
 
-- (void)logEventForwardALSLux:(unint64_t)a3
+- (void)logEventForwardALSLux:(unint64_t)lux
 {
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -4062,14 +4062,14 @@ LABEL_10:
     if (logEventForwardALSLux__classDebugEnabled == 1)
     {
       v6 = MEMORY[0x277CCACA8];
-      v7 = [MEMORY[0x277CBEAA8] monotonicDate];
-      v8 = [v6 stringWithFormat:@"Got event ALSLux:%llu at %@\n", a3, v7];
+      monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+      v8 = [v6 stringWithFormat:@"Got event ALSLux:%llu at %@\n", lux, monotonicDate];
 
       v9 = MEMORY[0x277D3F178];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLDisplayAgent.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDisplayAgent logEventForwardALSLux:]"];
-      [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:2703];
+      [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:2703];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -4079,18 +4079,18 @@ LABEL_10:
     }
   }
 
-  [(PLDisplayAgent *)self setPendingALSLux:a3];
-  v14 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [(PLDisplayAgent *)self setPendingALSLuxEntryDate:v14];
+  [(PLDisplayAgent *)self setPendingALSLux:lux];
+  monotonicDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
+  [(PLDisplayAgent *)self setPendingALSLuxEntryDate:monotonicDate2];
 
-  v15 = [(PLDisplayAgent *)self alsLuxFilterTimer];
-  if (v15)
+  alsLuxFilterTimer = [(PLDisplayAgent *)self alsLuxFilterTimer];
+  if (alsLuxFilterTimer)
   {
-    v16 = v15;
-    v17 = [(PLDisplayAgent *)self alsLuxFilterTimer];
-    v18 = [v17 timerActive];
+    v16 = alsLuxFilterTimer;
+    alsLuxFilterTimer2 = [(PLDisplayAgent *)self alsLuxFilterTimer];
+    timerActive = [alsLuxFilterTimer2 timerActive];
 
-    if ((v18 & 1) == 0)
+    if ((timerActive & 1) == 0)
     {
       v19 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:10.0];
       if ([MEMORY[0x277D3F180] debugEnabled])
@@ -4114,9 +4114,9 @@ LABEL_10:
 
           v24 = MEMORY[0x277D3F178];
           v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLDisplayAgent.m"];
-          v26 = [v25 lastPathComponent];
+          lastPathComponent2 = [v25 lastPathComponent];
           v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDisplayAgent logEventForwardALSLux:]"];
-          [v24 logMessage:v23 fromFile:v26 fromFunction:v27 fromLineNumber:2724];
+          [v24 logMessage:v23 fromFile:lastPathComponent2 fromFunction:v27 fromLineNumber:2724];
 
           v28 = PLLogCommon();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -4126,8 +4126,8 @@ LABEL_10:
         }
       }
 
-      v29 = [(PLDisplayAgent *)self alsLuxFilterTimer];
-      [v29 setFireDate:v19];
+      alsLuxFilterTimer3 = [(PLDisplayAgent *)self alsLuxFilterTimer];
+      [alsLuxFilterTimer3 setFireDate:v19];
     }
   }
 }
@@ -4146,9 +4146,9 @@ uint64_t __40__PLDisplayAgent_logEventForwardALSLux___block_invoke_1609(uint64_t
   return result;
 }
 
-- (unint64_t)getBacklightEnabledTimestamp:(unsigned int)a3
+- (unint64_t)getBacklightEnabledTimestamp:(unsigned int)timestamp
 {
-  v3 = IORegistryEntrySearchCFProperty(a3, "IOService", @"displayOnTimestamp", *MEMORY[0x277CBECE8], 1u);
+  v3 = IORegistryEntrySearchCFProperty(timestamp, "IOService", @"displayOnTimestamp", *MEMORY[0x277CBECE8], 1u);
   if (v3)
   {
     v4 = v3;
@@ -4169,11 +4169,11 @@ uint64_t __40__PLDisplayAgent_logEventForwardALSLux___block_invoke_1609(uint64_t
 {
   if (!+[PLDisplayAgent shouldLogFromDCP]&& self->_iokitBacklight)
   {
-    v3 = [(PLDisplayAgent *)self iokitBacklight];
-    v5 = [v3 propertiesForKey:@"IODisplayParameters"];
+    iokitBacklight = [(PLDisplayAgent *)self iokitBacklight];
+    v5 = [iokitBacklight propertiesForKey:@"IODisplayParameters"];
 
-    v4 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [(PLDisplayAgent *)self logEventForwardDisplayWithRawData:v5 withDate:v4];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [(PLDisplayAgent *)self logEventForwardDisplayWithRawData:v5 withDate:monotonicDate];
   }
 }
 
@@ -4182,12 +4182,12 @@ uint64_t __40__PLDisplayAgent_logEventForwardALSLux___block_invoke_1609(uint64_t
   v20[1] = *MEMORY[0x277D85DE8];
   if (+[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") || +[PLUtilities isPerfPowerMetricd])
   {
-    v3 = [(PLDisplayAgent *)self iokitBacklight];
+    iokitBacklight = [(PLDisplayAgent *)self iokitBacklight];
 
-    if (v3)
+    if (iokitBacklight)
     {
-      v4 = [(PLDisplayAgent *)self iokitBacklight];
-      v5 = [v4 propertiesForKey:@"IODisplayParameters"];
+      iokitBacklight2 = [(PLDisplayAgent *)self iokitBacklight];
+      v5 = [iokitBacklight2 propertiesForKey:@"IODisplayParameters"];
 
       v6 = [v5 objectForKeyedSubscript:@"brightness"];
       v7 = [v6 objectForKeyedSubscript:@"value"];
@@ -4201,23 +4201,23 @@ uint64_t __40__PLDisplayAgent_logEventForwardALSLux___block_invoke_1609(uint64_t
 
       if (v9 <= 0.0)
       {
-        v3 = &unk_287146D20;
+        iokitBacklight = &unk_287146D20;
       }
 
       else
       {
         v14 = MEMORY[0x277CCABB0];
         [(PLDisplayAgent *)self uAmpsToDisplayPower:v13];
-        v3 = [v14 numberWithDouble:?];
+        iokitBacklight = [v14 numberWithDouble:?];
       }
     }
 
     v15 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"DisplayBacklight"];
     v16 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v15];
     v17 = v16;
-    if (v3)
+    if (iokitBacklight)
     {
-      [v16 setObject:v3 forKeyedSubscript:@"DisplayPower"];
+      [v16 setObject:iokitBacklight forKeyedSubscript:@"DisplayPower"];
     }
 
     v20[0] = v17;
@@ -4228,17 +4228,17 @@ uint64_t __40__PLDisplayAgent_logEventForwardALSLux___block_invoke_1609(uint64_t
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventForwardDisplayWithRawData:(id)a3 withDate:(id)a4
+- (void)logEventForwardDisplayWithRawData:(id)data withDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PLDisplayAgent *)self brightnessSystemClient];
+  dataCopy = data;
+  dateCopy = date;
+  brightnessSystemClient = [(PLDisplayAgent *)self brightnessSystemClient];
 
-  if (v8)
+  if (brightnessSystemClient)
   {
-    v9 = [[PLEventForwardDisplayEntry alloc] initEntryWithRawData:v6];
-    [v9 setEntryDate:v7];
-    v10 = [v6 objectForKeyedSubscript:@"lux"];
+    v9 = [[PLEventForwardDisplayEntry alloc] initEntryWithRawData:dataCopy];
+    [v9 setEntryDate:dateCopy];
+    v10 = [dataCopy objectForKeyedSubscript:@"lux"];
     if (!v10)
     {
       v11 = [v9 objectForKeyedSubscript:@"Brightness"];
@@ -4252,8 +4252,8 @@ uint64_t __40__PLDisplayAgent_logEventForwardALSLux___block_invoke_1609(uint64_t
 
       else
       {
-        v14 = [(PLDisplayAgent *)self brightnessSystemClient];
-        v10 = [v14 copyPropertyForKey:@"TrustedLux"];
+        brightnessSystemClient2 = [(PLDisplayAgent *)self brightnessSystemClient];
+        v10 = [brightnessSystemClient2 copyPropertyForKey:@"TrustedLux"];
       }
 
       [v9 setObject:v10 forKeyedSubscript:@"lux"];
@@ -4286,36 +4286,36 @@ uint64_t __40__PLDisplayAgent_logEventForwardALSLux___block_invoke_1609(uint64_t
       [(PLDisplayAgent *)self setIsDisplayOnNow:v22 > 0.0];
     }
 
-    v23 = [(PLDisplayAgent *)self HDRHeadroom];
+    hDRHeadroom = [(PLDisplayAgent *)self HDRHeadroom];
 
-    if (v23)
+    if (hDRHeadroom)
     {
-      v24 = [(PLDisplayAgent *)self HDRHeadroom];
-      [v9 setObject:v24 forKeyedSubscript:@"EDRHeadroom"];
+      hDRHeadroom2 = [(PLDisplayAgent *)self HDRHeadroom];
+      [v9 setObject:hDRHeadroom2 forKeyedSubscript:@"EDRHeadroom"];
 
       [(PLDisplayAgent *)self setHDRHeadroom:0];
     }
 
     if ([(PLDisplayAgent *)self isMIEActive])
     {
-      v25 = [(PLDisplayAgent *)self uAmpsFilterTimer];
+      uAmpsFilterTimer = [(PLDisplayAgent *)self uAmpsFilterTimer];
 
-      if (!v25)
+      if (!uAmpsFilterTimer)
       {
         objc_initWeak(&location, self);
         v26 = objc_alloc(MEMORY[0x277D3F250]);
         v27 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:60.0];
-        v28 = [(PLOperator *)self workQueue];
+        workQueue = [(PLOperator *)self workQueue];
         v32 = MEMORY[0x277D85DD0];
         v33 = 3221225472;
         v34 = __61__PLDisplayAgent_logEventForwardDisplayWithRawData_withDate___block_invoke;
         v35 = &unk_279A5E8A0;
         objc_copyWeak(&v36, &location);
-        v29 = [v26 initWithFireDate:v27 withInterval:0 withTolerance:0 repeats:v28 withUserInfo:&v32 withQueue:0.0 withBlock:0.0];
+        v29 = [v26 initWithFireDate:v27 withInterval:0 withTolerance:0 repeats:workQueue withUserInfo:&v32 withQueue:0.0 withBlock:0.0];
         [(PLDisplayAgent *)self setUAmpsFilterTimer:v29, v32, v33, v34, v35];
 
-        v30 = [(PLDisplayAgent *)self uAmpsFilterTimer];
-        [v30 arm];
+        uAmpsFilterTimer2 = [(PLDisplayAgent *)self uAmpsFilterTimer];
+        [uAmpsFilterTimer2 arm];
 
         objc_destroyWeak(&v36);
         objc_destroyWeak(&location);
@@ -4347,17 +4347,17 @@ void __61__PLDisplayAgent_logEventForwardDisplayWithRawData_withDate___block_inv
 
 - (void)reArmUAmpsCallback
 {
-  v3 = [(PLDisplayAgent *)self uAmpsEntry];
-  [(PLOperator *)self logEntry:v3];
+  uAmpsEntry = [(PLDisplayAgent *)self uAmpsEntry];
+  [(PLOperator *)self logEntry:uAmpsEntry];
 
-  v4 = [(PLDisplayAgent *)self uAmpsEntry];
-  [(PLDisplayAgent *)self modelDisplayPower:v4];
+  uAmpsEntry2 = [(PLDisplayAgent *)self uAmpsEntry];
+  [(PLDisplayAgent *)self modelDisplayPower:uAmpsEntry2];
 
-  v5 = [(PLDisplayAgent *)self uAmpsEntry];
-  [(PLDisplayAgent *)self qualifyDisplayPower:v5];
+  uAmpsEntry3 = [(PLDisplayAgent *)self uAmpsEntry];
+  [(PLDisplayAgent *)self qualifyDisplayPower:uAmpsEntry3];
 
-  v6 = [(PLDisplayAgent *)self uAmpsFilterTimer];
-  [v6 invalidate];
+  uAmpsFilterTimer = [(PLDisplayAgent *)self uAmpsFilterTimer];
+  [uAmpsFilterTimer invalidate];
 
   [(PLDisplayAgent *)self setUAmpsFilterTimer:0];
 
@@ -4366,20 +4366,20 @@ void __61__PLDisplayAgent_logEventForwardDisplayWithRawData_withDate___block_inv
 
 - (void)logEventForwardColorAdaptationMode
 {
-  v3 = [(PLDisplayAgent *)self colorAdaptationClient];
-  if (v3)
+  colorAdaptationClient = [(PLDisplayAgent *)self colorAdaptationClient];
+  if (colorAdaptationClient)
   {
-    v4 = v3;
-    v5 = [MEMORY[0x277CFD398] supportsAdaptation];
+    v4 = colorAdaptationClient;
+    supportsAdaptation = [MEMORY[0x277CFD398] supportsAdaptation];
 
-    if (v5)
+    if (supportsAdaptation)
     {
       v10 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"CAModeEnabled"];
       v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v10];
-      v7 = [(PLDisplayAgent *)self colorAdaptationClient];
-      v8 = [v7 getEnabled];
+      colorAdaptationClient2 = [(PLDisplayAgent *)self colorAdaptationClient];
+      getEnabled = [colorAdaptationClient2 getEnabled];
 
-      v9 = [MEMORY[0x277CCABB0] numberWithBool:v8];
+      v9 = [MEMORY[0x277CCABB0] numberWithBool:getEnabled];
       [v6 setObject:v9 forKeyedSubscript:@"CAModeEnabled"];
 
       [(PLOperator *)self logEntry:v6];
@@ -4387,28 +4387,28 @@ void __61__PLDisplayAgent_logEventForwardDisplayWithRawData_withDate___block_inv
   }
 }
 
-- (void)logEventForwardALSUserPreferencesEntryWithLux:(id)a3
+- (void)logEventForwardALSUserPreferencesEntryWithLux:(id)lux
 {
-  v13 = a3;
-  v4 = [(PLDisplayAgent *)self brightnessSystemClient];
+  luxCopy = lux;
+  brightnessSystemClient = [(PLDisplayAgent *)self brightnessSystemClient];
 
-  if (v4 && ([MEMORY[0x277D3F208] isMac] & 1) == 0)
+  if (brightnessSystemClient && ([MEMORY[0x277D3F208] isMac] & 1) == 0)
   {
-    v5 = [(PLDisplayAgent *)self brightnessSystemClient];
-    v6 = [v5 copyPropertyForKey:@"ALSUserPreference"];
+    brightnessSystemClient2 = [(PLDisplayAgent *)self brightnessSystemClient];
+    v6 = [brightnessSystemClient2 copyPropertyForKey:@"ALSUserPreference"];
 
     if (v6)
     {
-      v7 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v6 != v7)
+      if (v6 != null)
       {
         v8 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"ALSUserPreferences"];
         v9 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v8 withRawData:v6];
         v10 = v9;
-        if (v13)
+        if (luxCopy)
         {
-          [v9 setObject:v13 forKeyedSubscript:@"Lux"];
+          [v9 setObject:luxCopy forKeyedSubscript:@"Lux"];
         }
 
         v11 = [v6 objectForKey:@"Prefs"];
@@ -4421,142 +4421,142 @@ void __61__PLDisplayAgent_logEventForwardDisplayWithRawData_withDate___block_inv
   }
 }
 
-- (void)logEventForwardExtendedALSUserPreferences:(id)a3
+- (void)logEventForwardExtendedALSUserPreferences:(id)preferences
 {
   v4 = *MEMORY[0x277D3F5D0];
-  v5 = a3;
+  preferencesCopy = preferences;
   v80 = [(PLOperator *)PLDisplayAgent entryKeyForType:v4 andName:@"ALSUserPreferences"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v80 withRawData:v5];
-  v7 = [v5 objectForKeyedSubscript:@"timestamp"];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v80 withRawData:preferencesCopy];
+  v7 = [preferencesCopy objectForKeyedSubscript:@"timestamp"];
   [v7 doubleValue];
   v9 = v8;
 
   v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v9];
-  v11 = [v10 convertFromSystemToMonotonic];
-  [v6 setEntryDate:v11];
+  convertFromSystemToMonotonic = [v10 convertFromSystemToMonotonic];
+  [v6 setEntryDate:convertFromSystemToMonotonic];
 
-  v12 = [v5 objectForKeyedSubscript:@"e0a"];
+  v12 = [preferencesCopy objectForKeyedSubscript:@"e0a"];
   [v6 setObject:v12 forKeyedSubscript:@"E0a"];
 
-  v13 = [v5 objectForKeyedSubscript:@"e0b"];
+  v13 = [preferencesCopy objectForKeyedSubscript:@"e0b"];
   [v6 setObject:v13 forKeyedSubscript:@"E0b"];
 
-  v14 = [v5 objectForKeyedSubscript:@"e0b"];
+  v14 = [preferencesCopy objectForKeyedSubscript:@"e0b"];
   [v6 setObject:v14 forKeyedSubscript:@"E0b"];
 
-  v15 = [v5 objectForKeyedSubscript:@"e1"];
+  v15 = [preferencesCopy objectForKeyedSubscript:@"e1"];
   [v6 setObject:v15 forKeyedSubscript:@"E1"];
 
-  v16 = [v5 objectForKeyedSubscript:@"e2"];
+  v16 = [preferencesCopy objectForKeyedSubscript:@"e2"];
   [v6 setObject:v16 forKeyedSubscript:@"E2"];
 
-  v17 = [v5 objectForKeyedSubscript:@"l0a"];
+  v17 = [preferencesCopy objectForKeyedSubscript:@"l0a"];
   [v6 setObject:v17 forKeyedSubscript:@"L0a"];
 
-  v18 = [v5 objectForKeyedSubscript:@"l0b"];
+  v18 = [preferencesCopy objectForKeyedSubscript:@"l0b"];
   [v6 setObject:v18 forKeyedSubscript:@"L0b"];
 
-  v19 = [v5 objectForKeyedSubscript:@"l1"];
+  v19 = [preferencesCopy objectForKeyedSubscript:@"l1"];
   [v6 setObject:v19 forKeyedSubscript:@"L1"];
 
-  v20 = [v5 objectForKeyedSubscript:@"l2"];
+  v20 = [preferencesCopy objectForKeyedSubscript:@"l2"];
   [v6 setObject:v20 forKeyedSubscript:@"L2"];
 
-  v21 = [v5 objectForKeyedSubscript:@"slider"];
+  v21 = [preferencesCopy objectForKeyedSubscript:@"slider"];
   [v6 setObject:v21 forKeyedSubscript:@"S"];
 
   v22 = MEMORY[0x277CCABB0];
-  v23 = [v5 objectForKeyedSubscript:@"frontLux"];
+  v23 = [preferencesCopy objectForKeyedSubscript:@"frontLux"];
   [v23 floatValue];
   v25 = [v22 numberWithDouble:roundf(v24)];
   [v6 setObject:v25 forKeyedSubscript:@"Lux"];
 
   v26 = MEMORY[0x277CCABB0];
-  v27 = [v5 objectForKeyedSubscript:@"rearLux"];
+  v27 = [preferencesCopy objectForKeyedSubscript:@"rearLux"];
   [v27 floatValue];
   v29 = [v26 numberWithDouble:roundf(v28)];
   [v6 setObject:v29 forKeyedSubscript:@"rearLux"];
 
   v30 = MEMORY[0x277CCABB0];
-  v31 = [v5 objectForKeyedSubscript:@"trustedLux"];
+  v31 = [preferencesCopy objectForKeyedSubscript:@"trustedLux"];
   [v31 floatValue];
   v33 = [v30 numberWithDouble:roundf(v32)];
   [v6 setObject:v33 forKeyedSubscript:@"trustedLux"];
 
   v34 = MEMORY[0x277CCABB0];
-  v35 = [v5 objectForKeyedSubscript:@"delayedAPCE"];
+  v35 = [preferencesCopy objectForKeyedSubscript:@"delayedAPCE"];
   [v35 floatValue];
   v37 = [v34 numberWithDouble:roundf(v36 * 100.0)];
   [v6 setObject:v37 forKeyedSubscript:@"delayedAPCE"];
 
   v38 = MEMORY[0x277CCABB0];
-  v39 = [v5 objectForKeyedSubscript:@"ecoModeFactor"];
+  v39 = [preferencesCopy objectForKeyedSubscript:@"ecoModeFactor"];
   [v39 floatValue];
   v41 = [v38 numberWithDouble:roundf(v40 * 100.0)];
   [v6 setObject:v41 forKeyedSubscript:@"ecoModeFactor"];
 
-  v42 = [v5 objectForKeyedSubscript:@"aabParamsUpdateReason"];
+  v42 = [preferencesCopy objectForKeyedSubscript:@"aabParamsUpdateReason"];
   [v6 setObject:v42 forKeyedSubscript:@"aabParamsUpdateReason"];
 
   v43 = MEMORY[0x277CCABB0];
-  v44 = [v5 objectForKeyedSubscript:@"inactiveLength"];
+  v44 = [preferencesCopy objectForKeyedSubscript:@"inactiveLength"];
   [v44 floatValue];
   v46 = [v43 numberWithDouble:roundf(v45 * 100.0)];
   [v6 setObject:v46 forKeyedSubscript:@"inactiveLength"];
 
-  v47 = [v5 objectForKeyedSubscript:@"inactiveStart"];
+  v47 = [preferencesCopy objectForKeyedSubscript:@"inactiveStart"];
   [v6 setObject:v47 forKeyedSubscript:@"inactiveStart"];
 
-  v48 = [v5 objectForKeyedSubscript:@"alternativeE0a"];
+  v48 = [preferencesCopy objectForKeyedSubscript:@"alternativeE0a"];
   [v6 setObject:v48 forKeyedSubscript:@"alternativeE0a"];
 
-  v49 = [v5 objectForKeyedSubscript:@"alternativeE0b"];
+  v49 = [preferencesCopy objectForKeyedSubscript:@"alternativeE0b"];
   [v6 setObject:v49 forKeyedSubscript:@"alternativeE0b"];
 
-  v50 = [v5 objectForKeyedSubscript:@"alternativeE1"];
+  v50 = [preferencesCopy objectForKeyedSubscript:@"alternativeE1"];
   [v6 setObject:v50 forKeyedSubscript:@"alternativeE1"];
 
-  v51 = [v5 objectForKeyedSubscript:@"alternativeE2"];
+  v51 = [preferencesCopy objectForKeyedSubscript:@"alternativeE2"];
   [v6 setObject:v51 forKeyedSubscript:@"alternativeE2"];
 
   v52 = MEMORY[0x277CCABB0];
-  v53 = [v5 objectForKeyedSubscript:@"alternativeL0a"];
+  v53 = [preferencesCopy objectForKeyedSubscript:@"alternativeL0a"];
   [v53 floatValue];
   v55 = [v52 numberWithDouble:roundf(v54 * 100.0)];
   [v6 setObject:v55 forKeyedSubscript:@"alternativeL0a"];
 
   v56 = MEMORY[0x277CCABB0];
-  v57 = [v5 objectForKeyedSubscript:@"alternativeL0b"];
+  v57 = [preferencesCopy objectForKeyedSubscript:@"alternativeL0b"];
   [v57 floatValue];
   v59 = [v56 numberWithDouble:roundf(v58 * 100.0)];
   [v6 setObject:v59 forKeyedSubscript:@"alternativeL0b"];
 
   v60 = MEMORY[0x277CCABB0];
-  v61 = [v5 objectForKeyedSubscript:@"alternativeL1"];
+  v61 = [preferencesCopy objectForKeyedSubscript:@"alternativeL1"];
   [v61 floatValue];
   v63 = [v60 numberWithDouble:roundf(v62 * 100.0)];
   [v6 setObject:v63 forKeyedSubscript:@"alternativeL1"];
 
   v64 = MEMORY[0x277CCABB0];
-  v65 = [v5 objectForKeyedSubscript:@"alternativeL2"];
+  v65 = [preferencesCopy objectForKeyedSubscript:@"alternativeL2"];
   [v65 floatValue];
   v67 = [v64 numberWithDouble:roundf(v66 * 100.0)];
   [v6 setObject:v67 forKeyedSubscript:@"alternativeL2"];
 
   v68 = MEMORY[0x277CCABB0];
-  v69 = [v5 objectForKeyedSubscript:@"alternativeThirdSlope"];
+  v69 = [preferencesCopy objectForKeyedSubscript:@"alternativeThirdSlope"];
   [v69 floatValue];
   v71 = [v68 numberWithDouble:roundf(v70 * 10000.0)];
   [v6 setObject:v71 forKeyedSubscript:@"alternativeThirdSlope"];
 
   v72 = MEMORY[0x277CCABB0];
-  v73 = [v5 objectForKeyedSubscript:@"nitsDelta"];
+  v73 = [preferencesCopy objectForKeyedSubscript:@"nitsDelta"];
   [v73 floatValue];
   v75 = [v72 numberWithDouble:roundf(v74 * 100.0)];
   [v6 setObject:v75 forKeyedSubscript:@"nitsDelta"];
 
   v76 = MEMORY[0x277CCABB0];
-  v77 = [v5 objectForKeyedSubscript:@"nitsDeltaAlternative"];
+  v77 = [preferencesCopy objectForKeyedSubscript:@"nitsDeltaAlternative"];
 
   [v77 floatValue];
   v79 = [v76 numberWithDouble:roundf(v78 * 100.0)];
@@ -4577,17 +4577,17 @@ void __61__PLDisplayAgent_logEventForwardDisplayWithRawData_withDate___block_inv
 
 - (void)logEventForwardALSUserPreferencesWithCurrLux
 {
-  v3 = [(PLDisplayAgent *)self brightnessSystemClient];
+  brightnessSystemClient = [(PLDisplayAgent *)self brightnessSystemClient];
 
-  if (v3)
+  if (brightnessSystemClient)
   {
-    v4 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __62__PLDisplayAgent_logEventForwardALSUserPreferencesWithCurrLux__block_invoke;
     block[3] = &unk_279A5BDC0;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(workQueue, block);
   }
 }
 
@@ -4599,23 +4599,23 @@ void __62__PLDisplayAgent_logEventForwardALSUserPreferencesWithCurrLux__block_in
   [*(a1 + 32) logEventForwardALSUserPreferencesEntryWithLux:v3];
 }
 
-- (void)logEventForwardLuxStats:(id)a3
+- (void)logEventForwardLuxStats:(id)stats
 {
-  v4 = a3;
-  if (v4)
+  statsCopy = stats;
+  if (statsCopy)
   {
     v5 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"LuxStats"];
-    v6 = [v4 valueForKey:@"rearLux"];
-    v7 = [v6 integerValue];
+    v6 = [statsCopy valueForKey:@"rearLux"];
+    integerValue = [v6 integerValue];
 
     if ([MEMORY[0x277D3F208] isiPhone])
     {
       if ([MEMORY[0x277D3F208] kPLSoCClassOfDevice] >= 1001021)
       {
-        v8 = [v4 valueForKey:@"gainChanged"];
-        v9 = [v8 BOOLValue];
+        v8 = [statsCopy valueForKey:@"gainChanged"];
+        bOOLValue = [v8 BOOLValue];
 
-        if (v9)
+        if (bOOLValue)
         {
           v10 = PLLogDisplay();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -4628,7 +4628,7 @@ void __62__PLDisplayAgent_logEventForwardALSUserPreferencesWithCurrLux__block_in
       }
     }
 
-    if ([(PLDisplayAgent *)self lastRearLuxValue]!= v7)
+    if ([(PLDisplayAgent *)self lastRearLuxValue]!= integerValue)
     {
       if ([(PLDisplayAgent *)self lastRearLuxValue]== -1)
       {
@@ -4638,18 +4638,18 @@ void __62__PLDisplayAgent_logEventForwardALSUserPreferencesWithCurrLux__block_in
 
       else
       {
-        v11 = [(PLDisplayAgent *)self lastRearLuxValue];
-        v12 = v11 - [(PLDisplayAgent *)self lastRearLuxValue]* 0.2;
-        v13 = [(PLDisplayAgent *)self lastRearLuxValue];
-        v14 = v13 + [(PLDisplayAgent *)self lastRearLuxValue]* 0.2;
+        lastRearLuxValue = [(PLDisplayAgent *)self lastRearLuxValue];
+        v12 = lastRearLuxValue - [(PLDisplayAgent *)self lastRearLuxValue]* 0.2;
+        lastRearLuxValue2 = [(PLDisplayAgent *)self lastRearLuxValue];
+        v14 = lastRearLuxValue2 + [(PLDisplayAgent *)self lastRearLuxValue]* 0.2;
       }
 
-      if ([(PLDisplayAgent *)self lastRearLuxValue]== -1 || (v12 <= v7 ? (v15 = v14 < v7) : (v15 = 1), v15))
+      if ([(PLDisplayAgent *)self lastRearLuxValue]== -1 || (v12 <= integerValue ? (v15 = v14 < integerValue) : (v15 = 1), v15))
       {
 LABEL_20:
-        v16 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withRawData:v4];
+        v16 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withRawData:statsCopy];
         [(PLOperator *)self logEntry:v16];
-        [(PLDisplayAgent *)self setLastRearLuxValue:v7];
+        [(PLDisplayAgent *)self setLastRearLuxValue:integerValue];
       }
     }
   }
@@ -4666,12 +4666,12 @@ LABEL_20:
 
 - (void)logEventBackwardTouch
 {
-  v3 = [(PLDisplayAgent *)self iokitTouch];
+  iokitTouch = [(PLDisplayAgent *)self iokitTouch];
 
-  if (v3)
+  if (iokitTouch)
   {
-    v4 = [(PLDisplayAgent *)self iokitTouch];
-    v7 = [v4 propertiesForKey:@"PowerStates"];
+    iokitTouch2 = [(PLDisplayAgent *)self iokitTouch];
+    v7 = [iokitTouch2 propertiesForKey:@"PowerStates"];
 
     if (v7)
     {
@@ -4689,126 +4689,126 @@ uint64_t __44__PLDisplayAgent_logEventBackwardUserTouch___block_invoke(uint64_t 
   return result;
 }
 
-- (void)logEventBackwardRampInfo:(id)a3
+- (void)logEventBackwardRampInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"RampInfo"];
   v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5];
-  if (v4)
+  if (infoCopy)
   {
-    v7 = [v4 objectForKeyedSubscript:@"AAPRampStats"];
+    v7 = [infoCopy objectForKeyedSubscript:@"AAPRampStats"];
 
     if (v7)
     {
-      v8 = [v4 objectForKeyedSubscript:@"AAPRampStats"];
+      v8 = [infoCopy objectForKeyedSubscript:@"AAPRampStats"];
       v9 = [v8 objectForKeyedSubscript:@"NumberOfUpdates"];
       [v6 setObject:v9 forKeyedSubscript:@"AAP_NumberOfUpdates"];
 
-      v10 = [v4 objectForKeyedSubscript:@"AAPRampStats"];
+      v10 = [infoCopy objectForKeyedSubscript:@"AAPRampStats"];
       v11 = [v10 objectForKeyedSubscript:@"RampFrequency"];
       [v6 setObject:v11 forKeyedSubscript:@"AAP_RampFrequency"];
 
-      v12 = [v4 objectForKeyedSubscript:@"AAPRampStats"];
+      v12 = [infoCopy objectForKeyedSubscript:@"AAPRampStats"];
       v13 = [v12 objectForKeyedSubscript:@"RampLength"];
       [v6 setObject:v13 forKeyedSubscript:@"AAP_RampLength"];
 
-      v14 = [v4 objectForKeyedSubscript:@"AAPRampStats"];
+      v14 = [infoCopy objectForKeyedSubscript:@"AAPRampStats"];
       v15 = [v14 objectForKeyedSubscript:@"RampOrigin"];
       [v6 setObject:v15 forKeyedSubscript:@"AAP_RampOrigin"];
 
-      v16 = [v4 objectForKeyedSubscript:@"AAPRampStats"];
+      v16 = [infoCopy objectForKeyedSubscript:@"AAPRampStats"];
       v17 = [v16 objectForKeyedSubscript:@"RampTarget"];
       [v6 setObject:v17 forKeyedSubscript:@"AAP_RampTarget"];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"ColourRampStats"];
+    v18 = [infoCopy objectForKeyedSubscript:@"ColourRampStats"];
 
     if (v18)
     {
-      v19 = [v4 objectForKeyedSubscript:@"ColourRampStats"];
+      v19 = [infoCopy objectForKeyedSubscript:@"ColourRampStats"];
       v20 = [v19 objectForKeyedSubscript:@"NumberOfUpdates"];
       [v6 setObject:v20 forKeyedSubscript:@"Colour_NumberOfUpdates"];
 
-      v21 = [v4 objectForKeyedSubscript:@"ColourRampStats"];
+      v21 = [infoCopy objectForKeyedSubscript:@"ColourRampStats"];
       v22 = [v21 objectForKeyedSubscript:@"RampFrequency"];
       [v6 setObject:v22 forKeyedSubscript:@"Colour_RampFrequency"];
 
-      v23 = [v4 objectForKeyedSubscript:@"ColourRampStats"];
+      v23 = [infoCopy objectForKeyedSubscript:@"ColourRampStats"];
       v24 = [v23 objectForKeyedSubscript:@"RampLength"];
       [v6 setObject:v24 forKeyedSubscript:@"Colour_RampLength"];
 
-      v25 = [v4 objectForKeyedSubscript:@"ColourRampStats"];
+      v25 = [infoCopy objectForKeyedSubscript:@"ColourRampStats"];
       v26 = [v25 objectForKeyedSubscript:@"RampOrigin"];
       v27 = [v26 objectForKeyedSubscript:@"X"];
       [v6 setObject:v27 forKeyedSubscript:@"Colour_RampOrigin_X"];
 
-      v28 = [v4 objectForKeyedSubscript:@"ColourRampStats"];
+      v28 = [infoCopy objectForKeyedSubscript:@"ColourRampStats"];
       v29 = [v28 objectForKeyedSubscript:@"RampOrigin"];
       v30 = [v29 objectForKeyedSubscript:@"Y"];
       [v6 setObject:v30 forKeyedSubscript:@"Colour_RampOrigin_Y"];
 
-      v31 = [v4 objectForKeyedSubscript:@"ColourRampStats"];
+      v31 = [infoCopy objectForKeyedSubscript:@"ColourRampStats"];
       v32 = [v31 objectForKeyedSubscript:@"RampTarget"];
       v33 = [v32 objectForKeyedSubscript:@"X"];
       [v6 setObject:v33 forKeyedSubscript:@"Colour_RampTarget_X"];
 
-      v34 = [v4 objectForKeyedSubscript:@"ColourRampStats"];
+      v34 = [infoCopy objectForKeyedSubscript:@"ColourRampStats"];
       v35 = [v34 objectForKeyedSubscript:@"RampTarget"];
       v36 = [v35 objectForKeyedSubscript:@"Y"];
       [v6 setObject:v36 forKeyedSubscript:@"Colour_RampTarget_Y"];
     }
 
-    v37 = [v4 objectForKeyedSubscript:@"SDRRampStats"];
+    v37 = [infoCopy objectForKeyedSubscript:@"SDRRampStats"];
 
     if (v37)
     {
-      v38 = [v4 objectForKeyedSubscript:@"SDRRampStats"];
+      v38 = [infoCopy objectForKeyedSubscript:@"SDRRampStats"];
       v39 = [v38 objectForKeyedSubscript:@"NumberOfUpdates"];
       [v6 setObject:v39 forKeyedSubscript:@"SDR_NumberOfUpdates"];
 
-      v40 = [v4 objectForKeyedSubscript:@"SDRRampStats"];
+      v40 = [infoCopy objectForKeyedSubscript:@"SDRRampStats"];
       v41 = [v40 objectForKeyedSubscript:@"RampFrequency"];
       [v6 setObject:v41 forKeyedSubscript:@"SDR_RampFrequency"];
 
-      v42 = [v4 objectForKeyedSubscript:@"SDRRampStats"];
+      v42 = [infoCopy objectForKeyedSubscript:@"SDRRampStats"];
       v43 = [v42 objectForKeyedSubscript:@"RampLength"];
       [v6 setObject:v43 forKeyedSubscript:@"SDR_RampLength"];
 
-      v44 = [v4 objectForKeyedSubscript:@"SDRRampStats"];
+      v44 = [infoCopy objectForKeyedSubscript:@"SDRRampStats"];
       v45 = [v44 objectForKeyedSubscript:@"RampOrigin"];
       [v6 setObject:v45 forKeyedSubscript:@"SDR_RampOrigin"];
 
-      v46 = [v4 objectForKeyedSubscript:@"SDRRampStats"];
+      v46 = [infoCopy objectForKeyedSubscript:@"SDRRampStats"];
       v47 = [v46 objectForKeyedSubscript:@"RampTarget"];
       [v6 setObject:v47 forKeyedSubscript:@"SDR_RampTarget"];
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"EDRRampStats"];
+    v48 = [infoCopy objectForKeyedSubscript:@"EDRRampStats"];
 
     if (v48)
     {
-      v49 = [v4 objectForKeyedSubscript:@"EDRRampStats"];
+      v49 = [infoCopy objectForKeyedSubscript:@"EDRRampStats"];
       v50 = [v49 objectForKeyedSubscript:@"NumberOfUpdates"];
       [v6 setObject:v50 forKeyedSubscript:@"EDR_NumberOfUpdates"];
 
-      v51 = [v4 objectForKeyedSubscript:@"EDRRampStats"];
+      v51 = [infoCopy objectForKeyedSubscript:@"EDRRampStats"];
       v52 = [v51 objectForKeyedSubscript:@"RampFrequency"];
       [v6 setObject:v52 forKeyedSubscript:@"EDR_RampFrequency"];
 
-      v53 = [v4 objectForKeyedSubscript:@"EDRRampStats"];
+      v53 = [infoCopy objectForKeyedSubscript:@"EDRRampStats"];
       v54 = [v53 objectForKeyedSubscript:@"RampLength"];
       [v6 setObject:v54 forKeyedSubscript:@"EDR_RampLength"];
 
-      v55 = [v4 objectForKeyedSubscript:@"EDRRampStats"];
+      v55 = [infoCopy objectForKeyedSubscript:@"EDRRampStats"];
       v56 = [v55 objectForKeyedSubscript:@"RampOrigin"];
       [v6 setObject:v56 forKeyedSubscript:@"EDR_RampOrigin"];
 
-      v57 = [v4 objectForKeyedSubscript:@"EDRRampStats"];
+      v57 = [infoCopy objectForKeyedSubscript:@"EDRRampStats"];
       v58 = [v57 objectForKeyedSubscript:@"RampTarget"];
       [v6 setObject:v58 forKeyedSubscript:@"EDR_RampTarget"];
     }
 
-    v59 = [v4 objectForKeyedSubscript:@"isFlipbookActive"];
+    v59 = [infoCopy objectForKeyedSubscript:@"isFlipbookActive"];
     [v6 setObject:v59 forKeyedSubscript:@"isFlipbookActive"];
 
     [(PLOperator *)self logEntry:v6];
@@ -4824,15 +4824,15 @@ uint64_t __44__PLDisplayAgent_logEventBackwardUserTouch___block_invoke(uint64_t 
   }
 }
 
-- (void)logEventBackwardCurveUpdate:(id)a3
+- (void)logEventBackwardCurveUpdate:(id)update
 {
   v60[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = PLLogDisplay();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-  if (v4)
+  if (updateCopy)
   {
-    v53 = self;
+    selfCopy = self;
     if (v6)
     {
       [PLDisplayAgent logEventBackwardCurveUpdate:];
@@ -4841,16 +4841,16 @@ uint64_t __44__PLDisplayAgent_logEventBackwardUserTouch___block_invoke(uint64_t 
     v7 = 0x279A5A000uLL;
     v8 = *MEMORY[0x277D3F5C8];
     v5 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"CurveUpdate"];
-    v9 = [MEMORY[0x277CBEB18] array];
-    v10 = [MEMORY[0x277CBEAA8] monotonicDate];
-    v11 = [v4 objectForKeyedSubscript:@"CurveLevelHigh"];
+    array = [MEMORY[0x277CBEB18] array];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    v11 = [updateCopy objectForKeyedSubscript:@"CurveLevelHigh"];
 
     v55 = v5;
-    v57 = v10;
-    v58 = v9;
+    v57 = monotonicDate;
+    v58 = array;
     if (v11)
     {
-      v12 = [v4 objectForKeyedSubscript:@"CurveLevelHigh"];
+      v12 = [updateCopy objectForKeyedSubscript:@"CurveLevelHigh"];
       v13 = [v12 objectForKeyedSubscript:@"lux"];
 
       v14 = v8;
@@ -4861,22 +4861,22 @@ uint64_t __44__PLDisplayAgent_logEventBackwardUserTouch___block_invoke(uint64_t 
         {
           v16 = objc_alloc(MEMORY[0x277D3F190]);
           v17 = [(PLOperator *)PLDisplayAgent entryKeyForType:v14 andName:@"CurveUpdate"];
-          v18 = [v16 initWithEntryKey:v17 withDate:v10];
+          v18 = [v16 initWithEntryKey:v17 withDate:monotonicDate];
 
-          v19 = [v4 objectForKeyedSubscript:@"CurveLevelHigh"];
+          v19 = [updateCopy objectForKeyedSubscript:@"CurveLevelHigh"];
           v20 = [v19 objectForKeyedSubscript:@"lux"];
           v21 = [v20 objectAtIndexedSubscript:v15];
           [v18 setObject:v21 forKeyedSubscript:@"lux"];
 
-          v22 = [v4 objectForKeyedSubscript:@"CurveLevelHigh"];
+          v22 = [updateCopy objectForKeyedSubscript:@"CurveLevelHigh"];
           v23 = [v22 objectForKeyedSubscript:@"nits"];
           v24 = [v23 objectAtIndexedSubscript:v15];
           [v18 setObject:v24 forKeyedSubscript:@"nits"];
 
-          v10 = v57;
+          monotonicDate = v57;
           v7 = 0x279A5A000uLL;
 
-          v9 = v58;
+          array = v58;
           [v18 setObject:&unk_287146D20 forKeyedSubscript:@"level"];
           [v58 addObject:v18];
 
@@ -4890,12 +4890,12 @@ uint64_t __44__PLDisplayAgent_logEventBackwardUserTouch___block_invoke(uint64_t 
       v8 = v14;
     }
 
-    v25 = [v4 objectForKeyedSubscript:{@"CurveLevelMed", v53}];
+    v25 = [updateCopy objectForKeyedSubscript:{@"CurveLevelMed", selfCopy}];
 
     v56 = v8;
     if (v25)
     {
-      v26 = [v4 objectForKeyedSubscript:@"CurveLevelHigh"];
+      v26 = [updateCopy objectForKeyedSubscript:@"CurveLevelHigh"];
       v27 = [v26 objectForKeyedSubscript:@"lux"];
 
       if ([v27 count])
@@ -4905,22 +4905,22 @@ uint64_t __44__PLDisplayAgent_logEventBackwardUserTouch___block_invoke(uint64_t 
         {
           v29 = objc_alloc(MEMORY[0x277D3F190]);
           v30 = [(PLOperator *)PLDisplayAgent entryKeyForType:v8 andName:@"CurveUpdate"];
-          v31 = [v29 initWithEntryKey:v30 withDate:v10];
+          v31 = [v29 initWithEntryKey:v30 withDate:monotonicDate];
 
-          v32 = [v4 objectForKeyedSubscript:@"CurveLevelHigh"];
+          v32 = [updateCopy objectForKeyedSubscript:@"CurveLevelHigh"];
           v33 = [v32 objectForKeyedSubscript:@"lux"];
           v34 = [v33 objectAtIndexedSubscript:v28];
           [v31 setObject:v34 forKeyedSubscript:@"lux"];
 
-          v35 = [v4 objectForKeyedSubscript:@"CurveLevelHigh"];
+          v35 = [updateCopy objectForKeyedSubscript:@"CurveLevelHigh"];
           v36 = [v35 objectForKeyedSubscript:@"nits"];
           v37 = [v36 objectAtIndexedSubscript:v28];
           [v31 setObject:v37 forKeyedSubscript:@"nits"];
 
-          v10 = v57;
+          monotonicDate = v57;
           v7 = 0x279A5A000uLL;
 
-          v9 = v58;
+          array = v58;
           [v31 setObject:&unk_287146D38 forKeyedSubscript:@"level"];
           [v58 addObject:v31];
 
@@ -4934,11 +4934,11 @@ uint64_t __44__PLDisplayAgent_logEventBackwardUserTouch___block_invoke(uint64_t 
       v5 = v55;
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"CurveLevelLow"];
+    v38 = [updateCopy objectForKeyedSubscript:@"CurveLevelLow"];
 
     if (v38)
     {
-      v39 = [v4 objectForKeyedSubscript:@"CurveLevelHigh"];
+      v39 = [updateCopy objectForKeyedSubscript:@"CurveLevelHigh"];
       v40 = [v39 objectForKeyedSubscript:@"lux"];
 
       if ([v40 count])
@@ -4948,22 +4948,22 @@ uint64_t __44__PLDisplayAgent_logEventBackwardUserTouch___block_invoke(uint64_t 
         {
           v42 = objc_alloc(MEMORY[0x277D3F190]);
           v43 = [*(v7 + 3520) entryKeyForType:v8 andName:@"CurveUpdate"];
-          v44 = [v42 initWithEntryKey:v43 withDate:v10];
+          v44 = [v42 initWithEntryKey:v43 withDate:monotonicDate];
 
-          v45 = [v4 objectForKeyedSubscript:@"CurveLevelHigh"];
+          v45 = [updateCopy objectForKeyedSubscript:@"CurveLevelHigh"];
           v46 = [v45 objectForKeyedSubscript:@"lux"];
           v47 = [v46 objectAtIndexedSubscript:v41];
           [v44 setObject:v47 forKeyedSubscript:@"lux"];
 
-          v48 = [v4 objectForKeyedSubscript:@"CurveLevelHigh"];
+          v48 = [updateCopy objectForKeyedSubscript:@"CurveLevelHigh"];
           v49 = [v48 objectForKeyedSubscript:@"nits"];
           v50 = [v49 objectAtIndexedSubscript:v41];
           [v44 setObject:v50 forKeyedSubscript:@"nits"];
 
-          v10 = v57;
+          monotonicDate = v57;
           v7 = 0x279A5A000;
 
-          v9 = v58;
+          array = v58;
           [v44 setObject:&unk_287146D50 forKeyedSubscript:@"level"];
           [v58 addObject:v44];
 
@@ -4977,10 +4977,10 @@ uint64_t __44__PLDisplayAgent_logEventBackwardUserTouch___block_invoke(uint64_t 
       v5 = v55;
     }
 
-    if ([v9 count])
+    if ([array count])
     {
       v59 = v5;
-      v60[0] = v9;
+      v60[0] = array;
       v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:&v59 count:1];
       [v54 logEntries:v51 withGroupID:v5];
     }
@@ -4994,38 +4994,38 @@ uint64_t __44__PLDisplayAgent_logEventBackwardUserTouch___block_invoke(uint64_t 
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventBackwardALSThreshold:(id)a3
+- (void)logEventBackwardALSThreshold:(id)threshold
 {
   v4 = *MEMORY[0x277D3F5C8];
-  v5 = a3;
+  thresholdCopy = threshold;
   v7 = [(PLOperator *)PLDisplayAgent entryKeyForType:v4 andName:@"ALSThreshold"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:thresholdCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventBackwardALSSamplesBeforeWake:(id)a3
+- (void)logEventBackwardALSSamplesBeforeWake:(id)wake
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  wakeCopy = wake;
+  if (wakeCopy)
   {
-    v27 = self;
+    selfCopy = self;
     v5 = *MEMORY[0x277D3F5C8];
     v28 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"AmbientLight"];
-    v6 = [MEMORY[0x277CBEB18] array];
-    v7 = [v4 objectForKeyedSubscript:@"count"];
-    v8 = [v7 unsignedIntValue];
+    array = [MEMORY[0x277CBEB18] array];
+    v7 = [wakeCopy objectForKeyedSubscript:@"count"];
+    unsignedIntValue = [v7 unsignedIntValue];
 
-    v30 = [v4 objectForKeyedSubscript:@"timestamp"];
-    v9 = [v4 objectForKeyedSubscript:@"lux"];
-    v10 = [v4 objectForKeyedSubscript:@"color_x"];
-    v29 = v4;
-    v11 = [v4 objectForKeyedSubscript:@"color_y"];
-    if (v8)
+    v30 = [wakeCopy objectForKeyedSubscript:@"timestamp"];
+    v9 = [wakeCopy objectForKeyedSubscript:@"lux"];
+    v10 = [wakeCopy objectForKeyedSubscript:@"color_x"];
+    v29 = wakeCopy;
+    v11 = [wakeCopy objectForKeyedSubscript:@"color_y"];
+    if (unsignedIntValue)
     {
       v12 = 0;
-      v13 = v8;
+      v13 = unsignedIntValue;
       do
       {
         v14 = MEMORY[0x277CBEAA8];
@@ -5058,7 +5058,7 @@ uint64_t __44__PLDisplayAgent_logEventBackwardUserTouch___block_invoke(uint64_t 
           _os_log_debug_impl(&dword_25EE51000, v23, OS_LOG_TYPE_DEBUG, "ALSSamplesBeforeWake for the count=%d at the time=%@ is %@", buf, 0x1Cu);
         }
 
-        [v6 addObject:v19];
+        [array addObject:v19];
         ++v12;
       }
 
@@ -5066,15 +5066,15 @@ uint64_t __44__PLDisplayAgent_logEventBackwardUserTouch___block_invoke(uint64_t 
     }
 
     v24 = v28;
-    if ([v6 count])
+    if ([array count])
     {
       v31 = v28;
-      v32 = v6;
+      v32 = array;
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-      [(PLOperator *)v27 logEntries:v25 withGroupID:v28];
+      [(PLOperator *)selfCopy logEntries:v25 withGroupID:v28];
     }
 
-    v4 = v29;
+    wakeCopy = v29;
   }
 
   else
@@ -5089,29 +5089,29 @@ uint64_t __44__PLDisplayAgent_logEventBackwardUserTouch___block_invoke(uint64_t 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventBackwardAmbientLight:(id)a3
+- (void)logEventBackwardAmbientLight:(id)light
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lightCopy = light;
   if ([MEMORY[0x277D3F208] internalBuild] && objc_msgSend(MEMORY[0x277D3F180], "fullMode") && self->_ShouldLogAmbient)
   {
-    if (v4)
+    if (lightCopy)
     {
-      v26 = self;
+      selfCopy = self;
       v5 = *MEMORY[0x277D3F5C8];
       v27 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"AmbientLight"];
-      v6 = [MEMORY[0x277CBEB18] array];
-      v7 = [v4 objectForKeyedSubscript:@"count"];
-      v8 = [v7 unsignedIntValue];
+      array = [MEMORY[0x277CBEB18] array];
+      v7 = [lightCopy objectForKeyedSubscript:@"count"];
+      unsignedIntValue = [v7 unsignedIntValue];
 
-      v29 = [v4 objectForKeyedSubscript:@"timestamp"];
-      v28 = [v4 objectForKeyedSubscript:@"lux"];
-      v9 = [v4 objectForKeyedSubscript:@"color_x"];
-      v10 = [v4 objectForKeyedSubscript:@"color_y"];
-      if (v8)
+      v29 = [lightCopy objectForKeyedSubscript:@"timestamp"];
+      v28 = [lightCopy objectForKeyedSubscript:@"lux"];
+      v9 = [lightCopy objectForKeyedSubscript:@"color_x"];
+      v10 = [lightCopy objectForKeyedSubscript:@"color_y"];
+      if (unsignedIntValue)
       {
         v11 = 0;
-        v12 = v8;
+        v12 = unsignedIntValue;
         do
         {
           v13 = MEMORY[0x277CBEAA8];
@@ -5144,7 +5144,7 @@ uint64_t __44__PLDisplayAgent_logEventBackwardUserTouch___block_invoke(uint64_t 
             _os_log_debug_impl(&dword_25EE51000, v22, OS_LOG_TYPE_DEBUG, "AmbientLight for the count=%d at the time=%@ is %@", buf, 0x1Cu);
           }
 
-          [v6 addObject:v18];
+          [array addObject:v18];
           ++v11;
         }
 
@@ -5152,12 +5152,12 @@ uint64_t __44__PLDisplayAgent_logEventBackwardUserTouch___block_invoke(uint64_t 
       }
 
       v23 = v27;
-      if ([v6 count])
+      if ([array count])
       {
         v30 = v27;
-        v31 = v6;
+        v31 = array;
         v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-        [(PLOperator *)v26 logEntries:v24 withGroupID:v27];
+        [(PLOperator *)selfCopy logEntries:v24 withGroupID:v27];
       }
     }
 
@@ -5174,20 +5174,20 @@ uint64_t __44__PLDisplayAgent_logEventBackwardUserTouch___block_invoke(uint64_t 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleBrightnessClientNotification:(id)a3 withValue:(id)a4
+- (void)handleBrightnessClientNotification:(id)notification withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqual:@"BacklightPowerMilliWatts"])
+  notificationCopy = notification;
+  valueCopy = value;
+  if ([notificationCopy isEqual:@"BacklightPowerMilliWatts"])
   {
-    v8 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __63__PLDisplayAgent_handleBrightnessClientNotification_withValue___block_invoke;
     block[3] = &unk_279A5C3F8;
     block[4] = self;
-    v70 = v7;
-    dispatch_async_and_wait(v8, block);
+    v70 = valueCopy;
+    dispatch_async_and_wait(workQueue, block);
 
     v9 = v70;
 LABEL_38:
@@ -5195,149 +5195,149 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if ([v6 isEqual:@"BacklightPowerNits"])
+  if ([notificationCopy isEqual:@"BacklightPowerNits"])
   {
-    v10 = [(PLOperator *)self workQueue];
+    workQueue2 = [(PLOperator *)self workQueue];
     v67[0] = MEMORY[0x277D85DD0];
     v67[1] = 3221225472;
     v67[2] = __63__PLDisplayAgent_handleBrightnessClientNotification_withValue___block_invoke_1750;
     v67[3] = &unk_279A5C3F8;
     v67[4] = self;
-    v68 = v7;
-    dispatch_async_and_wait(v10, v67);
+    v68 = valueCopy;
+    dispatch_async_and_wait(workQueue2, v67);
 
     v9 = v68;
     goto LABEL_38;
   }
 
-  if ([v6 isEqual:@"AODRampTelemetry"])
+  if ([notificationCopy isEqual:@"AODRampTelemetry"])
   {
-    v11 = [(PLOperator *)self workQueue];
+    workQueue3 = [(PLOperator *)self workQueue];
     v64[0] = MEMORY[0x277D85DD0];
     v64[1] = 3221225472;
     v64[2] = __63__PLDisplayAgent_handleBrightnessClientNotification_withValue___block_invoke_1761;
     v64[3] = &unk_279A5C3F8;
-    v65 = v7;
-    v66 = self;
-    dispatch_async_and_wait(v11, v64);
+    v65 = valueCopy;
+    selfCopy = self;
+    dispatch_async_and_wait(workQueue3, v64);
 
     v9 = v65;
     goto LABEL_38;
   }
 
-  if ([v6 isEqual:@"AODCurveUpdate"])
+  if ([notificationCopy isEqual:@"AODCurveUpdate"])
   {
-    v12 = [(PLOperator *)self workQueue];
+    workQueue4 = [(PLOperator *)self workQueue];
     v61[0] = MEMORY[0x277D85DD0];
     v61[1] = 3221225472;
     v61[2] = __63__PLDisplayAgent_handleBrightnessClientNotification_withValue___block_invoke_1762;
     v61[3] = &unk_279A5C3F8;
-    v62 = v7;
-    v63 = self;
-    dispatch_async_and_wait(v12, v61);
+    v62 = valueCopy;
+    selfCopy2 = self;
+    dispatch_async_and_wait(workQueue4, v61);
 
     v9 = v62;
     goto LABEL_38;
   }
 
-  if ([v6 isEqual:@"AODWakeFromALSThreshold"])
+  if ([notificationCopy isEqual:@"AODWakeFromALSThreshold"])
   {
-    v13 = [(PLOperator *)self workQueue];
+    workQueue5 = [(PLOperator *)self workQueue];
     v58[0] = MEMORY[0x277D85DD0];
     v58[1] = 3221225472;
     v58[2] = __63__PLDisplayAgent_handleBrightnessClientNotification_withValue___block_invoke_1763;
     v58[3] = &unk_279A5C3F8;
-    v59 = v7;
-    v60 = self;
-    dispatch_async_and_wait(v13, v58);
+    v59 = valueCopy;
+    selfCopy3 = self;
+    dispatch_async_and_wait(workQueue5, v58);
 
     v9 = v59;
     goto LABEL_38;
   }
 
-  if ([MEMORY[0x277D3F208] internalBuild] && objc_msgSend(MEMORY[0x277D3F180], "fullMode") && objc_msgSend(v6, "isEqual:", @"CBAmbientLightTelemetry") && self->_ShouldLogAmbient)
+  if ([MEMORY[0x277D3F208] internalBuild] && objc_msgSend(MEMORY[0x277D3F180], "fullMode") && objc_msgSend(notificationCopy, "isEqual:", @"CBAmbientLightTelemetry") && self->_ShouldLogAmbient)
   {
-    v14 = [(PLOperator *)self workQueue];
+    workQueue6 = [(PLOperator *)self workQueue];
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __63__PLDisplayAgent_handleBrightnessClientNotification_withValue___block_invoke_1764;
     v55[3] = &unk_279A5C3F8;
-    v56 = v7;
-    v57 = self;
-    dispatch_async_and_wait(v14, v55);
+    v56 = valueCopy;
+    selfCopy4 = self;
+    dispatch_async_and_wait(workQueue6, v55);
 
     v9 = v56;
     goto LABEL_38;
   }
 
-  if ([v6 isEqual:@"CBFinalBrightnessCommit"] && -[PLDisplayAgent supportsFinalBrightnessCommit](self, "supportsFinalBrightnessCommit"))
+  if ([notificationCopy isEqual:@"CBFinalBrightnessCommit"] && -[PLDisplayAgent supportsFinalBrightnessCommit](self, "supportsFinalBrightnessCommit"))
   {
-    v15 = [(PLOperator *)self workQueue];
+    workQueue7 = [(PLOperator *)self workQueue];
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __63__PLDisplayAgent_handleBrightnessClientNotification_withValue___block_invoke_1765;
     v52[3] = &unk_279A5C3F8;
-    v53 = v7;
-    v54 = self;
-    dispatch_async_and_wait(v15, v52);
+    v53 = valueCopy;
+    selfCopy5 = self;
+    dispatch_async_and_wait(workQueue7, v52);
 
     v9 = v53;
     goto LABEL_38;
   }
 
-  if ([v6 isEqual:@"DisplayBrightness"])
+  if ([notificationCopy isEqual:@"DisplayBrightness"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [(PLOperator *)self workQueue];
+      workQueue8 = [(PLOperator *)self workQueue];
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
       v50[2] = __63__PLDisplayAgent_handleBrightnessClientNotification_withValue___block_invoke_1766;
       v50[3] = &unk_279A5C3F8;
       v50[4] = self;
-      v51 = v7;
-      dispatch_async_and_wait(v16, v50);
+      v51 = valueCopy;
+      dispatch_async_and_wait(workQueue8, v50);
 
       v9 = v51;
       goto LABEL_38;
     }
   }
 
-  if ([v6 isEqual:@"BrightnessTransaction"])
+  if ([notificationCopy isEqual:@"BrightnessTransaction"])
   {
-    v17 = [(PLOperator *)self workQueue];
+    workQueue9 = [(PLOperator *)self workQueue];
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
     v47[2] = __63__PLDisplayAgent_handleBrightnessClientNotification_withValue___block_invoke_1773;
     v47[3] = &unk_279A5C3F8;
-    v48 = v7;
-    v49 = self;
-    dispatch_async_and_wait(v17, v47);
+    v48 = valueCopy;
+    selfCopy6 = self;
+    dispatch_async_and_wait(workQueue9, v47);
 
     v9 = v48;
     goto LABEL_38;
   }
 
-  if ([v6 isEqual:@"DisplayBrightnessAuto"])
+  if ([notificationCopy isEqual:@"DisplayBrightnessAuto"])
   {
-    v18 = [(PLOperator *)self workQueue];
+    workQueue10 = [(PLOperator *)self workQueue];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __63__PLDisplayAgent_handleBrightnessClientNotification_withValue___block_invoke_1777;
     v45[3] = &unk_279A5C3F8;
     v45[4] = self;
-    v46 = v7;
-    dispatch_async_and_wait(v18, v45);
+    v46 = valueCopy;
+    dispatch_async_and_wait(workQueue10, v45);
 
     v9 = v46;
     goto LABEL_38;
   }
 
-  if ([MEMORY[0x277CFD398] supportsAdaptation] && objc_msgSend(v6, "isEqual:", @"ColorAdaptationEnabled"))
+  if ([MEMORY[0x277CFD398] supportsAdaptation] && objc_msgSend(notificationCopy, "isEqual:", @"ColorAdaptationEnabled"))
   {
     v19 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"CAModeEnabled"];
-    [(PLDisplayAgent *)self logBrightnessDataWithEntryKey:v19 withColName:@"CAModeEnabled" withValue:v7];
+    [(PLDisplayAgent *)self logBrightnessDataWithEntryKey:v19 withColName:@"CAModeEnabled" withValue:valueCopy];
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
       v20 = objc_opt_class();
@@ -5353,12 +5353,12 @@ LABEL_38:
 
       if (handleBrightnessClientNotification_withValue__classDebugEnabled == 1)
       {
-        v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s-%d: property=%@, value=%@", "-[PLDisplayAgent handleBrightnessClientNotification:withValue:]", 3514, v6, v7];
+        valueCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s-%d: property=%@, value=%@", "-[PLDisplayAgent handleBrightnessClientNotification:withValue:]", 3514, notificationCopy, valueCopy];
         v22 = MEMORY[0x277D3F178];
         v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLDisplayAgent.m"];
-        v24 = [v23 lastPathComponent];
+        lastPathComponent = [v23 lastPathComponent];
         v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDisplayAgent handleBrightnessClientNotification:withValue:]"];
-        [v22 logMessage:v21 fromFile:v24 fromFunction:v25 fromLineNumber:3514];
+        [v22 logMessage:valueCopy fromFile:lastPathComponent fromFunction:v25 fromLineNumber:3514];
 
         v26 = PLLogCommon();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -5371,25 +5371,25 @@ LABEL_38:
 
   else
   {
-    if ([v6 isEqual:@"PowerLogReport"])
+    if ([notificationCopy isEqual:@"PowerLogReport"])
     {
-      v27 = [(PLOperator *)self workQueue];
+      workQueue11 = [(PLOperator *)self workQueue];
       v40[0] = MEMORY[0x277D85DD0];
       v40[1] = 3221225472;
       v40[2] = __63__PLDisplayAgent_handleBrightnessClientNotification_withValue___block_invoke_1786;
       v40[3] = &unk_279A5C768;
-      v41 = v7;
-      v42 = self;
-      v43 = v6;
-      dispatch_async(v27, v40);
+      v41 = valueCopy;
+      selfCopy7 = self;
+      v43 = notificationCopy;
+      dispatch_async(workQueue11, v40);
 
       v9 = v41;
       goto LABEL_38;
     }
 
-    if ([v6 isEqual:@"CBBlueReductionStatus"])
+    if ([notificationCopy isEqual:@"CBBlueReductionStatus"])
     {
-      [(PLDisplayAgent *)self logBlueLightDataWithDictionary:v7];
+      [(PLDisplayAgent *)self logBlueLightDataWithDictionary:valueCopy];
       if ([MEMORY[0x277D3F180] debugEnabled])
       {
         v28 = objc_opt_class();
@@ -5405,12 +5405,12 @@ LABEL_38:
 
         if (handleBrightnessClientNotification_withValue__classDebugEnabled_1810 == 1)
         {
-          v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s-%d: property=%@, value=%@", "-[PLDisplayAgent handleBrightnessClientNotification:withValue:]", 3576, v6, v7];
+          valueCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s-%d: property=%@, value=%@", "-[PLDisplayAgent handleBrightnessClientNotification:withValue:]", 3576, notificationCopy, valueCopy];
           v30 = MEMORY[0x277D3F178];
           v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLDisplayAgent.m"];
-          v32 = [v31 lastPathComponent];
+          lastPathComponent2 = [v31 lastPathComponent];
           v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDisplayAgent handleBrightnessClientNotification:withValue:]"];
-          [v30 logMessage:v29 fromFile:v32 fromFunction:v33 fromLineNumber:3576];
+          [v30 logMessage:valueCopy2 fromFile:lastPathComponent2 fromFunction:v33 fromLineNumber:3576];
 
           v34 = PLLogCommon();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
@@ -5421,16 +5421,16 @@ LABEL_38:
       }
     }
 
-    else if (+[PLDisplayAgent shouldLogLuxStats](PLDisplayAgent, "shouldLogLuxStats") && [v6 isEqual:@"RLuxStats"])
+    else if (+[PLDisplayAgent shouldLogLuxStats](PLDisplayAgent, "shouldLogLuxStats") && [notificationCopy isEqual:@"RLuxStats"])
     {
-      v35 = [(PLOperator *)self workQueue];
+      workQueue12 = [(PLOperator *)self workQueue];
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __63__PLDisplayAgent_handleBrightnessClientNotification_withValue___block_invoke_1812;
       v36[3] = &unk_279A5C3F8;
-      v37 = v7;
-      v38 = self;
-      dispatch_async_and_wait(v35, v36);
+      v37 = valueCopy;
+      selfCopy8 = self;
+      dispatch_async_and_wait(workQueue12, v36);
 
       v9 = v37;
       goto LABEL_38;
@@ -6146,27 +6146,27 @@ void __63__PLDisplayAgent_handleBrightnessClientNotification_withValue___block_i
   [*(a1 + 40) logEventForwardLuxStats:v2];
 }
 
-- (void)extractDataWithEntry:(id)a3 withColName:(id)a4 withDataArray:(id)a5
+- (void)extractDataWithEntry:(id)entry withColName:(id)name withDataArray:(id)array
 {
-  v22 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 count];
+  entryCopy = entry;
+  nameCopy = name;
+  arrayCopy = array;
+  v9 = [arrayCopy count];
   if (v9)
   {
     v10 = v9;
     for (i = 0; i != v10; ++i)
     {
       v12 = @"ACBins";
-      if (([(__CFString *)v7 isEqualToString:@"AmbientColorBins"]& 1) != 0 || (v12 = @"DCBins", ([(__CFString *)v7 isEqualToString:@"DisplayColorBins"]& 1) != 0) || (v12 = @"ASBins", ([(__CFString *)v7 isEqualToString:@"AdaptationStrengthBins"]& 1) != 0) || (v12 = @"ACABins", ([(__CFString *)v7 isEqualToString:@"AmbientColorBinsAnsi"]& 1) != 0) || (v12 = @"ACTBins", ([(__CFString *)v7 isEqualToString:@"AmbientColorTransitionBins"]& 1) != 0) || (v12 = @"DCTBins", [(__CFString *)v7 isEqualToString:@"DisplayColorTransitionBins"]))
+      if (([(__CFString *)nameCopy isEqualToString:@"AmbientColorBins"]& 1) != 0 || (v12 = @"DCBins", ([(__CFString *)nameCopy isEqualToString:@"DisplayColorBins"]& 1) != 0) || (v12 = @"ASBins", ([(__CFString *)nameCopy isEqualToString:@"AdaptationStrengthBins"]& 1) != 0) || (v12 = @"ACABins", ([(__CFString *)nameCopy isEqualToString:@"AmbientColorBinsAnsi"]& 1) != 0) || (v12 = @"ACTBins", ([(__CFString *)nameCopy isEqualToString:@"AmbientColorTransitionBins"]& 1) != 0) || (v12 = @"DCTBins", [(__CFString *)nameCopy isEqualToString:@"DisplayColorTransitionBins"]))
       {
 
-        v7 = v12;
+        nameCopy = v12;
       }
 
-      v13 = [v8 objectAtIndexedSubscript:i];
-      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%lu", v7, i];
-      [v22 setObject:v13 forKeyedSubscript:v14];
+      v13 = [arrayCopy objectAtIndexedSubscript:i];
+      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%lu", nameCopy, i];
+      [entryCopy setObject:v13 forKeyedSubscript:v14];
     }
   }
 
@@ -6185,12 +6185,12 @@ void __63__PLDisplayAgent_handleBrightnessClientNotification_withValue___block_i
 
     if (extractDataWithEntry_withColName_withDataArray__classDebugEnabled == 1)
     {
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s-%d: col=%@, data=%@, entry=%@", "-[PLDisplayAgent extractDataWithEntry:withColName:withDataArray:]", 3615, v7, v8, v22];
+      entryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s-%d: col=%@, data=%@, entry=%@", "-[PLDisplayAgent extractDataWithEntry:withColName:withDataArray:]", 3615, nameCopy, arrayCopy, entryCopy];
       v17 = MEMORY[0x277D3F178];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLDisplayAgent.m"];
-      v19 = [v18 lastPathComponent];
+      lastPathComponent = [v18 lastPathComponent];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDisplayAgent extractDataWithEntry:withColName:withDataArray:]"];
-      [v17 logMessage:v16 fromFile:v19 fromFunction:v20 fromLineNumber:3615];
+      [v17 logMessage:entryCopy fromFile:lastPathComponent fromFunction:v20 fromLineNumber:3615];
 
       v21 = PLLogCommon();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -6208,13 +6208,13 @@ uint64_t __65__PLDisplayAgent_extractDataWithEntry_withColName_withDataArray___b
   return result;
 }
 
-- (void)logBrightnessDataWithEntryKey:(id)a3 withColName:(id)a4 withValue:(id)a5
+- (void)logBrightnessDataWithEntryKey:(id)key withColName:(id)name withValue:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v8];
-  [v11 setObject:v10 forKeyedSubscript:v9];
+  keyCopy = key;
+  nameCopy = name;
+  valueCopy = value;
+  v11 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:keyCopy];
+  [v11 setObject:valueCopy forKeyedSubscript:nameCopy];
   [(PLOperator *)self logEntry:v11];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -6231,12 +6231,12 @@ uint64_t __65__PLDisplayAgent_extractDataWithEntry_withColName_withDataArray___b
 
     if (logBrightnessDataWithEntryKey_withColName_withValue__classDebugEnabled == 1)
     {
-      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s-%d: entryKey=%@, col=%@, value=%@", "-[PLDisplayAgent logBrightnessDataWithEntryKey:withColName:withValue:]", 3622, v8, v9, v10, block, v20, v21, v22, v23];
+      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s-%d: entryKey=%@, col=%@, value=%@", "-[PLDisplayAgent logBrightnessDataWithEntryKey:withColName:withValue:]", 3622, keyCopy, nameCopy, valueCopy, block, v20, v21, v22, v23];
       v14 = MEMORY[0x277D3F178];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLDisplayAgent.m"];
-      v16 = [v15 lastPathComponent];
+      lastPathComponent = [v15 lastPathComponent];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDisplayAgent logBrightnessDataWithEntryKey:withColName:withValue:]"];
-      [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:3622];
+      [v14 logMessage:v13 fromFile:lastPathComponent fromFunction:v17 fromLineNumber:3622];
 
       v18 = PLLogCommon();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -6424,39 +6424,39 @@ uint64_t __45__PLDisplayAgent_shouldLogKeyboardBrightness__block_invoke()
 
 + (BOOL)shouldLogLuxStats
 {
-  v2 = [MEMORY[0x277D3F1B8] isiPhone];
-  if (v2)
+  isiPhone = [MEMORY[0x277D3F1B8] isiPhone];
+  if (isiPhone)
   {
     v3 = MEMORY[0x277D3F1B8];
 
-    LOBYTE(v2) = [v3 hasRearALS];
+    LOBYTE(isiPhone) = [v3 hasRearALS];
   }
 
-  return v2;
+  return isiPhone;
 }
 
-- (void)logBlueLightDataWithDictionary:(id)a3
+- (void)logBlueLightDataWithDictionary:(id)dictionary
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PLDisplayAgent *)self bluelightFilterTimer];
+  dictionaryCopy = dictionary;
+  bluelightFilterTimer = [(PLDisplayAgent *)self bluelightFilterTimer];
 
-  if (!v5)
+  if (!bluelightFilterTimer)
   {
     objc_initWeak(&location, self);
     v6 = objc_alloc(MEMORY[0x277D3F250]);
     v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.5];
-    v8 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __49__PLDisplayAgent_logBlueLightDataWithDictionary___block_invoke;
     v32[3] = &unk_279A5E8A0;
     objc_copyWeak(&v33, &location);
-    v9 = [v6 initWithFireDate:v7 withInterval:0 withTolerance:0 repeats:v8 withUserInfo:v32 withQueue:0.0 withBlock:0.0];
+    v9 = [v6 initWithFireDate:v7 withInterval:0 withTolerance:0 repeats:workQueue withUserInfo:v32 withQueue:0.0 withBlock:0.0];
     [(PLDisplayAgent *)self setBluelightFilterTimer:v9];
 
-    v10 = [(PLDisplayAgent *)self bluelightFilterTimer];
-    [v10 arm];
+    bluelightFilterTimer2 = [(PLDisplayAgent *)self bluelightFilterTimer];
+    [bluelightFilterTimer2 arm];
 
     objc_destroyWeak(&v33);
     objc_destroyWeak(&location);
@@ -6464,12 +6464,12 @@ uint64_t __45__PLDisplayAgent_shouldLogKeyboardBrightness__block_invoke()
 
   v11 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"BlueLightReductionStatus"];
   v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
-  v13 = [v4 allKeys];
+  allKeys = [dictionaryCopy allKeys];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v14 = [v13 countByEnumeratingWithState:&v28 objects:v35 count:16];
+  v14 = [allKeys countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v14)
   {
     v15 = *v29;
@@ -6479,15 +6479,15 @@ uint64_t __45__PLDisplayAgent_shouldLogKeyboardBrightness__block_invoke()
       {
         if (*v29 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allKeys);
         }
 
         v17 = *(*(&v28 + 1) + 8 * i);
-        v18 = [v4 objectForKeyedSubscript:v17];
+        v18 = [dictionaryCopy objectForKeyedSubscript:v17];
         [v12 setObject:v18 forKeyedSubscript:v17];
       }
 
-      v14 = [v13 countByEnumeratingWithState:&v28 objects:v35 count:16];
+      v14 = [allKeys countByEnumeratingWithState:&v28 objects:v35 count:16];
     }
 
     while (v14);
@@ -6512,9 +6512,9 @@ uint64_t __45__PLDisplayAgent_shouldLogKeyboardBrightness__block_invoke()
       v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s-%d: entryKey=%@, entry=%@", "-[PLDisplayAgent logBlueLightDataWithDictionary:]", 3734, v11, v12];
       v21 = MEMORY[0x277D3F178];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLDisplayAgent.m"];
-      v23 = [v22 lastPathComponent];
+      lastPathComponent = [v22 lastPathComponent];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDisplayAgent logBlueLightDataWithDictionary:]"];
-      [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:3734];
+      [v21 logMessage:v20 fromFile:lastPathComponent fromFunction:v24 fromLineNumber:3734];
 
       v25 = PLLogCommon();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -6542,15 +6542,15 @@ uint64_t __49__PLDisplayAgent_logBlueLightDataWithDictionary___block_invoke_2(ui
 
 - (void)reArmCallback
 {
-  v3 = [(PLDisplayAgent *)self bluelightStatusEntry];
-  [(PLOperator *)self logEntry:v3];
+  bluelightStatusEntry = [(PLDisplayAgent *)self bluelightStatusEntry];
+  [(PLOperator *)self logEntry:bluelightStatusEntry];
 
-  v4 = [(PLDisplayAgent *)self bluelightFilterTimer];
+  bluelightFilterTimer = [(PLDisplayAgent *)self bluelightFilterTimer];
 
-  if (v4)
+  if (bluelightFilterTimer)
   {
-    v5 = [(PLDisplayAgent *)self bluelightFilterTimer];
-    [v5 invalidate];
+    bluelightFilterTimer2 = [(PLDisplayAgent *)self bluelightFilterTimer];
+    [bluelightFilterTimer2 invalidate];
   }
 
   [(PLDisplayAgent *)self setBluelightFilterTimer:0];
@@ -6586,14 +6586,14 @@ uint64_t __32__PLDisplayAgent_shouldLogTouch__block_invoke()
   v4 = IOHIDEventSystemClientCreate();
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v6 = [MEMORY[0x277CCABB0] numberWithInt:13];
-    [v5 setObject:v6 forKey:@"DeviceUsagePage"];
+    [dictionary setObject:v6 forKey:@"DeviceUsagePage"];
 
     v7 = [MEMORY[0x277CCABB0] numberWithBool:1];
-    [v5 setObject:v7 forKey:@"Built-In"];
+    [dictionary setObject:v7 forKey:@"Built-In"];
 
-    v8 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     IOHIDEventSystemClientScheduleWithDispatchQueue();
 
     IOHIDEventSystemClientRegisterEventCallback();
@@ -6603,15 +6603,15 @@ uint64_t __32__PLDisplayAgent_shouldLogTouch__block_invoke()
   return v4;
 }
 
-- (BOOL)updateDisplayIOReportStats:(id)a3 logZeroFramesOnlyOnce:(BOOL)a4
+- (BOOL)updateDisplayIOReportStats:(id)stats logZeroFramesOnlyOnce:(BOOL)once
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 subscription])
+  onceCopy = once;
+  statsCopy = stats;
+  v6 = statsCopy;
+  if (statsCopy && [statsCopy subscription])
   {
     [v6 subscription];
-    v7 = [v6 subscribedChannels];
+    subscribedChannels = [v6 subscribedChannels];
     Samples = IOReportCreateSamples();
 
     if (!Samples)
@@ -6622,22 +6622,22 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    v9 = [MEMORY[0x277CBEAA8] monotonicDate];
-    v10 = [v6 ioReportSample];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    ioReportSample = [v6 ioReportSample];
 
-    if (!v10)
+    if (!ioReportSample)
     {
 LABEL_39:
       [v6 setIoReportSample:Samples];
       SamplesDelta = [v6 sampleTime];
       [v6 setSampleTimePrevious:SamplesDelta];
 
-      [v6 setSampleTime:v9];
+      [v6 setSampleTime:monotonicDate];
       LOBYTE(SamplesDelta) = 1;
       goto LABEL_41;
     }
 
-    v11 = [v6 ioReportSample];
+    ioReportSample2 = [v6 ioReportSample];
     SamplesDelta = IOReportCreateSamplesDelta();
 
     if (!SamplesDelta)
@@ -6679,8 +6679,8 @@ LABEL_41:
     v57 = 0;
     v13 = objc_alloc_init(PLDisplayAPLStats);
     IOReportIterate();
-    v14 = [v6 sampleTime];
-    [v9 timeIntervalSinceDate:v14];
+    sampleTime = [v6 sampleTime];
+    [monotonicDate timeIntervalSinceDate:sampleTime];
     v16 = v15;
 
     if (v16 <= 0.0 || ([v61[5] doubleValue], v17 <= 0.0))
@@ -6720,19 +6720,19 @@ LABEL_41:
       [(PLDisplayAPLStats *)v13 setAvgAPL:v25];
     }
 
-    v26 = [(PLDisplayAPLStats *)v13 frames];
-    if (v26)
+    frames = [(PLDisplayAPLStats *)v13 frames];
+    if (frames)
     {
-      v27 = [(PLDisplayAPLStats *)v13 frames];
-      v28 = [v27 intValue];
+      frames2 = [(PLDisplayAPLStats *)v13 frames];
+      intValue = [frames2 intValue];
 
-      if (v28 >= 1)
+      if (intValue >= 1)
       {
-        v29 = [(PLDisplayAPLStats *)v13 avgRed];
-        [v29 doubleValue];
+        avgRed = [(PLDisplayAPLStats *)v13 avgRed];
+        [avgRed doubleValue];
         v31 = v30;
-        v32 = [(PLDisplayAPLStats *)v13 frames];
-        [v32 doubleValue];
+        frames3 = [(PLDisplayAPLStats *)v13 frames];
+        [frames3 doubleValue];
         v34 = v31 / v33;
 
         v35 = 0;
@@ -6749,11 +6749,11 @@ LABEL_41:
         v36 = [MEMORY[0x277CCABB0] numberWithDouble:v34];
         [(PLDisplayAPLStats *)v13 setAvgRed:v36];
 
-        v37 = [(PLDisplayAPLStats *)v13 avgGreen];
-        [v37 doubleValue];
+        avgGreen = [(PLDisplayAPLStats *)v13 avgGreen];
+        [avgGreen doubleValue];
         v39 = v38;
-        v40 = [(PLDisplayAPLStats *)v13 frames];
-        [v40 doubleValue];
+        frames4 = [(PLDisplayAPLStats *)v13 frames];
+        [frames4 doubleValue];
         v42 = v39 / v41;
 
         v35 = 0;
@@ -6770,11 +6770,11 @@ LABEL_41:
         v43 = [MEMORY[0x277CCABB0] numberWithDouble:v42];
         [(PLDisplayAPLStats *)v13 setAvgGreen:v43];
 
-        v44 = [(PLDisplayAPLStats *)v13 avgBlue];
-        [v44 doubleValue];
+        avgBlue = [(PLDisplayAPLStats *)v13 avgBlue];
+        [avgBlue doubleValue];
         v46 = v45;
-        v47 = [(PLDisplayAPLStats *)v13 frames];
-        [v47 doubleValue];
+        frames5 = [(PLDisplayAPLStats *)v13 frames];
+        [frames5 doubleValue];
         v49 = v46 / v48;
 
         v35 = 0;
@@ -6810,15 +6810,15 @@ LABEL_37:
       }
     }
 
-    v52 = [(PLDisplayAPLStats *)v13 frames];
-    if (v52)
+    frames6 = [(PLDisplayAPLStats *)v13 frames];
+    if (frames6)
     {
-      v53 = [(PLDisplayAPLStats *)v13 frames];
-      v54 = [v53 intValue];
+      frames7 = [(PLDisplayAPLStats *)v13 frames];
+      intValue2 = [frames7 intValue];
 
-      if ((v54 & 0x80000000) == 0)
+      if ((intValue2 & 0x80000000) == 0)
       {
-        if (!v4 || updateDisplayIOReportStats_logZeroFramesOnlyOnce__gotZeroFrameAlready != 1)
+        if (!onceCopy || updateDisplayIOReportStats_logZeroFramesOnlyOnce__gotZeroFrameAlready != 1)
         {
           v51 = 1;
           goto LABEL_37;
@@ -6921,7 +6921,7 @@ LABEL_23:
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)__FrameBufferEventCallback:(__IOMobileFramebuffer *)a3
+- (void)__FrameBufferEventCallback:(__IOMobileFramebuffer *)callback
 {
   v53 = *MEMORY[0x277D85DE8];
   v3 = malloc_type_aligned_alloc(0x4000uLL, 0x4000uLL, 0x100004052888210uLL);
@@ -6933,8 +6933,8 @@ LABEL_23:
   }
 
   v34 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"AZLSnapshots"];
-  v5 = [MEMORY[0x277CBEB18] array];
-  v36 = [MEMORY[0x277CBEAA8] monotonicDate];
+  array = [MEMORY[0x277CBEB18] array];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   if (*v3)
   {
     v7 = 0;
@@ -6947,7 +6947,7 @@ LABEL_23:
     {
       v11 = objc_alloc(MEMORY[0x277D3F190]);
       v12 = [(PLOperator *)PLDisplayAgent entryKeyForType:v10 andName:@"AZLSnapshots"];
-      v13 = [v11 initWithEntryKey:v12 withDate:v36];
+      v13 = [v11 initWithEntryKey:v12 withDate:monotonicDate];
 
       v14 = PLLogDisplay();
       v15 = v7;
@@ -7000,7 +7000,7 @@ LABEL_23:
       v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v16[7]];
       [v13 setObject:v23 forKeyedSubscript:@"PacketID"];
 
-      [v5 addObject:v13];
+      [array addObject:v13];
       ++v8;
       v7 += 7;
       v9 += 7;
@@ -7009,10 +7009,10 @@ LABEL_23:
     while (v8 < *v3);
   }
 
-  if ([v5 count])
+  if ([array count])
   {
     v37 = v34;
-    v38 = v5;
+    v38 = array;
     v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
     [(PLOperator *)self logEntries:v31 withGroupID:v34];
   }
@@ -7067,15 +7067,15 @@ uint64_t __43__PLDisplayAgent_shouldModelPowerFromIOMFB__block_invoke()
   return result;
 }
 
-- (void)updateLastForegroundAppAPL:(id)a3
+- (void)updateLastForegroundAppAPL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v20 = v4;
-    v5 = [v4 objectForKey:@"entry"];
+    v20 = lCopy;
+    v5 = [lCopy objectForKey:@"entry"];
 
-    v4 = v20;
+    lCopy = v20;
     if (v5)
     {
       v6 = [v20 objectForKey:@"entry"];
@@ -7106,7 +7106,7 @@ uint64_t __43__PLDisplayAgent_shouldModelPowerFromIOMFB__block_invoke()
         [(PLDisplayAgent *)self setLastForegroundAppAPL:0];
       }
 
-      v4 = v20;
+      lCopy = v20;
     }
   }
 }
@@ -7142,17 +7142,17 @@ uint64_t __43__PLDisplayAgent_shouldModelPowerFromIOMFB__block_invoke()
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)modelDisplayPower:(id)a3
+- (void)modelDisplayPower:(id)power
 {
-  v4 = a3;
+  powerCopy = power;
   if (([MEMORY[0x277D3F208] hasCapability:0] & 1) == 0)
   {
-    v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-    v6 = [v4 objectForKeyedSubscript:@"Brightness"];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    v6 = [powerCopy objectForKeyedSubscript:@"Brightness"];
     [v6 doubleValue];
     v8 = v7;
 
-    v9 = [v4 objectForKeyedSubscript:@"uAmps"];
+    v9 = [powerCopy objectForKeyedSubscript:@"uAmps"];
     [v9 doubleValue];
     v11 = v10;
 
@@ -7178,12 +7178,12 @@ uint64_t __43__PLDisplayAgent_shouldModelPowerFromIOMFB__block_invoke()
 
       if (modelDisplayPower__classDebugEnabled == 1)
       {
-        v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"raw data %@, brightness %f, uAmps %f, power %f", v4, *&v8, *&v11, *&v12];
+        v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"raw data %@, brightness %f, uAmps %f, power %f", powerCopy, *&v8, *&v11, *&v12];
         v16 = MEMORY[0x277D3F178];
         v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLDisplayAgent.m"];
-        v18 = [v17 lastPathComponent];
+        lastPathComponent = [v17 lastPathComponent];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDisplayAgent modelDisplayPower:]"];
-        [v16 logMessage:v15 fromFile:v18 fromFunction:v19 fromLineNumber:4551];
+        [v16 logMessage:v15 fromFile:lastPathComponent fromFunction:v19 fromLineNumber:4551];
 
         v20 = PLLogCommon();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -7193,8 +7193,8 @@ uint64_t __43__PLDisplayAgent_shouldModelPowerFromIOMFB__block_invoke()
       }
     }
 
-    v21 = [MEMORY[0x277D3F0C0] sharedInstance];
-    [v21 createPowerEventForwardWithRootNodeID:10 withPower:v5 withStartDate:v12];
+    mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+    [mEMORY[0x277D3F0C0] createPowerEventForwardWithRootNodeID:10 withPower:monotonicDate withStartDate:v12];
   }
 }
 
@@ -7205,20 +7205,20 @@ uint64_t __36__PLDisplayAgent_modelDisplayPower___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)qualifyDisplayPower:(id)a3
+- (void)qualifyDisplayPower:(id)power
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"Brightness"];
+  powerCopy = power;
+  v5 = [powerCopy objectForKeyedSubscript:@"Brightness"];
   [v5 doubleValue];
   v7 = v6;
 
-  v8 = [MEMORY[0x277CBEAA8] monotonicDate];
-  v9 = [(PLDisplayAgent *)self isFirstTimeModeling];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  isFirstTimeModeling = [(PLDisplayAgent *)self isFirstTimeModeling];
   v10 = MEMORY[0x277CBEBF8];
-  if (v9 || (v11 = [(PLDisplayAgent *)self wasDisplayOn], v11 != [(PLDisplayAgent *)self isDisplayOnNow]))
+  if (isFirstTimeModeling || (v11 = [(PLDisplayAgent *)self wasDisplayOn], v11 != [(PLDisplayAgent *)self isDisplayOnNow]))
   {
-    v12 = [MEMORY[0x277D3F0C0] sharedInstance];
+    mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
     if ([(PLDisplayAgent *)self isDisplayOnNow])
     {
       v13 = &unk_28714DB98;
@@ -7229,7 +7229,7 @@ uint64_t __36__PLDisplayAgent_modelDisplayPower___block_invoke(uint64_t a1)
       v13 = v10;
     }
 
-    [v12 createQualificationEventForwardWithQualificationID:5 withChildNodeNames:v13 withStartDate:v8];
+    [mEMORY[0x277D3F0C0] createQualificationEventForwardWithQualificationID:5 withChildNodeNames:v13 withStartDate:monotonicDate];
 
     [(PLDisplayAgent *)self setWasDisplayOn:[(PLDisplayAgent *)self isDisplayOnNow]];
   }
@@ -7240,11 +7240,11 @@ uint64_t __36__PLDisplayAgent_modelDisplayPower___block_invoke(uint64_t a1)
     v20 = 134218754;
     v21 = v7;
     v22 = 2112;
-    v23 = v4;
+    v23 = powerCopy;
     v24 = 1024;
     v25 = v7 > 80.0;
     v26 = 1024;
-    v27 = [(PLDisplayAgent *)self isDisplayHighBrightness];
+    isDisplayHighBrightness = [(PLDisplayAgent *)self isDisplayHighBrightness];
     _os_log_debug_impl(&dword_25EE51000, v14, OS_LOG_TYPE_DEBUG, "brightness=%f, entry=%@, isHighBrightnessNow=%d, isHighBrightnessPrevious=%d", &v20, 0x22u);
   }
 
@@ -7256,8 +7256,8 @@ uint64_t __36__PLDisplayAgent_modelDisplayPower___block_invoke(uint64_t a1)
       [PLDisplayAgent qualifyDisplayPower:];
     }
 
-    v16 = [MEMORY[0x277D3F0C0] sharedInstance];
-    v17 = v16;
+    mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+    v17 = mEMORY[0x277D3F0C0]2;
     if (v7 <= 80.0)
     {
       v18 = v10;
@@ -7268,7 +7268,7 @@ uint64_t __36__PLDisplayAgent_modelDisplayPower___block_invoke(uint64_t a1)
       v18 = &unk_28714DBB0;
     }
 
-    [v16 createQualificationEventForwardWithQualificationID:6 withChildNodeNames:v18 withStartDate:{v8, 80.0}];
+    [mEMORY[0x277D3F0C0]2 createQualificationEventForwardWithQualificationID:6 withChildNodeNames:v18 withStartDate:{monotonicDate, 80.0}];
 
     [(PLDisplayAgent *)self setIsDisplayHighBrightness:v7 > 80.0];
   }
@@ -7278,21 +7278,21 @@ uint64_t __36__PLDisplayAgent_modelDisplayPower___block_invoke(uint64_t a1)
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (double)uAmpsToDisplayPower:(double)a3
+- (double)uAmpsToDisplayPower:(double)power
 {
   v3 = 0.0;
-  if (a3 > 0.0)
+  if (power > 0.0)
   {
-    v6 = [(PLDisplayAgent *)self displayPowerModel];
-    v7 = [v6 objectForKeyedSubscript:@"slope2"];
+    displayPowerModel = [(PLDisplayAgent *)self displayPowerModel];
+    v7 = [displayPowerModel objectForKeyedSubscript:@"slope2"];
     [v7 doubleValue];
-    v9 = v8 * 0.0000001 * a3;
-    v10 = [(PLDisplayAgent *)self displayPowerModel];
-    v11 = [v10 objectForKeyedSubscript:@"slope"];
+    v9 = v8 * 0.0000001 * power;
+    displayPowerModel2 = [(PLDisplayAgent *)self displayPowerModel];
+    v11 = [displayPowerModel2 objectForKeyedSubscript:@"slope"];
     [v11 doubleValue];
-    v13 = v12 * a3 + v9 * a3;
-    v14 = [(PLDisplayAgent *)self displayPowerModel];
-    v15 = [v14 objectForKeyedSubscript:@"intercept"];
+    v13 = v12 * power + v9 * power;
+    displayPowerModel3 = [(PLDisplayAgent *)self displayPowerModel];
+    v15 = [displayPowerModel3 objectForKeyedSubscript:@"intercept"];
     [v15 doubleValue];
     v3 = v13 + v16;
   }
@@ -7333,15 +7333,15 @@ uint64_t __37__PLDisplayAgent_getIOMFBSubFrameMap__block_invoke()
   return [v2 setObject:&unk_28714B8F8 forKeyedSubscript:@"subframes_10"];
 }
 
-- (double)averageFrameRateFromIOMFBScanout:(id)a3
+- (double)averageFrameRateFromIOMFBScanout:(id)scanout
 {
-  v4 = a3;
-  if (v4)
+  scanoutCopy = scanout;
+  if (scanoutCopy)
   {
-    v5 = [(PLDisplayAgent *)self getIOMFBSubFrameMap];
-    v6 = v5;
+    getIOMFBSubFrameMap = [(PLDisplayAgent *)self getIOMFBSubFrameMap];
+    v6 = getIOMFBSubFrameMap;
     v7 = 0.0;
-    if (v5 && [v5 count] == 11)
+    if (getIOMFBSubFrameMap && [getIOMFBSubFrameMap count] == 11)
     {
       v19 = 0;
       v20 = &v19;
@@ -7355,7 +7355,7 @@ uint64_t __37__PLDisplayAgent_getIOMFBSubFrameMap__block_invoke()
       v11[1] = 3221225472;
       v11[2] = __51__PLDisplayAgent_averageFrameRateFromIOMFBScanout___block_invoke;
       v11[3] = &unk_279A5C628;
-      v12 = v4;
+      v12 = scanoutCopy;
       v13 = &v19;
       v14 = &v15;
       [v6 enumerateKeysAndObjectsUsingBlock:v11];
@@ -7410,16 +7410,16 @@ double __51__PLDisplayAgent_averageFrameRateFromIOMFBScanout___block_invoke(void
   return result;
 }
 
-- (void)modelDynamicDisplayPower:(id)a3
+- (void)modelDynamicDisplayPower:(id)power
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  powerCopy = power;
+  v5 = powerCopy;
+  if (!powerCopy)
   {
     goto LABEL_51;
   }
 
-  v6 = [v4 objectForKey:@"entry"];
+  v6 = [powerCopy objectForKey:@"entry"];
   v62 = v6;
   if (!v6)
   {
@@ -7447,9 +7447,9 @@ double __51__PLDisplayAgent_averageFrameRateFromIOMFBScanout___block_invoke(void
     v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: No entry object in IOMFBScanout entry"];
     v52 = MEMORY[0x277D3F178];
     v53 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLDisplayAgent.m"];
-    v54 = [v53 lastPathComponent];
+    lastPathComponent = [v53 lastPathComponent];
     v55 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDisplayAgent modelDynamicDisplayPower:]"];
-    [v52 logMessage:v51 fromFile:v54 fromFunction:v55 fromLineNumber:4653];
+    [v52 logMessage:v51 fromFile:lastPathComponent fromFunction:v55 fromLineNumber:4653];
 
     v56 = PLLogCommon();
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
@@ -7489,9 +7489,9 @@ LABEL_47:
     v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: No display states recorded"];
     v58 = MEMORY[0x277D3F178];
     v59 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLDisplayAgent.m"];
-    v60 = [v59 lastPathComponent];
+    lastPathComponent2 = [v59 lastPathComponent];
     v61 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDisplayAgent modelDynamicDisplayPower:]"];
-    [v58 logMessage:v51 fromFile:v60 fromFunction:v61 fromLineNumber:4655];
+    [v58 logMessage:v51 fromFile:lastPathComponent2 fromFunction:v61 fromLineNumber:4655];
 
     v56 = PLLogCommon();
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
@@ -7517,24 +7517,24 @@ LABEL_47:
 
   [(PLDisplayAgent *)self averageFrameRateFromIOMFBScanout:v62];
   v15 = v14;
-  v16 = [(PLDisplayAgent *)self displayPowerModel];
-  v17 = [v16 objectForKeyedSubscript:@"dyn_slope"];
+  displayPowerModel = [(PLDisplayAgent *)self displayPowerModel];
+  v17 = [displayPowerModel objectForKeyedSubscript:@"dyn_slope"];
   v18 = 0.0;
   v19 = 0.0;
   if (v17)
   {
-    v20 = [(PLDisplayAgent *)self displayPowerModel];
-    v21 = [v20 objectForKeyedSubscript:@"dyn_slope"];
+    displayPowerModel2 = [(PLDisplayAgent *)self displayPowerModel];
+    v21 = [displayPowerModel2 objectForKeyedSubscript:@"dyn_slope"];
     [v21 doubleValue];
     v19 = v22;
   }
 
-  v23 = [(PLDisplayAgent *)self displayPowerModel];
-  v24 = [v23 objectForKeyedSubscript:@"dyn_intercept"];
+  displayPowerModel3 = [(PLDisplayAgent *)self displayPowerModel];
+  v24 = [displayPowerModel3 objectForKeyedSubscript:@"dyn_intercept"];
   if (v24)
   {
-    v25 = [(PLDisplayAgent *)self displayPowerModel];
-    v26 = [v25 objectForKeyedSubscript:@"dyn_intercept"];
+    displayPowerModel4 = [(PLDisplayAgent *)self displayPowerModel];
+    v26 = [displayPowerModel4 objectForKeyedSubscript:@"dyn_intercept"];
     [v26 doubleValue];
     v18 = v27;
   }
@@ -7608,14 +7608,14 @@ LABEL_25:
     v43 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:v39];
     if (([v36 BOOLValue] & 1) == 0)
     {
-      v44 = [MEMORY[0x277D3F0C0] sharedInstance];
-      [v44 createPowerEventIntervalWithRootNodeID:56 withPower:v42 withStartDate:v43 withEndDate:0.0];
+      mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+      [mEMORY[0x277D3F0C0] createPowerEventIntervalWithRootNodeID:56 withPower:v42 withStartDate:v43 withEndDate:0.0];
     }
 
     if ([v36 BOOLValue])
     {
-      v45 = [MEMORY[0x277D3F0C0] sharedInstance];
-      [v45 createPowerEventIntervalWithRootNodeID:56 withPower:v42 withStartDate:v43 withEndDate:v28];
+      mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+      [mEMORY[0x277D3F0C0]2 createPowerEventIntervalWithRootNodeID:56 withPower:v42 withStartDate:v43 withEndDate:v28];
     }
 
     if (v31 < 2)
@@ -7664,7 +7664,7 @@ uint64_t __43__PLDisplayAgent_modelDynamicDisplayPower___block_invoke_2016(uint6
   return result;
 }
 
-- (double)calculatePowerFromAPL:(double)a3 withAvgRed:(double)a4 withAvgGreen:(double)a5 withAvgBlue:(double)a6
+- (double)calculatePowerFromAPL:(double)l withAvgRed:(double)red withAvgGreen:(double)green withAvgBlue:(double)blue
 {
   v9 = [(NSDictionary *)self->_displayPowerModel objectForKeyedSubscript:@"static_power"];
   v10 = 0.0;
@@ -7691,7 +7691,7 @@ uint64_t __43__PLDisplayAgent_modelDynamicDisplayPower___block_invoke_2016(uint6
   {
     v20 = [(NSDictionary *)self->_displayPowerModel objectForKeyedSubscript:@"red_norm_slope"];
     [v20 doubleValue];
-    v19 = v21 * 0.000001 * a3;
+    v19 = v21 * 0.000001 * l;
   }
 
   v22 = [(NSDictionary *)self->_displayPowerModel objectForKeyedSubscript:@"green_norm_slope"];
@@ -7699,7 +7699,7 @@ uint64_t __43__PLDisplayAgent_modelDynamicDisplayPower___block_invoke_2016(uint6
   {
     v23 = [(NSDictionary *)self->_displayPowerModel objectForKeyedSubscript:@"green_norm_slope"];
     [v23 doubleValue];
-    v18 = v24 * 0.000001 * a3;
+    v18 = v24 * 0.000001 * l;
   }
 
   v25 = [(NSDictionary *)self->_displayPowerModel objectForKeyedSubscript:@"blue_norm_slope"];
@@ -7707,7 +7707,7 @@ uint64_t __43__PLDisplayAgent_modelDynamicDisplayPower___block_invoke_2016(uint6
   {
     v26 = [(NSDictionary *)self->_displayPowerModel objectForKeyedSubscript:@"blue_norm_slope"];
     [v26 doubleValue];
-    v28 = v27 * 0.000001 * a3;
+    v28 = v27 * 0.000001 * l;
   }
 
   else
@@ -7799,7 +7799,7 @@ uint64_t __43__PLDisplayAgent_modelDynamicDisplayPower___block_invoke_2016(uint6
     v43 = 1.0;
   }
 
-  v44 = v41 * a4 / 255.0 + v42 * a5 / 255.0 + v43 * a6 / 255.0;
+  v44 = v41 * red / 255.0 + v42 * green / 255.0 + v43 * blue / 255.0;
   v45 = [(NSDictionary *)self->_displayPowerModel objectForKeyedSubscript:@"mnit_scale_values"];
   v46 = 0.0;
   if (v45)
@@ -7812,12 +7812,12 @@ uint64_t __43__PLDisplayAgent_modelDynamicDisplayPower___block_invoke_2016(uint6
     if (isKindOfClass)
     {
       v50 = [(NSDictionary *)self->_displayPowerModel objectForKeyedSubscript:@"mnit_scale_values"];
-      [PLUtilities scaledPowerBasedOnPoint:v50 withPowerModel:a3];
+      [PLUtilities scaledPowerBasedOnPoint:v50 withPowerModel:l];
       v46 = v51;
     }
   }
 
-  v52 = v44 * (v46 * a3);
+  v52 = v44 * (v46 * l);
   if (v52 > 5000.0 || v52 < 0.0)
   {
     v52 = 0.0;
@@ -7839,12 +7839,12 @@ uint64_t __43__PLDisplayAgent_modelDynamicDisplayPower___block_invoke_2016(uint6
 
     if (calculatePowerFromAPL_withAvgRed_withAvgGreen_withAvgBlue__classDebugEnabled == 1)
     {
-      v56 = [MEMORY[0x277CCACA8] stringWithFormat:@"mNits: %f\tavgRed: %f\tavgGreen: %f\tavgBlue: %f\tnormalizedColorSum: %.2f\tPower: %.2f", *&a3, *&a4, *&a5, *&a6, *&v44, *&v54];
+      v56 = [MEMORY[0x277CCACA8] stringWithFormat:@"mNits: %f\tavgRed: %f\tavgGreen: %f\tavgBlue: %f\tnormalizedColorSum: %.2f\tPower: %.2f", *&l, *&red, *&green, *&blue, *&v44, *&v54];
       v57 = MEMORY[0x277D3F178];
       v58 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLDisplayAgent.m"];
-      v59 = [v58 lastPathComponent];
+      lastPathComponent = [v58 lastPathComponent];
       v60 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDisplayAgent calculatePowerFromAPL:withAvgRed:withAvgGreen:withAvgBlue:]"];
-      [v57 logMessage:v56 fromFile:v59 fromFunction:v60 fromLineNumber:4832];
+      [v57 logMessage:v56 fromFile:lastPathComponent fromFunction:v60 fromLineNumber:4832];
 
       v61 = PLLogCommon();
       if (os_log_type_enabled(v61, OS_LOG_TYPE_DEBUG))
@@ -7864,11 +7864,11 @@ uint64_t __76__PLDisplayAgent_calculatePowerFromAPL_withAvgRed_withAvgGreen_with
   return result;
 }
 
-- (void)modelDisplayPowerFromIOMFB:(id)a3
+- (void)modelDisplayPowerFromIOMFB:(id)b
 {
-  v4 = [a3 displayAPLStats];
-  v5 = [v4 avgPower];
-  [v5 doubleValue];
+  displayAPLStats = [b displayAPLStats];
+  avgPower = [displayAPLStats avgPower];
+  [avgPower doubleValue];
   v7 = v6;
 
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -7889,9 +7889,9 @@ uint64_t __76__PLDisplayAgent_calculatePowerFromAPL_withAvgRed_withAvgGreen_with
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Display power: %f", *&v7];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLDisplayAgent.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDisplayAgent modelDisplayPowerFromIOMFB:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:4846];
+      [v10 logMessage:v9 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:4846];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -7917,15 +7917,15 @@ uint64_t __76__PLDisplayAgent_calculatePowerFromAPL_withAvgRed_withAvgGreen_with
     if (modelDisplayPowerFromIOMFB__classDebugEnabled_2063 == 1)
     {
       v16 = MEMORY[0x277CCACA8];
-      v17 = [(PLIOReportStats *)self->_displayIOReportStats sampleTimePrevious];
-      v18 = [(PLIOReportStats *)self->_displayIOReportStats sampleTime];
-      v19 = [v16 stringWithFormat:@"SampleTimePrevious: %@ sampleTime: %@, ", v17, v18, v28, v29, v30, v31, v32];
+      sampleTimePrevious = [(PLIOReportStats *)self->_displayIOReportStats sampleTimePrevious];
+      sampleTime = [(PLIOReportStats *)self->_displayIOReportStats sampleTime];
+      v19 = [v16 stringWithFormat:@"SampleTimePrevious: %@ sampleTime: %@, ", sampleTimePrevious, sampleTime, v28, v29, v30, v31, v32];
 
       v20 = MEMORY[0x277D3F178];
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLDisplayAgent.m"];
-      v22 = [v21 lastPathComponent];
+      lastPathComponent2 = [v21 lastPathComponent];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDisplayAgent modelDisplayPowerFromIOMFB:]"];
-      [v20 logMessage:v19 fromFile:v22 fromFunction:v23 fromLineNumber:4847];
+      [v20 logMessage:v19 fromFile:lastPathComponent2 fromFunction:v23 fromLineNumber:4847];
 
       v24 = PLLogCommon();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -7935,10 +7935,10 @@ uint64_t __76__PLDisplayAgent_calculatePowerFromAPL_withAvgRed_withAvgGreen_with
     }
   }
 
-  v25 = [MEMORY[0x277D3F0C0] sharedInstance];
-  v26 = [(PLIOReportStats *)self->_displayIOReportStats sampleTimePrevious];
-  v27 = [(PLIOReportStats *)self->_displayIOReportStats sampleTime];
-  [v25 createPowerEventIntervalWithRootNodeID:56 withPower:v26 withStartDate:v27 withEndDate:v7];
+  mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+  sampleTimePrevious2 = [(PLIOReportStats *)self->_displayIOReportStats sampleTimePrevious];
+  sampleTime2 = [(PLIOReportStats *)self->_displayIOReportStats sampleTime];
+  [mEMORY[0x277D3F0C0] createPowerEventIntervalWithRootNodeID:56 withPower:sampleTimePrevious2 withStartDate:sampleTime2 withEndDate:v7];
 }
 
 uint64_t __45__PLDisplayAgent_modelDisplayPowerFromIOMFB___block_invoke(uint64_t a1)
@@ -7955,53 +7955,53 @@ uint64_t __45__PLDisplayAgent_modelDisplayPowerFromIOMFB___block_invoke_2064(uin
   return result;
 }
 
-- (void)modelDynamicDisplayPowerFromAPL:(id)a3
+- (void)modelDynamicDisplayPowerFromAPL:(id)l
 {
-  v4 = [a3 displayAPLStats];
-  v5 = v4;
-  if (v4)
+  displayAPLStats = [l displayAPLStats];
+  v5 = displayAPLStats;
+  if (displayAPLStats)
   {
-    v6 = [v4 avgRed];
+    avgRed = [displayAPLStats avgRed];
 
-    if (v6)
+    if (avgRed)
     {
       v7 = 0.0;
       v8 = 0.0;
       if ([(PLDisplayAgent *)self isDisplayOnNow])
       {
         displaymNits = self->_displaymNits;
-        v10 = [v5 avgRed];
-        [v10 doubleValue];
+        avgRed2 = [v5 avgRed];
+        [avgRed2 doubleValue];
         v12 = v11;
-        v13 = [v5 avgGreen];
-        [v13 doubleValue];
+        avgGreen = [v5 avgGreen];
+        [avgGreen doubleValue];
         v15 = v14;
-        v16 = [v5 avgBlue];
-        [v16 doubleValue];
+        avgBlue = [v5 avgBlue];
+        [avgBlue doubleValue];
         [(PLDisplayAgent *)self calculatePowerFromAPL:displaymNits withAvgRed:v12 withAvgGreen:v15 withAvgBlue:v17];
         v8 = v18;
 
         realmNits = self->_realmNits;
-        v20 = [v5 avgRed];
-        [v20 doubleValue];
+        avgRed3 = [v5 avgRed];
+        [avgRed3 doubleValue];
         v22 = v21;
-        v23 = [v5 avgGreen];
-        [v23 doubleValue];
+        avgGreen2 = [v5 avgGreen];
+        [avgGreen2 doubleValue];
         v25 = v24;
-        v26 = [v5 avgBlue];
-        [v26 doubleValue];
+        avgBlue2 = [v5 avgBlue];
+        [avgBlue2 doubleValue];
         [(PLDisplayAgent *)self calculatePowerFromAPL:realmNits withAvgRed:v22 withAvgGreen:v25 withAvgBlue:v27];
         v29 = v28;
 
         autobrightnessmNits = self->_autobrightnessmNits;
-        v31 = [v5 avgRed];
-        [v31 doubleValue];
+        avgRed4 = [v5 avgRed];
+        [avgRed4 doubleValue];
         v33 = v32;
-        v34 = [v5 avgGreen];
-        [v34 doubleValue];
+        avgGreen3 = [v5 avgGreen];
+        [avgGreen3 doubleValue];
         v36 = v35;
-        v37 = [v5 avgBlue];
-        [v37 doubleValue];
+        avgBlue3 = [v5 avgBlue];
+        [avgBlue3 doubleValue];
         [(PLDisplayAgent *)self calculatePowerFromAPL:autobrightnessmNits withAvgRed:v33 withAvgGreen:v36 withAvgBlue:v38];
         v40 = v39;
 
@@ -8024,9 +8024,9 @@ uint64_t __45__PLDisplayAgent_modelDisplayPowerFromIOMFB___block_invoke_2064(uin
             v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"displayPower: %f\trealPower: %f\tvirtualPower: %f\tsavedPower: %f", *&v8, *&v29, *&v40, v29 - v40];
             v43 = MEMORY[0x277D3F178];
             v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLDisplayAgent.m"];
-            v45 = [v44 lastPathComponent];
+            lastPathComponent = [v44 lastPathComponent];
             v46 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDisplayAgent modelDynamicDisplayPowerFromAPL:]"];
-            [v43 logMessage:v42 fromFile:v45 fromFunction:v46 fromLineNumber:4870];
+            [v43 logMessage:v42 fromFile:lastPathComponent fromFunction:v46 fromLineNumber:4870];
 
             v47 = PLLogCommon();
             if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
@@ -8053,15 +8053,15 @@ uint64_t __45__PLDisplayAgent_modelDisplayPowerFromIOMFB___block_invoke_2064(uin
         if (modelDynamicDisplayPowerFromAPL__classDebugEnabled_2072 == 1)
         {
           v49 = MEMORY[0x277CCACA8];
-          v50 = [(PLIOReportStats *)self->_displayIOReportStats sampleTimePrevious];
-          v51 = [(PLIOReportStats *)self->_displayIOReportStats sampleTime];
-          v52 = [v49 stringWithFormat:@"SampleTimePrevious: %@ sampleTime: %@, ", v50, v51];
+          sampleTimePrevious = [(PLIOReportStats *)self->_displayIOReportStats sampleTimePrevious];
+          sampleTime = [(PLIOReportStats *)self->_displayIOReportStats sampleTime];
+          v52 = [v49 stringWithFormat:@"SampleTimePrevious: %@ sampleTime: %@, ", sampleTimePrevious, sampleTime];
 
           v53 = MEMORY[0x277D3F178];
           v54 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLDisplayAgent.m"];
-          v55 = [v54 lastPathComponent];
+          lastPathComponent2 = [v54 lastPathComponent];
           v56 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDisplayAgent modelDynamicDisplayPowerFromAPL:]"];
-          [v53 logMessage:v52 fromFile:v55 fromFunction:v56 fromLineNumber:4872];
+          [v53 logMessage:v52 fromFile:lastPathComponent2 fromFunction:v56 fromLineNumber:4872];
 
           v57 = PLLogCommon();
           if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
@@ -8071,17 +8071,17 @@ uint64_t __45__PLDisplayAgent_modelDisplayPowerFromIOMFB___block_invoke_2064(uin
         }
       }
 
-      v58 = [MEMORY[0x277D3F0C0] sharedInstance];
-      v59 = [(PLIOReportStats *)self->_displayIOReportStats sampleTimePrevious];
-      v60 = [(PLIOReportStats *)self->_displayIOReportStats sampleTime];
-      [v58 createPowerEventIntervalWithRootNodeID:56 withPower:v59 withStartDate:v60 withEndDate:v8];
+      mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+      sampleTimePrevious2 = [(PLIOReportStats *)self->_displayIOReportStats sampleTimePrevious];
+      sampleTime2 = [(PLIOReportStats *)self->_displayIOReportStats sampleTime];
+      [mEMORY[0x277D3F0C0] createPowerEventIntervalWithRootNodeID:56 withPower:sampleTimePrevious2 withStartDate:sampleTime2 withEndDate:v8];
 
       if (+[PLDisplayAgent shouldLogALSPowerSaved])
       {
         v61 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"ALSPowerSaved"];
         v62 = objc_alloc(MEMORY[0x277D3F190]);
-        v63 = [(PLIOReportStats *)self->_displayIOReportStats sampleTimePrevious];
-        v64 = [v62 initWithEntryKey:v61 withDate:v63];
+        sampleTimePrevious3 = [(PLIOReportStats *)self->_displayIOReportStats sampleTimePrevious];
+        v64 = [v62 initWithEntryKey:v61 withDate:sampleTimePrevious3];
 
         v65 = [MEMORY[0x277CCABB0] numberWithDouble:v7];
         [v64 setObject:v65 forKeyedSubscript:@"Power"];
@@ -8106,17 +8106,17 @@ uint64_t __50__PLDisplayAgent_modelDynamicDisplayPowerFromAPL___block_invoke_207
   return result;
 }
 
-- (id)trimConditionsForEntryKey:(id)a3 forTrimDate:(id)a4
+- (id)trimConditionsForEntryKey:(id)key forTrimDate:(id)date
 {
-  v5 = a3;
-  [a4 timeIntervalSince1970];
+  keyCopy = key;
+  [date timeIntervalSince1970];
   v7 = v6;
   v8 = [objc_opt_class() entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"Display"];
-  v9 = [v5 isEqualToString:v8];
+  v9 = [keyCopy isEqualToString:v8];
 
   if (v9)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ is NULL OR %@<(SELECT max(%@) FROM '%@' WHERE %@<%f)", @"timestamp", @"timestamp", @"timestamp", v5, @"timestamp", v7];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ is NULL OR %@<(SELECT max(%@) FROM '%@' WHERE %@<%f)", @"timestamp", @"timestamp", @"timestamp", keyCopy, @"timestamp", v7];
   }
 
   else

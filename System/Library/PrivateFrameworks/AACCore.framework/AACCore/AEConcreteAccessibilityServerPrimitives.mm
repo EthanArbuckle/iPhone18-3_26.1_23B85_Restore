@@ -6,10 +6,10 @@
 
 - (BOOL)isRestrictedForAAC
 {
-  v2 = [MEMORY[0x277CE7D30] server];
-  v3 = [v2 isRestrictedForAAC];
+  server = [MEMORY[0x277CE7D30] server];
+  isRestrictedForAAC = [server isRestrictedForAAC];
 
-  return v3;
+  return isRestrictedForAAC;
 }
 
 @end

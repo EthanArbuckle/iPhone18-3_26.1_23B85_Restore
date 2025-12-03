@@ -1,28 +1,28 @@
 @interface SKDiskResizerBase
-- (BOOL)resizeWithError:(id *)a3;
-- (SKDiskResizerBase)initWithDisk:(id)a3 requestedSize:(unint64_t)a4;
-- (id)cancelWithError:(id *)a3;
+- (BOOL)resizeWithError:(id *)error;
+- (SKDiskResizerBase)initWithDisk:(id)disk requestedSize:(unint64_t)size;
+- (id)cancelWithError:(id *)error;
 - (id)eventFromSize;
-- (id)resizeStateMachine:(id *)a3;
-- (id)rollbackResize:(id *)a3;
+- (id)resizeStateMachine:(id *)machine;
+- (id)rollbackResize:(id *)resize;
 - (int64_t)completedUnitCount;
 - (unint64_t)currentSize;
-- (void)setCompletedUnitCount:(int64_t)a3;
+- (void)setCompletedUnitCount:(int64_t)count;
 @end
 
 @implementation SKDiskResizerBase
 
-- (SKDiskResizerBase)initWithDisk:(id)a3 requestedSize:(unint64_t)a4
+- (SKDiskResizerBase)initWithDisk:(id)disk requestedSize:(unint64_t)size
 {
-  v7 = a3;
+  diskCopy = disk;
   v13.receiver = self;
   v13.super_class = SKDiskResizerBase;
   v8 = [(SKDiskResizerBase *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_disk, a3);
-    v9->_requestedSize = a4;
+    objc_storeStrong(&v8->_disk, disk);
+    v9->_requestedSize = size;
     v9->_originalSize = [(SKDiskResizerBase *)v9 currentSize];
     v10 = [SKProgress progressWithTotalUnitCount:100];
     progress = v9->_progress;
@@ -34,70 +34,70 @@
 
 - (int64_t)completedUnitCount
 {
-  v2 = [(SKDiskResizerBase *)self progress];
-  v3 = [v2 completedUnitCount];
+  progress = [(SKDiskResizerBase *)self progress];
+  completedUnitCount = [progress completedUnitCount];
 
-  return v3;
+  return completedUnitCount;
 }
 
-- (void)setCompletedUnitCount:(int64_t)a3
+- (void)setCompletedUnitCount:(int64_t)count
 {
-  v5 = [(SKDiskResizerBase *)self resizeError];
+  resizeError = [(SKDiskResizerBase *)self resizeError];
 
-  if (!v5)
+  if (!resizeError)
   {
-    if (a3 >= 100)
+    if (count >= 100)
     {
-      a3 = 100;
+      count = 100;
     }
 
-    v6 = [(SKDiskResizerBase *)self progress];
-    [v6 setCompletedUnitCount:a3];
+    progress = [(SKDiskResizerBase *)self progress];
+    [progress setCompletedUnitCount:count];
   }
 }
 
 - (unint64_t)currentSize
 {
-  v2 = [(SKDiskResizerBase *)self disk];
-  v3 = [v2 unformattedSize];
+  disk = [(SKDiskResizerBase *)self disk];
+  unformattedSize = [disk unformattedSize];
 
-  return v3;
+  return unformattedSize;
 }
 
-- (BOOL)resizeWithError:(id *)a3
+- (BOOL)resizeWithError:(id *)error
 {
   v5 = [(SKDiskResizerBase *)self resizeStateMachine:?];
   [(SKDiskResizerBase *)self setActiveFSM:v5];
 
-  v6 = [(SKDiskResizerBase *)self activeFSM];
+  activeFSM = [(SKDiskResizerBase *)self activeFSM];
 
-  if (v6)
+  if (activeFSM)
   {
-    v7 = [(SKDiskResizerBase *)self activeFSM];
+    activeFSM2 = [(SKDiskResizerBase *)self activeFSM];
     v17 = 0;
-    [v7 runWithError:&v17];
+    [activeFSM2 runWithError:&v17];
     v8 = v17;
 
-    v9 = [(SKDiskResizerBase *)self resizeError];
+    resizeError = [(SKDiskResizerBase *)self resizeError];
 
-    if (v9)
+    if (resizeError)
     {
-      v10 = [(SKDiskResizerBase *)self resizeError];
+      resizeError2 = [(SKDiskResizerBase *)self resizeError];
 
-      v8 = v10;
+      v8 = resizeError2;
     }
 
-    if (a3)
+    if (error)
     {
       v11 = v8;
-      *a3 = v8;
+      *error = v8;
     }
 
     [(SKDiskResizerBase *)self setActiveFSM:0];
-    v12 = [(SKDiskResizerBase *)self progress];
-    v13 = [v12 totalUnitCount];
-    v14 = [(SKDiskResizerBase *)self progress];
-    [v14 setCompletedUnitCount:v13];
+    progress = [(SKDiskResizerBase *)self progress];
+    totalUnitCount = [progress totalUnitCount];
+    progress2 = [(SKDiskResizerBase *)self progress];
+    [progress2 setCompletedUnitCount:totalUnitCount];
 
     v15 = v8 == 0;
   }
@@ -118,7 +118,7 @@
   return v15;
 }
 
-- (id)resizeStateMachine:(id *)a3
+- (id)resizeStateMachine:(id *)machine
 {
   v3 = [NSException exceptionWithName:@"com.apple.storagekit.notimplemented" reason:@"A required method is not implemented" userInfo:0];
   [v3 raise];
@@ -128,10 +128,10 @@
 
 - (id)eventFromSize
 {
-  v3 = [(SKDiskResizerBase *)self requestedSize];
-  v4 = [(SKDiskResizerBase *)self originalSize];
+  requestedSize = [(SKDiskResizerBase *)self requestedSize];
+  originalSize = [(SKDiskResizerBase *)self originalSize];
   v5 = &off_100059118;
-  if (v3 <= v4)
+  if (requestedSize <= originalSize)
   {
     v5 = &off_100059120;
   }
@@ -141,39 +141,39 @@
   return v6;
 }
 
-- (id)cancelWithError:(id *)a3
+- (id)cancelWithError:(id *)error
 {
-  v5 = [SKError errorWithPOSIXCode:89 error:a3];
+  v5 = [SKError errorWithPOSIXCode:89 error:error];
 
-  return [(SKDiskResizerBase *)self rollbackResize:a3];
+  return [(SKDiskResizerBase *)self rollbackResize:error];
 }
 
-- (id)rollbackResize:(id *)a3
+- (id)rollbackResize:(id *)resize
 {
-  if (a3 && (v5 = *a3) != 0)
+  if (resize && (v5 = *resize) != 0)
   {
     v6 = v5;
-    v7 = [(SKDiskResizerBase *)self resizeError];
+    resizeError = [(SKDiskResizerBase *)self resizeError];
 
     v8 = sub_10000BFD0();
     v9 = v8;
-    if (v7)
+    if (resizeError)
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v10 = [(SKDiskResizerBase *)self resizeError];
+        resizeError2 = [(SKDiskResizerBase *)self resizeError];
         v15 = 136315650;
         v16 = "[SKDiskResizerBase rollbackResize:]";
         v17 = 2112;
         v18 = v6;
         v19 = 2112;
-        v20 = v10;
+        requestedSize = resizeError2;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s: Failing resize with %@ after attempt to recover from %@", &v15, 0x20u);
       }
 
-      *a3 = [(SKDiskResizerBase *)self resizeError];
+      *resize = [(SKDiskResizerBase *)self resizeError];
 
-      v11 = 0;
+      eventFromSize = 0;
     }
 
     else
@@ -185,17 +185,17 @@
         v17 = 2112;
         v18 = v6;
         v19 = 2048;
-        v20 = [(SKDiskResizerBase *)self requestedSize];
+        requestedSize = [(SKDiskResizerBase *)self requestedSize];
         v21 = 2048;
-        v22 = [(SKDiskResizerBase *)self originalSize];
+        originalSize = [(SKDiskResizerBase *)self originalSize];
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: Rolling back resize after %@, reverting resize direction from %llu to %llu", &v15, 0x2Au);
       }
 
       [(SKDiskResizerBase *)self setResizeError:v6];
-      v14 = [(SKDiskResizerBase *)self requestedSize];
+      requestedSize2 = [(SKDiskResizerBase *)self requestedSize];
       [(SKDiskResizerBase *)self setRequestedSize:[(SKDiskResizerBase *)self originalSize]];
-      [(SKDiskResizerBase *)self setOriginalSize:v14];
-      v11 = [(SKDiskResizerBase *)self eventFromSize];
+      [(SKDiskResizerBase *)self setOriginalSize:requestedSize2];
+      eventFromSize = [(SKDiskResizerBase *)self eventFromSize];
     }
   }
 
@@ -209,10 +209,10 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s: Reached resize rollback without setting any error", &v15, 0xCu);
     }
 
-    v11 = [SKError nilWithSKErrorCode:102 error:a3];
+    eventFromSize = [SKError nilWithSKErrorCode:102 error:resize];
   }
 
-  return v11;
+  return eventFromSize;
 }
 
 @end

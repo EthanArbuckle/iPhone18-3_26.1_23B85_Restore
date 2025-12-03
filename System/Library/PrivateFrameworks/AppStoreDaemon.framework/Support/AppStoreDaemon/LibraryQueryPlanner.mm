@@ -1,18 +1,18 @@
 @interface LibraryQueryPlanner
-- (void)visitPredicate:(id)a3;
+- (void)visitPredicate:(id)predicate;
 @end
 
 @implementation LibraryQueryPlanner
 
-- (void)visitPredicate:(id)a3
+- (void)visitPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 subpredicates];
-    v7 = [v6 count];
+    v5 = predicateCopy;
+    subpredicates = [v5 subpredicates];
+    v7 = [subpredicates count];
 
     if (v7)
     {
@@ -84,7 +84,7 @@
 
   else
   {
-    v5 = sub_100213CF4(self->_classifier, v4, 0);
+    v5 = sub_100213CF4(self->_classifier, predicateCopy, 0);
     if (v5)
     {
       v13 = self->_stack;

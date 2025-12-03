@@ -4,12 +4,12 @@
 - (id)scriptForDisableMagnification;
 - (id)webView;
 - (void)dealloc;
-- (void)setHtml:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)setHtml:(id)html;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation RUIWebView
@@ -20,12 +20,12 @@
   if (!webView)
   {
     v4 = objc_opt_new();
-    v5 = [(RUIWebView *)self scriptForDisableMagnification];
-    [v4 addUserScript:v5];
+    scriptForDisableMagnification = [(RUIWebView *)self scriptForDisableMagnification];
+    [v4 addUserScript:scriptForDisableMagnification];
 
     v6 = objc_alloc(MEMORY[0x277CE38B0]);
-    v7 = [(RUIWebView *)self userStyleSheet];
-    v8 = [v6 initWithSource:v7 forMainFrameOnly:0];
+    userStyleSheet = [(RUIWebView *)self userStyleSheet];
+    v8 = [v6 initWithSource:userStyleSheet forMainFrameOnly:0];
 
     [v4 _addUserStyleSheet:v8];
     v9 = objc_opt_new();
@@ -44,8 +44,8 @@
 
     [(WKWebView *)self->_webView setOpaque:0];
     [(WKWebView *)self->_webView setNavigationDelegate:self];
-    v14 = [(WKWebView *)self->_webView scrollView];
-    [v14 _setShowsBackgroundShadow:0];
+    scrollView = [(WKWebView *)self->_webView scrollView];
+    [scrollView _setShowsBackgroundShadow:0];
 
     html = self->_html;
     if (html)
@@ -61,28 +61,28 @@
 
 - (BOOL)_isScrollEnabled
 {
-  v2 = [(RUIElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"scrollEnabled"];
+  attributes = [(RUIElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"scrollEnabled"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setHtml:(id)a3
+- (void)setHtml:(id)html
 {
-  v10 = a3;
-  if (([v10 isEqualToString:self->_html] & 1) == 0)
+  htmlCopy = html;
+  if (([htmlCopy isEqualToString:self->_html] & 1) == 0)
   {
-    v4 = [v10 copy];
+    v4 = [htmlCopy copy];
     html = self->_html;
     self->_html = v4;
 
@@ -96,11 +96,11 @@
       baseURL = self->_baseURL;
     }
 
-    v9 = [(WKWebView *)self->_webView loadHTMLString:v10 baseURL:baseURL];
+    v9 = [(WKWebView *)self->_webView loadHTMLString:htmlCopy baseURL:baseURL];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   [(RUIElement *)self reportInternalRenderEvent];
   webView = self->_webView;
@@ -115,34 +115,34 @@
   return v2;
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v11 = a5;
-  v7 = a4;
+  handlerCopy = handler;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [v7 request];
-  v10 = [v7 navigationType];
+  request = [actionCopy request];
+  navigationType = [actionCopy navigationType];
 
-  LODWORD(v7) = [WeakRetained webViewOM:self shouldStartLoadWithRequest:v9 navigationType:v10];
-  v11[2](v11, v7);
+  LODWORD(actionCopy) = [WeakRetained webViewOM:self shouldStartLoadWithRequest:request navigationType:navigationType];
+  handlerCopy[2](handlerCopy, actionCopy);
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:RUIWebViewDidFinishLoadNotification object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:RUIWebViewDidFinishLoadNotification object:0];
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:RUIWebViewDidFinishLoadNotification object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:RUIWebViewDidFinishLoadNotification object:0];
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:RUIWebViewDidFinishLoadNotification object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:RUIWebViewDidFinishLoadNotification object:0];
 }
 
 - (void)dealloc

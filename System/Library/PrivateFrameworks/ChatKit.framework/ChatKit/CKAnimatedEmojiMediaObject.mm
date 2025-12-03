@@ -1,8 +1,8 @@
 @interface CKAnimatedEmojiMediaObject
 + (id)UTITypes;
-- (id)attachmentSummary:(unint64_t)a3;
+- (id)attachmentSummary:(unint64_t)summary;
 - (id)icon;
-- (id)previewForWidth:(double)a3 orientation:(char)a4;
+- (id)previewForWidth:(double)width orientation:(char)orientation;
 - (id)previewItemTitle;
 @end
 
@@ -54,36 +54,36 @@
   return v4;
 }
 
-- (id)attachmentSummary:(unint64_t)a3
+- (id)attachmentSummary:(unint64_t)summary
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = IMSharedUtilitiesFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"%lu Animated Emoji" value:&stru_1F04268F8 table:@"IMSharedUtilities"];
-  v7 = [v4 localizedStringWithFormat:v6, a3];
+  summary = [v4 localizedStringWithFormat:v6, summary];
 
-  return v7;
+  return summary;
 }
 
-- (id)previewForWidth:(double)a3 orientation:(char)a4
+- (id)previewForWidth:(double)width orientation:(char)orientation
 {
-  v4 = a4;
+  orientationCopy = orientation;
   v7 = +[CKUIBehavior sharedBehaviors];
   [v7 emojiPreviewMaxWidth];
   v9 = v8;
 
-  if (v9 <= a3)
+  if (v9 <= width)
   {
-    v10 = v9;
+    widthCopy = v9;
   }
 
   else
   {
-    v10 = a3;
+    widthCopy = width;
   }
 
   v13.receiver = self;
   v13.super_class = CKAnimatedEmojiMediaObject;
-  v11 = [(CKAnimatedImageMediaObject *)&v13 previewForWidth:v4 orientation:v10];
+  v11 = [(CKAnimatedImageMediaObject *)&v13 previewForWidth:orientationCopy orientation:widthCopy];
 
   return v11;
 }

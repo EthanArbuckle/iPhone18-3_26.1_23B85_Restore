@@ -1,33 +1,33 @@
 @interface CMContinuityCaptureNWClient
-- (CMContinuityCaptureNWClient)initWithDevice:(id)a3 queue:(id)a4 taskDelegate:(id)a5;
+- (CMContinuityCaptureNWClient)initWithDevice:(id)device queue:(id)queue taskDelegate:(id)delegate;
 - (CMContinuityCaptureTimeSyncClock)timeSyncClock;
 - (ContinuityCaptureTaskDelegate)delegate;
 - (NSString)description;
-- (void)activateEntity:(int64_t)a3 configuration:(id)a4 option:(unint64_t)a5 entityCompletion:(id)a6 overallCompletion:(id)a7;
+- (void)activateEntity:(int64_t)entity configuration:(id)configuration option:(unint64_t)option entityCompletion:(id)completion overallCompletion:(id)overallCompletion;
 - (void)setupTCPListener;
-- (void)terminateEntity:(int64_t)a3 option:(unint64_t)a4 completion:(id)a5;
+- (void)terminateEntity:(int64_t)entity option:(unint64_t)option completion:(id)completion;
 @end
 
 @implementation CMContinuityCaptureNWClient
 
-- (CMContinuityCaptureNWClient)initWithDevice:(id)a3 queue:(id)a4 taskDelegate:(id)a5
+- (CMContinuityCaptureNWClient)initWithDevice:(id)device queue:(id)queue taskDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  deviceCopy = device;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = CMContinuityCaptureNWClient;
-  v12 = [(CMContinuityCaptureNWTransportBase *)&v24 initWithDevice:v9];
+  v12 = [(CMContinuityCaptureNWTransportBase *)&v24 initWithDevice:deviceCopy];
   if (v12)
   {
     v13 = objc_alloc_init(MEMORY[0x277CBEB58]);
     activeEntities = v12->_activeEntities;
     v12->_activeEntities = v13;
 
-    objc_storeStrong(&v12->_device, a3);
-    objc_storeStrong(&v12->_queue, a4);
-    v15 = objc_storeWeak(&v12->_taskDelegate, v11);
-    [(CMContinuityCaptureNWTransportBase *)v12 setTaskDelegate:v11];
+    objc_storeStrong(&v12->_device, device);
+    objc_storeStrong(&v12->_queue, queue);
+    v15 = objc_storeWeak(&v12->_taskDelegate, delegateCopy);
+    [(CMContinuityCaptureNWTransportBase *)v12 setTaskDelegate:delegateCopy];
 
     objc_initWeak(&location, v12);
     v18 = MEMORY[0x277D85DD0];
@@ -63,21 +63,21 @@ void __65__CMContinuityCaptureNWClient_initWithDevice_queue_taskDelegate___block
 
 - (CMContinuityCaptureTimeSyncClock)timeSyncClock
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_timeSyncClock;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_timeSyncClock;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (void)setupTCPListener
 {
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(self, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
     v5 = a2;
-    _os_log_impl(&dword_242545000, a1, OS_LOG_TYPE_DEFAULT, "%@ Failed to get tcp listener", &v4, 0xCu);
+    _os_log_impl(&dword_242545000, self, OS_LOG_TYPE_DEFAULT, "%@ Failed to get tcp listener", &v4, 0xCu);
   }
 }
 
@@ -190,28 +190,28 @@ void __47__CMContinuityCaptureNWClient_setupTCPListener__block_invoke_8(uint64_t
   return WeakRetained;
 }
 
-- (void)activateEntity:(int64_t)a3 configuration:(id)a4 option:(unint64_t)a5 entityCompletion:(id)a6 overallCompletion:(id)a7
+- (void)activateEntity:(int64_t)entity configuration:(id)configuration option:(unint64_t)option entityCompletion:(id)completion overallCompletion:(id)overallCompletion
 {
-  v18 = a4;
-  v11 = a6;
-  v12 = a7;
-  if (v18)
+  configurationCopy = configuration;
+  completionCopy = completion;
+  overallCompletionCopy = overallCompletion;
+  if (configurationCopy)
   {
     activeEntities = self->_activeEntities;
-    v14 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v14 = [MEMORY[0x277CCABB0] numberWithInteger:entity];
     LOBYTE(activeEntities) = [(NSMutableSet *)activeEntities containsObject:v14];
 
     if ((activeEntities & 1) == 0)
     {
       v15 = objc_opt_new();
-      [v18 setSessionID:v15];
+      [configurationCopy setSessionID:v15];
 
-      [v18 setGenerationID:CMContinuityCaptureGetStreamSessionGenerationID()];
+      [configurationCopy setGenerationID:CMContinuityCaptureGetStreamSessionGenerationID()];
     }
   }
 
   v16 = self->_activeEntities;
-  v17 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v17 = [MEMORY[0x277CCABB0] numberWithInteger:entity];
   [(NSMutableSet *)v16 addObject:v17];
 
   if ([(NSMutableSet *)self->_activeEntities count]== 1)
@@ -219,19 +219,19 @@ void __47__CMContinuityCaptureNWClient_setupTCPListener__block_invoke_8(uint64_t
     self->_currentSessionID = CMContinuityCaptureGetActivateGenerationID();
   }
 
-  v11[2](v11, a3, 0);
-  (*(v12 + 2))(v12, 0, 0);
+  completionCopy[2](completionCopy, entity, 0);
+  (*(overallCompletionCopy + 2))(overallCompletionCopy, 0, 0);
 }
 
-- (void)terminateEntity:(int64_t)a3 option:(unint64_t)a4 completion:(id)a5
+- (void)terminateEntity:(int64_t)entity option:(unint64_t)option completion:(id)completion
 {
   activeEntities = self->_activeEntities;
   v7 = MEMORY[0x277CCABB0];
-  v9 = a5;
-  v8 = [v7 numberWithInteger:a3];
+  completionCopy = completion;
+  v8 = [v7 numberWithInteger:entity];
   [(NSMutableSet *)activeEntities removeObject:v8];
 
-  v9[2](v9, a3, 0);
+  completionCopy[2](completionCopy, entity, 0);
 }
 
 - (NSString)description
@@ -239,8 +239,8 @@ void __47__CMContinuityCaptureNWClient_setupTCPListener__block_invoke_8(uint64_t
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CMContinuityCaptureNWClient *)self device];
-  v7 = [v3 stringWithFormat:@"%@: %@ [%p]", v5, v6, self];
+  device = [(CMContinuityCaptureNWClient *)self device];
+  v7 = [v3 stringWithFormat:@"%@: %@ [%p]", v5, device, self];
 
   return v7;
 }

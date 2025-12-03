@@ -1,18 +1,18 @@
 @interface JFXStillCompositionItem
-- (JFXStillCompositionItem)initWithClip:(id)a3 timeScale:(int)a4;
-- (id)audioTrackSegmentsLoopedForDestinationTimeRange:(id *)a3;
-- (id)audioTrackSegmentsWithDestinationTime:(id *)a3;
-- (id)audioTrackSegmentsWithDestinationTime:(id *)a3 paddedFromTime:(id *)a4;
-- (id)videoTrackSegmentsWithDestinationRange:(id *)a3;
+- (JFXStillCompositionItem)initWithClip:(id)clip timeScale:(int)scale;
+- (id)audioTrackSegmentsLoopedForDestinationTimeRange:(id *)range;
+- (id)audioTrackSegmentsWithDestinationTime:(id *)time;
+- (id)audioTrackSegmentsWithDestinationTime:(id *)time paddedFromTime:(id *)fromTime;
+- (id)videoTrackSegmentsWithDestinationRange:(id *)range;
 @end
 
 @implementation JFXStillCompositionItem
 
-- (JFXStillCompositionItem)initWithClip:(id)a3 timeScale:(int)a4
+- (JFXStillCompositionItem)initWithClip:(id)clip timeScale:(int)scale
 {
   v7.receiver = self;
   v7.super_class = JFXStillCompositionItem;
-  v4 = [(JFXMovieCompositionItem *)&v7 initWithClip:a3 timeScale:*&a4];
+  v4 = [(JFXMovieCompositionItem *)&v7 initWithClip:clip timeScale:*&scale];
   if (v4)
   {
     v5 = +[JFXCompositionItem silenceAsset];
@@ -22,27 +22,27 @@
   return v4;
 }
 
-- (id)videoTrackSegmentsWithDestinationRange:(id *)a3
+- (id)videoTrackSegmentsWithDestinationRange:(id *)range
 {
   v3 = MEMORY[0x277CBEA60];
-  v4 = *&a3->var0.var3;
-  v8[0] = *&a3->var0.var0;
+  v4 = *&range->var0.var3;
+  v8[0] = *&range->var0.var0;
   v8[1] = v4;
-  v8[2] = *&a3->var1.var1;
+  v8[2] = *&range->var1.var1;
   v5 = [(JFXCompositionItem *)self emptyTrackSegmentWithDestinationRange:v8];
   v6 = [v3 arrayWithObject:v5];
 
   return v6;
 }
 
-- (id)audioTrackSegmentsWithDestinationTime:(id *)a3
+- (id)audioTrackSegmentsWithDestinationTime:(id *)time
 {
   v27[1] = *MEMORY[0x277D85DE8];
   if (![(JFXCompositionItem *)self isFinalClip])
   {
     v7 = MEMORY[0x277CBEA60];
-    *&time.start.value = *&a3->var0;
-    time.start.epoch = a3->var3;
+    *&time.start.value = *&time->var0;
+    time.start.epoch = time->var3;
     v8 = [(JFXCompositionItem *)self emptyTrackSegmentWithDestinationTime:&time];
     v9 = [v7 arrayWithObject:v8];
 LABEL_14:
@@ -54,11 +54,11 @@ LABEL_14:
   v25 = v23;
   v26 = v24;
   memset(&v22, 0, sizeof(v22));
-  v5 = [(JFXMovieCompositionItem *)self asset];
-  v6 = v5;
-  if (v5)
+  asset = [(JFXMovieCompositionItem *)self asset];
+  v6 = asset;
+  if (asset)
   {
-    [v5 duration];
+    [asset duration];
   }
 
   else
@@ -79,8 +79,8 @@ LABEL_14:
     duration.start.epoch = v26;
     CMTimeRangeMake(&time, &time2.start, &duration.start);
     v10 = *MEMORY[0x277CE5DE0];
-    *&duration.start.value = *&a3->var0;
-    duration.start.epoch = a3->var3;
+    *&duration.start.value = *&time->var0;
+    duration.start.epoch = time->var3;
     v17.start = time.duration;
     CMTimeRangeMake(&time2, &duration.start, &v17.start);
     duration = time;
@@ -110,8 +110,8 @@ LABEL_14:
   duration.start.epoch = v26;
   v17.start = time2.duration;
   CMTimeSubtract(&time.duration, &duration.start, &v17.start);
-  *&time.start.value = *&a3->var0;
-  time.start.epoch = a3->var3;
+  *&time.start.value = *&time->var0;
+  time.start.epoch = time->var3;
   CMTimeMake(&duration.start, 0, [(JFXCompositionItem *)self timeScale]);
   *&time2.start.value = *&duration.start.value;
   time2.start.epoch = duration.start.epoch;
@@ -123,15 +123,15 @@ LABEL_14:
     [v12 addObject:v14];
   }
 
-  *&v17.start.value = *&a3->var0;
-  v17.start.epoch = a3->var3;
+  *&v17.start.value = *&time->var0;
+  v17.start.epoch = time->var3;
   rhs = time.duration;
   CMTimeAdd(&duration.start, &v17.start, &rhs);
-  *&a3->var0 = *&duration.start.value;
-  a3->var3 = duration.start.epoch;
+  *&time->var0 = *&duration.start.value;
+  time->var3 = duration.start.epoch;
   v15 = *MEMORY[0x277CE5DE0];
-  *&v17.start.value = *&a3->var0;
-  v17.start.epoch = a3->var3;
+  *&v17.start.value = *&time->var0;
+  v17.start.epoch = time->var3;
   rhs = time2.duration;
   CMTimeRangeMake(&duration, &v17.start, &rhs);
   v17 = time2;
@@ -147,20 +147,20 @@ LABEL_15:
   return v12;
 }
 
-- (id)audioTrackSegmentsWithDestinationTime:(id *)a3 paddedFromTime:(id *)a4
+- (id)audioTrackSegmentsWithDestinationTime:(id *)time paddedFromTime:(id *)fromTime
 {
-  v6 = *a3;
-  v4 = [(JFXStillCompositionItem *)self audioTrackSegmentsWithDestinationTime:&v6, a4];
+  v6 = *time;
+  fromTime = [(JFXStillCompositionItem *)self audioTrackSegmentsWithDestinationTime:&v6, fromTime];
 
-  return v4;
+  return fromTime;
 }
 
-- (id)audioTrackSegmentsLoopedForDestinationTimeRange:(id *)a3
+- (id)audioTrackSegmentsLoopedForDestinationTimeRange:(id *)range
 {
-  v4 = *&a3->var0.var3;
-  *&v7.start.value = *&a3->var0.var0;
+  v4 = *&range->var0.var3;
+  *&v7.start.value = *&range->var0.var0;
   *&v7.start.epoch = v4;
-  *&v7.duration.timescale = *&a3->var1.var1;
+  *&v7.duration.timescale = *&range->var1.var1;
   CMTimeRangeGetEnd(&v8, &v7);
   v5 = [(JFXStillCompositionItem *)self audioTrackSegmentsWithDestinationTime:&v8];
 

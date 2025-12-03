@@ -1,15 +1,15 @@
 @interface AFCoreAnalyticsCrossDeviceEvent
-- (AFCoreAnalyticsCrossDeviceEvent)initWithNearbyDevicesLoggingID:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setTargetedDeviceContextIdentifier:(id)a3 withAction:(id)a4 payload:(id)a5;
-- (void)addCoreAnalyticsDeviceTargetedWithContextIdentifier:(id)a3 commandResultDescription:(id)a4;
-- (void)addNearbyDeviceContexts:(id)a3 proximityInfo:(id)a4;
+- (AFCoreAnalyticsCrossDeviceEvent)initWithNearbyDevicesLoggingID:(id)d;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setTargetedDeviceContextIdentifier:(id)identifier withAction:(id)action payload:(id)payload;
+- (void)addCoreAnalyticsDeviceTargetedWithContextIdentifier:(id)identifier commandResultDescription:(id)description;
+- (void)addNearbyDeviceContexts:(id)contexts proximityInfo:(id)info;
 @end
 
 @implementation AFCoreAnalyticsCrossDeviceEvent
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -33,27 +33,27 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[AFCoreAnalyticsCrossDeviceEvent allocWithZone:?], "initWithNearbyDevicesLoggingID:", self->_nearbyDevicesLoggingID];
   [(AFCoreAnalyticsCrossDeviceEvent *)v4 setNearbyDevicesPayloads:self->_nearbyDevicesPayloads];
   return v4;
 }
 
-- (void)addCoreAnalyticsDeviceTargetedWithContextIdentifier:(id)a3 commandResultDescription:(id)a4
+- (void)addCoreAnalyticsDeviceTargetedWithContextIdentifier:(id)identifier commandResultDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  descriptionCopy = description;
   nearbyDevicesPayloads = self->_nearbyDevicesPayloads;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __112__AFCoreAnalyticsCrossDeviceEvent_addCoreAnalyticsDeviceTargetedWithContextIdentifier_commandResultDescription___block_invoke;
   v11[3] = &unk_1E7344F58;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  selfCopy = self;
+  v14 = descriptionCopy;
+  v9 = descriptionCopy;
+  v10 = identifierCopy;
   [(NSMutableDictionary *)nearbyDevicesPayloads enumerateKeysAndObjectsUsingBlock:v11];
 }
 
@@ -99,37 +99,37 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_setTargetedDeviceContextIdentifier:(id)a3 withAction:(id)a4 payload:(id)a5
+- (void)_setTargetedDeviceContextIdentifier:(id)identifier withAction:(id)action payload:(id)payload
 {
-  v8 = a4;
+  actionCopy = action;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __90__AFCoreAnalyticsCrossDeviceEvent__setTargetedDeviceContextIdentifier_withAction_payload___block_invoke;
   v12[3] = &unk_1E7344F30;
-  v13 = v8;
-  v9 = v8;
-  v10 = a3;
-  v11 = [a5 mutatedCopyWithMutator:v12];
-  [(NSMutableDictionary *)self->_nearbyDevicesPayloads setObject:v11 forKey:v10];
+  v13 = actionCopy;
+  v9 = actionCopy;
+  identifierCopy = identifier;
+  v11 = [payload mutatedCopyWithMutator:v12];
+  [(NSMutableDictionary *)self->_nearbyDevicesPayloads setObject:v11 forKey:identifierCopy];
 }
 
-- (void)addNearbyDeviceContexts:(id)a3 proximityInfo:(id)a4
+- (void)addNearbyDeviceContexts:(id)contexts proximityInfo:(id)info
 {
-  v6 = a4;
-  if (v6)
+  infoCopy = info;
+  if (infoCopy)
   {
     v7 = MEMORY[0x1E695DF90];
-    v8 = a3;
+    contextsCopy = contexts;
     v9 = objc_alloc_init(v7);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __73__AFCoreAnalyticsCrossDeviceEvent_addNearbyDeviceContexts_proximityInfo___block_invoke;
     v11[3] = &unk_1E7344F08;
-    v12 = v6;
-    v13 = self;
+    v12 = infoCopy;
+    selfCopy = self;
     v14 = v9;
     v10 = v9;
-    [v8 enumerateObjectsUsingBlock:v11];
+    [contextsCopy enumerateObjectsUsingBlock:v11];
 
     [(AFCoreAnalyticsCrossDeviceEvent *)self setNearbyDevicesPayloads:v10];
   }
@@ -183,15 +183,15 @@ void __73__AFCoreAnalyticsCrossDeviceEvent_addNearbyDeviceContexts_proximityInfo
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (AFCoreAnalyticsCrossDeviceEvent)initWithNearbyDevicesLoggingID:(id)a3
+- (AFCoreAnalyticsCrossDeviceEvent)initWithNearbyDevicesLoggingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = AFCoreAnalyticsCrossDeviceEvent;
   v5 = [(AFCoreAnalyticsCrossDeviceEvent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     nearbyDevicesLoggingID = v5->_nearbyDevicesLoggingID;
     v5->_nearbyDevicesLoggingID = v6;
   }

@@ -1,52 +1,52 @@
 @interface TLKAsyncCache
-- (id)getCachedObjectIfAvailableForKey:(id)a3;
-- (id)getCachedObjectsIfAvailableForKeys:(id)a3;
+- (id)getCachedObjectIfAvailableForKey:(id)key;
+- (id)getCachedObjectsIfAvailableForKeys:(id)keys;
 - (void)clear;
-- (void)computeObjectForKey:(NSObject *)a3 completionHandler:(id)a4;
-- (void)getObjectForKey:(id)a3 completionHandler:(id)a4;
-- (void)getObjectsForKeys:(id)a3 completionHandler:(id)a4;
+- (void)computeObjectForKey:(NSObject *)key completionHandler:(id)handler;
+- (void)getObjectForKey:(id)key completionHandler:(id)handler;
+- (void)getObjectsForKeys:(id)keys completionHandler:(id)handler;
 @end
 
 @implementation TLKAsyncCache
 
-- (void)getObjectForKey:(id)a3 completionHandler:(id)a4
+- (void)getObjectForKey:(id)key completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   if (v6)
   {
     v7 = v6;
     v8 = swift_allocObject();
     *(v8 + 16) = v7;
     v9 = *(&self->super.isa + OBJC_IVAR___TLKAsyncCache_wrappedCache);
-    v14 = a3;
+    keyCopy = key;
     v10 = swift_allocObject();
     *(v10 + 16) = sub_1BBA2C574;
     *(v10 + 24) = v8;
     v11 = *((*MEMORY[0x1E69E7D40] & *v9) + 0xE8);
-    v12 = a3;
-    v13 = self;
+    keyCopy2 = key;
+    selfCopy = self;
 
-    v11(&v14, sub_1BBA62080, v10);
+    v11(&keyCopy, sub_1BBA62080, v10);
   }
 }
 
-- (id)getCachedObjectIfAvailableForKey:(id)a3
+- (id)getCachedObjectIfAvailableForKey:(id)key
 {
   v4 = *(&self->super.isa + OBJC_IVAR___TLKAsyncCache_wrappedCache);
-  v10 = a3;
+  keyCopy = key;
   v5 = *((*MEMORY[0x1E69E7D40] & *v4) + 0xD8);
-  v6 = a3;
-  v7 = self;
-  v5(&v11, &v10);
+  keyCopy2 = key;
+  selfCopy = self;
+  v5(&v11, &keyCopy);
 
   v8 = v11;
 
   return v8;
 }
 
-- (void)getObjectsForKeys:(id)a3 completionHandler:(id)a4
+- (void)getObjectsForKeys:(id)keys completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   sub_1BBA26B84();
   v6 = sub_1BBA62210();
   if (v5)
@@ -59,16 +59,16 @@
     *(v9 + 24) = v7;
     v10 = *((*MEMORY[0x1E69E7D40] & *v8) + 0xF0);
     swift_retain_n();
-    v11 = self;
+    selfCopy = self;
     v10(v6, sub_1BBA62074, v9);
   }
 }
 
-- (id)getCachedObjectsIfAvailableForKeys:(id)a3
+- (id)getCachedObjectsIfAvailableForKeys:(id)keys
 {
   sub_1BBA26B84();
   sub_1BBA62210();
-  v4 = self;
+  selfCopy = self;
   sub_1BBA5F2B4();
 
   v5 = sub_1BBA62200();
@@ -79,18 +79,18 @@
 - (void)clear
 {
   v2 = *((*MEMORY[0x1E69E7D40] & **(&self->super.isa + OBJC_IVAR___TLKAsyncCache_wrappedCache)) + 0xF8);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 
-- (void)computeObjectForKey:(NSObject *)a3 completionHandler:(id)a4
+- (void)computeObjectForKey:(NSObject *)key completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBC7A510);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = key;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1BBA62320();
@@ -105,8 +105,8 @@
   v14[3] = 0;
   v14[4] = &unk_1BBA68428;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  keyCopy = key;
+  selfCopy = self;
   sub_1BBA605B4(0, 0, v9, &unk_1BBA68438, v14);
 }
 

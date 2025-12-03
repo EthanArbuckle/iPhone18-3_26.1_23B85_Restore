@@ -1,33 +1,33 @@
 @interface AssistantUIController
 - (AssistantUIController)init;
-- (BOOL)restoreNetworkIfNeeded:(BOOL)a3 disassociateIfNeeded:(BOOL)a4 forceQuit:(BOOL)a5;
-- (id)modifyTopoUIInLayer:(id)a3 withLayout:(id)a4 andOwningView:(id)a5 targetProductID:(id)a6 targetDeviceKind:(id)a7 targetName:(id)a8 targetWiFiName:(id)a9 sourceProductID:(id)a10 sourceDeviceKind:(id)a11 sourceName:(id)a12 sourceWiFiName:(id)a13 connectionType:(id)a14;
-- (id)setupPromptStringForBaseInfo:(id)a3 andResult:(int)a4;
-- (int)cancelCurrentAssistantState:(BOOL)a3;
-- (int)doneWithAssistant:(BOOL)a3;
+- (BOOL)restoreNetworkIfNeeded:(BOOL)needed disassociateIfNeeded:(BOOL)ifNeeded forceQuit:(BOOL)quit;
+- (id)modifyTopoUIInLayer:(id)layer withLayout:(id)layout andOwningView:(id)view targetProductID:(id)d targetDeviceKind:(id)kind targetName:(id)name targetWiFiName:(id)fiName sourceProductID:(id)self0 sourceDeviceKind:(id)self1 sourceName:(id)self2 sourceWiFiName:(id)self3 connectionType:(id)self4;
+- (id)setupPromptStringForBaseInfo:(id)info andResult:(int)result;
+- (int)cancelCurrentAssistantState:(BOOL)state;
+- (int)doneWithAssistant:(BOOL)assistant;
 - (int)startAutoGuess;
-- (int)startRestoreNetwork:(id)a3;
-- (int)startSetupFromAutoGuessRecommendation:(id)a3;
-- (int)startSetupFromStepByStepResults:(id)a3;
+- (int)startRestoreNetwork:(id)network;
+- (int)startSetupFromAutoGuessRecommendation:(id)recommendation;
+- (int)startSetupFromStepByStepResults:(id)results;
 - (int)startStepByStepFromAutoGuessRecommendation;
-- (void)autoguessProgressComplete:(id)a3;
-- (void)autoguessProgressUpdated:(int)a3 paramString:(id)a4;
-- (void)autoguessUpdateTargetInfo:(id)a3;
+- (void)autoguessProgressComplete:(id)complete;
+- (void)autoguessProgressUpdated:(int)updated paramString:(id)string;
+- (void)autoguessUpdateTargetInfo:(id)info;
 - (void)dealloc;
-- (void)deliverSetupUIConfigResult:(int)a3 withOptions:(id)a4;
-- (void)handlePresentAutoGuessUIFromAutoGuessCompleteResult:(BOOL)a3;
-- (void)presentUIForConnectionVerification:(int)a3 status:(int)a4 paramDict:(id)a5;
-- (void)presentUIForConnectionVerificationResult:(int)a3 withOptions:(id)a4;
-- (void)presentUIForStepByStepNextStepResult:(int)a3 withOptions:(id)a4;
-- (void)presentUIForUIConfigPrompt:(int)a3 paramDict:(id)a4;
-- (void)restoreNetworkDone:(id)a3;
-- (void)setupCompleteWithResult:(int)a3 baseStationInfo:(id)a4 forController:(id)a5;
-- (void)setupProgressUpdated:(int)a3 status:(int)a4 paramDict:(id)a5 forController:(id)a6;
-- (void)setupUIConfigConnectionStatusUpdated:(int)a3 status:(int)a4 paramDict:(id)a5 forController:(id)a6;
-- (void)showUIConfigPromptResult:(int)a3 withOptions:(id)a4;
-- (void)stepByStepCompleteWithResult:(int)a3 paramDict:(id)a4;
-- (void)stepByStepNextStep:(int)a3 paramDict:(id)a4;
-- (void)stepByStepProgressUpdated:(int)a3 status:(int)a4 paramString:(id)a5;
+- (void)deliverSetupUIConfigResult:(int)result withOptions:(id)options;
+- (void)handlePresentAutoGuessUIFromAutoGuessCompleteResult:(BOOL)result;
+- (void)presentUIForConnectionVerification:(int)verification status:(int)status paramDict:(id)dict;
+- (void)presentUIForConnectionVerificationResult:(int)result withOptions:(id)options;
+- (void)presentUIForStepByStepNextStepResult:(int)result withOptions:(id)options;
+- (void)presentUIForUIConfigPrompt:(int)prompt paramDict:(id)dict;
+- (void)restoreNetworkDone:(id)done;
+- (void)setupCompleteWithResult:(int)result baseStationInfo:(id)info forController:(id)controller;
+- (void)setupProgressUpdated:(int)updated status:(int)status paramDict:(id)dict forController:(id)controller;
+- (void)setupUIConfigConnectionStatusUpdated:(int)updated status:(int)status paramDict:(id)dict forController:(id)controller;
+- (void)showUIConfigPromptResult:(int)result withOptions:(id)options;
+- (void)stepByStepCompleteWithResult:(int)result paramDict:(id)dict;
+- (void)stepByStepNextStep:(int)step paramDict:(id)dict;
+- (void)stepByStepProgressUpdated:(int)updated status:(int)status paramString:(id)string;
 @end
 
 @implementation AssistantUIController
@@ -124,7 +124,7 @@
   return delegate;
 }
 
-- (int)startSetupFromAutoGuessRecommendation:(id)a3
+- (int)startSetupFromAutoGuessRecommendation:(id)recommendation
 {
   if (self->_state != 2)
   {
@@ -167,45 +167,45 @@
   setupOptions = self->_setupOptions;
   v26 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v25, 1);
   objc_msgSend_setObject_forKey_(setupOptions, v27, v26, @"kBSAutoGuessSetupOptionKey_RecommendationIsAutomatic");
-  if (a3)
+  if (recommendation)
   {
-    v29 = objc_msgSend_objectForKey_(a3, v28, @"kSBSKey_BaseName");
+    v29 = objc_msgSend_objectForKey_(recommendation, v28, @"kSBSKey_BaseName");
     if (v29)
     {
       objc_msgSend_setObject_forKey_(self->_setupOptions, v30, v29, @"kBSAutoGuessSetupOptionKey_BaseName");
     }
 
-    v31 = objc_msgSend_objectForKey_(a3, v30, @"kSBSKey_BasePassword");
+    v31 = objc_msgSend_objectForKey_(recommendation, v30, @"kSBSKey_BasePassword");
     if (v31)
     {
       objc_msgSend_setObject_forKey_(self->_setupOptions, v32, v31, @"kBSAutoGuessSetupOptionKey_BasePassword");
     }
 
-    v33 = objc_msgSend_objectForKey_(a3, v32, @"kSBSKey_AirPlayPassword");
+    v33 = objc_msgSend_objectForKey_(recommendation, v32, @"kSBSKey_AirPlayPassword");
     if (v33)
     {
       objc_msgSend_setObject_forKey_(self->_setupOptions, v34, v33, @"kBSAutoGuessSetupOptionKey_AirPlayPassword");
     }
 
-    v35 = objc_msgSend_objectForKey_(a3, v34, @"kSBSKey_NetworkName");
+    v35 = objc_msgSend_objectForKey_(recommendation, v34, @"kSBSKey_NetworkName");
     if (v35)
     {
       objc_msgSend_setObject_forKey_(self->_setupOptions, v36, v35, @"kBSAutoGuessSetupOptionKey_NetworkName");
     }
 
-    v37 = objc_msgSend_objectForKey_(a3, v36, @"kSBSKey_NetworkPassword");
+    v37 = objc_msgSend_objectForKey_(recommendation, v36, @"kSBSKey_NetworkPassword");
     if (v37)
     {
       objc_msgSend_setObject_forKey_(self->_setupOptions, v38, v37, @"kBSAutoGuessSetupOptionKey_NetworkPassword");
     }
 
-    v39 = objc_msgSend_objectForKey_(a3, v38, @"kSBSKey_SourceNetwork");
+    v39 = objc_msgSend_objectForKey_(recommendation, v38, @"kSBSKey_SourceNetwork");
     if (v39)
     {
       objc_msgSend_setObject_forKey_(self->_setupOptions, v40, v39, @"kBSAutoGuessSetupOptionKey_SourceNetwork");
     }
 
-    v41 = objc_msgSend_objectForKey_(a3, v40, @"kSBSKey_SourceBase");
+    v41 = objc_msgSend_objectForKey_(recommendation, v40, @"kSBSKey_SourceBase");
     if (v41)
     {
       objc_msgSend_setObject_forKey_(self->_setupOptions, v42, v41, @"kBSAutoGuessSetupOptionKey_SourceBase");
@@ -277,13 +277,13 @@
   return objc_msgSend_setupFromAutoguessRecommendation_withOptions_(v18, v17, v7, setupOptions);
 }
 
-- (int)cancelCurrentAssistantState:(BOOL)a3
+- (int)cancelCurrentAssistantState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   autoGuessController = self->_autoGuessController;
   if (autoGuessController && self->_state == 1)
   {
-    v6 = objc_msgSend_cancelAutoGuess(autoGuessController, a2, a3);
+    v6 = objc_msgSend_cancelAutoGuess(autoGuessController, a2, state);
     if (v6 == -6720)
     {
       self->_state = 10;
@@ -304,7 +304,7 @@ LABEL_11:
     stepByStepController = self->_stepByStepController;
     if (stepByStepController && self->_state == 3)
     {
-      v6 = objc_msgSend_cancelStepByStep(stepByStepController, a2, a3);
+      v6 = objc_msgSend_cancelStepByStep(stepByStepController, a2, state);
       if (!v6)
       {
         self->_state = 10;
@@ -335,7 +335,7 @@ LABEL_11:
       objc_msgSend_presentUIForConnectionVerificationResult_withOptions_(self, a2, 4294960573, 0);
       break;
     case 5:
-      v6 = objc_msgSend_cancelSetup(setupController, a2, a3);
+      v6 = objc_msgSend_cancelSetup(setupController, a2, state);
       if (v6 == -6720)
       {
         self->_state = 10;
@@ -353,9 +353,9 @@ LABEL_18:
 
   v6 = 4294960525;
 LABEL_22:
-  v16 = objc_msgSend_sharedInstance(WiFiUtils, a2, a3);
+  v16 = objc_msgSend_sharedInstance(WiFiUtils, a2, state);
   objc_msgSend_cancelAsync(v16, v17, v18);
-  if (v3)
+  if (stateCopy)
   {
     if (dword_27E381438 <= 100 && (dword_27E381438 != -1 || sub_23EB74AC8(&dword_27E381438, 0x64u)))
     {
@@ -390,7 +390,7 @@ LABEL_22:
   return v6;
 }
 
-- (int)doneWithAssistant:(BOOL)a3
+- (int)doneWithAssistant:(BOOL)assistant
 {
   state = self->_state;
   if ((state - 9) > 1)
@@ -399,7 +399,7 @@ LABEL_22:
   }
 
   self->_state = 11;
-  if (state == 9 || !objc_msgSend_restoreNetworkIfNeeded_disassociateIfNeeded_forceQuit_(self, a2, 1, 1, a3))
+  if (state == 9 || !objc_msgSend_restoreNetworkIfNeeded_disassociateIfNeeded_forceQuit_(self, a2, 1, 1, assistant))
   {
     if (dword_27E381438 <= 100)
     {
@@ -451,33 +451,33 @@ LABEL_16:
   return v8;
 }
 
-- (id)modifyTopoUIInLayer:(id)a3 withLayout:(id)a4 andOwningView:(id)a5 targetProductID:(id)a6 targetDeviceKind:(id)a7 targetName:(id)a8 targetWiFiName:(id)a9 sourceProductID:(id)a10 sourceDeviceKind:(id)a11 sourceName:(id)a12 sourceWiFiName:(id)a13 connectionType:(id)a14
+- (id)modifyTopoUIInLayer:(id)layer withLayout:(id)layout andOwningView:(id)view targetProductID:(id)d targetDeviceKind:(id)kind targetName:(id)name targetWiFiName:(id)fiName sourceProductID:(id)self0 sourceDeviceKind:(id)self1 sourceName:(id)self2 sourceWiFiName:(id)self3 connectionType:(id)self4
 {
-  if (a4)
+  if (layout)
   {
-    v19 = a4;
-    if (a3)
+    layoutCopy = layout;
+    if (layer)
     {
-      objc_msgSend_setContainerLayer_(a4, a2, a3);
+      objc_msgSend_setContainerLayer_(layout, a2, layer);
     }
   }
 
   else
   {
-    if (!a3)
+    if (!layer)
     {
       return 0;
     }
 
     v20 = [NetTopoMiniStaticLayout alloc];
-    v19 = objc_msgSend_initWithContainerLayer_andOptions_(v20, v21, a3, 4);
+    layoutCopy = objc_msgSend_initWithContainerLayer_andOptions_(v20, v21, layer, 4);
   }
 
-  objc_msgSend_setNetTopoMiniStaticLayout_(a5, a2, v19);
+  objc_msgSend_setNetTopoMiniStaticLayout_(view, a2, layoutCopy);
   v24 = 4;
-  if (a10)
+  if (iD)
   {
-    if (sub_23EC13544(a5, v22, v23) == 1)
+    if (sub_23EC13544(view, v22, v23) == 1)
     {
       v24 = 2;
     }
@@ -488,54 +488,54 @@ LABEL_16:
     }
   }
 
-  objc_msgSend_setLayoutOptions_(v19, v22, v24);
-  objc_msgSend_setOwningView_(v19, v25, a5);
+  objc_msgSend_setLayoutOptions_(layoutCopy, v22, v24);
+  objc_msgSend_setOwningView_(layoutCopy, v25, view);
   v29 = objc_msgSend_array(MEMORY[0x277CBEB18], v26, v27);
-  if (a10)
+  if (iD)
   {
-    v30 = objc_msgSend_dictionaryWithObjectsAndKeys_(MEMORY[0x277CBEB38], v28, off_27E3830B0[0], off_27E3830A8[0], a10, off_27E3830B8[0], a11, off_27E3830C0[0], 0);
+    v30 = objc_msgSend_dictionaryWithObjectsAndKeys_(MEMORY[0x277CBEB38], v28, off_27E3830B0[0], off_27E3830A8[0], iD, off_27E3830B8[0], deviceKind, off_27E3830C0[0], 0);
     v32 = v30;
-    if (a13)
+    if (wiFiName)
     {
-      objc_msgSend_setObject_forKey_(v30, v31, a13, off_27E3830C8[0]);
+      objc_msgSend_setObject_forKey_(v30, v31, wiFiName, off_27E3830C8[0]);
     }
 
-    if (a12)
+    if (sourceName)
     {
-      objc_msgSend_setObject_forKey_(v32, v31, a12, off_27E3830D0[0]);
+      objc_msgSend_setObject_forKey_(v32, v31, sourceName, off_27E3830D0[0]);
     }
 
     objc_msgSend_addObject_(v29, v31, v32);
   }
 
-  v33 = objc_msgSend_dictionaryWithObjectsAndKeys_(MEMORY[0x277CBEB38], v28, off_27E3830B0[0], off_27E3830A8[0], a6, off_27E3830B8[0], a7, off_27E3830C0[0], 0);
+  v33 = objc_msgSend_dictionaryWithObjectsAndKeys_(MEMORY[0x277CBEB38], v28, off_27E3830B0[0], off_27E3830A8[0], d, off_27E3830B8[0], kind, off_27E3830C0[0], 0);
   v35 = v33;
-  if (a9)
+  if (fiName)
   {
-    objc_msgSend_setObject_forKey_(v33, v34, a9, off_27E3830C8[0]);
+    objc_msgSend_setObject_forKey_(v33, v34, fiName, off_27E3830C8[0]);
   }
 
-  if (a8)
+  if (name)
   {
-    objc_msgSend_setObject_forKey_(v35, v34, a8, off_27E3830D0[0]);
+    objc_msgSend_setObject_forKey_(v35, v34, name, off_27E3830D0[0]);
   }
 
-  if (a10)
+  if (iD)
   {
-    objc_msgSend_setObject_forKey_(v35, v34, a14, off_27E3830D8[0]);
+    objc_msgSend_setObject_forKey_(v35, v34, type, off_27E3830D8[0]);
   }
 
   objc_msgSend_addObject_(v29, v34, v35);
-  objc_msgSend_createLayoutForDevices_(v19, v36, v29);
-  return v19;
+  objc_msgSend_createLayoutForDevices_(layoutCopy, v36, v29);
+  return layoutCopy;
 }
 
-- (void)deliverSetupUIConfigResult:(int)a3 withOptions:(id)a4
+- (void)deliverSetupUIConfigResult:(int)result withOptions:(id)options
 {
-  v5 = *&a3;
+  v5 = *&result;
   if (objc_opt_respondsToSelector())
   {
-    objc_msgSend_setupUIConfigResult_withOptions_(self->_setupController, v7, v5, a4);
+    objc_msgSend_setupUIConfigResult_withOptions_(self->_setupController, v7, v5, options);
   }
 
   if (objc_opt_respondsToSelector())
@@ -546,32 +546,32 @@ LABEL_16:
   }
 }
 
-- (void)presentUIForConnectionVerificationResult:(int)a3 withOptions:(id)a4
+- (void)presentUIForConnectionVerificationResult:(int)result withOptions:(id)options
 {
   if (self->_setupController)
   {
     if (self->_state == 6)
     {
-      objc_msgSend_deliverSetupUIConfigResult_withOptions_(self, a2, *&a3, a4);
+      objc_msgSend_deliverSetupUIConfigResult_withOptions_(self, a2, *&result, options);
     }
   }
 }
 
-- (void)showUIConfigPromptResult:(int)a3 withOptions:(id)a4
+- (void)showUIConfigPromptResult:(int)result withOptions:(id)options
 {
   if (self->_setupController)
   {
     if (self->_state == 7)
     {
-      objc_msgSend_deliverSetupUIConfigResult_withOptions_(self, a2, *&a3, a4);
+      objc_msgSend_deliverSetupUIConfigResult_withOptions_(self, a2, *&result, options);
       self->_state = 5;
     }
   }
 }
 
-- (void)presentUIForStepByStepNextStepResult:(int)a3 withOptions:(id)a4
+- (void)presentUIForStepByStepNextStepResult:(int)result withOptions:(id)options
 {
-  v8 = *&a3;
+  v8 = *&result;
   if (dword_27E381438 <= 100 && (dword_27E381438 != -1 || sub_23EB74AC8(&dword_27E381438, 0x64u)))
   {
     sub_23EB75374(&dword_27E381438, "[AssistantUIController presentUIForStepByStepNextStepResult:withOptions:]", 100, "result: %ld options: %@\n", v4, v5, v6, v7, v8);
@@ -585,24 +585,24 @@ LABEL_16:
   }
 }
 
-- (void)autoguessUpdateTargetInfo:(id)a3
+- (void)autoguessUpdateTargetInfo:(id)info
 {
   if (dword_27E381438 <= 100 && (dword_27E381438 != -1 || sub_23EB74AC8(&dword_27E381438, 0x64u)))
   {
-    sub_23EB75374(&dword_27E381438, "[AssistantUIController autoguessUpdateTargetInfo:]", 100, "targetInfo: %@ \n", v3, v4, v5, v6, a3);
+    sub_23EB75374(&dword_27E381438, "[AssistantUIController autoguessUpdateTargetInfo:]", 100, "targetInfo: %@ \n", v3, v4, v5, v6, info);
   }
 
   if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     delegate = self->_delegate;
 
-    MEMORY[0x2821F9670](delegate, sel_presentUIForRecommmendationTargetInfo_, a3);
+    MEMORY[0x2821F9670](delegate, sel_presentUIForRecommmendationTargetInfo_, info);
   }
 }
 
-- (void)autoguessProgressUpdated:(int)a3 paramString:(id)a4
+- (void)autoguessProgressUpdated:(int)updated paramString:(id)string
 {
-  v9 = *&a3;
+  v9 = *&updated;
   if (dword_27E381438 <= 100 && (dword_27E381438 != -1 || sub_23EB74AC8(&dword_27E381438, 0x64u)))
   {
     sub_23EB75374(&dword_27E381438, "[AssistantUIController autoguessProgressUpdated:paramString:]", 100, "selector: %d paramString: %@\n", v4, v5, v6, v7, v9);
@@ -620,7 +620,7 @@ LABEL_16:
         goto LABEL_31;
       }
 
-      if (v9 != 5 || !a4)
+      if (v9 != 5 || !string)
       {
         goto LABEL_33;
       }
@@ -635,7 +635,7 @@ LABEL_16:
       switch(v9)
       {
         case 7:
-          if (!a4)
+          if (!string)
           {
             goto LABEL_33;
           }
@@ -645,7 +645,7 @@ LABEL_16:
           v16 = @"kProgress_WaitingForBase";
           break;
         case 9:
-          if (!a4)
+          if (!string)
           {
             goto LABEL_33;
           }
@@ -666,7 +666,7 @@ LABEL_31:
     }
 
     v17 = sub_23EB6CD3C(v16, v15);
-    valid = objc_msgSend_stringWithValidatedFormat_validFormatSpecifiers_error_(v14, v18, v17, @"%@", 0, a4);
+    valid = objc_msgSend_stringWithValidatedFormat_validFormatSpecifiers_error_(v14, v18, v17, @"%@", 0, string);
 LABEL_32:
     v11 = valid;
     goto LABEL_33;
@@ -713,9 +713,9 @@ LABEL_33:
   }
 }
 
-- (void)autoguessProgressComplete:(id)a3
+- (void)autoguessProgressComplete:(id)complete
 {
-  objc_msgSend_setGuessCompleteDict_(self, a2, a3);
+  objc_msgSend_setGuessCompleteDict_(self, a2, complete);
   Instrumentation = objc_msgSend_lastInstrumentation(self->_autoGuessController, v4, v5);
   objc_msgSend_setLastAutoguessInstrumentation_(self, v7, Instrumentation);
   v8 = self->_autoGuessController;
@@ -728,15 +728,15 @@ LABEL_33:
   objc_msgSend_handlePresentAutoGuessUIFromAutoGuessCompleteResult_(self, v11, 1);
 }
 
-- (void)setupProgressUpdated:(int)a3 status:(int)a4 paramDict:(id)a5 forController:(id)a6
+- (void)setupProgressUpdated:(int)updated status:(int)status paramDict:(id)dict forController:(id)controller
 {
-  v9 = *&a3;
+  v9 = *&updated;
   if (dword_27E381438 <= 100 && (dword_27E381438 != -1 || sub_23EB74AC8(&dword_27E381438, 0x64u)))
   {
-    sub_23EB75374(&dword_27E381438, "[AssistantUIController setupProgressUpdated:status:paramDict:forController:]", 100, "selector: %d status: %ld paramDict: %@\n", a5, a6, v6, v7, v9);
+    sub_23EB75374(&dword_27E381438, "[AssistantUIController setupProgressUpdated:status:paramDict:forController:]", 100, "selector: %d status: %ld paramDict: %@\n", dict, controller, v6, v7, v9);
   }
 
-  v11 = objc_msgSend_objectForKey_(a5, a2, @"BSAssistantProgressKey_StringParameter");
+  v11 = objc_msgSend_objectForKey_(dict, a2, @"BSAssistantProgressKey_StringParameter");
   v16 = v11;
   switch(v9)
   {
@@ -794,7 +794,7 @@ LABEL_33:
     case 15:
       if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v25 = objc_msgSend_objectForKey_(a5, v24, @"BSAssistantProgressKey_DictionaryParameter");
+        v25 = objc_msgSend_objectForKey_(dict, v24, @"BSAssistantProgressKey_DictionaryParameter");
         v27 = objc_msgSend_objectForKey_(v25, v26, @"kBSConfigurationSetupComplete_RemovedBase");
         objc_msgSend_performSelector_withObject_(self->_delegate, v28, sel_setRemovedBaseStation_, v27);
       }
@@ -886,22 +886,22 @@ LABEL_43:
   }
 }
 
-- (void)setupCompleteWithResult:(int)a3 baseStationInfo:(id)a4 forController:(id)a5
+- (void)setupCompleteWithResult:(int)result baseStationInfo:(id)info forController:(id)controller
 {
-  self->_assistantResult = a3;
-  if (a3 == -6723)
+  self->_assistantResult = result;
+  if (result == -6723)
   {
-    v7 = 4294960527;
+    resultCopy = 4294960527;
   }
 
   else
   {
-    v7 = a3;
+    resultCopy = result;
   }
 
-  if (v7 != -6769)
+  if (resultCopy != -6769)
   {
-    if (v7)
+    if (resultCopy)
     {
       self->_state = 10;
     }
@@ -909,37 +909,37 @@ LABEL_43:
     else
     {
       self->_state = 9;
-      objc_msgSend_setLastAssociatedInfo_(self, a2, 0, a4, a5);
+      objc_msgSend_setLastAssociatedInfo_(self, a2, 0, info, controller);
     }
   }
 
   if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v8 = objc_msgSend_setupPromptStringForBaseInfo_andResult_(self, a2, a4, v7);
-    objc_msgSend_presentUIForSetupResult_baseStationInfo_withPrompt_(self->_delegate, v9, v7, a4, v8);
+    v8 = objc_msgSend_setupPromptStringForBaseInfo_andResult_(self, a2, info, resultCopy);
+    objc_msgSend_presentUIForSetupResult_baseStationInfo_withPrompt_(self->_delegate, v9, resultCopy, info, v8);
   }
 
-  Instrumentation = objc_msgSend_lastInstrumentation(self->_setupController, a2, *&a3);
+  Instrumentation = objc_msgSend_lastInstrumentation(self->_setupController, a2, *&result);
   objc_msgSend_setLastSetupInstrumentation_(self, v11, Instrumentation);
   v12 = self->_setupController;
   objc_msgSend_setSetupController_(self, v13, 0);
   objc_msgSend_setStepByStepController_(self, v14, 0);
-  if (v7 == -6769)
+  if (resultCopy == -6769)
   {
 
     objc_msgSend_handlePresentAutoGuessUIFromAutoGuessCompleteResult_(self, v15, 0);
   }
 }
 
-- (void)setupUIConfigConnectionStatusUpdated:(int)a3 status:(int)a4 paramDict:(id)a5 forController:(id)a6
+- (void)setupUIConfigConnectionStatusUpdated:(int)updated status:(int)status paramDict:(id)dict forController:(id)controller
 {
-  v9 = *&a3;
+  v9 = *&updated;
   if (dword_27E381438 <= 100 && (dword_27E381438 != -1 || sub_23EB74AC8(&dword_27E381438, 0x64u)))
   {
-    sub_23EB75374(&dword_27E381438, "[AssistantUIController setupUIConfigConnectionStatusUpdated:status:paramDict:forController:]", 100, " selector: %d status: %ld paramDict: %@\n", a5, a6, v6, v7, v9);
+    sub_23EB75374(&dword_27E381438, "[AssistantUIController setupUIConfigConnectionStatusUpdated:status:paramDict:forController:]", 100, " selector: %d status: %ld paramDict: %@\n", dict, controller, v6, v7, v9);
   }
 
-  if (a4)
+  if (status)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -964,12 +964,12 @@ LABEL_43:
   }
 }
 
-- (void)stepByStepProgressUpdated:(int)a3 status:(int)a4 paramString:(id)a5
+- (void)stepByStepProgressUpdated:(int)updated status:(int)status paramString:(id)string
 {
-  v9 = *&a3;
+  v9 = *&updated;
   if (dword_27E381438 <= 100 && (dword_27E381438 != -1 || sub_23EB74AC8(&dword_27E381438, 0x64u)))
   {
-    sub_23EB75374(&dword_27E381438, "[AssistantUIController stepByStepProgressUpdated:status:paramString:]", 100, "selector: %d paramString: %@\n", a5, v5, v6, v7, v9);
+    sub_23EB75374(&dword_27E381438, "[AssistantUIController stepByStepProgressUpdated:status:paramString:]", 100, "selector: %d paramString: %@\n", string, v5, v6, v7, v9);
   }
 
   v11 = &stru_285145FE8;
@@ -998,7 +998,7 @@ LABEL_43:
 
   if (v9 == 9)
   {
-    if (a5)
+    if (string)
     {
       v12 = MEMORY[0x277CCACA8];
       v13 = qword_27E383800;
@@ -1009,7 +1009,7 @@ LABEL_43:
 
   else if (v9 == 7)
   {
-    if (a5)
+    if (string)
     {
       v12 = MEMORY[0x277CCACA8];
       v13 = qword_27E383800;
@@ -1018,14 +1018,14 @@ LABEL_43:
     }
   }
 
-  else if (v9 == 5 && a5)
+  else if (v9 == 5 && string)
   {
     v12 = MEMORY[0x277CCACA8];
     v13 = qword_27E383800;
     v14 = @"kProgress_NetworkJoin";
 LABEL_18:
     v17 = sub_23EB6CD3C(v14, v13);
-    valid = objc_msgSend_stringWithValidatedFormat_validFormatSpecifiers_error_(v12, v18, v17, @"%@", 0, a5);
+    valid = objc_msgSend_stringWithValidatedFormat_validFormatSpecifiers_error_(v12, v18, v17, @"%@", 0, string);
 LABEL_21:
     v11 = valid;
   }
@@ -1039,15 +1039,15 @@ LABEL_22:
   }
 }
 
-- (void)stepByStepCompleteWithResult:(int)a3 paramDict:(id)a4
+- (void)stepByStepCompleteWithResult:(int)result paramDict:(id)dict
 {
-  if (a3 == -6769)
+  if (result == -6769)
   {
     goto LABEL_8;
   }
 
-  v6 = *&a3;
-  if (a3 == -6723)
+  v6 = *&result;
+  if (result == -6723)
   {
     v7 = 10;
   }
@@ -1072,18 +1072,18 @@ LABEL_8:
     objc_msgSend_setStepByStepController_(self, v9, 0);
   }
 
-  else if (a4)
+  else if (dict)
   {
 
-    MEMORY[0x2821F9670](self, sel_startSetupFromStepByStepResults_, a4);
+    MEMORY[0x2821F9670](self, sel_startSetupFromStepByStepResults_, dict);
   }
 }
 
-- (void)stepByStepNextStep:(int)a3 paramDict:(id)a4
+- (void)stepByStepNextStep:(int)step paramDict:(id)dict
 {
   if (self->_delegate)
   {
-    v5 = *&a3;
+    v5 = *&step;
     if (objc_opt_respondsToSelector())
     {
       delegate = self->_delegate;
@@ -1093,7 +1093,7 @@ LABEL_8:
   }
 }
 
-- (int)startSetupFromStepByStepResults:(id)a3
+- (int)startSetupFromStepByStepResults:(id)results
 {
   if (self->_setupController)
   {
@@ -1104,7 +1104,7 @@ LABEL_8:
   v32[4] = v9;
   v31 = 0;
   v32[0] = 0;
-  result = sub_23EBD9210(a3, v32, &v31, v3, v4, v5, v6, v7);
+  result = sub_23EBD9210(results, v32, &v31, v3, v4, v5, v6, v7);
   if (!result)
   {
     if (v32[0])
@@ -1153,13 +1153,13 @@ LABEL_8:
   return result;
 }
 
-- (void)presentUIForConnectionVerification:(int)a3 status:(int)a4 paramDict:(id)a5
+- (void)presentUIForConnectionVerification:(int)verification status:(int)status paramDict:(id)dict
 {
-  v8 = *&a4;
-  v9 = *&a3;
+  v8 = *&status;
+  v9 = *&verification;
   if (dword_27E381438 <= 100 && (dword_27E381438 != -1 || sub_23EB74AC8(&dword_27E381438, 0x64u)))
   {
-    sub_23EB75374(&dword_27E381438, "[AssistantUIController(Private) presentUIForConnectionVerification:status:paramDict:]", 100, " selector: %d status: %ld paramDict: %@\n", a5, v5, v6, v7, v9);
+    sub_23EB75374(&dword_27E381438, "[AssistantUIController(Private) presentUIForConnectionVerification:status:paramDict:]", 100, " selector: %d status: %ld paramDict: %@\n", dict, v5, v6, v7, v9);
   }
 
   self->_connectionStatusSelectorAwaitingResolution = v9;
@@ -1174,7 +1174,7 @@ LABEL_8:
 
       if (dword_27E381438 <= 100 && (dword_27E381438 != -1 || sub_23EB74AC8(&dword_27E381438, 0x64u)))
       {
-        sub_23EB75374(&dword_27E381438, "[AssistantUIController(Private) presentUIForConnectionVerification:status:paramDict:]", 100, "%s: eBSConfigurationUIConfigSelector_DHCPOrPPPoESeen\n", a5, v5, v6, v7, "[AssistantUIController(Private) presentUIForConnectionVerification:status:paramDict:]");
+        sub_23EB75374(&dword_27E381438, "[AssistantUIController(Private) presentUIForConnectionVerification:status:paramDict:]", 100, "%s: eBSConfigurationUIConfigSelector_DHCPOrPPPoESeen\n", dict, v5, v6, v7, "[AssistantUIController(Private) presentUIForConnectionVerification:status:paramDict:]");
       }
 
 LABEL_19:
@@ -1224,10 +1224,10 @@ LABEL_19:
   }
 }
 
-- (void)presentUIForUIConfigPrompt:(int)a3 paramDict:(id)a4
+- (void)presentUIForUIConfigPrompt:(int)prompt paramDict:(id)dict
 {
   self->_state = 7;
-  if (a3 == 8)
+  if (prompt == 8)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -1238,11 +1238,11 @@ LABEL_19:
 
       delegate = self->_delegate;
 
-      MEMORY[0x2821F9670](delegate, sel_showUIConfigPromptForGuestNetConfigWithParamDict_, a4);
+      MEMORY[0x2821F9670](delegate, sel_showUIConfigPromptForGuestNetConfigWithParamDict_, dict);
     }
   }
 
-  else if (a3 == 7 && (objc_opt_respondsToSelector() & 1) != 0)
+  else if (prompt == 7 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -1251,13 +1251,13 @@ LABEL_19:
 
     v8 = self->_delegate;
 
-    MEMORY[0x2821F9670](v8, sel_showUIConfigPromptToSendDiagsUsageStatsWithParamDict_, a4);
+    MEMORY[0x2821F9670](v8, sel_showUIConfigPromptToSendDiagsUsageStatsWithParamDict_, dict);
   }
 }
 
-- (void)handlePresentAutoGuessUIFromAutoGuessCompleteResult:(BOOL)a3
+- (void)handlePresentAutoGuessUIFromAutoGuessCompleteResult:(BOOL)result
 {
-  v7 = a3;
+  resultCopy = result;
   if (dword_27E381438 <= 100 && (dword_27E381438 != -1 || sub_23EB74AC8(&dword_27E381438, 0x64u)))
   {
     sub_23EB75374(&dword_27E381438, "[AssistantUIController(Private) handlePresentAutoGuessUIFromAutoGuessCompleteResult:]", 100, "\n", v3, v4, v5, v6, v54);
@@ -1276,9 +1276,9 @@ LABEL_19:
     goto LABEL_35;
   }
 
-  if (v7)
+  if (resultCopy)
   {
-    v10 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, a3);
+    v10 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, result);
     objc_msgSend_setSetupOptions_(self, v11, v10);
   }
 
@@ -1294,7 +1294,7 @@ LABEL_19:
     goto LABEL_35;
   }
 
-  v12 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3);
+  v12 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, result);
   if (objc_msgSend_BOOLForKey_(v12, v13, @"skipConnectionTesting"))
   {
     setupOptions = self->_setupOptions;
@@ -1371,7 +1371,7 @@ LABEL_34:
           if (NetworkPassword)
           {
             v9 = 0x277CBE000;
-            if (v7)
+            if (resultCopy)
             {
               objc_msgSend_setObject_forKey_(self->_setupOptions, a2, NetworkPassword, @"kBSAutoGuessSetupOptionKey_NetworkPassword");
               v24 = 1;
@@ -1405,7 +1405,7 @@ LABEL_33:
   }
 
   v9 = 0x277CBE000;
-  if (v7)
+  if (resultCopy)
   {
     v40 = sub_23EB6D820();
     objc_msgSend_setObject_forKey_(self->_setupOptions, v41, v40, @"kBSAutoGuessSetupOptionKey_NetworkName");
@@ -1448,9 +1448,9 @@ LABEL_35:
   }
 }
 
-- (id)setupPromptStringForBaseInfo:(id)a3 andResult:(int)a4
+- (id)setupPromptStringForBaseInfo:(id)info andResult:(int)result
 {
-  if (!a3 || a4)
+  if (!info || result)
   {
     v54 = qword_27E383800;
 
@@ -1459,9 +1459,9 @@ LABEL_35:
 
   else
   {
-    v6 = objc_msgSend_objectForKey_(a3, a2, @"kSetupBaseStationInfoKey_RecommendationInfo");
+    v6 = objc_msgSend_objectForKey_(info, a2, @"kSetupBaseStationInfoKey_RecommendationInfo");
     v8 = objc_msgSend_objectForKey_(v6, v7, @"BSAutoGuess_Recommendation");
-    v10 = objc_msgSend_objectForKey_(a3, v9, @"kSetupBaseStationInfoKey_GeneralInfo");
+    v10 = objc_msgSend_objectForKey_(info, v9, @"kSetupBaseStationInfoKey_GeneralInfo");
     v11 = sub_23EB6CDF8(1937326416);
     v13 = objc_msgSend_objectForKey_(v10, v12, v11);
     v14 = sub_23EB6CDF8(1937329773);
@@ -1471,7 +1471,7 @@ LABEL_35:
     v23 = objc_msgSend_setupOptions(self, v21, v22);
     v25 = objc_msgSend_objectForKey_(v23, v24, @"kBSAutoGuessSetupOptionKey_ExtendOption_JoinApple");
     v28 = objc_msgSend_BOOLValue(v25, v26, v27);
-    v31 = objc_msgSend_objectForKey_(a3, v29, @"kSetupBaseStationInfoKey_BrowseRecord");
+    v31 = objc_msgSend_objectForKey_(info, v29, @"kSetupBaseStationInfoKey_BrowseRecord");
     if (v28)
     {
       v8 = @"BSSetupRecommend_OfferJoinNetwork";
@@ -1497,10 +1497,10 @@ LABEL_35:
 
     else if ((objc_msgSend_isEqualToString_(v8, v35, @"BSSetupRecommend_OfferJoinNetwork") & 1) != 0 || objc_msgSend_isEqualToString_(v8, v36, @"BSSetupRecommend_AskUserChooseNetworkToJoin"))
     {
-      v37 = objc_msgSend_objectForKey_(a3, v36, @"kSetupBaseStationInfoKey_RadioInfo");
+      v37 = objc_msgSend_objectForKey_(info, v36, @"kSetupBaseStationInfoKey_RadioInfo");
       v38 = sub_23EB6CDF8(1918979693);
       v16 = objc_msgSend_objectForKey_(v37, v39, v38);
-      v41 = objc_msgSend_objectForKey_(a3, v40, @"kSetupBaseStationInfoKey_BrowseRecord");
+      v41 = objc_msgSend_objectForKey_(info, v40, @"kSetupBaseStationInfoKey_BrowseRecord");
       v42 = sub_23EB6A1FC(v41);
       v43 = MEMORY[0x277CCACA8];
       v46 = objc_msgSend_integerValue(v13, v44, v45);
@@ -1539,16 +1539,16 @@ LABEL_35:
   }
 }
 
-- (BOOL)restoreNetworkIfNeeded:(BOOL)a3 disassociateIfNeeded:(BOOL)a4 forceQuit:(BOOL)a5
+- (BOOL)restoreNetworkIfNeeded:(BOOL)needed disassociateIfNeeded:(BOOL)ifNeeded forceQuit:(BOOL)quit
 {
-  v8 = a5;
-  v9 = a4;
+  quitCopy = quit;
+  ifNeededCopy = ifNeeded;
   if (dword_27E381438 <= 100 && (dword_27E381438 != -1 || sub_23EB74AC8(&dword_27E381438, 0x64u)))
   {
-    sub_23EB75374(&dword_27E381438, "[AssistantUIController(Private) restoreNetworkIfNeeded:disassociateIfNeeded:forceQuit:]", 100, "_lastAssociatedInfo: %@\n", a5, v5, v6, v7, self->_lastAssociatedInfo);
+    sub_23EB75374(&dword_27E381438, "[AssistantUIController(Private) restoreNetworkIfNeeded:disassociateIfNeeded:forceQuit:]", 100, "_lastAssociatedInfo: %@\n", quit, v5, v6, v7, self->_lastAssociatedInfo);
   }
 
-  v11 = objc_msgSend_sharedInstance(WiFiUtils, a2, a3);
+  v11 = objc_msgSend_sharedInstance(WiFiUtils, a2, needed);
   v14 = objc_msgSend_airPortIsOn(v11, v12, v13);
   if (v14)
   {
@@ -1574,7 +1574,7 @@ LABEL_35:
       }
 
       isEqualToString = objc_msgSend_isEqualToString_(v26, v20, v29);
-      if ((isEqualToString & 1) == 0 && !v8)
+      if ((isEqualToString & 1) == 0 && !quitCopy)
       {
         LOBYTE(v14) = objc_msgSend_startRestoreNetwork_(self, v16, v26) == 0;
         return v14;
@@ -1586,7 +1586,7 @@ LABEL_35:
       }
     }
 
-    else if (((v9 || v8) & isCurrentlyAssociatedToAnInfrastructureNetwork & 1) == 0)
+    else if (((ifNeededCopy || quitCopy) & isCurrentlyAssociatedToAnInfrastructureNetwork & 1) == 0)
     {
 LABEL_11:
       LOBYTE(v14) = 0;
@@ -1600,21 +1600,21 @@ LABEL_11:
   return v14;
 }
 
-- (int)startRestoreNetwork:(id)a3
+- (int)startRestoreNetwork:(id)network
 {
   if (dword_27E381438 <= 100 && (dword_27E381438 != -1 || sub_23EB74AC8(&dword_27E381438, 0x64u)))
   {
     sub_23EB75374(&dword_27E381438, "[AssistantUIController(Private) startRestoreNetwork:]", 100, "\n", v3, v4, v5, v6, v26);
   }
 
-  if (!a3)
+  if (!network)
   {
     return -6705;
   }
 
-  v9 = objc_msgSend_sharedInstance(WiFiUtils, a2, a3);
+  v9 = objc_msgSend_sharedInstance(WiFiUtils, a2, network);
   v11 = objc_msgSend_objectForKey_(self->_lastAssociatedInfo, v10, @"BSSID");
-  if (v11 && (v13 = objc_msgSend_scanInfoForMACAddress_(v9, v12, v11)) != 0 || (v13 = objc_msgSend_scanInfoForName_wifiType_(v9, v12, a3, 3)) != 0)
+  if (v11 && (v13 = objc_msgSend_scanInfoForMACAddress_(v9, v12, v11)) != 0 || (v13 = objc_msgSend_scanInfoForName_wifiType_(v9, v12, network, 3)) != 0)
   {
     v18 = v13;
     v27 = 0;
@@ -1651,7 +1651,7 @@ LABEL_11:
       sub_23EB75374(&dword_27E381438, "[AssistantUIController(Private) startRestoreNetwork:]", 100, " restoring with name only \n", v14, v15, v16, v17, v26);
     }
 
-    result = objc_msgSend_joinNetworkWithNameAsync_password_rememberChoice_(v9, v12, a3, 0, 1);
+    result = objc_msgSend_joinNetworkWithNameAsync_password_rememberChoice_(v9, v12, network, 0, 1);
     if (!result)
     {
 LABEL_24:
@@ -1664,16 +1664,16 @@ LABEL_24:
   return result;
 }
 
-- (void)restoreNetworkDone:(id)a3
+- (void)restoreNetworkDone:(id)done
 {
   if (dword_27E381438 <= 100 && (dword_27E381438 != -1 || sub_23EB74AC8(&dword_27E381438, 0x64u)))
   {
     sub_23EB75374(&dword_27E381438, "[AssistantUIController(Private) restoreNetworkDone:]", 100, "\n", v3, v4, v5, v6, v22);
   }
 
-  v9 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], a2, a3);
+  v9 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], a2, done);
   objc_msgSend_removeObserver_name_object_(v9, v10, self, @"com.apple.WiFiUtils.Join.Complete", 0);
-  v13 = objc_msgSend_userInfo(a3, v11, v12);
+  v13 = objc_msgSend_userInfo(done, v11, v12);
   v15 = objc_msgSend_objectForKey_(v13, v14, @"WiFiUtils_OSStatus");
   if (v15)
   {

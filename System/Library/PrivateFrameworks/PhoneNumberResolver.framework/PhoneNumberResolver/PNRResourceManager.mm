@@ -1,23 +1,23 @@
 @interface PNRResourceManager
 + (id)sharedManager;
-- (BOOL)_lookupString:(id)a3 inTrieMemory:(void *)a4 value:(unsigned int *)a5;
+- (BOOL)_lookupString:(id)string inTrieMemory:(void *)memory value:(unsigned int *)value;
 - (PNRResourceManager)init;
-- (id)_assetQueryForPNRResource:(id)a3;
-- (id)_getDataFrom:(id)a3 zeroCacheCost:(BOOL)a4 logId:(id)a5;
+- (id)_assetQueryForPNRResource:(id)resource;
+- (id)_getDataFrom:(id)from zeroCacheCost:(BOOL)cost logId:(id)id;
 - (id)_lastCatalogLoadTime;
-- (void)_URLForInstalledResourceOfType:(id)a3 logId:(id)a4 resultBlock:(id)a5;
-- (void)_bestStringForInCountryPhoneNumber:(id)a3 phoneNumberCC:(id)a4 countryOfDevice:(id)a5 countryTrieData:(id)a6 countryStrings:(id)a7 logId:(id)a8 resultBlock:(id)a9;
-- (void)_catalogDownloadFinishedWithResult:(int64_t)a3;
-- (void)_openLatestAssetWithBasename:(id)a3 maType:(id)a4 logId:(id)a5 resultBlock:(id)a6;
-- (void)_setLastCatalogLoadTime:(id)a3;
+- (void)_URLForInstalledResourceOfType:(id)type logId:(id)id resultBlock:(id)block;
+- (void)_bestStringForInCountryPhoneNumber:(id)number phoneNumberCC:(id)c countryOfDevice:(id)device countryTrieData:(id)data countryStrings:(id)strings logId:(id)id resultBlock:(id)block;
+- (void)_catalogDownloadFinishedWithResult:(int64_t)result;
+- (void)_openLatestAssetWithBasename:(id)basename maType:(id)type logId:(id)id resultBlock:(id)block;
+- (void)_setLastCatalogLoadTime:(id)time;
 - (void)_updateCatalog;
-- (void)_updateCatalogAfterDelay:(double)a3;
-- (void)catalogLoadThen:(id)a3;
+- (void)_updateCatalogAfterDelay:(double)delay;
+- (void)catalogLoadThen:(id)then;
 - (void)dealloc;
-- (void)lookupCCForPhoneNumber:(id)a3 logId:(id)a4 withResult:(id)a5;
-- (void)lookupISOCountryCodeFromNANPNumber:(id)a3 logId:(id)a4 withResult:(id)a5;
-- (void)lookupStringForPhoneNumber:(id)a3 inCC:(id)a4 countryCodeOfDevice:(id)a5 logId:(id)a6 withResult:(id)a7;
-- (void)openPNRFilesForPrefix:(id)a3 logId:(id)a4 withResult:(id)a5;
+- (void)lookupCCForPhoneNumber:(id)number logId:(id)id withResult:(id)result;
+- (void)lookupISOCountryCodeFromNANPNumber:(id)number logId:(id)id withResult:(id)result;
+- (void)lookupStringForPhoneNumber:(id)number inCC:(id)c countryCodeOfDevice:(id)device logId:(id)id withResult:(id)result;
+- (void)openPNRFilesForPrefix:(id)prefix logId:(id)id withResult:(id)result;
 @end
 
 @implementation PNRResourceManager
@@ -52,9 +52,9 @@ uint64_t __35__PNRResourceManager_sharedManager__block_invoke()
     log = v2->_log;
     v2->_log = v3;
 
-    v5 = [(PNRResourceManager *)v2 _lastCatalogLoadTime];
+    _lastCatalogLoadTime = [(PNRResourceManager *)v2 _lastCatalogLoadTime];
     lastCatalogLoadTime = v2->_lastCatalogLoadTime;
-    v2->_lastCatalogLoadTime = v5;
+    v2->_lastCatalogLoadTime = _lastCatalogLoadTime;
 
     v2->_catalogLoadRetryMultiplier = 0;
     v7 = objc_alloc_init(MEMORY[0x277CBEA78]);
@@ -81,8 +81,8 @@ uint64_t __35__PNRResourceManager_sharedManager__block_invoke()
 
 - (id)_lastCatalogLoadTime
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 valueForKey:@"PNRltc"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults valueForKey:@"PNRltc"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -104,8 +104,8 @@ uint64_t __35__PNRResourceManager_sharedManager__block_invoke()
   v3 = objc_alloc_init(MEMORY[0x277D28A10]);
   [v3 setAllowsCellularAccess:1];
   [v3 setAllowsExpensiveAccess:1];
-  v4 = [(PNRResourceManager *)self _lastCatalogLoadTime];
-  [v3 setDiscretionary:v4 != 0];
+  _lastCatalogLoadTime = [(PNRResourceManager *)self _lastCatalogLoadTime];
+  [v3 setDiscretionary:_lastCatalogLoadTime != 0];
 
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -124,25 +124,25 @@ uint64_t __35__PNRResourceManager_sharedManager__block_invoke()
   [(PNRResourceManager *)&v4 dealloc];
 }
 
-- (void)_openLatestAssetWithBasename:(id)a3 maType:(id)a4 logId:(id)a5 resultBlock:(id)a6
+- (void)_openLatestAssetWithBasename:(id)basename maType:(id)type logId:(id)id resultBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  basenameCopy = basename;
+  typeCopy = type;
+  idCopy = id;
+  blockCopy = block;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __76__PNRResourceManager__openLatestAssetWithBasename_maType_logId_resultBlock___block_invoke;
   v18[3] = &unk_279A23F40;
-  v19 = v10;
-  v20 = self;
-  v22 = v11;
-  v23 = v13;
-  v21 = v12;
-  v14 = v11;
-  v15 = v13;
-  v16 = v12;
-  v17 = v10;
+  v19 = basenameCopy;
+  selfCopy = self;
+  v22 = typeCopy;
+  v23 = blockCopy;
+  v21 = idCopy;
+  v14 = typeCopy;
+  v15 = blockCopy;
+  v16 = idCopy;
+  v17 = basenameCopy;
   [(PNRResourceManager *)self _URLForInstalledResourceOfType:v14 logId:v16 resultBlock:v18];
 }
 
@@ -188,20 +188,20 @@ LABEL_8:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lookupCCForPhoneNumber:(id)a3 logId:(id)a4 withResult:(id)a5
+- (void)lookupCCForPhoneNumber:(id)number logId:(id)id withResult:(id)result
 {
-  v8 = a3;
-  v9 = a5;
+  numberCopy = number;
+  resultCopy = result;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __62__PNRResourceManager_lookupCCForPhoneNumber_logId_withResult___block_invoke;
   v12[3] = &unk_279A23F68;
-  v13 = v8;
-  v14 = v9;
+  v13 = numberCopy;
+  v14 = resultCopy;
   v12[4] = self;
-  v10 = v8;
-  v11 = v9;
-  [(PNRResourceManager *)self openCountryCodeFileUsingLogId:a4 withResult:v12];
+  v10 = numberCopy;
+  v11 = resultCopy;
+  [(PNRResourceManager *)self openCountryCodeFileUsingLogId:id withResult:v12];
 }
 
 void __62__PNRResourceManager_lookupCCForPhoneNumber_logId_withResult___block_invoke(uint64_t a1, id a2, uint64_t a3)
@@ -254,20 +254,20 @@ void __62__PNRResourceManager_lookupCCForPhoneNumber_logId_withResult___block_in
   }
 }
 
-- (void)lookupISOCountryCodeFromNANPNumber:(id)a3 logId:(id)a4 withResult:(id)a5
+- (void)lookupISOCountryCodeFromNANPNumber:(id)number logId:(id)id withResult:(id)result
 {
-  v8 = a3;
-  v9 = a5;
+  numberCopy = number;
+  resultCopy = result;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __74__PNRResourceManager_lookupISOCountryCodeFromNANPNumber_logId_withResult___block_invoke;
   v12[3] = &unk_279A23F68;
-  v13 = v8;
-  v14 = v9;
+  v13 = numberCopy;
+  v14 = resultCopy;
   v12[4] = self;
-  v10 = v8;
-  v11 = v9;
-  [(PNRResourceManager *)self openNANPFileUsingLogId:a4 withResult:v12];
+  v10 = numberCopy;
+  v11 = resultCopy;
+  [(PNRResourceManager *)self openNANPFileUsingLogId:id withResult:v12];
 }
 
 void __74__PNRResourceManager_lookupISOCountryCodeFromNANPNumber_logId_withResult___block_invoke(uint64_t a1, id a2, uint64_t a3)
@@ -321,32 +321,32 @@ void __74__PNRResourceManager_lookupISOCountryCodeFromNANPNumber_logId_withResul
   }
 }
 
-- (void)_bestStringForInCountryPhoneNumber:(id)a3 phoneNumberCC:(id)a4 countryOfDevice:(id)a5 countryTrieData:(id)a6 countryStrings:(id)a7 logId:(id)a8 resultBlock:(id)a9
+- (void)_bestStringForInCountryPhoneNumber:(id)number phoneNumberCC:(id)c countryOfDevice:(id)device countryTrieData:(id)data countryStrings:(id)strings logId:(id)id resultBlock:(id)block
 {
   v164[2] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = [v17 bytes];
-  if (!v21)
+  numberCopy = number;
+  cCopy = c;
+  deviceCopy = device;
+  dataCopy = data;
+  stringsCopy = strings;
+  idCopy = id;
+  blockCopy = block;
+  bytes = [dataCopy bytes];
+  if (!bytes)
   {
     v30 = MEMORY[0x277CCA9B8];
     v31 = &unk_28703B9D0;
 LABEL_6:
     v23 = [v30 _PNRAssetUnavailableErrorWithUserInfo:v31];
 LABEL_7:
-    (*(v20 + 2))(v20, 0, 0, v23);
+    (*(blockCopy + 2))(blockCopy, 0, 0, v23);
     goto LABEL_8;
   }
 
-  v22 = v21;
-  if (*v21 != 1380864110)
+  v22 = bytes;
+  if (*bytes != 1380864110)
   {
-    v23 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v21 length:4 encoding:1];
+    v23 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:bytes length:4 encoding:1];
     v24 = MEMORY[0x277CCA9B8];
     v163[0] = @"expected";
     v163[1] = @"found";
@@ -359,22 +359,22 @@ LABEL_4:
     v28 = [v25 dictionaryWithObjects:v26 forKeys:v27 count:2];
     v29 = [v24 _PNRBadMagicErrorWithUserInfo:v28];
 
-    (*(v20 + 2))(v20, 0, 0, v29);
+    (*(blockCopy + 2))(blockCopy, 0, 0, v29);
     goto LABEL_8;
   }
 
-  v33 = [v18 bytes];
-  if (!v33)
+  bytes2 = [stringsCopy bytes];
+  if (!bytes2)
   {
     v30 = MEMORY[0x277CCA9B8];
     v31 = &unk_28703B9F8;
     goto LABEL_6;
   }
 
-  v34 = v33;
-  if (*v33 != 1397902928)
+  v34 = bytes2;
+  if (*bytes2 != 1397902928)
   {
-    v23 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v33 length:4 encoding:1];
+    v23 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:bytes2 length:4 encoding:1];
     v24 = MEMORY[0x277CCA9B8];
     v161[0] = @"expected";
     v161[1] = @"found";
@@ -387,25 +387,25 @@ LABEL_4:
   }
 
   v146 = 0;
-  if (![(PNRResourceManager *)self _lookupString:v14 inTrieMemory:v22 + 34 value:&v146])
+  if (![(PNRResourceManager *)self _lookupString:numberCopy inTrieMemory:v22 + 34 value:&v146])
   {
     v106 = MEMORY[0x277CCA9B8];
     v159[0] = @"type";
     v159[1] = @"resource";
     v160[0] = @"trie";
-    v160[1] = v15;
+    v160[1] = cCopy;
     v107 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v160 forKeys:v159 count:2];
     v23 = [v106 _PNRNotFoundErrorWithUserInfo:v107];
 
     goto LABEL_7;
   }
 
-  v128 = v20;
-  v117 = v19;
-  v118 = v16;
-  v115 = v17;
-  v116 = v14;
-  v119 = v15;
+  v128 = blockCopy;
+  v117 = idCopy;
+  v118 = deviceCopy;
+  v115 = dataCopy;
+  v116 = numberCopy;
+  v119 = cCopy;
   v35 = v34[9];
   v36 = [MEMORY[0x277CBEB18] arrayWithCapacity:v35];
   v37 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v35];
@@ -433,7 +433,7 @@ LABEL_4:
   v113 = v42;
   v125 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:?];
   v44 = +[PNRUtils _preferredLanguages];
-  v45 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v142 = 0u;
   v143 = 0u;
   v144 = 0u;
@@ -460,7 +460,7 @@ LABEL_4:
 
         if (v52)
         {
-          [v45 addObject:v52];
+          [array addObject:v52];
         }
       }
 
@@ -474,13 +474,13 @@ LABEL_4:
   v141 = 0u;
   v138 = 0u;
   v139 = 0u;
-  v120 = v45;
+  v120 = array;
   v124 = [v120 countByEnumeratingWithState:&v138 objects:v156 count:16];
   if (!v124)
   {
     v121 = 0;
     v54 = 0;
-    v20 = v128;
+    blockCopy = v128;
     goto LABEL_102;
   }
 
@@ -489,7 +489,7 @@ LABEL_4:
   v123 = *v139;
   *&v53 = 138544130;
   v112 = v53;
-  v122 = v18;
+  v122 = stringsCopy;
   do
   {
     v55 = 0;
@@ -504,14 +504,14 @@ LABEL_4:
       v129 = v55;
       v56 = *(*(&v138 + 1) + 8 * v55);
       v57 = v146;
-      v58 = [v18 bytes];
-      v59 = [v18 length];
-      v60 = v58 + v59;
+      bytes3 = [stringsCopy bytes];
+      v59 = [stringsCopy length];
+      v60 = bytes3 + v59;
       v61 = [v125 objectForKey:v56];
-      v62 = v58 + [v61 unsignedIntValue];
+      v62 = bytes3 + [v61 unsignedIntValue];
 
       v63 = (v62 + 4 * (v57 & 0x1F));
-      if ((v63 + 1) >= v58 + v59)
+      if ((v63 + 1) >= bytes3 + v59)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
         {
@@ -523,7 +523,7 @@ LABEL_4:
         if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
         {
           v93 = log;
-          v94 = [v18 length];
+          v94 = [stringsCopy length];
           *buf = 138543618;
           *&buf[4] = v117;
           v150 = 2050;
@@ -537,9 +537,9 @@ LABEL_4:
           *buf = v112;
           *&buf[4] = v117;
           v150 = 2050;
-          v151 = v58;
+          v151 = bytes3;
           v152 = 2050;
-          v153 = v58 + v59;
+          v153 = bytes3 + v59;
           v154 = 2050;
           v155 = v63;
           _os_log_error_impl(&dword_25E515000, v84, OS_LOG_TYPE_ERROR, "[%{public}@] begin: %{public}p, end: %{public}p, offsetPtr: %{public}p", buf, 0x2Au);
@@ -558,7 +558,7 @@ LABEL_4:
         }
 
         v86 = self->_log;
-        v20 = v128;
+        blockCopy = v128;
         if (os_log_type_enabled(v86, OS_LOG_TYPE_ERROR))
         {
 LABEL_93:
@@ -590,7 +590,7 @@ LABEL_93:
           if (os_log_type_enabled(v87, OS_LOG_TYPE_ERROR))
           {
             v97 = v87;
-            v98 = [v18 length];
+            v98 = [stringsCopy length];
             *buf = 138543618;
             *&buf[4] = v117;
             v150 = 2050;
@@ -604,9 +604,9 @@ LABEL_93:
             *buf = v112;
             *&buf[4] = v117;
             v150 = 2050;
-            v151 = v58;
+            v151 = bytes3;
             v152 = 2050;
-            v153 = v58 + v59;
+            v153 = bytes3 + v59;
             v154 = 2050;
             v155 = v64;
             _os_log_error_impl(&dword_25E515000, v88, OS_LOG_TYPE_ERROR, "[%{public}@] begin: %{public}p, end: %{public}p, offsetPtr: %{public}p", buf, 0x2Au);
@@ -625,7 +625,7 @@ LABEL_93:
           }
 
           v86 = self->_log;
-          v20 = v128;
+          blockCopy = v128;
           if (os_log_type_enabled(v86, OS_LOG_TYPE_ERROR))
           {
             goto LABEL_93;
@@ -640,7 +640,7 @@ LABEL_93:
             v66 = *v63;
             v67 = *v64;
             v68 = *v65;
-            v69 = v58 + v66;
+            v69 = bytes3 + v66;
             if (v59 < v66)
             {
 LABEL_38:
@@ -661,7 +661,7 @@ LABEL_38:
               }
             }
 
-            v71 = v58 + v67;
+            v71 = bytes3 + v67;
             if (v59 < v67)
             {
 LABEL_43:
@@ -682,7 +682,7 @@ LABEL_43:
               }
             }
 
-            v73 = v58 + v68;
+            v73 = bytes3 + v68;
             if (v59 < v68)
             {
               [PNRResourceManager _bestStringForInCountryPhoneNumber:phoneNumberCC:countryOfDevice:countryTrieData:countryStrings:logId:resultBlock:];
@@ -706,7 +706,7 @@ LABEL_43:
               }
             }
 
-            v20 = v128;
+            blockCopy = v128;
             if (v70)
             {
               v75 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v69 length:v70 encoding:4];
@@ -717,7 +717,7 @@ LABEL_43:
               v75 = 0;
             }
 
-            v18 = v122;
+            stringsCopy = v122;
             if (v72)
             {
               v76 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v71 length:v72 encoding:4];
@@ -737,19 +737,19 @@ LABEL_55:
                 v78 = v77;
                 if (v77)
                 {
-                  v79 = [(PNRStringsFileReaderResult *)v77 score];
-                  if (v79 > [(PNRStringsFileReaderResult *)v54 score])
+                  score = [(PNRStringsFileReaderResult *)v77 score];
+                  if (score > [(PNRStringsFileReaderResult *)v54 score])
                   {
                     v80 = v78;
 
                     v81 = v127;
                     v121 = v81;
-                    v20 = v128;
+                    blockCopy = v128;
                     v54 = v80;
                   }
 
-                  v82 = [(PNRStringsFileReaderResult *)v54 score];
-                  if (v82 == +[PNRStringsFileReaderResult maxPossibleScore])
+                  score2 = [(PNRStringsFileReaderResult *)v54 score];
+                  if (score2 == +[PNRStringsFileReaderResult maxPossibleScore])
                   {
 
                     goto LABEL_102;
@@ -774,7 +774,7 @@ LABEL_55:
           if (os_log_type_enabled(v90, OS_LOG_TYPE_ERROR))
           {
             v101 = v90;
-            v102 = [v18 length];
+            v102 = [stringsCopy length];
             *buf = 138543618;
             *&buf[4] = v117;
             v150 = 2050;
@@ -788,9 +788,9 @@ LABEL_55:
             *buf = v112;
             *&buf[4] = v117;
             v150 = 2050;
-            v151 = v58;
+            v151 = bytes3;
             v152 = 2050;
-            v153 = v58 + v59;
+            v153 = bytes3 + v59;
             v154 = 2050;
             v155 = v65;
             _os_log_error_impl(&dword_25E515000, v91, OS_LOG_TYPE_ERROR, "[%{public}@] begin: %{public}p, end: %{public}p, offsetPtr: %{public}p", buf, 0x2Au);
@@ -809,7 +809,7 @@ LABEL_55:
           }
 
           v86 = self->_log;
-          v20 = v128;
+          blockCopy = v128;
           if (os_log_type_enabled(v86, OS_LOG_TYPE_ERROR))
           {
             goto LABEL_93;
@@ -829,10 +829,10 @@ LABEL_60:
   while (v105);
 LABEL_102:
 
-  v14 = v116;
+  numberCopy = v116;
   if ([(PNRStringsFileReaderResult *)v54 isPlaceHolderForEmpty])
   {
-    (*(v20 + 2))(v20, 0, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0, 0);
   }
 
   else
@@ -840,7 +840,7 @@ LABEL_102:
     v108 = [(PNRStringsFileReaderResult *)v54 aggregateStringWhileInCountry:v118 forLanguage:v121 ccOfNumber:v119];
     if (v108)
     {
-      (*(v20 + 2))(v20, v108, 1, 0);
+      (*(blockCopy + 2))(blockCopy, v108, 1, 0);
     }
 
     else
@@ -853,42 +853,42 @@ LABEL_102:
       v110 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v148 forKeys:v147 count:2];
       v111 = [v109 _PNRNotFoundErrorWithUserInfo:v110];
 
-      (*(v20 + 2))(v20, 0, 0, v111);
+      (*(blockCopy + 2))(blockCopy, 0, 0, v111);
     }
   }
 
-  v16 = v118;
-  v15 = v119;
+  deviceCopy = v118;
+  cCopy = v119;
   v23 = v114;
-  v17 = v115;
-  v19 = v117;
+  dataCopy = v115;
+  idCopy = v117;
 LABEL_8:
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lookupStringForPhoneNumber:(id)a3 inCC:(id)a4 countryCodeOfDevice:(id)a5 logId:(id)a6 withResult:(id)a7
+- (void)lookupStringForPhoneNumber:(id)number inCC:(id)c countryCodeOfDevice:(id)device logId:(id)id withResult:(id)result
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  numberCopy = number;
+  cCopy = c;
+  deviceCopy = device;
+  idCopy = id;
+  resultCopy = result;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __91__PNRResourceManager_lookupStringForPhoneNumber_inCC_countryCodeOfDevice_logId_withResult___block_invoke;
   v22[3] = &unk_279A23F90;
   v22[4] = self;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v26 = v15;
-  v27 = v16;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  v21 = v16;
+  v23 = numberCopy;
+  v24 = cCopy;
+  v25 = deviceCopy;
+  v26 = idCopy;
+  v27 = resultCopy;
+  v17 = idCopy;
+  v18 = deviceCopy;
+  v19 = cCopy;
+  v20 = numberCopy;
+  v21 = resultCopy;
   [(PNRResourceManager *)self openPNRFilesForPrefix:v19 logId:v17 withResult:v22];
 }
 
@@ -904,17 +904,17 @@ uint64_t __91__PNRResourceManager_lookupStringForPhoneNumber_inCC_countryCodeOfD
   return v5();
 }
 
-- (BOOL)_lookupString:(id)a3 inTrieMemory:(void *)a4 value:(unsigned int *)a5
+- (BOOL)_lookupString:(id)string inTrieMemory:(void *)memory value:(unsigned int *)value
 {
-  v6 = a3;
+  stringCopy = string;
   if (CFBurstTrieCreateFromMapBytes())
   {
     if (CFBurstTrieCreateCursorForBytes())
     {
-      v7 = [v6 UTF8String];
-      if (*v7)
+      uTF8String = [stringCopy UTF8String];
+      if (*uTF8String)
       {
-        v8 = v7;
+        v8 = uTF8String;
         v9 = 0;
         do
         {
@@ -925,7 +925,7 @@ uint64_t __91__PNRResourceManager_lookupStringForPhoneNumber_inCC_countryCodeOfD
 
           if (CFBurstTrieCursorGetPayload())
           {
-            *a5 = 0;
+            *value = 0;
             v9 = 1;
           }
         }
@@ -957,22 +957,22 @@ uint64_t __91__PNRResourceManager_lookupStringForPhoneNumber_inCC_countryCodeOfD
   return v9 & 1;
 }
 
-- (void)openPNRFilesForPrefix:(id)a3 logId:(id)a4 withResult:(id)a5
+- (void)openPNRFilesForPrefix:(id)prefix logId:(id)id withResult:(id)result
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  prefixCopy = prefix;
+  idCopy = id;
+  resultCopy = result;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __61__PNRResourceManager_openPNRFilesForPrefix_logId_withResult___block_invoke;
   v14[3] = &unk_279A23FB8;
-  v15 = v8;
-  v16 = self;
-  v17 = v9;
-  v18 = v10;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = prefixCopy;
+  selfCopy = self;
+  v17 = idCopy;
+  v18 = resultCopy;
+  v11 = idCopy;
+  v12 = prefixCopy;
+  v13 = resultCopy;
   [(PNRResourceManager *)self _URLForInstalledResourceOfType:v12 logId:v11 resultBlock:v14];
 }
 
@@ -1017,20 +1017,20 @@ void __61__PNRResourceManager_openPNRFilesForPrefix_logId_withResult___block_inv
   }
 }
 
-- (id)_getDataFrom:(id)a3 zeroCacheCost:(BOOL)a4 logId:(id)a5
+- (id)_getDataFrom:(id)from zeroCacheCost:(BOOL)cost logId:(id)id
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  fromCopy = from;
+  idCopy = id;
   log = self->_log;
-  if (v8)
+  if (fromCopy)
   {
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
     {
       [PNRResourceManager _getDataFrom:zeroCacheCost:logId:];
     }
 
-    v11 = [(NSCache *)self->_fileDataCache objectForKey:v8];
+    v11 = [(NSCache *)self->_fileDataCache objectForKey:fromCopy];
     if (v11)
     {
       v12 = v11;
@@ -1043,17 +1043,17 @@ void __61__PNRResourceManager_openPNRFilesForPrefix_logId_withResult___block_inv
       goto LABEL_21;
     }
 
-    [v8 startAccessingSecurityScopedResource];
+    [fromCopy startAccessingSecurityScopedResource];
     v24 = 0;
-    v14 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v8 options:1 error:&v24];
+    v14 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:fromCopy options:1 error:&v24];
     v15 = v24;
-    [v8 stopAccessingSecurityScopedResource];
+    [fromCopy stopAccessingSecurityScopedResource];
     if (v15 && (v16 = self->_log, os_log_type_enabled(v16, OS_LOG_TYPE_ERROR)))
     {
       *buf = 138543874;
-      v26 = v9;
+      v26 = idCopy;
       v27 = 2114;
-      v28 = v8;
+      v28 = fromCopy;
       v29 = 2114;
       v30 = v15;
       _os_log_error_impl(&dword_25E515000, v16, OS_LOG_TYPE_ERROR, "[%{public}@] failed to read file contents at %{public}@ : %{public}@", buf, 0x20u);
@@ -1066,7 +1066,7 @@ void __61__PNRResourceManager_openPNRFilesForPrefix_logId_withResult___block_inv
     else if (v14)
     {
 LABEL_14:
-      if (a4)
+      if (cost)
       {
         v17 = 0;
       }
@@ -1083,17 +1083,17 @@ LABEL_14:
         v20 = v18;
         v21 = [v19 numberWithUnsignedInteger:{objc_msgSend(v14, "length")}];
         *buf = 138544130;
-        v26 = v9;
+        v26 = idCopy;
         v27 = 2114;
         v28 = v21;
         v29 = 2114;
-        v30 = v8;
+        v30 = fromCopy;
         v31 = 2050;
         v32 = v17;
         _os_log_impl(&dword_25E515000, v20, OS_LOG_TYPE_INFO, "[%{public}@] cached data of size %{public}@ with key %{public}@ and cost %{public}lu", buf, 0x2Au);
       }
 
-      [(NSCache *)self->_fileDataCache setObject:v14 forKey:v8 cost:v17];
+      [(NSCache *)self->_fileDataCache setObject:v14 forKey:fromCopy cost:v17];
     }
 
     v13 = v14;
@@ -1105,7 +1105,7 @@ LABEL_21:
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v26 = v9;
+    v26 = idCopy;
     _os_log_impl(&dword_25E515000, log, OS_LOG_TYPE_INFO, "[%{public}@] fileURL is nil; no data for you", buf, 0xCu);
   }
 
@@ -1117,30 +1117,30 @@ LABEL_22:
   return v13;
 }
 
-- (id)_assetQueryForPNRResource:(id)a3
+- (id)_assetQueryForPNRResource:(id)resource
 {
   v3 = MEMORY[0x277D289D8];
-  v4 = a3;
+  resourceCopy = resource;
   v5 = [[v3 alloc] initWithType:@"com.apple.MobileAsset.phoneNumberResolver"];
   [v5 returnTypes:2];
   [v5 setDoNotBlockBeforeFirstUnlock:1];
-  [v5 addKeyValuePair:@"PNRResource" with:v4];
+  [v5 addKeyValuePair:@"PNRResource" with:resourceCopy];
 
   [v5 addKeyValuePair:@"FormatVersion" with:@"1"];
 
   return v5;
 }
 
-- (void)_URLForInstalledResourceOfType:(id)a3 logId:(id)a4 resultBlock:(id)a5
+- (void)_URLForInstalledResourceOfType:(id)type logId:(id)id resultBlock:(id)block
 {
   v66[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v43 = a4;
-  v41 = a5;
-  v9 = [(NSCache *)self->_maURLCache objectForKey:v8];
-  if (!v9)
+  typeCopy = type;
+  idCopy = id;
+  blockCopy = block;
+  getLocalFileUrl = [(NSCache *)self->_maURLCache objectForKey:typeCopy];
+  if (!getLocalFileUrl)
   {
-    v38 = [(PNRResourceManager *)self _assetQueryForPNRResource:v8];
+    v38 = [(PNRResourceManager *)self _assetQueryForPNRResource:typeCopy];
     if ([v38 queryMetaDataSync])
     {
       v10 = MEMORY[0x277CCA9B8];
@@ -1150,17 +1150,17 @@ LABEL_22:
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v66 forKeys:&v65 count:1];
       v40 = [v10 _PNRAssetQueryErrorWithUserInfo:v12];
 
-      v41[2](v41, 0, v40);
+      blockCopy[2](blockCopy, 0, v40);
 LABEL_5:
-      v9 = 0;
+      getLocalFileUrl = 0;
 LABEL_39:
 
       goto LABEL_40;
     }
 
-    v13 = [v38 results];
+    results = [v38 results];
 
-    if (!v13)
+    if (!results)
     {
       v30 = MEMORY[0x277CCA9B8];
       v63[0] = @"queryResult";
@@ -1171,7 +1171,7 @@ LABEL_39:
       v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v64 forKeys:v63 count:2];
       v40 = [v30 _PNRAssetQueryErrorWithUserInfo:v32];
 
-      v41[2](v41, 0, v40);
+      blockCopy[2](blockCopy, 0, v40);
       goto LABEL_5;
     }
 
@@ -1196,8 +1196,8 @@ LABEL_39:
           }
 
           v17 = *(*(&v50 + 1) + 8 * i);
-          v18 = [v17 attributes];
-          v19 = [v18 objectForKeyedSubscript:@"Build"];
+          attributes = [v17 attributes];
+          v19 = [attributes objectForKeyedSubscript:@"Build"];
           v20 = v19;
           v21 = @"Unknown";
           if (v19)
@@ -1214,24 +1214,24 @@ LABEL_39:
             if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
             {
               *buf = 138543874;
-              v57 = v43;
+              v57 = idCopy;
               v58 = 2114;
-              v59 = v8;
+              v59 = typeCopy;
               v60 = 2114;
               v61 = v22;
               _os_log_impl(&dword_25E515000, log, OS_LOG_TYPE_INFO, "[%{public}@] asset %{public}@/%{public}@ not present", buf, 0x20u);
             }
 
             os_unfair_lock_lock(&self->_downloadsInflightLock);
-            if (([(NSMutableSet *)self->_downloadsInflight containsObject:v8]& 1) != 0)
+            if (([(NSMutableSet *)self->_downloadsInflight containsObject:typeCopy]& 1) != 0)
             {
               v24 = self->_log;
               if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
               {
                 *buf = 138543874;
-                v57 = v43;
+                v57 = idCopy;
                 v58 = 2114;
-                v59 = v8;
+                v59 = typeCopy;
                 v60 = 2114;
                 v61 = v22;
                 _os_log_impl(&dword_25E515000, v24, OS_LOG_TYPE_INFO, "[%{public}@] download of asset %{public}@/%{public}@ is already inflight", buf, 0x20u);
@@ -1250,7 +1250,7 @@ LABEL_39:
               v44[2] = __71__PNRResourceManager__URLForInstalledResourceOfType_logId_resultBlock___block_invoke;
               v44[3] = &unk_279A23FE0;
               objc_copyWeak(&v48, &location);
-              v27 = v8;
+              v27 = typeCopy;
               v45 = v27;
               v28 = v15;
               v46 = v28;
@@ -1261,9 +1261,9 @@ LABEL_39:
               if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
               {
                 *buf = 138543874;
-                v57 = v43;
+                v57 = idCopy;
                 v58 = 2114;
-                v59 = v8;
+                v59 = typeCopy;
                 v60 = 2114;
                 v61 = v28;
                 _os_log_impl(&dword_25E515000, v29, OS_LOG_TYPE_INFO, "[%{public}@] download of asset %{public}@/%{public}@ has been requested", buf, 0x20u);
@@ -1308,13 +1308,13 @@ LABEL_32:
 
       if (v40)
       {
-        v9 = [v40 getLocalFileUrl];
-        if (v9)
+        getLocalFileUrl = [v40 getLocalFileUrl];
+        if (getLocalFileUrl)
         {
-          [(NSCache *)self->_maURLCache setObject:v9 forKey:v8];
+          [(NSCache *)self->_maURLCache setObject:getLocalFileUrl forKey:typeCopy];
         }
 
-        (v41)[2](v41, v9, 0);
+        (blockCopy)[2](blockCopy, getLocalFileUrl, 0);
         goto LABEL_38;
       }
     }
@@ -1328,20 +1328,20 @@ LABEL_32:
     v34 = MEMORY[0x277CCA9B8];
     v54[0] = @"type";
     v54[1] = @"build";
-    v55[0] = v8;
+    v55[0] = typeCopy;
     v55[1] = v15;
     v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:v54 count:2];
     v36 = [v34 _PNRAssetUnavailableErrorWithUserInfo:v35];
 
-    v41[2](v41, 0, v36);
+    blockCopy[2](blockCopy, 0, v36);
     v40 = 0;
-    v9 = 0;
+    getLocalFileUrl = 0;
 LABEL_38:
 
     goto LABEL_39;
   }
 
-  (v41)[2](v41, v9, 0);
+  (blockCopy)[2](blockCopy, getLocalFileUrl, 0);
 LABEL_40:
 
   v37 = *MEMORY[0x277D85DE8];
@@ -1380,17 +1380,17 @@ void __71__PNRResourceManager__URLForInstalledResourceOfType_logId_resultBlock__
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setLastCatalogLoadTime:(id)a3
+- (void)_setLastCatalogLoadTime:(id)time
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v5 setObject:v4 forKey:@"PNRltc"];
+  timeCopy = time;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setObject:timeCopy forKey:@"PNRltc"];
 
   lastCatalogLoadTime = self->_lastCatalogLoadTime;
-  self->_lastCatalogLoadTime = v4;
+  self->_lastCatalogLoadTime = timeCopy;
 }
 
-- (void)_updateCatalogAfterDelay:(double)a3
+- (void)_updateCatalogAfterDelay:(double)delay
 {
   v14 = *MEMORY[0x277D85DE8];
   log = self->_log;
@@ -1399,12 +1399,12 @@ void __71__PNRResourceManager__URLForInstalledResourceOfType_logId_resultBlock__
     *buf = 138543618;
     v11 = @"catalog";
     v12 = 2050;
-    v13 = a3;
+    delayCopy = delay;
     _os_log_impl(&dword_25E515000, log, OS_LOG_TYPE_INFO, "[%{public}@] phone number db catalog downloads in %{public}ld seconds", buf, 0x16u);
   }
 
   v6 = dispatch_get_global_queue(9, 0);
-  v7 = dispatch_time(0, (a3 * 1000000000.0));
+  v7 = dispatch_time(0, (delay * 1000000000.0));
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__PNRResourceManager__updateCatalogAfterDelay___block_invoke;
@@ -1415,7 +1415,7 @@ void __71__PNRResourceManager__URLForInstalledResourceOfType_logId_resultBlock__
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_catalogDownloadFinishedWithResult:(int64_t)a3
+- (void)_catalogDownloadFinishedWithResult:(int64_t)result
 {
   v14 = *MEMORY[0x277D85DE8];
   log = self->_log;
@@ -1424,11 +1424,11 @@ void __71__PNRResourceManager__URLForInstalledResourceOfType_logId_resultBlock__
     v10 = 138543618;
     v11 = @"catalog";
     v12 = 2050;
-    v13 = a3;
+    resultCopy = result;
     _os_log_impl(&dword_25E515000, log, OS_LOG_TYPE_INFO, "[%{public}@] catalog download results : %{public}ld", &v10, 0x16u);
   }
 
-  if (a3)
+  if (result)
   {
     catalogLoadRetryMultiplier = self->_catalogLoadRetryMultiplier;
     if (catalogLoadRetryMultiplier <= 0xB)
@@ -1451,9 +1451,9 @@ void __71__PNRResourceManager__URLForInstalledResourceOfType_logId_resultBlock__
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)catalogLoadThen:(id)a3
+- (void)catalogLoadThen:(id)then
 {
-  v3 = a3;
+  thenCopy = then;
   v4 = objc_alloc_init(MEMORY[0x277D28A10]);
   [v4 setAllowsCellularAccess:1];
   [v4 setDiscretionary:0];
@@ -1462,8 +1462,8 @@ void __71__PNRResourceManager__URLForInstalledResourceOfType_logId_resultBlock__
   v7[1] = 3221225472;
   v7[2] = __38__PNRResourceManager_catalogLoadThen___block_invoke;
   v7[3] = &unk_279A24058;
-  v8 = v3;
-  v6 = v3;
+  v8 = thenCopy;
+  v6 = thenCopy;
   [v5 startCatalogDownload:@"com.apple.MobileAsset.phoneNumberResolver" options:v4 then:v7];
 }
 

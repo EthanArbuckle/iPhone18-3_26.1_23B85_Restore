@@ -1,11 +1,11 @@
 @interface PSSGBuilderNodeList
 - (PSSGBuilderNodeList)init;
-- (PSSGBuilderNodeList)initWithGraphs:(id)a3 resources:(id)a4;
+- (PSSGBuilderNodeList)initWithGraphs:(id)graphs resources:(id)resources;
 @end
 
 @implementation PSSGBuilderNodeList
 
-- (PSSGBuilderNodeList)initWithGraphs:(id)a3 resources:(id)a4
+- (PSSGBuilderNodeList)initWithGraphs:(id)graphs resources:(id)resources
 {
   type metadata accessor for PSSGGraphID(0);
   sub_25EB24DC0(&unk_27FD11DF0, 255, type metadata accessor for PSSGGraphID);

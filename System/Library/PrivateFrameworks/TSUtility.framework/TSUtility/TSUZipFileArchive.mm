@@ -1,30 +1,30 @@
 @interface TSUZipFileArchive
-+ (void)readArchiveFromURL:(id)a3 queue:(id)a4 completion:(id)a5;
-- (BOOL)copyToTemporaryLocationRelativeToURL:(id)a3;
-- (BOOL)openWithURL:(id)a3;
-- (BOOL)reopenWithTemporaryURL:(id)a3;
-- (TSUZipFileArchive)initWithURL:(id)a3;
-- (TSUZipFileArchive)initWithWriter:(id)a3 atURL:(id)a4;
++ (void)readArchiveFromURL:(id)l queue:(id)queue completion:(id)completion;
+- (BOOL)copyToTemporaryLocationRelativeToURL:(id)l;
+- (BOOL)openWithURL:(id)l;
+- (BOOL)reopenWithTemporaryURL:(id)l;
+- (TSUZipFileArchive)initWithURL:(id)l;
+- (TSUZipFileArchive)initWithWriter:(id)writer atURL:(id)l;
 - (id)debugDescription;
 - (id)readChannel;
 - (unint64_t)archiveLength;
-- (void)createTemporaryDirectoryRelativeToURL:(id)a3;
+- (void)createTemporaryDirectoryRelativeToURL:(id)l;
 - (void)dealloc;
 - (void)removeTemporaryDirectory;
 @end
 
 @implementation TSUZipFileArchive
 
-+ (void)readArchiveFromURL:(id)a3 queue:(id)a4 completion:(id)a5
++ (void)readArchiveFromURL:(id)l queue:(id)queue completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithURL:v10];
+  completionCopy = completion;
+  queueCopy = queue;
+  lCopy = l;
+  v11 = [[self alloc] initWithURL:lCopy];
 
   if (v11)
   {
-    [v11 readArchiveWithQueue:v9 completion:v8];
+    [v11 readArchiveWithQueue:queueCopy completion:completionCopy];
   }
 
   else
@@ -33,10 +33,10 @@
     block[1] = 3221225472;
     block[2] = __57__TSUZipFileArchive_readArchiveFromURL_queue_completion___block_invoke;
     block[3] = &unk_279D663D8;
-    v13 = v8;
-    dispatch_async(v9, block);
+    v13 = completionCopy;
+    dispatch_async(queueCopy, block);
 
-    v9 = v13;
+    queueCopy = v13;
   }
 }
 
@@ -47,10 +47,10 @@ void __57__TSUZipFileArchive_readArchiveFromURL_queue_completion___block_invoke(
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (TSUZipFileArchive)initWithURL:(id)a3
+- (TSUZipFileArchive)initWithURL:(id)l
 {
-  v4 = a3;
-  if (([v4 isFileURL] & 1) == 0)
+  lCopy = l;
+  if (([lCopy isFileURL] & 1) == 0)
   {
     v5 = +[TSUAssertionHandler currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUZipFileArchive initWithURL:]"];
@@ -67,7 +67,7 @@ void __57__TSUZipFileArchive_readArchiveFromURL_queue_completion___block_invoke(
     accessQueue = v8->_accessQueue;
     v8->_accessQueue = v9;
 
-    if (![(TSUZipFileArchive *)v8 openWithURL:v4])
+    if (![(TSUZipFileArchive *)v8 openWithURL:lCopy])
     {
 
       v8 = 0;
@@ -77,9 +77,9 @@ void __57__TSUZipFileArchive_readArchiveFromURL_queue_completion___block_invoke(
   return v8;
 }
 
-- (BOOL)openWithURL:(id)a3
+- (BOOL)openWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (self->_archiveReadChannel)
   {
     v5 = +[TSUAssertionHandler currentHandler];
@@ -91,7 +91,7 @@ void __57__TSUZipFileArchive_readArchiveFromURL_queue_completion___block_invoke(
   v23 = 0;
   v8 = *MEMORY[0x277CBE838];
   v22 = 0;
-  v9 = [v4 getResourceValue:&v23 forKey:v8 error:&v22];
+  v9 = [lCopy getResourceValue:&v23 forKey:v8 error:&v22];
   v10 = v23;
   v11 = v22;
   v12 = v10;
@@ -99,7 +99,7 @@ void __57__TSUZipFileArchive_readArchiveFromURL_queue_completion___block_invoke(
   if (v9)
   {
     self->_archiveLength = [v12 unsignedLongLongValue];
-    v18 = [[TSUFileIOChannel alloc] initForReadingURL:v4];
+    v18 = [[TSUFileIOChannel alloc] initForReadingURL:lCopy];
     archiveReadChannel = self->_archiveReadChannel;
     self->_archiveReadChannel = v18;
 
@@ -108,7 +108,7 @@ void __57__TSUZipFileArchive_readArchiveFromURL_queue_completion___block_invoke(
 
   else
   {
-    TSULogErrorInFunction("[TSUZipFileArchive openWithURL:]", "/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipFileArchive.m", 87, @"Couldn't get size for %@: %@", v13, v14, v15, v16, v4);
+    TSULogErrorInFunction("[TSUZipFileArchive openWithURL:]", "/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipFileArchive.m", 87, @"Couldn't get size for %@: %@", v13, v14, v15, v16, lCopy);
 
     v20 = 0;
   }
@@ -116,22 +116,22 @@ void __57__TSUZipFileArchive_readArchiveFromURL_queue_completion___block_invoke(
   return v20;
 }
 
-- (TSUZipFileArchive)initWithWriter:(id)a3 atURL:(id)a4
+- (TSUZipFileArchive)initWithWriter:(id)writer atURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TSUZipFileArchive *)self initWithURL:v7];
+  writerCopy = writer;
+  lCopy = l;
+  v8 = [(TSUZipFileArchive *)self initWithURL:lCopy];
   v9 = v8;
   if (v8)
   {
     archiveLength = v8->_archiveLength;
-    if (archiveLength != [v6 archiveLength])
+    if (archiveLength != [writerCopy archiveLength])
     {
       v11 = +[TSUAssertionHandler currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUZipFileArchive initWithWriter:atURL:]"];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipFileArchive.m"];
-      v14 = [v7 path];
-      [v11 handleFailureInFunction:v12 file:v13 lineNumber:103 description:{@"Length of archive at %@ doesn't match archive length of writer. %llu != %llu", v14, v9->_archiveLength, objc_msgSend(v6, "archiveLength")}];
+      path = [lCopy path];
+      [v11 handleFailureInFunction:v12 file:v13 lineNumber:103 description:{@"Length of archive at %@ doesn't match archive length of writer. %llu != %llu", path, v9->_archiveLength, objc_msgSend(writerCopy, "archiveLength")}];
     }
 
     v16[0] = MEMORY[0x277D85DD0];
@@ -139,7 +139,7 @@ void __57__TSUZipFileArchive_readArchiveFromURL_queue_completion___block_invoke(
     v16[2] = __42__TSUZipFileArchive_initWithWriter_atURL___block_invoke;
     v16[3] = &unk_279D66450;
     v17 = v9;
-    [v6 enumerateEntriesUsingBlock:v16];
+    [writerCopy enumerateEntriesUsingBlock:v16];
   }
 
   return v9;
@@ -157,13 +157,13 @@ void __57__TSUZipFileArchive_readArchiveFromURL_queue_completion___block_invoke(
   [(TSUZipFileArchive *)&v4 dealloc];
 }
 
-- (void)createTemporaryDirectoryRelativeToURL:(id)a3
+- (void)createTemporaryDirectoryRelativeToURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (!self->_temporaryDirectoryURL)
   {
-    v11 = v4;
-    if (!v4 || ([MEMORY[0x277CCAA00] defaultManager], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "URLForDirectory:inDomain:appropriateForURL:create:error:", 99, 1, v11, 1, 0), v6 = objc_claimAutoreleasedReturnValue(), v7 = self->_temporaryDirectoryURL, self->_temporaryDirectoryURL = v6, v7, v5, v4 = v11, !self->_temporaryDirectoryURL))
+    v11 = lCopy;
+    if (!lCopy || ([MEMORY[0x277CCAA00] defaultManager], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "URLForDirectory:inDomain:appropriateForURL:create:error:", 99, 1, v11, 1, 0), v6 = objc_claimAutoreleasedReturnValue(), v7 = self->_temporaryDirectoryURL, self->_temporaryDirectoryURL = v6, v7, v5, lCopy = v11, !self->_temporaryDirectoryURL))
     {
       v8 = [[TSUTemporaryDirectory alloc] initWithSignature:@"ZipFile"];
       [(TSUTemporaryDirectory *)v8 leakTemporaryDirectory];
@@ -171,7 +171,7 @@ void __57__TSUZipFileArchive_readArchiveFromURL_queue_completion___block_invoke(
       temporaryDirectoryURL = self->_temporaryDirectoryURL;
       self->_temporaryDirectoryURL = v9;
 
-      v4 = v11;
+      lCopy = v11;
     }
   }
 }
@@ -180,10 +180,10 @@ void __57__TSUZipFileArchive_readArchiveFromURL_queue_completion___block_invoke(
 {
   if (self->_temporaryDirectoryURL)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     temporaryDirectoryURL = self->_temporaryDirectoryURL;
     v12 = 0;
-    v5 = [v3 removeItemAtURL:temporaryDirectoryURL error:&v12];
+    v5 = [defaultManager removeItemAtURL:temporaryDirectoryURL error:&v12];
     v6 = v12;
 
     if ((v5 & 1) == 0)
@@ -196,7 +196,7 @@ void __57__TSUZipFileArchive_readArchiveFromURL_queue_completion___block_invoke(
   }
 }
 
-- (BOOL)reopenWithTemporaryURL:(id)a3
+- (BOOL)reopenWithTemporaryURL:(id)l
 {
   archiveLength = self->_archiveLength;
   archiveReadChannel = self->_archiveReadChannel;
@@ -204,9 +204,9 @@ void __57__TSUZipFileArchive_readArchiveFromURL_queue_completion___block_invoke(
   self->_archiveLength = 0;
   v8 = self->_archiveReadChannel;
   self->_archiveReadChannel = 0;
-  v9 = a3;
+  lCopy = l;
 
-  v10 = [(TSUZipFileArchive *)self openWithURL:v9];
+  v10 = [(TSUZipFileArchive *)self openWithURL:lCopy];
   if (!v10)
   {
     self->_archiveLength = archiveLength;
@@ -216,9 +216,9 @@ void __57__TSUZipFileArchive_readArchiveFromURL_queue_completion___block_invoke(
   return v10;
 }
 
-- (BOOL)copyToTemporaryLocationRelativeToURL:(id)a3
+- (BOOL)copyToTemporaryLocationRelativeToURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -229,9 +229,9 @@ void __57__TSUZipFileArchive_readArchiveFromURL_queue_completion___block_invoke(
   block[2] = __58__TSUZipFileArchive_copyToTemporaryLocationRelativeToURL___block_invoke;
   block[3] = &unk_279D664C8;
   block[4] = self;
-  v9 = v4;
+  v9 = lCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = lCopy;
   dispatch_sync(accessQueue, block);
   LOBYTE(accessQueue) = *(v12 + 24);
 
@@ -447,9 +447,9 @@ void __58__TSUZipFileArchive_copyToTemporaryLocationRelativeToURL___block_invoke
   v5 = [(TSUZipArchive *)&v8 debugDescription];
   [v3 addFieldValue:v5];
 
-  v6 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v6;
+  return descriptionString;
 }
 
 @end

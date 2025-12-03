@@ -1,44 +1,44 @@
 @interface ISStackedEffects
-- (ISStackedEffects)initWithEffects:(id)a3;
-- (id)filterWithBackgroundImage:(id)a3 inputImage:(id)a4;
+- (ISStackedEffects)initWithEffects:(id)effects;
+- (id)filterWithBackgroundImage:(id)image inputImage:(id)inputImage;
 @end
 
 @implementation ISStackedEffects
 
-- (ISStackedEffects)initWithEffects:(id)a3
+- (ISStackedEffects)initWithEffects:(id)effects
 {
-  v5 = a3;
+  effectsCopy = effects;
   v9.receiver = self;
   v9.super_class = ISStackedEffects;
   v6 = [(ISStackedEffects *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_effects, a3);
+    objc_storeStrong(&v6->_effects, effects);
   }
 
   return v7;
 }
 
-- (id)filterWithBackgroundImage:(id)a3 inputImage:(id)a4
+- (id)filterWithBackgroundImage:(id)image inputImage:(id)inputImage
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ISStackedEffects *)self effects];
-  if (v8)
+  imageCopy = image;
+  inputImageCopy = inputImage;
+  effects = [(ISStackedEffects *)self effects];
+  if (effects)
   {
-    v9 = v8;
-    v10 = [(ISStackedEffects *)self effects];
-    v11 = [v10 count];
+    v9 = effects;
+    effects2 = [(ISStackedEffects *)self effects];
+    v11 = [effects2 count];
 
     if (v11)
     {
-      v12 = [(ISStackedEffects *)self effects];
-      v13 = [v12 firstObject];
-      v14 = [v13 filterWithBackgroundImage:v6 inputImage:v7];
+      effects3 = [(ISStackedEffects *)self effects];
+      firstObject = [effects3 firstObject];
+      v14 = [firstObject filterWithBackgroundImage:imageCopy inputImage:inputImageCopy];
 
-      v15 = [(ISStackedEffects *)self effects];
-      v16 = [v15 count];
+      effects4 = [(ISStackedEffects *)self effects];
+      v16 = [effects4 count];
 
       if (v16 < 2)
       {
@@ -50,14 +50,14 @@
         v17 = 1;
         do
         {
-          v18 = [(ISStackedEffects *)self effects];
-          v19 = [v18 objectAtIndex:v17];
-          v20 = [v14 outputImage];
-          v11 = [v19 filterWithBackgroundImage:0 inputImage:v20];
+          effects5 = [(ISStackedEffects *)self effects];
+          v19 = [effects5 objectAtIndex:v17];
+          outputImage = [v14 outputImage];
+          v11 = [v19 filterWithBackgroundImage:0 inputImage:outputImage];
 
           ++v17;
-          v21 = [(ISStackedEffects *)self effects];
-          v22 = [v21 count];
+          effects6 = [(ISStackedEffects *)self effects];
+          v22 = [effects6 count];
 
           v14 = v11;
         }

@@ -1,15 +1,15 @@
 @interface BuddyExpressSetupFeatureCardCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation BuddyExpressSetupFeatureCardCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BuddyExpressSetupFeatureCardCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BuddyExpressSetupFeatureCardCell" hasInstanceMethod:@"stateLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BuddyExpressSetupFeatureCardCell" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BuddyExpressSetupFeatureCardCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BuddyExpressSetupFeatureCardCell" hasInstanceMethod:@"stateLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BuddyExpressSetupFeatureCardCell" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
 }
 
 @end

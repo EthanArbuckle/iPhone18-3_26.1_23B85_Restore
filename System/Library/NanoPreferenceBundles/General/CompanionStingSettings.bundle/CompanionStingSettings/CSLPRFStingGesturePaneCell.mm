@@ -1,22 +1,22 @@
 @interface CSLPRFStingGesturePaneCell
-- (CSLPRFStingGesturePaneCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (CSLPRFStingGesturePaneCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (id)_imageForSymbolName:(id)a3 weight:(int64_t)a4 color:(id)a5;
-- (void)_setChordArrowVisible:(BOOL)a3;
-- (void)_setSymbol:(id)a3;
+- (CSLPRFStingGesturePaneCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (CSLPRFStingGesturePaneCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (id)_imageForSymbolName:(id)name weight:(int64_t)weight color:(id)color;
+- (void)_setChordArrowVisible:(BOOL)visible;
+- (void)_setSymbol:(id)symbol;
 - (void)_setupViews;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation CSLPRFStingGesturePaneCell
 
-- (CSLPRFStingGesturePaneCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (CSLPRFStingGesturePaneCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = CSLPRFStingGesturePaneCell;
-  v5 = [(CSLPRFStingGesturePaneCell *)&v8 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(CSLPRFStingGesturePaneCell *)&v8 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {
@@ -26,11 +26,11 @@
   return v6;
 }
 
-- (CSLPRFStingGesturePaneCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CSLPRFStingGesturePaneCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CSLPRFStingGesturePaneCell;
-  v4 = [(CSLPRFStingGesturePaneCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CSLPRFStingGesturePaneCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -42,9 +42,9 @@
 
 - (void)_setupViews
 {
-  v3 = [(CSLPRFStingGesturePaneCell *)self contentView];
+  contentView = [(CSLPRFStingGesturePaneCell *)self contentView];
   v4 = +[UIColor blackColor];
-  [v3 setBackgroundColor:v4];
+  [contentView setBackgroundColor:v4];
 
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [UIImage imageNamed:@"watchCase" inBundle:v5 compatibleWithTraitCollection:0];
@@ -55,8 +55,8 @@
   watchCaseView = self->_watchCaseView;
   self->_watchCaseView = v8;
 
-  v10 = [(CSLPRFStingGesturePaneCell *)self contentView];
-  [v10 addSubview:self->_watchCaseView];
+  contentView2 = [(CSLPRFStingGesturePaneCell *)self contentView];
+  [contentView2 addSubview:self->_watchCaseView];
 
   v11 = +[UIColor cslprf_stingColor];
   v15 = [(CSLPRFStingGesturePaneCell *)self _imageForSymbolName:@"arrow.right" weight:4 color:v11];
@@ -65,19 +65,19 @@
   stingArrowView = self->_stingArrowView;
   self->_stingArrowView = v12;
 
-  v14 = [(CSLPRFStingGesturePaneCell *)self contentView];
-  [v14 addSubview:self->_stingArrowView];
+  contentView3 = [(CSLPRFStingGesturePaneCell *)self contentView];
+  [contentView3 addSubview:self->_stingArrowView];
 }
 
-- (id)_imageForSymbolName:(id)a3 weight:(int64_t)a4 color:(id)a5
+- (id)_imageForSymbolName:(id)name weight:(int64_t)weight color:(id)color
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [UIImageSymbolConfiguration configurationWithPointSize:a4 weight:24.0];
-  v10 = [UIImageSymbolConfiguration configurationWithHierarchicalColor:v7];
+  colorCopy = color;
+  nameCopy = name;
+  v9 = [UIImageSymbolConfiguration configurationWithPointSize:weight weight:24.0];
+  v10 = [UIImageSymbolConfiguration configurationWithHierarchicalColor:colorCopy];
 
   v11 = [v9 configurationByApplyingConfiguration:v10];
-  v12 = [UIImage _systemImageNamed:v8 withConfiguration:v11];
+  v12 = [UIImage _systemImageNamed:nameCopy withConfiguration:v11];
 
   return v12;
 }
@@ -111,36 +111,36 @@
   [(UIImageView *)self->_sideButtonArrowView setCenter:v18, v19 + 78.0];
 }
 
-- (void)_setSymbol:(id)a3
+- (void)_setSymbol:(id)symbol
 {
-  if (a3)
+  if (symbol)
   {
     actionSymbolView = self->_actionSymbolView;
-    v5 = a3;
+    symbolCopy = symbol;
     [(UIImageView *)actionSymbolView removeFromSuperview];
     v6 = self->_actionSymbolView;
     self->_actionSymbolView = 0;
 
     v7 = +[UIColor cslprf_stingColor];
-    v11 = [(CSLPRFStingGesturePaneCell *)self _imageForSymbolName:v5 weight:6 color:v7];
+    v11 = [(CSLPRFStingGesturePaneCell *)self _imageForSymbolName:symbolCopy weight:6 color:v7];
 
     v8 = [[UIImageView alloc] initWithImage:v11];
     v9 = self->_actionSymbolView;
     self->_actionSymbolView = v8;
 
-    v10 = [(CSLPRFStingGesturePaneCell *)self contentView];
-    [v10 addSubview:self->_actionSymbolView];
+    contentView = [(CSLPRFStingGesturePaneCell *)self contentView];
+    [contentView addSubview:self->_actionSymbolView];
   }
 }
 
-- (void)_setChordArrowVisible:(BOOL)a3
+- (void)_setChordArrowVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   [(UIImageView *)self->_sideButtonArrowView removeFromSuperview];
   sideButtonArrowView = self->_sideButtonArrowView;
   self->_sideButtonArrowView = 0;
 
-  if (v3)
+  if (visibleCopy)
   {
     v6 = +[UIColor systemWhiteColor];
     v10 = [(CSLPRFStingGesturePaneCell *)self _imageForSymbolName:@"arrow.left" weight:4 color:v6];
@@ -149,8 +149,8 @@
     v8 = self->_sideButtonArrowView;
     self->_sideButtonArrowView = v7;
 
-    v9 = [(CSLPRFStingGesturePaneCell *)self contentView];
-    [v9 addSubview:self->_sideButtonArrowView];
+    contentView = [(CSLPRFStingGesturePaneCell *)self contentView];
+    [contentView addSubview:self->_sideButtonArrowView];
   }
 }
 
@@ -168,15 +168,15 @@
   self->_sideButtonArrowView = 0;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = CSLPRFStingGesturePaneCell;
-  v4 = a3;
-  [(CSLPRFStingGesturePaneCell *)&v7 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"CSLPRFStingGesturePaneCellSymbolName", v7.receiver, v7.super_class}];
+  specifierCopy = specifier;
+  [(CSLPRFStingGesturePaneCell *)&v7 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"CSLPRFStingGesturePaneCellSymbolName", v7.receiver, v7.super_class}];
   [(CSLPRFStingGesturePaneCell *)self _setSymbol:v5];
-  v6 = [v4 propertyForKey:@"CSLPRFStingGesturePaneCellHasChordArrow"];
+  v6 = [specifierCopy propertyForKey:@"CSLPRFStingGesturePaneCellHasChordArrow"];
 
   -[CSLPRFStingGesturePaneCell _setChordArrowVisible:](self, "_setChordArrowVisible:", [v6 BOOLValue]);
 }

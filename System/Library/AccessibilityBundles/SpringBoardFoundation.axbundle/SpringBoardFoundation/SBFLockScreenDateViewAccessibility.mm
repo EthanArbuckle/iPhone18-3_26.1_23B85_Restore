@@ -1,5 +1,5 @@
 @interface SBFLockScreenDateViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityServesAsFirstElement;
 - (BOOL)_accessibilityViewIsVisible;
 - (BOOL)_axIsComplicationViewVisible;
@@ -8,13 +8,13 @@
 - (BOOL)_axIsInlineWidgetVisible;
 - (CGRect)_axTimeLabelFrame;
 - (CGRect)accessibilityFrame;
-- (SBFLockScreenDateViewAccessibility)initWithFrame:(CGRect)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (SBFLockScreenDateViewAccessibility)initWithFrame:(CGRect)frame;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_axComplicationContainerViewController;
-- (id)_axElements:(BOOL)a3;
+- (id)_axElements:(BOOL)elements;
 - (id)_axInlineComplicationViewController;
 - (id)_axSidebarComplicationContainerViewController;
-- (id)_axWidgetFromController:(id)a3;
+- (id)_axWidgetFromController:(id)controller;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_updateLabels;
 - (void)layoutSubviews;
@@ -22,80 +22,80 @@
 
 @implementation SBFLockScreenDateViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
+  validationsCopy = validations;
   if (AXProcessIsSpringBoard())
   {
-    [v3 validateClass:@"SBFLockScreenDateView" isKindOfClass:@"UIView"];
-    [v3 validateClass:@"CSCoverSheetViewController"];
+    [validationsCopy validateClass:@"SBFLockScreenDateView" isKindOfClass:@"UIView"];
+    [validationsCopy validateClass:@"CSCoverSheetViewController"];
   }
 
-  [v3 validateClass:@"SBFLockScreenDateView" hasInstanceVariable:@"_timeLabel" withType:"SBUILegibilityLabel"];
-  [v3 validateClass:@"SBFLockScreenDateView" hasInstanceVariable:@"_dateSubtitleView" withType:"SBFLockScreenDateSubtitleDateView"];
-  [v3 validateClass:@"SBFLockScreenDateView" hasInstanceVariable:@"_customSubtitleView" withType:"SBFLockScreenDateSubtitleView"];
-  [v3 validateClass:@"SBFLockScreenDateSubtitleView" hasInstanceVariable:@"_label" withType:"SBUILegibilityLabel"];
-  [v3 validateClass:@"SBFLockScreenDateSubtitleView" hasInstanceMethod:@"string" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFLockScreenDateView" hasInstanceMethod:@"_updateLabels" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBFLockScreenDateViewController" hasProperty:@"inlineComplicationViewController" withType:"@"];
-  [v3 validateClass:@"SBFLockScreenDateViewController" hasProperty:@"complicationContainerViewController" withType:"@"];
+  [validationsCopy validateClass:@"SBFLockScreenDateView" hasInstanceVariable:@"_timeLabel" withType:"SBUILegibilityLabel"];
+  [validationsCopy validateClass:@"SBFLockScreenDateView" hasInstanceVariable:@"_dateSubtitleView" withType:"SBFLockScreenDateSubtitleDateView"];
+  [validationsCopy validateClass:@"SBFLockScreenDateView" hasInstanceVariable:@"_customSubtitleView" withType:"SBFLockScreenDateSubtitleView"];
+  [validationsCopy validateClass:@"SBFLockScreenDateSubtitleView" hasInstanceVariable:@"_label" withType:"SBUILegibilityLabel"];
+  [validationsCopy validateClass:@"SBFLockScreenDateSubtitleView" hasInstanceMethod:@"string" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFLockScreenDateView" hasInstanceMethod:@"_updateLabels" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBFLockScreenDateViewController" hasProperty:@"inlineComplicationViewController" withType:"@"];
+  [validationsCopy validateClass:@"SBFLockScreenDateViewController" hasProperty:@"complicationContainerViewController" withType:"@"];
   if (NSClassFromString(&cfstr_Chuiswidgethos.isa))
   {
-    [v3 validateClass:@"CHUISWidgetHostViewController" hasInstanceVariable:@"_vibrancyEffectView" withType:"BSUIVibrancyEffectView"];
+    [validationsCopy validateClass:@"CHUISWidgetHostViewController" hasInstanceVariable:@"_vibrancyEffectView" withType:"BSUIVibrancyEffectView"];
   }
 
-  [v3 validateClass:@"BSUIVibrancyEffectView" hasProperty:@"contentView" withType:"@"];
+  [validationsCopy validateClass:@"BSUIVibrancyEffectView" hasProperty:@"contentView" withType:"@"];
 }
 
-- (id)_axElements:(BOOL)a3
+- (id)_axElements:(BOOL)elements
 {
-  v3 = a3;
+  elementsCopy = elements;
   v46 = *MEMORY[0x29EDCA608];
-  v40 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v5 = [(SBFLockScreenDateViewAccessibility *)self safeUIViewForKey:@"_timeLabel"];
   v6 = [(SBFLockScreenDateViewAccessibility *)self safeUIViewForKey:@"_customSubtitleView"];
   v7 = [(SBFLockScreenDateViewAccessibility *)self safeUIViewForKey:@"_dateSubtitleView"];
   if ([v6 _accessibilityViewIsVisible])
   {
-    [v40 axSafelyAddObject:v6];
+    [array axSafelyAddObject:v6];
   }
 
   if ([(SBFLockScreenDateViewAccessibility *)self _axIsDateViewVisible])
   {
-    v8 = v7;
+    _axCustomSubtitleView2 = v7;
 LABEL_7:
-    v10 = v8;
+    view = _axCustomSubtitleView2;
     goto LABEL_8;
   }
 
-  v9 = [(SBFLockScreenDateViewAccessibility *)self _axCustomSubtitleView];
+  _axCustomSubtitleView = [(SBFLockScreenDateViewAccessibility *)self _axCustomSubtitleView];
 
-  if (v9)
+  if (_axCustomSubtitleView)
   {
-    v8 = [(SBFLockScreenDateViewAccessibility *)self _axCustomSubtitleView];
+    _axCustomSubtitleView2 = [(SBFLockScreenDateViewAccessibility *)self _axCustomSubtitleView];
     goto LABEL_7;
   }
 
-  v31 = [(SBFLockScreenDateViewAccessibility *)self _axInlineComplicationViewController];
-  v32 = v31;
-  if (v3)
+  _axInlineComplicationViewController = [(SBFLockScreenDateViewAccessibility *)self _axInlineComplicationViewController];
+  v32 = _axInlineComplicationViewController;
+  if (elementsCopy)
   {
-    v10 = [v31 view];
+    view = [_axInlineComplicationViewController view];
   }
 
   else
   {
-    v33 = [v31 safeValueForKeyPath:@"widgetViewController.widgetHostViewController"];
+    v33 = [_axInlineComplicationViewController safeValueForKeyPath:@"widgetViewController.widgetHostViewController"];
 
-    v10 = [(SBFLockScreenDateViewAccessibility *)self _axWidgetFromController:v33];
+    view = [(SBFLockScreenDateViewAccessibility *)self _axWidgetFromController:v33];
   }
 
 LABEL_8:
-  [v10 _setAccessibilityIsNotFirstElement:1];
-  [v40 axSafelyAddObject:v10];
+  [view _setAccessibilityIsNotFirstElement:1];
+  [array axSafelyAddObject:view];
   if ([v5 _accessibilityViewIsVisible])
   {
-    [v40 axSafelyAddObject:v5];
+    [array axSafelyAddObject:v5];
   }
 
   if ([(SBFLockScreenDateViewAccessibility *)self _axIsComplicationViewVisible])
@@ -111,18 +111,18 @@ LABEL_8:
     }
     v11 = ;
     v12 = v11;
-    if (v3)
+    if (elementsCopy)
     {
-      v13 = [v11 view];
-      [v40 axSafelyAddObject:v13];
+      view2 = [v11 view];
+      [array axSafelyAddObject:view2];
     }
 
     else
     {
-      v35 = v10;
+      v35 = view;
       v36 = v7;
       v38 = v5;
-      v39 = self;
+      selfCopy = self;
       v37 = v6;
       v34 = v11;
       v14 = [v11 safeValueForKey:@"widgetGridViewController"];
@@ -156,8 +156,8 @@ LABEL_8:
             if ((v25 & 1) == 0)
             {
               v26 = [v16 widgetHostViewControllerForComplicationDescriptor:v23];
-              v27 = [(SBFLockScreenDateViewAccessibility *)v39 _axWidgetFromController:v26];
-              [v40 axSafelyAddObject:v27];
+              v27 = [(SBFLockScreenDateViewAccessibility *)selfCopy _axWidgetFromController:v26];
+              [array axSafelyAddObject:v27];
 
               v28 = [v23 safeStringForKey:@"uniqueIdentifier"];
               [v15 addObject:v28];
@@ -172,13 +172,13 @@ LABEL_8:
 
       v6 = v37;
       v5 = v38;
-      v10 = v35;
+      view = v35;
       v7 = v36;
       v12 = v34;
     }
   }
 
-  v29 = [v40 sortedArrayUsingSelector:sel_accessibilityCompareGeometry_];
+  v29 = [array sortedArrayUsingSelector:sel_accessibilityCompareGeometry_];
 
   return v29;
 }
@@ -329,21 +329,21 @@ LABEL_8:
   return v4;
 }
 
-- (SBFLockScreenDateViewAccessibility)initWithFrame:(CGRect)a3
+- (SBFLockScreenDateViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SBFLockScreenDateViewAccessibility;
-  v3 = [(SBFLockScreenDateViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBFLockScreenDateViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SBFLockScreenDateViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v8 = [(SBFLockScreenDateViewAccessibility *)self safeUIViewForKey:@"_dateSubtitleView"];
   v9 = [(SBFLockScreenDateViewAccessibility *)self safeUIViewForKey:@"_timeLabel"];
   if (v8 && -[SBFLockScreenDateViewAccessibility _axIsDateViewVisible](self, "_axIsDateViewVisible") && ([v8 accessibilityFrame], v15.x = x, v15.y = y, CGRectContainsPoint(v17, v15)))
@@ -360,7 +360,7 @@ LABEL_8:
   {
     v13.receiver = self;
     v13.super_class = SBFLockScreenDateViewAccessibility;
-    v10 = [(SBFLockScreenDateViewAccessibility *)&v13 _accessibilityHitTest:v7 withEvent:x, y];
+    v10 = [(SBFLockScreenDateViewAccessibility *)&v13 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
   v11 = v10;
@@ -379,8 +379,8 @@ LABEL_8:
 - (id)_axInlineComplicationViewController
 {
   objc_opt_class();
-  v3 = [(SBFLockScreenDateViewAccessibility *)self _accessibilityViewController];
-  v4 = [v3 safeValueForKey:@"inlineComplicationViewController"];
+  _accessibilityViewController = [(SBFLockScreenDateViewAccessibility *)self _accessibilityViewController];
+  v4 = [_accessibilityViewController safeValueForKey:@"inlineComplicationViewController"];
   v5 = __UIAccessibilityCastAsClass();
 
   return v5;
@@ -394,15 +394,15 @@ LABEL_8:
   }
 
   v4 = [(SBFLockScreenDateViewAccessibility *)self safeUIViewForKey:@"_dateSubtitleView"];
-  v5 = [v4 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v4 _accessibilityViewIsVisible];
 
-  return v5;
+  return _accessibilityViewIsVisible;
 }
 
 - (BOOL)_axIsCustomSubtitleViewVisible
 {
-  v2 = [(SBFLockScreenDateViewAccessibility *)self _axCustomSubtitleView];
-  v3 = v2 != 0;
+  _axCustomSubtitleView = [(SBFLockScreenDateViewAccessibility *)self _axCustomSubtitleView];
+  v3 = _axCustomSubtitleView != 0;
 
   return v3;
 }
@@ -410,8 +410,8 @@ LABEL_8:
 - (id)_axComplicationContainerViewController
 {
   objc_opt_class();
-  v3 = [(SBFLockScreenDateViewAccessibility *)self _accessibilityViewController];
-  v4 = [v3 safeValueForKey:@"complicationContainerViewController"];
+  _accessibilityViewController = [(SBFLockScreenDateViewAccessibility *)self _accessibilityViewController];
+  v4 = [_accessibilityViewController safeValueForKey:@"complicationContainerViewController"];
   v5 = __UIAccessibilityCastAsClass();
 
   return v5;
@@ -420,9 +420,9 @@ LABEL_8:
 - (id)_axSidebarComplicationContainerViewController
 {
   objc_opt_class();
-  v3 = [(SBFLockScreenDateViewAccessibility *)self _accessibilityViewController];
-  v4 = [v3 parentViewController];
-  v5 = [v4 safeValueForKey:@"sidebarComplicationContainerViewController"];
+  _accessibilityViewController = [(SBFLockScreenDateViewAccessibility *)self _accessibilityViewController];
+  parentViewController = [_accessibilityViewController parentViewController];
+  v5 = [parentViewController safeValueForKey:@"sidebarComplicationContainerViewController"];
   v6 = __UIAccessibilityCastAsClass();
 
   return v6;
@@ -430,23 +430,23 @@ LABEL_8:
 
 - (BOOL)_axIsInlineWidgetVisible
 {
-  v2 = [(SBFLockScreenDateViewAccessibility *)self _axInlineComplicationViewController];
-  v3 = v2 != 0;
+  _axInlineComplicationViewController = [(SBFLockScreenDateViewAccessibility *)self _axInlineComplicationViewController];
+  v3 = _axInlineComplicationViewController != 0;
 
   return v3;
 }
 
 - (BOOL)_axIsComplicationViewVisible
 {
-  v2 = [(SBFLockScreenDateViewAccessibility *)self _axComplicationContainerViewController];
-  v3 = v2 != 0;
+  _axComplicationContainerViewController = [(SBFLockScreenDateViewAccessibility *)self _axComplicationContainerViewController];
+  v3 = _axComplicationContainerViewController != 0;
 
   return v3;
 }
 
-- (id)_axWidgetFromController:(id)a3
+- (id)_axWidgetFromController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (NSClassFromString(&cfstr_Cscoversheetvi_0.isa))
   {
     v5 = [(SBFLockScreenDateViewAccessibility *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Cscoversheetvi_0.isa)];
@@ -459,7 +459,7 @@ LABEL_8:
 
     else
     {
-      v8 = [v4 safeValueForKeyPath:@"_vibrancyEffectView.contentView"];
+      v8 = [controllerCopy safeValueForKeyPath:@"_vibrancyEffectView.contentView"];
       v7 = [v8 _accessibilityDescendantOfType:objc_opt_class()];
     }
   }

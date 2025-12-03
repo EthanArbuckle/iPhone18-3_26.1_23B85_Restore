@@ -1,38 +1,38 @@
 @interface DirectionIntentCellViewModel
-- (DirectionIntentCellViewModel)initWithLocalSearchCompletion:(id)a3;
-- (id)_titleOfResolvedItem:(id)a3 withSearchCompletion:(id)a4;
+- (DirectionIntentCellViewModel)initWithLocalSearchCompletion:(id)completion;
+- (id)_titleOfResolvedItem:(id)item withSearchCompletion:(id)completion;
 - (void)_calculateStrings;
 @end
 
 @implementation DirectionIntentCellViewModel
 
-- (id)_titleOfResolvedItem:(id)a3 withSearchCompletion:(id)a4
+- (id)_titleOfResolvedItem:(id)item withSearchCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 hasResultIndex];
-  if (v6 && (v7 & 1) != 0)
+  itemCopy = item;
+  completionCopy = completion;
+  hasResultIndex = [itemCopy hasResultIndex];
+  if (completionCopy && (hasResultIndex & 1) != 0)
   {
-    v8 = [v6 title];
+    title = [completionCopy title];
   }
 
   else
   {
-    v8 = [v5 extractedTerm];
+    title = [itemCopy extractedTerm];
   }
 
-  v9 = v8;
+  v9 = title;
 
   return v9;
 }
 
 - (void)_calculateStrings
 {
-  v3 = [(DirectionIntentCellViewModel *)self localSearchCompletion];
-  v4 = [v3 title];
+  localSearchCompletion = [(DirectionIntentCellViewModel *)self localSearchCompletion];
+  title = [localSearchCompletion title];
 
-  v5 = [(DirectionIntentCellViewModel *)self localSearchCompletion];
-  v6 = [v5 subtitle];
+  localSearchCompletion2 = [(DirectionIntentCellViewModel *)self localSearchCompletion];
+  subtitle = [localSearchCompletion2 subtitle];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -40,23 +40,23 @@
   v10[3] = &unk_10162B538;
   v10[4] = self;
   v7 = objc_retainBlock(v10);
-  v8 = (v7[2])(v7, v4);
+  v8 = (v7[2])(v7, title);
   [(DirectionIntentCellViewModel *)self setTitleCellString:v8];
 
-  v9 = (v7[2])(v7, v6);
+  v9 = (v7[2])(v7, subtitle);
   [(DirectionIntentCellViewModel *)self setSubtitleCellString:v9];
 }
 
-- (DirectionIntentCellViewModel)initWithLocalSearchCompletion:(id)a3
+- (DirectionIntentCellViewModel)initWithLocalSearchCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v9.receiver = self;
   v9.super_class = DirectionIntentCellViewModel;
   v6 = [(DirectionIntentCellViewModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_localSearchCompletion, a3);
+    objc_storeStrong(&v6->_localSearchCompletion, completion);
     [(DirectionIntentCellViewModel *)v7 _calculateStrings];
   }
 

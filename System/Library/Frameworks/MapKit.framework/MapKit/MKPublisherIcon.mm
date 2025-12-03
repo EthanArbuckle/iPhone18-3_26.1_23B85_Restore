@@ -1,21 +1,21 @@
 @interface MKPublisherIcon
-- (id)initUsingName:(id)a3 andImage:(id)a4;
+- (id)initUsingName:(id)name andImage:(id)image;
 @end
 
 @implementation MKPublisherIcon
 
-- (id)initUsingName:(id)a3 andImage:(id)a4
+- (id)initUsingName:(id)name andImage:(id)image
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  imageCopy = image;
   v12.receiver = self;
   v12.super_class = MKPublisherIcon;
   v9 = [(MKPublisherIcon *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_publisherName, a3);
-    objc_storeStrong(p_isa + 1, a4);
+    objc_storeStrong(&v9->_publisherName, name);
+    objc_storeStrong(p_isa + 1, image);
   }
 
   return p_isa;

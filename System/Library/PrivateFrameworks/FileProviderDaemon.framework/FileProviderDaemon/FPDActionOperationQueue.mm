@@ -1,24 +1,24 @@
 @interface FPDActionOperationQueue
-- (FPDActionOperationQueue)initWithMoveInfo:(id)a3;
+- (FPDActionOperationQueue)initWithMoveInfo:(id)info;
 - (id)dequeue;
 - (void)cancel;
-- (void)dumpStateTo:(id)a3;
-- (void)enqueue:(id)a3;
+- (void)dumpStateTo:(id)to;
+- (void)enqueue:(id)enqueue;
 - (void)finishedEnqueuing;
 @end
 
 @implementation FPDActionOperationQueue
 
-- (FPDActionOperationQueue)initWithMoveInfo:(id)a3
+- (FPDActionOperationQueue)initWithMoveInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v18.receiver = self;
   v18.super_class = FPDActionOperationQueue;
   v5 = [(FPDActionOperationQueue *)&v18 init];
   if (v5)
   {
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_attr_make_with_qos_class(v6, [v4 qos], 0);
+    v7 = dispatch_queue_attr_make_with_qos_class(v6, [infoCopy qos], 0);
     v8 = dispatch_queue_create("FileProvider.move-queue", v7);
     queue = v5->_queue;
     v5->_queue = v8;
@@ -28,9 +28,9 @@
     v5->_fifo = v10;
 
     v5->_maxLength = 128;
-    if ([v4 _t_moveQueueWidth])
+    if ([infoCopy _t_moveQueueWidth])
     {
-      maxLength = [v4 _t_moveQueueWidth];
+      maxLength = [infoCopy _t_moveQueueWidth];
       v5->_maxLength = maxLength;
     }
 
@@ -51,9 +51,9 @@
   return v5;
 }
 
-- (void)enqueue:(id)a3
+- (void)enqueue:(id)enqueue
 {
-  v4 = a3;
+  enqueueCopy = enqueue;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -75,7 +75,7 @@
     v7[2] = __35__FPDActionOperationQueue_enqueue___block_invoke_2;
     v7[3] = &unk_1E83BE158;
     v7[4] = self;
-    v8 = v4;
+    v8 = enqueueCopy;
     dispatch_sync(v6, v7);
   }
 
@@ -248,18 +248,18 @@ intptr_t __33__FPDActionOperationQueue_cancel__block_invoke(intptr_t result)
   return result;
 }
 
-- (void)dumpStateTo:(id)a3
+- (void)dumpStateTo:(id)to
 {
-  v4 = a3;
-  [v4 write:@"+ queue\n"];
+  toCopy = to;
+  [toCopy write:@"+ queue\n"];
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__FPDActionOperationQueue_dumpStateTo___block_invoke;
   v7[3] = &unk_1E83BE158;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = toCopy;
+  v6 = toCopy;
   dispatch_sync(queue, v7);
 }
 

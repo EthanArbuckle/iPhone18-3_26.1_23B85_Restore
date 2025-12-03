@@ -1,128 +1,128 @@
 @interface MCCSecretAgentService
-- (void)clearAllUserOverridesWithTimestamp:(double)a3 completion:(id)a4;
-- (void)getPKCategoryForDomain:(id)a3 completion:(id)a4;
-- (void)isCategorizationSupportedForLocale:(id)a3 completion:(id)a4;
-- (void)notifyFullSyncCategoryOverrides:(id)a3;
-- (void)notifyNewOldCategoryChange:(id)a3 timestamp:(double)a4;
-- (void)notifyWebRule:(id)a3;
-- (void)pingWithcompletion:(id)a3;
-- (void)predictCommerceEmailWithContext:(id)a3 completion:(id)a4;
-- (void)registerCategoryRulesCallbackListener:(id)a3 notificationTypes:(unint64_t)a4 completion:(id)a5;
-- (void)syncNewOldCategoryTimestamps:(id)a3;
-- (void)syncRecategorizationRules:(id)a3 completion:(id)a4;
+- (void)clearAllUserOverridesWithTimestamp:(double)timestamp completion:(id)completion;
+- (void)getPKCategoryForDomain:(id)domain completion:(id)completion;
+- (void)isCategorizationSupportedForLocale:(id)locale completion:(id)completion;
+- (void)notifyFullSyncCategoryOverrides:(id)overrides;
+- (void)notifyNewOldCategoryChange:(id)change timestamp:(double)timestamp;
+- (void)notifyWebRule:(id)rule;
+- (void)pingWithcompletion:(id)withcompletion;
+- (void)predictCommerceEmailWithContext:(id)context completion:(id)completion;
+- (void)registerCategoryRulesCallbackListener:(id)listener notificationTypes:(unint64_t)types completion:(id)completion;
+- (void)syncNewOldCategoryTimestamps:(id)timestamps;
+- (void)syncRecategorizationRules:(id)rules completion:(id)completion;
 @end
 
 @implementation MCCSecretAgentService
 
-- (void)pingWithcompletion:(id)a3
+- (void)pingWithcompletion:(id)withcompletion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(withcompletion);
   _Block_copy(v4);
-  v5 = self;
+  selfCopy = self;
   specialized MCCSecretAgentService.pingWithcompletion(_:)(v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)predictCommerceEmailWithContext:(id)a3 completion:(id)a4
+- (void)predictCommerceEmailWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  specialized MCCSecretAgentService.predictCommerceEmail(with:completion:)(v7, v8, v6);
+  contextCopy = context;
+  selfCopy = self;
+  specialized MCCSecretAgentService.predictCommerceEmail(with:completion:)(contextCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)getPKCategoryForDomain:(id)a3 completion:(id)a4
+- (void)getPKCategoryForDomain:(id)domain completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
-  specialized MCCSecretAgentService.getPKCategory(forDomain:completion:)(v6, v8, v9, v5);
+  selfCopy = self;
+  specialized MCCSecretAgentService.getPKCategory(forDomain:completion:)(v6, v8, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }
 
-- (void)isCategorizationSupportedForLocale:(id)a3 completion:(id)a4
+- (void)isCategorizationSupportedForLocale:(id)locale completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
+  selfCopy = self;
   specialized MCCSecretAgentService.isCategorizationSupported(forLocale:completion:)(v6, v8, v5);
   _Block_release(v5);
   _Block_release(v5);
 }
 
-- (void)registerCategoryRulesCallbackListener:(id)a3 notificationTypes:(unint64_t)a4 completion:(id)a5
+- (void)registerCategoryRulesCallbackListener:(id)listener notificationTypes:(unint64_t)types completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   v9 = *(&self->super.isa + OBJC_IVAR____TtC15icloudmailagent21MCCSecretAgentService_categorizationSyncManager);
   _Block_copy(v8);
-  v11 = a3;
-  v10 = self;
-  specialized CategorizationSyncManager.registerCategoryRulesCallbackListener(endpoint:notificationTypes:completion:)(v11, a4, v9, v8);
+  listenerCopy = listener;
+  selfCopy = self;
+  specialized CategorizationSyncManager.registerCategoryRulesCallbackListener(endpoint:notificationTypes:completion:)(listenerCopy, types, v9, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-- (void)syncRecategorizationRules:(id)a3 completion:(id)a4
+- (void)syncRecategorizationRules:(id)rules completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   type metadata accessor for RCOverrideRule(0, &lazy cache variable for type metadata for RCOverrideRule, RCOverrideRule_ptr);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   _Block_copy(v5);
-  v7 = self;
-  specialized MCCSecretAgentService.syncRecategorizationRules(_:completion:)(v6, v7, v5);
+  selfCopy = self;
+  specialized MCCSecretAgentService.syncRecategorizationRules(_:completion:)(v6, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }
 
-- (void)clearAllUserOverridesWithTimestamp:(double)a3 completion:(id)a4
+- (void)clearAllUserOverridesWithTimestamp:(double)timestamp completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = self;
-  specialized MCCSecretAgentService.clearAllUserOverrides(withTimestamp:completion:)(v7, v6, a3);
+  selfCopy = self;
+  specialized MCCSecretAgentService.clearAllUserOverrides(withTimestamp:completion:)(selfCopy, v6, timestamp);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)syncNewOldCategoryTimestamps:(id)a3
+- (void)syncNewOldCategoryTimestamps:(id)timestamps
 {
   type metadata accessor for RCOverrideRule(0, &lazy cache variable for type metadata for NSNumber, NSNumber_ptr);
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   MCCSecretAgentService.syncNewOldCategoryTimestamps(_:)(v4);
 }
 
-- (void)notifyWebRule:(id)a3
+- (void)notifyWebRule:(id)rule
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtC15icloudmailagent21MCCSecretAgentService_categorizationSyncManager);
   __swift_instantiateConcreteTypeFromMangledNameV2(&_ss23_ContiguousArrayStorageCyyXlGMd, &_ss23_ContiguousArrayStorageCyyXlGMR);
   v6 = swift_allocObject();
   *(v6 + 16) = xmmword_100035B00;
-  *(v6 + 32) = a3;
-  v8 = a3;
-  v7 = self;
+  *(v6 + 32) = rule;
+  ruleCopy = rule;
+  selfCopy = self;
   CategorizationSyncManager.notifyRuleListeners(overrides:)(v6);
 }
 
-- (void)notifyFullSyncCategoryOverrides:(id)a3
+- (void)notifyFullSyncCategoryOverrides:(id)overrides
 {
   type metadata accessor for RCOverrideRule(0, &lazy cache variable for type metadata for RCOverrideRule, RCOverrideRule_ptr);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = *(&self->super.isa + OBJC_IVAR____TtC15icloudmailagent21MCCSecretAgentService_categorizationSyncManager);
-  v6 = self;
+  selfCopy = self;
   CategorizationSyncManager.notifySyncAllListeners(overrides:)(v4);
 }
 
-- (void)notifyNewOldCategoryChange:(id)a3 timestamp:(double)a4
+- (void)notifyNewOldCategoryChange:(id)change timestamp:(double)timestamp
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
@@ -132,8 +132,8 @@
   *(inited + 16) = xmmword_1000356B0;
   *(inited + 32) = v6;
   *(inited + 40) = v8;
-  *(inited + 48) = a4;
-  v11 = self;
+  *(inited + 48) = timestamp;
+  selfCopy = self;
   v12 = _sSD17dictionaryLiteralSDyxq_Gx_q_td_tcfCSS_SdTt0g5Tf4g_n(inited);
   swift_setDeallocating();
   outlined destroy of (String, Double)(inited + 32);

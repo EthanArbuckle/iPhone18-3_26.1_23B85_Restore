@@ -1,20 +1,20 @@
 @interface CKArchiveRecordsOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
-- (BOOL)CKOperationShouldRun:(id *)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
 - (CKArchiveRecordsOperation)init;
-- (CKArchiveRecordsOperation)initWithRecordIDs:(id)a3;
+- (CKArchiveRecordsOperation)initWithRecordIDs:(id)ds;
 - (id)activityCreate;
 - (id)archiveRecordsCompletionBlock;
 - (id)recordArchivedBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleRecordArchivalForRecordID:(id)a3 error:(id)a4;
-- (void)setArchiveRecordsCompletionBlock:(id)a3;
-- (void)setRecordArchivedBlock:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleRecordArchivalForRecordID:(id)d error:(id)error;
+- (void)setArchiveRecordsCompletionBlock:(id)block;
+- (void)setRecordArchivedBlock:(id)block;
 @end
 
 @implementation CKArchiveRecordsOperation
@@ -34,13 +34,13 @@
   return v2;
 }
 
-- (CKArchiveRecordsOperation)initWithRecordIDs:(id)a3
+- (CKArchiveRecordsOperation)initWithRecordIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v9 = objc_msgSend_init(self, v5, v6);
   if (v9)
   {
-    v10 = objc_msgSend_copy(v4, v7, v8);
+    v10 = objc_msgSend_copy(dsCopy, v7, v8);
     recordIDs = v9->_recordIDs;
     v9->_recordIDs = v10;
   }
@@ -48,9 +48,9 @@
   return v9;
 }
 
-- (void)setRecordArchivedBlock:(id)a3
+- (void)setRecordArchivedBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -64,16 +64,16 @@
     v12[2] = sub_1885BEBA0;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     recordArchivedBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_recordArchivedBlock != v6)
+  if (self->_recordArchivedBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     recordArchivedBlock = self->_recordArchivedBlock;
     self->_recordArchivedBlock = v9;
 LABEL_9:
@@ -116,9 +116,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setArchiveRecordsCompletionBlock:(id)a3
+- (void)setArchiveRecordsCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -132,16 +132,16 @@ LABEL_9:
     v12[2] = sub_1885BEF2C;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     archiveRecordsCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_archiveRecordsCompletionBlock != v6)
+  if (self->_archiveRecordsCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     archiveRecordsCompletionBlock = self->_archiveRecordsCompletionBlock;
     self->_archiveRecordsCompletionBlock = v9;
 LABEL_9:
@@ -184,24 +184,24 @@ LABEL_9:
   return v6;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_recordIDs(self, v5, v6);
-  objc_msgSend_setRecordIDs_(v4, v8, v7);
+  objc_msgSend_setRecordIDs_(infoCopy, v8, v7);
 
   v9.receiver = self;
   v9.super_class = CKArchiveRecordsOperation;
-  [(CKDatabaseOperation *)&v9 fillOutOperationInfo:v4];
+  [(CKDatabaseOperation *)&v9 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v9.receiver = self;
   v9.super_class = CKArchiveRecordsOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v9 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_recordIDs(v4, v5, v6, v9.receiver, v9.super_class);
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v9 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_recordIDs(infoCopy, v5, v6, v9.receiver, v9.super_class);
 
   objc_msgSend_setRecordIDs_(self, v8, v7);
 }
@@ -230,10 +230,10 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_recordIDs(self, a2, a3);
+  v5 = objc_msgSend_recordIDs(self, a2, run);
   v8 = objc_msgSend_count(v5, v6, v7);
 
   if (v8)
@@ -259,7 +259,7 @@ LABEL_9:
           }
 
           v19 = objc_msgSend_zoneID(*(*(&v28 + 1) + 8 * v18), v14, v15);
-          v21 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v20, v19, a3);
+          v21 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v20, v19, run);
 
           if (!v21)
           {
@@ -283,16 +283,16 @@ LABEL_9:
 
     v27.receiver = self;
     v27.super_class = CKArchiveRecordsOperation;
-    result = [(CKDatabaseOperation *)&v27 CKOperationShouldRun:a3];
+    result = [(CKDatabaseOperation *)&v27 CKOperationShouldRun:run];
   }
 
   else
   {
-    if (a3)
+    if (run)
     {
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
-      *a3 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v25, @"CKErrorDomain", 12, @"You must pass at least one record ID to %@", v24);
+      *run = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v25, @"CKErrorDomain", 12, @"You must pass at least one record ID to %@", v24);
     }
 
 LABEL_14:
@@ -303,12 +303,12 @@ LABEL_14:
   return result;
 }
 
-- (void)handleRecordArchivalForRecordID:(id)a3 error:(id)a4
+- (void)handleRecordArchivalForRecordID:(id)d error:(id)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_CKClientSuitableError(v7, v8, v9);
+  dCopy = d;
+  errorCopy = error;
+  v10 = objc_msgSend_CKClientSuitableError(errorCopy, v8, v9);
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -354,7 +354,7 @@ LABEL_14:
       if (v24 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
       {
         v47 = 138412546;
-        v48 = v6;
+        v48 = dCopy;
         v49 = 2112;
         v50 = v10;
         _os_signpost_emit_with_name_impl(&dword_1883EA000, v19, OS_SIGNPOST_EVENT, v24, "CKArchiveRecordsOperation", "Record %@ archived with error: %@", &v47, 0x16u);
@@ -362,7 +362,7 @@ LABEL_14:
     }
 
     v25 = objc_msgSend_perItemErrors(self, v13, v14);
-    objc_msgSend_setObject_forKeyedSubscript_(v25, v26, v10, v6);
+    objc_msgSend_setObject_forKeyedSubscript_(v25, v26, v10, dCopy);
 LABEL_14:
 
     goto LABEL_15;
@@ -399,7 +399,7 @@ LABEL_14:
     if (v42 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v25))
     {
       v47 = 138412290;
-      v48 = v6;
+      v48 = dCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v25, OS_SIGNPOST_EVENT, v42, "CKArchiveRecordsOperation", "Record %@ archived", &v47, 0xCu);
     }
 
@@ -424,12 +424,12 @@ LABEL_15:
       v47 = 138543618;
       v48 = v46;
       v49 = 2112;
-      v50 = v6;
+      v50 = dCopy;
       _os_log_debug_impl(&dword_1883EA000, v43, OS_LOG_TYPE_DEBUG, "Operation %{public}@ calling out about an archived record with id %@", &v47, 0x16u);
     }
 
     v31 = objc_msgSend_recordArchivedBlock(self, v29, v30);
-    (v31)[2](v31, v6, v7);
+    (v31)[2](v31, dCopy, errorCopy);
   }
 
   if (ck_log_initialization_predicate != -1)
@@ -441,17 +441,17 @@ LABEL_15:
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
   {
     v47 = 138412290;
-    v48 = v6;
+    v48 = dCopy;
     _os_log_debug_impl(&dword_1883EA000, v32, OS_LOG_TYPE_DEBUG, "Progress callback for record id %@ is done", &v47, 0xCu);
   }
 
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v91 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -499,7 +499,7 @@ LABEL_15:
     }
   }
 
-  if (!v4)
+  if (!errorCopy)
   {
     v19 = objc_msgSend_perItemErrors(self, v7, v8);
     v22 = objc_msgSend_count(v19, v20, v21);
@@ -510,12 +510,12 @@ LABEL_15:
       v28 = objc_msgSend_perItemErrors(self, v26, v27);
       objc_msgSend_setObject_forKeyedSubscript_(v25, v29, v28, @"CKPartialErrors");
 
-      v4 = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v30, @"CKInternalErrorDomain", 1011, v25, @"Couldn't archive some records");
+      errorCopy = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v30, @"CKInternalErrorDomain", 1011, v25, @"Couldn't archive some records");
     }
 
     else
     {
-      v4 = 0;
+      errorCopy = 0;
     }
   }
 
@@ -570,7 +570,7 @@ LABEL_15:
     {
       v71 = objc_msgSend_operationID(self, v55, v56);
       v72 = &stru_1EFA32970;
-      if (v4)
+      if (errorCopy)
       {
         v73 = @" Error was: ";
       }
@@ -580,9 +580,9 @@ LABEL_15:
         v73 = &stru_1EFA32970;
       }
 
-      if (v4)
+      if (errorCopy)
       {
-        v72 = objc_msgSend_CKClientSuitableError(v4, v69, v70);
+        v72 = objc_msgSend_CKClientSuitableError(errorCopy, v69, v70);
       }
 
       *buf = 138543874;
@@ -592,13 +592,13 @@ LABEL_15:
       v88 = 2112;
       v89 = v72;
       _os_log_debug_impl(&dword_1883EA000, v54, OS_LOG_TYPE_DEBUG, "Operation %{public}@ has completed. %@%@", buf, 0x20u);
-      if (v4)
+      if (errorCopy)
       {
       }
     }
 
     v59 = objc_msgSend_archiveRecordsCompletionBlock(self, v57, v58);
-    v62 = objc_msgSend_CKClientSuitableError(v4, v60, v61);
+    v62 = objc_msgSend_CKClientSuitableError(errorCopy, v60, v61);
     (v59)[2](v59, v62);
 
     objc_msgSend_setArchiveRecordsCompletionBlock_(self, v63, 0);
@@ -616,7 +616,7 @@ LABEL_15:
     {
       v76 = objc_msgSend_operationID(self, v66, v67);
       v77 = &stru_1EFA32970;
-      if (v4)
+      if (errorCopy)
       {
         v78 = @" Error was: ";
       }
@@ -626,9 +626,9 @@ LABEL_15:
         v78 = &stru_1EFA32970;
       }
 
-      if (v4)
+      if (errorCopy)
       {
-        v77 = objc_msgSend_CKClientSuitableError(v4, v74, v75);
+        v77 = objc_msgSend_CKClientSuitableError(errorCopy, v74, v75);
       }
 
       *buf = 138543874;
@@ -638,7 +638,7 @@ LABEL_15:
       v88 = 2112;
       v89 = v77;
       _os_log_debug_impl(&dword_1883EA000, v65, OS_LOG_TYPE_DEBUG, "Operation %{public}@ finished but no archiveRecordsCompletionBlock was set.%@%@", buf, 0x20u);
-      if (v4)
+      if (errorCopy)
       {
       }
     }
@@ -647,7 +647,7 @@ LABEL_15:
   objc_msgSend_setRecordArchivedBlock_(self, v64, 0);
   v79.receiver = self;
   v79.super_class = CKArchiveRecordsOperation;
-  [(CKOperation *)&v79 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v79 _finishOnCallbackQueueWithError:errorCopy];
 
   v68 = *MEMORY[0x1E69E9840];
 }
@@ -726,10 +726,10 @@ LABEL_15:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -773,7 +773,7 @@ LABEL_15:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKArchiveRecordsOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -788,15 +788,15 @@ LABEL_15:
   return v2;
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
-  v4 = a3;
+  tweaksCopy = tweaks;
   v5 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v6, v5, sel_handleRecordArchivalForRecordID_error_, 1, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v6, v5, sel_handleRecordArchivalForRecordID_error_, 1, 0);
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CKArchiveRecordsOperation;
-  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, v4);
+  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface TLKDetailsSection
-- (void)setDetails:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setDetails:(id)details;
+- (void)setTitle:(id)title;
 @end
 
 @implementation TLKDetailsSection
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  titleCopy = title;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_title setObserver:0];
@@ -19,7 +19,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = titleCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -52,11 +52,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      titleCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_title, a3);
+  objc_storeStrong(&self->_title, title);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_title setObserver:self];
@@ -101,25 +101,25 @@
     }
   }
 
-  v18 = [(TLKObject *)self observer];
-  if (v18)
+  observer = [(TLKObject *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKObject *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKObject *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKObject *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKObject *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setDetails:(id)a3
+- (void)setDetails:(id)details
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  detailsCopy = details;
   if (objc_opt_respondsToSelector())
   {
     [(NSArray *)self->_details setObserver:0];
@@ -130,7 +130,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = detailsCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -163,11 +163,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      detailsCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_details, a3);
+  objc_storeStrong(&self->_details, details);
   if (objc_opt_respondsToSelector())
   {
     [(NSArray *)self->_details setObserver:self];
@@ -212,17 +212,17 @@
     }
   }
 
-  v18 = [(TLKObject *)self observer];
-  if (v18)
+  observer = [(TLKObject *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKObject *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKObject *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKObject *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKObject *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }

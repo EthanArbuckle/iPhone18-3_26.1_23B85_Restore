@@ -10,8 +10,8 @@
 - (void)invalidateIntrinsicContentSize;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setPosterDescription:(id)a3;
-- (void)updatePreview:(id)a3 posterPreviewView:(id)a4 layoutOrientation:(int64_t)a5 index:(unint64_t)a6;
+- (void)setPosterDescription:(id)description;
+- (void)updatePreview:(id)preview posterPreviewView:(id)view layoutOrientation:(int64_t)orientation index:(unint64_t)index;
 @end
 
 @implementation PBFPosterGalleryPreviewWithDescriptionCell
@@ -29,8 +29,8 @@
   self->_metrics.posterViewFrame.size = v3;
   self->_metrics.posterDescriptionLabelFrame.origin = v4;
   self->_metrics.posterViewFrame.origin = v4;
-  v6 = [(PBFPosterGalleryPreviewWithDescriptionCell *)self posterPreviewView];
-  [v6 prepareForReuse];
+  posterPreviewView = [(PBFPosterGalleryPreviewWithDescriptionCell *)self posterPreviewView];
+  [posterPreviewView prepareForReuse];
 
   self->_index = 0x7FFFFFFFFFFFFFFFLL;
 }
@@ -44,21 +44,21 @@
   self->_spec = 0;
 }
 
-- (void)updatePreview:(id)a3 posterPreviewView:(id)a4 layoutOrientation:(int64_t)a5 index:(unint64_t)a6
+- (void)updatePreview:(id)preview posterPreviewView:(id)view layoutOrientation:(int64_t)orientation index:(unint64_t)index
 {
-  v14 = a3;
-  v10 = a4;
-  if (self->_posterPreview != v14 || !BSEqualObjects() || self->_layoutOrientation != a5)
+  previewCopy = preview;
+  viewCopy = view;
+  if (self->_posterPreview != previewCopy || !BSEqualObjects() || self->_layoutOrientation != orientation)
   {
-    v11 = [(PBFPosterPreview *)v14 type];
+    type = [(PBFPosterPreview *)previewCopy type];
     previewType = self->_previewType;
-    self->_previewType = v11;
+    self->_previewType = type;
 
-    v13 = [(PBFPosterGalleryPreviewWithDescriptionCell *)self posterPreviewView];
-    [v13 updatePreview:v14 posterPreviewView:v10 layoutOrientation:a5 index:a6];
+    posterPreviewView = [(PBFPosterGalleryPreviewWithDescriptionCell *)self posterPreviewView];
+    [posterPreviewView updatePreview:previewCopy posterPreviewView:viewCopy layoutOrientation:orientation index:index];
 
-    self->_index = a6;
-    self->_layoutOrientation = a5;
+    self->_index = index;
+    self->_layoutOrientation = orientation;
     [(PBFPosterGalleryPreviewWithDescriptionCell *)self invalidateIntrinsicContentSize];
     [(PBFPosterGalleryPreviewWithDescriptionCell *)self setNeedsLayout];
   }
@@ -66,22 +66,22 @@
 
 - (NSString)posterDescription
 {
-  v2 = [(PBFPosterGalleryPreviewWithDescriptionCell *)self posterDescriptionLabel];
-  v3 = [v2 text];
+  posterDescriptionLabel = [(PBFPosterGalleryPreviewWithDescriptionCell *)self posterDescriptionLabel];
+  text = [posterDescriptionLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setPosterDescription:(id)a3
+- (void)setPosterDescription:(id)description
 {
-  v10 = a3;
-  v4 = [(PBFPosterGalleryPreviewWithDescriptionCell *)self posterDescriptionLabel];
-  v5 = [v4 isEqual:v10];
+  descriptionCopy = description;
+  posterDescriptionLabel = [(PBFPosterGalleryPreviewWithDescriptionCell *)self posterDescriptionLabel];
+  v5 = [posterDescriptionLabel isEqual:descriptionCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(PBFPosterGalleryPreviewWithDescriptionCell *)self posterDescriptionLabel];
-    [v6 setText:v10];
+    posterDescriptionLabel2 = [(PBFPosterGalleryPreviewWithDescriptionCell *)self posterDescriptionLabel];
+    [posterDescriptionLabel2 setText:descriptionCopy];
 
     v8 = *MEMORY[0x277CBF3A0];
     v7 = *(MEMORY[0x277CBF3A0] + 16);
@@ -106,18 +106,18 @@
 
     [(UILabel *)self->_posterDescriptionLabel setNumberOfLines:0];
     v6 = self->_posterDescriptionLabel;
-    v7 = [(PBFPosterGalleryPreviewWithDescriptionCell *)self spec];
-    v8 = [v7 previewCellDescriptionLabelFont];
-    [(UILabel *)v6 setFont:v8];
+    spec = [(PBFPosterGalleryPreviewWithDescriptionCell *)self spec];
+    previewCellDescriptionLabelFont = [spec previewCellDescriptionLabelFont];
+    [(UILabel *)v6 setFont:previewCellDescriptionLabelFont];
 
     v9 = self->_posterDescriptionLabel;
-    v10 = [(PBFPosterGalleryPreviewWithDescriptionCell *)self spec];
-    v11 = [v10 previewCellDescriptionLabelColor];
-    [(UILabel *)v9 setTextColor:v11];
+    spec2 = [(PBFPosterGalleryPreviewWithDescriptionCell *)self spec];
+    previewCellDescriptionLabelColor = [spec2 previewCellDescriptionLabelColor];
+    [(UILabel *)v9 setTextColor:previewCellDescriptionLabelColor];
 
     [(UILabel *)self->_posterDescriptionLabel setTextAlignment:4];
-    v12 = [(PBFPosterGalleryPreviewWithDescriptionCell *)self contentView];
-    [v12 addSubview:self->_posterDescriptionLabel];
+    contentView = [(PBFPosterGalleryPreviewWithDescriptionCell *)self contentView];
+    [contentView addSubview:self->_posterDescriptionLabel];
 
     [(PBFPosterGalleryPreviewWithDescriptionCell *)self setNeedsLayout];
     posterDescriptionLabel = self->_posterDescriptionLabel;
@@ -132,8 +132,8 @@
 {
   v6.receiver = self;
   v6.super_class = PBFPosterGalleryPreviewWithDescriptionCell;
-  v3 = [(UIView *)&v6 pbf_displayContext];
-  v4 = [v3 displayContextWithUpdatedInterfaceOrientation:self->_layoutOrientation];
+  pbf_displayContext = [(UIView *)&v6 pbf_displayContext];
+  v4 = [pbf_displayContext displayContextWithUpdatedInterfaceOrientation:self->_layoutOrientation];
 
   return v4;
 }
@@ -148,11 +148,11 @@
     self->_posterPreviewView = v4;
 
     [(PBFPosterGalleryPreviewView *)self->_posterPreviewView sizeToFit];
-    v6 = [(PBFPosterGalleryPreviewWithDescriptionCell *)self contentView];
-    [v6 addSubview:self->_posterPreviewView];
+    contentView = [(PBFPosterGalleryPreviewWithDescriptionCell *)self contentView];
+    [contentView addSubview:self->_posterPreviewView];
 
-    v7 = [(PBFPosterGalleryPreviewWithDescriptionCell *)self contentView];
-    [v7 sendSubviewToBack:self->_posterPreviewView];
+    contentView2 = [(PBFPosterGalleryPreviewWithDescriptionCell *)self contentView];
+    [contentView2 sendSubviewToBack:self->_posterPreviewView];
 
     posterPreviewView = self->_posterPreviewView;
   }
@@ -167,9 +167,9 @@
   spec = self->_spec;
   if (!spec)
   {
-    v4 = [(PBFPosterGalleryPreviewWithDescriptionCell *)self window];
-    v5 = [v4 screen];
-    v6 = [PBFPosterGalleryViewSpec specForScreen:v5];
+    window = [(PBFPosterGalleryPreviewWithDescriptionCell *)self window];
+    screen = [window screen];
+    v6 = [PBFPosterGalleryViewSpec specForScreen:screen];
     v7 = self->_spec;
     self->_spec = v6;
 
@@ -184,21 +184,21 @@
   p_height = &self[8].var0.size.height;
   if (self[9].var0.origin.y == *MEMORY[0x277CBF3A8] && self[9].var0.size.width == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v8 = self;
-    v33 = [($91384402D6A983DE6D4FF1F0AF3B9FB7 *)self spec];
-    [($91384402D6A983DE6D4FF1F0AF3B9FB7 *)v8 bounds];
+    selfCopy = self;
+    spec = [($91384402D6A983DE6D4FF1F0AF3B9FB7 *)self spec];
+    [($91384402D6A983DE6D4FF1F0AF3B9FB7 *)selfCopy bounds];
     v10 = v9;
-    v11 = [($91384402D6A983DE6D4FF1F0AF3B9FB7 *)v8 traitCollection];
-    [v11 displayScale];
+    traitCollection = [($91384402D6A983DE6D4FF1F0AF3B9FB7 *)selfCopy traitCollection];
+    [traitCollection displayScale];
 
-    v12 = [($91384402D6A983DE6D4FF1F0AF3B9FB7 *)v8 effectiveUserInterfaceLayoutDirection];
-    [v33 standardSpacing];
+    effectiveUserInterfaceLayoutDirection = [($91384402D6A983DE6D4FF1F0AF3B9FB7 *)selfCopy effectiveUserInterfaceLayoutDirection];
+    [spec standardSpacing];
     v14 = v13;
-    [v33 posterContentSizeForOrientation:*&v8[9].var1.origin.x];
+    [spec posterContentSizeForOrientation:*&selfCopy[9].var1.origin.x];
     v16 = v15;
     v18 = v17;
     v19 = v10 - v15;
-    if (v12)
+    if (effectiveUserInterfaceLayoutDirection)
     {
       v20 = v10 - v15;
     }
@@ -209,7 +209,7 @@
     }
 
     v32 = v20;
-    [*&v8[8].var0.size.width sizeThatFits:{v10 - (v14 + v16), 1000.0}];
+    [*&selfCopy[8].var0.size.width sizeThatFits:{v10 - (v14 + v16), 1000.0}];
     v23 = v22;
     if (v21 >= v18)
     {
@@ -221,7 +221,7 @@
       v24 = v21;
     }
 
-    if (v12)
+    if (effectiveUserInterfaceLayoutDirection)
     {
       v35.origin.y = 0.0;
       v35.origin.x = v19;
@@ -282,24 +282,24 @@
   v5.super_class = PBFPosterGalleryPreviewWithDescriptionCell;
   [(PBFPosterGalleryPreviewWithDescriptionCell *)&v5 layoutSubviews];
   [(PBFPosterGalleryPreviewWithDescriptionCell *)self metrics];
-  v3 = [(PBFPosterGalleryPreviewWithDescriptionCell *)self posterDescriptionLabel];
-  v4 = [(PBFPosterGalleryPreviewWithDescriptionCell *)self posterPreviewView];
-  [v4 frame];
+  posterDescriptionLabel = [(PBFPosterGalleryPreviewWithDescriptionCell *)self posterDescriptionLabel];
+  posterPreviewView = [(PBFPosterGalleryPreviewWithDescriptionCell *)self posterPreviewView];
+  [posterPreviewView frame];
   v8.origin.x = 0.0;
   v8.origin.y = 0.0;
   v8.size.width = 0.0;
   v8.size.height = 0.0;
   if (!CGRectEqualToRect(v6, v8))
   {
-    [v4 setFrame:{0.0, 0.0, 0.0, 0.0}];
+    [posterPreviewView setFrame:{0.0, 0.0, 0.0, 0.0}];
   }
 
-  [v3 frame];
+  [posterDescriptionLabel frame];
   v9.origin = 0u;
   v9.size = 0u;
   if (!CGRectEqualToRect(v7, v9))
   {
-    [v3 setFrame:{0.0, 0.0, 0.0, 0.0}];
+    [posterDescriptionLabel setFrame:{0.0, 0.0, 0.0, 0.0}];
   }
 }
 

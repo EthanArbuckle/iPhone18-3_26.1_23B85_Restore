@@ -1,13 +1,13 @@
 @interface ATXTrialAssets
 - (ATXTrialAssets)init;
 - (id)client;
-- (id)dictionaryForClass:(Class)a3;
-- (id)dictionaryForClassName:(id)a3;
-- (id)dictionaryForResource:(id)a3;
-- (id)directoryPathForTrialResource:(id)a3;
-- (id)filePathForClass:(Class)a3;
-- (id)filePathForResource:(id)a3;
-- (void)addUpdateHandlerWithBlock:(id)a3;
+- (id)dictionaryForClass:(Class)class;
+- (id)dictionaryForClassName:(id)name;
+- (id)dictionaryForResource:(id)resource;
+- (id)directoryPathForTrialResource:(id)resource;
+- (id)filePathForClass:(Class)class;
+- (id)filePathForResource:(id)resource;
+- (void)addUpdateHandlerWithBlock:(id)block;
 - (void)fetchTrialExperimentIdentifiers;
 @end
 
@@ -70,10 +70,10 @@ uint64_t __24__ATXTrialAssets_client__block_invoke(uint64_t a1, uint64_t a2)
   return MEMORY[0x1EEE66BB8](v3, v5);
 }
 
-- (id)dictionaryForResource:(id)a3
+- (id)dictionaryForResource:(id)resource
 {
-  v4 = a3;
-  v5 = [(ATXTrialAssets *)self filePathForResource:v4];
+  resourceCopy = resource;
+  v5 = [(ATXTrialAssets *)self filePathForResource:resourceCopy];
   v6 = v5;
   if (v5)
   {
@@ -85,7 +85,7 @@ uint64_t __24__ATXTrialAssets_client__block_invoke(uint64_t a1, uint64_t a2)
     v8 = __atxlog_handle_trial_assets();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(ATXTrialAssets *)v4 dictionaryForResource:v8];
+      [(ATXTrialAssets *)resourceCopy dictionaryForResource:v8];
     }
 
     v7 = 0;
@@ -94,18 +94,18 @@ uint64_t __24__ATXTrialAssets_client__block_invoke(uint64_t a1, uint64_t a2)
   return v7;
 }
 
-- (id)dictionaryForClass:(Class)a3
+- (id)dictionaryForClass:(Class)class
 {
-  v4 = NSStringFromClass(a3);
+  v4 = NSStringFromClass(class);
   v5 = [(ATXTrialAssets *)self dictionaryForClassName:v4];
 
   return v5;
 }
 
-- (id)dictionaryForClassName:(id)a3
+- (id)dictionaryForClassName:(id)name
 {
-  v4 = a3;
-  v5 = [(ATXTrialAssets *)self filePathForClassName:v4];
+  nameCopy = name;
+  v5 = [(ATXTrialAssets *)self filePathForClassName:nameCopy];
   v6 = v5;
   if (v5)
   {
@@ -117,7 +117,7 @@ uint64_t __24__ATXTrialAssets_client__block_invoke(uint64_t a1, uint64_t a2)
     v8 = __atxlog_handle_trial_assets();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(ATXTrialAssets *)v4 dictionaryForClassName:v8];
+      [(ATXTrialAssets *)nameCopy dictionaryForClassName:v8];
     }
 
     v7 = 0;
@@ -126,17 +126,17 @@ uint64_t __24__ATXTrialAssets_client__block_invoke(uint64_t a1, uint64_t a2)
   return v7;
 }
 
-- (id)filePathForClass:(Class)a3
+- (id)filePathForClass:(Class)class
 {
-  v4 = NSStringFromClass(a3);
+  v4 = NSStringFromClass(class);
   v5 = [(ATXTrialAssets *)self filePathForClassName:v4];
 
   return v5;
 }
 
-- (id)filePathForResource:(id)a3
+- (id)filePathForResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -149,7 +149,7 @@ uint64_t __24__ATXTrialAssets_client__block_invoke(uint64_t a1, uint64_t a2)
   v9[2] = __38__ATXTrialAssets_filePathForResource___block_invoke;
   v9[3] = &unk_1E80C0EF0;
   v9[4] = self;
-  v6 = v4;
+  v6 = resourceCopy;
   v10 = v6;
   v11 = &v12;
   [(_PASLock *)lock runWithLockAcquired:v9];
@@ -177,9 +177,9 @@ void __38__ATXTrialAssets_filePathForResource___block_invoke(uint64_t a1, void *
   objc_autoreleasePoolPop(v3);
 }
 
-- (id)directoryPathForTrialResource:(id)a3
+- (id)directoryPathForTrialResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -192,7 +192,7 @@ void __38__ATXTrialAssets_filePathForResource___block_invoke(uint64_t a1, void *
   v9[2] = __48__ATXTrialAssets_directoryPathForTrialResource___block_invoke;
   v9[3] = &unk_1E80C0EF0;
   v9[4] = self;
-  v6 = v4;
+  v6 = resourceCopy;
   v10 = v6;
   v11 = &v12;
   [(_PASLock *)lock runWithLockAcquired:v9];
@@ -220,16 +220,16 @@ void __48__ATXTrialAssets_directoryPathForTrialResource___block_invoke(uint64_t 
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)addUpdateHandlerWithBlock:(id)a3
+- (void)addUpdateHandlerWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__ATXTrialAssets_addUpdateHandlerWithBlock___block_invoke;
   v7[3] = &unk_1E80C0F40;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 

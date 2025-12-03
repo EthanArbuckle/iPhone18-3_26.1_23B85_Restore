@@ -1,14 +1,14 @@
 @interface WidgetLocalizations
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WidgetLocalizations
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
 
-  sub_192169E54(v3);
+  sub_192169E54(coderCopy);
 }
 
 @end

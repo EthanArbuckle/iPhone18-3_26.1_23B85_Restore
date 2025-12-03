@@ -1,30 +1,30 @@
 @interface SIRINLUINTERNALOVERRIDESOverridesRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addInputs:(id)a3;
-- (void)addMatchingSpans:(id)a3;
-- (void)addSystemDialogActs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addInputs:(id)inputs;
+- (void)addMatchingSpans:(id)spans;
+- (void)addSystemDialogActs:(id)acts;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALOVERRIDESOverridesRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 6))
+  fromCopy = from;
+  if (*(fromCopy + 6))
   {
     [(SIRINLUINTERNALOVERRIDESOverridesRequest *)self setUtterance:?];
   }
 
   tokenChain = self->_tokenChain;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (tokenChain)
   {
     if (v6)
@@ -42,7 +42,7 @@
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v8)
   {
@@ -70,7 +70,7 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v12 = *(v4 + 3);
+  v12 = *(fromCopy + 3);
   v13 = [v12 countByEnumeratingWithState:&v29 objects:v38 count:16];
   if (v13)
   {
@@ -95,7 +95,7 @@
   }
 
   turnContext = self->_turnContext;
-  v18 = *(v4 + 5);
+  v18 = *(fromCopy + 5);
   if (turnContext)
   {
     if (v18)
@@ -113,7 +113,7 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v19 = *(v4 + 1);
+  v19 = *(fromCopy + 1);
   v20 = [v19 countByEnumeratingWithState:&v25 objects:v37 count:16];
   if (v20)
   {
@@ -150,13 +150,13 @@
   return v6 ^ v7 ^ [(NSMutableArray *)self->_inputs hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((utterance = self->_utterance, !(utterance | v4[6])) || -[NSString isEqual:](utterance, "isEqual:")) && ((tokenChain = self->_tokenChain, !(tokenChain | v4[4])) || -[SIRINLUINTERNALTokenChain isEqual:](tokenChain, "isEqual:")) && ((matchingSpans = self->_matchingSpans, !(matchingSpans | v4[2])) || -[NSMutableArray isEqual:](matchingSpans, "isEqual:")) && ((systemDialogActs = self->_systemDialogActs, !(systemDialogActs | v4[3])) || -[NSMutableArray isEqual:](systemDialogActs, "isEqual:")) && ((turnContext = self->_turnContext, !(turnContext | v4[5])) || -[SIRINLUEXTERNALTurnContext isEqual:](turnContext, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((utterance = self->_utterance, !(utterance | equalCopy[6])) || -[NSString isEqual:](utterance, "isEqual:")) && ((tokenChain = self->_tokenChain, !(tokenChain | equalCopy[4])) || -[SIRINLUINTERNALTokenChain isEqual:](tokenChain, "isEqual:")) && ((matchingSpans = self->_matchingSpans, !(matchingSpans | equalCopy[2])) || -[NSMutableArray isEqual:](matchingSpans, "isEqual:")) && ((systemDialogActs = self->_systemDialogActs, !(systemDialogActs | equalCopy[3])) || -[NSMutableArray isEqual:](systemDialogActs, "isEqual:")) && ((turnContext = self->_turnContext, !(turnContext | equalCopy[5])) || -[SIRINLUEXTERNALTurnContext isEqual:](turnContext, "isEqual:")))
   {
     inputs = self->_inputs;
-    if (inputs | v4[1])
+    if (inputs | equalCopy[1])
     {
       v11 = [(NSMutableArray *)inputs isEqual:?];
     }
@@ -175,15 +175,15 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v47 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_utterance copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_utterance copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
-  v8 = [(SIRINLUINTERNALTokenChain *)self->_tokenChain copyWithZone:a3];
+  v8 = [(SIRINLUINTERNALTokenChain *)self->_tokenChain copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
@@ -207,7 +207,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v40 + 1) + 8 * v14) copyWithZone:a3];
+        v15 = [*(*(&v40 + 1) + 8 * v14) copyWithZone:zone];
         [v5 addMatchingSpans:v15];
 
         ++v14;
@@ -240,7 +240,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v36 + 1) + 8 * v20) copyWithZone:a3];
+        v21 = [*(*(&v36 + 1) + 8 * v20) copyWithZone:zone];
         [v5 addSystemDialogActs:v21];
 
         ++v20;
@@ -253,7 +253,7 @@
     while (v18);
   }
 
-  v22 = [(SIRINLUEXTERNALTurnContext *)self->_turnContext copyWithZone:a3];
+  v22 = [(SIRINLUEXTERNALTurnContext *)self->_turnContext copyWithZone:zone];
   v23 = v5[5];
   v5[5] = v22;
 
@@ -277,7 +277,7 @@
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v32 + 1) + 8 * v28) copyWithZone:{a3, v32}];
+        v29 = [*(*(&v32 + 1) + 8 * v28) copyWithZone:{zone, v32}];
         [v5 addInputs:v29];
 
         ++v28;
@@ -294,74 +294,74 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if (self->_utterance)
   {
-    [v16 setUtterance:?];
+    [toCopy setUtterance:?];
   }
 
   if (self->_tokenChain)
   {
-    [v16 setTokenChain:?];
+    [toCopy setTokenChain:?];
   }
 
   if ([(SIRINLUINTERNALOVERRIDESOverridesRequest *)self matchingSpansCount])
   {
-    [v16 clearMatchingSpans];
-    v4 = [(SIRINLUINTERNALOVERRIDESOverridesRequest *)self matchingSpansCount];
-    if (v4)
+    [toCopy clearMatchingSpans];
+    matchingSpansCount = [(SIRINLUINTERNALOVERRIDESOverridesRequest *)self matchingSpansCount];
+    if (matchingSpansCount)
     {
-      v5 = v4;
+      v5 = matchingSpansCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUINTERNALOVERRIDESOverridesRequest *)self matchingSpansAtIndex:i];
-        [v16 addMatchingSpans:v7];
+        [toCopy addMatchingSpans:v7];
       }
     }
   }
 
   if ([(SIRINLUINTERNALOVERRIDESOverridesRequest *)self systemDialogActsCount])
   {
-    [v16 clearSystemDialogActs];
-    v8 = [(SIRINLUINTERNALOVERRIDESOverridesRequest *)self systemDialogActsCount];
-    if (v8)
+    [toCopy clearSystemDialogActs];
+    systemDialogActsCount = [(SIRINLUINTERNALOVERRIDESOverridesRequest *)self systemDialogActsCount];
+    if (systemDialogActsCount)
     {
-      v9 = v8;
+      v9 = systemDialogActsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(SIRINLUINTERNALOVERRIDESOverridesRequest *)self systemDialogActsAtIndex:j];
-        [v16 addSystemDialogActs:v11];
+        [toCopy addSystemDialogActs:v11];
       }
     }
   }
 
   if (self->_turnContext)
   {
-    [v16 setTurnContext:?];
+    [toCopy setTurnContext:?];
   }
 
   if ([(SIRINLUINTERNALOVERRIDESOverridesRequest *)self inputsCount])
   {
-    [v16 clearInputs];
-    v12 = [(SIRINLUINTERNALOVERRIDESOverridesRequest *)self inputsCount];
-    if (v12)
+    [toCopy clearInputs];
+    inputsCount = [(SIRINLUINTERNALOVERRIDESOverridesRequest *)self inputsCount];
+    if (inputsCount)
     {
-      v13 = v12;
+      v13 = inputsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(SIRINLUINTERNALOVERRIDESOverridesRequest *)self inputsAtIndex:k];
-        [v16 addInputs:v15];
+        [toCopy addInputs:v15];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_utterance)
   {
     PBDataWriterWriteStringField();
@@ -479,19 +479,19 @@
 - (id)dictionaryRepresentation
 {
   v48 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   utterance = self->_utterance;
   if (utterance)
   {
-    [v3 setObject:utterance forKey:@"utterance"];
+    [dictionary setObject:utterance forKey:@"utterance"];
   }
 
   tokenChain = self->_tokenChain;
   if (tokenChain)
   {
-    v7 = [(SIRINLUINTERNALTokenChain *)tokenChain dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"token_chain"];
+    dictionaryRepresentation = [(SIRINLUINTERNALTokenChain *)tokenChain dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"token_chain"];
   }
 
   if ([(NSMutableArray *)self->_matchingSpans count])
@@ -516,8 +516,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v41 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation2 = [*(*(&v41 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation2];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v41 objects:v47 count:16];
@@ -551,8 +551,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v37 + 1) + 8 * j) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation3 = [*(*(&v37 + 1) + 8 * j) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation3];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v37 objects:v46 count:16];
@@ -567,8 +567,8 @@
   turnContext = self->_turnContext;
   if (turnContext)
   {
-    v23 = [(SIRINLUEXTERNALTurnContext *)turnContext dictionaryRepresentation];
-    [v4 setObject:v23 forKey:@"turn_context"];
+    dictionaryRepresentation4 = [(SIRINLUEXTERNALTurnContext *)turnContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"turn_context"];
   }
 
   if ([(NSMutableArray *)self->_inputs count])
@@ -593,8 +593,8 @@
             objc_enumerationMutation(v25);
           }
 
-          v30 = [*(*(&v33 + 1) + 8 * k) dictionaryRepresentation];
-          [v24 addObject:v30];
+          dictionaryRepresentation5 = [*(*(&v33 + 1) + 8 * k) dictionaryRepresentation];
+          [v24 addObject:dictionaryRepresentation5];
         }
 
         v27 = [(NSMutableArray *)v25 countByEnumeratingWithState:&v33 objects:v45 count:16];
@@ -617,64 +617,64 @@
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALOVERRIDESOverridesRequest;
   v4 = [(SIRINLUINTERNALOVERRIDESOverridesRequest *)&v8 description];
-  v5 = [(SIRINLUINTERNALOVERRIDESOverridesRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALOVERRIDESOverridesRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addInputs:(id)a3
+- (void)addInputs:(id)inputs
 {
-  v4 = a3;
+  inputsCopy = inputs;
   inputs = self->_inputs;
-  v8 = v4;
+  v8 = inputsCopy;
   if (!inputs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_inputs;
     self->_inputs = v6;
 
-    v4 = v8;
+    inputsCopy = v8;
     inputs = self->_inputs;
   }
 
-  [(NSMutableArray *)inputs addObject:v4];
+  [(NSMutableArray *)inputs addObject:inputsCopy];
 }
 
-- (void)addSystemDialogActs:(id)a3
+- (void)addSystemDialogActs:(id)acts
 {
-  v4 = a3;
+  actsCopy = acts;
   systemDialogActs = self->_systemDialogActs;
-  v8 = v4;
+  v8 = actsCopy;
   if (!systemDialogActs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_systemDialogActs;
     self->_systemDialogActs = v6;
 
-    v4 = v8;
+    actsCopy = v8;
     systemDialogActs = self->_systemDialogActs;
   }
 
-  [(NSMutableArray *)systemDialogActs addObject:v4];
+  [(NSMutableArray *)systemDialogActs addObject:actsCopy];
 }
 
-- (void)addMatchingSpans:(id)a3
+- (void)addMatchingSpans:(id)spans
 {
-  v4 = a3;
+  spansCopy = spans;
   matchingSpans = self->_matchingSpans;
-  v8 = v4;
+  v8 = spansCopy;
   if (!matchingSpans)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_matchingSpans;
     self->_matchingSpans = v6;
 
-    v4 = v8;
+    spansCopy = v8;
     matchingSpans = self->_matchingSpans;
   }
 
-  [(NSMutableArray *)matchingSpans addObject:v4];
+  [(NSMutableArray *)matchingSpans addObject:spansCopy];
 }
 
 @end

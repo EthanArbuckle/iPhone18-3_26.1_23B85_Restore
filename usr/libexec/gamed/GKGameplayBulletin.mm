@@ -1,22 +1,22 @@
 @interface GKGameplayBulletin
-+ (BOOL)areGameVersionsCompatibleForGame:(id)a3 shortVersion:(id)a4 version:(id)a5;
-- (BOOL)isCompatibleWithGameDescriptor:(id)a3;
++ (BOOL)areGameVersionsCompatibleForGame:(id)game shortVersion:(id)version version:(id)a5;
+- (BOOL)isCompatibleWithGameDescriptor:(id)descriptor;
 - (BOOL)isPushForLocalPlayers;
 - (BOOL)isPushFromLocalPlayers;
-- (BOOL)setInstalledGameLocationFor:(id)a3 descriptor:(id)a4;
-- (GKGameplayBulletin)initWithCoder:(id)a3;
+- (BOOL)setInstalledGameLocationFor:(id)for descriptor:(id)descriptor;
+- (GKGameplayBulletin)initWithCoder:(id)coder;
 - (void)checkCompatibleGameWithoutCompatibilityMatrix;
-- (void)determineGameLocationOnDeviceOrInStoreWithCompletionHandler:(id)a3;
-- (void)determineGameLocationViaCompatibilityMatrixWithCompletionHandler:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadOriginatorPlayerWithCompletionHandler:(id)a3;
+- (void)determineGameLocationOnDeviceOrInStoreWithCompletionHandler:(id)handler;
+- (void)determineGameLocationViaCompatibilityMatrixWithCompletionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadOriginatorPlayerWithCompletionHandler:(id)handler;
 @end
 
 @implementation GKGameplayBulletin
 
-- (GKGameplayBulletin)initWithCoder:(id)a3
+- (GKGameplayBulletin)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -31,65 +31,65 @@
 
   v36.receiver = self;
   v36.super_class = GKGameplayBulletin;
-  v7 = [(GKBulletin *)&v36 initWithCoder:v4];
+  v7 = [(GKBulletin *)&v36 initWithCoder:coderCopy];
   if (v7)
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"receiverPlayerID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"receiverPlayerID"];
     receiverPlayerID = v7->_receiverPlayerID;
     v7->_receiverPlayerID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatorPlayerID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatorPlayerID"];
     originatorPlayerID = v7->_originatorPlayerID;
     v7->_originatorPlayerID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"receiverPlayer"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"receiverPlayer"];
     receiverPlayer = v7->_receiverPlayer;
     v7->_receiverPlayer = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatorPlayer"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatorPlayer"];
     originatorPlayer = v7->_originatorPlayer;
     v7->_originatorPlayer = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"receiverGuestPlayerID"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"receiverGuestPlayerID"];
     receiverGuestPlayerID = v7->_receiverGuestPlayerID;
     v7->_receiverGuestPlayerID = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatorGuestPlayerID"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatorGuestPlayerID"];
     originatorGuestPlayerID = v7->_originatorGuestPlayerID;
     v7->_originatorGuestPlayerID = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"receiverGuestPlayer"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"receiverGuestPlayer"];
     receiverGuestPlayer = v7->_receiverGuestPlayer;
     v7->_receiverGuestPlayer = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatorGuestPlayer"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatorGuestPlayer"];
     originatorGuestPlayer = v7->_originatorGuestPlayer;
     v7->_originatorGuestPlayer = v22;
 
     v24 = objc_opt_class();
     v25 = objc_opt_class();
     v26 = [NSSet setWithObjects:v24, v25, objc_opt_class(), 0];
-    v27 = [v4 decodeObjectOfClasses:v26 forKey:@"compatibleVersions"];
+    v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"compatibleVersions"];
     compatibleVersions = v7->_compatibleVersions;
     v7->_compatibleVersions = v27;
 
     v29 = objc_opt_class();
     v30 = objc_opt_class();
     v31 = [NSSet setWithObjects:v29, v30, objc_opt_class(), 0];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"compatibleShortVersions"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"compatibleShortVersions"];
     compatibleShortVersions = v7->_compatibleShortVersions;
     v7->_compatibleShortVersions = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gameLocation"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gameLocation"];
     v7->_gameLocation = [v34 integerValue];
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -104,39 +104,39 @@
 
   v18.receiver = self;
   v18.super_class = GKGameplayBulletin;
-  [(GKBulletin *)&v18 encodeWithCoder:v4];
-  v7 = [(GKGameplayBulletin *)self receiverPlayerID];
-  [v4 encodeObject:v7 forKey:@"receiverPlayerID"];
+  [(GKBulletin *)&v18 encodeWithCoder:coderCopy];
+  receiverPlayerID = [(GKGameplayBulletin *)self receiverPlayerID];
+  [coderCopy encodeObject:receiverPlayerID forKey:@"receiverPlayerID"];
 
-  v8 = [(GKGameplayBulletin *)self originatorPlayerID];
-  [v4 encodeObject:v8 forKey:@"originatorPlayerID"];
+  originatorPlayerID = [(GKGameplayBulletin *)self originatorPlayerID];
+  [coderCopy encodeObject:originatorPlayerID forKey:@"originatorPlayerID"];
 
-  v9 = [(GKGameplayBulletin *)self receiverPlayer];
-  [v4 encodeObject:v9 forKey:@"receiverPlayer"];
+  receiverPlayer = [(GKGameplayBulletin *)self receiverPlayer];
+  [coderCopy encodeObject:receiverPlayer forKey:@"receiverPlayer"];
 
-  v10 = [(GKGameplayBulletin *)self originatorPlayer];
-  [v4 encodeObject:v10 forKey:@"originatorPlayer"];
+  originatorPlayer = [(GKGameplayBulletin *)self originatorPlayer];
+  [coderCopy encodeObject:originatorPlayer forKey:@"originatorPlayer"];
 
-  v11 = [(GKGameplayBulletin *)self receiverGuestPlayerID];
-  [v4 encodeObject:v11 forKey:@"receiverGuestPlayerID"];
+  receiverGuestPlayerID = [(GKGameplayBulletin *)self receiverGuestPlayerID];
+  [coderCopy encodeObject:receiverGuestPlayerID forKey:@"receiverGuestPlayerID"];
 
-  v12 = [(GKGameplayBulletin *)self originatorGuestPlayerID];
-  [v4 encodeObject:v12 forKey:@"originatorGuestPlayerID"];
+  originatorGuestPlayerID = [(GKGameplayBulletin *)self originatorGuestPlayerID];
+  [coderCopy encodeObject:originatorGuestPlayerID forKey:@"originatorGuestPlayerID"];
 
-  v13 = [(GKGameplayBulletin *)self receiverGuestPlayer];
-  [v4 encodeObject:v13 forKey:@"receiverGuestPlayer"];
+  receiverGuestPlayer = [(GKGameplayBulletin *)self receiverGuestPlayer];
+  [coderCopy encodeObject:receiverGuestPlayer forKey:@"receiverGuestPlayer"];
 
-  v14 = [(GKGameplayBulletin *)self originatorGuestPlayer];
-  [v4 encodeObject:v14 forKey:@"originatorGuestPlayer"];
+  originatorGuestPlayer = [(GKGameplayBulletin *)self originatorGuestPlayer];
+  [coderCopy encodeObject:originatorGuestPlayer forKey:@"originatorGuestPlayer"];
 
-  v15 = [(GKGameplayBulletin *)self compatibleVersions];
-  [v4 encodeObject:v15 forKey:@"compatibleVersions"];
+  compatibleVersions = [(GKGameplayBulletin *)self compatibleVersions];
+  [coderCopy encodeObject:compatibleVersions forKey:@"compatibleVersions"];
 
-  v16 = [(GKGameplayBulletin *)self compatibleShortVersions];
-  [v4 encodeObject:v16 forKey:@"compatibleShortVersions"];
+  compatibleShortVersions = [(GKGameplayBulletin *)self compatibleShortVersions];
+  [coderCopy encodeObject:compatibleShortVersions forKey:@"compatibleShortVersions"];
 
   v17 = [NSNumber numberWithInt:[(GKGameplayBulletin *)self gameLocation]];
-  [v4 encodeObject:v17 forKey:@"gameLocation"];
+  [coderCopy encodeObject:v17 forKey:@"gameLocation"];
 }
 
 - (BOOL)isPushForLocalPlayers
@@ -153,8 +153,8 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "GKGameplayBulletin isPushForLocalPlayers", v8, 2u);
   }
 
-  v5 = [(GKGameplayBulletin *)self receiverPlayerID];
-  v6 = [objc_opt_class() playerIsLocal:v5];
+  receiverPlayerID = [(GKGameplayBulletin *)self receiverPlayerID];
+  v6 = [objc_opt_class() playerIsLocal:receiverPlayerID];
 
   return v6;
 }
@@ -173,15 +173,15 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "GKGameplayBulletin isPushFromLocalPlayers", v8, 2u);
   }
 
-  v5 = [(GKGameplayBulletin *)self originatorPlayerID];
-  v6 = [objc_opt_class() playerIsLocal:v5];
+  originatorPlayerID = [(GKGameplayBulletin *)self originatorPlayerID];
+  v6 = [objc_opt_class() playerIsLocal:originatorPlayerID];
 
   return v6;
 }
 
-- (BOOL)isCompatibleWithGameDescriptor:(id)a3
+- (BOOL)isCompatibleWithGameDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -194,36 +194,36 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKGameplayBulletin isCompatibleWithGameDescriptor:", v22, 2u);
   }
 
-  v7 = [(GKBulletin *)self gameDescriptor];
-  v8 = [v7 bundleIdentifier];
+  gameDescriptor = [(GKBulletin *)self gameDescriptor];
+  bundleIdentifier = [gameDescriptor bundleIdentifier];
 
-  v9 = [(GKBulletin *)self gameDescriptor];
-  v10 = [v9 bundleVersion];
+  gameDescriptor2 = [(GKBulletin *)self gameDescriptor];
+  bundleVersion = [gameDescriptor2 bundleVersion];
 
-  v11 = [(GKBulletin *)self gameDescriptor];
-  v12 = [v11 shortBundleVersion];
+  gameDescriptor3 = [(GKBulletin *)self gameDescriptor];
+  shortBundleVersion = [gameDescriptor3 shortBundleVersion];
 
-  v13 = [v4 bundleIdentifier];
-  v14 = [v8 isEqualToString:v13];
+  bundleIdentifier2 = [descriptorCopy bundleIdentifier];
+  v14 = [bundleIdentifier isEqualToString:bundleIdentifier2];
 
   if (!v14)
   {
     goto LABEL_13;
   }
 
-  v15 = [v4 shortBundleVersion];
-  v16 = [v4 bundleVersion];
-  if (![v12 isEqualToString:v15])
+  shortBundleVersion2 = [descriptorCopy shortBundleVersion];
+  bundleVersion2 = [descriptorCopy bundleVersion];
+  if (![shortBundleVersion isEqualToString:shortBundleVersion2])
   {
-    v17 = [(GKGameplayBulletin *)self compatibleShortVersions];
-    if (([v17 containsObject:v15] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", v16))
+    compatibleShortVersions = [(GKGameplayBulletin *)self compatibleShortVersions];
+    if (([compatibleShortVersions containsObject:shortBundleVersion2] & 1) != 0 || objc_msgSend(bundleVersion, "isEqualToString:", bundleVersion2))
     {
 
       goto LABEL_10;
     }
 
-    v19 = [(GKGameplayBulletin *)self compatibleVersions];
-    v20 = [v19 containsObject:v16];
+    compatibleVersions = [(GKGameplayBulletin *)self compatibleVersions];
+    v20 = [compatibleVersions containsObject:bundleVersion2];
 
     if (v20)
     {
@@ -259,36 +259,36 @@ LABEL_14:
   }
 
   v5 = +[GKApplicationWorkspace defaultWorkspace];
-  v6 = [(GKBulletin *)self gameDescriptor];
-  v7 = [v6 bundleIdentifier];
+  gameDescriptor = [(GKBulletin *)self gameDescriptor];
+  bundleIdentifier = [gameDescriptor bundleIdentifier];
 
-  v8 = [v5 applicationProxyForBundleID:v7];
+  v8 = [v5 applicationProxyForBundleID:bundleIdentifier];
   if ([v8 isInstalled] && (objc_msgSend(v8, "isRestricted") & 1) == 0)
   {
-    v9 = [v8 bundleShortVersion];
-    v31 = [v8 bundleVersion];
-    v10 = [(GKBulletin *)self gameDescriptor];
-    v11 = [v10 shortBundleVersion];
-    if (([v11 isEqualToString:v9] & 1) == 0)
+    bundleShortVersion = [v8 bundleShortVersion];
+    bundleVersion = [v8 bundleVersion];
+    gameDescriptor2 = [(GKBulletin *)self gameDescriptor];
+    shortBundleVersion = [gameDescriptor2 shortBundleVersion];
+    if (([shortBundleVersion isEqualToString:bundleShortVersion] & 1) == 0)
     {
-      v12 = [(GKGameplayBulletin *)self compatibleShortVersions];
-      if (([v12 containsObject:v9] & 1) == 0)
+      compatibleShortVersions = [(GKGameplayBulletin *)self compatibleShortVersions];
+      if (([compatibleShortVersions containsObject:bundleShortVersion] & 1) == 0)
       {
-        v29 = v9;
-        v30 = v12;
-        v13 = [(GKBulletin *)self gameDescriptor];
-        v14 = [v13 bundleVersion];
-        if (([v14 isEqualToString:v31] & 1) == 0)
+        v29 = bundleShortVersion;
+        v30 = compatibleShortVersions;
+        gameDescriptor3 = [(GKBulletin *)self gameDescriptor];
+        bundleVersion2 = [gameDescriptor3 bundleVersion];
+        if (([bundleVersion2 isEqualToString:bundleVersion] & 1) == 0)
         {
-          v27 = v14;
-          v28 = v13;
-          v15 = [(GKGameplayBulletin *)self compatibleVersions];
-          v16 = v31;
-          if (([v15 containsObject:?] & 1) == 0)
+          v27 = bundleVersion2;
+          v28 = gameDescriptor3;
+          compatibleVersions = [(GKGameplayBulletin *)self compatibleVersions];
+          v16 = bundleVersion;
+          if (([compatibleVersions containsObject:?] & 1) == 0)
           {
-            v26 = [v31 isEqualToString:@"-1"];
+            v26 = [bundleVersion isEqualToString:@"-1"];
 
-            v9 = v29;
+            bundleShortVersion = v29;
             if ((v26 & 1) == 0)
             {
 LABEL_25:
@@ -297,11 +297,11 @@ LABEL_25:
             }
 
 LABEL_15:
-            v17 = [GKApplicationWorkspace getPlatformForBundleID:v7];
-            v18 = [(GKBulletin *)self gameDescriptor];
-            v19 = [v18 platform];
+            v17 = [GKApplicationWorkspace getPlatformForBundleID:bundleIdentifier];
+            gameDescriptor4 = [(GKBulletin *)self gameDescriptor];
+            platform = [gameDescriptor4 platform];
 
-            if (v19 == v17)
+            if (platform == v17)
             {
               if (!os_log_GKGeneral)
               {
@@ -309,23 +309,23 @@ LABEL_15:
               }
 
               v21 = os_log_GKDaemon;
-              v16 = v31;
+              v16 = bundleVersion;
               if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412802;
-                v33 = v7;
+                v33 = bundleIdentifier;
                 v34 = 2112;
-                v35 = v9;
+                v35 = bundleShortVersion;
                 v36 = 2112;
-                v37 = v31;
+                v37 = bundleVersion;
                 _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Found perfect compatible game: bundleID = %@, short version = %@, version = %@", buf, 0x20u);
               }
 
-              v22 = [(GKBulletin *)self gameDescriptor];
-              [v22 setShortBundleVersion:v9];
+              gameDescriptor5 = [(GKBulletin *)self gameDescriptor];
+              [gameDescriptor5 setShortBundleVersion:bundleShortVersion];
 
-              v23 = [(GKBulletin *)self gameDescriptor];
-              [v23 setBundleVersion:v31];
+              gameDescriptor6 = [(GKBulletin *)self gameDescriptor];
+              [gameDescriptor6 setBundleVersion:bundleVersion];
 
               [(GKGameplayBulletin *)self setGameLocation:1];
             }
@@ -338,15 +338,15 @@ LABEL_15:
               }
 
               v25 = os_log_GKDaemon;
-              v16 = v31;
+              v16 = bundleVersion;
               if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412802;
-                v33 = v7;
+                v33 = bundleIdentifier;
                 v34 = 2112;
-                v35 = v9;
+                v35 = bundleShortVersion;
                 v36 = 2112;
-                v37 = v31;
+                v37 = bundleVersion;
                 _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Didn't find a perfect compatible game: bundleID = %@, short version = %@, version = %@", buf, 0x20u);
               }
             }
@@ -354,12 +354,12 @@ LABEL_15:
             goto LABEL_25;
           }
 
-          v14 = v27;
-          v13 = v28;
+          bundleVersion2 = v27;
+          gameDescriptor3 = v28;
         }
 
-        v9 = v29;
-        v12 = v30;
+        bundleShortVersion = v29;
+        compatibleShortVersions = v30;
       }
     }
 
@@ -369,22 +369,22 @@ LABEL_15:
 LABEL_26:
 }
 
-- (BOOL)setInstalledGameLocationFor:(id)a3 descriptor:(id)a4
+- (BOOL)setInstalledGameLocationFor:(id)for descriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 platform] || (+[GKGameDescriptor supportsPlatform:](GKGameDescriptor, "supportsPlatform:", objc_msgSend(v6, "platform")) & 1) != 0)
+  forCopy = for;
+  descriptorCopy = descriptor;
+  if (![forCopy platform] || (+[GKGameDescriptor supportsPlatform:](GKGameDescriptor, "supportsPlatform:", objc_msgSend(forCopy, "platform")) & 1) != 0)
   {
-    v8 = [v6 bundleID];
+    bundleID = [forCopy bundleID];
     v9 = +[GKApplicationWorkspace defaultWorkspace];
-    v10 = [v9 applicationProxyForBundleID:v8];
+    v10 = [v9 applicationProxyForBundleID:bundleID];
 
     if ([v10 isInstalled] && (objc_msgSend(v10, "isRestricted") & 1) == 0)
     {
-      v13 = [v10 bundleShortVersion];
-      v14 = [v10 bundleVersion];
-      v25 = [v6 adamID];
-      if ([objc_opt_class() areGameVersionsCompatibleForGame:v6 shortVersion:v13 version:v14])
+      bundleShortVersion = [v10 bundleShortVersion];
+      bundleVersion = [v10 bundleVersion];
+      adamID = [forCopy adamID];
+      if ([objc_opt_class() areGameVersionsCompatibleForGame:forCopy shortVersion:bundleShortVersion version:bundleVersion])
       {
         if (!os_log_GKGeneral)
         {
@@ -407,29 +407,29 @@ LABEL_26:
         if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
         {
           v39 = 138412802;
-          v40 = v8;
+          v40 = bundleID;
           v41 = 2112;
-          v42 = v13;
+          v42 = bundleShortVersion;
           v43 = 2112;
-          v44 = v14;
+          v44 = bundleVersion;
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "GKGameplayBulletin - found installed compatible app: bundleID = %@, short version = %@, version = %@", &v39, 0x20u);
         }
 
         [(GKGameplayBulletin *)self setGameLocation:1];
-        v30 = [(GKBulletin *)self gameDescriptor];
-        [v30 setBundleIdentifier:v8];
+        gameDescriptor = [(GKBulletin *)self gameDescriptor];
+        [gameDescriptor setBundleIdentifier:bundleID];
 
-        v31 = [(GKBulletin *)self gameDescriptor];
-        [v31 setBundleVersion:v14];
+        gameDescriptor2 = [(GKBulletin *)self gameDescriptor];
+        [gameDescriptor2 setBundleVersion:bundleVersion];
 
-        v32 = [(GKBulletin *)self gameDescriptor];
-        [v32 setShortBundleVersion:v13];
+        gameDescriptor3 = [(GKBulletin *)self gameDescriptor];
+        [gameDescriptor3 setShortBundleVersion:bundleShortVersion];
 
         v33 = +[GKGameDescriptor currentPlatform];
-        v34 = [(GKBulletin *)self gameDescriptor];
-        [v34 setPlatform:v33];
+        gameDescriptor4 = [(GKBulletin *)self gameDescriptor];
+        [gameDescriptor4 setPlatform:v33];
 
-        if ([v25 integerValue] < 1)
+        if ([adamID integerValue] < 1)
         {
           if (!os_log_GKGeneral)
           {
@@ -440,19 +440,19 @@ LABEL_26:
           if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_ERROR))
           {
             v39 = 138412802;
-            v40 = v8;
+            v40 = bundleID;
             v41 = 2112;
-            v42 = v14;
+            v42 = bundleVersion;
             v43 = 2112;
-            v44 = v13;
+            v44 = bundleShortVersion;
             _os_log_error_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "No adamID found from the installed app. bundleID: %@, version: %@, shortVersion: %@", &v39, 0x20u);
           }
         }
 
         else
         {
-          v35 = [(GKBulletin *)self gameDescriptor];
-          [v35 setAdamID:v25];
+          gameDescriptor5 = [(GKBulletin *)self gameDescriptor];
+          [gameDescriptor5 setAdamID:adamID];
         }
 
         v24 = 1;
@@ -463,9 +463,9 @@ LABEL_26:
     else
     {
       v11 = +[GKPreferences shared];
-      v12 = [v11 isAppInstallationRestricted];
+      isAppInstallationRestricted = [v11 isAppInstallationRestricted];
 
-      if (v12)
+      if (isAppInstallationRestricted)
       {
 LABEL_33:
         v24 = 0;
@@ -474,8 +474,8 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v13 = [v7 objectForKeyedSubscript:@"short-bundle-version"];
-      v14 = [v7 objectForKeyedSubscript:@"bundle-version"];
+      bundleShortVersion = [descriptorCopy objectForKeyedSubscript:@"short-bundle-version"];
+      bundleVersion = [descriptorCopy objectForKeyedSubscript:@"bundle-version"];
       if (!os_log_GKGeneral)
       {
         v15 = GKOSLoggers();
@@ -497,11 +497,11 @@ LABEL_34:
       if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
       {
         v39 = 138412802;
-        v40 = v8;
+        v40 = bundleID;
         v41 = 2112;
-        v42 = v13;
+        v42 = bundleShortVersion;
         v43 = 2112;
-        v44 = v14;
+        v44 = bundleVersion;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "GKGameplayBulletin - found store compatible app: bundleID = %@, short version = %@, version = %@", &v39, 0x20u);
       }
 
@@ -525,7 +525,7 @@ LABEL_34:
     v39 = 134218498;
     v40 = v22;
     v41 = 2112;
-    v42 = v6;
+    v42 = forCopy;
     v43 = 2112;
     v44 = v23;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "GKGameplayBulletin - skipping mismatching platform between current = %ld and game = %@. Supported platforms: %@", &v39, 0x20u);
@@ -537,9 +537,9 @@ LABEL_35:
   return v24;
 }
 
-- (void)determineGameLocationViaCompatibilityMatrixWithCompletionHandler:(id)a3
+- (void)determineGameLocationViaCompatibilityMatrixWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -556,57 +556,57 @@ LABEL_35:
   v8 = [GKDispatchGroup dispatchGroupWithName:v7];
 
   v9 = +[GKClientProxy gameCenterClient];
-  v10 = [(GKBulletin *)self gameDescriptor];
-  v11 = [v10 shortBundleVersion];
-  if (v11)
+  gameDescriptor = [(GKBulletin *)self gameDescriptor];
+  shortBundleVersion = [gameDescriptor shortBundleVersion];
+  if (shortBundleVersion)
   {
-    v12 = v11;
+    lastObject = shortBundleVersion;
   }
 
   else
   {
-    v13 = [(GKGameplayBulletin *)self compatibleShortVersions];
-    v14 = [v13 count];
+    compatibleShortVersions = [(GKGameplayBulletin *)self compatibleShortVersions];
+    v14 = [compatibleShortVersions count];
 
     if (!v14)
     {
       goto LABEL_10;
     }
 
-    v10 = [(GKGameplayBulletin *)self compatibleShortVersions];
-    v12 = [v10 lastObject];
-    v15 = [(GKBulletin *)self gameDescriptor];
-    [v15 setShortBundleVersion:v12];
+    gameDescriptor = [(GKGameplayBulletin *)self compatibleShortVersions];
+    lastObject = [gameDescriptor lastObject];
+    gameDescriptor2 = [(GKBulletin *)self gameDescriptor];
+    [gameDescriptor2 setShortBundleVersion:lastObject];
   }
 
 LABEL_10:
-  v16 = [(GKBulletin *)self gameDescriptor];
-  v17 = [v16 bundleVersion];
-  if (v17)
+  gameDescriptor3 = [(GKBulletin *)self gameDescriptor];
+  bundleVersion = [gameDescriptor3 bundleVersion];
+  if (bundleVersion)
   {
-    v18 = v17;
+    lastObject2 = bundleVersion;
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v19 = [(GKGameplayBulletin *)self compatibleVersions];
-  v20 = [v19 count];
+  compatibleVersions = [(GKGameplayBulletin *)self compatibleVersions];
+  v20 = [compatibleVersions count];
 
   if (v20)
   {
-    v16 = [(GKGameplayBulletin *)self compatibleVersions];
-    v18 = [v16 lastObject];
-    v21 = [(GKBulletin *)self gameDescriptor];
-    [v21 setBundleVersion:v18];
+    gameDescriptor3 = [(GKGameplayBulletin *)self compatibleVersions];
+    lastObject2 = [gameDescriptor3 lastObject];
+    gameDescriptor4 = [(GKBulletin *)self gameDescriptor];
+    [gameDescriptor4 setBundleVersion:lastObject2];
 
     goto LABEL_14;
   }
 
 LABEL_15:
-  v22 = [(GKBulletin *)self gameDescriptor];
+  gameDescriptor5 = [(GKBulletin *)self gameDescriptor];
 
-  if (v22)
+  if (gameDescriptor5)
   {
     [(GKGameplayBulletin *)self checkCompatibleGameWithoutCompatibilityMatrix];
     if ([(GKGameplayBulletin *)self gameLocation]!= 1)
@@ -622,25 +622,25 @@ LABEL_15:
     }
   }
 
-  v23 = [v9 replyQueue];
+  replyQueue = [v9 replyQueue];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_1001842C8;
   v26[3] = &unk_100360EB0;
   v27 = v8;
-  v28 = v4;
+  v28 = handlerCopy;
   v24 = v8;
-  v25 = v4;
-  [v24 notifyOnQueue:v23 block:v26];
+  v25 = handlerCopy;
+  [v24 notifyOnQueue:replyQueue block:v26];
 }
 
-+ (BOOL)areGameVersionsCompatibleForGame:(id)a3 shortVersion:(id)a4 version:(id)a5
++ (BOOL)areGameVersionsCompatibleForGame:(id)game shortVersion:(id)version version:(id)a5
 {
-  v7 = a3;
+  gameCopy = game;
   v8 = a5;
-  v9 = a4;
-  v10 = [v7 shortVersions];
-  v11 = [v10 containsObject:v9];
+  versionCopy = version;
+  shortVersions = [gameCopy shortVersions];
+  v11 = [shortVersions containsObject:versionCopy];
 
   if (v11)
   {
@@ -649,24 +649,24 @@ LABEL_15:
 
   else
   {
-    v13 = [v7 shortVersions];
-    if ([v13 containsObject:@"-1"])
+    shortVersions2 = [gameCopy shortVersions];
+    if ([shortVersions2 containsObject:@"-1"])
     {
       v12 = 1;
     }
 
     else
     {
-      v14 = [v7 versions];
-      if ([v14 containsObject:v8])
+      versions = [gameCopy versions];
+      if ([versions containsObject:v8])
       {
         v12 = 1;
       }
 
       else
       {
-        v15 = [v7 versions];
-        v12 = [v15 containsObject:@"-1"];
+        versions2 = [gameCopy versions];
+        v12 = [versions2 containsObject:@"-1"];
       }
     }
   }
@@ -674,9 +674,9 @@ LABEL_15:
   return v12;
 }
 
-- (void)determineGameLocationOnDeviceOrInStoreWithCompletionHandler:(id)a3
+- (void)determineGameLocationOnDeviceOrInStoreWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -701,22 +701,22 @@ LABEL_15:
   v10 = v8;
   v16 = v10;
   [v10 perform:v15];
-  if (v4)
+  if (handlerCopy)
   {
-    v11 = [v9 replyQueue];
+    replyQueue = [v9 replyQueue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10018491C;
     v12[3] = &unk_100360EB0;
-    v14 = v4;
+    v14 = handlerCopy;
     v13 = v10;
-    [v13 notifyOnQueue:v11 block:v12];
+    [v13 notifyOnQueue:replyQueue block:v12];
   }
 }
 
-- (void)loadOriginatorPlayerWithCompletionHandler:(id)a3
+- (void)loadOriginatorPlayerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -733,9 +733,9 @@ LABEL_15:
   v8 = [NSString stringWithFormat:@"%s:%d %s", "GKGameplayBulletin.m", 318, "[GKGameplayBulletin loadOriginatorPlayerWithCompletionHandler:]"];
   v9 = [GKDispatchGroup dispatchGroupWithName:v8];
 
-  v10 = [(GKGameplayBulletin *)self originatorPlayer];
+  originatorPlayer = [(GKGameplayBulletin *)self originatorPlayer];
 
-  if (!v10)
+  if (!originatorPlayer)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
@@ -746,16 +746,16 @@ LABEL_15:
     [v16 perform:v15];
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v11 = [v7 replyQueue];
+    replyQueue = [v7 replyQueue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100184DC0;
     v12[3] = &unk_100360EB0;
-    v14 = v4;
+    v14 = handlerCopy;
     v13 = v9;
-    [v13 notifyOnQueue:v11 block:v12];
+    [v13 notifyOnQueue:replyQueue block:v12];
   }
 }
 

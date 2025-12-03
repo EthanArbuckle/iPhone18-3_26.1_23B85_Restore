@@ -2,7 +2,7 @@
 + (void)initializeMonitor;
 - (AXBLiveCaptionsManager)init;
 - (void)dealloc;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
 - (void)updateSettings;
 @end
 
@@ -83,19 +83,19 @@ void __43__AXBLiveCaptionsManager_initializeMonitor__block_invoke_3()
 - (void)dealloc
 {
   [(AXBLiveCaptionsManager *)self setIsManagedConfigurationOverridingLiveCaptions:0];
-  v3 = [MEMORY[0x29EDC58E0] sharedConnection];
-  [v3 unregisterObserver:self];
+  mEMORY[0x29EDC58E0] = [MEMORY[0x29EDC58E0] sharedConnection];
+  [mEMORY[0x29EDC58E0] unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = AXBLiveCaptionsManager;
   [(AXBLiveCaptionsManager *)&v4 dealloc];
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
   v13 = *MEMORY[0x29EDCA608];
-  v5 = [MEMORY[0x29EDC58E0] sharedConnection];
-  v6 = [v5 effectiveBoolValueForSetting:*MEMORY[0x29EDC5870]];
+  mEMORY[0x29EDC58E0] = [MEMORY[0x29EDC58E0] sharedConnection];
+  v6 = [mEMORY[0x29EDC58E0] effectiveBoolValueForSetting:*MEMORY[0x29EDC5870]];
 
   v7 = AXLogLiveTranscription();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))

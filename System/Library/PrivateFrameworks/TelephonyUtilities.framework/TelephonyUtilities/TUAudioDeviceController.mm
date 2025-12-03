@@ -8,41 +8,41 @@
 - (NSArray)outputDevices;
 - (NSString)debugDescription;
 - (TUAudioDeviceController)init;
-- (TUAudioDeviceController)initWithActionsDelegate:(id)a3 serialQueue:(id)a4;
+- (TUAudioDeviceController)initWithActionsDelegate:(id)delegate serialQueue:(id)queue;
 - (TUAudioDeviceControllerActions)actionsDelegate;
-- (void)_handleCallStatusChangedNotification:(id)a3;
-- (void)addDelegate:(id)a3;
+- (void)_handleCallStatusChangedNotification:(id)notification;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
 - (void)notifyDelegatesOfDeviceListChange;
-- (void)removeDelegate:(id)a3;
-- (void)setCurrentAudioInputDeviceToDeviceWithUID:(id)a3;
-- (void)setCurrentAudioOutputDeviceToDeviceWithUID:(id)a3;
-- (void)setCurrentOutputDevice:(id)a3;
+- (void)removeDelegate:(id)delegate;
+- (void)setCurrentAudioInputDeviceToDeviceWithUID:(id)d;
+- (void)setCurrentAudioOutputDeviceToDeviceWithUID:(id)d;
+- (void)setCurrentOutputDevice:(id)device;
 @end
 
 @implementation TUAudioDeviceController
 
-- (TUAudioDeviceController)initWithActionsDelegate:(id)a3 serialQueue:(id)a4
+- (TUAudioDeviceController)initWithActionsDelegate:(id)delegate serialQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = TUAudioDeviceController;
   v8 = [(TUAudioDeviceController *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_actionsDelegate, v6);
-    objc_storeStrong(&v9->_serialQueue, a4);
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeWeak(&v8->_actionsDelegate, delegateCopy);
+    objc_storeStrong(&v9->_serialQueue, queue);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     delegates = v9->_delegates;
-    v9->_delegates = v10;
+    v9->_delegates = weakObjectsHashTable;
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v9 selector:sel__handleCallStatusChangedNotification_ name:@"TUCallCenterCallStatusChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__handleCallStatusChangedNotification_ name:@"TUCallCenterCallStatusChangedNotification" object:0];
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v9 selector:sel__handleCallStatusChangedNotification_ name:@"TUCallCenterVideoCallStatusChangedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v9 selector:sel__handleCallStatusChangedNotification_ name:@"TUCallCenterVideoCallStatusChangedNotification" object:0];
 
     objc_initWeak(&location, v9);
     v17[0] = MEMORY[0x1E69E9820];
@@ -193,22 +193,22 @@ LABEL_22:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleCallStatusChangedNotification:(id)a3
+- (void)_handleCallStatusChangedNotification:(id)notification
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = notificationCopy;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "notification: %@", &v13, 0xCu);
   }
 
   if (_TUIsInternalInstall())
   {
-    v6 = [MEMORY[0x1E695E000] tu_defaults];
-    v7 = [v6 BOOLForKey:@"shouldSuppressMutedTalkerNotification"] ^ 1;
+    tu_defaults = [MEMORY[0x1E695E000] tu_defaults];
+    v7 = [tu_defaults BOOLForKey:@"shouldSuppressMutedTalkerNotification"] ^ 1;
   }
 
   else
@@ -216,24 +216,24 @@ LABEL_22:
     v7 = 1;
   }
 
-  v8 = [v4 object];
-  v9 = v8;
-  if (v7 && v8)
+  object = [notificationCopy object];
+  v9 = object;
+  if (v7 && object)
   {
-    v10 = [v8 provider];
-    if (![v10 isSystemProvider])
+    provider = [object provider];
+    if (![provider isSystemProvider])
     {
 LABEL_11:
 
       goto LABEL_12;
     }
 
-    v11 = [v9 isActive];
+    isActive = [v9 isActive];
 
-    if (v11)
+    if (isActive)
     {
-      v10 = [(TUAudioDeviceController *)self registerForMutedTalkerNotificationCallback];
-      v10[2]();
+      provider = [(TUAudioDeviceController *)self registerForMutedTalkerNotificationCallback];
+      provider[2]();
       goto LABEL_11;
     }
   }
@@ -245,13 +245,13 @@ LABEL_12:
 
 - (void)notifyDelegatesOfDeviceListChange
 {
-  v3 = [(TUAudioDeviceController *)self serialQueue];
+  serialQueue = [(TUAudioDeviceController *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__TUAudioDeviceController_notifyDelegatesOfDeviceListChange__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialQueue, block);
 }
 
 void __60__TUAudioDeviceController_notifyDelegatesOfDeviceListChange__block_invoke(uint64_t a1)
@@ -315,8 +315,8 @@ void __60__TUAudioDeviceController_notifyDelegatesOfDeviceListChange__block_invo
 
 - (TUAudioDeviceController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"TUAudioDeviceController.m" lineNumber:173 description:{@"%s is not available. Use a designated initializer instead.", "-[TUAudioDeviceController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"TUAudioDeviceController.m" lineNumber:173 description:{@"%s is not available. Use a designated initializer instead.", "-[TUAudioDeviceController init]"}];
 
   return 0;
 }
@@ -325,67 +325,67 @@ void __60__TUAudioDeviceController_notifyDelegatesOfDeviceListChange__block_invo
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(TUAudioDeviceController *)self devices];
-  v6 = [v3 stringWithFormat:@"<%@ %p devices=%@>", v4, self, v5];
+  devices = [(TUAudioDeviceController *)self devices];
+  v6 = [v3 stringWithFormat:@"<%@ %p devices=%@>", v4, self, devices];
 
   return v6;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(TUAudioDeviceController *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  delegateCopy = delegate;
+  serialQueue = [(TUAudioDeviceController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v6 = [(TUAudioDeviceController *)self delegates];
-  [v6 addObject:v4];
+  delegates = [(TUAudioDeviceController *)self delegates];
+  [delegates addObject:delegateCopy];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(TUAudioDeviceController *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  delegateCopy = delegate;
+  serialQueue = [(TUAudioDeviceController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v6 = [(TUAudioDeviceController *)self delegates];
-  [v6 removeObject:v4];
+  delegates = [(TUAudioDeviceController *)self delegates];
+  [delegates removeObject:delegateCopy];
 }
 
 - (AVAudioDevice)currentInputDevice
 {
-  v2 = [(TUAudioDeviceController *)self audioClient];
-  v3 = [objc_opt_class() currentInputDevice];
+  audioClient = [(TUAudioDeviceController *)self audioClient];
+  currentInputDevice = [objc_opt_class() currentInputDevice];
 
-  return v3;
+  return currentInputDevice;
 }
 
-- (void)setCurrentAudioInputDeviceToDeviceWithUID:(id)a3
+- (void)setCurrentAudioInputDeviceToDeviceWithUID:(id)d
 {
-  v3 = [(TUAudioDeviceController *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(TUAudioDeviceController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 }
 
 - (AVAudioDevice)currentOutputDevice
 {
-  v3 = [(TUAudioDeviceController *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(TUAudioDeviceController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v4 = [(TUAudioDeviceController *)self audioClient];
-  v5 = [objc_opt_class() currentOutputDevice];
+  audioClient = [(TUAudioDeviceController *)self audioClient];
+  currentOutputDevice = [objc_opt_class() currentOutputDevice];
 
-  return v5;
+  return currentOutputDevice;
 }
 
-- (void)setCurrentOutputDevice:(id)a3
+- (void)setCurrentOutputDevice:(id)device
 {
-  v3 = [(TUAudioDeviceController *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(TUAudioDeviceController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 }
 
-- (void)setCurrentAudioOutputDeviceToDeviceWithUID:(id)a3
+- (void)setCurrentAudioOutputDeviceToDeviceWithUID:(id)d
 {
-  v3 = [(TUAudioDeviceController *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(TUAudioDeviceController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 }
 
 - (BOOL)isFollowingSystemInputSetting
@@ -408,35 +408,35 @@ void __60__TUAudioDeviceController_notifyDelegatesOfDeviceListChange__block_invo
 
 - (NSArray)devices
 {
-  v3 = [(TUAudioDeviceController *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(TUAudioDeviceController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v4 = [(TUAudioDeviceController *)self audioClient];
-  v5 = [v4 devices];
+  audioClient = [(TUAudioDeviceController *)self audioClient];
+  devices = [audioClient devices];
 
-  return v5;
+  return devices;
 }
 
 - (NSArray)inputDevices
 {
-  v3 = [(TUAudioDeviceController *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(TUAudioDeviceController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v4 = [(TUAudioDeviceController *)self audioClient];
-  v5 = [v4 inputDevices];
+  audioClient = [(TUAudioDeviceController *)self audioClient];
+  inputDevices = [audioClient inputDevices];
 
-  return v5;
+  return inputDevices;
 }
 
 - (NSArray)outputDevices
 {
-  v3 = [(TUAudioDeviceController *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(TUAudioDeviceController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v4 = [(TUAudioDeviceController *)self audioClient];
-  v5 = [v4 outputDevices];
+  audioClient = [(TUAudioDeviceController *)self audioClient];
+  outputDevices = [audioClient outputDevices];
 
-  return v5;
+  return outputDevices;
 }
 
 - (TUAudioDeviceControllerActions)actionsDelegate

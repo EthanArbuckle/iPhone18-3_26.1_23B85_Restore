@@ -1,16 +1,16 @@
 @interface UINotificationFeedbackGenerator
-- (double)_preparationTimeoutForStyle:(int64_t)a3;
-- (id)_categoryForType:(int64_t)a3;
-- (void)_playEventType:(int64_t)a3 atLocation:(CGPoint)a4;
-- (void)_playEventType:(void *)a3 senderID:(void *)a4 powerSourceID:(double)a5 atLocation:(double)a6;
-- (void)_stopEventType:(int64_t)a3;
+- (double)_preparationTimeoutForStyle:(int64_t)style;
+- (id)_categoryForType:(int64_t)type;
+- (void)_playEventType:(int64_t)type atLocation:(CGPoint)location;
+- (void)_playEventType:(void *)type senderID:(void *)d powerSourceID:(double)iD atLocation:(double)location;
+- (void)_stopEventType:(int64_t)type;
 @end
 
 @implementation UINotificationFeedbackGenerator
 
-- (id)_categoryForType:(int64_t)a3
+- (id)_categoryForType:(int64_t)type
 {
-  if ((a3 | 2) == 0x3EA)
+  if ((type | 2) == 0x3EA)
   {
     v4 = @"lock";
   }
@@ -23,10 +23,10 @@
   return v4;
 }
 
-- (double)_preparationTimeoutForStyle:(int64_t)a3
+- (double)_preparationTimeoutForStyle:(int64_t)style
 {
   result = 0.0;
-  if (a3 != 2)
+  if (style != 2)
   {
     v7 = v3;
     v8 = v4;
@@ -38,63 +38,63 @@
   return result;
 }
 
-- (void)_playEventType:(void *)a3 senderID:(void *)a4 powerSourceID:(double)a5 atLocation:(double)a6
+- (void)_playEventType:(void *)type senderID:(void *)d powerSourceID:(double)iD atLocation:(double)location
 {
-  v18 = a4;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
-    [a1 _clientDidUpdateGeneratorWithSelector:sel__playEventType_senderID_powerSourceID_atLocation_];
-    v11 = [a1 _eventConfiguration];
-    v12 = [v11 feedbacks];
+    [self _clientDidUpdateGeneratorWithSelector:sel__playEventType_senderID_powerSourceID_atLocation_];
+    _eventConfiguration = [self _eventConfiguration];
+    feedbacks = [_eventConfiguration feedbacks];
     v13 = [MEMORY[0x1E696AD98] numberWithInteger:a2];
-    v14 = [v12 objectForKeyedSubscript:v13];
+    v14 = [feedbacks objectForKeyedSubscript:v13];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (v18)
+      if (dCopy)
       {
-        v15 = v18;
+        typeCopy = dCopy;
       }
 
       else
       {
-        v15 = a3;
+        typeCopy = type;
       }
 
-      v16 = [v14 completeFeedbackPatternWithSenderID:v15];
+      v16 = [v14 completeFeedbackPatternWithSenderID:typeCopy];
 
-      v17 = [a1 _categoryForType:a2];
+      v17 = [self _categoryForType:a2];
       [v16 _setCategory:v17];
 
-      [a1 _playFeedback:v16 atLocation:{a5, a6}];
+      [self _playFeedback:v16 atLocation:{iD, location}];
       v14 = v16;
     }
   }
 }
 
-- (void)_playEventType:(int64_t)a3 atLocation:(CGPoint)a4
+- (void)_playEventType:(int64_t)type atLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2];
-  v8 = [(UINotificationFeedbackGenerator *)self _eventConfiguration];
-  v9 = [v8 feedbacks];
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v12 = [v9 objectForKeyedSubscript:v10];
+  _eventConfiguration = [(UINotificationFeedbackGenerator *)self _eventConfiguration];
+  feedbacks = [_eventConfiguration feedbacks];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v12 = [feedbacks objectForKeyedSubscript:v10];
 
-  v11 = [(UINotificationFeedbackGenerator *)self _categoryForType:a3];
+  v11 = [(UINotificationFeedbackGenerator *)self _categoryForType:type];
   [v12 _setCategory:v11];
 
   [(UIFeedbackGenerator *)self _playFeedback:v12 atLocation:x, y];
 }
 
-- (void)_stopEventType:(int64_t)a3
+- (void)_stopEventType:(int64_t)type
 {
-  v5 = [(UINotificationFeedbackGenerator *)self _eventConfiguration];
-  v6 = [v5 feedbacks];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  _eventConfiguration = [(UINotificationFeedbackGenerator *)self _eventConfiguration];
+  feedbacks = [_eventConfiguration feedbacks];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v8 = [feedbacks objectForKeyedSubscript:v7];
 
   [(UIFeedbackGenerator *)self _stopFeedback:v8];
 }

@@ -1,32 +1,32 @@
 @interface AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCdrxEnable:(BOOL)a3;
-- (void)setHasHarqRttTimerDl:(BOOL)a3;
-- (void)setHasHarqRttTimerUl:(BOOL)a3;
-- (void)setHasInactivityTimerMs:(BOOL)a3;
-- (void)setHasLongCycle:(BOOL)a3;
-- (void)setHasLongCycleOffset:(BOOL)a3;
-- (void)setHasOnDurationTimerFraction:(BOOL)a3;
-- (void)setHasOnDurationTimerMs:(BOOL)a3;
-- (void)setHasRetransmissionTimerDl:(BOOL)a3;
-- (void)setHasRetransmissionTimerUl:(BOOL)a3;
-- (void)setHasShortCycle:(BOOL)a3;
-- (void)setHasShortCycleEnable:(BOOL)a3;
-- (void)setHasShortCycleTimer:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCdrxEnable:(BOOL)enable;
+- (void)setHasHarqRttTimerDl:(BOOL)dl;
+- (void)setHasHarqRttTimerUl:(BOOL)ul;
+- (void)setHasInactivityTimerMs:(BOOL)ms;
+- (void)setHasLongCycle:(BOOL)cycle;
+- (void)setHasLongCycleOffset:(BOOL)offset;
+- (void)setHasOnDurationTimerFraction:(BOOL)fraction;
+- (void)setHasOnDurationTimerMs:(BOOL)ms;
+- (void)setHasRetransmissionTimerDl:(BOOL)dl;
+- (void)setHasRetransmissionTimerUl:(BOOL)ul;
+- (void)setHasShortCycle:(BOOL)cycle;
+- (void)setHasShortCycleEnable:(BOOL)enable;
+- (void)setHasShortCycleTimer:(BOOL)timer;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup
 
-- (void)setHasCdrxEnable:(BOOL)a3
+- (void)setHasCdrxEnable:(BOOL)enable
 {
-  if (a3)
+  if (enable)
   {
     v3 = 4096;
   }
@@ -39,9 +39,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasHarqRttTimerDl:(BOOL)a3
+- (void)setHasHarqRttTimerDl:(BOOL)dl
 {
-  if (a3)
+  if (dl)
   {
     v3 = 2;
   }
@@ -54,9 +54,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasHarqRttTimerUl:(BOOL)a3
+- (void)setHasHarqRttTimerUl:(BOOL)ul
 {
-  if (a3)
+  if (ul)
   {
     v3 = 4;
   }
@@ -69,9 +69,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasRetransmissionTimerDl:(BOOL)a3
+- (void)setHasRetransmissionTimerDl:(BOOL)dl
 {
-  if (a3)
+  if (dl)
   {
     v3 = 256;
   }
@@ -84,9 +84,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasRetransmissionTimerUl:(BOOL)a3
+- (void)setHasRetransmissionTimerUl:(BOOL)ul
 {
-  if (a3)
+  if (ul)
   {
     v3 = 512;
   }
@@ -99,9 +99,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasOnDurationTimerFraction:(BOOL)a3
+- (void)setHasOnDurationTimerFraction:(BOOL)fraction
 {
-  if (a3)
+  if (fraction)
   {
     v3 = 64;
   }
@@ -114,9 +114,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasOnDurationTimerMs:(BOOL)a3
+- (void)setHasOnDurationTimerMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 128;
   }
@@ -129,9 +129,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasInactivityTimerMs:(BOOL)a3
+- (void)setHasInactivityTimerMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 8;
   }
@@ -144,9 +144,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasLongCycle:(BOOL)a3
+- (void)setHasLongCycle:(BOOL)cycle
 {
-  if (a3)
+  if (cycle)
   {
     v3 = 16;
   }
@@ -159,9 +159,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasLongCycleOffset:(BOOL)a3
+- (void)setHasLongCycleOffset:(BOOL)offset
 {
-  if (a3)
+  if (offset)
   {
     v3 = 32;
   }
@@ -174,9 +174,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasShortCycleEnable:(BOOL)a3
+- (void)setHasShortCycleEnable:(BOOL)enable
 {
-  if (a3)
+  if (enable)
   {
     v3 = 0x2000;
   }
@@ -189,9 +189,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasShortCycle:(BOOL)a3
+- (void)setHasShortCycle:(BOOL)cycle
 {
-  if (a3)
+  if (cycle)
   {
     v3 = 1024;
   }
@@ -204,9 +204,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasShortCycleTimer:(BOOL)a3
+- (void)setHasShortCycleTimer:(BOOL)timer
 {
-  if (a3)
+  if (timer)
   {
     v3 = 2048;
   }
@@ -225,20 +225,20 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup;
   v4 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 0x1000) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_cdrxEnable];
-    [v3 setObject:v7 forKey:@"cdrx_enable"];
+    [dictionary setObject:v7 forKey:@"cdrx_enable"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -259,7 +259,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_harqRttTimerDl];
-  [v3 setObject:v8 forKey:@"harq_rtt_timer_dl"];
+  [dictionary setObject:v8 forKey:@"harq_rtt_timer_dl"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -275,7 +275,7 @@ LABEL_4:
 
 LABEL_21:
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_harqRttTimerUl];
-  [v3 setObject:v9 forKey:@"harq_rtt_timer_ul"];
+  [dictionary setObject:v9 forKey:@"harq_rtt_timer_ul"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -291,7 +291,7 @@ LABEL_5:
 
 LABEL_22:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_drxSlotOffset];
-  [v3 setObject:v10 forKey:@"drx_slot_offset"];
+  [dictionary setObject:v10 forKey:@"drx_slot_offset"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -307,7 +307,7 @@ LABEL_6:
 
 LABEL_23:
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_retransmissionTimerDl];
-  [v3 setObject:v11 forKey:@"retransmission_timer_dl"];
+  [dictionary setObject:v11 forKey:@"retransmission_timer_dl"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -323,7 +323,7 @@ LABEL_7:
 
 LABEL_24:
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_retransmissionTimerUl];
-  [v3 setObject:v12 forKey:@"retransmission_timer_ul"];
+  [dictionary setObject:v12 forKey:@"retransmission_timer_ul"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -339,7 +339,7 @@ LABEL_8:
 
 LABEL_25:
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_onDurationTimerFraction];
-  [v3 setObject:v13 forKey:@"on_duration_timer_fraction"];
+  [dictionary setObject:v13 forKey:@"on_duration_timer_fraction"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -355,7 +355,7 @@ LABEL_9:
 
 LABEL_26:
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_onDurationTimerMs];
-  [v3 setObject:v14 forKey:@"on_duration_timer_ms"];
+  [dictionary setObject:v14 forKey:@"on_duration_timer_ms"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -371,7 +371,7 @@ LABEL_10:
 
 LABEL_27:
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_inactivityTimerMs];
-  [v3 setObject:v15 forKey:@"inactivity_timer_ms"];
+  [dictionary setObject:v15 forKey:@"inactivity_timer_ms"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -387,7 +387,7 @@ LABEL_11:
 
 LABEL_28:
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_longCycle];
-  [v3 setObject:v16 forKey:@"long_cycle"];
+  [dictionary setObject:v16 forKey:@"long_cycle"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -403,7 +403,7 @@ LABEL_12:
 
 LABEL_29:
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_longCycleOffset];
-  [v3 setObject:v17 forKey:@"long_cycle_offset"];
+  [dictionary setObject:v17 forKey:@"long_cycle_offset"];
 
   has = self->_has;
   if ((has & 0x2000) == 0)
@@ -419,7 +419,7 @@ LABEL_13:
 
 LABEL_30:
   v18 = [MEMORY[0x277CCABB0] numberWithBool:self->_shortCycleEnable];
-  [v3 setObject:v18 forKey:@"short_cycle_enable"];
+  [dictionary setObject:v18 forKey:@"short_cycle_enable"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -435,23 +435,23 @@ LABEL_14:
 
 LABEL_31:
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_shortCycle];
-  [v3 setObject:v19 forKey:@"short_cycle"];
+  [dictionary setObject:v19 forKey:@"short_cycle"];
 
   if ((*&self->_has & 0x800) != 0)
   {
 LABEL_15:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_shortCycleTimer];
-    [v3 setObject:v5 forKey:@"short_cycle_timer"];
+    [dictionary setObject:v5 forKey:@"short_cycle_timer"];
   }
 
 LABEL_16:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v19 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x1000) != 0)
   {
@@ -652,14 +652,14 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x1000) != 0)
   {
-    v4[56] = self->_cdrxEnable;
-    *(v4 + 30) |= 0x1000u;
+    toCopy[56] = self->_cdrxEnable;
+    *(toCopy + 30) |= 0x1000u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -678,8 +678,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 3) = self->_harqRttTimerDl;
-  *(v4 + 30) |= 2u;
+  *(toCopy + 3) = self->_harqRttTimerDl;
+  *(toCopy + 30) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -693,8 +693,8 @@ LABEL_4:
   }
 
 LABEL_21:
-  *(v4 + 4) = self->_harqRttTimerUl;
-  *(v4 + 30) |= 4u;
+  *(toCopy + 4) = self->_harqRttTimerUl;
+  *(toCopy + 30) |= 4u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -708,8 +708,8 @@ LABEL_5:
   }
 
 LABEL_22:
-  *(v4 + 2) = self->_drxSlotOffset;
-  *(v4 + 30) |= 1u;
+  *(toCopy + 2) = self->_drxSlotOffset;
+  *(toCopy + 30) |= 1u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -723,8 +723,8 @@ LABEL_6:
   }
 
 LABEL_23:
-  *(v4 + 10) = self->_retransmissionTimerDl;
-  *(v4 + 30) |= 0x100u;
+  *(toCopy + 10) = self->_retransmissionTimerDl;
+  *(toCopy + 30) |= 0x100u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -738,8 +738,8 @@ LABEL_7:
   }
 
 LABEL_24:
-  *(v4 + 11) = self->_retransmissionTimerUl;
-  *(v4 + 30) |= 0x200u;
+  *(toCopy + 11) = self->_retransmissionTimerUl;
+  *(toCopy + 30) |= 0x200u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -753,8 +753,8 @@ LABEL_8:
   }
 
 LABEL_25:
-  *(v4 + 8) = self->_onDurationTimerFraction;
-  *(v4 + 30) |= 0x40u;
+  *(toCopy + 8) = self->_onDurationTimerFraction;
+  *(toCopy + 30) |= 0x40u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -768,8 +768,8 @@ LABEL_9:
   }
 
 LABEL_26:
-  *(v4 + 9) = self->_onDurationTimerMs;
-  *(v4 + 30) |= 0x80u;
+  *(toCopy + 9) = self->_onDurationTimerMs;
+  *(toCopy + 30) |= 0x80u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -783,8 +783,8 @@ LABEL_10:
   }
 
 LABEL_27:
-  *(v4 + 5) = self->_inactivityTimerMs;
-  *(v4 + 30) |= 8u;
+  *(toCopy + 5) = self->_inactivityTimerMs;
+  *(toCopy + 30) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -798,8 +798,8 @@ LABEL_11:
   }
 
 LABEL_28:
-  *(v4 + 6) = self->_longCycle;
-  *(v4 + 30) |= 0x10u;
+  *(toCopy + 6) = self->_longCycle;
+  *(toCopy + 30) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -813,8 +813,8 @@ LABEL_12:
   }
 
 LABEL_29:
-  *(v4 + 7) = self->_longCycleOffset;
-  *(v4 + 30) |= 0x20u;
+  *(toCopy + 7) = self->_longCycleOffset;
+  *(toCopy + 30) |= 0x20u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -828,8 +828,8 @@ LABEL_13:
   }
 
 LABEL_30:
-  v4[57] = self->_shortCycleEnable;
-  *(v4 + 30) |= 0x2000u;
+  toCopy[57] = self->_shortCycleEnable;
+  *(toCopy + 30) |= 0x2000u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -843,21 +843,21 @@ LABEL_14:
   }
 
 LABEL_31:
-  *(v4 + 12) = self->_shortCycle;
-  *(v4 + 30) |= 0x400u;
+  *(toCopy + 12) = self->_shortCycle;
+  *(toCopy + 30) |= 0x400u;
   if ((*&self->_has & 0x800) != 0)
   {
 LABEL_15:
-    *(v4 + 13) = self->_shortCycleTimer;
-    *(v4 + 30) |= 0x800u;
+    *(toCopy + 13) = self->_shortCycleTimer;
+    *(toCopy + 30) |= 0x800u;
   }
 
 LABEL_16:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x1000) != 0)
   {
@@ -1059,46 +1059,46 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_78;
   }
 
   has = self->_has;
-  v6 = *(v4 + 30);
+  v6 = *(equalCopy + 30);
   if ((has & 0x1000) != 0)
   {
-    if ((*(v4 + 30) & 0x1000) == 0)
+    if ((*(equalCopy + 30) & 0x1000) == 0)
     {
       goto LABEL_78;
     }
 
-    v7 = *(v4 + 56);
+    v7 = *(equalCopy + 56);
     if (self->_cdrxEnable)
     {
-      if ((*(v4 + 56) & 1) == 0)
+      if ((*(equalCopy + 56) & 1) == 0)
       {
         goto LABEL_78;
       }
     }
 
-    else if (*(v4 + 56))
+    else if (*(equalCopy + 56))
     {
       goto LABEL_78;
     }
   }
 
-  else if ((*(v4 + 30) & 0x1000) != 0)
+  else if ((*(equalCopy + 30) & 0x1000) != 0)
   {
     goto LABEL_78;
   }
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_harqRttTimerDl != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_harqRttTimerDl != *(equalCopy + 3))
     {
       goto LABEL_78;
     }
@@ -1111,7 +1111,7 @@ LABEL_15:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_harqRttTimerUl != *(v4 + 4))
+    if ((v6 & 4) == 0 || self->_harqRttTimerUl != *(equalCopy + 4))
     {
       goto LABEL_78;
     }
@@ -1124,7 +1124,7 @@ LABEL_15:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_drxSlotOffset != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_drxSlotOffset != *(equalCopy + 2))
     {
       goto LABEL_78;
     }
@@ -1137,33 +1137,33 @@ LABEL_15:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 30) & 0x100) == 0 || self->_retransmissionTimerDl != *(v4 + 10))
+    if ((*(equalCopy + 30) & 0x100) == 0 || self->_retransmissionTimerDl != *(equalCopy + 10))
     {
       goto LABEL_78;
     }
   }
 
-  else if ((*(v4 + 30) & 0x100) != 0)
+  else if ((*(equalCopy + 30) & 0x100) != 0)
   {
     goto LABEL_78;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 30) & 0x200) == 0 || self->_retransmissionTimerUl != *(v4 + 11))
+    if ((*(equalCopy + 30) & 0x200) == 0 || self->_retransmissionTimerUl != *(equalCopy + 11))
     {
       goto LABEL_78;
     }
   }
 
-  else if ((*(v4 + 30) & 0x200) != 0)
+  else if ((*(equalCopy + 30) & 0x200) != 0)
   {
     goto LABEL_78;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_onDurationTimerFraction != *(v4 + 8))
+    if ((v6 & 0x40) == 0 || self->_onDurationTimerFraction != *(equalCopy + 8))
     {
       goto LABEL_78;
     }
@@ -1176,7 +1176,7 @@ LABEL_15:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_onDurationTimerMs != *(v4 + 9))
+    if ((v6 & 0x80) == 0 || self->_onDurationTimerMs != *(equalCopy + 9))
     {
       goto LABEL_78;
     }
@@ -1189,7 +1189,7 @@ LABEL_15:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_inactivityTimerMs != *(v4 + 5))
+    if ((v6 & 8) == 0 || self->_inactivityTimerMs != *(equalCopy + 5))
     {
       goto LABEL_78;
     }
@@ -1202,7 +1202,7 @@ LABEL_15:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_longCycle != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_longCycle != *(equalCopy + 6))
     {
       goto LABEL_78;
     }
@@ -1215,7 +1215,7 @@ LABEL_15:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_longCycleOffset != *(v4 + 7))
+    if ((v6 & 0x20) == 0 || self->_longCycleOffset != *(equalCopy + 7))
     {
       goto LABEL_78;
     }
@@ -1228,7 +1228,7 @@ LABEL_15:
 
   if ((*&self->_has & 0x2000) == 0)
   {
-    if ((*(v4 + 30) & 0x2000) == 0)
+    if ((*(equalCopy + 30) & 0x2000) == 0)
     {
       goto LABEL_62;
     }
@@ -1238,21 +1238,21 @@ LABEL_78:
     goto LABEL_79;
   }
 
-  if ((*(v4 + 30) & 0x2000) == 0)
+  if ((*(equalCopy + 30) & 0x2000) == 0)
   {
     goto LABEL_78;
   }
 
-  v8 = *(v4 + 57);
+  v8 = *(equalCopy + 57);
   if (self->_shortCycleEnable)
   {
-    if ((*(v4 + 57) & 1) == 0)
+    if ((*(equalCopy + 57) & 1) == 0)
     {
       goto LABEL_78;
     }
   }
 
-  else if (*(v4 + 57))
+  else if (*(equalCopy + 57))
   {
     goto LABEL_78;
   }
@@ -1260,20 +1260,20 @@ LABEL_78:
 LABEL_62:
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 30) & 0x400) == 0 || self->_shortCycle != *(v4 + 12))
+    if ((*(equalCopy + 30) & 0x400) == 0 || self->_shortCycle != *(equalCopy + 12))
     {
       goto LABEL_78;
     }
   }
 
-  else if ((*(v4 + 30) & 0x400) != 0)
+  else if ((*(equalCopy + 30) & 0x400) != 0)
   {
     goto LABEL_78;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 30) & 0x800) == 0 || self->_shortCycleTimer != *(v4 + 13))
+    if ((*(equalCopy + 30) & 0x800) == 0 || self->_shortCycleTimer != *(equalCopy + 13))
     {
       goto LABEL_78;
     }
@@ -1486,15 +1486,15 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 30);
+  fromCopy = from;
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x1000) != 0)
   {
-    self->_cdrxEnable = *(v4 + 56);
+    self->_cdrxEnable = *(fromCopy + 56);
     *&self->_has |= 0x1000u;
-    v5 = *(v4 + 30);
+    v5 = *(fromCopy + 30);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -1512,9 +1512,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_harqRttTimerDl = *(v4 + 3);
+  self->_harqRttTimerDl = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -1527,9 +1527,9 @@ LABEL_4:
   }
 
 LABEL_21:
-  self->_harqRttTimerUl = *(v4 + 4);
+  self->_harqRttTimerUl = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 1) == 0)
   {
 LABEL_5:
@@ -1542,9 +1542,9 @@ LABEL_5:
   }
 
 LABEL_22:
-  self->_drxSlotOffset = *(v4 + 2);
+  self->_drxSlotOffset = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x100) == 0)
   {
 LABEL_6:
@@ -1557,9 +1557,9 @@ LABEL_6:
   }
 
 LABEL_23:
-  self->_retransmissionTimerDl = *(v4 + 10);
+  self->_retransmissionTimerDl = *(fromCopy + 10);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x200) == 0)
   {
 LABEL_7:
@@ -1572,9 +1572,9 @@ LABEL_7:
   }
 
 LABEL_24:
-  self->_retransmissionTimerUl = *(v4 + 11);
+  self->_retransmissionTimerUl = *(fromCopy + 11);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x40) == 0)
   {
 LABEL_8:
@@ -1587,9 +1587,9 @@ LABEL_8:
   }
 
 LABEL_25:
-  self->_onDurationTimerFraction = *(v4 + 8);
+  self->_onDurationTimerFraction = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x80) == 0)
   {
 LABEL_9:
@@ -1602,9 +1602,9 @@ LABEL_9:
   }
 
 LABEL_26:
-  self->_onDurationTimerMs = *(v4 + 9);
+  self->_onDurationTimerMs = *(fromCopy + 9);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 8) == 0)
   {
 LABEL_10:
@@ -1617,9 +1617,9 @@ LABEL_10:
   }
 
 LABEL_27:
-  self->_inactivityTimerMs = *(v4 + 5);
+  self->_inactivityTimerMs = *(fromCopy + 5);
   *&self->_has |= 8u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x10) == 0)
   {
 LABEL_11:
@@ -1632,9 +1632,9 @@ LABEL_11:
   }
 
 LABEL_28:
-  self->_longCycle = *(v4 + 6);
+  self->_longCycle = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x20) == 0)
   {
 LABEL_12:
@@ -1647,9 +1647,9 @@ LABEL_12:
   }
 
 LABEL_29:
-  self->_longCycleOffset = *(v4 + 7);
+  self->_longCycleOffset = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_13:
@@ -1662,9 +1662,9 @@ LABEL_13:
   }
 
 LABEL_30:
-  self->_shortCycleEnable = *(v4 + 57);
+  self->_shortCycleEnable = *(fromCopy + 57);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x400) == 0)
   {
 LABEL_14:
@@ -1677,12 +1677,12 @@ LABEL_14:
   }
 
 LABEL_31:
-  self->_shortCycle = *(v4 + 12);
+  self->_shortCycle = *(fromCopy + 12);
   *&self->_has |= 0x400u;
-  if ((*(v4 + 30) & 0x800) != 0)
+  if ((*(fromCopy + 30) & 0x800) != 0)
   {
 LABEL_15:
-    self->_shortCycleTimer = *(v4 + 13);
+    self->_shortCycleTimer = *(fromCopy + 13);
     *&self->_has |= 0x800u;
   }
 

@@ -1,19 +1,19 @@
 @interface FPProviderDomainChangesReceiver
 + (BOOL)allowedToReadCacheFromDisk;
-+ (id)_sharedChangesReceiverInitIfNeeded:(BOOL)a3;
-+ (id)readCacheFromDisk:(BOOL)a3;
++ (id)_sharedChangesReceiverInitIfNeeded:(BOOL)needed;
++ (id)readCacheFromDisk:(BOOL)disk;
 - (BOOL)ignoreUpdateNotifications;
 - (NSDictionary)cachedProviderDomainsByID;
 - (id)_init;
-- (id)addChangesHandler:(id)a3;
+- (id)addChangesHandler:(id)handler;
 - (void)_t_discardCache;
 - (void)_t_forceReadCacheFromDisk;
-- (void)_t_ignoreUpdateNotifications:(BOOL)a3;
-- (void)_t_loadCacheOnHandlerAdding:(BOOL)a3;
-- (void)callChangesHandlersWithProviderDomains:(id)a3 error:(id)a4;
-- (void)providerDomainsHaveChanged:(id)a3 error:(id)a4;
-- (void)removeChangesHandlerToken:(id)a3;
-- (void)updateProviderDomainsWithAttemptCount:(unint64_t)a3;
+- (void)_t_ignoreUpdateNotifications:(BOOL)notifications;
+- (void)_t_loadCacheOnHandlerAdding:(BOOL)adding;
+- (void)callChangesHandlersWithProviderDomains:(id)domains error:(id)error;
+- (void)providerDomainsHaveChanged:(id)changed error:(id)error;
+- (void)removeChangesHandlerToken:(id)token;
+- (void)updateProviderDomainsWithAttemptCount:(unint64_t)count;
 @end
 
 @implementation FPProviderDomainChangesReceiver
@@ -34,7 +34,7 @@
     v7 = *(v2 + 3);
     *(v2 + 3) = v6;
 
-    v8 = [@"com.apple.fileprovider.providers-changed" fp_libnotifyPerUserNotificationName];
+    fp_libnotifyPerUserNotificationName = [@"com.apple.fileprovider.providers-changed" fp_libnotifyPerUserNotificationName];
     objc_initWeak(&location, v2);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -42,7 +42,7 @@
     aBlock[3] = &unk_1E7938FE8;
     objc_copyWeak(&v19, &location);
     v9 = _Block_copy(aBlock);
-    notify_register_dispatch([v8 UTF8String], v2 + 8, *(v2 + 3), v9);
+    notify_register_dispatch([fp_libnotifyPerUserNotificationName UTF8String], v2 + 8, *(v2 + 3), v9);
     v10 = fp_current_or_default_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -136,17 +136,17 @@ void __61__FPProviderDomainChangesReceiver_allowedToReadCacheFromDisk__block_inv
 
 - (NSDictionary)cachedProviderDomainsByID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSDictionary *)v2->_providerDomainsByID copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSDictionary *)selfCopy->_providerDomainsByID copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-+ (id)_sharedChangesReceiverInitIfNeeded:(BOOL)a3
++ (id)_sharedChangesReceiverInitIfNeeded:(BOOL)needed
 {
-  if (a3 && _sharedChangesReceiverInitIfNeeded__onceToken != -1)
+  if (needed && _sharedChangesReceiverInitIfNeeded__onceToken != -1)
   {
     +[FPProviderDomainChangesReceiver _sharedChangesReceiverInitIfNeeded:];
   }
@@ -194,9 +194,9 @@ void __40__FPProviderDomainChangesReceiver__init__block_invoke_30(uint64_t a1)
   }
 }
 
-+ (id)readCacheFromDisk:(BOOL)a3
++ (id)readCacheFromDisk:(BOOL)disk
 {
-  if (a3 || [a1 allowedToReadCacheFromDisk])
+  if (disk || [self allowedToReadCacheFromDisk])
   {
     v16 = -1;
     v3 = FPGetSharedDomainCachingPath(&v16);
@@ -257,20 +257,20 @@ void __40__FPProviderDomainChangesReceiver__init__block_invoke_30(uint64_t a1)
   return v10;
 }
 
-- (id)addChangesHandler:(id)a3
+- (id)addChangesHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [(FPProviderDomainChangesReceiver *)v5 addChangesHandler:v6, v7, v8, v9, v10, v11, v12];
   }
 
-  v13 = [_FPProviderDomainChangesHandlerWrapper wrapperWithHandler:v4];
-  v14 = self;
-  objc_sync_enter(v14);
-  [(NSMutableSet *)v14->_changesHandlers addObject:v13];
-  providerDomainsByID = v14->_providerDomainsByID;
+  v13 = [_FPProviderDomainChangesHandlerWrapper wrapperWithHandler:handlerCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_changesHandlers addObject:v13];
+  providerDomainsByID = selfCopy->_providerDomainsByID;
   if (providerDomainsByID)
   {
     v16 = [(NSDictionary *)providerDomainsByID copy];
@@ -281,7 +281,7 @@ void __40__FPProviderDomainChangesReceiver__init__block_invoke_30(uint64_t a1)
     v16 = 0;
   }
 
-  objc_sync_exit(v14);
+  objc_sync_exit(selfCopy);
 
   if (v16)
   {
@@ -290,54 +290,54 @@ void __40__FPProviderDomainChangesReceiver__init__block_invoke_30(uint64_t a1)
 
   else
   {
-    if (!v14->_dontLoadCacheFromDisk)
+    if (!selfCopy->_dontLoadCacheFromDisk)
     {
       v17 = [FPProviderDomainChangesReceiver readCacheFromDisk:0];
       if (v17)
       {
-        v18 = v14;
+        v18 = selfCopy;
         objc_sync_enter(v18);
-        if (!v14->_providerDomainsByID)
+        if (!selfCopy->_providerDomainsByID)
         {
-          objc_storeStrong(&v14->_providerDomainsByID, v17);
+          objc_storeStrong(&selfCopy->_providerDomainsByID, v17);
         }
 
         objc_sync_exit(v18);
       }
     }
 
-    if ([(FPPacer *)v14->_pacer isSuspended])
+    if ([(FPPacer *)selfCopy->_pacer isSuspended])
     {
-      [(FPProviderDomainChangesReceiver *)v14 signalChange];
+      [(FPProviderDomainChangesReceiver *)selfCopy signalChange];
     }
 
     else
     {
-      [(FPProviderDomainChangesReceiver *)v14 updateProviderDomainsWithAttemptCount:3];
+      [(FPProviderDomainChangesReceiver *)selfCopy updateProviderDomainsWithAttemptCount:3];
     }
   }
 
   return v13;
 }
 
-- (void)removeChangesHandlerToken:(id)a3
+- (void)removeChangesHandlerToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [(FPProviderDomainChangesReceiver *)v5 removeChangesHandlerToken:v6, v7, v8, v9, v10, v11, v12];
   }
 
-  v13 = v4;
+  v13 = tokenCopy;
   objc_sync_enter(v13);
   [v13 setUnregistered:1];
   objc_sync_exit(v13);
 
-  v14 = self;
-  objc_sync_enter(v14);
-  [(NSMutableSet *)v14->_changesHandlers removeObject:v13];
-  objc_sync_exit(v14);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_changesHandlers removeObject:v13];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_t_discardCache
@@ -358,43 +358,43 @@ void __40__FPProviderDomainChangesReceiver__init__block_invoke_30(uint64_t a1)
     obj = v3;
     if ([v3 count])
     {
-      v4 = self;
-      objc_sync_enter(v4);
-      objc_storeStrong(&v4->_providerDomainsByID, obj);
-      objc_sync_exit(v4);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      objc_storeStrong(&selfCopy->_providerDomainsByID, obj);
+      objc_sync_exit(selfCopy);
     }
   }
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_t_loadCacheOnHandlerAdding:(BOOL)a3
+- (void)_t_loadCacheOnHandlerAdding:(BOOL)adding
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_dontLoadCacheFromDisk = !a3;
+  obj->_dontLoadCacheFromDisk = !adding;
   objc_sync_exit(obj);
 }
 
-- (void)_t_ignoreUpdateNotifications:(BOOL)a3
+- (void)_t_ignoreUpdateNotifications:(BOOL)notifications
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_ignoreUpdateNotifications = a3;
+  obj->_ignoreUpdateNotifications = notifications;
   objc_sync_exit(obj);
 }
 
 - (BOOL)ignoreUpdateNotifications
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  ignoreUpdateNotifications = v2->_ignoreUpdateNotifications;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  ignoreUpdateNotifications = selfCopy->_ignoreUpdateNotifications;
+  objc_sync_exit(selfCopy);
 
   return ignoreUpdateNotifications;
 }
 
-- (void)updateProviderDomainsWithAttemptCount:(unint64_t)a3
+- (void)updateProviderDomainsWithAttemptCount:(unint64_t)count
 {
   [(FPPacer *)self->_pacer suspend];
   v5 = +[FPDaemonConnection sharedConnectionProxy];
@@ -403,7 +403,7 @@ void __40__FPProviderDomainChangesReceiver__init__block_invoke_30(uint64_t a1)
   v6[2] = __73__FPProviderDomainChangesReceiver_updateProviderDomainsWithAttemptCount___block_invoke;
   v6[3] = &unk_1E7939060;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = count;
   [v5 providerDomainsCompletionHandler:v6];
 }
 
@@ -465,15 +465,15 @@ uint64_t __73__FPProviderDomainChangesReceiver_updateProviderDomainsWithAttemptC
   return [v2 resume];
 }
 
-- (void)callChangesHandlersWithProviderDomains:(id)a3 error:(id)a4
+- (void)callChangesHandlersWithProviderDomains:(id)domains error:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(NSMutableSet *)v8->_changesHandlers copy];
-  objc_sync_exit(v8);
+  domainsCopy = domains;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(NSMutableSet *)selfCopy->_changesHandlers copy];
+  objc_sync_exit(selfCopy);
 
   v17 = 0u;
   v18 = 0u;
@@ -494,7 +494,7 @@ uint64_t __73__FPProviderDomainChangesReceiver_updateProviderDomainsWithAttemptC
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v15 + 1) + 8 * v13++) callHandlerWithProvidersByID:v6 error:{v7, v15}];
+        [*(*(&v15 + 1) + 8 * v13++) callHandlerWithProvidersByID:domainsCopy error:{errorCopy, v15}];
       }
 
       while (v11 != v13);
@@ -507,22 +507,22 @@ uint64_t __73__FPProviderDomainChangesReceiver_updateProviderDomainsWithAttemptC
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)providerDomainsHaveChanged:(id)a3 error:(id)a4
+- (void)providerDomainsHaveChanged:(id)changed error:(id)error
 {
-  v10 = a3;
-  v6 = a4;
-  if (!v6)
+  changedCopy = changed;
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = [v10 copy];
-    providerDomainsByID = v7->_providerDomainsByID;
-    v7->_providerDomainsByID = v8;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v8 = [changedCopy copy];
+    providerDomainsByID = selfCopy->_providerDomainsByID;
+    selfCopy->_providerDomainsByID = v8;
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
-  [(FPProviderDomainChangesReceiver *)self callChangesHandlersWithProviderDomains:v10 error:v6];
+  [(FPProviderDomainChangesReceiver *)self callChangesHandlersWithProviderDomains:changedCopy error:errorCopy];
 }
 
 + (void)readCacheFromDisk:(void *)a1 .cold.1(void *a1)

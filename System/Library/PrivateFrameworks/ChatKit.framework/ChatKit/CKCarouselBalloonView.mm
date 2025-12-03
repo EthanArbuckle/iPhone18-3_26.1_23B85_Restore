@@ -1,18 +1,18 @@
 @interface CKCarouselBalloonView
-- (CKCarouselBalloonView)initWithCoder:(id)a3;
-- (CKCarouselBalloonView)initWithFrame:(CGRect)a3;
-- (void)carousel:(id)a3 didScrollToIndex:(int64_t)a4;
+- (CKCarouselBalloonView)initWithCoder:(id)coder;
+- (CKCarouselBalloonView)initWithFrame:(CGRect)frame;
+- (void)carousel:(id)carousel didScrollToIndex:(int64_t)index;
 - (void)layoutSubviews;
 @end
 
 @implementation CKCarouselBalloonView
 
-- (CKCarouselBalloonView)initWithFrame:(CGRect)a3
+- (CKCarouselBalloonView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR___CKCarouselBalloonView_carouselStackView) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR___CKCarouselBalloonView_dataSource) = 0;
   v8.receiver = self;
@@ -20,7 +20,7 @@
   return [(CKBalloonView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (CKCarouselBalloonView)initWithCoder:(id)a3
+- (CKCarouselBalloonView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR___CKCarouselBalloonView_carouselStackView) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR___CKCarouselBalloonView_dataSource) = 0;
@@ -31,20 +31,20 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_190CE83FC();
 }
 
-- (void)carousel:(id)a3 didScrollToIndex:(int64_t)a4
+- (void)carousel:(id)carousel didScrollToIndex:(int64_t)index
 {
-  v7 = self;
-  v5 = [(CKBalloonView *)v7 delegate];
-  if (v5)
+  selfCopy = self;
+  delegate = [(CKBalloonView *)selfCopy delegate];
+  if (delegate)
   {
-    v6 = v5;
-    if (([(CKBalloonViewDelegate *)v5 respondsToSelector:sel_balloonView_carouselScrolledToIndex_]& 1) != 0)
+    v6 = delegate;
+    if (([(CKBalloonViewDelegate *)delegate respondsToSelector:sel_balloonView_carouselScrolledToIndex_]& 1) != 0)
     {
-      [(CKBalloonViewDelegate *)v6 balloonView:v7 carouselScrolledToIndex:a4];
+      [(CKBalloonViewDelegate *)v6 balloonView:selfCopy carouselScrolledToIndex:index];
     }
 
     swift_unknownObjectRelease();

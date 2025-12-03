@@ -1,48 +1,48 @@
 @interface RTHelperService
-+ (id)computeMetricsForAnalyticsIdentifier:(id)a3 appIdentifier:(id)a4 requestType:(unint64_t)a5 mapItems:(id)a6 serviceError:(id)a7 isBackgroundRequest:(BOOL)a8;
-+ (id)exposedErrorFrom:(id)a3;
-+ (void)submitMetricsForAnalyticsIdentifier:(id)a3 appIdentifier:(id)a4 requestType:(unint64_t)a5 mapItems:(id)a6 serviceError:(id)a7 isBackgroundRequest:(BOOL)a8;
++ (id)computeMetricsForAnalyticsIdentifier:(id)identifier appIdentifier:(id)appIdentifier requestType:(unint64_t)type mapItems:(id)items serviceError:(id)error isBackgroundRequest:(BOOL)request;
++ (id)exposedErrorFrom:(id)from;
++ (void)submitMetricsForAnalyticsIdentifier:(id)identifier appIdentifier:(id)appIdentifier requestType:(unint64_t)type mapItems:(id)items serviceError:(id)error isBackgroundRequest:(BOOL)request;
 - (RTHelperService)init;
-- (RTHelperService)initWithGeoMapService:(id)a3;
-- (double)confidenceWeightForGeoMapItem:(id)a3 startDate:(id)a4 endDate:(id)a5 timeZone:(id)a6;
-- (id)_buildingPolygonsFromGEOBuilding:(id)a3;
-- (id)_mapItemFromGEOMapItem:(id)a3 mapItemSource:(unint64_t)a4 confidenceScalingFactor:(double)a5;
-- (id)_mapItemsFromGEOMapItems:(id)a3 mapItemSource:(unint64_t)a4;
-- (id)defaultTraitsForOptions:(id)a3 selector:(SEL)a4;
+- (RTHelperService)initWithGeoMapService:(id)service;
+- (double)confidenceWeightForGeoMapItem:(id)item startDate:(id)date endDate:(id)endDate timeZone:(id)zone;
+- (id)_buildingPolygonsFromGEOBuilding:(id)building;
+- (id)_mapItemFromGEOMapItem:(id)item mapItemSource:(unint64_t)source confidenceScalingFactor:(double)factor;
+- (id)_mapItemsFromGEOMapItems:(id)items mapItemSource:(unint64_t)source;
+- (id)defaultTraitsForOptions:(id)options selector:(SEL)selector;
 - (id)getDefaultMapServiceOptions;
-- (void)_relatedPlacesMapItemsIdentifiersForGEOMapItem:(id)a3 relatedPlaceListType:(int)a4 handler:(id)a5;
-- (void)_relatedPlacesMapItemsIdentifiersForGEOMapItems:(id)a3 relatedPlaceListType:(int)a4 handler:(id)a5;
-- (void)addTicket:(id)a3;
-- (void)cancelTicket:(id)a3;
-- (void)compileCoreMLModelAtURL:(id)a3 handler:(id)a4;
-- (void)computeWithInputSignals:(id)a3 handler:(id)a4;
-- (void)createMapItemWithIdentifier:(id)a3 geoMapItemStorage:(id)a4 source:(unint64_t)a5 creationDate:(id)a6 handler:(id)a7;
+- (void)_relatedPlacesMapItemsIdentifiersForGEOMapItem:(id)item relatedPlaceListType:(int)type handler:(id)handler;
+- (void)_relatedPlacesMapItemsIdentifiersForGEOMapItems:(id)items relatedPlaceListType:(int)type handler:(id)handler;
+- (void)addTicket:(id)ticket;
+- (void)cancelTicket:(id)ticket;
+- (void)compileCoreMLModelAtURL:(id)l handler:(id)handler;
+- (void)computeWithInputSignals:(id)signals handler:(id)handler;
+- (void)createMapItemWithIdentifier:(id)identifier geoMapItemStorage:(id)storage source:(unint64_t)source creationDate:(id)date handler:(id)handler;
 - (void)dealloc;
-- (void)downloadBluePOIMetadataWithHandler:(id)a3;
-- (void)downloadBluePOITilesForDownloadKeys:(id)a3 handler:(id)a4;
-- (void)fetchAppClipURLsForMapItem:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchBluePOIMetadataWithHandler:(id)a3;
-- (void)fetchBluePOITilesForDownloadKeys:(id)a3 handler:(id)a4;
-- (void)fetchBuildingPolygonsFromLocation:(id)a3 radius:(double)a4 handler:(id)a5;
-- (void)fetchConfidenceWeightForMapItem:(id)a3 startDate:(id)a4 endDate:(id)a5 options:(id)a6 handler:(id)a7;
-- (void)fetchCountryAndSubdivisionCodesFromLocation:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchGeoMapItemFromHandle:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchMapGEOItemsFromLocation:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchMapItemFromHandle:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchMapItemsFromAddressDictionary:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchMapItemsFromAddressString:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchMapItemsFromIdentifiers:(id)a3 options:(id)a4 source:(unint64_t)a5 handler:(id)a6;
-- (void)fetchMapItemsFromLocation:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchMapItemsFromLocations:(id)a3 accessPoints:(id)a4 startDate:(id)a5 endDate:(id)a6 options:(id)a7 handler:(id)a8;
-- (void)fetchMapItemsFromNaturalLanguageQuery:(id)a3 location:(id)a4 options:(id)a5 handler:(id)a6;
-- (void)fetchMapItemsRelatedPlacesFromLocation:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchPointOfInterestAttributesWithIdentifier:(unint64_t)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchPointOfInterestsAroundCoordinate:(id)a3 radius:(double)a4 options:(id)a5 handler:(id)a6;
-- (void)fetchPostalAddressForMapItem:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchRelatedPlacesMapItemsForMapItem:(id)a3 relatedPlaceListType:(int)a4 options:(id)a5 source:(unint64_t)a6 handler:(id)a7;
-- (void)interruptComputeWithError:(id)a3;
-- (void)loadProtobufTileAtPath:(id)a3 handler:(id)a4;
-- (void)removeTicket:(id)a3;
+- (void)downloadBluePOIMetadataWithHandler:(id)handler;
+- (void)downloadBluePOITilesForDownloadKeys:(id)keys handler:(id)handler;
+- (void)fetchAppClipURLsForMapItem:(id)item options:(id)options handler:(id)handler;
+- (void)fetchBluePOIMetadataWithHandler:(id)handler;
+- (void)fetchBluePOITilesForDownloadKeys:(id)keys handler:(id)handler;
+- (void)fetchBuildingPolygonsFromLocation:(id)location radius:(double)radius handler:(id)handler;
+- (void)fetchConfidenceWeightForMapItem:(id)item startDate:(id)date endDate:(id)endDate options:(id)options handler:(id)handler;
+- (void)fetchCountryAndSubdivisionCodesFromLocation:(id)location options:(id)options handler:(id)handler;
+- (void)fetchGeoMapItemFromHandle:(id)handle options:(id)options handler:(id)handler;
+- (void)fetchMapGEOItemsFromLocation:(id)location options:(id)options handler:(id)handler;
+- (void)fetchMapItemFromHandle:(id)handle options:(id)options handler:(id)handler;
+- (void)fetchMapItemsFromAddressDictionary:(id)dictionary options:(id)options handler:(id)handler;
+- (void)fetchMapItemsFromAddressString:(id)string options:(id)options handler:(id)handler;
+- (void)fetchMapItemsFromIdentifiers:(id)identifiers options:(id)options source:(unint64_t)source handler:(id)handler;
+- (void)fetchMapItemsFromLocation:(id)location options:(id)options handler:(id)handler;
+- (void)fetchMapItemsFromLocations:(id)locations accessPoints:(id)points startDate:(id)date endDate:(id)endDate options:(id)options handler:(id)handler;
+- (void)fetchMapItemsFromNaturalLanguageQuery:(id)query location:(id)location options:(id)options handler:(id)handler;
+- (void)fetchMapItemsRelatedPlacesFromLocation:(id)location options:(id)options handler:(id)handler;
+- (void)fetchPointOfInterestAttributesWithIdentifier:(unint64_t)identifier options:(id)options handler:(id)handler;
+- (void)fetchPointOfInterestsAroundCoordinate:(id)coordinate radius:(double)radius options:(id)options handler:(id)handler;
+- (void)fetchPostalAddressForMapItem:(id)item options:(id)options handler:(id)handler;
+- (void)fetchRelatedPlacesMapItemsForMapItem:(id)item relatedPlaceListType:(int)type options:(id)options source:(unint64_t)source handler:(id)handler;
+- (void)interruptComputeWithError:(id)error;
+- (void)loadProtobufTileAtPath:(id)path handler:(id)handler;
+- (void)removeTicket:(id)ticket;
 @end
 
 @implementation RTHelperService
@@ -55,10 +55,10 @@
   return v4;
 }
 
-- (RTHelperService)initWithGeoMapService:(id)a3
+- (RTHelperService)initWithGeoMapService:(id)service
 {
-  v5 = a3;
-  if (v5)
+  serviceCopy = service;
+  if (serviceCopy)
   {
     v23.receiver = self;
     v23.super_class = RTHelperService;
@@ -66,7 +66,7 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_geoMapService, a3);
+      objc_storeStrong(&v6->_geoMapService, service);
       v8 = objc_opt_new();
       tickets = v7->_tickets;
       v7->_tickets = v8;
@@ -85,23 +85,23 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = [(RTHelperService *)v14 UTF8String];
+        uTF8String = [(RTHelperService *)v14 UTF8String];
       }
 
       else
       {
         v19 = [NSString stringWithFormat:@"%@-%p", objc_opt_class(), v14];
-        v16 = [v19 UTF8String];
+        uTF8String = [v19 UTF8String];
       }
 
-      v20 = dispatch_queue_create(v16, v15);
+      v20 = dispatch_queue_create(uTF8String, v15);
 
       queue = v14->_queue;
       v14->_queue = v20;
     }
 
     self = v7;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
@@ -113,15 +113,15 @@
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: geoMapService", buf, 2u);
     }
 
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (void)addTicket:(id)a3
+- (void)addTicket:(id)ticket
 {
-  if (a3)
+  if (ticket)
   {
     tickets = self->_tickets;
 
@@ -142,9 +142,9 @@
   }
 }
 
-- (void)removeTicket:(id)a3
+- (void)removeTicket:(id)ticket
 {
-  if (a3)
+  if (ticket)
   {
     tickets = self->_tickets;
 
@@ -165,12 +165,12 @@
   }
 }
 
-- (void)cancelTicket:(id)a3
+- (void)cancelTicket:(id)ticket
 {
-  if (a3)
+  if (ticket)
   {
 
-    [a3 cancel];
+    [ticket cancel];
   }
 
   else
@@ -232,12 +232,12 @@
   return v2;
 }
 
-- (id)defaultTraitsForOptions:(id)a3 selector:(SEL)a4
+- (id)defaultTraitsForOptions:(id)options selector:(SEL)selector
 {
-  v6 = a3;
-  if (!v6)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v6 = [(RTHelperService *)self getDefaultMapServiceOptions];
+    optionsCopy = [(RTHelperService *)self getDefaultMapServiceOptions];
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -245,19 +245,19 @@
     v7 = sub_1000011A0(&qword_1000B29B8);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [v6 analyticsIdentifier];
-      v26 = [v6 clientIdentifier];
+      analyticsIdentifier = [optionsCopy analyticsIdentifier];
+      clientIdentifier = [optionsCopy clientIdentifier];
       *buf = 138412546;
-      v30 = v25;
+      v30 = analyticsIdentifier;
       v31 = 2112;
-      v32 = v26;
+      v32 = clientIdentifier;
       _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "RTMapServiceOptions: analytics indentifier: %@, app identifier: %@", buf, 0x16u);
     }
   }
 
-  v8 = [v6 useBackgroundTraits];
+  useBackgroundTraits = [optionsCopy useBackgroundTraits];
   geoMapService = self->_geoMapService;
-  if (v8)
+  if (useBackgroundTraits)
   {
     [(GEOMapService *)geoMapService defaultBackgroundTraits];
   }
@@ -267,34 +267,34 @@
     [(GEOMapService *)geoMapService defaultTraits];
   }
   v10 = ;
-  v11 = [v6 clientIdentifier];
+  clientIdentifier2 = [optionsCopy clientIdentifier];
 
-  if (v11)
+  if (clientIdentifier2)
   {
-    v12 = [v10 appIdentifier];
-    v13 = [v6 clientIdentifier];
-    v14 = [NSString stringWithFormat:@"%@|%@", v12, v13];
+    appIdentifier = [v10 appIdentifier];
+    clientIdentifier3 = [optionsCopy clientIdentifier];
+    v14 = [NSString stringWithFormat:@"%@|%@", appIdentifier, clientIdentifier3];
     [v10 setAppIdentifier:v14];
   }
 
-  v15 = [v10 appIdentifier];
-  [v10 setAnalyticsAppIdentifier:v15];
+  appIdentifier2 = [v10 appIdentifier];
+  [v10 setAnalyticsAppIdentifier:appIdentifier2];
 
-  v16 = [v6 analyticsIdentifier];
+  analyticsIdentifier2 = [optionsCopy analyticsIdentifier];
 
-  if (v16)
+  if (analyticsIdentifier2)
   {
-    v17 = [v10 analyticsAppIdentifier];
-    v18 = [v6 analyticsIdentifier];
-    v19 = [NSString stringWithFormat:@"%@|%@", v17, v18];
+    analyticsAppIdentifier = [v10 analyticsAppIdentifier];
+    analyticsIdentifier3 = [optionsCopy analyticsIdentifier];
+    v19 = [NSString stringWithFormat:@"%@|%@", analyticsAppIdentifier, analyticsIdentifier3];
     [v10 setAnalyticsAppIdentifier:v19];
   }
 
-  if (a4)
+  if (selector)
   {
-    v20 = [v10 analyticsAppIdentifier];
-    v21 = NSStringFromSelector(a4);
-    v22 = [NSString stringWithFormat:@"%@|%@", v20, v21];
+    analyticsAppIdentifier2 = [v10 analyticsAppIdentifier];
+    v21 = NSStringFromSelector(selector);
+    v22 = [NSString stringWithFormat:@"%@|%@", analyticsAppIdentifier2, v21];
     [v10 setAnalyticsAppIdentifier:v22];
   }
 
@@ -303,12 +303,12 @@
     v23 = sub_1000011A0(&qword_1000B29B8);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      v27 = [v10 analyticsAppIdentifier];
-      v28 = [v10 appIdentifier];
+      analyticsAppIdentifier3 = [v10 analyticsAppIdentifier];
+      appIdentifier3 = [v10 appIdentifier];
       *buf = 138412546;
-      v30 = v27;
+      v30 = analyticsAppIdentifier3;
       v31 = 2112;
-      v32 = v28;
+      v32 = appIdentifier3;
       _os_log_debug_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "GEOMapServiceTraits: analytics app indentifier: %@, app identifier: %@", buf, 0x16u);
     }
   }
@@ -316,26 +316,26 @@
   return v10;
 }
 
-- (void)fetchMapItemFromHandle:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchMapItemFromHandle:(id)handle options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  handleCopy = handle;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v9)
+    if (handleCopy)
     {
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_10006D868;
       v17[3] = &unk_1000A9200;
-      v12 = v9;
+      v12 = handleCopy;
       v18 = v12;
       v21 = a2;
-      v19 = self;
-      v20 = v11;
+      selfCopy = self;
+      v20 = handlerCopy;
       v13 = objc_retainBlock(v17);
-      [(RTHelperService *)self fetchGeoMapItemFromHandle:v12 options:v10 handler:v13];
+      [(RTHelperService *)self fetchGeoMapItemFromHandle:v12 options:optionsCopy handler:v13];
 
       v14 = v18;
     }
@@ -347,31 +347,31 @@
       v23 = @"requires valid handle.";
       v14 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
       v16 = [NSError errorWithDomain:v15 code:7 userInfo:v14];
-      (*(v11 + 2))(v11, 0, v16);
+      (*(handlerCopy + 2))(handlerCopy, 0, v16);
     }
   }
 }
 
-- (void)fetchGeoMapItemFromHandle:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchGeoMapItemFromHandle:(id)handle options:(id)options handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  handleCopy = handle;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (handleCopy)
   {
-    if (v10)
+    if (handlerCopy)
     {
-      v12 = [(RTHelperService *)self defaultTraitsForOptions:v9 selector:"resolveMapItemFromHandle:traits:completionHandler:"];
+      v12 = [(RTHelperService *)self defaultTraitsForOptions:optionsCopy selector:"resolveMapItemFromHandle:traits:completionHandler:"];
       geoMapService = self->_geoMapService;
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_10006DD20;
       v18[3] = &unk_1000A9250;
       v18[4] = self;
-      v19 = v8;
+      v19 = handleCopy;
       v22 = v11;
-      v20 = v9;
+      v20 = optionsCopy;
       v21 = v12;
       v14 = v12;
       [(GEOMapService *)geoMapService resolveMapItemFromHandle:v19 traits:v14 completionHandler:v18];
@@ -418,12 +418,12 @@
 LABEL_10:
 }
 
-- (id)_mapItemsFromGEOMapItems:(id)a3 mapItemSource:(unint64_t)a4
+- (id)_mapItemsFromGEOMapItems:(id)items mapItemSource:(unint64_t)source
 {
-  v6 = a3;
+  itemsCopy = items;
   v7 = +[NSDate date];
   v8 = [v7 dateByAddingTimeInterval:4838400.0];
-  v9 = [[_RTMap alloc] initWithInput:v6];
+  v9 = [[_RTMap alloc] initWithInput:itemsCopy];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -432,7 +432,7 @@ LABEL_10:
   v14[4] = self;
   v15 = v7;
   v16 = v8;
-  v17 = a4;
+  sourceCopy = source;
   v10 = v8;
   v11 = v7;
   v12 = [(_RTMap *)v9 withBlock:v14];
@@ -440,12 +440,12 @@ LABEL_10:
   return v12;
 }
 
-- (id)_mapItemFromGEOMapItem:(id)a3 mapItemSource:(unint64_t)a4 confidenceScalingFactor:(double)a5
+- (id)_mapItemFromGEOMapItem:(id)item mapItemSource:(unint64_t)source confidenceScalingFactor:(double)factor
 {
-  v7 = a3;
+  itemCopy = item;
   v8 = +[NSDate date];
   v21 = [v8 dateByAddingTimeInterval:4838400.0];
-  v9 = [(GEOMapService *)self->_geoMapService handleForMapItem:v7];
+  v9 = [(GEOMapService *)self->_geoMapService handleForMapItem:itemCopy];
   v10 = [NSString alloc];
   v11 = [v10 initWithCString:off_1000B2A28 encoding:1];
   v25 = @"geoMapItemHandleSize";
@@ -463,42 +463,42 @@ LABEL_10:
 
   v17 = [RTMapItem alloc];
   v18 = +[NSUUID UUID];
-  v19 = [v17 initWithIdentifier:v18 geoMapItem:v7 geoMapItemHandle:v9 source:a4 creationDate:v8 expirationDate:v21 confidenceScalingFactor:a5];
+  v19 = [v17 initWithIdentifier:v18 geoMapItem:itemCopy geoMapItemHandle:v9 source:source creationDate:v8 expirationDate:v21 confidenceScalingFactor:factor];
 
   return v19;
 }
 
-- (void)fetchMapItemsFromNaturalLanguageQuery:(id)a3 location:(id)a4 options:(id)a5 handler:(id)a6
+- (void)fetchMapItemsFromNaturalLanguageQuery:(id)query location:(id)location options:(id)options handler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v14)
+  queryCopy = query;
+  locationCopy = location;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if ([v11 length])
+    if ([queryCopy length])
     {
-      if (v12)
+      if (locationCopy)
       {
-        v15 = [(RTHelperService *)self defaultTraitsForOptions:v13 selector:"ticketForSearchQuery:completionItem:maxResults:traits:"];
-        [v12 latitude];
-        [v12 longitude];
-        [v12 horizontalUncertainty];
-        [v12 horizontalUncertainty];
+        v15 = [(RTHelperService *)self defaultTraitsForOptions:optionsCopy selector:"ticketForSearchQuery:completionItem:maxResults:traits:"];
+        [locationCopy latitude];
+        [locationCopy longitude];
+        [locationCopy horizontalUncertainty];
+        [locationCopy horizontalUncertainty];
         GEOCoordinateRegionMakeWithDistance();
         v16 = [GEOMapRegion _geo_mapRegionForGEOCoordinateRegion:?];
         [v15 setMapRegion:v16];
 
-        v17 = [(GEOMapService *)self->_geoMapService ticketForSearchQuery:v11 completionItem:0 maxResults:5 traits:v15];
+        v17 = [(GEOMapService *)self->_geoMapService ticketForSearchQuery:queryCopy completionItem:0 maxResults:5 traits:v15];
         v22[0] = _NSConcreteStackBlock;
         v22[1] = 3221225472;
         v22[2] = sub_10006E7A8;
         v22[3] = &unk_1000A9308;
         v22[4] = self;
         v27 = a2;
-        v23 = v11;
-        v26 = v14;
-        v24 = v13;
+        v23 = queryCopy;
+        v26 = handlerCopy;
+        v24 = optionsCopy;
         v25 = v15;
         v18 = v15;
         [v17 submitWithHandler:v22 networkActivity:0];
@@ -525,34 +525,34 @@ LABEL_8:
 
     v17 = [NSDictionary dictionaryWithObjects:v20 forKeys:v21 count:1];
     v18 = [NSError errorWithDomain:v19 code:7 userInfo:v17];
-    (*(v14 + 2))(v14, 0, v18);
+    (*(handlerCopy + 2))(handlerCopy, 0, v18);
     goto LABEL_8;
   }
 
 LABEL_9:
 }
 
-- (void)fetchMapGEOItemsFromLocation:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchMapGEOItemsFromLocation:(id)location options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  locationCopy = location;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v9)
+    if (locationCopy)
     {
-      v12 = [[GEOLocation alloc] initWithRTLocation:v9 includeTimeStamp:1];
-      v13 = [(RTHelperService *)self defaultTraitsForOptions:v10 selector:"ticketForReverseGeocodeLocation:preserveOriginalLocation:placeTypeLimit:traits:"];
+      v12 = [[GEOLocation alloc] initWithRTLocation:locationCopy includeTimeStamp:1];
+      v13 = [(RTHelperService *)self defaultTraitsForOptions:optionsCopy selector:"ticketForReverseGeocodeLocation:preserveOriginalLocation:placeTypeLimit:traits:"];
       v14 = [(GEOMapService *)self->_geoMapService ticketForReverseGeocodeLocation:v12 preserveOriginalLocation:0 placeTypeLimit:0 traits:v13];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_10006ED3C;
       v17[3] = &unk_1000A9308;
       v23 = a2;
-      v18 = v9;
-      v22 = v11;
-      v19 = self;
-      v20 = v10;
+      v18 = locationCopy;
+      v22 = handlerCopy;
+      selfCopy = self;
+      v20 = optionsCopy;
       v21 = v13;
       v15 = v13;
       [v14 submitWithHandler:v17 networkActivity:0];
@@ -565,19 +565,19 @@ LABEL_9:
       v25 = @"requires a valid location.";
       v12 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
       v14 = [NSError errorWithDomain:v16 code:7 userInfo:v12];
-      (*(v11 + 2))(v11, 0, v14);
+      (*(handlerCopy + 2))(handlerCopy, 0, v14);
     }
   }
 }
 
-- (void)fetchMapItemsFromLocation:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchMapItemsFromLocation:(id)location options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  locationCopy = location;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v9)
+    if (locationCopy)
     {
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
@@ -585,9 +585,9 @@ LABEL_9:
       v15[3] = &unk_1000A92C0;
       v15[4] = self;
       v18 = a2;
-      v16 = v9;
-      v17 = v11;
-      [(RTHelperService *)self fetchMapGEOItemsFromLocation:v16 options:v10 handler:v15];
+      v16 = locationCopy;
+      v17 = handlerCopy;
+      [(RTHelperService *)self fetchMapGEOItemsFromLocation:v16 options:optionsCopy handler:v15];
     }
 
     else
@@ -597,19 +597,19 @@ LABEL_9:
       v20 = @"requires a valid location.";
       v13 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
       v14 = [NSError errorWithDomain:v12 code:7 userInfo:v13];
-      (*(v11 + 2))(v11, 0, v14);
+      (*(handlerCopy + 2))(handlerCopy, 0, v14);
     }
   }
 }
 
-- (void)fetchMapItemsRelatedPlacesFromLocation:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchMapItemsRelatedPlacesFromLocation:(id)location options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  locationCopy = location;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v9)
+    if (locationCopy)
     {
       v12 = +[NSMutableArray array];
       v16[0] = _NSConcreteStackBlock;
@@ -618,11 +618,11 @@ LABEL_9:
       v16[3] = &unk_1000A9330;
       v16[4] = self;
       v20 = a2;
-      v17 = v9;
+      v17 = locationCopy;
       v18 = v12;
-      v19 = v11;
+      v19 = handlerCopy;
       v13 = v12;
-      [(RTHelperService *)self fetchMapGEOItemsFromLocation:v17 options:v10 handler:v16];
+      [(RTHelperService *)self fetchMapGEOItemsFromLocation:v17 options:optionsCopy handler:v16];
     }
 
     else
@@ -632,32 +632,32 @@ LABEL_9:
       v22 = @"requires a valid location.";
       v13 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
       v15 = [NSError errorWithDomain:v14 code:7 userInfo:v13];
-      (*(v11 + 2))(v11, 0, 0, v15);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v15);
     }
   }
 }
 
-- (void)fetchMapItemsFromIdentifiers:(id)a3 options:(id)a4 source:(unint64_t)a5 handler:(id)a6
+- (void)fetchMapItemsFromIdentifiers:(id)identifiers options:(id)options source:(unint64_t)source handler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v13)
+  identifiersCopy = identifiers;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if ([v11 count])
+    if ([identifiersCopy count])
     {
-      v14 = [(RTHelperService *)self defaultTraitsForOptions:v12 selector:"ticketForReverseGeocodeLocation:preserveOriginalLocation:placeTypeLimit:traits:"];
-      v15 = [(GEOMapService *)self->_geoMapService _bpod_ticketForIdentifiers:v11 traits:v14];
+      v14 = [(RTHelperService *)self defaultTraitsForOptions:optionsCopy selector:"ticketForReverseGeocodeLocation:preserveOriginalLocation:placeTypeLimit:traits:"];
+      v15 = [(GEOMapService *)self->_geoMapService _bpod_ticketForIdentifiers:identifiersCopy traits:v14];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_10006FE6C;
       v18[3] = &unk_1000A9358;
       v18[4] = self;
-      v23 = a5;
+      sourceCopy = source;
       v24 = a2;
-      v19 = v11;
-      v22 = v13;
-      v20 = v12;
+      v19 = identifiersCopy;
+      v22 = handlerCopy;
+      v20 = optionsCopy;
       v21 = v14;
       v16 = v14;
       [v15 submitWithHandler:v18 networkActivity:0];
@@ -670,31 +670,31 @@ LABEL_9:
       v26 = @"requires a list of GEOMapItem identifiers.";
       v15 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
       v16 = [NSError errorWithDomain:v17 code:7 userInfo:v15];
-      (*(v13 + 2))(v13, 0, v16);
+      (*(handlerCopy + 2))(handlerCopy, 0, v16);
     }
   }
 }
 
-- (void)fetchRelatedPlacesMapItemsForMapItem:(id)a3 relatedPlaceListType:(int)a4 options:(id)a5 source:(unint64_t)a6 handler:(id)a7
+- (void)fetchRelatedPlacesMapItemsForMapItem:(id)item relatedPlaceListType:(int)type options:(id)options source:(unint64_t)source handler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  if (v14)
+  itemCopy = item;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v12)
+    if (itemCopy)
     {
-      v15 = [v12 geoMapItemHandle];
+      geoMapItemHandle = [itemCopy geoMapItemHandle];
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_1000703AC;
       v19[3] = &unk_1000A9380;
       v19[4] = self;
-      v23 = a4;
-      v20 = v13;
-      v22 = a6;
-      v21 = v14;
-      [(RTHelperService *)self fetchGeoMapItemFromHandle:v15 options:v20 handler:v19];
+      typeCopy = type;
+      v20 = optionsCopy;
+      sourceCopy = source;
+      v21 = handlerCopy;
+      [(RTHelperService *)self fetchGeoMapItemFromHandle:geoMapItemHandle options:v20 handler:v19];
     }
 
     else
@@ -704,18 +704,18 @@ LABEL_9:
       v25 = @"requires a map item.";
       v17 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
       v18 = [NSError errorWithDomain:v16 code:7 userInfo:v17];
-      (*(v14 + 2))(v14, 0, v18);
+      (*(handlerCopy + 2))(handlerCopy, 0, v18);
     }
   }
 }
 
-- (void)_relatedPlacesMapItemsIdentifiersForGEOMapItems:(id)a3 relatedPlaceListType:(int)a4 handler:(id)a5
+- (void)_relatedPlacesMapItemsIdentifiersForGEOMapItems:(id)items relatedPlaceListType:(int)type handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  itemsCopy = items;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if ([v8 count])
+    if ([itemsCopy count])
     {
       v10 = +[NSMutableArray array];
       +[NSMutableArray array];
@@ -723,12 +723,12 @@ LABEL_9:
       v16[1] = 3221225472;
       v16[2] = sub_1000706CC;
       v16[3] = &unk_1000A93D0;
-      v19 = a4;
+      typeCopy = type;
       v16[4] = self;
       v11 = v17 = v10;
       v18 = v11;
       v12 = v10;
-      [v8 enumerateObjectsUsingBlock:v16];
+      [itemsCopy enumerateObjectsUsingBlock:v16];
       if ([v11 count])
       {
         v13 = _RTSafeArray();
@@ -740,7 +740,7 @@ LABEL_9:
         v14 = 0;
       }
 
-      v9[2](v9, v12, v14);
+      handlerCopy[2](handlerCopy, v12, v14);
     }
 
     else
@@ -750,26 +750,26 @@ LABEL_9:
       v21 = @"requires a list GEOMapItems.";
       v11 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
       v12 = [NSError errorWithDomain:v15 code:7 userInfo:v11];
-      v9[2](v9, 0, v12);
+      handlerCopy[2](handlerCopy, 0, v12);
     }
   }
 }
 
-- (void)_relatedPlacesMapItemsIdentifiersForGEOMapItem:(id)a3 relatedPlaceListType:(int)a4 handler:(id)a5
+- (void)_relatedPlacesMapItemsIdentifiersForGEOMapItem:(id)item relatedPlaceListType:(int)type handler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  if (v8)
+  itemCopy = item;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v7)
+    if (itemCopy)
     {
       v9 = +[NSMutableSet set];
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v10 = [v7 _relatedPlaceLists];
-      v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      _relatedPlaceLists = [itemCopy _relatedPlaceLists];
+      v11 = [_relatedPlaceLists countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v11)
       {
         v12 = v11;
@@ -780,18 +780,18 @@ LABEL_9:
           {
             if (*v20 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(_relatedPlaceLists);
             }
 
             v15 = *(*(&v19 + 1) + 8 * i);
-            if ([v15 type] == a4)
+            if ([v15 type] == type)
             {
-              v16 = [v15 mapIdentifiers];
-              [v9 addObjectsFromArray:v16];
+              mapIdentifiers = [v15 mapIdentifiers];
+              [v9 addObjectsFromArray:mapIdentifiers];
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v12 = [_relatedPlaceLists countByEnumeratingWithState:&v19 objects:v23 count:16];
         }
 
         while (v12);
@@ -799,12 +799,12 @@ LABEL_9:
 
       if (![v9 count])
       {
-        (*(v8 + 2))(v8, 0, 0);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0);
         goto LABEL_17;
       }
 
-      v17 = [v9 allObjects];
-      (*(v8 + 2))(v8, v17, 0);
+      allObjects = [v9 allObjects];
+      (*(handlerCopy + 2))(handlerCopy, allObjects, 0);
     }
 
     else
@@ -813,58 +813,58 @@ LABEL_9:
       v24 = NSLocalizedDescriptionKey;
       v25 = @"requires a GEOMapItem.";
       v9 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-      v17 = [NSError errorWithDomain:v18 code:7 userInfo:v9];
-      (*(v8 + 2))(v8, 0, v17);
+      allObjects = [NSError errorWithDomain:v18 code:7 userInfo:v9];
+      (*(handlerCopy + 2))(handlerCopy, 0, allObjects);
     }
 
 LABEL_17:
   }
 }
 
-- (void)fetchConfidenceWeightForMapItem:(id)a3 startDate:(id)a4 endDate:(id)a5 options:(id)a6 handler:(id)a7
+- (void)fetchConfidenceWeightForMapItem:(id)item startDate:(id)date endDate:(id)endDate options:(id)options handler:(id)handler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (v14)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v15 = a6;
-    v16 = [a3 geoMapItemHandle];
+    optionsCopy = options;
+    geoMapItemHandle = [item geoMapItemHandle];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100070B5C;
     v17[3] = &unk_1000A93F8;
     v17[4] = self;
-    v18 = v12;
-    v19 = v13;
-    v20 = v14;
-    [(RTHelperService *)self fetchGeoMapItemFromHandle:v16 options:v15 handler:v17];
+    v18 = dateCopy;
+    v19 = endDateCopy;
+    v20 = handlerCopy;
+    [(RTHelperService *)self fetchGeoMapItemFromHandle:geoMapItemHandle options:optionsCopy handler:v17];
   }
 }
 
-- (void)fetchMapItemsFromLocations:(id)a3 accessPoints:(id)a4 startDate:(id)a5 endDate:(id)a6 options:(id)a7 handler:(id)a8
+- (void)fetchMapItemsFromLocations:(id)locations accessPoints:(id)points startDate:(id)date endDate:(id)endDate options:(id)options handler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if (v20)
+  locationsCopy = locations;
+  pointsCopy = points;
+  dateCopy = date;
+  endDateCopy = endDate;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if ([v15 count])
+    if ([locationsCopy count])
     {
       aSelector = a2;
-      v53 = v16;
-      v54 = v19;
-      v48 = v18;
-      v49 = v17;
-      v21 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v15 count]);
+      v53 = pointsCopy;
+      v54 = optionsCopy;
+      v48 = endDateCopy;
+      v49 = dateCopy;
+      v21 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [locationsCopy count]);
       v69 = 0u;
       v70 = 0u;
       v71 = 0u;
       v72 = 0u;
-      v22 = v15;
+      v22 = locationsCopy;
       v23 = [v22 countByEnumeratingWithState:&v69 objects:v84 count:16];
       if (v23)
       {
@@ -892,8 +892,8 @@ LABEL_17:
         while (v24);
       }
 
-      v52 = self;
-      v50 = v15;
+      selfCopy = self;
+      v50 = locationsCopy;
 
       v28 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v53 count]);
       v65 = 0u;
@@ -928,30 +928,30 @@ LABEL_17:
         while (v31);
       }
 
-      v35 = [(RTHelperService *)v52 defaultTraitsForOptions:v54 selector:"ticketForWifiFingerprintWithLocations:wifiAccessPoints:maxLabels:entryTime:exitTime:traits:"];
-      v47 = [(GEOMapService *)v52->_geoMapService ticketForWifiFingerprintWithLocations:v21 wifiAccessPoints:v28 maxLabels:50 entryTime:0 exitTime:0 traits:v35];
-      v18 = v48;
-      v17 = v49;
+      v35 = [(RTHelperService *)selfCopy defaultTraitsForOptions:v54 selector:"ticketForWifiFingerprintWithLocations:wifiAccessPoints:maxLabels:entryTime:exitTime:traits:"];
+      v47 = [(GEOMapService *)selfCopy->_geoMapService ticketForWifiFingerprintWithLocations:v21 wifiAccessPoints:v28 maxLabels:50 entryTime:0 exitTime:0 traits:v35];
+      endDateCopy = v48;
+      dateCopy = v49;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
       {
         v36 = sub_1000011A0(&qword_1000B29B8);
         if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
         {
           v46 = NSStringFromSelector(aSelector);
-          v45 = [v22 firstObject];
+          firstObject = [v22 firstObject];
           v44 = [v22 count];
           v43 = [v29 count];
-          v37 = [v54 useBackgroundTraits];
+          useBackgroundTraits = [v54 useBackgroundTraits];
           *buf = 138413315;
           v74 = v46;
           v75 = 2117;
-          v76 = v45;
+          v76 = firstObject;
           v77 = 2048;
           v78 = v44;
           v79 = 2048;
           v80 = v43;
           v81 = 1024;
-          v82 = v37;
+          v82 = useBackgroundTraits;
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "%@, fetch mapItems from bluePoi, location, %{sensitive}@, locations, %lu, accessPoints, %lu, background, %d", buf, 0x30u);
         }
       }
@@ -961,24 +961,24 @@ LABEL_17:
       v55[1] = 3221225472;
       v55[2] = sub_1000711CC;
       v55[3] = &unk_1000A9420;
-      v55[4] = v52;
+      v55[4] = selfCopy;
       v56 = v49;
       v57 = v48;
       v58 = v38;
       v64 = aSelector;
       v59 = v22;
       v60 = v29;
-      v63 = v20;
+      v63 = handlerCopy;
       v61 = v54;
       v62 = v35;
       v39 = v35;
       v40 = v38;
-      v19 = v54;
+      optionsCopy = v54;
       v41 = v40;
       [v47 submitWithHandler:v55 networkActivity:0];
 
-      v15 = v50;
-      v16 = v53;
+      locationsCopy = v50;
+      pointsCopy = v53;
     }
 
     else
@@ -988,31 +988,31 @@ LABEL_17:
       v86 = @"requires valid locations.";
       v21 = [NSDictionary dictionaryWithObjects:&v86 forKeys:&v85 count:1];
       v28 = [NSError errorWithDomain:v42 code:7 userInfo:v21];
-      (*(v20 + 2))(v20, 0, v28);
+      (*(handlerCopy + 2))(handlerCopy, 0, v28);
     }
   }
 }
 
-- (void)fetchMapItemsFromAddressString:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchMapItemsFromAddressString:(id)string options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  stringCopy = string;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v9)
+    if (stringCopy)
     {
-      v12 = [(RTHelperService *)self defaultTraitsForOptions:v10 selector:"ticketForForwardGeocodeString:maxResults:traits:"];
-      v13 = [(GEOMapService *)self->_geoMapService ticketForForwardGeocodeString:v9 maxResults:5 traits:v12];
+      v12 = [(RTHelperService *)self defaultTraitsForOptions:optionsCopy selector:"ticketForForwardGeocodeString:maxResults:traits:"];
+      v13 = [(GEOMapService *)self->_geoMapService ticketForForwardGeocodeString:stringCopy maxResults:5 traits:v12];
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = sub_1000718D8;
       v16[3] = &unk_1000A9308;
       v16[4] = self;
       v21 = a2;
-      v17 = v9;
-      v20 = v11;
-      v18 = v10;
+      v17 = stringCopy;
+      v20 = handlerCopy;
+      v18 = optionsCopy;
       v19 = v12;
       v14 = v12;
       [v13 submitWithHandler:v16 networkActivity:0];
@@ -1025,21 +1025,21 @@ LABEL_17:
       v23 = @"requires a valid addressString.";
       v13 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
       v14 = [NSError errorWithDomain:v15 code:7 userInfo:v13];
-      (*(v11 + 2))(v11, 0, v14);
+      (*(handlerCopy + 2))(handlerCopy, 0, v14);
     }
   }
 }
 
-- (void)fetchMapItemsFromAddressDictionary:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchMapItemsFromAddressDictionary:(id)dictionary options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  dictionaryCopy = dictionary;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if ([v9 count])
+    if ([dictionaryCopy count])
     {
-      v12 = v9;
+      v12 = dictionaryCopy;
       if ([RTMapItem addressDictionaryContainsContactsKeys:v12])
       {
         v13 = [RTMapItem convertAddressDictionaryFromContactsToGeoServices:v12];
@@ -1047,7 +1047,7 @@ LABEL_17:
         v12 = v13;
       }
 
-      v14 = [(RTHelperService *)self defaultTraitsForOptions:v10 selector:"ticketForForwardGeocodeAddressDictionary:maxResults:traits:"];
+      v14 = [(RTHelperService *)self defaultTraitsForOptions:optionsCopy selector:"ticketForForwardGeocodeAddressDictionary:maxResults:traits:"];
       v15 = [(GEOMapService *)self->_geoMapService ticketForForwardGeocodeAddressDictionary:v12 maxResults:5 traits:v14];
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
@@ -1056,8 +1056,8 @@ LABEL_17:
       v24 = a2;
       v19[4] = self;
       v20 = v12;
-      v23 = v11;
-      v21 = v10;
+      v23 = handlerCopy;
+      v21 = optionsCopy;
       v22 = v14;
       v16 = v14;
       v17 = v12;
@@ -1071,28 +1071,28 @@ LABEL_17:
       v26 = @"requires a valid addressDictionary.";
       v15 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
       v17 = [NSError errorWithDomain:v18 code:7 userInfo:v15];
-      (*(v11 + 2))(v11, 0, v17);
+      (*(handlerCopy + 2))(handlerCopy, 0, v17);
     }
   }
 }
 
-- (void)fetchPostalAddressForMapItem:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchPostalAddressForMapItem:(id)item options:(id)options handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  itemCopy = item;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v8)
+    if (itemCopy)
     {
-      v11 = [v8 geoMapItemHandle];
+      geoMapItemHandle = [itemCopy geoMapItemHandle];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_100072390;
       v15[3] = &unk_1000A9448;
       v15[4] = self;
-      v16 = v10;
-      [(RTHelperService *)self fetchGeoMapItemFromHandle:v11 options:v9 handler:v15];
+      v16 = handlerCopy;
+      [(RTHelperService *)self fetchGeoMapItemFromHandle:geoMapItemHandle options:optionsCopy handler:v15];
 
       v12 = v16;
     }
@@ -1105,27 +1105,27 @@ LABEL_17:
       v14 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
       v12 = [NSError errorWithDomain:v13 code:7 userInfo:v14];
 
-      (*(v10 + 2))(v10, 0, v12);
+      (*(handlerCopy + 2))(handlerCopy, 0, v12);
     }
   }
 }
 
-- (void)fetchAppClipURLsForMapItem:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchAppClipURLsForMapItem:(id)item options:(id)options handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  itemCopy = item;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v8)
+    if (itemCopy)
     {
-      v11 = [v8 geoMapItemHandle];
+      geoMapItemHandle = [itemCopy geoMapItemHandle];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_1000725D8;
       v15[3] = &unk_1000A9228;
-      v16 = v10;
-      [(RTHelperService *)self fetchGeoMapItemFromHandle:v11 options:v9 handler:v15];
+      v16 = handlerCopy;
+      [(RTHelperService *)self fetchGeoMapItemFromHandle:geoMapItemHandle options:optionsCopy handler:v15];
 
       v12 = v16;
     }
@@ -1138,22 +1138,22 @@ LABEL_17:
       v14 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
       v12 = [NSError errorWithDomain:v13 code:7 userInfo:v14];
 
-      (*(v10 + 2))(v10, 0, v12);
+      (*(handlerCopy + 2))(handlerCopy, 0, v12);
     }
   }
 }
 
-- (void)fetchCountryAndSubdivisionCodesFromLocation:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchCountryAndSubdivisionCodesFromLocation:(id)location options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  locationCopy = location;
+  optionsCopy = options;
+  handlerCopy = handler;
   v12 = objc_alloc_init(GEOLatLng);
-  [v9 latitude];
+  [locationCopy latitude];
   [v12 setLat:?];
-  [v9 longitude];
+  [locationCopy longitude];
   [v12 setLng:?];
-  v13 = [(RTHelperService *)self defaultTraitsForOptions:v10 selector:"ticketForTerritoryForLocations:shiftLocationsIfNeeded:traits:"];
+  v13 = [(RTHelperService *)self defaultTraitsForOptions:optionsCopy selector:"ticketForTerritoryForLocations:shiftLocationsIfNeeded:traits:"];
   geoMapService = self->_geoMapService;
   v27 = v12;
   v15 = [NSArray arrayWithObjects:&v27 count:1];
@@ -1164,23 +1164,23 @@ LABEL_17:
   v21[2] = sub_100072984;
   v21[3] = &unk_1000A9308;
   v21[4] = self;
-  v22 = v9;
-  v25 = v11;
+  v22 = locationCopy;
+  v25 = handlerCopy;
   v26 = a2;
-  v23 = v10;
+  v23 = optionsCopy;
   v24 = v13;
   v17 = v13;
-  v18 = v10;
-  v19 = v11;
-  v20 = v9;
+  v18 = optionsCopy;
+  v19 = handlerCopy;
+  v20 = locationCopy;
   [v16 submitWithHandler:v21 networkActivity:0];
 }
 
-- (id)_buildingPolygonsFromGEOBuilding:(id)a3
+- (id)_buildingPolygonsFromGEOBuilding:(id)building
 {
-  v3 = a3;
-  v4 = [v3 sections];
-  v5 = [v4 count];
+  buildingCopy = building;
+  sections = [buildingCopy sections];
+  v5 = [sections count];
 
   if (v5)
   {
@@ -1189,12 +1189,12 @@ LABEL_17:
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    obj = [v3 sections];
+    obj = [buildingCopy sections];
     v6 = [obj countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v6)
     {
       v7 = v6;
-      v18 = v3;
+      v18 = buildingCopy;
       v8 = *v22;
       do
       {
@@ -1240,7 +1240,7 @@ LABEL_17:
       }
 
       while (v7);
-      v3 = v18;
+      buildingCopy = v18;
     }
   }
 
@@ -1259,13 +1259,13 @@ LABEL_17:
   return v20;
 }
 
-- (void)fetchBuildingPolygonsFromLocation:(id)a3 radius:(double)a4 handler:(id)a5
+- (void)fetchBuildingPolygonsFromLocation:(id)location radius:(double)radius handler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  if (v10)
+  locationCopy = location;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v9 && a4 > 0.0)
+    if (locationCopy && radius > 0.0)
     {
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
@@ -1280,43 +1280,43 @@ LABEL_17:
       v24[2] = sub_100073248;
       v24[3] = &unk_1000A9498;
       v28 = a2;
-      v13 = v9;
-      v29 = a4;
+      v13 = locationCopy;
+      radiusCopy = radius;
       v25 = v13;
       v26 = v11;
-      v27 = v10;
+      v27 = handlerCopy;
       v14 = v11;
       v15 = objc_retainBlock(v24);
       [v13 latitude];
       v17 = v16;
       [v13 longitude];
-      v19 = [(GEOMapFeatureAccess *)self->_mapFeatureAccess findBuildingsNear:v12 radius:v15 handler:v17 completionHandler:v18, a4];
+      radius = [(GEOMapFeatureAccess *)self->_mapFeatureAccess findBuildingsNear:v12 radius:v15 handler:v17 completionHandler:v18, radius];
     }
 
     else
     {
       v20 = NSStringFromSelector(a2);
-      v14 = [NSString stringWithFormat:@"invalid parameters passed to %@, location, %@, radius, %.2f", v20, v9, *&a4];
+      v14 = [NSString stringWithFormat:@"invalid parameters passed to %@, location, %@, radius, %.2f", v20, locationCopy, *&radius];
 
       v21 = RTErrorDomain;
       v32 = NSLocalizedDescriptionKey;
       v33 = v14;
       v22 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
       v23 = [NSError errorWithDomain:v21 code:7 userInfo:v22];
-      (*(v10 + 2))(v10, 0, v23);
+      (*(handlerCopy + 2))(handlerCopy, 0, v23);
     }
   }
 }
 
-- (void)fetchPointOfInterestAttributesWithIdentifier:(unint64_t)a3 options:(id)a4 handler:(id)a5
+- (void)fetchPointOfInterestAttributesWithIdentifier:(unint64_t)identifier options:(id)options handler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v11 = [(RTHelperService *)self defaultTraitsForOptions:v9 selector:"fetchPointOfInterestAttributesWithIdentifier:options:handler:"];
+    v11 = [(RTHelperService *)self defaultTraitsForOptions:optionsCopy selector:"fetchPointOfInterestAttributesWithIdentifier:options:handler:"];
     geoMapService = self->_geoMapService;
-    v13 = [NSNumber numberWithUnsignedInteger:a3];
+    v13 = [NSNumber numberWithUnsignedInteger:identifier];
     v21 = v13;
     v14 = [NSArray arrayWithObjects:&v21 count:1];
     v15 = [(GEOMapService *)geoMapService ticketForMUIDs:v14 traits:v11];
@@ -1326,27 +1326,27 @@ LABEL_17:
     v16[2] = sub_10007370C;
     v16[3] = &unk_1000A9508;
     v19 = a2;
-    v20 = a3;
-    v18 = v10;
+    identifierCopy = identifier;
+    v18 = handlerCopy;
     v16[4] = self;
-    v17 = v9;
+    v17 = optionsCopy;
     [v15 submitWithHandler:v16 networkActivity:0];
   }
 }
 
-- (void)fetchPointOfInterestsAroundCoordinate:(id)a3 radius:(double)a4 options:(id)a5 handler:(id)a6
+- (void)fetchPointOfInterestsAroundCoordinate:(id)coordinate radius:(double)radius options:(id)options handler:(id)handler
 {
-  v10 = a6;
-  if (v10)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v11 = a3;
-    v12 = [(RTHelperService *)self defaultTraitsForOptions:a5 selector:"fetchPointOfInterestsAroundCoordinate:radius:options:handler:"];
-    [v11 latitude];
+    coordinateCopy = coordinate;
+    v12 = [(RTHelperService *)self defaultTraitsForOptions:options selector:"fetchPointOfInterestsAroundCoordinate:radius:options:handler:"];
+    [coordinateCopy latitude];
     v14 = v13;
-    [v11 longitude];
+    [coordinateCopy longitude];
     v16 = v15;
 
-    v17 = [[GEOSpatialLookupParameters alloc] initWithCoordinate:&__NSArray0__struct radius:v14 categories:{v16, a4}];
+    v17 = [[GEOSpatialLookupParameters alloc] initWithCoordinate:&__NSArray0__struct radius:v14 categories:{v16, radius}];
     geoMapService = self->_geoMapService;
     v30 = v17;
     v19 = [NSArray arrayWithObjects:&v30 count:1];
@@ -1357,10 +1357,10 @@ LABEL_17:
     v24[2] = sub_100074134;
     v24[3] = &unk_1000A9558;
     v28 = v12;
-    v29 = v10;
+    v29 = handlerCopy;
     v25 = v20;
     v26 = v17;
-    v27 = self;
+    selfCopy = self;
     v21 = v12;
     v22 = v17;
     v23 = v20;
@@ -1368,15 +1368,15 @@ LABEL_17:
   }
 }
 
-- (void)createMapItemWithIdentifier:(id)a3 geoMapItemStorage:(id)a4 source:(unint64_t)a5 creationDate:(id)a6 handler:(id)a7
+- (void)createMapItemWithIdentifier:(id)identifier geoMapItemStorage:(id)storage source:(unint64_t)source creationDate:(id)date handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (v12)
+  identifierCopy = identifier;
+  storageCopy = storage;
+  dateCopy = date;
+  handlerCopy = handler;
+  if (identifierCopy)
   {
-    if (v13)
+    if (storageCopy)
     {
       goto LABEL_3;
     }
@@ -1394,10 +1394,10 @@ LABEL_17:
       _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: identifier (in %s:%d)", buf, 0x12u);
     }
 
-    if (v13)
+    if (storageCopy)
     {
 LABEL_3:
-      if (v14)
+      if (dateCopy)
       {
         goto LABEL_4;
       }
@@ -1416,10 +1416,10 @@ LABEL_3:
     _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: geoMapItemStorage (in %s:%d)", buf, 0x12u);
   }
 
-  if (v14)
+  if (dateCopy)
   {
 LABEL_4:
-    if (v15)
+    if (handlerCopy)
     {
       goto LABEL_5;
     }
@@ -1438,16 +1438,16 @@ LABEL_15:
     _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: creationDate (in %s:%d)", buf, 0x12u);
   }
 
-  if (v15)
+  if (handlerCopy)
   {
 LABEL_5:
-    if (v12)
+    if (identifierCopy)
     {
-      if (v13)
+      if (storageCopy)
       {
-        if (v14)
+        if (dateCopy)
         {
-          v16 = [(GEOMapService *)self->_geoMapService handleForMapItem:v13];
+          v16 = [(GEOMapService *)self->_geoMapService handleForMapItem:storageCopy];
           v17 = [NSString alloc];
           v18 = [v17 initWithCString:off_1000B2A28 encoding:1];
           v35 = @"geoMapItemHandleSize";
@@ -1464,10 +1464,10 @@ LABEL_5:
           AnalyticsSendEvent();
 
           v24 = [RTMapItem alloc];
-          v25 = [v14 dateByAddingTimeInterval:4838400.0];
-          v26 = [v24 initWithIdentifier:v12 geoMapItem:v13 geoMapItemHandle:v16 source:a5 creationDate:v14 expirationDate:v25];
+          v25 = [dateCopy dateByAddingTimeInterval:4838400.0];
+          v26 = [v24 initWithIdentifier:identifierCopy geoMapItem:storageCopy geoMapItemHandle:v16 source:source creationDate:dateCopy expirationDate:v25];
 
-          v15[2](v15, v26, 0);
+          handlerCopy[2](handlerCopy, v26, 0);
 LABEL_24:
 
           goto LABEL_25;
@@ -1501,7 +1501,7 @@ LABEL_24:
 
     v16 = [NSDictionary dictionaryWithObjects:v31 forKeys:v32 count:1];
     v26 = [NSError errorWithDomain:v30 code:7 userInfo:v16];
-    (v15)[2](v15, 0, v26);
+    (handlerCopy)[2](handlerCopy, 0, v26);
     goto LABEL_24;
   }
 
@@ -1519,29 +1519,29 @@ LABEL_18:
 LABEL_25:
 }
 
-- (double)confidenceWeightForGeoMapItem:(id)a3 startDate:(id)a4 endDate:(id)a5 timeZone:(id)a6
+- (double)confidenceWeightForGeoMapItem:(id)item startDate:(id)date endDate:(id)endDate timeZone:(id)zone
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemCopy = item;
+  dateCopy = date;
+  endDateCopy = endDate;
+  zoneCopy = zone;
   v14 = 1.0;
-  if (v13 && ([v11 isAfterDate:v12] & 1) == 0)
+  if (zoneCopy && ([dateCopy isAfterDate:endDateCopy] & 1) == 0)
   {
     v15 = objc_opt_new();
-    v16 = [v10 _businessHours];
-    [RTBluePOIHelper weightBasedOnBusinessHours:v16 startDate:v11 endDate:v12 timeZone:v13 metrics:v15];
+    _businessHours = [itemCopy _businessHours];
+    [RTBluePOIHelper weightBasedOnBusinessHours:_businessHours startDate:dateCopy endDate:endDateCopy timeZone:zoneCopy metrics:v15];
     v18 = v17;
 
-    v19 = [v10 _poiCategory];
-    [RTBluePOIHelper weightBasedOnDurationWithStartDate:v11 endDate:v12 timeZone:v13 poiCategory:v19];
+    _poiCategory = [itemCopy _poiCategory];
+    [RTBluePOIHelper weightBasedOnDurationWithStartDate:dateCopy endDate:endDateCopy timeZone:zoneCopy poiCategory:_poiCategory];
     v21 = v20;
 
     v22 = [NSNumber numberWithDouble:v21];
     [v15 setObject:v22 forKeyedSubscript:@"weightBasedOnDuration"];
 
-    v23 = [v10 _poiCategory];
-    [v15 setObject:v23 forKeyedSubscript:@"poiCategory"];
+    _poiCategory2 = [itemCopy _poiCategory];
+    [v15 setObject:_poiCategory2 forKeyedSubscript:@"poiCategory"];
 
     v24 = [NSString alloc];
     v25 = [v24 initWithCString:off_1000B2A18 encoding:1];
@@ -1565,13 +1565,13 @@ LABEL_25:
         v36 = 2048;
         v37 = v21;
         v38 = 2048;
-        v39 = [v10 _muid];
+        _muid = [itemCopy _muid];
         v40 = 2112;
-        v41 = v11;
+        v41 = dateCopy;
         v42 = 2112;
-        v43 = v12;
+        v43 = endDateCopy;
         v44 = 2112;
-        v45 = v13;
+        v45 = zoneCopy;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "%@, weight, %.1f, weightBasedOnBusinessHours, %.1f, weightBasedOnDuration, %.1f, muid, %lu, start, %@, end, %@, timeZone, %@", buf, 0x52u);
       }
     }
@@ -1580,22 +1580,22 @@ LABEL_25:
   return v14;
 }
 
-+ (id)exposedErrorFrom:(id)a3
++ (id)exposedErrorFrom:(id)from
 {
-  v3 = a3;
-  if ([v3 code] == -8)
+  fromCopy = from;
+  if ([fromCopy code] == -8)
   {
     v4 = 0;
   }
 
-  else if ([v3 code] == -6)
+  else if ([fromCopy code] == -6)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = v3;
+    v4 = fromCopy;
   }
 
   v5 = v4;
@@ -1603,45 +1603,45 @@ LABEL_25:
   return v4;
 }
 
-+ (id)computeMetricsForAnalyticsIdentifier:(id)a3 appIdentifier:(id)a4 requestType:(unint64_t)a5 mapItems:(id)a6 serviceError:(id)a7 isBackgroundRequest:(BOOL)a8
++ (id)computeMetricsForAnalyticsIdentifier:(id)identifier appIdentifier:(id)appIdentifier requestType:(unint64_t)type mapItems:(id)items serviceError:(id)error isBackgroundRequest:(BOOL)request
 {
-  v8 = a8;
-  v13 = a7;
-  v14 = a6;
-  v15 = a4;
-  v16 = a3;
+  requestCopy = request;
+  errorCopy = error;
+  itemsCopy = items;
+  appIdentifierCopy = appIdentifier;
+  identifierCopy = identifier;
   v17 = +[NSMutableDictionary dictionary];
-  [v17 setObject:v16 forKeyedSubscript:@"analyticsIdentifier"];
+  [v17 setObject:identifierCopy forKeyedSubscript:@"analyticsIdentifier"];
 
-  [v17 setObject:v15 forKeyedSubscript:@"appIdentifier"];
-  v18 = [NSNumber numberWithUnsignedInteger:a5];
+  [v17 setObject:appIdentifierCopy forKeyedSubscript:@"appIdentifier"];
+  v18 = [NSNumber numberWithUnsignedInteger:type];
   [v17 setObject:v18 forKeyedSubscript:@"requestType"];
 
-  v19 = [v14 count];
+  v19 = [itemsCopy count];
   v20 = [NSNumber numberWithUnsignedInteger:v19];
   [v17 setObject:v20 forKeyedSubscript:@"yieldCount"];
 
-  if (v13)
+  if (errorCopy)
   {
-    v21 = [v13 domain];
-    [v17 setObject:v21 forKeyedSubscript:@"errorDomain"];
+    domain = [errorCopy domain];
+    [v17 setObject:domain forKeyedSubscript:@"errorDomain"];
 
-    v22 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v13 code]);
+    v22 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     [v17 setObject:v22 forKeyedSubscript:@"errorCode"];
 
-    v23 = [v13 userInfo];
+    userInfo = [errorCopy userInfo];
     v24 = GEOErrorHttpStatusCodeKey;
-    v25 = [v23 objectForKeyedSubscript:GEOErrorHttpStatusCodeKey];
+    v25 = [userInfo objectForKeyedSubscript:GEOErrorHttpStatusCodeKey];
 
     if (v25)
     {
-      v26 = [v13 userInfo];
-      v27 = [v26 objectForKeyedSubscript:v24];
+      userInfo2 = [errorCopy userInfo];
+      v27 = [userInfo2 objectForKeyedSubscript:v24];
       [v17 setObject:v27 forKeyedSubscript:@"errorHTTPStatus"];
     }
   }
 
-  if (v8)
+  if (requestCopy)
   {
     v28 = 2;
   }
@@ -1657,25 +1657,25 @@ LABEL_25:
   return v17;
 }
 
-+ (void)submitMetricsForAnalyticsIdentifier:(id)a3 appIdentifier:(id)a4 requestType:(unint64_t)a5 mapItems:(id)a6 serviceError:(id)a7 isBackgroundRequest:(BOOL)a8
++ (void)submitMetricsForAnalyticsIdentifier:(id)identifier appIdentifier:(id)appIdentifier requestType:(unint64_t)type mapItems:(id)items serviceError:(id)error isBackgroundRequest:(BOOL)request
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
+  identifierCopy = identifier;
+  appIdentifierCopy = appIdentifier;
+  itemsCopy = items;
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_1000751C0;
   v29[3] = &unk_1000A9580;
-  v30 = v13;
-  v31 = v14;
-  v33 = a7;
-  v34 = a5;
-  v32 = v15;
-  v35 = a8;
-  v16 = v33;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
+  v30 = identifierCopy;
+  v31 = appIdentifierCopy;
+  errorCopy = error;
+  typeCopy = type;
+  v32 = itemsCopy;
+  requestCopy = request;
+  v16 = errorCopy;
+  v17 = itemsCopy;
+  v18 = appIdentifierCopy;
+  v19 = identifierCopy;
   v20 = objc_retainBlock(v29);
   v21 = [NSString alloc];
   v26[0] = _NSConcreteStackBlock;
@@ -1691,56 +1691,56 @@ LABEL_25:
   AnalyticsSendEventLazy();
 }
 
-- (void)compileCoreMLModelAtURL:(id)a3 handler:(id)a4
+- (void)compileCoreMLModelAtURL:(id)l handler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   v7 = objc_opt_new();
-  [v7 compileCoreMLModelAtURL:v6 handler:v5];
+  [v7 compileCoreMLModelAtURL:lCopy handler:handlerCopy];
 }
 
-- (void)downloadBluePOITilesForDownloadKeys:(id)a3 handler:(id)a4
+- (void)downloadBluePOITilesForDownloadKeys:(id)keys handler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  keysCopy = keys;
   v7 = objc_opt_new();
-  [v7 downloadBluePOITilesForDownloadKeys:v6 handler:v5];
+  [v7 downloadBluePOITilesForDownloadKeys:keysCopy handler:handlerCopy];
 }
 
-- (void)downloadBluePOIMetadataWithHandler:(id)a3
+- (void)downloadBluePOIMetadataWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_opt_new();
-  [v4 downloadBluePOIMetadataWithHandler:v3];
+  [v4 downloadBluePOIMetadataWithHandler:handlerCopy];
 }
 
-- (void)fetchBluePOITilesForDownloadKeys:(id)a3 handler:(id)a4
+- (void)fetchBluePOITilesForDownloadKeys:(id)keys handler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  keysCopy = keys;
   v7 = objc_opt_new();
-  [v7 fetchBluePOITilesForDownloadKeys:v6 handler:v5];
+  [v7 fetchBluePOITilesForDownloadKeys:keysCopy handler:handlerCopy];
 }
 
-- (void)loadProtobufTileAtPath:(id)a3 handler:(id)a4
+- (void)loadProtobufTileAtPath:(id)path handler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  pathCopy = path;
   v7 = objc_opt_new();
-  [v7 loadPreinstalledTileAtPath:v6 handler:v5];
+  [v7 loadPreinstalledTileAtPath:pathCopy handler:handlerCopy];
 }
 
-- (void)fetchBluePOIMetadataWithHandler:(id)a3
+- (void)fetchBluePOIMetadataWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_opt_new();
-  [v4 fetchBluePOIMetadataWithHandler:v3];
+  [v4 fetchBluePOIMetadataWithHandler:handlerCopy];
 }
 
-- (void)computeWithInputSignals:(id)a3 handler:(id)a4
+- (void)computeWithInputSignals:(id)signals handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  signalsCopy = signals;
+  handlerCopy = handler;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v9 = sub_1000011A0(&qword_1000B29B8);
@@ -1754,23 +1754,23 @@ LABEL_25:
   }
 
   v11 = +[NSDate date];
-  v12 = [(RTHelperService *)self contextAlgorithmsService];
+  contextAlgorithmsService = [(RTHelperService *)self contextAlgorithmsService];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10007578C;
   v15[3] = &unk_1000A92C0;
   v16 = v11;
-  v17 = self;
-  v18 = v8;
+  selfCopy = self;
+  v18 = handlerCopy;
   v19 = a2;
-  v13 = v8;
+  v13 = handlerCopy;
   v14 = v11;
-  [v12 computeWithInputSignals:v7 handler:v15];
+  [contextAlgorithmsService computeWithInputSignals:signalsCopy handler:v15];
 }
 
-- (void)interruptComputeWithError:(id)a3
+- (void)interruptComputeWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v6 = sub_1000011A0(&qword_1000B29B8);
@@ -1784,18 +1784,18 @@ LABEL_25:
   }
 
   v8 = +[NSDate date];
-  v9 = [(RTHelperService *)self contextAlgorithmsService];
+  contextAlgorithmsService = [(RTHelperService *)self contextAlgorithmsService];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100075B5C;
   v12[3] = &unk_1000A9620;
   v13 = v8;
-  v14 = self;
-  v15 = v5;
+  selfCopy = self;
+  v15 = errorCopy;
   v16 = a2;
-  v10 = v5;
+  v10 = errorCopy;
   v11 = v8;
-  [v9 interruptComputeWithError:v12];
+  [contextAlgorithmsService interruptComputeWithError:v12];
 }
 
 @end

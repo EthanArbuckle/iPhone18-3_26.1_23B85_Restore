@@ -1,10 +1,10 @@
 @interface BuddyConfiguringMultiUserController
 - (BOOL)controllerNeedsToRun;
 - (BuddyConfiguringMultiUserController)init;
-- (void)_showConfigurationFailedForError:(id)a3;
+- (void)_showConfigurationFailedForError:(id)error;
 - (void)provisionDeviceForMultiUserAndSwitchToLoginWindow;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BuddyConfiguringMultiUserController
@@ -24,35 +24,35 @@
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = BuddyConfiguringMultiUserController;
-  [(BuddyConfiguringMultiUserController *)&v5 viewWillAppear:a3];
-  v3 = [(BuddyConfiguringMultiUserController *)v8 navigationItem];
-  [v3 setHidesBackButton:1];
+  [(BuddyConfiguringMultiUserController *)&v5 viewWillAppear:appear];
+  navigationItem = [(BuddyConfiguringMultiUserController *)selfCopy navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   v4 = +[UIApplication sharedApplication];
   [(UIApplication *)v4 setIdleTimerDisabled:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = BuddyConfiguringMultiUserController;
-  [(BuddyConfiguringMultiUserController *)&v3 viewDidAppear:a3];
-  [(BuddyConfiguringMultiUserController *)v6 provisionDeviceForMultiUserAndSwitchToLoginWindow];
+  [(BuddyConfiguringMultiUserController *)&v3 viewDidAppear:appear];
+  [(BuddyConfiguringMultiUserController *)selfCopy provisionDeviceForMultiUserAndSwitchToLoginWindow];
 }
 
 - (void)provisionDeviceForMultiUserAndSwitchToLoginWindow
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v2 = dispatch_get_global_queue(0, 0);
   block = _NSConcreteStackBlock;
@@ -60,18 +60,18 @@
   v5 = 0;
   v6 = sub_100183464;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
+  v8[0] = selfCopy;
   dispatch_async(v2, &block);
 
   objc_storeStrong(v8, 0);
 }
 
-- (void)_showConfigurationFailedForError:(id)a3
+- (void)_showConfigurationFailedForError:(id)error
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v3 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
@@ -79,7 +79,7 @@
   v7 = sub_10018380C;
   v8 = &unk_10032B838;
   v9 = location[0];
-  v10 = v12;
+  v10 = selfCopy;
   dispatch_async(v3, &block);
 
   objc_storeStrong(&v10, 0);
@@ -89,15 +89,15 @@
 
 - (BOOL)controllerNeedsToRun
 {
-  v2 = [(BuddyConfiguringMultiUserController *)self managedConfiguration];
-  v3 = [(MCProfileConnection *)v2 userMode];
+  managedConfiguration = [(BuddyConfiguringMultiUserController *)self managedConfiguration];
+  userMode = [(MCProfileConnection *)managedConfiguration userMode];
   v6 = 0;
   v4 = 0;
-  if (v3 == 1)
+  if (userMode == 1)
   {
-    v7 = [(BuddyConfiguringMultiUserController *)self managedConfiguration];
+    managedConfiguration2 = [(BuddyConfiguringMultiUserController *)self managedConfiguration];
     v6 = 1;
-    v4 = [(MCProfileConnection *)v7 isEphemeralMultiUser]^ 1;
+    v4 = [(MCProfileConnection *)managedConfiguration2 isEphemeralMultiUser]^ 1;
   }
 
   v9 = v4 & 1;

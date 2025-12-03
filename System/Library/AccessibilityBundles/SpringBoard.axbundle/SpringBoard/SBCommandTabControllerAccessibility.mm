@@ -1,30 +1,30 @@
 @interface SBCommandTabControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_activateWithForwardDirection:(BOOL)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_activateWithForwardDirection:(BOOL)direction;
 @end
 
 @implementation SBCommandTabControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBSceneManagerCoordinator"];
-  [v3 validateClass:@"FBDisplayManager"];
-  [v3 validateClass:@"SBSceneManagerCoordinator" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FBDisplayManager" hasClassMethod:@"mainIdentity" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBSceneManagerCoordinator" hasInstanceMethod:@"sceneManagerForDisplayIdentity:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBSceneManager" hasInstanceMethod:@"externalForegroundApplicationSceneHandles" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBCommandTabController" hasInstanceMethod:@"_activateWithForwardDirection:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"SBCommandTabController" hasInstanceVariable:@"_commandTabViewController" withType:"SBCommandTabViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBSceneManagerCoordinator"];
+  [validationsCopy validateClass:@"FBDisplayManager"];
+  [validationsCopy validateClass:@"SBSceneManagerCoordinator" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FBDisplayManager" hasClassMethod:@"mainIdentity" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBSceneManagerCoordinator" hasInstanceMethod:@"sceneManagerForDisplayIdentity:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBSceneManager" hasInstanceMethod:@"externalForegroundApplicationSceneHandles" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBCommandTabController" hasInstanceMethod:@"_activateWithForwardDirection:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"SBCommandTabController" hasInstanceVariable:@"_commandTabViewController" withType:"SBCommandTabViewController"];
 }
 
-- (void)_activateWithForwardDirection:(BOOL)a3
+- (void)_activateWithForwardDirection:(BOOL)direction
 {
-  v3 = a3;
+  directionCopy = direction;
   v21.receiver = self;
   v21.super_class = SBCommandTabControllerAccessibility;
   [(SBCommandTabControllerAccessibility *)&v21 _activateWithForwardDirection:?];
-  if (v3)
+  if (directionCopy)
   {
     v5 = [NSClassFromString(&cfstr_Sbscenemanager.isa) safeValueForKey:@"sharedInstance"];
     v6 = [NSClassFromString(&cfstr_Fbdisplaymanag.isa) safeValueForKey:@"mainIdentity"];

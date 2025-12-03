@@ -13,17 +13,17 @@
 - (int64_t)gender;
 - (int64_t)purgeCondition;
 - (int64_t)versionNumber;
-- (void)cancelDownloadingThen:(id)a3;
-- (void)downloadWithOptions:(unint64_t)a3 progress:(id)a4 then:(id)a5;
-- (void)purgeThen:(id)a3;
-- (void)setPurgeCondition:(int64_t)a3;
+- (void)cancelDownloadingThen:(id)then;
+- (void)downloadWithOptions:(unint64_t)options progress:(id)progress then:(id)then;
+- (void)purgeThen:(id)then;
+- (void)setPurgeCondition:(int64_t)condition;
 @end
 
 @implementation TTSAssetProxyAsset
 
 - (TTSAssetType)assetType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1AF1750();
 
   return v3;
@@ -31,7 +31,7 @@
 
 - (TTSAssetSource)assetSource
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1AF1F00();
 
   return v3;
@@ -39,7 +39,7 @@
 
 - (TTSAssetTechnology)technology
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1AF18D0();
 
   return v3;
@@ -54,7 +54,7 @@
 
 - (int64_t)versionNumber
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1B40BCC();
 
   return v3;
@@ -62,7 +62,7 @@
 
 - (NSArray)supportedLanguages
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B1AF1F5C();
 
   v3 = sub_1B1C2CE68();
@@ -72,7 +72,7 @@
 
 - (int64_t)gender
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1B40CF4();
 
   return v3;
@@ -80,7 +80,7 @@
 
 - (NSNumber)age
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1B40D64();
 
   return v3;
@@ -88,7 +88,7 @@
 
 - (NSNumber)downloadSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1B40DB0();
 
   return v3;
@@ -96,7 +96,7 @@
 
 - (NSNumber)diskSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1B40DFC();
 
   return v3;
@@ -104,7 +104,7 @@
 
 - (NSDictionary)attributes
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B1B40E78();
 
   v3 = sub_1B1C2CA78();
@@ -114,7 +114,7 @@
 
 - (NSBundle)bundle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1B40FA0();
 
   return v3;
@@ -122,16 +122,16 @@
 
 - (BOOL)downloading
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B1B412CC();
 
   return 0;
 }
 
-- (void)downloadWithOptions:(unint64_t)a3 progress:(id)a4 then:(id)a5
+- (void)downloadWithOptions:(unint64_t)options progress:(id)progress then:(id)then
 {
-  v7 = _Block_copy(a4);
-  v8 = _Block_copy(a5);
+  v7 = _Block_copy(progress);
+  v8 = _Block_copy(then);
   v9 = v8;
   if (v7)
   {
@@ -153,24 +153,24 @@ LABEL_3:
 
   v10 = 0;
 LABEL_6:
-  v13 = self;
-  sub_1B1B413A8(v13, v11, v12, v10);
+  selfCopy = self;
+  sub_1B1B413A8(selfCopy, v11, v12, v10);
   sub_1B1A949B4(v10);
   sub_1B1A949B4(v7);
 }
 
-- (void)cancelDownloadingThen:(id)a3
+- (void)cancelDownloadingThen:(id)then
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(then);
   _Block_copy(v4);
-  v5 = self;
-  sub_1B1B415A8(v5, v4);
+  selfCopy = self;
+  sub_1B1B415A8(selfCopy, v4);
   _Block_release(v4);
 }
 
-- (void)purgeThen:(id)a3
+- (void)purgeThen:(id)then
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(then);
   if (v4)
   {
     *(swift_allocObject() + 16) = v4;
@@ -182,20 +182,20 @@ LABEL_6:
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1B1B41724(v5);
   sub_1B1A949B4(v5);
 }
 
-- (void)setPurgeCondition:(int64_t)a3
+- (void)setPurgeCondition:(int64_t)condition
 {
-  v3 = self;
+  selfCopy = self;
   sub_1B1B418C4();
 }
 
 - (int64_t)purgeCondition
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B1B41A0C();
 
   return 3;

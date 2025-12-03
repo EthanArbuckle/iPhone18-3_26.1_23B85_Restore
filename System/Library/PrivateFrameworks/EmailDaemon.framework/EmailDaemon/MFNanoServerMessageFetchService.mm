@@ -1,25 +1,25 @@
 @interface MFNanoServerMessageFetchService
-- (id)_criterionForFilterType:(unint64_t)a3;
-- (id)_criterionForMessagesFromMailbox:(id)a3 param:(id)a4;
-- (id)_criterionForMessagesFromMailboxes:(id)a3 param:(id)a4;
-- (id)_filterTypeCriterionForMailbox:(id)a3;
-- (id)criterionForMailboxUrl:(id)a3;
-- (id)messagesForMailboxes:(id)a3 param:(id)a4;
+- (id)_criterionForFilterType:(unint64_t)type;
+- (id)_criterionForMessagesFromMailbox:(id)mailbox param:(id)param;
+- (id)_criterionForMessagesFromMailboxes:(id)mailboxes param:(id)param;
+- (id)_filterTypeCriterionForMailbox:(id)mailbox;
+- (id)criterionForMailboxUrl:(id)url;
+- (id)messagesForMailboxes:(id)mailboxes param:(id)param;
 @end
 
 @implementation MFNanoServerMessageFetchService
 
-- (id)messagesForMailboxes:(id)a3 param:(id)a4
+- (id)messagesForMailboxes:(id)mailboxes param:(id)param
 {
-  v6 = a4;
-  v7 = [(MFNanoServerMessageFetchService *)self _criterionForMessagesFromMailboxes:a3 param:v6];
+  paramCopy = param;
+  v7 = [(MFNanoServerMessageFetchService *)self _criterionForMessagesFromMailboxes:mailboxes param:paramCopy];
   if (v7)
   {
     v11 = 0;
     v8 = +[MFMailMessageLibrary defaultInstance];
-    v9 = [v8 loadLibraryMessagesFromLibraryMatchingCriterion:v7 count:objc_msgSend(v6 protectedDataAvailable:{"count"), &v11}];
+    v9 = [v8 loadLibraryMessagesFromLibraryMatchingCriterion:v7 count:objc_msgSend(paramCopy protectedDataAvailable:{"count"), &v11}];
 
-    [v6 setProtectedDataAvailable:v11];
+    [paramCopy setProtectedDataAvailable:v11];
   }
 
   else
@@ -30,16 +30,16 @@
   return v9;
 }
 
-- (id)_criterionForMessagesFromMailboxes:(id)a3 param:(id)a4
+- (id)_criterionForMessagesFromMailboxes:(id)mailboxes param:(id)param
 {
-  v6 = a3;
-  v7 = a4;
+  mailboxesCopy = mailboxes;
+  paramCopy = param;
   v8 = objc_alloc_init(NSMutableArray);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = v6;
+  v9 = mailboxesCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -53,7 +53,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v13 = [(MFNanoServerMessageFetchService *)self _criterionForMessagesFromMailbox:*(*(&v16 + 1) + 8 * i) param:v7, v16];
+        v13 = [(MFNanoServerMessageFetchService *)self _criterionForMessagesFromMailbox:*(*(&v16 + 1) + 8 * i) param:paramCopy, v16];
         if (v13)
         {
           [v8 addObject:v13];
@@ -71,56 +71,56 @@
   return v14;
 }
 
-- (id)_criterionForMessagesFromMailbox:(id)a3 param:(id)a4
+- (id)_criterionForMessagesFromMailbox:(id)mailbox param:(id)param
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 url];
+  mailboxCopy = mailbox;
+  paramCopy = param;
+  v8 = [mailboxCopy url];
   v9 = [(MFNanoServerMessageFetchService *)self criterionForMailboxUrl:v8];
 
   if (v9)
   {
     v10 = objc_alloc_init(NSMutableArray);
     [v10 addObject:v9];
-    v11 = [(MFNanoServerMessageFetchService *)self _filterTypeCriterionForMailbox:v6];
+    v11 = [(MFNanoServerMessageFetchService *)self _filterTypeCriterionForMailbox:mailboxCopy];
     if (v11)
     {
       [v10 addObject:v11];
     }
 
-    v12 = [v7 beforeDateReceived];
+    beforeDateReceived = [paramCopy beforeDateReceived];
 
-    if (v12)
+    if (beforeDateReceived)
     {
       v13 = [MFMessageCriterion alloc];
-      v14 = [v7 beforeDateReceived];
-      [v14 timeIntervalSince1970];
+      beforeDateReceived2 = [paramCopy beforeDateReceived];
+      [beforeDateReceived2 timeIntervalSince1970];
       v16 = [NSString stringWithFormat:@"%lld", v15];
       v17 = [v13 initWithType:11 qualifier:5 expression:v16];
 
       [v10 addObject:v17];
     }
 
-    v18 = [v7 dateReceivedLimit];
+    dateReceivedLimit = [paramCopy dateReceivedLimit];
 
-    if (v18)
+    if (dateReceivedLimit)
     {
       v19 = [MFMessageCriterion alloc];
-      v20 = [v7 dateReceivedLimit];
-      [v20 timeIntervalSince1970];
+      dateReceivedLimit2 = [paramCopy dateReceivedLimit];
+      [dateReceivedLimit2 timeIntervalSince1970];
       v22 = [NSString stringWithFormat:@"%lld", (v21 + -1.0)];
       v23 = [v19 initWithType:11 qualifier:6 expression:v22];
 
       [v10 addObject:v23];
     }
 
-    v24 = [v7 conversationId];
+    conversationId = [paramCopy conversationId];
 
-    if (v24)
+    if (conversationId)
     {
       v25 = [MFMessageCriterion alloc];
-      v26 = [v7 conversationId];
-      v27 = [v25 initWithType:34 qualifier:3 expression:v26];
+      conversationId2 = [paramCopy conversationId];
+      v27 = [v25 initWithType:34 qualifier:3 expression:conversationId2];
 
       [v10 addObject:v27];
     }
@@ -136,14 +136,14 @@
   return v28;
 }
 
-- (id)criterionForMailboxUrl:(id)a3
+- (id)criterionForMailboxUrl:(id)url
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  urlCopy = url;
+  v4 = urlCopy;
+  if (urlCopy)
   {
-    v5 = [v3 absoluteString];
-    v6 = [MFMessageCriterion criterionForMailboxURL:v5];
+    absoluteString = [urlCopy absoluteString];
+    v6 = [MFMessageCriterion criterionForMailboxURL:absoluteString];
   }
 
   else
@@ -172,8 +172,8 @@
             }
 
             v13 = [*(*(&v18 + 1) + 8 * i) mailboxUidOfType:7 createIfNeeded:0];
-            v14 = [v13 URLString];
-            v15 = [MFMessageCriterion criterionForMailboxURL:v14];
+            uRLString = [v13 URLString];
+            v15 = [MFMessageCriterion criterionForMailboxURL:uRLString];
             [v8 addObject:v15];
           }
 
@@ -195,10 +195,10 @@
   return v6;
 }
 
-- (id)_filterTypeCriterionForMailbox:(id)a3
+- (id)_filterTypeCriterionForMailbox:(id)mailbox
 {
-  v4 = a3;
-  if ([v4 hasFilterType:1])
+  mailboxCopy = mailbox;
+  if ([mailboxCopy hasFilterType:1])
   {
     v5 = 0;
   }
@@ -223,10 +223,10 @@
             objc_enumerationMutation(&off_100163798);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) unsignedIntegerValue];
-          if ([v4 hasFilterType:v10])
+          unsignedIntegerValue = [*(*(&v13 + 1) + 8 * i) unsignedIntegerValue];
+          if ([mailboxCopy hasFilterType:unsignedIntegerValue])
           {
-            v11 = [(MFNanoServerMessageFetchService *)self _criterionForFilterType:v10];
+            v11 = [(MFNanoServerMessageFetchService *)self _criterionForFilterType:unsignedIntegerValue];
             if (v11)
             {
               [v6 addObject:v11];
@@ -246,12 +246,12 @@
   return v5;
 }
 
-- (id)_criterionForFilterType:(unint64_t)a3
+- (id)_criterionForFilterType:(unint64_t)type
 {
   v3 = 0;
-  if (a3 > 15)
+  if (type > 15)
   {
-    switch(a3)
+    switch(type)
     {
       case 0x10uLL:
         v3 = +[MFMessageCriterion includesMeCriterion];
@@ -267,7 +267,7 @@
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 2uLL:
         v3 = [MFMessageCriterion senderIsVIPCriterion:1];

@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (MSDViewServiceModel)init;
 - (id)errorMessageFromErrors;
-- (void)didReceiveError:(id)a3;
-- (void)didReceiveProgress:(int64_t)a3;
+- (void)didReceiveError:(id)error;
+- (void)didReceiveProgress:(int64_t)progress;
 - (void)operationCompleted;
-- (void)operationFailed:(id)a3;
+- (void)operationFailed:(id)failed;
 @end
 
 @implementation MSDViewServiceModel
@@ -48,8 +48,8 @@
 
 - (id)errorMessageFromErrors
 {
-  v3 = [(MSDViewServiceModel *)self errors];
-  v4 = [v3 count];
+  errors = [(MSDViewServiceModel *)self errors];
+  v4 = [errors count];
 
   if (v4)
   {
@@ -77,23 +77,23 @@
           }
 
           v12 = *(*(&v24 + 1) + 8 * v10);
-          v13 = [v12 localizedFailureReason];
+          localizedFailureReason = [v12 localizedFailureReason];
 
-          v14 = [v12 localizedDescription];
-          v15 = [v12 code];
-          v16 = v15;
-          if (v13)
+          localizedDescription = [v12 localizedDescription];
+          code = [v12 code];
+          v16 = code;
+          if (localizedFailureReason)
           {
-            v17 = [v12 localizedFailureReason];
-            v18 = [NSString stringWithFormat:@"%@(0x%lx) - %@\n", v14, v16, v17];
+            localizedFailureReason2 = [v12 localizedFailureReason];
+            v18 = [NSString stringWithFormat:@"%@(0x%lx) - %@\n", localizedDescription, v16, localizedFailureReason2];
 
             v7 = v18;
           }
 
           else
           {
-            [NSString stringWithFormat:@"%@(0x%lx)\n", v14, v15];
-            v7 = v17 = v7;
+            [NSString stringWithFormat:@"%@(0x%lx)\n", localizedDescription, code];
+            v7 = localizedFailureReason2 = v7;
           }
 
           v8 = [(__CFString *)v11 stringByAppendingString:v7];
@@ -135,29 +135,29 @@
   return v19;
 }
 
-- (void)didReceiveError:(id)a3
+- (void)didReceiveError:(id)error
 {
-  v4 = a3;
-  v5 = [(MSDViewServiceModel *)self errors];
-  [v5 addObject:v4];
+  errorCopy = error;
+  errors = [(MSDViewServiceModel *)self errors];
+  [errors addObject:errorCopy];
 
-  v6 = [(MSDViewServiceModel *)self errorMessageFromErrors];
-  [(MSDViewServiceModel *)self setErrorMessage:v6];
+  errorMessageFromErrors = [(MSDViewServiceModel *)self errorMessageFromErrors];
+  [(MSDViewServiceModel *)self setErrorMessage:errorMessageFromErrors];
 }
 
-- (void)didReceiveProgress:(int64_t)a3
+- (void)didReceiveProgress:(int64_t)progress
 {
   v5 = sub_1000015E4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = a3;
+    progressCopy = progress;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received progress: %ld", &v8, 0xCu);
   }
 
-  if (a3 >= 1)
+  if (progress >= 1)
   {
-    *&v6 = a3 / 100.0;
+    *&v6 = progress / 100.0;
     v7 = [NSNumber numberWithFloat:v6];
     [(MSDViewServiceModel *)self setProgress:v7];
   }
@@ -175,9 +175,9 @@
   [(MSDViewServiceModel *)self setErrorToReport:0];
 }
 
-- (void)operationFailed:(id)a3
+- (void)operationFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   v5 = sub_1000015E4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -185,7 +185,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Operation failed, informing the view controller.", v6, 2u);
   }
 
-  [(MSDViewServiceModel *)self setErrorToReport:v4];
+  [(MSDViewServiceModel *)self setErrorToReport:failedCopy];
 }
 
 @end

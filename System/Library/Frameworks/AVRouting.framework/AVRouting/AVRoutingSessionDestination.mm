@@ -1,6 +1,6 @@
 @interface AVRoutingSessionDestination
-- (AVRoutingSessionDestination)initWithFigRoutingSessionDestination:(__CFDictionary *)a3;
-- (BOOL)_canQueryOutputDeviceDescriptionsAndReturnCurrentValue:(id *)a3;
+- (AVRoutingSessionDestination)initWithFigRoutingSessionDestination:(__CFDictionary *)destination;
+- (BOOL)_canQueryOutputDeviceDescriptionsAndReturnCurrentValue:(id *)value;
 - (BOOL)providesExternalVideoPlayback;
 - (NSArray)outputDeviceDescriptions;
 - (float)probability;
@@ -77,12 +77,12 @@
   return 0;
 }
 
-- (AVRoutingSessionDestination)initWithFigRoutingSessionDestination:(__CFDictionary *)a3
+- (AVRoutingSessionDestination)initWithFigRoutingSessionDestination:(__CFDictionary *)destination
 {
   v9.receiver = self;
   v9.super_class = AVRoutingSessionDestination;
   v4 = [(AVRoutingSessionDestination *)&v9 init];
-  if (v4 && (ivars = objc_alloc_init(AVRoutingSessionDestinationInternal), (v4->_ivars = ivars) != 0) && (!a3 ? (v6 = 0) : (v6 = CFRetain(a3), ivars = v4->_ivars), ivars->figDestination = v6, v4->_ivars->figDestination))
+  if (v4 && (ivars = objc_alloc_init(AVRoutingSessionDestinationInternal), (v4->_ivars = ivars) != 0) && (!destination ? (v6 = 0) : (v6 = CFRetain(destination), ivars = v4->_ivars), ivars->figDestination = v6, v4->_ivars->figDestination))
   {
     v7 = v4;
   }
@@ -95,13 +95,13 @@
   return v7;
 }
 
-- (BOOL)_canQueryOutputDeviceDescriptionsAndReturnCurrentValue:(id *)a3
+- (BOOL)_canQueryOutputDeviceDescriptionsAndReturnCurrentValue:(id *)value
 {
   Value = CFDictionaryGetValue(self->_ivars->figDestination, *MEMORY[0x1E69AF560]);
   if (Value)
   {
     v5 = Value;
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if (CFArrayGetCount(v5) >= 1)
     {
       v7 = 0;
@@ -110,7 +110,7 @@
         v8 = [AVOutputDevice outputDeviceWithRouteDescriptor:CFArrayGetValueAtIndex(v5 withRoutingContext:v7), 0];
         if (v8)
         {
-          [v6 addObject:v8];
+          [array addObject:v8];
         }
 
         ++v7;
@@ -119,11 +119,11 @@
       while (v7 < CFArrayGetCount(v5));
     }
 
-    if (v6)
+    if (array)
     {
-      if (a3)
+      if (value)
       {
-        *a3 = v6;
+        *value = array;
       }
 
       LOBYTE(Value) = 1;

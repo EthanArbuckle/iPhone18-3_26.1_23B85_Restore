@@ -1,22 +1,22 @@
 @interface UIKBBackgroundView
 - (NSString)cacheKey;
-- (UIKBBackgroundView)initWithFrame:(CGRect)a3;
+- (UIKBBackgroundView)initWithFrame:(CGRect)frame;
 - (double)cachedWidth;
-- (id)cacheKeysForRenderFlags:(id)a3;
+- (id)cacheKeysForRenderFlags:(id)flags;
 - (int64_t)assetIdiom;
-- (void)displayLayer:(id)a3;
-- (void)drawContentsOfRenderers:(id)a3;
-- (void)refreshStyleForKeyplane:(id)a3 inputTraits:(id)a4;
-- (void)setRenderConfig:(id)a3;
+- (void)displayLayer:(id)layer;
+- (void)drawContentsOfRenderers:(id)renderers;
+- (void)refreshStyleForKeyplane:(id)keyplane inputTraits:(id)traits;
+- (void)setRenderConfig:(id)config;
 @end
 
 @implementation UIKBBackgroundView
 
-- (UIKBBackgroundView)initWithFrame:(CGRect)a3
+- (UIKBBackgroundView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = UIKBBackgroundView;
-  v3 = [(UIKBSplitImageView *)&v8 initWithFrame:1 canStretchAsFullWidth:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIKBSplitImageView *)&v8 initWithFrame:1 canStretchAsFullWidth:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,30 +30,30 @@
   return v4;
 }
 
-- (void)refreshStyleForKeyplane:(id)a3 inputTraits:(id)a4
+- (void)refreshStyleForKeyplane:(id)keyplane inputTraits:(id)traits
 {
-  v27 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_keyplane, a3);
-  objc_storeStrong(&self->_inputTraits, a4);
+  keyplaneCopy = keyplane;
+  traitsCopy = traits;
+  objc_storeStrong(&self->_keyplane, keyplane);
+  objc_storeStrong(&self->_inputTraits, traits);
   [(UIView *)self setOpaque:0];
   v8 = [(UIKBTree *)self->_keyplane cachedKeysByKeyName:@"Candidate-Selection"];
   self->_hasCandidateKeys = v8 != 0;
 
   if (self->_hasCandidateKeys)
   {
-    v9 = 101;
+    visualStyle = 101;
   }
 
   else
   {
-    v9 = [v27 visualStyle];
+    visualStyle = [keyplaneCopy visualStyle];
   }
 
-  self->_visualStyle = v9;
+  self->_visualStyle = visualStyle;
   self->_isSplit = [(UIKBTree *)self->_keyplane isSplit];
   self->_centerFilled = [(UIKBScreenTraits *)self->_screenTraits centerFilled];
-  if (self->_isSplit && (-[UIKBSplitImageView prepareForDisplay:](self, "prepareForDisplay:", 1), [v27 frameForKeylayoutName:@"split-left"], self->_splitLeftRect.origin.x = v10, self->_splitLeftRect.origin.y = v11, self->_splitLeftRect.size.width = v12, self->_splitLeftRect.size.height = v13, objc_msgSend(v27, "frameForKeylayoutName:", @"split-right"), self->_splitRightRect.origin.x = v14, self->_splitRightRect.origin.y = v15, self->_splitRightRect.size.width = v16, self->_splitRightRect.size.height = v17, size = self->_splitLeftRect.size, self->_splitLeftCacheRect.origin = self->_splitLeftRect.origin, self->_splitLeftCacheRect.size = size, v19 = self->_splitRightRect.size, self->_splitRightCacheRect.origin = self->_splitRightRect.origin, self->_splitRightCacheRect.size = v19, self->_isSplit) && !self->_centerFilled)
+  if (self->_isSplit && (-[UIKBSplitImageView prepareForDisplay:](self, "prepareForDisplay:", 1), [keyplaneCopy frameForKeylayoutName:@"split-left"], self->_splitLeftRect.origin.x = v10, self->_splitLeftRect.origin.y = v11, self->_splitLeftRect.size.width = v12, self->_splitLeftRect.size.height = v13, objc_msgSend(keyplaneCopy, "frameForKeylayoutName:", @"split-right"), self->_splitRightRect.origin.x = v14, self->_splitRightRect.origin.y = v15, self->_splitRightRect.size.width = v16, self->_splitRightRect.size.height = v17, size = self->_splitLeftRect.size, self->_splitLeftCacheRect.origin = self->_splitLeftRect.origin, self->_splitLeftCacheRect.size = size, v19 = self->_splitRightRect.size, self->_splitRightCacheRect.origin = self->_splitRightRect.origin, self->_splitRightCacheRect.size = v19, self->_isSplit) && !self->_centerFilled)
   {
     [(UIKBSplitImageView *)self prepareForDisplay:1];
     v23 = [(UIView *)self _clipCornersOfView:self];
@@ -80,9 +80,9 @@
   [(UIView *)self setNeedsDisplay];
 }
 
-- (void)drawContentsOfRenderers:(id)a3
+- (void)drawContentsOfRenderers:(id)renderers
 {
-  v21 = a3;
+  renderersCopy = renderers;
   v4 = [UIKBRenderingContext renderingContextForRenderConfig:self->_renderConfig];
   v5 = [UIKBRenderFactory lightweightFactoryForVisualStyle:[(UIKBTree *)self->_keyplane visualStyling] renderingContext:v4];
   if (v5)
@@ -92,18 +92,18 @@
     [(UIKBScreenTraits *)self->_screenTraits stretchFactor];
     [v5 setStretchFactor:?];
     v6 = [v5 backgroundTraitsForKeyplane:self->_keyplane];
-    v7 = [v6 geometry];
-    v8 = [v7 splitLeftRect];
-    if (v8)
+    geometry = [v6 geometry];
+    splitLeftRect = [geometry splitLeftRect];
+    if (splitLeftRect)
     {
-      v9 = v8;
-      v10 = [v6 geometry];
-      v11 = [v10 splitRightRect];
+      v9 = splitLeftRect;
+      geometry2 = [v6 geometry];
+      splitRightRect = [geometry2 splitRightRect];
 
-      if (!v11)
+      if (!splitRightRect)
       {
 LABEL_8:
-        v20 = [v21 objectAtIndex:0];
+        v20 = [renderersCopy objectAtIndex:0];
         [v20 renderBackgroundTraits:v6];
 
         goto LABEL_9;
@@ -111,30 +111,30 @@ LABEL_8:
 
       if (self->_centerFilled)
       {
-        v12 = [v6 geometry];
-        [v12 setSplitLeftRect:0];
+        geometry3 = [v6 geometry];
+        [geometry3 setSplitLeftRect:0];
 
-        v7 = [v6 geometry];
-        [v7 setSplitRightRect:0];
+        geometry = [v6 geometry];
+        [geometry setSplitRightRect:0];
       }
 
       else
       {
         topCorners = self->_topCorners;
-        v14 = [v6 geometry];
-        [v14 setRoundRectCorners:topCorners];
+        geometry4 = [v6 geometry];
+        [geometry4 setRoundRectCorners:topCorners];
 
         v15 = [MEMORY[0x1E696B098] valueWithCGRect:{self->_splitLeftCacheRect.origin.x, self->_splitLeftCacheRect.origin.y, self->_splitLeftCacheRect.size.width, self->_splitLeftCacheRect.size.height}];
-        v16 = [v6 geometry];
-        [v16 setSplitLeftRect:v15];
+        geometry5 = [v6 geometry];
+        [geometry5 setSplitLeftRect:v15];
 
         v17 = [MEMORY[0x1E696B098] valueWithCGRect:{self->_splitRightCacheRect.origin.x, self->_splitRightCacheRect.origin.y, self->_splitRightCacheRect.size.width, self->_splitRightCacheRect.size.height}];
-        v18 = [v6 geometry];
-        [v18 setSplitRightRect:v17];
+        geometry6 = [v6 geometry];
+        [geometry6 setSplitRightRect:v17];
 
         v19 = UIKBCornerRadius();
-        v7 = [v6 geometry];
-        [v7 setRoundRectRadius:v19];
+        geometry = [v6 geometry];
+        [geometry setRoundRectRadius:v19];
       }
     }
 
@@ -155,33 +155,33 @@ LABEL_9:
   return v7;
 }
 
-- (id)cacheKeysForRenderFlags:(id)a3
+- (id)cacheKeysForRenderFlags:(id)flags
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIKBBackgroundView *)self cacheKey];
-  v6 = [v4 firstObject];
+  flagsCopy = flags;
+  cacheKey = [(UIKBBackgroundView *)self cacheKey];
+  firstObject = [flagsCopy firstObject];
 
-  v7 = [v6 integerValue];
-  v8 = [(UIKBBackgroundView *)self renderConfig];
-  v9 = [UIKBRenderFactory cacheKeyForString:v5 withRenderFlags:v7 renderConfig:v8];
+  integerValue = [firstObject integerValue];
+  renderConfig = [(UIKBBackgroundView *)self renderConfig];
+  v9 = [UIKBRenderFactory cacheKeyForString:cacheKey withRenderFlags:integerValue renderConfig:renderConfig];
 
-  v12 = v6;
+  v12 = firstObject;
   v13[0] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
   return v10;
 }
 
-- (void)setRenderConfig:(id)a3
+- (void)setRenderConfig:(id)config
 {
-  v4 = a3;
-  v5 = [(UIKBBackgroundView *)self renderConfig];
-  if (v5)
+  configCopy = config;
+  renderConfig = [(UIKBBackgroundView *)self renderConfig];
+  if (renderConfig)
   {
-    v6 = [(UIKBBackgroundView *)self renderConfig];
-    v7 = [v6 lightKeyboard];
-    v8 = v7 ^ [(UIKBRenderConfig *)v4 lightKeyboard];
+    renderConfig2 = [(UIKBBackgroundView *)self renderConfig];
+    lightKeyboard = [renderConfig2 lightKeyboard];
+    v8 = lightKeyboard ^ [(UIKBRenderConfig *)configCopy lightKeyboard];
   }
 
   else
@@ -189,27 +189,27 @@ LABEL_9:
     v8 = 1;
   }
 
-  if ([(UIKBRenderConfig *)v4 usesCompactKeycapsFont]&& [(UIKBTree *)self->_keyplane isKanaKeyboard])
+  if ([(UIKBRenderConfig *)configCopy usesCompactKeycapsFont]&& [(UIKBTree *)self->_keyplane isKanaKeyboard])
   {
-    [(UIKBRenderConfig *)v4 setUsesCompactKeycapsFont:0];
-    v9 = [(UIKBRenderConfig *)self->_renderConfig usesCompactKeycapsFont];
-    v8 = v9 ^ [(UIKBRenderConfig *)v4 usesCompactKeycapsFont];
+    [(UIKBRenderConfig *)configCopy setUsesCompactKeycapsFont:0];
+    usesCompactKeycapsFont = [(UIKBRenderConfig *)self->_renderConfig usesCompactKeycapsFont];
+    v8 = usesCompactKeycapsFont ^ [(UIKBRenderConfig *)configCopy usesCompactKeycapsFont];
   }
 
   renderConfig = self->_renderConfig;
-  self->_renderConfig = v4;
+  self->_renderConfig = configCopy;
 
-  if (v4)
+  if (configCopy)
   {
     if (v8)
     {
       [(UIView *)self setNeedsDisplay];
     }
 
-    v11 = [(UIView *)self layer];
-    v12 = [v11 contents];
+    layer = [(UIView *)self layer];
+    contents = [layer contents];
 
-    if (!v12)
+    if (!contents)
     {
 
       [(UIView *)self setNeedsDisplay];
@@ -217,7 +217,7 @@ LABEL_9:
   }
 }
 
-- (void)displayLayer:(id)a3
+- (void)displayLayer:(id)layer
 {
   if ([(UIView *)self isHidden])
   {
@@ -242,14 +242,14 @@ LABEL_9:
     v8 = self->_splitRightCacheRect.size.width + 1.0;
   }
 
-  v12 = [(UIView *)self layer];
-  [v12 setBackgroundColor:0];
+  layer = [(UIView *)self layer];
+  [layer setBackgroundColor:0];
 
   visualStyle = self->_visualStyle;
   if (visualStyle == 5 || visualStyle == 105 || [(UITextInputTraits *)self->_inputTraits keyboardType]== 127)
   {
-    v14 = [(UIView *)self layer];
-    [v14 setContents:0];
+    layer2 = [(UIView *)self layer];
+    [layer2 setContents:0];
 
     [(UIKBSplitImageView *)self setImage:0 splitLeft:0 splitRight:0 keyplane:0];
     if (-[UITextInputTraits keyboardType](self->_inputTraits, "keyboardType") != 127 && -[UITextInputTraits keyboardType](self->_inputTraits, "keyboardType") != 4 && -[UITextInputTraits keyboardType](self->_inputTraits, "keyboardType") != 11 && ([UIApp _isSpringBoard] & 1) != 0)
@@ -257,24 +257,24 @@ LABEL_9:
       return;
     }
 
-    v15 = [(UIView *)self window];
-    v16 = [v15 _isTextEffectsWindow];
+    window = [(UIView *)self window];
+    _isTextEffectsWindow = [window _isTextEffectsWindow];
 
-    if (v16)
+    if (_isTextEffectsWindow)
     {
       return;
     }
 
-    v17 = [(UIKBBackgroundView *)self renderConfig];
-    v31 = +[_UIBackdropViewSettings settingsForStyle:graphicsQuality:](_UIBackdropViewSettings, "settingsForStyle:graphicsQuality:", [v17 backdropStyle], +[UIKBRenderFactory _graphicsQuality](UIKBRenderFactory, "_graphicsQuality"));
+    renderConfig = [(UIKBBackgroundView *)self renderConfig];
+    v31 = +[_UIBackdropViewSettings settingsForStyle:graphicsQuality:](_UIBackdropViewSettings, "settingsForStyle:graphicsQuality:", [renderConfig backdropStyle], +[UIKBRenderFactory _graphicsQuality](UIKBRenderFactory, "_graphicsQuality"));
 
     [v31 grayscaleTintLevel];
     v19 = v18;
     [v31 grayscaleTintAlpha];
     v21 = [UIColor colorWithWhite:v19 alpha:v20];
-    v22 = [v21 CGColor];
-    v23 = [(UIView *)self layer];
-    [v23 setBackgroundColor:v22];
+    cGColor = [v21 CGColor];
+    layer3 = [(UIView *)self layer];
+    [layer3 setBackgroundColor:cGColor];
 
 LABEL_14:
 
@@ -284,8 +284,8 @@ LABEL_14:
   if ([(UIKBRenderConfig *)self->_renderConfig lightKeyboard])
   {
     v24 = +[UIKeyboardCache sharedInstance];
-    v25 = [(UIKBTree *)self->_keyplane layoutName];
-    v26 = [v24 displayImagesForView:self fromLayout:v25 imageFlags:&unk_1EFE2C6A0];
+    layoutName = [(UIKBTree *)self->_keyplane layoutName];
+    v26 = [v24 displayImagesForView:self fromLayout:layoutName imageFlags:&unk_1EFE2C6A0];
 
     v31 = [v26 objectForKey:&unk_1EFE31288];
 
@@ -311,8 +311,8 @@ LABEL_14:
         v21 = 0;
       }
 
-      v27 = [(UIView *)self layer];
-      [v27 setContents:0];
+      layer4 = [(UIView *)self layer];
+      [layer4 setContents:0];
 
       if (self->_isSplit)
       {
@@ -337,8 +337,8 @@ LABEL_14:
 
       if (v21)
       {
-        v30 = [v21 formatColor];
-        [(UIKBSplitImageView *)self setContentsMultiplyColor:v30];
+        formatColor = [v21 formatColor];
+        [(UIKBSplitImageView *)self setContentsMultiplyColor:formatColor];
       }
 
       else
@@ -375,10 +375,10 @@ LABEL_14:
 
 - (int64_t)assetIdiom
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  return v3;
+  return userInterfaceIdiom;
 }
 
 @end

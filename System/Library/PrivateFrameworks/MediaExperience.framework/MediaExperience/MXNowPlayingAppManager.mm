@@ -1,9 +1,9 @@
 @interface MXNowPlayingAppManager
 + (id)sharedInstance;
-+ (void)actuallyWriteNowPlayingAppDisplayIDToDisk:(id)a3;
-+ (void)processNowPlayingAppPIDChangeIfNeeded:(BOOL)a3;
-- (BOOL)doesNowPlayingAppStackContain:(id)a3;
-- (BOOL)resetNowPlayingAppIfNeeded:(unsigned int)a3 allowedToBeNowPlaying:(BOOL)a4 canBeNowPlayingApp:(BOOL)a5;
++ (void)actuallyWriteNowPlayingAppDisplayIDToDisk:(id)disk;
++ (void)processNowPlayingAppPIDChangeIfNeeded:(BOOL)needed;
+- (BOOL)doesNowPlayingAppStackContain:(id)contain;
+- (BOOL)resetNowPlayingAppIfNeeded:(unsigned int)needed allowedToBeNowPlaying:(BOOL)playing canBeNowPlayingApp:(BOOL)app;
 - (MXNowPlayingAppManager)init;
 - (id)copyTopOfNowPlayingAppStack;
 - (unint64_t)nowPlayingAppStackSize;
@@ -12,13 +12,13 @@
 - (void)dumpNowPlayingAppInfo;
 - (void)popNowPlayingAppStack;
 - (void)popNowPlayingAppStackOldestDisplayID;
-- (void)populateNowPlayingAppStack:(id)a3 hostProcessAttributionBundleID:(id)a4;
-- (void)pushToNowPlayingAppStack:(id)a3 hostProcessAttributionBundleID:(id)a4;
-- (void)removeFromNowPlayingAppStack:(id)a3;
-- (void)resetNowPlayingApp:(id)a3;
+- (void)populateNowPlayingAppStack:(id)stack hostProcessAttributionBundleID:(id)d;
+- (void)pushToNowPlayingAppStack:(id)stack hostProcessAttributionBundleID:(id)d;
+- (void)removeFromNowPlayingAppStack:(id)stack;
+- (void)resetNowPlayingApp:(id)app;
 - (void)resetNowPlayingAppToDefaultMusicApp;
 - (void)saveNowPlayingAppStackToDisk;
-- (void)setWriteNowPlayingAppToDiskTimer:(id)a3;
+- (void)setWriteNowPlayingAppToDiskTimer:(id)timer;
 - (void)updateNowPlayingAppStackFromDisk;
 - (void)writeNowPlayingAppInfoToDisk;
 @end
@@ -38,9 +38,9 @@
 - (id)copyTopOfNowPlayingAppStack
 {
   [(NSLock *)self->mLock lock];
-  v3 = [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack lastObject];
+  lastObject = [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack lastObject];
   [(NSLock *)self->mLock unlock];
-  return v3;
+  return lastObject;
 }
 
 MXNowPlayingAppManager *__40__MXNowPlayingAppManager_sharedInstance__block_invoke()
@@ -84,7 +84,7 @@ MXNowPlayingAppManager *__40__MXNowPlayingAppManager_sharedInstance__block_invok
   [(MXNowPlayingAppManager *)&v3 dealloc];
 }
 
-- (void)setWriteNowPlayingAppToDiskTimer:(id)a3
+- (void)setWriteNowPlayingAppToDiskTimer:(id)timer
 {
   [(NSLock *)self->mLock lock];
   writeNowPlayingAppToDiskTimer = self->_writeNowPlayingAppToDiskTimer;
@@ -99,13 +99,13 @@ MXNowPlayingAppManager *__40__MXNowPlayingAppManager_sharedInstance__block_invok
     }
   }
 
-  self->_writeNowPlayingAppToDiskTimer = a3;
+  self->_writeNowPlayingAppToDiskTimer = timer;
   mLock = self->mLock;
 
   [(NSLock *)mLock unlock];
 }
 
-+ (void)actuallyWriteNowPlayingAppDisplayIDToDisk:(id)a3
++ (void)actuallyWriteNowPlayingAppDisplayIDToDisk:(id)disk
 {
   v6 = *MEMORY[0x1E69E9840];
   if (dword_1EB75DE40)
@@ -115,13 +115,13 @@ MXNowPlayingAppManager *__40__MXNowPlayingAppManager_sharedInstance__block_invok
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  MXCFPreferencesSetAndSynchronizeUserPreference(@"nowPlayingAppDisplayID", a3);
+  MXCFPreferencesSetAndSynchronizeUserPreference(@"nowPlayingAppDisplayID", disk);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)processNowPlayingAppPIDChangeIfNeeded:(BOOL)a3
++ (void)processNowPlayingAppPIDChangeIfNeeded:(BOOL)needed
 {
-  if (a3)
+  if (needed)
   {
     CMSMUtility_UpdateSharePlayVolumeBehaviours();
     CMSMNotificationUtility_PostNowPlayingAppPIDDidChange();
@@ -164,20 +164,20 @@ uint64_t __54__MXNowPlayingAppManager_writeNowPlayingAppInfoToDisk__block_invoke
   [(MXNowPlayingAppManager *)self setNowPlayingAppStopTime:0];
 }
 
-- (void)resetNowPlayingApp:(id)a3
+- (void)resetNowPlayingApp:(id)app
 {
   v8 = *MEMORY[0x1E69E9840];
   if (MX_FeatureFlags_IsNowPlayingAppStackEnabled())
   {
-    v4 = [+[MXNowPlayingAppManager sharedInstance](MXNowPlayingAppManager copyTopOfNowPlayingAppStack];
+    copyTopOfNowPlayingAppStack = [+[MXNowPlayingAppManager sharedInstance](MXNowPlayingAppManager copyTopOfNowPlayingAppStack];
     [+[MXNowPlayingAppManager sharedInstance](MXNowPlayingAppManager popNowPlayingAppStack];
-    v5 = [+[MXNowPlayingAppManager sharedInstance](MXNowPlayingAppManager copyTopOfNowPlayingAppStack];
+    copyTopOfNowPlayingAppStack2 = [+[MXNowPlayingAppManager sharedInstance](MXNowPlayingAppManager copyTopOfNowPlayingAppStack];
   }
 
   else
   {
-    v4 = [(MXNowPlayingAppManager *)self nowPlayingAppDisplayID];
-    v5 = [+[MXSessionManager sharedInstance](MXSessionManager defaultMusicApp];
+    copyTopOfNowPlayingAppStack = [(MXNowPlayingAppManager *)self nowPlayingAppDisplayID];
+    copyTopOfNowPlayingAppStack2 = [+[MXSessionManager sharedInstance](MXSessionManager defaultMusicApp];
     [(MXNowPlayingAppManager *)self resetNowPlayingAppToDefaultMusicApp];
   }
 
@@ -191,14 +191,14 @@ uint64_t __54__MXNowPlayingAppManager_writeNowPlayingAppInfoToDisk__block_invoke
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)resetNowPlayingAppIfNeeded:(unsigned int)a3 allowedToBeNowPlaying:(BOOL)a4 canBeNowPlayingApp:(BOOL)a5
+- (BOOL)resetNowPlayingAppIfNeeded:(unsigned int)needed allowedToBeNowPlaying:(BOOL)playing canBeNowPlayingApp:(BOOL)app
 {
-  v5 = a5;
-  v6 = a4;
+  appCopy = app;
+  playingCopy = playing;
   v18 = *MEMORY[0x1E69E9840];
-  v9 = [(MXNowPlayingAppManager *)self nowPlayingAppDisplayID];
-  v10 = [+[MXSessionManager sharedInstance](MXSessionManager defaultMusicApp];
-  v11 = [(NSString *)v9 isEqualToString:v10];
+  nowPlayingAppDisplayID = [(MXNowPlayingAppManager *)self nowPlayingAppDisplayID];
+  defaultMusicApp = [+[MXSessionManager sharedInstance](MXSessionManager defaultMusicApp];
+  v11 = [(NSString *)nowPlayingAppDisplayID isEqualToString:defaultMusicApp];
   if (MX_FeatureFlags_IsNowPlayingAppStackEnabled())
   {
     if ([-[MXNowPlayingAppManager copyTopOfNowPlayingAppStack](self "copyTopOfNowPlayingAppStack")])
@@ -214,7 +214,7 @@ uint64_t __54__MXNowPlayingAppManager_writeNowPlayingAppInfoToDisk__block_invoke
     v11 &= v12;
   }
 
-  if (!a3 || v11)
+  if (!needed || v11)
   {
     if (dword_1EB75DE40)
     {
@@ -228,7 +228,7 @@ uint64_t __54__MXNowPlayingAppManager_writeNowPlayingAppInfoToDisk__block_invoke
 
   else
   {
-    if (a3 == 3 && !v6)
+    if (needed == 3 && !playingCopy)
     {
       v13 = @"of new interruption style";
 LABEL_22:
@@ -238,13 +238,13 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    if (a3 == 4 && !v5)
+    if (needed == 4 && !appCopy)
     {
       v13 = @"of canBeNowPlayingApp changed to false";
       goto LABEL_22;
     }
 
-    if (a3 == 2)
+    if (needed == 2)
     {
       v13 = @"app went into background";
       goto LABEL_22;
@@ -252,7 +252,7 @@ LABEL_22:
 
     IsNowPlayingAppStackEnabled = MX_FeatureFlags_IsNowPlayingAppStackEnabled();
     result = 0;
-    if (a3 == 7 && IsNowPlayingAppStackEnabled)
+    if (needed == 7 && IsNowPlayingAppStackEnabled)
     {
       v13 = @"Now Playing app stack is being popped";
       goto LABEL_22;
@@ -272,24 +272,24 @@ LABEL_23:
   return v3;
 }
 
-- (BOOL)doesNowPlayingAppStackContain:(id)a3
+- (BOOL)doesNowPlayingAppStackContain:(id)contain
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (contain)
   {
     [(NSLock *)self->mLock lock];
-    v5 = [(NSMutableDictionary *)self->mNowPlayingAppHostProcessAttributionBundleID objectForKey:a3];
+    v5 = [(NSMutableDictionary *)self->mNowPlayingAppHostProcessAttributionBundleID objectForKey:contain];
     if (v5)
     {
-      v6 = v5;
+      containCopy = v5;
     }
 
     else
     {
-      v6 = a3;
+      containCopy = contain;
     }
 
-    v7 = [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack containsObject:v6];
+    v7 = [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack containsObject:containCopy];
     [(NSLock *)self->mLock unlock];
     v8 = *MEMORY[0x1E69E9840];
     return v7;
@@ -305,14 +305,14 @@ LABEL_23:
   }
 }
 
-- (void)pushToNowPlayingAppStack:(id)a3 hostProcessAttributionBundleID:(id)a4
+- (void)pushToNowPlayingAppStack:(id)stack hostProcessAttributionBundleID:(id)d
 {
   v39 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (stack)
   {
-    v7 = [(MXNowPlayingAppManager *)self nowPlayingAppStackSize];
+    nowPlayingAppStackSize = [(MXNowPlayingAppManager *)self nowPlayingAppStackSize];
     [(NSLock *)self->mLock lock];
-    [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack removeObject:a3];
+    [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack removeObject:stack];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -333,7 +333,7 @@ LABEL_23:
           }
 
           v13 = *(*(&v22 + 1) + 8 * i);
-          if ([a3 isEqualToString:{-[NSMutableDictionary objectForKey:](self->mNowPlayingAppHostProcessAttributionBundleID, "objectForKey:", v13)}])
+          if ([stack isEqualToString:{-[NSMutableDictionary objectForKey:](self->mNowPlayingAppHostProcessAttributionBundleID, "objectForKey:", v13)}])
           {
             [(NSMutableDictionary *)self->mNowPlayingAppHostProcessAttributionBundleID removeObjectForKey:v13];
             goto LABEL_12;
@@ -351,10 +351,10 @@ LABEL_23:
     }
 
 LABEL_12:
-    [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack addObject:a3];
-    if (a4)
+    [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack addObject:stack];
+    if (d)
     {
-      [(NSMutableDictionary *)self->mNowPlayingAppHostProcessAttributionBundleID setObject:a3 forKey:a4];
+      [(NSMutableDictionary *)self->mNowPlayingAppHostProcessAttributionBundleID setObject:stack forKey:d];
     }
 
     [(NSLock *)self->mLock unlock];
@@ -376,17 +376,17 @@ LABEL_12:
 
       if (v16)
       {
-        v17 = [(MXNowPlayingAppManager *)self nowPlayingAppStackSize];
+        nowPlayingAppStackSize2 = [(MXNowPlayingAppManager *)self nowPlayingAppStackSize];
         v28 = 136316162;
         v29 = "[MXNowPlayingAppManager pushToNowPlayingAppStack:hostProcessAttributionBundleID:]";
         v30 = 2114;
-        v31 = a3;
+        stackCopy = stack;
         v32 = 2114;
-        v33 = a4;
+        dCopy = d;
         v34 = 2048;
-        v35 = v7;
+        v35 = nowPlayingAppStackSize;
         v36 = 2048;
-        v37 = v17;
+        v37 = nowPlayingAppStackSize2;
         LODWORD(v21) = 52;
         v20 = &v28;
         _os_log_send_and_compose_impl();
@@ -430,8 +430,8 @@ LABEL_12:
 
   if ([(NSMutableArray *)self->mNowPlayingAppDisplayIDStack count:v12])
   {
-    v4 = [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack lastObject];
-    [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack removeObject:v4];
+    lastObject = [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack lastObject];
+    [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack removeObject:lastObject];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
@@ -452,7 +452,7 @@ LABEL_12:
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          if ([v4 isEqualToString:{-[NSMutableDictionary objectForKey:](self->mNowPlayingAppHostProcessAttributionBundleID, "objectForKey:", v10)}])
+          if ([lastObject isEqualToString:{-[NSMutableDictionary objectForKey:](self->mNowPlayingAppHostProcessAttributionBundleID, "objectForKey:", v10)}])
           {
             [(NSMutableDictionary *)self->mNowPlayingAppHostProcessAttributionBundleID removeObjectForKey:v10];
             goto LABEL_14;
@@ -484,22 +484,22 @@ LABEL_14:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeFromNowPlayingAppStack:(id)a3
+- (void)removeFromNowPlayingAppStack:(id)stack
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (stack)
   {
     [(NSLock *)self->mLock lock];
-    v5 = [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack lastObject];
-    v6 = [(NSMutableDictionary *)self->mNowPlayingAppHostProcessAttributionBundleID objectForKey:a3];
+    lastObject = [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack lastObject];
+    v6 = [(NSMutableDictionary *)self->mNowPlayingAppHostProcessAttributionBundleID objectForKey:stack];
     if (v6)
     {
-      v7 = v6;
+      stackCopy = v6;
     }
 
     else
     {
-      v7 = a3;
+      stackCopy = stack;
     }
 
     if (dword_1EB75DE40)
@@ -509,18 +509,18 @@ LABEL_14:
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack removeObject:v7, v13, v14];
-    [(NSMutableDictionary *)self->mNowPlayingAppHostProcessAttributionBundleID removeObjectForKey:a3];
+    [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack removeObject:stackCopy, v13, v14];
+    [(NSMutableDictionary *)self->mNowPlayingAppHostProcessAttributionBundleID removeObjectForKey:stack];
     if (![(NSMutableArray *)self->mNowPlayingAppDisplayIDStack count])
     {
       -[NSMutableArray addObject:](self->mNowPlayingAppDisplayIDStack, "addObject:", [+[MXSessionManager sharedInstance](MXSessionManager defaultMusicApp]);
     }
 
-    v10 = [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack lastObject];
-    v11 = [v10 isEqualToString:v5];
+    lastObject2 = [(NSMutableArray *)self->mNowPlayingAppDisplayIDStack lastObject];
+    v11 = [lastObject2 isEqualToString:lastObject];
     if ((v11 & 1) == 0)
     {
-      [(MXNowPlayingAppManager *)self setNowPlayingAppDisplayID:v10];
+      [(MXNowPlayingAppManager *)self setNowPlayingAppDisplayID:lastObject2];
       [(MXNowPlayingAppManager *)self setNowPlayingAppPID:0];
       [(MXNowPlayingAppManager *)self setNowPlayingAppStopTime:0];
     }
@@ -540,14 +540,14 @@ LABEL_14:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)populateNowPlayingAppStack:(id)a3 hostProcessAttributionBundleID:(id)a4
+- (void)populateNowPlayingAppStack:(id)stack hostProcessAttributionBundleID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [stack countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -559,15 +559,15 @@ LABEL_14:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(stack);
         }
 
-        -[MXNowPlayingAppManager pushToNowPlayingAppStack:hostProcessAttributionBundleID:](self, "pushToNowPlayingAppStack:hostProcessAttributionBundleID:", *(*(&v12 + 1) + 8 * v10), [a4 objectForKey:*(*(&v12 + 1) + 8 * v10)]);
+        -[MXNowPlayingAppManager pushToNowPlayingAppStack:hostProcessAttributionBundleID:](self, "pushToNowPlayingAppStack:hostProcessAttributionBundleID:", *(*(&v12 + 1) + 8 * v10), [d objectForKey:*(*(&v12 + 1) + 8 * v10)]);
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [stack countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);

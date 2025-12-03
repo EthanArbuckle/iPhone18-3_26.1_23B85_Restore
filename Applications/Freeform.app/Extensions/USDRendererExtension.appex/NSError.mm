@@ -1,45 +1,45 @@
 @interface NSError
-+ (id)crl_errorWithCode:(int64_t)a3 userInfo:(id)a4;
-+ (id)crl_errorWithDomain:(id)a3 code:(int64_t)a4 alertTitle:(id)a5 alertMessage:(id)a6 userInfo:(id)a7;
-+ (id)crl_errorWithDomain:(id)a3 code:(int64_t)a4 description:(id)a5 recoverySuggestion:(id)a6;
-+ (id)crl_errorWithDomain:(id)a3 code:(int64_t)a4 description:(id)a5 underlyingError:(id)a6;
-+ (id)crl_errorWithError:(id)a3 alertTitle:(id)a4 alertMessage:(id)a5 additionalUserInfo:(id)a6;
-- (BOOL)crl_isErrorPassingTest:(id)a3;
++ (id)crl_errorWithCode:(int64_t)code userInfo:(id)info;
++ (id)crl_errorWithDomain:(id)domain code:(int64_t)code alertTitle:(id)title alertMessage:(id)message userInfo:(id)info;
++ (id)crl_errorWithDomain:(id)domain code:(int64_t)code description:(id)description recoverySuggestion:(id)suggestion;
++ (id)crl_errorWithDomain:(id)domain code:(int64_t)code description:(id)description underlyingError:(id)error;
++ (id)crl_errorWithError:(id)error alertTitle:(id)title alertMessage:(id)message additionalUserInfo:(id)info;
+- (BOOL)crl_isErrorPassingTest:(id)test;
 - (id)crl_errorPreservingAlertTitle;
 - (id)crl_errorPreservingCancel;
 - (id)crl_localizedAlertMessage;
 - (id)crl_localizedAlertTitle;
-- (void)crl_enumerateErrorUsingBlock:(id)a3;
+- (void)crl_enumerateErrorUsingBlock:(id)block;
 @end
 
 @implementation NSError
 
-+ (id)crl_errorWithDomain:(id)a3 code:(int64_t)a4 description:(id)a5 recoverySuggestion:(id)a6
++ (id)crl_errorWithDomain:(id)domain code:(int64_t)code description:(id)description recoverySuggestion:(id)suggestion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  domainCopy = domain;
+  descriptionCopy = description;
+  suggestionCopy = suggestion;
   v13 = [[NSMutableDictionary alloc] initWithCapacity:2];
   v14 = v13;
-  if (v11)
+  if (descriptionCopy)
   {
-    [v13 setObject:v11 forKeyedSubscript:NSLocalizedDescriptionKey];
+    [v13 setObject:descriptionCopy forKeyedSubscript:NSLocalizedDescriptionKey];
   }
 
-  if (v12)
+  if (suggestionCopy)
   {
-    [v14 setObject:v12 forKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
+    [v14 setObject:suggestionCopy forKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
   }
 
-  v15 = [a1 errorWithDomain:v10 code:a4 userInfo:v14];
+  v15 = [self errorWithDomain:domainCopy code:code userInfo:v14];
 
   return v15;
 }
 
-+ (id)crl_errorWithCode:(int64_t)a3 userInfo:(id)a4
++ (id)crl_errorWithCode:(int64_t)code userInfo:(id)info
 {
-  v6 = a4;
-  if (a3 >= 3)
+  infoCopy = info;
+  if (code >= 3)
   {
     v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (CRLAssertCat_init_token != -1)
@@ -69,86 +69,86 @@
     [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:40 isFatal:0 description:"Bad error code"];
   }
 
-  v12 = [a1 errorWithDomain:@"com.apple.freeform" code:a3 userInfo:v6];
+  v12 = [self errorWithDomain:@"com.apple.freeform" code:code userInfo:infoCopy];
 
   return v12;
 }
 
-+ (id)crl_errorWithDomain:(id)a3 code:(int64_t)a4 alertTitle:(id)a5 alertMessage:(id)a6 userInfo:(id)a7
++ (id)crl_errorWithDomain:(id)domain code:(int64_t)code alertTitle:(id)title alertMessage:(id)message userInfo:(id)info
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v15, "count") + 4}];
+  domainCopy = domain;
+  titleCopy = title;
+  messageCopy = message;
+  infoCopy = info;
+  v16 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(infoCopy, "count") + 4}];
   v17 = v16;
-  if (v15)
+  if (infoCopy)
   {
-    [v16 addEntriesFromDictionary:v15];
+    [v16 addEntriesFromDictionary:infoCopy];
   }
 
-  if (v13)
+  if (titleCopy)
   {
-    [v17 setObject:v13 forKeyedSubscript:NSLocalizedDescriptionKey];
-    [v17 setObject:v13 forKeyedSubscript:@"CRLLocalizedErrorAlertTitle"];
+    [v17 setObject:titleCopy forKeyedSubscript:NSLocalizedDescriptionKey];
+    [v17 setObject:titleCopy forKeyedSubscript:@"CRLLocalizedErrorAlertTitle"];
   }
 
-  if (v14)
+  if (messageCopy)
   {
-    [v17 setObject:v14 forKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
-    [v17 setObject:v14 forKeyedSubscript:@"CRLLocalizedErrorAlertMessage"];
-    [v17 setObject:v14 forKeyedSubscript:NSLocalizedFailureReasonErrorKey];
+    [v17 setObject:messageCopy forKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
+    [v17 setObject:messageCopy forKeyedSubscript:@"CRLLocalizedErrorAlertMessage"];
+    [v17 setObject:messageCopy forKeyedSubscript:NSLocalizedFailureReasonErrorKey];
   }
 
-  v18 = [a1 errorWithDomain:v12 code:a4 userInfo:v17];
+  v18 = [self errorWithDomain:domainCopy code:code userInfo:v17];
 
   return v18;
 }
 
-+ (id)crl_errorWithDomain:(id)a3 code:(int64_t)a4 description:(id)a5 underlyingError:(id)a6
++ (id)crl_errorWithDomain:(id)domain code:(int64_t)code description:(id)description underlyingError:(id)error
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
+  domainCopy = domain;
+  errorCopy = error;
+  descriptionCopy = description;
   v13 = [[NSMutableDictionary alloc] initWithCapacity:2];
-  [v13 setObject:v12 forKeyedSubscript:NSLocalizedDescriptionKey];
+  [v13 setObject:descriptionCopy forKeyedSubscript:NSLocalizedDescriptionKey];
 
-  if (v11)
+  if (errorCopy)
   {
-    [v13 setObject:v11 forKeyedSubscript:NSUnderlyingErrorKey];
+    [v13 setObject:errorCopy forKeyedSubscript:NSUnderlyingErrorKey];
   }
 
-  v14 = [a1 errorWithDomain:v10 code:a4 userInfo:v13];
+  v14 = [self errorWithDomain:domainCopy code:code userInfo:v13];
 
   return v14;
 }
 
-+ (id)crl_errorWithError:(id)a3 alertTitle:(id)a4 alertMessage:(id)a5 additionalUserInfo:(id)a6
++ (id)crl_errorWithError:(id)error alertTitle:(id)title alertMessage:(id)message additionalUserInfo:(id)info
 {
-  v10 = a6;
-  if (a3)
+  infoCopy = info;
+  if (error)
   {
-    v11 = a5;
-    v12 = a4;
-    v13 = a3;
-    v14 = [v13 userInfo];
-    v15 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v10, "count") + objc_msgSend(v14, "count") + 1}];
+    messageCopy = message;
+    titleCopy = title;
+    errorCopy = error;
+    userInfo = [errorCopy userInfo];
+    v15 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(infoCopy, "count") + objc_msgSend(userInfo, "count") + 1}];
     v16 = v15;
-    if (v14)
+    if (userInfo)
     {
-      [v15 addEntriesFromDictionary:v14];
+      [v15 addEntriesFromDictionary:userInfo];
     }
 
-    if (v10)
+    if (infoCopy)
     {
-      [v16 addEntriesFromDictionary:v10];
+      [v16 addEntriesFromDictionary:infoCopy];
     }
 
-    [v16 setObject:v13 forKeyedSubscript:NSUnderlyingErrorKey];
-    v17 = [v13 domain];
-    v18 = [v13 code];
+    [v16 setObject:errorCopy forKeyedSubscript:NSUnderlyingErrorKey];
+    domain = [errorCopy domain];
+    code = [errorCopy code];
 
-    v19 = [a1 crl_errorWithDomain:v17 code:v18 alertTitle:v12 alertMessage:v11 userInfo:v16];
+    v19 = [self crl_errorWithDomain:domain code:code alertTitle:titleCopy alertMessage:messageCopy userInfo:v16];
   }
 
   else
@@ -161,44 +161,44 @@
 
 - (id)crl_errorPreservingAlertTitle
 {
-  v3 = [(NSError *)self userInfo];
-  v4 = [v3 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+  userInfo = [(NSError *)self userInfo];
+  v4 = [userInfo objectForKeyedSubscript:NSLocalizedDescriptionKey];
   if (!v4)
   {
     goto LABEL_5;
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"CRLLocalizedErrorAlertTitle"];
+  v5 = [userInfo objectForKeyedSubscript:@"CRLLocalizedErrorAlertTitle"];
   v6 = v5;
   if (!v5 || [v5 isEqualToString:v4])
   {
 
 LABEL_5:
-    v7 = self;
+    selfCopy = self;
     goto LABEL_6;
   }
 
-  v9 = [v3 mutableCopy];
+  v9 = [userInfo mutableCopy];
   [v9 setObject:v6 forKeyedSubscript:NSLocalizedDescriptionKey];
   v10 = objc_opt_class();
-  v11 = [(NSError *)self domain];
-  v7 = [v10 errorWithDomain:v11 code:-[NSError code](self userInfo:{"code"), v9}];
+  domain = [(NSError *)self domain];
+  selfCopy = [v10 errorWithDomain:domain code:-[NSError code](self userInfo:{"code"), v9}];
 
 LABEL_6:
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)crl_errorPreservingCancel
 {
-  v2 = self;
-  if ([(NSError *)v2 crl_isCancelError])
+  selfCopy = self;
+  if ([(NSError *)selfCopy crl_isCancelError])
   {
-    if ([(NSError *)v2 code]== 3072)
+    if ([(NSError *)selfCopy code]== 3072)
     {
-      v3 = [(NSError *)v2 domain];
+      domain = [(NSError *)selfCopy domain];
       v4 = NSCocoaErrorDomain;
-      v5 = [v3 isEqualToString:NSCocoaErrorDomain];
+      v5 = [domain isEqualToString:NSCocoaErrorDomain];
 
       if (v5)
       {
@@ -213,22 +213,22 @@ LABEL_6:
 
     v6 = objc_opt_class();
     v10 = NSUnderlyingErrorKey;
-    v11 = v2;
+    v11 = selfCopy;
     v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
     v8 = [v6 errorWithDomain:v4 code:3072 userInfo:v7];
 
-    v2 = v8;
+    selfCopy = v8;
   }
 
 LABEL_7:
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)crl_localizedAlertTitle
 {
-  v2 = [(NSError *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"CRLLocalizedErrorAlertTitle"];
+  userInfo = [(NSError *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"CRLLocalizedErrorAlertTitle"];
   v4 = v3;
   if (v3)
   {
@@ -237,7 +237,7 @@ LABEL_7:
 
   else
   {
-    v5 = [v2 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+    v5 = [userInfo objectForKeyedSubscript:NSLocalizedDescriptionKey];
   }
 
   v6 = v5;
@@ -247,8 +247,8 @@ LABEL_7:
 
 - (id)crl_localizedAlertMessage
 {
-  v2 = [(NSError *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"CRLLocalizedErrorAlertMessage"];
+  userInfo = [(NSError *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"CRLLocalizedErrorAlertMessage"];
   v4 = v3;
   if (v3)
   {
@@ -257,7 +257,7 @@ LABEL_7:
 
   else
   {
-    v5 = [v2 objectForKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
+    v5 = [userInfo objectForKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
   }
 
   v6 = v5;
@@ -265,23 +265,23 @@ LABEL_7:
   return v6;
 }
 
-- (void)crl_enumerateErrorUsingBlock:(id)a3
+- (void)crl_enumerateErrorUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = self;
+    selfCopy = self;
     v12 = 0;
-    if (v5)
+    if (selfCopy)
     {
-      v6 = v5;
+      v6 = selfCopy;
       do
       {
-        v7 = [(NSError *)v6 userInfo];
-        v8 = [(NSError *)v6 domain];
-        v4[2](v4, v8, [(NSError *)v6 code], v7, &v12);
+        userInfo = [(NSError *)v6 userInfo];
+        domain = [(NSError *)v6 domain];
+        blockCopy[2](blockCopy, domain, [(NSError *)v6 code], userInfo, &v12);
 
-        v9 = [v7 objectForKeyedSubscript:NSUnderlyingErrorKey];
+        v9 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
         v10 = v9;
         if (v9 != v6)
         {
@@ -296,21 +296,21 @@ LABEL_7:
   }
 }
 
-- (BOOL)crl_isErrorPassingTest:(id)a3
+- (BOOL)crl_isErrorPassingTest:(id)test
 {
-  v4 = a3;
-  v5 = v4;
+  testCopy = test;
+  v5 = testCopy;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if (v4)
+  if (testCopy)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100014674;
     v8[3] = &unk_1000C3180;
-    v9 = v4;
+    v9 = testCopy;
     v10 = &v11;
     [(NSError *)self crl_enumerateErrorUsingBlock:v8];
 

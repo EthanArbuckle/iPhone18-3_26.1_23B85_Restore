@@ -1,31 +1,31 @@
 @interface PKPassAuxiliaryPassInformation
-- (PKPassAuxiliaryPassInformation)initWithCoder:(id)a3;
-- (PKPassAuxiliaryPassInformation)initWithInformation:(id)a3 bundle:(id)a4 privateBundle:(id)a5 passType:(unint64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPassAuxiliaryPassInformation)initWithCoder:(id)coder;
+- (PKPassAuxiliaryPassInformation)initWithInformation:(id)information bundle:(id)bundle privateBundle:(id)privateBundle passType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassAuxiliaryPassInformation
 
-- (PKPassAuxiliaryPassInformation)initWithInformation:(id)a3 bundle:(id)a4 privateBundle:(id)a5 passType:(unint64_t)a6
+- (PKPassAuxiliaryPassInformation)initWithInformation:(id)information bundle:(id)bundle privateBundle:(id)privateBundle passType:(unint64_t)type
 {
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  informationCopy = information;
+  bundleCopy = bundle;
+  privateBundleCopy = privateBundle;
   v34.receiver = self;
   v34.super_class = PKPassAuxiliaryPassInformation;
   v13 = [(PKPassAuxiliaryPassInformation *)&v34 init];
   if (v13)
   {
-    v14 = [v10 PKStringForKey:@"identifier"];
+    v14 = [informationCopy PKStringForKey:@"identifier"];
     identifier = v13->_identifier;
     v13->_identifier = v14;
 
-    v16 = [v10 PKStringForKey:@"title"];
-    v17 = PKLocalizedPassStringForPassBundle(v16, v11, v12);
+    v16 = [informationCopy PKStringForKey:@"title"];
+    v17 = PKLocalizedPassStringForPassBundle(v16, bundleCopy, privateBundleCopy);
     title = v13->_title;
     v29 = v13;
     v13->_title = v17;
@@ -35,7 +35,7 @@
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v20 = [v10 objectForKey:@"values"];
+    v20 = [informationCopy objectForKey:@"values"];
     v21 = [v20 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v21)
     {
@@ -50,7 +50,7 @@
             objc_enumerationMutation(v20);
           }
 
-          v25 = [[PKPassAuxiliaryPassInformationItem alloc] initWithItemInformation:*(*(&v30 + 1) + 8 * i) bundle:v11 privateBundle:v12 passType:a6];
+          v25 = [[PKPassAuxiliaryPassInformationItem alloc] initWithItemInformation:*(*(&v30 + 1) + 8 * i) bundle:bundleCopy privateBundle:privateBundleCopy passType:type];
           [v19 safelyAddObject:v25];
         }
 
@@ -76,26 +76,26 @@
   return [(NSArray *)self->_items hash]- v4 + 32 * v4 + 506447;
 }
 
-- (PKPassAuxiliaryPassInformation)initWithCoder:(id)a3
+- (PKPassAuxiliaryPassInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PKPassAuxiliaryPassInformation;
   v5 = [(PKPassAuxiliaryPassInformation *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"values"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"values"];
     items = v5->_items;
     v5->_items = v13;
   }
@@ -103,27 +103,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeObject:self->_items forKey:@"values"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_items forKey:@"values"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPassAuxiliaryPassInformation allocWithZone:](PKPassAuxiliaryPassInformation init];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [(NSString *)self->_title copyWithZone:a3];
+  v8 = [(NSString *)self->_title copyWithZone:zone];
   title = v5->_title;
   v5->_title = v8;
 
-  v10 = [(NSArray *)self->_items copyWithZone:a3];
+  v10 = [(NSArray *)self->_items copyWithZone:zone];
   items = v5->_items;
   v5->_items = v10;
 

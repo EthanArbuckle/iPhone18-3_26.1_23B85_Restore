@@ -1,24 +1,24 @@
 @interface CADFullLoggingSpotlightIndex
-- (CADFullLoggingSpotlightIndex)initWithIndex:(id)a3;
+- (CADFullLoggingSpotlightIndex)initWithIndex:(id)index;
 - (void)beginIndexBatch;
-- (void)deleteAllSearchableItemsForBundleID:(id)a3 completionHandler:(id)a4;
-- (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)endIndexBatchWithExpectedClientState:(id)a3 newClientState:(id)a4 completionHandler:(id)a5;
-- (void)indexSearchableItems:(id)a3 completionHandler:(id)a4;
+- (void)deleteAllSearchableItemsForBundleID:(id)d completionHandler:(id)handler;
+- (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)endIndexBatchWithExpectedClientState:(id)state newClientState:(id)clientState completionHandler:(id)handler;
+- (void)indexSearchableItems:(id)items completionHandler:(id)handler;
 @end
 
 @implementation CADFullLoggingSpotlightIndex
 
-- (CADFullLoggingSpotlightIndex)initWithIndex:(id)a3
+- (CADFullLoggingSpotlightIndex)initWithIndex:(id)index
 {
-  v5 = a3;
+  indexCopy = index;
   v9.receiver = self;
   v9.super_class = CADFullLoggingSpotlightIndex;
   v6 = [(CADFullLoggingSpotlightIndex *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrappedIndex, a3);
+    objc_storeStrong(&v6->_wrappedIndex, index);
   }
 
   return v7;
@@ -36,20 +36,20 @@
   [(CADSpotlightIndex *)self->_wrappedIndex beginIndexBatch];
 }
 
-- (void)endIndexBatchWithExpectedClientState:(id)a3 newClientState:(id)a4 completionHandler:(id)a5
+- (void)endIndexBatchWithExpectedClientState:(id)state newClientState:(id)clientState completionHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  clientStateCopy = clientState;
+  handlerCopy = handler;
   v11 = CADSpotlightHandle;
   v12 = os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_INFO);
-  if (v8)
+  if (stateCopy)
   {
     if (v12)
     {
       *v17 = 138412290;
-      *&v17[4] = v8;
+      *&v17[4] = stateCopy;
       v13 = "endIndexBatchWithExpectedClientState called with expectedClientState %@";
       v14 = v11;
       v15 = 12;
@@ -67,24 +67,24 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  [(CADSpotlightIndex *)self->_wrappedIndex endIndexBatchWithExpectedClientState:v8 newClientState:v9 completionHandler:v10, *v17];
+  [(CADSpotlightIndex *)self->_wrappedIndex endIndexBatchWithExpectedClientState:stateCopy newClientState:clientStateCopy completionHandler:handlerCopy, *v17];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v8 = CADSpotlightHandle;
   if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
     *buf = 134218242;
-    v16 = [v6 count];
+    v16 = [identifiersCopy count];
     v17 = 2112;
-    v18 = v6;
+    v18 = identifiersCopy;
     _os_log_impl(&dword_22430B000, v9, OS_LOG_TYPE_INFO, "deleteSearchableItems called with %lu domain identifiers: %@", buf, 0x16u);
   }
 
@@ -93,9 +93,9 @@ LABEL_6:
   v13[1] = 3221225472;
   v13[2] = __93__CADFullLoggingSpotlightIndex_deleteSearchableItemsWithDomainIdentifiers_completionHandler___block_invoke;
   v13[3] = &unk_27851B190;
-  v14 = v7;
-  v11 = v7;
-  [(CADSpotlightIndex *)wrappedIndex deleteSearchableItemsWithDomainIdentifiers:v6 completionHandler:v13];
+  v14 = handlerCopy;
+  v11 = handlerCopy;
+  [(CADSpotlightIndex *)wrappedIndex deleteSearchableItemsWithDomainIdentifiers:identifiersCopy completionHandler:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -117,18 +117,18 @@ void __93__CADFullLoggingSpotlightIndex_deleteSearchableItemsWithDomainIdentifie
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)indexSearchableItems:(id)a3 completionHandler:(id)a4
+- (void)indexSearchableItems:(id)items completionHandler:(id)handler
 {
-  v25 = self;
+  selfCopy = self;
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v26 = a4;
+  itemsCopy = items;
+  handlerCopy = handler;
   v6 = CADSpotlightHandle;
   if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
     *buf = 134217984;
-    v34 = [v5 count];
+    v34 = [itemsCopy count];
     _os_log_impl(&dword_22430B000, v7, OS_LOG_TYPE_INFO, "indexSearchableItems called with %lu searchable items: [", buf, 0xCu);
   }
 
@@ -136,7 +136,7 @@ void __93__CADFullLoggingSpotlightIndex_deleteSearchableItemsWithDomainIdentifie
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = v5;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v9)
   {
@@ -152,21 +152,21 @@ void __93__CADFullLoggingSpotlightIndex_deleteSearchableItemsWithDomainIdentifie
         }
 
         v13 = *(*(&v29 + 1) + 8 * i);
-        v14 = [v13 attributeSet];
-        v15 = [v14 attributeDictionary];
-        v16 = [v15 mutableCopy];
+        attributeSet = [v13 attributeSet];
+        attributeDictionary = [attributeSet attributeDictionary];
+        v16 = [attributeDictionary mutableCopy];
 
         [v16 removeObjectForKey:@"_kMDItemProviderDataTypes"];
         v17 = CADSpotlightHandle;
         if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_INFO))
         {
           v18 = v17;
-          v19 = [v13 attributeSet];
-          v20 = [v19 customAttributeDictionary];
+          attributeSet2 = [v13 attributeSet];
+          customAttributeDictionary = [attributeSet2 customAttributeDictionary];
           *buf = 138412546;
           v34 = v16;
           v35 = 2112;
-          v36 = v20;
+          v36 = customAttributeDictionary;
           _os_log_impl(&dword_22430B000, v18, OS_LOG_TYPE_INFO, "Item %@\n%@", buf, 0x16u);
         }
       }
@@ -184,13 +184,13 @@ void __93__CADFullLoggingSpotlightIndex_deleteSearchableItemsWithDomainIdentifie
     _os_log_impl(&dword_22430B000, v21, OS_LOG_TYPE_INFO, "]", buf, 2u);
   }
 
-  wrappedIndex = v25->_wrappedIndex;
+  wrappedIndex = selfCopy->_wrappedIndex;
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __71__CADFullLoggingSpotlightIndex_indexSearchableItems_completionHandler___block_invoke;
   v27[3] = &unk_27851B190;
-  v28 = v26;
-  v23 = v26;
+  v28 = handlerCopy;
+  v23 = handlerCopy;
   [(CADSpotlightIndex *)wrappedIndex indexSearchableItems:v8 completionHandler:v27];
 
   v24 = *MEMORY[0x277D85DE8];
@@ -213,16 +213,16 @@ void __71__CADFullLoggingSpotlightIndex_indexSearchableItems_completionHandler__
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteAllSearchableItemsForBundleID:(id)a3 completionHandler:(id)a4
+- (void)deleteAllSearchableItemsForBundleID:(id)d completionHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = CADSpotlightHandle;
   if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = dCopy;
     _os_log_impl(&dword_22430B000, v8, OS_LOG_TYPE_INFO, "deleteSearchableItemsForBundleID called with bundle id: %@", buf, 0xCu);
   }
 
@@ -231,9 +231,9 @@ void __71__CADFullLoggingSpotlightIndex_indexSearchableItems_completionHandler__
   v12[1] = 3221225472;
   v12[2] = __86__CADFullLoggingSpotlightIndex_deleteAllSearchableItemsForBundleID_completionHandler___block_invoke;
   v12[3] = &unk_27851B190;
-  v13 = v7;
-  v10 = v7;
-  [(CADSpotlightIndex *)wrappedIndex deleteAllSearchableItemsForBundleID:v6 completionHandler:v12];
+  v13 = handlerCopy;
+  v10 = handlerCopy;
+  [(CADSpotlightIndex *)wrappedIndex deleteAllSearchableItemsForBundleID:dCopy completionHandler:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }

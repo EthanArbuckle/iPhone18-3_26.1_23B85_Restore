@@ -1,68 +1,68 @@
 @interface SBFlexibleWindowingToAppExposeWindowingModifier
-- (BOOL)shouldInterruptForActivity:(id)a3;
-- (SBFlexibleWindowingToAppExposeWindowingModifier)initWithBundleIdentifier:(id)a3;
-- (SBWindowingItemFrame)frameForItem:(SEL)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (BOOL)shouldInterruptForActivity:(id)activity;
+- (SBFlexibleWindowingToAppExposeWindowingModifier)initWithBundleIdentifier:(id)identifier;
+- (SBWindowingItemFrame)frameForItem:(SEL)item;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)visibleItems;
 - (void)didComplete;
-- (void)transitionDidUpdate:(id)a3;
-- (void)transitionWillBegin:(id)a3;
+- (void)transitionDidUpdate:(id)update;
+- (void)transitionWillBegin:(id)begin;
 - (void)willBegin;
 @end
 
 @implementation SBFlexibleWindowingToAppExposeWindowingModifier
 
-- (SBFlexibleWindowingToAppExposeWindowingModifier)initWithBundleIdentifier:(id)a3
+- (SBFlexibleWindowingToAppExposeWindowingModifier)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = SBFlexibleWindowingToAppExposeWindowingModifier;
   v6 = [(SBWindowingModifier *)&v10 init];
   if (v6)
   {
-    v7 = [[SBAppExposeWindowingModifier alloc] initWithBundleIdentifier:v5];
+    v7 = [[SBAppExposeWindowingModifier alloc] initWithBundleIdentifier:identifierCopy];
     appExposeModifier = v6->_appExposeModifier;
     v6->_appExposeModifier = v7;
 
-    objc_storeStrong(&v6->_bundleId, a3);
+    objc_storeStrong(&v6->_bundleId, identifier);
   }
 
   return v6;
 }
 
-- (BOOL)shouldInterruptForActivity:(id)a3
+- (BOOL)shouldInterruptForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_transitionID && [v4 isTransitionEvent])
+  activityCopy = activity;
+  v5 = activityCopy;
+  if (self->_transitionID && [activityCopy isTransitionEvent])
   {
-    v6 = [v5 transitionID];
+    transitionID = [v5 transitionID];
     if (BSEqualObjects())
     {
-      v7 = [v5 isGestureEvent];
+      isGestureEvent = [v5 isGestureEvent];
     }
 
     else
     {
-      v7 = 1;
+      isGestureEvent = 1;
     }
   }
 
   else
   {
-    v7 = [v5 isGestureEvent];
+    isGestureEvent = [v5 isGestureEvent];
   }
 
-  return v7;
+  return isGestureEvent;
 }
 
 - (void)willBegin
 {
   v5.receiver = self;
   v5.super_class = SBFlexibleWindowingToAppExposeWindowingModifier;
-  v3 = [(SBWindowingModifier *)&v5 visibleItems];
+  visibleItems = [(SBWindowingModifier *)&v5 visibleItems];
   appLayoutsVisibleBeforeTransition = self->_appLayoutsVisibleBeforeTransition;
-  self->_appLayoutsVisibleBeforeTransition = v3;
+  self->_appLayoutsVisibleBeforeTransition = visibleItems;
 }
 
 - (void)didComplete
@@ -75,17 +75,17 @@
 {
   v6.receiver = self;
   v6.super_class = SBFlexibleWindowingToAppExposeWindowingModifier;
-  v3 = [(SBWindowingModifier *)&v6 visibleItems];
-  v4 = [v3 setByAddingObjectsFromSet:self->_appLayoutsVisibleBeforeTransition];
+  visibleItems = [(SBWindowingModifier *)&v6 visibleItems];
+  v4 = [visibleItems setByAddingObjectsFromSet:self->_appLayoutsVisibleBeforeTransition];
 
   return v4;
 }
 
-- (void)transitionWillBegin:(id)a3
+- (void)transitionWillBegin:(id)begin
 {
-  v4 = [a3 transitionID];
+  transitionID = [begin transitionID];
   transitionID = self->_transitionID;
-  self->_transitionID = v4;
+  self->_transitionID = transitionID;
 
   [(SBChainableModifier *)self addChildModifier:self->_appExposeModifier];
   v6 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
@@ -95,22 +95,22 @@
   [(SBWindowingModifier *)self appendResponse:v7];
 }
 
-- (void)transitionDidUpdate:(id)a3
+- (void)transitionDidUpdate:(id)update
 {
   v9.receiver = self;
   v9.super_class = SBFlexibleWindowingToAppExposeWindowingModifier;
-  v4 = [(SBFlexibleWindowingToAppExposeWindowingModifier *)&v9 appLayouts];
-  v5 = [(SBFlexibleWindowingToAppExposeWindowingModifier *)self adjustedAppLayoutsForAppLayouts:v4];
-  v6 = [v5 firstObject];
+  appLayouts = [(SBFlexibleWindowingToAppExposeWindowingModifier *)&v9 appLayouts];
+  v5 = [(SBFlexibleWindowingToAppExposeWindowingModifier *)self adjustedAppLayoutsForAppLayouts:appLayouts];
+  firstObject = [v5 firstObject];
 
-  v7 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:v6 alignment:0 animated:0];
+  v7 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:firstObject alignment:0 animated:0];
   [(SBWindowingModifier *)self appendResponse:v7];
 
   v8 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:30 updateMode:3];
   [(SBWindowingModifier *)self appendResponse:v8];
 }
 
-- (SBWindowingItemFrame)frameForItem:(SEL)a3
+- (SBWindowingItemFrame)frameForItem:(SEL)item
 {
   v6 = a4;
   retstr->bounds.origin = 0u;
@@ -124,22 +124,22 @@
   [(SBWindowingItemFrame *)&v14 frameForItem:v6];
   if (self->_appExposeModifier && [v6 isAppLayout])
   {
-    v7 = [(SBAppExposeWindowingModifier *)self->_appExposeModifier appLayout];
-    v8 = [v6 appLayout];
-    if ([v7 isOrContainsAppLayout:v8])
+    appLayout = [(SBAppExposeWindowingModifier *)self->_appExposeModifier appLayout];
+    appLayout2 = [v6 appLayout];
+    if ([appLayout isOrContainsAppLayout:appLayout2])
     {
     }
 
     else
     {
-      v9 = [(SBWindowingModifier *)self transitionPhase];
+      transitionPhase = [(SBWindowingModifier *)self transitionPhase];
 
-      if (v9 == 1)
+      if (transitionPhase == 1)
       {
-        v10 = [(SBFlexibleWindowingToAppExposeWindowingModifier *)self isRTLEnabled];
+        isRTLEnabled = [(SBFlexibleWindowingToAppExposeWindowingModifier *)self isRTLEnabled];
         [(SBFlexibleWindowingToAppExposeWindowingModifier *)self switcherViewBounds];
         v12 = -v11;
-        if (v10)
+        if (isRTLEnabled)
         {
           v12 = v11;
         }
@@ -152,27 +152,27 @@
   return result;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
-  if ([v4 isAppLayout])
+  elementCopy = element;
+  if ([elementCopy isAppLayout])
   {
     v11.receiver = self;
     v11.super_class = SBFlexibleWindowingToAppExposeWindowingModifier;
-    v5 = [(SBWindowingModifier *)&v11 animationAttributesForLayoutElement:v4];
+    v5 = [(SBWindowingModifier *)&v11 animationAttributesForLayoutElement:elementCopy];
 
     v6 = [v5 mutableCopy];
-    v4 = [(SBFlexibleWindowingToAppExposeWindowingModifier *)self switcherSettings];
-    v7 = [v4 animationSettings];
-    v8 = [v7 toggleAppSwitcherSettings];
-    [v6 setLayoutSettings:v8];
+    elementCopy = [(SBFlexibleWindowingToAppExposeWindowingModifier *)self switcherSettings];
+    animationSettings = [elementCopy animationSettings];
+    toggleAppSwitcherSettings = [animationSettings toggleAppSwitcherSettings];
+    [v6 setLayoutSettings:toggleAppSwitcherSettings];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SBFlexibleWindowingToAppExposeWindowingModifier;
-    v6 = [(SBWindowingModifier *)&v10 animationAttributesForLayoutElement:v4];
+    v6 = [(SBWindowingModifier *)&v10 animationAttributesForLayoutElement:elementCopy];
   }
 
   return v6;

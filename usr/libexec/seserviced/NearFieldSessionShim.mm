@@ -1,8 +1,8 @@
 @interface NearFieldSessionShim
-- (id)getUnderlyingNFSession:(id *)a3;
-- (id)transceive:(id)a3 toOS:(int64_t)a4 outError:(id *)a5;
-- (id)transceiveSensitive:(id)a3 outError:(id *)a4;
-- (unint64_t)validatePairing:(id *)a3;
+- (id)getUnderlyingNFSession:(id *)session;
+- (id)transceive:(id)transceive toOS:(int64_t)s outError:(id *)error;
+- (id)transceiveSensitive:(id)sensitive outError:(id *)error;
+- (unint64_t)validatePairing:(id *)pairing;
 - (void)dealloc;
 @end
 
@@ -17,15 +17,15 @@
   [(NearFieldSessionShim *)&v4 dealloc];
 }
 
-- (id)transceive:(id)a3 toOS:(int64_t)a4 outError:(id *)a5
+- (id)transceive:(id)transceive toOS:(int64_t)s outError:(id *)error
 {
-  v8 = a3;
+  transceiveCopy = transceive;
   if (self->_invalidated)
   {
-    if (a5)
+    if (error)
     {
       v9 = sub_1000554DC();
-      *a5 = SESCreateAndLogError();
+      *error = SESCreateAndLogError();
     }
 
     v10 = 0;
@@ -36,7 +36,7 @@
     session = self->_session;
     seid = self->_seid;
     v18 = 0;
-    v10 = [(NFSecureElementManagerSession *)session transceive:v8 forSEID:seid toOS:a4 error:&v18];
+    v10 = [(NFSecureElementManagerSession *)session transceive:transceiveCopy forSEID:seid toOS:s error:&v18];
     v13 = v18;
     v14 = v13;
     if (v10)
@@ -51,10 +51,10 @@
 
     if (!v15)
     {
-      if (a5)
+      if (error)
       {
         v16 = sub_1000554DC();
-        *a5 = SESCreateAndLogError();
+        *error = SESCreateAndLogError();
       }
 
       self->_invalidated = 1;
@@ -64,15 +64,15 @@
   return v10;
 }
 
-- (unint64_t)validatePairing:(id *)a3
+- (unint64_t)validatePairing:(id *)pairing
 {
   if (self->_invalidated)
   {
     v4 = 4279897;
-    if (a3)
+    if (pairing)
     {
       v5 = sub_1000554DC();
-      *a3 = SESCreateAndLogError();
+      *pairing = SESCreateAndLogError();
     }
   }
 
@@ -89,10 +89,10 @@
       else
       {
         v4 = 4279897;
-        if (a3)
+        if (pairing)
         {
           v7 = sub_1000554DC();
-          *a3 = SESCreateAndLogError();
+          *pairing = SESCreateAndLogError();
         }
       }
     }
@@ -106,14 +106,14 @@
   return v4;
 }
 
-- (id)getUnderlyingNFSession:(id *)a3
+- (id)getUnderlyingNFSession:(id *)session
 {
   if (self->_invalidated)
   {
-    if (a3)
+    if (session)
     {
       v4 = sub_1000554DC();
-      *a3 = SESCreateAndLogError();
+      *session = SESCreateAndLogError();
     }
 
     v5 = 0;
@@ -127,26 +127,26 @@
   return v5;
 }
 
-- (id)transceiveSensitive:(id)a3 outError:(id *)a4
+- (id)transceiveSensitive:(id)sensitive outError:(id *)error
 {
-  v6 = a3;
+  sensitiveCopy = sensitive;
   if (self->_invalidated)
   {
-    if (a4)
+    if (error)
     {
       v7 = sub_1000554DC();
-      *a4 = SESCreateAndLogError();
+      *error = SESCreateAndLogError();
 
-      a4 = 0;
+      error = 0;
     }
   }
 
   else
   {
-    a4 = [(NFSecureElementManagerSession *)self->_session transceive:v6 forSEID:self->_seid toOS:0 secureZeroOut:1 error:a4];
+    error = [(NFSecureElementManagerSession *)self->_session transceive:sensitiveCopy forSEID:self->_seid toOS:0 secureZeroOut:1 error:error];
   }
 
-  return a4;
+  return error;
 }
 
 @end

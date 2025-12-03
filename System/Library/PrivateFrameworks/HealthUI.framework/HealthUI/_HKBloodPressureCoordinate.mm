@@ -1,46 +1,46 @@
 @interface _HKBloodPressureCoordinate
 - (NSString)description;
-- (_HKBloodPressureCoordinate)initWithSystolicCoordinate:(id)a3 diastolicCoordinate:(id)a4 userInfo:(id)a5;
+- (_HKBloodPressureCoordinate)initWithSystolicCoordinate:(id)coordinate diastolicCoordinate:(id)diastolicCoordinate userInfo:(id)info;
 - (double)startXValue;
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4;
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale;
 @end
 
 @implementation _HKBloodPressureCoordinate
 
-- (_HKBloodPressureCoordinate)initWithSystolicCoordinate:(id)a3 diastolicCoordinate:(id)a4 userInfo:(id)a5
+- (_HKBloodPressureCoordinate)initWithSystolicCoordinate:(id)coordinate diastolicCoordinate:(id)diastolicCoordinate userInfo:(id)info
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  coordinateCopy = coordinate;
+  diastolicCoordinateCopy = diastolicCoordinate;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = _HKBloodPressureCoordinate;
   v12 = [(_HKBloodPressureCoordinate *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_systolicCoordinate, a3);
-    objc_storeStrong(&v13->_diastolicCoordinate, a4);
-    objc_storeStrong(&v13->_userInfo, a5);
+    objc_storeStrong(&v12->_systolicCoordinate, coordinate);
+    objc_storeStrong(&v13->_diastolicCoordinate, diastolicCoordinate);
+    objc_storeStrong(&v13->_userInfo, info);
   }
 
   return v13;
 }
 
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale
 {
-  v4 = a4;
+  scaleCopy = scale;
   systolicCoordinate = self->_systolicCoordinate;
-  v8 = *&a3->c;
-  v15 = *&a3->a;
+  v8 = *&transform->c;
+  v15 = *&transform->a;
   v16 = v8;
-  v17 = *&a3->tx;
+  v17 = *&transform->tx;
   v9 = [(_HKBloodPressureMinMaxCoordinate *)systolicCoordinate copyWithTransform:&v15 roundToViewScale:?];
   diastolicCoordinate = self->_diastolicCoordinate;
-  v11 = *&a3->c;
-  v15 = *&a3->a;
+  v11 = *&transform->c;
+  v15 = *&transform->a;
   v16 = v11;
-  v17 = *&a3->tx;
-  v12 = [(_HKBloodPressureMinMaxCoordinate *)diastolicCoordinate copyWithTransform:&v15 roundToViewScale:v4];
+  v17 = *&transform->tx;
+  v12 = [(_HKBloodPressureMinMaxCoordinate *)diastolicCoordinate copyWithTransform:&v15 roundToViewScale:scaleCopy];
   v13 = [objc_alloc(objc_opt_class()) initWithSystolicCoordinate:v9 diastolicCoordinate:v12 userInfo:self->_userInfo];
 
   return v13;

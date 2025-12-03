@@ -1,19 +1,19 @@
 @interface BKEnrollPearlResultInfo
-- (BKEnrollPearlResultInfo)initWithServerIdentity:(id)a3 details:(id)a4 device:(id)a5;
+- (BKEnrollPearlResultInfo)initWithServerIdentity:(id)identity details:(id)details device:(id)device;
 @end
 
 @implementation BKEnrollPearlResultInfo
 
-- (BKEnrollPearlResultInfo)initWithServerIdentity:(id)a3 details:(id)a4 device:(id)a5
+- (BKEnrollPearlResultInfo)initWithServerIdentity:(id)identity details:(id)details device:(id)device
 {
-  v8 = a4;
+  detailsCopy = details;
   v14.receiver = self;
   v14.super_class = BKEnrollPearlResultInfo;
-  v9 = [(BKEnrollResultInfo *)&v14 initWithServerIdentity:a3 details:v8 device:a5];
+  v9 = [(BKEnrollResultInfo *)&v14 initWithServerIdentity:identity details:detailsCopy device:device];
   v10 = v9;
-  if (v8 && v9)
+  if (detailsCopy && v9)
   {
-    v11 = [v8 objectForKeyedSubscript:@"BKEnrollDetailGlassesDetected"];
+    v11 = [detailsCopy objectForKeyedSubscript:@"BKEnrollDetailGlassesDetected"];
     v12 = v11;
     if (v11)
     {

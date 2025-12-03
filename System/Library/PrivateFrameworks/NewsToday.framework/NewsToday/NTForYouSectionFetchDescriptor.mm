@@ -1,9 +1,9 @@
 @interface NTForYouSectionFetchDescriptor
 - (NTForYouSectionFetchDescriptor)init;
-- (NTForYouSectionFetchDescriptor)initWithForYouConfiguration:(id)a3 appConfiguration:(id)a4 topStoriesChannelID:(id)a5 localNewsTagID:(id)a6 hiddenFeedIDs:(id)a7 allowPaidBundleFeed:(BOOL)a8 mutedTagIDs:(id)a9 purchasedTagIDs:(id)a10 rankedAllSubscribedTagIDs:(id)a11 bundleSubscriptionProvider:(id)a12 groupingService:(id)a13;
-- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)a3 limit:(unint64_t)a4 priorFeedItems:(id)a5;
-- (id)incrementalSortTransformationWithFeedPersonalizer:(id)a3;
-- (void)configureCatchUpOperationWithFetchRequest:(id)a3;
+- (NTForYouSectionFetchDescriptor)initWithForYouConfiguration:(id)configuration appConfiguration:(id)appConfiguration topStoriesChannelID:(id)d localNewsTagID:(id)iD hiddenFeedIDs:(id)ds allowPaidBundleFeed:(BOOL)feed mutedTagIDs:(id)iDs purchasedTagIDs:(id)self0 rankedAllSubscribedTagIDs:(id)self1 bundleSubscriptionProvider:(id)self2 groupingService:(id)self3;
+- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)personalizer limit:(unint64_t)limit priorFeedItems:(id)items;
+- (id)incrementalSortTransformationWithFeedPersonalizer:(id)personalizer;
+- (void)configureCatchUpOperationWithFetchRequest:(id)request;
 @end
 
 @implementation NTForYouSectionFetchDescriptor
@@ -34,35 +34,35 @@
   objc_exception_throw(v6);
 }
 
-- (NTForYouSectionFetchDescriptor)initWithForYouConfiguration:(id)a3 appConfiguration:(id)a4 topStoriesChannelID:(id)a5 localNewsTagID:(id)a6 hiddenFeedIDs:(id)a7 allowPaidBundleFeed:(BOOL)a8 mutedTagIDs:(id)a9 purchasedTagIDs:(id)a10 rankedAllSubscribedTagIDs:(id)a11 bundleSubscriptionProvider:(id)a12 groupingService:(id)a13
+- (NTForYouSectionFetchDescriptor)initWithForYouConfiguration:(id)configuration appConfiguration:(id)appConfiguration topStoriesChannelID:(id)d localNewsTagID:(id)iD hiddenFeedIDs:(id)ds allowPaidBundleFeed:(BOOL)feed mutedTagIDs:(id)iDs purchasedTagIDs:(id)self0 rankedAllSubscribedTagIDs:(id)self1 bundleSubscriptionProvider:(id)self2 groupingService:(id)self3
 {
-  v33 = a8;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
-  v26 = v17;
-  v35 = a13;
-  if (!v17 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  feedCopy = feed;
+  configurationCopy = configuration;
+  appConfigurationCopy = appConfiguration;
+  dCopy = d;
+  iDCopy = iD;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  tagIDsCopy = tagIDs;
+  subscribedTagIDsCopy = subscribedTagIDs;
+  providerCopy = provider;
+  v26 = configurationCopy;
+  serviceCopy = service;
+  if (!configurationCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTForYouSectionFetchDescriptor initWithForYouConfiguration:appConfiguration:topStoriesChannelID:localNewsTagID:hiddenFeedIDs:allowPaidBundleFeed:mutedTagIDs:purchasedTagIDs:rankedAllSubscribedTagIDs:bundleSubscriptionProvider:groupingService:];
   }
 
-  if (!v18 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!appConfigurationCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTForYouSectionFetchDescriptor initWithForYouConfiguration:appConfiguration:topStoriesChannelID:localNewsTagID:hiddenFeedIDs:allowPaidBundleFeed:mutedTagIDs:purchasedTagIDs:rankedAllSubscribedTagIDs:bundleSubscriptionProvider:groupingService:];
-    if (v21)
+    if (dsCopy)
     {
       goto LABEL_9;
     }
   }
 
-  else if (v21)
+  else if (dsCopy)
   {
     goto LABEL_9;
   }
@@ -73,16 +73,16 @@
   }
 
 LABEL_9:
-  if (!v22 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!iDsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTForYouSectionFetchDescriptor initWithForYouConfiguration:appConfiguration:topStoriesChannelID:localNewsTagID:hiddenFeedIDs:allowPaidBundleFeed:mutedTagIDs:purchasedTagIDs:rankedAllSubscribedTagIDs:bundleSubscriptionProvider:groupingService:];
-    if (v23)
+    if (tagIDsCopy)
     {
       goto LABEL_14;
     }
   }
 
-  else if (v23)
+  else if (tagIDsCopy)
   {
     goto LABEL_14;
   }
@@ -93,7 +93,7 @@ LABEL_9:
   }
 
 LABEL_14:
-  if (!v24 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!subscribedTagIDsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTForYouSectionFetchDescriptor initWithForYouConfiguration:appConfiguration:topStoriesChannelID:localNewsTagID:hiddenFeedIDs:allowPaidBundleFeed:mutedTagIDs:purchasedTagIDs:rankedAllSubscribedTagIDs:bundleSubscriptionProvider:groupingService:];
   }
@@ -103,68 +103,68 @@ LABEL_14:
   v27 = [(NTForYouSectionFetchDescriptor *)&v36 init];
   if (v27)
   {
-    v28 = [[NTForYouRequest alloc] initWithForYouTodaySectionSpecificConfig:v26 appConfiguration:v18 topStoriesChannelID:v19 localNewsTagID:v20 hiddenFeedIDs:v21 allowPaidBundleFeed:v33 mutedTagIDs:v22 purchasedTagIDs:v23 rankedAllSubscribedTagIDs:v24 bundleSubscriptionProvider:v25 throttlingIdentifier:&stru_286D90198];
+    v28 = [[NTForYouRequest alloc] initWithForYouTodaySectionSpecificConfig:v26 appConfiguration:appConfigurationCopy topStoriesChannelID:dCopy localNewsTagID:iDCopy hiddenFeedIDs:dsCopy allowPaidBundleFeed:feedCopy mutedTagIDs:iDsCopy purchasedTagIDs:tagIDsCopy rankedAllSubscribedTagIDs:subscribedTagIDsCopy bundleSubscriptionProvider:providerCopy throttlingIdentifier:&stru_286D90198];
     forYouRequest = v27->_forYouRequest;
     v27->_forYouRequest = v28;
 
     v27->_localNewsPromotionIndex = [v26 localNewsPromotionIndex];
-    v30 = [v20 copy];
+    v30 = [iDCopy copy];
     localNewsTagID = v27->_localNewsTagID;
     v27->_localNewsTagID = v30;
 
-    objc_storeStrong(&v27->_groupingService, a13);
+    objc_storeStrong(&v27->_groupingService, service);
   }
 
   return v27;
 }
 
-- (void)configureCatchUpOperationWithFetchRequest:(id)a3
+- (void)configureCatchUpOperationWithFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NTForYouSectionFetchDescriptor *)self forYouRequest];
-  [v4 setForYouRequest:v5];
+  requestCopy = request;
+  forYouRequest = [(NTForYouSectionFetchDescriptor *)self forYouRequest];
+  [requestCopy setForYouRequest:forYouRequest];
 
-  [v4 setForYouEnabled:1];
+  [requestCopy setForYouEnabled:1];
   v6 = NewsCoreUserDefaults();
-  [v4 setForYouSource:{objc_msgSend(v6, "integerForKey:", *MEMORY[0x277D30D68])}];
+  [requestCopy setForYouSource:{objc_msgSend(v6, "integerForKey:", *MEMORY[0x277D30D68])}];
 }
 
-- (id)incrementalSortTransformationWithFeedPersonalizer:(id)a3
+- (id)incrementalSortTransformationWithFeedPersonalizer:(id)personalizer
 {
-  v3 = [MEMORY[0x277D31038] transformationWithPersonalizer:a3 configurationSet:16];
+  v3 = [MEMORY[0x277D31038] transformationWithPersonalizer:personalizer configurationSet:16];
   v4 = [[NTFeedTransformationItemFeedTransformation alloc] initWithFeedItemTransformation:v3];
 
   return v4;
 }
 
-- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)a3 limit:(unint64_t)a4 priorFeedItems:(id)a5
+- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)personalizer limit:(unint64_t)limit priorFeedItems:(id)items
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v8 fc_arrayByTransformingWithBlock:&__block_literal_global_2];
-  v11 = [[NTFeedTransformationIncrementalPersonalizedDiversifiedLimit alloc] initWithFunctionProvider:v9 limit:a4 priorFeedItems:v10];
+  itemsCopy = items;
+  personalizerCopy = personalizer;
+  v10 = [itemsCopy fc_arrayByTransformingWithBlock:&__block_literal_global_2];
+  v11 = [[NTFeedTransformationIncrementalPersonalizedDiversifiedLimit alloc] initWithFunctionProvider:personalizerCopy limit:limit priorFeedItems:v10];
 
   v12 = v11;
-  v13 = [(NTForYouSectionFetchDescriptor *)self groupingService];
+  groupingService = [(NTForYouSectionFetchDescriptor *)self groupingService];
 
   v14 = v12;
-  if (v13)
+  if (groupingService)
   {
     v15 = [NTBestOfSectionTransformation alloc];
-    v16 = [(NTForYouSectionFetchDescriptor *)self groupingService];
-    v14 = [(NTBestOfSectionTransformation *)v15 initWithGroupingService:v16 limit:a4 fallbackTransformation:v12];
+    groupingService2 = [(NTForYouSectionFetchDescriptor *)self groupingService];
+    v14 = [(NTBestOfSectionTransformation *)v15 initWithGroupingService:groupingService2 limit:limit fallbackTransformation:v12];
   }
 
   v17 = [[NTFeedTransformationItemFeedTransformation alloc] initWithFeedItemTransformation:v14];
-  v18 = [(NTForYouSectionFetchDescriptor *)self localNewsPromotionIndex];
-  v19 = [v8 count];
+  localNewsPromotionIndex = [(NTForYouSectionFetchDescriptor *)self localNewsPromotionIndex];
+  v19 = [itemsCopy count];
 
-  v20 = v18 - v19;
-  if (v18 >= v19)
+  v20 = localNewsPromotionIndex - v19;
+  if (localNewsPromotionIndex >= v19)
   {
     v22 = [NTLocalNewsPromotionTransformation alloc];
-    v23 = [(NTForYouSectionFetchDescriptor *)self localNewsTagID];
-    v21 = [(NTLocalNewsPromotionTransformation *)v22 initWithLocalNewsTagID:v23 localNewsPromotionIndex:v20 baseTransformation:v17];
+    localNewsTagID = [(NTForYouSectionFetchDescriptor *)self localNewsTagID];
+    v21 = [(NTLocalNewsPromotionTransformation *)v22 initWithLocalNewsTagID:localNewsTagID localNewsPromotionIndex:v20 baseTransformation:v17];
   }
 
   else

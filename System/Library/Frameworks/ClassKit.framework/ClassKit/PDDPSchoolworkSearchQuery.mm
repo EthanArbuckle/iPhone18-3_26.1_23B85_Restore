@@ -1,15 +1,15 @@
 @interface PDDPSchoolworkSearchQuery
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)addContents:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addContents:(id)contents;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPSchoolworkSearchQuery
@@ -27,25 +27,25 @@
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_SEARCH_QUERY_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_SEARCH_QUERY_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AND"])
+  else if ([typeCopy isEqualToString:@"AND"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"OR"])
+  else if ([typeCopy isEqualToString:@"OR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CRITERIA"])
+  else if ([typeCopy isEqualToString:@"CRITERIA"])
   {
     v4 = 3;
   }
@@ -58,22 +58,22 @@
   return v4;
 }
 
-- (void)addContents:(id)a3
+- (void)addContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   contents = self->_contents;
-  v8 = v4;
+  v8 = contentsCopy;
   if (!contents)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_contents;
     self->_contents = v6;
 
-    v4 = v8;
+    contentsCopy = v8;
     contents = self->_contents;
   }
 
-  [(NSMutableArray *)contents addObject:v4];
+  [(NSMutableArray *)contents addObject:contentsCopy];
 }
 
 - (id)description
@@ -81,8 +81,8 @@
   v7.receiver = self;
   v7.super_class = PDDPSchoolworkSearchQuery;
   v3 = [(PDDPSchoolworkSearchQuery *)&v7 description];
-  v4 = [(PDDPSchoolworkSearchQuery *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPSchoolworkSearchQuery *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -128,8 +128,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -144,16 +144,16 @@
   criteria = self->_criteria;
   if (criteria)
   {
-    v14 = [(PDDPSchoolworkSearchCriteria *)criteria dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"criteria"];
+    dictionaryRepresentation2 = [(PDDPSchoolworkSearchCriteria *)criteria dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"criteria"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     type = self->_type;
@@ -198,23 +198,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = self->_type;
-    *(v4 + 28) |= 1u;
+    toCopy[6] = self->_type;
+    *(toCopy + 28) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(PDDPSchoolworkSearchQuery *)self contentsCount])
   {
     [v9 clearContents];
-    v5 = [(PDDPSchoolworkSearchQuery *)self contentsCount];
-    if (v5)
+    contentsCount = [(PDDPSchoolworkSearchQuery *)self contentsCount];
+    if (contentsCount)
     {
-      v6 = v5;
+      v6 = contentsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PDDPSchoolworkSearchQuery *)self contentsAtIndex:i];
@@ -229,9 +229,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -259,7 +259,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * v11) copyWithZone:{a3, v16}];
+        v12 = [*(*(&v16 + 1) + 8 * v11) copyWithZone:{zone, v16}];
         [v6 addContents:v12];
 
         v11 = v11 + 1;
@@ -272,31 +272,31 @@
     while (v9);
   }
 
-  v13 = [(PDDPSchoolworkSearchCriteria *)self->_criteria copyWithZone:a3];
+  v13 = [(PDDPSchoolworkSearchCriteria *)self->_criteria copyWithZone:zone];
   v14 = v6[2];
   v6[2] = v13;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_type != *(v4 + 6))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_type != *(equalCopy + 6))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_11:
     v8 = 0;
@@ -304,13 +304,13 @@ LABEL_11:
   }
 
   contents = self->_contents;
-  if (contents | *(v4 + 1) && ![(NSMutableArray *)contents isEqual:?])
+  if (contents | *(equalCopy + 1) && ![(NSMutableArray *)contents isEqual:?])
   {
     goto LABEL_11;
   }
 
   criteria = self->_criteria;
-  if (criteria | *(v4 + 2))
+  if (criteria | *(equalCopy + 2))
   {
     v8 = [(PDDPSchoolworkSearchCriteria *)criteria isEqual:?];
   }
@@ -341,13 +341,13 @@ LABEL_12:
   return v4 ^ [(PDDPSchoolworkSearchCriteria *)self->_criteria hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 28))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 28))
   {
-    self->_type = *(v4 + 6);
+    self->_type = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
@@ -355,7 +355,7 @@ LABEL_12:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {

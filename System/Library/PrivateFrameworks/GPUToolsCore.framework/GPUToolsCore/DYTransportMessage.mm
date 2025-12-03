@@ -1,19 +1,19 @@
 @interface DYTransportMessage
-- (BOOL)BOOLForKey:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
 - (BOOL)BOOLPayload;
 - (DYTransportMessage)init;
-- (DYTransportMessage)initWithKind:(int)a3 attributes:(id)a4 payload:(id)a5;
+- (DYTransportMessage)initWithKind:(int)kind attributes:(id)attributes payload:(id)payload;
 - (NSString)description;
-- (double)doubleForKey:(id)a3;
-- (id)archiver:(id)a3 willEncodeObject:(id)a4;
-- (id)attributeForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)doubleForKey:(id)key;
+- (id)archiver:(id)archiver willEncodeObject:(id)object;
+- (id)attributeForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)objectPayload;
 - (id)plistPayload;
 - (id)stringPayload;
-- (unint64_t)uint64ForKey:(id)a3;
-- (unsigned)uint32ForKey:(id)a3;
-- (void)_setSerial:(unsigned int)a3 replySerial:(unsigned int)a4 transport:(id)a5;
+- (unint64_t)uint64ForKey:(id)key;
+- (unsigned)uint32ForKey:(id)key;
+- (void)_setSerial:(unsigned int)serial replySerial:(unsigned int)replySerial transport:(id)transport;
 - (void)dealloc;
 @end
 
@@ -26,7 +26,7 @@
   return 0;
 }
 
-- (DYTransportMessage)initWithKind:(int)a3 attributes:(id)a4 payload:(id)a5
+- (DYTransportMessage)initWithKind:(int)kind attributes:(id)attributes payload:(id)payload
 {
   v11.receiver = self;
   v11.super_class = DYTransportMessage;
@@ -34,18 +34,18 @@
   v9 = v8;
   if (v8)
   {
-    v8->_kind = a3;
+    v8->_kind = kind;
     *&v8->_serial = -1;
-    v8->_attributes = a4;
-    v9->_payload = a5;
+    v8->_attributes = attributes;
+    v9->_payload = payload;
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   kind = self->_kind;
   payload = self->_payload;
   attributes = self->_attributes;
@@ -67,45 +67,45 @@
   return [MEMORY[0x277CCACA8] stringWithFormat:@"%@ kind=0x%x serial=%u, reply serial=%u", -[DYTransportMessage description](&v3, sel_description), self->_kind, self->_serial, self->_replySerial];
 }
 
-- (void)_setSerial:(unsigned int)a3 replySerial:(unsigned int)a4 transport:(id)a5
+- (void)_setSerial:(unsigned int)serial replySerial:(unsigned int)replySerial transport:(id)transport
 {
-  self->_serial = a3;
-  self->_replySerial = a4;
-  self->_transport = a5;
+  self->_serial = serial;
+  self->_replySerial = replySerial;
+  self->_transport = transport;
 }
 
-- (id)attributeForKey:(id)a3
+- (id)attributeForKey:(id)key
 {
-  v4 = [(DYTransportMessage *)self attributes];
+  attributes = [(DYTransportMessage *)self attributes];
 
-  return [(NSDictionary *)v4 objectForKey:a3];
+  return [(NSDictionary *)attributes objectForKey:key];
 }
 
-- (unsigned)uint32ForKey:(id)a3
+- (unsigned)uint32ForKey:(id)key
 {
-  v3 = [(NSDictionary *)[(DYTransportMessage *)self attributes] objectForKey:a3];
+  v3 = [(NSDictionary *)[(DYTransportMessage *)self attributes] objectForKey:key];
 
   return [v3 unsignedIntValue];
 }
 
-- (unint64_t)uint64ForKey:(id)a3
+- (unint64_t)uint64ForKey:(id)key
 {
-  v3 = [(NSDictionary *)[(DYTransportMessage *)self attributes] objectForKey:a3];
+  v3 = [(NSDictionary *)[(DYTransportMessage *)self attributes] objectForKey:key];
 
   return [v3 unsignedLongLongValue];
 }
 
-- (double)doubleForKey:(id)a3
+- (double)doubleForKey:(id)key
 {
-  v3 = [(NSDictionary *)[(DYTransportMessage *)self attributes] objectForKey:a3];
+  v3 = [(NSDictionary *)[(DYTransportMessage *)self attributes] objectForKey:key];
 
   [v3 doubleValue];
   return result;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v3 = [(NSDictionary *)[(DYTransportMessage *)self attributes] objectForKey:a3];
+  v3 = [(NSDictionary *)[(DYTransportMessage *)self attributes] objectForKey:key];
 
   return [v3 BOOLValue];
 }
@@ -151,15 +151,15 @@
   return result;
 }
 
-- (id)archiver:(id)a3 willEncodeObject:(id)a4
+- (id)archiver:(id)archiver willEncodeObject:(id)object
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    return a4;
+    return object;
   }
 
-  return [a4 array];
+  return [object array];
 }
 
 - (BOOL)BOOLPayload

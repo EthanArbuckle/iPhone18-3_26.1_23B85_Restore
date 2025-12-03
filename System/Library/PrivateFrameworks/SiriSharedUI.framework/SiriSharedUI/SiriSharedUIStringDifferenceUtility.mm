@@ -1,11 +1,11 @@
 @interface SiriSharedUIStringDifferenceUtility
-+ (_NSRange)findFirstDifferenceWithOriginalText:(id)a3 alternativeText:(id)a4;
++ (_NSRange)findFirstDifferenceWithOriginalText:(id)text alternativeText:(id)alternativeText;
 - (_TtC12SiriSharedUI35SiriSharedUIStringDifferenceUtility)init;
 @end
 
 @implementation SiriSharedUIStringDifferenceUtility
 
-+ (_NSRange)findFirstDifferenceWithOriginalText:(id)a3 alternativeText:(id)a4
++ (_NSRange)findFirstDifferenceWithOriginalText:(id)text alternativeText:(id)alternativeText
 {
   sub_21E4DCF78();
   sub_21E4DCF78();

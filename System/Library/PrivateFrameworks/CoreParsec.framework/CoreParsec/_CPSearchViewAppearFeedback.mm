@@ -1,9 +1,9 @@
 @interface _CPSearchViewAppearFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPSearchViewAppearFeedback)init;
-- (_CPSearchViewAppearFeedback)initWithFacade:(id)a3;
+- (_CPSearchViewAppearFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPSearchViewAppearFeedback
@@ -29,58 +29,58 @@
   return v3 ^ v4 ^ [(NSString *)self->_originatingApp hash]^ (2654435761 * self->_isUsingLoweredSearchBar);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_17;
   }
 
   viewAppearEvent = self->_viewAppearEvent;
-  if (viewAppearEvent != [v4 viewAppearEvent])
+  if (viewAppearEvent != [equalCopy viewAppearEvent])
   {
     goto LABEL_17;
   }
 
   isOnLockScreen = self->_isOnLockScreen;
-  if (isOnLockScreen != [v4 isOnLockScreen])
+  if (isOnLockScreen != [equalCopy isOnLockScreen])
   {
     goto LABEL_17;
   }
 
   isOverApp = self->_isOverApp;
-  if (isOverApp != [v4 isOverApp])
+  if (isOverApp != [equalCopy isOverApp])
   {
     goto LABEL_17;
   }
 
   readerTextAvailable = self->_readerTextAvailable;
-  if (readerTextAvailable != [v4 readerTextAvailable])
+  if (readerTextAvailable != [equalCopy readerTextAvailable])
   {
     goto LABEL_17;
   }
 
-  v10 = [(_CPSearchViewAppearFeedback *)self preexistingInput];
-  v11 = [v4 preexistingInput];
-  if ((v10 != 0) == (v11 == 0))
+  preexistingInput = [(_CPSearchViewAppearFeedback *)self preexistingInput];
+  preexistingInput2 = [equalCopy preexistingInput];
+  if ((preexistingInput != 0) == (preexistingInput2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_CPSearchViewAppearFeedback *)self preexistingInput];
-  if (v12)
+  preexistingInput3 = [(_CPSearchViewAppearFeedback *)self preexistingInput];
+  if (preexistingInput3)
   {
-    v13 = v12;
-    v14 = [(_CPSearchViewAppearFeedback *)self preexistingInput];
-    v15 = [v4 preexistingInput];
-    v16 = [v14 isEqual:v15];
+    v13 = preexistingInput3;
+    preexistingInput4 = [(_CPSearchViewAppearFeedback *)self preexistingInput];
+    preexistingInput5 = [equalCopy preexistingInput];
+    v16 = [preexistingInput4 isEqual:preexistingInput5];
 
     if (!v16)
     {
@@ -92,24 +92,24 @@
   {
   }
 
-  v10 = [(_CPSearchViewAppearFeedback *)self originatingApp];
-  v11 = [v4 originatingApp];
-  if ((v10 != 0) != (v11 == 0))
+  preexistingInput = [(_CPSearchViewAppearFeedback *)self originatingApp];
+  preexistingInput2 = [equalCopy originatingApp];
+  if ((preexistingInput != 0) != (preexistingInput2 == 0))
   {
-    v17 = [(_CPSearchViewAppearFeedback *)self originatingApp];
-    if (!v17)
+    originatingApp = [(_CPSearchViewAppearFeedback *)self originatingApp];
+    if (!originatingApp)
     {
 
 LABEL_20:
       isUsingLoweredSearchBar = self->_isUsingLoweredSearchBar;
-      v22 = isUsingLoweredSearchBar == [v4 isUsingLoweredSearchBar];
+      v22 = isUsingLoweredSearchBar == [equalCopy isUsingLoweredSearchBar];
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_CPSearchViewAppearFeedback *)self originatingApp];
-    v20 = [v4 originatingApp];
-    v21 = [v19 isEqual:v20];
+    v18 = originatingApp;
+    originatingApp2 = [(_CPSearchViewAppearFeedback *)self originatingApp];
+    originatingApp3 = [equalCopy originatingApp];
+    v21 = [originatingApp2 isEqual:originatingApp3];
 
     if (v21)
     {
@@ -129,9 +129,9 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   if ([(_CPSearchViewAppearFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
@@ -162,17 +162,17 @@ LABEL_18:
     PBDataWriterWriteBOOLField();
   }
 
-  v9 = [(_CPSearchViewAppearFeedback *)self preexistingInput];
+  preexistingInput = [(_CPSearchViewAppearFeedback *)self preexistingInput];
 
-  if (v9)
+  if (preexistingInput)
   {
     preexistingInput = self->_preexistingInput;
     PBDataWriterWriteStringField();
   }
 
-  v11 = [(_CPSearchViewAppearFeedback *)self originatingApp];
+  originatingApp = [(_CPSearchViewAppearFeedback *)self originatingApp];
 
-  if (v11)
+  if (originatingApp)
   {
     originatingApp = self->_originatingApp;
     PBDataWriterWriteStringField();
@@ -185,36 +185,36 @@ LABEL_18:
   }
 }
 
-- (_CPSearchViewAppearFeedback)initWithFacade:(id)a3
+- (_CPSearchViewAppearFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v12.receiver = self;
   v12.super_class = _CPSearchViewAppearFeedback;
   v5 = [(_CPSearchViewAppearFeedback *)&v12 init];
   if (v5)
   {
-    -[_CPSearchViewAppearFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    -[_CPSearchViewAppearFeedback setViewAppearEvent:](v5, "setViewAppearEvent:", [v4 viewAppearEvent]);
-    -[_CPSearchViewAppearFeedback setIsOnLockScreen:](v5, "setIsOnLockScreen:", [v4 isOnLockScreen]);
-    -[_CPSearchViewAppearFeedback setIsOverApp:](v5, "setIsOverApp:", [v4 isOverApp]);
-    -[_CPSearchViewAppearFeedback setReaderTextAvailable:](v5, "setReaderTextAvailable:", [v4 readerTextAvailable]);
-    v6 = [v4 preexistingInput];
+    -[_CPSearchViewAppearFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    -[_CPSearchViewAppearFeedback setViewAppearEvent:](v5, "setViewAppearEvent:", [facadeCopy viewAppearEvent]);
+    -[_CPSearchViewAppearFeedback setIsOnLockScreen:](v5, "setIsOnLockScreen:", [facadeCopy isOnLockScreen]);
+    -[_CPSearchViewAppearFeedback setIsOverApp:](v5, "setIsOverApp:", [facadeCopy isOverApp]);
+    -[_CPSearchViewAppearFeedback setReaderTextAvailable:](v5, "setReaderTextAvailable:", [facadeCopy readerTextAvailable]);
+    preexistingInput = [facadeCopy preexistingInput];
 
-    if (v6)
+    if (preexistingInput)
     {
-      v7 = [v4 preexistingInput];
-      [(_CPSearchViewAppearFeedback *)v5 setPreexistingInput:v7];
+      preexistingInput2 = [facadeCopy preexistingInput];
+      [(_CPSearchViewAppearFeedback *)v5 setPreexistingInput:preexistingInput2];
     }
 
-    v8 = [v4 originatingApp];
+    originatingApp = [facadeCopy originatingApp];
 
-    if (v8)
+    if (originatingApp)
     {
-      v9 = [v4 originatingApp];
-      [(_CPSearchViewAppearFeedback *)v5 setOriginatingApp:v9];
+      originatingApp2 = [facadeCopy originatingApp];
+      [(_CPSearchViewAppearFeedback *)v5 setOriginatingApp:originatingApp2];
     }
 
-    -[_CPSearchViewAppearFeedback setIsUsingLoweredSearchBar:](v5, "setIsUsingLoweredSearchBar:", [v4 isUsingLoweredSearchBar]);
+    -[_CPSearchViewAppearFeedback setIsUsingLoweredSearchBar:](v5, "setIsUsingLoweredSearchBar:", [facadeCopy isUsingLoweredSearchBar]);
     v10 = v5;
   }
 

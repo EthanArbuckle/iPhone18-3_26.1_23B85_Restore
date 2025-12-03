@@ -1,20 +1,20 @@
 @interface EscrowProxySyncOperation
-- (EscrowProxySyncOperation)initWithDSID:(id)a3;
+- (EscrowProxySyncOperation)initWithDSID:(id)d;
 - (void)main;
 @end
 
 @implementation EscrowProxySyncOperation
 
-- (EscrowProxySyncOperation)initWithDSID:(id)a3
+- (EscrowProxySyncOperation)initWithDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = EscrowProxySyncOperation;
   v5 = [(EscrowProxySyncOperation *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(EscrowProxySyncOperation *)v5 setDsid:v4];
+    [(EscrowProxySyncOperation *)v5 setDsid:dCopy];
   }
 
   return v6;
@@ -29,19 +29,19 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Synchronize keys with escrow proxy", buf, 2u);
   }
 
-  v4 = [(EscrowProxySyncOperation *)self dsid];
+  dsid = [(EscrowProxySyncOperation *)self dsid];
   v5 = PCSCurrentPersonaMatchesDSID();
 
   if (v5)
   {
     v6 = objc_alloc_init(NSMutableDictionary);
     [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:kPCSSetupForceLogging];
-    v7 = [(EscrowProxySyncOperation *)self dsid];
-    [v6 setObject:v7 forKeyedSubscript:kPCSSetupDSID];
+    dsid2 = [(EscrowProxySyncOperation *)self dsid];
+    [v6 setObject:dsid2 forKeyedSubscript:kPCSSetupDSID];
 
     v8 = +[PCSMetrics metrics];
-    v9 = [v8 keyRegistryCallback];
-    v10 = objc_retainBlock(v9);
+    keyRegistryCallback = [v8 keyRegistryCallback];
+    v10 = objc_retainBlock(keyRegistryCallback);
     [v6 setObject:v10 forKeyedSubscript:kPCSSetupCallbackKeyRegistry];
 
     if ((PCSIdentitySynchronizeKeys() & 1) == 0)
@@ -55,8 +55,8 @@
       }
     }
 
-    v13 = [(EscrowProxySyncOperation *)self completionBlockWithError];
-    v13[2]();
+    completionBlockWithError = [(EscrowProxySyncOperation *)self completionBlockWithError];
+    completionBlockWithError[2]();
 
     v14 = qword_1000407B8;
     if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))

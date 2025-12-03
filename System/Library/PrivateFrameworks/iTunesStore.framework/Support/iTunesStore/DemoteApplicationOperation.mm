@@ -1,19 +1,19 @@
 @interface DemoteApplicationOperation
-- (DemoteApplicationOperation)initWithBundleIdentifier:(id)a3;
+- (DemoteApplicationOperation)initWithBundleIdentifier:(id)identifier;
 - (void)run;
 @end
 
 @implementation DemoteApplicationOperation
 
-- (DemoteApplicationOperation)initWithBundleIdentifier:(id)a3
+- (DemoteApplicationOperation)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = DemoteApplicationOperation;
   v5 = [(DemoteApplicationOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
   }

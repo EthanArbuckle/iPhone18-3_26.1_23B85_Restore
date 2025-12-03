@@ -1,6 +1,6 @@
 @interface PXCMMMomentsParticipant
-- (PXCMMMomentsParticipant)initWithEmailAddress:(id)a3 phoneNumber:(id)a4 localizedName:(id)a5;
-- (PXCMMMomentsParticipant)initWithPerson:(id)a3;
+- (PXCMMMomentsParticipant)initWithEmailAddress:(id)address phoneNumber:(id)number localizedName:(id)name;
+- (PXCMMMomentsParticipant)initWithPerson:(id)person;
 - (id)localizedName;
 @end
 
@@ -11,79 +11,79 @@
   additionalLocalizedName = self->_additionalLocalizedName;
   if (additionalLocalizedName)
   {
-    v3 = additionalLocalizedName;
+    localizedName = additionalLocalizedName;
   }
 
   else
   {
-    v3 = [(PXCMMMomentsParticipant *)self localizedName];
+    localizedName = [(PXCMMMomentsParticipant *)self localizedName];
   }
 
-  return v3;
+  return localizedName;
 }
 
-- (PXCMMMomentsParticipant)initWithPerson:(id)a3
+- (PXCMMMomentsParticipant)initWithPerson:(id)person
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  personCopy = person;
+  if (!personCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXCMMMomentsInvitation.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMMomentsInvitation.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"person"}];
   }
 
   v7 = *MEMORY[0x1E695C330];
   v21[0] = *MEMORY[0x1E695C208];
   v21[1] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
-  v9 = [v6 linkedContactWithKeysToFetch:v8];
+  v9 = [personCopy linkedContactWithKeysToFetch:v8];
 
   if (v9)
   {
-    v10 = [v9 emailAddresses];
-    v11 = [v10 firstObject];
-    v12 = [v11 value];
+    emailAddresses = [v9 emailAddresses];
+    firstObject = [emailAddresses firstObject];
+    value = [firstObject value];
 
-    v13 = [v9 phoneNumbers];
-    v14 = [v13 firstObject];
-    v15 = [v14 value];
-    v16 = [v15 stringValue];
+    phoneNumbers = [v9 phoneNumbers];
+    firstObject2 = [phoneNumbers firstObject];
+    value2 = [firstObject2 value];
+    stringValue = [value2 stringValue];
   }
 
   else
   {
-    v16 = 0;
-    v12 = 0;
+    stringValue = 0;
+    value = 0;
   }
 
-  if (!(v12 | v16))
+  if (!(value | stringValue))
   {
-    v12 = @"foo@bar.com";
+    value = @"foo@bar.com";
   }
 
-  v17 = [v6 px_localizedName];
-  v18 = [(PXCMMMomentsParticipant *)self initWithEmailAddress:v12 phoneNumber:v16 localizedName:v17];
+  px_localizedName = [personCopy px_localizedName];
+  v18 = [(PXCMMMomentsParticipant *)self initWithEmailAddress:value phoneNumber:stringValue localizedName:px_localizedName];
 
   if (v18)
   {
-    objc_storeStrong(&v18->_person, a3);
+    objc_storeStrong(&v18->_person, person);
   }
 
   return v18;
 }
 
-- (PXCMMMomentsParticipant)initWithEmailAddress:(id)a3 phoneNumber:(id)a4 localizedName:(id)a5
+- (PXCMMMomentsParticipant)initWithEmailAddress:(id)address phoneNumber:(id)number localizedName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!(v9 | v10))
+  addressCopy = address;
+  numberCopy = number;
+  nameCopy = name;
+  if (!(addressCopy | numberCopy))
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PXCMMMomentsInvitation.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"emailAddress || phoneNumber"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMMomentsInvitation.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"emailAddress || phoneNumber"}];
   }
 
-  if (v9)
+  if (addressCopy)
   {
     v12 = 1;
   }
@@ -93,14 +93,14 @@
     v12 = 2;
   }
 
-  if (v9)
+  if (addressCopy)
   {
-    v13 = v9;
+    v13 = addressCopy;
   }
 
   else
   {
-    v13 = v10;
+    v13 = numberCopy;
   }
 
   v19.receiver = self;
@@ -108,7 +108,7 @@
   v14 = [(PXRecipient *)&v19 initWithAddress:v13 nameComponents:0 recipientKind:v12];
   if (v14)
   {
-    v15 = [v11 copy];
+    v15 = [nameCopy copy];
     additionalLocalizedName = v14->_additionalLocalizedName;
     v14->_additionalLocalizedName = v15;
   }

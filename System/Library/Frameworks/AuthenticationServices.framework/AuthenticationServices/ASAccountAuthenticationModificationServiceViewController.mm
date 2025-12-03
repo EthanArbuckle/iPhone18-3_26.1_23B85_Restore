@@ -2,32 +2,32 @@
 + (id)_exportedInterface;
 - (BOOL)_ensureHostHasAccountModificationEntitlement;
 - (BOOL)_isKeychainSyncEnabled;
-- (void)_deleteExistingKeychainCredentialIfPossibleWithCompletionHandler:(id)a3;
-- (void)_findExtensionSupportingUpgrade:(id)a3 withCompletionHandler:(id)a4;
-- (void)_updateCredential:(id)a3 forServiceIdentifier:(id)a4 userInfo:(id)a5 extension:(id)a6;
-- (void)_updateKeychainWithNewCredential:(id)a3;
-- (void)_upgradeCredentialToSignInWithApple:(id)a3 forServiceIdentifier:(id)a4 userInfo:(id)a5 extension:(id)a6;
-- (void)accountModificationHostViewController:(id)a3 didFinishWithCredential:(id)a4 userInfo:(id)a5 completion:(id)a6;
-- (void)accountModificationHostViewController:(id)a3 requestCanceledWithError:(id)a4 completion:(id)a5;
-- (void)accountModificationHostViewControllerDidCompleteUpgradeToSignInWithApple:(id)a3 userInfo:(id)a4 completion:(id)a5;
-- (void)dismissUIForAccountModificationHostViewController:(id)a3;
-- (void)presentUIForAccountModificationHostViewController:(id)a3;
-- (void)updateCredential:(id)a3 forServiceIdentifier:(id)a4 userInfo:(id)a5 extensionUUID:(id)a6;
-- (void)upgradeCredentialToSignInWithApple:(id)a3 forServiceIdentifier:(id)a4 userInfo:(id)a5 extensionUUID:(id)a6;
+- (void)_deleteExistingKeychainCredentialIfPossibleWithCompletionHandler:(id)handler;
+- (void)_findExtensionSupportingUpgrade:(id)upgrade withCompletionHandler:(id)handler;
+- (void)_updateCredential:(id)credential forServiceIdentifier:(id)identifier userInfo:(id)info extension:(id)extension;
+- (void)_updateKeychainWithNewCredential:(id)credential;
+- (void)_upgradeCredentialToSignInWithApple:(id)apple forServiceIdentifier:(id)identifier userInfo:(id)info extension:(id)extension;
+- (void)accountModificationHostViewController:(id)controller didFinishWithCredential:(id)credential userInfo:(id)info completion:(id)completion;
+- (void)accountModificationHostViewController:(id)controller requestCanceledWithError:(id)error completion:(id)completion;
+- (void)accountModificationHostViewControllerDidCompleteUpgradeToSignInWithApple:(id)apple userInfo:(id)info completion:(id)completion;
+- (void)dismissUIForAccountModificationHostViewController:(id)controller;
+- (void)presentUIForAccountModificationHostViewController:(id)controller;
+- (void)updateCredential:(id)credential forServiceIdentifier:(id)identifier userInfo:(id)info extensionUUID:(id)d;
+- (void)upgradeCredentialToSignInWithApple:(id)apple forServiceIdentifier:(id)identifier userInfo:(id)info extensionUUID:(id)d;
 @end
 
 @implementation ASAccountAuthenticationModificationServiceViewController
 
-- (void)upgradeCredentialToSignInWithApple:(id)a3 forServiceIdentifier:(id)a4 userInfo:(id)a5 extensionUUID:(id)a6
+- (void)upgradeCredentialToSignInWithApple:(id)apple forServiceIdentifier:(id)identifier userInfo:(id)info extensionUUID:(id)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  self->_isPerformingAppInitiatedUpgrade = v14 == 0;
-  objc_storeStrong(&self->_existingCredential, a3);
-  objc_storeStrong(&self->_serviceIdentifierForUpgrade, a4);
-  if (v14)
+  appleCopy = apple;
+  identifierCopy = identifier;
+  infoCopy = info;
+  dCopy = d;
+  self->_isPerformingAppInitiatedUpgrade = dCopy == 0;
+  objc_storeStrong(&self->_existingCredential, apple);
+  objc_storeStrong(&self->_serviceIdentifierForUpgrade, identifier);
+  if (dCopy)
   {
     if ([(ASAccountAuthenticationModificationServiceViewController *)self _ensureHostHasAccountModificationEntitlement])
     {
@@ -39,10 +39,10 @@
       v21[3] = &unk_1E7AF8688;
       v21[4] = self;
       objc_copyWeak(&v25, &location);
-      v22 = v11;
-      v23 = v12;
-      v24 = v13;
-      [v15 extensionWithUUID:v14 completion:v21];
+      v22 = appleCopy;
+      v23 = identifierCopy;
+      v24 = infoCopy;
+      [v15 extensionWithUUID:dCopy completion:v21];
 
       objc_destroyWeak(&v25);
       objc_destroyWeak(&location);
@@ -57,9 +57,9 @@
     v17[2] = __139__ASAccountAuthenticationModificationServiceViewController_upgradeCredentialToSignInWithApple_forServiceIdentifier_userInfo_extensionUUID___block_invoke_4;
     v17[3] = &unk_1E7AF86B0;
     v17[4] = self;
-    v18 = v11;
-    v19 = v12;
-    v20 = v13;
+    v18 = appleCopy;
+    v19 = identifierCopy;
+    v20 = infoCopy;
     [(ASAccountAuthenticationModificationServiceViewController *)self _findExtensionSupportingUpgrade:v16 withCompletionHandler:v17];
   }
 }
@@ -142,32 +142,32 @@ void __139__ASAccountAuthenticationModificationServiceViewController_upgradeCred
   }
 }
 
-- (void)_upgradeCredentialToSignInWithApple:(id)a3 forServiceIdentifier:(id)a4 userInfo:(id)a5 extension:(id)a6
+- (void)_upgradeCredentialToSignInWithApple:(id)apple forServiceIdentifier:(id)identifier userInfo:(id)info extension:(id)extension
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v15 = a3;
-  v13 = [[_ASAccountAuthenticationModificationHostViewController alloc] initWithExtension:v10 serviceIdentifier:v12];
+  extensionCopy = extension;
+  infoCopy = info;
+  identifierCopy = identifier;
+  appleCopy = apple;
+  v13 = [[_ASAccountAuthenticationModificationHostViewController alloc] initWithExtension:extensionCopy serviceIdentifier:identifierCopy];
 
   accountModificationHostViewController = self->_accountModificationHostViewController;
   self->_accountModificationHostViewController = v13;
 
   [(_ASAccountAuthenticationModificationHostViewController *)self->_accountModificationHostViewController setDelegate:self];
-  [(_ASAccountAuthenticationModificationHostViewController *)self->_accountModificationHostViewController upgradeCredentialToSignInWithApple:v15 userInfo:v11];
+  [(_ASAccountAuthenticationModificationHostViewController *)self->_accountModificationHostViewController upgradeCredentialToSignInWithApple:appleCopy userInfo:infoCopy];
 }
 
-- (void)updateCredential:(id)a3 forServiceIdentifier:(id)a4 userInfo:(id)a5 extensionUUID:(id)a6
+- (void)updateCredential:(id)credential forServiceIdentifier:(id)identifier userInfo:(id)info extensionUUID:(id)d
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  self->_isPerformingAppInitiatedUpgrade = v14 == 0;
-  objc_storeStrong(&self->_existingCredential, a3);
-  objc_storeStrong(&self->_serviceIdentifierForUpgrade, a4);
-  if (v14)
+  credentialCopy = credential;
+  identifierCopy = identifier;
+  infoCopy = info;
+  dCopy = d;
+  self->_isPerformingAppInitiatedUpgrade = dCopy == 0;
+  objc_storeStrong(&self->_existingCredential, credential);
+  objc_storeStrong(&self->_serviceIdentifierForUpgrade, identifier);
+  if (dCopy)
   {
     if ([(ASAccountAuthenticationModificationServiceViewController *)self _ensureHostHasAccountModificationEntitlement])
     {
@@ -179,10 +179,10 @@ void __139__ASAccountAuthenticationModificationServiceViewController_upgradeCred
       v26[3] = &unk_1E7AF8688;
       v26[4] = self;
       objc_copyWeak(&v30, &location);
-      v27 = v11;
-      v28 = v12;
-      v29 = v13;
-      [v15 extensionWithUUID:v14 completion:v26];
+      v27 = credentialCopy;
+      v28 = identifierCopy;
+      v29 = infoCopy;
+      [v15 extensionWithUUID:dCopy completion:v26];
 
       objc_destroyWeak(&v30);
       objc_destroyWeak(&location);
@@ -199,8 +199,8 @@ void __139__ASAccountAuthenticationModificationServiceViewController_upgradeCred
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
       v18 = [v16 errorWithDomain:*MEMORY[0x1E696A2B8] code:0 userInfo:v17];
 
-      v19 = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
-      [v19 requestDidFailWithError:v18 completion:&__block_literal_global_21];
+      _remoteViewControllerProxy = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
+      [_remoteViewControllerProxy requestDidFailWithError:v18 completion:&__block_literal_global_21];
     }
 
     v20 = *MEMORY[0x1E69C8E38];
@@ -209,9 +209,9 @@ void __139__ASAccountAuthenticationModificationServiceViewController_upgradeCred
     v22[2] = __121__ASAccountAuthenticationModificationServiceViewController_updateCredential_forServiceIdentifier_userInfo_extensionUUID___block_invoke_5;
     v22[3] = &unk_1E7AF86B0;
     v22[4] = self;
-    v23 = v11;
-    v24 = v12;
-    v25 = v13;
+    v23 = credentialCopy;
+    v24 = identifierCopy;
+    v25 = infoCopy;
     [(ASAccountAuthenticationModificationServiceViewController *)self _findExtensionSupportingUpgrade:v20 withCompletionHandler:v22];
   }
 
@@ -296,14 +296,14 @@ void __121__ASAccountAuthenticationModificationServiceViewController_updateCrede
   }
 }
 
-- (void)_updateCredential:(id)a3 forServiceIdentifier:(id)a4 userInfo:(id)a5 extension:(id)a6
+- (void)_updateCredential:(id)credential forServiceIdentifier:(id)identifier userInfo:(id)info extension:(id)extension
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v10 attributes];
-  v21 = [v14 safari_stringForKey:*MEMORY[0x1E69C8E48]];
+  extensionCopy = extension;
+  infoCopy = info;
+  identifierCopy = identifier;
+  credentialCopy = credential;
+  attributes = [extensionCopy attributes];
+  v21 = [attributes safari_stringForKey:*MEMORY[0x1E69C8E48]];
 
   if (v21)
   {
@@ -318,27 +318,27 @@ void __121__ASAccountAuthenticationModificationServiceViewController_updateCrede
 
   v17 = [objc_alloc(MEMORY[0x1E69C8970]) initWithPasswordRequirementsByDomain:0];
   v18 = [v17 generatedPasswordMatchingRequirements:v16];
-  v19 = [[_ASAccountAuthenticationModificationHostViewController alloc] initWithExtension:v10 serviceIdentifier:v12];
+  v19 = [[_ASAccountAuthenticationModificationHostViewController alloc] initWithExtension:extensionCopy serviceIdentifier:identifierCopy];
 
   accountModificationHostViewController = self->_accountModificationHostViewController;
   self->_accountModificationHostViewController = v19;
 
   [(_ASAccountAuthenticationModificationHostViewController *)self->_accountModificationHostViewController setDelegate:self];
-  [(_ASAccountAuthenticationModificationHostViewController *)self->_accountModificationHostViewController updateCredential:v13 withNewPassword:v18 userInfo:v11];
+  [(_ASAccountAuthenticationModificationHostViewController *)self->_accountModificationHostViewController updateCredential:credentialCopy withNewPassword:v18 userInfo:infoCopy];
 }
 
-- (void)_findExtensionSupportingUpgrade:(id)a3 withCompletionHandler:(id)a4
+- (void)_findExtensionSupportingUpgrade:(id)upgrade withCompletionHandler:(id)handler
 {
   v44[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  upgradeCopy = upgrade;
+  handlerCopy = handler;
   v8 = MEMORY[0x1E6963620];
   [(ASAccountAuthenticationModificationServiceViewController *)self _hostAuditToken];
   v37 = 0;
   v9 = [v8 bundleRecordForAuditToken:v38 error:&v37];
   v10 = v37;
   v11 = [v9 URL];
-  v12 = [v11 path];
+  path = [v11 path];
 
   if (v10)
   {
@@ -348,7 +348,7 @@ void __121__ASAccountAuthenticationModificationServiceViewController_updateCrede
       [ASAccountAuthenticationModificationServiceViewController _findExtensionSupportingUpgrade:v13 withCompletionHandler:v10];
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -358,38 +358,38 @@ void __121__ASAccountAuthenticationModificationServiceViewController_updateCrede
     v43[0] = *MEMORY[0x1E696A2F8];
     v43[1] = v15;
     v44[0] = v14;
-    v44[1] = v12;
+    v44[1] = path;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:2];
     v36 = 0;
     v17 = [MEMORY[0x1E696ABD0] extensionsWithMatchingAttributes:v16 error:&v36];
     v18 = v36;
-    v19 = [v17 firstObject];
+    firstObject = [v17 firstObject];
 
-    if (v19)
+    if (firstObject)
     {
-      v20 = [v19 attributes];
-      v21 = [v20 safari_BOOLForKey:v6];
+      attributes = [firstObject attributes];
+      v21 = [attributes safari_BOOLForKey:upgradeCopy];
 
-      v22 = v7[2];
+      v22 = handlerCopy[2];
       if (v21)
       {
-        v22(v7, v19);
+        v22(handlerCopy, firstObject);
       }
 
       else
       {
-        v22(v7, 0);
-        v26 = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
+        v22(handlerCopy, 0);
+        _remoteViewControllerProxy = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
         v32 = MEMORY[0x1E696ABC0];
         v35 = v18;
         v39 = *MEMORY[0x1E696A588];
         v27 = MEMORY[0x1E696AEC0];
-        v33 = [v19 identifier];
-        v28 = [v27 stringWithFormat:@"Discovered extension %@ does not support strong password upgrades.", v33];
+        identifier = [firstObject identifier];
+        v28 = [v27 stringWithFormat:@"Discovered extension %@ does not support strong password upgrades.", identifier];
         v40 = v28;
         v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
         v30 = [v32 errorWithDomain:@"ASExtensionErrorDomain" code:0 userInfo:v29];
-        [v26 requestDidFailWithError:v30 completion:&__block_literal_global_34];
+        [_remoteViewControllerProxy requestDidFailWithError:v30 completion:&__block_literal_global_34];
 
         v18 = v35;
       }
@@ -397,14 +397,14 @@ void __121__ASAccountAuthenticationModificationServiceViewController_updateCrede
 
     else
     {
-      v7[2](v7, 0);
-      v34 = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
+      handlerCopy[2](handlerCopy, 0);
+      _remoteViewControllerProxy2 = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
       v23 = MEMORY[0x1E696ABC0];
       v41 = *MEMORY[0x1E696A588];
       v42 = @"Did not find Account Authentication Modification extension.";
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
       v25 = [v23 errorWithDomain:@"ASExtensionErrorDomain" code:0 userInfo:v24];
-      [v34 requestDidFailWithError:v25 completion:&__block_literal_global_28];
+      [_remoteViewControllerProxy2 requestDidFailWithError:v25 completion:&__block_literal_global_28];
     }
   }
 
@@ -425,36 +425,36 @@ void __121__ASAccountAuthenticationModificationServiceViewController_updateCrede
       [(ASAccountAuthenticationModificationServiceViewController *)v5 _ensureHostHasAccountModificationEntitlement];
     }
 
-    v6 = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
+    _remoteViewControllerProxy = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
     v7 = MEMORY[0x1E696ABC0];
     v8 = *MEMORY[0x1E696A250];
     v13 = *MEMORY[0x1E696A588];
     v14[0] = @"Calling process is not entitled";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     v10 = [v7 errorWithDomain:v8 code:4099 userInfo:v9];
-    [v6 requestDidFailWithError:v10 completion:&__block_literal_global_39];
+    [_remoteViewControllerProxy requestDidFailWithError:v10 completion:&__block_literal_global_39];
   }
 
   v11 = *MEMORY[0x1E69E9840];
   return HasEntitlement;
 }
 
-- (void)_deleteExistingKeychainCredentialIfPossibleWithCompletionHandler:(id)a3
+- (void)_deleteExistingKeychainCredentialIfPossibleWithCompletionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v4 = [(ASCredentialServiceIdentifier *)self->_serviceIdentifierForUpgrade identifier];
-  v22 = [v4 safari_highLevelDomainFromHost];
+  handlerCopy = handler;
+  identifier = [(ASCredentialServiceIdentifier *)self->_serviceIdentifierForUpgrade identifier];
+  safari_highLevelDomainFromHost = [identifier safari_highLevelDomainFromHost];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [MEMORY[0x1E69C8A38] sharedStore];
-  v6 = [v5 savedAccountsWithPasswords];
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
+  savedAccountsWithPasswords = [mEMORY[0x1E69C8A38] savedAccountsWithPasswords];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  obj = savedAccountsWithPasswords;
+  v7 = [savedAccountsWithPasswords countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -470,12 +470,12 @@ void __121__ASAccountAuthenticationModificationServiceViewController_updateCrede
         }
 
         v11 = *(*(&v24 + 1) + 8 * v10);
-        v12 = [(ASPasswordCredential *)self->_existingCredential user];
-        v13 = [v11 user];
-        if ([v12 isEqualToString:v13])
+        user = [(ASPasswordCredential *)self->_existingCredential user];
+        user2 = [v11 user];
+        if ([user isEqualToString:user2])
         {
-          v14 = [v11 highLevelDomain];
-          v15 = [v22 isEqualToString:v14];
+          highLevelDomain = [v11 highLevelDomain];
+          v15 = [safari_highLevelDomainFromHost isEqualToString:highLevelDomain];
 
           if (v15)
           {
@@ -485,9 +485,9 @@ void __121__ASAccountAuthenticationModificationServiceViewController_updateCrede
               [ASAccountAuthenticationModificationServiceViewController _deleteExistingKeychainCredentialIfPossibleWithCompletionHandler:v17];
             }
 
-            v19 = [MEMORY[0x1E69C8A38] sharedStore];
-            v16 = v21;
-            [v19 removeCredentialTypes:1 forSavedAccount:v11 completionHandler:v21];
+            mEMORY[0x1E69C8A38]2 = [MEMORY[0x1E69C8A38] sharedStore];
+            v16 = handlerCopy;
+            [mEMORY[0x1E69C8A38]2 removeCredentialTypes:1 forSavedAccount:v11 completionHandler:handlerCopy];
 
             goto LABEL_16;
           }
@@ -511,28 +511,28 @@ void __121__ASAccountAuthenticationModificationServiceViewController_updateCrede
     }
   }
 
-  v16 = v21;
-  (*(v21 + 2))(v21);
+  v16 = handlerCopy;
+  (*(handlerCopy + 2))(handlerCopy);
 LABEL_16:
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateKeychainWithNewCredential:(id)a3
+- (void)_updateKeychainWithNewCredential:(id)credential
 {
   v39 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v4 = [(ASCredentialServiceIdentifier *)self->_serviceIdentifierForUpgrade identifier];
-  v33 = [v4 safari_highLevelDomainFromHost];
+  credentialCopy = credential;
+  identifier = [(ASCredentialServiceIdentifier *)self->_serviceIdentifierForUpgrade identifier];
+  safari_highLevelDomainFromHost = [identifier safari_highLevelDomainFromHost];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = [MEMORY[0x1E69C8A38] sharedStore];
-  v6 = [v5 savedAccountsWithPasswords];
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
+  savedAccountsWithPasswords = [mEMORY[0x1E69C8A38] savedAccountsWithPasswords];
 
-  v7 = [v6 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  v7 = [savedAccountsWithPasswords countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v7)
   {
     v8 = v7;
@@ -544,37 +544,37 @@ LABEL_16:
       {
         if (*v35 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(savedAccountsWithPasswords);
         }
 
         v12 = *(*(&v34 + 1) + 8 * i);
-        v13 = [*(&self->super.super.super.isa + v10[38]) user];
-        v14 = [v12 user];
-        if ([v13 isEqualToString:v14])
+        user = [*(&self->super.super.super.isa + v10[38]) user];
+        user2 = [v12 user];
+        if ([user isEqualToString:user2])
         {
           v32 = v12;
           [v12 highLevelDomain];
           v15 = v8;
           v16 = v9;
-          v17 = self;
+          selfCopy = self;
           v18 = v10;
-          v20 = v19 = v6;
-          v21 = [v33 isEqualToString:v20];
+          v20 = v19 = savedAccountsWithPasswords;
+          v21 = [safari_highLevelDomainFromHost isEqualToString:v20];
 
-          v6 = v19;
+          savedAccountsWithPasswords = v19;
           v10 = v18;
-          self = v17;
+          self = selfCopy;
           v9 = v16;
           v8 = v15;
 
           if (v21)
           {
-            v25 = [MEMORY[0x1E69C8A38] sharedStore];
-            v26 = v31;
-            v27 = [v31 user];
-            v28 = [v31 password];
-            [v25 changeSavedAccount:v32 toUser:v27 password:v28];
-            v29 = v33;
+            mEMORY[0x1E69C8A38]2 = [MEMORY[0x1E69C8A38] sharedStore];
+            v26 = credentialCopy;
+            user3 = [credentialCopy user];
+            password = [credentialCopy password];
+            [mEMORY[0x1E69C8A38]2 changeSavedAccount:v32 toUser:user3 password:password];
+            v29 = safari_highLevelDomainFromHost;
             goto LABEL_13;
           }
         }
@@ -584,22 +584,22 @@ LABEL_16:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v8 = [savedAccountsWithPasswords countByEnumeratingWithState:&v34 objects:v38 count:16];
     }
 
     while (v8);
   }
 
   v22 = objc_alloc(MEMORY[0x1E696AF50]);
-  v23 = [(ASCredentialServiceIdentifier *)self->_serviceIdentifierForUpgrade identifier];
-  v6 = [v22 initWithHost:v23 port:0 protocol:&stru_1F28DE020 realm:0 authenticationMethod:*MEMORY[0x1E696A950]];
+  identifier2 = [(ASCredentialServiceIdentifier *)self->_serviceIdentifierForUpgrade identifier];
+  savedAccountsWithPasswords = [v22 initWithHost:identifier2 port:0 protocol:&stru_1F28DE020 realm:0 authenticationMethod:*MEMORY[0x1E696A950]];
 
-  v25 = [MEMORY[0x1E69C8A38] sharedStore];
-  v26 = v31;
-  v27 = [v31 user];
-  v28 = [v31 password];
-  v29 = v33;
-  v24 = [v25 saveUser:v27 password:v28 forProtectionSpace:v6 highLevelDomain:v33 groupID:&stru_1F28DE020];
+  mEMORY[0x1E69C8A38]2 = [MEMORY[0x1E69C8A38] sharedStore];
+  v26 = credentialCopy;
+  user3 = [credentialCopy user];
+  password = [credentialCopy password];
+  v29 = safari_highLevelDomainFromHost;
+  v24 = [mEMORY[0x1E69C8A38]2 saveUser:user3 password:password forProtectionSpace:savedAccountsWithPasswords highLevelDomain:safari_highLevelDomainFromHost groupID:&stru_1F28DE020];
 LABEL_13:
 
   v30 = *MEMORY[0x1E69E9840];
@@ -607,16 +607,16 @@ LABEL_13:
 
 - (BOOL)_isKeychainSyncEnabled
 {
-  v2 = [MEMORY[0x1E69C88B8] sharedMonitor];
-  v3 = [v2 isKeychainSyncEnabled];
+  mEMORY[0x1E69C88B8] = [MEMORY[0x1E69C88B8] sharedMonitor];
+  isKeychainSyncEnabled = [mEMORY[0x1E69C88B8] isKeychainSyncEnabled];
 
-  return v3;
+  return isKeychainSyncEnabled;
 }
 
-- (void)accountModificationHostViewControllerDidCompleteUpgradeToSignInWithApple:(id)a3 userInfo:(id)a4 completion:(id)a5
+- (void)accountModificationHostViewControllerDidCompleteUpgradeToSignInWithApple:(id)apple userInfo:(id)info completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  infoCopy = info;
   v9 = dispatch_group_create();
   v10 = v9;
   if (self->_isPerformingAppInitiatedUpgrade)
@@ -631,55 +631,55 @@ LABEL_13:
   }
 
   dispatch_group_enter(v10);
-  v11 = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
+  _remoteViewControllerProxy = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __153__ASAccountAuthenticationModificationServiceViewController_accountModificationHostViewControllerDidCompleteUpgradeToSignInWithApple_userInfo_completion___block_invoke_2;
   v13[3] = &unk_1E7AF7608;
   v14 = v10;
   v12 = v10;
-  [v11 requestToUpgradeToSignInWithAppleDidFinishWithUserInfo:v8 completion:v13];
+  [_remoteViewControllerProxy requestToUpgradeToSignInWithAppleDidFinishWithUserInfo:infoCopy completion:v13];
 
-  dispatch_group_notify(v12, MEMORY[0x1E69E96A0], v7);
+  dispatch_group_notify(v12, MEMORY[0x1E69E96A0], completionCopy);
 }
 
-- (void)accountModificationHostViewController:(id)a3 didFinishWithCredential:(id)a4 userInfo:(id)a5 completion:(id)a6
+- (void)accountModificationHostViewController:(id)controller didFinishWithCredential:(id)credential userInfo:(id)info completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  [(ASAccountAuthenticationModificationServiceViewController *)self _updateKeychainWithNewCredential:v11];
-  v12 = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
-  [v12 requestDidFinishWithCredential:v11 userInfo:v10 completion:v9];
+  completionCopy = completion;
+  infoCopy = info;
+  credentialCopy = credential;
+  [(ASAccountAuthenticationModificationServiceViewController *)self _updateKeychainWithNewCredential:credentialCopy];
+  _remoteViewControllerProxy = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy requestDidFinishWithCredential:credentialCopy userInfo:infoCopy completion:completionCopy];
 }
 
-- (void)presentUIForAccountModificationHostViewController:(id)a3
+- (void)presentUIForAccountModificationHostViewController:(id)controller
 {
   v7 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:self->_accountModificationHostViewController];
   [(ASAccountAuthenticationModificationServiceViewController *)self addChildViewController:v7];
-  v4 = [(ASAccountAuthenticationModificationServiceViewController *)self view];
-  v5 = [v7 view];
-  [v4 addSubview:v5];
-  [v4 bounds];
-  [v5 setFrame:?];
-  [v5 setAutoresizingMask:18];
+  view = [(ASAccountAuthenticationModificationServiceViewController *)self view];
+  view2 = [v7 view];
+  [view addSubview:view2];
+  [view bounds];
+  [view2 setFrame:?];
+  [view2 setAutoresizingMask:18];
   [v7 didMoveToParentViewController:self];
-  v6 = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
-  [v6 presentAccountModificationRemoteViewController];
+  _remoteViewControllerProxy = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy presentAccountModificationRemoteViewController];
 }
 
-- (void)dismissUIForAccountModificationHostViewController:(id)a3
+- (void)dismissUIForAccountModificationHostViewController:(id)controller
 {
-  v3 = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
-  [v3 dismissAccountModificationRemoteViewController];
+  _remoteViewControllerProxy = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy dismissAccountModificationRemoteViewController];
 }
 
-- (void)accountModificationHostViewController:(id)a3 requestCanceledWithError:(id)a4 completion:(id)a5
+- (void)accountModificationHostViewController:(id)controller requestCanceledWithError:(id)error completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
-  [v9 requestDidFailWithError:v8 completion:v7];
+  completionCopy = completion;
+  errorCopy = error;
+  _remoteViewControllerProxy = [(ASAccountAuthenticationModificationServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy requestDidFailWithError:errorCopy completion:completionCopy];
 }
 
 + (id)_exportedInterface

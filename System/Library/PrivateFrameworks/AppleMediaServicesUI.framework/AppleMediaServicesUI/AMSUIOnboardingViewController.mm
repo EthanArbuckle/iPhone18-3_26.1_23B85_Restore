@@ -1,170 +1,170 @@
 @interface AMSUIOnboardingViewController
-+ (id)privacyLinkIdentifiersFromController:(id)a3;
-- (AMSUIOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 appName:(id)a5 features:(id)a6 primaryButtonText:(id)a7 privacyLinkBundleIdentifier:(id)a8;
-- (AMSUIOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 descriptionText:(id)a5 appName:(id)a6 primaryButtonText:(id)a7 privacyLinkBundleIdentifier:(id)a8;
-- (AMSUIOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 descriptionText:(id)a5 appName:(id)a6 primaryButtonText:(id)a7 privacyLinkController:(id)a8;
-- (AMSUIOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 descriptionText:(id)a5 appName:(id)a6 primaryButtonText:(id)a7 secondaryButtonText:(id)a8 privacyLinkController:(id)a9;
-- (AMSUIOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 descriptionText:(id)a5 primaryButtonText:(id)a6 privacyLinkBundleIdentifier:(id)a7;
-- (AMSUIOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 descriptionText:(id)a5 primaryButtonText:(id)a6 privacyLinkController:(id)a7;
-- (AMSUIOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 descriptionText:(id)a5 primaryButtonText:(id)a6 secondaryButtonText:(id)a7 privacyLinkController:(id)a8;
-- (AMSUIOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 features:(id)a5 primaryButtonText:(id)a6 privacyLinkBundleIdentifier:(id)a7;
-- (AMSUIOnboardingViewController)initWithTitleText:(id)a3 appName:(id)a4 features:(id)a5 primaryButtonText:(id)a6 privacyLinkController:(id)a7;
-- (AMSUIOnboardingViewController)initWithTitleText:(id)a3 features:(id)a4 primaryButtonText:(id)a5 privacyLinkController:(id)a6;
++ (id)privacyLinkIdentifiersFromController:(id)controller;
+- (AMSUIOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text appName:(id)name features:(id)features primaryButtonText:(id)buttonText privacyLinkBundleIdentifier:(id)identifier;
+- (AMSUIOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text descriptionText:(id)descriptionText appName:(id)name primaryButtonText:(id)buttonText privacyLinkBundleIdentifier:(id)identifier;
+- (AMSUIOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text descriptionText:(id)descriptionText appName:(id)name primaryButtonText:(id)buttonText privacyLinkController:(id)controller;
+- (AMSUIOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text descriptionText:(id)descriptionText appName:(id)name primaryButtonText:(id)buttonText secondaryButtonText:(id)secondaryButtonText privacyLinkController:(id)controller;
+- (AMSUIOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text descriptionText:(id)descriptionText primaryButtonText:(id)buttonText privacyLinkBundleIdentifier:(id)identifier;
+- (AMSUIOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text descriptionText:(id)descriptionText primaryButtonText:(id)buttonText privacyLinkController:(id)controller;
+- (AMSUIOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text descriptionText:(id)descriptionText primaryButtonText:(id)buttonText secondaryButtonText:(id)secondaryButtonText privacyLinkController:(id)controller;
+- (AMSUIOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text features:(id)features primaryButtonText:(id)buttonText privacyLinkBundleIdentifier:(id)identifier;
+- (AMSUIOnboardingViewController)initWithTitleText:(id)text appName:(id)name features:(id)features primaryButtonText:(id)buttonText privacyLinkController:(id)controller;
+- (AMSUIOnboardingViewController)initWithTitleText:(id)text features:(id)features primaryButtonText:(id)buttonText privacyLinkController:(id)controller;
 - (BOOL)isPresentedInFormSheet;
 - (CGSize)preferredContentSize;
 - (UITraitCollection)cappedTraitCollection;
-- (id)childTraitCollectionForViewController:(id)a3;
+- (id)childTraitCollectionForViewController:(id)controller;
 - (id)keyCommands;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)commonInitWithPrimaryButtonText:(id)a3 privacyLinkBundleIdentifier:(id)a4;
-- (void)commonInitWithPrimaryButtonText:(id)a3 privacyLinkController:(id)a4;
-- (void)commonSetupWithPrimaryButtonText:(id)a3 secondaryButtonText:(id)a4 privacyLinkBundleIdentifiers:(id)a5;
-- (void)didTapPrimaryButton:(id)a3;
-- (void)didTapSecondaryButton:(id)a3;
+- (void)commonInitWithPrimaryButtonText:(id)text privacyLinkBundleIdentifier:(id)identifier;
+- (void)commonInitWithPrimaryButtonText:(id)text privacyLinkController:(id)controller;
+- (void)commonSetupWithPrimaryButtonText:(id)text secondaryButtonText:(id)buttonText privacyLinkBundleIdentifiers:(id)identifiers;
+- (void)didTapPrimaryButton:(id)button;
+- (void)didTapSecondaryButton:(id)button;
 - (void)updateOverrideTraits;
 - (void)viewDidLoad;
 @end
 
 @implementation AMSUIOnboardingViewController
 
-- (AMSUIOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 descriptionText:(id)a5 primaryButtonText:(id)a6 secondaryButtonText:(id)a7 privacyLinkController:(id)a8
+- (AMSUIOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text descriptionText:(id)descriptionText primaryButtonText:(id)buttonText secondaryButtonText:(id)secondaryButtonText privacyLinkController:(id)controller
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  obj = a7;
-  v18 = a7;
+  imageCopy = image;
+  textCopy = text;
+  descriptionTextCopy = descriptionText;
+  buttonTextCopy = buttonText;
+  obj = secondaryButtonText;
+  secondaryButtonTextCopy = secondaryButtonText;
   v28.receiver = self;
   v28.super_class = AMSUIOnboardingViewController;
-  v19 = a8;
+  controllerCopy = controller;
   v20 = [(AMSUIOnboardingViewController *)&v28 initWithNibName:0 bundle:0];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_titleText, a4);
-    objc_storeStrong(&v21->_descriptionText, a5);
-    objc_storeStrong(&v21->_primaryButtonText, a6);
+    objc_storeStrong(&v20->_titleText, text);
+    objc_storeStrong(&v21->_descriptionText, descriptionText);
+    objc_storeStrong(&v21->_primaryButtonText, buttonText);
     objc_storeStrong(&v21->_secondaryButtonText, obj);
-    objc_storeStrong(&v21->_image, a3);
-    v22 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:v15 detailText:v16 icon:v14];
+    objc_storeStrong(&v21->_image, image);
+    v22 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:textCopy detailText:descriptionTextCopy icon:imageCopy];
     welcomeController = v21->_welcomeController;
     v21->_welcomeController = v22;
 
-    v24 = [objc_opt_class() privacyLinkIdentifiersFromController:v19];
-    [(AMSUIOnboardingViewController *)v21 commonSetupWithPrimaryButtonText:v17 secondaryButtonText:v18 privacyLinkBundleIdentifiers:v24];
+    v24 = [objc_opt_class() privacyLinkIdentifiersFromController:controllerCopy];
+    [(AMSUIOnboardingViewController *)v21 commonSetupWithPrimaryButtonText:buttonTextCopy secondaryButtonText:secondaryButtonTextCopy privacyLinkBundleIdentifiers:v24];
   }
 
   return v21;
 }
 
-- (AMSUIOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 descriptionText:(id)a5 appName:(id)a6 primaryButtonText:(id)a7 secondaryButtonText:(id)a8 privacyLinkController:(id)a9
+- (AMSUIOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text descriptionText:(id)descriptionText appName:(id)name primaryButtonText:(id)buttonText secondaryButtonText:(id)secondaryButtonText privacyLinkController:(id)controller
 {
-  v28 = a3;
-  v27 = a4;
-  v26 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  imageCopy = image;
+  textCopy = text;
+  descriptionTextCopy = descriptionText;
+  nameCopy = name;
+  buttonTextCopy = buttonText;
+  secondaryButtonTextCopy = secondaryButtonText;
+  controllerCopy = controller;
   v29.receiver = self;
   v29.super_class = AMSUIOnboardingViewController;
   v20 = [(AMSUIOnboardingViewController *)&v29 initWithNibName:0 bundle:0];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_titleText, a4);
-    objc_storeStrong(&v21->_descriptionText, a5);
-    objc_storeStrong(&v21->_primaryButtonText, a7);
-    objc_storeStrong(&v21->_secondaryButtonText, a8);
-    objc_storeStrong(&v21->_image, a3);
-    v22 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:v27 detailText:v26 appName:v16 icon:v28];
+    objc_storeStrong(&v20->_titleText, text);
+    objc_storeStrong(&v21->_descriptionText, descriptionText);
+    objc_storeStrong(&v21->_primaryButtonText, buttonText);
+    objc_storeStrong(&v21->_secondaryButtonText, secondaryButtonText);
+    objc_storeStrong(&v21->_image, image);
+    v22 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:textCopy detailText:descriptionTextCopy appName:nameCopy icon:imageCopy];
     welcomeController = v21->_welcomeController;
     v21->_welcomeController = v22;
 
-    v24 = [objc_opt_class() privacyLinkIdentifiersFromController:v19];
-    [(AMSUIOnboardingViewController *)v21 commonSetupWithPrimaryButtonText:v17 secondaryButtonText:v18 privacyLinkBundleIdentifiers:v24];
+    v24 = [objc_opt_class() privacyLinkIdentifiersFromController:controllerCopy];
+    [(AMSUIOnboardingViewController *)v21 commonSetupWithPrimaryButtonText:buttonTextCopy secondaryButtonText:secondaryButtonTextCopy privacyLinkBundleIdentifiers:v24];
   }
 
   return v21;
 }
 
-- (AMSUIOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 descriptionText:(id)a5 primaryButtonText:(id)a6 privacyLinkController:(id)a7
+- (AMSUIOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text descriptionText:(id)descriptionText primaryButtonText:(id)buttonText privacyLinkController:(id)controller
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  imageCopy = image;
+  textCopy = text;
+  descriptionTextCopy = descriptionText;
+  buttonTextCopy = buttonText;
+  controllerCopy = controller;
   v24.receiver = self;
   v24.super_class = AMSUIOnboardingViewController;
   v18 = [(AMSUIOnboardingViewController *)&v24 initWithNibName:0 bundle:0];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_titleText, a4);
-    objc_storeStrong(&v19->_descriptionText, a5);
-    objc_storeStrong(&v19->_primaryButtonText, a6);
-    objc_storeStrong(&v19->_image, a3);
-    v20 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:v14 detailText:v15 icon:v13];
+    objc_storeStrong(&v18->_titleText, text);
+    objc_storeStrong(&v19->_descriptionText, descriptionText);
+    objc_storeStrong(&v19->_primaryButtonText, buttonText);
+    objc_storeStrong(&v19->_image, image);
+    v20 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:textCopy detailText:descriptionTextCopy icon:imageCopy];
     welcomeController = v19->_welcomeController;
     v19->_welcomeController = v20;
 
-    v22 = [objc_opt_class() privacyLinkIdentifiersFromController:v17];
-    [(AMSUIOnboardingViewController *)v19 commonSetupWithPrimaryButtonText:v16 privacyLinkBundleIdentifiers:v22];
+    v22 = [objc_opt_class() privacyLinkIdentifiersFromController:controllerCopy];
+    [(AMSUIOnboardingViewController *)v19 commonSetupWithPrimaryButtonText:buttonTextCopy privacyLinkBundleIdentifiers:v22];
   }
 
   return v19;
 }
 
-- (AMSUIOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 descriptionText:(id)a5 appName:(id)a6 primaryButtonText:(id)a7 privacyLinkController:(id)a8
+- (AMSUIOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text descriptionText:(id)descriptionText appName:(id)name primaryButtonText:(id)buttonText privacyLinkController:(id)controller
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a7;
+  imageCopy = image;
+  textCopy = text;
+  descriptionTextCopy = descriptionText;
+  nameCopy = name;
+  buttonTextCopy = buttonText;
+  buttonTextCopy2 = buttonText;
   v28.receiver = self;
   v28.super_class = AMSUIOnboardingViewController;
-  v20 = a8;
+  controllerCopy = controller;
   v21 = [(AMSUIOnboardingViewController *)&v28 initWithNibName:0 bundle:0];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_titleText, a4);
-    objc_storeStrong(&v22->_descriptionText, a5);
-    objc_storeStrong(&v22->_primaryButtonText, v18);
-    objc_storeStrong(&v22->_image, a3);
-    v23 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:v15 detailText:v16 appName:v17 icon:v14];
+    objc_storeStrong(&v21->_titleText, text);
+    objc_storeStrong(&v22->_descriptionText, descriptionText);
+    objc_storeStrong(&v22->_primaryButtonText, buttonTextCopy);
+    objc_storeStrong(&v22->_image, image);
+    v23 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:textCopy detailText:descriptionTextCopy appName:nameCopy icon:imageCopy];
     welcomeController = v22->_welcomeController;
     v22->_welcomeController = v23;
 
-    v25 = [objc_opt_class() privacyLinkIdentifiersFromController:v20];
-    [(AMSUIOnboardingViewController *)v22 commonSetupWithPrimaryButtonText:v19 privacyLinkBundleIdentifiers:v25];
+    v25 = [objc_opt_class() privacyLinkIdentifiersFromController:controllerCopy];
+    [(AMSUIOnboardingViewController *)v22 commonSetupWithPrimaryButtonText:buttonTextCopy2 privacyLinkBundleIdentifiers:v25];
   }
 
   return v22;
 }
 
-- (AMSUIOnboardingViewController)initWithTitleText:(id)a3 features:(id)a4 primaryButtonText:(id)a5 privacyLinkController:(id)a6
+- (AMSUIOnboardingViewController)initWithTitleText:(id)text features:(id)features primaryButtonText:(id)buttonText privacyLinkController:(id)controller
 {
   v41 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  textCopy = text;
+  featuresCopy = features;
+  buttonTextCopy = buttonText;
+  controllerCopy = controller;
   v39.receiver = self;
   v39.super_class = AMSUIOnboardingViewController;
   v15 = [(AMSUIOnboardingViewController *)&v39 initWithNibName:0 bundle:0];
   v16 = v15;
   if (v15)
   {
-    v32 = v14;
-    objc_storeStrong(&v15->_titleText, a3);
-    objc_storeStrong(&v16->_primaryButtonText, a5);
-    v34 = v11;
-    v17 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:v11 detailText:0 icon:0];
+    v32 = controllerCopy;
+    objc_storeStrong(&v15->_titleText, text);
+    objc_storeStrong(&v16->_primaryButtonText, buttonText);
+    v34 = textCopy;
+    v17 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:textCopy detailText:0 icon:0];
     welcomeController = v16->_welcomeController;
     v16->_welcomeController = v17;
 
@@ -172,8 +172,8 @@
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v33 = v12;
-    v19 = v12;
+    v33 = featuresCopy;
+    v19 = featuresCopy;
     v20 = [v19 countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v20)
     {
@@ -190,10 +190,10 @@
 
           v24 = *(*(&v35 + 1) + 8 * i);
           v25 = v16->_welcomeController;
-          v26 = [v24 titleText];
-          v27 = [v24 descriptionText];
-          v28 = [v24 image];
-          [(OBWelcomeController *)v25 addBulletedListItemWithTitle:v26 description:v27 image:v28];
+          titleText = [v24 titleText];
+          descriptionText = [v24 descriptionText];
+          image = [v24 image];
+          [(OBWelcomeController *)v25 addBulletedListItemWithTitle:titleText description:descriptionText image:image];
         }
 
         v21 = [v19 countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -202,38 +202,38 @@
       while (v21);
     }
 
-    v14 = v32;
+    controllerCopy = v32;
     v29 = [objc_opt_class() privacyLinkIdentifiersFromController:v32];
-    [(AMSUIOnboardingViewController *)v16 commonSetupWithPrimaryButtonText:v13 privacyLinkBundleIdentifiers:v29];
+    [(AMSUIOnboardingViewController *)v16 commonSetupWithPrimaryButtonText:buttonTextCopy privacyLinkBundleIdentifiers:v29];
 
-    v12 = v33;
-    v11 = v34;
+    featuresCopy = v33;
+    textCopy = v34;
   }
 
   v30 = *MEMORY[0x1E69E9840];
   return v16;
 }
 
-- (AMSUIOnboardingViewController)initWithTitleText:(id)a3 appName:(id)a4 features:(id)a5 primaryButtonText:(id)a6 privacyLinkController:(id)a7
+- (AMSUIOnboardingViewController)initWithTitleText:(id)text appName:(id)name features:(id)features primaryButtonText:(id)buttonText privacyLinkController:(id)controller
 {
   v45 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  textCopy = text;
+  nameCopy = name;
+  featuresCopy = features;
+  buttonTextCopy = buttonText;
+  controllerCopy = controller;
   v43.receiver = self;
   v43.super_class = AMSUIOnboardingViewController;
   v18 = [(AMSUIOnboardingViewController *)&v43 initWithNibName:0 bundle:0];
   v19 = v18;
   if (v18)
   {
-    v35 = v17;
-    objc_storeStrong(&v18->_titleText, a3);
-    objc_storeStrong(&v19->_primaryButtonText, a6);
-    v37 = v14;
-    v38 = v13;
-    v20 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:v13 detailText:0 appName:v14 icon:0];
+    v35 = controllerCopy;
+    objc_storeStrong(&v18->_titleText, text);
+    objc_storeStrong(&v19->_primaryButtonText, buttonText);
+    v37 = nameCopy;
+    v38 = textCopy;
+    v20 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:textCopy detailText:0 appName:nameCopy icon:0];
     welcomeController = v19->_welcomeController;
     v19->_welcomeController = v20;
 
@@ -241,8 +241,8 @@
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v36 = v15;
-    v22 = v15;
+    v36 = featuresCopy;
+    v22 = featuresCopy;
     v23 = [v22 countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v23)
     {
@@ -259,10 +259,10 @@
 
           v27 = *(*(&v39 + 1) + 8 * i);
           v28 = v19->_welcomeController;
-          v29 = [v27 titleText];
-          v30 = [v27 descriptionText];
-          v31 = [v27 image];
-          [(OBWelcomeController *)v28 addBulletedListItemWithTitle:v29 description:v30 image:v31];
+          titleText = [v27 titleText];
+          descriptionText = [v27 descriptionText];
+          image = [v27 image];
+          [(OBWelcomeController *)v28 addBulletedListItemWithTitle:titleText description:descriptionText image:image];
         }
 
         v24 = [v22 countByEnumeratingWithState:&v39 objects:v44 count:16];
@@ -271,104 +271,104 @@
       while (v24);
     }
 
-    v17 = v35;
+    controllerCopy = v35;
     v32 = [objc_opt_class() privacyLinkIdentifiersFromController:v35];
-    [(AMSUIOnboardingViewController *)v19 commonSetupWithPrimaryButtonText:v16 privacyLinkBundleIdentifiers:v32];
+    [(AMSUIOnboardingViewController *)v19 commonSetupWithPrimaryButtonText:buttonTextCopy privacyLinkBundleIdentifiers:v32];
 
-    v14 = v37;
-    v13 = v38;
-    v15 = v36;
+    nameCopy = v37;
+    textCopy = v38;
+    featuresCopy = v36;
   }
 
   v33 = *MEMORY[0x1E69E9840];
   return v19;
 }
 
-- (AMSUIOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 descriptionText:(id)a5 primaryButtonText:(id)a6 privacyLinkBundleIdentifier:(id)a7
+- (AMSUIOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text descriptionText:(id)descriptionText primaryButtonText:(id)buttonText privacyLinkBundleIdentifier:(id)identifier
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  imageCopy = image;
+  textCopy = text;
+  descriptionTextCopy = descriptionText;
+  buttonTextCopy = buttonText;
+  identifierCopy = identifier;
   v25.receiver = self;
   v25.super_class = AMSUIOnboardingViewController;
   v17 = [(AMSUIOnboardingViewController *)&v25 initWithNibName:0 bundle:0];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_titleText, a4);
-    objc_storeStrong(&v18->_descriptionText, a5);
-    objc_storeStrong(&v18->_primaryButtonText, a6);
-    objc_storeStrong(&v18->_image, a3);
-    v19 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:v13 detailText:v14 icon:v24];
+    objc_storeStrong(&v17->_titleText, text);
+    objc_storeStrong(&v18->_descriptionText, descriptionText);
+    objc_storeStrong(&v18->_primaryButtonText, buttonText);
+    objc_storeStrong(&v18->_image, image);
+    v19 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:textCopy detailText:descriptionTextCopy icon:imageCopy];
     welcomeController = v18->_welcomeController;
     v18->_welcomeController = v19;
 
-    v26[0] = v16;
+    v26[0] = identifierCopy;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-    [(AMSUIOnboardingViewController *)v18 commonSetupWithPrimaryButtonText:v15 privacyLinkBundleIdentifiers:v21];
+    [(AMSUIOnboardingViewController *)v18 commonSetupWithPrimaryButtonText:buttonTextCopy privacyLinkBundleIdentifiers:v21];
   }
 
   v22 = *MEMORY[0x1E69E9840];
   return v18;
 }
 
-- (AMSUIOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 descriptionText:(id)a5 appName:(id)a6 primaryButtonText:(id)a7 privacyLinkBundleIdentifier:(id)a8
+- (AMSUIOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text descriptionText:(id)descriptionText appName:(id)name primaryButtonText:(id)buttonText privacyLinkBundleIdentifier:(id)identifier
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a7;
+  imageCopy = image;
+  textCopy = text;
+  descriptionTextCopy = descriptionText;
+  nameCopy = name;
+  buttonTextCopy = buttonText;
+  buttonTextCopy2 = buttonText;
   v29.receiver = self;
   v29.super_class = AMSUIOnboardingViewController;
-  v20 = a8;
+  identifierCopy = identifier;
   v21 = [(AMSUIOnboardingViewController *)&v29 initWithNibName:0 bundle:0];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_titleText, a4);
-    objc_storeStrong(&v22->_descriptionText, a5);
-    objc_storeStrong(&v22->_primaryButtonText, v18);
-    objc_storeStrong(&v22->_image, a3);
-    v23 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:v15 detailText:v16 appName:v17 icon:v14];
+    objc_storeStrong(&v21->_titleText, text);
+    objc_storeStrong(&v22->_descriptionText, descriptionText);
+    objc_storeStrong(&v22->_primaryButtonText, buttonTextCopy);
+    objc_storeStrong(&v22->_image, image);
+    v23 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:textCopy detailText:descriptionTextCopy appName:nameCopy icon:imageCopy];
     welcomeController = v22->_welcomeController;
     v22->_welcomeController = v23;
 
-    v30[0] = v20;
+    v30[0] = identifierCopy;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
-    [(AMSUIOnboardingViewController *)v22 commonSetupWithPrimaryButtonText:v19 privacyLinkBundleIdentifiers:v25];
+    [(AMSUIOnboardingViewController *)v22 commonSetupWithPrimaryButtonText:buttonTextCopy2 privacyLinkBundleIdentifiers:v25];
   }
 
   v26 = *MEMORY[0x1E69E9840];
   return v22;
 }
 
-- (AMSUIOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 features:(id)a5 primaryButtonText:(id)a6 privacyLinkBundleIdentifier:(id)a7
+- (AMSUIOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text features:(id)features primaryButtonText:(id)buttonText privacyLinkBundleIdentifier:(id)identifier
 {
   v46 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  imageCopy = image;
+  textCopy = text;
+  featuresCopy = features;
+  buttonTextCopy = buttonText;
+  identifierCopy = identifier;
   v43.receiver = self;
   v43.super_class = AMSUIOnboardingViewController;
   v18 = [(AMSUIOnboardingViewController *)&v43 initWithNibName:0 bundle:0];
   v19 = v18;
   if (v18)
   {
-    v35 = v17;
-    objc_storeStrong(&v18->_titleText, a4);
-    objc_storeStrong(&v19->_primaryButtonText, a6);
-    objc_storeStrong(&v19->_image, a3);
-    v37 = v14;
-    v38 = v13;
-    v20 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:v14 detailText:0 icon:v13];
+    v35 = identifierCopy;
+    objc_storeStrong(&v18->_titleText, text);
+    objc_storeStrong(&v19->_primaryButtonText, buttonText);
+    objc_storeStrong(&v19->_image, image);
+    v37 = textCopy;
+    v38 = imageCopy;
+    v20 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:textCopy detailText:0 icon:imageCopy];
     welcomeController = v19->_welcomeController;
     v19->_welcomeController = v20;
 
@@ -376,8 +376,8 @@
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v36 = v15;
-    v22 = v15;
+    v36 = featuresCopy;
+    v22 = featuresCopy;
     v23 = [v22 countByEnumeratingWithState:&v39 objects:v45 count:16];
     if (v23)
     {
@@ -394,10 +394,10 @@
 
           v27 = *(*(&v39 + 1) + 8 * i);
           v28 = v19->_welcomeController;
-          v29 = [v27 titleText];
-          v30 = [v27 descriptionText];
-          v31 = [v27 image];
-          [(OBWelcomeController *)v28 addBulletedListItemWithTitle:v29 description:v30 image:v31];
+          titleText = [v27 titleText];
+          descriptionText = [v27 descriptionText];
+          image = [v27 image];
+          [(OBWelcomeController *)v28 addBulletedListItemWithTitle:titleText description:descriptionText image:image];
         }
 
         v24 = [v22 countByEnumeratingWithState:&v39 objects:v45 count:16];
@@ -406,43 +406,43 @@
       while (v24);
     }
 
-    v17 = v35;
+    identifierCopy = v35;
     v44 = v35;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
-    [(AMSUIOnboardingViewController *)v19 commonSetupWithPrimaryButtonText:v16 privacyLinkBundleIdentifiers:v32];
+    [(AMSUIOnboardingViewController *)v19 commonSetupWithPrimaryButtonText:buttonTextCopy privacyLinkBundleIdentifiers:v32];
 
-    v14 = v37;
-    v13 = v38;
-    v15 = v36;
+    textCopy = v37;
+    imageCopy = v38;
+    featuresCopy = v36;
   }
 
   v33 = *MEMORY[0x1E69E9840];
   return v19;
 }
 
-- (AMSUIOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 appName:(id)a5 features:(id)a6 primaryButtonText:(id)a7 privacyLinkBundleIdentifier:(id)a8
+- (AMSUIOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text appName:(id)name features:(id)features primaryButtonText:(id)buttonText privacyLinkBundleIdentifier:(id)identifier
 {
   v50 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  imageCopy = image;
+  textCopy = text;
+  nameCopy = name;
+  featuresCopy = features;
+  buttonTextCopy = buttonText;
+  identifierCopy = identifier;
   v47.receiver = self;
   v47.super_class = AMSUIOnboardingViewController;
   v20 = [(AMSUIOnboardingViewController *)&v47 initWithNibName:0 bundle:0];
   v21 = v20;
   if (v20)
   {
-    v37 = v19;
-    objc_storeStrong(&v20->_titleText, a4);
-    objc_storeStrong(&v21->_primaryButtonText, a7);
-    objc_storeStrong(&v21->_image, a3);
-    v39 = v16;
-    v40 = v15;
-    obja = v14;
-    v22 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:v15 detailText:0 appName:v16 icon:v14];
+    v37 = identifierCopy;
+    objc_storeStrong(&v20->_titleText, text);
+    objc_storeStrong(&v21->_primaryButtonText, buttonText);
+    objc_storeStrong(&v21->_image, image);
+    v39 = nameCopy;
+    v40 = textCopy;
+    obja = imageCopy;
+    v22 = [objc_alloc(getOBWelcomeControllerClass()) initWithTitle:textCopy detailText:0 appName:nameCopy icon:imageCopy];
     welcomeController = v21->_welcomeController;
     v21->_welcomeController = v22;
 
@@ -450,8 +450,8 @@
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v38 = v17;
-    v24 = v17;
+    v38 = featuresCopy;
+    v24 = featuresCopy;
     v25 = [v24 countByEnumeratingWithState:&v43 objects:v49 count:16];
     if (v25)
     {
@@ -468,10 +468,10 @@
 
           v29 = *(*(&v43 + 1) + 8 * i);
           v30 = v21->_welcomeController;
-          v31 = [v29 titleText];
-          v32 = [v29 descriptionText];
-          v33 = [v29 image];
-          [(OBWelcomeController *)v30 addBulletedListItemWithTitle:v31 description:v32 image:v33];
+          titleText = [v29 titleText];
+          descriptionText = [v29 descriptionText];
+          image = [v29 image];
+          [(OBWelcomeController *)v30 addBulletedListItemWithTitle:titleText description:descriptionText image:image];
         }
 
         v26 = [v24 countByEnumeratingWithState:&v43 objects:v49 count:16];
@@ -480,35 +480,35 @@
       while (v26);
     }
 
-    v19 = v37;
+    identifierCopy = v37;
     v48 = v37;
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1];
-    [(AMSUIOnboardingViewController *)v21 commonSetupWithPrimaryButtonText:v18 privacyLinkBundleIdentifiers:v34];
+    [(AMSUIOnboardingViewController *)v21 commonSetupWithPrimaryButtonText:buttonTextCopy privacyLinkBundleIdentifiers:v34];
 
-    v15 = v40;
-    v14 = obja;
-    v17 = v38;
-    v16 = v39;
+    textCopy = v40;
+    imageCopy = obja;
+    featuresCopy = v38;
+    nameCopy = v39;
   }
 
   v35 = *MEMORY[0x1E69E9840];
   return v21;
 }
 
-- (void)commonSetupWithPrimaryButtonText:(id)a3 secondaryButtonText:(id)a4 privacyLinkBundleIdentifiers:(id)a5
+- (void)commonSetupWithPrimaryButtonText:(id)text secondaryButtonText:(id)buttonText privacyLinkBundleIdentifiers:(id)identifiers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  buttonTextCopy = buttonText;
+  identifiersCopy = identifiers;
   v11 = dispatch_queue_create("com.apple.AppleMediaServicesUI.onboardingMetrics", 0);
   metricsQueue = self->_metricsQueue;
   self->_metricsQueue = v11;
 
-  if (v10)
+  if (identifiersCopy)
   {
-    v13 = [(AMSUIOnboardingViewController *)self welcomeController];
-    v14 = [v13 buttonTray];
-    [v14 addPrivacyLinkForBundles:v10];
+    welcomeController = [(AMSUIOnboardingViewController *)self welcomeController];
+    buttonTray = [welcomeController buttonTray];
+    [buttonTray addPrivacyLinkForBundles:identifiersCopy];
   }
 
   v30 = 0;
@@ -529,15 +529,15 @@
 
   v16 = v15;
   _Block_object_dispose(&v30, 8);
-  v17 = [v15 boldButton];
-  [v17 setTitle:v8 forState:0];
-  [v17 setAccessibilityIdentifier:@"amsui.onboarding.primaryButton"];
-  [v17 addTarget:self action:sel_didTapPrimaryButton_ forControlEvents:64];
-  v18 = [(AMSUIOnboardingViewController *)self welcomeController];
-  v19 = [v18 buttonTray];
-  [v19 addButton:v17];
+  boldButton = [v15 boldButton];
+  [boldButton setTitle:textCopy forState:0];
+  [boldButton setAccessibilityIdentifier:@"amsui.onboarding.primaryButton"];
+  [boldButton addTarget:self action:sel_didTapPrimaryButton_ forControlEvents:64];
+  welcomeController2 = [(AMSUIOnboardingViewController *)self welcomeController];
+  buttonTray2 = [welcomeController2 buttonTray];
+  [buttonTray2 addButton:boldButton];
 
-  if (v9)
+  if (buttonTextCopy)
   {
     v30 = 0;
     v31 = &v30;
@@ -557,26 +557,26 @@
 
     v21 = v20;
     _Block_object_dispose(&v30, 8);
-    v22 = [v20 linkButton];
-    [v22 setTitle:v9 forState:0];
-    [v17 setAccessibilityIdentifier:@"amsui.onboarding.secondaryButton"];
-    [v22 addTarget:self action:sel_didTapSecondaryButton_ forControlEvents:64];
-    v23 = [(AMSUIOnboardingViewController *)self welcomeController];
-    v24 = [v23 buttonTray];
-    [v24 addButton:v22];
+    linkButton = [v20 linkButton];
+    [linkButton setTitle:buttonTextCopy forState:0];
+    [boldButton setAccessibilityIdentifier:@"amsui.onboarding.secondaryButton"];
+    [linkButton addTarget:self action:sel_didTapSecondaryButton_ forControlEvents:64];
+    welcomeController3 = [(AMSUIOnboardingViewController *)self welcomeController];
+    buttonTray3 = [welcomeController3 buttonTray];
+    [buttonTray3 addButton:linkButton];
   }
 }
 
-- (void)commonInitWithPrimaryButtonText:(id)a3 privacyLinkBundleIdentifier:(id)a4
+- (void)commonInitWithPrimaryButtonText:(id)text privacyLinkBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [getOBPrivacyLinkControllerClass() linkWithBundleIdentifier:v6];
+  identifierCopy = identifier;
+  textCopy = text;
+  v8 = [getOBPrivacyLinkControllerClass() linkWithBundleIdentifier:identifierCopy];
 
-  [(AMSUIOnboardingViewController *)self commonInitWithPrimaryButtonText:v7 privacyLinkController:v8];
+  [(AMSUIOnboardingViewController *)self commonInitWithPrimaryButtonText:textCopy privacyLinkController:v8];
 }
 
-- (void)commonInitWithPrimaryButtonText:(id)a3 privacyLinkController:(id)a4
+- (void)commonInitWithPrimaryButtonText:(id)text privacyLinkController:(id)controller
 {
   v5 = dispatch_queue_create("com.apple.AppleMediaServicesUI.onboardingMetrics", 0);
   metricsQueue = self->_metricsQueue;
@@ -590,52 +590,52 @@
   v27.receiver = self;
   v27.super_class = AMSUIOnboardingViewController;
   [(AMSUIOnboardingViewController *)&v27 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v4 = [(AMSUIOnboardingViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view = [(AMSUIOnboardingViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(AMSUIOnboardingViewController *)self welcomeController];
+  welcomeController = [(AMSUIOnboardingViewController *)self welcomeController];
 
-  if (v5)
+  if (welcomeController)
   {
-    v6 = [(AMSUIOnboardingViewController *)self welcomeController];
-    [(AMSUIOnboardingViewController *)self addChildViewController:v6];
+    welcomeController2 = [(AMSUIOnboardingViewController *)self welcomeController];
+    [(AMSUIOnboardingViewController *)self addChildViewController:welcomeController2];
 
-    v7 = [(AMSUIOnboardingViewController *)self welcomeController];
-    [v7 setModalPresentationStyle:2];
+    welcomeController3 = [(AMSUIOnboardingViewController *)self welcomeController];
+    [welcomeController3 setModalPresentationStyle:2];
 
-    v8 = [(AMSUIOnboardingViewController *)self welcomeController];
-    v9 = [v8 view];
-    [v9 setAutoresizingMask:18];
+    welcomeController4 = [(AMSUIOnboardingViewController *)self welcomeController];
+    view2 = [welcomeController4 view];
+    [view2 setAutoresizingMask:18];
 
-    v10 = [(AMSUIOnboardingViewController *)self view];
-    [v10 frame];
+    view3 = [(AMSUIOnboardingViewController *)self view];
+    [view3 frame];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(AMSUIOnboardingViewController *)self welcomeController];
-    v20 = [v19 view];
-    [v20 setFrame:{v12, v14, v16, v18}];
+    welcomeController5 = [(AMSUIOnboardingViewController *)self welcomeController];
+    view4 = [welcomeController5 view];
+    [view4 setFrame:{v12, v14, v16, v18}];
 
-    v21 = [(AMSUIOnboardingViewController *)self welcomeController];
-    v22 = [v21 view];
-    [v22 setAccessibilityIdentifier:@"amsui.onboarding"];
+    welcomeController6 = [(AMSUIOnboardingViewController *)self welcomeController];
+    view5 = [welcomeController6 view];
+    [view5 setAccessibilityIdentifier:@"amsui.onboarding"];
 
-    v23 = [(AMSUIOnboardingViewController *)self view];
-    v24 = [(AMSUIOnboardingViewController *)self welcomeController];
-    v25 = [v24 view];
-    [v23 addSubview:v25];
+    view6 = [(AMSUIOnboardingViewController *)self view];
+    welcomeController7 = [(AMSUIOnboardingViewController *)self welcomeController];
+    view7 = [welcomeController7 view];
+    [view6 addSubview:view7];
 
-    v26 = [(AMSUIOnboardingViewController *)self welcomeController];
-    [v26 didMoveToParentViewController:self];
+    welcomeController8 = [(AMSUIOnboardingViewController *)self welcomeController];
+    [welcomeController8 didMoveToParentViewController:self];
   }
 }
 
 - (CGSize)preferredContentSize
 {
-  v2 = [(AMSUIOnboardingViewController *)self welcomeController];
-  [v2 preferredContentSize];
+  welcomeController = [(AMSUIOnboardingViewController *)self welcomeController];
+  [welcomeController preferredContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -648,10 +648,10 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(AMSUIOnboardingViewController *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(AMSUIOnboardingViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -670,20 +670,20 @@
     [AMSUIOnboardingViewController cappedTraitCollection];
   }
 
-  v3 = [(AMSUIOnboardingViewController *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v4))
+  traitCollection = [(AMSUIOnboardingViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v5 = cappedTraitCollection_cappedSizes;
-    v6 = [(AMSUIOnboardingViewController *)self traitCollection];
-    v7 = [v6 preferredContentSizeCategory];
-    LODWORD(v5) = [v5 containsObject:v7];
+    traitCollection2 = [(AMSUIOnboardingViewController *)self traitCollection];
+    preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+    LODWORD(v5) = [v5 containsObject:preferredContentSizeCategory2];
 
     if (v5)
     {
       v8 = MEMORY[0x1E69DD1B8];
-      v9 = [(AMSUIOnboardingViewController *)self traitCollection];
-      v15[0] = v9;
+      traitCollection3 = [(AMSUIOnboardingViewController *)self traitCollection];
+      v15[0] = traitCollection3;
       v10 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x1E69DDC38]];
       v15[1] = v10;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
@@ -718,23 +718,23 @@ void __54__AMSUIOnboardingViewController_cappedTraitCollection__block_invoke()
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (id)childTraitCollectionForViewController:(id)a3
+- (id)childTraitCollectionForViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   getOBPrivacyLinkControllerClass();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(AMSUIOnboardingViewController *)self cappedTraitCollection];
+    cappedTraitCollection = [(AMSUIOnboardingViewController *)self cappedTraitCollection];
   }
 
   else
   {
-    v6 = 0;
+    cappedTraitCollection = 0;
   }
 
-  return v6;
+  return cappedTraitCollection;
 }
 
 - (void)updateOverrideTraits
@@ -744,8 +744,8 @@ void __54__AMSUIOnboardingViewController_cappedTraitCollection__block_invoke()
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(AMSUIOnboardingViewController *)self childViewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  childViewControllers = [(AMSUIOnboardingViewController *)self childViewControllers];
+  v4 = [childViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -756,7 +756,7 @@ void __54__AMSUIOnboardingViewController_cappedTraitCollection__block_invoke()
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -764,7 +764,7 @@ void __54__AMSUIOnboardingViewController_cappedTraitCollection__block_invoke()
         [(AMSUIOnboardingViewController *)self setOverrideTraitCollection:v9 forChildViewController:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [childViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -776,17 +776,17 @@ void __54__AMSUIOnboardingViewController_cappedTraitCollection__block_invoke()
 - (id)keyCommands
 {
   v3 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"\r" modifierFlags:0 action:sel_didTapPrimaryButton_];
-  v4 = [(AMSUIOnboardingViewController *)self primaryButtonText];
-  [v3 setTitle:v4];
+  primaryButtonText = [(AMSUIOnboardingViewController *)self primaryButtonText];
+  [v3 setTitle:primaryButtonText];
 
   v11.receiver = self;
   v11.super_class = AMSUIOnboardingViewController;
-  v5 = [(AMSUIOnboardingViewController *)&v11 keyCommands];
-  v6 = v5;
+  keyCommands = [(AMSUIOnboardingViewController *)&v11 keyCommands];
+  v6 = keyCommands;
   v7 = MEMORY[0x1E695E0F0];
-  if (v5)
+  if (keyCommands)
   {
-    v7 = v5;
+    v7 = keyCommands;
   }
 
   v8 = v7;
@@ -796,63 +796,63 @@ void __54__AMSUIOnboardingViewController_cappedTraitCollection__block_invoke()
   return v9;
 }
 
-- (void)didTapSecondaryButton:(id)a3
+- (void)didTapSecondaryButton:(id)button
 {
-  v4 = [(AMSUIOnboardingViewController *)self secondaryButtonCallback];
+  secondaryButtonCallback = [(AMSUIOnboardingViewController *)self secondaryButtonCallback];
 
-  if (v4)
+  if (secondaryButtonCallback)
   {
-    v5 = [(AMSUIOnboardingViewController *)self secondaryButtonCallback];
-    v5[2](v5, self);
+    secondaryButtonCallback2 = [(AMSUIOnboardingViewController *)self secondaryButtonCallback];
+    secondaryButtonCallback2[2](secondaryButtonCallback2, self);
   }
 }
 
-- (void)didTapPrimaryButton:(id)a3
+- (void)didTapPrimaryButton:(id)button
 {
-  v4 = [(AMSUIOnboardingViewController *)self primaryButtonCallback];
+  primaryButtonCallback = [(AMSUIOnboardingViewController *)self primaryButtonCallback];
 
-  if (v4)
+  if (primaryButtonCallback)
   {
-    v5 = [(AMSUIOnboardingViewController *)self primaryButtonCallback];
-    v5[2](v5, self);
+    primaryButtonCallback2 = [(AMSUIOnboardingViewController *)self primaryButtonCallback];
+    primaryButtonCallback2[2](primaryButtonCallback2, self);
   }
 }
 
 - (BOOL)isPresentedInFormSheet
 {
-  v3 = [(AMSUIOnboardingViewController *)self navigationController];
-  v4 = v3;
-  if (v3)
+  navigationController = [(AMSUIOnboardingViewController *)self navigationController];
+  v4 = navigationController;
+  if (navigationController)
   {
-    v5 = v3;
+    selfCopy = navigationController;
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
-  v7 = [(AMSUIOnboardingViewController *)v6 presentationController];
+  presentationController = [(AMSUIOnboardingViewController *)v6 presentationController];
 
-  v8 = [v7 _activePresentationController];
-  v9 = [v8 presentationStyle] == 2;
+  _activePresentationController = [presentationController _activePresentationController];
+  v9 = [_activePresentationController presentationStyle] == 2;
 
   return v9;
 }
 
-+ (id)privacyLinkIdentifiersFromController:(id)a3
++ (id)privacyLinkIdentifiersFromController:(id)controller
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  controllerCopy = controller;
   v4 = [MEMORY[0x1E695E0F0] mutableCopy];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v3 bundles];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  bundles = [controllerCopy bundles];
+  v6 = [bundles countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -863,14 +863,14 @@ void __54__AMSUIOnboardingViewController_cappedTraitCollection__block_invoke()
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(bundles);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) identifier];
-        [v4 addObject:v10];
+        identifier = [*(*(&v13 + 1) + 8 * i) identifier];
+        [v4 addObject:identifier];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [bundles countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);

@@ -1,5 +1,5 @@
 @interface AccessoryContainerView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (void)layoutSubviews;
 @end
 
@@ -7,15 +7,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   AccessoryContainerView.layoutSubviews()();
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v10.value.super.isa = self;
   isa = v10.value.super.isa;
   LOBYTE(self) = AccessoryContainerView.point(inside:with:)(__PAIR128__(*&y, *&x), v10);

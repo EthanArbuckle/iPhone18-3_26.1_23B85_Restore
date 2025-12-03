@@ -1,15 +1,15 @@
 @interface STSingleLineDetailTextHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation STSingleLineDetailTextHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STSingleLineDetailTextHeaderView" isKindOfClass:@"STSingleLineHeaderView"];
-  [v3 validateClass:@"STSingleLineHeaderView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STSingleLineDetailTextHeaderView" hasInstanceMethod:@"detailLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STSingleLineDetailTextHeaderView" isKindOfClass:@"STSingleLineHeaderView"];
+  [validationsCopy validateClass:@"STSingleLineHeaderView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STSingleLineDetailTextHeaderView" hasInstanceMethod:@"detailLabel" withFullSignature:{"@", 0}];
 }
 
 @end

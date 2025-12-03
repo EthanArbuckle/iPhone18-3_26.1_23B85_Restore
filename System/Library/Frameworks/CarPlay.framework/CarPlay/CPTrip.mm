@@ -1,19 +1,19 @@
 @interface CPTrip
 - (CPTrip)init;
-- (CPTrip)initWithCoder:(id)a3;
+- (CPTrip)initWithCoder:(id)coder;
 - (CPTrip)initWithOrigin:(MKMapItem *)origin destination:(MKMapItem *)destination routeChoices:(NSArray *)routeChoices;
 - (id)description;
 - (signed)destinationTimeZoneOffsetFromGMT;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPTrip
 
 - (CPTrip)init
 {
-  v3 = [MEMORY[0x277CD4E80] mapItemForCurrentLocation];
-  v4 = [MEMORY[0x277CD4E80] mapItemForCurrentLocation];
-  v5 = [(CPTrip *)self initWithOrigin:v3 destination:v4 routeChoices:MEMORY[0x277CBEBF8]];
+  mapItemForCurrentLocation = [MEMORY[0x277CD4E80] mapItemForCurrentLocation];
+  mapItemForCurrentLocation2 = [MEMORY[0x277CD4E80] mapItemForCurrentLocation];
+  v5 = [(CPTrip *)self initWithOrigin:mapItemForCurrentLocation destination:mapItemForCurrentLocation2 routeChoices:MEMORY[0x277CBEBF8]];
 
   return v5;
 }
@@ -29,9 +29,9 @@
   v12 = [(CPTrip *)&v23 init];
   if (v12)
   {
-    v13 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v12->_identifier;
-    v12->_identifier = v13;
+    v12->_identifier = uUID;
 
     objc_storeStrong(&v12->_origin, origin);
     objc_storeStrong(&v12->_destination, destination);
@@ -39,12 +39,12 @@
     v16 = v12->_routeChoices;
     v12->_routeChoices = v15;
 
-    v17 = [(MKMapItem *)v10 name];
+    name = [(MKMapItem *)v10 name];
 
-    if (v17)
+    if (name)
     {
-      v18 = [(MKMapItem *)v10 name];
-      v24[0] = v18;
+      name2 = [(MKMapItem *)v10 name];
+      v24[0] = name2;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
       destinationNameVariants = v12->_destinationNameVariants;
       v12->_destinationNameVariants = v19;
@@ -55,16 +55,16 @@
   return v12;
 }
 
-- (CPTrip)initWithCoder:(id)a3
+- (CPTrip)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPIdentifierKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPTripOriginKey"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPTripDestinationKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPIdentifierKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPTripOriginKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPTripDestinationKey"];
   v8 = MEMORY[0x277CBEB98];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"kCPTripRouteChoicesKey"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"kCPTripRouteChoicesKey"];
 
   v12 = [(CPTrip *)self initWithOrigin:v6 destination:v7 routeChoices:v11];
   [(CPTrip *)v12 setIdentifier:v5];
@@ -72,42 +72,42 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPTrip *)self identifier];
-  [v4 encodeObject:v5 forKey:@"kCPIdentifierKey"];
+  coderCopy = coder;
+  identifier = [(CPTrip *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"kCPIdentifierKey"];
 
-  v6 = [(CPTrip *)self origin];
-  v26 = [v6 placemark];
+  origin = [(CPTrip *)self origin];
+  placemark = [origin placemark];
 
-  v25 = [v26 postalAddress];
+  postalAddress = [placemark postalAddress];
   v7 = MEMORY[0x277CBFC40];
-  v8 = [v26 location];
-  v9 = [v26 name];
-  v10 = [v7 placemarkWithLocation:v8 name:v9 postalAddress:v25];
+  location = [placemark location];
+  name = [placemark name];
+  v10 = [v7 placemarkWithLocation:location name:name postalAddress:postalAddress];
 
   v11 = objc_alloc(MEMORY[0x277CD4E80]);
   v12 = [objc_alloc(MEMORY[0x277CD4F00]) initWithPlacemark:v10];
   v13 = [v11 initWithPlacemark:v12];
 
-  v14 = [(CPTrip *)self destination];
-  v15 = [v14 placemark];
+  destination = [(CPTrip *)self destination];
+  placemark2 = [destination placemark];
 
-  v16 = [v15 postalAddress];
+  postalAddress2 = [placemark2 postalAddress];
   v17 = MEMORY[0x277CBFC40];
-  v18 = [v15 location];
-  v19 = [v15 name];
-  v20 = [v17 placemarkWithLocation:v18 name:v19 postalAddress:v16];
+  location2 = [placemark2 location];
+  name2 = [placemark2 name];
+  v20 = [v17 placemarkWithLocation:location2 name:name2 postalAddress:postalAddress2];
 
   v21 = objc_alloc(MEMORY[0x277CD4E80]);
   v22 = [objc_alloc(MEMORY[0x277CD4F00]) initWithPlacemark:v20];
   v23 = [v21 initWithPlacemark:v22];
 
-  [v4 encodeObject:v13 forKey:@"kCPTripOriginKey"];
-  [v4 encodeObject:v23 forKey:@"kCPTripDestinationKey"];
-  v24 = [(CPTrip *)self routeChoices];
-  [v4 encodeObject:v24 forKey:@"kCPTripRouteChoicesKey"];
+  [coderCopy encodeObject:v13 forKey:@"kCPTripOriginKey"];
+  [coderCopy encodeObject:v23 forKey:@"kCPTripDestinationKey"];
+  routeChoices = [(CPTrip *)self routeChoices];
+  [coderCopy encodeObject:routeChoices forKey:@"kCPTripRouteChoicesKey"];
 }
 
 - (id)description
@@ -123,10 +123,10 @@
 
 - (signed)destinationTimeZoneOffsetFromGMT
 {
-  v2 = [(CPTrip *)self destination];
-  v3 = [v2 timeZone];
-  v4 = [v3 secondsFromGMT];
-  v5 = ((v4 * 0x8888888888888889) >> 64) + v4;
+  destination = [(CPTrip *)self destination];
+  timeZone = [destination timeZone];
+  secondsFromGMT = [timeZone secondsFromGMT];
+  v5 = ((secondsFromGMT * 0x8888888888888889) >> 64) + secondsFromGMT;
   v6 = (v5 >> 63) + (v5 >> 5);
 
   return v6;

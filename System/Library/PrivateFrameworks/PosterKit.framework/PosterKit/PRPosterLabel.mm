@@ -1,28 +1,28 @@
 @interface PRPosterLabel
-- (void)posterAppearanceDidChange:(id)a3;
+- (void)posterAppearanceDidChange:(id)change;
 @end
 
 @implementation PRPosterLabel
 
-- (void)posterAppearanceDidChange:(id)a3
+- (void)posterAppearanceDidChange:(id)change
 {
-  v4 = a3;
-  v9 = [v4 font];
-  v5 = [v4 labelColor];
+  changeCopy = change;
+  font = [changeCopy font];
+  labelColor = [changeCopy labelColor];
 
-  v6 = [v5 color];
-  v7 = [(PRPosterLabel *)self font];
+  color = [labelColor color];
+  font2 = [(PRPosterLabel *)self font];
 
-  if (v7 != v9)
+  if (font2 != font)
   {
-    [(PRPosterLabel *)self setFont:v9];
+    [(PRPosterLabel *)self setFont:font];
   }
 
-  v8 = [(PRPosterLabel *)self textColor];
+  textColor = [(PRPosterLabel *)self textColor];
 
-  if (v8 != v6)
+  if (textColor != color)
   {
-    [(PRPosterLabel *)self setTextColor:v6];
+    [(PRPosterLabel *)self setTextColor:color];
   }
 }
 

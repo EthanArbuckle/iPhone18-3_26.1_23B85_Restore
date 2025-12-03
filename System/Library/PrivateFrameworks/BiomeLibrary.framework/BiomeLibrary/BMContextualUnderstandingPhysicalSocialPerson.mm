@@ -1,38 +1,38 @@
 @interface BMContextualUnderstandingPhysicalSocialPerson
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMContextualUnderstandingPhysicalSocialPerson)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMContextualUnderstandingPhysicalSocialPerson)initWithName:(id)a3 phoneNumber:(id)a4 emailAddress:(id)a5 cnContactID:(id)a6 unknownPersonID:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMContextualUnderstandingPhysicalSocialPerson)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMContextualUnderstandingPhysicalSocialPerson)initWithName:(id)name phoneNumber:(id)number emailAddress:(id)address cnContactID:(id)d unknownPersonID:(id)iD;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMContextualUnderstandingPhysicalSocialPerson
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMContextualUnderstandingPhysicalSocialPerson *)self name];
-    v7 = [v5 name];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    name = [(BMContextualUnderstandingPhysicalSocialPerson *)self name];
+    name2 = [v5 name];
+    v8 = name2;
+    if (name == name2)
     {
     }
 
     else
     {
-      v9 = [(BMContextualUnderstandingPhysicalSocialPerson *)self name];
-      v10 = [v5 name];
-      v11 = [v9 isEqual:v10];
+      name3 = [(BMContextualUnderstandingPhysicalSocialPerson *)self name];
+      name4 = [v5 name];
+      v11 = [name3 isEqual:name4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMContextualUnderstandingPhysicalSocialPerson *)self phoneNumber];
-    v14 = [v5 phoneNumber];
-    v15 = v14;
-    if (v13 == v14)
+    phoneNumber = [(BMContextualUnderstandingPhysicalSocialPerson *)self phoneNumber];
+    phoneNumber2 = [v5 phoneNumber];
+    v15 = phoneNumber2;
+    if (phoneNumber == phoneNumber2)
     {
     }
 
     else
     {
-      v16 = [(BMContextualUnderstandingPhysicalSocialPerson *)self phoneNumber];
-      v17 = [v5 phoneNumber];
-      v18 = [v16 isEqual:v17];
+      phoneNumber3 = [(BMContextualUnderstandingPhysicalSocialPerson *)self phoneNumber];
+      phoneNumber4 = [v5 phoneNumber];
+      v18 = [phoneNumber3 isEqual:phoneNumber4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMContextualUnderstandingPhysicalSocialPerson *)self emailAddress];
-    v20 = [v5 emailAddress];
-    v21 = v20;
-    if (v19 == v20)
+    emailAddress = [(BMContextualUnderstandingPhysicalSocialPerson *)self emailAddress];
+    emailAddress2 = [v5 emailAddress];
+    v21 = emailAddress2;
+    if (emailAddress == emailAddress2)
     {
     }
 
     else
     {
-      v22 = [(BMContextualUnderstandingPhysicalSocialPerson *)self emailAddress];
-      v23 = [v5 emailAddress];
-      v24 = [v22 isEqual:v23];
+      emailAddress3 = [(BMContextualUnderstandingPhysicalSocialPerson *)self emailAddress];
+      emailAddress4 = [v5 emailAddress];
+      v24 = [emailAddress3 isEqual:emailAddress4];
 
       if (!v24)
       {
@@ -78,18 +78,18 @@
       }
     }
 
-    v25 = [(BMContextualUnderstandingPhysicalSocialPerson *)self cnContactID];
-    v26 = [v5 cnContactID];
-    v27 = v26;
-    if (v25 == v26)
+    cnContactID = [(BMContextualUnderstandingPhysicalSocialPerson *)self cnContactID];
+    cnContactID2 = [v5 cnContactID];
+    v27 = cnContactID2;
+    if (cnContactID == cnContactID2)
     {
     }
 
     else
     {
-      v28 = [(BMContextualUnderstandingPhysicalSocialPerson *)self cnContactID];
-      v29 = [v5 cnContactID];
-      v30 = [v28 isEqual:v29];
+      cnContactID3 = [(BMContextualUnderstandingPhysicalSocialPerson *)self cnContactID];
+      cnContactID4 = [v5 cnContactID];
+      v30 = [cnContactID3 isEqual:cnContactID4];
 
       if (!v30)
       {
@@ -101,18 +101,18 @@ LABEL_23:
       }
     }
 
-    v31 = [(BMContextualUnderstandingPhysicalSocialPerson *)self unknownPersonID];
-    v32 = [v5 unknownPersonID];
-    if (v31 == v32)
+    unknownPersonID = [(BMContextualUnderstandingPhysicalSocialPerson *)self unknownPersonID];
+    unknownPersonID2 = [v5 unknownPersonID];
+    if (unknownPersonID == unknownPersonID2)
     {
       v12 = 1;
     }
 
     else
     {
-      v33 = [(BMContextualUnderstandingPhysicalSocialPerson *)self unknownPersonID];
-      v34 = [v5 unknownPersonID];
-      v12 = [v33 isEqual:v34];
+      unknownPersonID3 = [(BMContextualUnderstandingPhysicalSocialPerson *)self unknownPersonID];
+      unknownPersonID4 = [v5 unknownPersonID];
+      v12 = [unknownPersonID3 isEqual:unknownPersonID4];
     }
 
     goto LABEL_23;
@@ -127,56 +127,56 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v23[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMContextualUnderstandingPhysicalSocialPerson *)self name];
-  v4 = [(BMContextualUnderstandingPhysicalSocialPerson *)self phoneNumber];
-  v5 = [(BMContextualUnderstandingPhysicalSocialPerson *)self emailAddress];
-  v6 = [(BMContextualUnderstandingPhysicalSocialPerson *)self cnContactID];
-  v7 = [(BMContextualUnderstandingPhysicalSocialPerson *)self unknownPersonID];
+  name = [(BMContextualUnderstandingPhysicalSocialPerson *)self name];
+  phoneNumber = [(BMContextualUnderstandingPhysicalSocialPerson *)self phoneNumber];
+  emailAddress = [(BMContextualUnderstandingPhysicalSocialPerson *)self emailAddress];
+  cnContactID = [(BMContextualUnderstandingPhysicalSocialPerson *)self cnContactID];
+  unknownPersonID = [(BMContextualUnderstandingPhysicalSocialPerson *)self unknownPersonID];
   v18 = @"name";
-  v8 = v3;
-  if (!v3)
+  null = name;
+  if (!name)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v8;
-  v23[0] = v8;
+  v16 = null;
+  v23[0] = null;
   v19 = @"phoneNumber";
-  v9 = v4;
-  if (!v4)
+  null2 = phoneNumber;
+  if (!phoneNumber)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v9;
+  v23[1] = null2;
   v20 = @"emailAddress";
-  v10 = v5;
-  if (!v5)
+  null3 = emailAddress;
+  if (!emailAddress)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v10;
+  v23[2] = null3;
   v21 = @"cnContactID";
-  v11 = v6;
-  if (!v6)
+  null4 = cnContactID;
+  if (!cnContactID)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v11;
+  v23[3] = null4;
   v22 = @"unknownPersonID";
-  v12 = v7;
-  if (!v7)
+  null5 = unknownPersonID;
+  if (!unknownPersonID)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
-  if (v7)
+  if (unknownPersonID)
   {
-    if (v6)
+    if (cnContactID)
     {
       goto LABEL_13;
     }
@@ -185,10 +185,10 @@ LABEL_24:
   else
   {
 
-    if (v6)
+    if (cnContactID)
     {
 LABEL_13:
-      if (v5)
+      if (emailAddress)
       {
         goto LABEL_14;
       }
@@ -197,17 +197,17 @@ LABEL_13:
     }
   }
 
-  if (v5)
+  if (emailAddress)
   {
 LABEL_14:
-    if (v4)
+    if (phoneNumber)
     {
       goto LABEL_15;
     }
 
 LABEL_22:
 
-    if (v3)
+    if (name)
     {
       goto LABEL_16;
     }
@@ -217,13 +217,13 @@ LABEL_22:
 
 LABEL_21:
 
-  if (!v4)
+  if (!phoneNumber)
   {
     goto LABEL_22;
   }
 
 LABEL_15:
-  if (v3)
+  if (name)
   {
     goto LABEL_16;
   }
@@ -236,29 +236,29 @@ LABEL_16:
   return v13;
 }
 
-- (BMContextualUnderstandingPhysicalSocialPerson)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMContextualUnderstandingPhysicalSocialPerson)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"name"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"name"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"phoneNumber"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"phoneNumber"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v38 = 0;
           v16 = 0;
           goto LABEL_20;
         }
 
-        v32 = a4;
+        errorCopy = error;
         v22 = objc_alloc(MEMORY[0x1E696ABC0]);
         v23 = *MEMORY[0x1E698F240];
         v45 = *MEMORY[0x1E696A578];
@@ -267,7 +267,7 @@ LABEL_4:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
         v38 = 0;
         v16 = 0;
-        *v32 = [v22 initWithDomain:v23 code:2 userInfo:v10];
+        *errorCopy = [v22 initWithDomain:v23 code:2 userInfo:v10];
         goto LABEL_19;
       }
 
@@ -279,22 +279,22 @@ LABEL_4:
       v38 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"emailAddress"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"emailAddress"];
     v35 = v8;
-    v37 = self;
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v36 = 0;
           v16 = 0;
           goto LABEL_19;
         }
 
-        v24 = a4;
+        errorCopy2 = error;
         v25 = objc_alloc(MEMORY[0x1E696ABC0]);
         v26 = *MEMORY[0x1E698F240];
         v43 = *MEMORY[0x1E696A578];
@@ -303,10 +303,10 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
         v36 = 0;
         v16 = 0;
-        *v24 = [v25 initWithDomain:v26 code:2 userInfo:v11];
+        *errorCopy2 = [v25 initWithDomain:v26 code:2 userInfo:v11];
 LABEL_18:
 
-        self = v37;
+        self = selfCopy;
         v8 = v35;
 LABEL_19:
 
@@ -321,14 +321,14 @@ LABEL_19:
       v36 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"cnContactID"];
-    v12 = a4;
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"cnContactID"];
+    errorCopy3 = error;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v13 = 0;
           v16 = 0;
@@ -344,7 +344,7 @@ LABEL_19:
         v28 = [v33 initWithDomain:v27 code:2 userInfo:v14];
         v13 = 0;
         v16 = 0;
-        *v12 = v28;
+        *errorCopy3 = v28;
         goto LABEL_17;
       }
 
@@ -356,13 +356,13 @@ LABEL_19:
       v13 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"unknownPersonID"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"unknownPersonID"];
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v12)
+        if (errorCopy3)
         {
           v34 = objc_alloc(MEMORY[0x1E696ABC0]);
           v31 = *MEMORY[0x1E698F240];
@@ -370,7 +370,7 @@ LABEL_19:
           v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"unknownPersonID"];
           v40 = v29;
           v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-          *v12 = [v34 initWithDomain:v31 code:2 userInfo:v30];
+          *errorCopy3 = [v34 initWithDomain:v31 code:2 userInfo:v30];
         }
 
         v15 = 0;
@@ -386,8 +386,8 @@ LABEL_19:
       v15 = 0;
     }
 
-    v16 = [(BMContextualUnderstandingPhysicalSocialPerson *)v37 initWithName:v35 phoneNumber:v38 emailAddress:v36 cnContactID:v13 unknownPersonID:v15];
-    v37 = v16;
+    v16 = [(BMContextualUnderstandingPhysicalSocialPerson *)selfCopy initWithName:v35 phoneNumber:v38 emailAddress:v36 cnContactID:v13 unknownPersonID:v15];
+    selfCopy = v16;
 LABEL_17:
 
     goto LABEL_18;
@@ -400,14 +400,14 @@ LABEL_17:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v16 = 0;
     goto LABEL_21;
   }
 
-  v19 = a4;
+  errorCopy4 = error;
   v20 = objc_alloc(MEMORY[0x1E696ABC0]);
   v21 = *MEMORY[0x1E698F240];
   v47 = *MEMORY[0x1E696A578];
@@ -416,7 +416,7 @@ LABEL_17:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:&v47 count:1];
   v8 = 0;
   v16 = 0;
-  *v19 = [v20 initWithDomain:v21 code:2 userInfo:v9];
+  *errorCopy4 = [v20 initWithDomain:v21 code:2 userInfo:v9];
 LABEL_20:
 
 LABEL_21:
@@ -428,49 +428,49 @@ LABEL_21:
 {
   v3 = objc_opt_new();
   [(BMContextualUnderstandingPhysicalSocialPerson *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_phoneNumber)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_emailAddress)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_cnContactID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_unknownPersonID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v23.receiver = self;
   v23.super_class = BMContextualUnderstandingPhysicalSocialPerson;
   v5 = [(BMEventBase *)&v23 init];
@@ -479,12 +479,12 @@ LABEL_21:
     goto LABEL_24;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -495,18 +495,18 @@ LABEL_21:
       while (1)
       {
         v24 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v24 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v24 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v24 & 0x7F) << v7;
@@ -523,9 +523,9 @@ LABEL_21:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -548,13 +548,13 @@ LABEL_16:
         *(&v5->super.super.isa + v18) = v17;
       }
 
-      v20 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v20 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_23:
     v21 = 0;
@@ -572,34 +572,34 @@ LABEL_24:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMContextualUnderstandingPhysicalSocialPerson *)self name];
-  v5 = [(BMContextualUnderstandingPhysicalSocialPerson *)self phoneNumber];
-  v6 = [(BMContextualUnderstandingPhysicalSocialPerson *)self emailAddress];
-  v7 = [(BMContextualUnderstandingPhysicalSocialPerson *)self cnContactID];
-  v8 = [(BMContextualUnderstandingPhysicalSocialPerson *)self unknownPersonID];
-  v9 = [v3 initWithFormat:@"BMContextualUnderstandingPhysicalSocialPerson with name: %@, phoneNumber: %@, emailAddress: %@, cnContactID: %@, unknownPersonID: %@", v4, v5, v6, v7, v8];
+  name = [(BMContextualUnderstandingPhysicalSocialPerson *)self name];
+  phoneNumber = [(BMContextualUnderstandingPhysicalSocialPerson *)self phoneNumber];
+  emailAddress = [(BMContextualUnderstandingPhysicalSocialPerson *)self emailAddress];
+  cnContactID = [(BMContextualUnderstandingPhysicalSocialPerson *)self cnContactID];
+  unknownPersonID = [(BMContextualUnderstandingPhysicalSocialPerson *)self unknownPersonID];
+  v9 = [v3 initWithFormat:@"BMContextualUnderstandingPhysicalSocialPerson with name: %@, phoneNumber: %@, emailAddress: %@, cnContactID: %@, unknownPersonID: %@", name, phoneNumber, emailAddress, cnContactID, unknownPersonID];
 
   return v9;
 }
 
-- (BMContextualUnderstandingPhysicalSocialPerson)initWithName:(id)a3 phoneNumber:(id)a4 emailAddress:(id)a5 cnContactID:(id)a6 unknownPersonID:(id)a7
+- (BMContextualUnderstandingPhysicalSocialPerson)initWithName:(id)name phoneNumber:(id)number emailAddress:(id)address cnContactID:(id)d unknownPersonID:(id)iD
 {
-  v19 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  numberCopy = number;
+  addressCopy = address;
+  dCopy = d;
+  iDCopy = iD;
   v20.receiver = self;
   v20.super_class = BMContextualUnderstandingPhysicalSocialPerson;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_name, a3);
-    objc_storeStrong(&v17->_phoneNumber, a4);
-    objc_storeStrong(&v17->_emailAddress, a5);
-    objc_storeStrong(&v17->_cnContactID, a6);
-    objc_storeStrong(&v17->_unknownPersonID, a7);
+    objc_storeStrong(&v17->_name, name);
+    objc_storeStrong(&v17->_phoneNumber, number);
+    objc_storeStrong(&v17->_emailAddress, address);
+    objc_storeStrong(&v17->_cnContactID, d);
+    objc_storeStrong(&v17->_unknownPersonID, iD);
   }
 
   return v17;
@@ -644,9 +644,9 @@ LABEL_24:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -654,8 +654,8 @@ LABEL_24:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMContextualUnderstandingPhysicalSocialPerson alloc] initByReadFrom:v7];
     v4 = v8;

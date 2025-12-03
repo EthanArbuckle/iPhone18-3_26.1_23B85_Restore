@@ -1,45 +1,45 @@
 @interface _NFContactlessSession
-+ (id)validateEntitlements:(id)a3;
-- (BOOL)_configureEmulationType:(unint64_t)a3;
-- (BOOL)_configureEmulationType:(unint64_t)a3 routingConfigWhenEmulationOff:(id)a4;
-- (BOOL)_expressModeRequiredForApplet:(id)a3 keySet:(id)a4;
-- (BOOL)_startFieldDetectAndKeepSEOn:(BOOL)a3;
++ (id)validateEntitlements:(id)entitlements;
+- (BOOL)_configureEmulationType:(unint64_t)type;
+- (BOOL)_configureEmulationType:(unint64_t)type routingConfigWhenEmulationOff:(id)off;
+- (BOOL)_expressModeRequiredForApplet:(id)applet keySet:(id)set;
+- (BOOL)_startFieldDetectAndKeepSEOn:(BOOL)on;
 - (BOOL)canEnableExpress;
 - (BOOL)startWiredMode;
-- (BOOL)suspendWithInfo:(id)a3;
+- (BOOL)suspendWithInfo:(id)info;
 - (BOOL)willStartSession;
-- (id)_getAppletsForAids:(id)a3;
+- (id)_getAppletsForAids:(id)aids;
 - (id)_getRelatedGroupMembersForActiveApplet;
-- (id)_getSecureElementWrapperForApplet:(id)a3;
-- (id)_resetVolatileConfigOnApplet:(id)a3;
+- (id)_getSecureElementWrapperForApplet:(id)applet;
+- (id)_resetVolatileConfigOnApplet:(id)applet;
 - (id)preloadApplets;
-- (id)seidForApplet:(id)a3;
-- (id)setActiveApplet:(id)a3;
-- (id)setActiveApplets:(id)a3;
-- (id)setActiveApplets:(id)a3 keyIdentifiers:(id)a4 activationConfig:(unint64_t)a5;
-- (id)setActiveKeys:(id)a3 onApplet:(id)a4 activationConfig:(unint64_t)a5;
-- (int)_getActiveAppletEmulationType:(id)a3;
+- (id)seidForApplet:(id)applet;
+- (id)setActiveApplet:(id)applet;
+- (id)setActiveApplets:(id)applets;
+- (id)setActiveApplets:(id)applets keyIdentifiers:(id)identifiers activationConfig:(unint64_t)config;
+- (id)setActiveKeys:(id)keys onApplet:(id)applet activationConfig:(unint64_t)config;
+- (int)_getActiveAppletEmulationType:(id)type;
 - (void)_internalCleanup;
-- (void)_setActiveSecureElementWrapper:(id)a3;
+- (void)_setActiveSecureElementWrapper:(id)wrapper;
 - (void)cleanup;
-- (void)didStartSession:(id)a3;
-- (void)getAppletsWithCompletion:(id)a3;
-- (void)handleFelicaStateEvent:(id)a3;
-- (void)handleFieldNotification:(id)a3;
+- (void)didStartSession:(id)session;
+- (void)getAppletsWithCompletion:(id)completion;
+- (void)handleFelicaStateEvent:(id)event;
+- (void)handleFieldNotification:(id)notification;
 - (void)handleFieldReset;
-- (void)handleSelectEvent:(id)a3;
-- (void)setActiveApplet:(id)a3 completion:(id)a4;
-- (void)setActiveAppletsForTest:(id)a3 withCardType:(unsigned int)a4 completion:(id)a5;
-- (void)startCardEmulationWithCompletion:(id)a3;
-- (void)stopCardEmulationWithCompletion:(id)a3;
-- (void)switchToSecureElementWrapperForApplet:(id)a3;
+- (void)handleSelectEvent:(id)event;
+- (void)setActiveApplet:(id)applet completion:(id)completion;
+- (void)setActiveAppletsForTest:(id)test withCardType:(unsigned int)type completion:(id)completion;
+- (void)startCardEmulationWithCompletion:(id)completion;
+- (void)stopCardEmulationWithCompletion:(id)completion;
+- (void)switchToSecureElementWrapperForApplet:(id)applet;
 @end
 
 @implementation _NFContactlessSession
 
-+ (id)validateEntitlements:(id)a3
++ (id)validateEntitlements:(id)entitlements
 {
-  if ([a3 cardModeAccess])
+  if ([entitlements cardModeAccess])
   {
     v5 = 0;
   }
@@ -51,9 +51,9 @@
     if (Logger)
     {
       v7 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v11 = 45;
       if (isMetaClass)
@@ -68,7 +68,7 @@
     v12 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = object_getClass(a1);
+      v13 = object_getClass(self);
       if (class_isMetaClass(v13))
       {
         v14 = 43;
@@ -82,7 +82,7 @@
       *buf = 67109890;
       v26 = v14;
       v27 = 2082;
-      v28 = object_getClassName(a1);
+      v28 = object_getClassName(self);
       v29 = 2082;
       v30 = sel_getName(a2);
       v31 = 1024;
@@ -119,9 +119,9 @@
   return [(_NFSession *)&v5 willStartSession];
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -168,19 +168,19 @@
 
   v21.receiver = self;
   v21.super_class = _NFContactlessSession;
-  [(_NFXPCSession *)&v21 didStartSession:v5];
-  if (!v5)
+  [(_NFXPCSession *)&v21 didStartSession:sessionCopy];
+  if (!sessionCopy)
   {
     v15 = +[_NFHardwareManager sharedHardwareManager];
-    v16 = [v15 secureElementWrapper];
+    secureElementWrapper = [v15 secureElementWrapper];
     secureElementWrapper = self->_secureElementWrapper;
-    self->_secureElementWrapper = v16;
+    self->_secureElementWrapper = secureElementWrapper;
 
-    v18 = [(_NFContactlessSession *)self preloadApplets];
+    preloadApplets = [(_NFContactlessSession *)self preloadApplets];
   }
 
-  v19 = [(_NFXPCSession *)self remoteObject];
-  [v19 didStartSession:v5];
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  [remoteObject didStartSession:sessionCopy];
 }
 
 - (void)_internalCleanup
@@ -204,13 +204,13 @@
 
     if (self->_activeApplet)
     {
-      v8 = [(_NFXPCSession *)self expressModeManager];
-      if (v8)
+      expressModeManager = [(_NFXPCSession *)self expressModeManager];
+      if (expressModeManager)
       {
-        v9 = v8;
-        v10 = [(_NFXPCSession *)self expressModeManager];
-        v11 = [(NFApplet *)self->_activeApplet identifier];
-        v12 = sub_1000354C4(v10, v11);
+        v9 = expressModeManager;
+        expressModeManager2 = [(_NFXPCSession *)self expressModeManager];
+        identifier = [(NFApplet *)self->_activeApplet identifier];
+        v12 = sub_1000354C4(expressModeManager2, identifier);
 
         if ((v12 & 1) == 0)
         {
@@ -263,14 +263,14 @@
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Deselecting applet %{public}@", buf, 0x2Cu);
           }
 
-          v26 = [(_NFXPCSession *)self expressModeManager];
-          sub_100035DE4(v26, 1);
+          expressModeManager3 = [(_NFXPCSession *)self expressModeManager];
+          sub_100035DE4(expressModeManager3, 1);
 
           v27 = [(_NFContactlessSession *)self setActiveApplet:0];
-          v28 = [(_NFXPCSession *)self expressModeManager];
-          if (v28)
+          expressModeManager4 = [(_NFXPCSession *)self expressModeManager];
+          if (expressModeManager4)
           {
-            v29 = v28[2];
+            v29 = expressModeManager4[2];
             if (v29)
             {
               *(v29 + 176) = 0;
@@ -358,11 +358,11 @@
   }
 }
 
-- (BOOL)suspendWithInfo:(id)a3
+- (BOOL)suspendWithInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = _NFContactlessSession;
-  v4 = [(_NFXPCSession *)&v6 suspendWithInfo:a3];
+  v4 = [(_NFXPCSession *)&v6 suspendWithInfo:info];
   if (v4)
   {
     [(_NFContactlessSession *)self _internalCleanup];
@@ -376,16 +376,16 @@
   activeApplet = self->_activeApplet;
   if (activeApplet)
   {
-    v4 = activeApplet;
+    deferredActivationApplet = activeApplet;
   }
 
   else
   {
-    v4 = [(_NFContactlessSession *)self deferredActivationApplet];
+    deferredActivationApplet = [(_NFContactlessSession *)self deferredActivationApplet];
   }
 
-  v5 = v4;
-  if ([(_NFContactlessSession *)self _expressModeRequiredForApplet:v4 keySet:self->_activeKeyIdentifiers])
+  v5 = deferredActivationApplet;
+  if ([(_NFContactlessSession *)self _expressModeRequiredForApplet:deferredActivationApplet keySet:self->_activeKeyIdentifiers])
   {
     v6 = 1;
   }
@@ -398,36 +398,36 @@
   return v6;
 }
 
-- (BOOL)_expressModeRequiredForApplet:(id)a3 keySet:(id)a4
+- (BOOL)_expressModeRequiredForApplet:(id)applet keySet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  appletCopy = applet;
+  setCopy = set;
+  if (appletCopy)
   {
-    v8 = [(_NFXPCSession *)self expressModeManager];
-    if (!v8)
+    expressModeManager = [(_NFXPCSession *)self expressModeManager];
+    if (!expressModeManager)
     {
-      v10 = 0;
+      expressModeManager2 = 0;
       v13 = 0;
 LABEL_11:
 
       goto LABEL_12;
     }
 
-    if (*(v8 + 152) == 1)
+    if (*(expressModeManager + 152) == 1)
     {
 
 LABEL_6:
-      v10 = [(_NFXPCSession *)self expressModeManager];
-      v11 = [v6 identifier];
-      if (v7)
+      expressModeManager2 = [(_NFXPCSession *)self expressModeManager];
+      identifier = [appletCopy identifier];
+      if (setCopy)
       {
-        v12 = sub_1000355EC(v10, v11, v7);
+        v12 = sub_1000355EC(expressModeManager2, identifier, setCopy);
       }
 
       else
       {
-        v12 = sub_1000354C4(v10, v11);
+        v12 = sub_1000354C4(expressModeManager2, identifier);
       }
 
       v13 = v12;
@@ -435,7 +435,7 @@ LABEL_6:
       goto LABEL_11;
     }
 
-    v9 = *(v8 + 179);
+    v9 = *(expressModeManager + 179);
 
     if (v9 == 1)
     {
@@ -449,14 +449,14 @@ LABEL_12:
   return v13;
 }
 
-- (void)_setActiveSecureElementWrapper:(id)a3
+- (void)_setActiveSecureElementWrapper:(id)wrapper
 {
-  v5 = a3;
-  if (v5)
+  wrapperCopy = wrapper;
+  if (wrapperCopy)
   {
-    v6 = [(_NFContactlessSession *)self secureElementWrapper];
+    secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
 
-    if (v6 != v5)
+    if (secureElementWrapper != wrapperCopy)
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       Logger = NFLogGetLogger();
@@ -502,23 +502,23 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i switching to eSE", buf, 0x22u);
       }
 
-      [(_NFContactlessSession *)self setSecureElementWrapper:v5];
+      [(_NFContactlessSession *)self setSecureElementWrapper:wrapperCopy];
     }
   }
 }
 
-- (id)_getSecureElementWrapperForApplet:(id)a3
+- (id)_getSecureElementWrapperForApplet:(id)applet
 {
-  v5 = a3;
-  v6 = [(_NFContactlessSession *)self secureElementWrapper];
-  v62 = v6;
+  appletCopy = applet;
+  secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
+  v62 = secureElementWrapper;
   v7 = [NSArray arrayWithObjects:&v62 count:1];
 
-  if (v5)
+  if (appletCopy)
   {
     appletMap = self->_appletMap;
-    v9 = [v5 identifier];
-    v10 = [(NSMutableDictionary *)appletMap objectForKey:v9];
+    identifier = [appletCopy identifier];
+    v10 = [(NSMutableDictionary *)appletMap objectForKey:identifier];
   }
 
   else
@@ -536,7 +536,7 @@ LABEL_12:
   {
     v13 = v12;
     v14 = *v47;
-    v40 = self;
+    selfCopy = self;
     v41 = a2;
     v39 = *v47;
     while (2)
@@ -552,8 +552,8 @@ LABEL_12:
         v16 = *(*(&v46 + 1) + 8 * v15);
         if (v10)
         {
-          v17 = [*(*(&v46 + 1) + 8 * v15) serialNumber];
-          if ([v10 isEqualToString:v17])
+          serialNumber = [*(*(&v46 + 1) + 8 * v15) serialNumber];
+          if ([v10 isEqualToString:serialNumber])
           {
 
 LABEL_39:
@@ -563,8 +563,8 @@ LABEL_34:
             goto LABEL_35;
           }
 
-          v18 = [v16 systemOSSerialNumber];
-          v19 = [v10 isEqualToString:v18];
+          systemOSSerialNumber = [v16 systemOSSerialNumber];
+          v19 = [v10 isEqualToString:systemOSSerialNumber];
 
           if (v19)
           {
@@ -572,7 +572,7 @@ LABEL_34:
           }
         }
 
-        if (!v5)
+        if (!appletCopy)
         {
           goto LABEL_39;
         }
@@ -596,7 +596,7 @@ LABEL_34:
                 objc_enumerationMutation(v20);
               }
 
-              if ([*(*(&v42 + 1) + 8 * i) isEqualToApplet:v5])
+              if ([*(*(&v42 + 1) + 8 * i) isEqualToApplet:appletCopy])
               {
                 v35 = v16;
 
@@ -615,7 +615,7 @@ LABEL_34:
         }
 
         v15 = v15 + 1;
-        self = v40;
+        self = selfCopy;
         a2 = v41;
         v14 = v39;
       }
@@ -646,7 +646,7 @@ LABEL_34:
       v29 = 43;
     }
 
-    v26(3, "%c[%{public}s %{public}s]:%i No secure element wrapper found for applet %{public}@", v29, ClassName, Name, 211, v5);
+    v26(3, "%c[%{public}s %{public}s]:%i No secure element wrapper found for applet %{public}@", v29, ClassName, Name, 211, appletCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -675,7 +675,7 @@ LABEL_34:
     v56 = 1024;
     v57 = 211;
     v58 = 2114;
-    v59 = v5;
+    v59 = appletCopy;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i No secure element wrapper found for applet %{public}@", buf, 0x2Cu);
   }
 
@@ -685,24 +685,24 @@ LABEL_35:
   return v35;
 }
 
-- (void)switchToSecureElementWrapperForApplet:(id)a3
+- (void)switchToSecureElementWrapperForApplet:(id)applet
 {
-  v4 = [(_NFContactlessSession *)self _getSecureElementWrapperForApplet:a3];
+  v4 = [(_NFContactlessSession *)self _getSecureElementWrapperForApplet:applet];
   [(_NFContactlessSession *)self _setActiveSecureElementWrapper:v4];
 }
 
-- (id)seidForApplet:(id)a3
+- (id)seidForApplet:(id)applet
 {
   appletMap = self->_appletMap;
-  v4 = [a3 identifier];
-  v5 = [(NSMutableDictionary *)appletMap objectForKey:v4];
+  identifier = [applet identifier];
+  v5 = [(NSMutableDictionary *)appletMap objectForKey:identifier];
 
   return v5;
 }
 
-- (id)_resetVolatileConfigOnApplet:(id)a3
+- (id)_resetVolatileConfigOnApplet:(id)applet
 {
-  v5 = a3;
+  appletCopy = applet;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -718,7 +718,7 @@ LABEL_35:
       v10 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i applet: %{public}@", v10, ClassName, Name, 249, v5);
+    v7(6, "%c[%{public}s %{public}s]:%i applet: %{public}@", v10, ClassName, Name, 249, appletCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -745,17 +745,17 @@ LABEL_35:
     v44 = 1024;
     v45 = 249;
     v46 = 2114;
-    v47 = v5;
+    v47 = appletCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i applet: %{public}@", buf, 0x2Cu);
   }
 
-  if (v5 && [v5 containsSubKeys])
+  if (appletCopy && [appletCopy containsSubKeys])
   {
-    [(_NFContactlessSession *)self switchToSecureElementWrapperForApplet:v5];
+    [(_NFContactlessSession *)self switchToSecureElementWrapperForApplet:appletCopy];
     if ([(_NFContactlessSession *)self startWiredMode])
     {
-      v14 = [(_NFContactlessSession *)self secureElementWrapper];
-      v15 = sub_10025F700(v14, v5);
+      secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
+      v15 = sub_10025F700(secureElementWrapper, appletCopy);
     }
 
     else
@@ -807,7 +807,7 @@ LABEL_35:
       }
 
       v27 = [NSError alloc];
-      v14 = [NSString stringWithUTF8String:"nfcd"];
+      secureElementWrapper = [NSString stringWithUTF8String:"nfcd"];
       v36[0] = NSLocalizedDescriptionKey;
       v28 = [NSString stringWithUTF8String:"Stack Error"];
       v37[0] = v28;
@@ -820,7 +820,7 @@ LABEL_35:
       v30 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 261];
       v37[3] = v30;
       v31 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:4];
-      v15 = [v27 initWithDomain:v14 code:15 userInfo:v31];
+      v15 = [v27 initWithDomain:secureElementWrapper code:15 userInfo:v31];
     }
   }
 
@@ -832,10 +832,10 @@ LABEL_35:
   return v15;
 }
 
-- (id)setActiveKeys:(id)a3 onApplet:(id)a4 activationConfig:(unint64_t)a5
+- (id)setActiveKeys:(id)keys onApplet:(id)applet activationConfig:(unint64_t)config
 {
-  v9 = a3;
-  v10 = a4;
+  keysCopy = keys;
+  appletCopy = applet;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -851,7 +851,7 @@ LABEL_35:
       v16 = 43;
     }
 
-    v12(6, "%c[%{public}s %{public}s]:%i applet: %{public}@  keyIdentifiers: %{public}@", v16, ClassName, Name, 271, v10, v9);
+    v12(6, "%c[%{public}s %{public}s]:%i applet: %{public}@  keyIdentifiers: %{public}@", v16, ClassName, Name, 271, appletCopy, keysCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -878,9 +878,9 @@ LABEL_35:
     v52 = 1024;
     v53 = 271;
     v54 = 2114;
-    v55 = v10;
+    v55 = appletCopy;
     v56 = 2114;
-    v57 = v9;
+    v57 = keysCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i applet: %{public}@  keyIdentifiers: %{public}@", buf, 0x36u);
   }
 
@@ -897,28 +897,28 @@ LABEL_35:
     self->_activeKeyIdentifiers = 0;
   }
 
-  if (v9 | v10)
+  if (keysCopy | appletCopy)
   {
-    if (!v9 || v10)
+    if (!keysCopy || appletCopy)
     {
-      if (v9)
+      if (keysCopy)
       {
         v37 = 1;
       }
 
       else
       {
-        v37 = a5 == 0;
+        v37 = config == 0;
       }
 
       v38 = v37;
-      v21 = [(_NFContactlessSession *)self _activateKeys:v38 forIdentifiers:v9 onApplet:v10];
+      v21 = [(_NFContactlessSession *)self _activateKeys:v38 forIdentifiers:keysCopy onApplet:appletCopy];
       if (v21)
       {
         goto LABEL_38;
       }
 
-      v39 = v9;
+      v39 = keysCopy;
       v34 = self->_activeKeyIdentifiers;
       self->_activeKeyIdentifiers = v39;
     }
@@ -940,7 +940,7 @@ LABEL_35:
           v27 = 43;
         }
 
-        v24(3, "%c[%{public}s %{public}s]:%i An applet is needed to activate keys %{public}@", v27, v41, v43, 306, v9);
+        v24(3, "%c[%{public}s %{public}s]:%i An applet is needed to activate keys %{public}@", v27, v41, v43, 306, keysCopy);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -969,7 +969,7 @@ LABEL_35:
         v52 = 1024;
         v53 = 306;
         v54 = 2114;
-        v55 = v9;
+        v55 = keysCopy;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i An applet is needed to activate keys %{public}@", buf, 0x2Cu);
       }
 
@@ -993,10 +993,10 @@ LABEL_38:
   return v21;
 }
 
-- (id)setActiveApplets:(id)a3 keyIdentifiers:(id)a4 activationConfig:(unint64_t)a5
+- (id)setActiveApplets:(id)applets keyIdentifiers:(id)identifiers activationConfig:(unint64_t)config
 {
-  v9 = a3;
-  v10 = a4;
+  appletsCopy = applets;
+  identifiersCopy = identifiers;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -1012,7 +1012,7 @@ LABEL_38:
       v15 = 43;
     }
 
-    v12(6, "%c[%{public}s %{public}s]:%i applets=%{public}@", v15, ClassName, Name, 324, v9);
+    v12(6, "%c[%{public}s %{public}s]:%i applets=%{public}@", v15, ClassName, Name, 324, appletsCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1041,7 +1041,7 @@ LABEL_38:
     v160 = 1024;
     v161 = 324;
     v162 = 2114;
-    v163 = v9;
+    v163 = appletsCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i applets=%{public}@", buf, 0x2Cu);
   }
 
@@ -1060,7 +1060,7 @@ LABEL_38:
       v25 = 43;
     }
 
-    v22(6, "%c[%{public}s %{public}s]:%i keyIdentifiers: %{public}@", v25, v132, v135, 325, v10);
+    v22(6, "%c[%{public}s %{public}s]:%i keyIdentifiers: %{public}@", v25, v132, v135, 325, identifiersCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1089,31 +1089,31 @@ LABEL_38:
     v160 = 1024;
     v161 = 325;
     v162 = 2114;
-    v163 = v10;
+    v163 = identifiersCopy;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i keyIdentifiers: %{public}@", buf, 0x2Cu);
   }
 
-  v147 = v10;
+  v147 = identifiersCopy;
   if (!self->_activeApplet || !self->_activeKeyIdentifiers)
   {
 LABEL_32:
-    if ([v9 count] && objc_msgSend(v10, "count"))
+    if ([appletsCopy count] && objc_msgSend(identifiersCopy, "count"))
     {
-      v46 = [v9 count];
-      if (v46 == [v10 count])
+      v46 = [appletsCopy count];
+      if (v46 == [identifiersCopy count])
       {
-        v39 = [v10 firstObject];
-        if (v39)
+        firstObject = [identifiersCopy firstObject];
+        if (firstObject)
         {
-          v47 = [NSSet setWithObject:v39];
-          if ([v9 count] < 2)
+          v47 = [NSSet setWithObject:firstObject];
+          if ([appletsCopy count] < 2)
           {
             v49 = 0;
           }
 
           else
           {
-            v48 = [v10 objectAtIndex:1];
+            v48 = [identifiersCopy objectAtIndex:1];
             if (v48)
             {
               v49 = [NSSet setWithObject:v48];
@@ -1127,12 +1127,12 @@ LABEL_32:
               {
                 v97 = v96;
                 v98 = object_getClass(self);
-                v99 = v9;
+                v99 = appletsCopy;
                 v100 = class_isMetaClass(v98);
                 v142 = object_getClassName(self);
                 v140 = sel_getName(a2);
                 v112 = !v100;
-                v9 = v99;
+                appletsCopy = v99;
                 v101 = 45;
                 if (!v112)
                 {
@@ -1159,16 +1159,16 @@ LABEL_32:
 
                 v143 = v104;
                 v105 = v47;
-                v106 = v39;
-                v107 = v9;
+                v106 = firstObject;
+                v107 = appletsCopy;
                 v108 = object_getClassName(self);
                 v109 = sel_getName(a2);
                 *buf = 67109890;
                 v155 = v143;
                 v156 = 2082;
                 v157 = v108;
-                v9 = v107;
-                v39 = v106;
+                appletsCopy = v107;
+                firstObject = v106;
                 v47 = v105;
                 v158 = 2082;
                 v159 = v109;
@@ -1182,7 +1182,7 @@ LABEL_32:
           }
 
           obj = v47;
-          v146 = v39;
+          v146 = firstObject;
           v144 = v49;
           if ([v47 count])
           {
@@ -1192,7 +1192,7 @@ LABEL_32:
           else
           {
             v111 = [v49 count];
-            if (a5)
+            if (config)
             {
               v112 = v111 == 0;
             }
@@ -1205,8 +1205,8 @@ LABEL_32:
             v110 = !v112;
           }
 
-          v113 = v9;
-          if ([v9 count])
+          v113 = appletsCopy;
+          if ([appletsCopy count])
           {
             v114 = 0;
             while (1)
@@ -1248,7 +1248,7 @@ LABEL_32:
 
             dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
             p_super = NFSharedLogGetLogger();
-            v9 = v113;
+            appletsCopy = v113;
             v93 = v144;
             if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
             {
@@ -1291,12 +1291,12 @@ LABEL_98:
             v119 = 0;
             p_super = &self->_activeSecondaryKeyIdentifiers->super;
             self->_activeSecondaryKeyIdentifiers = v120;
-            v9 = v113;
+            appletsCopy = v113;
           }
 
           v62 = v119;
           v32 = v62;
-          v39 = v146;
+          firstObject = v146;
         }
 
         else
@@ -1319,7 +1319,7 @@ LABEL_98:
             v81(3, "%c[%{public}s %{public}s]:%i Invalid primaryKeyIdentifier", v85, v84, v139, 352);
           }
 
-          v86 = v9;
+          v86 = appletsCopy;
           dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
           v87 = NFSharedLogGetLogger();
           if (os_log_type_enabled(v87, OS_LOG_TYPE_ERROR))
@@ -1364,7 +1364,7 @@ LABEL_98:
           v95 = [NSDictionary dictionaryWithObjects:v149 forKeys:v148 count:4];
           v32 = [v92 initWithDomain:v62 code:10 userInfo:v95];
 
-          v9 = v86;
+          appletsCopy = v86;
         }
 
         goto LABEL_60;
@@ -1417,7 +1417,7 @@ LABEL_98:
       }
 
       v61 = [NSError alloc];
-      v39 = [NSString stringWithUTF8String:"nfcd"];
+      firstObject = [NSString stringWithUTF8String:"nfcd"];
       v150[0] = NSLocalizedDescriptionKey;
       v62 = [NSString stringWithUTF8String:"Invalid Parameter"];
       v151[0] = v62;
@@ -1482,7 +1482,7 @@ LABEL_98:
       }
 
       v61 = [NSError alloc];
-      v39 = [NSString stringWithUTF8String:"nfcd"];
+      firstObject = [NSString stringWithUTF8String:"nfcd"];
       v152[0] = NSLocalizedDescriptionKey;
       v62 = [NSString stringWithUTF8String:"Invalid Parameter"];
       v153[0] = v62;
@@ -1499,7 +1499,7 @@ LABEL_98:
     }
 
     v78 = [NSDictionary dictionaryWithObjects:v65 forKeys:v66 count:4];
-    v32 = [v61 initWithDomain:v39 code:10 userInfo:v78];
+    v32 = [v61 initWithDomain:firstObject code:10 userInfo:v78];
 
 LABEL_60:
     goto LABEL_61;
@@ -1537,8 +1537,8 @@ LABEL_60:
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-  v39 = NFSharedLogGetLogger();
-  if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
+  firstObject = NFSharedLogGetLogger();
+  if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
   {
     v40 = object_getClass(self);
     if (class_isMetaClass(v40))
@@ -1561,7 +1561,7 @@ LABEL_60:
     v159 = v43;
     v160 = 1024;
     v161 = 336;
-    _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Unable to deactivate keys on activeApplet", buf, 0x22u);
+    _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Unable to deactivate keys on activeApplet", buf, 0x22u);
   }
 
 LABEL_61:
@@ -1569,15 +1569,15 @@ LABEL_61:
   return v32;
 }
 
-- (id)setActiveApplet:(id)a3
+- (id)setActiveApplet:(id)applet
 {
-  v6 = a3;
-  v7 = [(_NFXPCSession *)self expressModeManager];
+  appletCopy = applet;
+  expressModeManager = [(_NFXPCSession *)self expressModeManager];
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   v9 = Logger;
-  if (!v7)
+  if (!expressModeManager)
   {
     if (Logger)
     {
@@ -1644,7 +1644,7 @@ LABEL_61:
       v12 = 43;
     }
 
-    v9(6, "%c[%{public}s %{public}s]:%i %{public}@", v12, v146, v151, 398, v6);
+    v9(6, "%c[%{public}s %{public}s]:%i %{public}@", v12, v146, v151, 398, appletCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1671,11 +1671,11 @@ LABEL_61:
     v167 = 1024;
     v168 = 398;
     v169 = 2114;
-    v170 = v6;
+    v170 = appletCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
-  if (!v6 || ![(NFApplet *)self->_activeApplet isEqualToApplet:v6])
+  if (!appletCopy || ![(NFApplet *)self->_activeApplet isEqualToApplet:appletCopy])
   {
     if (self->_activeApplet)
     {
@@ -1760,14 +1760,14 @@ LABEL_96:
           v32 = class_isMetaClass(v31);
           v33 = object_getClassName(self);
           v34 = sel_getName(a2);
-          v35 = [(NFApplet *)self->_activeApplet identifier];
+          identifier = [(NFApplet *)self->_activeApplet identifier];
           v36 = 45;
           if (v32)
           {
             v36 = 43;
           }
 
-          v30(6, "%c[%{public}s %{public}s]:%i Resetting volatile config on: %{public}@", v36, v33, v34, 412, v35);
+          v30(6, "%c[%{public}s %{public}s]:%i Resetting volatile config on: %{public}@", v36, v33, v34, 412, identifier);
         }
 
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1787,7 +1787,7 @@ LABEL_96:
 
           v40 = object_getClassName(self);
           v41 = sel_getName(a2);
-          v42 = [(NFApplet *)self->_activeApplet identifier];
+          identifier2 = [(NFApplet *)self->_activeApplet identifier];
           *buf = 67110146;
           v162 = v39;
           v163 = 2082;
@@ -1797,16 +1797,16 @@ LABEL_96:
           v167 = 1024;
           v168 = 412;
           v169 = 2114;
-          v170 = v42;
+          v170 = identifier2;
           _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Resetting volatile config on: %{public}@", buf, 0x2Cu);
         }
 
-        v43 = [(_NFContactlessSession *)self secureElementWrapper];
-        v44 = sub_10025F700(v43, self->_activeApplet);
+        secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
+        v44 = sub_10025F700(secureElementWrapper, self->_activeApplet);
       }
 
-      v45 = [(_NFContactlessSession *)self secureElementWrapper];
-      v46 = sub_1002562FC(v45);
+      secureElementWrapper2 = [(_NFContactlessSession *)self secureElementWrapper];
+      v46 = sub_1002562FC(secureElementWrapper2);
 
       if (v46)
       {
@@ -1863,8 +1863,8 @@ LABEL_96:
 
       if ([(_NFContactlessSession *)self plasticCardMode])
       {
-        v117 = [(_NFContactlessSession *)self secureElementWrapper];
-        v118 = sub_1002629A4(v117, 0, self->_activeApplet);
+        secureElementWrapper3 = [(_NFContactlessSession *)self secureElementWrapper];
+        v118 = sub_1002629A4(secureElementWrapper3, 0, self->_activeApplet);
 
         if (v118)
         {
@@ -1929,7 +1929,7 @@ LABEL_96:
       activeGroupMembers = self->_activeGroupMembers;
       self->_activeGroupMembers = 0;
 
-      if (!v6)
+      if (!appletCopy)
       {
         goto LABEL_114;
       }
@@ -1938,7 +1938,7 @@ LABEL_96:
     else
     {
       [(_NFContactlessSession *)self switchToSecureElementWrapperForApplet:?];
-      if (!v6)
+      if (!appletCopy)
       {
 LABEL_114:
         if (![(_NFSession *)self isEnding]&& ![(_NFSession *)self didEnd])
@@ -1989,8 +1989,8 @@ LABEL_114:
             _os_log_impl(&_mh_execute_header, v137, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Removing express mode aid restriction", buf, 0x22u);
           }
 
-          v142 = [(_NFXPCSession *)self expressModeManager];
-          sub_10003AE30(v142, 0);
+          expressModeManager2 = [(_NFXPCSession *)self expressModeManager];
+          sub_10003AE30(expressModeManager2, 0);
         }
 
         v46 = 0;
@@ -2023,7 +2023,7 @@ LABEL_58:
       v78 = 43;
     }
 
-    v75(6, "%c[%{public}s %{public}s]:%i Activating %{public}@", v78, v148, v154, 444, v6);
+    v75(6, "%c[%{public}s %{public}s]:%i Activating %{public}@", v78, v148, v154, 444, appletCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2052,11 +2052,11 @@ LABEL_58:
     v167 = 1024;
     v168 = 444;
     v169 = 2114;
-    v170 = v6;
+    v170 = appletCopy;
     _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Activating %{public}@", buf, 0x2Cu);
   }
 
-  [(_NFContactlessSession *)self switchToSecureElementWrapperForApplet:v6];
+  [(_NFContactlessSession *)self switchToSecureElementWrapperForApplet:appletCopy];
   if (![(_NFContactlessSession *)self startWiredMode])
   {
     v71 = [NSError alloc];
@@ -2069,13 +2069,13 @@ LABEL_58:
     goto LABEL_95;
   }
 
-  v84 = [(_NFContactlessSession *)self secureElementWrapper];
-  v85 = sub_1002562FC(v84);
+  secureElementWrapper4 = [(_NFContactlessSession *)self secureElementWrapper];
+  v85 = sub_1002562FC(secureElementWrapper4);
 
   if ([(_NFContactlessSession *)self plasticCardMode])
   {
-    v86 = [(_NFContactlessSession *)self secureElementWrapper];
-    v87 = sub_1002629A4(v86, 1, v6);
+    secureElementWrapper5 = [(_NFContactlessSession *)self secureElementWrapper];
+    v87 = sub_1002629A4(secureElementWrapper5, 1, appletCopy);
 
     if (v87)
     {
@@ -2129,15 +2129,15 @@ LABEL_58:
     }
   }
 
-  v98 = [(_NFContactlessSession *)self secureElementWrapper];
-  v46 = sub_100254768(v98, v6);
+  secureElementWrapper6 = [(_NFContactlessSession *)self secureElementWrapper];
+  v46 = sub_100254768(secureElementWrapper6, appletCopy);
 
   if (!v46)
   {
-    objc_storeStrong(&self->_activeApplet, a3);
-    v143 = [(_NFContactlessSession *)self _getRelatedGroupMembersForActiveApplet];
+    objc_storeStrong(&self->_activeApplet, applet);
+    _getRelatedGroupMembersForActiveApplet = [(_NFContactlessSession *)self _getRelatedGroupMembersForActiveApplet];
     v144 = self->_activeGroupMembers;
-    self->_activeGroupMembers = v143;
+    self->_activeGroupMembers = _getRelatedGroupMembersForActiveApplet;
 
     v145 = self->_activeApplet;
     goto LABEL_58;
@@ -2158,7 +2158,7 @@ LABEL_58:
       v104 = 43;
     }
 
-    v100(3, "%c[%{public}s %{public}s]:%i Activation failed: %{public}@ : %{public}@", v104, v103, v156, 465, v6, v46);
+    v100(3, "%c[%{public}s %{public}s]:%i Activation failed: %{public}@ : %{public}@", v104, v103, v156, 465, appletCopy, v46);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2187,20 +2187,20 @@ LABEL_58:
     v167 = 1024;
     v168 = 465;
     v169 = 2114;
-    v170 = v6;
+    v170 = appletCopy;
     v171 = 2114;
     v172 = v46;
     _os_log_impl(&_mh_execute_header, v105, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Activation failed: %{public}@ : %{public}@", buf, 0x36u);
   }
 
-  v110 = [(NFApplet *)v6 identifier];
-  v111 = [(NFApplet *)v6 packageIdentifier];
-  v112 = [(NFApplet *)v6 moduleIdentifier];
-  v113 = [NSString stringWithFormat:@"Unable to activate applet with AID: %@, PID: %@, MID: %@. Error: %@", v110, v111, v112, v46];
+  identifier3 = [(NFApplet *)appletCopy identifier];
+  packageIdentifier = [(NFApplet *)appletCopy packageIdentifier];
+  moduleIdentifier = [(NFApplet *)appletCopy moduleIdentifier];
+  v113 = [NSString stringWithFormat:@"Unable to activate applet with AID: %@, PID: %@, MID: %@. Error: %@", identifier3, packageIdentifier, moduleIdentifier, v46];
 
   v159[0] = @"Applet Identifier";
-  v114 = [(NFApplet *)v6 identifier];
-  v160[0] = v114;
+  identifier4 = [(NFApplet *)appletCopy identifier];
+  v160[0] = identifier4;
   v160[1] = @"Other Bug";
   v159[1] = @"Classification";
   v159[2] = @"FailureKey";
@@ -2213,15 +2213,15 @@ LABEL_97:
   return v46;
 }
 
-- (id)setActiveApplets:(id)a3
+- (id)setActiveApplets:(id)applets
 {
-  v5 = a3;
-  v6 = [(_NFXPCSession *)self expressModeManager];
+  appletsCopy = applets;
+  expressModeManager = [(_NFXPCSession *)self expressModeManager];
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   v8 = Logger;
-  if (!v6)
+  if (!expressModeManager)
   {
     if (Logger)
     {
@@ -2265,10 +2265,10 @@ LABEL_97:
     }
 
     v65 = [NSError alloc];
-    v15 = [NSString stringWithUTF8String:"nfcd"];
+    firstObject = [NSString stringWithUTF8String:"nfcd"];
     v199[0] = NSLocalizedDescriptionKey;
-    v16 = [NSString stringWithUTF8String:"Invalid State"];
-    v200[0] = v16;
+    lastObject = [NSString stringWithUTF8String:"Invalid State"];
+    v200[0] = lastObject;
     v200[1] = &off_100330F30;
     v199[1] = @"Line";
     v199[2] = @"Method";
@@ -2279,7 +2279,7 @@ LABEL_97:
     v200[3] = v66;
     v67 = [NSDictionary dictionaryWithObjects:v200 forKeys:v199 count:4];
     v68 = v65;
-    v69 = v15;
+    v69 = firstObject;
     v70 = 12;
     goto LABEL_66;
   }
@@ -2296,7 +2296,7 @@ LABEL_97:
       v11 = 43;
     }
 
-    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v11, v164, v170, 499, v5);
+    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v11, v164, v170, 499, appletsCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2323,11 +2323,11 @@ LABEL_97:
     v187 = 1024;
     v188 = 499;
     v189 = 2114;
-    v190 = v5;
+    v190 = appletsCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
-  if ([(NFApplet *)v5 count]!= 2)
+  if ([(NFApplet *)appletsCopy count]!= 2)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v71 = NFLogGetLogger();
@@ -2344,7 +2344,7 @@ LABEL_97:
         v75 = 43;
       }
 
-      v72(3, "%c[%{public}s %{public}s]:%i Invalid number of applets %{public}@", v75, v166, v173, 502, v5);
+      v72(3, "%c[%{public}s %{public}s]:%i Invalid number of applets %{public}@", v75, v166, v173, 502, appletsCopy);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2373,15 +2373,15 @@ LABEL_97:
       v187 = 1024;
       v188 = 502;
       v189 = 2114;
-      v190 = v5;
+      v190 = appletsCopy;
       _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Invalid number of applets %{public}@", buf, 0x2Cu);
     }
 
     v81 = [NSError alloc];
-    v15 = [NSString stringWithUTF8String:"nfcd"];
+    firstObject = [NSString stringWithUTF8String:"nfcd"];
     v197[0] = NSLocalizedDescriptionKey;
-    v16 = [NSString stringWithUTF8String:"Invalid Parameter"];
-    v198[0] = v16;
+    lastObject = [NSString stringWithUTF8String:"Invalid Parameter"];
+    v198[0] = lastObject;
     v198[1] = &off_100330F48;
     v197[1] = @"Line";
     v197[2] = @"Method";
@@ -2392,7 +2392,7 @@ LABEL_97:
     v198[3] = v66;
     v67 = [NSDictionary dictionaryWithObjects:v198 forKeys:v197 count:4];
     v68 = v81;
-    v69 = v15;
+    v69 = firstObject;
     v70 = 10;
 LABEL_66:
     v47 = [v68 initWithDomain:v69 code:v70 userInfo:v67];
@@ -2401,9 +2401,9 @@ LABEL_67:
     goto LABEL_68;
   }
 
-  v15 = [(NFApplet *)v5 firstObject];
-  v16 = [(NFApplet *)v5 lastObject];
-  if (!v15 || ![(NFApplet *)self->_activeApplet isEqualToApplet:v15])
+  firstObject = [(NFApplet *)appletsCopy firstObject];
+  lastObject = [(NFApplet *)appletsCopy lastObject];
+  if (!firstObject || ![(NFApplet *)self->_activeApplet isEqualToApplet:firstObject])
   {
     if (self->_activeApplet)
     {
@@ -2492,14 +2492,14 @@ LABEL_124:
           v33 = class_isMetaClass(v32);
           v34 = object_getClassName(self);
           v35 = sel_getName(a2);
-          v36 = [(NFApplet *)self->_activeApplet identifier];
+          identifier = [(NFApplet *)self->_activeApplet identifier];
           v37 = 45;
           if (v33)
           {
             v37 = 43;
           }
 
-          v31(6, "%c[%{public}s %{public}s]:%i Resetting volatile config on: %{public}@", v37, v34, v35, 521, v36);
+          v31(6, "%c[%{public}s %{public}s]:%i Resetting volatile config on: %{public}@", v37, v34, v35, 521, identifier);
         }
 
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2519,7 +2519,7 @@ LABEL_124:
 
           v41 = object_getClassName(self);
           v42 = sel_getName(a2);
-          v43 = [(NFApplet *)self->_activeApplet identifier];
+          identifier2 = [(NFApplet *)self->_activeApplet identifier];
           *buf = 67110146;
           v182 = v40;
           v183 = 2082;
@@ -2529,16 +2529,16 @@ LABEL_124:
           v187 = 1024;
           v188 = 521;
           v189 = 2114;
-          v190 = v43;
+          v190 = identifier2;
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Resetting volatile config on: %{public}@", buf, 0x2Cu);
         }
 
-        v44 = [(_NFContactlessSession *)self secureElementWrapper];
-        v45 = sub_10025F700(v44, self->_activeApplet);
+        secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
+        v45 = sub_10025F700(secureElementWrapper, self->_activeApplet);
       }
 
-      v46 = [(_NFContactlessSession *)self secureElementWrapper];
-      v47 = sub_1002562FC(v46);
+      secureElementWrapper2 = [(_NFContactlessSession *)self secureElementWrapper];
+      v47 = sub_1002562FC(secureElementWrapper2);
 
       if (v47)
       {
@@ -2595,8 +2595,8 @@ LABEL_124:
 
       if ([(_NFContactlessSession *)self plasticCardMode])
       {
-        v132 = [(_NFContactlessSession *)self secureElementWrapper];
-        v133 = sub_1002629A4(v132, 0, self->_activeApplet);
+        secureElementWrapper3 = [(_NFContactlessSession *)self secureElementWrapper];
+        v133 = sub_1002629A4(secureElementWrapper3, 0, self->_activeApplet);
 
         if (v133)
         {
@@ -2664,7 +2664,7 @@ LABEL_124:
       activeGroupMembers = self->_activeGroupMembers;
       self->_activeGroupMembers = 0;
 
-      if (!v15)
+      if (!firstObject)
       {
         goto LABEL_127;
       }
@@ -2673,7 +2673,7 @@ LABEL_124:
     else
     {
       [(_NFContactlessSession *)self switchToSecureElementWrapperForApplet:?];
-      if (!v15)
+      if (!firstObject)
       {
 LABEL_127:
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2722,10 +2722,10 @@ LABEL_127:
           _os_log_impl(&_mh_execute_header, v154, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Removing express mode aid restriction", buf, 0x22u);
         }
 
-        v159 = [(_NFXPCSession *)self expressModeManager];
-        sub_10003AE30(v159, 0);
+        expressModeManager2 = [(_NFXPCSession *)self expressModeManager];
+        sub_10003AE30(expressModeManager2, 0);
 
-        if (!v5)
+        if (!appletsCopy)
         {
           goto LABEL_137;
         }
@@ -2735,7 +2735,7 @@ LABEL_127:
     }
   }
 
-  if (!v5)
+  if (!appletsCopy)
   {
 LABEL_137:
     v47 = 0;
@@ -2767,7 +2767,7 @@ LABEL_74:
       v94 = 43;
     }
 
-    v91(6, "%c[%{public}s %{public}s]:%i Activating %{public}@", v94, v167, v174, 553, v5);
+    v91(6, "%c[%{public}s %{public}s]:%i Activating %{public}@", v94, v167, v174, 553, appletsCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2796,11 +2796,11 @@ LABEL_74:
     v187 = 1024;
     v188 = 553;
     v189 = 2114;
-    v190 = v5;
+    v190 = appletsCopy;
     _os_log_impl(&_mh_execute_header, v95, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Activating %{public}@", buf, 0x2Cu);
   }
 
-  [(_NFContactlessSession *)self switchToSecureElementWrapperForApplet:v15];
+  [(_NFContactlessSession *)self switchToSecureElementWrapperForApplet:firstObject];
   if (![(_NFContactlessSession *)self startWiredMode])
   {
     v83 = [NSError alloc];
@@ -2821,13 +2821,13 @@ LABEL_74:
     goto LABEL_124;
   }
 
-  v100 = [(_NFContactlessSession *)self secureElementWrapper];
-  v101 = sub_1002562FC(v100);
+  secureElementWrapper4 = [(_NFContactlessSession *)self secureElementWrapper];
+  v101 = sub_1002562FC(secureElementWrapper4);
 
   if ([(_NFContactlessSession *)self plasticCardMode])
   {
-    v102 = [(_NFContactlessSession *)self secureElementWrapper];
-    v103 = sub_1002629A4(v102, 1, v15);
+    secureElementWrapper5 = [(_NFContactlessSession *)self secureElementWrapper];
+    v103 = sub_1002629A4(secureElementWrapper5, 1, firstObject);
 
     if (v103)
     {
@@ -2881,16 +2881,16 @@ LABEL_74:
     }
   }
 
-  v114 = [(_NFContactlessSession *)self secureElementWrapper];
-  v47 = sub_100254C8C(v114, v5);
+  secureElementWrapper6 = [(_NFContactlessSession *)self secureElementWrapper];
+  v47 = sub_100254C8C(secureElementWrapper6, appletsCopy);
 
   if (!v47)
   {
-    objc_storeStrong(&self->_activeApplet, v15);
-    objc_storeStrong(&self->_activeSecondaryApplet, v16);
-    v160 = [(_NFContactlessSession *)self _getRelatedGroupMembersForActiveApplet];
+    objc_storeStrong(&self->_activeApplet, firstObject);
+    objc_storeStrong(&self->_activeSecondaryApplet, lastObject);
+    _getRelatedGroupMembersForActiveApplet = [(_NFContactlessSession *)self _getRelatedGroupMembersForActiveApplet];
     v161 = self->_activeGroupMembers;
-    self->_activeGroupMembers = v160;
+    self->_activeGroupMembers = _getRelatedGroupMembersForActiveApplet;
 
     v162 = self->_activeApplet;
     goto LABEL_74;
@@ -2911,7 +2911,7 @@ LABEL_74:
       v120 = 43;
     }
 
-    v116(3, "%c[%{public}s %{public}s]:%i Activation failed: %{public}@ : %{public}@", v120, v119, v176, 574, v5, v47);
+    v116(3, "%c[%{public}s %{public}s]:%i Activation failed: %{public}@ : %{public}@", v120, v119, v176, 574, appletsCopy, v47);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2940,30 +2940,30 @@ LABEL_74:
     v187 = 1024;
     v188 = 574;
     v189 = 2114;
-    v190 = v5;
+    v190 = appletsCopy;
     v191 = 2114;
     v192 = v47;
     _os_log_impl(&_mh_execute_header, v121, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Activation failed: %{public}@ : %{public}@", buf, 0x36u);
   }
 
-  v126 = [v15 identifier];
-  v127 = [v15 packageIdentifier];
-  v128 = [v15 moduleIdentifier];
-  v129 = [NSString stringWithFormat:@"Unable to activate applet with AID: %@, PID: %@, MID: %@. Error: %@", v126, v127, v128, v47];
+  identifier3 = [firstObject identifier];
+  packageIdentifier = [firstObject packageIdentifier];
+  moduleIdentifier = [firstObject moduleIdentifier];
+  v129 = [NSString stringWithFormat:@"Unable to activate applet with AID: %@, PID: %@, MID: %@. Error: %@", identifier3, packageIdentifier, moduleIdentifier, v47];
 
   v179[0] = @"Applet Identifier";
-  v130 = [v15 identifier];
-  if (v130)
+  identifier4 = [firstObject identifier];
+  if (identifier4)
   {
-    v131 = [v15 identifier];
+    identifier5 = [firstObject identifier];
   }
 
   else
   {
-    v131 = @"NULL";
+    identifier5 = @"NULL";
   }
 
-  v180[0] = v131;
+  v180[0] = identifier5;
   v180[1] = @"Other Bug";
   v179[1] = @"Classification";
   v179[2] = @"FailureKey";
@@ -2971,7 +2971,7 @@ LABEL_74:
   v163 = [NSDictionary dictionaryWithObjects:v180 forKeys:v179 count:3];
   sub_1001998C4(NFBugCapture, @"Failed to activate applet", v129, v163);
 
-  if (v130)
+  if (identifier4)
   {
   }
 
@@ -2982,30 +2982,30 @@ LABEL_68:
 
 - (id)preloadApplets
 {
-  v3 = self;
-  objc_sync_enter(v3);
-  v4 = [(_NFContactlessSession *)v3 secureElementWrapper];
-  v133 = v4;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  secureElementWrapper = [(_NFContactlessSession *)selfCopy secureElementWrapper];
+  v133 = secureElementWrapper;
   v5 = [NSArray arrayWithObjects:&v133 count:1];
 
-  v6 = [(_NFXPCSession *)v3 expressModeManager];
+  expressModeManager = [(_NFXPCSession *)selfCopy expressModeManager];
 
-  if (v6)
+  if (expressModeManager)
   {
-    if (!v3->_appletMap)
+    if (!selfCopy->_appletMap)
     {
       v7 = objc_alloc_init(NSMutableDictionary);
-      appletMap = v3->_appletMap;
-      v3->_appletMap = v7;
+      appletMap = selfCopy->_appletMap;
+      selfCopy->_appletMap = v7;
     }
 
-    if (!v3->_applets)
+    if (!selfCopy->_applets)
     {
       sel = a2;
-      [(NSMutableDictionary *)v3->_appletMap removeAllObjects];
+      [(NSMutableDictionary *)selfCopy->_appletMap removeAllObjects];
       v102 = objc_opt_new();
-      v24 = [(_NFXPCSession *)v3 expressModeManager];
-      sub_100035DE4(v24, 1);
+      expressModeManager2 = [(_NFXPCSession *)selfCopy expressModeManager];
+      sub_100035DE4(expressModeManager2, 1);
 
       v115 = 0u;
       v116 = 0u;
@@ -3028,9 +3028,9 @@ LABEL_68:
             }
 
             v26 = *(*(&v113 + 1) + 8 * v25);
-            [(_NFContactlessSession *)v3 _setActiveSecureElementWrapper:v26];
+            [(_NFContactlessSession *)selfCopy _setActiveSecureElementWrapper:v26];
             v27 = sub_100253854(v26);
-            if (v27 && (v28 = v27, v29 = [(_NFContactlessSession *)v3 useFilteredApplets], v28, v29))
+            if (v27 && (v28 = v27, v29 = [(_NFContactlessSession *)selfCopy useFilteredApplets], v28, v29))
             {
               v30 = sub_100253854(v26);
               v106 = 1;
@@ -3038,12 +3038,12 @@ LABEL_68:
 
             else
             {
-              if (![(_NFContactlessSession *)v3 startWiredMode])
+              if (![(_NFContactlessSession *)selfCopy startWiredMode])
               {
-                v48 = [(_NFXPCSession *)v3 expressModeManager];
-                if (v48)
+                expressModeManager3 = [(_NFXPCSession *)selfCopy expressModeManager];
+                if (expressModeManager3)
                 {
-                  v49 = v48[2];
+                  v49 = expressModeManager3[2];
                   if (v49)
                   {
                     *(v49 + 176) = 0;
@@ -3055,9 +3055,9 @@ LABEL_68:
                 if (Logger)
                 {
                   v51 = Logger;
-                  Class = object_getClass(v3);
+                  Class = object_getClass(selfCopy);
                   isMetaClass = class_isMetaClass(Class);
-                  ClassName = object_getClassName(v3);
+                  ClassName = object_getClassName(selfCopy);
                   Name = sel_getName(sel);
                   v55 = 45;
                   if (isMetaClass)
@@ -3072,7 +3072,7 @@ LABEL_68:
                 v56 = NFSharedLogGetLogger();
                 if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
                 {
-                  v57 = object_getClass(v3);
+                  v57 = object_getClass(selfCopy);
                   if (class_isMetaClass(v57))
                   {
                     v58 = 43;
@@ -3083,7 +3083,7 @@ LABEL_68:
                     v58 = 45;
                   }
 
-                  v59 = object_getClassName(v3);
+                  v59 = object_getClassName(selfCopy);
                   v60 = sel_getName(sel);
                   *buf = 67109890;
                   v126 = v58;
@@ -3107,31 +3107,31 @@ LABEL_68:
                 goto LABEL_87;
               }
 
-              v31 = [(_NFContactlessSession *)v3 useFilteredApplets];
-              v32 = [(_NFContactlessSession *)v3 secureElementWrapper];
-              v33 = v32;
-              if (v31)
+              useFilteredApplets = [(_NFContactlessSession *)selfCopy useFilteredApplets];
+              secureElementWrapper2 = [(_NFContactlessSession *)selfCopy secureElementWrapper];
+              v33 = secureElementWrapper2;
+              if (useFilteredApplets)
               {
                 v112 = 0;
                 v34 = &v112;
-                sub_1002543BC(v32, &v112);
+                sub_1002543BC(secureElementWrapper2, &v112);
               }
 
               else
               {
                 v111 = 0;
                 v34 = &v111;
-                sub_100257A4C(v32, &v111);
+                sub_100257A4C(secureElementWrapper2, &v111);
               }
               v9 = ;
               v30 = *v34;
 
               if (v9 && [v9 code] != 24)
               {
-                v81 = [(_NFXPCSession *)v3 expressModeManager];
-                if (v81)
+                expressModeManager4 = [(_NFXPCSession *)selfCopy expressModeManager];
+                if (expressModeManager4)
                 {
-                  v82 = v81[2];
+                  v82 = expressModeManager4[2];
                   if (v82)
                   {
                     *(v82 + 176) = 0;
@@ -3143,9 +3143,9 @@ LABEL_68:
                 if (v83)
                 {
                   v84 = v83;
-                  v85 = object_getClass(v3);
+                  v85 = object_getClass(selfCopy);
                   v86 = class_isMetaClass(v85);
-                  v87 = object_getClassName(v3);
+                  v87 = object_getClassName(selfCopy);
                   v98 = sel_getName(sel);
                   v88 = 45;
                   if (v86)
@@ -3160,7 +3160,7 @@ LABEL_68:
                 v89 = NFSharedLogGetLogger();
                 if (os_log_type_enabled(v89, OS_LOG_TYPE_ERROR))
                 {
-                  v90 = object_getClass(v3);
+                  v90 = object_getClass(selfCopy);
                   if (class_isMetaClass(v90))
                   {
                     v91 = 43;
@@ -3171,7 +3171,7 @@ LABEL_68:
                     v91 = 45;
                   }
 
-                  v92 = object_getClassName(v3);
+                  v92 = object_getClassName(selfCopy);
                   v93 = sel_getName(sel);
                   *buf = 67109890;
                   v126 = v91;
@@ -3184,7 +3184,7 @@ LABEL_68:
                   _os_log_impl(&_mh_execute_header, v89, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to get applets from eSE", buf, 0x22u);
                 }
 
-                [(_NFContactlessSession *)v3 startDefaultMode];
+                [(_NFContactlessSession *)selfCopy startDefaultMode];
                 goto LABEL_87;
               }
 
@@ -3217,10 +3217,10 @@ LABEL_68:
                   }
 
                   v39 = *(*(&v107 + 1) + 8 * i);
-                  v40 = v3->_appletMap;
-                  v41 = [v26 serialNumber];
-                  v42 = [v39 identifier];
-                  [(NSMutableDictionary *)v40 setObject:v41 forKey:v42];
+                  v40 = selfCopy->_appletMap;
+                  serialNumber = [v26 serialNumber];
+                  identifier = [v39 identifier];
+                  [(NSMutableDictionary *)v40 setObject:serialNumber forKey:identifier];
                 }
 
                 v36 = [v30 countByEnumeratingWithState:&v107 objects:v119 count:16];
@@ -3229,12 +3229,12 @@ LABEL_68:
               while (v36);
             }
 
-            if (v106 && ![(_NFContactlessSession *)v3 startWiredMode])
+            if (v106 && ![(_NFContactlessSession *)selfCopy startWiredMode])
             {
-              v64 = [(_NFXPCSession *)v3 expressModeManager];
-              if (v64)
+              expressModeManager5 = [(_NFXPCSession *)selfCopy expressModeManager];
+              if (expressModeManager5)
               {
-                v65 = v64[2];
+                v65 = expressModeManager5[2];
                 if (v65)
                 {
                   *(v65 + 176) = 0;
@@ -3246,9 +3246,9 @@ LABEL_68:
               if (v66)
               {
                 v67 = v66;
-                v68 = object_getClass(v3);
+                v68 = object_getClass(selfCopy);
                 v69 = class_isMetaClass(v68);
-                v70 = object_getClassName(v3);
+                v70 = object_getClassName(selfCopy);
                 v97 = sel_getName(sel);
                 v71 = 45;
                 if (v69)
@@ -3263,7 +3263,7 @@ LABEL_68:
               v72 = NFSharedLogGetLogger();
               if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
               {
-                v73 = object_getClass(v3);
+                v73 = object_getClass(selfCopy);
                 if (class_isMetaClass(v73))
                 {
                   v74 = 43;
@@ -3274,7 +3274,7 @@ LABEL_68:
                   v74 = 45;
                 }
 
-                v75 = object_getClassName(v3);
+                v75 = object_getClassName(selfCopy);
                 v76 = sel_getName(sel);
                 *buf = 67109890;
                 v126 = v74;
@@ -3300,8 +3300,8 @@ LABEL_87:
               goto LABEL_88;
             }
 
-            v43 = [(_NFContactlessSession *)v3 secureElementWrapper];
-            v44 = sub_1002562FC(v43);
+            secureElementWrapper3 = [(_NFContactlessSession *)selfCopy secureElementWrapper];
+            v44 = sub_1002562FC(secureElementWrapper3);
 
             v25 = v105 + 1;
           }
@@ -3318,20 +3318,20 @@ LABEL_87:
         }
       }
 
-      v45 = [(_NFXPCSession *)v3 expressModeManager];
-      if (v45)
+      expressModeManager6 = [(_NFXPCSession *)selfCopy expressModeManager];
+      if (expressModeManager6)
       {
-        v46 = v45[2];
+        v46 = expressModeManager6[2];
         if (v46)
         {
           *(v46 + 176) = 0;
         }
       }
 
-      applets = v3->_applets;
-      v3->_applets = v102;
+      applets = selfCopy->_applets;
+      selfCopy->_applets = v102;
 
-      [(_NFContactlessSession *)v3 startDefaultMode];
+      [(_NFContactlessSession *)selfCopy startDefaultMode];
     }
 
     v9 = 0;
@@ -3345,9 +3345,9 @@ LABEL_87:
     if (v11)
     {
       v12 = v11;
-      v13 = object_getClass(v3);
+      v13 = object_getClass(selfCopy);
       v14 = class_isMetaClass(v13);
-      v15 = object_getClassName(v3);
+      v15 = object_getClassName(selfCopy);
       v95 = sel_getName(a2);
       v16 = 45;
       if (v14)
@@ -3362,7 +3362,7 @@ LABEL_87:
     v17 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = object_getClass(v3);
+      v18 = object_getClass(selfCopy);
       if (class_isMetaClass(v18))
       {
         v19 = 43;
@@ -3376,7 +3376,7 @@ LABEL_87:
       *buf = 67109890;
       v126 = v19;
       v127 = 2082;
-      v128 = object_getClassName(v3);
+      v128 = object_getClassName(selfCopy);
       v129 = 2082;
       v130 = sel_getName(a2);
       v131 = 1024;
@@ -3397,17 +3397,17 @@ LABEL_87:
 
 LABEL_88:
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (id)_getAppletsForAids:(id)a3
+- (id)_getAppletsForAids:(id)aids
 {
-  v4 = a3;
+  aidsCopy = aids;
   v5 = objc_opt_new();
-  v6 = [(_NFContactlessSession *)self secureElementWrapper];
-  v7 = sub_100253854(v6);
+  secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
+  v7 = sub_100253854(secureElementWrapper);
 
   if (v7)
   {
@@ -3415,8 +3415,8 @@ LABEL_88:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [(_NFContactlessSession *)self secureElementWrapper];
-    v9 = sub_100253854(v8);
+    secureElementWrapper2 = [(_NFContactlessSession *)self secureElementWrapper];
+    v9 = sub_100253854(secureElementWrapper2);
 
     v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
@@ -3433,8 +3433,8 @@ LABEL_88:
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
-          v15 = [v14 identifier];
-          v16 = [v4 containsObject:v15];
+          identifier = [v14 identifier];
+          v16 = [aidsCopy containsObject:identifier];
 
           if (v16)
           {
@@ -3470,12 +3470,12 @@ LABEL_88:
     goto LABEL_39;
   }
 
-  v5 = [(NFApplet *)activeApplet multiSEGroupMemberIDs];
+  multiSEGroupMemberIDs = [(NFApplet *)activeApplet multiSEGroupMemberIDs];
 
   v6 = self->_activeApplet;
-  if (v5)
+  if (multiSEGroupMemberIDs)
   {
-    v7 = [(NFApplet *)v6 multiSEGroupMemberIDs];
+    multiSEGroupMemberIDs2 = [(NFApplet *)v6 multiSEGroupMemberIDs];
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
     if (Logger)
@@ -3491,7 +3491,7 @@ LABEL_88:
         v12 = 43;
       }
 
-      v9(6, "%c[%{public}s %{public}s]:%i MultiSE group members found: %{public}@", v12, ClassName, Name, 845, v7);
+      v9(6, "%c[%{public}s %{public}s]:%i MultiSE group members found: %{public}@", v12, ClassName, Name, 845, multiSEGroupMemberIDs2);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3518,7 +3518,7 @@ LABEL_88:
       v55 = 1024;
       v56 = 845;
       v57 = 2114;
-      v58 = v7;
+      v58 = multiSEGroupMemberIDs2;
       v16 = "%c[%{public}s %{public}s]:%i MultiSE group members found: %{public}@";
 LABEL_22:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, v16, buf, 0x2Cu);
@@ -3527,12 +3527,12 @@ LABEL_22:
 
   else
   {
-    v17 = [(NFApplet *)v6 groupMemberIDs];
+    groupMemberIDs = [(NFApplet *)v6 groupMemberIDs];
 
     v18 = self->_activeApplet;
-    if (v17)
+    if (groupMemberIDs)
     {
-      v7 = [(NFApplet *)v18 groupMemberIDs];
+      multiSEGroupMemberIDs2 = [(NFApplet *)v18 groupMemberIDs];
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v19 = NFLogGetLogger();
       if (v19)
@@ -3548,7 +3548,7 @@ LABEL_22:
           v23 = 43;
         }
 
-        v20(6, "%c[%{public}s %{public}s]:%i Group members found: %{public}@", v23, v43, v46, 849, v7);
+        v20(6, "%c[%{public}s %{public}s]:%i Group members found: %{public}@", v23, v43, v46, 849, multiSEGroupMemberIDs2);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3575,7 +3575,7 @@ LABEL_22:
         v55 = 1024;
         v56 = 849;
         v57 = 2114;
-        v58 = v7;
+        v58 = multiSEGroupMemberIDs2;
         v16 = "%c[%{public}s %{public}s]:%i Group members found: %{public}@";
         goto LABEL_22;
       }
@@ -3583,15 +3583,15 @@ LABEL_22:
 
     else
     {
-      v27 = [(NFApplet *)v18 groupHeadID];
+      groupHeadID = [(NFApplet *)v18 groupHeadID];
 
-      if (!v27)
+      if (!groupHeadID)
       {
         goto LABEL_39;
       }
 
-      v28 = [(NFApplet *)self->_activeApplet groupHeadID];
-      v48 = v28;
+      groupHeadID2 = [(NFApplet *)self->_activeApplet groupHeadID];
+      v48 = groupHeadID2;
       v29 = [NSArray arrayWithObjects:&v48 count:1];
       v13 = [(_NFContactlessSession *)self _getAppletsForAids:v29];
 
@@ -3602,7 +3602,7 @@ LABEL_22:
       }
 
       v30 = [v13 objectAtIndex:0];
-      v7 = [v30 groupMemberIDs];
+      multiSEGroupMemberIDs2 = [v30 groupMemberIDs];
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v31 = NFLogGetLogger();
       if (v31)
@@ -3618,7 +3618,7 @@ LABEL_22:
           v35 = 43;
         }
 
-        v32(6, "%c[%{public}s %{public}s]:%i Group members found: %{public}@", v35, v44, v47, 856, v7);
+        v32(6, "%c[%{public}s %{public}s]:%i Group members found: %{public}@", v35, v44, v47, 856, multiSEGroupMemberIDs2);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3647,16 +3647,16 @@ LABEL_22:
         v55 = 1024;
         v56 = 856;
         v57 = 2114;
-        v58 = v7;
+        v58 = multiSEGroupMemberIDs2;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Group members found: %{public}@", buf, 0x2Cu);
       }
     }
   }
 
-  if (v7)
+  if (multiSEGroupMemberIDs2)
   {
-    v26 = [(_NFContactlessSession *)self _getAppletsForAids:v7];
-    v13 = v7;
+    v26 = [(_NFContactlessSession *)self _getAppletsForAids:multiSEGroupMemberIDs2];
+    v13 = multiSEGroupMemberIDs2;
 LABEL_25:
 
     goto LABEL_40;
@@ -3669,16 +3669,16 @@ LABEL_40:
   return v26;
 }
 
-- (int)_getActiveAppletEmulationType:(id)a3
+- (int)_getActiveAppletEmulationType:(id)type
 {
-  v5 = a3;
-  v6 = [v5 identifierAsData];
+  typeCopy = type;
+  identifierAsData = [typeCopy identifierAsData];
   v7 = [[NSData alloc] initWithBytes:&unk_100296F08 length:14];
-  v8 = [v6 isEqualToData:v7];
+  v8 = [identifierAsData isEqualToData:v7];
 
   if (v8)
   {
-    v9 = v5;
+    v9 = typeCopy;
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
     if (Logger)
@@ -3725,14 +3725,14 @@ LABEL_40:
 
     v19 = 7;
 LABEL_12:
-    v5 = v9;
+    typeCopy = v9;
     goto LABEL_52;
   }
 
-  v20 = [v5 isTypeF];
-  if ([v5 groupActivationStyle] == 1)
+  isTypeF = [typeCopy isTypeF];
+  if ([typeCopy groupActivationStyle] == 1)
   {
-    if (v20)
+    if (isTypeF)
     {
       v19 = 4;
     }
@@ -3745,13 +3745,13 @@ LABEL_12:
 
   else
   {
-    if (![v5 groupActivationStyle])
+    if (![typeCopy groupActivationStyle])
     {
-      v25 = [v5 groupHeadID];
+      groupHeadID = [typeCopy groupHeadID];
 
-      if (v25)
+      if (groupHeadID)
       {
-        v9 = v5;
+        v9 = typeCopy;
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         v26 = NFLogGetLogger();
         if (v26)
@@ -3801,24 +3801,24 @@ LABEL_12:
       }
     }
 
-    v21 = [v5 groupHeadID];
-    if (v21)
+    groupHeadID2 = [typeCopy groupHeadID];
+    if (groupHeadID2)
     {
-      v22 = [(_NFContactlessSession *)self secureElementWrapper];
-      v23 = [v5 groupHeadIDAsData];
-      v24 = sub_100257F24(v22, v23, 0);
+      secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
+      groupHeadIDAsData = [typeCopy groupHeadIDAsData];
+      v24 = sub_100257F24(secureElementWrapper, groupHeadIDAsData, 0);
     }
 
     else
     {
-      v24 = v5;
+      v24 = typeCopy;
     }
 
-    v35 = [v24 groupMemberIDs];
-    v36 = v35;
-    if (v35)
+    groupMemberIDs = [v24 groupMemberIDs];
+    v36 = groupMemberIDs;
+    if (groupMemberIDs)
     {
-      v37 = v35;
+      v37 = groupMemberIDs;
     }
 
     else
@@ -3828,7 +3828,7 @@ LABEL_12:
 
     v38 = v37;
 
-    v52 = v5;
+    v52 = typeCopy;
     if (v24)
     {
       if ([v24 isTypeF])
@@ -3868,9 +3868,9 @@ LABEL_12:
           }
 
           v44 = *(*(&v53 + 1) + 8 * i);
-          v45 = [(_NFContactlessSession *)self secureElementWrapper];
+          secureElementWrapper2 = [(_NFContactlessSession *)self secureElementWrapper];
           v46 = [NSData NF_dataWithHexString:v44];
-          v47 = sub_100257F24(v45, v46, 0);
+          v47 = sub_100257F24(secureElementWrapper2, v46, 0);
 
           if (v47)
           {
@@ -3892,7 +3892,7 @@ LABEL_12:
       while (v41);
     }
 
-    v5 = v52;
+    typeCopy = v52;
   }
 
 LABEL_52:
@@ -3900,24 +3900,24 @@ LABEL_52:
   return v19;
 }
 
-- (BOOL)_configureEmulationType:(unint64_t)a3
+- (BOOL)_configureEmulationType:(unint64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     v9 = +[NSAssertionHandler currentHandler];
     [v9 handleFailureInMethod:a2 object:self file:@"_NFContactlessSession.m" lineNumber:915 description:@"Invalid argument"];
   }
 
   v5 = sub_10004C144();
-  v6 = [(_NFContactlessSession *)self _configureEmulationType:a3 routingConfigWhenEmulationOff:v5];
+  v6 = [(_NFContactlessSession *)self _configureEmulationType:type routingConfigWhenEmulationOff:v5];
 
   return v6;
 }
 
-- (BOOL)_configureEmulationType:(unint64_t)a3 routingConfigWhenEmulationOff:(id)a4
+- (BOOL)_configureEmulationType:(unint64_t)type routingConfigWhenEmulationOff:(id)off
 {
-  v7 = a4;
-  if (!a3)
+  offCopy = off;
+  if (!type)
   {
     if (self->_emulationState)
     {
@@ -3929,14 +3929,14 @@ LABEL_52:
         isMetaClass = class_isMetaClass(Class);
         ClassName = object_getClassName(self);
         Name = sel_getName(a2);
-        v18 = [(_NFXPCSession *)self clientName];
+        clientName = [(_NFXPCSession *)self clientName];
         v19 = 45;
         if (isMetaClass)
         {
           v19 = 43;
         }
 
-        v13(6, "%c[%{public}s %{public}s]:%i NFC emulation mode terminated: %@", v19, ClassName, Name, 929, v18);
+        v13(6, "%c[%{public}s %{public}s]:%i NFC emulation mode terminated: %@", v19, ClassName, Name, 929, clientName);
       }
 
       v20 = NFSharedLogGetLogger();
@@ -3955,7 +3955,7 @@ LABEL_52:
 
         v23 = object_getClassName(self);
         v24 = sel_getName(a2);
-        v25 = [(_NFXPCSession *)self clientName];
+        clientName2 = [(_NFXPCSession *)self clientName];
         *buf = 67110146;
         v67 = v22;
         v68 = 2082;
@@ -3965,23 +3965,23 @@ LABEL_52:
         v72 = 1024;
         v73 = 929;
         v74 = 2112;
-        v75 = v25;
+        v75 = clientName2;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i NFC emulation mode terminated: %@", buf, 0x2Cu);
       }
     }
 
     self->_emulationState = 0;
     v8 = +[_NFHardwareManager sharedHardwareManager];
-    v26 = [v8 setRoutingConfig:v7];
+    v26 = [v8 setRoutingConfig:offCopy];
     v11 = v26 == 0;
 
     goto LABEL_16;
   }
 
-  if ((a3 & 0x18) != 0)
+  if ((type & 0x18) != 0)
   {
     self->_emulationState = 8;
-    v8 = sub_10004C2B0(NFRoutingConfig, 0, 1, (a3 >> 4) & 1, 0, 2, 0);
+    v8 = sub_10004C2B0(NFRoutingConfig, 0, 1, (type >> 4) & 1, 0, 2, 0);
     v9 = +[_NFHardwareManager sharedHardwareManager];
     v10 = [v9 setRoutingConfig:v8];
     v11 = v10 == 0;
@@ -3991,9 +3991,9 @@ LABEL_16:
   }
 
   v27 = self->_emulationState & 0xFFFFFFFFFFFFFFF7;
-  v28 = v27 | a3;
+  v28 = v27 | type;
   self->_emulationState = v27;
-  if ((v27 | a3) == 4)
+  if ((v27 | type) == 4)
   {
     v29 = sub_10004BD70();
   }
@@ -4003,9 +4003,9 @@ LABEL_16:
     activeAppletEmulationType = self->_activeAppletEmulationType;
     if ((v28 & 4) != 0)
     {
-      v32 = [(NFApplet *)self->_activeApplet supportedTypeFSystem];
-      v31 = v32 != 2;
-      if (v32 == 2)
+      supportedTypeFSystem = [(NFApplet *)self->_activeApplet supportedTypeFSystem];
+      v31 = supportedTypeFSystem != 2;
+      if (supportedTypeFSystem == 2)
       {
         activeAppletEmulationType |= 4u;
       }
@@ -4032,8 +4032,8 @@ LABEL_16:
       v64 = 0u;
       v61 = 0u;
       v62 = 0u;
-      v33 = [(NFApplet *)self->_activeApplet groupMemberIDs];
-      v34 = [(_NFContactlessSession *)self _getAppletsForAids:v33];
+      groupMemberIDs = [(NFApplet *)self->_activeApplet groupMemberIDs];
+      v34 = [(_NFContactlessSession *)self _getAppletsForAids:groupMemberIDs];
 
       v35 = [v34 countByEnumeratingWithState:&v61 objects:v65 count:16];
       if (v35)
@@ -4103,14 +4103,14 @@ LABEL_37:
         v59 = class_isMetaClass(v45);
         v46 = object_getClassName(self);
         v57 = sel_getName(a2);
-        v47 = [(_NFXPCSession *)self clientName];
+        clientName3 = [(_NFXPCSession *)self clientName];
         v48 = 45;
         if (v59)
         {
           v48 = 43;
         }
 
-        v44(6, "%c[%{public}s %{public}s]:%i NFC emulation mode activated: %@", v48, v46, v57, 994, v47);
+        v44(6, "%c[%{public}s %{public}s]:%i NFC emulation mode activated: %@", v48, v46, v57, 994, clientName3);
       }
 
       v49 = NFSharedLogGetLogger();
@@ -4130,7 +4130,7 @@ LABEL_37:
 
         v60 = object_getClassName(self);
         v53 = sel_getName(a2);
-        v54 = [(_NFXPCSession *)self clientName];
+        clientName4 = [(_NFXPCSession *)self clientName];
         *buf = 67110146;
         v67 = v52;
         v28 = v51;
@@ -4141,7 +4141,7 @@ LABEL_37:
         v72 = 1024;
         v73 = 994;
         v74 = 2112;
-        v75 = v54;
+        v75 = clientName4;
         _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i NFC emulation mode activated: %@", buf, 0x2Cu);
       }
     }
@@ -4153,96 +4153,96 @@ LABEL_57:
   return v11;
 }
 
-- (void)getAppletsWithCompletion:(id)a3
+- (void)getAppletsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFContactlessSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C3ECC;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)setActiveApplet:(id)a3 completion:(id)a4
+- (void)setActiveApplet:(id)applet completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  appletCopy = applet;
+  completionCopy = completion;
   v16.receiver = self;
   v16.super_class = _NFContactlessSession;
-  v9 = [(_NFSession *)&v16 workQueue];
+  workQueue = [(_NFSession *)&v16 workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000C42F4;
   v12[3] = &unk_1003165E8;
-  v14 = v8;
+  v14 = completionCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = appletCopy;
+  v10 = appletCopy;
+  v11 = completionCopy;
+  dispatch_async(workQueue, v12);
 }
 
-- (void)setActiveAppletsForTest:(id)a3 withCardType:(unsigned int)a4 completion:(id)a5
+- (void)setActiveAppletsForTest:(id)test withCardType:(unsigned int)type completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
+  testCopy = test;
+  completionCopy = completion;
   v19.receiver = self;
   v19.super_class = _NFContactlessSession;
-  v11 = [(_NFSession *)&v19 workQueue];
+  workQueue = [(_NFSession *)&v19 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C4844;
   block[3] = &unk_100318228;
-  v16 = v10;
+  v16 = completionCopy;
   v17 = a2;
   block[4] = self;
-  v15 = v9;
-  v18 = a4;
-  v12 = v9;
-  v13 = v10;
-  dispatch_async(v11, block);
+  v15 = testCopy;
+  typeCopy = type;
+  v12 = testCopy;
+  v13 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)startCardEmulationWithCompletion:(id)a3
+- (void)startCardEmulationWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFContactlessSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C4D50;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)stopCardEmulationWithCompletion:(id)a3
+- (void)stopCardEmulationWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFContactlessSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C5410;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
 - (BOOL)startWiredMode
@@ -4253,9 +4253,9 @@ LABEL_57:
   return self;
 }
 
-- (BOOL)_startFieldDetectAndKeepSEOn:(BOOL)a3
+- (BOOL)_startFieldDetectAndKeepSEOn:(BOOL)on
 {
-  if (a3)
+  if (on)
   {
     sub_10004BF60(NFRoutingConfig, 1);
   }
@@ -4270,11 +4270,11 @@ LABEL_57:
   return v5;
 }
 
-- (void)handleFieldNotification:(id)a3
+- (void)handleFieldNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(_NFXPCSession *)self remoteObject];
-  [v5 didDetectFieldNotification:v4];
+  notificationCopy = notification;
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  [remoteObject didDetectFieldNotification:notificationCopy];
 }
 
 - (void)handleFieldReset
@@ -4324,9 +4324,9 @@ LABEL_57:
   }
 }
 
-- (void)handleSelectEvent:(id)a3
+- (void)handleSelectEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   if ([(_NFContactlessSession *)self plasticCardMode])
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -4376,16 +4376,16 @@ LABEL_57:
 
   else
   {
-    v15 = [(_NFXPCSession *)self remoteObject];
-    [v15 didSelectApplet:v5];
+    remoteObject = [(_NFXPCSession *)self remoteObject];
+    [remoteObject didSelectApplet:eventCopy];
   }
 }
 
-- (void)handleFelicaStateEvent:(id)a3
+- (void)handleFelicaStateEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(_NFXPCSession *)self remoteObject];
-  [v5 didFelicaStateChange:v4];
+  eventCopy = event;
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  [remoteObject didFelicaStateChange:eventCopy];
 }
 
 @end

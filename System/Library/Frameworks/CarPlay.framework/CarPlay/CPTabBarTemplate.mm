@@ -1,16 +1,16 @@
 @interface CPTabBarTemplate
 + (NSInteger)maximumTabCount;
 - (CPInterfaceController)interfaceController;
-- (CPTabBarTemplate)initWithCoder:(id)a3;
+- (CPTabBarTemplate)initWithCoder:(id)coder;
 - (CPTabBarTemplate)initWithTemplates:(NSArray *)templates;
 - (CPTemplate)selectedTemplate;
 - (id)delegate;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleActionForControlIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleActionForControlIdentifier:(id)identifier;
 - (void)selectTemplate:(CPTemplate *)newTemplate;
 - (void)selectTemplateAtIndex:(NSInteger)index;
 - (void)updateTemplates:(NSArray *)newTemplates;
-- (void)validateTemplates:(id)a3;
+- (void)validateTemplates:(id)templates;
 @end
 
 @implementation CPTabBarTemplate
@@ -47,12 +47,12 @@
   return v7;
 }
 
-- (CPTabBarTemplate)initWithCoder:(id)a3
+- (CPTabBarTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CPTabBarTemplate;
-  v5 = [(CPTemplate *)&v10 initWithCoder:v4];
+  v5 = [(CPTemplate *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
     if (CPWhiteListedTemplates_onceToken != -1)
@@ -61,7 +61,7 @@
     }
 
     v6 = CPWhiteListedTemplates_classes;
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"kCPTabBarTemplatesKey"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"kCPTabBarTemplatesKey"];
     templates = v5->_templates;
     v5->_templates = v7;
   }
@@ -69,14 +69,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CPTabBarTemplate;
-  v4 = a3;
-  [(CPTemplate *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPTemplate *)&v6 encodeWithCoder:coderCopy];
   v5 = [(CPTabBarTemplate *)self templates:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"kCPTabBarTemplatesKey"];
+  [coderCopy encodeObject:v5 forKey:@"kCPTabBarTemplatesKey"];
 }
 
 - (void)updateTemplates:(NSArray *)newTemplates
@@ -87,32 +87,32 @@
   self->_templates = v4;
   v6 = v4;
 
-  v7 = [(CPTabBarTemplate *)self interfaceController];
-  [v7 updateTabBarTemplate:self];
+  interfaceController = [(CPTabBarTemplate *)self interfaceController];
+  [interfaceController updateTabBarTemplate:self];
 
-  v8 = [(CPTabBarTemplate *)self indexOfSelectedTab];
+  indexOfSelectedTab = [(CPTabBarTemplate *)self indexOfSelectedTab];
   v9 = [(NSArray *)v6 count];
 
-  if (v8 > v9)
+  if (indexOfSelectedTab > v9)
   {
 
     [(CPTabBarTemplate *)self setIndexOfSelectedTab:0];
   }
 }
 
-- (void)validateTemplates:(id)a3
+- (void)validateTemplates:(id)templates
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_opt_class() maximumTabCount];
-  v5 = [v3 count];
+  templatesCopy = templates;
+  maximumTabCount = [objc_opt_class() maximumTabCount];
+  v5 = [templatesCopy count];
   v6 = MEMORY[0x277CBE660];
-  if (v5 > v4)
+  if (v5 > maximumTabCount)
   {
     v7 = MEMORY[0x277CBEAD8];
     v8 = *MEMORY[0x277CBE660];
     v9 = NSStringFromSelector(a2);
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:maximumTabCount];
     [v7 raise:v8 format:{@"Too many templates passed to %@. Maximum allowed is %@.", v9, v10}];
   }
 
@@ -120,7 +120,7 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v3;
+  obj = templatesCopy;
   v11 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v11)
   {
@@ -167,19 +167,19 @@
 
 - (CPTemplate)selectedTemplate
 {
-  v3 = [(CPTabBarTemplate *)self indexOfSelectedTab];
-  v4 = [(CPTabBarTemplate *)self templates];
-  v5 = [v4 count];
+  indexOfSelectedTab = [(CPTabBarTemplate *)self indexOfSelectedTab];
+  templates = [(CPTabBarTemplate *)self templates];
+  v5 = [templates count];
 
-  if (v3 >= v5)
+  if (indexOfSelectedTab >= v5)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(CPTabBarTemplate *)self templates];
-    v7 = [v6 objectAtIndexedSubscript:{-[CPTabBarTemplate indexOfSelectedTab](self, "indexOfSelectedTab")}];
+    templates2 = [(CPTabBarTemplate *)self templates];
+    v7 = [templates2 objectAtIndexedSubscript:{-[CPTabBarTemplate indexOfSelectedTab](self, "indexOfSelectedTab")}];
   }
 
   return v7;
@@ -230,23 +230,23 @@ uint64_t __35__CPTabBarTemplate_selectTemplate___block_invoke(uint64_t a1, void 
   v14 = *MEMORY[0x277D85DE8];
   if ([(CPTabBarTemplate *)self indexOfSelectedTab]== index)
   {
-    v5 = CarPlayFrameworkGeneralLogging();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    interfaceController = CarPlayFrameworkGeneralLogging();
+    if (os_log_type_enabled(interfaceController, OS_LOG_TYPE_DEFAULT))
     {
       v6 = [MEMORY[0x277CCABB0] numberWithInteger:index];
       v12 = 138412290;
       v13 = v6;
       v7 = "Requested to select tab bar index %@, but it's already selected.";
 LABEL_10:
-      _os_log_impl(&dword_236ED4000, v5, OS_LOG_TYPE_DEFAULT, v7, &v12, 0xCu);
+      _os_log_impl(&dword_236ED4000, interfaceController, OS_LOG_TYPE_DEFAULT, v7, &v12, 0xCu);
     }
   }
 
   else
   {
     v8 = [(NSArray *)self->_templates count];
-    v5 = CarPlayFrameworkGeneralLogging();
-    v9 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
+    interfaceController = CarPlayFrameworkGeneralLogging();
+    v9 = os_log_type_enabled(interfaceController, OS_LOG_TYPE_DEFAULT);
     if (v8 <= index)
     {
       if (v9)
@@ -266,28 +266,28 @@ LABEL_10:
         v10 = [MEMORY[0x277CCABB0] numberWithInteger:index];
         v12 = 138412290;
         v13 = v10;
-        _os_log_impl(&dword_236ED4000, v5, OS_LOG_TYPE_DEFAULT, "Selecting tab bar template at index %@", &v12, 0xCu);
+        _os_log_impl(&dword_236ED4000, interfaceController, OS_LOG_TYPE_DEFAULT, "Selecting tab bar template at index %@", &v12, 0xCu);
       }
 
-      v5 = [(CPTabBarTemplate *)self interfaceController];
-      [v5 selectTabBarTemplateIndex:index];
+      interfaceController = [(CPTabBarTemplate *)self interfaceController];
+      [interfaceController selectTabBarTemplateIndex:index];
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleActionForControlIdentifier:(id)a3
+- (void)handleActionForControlIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPTabBarTemplate *)self templates];
+  identifierCopy = identifier;
+  templates = [(CPTabBarTemplate *)self templates];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__CPTabBarTemplate_handleActionForControlIdentifier___block_invoke;
   v12[3] = &unk_278A11050;
-  v6 = v4;
+  v6 = identifierCopy;
   v13 = v6;
-  v7 = [v5 indexOfObjectPassingTest:v12];
+  v7 = [templates indexOfObjectPassingTest:v12];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -301,7 +301,7 @@ LABEL_10:
   else
   {
     [(CPTabBarTemplate *)self setIndexOfSelectedTab:v7];
-    v9 = [(CPTabBarTemplate *)self delegate];
+    delegate = [(CPTabBarTemplate *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)

@@ -1,43 +1,43 @@
 @interface SUUIModernChartsDocumentViewController
 - (CGRect)_computedFrameForActivityIndicatorView;
-- (SUUIModernChartsDocumentViewController)initWithTemplateElement:(id)a3;
+- (SUUIModernChartsDocumentViewController)initWithTemplateElement:(id)element;
 - (UIEdgeInsets)_contentInset;
 - (id)_layoutCache;
-- (id)_newColumnViewControllersWithReusableViewControllers:(id)a3;
+- (id)_newColumnViewControllersWithReusableViewControllers:(id)controllers;
 - (id)_resourceLoader;
 - (id)_viewLayoutContext;
 - (void)_hideActivityIndicator;
-- (void)_reloadWithTemplateElement:(id)a3;
+- (void)_reloadWithTemplateElement:(id)element;
 - (void)_showActivityIndicator;
-- (void)documentDidUpdate:(id)a3;
-- (void)documentMediaQueriesDidUpdate:(id)a3;
-- (void)getModalSourceViewForElementIdentifier:(id)a3 completionBlock:(id)a4;
+- (void)documentDidUpdate:(id)update;
+- (void)documentMediaQueriesDidUpdate:(id)update;
+- (void)getModalSourceViewForElementIdentifier:(id)identifier completionBlock:(id)block;
 - (void)loadView;
-- (void)resourceLoader:(id)a3 didLoadAllForReason:(int64_t)a4;
-- (void)resourceLoaderDidBeginLoading:(id)a3;
+- (void)resourceLoader:(id)loader didLoadAllForReason:(int64_t)reason;
+- (void)resourceLoaderDidBeginLoading:(id)loading;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SUUIModernChartsDocumentViewController
 
-- (SUUIModernChartsDocumentViewController)initWithTemplateElement:(id)a3
+- (SUUIModernChartsDocumentViewController)initWithTemplateElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SUUIModernChartsDocumentViewController;
   v5 = [(SUUIModernChartsDocumentViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SUUIModernChartsDocumentViewController *)v5 _reloadWithTemplateElement:v4];
+    [(SUUIModernChartsDocumentViewController *)v5 _reloadWithTemplateElement:elementCopy];
   }
 
   return v6;
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v4 = [a3 templateElement];
+  templateElement = [update templateElement];
   [(SUUIModernChartsDocumentViewController *)self _reloadWithTemplateElement:?];
   if ([(SUUIResourceLoader *)self->_resourceLoader isIdleForReason:1])
   {
@@ -45,7 +45,7 @@
   }
 }
 
-- (void)documentMediaQueriesDidUpdate:(id)a3
+- (void)documentMediaQueriesDidUpdate:(id)update
 {
   v13 = *MEMORY[0x277D85DE8];
   v8 = 0u;
@@ -79,11 +79,11 @@
   }
 }
 
-- (void)getModalSourceViewForElementIdentifier:(id)a3 completionBlock:(id)a4
+- (void)getModalSourceViewForElementIdentifier:(id)identifier completionBlock:(id)block
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v22 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -103,12 +103,12 @@
           objc_enumerationMutation(obj);
         }
 
-        v9 = [*(*(&v30 + 1) + 8 * i) sections];
+        sections = [*(*(&v30 + 1) + 8 * i) sections];
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v10 = v9;
+        v10 = sections;
         v11 = [v10 countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v11)
         {
@@ -124,10 +124,10 @@ LABEL_8:
             }
 
             v15 = *(*(&v26 + 1) + 8 * v14);
-            v16 = [v15 pageComponent];
-            v17 = [v16 viewElement];
+            pageComponent = [v15 pageComponent];
+            viewElement = [pageComponent viewElement];
 
-            v18 = [v17 elementWithIdentifier:v6];
+            v18 = [viewElement elementWithIdentifier:identifierCopy];
 
             if (v18)
             {
@@ -157,8 +157,8 @@ LABEL_8:
             continue;
           }
 
-          v21 = v22;
-          [v20 getModalSourceViewForViewElement:v18 completionBlock:v22];
+          v21 = blockCopy;
+          [v20 getModalSourceViewForViewElement:v18 completionBlock:blockCopy];
 
           goto LABEL_23;
         }
@@ -179,8 +179,8 @@ LABEL_18:
     }
   }
 
-  v21 = v22;
-  (*(v22 + 2))(v22, 0);
+  v21 = blockCopy;
+  (*(blockCopy + 2))(blockCopy, 0);
   v18 = v7;
 LABEL_23:
 }
@@ -216,39 +216,39 @@ LABEL_23:
   [(SUUIModernChartsDocumentViewController *)&v5 viewWillLayoutSubviews];
 }
 
-- (void)resourceLoaderDidBeginLoading:(id)a3
+- (void)resourceLoaderDidBeginLoading:(id)loading
 {
-  v5 = a3;
-  v4 = [(SUUIModernChartsDocumentViewController *)self parentViewController];
-  if ([v4 conformsToProtocol:&unk_286BDF918] && (objc_opt_respondsToSelector() & 1) != 0)
+  loadingCopy = loading;
+  parentViewController = [(SUUIModernChartsDocumentViewController *)self parentViewController];
+  if ([parentViewController conformsToProtocol:&unk_286BDF918] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 resourceLoaderDidBeginLoading:v5];
+    [parentViewController resourceLoaderDidBeginLoading:loadingCopy];
   }
 }
 
-- (void)resourceLoader:(id)a3 didLoadAllForReason:(int64_t)a4
+- (void)resourceLoader:(id)loader didLoadAllForReason:(int64_t)reason
 {
-  v7 = a3;
-  if (a4 == 1)
+  loaderCopy = loader;
+  if (reason == 1)
   {
     [(SUUIChartsTemplateViewElement *)self->_templateElement dispatchEvent:@"visibleimagesloaded" eventAttribute:@"onvisibleimagesloaded" canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
   }
 
-  v6 = [(SUUIModernChartsDocumentViewController *)self parentViewController];
-  if ([v6 conformsToProtocol:&unk_286BDF918] && (objc_opt_respondsToSelector() & 1) != 0)
+  parentViewController = [(SUUIModernChartsDocumentViewController *)self parentViewController];
+  if ([parentViewController conformsToProtocol:&unk_286BDF918] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 resourceLoader:v7 didLoadAllForReason:a4];
+    [parentViewController resourceLoader:loaderCopy didLoadAllForReason:reason];
   }
 }
 
 - (UIEdgeInsets)_contentInset
 {
-  v3 = [(SUUIModernChartsDocumentViewController *)self topLayoutGuide];
-  [v3 length];
+  topLayoutGuide = [(SUUIModernChartsDocumentViewController *)self topLayoutGuide];
+  [topLayoutGuide length];
   v5 = v4;
 
-  v6 = [(SUUIModernChartsDocumentViewController *)self bottomLayoutGuide];
-  [v6 length];
+  bottomLayoutGuide = [(SUUIModernChartsDocumentViewController *)self bottomLayoutGuide];
+  [bottomLayoutGuide length];
   v8 = v7;
 
   v9 = 0.0;
@@ -284,12 +284,12 @@ LABEL_23:
   return layoutCache;
 }
 
-- (id)_newColumnViewControllersWithReusableViewControllers:(id)a3
+- (id)_newColumnViewControllersWithReusableViewControllers:(id)controllers
 {
   v47 = *MEMORY[0x277D85DE8];
-  v31 = a3;
+  controllersCopy = controllers;
   v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v28 = [(SUUIViewController *)self clientContext];
+  clientContext = [(SUUIViewController *)self clientContext];
   [(SUUIChartsTemplateViewElement *)self->_templateElement columns];
   v40 = 0u;
   v41 = 0u;
@@ -299,7 +299,7 @@ LABEL_23:
   if (v34)
   {
     v33 = *v41;
-    v30 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v34; ++i)
@@ -313,19 +313,19 @@ LABEL_23:
         v6 = [objc_alloc(SUUIPageComponentClassForComponentType(objc_msgSend(v5 "pageComponentType")))];
         if (v6)
         {
-          v7 = [v5 headerElement];
-          v8 = [v7 titleLabels];
-          v9 = [v8 firstObject];
+          headerElement = [v5 headerElement];
+          titleLabels = [headerElement titleLabels];
+          firstObject = [titleLabels firstObject];
 
-          v35 = v9;
-          v10 = [v9 text];
-          v11 = [v10 string];
+          v35 = firstObject;
+          text = [firstObject text];
+          string = [text string];
 
           v38 = 0u;
           v39 = 0u;
           v36 = 0u;
           v37 = 0u;
-          v12 = v31;
+          v12 = controllersCopy;
           v13 = [v12 countByEnumeratingWithState:&v36 objects:v45 count:16];
           if (v13)
           {
@@ -341,8 +341,8 @@ LABEL_9:
               }
 
               v17 = *(*(&v36 + 1) + 8 * v16);
-              v18 = [v17 title];
-              v19 = [v18 isEqualToString:v11];
+              title = [v17 title];
+              v19 = [title isEqualToString:string];
 
               if (v19)
               {
@@ -363,7 +363,7 @@ LABEL_9:
 
             v21 = v17;
 
-            v20 = v30;
+            v20 = selfCopy;
             if (v21)
             {
               goto LABEL_21;
@@ -374,20 +374,20 @@ LABEL_9:
           {
 LABEL_15:
 
-            v20 = v30;
+            v20 = selfCopy;
           }
 
           v21 = [[SUUIStorePageSectionsViewController alloc] initWithLayoutStyle:0];
-          [(SUUIViewController *)v21 setClientContext:v28];
-          v22 = [(SUUIViewController *)v20 operationQueue];
-          [(SUUIViewController *)v21 setOperationQueue:v22];
+          [(SUUIViewController *)v21 setClientContext:clientContext];
+          operationQueue = [(SUUIViewController *)v20 operationQueue];
+          [(SUUIViewController *)v21 setOperationQueue:operationQueue];
 
-          v23 = [(SUUIModernChartsDocumentViewController *)v20 _resourceLoader];
-          [(SUUIStorePageSectionsViewController *)v21 setResourceLoader:v23];
+          _resourceLoader = [(SUUIModernChartsDocumentViewController *)v20 _resourceLoader];
+          [(SUUIStorePageSectionsViewController *)v21 setResourceLoader:_resourceLoader];
 
-          if (v11)
+          if (string)
           {
-            v24 = v11;
+            v24 = string;
           }
 
           else
@@ -418,11 +418,11 @@ LABEL_21:
   return v32;
 }
 
-- (void)_reloadWithTemplateElement:(id)a3
+- (void)_reloadWithTemplateElement:(id)element
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_templateElement, a3);
+  elementCopy = element;
+  objc_storeStrong(&self->_templateElement, element);
   v6 = self->_columnViewControllers;
   v7 = [(SUUIModernChartsDocumentViewController *)self _newColumnViewControllersWithReusableViewControllers:v6];
   columnViewControllers = self->_columnViewControllers;
@@ -466,9 +466,9 @@ LABEL_21:
     [(SUUIModernChartsView *)chartsView setColumnViewControllers:self->_columnViewControllers];
   }
 
-  v16 = [(SUUIChartsTemplateViewElement *)self->_templateElement activityIndicator];
+  activityIndicator = [(SUUIChartsTemplateViewElement *)self->_templateElement activityIndicator];
 
-  if (v16)
+  if (activityIndicator)
   {
     [(SUUIModernChartsDocumentViewController *)self _showActivityIndicator];
   }
@@ -481,7 +481,7 @@ LABEL_21:
 
 - (void)_showActivityIndicator
 {
-  v14 = [(SUUIModernChartsDocumentViewController *)self view];
+  view = [(SUUIModernChartsDocumentViewController *)self view];
   if (!self->_activityIndicatorView)
   {
     v3 = objc_alloc_init(SUUIActivityIndicatorView);
@@ -489,32 +489,32 @@ LABEL_21:
     self->_activityIndicatorView = v3;
   }
 
-  v5 = [(SUUIChartsTemplateViewElement *)self->_templateElement activityIndicator];
-  v6 = [(SUUIModernChartsDocumentViewController *)self _viewLayoutContext];
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 bounds];
+  activityIndicator = [(SUUIChartsTemplateViewElement *)self->_templateElement activityIndicator];
+  _viewLayoutContext = [(SUUIModernChartsDocumentViewController *)self _viewLayoutContext];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v9 = v8;
 
-  [objc_opt_class() requestLayoutForViewElement:v5 width:v6 context:v9];
-  v10 = [(SUUIModernChartsDocumentViewController *)self _layoutCache];
-  [v10 commitLayoutRequests];
+  [objc_opt_class() requestLayoutForViewElement:activityIndicator width:_viewLayoutContext context:v9];
+  _layoutCache = [(SUUIModernChartsDocumentViewController *)self _layoutCache];
+  [_layoutCache commitLayoutRequests];
 
-  [(SUUIActivityIndicatorView *)self->_activityIndicatorView reloadWithViewElement:v5 width:v6 context:v9];
+  [(SUUIActivityIndicatorView *)self->_activityIndicatorView reloadWithViewElement:activityIndicator width:_viewLayoutContext context:v9];
   [(SUUIActivityIndicatorView *)self->_activityIndicatorView setAutoresizingMask:45];
   v11 = self->_activityIndicatorView;
-  v12 = [MEMORY[0x277D75348] clearColor];
-  [(SUUIViewReuseView *)v11 setBackgroundColor:v12];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(SUUIViewReuseView *)v11 setBackgroundColor:clearColor];
 
   v13 = self->_activityIndicatorView;
   [(SUUIModernChartsDocumentViewController *)self _computedFrameForActivityIndicatorView];
   [(SUUIActivityIndicatorView *)v13 setFrame:?];
-  [v14 addSubview:self->_activityIndicatorView];
+  [view addSubview:self->_activityIndicatorView];
 }
 
 - (CGRect)_computedFrameForActivityIndicatorView
 {
-  v3 = [(SUUIModernChartsDocumentViewController *)self view];
-  [v3 bounds];
+  view = [(SUUIModernChartsDocumentViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
@@ -543,14 +543,14 @@ LABEL_21:
     self->_viewLayoutContext = v4;
 
     [(SUUIViewElementLayoutContext *)self->_viewLayoutContext setParentViewController:self];
-    v6 = [(SUUIViewController *)self clientContext];
-    [(SUUIViewElementLayoutContext *)self->_viewLayoutContext setClientContext:v6];
+    clientContext = [(SUUIViewController *)self clientContext];
+    [(SUUIViewElementLayoutContext *)self->_viewLayoutContext setClientContext:clientContext];
     v7 = [SUUIViewElementTextLayoutCache alloc];
-    v8 = [(SUUIModernChartsDocumentViewController *)self _layoutCache];
-    v9 = [(SUUIViewElementTextLayoutCache *)v7 initWithLayoutCache:v8];
+    _layoutCache = [(SUUIModernChartsDocumentViewController *)self _layoutCache];
+    v9 = [(SUUIViewElementTextLayoutCache *)v7 initWithLayoutCache:_layoutCache];
 
     [(SUUIViewElementLayoutContext *)self->_viewLayoutContext setLabelLayoutCache:v9];
-    v10 = [[SUUIResourceLoader alloc] initWithClientContext:v6];
+    v10 = [[SUUIResourceLoader alloc] initWithClientContext:clientContext];
     [(SUUIViewElementLayoutContext *)self->_viewLayoutContext setResourceLoader:v10];
 
     viewLayoutContext = self->_viewLayoutContext;
@@ -565,8 +565,8 @@ LABEL_21:
   if (!resourceLoader)
   {
     v4 = [SUUIResourceLoader alloc];
-    v5 = [(SUUIViewController *)self clientContext];
-    v6 = [(SUUIResourceLoader *)v4 initWithClientContext:v5];
+    clientContext = [(SUUIViewController *)self clientContext];
+    v6 = [(SUUIResourceLoader *)v4 initWithClientContext:clientContext];
     v7 = self->_resourceLoader;
     self->_resourceLoader = v6;
 

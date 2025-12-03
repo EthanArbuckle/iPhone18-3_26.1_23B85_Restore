@@ -1,7 +1,7 @@
 @interface DSAdvertiseManager
 - (BOOL)_getAdvertisementFields;
-- (void)_setDSActionFieldsInAdvertiser:(id)a3;
-- (void)_setDSInfoFieldsInAdvertiser:(id)a3;
+- (void)_setDSActionFieldsInAdvertiser:(id)advertiser;
+- (void)_setDSInfoFieldsInAdvertiser:(id)advertiser;
 - (void)startAdvertising;
 - (void)stopAdvertising;
 @end
@@ -41,7 +41,7 @@
     v12 = &unk_278F85A50;
     v5 = v4;
     v13 = v5;
-    v14 = self;
+    selfCopy = self;
     [(CBAdvertiser *)v5 activateWithCompletion:&v9];
     objc_storeStrong(&self->_bleAdvertiser, v4);
     if (onceTokenDSAdvertiseManager != -1)
@@ -141,33 +141,33 @@ void __38__DSAdvertiseManager_startAdvertising__block_invoke(uint64_t a1, void *
 
 - (BOOL)_getAdvertisementFields
 {
-  v3 = [(DSXPCServer *)self->_xpcDaemonServer myDeviceContext];
-  v4 = v3;
-  if (v3)
+  myDeviceContext = [(DSXPCServer *)self->_xpcDaemonServer myDeviceContext];
+  v4 = myDeviceContext;
+  if (myDeviceContext)
   {
-    v5 = [v3 coordinationStatus];
-    v6 = 0x100802040100uLL >> (8 * v5);
-    if (v5 >= 6)
+    coordinationStatus = [myDeviceContext coordinationStatus];
+    v6 = 0x100802040100uLL >> (8 * coordinationStatus);
+    if (coordinationStatus >= 6)
     {
       LOBYTE(v6) = 0;
     }
 
     self->_cbDSActionFlags = v6;
     self->_cbTieBreaker = [v4 tiebreaker];
-    v7 = [v4 vehicleState];
-    if (v7 == 2)
+    vehicleState = [v4 vehicleState];
+    if (vehicleState == 2)
     {
       v8 = 2;
     }
 
     else
     {
-      v8 = v7 == 1;
+      v8 = vehicleState == 1;
     }
 
     self->_cbVehicleState = v8;
-    v9 = [v4 vehicleConfidence];
-    if (v9 == 15)
+    vehicleConfidence = [v4 vehicleConfidence];
+    if (vehicleConfidence == 15)
     {
       v10 = 15;
     }
@@ -177,12 +177,12 @@ void __38__DSAdvertiseManager_startAdvertising__block_invoke(uint64_t a1, void *
       v10 = 0;
     }
 
-    if (v9 == 11)
+    if (vehicleConfidence == 11)
     {
       v10 = 11;
     }
 
-    if (v9 == 7)
+    if (vehicleConfidence == 7)
     {
       v11 = 7;
     }
@@ -192,12 +192,12 @@ void __38__DSAdvertiseManager_startAdvertising__block_invoke(uint64_t a1, void *
       v11 = 0;
     }
 
-    if (v9 == 4)
+    if (vehicleConfidence == 4)
     {
       v11 = 4;
     }
 
-    if (v9 <= 10)
+    if (vehicleConfidence <= 10)
     {
       v10 = v11;
     }
@@ -208,41 +208,41 @@ void __38__DSAdvertiseManager_startAdvertising__block_invoke(uint64_t a1, void *
   return v4 != 0;
 }
 
-- (void)_setDSActionFieldsInAdvertiser:(id)a3
+- (void)_setDSActionFieldsInAdvertiser:(id)advertiser
 {
   if ((self->_dsAdvertiseFlags & 4) != 0)
   {
-    [a3 setDsActionFlags:self->_cbDSActionFlags];
+    [advertiser setDsActionFlags:self->_cbDSActionFlags];
     cbTieBreaker = self->_cbTieBreaker;
     v4 = 54;
   }
 
   else
   {
-    [a3 setDsActionFlags:0];
+    [advertiser setDsActionFlags:0];
     cbTieBreaker = 0;
     v4 = 0;
   }
 
-  [a3 setDsActionTieBreaker:cbTieBreaker];
-  [a3 setNearbyActionType:v4];
+  [advertiser setDsActionTieBreaker:cbTieBreaker];
+  [advertiser setNearbyActionType:v4];
 }
 
-- (void)_setDSInfoFieldsInAdvertiser:(id)a3
+- (void)_setDSInfoFieldsInAdvertiser:(id)advertiser
 {
   if ((self->_dsAdvertiseFlags & 2) != 0)
   {
-    [a3 setDsInfoVehicleState:self->_cbVehicleState];
+    [advertiser setDsInfoVehicleState:self->_cbVehicleState];
     cbVehicleConfidence = self->_cbVehicleConfidence;
   }
 
   else
   {
-    [a3 setDsInfoVehicleState:0];
+    [advertiser setDsInfoVehicleState:0];
     cbVehicleConfidence = 0;
   }
 
-  [a3 setDsInfoVehicleConfidence:cbVehicleConfidence];
+  [advertiser setDsInfoVehicleConfidence:cbVehicleConfidence];
 }
 
 - (void)stopAdvertising

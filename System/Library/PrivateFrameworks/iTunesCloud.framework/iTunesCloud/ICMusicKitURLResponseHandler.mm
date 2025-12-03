@@ -1,39 +1,39 @@
 @interface ICMusicKitURLResponseHandler
-- (void)_invalidateDeveloperTokenForInitialResponse:(id)a3 toRequest:(id)a4 withCompletionHandler:(id)a5;
-- (void)_invalidateUserTokenForInitialResponse:(id)a3 toRequest:(id)a4 withCompletionHandler:(id)a5;
-- (void)_updateRequest:(id)a3 forProcessedResponseOfStoreURLRequest:(id)a4;
-- (void)processCompletedResponse:(id)a3 toRequest:(id)a4 withCompletionHandler:(id)a5;
-- (void)processInitialResponse:(id)a3 toRequest:(id)a4 withCompletionHandler:(id)a5;
+- (void)_invalidateDeveloperTokenForInitialResponse:(id)response toRequest:(id)request withCompletionHandler:(id)handler;
+- (void)_invalidateUserTokenForInitialResponse:(id)response toRequest:(id)request withCompletionHandler:(id)handler;
+- (void)_updateRequest:(id)request forProcessedResponseOfStoreURLRequest:(id)lRequest;
+- (void)processCompletedResponse:(id)response toRequest:(id)request withCompletionHandler:(id)handler;
+- (void)processInitialResponse:(id)response toRequest:(id)request withCompletionHandler:(id)handler;
 @end
 
 @implementation ICMusicKitURLResponseHandler
 
-- (void)_updateRequest:(id)a3 forProcessedResponseOfStoreURLRequest:(id)a4
+- (void)_updateRequest:(id)request forProcessedResponseOfStoreURLRequest:(id)lRequest
 {
-  v5 = a3;
-  [a4 retryDelay];
-  [v5 setRetryDelay:?];
+  requestCopy = request;
+  [lRequest retryDelay];
+  [requestCopy setRetryDelay:?];
 }
 
-- (void)_invalidateUserTokenForInitialResponse:(id)a3 toRequest:(id)a4 withCompletionHandler:(id)a5
+- (void)_invalidateUserTokenForInitialResponse:(id)response toRequest:(id)request withCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 requestContext];
-  v11 = [v8 _developerToken];
+  responseCopy = response;
+  requestCopy = request;
+  handlerCopy = handler;
+  requestContext = [requestCopy requestContext];
+  _developerToken = [requestCopy _developerToken];
   v12 = +[ICMusicUserTokenCache sharedCache];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __103__ICMusicKitURLResponseHandler__invalidateUserTokenForInitialResponse_toRequest_withCompletionHandler___block_invoke;
   v16[3] = &unk_1E7BF9240;
-  v17 = v8;
-  v18 = v7;
-  v19 = v9;
-  v13 = v9;
-  v14 = v7;
-  v15 = v8;
-  [v12 setCachedUserToken:0 forDeveloperToken:v11 requestContext:v10 completion:v16];
+  v17 = requestCopy;
+  v18 = responseCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = responseCopy;
+  v15 = requestCopy;
+  [v12 setCachedUserToken:0 forDeveloperToken:_developerToken requestContext:requestContext completion:v16];
 }
 
 void __103__ICMusicKitURLResponseHandler__invalidateUserTokenForInitialResponse_toRequest_withCompletionHandler___block_invoke(void *a1, int a2, uint64_t a3)
@@ -78,25 +78,25 @@ void __103__ICMusicKitURLResponseHandler__invalidateUserTokenForInitialResponse_
   (*(a1[6] + 16))();
 }
 
-- (void)_invalidateDeveloperTokenForInitialResponse:(id)a3 toRequest:(id)a4 withCompletionHandler:(id)a5
+- (void)_invalidateDeveloperTokenForInitialResponse:(id)response toRequest:(id)request withCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 requestContext];
-  v11 = [v10 clientInfo];
-  v12 = [v10 developerTokenProvider];
+  responseCopy = response;
+  requestCopy = request;
+  handlerCopy = handler;
+  requestContext = [requestCopy requestContext];
+  clientInfo = [requestContext clientInfo];
+  developerTokenProvider = [requestContext developerTokenProvider];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __108__ICMusicKitURLResponseHandler__invalidateDeveloperTokenForInitialResponse_toRequest_withCompletionHandler___block_invoke;
   v16[3] = &unk_1E7BF9240;
-  v17 = v8;
-  v18 = v7;
-  v19 = v9;
-  v13 = v9;
-  v14 = v7;
-  v15 = v8;
-  [v12 invalidateCachedDeveloperTokenForClientInfo:v11 completionHandler:v16];
+  v17 = requestCopy;
+  v18 = responseCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = responseCopy;
+  v15 = requestCopy;
+  [developerTokenProvider invalidateCachedDeveloperTokenForClientInfo:clientInfo completionHandler:v16];
 }
 
 void __108__ICMusicKitURLResponseHandler__invalidateDeveloperTokenForInitialResponse_toRequest_withCompletionHandler___block_invoke(void *a1, int a2, uint64_t a3)
@@ -141,41 +141,41 @@ void __108__ICMusicKitURLResponseHandler__invalidateDeveloperTokenForInitialResp
   (*(a1[6] + 16))();
 }
 
-- (void)processCompletedResponse:(id)a3 toRequest:(id)a4 withCompletionHandler:(id)a5
+- (void)processCompletedResponse:(id)response toRequest:(id)request withCompletionHandler:(id)handler
 {
   v59 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  responseCopy = response;
+  requestCopy = request;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"ICMusicKitURLResponseHandler.m" lineNumber:62 description:{@"%@ only knows how to process responses for MusicKit requests. %@ is unsupported.", self, v10}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMusicKitURLResponseHandler.m" lineNumber:62 description:{@"%@ only knows how to process responses for MusicKit requests. %@ is unsupported.", self, requestCopy}];
   }
 
-  v12 = [v10 handlingType];
-  if (!v12)
+  handlingType = [requestCopy handlingType];
+  if (!handlingType)
   {
-    v16 = [v9 statusCode];
-    v17 = ICURLResponseStatusCodeGetExtendedDescription(v16);
-    v18 = v10;
-    v19 = [v18 requestContext];
-    v20 = [v19 personalizationMethod];
-    if (v20)
+    statusCode = [responseCopy statusCode];
+    v17 = ICURLResponseStatusCodeGetExtendedDescription(statusCode);
+    v18 = requestCopy;
+    requestContext = [v18 requestContext];
+    personalizationMethod = [requestContext personalizationMethod];
+    if (personalizationMethod)
     {
-      if (v20 != 1)
+      if (personalizationMethod != 1)
       {
-        v35 = v19;
+        v35 = requestContext;
         v22 = 0;
         v21 = 0;
         goto LABEL_14;
       }
 
-      v21 = v16 == 403;
-      if (v16 != 401)
+      v21 = statusCode == 403;
+      if (statusCode != 401)
       {
-        v35 = v19;
+        v35 = requestContext;
         v22 = 0;
 LABEL_14:
         v24 = 0;
@@ -185,10 +185,10 @@ LABEL_14:
 
     else
     {
-      v22 = v16 == 403;
-      if (v16 != 401)
+      v22 = statusCode == 403;
+      if (statusCode != 401)
       {
-        v35 = v19;
+        v35 = requestContext;
         v21 = 0;
         v24 = 1;
 LABEL_16:
@@ -198,12 +198,12 @@ LABEL_16:
         v42[3] = &unk_1E7BF6878;
         v43 = v18;
         v49 = v22;
-        v48 = v11;
-        v44 = self;
+        v48 = handlerCopy;
+        selfCopy = self;
         v36 = v17;
         v25 = v17;
         v45 = v25;
-        v26 = v9;
+        v26 = responseCopy;
         v46 = v26;
         v27 = v43;
         v47 = v27;
@@ -211,22 +211,22 @@ LABEL_16:
         v28 = MEMORY[0x1B8C781E0](v42);
         if (v24)
         {
-          v29 = [v27 _pendingEquivalentStoreURLRequest];
-          v30 = [v29 responseHandler];
-          if (v29 && v30)
+          _pendingEquivalentStoreURLRequest = [v27 _pendingEquivalentStoreURLRequest];
+          responseHandler = [_pendingEquivalentStoreURLRequest responseHandler];
+          if (_pendingEquivalentStoreURLRequest && responseHandler)
           {
-            v34 = v30;
+            v34 = responseHandler;
             v33 = os_log_create("com.apple.amp.iTunesCloud", "Default");
             if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138544130;
-              v52 = self;
+              selfCopy3 = self;
               v53 = 2114;
               v54 = v34;
               v55 = 2114;
               v56 = v25;
               v57 = 2114;
-              v58 = v29;
+              v58 = _pendingEquivalentStoreURLRequest;
               _os_log_impl(&dword_1B4491000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@: Deferring to %{public}@ to process completed response with status code %{public}@ for %{public}@.", buf, 0x2Au);
             }
 
@@ -236,9 +236,9 @@ LABEL_16:
             v38[3] = &unk_1E7BF9710;
             v38[4] = self;
             v39 = v27;
-            v40 = v29;
+            v40 = _pendingEquivalentStoreURLRequest;
             v41 = v28;
-            v31 = v29;
+            v31 = _pendingEquivalentStoreURLRequest;
             [v34 processCompletedResponse:v26 toRequest:v31 withCompletionHandler:v38];
 
             goto LABEL_24;
@@ -250,7 +250,7 @@ LABEL_16:
         [(ICURLResponseHandler *)&v37 processCompletedResponse:v26 toRequest:v27 withCompletionHandler:v28];
 LABEL_24:
 
-        v19 = v35;
+        requestContext = v35;
         v17 = v36;
 LABEL_25:
 
@@ -262,20 +262,20 @@ LABEL_25:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v52 = self;
+      selfCopy3 = self;
       v53 = 2114;
       v54 = v17;
       _os_log_impl(&dword_1B4491000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@: Invalidating developer token upon processing completed response with status code %{public}@.", buf, 0x16u);
     }
 
-    [(ICMusicKitURLResponseHandler *)self _invalidateDeveloperTokenForInitialResponse:v9 toRequest:v18 withCompletionHandler:v11];
+    [(ICMusicKitURLResponseHandler *)self _invalidateDeveloperTokenForInitialResponse:responseCopy toRequest:v18 withCompletionHandler:handlerCopy];
     goto LABEL_25;
   }
 
-  v13 = v12;
-  v14 = [v10 retryReason];
-  v15 = [v10 error];
-  (*(v11 + 2))(v11, v13, v14, v15);
+  v13 = handlingType;
+  retryReason = [requestCopy retryReason];
+  error = [requestCopy error];
+  (*(handlerCopy + 2))(handlerCopy, v13, retryReason, error);
 
 LABEL_26:
 }
@@ -381,51 +381,51 @@ void __89__ICMusicKitURLResponseHandler_processCompletedResponse_toRequest_withC
   (*(a1[7] + 16))();
 }
 
-- (void)processInitialResponse:(id)a3 toRequest:(id)a4 withCompletionHandler:(id)a5
+- (void)processInitialResponse:(id)response toRequest:(id)request withCompletionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  responseCopy = response;
+  requestCopy = request;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"ICMusicKitURLResponseHandler.m" lineNumber:35 description:{@"%@ only knows how to process responses for MusicKit requests. %@ is unsupported.", self, v10}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMusicKitURLResponseHandler.m" lineNumber:35 description:{@"%@ only knows how to process responses for MusicKit requests. %@ is unsupported.", self, requestCopy}];
   }
 
-  v12 = v10;
-  v13 = [v12 requestContext];
-  if ([v13 personalizationMethod])
+  v12 = requestCopy;
+  requestContext = [v12 requestContext];
+  if ([requestContext personalizationMethod])
   {
     goto LABEL_10;
   }
 
-  v14 = [v12 _pendingEquivalentStoreURLRequest];
-  v15 = [v14 responseHandler];
-  v16 = v15;
-  if (!v14 || !v15)
+  _pendingEquivalentStoreURLRequest = [v12 _pendingEquivalentStoreURLRequest];
+  responseHandler = [_pendingEquivalentStoreURLRequest responseHandler];
+  v16 = responseHandler;
+  if (!_pendingEquivalentStoreURLRequest || !responseHandler)
   {
 
 LABEL_10:
     v21.receiver = self;
     v21.super_class = ICMusicKitURLResponseHandler;
-    [(ICURLResponseHandler *)&v21 processInitialResponse:v9 toRequest:v12 withCompletionHandler:v11];
+    [(ICURLResponseHandler *)&v21 processInitialResponse:responseCopy toRequest:v12 withCompletionHandler:handlerCopy];
     goto LABEL_11;
   }
 
   v17 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = ICURLResponseStatusCodeGetExtendedDescription([v9 statusCode]);
+    v18 = ICURLResponseStatusCodeGetExtendedDescription([responseCopy statusCode]);
     *buf = 138544130;
-    v27 = self;
+    selfCopy = self;
     v28 = 2114;
     v29 = v16;
     v30 = 2114;
     v31 = v18;
     v32 = 2114;
-    v33 = v14;
+    v33 = _pendingEquivalentStoreURLRequest;
     _os_log_impl(&dword_1B4491000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: Deferring to %{public}@ to process initial response with status code %{public}@ for %{public}@.", buf, 0x2Au);
   }
 
@@ -435,10 +435,10 @@ LABEL_10:
   v22[3] = &unk_1E7BF6850;
   v22[4] = self;
   v23 = v12;
-  v24 = v14;
-  v25 = v11;
-  v19 = v14;
-  [v16 processInitialResponse:v9 toRequest:v19 withCompletionHandler:v22];
+  v24 = _pendingEquivalentStoreURLRequest;
+  v25 = handlerCopy;
+  v19 = _pendingEquivalentStoreURLRequest;
+  [v16 processInitialResponse:responseCopy toRequest:v19 withCompletionHandler:v22];
 
 LABEL_11:
 }

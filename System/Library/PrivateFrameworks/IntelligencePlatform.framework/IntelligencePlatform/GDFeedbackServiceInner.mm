@@ -1,25 +1,25 @@
 @interface GDFeedbackServiceInner
-- (BOOL)objcRecordWithFeedback:(id)a3 error:(id *)a4;
-- (BOOL)objcRecordWithFeedback:(id)a3 for:(int64_t)a4 error:(id *)a5;
+- (BOOL)objcRecordWithFeedback:(id)feedback error:(id *)error;
+- (BOOL)objcRecordWithFeedback:(id)feedback for:(int64_t)for error:(id *)error;
 @end
 
 @implementation GDFeedbackServiceInner
 
-- (BOOL)objcRecordWithFeedback:(id)a3 error:(id *)a4
+- (BOOL)objcRecordWithFeedback:(id)feedback error:(id *)error
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  FeedbackService.objcRecord(feedback:)(a3);
+  selfCopy = self;
+  FeedbackService.objcRecord(feedback:)(feedback);
 
   swift_unknownObjectRelease();
   return 1;
 }
 
-- (BOOL)objcRecordWithFeedback:(id)a3 for:(int64_t)a4 error:(id *)a5
+- (BOOL)objcRecordWithFeedback:(id)feedback for:(int64_t)for error:(id *)error
 {
   swift_unknownObjectRetain();
-  v8 = self;
-  FeedbackService.objcRecord(feedback:for:)(a3, a4);
+  selfCopy = self;
+  FeedbackService.objcRecord(feedback:for:)(feedback, for);
 
   swift_unknownObjectRelease();
   return 1;

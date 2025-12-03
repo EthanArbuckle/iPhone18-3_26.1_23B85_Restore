@@ -1,14 +1,14 @@
 @interface AnalyticsRTCReporter
 - (_TtC13appleaccountd20AnalyticsRTCReporter)init;
-- (void)sendEvent:(id)a3;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation AnalyticsRTCReporter
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
   v4 = objc_opt_self();
-  v5 = a3;
+  eventCopy = event;
   [objc_msgSend(v4 "reporter")];
   swift_unknownObjectRelease();
 }

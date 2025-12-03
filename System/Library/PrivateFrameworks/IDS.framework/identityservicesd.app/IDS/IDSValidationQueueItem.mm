@@ -1,23 +1,23 @@
 @interface IDSValidationQueueItem
-- (BOOL)isEqual:(id)a3;
-- (IDSValidationQueueItem)initWithMessage:(id)a3 subsystem:(int64_t)a4 sendBlock:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (IDSValidationQueueItem)initWithMessage:(id)message subsystem:(int64_t)subsystem sendBlock:(id)block;
 @end
 
 @implementation IDSValidationQueueItem
 
-- (IDSValidationQueueItem)initWithMessage:(id)a3 subsystem:(int64_t)a4 sendBlock:(id)a5
+- (IDSValidationQueueItem)initWithMessage:(id)message subsystem:(int64_t)subsystem sendBlock:(id)block
 {
-  v9 = a3;
-  v10 = a5;
+  messageCopy = message;
+  blockCopy = block;
   v16.receiver = self;
   v16.super_class = IDSValidationQueueItem;
   v11 = [(IDSValidationQueueItem *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_message, a3);
-    v12->_subsystem = a4;
-    v13 = objc_retainBlock(v10);
+    objc_storeStrong(&v11->_message, message);
+    v12->_subsystem = subsystem;
+    v13 = objc_retainBlock(blockCopy);
     sendBlock = v12->_sendBlock;
     v12->_sendBlock = v13;
   }
@@ -25,14 +25,14 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(IDSValidationQueueItem *)self message];
-    v6 = [v4 message];
-    v7 = v5 == v6;
+    message = [(IDSValidationQueueItem *)self message];
+    message2 = [equalCopy message];
+    v7 = message == message2;
   }
 
   else

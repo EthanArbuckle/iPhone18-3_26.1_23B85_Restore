@@ -1,11 +1,11 @@
 @interface DigitalTimeView
 - (BOOL)isHidden;
-- (_TtC30NTKParmesanFaceBundleCompanion15DigitalTimeView)initWithCoder:(id)a3;
-- (_TtC30NTKParmesanFaceBundleCompanion15DigitalTimeView)initWithFrame:(CGRect)a3;
+- (_TtC30NTKParmesanFaceBundleCompanion15DigitalTimeView)initWithCoder:(id)coder;
+- (_TtC30NTKParmesanFaceBundleCompanion15DigitalTimeView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setHidden:(BOOL)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)timeFormatterTextDidChange:(id)a3;
+- (void)setHidden:(BOOL)hidden;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)timeFormatterTextDidChange:(id)change;
 @end
 
 @implementation DigitalTimeView
@@ -17,13 +17,13 @@
   return [(DigitalTimeView *)&v3 isHidden];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v4 = self;
-  sub_23BFA88F8(a3);
+  selfCopy = self;
+  sub_23BFA88F8(hidden);
 }
 
-- (_TtC30NTKParmesanFaceBundleCompanion15DigitalTimeView)initWithCoder:(id)a3
+- (_TtC30NTKParmesanFaceBundleCompanion15DigitalTimeView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion15DigitalTimeView_fontTracking;
   *v3 = 0;
@@ -43,14 +43,14 @@
   return result;
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v6 = sub_23BF4A264(&qword_27E1E0B80);
   v7 = MEMORY[0x28223BE20](v6 - 8);
   v9 = &v18 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v7);
   v11 = &v18 - v10;
-  if (a3)
+  if (date)
   {
     sub_23BFF8D80();
     v12 = sub_23BFF8D90();
@@ -68,7 +68,7 @@
   sub_23BFF8D90();
   v14 = *(v12 - 8);
   v15 = (*(v14 + 48))(v9, 1, v12);
-  v16 = self;
+  selfCopy = self;
   v17 = 0;
   if (v15 != 1)
   {
@@ -83,25 +83,25 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BFA9790();
 }
 
-- (_TtC30NTKParmesanFaceBundleCompanion15DigitalTimeView)initWithFrame:(CGRect)a3
+- (_TtC30NTKParmesanFaceBundleCompanion15DigitalTimeView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)timeFormatterTextDidChange:(id)a3
+- (void)timeFormatterTextDidChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
   sub_23BFA8DB4(v4);
   sub_23BF4A264(&qword_27E1E1F50);
   sub_23BFF9EE0();
   sub_23BF9C60C(v4);
-  sub_23BFB43B4(*(&v3->super.super.super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion15DigitalTimeView_timeFormatter));
+  sub_23BFB43B4(*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion15DigitalTimeView_timeFormatter));
 }
 
 @end

@@ -2,31 +2,31 @@
 + (BOOL)affectsBannerVisibility;
 + (BOOL)affectsPuckVisibility;
 - (NSString)debugDescription;
-- (VLFSessionSunsetSunriseMonitor)initWithObserver:(id)a3 locationManager:(id)a4 sunsetSunriseCalculator:(id)a5 platformController:(id)a6 transportTypeSupportProvider:(Class)a7;
+- (VLFSessionSunsetSunriseMonitor)initWithObserver:(id)observer locationManager:(id)manager sunsetSunriseCalculator:(id)calculator platformController:(id)controller transportTypeSupportProvider:(Class)provider;
 - (void)calculateState;
 - (void)dealloc;
-- (void)sunsetSunriseObserver:(id)a3 didUpdateState:(int64_t)a4;
+- (void)sunsetSunriseObserver:(id)observer didUpdateState:(int64_t)state;
 @end
 
 @implementation VLFSessionSunsetSunriseMonitor
 
-- (void)sunsetSunriseObserver:(id)a3 didUpdateState:(int64_t)a4
+- (void)sunsetSunriseObserver:(id)observer didUpdateState:(int64_t)state
 {
   v6 = sub_100E20CCC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    if ((a4 - 1) > 3)
+    if ((state - 1) > 3)
     {
       v7 = @"Unknown";
     }
 
     else
     {
-      v7 = *(&off_101655B88 + a4 - 1);
+      v7 = *(&off_101655B88 + state - 1);
     }
 
     v8 = 134349314;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Got a new state from the sunset/sunrise observer: %@", &v8, 0x16u);
@@ -73,8 +73,8 @@
   v9 = v8;
   [objc_opt_class() offsetThreshold];
   v11 = v10;
-  v12 = [(VLFSessionSunsetSunriseMonitor *)self sunsetSunriseObserver];
-  v13 = [v12 currentState] - 1;
+  sunsetSunriseObserver = [(VLFSessionSunsetSunriseMonitor *)self sunsetSunriseObserver];
+  v13 = [sunsetSunriseObserver currentState] - 1;
   if (v13 > 3)
   {
     v14 = @"Unknown";
@@ -85,14 +85,14 @@
     v14 = *(&off_101655B88 + v13);
   }
 
-  v15 = [(VLFSessionMonitor *)self state];
+  state = [(VLFSessionMonitor *)self state];
   v16 = @"Hide";
-  if (v15 == 1)
+  if (state == 1)
   {
     v16 = @"EnablePuck";
   }
 
-  if (v15 == 2)
+  if (state == 2)
   {
     v16 = @"EnablePuckAndBanner";
   }
@@ -104,15 +104,15 @@
 
 - (void)calculateState
 {
-  v3 = [(VLFSessionSunsetSunriseMonitor *)self sunsetSunriseObserver];
-  v4 = [v3 currentState];
+  sunsetSunriseObserver = [(VLFSessionSunsetSunriseMonitor *)self sunsetSunriseObserver];
+  currentState = [sunsetSunriseObserver currentState];
 
   v5 = 0;
-  if (v4 <= 1)
+  if (currentState <= 1)
   {
-    if (v4)
+    if (currentState)
     {
-      if (v4 != 1)
+      if (currentState != 1)
       {
         goto LABEL_22;
       }
@@ -148,7 +148,7 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  switch(v4)
+  switch(currentState)
   {
     case 2:
       v6 = sub_100E20CCC();
@@ -201,7 +201,7 @@ LABEL_22:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -211,13 +211,13 @@ LABEL_22:
   [(VLFSessionSunsetSunriseMonitor *)&v4 dealloc];
 }
 
-- (VLFSessionSunsetSunriseMonitor)initWithObserver:(id)a3 locationManager:(id)a4 sunsetSunriseCalculator:(id)a5 platformController:(id)a6 transportTypeSupportProvider:(Class)a7
+- (VLFSessionSunsetSunriseMonitor)initWithObserver:(id)observer locationManager:(id)manager sunsetSunriseCalculator:(id)calculator platformController:(id)controller transportTypeSupportProvider:(Class)provider
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v13)
+  observerCopy = observer;
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  controllerCopy = controller;
+  if (!managerCopy)
   {
     v21 = sub_10006D178();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -246,7 +246,7 @@ LABEL_22:
     }
   }
 
-  if (!v14)
+  if (!calculatorCopy)
   {
     v24 = sub_10006D178();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -275,7 +275,7 @@ LABEL_22:
     }
   }
 
-  if (!v15)
+  if (!controllerCopy)
   {
     v27 = sub_10006D178();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -304,7 +304,7 @@ LABEL_22:
     }
   }
 
-  if (!a7)
+  if (!provider)
   {
     v30 = sub_10006D178();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -335,7 +335,7 @@ LABEL_22:
 
   v33.receiver = self;
   v33.super_class = VLFSessionSunsetSunriseMonitor;
-  v16 = [(VLFSessionMonitor *)&v33 initWithObserver:v12];
+  v16 = [(VLFSessionMonitor *)&v33 initWithObserver:observerCopy];
   if (v16)
   {
     v17 = sub_100E20CCC();
@@ -346,7 +346,7 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    v18 = [[MapsSunsetSunriseObserver alloc] initWithLocationManager:v13 sunsetSunriseCalculator:v14 platformController:v15 transportTypeSupportProvider:a7];
+    v18 = [[MapsSunsetSunriseObserver alloc] initWithLocationManager:managerCopy sunsetSunriseCalculator:calculatorCopy platformController:controllerCopy transportTypeSupportProvider:provider];
     sunsetSunriseObserver = v16->_sunsetSunriseObserver;
     v16->_sunsetSunriseObserver = v18;
 

@@ -1,13 +1,13 @@
 @interface LegacyUserTrustDB
 - (BOOL)setupSchema;
 - (_TtC3mis17LegacyUserTrustDB)init;
-- (_TtC3mis17LegacyUserTrustDB)initWithDatabaseURL:(id)a3;
+- (_TtC3mis17LegacyUserTrustDB)initWithDatabaseURL:(id)l;
 - (void)setupPermissions;
 @end
 
 @implementation LegacyUserTrustDB
 
-- (_TtC3mis17LegacyUserTrustDB)initWithDatabaseURL:(id)a3
+- (_TtC3mis17LegacyUserTrustDB)initWithDatabaseURL:(id)l
 {
   v4 = sub_1B9DD2728();
   v5 = *(v4 - 8);
@@ -27,7 +27,7 @@
 
 - (void)setupPermissions
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B9DA4BB8();
 }
 
@@ -40,7 +40,7 @@
 
 - (BOOL)setupSchema
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B9DA7AE0();
 
   return v3 & 1;

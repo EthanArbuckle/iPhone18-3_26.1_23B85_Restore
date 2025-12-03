@@ -1,20 +1,20 @@
 @interface _NSKeyValueDebuggingDeallocSentinel
-+ (void)_invalidateSentinelWithKey:(void *)a3 fromObject:(id)a4;
-- (_NSKeyValueDebuggingDeallocSentinel)initWithObjectPointer:(unint64_t)a3 callbackBlock:(id)a4;
++ (void)_invalidateSentinelWithKey:(void *)key fromObject:(id)object;
+- (_NSKeyValueDebuggingDeallocSentinel)initWithObjectPointer:(unint64_t)pointer callbackBlock:(id)block;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation _NSKeyValueDebuggingDeallocSentinel
 
-+ (void)_invalidateSentinelWithKey:(void *)a3 fromObject:(id)a4
++ (void)_invalidateSentinelWithKey:(void *)key fromObject:(id)object
 {
-  AssociatedObject = objc_getAssociatedObject(a4, a3);
+  AssociatedObject = objc_getAssociatedObject(object, key);
 
   [AssociatedObject invalidate];
 }
 
-- (_NSKeyValueDebuggingDeallocSentinel)initWithObjectPointer:(unint64_t)a3 callbackBlock:(id)a4
+- (_NSKeyValueDebuggingDeallocSentinel)initWithObjectPointer:(unint64_t)pointer callbackBlock:(id)block
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -24,8 +24,8 @@
   if (v6)
   {
     v6->_isInvalid = 0;
-    v6->_objectPointer = a3;
-    v6->_callbackBlock = [a4 copy];
+    v6->_objectPointer = pointer;
+    v6->_callbackBlock = [block copy];
   }
 
   return v7;

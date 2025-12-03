@@ -1,16 +1,16 @@
 @interface NESMFilterSessionStateStartPacketPlugin
-- (void)enterWithSession:(id)a3;
-- (void)handlePluginStatusDidChangeToRunning:(id)a3;
+- (void)enterWithSession:(id)session;
+- (void)handlePluginStatusDidChangeToRunning:(id)running;
 @end
 
 @implementation NESMFilterSessionStateStartPacketPlugin
 
-- (void)handlePluginStatusDidChangeToRunning:(id)a3
+- (void)handlePluginStatusDidChangeToRunning:(id)running
 {
   v11.receiver = self;
   v11.super_class = NESMFilterSessionStateStartPacketPlugin;
-  v4 = a3;
-  [(NESMFilterSessionState *)&v11 handlePluginStatusDidChangeToRunning:v4];
+  runningCopy = running;
+  [(NESMFilterSessionState *)&v11 handlePluginStatusDidChangeToRunning:runningCopy];
   if (self)
   {
     Property = objc_getProperty(self, v5, 16, 1);
@@ -27,7 +27,7 @@
 
   v8 = Property;
 
-  if (v8 == v4)
+  if (v8 == runningCopy)
   {
     if (self)
     {
@@ -43,11 +43,11 @@
   }
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
   v11.receiver = self;
   v11.super_class = NESMFilterSessionStateStartPacketPlugin;
-  [(NESMFilterSessionState *)&v11 enterWithSession:a3];
+  [(NESMFilterSessionState *)&v11 enterWithSession:session];
   if (self)
   {
     Property = objc_getProperty(self, v4, 16, 1);
@@ -66,8 +66,8 @@
     v9 = 0;
   }
 
-  v10 = [v9 configuration];
-  sub_1000187A4(v7, v10);
+  configuration = [v9 configuration];
+  sub_1000187A4(v7, configuration);
 }
 
 @end

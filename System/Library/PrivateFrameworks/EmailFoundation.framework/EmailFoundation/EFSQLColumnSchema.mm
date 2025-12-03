@@ -1,20 +1,20 @@
 @interface EFSQLColumnSchema
-+ (id)stringForColumnType:(unint64_t)a3;
-+ (unint64_t)columnTypeForString:(id)a3;
++ (id)stringForColumnType:(unint64_t)type;
++ (unint64_t)columnTypeForString:(id)string;
 - (EFSQLColumnExpression)columnExpression;
 - (EFSQLColumnExpression)columnExpressionWithFullName;
-- (EFSQLColumnSchema)initWithName:(id)a3 isPrimaryKey:(BOOL)a4 isAutoincrementing:(BOOL)a5 type:(unint64_t)a6 collation:(unint64_t)a7 nullable:(BOOL)a8 defaultValue:(id)a9;
+- (EFSQLColumnSchema)initWithName:(id)name isPrimaryKey:(BOOL)key isAutoincrementing:(BOOL)autoincrementing type:(unint64_t)type collation:(unint64_t)collation nullable:(BOOL)nullable defaultValue:(id)value;
 - (EFSQLTableSchema)associatedTable;
 - (EFSQLTableSchema)foreignKeyTarget;
 - (EFSQLTableSchema)table;
 - (NSString)definition;
-- (id)_stringForForeignKeyAction:(unint64_t)a3;
+- (id)_stringForForeignKeyAction:(unint64_t)action;
 - (id)debugDescription;
 - (id)description;
-- (id)fullNameWithDatabaseName:(id)a3;
-- (void)associateWithTable:(id)a3;
-- (void)setAsForeignKeyForString:(id)a3 onDelete:(unint64_t)a4 onUpdate:(unint64_t)a5;
-- (void)setAsForeignKeyForTable:(id)a3 onDelete:(unint64_t)a4 onUpdate:(unint64_t)a5;
+- (id)fullNameWithDatabaseName:(id)name;
+- (void)associateWithTable:(id)table;
+- (void)setAsForeignKeyForString:(id)string onDelete:(unint64_t)delete onUpdate:(unint64_t)update;
+- (void)setAsForeignKeyForTable:(id)table onDelete:(unint64_t)delete onUpdate:(unint64_t)update;
 @end
 
 @implementation EFSQLColumnSchema
@@ -29,54 +29,54 @@
 - (EFSQLColumnExpression)columnExpressionWithFullName
 {
   v3 = [EFSQLColumnExpression alloc];
-  v4 = [(EFSQLColumnSchema *)self name];
-  v5 = [(EFSQLColumnSchema *)self table];
-  v6 = [v5 name];
-  v7 = [(EFSQLColumnExpression *)v3 initWithName:v4 table:v6];
+  name = [(EFSQLColumnSchema *)self name];
+  table = [(EFSQLColumnSchema *)self table];
+  name2 = [table name];
+  v7 = [(EFSQLColumnExpression *)v3 initWithName:name table:name2];
 
   return v7;
 }
 
-+ (id)stringForColumnType:(unint64_t)a3
++ (id)stringForColumnType:(unint64_t)type
 {
-  if (a3 - 2 > 2)
+  if (type - 2 > 2)
   {
     return @"INTEGER";
   }
 
   else
   {
-    return off_1E8249BC8[a3 - 2];
+    return off_1E8249BC8[type - 2];
   }
 }
 
-+ (unint64_t)columnTypeForString:(id)a3
++ (unint64_t)columnTypeForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (columnTypeForString__onceToken != -1)
   {
     +[EFSQLColumnSchema columnTypeForString:];
   }
 
   v4 = columnTypeForString__sColumnTypeMap;
-  v5 = [v3 uppercaseString];
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 unsignedIntegerValue];
+  uppercaseString = [stringCopy uppercaseString];
+  v6 = [v4 objectForKeyedSubscript:uppercaseString];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  if (!v7)
+  if (!unsignedIntegerValue)
   {
-    if ([v3 length])
+    if ([stringCopy length])
     {
-      v7 = 1;
+      unsignedIntegerValue = 1;
     }
 
     else
     {
-      v7 = 4;
+      unsignedIntegerValue = 4;
     }
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 void __41__EFSQLColumnSchema_columnTypeForString___block_invoke()
@@ -85,15 +85,15 @@ void __41__EFSQLColumnSchema_columnTypeForString___block_invoke()
   columnTypeForString__sColumnTypeMap = &unk_1F45AD100;
 }
 
-- (EFSQLColumnSchema)initWithName:(id)a3 isPrimaryKey:(BOOL)a4 isAutoincrementing:(BOOL)a5 type:(unint64_t)a6 collation:(unint64_t)a7 nullable:(BOOL)a8 defaultValue:(id)a9
+- (EFSQLColumnSchema)initWithName:(id)name isPrimaryKey:(BOOL)key isAutoincrementing:(BOOL)autoincrementing type:(unint64_t)type collation:(unint64_t)collation nullable:(BOOL)nullable defaultValue:(id)value
 {
-  v12 = a4;
-  v16 = a3;
-  v17 = a9;
-  if (!v16 && !v12)
+  keyCopy = key;
+  nameCopy = name;
+  valueCopy = value;
+  if (!nameCopy && !keyCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"EFSQLColumnSchema.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"name || isPrimaryKey"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFSQLColumnSchema.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"name || isPrimaryKey"}];
   }
 
   v23.receiver = self;
@@ -102,18 +102,18 @@ void __41__EFSQLColumnSchema_columnTypeForString___block_invoke()
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_name, a3);
-    if (!v16 && v12)
+    objc_storeStrong(&v18->_name, name);
+    if (!nameCopy && keyCopy)
     {
       objc_storeStrong(&v19->_name, @"ROWID");
     }
 
-    v19->_isPrimaryKey = v12;
-    v19->_isAutoincrementing = a5;
-    v19->_type = a6;
-    v19->_collation = a7;
-    v19->_nullable = a8;
-    objc_storeStrong(&v19->_defaultValue, a9);
+    v19->_isPrimaryKey = keyCopy;
+    v19->_isAutoincrementing = autoincrementing;
+    v19->_type = type;
+    v19->_collation = collation;
+    v19->_nullable = nullable;
+    objc_storeStrong(&v19->_defaultValue, value);
   }
 
   return v19;
@@ -125,8 +125,8 @@ void __41__EFSQLColumnSchema_columnTypeForString___block_invoke()
   v8.receiver = self;
   v8.super_class = EFSQLColumnSchema;
   v4 = [(EFSQLColumnSchema *)&v8 description];
-  v5 = [(EFSQLColumnSchema *)self name];
-  v6 = [v3 initWithFormat:@"%@ %@", v4, v5];
+  name = [(EFSQLColumnSchema *)self name];
+  v6 = [v3 initWithFormat:@"%@ %@", v4, name];
 
   return v6;
 }
@@ -149,9 +149,9 @@ void __41__EFSQLColumnSchema_columnTypeForString___block_invoke()
   v5 = &stru_1F459BF68;
   if ([(EFSQLColumnSchema *)self isPrimaryKey])
   {
-    v6 = [(EFSQLColumnSchema *)self isAutoincrementing];
+    isAutoincrementing = [(EFSQLColumnSchema *)self isAutoincrementing];
     v7 = @" PRIMARY KEY";
-    if (v6)
+    if (isAutoincrementing)
     {
       v7 = @" PRIMARY KEY AUTOINCREMENT";
     }
@@ -176,26 +176,26 @@ void __41__EFSQLColumnSchema_columnTypeForString___block_invoke()
       v5 = v11;
     }
 
-    v13 = [(EFSQLColumnSchema *)self nullable];
+    nullable = [(EFSQLColumnSchema *)self nullable];
     v14 = @" NOT NULL";
-    if (v13)
+    if (nullable)
     {
       v14 = &stru_1F459BF68;
     }
 
     v9 = v14;
-    v15 = [(EFSQLColumnSchema *)self defaultValue];
-    if (v15)
+    defaultValue = [(EFSQLColumnSchema *)self defaultValue];
+    if (defaultValue)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = [v15 ef_quotedSQLEscapedString];
+        ef_quotedSQLEscapedString = [defaultValue ef_quotedSQLEscapedString];
 
-        v15 = v16;
+        defaultValue = ef_quotedSQLEscapedString;
       }
 
-      v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@" DEFAULT %@", v15];
+      v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@" DEFAULT %@", defaultValue];
 
       v8 = &stru_1F459BF68;
     }
@@ -207,28 +207,28 @@ void __41__EFSQLColumnSchema_columnTypeForString___block_invoke()
     }
   }
 
-  v17 = [(EFSQLColumnSchema *)self foreignKeyTargetString];
-  if (v17)
+  foreignKeyTargetString = [(EFSQLColumnSchema *)self foreignKeyTargetString];
+  if (foreignKeyTargetString)
   {
     goto LABEL_19;
   }
 
-  v21 = [(EFSQLColumnSchema *)self foreignKeyTarget];
-  if (!v21)
+  foreignKeyTarget = [(EFSQLColumnSchema *)self foreignKeyTarget];
+  if (!foreignKeyTarget)
   {
-    v17 = 0;
+    foreignKeyTargetString = 0;
 LABEL_29:
     v29 = &stru_1F459BF68;
     goto LABEL_30;
   }
 
   v22 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v23 = [v21 name];
-  v24 = [v21 rowIDColumn];
-  v25 = [v24 name];
-  v17 = [v22 initWithFormat:@"%@(%@)", v23, v25];
+  name = [foreignKeyTarget name];
+  rowIDColumn = [foreignKeyTarget rowIDColumn];
+  name2 = [rowIDColumn name];
+  foreignKeyTargetString = [v22 initWithFormat:@"%@(%@)", name, name2];
 
-  if (!v17)
+  if (!foreignKeyTargetString)
   {
     goto LABEL_29;
   }
@@ -254,151 +254,151 @@ LABEL_19:
     v26 = [v27 initWithFormat:@" ON UPDATE %@", v28];
   }
 
-  v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@" REFERENCES %@%@%@", v17, v20, v26];
+  v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@" REFERENCES %@%@%@", foreignKeyTargetString, v20, v26];
 
 LABEL_30:
   v30 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v31 = [(EFSQLColumnSchema *)self name];
-  v32 = [v30 initWithFormat:@"%@%@%@%@%@%@%@", v31, v34, v8, v5, v9, v10, v29];
+  name3 = [(EFSQLColumnSchema *)self name];
+  v32 = [v30 initWithFormat:@"%@%@%@%@%@%@%@", name3, v34, v8, v5, v9, v10, v29];
 
   return v32;
 }
 
-- (id)_stringForForeignKeyAction:(unint64_t)a3
+- (id)_stringForForeignKeyAction:(unint64_t)action
 {
-  if (a3 - 1 > 3)
+  if (action - 1 > 3)
   {
     return @"NO ACTION";
   }
 
   else
   {
-    return off_1E8249BE0[a3 - 1];
+    return off_1E8249BE0[action - 1];
   }
 }
 
-- (id)fullNameWithDatabaseName:(id)a3
+- (id)fullNameWithDatabaseName:(id)name
 {
-  v4 = a3;
-  v5 = [(EFSQLColumnSchema *)self table];
-  if (v5)
+  nameCopy = name;
+  table = [(EFSQLColumnSchema *)self table];
+  if (table)
   {
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v7 = [v5 fullNameWithDatabaseName:v4];
-    v8 = [(EFSQLColumnSchema *)self name];
-    v9 = [v6 initWithFormat:@"%@.%@", v7, v8];
+    v7 = [table fullNameWithDatabaseName:nameCopy];
+    name = [(EFSQLColumnSchema *)self name];
+    name2 = [v6 initWithFormat:@"%@.%@", v7, name];
   }
 
   else
   {
-    v9 = [(EFSQLColumnSchema *)self name];
+    name2 = [(EFSQLColumnSchema *)self name];
   }
 
-  return v9;
+  return name2;
 }
 
-- (void)setAsForeignKeyForTable:(id)a3 onDelete:(unint64_t)a4 onUpdate:(unint64_t)a5
+- (void)setAsForeignKeyForTable:(id)table onDelete:(unint64_t)delete onUpdate:(unint64_t)update
 {
-  v14 = a3;
-  v9 = [v14 rowIDColumn];
+  tableCopy = table;
+  rowIDColumn = [tableCopy rowIDColumn];
 
-  if (!v9)
+  if (!rowIDColumn)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"EFSQLColumnSchema.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"table.rowIDColumn"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFSQLColumnSchema.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"table.rowIDColumn"}];
   }
 
-  v10 = [(EFSQLColumnSchema *)self associatedTable];
-  if (v10)
+  associatedTable = [(EFSQLColumnSchema *)self associatedTable];
+  if (associatedTable)
   {
   }
 
   else
   {
-    v11 = [(EFSQLColumnSchema *)self foreignKeyTargetString];
+    foreignKeyTargetString = [(EFSQLColumnSchema *)self foreignKeyTargetString];
 
-    if (!v11)
+    if (!foreignKeyTargetString)
     {
       goto LABEL_6;
     }
   }
 
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v12 handleFailureInMethod:a2 object:self file:@"EFSQLColumnSchema.m" lineNumber:212 description:@"Cannot set association for table that already has a foreign key target or associated table"];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"EFSQLColumnSchema.m" lineNumber:212 description:@"Cannot set association for table that already has a foreign key target or associated table"];
 
 LABEL_6:
-  [(EFSQLColumnSchema *)self setForeignKeyTarget:v14];
-  [(EFSQLColumnSchema *)self setForeignKeyDeleteAction:a4];
-  [(EFSQLColumnSchema *)self setForeignKeyUpdateAction:a5];
-  [v14 addForeignKeyReference:self];
+  [(EFSQLColumnSchema *)self setForeignKeyTarget:tableCopy];
+  [(EFSQLColumnSchema *)self setForeignKeyDeleteAction:delete];
+  [(EFSQLColumnSchema *)self setForeignKeyUpdateAction:update];
+  [tableCopy addForeignKeyReference:self];
 }
 
-- (void)setAsForeignKeyForString:(id)a3 onDelete:(unint64_t)a4 onUpdate:(unint64_t)a5
+- (void)setAsForeignKeyForString:(id)string onDelete:(unint64_t)delete onUpdate:(unint64_t)update
 {
-  v12 = a3;
-  v9 = [(EFSQLColumnSchema *)self foreignKeyTarget];
-  if (v9)
+  stringCopy = string;
+  foreignKeyTarget = [(EFSQLColumnSchema *)self foreignKeyTarget];
+  if (foreignKeyTarget)
   {
   }
 
   else
   {
-    v10 = [(EFSQLColumnSchema *)self associatedTable];
+    associatedTable = [(EFSQLColumnSchema *)self associatedTable];
 
-    if (!v10)
+    if (!associatedTable)
     {
       goto LABEL_4;
     }
   }
 
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"EFSQLColumnSchema.m" lineNumber:221 description:@"Cannot set association for table that already has a foreign key target or associated table"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"EFSQLColumnSchema.m" lineNumber:221 description:@"Cannot set association for table that already has a foreign key target or associated table"];
 
 LABEL_4:
-  [(EFSQLColumnSchema *)self setForeignKeyTargetString:v12];
-  [(EFSQLColumnSchema *)self setForeignKeyDeleteAction:a4];
-  [(EFSQLColumnSchema *)self setForeignKeyUpdateAction:a5];
+  [(EFSQLColumnSchema *)self setForeignKeyTargetString:stringCopy];
+  [(EFSQLColumnSchema *)self setForeignKeyDeleteAction:delete];
+  [(EFSQLColumnSchema *)self setForeignKeyUpdateAction:update];
 }
 
-- (void)associateWithTable:(id)a3
+- (void)associateWithTable:(id)table
 {
-  v10 = a3;
-  v5 = [v10 rowIDColumn];
+  tableCopy = table;
+  rowIDColumn = [tableCopy rowIDColumn];
 
-  if (!v5)
+  if (!rowIDColumn)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"EFSQLColumnSchema.m" lineNumber:228 description:{@"Invalid parameter not satisfying: %@", @"table.rowIDColumn"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFSQLColumnSchema.m" lineNumber:228 description:{@"Invalid parameter not satisfying: %@", @"table.rowIDColumn"}];
   }
 
-  v6 = [(EFSQLColumnSchema *)self foreignKeyTarget];
-  if (v6)
+  foreignKeyTarget = [(EFSQLColumnSchema *)self foreignKeyTarget];
+  if (foreignKeyTarget)
   {
   }
 
   else
   {
-    v7 = [(EFSQLColumnSchema *)self foreignKeyTargetString];
+    foreignKeyTargetString = [(EFSQLColumnSchema *)self foreignKeyTargetString];
 
-    if (!v7)
+    if (!foreignKeyTargetString)
     {
       goto LABEL_6;
     }
   }
 
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v8 handleFailureInMethod:a2 object:self file:@"EFSQLColumnSchema.m" lineNumber:229 description:@"Cannot set association for table that already has a foreign key target"];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"EFSQLColumnSchema.m" lineNumber:229 description:@"Cannot set association for table that already has a foreign key target"];
 
 LABEL_6:
-  [(EFSQLColumnSchema *)self setAssociatedTable:v10];
-  [v10 addAssociatedColumn:self];
+  [(EFSQLColumnSchema *)self setAssociatedTable:tableCopy];
+  [tableCopy addAssociatedColumn:self];
 }
 
 - (EFSQLColumnExpression)columnExpression
 {
   v3 = [EFSQLColumnExpression alloc];
-  v4 = [(EFSQLColumnSchema *)self name];
-  v5 = [(EFSQLColumnExpression *)v3 initWithName:v4];
+  name = [(EFSQLColumnSchema *)self name];
+  v5 = [(EFSQLColumnExpression *)v3 initWithName:name];
 
   return v5;
 }
@@ -407,8 +407,8 @@ LABEL_6:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EFSQLColumnSchema *)self name];
-  v6 = [v3 stringWithFormat:@"<%@: %p> column name:%@", v4, self, v5];
+  name = [(EFSQLColumnSchema *)self name];
+  v6 = [v3 stringWithFormat:@"<%@: %p> column name:%@", v4, self, name];
 
   return v6;
 }

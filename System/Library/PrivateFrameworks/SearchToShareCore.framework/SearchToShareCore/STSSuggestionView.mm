@@ -4,13 +4,13 @@
 - (STSSuggestionView)init;
 - (STSSuggestionViewDelegate)delegate;
 - (UIEdgeInsets)contentInset;
-- (void)_handleLogoTap:(id)a3;
+- (void)_handleLogoTap:(id)tap;
 - (void)_updateContentInsets;
 - (void)_updateFooterOrigin;
 - (void)layoutSubviews;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setFooterOffset:(CGPoint)a3;
-- (void)setOverlayView:(id)a3 animated:(BOOL)a4;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setFooterOffset:(CGPoint)offset;
+- (void)setOverlayView:(id)view animated:(BOOL)animated;
 @end
 
 @implementation STSSuggestionView
@@ -30,8 +30,8 @@
     v3->_tableView = v5;
 
     v7 = v3->_tableView;
-    v8 = [MEMORY[0x277D75348] sts_defaultBackgroundColor];
-    [(UITableView *)v7 setBackgroundColor:v8];
+    sts_defaultBackgroundColor = [MEMORY[0x277D75348] sts_defaultBackgroundColor];
+    [(UITableView *)v7 setBackgroundColor:sts_defaultBackgroundColor];
 
     [(UITableView *)v3->_tableView setCellLayoutMarginsFollowReadableWidth:1];
     [(UITableView *)v3->_tableView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -49,28 +49,28 @@
     [(UITableView *)v3->_tableView setTableFooterView:v13];
     [(STSSuggestionView *)v3 addSubview:v3->_tableView];
     [(STSSuggestionView *)v3 addSubview:v3->_footerView];
-    v14 = [MEMORY[0x277CBEB18] array];
-    v15 = [(UITableView *)v3->_tableView leadingAnchor];
-    v16 = [(STSSuggestionView *)v3 leadingAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
-    [v14 addObject:v17];
+    array = [MEMORY[0x277CBEB18] array];
+    leadingAnchor = [(UITableView *)v3->_tableView leadingAnchor];
+    leadingAnchor2 = [(STSSuggestionView *)v3 leadingAnchor];
+    v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [array addObject:v17];
 
-    v18 = [(UITableView *)v3->_tableView trailingAnchor];
-    v19 = [(STSSuggestionView *)v3 trailingAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
-    [v14 addObject:v20];
+    trailingAnchor = [(UITableView *)v3->_tableView trailingAnchor];
+    trailingAnchor2 = [(STSSuggestionView *)v3 trailingAnchor];
+    v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    [array addObject:v20];
 
-    v21 = [(UITableView *)v3->_tableView topAnchor];
-    v22 = [(STSSuggestionView *)v3 topAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
-    [v14 addObject:v23];
+    topAnchor = [(UITableView *)v3->_tableView topAnchor];
+    topAnchor2 = [(STSSuggestionView *)v3 topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v23];
 
-    v24 = [(UITableView *)v3->_tableView bottomAnchor];
-    v25 = [(STSSuggestionView *)v3 bottomAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
-    [v14 addObject:v26];
+    bottomAnchor = [(UITableView *)v3->_tableView bottomAnchor];
+    bottomAnchor2 = [(STSSuggestionView *)v3 bottomAnchor];
+    v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    [array addObject:v26];
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v14];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
   }
 
   return v3;
@@ -89,15 +89,15 @@
   [(STSSuggestionView *)self _updateFooterOrigin];
 }
 
-- (void)setOverlayView:(id)a3 animated:(BOOL)a4
+- (void)setOverlayView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   overlayView = self->_overlayView;
-  if (overlayView != v7)
+  if (overlayView != viewCopy)
   {
     v9 = overlayView;
-    objc_storeStrong(&self->_overlayView, a3);
+    objc_storeStrong(&self->_overlayView, view);
     [(STSSuggestionView *)self addSubview:self->_overlayView];
     [(STSSuggestionView *)self setNeedsLayout];
     [(STSSuggestionView *)self layoutIfNeeded];
@@ -106,7 +106,7 @@
     v21 = 3221225472;
     v22 = __45__STSSuggestionView_setOverlayView_animated___block_invoke;
     v23 = &unk_279B8AEF0;
-    v24 = self;
+    selfCopy = self;
     v10 = v9;
     v25 = v10;
     v11 = MEMORY[0x266751FB0](&v20);
@@ -115,12 +115,12 @@
     v16 = __45__STSSuggestionView_setOverlayView_animated___block_invoke_2;
     v17 = &unk_279B8B2E8;
     v18 = v10;
-    v19 = self;
+    selfCopy2 = self;
     v12 = v10;
     v13 = MEMORY[0x266751FB0](&v14);
-    if (v4)
+    if (animatedCopy)
     {
-      [MEMORY[0x277D75D18] animateWithDuration:v11 animations:v13 completion:{0.2, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24}];
+      [MEMORY[0x277D75D18] animateWithDuration:v11 animations:v13 completion:{0.2, v14, v15, v16, v17, v18, selfCopy2, v20, v21, v22, v23, selfCopy}];
     }
 
     else
@@ -152,21 +152,21 @@ uint64_t __45__STSSuggestionView_setOverlayView_animated___block_invoke_2(uint64
   return result;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
   p_contentInset = &self->_contentInset;
-  self->_contentInset = a3;
+  self->_contentInset = inset;
   [(UITableView *)self->_tableView setScrollIndicatorInsets:?];
   [(UITableView *)self->_tableView setContentInset:p_contentInset->top, p_contentInset->left, p_contentInset->bottom, p_contentInset->right];
 
   [(STSSuggestionView *)self setNeedsLayout];
 }
 
-- (void)setFooterOffset:(CGPoint)a3
+- (void)setFooterOffset:(CGPoint)offset
 {
-  if (self->_footerOffset.x != a3.x || self->_footerOffset.y != a3.y)
+  if (self->_footerOffset.x != offset.x || self->_footerOffset.y != offset.y)
   {
-    self->_footerOffset = a3;
+    self->_footerOffset = offset;
     [(STSSuggestionView *)self _updateFooterOrigin];
   }
 }
@@ -179,15 +179,15 @@ uint64_t __45__STSSuggestionView_setOverlayView_animated___block_invoke_2(uint64
   return result;
 }
 
-- (void)_handleLogoTap:(id)a3
+- (void)_handleLogoTap:(id)tap
 {
-  v4 = [(STSSuggestionView *)self delegate];
+  delegate = [(STSSuggestionView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(STSSuggestionView *)self delegate];
-    [v6 suggestionViewDidTapLogo:self];
+    delegate2 = [(STSSuggestionView *)self delegate];
+    [delegate2 suggestionViewDidTapLogo:self];
   }
 }
 

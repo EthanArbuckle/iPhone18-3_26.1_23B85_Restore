@@ -1,19 +1,19 @@
 @interface AMSMockURLRequestComparator
-- (AMSMockURLRequestComparator)initWithCriteriaBlock:(id)a3;
-- (BOOL)shouldOverrideURLRequest:(id)a3;
+- (AMSMockURLRequestComparator)initWithCriteriaBlock:(id)block;
+- (BOOL)shouldOverrideURLRequest:(id)request;
 @end
 
 @implementation AMSMockURLRequestComparator
 
-- (AMSMockURLRequestComparator)initWithCriteriaBlock:(id)a3
+- (AMSMockURLRequestComparator)initWithCriteriaBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = AMSMockURLRequestComparator;
   v5 = [(AMSMockURLRequestComparator *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(blockCopy);
     criteriaBlock = v5->_criteriaBlock;
     v5->_criteriaBlock = v6;
   }
@@ -21,11 +21,11 @@
   return v5;
 }
 
-- (BOOL)shouldOverrideURLRequest:(id)a3
+- (BOOL)shouldOverrideURLRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(AMSMockURLRequestComparator *)self criteriaBlock];
-  v6 = (v5)[2](v5, v4);
+  requestCopy = request;
+  criteriaBlock = [(AMSMockURLRequestComparator *)self criteriaBlock];
+  v6 = (criteriaBlock)[2](criteriaBlock, requestCopy);
 
   return v6;
 }

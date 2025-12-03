@@ -1,27 +1,27 @@
 @interface SKIOObject
 - (NSString)ioClassName;
-- (SKIOObject)initWithClassName:(id)a3;
-- (SKIOObject)initWithIOObject:(unsigned int)a3 retain:(BOOL)a4;
-- (SKIOObject)initWithIteratorNext:(id)a3;
-- (SKIOObject)initWithSKIOObject:(id)a3;
-- (SKIOObject)ioObjectWithClassName:(id)a3 iterateParents:(BOOL)a4;
+- (SKIOObject)initWithClassName:(id)name;
+- (SKIOObject)initWithIOObject:(unsigned int)object retain:(BOOL)retain;
+- (SKIOObject)initWithIteratorNext:(id)next;
+- (SKIOObject)initWithSKIOObject:(id)object;
+- (SKIOObject)ioObjectWithClassName:(id)name iterateParents:(BOOL)parents;
 - (id)copyParent;
-- (id)copyParentPropertyWithClass:(Class)a3 key:(id)a4;
+- (id)copyParentPropertyWithClass:(Class)class key:(id)key;
 - (id)copyProperties;
-- (id)copyPropertyWithClass:(Class)a3 key:(id)a4;
-- (id)newIteratorWithOptions:(unsigned int)a3;
+- (id)copyPropertyWithClass:(Class)class key:(id)key;
+- (id)newIteratorWithOptions:(unsigned int)options;
 - (void)dealloc;
 @end
 
 @implementation SKIOObject
 
-- (SKIOObject)initWithIOObject:(unsigned int)a3 retain:(BOOL)a4
+- (SKIOObject)initWithIOObject:(unsigned int)object retain:(BOOL)retain
 {
-  if (a3)
+  if (object)
   {
-    if (a4)
+    if (retain)
     {
-      IOObjectRetain(a3);
+      IOObjectRetain(object);
     }
 
     v10.receiver = self;
@@ -30,42 +30,42 @@
     v7 = v6;
     if (v6)
     {
-      v6->_ioObj = a3;
+      v6->_ioObj = object;
     }
 
     else
     {
-      IOObjectRelease(a3);
+      IOObjectRelease(object);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (SKIOObject)initWithSKIOObject:(id)a3
+- (SKIOObject)initWithSKIOObject:(id)object
 {
-  v4 = [a3 ioObj];
+  ioObj = [object ioObj];
 
-  return [(SKIOObject *)self initWithIOObject:v4 retain:1];
+  return [(SKIOObject *)self initWithIOObject:ioObj retain:1];
 }
 
-- (SKIOObject)initWithClassName:(id)a3
+- (SKIOObject)initWithClassName:(id)name
 {
-  v4 = a3;
-  v5 = IOServiceMatching([v4 UTF8String]);
+  nameCopy = name;
+  v5 = IOServiceMatching([nameCopy UTF8String]);
   MatchingService = IOServiceGetMatchingService(kIOMainPortDefault, v5);
   if (MatchingService)
   {
     self = [(SKIOObject *)self initWithIOObject:MatchingService];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -74,27 +74,27 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = nameCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Cannot find IO object of class %@", &v10, 0xCu);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (SKIOObject)initWithIteratorNext:(id)a3
+- (SKIOObject)initWithIteratorNext:(id)next
 {
-  v4 = [a3 copyNextObject];
+  copyNextObject = [next copyNextObject];
 
-  return [(SKIOObject *)self initWithIOObject:v4];
+  return [(SKIOObject *)self initWithIOObject:copyNextObject];
 }
 
-- (id)newIteratorWithOptions:(unsigned int)a3
+- (id)newIteratorWithOptions:(unsigned int)options
 {
   iterator = 0;
-  v3 = IORegistryEntryCreateIterator([(SKIOObject *)self ioObj], "IOService", a3, &iterator);
+  v3 = IORegistryEntryCreateIterator([(SKIOObject *)self ioObj], "IOService", options, &iterator);
   if (v3)
   {
     v4 = v3;
@@ -136,12 +136,12 @@
   [(SKIOObject *)&v4 dealloc];
 }
 
-- (SKIOObject)ioObjectWithClassName:(id)a3 iterateParents:(BOOL)a4
+- (SKIOObject)ioObjectWithClassName:(id)name iterateParents:(BOOL)parents
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 UTF8String];
-  if (v4)
+  parentsCopy = parents;
+  nameCopy = name;
+  uTF8String = [nameCopy UTF8String];
+  if (parentsCopy)
   {
     v8 = 3;
   }
@@ -165,7 +165,7 @@
       }
 
       v10 = v11;
-      if (IOObjectConformsTo([(SKIOObject *)v11 ioObj], v7))
+      if (IOObjectConformsTo([(SKIOObject *)v11 ioObj], uTF8String))
       {
         goto LABEL_13;
       }
@@ -175,7 +175,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412290;
-      v15 = v6;
+      v15 = nameCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Cannot find %@ entry", &v14, 0xCu);
     }
   }
@@ -186,10 +186,10 @@ LABEL_13:
   return v11;
 }
 
-- (id)copyPropertyWithClass:(Class)a3 key:(id)a4
+- (id)copyPropertyWithClass:(Class)class key:(id)key
 {
-  v5 = a4;
-  CFProperty = IORegistryEntryCreateCFProperty([(SKIOObject *)self ioObj], v5, kCFAllocatorDefault, 0);
+  keyCopy = key;
+  CFProperty = IORegistryEntryCreateCFProperty([(SKIOObject *)self ioObj], keyCopy, kCFAllocatorDefault, 0);
 
   if (CFProperty && (objc_opt_isKindOfClass() & 1) != 0)
   {
@@ -204,10 +204,10 @@ LABEL_13:
   return v7;
 }
 
-- (id)copyParentPropertyWithClass:(Class)a3 key:(id)a4
+- (id)copyParentPropertyWithClass:(Class)class key:(id)key
 {
-  v5 = a4;
-  v6 = IORegistryEntrySearchCFProperty([(SKIOObject *)self ioObj], "IOService", v5, kCFAllocatorDefault, 3u);
+  keyCopy = key;
+  v6 = IORegistryEntrySearchCFProperty([(SKIOObject *)self ioObj], "IOService", keyCopy, kCFAllocatorDefault, 3u);
 
   if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
   {

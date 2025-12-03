@@ -1,8 +1,8 @@
 @interface SRSensorsCache
 + (void)initialize;
-+ (void)setDefaultCache:(id)a3;
++ (void)setDefaultCache:(id)cache;
 - (SRSensorsCache)init;
-- (SRSensorsCache)initWithDirectories:(id)a3;
+- (SRSensorsCache)initWithDirectories:(id)directories;
 - (void)dealloc;
 @end
 
@@ -10,18 +10,18 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100071A10 = os_log_create("com.apple.SensorKit", "SensorsCache");
   }
 }
 
-+ (void)setDefaultCache:(id)a3
++ (void)setDefaultCache:(id)cache
 {
-  if (qword_100071A18 != a3)
+  if (qword_100071A18 != cache)
   {
 
-    qword_100071A18 = a3;
+    qword_100071A18 = cache;
   }
 }
 
@@ -68,7 +68,7 @@
   return [(SRSensorsCache *)self initWithDirectories:[NSArray arrayWithObjects:v10 count:v11]];
 }
 
-- (SRSensorsCache)initWithDirectories:(id)a3
+- (SRSensorsCache)initWithDirectories:(id)directories
 {
   v6.receiver = self;
   v6.super_class = SRSensorsCache;
@@ -76,7 +76,7 @@
   if (v4)
   {
     v4->_sensorsCache = objc_alloc_init(NSCache);
-    v4->_sensorDescriptionsDirs = a3;
+    v4->_sensorDescriptionsDirs = directories;
   }
 
   return v4;

@@ -1,41 +1,41 @@
 @interface WFHandOffPlaybackAction
 - (id)destinationRouteDescriptor;
-- (id)errorFromRoutePickerError:(id)a3;
-- (id)errorUserInfoForRoutePickerErrorCode:(int64_t)a3 involvedRouteName:(id)a4;
+- (id)errorFromRoutePickerError:(id)error;
+- (id)errorUserInfoForRoutePickerErrorCode:(int64_t)code involvedRouteName:(id)name;
 - (id)invokingHomePodRouteDescriptor;
 - (id)localEndpoint;
 - (id)sourceRouteDescriptor;
-- (void)askForUserSpecificationOfMissingRouteWithRoutePicker:(id)a3 completionBlock:(id)a4;
-- (void)findInvokingHomePodEndpointWithRoutePicker:(id)a3 completionBlock:(id)a4;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)runWhenInvokedThroughHomePodWithSpecifiedDescriptor:(id)a3 picker:(id)a4;
-- (void)runWhenInvokedThroughLocalDeviceWithSpecifiedDescriptor:(id)a3 picker:(id)a4;
-- (void)runWithSourceRouteUID:(id)a3 destinationRouteUID:(id)a4 routePicker:(id)a5;
+- (void)askForUserSpecificationOfMissingRouteWithRoutePicker:(id)picker completionBlock:(id)block;
+- (void)findInvokingHomePodEndpointWithRoutePicker:(id)picker completionBlock:(id)block;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)runWhenInvokedThroughHomePodWithSpecifiedDescriptor:(id)descriptor picker:(id)picker;
+- (void)runWhenInvokedThroughLocalDeviceWithSpecifiedDescriptor:(id)descriptor picker:(id)picker;
+- (void)runWithSourceRouteUID:(id)d destinationRouteUID:(id)iD routePicker:(id)picker;
 @end
 
 @implementation WFHandOffPlaybackAction
 
-- (id)errorUserInfoForRoutePickerErrorCode:(int64_t)a3 involvedRouteName:(id)a4
+- (id)errorUserInfoForRoutePickerErrorCode:(int64_t)code involvedRouteName:(id)name
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (!v6)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v6 = WFLocalizedString(@"Unknown");
+    nameCopy = WFLocalizedString(@"Unknown");
   }
 
-  if (a3 <= 8)
+  if (code <= 8)
   {
-    if (((1 << a3) & 0xD8) != 0)
+    if (((1 << code) & 0xD8) != 0)
     {
       v23[0] = *MEMORY[0x277CCA470];
       v7 = MEMORY[0x277CCACA8];
       v8 = WFLocalizedString(@"Failed to Hand Off Music Between “%@” and “%@”");
-      v9 = [(WFHandOffPlaybackAction *)self sourceRouteDescriptor];
-      v10 = [v9 routeName];
-      v11 = [(WFHandOffPlaybackAction *)self destinationRouteDescriptor];
-      v12 = [v11 routeName];
-      v13 = [v7 localizedStringWithFormat:v8, v10, v12];
+      sourceRouteDescriptor = [(WFHandOffPlaybackAction *)self sourceRouteDescriptor];
+      routeName = [sourceRouteDescriptor routeName];
+      destinationRouteDescriptor = [(WFHandOffPlaybackAction *)self destinationRouteDescriptor];
+      routeName2 = [destinationRouteDescriptor routeName];
+      v13 = [v7 localizedStringWithFormat:v8, routeName, routeName2];
       v24[0] = v13;
       v23[1] = *MEMORY[0x277CCA450];
       v14 = WFLocalizedString(@"Couldn't hand off music between specified devices.");
@@ -46,32 +46,32 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if (a3 == 5)
+    if (code == 5)
     {
       v27[0] = *MEMORY[0x277CCA470];
       v20 = MEMORY[0x277CCACA8];
       v8 = WFLocalizedString(@"Could Not Connect To “%@”");
-      v9 = [v20 localizedStringWithFormat:v8, v6];
-      v28[0] = v9;
+      sourceRouteDescriptor = [v20 localizedStringWithFormat:v8, nameCopy];
+      v28[0] = sourceRouteDescriptor;
       v27[1] = *MEMORY[0x277CCA450];
-      v10 = WFLocalizedString(@"It took too long to connect to the specified device.");
-      v28[1] = v10;
+      routeName = WFLocalizedString(@"It took too long to connect to the specified device.");
+      v28[1] = routeName;
       v16 = MEMORY[0x277CBEAC0];
       v17 = v28;
       v18 = v27;
       goto LABEL_12;
     }
 
-    if (a3 == 8)
+    if (code == 8)
     {
       v25[0] = *MEMORY[0x277CCA470];
       v15 = MEMORY[0x277CCACA8];
       v8 = WFLocalizedString(@"Device “%@” Is Not Playing Music");
-      v9 = [v15 localizedStringWithFormat:v8, v6];
-      v26[0] = v9;
+      sourceRouteDescriptor = [v15 localizedStringWithFormat:v8, nameCopy];
+      v26[0] = sourceRouteDescriptor;
       v25[1] = *MEMORY[0x277CCA450];
-      v10 = WFLocalizedString(@"The specified device is not playing any music.");
-      v26[1] = v10;
+      routeName = WFLocalizedString(@"The specified device is not playing any music.");
+      v26[1] = routeName;
       v16 = MEMORY[0x277CBEAC0];
       v17 = v26;
       v18 = v25;
@@ -81,16 +81,16 @@ LABEL_12:
     }
   }
 
-  if (a3 < 3)
+  if (code < 3)
   {
     v29[0] = *MEMORY[0x277CCA470];
     v19 = MEMORY[0x277CCACA8];
     v8 = WFLocalizedString(@"Could Not Find “%@”");
-    v9 = [v19 localizedStringWithFormat:v8, v6];
-    v30[0] = v9;
+    sourceRouteDescriptor = [v19 localizedStringWithFormat:v8, nameCopy];
+    v30[0] = sourceRouteDescriptor;
     v29[1] = *MEMORY[0x277CCA450];
-    v10 = WFLocalizedString(@"Hand Off Playback failed because the specified device could not be found.");
-    v30[1] = v10;
+    routeName = WFLocalizedString(@"Hand Off Playback failed because the specified device could not be found.");
+    v30[1] = routeName;
     v16 = MEMORY[0x277CBEAC0];
     v17 = v30;
     v18 = v29;
@@ -104,19 +104,19 @@ LABEL_14:
   return self;
 }
 
-- (id)errorFromRoutePickerError:(id)a3
+- (id)errorFromRoutePickerError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [v4 domain];
-    v7 = [v6 isEqualToString:@"WFMediaRoutePickerErrorDomain"];
+    domain = [errorCopy domain];
+    v7 = [domain isEqualToString:@"WFMediaRoutePickerErrorDomain"];
 
     if (v7)
     {
-      v8 = [v5 userInfo];
-      v9 = [v8 objectForKeyedSubscript:@"InvolvedMediaRoute"];
+      userInfo = [v5 userInfo];
+      v9 = [userInfo objectForKeyedSubscript:@"InvolvedMediaRoute"];
 
       v10 = -[WFHandOffPlaybackAction errorUserInfoForRoutePickerErrorCode:involvedRouteName:](self, "errorUserInfoForRoutePickerErrorCode:involvedRouteName:", [v5 code], v9);
       v11 = [v10 mutableCopy];
@@ -152,11 +152,11 @@ LABEL_14:
   return [(WFHandOffPlaybackAction *)self parameterValueForKey:@"WFSourceMediaRoute" ofClass:v3];
 }
 
-- (void)askForUserSpecificationOfMissingRouteWithRoutePicker:(id)a3 completionBlock:(id)a4
+- (void)askForUserSpecificationOfMissingRouteWithRoutePicker:(id)picker completionBlock:(id)block
 {
-  v5 = a4;
-  v6 = [(WFHandOffPlaybackAction *)self sourceRouteDescriptor];
-  if (v6)
+  blockCopy = block;
+  sourceRouteDescriptor = [(WFHandOffPlaybackAction *)self sourceRouteDescriptor];
+  if (sourceRouteDescriptor)
   {
     v7 = @"WFDestinationMediaRoute";
   }
@@ -175,8 +175,8 @@ LABEL_14:
   v13[2] = __96__WFHandOffPlaybackAction_askForUserSpecificationOfMissingRouteWithRoutePicker_completionBlock___block_invoke;
   v13[3] = &unk_278C19228;
   v14 = v8;
-  v15 = v5;
-  v11 = v5;
+  v15 = blockCopy;
+  v11 = blockCopy;
   v12 = v8;
   [(WFHandOffPlaybackAction *)self askForValuesOfParameters:v9 withDefaultStates:MEMORY[0x277CBEC10] prompts:MEMORY[0x277CBEC10] input:0 workQueue:v10 completionHandler:v13];
 }
@@ -232,25 +232,25 @@ void __96__WFHandOffPlaybackAction_askForUserSpecificationOfMissingRouteWithRout
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)findInvokingHomePodEndpointWithRoutePicker:(id)a3 completionBlock:(id)a4
+- (void)findInvokingHomePodEndpointWithRoutePicker:(id)picker completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFHandOffPlaybackAction *)self invokingHomePodRouteDescriptor];
-  if (v8)
+  pickerCopy = picker;
+  blockCopy = block;
+  invokingHomePodRouteDescriptor = [(WFHandOffPlaybackAction *)self invokingHomePodRouteDescriptor];
+  if (invokingHomePodRouteDescriptor)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __86__WFHandOffPlaybackAction_findInvokingHomePodEndpointWithRoutePicker_completionBlock___block_invoke;
     v9[3] = &unk_278C19200;
     v9[4] = self;
-    v10 = v7;
-    [v6 findHandoffRouteMatchingDescriptor:v8 timeout:v9 completionHandler:5.0];
+    v10 = blockCopy;
+    [pickerCopy findHandoffRouteMatchingDescriptor:invokingHomePodRouteDescriptor timeout:v9 completionHandler:5.0];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0);
   }
 }
 
@@ -290,25 +290,25 @@ void __86__WFHandOffPlaybackAction_findInvokingHomePodEndpointWithRoutePicker_co
 
 - (id)invokingHomePodRouteDescriptor
 {
-  v3 = [(WFHandOffPlaybackAction *)self userInterface];
-  if (![v3 isRunningWithSiriUI])
+  userInterface = [(WFHandOffPlaybackAction *)self userInterface];
+  if (![userInterface isRunningWithSiriUI])
   {
     v8 = 0;
     goto LABEL_6;
   }
 
-  v4 = [(WFHandOffPlaybackAction *)self userInterface];
+  userInterface2 = [(WFHandOffPlaybackAction *)self userInterface];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WFHandOffPlaybackAction *)self userInterface];
-    v7 = [v6 airPlayRouteIDs];
-    v3 = [v7 firstObject];
+    userInterface3 = [(WFHandOffPlaybackAction *)self userInterface];
+    airPlayRouteIDs = [userInterface3 airPlayRouteIDs];
+    userInterface = [airPlayRouteIDs firstObject];
 
-    if (v3)
+    if (userInterface)
     {
-      v8 = [[WFMediaRouteDescriptor alloc] initWithRouteUID:v3 groupUID:0 routeName:0 isLocalDevice:0];
+      v8 = [[WFMediaRouteDescriptor alloc] initWithRouteUID:userInterface groupUID:0 routeName:0 isLocalDevice:0];
 LABEL_6:
 
       goto LABEL_8;
@@ -321,56 +321,56 @@ LABEL_8:
   return v8;
 }
 
-- (void)runWithSourceRouteUID:(id)a3 destinationRouteUID:(id)a4 routePicker:(id)a5
+- (void)runWithSourceRouteUID:(id)d destinationRouteUID:(id)iD routePicker:(id)picker
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __81__WFHandOffPlaybackAction_runWithSourceRouteUID_destinationRouteUID_routePicker___block_invoke;
   v5[3] = &unk_278C221F8;
   v5[4] = self;
-  [a5 handOffFromSourceUID:a3 toDestinationUID:a4 timeout:v5 completionHandler:20.0];
+  [picker handOffFromSourceUID:d toDestinationUID:iD timeout:v5 completionHandler:20.0];
 }
 
-- (void)runWhenInvokedThroughLocalDeviceWithSpecifiedDescriptor:(id)a3 picker:(id)a4
+- (void)runWhenInvokedThroughLocalDeviceWithSpecifiedDescriptor:(id)descriptor picker:(id)picker
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFHandOffPlaybackAction *)self sourceRouteDescriptor];
+  descriptorCopy = descriptor;
+  pickerCopy = picker;
+  sourceRouteDescriptor = [(WFHandOffPlaybackAction *)self sourceRouteDescriptor];
 
-  if ([v6 isLocalDevice])
+  if ([descriptorCopy isLocalDevice])
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __90__WFHandOffPlaybackAction_runWhenInvokedThroughLocalDeviceWithSpecifiedDescriptor_picker___block_invoke;
     v14[3] = &unk_278C191D8;
     v14[4] = self;
-    v17 = v8 == 0;
-    v15 = v6;
-    v16 = v7;
+    v17 = sourceRouteDescriptor == 0;
+    v15 = descriptorCopy;
+    v16 = pickerCopy;
     [(WFHandOffPlaybackAction *)self askForUserSpecificationOfMissingRouteWithRoutePicker:v16 completionBlock:v14];
   }
 
   else
   {
-    if (v8)
+    if (sourceRouteDescriptor)
     {
-      v9 = [v6 routeUID];
-      v10 = [(WFHandOffPlaybackAction *)self localEndpoint];
-      v11 = [v10 routeUID];
-      v12 = self;
-      v13 = v9;
+      routeUID = [descriptorCopy routeUID];
+      localEndpoint = [(WFHandOffPlaybackAction *)self localEndpoint];
+      routeUID2 = [localEndpoint routeUID];
+      selfCopy2 = self;
+      v13 = routeUID;
     }
 
     else
     {
-      v9 = [(WFHandOffPlaybackAction *)self localEndpoint];
-      v10 = [v9 routeUID];
-      v11 = [v6 routeUID];
-      v12 = self;
-      v13 = v10;
+      routeUID = [(WFHandOffPlaybackAction *)self localEndpoint];
+      localEndpoint = [routeUID routeUID];
+      routeUID2 = [descriptorCopy routeUID];
+      selfCopy2 = self;
+      v13 = localEndpoint;
     }
 
-    [(WFHandOffPlaybackAction *)v12 runWithSourceRouteUID:v13 destinationRouteUID:v11 routePicker:v7];
+    [(WFHandOffPlaybackAction *)selfCopy2 runWithSourceRouteUID:v13 destinationRouteUID:routeUID2 routePicker:pickerCopy];
   }
 }
 
@@ -412,123 +412,123 @@ void __90__WFHandOffPlaybackAction_runWhenInvokedThroughLocalDeviceWithSpecified
   }
 }
 
-- (void)runWhenInvokedThroughHomePodWithSpecifiedDescriptor:(id)a3 picker:(id)a4
+- (void)runWhenInvokedThroughHomePodWithSpecifiedDescriptor:(id)descriptor picker:(id)picker
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [(WFHandOffPlaybackAction *)self sourceRouteDescriptor];
+  descriptorCopy = descriptor;
+  pickerCopy = picker;
+  sourceRouteDescriptor = [(WFHandOffPlaybackAction *)self sourceRouteDescriptor];
 
-  v8 = [(WFHandOffPlaybackAction *)self invokingHomePodRouteDescriptor];
-  if ([v15 isEqualInRouteUIDs:v8])
+  invokingHomePodRouteDescriptor = [(WFHandOffPlaybackAction *)self invokingHomePodRouteDescriptor];
+  if ([descriptorCopy isEqualInRouteUIDs:invokingHomePodRouteDescriptor])
   {
-    if (v7)
+    if (sourceRouteDescriptor)
     {
-      v9 = [v15 routeUID];
-      v10 = [(WFHandOffPlaybackAction *)self localEndpoint];
-      v11 = [v10 routeUID];
-      v12 = self;
-      v13 = v9;
+      routeUID = [descriptorCopy routeUID];
+      localEndpoint = [(WFHandOffPlaybackAction *)self localEndpoint];
+      routeUID2 = [localEndpoint routeUID];
+      selfCopy2 = self;
+      v13 = routeUID;
     }
 
     else
     {
-      v9 = [(WFHandOffPlaybackAction *)self localEndpoint];
-      v10 = [v9 routeUID];
-      v11 = [v15 routeUID];
-      v12 = self;
-      v13 = v10;
+      routeUID = [(WFHandOffPlaybackAction *)self localEndpoint];
+      localEndpoint = [routeUID routeUID];
+      routeUID2 = [descriptorCopy routeUID];
+      selfCopy2 = self;
+      v13 = localEndpoint;
     }
 
-    [(WFHandOffPlaybackAction *)v12 runWithSourceRouteUID:v13 destinationRouteUID:v11 routePicker:v6];
+    [(WFHandOffPlaybackAction *)selfCopy2 runWithSourceRouteUID:v13 destinationRouteUID:routeUID2 routePicker:pickerCopy];
   }
 
   else
   {
-    if (!v8)
+    if (!invokingHomePodRouteDescriptor)
     {
       [(WFHandOffPlaybackAction *)self finishRunningWithError:0];
       goto LABEL_13;
     }
 
-    if (v7)
+    if (sourceRouteDescriptor)
     {
-      v9 = [v15 routeUID];
-      v14 = v8;
+      routeUID = [descriptorCopy routeUID];
+      v14 = invokingHomePodRouteDescriptor;
     }
 
     else
     {
-      v9 = [v8 routeUID];
-      v14 = v15;
+      routeUID = [invokingHomePodRouteDescriptor routeUID];
+      v14 = descriptorCopy;
     }
 
-    v10 = [v14 routeUID];
-    [(WFHandOffPlaybackAction *)self runWithSourceRouteUID:v9 destinationRouteUID:v10 routePicker:v6];
+    localEndpoint = [v14 routeUID];
+    [(WFHandOffPlaybackAction *)self runWithSourceRouteUID:routeUID destinationRouteUID:localEndpoint routePicker:pickerCopy];
   }
 
 LABEL_13:
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v4 = [[WFMediaRoutePicker alloc] initWithRouteType:2];
-  v5 = [(WFHandOffPlaybackAction *)self sourceRouteDescriptor];
-  if (v5 && (v6 = v5, [(WFHandOffPlaybackAction *)self destinationRouteDescriptor], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  sourceRouteDescriptor = [(WFHandOffPlaybackAction *)self sourceRouteDescriptor];
+  if (sourceRouteDescriptor && (v6 = sourceRouteDescriptor, [(WFHandOffPlaybackAction *)self destinationRouteDescriptor], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
-    v8 = [(WFHandOffPlaybackAction *)self sourceRouteDescriptor];
-    v9 = [v8 routeUID];
-    v10 = [(WFHandOffPlaybackAction *)self destinationRouteDescriptor];
-    v11 = [v10 routeUID];
+    sourceRouteDescriptor2 = [(WFHandOffPlaybackAction *)self sourceRouteDescriptor];
+    routeUID = [sourceRouteDescriptor2 routeUID];
+    destinationRouteDescriptor = [(WFHandOffPlaybackAction *)self destinationRouteDescriptor];
+    routeUID2 = [destinationRouteDescriptor routeUID];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __54__WFHandOffPlaybackAction_runAsynchronouslyWithInput___block_invoke;
     v18[3] = &unk_278C221F8;
     v18[4] = self;
-    [(WFMediaRoutePicker *)v4 handOffFromSourceUID:v9 toDestinationUID:v11 timeout:v18 completionHandler:20.0];
+    [(WFMediaRoutePicker *)v4 handOffFromSourceUID:routeUID toDestinationUID:routeUID2 timeout:v18 completionHandler:20.0];
   }
 
   else
   {
-    v12 = [(WFHandOffPlaybackAction *)self sourceRouteDescriptor];
-    if (v12)
+    sourceRouteDescriptor3 = [(WFHandOffPlaybackAction *)self sourceRouteDescriptor];
+    if (sourceRouteDescriptor3)
     {
     }
 
     else
     {
-      v13 = [(WFHandOffPlaybackAction *)self destinationRouteDescriptor];
+      destinationRouteDescriptor2 = [(WFHandOffPlaybackAction *)self destinationRouteDescriptor];
 
-      if (!v13)
+      if (!destinationRouteDescriptor2)
       {
         [(WFHandOffPlaybackAction *)self finishRunningWithError:0];
         goto LABEL_14;
       }
     }
 
-    v14 = [(WFHandOffPlaybackAction *)self sourceRouteDescriptor];
-    v15 = v14;
-    if (v14)
+    sourceRouteDescriptor4 = [(WFHandOffPlaybackAction *)self sourceRouteDescriptor];
+    v15 = sourceRouteDescriptor4;
+    if (sourceRouteDescriptor4)
     {
-      v16 = v14;
+      destinationRouteDescriptor3 = sourceRouteDescriptor4;
     }
 
     else
     {
-      v16 = [(WFHandOffPlaybackAction *)self destinationRouteDescriptor];
+      destinationRouteDescriptor3 = [(WFHandOffPlaybackAction *)self destinationRouteDescriptor];
     }
 
-    v8 = v16;
+    sourceRouteDescriptor2 = destinationRouteDescriptor3;
 
-    v17 = [(WFHandOffPlaybackAction *)self invokingHomePodRouteDescriptor];
+    invokingHomePodRouteDescriptor = [(WFHandOffPlaybackAction *)self invokingHomePodRouteDescriptor];
 
-    if (v17)
+    if (invokingHomePodRouteDescriptor)
     {
-      [(WFHandOffPlaybackAction *)self runWhenInvokedThroughHomePodWithSpecifiedDescriptor:v8 picker:v4];
+      [(WFHandOffPlaybackAction *)self runWhenInvokedThroughHomePodWithSpecifiedDescriptor:sourceRouteDescriptor2 picker:v4];
     }
 
     else
     {
-      [(WFHandOffPlaybackAction *)self runWhenInvokedThroughLocalDeviceWithSpecifiedDescriptor:v8 picker:v4];
+      [(WFHandOffPlaybackAction *)self runWhenInvokedThroughLocalDeviceWithSpecifiedDescriptor:sourceRouteDescriptor2 picker:v4];
     }
   }
 

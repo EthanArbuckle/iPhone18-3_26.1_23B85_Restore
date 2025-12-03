@@ -1,5 +1,5 @@
 @interface LookAroundShareItemSource
-- (LookAroundShareItemSource)initWithMapItem:(id)a3 shareStateProvider:(id)a4;
+- (LookAroundShareItemSource)initWithMapItem:(id)item shareStateProvider:(id)provider;
 - (LookAroundShareStateProvider)shareStateProvider;
 - (NSArray)activityProviders;
 - (NSArray)excludedActivityTypes;
@@ -17,10 +17,10 @@
 
 - (id)_activityTitle
 {
-  v2 = [(LookAroundShareItemSource *)self shareStateProvider];
-  v3 = [v2 sharingTitle];
+  shareStateProvider = [(LookAroundShareItemSource *)self shareStateProvider];
+  sharingTitle = [shareStateProvider sharingTitle];
 
-  return v3;
+  return sharingTitle;
 }
 
 - (NSArray)excludedActivityTypes
@@ -33,28 +33,28 @@
 
 - (NSArray)activityProviders
 {
-  v3 = [(LookAroundShareItemSource *)self textProvider];
-  v4 = [(LookAroundShareItemSource *)self urlProvider];
-  v8[1] = v4;
-  v5 = [(LookAroundShareItemSource *)self linkPresentationProvider];
-  v8[2] = v5;
+  textProvider = [(LookAroundShareItemSource *)self textProvider];
+  urlProvider = [(LookAroundShareItemSource *)self urlProvider];
+  v8[1] = urlProvider;
+  linkPresentationProvider = [(LookAroundShareItemSource *)self linkPresentationProvider];
+  v8[2] = linkPresentationProvider;
   v6 = [NSArray arrayWithObjects:v8 count:3];
 
   return v6;
 }
 
-- (LookAroundShareItemSource)initWithMapItem:(id)a3 shareStateProvider:(id)a4
+- (LookAroundShareItemSource)initWithMapItem:(id)item shareStateProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = LookAroundShareItemSource;
   v8 = [(LookAroundShareItemSource *)&v24 init];
   v9 = v8;
   if (v8)
   {
-    [(LookAroundShareItemSource *)v8 setShareStateProvider:v7];
-    v10 = [[MUPlaceActivityDataProviderConfiguration alloc] initWithMapItem:v6];
+    [(LookAroundShareItemSource *)v8 setShareStateProvider:providerCopy];
+    v10 = [[MUPlaceActivityDataProviderConfiguration alloc] initWithMapItem:itemCopy];
     [v10 setSupportsURLShorteningService:1];
     objc_initWeak(&location, v9);
     v21[0] = _NSConcreteStackBlock;
@@ -72,16 +72,16 @@
     v11 = [[MULookAroundActivityDataProvider alloc] initWithConfiguration:v10];
     [(LookAroundShareItemSource *)v9 setDataProvider:v11];
 
-    v12 = [(LookAroundShareItemSource *)v9 dataProvider];
-    v13 = [MUTextActivityProvider activityProviderFromDataProvider:v12];
+    dataProvider = [(LookAroundShareItemSource *)v9 dataProvider];
+    v13 = [MUTextActivityProvider activityProviderFromDataProvider:dataProvider];
     [(LookAroundShareItemSource *)v9 setTextProvider:v13];
 
-    v14 = [(LookAroundShareItemSource *)v9 dataProvider];
-    v15 = [MUURLActivityProvider activityProviderFromDataProvider:v14];
+    dataProvider2 = [(LookAroundShareItemSource *)v9 dataProvider];
+    v15 = [MUURLActivityProvider activityProviderFromDataProvider:dataProvider2];
     [(LookAroundShareItemSource *)v9 setUrlProvider:v15];
 
-    v16 = [(LookAroundShareItemSource *)v9 dataProvider];
-    v17 = [MULinkMetadataActivityProvider activityProviderFromDataProvider:v16];
+    dataProvider3 = [(LookAroundShareItemSource *)v9 dataProvider];
+    v17 = [MULinkMetadataActivityProvider activityProviderFromDataProvider:dataProvider3];
     [(LookAroundShareItemSource *)v9 setLinkPresentationProvider:v17];
 
     objc_destroyWeak(&v20);

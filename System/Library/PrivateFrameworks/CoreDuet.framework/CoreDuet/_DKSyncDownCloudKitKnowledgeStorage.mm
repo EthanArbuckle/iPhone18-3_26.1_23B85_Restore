@@ -3,15 +3,15 @@
 - (BOOL)isAvailable;
 - (_DKSyncDownCloudKitKnowledgeStorage)init;
 - (void)cancelOutstandingOperations;
-- (void)fetchAdditionsHighWaterMarkWithPeer:(id)a3 highPriority:(BOOL)a4 completion:(id)a5;
-- (void)fetchDeletedEventIDsFromPeer:(id)a3 sinceDate:(id)a4 streamNames:(id)a5 limit:(unint64_t)a6 highPriority:(BOOL)a7 completion:(id)a8;
-- (void)fetchDeletionsHighWaterMarkWithPeer:(id)a3 highPriority:(BOOL)a4 completion:(id)a5;
-- (void)fetchEventsFromPeer:(id)a3 windows:(id)a4 streamNames:(id)a5 limit:(unint64_t)a6 fetchOrder:(int64_t)a7 highPriority:(BOOL)a8 completion:(id)a9;
-- (void)fetchSourceDeviceIDFromPeer:(id)a3 highPriority:(BOOL)a4 completion:(id)a5;
-- (void)prewarmFetchWithCompletion:(id)a3;
-- (void)setAvailable:(BOOL)a3;
+- (void)fetchAdditionsHighWaterMarkWithPeer:(id)peer highPriority:(BOOL)priority completion:(id)completion;
+- (void)fetchDeletedEventIDsFromPeer:(id)peer sinceDate:(id)date streamNames:(id)names limit:(unint64_t)limit highPriority:(BOOL)priority completion:(id)completion;
+- (void)fetchDeletionsHighWaterMarkWithPeer:(id)peer highPriority:(BOOL)priority completion:(id)completion;
+- (void)fetchEventsFromPeer:(id)peer windows:(id)windows streamNames:(id)names limit:(unint64_t)limit fetchOrder:(int64_t)order highPriority:(BOOL)priority completion:(id)completion;
+- (void)fetchSourceDeviceIDFromPeer:(id)peer highPriority:(BOOL)priority completion:(id)completion;
+- (void)prewarmFetchWithCompletion:(id)completion;
+- (void)setAvailable:(BOOL)available;
 - (void)start;
-- (void)updateStorageWithAddedEvents:(id)a3 deletedEventIDs:(id)a4 highPriority:(BOOL)a5 completion:(id)a6;
+- (void)updateStorageWithAddedEvents:(id)events deletedEventIDs:(id)ds highPriority:(BOOL)priority completion:(id)completion;
 @end
 
 @implementation _DKSyncDownCloudKitKnowledgeStorage
@@ -46,12 +46,12 @@
   return OUTLINED_FUNCTION_61(common);
 }
 
-- (void)setAvailable:(BOOL)a3
+- (void)setAvailable:(BOOL)available
 {
   common = self->_common;
   if (common)
   {
-    common->_available = a3;
+    common->_available = available;
   }
 }
 
@@ -83,9 +83,9 @@
   [(_DKSyncCloudKitKnowledgeStorage *)common cancelOutstandingOperations];
 }
 
-- (void)prewarmFetchWithCompletion:(id)a3
+- (void)prewarmFetchWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   common = self->_common;
   if (common)
   {
@@ -93,12 +93,12 @@
     common = self->_common;
   }
 
-  [(_DKSyncCloudKitKnowledgeStorage *)common prewarmFetchWithCompletion:v6];
+  [(_DKSyncCloudKitKnowledgeStorage *)common prewarmFetchWithCompletion:completionCopy];
 }
 
-- (void)fetchEventsFromPeer:(id)a3 windows:(id)a4 streamNames:(id)a5 limit:(unint64_t)a6 fetchOrder:(int64_t)a7 highPriority:(BOOL)a8 completion:(id)a9
+- (void)fetchEventsFromPeer:(id)peer windows:(id)windows streamNames:(id)names limit:(unint64_t)limit fetchOrder:(int64_t)order highPriority:(BOOL)priority completion:(id)completion
 {
-  v25 = OUTLINED_FUNCTION_42(self, a2, a3);
+  v25 = OUTLINED_FUNCTION_42(self, a2, peer);
   v13 = v9;
   v14 = v10;
   v22 = v12;
@@ -112,9 +112,9 @@
   OUTLINED_FUNCTION_36_0(v23, v15, v16, v17, v18, v19, v20, v21, v24, v25);
 }
 
-- (void)fetchAdditionsHighWaterMarkWithPeer:(id)a3 highPriority:(BOOL)a4 completion:(id)a5
+- (void)fetchAdditionsHighWaterMarkWithPeer:(id)peer highPriority:(BOOL)priority completion:(id)completion
 {
-  v12 = OUTLINED_FUNCTION_29_0(self, a2, a3);
+  v12 = OUTLINED_FUNCTION_29_0(self, a2, peer);
   v7 = v5;
   v8 = OUTLINED_FUNCTION_40();
   if (v8)
@@ -127,9 +127,9 @@
   [v11 fetchAdditionsHighWaterMarkWithPeer:? highPriority:? completion:?];
 }
 
-- (void)fetchDeletedEventIDsFromPeer:(id)a3 sinceDate:(id)a4 streamNames:(id)a5 limit:(unint64_t)a6 highPriority:(BOOL)a7 completion:(id)a8
+- (void)fetchDeletedEventIDsFromPeer:(id)peer sinceDate:(id)date streamNames:(id)names limit:(unint64_t)limit highPriority:(BOOL)priority completion:(id)completion
 {
-  v24 = OUTLINED_FUNCTION_47(self, a2, a3);
+  v24 = OUTLINED_FUNCTION_47(self, a2, peer);
   v12 = v8;
   v13 = v9;
   v21 = v11;
@@ -143,9 +143,9 @@
   OUTLINED_FUNCTION_48(v22, v14, v15, v16, v17, v18, v19, v20, v23, v24);
 }
 
-- (void)fetchDeletionsHighWaterMarkWithPeer:(id)a3 highPriority:(BOOL)a4 completion:(id)a5
+- (void)fetchDeletionsHighWaterMarkWithPeer:(id)peer highPriority:(BOOL)priority completion:(id)completion
 {
-  v12 = OUTLINED_FUNCTION_29_0(self, a2, a3);
+  v12 = OUTLINED_FUNCTION_29_0(self, a2, peer);
   v7 = v5;
   v8 = OUTLINED_FUNCTION_40();
   if (v8)
@@ -158,9 +158,9 @@
   [v11 fetchDeletionsHighWaterMarkWithPeer:? highPriority:? completion:?];
 }
 
-- (void)fetchSourceDeviceIDFromPeer:(id)a3 highPriority:(BOOL)a4 completion:(id)a5
+- (void)fetchSourceDeviceIDFromPeer:(id)peer highPriority:(BOOL)priority completion:(id)completion
 {
-  v12 = OUTLINED_FUNCTION_29_0(self, a2, a3);
+  v12 = OUTLINED_FUNCTION_29_0(self, a2, peer);
   v7 = v5;
   v8 = OUTLINED_FUNCTION_40();
   if (v8)
@@ -173,9 +173,9 @@
   [v11 fetchSourceDeviceIDFromPeer:? highPriority:? completion:?];
 }
 
-- (void)updateStorageWithAddedEvents:(id)a3 deletedEventIDs:(id)a4 highPriority:(BOOL)a5 completion:(id)a6
+- (void)updateStorageWithAddedEvents:(id)events deletedEventIDs:(id)ds highPriority:(BOOL)priority completion:(id)completion
 {
-  v20 = OUTLINED_FUNCTION_76(self, a2, a3);
+  v20 = OUTLINED_FUNCTION_76(self, a2, events);
   v9 = v6;
   v17 = v7;
   v18 = *(v8 + 8);

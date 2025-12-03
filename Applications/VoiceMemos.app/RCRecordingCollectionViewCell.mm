@@ -6,61 +6,61 @@
 - (BOOL)isAccessibilityElement;
 - (BOOL)isEditingTitle;
 - (BOOL)wasManuallyRenamed;
-- (CGRect)containerView:(id)a3 layoutFrameForArrangedSubview:(id)a4 withProposedFrame:(CGRect)result;
+- (CGRect)containerView:(id)view layoutFrameForArrangedSubview:(id)subview withProposedFrame:(CGRect)result;
 - (NSDate)creationDate;
 - (NSString)recordingTitle;
-- (RCRecordingCollectionViewCell)initWithFrame:(CGRect)a3;
+- (RCRecordingCollectionViewCell)initWithFrame:(CGRect)frame;
 - (RCRecordingsCollectionViewCellDelegate)cellDelegate;
 - (UITextField)textFieldBeingEdited;
 - (float)editingProgress;
-- (id)_backgroundConfigurationForState:(id)a3;
+- (id)_backgroundConfigurationForState:(id)state;
 - (id)_createCellAccessories;
 - (id)_createProgressOverlay;
 - (id)_customBackgroundColor;
-- (id)_labelConfigurationForState:(id)a3;
+- (id)_labelConfigurationForState:(id)state;
 - (id)_progressOverlayAccessory;
 - (id)accessibilityCustomActions;
 - (id)accessibilityElements;
 - (id)accessibilityLabel;
 - (id)accessibilityUserInputLabels;
 - (id)accessibilityValue;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (unint64_t)accessibilityTraits;
 - (void)_collapseVertically;
 - (void)_createShuttleBarIfNeeded;
 - (void)_expandVertically;
 - (void)_styleView;
-- (void)_updateAfterSelectionChangeToSelected:(BOOL)a3;
-- (void)_updateUIToVerticallyExpandedState:(BOOL)a3;
+- (void)_updateAfterSelectionChangeToSelected:(BOOL)selected;
+- (void)_updateUIToVerticallyExpandedState:(BOOL)state;
 - (void)_verifyVerticallyExpandedState;
 - (void)beginEditingTitle;
-- (void)didBeginEditingInTextField:(id)a3;
+- (void)didBeginEditingInTextField:(id)field;
 - (void)didEndEditingInTextField;
-- (void)handleUpdateTitle:(id)a3;
+- (void)handleUpdateTitle:(id)title;
 - (void)layoutSubviews;
-- (void)performControlsAction:(int64_t)a3 position:(double)a4 source:(id)a5;
+- (void)performControlsAction:(int64_t)action position:(double)position source:(id)source;
 - (void)prepareForReuse;
 - (void)resignFirstResponderForTitleEditing;
 - (void)restyle;
-- (void)setCreationDate:(id)a3;
-- (void)setCurrentTime:(double)a3;
-- (void)setDescriptionHeight:(double)a3;
-- (void)setEditingInFlight:(BOOL)a3;
-- (void)setEditingProgress:(float)a3;
-- (void)setHasMultipleTracks:(BOOL)a3;
-- (void)setHasTranscription:(BOOL)a3;
-- (void)setIsSpatialRecording:(BOOL)a3;
-- (void)setPlayControlState:(int64_t)a3;
-- (void)setRecordingDuration:(double)a3;
-- (void)setRecordingTitle:(id)a3;
-- (void)setRepresentsDownloadingFile:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setShuttleBarHeight:(double)a3;
-- (void)setUUID:(id)a3;
-- (void)setVerticallyExpanded:(BOOL)a3;
-- (void)setWasManuallyRenamed:(BOOL)a3;
+- (void)setCreationDate:(id)date;
+- (void)setCurrentTime:(double)time;
+- (void)setDescriptionHeight:(double)height;
+- (void)setEditingInFlight:(BOOL)flight;
+- (void)setEditingProgress:(float)progress;
+- (void)setHasMultipleTracks:(BOOL)tracks;
+- (void)setHasTranscription:(BOOL)transcription;
+- (void)setIsSpatialRecording:(BOOL)recording;
+- (void)setPlayControlState:(int64_t)state;
+- (void)setRecordingDuration:(double)duration;
+- (void)setRecordingTitle:(id)title;
+- (void)setRepresentsDownloadingFile:(BOOL)file;
+- (void)setSelected:(BOOL)selected;
+- (void)setShuttleBarHeight:(double)height;
+- (void)setUUID:(id)d;
+- (void)setVerticallyExpanded:(BOOL)expanded;
+- (void)setWasManuallyRenamed:(BOOL)renamed;
 - (void)updateAccessories;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation RCRecordingCollectionViewCell
@@ -70,8 +70,8 @@
   v13.receiver = self;
   v13.super_class = RCRecordingCollectionViewCell;
   [(RCRecordingCollectionViewCell *)&v13 layoutSubviews];
-  v3 = [(RCRecordingCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(RCRecordingCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -90,8 +90,8 @@
   [v3 addObject:v4];
   if ([(RCRecordingCollectionViewCell *)self _shouldShowProgressOverlay])
   {
-    v5 = [(RCRecordingCollectionViewCell *)self _progressOverlayAccessory];
-    [v3 addObject:v5];
+    _progressOverlayAccessory = [(RCRecordingCollectionViewCell *)self _progressOverlayAccessory];
+    [v3 addObject:_progressOverlayAccessory];
   }
 
   else
@@ -131,8 +131,8 @@
 
 - (BOOL)_hasCustomBackgroundColor
 {
-  v2 = [(RCRecordingCollectionViewCell *)self _customBackgroundColor];
-  v3 = v2 != 0;
+  _customBackgroundColor = [(RCRecordingCollectionViewCell *)self _customBackgroundColor];
+  v3 = _customBackgroundColor != 0;
 
   return v3;
 }
@@ -140,9 +140,9 @@
 - (id)_customBackgroundColor
 {
   v2 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [v2 recordingCollectionViewCellCustomBackgroundColor];
+  recordingCollectionViewCellCustomBackgroundColor = [v2 recordingCollectionViewCellCustomBackgroundColor];
 
-  return v3;
+  return recordingCollectionViewCellCustomBackgroundColor;
 }
 
 - (void)_verifyVerticallyExpandedState
@@ -150,8 +150,8 @@
   v5 = +[RCRecorderStyleProvider sharedStyleProvider];
   if (([v5 expandsRecordingsCollectionViewItemOnSelection] & 1) != 0 && -[RCRecordingCollectionViewCell isSelected](self, "isSelected"))
   {
-    v3 = [(RCRecordingCollectionViewCell *)self configurationState];
-    if ([v3 isEditing])
+    configurationState = [(RCRecordingCollectionViewCell *)self configurationState];
+    if ([configurationState isEditing])
     {
       v4 = 0;
     }
@@ -170,134 +170,134 @@
   }
 }
 
-- (void)setDescriptionHeight:(double)a3
+- (void)setDescriptionHeight:(double)height
 {
-  self->_descriptionHeight = a3;
-  v4 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  [v4 setIntrinsicHeight:a3];
+  self->_descriptionHeight = height;
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  [recordingDescriptionView setIntrinsicHeight:height];
 }
 
-- (void)setShuttleBarHeight:(double)a3
+- (void)setShuttleBarHeight:(double)height
 {
-  self->_shuttleBarHeight = a3;
-  v4 = [(RCRecordingCollectionViewCell *)self shuttleBar];
-  [v4 setIntrinsicHeight:a3];
+  self->_shuttleBarHeight = height;
+  shuttleBar = [(RCRecordingCollectionViewCell *)self shuttleBar];
+  [shuttleBar setIntrinsicHeight:height];
 }
 
-- (void)setRecordingTitle:(id)a3
+- (void)setRecordingTitle:(id)title
 {
-  v4 = a3;
-  v6 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  [v6 setRecordingTitle:v4];
+  titleCopy = title;
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  [recordingDescriptionView setRecordingTitle:titleCopy];
 
-  v5 = [(RCRecordingCollectionViewCell *)self UUID];
-  [v6 setUUID:v5];
+  uUID = [(RCRecordingCollectionViewCell *)self UUID];
+  [recordingDescriptionView setUUID:uUID];
 }
 
 - (NSString)recordingTitle
 {
-  v2 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  v3 = [v2 recordingTitle];
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  recordingTitle = [recordingDescriptionView recordingTitle];
 
-  return v3;
+  return recordingTitle;
 }
 
-- (void)setUUID:(id)a3
+- (void)setUUID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  dCopy = d;
+  v5 = [dCopy copy];
   UUID = self->_UUID;
   self->_UUID = v5;
 
-  v7 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  [v7 setUUID:v4];
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  [recordingDescriptionView setUUID:dCopy];
 }
 
-- (void)setRecordingDuration:(double)a3
+- (void)setRecordingDuration:(double)duration
 {
-  self->_recordingDuration = a3;
-  v5 = round(a3);
-  v6 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  [v6 setRecordingDuration:0 withHiddenLabel:1 isDurationLabelAX:v5];
+  self->_recordingDuration = duration;
+  v5 = round(duration);
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  [recordingDescriptionView setRecordingDuration:0 withHiddenLabel:1 isDurationLabelAX:v5];
 
-  v7 = [(RCRecordingCollectionViewCell *)self shuttleBar];
-  [v7 setDuration:a3];
+  shuttleBar = [(RCRecordingCollectionViewCell *)self shuttleBar];
+  [shuttleBar setDuration:duration];
 }
 
-- (void)setCurrentTime:(double)a3
+- (void)setCurrentTime:(double)time
 {
-  self->_currentTime = a3;
-  v4 = [(RCRecordingCollectionViewCell *)self shuttleBar];
-  [v4 setCurrentTime:a3];
+  self->_currentTime = time;
+  shuttleBar = [(RCRecordingCollectionViewCell *)self shuttleBar];
+  [shuttleBar setCurrentTime:time];
 }
 
-- (void)setCreationDate:(id)a3
+- (void)setCreationDate:(id)date
 {
-  v4 = a3;
-  v5 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  [v5 setCreationDate:v4];
+  dateCopy = date;
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  [recordingDescriptionView setCreationDate:dateCopy];
 }
 
 - (NSDate)creationDate
 {
-  v2 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  v3 = [v2 creationDate];
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  creationDate = [recordingDescriptionView creationDate];
 
-  return v3;
+  return creationDate;
 }
 
-- (void)setRepresentsDownloadingFile:(BOOL)a3
+- (void)setRepresentsDownloadingFile:(BOOL)file
 {
-  v3 = a3;
-  self->_representsDownloadingFile = a3;
-  v4 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  [v4 setShowDownloading:v3];
+  fileCopy = file;
+  self->_representsDownloadingFile = file;
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  [recordingDescriptionView setShowDownloading:fileCopy];
 }
 
 - (BOOL)wasManuallyRenamed
 {
-  v2 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  v3 = [v2 wasManuallyRenamed];
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  wasManuallyRenamed = [recordingDescriptionView wasManuallyRenamed];
 
-  return v3;
+  return wasManuallyRenamed;
 }
 
-- (void)setWasManuallyRenamed:(BOOL)a3
+- (void)setWasManuallyRenamed:(BOOL)renamed
 {
-  v3 = a3;
-  v4 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  [v4 setWasManuallyRenamed:v3];
+  renamedCopy = renamed;
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  [recordingDescriptionView setWasManuallyRenamed:renamedCopy];
 }
 
-- (void)setHasTranscription:(BOOL)a3
+- (void)setHasTranscription:(BOOL)transcription
 {
-  v3 = a3;
-  self->_hasTranscription = a3;
-  v4 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  [v4 setDisplayTranscriptAvailableIcon:v3];
+  transcriptionCopy = transcription;
+  self->_hasTranscription = transcription;
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  [recordingDescriptionView setDisplayTranscriptAvailableIcon:transcriptionCopy];
 }
 
-- (void)setHasMultipleTracks:(BOOL)a3
+- (void)setHasMultipleTracks:(BOOL)tracks
 {
-  v3 = a3;
-  self->_hasMultipleTracks = a3;
-  v4 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  [v4 setHasMultipleTracks:v3];
+  tracksCopy = tracks;
+  self->_hasMultipleTracks = tracks;
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  [recordingDescriptionView setHasMultipleTracks:tracksCopy];
 }
 
-- (void)setIsSpatialRecording:(BOOL)a3
+- (void)setIsSpatialRecording:(BOOL)recording
 {
-  v3 = a3;
-  self->_isSpatialRecording = a3;
-  v4 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  [v4 setIsSpatialRecording:v3];
+  recordingCopy = recording;
+  self->_isSpatialRecording = recording;
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  [recordingDescriptionView setIsSpatialRecording:recordingCopy];
 }
 
-- (RCRecordingCollectionViewCell)initWithFrame:(CGRect)a3
+- (RCRecordingCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = RCRecordingCollectionViewCell;
-  v3 = [(RCRecordingCollectionViewCell *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RCRecordingCollectionViewCell *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [RCRecordingDescriptionView descriptionViewWithStyle:1];
@@ -325,14 +325,14 @@
     v12 = v11;
 
     [(NUIContainerStackView *)v3->_stackView setDirectionalLayoutMargins:v12, 0.0, v12, 0.0];
-    v13 = [(RCRecordingCollectionViewCell *)v3 contentView];
-    [v13 addSubview:v3->_stackView];
+    contentView = [(RCRecordingCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_stackView];
 
-    v14 = [(RCRecordingCollectionViewCell *)v3 contentView];
-    [v14 setClipsToBounds:1];
+    contentView2 = [(RCRecordingCollectionViewCell *)v3 contentView];
+    [contentView2 setClipsToBounds:1];
 
-    v15 = [(RCRecordingCollectionViewCell *)v3 _createCellAccessories];
-    [(RCRecordingCollectionViewCell *)v3 setAccessories:v15];
+    _createCellAccessories = [(RCRecordingCollectionViewCell *)v3 _createCellAccessories];
+    [(RCRecordingCollectionViewCell *)v3 setAccessories:_createCellAccessories];
 
     [(RCRecordingCollectionViewCell *)v3 _styleView];
     v3->_playControlState = 0;
@@ -341,11 +341,11 @@
   return v3;
 }
 
-- (void)setPlayControlState:(int64_t)a3
+- (void)setPlayControlState:(int64_t)state
 {
-  self->_playControlState = a3;
-  v4 = [(RCRecordingCollectionViewCell *)self shuttleBar];
-  [v4 setPlayControlState:a3];
+  self->_playControlState = state;
+  shuttleBar = [(RCRecordingCollectionViewCell *)self shuttleBar];
+  [shuttleBar setPlayControlState:state];
 }
 
 - (void)_createShuttleBarIfNeeded
@@ -359,11 +359,11 @@
     [(RCShuttleBar *)self->_shuttleBar setActionDelegate:self];
     [(RCShuttleBar *)self->_shuttleBar setPresentedControlsOptions:3];
     v7 = objc_opt_new();
-    v5 = [v7 transportControlsColorForLibrary];
-    [(RCShuttleBar *)self->_shuttleBar setControlsColor:v5];
+    transportControlsColorForLibrary = [v7 transportControlsColorForLibrary];
+    [(RCShuttleBar *)self->_shuttleBar setControlsColor:transportControlsColorForLibrary];
 
-    v6 = [v7 secondaryTransportControlsColorForLibrary];
-    [(RCShuttleBar *)self->_shuttleBar setSecondaryControlsColor:v6];
+    secondaryTransportControlsColorForLibrary = [v7 secondaryTransportControlsColorForLibrary];
+    [(RCShuttleBar *)self->_shuttleBar setSecondaryControlsColor:secondaryTransportControlsColorForLibrary];
 
     [(RCShuttleBar *)self->_shuttleBar setIntrinsicHeight:self->_shuttleBarHeight];
     [(RCShuttleBar *)self->_shuttleBar setHidden:1];
@@ -377,9 +377,9 @@
   }
 }
 
-- (CGRect)containerView:(id)a3 layoutFrameForArrangedSubview:(id)a4 withProposedFrame:(CGRect)result
+- (CGRect)containerView:(id)view layoutFrameForArrangedSubview:(id)subview withProposedFrame:(CGRect)result
 {
-  if (self->_shuttleBar == a4)
+  if (self->_shuttleBar == subview)
   {
     result.origin.y = result.origin.y + 8.0;
   }
@@ -389,15 +389,15 @@
 
 - (void)updateAccessories
 {
-  v3 = [(RCRecordingCollectionViewCell *)self _createCellAccessories];
-  [(RCRecordingCollectionViewCell *)self setAccessories:v3];
+  _createCellAccessories = [(RCRecordingCollectionViewCell *)self _createCellAccessories];
+  [(RCRecordingCollectionViewCell *)self setAccessories:_createCellAccessories];
 }
 
 - (id)_progressOverlayAccessory
 {
-  v3 = [(RCRecordingCollectionViewCell *)self _createProgressOverlay];
-  [(RCRecordingCollectionViewCell *)self setProgressOverlay:v3];
-  v4 = [[UICellAccessoryCustomView alloc] initWithCustomView:v3 placement:1];
+  _createProgressOverlay = [(RCRecordingCollectionViewCell *)self _createProgressOverlay];
+  [(RCRecordingCollectionViewCell *)self setProgressOverlay:_createProgressOverlay];
+  v4 = [[UICellAccessoryCustomView alloc] initWithCustomView:_createProgressOverlay placement:1];
   [v4 setDisplayedState:0];
 
   return v4;
@@ -407,8 +407,8 @@
 {
   v2 = +[RCRecorderStyleProvider sharedStyleProvider];
   v3 = objc_opt_new();
-  v4 = [v2 progressViewBackgroundColorEditingCard];
-  [v3 setDimmingBackgroundColor:v4];
+  progressViewBackgroundColorEditingCard = [v2 progressViewBackgroundColorEditingCard];
+  [v3 setDimmingBackgroundColor:progressViewBackgroundColorEditingCard];
 
   [v3 setStyle:0];
   [v2 editingProgressIndicatorDiameterCell];
@@ -417,56 +417,56 @@
   return v3;
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v11 = a3;
-  v4 = [(RCRecordingCollectionViewCell *)self _backgroundConfigurationForState:v11];
+  stateCopy = state;
+  v4 = [(RCRecordingCollectionViewCell *)self _backgroundConfigurationForState:stateCopy];
   [(RCRecordingCollectionViewCell *)self setBackgroundConfiguration:v4];
 
-  v5 = [(RCRecordingCollectionViewCell *)self _labelConfigurationForState:v11];
-  v6 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  [v6 setLabelConfiguration:v5];
+  v5 = [(RCRecordingCollectionViewCell *)self _labelConfigurationForState:stateCopy];
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  [recordingDescriptionView setLabelConfiguration:v5];
 
-  if ([v11 isEditing])
+  if ([stateCopy isEditing])
   {
-    v7 = 0;
+    isSelected = 0;
   }
 
   else
   {
-    v7 = [v11 isSelected];
+    isSelected = [stateCopy isSelected];
   }
 
-  v8 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  v9 = [v8 titleEditingAllowed];
+  recordingDescriptionView2 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  titleEditingAllowed = [recordingDescriptionView2 titleEditingAllowed];
 
-  if (v7 != v9)
+  if (isSelected != titleEditingAllowed)
   {
-    v10 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-    [v10 setTitleEditingAllowed:v7];
+    recordingDescriptionView3 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+    [recordingDescriptionView3 setTitleEditingAllowed:isSelected];
   }
 
   [(RCRecordingCollectionViewCell *)self _verifyVerticallyExpandedState];
 }
 
-- (id)_backgroundConfigurationForState:(id)a3
+- (id)_backgroundConfigurationForState:(id)state
 {
-  v4 = a3;
-  v5 = [(RCRecordingCollectionViewCell *)self defaultBackgroundConfiguration];
-  v6 = [v5 updatedConfigurationForState:v4];
+  stateCopy = state;
+  defaultBackgroundConfiguration = [(RCRecordingCollectionViewCell *)self defaultBackgroundConfiguration];
+  v6 = [defaultBackgroundConfiguration updatedConfigurationForState:stateCopy];
 
   if ([(RCRecordingCollectionViewCell *)self _hasCustomBackgroundColor])
   {
-    v7 = [(RCRecordingCollectionViewCell *)self _customBackgroundColor];
-    [v6 setBackgroundColor:v7];
+    _customBackgroundColor = [(RCRecordingCollectionViewCell *)self _customBackgroundColor];
+    [v6 setBackgroundColor:_customBackgroundColor];
   }
 
   return v6;
 }
 
-- (id)_labelConfigurationForState:(id)a3
+- (id)_labelConfigurationForState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if ([(RCRecordingCollectionViewCell *)self _hasCustomBackgroundColor])
   {
     v5 = +[RCRecordingDescriptionViewLabelConfiguration recordingCollectionViewCellConfiguration];
@@ -474,21 +474,21 @@
 
   else
   {
-    v6 = [(RCRecordingCollectionViewCell *)self defaultContentConfiguration];
-    v7 = [v6 updatedConfigurationForState:v4];
+    defaultContentConfiguration = [(RCRecordingCollectionViewCell *)self defaultContentConfiguration];
+    v7 = [defaultContentConfiguration updatedConfigurationForState:stateCopy];
 
-    v8 = [v7 textProperties];
+    textProperties = [v7 textProperties];
     v5 = +[RCRecordingDescriptionViewLabelConfiguration emptyConfiguration];
-    v9 = [v8 color];
-    [v5 setRecordingTitleTextColor:v9];
+    color = [textProperties color];
+    [v5 setRecordingTitleTextColor:color];
 
-    v10 = [v8 color];
-    [v5 setRecordingTitleEditingTintColor:v10];
+    color2 = [textProperties color];
+    [v5 setRecordingTitleEditingTintColor:color2];
 
-    v11 = [v8 color];
+    color3 = [textProperties color];
     v12 = +[RCRecorderStyleProvider sharedStyleProvider];
     [v12 descriptionViewSecondaryLabelAlpha];
-    v13 = [v11 colorWithAlphaComponent:?];
+    v13 = [color3 colorWithAlphaComponent:?];
     [v5 setSubtitleTextColor:v13];
   }
 
@@ -498,11 +498,11 @@
 - (void)restyle
 {
   [(RCRecordingCollectionViewCell *)self _styleView];
-  v3 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  [v3 restyle];
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  [recordingDescriptionView restyle];
 
-  v4 = [(RCRecordingCollectionViewCell *)self progressOverlay];
-  [v4 restyle];
+  progressOverlay = [(RCRecordingCollectionViewCell *)self progressOverlay];
+  [progressOverlay restyle];
 
   if ([(RCRecordingCollectionViewCell *)self isSelected])
   {
@@ -524,23 +524,23 @@
   [(RCRecordingCollectionViewCell *)&v3 prepareForReuse];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if (!a3)
+  selectedCopy = selected;
+  if (!selected)
   {
-    v5 = [(RCRecordingCollectionViewCell *)self shuttleBar];
-    [v5 cancelScrubbing];
+    shuttleBar = [(RCRecordingCollectionViewCell *)self shuttleBar];
+    [shuttleBar cancelScrubbing];
   }
 
   v9.receiver = self;
   v9.super_class = RCRecordingCollectionViewCell;
-  [(RCRecordingCollectionViewCell *)&v9 setSelected:v3];
-  v6 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  if (v3)
+  [(RCRecordingCollectionViewCell *)&v9 setSelected:selectedCopy];
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  if (selectedCopy)
   {
-    v7 = [(RCRecordingCollectionViewCell *)self configurationState];
-    v8 = [v7 isEditing] ^ 1;
+    configurationState = [(RCRecordingCollectionViewCell *)self configurationState];
+    v8 = [configurationState isEditing] ^ 1;
   }
 
   else
@@ -548,24 +548,24 @@
     v8 = 0;
   }
 
-  [v6 setTitleEditingAllowed:v8];
-  [v6 setUserInteractionEnabled:v3];
-  [(RCRecordingCollectionViewCell *)self _updateAfterSelectionChangeToSelected:v3];
+  [recordingDescriptionView setTitleEditingAllowed:v8];
+  [recordingDescriptionView setUserInteractionEnabled:selectedCopy];
+  [(RCRecordingCollectionViewCell *)self _updateAfterSelectionChangeToSelected:selectedCopy];
 }
 
-- (void)_updateAfterSelectionChangeToSelected:(BOOL)a3
+- (void)_updateAfterSelectionChangeToSelected:(BOOL)selected
 {
-  v9 = [(RCRecordingCollectionViewCell *)self progressOverlay];
-  if (v9)
+  progressOverlay = [(RCRecordingCollectionViewCell *)self progressOverlay];
+  if (progressOverlay)
   {
     v4 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v5 = [v4 expandsRecordingsCollectionViewItemOnSelection];
+    expandsRecordingsCollectionViewItemOnSelection = [v4 expandsRecordingsCollectionViewItemOnSelection];
 
-    if ((v5 & 1) == 0)
+    if ((expandsRecordingsCollectionViewItemOnSelection & 1) == 0)
     {
       v6 = +[RCRecorderStyleProvider sharedStyleProvider];
       v7 = v6;
-      if (a3)
+      if (selected)
       {
         +[UIColor secondaryLabelColor];
       }
@@ -575,23 +575,23 @@
         [v6 recordingCollectionViewCellTextColor];
       }
       v8 = ;
-      [v9 setProgressIndicatorColor:v8];
+      [progressOverlay setProgressIndicatorColor:v8];
     }
   }
 }
 
-- (void)setVerticallyExpanded:(BOOL)a3
+- (void)setVerticallyExpanded:(BOOL)expanded
 {
-  if (self->_verticallyExpanded != a3)
+  if (self->_verticallyExpanded != expanded)
   {
-    self->_verticallyExpanded = a3;
+    self->_verticallyExpanded = expanded;
     [(RCRecordingCollectionViewCell *)self _updateUIToVerticallyExpandedState:?];
   }
 }
 
-- (void)_updateUIToVerticallyExpandedState:(BOOL)a3
+- (void)_updateUIToVerticallyExpandedState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     [(RCRecordingCollectionViewCell *)self _expandVertically];
   }
@@ -615,13 +615,13 @@
   v7[3] = &unk_10028A3B8;
   v7[4] = self;
   [UIView animateWithDuration:v7 animations:0.5];
-  v3 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  [v3 setTitleFieldAccessible:1];
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  [recordingDescriptionView setTitleFieldAccessible:1];
 
-  LODWORD(v3) = [(RCRecordingCollectionViewCell *)self isRecentlyDeleted];
-  v4 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  v5 = v4;
-  if (v3)
+  LODWORD(recordingDescriptionView) = [(RCRecordingCollectionViewCell *)self isRecentlyDeleted];
+  recordingDescriptionView2 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  v5 = recordingDescriptionView2;
+  if (recordingDescriptionView)
   {
     v6 = 0;
   }
@@ -631,27 +631,27 @@
     v6 = 2;
   }
 
-  [v4 setPresentedControl:v6];
+  [recordingDescriptionView2 setPresentedControl:v6];
 }
 
 - (void)_collapseVertically
 {
   [(RCShuttleBar *)self->_shuttleBar setHidden:1];
-  v3 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  [v3 setTitleFieldAccessible:0];
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  [recordingDescriptionView setTitleFieldAccessible:0];
 
-  v4 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  [v4 setPresentedControl:1];
+  recordingDescriptionView2 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  [recordingDescriptionView2 setPresentedControl:1];
 }
 
-- (void)setEditingInFlight:(BOOL)a3
+- (void)setEditingInFlight:(BOOL)flight
 {
-  if (self->_editingInFlight != a3)
+  if (self->_editingInFlight != flight)
   {
-    v4 = a3;
-    self->_editingInFlight = a3;
-    v6 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-    [v6 setShowSaving:v4];
+    flightCopy = flight;
+    self->_editingInFlight = flight;
+    recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+    [recordingDescriptionView setShowSaving:flightCopy];
 
     [(RCRecordingCollectionViewCell *)self updateAccessories];
 
@@ -659,72 +659,72 @@
   }
 }
 
-- (void)setEditingProgress:(float)a3
+- (void)setEditingProgress:(float)progress
 {
-  v5 = [(RCRecordingCollectionViewCell *)self progressOverlay];
-  *&v4 = a3;
-  [v5 setProgress:v4];
+  progressOverlay = [(RCRecordingCollectionViewCell *)self progressOverlay];
+  *&v4 = progress;
+  [progressOverlay setProgress:v4];
 }
 
 - (float)editingProgress
 {
-  v2 = [(RCRecordingCollectionViewCell *)self progressOverlay];
-  [v2 progress];
+  progressOverlay = [(RCRecordingCollectionViewCell *)self progressOverlay];
+  [progressOverlay progress];
   v4 = v3;
 
   return v4;
 }
 
-- (void)performControlsAction:(int64_t)a3 position:(double)a4 source:(id)a5
+- (void)performControlsAction:(int64_t)action position:(double)position source:(id)source
 {
-  v8 = a5;
-  v10 = [(RCRecordingCollectionViewCell *)self cellDelegate];
-  v9 = [(RCRecordingCollectionViewCell *)self UUID];
-  [v10 performAction:a3 atPosition:v9 forCellWithUUID:v8 source:a4];
+  sourceCopy = source;
+  cellDelegate = [(RCRecordingCollectionViewCell *)self cellDelegate];
+  uUID = [(RCRecordingCollectionViewCell *)self UUID];
+  [cellDelegate performAction:action atPosition:uUID forCellWithUUID:sourceCopy source:position];
 }
 
-- (void)handleUpdateTitle:(id)a3
+- (void)handleUpdateTitle:(id)title
 {
-  v4 = a3;
-  v6 = [(RCRecordingCollectionViewCell *)self cellDelegate];
-  v5 = [(RCRecordingCollectionViewCell *)self UUID];
-  [v6 performRenameWithNewTitle:v4 forCellWithUUID:v5];
+  titleCopy = title;
+  cellDelegate = [(RCRecordingCollectionViewCell *)self cellDelegate];
+  uUID = [(RCRecordingCollectionViewCell *)self UUID];
+  [cellDelegate performRenameWithNewTitle:titleCopy forCellWithUUID:uUID];
 }
 
-- (void)didBeginEditingInTextField:(id)a3
+- (void)didBeginEditingInTextField:(id)field
 {
-  v5 = a3;
-  v4 = [(RCRecordingCollectionViewCell *)self cellDelegate];
-  [v4 didBeginEditingTitle:self];
+  fieldCopy = field;
+  cellDelegate = [(RCRecordingCollectionViewCell *)self cellDelegate];
+  [cellDelegate didBeginEditingTitle:self];
 
-  [(RCRecordingCollectionViewCell *)self setTextFieldBeingEdited:v5];
+  [(RCRecordingCollectionViewCell *)self setTextFieldBeingEdited:fieldCopy];
 }
 
 - (void)didEndEditingInTextField
 {
-  v3 = [(RCRecordingCollectionViewCell *)self cellDelegate];
-  [v3 didEndEditingTitle:self];
+  cellDelegate = [(RCRecordingCollectionViewCell *)self cellDelegate];
+  [cellDelegate didEndEditingTitle:self];
 
   [(RCRecordingCollectionViewCell *)self setTextFieldBeingEdited:0];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   [(RCRecordingCollectionViewCell *)self bounds];
   [(NUIContainerStackView *)self->_stackView effectiveLayoutSizeFittingSize:v5, 0.0];
   v7 = v6;
   v9 = v8;
-  [v4 size];
+  [attributesCopy size];
   if (v7 != v11 || v9 != v10)
   {
-    v13 = [v4 copy];
+    v13 = [attributesCopy copy];
 
     [v13 setSize:{v7, v9}];
-    v4 = v13;
+    attributesCopy = v13;
   }
 
-  return v4;
+  return attributesCopy;
 }
 
 - (BOOL)canBecomeFocused
@@ -741,31 +741,31 @@
     return 0;
   }
 
-  v3 = [(RCRecordingCollectionViewCell *)self textFieldBeingEdited];
-  v4 = v3 == 0;
+  textFieldBeingEdited = [(RCRecordingCollectionViewCell *)self textFieldBeingEdited];
+  v4 = textFieldBeingEdited == 0;
 
   return v4;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(RCRecordingCollectionViewCell *)self recordingTitle];
+  recordingTitle = [(RCRecordingCollectionViewCell *)self recordingTitle];
 
-  if (!v3)
+  if (!recordingTitle)
   {
     [(RCRecordingCollectionViewCell *)self setRecordingTitle:&stru_100295BB8];
   }
 
-  v4 = [(RCRecordingCollectionViewCell *)self recordingTitle];
-  v5 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  v6 = [v5 axCreationDateString];
-  v7 = [NSString stringWithFormat:@"%@, %@", v4, v6];
+  recordingTitle2 = [(RCRecordingCollectionViewCell *)self recordingTitle];
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  axCreationDateString = [recordingDescriptionView axCreationDateString];
+  v7 = [NSString stringWithFormat:@"%@, %@", recordingTitle2, axCreationDateString];
 
   if (self->_hasTranscription)
   {
-    v8 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-    v9 = [v8 axTranscriptAvailableString];
-    v10 = [NSString stringWithFormat:@", %@", v9];
+    recordingDescriptionView2 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+    axTranscriptAvailableString = [recordingDescriptionView2 axTranscriptAvailableString];
+    v10 = [NSString stringWithFormat:@", %@", axTranscriptAvailableString];
     v11 = [v7 stringByAppendingString:v10];
 
     v7 = v11;
@@ -773,17 +773,17 @@
 
   if (self->_hasMultipleTracks)
   {
-    v12 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-    v13 = [v12 axMultiTrackIndicatorString];
-    v14 = [NSString stringWithFormat:@", %@", v13];
+    recordingDescriptionView3 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+    axMultiTrackIndicatorString = [recordingDescriptionView3 axMultiTrackIndicatorString];
+    v14 = [NSString stringWithFormat:@", %@", axMultiTrackIndicatorString];
     v15 = [v7 stringByAppendingString:v14];
 
     v7 = v15;
   }
 
-  v16 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  v17 = [v16 axDurationString];
-  v18 = [NSString stringWithFormat:@", %@", v17];
+  recordingDescriptionView4 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  axDurationString = [recordingDescriptionView4 axDurationString];
+  v18 = [NSString stringWithFormat:@", %@", axDurationString];
   v19 = [v7 stringByAppendingString:v18];
 
   return v7;
@@ -791,15 +791,15 @@
 
 - (id)accessibilityUserInputLabels
 {
-  v3 = [(RCRecordingCollectionViewCell *)self recordingTitle];
+  recordingTitle = [(RCRecordingCollectionViewCell *)self recordingTitle];
 
-  if (!v3)
+  if (!recordingTitle)
   {
     [(RCRecordingCollectionViewCell *)self setRecordingTitle:&stru_100295BB8];
   }
 
-  v4 = [(RCRecordingCollectionViewCell *)self recordingTitle];
-  v7 = v4;
+  recordingTitle2 = [(RCRecordingCollectionViewCell *)self recordingTitle];
+  v7 = recordingTitle2;
   v5 = [NSArray arrayWithObjects:&v7 count:1];
 
   return v5;
@@ -817,10 +817,10 @@
   v3 = +[RCRecorderStyleProvider sharedStyleProvider];
   if ([v3 expandsRecordingsCollectionViewItemOnSelection])
   {
-    v4 = [(RCRecordingCollectionViewCell *)self configurationState];
-    v5 = [v4 isEditing];
+    configurationState = [(RCRecordingCollectionViewCell *)self configurationState];
+    isEditing = [configurationState isEditing];
 
-    if ((v5 & 1) == 0)
+    if ((isEditing & 1) == 0)
     {
       return [(RCRecordingCollectionViewCell *)self isSelected]^ 1;
     }
@@ -843,13 +843,13 @@
   else
   {
     v3 = +[NSMutableArray array];
-    v4 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-    v5 = [v4 accessibilityElements];
-    [v3 addObjectsFromArray:v5];
+    recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+    accessibilityElements = [recordingDescriptionView accessibilityElements];
+    [v3 addObjectsFromArray:accessibilityElements];
 
-    v6 = [(RCRecordingCollectionViewCell *)self shuttleBar];
-    v7 = [v6 accessibilityElements];
-    [v3 addObjectsFromArray:v7];
+    shuttleBar = [(RCRecordingCollectionViewCell *)self shuttleBar];
+    accessibilityElements2 = [shuttleBar accessibilityElements];
+    [v3 addObjectsFromArray:accessibilityElements2];
   }
 
   v8 = [v3 copy];
@@ -877,8 +877,8 @@
 {
   v10.receiver = self;
   v10.super_class = RCRecordingCollectionViewCell;
-  v3 = [(RCRecordingCollectionViewCell *)&v10 accessibilityCustomActions];
-  v4 = [NSMutableArray arrayWithArray:v3];
+  accessibilityCustomActions = [(RCRecordingCollectionViewCell *)&v10 accessibilityCustomActions];
+  v4 = [NSMutableArray arrayWithArray:accessibilityCustomActions];
 
   if ([(RCRecordingCollectionViewCell *)self isSelected])
   {
@@ -895,26 +895,26 @@
 
 - (BOOL)isEditingTitle
 {
-  v2 = [(RCRecordingCollectionViewCell *)self textFieldBeingEdited];
-  v3 = v2 != 0;
+  textFieldBeingEdited = [(RCRecordingCollectionViewCell *)self textFieldBeingEdited];
+  v3 = textFieldBeingEdited != 0;
 
   return v3;
 }
 
 - (void)beginEditingTitle
 {
-  v2 = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
-  [v2 beginEditingTitle];
+  recordingDescriptionView = [(RCRecordingCollectionViewCell *)self recordingDescriptionView];
+  [recordingDescriptionView beginEditingTitle];
 }
 
 - (void)resignFirstResponderForTitleEditing
 {
-  v3 = [(RCRecordingCollectionViewCell *)self textFieldBeingEdited];
+  textFieldBeingEdited = [(RCRecordingCollectionViewCell *)self textFieldBeingEdited];
 
-  if (v3)
+  if (textFieldBeingEdited)
   {
-    v4 = [(RCRecordingCollectionViewCell *)self textFieldBeingEdited];
-    [v4 resignFirstResponder];
+    textFieldBeingEdited2 = [(RCRecordingCollectionViewCell *)self textFieldBeingEdited];
+    [textFieldBeingEdited2 resignFirstResponder];
   }
 }
 
@@ -925,10 +925,10 @@
     return 0;
   }
 
-  v3 = [(RCRecordingCollectionViewCell *)self shuttleBar];
-  v4 = [v3 playControlState];
+  shuttleBar = [(RCRecordingCollectionViewCell *)self shuttleBar];
+  playControlState = [shuttleBar playControlState];
 
-  if (v4 != 1)
+  if (playControlState != 1)
   {
     return 0;
   }

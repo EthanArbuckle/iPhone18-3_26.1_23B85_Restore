@@ -1,36 +1,36 @@
 @interface PKPaymentTransactionRewards
-+ (id)_cloudRecordKeyForRewardsProperty:(unint64_t)a3;
-+ (id)_rewardsItemsSetFromJsonString:(id)a3;
-- (BOOL)containsItemOfType:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRewards:(id)a3;
-- (PKPaymentTransactionRewards)initWithCloudStoreCoder:(id)a3;
-- (PKPaymentTransactionRewards)initWithCloudStoreCoder:(id)a3 property:(unint64_t)a4;
-- (PKPaymentTransactionRewards)initWithCoder:(id)a3;
-- (PKPaymentTransactionRewards)initWithJsonString:(id)a3;
-- (PKPaymentTransactionRewards)initWithRewardsItems:(id)a3;
-- (id)_rewardItemsFromRecord:(id)a3 property:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)_cloudRecordKeyForRewardsProperty:(unint64_t)property;
++ (id)_rewardsItemsSetFromJsonString:(id)string;
+- (BOOL)containsItemOfType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRewards:(id)rewards;
+- (PKPaymentTransactionRewards)initWithCloudStoreCoder:(id)coder;
+- (PKPaymentTransactionRewards)initWithCloudStoreCoder:(id)coder property:(unint64_t)property;
+- (PKPaymentTransactionRewards)initWithCoder:(id)coder;
+- (PKPaymentTransactionRewards)initWithJsonString:(id)string;
+- (PKPaymentTransactionRewards)initWithRewardsItems:(id)items;
+- (id)_rewardItemsFromRecord:(id)record property:(unint64_t)property;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)enhancedMerchantRewardsItems;
 - (id)jsonArrayRepresentation;
 - (id)jsonString;
 - (id)promotionalRewardsItems;
-- (id)totalAmountForUnit:(unint64_t)a3;
-- (id)totalEligibleValueForUnit:(unint64_t)a3;
+- (id)totalAmountForUnit:(unint64_t)unit;
+- (id)totalEligibleValueForUnit:(unint64_t)unit;
 - (unint64_t)hash;
-- (void)_encodeServerDataWithCloudStoreCoder:(id)a3 property:(unint64_t)a4;
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3 property:(unint64_t)a4;
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4 property:(unint64_t)a5;
+- (void)_encodeServerDataWithCloudStoreCoder:(id)coder property:(unint64_t)property;
+- (void)applyPropertiesFromCloudStoreRecord:(id)record property:(unint64_t)property;
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type property:(unint64_t)property;
 @end
 
 @implementation PKPaymentTransactionRewards
 
-- (PKPaymentTransactionRewards)initWithRewardsItems:(id)a3
+- (PKPaymentTransactionRewards)initWithRewardsItems:(id)items
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count])
+  itemsCopy = items;
+  v6 = itemsCopy;
+  if (itemsCopy && [itemsCopy count])
   {
     v11.receiver = self;
     v11.super_class = PKPaymentTransactionRewards;
@@ -38,25 +38,25 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_rewardsItems, a3);
+      objc_storeStrong(&v7->_rewardsItems, items);
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (PKPaymentTransactionRewards)initWithJsonString:(id)a3
+- (PKPaymentTransactionRewards)initWithJsonString:(id)string
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _rewardsItemsSetFromJsonString:v4];
+  stringCopy = string;
+  v5 = [objc_opt_class() _rewardsItemsSetFromJsonString:stringCopy];
 
   if (v5 && [v5 count])
   {
@@ -70,21 +70,21 @@
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)jsonArrayRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -104,8 +104,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionaryRepresentation];
-        [v3 safelyAddObject:v9];
+        jsonDictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) jsonDictionaryRepresentation];
+        [array safelyAddObject:jsonDictionaryRepresentation];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -114,7 +114,7 @@
     while (v6);
   }
 
-  v10 = [v3 copy];
+  v10 = [array copy];
 
   return v10;
 }
@@ -122,11 +122,11 @@
 - (id)jsonString
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [(PKPaymentTransactionRewards *)self jsonArrayRepresentation];
-  if ([v2 count])
+  jsonArrayRepresentation = [(PKPaymentTransactionRewards *)self jsonArrayRepresentation];
+  if ([jsonArrayRepresentation count])
   {
     v8 = 0;
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:2 error:&v8];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:jsonArrayRepresentation options:2 error:&v8];
     v4 = v8;
     if (v4)
     {
@@ -155,7 +155,7 @@
   return v6;
 }
 
-- (BOOL)containsItemOfType:(unint64_t)a3
+- (BOOL)containsItemOfType:(unint64_t)type
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -177,7 +177,7 @@
           objc_enumerationMutation(v4);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) type] == a3)
+        if ([*(*(&v11 + 1) + 8 * i) type] == type)
         {
           v9 = 1;
           goto LABEL_11;
@@ -215,8 +215,8 @@ LABEL_11:
   }
 
   v6 = [v4 initWithArray:v5];
-  v7 = [(PKPaymentTransactionRewards *)self enhancedMerchantRewardsItems];
-  [v6 minusSet:v7];
+  enhancedMerchantRewardsItems = [(PKPaymentTransactionRewards *)self enhancedMerchantRewardsItems];
+  [v6 minusSet:enhancedMerchantRewardsItems];
   v8 = [v6 copy];
 
   return v8;
@@ -338,73 +338,73 @@ uint64_t __59__PKPaymentTransactionRewards_enhancedMerchantRewardsItems__block_i
   return v9;
 }
 
-- (PKPaymentTransactionRewards)initWithCloudStoreCoder:(id)a3
+- (PKPaymentTransactionRewards)initWithCloudStoreCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Not supported. Use initWithCloudStoreCoder:property:"];
 
   return [(PKPaymentTransactionRewards *)self init];
 }
 
-- (PKPaymentTransactionRewards)initWithCloudStoreCoder:(id)a3 property:(unint64_t)a4
+- (PKPaymentTransactionRewards)initWithCloudStoreCoder:(id)coder property:(unint64_t)property
 {
-  v6 = [a3 recordsWithRecordType:@"Transaction"];
-  v7 = [v6 firstObject];
+  v6 = [coder recordsWithRecordType:@"Transaction"];
+  firstObject = [v6 firstObject];
 
-  v8 = [(PKPaymentTransactionRewards *)self _rewardItemsFromRecord:v7 property:a4];
+  v8 = [(PKPaymentTransactionRewards *)self _rewardItemsFromRecord:firstObject property:property];
   v9 = [(PKPaymentTransactionRewards *)self initWithRewardsItems:v8];
 
   return v9;
 }
 
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3 property:(unint64_t)a4
+- (void)applyPropertiesFromCloudStoreRecord:(id)record property:(unint64_t)property
 {
-  v6 = [a3 recordsWithRecordType:@"Transaction"];
-  v10 = [v6 firstObject];
+  v6 = [record recordsWithRecordType:@"Transaction"];
+  firstObject = [v6 firstObject];
 
-  v7 = v10;
-  if (v10)
+  v7 = firstObject;
+  if (firstObject)
   {
-    v8 = [(PKPaymentTransactionRewards *)self _rewardItemsFromRecord:v10 property:a4];
+    v8 = [(PKPaymentTransactionRewards *)self _rewardItemsFromRecord:firstObject property:property];
     rewardsItems = self->_rewardsItems;
     self->_rewardsItems = v8;
 
-    v7 = v10;
+    v7 = firstObject;
   }
 }
 
-- (id)_rewardItemsFromRecord:(id)a3 property:(unint64_t)a4
+- (id)_rewardItemsFromRecord:(id)record property:(unint64_t)property
 {
-  v5 = a3;
-  v6 = [objc_opt_class() _cloudRecordKeyForRewardsProperty:a4];
-  v7 = [v5 pk_encryptedStringForKey:v6];
+  recordCopy = record;
+  v6 = [objc_opt_class() _cloudRecordKeyForRewardsProperty:property];
+  v7 = [recordCopy pk_encryptedStringForKey:v6];
 
   v8 = [objc_opt_class() _rewardsItemsSetFromJsonString:v7];
 
   return v8;
 }
 
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4 property:(unint64_t)a5
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type property:(unint64_t)property
 {
-  if (a4 - 1 <= 1)
+  if (type - 1 <= 1)
   {
-    [(PKPaymentTransactionRewards *)self _encodeServerDataWithCloudStoreCoder:a3 property:a5];
+    [(PKPaymentTransactionRewards *)self _encodeServerDataWithCloudStoreCoder:coder property:property];
   }
 }
 
-- (void)_encodeServerDataWithCloudStoreCoder:(id)a3 property:(unint64_t)a4
+- (void)_encodeServerDataWithCloudStoreCoder:(id)coder property:(unint64_t)property
 {
-  v6 = [a3 recordsWithRecordType:@"Transaction"];
-  v10 = [v6 firstObject];
+  v6 = [coder recordsWithRecordType:@"Transaction"];
+  firstObject = [v6 firstObject];
 
-  v7 = [v10 encryptedValues];
-  v8 = [(PKPaymentTransactionRewards *)self jsonString];
-  v9 = [objc_opt_class() _cloudRecordKeyForRewardsProperty:a4];
-  [v7 setObject:v8 forKey:v9];
+  encryptedValues = [firstObject encryptedValues];
+  jsonString = [(PKPaymentTransactionRewards *)self jsonString];
+  v9 = [objc_opt_class() _cloudRecordKeyForRewardsProperty:property];
+  [encryptedValues setObject:jsonString forKey:v9];
 }
 
-+ (id)_cloudRecordKeyForRewardsProperty:(unint64_t)a3
++ (id)_cloudRecordKeyForRewardsProperty:(unint64_t)property
 {
-  if (a3 == 1)
+  if (property == 1)
   {
     return @"rewardsInProgress";
   }
@@ -415,9 +415,9 @@ uint64_t __59__PKPaymentTransactionRewards_enhancedMerchantRewardsItems__block_i
   }
 }
 
-- (PKPaymentTransactionRewards)initWithCoder:(id)a3
+- (PKPaymentTransactionRewards)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKPaymentTransactionRewards;
   v5 = [(PKPaymentTransactionRewards *)&v13 init];
@@ -427,7 +427,7 @@ uint64_t __59__PKPaymentTransactionRewards_enhancedMerchantRewardsItems__block_i
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"rewards"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"rewards"];
     rewardsItems = v5->_rewardsItems;
     v5->_rewardsItems = v10;
   }
@@ -435,10 +435,10 @@ uint64_t __59__PKPaymentTransactionRewards_enhancedMerchantRewardsItems__block_i
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = 0u;
   v17 = 0u;
@@ -460,7 +460,7 @@ uint64_t __59__PKPaymentTransactionRewards_enhancedMerchantRewardsItems__block_i
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * v11) copyWithZone:{a3, v16}];
+        v12 = [*(*(&v16 + 1) + 8 * v11) copyWithZone:{zone, v16}];
         [v6 addObject:v12];
 
         ++v11;
@@ -482,38 +482,38 @@ uint64_t __59__PKPaymentTransactionRewards_enhancedMerchantRewardsItems__block_i
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_rewardsItems];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_rewardsItems];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransactionRewards *)self isEqualToRewards:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransactionRewards *)self isEqualToRewards:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToRewards:(id)a3
+- (BOOL)isEqualToRewards:(id)rewards
 {
   v3 = MEMORY[0x1E695DFD8];
   rewardsItems = self->_rewardsItems;
-  v5 = a3;
+  rewardsCopy = rewards;
   v6 = [v3 setWithArray:rewardsItems];
   v7 = MEMORY[0x1E695DFD8];
-  v8 = v5[1];
+  v8 = rewardsCopy[1];
 
   v9 = [v7 setWithArray:v8];
   v10 = v9;
@@ -581,10 +581,10 @@ uint64_t __59__PKPaymentTransactionRewards_enhancedMerchantRewardsItems__block_i
   return v3;
 }
 
-- (id)totalEligibleValueForUnit:(unint64_t)a3
+- (id)totalEligibleValueForUnit:(unint64_t)unit
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AB90] zero];
+  zero = [MEMORY[0x1E696AB90] zero];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -605,12 +605,12 @@ uint64_t __59__PKPaymentTransactionRewards_enhancedMerchantRewardsItems__block_i
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if (([v11 state] - 5) <= 0xFFFFFFFFFFFFFFFDLL && objc_msgSend(v11, "eligibleValueUnit") == a3)
+        if (([v11 state] - 5) <= 0xFFFFFFFFFFFFFFFDLL && objc_msgSend(v11, "eligibleValueUnit") == unit)
         {
-          v12 = [v11 eligibleValue];
-          v13 = [v5 decimalNumberByAdding:v12];
+          eligibleValue = [v11 eligibleValue];
+          v13 = [zero decimalNumberByAdding:eligibleValue];
 
-          v5 = v13;
+          zero = v13;
         }
       }
 
@@ -620,20 +620,20 @@ uint64_t __59__PKPaymentTransactionRewards_enhancedMerchantRewardsItems__block_i
     while (v8);
   }
 
-  return v5;
+  return zero;
 }
 
-- (id)totalAmountForUnit:(unint64_t)a3
+- (id)totalAmountForUnit:(unint64_t)unit
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [(NSArray *)self->_rewardsItems firstObject];
-  v6 = [v5 currencyAmount];
-  v7 = [v6 currency];
+  firstObject = [(NSArray *)self->_rewardsItems firstObject];
+  currencyAmount = [firstObject currencyAmount];
+  currency = [currencyAmount currency];
 
-  if (v7)
+  if (currency)
   {
-    v8 = [MEMORY[0x1E696AB90] zero];
-    v9 = PKCurrencyAmountCreate(v8, v7, 0);
+    zero = [MEMORY[0x1E696AB90] zero];
+    v9 = PKCurrencyAmountCreate(zero, currency, 0);
 
     v22 = 0u;
     v23 = 0u;
@@ -655,13 +655,13 @@ uint64_t __59__PKPaymentTransactionRewards_enhancedMerchantRewardsItems__block_i
           }
 
           v15 = *(*(&v20 + 1) + 8 * i);
-          if (([v15 state] - 5) <= 0xFFFFFFFFFFFFFFFDLL && objc_msgSend(v15, "eligibleValueUnit") == a3)
+          if (([v15 state] - 5) <= 0xFFFFFFFFFFFFFFFDLL && objc_msgSend(v15, "eligibleValueUnit") == unit)
           {
-            v16 = [v15 currencyAmount];
-            if (v16)
+            currencyAmount2 = [v15 currencyAmount];
+            if (currencyAmount2)
             {
-              v17 = [v15 currencyAmount];
-              v18 = [v9 currencyAmountByAddingCurrencyAmount:v17];
+              currencyAmount3 = [v15 currencyAmount];
+              v18 = [v9 currencyAmountByAddingCurrencyAmount:currencyAmount3];
 
               v9 = v18;
             }
@@ -683,10 +683,10 @@ uint64_t __59__PKPaymentTransactionRewards_enhancedMerchantRewardsItems__block_i
   return v9;
 }
 
-+ (id)_rewardsItemsSetFromJsonString:(id)a3
++ (id)_rewardsItemsSetFromJsonString:(id)string
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [string dataUsingEncoding:4];
   if (!v3)
   {
     v8 = 0;
@@ -699,12 +699,12 @@ uint64_t __59__PKPaymentTransactionRewards_enhancedMerchantRewardsItems__block_i
   if (v5)
   {
     v6 = v5;
-    v7 = PKLogFacilityTypeGetObject(0xCuLL);
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    array = PKLogFacilityTypeGetObject(0xCuLL);
+    if (os_log_type_enabled(array, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v25 = v6;
-      _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Cannot decode PKPaymentTransactionRewards json string with error: %@", buf, 0xCu);
+      _os_log_impl(&dword_1AD337000, array, OS_LOG_TYPE_DEFAULT, "Cannot decode PKPaymentTransactionRewards json string with error: %@", buf, 0xCu);
     }
 
     goto LABEL_21;
@@ -713,11 +713,11 @@ uint64_t __59__PKPaymentTransactionRewards_enhancedMerchantRewardsItems__block_i
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = PKLogFacilityTypeGetObject(0xCuLL);
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    array = PKLogFacilityTypeGetObject(0xCuLL);
+    if (os_log_type_enabled(array, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Decoded PKPaymentTransactionRewards json string is not of type array", buf, 2u);
+      _os_log_impl(&dword_1AD337000, array, OS_LOG_TYPE_DEFAULT, "Decoded PKPaymentTransactionRewards json string is not of type array", buf, 2u);
     }
 
     v6 = 0;
@@ -725,7 +725,7 @@ uint64_t __59__PKPaymentTransactionRewards_enhancedMerchantRewardsItems__block_i
   }
 
   v9 = v4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -750,7 +750,7 @@ uint64_t __59__PKPaymentTransactionRewards_enhancedMerchantRewardsItems__block_i
         v16 = [(PKPaymentTransactionRewardsItem *)v15 initWithDictionary:v14, v18];
         if (v16)
         {
-          [v7 addObject:v16];
+          [array addObject:v16];
         }
       }
 
@@ -760,14 +760,14 @@ uint64_t __59__PKPaymentTransactionRewards_enhancedMerchantRewardsItems__block_i
     while (v11);
   }
 
-  if (![v7 count])
+  if (![array count])
   {
 LABEL_21:
     v8 = 0;
     goto LABEL_22;
   }
 
-  v8 = [v7 copy];
+  v8 = [array copy];
 LABEL_22:
 
 LABEL_23:

@@ -1,36 +1,36 @@
 @interface OKVideoPlayerController
-- (OKVideoPlayerController)initWithPlayerLayer:(id)a3;
+- (OKVideoPlayerController)initWithPlayerLayer:(id)layer;
 - (double)currentTime;
 - (double)duration;
 - (id)description;
 - (void)_cancelSeeking;
-- (void)_playerItemDidReachEndNotification:(id)a3;
-- (void)_playerItemFailedToPlayToEndNotification:(id)a3;
+- (void)_playerItemDidReachEndNotification:(id)notification;
+- (void)_playerItemFailedToPlayToEndNotification:(id)notification;
 - (void)_resetPlayer;
 - (void)_resetPlayerItem;
-- (void)_setState:(unint64_t)a3;
+- (void)_setState:(unint64_t)state;
 - (void)_setupPlayer;
-- (void)_updateBufferingStateWithState:(unint64_t)a3;
+- (void)_updateBufferingStateWithState:(unint64_t)state;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)play;
-- (void)playPlayerItem:(id)a3;
-- (void)setCurrentTime:(double)a3;
-- (void)setDelegate:(id)a3;
+- (void)playPlayerItem:(id)item;
+- (void)setCurrentTime:(double)time;
+- (void)setDelegate:(id)delegate;
 - (void)stop;
 @end
 
 @implementation OKVideoPlayerController
 
-- (OKVideoPlayerController)initWithPlayerLayer:(id)a3
+- (OKVideoPlayerController)initWithPlayerLayer:(id)layer
 {
   v6.receiver = self;
   v6.super_class = OKVideoPlayerController;
   v4 = [(OKVideoPlayerController *)&v6 init];
   if (v4)
   {
-    v4->_playerLayer = a3;
+    v4->_playerLayer = layer;
     v4->_videoPlayerControllerSerialQueue = dispatch_queue_create("Video player controller queue", 0);
     [(OKVideoPlayerController *)v4 _setupPlayer];
   }
@@ -77,13 +77,13 @@
   [(OKVideoPlayerController *)&v7 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   delegate = self->_delegate;
   p_delegate = &self->_delegate;
-  if (delegate != a3)
+  if (delegate != delegate)
   {
-    objc_storeWeak(p_delegate, a3);
+    objc_storeWeak(p_delegate, delegate);
     *&self->_delegateFlags = *&self->_delegateFlags & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
@@ -145,10 +145,10 @@
 
 - (double)duration
 {
-  v2 = [(AVPlayerItem *)self->_playerItem asset];
-  if (v2)
+  asset = [(AVPlayerItem *)self->_playerItem asset];
+  if (asset)
   {
-    [(AVAsset *)v2 duration];
+    [(AVAsset *)asset duration];
   }
 
   else
@@ -175,7 +175,7 @@
   return CMTimeGetSeconds(&time);
 }
 
-- (void)setCurrentTime:(double)a3
+- (void)setCurrentTime:(double)time
 {
   [(OKVideoPlayerController *)self _cancelSeeking];
   videoPlayerControllerSerialQueue = self->_videoPlayerControllerSerialQueue;
@@ -184,7 +184,7 @@
   v6[2] = __42__OKVideoPlayerController_setCurrentTime___block_invoke;
   v6[3] = &unk_279C903C0;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = time;
   dispatch_async(videoPlayerControllerSerialQueue, v6);
 }
 
@@ -211,20 +211,20 @@ intptr_t __42__OKVideoPlayerController_setCurrentTime___block_invoke(uint64_t a1
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = objc_opt_class();
-  [v3 appendFormat:@"<%@ (%p)> state:", NSStringFromClass(v4), self];
-  v5 = [(OKVideoPlayerController *)self state];
-  if (v5 <= 3)
+  [string appendFormat:@"<%@ (%p)> state:", NSStringFromClass(v4), self];
+  state = [(OKVideoPlayerController *)self state];
+  if (state <= 3)
   {
-    [v3 appendFormat:off_279C919E0[v5]];
+    [string appendFormat:off_279C919E0[state]];
   }
 
-  [v3 appendString:@" bufferingState:"];
+  [string appendString:@" bufferingState:"];
   bufferingState = self->_bufferingState;
   if ((bufferingState & 8) != 0)
   {
-    [v3 appendString:@"full|"];
+    [string appendString:@"full|"];
     bufferingState = self->_bufferingState;
     if ((bufferingState & 4) == 0)
     {
@@ -235,10 +235,10 @@ LABEL_5:
       }
 
 LABEL_11:
-      [v3 appendString:@"likelyToKeepUp|"];
+      [string appendString:@"likelyToKeepUp|"];
       if ((self->_bufferingState & 1) == 0)
       {
-        return v3;
+        return string;
       }
 
       goto LABEL_7;
@@ -250,7 +250,7 @@ LABEL_11:
     goto LABEL_5;
   }
 
-  [v3 appendString:@"stalled|"];
+  [string appendString:@"stalled|"];
   bufferingState = self->_bufferingState;
   if ((bufferingState & 2) != 0)
   {
@@ -261,10 +261,10 @@ LABEL_6:
   if (bufferingState)
   {
 LABEL_7:
-    [v3 appendString:@"readyToPlay|"];
+    [string appendString:@"readyToPlay|"];
   }
 
-  return v3;
+  return string;
 }
 
 - (void)_setupPlayer
@@ -280,8 +280,8 @@ LABEL_7:
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [(OKVideoPlayerController *)self _playerKeysToObserve];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    _playerKeysToObserve = [(OKVideoPlayerController *)self _playerKeysToObserve];
+    v5 = [_playerKeysToObserve countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -293,14 +293,14 @@ LABEL_7:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_playerKeysToObserve);
           }
 
           [(AVPlayer *)self->_player addObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) options:1 context:&OKVideoControllerPlayerKeyContext];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [_playerKeysToObserve countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -324,8 +324,8 @@ LABEL_7:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(OKVideoPlayerController *)self _playerKeysToObserve];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    _playerKeysToObserve = [(OKVideoPlayerController *)self _playerKeysToObserve];
+    v5 = [_playerKeysToObserve countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -337,14 +337,14 @@ LABEL_7:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_playerKeysToObserve);
           }
 
           [(AVPlayer *)self->_player removeObserver:self forKeyPath:*(*(&v10 + 1) + 8 * v8++) context:&OKVideoControllerPlayerKeyContext];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [_playerKeysToObserve countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -368,8 +368,8 @@ LABEL_7:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v3 = [(OKVideoPlayerController *)self _playerItemKeysToObserve];
-    v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    _playerItemKeysToObserve = [(OKVideoPlayerController *)self _playerItemKeysToObserve];
+    v4 = [_playerItemKeysToObserve countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v4)
     {
       v5 = v4;
@@ -381,23 +381,23 @@ LABEL_7:
         {
           if (*v13 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(_playerItemKeysToObserve);
           }
 
           [(AVPlayerItem *)self->_playerItem removeObserver:self forKeyPath:*(*(&v12 + 1) + 8 * v7++) context:&OKVideoControllerItemKeyContext];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v5 = [_playerItemKeysToObserve countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v5);
     }
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 removeObserver:self name:*MEMORY[0x277CE60C0] object:self->_playerItem];
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 removeObserver:self name:*MEMORY[0x277CE60D0] object:self->_playerItem];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277CE60C0] object:self->_playerItem];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 removeObserver:self name:*MEMORY[0x277CE60D0] object:self->_playerItem];
     playerItem = self->_playerItem;
     if (playerItem)
     {
@@ -418,9 +418,9 @@ LABEL_7:
   }
 }
 
-- (void)playPlayerItem:(id)a3
+- (void)playPlayerItem:(id)item
 {
-  if (self->_playerItem != a3)
+  if (self->_playerItem != item)
   {
     v8[8] = v3;
     v8[9] = v4;
@@ -431,7 +431,7 @@ LABEL_7:
     v8[2] = __42__OKVideoPlayerController_playPlayerItem___block_invoke;
     v8[3] = &unk_279C90078;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = item;
     dispatch_async(videoPlayerControllerSerialQueue, v8);
   }
 }
@@ -546,7 +546,7 @@ _BYTE *__42__OKVideoPlayerController_playPlayerItem___block_invoke_2(uint64_t a1
   return result;
 }
 
-- (void)_playerItemFailedToPlayToEndNotification:(id)a3
+- (void)_playerItemFailedToPlayToEndNotification:(id)notification
 {
   if (self->_state != 3)
   {
@@ -558,7 +558,7 @@ _BYTE *__42__OKVideoPlayerController_playPlayerItem___block_invoke_2(uint64_t a1
     v7[2] = __68__OKVideoPlayerController__playerItemFailedToPlayToEndNotification___block_invoke;
     v7[3] = &unk_279C90078;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = notification;
     dispatch_async(MEMORY[0x277D85CD0], v7);
   }
 }
@@ -578,7 +578,7 @@ _BYTE *__68__OKVideoPlayerController__playerItemFailedToPlayToEndNotification___
   return result;
 }
 
-- (void)_playerItemDidReachEndNotification:(id)a3
+- (void)_playerItemDidReachEndNotification:(id)notification
 {
   if (self->_state)
   {
@@ -588,7 +588,7 @@ _BYTE *__68__OKVideoPlayerController__playerItemFailedToPlayToEndNotification___
     v5[2] = __62__OKVideoPlayerController__playerItemDidReachEndNotification___block_invoke;
     v5[3] = &unk_279C90078;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = notification;
     dispatch_async(MEMORY[0x277D85CD0], v5);
   }
 }
@@ -608,19 +608,19 @@ _BYTE *__62__OKVideoPlayerController__playerItemDidReachEndNotification___block_
   return result;
 }
 
-- (void)_setState:(unint64_t)a3
+- (void)_setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     v5[6] = v3;
     v5[7] = v4;
-    self->_state = a3;
+    self->_state = state;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __37__OKVideoPlayerController__setState___block_invoke;
     v5[3] = &unk_279C903C0;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = state;
     dispatch_async(MEMORY[0x277D85CD0], v5);
   }
 }
@@ -640,17 +640,17 @@ _BYTE *__37__OKVideoPlayerController__setState___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_updateBufferingStateWithState:(unint64_t)a3
+- (void)_updateBufferingStateWithState:(unint64_t)state
 {
   bufferingState = self->_bufferingState;
-  if (((bufferingState | a3) & 4) != 0)
+  if (((bufferingState | state) & 4) != 0)
   {
-    v6 = (bufferingState | a3) & 0xFFFFFFFFFFFFFFF5;
+    v6 = (bufferingState | state) & 0xFFFFFFFFFFFFFFF5;
   }
 
   else
   {
-    v6 = ((bufferingState | a3) >> 2) & 2 | bufferingState | a3;
+    v6 = ((bufferingState | state) >> 2) & 2 | bufferingState | state;
   }
 
   if (bufferingState != v6)
@@ -683,18 +683,18 @@ _BYTE *__58__OKVideoPlayerController__updateBufferingStateWithState___block_invo
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   videoPlayerControllerSerialQueue = self->_videoPlayerControllerSerialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__OKVideoPlayerController_observeValueForKeyPath_ofObject_change_context___block_invoke;
   block[3] = &unk_279C919C0;
-  block[7] = a5;
-  block[8] = a6;
+  block[7] = change;
+  block[8] = context;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = object;
+  block[6] = path;
   dispatch_async(videoPlayerControllerSerialQueue, block);
 }
 

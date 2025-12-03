@@ -2,10 +2,10 @@
 - (UISlider)slider;
 - (void)dealloc;
 - (void)releaseViews;
-- (void)setBrightness:(id)a3;
+- (void)setBrightness:(id)brightness;
 - (void)updateBrightness;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BKBrightnessController
@@ -53,15 +53,15 @@
   [(BKBrightnessController *)self setPreferredContentSize:300.0, 44.0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = BKBrightnessController;
-  [(BKBrightnessController *)&v4 viewWillAppear:a3];
+  [(BKBrightnessController *)&v4 viewWillAppear:appear];
   [(BKBrightnessController *)self updateBrightness];
 }
 
-- (void)setBrightness:(id)a3
+- (void)setBrightness:(id)brightness
 {
   WeakRetained = objc_loadWeakRetained(&self->_slider);
   [WeakRetained value];

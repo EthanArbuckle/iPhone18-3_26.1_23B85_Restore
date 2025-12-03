@@ -37,19 +37,19 @@
   else
   {
 
-    return [a1 init];
+    return [self init];
   }
 }
 
 - (__CFString)initWithOcText:()OCBStringAdditions
 {
-  v3 = a1;
+  selfCopy = self;
   if (!a3 || !*(a3 + 16))
   {
-    v6 = [(__CFString *)a1 init];
+    v6 = [(__CFString *)self init];
 LABEL_14:
-    v3 = v6;
-    v7 = v3;
+    selfCopy = v6;
+    v7 = selfCopy;
     goto LABEL_15;
   }
 
@@ -121,7 +121,7 @@ LABEL_15:
 - (id)dataUsingWordEncoding:()OCBStringAdditions
 {
   v4 = OCNsEncodingForOcEncoding(a3);
-  v5 = [a1 dataUsingEncoding:v4];
+  v5 = [self dataUsingEncoding:v4];
   if (v5)
   {
 LABEL_5:
@@ -130,10 +130,10 @@ LABEL_5:
 
   else
   {
-    v6 = [MEMORY[0x277CCACA8] availableStringEncodings];
-    while (*v6++)
+    availableStringEncodings = [MEMORY[0x277CCACA8] availableStringEncodings];
+    while (*availableStringEncodings++)
     {
-      v5 = [a1 dataUsingEncoding:?];
+      v5 = [self dataUsingEncoding:?];
       if (v5)
       {
         goto LABEL_5;
@@ -145,13 +145,13 @@ LABEL_5:
 
   if (v4 == 10)
   {
-    v9 = [v8 bytes];
+    bytes = [v8 bytes];
     v10 = [v8 length];
     if (v10)
     {
-      if (*v9 == -257)
+      if (*bytes == -257)
       {
-        v11 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v9 + 1 length:v10 - 2 freeWhenDone:0];
+        v11 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:bytes + 1 length:v10 - 2 freeWhenDone:0];
 
         v8 = v11;
       }
@@ -164,7 +164,7 @@ LABEL_5:
 - (void)copyToCsString:()OCBStringAdditions
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 dataUsingWordEncoding:1];
+  v6 = [self dataUsingWordEncoding:1];
   v7 = [v6 length];
   a3->var2 = 0;
   bzero(a3->var1, 2 * a3->var3);
@@ -179,7 +179,7 @@ LABEL_5:
 - (void)copyToOcText:()OCBStringAdditions encoding:
 {
   v7 = objc_autoreleasePoolPush();
-  v8 = [a1 dataUsingWordEncoding:a4];
+  v8 = [self dataUsingWordEncoding:a4];
   v9 = [v8 length];
   if (v9)
   {
@@ -195,7 +195,7 @@ LABEL_5:
 
     OcText::allocBuffer(a3, v10 + v9, 1);
     OcText::copyBuffer(a3, [v8 bytes], v9);
-    a3->var3 = [a1 length];
+    a3->var3 = [self length];
     a3->var1 = a4;
   }
 

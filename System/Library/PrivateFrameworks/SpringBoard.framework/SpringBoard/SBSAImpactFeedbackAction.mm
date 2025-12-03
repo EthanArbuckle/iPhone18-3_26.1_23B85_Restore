@@ -1,25 +1,25 @@
 @interface SBSAImpactFeedbackAction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SBSAImpactFeedbackAction)initWithImpactFeedbackStyle:(int64_t)a3 prepareOnly:(BOOL)a4 reasons:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBSAImpactFeedbackAction)initWithImpactFeedbackStyle:(int64_t)style prepareOnly:(BOOL)only reasons:(id)reasons;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SBSAImpactFeedbackAction
 
-- (SBSAImpactFeedbackAction)initWithImpactFeedbackStyle:(int64_t)a3 prepareOnly:(BOOL)a4 reasons:(id)a5
+- (SBSAImpactFeedbackAction)initWithImpactFeedbackStyle:(int64_t)style prepareOnly:(BOOL)only reasons:(id)reasons
 {
-  v8 = a5;
+  reasonsCopy = reasons;
   v14.receiver = self;
   v14.super_class = SBSAImpactFeedbackAction;
   v9 = [(SBSAImpactFeedbackAction *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_impactFeedbackStyle = a3;
-    v9->_prepareOnly = a4;
-    v11 = [v8 copy];
+    v9->_impactFeedbackStyle = style;
+    v9->_prepareOnly = only;
+    v11 = [reasonsCopy copy];
     reasons = v10->_reasons;
     v10->_reasons = v11;
   }
@@ -27,16 +27,16 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   impactFeedbackStyle = self->_impactFeedbackStyle;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __36__SBSAImpactFeedbackAction_isEqual___block_invoke;
   v21[3] = &unk_2783ACDE0;
-  v7 = v4;
+  v7 = equalCopy;
   v22 = v7;
   v8 = [v5 appendInteger:impactFeedbackStyle counterpart:v21];
   prepareOnly = self->_prepareOnly;
@@ -62,8 +62,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendInteger:self->_impactFeedbackStyle];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendInteger:self->_impactFeedbackStyle];
   v5 = [v4 appendBool:self->_prepareOnly];
   v6 = [v5 appendObject:self->_reasons];
   v7 = [v6 hash];
@@ -82,7 +82,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   prepareOnly = self->_prepareOnly;

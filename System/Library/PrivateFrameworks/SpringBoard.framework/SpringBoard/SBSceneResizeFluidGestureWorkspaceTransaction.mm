@@ -1,66 +1,66 @@
 @interface SBSceneResizeFluidGestureWorkspaceTransaction
 - (BOOL)isLiveResize;
 - (id)layoutState;
-- (void)_beginWithGesture:(id)a3;
-- (void)_willAddChildTransaction:(id)a3;
+- (void)_beginWithGesture:(id)gesture;
+- (void)_willAddChildTransaction:(id)transaction;
 @end
 
 @implementation SBSceneResizeFluidGestureWorkspaceTransaction
 
 - (id)layoutState
 {
-  v2 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
-  v3 = [v2 layoutContext];
-  v4 = [v3 layoutState];
+  switcherViewController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
+  layoutContext = [switcherViewController layoutContext];
+  layoutState = [layoutContext layoutState];
 
-  return v4;
+  return layoutState;
 }
 
-- (void)_beginWithGesture:(id)a3
+- (void)_beginWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
-  v6 = [v5 windowManagementContext];
-  v7 = [v6 isFlexibleWindowingEnabled];
+  gestureCopy = gesture;
+  switcherController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-  if (!v7)
+  if (!isFlexibleWindowingEnabled)
   {
-    v10 = [(SBSceneResizeFluidGestureWorkspaceTransaction *)self layoutState];
-    v11 = [v10 appLayout];
+    layoutState = [(SBSceneResizeFluidGestureWorkspaceTransaction *)self layoutState];
+    appLayout = [layoutState appLayout];
     goto LABEL_5;
   }
 
   v8 = objc_opt_class();
-  v9 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
-  v10 = SBSafeCast(v8, v9);
+  gestureRecognizer = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
+  layoutState = SBSafeCast(v8, gestureRecognizer);
 
-  if (v10)
+  if (layoutState)
   {
-    v11 = [v10 splitPairAppLayout];
+    appLayout = [layoutState splitPairAppLayout];
 LABEL_5:
-    v12 = v11;
-    [(SBFluidSwitcherGestureWorkspaceTransaction *)self setSelectedAppLayout:v11];
+    v12 = appLayout;
+    [(SBFluidSwitcherGestureWorkspaceTransaction *)self setSelectedAppLayout:appLayout];
   }
 
   v13.receiver = self;
   v13.super_class = SBSceneResizeFluidGestureWorkspaceTransaction;
-  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v13 _beginWithGesture:v4];
+  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v13 _beginWithGesture:gestureCopy];
 }
 
 - (BOOL)isLiveResize
 {
-  v2 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
-  v3 = [v2 windowManagementContext];
-  v4 = [v3 isFlexibleWindowingEnabled];
+  switcherController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-  return v4;
+  return isFlexibleWindowingEnabled;
 }
 
-- (void)_willAddChildTransaction:(id)a3
+- (void)_willAddChildTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = transactionCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())

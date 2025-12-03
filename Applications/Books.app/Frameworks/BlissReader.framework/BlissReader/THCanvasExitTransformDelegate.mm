@@ -1,25 +1,25 @@
 @interface THCanvasExitTransformDelegate
-- ($F79AFF246B753071D4AF2E33424639CF)shadowPropertiesForFreeTransformController:(SEL)a3 defaults:(id)a4;
-- (BOOL)freeTransformControllerShouldAllowPinchDown:(id)a3;
-- (BOOL)freeTransformControllerShouldAllowPinchUp:(id)a3;
-- (BOOL)p_shouldShowShroudForVisibleSize:(CGSize)a3;
-- (CGRect)freeTransformControllerOriginalTargetLayerFrame:(id)a3;
-- (CGRect)freeTransformControllerRectForCompletionAnimation:(id)a3;
-- (CGRect)shadowBoundsForFreeTransformController:(id)a3;
-- (CGSize)curtainSizeForFreeTransformController:(id)a3;
-- (THCanvasExitTransformDelegate)initWithBookViewController:(id)a3;
-- (id)p_shadowFadeInAnimation:(double)a3;
-- (id)p_shadowFadeOutAnimation:(double)a3;
-- (void)freeTransformControllerDidBegin:(id)a3;
-- (void)freeTransformControllerDidContinue:(id)a3 withScale:(double)a4;
-- (void)freeTransformControllerDidEnd:(id)a3 passedThreshold:(BOOL)a4;
-- (void)freeTransformControllerWillBeginCompletionAnimation:(id)a3 passedThreshold:(BOOL)a4;
-- (void)p_showThumbUsingTinyThumb:(BOOL)a3 freeTransformController:(id)a4;
+- ($F79AFF246B753071D4AF2E33424639CF)shadowPropertiesForFreeTransformController:(SEL)controller defaults:(id)defaults;
+- (BOOL)freeTransformControllerShouldAllowPinchDown:(id)down;
+- (BOOL)freeTransformControllerShouldAllowPinchUp:(id)up;
+- (BOOL)p_shouldShowShroudForVisibleSize:(CGSize)size;
+- (CGRect)freeTransformControllerOriginalTargetLayerFrame:(id)frame;
+- (CGRect)freeTransformControllerRectForCompletionAnimation:(id)animation;
+- (CGRect)shadowBoundsForFreeTransformController:(id)controller;
+- (CGSize)curtainSizeForFreeTransformController:(id)controller;
+- (THCanvasExitTransformDelegate)initWithBookViewController:(id)controller;
+- (id)p_shadowFadeInAnimation:(double)animation;
+- (id)p_shadowFadeOutAnimation:(double)animation;
+- (void)freeTransformControllerDidBegin:(id)begin;
+- (void)freeTransformControllerDidContinue:(id)continue withScale:(double)scale;
+- (void)freeTransformControllerDidEnd:(id)end passedThreshold:(BOOL)threshold;
+- (void)freeTransformControllerWillBeginCompletionAnimation:(id)animation passedThreshold:(BOOL)threshold;
+- (void)p_showThumbUsingTinyThumb:(BOOL)thumb freeTransformController:(id)controller;
 @end
 
 @implementation THCanvasExitTransformDelegate
 
-- (THCanvasExitTransformDelegate)initWithBookViewController:(id)a3
+- (THCanvasExitTransformDelegate)initWithBookViewController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = THCanvasExitTransformDelegate;
@@ -27,15 +27,15 @@
   v5 = v4;
   if (v4)
   {
-    v4->mBookViewController = a3;
-    v4->mDocumentViewController = [a3 documentViewController];
+    v4->mBookViewController = controller;
+    v4->mDocumentViewController = [controller documentViewController];
     v5->mChapterBrowserController = [(THBookViewController *)v5->mBookViewController chapterBrowserController];
   }
 
   return v5;
 }
 
-- (CGRect)shadowBoundsForFreeTransformController:(id)a3
+- (CGRect)shadowBoundsForFreeTransformController:(id)controller
 {
   [(THDocumentViewController *)self->mDocumentViewController shadowBoundsForCanvasExitTransformDelegate:self];
   result.size.height = v6;
@@ -45,10 +45,10 @@
   return result;
 }
 
-- (BOOL)p_shouldShowShroudForVisibleSize:(CGSize)a3
+- (BOOL)p_shouldShowShroudForVisibleSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (TSUPhoneUI())
   {
     return 1;
@@ -66,7 +66,7 @@
   return result;
 }
 
-- (void)freeTransformControllerDidBegin:(id)a3
+- (void)freeTransformControllerDidBegin:(id)begin
 {
   [(THDocumentViewController *)self->mDocumentViewController currentRelativePageIndexRange];
   if (v4 == 2)
@@ -84,10 +84,10 @@
   }
 
   self->mChapterIndex = [(THDocumentViewController *)self->mDocumentViewController currentChapter];
-  v7 = [(THDocumentViewController *)self->mDocumentViewController currentRelativePageIndexRange];
-  self->mAnimatingPageIndexRange.location = v7;
+  currentRelativePageIndexRange = [(THDocumentViewController *)self->mDocumentViewController currentRelativePageIndexRange];
+  self->mAnimatingPageIndexRange.location = currentRelativePageIndexRange;
   self->mAnimatingPageIndexRange.length = v8;
-  if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+  if (currentRelativePageIndexRange == 0x7FFFFFFFFFFFFFFFLL)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -101,29 +101,29 @@
   }
 
   [(THChapterBrowserController *)self->mChapterBrowserController scrollToThumbnailAtIndex:self->mAnimatingPageIndexRange.location];
-  v9 = [(THDocumentViewController *)self->mDocumentViewController interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self->mDocumentViewController interactiveCanvasController];
 
-  [v9 didBeginFreeTransform];
+  [interactiveCanvasController didBeginFreeTransform];
 }
 
-- (id)p_shadowFadeInAnimation:(double)a3
+- (id)p_shadowFadeInAnimation:(double)animation
 {
   v4 = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
   [(CABasicAnimation *)v4 setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
   [(CABasicAnimation *)v4 setDuration:0.15];
   [(CABasicAnimation *)v4 setFromValue:[NSNumber numberWithFloat:0.0]];
-  *&v5 = a3;
+  *&v5 = animation;
   [(CABasicAnimation *)v4 setToValue:[NSNumber numberWithFloat:v5]];
   [(CABasicAnimation *)v4 setRemovedOnCompletion:0];
   return v4;
 }
 
-- (id)p_shadowFadeOutAnimation:(double)a3
+- (id)p_shadowFadeOutAnimation:(double)animation
 {
   v4 = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
   [(CABasicAnimation *)v4 setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
   [(CABasicAnimation *)v4 setDuration:0.15];
-  *&v5 = a3;
+  *&v5 = animation;
   [(CABasicAnimation *)v4 setFromValue:[NSNumber numberWithFloat:v5]];
   [(CABasicAnimation *)v4 setToValue:[NSNumber numberWithFloat:0.0]];
   [(CABasicAnimation *)v4 setFillMode:kCAFillModeForwards];
@@ -131,23 +131,23 @@
   return v4;
 }
 
-- (void)p_showThumbUsingTinyThumb:(BOOL)a3 freeTransformController:(id)a4
+- (void)p_showThumbUsingTinyThumb:(BOOL)thumb freeTransformController:(id)controller
 {
-  v5 = a3;
-  v7 = [(THDocumentViewController *)self->mDocumentViewController canvasScrollView];
+  thumbCopy = thumb;
+  canvasScrollView = [(THDocumentViewController *)self->mDocumentViewController canvasScrollView];
   mThumbView = self->mThumbView;
   if (!mThumbView)
   {
     v9 = [UIView alloc];
-    [v7 frame];
+    [canvasScrollView frame];
     v10 = [v9 initWithFrame:?];
     self->mThumbView = v10;
     [(UIView *)v10 setAlpha:0.0];
-    [objc_msgSend(v7 "superview")];
+    [objc_msgSend(canvasScrollView "superview")];
     mThumbView = self->mThumbView;
   }
 
-  if (self->mUsingTinyThumb == v5)
+  if (self->mUsingTinyThumb == thumbCopy)
   {
     if ([(NSArray *)[(UIView *)mThumbView subviews] count])
     {
@@ -161,8 +161,8 @@
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v11 = [(UIView *)mThumbView subviews];
-  v12 = [(NSArray *)v11 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  subviews = [(UIView *)mThumbView subviews];
+  v12 = [(NSArray *)subviews countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v12)
   {
     v13 = v12;
@@ -173,13 +173,13 @@
       {
         if (*v40 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v39 + 1) + 8 * i) removeFromSuperview];
       }
 
-      v13 = [(NSArray *)v11 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v13 = [(NSArray *)subviews countByEnumeratingWithState:&v39 objects:v43 count:16];
     }
 
     while (v13);
@@ -188,7 +188,7 @@
   v16 = &off_349000;
   if (self->mAnimatingPageIndexRange.length == 1)
   {
-    v17 = [[UIImageView alloc] initWithImage:{-[THChapterBrowserController thumbnailImageForPageAtIndex:chapterIndex:tinyThumb:](self->mChapterBrowserController, "thumbnailImageForPageAtIndex:chapterIndex:tinyThumb:", self->mAnimatingPageIndexRange.location, self->mChapterIndex, v5)}];
+    v17 = [[UIImageView alloc] initWithImage:{-[THChapterBrowserController thumbnailImageForPageAtIndex:chapterIndex:tinyThumb:](self->mChapterBrowserController, "thumbnailImageForPageAtIndex:chapterIndex:tinyThumb:", self->mAnimatingPageIndexRange.location, self->mChapterIndex, thumbCopy)}];
     v18 = [(THDocumentViewController *)self->mDocumentViewController is2UpForCanvasExitTransformDelegate:self];
     [(UIView *)self->mThumbView bounds];
     if (v18)
@@ -213,8 +213,8 @@
     v24 = v23;
     v26 = v25;
     location = self->mAnimatingPageIndexRange.location;
-    v28 = [[UIImageView alloc] initWithImage:{-[THChapterBrowserController thumbnailImageForPageAtIndex:chapterIndex:tinyThumb:](self->mChapterBrowserController, "thumbnailImageForPageAtIndex:chapterIndex:tinyThumb:", location, self->mChapterIndex, v5)}];
-    v29 = [[UIImageView alloc] initWithImage:{-[THChapterBrowserController thumbnailImageForPageAtIndex:chapterIndex:tinyThumb:](self->mChapterBrowserController, "thumbnailImageForPageAtIndex:chapterIndex:tinyThumb:", location + 1, self->mChapterIndex, v5)}];
+    v28 = [[UIImageView alloc] initWithImage:{-[THChapterBrowserController thumbnailImageForPageAtIndex:chapterIndex:tinyThumb:](self->mChapterBrowserController, "thumbnailImageForPageAtIndex:chapterIndex:tinyThumb:", location, self->mChapterIndex, thumbCopy)}];
+    v29 = [[UIImageView alloc] initWithImage:{-[THChapterBrowserController thumbnailImageForPageAtIndex:chapterIndex:tinyThumb:](self->mChapterBrowserController, "thumbnailImageForPageAtIndex:chapterIndex:tinyThumb:", location + 1, self->mChapterIndex, thumbCopy)}];
     v30 = v24 * 0.5;
     if (self->mAnimatingPageIndexRange.location)
     {
@@ -243,17 +243,17 @@
     {
       if (self->_targetLayerShadowOpacity == 0.0)
       {
-        [objc_msgSend(a4 "shadowLayer")];
+        [objc_msgSend(controller "shadowLayer")];
         self->_targetLayerShadowOpacity = v35;
-        [objc_msgSend(a4 "shadowLayer")];
-        [objc_msgSend(a4 "shadowLayer")];
+        [objc_msgSend(controller "shadowLayer")];
+        [objc_msgSend(controller "shadowLayer")];
       }
 
       v38[0] = _NSConcreteStackBlock;
       v38[1] = 3221225472;
       v38[2] = sub_B12D4;
       v38[3] = &unk_45AE00;
-      v38[4] = v7;
+      v38[4] = canvasScrollView;
       [UIView animateWithDuration:v38 animations:0.15];
     }
   }
@@ -265,10 +265,10 @@
   v37[4] = self;
   [UIView animateWithDuration:v37 animations:*(v16 + 448)];
 LABEL_26:
-  self->mUsingTinyThumb = v5;
+  self->mUsingTinyThumb = thumbCopy;
 }
 
-- (void)freeTransformControllerDidContinue:(id)a3 withScale:(double)a4
+- (void)freeTransformControllerDidContinue:(id)continue withScale:(double)scale
 {
   [-[THDocumentViewController view](self->mDocumentViewController "view")];
   if ([(THCanvasExitTransformDelegate *)self p_shouldShowShroudForVisibleSize:v7, v8])
@@ -278,24 +278,24 @@ LABEL_26:
     [(THTOCViewController *)mChapterBrowserController setShroudedFraction:?];
   }
 
-  if (a4 >= 0.5)
+  if (scale >= 0.5)
   {
     if (self->mThumbView && !self->_thumbFadeOutAnimationInProgress)
     {
       self->_thumbFadeOutAnimationInProgress = 1;
       if (self->_targetLayerShadowOpacity > 0.0)
       {
-        [objc_msgSend(a3 "shadowLayer")];
-        [objc_msgSend(a3 "shadowLayer")];
+        [objc_msgSend(continue "shadowLayer")];
+        [objc_msgSend(continue "shadowLayer")];
         self->_targetLayerShadowOpacity = 0.0;
       }
 
-      v10 = [(THDocumentViewController *)self->mDocumentViewController canvasScrollView];
+      canvasScrollView = [(THDocumentViewController *)self->mDocumentViewController canvasScrollView];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_B14C0;
       v12[3] = &unk_45AE58;
-      v12[4] = v10;
+      v12[4] = canvasScrollView;
       v12[5] = self;
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
@@ -309,20 +309,20 @@ LABEL_26:
   else
   {
 
-    [(THCanvasExitTransformDelegate *)self p_showThumbUsingTinyThumb:a4 < 0.25 freeTransformController:a3];
+    [(THCanvasExitTransformDelegate *)self p_showThumbUsingTinyThumb:scale < 0.25 freeTransformController:continue];
   }
 }
 
-- (CGRect)freeTransformControllerRectForCompletionAnimation:(id)a3
+- (CGRect)freeTransformControllerRectForCompletionAnimation:(id)animation
 {
-  -[THChapterBrowserController rectForPageThumbnailAtIndex:chapterIndex:inLayer:](self->mChapterBrowserController, "rectForPageThumbnailAtIndex:chapterIndex:inLayer:", self->mAnimatingPageIndexRange.location, self->mChapterIndex, [objc_msgSend(a3 "freeTransformLayer")]);
+  -[THChapterBrowserController rectForPageThumbnailAtIndex:chapterIndex:inLayer:](self->mChapterBrowserController, "rectForPageThumbnailAtIndex:chapterIndex:inLayer:", self->mAnimatingPageIndexRange.location, self->mChapterIndex, [objc_msgSend(animation "freeTransformLayer")]);
   x = v5;
   y = v7;
   width = v9;
   height = v11;
   if (self->mAnimatingPageIndexRange.length == 2)
   {
-    -[THChapterBrowserController rectForPageThumbnailAtIndex:chapterIndex:inLayer:](self->mChapterBrowserController, "rectForPageThumbnailAtIndex:chapterIndex:inLayer:", self->mAnimatingPageIndexRange.location + 1, self->mChapterIndex, [objc_msgSend(a3 "freeTransformLayer")]);
+    -[THChapterBrowserController rectForPageThumbnailAtIndex:chapterIndex:inLayer:](self->mChapterBrowserController, "rectForPageThumbnailAtIndex:chapterIndex:inLayer:", self->mAnimatingPageIndexRange.location + 1, self->mChapterIndex, [objc_msgSend(animation "freeTransformLayer")]);
     v24.origin.x = v13;
     v24.origin.y = v14;
     v24.size.width = v15;
@@ -349,39 +349,39 @@ LABEL_26:
   return result;
 }
 
-- (void)freeTransformControllerWillBeginCompletionAnimation:(id)a3 passedThreshold:(BOOL)a4
+- (void)freeTransformControllerWillBeginCompletionAnimation:(id)animation passedThreshold:(BOOL)threshold
 {
-  v4 = a4;
-  if (a4 && !self->mThumbView)
+  thresholdCopy = threshold;
+  if (threshold && !self->mThumbView)
   {
-    [(THCanvasExitTransformDelegate *)self p_showThumbUsingTinyThumb:1 freeTransformController:a3];
+    [(THCanvasExitTransformDelegate *)self p_showThumbUsingTinyThumb:1 freeTransformController:animation];
   }
 
   mChapterBrowserController = self->mChapterBrowserController;
 
-  [(THTOCViewController *)mChapterBrowserController setShrouded:!v4 animated:1 duration:0.25];
+  [(THTOCViewController *)mChapterBrowserController setShrouded:!thresholdCopy animated:1 duration:0.25];
 }
 
-- (void)freeTransformControllerDidEnd:(id)a3 passedThreshold:(BOOL)a4
+- (void)freeTransformControllerDidEnd:(id)end passedThreshold:(BOOL)threshold
 {
-  v4 = a4;
+  thresholdCopy = threshold;
   if (self->_targetLayerShadowOpacity > 0.0)
   {
-    [objc_msgSend(a3 "shadowLayer")];
+    [objc_msgSend(end "shadowLayer")];
     self->_targetLayerShadowOpacity = 0.0;
   }
 
-  v6 = [(THDocumentViewController *)self->mDocumentViewController canvasScrollView];
+  canvasScrollView = [(THDocumentViewController *)self->mDocumentViewController canvasScrollView];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_B1894;
   v9[3] = &unk_45AE00;
-  v9[4] = v6;
+  v9[4] = canvasScrollView;
   [UIView animateWithDuration:v9 animations:0.15];
   [(UIView *)self->mThumbView removeFromSuperview];
 
   self->mThumbView = 0;
-  if (!v4)
+  if (!thresholdCopy)
   {
     [(THBookViewController *)self->mBookViewController removeTOC];
     [(THBookViewController *)self->mBookViewController setCenterTitleForCurrentNavigationUnit];
@@ -396,14 +396,14 @@ LABEL_26:
   }
 
   [-[THDocumentViewController interactiveCanvasController](self->mDocumentViewController "interactiveCanvasController")];
-  if (v4)
+  if (thresholdCopy)
   {
     [(THBookViewController *)self->mBookViewController dismissActivePopover];
     if (![(THChapterBrowserController *)self->mChapterBrowserController paginatedTOCShowsStatusBar])
     {
-      v7 = [(THBookViewController *)self->mBookViewController isToolbarHidden];
+      isToolbarHidden = [(THBookViewController *)self->mBookViewController isToolbarHidden];
       mBookViewController = self->mBookViewController;
-      if (v7)
+      if (isToolbarHidden)
       {
         [(THBookViewController *)mBookViewController refreshStatusBarAppearance];
       }
@@ -428,7 +428,7 @@ LABEL_26:
   }
 }
 
-- (CGSize)curtainSizeForFreeTransformController:(id)a3
+- (CGSize)curtainSizeForFreeTransformController:(id)controller
 {
   width = CGSizeZero.width;
   height = CGSizeZero.height;
@@ -437,17 +437,17 @@ LABEL_26:
   return result;
 }
 
-- ($F79AFF246B753071D4AF2E33424639CF)shadowPropertiesForFreeTransformController:(SEL)a3 defaults:(id)a4
+- ($F79AFF246B753071D4AF2E33424639CF)shadowPropertiesForFreeTransformController:(SEL)controller defaults:(id)defaults
 {
-  [a4 completionTargetRect];
+  [defaults completionTargetRect];
   CGRectGetWidth(v8);
-  [objc_msgSend(a4 "targetLayer")];
+  [objc_msgSend(defaults "targetLayer")];
   CGRectGetWidth(v9);
   [(THDocumentViewController *)self->mDocumentViewController is2UpForCanvasExitTransformDelegate:self];
   return TSDMultiplySizeScalar();
 }
 
-- (CGRect)freeTransformControllerOriginalTargetLayerFrame:(id)a3
+- (CGRect)freeTransformControllerOriginalTargetLayerFrame:(id)frame
 {
   [(THDocumentViewController *)self->mDocumentViewController shadowBoundsForCanvasExitTransformDelegate:self];
   result.size.height = v6;
@@ -457,31 +457,31 @@ LABEL_26:
   return result;
 }
 
-- (BOOL)freeTransformControllerShouldAllowPinchDown:(id)a3
+- (BOOL)freeTransformControllerShouldAllowPinchDown:(id)down
 {
-  v3 = [-[THDocumentViewController canvasViewController](self->mDocumentViewController canvasViewController];
-  if (![v3 allowsPinchZoom])
+  canvasViewController = [-[THDocumentViewController canvasViewController](self->mDocumentViewController canvasViewController];
+  if (![canvasViewController allowsPinchZoom])
   {
     return 1;
   }
 
-  [v3 viewScale];
+  [canvasViewController viewScale];
   v5 = v4;
-  [v3 minimumPinchViewScale];
+  [canvasViewController minimumPinchViewScale];
   return vabdd_f64(v5, v6) < 0.00999999978;
 }
 
-- (BOOL)freeTransformControllerShouldAllowPinchUp:(id)a3
+- (BOOL)freeTransformControllerShouldAllowPinchUp:(id)up
 {
-  v3 = [-[THDocumentViewController canvasViewController](self->mDocumentViewController canvasViewController];
-  if (![v3 allowsPinchZoom])
+  canvasViewController = [-[THDocumentViewController canvasViewController](self->mDocumentViewController canvasViewController];
+  if (![canvasViewController allowsPinchZoom])
   {
     return 1;
   }
 
-  [v3 minimumPinchViewScale];
+  [canvasViewController minimumPinchViewScale];
   v5 = v4;
-  [v3 maximumPinchViewScale];
+  [canvasViewController maximumPinchViewScale];
   return vabdd_f64(v5, v6) < 0.00999999978;
 }
 

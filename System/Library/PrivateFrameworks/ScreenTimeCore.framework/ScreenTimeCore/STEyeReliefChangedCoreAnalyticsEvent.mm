@@ -1,16 +1,16 @@
 @interface STEyeReliefChangedCoreAnalyticsEvent
 - (NSDictionary)payload;
-- (STEyeReliefChangedCoreAnalyticsEvent)initWithEyeReliefEnabled:(BOOL)a3;
+- (STEyeReliefChangedCoreAnalyticsEvent)initWithEyeReliefEnabled:(BOOL)enabled;
 @end
 
 @implementation STEyeReliefChangedCoreAnalyticsEvent
 
-- (STEyeReliefChangedCoreAnalyticsEvent)initWithEyeReliefEnabled:(BOOL)a3
+- (STEyeReliefChangedCoreAnalyticsEvent)initWithEyeReliefEnabled:(BOOL)enabled
 {
   v5.receiver = self;
   v5.super_class = STEyeReliefChangedCoreAnalyticsEvent;
   result = [(STEyeReliefChangedCoreAnalyticsEvent *)&v5 init];
-  result->_eyeReliefEnabled = a3;
+  result->_eyeReliefEnabled = enabled;
   return result;
 }
 

@@ -1,16 +1,16 @@
 @interface CKDFetchUserQuotaOperation
-- (CKDFetchUserQuotaOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDFetchUserQuotaOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (void)main;
 @end
 
 @implementation CKDFetchUserQuotaOperation
 
-- (CKDFetchUserQuotaOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDFetchUserQuotaOperation)initWithOperationInfo:(id)info container:(id)container
 {
   v5.receiver = self;
   v5.super_class = CKDFetchUserQuotaOperation;
-  return [(CKDDatabaseOperation *)&v5 initWithOperationInfo:a3 container:a4];
+  return [(CKDDatabaseOperation *)&v5 initWithOperationInfo:info container:container];
 }
 
 - (id)activityCreate
@@ -41,7 +41,7 @@
     *location = 138544130;
     *&location[4] = v17;
     v36 = 2048;
-    v37 = self;
+    selfCopy = self;
     v38 = 2114;
     v39 = v22;
     v40 = 2112;

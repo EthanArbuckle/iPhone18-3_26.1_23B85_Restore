@@ -1,9 +1,9 @@
 @interface SiriSharedUIContentPlatterViewController
 - (BOOL)_canShowWhileLocked;
 - (SiriSharedUIContentPlatterView)contentPlatterView;
-- (void)appendSeparatorToViewControllers:(id)a3 forNextViewController:(id)a4;
+- (void)appendSeparatorToViewControllers:(id)controllers forNextViewController:(id)controller;
 - (void)loadView;
-- (void)setContentViewControllers:(id)a3;
+- (void)setContentViewControllers:(id)controllers;
 @end
 
 @implementation SiriSharedUIContentPlatterViewController
@@ -14,12 +14,12 @@
   [(SiriSharedUIContentPlatterViewController *)self setView:v3];
 }
 
-- (void)setContentViewControllers:(id)a3
+- (void)setContentViewControllers:(id)controllers
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  controllersCopy = controllers;
   contentViewControllers = self->_contentViewControllers;
-  if (contentViewControllers != v5)
+  if (contentViewControllers != controllersCopy)
   {
     v29 = 0u;
     v30 = 0u;
@@ -42,8 +42,8 @@
 
           v12 = *(*(&v27 + 1) + 8 * i);
           [v12 removeFromParentViewController];
-          v13 = [v12 view];
-          [v13 removeFromSuperview];
+          view = [v12 view];
+          [view removeFromSuperview];
 
           [v12 didMoveToParentViewController:0];
         }
@@ -54,7 +54,7 @@
       while (v9);
     }
 
-    objc_storeStrong(&self->_contentViewControllers, a3);
+    objc_storeStrong(&self->_contentViewControllers, controllers);
     v14 = objc_opt_new();
     v23 = 0u;
     v24 = 0u;
@@ -78,8 +78,8 @@
           v20 = *(*(&v23 + 1) + 8 * j);
           [(SiriSharedUIContentPlatterViewController *)self addChildViewController:v20, v23];
           [v20 didMoveToParentViewController:self];
-          v21 = [v20 view];
-          [v14 addObject:v21];
+          view2 = [v20 view];
+          [v14 addObject:view2];
         }
 
         v17 = [(NSArray *)v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -88,19 +88,19 @@
       while (v17);
     }
 
-    v22 = [(SiriSharedUIContentPlatterViewController *)self contentPlatterView];
-    [v22 setContentViews:v14];
+    contentPlatterView = [(SiriSharedUIContentPlatterViewController *)self contentPlatterView];
+    [contentPlatterView setContentViews:v14];
   }
 }
 
-- (void)appendSeparatorToViewControllers:(id)a3 forNextViewController:(id)a4
+- (void)appendSeparatorToViewControllers:(id)controllers forNextViewController:(id)controller
 {
-  v12 = a4;
+  controllerCopy = controller;
   v5 = MEMORY[0x277D75D28];
-  v6 = a3;
+  controllersCopy = controllers;
   v7 = objc_alloc_init(v5);
   v8 = objc_alloc_init(SiriSharedUIContentPlatterSeparatorView);
-  v9 = [v12 aceObject];
+  aceObject = [controllerCopy aceObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -108,7 +108,7 @@
 
   else
   {
-    v10 = [v12 aceObject];
+    aceObject2 = [controllerCopy aceObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -121,16 +121,16 @@
   [(SiriSharedUIContentPlatterSeparatorView *)v8 setSeparatorType:1];
 LABEL_5:
   [v7 setView:v8];
-  [v6 addObject:v7];
+  [controllersCopy addObject:v7];
 }
 
 - (SiriSharedUIContentPlatterView)contentPlatterView
 {
-  v2 = [(SiriSharedUIContentPlatterViewController *)self view];
+  view = [(SiriSharedUIContentPlatterViewController *)self view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = view;
   }
 
   else
@@ -145,10 +145,10 @@ LABEL_5:
 
 - (BOOL)_canShowWhileLocked
 {
-  v2 = [MEMORY[0x277D61AB8] sharedInstance];
-  v3 = [v2 isSiriSafeForLockScreen];
+  mEMORY[0x277D61AB8] = [MEMORY[0x277D61AB8] sharedInstance];
+  isSiriSafeForLockScreen = [mEMORY[0x277D61AB8] isSiriSafeForLockScreen];
 
-  return v3;
+  return isSiriSafeForLockScreen;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface AppDetailViewWrapper
-- (_TtC17StorageSettingsUI20AppDetailViewWrapper)initWithCoder:(id)a3;
-- (_TtC17StorageSettingsUI20AppDetailViewWrapper)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC17StorageSettingsUI20AppDetailViewWrapper)initWithCoder:(id)coder;
+- (_TtC17StorageSettingsUI20AppDetailViewWrapper)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation AppDetailViewWrapper
 
-- (_TtC17StorageSettingsUI20AppDetailViewWrapper)initWithCoder:(id)a3
+- (_TtC17StorageSettingsUI20AppDetailViewWrapper)initWithCoder:(id)coder
 {
   result = sub_81D78();
   __break(1u);
@@ -15,11 +15,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_7EF3C();
 }
 
-- (_TtC17StorageSettingsUI20AppDetailViewWrapper)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17StorageSettingsUI20AppDetailViewWrapper)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,14 +1,14 @@
 @interface SKRExecutionOutput
 - (NSString)debugDescription;
 - (SKRExecutionOutput)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKRExecutionOutput
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ExecutionOutput.debugDescription.getter();
   v5 = v4;
 
@@ -17,11 +17,11 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ExecutionOutput.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ExecutionOutput.encode(with:)(coderCopy);
 }
 
 - (SKRExecutionOutput)init

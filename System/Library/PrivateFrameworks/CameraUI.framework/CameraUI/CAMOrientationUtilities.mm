@@ -1,72 +1,72 @@
 @interface CAMOrientationUtilities
-+ (id)imagePropertiesFromAssetAtUrl:(id)a3;
-+ (int)exifOrientationFromDeviceOrientationForCaptureRequest:(id)a3;
-+ (int64_t)captureOrientationFromPanoramaCaptureOrientation:(int64_t)a3;
-+ (int64_t)imageOrientationForVideoRequest:(id)a3;
-+ (int64_t)imageOrientationOfResult:(id)a3 withCaptureDevice:(int64_t)a4 captureOrientation:(int64_t)a5;
-+ (int64_t)orientationFromAssetAtUrl:(id)a3;
-+ (int64_t)orientationFromImageProperties:(id)a3;
-+ (int64_t)panoramaCaptureOrientationFromCaptureOrientation:(int64_t)a3;
-+ (int64_t)pixelHeightFromAssetAtUrl:(id)a3;
-+ (int64_t)pixelHeightFromImageProperties:(id)a3;
-+ (int64_t)pixelWidthFromAssetAtUrl:(id)a3;
-+ (int64_t)pixelWidthFromImageProperties:(id)a3;
-+ (int64_t)videoTrackOrientationForVideoRequest:(id)a3;
++ (id)imagePropertiesFromAssetAtUrl:(id)url;
++ (int)exifOrientationFromDeviceOrientationForCaptureRequest:(id)request;
++ (int64_t)captureOrientationFromPanoramaCaptureOrientation:(int64_t)orientation;
++ (int64_t)imageOrientationForVideoRequest:(id)request;
++ (int64_t)imageOrientationOfResult:(id)result withCaptureDevice:(int64_t)device captureOrientation:(int64_t)orientation;
++ (int64_t)orientationFromAssetAtUrl:(id)url;
++ (int64_t)orientationFromImageProperties:(id)properties;
++ (int64_t)panoramaCaptureOrientationFromCaptureOrientation:(int64_t)orientation;
++ (int64_t)pixelHeightFromAssetAtUrl:(id)url;
++ (int64_t)pixelHeightFromImageProperties:(id)properties;
++ (int64_t)pixelWidthFromAssetAtUrl:(id)url;
++ (int64_t)pixelWidthFromImageProperties:(id)properties;
++ (int64_t)videoTrackOrientationForVideoRequest:(id)request;
 @end
 
 @implementation CAMOrientationUtilities
 
-+ (int64_t)imageOrientationForVideoRequest:(id)a3
++ (int64_t)imageOrientationForVideoRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 isCaptureMirrored];
-  v5 = [v3 captureOrientation];
+  requestCopy = request;
+  isCaptureMirrored = [requestCopy isCaptureMirrored];
+  captureOrientation = [requestCopy captureOrientation];
 
   v6 = 4;
-  if (!v4)
+  if (!isCaptureMirrored)
   {
     v6 = 0;
   }
 
   v7 = 5;
-  if (!v4)
+  if (!isCaptureMirrored)
   {
     v7 = 1;
   }
 
-  if (v5 != 4)
+  if (captureOrientation != 4)
   {
     v7 = 0;
   }
 
-  if (v5 != 3)
+  if (captureOrientation != 3)
   {
     v6 = v7;
   }
 
   v8 = 3;
-  if (v4)
+  if (isCaptureMirrored)
   {
     v8 = 6;
   }
 
   v9 = 2;
-  if (v4)
+  if (isCaptureMirrored)
   {
     v9 = 7;
   }
 
-  if (v5 != 2)
+  if (captureOrientation != 2)
   {
     v9 = 0;
   }
 
-  if (v5 >= 2)
+  if (captureOrientation >= 2)
   {
     v8 = v9;
   }
 
-  if (v5 <= 2)
+  if (captureOrientation <= 2)
   {
     return v8;
   }
@@ -77,47 +77,47 @@
   }
 }
 
-+ (int64_t)videoTrackOrientationForVideoRequest:(id)a3
++ (int64_t)videoTrackOrientationForVideoRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 isCaptureMirrored];
-  v5 = [v3 captureOrientation];
+  requestCopy = request;
+  isCaptureMirrored = [requestCopy isCaptureMirrored];
+  captureOrientation = [requestCopy captureOrientation];
 
-  v6 = v4;
-  v7 = v4 ^ 1;
-  if (v5 != 4)
+  v6 = isCaptureMirrored;
+  v7 = isCaptureMirrored ^ 1;
+  if (captureOrientation != 4)
   {
     v7 = 0;
   }
 
-  if (v5 != 3)
+  if (captureOrientation != 3)
   {
     v6 = v7;
   }
 
   v8 = 2;
-  if (!v4)
+  if (!isCaptureMirrored)
   {
     v8 = 3;
   }
 
   v9 = 2;
-  if (v4)
+  if (isCaptureMirrored)
   {
     v9 = 3;
   }
 
-  if (v5 != 2)
+  if (captureOrientation != 2)
   {
     v9 = 0;
   }
 
-  if (v5 >= 2)
+  if (captureOrientation >= 2)
   {
     v8 = v9;
   }
 
-  if (v5 <= 2)
+  if (captureOrientation <= 2)
   {
     return v8;
   }
@@ -128,14 +128,14 @@
   }
 }
 
-+ (int)exifOrientationFromDeviceOrientationForCaptureRequest:(id)a3
++ (int)exifOrientationFromDeviceOrientationForCaptureRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 captureDevicePosition];
+  requestCopy = request;
+  captureDevicePosition = [requestCopy captureDevicePosition];
   v5 = +[CAMCaptureCapabilities capabilities];
-  v6 = [v5 frontCameraRotationAngle];
+  frontCameraRotationAngle = [v5 frontCameraRotationAngle];
 
-  if ([v3 isCaptureMirrored])
+  if ([requestCopy isCaptureMirrored])
   {
     v7 = &unk_1F16C90E0;
   }
@@ -146,13 +146,13 @@
   }
 
   v8 = [v7 count];
-  v9 = [v3 captureOrientation];
+  captureOrientation = [requestCopy captureOrientation];
 
-  if (v9 > 2)
+  if (captureOrientation > 2)
   {
-    if (v9 == 3)
+    if (captureOrientation == 3)
     {
-      if (v4 != 1)
+      if (captureDevicePosition != 1)
       {
         v10 = 1;
         goto LABEL_19;
@@ -162,10 +162,10 @@
       goto LABEL_18;
     }
 
-    if (v9 == 4)
+    if (captureOrientation == 4)
     {
       v10 = 3;
-      if (v4 != 1)
+      if (captureDevicePosition != 1)
       {
         goto LABEL_19;
       }
@@ -176,27 +176,27 @@
 
   else
   {
-    if (v9 < 2)
+    if (captureOrientation < 2)
     {
-      if (v4 != 1)
+      if (captureDevicePosition != 1)
       {
         v10 = 0;
 LABEL_19:
         v11 = [v7 objectAtIndexedSubscript:v10];
-        v12 = [v11 intValue];
+        intValue = [v11 intValue];
 
-        return v12;
+        return intValue;
       }
 
       LODWORD(v10) = 2;
 LABEL_18:
-      v10 = (((((1240768329 * v6) >> 32) - v6) >> 6) + ((((1240768329 * v6) >> 32) - v6) >> 31) + v10) % v8;
+      v10 = (((((1240768329 * frontCameraRotationAngle) >> 32) - frontCameraRotationAngle) >> 6) + ((((1240768329 * frontCameraRotationAngle) >> 32) - frontCameraRotationAngle) >> 31) + v10) % v8;
       goto LABEL_19;
     }
 
-    if (v9 == 2)
+    if (captureOrientation == 2)
     {
-      if (v4 != 1)
+      if (captureDevicePosition != 1)
       {
         v10 = 2;
         goto LABEL_19;
@@ -210,10 +210,10 @@ LABEL_18:
   return 1;
 }
 
-+ (int64_t)imageOrientationOfResult:(id)a3 withCaptureDevice:(int64_t)a4 captureOrientation:(int64_t)a5
++ (int64_t)imageOrientationOfResult:(id)result withCaptureDevice:(int64_t)device captureOrientation:(int64_t)orientation
 {
-  v5 = [a3 metadata];
-  v6 = [v5 objectForKey:*MEMORY[0x1E696DE78]];
+  metadata = [result metadata];
+  v6 = [metadata objectForKey:*MEMORY[0x1E696DE78]];
   v7 = v6;
   if (v6)
   {
@@ -232,35 +232,35 @@ LABEL_18:
   return v9;
 }
 
-+ (int64_t)orientationFromAssetAtUrl:(id)a3
++ (int64_t)orientationFromAssetAtUrl:(id)url
 {
-  v4 = [a1 imagePropertiesFromAssetAtUrl:a3];
-  v5 = [a1 orientationFromImageProperties:v4];
+  v4 = [self imagePropertiesFromAssetAtUrl:url];
+  v5 = [self orientationFromImageProperties:v4];
 
   return v5;
 }
 
-+ (int64_t)pixelWidthFromAssetAtUrl:(id)a3
++ (int64_t)pixelWidthFromAssetAtUrl:(id)url
 {
-  v4 = [a1 imagePropertiesFromAssetAtUrl:a3];
-  v5 = [a1 pixelWidthFromImageProperties:v4];
+  v4 = [self imagePropertiesFromAssetAtUrl:url];
+  v5 = [self pixelWidthFromImageProperties:v4];
 
   return v5;
 }
 
-+ (int64_t)pixelHeightFromAssetAtUrl:(id)a3
++ (int64_t)pixelHeightFromAssetAtUrl:(id)url
 {
-  v4 = [a1 imagePropertiesFromAssetAtUrl:a3];
-  v5 = [a1 pixelHeightFromImageProperties:v4];
+  v4 = [self imagePropertiesFromAssetAtUrl:url];
+  v5 = [self pixelHeightFromImageProperties:v4];
 
   return v5;
 }
 
-+ (id)imagePropertiesFromAssetAtUrl:(id)a3
++ (id)imagePropertiesFromAssetAtUrl:(id)url
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = CGImageSourceCreateWithURL(v3, 0);
+  urlCopy = url;
+  v4 = CGImageSourceCreateWithURL(urlCopy, 0);
   if (v4)
   {
     v5 = v4;
@@ -274,7 +274,7 @@ LABEL_18:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v3;
+      v10 = urlCopy;
       _os_log_impl(&dword_1A3640000, v7, OS_LOG_TYPE_DEFAULT, "Failed to create image source for asset at path %@", &v9, 0xCu);
     }
 
@@ -284,13 +284,13 @@ LABEL_18:
   return v6;
 }
 
-+ (int64_t)orientationFromImageProperties:(id)a3
++ (int64_t)orientationFromImageProperties:(id)properties
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x1E696DE78]];
+  v3 = [properties objectForKeyedSubscript:*MEMORY[0x1E696DE78]];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
@@ -302,19 +302,19 @@ LABEL_18:
       _os_log_impl(&dword_1A3640000, v6, OS_LOG_TYPE_DEFAULT, "No orientation metadata found for asset", v8, 2u);
     }
 
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
-+ (int64_t)pixelWidthFromImageProperties:(id)a3
++ (int64_t)pixelWidthFromImageProperties:(id)properties
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x1E696DED8]];
+  v3 = [properties objectForKeyedSubscript:*MEMORY[0x1E696DED8]];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
@@ -326,19 +326,19 @@ LABEL_18:
       _os_log_impl(&dword_1A3640000, v6, OS_LOG_TYPE_DEFAULT, "No pixelWidth metadata found for asset", v8, 2u);
     }
 
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
-+ (int64_t)pixelHeightFromImageProperties:(id)a3
++ (int64_t)pixelHeightFromImageProperties:(id)properties
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x1E696DEC8]];
+  v3 = [properties objectForKeyedSubscript:*MEMORY[0x1E696DEC8]];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
@@ -350,35 +350,35 @@ LABEL_18:
       _os_log_impl(&dword_1A3640000, v6, OS_LOG_TYPE_DEFAULT, "No pixelHeight metadata found for asset", v8, 2u);
     }
 
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
-+ (int64_t)panoramaCaptureOrientationFromCaptureOrientation:(int64_t)a3
++ (int64_t)panoramaCaptureOrientationFromCaptureOrientation:(int64_t)orientation
 {
-  if ((a3 - 2) > 2)
+  if ((orientation - 2) > 2)
   {
     return 3;
   }
 
   else
   {
-    return qword_1A3A64C00[a3 - 2];
+    return qword_1A3A64C00[orientation - 2];
   }
 }
 
-+ (int64_t)captureOrientationFromPanoramaCaptureOrientation:(int64_t)a3
++ (int64_t)captureOrientationFromPanoramaCaptureOrientation:(int64_t)orientation
 {
-  if (a3 > 4)
+  if (orientation > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_1A3A64C18[a3];
+    return qword_1A3A64C18[orientation];
   }
 }
 

@@ -1,31 +1,31 @@
 @interface IMPodcastOffer
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)offerTypeAsFlagBit;
 @end
 
 @implementation IMPodcastOffer
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(IMPodcastOffer *)self priceType];
-    v7 = [(IMPodcastOffer *)self priceType];
-    if (v6 == v7 || [v6 isEqual:v7])
+    v5 = equalCopy;
+    priceType = [(IMPodcastOffer *)self priceType];
+    priceType2 = [(IMPodcastOffer *)self priceType];
+    if (priceType == priceType2 || [priceType isEqual:priceType2])
     {
-      v8 = [(IMPodcastOffer *)self kind];
-      v9 = [v5 kind];
-      if (v8 == v9)
+      kind = [(IMPodcastOffer *)self kind];
+      kind2 = [v5 kind];
+      if (kind == kind2)
       {
         v10 = 1;
       }
 
       else
       {
-        v10 = [v8 isEqual:v9];
+        v10 = [kind isEqual:kind2];
       }
     }
 
@@ -45,32 +45,32 @@
 
 - (unint64_t)offerTypeAsFlagBit
 {
-  v3 = [(IMPodcastOffer *)self priceType];
-  v4 = [v3 isEqualToString:@"STDQ"];
+  priceType = [(IMPodcastOffer *)self priceType];
+  v4 = [priceType isEqualToString:@"STDQ"];
 
   if (v4)
   {
     return 1;
   }
 
-  v6 = [(IMPodcastOffer *)self priceType];
-  v7 = [v6 isEqualToString:@"PSUB"];
+  priceType2 = [(IMPodcastOffer *)self priceType];
+  v7 = [priceType2 isEqualToString:@"PSUB"];
 
   if (v7)
   {
     return 2;
   }
 
-  v8 = [(IMPodcastOffer *)self priceType];
-  v9 = [v8 isEqualToString:@"PLUS"];
+  priceType3 = [(IMPodcastOffer *)self priceType];
+  v9 = [priceType3 isEqualToString:@"PLUS"];
 
   if (v9)
   {
     return 4;
   }
 
-  v10 = [(IMPodcastOffer *)self priceType];
-  v11 = [v10 isEqualToString:@"PRMO"];
+  priceType4 = [(IMPodcastOffer *)self priceType];
+  v11 = [priceType4 isEqualToString:@"PRMO"];
 
   if (v11)
   {

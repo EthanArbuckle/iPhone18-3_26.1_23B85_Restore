@@ -1,5 +1,5 @@
 @interface UIKeyboard
-+ (BOOL)assistantBarShouldBeIncludedInSizeForDelegate:(id)a3;
++ (BOOL)assistantBarShouldBeIncludedInSizeForDelegate:(id)delegate;
 + (BOOL)canShowEmojiKeyboardInsideStickerPickerService;
 + (BOOL)candidateDisplayIsExtended;
 + (BOOL)doesKeyboardFollowEventDeferralTarget;
@@ -32,107 +32,107 @@
 + (BOOL)respondsToProxGesture;
 + (BOOL)shouldExtendKeyboardInputUI;
 + (BOOL)shouldMinimizeForHardwareKeyboard;
-+ (BOOL)shouldSuppressSoftwareKeyboardForResponder:(id)a3;
++ (BOOL)shouldSuppressSoftwareKeyboardForResponder:(id)responder;
 + (BOOL)supportsAutoFillPanel;
 + (BOOL)usesInputSystemUI;
 + (BOOL)usesInputSystemUIForAutoFillOnly;
 + (BOOL)usesInputSystemUIForAutoFillOnlyWithRTI;
 + (BOOL)usesLocalKeyboard;
 + (BOOL)usingEndInputSessionCompletion;
-+ (CGRect)defaultFrameForInterfaceOrientation:(int64_t)a3;
++ (CGRect)defaultFrameForInterfaceOrientation:(int64_t)orientation;
 + (CGSize)defaultSize;
-+ (CGSize)defaultSizeForInterfaceOrientation:(int64_t)a3;
-+ (CGSize)keyboardSizeForInterfaceOrientation:(int64_t)a3;
-+ (CGSize)sizeForInterfaceOrientation:(int64_t)a3;
-+ (CGSize)sizeForInterfaceOrientation:(int64_t)a3 ignoreInputView:(BOOL)a4;
-+ (CGSize)sizeForInterfaceOrientation:(int64_t)a3 ignoreInputView:(BOOL)a4 inputDelegate:(id)a5;
-+ (CGSize)sizeForInterfaceOrientation:(int64_t)a3 includingAssistantBar:(BOOL)a4 ignoreInputView:(BOOL)a5;
-+ (CGSize)sizeForInterfaceOrientation:(int64_t)a3 inputDelegate:(id)a4;
++ (CGSize)defaultSizeForInterfaceOrientation:(int64_t)orientation;
++ (CGSize)keyboardSizeForInterfaceOrientation:(int64_t)orientation;
++ (CGSize)sizeForInterfaceOrientation:(int64_t)orientation;
++ (CGSize)sizeForInterfaceOrientation:(int64_t)orientation ignoreInputView:(BOOL)view;
++ (CGSize)sizeForInterfaceOrientation:(int64_t)orientation ignoreInputView:(BOOL)view inputDelegate:(id)delegate;
++ (CGSize)sizeForInterfaceOrientation:(int64_t)orientation includingAssistantBar:(BOOL)bar ignoreInputView:(BOOL)view;
++ (CGSize)sizeForInterfaceOrientation:(int64_t)orientation inputDelegate:(id)delegate;
 + (UIEdgeInsets)_keyboardFocusGuideMargins;
 + (UIEdgeInsets)keyplanePadding;
 + (double)predictionViewHeightForCurrentInputMode;
-+ (id)activeKeyboardForScreen:(id)a3;
++ (id)activeKeyboardForScreen:(id)screen;
 + (id)activeScreenTraits;
 + (id)currentDocumentState;
 + (id)homeGestureExclusionZones;
 + (id)keyboardApplicationIdentifier;
 + (id)keyboardBundleIdentifier;
-+ (id)obtainHideDisambiguationCandidatesAssertionForReason:(id)a3;
-+ (id)obtainHideInlineCandidatesAssertionForReason:(id)a3;
-+ (id)snapshotViewForOptions:(unint64_t)a3;
++ (id)obtainHideDisambiguationCandidatesAssertionForReason:(id)reason;
++ (id)obtainHideInlineCandidatesAssertionForReason:(id)reason;
++ (id)snapshotViewForOptions:(unint64_t)options;
 + (id)snapshotViewForPredictionViewTransition;
 + (int)keyboardProcessId;
 + (unint64_t)serviceRole;
 + (void)_clearActiveKeyboard;
-+ (void)clearActiveForScreen:(id)a3;
++ (void)clearActiveForScreen:(id)screen;
 + (void)clearLastKeyboardApplicationIdentifier;
-+ (void)forceKeyboardAlpha:(double)a3;
-+ (void)makeKeyboardActive:(id)a3 forScreen:(id)a4;
++ (void)forceKeyboardAlpha:(double)alpha;
++ (void)makeKeyboardActive:(id)active forScreen:(id)screen;
 + (void)removeAllDynamicDictionaries;
 + (void)resetServiceRole;
-+ (void)setKeyboardAlpha:(double)a3 remote:(BOOL)a4 force:(BOOL)a5 processId:(int)a6;
-+ (void)setPredictionViewPrewarmsPredictiveCandidates:(BOOL)a3;
-+ (void)setServiceRole:(unint64_t)a3;
++ (void)setKeyboardAlpha:(double)alpha remote:(BOOL)remote force:(BOOL)force processId:(int)id;
++ (void)setPredictionViewPrewarmsPredictiveCandidates:(BOOL)candidates;
++ (void)setServiceRole:(unint64_t)role;
 - (BOOL)_hasCandidates;
 - (BOOL)_isDictationCurrentView;
-- (BOOL)allowExternalChangeForFocusHeading:(unint64_t)a3 cursorLocation:(unint64_t)a4;
+- (BOOL)allowExternalChangeForFocusHeading:(unint64_t)heading cursorLocation:(unint64_t)location;
 - (BOOL)canBecomeFocused;
-- (BOOL)canHandlePresses:(id)a3 withEvent:(id)a4;
+- (BOOL)canHandlePresses:(id)presses withEvent:(id)event;
 - (BOOL)caretBlinks;
 - (BOOL)caretVisible;
 - (BOOL)disableInteraction;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)hasAutocorrectPrompt;
 - (BOOL)isActivePerScreen;
-- (BOOL)pointInside:(CGPoint)a3 forEvent:(__GSEvent *)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside forEvent:(__GSEvent *)event;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (BOOL)returnKeyEnabled;
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
 - (BOOL)showPredictionBar;
 - (BOOL)showsCandidatesInline;
 - (CGRect)_floatingKeyboardDraggableRect;
-- (CGRect)_focusCastingFrameForHeading:(unint64_t)a3 inCoordinateSpace:(id)a4;
+- (CGRect)_focusCastingFrameForHeading:(unint64_t)heading inCoordinateSpace:(id)space;
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)unfocusedFocusGuideOutsets;
 - (UIKeyboard)initWithDefaultSize;
-- (UIKeyboard)initWithRequestedInteractionModel:(unint64_t)a3;
-- (UIPeripheralAnimationGeometry)geometryForImplHeightDelta:(SEL)a3;
-- (UIPeripheralAnimationGeometry)geometryForMinimize:(SEL)a3;
+- (UIKeyboard)initWithRequestedInteractionModel:(unint64_t)model;
+- (UIPeripheralAnimationGeometry)geometryForImplHeightDelta:(SEL)delta;
+- (UIPeripheralAnimationGeometry)geometryForMinimize:(SEL)minimize;
 - (UITextCursorAssertionController)_activeAssertionController;
-- (id)_baseKeyForRepresentedString:(id)a3;
+- (id)_baseKeyForRepresentedString:(id)string;
 - (id)_getAutocorrection;
 - (id)_getCurrentKeyboardName;
 - (id)_getCurrentKeyplaneName;
 - (id)_getLocalizedInputMode;
-- (id)_initWithFrame:(CGRect)a3 lazily:(BOOL)a4;
-- (id)_keyplaneForKey:(id)a3;
-- (id)_keyplaneNamed:(id)a3;
+- (id)_initWithFrame:(CGRect)frame lazily:(BOOL)lazily;
+- (id)_keyplaneForKey:(id)key;
+- (id)_keyplaneNamed:(id)named;
 - (id)_systemDefaultFocusGroupIdentifier;
-- (id)_touchPoint:(CGPoint)a3;
-- (id)_typeCharacter:(id)a3 withError:(CGPoint)a4 shouldTypeVariants:(BOOL)a5 baseKeyForVariants:(BOOL)a6;
+- (id)_touchPoint:(CGPoint)point;
+- (id)_typeCharacter:(id)character withError:(CGPoint)error shouldTypeVariants:(BOOL)variants baseKeyForVariants:(BOOL)forVariants;
 - (id)createPathEffectViewIfNecessary;
 - (id)defaultTextInputTraits;
 - (id)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)targetWindow;
 - (id)window;
-- (int64_t)_positionInCandidateList:(id)a3;
+- (int64_t)_positionInCandidateList:(id)list;
 - (unint64_t)cursorLocation;
 - (void)_acceptCurrentCandidate;
-- (void)_changeToKeyplane:(id)a3;
+- (void)_changeToKeyplane:(id)keyplane;
 - (void)_deactivateForBackgrounding;
-- (void)_didChangeKeyplaneWithContext:(id)a3;
-- (void)_setAutocorrects:(BOOL)a3;
-- (void)_setDisableTouchInput:(BOOL)a3;
-- (void)_setDisableUpdateMaskForSecureTextEntry:(BOOL)a3;
-- (void)_setInputMode:(id)a3;
-- (void)_setPasscodeOutlineAlpha:(double)a3;
-- (void)_setRenderConfig:(id)a3;
+- (void)_didChangeKeyplaneWithContext:(id)context;
+- (void)_setAutocorrects:(BOOL)autocorrects;
+- (void)_setDisableTouchInput:(BOOL)input;
+- (void)_setDisableUpdateMaskForSecureTextEntry:(BOOL)entry;
+- (void)_setInputMode:(id)mode;
+- (void)_setPasscodeOutlineAlpha:(double)alpha;
+- (void)_setRenderConfig:(id)config;
 - (void)_showPasswordAutoFillPocket;
-- (void)_toggleMenuGestureRecognizer:(BOOL)a3;
-- (void)_wheelChangedWithEvent:(id)a3;
+- (void)_toggleMenuGestureRecognizer:(BOOL)recognizer;
+- (void)_wheelChangedWithEvent:(id)event;
 - (void)acceptAutocorrection;
-- (void)acceptAutocorrectionWithCompletionHandler:(id)a3;
+- (void)acceptAutocorrectionWithCompletionHandler:(id)handler;
 - (void)activate;
 - (void)activateIfNeeded;
 - (void)autoAdjustOrientation;
@@ -140,13 +140,13 @@
 - (void)clearSnapshot;
 - (void)deactivate;
 - (void)dealloc;
-- (void)didFocusGuideWithHeading:(unint64_t)a3;
+- (void)didFocusGuideWithHeading:(unint64_t)heading;
 - (void)didMoveToWindow;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)displayLayer:(id)a3;
-- (void)geometryChangeDone:(BOOL)a3;
-- (void)implBoundsHeightChangeDone:(double)a3 suppressNotification:(BOOL)a4;
-- (void)keyboardMinMaximized:(BOOL)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)displayLayer:(id)layer;
+- (void)geometryChangeDone:(BOOL)done;
+- (void)implBoundsHeightChangeDone:(double)done suppressNotification:(BOOL)notification;
+- (void)keyboardMinMaximized:(BOOL)maximized;
 - (void)layoutSubviews;
 - (void)manualKeyboardWasOrderedIn;
 - (void)manualKeyboardWasOrderedOut;
@@ -155,51 +155,51 @@
 - (void)maximize;
 - (void)minimize;
 - (void)prepareForGeometryChange;
-- (void)prepareForImplBoundsHeightChange:(double)a3 suppressNotification:(BOOL)a4;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesChanged:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)remoteControlReceivedWithEvent:(id)a3;
+- (void)prepareForImplBoundsHeightChange:(double)change suppressNotification:(BOOL)notification;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesChanged:(id)changed withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)remoteControlReceivedWithEvent:(id)event;
 - (void)removeAutocorrectPrompt;
 - (void)responseContextDidChange;
-- (void)setBounds:(CGRect)a3;
-- (void)setCaretBlinks:(BOOL)a3;
-- (void)setCaretVisible:(BOOL)a3;
-- (void)setCorrectionLearningAllowed:(BOOL)a3;
-- (void)setCursorLocation:(unint64_t)a3;
-- (void)setDefaultTextInputTraits:(id)a3;
-- (void)setDisableInteraction:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setMinimized:(BOOL)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCaretBlinks:(BOOL)blinks;
+- (void)setCaretVisible:(BOOL)visible;
+- (void)setCorrectionLearningAllowed:(BOOL)allowed;
+- (void)setCursorLocation:(unint64_t)location;
+- (void)setDefaultTextInputTraits:(id)traits;
+- (void)setDisableInteraction:(BOOL)interaction;
+- (void)setFrame:(CGRect)frame;
+- (void)setMinimized:(BOOL)minimized;
 - (void)setNeedsDisplay;
-- (void)setReturnKeyEnabled:(BOOL)a3;
-- (void)setShouldUpdateLayoutAutomatically:(BOOL)a3;
-- (void)setShowsCandidatesInline:(BOOL)a3;
-- (void)set_overrideTextInputTraits:(id)a3;
+- (void)setReturnKeyEnabled:(BOOL)enabled;
+- (void)setShouldUpdateLayoutAutomatically:(BOOL)automatically;
+- (void)setShowsCandidatesInline:(BOOL)inline;
+- (void)set_overrideTextInputTraits:(id)traits;
 - (void)setupKeyFocusGuides;
 - (void)syncMinimizedStateToHardwareKeyboardAttachedState;
 - (void)takeSnapshot;
 - (void)textInputTraitsDidChange;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)updateFocusMarginsUpToView:(id)a3;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)updateFocusMarginsUpToView:(id)view;
 - (void)updateKeyFocusGuides;
 - (void)updateLayout;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation UIKeyboard
 
 + (BOOL)usesInputSystemUI
 {
-  v3 = [a1 inputUIOOP];
-  if (v3)
+  inputUIOOP = [self inputUIOOP];
+  if (inputUIOOP)
   {
-    LOBYTE(v3) = [a1 isKeyboardProcess] ^ 1;
+    LOBYTE(inputUIOOP) = [self isKeyboardProcess] ^ 1;
   }
 
-  return v3;
+  return inputUIOOP;
 }
 
 + (BOOL)inputUIOOP
@@ -238,21 +238,21 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 isInHardwareKeyboardMode];
+    isInHardwareKeyboardMode = [v2 isInHardwareKeyboardMode];
   }
 
   else
   {
     v5 = +[UIDevice currentDevice];
-    v4 = [v5 _isHardwareKeyboardAvailable];
+    isInHardwareKeyboardMode = [v5 _isHardwareKeyboardAvailable];
   }
 
-  return v4;
+  return isInHardwareKeyboardMode;
 }
 
 + (id)keyboardBundleIdentifier
 {
-  if (![a1 isKeyboardProcess] || (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "inputSystemSourceSession"), v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "documentTraits"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "bundleId"), v5 = objc_claimAutoreleasedReturnValue(), v4, v3, v2, !v5))
+  if (![self isKeyboardProcess] || (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "inputSystemSourceSession"), v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "documentTraits"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "bundleId"), v5 = objc_claimAutoreleasedReturnValue(), v4, v3, v2, !v5))
   {
     v5 = _UIMainBundleIdentifier();
   }
@@ -266,7 +266,7 @@
   block[1] = 3221225472;
   block[2] = __45__UIKeyboard_isInlineTextCompletionUIEnabled__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49C418 != -1)
   {
     dispatch_once(&qword_1ED49C418, block);
@@ -281,7 +281,7 @@
   block[1] = 3221225472;
   block[2] = __54__UIKeyboard_presentsInlineTextCompletionAsMarkedText__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49C420 != -1)
   {
     dispatch_once(&qword_1ED49C420, block);
@@ -297,20 +297,20 @@
     dispatch_once(TIGetUsesLocalKeyboardValue_onceToken, &__block_literal_global_1489);
   }
 
-  v2 = [MEMORY[0x1E69D9680] sharedPreferencesController];
-  v3 = [v2 valueForPreferenceKey:@"UsesLocalKeyboard"];
+  mEMORY[0x1E69D9680] = [MEMORY[0x1E69D9680] sharedPreferencesController];
+  v3 = [mEMORY[0x1E69D9680] valueForPreferenceKey:@"UsesLocalKeyboard"];
 
-  LODWORD(v2) = [v3 BOOLValue];
-  if (v2 && +[UIKeyboard usesInputSystemUI])
+  LODWORD(mEMORY[0x1E69D9680]) = [v3 BOOLValue];
+  if (mEMORY[0x1E69D9680] && +[UIKeyboard usesInputSystemUI])
   {
     v4 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-    v5 = [v4 snapshotting];
-    if ((v5 & 1) != 0 || (+[UIKeyboardSceneDelegate activeKeyboardSceneDelegate](UIKeyboardSceneDelegate, "activeKeyboardSceneDelegate"), v3 = objc_claimAutoreleasedReturnValue(), [v3 loadingLocalKeyboard]))
+    snapshotting = [v4 snapshotting];
+    if ((snapshotting & 1) != 0 || (+[UIKeyboardSceneDelegate activeKeyboardSceneDelegate](UIKeyboardSceneDelegate, "activeKeyboardSceneDelegate"), v3 = objc_claimAutoreleasedReturnValue(), [v3 loadingLocalKeyboard]))
     {
       v6 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
-      v7 = [v6 sceneIsFullScreen];
+      sceneIsFullScreen = [v6 sceneIsFullScreen];
 
-      if (v5)
+      if (snapshotting)
       {
         goto LABEL_12;
       }
@@ -318,11 +318,11 @@
 
     else
     {
-      v7 = 0;
+      sceneIsFullScreen = 0;
     }
 
 LABEL_12:
-    return v7;
+    return sceneIsFullScreen;
   }
 
   return 0;
@@ -446,12 +446,12 @@ uint64_t __43__UIKeyboard_isRedesignedTextCursorEnabled__block_invoke()
 
 + (BOOL)usesInputSystemUIForAutoFillOnly
 {
-  if ([a1 isKeyboardProcess] & 1) != 0 || (objc_msgSend(a1, "inputUIOOP"))
+  if ([self isKeyboardProcess] & 1) != 0 || (objc_msgSend(self, "inputUIOOP"))
   {
     return 0;
   }
 
-  return [a1 supportsAutoFillPanel];
+  return [self supportsAutoFillPanel];
 }
 
 + (BOOL)isRemoteEmojiCollectionViewEnabled
@@ -466,11 +466,11 @@ uint64_t __43__UIKeyboard_isRedesignedTextCursorEnabled__block_invoke()
     dispatch_once(TIGetRemoteEmojiValue_onceToken, &__block_literal_global_1499_0);
   }
 
-  v2 = [MEMORY[0x1E69D9680] sharedPreferencesController];
-  v3 = [v2 valueForPreferenceKey:@"RemoteEmoji"];
+  mEMORY[0x1E69D9680] = [MEMORY[0x1E69D9680] sharedPreferencesController];
+  v3 = [mEMORY[0x1E69D9680] valueForPreferenceKey:@"RemoteEmoji"];
 
-  LODWORD(v2) = [v3 BOOLValue];
-  if (!v2)
+  LODWORD(mEMORY[0x1E69D9680]) = [v3 BOOLValue];
+  if (!mEMORY[0x1E69D9680])
   {
     return 0;
   }
@@ -485,9 +485,9 @@ uint64_t __43__UIKeyboard_isRedesignedTextCursorEnabled__block_invoke()
 {
   v4.receiver = self;
   v4.super_class = UIKeyboard;
-  v2 = [(UIView *)&v4 window];
+  window = [(UIView *)&v4 window];
 
-  return v2;
+  return window;
 }
 
 + (BOOL)isOnScreen
@@ -506,16 +506,16 @@ uint64_t __43__UIKeyboard_isRedesignedTextCursorEnabled__block_invoke()
 
 + (BOOL)isModelessActive
 {
-  v2 = [objc_opt_class() isMajelEnabled];
-  if (v2)
+  isMajelEnabled = [objc_opt_class() isMajelEnabled];
+  if (isMajelEnabled)
   {
     v3 = +[UIKeyboardInputMode dictationInputMode];
-    v4 = [v3 usingTypeAndTalk];
+    usingTypeAndTalk = [v3 usingTypeAndTalk];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(isMajelEnabled) = usingTypeAndTalk;
   }
 
-  return v2;
+  return isMajelEnabled;
 }
 
 + (BOOL)isMajelEnabled
@@ -583,9 +583,9 @@ void __30__UIKeyboard_isMajelSupported__block_invoke()
 + (BOOL)isLanguageIndicatorEnabled
 {
   v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v3 = [v2 keyboardLanguageIndicatorEnabled];
+  keyboardLanguageIndicatorEnabled = [v2 keyboardLanguageIndicatorEnabled];
 
-  return v3;
+  return keyboardLanguageIndicatorEnabled;
 }
 
 - (void)syncMinimizedStateToHardwareKeyboardAttachedState
@@ -596,15 +596,15 @@ void __30__UIKeyboard_isMajelSupported__block_invoke()
     v3 = +[UIKeyboardImpl sharedInstance];
     if ([v3 _shouldMinimizeForHardwareKeyboard])
     {
-      v4 = 1;
+      _shouldSuppressSoftwareKeyboard = 1;
     }
 
     else
     {
-      v4 = [v3 _shouldSuppressSoftwareKeyboard];
+      _shouldSuppressSoftwareKeyboard = [v3 _shouldSuppressSoftwareKeyboard];
     }
 
-    if (self->m_minimized != v4)
+    if (self->m_minimized != _shouldSuppressSoftwareKeyboard)
     {
       v5 = _UIKeyboardLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -612,11 +612,11 @@ void __30__UIKeyboard_isMajelSupported__block_invoke()
         v6 = 136315394;
         v7 = "[UIKeyboard syncMinimizedStateToHardwareKeyboardAttachedState]";
         v8 = 1024;
-        v9 = v4;
+        v9 = _shouldSuppressSoftwareKeyboard;
         _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "%s Setting keyboard minimized = %d", &v6, 0x12u);
       }
 
-      self->m_minimized = v4;
+      self->m_minimized = _shouldSuppressSoftwareKeyboard;
     }
 
     [v3 notifyInputSourceStateChangeIfNeeded];
@@ -635,33 +635,33 @@ void __30__UIKeyboard_isMajelSupported__block_invoke()
 
 + (BOOL)usesInputSystemUIForAutoFillOnlyWithRTI
 {
-  v2 = [a1 usesInputSystemUIForAutoFillOnly];
-  if (v2)
+  usesInputSystemUIForAutoFillOnly = [self usesInputSystemUIForAutoFillOnly];
+  if (usesInputSystemUIForAutoFillOnly)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(usesInputSystemUIForAutoFillOnly) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return usesInputSystemUIForAutoFillOnly;
 }
 
 + (BOOL)isInlineDictationGlowEffectEnabled
 {
-  if (![a1 isRedesignedTextCursorEnabled] || !_os_feature_enabled_impl())
+  if (![self isRedesignedTextCursorEnabled] || !_os_feature_enabled_impl())
   {
     return 0;
   }
 
   v2 = +[_UIDictationSettingsDomain rootSettings];
-  v3 = [v2 glowEffectEnabled];
+  glowEffectEnabled = [v2 glowEffectEnabled];
 
-  return v3;
+  return glowEffectEnabled;
 }
 
 - (void)setNeedsDisplay
 {
-  v2 = [(UIView *)self layer];
-  [v2 setNeedsDisplay];
+  layer = [(UIView *)self layer];
+  [layer setNeedsDisplay];
 }
 
 - (CGSize)intrinsicContentSize
@@ -686,7 +686,7 @@ void __30__UIKeyboard_isMajelSupported__block_invoke()
   block[1] = 3221225472;
   block[2] = __48__UIKeyboard_isAlwaysAllowedAutoFillPanelClient__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49C460 != -1)
   {
     dispatch_once(&qword_1ED49C460, block);
@@ -794,7 +794,7 @@ uint64_t __46__UIKeyboard_OutOfProcessSupport__serviceRole__block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __46__UIKeyboard_OutOfProcessSupport__serviceRole__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49C490 != -1)
   {
     dispatch_once(&qword_1ED49C490, block);
@@ -810,12 +810,12 @@ uint64_t __46__UIKeyboard_OutOfProcessSupport__serviceRole__block_invoke(uint64_
     dispatch_once(TIGetExtendInputUIValue_onceToken, &__block_literal_global_1484_0);
   }
 
-  v3 = [MEMORY[0x1E69D9680] sharedPreferencesController];
-  v4 = [v3 valueForPreferenceKey:@"ExtendInputUI"];
+  mEMORY[0x1E69D9680] = [MEMORY[0x1E69D9680] sharedPreferencesController];
+  v4 = [mEMORY[0x1E69D9680] valueForPreferenceKey:@"ExtendInputUI"];
 
   if ([v4 BOOLValue])
   {
-    v5 = [a1 isSpotlight] ^ 1;
+    v5 = [self isSpotlight] ^ 1;
   }
 
   else
@@ -828,8 +828,8 @@ uint64_t __46__UIKeyboard_OutOfProcessSupport__serviceRole__block_invoke(uint64_
 
 + (BOOL)isSpotlight
 {
-  v2 = [a1 keyboardBundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.Spotlight"];
+  keyboardBundleIdentifier = [self keyboardBundleIdentifier];
+  v3 = [keyboardBundleIdentifier isEqualToString:@"com.apple.Spotlight"];
 
   return v3;
 }
@@ -855,9 +855,9 @@ uint64_t __54__UIKeyboard_presentsInlineTextCompletionAsMarkedText__block_invoke
 - (void)activate
 {
   v58[4] = *MEMORY[0x1E69E9840];
-  v3 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     if (activeKeyboard == self)
     {
@@ -865,12 +865,12 @@ uint64_t __54__UIKeyboard_presentsInlineTextCompletionAsMarkedText__block_invoke
       if (v24)
       {
         v10 = v24;
-        v25 = [(UIView *)self traitCollection];
-        if ([v25 userInterfaceIdiom] == 3)
+        traitCollection = [(UIView *)self traitCollection];
+        if ([traitCollection userInterfaceIdiom] == 3)
         {
-          v26 = [(UIKeyboard *)self requestedInteractionModel];
+          requestedInteractionModel = [(UIKeyboard *)self requestedInteractionModel];
 
-          if (v26)
+          if (requestedInteractionModel)
           {
             [(UIKeyboard *)v10 setRequestedInteractionModel:[(UIKeyboard *)self requestedInteractionModel]];
           }
@@ -881,27 +881,27 @@ uint64_t __54__UIKeyboard_presentsInlineTextCompletionAsMarkedText__block_invoke
         }
 
         [(UIKeyboard *)v10 setGeometryDelegate:self];
-        v27 = [(UIView *)v10 superview];
-        if (v27)
+        superview2 = [(UIView *)v10 superview];
+        if (superview2)
         {
-          v28 = self;
+          selfCopy = self;
         }
 
         else
         {
-          v28 = v10;
+          selfCopy = v10;
         }
 
-        [(UIView *)v28 bounds];
+        [(UIView *)selfCopy bounds];
         v30 = v29;
         v32 = v31;
 
         [(UIKeyboard *)self autoAdjustOrientation];
         [(UIKeyboard *)v10 setShouldUpdateLayoutAutomatically:[(UIKeyboard *)self shouldUpdateLayoutAutomatically]];
         [(UIKeyboard *)v10 setFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v30, v32];
-        v33 = [(UIView *)v10 superview];
+        superview3 = [(UIView *)v10 superview];
 
-        if (!v33)
+        if (!superview3)
         {
           [(UIView *)self addSubview:v10];
           [(UIKeyboard *)v10 setDefaultTextInputTraits:self->m_defaultTraits];
@@ -912,27 +912,27 @@ uint64_t __54__UIKeyboard_presentsInlineTextCompletionAsMarkedText__block_invoke
           }
 
           v34 = +[UIKeyboardPreferencesController sharedPreferencesController];
-          v35 = [v34 preferencesActions];
-          v36 = [v35 crescendoEnabled];
+          preferencesActions = [v34 preferencesActions];
+          crescendoEnabled = [preferencesActions crescendoEnabled];
 
-          if (v36)
+          if (crescendoEnabled)
           {
             [(UIView *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-            v56 = [(UIView *)v10 topAnchor];
-            v53 = [(UIView *)self topAnchor];
-            v51 = [v56 constraintEqualToAnchor:v53];
+            topAnchor = [(UIView *)v10 topAnchor];
+            topAnchor2 = [(UIView *)self topAnchor];
+            v51 = [topAnchor constraintEqualToAnchor:topAnchor2];
             v58[0] = v51;
-            v49 = [(UIView *)v10 leadingAnchor];
-            v47 = [(UIView *)self leadingAnchor];
-            v37 = [v49 constraintEqualToAnchor:v47];
+            leadingAnchor = [(UIView *)v10 leadingAnchor];
+            leadingAnchor2 = [(UIView *)self leadingAnchor];
+            v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
             v58[1] = v37;
-            v38 = [(UIView *)self bottomAnchor];
-            v39 = [(UIView *)v10 bottomAnchor];
-            v40 = [v38 constraintEqualToAnchor:v39];
+            bottomAnchor = [(UIView *)self bottomAnchor];
+            bottomAnchor2 = [(UIView *)v10 bottomAnchor];
+            v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
             v58[2] = v40;
-            v41 = [(UIView *)self trailingAnchor];
-            v42 = [(UIView *)v10 trailingAnchor];
-            v43 = [v41 constraintEqualToAnchor:v42];
+            trailingAnchor = [(UIView *)self trailingAnchor];
+            trailingAnchor2 = [(UIView *)v10 trailingAnchor];
+            v43 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
             v58[3] = v43;
             v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:4];
             implConstraints = self->_implConstraints;
@@ -961,14 +961,14 @@ uint64_t __54__UIKeyboard_presentsInlineTextCompletionAsMarkedText__block_invoke
     }
 
     objc_storeStrong(&activeKeyboard, self);
-    v4 = [(UIKeyboard *)self window];
+    window = [(UIKeyboard *)self window];
 
-    if (v4)
+    if (window)
     {
       v5 = objc_opt_class();
-      v6 = [(UIKeyboard *)self window];
-      v7 = [v6 screen];
-      [v5 makeKeyboardActive:self forScreen:v7];
+      window2 = [(UIKeyboard *)self window];
+      screen = [window2 screen];
+      [v5 makeKeyboardActive:self forScreen:screen];
     }
 
     v8 = +[UIKeyboardImpl activeInstance];
@@ -988,8 +988,8 @@ uint64_t __54__UIKeyboard_presentsInlineTextCompletionAsMarkedText__block_invoke
     [(UIKeyboard *)v10 setFrame:?];
     [(UIView *)self addSubview:v10];
     v11 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v12 = [v11 preferencesActions];
-    if ([v12 crescendoEnabled])
+    preferencesActions2 = [v11 preferencesActions];
+    if ([preferencesActions2 crescendoEnabled])
     {
     }
 
@@ -1005,21 +1005,21 @@ uint64_t __54__UIKeyboard_presentsInlineTextCompletionAsMarkedText__block_invoke
     }
 
     [(UIView *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v55 = [(UIView *)v10 topAnchor];
-    v52 = [(UIView *)self topAnchor];
-    v50 = [v55 constraintEqualToAnchor:v52];
+    topAnchor3 = [(UIView *)v10 topAnchor];
+    topAnchor4 = [(UIView *)self topAnchor];
+    v50 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v57[0] = v50;
-    v48 = [(UIView *)v10 leadingAnchor];
-    v46 = [(UIView *)self leadingAnchor];
-    v15 = [v48 constraintEqualToAnchor:v46];
+    leadingAnchor3 = [(UIView *)v10 leadingAnchor];
+    leadingAnchor4 = [(UIView *)self leadingAnchor];
+    v15 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v57[1] = v15;
-    v16 = [(UIView *)self bottomAnchor];
-    v17 = [(UIView *)v10 bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    bottomAnchor3 = [(UIView *)self bottomAnchor];
+    bottomAnchor4 = [(UIView *)v10 bottomAnchor];
+    v18 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v57[2] = v18;
-    v19 = [(UIView *)self trailingAnchor];
-    v20 = [(UIView *)v10 trailingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    trailingAnchor3 = [(UIView *)self trailingAnchor];
+    trailingAnchor4 = [(UIView *)v10 trailingAnchor];
+    v21 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v57[3] = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:4];
     v23 = self->_implConstraints;
@@ -1065,13 +1065,13 @@ LABEL_40:
   v16 = *MEMORY[0x1E69E9840];
   if ([(NSMutableDictionary *)self->m_focusGuides count])
   {
-    v3 = [(UIKeyboard *)self cursorLocation];
+    cursorLocation = [(UIKeyboard *)self cursorLocation];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(UIView *)self layoutGuides];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    layoutGuides = [(UIView *)self layoutGuides];
+    v5 = [layoutGuides countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1083,7 +1083,7 @@ LABEL_40:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(layoutGuides);
           }
 
           v9 = *(*(&v11 + 1) + 8 * v8);
@@ -1092,7 +1092,7 @@ LABEL_40:
           {
             if ([(UIView *)self isFocused])
             {
-              v10 = -[UIKeyboard allowExternalChangeForFocusHeading:cursorLocation:](self, "allowExternalChangeForFocusHeading:cursorLocation:", [v9 focusHeading], v3) ^ 1;
+              v10 = -[UIKeyboard allowExternalChangeForFocusHeading:cursorLocation:](self, "allowExternalChangeForFocusHeading:cursorLocation:", [v9 focusHeading], cursorLocation) ^ 1;
             }
 
             else
@@ -1107,7 +1107,7 @@ LABEL_40:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [layoutGuides countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
@@ -1118,17 +1118,17 @@ LABEL_40:
 - (unint64_t)cursorLocation
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 _layout];
-  v4 = [v3 cursorLocation];
+  _layout = [v2 _layout];
+  cursorLocation = [_layout cursorLocation];
 
-  return v4;
+  return cursorLocation;
 }
 
 - (BOOL)_isDictationCurrentView
 {
   v2 = +[UIKeyboardImpl sharedInstance];
-  v3 = [v2 _getCurrentKeyplaneName];
-  [v3 rangeOfString:@"Dictation"];
+  _getCurrentKeyplaneName = [v2 _getCurrentKeyplaneName];
+  [_getCurrentKeyplaneName rangeOfString:@"Dictation"];
   v5 = v4 != 0;
 
   return v5;
@@ -1141,8 +1141,8 @@ LABEL_40:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v3 = [(UIView *)self focusGuides];
-  v4 = [v3 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  focusGuides = [(UIView *)self focusGuides];
+  v4 = [focusGuides countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1153,15 +1153,15 @@ LABEL_40:
       {
         if (*v34 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(focusGuides);
         }
 
         v8 = *(*(&v33 + 1) + 8 * i);
-        v9 = [v8 owningView];
-        [v9 removeLayoutGuide:v8];
+        owningView = [v8 owningView];
+        [owningView removeLayoutGuide:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      v5 = [focusGuides countByEnumeratingWithState:&v33 objects:v38 count:16];
     }
 
     while (v5);
@@ -1180,16 +1180,16 @@ LABEL_40:
       *&self->m_unfocusedFocusGuideOutsets.bottom = 0u;
     }
 
-    v12 = [(UIView *)self traitCollection];
-    v13 = [v12 userInterfaceIdiom];
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
     v14 = &unk_1EFE2CCB8;
-    if (v13 != 3)
+    if (userInterfaceIdiom != 3)
     {
       v14 = 0;
     }
 
-    if (v13 == 2)
+    if (userInterfaceIdiom == 2)
     {
       v15 = &unk_1EFE2CCA0;
     }
@@ -1199,12 +1199,12 @@ LABEL_40:
       v15 = v14;
     }
 
-    v16 = [UIApp userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [UIApp userInterfaceLayoutDirection];
     if ([v15 count])
     {
       v17 = 0;
       v18 = 32;
-      if (v16 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         v19 = 16;
       }
@@ -1214,7 +1214,7 @@ LABEL_40:
         v19 = 32;
       }
 
-      if (v16 != 1)
+      if (userInterfaceLayoutDirection != 1)
       {
         v18 = 16;
       }
@@ -1224,17 +1224,17 @@ LABEL_40:
       do
       {
         v20 = [v15 objectAtIndex:{v17, v31}];
-        v21 = [v20 integerValue];
+        integerValue = [v20 integerValue];
 
         v22 = objc_alloc_init(UIKBFocusGuide);
         [(UIKBFocusGuide *)v22 setKeyboardDelegate:self];
-        v37 = self;
-        v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
+        selfCopy = self;
+        v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&selfCopy count:1];
         [(UIFocusGuide *)v22 setPreferredFocusEnvironments:v23];
 
-        [(UIKBFocusGuide *)v22 setFocusHeading:v21];
+        [(UIKBFocusGuide *)v22 setFocusHeading:integerValue];
         [(UIView *)self bounds];
-        switch(v21)
+        switch(integerValue)
         {
           case 1:
             v27 = 60.0;
@@ -1247,9 +1247,9 @@ LABEL_40:
             v27 = 60.0;
             break;
           default:
-            if (v21 != v32)
+            if (integerValue != v32)
             {
-              if (v21 == 8 || v21 == v31)
+              if (integerValue == 8 || integerValue == v31)
               {
                 v24 = v26;
                 v26 = 60.0;
@@ -1267,7 +1267,7 @@ LABEL_30:
         [(UILayoutGuide *)v22 _setManualLayoutFrame:v24, v25, v26, v27];
         [(UIView *)self addLayoutGuide:v22];
         v29 = self->m_focusGuides;
-        v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v21];
+        v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:integerValue];
         [(NSMutableDictionary *)v29 setObject:v22 forKey:v30];
 
         ++v17;
@@ -1290,8 +1290,8 @@ LABEL_30:
 + (id)activeScreenTraits
 {
   v3 = +[UIKeyboardImpl keyboardScreen];
-  v4 = [a1 activeKeyboard];
-  v5 = +[UIKBScreenTraits traitsWithScreen:orientation:](UIKBScreenTraits, "traitsWithScreen:orientation:", v3, [v4 interfaceOrientation]);
+  activeKeyboard = [self activeKeyboard];
+  v5 = +[UIKBScreenTraits traitsWithScreen:orientation:](UIKBScreenTraits, "traitsWithScreen:orientation:", v3, [activeKeyboard interfaceOrientation]);
 
   return v5;
 }
@@ -1299,9 +1299,9 @@ LABEL_30:
 + (BOOL)isShowingEmojiSearch
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 showingEmojiSearch];
+  showingEmojiSearch = [v2 showingEmojiSearch];
 
-  return v3;
+  return showingEmojiSearch;
 }
 
 - (void)layoutSubviews
@@ -1316,18 +1316,18 @@ LABEL_30:
   if ([(UIKeyboard *)self isActivePerScreen])
   {
     v3 = objc_opt_class();
-    v5 = [(UIKeyboard *)self window];
-    v4 = [v5 screen];
-    [v3 clearActiveForScreen:v4];
+    window = [(UIKeyboard *)self window];
+    screen = [window screen];
+    [v3 clearActiveForScreen:screen];
   }
 }
 
 - (BOOL)isActivePerScreen
 {
   v3 = objc_opt_class();
-  v4 = [(UIKeyboard *)self window];
-  v5 = [v4 screen];
-  v6 = [v3 activeKeyboardForScreen:v5];
+  window = [(UIKeyboard *)self window];
+  screen = [window screen];
+  v6 = [v3 activeKeyboardForScreen:screen];
   LOBYTE(v3) = v6 != 0;
 
   return v3;
@@ -1336,9 +1336,9 @@ LABEL_30:
 - (void)didMoveToWindow
 {
   v3 = activeKeyboard;
-  v4 = [(UIKeyboard *)self window];
+  window = [(UIKeyboard *)self window];
 
-  if (!v4)
+  if (!window)
   {
     self->m_hasExplicitOrientation = 0;
     if (v3 != self)
@@ -1353,12 +1353,12 @@ LABEL_30:
   }
 
   v5 = +[UIPeripheralHost sharedInstance];
-  v6 = [v5 containerWindow];
-  [v6 orderFront:0];
+  containerWindow = [v5 containerWindow];
+  [containerWindow orderFront:0];
 
-  v7 = [(UIView *)self subviews];
+  subviews = [(UIView *)self subviews];
   v8 = +[UIKeyboardImpl activeInstance];
-  v9 = [v7 containsObject:v8];
+  v9 = [subviews containsObject:v8];
 
   if ((v9 & 1) == 0)
   {
@@ -1368,25 +1368,25 @@ LABEL_30:
   if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1 && !+[UIDevice _hasHomeButton]&& self->m_minimized)
   {
     v10 = +[UIKeyboardImpl activeInstance];
-    v11 = [v10 _layout];
+    _layout = [v10 _layout];
 
     +[UIKeyboardImpl additionalInstanceHeight];
     v13 = v12;
-    [v11 frame];
-    [v11 setFrame:{0.0, v13}];
+    [_layout frame];
+    [_layout setFrame:{0.0, v13}];
   }
 
   if (v3 == self)
   {
 LABEL_12:
-    v15 = [(UIKeyboard *)self window];
+    window2 = [(UIKeyboard *)self window];
 
-    if (v15)
+    if (window2)
     {
       v16 = objc_opt_class();
-      v17 = [(UIKeyboard *)self window];
-      v18 = [v17 screen];
-      [v16 makeKeyboardActive:self forScreen:v18];
+      window3 = [(UIKeyboard *)self window];
+      screen = [window3 screen];
+      [v16 makeKeyboardActive:self forScreen:screen];
     }
   }
 
@@ -1397,15 +1397,15 @@ LABEL_14:
 
 - (BOOL)canBecomeFocused
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 3)
+  if (userInterfaceIdiom == 3)
   {
     if (![(UIKeyboard *)self requestedInteractionModel])
     {
-      v6 = [(UIView *)self traitCollection];
-      v5 = [v6 primaryInteractionModel] != 1;
+      traitCollection2 = [(UIView *)self traitCollection];
+      v5 = [traitCollection2 primaryInteractionModel] != 1;
 
       return v5;
     }
@@ -1427,21 +1427,21 @@ LABEL_14:
   }
 }
 
-- (id)_initWithFrame:(CGRect)a3 lazily:(BOOL)a4
+- (id)_initWithFrame:(CGRect)frame lazily:(BOOL)lazily
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v18 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = UIKeyboard;
-  v7 = [(UIView *)&v15 initWithFrame:a3.origin.x, a3.origin.y];
+  v7 = [(UIView *)&v15 initWithFrame:frame.origin.x, frame.origin.y];
   v8 = v7;
   if (v7)
   {
     v7->_shouldUpdateLayoutAutomatically = 1;
     [(UIView *)v7 setAutoresizingMask:0];
     v8->m_orientation = 0;
-    if (!a4)
+    if (!lazily)
     {
       if (!activeKeyboard)
       {
@@ -1491,7 +1491,7 @@ LABEL_14:
   return [(UIKeyboard *)self initWithFrame:v3, v4, v5, v6];
 }
 
-- (UIKeyboard)initWithRequestedInteractionModel:(unint64_t)a3
+- (UIKeyboard)initWithRequestedInteractionModel:(unint64_t)model
 {
   v5 = *MEMORY[0x1E695EFF8];
   v6 = *(MEMORY[0x1E695EFF8] + 8);
@@ -1499,7 +1499,7 @@ LABEL_14:
   result = [(UIKeyboard *)self _initWithFrame:0 lazily:v5, v6, v7, v8];
   if (result)
   {
-    result->_requestedInteractionModel = a3;
+    result->_requestedInteractionModel = model;
   }
 
   return result;
@@ -1531,25 +1531,25 @@ LABEL_14:
   activeKeyboard = 0;
 }
 
-+ (id)activeKeyboardForScreen:(id)a3
++ (id)activeKeyboardForScreen:(id)screen
 {
-  v3 = a3;
+  screenCopy = screen;
   v4 = activeKeyboardsPerScreen;
   objc_sync_enter(v4);
   v5 = activeKeyboardsPerScreen;
-  v6 = [v3 _name];
-  v7 = [v5 objectForKey:v6];
+  _name = [screenCopy _name];
+  v7 = [v5 objectForKey:_name];
 
   objc_sync_exit(v4);
 
   return v7;
 }
 
-+ (void)makeKeyboardActive:(id)a3 forScreen:(id)a4
++ (void)makeKeyboardActive:(id)active forScreen:(id)screen
 {
-  v11 = a3;
-  v5 = a4;
-  if (v5)
+  activeCopy = active;
+  screenCopy = screen;
+  if (screenCopy)
   {
     v6 = activeKeyboardsPerScreen;
     objc_sync_enter(v6);
@@ -1563,21 +1563,21 @@ LABEL_14:
       v7 = activeKeyboardsPerScreen;
     }
 
-    v10 = [v5 _name];
-    [v7 setObject:v11 forKey:v10];
+    _name = [screenCopy _name];
+    [v7 setObject:activeCopy forKey:_name];
 
     objc_sync_exit(v6);
   }
 }
 
-+ (void)clearActiveForScreen:(id)a3
++ (void)clearActiveForScreen:(id)screen
 {
-  v6 = a3;
+  screenCopy = screen;
   v3 = activeKeyboardsPerScreen;
   objc_sync_enter(v3);
   v4 = activeKeyboardsPerScreen;
-  v5 = [v6 _name];
-  [v4 removeObjectForKey:v5];
+  _name = [screenCopy _name];
+  [v4 removeObjectForKey:_name];
 
   objc_sync_exit(v3);
 }
@@ -1609,46 +1609,46 @@ LABEL_14:
   return result;
 }
 
-+ (CGSize)defaultSizeForInterfaceOrientation:(int64_t)a3
++ (CGSize)defaultSizeForInterfaceOrientation:(int64_t)orientation
 {
-  [UIKeyboardImpl defaultSizeForInterfaceOrientation:a3];
+  [UIKeyboardImpl defaultSizeForInterfaceOrientation:orientation];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-+ (CGRect)defaultFrameForInterfaceOrientation:(int64_t)a3
++ (CGRect)defaultFrameForInterfaceOrientation:(int64_t)orientation
 {
   [UIKeyboard defaultSizeForInterfaceOrientation:?];
   v5 = v4;
   v7 = v6;
   v8 = _UIAppUseModernRotationAndPresentationBehaviors();
-  v9 = [objc_opt_self() mainScreen];
-  v10 = v9;
+  mainScreen = [objc_opt_self() mainScreen];
+  v10 = mainScreen;
   if (v8)
   {
-    [v9 _boundsForInterfaceOrientation:a3];
+    [mainScreen _boundsForInterfaceOrientation:orientation];
     v12 = v11;
 
     v13 = v12 - v7;
     goto LABEL_3;
   }
 
-  [v9 bounds];
+  [mainScreen bounds];
   v17 = v16;
   v19 = v18;
 
   v13 = 0.0;
-  if (a3 > 2)
+  if (orientation > 2)
   {
-    if (a3 == 3)
+    if (orientation == 3)
     {
       v14 = 0.0;
     }
 
     else
     {
-      if (a3 != 4)
+      if (orientation != 4)
       {
         goto LABEL_11;
       }
@@ -1661,13 +1661,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a3 == 1)
+  if (orientation == 1)
   {
     v13 = v19 - v7;
     goto LABEL_3;
   }
 
-  if (a3 != 2)
+  if (orientation != 2)
   {
 LABEL_11:
     v14 = *MEMORY[0x1E695F058];
@@ -1709,67 +1709,67 @@ LABEL_15:
   if ([v2 _isHardwareKeyboardAvailable])
   {
     v3 = +[UIKeyboardImpl activeInstance];
-    v4 = [v3 automaticMinimizationEnabled];
+    automaticMinimizationEnabled = [v3 automaticMinimizationEnabled];
   }
 
   else
   {
-    v4 = 0;
+    automaticMinimizationEnabled = 0;
   }
 
-  return v4;
+  return automaticMinimizationEnabled;
 }
 
 + (BOOL)hasInputOrAssistantViewsOnScreen
 {
   v2 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v3 = [v2 containerRootController];
+  containerRootController = [v2 containerRootController];
 
-  LOBYTE(v2) = [v3 hasInputOrAssistantViewsOnScreen];
+  LOBYTE(v2) = [containerRootController hasInputOrAssistantViewsOnScreen];
   return v2;
 }
 
-+ (BOOL)shouldSuppressSoftwareKeyboardForResponder:(id)a3
++ (BOOL)shouldSuppressSoftwareKeyboardForResponder:(id)responder
 {
-  v3 = a3;
-  if (!v3)
+  responderCopy = responder;
+  if (!responderCopy)
   {
     v4 = +[UIKeyboardImpl activeInstance];
-    v3 = [v4 delegateAsResponder];
+    responderCopy = [v4 delegateAsResponder];
   }
 
   v5 = +[UIKeyboardImpl sharedInstance];
-  v6 = [v5 _shouldSuppressSoftwareKeyboardForResponder:v3 ignoringPolicyDelegate:0];
+  v6 = [v5 _shouldSuppressSoftwareKeyboardForResponder:responderCopy ignoringPolicyDelegate:0];
 
   return v6;
 }
 
-+ (CGSize)sizeForInterfaceOrientation:(int64_t)a3
++ (CGSize)sizeForInterfaceOrientation:(int64_t)orientation
 {
-  [a1 sizeForInterfaceOrientation:a3 ignoreInputView:0];
+  [self sizeForInterfaceOrientation:orientation ignoreInputView:0];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-+ (CGSize)sizeForInterfaceOrientation:(int64_t)a3 inputDelegate:(id)a4
++ (CGSize)sizeForInterfaceOrientation:(int64_t)orientation inputDelegate:(id)delegate
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if ([a1 usesInputSystemUI])
+  delegateCopy = delegate;
+  if ([self usesInputSystemUI])
   {
     v7 = +[_UIKeyboardArbiterClient automaticSharedArbiterClient];
-    v8 = [v7 currentUIState];
-    v9 = [v8 resizing];
+    currentUIState = [v7 currentUIState];
+    resizing = [currentUIState resizing];
 
-    if ((v9 & 1) == 0)
+    if ((resizing & 1) == 0)
     {
       v10 = +[UIKeyboardImpl sharedInstance];
       [v10 setInputModeFromPreferences];
     }
   }
 
-  [a1 sizeForInterfaceOrientation:a3 ignoreInputView:1 inputDelegate:v6];
+  [self sizeForInterfaceOrientation:orientation ignoreInputView:1 inputDelegate:delegateCopy];
   v12 = v11;
   v14 = v13;
   if (!+[UIKeyboard inputUIOOP])
@@ -1784,19 +1784,19 @@ LABEL_15:
       {
         v18 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
         v19 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-        v20 = [v19 scene];
-        [v18 intersectionHeightForWindowScene:v20];
+        scene = [v19 scene];
+        [v18 intersectionHeightForWindowScene:scene];
         v22 = v21;
 
         if (v22 > 0.0)
         {
           v23 = +[UIKeyboardInputModeController sharedInputModeController];
-          v24 = [v23 currentInputMode];
+          currentInputMode = [v23 currentInputMode];
 
-          [UIKeyboardImpl deviceSpecificPaddingForInterfaceOrientation:a3 inputMode:v24];
+          [UIKeyboardImpl deviceSpecificPaddingForInterfaceOrientation:orientation inputMode:currentInputMode];
           v26 = v25;
           v28 = v27;
-          [UIKeyboardImpl deviceSpecificStaticHitBufferForInterfaceOrientation:a3 inputMode:v24];
+          [UIKeyboardImpl deviceSpecificStaticHitBufferForInterfaceOrientation:orientation inputMode:currentInputMode];
           v31 = v22 + v26 - v29 + v28 - v30;
           if (v14 < v31)
           {
@@ -1828,42 +1828,42 @@ LABEL_15:
   return result;
 }
 
-+ (CGSize)sizeForInterfaceOrientation:(int64_t)a3 ignoreInputView:(BOOL)a4
++ (CGSize)sizeForInterfaceOrientation:(int64_t)orientation ignoreInputView:(BOOL)view
 {
-  [a1 sizeForInterfaceOrientation:a3 ignoreInputView:a4 inputDelegate:0];
+  [self sizeForInterfaceOrientation:orientation ignoreInputView:view inputDelegate:0];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-+ (CGSize)sizeForInterfaceOrientation:(int64_t)a3 ignoreInputView:(BOOL)a4 inputDelegate:(id)a5
++ (CGSize)sizeForInterfaceOrientation:(int64_t)orientation ignoreInputView:(BOOL)view inputDelegate:(id)delegate
 {
-  v5 = a4;
-  v7 = a5;
+  viewCopy = view;
+  delegateCopy = delegate;
   v8 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v9 = [v8 inputViews];
-  v10 = v9;
-  if (!v7 || v9 && ![v9 isEmpty] || objc_msgSend(v10, "isCustomInputView"))
+  inputViews = [v8 inputViews];
+  v10 = inputViews;
+  if (!delegateCopy || inputViews && ![inputViews isEmpty] || objc_msgSend(v10, "isCustomInputView"))
   {
-    v11 = [v10 keyboard];
-    if (!v11)
+    keyboard = [v10 keyboard];
+    if (!keyboard)
     {
-      if (!v5 && ([v10 isCustomInputView] & 1) != 0)
+      if (!viewCopy && ([v10 isCustomInputView] & 1) != 0)
       {
         goto LABEL_10;
       }
 
       v12 = [UIInputViewSet inputSetWithKeyboardAndAccessoryView:0];
-      v11 = v10;
+      keyboard = v10;
       v10 = v12;
     }
 
 LABEL_10:
-    v13 = [v8 systemInputAssistantViewController];
-    v14 = v13;
-    if (v13)
+    systemInputAssistantViewController = [v8 systemInputAssistantViewController];
+    v14 = systemInputAssistantViewController;
+    if (systemInputAssistantViewController)
     {
-      v15 = v13;
+      v15 = systemInputAssistantViewController;
     }
 
     else
@@ -1873,7 +1873,7 @@ LABEL_10:
 
     v16 = v15;
 
-    v17 = [(UISystemInputAssistantViewController *)v16 shouldBeShownForInputDelegate:v7 inputViews:v10];
+    v17 = [(UISystemInputAssistantViewController *)v16 shouldBeShownForInputDelegate:delegateCopy inputViews:v10];
     if (v17)
     {
       goto LABEL_14;
@@ -1882,7 +1882,7 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  if ([objc_opt_class() assistantBarShouldBeIncludedInSizeForDelegate:v7])
+  if ([objc_opt_class() assistantBarShouldBeIncludedInSizeForDelegate:delegateCopy])
   {
 LABEL_14:
     v18 = 1;
@@ -1892,9 +1892,9 @@ LABEL_14:
 LABEL_16:
   if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1 && !+[UIKeyboardImpl isFloating])
   {
-    v19 = [v8 responder];
-    v20 = [v19 inputViewController];
-    v18 = v20 != 0;
+    responder = [v8 responder];
+    inputViewController = [responder inputViewController];
+    v18 = inputViewController != 0;
   }
 
   else
@@ -1903,7 +1903,7 @@ LABEL_16:
   }
 
 LABEL_20:
-  [objc_opt_class() sizeForInterfaceOrientation:a3 includingAssistantBar:v18 ignoreInputView:v5];
+  [objc_opt_class() sizeForInterfaceOrientation:orientation includingAssistantBar:v18 ignoreInputView:viewCopy];
   v22 = v21;
   v24 = v23;
 
@@ -1914,13 +1914,13 @@ LABEL_20:
   return result;
 }
 
-+ (BOOL)assistantBarShouldBeIncludedInSizeForDelegate:(id)a3
++ (BOOL)assistantBarShouldBeIncludedInSizeForDelegate:(id)delegate
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  delegateCopy = delegate;
   if (os_variant_has_internal_diagnostics())
   {
-    if (!v3)
+    if (!delegateCopy)
     {
       v23 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
@@ -1931,7 +1931,7 @@ LABEL_20:
     }
   }
 
-  else if (!v3)
+  else if (!delegateCopy)
   {
     v24 = *(__UILogGetCategoryCachedImpl("Assert", &assistantBarShouldBeIncludedInSizeForDelegate____s_category) + 8);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -1942,53 +1942,53 @@ LABEL_20:
   }
 
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 textInputTraits];
+  textInputTraits = [v4 textInputTraits];
 
-  if ([v3 conformsToProtocolCached:&unk_1EFE8E9A0])
+  if ([delegateCopy conformsToProtocolCached:&unk_1EFE8E9A0])
   {
-    v6 = [v3 textInputTraits];
-    v7 = [UITextInputTraits traitsByAdoptingTraits:v6];
+    textInputTraits2 = [delegateCopy textInputTraits];
+    v7 = [UITextInputTraits traitsByAdoptingTraits:textInputTraits2];
 
-    v5 = v7;
+    textInputTraits = v7;
   }
 
-  if (!v5)
+  if (!textInputTraits)
   {
-    if (!+[UIKBInputDelegateManager isAsyncTextInputEnabled](UIKBInputDelegateManager, "isAsyncTextInputEnabled") || ![v3 conformsToProtocolCached:&unk_1F016C7B0] || (+[UITextInputTraits traitsByAdoptingTraits:](UITextInputTraits, "traitsByAdoptingTraits:", v3), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!+[UIKBInputDelegateManager isAsyncTextInputEnabled](UIKBInputDelegateManager, "isAsyncTextInputEnabled") || ![delegateCopy conformsToProtocolCached:&unk_1F016C7B0] || (+[UITextInputTraits traitsByAdoptingTraits:](UITextInputTraits, "traitsByAdoptingTraits:", delegateCopy), (textInputTraits = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      if ([v3 conformsToProtocolCached:&unk_1EFE8B2D0])
+      if ([delegateCopy conformsToProtocolCached:&unk_1EFE8B2D0])
       {
-        v5 = [UITextInputTraits traitsByAdoptingTraits:v3];
+        textInputTraits = [UITextInputTraits traitsByAdoptingTraits:delegateCopy];
       }
 
       else
       {
-        v5 = 0;
+        textInputTraits = 0;
       }
     }
   }
 
   v8 = +[UIKeyboardInputModeController sharedInputModeController];
-  v9 = [v8 currentInputMode];
-  v10 = [v9 identifier];
+  currentInputMode = [v8 currentInputMode];
+  identifier = [currentInputMode identifier];
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v3 textInputMode];
-    v12 = v11;
-    if (v11)
+    textInputMode = [delegateCopy textInputMode];
+    v12 = textInputMode;
+    if (textInputMode)
     {
-      v13 = [v11 identifier];
+      identifier2 = [textInputMode identifier];
 
-      v10 = v13;
+      identifier = identifier2;
     }
   }
 
   if (UIKeyboardAlwaysShowCandidateBarForInputMode())
   {
-    if (([v5 disableInputBars] & 1) == 0)
+    if (([textInputTraits disableInputBars] & 1) == 0)
     {
-      v14 = [v5 hidePrediction] ^ 1;
+      v14 = [textInputTraits hidePrediction] ^ 1;
       goto LABEL_28;
     }
 
@@ -1997,7 +1997,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if ([v5 autocorrectionType] == 1)
+  if ([textInputTraits autocorrectionType] == 1)
   {
     v15 = +[UIKeyboardImpl activeInstance];
     v16 = [v15 autocorrectionPreferenceForTraits] != 2;
@@ -2008,7 +2008,7 @@ LABEL_27:
     v16 = 0;
   }
 
-  if ([v5 disablePrediction] & 1) != 0 || (objc_msgSend(v5, "hidePrediction"))
+  if ([textInputTraits disablePrediction] & 1) != 0 || (objc_msgSend(textInputTraits, "hidePrediction"))
   {
     goto LABEL_27;
   }
@@ -2020,20 +2020,20 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v18 = [v5 isSecureTextEntry];
+  isSecureTextEntry = [textInputTraits isSecureTextEntry];
 
-  if (v18)
+  if (isSecureTextEntry)
   {
     goto LABEL_27;
   }
 
-  v26[0] = v10;
+  v26[0] = identifier;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
   if (UIKeyboardPredictionEnabledForInputModes(v20))
   {
     v21 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v22 = [v21 preferencesActions];
-    LOBYTE(v14) = [v22 predictionEnabled];
+    preferencesActions = [v21 preferencesActions];
+    LOBYTE(v14) = [preferencesActions predictionEnabled];
   }
 
   else
@@ -2045,32 +2045,32 @@ LABEL_28:
   return v14;
 }
 
-+ (CGSize)sizeForInterfaceOrientation:(int64_t)a3 includingAssistantBar:(BOOL)a4 ignoreInputView:(BOOL)a5
++ (CGSize)sizeForInterfaceOrientation:(int64_t)orientation includingAssistantBar:(BOOL)bar ignoreInputView:(BOOL)view
 {
-  v5 = a4;
-  [UIKeyboardImpl sizeForInterfaceOrientation:a3 ignoreInputView:a5];
+  barCopy = bar;
+  [UIKeyboardImpl sizeForInterfaceOrientation:orientation ignoreInputView:view];
   v8 = v7;
   v10 = v9;
   v11 = +[UIKeyboardInputModeController sharedInputModeController];
-  v12 = [v11 currentInputMode];
+  currentInputMode = [v11 currentInputMode];
 
-  [UIKeyboardImpl deviceSpecificPaddingForInterfaceOrientation:a3 inputMode:v12];
+  [UIKeyboardImpl deviceSpecificPaddingForInterfaceOrientation:orientation inputMode:currentInputMode];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  [UIKeyboardImpl deviceSpecificStaticHitBufferForInterfaceOrientation:a3 inputMode:v12];
+  [UIKeyboardImpl deviceSpecificStaticHitBufferForInterfaceOrientation:orientation inputMode:currentInputMode];
   v22 = v21;
   v24 = v23;
   v27 = v10 + v14 - v25 + v18 - v26;
-  if (v5)
+  if (barCopy)
   {
     v28 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v29 = [v28 systemInputAssistantViewController];
-    v30 = v29;
-    if (v29)
+    systemInputAssistantViewController = [v28 systemInputAssistantViewController];
+    v30 = systemInputAssistantViewController;
+    if (systemInputAssistantViewController)
     {
-      v31 = v29;
+      v31 = systemInputAssistantViewController;
     }
 
     else
@@ -2080,20 +2080,20 @@ LABEL_28:
 
     v32 = v31;
 
-    v33 = [(UIViewController *)v32 traitCollection];
-    v34 = v33;
-    if (v33)
+    traitCollection = [(UIViewController *)v32 traitCollection];
+    v34 = traitCollection;
+    if (traitCollection)
     {
-      v35 = v33;
+      traitCollection2 = traitCollection;
     }
 
     else
     {
-      v36 = [v28 containerWindow];
-      v35 = [v36 traitCollection];
+      containerWindow = [v28 containerWindow];
+      traitCollection2 = [containerWindow traitCollection];
     }
 
-    [(UISystemInputAssistantViewController *)v32 preferredHeightForTraitCollection:v35 orientation:a3];
+    [(UISystemInputAssistantViewController *)v32 preferredHeightForTraitCollection:traitCollection2 orientation:orientation];
     v27 = v27 + v37;
   }
 
@@ -2104,34 +2104,34 @@ LABEL_28:
   return result;
 }
 
-+ (CGSize)keyboardSizeForInterfaceOrientation:(int64_t)a3
++ (CGSize)keyboardSizeForInterfaceOrientation:(int64_t)orientation
 {
-  [UIKeyboardImpl keyboardSizeForInterfaceOrientation:a3];
+  [UIKeyboardImpl keyboardSizeForInterfaceOrientation:orientation];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(UIKeyboard *)self window];
-  v6 = [v5 screen];
-  v7 = [v4 screen];
+  windowCopy = window;
+  window = [(UIKeyboard *)self window];
+  screen = [window screen];
+  screen2 = [windowCopy screen];
 
-  if (v6 != v7)
+  if (screen != screen2)
   {
 
     [(UIKeyboard *)self clearActivePerScreenIfNeeded];
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   if (v9 == width && v8 == height)
   {
@@ -2139,8 +2139,8 @@ LABEL_28:
   }
 
   v11 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v12 = [v11 preferencesActions];
-  if ([v12 currentInputModeSupportsCrescendo])
+  preferencesActions = [v11 preferencesActions];
+  if ([preferencesActions currentInputModeSupportsCrescendo])
   {
 
 LABEL_8:
@@ -2178,14 +2178,14 @@ LABEL_8:
   [(UIView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  self->_preferredSize.width = a3.size.width;
-  self->_preferredSize.height = a3.size.height;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  self->_preferredSize.width = frame.size.width;
+  self->_preferredSize.height = frame.size.height;
   [(UIView *)self bounds];
   if (v9 == width && v8 == height)
   {
@@ -2193,8 +2193,8 @@ LABEL_8:
   }
 
   v11 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v12 = [v11 preferencesActions];
-  if ([v12 currentInputModeSupportsCrescendo])
+  preferencesActions = [v11 preferencesActions];
+  if ([preferencesActions currentInputModeSupportsCrescendo])
   {
 
 LABEL_8:
@@ -2229,12 +2229,12 @@ LABEL_8:
 {
   [(UIKeyboard *)self activate];
   v2 = +[UIKeyboardInputModeController sharedInputModeController];
-  v6 = [v2 currentInputMode];
+  currentInputMode = [v2 currentInputMode];
 
-  if (([v6 isExtensionInputMode] & 1) == 0)
+  if (([currentInputMode isExtensionInputMode] & 1) == 0)
   {
-    v3 = [v6 normalizedIdentifier];
-    v4 = [v3 isEqualToString:@"emoji"];
+    normalizedIdentifier = [currentInputMode normalizedIdentifier];
+    v4 = [normalizedIdentifier isEqualToString:@"emoji"];
 
     if ((v4 & 1) == 0)
     {
@@ -2244,36 +2244,36 @@ LABEL_8:
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if (self->m_typingDisabled)
   {
     v18.receiver = self;
     v18.super_class = UIKeyboard;
-    if ([(UIView *)&v18 pointInside:v7 withEvent:x, y])
+    if ([(UIView *)&v18 pointInside:eventCopy withEvent:x, y])
     {
-      v8 = self;
+      selfCopy = self;
       goto LABEL_9;
     }
   }
 
   v9 = +[UIKeyboardImpl sharedInstance];
-  v10 = [v9 candidateController];
-  v11 = [v10 candidateBar];
+  candidateController = [v9 candidateController];
+  candidateBar = [candidateController candidateBar];
 
-  v12 = [v11 window];
-  v13 = [(UIKeyboard *)self window];
-  if (v12 == v13 && ([v11 isHidden] & 1) == 0)
+  window = [candidateBar window];
+  window2 = [(UIKeyboard *)self window];
+  if (window == window2 && ([candidateBar isHidden] & 1) == 0)
   {
-    v16 = -[UIKeyboard pointInside:forEvent:](self, "pointInside:forEvent:", [v7 _gsEvent], x, y);
+    v16 = -[UIKeyboard pointInside:forEvent:](self, "pointInside:forEvent:", [eventCopy _gsEvent], x, y);
 
     if (!v16)
     {
-      [(UIView *)self convertPoint:v11 toView:x, y];
-      v14 = [v11 hitTest:v7 withEvent:?];
+      [(UIView *)self convertPoint:candidateBar toView:x, y];
+      v14 = [candidateBar hitTest:eventCopy withEvent:?];
       goto LABEL_8;
     }
   }
@@ -2284,25 +2284,25 @@ LABEL_8:
 
   v17.receiver = self;
   v17.super_class = UIKeyboard;
-  v14 = [(UIView *)&v17 hitTest:v7 withEvent:x, y];
+  v14 = [(UIView *)&v17 hitTest:eventCopy withEvent:x, y];
 LABEL_8:
-  v8 = v14;
+  selfCopy = v14;
 
 LABEL_9:
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 forEvent:(__GSEvent *)a4
+- (BOOL)pointInside:(CGPoint)inside forEvent:(__GSEvent *)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v8 = +[UIKeyboardImpl sharedInstance];
-  v9 = [v8 superview];
-  if (v9 == self)
+  superview = [v8 superview];
+  if (superview == self)
   {
     [(UIView *)self convertPoint:v8 toView:x, y];
-    v10 = [v8 pointInside:a4 forEvent:?];
+    v10 = [v8 pointInside:event forEvent:?];
   }
 
   else
@@ -2313,27 +2313,27 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if (!-[UIKeyboard pointInside:forEvent:](self, "pointInside:forEvent:", [v7 _gsEvent], x, y))
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  if (!-[UIKeyboard pointInside:forEvent:](self, "pointInside:forEvent:", [eventCopy _gsEvent], x, y))
   {
     v9 = +[UIKeyboardImpl sharedInstance];
-    v10 = [v9 candidateController];
-    v11 = [v10 candidateBar];
+    candidateController = [v9 candidateController];
+    candidateBar = [candidateController candidateBar];
 
-    v12 = [v11 window];
-    v13 = [(UIKeyboard *)self window];
-    if (v12 == v13 && ([v11 isHiddenOrHasHiddenAncestor] & 1) == 0)
+    window = [candidateBar window];
+    window2 = [(UIKeyboard *)self window];
+    if (window == window2 && ([candidateBar isHiddenOrHasHiddenAncestor] & 1) == 0)
     {
-      HasAlphaHittable = [(UIView *)v11 _isAlphaHittableAndHasAlphaHittableAncestors];
+      HasAlphaHittable = [(UIView *)candidateBar _isAlphaHittableAndHasAlphaHittableAncestors];
 
       if (HasAlphaHittable)
       {
-        [(UIView *)self convertPoint:v11 toView:x, y];
-        v8 = [v11 pointInside:v7 withEvent:?];
+        [(UIView *)self convertPoint:candidateBar toView:x, y];
+        v8 = [candidateBar pointInside:eventCopy withEvent:?];
         goto LABEL_7;
       }
     }
@@ -2361,16 +2361,16 @@ LABEL_8:
   [v2 prepareForGeometryChange];
 }
 
-- (void)geometryChangeDone:(BOOL)a3
+- (void)geometryChangeDone:(BOOL)done
 {
-  v3 = a3;
-  if (a3)
+  doneCopy = done;
+  if (done)
   {
     [(UIKeyboard *)self activate];
   }
 
   v4 = +[UIKeyboardImpl activeInstance];
-  [v4 geometryChangeDone:v3];
+  [v4 geometryChangeDone:doneCopy];
 }
 
 - (void)removeAutocorrectPrompt
@@ -2384,10 +2384,10 @@ LABEL_8:
 {
   [(UIKeyboard *)self activate];
   v5 = +[UIKeyboardImpl sharedInstance];
-  v2 = [v5 textInputTraits];
-  v3 = [v2 keyboardType];
+  textInputTraits = [v5 textInputTraits];
+  keyboardType = [textInputTraits keyboardType];
 
-  if (v3 == 126)
+  if (keyboardType == 126)
   {
     v4 = +[UIDictationController sharedInstance];
     [v4 stopDictationIgnoreFinalizePhrases];
@@ -2396,16 +2396,16 @@ LABEL_8:
   [v5 acceptAutocorrection];
 }
 
-- (void)acceptAutocorrectionWithCompletionHandler:(id)a3
+- (void)acceptAutocorrectionWithCompletionHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   [(UIKeyboard *)self activate];
   v5 = +[UIKeyboardImpl sharedInstance];
-  v6 = [v5 textInputTraits];
-  v7 = [v6 keyboardType];
+  textInputTraits = [v5 textInputTraits];
+  keyboardType = [textInputTraits keyboardType];
 
-  if (v7 == 126)
+  if (keyboardType == 126)
   {
     v8 = +[UIDictationController sharedInstance];
     [v8 stopDictationIgnoreFinalizePhrases];
@@ -2425,8 +2425,8 @@ LABEL_8:
   v11[1] = 3221225472;
   v11[2] = __56__UIKeyboard_acceptAutocorrectionWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E70F3608;
-  v12 = v4;
-  v10 = v4;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [v5 acceptAutocorrectionWithCompletionHandler:v11];
 }
 
@@ -2453,8 +2453,8 @@ uint64_t __56__UIKeyboard_acceptAutocorrectionWithCompletionHandler___block_invo
 - (BOOL)hasAutocorrectPrompt
 {
   v2 = +[UIKeyboardImpl sharedInstance];
-  v3 = [v2 autocorrectPrompt];
-  v4 = v3 != 0;
+  autocorrectPrompt = [v2 autocorrectPrompt];
+  v4 = autocorrectPrompt != 0;
 
   return v4;
 }
@@ -2463,58 +2463,58 @@ uint64_t __56__UIKeyboard_acceptAutocorrectionWithCompletionHandler___block_invo
 {
   [(UIKeyboard *)self activate];
   v2 = +[UIKeyboardImpl sharedInstance];
-  v3 = [v2 _activeAssertionController];
+  _activeAssertionController = [v2 _activeAssertionController];
 
-  return v3;
+  return _activeAssertionController;
 }
 
-- (void)setCaretBlinks:(BOOL)a3
+- (void)setCaretBlinks:(BOOL)blinks
 {
-  v3 = a3;
+  blinksCopy = blinks;
   [(UIKeyboard *)self activate];
   v4 = +[UIKeyboardImpl sharedInstance];
-  [v4 setCaretBlinks:v3];
+  [v4 setCaretBlinks:blinksCopy];
 }
 
 - (BOOL)caretBlinks
 {
   v2 = +[UIKeyboardImpl sharedInstance];
-  v3 = [v2 caretBlinks];
+  caretBlinks = [v2 caretBlinks];
 
-  return v3;
+  return caretBlinks;
 }
 
-- (void)setCaretVisible:(BOOL)a3
+- (void)setCaretVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   [(UIKeyboard *)self activate];
   v4 = +[UIKeyboardImpl sharedInstance];
-  [v4 setCaretVisible:v3];
+  [v4 setCaretVisible:visibleCopy];
 }
 
 - (BOOL)caretVisible
 {
   v2 = +[UIKeyboardImpl sharedInstance];
-  v3 = [v2 caretVisible];
+  caretVisible = [v2 caretVisible];
 
-  return v3;
+  return caretVisible;
 }
 
 - (BOOL)returnKeyEnabled
 {
   [(UIKeyboard *)self activateIfNeeded];
   v2 = +[UIKeyboardImpl sharedInstance];
-  v3 = [v2 returnKeyEnabled];
+  returnKeyEnabled = [v2 returnKeyEnabled];
 
-  return v3;
+  return returnKeyEnabled;
 }
 
-- (void)setReturnKeyEnabled:(BOOL)a3
+- (void)setReturnKeyEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(UIKeyboard *)self activateIfNeeded];
   v4 = +[UIKeyboardImpl sharedInstance];
-  [v4 setReturnKeyEnabled:v3];
+  [v4 setReturnKeyEnabled:enabledCopy];
 }
 
 - (id)defaultTextInputTraits
@@ -2533,25 +2533,25 @@ uint64_t __56__UIKeyboard_acceptAutocorrectionWithCompletionHandler___block_invo
   return m_defaultTraits;
 }
 
-- (void)setDefaultTextInputTraits:(id)a3
+- (void)setDefaultTextInputTraits:(id)traits
 {
-  v4 = a3;
+  traitsCopy = traits;
   [(UIKeyboard *)self activate];
   m_defaultTraits = self->m_defaultTraits;
-  self->m_defaultTraits = v4;
-  v6 = v4;
+  self->m_defaultTraits = traitsCopy;
+  v6 = traitsCopy;
 
   v7 = +[UIKeyboardImpl sharedInstance];
   [v7 setDefaultTextInputTraits:self->m_defaultTraits];
 }
 
-- (void)set_overrideTextInputTraits:(id)a3
+- (void)set_overrideTextInputTraits:(id)traits
 {
-  v6 = a3;
+  traitsCopy = traits;
   [(UIKeyboard *)self activate];
-  if (self->m_overrideTraits != v6)
+  if (self->m_overrideTraits != traitsCopy)
   {
-    objc_storeStrong(&self->m_overrideTraits, a3);
+    objc_storeStrong(&self->m_overrideTraits, traits);
     v5 = +[UIKeyboardImpl sharedInstance];
     [v5 setOverrideTextInputTraits:self->m_overrideTraits];
   }
@@ -2561,9 +2561,9 @@ uint64_t __56__UIKeyboard_acceptAutocorrectionWithCompletionHandler___block_invo
 {
   [(UIKeyboard *)self activate];
   v2 = +[UIKeyboardImpl sharedInstance];
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
 
-  return v3;
+  return delegate;
 }
 
 - (void)takeSnapshot
@@ -2585,18 +2585,18 @@ uint64_t __56__UIKeyboard_acceptAutocorrectionWithCompletionHandler___block_invo
 {
   if (activeKeyboard == self)
   {
-    v3 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
 
-    if (v3)
+    if (superview)
     {
       [(UIKeyboard *)self takeSnapshot];
       [(UIKeyboard *)self setNeedsDisplay];
     }
 
     v7 = +[UIKeyboardImpl activeInstance];
-    v4 = [v7 superview];
+    superview2 = [v7 superview];
 
-    if (v4)
+    if (superview2)
     {
       if (self->_implConstraints)
       {
@@ -2622,18 +2622,18 @@ uint64_t __56__UIKeyboard_acceptAutocorrectionWithCompletionHandler___block_invo
 {
   if (activeKeyboard == self)
   {
-    v4 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
 
-    if (v4)
+    if (superview)
     {
       [(UIKeyboard *)self takeSnapshot];
       [(UIKeyboard *)self setNeedsDisplay];
     }
 
     v7 = +[UIKeyboardImpl activeInstance];
-    v5 = [v7 superview];
+    superview2 = [v7 superview];
 
-    if (v5)
+    if (superview2)
     {
       if (self->_implConstraints)
       {
@@ -2647,7 +2647,7 @@ uint64_t __56__UIKeyboard_acceptAutocorrectionWithCompletionHandler___block_invo
   }
 }
 
-- (void)displayLayer:(id)a3
+- (void)displayLayer:(id)layer
 {
   if (activeKeyboard == self)
   {
@@ -2664,159 +2664,159 @@ uint64_t __56__UIKeyboard_acceptAutocorrectionWithCompletionHandler___block_invo
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v4 = [UIKeyboardImpl activeInstance:a3];
+  v4 = [UIKeyboardImpl activeInstance:began];
   [v4 updateIdleDetection:0];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v4 = [UIKeyboardImpl activeInstance:a3];
+  v4 = [UIKeyboardImpl activeInstance:moved];
   [v4 updateIdleDetection:0];
 }
 
-- (BOOL)canHandlePresses:(id)a3 withEvent:(id)a4
+- (BOOL)canHandlePresses:(id)presses withEvent:(id)event
 {
-  v5 = a4;
-  v6 = a3;
+  eventCopy = event;
+  pressesCopy = presses;
   v7 = +[UIKeyboardImpl activeInstance];
-  v8 = [v7 canHandlePresses:v6 withEvent:v5];
+  v8 = [v7 canHandlePresses:pressesCopy withEvent:eventCopy];
 
   return v8;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UIKeyboard *)self canHandlePresses:v6 withEvent:v7])
+  beganCopy = began;
+  eventCopy = event;
+  if ([(UIKeyboard *)self canHandlePresses:beganCopy withEvent:eventCopy])
   {
     v8 = +[UIKeyboardImpl activeInstance];
-    v9 = [v8 _layout];
-    [v9 pressesBegan:v6 withEvent:v7];
+    _layout = [v8 _layout];
+    [_layout pressesBegan:beganCopy withEvent:eventCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = UIKeyboard;
-    [(UIResponder *)&v10 pressesBegan:v6 withEvent:v7];
+    [(UIResponder *)&v10 pressesBegan:beganCopy withEvent:eventCopy];
   }
 }
 
-- (void)pressesChanged:(id)a3 withEvent:(id)a4
+- (void)pressesChanged:(id)changed withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UIKeyboard *)self canHandlePresses:v6 withEvent:v7])
+  changedCopy = changed;
+  eventCopy = event;
+  if ([(UIKeyboard *)self canHandlePresses:changedCopy withEvent:eventCopy])
   {
     v8 = +[UIKeyboardImpl activeInstance];
-    v9 = [v8 _layout];
-    [v9 pressesChanged:v6 withEvent:v7];
+    _layout = [v8 _layout];
+    [_layout pressesChanged:changedCopy withEvent:eventCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = UIKeyboard;
-    [(UIResponder *)&v10 pressesChanged:v6 withEvent:v7];
+    [(UIResponder *)&v10 pressesChanged:changedCopy withEvent:eventCopy];
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UIKeyboard *)self canHandlePresses:v6 withEvent:v7])
+  endedCopy = ended;
+  eventCopy = event;
+  if ([(UIKeyboard *)self canHandlePresses:endedCopy withEvent:eventCopy])
   {
     v8 = +[UIKeyboardImpl activeInstance];
-    v9 = [v8 _layout];
-    [v9 pressesEnded:v6 withEvent:v7];
+    _layout = [v8 _layout];
+    [_layout pressesEnded:endedCopy withEvent:eventCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = UIKeyboard;
-    [(UIResponder *)&v10 pressesEnded:v6 withEvent:v7];
+    [(UIResponder *)&v10 pressesEnded:endedCopy withEvent:eventCopy];
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UIKeyboard *)self canHandlePresses:v6 withEvent:v7])
+  cancelledCopy = cancelled;
+  eventCopy = event;
+  if ([(UIKeyboard *)self canHandlePresses:cancelledCopy withEvent:eventCopy])
   {
     v8 = +[UIKeyboardImpl activeInstance];
-    v9 = [v8 _layout];
-    [v9 pressesCancelled:v6 withEvent:v7];
+    _layout = [v8 _layout];
+    [_layout pressesCancelled:cancelledCopy withEvent:eventCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = UIKeyboard;
-    [(UIResponder *)&v10 pressesCancelled:v6 withEvent:v7];
+    [(UIResponder *)&v10 pressesCancelled:cancelledCopy withEvent:eventCopy];
   }
 }
 
-- (void)remoteControlReceivedWithEvent:(id)a3
+- (void)remoteControlReceivedWithEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = +[UIKeyboardImpl activeInstance];
-  [v4 remoteControlReceivedWithEvent:v3];
+  [v4 remoteControlReceivedWithEvent:eventCopy];
 }
 
-- (void)_wheelChangedWithEvent:(id)a3
+- (void)_wheelChangedWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(UIView *)self isFocused])
   {
     v5 = +[UIKeyboardImpl activeInstance];
-    [v5 _wheelChangedWithEvent:v4];
+    [v5 _wheelChangedWithEvent:eventCopy];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIKeyboard;
-    [(UIResponder *)&v6 _wheelChangedWithEvent:v4];
+    [(UIResponder *)&v6 _wheelChangedWithEvent:eventCopy];
   }
 }
 
 - (id)_systemDefaultFocusGroupIdentifier
 {
-  v3 = [(UIView *)self _focusBehavior];
-  v4 = [v3 focusGroupContainmentBehavior];
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  focusGroupContainmentBehavior = [_focusBehavior focusGroupContainmentBehavior];
 
-  if ((v4 & 0x100) != 0)
+  if ((focusGroupContainmentBehavior & 0x100) != 0)
   {
-    v5 = _UIFocusGroupIdentifierForInstance(self);
+    _systemDefaultFocusGroupIdentifier = _UIFocusGroupIdentifierForInstance(self);
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIKeyboard;
-    v5 = [(UIView *)&v7 _systemDefaultFocusGroupIdentifier];
+    _systemDefaultFocusGroupIdentifier = [(UIView *)&v7 _systemDefaultFocusGroupIdentifier];
   }
 
-  return v5;
+  return _systemDefaultFocusGroupIdentifier;
 }
 
-- (CGRect)_focusCastingFrameForHeading:(unint64_t)a3 inCoordinateSpace:(id)a4
+- (CGRect)_focusCastingFrameForHeading:(unint64_t)heading inCoordinateSpace:(id)space
 {
-  v4 = a4;
+  spaceCopy = space;
   v5 = +[UIKeyboardImpl sharedInstance];
-  v6 = [v5 currentKey];
+  currentKey = [v5 currentKey];
 
-  if (v6 && [v6 state] != 16)
+  if (currentKey && [currentKey state] != 16)
   {
     v11 = +[UIKeyboardImpl sharedInstance];
-    [v6 frame];
-    [v11 convertRect:v4 toCoordinateSpace:?];
+    [currentKey frame];
+    [v11 convertRect:spaceCopy toCoordinateSpace:?];
     v7 = v12;
     v8 = v13;
     v9 = v14;
@@ -2842,11 +2842,11 @@ uint64_t __56__UIKeyboard_acceptAutocorrectionWithCompletionHandler___block_invo
   return result;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = UIKeyboard;
-  [(UIView *)&v8 didUpdateFocusInContext:a3 withAnimationCoordinator:a4];
+  [(UIView *)&v8 didUpdateFocusInContext:context withAnimationCoordinator:coordinator];
   if ([(UIKeyboard *)self hasImpendingCursorLocation])
   {
     [(UIKeyboard *)self setCursorLocation:[(UIKeyboard *)self impendingCursorLocation]];
@@ -2870,12 +2870,12 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  v6 = [(UIView *)self traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   [(UIKeyboard *)self updateFocusMarginsUpToView:0];
   v5 = 0;
-  if (v7 == 3)
+  if (userInterfaceIdiom == 3)
   {
     goto LABEL_12;
   }
@@ -2896,22 +2896,22 @@ LABEL_13:
   [(UIKeyboard *)self updateKeyFocusGuides];
 }
 
-- (BOOL)allowExternalChangeForFocusHeading:(unint64_t)a3 cursorLocation:(unint64_t)a4
+- (BOOL)allowExternalChangeForFocusHeading:(unint64_t)heading cursorLocation:(unint64_t)location
 {
-  if (a3 == 1 && (a4 & 8) != 0)
+  if (heading == 1 && (location & 8) != 0)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = vdupq_n_s64(a3);
-    v6 = vdupq_n_s64(a4);
+    v5 = vdupq_n_s64(heading);
+    v6 = vdupq_n_s64(location);
     v7 = vuzp1q_s32(vceqq_s64(v5, xmmword_18A680110), vceqq_s64(v5, xmmword_18A64BFA0));
     v8 = vandq_s8(v6, xmmword_18A679310);
     v9 = vandq_s8(v6, xmmword_18A680120);
-    v10 = (a4 >> 6) & 1;
-    if (a3 != 8)
+    v10 = (location >> 6) & 1;
+    if (heading != 8)
     {
       LOBYTE(v10) = 0;
     }
@@ -2922,36 +2922,36 @@ LABEL_13:
   return v4 & 1;
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 nextFocusedItem];
-  v6 = [v4 focusHeading];
+  contextCopy = context;
+  nextFocusedItem = [contextCopy nextFocusedItem];
+  focusHeading = [contextCopy focusHeading];
 
   if (![(UIView *)self isFocused]|| ![(UIKeyboard *)self canBecomeFocused])
   {
-    if (v5 == self)
+    if (nextFocusedItem == self)
     {
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2;
       goto LABEL_14;
     }
 
 LABEL_12:
-    v15 = self;
+    selfCopy2 = self;
     v16 = 0;
 LABEL_14:
-    [(UIKeyboard *)v15 setImpendingCursorLocation:v16];
+    [(UIKeyboard *)selfCopy2 setImpendingCursorLocation:v16];
 LABEL_15:
     v8 = 1;
     goto LABEL_16;
   }
 
-  v7 = [(UIKeyboard *)self cursorLocation];
-  v8 = v5 == self;
-  if (!v7)
+  cursorLocation = [(UIKeyboard *)self cursorLocation];
+  v8 = nextFocusedItem == self;
+  if (!cursorLocation)
   {
-    if (v5 == self)
+    if (nextFocusedItem == self)
     {
       v8 = 1;
       [(UIKeyboard *)self setImpendingCursorLocation:1];
@@ -2961,16 +2961,16 @@ LABEL_15:
     goto LABEL_18;
   }
 
-  v9 = v7;
-  v10 = (v7 & 0x80) == 0;
-  v11 = [(UIKeyboard *)self allowExternalChangeForFocusHeading:v6 cursorLocation:v7];
-  v12 = v5 != self && v10 && v11;
-  v13 = [(UIView *)self traitCollection];
-  v14 = [v13 userInterfaceIdiom];
+  v9 = cursorLocation;
+  v10 = (cursorLocation & 0x80) == 0;
+  v11 = [(UIKeyboard *)self allowExternalChangeForFocusHeading:focusHeading cursorLocation:cursorLocation];
+  v12 = nextFocusedItem != self && v10 && v11;
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v14 == 3)
+  if (userInterfaceIdiom == 3)
   {
-    if ((v9 & 0x20) != 0 && v6 == 4 || (v9 & 0x40) != 0 && v6 == 8)
+    if ((v9 & 0x20) != 0 && focusHeading == 4 || (v9 & 0x40) != 0 && focusHeading == 8)
     {
       v8 = 0;
       goto LABEL_16;
@@ -2985,7 +2985,7 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  if (v14 != 2)
+  if (userInterfaceIdiom != 2)
   {
 LABEL_18:
     [(UIKeyboard *)self setHasImpendingCursorLocation:0];
@@ -3002,31 +3002,31 @@ LABEL_18:
     [(UIKeyboard *)self setHasImpendingCursorLocation:0];
   }
 
-  v8 = v5 != self || !v11;
+  v8 = nextFocusedItem != self || !v11;
 LABEL_16:
 
   return v8;
 }
 
-- (void)setCursorLocation:(unint64_t)a3
+- (void)setCursorLocation:(unint64_t)location
 {
   v5 = +[UIKeyboardImpl activeInstance];
-  v4 = [v5 _layout];
-  [v4 setCursorLocation:a3];
+  _layout = [v5 _layout];
+  [_layout setCursorLocation:location];
 }
 
-- (void)didFocusGuideWithHeading:(unint64_t)a3
+- (void)didFocusGuideWithHeading:(unint64_t)heading
 {
-  v9 = [(UIEvent *)[UIMoveEvent alloc] _init];
-  [v9 _setFocusHeading:a3];
+  _init = [(UIEvent *)[UIMoveEvent alloc] _init];
+  [_init _setFocusHeading:heading];
   v5 = +[UIKeyboardImpl activeInstance];
-  [v5 _moveWithEvent:v9];
+  [v5 _moveWithEvent:_init];
 
   [(UIKeyboard *)self updateKeyFocusGuides];
-  v6 = [(UIView *)self traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v7 == 2)
+  if (userInterfaceIdiom == 2)
   {
     v8 = +[UIDictationController sharedInstance];
     [v8 updateHelperMessageDisplayIfNeeded];
@@ -3046,9 +3046,9 @@ LABEL_16:
   return result;
 }
 
-- (void)updateFocusMarginsUpToView:(id)a3
+- (void)updateFocusMarginsUpToView:(id)view
 {
-  v19 = a3;
+  viewCopy = view;
   [(UIKeyboard *)self unfocusedFocusGuideOutsets];
   if (v7 != 0.0 || v4 != 0.0 || v6 != 0.0 || v5 != 0.0)
   {
@@ -3065,23 +3065,23 @@ LABEL_16:
       v8 = v15;
     }
 
-    v16 = self;
-    v17 = [v19 superview];
+    selfCopy = self;
+    superview = [viewCopy superview];
     do
     {
-      v18 = v16;
-      [(UIView *)v16 _setFocusableContentMargins:v11, v10, v9, v8];
-      v16 = [(UIView *)v16 superview];
+      v18 = selfCopy;
+      [(UIView *)selfCopy _setFocusableContentMargins:v11, v10, v9, v8];
+      selfCopy = [(UIView *)selfCopy superview];
     }
 
-    while (v16 && v17 && v16 != v17);
+    while (selfCopy && superview && selfCopy != superview);
   }
 }
 
-- (void)_toggleMenuGestureRecognizer:(BOOL)a3
+- (void)_toggleMenuGestureRecognizer:(BOOL)recognizer
 {
-  v3 = a3;
-  if (a3 && !self->_menuGestureRecognizer)
+  recognizerCopy = recognizer;
+  if (recognizer && !self->_menuGestureRecognizer)
   {
     v5 = [[UITapGestureRecognizer alloc] initWithTarget:self action:0];
     menuGestureRecognizer = self->_menuGestureRecognizer;
@@ -3094,32 +3094,32 @@ LABEL_16:
 
   v7 = self->_menuGestureRecognizer;
 
-  [(UIGestureRecognizer *)v7 setEnabled:v3];
+  [(UIGestureRecognizer *)v7 setEnabled:recognizerCopy];
 }
 
 - (BOOL)disableInteraction
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 _layout];
-  v4 = [v3 disableInteraction];
+  _layout = [v2 _layout];
+  disableInteraction = [_layout disableInteraction];
 
-  return v4;
+  return disableInteraction;
 }
 
-- (void)setDisableInteraction:(BOOL)a3
+- (void)setDisableInteraction:(BOOL)interaction
 {
-  v3 = a3;
+  interactionCopy = interaction;
   v5 = +[UIKeyboardImpl activeInstance];
-  v4 = [v5 _layout];
-  [v4 setDisableInteraction:v3];
+  _layout = [v5 _layout];
+  [_layout setDisableInteraction:interactionCopy];
 }
 
 - (BOOL)showPredictionBar
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 isPredictionViewControllerVisible];
+  isPredictionViewControllerVisible = [v2 isPredictionViewControllerVisible];
 
-  return v3;
+  return isPredictionViewControllerVisible;
 }
 
 - (void)_showPasswordAutoFillPocket
@@ -3133,12 +3133,12 @@ LABEL_16:
   }
 }
 
-- (void)setShouldUpdateLayoutAutomatically:(BOOL)a3
+- (void)setShouldUpdateLayoutAutomatically:(BOOL)automatically
 {
-  v3 = a3;
-  self->_shouldUpdateLayoutAutomatically = a3;
+  automaticallyCopy = automatically;
+  self->_shouldUpdateLayoutAutomatically = automatically;
   v4 = +[UIKeyboardImpl activeInstance];
-  [v4 setShouldUpdateLayoutAutomatically:v3];
+  [v4 setShouldUpdateLayoutAutomatically:automaticallyCopy];
 }
 
 + (void)clearLastKeyboardApplicationIdentifier
@@ -3151,31 +3151,31 @@ LABEL_16:
 
 + (id)keyboardApplicationIdentifier
 {
-  if (([a1 isKeyboardProcess] & 1) == 0)
+  if (([self isKeyboardProcess] & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"UIKeyboard.m" lineNumber:1688 description:@"keyboardApplicationIdentifier can only be called from keyboard process"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboard.m" lineNumber:1688 description:@"keyboardApplicationIdentifier can only be called from keyboard process"];
   }
 
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 inputSystemSourceSession];
-  v6 = [v5 documentTraits];
+  inputSystemSourceSession = [v4 inputSystemSourceSession];
+  documentTraits = [inputSystemSourceSession documentTraits];
 
-  v7 = [v6 appId];
-  if (v7)
+  appId = [documentTraits appId];
+  if (appId)
   {
-    v8 = v7;
+    v8 = appId;
 LABEL_8:
     objc_storeStrong(&qword_1ED49C3E8, v8);
     goto LABEL_9;
   }
 
-  v9 = [v6 bundleId];
-  v10 = v9;
+  bundleId = [documentTraits bundleId];
+  v10 = bundleId;
   v11 = qword_1ED49C3E8;
-  if (v9)
+  if (bundleId)
   {
-    v11 = v9;
+    v11 = bundleId;
   }
 
   v8 = v11;
@@ -3192,20 +3192,20 @@ LABEL_9:
 
 + (int)keyboardProcessId
 {
-  if (([a1 isKeyboardProcess] & 1) == 0)
+  if (([self isKeyboardProcess] & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"UIKeyboard.m" lineNumber:1700 description:@"keyboardProcessId can only be called from keyboard process"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboard.m" lineNumber:1700 description:@"keyboardProcessId can only be called from keyboard process"];
   }
 
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 inputSystemSourceSession];
-  v6 = [v5 documentTraits];
+  inputSystemSourceSession = [v4 inputSystemSourceSession];
+  documentTraits = [inputSystemSourceSession documentTraits];
 
-  v7 = [v6 processId];
-  if (v7)
+  processId = [documentTraits processId];
+  if (processId)
   {
-    v8 = v7;
+    v8 = processId;
   }
 
   else
@@ -3223,19 +3223,19 @@ LABEL_9:
 
 + (id)currentDocumentState
 {
-  if ([a1 isKeyboardProcess])
+  if ([self isKeyboardProcess])
   {
     v2 = +[UIKeyboardImpl activeInstance];
-    v3 = [v2 inputSystemSourceSession];
-    v4 = [v3 documentState];
+    inputSystemSourceSession = [v2 inputSystemSourceSession];
+    documentState = [inputSystemSourceSession documentState];
   }
 
   else
   {
-    v4 = 0;
+    documentState = 0;
   }
 
-  return v4;
+  return documentState;
 }
 
 + (BOOL)doesSpacebarAcceptInlineTextCompletion
@@ -3244,7 +3244,7 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = __52__UIKeyboard_doesSpacebarAcceptInlineTextCompletion__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49C428 != -1)
   {
     dispatch_once(&qword_1ED49C428, block);
@@ -3271,7 +3271,7 @@ uint64_t __52__UIKeyboard_doesSpacebarAcceptInlineTextCompletion__block_invoke(u
   block[1] = 3221225472;
   block[2] = __54__UIKeyboard_isInlineTextCompletionEducationUIEnabled__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49C430 != -1)
   {
     dispatch_once(&qword_1ED49C430, block);
@@ -3298,7 +3298,7 @@ uint64_t __54__UIKeyboard_isInlineTextCompletionEducationUIEnabled__block_invoke
   block[1] = 3221225472;
   block[2] = __56__UIKeyboard_doesSpacebarAcceptFullInlineTextCompletion__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49C438 != -1)
   {
     dispatch_once(&qword_1ED49C438, block);
@@ -3319,9 +3319,9 @@ uint64_t __56__UIKeyboard_doesSpacebarAcceptFullInlineTextCompletion__block_invo
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  if (self->_menuGestureRecognizer == a3)
+  if (self->_menuGestureRecognizer == begin)
   {
     v5 = ([(UIKeyboard *)self cursorLocation]>> 7) & 1;
     v3 = v5 | [(UIKeyboard *)self _isDictationCurrentView];
@@ -3335,7 +3335,7 @@ uint64_t __56__UIKeyboard_doesSpacebarAcceptFullInlineTextCompletion__block_invo
   return v3 & 1;
 }
 
-- (UIPeripheralAnimationGeometry)geometryForMinimize:(SEL)a3
+- (UIPeripheralAnimationGeometry)geometryForMinimize:(SEL)minimize
 {
   v4 = a4;
   retstr->targetFrameHeightDelta = 0.0;
@@ -3347,8 +3347,8 @@ uint64_t __56__UIKeyboard_doesSpacebarAcceptFullInlineTextCompletion__block_invo
   retstr->bounds.size.width = v7;
   retstr->bounds.size.height = v9;
   v13 = [(UIView *)self _keyboardOrientation]- 3;
-  v14 = [objc_opt_self() mainScreen];
-  [v14 bounds];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen bounds];
   v16 = v15;
   v18 = v17;
 
@@ -3386,11 +3386,11 @@ uint64_t __56__UIKeyboard_doesSpacebarAcceptFullInlineTextCompletion__block_invo
   return result;
 }
 
-- (void)setCorrectionLearningAllowed:(BOOL)a3
+- (void)setCorrectionLearningAllowed:(BOOL)allowed
 {
-  v3 = a3;
+  allowedCopy = allowed;
   v4 = +[UIKeyboardImpl activeInstance];
-  [v4 setCorrectionLearningAllowed:v3];
+  [v4 setCorrectionLearningAllowed:allowedCopy];
 }
 
 - (void)responseContextDidChange
@@ -3407,26 +3407,26 @@ uint64_t __56__UIKeyboard_doesSpacebarAcceptFullInlineTextCompletion__block_invo
   if (+[UIKeyboard usesInputSystemUI])
   {
     v9 = +[UIKeyboardImpl activeInstance];
-    v4 = [v9 remoteTextInputPartner];
-    [v4 documentTraitsChanged];
+    remoteTextInputPartner = [v9 remoteTextInputPartner];
+    [remoteTextInputPartner documentTraitsChanged];
   }
 
   else
   {
     v9 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v5 = [v9 responder];
-    v6 = [v5 inputAccessoryView];
-    v7 = [v9 inputViews];
-    v8 = [v7 inputAccessoryView];
+    responder = [v9 responder];
+    inputAccessoryView = [responder inputAccessoryView];
+    inputViews = [v9 inputViews];
+    inputAccessoryView2 = [inputViews inputAccessoryView];
 
-    if (v6 != v8)
+    if (inputAccessoryView != inputAccessoryView2)
     {
       goto LABEL_6;
     }
 
-    v4 = +[UIKBKeyplaneChangeContext keyplaneChangeContext];
-    [v4 setUpdateAssistantView:1];
-    [(UIKeyboard *)self _didChangeKeyplaneWithContext:v4];
+    remoteTextInputPartner = +[UIKBKeyplaneChangeContext keyplaneChangeContext];
+    [remoteTextInputPartner setUpdateAssistantView:1];
+    [(UIKeyboard *)self _didChangeKeyplaneWithContext:remoteTextInputPartner];
   }
 
 LABEL_6:
@@ -3435,45 +3435,45 @@ LABEL_6:
 - (id)targetWindow
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 inputDelegate];
-  v4 = [v3 textInputView];
-  v5 = [v4 window];
+  inputDelegate = [v2 inputDelegate];
+  textInputView = [inputDelegate textInputView];
+  window = [textInputView window];
 
-  return v5;
+  return window;
 }
 
-- (void)_setRenderConfig:(id)a3
+- (void)_setRenderConfig:(id)config
 {
-  v9 = a3;
+  configCopy = config;
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 superview];
+  superview = [v4 superview];
 
-  if (v5 == self)
+  if (superview == self)
   {
     v6 = +[UIKeyboardImpl activeInstance];
-    [v6 setLayoutRenderConfig:v9];
+    [v6 setLayoutRenderConfig:configCopy];
 
     v7 = +[UIKeyboardImpl activeInstance];
-    v8 = [v7 candidateController];
-    [v8 _setRenderConfig:v9];
+    candidateController = [v7 candidateController];
+    [candidateController _setRenderConfig:configCopy];
   }
 }
 
-- (void)_setPasscodeOutlineAlpha:(double)a3
+- (void)_setPasscodeOutlineAlpha:(double)alpha
 {
   if ([(UIKeyboard *)self isActive])
   {
     v5 = +[UIKeyboardImpl activeInstance];
-    v4 = [v5 _layout];
-    [v4 setPasscodeOutlineAlpha:a3];
+    _layout = [v5 _layout];
+    [_layout setPasscodeOutlineAlpha:alpha];
   }
 }
 
-- (void)_setDisableUpdateMaskForSecureTextEntry:(BOOL)a3
+- (void)_setDisableUpdateMaskForSecureTextEntry:(BOOL)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   passcodeObscuringInteraction = self->_passcodeObscuringInteraction;
-  if (v3)
+  if (entryCopy)
   {
     if (!passcodeObscuringInteraction)
     {
@@ -3495,15 +3495,15 @@ LABEL_6:
   }
 }
 
-- (void)_setDisableTouchInput:(BOOL)a3
+- (void)_setDisableTouchInput:(BOOL)input
 {
-  v3 = a3;
-  self->m_disableTouchInput = a3;
+  inputCopy = input;
+  self->m_disableTouchInput = input;
   if ([(UIKeyboard *)self isActive])
   {
     v5 = +[UIKeyboardImpl activeInstance];
-    v4 = [v5 _layout];
-    [v4 setDisableTouchInput:v3];
+    _layout = [v5 _layout];
+    [_layout setDisableTouchInput:inputCopy];
   }
 }
 
@@ -3518,9 +3518,9 @@ LABEL_6:
   v19 = 0u;
   v17 = 0u;
   [(UIKeyboard *)self geometryForMinimize:1];
-  v3 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     v4 = +[UIPeripheralHost sharedInstance];
     v15[4] = v21;
@@ -3571,9 +3571,9 @@ LABEL_6:
   v19 = 0u;
   v17 = 0u;
   [(UIKeyboard *)self geometryForMinimize:0];
-  v3 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     v4 = +[UIPeripheralHost sharedInstance];
     v15[4] = v21;
@@ -3613,17 +3613,17 @@ LABEL_6:
   }
 }
 
-- (void)setMinimized:(BOOL)a3
+- (void)setMinimized:(BOOL)minimized
 {
-  v3 = a3;
+  minimizedCopy = minimized;
   v16 = *MEMORY[0x1E69E9840];
   if ([(UIKeyboard *)self isAutomatic])
   {
     v5 = +[UIKeyboardImpl sharedInstance];
-    v6 = [v5 textInputTraits];
-    v7 = [v6 keyboardAppearance];
+    textInputTraits = [v5 textInputTraits];
+    keyboardAppearance = [textInputTraits keyboardAppearance];
 
-    v8 = v7 != 127 && v3;
+    v8 = keyboardAppearance != 127 && minimizedCopy;
     if (self->m_minimized != v8)
     {
       v9 = _UIKeyboardLog();
@@ -3648,9 +3648,9 @@ LABEL_6:
     else
     {
       v10 = +[UIDictationController activeInstance];
-      v11 = [v10 resigningFirstResponder];
+      resigningFirstResponder = [v10 resigningFirstResponder];
 
-      if ((v11 & 1) == 0)
+      if ((resigningFirstResponder & 1) == 0)
       {
         [(UIKeyboard *)self maximize];
       }
@@ -3658,25 +3658,25 @@ LABEL_6:
   }
 }
 
-- (void)keyboardMinMaximized:(BOOL)a3
+- (void)keyboardMinMaximized:(BOOL)maximized
 {
-  v3 = a3;
+  maximizedCopy = maximized;
   v5 = +[UIPeripheralHost sharedInstance];
-  [(UIKeyboard *)self geometryForMinimize:v3];
+  [(UIKeyboard *)self geometryForMinimize:maximizedCopy];
   [v5 postDidShowNotificationForGeometry:v6];
 
-  if (v3)
+  if (maximizedCopy)
   {
     [(UIKeyboard *)self geometryChangeDone:0];
   }
 }
 
-- (UIPeripheralAnimationGeometry)geometryForImplHeightDelta:(SEL)a3
+- (UIPeripheralAnimationGeometry)geometryForImplHeightDelta:(SEL)delta
 {
-  v6 = [(UIView *)self _keyboardOrientation];
+  _keyboardOrientation = [(UIView *)self _keyboardOrientation];
   retstr->bounds.origin.x = 0.0;
   retstr->bounds.origin.y = 0.0;
-  [UIKeyboard defaultSizeForInterfaceOrientation:v6];
+  [UIKeyboard defaultSizeForInterfaceOrientation:_keyboardOrientation];
   v9 = v7;
   if (a4 >= 0.0)
   {
@@ -3690,9 +3690,9 @@ LABEL_6:
 
   retstr->bounds.size.width = v7;
   retstr->bounds.size.height = v10;
-  v11 = v6 - 3;
-  v12 = [objc_opt_self() mainScreen];
-  [v12 bounds];
+  v11 = _keyboardOrientation - 3;
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen bounds];
   v14 = v13;
   v16 = v15;
 
@@ -3731,9 +3731,9 @@ LABEL_6:
   return result;
 }
 
-- (void)prepareForImplBoundsHeightChange:(double)a3 suppressNotification:(BOOL)a4
+- (void)prepareForImplBoundsHeightChange:(double)change suppressNotification:(BOOL)notification
 {
-  if (!a4)
+  if (!notification)
   {
     v14 = 0;
     v12 = 0u;
@@ -3743,7 +3743,7 @@ LABEL_6:
     v8 = 0u;
     v9 = 0u;
     v7 = 0u;
-    [(UIKeyboard *)self geometryForImplHeightDelta:a3];
+    [(UIKeyboard *)self geometryForImplHeightDelta:change];
     v4 = +[UIPeripheralHost sharedInstance];
     v5[4] = v11;
     v5[5] = v12;
@@ -3757,13 +3757,13 @@ LABEL_6:
   }
 }
 
-- (void)implBoundsHeightChangeDone:(double)a3 suppressNotification:(BOOL)a4
+- (void)implBoundsHeightChangeDone:(double)done suppressNotification:(BOOL)notification
 {
   self->m_respondingToImplGeometryChange = 1;
   [(UIView *)self frame];
   [(UIKeyboard *)self setFrame:?];
   self->m_respondingToImplGeometryChange = 0;
-  if (!a4)
+  if (!notification)
   {
     v17 = 0;
     v15 = 0u;
@@ -3773,7 +3773,7 @@ LABEL_6:
     v11 = 0u;
     v12 = 0u;
     v10 = 0u;
-    [(UIKeyboard *)self geometryForImplHeightDelta:a3];
+    [(UIKeyboard *)self geometryForImplHeightDelta:done];
     v7 = +[UIPeripheralHost sharedInstance];
     v8[4] = v14;
     v8[5] = v15;
@@ -3790,48 +3790,48 @@ LABEL_6:
 - (BOOL)showsCandidatesInline
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 showsCandidateInline];
+  showsCandidateInline = [v2 showsCandidateInline];
 
-  return v3;
+  return showsCandidateInline;
 }
 
-- (void)setShowsCandidatesInline:(BOOL)a3
+- (void)setShowsCandidatesInline:(BOOL)inline
 {
-  v3 = a3;
+  inlineCopy = inline;
   v4 = +[UIKeyboardImpl activeInstance];
-  [v4 setShowsCandidateInline:v3];
+  [v4 setShowsCandidateInline:inlineCopy];
 }
 
-- (void)_didChangeKeyplaneWithContext:(id)a3
+- (void)_didChangeKeyplaneWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(UIKeyboard *)self updateKeyFocusGuides];
   [(UIKeyboard *)self _toggleMenuGestureRecognizer:([(UIKeyboard *)self _isDictationCurrentView]| ([(UIKeyboard *)self cursorLocation]>> 7)) & 1];
   v5 = +[UIPeripheralHost sharedInstance];
-  v6 = [v5 automaticAppearanceEnabled];
+  automaticAppearanceEnabled = [v5 automaticAppearanceEnabled];
 
-  if (v6)
+  if (automaticAppearanceEnabled)
   {
-    if ([v4 sizeDidChange])
+    if ([contextCopy sizeDidChange])
     {
-      [v4 size];
+      [contextCopy size];
       self->_preferredSize.width = v7;
       self->_preferredSize.height = v8;
       [(UIView *)self invalidateIntrinsicContentSize];
-      if (([v4 isDynamicLayout] & 1) == 0 && !+[UIKeyboard resizable](UIKeyboard, "resizable"))
+      if (([contextCopy isDynamicLayout] & 1) == 0 && !+[UIKeyboard resizable](UIKeyboard, "resizable"))
       {
         [(UIView *)self frame];
         v10 = v9;
-        [v4 size];
+        [contextCopy size];
         v12 = v11;
-        [v4 size];
+        [contextCopy size];
         [(UIKeyboard *)self setFrame:0.0, v10, v12, v13];
       }
     }
 
     v14.receiver = self;
     v14.super_class = UIKeyboard;
-    [(UIView *)&v14 _didChangeKeyplaneWithContext:v4];
+    [(UIView *)&v14 _didChangeKeyplaneWithContext:contextCopy];
   }
 }
 
@@ -3841,7 +3841,7 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = __22__UIKeyboard_isSafari__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49C458 != -1)
   {
     dispatch_once(&qword_1ED49C458, block);
@@ -3876,7 +3876,7 @@ void __22__UIKeyboard_isSafari__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __48__UIKeyboard_isAlwaysBlockedAutoFillPanelClient__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49C468 != -1)
   {
     dispatch_once(&qword_1ED49C468, block);
@@ -3903,15 +3903,15 @@ void __48__UIKeyboard_isAlwaysBlockedAutoFillPanelClient__block_invoke(uint64_t 
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 void __60__UIKeyboard_canShowEmojiKeyboardInsideStickerPickerService__block_invoke()
@@ -3932,15 +3932,15 @@ void __60__UIKeyboard_canShowEmojiKeyboardInsideStickerPickerService__block_invo
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = _UIDeviceNativeUserInterfaceIdiomIgnoringClassic() != 1;
+    bOOLValue = _UIDeviceNativeUserInterfaceIdiomIgnoringClassic() != 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 void __47__UIKeyboard_isEmojiSearchEnabledInEmojiPoster__block_invoke()
@@ -3953,17 +3953,17 @@ void __47__UIKeyboard_isEmojiSearchEnabledInEmojiPoster__block_invoke()
 - (id)createPathEffectViewIfNecessary
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 _layout];
+  _layout = [v2 _layout];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 pathEffectView];
+    v4 = _layout;
+    pathEffectView = [v4 pathEffectView];
 
-    if (v5)
+    if (pathEffectView)
     {
-      v6 = [v4 pathEffectView];
+      pathEffectView2 = [v4 pathEffectView];
     }
 
     else
@@ -3987,45 +3987,45 @@ void __47__UIKeyboard_isEmojiSearchEnabledInEmojiPoster__block_invoke()
       v8 = v7;
       _Block_object_dispose(&v12, 8);
       v9 = [v7 alloc];
-      v6 = [v9 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-      [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v6 setAlpha:0.0];
-      [v4 setPathEffectView:v6];
+      pathEffectView2 = [v9 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+      [pathEffectView2 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [pathEffectView2 setAlpha:0.0];
+      [v4 setPathEffectView:pathEffectView2];
     }
   }
 
   else
   {
-    v6 = 0;
+    pathEffectView2 = 0;
   }
 
-  return v6;
+  return pathEffectView2;
 }
 
-+ (void)setServiceRole:(unint64_t)a3
++ (void)setServiceRole:(unint64_t)role
 {
-  if ([a1 platformSupportsKeyboardServiceRole:?])
+  if ([self platformSupportsKeyboardServiceRole:?])
   {
-    [a1 serviceRole];
-    qword_1ED49C498 = a3;
+    [self serviceRole];
+    qword_1ED49C498 = role;
     v5 = +[UIKeyboardImpl activeInstance];
-    [v5 setServiceRole:a3];
+    [v5 setServiceRole:role];
   }
 }
 
 + (void)resetServiceRole
 {
-  if ([a1 usesInputSystemUI])
+  if ([self usesInputSystemUI])
   {
-    v3 = 1;
+    usesInputSystemUIForAutoFillOnly = 1;
   }
 
   else
   {
-    v3 = [a1 usesInputSystemUIForAutoFillOnly];
+    usesInputSystemUIForAutoFillOnly = [self usesInputSystemUIForAutoFillOnly];
   }
 
-  [a1 setServiceRole:v3];
+  [self setServiceRole:usesInputSystemUIForAutoFillOnly];
 }
 
 - (void)manualKeyboardWillBeOrderedIn
@@ -4070,39 +4070,39 @@ void __47__UIKeyboard_isEmojiSearchEnabledInEmojiPoster__block_invoke()
 - (id)_getCurrentKeyplaneName
 {
   v2 = +[UIKeyboardImpl sharedInstance];
-  v3 = [v2 _getCurrentKeyplaneName];
+  _getCurrentKeyplaneName = [v2 _getCurrentKeyplaneName];
 
-  return v3;
+  return _getCurrentKeyplaneName;
 }
 
 - (id)_getCurrentKeyboardName
 {
   v2 = +[UIKeyboardImpl sharedInstance];
-  v3 = [v2 _getCurrentKeyboardName];
+  _getCurrentKeyboardName = [v2 _getCurrentKeyboardName];
 
-  return v3;
+  return _getCurrentKeyboardName;
 }
 
 - (id)_getLocalizedInputMode
 {
   v2 = +[UIKeyboardImpl sharedInstance];
-  v3 = [v2 _getLocalizedInputMode];
+  _getLocalizedInputMode = [v2 _getLocalizedInputMode];
 
-  return v3;
+  return _getLocalizedInputMode;
 }
 
-- (id)_baseKeyForRepresentedString:(id)a3
+- (id)_baseKeyForRepresentedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 _layout];
-  v6 = [v5 canProduceString:v3];
+  _layout = [v4 _layout];
+  v6 = [_layout canProduceString:stringCopy];
 
   if (v6)
   {
     v7 = +[UIKeyboardImpl activeInstance];
-    v8 = [v7 _layout];
-    v9 = [v8 baseKeyForString:v3];
+    _layout2 = [v7 _layout];
+    v9 = [_layout2 baseKeyForString:stringCopy];
   }
 
   else
@@ -4113,91 +4113,91 @@ void __47__UIKeyboard_isEmojiSearchEnabledInEmojiPoster__block_invoke()
   return v9;
 }
 
-- (id)_keyplaneForKey:(id)a3
+- (id)_keyplaneForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 _layout];
-  v6 = [v5 keyplaneForKey:v3];
+  _layout = [v4 _layout];
+  v6 = [_layout keyplaneForKey:keyCopy];
 
   return v6;
 }
 
-- (id)_keyplaneNamed:(id)a3
+- (id)_keyplaneNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 _layout];
-  v6 = [v5 keyplaneNamed:v3];
+  _layout = [v4 _layout];
+  v6 = [_layout keyplaneNamed:namedCopy];
 
   return v6;
 }
 
-- (void)_changeToKeyplane:(id)a3
+- (void)_changeToKeyplane:(id)keyplane
 {
-  v3 = a3;
+  keyplaneCopy = keyplane;
   v5 = +[UIKeyboardImpl activeInstance];
-  v4 = [v5 _layout];
-  [v4 changeToKeyplane:v3];
+  _layout = [v5 _layout];
+  [_layout changeToKeyplane:keyplaneCopy];
 }
 
-- (id)_touchPoint:(CGPoint)a3
+- (id)_touchPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v5 = +[UIKeyboardImpl activeInstance];
   [v5 _setNeedsCandidates:1];
 
   v6 = +[UIKeyboardImpl activeInstance];
-  v7 = [v6 _layout];
-  v8 = [v7 simulateTouch:{x, y}];
+  _layout = [v6 _layout];
+  v8 = [_layout simulateTouch:{x, y}];
 
   return v8;
 }
 
-- (id)_typeCharacter:(id)a3 withError:(CGPoint)a4 shouldTypeVariants:(BOOL)a5 baseKeyForVariants:(BOOL)a6
+- (id)_typeCharacter:(id)character withError:(CGPoint)error shouldTypeVariants:(BOOL)variants baseKeyForVariants:(BOOL)forVariants
 {
-  v6 = a6;
-  v7 = a5;
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
+  forVariantsCopy = forVariants;
+  variantsCopy = variants;
+  y = error.y;
+  x = error.x;
+  characterCopy = character;
   v11 = +[UIKeyboardImpl activeInstance];
   [v11 _setNeedsCandidates:1];
 
   v12 = +[UIKeyboardImpl activeInstance];
-  v13 = [v12 _layout];
-  v14 = [v13 simulateTouchForCharacter:v10 errorVector:v7 shouldTypeVariants:v6 baseKeyForVariants:{x, y}];
+  _layout = [v12 _layout];
+  v14 = [_layout simulateTouchForCharacter:characterCopy errorVector:variantsCopy shouldTypeVariants:forVariantsCopy baseKeyForVariants:{x, y}];
 
   return v14;
 }
 
-- (void)_setInputMode:(id)a3
+- (void)_setInputMode:(id)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v4 = +[UIKeyboardImpl activeInstance];
-  [v4 setInputMode:v3];
+  [v4 setInputMode:modeCopy];
 }
 
-- (void)_setAutocorrects:(BOOL)a3
+- (void)_setAutocorrects:(BOOL)autocorrects
 {
-  v3 = a3;
+  autocorrectsCopy = autocorrects;
   v4 = +[UIKeyboardImpl activeInstance];
-  [v4 _setAutocorrects:v3];
+  [v4 _setAutocorrects:autocorrectsCopy];
 }
 
 - (id)_getAutocorrection
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 _getAutocorrection];
+  _getAutocorrection = [v2 _getAutocorrection];
 
-  return v3;
+  return _getAutocorrection;
 }
 
 - (void)_acceptCurrentCandidate
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v2 = [v3 acceptCurrentCandidate];
+  acceptCurrentCandidate = [v3 acceptCurrentCandidate];
 }
 
 - (BOOL)_hasCandidates
@@ -4205,23 +4205,23 @@ void __47__UIKeyboard_isEmojiSearchEnabledInEmojiPoster__block_invoke()
   v2 = +[UIKeyboardImpl activeInstance];
   if ([v2 _needsCandidates])
   {
-    v3 = 0;
+    _hasCandidates = 0;
   }
 
   else
   {
     v4 = +[UIKeyboardImpl activeInstance];
-    v3 = [v4 _hasCandidates];
+    _hasCandidates = [v4 _hasCandidates];
   }
 
-  return v3;
+  return _hasCandidates;
 }
 
-- (int64_t)_positionInCandidateList:(id)a3
+- (int64_t)_positionInCandidateList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 _positionInCandidateList:v3];
+  v5 = [v4 _positionInCandidateList:listCopy];
 
   return v5;
 }
@@ -4234,18 +4234,18 @@ void __47__UIKeyboard_isEmojiSearchEnabledInEmojiPoster__block_invoke()
   v6 = *(MEMORY[0x1E695F058] + 24);
   if (+[UIKeyboardImpl isFloating])
   {
-    v7 = [(UIView *)self _rootInputWindowController];
-    v8 = [v7 hosting];
-    v9 = [v8 itemForPurpose:0];
+    _rootInputWindowController = [(UIView *)self _rootInputWindowController];
+    hosting = [_rootInputWindowController hosting];
+    v9 = [hosting itemForPurpose:0];
 
-    v10 = [v9 applicator];
-    v11 = v10;
-    if (v10)
+    applicator = [v9 applicator];
+    v11 = applicator;
+    if (applicator)
     {
-      v12 = [v10 draggableView];
-      v13 = [v12 superview];
-      [v12 frame];
-      [v13 convertRect:self toView:?];
+      draggableView = [applicator draggableView];
+      superview = [draggableView superview];
+      [draggableView frame];
+      [superview convertRect:self toView:?];
       v3 = v14;
       v4 = v15;
       v5 = v16;
@@ -4267,34 +4267,34 @@ void __47__UIKeyboard_isEmojiSearchEnabledInEmojiPoster__block_invoke()
 + (double)predictionViewHeightForCurrentInputMode
 {
   v2 = +[UIKeyboardImpl sharedInstance];
-  v3 = [v2 usesCandidateSelection];
+  usesCandidateSelection = [v2 usesCandidateSelection];
 
   v4 = +[UIKeyboardImpl sharedInstance];
   v5 = v4;
-  if (v3)
+  if (usesCandidateSelection)
   {
-    v6 = [v4 candidateController];
+    candidateController = [v4 candidateController];
     v7 = +[UIKeyboard activeKeyboard];
-    [v6 candidateBarHeightForOrientation:{objc_msgSend(v7, "interfaceOrientation")}];
+    [candidateController candidateBarHeightForOrientation:{objc_msgSend(v7, "interfaceOrientation")}];
     v9 = v8;
-    v10 = v5;
+    traitCollection = v5;
   }
 
   else
   {
-    v10 = [v4 traitCollection];
+    traitCollection = [v4 traitCollection];
 
-    v6 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v11 = [v6 systemInputAssistantViewController];
-    v7 = v11;
-    if (v11 && ([v11 isEmojiSearchResultsVisible] & 1) == 0)
+    candidateController = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
+    systemInputAssistantViewController = [candidateController systemInputAssistantViewController];
+    v7 = systemInputAssistantViewController;
+    if (systemInputAssistantViewController && ([systemInputAssistantViewController isEmojiSearchResultsVisible] & 1) == 0)
     {
-      [v7 preferredHeightForTraitCollection:v10];
+      [v7 preferredHeightForTraitCollection:traitCollection];
     }
 
     else
     {
-      [UISystemInputAssistantViewController _defaultPreferredHeightForTraitCollection:v10];
+      [UISystemInputAssistantViewController _defaultPreferredHeightForTraitCollection:traitCollection];
     }
 
     v9 = v12;
@@ -4306,9 +4306,9 @@ void __47__UIKeyboard_isEmojiSearchEnabledInEmojiPoster__block_invoke()
 + (UIEdgeInsets)keyplanePadding
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 _layout];
+  _layout = [v2 _layout];
 
-  [v3 keyplanePadding];
+  [_layout keyplanePadding];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -4327,32 +4327,32 @@ void __47__UIKeyboard_isEmojiSearchEnabledInEmojiPoster__block_invoke()
 
 + (id)snapshotViewForPredictionViewTransition
 {
-  if ([a1 usesInputSystemUI])
+  if ([self usesInputSystemUI])
   {
-    v2 = +[UIKeyboardUIClient sharedInstance];
-    v3 = [v2 snapshotViewForOptions:2];
+    snapshotView = +[UIKeyboardUIClient sharedInstance];
+    v3 = [snapshotView snapshotViewForOptions:2];
 LABEL_3:
     v4 = v3;
     goto LABEL_12;
   }
 
   v5 = +[UIKeyboardImpl sharedInstance];
-  v6 = [v5 usesCandidateSelection];
+  usesCandidateSelection = [v5 usesCandidateSelection];
 
-  if (v6)
+  if (usesCandidateSelection)
   {
     if (+[UIKeyboard isKeyboardProcess])
     {
-      v2 = +[UIKeyboardImpl activeInstance];
-      v7 = [v2 candidateController];
-      [v7 candidateBar];
+      snapshotView = +[UIKeyboardImpl activeInstance];
+      candidateController = [snapshotView candidateController];
+      [candidateController candidateBar];
     }
 
     else
     {
-      v2 = +[UIKeyboardImpl sharedInstance];
-      v7 = [v2 candidateController];
-      [v7 snapshot];
+      snapshotView = +[UIKeyboardImpl sharedInstance];
+      candidateController = [snapshotView candidateController];
+      [candidateController snapshot];
     }
     v4 = ;
 
@@ -4360,69 +4360,69 @@ LABEL_3:
   }
 
   v8 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v9 = [v8 systemInputAssistantViewController];
-  v10 = [v9 view];
+  systemInputAssistantViewController = [v8 systemInputAssistantViewController];
+  view = [systemInputAssistantViewController view];
 
   if (+[UIKeyboard isKeyboardProcess])
   {
-    v3 = v10;
-    v2 = v3;
+    v3 = view;
+    snapshotView = v3;
     goto LABEL_3;
   }
 
-  v2 = [v10 snapshotView];
+  snapshotView = [view snapshotView];
 
   v11 = [UIView alloc];
-  [v2 bounds];
+  [snapshotView bounds];
   v4 = [(UIView *)v11 initWithFrame:?];
   [(UIView *)v4 setClipsToBounds:1];
-  [(UIView *)v4 addSubview:v2];
+  [(UIView *)v4 addSubview:snapshotView];
 LABEL_12:
 
   return v4;
 }
 
-+ (id)snapshotViewForOptions:(unint64_t)a3
++ (id)snapshotViewForOptions:(unint64_t)options
 {
   if (!+[UIKeyboard usesInputSystemUI])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"UIKeyboard.m" lineNumber:2993 description:@"snapshotViewForOptions only supports OOP keyboard"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboard.m" lineNumber:2993 description:@"snapshotViewForOptions only supports OOP keyboard"];
   }
 
   v6 = +[UIKeyboardUIClient sharedInstance];
-  v7 = [v6 snapshotViewForOptions:a3];
+  v7 = [v6 snapshotViewForOptions:options];
 
   return v7;
 }
 
-+ (void)forceKeyboardAlpha:(double)a3
++ (void)forceKeyboardAlpha:(double)alpha
 {
-  if ([a1 usesInputSystemUI])
+  if ([self usesInputSystemUI])
   {
     v4 = +[UIKeyboardUIClient sharedInstance];
-    [v4 setKeyboardAlpha:1 force:a3];
+    [v4 setKeyboardAlpha:1 force:alpha];
   }
 }
 
-+ (void)setKeyboardAlpha:(double)a3 remote:(BOOL)a4 force:(BOOL)a5 processId:(int)a6
++ (void)setKeyboardAlpha:(double)alpha remote:(BOOL)remote force:(BOOL)force processId:(int)id
 {
-  v6 = *&a6;
-  v7 = a5;
-  v8 = a4;
+  v6 = *&id;
+  forceCopy = force;
+  remoteCopy = remote;
   v38 = *MEMORY[0x1E69E9840];
-  if ([a1 usesInputSystemUI])
+  if ([self usesInputSystemUI])
   {
     v11 = _UIKeyboardLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      *&buf[4] = a3;
+      *&buf[4] = alpha;
       _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_DEFAULT, "Setting keyboard alpha: %f", buf, 0xCu);
     }
 
     v12 = +[UIKeyboardUIClient sharedInstance];
-    [v12 setKeyboardAlpha:v7 force:a3];
+    [v12 setKeyboardAlpha:forceCopy force:alpha];
   }
 
   else
@@ -4465,9 +4465,9 @@ LABEL_12:
 
     v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d:%llu", v6, v14];
     v16 = v15;
-    if (v15 && v8 && !v7)
+    if (v15 && remoteCopy && !forceCopy)
     {
-      if (a3 == 0.0)
+      if (alpha == 0.0)
       {
         [qword_1ED49C4A0 addObject:v15];
       }
@@ -4478,36 +4478,36 @@ LABEL_12:
       }
     }
 
-    else if (v15 && !v7 && [qword_1ED49C4A0 containsObject:v15])
+    else if (v15 && !forceCopy && [qword_1ED49C4A0 containsObject:v15])
     {
-      a3 = 0.0;
+      alpha = 0.0;
     }
 
     v17 = _UIKeyboardLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *v27 = 134218242;
-      *v28 = a3;
+      *v28 = alpha;
       *&v28[8] = 2112;
       *&v28[10] = v16;
       _os_log_impl(&dword_188A29000, v17, OS_LOG_TYPE_DEFAULT, "Setting keyboard alpha: %f, key=%@", v27, 0x16u);
     }
 
-    if (([a1 isKeyboardProcess] & 1) == 0)
+    if (([self isKeyboardProcess] & 1) == 0)
     {
       v18 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
-      v19 = [v18 keyboardWindow];
+      keyboardWindow = [v18 keyboardWindow];
 
-      v20 = [v19 rootViewController];
-      v21 = [v20 view];
-      [v21 setAlpha:a3];
+      rootViewController = [keyboardWindow rootViewController];
+      view = [rootViewController view];
+      [view setAlpha:alpha];
     }
 
     v22 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v23 = [v22 containerRootController];
-    v24 = [v23 view];
+    containerRootController = [v22 containerRootController];
+    view2 = [containerRootController view];
 
-    [v24 setAlpha:a3];
+    [view2 setAlpha:alpha];
   }
 }
 
@@ -4521,43 +4521,43 @@ void __70__UIKeyboard_TestingSupport__setKeyboardAlpha_remote_force_processId___
 + (BOOL)predictionViewPrewarmsPredictiveCandidates
 {
   v2 = +[UIKeyboardImpl sharedInstance];
-  v3 = [v2 prewarmsPredictiveCandidates];
+  prewarmsPredictiveCandidates = [v2 prewarmsPredictiveCandidates];
 
-  return v3;
+  return prewarmsPredictiveCandidates;
 }
 
-+ (void)setPredictionViewPrewarmsPredictiveCandidates:(BOOL)a3
++ (void)setPredictionViewPrewarmsPredictiveCandidates:(BOOL)candidates
 {
-  v3 = a3;
+  candidatesCopy = candidates;
   v4 = +[UIKeyboardImpl sharedInstance];
-  [v4 setPrewarmsPredictiveCandidates:v3];
+  [v4 setPrewarmsPredictiveCandidates:candidatesCopy];
 }
 
 + (BOOL)candidateDisplayIsExtended
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 candidateController];
+  candidateController = [v2 candidateController];
 
-  LOBYTE(v2) = [v3 isExtended];
+  LOBYTE(v2) = [candidateController isExtended];
   return v2;
 }
 
-+ (id)obtainHideDisambiguationCandidatesAssertionForReason:(id)a3
++ (id)obtainHideDisambiguationCandidatesAssertionForReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 candidateController];
+  candidateController = [v4 candidateController];
 
-  v6 = [v5 obtainHideDisambiguationCandidatesAssertionForReason:v3];
+  v6 = [candidateController obtainHideDisambiguationCandidatesAssertionForReason:reasonCopy];
 
   return v6;
 }
 
-+ (id)obtainHideInlineCandidatesAssertionForReason:(id)a3
++ (id)obtainHideInlineCandidatesAssertionForReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 obtainHideInlineCandidatesAssertionForReason:v3];
+  v5 = [v4 obtainHideInlineCandidatesAssertionForReason:reasonCopy];
 
   return v5;
 }

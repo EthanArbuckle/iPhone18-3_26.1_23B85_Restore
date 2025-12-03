@@ -14,7 +14,7 @@
 
 - (id)lineSeriesPresentationStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C3C70548();
 
   return v3;

@@ -1,12 +1,12 @@
 @interface MCProfileEventsManager
 - (MCProfileEventsManager)init;
-- (MCProfileEventsManager)initWithDataProvider:(id)a3;
+- (MCProfileEventsManager)initWithDataProvider:(id)provider;
 - (id)_profileEvents;
 - (id)_profileEventsOnDisk;
-- (id)_timestampFromEvent:(id)a3;
+- (id)_timestampFromEvent:(id)event;
 - (id)earlistProfileEventExpiry;
-- (void)_saveProfileEvents:(id)a3;
-- (void)addEventForProfile:(id)a3 operation:(id)a4 source:(id)a5;
+- (void)_saveProfileEvents:(id)events;
+- (void)addEventForProfile:(id)profile operation:(id)operation source:(id)source;
 - (void)removeExpiredProfileEvents;
 @end
 
@@ -20,16 +20,16 @@
   return v4;
 }
 
-- (MCProfileEventsManager)initWithDataProvider:(id)a3
+- (MCProfileEventsManager)initWithDataProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = MCProfileEventsManager;
   v6 = [(MCProfileEventsManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataProvider, a3);
+    objc_storeStrong(&v6->_dataProvider, provider);
   }
 
   return v7;
@@ -41,8 +41,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(MCProfileEventsManager *)self _profileEvents];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  _profileEvents = [(MCProfileEventsManager *)self _profileEvents];
+  v4 = [_profileEvents countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -54,7 +54,7 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_profileEvents);
         }
 
         v9 = [(MCProfileEventsManager *)self _timestampFromEvent:*(*(&v15 + 1) + 8 * i)];
@@ -80,7 +80,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [_profileEvents countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -96,15 +96,15 @@
   return v13;
 }
 
-- (void)addEventForProfile:(id)a3 operation:(id)a4 source:(id)a5
+- (void)addEventForProfile:(id)profile operation:(id)operation source:(id)source
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(MCProfileEventsManager *)self _profileEvents];
-  if (v11)
+  operationCopy = operation;
+  sourceCopy = source;
+  profileCopy = profile;
+  _profileEvents = [(MCProfileEventsManager *)self _profileEvents];
+  if (_profileEvents)
   {
-    v12 = [NSMutableArray arrayWithArray:v11];
+    v12 = [NSMutableArray arrayWithArray:_profileEvents];
   }
 
   else
@@ -113,23 +113,23 @@
   }
 
   v13 = v12;
-  v14 = [v10 loggingID];
+  loggingID = [profileCopy loggingID];
 
   v15 = @"Unknown";
-  v23 = v14;
-  if (v9)
+  v23 = loggingID;
+  if (sourceCopy)
   {
-    v15 = v9;
+    v15 = sourceCopy;
   }
 
   v21[0] = @"Process";
   v21[1] = @"Operation";
   v22[0] = v15;
-  v22[1] = v8;
+  v22[1] = operationCopy;
   v21[2] = @"Timestamp";
-  v16 = [(MCProfileEventsManager *)self dataProvider];
-  v17 = [v16 currentTime];
-  v22[2] = v17;
+  dataProvider = [(MCProfileEventsManager *)self dataProvider];
+  currentTime = [dataProvider currentTime];
+  v22[2] = currentTime;
   v18 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:3];
   v24 = v18;
   v19 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
@@ -146,13 +146,13 @@
 
 - (void)removeExpiredProfileEvents
 {
-  v3 = [(MCProfileEventsManager *)self _profileEvents];
-  v4 = v3;
-  if (v3 && [v3 count])
+  _profileEvents = [(MCProfileEventsManager *)self _profileEvents];
+  v4 = _profileEvents;
+  if (_profileEvents && [_profileEvents count])
   {
     v17 = objc_opt_new();
-    v5 = [(MCProfileEventsManager *)self dataProvider];
-    v6 = [v5 currentTime];
+    dataProvider = [(MCProfileEventsManager *)self dataProvider];
+    currentTime = [dataProvider currentTime];
 
     v20 = 0u;
     v21 = 0u;
@@ -179,9 +179,9 @@
           if (v13)
           {
             v14 = [v13 dateByAddingTimeInterval:{+[MCFeatureOverrides profileEventsExpirationInterval](MCFeatureOverrides, "profileEventsExpirationInterval")}];
-            v15 = [v6 earlierDate:v14];
+            v15 = [currentTime earlierDate:v14];
 
-            if (v15 == v6)
+            if (v15 == currentTime)
             {
               [v17 addObject:v12];
             }
@@ -201,9 +201,9 @@
 
 - (id)_profileEventsOnDisk
 {
-  v2 = [(MCProfileEventsManager *)self dataProvider];
-  v3 = [v2 profileEventsFilePath];
-  v4 = [NSData MCDataFromFile:v3];
+  dataProvider = [(MCProfileEventsManager *)self dataProvider];
+  profileEventsFilePath = [dataProvider profileEventsFilePath];
+  v4 = [NSData MCDataFromFile:profileEventsFilePath];
 
   if (v4)
   {
@@ -232,8 +232,8 @@
 
 - (id)_profileEvents
 {
-  v2 = [(MCProfileEventsManager *)self _profileEventsOnDisk];
-  v3 = [v2 objectForKeyedSubscript:@"ProfileEvents"];
+  _profileEventsOnDisk = [(MCProfileEventsManager *)self _profileEventsOnDisk];
+  v3 = [_profileEventsOnDisk objectForKeyedSubscript:@"ProfileEvents"];
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -248,26 +248,26 @@
   return v4;
 }
 
-- (id)_timestampFromEvent:(id)a3
+- (id)_timestampFromEvent:(id)event
 {
-  v3 = [a3 allValues];
-  v4 = [v3 firstObject];
+  allValues = [event allValues];
+  firstObject = [allValues firstObject];
 
-  v5 = [v4 objectForKeyedSubscript:@"Timestamp"];
+  v5 = [firstObject objectForKeyedSubscript:@"Timestamp"];
 
   return v5;
 }
 
-- (void)_saveProfileEvents:(id)a3
+- (void)_saveProfileEvents:(id)events
 {
   v8 = @"ProfileEvents";
-  v9 = a3;
-  v4 = a3;
-  v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
+  eventsCopy = events;
+  eventsCopy2 = events;
+  v5 = [NSDictionary dictionaryWithObjects:&eventsCopy forKeys:&v8 count:1];
 
-  v6 = [(MCProfileEventsManager *)self dataProvider];
-  v7 = [v6 profileEventsFilePath];
-  [v5 MCWriteToBinaryFile:v7];
+  dataProvider = [(MCProfileEventsManager *)self dataProvider];
+  profileEventsFilePath = [dataProvider profileEventsFilePath];
+  [v5 MCWriteToBinaryFile:profileEventsFilePath];
 }
 
 @end

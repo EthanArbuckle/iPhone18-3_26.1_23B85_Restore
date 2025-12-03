@@ -1,11 +1,11 @@
 @interface CircularProgressView
-- (_TtC7ChatKit20CircularProgressView)initWithCoder:(id)a3;
+- (_TtC7ChatKit20CircularProgressView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation CircularProgressView
 
-- (_TtC7ChatKit20CircularProgressView)initWithCoder:(id)a3
+- (_TtC7ChatKit20CircularProgressView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7ChatKit20CircularProgressView_lineWidth) = 0x4008000000000000;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7ChatKit20CircularProgressView_progressValue) = 0;
@@ -18,7 +18,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_19093BFDC();
 }
 

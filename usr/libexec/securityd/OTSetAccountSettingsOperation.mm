@@ -1,5 +1,5 @@
 @interface OTSetAccountSettingsOperation
-- (OTSetAccountSettingsOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 settings:(id)a6;
+- (OTSetAccountSettingsOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState settings:(id)settings;
 - (void)groupStart;
 @end
 
@@ -10,60 +10,60 @@
   v3 = objc_alloc_init(NSOperation);
   [(OTSetAccountSettingsOperation *)self setFinishOp:v3];
 
-  v4 = [(OTSetAccountSettingsOperation *)self finishOp];
-  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v4];
+  finishOp = [(OTSetAccountSettingsOperation *)self finishOp];
+  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:finishOp];
 
-  v5 = [(OTSetAccountSettingsOperation *)self settings];
+  settings = [(OTSetAccountSettingsOperation *)self settings];
 
-  if (v5)
+  if (settings)
   {
     if ([(OTAccountSettings *)self->_settings hasWalrus])
     {
-      v6 = [(OTAccountSettings *)self->_settings walrus];
+      walrus = [(OTAccountSettings *)self->_settings walrus];
 
-      if (v6)
+      if (walrus)
       {
-        v6 = objc_alloc_init(TPPBPeerStableInfoSetting);
-        v7 = [(OTSetAccountSettingsOperation *)self settings];
-        v8 = [v7 walrus];
-        [v6 setValue:{objc_msgSend(v8, "enabled")}];
+        walrus = objc_alloc_init(TPPBPeerStableInfoSetting);
+        settings2 = [(OTSetAccountSettingsOperation *)self settings];
+        walrus2 = [settings2 walrus];
+        [walrus setValue:{objc_msgSend(walrus2, "enabled")}];
       }
     }
 
     else
     {
-      v6 = 0;
+      walrus = 0;
     }
 
     if ([(OTAccountSettings *)self->_settings hasWebAccess])
     {
-      v10 = [(OTAccountSettings *)self->_settings webAccess];
+      webAccess = [(OTAccountSettings *)self->_settings webAccess];
 
-      if (v10)
+      if (webAccess)
       {
-        v10 = objc_alloc_init(TPPBPeerStableInfoSetting);
-        v11 = [(OTSetAccountSettingsOperation *)self settings];
-        v12 = [v11 webAccess];
-        [v10 setValue:{objc_msgSend(v12, "enabled")}];
+        webAccess = objc_alloc_init(TPPBPeerStableInfoSetting);
+        settings3 = [(OTSetAccountSettingsOperation *)self settings];
+        webAccess2 = [settings3 webAccess];
+        [webAccess setValue:{objc_msgSend(webAccess2, "enabled")}];
       }
     }
 
     else
     {
-      v10 = 0;
+      webAccess = 0;
     }
 
     objc_initWeak(&location, self);
-    v13 = [(OTSetAccountSettingsOperation *)self deps];
-    v14 = [v13 cuttlefishXPCWrapper];
-    v15 = [(OTSetAccountSettingsOperation *)self deps];
-    v16 = [v15 activeAccount];
+    deps = [(OTSetAccountSettingsOperation *)self deps];
+    cuttlefishXPCWrapper = [deps cuttlefishXPCWrapper];
+    deps2 = [(OTSetAccountSettingsOperation *)self deps];
+    activeAccount = [deps2 activeAccount];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1001F7C78;
     v18[3] = &unk_100344998;
     objc_copyWeak(&v19, &location);
-    [v14 updateWithSpecificUser:v16 forceRefetch:0 deviceName:0 serialNumber:0 osVersion:0 policyVersion:0 policySecrets:0 syncUserControllableViews:0 secureElementIdentity:0 walrusSetting:v6 webAccess:v10 reply:v18];
+    [cuttlefishXPCWrapper updateWithSpecificUser:activeAccount forceRefetch:0 deviceName:0 serialNumber:0 osVersion:0 policyVersion:0 policySecrets:0 syncUserControllableViews:0 secureElementIdentity:0 walrusSetting:walrus webAccess:webAccess reply:v18];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -71,31 +71,31 @@
 
   else
   {
-    v9 = [(OTSetAccountSettingsOperation *)self intendedState];
-    [(OTSetAccountSettingsOperation *)self setNextState:v9];
+    intendedState = [(OTSetAccountSettingsOperation *)self intendedState];
+    [(OTSetAccountSettingsOperation *)self setNextState:intendedState];
 
-    v17 = [(OTSetAccountSettingsOperation *)self finishOp];
-    [(CKKSGroupOperation *)self runBeforeGroupFinished:v17];
+    finishOp2 = [(OTSetAccountSettingsOperation *)self finishOp];
+    [(CKKSGroupOperation *)self runBeforeGroupFinished:finishOp2];
   }
 }
 
-- (OTSetAccountSettingsOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 settings:(id)a6
+- (OTSetAccountSettingsOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState settings:(id)settings
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
+  settingsCopy = settings;
   v18.receiver = self;
   v18.super_class = OTSetAccountSettingsOperation;
   v15 = [(CKKSGroupOperation *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_deps, a3);
-    objc_storeStrong(&v16->_settings, a6);
-    objc_storeStrong(&v16->_deps, a3);
-    objc_storeStrong(&v16->_intendedState, a4);
-    objc_storeStrong(&v16->_nextState, a5);
+    objc_storeStrong(&v15->_deps, dependencies);
+    objc_storeStrong(&v16->_settings, settings);
+    objc_storeStrong(&v16->_deps, dependencies);
+    objc_storeStrong(&v16->_intendedState, state);
+    objc_storeStrong(&v16->_nextState, errorState);
   }
 
   return v16;

@@ -1,29 +1,29 @@
 @interface CSIssue
-- (CSIssue)initWithIdentifier:(id)a3 andLaunchdName:(id)a4 andIssueType:(int)a5 andStartTime:(id)a6 andEndTime:(id)a7;
-- (CSIssue)initWithIdentifier:(id)a3 andProcessName:(id)a4 andIssueType:(int)a5 andStartTime:(id)a6 andEndTime:(id)a7;
+- (CSIssue)initWithIdentifier:(id)identifier andLaunchdName:(id)name andIssueType:(int)type andStartTime:(id)time andEndTime:(id)endTime;
+- (CSIssue)initWithIdentifier:(id)identifier andProcessName:(id)name andIssueType:(int)type andStartTime:(id)time andEndTime:(id)endTime;
 - (id)description;
 @end
 
 @implementation CSIssue
 
-- (CSIssue)initWithIdentifier:(id)a3 andLaunchdName:(id)a4 andIssueType:(int)a5 andStartTime:(id)a6 andEndTime:(id)a7
+- (CSIssue)initWithIdentifier:(id)identifier andLaunchdName:(id)name andIssueType:(int)type andStartTime:(id)time andEndTime:(id)endTime
 {
-  v9 = a5;
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  identifierCopy = identifier;
+  nameCopy = name;
+  timeCopy = time;
+  endTimeCopy = endTime;
   v26.receiver = self;
   v26.super_class = CSIssue;
   v17 = [(CSIssue *)&v26 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_identifier, a3);
-    objc_storeStrong(&v18->_launchdName, a4);
-    v18->_issueType = v9;
-    objc_storeStrong(&v18->_startTime, a6);
-    objc_storeStrong(&v18->_endTime, a7);
+    objc_storeStrong(&v17->_identifier, identifier);
+    objc_storeStrong(&v18->_launchdName, name);
+    v18->_issueType = typeCopy;
+    objc_storeStrong(&v18->_startTime, time);
+    objc_storeStrong(&v18->_endTime, endTime);
     processName = v18->_processName;
     v18->_processName = 0;
 
@@ -51,24 +51,24 @@
   return v18;
 }
 
-- (CSIssue)initWithIdentifier:(id)a3 andProcessName:(id)a4 andIssueType:(int)a5 andStartTime:(id)a6 andEndTime:(id)a7
+- (CSIssue)initWithIdentifier:(id)identifier andProcessName:(id)name andIssueType:(int)type andStartTime:(id)time andEndTime:(id)endTime
 {
-  v9 = a5;
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  identifierCopy = identifier;
+  nameCopy = name;
+  timeCopy = time;
+  endTimeCopy = endTime;
   v26.receiver = self;
   v26.super_class = CSIssue;
   v17 = [(CSIssue *)&v26 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_identifier, a3);
-    objc_storeStrong(&v18->_processName, a4);
-    v18->_issueType = v9;
-    objc_storeStrong(&v18->_startTime, a6);
-    objc_storeStrong(&v18->_endTime, a7);
+    objc_storeStrong(&v17->_identifier, identifier);
+    objc_storeStrong(&v18->_processName, name);
+    v18->_issueType = typeCopy;
+    objc_storeStrong(&v18->_startTime, time);
+    objc_storeStrong(&v18->_endTime, endTime);
     launchdName = v18->_launchdName;
     v18->_launchdName = 0;
 
@@ -121,7 +121,7 @@
     v16 = self->_processName;
     v21 = v4;
     v17 = self->_lastPID;
-    v18 = [(CSDetectionRule *)rule ruleID];
+    ruleID = [(CSDetectionRule *)rule ruleID];
     lastPID = v17;
     v4 = v21;
     processName = v16;
@@ -129,10 +129,10 @@
 
   else
   {
-    v18 = 0xFFFFFFFFLL;
+    ruleID = 0xFFFFFFFFLL;
   }
 
-  v19 = [v25 stringWithFormat:@"CSIssue with nameIdentifier: %@, \nlaunchdName:%@, \nstartTime:%@, \nendTime:%@, \nvalue:%.4f \nprocessName:%@, \npid: %d, \npuuid: %@, \ncoalitionID: %llu, \nmitigationSuggestion: %d, \nforceMitigationSuggestion: %d, \nmitigationSuggestionReason: %d, \noverridden: %d, \nruleID: %d, \nmitigationDecisionType: %d, \nmitigationDecisionReason:%d", identifier, launchdName, v24, v4, v6, processName, lastPID, lastPUUID, coalitionID, mitigationSuggestion, forceMitigationSuggestion, mitigationSuggestionReason, overridden, v18, self->_mitigationDecisionType, self->_mitigationDecisionReason];
+  v19 = [v25 stringWithFormat:@"CSIssue with nameIdentifier: %@, \nlaunchdName:%@, \nstartTime:%@, \nendTime:%@, \nvalue:%.4f \nprocessName:%@, \npid: %d, \npuuid: %@, \ncoalitionID: %llu, \nmitigationSuggestion: %d, \nforceMitigationSuggestion: %d, \nmitigationSuggestionReason: %d, \noverridden: %d, \nruleID: %d, \nmitigationDecisionType: %d, \nmitigationDecisionReason:%d", identifier, launchdName, v24, v4, v6, processName, lastPID, lastPUUID, coalitionID, mitigationSuggestion, forceMitigationSuggestion, mitigationSuggestionReason, overridden, ruleID, self->_mitigationDecisionType, self->_mitigationDecisionReason];
 
   return v19;
 }

@@ -1,8 +1,8 @@
 @interface REMCDPublicTemplate
 + (NSString)cdEntityName;
 + (id)newObjectID;
-+ (id)objectIDWithUUID:(id)a3;
-- (REMCDPublicTemplate)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
++ (id)objectIDWithUUID:(id)d;
+- (REMCDPublicTemplate)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (REMObjectID)remObjectID;
 @end
 
@@ -17,7 +17,7 @@
 
 - (REMObjectID)remObjectID
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1006E8E28();
 
   return v3;
@@ -40,7 +40,7 @@
   return v10;
 }
 
-+ (id)objectIDWithUUID:(id)a3
++ (id)objectIDWithUUID:(id)d
 {
   v3 = type metadata accessor for UUID();
   v4 = *(v3 - 8);
@@ -58,11 +58,11 @@
   return v11;
 }
 
-- (REMCDPublicTemplate)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (REMCDPublicTemplate)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(REMCDPublicTemplate *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(REMCDPublicTemplate *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

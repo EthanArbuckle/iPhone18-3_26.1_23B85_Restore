@@ -6,11 +6,11 @@
 - (BOOL)supportsExpressiveText;
 - (BOOL)wantsInlinedRichLinks;
 - (_TtC7ChatKit27CKCompositionBuilderContext)init;
-- (void)setCanUseRichTextAttributes:(BOOL)a3;
-- (void)setConversationSupportsInlineAdaptiveImageGlyphs:(BOOL)a3;
-- (void)setIsInLockdownMode:(BOOL)a3;
-- (void)setIsPastingAfterBracketCharacter:(BOOL)a3;
-- (void)setSupportsExpressiveText:(BOOL)a3;
+- (void)setCanUseRichTextAttributes:(BOOL)attributes;
+- (void)setConversationSupportsInlineAdaptiveImageGlyphs:(BOOL)glyphs;
+- (void)setIsInLockdownMode:(BOOL)mode;
+- (void)setIsPastingAfterBracketCharacter:(BOOL)character;
+- (void)setSupportsExpressiveText:(BOOL)text;
 @end
 
 @implementation CKCompositionBuilderContext
@@ -22,11 +22,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsInLockdownMode:(BOOL)a3
+- (void)setIsInLockdownMode:(BOOL)mode
 {
   v5 = OBJC_IVAR____TtC7ChatKit27CKCompositionBuilderContext_isInLockdownMode;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = mode;
 }
 
 - (BOOL)isPastingAfterBracketCharacter
@@ -36,11 +36,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsPastingAfterBracketCharacter:(BOOL)a3
+- (void)setIsPastingAfterBracketCharacter:(BOOL)character
 {
   v5 = OBJC_IVAR____TtC7ChatKit27CKCompositionBuilderContext_isPastingAfterBracketCharacter;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = character;
 }
 
 - (BOOL)supportsExpressiveText
@@ -50,11 +50,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setSupportsExpressiveText:(BOOL)a3
+- (void)setSupportsExpressiveText:(BOOL)text
 {
   v5 = OBJC_IVAR____TtC7ChatKit27CKCompositionBuilderContext_supportsExpressiveText;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = text;
 }
 
 - (BOOL)conversationSupportsInlineAdaptiveImageGlyphs
@@ -64,11 +64,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setConversationSupportsInlineAdaptiveImageGlyphs:(BOOL)a3
+- (void)setConversationSupportsInlineAdaptiveImageGlyphs:(BOOL)glyphs
 {
   v5 = OBJC_IVAR____TtC7ChatKit27CKCompositionBuilderContext_conversationSupportsInlineAdaptiveImageGlyphs;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = glyphs;
 }
 
 - (BOOL)canUseRichTextAttributes
@@ -78,16 +78,16 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setCanUseRichTextAttributes:(BOOL)a3
+- (void)setCanUseRichTextAttributes:(BOOL)attributes
 {
   v5 = OBJC_IVAR____TtC7ChatKit27CKCompositionBuilderContext_canUseRichTextAttributes;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = attributes;
 }
 
 - (BOOL)wantsInlinedRichLinks
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190B0F9F8();
 
   return v3 & 1;

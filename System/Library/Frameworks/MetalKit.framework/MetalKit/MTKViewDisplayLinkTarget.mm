@@ -1,21 +1,21 @@
 @interface MTKViewDisplayLinkTarget
 - (MTKView)target;
-- (MTKViewDisplayLinkTarget)initWithTarget:(id)a3;
+- (MTKViewDisplayLinkTarget)initWithTarget:(id)target;
 - (void)draw;
 @end
 
 @implementation MTKViewDisplayLinkTarget
 
-- (MTKViewDisplayLinkTarget)initWithTarget:(id)a3
+- (MTKViewDisplayLinkTarget)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v9.receiver = self;
   v9.super_class = MTKViewDisplayLinkTarget;
   v5 = [(MTKViewDisplayLinkTarget *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(MTKViewDisplayLinkTarget *)v5 setTarget:v4];
+    [(MTKViewDisplayLinkTarget *)v5 setTarget:targetCopy];
     v7 = v6;
   }
 

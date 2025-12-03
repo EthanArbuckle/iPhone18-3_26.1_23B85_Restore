@@ -1,13 +1,13 @@
 @interface LPPointUnit
 + (id)zero;
-- (LPPointUnit)initWithValue:(double)a3;
+- (LPPointUnit)initWithValue:(double)value;
 - (id)_lp_CSSText;
 - (id)_lp_HTMLAttributeText;
 @end
 
 @implementation LPPointUnit
 
-- (LPPointUnit)initWithValue:(double)a3
+- (LPPointUnit)initWithValue:(double)value
 {
   v8.receiver = self;
   v8.super_class = LPPointUnit;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_value = a3;
+    v4->_value = value;
     v6 = v4;
   }
 

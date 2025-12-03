@@ -1,19 +1,19 @@
 @interface ActivityTracker
-- (ActivityTracker)initWithDescription:(id)a3;
-- (void)setActive:(BOOL)a3;
+- (ActivityTracker)initWithDescription:(id)description;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation ActivityTracker
 
-- (ActivityTracker)initWithDescription:(id)a3
+- (ActivityTracker)initWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v10.receiver = self;
   v10.super_class = ActivityTracker;
   v5 = [(ActivityTracker *)&v10 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithString:v4];
+    v6 = [MEMORY[0x277CCACA8] stringWithString:descriptionCopy];
     description = v5->_description;
     v5->_description = v6;
 
@@ -24,13 +24,13 @@
   return v5;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   obj = self;
   objc_sync_enter(obj);
   transaction = obj->_transaction;
-  if (v3)
+  if (activeCopy)
   {
     if (!transaction)
     {

@@ -1,8 +1,8 @@
 @interface SBHomeGrabberRotationView
-- (SBHomeGrabberRotationView)initWithFrame:(CGRect)a3 settings:(id)a4 useRotationWrapperViews:(BOOL)a5;
-- (id)_addWrapperViewWithOrientation:(int64_t)a3;
+- (SBHomeGrabberRotationView)initWithFrame:(CGRect)frame settings:(id)settings useRotationWrapperViews:(BOOL)views;
+- (id)_addWrapperViewWithOrientation:(int64_t)orientation;
 - (void)layoutSubviews;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4 rotationSettings:(id)a5;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated rotationSettings:(id)settings;
 @end
 
 @implementation SBHomeGrabberRotationView
@@ -49,66 +49,66 @@
   }
 
   grabberView = self->_grabberView;
-  v17 = [(SBHomeGrabberView *)grabberView superview];
-  [v17 bounds];
+  superview = [(SBHomeGrabberView *)grabberView superview];
+  [superview bounds];
   [(SBHomeGrabberView *)grabberView setFrame:?];
 }
 
-- (SBHomeGrabberRotationView)initWithFrame:(CGRect)a3 settings:(id)a4 useRotationWrapperViews:(BOOL)a5
+- (SBHomeGrabberRotationView)initWithFrame:(CGRect)frame settings:(id)settings useRotationWrapperViews:(BOOL)views
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  viewsCopy = views;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  settingsCopy = settings;
   v22.receiver = self;
   v22.super_class = SBHomeGrabberRotationView;
-  v12 = [(SBHomeGrabberRotationView *)&v22 initWithFrame:x, y, width, height];
-  if (v12)
+  height = [(SBHomeGrabberRotationView *)&v22 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v13 = [MEMORY[0x277CBEB18] array];
-    rotationWrapperViews = v12->_rotationWrapperViews;
-    v12->_rotationWrapperViews = v13;
+    array = [MEMORY[0x277CBEB18] array];
+    rotationWrapperViews = height->_rotationWrapperViews;
+    height->_rotationWrapperViews = array;
 
-    v12->_orientation = 1;
+    height->_orientation = 1;
     v15 = [SBHomeGrabberView alloc];
-    [(SBHomeGrabberRotationView *)v12 bounds];
-    v16 = [(SBHomeGrabberView *)v15 initWithFrame:v11 settings:1 shouldEnableGestures:?];
-    grabberView = v12->_grabberView;
-    v12->_grabberView = v16;
+    [(SBHomeGrabberRotationView *)height bounds];
+    v16 = [(SBHomeGrabberView *)v15 initWithFrame:settingsCopy settings:1 shouldEnableGestures:?];
+    grabberView = height->_grabberView;
+    height->_grabberView = v16;
 
-    v18 = [MEMORY[0x277D65E80] rootSettings];
-    grabberSettings = v12->_grabberSettings;
-    v12->_grabberSettings = v18;
+    rootSettings = [MEMORY[0x277D65E80] rootSettings];
+    grabberSettings = height->_grabberSettings;
+    height->_grabberSettings = rootSettings;
 
-    v12->_useRotationWrapperViews = v5;
-    if (v5)
+    height->_useRotationWrapperViews = viewsCopy;
+    if (viewsCopy)
     {
-      v20 = [(SBHomeGrabberRotationView *)v12 _addWrapperViewWithOrientation:v12->_orientation];
-      [v20 addSubview:v12->_grabberView];
+      v20 = [(SBHomeGrabberRotationView *)height _addWrapperViewWithOrientation:height->_orientation];
+      [v20 addSubview:height->_grabberView];
     }
 
     else
     {
-      [(SBHomeGrabberRotationView *)v12 addSubview:v12->_grabberView];
+      [(SBHomeGrabberRotationView *)height addSubview:height->_grabberView];
     }
   }
 
-  return v12;
+  return height;
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4 rotationSettings:(id)a5
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated rotationSettings:(id)settings
 {
-  v5 = a4;
-  v8 = a5;
-  if (self->_orientation != a3)
+  animatedCopy = animated;
+  settingsCopy = settings;
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
-    v9 = [(NSMutableArray *)self->_rotationWrapperViews firstObject];
-    if (v5)
+    self->_orientation = orientation;
+    firstObject = [(NSMutableArray *)self->_rotationWrapperViews firstObject];
+    if (animatedCopy)
     {
-      v10 = [(SBHomeGrabberRotationView *)self _addWrapperViewWithOrientation:a3];
+      v10 = [(SBHomeGrabberRotationView *)self _addWrapperViewWithOrientation:orientation];
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"grabberViewRotationFadeIn-%llu", ++setOrientation_animated_rotationSettings____animationCount];
       v12 = objc_opt_new();
       v13 = objc_opt_new();
@@ -120,18 +120,18 @@
       v45 = v14;
       v15 = v13;
       v46 = v15;
-      v47 = self;
+      selfCopy = self;
       v16 = v11;
       v48 = v16;
       v17 = MEMORY[0x223D6F7F0](v44);
       v28 = MEMORY[0x277CF0D38];
-      v18 = [(SBFHomeGrabberSettings *)self->_grabberSettings rotationFadeOutAnimationSettings];
-      v19 = [v18 BSAnimationSettings];
+      rotationFadeOutAnimationSettings = [(SBFHomeGrabberSettings *)self->_grabberSettings rotationFadeOutAnimationSettings];
+      bSAnimationSettings = [rotationFadeOutAnimationSettings BSAnimationSettings];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __70__SBHomeGrabberRotationView_setOrientation_animated_rotationSettings___block_invoke_2;
       v42[3] = &unk_2783A8C18;
-      v43 = v9;
+      v43 = firstObject;
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __70__SBHomeGrabberRotationView_setOrientation_animated_rotationSettings___block_invoke_3;
@@ -146,12 +146,12 @@
       v30 = v14;
       v29 = v43;
       v21 = v10;
-      v9 = v16;
-      [v28 animateWithSettings:v19 actions:v42 completion:v36];
+      firstObject = v16;
+      [v28 animateWithSettings:bSAnimationSettings actions:v42 completion:v36];
 
-      [v8 delay];
+      [settingsCopy delay];
       v23 = v22;
-      [v8 duration];
+      [settingsCopy duration];
       v24 = *MEMORY[0x277D76620];
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
@@ -168,7 +168,7 @@
     else
     {
       SBFTransformFromOrientationToOrientation();
-      [v9 setTransform:v31];
+      [firstObject setTransform:v31];
     }
 
     [(SBHomeGrabberRotationView *)self setNeedsLayout];
@@ -247,7 +247,7 @@ uint64_t __70__SBHomeGrabberRotationView_setOrientation_animated_rotationSetting
   return v2();
 }
 
-- (id)_addWrapperViewWithOrientation:(int64_t)a3
+- (id)_addWrapperViewWithOrientation:(int64_t)orientation
 {
   if (self->_useRotationWrapperViews)
   {

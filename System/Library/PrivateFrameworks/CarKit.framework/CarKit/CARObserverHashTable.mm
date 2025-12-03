@@ -1,28 +1,28 @@
 @interface CARObserverHashTable
 - (BOOL)hasObservers;
-- (CARObserverHashTable)initWithProtocol:(id)a3 callbackQueue:(id)a4;
+- (CARObserverHashTable)initWithProtocol:(id)protocol callbackQueue:(id)queue;
 - (id)description;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)enumerateObserversWithBlock:(id)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)enumerateObserversWithBlock:(id)block;
+- (void)forwardInvocation:(id)invocation;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CARObserverHashTable
 
-- (CARObserverHashTable)initWithProtocol:(id)a3 callbackQueue:(id)a4
+- (CARObserverHashTable)initWithProtocol:(id)protocol callbackQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  protocolCopy = protocol;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = CARObserverHashTable;
   v9 = [(CARObserverHashTable *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_protocol, a3);
-    objc_storeStrong(&v10->_callbackQueue, a4);
+    objc_storeStrong(&v9->_protocol, protocol);
+    objc_storeStrong(&v10->_callbackQueue, queue);
     v10->_observersLock._os_unfair_lock_opaque = 0;
     v11 = v10;
   }
@@ -39,9 +39,9 @@
   return v3;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   os_unfair_lock_assert_not_owner(&self->_observersLock);
   os_unfair_lock_lock(&self->_observersLock);
   observers = self->_observers;
@@ -54,16 +54,16 @@
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v7];
+  [(NSHashTable *)observers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_assert_not_owner(&self->_observersLock);
   os_unfair_lock_lock(&self->_observersLock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   if (![(NSHashTable *)self->_observers count])
   {
@@ -74,9 +74,9 @@
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (void)enumerateObserversWithBlock:(id)a3
+- (void)enumerateObserversWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -95,7 +95,7 @@
   v12 = __52__CARObserverHashTable_enumerateObserversWithBlock___block_invoke;
   v13 = &unk_1E82FD700;
   v15 = &v16;
-  v7 = v4;
+  v7 = blockCopy;
   v14 = v7;
   v8 = MEMORY[0x1CCA72270](&v10);
   v9 = [(CARObserverHashTable *)self callbackQueue:v10];
@@ -122,27 +122,27 @@ void __52__CARObserverHashTable_enumerateObserversWithBlock___block_invoke(uint6
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  MethodDescription = protocol_getMethodDescription(self->_protocol, a3, 0, 1);
+  MethodDescription = protocol_getMethodDescription(self->_protocol, selector, 0, 1);
   types = MethodDescription.types;
-  if ((MethodDescription.name || (v7 = protocol_getMethodDescription(self->_protocol, a3, 1, 1), types = v7.types, v7.name)) && types)
+  if ((MethodDescription.name || (v7 = protocol_getMethodDescription(self->_protocol, selector, 1, 1), types = v7.types, v7.name)) && types)
   {
     v8 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:types];
   }
 
   else
   {
-    [(CARObserverHashTable *)self doesNotRecognizeSelector:a3];
+    [(CARObserverHashTable *)self doesNotRecognizeSelector:selector];
     v8 = 0;
   }
 
   return v8;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -160,13 +160,13 @@ void __52__CARObserverHashTable_enumerateObserversWithBlock___block_invoke(uint6
   v11 = 3221225472;
   v12 = __42__CARObserverHashTable_forwardInvocation___block_invoke;
   v13 = &unk_1E82FD728;
-  v7 = v4;
+  v7 = invocationCopy;
   v14 = v7;
   v15 = &v16;
   v8 = MEMORY[0x1CCA72270](&v10);
   [v7 retainArguments];
-  v9 = [(CARObserverHashTable *)self callbackQueue];
-  dispatch_async(v9, v8);
+  callbackQueue = [(CARObserverHashTable *)self callbackQueue];
+  dispatch_async(callbackQueue, v8);
 
   _Block_object_dispose(&v16, 8);
 }

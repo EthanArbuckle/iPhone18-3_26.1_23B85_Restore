@@ -1,20 +1,20 @@
 @interface HMMutableUserInviteInformation
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMMutableUserInviteInformation
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HMUserInviteInformation alloc];
-  v5 = [(HMUserInviteInformation *)self userID];
-  v6 = [(HMUserInviteInformation *)self isAdministrator];
-  v7 = [(HMUserInviteInformation *)self isRemoteAccessAllowed];
-  v8 = [(HMUserInviteInformation *)self isAnnounceAccessAllowed];
-  v9 = [(HMUserInviteInformation *)self camerasAccessLevel];
-  v10 = [(HMUserInviteInformation *)self isRestrictedGuest];
-  v11 = [(HMUserInviteInformation *)self restrictedGuestHomeAccessSettings];
-  v12 = [(HMUserInviteInformation *)v4 initWithUser:v5 administrator:v6 remoteAccess:v7 announceAccess:v8 camerasAccessLevel:v9 restrictedGuest:v10 restrictedGuestHomeAccessSettings:v11];
+  userID = [(HMUserInviteInformation *)self userID];
+  isAdministrator = [(HMUserInviteInformation *)self isAdministrator];
+  isRemoteAccessAllowed = [(HMUserInviteInformation *)self isRemoteAccessAllowed];
+  isAnnounceAccessAllowed = [(HMUserInviteInformation *)self isAnnounceAccessAllowed];
+  camerasAccessLevel = [(HMUserInviteInformation *)self camerasAccessLevel];
+  isRestrictedGuest = [(HMUserInviteInformation *)self isRestrictedGuest];
+  restrictedGuestHomeAccessSettings = [(HMUserInviteInformation *)self restrictedGuestHomeAccessSettings];
+  v12 = [(HMUserInviteInformation *)v4 initWithUser:userID administrator:isAdministrator remoteAccess:isRemoteAccessAllowed announceAccess:isAnnounceAccessAllowed camerasAccessLevel:camerasAccessLevel restrictedGuest:isRestrictedGuest restrictedGuestHomeAccessSettings:restrictedGuestHomeAccessSettings];
 
   return v12;
 }

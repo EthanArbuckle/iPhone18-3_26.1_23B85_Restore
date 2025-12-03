@@ -1,67 +1,67 @@
 @interface MSServerSideConfigManager
-+ (double)doubleValueForParameter:(id)a3 forPersonID:(id)a4 defaultValue:(double)a5;
-+ (id)configManagerForPersonID:(id)a3;
-+ (id)objectForKey:(id)a3 forPersonID:(id)a4 defaultValue:(id)a5;
-+ (int)intValueForParameter:(id)a3 forPersonID:(id)a4 defaultValue:(int)a5;
-+ (int64_t)longLongValueForParameter:(id)a3 forPersonID:(id)a4 defaultValue:(int64_t)a5;
-+ (int64_t)longValueForParameter:(id)a3 forPersonID:(id)a4 defaultValue:(int64_t)a5;
++ (double)doubleValueForParameter:(id)parameter forPersonID:(id)d defaultValue:(double)value;
++ (id)configManagerForPersonID:(id)d;
++ (id)objectForKey:(id)key forPersonID:(id)d defaultValue:(id)value;
++ (int)intValueForParameter:(id)parameter forPersonID:(id)d defaultValue:(int)value;
++ (int64_t)longLongValueForParameter:(id)parameter forPersonID:(id)d defaultValue:(int64_t)value;
++ (int64_t)longValueForParameter:(id)parameter forPersonID:(id)d defaultValue:(int64_t)value;
 + (void)abortAllActivities;
-+ (void)forgetPersonID:(id)a3;
-- (MSServerSideConfigManager)initWithPersonID:(id)a3 baseURL:(id)a4;
++ (void)forgetPersonID:(id)d;
+- (MSServerSideConfigManager)initWithPersonID:(id)d baseURL:(id)l;
 - (NSDictionary)config;
 - (void)abort;
 - (void)dealloc;
 - (void)refreshConfiguration;
-- (void)serverSideConfigProtocol:(id)a3 didFinishWithConfiguration:(id)a4 error:(id)a5;
-- (void)serverSideConfigProtocol:(id)a3 didReceiveAuthenticationError:(id)a4;
-- (void)setConfig:(id)a3;
+- (void)serverSideConfigProtocol:(id)protocol didFinishWithConfiguration:(id)configuration error:(id)error;
+- (void)serverSideConfigProtocol:(id)protocol didReceiveAuthenticationError:(id)error;
+- (void)setConfig:(id)config;
 @end
 
 @implementation MSServerSideConfigManager
 
-- (void)serverSideConfigProtocol:(id)a3 didReceiveAuthenticationError:(id)a4
+- (void)serverSideConfigProtocol:(id)protocol didReceiveAuthenticationError:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v9 = [a4 MSVerboseDescription];
+    mSVerboseDescription = [error MSVerboseDescription];
     v10 = 138543362;
-    v11 = v9;
+    v11 = mSVerboseDescription;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Failed to retrieve configuration due to authentication error: %{public}@", &v10, 0xCu);
   }
 
   daemon = self->_daemon;
-  v7 = [(MSServerSideConfigManager *)self personID];
-  [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationFailureForPersonID:v7];
+  personID = [(MSServerSideConfigManager *)self personID];
+  [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationFailureForPersonID:personID];
 
   [(MSDaemon *)self->_daemon releaseBusy];
   self->_state = 0;
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serverSideConfigProtocol:(id)a3 didFinishWithConfiguration:(id)a4 error:(id)a5
+- (void)serverSideConfigProtocol:(id)protocol didFinishWithConfiguration:(id)configuration error:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  protocolCopy = protocol;
+  configurationCopy = configuration;
+  errorCopy = error;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v11 = [v10 MSVerboseDescription];
+    mSVerboseDescription = [errorCopy MSVerboseDescription];
     v15 = 138543618;
-    v16 = v9;
+    v16 = configurationCopy;
     v17 = 2114;
-    v18 = v11;
+    v18 = mSVerboseDescription;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Finished retrieving server-side configuration: %{public}@, error: %{public}@", &v15, 0x16u);
   }
 
-  if (!v10)
+  if (!errorCopy)
   {
     daemon = self->_daemon;
-    v13 = [(MSServerSideConfigManager *)self personID];
-    [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:v13];
+    personID = [(MSServerSideConfigManager *)self personID];
+    [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:personID];
 
-    [(MSServerSideConfigManager *)self setConfig:v9];
+    [(MSServerSideConfigManager *)self setConfig:configurationCopy];
   }
 
   [(MSDaemon *)self->_daemon releaseBusy];
@@ -105,22 +105,22 @@
   [(MSServerSideConfigProtocol *)self->_protocol queryConfiguration];
 }
 
-- (void)setConfig:(id)a3
+- (void)setConfig:(id)config
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configCopy = config;
   config = self->_config;
-  if (!config || ![(NSDictionary *)config isEqualToDictionary:v5])
+  if (!config || ![(NSDictionary *)config isEqualToDictionary:configCopy])
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = v7;
-    if (v5)
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v8 = defaultManager;
+    if (configCopy)
     {
-      v9 = [(NSString *)self->_configPath stringByDeletingLastPathComponent];
-      [v8 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:0];
+      stringByDeletingLastPathComponent = [(NSString *)self->_configPath stringByDeletingLastPathComponent];
+      [v8 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
       v19 = 0;
-      v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v19];
+      v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:configCopy requiringSecureCoding:1 error:&v19];
       v11 = v19;
       if (!v10 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
@@ -138,19 +138,19 @@
 
     else
     {
-      [v7 removeItemAtPath:self->_configPath error:0];
+      [defaultManager removeItemAtPath:self->_configPath error:0];
     }
 
-    objc_storeStrong(&self->_config, a3);
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
+    objc_storeStrong(&self->_config, config);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v13 = MEMORY[0x277CBEAC0];
-    v14 = [(MSServerSideConfigManager *)self personID];
-    v15 = [v13 dictionaryWithObjectsAndKeys:{v14, @"personID", 0}];
-    [v12 postNotificationName:@"MSServerSideConfigChanged" object:self userInfo:v15];
+    personID = [(MSServerSideConfigManager *)self personID];
+    v15 = [v13 dictionaryWithObjectsAndKeys:{personID, @"personID", 0}];
+    [defaultCenter postNotificationName:@"MSServerSideConfigChanged" object:self userInfo:v15];
 
     daemon = self->_daemon;
-    v17 = [(MSServerSideConfigManager *)self personID];
-    [(MSMediaStreamDaemon *)daemon didReceiveNewServerSideConfigurationForPersonID:v17];
+    personID2 = [(MSServerSideConfigManager *)self personID];
+    [(MSMediaStreamDaemon *)daemon didReceiveNewServerSideConfigurationForPersonID:personID2];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -161,15 +161,15 @@
   config = self->_config;
   if (config || ([MEMORY[0x277CCAAC8] MSSafeUnarchiveObjectWithFile:self->_configPath outError:0], v4 = objc_claimAutoreleasedReturnValue(), v5 = self->_config, self->_config = v4, v5, (config = self->_config) != 0))
   {
-    v6 = config;
+    dictionary = config;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
   }
 
-  return v6;
+  return dictionary;
 }
 
 - (void)dealloc
@@ -180,23 +180,23 @@
   [(MSServerSideConfigManager *)&v3 dealloc];
 }
 
-- (MSServerSideConfigManager)initWithPersonID:(id)a3 baseURL:(id)a4
+- (MSServerSideConfigManager)initWithPersonID:(id)d baseURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  lCopy = l;
   v16.receiver = self;
   v16.super_class = MSServerSideConfigManager;
   v9 = [(MSServerSideConfigManager *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_personID, a3);
-    v11 = [[MSServerSideConfigProtocol alloc] initWithPersonID:v7 baseURL:v8];
+    objc_storeStrong(&v9->_personID, d);
+    v11 = [[MSServerSideConfigProtocol alloc] initWithPersonID:dCopy baseURL:lCopy];
     protocol = v10->_protocol;
     v10->_protocol = v11;
 
     [(MSServerSideConfigProtocol *)v10->_protocol setDelegate:v10];
-    v13 = MSPathServerSideConfigPathForPersonID(v7);
+    v13 = MSPathServerSideConfigPathForPersonID(dCopy);
     configPath = v10->_configPath;
     v10->_configPath = v13;
   }
@@ -204,18 +204,18 @@
   return v10;
 }
 
-+ (id)objectForKey:(id)a3 forPersonID:(id)a4 defaultValue:(id)a5
++ (id)objectForKey:(id)key forPersonID:(id)d defaultValue:(id)value
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  dCopy = d;
+  valueCopy = value;
   v10 = MSPlatform();
-  v11 = [v10 theDaemon];
-  v12 = [v11 serverSideConfigurationForPersonID:v8];
-  v13 = [v12 objectForKey:v7];
+  theDaemon = [v10 theDaemon];
+  v12 = [theDaemon serverSideConfigurationForPersonID:dCopy];
+  v13 = [v12 objectForKey:keyCopy];
 
-  v14 = v9;
+  v14 = valueCopy;
   if (v13)
   {
     v15 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
@@ -223,9 +223,9 @@
     if (v15)
     {
       v19 = 138412802;
-      v20 = v8;
+      v20 = dCopy;
       v21 = 2114;
-      v22 = v7;
+      v22 = keyCopy;
       v23 = 2114;
       v24 = v13;
       _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "PersonID %@ using server-side value for key %{public}@. Value: %{public}@", &v19, 0x20u);
@@ -240,144 +240,144 @@
   return v16;
 }
 
-+ (int64_t)longLongValueForParameter:(id)a3 forPersonID:(id)a4 defaultValue:(int64_t)a5
++ (int64_t)longLongValueForParameter:(id)parameter forPersonID:(id)d defaultValue:(int64_t)value
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  parameterCopy = parameter;
+  dCopy = d;
   v9 = MSPlatform();
-  v10 = [v9 theDaemon];
-  v11 = [v10 serverSideConfigurationForPersonID:v8];
-  v12 = [v11 objectForKey:v7];
+  theDaemon = [v9 theDaemon];
+  v11 = [theDaemon serverSideConfigurationForPersonID:dCopy];
+  v12 = [v11 objectForKey:parameterCopy];
 
   if (v12)
   {
     if (objc_opt_respondsToSelector())
     {
-      a5 = [v12 longLongValue];
+      value = [v12 longLongValue];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         v15 = 138412802;
-        v16 = v8;
+        v16 = dCopy;
         v17 = 2114;
-        v18 = v7;
+        v18 = parameterCopy;
         v19 = 2048;
-        v20 = a5;
+        valueCopy = value;
         _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "PersonID %@ using server-side value for parameter %{public}@. Value: %lld", &v15, 0x20u);
       }
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return a5;
+  return value;
 }
 
-+ (int64_t)longValueForParameter:(id)a3 forPersonID:(id)a4 defaultValue:(int64_t)a5
++ (int64_t)longValueForParameter:(id)parameter forPersonID:(id)d defaultValue:(int64_t)value
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  parameterCopy = parameter;
+  dCopy = d;
   v9 = MSPlatform();
-  v10 = [v9 theDaemon];
-  v11 = [v10 serverSideConfigurationForPersonID:v8];
-  v12 = [v11 objectForKey:v7];
+  theDaemon = [v9 theDaemon];
+  v11 = [theDaemon serverSideConfigurationForPersonID:dCopy];
+  v12 = [v11 objectForKey:parameterCopy];
 
   if (v12)
   {
     if (objc_opt_respondsToSelector())
     {
-      a5 = [v12 longValue];
+      value = [v12 longValue];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         v15 = 138412802;
-        v16 = v8;
+        v16 = dCopy;
         v17 = 2114;
-        v18 = v7;
+        v18 = parameterCopy;
         v19 = 2048;
-        v20 = a5;
+        valueCopy = value;
         _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "PersonID %@ using server-side value for parameter %{public}@. Value: %ld", &v15, 0x20u);
       }
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return a5;
+  return value;
 }
 
-+ (double)doubleValueForParameter:(id)a3 forPersonID:(id)a4 defaultValue:(double)a5
++ (double)doubleValueForParameter:(id)parameter forPersonID:(id)d defaultValue:(double)value
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  parameterCopy = parameter;
+  dCopy = d;
   v9 = MSPlatform();
-  v10 = [v9 theDaemon];
-  v11 = [v10 serverSideConfigurationForPersonID:v8];
-  v12 = [v11 objectForKey:v7];
+  theDaemon = [v9 theDaemon];
+  v11 = [theDaemon serverSideConfigurationForPersonID:dCopy];
+  v12 = [v11 objectForKey:parameterCopy];
 
   if (v12)
   {
     if (objc_opt_respondsToSelector())
     {
       [v12 doubleValue];
-      a5 = v13;
+      value = v13;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         v16 = 138412802;
-        v17 = v8;
+        v17 = dCopy;
         v18 = 2114;
-        v19 = v7;
+        v19 = parameterCopy;
         v20 = 2048;
-        v21 = a5;
+        valueCopy = value;
         _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "PersonID %@ using server-side value for parameter %{public}@. Value: %f", &v16, 0x20u);
       }
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return a5;
+  return value;
 }
 
-+ (int)intValueForParameter:(id)a3 forPersonID:(id)a4 defaultValue:(int)a5
++ (int)intValueForParameter:(id)parameter forPersonID:(id)d defaultValue:(int)value
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  parameterCopy = parameter;
+  dCopy = d;
   v9 = MSPlatform();
-  v10 = [v9 theDaemon];
-  v11 = [v10 serverSideConfigurationForPersonID:v8];
-  v12 = [v11 objectForKey:v7];
+  theDaemon = [v9 theDaemon];
+  v11 = [theDaemon serverSideConfigurationForPersonID:dCopy];
+  v12 = [v11 objectForKey:parameterCopy];
 
   if (v12)
   {
     if (objc_opt_respondsToSelector())
     {
-      a5 = [v12 intValue];
+      value = [v12 intValue];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         v15 = 138412802;
-        v16 = v8;
+        v16 = dCopy;
         v17 = 2114;
-        v18 = v7;
+        v18 = parameterCopy;
         v19 = 1024;
-        v20 = a5;
+        valueCopy = value;
         _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "PersonID %@ using server-side value for parameter %{public}@. Value: %d", &v15, 0x1Cu);
       }
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return a5;
+  return value;
 }
 
-+ (void)forgetPersonID:(id)a3
++ (void)forgetPersonID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v3 = [_configManagerByID objectForKey:?];
   v4 = v3;
   if (v3)
   {
     [v3 abort];
-    [_configManagerByID removeObjectForKey:v5];
+    [_configManagerByID removeObjectForKey:dCopy];
   }
 }
 
@@ -388,8 +388,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [_configManagerByID allValues];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [_configManagerByID allValues];
+  v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -401,14 +401,14 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) abort];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -417,10 +417,10 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)configManagerForPersonID:(id)a3
++ (id)configManagerForPersonID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
     v4 = _configManagerByID;
     if (!_configManagerByID)
@@ -432,15 +432,15 @@
       v4 = _configManagerByID;
     }
 
-    v7 = [v4 objectForKey:v3];
+    v7 = [v4 objectForKey:dCopy];
     if (!v7)
     {
       v8 = [MSServerSideConfigManager alloc];
       v9 = MSPlatform();
-      v10 = [v9 baseURLForPersonID:v3];
-      v7 = [(MSServerSideConfigManager *)v8 initWithPersonID:v3 baseURL:v10];
+      v10 = [v9 baseURLForPersonID:dCopy];
+      v7 = [(MSServerSideConfigManager *)v8 initWithPersonID:dCopy baseURL:v10];
 
-      [_configManagerByID setObject:v7 forKey:v3];
+      [_configManagerByID setObject:v7 forKey:dCopy];
     }
   }
 

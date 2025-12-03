@@ -1,8 +1,8 @@
 @interface COSTinkerHealthSharingSyncSetupController
 - (COSTinkerHealthSharingSyncSetupController)init;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)setupSharingIfReady;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation COSTinkerHealthSharingSyncSetupController
@@ -23,24 +23,24 @@
   return v5;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = COSTinkerHealthSharingSyncSetupController;
-  [(COSTinkerHealthSharingSyncSetupController *)&v4 viewDidAppear:a3];
+  [(COSTinkerHealthSharingSyncSetupController *)&v4 viewDidAppear:appear];
   self->_viewDidAppear = 1;
   [(COSTinkerHealthSharingSyncSetupController *)self setupSharingIfReady];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100029F90;
   v4[3] = &unk_100268358;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  delegateCopy = delegate;
+  v3 = delegateCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 

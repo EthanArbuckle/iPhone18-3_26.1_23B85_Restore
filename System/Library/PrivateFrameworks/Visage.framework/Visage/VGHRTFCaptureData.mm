@@ -1,22 +1,22 @@
 @interface VGHRTFCaptureData
 - (__n128)colorIntrinsics;
-- (__n128)setColorIntrinsics:(__n128)a3;
+- (__n128)setColorIntrinsics:(__n128)intrinsics;
 @end
 
 @implementation VGHRTFCaptureData
 
 - (__n128)colorIntrinsics
 {
-  result = *(a1 + 48);
-  v2 = *(a1 + 64);
-  v3 = *(a1 + 80);
+  result = *(self + 48);
+  v2 = *(self + 64);
+  v3 = *(self + 80);
   return result;
 }
 
-- (__n128)setColorIntrinsics:(__n128)a3
+- (__n128)setColorIntrinsics:(__n128)intrinsics
 {
   result[3] = a2;
-  result[4] = a3;
+  result[4] = intrinsics;
   result[5] = a4;
   return result;
 }

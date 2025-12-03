@@ -9,8 +9,8 @@
 + (id)setupAppearanceProxy
 {
   v2 = objc_alloc_init(WFAppearanceProxy);
-  v3 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  [(WFAppearanceProxy *)v2 setTableViewCellBackgroundColor:v3];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  [(WFAppearanceProxy *)v2 setTableViewCellBackgroundColor:secondarySystemBackgroundColor];
 
   v4 = MEMORY[0x277D74300];
   v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
@@ -43,13 +43,13 @@
 
 - (void)apply
 {
-  v3 = [(WFAppearanceProxy *)self tableViewCellBackgroundColor];
+  tableViewCellBackgroundColor = [(WFAppearanceProxy *)self tableViewCellBackgroundColor];
 
-  if (v3)
+  if (tableViewCellBackgroundColor)
   {
-    v5 = [MEMORY[0x277D75B48] appearance];
-    v4 = [(WFAppearanceProxy *)self tableViewCellBackgroundColor];
-    [v5 setBackgroundColor:v4];
+    appearance = [MEMORY[0x277D75B48] appearance];
+    tableViewCellBackgroundColor2 = [(WFAppearanceProxy *)self tableViewCellBackgroundColor];
+    [appearance setBackgroundColor:tableViewCellBackgroundColor2];
   }
 }
 

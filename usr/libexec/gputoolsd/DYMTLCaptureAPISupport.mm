@@ -1,5 +1,5 @@
 @interface DYMTLCaptureAPISupport
-- (DYMTLCaptureAPISupport)initWithAPI:(unsigned int)a3;
+- (DYMTLCaptureAPISupport)initWithAPI:(unsigned int)i;
 - (id)diagnosticsDylibPath;
 - (id)graphicsAPIInfo;
 - (id)interposeDylibPath;
@@ -7,22 +7,22 @@
 
 @implementation DYMTLCaptureAPISupport
 
-- (DYMTLCaptureAPISupport)initWithAPI:(unsigned int)a3
+- (DYMTLCaptureAPISupport)initWithAPI:(unsigned int)i
 {
-  if (a3 == 1)
+  if (i == 1)
   {
     v5.receiver = self;
     v5.super_class = DYMTLCaptureAPISupport;
     self = [(DYMTLCaptureAPISupport *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)interposeDylibPath

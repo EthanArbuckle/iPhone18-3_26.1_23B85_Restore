@@ -1,9 +1,9 @@
 @interface HMHomeManager.DelegateAdapter
 - (_TtCE13HomeDataModelCSo13HMHomeManager15DelegateAdapter)init;
-- (void)homeManager:(id)a3 didAddHome:(id)a4;
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4;
-- (void)homeManagerDidUpdateHomes:(id)a3;
-- (void)homeManagerDidUpdatePrimaryHome:(id)a3;
+- (void)homeManager:(id)manager didAddHome:(id)home;
+- (void)homeManager:(id)manager didRemoveHome:(id)home;
+- (void)homeManagerDidUpdateHomes:(id)homes;
+- (void)homeManagerDidUpdatePrimaryHome:(id)home;
 @end
 
 @implementation HMHomeManager.DelegateAdapter
@@ -15,34 +15,34 @@
   return result;
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A71F90(v4);
+  homesCopy = homes;
+  selfCopy = self;
+  sub_1D1A71F90(homesCopy);
 }
 
-- (void)homeManagerDidUpdatePrimaryHome:(id)a3
+- (void)homeManagerDidUpdatePrimaryHome:(id)home
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A721E8(v4);
+  homeCopy = home;
+  selfCopy = self;
+  sub_1D1A721E8(homeCopy);
 }
 
-- (void)homeManager:(id)a3 didAddHome:(id)a4
+- (void)homeManager:(id)manager didAddHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A72628(v6, v7);
+  managerCopy = manager;
+  homeCopy = home;
+  selfCopy = self;
+  sub_1D1A72628(managerCopy, homeCopy);
 }
 
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4
+- (void)homeManager:(id)manager didRemoveHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A729A4(v6, v7);
+  managerCopy = manager;
+  homeCopy = home;
+  selfCopy = self;
+  sub_1D1A729A4(managerCopy, homeCopy);
 }
 
 @end

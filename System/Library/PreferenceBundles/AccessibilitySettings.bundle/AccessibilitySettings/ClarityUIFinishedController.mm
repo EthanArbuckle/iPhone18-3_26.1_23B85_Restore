@@ -1,13 +1,13 @@
 @interface ClarityUIFinishedController
-- (ClarityUIFinishedController)initWithCompletion:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (ClarityUIFinishedController)initWithCompletion:(id)completion;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ClarityUIFinishedController
 
-- (ClarityUIFinishedController)initWithCompletion:(id)a3
+- (ClarityUIFinishedController)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [UIImage systemImageNamed:@"checkmark.circle"];
   v6 = +[UIColor systemGreenColor];
   v7 = [v5 imageWithTintColor:v6 renderingMode:1];
@@ -20,7 +20,7 @@
 
   if (v10)
   {
-    v11 = objc_retainBlock(v4);
+    v11 = objc_retainBlock(completionCopy);
     completionHandler = v10->_completionHandler;
     v10->_completionHandler = v11;
 
@@ -29,26 +29,26 @@
     [v13 setTitle:v14 forState:0];
 
     [v13 addTarget:v10 action:"_didTapDoneButton:" forControlEvents:0x2000];
-    v15 = [(ClarityUIFinishedController *)v10 buttonTray];
-    [v15 addButton:v13];
+    buttonTray = [(ClarityUIFinishedController *)v10 buttonTray];
+    [buttonTray addButton:v13];
 
     v16 = +[OBLinkTrayButton linkButton];
     v17 = settingsLocString(@"ENTER_CLARITY_UI_LATER_BUTTON", @"ClarityUISettings");
     [v16 setTitle:v17 forState:0];
 
     [v16 addTarget:v10 action:"_didTapEnterLaterButton:" forControlEvents:0x2000];
-    v18 = [(ClarityUIFinishedController *)v10 buttonTray];
-    [v18 addButton:v16];
+    buttonTray2 = [(ClarityUIFinishedController *)v10 buttonTray];
+    [buttonTray2 addButton:v16];
   }
 
   return v10;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = ClarityUIFinishedController;
-  [(ClarityUIFinishedController *)&v3 viewWillAppear:a3];
+  [(ClarityUIFinishedController *)&v3 viewWillAppear:appear];
   _AXSClarityUISetEnabled();
 }
 

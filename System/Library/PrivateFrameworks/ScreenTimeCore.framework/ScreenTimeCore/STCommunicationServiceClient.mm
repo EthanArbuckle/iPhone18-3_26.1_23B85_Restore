@@ -1,10 +1,10 @@
 @interface STCommunicationServiceClient
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (STCommunicationServiceClient)init;
-- (id)currentConfigurationWithError:(id *)a3;
-- (void)authenticateForCommunicationConfigurationOverrideWithCompletionHandler:(id)a3;
+- (id)currentConfigurationWithError:(id *)error;
+- (void)authenticateForCommunicationConfigurationOverrideWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)receivePasscodeAuthenticationResult:(id)a3 completionHandler:(id)a4;
+- (void)receivePasscodeAuthenticationResult:(id)result completionHandler:(id)handler;
 @end
 
 @implementation STCommunicationServiceClient
@@ -57,9 +57,9 @@ void __36__STCommunicationServiceClient_init__block_invoke_12()
   [(STCommunicationServiceClient *)&v4 dealloc];
 }
 
-- (void)authenticateForCommunicationConfigurationOverrideWithCompletionHandler:(id)a3
+- (void)authenticateForCommunicationConfigurationOverrideWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[STLog communicationClient];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -73,13 +73,13 @@ void __36__STCommunicationServiceClient_init__block_invoke_12()
   v14[2] = __Block_byref_object_copy__13;
   v14[3] = __Block_byref_object_dispose__13;
   v15 = 0;
-  v6 = [(STCommunicationServiceClient *)self connection];
+  connection = [(STCommunicationServiceClient *)self connection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __103__STCommunicationServiceClient_authenticateForCommunicationConfigurationOverrideWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E7CE6BA8;
   v12[4] = buf;
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   if (*(v14[0] + 40))
   {
@@ -89,23 +89,23 @@ void __36__STCommunicationServiceClient_init__block_invoke_12()
       [(STCommunicationServiceClient *)v14 authenticateForCommunicationConfigurationOverrideWithCompletionHandler:v8];
     }
 
-    (*(v4 + 2))(v4, 0, *(v14[0] + 40));
+    (*(handlerCopy + 2))(handlerCopy, 0, *(v14[0] + 40));
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696B0D8] anonymousListener];
-    [(STCommunicationServiceClient *)self setActiveListener:v9];
-    [v9 setDelegate:self];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
+    [(STCommunicationServiceClient *)self setActiveListener:anonymousListener];
+    [anonymousListener setDelegate:self];
     [(STCommunicationServiceClient *)self setProvidedService:self];
     v10 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F3067BB0];
     [(STCommunicationServiceClient *)self setProvidedServiceInterface:v10];
 
-    v11 = [v9 endpoint];
-    objc_storeStrong(&self->_clientListenerEndpoint, v11);
-    [v9 resume];
-    [(STCommunicationServiceClient *)self setPendingAuthenticationCompletionHandler:v4];
-    [v7 authenticatePasscodeForUserWithEndpoint:v11 completionHandler:&__block_literal_global_24];
+    endpoint = [anonymousListener endpoint];
+    objc_storeStrong(&self->_clientListenerEndpoint, endpoint);
+    [anonymousListener resume];
+    [(STCommunicationServiceClient *)self setPendingAuthenticationCompletionHandler:handlerCopy];
+    [v7 authenticatePasscodeForUserWithEndpoint:endpoint completionHandler:&__block_literal_global_24];
   }
 
   _Block_object_dispose(buf, 8);
@@ -121,7 +121,7 @@ void __103__STCommunicationServiceClient_authenticateForCommunicationConfigurati
   }
 }
 
-- (id)currentConfigurationWithError:(id *)a3
+- (id)currentConfigurationWithError:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
   v5 = +[STLog communicationClient];
@@ -143,13 +143,13 @@ void __103__STCommunicationServiceClient_authenticateForCommunicationConfigurati
   v19 = __Block_byref_object_copy__13;
   v20 = __Block_byref_object_dispose__13;
   v21 = 0;
-  v6 = [(STCommunicationServiceClient *)self connection];
+  connection = [(STCommunicationServiceClient *)self connection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __62__STCommunicationServiceClient_currentConfigurationWithError___block_invoke;
   v15[3] = &unk_1E7CE6BA8;
   v15[4] = buf;
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v15];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v15];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -170,9 +170,9 @@ void __103__STCommunicationServiceClient_authenticateForCommunicationConfigurati
     _os_log_impl(&dword_1B831F000, v8, OS_LOG_TYPE_DEFAULT, "Got current communication configuration: %{public}@ - Error: %{public}@", v28, 0x16u);
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = *(v23 + 5);
+    *error = *(v23 + 5);
   }
 
   v11 = v17[5];
@@ -199,16 +199,16 @@ void __62__STCommunicationServiceClient_currentConfigurationWithError___block_in
   *(v9 + 40) = v6;
 }
 
-- (void)receivePasscodeAuthenticationResult:(id)a3 completionHandler:(id)a4
+- (void)receivePasscodeAuthenticationResult:(id)result completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STCommunicationServiceClient *)self pendingAuthenticationCompletionHandler];
-  if (v8)
+  resultCopy = result;
+  handlerCopy = handler;
+  pendingAuthenticationCompletionHandler = [(STCommunicationServiceClient *)self pendingAuthenticationCompletionHandler];
+  if (pendingAuthenticationCompletionHandler)
   {
     v9 = +[STLog communicationClient];
     v10 = v9;
-    if (v6)
+    if (resultCopy)
     {
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -216,7 +216,7 @@ void __62__STCommunicationServiceClient_currentConfigurationWithError___block_in
         _os_log_impl(&dword_1B831F000, v10, OS_LOG_TYPE_DEFAULT, "Resolving pending completion with authentication result", v14, 2u);
       }
 
-      (v8)[2](v8, v6, 0);
+      (pendingAuthenticationCompletionHandler)[2](pendingAuthenticationCompletionHandler, resultCopy, 0);
     }
 
     else
@@ -227,11 +227,11 @@ void __62__STCommunicationServiceClient_currentConfigurationWithError___block_in
       }
 
       v13 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"STErrorDomain" code:51 userInfo:0];
-      (v8)[2](v8, 0, v13);
+      (pendingAuthenticationCompletionHandler)[2](pendingAuthenticationCompletionHandler, 0, v13);
     }
 
     [(STCommunicationServiceClient *)self setPendingAuthenticationCompletionHandler:0];
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -243,28 +243,28 @@ void __62__STCommunicationServiceClient_currentConfigurationWithError___block_in
     }
 
     v12 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"STErrorDomain" code:1 userInfo:0];
-    v7[2](v7, v12);
+    handlerCopy[2](handlerCopy, v12);
 
-    v7 = v12;
+    handlerCopy = v12;
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STCommunicationServiceClient *)self activeListener];
+  connectionCopy = connection;
+  listenerCopy = listener;
+  activeListener = [(STCommunicationServiceClient *)self activeListener];
 
-  if (v8 == v7)
+  if (activeListener == listenerCopy)
   {
-    v9 = [(STCommunicationServiceClient *)self providedServiceInterface];
-    if (v9)
+    providedServiceInterface = [(STCommunicationServiceClient *)self providedServiceInterface];
+    if (providedServiceInterface)
     {
-      [v6 setExportedInterface:v9];
-      [v6 setExportedObject:self];
-      [v6 setInterruptionHandler:&__block_literal_global_28];
-      [v6 setInvalidationHandler:&__block_literal_global_31];
-      [v6 resume];
+      [connectionCopy setExportedInterface:providedServiceInterface];
+      [connectionCopy setExportedObject:self];
+      [connectionCopy setInterruptionHandler:&__block_literal_global_28];
+      [connectionCopy setInvalidationHandler:&__block_literal_global_31];
+      [connectionCopy resume];
       v10 = 1;
       goto LABEL_7;
     }
@@ -278,8 +278,8 @@ void __62__STCommunicationServiceClient_currentConfigurationWithError___block_in
 
   else
   {
-    v9 = +[STLog communicationClient];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    providedServiceInterface = +[STLog communicationClient];
+    if (os_log_type_enabled(providedServiceInterface, OS_LOG_TYPE_ERROR))
     {
       [STSetupServiceClient listener:shouldAcceptNewConnection:];
     }

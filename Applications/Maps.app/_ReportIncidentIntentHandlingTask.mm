@@ -7,20 +7,20 @@
 - (void)performTask
 {
   [(RichMapsActivityCreatingTaskImpl *)self taskStarted];
-  v3 = [(UserActivityHandlingTask *)self userActivity];
-  v4 = [v3 interaction];
-  v5 = [v4 intent];
+  userActivity = [(UserActivityHandlingTask *)self userActivity];
+  interaction = [userActivity interaction];
+  intent = [interaction intent];
 
-  if (v5)
+  if (intent)
   {
-    v6 = [[ReportIncidentAction alloc] initWithIncidentIntent:v5];
+    v6 = [[ReportIncidentAction alloc] initWithIncidentIntent:intent];
     [(MapsAction *)v6 setUserLocationAccuracy:kCLLocationAccuracyBest];
     v7 = objc_alloc_init(MapsActivity);
     v8 = objc_alloc_init(GEOURLOptions);
     [(MapsActivity *)v7 setDisplayOptions:v8];
 
-    v9 = [(MapsActivity *)v7 displayOptions];
-    [v9 setUserTrackingMode:1];
+    displayOptions = [(MapsActivity *)v7 displayOptions];
+    [displayOptions setUserTrackingMode:1];
 
     v10 = [[RichMapsActivity alloc] initWithMapsActivity:v7 mapsAction:v6];
     [(UserActivityHandlingTask *)self taskFinished:v10];

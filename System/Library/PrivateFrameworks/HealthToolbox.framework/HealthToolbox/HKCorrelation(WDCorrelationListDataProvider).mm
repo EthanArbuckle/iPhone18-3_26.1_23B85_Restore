@@ -6,10 +6,10 @@
 
 - (id)quantitySampleForType:()WDCorrelationListDataProvider
 {
-  v1 = [a1 objectsForType:?];
-  v2 = [v1 anyObject];
+  v1 = [self objectsForType:?];
+  anyObject = [v1 anyObject];
 
-  return v2;
+  return anyObject;
 }
 
 @end

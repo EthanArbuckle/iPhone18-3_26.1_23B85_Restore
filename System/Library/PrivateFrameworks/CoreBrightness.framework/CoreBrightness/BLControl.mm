@@ -2,51 +2,51 @@
 - (BLControl)init;
 - (BOOL)findBacklight;
 - (BOOL)findDisplays;
-- (BOOL)handleDisplayModeUpdatePropertyHandler:(id)a3;
+- (BOOL)handleDisplayModeUpdatePropertyHandler:(id)handler;
 - (BOOL)initKeyboardBacklightHIDManager;
-- (BOOL)setBLControlPropertyWithKey:(id)a3 property:(id)a4;
-- (BOOL)setDisplayFactor:(float)a3 transitionLength:(float)a4;
-- (BOOL)setPropertyInternalWithKey:(id)a3 property:(id)a4 client:(id)a5;
-- (BOOL)setPropertyWithKey:(id)a3 property:(id)a4 client:(id)a5;
+- (BOOL)setBLControlPropertyWithKey:(id)key property:(id)property;
+- (BOOL)setDisplayFactor:(float)factor transitionLength:(float)length;
+- (BOOL)setPropertyInternalWithKey:(id)key property:(id)property client:(id)client;
+- (BOOL)setPropertyWithKey:(id)key property:(id)property client:(id)client;
 - (BOOL)start;
 - (BOOL)startHIDSystemClient;
-- (BOOL)useSyncBrightnessTransactionForDisplay:(id)a3;
-- (id)copyBLControlPropertyWithkey:(id)a3;
+- (BOOL)useSyncBrightnessTransactionForDisplay:(id)display;
+- (id)copyBLControlPropertyWithkey:(id)withkey;
 - (id)copyDisplayInfo;
 - (id)copyDisplayList;
-- (id)copyPropertyInternalWithKey:(id)a3 forClient:(id)a4;
-- (id)copyPropertyWithKey:(id)a3 client:(id)a4;
+- (id)copyPropertyInternalWithKey:(id)key forClient:(id)client;
+- (id)copyPropertyWithKey:(id)key client:(id)client;
 - (id)copyStatusInfo;
-- (id)newDevicePariMatchingDictionaryWithPage:(unsigned int)a3 andUsage:(unsigned int)a4;
+- (id)newDevicePariMatchingDictionaryWithPage:(unsigned int)page andUsage:(unsigned int)usage;
 - (id)newGlobalConfigProvider;
-- (void)addDisplayContainer:(id)a3;
+- (void)addDisplayContainer:(id)container;
 - (void)cancelHIDSystemClient;
 - (void)dealloc;
-- (void)handleCADisplay:(id)a3;
-- (void)handleCADisplayArrival:(id)a3;
-- (void)handleCADisplayRemoval:(id)a3;
-- (void)handleCAWindowServerDisplay:(id)a3;
-- (void)handleCloningChange:(id)a3;
+- (void)handleCADisplay:(id)display;
+- (void)handleCADisplayArrival:(id)arrival;
+- (void)handleCADisplayRemoval:(id)removal;
+- (void)handleCAWindowServerDisplay:(id)display;
+- (void)handleCloningChange:(id)change;
 - (void)handleExternalDisplayChange;
-- (void)handleHIDEvent:(__IOHIDEvent *)a3 from:(__IOHIDServiceClient *)a4;
+- (void)handleHIDEvent:(__IOHIDEvent *)event from:(__IOHIDServiceClient *)from;
 - (void)handlePresetChange;
-- (void)hidServiceArrival:(__IOHIDServiceClient *)a3;
-- (void)keyboardBacklightHIDDeviceArrived:(id)a3;
-- (void)keyboardBacklightHIDDeviceRemoved:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)registerNotificationBlock:(id)a3;
+- (void)hidServiceArrival:(__IOHIDServiceClient *)arrival;
+- (void)keyboardBacklightHIDDeviceArrived:(id)arrived;
+- (void)keyboardBacklightHIDDeviceRemoved:(id)removed;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)registerNotificationBlock:(id)block;
 - (void)releaseDisplayModeCompletionTimer;
-- (void)removeDisplayContainer:(id)a3;
-- (void)removeHIDService:(__IOHIDServiceClient *)a3;
-- (void)scheduleDisplayModeCompletionTimerIn:(float)a3 forDisplayMode:(int64_t)a4;
-- (void)sendNotificationFor:(id)a3 withValue:(id)a4;
+- (void)removeDisplayContainer:(id)container;
+- (void)removeHIDService:(__IOHIDServiceClient *)service;
+- (void)scheduleDisplayModeCompletionTimerIn:(float)in forDisplayMode:(int64_t)mode;
+- (void)sendNotificationFor:(id)for withValue:(id)value;
 - (void)sendNotificationWithKeyboardIDs;
-- (void)sendSyncNotificationFor:(id)a3 withValue:(id)a4;
+- (void)sendSyncNotificationFor:(id)for withValue:(id)value;
 - (void)stop;
 - (void)stopDisplayLookup;
-- (void)systemSleepMonitor:(id)a3 prepareForSleepWithCompletion:(id)a4;
-- (void)systemSleepMonitorDidWakeFromSleep:(id)a3;
-- (void)systemSleepMonitorWillWakeFromSleep:(id)a3;
+- (void)systemSleepMonitor:(id)monitor prepareForSleepWithCompletion:(id)completion;
+- (void)systemSleepMonitorDidWakeFromSleep:(id)sleep;
+- (void)systemSleepMonitorWillWakeFromSleep:(id)sleep;
 - (void)waitForALSArrival;
 @end
 
@@ -54,13 +54,13 @@
 
 - (void)releaseDisplayModeCompletionTimer
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   if (self->_displayModeCompletionTimer)
   {
-    if (v10->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v10->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -88,24 +88,24 @@
       _os_log_impl(&dword_1DE8E5000, log, type, "[Display Mode] Release scheduled display mode completion timer", v6, 2u);
     }
 
-    dispatch_source_cancel(v10->_displayModeCompletionTimer);
-    dispatch_release(v10->_displayModeCompletionTimer);
-    v10->_displayModeCompletionTimer = 0;
+    dispatch_source_cancel(selfCopy->_displayModeCompletionTimer);
+    dispatch_release(selfCopy->_displayModeCompletionTimer);
+    selfCopy->_displayModeCompletionTimer = 0;
   }
 }
 
 - (BLControl)init
 {
-  v41 = self;
+  selfCopy = self;
   v40 = a2;
   v39.receiver = self;
   v39.super_class = BLControl;
-  v41 = [(BLControl *)&v39 init];
-  if (v41)
+  selfCopy = [(BLControl *)&v39 init];
+  if (selfCopy)
   {
     v2 = os_log_create("com.apple.CoreBrightness.BLControl", "default");
-    *(v41 + 14) = v2;
-    if (!*(v41 + 14))
+    *(selfCopy + 14) = v2;
+    if (!*(selfCopy + 14))
     {
       v26 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
       v38 = v26;
@@ -120,12 +120,12 @@
     }
 
     v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    *(v41 + 11) = v3;
-    if (!*(v41 + 11))
+    *(selfCopy + 11) = v3;
+    if (!*(selfCopy + 11))
     {
-      if (*(v41 + 14))
+      if (*(selfCopy + 14))
       {
-        v23 = *(v41 + 14);
+        v23 = *(selfCopy + 14);
       }
 
       else
@@ -154,23 +154,23 @@
       }
 
 LABEL_39:
-      MEMORY[0x1E69E5920](v41);
-      v41 = 0;
+      MEMORY[0x1E69E5920](selfCopy);
+      selfCopy = 0;
       return 0;
     }
 
     inactive = dispatch_workloop_create_inactive("BacklightControl - Primary workloop");
-    *(v41 + 2) = inactive;
-    v5 = *(v41 + 2);
+    *(selfCopy + 2) = inactive;
+    v5 = *(selfCopy + 2);
     dispatch_workloop_set_scheduler_priority();
-    dispatch_activate(*(v41 + 2));
-    v6 = dispatch_queue_create_with_target_V2("BacklightControl - Primary queue", 0, *(v41 + 2));
-    *(v41 + 3) = v6;
-    if (!*(v41 + 3))
+    dispatch_activate(*(selfCopy + 2));
+    v6 = dispatch_queue_create_with_target_V2("BacklightControl - Primary queue", 0, *(selfCopy + 2));
+    *(selfCopy + 3) = v6;
+    if (!*(selfCopy + 3))
     {
-      if (*(v41 + 14))
+      if (*(selfCopy + 14))
       {
-        v19 = *(v41 + 14);
+        v19 = *(selfCopy + 14);
       }
 
       else
@@ -201,26 +201,26 @@ LABEL_39:
       goto LABEL_39;
     }
 
-    *(v41 + 57) = 0;
-    *(v41 + 56) = 0;
-    v7 = [v41 newGlobalConfigProvider];
-    *(v41 + 15) = v7;
-    *(v41 + 15) = -1;
-    *(v41 + 18) = -1;
+    *(selfCopy + 57) = 0;
+    *(selfCopy + 56) = 0;
+    newGlobalConfigProvider = [selfCopy newGlobalConfigProvider];
+    *(selfCopy + 15) = newGlobalConfigProvider;
+    *(selfCopy + 15) = -1;
+    *(selfCopy + 18) = -1;
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    *(v41 + 12) = v8;
+    *(selfCopy + 12) = v8;
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    *(v41 + 13) = v9;
-    *(v41 + 20) = 0;
-    *(v41 + 21) = 5;
-    *(v41 + 22) = 0;
+    *(selfCopy + 13) = v9;
+    *(selfCopy + 20) = 0;
+    *(selfCopy + 21) = 5;
+    *(selfCopy + 22) = 0;
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    *(v41 + 18) = v10;
-    if (!*(v41 + 18))
+    *(selfCopy + 18) = v10;
+    if (!*(selfCopy + 18))
     {
-      if (*(v41 + 14))
+      if (*(selfCopy + 14))
       {
-        v15 = *(v41 + 14);
+        v15 = *(selfCopy + 14);
       }
 
       else
@@ -252,41 +252,41 @@ LABEL_39:
     }
   }
 
-  return v41;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   [(BLControl *)self releaseDisplayModeCompletionTimer];
-  if (v5->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    MEMORY[0x1E69E5920](v5->_logHandle);
-    v5->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
-  if (v5->_cbConfig)
+  if (selfCopy->_cbConfig)
   {
-    MEMORY[0x1E69E5920](v5->_cbConfig);
-    v5->_cbConfig = 0;
+    MEMORY[0x1E69E5920](selfCopy->_cbConfig);
+    selfCopy->_cbConfig = 0;
   }
 
-  if (v5->_queue)
+  if (selfCopy->_queue)
   {
-    dispatch_release(v5->_queue);
+    dispatch_release(selfCopy->_queue);
   }
 
-  if (v5->_workloop)
+  if (selfCopy->_workloop)
   {
-    dispatch_release(v5->_workloop);
+    dispatch_release(selfCopy->_workloop);
   }
 
-  MEMORY[0x1E69E5920](v5->_displayContainers);
-  MEMORY[0x1E69E5920](v5->_hidServiceClients);
-  MEMORY[0x1E69E5920](v5->_clientDisplayMap);
-  *&v2 = MEMORY[0x1E69E5920](v5->_keyboardContainers).n128_u64[0];
-  v3.receiver = v5;
+  MEMORY[0x1E69E5920](selfCopy->_displayContainers);
+  MEMORY[0x1E69E5920](selfCopy->_hidServiceClients);
+  MEMORY[0x1E69E5920](selfCopy->_clientDisplayMap);
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_keyboardContainers).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = BLControl;
   [(BLControl *)&v3 dealloc];
 }
@@ -320,7 +320,7 @@ LABEL_39:
 
 - (BOOL)start
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
   v12 = 0;
   v13 = &v12;
@@ -333,7 +333,7 @@ LABEL_39:
   v7 = 0;
   v8 = __18__BLControl_start__block_invoke;
   v9 = &unk_1E867C080;
-  v10 = v18;
+  v10 = selfCopy;
   v11 = &v12;
   dispatch_sync(queue, &block);
   v4 = *(v13 + 24);
@@ -586,7 +586,7 @@ void __18__BLControl_start__block_invoke_3(uint64_t a1)
 
 - (void)stop
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   queue = self->_queue;
   block = MEMORY[0x1E69E9820];
@@ -594,7 +594,7 @@ void __18__BLControl_start__block_invoke_3(uint64_t a1)
   v5 = 0;
   v6 = __17__BLControl_stop__block_invoke;
   v7 = &unk_1E867B480;
-  v8 = v10;
+  v8 = selfCopy;
   dispatch_sync(queue, &block);
 }
 
@@ -643,29 +643,29 @@ void __17__BLControl_stop__block_invoke(uint64_t a1)
   }
 }
 
-- (void)handleHIDEvent:(__IOHIDEvent *)a3 from:(__IOHIDServiceClient *)a4
+- (void)handleHIDEvent:(__IOHIDEvent *)event from:(__IOHIDServiceClient *)from
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
-  v16 = a3;
-  v15 = a4;
-  if (a4 && v16)
+  eventCopy = event;
+  fromCopy = from;
+  if (from && eventCopy)
   {
     v11 = 0;
     if (IOHIDEventGetType() == 12)
     {
-      v10 = [(BLControl *)v18 copyPropertyInternalWithKey:@"ALSIntegrationMode" forClient:0];
+      v10 = [(BLControl *)selfCopy copyPropertyInternalWithKey:@"ALSIntegrationMode" forClient:0];
       if ([+[CBAODState isAODActive] sharedInstance]
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0 || [v10 intValue] != 2 && objc_msgSend(v10, "intValue") != 1)
         {
-          [CBALSEvent replaceLuxWithFilteredLux:v16];
+          [CBALSEvent replaceLuxWithFilteredLux:eventCopy];
         }
       }
 
       *&v4 = MEMORY[0x1E69E5920](v10).n128_u64[0];
-      if (!v18->_ignoreALSEvents)
+      if (!selfCopy->_ignoreALSEvents)
       {
         v11 = 1;
       }
@@ -693,15 +693,15 @@ void __17__BLControl_stop__block_invoke(uint64_t a1)
 
     if (v11)
     {
-      [(NSMutableArray *)v18->_displayContainers enumerateObjectsUsingBlock:v4];
-      if ([(NSMutableDictionary *)v18->_keyboardContainers count])
+      [(NSMutableArray *)selfCopy->_displayContainers enumerateObjectsUsingBlock:v4];
+      if ([(NSMutableDictionary *)selfCopy->_keyboardContainers count])
       {
         if (IOHIDEventGetType() == 12)
         {
-          v9 = [(BLControl *)v18 copyPropertyInternalWithKey:@"TrustedFrontLux" forClient:0];
+          v9 = [(BLControl *)selfCopy copyPropertyInternalWithKey:@"TrustedFrontLux" forClient:0];
           if (v9)
           {
-            [(NSMutableDictionary *)v18->_keyboardContainers enumerateKeysAndObjectsUsingBlock:?];
+            [(NSMutableDictionary *)selfCopy->_keyboardContainers enumerateKeysAndObjectsUsingBlock:?];
           }
 
           MEMORY[0x1E69E5920](v9);
@@ -712,9 +712,9 @@ void __17__BLControl_stop__block_invoke(uint64_t a1)
 
   else
   {
-    if (v18->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v18->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -769,9 +769,9 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
 - (BOOL)findBacklight
 {
   keys[1] = *MEMORY[0x1E69E9840];
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
-  v32 = 0;
+  start = 0;
   keys[0] = @"backlight-control";
   values = 0;
   values = *MEMORY[0x1E695E4D0];
@@ -799,26 +799,26 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
       v27 = [(CBDisplayContaineriOS *)v2 initWithBacklightService:v28];
       if (v27)
       {
-        [(CBContainer *)v27 scheduleWithDispatchQueue:v34->_queue];
+        [(CBContainer *)v27 scheduleWithDispatchQueue:selfCopy->_queue];
         v21 = MEMORY[0x1E69E9820];
         v22 = -1073741824;
         v23 = 0;
         v24 = __26__BLControl_findBacklight__block_invoke;
         v25 = &unk_1E867B558;
-        v26 = v34;
+        v26 = selfCopy;
         [(CBDisplayContaineriOS *)v27 registerNotificationBlock:?];
-        v32 = [(CBDisplayContaineriOS *)v27 start];
-        if ((v32 & 1) == 0)
+        start = [(CBDisplayContaineriOS *)v27 start];
+        if ((start & 1) == 0)
         {
           MEMORY[0x1E69E5920](v27);
           break;
         }
 
-        [(BLControl *)v34 addDisplayContainer:v27];
-        ++v34->_builtInDisplayCount;
+        [(BLControl *)selfCopy addDisplayContainer:v27];
+        ++selfCopy->_builtInDisplayCount;
         if (([(CBDisplayContaineriOS *)v27 conformsToProtocol:&unk_1F59CC038]& 1) != 0)
         {
-          hidServiceClients = v34->_hidServiceClients;
+          hidServiceClients = selfCopy->_hidServiceClients;
           v15 = MEMORY[0x1E69E9820];
           v16 = -1073741824;
           v17 = 0;
@@ -833,9 +833,9 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
 
       else
       {
-        if (v34->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          logHandle = v34->_logHandle;
+          logHandle = selfCopy->_logHandle;
         }
 
         else
@@ -864,29 +864,29 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
         }
       }
 
-      v32 = 1;
+      start = 1;
     }
 
     IOObjectRelease(existing);
   }
 
   *MEMORY[0x1E69E9840];
-  return v32 & 1;
+  return start & 1;
 }
 
 - (BOOL)findDisplays
 {
   v43 = *MEMORY[0x1E69E9840];
-  v38 = self;
+  selfCopy = self;
   v37 = a2;
   v36 = 0;
-  v35 = [MEMORY[0x1E6979550] serverIfRunning];
-  if (v35)
+  serverIfRunning = [MEMORY[0x1E6979550] serverIfRunning];
+  if (serverIfRunning)
   {
-    v31 = [v35 displays];
-    if (v38->_logHandle)
+    displays = [serverIfRunning displays];
+    if (selfCopy->_logHandle)
     {
-      logHandle = v38->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -908,14 +908,14 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
     v29 = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_1_8_66(v42, v31);
+      __os_log_helper_16_2_1_8_66(v42, displays);
       _os_log_impl(&dword_1DE8E5000, v30, v29, "displays: %{public}@", v42, 0xCu);
     }
 
     v28 = objc_alloc_init(MEMORY[0x1E695DF90]);
     memset(__b, 0, sizeof(__b));
-    obj = v31;
-    v15 = [v31 countByEnumeratingWithState:__b objects:v41 count:16];
+    obj = displays;
+    v15 = [displays countByEnumeratingWithState:__b objects:v41 count:16];
     if (v15)
     {
       v11 = *__b[2];
@@ -931,17 +931,17 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
 
         v27 = 0;
         v27 = *(__b[1] + 8 * v12);
-        v25 = [v27 displayId];
-        if ([(BLControl *)v38 useSyncBrightnessTransactionForDisplay:v27])
+        displayId = [v27 displayId];
+        if ([(BLControl *)selfCopy useSyncBrightnessTransactionForDisplay:v27])
         {
-          [(BLControl *)v38 handleCAWindowServerDisplay:v27];
+          [(BLControl *)selfCopy handleCAWindowServerDisplay:v27];
           v36 = 1;
-          [v28 setObject:@"WSDisplay" forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v25)}];
+          [v28 setObject:@"WSDisplay" forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", displayId)}];
         }
 
         else
         {
-          [v28 setObject:@"CADisplay" forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v25)}];
+          [v28 setObject:@"CADisplay" forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", displayId)}];
         }
 
         ++v12;
@@ -957,12 +957,12 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
       }
     }
 
-    v2 = [MEMORY[0x1E6979328] mainDisplay];
-    [v2 addObserver:v38 forKeyPath:@"currentPreset" options:0 context:0];
-    [(BLControl *)v38 handlePresetChange];
+    mainDisplay = [MEMORY[0x1E6979328] mainDisplay];
+    [mainDisplay addObserver:selfCopy forKeyPath:@"currentPreset" options:0 context:0];
+    [(BLControl *)selfCopy handlePresetChange];
     memset(v23, 0, sizeof(v23));
-    v8 = [MEMORY[0x1E6979328] displays];
-    v9 = [v8 countByEnumeratingWithState:v23 objects:v40 count:16];
+    displays2 = [MEMORY[0x1E6979328] displays];
+    v9 = [displays2 countByEnumeratingWithState:v23 objects:v40 count:16];
     if (v9)
     {
       v5 = *v23[2];
@@ -973,17 +973,17 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
         v4 = v6;
         if (*v23[2] != v5)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(displays2);
         }
 
         v24 = 0;
         v24 = *(v23[1] + 8 * v6);
-        v22 = [v24 displayId];
-        if ([objc_msgSend(v28 objectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v22)), "isEqualToString:", @"CADisplay"}])
+        displayId2 = [v24 displayId];
+        if ([objc_msgSend(v28 objectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", displayId2)), "isEqualToString:", @"CADisplay"}])
         {
-          [(BLControl *)v38 handleCADisplay:v24];
-          [v24 addObserver:v38 forKeyPath:@"currentMode" options:? context:?];
-          [v24 addObserver:v38 forKeyPath:@"cloning" options:0 context:0];
+          [(BLControl *)selfCopy handleCADisplay:v24];
+          [v24 addObserver:selfCopy forKeyPath:@"currentMode" options:? context:?];
+          [v24 addObserver:selfCopy forKeyPath:@"cloning" options:0 context:0];
           v36 = 1;
         }
 
@@ -991,7 +991,7 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
         if (v4 + 1 >= v7)
         {
           v6 = 0;
-          v7 = [v8 countByEnumeratingWithState:v23 objects:v40 count:16];
+          v7 = [displays2 countByEnumeratingWithState:v23 objects:v40 count:16];
           if (!v7)
           {
             break;
@@ -1006,9 +1006,9 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
 
   else
   {
-    if (v38->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v21 = v38->_logHandle;
+      v21 = selfCopy->_logHandle;
     }
 
     else
@@ -1046,12 +1046,12 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
 - (void)stopDisplayLookup
 {
   v19 = *MEMORY[0x1E69E9840];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   v14 = [objc_msgSend(MEMORY[0x1E6979550] "serverIfRunning")];
-  if (v16->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    logHandle = v16->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -1096,8 +1096,8 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
 
       v11 = 0;
       v11 = *(__b[1] + 8 * v4);
-      [v11 removeObserver:v16 forKeyPath:@"currentMode" context:0];
-      [v11 removeObserver:v16 forKeyPath:@"cloning" context:0];
+      [v11 removeObserver:selfCopy forKeyPath:@"currentMode" context:0];
+      [v11 removeObserver:selfCopy forKeyPath:@"cloning" context:0];
       ++v4;
       if (v2 + 1 >= v5)
       {
@@ -1114,10 +1114,10 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
   *MEMORY[0x1E69E9840];
 }
 
-- (void)handleCADisplay:(id)a3
+- (void)handleCADisplay:(id)display
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3 && isDisplayAvailable(a3))
+  if (display && isDisplayAvailable(display))
   {
     if (self->_logHandle)
     {
@@ -1141,11 +1141,11 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_1_8_66(v10, [a3 deviceName]);
+      __os_log_helper_16_2_1_8_66(v10, [display deviceName]);
       _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_INFO, "%{public}@ is available", v10, 0xCu);
     }
 
-    [(BLControl *)self handleCADisplayArrival:a3];
+    [(BLControl *)self handleCADisplayArrival:display];
   }
 
   else
@@ -1172,65 +1172,65 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
 
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_1_8_66(v9, [a3 deviceName]);
+      __os_log_helper_16_2_1_8_66(v9, [display deviceName]);
       _os_log_impl(&dword_1DE8E5000, v4, OS_LOG_TYPE_INFO, "%{public}@ is not available", v9, 0xCu);
     }
 
-    [(BLControl *)self handleCADisplayRemoval:a3];
+    [(BLControl *)self handleCADisplayRemoval:display];
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (void)handleCAWindowServerDisplay:(id)a3
+- (void)handleCAWindowServerDisplay:(id)display
 {
   v36 = *MEMORY[0x1E69E9840];
-  v33 = self;
+  selfCopy = self;
   v32 = a2;
-  v31 = a3;
-  v30 = a3;
-  v29 = [[CBBrightnessProxyCA alloc] initWithCABrightnessControl:a3];
+  displayCopy = display;
+  displayCopy2 = display;
+  v29 = [[CBBrightnessProxyCA alloc] initWithCABrightnessControl:display];
   if (v29)
   {
     v28 = [[CBDisplayContaineriOS alloc] initWithCBBrtControl:v29];
     if (v28)
     {
-      [(CBContainer *)v28 scheduleWithDispatchQueue:v33->_queue];
+      [(CBContainer *)v28 scheduleWithDispatchQueue:selfCopy->_queue];
       v22 = MEMORY[0x1E69E9820];
       v23 = -1073741824;
       v24 = 0;
       v25 = __41__BLControl_handleCAWindowServerDisplay___block_invoke;
       v26 = &unk_1E867B558;
-      v27 = v33;
+      v27 = selfCopy;
       [(CBDisplayContaineriOS *)v28 registerNotificationBlock:?];
-      v21 = [(CBDisplayContaineriOS *)v28 start];
-      v16 = [(CBBrightnessProxyCA *)v29 getDisplayType];
-      if (v16 != [(CBBrightnessProxyCA *)v29 CBDispTypeIntegrated]|| v21)
+      start = [(CBDisplayContaineriOS *)v28 start];
+      getDisplayType = [(CBBrightnessProxyCA *)v29 getDisplayType];
+      if (getDisplayType != [(CBBrightnessProxyCA *)v29 CBDispTypeIntegrated]|| start)
       {
-        v11 = [(CBBrightnessProxyCA *)v29 getDisplayType];
-        if (v11 == [(CBBrightnessProxyCA *)v29 CBDispTypeIntegrated])
+        getDisplayType2 = [(CBBrightnessProxyCA *)v29 getDisplayType];
+        if (getDisplayType2 == [(CBBrightnessProxyCA *)v29 CBDispTypeIntegrated])
         {
-          ++v33->_builtInDisplayCount;
+          ++selfCopy->_builtInDisplayCount;
         }
 
-        v10 = [(CBBrightnessProxyCA *)v29 getDisplayType];
-        if (v10 == [(CBBrightnessProxyCA *)v29 CBDispTypeIntegrated]&& v33->_displayMode == 5)
+        getDisplayType3 = [(CBBrightnessProxyCA *)v29 getDisplayType];
+        if (getDisplayType3 == [(CBBrightnessProxyCA *)v29 CBDispTypeIntegrated]&& selfCopy->_displayMode == 5)
         {
           v17 = [(CBDisplayContaineriOS *)v28 copyPropertyForKey:@"DisplayOn"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v4 = [v17 BOOLValue];
+            bOOLValue = [v17 BOOLValue];
             v5 = 3;
-            if ((v4 & 1) == 0)
+            if ((bOOLValue & 1) == 0)
             {
               v5 = 0;
             }
 
-            v33->_displayMode = v5;
-            if (v33->_logHandle)
+            selfCopy->_displayMode = v5;
+            if (selfCopy->_logHandle)
             {
-              logHandle = v33->_logHandle;
+              logHandle = selfCopy->_logHandle;
             }
 
             else
@@ -1250,7 +1250,7 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
 
             if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
             {
-              __os_log_helper_16_2_1_8_66(v35, [CBDisplayStateUtilities stringForDisplayMode:v33->_displayMode]);
+              __os_log_helper_16_2_1_8_66(v35, [CBDisplayStateUtilities stringForDisplayMode:selfCopy->_displayMode]);
               _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "display mode initialised from invalid to %{public}@", v35, 0xCu);
             }
           }
@@ -1258,10 +1258,10 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
           *&v3 = MEMORY[0x1E69E5920](v17).n128_u64[0];
         }
 
-        [(BLControl *)v33 addDisplayContainer:v28, v3];
+        [(BLControl *)selfCopy addDisplayContainer:v28, v3];
         if (([(CBDisplayContaineriOS *)v28 conformsToProtocol:&unk_1F59CC038]& 1) != 0)
         {
-          [(NSMutableArray *)v33->_hidServiceClients enumerateObjectsUsingBlock:?];
+          [(NSMutableArray *)selfCopy->_hidServiceClients enumerateObjectsUsingBlock:?];
         }
 
         MEMORY[0x1E69E5920](v28);
@@ -1270,9 +1270,9 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
 
       else
       {
-        if (v33->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v15 = v33->_logHandle;
+          v15 = selfCopy->_logHandle;
         }
 
         else
@@ -1307,9 +1307,9 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
 
     else
     {
-      if (v33->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        v7 = v33->_logHandle;
+        v7 = selfCopy->_logHandle;
       }
 
       else
@@ -1329,7 +1329,7 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
 
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_2_1_8_66(v34, v31);
+        __os_log_helper_16_2_1_8_66(v34, displayCopy);
         _os_log_error_impl(&dword_1DE8E5000, v7, OS_LOG_TYPE_ERROR, "error: failed to create display container for service %{public}@", v34, 0xCu);
       }
 
@@ -1340,24 +1340,24 @@ uint64_t __33__BLControl_handleHIDEvent_from___block_invoke_2(uint64_t a1, uint6
   *MEMORY[0x1E69E9840];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
-  v18 = a4;
-  v17 = a5;
-  v16 = a6;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  contextCopy = context;
   queue = self->_queue;
   v7 = MEMORY[0x1E69E9820];
   v8 = -1073741824;
   v9 = 0;
   v10 = __60__BLControl_observeValueForKeyPath_ofObject_change_context___block_invoke;
   v11 = &unk_1E867BB20;
-  v12 = a4;
-  v13 = v21;
-  v14 = a3;
-  v15 = a5;
+  objectCopy2 = object;
+  v13 = selfCopy;
+  pathCopy2 = path;
+  changeCopy2 = change;
   dispatch_sync(queue, &v7);
 }
 
@@ -1501,32 +1501,32 @@ void __60__BLControl_observeValueForKeyPath_ofObject_change_context___block_invo
   *MEMORY[0x1E69E9840];
 }
 
-- (void)handleCADisplayArrival:(id)a3
+- (void)handleCADisplayArrival:(id)arrival
 {
   v16 = *MEMORY[0x1E69E9840];
-  [(BLControl *)self handleCADisplayRemoval:a3];
-  v11 = [[CBDisplayContaineriOS alloc] initWithCADisplay:a3];
+  [(BLControl *)self handleCADisplayRemoval:arrival];
+  v11 = [[CBDisplayContaineriOS alloc] initWithCADisplay:arrival];
   if (v11)
   {
     [(CBContainer *)v11 scheduleWithDispatchQueue:self->_queue];
     [(CBDisplayContaineriOS *)v11 registerNotificationBlock:?];
-    v10 = [(CBDisplayContaineriOS *)v11 start];
-    if (([a3 isExternal] & 1) != 0 || v10)
+    start = [(CBDisplayContaineriOS *)v11 start];
+    if (([arrival isExternal] & 1) != 0 || start)
     {
-      if (([a3 isExternal] & 1) == 0)
+      if (([arrival isExternal] & 1) == 0)
       {
         ++self->_builtInDisplayCount;
       }
 
-      if (([a3 isExternal] & 1) == 0 && self->_displayMode == 5)
+      if (([arrival isExternal] & 1) == 0 && self->_displayMode == 5)
       {
         v9 = [(CBDisplayContaineriOS *)v11 copyPropertyForKey:@"DisplayOn"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v3 = [v9 BOOLValue];
+          bOOLValue = [v9 BOOLValue];
           v4 = 3;
-          if ((v3 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
             v4 = 0;
           }
@@ -1569,7 +1569,7 @@ void __60__BLControl_observeValueForKeyPath_ofObject_change_context___block_invo
       }
 
       [(BLControl *)self handleExternalDisplayChange];
-      [(BLControl *)self handleCloningChange:a3];
+      [(BLControl *)self handleCloningChange:arrival];
     }
 
     else
@@ -1602,7 +1602,7 @@ void __60__BLControl_observeValueForKeyPath_ofObject_change_context___block_invo
 
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_2_1_8_66(v14, a3);
+      __os_log_helper_16_2_1_8_66(v14, arrival);
       _os_log_error_impl(&dword_1DE8E5000, v6, OS_LOG_TYPE_ERROR, "error: failed to create display container for service %{public}@", v14, 0xCu);
     }
   }
@@ -1610,15 +1610,15 @@ void __60__BLControl_observeValueForKeyPath_ofObject_change_context___block_invo
   *MEMORY[0x1E69E9840];
 }
 
-- (void)handleCADisplayRemoval:(id)a3
+- (void)handleCADisplayRemoval:(id)removal
 {
   v20 = *MEMORY[0x1E69E9840];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  if (a3)
+  removalCopy = removal;
+  if (removal)
   {
-    v14 = [v15 displayId];
+    displayId = [removalCopy displayId];
     v7 = 0;
     v8 = &v7;
     v9 = 1375731712;
@@ -1626,17 +1626,17 @@ void __60__BLControl_observeValueForKeyPath_ofObject_change_context___block_invo
     v11 = __Block_byref_object_copy__15;
     v12 = __Block_byref_object_dispose__15;
     v13 = 0;
-    [(NSMutableArray *)v17->_displayContainers enumerateObjectsUsingBlock:?];
+    [(NSMutableArray *)selfCopy->_displayContainers enumerateObjectsUsingBlock:?];
     if (v8[5])
     {
-      if (([v15 isExternal] & 1) == 0)
+      if (([removalCopy isExternal] & 1) == 0)
       {
-        --v17->_builtInDisplayCount;
+        --selfCopy->_builtInDisplayCount;
       }
 
-      if (v17->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        logHandle = v17->_logHandle;
+        logHandle = selfCopy->_logHandle;
       }
 
       else
@@ -1662,17 +1662,17 @@ void __60__BLControl_observeValueForKeyPath_ofObject_change_context___block_invo
 
       [v8[5] stop];
       [v8[5] unregisterNotificationBlock];
-      [v8[5] unscheduleWithDispatchQueue:v17->_queue];
-      [(BLControl *)v17 removeDisplayContainer:v8[5]];
-      [(BLControl *)v17 handleExternalDisplayChange];
-      [(BLControl *)v17 handleCloningChange:v15];
+      [v8[5] unscheduleWithDispatchQueue:selfCopy->_queue];
+      [(BLControl *)selfCopy removeDisplayContainer:v8[5]];
+      [(BLControl *)selfCopy handleExternalDisplayChange];
+      [(BLControl *)selfCopy handleCloningChange:removalCopy];
     }
 
     else
     {
-      if (v17->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        v4 = v17->_logHandle;
+        v4 = selfCopy->_logHandle;
       }
 
       else
@@ -1692,7 +1692,7 @@ void __60__BLControl_observeValueForKeyPath_ofObject_change_context___block_invo
 
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
-        __os_log_helper_16_0_1_8_0(v18, v14);
+        __os_log_helper_16_0_1_8_0(v18, displayId);
         _os_log_impl(&dword_1DE8E5000, v4, OS_LOG_TYPE_INFO, "no matching container to registry ID 0x%llX", v18, 0xCu);
       }
     }
@@ -1752,17 +1752,17 @@ void __36__BLControl_handleCADisplayRemoval___block_invoke(uint64_t a1, void *a2
   *MEMORY[0x1E69E9840];
 }
 
-- (id)newDevicePariMatchingDictionaryWithPage:(unsigned int)a3 andUsage:(unsigned int)a4
+- (id)newDevicePariMatchingDictionaryWithPage:(unsigned int)page andUsage:(unsigned int)usage
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
-  v13 = a4;
+  pageCopy = page;
+  usageCopy = usage;
   v12 = 0;
   v11 = 0;
   v7 = 0x1E696A000uLL;
-  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a3];
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:v13];
+  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:page];
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:usageCopy];
   if (v10 && v9)
   {
     v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v10, @"DeviceUsagePage", v9, @"DeviceUsage", 0}];
@@ -1787,7 +1787,7 @@ void __36__BLControl_handleCADisplayRemoval___block_invoke(uint64_t a1, void *a2
   return v12;
 }
 
-- (void)hidServiceArrival:(__IOHIDServiceClient *)a3
+- (void)hidServiceArrival:(__IOHIDServiceClient *)arrival
 {
   v8 = *MEMORY[0x1E69E9840];
   if (self->_logHandle)
@@ -1812,12 +1812,12 @@ void __36__BLControl_handleCADisplayRemoval___block_invoke(uint64_t a1, void *a2
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
   {
-    __os_log_helper_16_2_2_8_0_8_66(v7, a3, a3);
+    __os_log_helper_16_2_2_8_0_8_66(v7, arrival, arrival);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_INFO, "(%p) %{public}@", v7, 0x16u);
   }
 
   IOHIDServiceClientRegisterRemovalBlock();
-  [(NSMutableArray *)self->_hidServiceClients addObject:a3];
+  [(NSMutableArray *)self->_hidServiceClients addObject:arrival];
   [(NSMutableArray *)self->_displayContainers enumerateObjectsUsingBlock:?];
   [(NSMutableDictionary *)self->_keyboardContainers enumerateKeysAndObjectsUsingBlock:?];
   *MEMORY[0x1E69E9840];
@@ -1845,7 +1845,7 @@ uint64_t __31__BLControl_hidServiceArrival___block_invoke_3(uint64_t a1, uint64_
   return result;
 }
 
-- (void)removeHIDService:(__IOHIDServiceClient *)a3
+- (void)removeHIDService:(__IOHIDServiceClient *)service
 {
   v8 = *MEMORY[0x1E69E9840];
   if (self->_logHandle)
@@ -1870,11 +1870,11 @@ uint64_t __31__BLControl_hidServiceArrival___block_invoke_3(uint64_t a1, uint64_
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
   {
-    __os_log_helper_16_2_2_8_0_8_66(v7, a3, a3);
+    __os_log_helper_16_2_2_8_0_8_66(v7, service, service);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_INFO, "(%p) %{public}@", v7, 0x16u);
   }
 
-  [(NSMutableArray *)self->_hidServiceClients removeObject:a3];
+  [(NSMutableArray *)self->_hidServiceClients removeObject:service];
   [(NSMutableArray *)self->_displayContainers enumerateObjectsUsingBlock:?];
   [(NSMutableDictionary *)self->_keyboardContainers enumerateKeysAndObjectsUsingBlock:?];
   *MEMORY[0x1E69E9840];
@@ -1904,40 +1904,40 @@ uint64_t __30__BLControl_removeHIDService___block_invoke_2(uint64_t a1, uint64_t
 
 - (BOOL)startHIDSystemClient
 {
-  v39 = self;
+  selfCopy = self;
   v38 = a2;
   v37 = 0;
   v2 = *MEMORY[0x1E695E480];
-  v39->_hidSystemClient = IOHIDEventSystemClientCreateWithType();
-  if (v39->_hidSystemClient)
+  selfCopy->_hidSystemClient = IOHIDEventSystemClientCreateWithType();
+  if (selfCopy->_hidSystemClient)
   {
     v36 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (v36)
     {
-      v35 = [(BLControl *)v39 newDevicePariMatchingDictionaryWithPage:65280 andUsage:4];
+      v35 = [(BLControl *)selfCopy newDevicePariMatchingDictionaryWithPage:65280 andUsage:4];
       if (v35)
       {
         [v36 addObject:v35];
         MEMORY[0x1E69E5920](v35);
       }
 
-      v35 = [(BLControl *)v39 newDevicePariMatchingDictionaryWithPage:32 andUsage:65];
+      v35 = [(BLControl *)selfCopy newDevicePariMatchingDictionaryWithPage:32 andUsage:65];
       if (v35)
       {
         [v36 addObject:v35];
         MEMORY[0x1E69E5920](v35);
       }
 
-      if (!v39->_monitorALSOnly)
+      if (!selfCopy->_monitorALSOnly)
       {
-        v35 = [(BLControl *)v39 newDevicePariMatchingDictionaryWithPage:65280 andUsage:8];
+        v35 = [(BLControl *)selfCopy newDevicePariMatchingDictionaryWithPage:65280 andUsage:8];
         if (v35)
         {
           [v36 addObject:v35];
           MEMORY[0x1E69E5920](v35);
         }
 
-        v35 = [(BLControl *)v39 newDevicePariMatchingDictionaryWithPage:13 andUsage:12];
+        v35 = [(BLControl *)selfCopy newDevicePariMatchingDictionaryWithPage:13 andUsage:12];
         if (v35)
         {
           [v35 setObject:MEMORY[0x1E695E118] forKey:@"Built-In"];
@@ -1945,7 +1945,7 @@ uint64_t __30__BLControl_removeHIDService___block_invoke_2(uint64_t a1, uint64_t
           MEMORY[0x1E69E5920](v35);
         }
 
-        v35 = [(BLControl *)v39 newDevicePariMatchingDictionaryWithPage:13 andUsage:4];
+        v35 = [(BLControl *)selfCopy newDevicePariMatchingDictionaryWithPage:13 andUsage:4];
         if (v35)
         {
           [v35 setObject:MEMORY[0x1E695E118] forKey:@"Built-In"];
@@ -1953,14 +1953,14 @@ uint64_t __30__BLControl_removeHIDService___block_invoke_2(uint64_t a1, uint64_t
           MEMORY[0x1E69E5920](v35);
         }
 
-        v35 = [(BLControl *)v39 newDevicePariMatchingDictionaryWithPage:11 andUsage:1];
+        v35 = [(BLControl *)selfCopy newDevicePariMatchingDictionaryWithPage:11 andUsage:1];
         if (v35)
         {
           [v36 addObject:v35];
           MEMORY[0x1E69E5920](v35);
         }
 
-        v35 = [(BLControl *)v39 newDevicePariMatchingDictionaryWithPage:65280 andUsage:98];
+        v35 = [(BLControl *)selfCopy newDevicePariMatchingDictionaryWithPage:65280 andUsage:98];
         if (v35)
         {
           [v36 addObject:v35];
@@ -1968,35 +1968,35 @@ uint64_t __30__BLControl_removeHIDService___block_invoke_2(uint64_t a1, uint64_t
         }
       }
 
-      hidSystemClient = v39->_hidSystemClient;
+      hidSystemClient = selfCopy->_hidSystemClient;
       IOHIDEventSystemClientSetMatchingMultiple();
       MEMORY[0x1E69E5920](v36);
-      v4 = v39->_hidSystemClient;
+      v4 = selfCopy->_hidSystemClient;
       v29 = MEMORY[0x1E69E9820];
       v30 = -1073741824;
       v31 = 0;
       v32 = __33__BLControl_startHIDSystemClient__block_invoke;
       v33 = &unk_1E867C470;
-      v34 = v39;
+      v34 = selfCopy;
       IOHIDEventSystemClientRegisterEventBlock();
-      v5 = v39->_hidSystemClient;
+      v5 = selfCopy->_hidSystemClient;
       v23 = MEMORY[0x1E69E9820];
       v24 = -1073741824;
       v25 = 0;
       v26 = __33__BLControl_startHIDSystemClient__block_invoke_2;
       v27 = &unk_1E867C428;
-      v28 = v39;
+      v28 = selfCopy;
       IOHIDEventSystemClientRegisterDeviceMatchingBlock();
-      v6 = v39->_hidSystemClient;
-      queue = v39->_queue;
+      v6 = selfCopy->_hidSystemClient;
+      queue = selfCopy->_queue;
       IOHIDEventSystemClientScheduleWithDispatchQueue();
-      v22 = IOHIDEventSystemClientCopyServices(v39->_hidSystemClient);
+      v22 = IOHIDEventSystemClientCopyServices(selfCopy->_hidSystemClient);
       v16 = MEMORY[0x1E69E9820];
       v17 = -1073741824;
       v18 = 0;
       v19 = __33__BLControl_startHIDSystemClient__block_invoke_3;
       v20 = &unk_1E867B668;
-      v21 = v39;
+      v21 = selfCopy;
       [(__CFArray *)v22 enumerateObjectsUsingBlock:?];
       MEMORY[0x1E69E5920](v22);
       v37 = 1;
@@ -2005,9 +2005,9 @@ uint64_t __30__BLControl_removeHIDService___block_invoke_2(uint64_t a1, uint64_t
 
   else
   {
-    if (v39->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v39->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -2051,11 +2051,11 @@ uint64_t __30__BLControl_removeHIDService___block_invoke_2(uint64_t a1, uint64_t
   }
 }
 
-- (id)copyBLControlPropertyWithkey:(id)a3
+- (id)copyBLControlPropertyWithkey:(id)withkey
 {
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
-  v32 = a3;
+  withkeyCopy = withkey;
   v25 = 0;
   v26 = &v25;
   v27 = 1375731712;
@@ -2063,23 +2063,23 @@ uint64_t __30__BLControl_removeHIDService___block_invoke_2(uint64_t a1, uint64_t
   v29 = __Block_byref_object_copy__15;
   v30 = __Block_byref_object_dispose__15;
   v31 = 0;
-  if ([a3 isEqual:@"BLControlAlsSupported"])
+  if ([withkey isEqual:@"BLControlAlsSupported"])
   {
-    displayContainers = v34->_displayContainers;
+    displayContainers = selfCopy->_displayContainers;
     v18 = MEMORY[0x1E69E9820];
     v19 = -1073741824;
     v20 = 0;
     v21 = __42__BLControl_copyBLControlPropertyWithkey___block_invoke;
     v22 = &unk_1E867BEB8;
     v24 = &v25;
-    v23 = v32;
+    v23 = withkeyCopy;
     [(NSMutableArray *)displayContainers enumerateObjectsUsingBlock:?];
   }
 
-  else if ([v32 isEqual:@"DisplayStateControlSupported"])
+  else if ([withkeyCopy isEqual:@"DisplayStateControlSupported"])
   {
     v17 = 0;
-    [(CBPrimitiveConfigurationProvider *)v34->_cbConfig loadUint:kCBSupportsSyncDisplayStateControl toDestination:&v17];
+    [(CBPrimitiveConfigurationProvider *)selfCopy->_cbConfig loadUint:kCBSupportsSyncDisplayStateControl toDestination:&v17];
     v16 = objc_alloc(MEMORY[0x1E696AD98]);
     IsWatch = 1;
     if (!v17)
@@ -2091,9 +2091,9 @@ uint64_t __30__BLControl_removeHIDService___block_invoke_2(uint64_t a1, uint64_t
     v26[5] = v4;
   }
 
-  else if ([v32 isEqual:@"DisplayBrightnessIgnored"])
+  else if ([withkeyCopy isEqual:@"DisplayBrightnessIgnored"])
   {
-    if (v34->_ignoreBrightnessKey)
+    if (selfCopy->_ignoreBrightnessKey)
     {
       v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:1];
     }
@@ -2106,40 +2106,40 @@ uint64_t __30__BLControl_removeHIDService___block_invoke_2(uint64_t a1, uint64_t
     v26[5] = v5;
   }
 
-  else if ([v32 isEqual:@"EventTimestamps"])
+  else if ([withkeyCopy isEqual:@"EventTimestamps"])
   {
-    [(NSMutableArray *)v34->_displayContainers enumerateObjectsUsingBlock:?];
+    [(NSMutableArray *)selfCopy->_displayContainers enumerateObjectsUsingBlock:?];
   }
 
-  else if ([v32 isEqual:@"CBDisplayList"])
+  else if ([withkeyCopy isEqual:@"CBDisplayList"])
   {
-    v6 = [(BLControl *)v34 copyDisplayList];
-    v26[5] = v6;
+    copyDisplayList = [(BLControl *)selfCopy copyDisplayList];
+    v26[5] = copyDisplayList;
   }
 
-  else if ([v32 isEqual:@"CBDisplayInfo"])
+  else if ([withkeyCopy isEqual:@"CBDisplayInfo"])
   {
-    v7 = [(BLControl *)v34 copyDisplayInfo];
-    v26[5] = v7;
+    copyDisplayInfo = [(BLControl *)selfCopy copyDisplayInfo];
+    v26[5] = copyDisplayInfo;
   }
 
-  else if ([v32 isEqual:@"StatusInfo"])
+  else if ([withkeyCopy isEqual:@"StatusInfo"])
   {
-    v8 = [(BLControl *)v34 copyStatusInfo];
-    v26[5] = v8;
+    copyStatusInfo = [(BLControl *)selfCopy copyStatusInfo];
+    v26[5] = copyStatusInfo;
   }
 
-  else if ([v32 isEqual:@"DisplayMode"])
+  else if ([withkeyCopy isEqual:@"DisplayMode"])
   {
     v14 = objc_alloc(MEMORY[0x1E696AD98]);
-    v9 = [v14 initWithInt:v34->_displayMode];
+    v9 = [v14 initWithInt:selfCopy->_displayMode];
     v26[5] = v9;
   }
 
-  else if ([v32 isEqual:@"KeyboardBacklightIDs"])
+  else if ([withkeyCopy isEqual:@"KeyboardBacklightIDs"])
   {
     v13 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v10 = [v13 initWithArray:{-[NSMutableDictionary allKeys](v34->_keyboardContainers, "allKeys")}];
+    v10 = [v13 initWithArray:{-[NSMutableDictionary allKeys](selfCopy->_keyboardContainers, "allKeys")}];
     v26[5] = v10;
   }
 
@@ -2203,26 +2203,26 @@ double __42__BLControl_copyBLControlPropertyWithkey___block_invoke_2(uint64_t a1
   return result;
 }
 
-- (id)copyPropertyInternalWithKey:(id)a3 forClient:(id)a4
+- (id)copyPropertyInternalWithKey:(id)key forClient:(id)client
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
-  v16 = a4;
+  keyCopy = key;
+  clientCopy = client;
   v9 = 0;
   v10 = &v9;
   v11 = 1375731712;
   v12 = 48;
   v13 = __Block_byref_object_copy__15;
   v14 = __Block_byref_object_dispose__15;
-  v15 = [(BLControl *)self copyBLControlPropertyWithkey:a3];
+  v15 = [(BLControl *)self copyBLControlPropertyWithkey:key];
   if (!v10[5])
   {
-    if (v19->_builtInDisplayCount > 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (([v17 isEqual:@"DisplayBrightness"] & 1) != 0 || (objc_msgSend(v17, "isEqual:", @"DisplayNitsKey") & 1) != 0 || (objc_msgSend(v17, "isEqual:", @"BrightnessCLTMMode") & 1) != 0 || (objc_msgSend(v17, "isEqual:", @"BrightnessCLTM") & 1) != 0))
+    if (selfCopy->_builtInDisplayCount > 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (([keyCopy isEqual:@"DisplayBrightness"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqual:", @"DisplayNitsKey") & 1) != 0 || (objc_msgSend(keyCopy, "isEqual:", @"BrightnessCLTMMode") & 1) != 0 || (objc_msgSend(keyCopy, "isEqual:", @"BrightnessCLTM") & 1) != 0))
     {
-      if (v16)
+      if (clientCopy)
       {
-        v7 = v16;
+        v7 = clientCopy;
       }
 
       else
@@ -2230,7 +2230,7 @@ double __42__BLControl_copyBLControlPropertyWithkey___block_invoke_2(uint64_t a1
         v7 = @"Server";
       }
 
-      v8 = [(NSMutableDictionary *)v19->_clientDisplayMap objectForKey:v7];
+      v8 = [(NSMutableDictionary *)selfCopy->_clientDisplayMap objectForKey:v7];
       if (!v8)
       {
         v8 = @"DisplayTypeIcon";
@@ -2240,19 +2240,19 @@ double __42__BLControl_copyBLControlPropertyWithkey___block_invoke_2(uint64_t a1
       if (objc_opt_isKindOfClass())
       {
         [(__CFString *)v8 isEqual:@"DisplayTypeIcon"];
-        [(NSMutableArray *)v19->_displayContainers enumerateObjectsUsingBlock:?];
+        [(NSMutableArray *)selfCopy->_displayContainers enumerateObjectsUsingBlock:?];
       }
     }
 
     else
     {
-      [(NSMutableArray *)v19->_displayContainers enumerateObjectsUsingBlock:?];
+      [(NSMutableArray *)selfCopy->_displayContainers enumerateObjectsUsingBlock:?];
     }
   }
 
   if (!v10[5])
   {
-    [(NSMutableDictionary *)v19->_keyboardContainers enumerateKeysAndObjectsUsingBlock:?];
+    [(NSMutableDictionary *)selfCopy->_keyboardContainers enumerateKeysAndObjectsUsingBlock:?];
   }
 
   if (!v10[5])
@@ -2260,7 +2260,7 @@ double __42__BLControl_copyBLControlPropertyWithkey___block_invoke_2(uint64_t a1
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [-[NightModeControl getPropertyForKey:](v19->_nightModeControl getPropertyForKey:{v17), "copy"}];
+      v4 = [-[NightModeControl getPropertyForKey:](selfCopy->_nightModeControl getPropertyForKey:{keyCopy), "copy"}];
       v10[5] = v4;
     }
   }
@@ -2329,13 +2329,13 @@ uint64_t __51__BLControl_copyPropertyInternalWithKey_forClient___block_invoke_4(
   return result;
 }
 
-- (id)copyPropertyWithKey:(id)a3 client:(id)a4
+- (id)copyPropertyWithKey:(id)key client:(id)client
 {
   v30 = *MEMORY[0x1E69E9840];
-  v28 = self;
+  selfCopy = self;
   v27 = a2;
-  v26 = a3;
-  v25 = a4;
+  keyCopy = key;
+  clientCopy = client;
   v18 = 0;
   v19 = &v18;
   v20 = 1375731712;
@@ -2350,13 +2350,13 @@ uint64_t __51__BLControl_copyPropertyInternalWithKey_forClient___block_invoke_4(
   v12 = __40__BLControl_copyPropertyWithKey_client___block_invoke;
   v13 = &unk_1E867C2B0;
   v17 = &v18;
-  v14 = v28;
-  v15 = a3;
-  v16 = a4;
+  v14 = selfCopy;
+  keyCopy2 = key;
+  clientCopy2 = client;
   dispatch_sync(queue, &block);
-  if (v28->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    logHandle = v28->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -2376,7 +2376,7 @@ uint64_t __51__BLControl_copyPropertyInternalWithKey_forClient___block_invoke_4(
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v29, v26, v19[5]);
+    __os_log_helper_16_2_2_8_64_8_64(v29, keyCopy, v19[5]);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_INFO, "key=%@ result=%@", v29, 0x16u);
   }
 
@@ -2401,9 +2401,9 @@ uint64_t __40__BLControl_copyPropertyWithKey_client___block_invoke(uint64_t a1)
   [(BLControl *)self setPropertyInternalWithKey:@"kCoreBrightnessPresetStateChanged" property:0 client:?];
 }
 
-- (void)handleCloningChange:(id)a3
+- (void)handleCloningChange:(id)change
 {
-  if (isDisplayAvailable(a3) && ([a3 isExternal] & 1) != 0 && (objc_msgSend(a3, "isCloning") & 1) != 0)
+  if (isDisplayAvailable(change) && ([change isExternal] & 1) != 0 && (objc_msgSend(change, "isCloning") & 1) != 0)
   {
     [(BLControl *)self setPropertyInternalWithKey:@"CBExternalDisplayIsMirroring" property:MEMORY[0x1E695E118] client:0];
   }
@@ -2416,7 +2416,7 @@ uint64_t __40__BLControl_copyPropertyWithKey_client___block_invoke(uint64_t a1)
 
 - (void)handleExternalDisplayChange
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   v9 = 0;
   v10 = &v9;
@@ -2431,7 +2431,7 @@ uint64_t __40__BLControl_copyPropertyWithKey_client___block_invoke(uint64_t a1)
   v7 = &unk_1E867C510;
   v8 = &v9;
   [(NSMutableArray *)displayContainers enumerateObjectsUsingBlock:?];
-  -[BLControl setPropertyInternalWithKey:property:client:](v15, "setPropertyInternalWithKey:property:client:", @"CBHasExternalDisplay", [MEMORY[0x1E696AD98] numberWithBool:v10[3] & 1], 0);
+  -[BLControl setPropertyInternalWithKey:property:client:](selfCopy, "setPropertyInternalWithKey:property:client:", @"CBHasExternalDisplay", [MEMORY[0x1E696AD98] numberWithBool:v10[3] & 1], 0);
   _Block_object_dispose(&v9, 8);
 }
 
@@ -2448,24 +2448,24 @@ double __40__BLControl_handleExternalDisplayChange__block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (BOOL)setBLControlPropertyWithKey:(id)a3 property:(id)a4
+- (BOOL)setBLControlPropertyWithKey:(id)key property:(id)property
 {
   v72 = *MEMORY[0x1E69E9840];
-  v68 = self;
+  selfCopy = self;
   v67 = a2;
-  v66 = a3;
-  v65 = a4;
+  keyCopy = key;
+  propertyCopy = property;
   v64 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v66 isEqual:@"DisplayBrightness"])
+    if ([keyCopy isEqual:@"DisplayBrightness"])
     {
-      if (v68->_ignoreBrightnessKey && !v68->_overrideIgnoreBrightness)
+      if (selfCopy->_ignoreBrightnessKey && !selfCopy->_overrideIgnoreBrightness)
       {
-        if (v68->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          logHandle = v68->_logHandle;
+          logHandle = selfCopy->_logHandle;
         }
 
         else
@@ -2495,44 +2495,44 @@ double __40__BLControl_handleExternalDisplayChange__block_invoke(uint64_t a1, vo
       }
     }
 
-    else if ([v66 isEqual:@"DisplayBrightnessAuto"])
+    else if ([keyCopy isEqual:@"DisplayBrightnessAuto"])
     {
-      if (v65)
+      if (propertyCopy)
       {
         TypeID = CFNumberGetTypeID();
-        if (TypeID == CFGetTypeID(v65))
+        if (TypeID == CFGetTypeID(propertyCopy))
         {
           valuePtr = 0;
-          if (CFNumberGetValue(v65, kCFNumberIntType, &valuePtr))
+          if (CFNumberGetValue(propertyCopy, kCFNumberIntType, &valuePtr))
           {
-            v68->_overrideIgnoreBrightness = valuePtr == 0;
+            selfCopy->_overrideIgnoreBrightness = valuePtr == 0;
           }
         }
 
         else
         {
           v18 = CFBooleanGetTypeID();
-          if (v18 == CFGetTypeID(v65))
+          if (v18 == CFGetTypeID(propertyCopy))
           {
-            v57 = CFEqual(v65, *MEMORY[0x1E695E4D0]);
-            v68->_overrideIgnoreBrightness = v57 == 0;
+            v57 = CFEqual(propertyCopy, *MEMORY[0x1E695E4D0]);
+            selfCopy->_overrideIgnoreBrightness = v57 == 0;
           }
         }
       }
     }
 
-    else if ([v66 isEqual:@"BrightnessCurveLevel"])
+    else if ([keyCopy isEqual:@"BrightnessCurveLevel"])
     {
-      if (v68->_useMultiCurves)
+      if (selfCopy->_useMultiCurves)
       {
-        v68->_ignoreBrightnessKey = 1;
+        selfCopy->_ignoreBrightnessKey = 1;
       }
 
       else
       {
-        if (v68->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v17 = v68->_logHandle;
+          v17 = selfCopy->_logHandle;
         }
 
         else
@@ -2564,42 +2564,42 @@ double __40__BLControl_handleExternalDisplayChange__block_invoke(uint64_t a1, vo
       }
     }
 
-    else if ([v66 isEqual:@"ALSEventsIgnore"])
+    else if ([keyCopy isEqual:@"ALSEventsIgnore"])
     {
-      if (v65)
+      if (propertyCopy)
       {
-        v13 = CFGetTypeID(v65);
+        v13 = CFGetTypeID(propertyCopy);
         if (v13 == CFBooleanGetTypeID())
         {
-          v68->_ignoreALSEvents = CFBooleanGetValue(v65) != 0;
+          selfCopy->_ignoreALSEvents = CFBooleanGetValue(propertyCopy) != 0;
           v64 = 1;
         }
       }
     }
 
-    else if ([v66 isEqual:@"ALSEventsOverride"])
+    else if ([keyCopy isEqual:@"ALSEventsOverride"])
     {
-      if (v65)
+      if (propertyCopy)
       {
-        v12 = CFGetTypeID(v65);
+        v12 = CFGetTypeID(propertyCopy);
         if (v12 == CFNumberGetTypeID())
         {
           v53 = 0;
-          if (CFNumberGetValue(v65, kCFNumberFloatType, &v53))
+          if (CFNumberGetValue(propertyCopy, kCFNumberFloatType, &v53))
           {
             v11 = *MEMORY[0x1E695E480];
             mach_absolute_time();
             AmbientLightSensorEvent = IOHIDEventCreateAmbientLightSensorEvent();
             if (AmbientLightSensorEvent)
             {
-              hidServiceClients = v68->_hidServiceClients;
+              hidServiceClients = selfCopy->_hidServiceClients;
               v45 = MEMORY[0x1E69E9820];
               v46 = -1073741824;
               v47 = 0;
               v48 = __50__BLControl_setBLControlPropertyWithKey_property___block_invoke;
               v49 = &unk_1E867BC30;
               v51 = AmbientLightSensorEvent;
-              v50 = v68;
+              v50 = selfCopy;
               [(NSMutableArray *)hidServiceClients enumerateObjectsUsingBlock:?];
               CFRelease(AmbientLightSensorEvent);
             }
@@ -2608,36 +2608,36 @@ double __40__BLControl_handleExternalDisplayChange__block_invoke(uint64_t a1, vo
       }
     }
 
-    else if ([v66 isEqual:@"DisplayMode"])
+    else if ([keyCopy isEqual:@"DisplayMode"])
     {
       v40 = 0;
       v41 = &v40;
       v42 = 0x20000000;
       v43 = 32;
       v44 = 0;
-      [(BLControl *)v68 releaseDisplayModeCompletionTimer];
-      displayContainers = v68->_displayContainers;
+      [(BLControl *)selfCopy releaseDisplayModeCompletionTimer];
+      displayContainers = selfCopy->_displayContainers;
       v33 = MEMORY[0x1E69E9820];
       v34 = -1073741824;
       v35 = 0;
       v36 = __50__BLControl_setBLControlPropertyWithKey_property___block_invoke_2;
       v37 = &unk_1E867BEB8;
       v39 = &v40;
-      v38 = v65;
+      v38 = propertyCopy;
       [(NSMutableArray *)displayContainers enumerateObjectsUsingBlock:?];
       if ((v41[3] & 1) == 0)
       {
-        v10 = [(BLControl *)v68 handleDisplayModeUpdatePropertyHandler:v65];
+        v10 = [(BLControl *)selfCopy handleDisplayModeUpdatePropertyHandler:propertyCopy];
         *(v41 + 24) = (v41[3] & 1 | v10) != 0;
       }
 
-      v9 = [CBDisplayStateUtilities displayModeFromProperty:v65];
-      v68->_displayMode = v9;
-      if ((CBU_ImplicitUserInteractedWithUI() & 1) != 0 && v68->_displayMode == 3)
+      v9 = [CBDisplayStateUtilities displayModeFromProperty:propertyCopy];
+      selfCopy->_displayMode = v9;
+      if ((CBU_ImplicitUserInteractedWithUI() & 1) != 0 && selfCopy->_displayMode == 3)
       {
-        if (v68->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v8 = v68->_logHandle;
+          v8 = selfCopy->_logHandle;
         }
 
         else
@@ -2659,25 +2659,25 @@ double __40__BLControl_handleExternalDisplayChange__block_invoke(uint64_t a1, vo
         v31 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          __os_log_helper_16_2_1_8_64(v70, [CBDisplayStateUtilities stringForDisplayMode:v68->_displayMode]);
+          __os_log_helper_16_2_1_8_64(v70, [CBDisplayStateUtilities stringForDisplayMode:selfCopy->_displayMode]);
           _os_log_impl(&dword_1DE8E5000, oslog, v31, "%@ -> Implicit user interacted with UI message", v70, 0xCu);
         }
 
-        [(BLControl *)v68 setPropertyInternalWithKey:@"UserInteractedWithUI" property:MEMORY[0x1E695E118] client:0];
+        [(BLControl *)selfCopy setPropertyInternalWithKey:@"UserInteractedWithUI" property:MEMORY[0x1E695E118] client:0];
       }
 
       v64 = v41[3] & 1;
       _Block_object_dispose(&v40, 8);
     }
 
-    else if ([v66 isEqual:@"FlipBookState"])
+    else if ([keyCopy isEqual:@"FlipBookState"])
     {
       v26 = 0;
       v27 = &v26;
       v28 = 0x20000000;
       v29 = 32;
       v30 = 0;
-      [(NSMutableArray *)v68->_displayContainers enumerateObjectsUsingBlock:?];
+      [(NSMutableArray *)selfCopy->_displayContainers enumerateObjectsUsingBlock:?];
       v64 = v27[3] & 1;
       _Block_object_dispose(&v26, 8);
     }
@@ -2687,9 +2687,9 @@ double __40__BLControl_handleExternalDisplayChange__block_invoke(uint64_t a1, vo
 
   else
   {
-    if (v68->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v25 = v68->_logHandle;
+      v25 = selfCopy->_logHandle;
     }
 
     else
@@ -2763,14 +2763,14 @@ uint64_t __50__BLControl_setBLControlPropertyWithKey_property___block_invoke_282
   return result;
 }
 
-- (BOOL)setPropertyInternalWithKey:(id)a3 property:(id)a4 client:(id)a5
+- (BOOL)setPropertyInternalWithKey:(id)key property:(id)property client:(id)client
 {
   v25 = *MEMORY[0x1E69E9840];
-  v23 = self;
+  selfCopy = self;
   v22 = a2;
-  v21 = a3;
-  v20 = a4;
-  v19 = a5;
+  keyCopy = key;
+  propertyCopy = property;
+  clientCopy = client;
   v14 = 0;
   v15 = &v14;
   v16 = 0x20000000;
@@ -2778,7 +2778,7 @@ uint64_t __50__BLControl_setBLControlPropertyWithKey_property___block_invoke_282
   v18 = 0;
   if (self->_logHandle)
   {
-    logHandle = v23->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -2798,22 +2798,22 @@ uint64_t __50__BLControl_setBLControlPropertyWithKey_property___block_invoke_282
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v24, v21, v20);
+    __os_log_helper_16_2_2_8_64_8_64(v24, keyCopy, propertyCopy);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_INFO, "key=%@ property=%@", v24, 0x16u);
   }
 
-  v10 = [(BLControl *)v23 setBLControlPropertyWithKey:v21 property:v20];
+  v10 = [(BLControl *)selfCopy setBLControlPropertyWithKey:keyCopy property:propertyCopy];
   *(v15 + 24) = v10;
-  if ((v15[3] & 1) == 0 && v23->_builtInDisplayCount > 1)
+  if ((v15[3] & 1) == 0 && selfCopy->_builtInDisplayCount > 1)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v21 isEqual:@"DisplaySelect"])
+      if ([keyCopy isEqual:@"DisplaySelect"])
       {
-        if (v19)
+        if (clientCopy)
         {
-          v9 = v19;
+          v9 = clientCopy;
         }
 
         else
@@ -2821,15 +2821,15 @@ uint64_t __50__BLControl_setBLControlPropertyWithKey_property___block_invoke_282
           v9 = @"Server";
         }
 
-        [(NSMutableDictionary *)v23->_clientDisplayMap setObject:v20 forKey:v9];
+        [(NSMutableDictionary *)selfCopy->_clientDisplayMap setObject:propertyCopy forKey:v9];
         *(v15 + 24) = 1;
       }
 
-      else if ([v21 isEqual:@"DisplayBrightness"] & 1) != 0 || (objc_msgSend(v21, "isEqual:", @"DisplayNitsKey") & 1) != 0 || (objc_msgSend(v21, "isEqual:", @"MaxBrightness"))
+      else if ([keyCopy isEqual:@"DisplayBrightness"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqual:", @"DisplayNitsKey") & 1) != 0 || (objc_msgSend(keyCopy, "isEqual:", @"MaxBrightness"))
       {
-        if (v19)
+        if (clientCopy)
         {
-          v8 = v19;
+          v8 = clientCopy;
         }
 
         else
@@ -2837,7 +2837,7 @@ uint64_t __50__BLControl_setBLControlPropertyWithKey_property___block_invoke_282
           v8 = @"Server";
         }
 
-        v13 = [(NSMutableDictionary *)v23->_clientDisplayMap objectForKey:v8];
+        v13 = [(NSMutableDictionary *)selfCopy->_clientDisplayMap objectForKey:v8];
         if (!v13)
         {
           v13 = @"DisplayTypeIcon";
@@ -2847,25 +2847,25 @@ uint64_t __50__BLControl_setBLControlPropertyWithKey_property___block_invoke_282
         if (objc_opt_isKindOfClass())
         {
           [(__CFString *)v13 isEqual:@"DisplayTypeIcon"];
-          [(NSMutableArray *)v23->_displayContainers enumerateObjectsUsingBlock:?];
+          [(NSMutableArray *)selfCopy->_displayContainers enumerateObjectsUsingBlock:?];
         }
       }
 
       else
       {
-        [(NSMutableArray *)v23->_displayContainers enumerateObjectsUsingBlock:?];
+        [(NSMutableArray *)selfCopy->_displayContainers enumerateObjectsUsingBlock:?];
       }
     }
   }
 
   if ((v15[3] & 1) == 0)
   {
-    [(NSMutableArray *)v23->_displayContainers enumerateObjectsUsingBlock:?];
-    [(NSMutableDictionary *)v23->_keyboardContainers enumerateKeysAndObjectsUsingBlock:?];
+    [(NSMutableArray *)selfCopy->_displayContainers enumerateObjectsUsingBlock:?];
+    [(NSMutableDictionary *)selfCopy->_keyboardContainers enumerateKeysAndObjectsUsingBlock:?];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(NightModeControl *)v23->_nightModeControl setProperty:v20 forKey:v21];
+      v7 = [(NightModeControl *)selfCopy->_nightModeControl setProperty:propertyCopy forKey:keyCopy];
       *(v15 + 24) = (v15[3] & 1 | v7) != 0;
     }
   }
@@ -2921,36 +2921,36 @@ uint64_t __56__BLControl_setPropertyInternalWithKey_property_client___block_invo
   return result;
 }
 
-- (BOOL)setPropertyWithKey:(id)a3 property:(id)a4 client:(id)a5
+- (BOOL)setPropertyWithKey:(id)key property:(id)property client:(id)client
 {
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
+  keyCopy = key;
+  propertyCopy = property;
+  clientCopy = client;
   v18 = 0;
   v19 = &v18;
   v20 = 0x20000000;
   v21 = 32;
   v22 = 0;
-  if ([a3 isEqual:@"CBAOTStateUpdate"])
+  if ([key isEqual:@"CBAOTStateUpdate"])
   {
     v28 = 1;
   }
 
   else
   {
-    queue = v27->_queue;
+    queue = selfCopy->_queue;
     block = MEMORY[0x1E69E9820];
     v8 = -1073741824;
     v9 = 0;
     v10 = __48__BLControl_setPropertyWithKey_property_client___block_invoke;
     v11 = &unk_1E867C2D8;
     v16 = &v18;
-    v12 = v27;
-    v13 = v25;
-    v14 = v24;
-    v15 = v23;
+    v12 = selfCopy;
+    v13 = keyCopy;
+    v14 = propertyCopy;
+    v15 = clientCopy;
     dispatch_sync(queue, &block);
     v28 = v19[3] & 1;
   }
@@ -2967,7 +2967,7 @@ uint64_t __48__BLControl_setPropertyWithKey_property_client___block_invoke(uint6
   return result;
 }
 
-- (BOOL)handleDisplayModeUpdatePropertyHandler:(id)a3
+- (BOOL)handleDisplayModeUpdatePropertyHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0;
@@ -2975,15 +2975,15 @@ uint64_t __48__BLControl_setPropertyWithKey_property_client___block_invoke(uint6
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [a3 objectForKey:@"Value"];
-    v16 = [a3 objectForKey:@"TransitionLength"];
+    v17 = [handler objectForKey:@"Value"];
+    v16 = [handler objectForKey:@"TransitionLength"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = [v17 integerValue];
+        integerValue = [v17 integerValue];
         [v16 floatValue];
         v14 = v3;
         v13 = 0.02;
@@ -3009,11 +3009,11 @@ uint64_t __48__BLControl_setPropertyWithKey_property_client___block_invoke(uint6
 
         if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
         {
-          __os_log_helper_16_2_3_8_66_4_0_8_0(v22, [CBDisplayStateUtilities stringForDisplayMode:v15], v15, COERCE__INT64(v14));
+          __os_log_helper_16_2_3_8_66_4_0_8_0(v22, [CBDisplayStateUtilities stringForDisplayMode:integerValue], integerValue, COERCE__INT64(v14));
           _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "[Display Mode] Update handler - new mode: %{public}@ (%d), transition length: %f", v22, 0x1Cu);
         }
 
-        if (!v15)
+        if (!integerValue)
         {
           *&v5 = v14;
           [(BLControl *)self setDisplayFactor:0.0 transitionLength:v5];
@@ -3022,9 +3022,9 @@ uint64_t __48__BLControl_setPropertyWithKey_property_client___block_invoke(uint6
           goto LABEL_26;
         }
 
-        if (v15 != 1)
+        if (integerValue != 1)
         {
-          if (v15 == 2)
+          if (integerValue == 2)
           {
             *&v5 = v14;
             [(BLControl *)self setDisplayFactor:0.0 transitionLength:v5];
@@ -3032,9 +3032,9 @@ uint64_t __48__BLControl_setPropertyWithKey_property_client___block_invoke(uint6
             goto LABEL_26;
           }
 
-          if (v15 != 3)
+          if (integerValue != 3)
           {
-            if (v15 == 4)
+            if (integerValue == 4)
             {
               *&v5 = v14;
               LODWORD(v4) = 1028443341;
@@ -3047,7 +3047,7 @@ uint64_t __48__BLControl_setPropertyWithKey_property_client___block_invoke(uint6
               v12 = self->_logHandle;
               if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
               {
-                __os_log_helper_16_0_1_4_0(v21, v15);
+                __os_log_helper_16_0_1_4_0(v21, integerValue);
                 _os_log_fault_impl(&dword_1DE8E5000, v12, OS_LOG_TYPE_FAULT, "[Display Mode] Failed to handle unexpected display mode = %d", v21, 8u);
               }
 
@@ -3064,7 +3064,7 @@ uint64_t __48__BLControl_setPropertyWithKey_property_client___block_invoke(uint6
         v18 = 1;
 LABEL_26:
         *&v7 = v14 + v13;
-        [(BLControl *)self scheduleDisplayModeCompletionTimerIn:v15 forDisplayMode:v7];
+        [(BLControl *)self scheduleDisplayModeCompletionTimerIn:integerValue forDisplayMode:v7];
       }
     }
   }
@@ -3074,12 +3074,12 @@ LABEL_26:
   return v18 & 1;
 }
 
-- (BOOL)setDisplayFactor:(float)a3 transitionLength:(float)a4
+- (BOOL)setDisplayFactor:(float)factor transitionLength:(float)length
 {
   context = objc_autoreleasePoolPush();
-  *&v4 = a4;
+  *&v4 = length;
   -[BLControl setPropertyInternalWithKey:property:client:](self, "setPropertyInternalWithKey:property:client:", @"DisplayBrightnessFadePeriod", [MEMORY[0x1E696AD98] numberWithFloat:v4]);
-  *&v5 = a3;
+  *&v5 = factor;
   v8 = -[BLControl setPropertyInternalWithKey:property:client:](self, "setPropertyInternalWithKey:property:client:", @"DisplayBrightnessFactorWithFade", [MEMORY[0x1E696AD98] numberWithFloat:v5], 0);
   objc_autoreleasePoolPop(context);
   return v8;
@@ -3087,7 +3087,7 @@ LABEL_26:
 
 - (void)waitForALSArrival
 {
-  v54 = self;
+  selfCopy = self;
   v53 = a2;
   v52 = dispatch_queue_create("com.apple.CoreBrightness.initQueue", 0);
   if (v52)
@@ -3096,7 +3096,7 @@ LABEL_26:
     v51 = IOHIDEventSystemClientCreate();
     if (v51)
     {
-      v50 = [(BLControl *)v54 newDevicePariMatchingDictionaryWithPage:65280 andUsage:4];
+      v50 = [(BLControl *)selfCopy newDevicePariMatchingDictionaryWithPage:65280 andUsage:4];
       if (v50)
       {
         IOHIDEventSystemClientSetMatching();
@@ -3116,7 +3116,7 @@ LABEL_26:
       v37 = __30__BLControl_waitForALSArrival__block_invoke;
       v38 = &unk_1E867C5B0;
       v42 = v51;
-      v39 = v54;
+      v39 = selfCopy;
       v41 = &v43;
       v40 = v52;
       dispatch_sync(v52, &block);
@@ -3126,9 +3126,9 @@ LABEL_26:
         v3 = dispatch_time(0, 5000000000);
         if (dispatch_semaphore_wait(dsema, v3))
         {
-          if (v54->_logHandle)
+          if (selfCopy->_logHandle)
           {
-            logHandle = v54->_logHandle;
+            logHandle = selfCopy->_logHandle;
           }
 
           else
@@ -3159,9 +3159,9 @@ LABEL_26:
 
         else
         {
-          if (v54->_logHandle)
+          if (selfCopy->_logHandle)
           {
-            v11 = v54->_logHandle;
+            v11 = selfCopy->_logHandle;
           }
 
           else
@@ -3203,9 +3203,9 @@ LABEL_26:
 
       else
       {
-        if (v54->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v7 = v54->_logHandle;
+          v7 = selfCopy->_logHandle;
         }
 
         else
@@ -3316,19 +3316,19 @@ uint64_t __30__BLControl_waitForALSArrival__block_invoke_306(void *a1)
   return MEMORY[0x1E12C3B10](a1[6], a1[4]);
 }
 
-- (void)registerNotificationBlock:(id)a3
+- (void)registerNotificationBlock:(id)block
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  blockCopy = block;
   queue = self->_queue;
   block = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __39__BLControl_registerNotificationBlock___block_invoke;
   v8 = &unk_1E867C300;
-  v9 = v13;
-  v10 = a3;
+  v9 = selfCopy;
+  blockCopy2 = block;
   dispatch_sync(queue, &block);
 }
 
@@ -3346,7 +3346,7 @@ void __39__BLControl_registerNotificationBlock___block_invoke(uint64_t a1)
   }
 }
 
-- (void)sendSyncNotificationFor:(id)a3 withValue:(id)a4
+- (void)sendSyncNotificationFor:(id)for withValue:(id)value
 {
   v10 = *MEMORY[0x1E69E9840];
   if (self->_logHandle)
@@ -3371,11 +3371,11 @@ void __39__BLControl_registerNotificationBlock___block_invoke(uint64_t a1)
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v9, a3, a4);
+    __os_log_helper_16_2_2_8_64_8_64(v9, for, value);
     _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "key=%@ value=%@", v9, 0x16u);
   }
 
-  [(BLControl *)self handleNotificationInternalForKey:a3 withValue:a4];
+  [(BLControl *)self handleNotificationInternalForKey:for withValue:value];
   if (self->_callback)
   {
     (*(self->_callback + 2))();
@@ -3384,23 +3384,23 @@ void __39__BLControl_registerNotificationBlock___block_invoke(uint64_t a1)
   *MEMORY[0x1E69E9840];
 }
 
-- (void)sendNotificationFor:(id)a3 withValue:(id)a4
+- (void)sendNotificationFor:(id)for withValue:(id)value
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
-  v13 = a4;
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](v13);
-  queue = v16->_queue;
+  forCopy = for;
+  valueCopy = value;
+  MEMORY[0x1E69E5928](for);
+  MEMORY[0x1E69E5928](valueCopy);
+  queue = selfCopy->_queue;
   block = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
   v8 = __43__BLControl_sendNotificationFor_withValue___block_invoke;
   v9 = &unk_1E867B750;
-  v10 = v16;
-  v11 = v14;
-  v12 = v13;
+  v10 = selfCopy;
+  v11 = forCopy;
+  v12 = valueCopy;
   dispatch_async(queue, &block);
 }
 
@@ -3462,11 +3462,11 @@ double __27__BLControl_copyStatusInfo__block_invoke_2(uint64_t a1, uint64_t a2, 
 
 - (id)copyDisplayList
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  displayContainers = v13->_displayContainers;
+  displayContainers = selfCopy->_displayContainers;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
@@ -3493,10 +3493,10 @@ double __28__BLControl_copyDisplayList__block_invoke(uint64_t a1, void *a2)
 
 - (id)copyDisplayInfo
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  displayContainers = v12->_displayContainers;
+  displayContainers = selfCopy->_displayContainers;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
@@ -3524,14 +3524,14 @@ double __28__BLControl_copyDisplayInfo__block_invoke(uint64_t a1, void *a2)
   return result;
 }
 
-- (BOOL)useSyncBrightnessTransactionForDisplay:(id)a3
+- (BOOL)useSyncBrightnessTransactionForDisplay:(id)display
 {
   v10 = *MEMORY[0x1E69E9840];
   v6 = 0;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ![a3 displayType])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ![display displayType])
   {
-    v6 = (CBU_IsSyncBrightnessTransactionsSupported() & 1) != 0 || ([a3 brightnessAvailable] & 1) != 0;
+    v6 = (CBU_IsSyncBrightnessTransactionsSupported() & 1) != 0 || ([display brightnessAvailable] & 1) != 0;
   }
 
   if (self->_logHandle)
@@ -3556,7 +3556,7 @@ double __28__BLControl_copyDisplayInfo__block_invoke(uint64_t a1, void *a2)
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_2_4_0_4_0(v9, [a3 displayId], v6);
+    __os_log_helper_16_0_2_4_0_4_0(v9, [display displayId], v6);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Display ID: %d, UseSyncBrightnessTransactionForDisplay: %d", v9, 0xEu);
   }
 
@@ -3564,31 +3564,31 @@ double __28__BLControl_copyDisplayInfo__block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-- (void)addDisplayContainer:(id)a3
+- (void)addDisplayContainer:(id)container
 {
   context = objc_autoreleasePoolPush();
-  [(NSMutableArray *)self->_displayContainers addObject:a3];
+  [(NSMutableArray *)self->_displayContainers addObject:container];
   if (self->_nightModeControl)
   {
-    [(NightModeControl *)self->_nightModeControl addSupportObject:a3];
+    [(NightModeControl *)self->_nightModeControl addSupportObject:container];
   }
 
   else
   {
-    self->_nightModeControl = [[NightModeControl alloc] initWithSupportObject:a3 queue:self->_queue callback:?];
+    self->_nightModeControl = [[NightModeControl alloc] initWithSupportObject:container queue:self->_queue callback:?];
   }
 
   -[CBPresetsParser setDisplayList:](+[CBPresetsParser sharedInstance](CBPresetsParser, "sharedInstance"), "setDisplayList:", [-[BLControl copyDisplayList](self "copyDisplayList")]);
   objc_autoreleasePoolPop(context);
 }
 
-- (void)removeDisplayContainer:(id)a3
+- (void)removeDisplayContainer:(id)container
 {
   context = objc_autoreleasePoolPush();
-  [(NSMutableArray *)self->_displayContainers removeObject:a3];
-  if (self->_nightModeControl && ([a3 conformsToProtocol:&unk_1F59D3198] & 1) != 0)
+  [(NSMutableArray *)self->_displayContainers removeObject:container];
+  if (self->_nightModeControl && ([container conformsToProtocol:&unk_1F59D3198] & 1) != 0)
   {
-    [(NightModeControl *)self->_nightModeControl removeSupportObject:a3];
+    [(NightModeControl *)self->_nightModeControl removeSupportObject:container];
   }
 
   -[CBPresetsParser setDisplayList:](+[CBPresetsParser sharedInstance](CBPresetsParser, "sharedInstance"), "setDisplayList:", [-[BLControl copyDisplayList](self "copyDisplayList")]);
@@ -3597,7 +3597,7 @@ double __28__BLControl_copyDisplayInfo__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)initKeyboardBacklightHIDManager
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
   self->_keyboardBacklightHIDManager = [objc_alloc(MEMORY[0x1E69A2958]) initWithOptions:8];
   v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -3605,7 +3605,7 @@ double __28__BLControl_copyDisplayInfo__block_invoke(uint64_t a1, void *a2)
   [v18 addObject:&unk_1F59C9830];
   [v18 addObject:&unk_1F59C9880];
   objc_autoreleasePoolPop(context);
-  [v20->_keyboardBacklightHIDManager setDeviceMatching:v18];
+  [selfCopy->_keyboardBacklightHIDManager setDeviceMatching:v18];
   *&v2 = MEMORY[0x1E69E5920](v18).n128_u64[0];
   v12[0] = 0;
   v12[1] = v12;
@@ -3613,8 +3613,8 @@ double __28__BLControl_copyDisplayInfo__block_invoke(uint64_t a1, void *a2)
   v14 = 48;
   v15 = __Block_byref_object_copy__15;
   v16 = __Block_byref_object_dispose__15;
-  v17 = v20;
-  keyboardBacklightHIDManager = v20->_keyboardBacklightHIDManager;
+  v17 = selfCopy;
+  keyboardBacklightHIDManager = selfCopy->_keyboardBacklightHIDManager;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -3622,8 +3622,8 @@ double __28__BLControl_copyDisplayInfo__block_invoke(uint64_t a1, void *a2)
   v10 = &unk_1E867C600;
   v11 = v12;
   [keyboardBacklightHIDManager setDeviceNotificationHandler:v2];
-  [v20->_keyboardBacklightHIDManager setDispatchQueue:v20->_queue];
-  [v20->_keyboardBacklightHIDManager activate];
+  [selfCopy->_keyboardBacklightHIDManager setDispatchQueue:selfCopy->_queue];
+  [selfCopy->_keyboardBacklightHIDManager activate];
   _Block_object_dispose(v12, 8);
   return 1;
 }
@@ -3641,13 +3641,13 @@ uint64_t __44__BLControl_initKeyboardBacklightHIDManager__block_invoke(uint64_t 
   }
 }
 
-- (void)keyboardBacklightHIDDeviceArrived:(id)a3
+- (void)keyboardBacklightHIDDeviceArrived:(id)arrived
 {
   v63 = *MEMORY[0x1E69E9840];
-  v59 = self;
+  selfCopy = self;
   v58 = a2;
-  v57 = a3;
-  v56 = [a3 propertyForKey:@"KeyboardUniqueID"];
+  arrivedCopy = arrived;
+  v56 = [arrived propertyForKey:@"KeyboardUniqueID"];
   v55 = 0;
   if (v56)
   {
@@ -3656,10 +3656,10 @@ uint64_t __44__BLControl_initKeyboardBacklightHIDManager__block_invoke(uint64_t 
 
   else
   {
-    v55 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:{+[KeyboardBacklight getHashIDForDevice:](KeyboardBacklight, "getHashIDForDevice:", v57)}];
-    if (v59->_logHandle)
+    v55 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:{+[KeyboardBacklight getHashIDForDevice:](KeyboardBacklight, "getHashIDForDevice:", arrivedCopy)}];
+    if (selfCopy->_logHandle)
     {
-      logHandle = v59->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -3686,9 +3686,9 @@ uint64_t __44__BLControl_initKeyboardBacklightHIDManager__block_invoke(uint64_t 
     }
   }
 
-  if (v59->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    v18 = v59->_logHandle;
+    v18 = selfCopy->_logHandle;
   }
 
   else
@@ -3710,30 +3710,30 @@ uint64_t __44__BLControl_initKeyboardBacklightHIDManager__block_invoke(uint64_t 
   v51 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_2_8_66_8_66(v61, v55, v57);
+    __os_log_helper_16_2_2_8_66_8_66(v61, v55, arrivedCopy);
     _os_log_impl(&dword_1DE8E5000, v52, v51, "Keyboard backlight HID device (ID=%{public}@) arrived = %{public}@", v61, 0x16u);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v50 = [(NSMutableDictionary *)v59->_keyboardContainers objectForKey:v55];
+    v50 = [(NSMutableDictionary *)selfCopy->_keyboardContainers objectForKey:v55];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[BLControl keyboardBacklightHIDDeviceRemoved:](v59, "keyboardBacklightHIDDeviceRemoved:", [v50 device]);
+      -[BLControl keyboardBacklightHIDDeviceRemoved:](selfCopy, "keyboardBacklightHIDDeviceRemoved:", [v50 device]);
     }
 
-    v49 = [[CBKeyboardBacklightContainer alloc] initWithDevice:v57];
-    [(CBContainer *)v49 scheduleWithDispatchQueue:v59->_queue];
+    v49 = [[CBKeyboardBacklightContainer alloc] initWithDevice:arrivedCopy];
+    [(CBContainer *)v49 scheduleWithDispatchQueue:selfCopy->_queue];
     v43 = MEMORY[0x1E69E9820];
     v44 = -1073741824;
     v45 = 0;
     v46 = __47__BLControl_keyboardBacklightHIDDeviceArrived___block_invoke;
     v47 = &unk_1E867B558;
-    v48 = v59;
+    v48 = selfCopy;
     [(CBContainer *)v49 registerNotificationBlock:?];
-    displayContainers = v59->_displayContainers;
+    displayContainers = selfCopy->_displayContainers;
     v37 = MEMORY[0x1E69E9820];
     v38 = -1073741824;
     v39 = 0;
@@ -3743,8 +3743,8 @@ uint64_t __44__BLControl_initKeyboardBacklightHIDManager__block_invoke(uint64_t 
     [(NSMutableArray *)displayContainers enumerateObjectsUsingBlock:?];
     if ([(CBKeyboardBacklightContainer *)v49 start])
     {
-      [(NSMutableDictionary *)v59->_keyboardContainers setObject:v49 forKey:v55];
-      hidServiceClients = v59->_hidServiceClients;
+      [(NSMutableDictionary *)selfCopy->_keyboardContainers setObject:v49 forKey:v55];
+      hidServiceClients = selfCopy->_hidServiceClients;
       v31 = MEMORY[0x1E69E9820];
       v32 = -1073741824;
       v33 = 0;
@@ -3755,9 +3755,9 @@ uint64_t __44__BLControl_initKeyboardBacklightHIDManager__block_invoke(uint64_t 
     }
 
     MEMORY[0x1E69E5920](v49);
-    if (v59->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v16 = v59->_logHandle;
+      v16 = selfCopy->_logHandle;
     }
 
     else
@@ -3779,7 +3779,7 @@ uint64_t __44__BLControl_initKeyboardBacklightHIDManager__block_invoke(uint64_t 
     v29 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_1_8_66(v60, v59->_keyboardContainers);
+      __os_log_helper_16_2_1_8_66(v60, selfCopy->_keyboardContainers);
       _os_log_impl(&dword_1DE8E5000, oslog, v29, "Keyboard added to dictionary = %{public}@", v60, 0xCu);
     }
 
@@ -3790,9 +3790,9 @@ uint64_t __44__BLControl_initKeyboardBacklightHIDManager__block_invoke(uint64_t 
     {
       if (IORegistryEntrySetCFProperty(entry, @"KeyboardBacklight", *MEMORY[0x1E695E4D0]))
       {
-        if (v59->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v9 = v59->_logHandle;
+          v9 = selfCopy->_logHandle;
         }
 
         else
@@ -3817,9 +3817,9 @@ uint64_t __44__BLControl_initKeyboardBacklightHIDManager__block_invoke(uint64_t 
 
     else
     {
-      if (v59->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        v13 = v59->_logHandle;
+        v13 = selfCopy->_logHandle;
       }
 
       else
@@ -3848,7 +3848,7 @@ uint64_t __44__BLControl_initKeyboardBacklightHIDManager__block_invoke(uint64_t 
       }
     }
 
-    [(BLControl *)v59 sendNotificationWithKeyboardIDs];
+    [(BLControl *)selfCopy sendNotificationWithKeyboardIDs];
   }
 
   if (!v56)
@@ -3887,10 +3887,10 @@ double __47__BLControl_keyboardBacklightHIDDeviceArrived___block_invoke_2(uint64
   return result;
 }
 
-- (void)keyboardBacklightHIDDeviceRemoved:(id)a3
+- (void)keyboardBacklightHIDDeviceRemoved:(id)removed
 {
   v22 = *MEMORY[0x1E69E9840];
-  v15 = [a3 propertyForKey:@"KeyboardUniqueID"];
+  v15 = [removed propertyForKey:@"KeyboardUniqueID"];
   if (v15)
   {
     v14 = v15;
@@ -3898,7 +3898,7 @@ double __47__BLControl_keyboardBacklightHIDDeviceArrived___block_invoke_2(uint64
 
   else
   {
-    v14 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:{+[KeyboardBacklight getHashIDForDevice:](KeyboardBacklight, "getHashIDForDevice:", a3)}];
+    v14 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:{+[KeyboardBacklight getHashIDForDevice:](KeyboardBacklight, "getHashIDForDevice:", removed)}];
     if (self->_logHandle)
     {
       logHandle = self->_logHandle;
@@ -3960,7 +3960,7 @@ double __47__BLControl_keyboardBacklightHIDDeviceArrived___block_invoke_2(uint64
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v12 device] == a3)
+      if ([v12 device] == removed)
       {
         [v12 stop];
         [v12 unregisterNotificationBlock];
@@ -3992,7 +3992,7 @@ double __47__BLControl_keyboardBacklightHIDDeviceArrived___block_invoke_2(uint64
 
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          __os_log_helper_16_2_1_8_66(v19, a3);
+          __os_log_helper_16_2_1_8_66(v19, removed);
           _os_log_impl(&dword_1DE8E5000, v7, OS_LOG_TYPE_DEFAULT, "Keyboard HID device was not present already = %{public}@", v19, 0xCu);
         }
       }
@@ -4015,7 +4015,7 @@ double __47__BLControl_keyboardBacklightHIDDeviceArrived___block_invoke_2(uint64
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v3 = v5;
-        __os_log_helper_16_2_1_8_66(v18, a3);
+        __os_log_helper_16_2_1_8_66(v18, removed);
         _os_log_impl(&dword_1DE8E5000, v5, OS_LOG_TYPE_DEFAULT, "Keyboard HID device has been removed = %{public}@", v18, 0xCu);
       }
     }
@@ -4038,21 +4038,21 @@ double __47__BLControl_keyboardBacklightHIDDeviceArrived___block_invoke_2(uint64
   MEMORY[0x1E69E5920](v2);
 }
 
-- (void)scheduleDisplayModeCompletionTimerIn:(float)a3 forDisplayMode:(int64_t)a4
+- (void)scheduleDisplayModeCompletionTimerIn:(float)in forDisplayMode:(int64_t)mode
 {
   v39 = *MEMORY[0x1E69E9840];
-  v37 = self;
+  selfCopy = self;
   v36 = a2;
-  v35 = a3;
-  v34 = a4;
+  inCopy = in;
+  modeCopy = mode;
   if (self->_displayModeCompletionTimer)
   {
-    [(dispatch_queue_t *)v37 releaseDisplayModeCompletionTimer];
+    [(dispatch_queue_t *)selfCopy releaseDisplayModeCompletionTimer];
   }
 
-  if (v37[14])
+  if (selfCopy[14])
   {
-    v15 = v37[14];
+    v15 = selfCopy[14];
   }
 
   else
@@ -4074,38 +4074,38 @@ double __47__BLControl_keyboardBacklightHIDDeviceArrived___block_invoke_2(uint64
   v32 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_3_8_0_8_66_4_0(v38, COERCE__INT64(v35), [CBDisplayStateUtilities stringForDisplayMode:v34], v34);
+    __os_log_helper_16_2_3_8_0_8_66_4_0(v38, COERCE__INT64(inCopy), [CBDisplayStateUtilities stringForDisplayMode:modeCopy], modeCopy);
     _os_log_impl(&dword_1DE8E5000, v33, v32, "[Display Mode] Schedule display mode completion timer in %f sec for %{public}@ (%d) mode", v38, 0x1Cu);
   }
 
-  v31 = (v35 * 1000000000.0);
-  v37[22] = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v37[3]);
-  if (v37[22])
+  v31 = (inCopy * 1000000000.0);
+  selfCopy[22] = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, selfCopy[3]);
+  if (selfCopy[22])
   {
     block = MEMORY[0x1E69E9820];
     v23 = -1073741824;
     v24 = 0;
     v25 = __65__BLControl_scheduleDisplayModeCompletionTimerIn_forDisplayMode___block_invoke;
     v26 = &unk_1E867BF80;
-    v27 = v37;
-    v28 = v34;
-    v29 = v35;
+    v27 = selfCopy;
+    v28 = modeCopy;
+    v29 = inCopy;
     v30 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INTERACTIVE, 0, &block);
     if (v30)
     {
-      dispatch_source_set_event_handler(v37[22], v30);
+      dispatch_source_set_event_handler(selfCopy[22], v30);
       _Block_release(v30);
-      source = v37[22];
+      source = selfCopy[22];
       v4 = dispatch_time(0, v31);
       dispatch_source_set_timer(source, v4, 0xFFFFFFFFFFFFFFFFLL, 0);
-      dispatch_activate(v37[22]);
+      dispatch_activate(selfCopy[22]);
     }
 
     else
     {
-      if (v37[14])
+      if (selfCopy[14])
       {
-        v12 = v37[14];
+        v12 = selfCopy[14];
       }
 
       else
@@ -4137,9 +4137,9 @@ double __47__BLControl_keyboardBacklightHIDDeviceArrived___block_invoke_2(uint64
 
   else
   {
-    if (v37[14])
+    if (selfCopy[14])
     {
-      v8 = v37[14];
+      v8 = selfCopy[14];
     }
 
     else
@@ -4274,14 +4274,14 @@ void __65__BLControl_scheduleDisplayModeCompletionTimerIn_forDisplayMode___block
   *MEMORY[0x1E69E9840];
 }
 
-- (void)systemSleepMonitorWillWakeFromSleep:(id)a3
+- (void)systemSleepMonitorWillWakeFromSleep:(id)sleep
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  sleepCopy = sleep;
   if (self->_logHandle)
   {
-    logHandle = v12->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -4309,17 +4309,17 @@ void __65__BLControl_scheduleDisplayModeCompletionTimerIn_forDisplayMode___block
     _os_log_impl(&dword_1DE8E5000, log, type, "System WILL wake from sleep", v7, 2u);
   }
 
-  [(BLControl *)v12 setPropertyInternalWithKey:@"CBSystemWillWakeFromSleep" property:v10 client:0];
+  [(BLControl *)selfCopy setPropertyInternalWithKey:@"CBSystemWillWakeFromSleep" property:sleepCopy client:0];
 }
 
-- (void)systemSleepMonitorDidWakeFromSleep:(id)a3
+- (void)systemSleepMonitorDidWakeFromSleep:(id)sleep
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  sleepCopy = sleep;
   if (self->_logHandle)
   {
-    logHandle = v12->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -4347,18 +4347,18 @@ void __65__BLControl_scheduleDisplayModeCompletionTimerIn_forDisplayMode___block
     _os_log_impl(&dword_1DE8E5000, log, type, "System DID wake from sleep", v7, 2u);
   }
 
-  [(BLControl *)v12 setPropertyInternalWithKey:@"CBSystemDidWakeFromSleep" property:v10 client:0];
+  [(BLControl *)selfCopy setPropertyInternalWithKey:@"CBSystemDidWakeFromSleep" property:sleepCopy client:0];
 }
 
-- (void)systemSleepMonitor:(id)a3 prepareForSleepWithCompletion:(id)a4
+- (void)systemSleepMonitor:(id)monitor prepareForSleepWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = a4;
+  monitorCopy = monitor;
+  completionCopy = completion;
   if (self->_logHandle)
   {
-    logHandle = v14->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -4386,8 +4386,8 @@ void __65__BLControl_scheduleDisplayModeCompletionTimerIn_forDisplayMode___block
     _os_log_impl(&dword_1DE8E5000, log, type, "System is preparing for sleep", v8, 2u);
   }
 
-  [(BLControl *)v14 setPropertyInternalWithKey:@"CBSystemPrepareForSleep" property:v12 client:0];
-  v11[2]();
+  [(BLControl *)selfCopy setPropertyInternalWithKey:@"CBSystemPrepareForSleep" property:monitorCopy client:0];
+  completionCopy[2]();
 }
 
 @end

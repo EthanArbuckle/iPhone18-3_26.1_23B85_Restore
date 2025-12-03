@@ -1,52 +1,52 @@
 @interface AASignOutFlowController
-- (AASignOutFlowController)initWithContext:(id)a3;
+- (AASignOutFlowController)initWithContext:(id)context;
 - (AASignOutFlowControllerDelegate)delegate;
-- (void)_delegate_disableFindMyDeviceForAccount:(id)a3 completion:(id)a4;
-- (void)_delegate_performWalrusValidationForAccount:(id)a3 completion:(id)a4;
-- (void)_delegate_presentError:(id)a3 withTitle:(id)a4;
-- (void)_delegate_signOutAccount:(id)a3 completion:(id)a4;
-- (void)_delegate_startSignOutFlowForAccount:(id)a3 completion:(id)a4;
-- (void)_disableDeviceLocatorForAccount:(id)a3 completion:(id)a4;
-- (void)_performWalrusValidationForAccount:(id)a3 completion:(id)a4;
-- (void)_preflightSignOutOfAccount:(id)a3 completion:(id)a4;
-- (void)_signOutAppleAccount:(id)a3 completion:(id)a4;
-- (void)_startSignOutOfferFlow:(id)a3 completion:(id)a4;
-- (void)sendTelemetryEventSignoutStart:(id)a3;
-- (void)signOutAppleAccount:(id)a3 completion:(id)a4;
+- (void)_delegate_disableFindMyDeviceForAccount:(id)account completion:(id)completion;
+- (void)_delegate_performWalrusValidationForAccount:(id)account completion:(id)completion;
+- (void)_delegate_presentError:(id)error withTitle:(id)title;
+- (void)_delegate_signOutAccount:(id)account completion:(id)completion;
+- (void)_delegate_startSignOutFlowForAccount:(id)account completion:(id)completion;
+- (void)_disableDeviceLocatorForAccount:(id)account completion:(id)completion;
+- (void)_performWalrusValidationForAccount:(id)account completion:(id)completion;
+- (void)_preflightSignOutOfAccount:(id)account completion:(id)completion;
+- (void)_signOutAppleAccount:(id)account completion:(id)completion;
+- (void)_startSignOutOfferFlow:(id)flow completion:(id)completion;
+- (void)sendTelemetryEventSignoutStart:(id)start;
+- (void)signOutAppleAccount:(id)account completion:(id)completion;
 @end
 
 @implementation AASignOutFlowController
 
-- (AASignOutFlowController)initWithContext:(id)a3
+- (AASignOutFlowController)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = AASignOutFlowController;
   v5 = [(AASignOutFlowController *)&v19 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E6959A48] defaultStore];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
     accountStore = v5->_accountStore;
-    v5->_accountStore = v6;
+    v5->_accountStore = defaultStore;
 
     v8 = objc_alloc_init(AASignedOutAccountKeychain);
     signedOutAccountKeychain = v5->_signedOutAccountKeychain;
     v5->_signedOutAccountKeychain = v8;
 
-    if (v4)
+    if (contextCopy)
     {
-      v10 = [v4 authenticationResults];
-      v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E698DBE0]];
+      authenticationResults = [contextCopy authenticationResults];
+      v11 = [authenticationResults objectForKeyedSubscript:*MEMORY[0x1E698DBE0]];
       p_telemetryFlowID = &v5->telemetryFlowID;
       telemetryFlowID = v5->telemetryFlowID;
       v5->telemetryFlowID = v11;
 
       if (!v5->telemetryFlowID)
       {
-        v14 = [MEMORY[0x1E696AFB0] UUID];
-        v15 = [v14 UUIDString];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
         v16 = *p_telemetryFlowID;
-        *p_telemetryFlowID = v15;
+        *p_telemetryFlowID = uUIDString;
 
         v17 = _AASignOutLogSystem();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -60,19 +60,19 @@
   return v5;
 }
 
-- (void)signOutAppleAccount:(id)a3 completion:(id)a4
+- (void)signOutAppleAccount:(id)account completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  accountCopy = account;
+  completionCopy = completion;
+  if (!accountCopy)
   {
     [AASignOutFlowController signOutAppleAccount:a2 completion:self];
   }
 
-  v9 = [v7 accountType];
-  v10 = [v9 identifier];
-  v11 = [v10 isEqualToString:*MEMORY[0x1E69597F8]];
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
+  v11 = [identifier isEqualToString:*MEMORY[0x1E69597F8]];
 
   if (v11)
   {
@@ -84,7 +84,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v7;
+      v31 = accountCopy;
       _os_log_impl(&dword_1B6F6A000, v13, OS_LOG_TYPE_DEFAULT, "AASignOutFlowController: Will begin sign out of account: %@", buf, 0xCu);
     }
 
@@ -108,7 +108,7 @@
       _os_log_impl(&dword_1B6F6A000, v20, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: SignOutAppleAccount  enableTelemetry=YES ", buf, 0xCu);
     }
 
-    [(AASignOutFlowController *)self sendTelemetryEventSignoutStart:v7];
+    [(AASignOutFlowController *)self sendTelemetryEventSignoutStart:accountCopy];
     objc_initWeak(buf, self);
     v21 = dispatch_get_global_queue(25, 0);
     v24[0] = MEMORY[0x1E69E9820];
@@ -116,9 +116,9 @@
     v24[2] = __58__AASignOutFlowController_signOutAppleAccount_completion___block_invoke;
     v24[3] = &unk_1E7C9AF88;
     objc_copyWeak(v28, buf);
-    v25 = v7;
-    v26 = self;
-    v27 = v8;
+    v25 = accountCopy;
+    selfCopy = self;
+    v27 = completionCopy;
     v28[1] = v15;
     v28[2] = v17;
     dispatch_async(v21, v24);
@@ -138,7 +138,7 @@
     }
 
     v12 = [MEMORY[0x1E696ABC0] aa_errorWithCode:-4404];
-    (*(v8 + 2))(v8, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -388,25 +388,25 @@ void __58__AASignOutFlowController_signOutAppleAccount_completion___block_invoke
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startSignOutOfferFlow:(id)a3 completion:(id)a4
+- (void)_startSignOutOfferFlow:(id)flow completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (+[AADeviceInfo hasiCloudSignOutRestriction](AADeviceInfo, "hasiCloudSignOutRestriction") || [v6 aa_isRemotelyManaged])
+  flowCopy = flow;
+  completionCopy = completion;
+  if (+[AADeviceInfo hasiCloudSignOutRestriction](AADeviceInfo, "hasiCloudSignOutRestriction") || [flowCopy aa_isRemotelyManaged])
   {
     v8 = _AASignOutLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [AASignOutFlowController _startSignOutOfferFlow:v6 completion:?];
+      [AASignOutFlowController _startSignOutOfferFlow:flowCopy completion:?];
     }
 
     v9 = [MEMORY[0x1E696ABC0] aa_errorWithCode:-4406];
-    v7[2](v7, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
   }
 
-  else if (+[AAFeatureFlags isBetterSignOutEnabled](AAFeatureFlags, "isBetterSignOutEnabled") && [v6 aa_isAccountClass:@"primary"])
+  else if (+[AAFeatureFlags isBetterSignOutEnabled](AAFeatureFlags, "isBetterSignOutEnabled") && [flowCopy aa_isAccountClass:@"primary"])
   {
-    [(AASignOutFlowController *)self _delegate_startSignOutFlowForAccount:v6 completion:v7];
+    [(AASignOutFlowController *)self _delegate_startSignOutFlowForAccount:flowCopy completion:completionCopy];
   }
 
   else
@@ -418,23 +418,23 @@ void __58__AASignOutFlowController_signOutAppleAccount_completion___block_invoke
       _os_log_impl(&dword_1B6F6A000, v10, OS_LOG_TYPE_DEFAULT, "SignOutRedesign feature flag turned off. Not showing the Erase/Sign out offer. Continuing with Sign Out.", v11, 2u);
     }
 
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (void)_preflightSignOutOfAccount:(id)a3 completion:(id)a4
+- (void)_preflightSignOutOfAccount:(id)account completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__AASignOutFlowController__preflightSignOutOfAccount_completion___block_invoke;
   v10[3] = &unk_1E7C9AFD8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = accountCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = accountCopy;
   [(AASignOutFlowController *)self _performWalrusValidationForAccount:v9 completion:v10];
 }
 
@@ -521,19 +521,19 @@ void __65__AASignOutFlowController__preflightSignOutOfAccount_completion___block
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_performWalrusValidationForAccount:(id)a3 completion:(id)a4
+- (void)_performWalrusValidationForAccount:(id)account completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 accountType];
-  v9 = [v8 identifier];
-  v10 = [v9 isEqualToString:*MEMORY[0x1E69597F8]];
+  accountCopy = account;
+  completionCopy = completion;
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
+  v10 = [identifier isEqualToString:*MEMORY[0x1E69597F8]];
 
-  v11 = [v6 aa_isAccountClass:@"primary"];
+  v11 = [accountCopy aa_isAccountClass:@"primary"];
   if (v10 && (v11 & 1) != 0)
   {
-    [(AASignOutFlowController *)self _delegate_performWalrusValidationForAccount:v6 completion:v7];
+    [(AASignOutFlowController *)self _delegate_performWalrusValidationForAccount:accountCopy completion:completionCopy];
   }
 
   else
@@ -542,21 +542,21 @@ void __65__AASignOutFlowController__preflightSignOutOfAccount_completion___block
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v6;
+      v15 = accountCopy;
       _os_log_impl(&dword_1B6F6A000, v12, OS_LOG_TYPE_DEFAULT, "Walrus validation is not necessary for non-primary/non-apple account: %@", &v14, 0xCu);
     }
 
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_signOutAppleAccount:(id)a3 completion:(id)a4
+- (void)_signOutAppleAccount:(id)account completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  accountCopy = account;
   v8 = _AASignpostLogSystem();
   v9 = _AASignpostCreate(v8);
   v11 = v10;
@@ -583,9 +583,9 @@ void __65__AASignOutFlowController__preflightSignOutOfAccount_completion___block
   v17[3] = &unk_1E7C9AFB0;
   v19 = v9;
   v20 = v11;
-  v18 = v6;
-  v15 = v6;
-  [(AASignOutFlowController *)self _delegate_signOutAccount:v7 completion:v17];
+  v18 = completionCopy;
+  v15 = completionCopy;
+  [(AASignOutFlowController *)self _delegate_signOutAccount:accountCopy completion:v17];
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -624,13 +624,13 @@ void __59__AASignOutFlowController__signOutAppleAccount_completion___block_invok
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_disableDeviceLocatorForAccount:(id)a3 completion:(id)a4
+- (void)_disableDeviceLocatorForAccount:(id)account completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 accountType];
-  v9 = [v8 identifier];
-  v10 = [v9 isEqualToString:*MEMORY[0x1E69597F8]];
+  accountCopy = account;
+  completionCopy = completion;
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
+  v10 = [identifier isEqualToString:*MEMORY[0x1E69597F8]];
 
   if ((v10 & 1) == 0)
   {
@@ -646,11 +646,11 @@ LABEL_8:
 
 LABEL_9:
 
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
     goto LABEL_10;
   }
 
-  if (([v6 aa_isAccountClass:@"primary"] & 1) == 0)
+  if (([accountCopy aa_isAccountClass:@"primary"] & 1) == 0)
   {
     v11 = _AASignOutLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -664,31 +664,31 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  [(AASignOutFlowController *)self _delegate_disableFindMyDeviceForAccount:v6 completion:v7];
+  [(AASignOutFlowController *)self _delegate_disableFindMyDeviceForAccount:accountCopy completion:completionCopy];
 LABEL_10:
 }
 
-- (void)_delegate_presentError:(id)a3 withTitle:(id)a4
+- (void)_delegate_presentError:(id)error withTitle:(id)title
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 userInfo];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696A578]];
+  errorCopy = error;
+  titleCopy = title;
+  userInfo = [errorCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A578]];
 
   v10 = _AASignOutLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
-    v19 = v6;
+    v19 = errorCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = titleCopy;
     v22 = 2112;
     v23 = v9;
     _os_log_error_impl(&dword_1B6F6A000, v10, OS_LOG_TYPE_ERROR, "AASignOutFlowController: Will show alert for error: %@, title: %@, message: %@", buf, 0x20u);
   }
 
-  v11 = [(AASignOutFlowController *)self delegate];
+  delegate = [(AASignOutFlowController *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
@@ -698,7 +698,7 @@ LABEL_10:
     block[2] = __60__AASignOutFlowController__delegate_presentError_withTitle___block_invoke;
     block[3] = &unk_1E7C9B020;
     block[4] = self;
-    v16 = v7;
+    v16 = titleCopy;
     v17 = v9;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
@@ -730,12 +730,12 @@ void __60__AASignOutFlowController__delegate_presentError_withTitle___block_invo
   }
 }
 
-- (void)_delegate_startSignOutFlowForAccount:(id)a3 completion:(id)a4
+- (void)_delegate_startSignOutFlowForAccount:(id)account completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AASignOutFlowController *)self delegate];
+  accountCopy = account;
+  completionCopy = completion;
+  delegate = [(AASignOutFlowController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   v10 = _AASignOutLogSystem();
@@ -745,7 +745,7 @@ void __60__AASignOutFlowController__delegate_presentError_withTitle___block_invo
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v6;
+      v17 = accountCopy;
       _os_log_impl(&dword_1B6F6A000, v11, OS_LOG_TYPE_DEFAULT, "AASignOutFlowController: Calling delegate to start Sign Out/Erase flow for account: %@", buf, 0xCu);
     }
 
@@ -754,8 +754,8 @@ void __60__AASignOutFlowController__delegate_presentError_withTitle___block_invo
     block[2] = __75__AASignOutFlowController__delegate_startSignOutFlowForAccount_completion___block_invoke;
     block[3] = &unk_1E7C9A898;
     block[4] = self;
-    v14 = v6;
-    v15 = v7;
+    v14 = accountCopy;
+    v15 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
@@ -766,7 +766,7 @@ void __60__AASignOutFlowController__delegate_presentError_withTitle___block_invo
       [AASignOutFlowController _delegate_startSignOutFlowForAccount:? completion:?];
     }
 
-    (*(v7 + 2))(v7, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -800,12 +800,12 @@ void __75__AASignOutFlowController__delegate_startSignOutFlowForAccount_completi
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_delegate_disableFindMyDeviceForAccount:(id)a3 completion:(id)a4
+- (void)_delegate_disableFindMyDeviceForAccount:(id)account completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AASignOutFlowController *)self delegate];
+  accountCopy = account;
+  completionCopy = completion;
+  delegate = [(AASignOutFlowController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   v10 = _AASignOutLogSystem();
@@ -815,7 +815,7 @@ void __75__AASignOutFlowController__delegate_startSignOutFlowForAccount_completi
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v6;
+      v18 = accountCopy;
       _os_log_impl(&dword_1B6F6A000, v11, OS_LOG_TYPE_DEFAULT, "AASignOutFlowController: Calling delegate to disable find my device for account: %@", buf, 0xCu);
     }
 
@@ -824,8 +824,8 @@ void __75__AASignOutFlowController__delegate_startSignOutFlowForAccount_completi
     block[2] = __78__AASignOutFlowController__delegate_disableFindMyDeviceForAccount_completion___block_invoke;
     block[3] = &unk_1E7C9A898;
     block[4] = self;
-    v15 = v6;
-    v16 = v7;
+    v15 = accountCopy;
+    v16 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
@@ -837,7 +837,7 @@ void __75__AASignOutFlowController__delegate_startSignOutFlowForAccount_completi
     }
 
     v12 = [MEMORY[0x1E696ABC0] aa_errorWithCode:-4405];
-    (*(v7 + 2))(v7, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -880,12 +880,12 @@ void __78__AASignOutFlowController__delegate_disableFindMyDeviceForAccount_compl
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_delegate_signOutAccount:(id)a3 completion:(id)a4
+- (void)_delegate_signOutAccount:(id)account completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AASignOutFlowController *)self delegate];
+  accountCopy = account;
+  completionCopy = completion;
+  delegate = [(AASignOutFlowController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   v10 = _AASignOutLogSystem();
@@ -895,17 +895,17 @@ void __78__AASignOutFlowController__delegate_disableFindMyDeviceForAccount_compl
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v6;
+      v18 = accountCopy;
       _os_log_impl(&dword_1B6F6A000, v11, OS_LOG_TYPE_DEFAULT, "AASignOutFlowController: Calling delegate to sign out account: %@", buf, 0xCu);
     }
 
-    v12 = [(AASignOutFlowController *)self delegate];
+    delegate2 = [(AASignOutFlowController *)self delegate];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __63__AASignOutFlowController__delegate_signOutAccount_completion___block_invoke;
     v15[3] = &unk_1E7C9ABB8;
-    v16 = v7;
-    [v12 signOutFlowController:self signOutAccount:v6 completion:v15];
+    v16 = completionCopy;
+    [delegate2 signOutFlowController:self signOutAccount:accountCopy completion:v15];
 
     v13 = v16;
   }
@@ -918,7 +918,7 @@ void __78__AASignOutFlowController__delegate_disableFindMyDeviceForAccount_compl
     }
 
     v13 = [MEMORY[0x1E696ABC0] aa_errorWithCode:-4405];
-    (*(v7 + 2))(v7, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -948,12 +948,12 @@ void __63__AASignOutFlowController__delegate_signOutAccount_completion___block_i
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_delegate_performWalrusValidationForAccount:(id)a3 completion:(id)a4
+- (void)_delegate_performWalrusValidationForAccount:(id)account completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AASignOutFlowController *)self delegate];
+  accountCopy = account;
+  completionCopy = completion;
+  delegate = [(AASignOutFlowController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   v10 = _AASignOutLogSystem();
@@ -963,7 +963,7 @@ void __63__AASignOutFlowController__delegate_signOutAccount_completion___block_i
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v6;
+      v18 = accountCopy;
       _os_log_impl(&dword_1B6F6A000, v11, OS_LOG_TYPE_DEFAULT, "AASignOutFlowController: Calling delegate to perform walrus validation for account: %@", buf, 0xCu);
     }
 
@@ -972,8 +972,8 @@ void __63__AASignOutFlowController__delegate_signOutAccount_completion___block_i
     block[2] = __82__AASignOutFlowController__delegate_performWalrusValidationForAccount_completion___block_invoke;
     block[3] = &unk_1E7C9A898;
     block[4] = self;
-    v15 = v6;
-    v16 = v7;
+    v15 = accountCopy;
+    v16 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
@@ -985,7 +985,7 @@ void __63__AASignOutFlowController__delegate_signOutAccount_completion___block_i
     }
 
     v12 = [MEMORY[0x1E696ABC0] aa_errorWithCode:-4405];
-    (*(v7 + 2))(v7, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -1028,32 +1028,32 @@ void __82__AASignOutFlowController__delegate_performWalrusValidationForAccount_c
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendTelemetryEventSignoutStart:(id)a3
+- (void)sendTelemetryEventSignoutStart:(id)start
 {
-  v4 = a3;
-  v5 = [(AASignOutFlowController *)self delegate];
+  startCopy = start;
+  delegate = [(AASignOutFlowController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AASignOutFlowController *)self delegate];
-    [v7 setTelemetryFlowID:self->telemetryFlowID];
+    delegate2 = [(AASignOutFlowController *)self delegate];
+    [delegate2 setTelemetryFlowID:self->telemetryFlowID];
   }
 
   else
   {
-    v7 = _AASignOutLogSystem();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    delegate2 = _AASignOutLogSystem();
+    if (os_log_type_enabled(delegate2, OS_LOG_TYPE_DEBUG))
     {
-      [AASignOutFlowController sendTelemetryEventSignoutStart:v7];
+      [AASignOutFlowController sendTelemetryEventSignoutStart:delegate2];
     }
   }
 
   v8 = +[AAAnalyticsRTCReporter reporter];
   v9 = MEMORY[0x1E6985DB0];
-  v10 = [v4 aida_alternateDSID];
+  aida_alternateDSID = [startCopy aida_alternateDSID];
 
-  v11 = [v9 analyticsEventWithName:@"com.apple.appleaccount.signOutStart" altDSID:v10 flowID:self->telemetryFlowID];
+  v11 = [v9 analyticsEventWithName:@"com.apple.appleaccount.signOutStart" altDSID:aida_alternateDSID flowID:self->telemetryFlowID];
   [v8 sendEvent:v11];
 }
 

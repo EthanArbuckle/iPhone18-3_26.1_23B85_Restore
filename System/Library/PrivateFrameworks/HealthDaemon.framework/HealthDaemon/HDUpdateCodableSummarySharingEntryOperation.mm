@@ -1,9 +1,9 @@
 @interface HDUpdateCodableSummarySharingEntryOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
 - (HDUpdateCodableSummarySharingEntryOperation)init;
-- (HDUpdateCodableSummarySharingEntryOperation)initWithCoder:(id)a3;
-- (HDUpdateCodableSummarySharingEntryOperation)initWithInvitationUUID:(id)a3 status:(int64_t)a4 dateModified:(id)a5 dateAccepted:(id)a6 ownerParticipant:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (HDUpdateCodableSummarySharingEntryOperation)initWithCoder:(id)coder;
+- (HDUpdateCodableSummarySharingEntryOperation)initWithInvitationUUID:(id)d status:(int64_t)status dateModified:(id)modified dateAccepted:(id)accepted ownerParticipant:(id)participant;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDUpdateCodableSummarySharingEntryOperation
@@ -18,31 +18,31 @@
   return 0;
 }
 
-- (HDUpdateCodableSummarySharingEntryOperation)initWithInvitationUUID:(id)a3 status:(int64_t)a4 dateModified:(id)a5 dateAccepted:(id)a6 ownerParticipant:(id)a7
+- (HDUpdateCodableSummarySharingEntryOperation)initWithInvitationUUID:(id)d status:(int64_t)status dateModified:(id)modified dateAccepted:(id)accepted ownerParticipant:(id)participant
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dCopy = d;
+  modifiedCopy = modified;
+  acceptedCopy = accepted;
+  participantCopy = participant;
   v26.receiver = self;
   v26.super_class = HDUpdateCodableSummarySharingEntryOperation;
   v16 = [(HDUpdateCodableSummarySharingEntryOperation *)&v26 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [dCopy copy];
     invitationUUID = v16->_invitationUUID;
     v16->_invitationUUID = v17;
 
-    v16->_status = a4;
-    v19 = [v13 copy];
+    v16->_status = status;
+    v19 = [modifiedCopy copy];
     dateModified = v16->_dateModified;
     v16->_dateModified = v19;
 
-    v21 = [v14 copy];
+    v21 = [acceptedCopy copy];
     dateAccepted = v16->_dateAccepted;
     v16->_dateAccepted = v21;
 
-    v23 = [v15 copy];
+    v23 = [participantCopy copy];
     ownerParticipant = v16->_ownerParticipant;
     v16->_ownerParticipant = v23;
   }
@@ -50,20 +50,20 @@
   return v16;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  profileCopy = profile;
+  transactionCopy = transaction;
   v10 = HDSummarySharingEntryPredicateForInvitationUUID(self->_invitationUUID);
-  v11 = [v8 sharingEntryManager];
-  v12 = [v11 anyCodableEntryWithPredicate:v10 errorOut:a5];
+  sharingEntryManager = [profileCopy sharingEntryManager];
+  v12 = [sharingEntryManager anyCodableEntryWithPredicate:v10 errorOut:error];
 
   if (v12)
   {
-    v13 = [v12 status];
+    status = [v12 status];
     status = self->_status;
-    if (HDMergedSharingStatus(status, v13) != status)
+    if (HDMergedSharingStatus(status, status) != status)
     {
       _HKInitializeLogging();
       v18 = HKLogSharing();
@@ -84,7 +84,7 @@
       goto LABEL_11;
     }
 
-    if ([HDSummarySharingEntryEntity updateStatus:status dateModified:self->_dateModified dateAccepted:self->_dateAccepted predicate:v10 profile:v8 error:a5])
+    if ([HDSummarySharingEntryEntity updateStatus:status dateModified:self->_dateModified dateAccepted:self->_dateAccepted predicate:v10 profile:profileCopy error:error])
     {
       *buf = 0;
       *&buf[8] = buf;
@@ -92,7 +92,7 @@
       v29 = __Block_byref_object_copy__45;
       v30 = __Block_byref_object_dispose__45;
       v31 = 0;
-      v15 = [v8 sharingEntryManager];
+      sharingEntryManager2 = [profileCopy sharingEntryManager];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __84__HDUpdateCodableSummarySharingEntryOperation_performWithProfile_transaction_error___block_invoke;
@@ -100,8 +100,8 @@
       v27 = buf;
       v24[4] = self;
       v25 = v10;
-      v26 = v8;
-      v16 = [v15 enumerateCodableEntriesWithPredicate:v25 error:a5 handler:v24];
+      v26 = profileCopy;
+      v16 = [sharingEntryManager2 enumerateCodableEntriesWithPredicate:v25 error:error handler:v24];
 
       if (v16)
       {
@@ -192,28 +192,28 @@ LABEL_15:
   return 1;
 }
 
-- (HDUpdateCodableSummarySharingEntryOperation)initWithCoder:(id)a3
+- (HDUpdateCodableSummarySharingEntryOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"InvitationUUID"];
-  v6 = [v4 decodeIntegerForKey:@"Status"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DateModified"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DateAccepted"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OwnerParticipant"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"InvitationUUID"];
+  v6 = [coderCopy decodeIntegerForKey:@"Status"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DateModified"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DateAccepted"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OwnerParticipant"];
 
   v10 = [(HDUpdateCodableSummarySharingEntryOperation *)self initWithInvitationUUID:v5 status:v6 dateModified:v7 dateAccepted:v8 ownerParticipant:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   invitationUUID = self->_invitationUUID;
-  v5 = a3;
-  [v5 encodeObject:invitationUUID forKey:@"InvitationUUID"];
-  [v5 encodeInteger:self->_status forKey:@"Status"];
-  [v5 encodeObject:self->_dateModified forKey:@"DateModified"];
-  [v5 encodeObject:self->_dateAccepted forKey:@"DateAccepted"];
-  [v5 encodeObject:self->_ownerParticipant forKey:@"OwnerParticipant"];
+  coderCopy = coder;
+  [coderCopy encodeObject:invitationUUID forKey:@"InvitationUUID"];
+  [coderCopy encodeInteger:self->_status forKey:@"Status"];
+  [coderCopy encodeObject:self->_dateModified forKey:@"DateModified"];
+  [coderCopy encodeObject:self->_dateAccepted forKey:@"DateAccepted"];
+  [coderCopy encodeObject:self->_ownerParticipant forKey:@"OwnerParticipant"];
 }
 
 @end

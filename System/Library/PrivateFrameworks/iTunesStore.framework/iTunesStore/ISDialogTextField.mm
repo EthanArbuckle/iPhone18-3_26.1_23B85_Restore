@@ -1,7 +1,7 @@
 @interface ISDialogTextField
-+ (id)textFieldWithTitle:(id)a3;
++ (id)textFieldWithTitle:(id)title;
 - (ISDialogTextField)init;
-- (ISDialogTextField)initWithXPCEncoding:(id)a3;
+- (ISDialogTextField)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 - (void)dealloc;
 @end
@@ -23,26 +23,26 @@
   [(ISDialogTextField *)&v3 dealloc];
 }
 
-+ (id)textFieldWithTitle:(id)a3
++ (id)textFieldWithTitle:(id)title
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setTitle:a3];
+  v4 = objc_alloc_init(self);
+  [v4 setTitle:title];
 
   return v4;
 }
 
-- (ISDialogTextField)initWithXPCEncoding:(id)a3
+- (ISDialogTextField)initWithXPCEncoding:(id)encoding
 {
   __ISRecordSPIClassUsage(self);
-  if (a3 && MEMORY[0x277C8C570](a3) == MEMORY[0x277D86468])
+  if (encoding && MEMORY[0x277C8C570](encoding) == MEMORY[0x277D86468])
   {
     v7.receiver = self;
     v7.super_class = ISDialogTextField;
     v5 = [(ISDialogTextField *)&v7 init];
     if (v5)
     {
-      v5->_keyboardType = xpc_dictionary_get_int64(a3, "0");
-      v5->_secure = xpc_dictionary_get_BOOL(a3, "1");
+      v5->_keyboardType = xpc_dictionary_get_int64(encoding, "0");
+      v5->_secure = xpc_dictionary_get_BOOL(encoding, "1");
       objc_opt_class();
       v5->_title = SSXPCDictionaryCopyCFObjectWithClass();
       objc_opt_class();

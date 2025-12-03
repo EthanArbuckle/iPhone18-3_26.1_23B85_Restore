@@ -1,17 +1,17 @@
 @interface BYODDomainVerifyTransferResponse
-- (BYODDomainVerifyTransferResponse)initWithDictionary:(id)a3;
-- (BYODDomainVerifyTransferResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (BYODDomainVerifyTransferResponse)initWithDictionary:(id)dictionary;
+- (BYODDomainVerifyTransferResponse)initWithHTTPResponse:(id)response data:(id)data;
 @end
 
 @implementation BYODDomainVerifyTransferResponse
 
-- (BYODDomainVerifyTransferResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (BYODDomainVerifyTransferResponse)initWithHTTPResponse:(id)response data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = BYODDomainVerifyTransferResponse;
-  v8 = [(BYODDomainVerifyTransferResponse *)&v11 initWithHTTPResponse:v6 data:v7 bodyIsPlist:0];
+  v8 = [(BYODDomainVerifyTransferResponse *)&v11 initWithHTTPResponse:responseCopy data:dataCopy bodyIsPlist:0];
   v9 = v8;
   if (v8 && [*&v8->super.AAResponse_opaque[OBJC_IVAR___AAResponse__httpResponse] statusCode] == stru_B8.segname)
   {
@@ -21,15 +21,15 @@
   return v9;
 }
 
-- (BYODDomainVerifyTransferResponse)initWithDictionary:(id)a3
+- (BYODDomainVerifyTransferResponse)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = BYODDomainVerifyTransferResponse;
-  v5 = [(BYODBaseResponse *)&v8 initWithDictionary:v4];
+  v5 = [(BYODBaseResponse *)&v8 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"success"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"success"];
     v5->_verifySuccess = [v6 BOOLValue];
   }
 

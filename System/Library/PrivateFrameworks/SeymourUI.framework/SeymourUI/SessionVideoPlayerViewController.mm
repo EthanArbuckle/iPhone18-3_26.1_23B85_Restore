@@ -1,18 +1,18 @@
 @interface SessionVideoPlayerViewController
 - (NSArray)preferredFocusEnvironments;
-- (_TtC9SeymourUI32SessionVideoPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didTapMediaPlayerViewWithTapGestureRecognizer:(id)a3;
+- (_TtC9SeymourUI32SessionVideoPlayerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didTapMediaPlayerViewWithTapGestureRecognizer:(id)recognizer;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SessionVideoPlayerViewController
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BE8FA88();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27C7620E0);
@@ -23,17 +23,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BE906FC();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for SessionVideoPlayerViewController();
   v4 = v8.receiver;
-  [(SessionVideoPlayerViewController *)&v8 viewWillAppear:v3];
+  [(SessionVideoPlayerViewController *)&v8 viewWillAppear:appearCopy];
   v5 = *&v4[OBJC_IVAR____TtC9SeymourUI32SessionVideoPlayerViewController_presenter];
   if (swift_unknownObjectWeakLoadStrong())
   {
@@ -49,13 +49,13 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for SessionVideoPlayerViewController();
   v4 = v8.receiver;
-  [(SessionVideoPlayerViewController *)&v8 viewWillDisappear:v3];
+  [(SessionVideoPlayerViewController *)&v8 viewWillDisappear:disappearCopy];
   v5 = *&v4[OBJC_IVAR____TtC9SeymourUI32SessionVideoPlayerViewController_presenter];
   if (swift_unknownObjectWeakLoadStrong())
   {
@@ -78,16 +78,16 @@
   [(SessionVideoPlayerViewController *)&v2 viewSafeAreaInsetsDidChange];
 }
 
-- (_TtC9SeymourUI32SessionVideoPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI32SessionVideoPlayerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)didTapMediaPlayerViewWithTapGestureRecognizer:(id)a3
+- (void)didTapMediaPlayerViewWithTapGestureRecognizer:(id)recognizer
 {
-  v3 = self;
+  selfCopy = self;
   sub_20B672820();
 }
 

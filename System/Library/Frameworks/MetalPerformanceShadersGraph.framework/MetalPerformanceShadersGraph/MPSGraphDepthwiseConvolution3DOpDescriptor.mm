@@ -1,6 +1,6 @@
 @interface MPSGraphDepthwiseConvolution3DOpDescriptor
 + (MPSGraphDepthwiseConvolution3DOpDescriptor)descriptorWithStrides:(NSArray *)strides dilationRates:(NSArray *)dilationRates paddingValues:(NSArray *)paddingValues paddingStyle:(MPSGraphPaddingStyle)paddingStyle;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPSGraphDepthwiseConvolution3DOpDescriptor
@@ -53,7 +53,7 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MPSGraphDepthwiseConvolution3DOpDescriptor alloc];
   v5 = [(NSArray *)self->_dilationRates copy];

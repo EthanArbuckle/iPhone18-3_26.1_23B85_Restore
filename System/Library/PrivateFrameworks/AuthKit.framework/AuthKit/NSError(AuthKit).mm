@@ -33,12 +33,12 @@
 
 - (id)ak_errorByAppendingUserInfo:()AuthKit
 {
-  v16 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  v10 = [v16 userInfo];
-  v11 = [v10 mutableCopy];
+  userInfo = [selfCopy userInfo];
+  v11 = [userInfo mutableCopy];
   v12 = 0;
   if (v11)
   {
@@ -59,15 +59,15 @@
   }
 
   MEMORY[0x1E69E5920](v11);
-  MEMORY[0x1E69E5920](v10);
+  MEMORY[0x1E69E5920](userInfo);
   [v14 addEntriesFromDictionary:location[0]];
   v6 = MEMORY[0x1E696ABC0];
-  v8 = [v16 domain];
-  v5 = [v16 code];
+  domain = [selfCopy domain];
+  code = [selfCopy code];
   v7 = [v14 copy];
-  v9 = [v6 errorWithDomain:v8 code:v5 userInfo:?];
+  v9 = [v6 errorWithDomain:domain code:code userInfo:?];
   MEMORY[0x1E69E5920](v7);
-  MEMORY[0x1E69E5920](v8);
+  MEMORY[0x1E69E5920](domain);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
 
@@ -76,7 +76,7 @@
 
 + (id)ak_errorWithCode:()AuthKit userInfo:
 {
-  v9 = a1;
+  selfCopy = self;
   v8 = a2;
   v7 = a3;
   location = 0;
@@ -90,7 +90,7 @@
 + (id)ak_errorWithCode:()AuthKit underlyingError:
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v13 = a1;
+  selfCopy = self;
   v12 = a2;
   v11 = a3;
   location = 0;
@@ -117,7 +117,7 @@
 + (id)ak_anisetteErrorWithCode:()AuthKit underlyingError:
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v13 = a1;
+  selfCopy = self;
   v12 = a2;
   v11 = a3;
   location = 0;
@@ -144,7 +144,7 @@
 + (id)ak_attestationErrorWithCode:()AuthKit underlyingError:
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v13 = a1;
+  selfCopy = self;
   v12 = a2;
   v11 = a3;
   location = 0;
@@ -171,7 +171,7 @@
 + (id)ak_generalErrorWithCode:()AuthKit errorDomain:underlyingError:
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v15 = a1;
+  selfCopy = self;
   v14 = a2;
   v13 = a3;
   location = 0;
@@ -201,7 +201,7 @@
 + (id)ak_wrappedAnisetteError:()AuthKit underlyingADIErrorCode:
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v13 = a1;
+  selfCopy = self;
   v12 = a2;
   v11 = a3;
   v10 = a4;
@@ -222,9 +222,9 @@
 - (BOOL)ak_isUserCancelError
 {
   v2 = 0;
-  if ([a1 ak_isAuthenticationError])
+  if ([self ak_isAuthenticationError])
   {
-    return [a1 code] == -7003;
+    return [self code] == -7003;
   }
 
   return v2;
@@ -233,9 +233,9 @@
 - (BOOL)ak_isUserSkippedError
 {
   v2 = 0;
-  if ([a1 ak_isAuthenticationError])
+  if ([self ak_isAuthenticationError])
   {
-    return [a1 code] == -7038;
+    return [self code] == -7038;
   }
 
   return v2;
@@ -244,9 +244,9 @@
 - (BOOL)ak_isAdditionalCTASelected
 {
   v2 = 0;
-  if ([a1 ak_isAuthenticationError])
+  if ([self ak_isAuthenticationError])
   {
-    return [a1 code] == -7124;
+    return [self code] == -7124;
   }
 
   return v2;
@@ -255,9 +255,9 @@
 - (BOOL)ak_isUserTryAgainError
 {
   v2 = 0;
-  if ([a1 ak_isAuthenticationError])
+  if ([self ak_isAuthenticationError])
   {
-    return [a1 code] == -7062;
+    return [self code] == -7062;
   }
 
   return v2;
@@ -265,31 +265,31 @@
 
 - (uint64_t)ak_isUserInitiatedError
 {
-  v2 = 1;
-  if (([a1 ak_isUserCancelError] & 1) == 0)
+  ak_isAdditionalCTASelected = 1;
+  if (([self ak_isUserCancelError] & 1) == 0)
   {
-    v2 = 1;
-    if (([a1 ak_isUserSkippedError] & 1) == 0)
+    ak_isAdditionalCTASelected = 1;
+    if (([self ak_isUserSkippedError] & 1) == 0)
     {
-      v2 = [a1 ak_isAdditionalCTASelected];
+      ak_isAdditionalCTASelected = [self ak_isAdditionalCTASelected];
     }
   }
 
-  return v2 & 1;
+  return ak_isAdditionalCTASelected & 1;
 }
 
 - (uint64_t)ak_isServiceError
 {
   v19 = *MEMORY[0x1E69E9840];
-  v16 = a1;
+  selfCopy = self;
   v15 = a2;
   v10 = 0;
-  if ([a1 ak_isAuthenticationError])
+  if ([self ak_isAuthenticationError])
   {
     v9 = 1;
-    if ([v16 code] != -7029)
+    if ([selfCopy code] != -7029)
     {
-      v9 = [v16 code] == -7005;
+      v9 = [selfCopy code] == -7005;
     }
 
     v10 = v9;
@@ -297,7 +297,7 @@
 
   v14 = v10;
   memset(__b, 0, sizeof(__b));
-  obj = [v16 underlyingErrors];
+  obj = [selfCopy underlyingErrors];
   v8 = [obj countByEnumeratingWithState:__b objects:v18 count:16];
   if (v8)
   {
@@ -353,16 +353,16 @@ LABEL_14:
 - (uint64_t)ak_isXPCServiceError
 {
   v3 = 0;
-  if ([a1 code] == 4099 || (v2 = 0, objc_msgSend(a1, "code") == 4097))
+  if ([self code] == 4099 || (v2 = 0, objc_msgSend(self, "code") == 4097))
   {
-    v4 = [a1 domain];
+    domain = [self domain];
     v3 = 1;
-    v2 = [v4 isEqualToString:*MEMORY[0x1E696A250]];
+    v2 = [domain isEqualToString:*MEMORY[0x1E696A250]];
   }
 
   if (v3)
   {
-    MEMORY[0x1E69E5920](v4);
+    MEMORY[0x1E69E5920](domain);
   }
 
   return v2 & 1;
@@ -371,9 +371,9 @@ LABEL_14:
 - (BOOL)ak_isUnableToPromptError
 {
   v2 = 0;
-  if ([a1 ak_isAuthenticationError])
+  if ([self ak_isAuthenticationError])
   {
-    return [a1 code] == -7013;
+    return [self code] == -7013;
   }
 
   return v2;
@@ -382,9 +382,9 @@ LABEL_14:
 - (BOOL)ak_isSurrogateAuthAlreadyInProgressError
 {
   v2 = 0;
-  if ([a1 ak_isAuthenticationError])
+  if ([self ak_isAuthenticationError])
   {
-    return [a1 code] == -7045;
+    return [self code] == -7045;
   }
 
   return v2;
@@ -393,9 +393,9 @@ LABEL_14:
 - (BOOL)ak_isIncompatibleDevicesError
 {
   v2 = 0;
-  if ([a1 ak_isAuthenticationError])
+  if ([self ak_isAuthenticationError])
   {
-    return [a1 code] == -7095;
+    return [self code] == -7095;
   }
 
   return v2;
@@ -404,9 +404,9 @@ LABEL_14:
 - (BOOL)ak_isAuthenticationErrorWithCode:()AuthKit
 {
   v4 = 0;
-  if ([a1 ak_isAuthenticationError])
+  if ([self ak_isAuthenticationError])
   {
-    return [a1 code] == a3;
+    return [self code] == a3;
   }
 
   return v4;
@@ -414,31 +414,31 @@ LABEL_14:
 
 - (uint64_t)ak_isAuthenticationError
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:@"AKAuthenticationError"];
-  MEMORY[0x1E69E5920](v2);
+  domain = [self domain];
+  v3 = [domain isEqualToString:@"AKAuthenticationError"];
+  MEMORY[0x1E69E5920](domain);
   return v3;
 }
 
 - (BOOL)ak_isLAUserCancelError
 {
-  v2 = [a1 domain];
+  domain = [self domain];
   v3 = 0;
-  if ([v2 isEqualToString:*MEMORY[0x1E696EE28]])
+  if ([domain isEqualToString:*MEMORY[0x1E696EE28]])
   {
-    v3 = [a1 code] == -2;
+    v3 = [self code] == -2;
   }
 
-  MEMORY[0x1E69E5920](v2);
+  MEMORY[0x1E69E5920](domain);
   return v3;
 }
 
 - (BOOL)ak_isServerThrottlingError
 {
   v2 = 0;
-  if ([a1 ak_isAuthenticationError])
+  if ([self ak_isAuthenticationError])
   {
-    return [a1 code] == -7120;
+    return [self code] == -7120;
   }
 
   return v2;
@@ -447,13 +447,13 @@ LABEL_14:
 - (uint64_t)ak_isEligibleForProxiedAuthFallback
 {
   v9 = *MEMORY[0x1E69E9840];
-  v7 = a1;
+  selfCopy = self;
   v6 = a2;
-  v5 = [a1 ak_isUnableToPromptError];
+  ak_isUnableToPromptError = [self ak_isUnableToPromptError];
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    if (v5)
+    if (ak_isUnableToPromptError)
     {
       v2 = @"YES";
     }
@@ -463,23 +463,23 @@ LABEL_14:
       v2 = @"NO";
     }
 
-    __os_log_helper_16_2_2_8_64_8_64(v8, v2, v7);
+    __os_log_helper_16_2_2_8_64_8_64(v8, v2, selfCopy);
     _os_log_impl(&dword_193225000, oslog, OS_LOG_TYPE_DEFAULT, "Proxied auth fallback eligibility: %@, %@", v8, 0x16u);
   }
 
   objc_storeStrong(&oslog, 0);
   *MEMORY[0x1E69E9840];
-  return v5 & 1;
+  return ak_isUnableToPromptError & 1;
 }
 
 - (id)ak_allUnderlyingErrorsWithMaxDepth:()AuthKit
 {
-  v14 = a1;
+  selfCopy = self;
   v13 = a2;
   v12 = a3;
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = 0;
-  location = MEMORY[0x1E69E5928](v14);
+  location = MEMORY[0x1E69E5928](selfCopy);
   while (1)
   {
     v8 = 0;
@@ -493,28 +493,28 @@ LABEL_14:
       break;
     }
 
-    [v11 addObject:location];
+    [array addObject:location];
     ++v10;
-    v7 = [location userInfo];
-    v3 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    userInfo = [location userInfo];
+    v3 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
     v4 = location;
     location = v3;
     MEMORY[0x1E69E5920](v4);
-    MEMORY[0x1E69E5920](v7);
+    MEMORY[0x1E69E5920](userInfo);
   }
 
-  v6 = [v11 copy];
+  v6 = [array copy];
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&array, 0);
 
   return v6;
 }
 
 - (id)ak_errorsHeaderStringWithMessage
 {
-  v12[2] = a1;
+  v12[2] = self;
   v12[1] = a2;
-  v12[0] = [a1 ak_allUnderlyingErrors];
+  v12[0] = [self ak_allUnderlyingErrors];
   location = [MEMORY[0x1E695DF70] array];
   v4 = v12[0];
   v5 = MEMORY[0x1E69E9820];
@@ -544,25 +544,25 @@ LABEL_14:
 
 - (id)errorDescriptionIncludingUnderlyingErrorsWithMaxDepth:()AuthKit
 {
-  v14[3] = a1;
+  v14[3] = self;
   v14[2] = a2;
   v14[1] = a3;
-  v14[0] = [a1 ak_allUnderlyingErrorsWithMaxDepth:a3];
+  v14[0] = [self ak_allUnderlyingErrorsWithMaxDepth:a3];
   if ([v14[0] count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = v14[0];
     v6 = MEMORY[0x1E69E9820];
     v7 = -1073741824;
     v8 = 0;
     v9 = __74__NSError_AuthKit__errorDescriptionIncludingUnderlyingErrorsWithMaxDepth___block_invoke;
     v10 = &unk_1E73D6368;
-    v11 = MEMORY[0x1E69E5928](v12);
+    v11 = MEMORY[0x1E69E5928](array);
     [v5 enumerateObjectsUsingBlock:&v6];
-    v15 = [v12 componentsJoinedByString:{@", "}];
+    v15 = [array componentsJoinedByString:{@", "}];
     v13 = 1;
     objc_storeStrong(&v11, 0);
-    objc_storeStrong(&v12, 0);
+    objc_storeStrong(&array, 0);
   }
 
   else
@@ -580,17 +580,17 @@ LABEL_14:
 - (uint64_t)isAccountNotProvisioned
 {
   v16 = *MEMORY[0x1E69E9840];
-  v14 = a1;
+  selfCopy = self;
   v13 = a2;
   v9 = 1;
-  if ([a1 code] != -45061)
+  if ([self code] != -45061)
   {
-    v9 = [v14 code] == -45059;
+    v9 = [selfCopy code] == -45059;
   }
 
   v12 = v9;
   memset(__b, 0, sizeof(__b));
-  obj = [v14 underlyingErrors];
+  obj = [selfCopy underlyingErrors];
   v8 = [obj countByEnumeratingWithState:__b objects:v15 count:16];
   if (v8)
   {
@@ -631,23 +631,23 @@ LABEL_14:
 
 - (BOOL)ak_isAppleIDSetupErrorWithCode:()AuthKit
 {
-  v4 = [a1 domain];
+  domain = [self domain];
   v5 = 0;
-  if ([v4 isEqualToString:@"AppleIDSetupErrorDomain"])
+  if ([domain isEqualToString:@"AppleIDSetupErrorDomain"])
   {
-    v5 = [a1 code] == a3;
+    v5 = [self code] == a3;
   }
 
-  MEMORY[0x1E69E5920](v4);
+  MEMORY[0x1E69E5920](domain);
   return v5;
 }
 
 - (uint64_t)ak_isAppleIDSetupCancelError
 {
   v2 = 1;
-  if (([a1 ak_isAppleIDSetupErrorWithCode:1001] & 1) == 0)
+  if (([self ak_isAppleIDSetupErrorWithCode:1001] & 1) == 0)
   {
-    v2 = [a1 ak_isAppleIDSetupErrorWithCode:1002];
+    v2 = [self ak_isAppleIDSetupErrorWithCode:1002];
   }
 
   return v2 & 1;

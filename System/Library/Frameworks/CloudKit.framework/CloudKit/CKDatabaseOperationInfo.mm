@@ -1,43 +1,43 @@
 @interface CKDatabaseOperationInfo
-- (CKDatabaseOperationInfo)initWithCoder:(id)a3;
+- (CKDatabaseOperationInfo)initWithCoder:(id)coder;
 - (id)activityCreate;
-- (void)encodeWithCoder:(id)a3;
-- (void)takeValuesFrom:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)takeValuesFrom:(id)from;
 @end
 
 @implementation CKDatabaseOperationInfo
 
-- (void)takeValuesFrom:(id)a3
+- (void)takeValuesFrom:(id)from
 {
-  v4 = a3;
-  self->_databaseScope = objc_msgSend_databaseScope(v4, v5, v6);
+  fromCopy = from;
+  self->_databaseScope = objc_msgSend_databaseScope(fromCopy, v5, v6);
   v7.receiver = self;
   v7.super_class = CKDatabaseOperationInfo;
-  [(CKOperationInfo *)&v7 takeValuesFrom:v4];
+  [(CKOperationInfo *)&v7 takeValuesFrom:fromCopy];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v10.receiver = self;
   v10.super_class = CKDatabaseOperationInfo;
-  [(CKOperationInfo *)&v10 encodeWithCoder:v4];
+  [(CKOperationInfo *)&v10 encodeWithCoder:coderCopy];
   v8 = objc_msgSend_databaseScope(self, v6, v7);
-  objc_msgSend_encodeInt64_forKey_(v4, v9, v8, @"DatabaseScope");
+  objc_msgSend_encodeInt64_forKey_(coderCopy, v9, v8, @"DatabaseScope");
   objc_autoreleasePoolPop(v5);
 }
 
-- (CKDatabaseOperationInfo)initWithCoder:(id)a3
+- (CKDatabaseOperationInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CKDatabaseOperationInfo;
-  v5 = [(CKOperationInfo *)&v9 initWithCoder:v4];
+  v5 = [(CKOperationInfo *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v5->_databaseScope = objc_msgSend_decodeInt64ForKey_(v4, v7, @"DatabaseScope");
+    v5->_databaseScope = objc_msgSend_decodeInt64ForKey_(coderCopy, v7, @"DatabaseScope");
     objc_autoreleasePoolPop(v6);
   }
 

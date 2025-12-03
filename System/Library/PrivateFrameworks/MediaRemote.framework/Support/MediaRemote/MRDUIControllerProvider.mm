@@ -1,19 +1,19 @@
 @interface MRDUIControllerProvider
-+ (id)bannerUIControllerWithDelegate:(id)a3;
-+ (id)groupSessionUIControllerWithDelegate:(id)a3;
-+ (id)lockScreenUIControllerWithDelegate:(id)a3;
++ (id)bannerUIControllerWithDelegate:(id)delegate;
++ (id)groupSessionUIControllerWithDelegate:(id)delegate;
++ (id)lockScreenUIControllerWithDelegate:(id)delegate;
 + (id)volumeHUDController;
 @end
 
 @implementation MRDUIControllerProvider
 
-+ (id)lockScreenUIControllerWithDelegate:(id)a3
++ (id)lockScreenUIControllerWithDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = +[MRSharedSettings currentSettings];
   if ([v4 supportSessionBasedLockScreenPlatter])
   {
-    v5 = [[MRDXPCUIController alloc] initWithDelegate:v3];
+    v5 = [[MRDXPCUIController alloc] initWithDelegate:delegateCopy];
   }
 
   else
@@ -24,18 +24,18 @@
   return v5;
 }
 
-+ (id)bannerUIControllerWithDelegate:(id)a3
++ (id)bannerUIControllerWithDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [[MRDUIController alloc] initWithDelegate:v3];
+  delegateCopy = delegate;
+  v4 = [[MRDUIController alloc] initWithDelegate:delegateCopy];
 
   return v4;
 }
 
-+ (id)groupSessionUIControllerWithDelegate:(id)a3
++ (id)groupSessionUIControllerWithDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [[MRDXPCUIController alloc] initWithDelegate:v3];
+  delegateCopy = delegate;
+  v4 = [[MRDXPCUIController alloc] initWithDelegate:delegateCopy];
 
   return v4;
 }

@@ -1,53 +1,53 @@
 @interface RKLocationCategoryRelevantContext
-- (BOOL)isEqual:(id)a3;
-- (RKLocationCategoryRelevantContext)initWithCoder:(id)a3;
-- (RKLocationCategoryRelevantContext)initWithRawCategory:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (RKLocationCategoryRelevantContext)initWithCoder:(id)coder;
+- (RKLocationCategoryRelevantContext)initWithRawCategory:(id)category;
 - (id)description;
 @end
 
 @implementation RKLocationCategoryRelevantContext
 
-- (RKLocationCategoryRelevantContext)initWithRawCategory:(id)a3
+- (RKLocationCategoryRelevantContext)initWithRawCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   v10.receiver = self;
   v10.super_class = RKLocationCategoryRelevantContext;
-  v5 = [(RKRelevantContext *)&v10 _init];
-  if (v5)
+  _init = [(RKRelevantContext *)&v10 _init];
+  if (_init)
   {
-    v6 = [v4 copy];
-    rawCategory = v5->_rawCategory;
-    v5->_rawCategory = v6;
+    v6 = [categoryCopy copy];
+    rawCategory = _init->_rawCategory;
+    _init->_rawCategory = v6;
 
-    v8 = v5;
+    v8 = _init;
   }
 
-  return v5;
+  return _init;
 }
 
-- (RKLocationCategoryRelevantContext)initWithCoder:(id)a3
+- (RKLocationCategoryRelevantContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rawCategory"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rawCategory"];
 
   if (v5)
   {
     self = [(RKLocationCategoryRelevantContext *)self initWithRawCategory:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -57,7 +57,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       rawCategory = self->_rawCategory;
       v7 = rawCategory == v5->_rawCategory || [(NSString *)rawCategory isEqual:?];
     }
@@ -74,8 +74,8 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(RKLocationCategoryRelevantContext *)self rawCategory];
-  v4 = [v2 stringWithFormat:@"<locationCategory: %@>", v3];
+  rawCategory = [(RKLocationCategoryRelevantContext *)self rawCategory];
+  v4 = [v2 stringWithFormat:@"<locationCategory: %@>", rawCategory];
 
   return v4;
 }

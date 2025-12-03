@@ -1,21 +1,21 @@
 @interface CoreColor
-+ (id)blackColorWithSystem:(unsigned __int8)a3;
-+ (id)colorWithSystem:(unsigned __int8)a3 cgColor:(CGColor *)a4;
-+ (id)systemBlueColorWithSystem:(unsigned __int8)a3;
-+ (id)systemBrownColorWithSystem:(unsigned __int8)a3;
-+ (id)systemCyanColorWithSystem:(unsigned __int8)a3;
-+ (id)systemGrayColorWithSystem:(unsigned __int8)a3;
-+ (id)systemGreenColorWithSystem:(unsigned __int8)a3;
-+ (id)systemIndigoColorWithSystem:(unsigned __int8)a3;
-+ (id)systemMintColorWithSystem:(unsigned __int8)a3;
-+ (id)systemOrangeColorWithSystem:(unsigned __int8)a3;
-+ (id)systemPinkColorWithSystem:(unsigned __int8)a3;
-+ (id)systemPurpleColorWithSystem:(unsigned __int8)a3;
-+ (id)systemRedColorWithSystem:(unsigned __int8)a3;
-+ (id)systemTealColorWithSystem:(unsigned __int8)a3;
-+ (id)systemYellowColorWithSystem:(unsigned __int8)a3;
-- (CoreColor)colorWithAlphaComponent:(double)a3;
-- (CoreColor)initWithCGColor:(CGColor *)a3;
++ (id)blackColorWithSystem:(unsigned __int8)system;
++ (id)colorWithSystem:(unsigned __int8)system cgColor:(CGColor *)color;
++ (id)systemBlueColorWithSystem:(unsigned __int8)system;
++ (id)systemBrownColorWithSystem:(unsigned __int8)system;
++ (id)systemCyanColorWithSystem:(unsigned __int8)system;
++ (id)systemGrayColorWithSystem:(unsigned __int8)system;
++ (id)systemGreenColorWithSystem:(unsigned __int8)system;
++ (id)systemIndigoColorWithSystem:(unsigned __int8)system;
++ (id)systemMintColorWithSystem:(unsigned __int8)system;
++ (id)systemOrangeColorWithSystem:(unsigned __int8)system;
++ (id)systemPinkColorWithSystem:(unsigned __int8)system;
++ (id)systemPurpleColorWithSystem:(unsigned __int8)system;
++ (id)systemRedColorWithSystem:(unsigned __int8)system;
++ (id)systemTealColorWithSystem:(unsigned __int8)system;
++ (id)systemYellowColorWithSystem:(unsigned __int8)system;
+- (CoreColor)colorWithAlphaComponent:(double)component;
+- (CoreColor)initWithCGColor:(CGColor *)color;
 - (void)dealloc;
 - (void)set;
 - (void)setFill;
@@ -24,129 +24,129 @@
 
 @implementation CoreColor
 
-+ (id)colorWithSystem:(unsigned __int8)a3 cgColor:(CGColor *)a4
++ (id)colorWithSystem:(unsigned __int8)system cgColor:(CGColor *)color
 {
-  v6 = CoreColorClass(a3);
+  v6 = CoreColorClass(system);
   if (v6)
   {
 
-    return [v6 colorWithCGColor:a4];
+    return [v6 colorWithCGColor:color];
   }
 
   else
   {
-    v8 = [[a1 alloc] initWithCGColor:a4];
+    v8 = [[self alloc] initWithCGColor:color];
 
     return v8;
   }
 }
 
-+ (id)blackColorWithSystem:(unsigned __int8)a3
++ (id)blackColorWithSystem:(unsigned __int8)system
 {
-  v3 = CoreColorClass(a3);
+  v3 = CoreColorClass(system);
 
   return [v3 blackColor];
 }
 
-+ (id)systemRedColorWithSystem:(unsigned __int8)a3
++ (id)systemRedColorWithSystem:(unsigned __int8)system
 {
-  v3 = CoreColorClass(a3);
+  v3 = CoreColorClass(system);
 
   return [v3 systemRedColor];
 }
 
-+ (id)systemOrangeColorWithSystem:(unsigned __int8)a3
++ (id)systemOrangeColorWithSystem:(unsigned __int8)system
 {
-  v3 = CoreColorClass(a3);
+  v3 = CoreColorClass(system);
 
   return [v3 systemOrangeColor];
 }
 
-+ (id)systemYellowColorWithSystem:(unsigned __int8)a3
++ (id)systemYellowColorWithSystem:(unsigned __int8)system
 {
-  v3 = CoreColorClass(a3);
+  v3 = CoreColorClass(system);
 
   return [v3 systemYellowColor];
 }
 
-+ (id)systemGreenColorWithSystem:(unsigned __int8)a3
++ (id)systemGreenColorWithSystem:(unsigned __int8)system
 {
-  v3 = CoreColorClass(a3);
+  v3 = CoreColorClass(system);
 
   return [v3 systemGreenColor];
 }
 
-+ (id)systemTealColorWithSystem:(unsigned __int8)a3
++ (id)systemTealColorWithSystem:(unsigned __int8)system
 {
-  v3 = CoreColorClass(a3);
+  v3 = CoreColorClass(system);
 
   return [v3 systemTealColor];
 }
 
-+ (id)systemMintColorWithSystem:(unsigned __int8)a3
++ (id)systemMintColorWithSystem:(unsigned __int8)system
 {
-  v3 = CoreColorClass(a3);
+  v3 = CoreColorClass(system);
 
   return [v3 systemMintColor];
 }
 
-+ (id)systemCyanColorWithSystem:(unsigned __int8)a3
++ (id)systemCyanColorWithSystem:(unsigned __int8)system
 {
-  v3 = CoreColorClass(a3);
+  v3 = CoreColorClass(system);
 
   return [v3 systemCyanColor];
 }
 
-+ (id)systemBlueColorWithSystem:(unsigned __int8)a3
++ (id)systemBlueColorWithSystem:(unsigned __int8)system
 {
-  v3 = CoreColorClass(a3);
+  v3 = CoreColorClass(system);
 
   return [v3 systemBlueColor];
 }
 
-+ (id)systemIndigoColorWithSystem:(unsigned __int8)a3
++ (id)systemIndigoColorWithSystem:(unsigned __int8)system
 {
-  v3 = CoreColorClass(a3);
+  v3 = CoreColorClass(system);
 
   return [v3 systemIndigoColor];
 }
 
-+ (id)systemPurpleColorWithSystem:(unsigned __int8)a3
++ (id)systemPurpleColorWithSystem:(unsigned __int8)system
 {
-  v3 = CoreColorClass(a3);
+  v3 = CoreColorClass(system);
 
   return [v3 systemPurpleColor];
 }
 
-+ (id)systemPinkColorWithSystem:(unsigned __int8)a3
++ (id)systemPinkColorWithSystem:(unsigned __int8)system
 {
-  v3 = CoreColorClass(a3);
+  v3 = CoreColorClass(system);
 
   return [v3 systemPinkColor];
 }
 
-+ (id)systemBrownColorWithSystem:(unsigned __int8)a3
++ (id)systemBrownColorWithSystem:(unsigned __int8)system
 {
-  v3 = CoreColorClass(a3);
+  v3 = CoreColorClass(system);
 
   return [v3 systemBrownColor];
 }
 
-+ (id)systemGrayColorWithSystem:(unsigned __int8)a3
++ (id)systemGrayColorWithSystem:(unsigned __int8)system
 {
-  v3 = CoreColorClass(a3);
+  v3 = CoreColorClass(system);
 
   return [v3 systemGrayColor];
 }
 
-- (CoreColor)initWithCGColor:(CGColor *)a3
+- (CoreColor)initWithCGColor:(CGColor *)color
 {
   v6.receiver = self;
   v6.super_class = CoreColor;
   v4 = [(CoreColor *)&v6 init];
   if (v4)
   {
-    v4->_color = CGColorRetain(a3);
+    v4->_color = CGColorRetain(color);
   }
 
   return v4;
@@ -162,44 +162,44 @@
 
 - (void)set
 {
-  v3 = [+[CoreGraphicsContext current](CoreGraphicsContext CGContext];
-  if (v3)
+  cGContext = [+[CoreGraphicsContext current](CoreGraphicsContext CGContext];
+  if (cGContext)
   {
-    v4 = v3;
-    CGContextSetFillColorWithColor(v3, [(CoreColor *)self CGColor]);
-    v5 = [(CoreColor *)self CGColor];
+    v4 = cGContext;
+    CGContextSetFillColorWithColor(cGContext, [(CoreColor *)self CGColor]);
+    cGColor = [(CoreColor *)self CGColor];
 
-    CGContextSetStrokeColorWithColor(v4, v5);
+    CGContextSetStrokeColorWithColor(v4, cGColor);
   }
 }
 
 - (void)setFill
 {
-  v3 = [+[CoreGraphicsContext current](CoreGraphicsContext CGContext];
-  if (v3)
+  cGContext = [+[CoreGraphicsContext current](CoreGraphicsContext CGContext];
+  if (cGContext)
   {
-    v4 = v3;
-    v5 = [(CoreColor *)self CGColor];
+    v4 = cGContext;
+    cGColor = [(CoreColor *)self CGColor];
 
-    CGContextSetFillColorWithColor(v4, v5);
+    CGContextSetFillColorWithColor(v4, cGColor);
   }
 }
 
 - (void)setStroke
 {
-  v3 = [+[CoreGraphicsContext current](CoreGraphicsContext CGContext];
-  if (v3)
+  cGContext = [+[CoreGraphicsContext current](CoreGraphicsContext CGContext];
+  if (cGContext)
   {
-    v4 = v3;
-    v5 = [(CoreColor *)self CGColor];
+    v4 = cGContext;
+    cGColor = [(CoreColor *)self CGColor];
 
-    CGContextSetStrokeColorWithColor(v4, v5);
+    CGContextSetStrokeColorWithColor(v4, cGColor);
   }
 }
 
-- (CoreColor)colorWithAlphaComponent:(double)a3
+- (CoreColor)colorWithAlphaComponent:(double)component
 {
-  CopyWithAlpha = CGColorCreateCopyWithAlpha(self->_color, a3);
+  CopyWithAlpha = CGColorCreateCopyWithAlpha(self->_color, component);
   v4 = [CoreColor colorWithCGColor:CopyWithAlpha];
   CGColorRelease(CopyWithAlpha);
   return v4;

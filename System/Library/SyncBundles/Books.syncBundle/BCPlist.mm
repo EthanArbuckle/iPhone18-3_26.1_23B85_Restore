@@ -1,18 +1,18 @@
 @interface BCPlist
-+ (id)promisableItemsFromItems:(id)a3;
-- (BCPlist)initWithPath:(id)a3;
-- (BOOL)addItems:(id)a3;
-- (BOOL)isExistingEntry:(id)a3;
-- (BOOL)removeItemsByPersistentID:(id)a3;
-- (BOOL)replaceItems:(id)a3;
++ (id)promisableItemsFromItems:(id)items;
+- (BCPlist)initWithPath:(id)path;
+- (BOOL)addItems:(id)items;
+- (BOOL)isExistingEntry:(id)entry;
+- (BOOL)removeItemsByPersistentID:(id)d;
+- (BOOL)replaceItems:(id)items;
 - (id)books;
-- (id)booksSortedByKey:(id)a3;
+- (id)booksSortedByKey:(id)key;
 - (id)entriesWithPath;
 - (id)existingPersistentIDs;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (id)paths;
 - (id)sortedPaths;
-- (id)sortedPersistentIDs:(BOOL)a3;
+- (id)sortedPersistentIDs:(BOOL)ds;
 - (id)unfilteredPersistentIDs;
 - (id)uploadsByPersistentID;
 - (void)dealloc;
@@ -20,18 +20,18 @@
 - (void)processDeletesFile;
 - (void)regenerateMissingEstimatedDownloadSizes;
 - (void)regenerateMissingPersistentIDs;
-- (void)removeItemsFromSidecar:(id)a3;
+- (void)removeItemsFromSidecar:(id)sidecar;
 - (void)resetPaths;
 @end
 
 @implementation BCPlist
 
-- (BCPlist)initWithPath:(id)a3
+- (BCPlist)initWithPath:(id)path
 {
   v4 = [(BCPlist *)self init];
   if (v4)
   {
-    v4->_path = a3;
+    v4->_path = path;
     [(BCPlist *)v4 generateDirectory];
   }
 
@@ -58,11 +58,11 @@
   [(BCPlistProducer *)v2 write];
 }
 
-- (BOOL)isExistingEntry:(id)a3
+- (BOOL)isExistingEntry:(id)entry
 {
   v5 = +[NSFileManager defaultManager];
   v6 = objc_opt_class();
-  v7 = BCDynamicCast(v6, [a3 objectForKey:@"Path"]);
+  v7 = BCDynamicCast(v6, [entry objectForKey:@"Path"]);
   if ([v7 length] && -[NSFileManager fileExistsAtPath:](v5, "fileExistsAtPath:", -[NSString stringByAppendingPathComponent:](-[NSString stringByDeletingLastPathComponent](-[BCPlist path](self, "path"), "stringByDeletingLastPathComponent"), "stringByAppendingPathComponent:", v7)))
   {
     return 1;
@@ -73,10 +73,10 @@
   result = 0;
   if (v10)
   {
-    v11 = [(BCPlist *)self path];
+    path = [(BCPlist *)self path];
     v12 = @"is not nil";
     v13 = 138543874;
-    v14 = v11;
+    v14 = path;
     v15 = 2112;
     if (!v7)
     {
@@ -96,17 +96,17 @@
 - (id)existingPersistentIDs
 {
   v23 = +[NSMutableArray array];
-  v3 = [(BCPlist *)self books];
+  books = [(BCPlist *)self books];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v24 objects:v36 count:16];
+  v4 = [books countByEnumeratingWithState:&v24 objects:v36 count:16];
   if (v4)
   {
     v5 = v4;
     v6 = *v25;
-    v22 = v3;
+    v22 = books;
     do
     {
       v7 = 0;
@@ -114,7 +114,7 @@
       {
         if (*v25 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(books);
         }
 
         v8 = *(*(&v24 + 1) + 8 * v7);
@@ -135,11 +135,11 @@
             v18 = BCDefaultLog();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
             {
-              v19 = [(BCPlist *)self path];
+              path = [(BCPlist *)self path];
               v20 = [v10 objectForKey:@"Path"];
               *buf = 138543874;
-              v29 = v19;
-              v3 = v22;
+              v29 = path;
+              books = v22;
               v30 = 2112;
               v31 = v20;
               v32 = 2112;
@@ -154,14 +154,14 @@
           v14 = BCDefaultLog();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [(BCPlist *)self path];
+            path2 = [(BCPlist *)self path];
             v16 = [v10 objectForKey:@"Artist"];
             v17 = [v10 objectForKey:@"Name"];
             *buf = 138544130;
-            v29 = v15;
+            v29 = path2;
             v30 = 2112;
             v31 = v16;
-            v3 = v22;
+            books = v22;
             v32 = 2112;
             v33 = v17;
             v34 = 2112;
@@ -174,7 +174,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v24 objects:v36 count:16];
+      v5 = [books countByEnumeratingWithState:&v24 objects:v36 count:16];
     }
 
     while (v5);
@@ -186,12 +186,12 @@
 - (id)entriesWithPath
 {
   v3 = +[NSMutableArray array];
-  v4 = [(BCPlist *)self books];
+  books = [(BCPlist *)self books];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [books countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -203,7 +203,7 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(books);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
@@ -219,7 +219,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [books countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -231,12 +231,12 @@
 - (id)unfilteredPersistentIDs
 {
   v3 = +[NSMutableArray array];
-  v4 = [(BCPlist *)self books];
+  books = [(BCPlist *)self books];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [books countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -248,7 +248,7 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(books);
         }
 
         v9 = *(*(&v15 + 1) + 8 * v8);
@@ -265,7 +265,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [books countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -274,20 +274,20 @@
   return v3;
 }
 
-- (id)sortedPersistentIDs:(BOOL)a3
+- (id)sortedPersistentIDs:(BOOL)ds
 {
-  if (a3)
+  if (ds)
   {
-    v3 = [(BCPlist *)self existingPersistentIDs];
+    existingPersistentIDs = [(BCPlist *)self existingPersistentIDs];
   }
 
   else
   {
-    v3 = [(BCPlist *)self unfilteredPersistentIDs];
+    existingPersistentIDs = [(BCPlist *)self unfilteredPersistentIDs];
   }
 
-  v4 = v3;
-  if (![v3 count])
+  v4 = existingPersistentIDs;
+  if (![existingPersistentIDs count])
   {
     return 0;
   }
@@ -300,14 +300,14 @@
 - (id)paths
 {
   v3 = +[NSMutableArray array];
-  v4 = [(BCPlist *)self books];
-  if ([v4 count])
+  books = [(BCPlist *)self books];
+  if ([books count])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v5 = [books countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v5)
     {
       v6 = v5;
@@ -319,7 +319,7 @@
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(books);
           }
 
           v9 = *(*(&v15 + 1) + 8 * v8);
@@ -336,7 +336,7 @@
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [books countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v6);
@@ -357,14 +357,14 @@
   return v2;
 }
 
-- (void)removeItemsFromSidecar:(id)a3
+- (void)removeItemsFromSidecar:(id)sidecar
 {
   v4 = objc_alloc_init(NSMutableArray);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [sidecar countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -376,7 +376,7 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(sidecar);
         }
 
         v9 = *(*(&v16 + 1) + 8 * v8);
@@ -393,7 +393,7 @@
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [sidecar countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -406,52 +406,52 @@
   }
 }
 
-- (BOOL)addItems:(id)a3
+- (BOOL)addItems:(id)items
 {
-  v5 = [[BCAddEntriesPlistProducer alloc] initWithPath:[(BCPlist *)self path] entries:a3];
-  v6 = [(BCPlistProducer *)v5 write];
+  v5 = [[BCAddEntriesPlistProducer alloc] initWithPath:[(BCPlist *)self path] entries:items];
+  write = [(BCPlistProducer *)v5 write];
 
-  if (v6)
+  if (write)
   {
-    [(BCPlist *)self removeItemsFromSidecar:a3];
+    [(BCPlist *)self removeItemsFromSidecar:items];
   }
 
-  return v6;
+  return write;
 }
 
-- (BOOL)replaceItems:(id)a3
+- (BOOL)replaceItems:(id)items
 {
-  v3 = [[BCAddEntriesPlistProducer alloc] initWithPath:[(BCPlist *)self path] entries:a3];
+  v3 = [[BCAddEntriesPlistProducer alloc] initWithPath:[(BCPlist *)self path] entries:items];
   [(BCAddEntriesPlistProducer *)v3 replace:1];
-  v4 = [(BCPlistProducer *)v3 write];
+  write = [(BCPlistProducer *)v3 write];
 
-  return v4;
+  return write;
 }
 
 - (void)generateDirectory
 {
-  v2 = [(NSString *)[(BCPlist *)self path] stringByDeletingLastPathComponent];
-  if ([(NSString *)v2 length])
+  stringByDeletingLastPathComponent = [(NSString *)[(BCPlist *)self path] stringByDeletingLastPathComponent];
+  if ([(NSString *)stringByDeletingLastPathComponent length])
   {
     v3 = +[NSFileManager defaultManager];
-    if (![(NSFileManager *)v3 fileExistsAtPath:v2])
+    if (![(NSFileManager *)v3 fileExistsAtPath:stringByDeletingLastPathComponent])
     {
       v4[0] = NSFileOwnerAccountName;
       v4[1] = NSFileGroupOwnerAccountName;
       v5[0] = @"mobile";
       v5[1] = @"mobile";
-      [(NSFileManager *)v3 createDirectoryAtPath:v2 withIntermediateDirectories:1 attributes:[NSDictionary error:"dictionaryWithObjects:forKeys:count:" dictionaryWithObjects:v5 forKeys:v4 count:2], 0];
+      [(NSFileManager *)v3 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:[NSDictionary error:"dictionaryWithObjects:forKeys:count:" dictionaryWithObjects:v5 forKeys:v4 count:2], 0];
     }
   }
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   result = [NSDictionary dictionaryWithContentsOfFile:[(BCPlist *)self path]];
   if (result)
   {
 
-    return [result objectForKey:a3];
+    return [result objectForKey:key];
   }
 
   return result;
@@ -497,11 +497,11 @@
   return v5;
 }
 
-- (id)booksSortedByKey:(id)a3
+- (id)booksSortedByKey:(id)key
 {
-  v3 = [(BCPlist *)self books];
+  books = [(BCPlist *)self books];
 
-  return [v3 arrayOfDictionariesSortedByKey:@"Persistent ID"];
+  return [books arrayOfDictionariesSortedByKey:@"Persistent ID"];
 }
 
 - (id)uploadsByPersistentID
@@ -523,30 +523,30 @@
   return v4;
 }
 
-- (BOOL)removeItemsByPersistentID:(id)a3
+- (BOOL)removeItemsByPersistentID:(id)d
 {
   v5 = BCDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = a3;
+    dCopy = d;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Removing items with IDs %@.", &v9, 0xCu);
   }
 
-  v6 = [[BCRemovePersistentIDPlistProducer alloc] initWithPath:[(BCPlist *)self path] persistentIDs:a3];
-  v7 = [(BCPlistProducer *)v6 write];
+  v6 = [[BCRemovePersistentIDPlistProducer alloc] initWithPath:[(BCPlist *)self path] persistentIDs:d];
+  write = [(BCPlistProducer *)v6 write];
 
-  return v7;
+  return write;
 }
 
-+ (id)promisableItemsFromItems:(id)a3
++ (id)promisableItemsFromItems:(id)items
 {
   v4 = +[NSMutableArray array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  v5 = [items countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v5)
   {
     v6 = v5;
@@ -557,7 +557,7 @@
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(items);
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
@@ -603,7 +603,7 @@
         _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, v16, buf, 0x16u);
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v6 = [items countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v6);
@@ -618,23 +618,23 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v47 = [(BCPlist *)self path];
+    path = [(BCPlist *)self path];
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Resetting paths in %{public}@.", buf, 0xCu);
   }
 
   v37 = objc_alloc_init(NSAutoreleasePool);
   [(BCPlist *)self regenerateMissingPersistentIDs];
-  v4 = [(BCPlist *)self books];
+  books = [(BCPlist *)self books];
   v41 = objc_alloc_init(NSMutableArray);
   v40 = +[NSFileManager defaultManager];
-  v38 = self;
-  v5 = [(NSString *)[(BCPlist *)self path] stringByDeletingLastPathComponent];
+  selfCopy = self;
+  stringByDeletingLastPathComponent = [(NSString *)[(BCPlist *)self path] stringByDeletingLastPathComponent];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v4;
-  v6 = [v4 countByEnumeratingWithState:&v42 objects:v50 count:16];
+  obj = books;
+  v6 = [books countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v6)
   {
     v7 = v6;
@@ -656,7 +656,7 @@
         v15 = BCDynamicCast(v14, [v12 objectForKey:@"Path"]);
         if ([v15 length])
         {
-          v16 = [(NSString *)v5 stringByAppendingPathComponent:v15];
+          v16 = [(NSString *)stringByDeletingLastPathComponent stringByAppendingPathComponent:v15];
           v17 = [(NSFileManager *)v40 fileExistsAtPath:v16];
           v18 = BCDefaultLog();
           v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
@@ -666,7 +666,7 @@
             {
               v20 = [v12 objectForKey:@"Persistent ID"];
               *buf = 138412546;
-              v47 = v20;
+              path = v20;
               v48 = 2112;
               v49 = v16;
               v21 = v18;
@@ -687,7 +687,7 @@
 
             v33 = [v12 objectForKey:@"Persistent ID"];
             *buf = 138412546;
-            v47 = v33;
+            path = v33;
             v48 = 2112;
             v49 = v16;
             v30 = v18;
@@ -700,7 +700,7 @@
           {
             v27 = [v12 objectForKey:@"Persistent ID"];
             *buf = 138412546;
-            v47 = v27;
+            path = v27;
             v48 = 2112;
             v49 = v16;
             _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "resetting paths -- Entry does not stat: %@ -- [%@]", buf, 0x16u);
@@ -723,7 +723,7 @@
             {
               v26 = [v12 objectForKey:@"Persistent ID"];
               *buf = 138412290;
-              v47 = v26;
+              path = v26;
               v21 = v24;
               v22 = "resetting paths -- Entry without a path: %@";
               v23 = 12;
@@ -740,7 +740,7 @@ LABEL_16:
           {
             v29 = [v12 objectForKey:@"Persistent ID"];
             *buf = 138412290;
-            v47 = v29;
+            path = v29;
             v30 = v24;
             v31 = "resetting paths -- Entry without a path: %@ -- Cannot promise";
             v32 = 12;
@@ -762,11 +762,11 @@ LABEL_25:
   {
     v35 = [v41 count];
     *buf = 134217984;
-    v47 = v35;
+    path = v35;
     _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, "resetting paths -- rewriting %lu entries", buf, 0xCu);
   }
 
-  v36 = [[BCAddEntriesPlistProducer alloc] initWithPath:[(BCPlist *)v38 path] entries:v41];
+  v36 = [[BCAddEntriesPlistProducer alloc] initWithPath:[(BCPlist *)selfCopy path] entries:v41];
   [(BCAddEntriesPlistProducer *)v36 replace:1];
   [(BCPlistProducer *)v36 write];
 }
@@ -775,12 +775,12 @@ LABEL_25:
 {
   v3 = [[(NSString *)[(BCPlist *)self path] stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"Deletes.plist"];
   v4 = [[BCIngestSidecarPlistProducer alloc] initWithPath:[(BCPlist *)self path] sidecarPath:v3];
-  v5 = [(BCPlistProducer *)v4 write];
-  v7 = [(BCIngestSidecarPlistProducer *)v4 filterMatches];
+  write = [(BCPlistProducer *)v4 write];
+  filterMatches = [(BCIngestSidecarPlistProducer *)v4 filterMatches];
 
-  if (v5)
+  if (write)
   {
-    v6 = [[BCSidecarRewritePlistProducer alloc] initWithPath:v3 deletes:v7];
+    v6 = [[BCSidecarRewritePlistProducer alloc] initWithPath:v3 deletes:filterMatches];
     [(BCPlistProducer *)v6 write];
   }
 }

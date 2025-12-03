@@ -1,20 +1,20 @@
 @interface JavaMathDivision
-+ (int)remainderWithJavaMathBigInteger:(id)a3 withInt:(int)a4;
++ (int)remainderWithJavaMathBigInteger:(id)integer withInt:(int)int;
 @end
 
 @implementation JavaMathDivision
 
-+ (int)remainderWithJavaMathBigInteger:(id)a3 withInt:(int)a4
++ (int)remainderWithJavaMathBigInteger:(id)integer withInt:(int)int
 {
-  if (!a3)
+  if (!integer)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = *(a3 + 1);
-  v6 = *(a3 + 4);
+  v5 = *(integer + 1);
+  v6 = *(integer + 4);
 
-  return JavaMathDivision_remainderArrayByIntWithIntArray_withInt_withInt_(v5, v6, a4);
+  return JavaMathDivision_remainderArrayByIntWithIntArray_withInt_withInt_(v5, v6, int);
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface BSNSXPCTransport
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
 - (id)_auditToken;
-- (id)newExternalMessageSessionWithReason:(id)a3;
-- (id)sendMessageWithReplySync:(id)a3;
+- (id)newExternalMessageSessionWithReason:(id)reason;
+- (id)sendMessageWithReplySync:(id)sync;
 - (int)auditSessionIdentifier;
 - (int)processIdentifier;
 - (unsigned)effectiveGroupIdentifier;
 - (unsigned)effectiveUserIdentifier;
-- (void)_newAcquiredAssertionWithAttributes:(void *)a1;
-- (void)_newMessageSessionWithReason:(void *)a1;
-- (void)_sendMessage:(int)a3 asNotification:;
-- (void)_setSendingQueue:(id)a3;
+- (void)_newAcquiredAssertionWithAttributes:(void *)attributes;
+- (void)_newMessageSessionWithReason:(void *)reason;
+- (void)_sendMessage:(int)message asNotification:;
+- (void)_setSendingQueue:(id)queue;
 - (void)activate;
 - (void)cancel;
 - (void)dealloc;
 - (void)resume;
-- (void)sendBarrierBlock:(id)a3;
-- (void)sendMessage:(id)a3;
-- (void)sendMessageWithReply:(id)a3 onQueue:(id)a4 replyHandler:(id)a5;
-- (void)sendNotification:(id)a3;
-- (void)setErrorHandler:(id)a3;
-- (void)setEventObserver:(id)a3;
-- (void)setMessageHandler:(id)a3;
-- (void)setPerMessageAssertionAttributes:(id)a3;
-- (void)setRefCountedAssertionAttributes:(id)a3;
-- (void)setSendingQueue:(id)a3;
-- (void)setTargetQueue:(id)a3;
+- (void)sendBarrierBlock:(id)block;
+- (void)sendMessage:(id)message;
+- (void)sendMessageWithReply:(id)reply onQueue:(id)queue replyHandler:(id)handler;
+- (void)sendNotification:(id)notification;
+- (void)setErrorHandler:(id)handler;
+- (void)setEventObserver:(id)observer;
+- (void)setMessageHandler:(id)handler;
+- (void)setPerMessageAssertionAttributes:(id)attributes;
+- (void)setRefCountedAssertionAttributes:(id)attributes;
+- (void)setSendingQueue:(id)queue;
+- (void)setTargetQueue:(id)queue;
 - (void)suspend;
 @end
 
@@ -33,11 +33,11 @@
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken
 {
-  v4 = [(BSNSXPCTransport *)self _auditToken];
-  v6 = v4;
-  if (v4)
+  _auditToken = [(BSNSXPCTransport *)self _auditToken];
+  v6 = _auditToken;
+  if (_auditToken)
   {
-    [v4 realToken];
+    [_auditToken realToken];
   }
 
   else
@@ -51,21 +51,21 @@
 
 - (id)_auditToken
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(BSXPCServiceConnection *)*(a1 + 8) auditToken];
-    v2 = v1;
-    if (v1)
+    auditToken = [(BSXPCServiceConnection *)*(self + 8) auditToken];
+    v2 = auditToken;
+    if (auditToken)
     {
-      v3 = v1;
+      invalidToken = auditToken;
     }
 
     else
     {
-      v3 = [MEMORY[0x1E698E620] invalidToken];
+      invalidToken = [MEMORY[0x1E698E620] invalidToken];
     }
 
-    v4 = v3;
+    v4 = invalidToken;
   }
 
   else
@@ -92,7 +92,7 @@
       v12 = 2114;
       v13 = v8;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = @"BSNSXPCTransport.m";
       v18 = 1024;
@@ -132,7 +132,7 @@
       v12 = 2114;
       v13 = v8;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = @"BSNSXPCTransport.m";
       v18 = 1024;
@@ -177,9 +177,9 @@
   os_unfair_lock_unlock(&self->_lock);
   if ([(_BSNSXPCCallbackTracking *)self->_callbackTracking isInvalidationStillPending])
   {
-    v4 = [(BSXPCServiceConnection *)self->_connection activatedConnectionQueue];
+    activatedConnectionQueue = [(BSXPCServiceConnection *)self->_connection activatedConnectionQueue];
     callbackTracking = self->_callbackTracking;
-    if (v4)
+    if (activatedConnectionQueue)
     {
       v6 = callbackTracking;
       v8[0] = MEMORY[0x1E69E9820];
@@ -188,7 +188,7 @@
       v8[3] = &unk_1E75205D0;
       v9 = v6;
       v7 = v6;
-      [v4 performAsync:v8];
+      [activatedConnectionQueue performAsync:v8];
     }
 
     else
@@ -209,8 +209,8 @@
 
 - (int)processIdentifier
 {
-  v2 = [(BSNSXPCTransport *)self _auditToken];
-  v3 = [v2 pid];
+  _auditToken = [(BSNSXPCTransport *)self _auditToken];
+  v3 = [_auditToken pid];
 
   return v3;
 }
@@ -295,7 +295,7 @@ void __92__BSNSXPCTransport__initWithConnection_configurator_assertionProvider_o
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_newAcquiredAssertionWithAttributes:(void *)a1
+- (void)_newAcquiredAssertionWithAttributes:(void *)attributes
 {
   v49 = *MEMORY[0x1E69E9840];
   v3 = a2;
@@ -312,7 +312,7 @@ void __92__BSNSXPCTransport__initWithConnection_configurator_assertionProvider_o
       *&buf[12] = 2114;
       *&buf[14] = v25;
       *&buf[22] = 2048;
-      v43 = a1;
+      attributesCopy2 = attributes;
       *v44 = 2114;
       *&v44[2] = @"BSNSXPCTransport.m";
       v45 = 1024;
@@ -329,7 +329,7 @@ void __92__BSNSXPCTransport__initWithConnection_configurator_assertionProvider_o
     JUMPOUT(0x19A838ED4);
   }
 
-  v4 = a1[1];
+  v4 = attributes[1];
   if (!v4)
   {
     goto LABEL_29;
@@ -343,10 +343,10 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v6 = a1[6];
+  v6 = attributes[6];
   if (v6)
   {
-    v7 = (*(v6 + 16))(v6, a1[2], v5, v3);
+    v7 = (*(v6 + 16))(v6, attributes[2], v5, v3);
   }
 
   else
@@ -361,7 +361,7 @@ LABEL_30:
       *buf = MEMORY[0x1E69E9820];
       *&buf[8] = 3221225472;
       *&buf[16] = __getRBSAssertionClass_block_invoke_1;
-      v43 = &unk_1E75200F8;
+      attributesCopy2 = &unk_1E75200F8;
       *v44 = &v38;
       __getRBSAssertionClass_block_invoke_1(buf);
       v8 = v39[3];
@@ -369,13 +369,13 @@ LABEL_30:
 
     v9 = v8;
     _Block_object_dispose(&v38, 8);
-    v7 = [[v8 alloc] initWithExplanation:a1[2] target:v5 attributes:v3];
+    v7 = [[v8 alloc] initWithExplanation:attributes[2] target:v5 attributes:v3];
   }
 
   v10 = v7;
   if (!v7)
   {
-    v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ failed to create assertion : attributes=%@", a1[2], v3];
+    v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ failed to create assertion : attributes=%@", attributes[2], v3];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v28 = NSStringFromSelector(sel__newAcquiredAssertionWithAttributes_);
@@ -386,7 +386,7 @@ LABEL_30:
       *&buf[12] = 2114;
       *&buf[14] = v30;
       *&buf[22] = 2048;
-      v43 = a1;
+      attributesCopy2 = attributes;
       *v44 = 2114;
       *&v44[2] = @"BSNSXPCTransport.m";
       v45 = 1024;
@@ -412,7 +412,7 @@ LABEL_30:
     goto LABEL_21;
   }
 
-  v14 = [v12 domain];
+  domain = [v12 domain];
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -423,7 +423,7 @@ LABEL_30:
     *buf = MEMORY[0x1E69E9820];
     *&buf[8] = 3221225472;
     *&buf[16] = __getRBSAssertionErrorDomainSymbolLoc_block_invoke_0;
-    v43 = &unk_1E75200F8;
+    attributesCopy2 = &unk_1E75200F8;
     *v44 = &v38;
     v16 = RunningBoardServicesLibrary_1();
     v17 = dlsym(v16, "RBSAssertionErrorDomain");
@@ -435,9 +435,9 @@ LABEL_30:
   _Block_object_dispose(&v38, 8);
   if (!v15)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v33 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getRBSAssertionErrorDomain(void)"];
-    [v32 handleFailureInFunction:v33 file:@"BSNSXPCTransport.m" lineNumber:41 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v33 file:@"BSNSXPCTransport.m" lineNumber:41 description:{@"%s", dlerror()}];
 
     __break(1u);
 LABEL_29:
@@ -446,7 +446,7 @@ LABEL_29:
   }
 
   v18 = *v15;
-  if ([v14 isEqualToString:v18])
+  if ([domain isEqualToString:v18])
   {
     v19 = [v13 code] == 4;
 
@@ -456,7 +456,7 @@ LABEL_29:
       v36[1] = 3221225472;
       v36[2] = __56__BSNSXPCTransport__newAcquiredAssertionWithAttributes___block_invoke;
       v36[3] = &unk_1E75205F8;
-      v36[4] = a1;
+      v36[4] = attributes;
       v36[5] = v13;
       v36[6] = v3;
       v36[7] = sel__newAcquiredAssertionWithAttributes_;
@@ -471,13 +471,13 @@ LABEL_29:
   v20 = BSServiceXPCErrorsLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
-    v21 = a1[2];
+    v21 = attributes[2];
     *buf = 138543874;
     *&buf[4] = v21;
     *&buf[12] = 2114;
     *&buf[14] = v13;
     *&buf[22] = 2114;
-    v43 = v3;
+    attributesCopy2 = v3;
     _os_log_error_impl(&dword_19A821000, v20, OS_LOG_TYPE_ERROR, "%{public}@ failed to acquire assertion : error=%{public}@ attributes=%{public}@", buf, 0x20u);
   }
 
@@ -521,15 +521,15 @@ void __56__BSNSXPCTransport__newAcquiredAssertionWithAttributes___block_invoke(u
   __break(0);
 }
 
-- (void)_newMessageSessionWithReason:(void *)a1
+- (void)_newMessageSessionWithReason:(void *)reason
 {
   v3 = a2;
-  if (a1)
+  if (reason)
   {
-    v4 = a1[3];
+    v4 = reason[3];
     if (v4)
     {
-      v5 = [(BSNSXPCTransport *)a1 _newAcquiredAssertionWithAttributes:v4];
+      v5 = [(BSNSXPCTransport *)reason _newAcquiredAssertionWithAttributes:v4];
     }
 
     else
@@ -537,7 +537,7 @@ void __56__BSNSXPCTransport__newAcquiredAssertionWithAttributes___block_invoke(u
       v5 = 0;
     }
 
-    v6 = a1[4];
+    v6 = reason[4];
     if (v6)
     {
       v7 = [v6 acquireForReason:v3];
@@ -546,7 +546,7 @@ void __56__BSNSXPCTransport__newAcquiredAssertionWithAttributes___block_invoke(u
       if (v5 && v7)
       {
         v10 = objc_alloc(MEMORY[0x1E698E778]);
-        v11 = a1[2];
+        v11 = reason[2];
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __49__BSNSXPCTransport__newMessageSessionWithReason___block_invoke;
@@ -554,7 +554,7 @@ void __56__BSNSXPCTransport__newAcquiredAssertionWithAttributes___block_invoke(u
         v15 = v5;
         v8 = v8;
         v16 = v8;
-        a1 = [v10 initWithIdentifier:v11 forReason:@"combiner" invalidationBlock:v14];
+        reason = [v10 initWithIdentifier:v11 forReason:@"combiner" invalidationBlock:v14];
 
 LABEL_14:
         goto LABEL_15;
@@ -577,13 +577,13 @@ LABEL_14:
       v12 = v8;
     }
 
-    a1 = v12;
+    reason = v12;
     goto LABEL_14;
   }
 
 LABEL_15:
 
-  return a1;
+  return reason;
 }
 
 uint64_t __49__BSNSXPCTransport__newMessageSessionWithReason___block_invoke(uint64_t a1)
@@ -594,14 +594,14 @@ uint64_t __49__BSNSXPCTransport__newMessageSessionWithReason___block_invoke(uint
   return [v2 invalidate];
 }
 
-- (void)_sendMessage:(int)a3 asNotification:
+- (void)_sendMessage:(int)message asNotification:
 {
   v37 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 8);
-    if (v6 && [*(v6 + 192) isNonLaunching] && (*(a1 + 84) & 1) == 0)
+    v6 = *(self + 8);
+    if (v6 && [*(v6 + 192) isNonLaunching] && (*(self + 84) & 1) == 0)
     {
       v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot send to non-launching services without specifying launching attributes"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -614,7 +614,7 @@ uint64_t __49__BSNSXPCTransport__newMessageSessionWithReason___block_invoke(uint
         v27 = 2114;
         v28 = v18;
         v29 = 2048;
-        v30 = a1;
+        selfCopy = self;
         v31 = 2114;
         v32 = @"BSNSXPCTransport.m";
         v33 = 1024;
@@ -631,14 +631,14 @@ uint64_t __49__BSNSXPCTransport__newMessageSessionWithReason___block_invoke(uint
       JUMPOUT(0x19A8397C4);
     }
 
-    os_unfair_lock_lock((a1 + 80));
-    v7 = *(a1 + 88);
-    os_unfair_lock_unlock((a1 + 80));
+    os_unfair_lock_lock((self + 80));
+    v7 = *(self + 88);
+    os_unfair_lock_unlock((self + 80));
     if ((v7 & 1) == 0)
     {
-      v8 = [(BSXPCServiceConnection *)*(a1 + 8) createMessageWithOptions:?];
+      v8 = [(BSXPCServiceConnection *)*(self + 8) createMessageWithOptions:?];
       [v8 encodeXPCObject:v5 forKey:@"BSNSXPCMessage"];
-      if (a3)
+      if (message)
       {
         v9 = @"per-notification";
       }
@@ -648,7 +648,7 @@ uint64_t __49__BSNSXPCTransport__newMessageSessionWithReason___block_invoke(uint
         v9 = @"per-async-message";
       }
 
-      v10 = [(BSNSXPCTransport *)a1 _newMessageSessionWithReason:v9];
+      v10 = [(BSNSXPCTransport *)self _newMessageSessionWithReason:v9];
       if (v10)
       {
         [v8 encodeBool:1 forKey:@"BSNSXPCReplyIsInternal"];
@@ -665,19 +665,19 @@ uint64_t __49__BSNSXPCTransport__newMessageSessionWithReason___block_invoke(uint
         }
       }
 
-      else if (a3 && v8)
+      else if (message && v8)
       {
         v8[61] = 1;
       }
 
-      v13 = *(a1 + 56);
+      v13 = *(self + 56);
       if (v13)
       {
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
         v20[2] = __48__BSNSXPCTransport__sendMessage_asNotification___block_invoke_2;
         v20[3] = &unk_1E75205A8;
-        v20[4] = a1;
+        v20[4] = self;
         v21 = v8;
         v22 = v10;
         [v13 performAsync:v20];
@@ -715,24 +715,24 @@ uint64_t __48__BSNSXPCTransport__sendMessage_asNotification___block_invoke_2(voi
   }
 }
 
-- (void)setPerMessageAssertionAttributes:(id)a3
+- (void)setPerMessageAssertionAttributes:(id)attributes
 {
-  v9 = a3;
+  attributesCopy = attributes;
   os_unfair_lock_assert_owner(&self->_lock);
-  if ([v9 count])
+  if ([attributesCopy count])
   {
     connection = self->_connection;
     if (connection && [(BSXPCServiceConnectionContext *)connection->_context isNonLaunching])
     {
       v5 = [getRBSConstraintsAttributeClass() attributeWithConstraints:7];
-      v6 = [v9 arrayByAddingObject:v5];
+      v6 = [attributesCopy arrayByAddingObject:v5];
       perMessageAttributes = self->_perMessageAttributes;
       self->_perMessageAttributes = v6;
     }
 
     else
     {
-      v8 = [v9 copy];
+      v8 = [attributesCopy copy];
       v5 = self->_perMessageAttributes;
       self->_perMessageAttributes = v8;
     }
@@ -745,23 +745,23 @@ uint64_t __48__BSNSXPCTransport__sendMessage_asNotification___block_invoke_2(voi
   }
 }
 
-- (void)setRefCountedAssertionAttributes:(id)a3
+- (void)setRefCountedAssertionAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   os_unfair_lock_assert_owner(&self->_lock);
-  if ([v4 count])
+  if ([attributesCopy count])
   {
     connection = self->_connection;
     if (connection && [(BSXPCServiceConnectionContext *)connection->_context isNonLaunching])
     {
       v6 = [getRBSConstraintsAttributeClass() attributeWithConstraints:7];
-      v7 = [v4 arrayByAddingObject:v6];
+      v7 = [attributesCopy arrayByAddingObject:v6];
     }
 
     else
     {
       v6 = [getRBSConstraintsAttributeClass() attributeWithConstraints:4];
-      v7 = [v4 arrayByAddingObject:v6];
+      v7 = [attributesCopy arrayByAddingObject:v6];
     }
 
     v9 = v7;
@@ -774,8 +774,8 @@ uint64_t __48__BSNSXPCTransport__sendMessage_asNotification___block_invoke_2(voi
     v14[2] = __53__BSNSXPCTransport_setRefCountedAssertionAttributes___block_invoke;
     v14[3] = &unk_1E7520418;
     objc_copyWeak(&v16, &location);
-    v4 = v9;
-    v15 = v4;
+    attributesCopy = v9;
+    v15 = attributesCopy;
     v12 = [v10 assertionWithIdentifier:explanation stateDidChangeHandler:v14];
     refCounter = self->_refCounter;
     self->_refCounter = v12;
@@ -828,11 +828,11 @@ void __53__BSNSXPCTransport_setRefCountedAssertionAttributes___block_invoke(uint
 LABEL_8:
 }
 
-- (void)setSendingQueue:(id)a3
+- (void)setSendingQueue:(id)queue
 {
   v37 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  if (!v24)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = objc_opt_class();
@@ -849,7 +849,7 @@ LABEL_8:
       v27 = 2114;
       v28 = v12;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BSNSXPCTransport.m";
       v33 = 1024;
@@ -870,13 +870,13 @@ LABEL_8:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [v24 classForCoder];
-    if (!v15)
+    classForCoder = [queueCopy classForCoder];
+    if (!classForCoder)
     {
-      v15 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v16 = NSStringFromClass(v15);
+    v16 = NSStringFromClass(classForCoder);
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
     v19 = [v14 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"sendingQueue", v16, v18];
@@ -891,7 +891,7 @@ LABEL_8:
       v27 = 2114;
       v28 = v22;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BSNSXPCTransport.m";
       v33 = 1024;
@@ -908,17 +908,17 @@ LABEL_8:
     JUMPOUT(0x19A839F44);
   }
 
-  [(BSNSXPCTransport *)self _setSendingQueue:v24];
+  [(BSNSXPCTransport *)self _setSendingQueue:queueCopy];
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setEventObserver:(id)a3
+- (void)setEventObserver:(id)observer
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_assert_owner(&self->_lock);
   callbackTracking = self->_callbackTracking;
-  v6 = v4;
+  v6 = observerCopy;
   obj = v6;
   if (callbackTracking)
   {
@@ -965,11 +965,11 @@ LABEL_8:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setSendingQueue:(id)a3
+- (void)_setSendingQueue:(id)queue
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"sendingQueue"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -982,7 +982,7 @@ LABEL_8:
       v16 = 2114;
       v17 = v12;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
       v21 = @"BSNSXPCTransport.m";
       v22 = 1024;
@@ -999,17 +999,17 @@ LABEL_8:
     JUMPOUT(0x19A83A360);
   }
 
-  v6 = v5;
+  v6 = queueCopy;
   os_unfair_lock_assert_owner(&self->_lock);
   sendingQueue = self->_sendingQueue;
   self->_sendingQueue = v6;
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)newExternalMessageSessionWithReason:(id)a3
+- (id)newExternalMessageSessionWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(BSNSXPCTransport *)self _newMessageSessionWithReason:v4];
+  reasonCopy = reason;
+  v5 = [(BSNSXPCTransport *)self _newMessageSessionWithReason:reasonCopy];
   v6 = v5;
   if (v5)
   {
@@ -1018,7 +1018,7 @@ LABEL_8:
 
   else
   {
-    v7 = [objc_alloc(MEMORY[0x1E698E778]) initWithIdentifier:self->_explanation forReason:v4 invalidationBlock:&__block_literal_global_0];
+    v7 = [objc_alloc(MEMORY[0x1E698E778]) initWithIdentifier:self->_explanation forReason:reasonCopy invalidationBlock:&__block_literal_global_0];
   }
 
   v8 = v7;
@@ -1026,11 +1026,11 @@ LABEL_8:
   return v8;
 }
 
-- (void)setMessageHandler:(id)a3
+- (void)setMessageHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"handler"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1060,7 +1060,7 @@ LABEL_8:
   v11[2] = __38__BSNSXPCTransport_setMessageHandler___block_invoke;
   v11[3] = &unk_1E7520488;
   v11[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
   [(BSXPCServiceConnection *)connection configure:v11];
 
@@ -1148,11 +1148,11 @@ void __38__BSNSXPCTransport_setMessageHandler___block_invoke_2(uint64_t a1, uint
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setErrorHandler:(id)a3
+- (void)setErrorHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"handler"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1182,7 +1182,7 @@ void __38__BSNSXPCTransport_setMessageHandler___block_invoke_2(uint64_t a1, uint
   v11[2] = __36__BSNSXPCTransport_setErrorHandler___block_invoke;
   v11[3] = &unk_1E7520488;
   v11[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
   [(BSXPCServiceConnection *)connection configure:v11];
 
@@ -1242,13 +1242,13 @@ void __36__BSNSXPCTransport_setErrorHandler___block_invoke(uint64_t a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  xdict = v5;
-  if (!v5 || (v7 = MEMORY[0x19A908710](v5), v6 = xdict, v7 != MEMORY[0x1E69E9E80]))
+  messageCopy = message;
+  v6 = messageCopy;
+  xdict = messageCopy;
+  if (!messageCopy || (v7 = MEMORY[0x19A908710](messageCopy), v6 = xdict, v7 != MEMORY[0x1E69E9E80]))
   {
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"xMessage was invalid : %@", v6];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1261,7 +1261,7 @@ void __36__BSNSXPCTransport_setErrorHandler___block_invoke(uint64_t a1)
       v19 = 2114;
       v20 = v14;
       v21 = 2048;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
       v24 = @"BSNSXPCTransport.m";
       v25 = 1024;
@@ -1293,12 +1293,12 @@ void __36__BSNSXPCTransport_setErrorHandler___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)sendMessageWithReplySync:(id)a3
+- (id)sendMessageWithReplySync:(id)sync
 {
   v52 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5 || MEMORY[0x19A908710](v5) != MEMORY[0x1E69E9E80])
+  syncCopy = sync;
+  v6 = syncCopy;
+  if (!syncCopy || MEMORY[0x19A908710](syncCopy) != MEMORY[0x1E69E9E80])
   {
     v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"xMessage was invalid : %@", v6];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1311,7 +1311,7 @@ void __36__BSNSXPCTransport_setErrorHandler___block_invoke(uint64_t a1)
       *&buf[12] = 2114;
       *&buf[14] = v31;
       *&buf[22] = 2048;
-      v48 = self;
+      selfCopy3 = self;
       LOWORD(v49) = 2114;
       *(&v49 + 2) = @"BSNSXPCTransport.m";
       WORD5(v49) = 1024;
@@ -1343,7 +1343,7 @@ void __36__BSNSXPCTransport_setErrorHandler___block_invoke(uint64_t a1)
       *&buf[12] = 2114;
       *&buf[14] = v36;
       *&buf[22] = 2048;
-      v48 = self;
+      selfCopy3 = self;
       LOWORD(v49) = 2114;
       *(&v49 + 2) = @"BSNSXPCTransport.m";
       WORD5(v49) = 1024;
@@ -1374,7 +1374,7 @@ void __36__BSNSXPCTransport_setErrorHandler___block_invoke(uint64_t a1)
       *&buf[12] = 2114;
       *&buf[14] = v41;
       *&buf[22] = 2048;
-      v48 = self;
+      selfCopy3 = self;
       LOWORD(v49) = 2114;
       *(&v49 + 2) = @"BSNSXPCTransport.m";
       WORD5(v49) = 1024;
@@ -1399,7 +1399,7 @@ void __36__BSNSXPCTransport_setErrorHandler___block_invoke(uint64_t a1)
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
-    v48 = __Block_byref_object_copy__0;
+    selfCopy3 = __Block_byref_object_copy__0;
     *&v49 = __Block_byref_object_dispose__0;
     *(&v49 + 1) = 0;
     v13 = [(BSXPCServiceConnection *)self->_connection createMessageWithOptions:?];
@@ -1442,9 +1442,9 @@ LABEL_19:
     v18 = v17;
     if (v16)
     {
-      v19 = [v16 message];
+      message = [v16 message];
       v20 = *(*&buf[8] + 40);
-      *(*&buf[8] + 40) = v19;
+      *(*&buf[8] + 40) = message;
     }
 
     else
@@ -1522,15 +1522,15 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)sendMessageWithReply:(id)a3 onQueue:(id)a4 replyHandler:(id)a5
+- (void)sendMessageWithReply:(id)reply onQueue:(id)queue replyHandler:(id)handler
 {
   v79 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9 || MEMORY[0x19A908710](v9) != MEMORY[0x1E69E9E80])
+  replyCopy = reply;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!replyCopy || MEMORY[0x19A908710](replyCopy) != MEMORY[0x1E69E9E80])
   {
-    v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"xMessage was invalid : %@", v9];
+    replyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"xMessage was invalid : %@", replyCopy];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v25 = NSStringFromSelector(a2);
@@ -1541,24 +1541,24 @@ LABEL_8:
       v69 = 2114;
       v70 = v27;
       v71 = 2048;
-      v72 = self;
+      selfCopy6 = self;
       v73 = 2114;
       v74 = @"BSNSXPCTransport.m";
       v75 = 1024;
       v76 = 596;
       v77 = 2114;
-      v78 = v24;
+      v78 = replyCopy;
       _os_log_error_impl(&dword_19A821000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
     }
 
-    v28 = v24;
-    [v24 UTF8String];
+    v28 = replyCopy;
+    [replyCopy UTF8String];
     _bs_set_crash_log_message();
     __break(0);
     JUMPOUT(0x19A83BB10);
   }
 
-  v12 = xpc_dictionary_get_remote_connection(v9);
+  v12 = xpc_dictionary_get_remote_connection(replyCopy);
 
   if (v12)
   {
@@ -1573,7 +1573,7 @@ LABEL_8:
       v69 = 2114;
       v70 = v32;
       v71 = 2048;
-      v72 = self;
+      selfCopy6 = self;
       v73 = 2114;
       v74 = @"BSNSXPCTransport.m";
       v75 = 1024;
@@ -1590,7 +1590,7 @@ LABEL_8:
     JUMPOUT(0x19A83BC08);
   }
 
-  if (!v10)
+  if (!queueCopy)
   {
     v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"queue"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1603,7 +1603,7 @@ LABEL_8:
       v69 = 2114;
       v70 = v37;
       v71 = 2048;
-      v72 = self;
+      selfCopy6 = self;
       v73 = 2114;
       v74 = @"BSNSXPCTransport.m";
       v75 = 1024;
@@ -1620,7 +1620,7 @@ LABEL_8:
     JUMPOUT(0x19A83BD0CLL);
   }
 
-  if (!v11)
+  if (!handlerCopy)
   {
     v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"handler"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1633,7 +1633,7 @@ LABEL_8:
       v69 = 2114;
       v70 = v42;
       v71 = 2048;
-      v72 = self;
+      selfCopy6 = self;
       v73 = 2114;
       v74 = @"BSNSXPCTransport.m";
       v75 = 1024;
@@ -1664,7 +1664,7 @@ LABEL_8:
       v69 = 2114;
       v70 = v52;
       v71 = 2048;
-      v72 = self;
+      selfCopy6 = self;
       v73 = 2114;
       v74 = @"BSNSXPCTransport.m";
       v75 = 1024;
@@ -1681,11 +1681,11 @@ LABEL_8:
     JUMPOUT(0x19A83C008);
   }
 
-  v14 = [(BSServiceDispatchQueue *)self->_queue queue];
+  queue = [(BSServiceDispatchQueue *)self->_queue queue];
 
-  if (v14 != v10)
+  if (queue != queueCopy)
   {
-    v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"queue does not match configured queue : param=%@ config=%@", v10, self->_queue];
+    v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"queue does not match configured queue : param=%@ config=%@", queueCopy, self->_queue];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v45 = NSStringFromSelector(a2);
@@ -1696,7 +1696,7 @@ LABEL_8:
       v69 = 2114;
       v70 = v47;
       v71 = 2048;
-      v72 = self;
+      selfCopy6 = self;
       v73 = 2114;
       v74 = @"BSNSXPCTransport.m";
       v75 = 1024;
@@ -1725,8 +1725,8 @@ LABEL_8:
       v64[1] = 3221225472;
       v64[2] = __62__BSNSXPCTransport_sendMessageWithReply_onQueue_replyHandler___block_invoke;
       v64[3] = &unk_1E7520648;
-      v65 = v10;
-      v66 = v11;
+      v65 = queueCopy;
+      v66 = handlerCopy;
       [(BSNSXPCSending *)sendingQueue performAsync:v64];
 
       v17 = v65;
@@ -1738,8 +1738,8 @@ LABEL_8:
       block[1] = 3221225472;
       block[2] = __62__BSNSXPCTransport_sendMessageWithReply_onQueue_replyHandler___block_invoke_3;
       block[3] = &unk_1E7520620;
-      v63 = v11;
-      dispatch_async(v10, block);
+      v63 = handlerCopy;
+      dispatch_async(queueCopy, block);
       v17 = v63;
     }
   }
@@ -1747,7 +1747,7 @@ LABEL_8:
   else
   {
     v17 = [(BSXPCServiceConnection *)self->_connection createMessageWithOptions:?];
-    [v17 encodeXPCObject:v9 forKey:@"BSNSXPCMessage"];
+    [v17 encodeXPCObject:replyCopy forKey:@"BSNSXPCMessage"];
     v18 = [(BSNSXPCTransport *)self _newMessageSessionWithReason:?];
     newValue[0] = MEMORY[0x1E69E9820];
     newValue[1] = 3221225472;
@@ -1755,7 +1755,7 @@ LABEL_8:
     newValue[3] = &unk_1E7520670;
     v19 = v18;
     v60 = v19;
-    v21 = v11;
+    v21 = handlerCopy;
     v61 = v21;
     if (v17)
     {
@@ -1772,7 +1772,7 @@ LABEL_8:
       v54[4] = self;
       v55 = v17;
       v56 = v19;
-      v57 = v10;
+      v57 = queueCopy;
       v58 = v21;
       [(BSNSXPCSending *)v22 performAsync:v54];
     }
@@ -1842,13 +1842,13 @@ void __62__BSNSXPCTransport_sendMessageWithReply_onQueue_replyHandler___block_in
   }
 }
 
-- (void)sendNotification:(id)a3
+- (void)sendNotification:(id)notification
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  xdict = v5;
-  if (!v5 || (v7 = MEMORY[0x19A908710](v5), v6 = xdict, v7 != MEMORY[0x1E69E9E80]))
+  notificationCopy = notification;
+  v6 = notificationCopy;
+  xdict = notificationCopy;
+  if (!notificationCopy || (v7 = MEMORY[0x19A908710](notificationCopy), v6 = xdict, v7 != MEMORY[0x1E69E9E80]))
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"xMessage was invalid : %@", v6];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1861,7 +1861,7 @@ void __62__BSNSXPCTransport_sendMessageWithReply_onQueue_replyHandler___block_in
       v23 = 2114;
       v24 = v13;
       v25 = 2048;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2114;
       v28 = @"BSNSXPCTransport.m";
       v29 = 1024;
@@ -1893,7 +1893,7 @@ void __62__BSNSXPCTransport_sendMessageWithReply_onQueue_replyHandler___block_in
       v23 = 2114;
       v24 = v18;
       v25 = 2048;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2114;
       v28 = @"BSNSXPCTransport.m";
       v29 = 1024;
@@ -1914,10 +1914,10 @@ void __62__BSNSXPCTransport_sendMessageWithReply_onQueue_replyHandler___block_in
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendBarrierBlock:(id)a3
+- (void)sendBarrierBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   sendingQueue = self->_sendingQueue;
   if (sendingQueue)
   {
@@ -1926,21 +1926,21 @@ void __62__BSNSXPCTransport_sendMessageWithReply_onQueue_replyHandler___block_in
     v7[2] = __37__BSNSXPCTransport_sendBarrierBlock___block_invoke;
     v7[3] = &unk_1E7520648;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     [(BSNSXPCSending *)sendingQueue performAsync:v7];
   }
 
   else
   {
-    [(BSXPCServiceConnection *)self->_connection sendBarrierBlock:v4];
+    [(BSXPCServiceConnection *)self->_connection sendBarrierBlock:blockCopy];
   }
 }
 
-- (void)setTargetQueue:(id)a3
+- (void)setTargetQueue:(id)queue
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"targetQueue"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1953,7 +1953,7 @@ void __62__BSNSXPCTransport_sendMessageWithReply_onQueue_replyHandler___block_in
       v22 = 2114;
       v23 = v14;
       v24 = 2048;
-      v25 = self;
+      selfCopy = self;
       v26 = 2114;
       v27 = @"BSNSXPCTransport.m";
       v28 = 1024;
@@ -1970,14 +1970,14 @@ void __62__BSNSXPCTransport_sendMessageWithReply_onQueue_replyHandler___block_in
     JUMPOUT(0x19A83CA4CLL);
   }
 
-  v6 = [BSServiceDispatchQueue _queueOfDispatchQueue:v5];
+  v6 = [BSServiceDispatchQueue _queueOfDispatchQueue:queueCopy];
   if (!v6)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __35__BSNSXPCTransport_setTargetQueue___block_invoke;
     block[3] = &unk_1E75205D0;
-    v7 = v5;
+    v7 = queueCopy;
     v19 = v7;
     dispatch_async(v7, block);
     v6 = [BSServiceDispatchQueue _queueWithDispatchQueue:v7];
@@ -2019,7 +2019,7 @@ void __35__BSNSXPCTransport_setTargetQueue___block_invoke_2(uint64_t a1, void *a
       v15 = 2114;
       v16 = v11;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = @"BSNSXPCTransport.m";
       v21 = 1024;
@@ -2073,26 +2073,26 @@ void __26__BSNSXPCTransport_cancel__block_invoke(uint64_t a1)
 
 - (int)auditSessionIdentifier
 {
-  v2 = [(BSNSXPCTransport *)self _auditToken];
-  v3 = [v2 asid];
+  _auditToken = [(BSNSXPCTransport *)self _auditToken];
+  asid = [_auditToken asid];
 
-  return v3;
+  return asid;
 }
 
 - (unsigned)effectiveUserIdentifier
 {
-  v2 = [(BSNSXPCTransport *)self _auditToken];
-  v3 = [v2 euid];
+  _auditToken = [(BSNSXPCTransport *)self _auditToken];
+  euid = [_auditToken euid];
 
-  return v3;
+  return euid;
 }
 
 - (unsigned)effectiveGroupIdentifier
 {
-  v2 = [(BSNSXPCTransport *)self _auditToken];
-  v3 = [v2 egid];
+  _auditToken = [(BSNSXPCTransport *)self _auditToken];
+  egid = [_auditToken egid];
 
-  return v3;
+  return egid;
 }
 
 @end

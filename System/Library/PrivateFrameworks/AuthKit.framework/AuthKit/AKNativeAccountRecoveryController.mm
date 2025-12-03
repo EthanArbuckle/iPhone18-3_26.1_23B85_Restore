@@ -1,138 +1,138 @@
 @interface AKNativeAccountRecoveryController
-+ (BOOL)shouldSendServerResponseForRecoveredInfo:(id)a3 withRecoveryError:(id)a4;
-+ (id)postBodyForiCSCServerUIResponseWithContext:(id)a3 recoveryError:(id)a4;
-+ (id)requestForRecoveryCompletionWithContext:(id)a3 recoveredInfo:(id)a4 recoveryError:(id)a5;
-- (AKNativeAccountRecoveryController)initWithContext:(id)a3 uiProvider:(id)a4;
-- (AKNativeAccountRecoveryController)initWithContext:(id)a3 uiProvider:(id)a4 flowID:(id)a5;
-- (id)_mapICSCRecoveryResultsToAuthKit:(id)a3;
-- (void)cdpContext:(id)a3 performSilentRecoveryTokenRenewal:(id)a4;
-- (void)cdpContext:(id)a3 verifyMasterKey:(id)a4 completion:(id)a5;
-- (void)dismissNativeRecoveryUIWithCompletion:(id)a3;
-- (void)presentNativeRecoveryUIWithCompletion:(id)a3;
++ (BOOL)shouldSendServerResponseForRecoveredInfo:(id)info withRecoveryError:(id)error;
++ (id)postBodyForiCSCServerUIResponseWithContext:(id)context recoveryError:(id)error;
++ (id)requestForRecoveryCompletionWithContext:(id)context recoveredInfo:(id)info recoveryError:(id)error;
+- (AKNativeAccountRecoveryController)initWithContext:(id)context uiProvider:(id)provider;
+- (AKNativeAccountRecoveryController)initWithContext:(id)context uiProvider:(id)provider flowID:(id)d;
+- (id)_mapICSCRecoveryResultsToAuthKit:(id)kit;
+- (void)cdpContext:(id)context performSilentRecoveryTokenRenewal:(id)renewal;
+- (void)cdpContext:(id)context verifyMasterKey:(id)key completion:(id)completion;
+- (void)dismissNativeRecoveryUIWithCompletion:(id)completion;
+- (void)presentNativeRecoveryUIWithCompletion:(id)completion;
 @end
 
 @implementation AKNativeAccountRecoveryController
 
-- (AKNativeAccountRecoveryController)initWithContext:(id)a3 uiProvider:(id)a4 flowID:(id)a5
+- (AKNativeAccountRecoveryController)initWithContext:(id)context uiProvider:(id)provider flowID:(id)d
 {
   v23 = *MEMORY[0x1E69E9840];
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, provider);
   v18 = 0;
-  objc_storeStrong(&v18, a5);
-  v5 = v21;
-  v21 = 0;
+  objc_storeStrong(&v18, d);
+  v5 = selfCopy;
+  selfCopy = 0;
   v17.receiver = v5;
   v17.super_class = AKNativeAccountRecoveryController;
   v15 = [(AKNativeAccountRecoveryController *)&v17 init];
-  v21 = v15;
-  objc_storeStrong(&v21, v15);
+  selfCopy = v15;
+  objc_storeStrong(&selfCopy, v15);
   if (v15)
   {
-    objc_storeStrong(&v21->_recoveryContext, location[0]);
+    objc_storeStrong(&selfCopy->_recoveryContext, location[0]);
     if (v18)
     {
       v16 = _AKLogSystem();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        v10 = v21;
-        v12 = [(AKAccountRecoveryContext *)v21->_recoveryContext authContext];
-        v11 = [(AKAppleIDAuthenticationContext *)v12 telemetryFlowID];
-        __os_log_helper_16_2_3_8_64_8_64_8_64(v22, v10, v11, v18);
+        v10 = selfCopy;
+        authContext = [(AKAccountRecoveryContext *)selfCopy->_recoveryContext authContext];
+        telemetryFlowID = [(AKAppleIDAuthenticationContext *)authContext telemetryFlowID];
+        __os_log_helper_16_2_3_8_64_8_64_8_64(v22, v10, telemetryFlowID, v18);
         _os_log_debug_impl(&dword_193225000, v16, OS_LOG_TYPE_DEBUG, "%@: Overriding the telemetryFlowID: from recoveryContext.authContext.telemetryFlowID=%@ to flowID=%@", v22, 0x20u);
-        MEMORY[0x1E69E5920](v11);
-        MEMORY[0x1E69E5920](v12);
+        MEMORY[0x1E69E5920](telemetryFlowID);
+        MEMORY[0x1E69E5920](authContext);
       }
 
       objc_storeStrong(&v16, 0);
       v8 = v18;
-      v9 = [(AKAccountRecoveryContext *)v21->_recoveryContext authContext];
-      [(AKAppleIDAuthenticationContext *)v9 setTelemetryFlowID:v8];
-      MEMORY[0x1E69E5920](v9);
+      authContext2 = [(AKAccountRecoveryContext *)selfCopy->_recoveryContext authContext];
+      [(AKAppleIDAuthenticationContext *)authContext2 setTelemetryFlowID:v8];
+      MEMORY[0x1E69E5920](authContext2);
     }
 
-    objc_storeStrong(&v21->_cdpUiProvider, v19);
+    objc_storeStrong(&selfCopy->_cdpUiProvider, v19);
   }
 
-  v7 = MEMORY[0x1E69E5928](v21);
+  v7 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (AKNativeAccountRecoveryController)initWithContext:(id)a3 uiProvider:(id)a4
+- (AKNativeAccountRecoveryController)initWithContext:(id)context uiProvider:(id)provider
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v4 = v10;
-  v10 = 0;
-  v10 = [(AKNativeAccountRecoveryController *)v4 initWithContext:location[0] uiProvider:v8 flowID:0];
-  v7 = MEMORY[0x1E69E5928](v10);
+  objc_storeStrong(&v8, provider);
+  v4 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKNativeAccountRecoveryController *)v4 initWithContext:location[0] uiProvider:v8 flowID:0];
+  v7 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (void)presentNativeRecoveryUIWithCompletion:(id)a3
+- (void)presentNativeRecoveryUIWithCompletion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v22 = _AKLogSystem();
   v21 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(AKAccountRecoveryContext *)v24->_recoveryContext authContext];
-    v10 = [(AKAppleIDAuthenticationContext *)v11 username];
-    v9 = [(AKAccountRecoveryContext *)v24->_recoveryContext authContext];
-    v8 = [(AKAppleIDAuthenticationContext *)v9 DSID];
-    __os_log_helper_16_2_4_8_112_8_64_8_112_8_64(v26, 1752392040, v10, 1752392040, v8);
+    authContext = [(AKAccountRecoveryContext *)selfCopy->_recoveryContext authContext];
+    username = [(AKAppleIDAuthenticationContext *)authContext username];
+    authContext2 = [(AKAccountRecoveryContext *)selfCopy->_recoveryContext authContext];
+    dSID = [(AKAppleIDAuthenticationContext *)authContext2 DSID];
+    __os_log_helper_16_2_4_8_112_8_64_8_112_8_64(v26, 1752392040, username, 1752392040, dSID);
     _os_log_debug_impl(&dword_193225000, v22, v21, "Starting retrieval of recovery info for appleId <%{mask.hash}@ : %{mask.hash}@>", v26, 0x2Au);
-    MEMORY[0x1E69E5920](v8);
-    MEMORY[0x1E69E5920](v9);
-    MEMORY[0x1E69E5920](v10);
-    MEMORY[0x1E69E5920](v11);
+    MEMORY[0x1E69E5920](dSID);
+    MEMORY[0x1E69E5920](authContext2);
+    MEMORY[0x1E69E5920](username);
+    MEMORY[0x1E69E5920](authContext);
   }
 
   objc_storeStrong(&v22, 0);
-  v3 = [AKCDPFactory recoveryControllerWithContext:v24->_recoveryContext];
-  recoveryController = v24->_recoveryController;
-  v24->_recoveryController = v3;
+  v3 = [AKCDPFactory recoveryControllerWithContext:selfCopy->_recoveryContext];
+  recoveryController = selfCopy->_recoveryController;
+  selfCopy->_recoveryController = v3;
   MEMORY[0x1E69E5920](recoveryController);
-  [(CDPRecoveryController *)v24->_recoveryController setAuthProvider:v24];
-  [(CDPRecoveryController *)v24->_recoveryController setUiProvider:v24->_cdpUiProvider];
+  [(CDPRecoveryController *)selfCopy->_recoveryController setAuthProvider:selfCopy];
+  [(CDPRecoveryController *)selfCopy->_recoveryController setUiProvider:selfCopy->_cdpUiProvider];
   v20 = _AKLogSystem();
   v19 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_1_8_64(v25, v24->_recoveryController);
+    __os_log_helper_16_2_1_8_64(v25, selfCopy->_recoveryController);
     _os_log_debug_impl(&dword_193225000, v20, v19, "Starting recovery using %@...", v25, 0xCu);
   }
 
   objc_storeStrong(&v20, 0);
-  if (v24->_recoveryController)
+  if (selfCopy->_recoveryController)
   {
-    v7 = v24->_recoveryController;
+    v7 = selfCopy->_recoveryController;
     v12 = MEMORY[0x1E69E9820];
     v13 = -1073741824;
     v14 = 0;
     v15 = __75__AKNativeAccountRecoveryController_presentNativeRecoveryUIWithCompletion___block_invoke;
     v16 = &unk_1E73D4BA0;
-    v17 = MEMORY[0x1E69E5928](v24);
+    v17 = MEMORY[0x1E69E5928](selfCopy);
     v18 = MEMORY[0x1E69E5928](location[0]);
     [(CDPRecoveryController *)v7 performRecovery:&v12];
     objc_storeStrong(&v18, 0);
@@ -220,15 +220,15 @@ void __75__AKNativeAccountRecoveryController_presentNativeRecoveryUIWithCompleti
   *MEMORY[0x1E69E9840];
 }
 
-- (void)dismissNativeRecoveryUIWithCompletion:(id)a3
+- (void)dismissNativeRecoveryUIWithCompletion:(id)completion
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_recoveryContext, 0);
-  [(CDPRecoveryController *)v4->_recoveryController invalidate];
-  objc_storeStrong(&v4->_recoveryController, 0);
+  objc_storeStrong(location, completion);
+  objc_storeStrong(&selfCopy->_recoveryContext, 0);
+  [(CDPRecoveryController *)selfCopy->_recoveryController invalidate];
+  objc_storeStrong(&selfCopy->_recoveryController, 0);
   if (location[0])
   {
     (*(location[0] + 2))(location[0], 1, 0);
@@ -237,17 +237,17 @@ void __75__AKNativeAccountRecoveryController_presentNativeRecoveryUIWithCompleti
   objc_storeStrong(location, 0);
 }
 
-- (void)cdpContext:(id)a3 performSilentRecoveryTokenRenewal:(id)a4
+- (void)cdpContext:(id)context performSilentRecoveryTokenRenewal:(id)renewal
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, renewal);
   v14 = objc_alloc_init(AKAppleIDAuthenticationController);
   v6 = v14;
-  recoveryContext = v17->_recoveryContext;
+  recoveryContext = selfCopy->_recoveryContext;
   v7 = MEMORY[0x1E69E9820];
   v8 = -1073741824;
   v9 = 0;
@@ -295,31 +295,31 @@ void __82__AKNativeAccountRecoveryController_cdpContext_performSilentRecoveryTok
   *MEMORY[0x1E69E9840];
 }
 
-- (void)cdpContext:(id)a3 verifyMasterKey:(id)a4 completion:(id)a5
+- (void)cdpContext:(id)context verifyMasterKey:(id)key completion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, key);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
+  objc_storeStrong(&v8, completion);
   v7 = objc_alloc_init(AKAppleIDAuthenticationController);
-  [(AKAppleIDAuthenticationController *)v7 verifyMasterKey:v9 context:v11->_recoveryContext completion:v8];
+  [(AKAppleIDAuthenticationController *)v7 verifyMasterKey:v9 context:selfCopy->_recoveryContext completion:v8];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)_mapICSCRecoveryResultsToAuthKit:(id)a3
+- (id)_mapICSCRecoveryResultsToAuthKit:(id)kit
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v21 = [MEMORY[0x1E695DF90] dictionary];
+  objc_storeStrong(location, kit);
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v9 = location[0];
   v10 = +[AKCDPFactory cdpIDMSRecordPRKKey];
   v20 = [v9 objectForKeyedSubscript:?];
@@ -330,7 +330,7 @@ void __82__AKNativeAccountRecoveryController_cdpContext_performSilentRecoveryTok
   MEMORY[0x1E69E5920](v12);
   if (v20)
   {
-    [v21 setObject:v20 forKeyedSubscript:@"X-Apple-I-iCSC-PRK"];
+    [dictionary setObject:v20 forKeyedSubscript:@"X-Apple-I-iCSC-PRK"];
   }
 
   else
@@ -350,7 +350,7 @@ void __82__AKNativeAccountRecoveryController_cdpContext_performSilentRecoveryTok
 
   if (v19)
   {
-    [v21 setObject:v19 forKeyedSubscript:@"X-Apple-I-iCSC-MD-M"];
+    [dictionary setObject:v19 forKeyedSubscript:@"X-Apple-I-iCSC-MD-M"];
   }
 
   else
@@ -368,26 +368,26 @@ void __82__AKNativeAccountRecoveryController_cdpContext_performSilentRecoveryTok
     objc_storeStrong(&v15, 0);
   }
 
-  v4 = [v21 copy];
+  v4 = [dictionary copy];
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v20, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&dictionary, 0);
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-+ (id)requestForRecoveryCompletionWithContext:(id)a3 recoveredInfo:(id)a4 recoveryError:(id)a5
++ (id)requestForRecoveryCompletionWithContext:(id)context recoveredInfo:(id)info recoveryError:(id)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v43 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v41 = 0;
-  objc_storeStrong(&v41, a4);
+  objc_storeStrong(&v41, info);
   v40 = 0;
-  objc_storeStrong(&v40, a5);
+  objc_storeStrong(&v40, error);
   v39 = _AKLogSystem();
   v38 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -408,19 +408,19 @@ void __82__AKNativeAccountRecoveryController_cdpContext_performSilentRecoveryTok
   }
 
   objc_storeStrong(&v36, 0);
-  v34 = [location[0] recoveryContinuationURL];
-  if (v34)
+  recoveryContinuationURL = [location[0] recoveryContinuationURL];
+  if (recoveryContinuationURL)
   {
-    v33 = [MEMORY[0x1E695AC18] requestWithURL:v34];
+    v33 = [MEMORY[0x1E695AC18] requestWithURL:recoveryContinuationURL];
     [v33 setHTTPMethod:@"POST"];
-    v32 = [location[0] decodedRecoveryIdentityTokenString];
-    if (v32)
+    decodedRecoveryIdentityTokenString = [location[0] decodedRecoveryIdentityTokenString];
+    if (decodedRecoveryIdentityTokenString)
     {
-      v12 = [location[0] authContext];
-      v11 = [v12 altDSID];
-      [v33 ak_addICSCRecoveryHeaderWithIdentityToken:v32 forAltDSID:?];
-      MEMORY[0x1E69E5920](v11);
-      MEMORY[0x1E69E5920](v12);
+      authContext = [location[0] authContext];
+      altDSID = [authContext altDSID];
+      [v33 ak_addICSCRecoveryHeaderWithIdentityToken:decodedRecoveryIdentityTokenString forAltDSID:?];
+      MEMORY[0x1E69E5920](altDSID);
+      MEMORY[0x1E69E5920](authContext);
       v8 = v41;
       v21 = MEMORY[0x1E69E9820];
       v22 = -1073741824;
@@ -430,16 +430,16 @@ void __82__AKNativeAccountRecoveryController_cdpContext_performSilentRecoveryTok
       v26 = MEMORY[0x1E69E5928](v33);
       v27 = MEMORY[0x1E69E5928](location[0]);
       [v8 enumerateKeysAndObjectsUsingBlock:&v21];
-      v20 = [v43 postBodyForiCSCServerUIResponseWithContext:location[0] recoveryError:v40];
+      v20 = [selfCopy postBodyForiCSCServerUIResponseWithContext:location[0] recoveryError:v40];
       [v33 ak_setBodyWithParameters:v20];
       oslog = _AKLogSystem();
       v18 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [v33 allHTTPHeaderFields];
-        __os_log_helper_16_2_1_8_64(v46, v7);
+        allHTTPHeaderFields = [v33 allHTTPHeaderFields];
+        __os_log_helper_16_2_1_8_64(v46, allHTTPHeaderFields);
         _os_log_impl(&dword_193225000, oslog, v18, "Recovery response: %@", v46, 0xCu);
-        MEMORY[0x1E69E5920](v7);
+        MEMORY[0x1E69E5920](allHTTPHeaderFields);
       }
 
       objc_storeStrong(&oslog, 0);
@@ -475,7 +475,7 @@ void __82__AKNativeAccountRecoveryController_cdpContext_performSilentRecoveryTok
       v28 = 1;
     }
 
-    objc_storeStrong(&v32, 0);
+    objc_storeStrong(&decodedRecoveryIdentityTokenString, 0);
     objc_storeStrong(&v33, 0);
   }
 
@@ -485,7 +485,7 @@ void __82__AKNativeAccountRecoveryController_cdpContext_performSilentRecoveryTok
     v28 = 1;
   }
 
-  objc_storeStrong(&v34, 0);
+  objc_storeStrong(&recoveryContinuationURL, 0);
   objc_storeStrong(&v40, 0);
   objc_storeStrong(&v41, 0);
   objc_storeStrong(location, 0);
@@ -574,14 +574,14 @@ LABEL_13:
   *MEMORY[0x1E69E9840];
 }
 
-+ (id)postBodyForiCSCServerUIResponseWithContext:(id)a3 recoveryError:(id)a4
++ (id)postBodyForiCSCServerUIResponseWithContext:(id)context recoveryError:(id)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, error);
   v21 = _AKLogSystem();
   v20 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -593,76 +593,76 @@ LABEL_13:
   }
 
   objc_storeStrong(&v21, 0);
-  v18 = [MEMORY[0x1E695DF90] dictionary];
-  v13 = [location[0] authContext];
-  v17 = [v13 username];
-  MEMORY[0x1E69E5920](v13);
-  if (v17)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  authContext = [location[0] authContext];
+  username = [authContext username];
+  MEMORY[0x1E69E5920](authContext);
+  if (username)
   {
-    [v18 setObject:v17 forKeyedSubscript:@"appleid"];
+    [dictionary setObject:username forKeyedSubscript:@"appleid"];
   }
 
   if (v22)
   {
-    [v18 setObject:@"failure" forKeyedSubscript:@"status"];
+    [dictionary setObject:@"failure" forKeyedSubscript:@"status"];
     v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v22, "code")}];
-    [v18 setObject:? forKeyedSubscript:?];
+    [dictionary setObject:? forKeyedSubscript:?];
     MEMORY[0x1E69E5920](v9);
-    v11 = [v22 domain];
+    domain = [v22 domain];
     v10 = +[AKCDPFactory cdpErrorDomain];
-    v12 = [v11 isEqualToString:?];
+    v12 = [domain isEqualToString:?];
     MEMORY[0x1E69E5920](v10);
-    MEMORY[0x1E69E5920](v11);
+    MEMORY[0x1E69E5920](domain);
     if (v12)
     {
-      v8 = [v22 code];
-      switch(v8)
+      code = [v22 code];
+      switch(code)
       {
         case -5215:
-          [v18 setObject:@"cancel" forKeyedSubscript:@"action"];
+          [dictionary setObject:@"cancel" forKeyedSubscript:@"action"];
           break;
         case -5207:
-          [v18 setObject:@"start_account_recovery" forKeyedSubscript:@"action"];
+          [dictionary setObject:@"start_account_recovery" forKeyedSubscript:@"action"];
           break;
         case -5200:
-          [v18 setObject:@"try_again" forKeyedSubscript:@"action"];
+          [dictionary setObject:@"try_again" forKeyedSubscript:@"action"];
           break;
       }
     }
 
-    v7 = [v22 localizedFailureReason];
-    MEMORY[0x1E69E5920](v7);
-    if (v7)
+    localizedFailureReason = [v22 localizedFailureReason];
+    MEMORY[0x1E69E5920](localizedFailureReason);
+    if (localizedFailureReason)
     {
-      v6 = [v22 localizedFailureReason];
-      [v18 setObject:? forKeyedSubscript:?];
-      MEMORY[0x1E69E5920](v6);
+      localizedFailureReason2 = [v22 localizedFailureReason];
+      [dictionary setObject:? forKeyedSubscript:?];
+      MEMORY[0x1E69E5920](localizedFailureReason2);
     }
   }
 
   else
   {
-    [v18 setObject:@"success" forKeyedSubscript:@"status"];
+    [dictionary setObject:@"success" forKeyedSubscript:@"status"];
   }
 
-  v5 = [v18 copy];
-  objc_storeStrong(&v17, 0);
-  objc_storeStrong(&v18, 0);
+  v5 = [dictionary copy];
+  objc_storeStrong(&username, 0);
+  objc_storeStrong(&dictionary, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-+ (BOOL)shouldSendServerResponseForRecoveredInfo:(id)a3 withRecoveryError:(id)a4
++ (BOOL)shouldSendServerResponseForRecoveredInfo:(id)info withRecoveryError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, error);
   v10 = _AKLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -673,10 +673,10 @@ LABEL_13:
   objc_storeStrong(&v10, 0);
   if (v11)
   {
-    v6 = [v11 domain];
+    domain = [v11 domain];
     v7 = +[AKCDPFactory cdpErrorDomain];
     v8 = 0;
-    if ([v6 isEqualToString:?])
+    if ([domain isEqualToString:?])
     {
       v5 = 1;
       if ([v11 code] != -5200)
@@ -693,7 +693,7 @@ LABEL_13:
 
     v13 = v8;
     MEMORY[0x1E69E5920](v7);
-    MEMORY[0x1E69E5920](v6);
+    MEMORY[0x1E69E5920](domain);
   }
 
   else

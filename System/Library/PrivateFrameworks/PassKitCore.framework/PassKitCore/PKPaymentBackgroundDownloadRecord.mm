@@ -1,8 +1,8 @@
 @interface PKPaymentBackgroundDownloadRecord
-+ (id)taskWithType:(int64_t)a3;
-- (PKPaymentBackgroundDownloadRecord)initWithCoder:(id)a3;
++ (id)taskWithType:(int64_t)type;
+- (PKPaymentBackgroundDownloadRecord)initWithCoder:(id)coder;
 - (id)_init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentBackgroundDownloadRecord
@@ -14,31 +14,31 @@
   return [(PKPaymentBackgroundDownloadRecord *)&v3 init];
 }
 
-- (PKPaymentBackgroundDownloadRecord)initWithCoder:(id)a3
+- (PKPaymentBackgroundDownloadRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKPaymentBackgroundDownloadRecord;
   v5 = [(PKPaymentBackgroundDownloadRecord *)&v7 init];
   if (v5)
   {
-    -[PKPaymentBackgroundDownloadRecord setTaskType:](v5, "setTaskType:", [v4 decodeIntegerForKey:@"taskType"]);
-    -[PKPaymentBackgroundDownloadRecord setRetryCount:](v5, "setRetryCount:", [v4 decodeIntegerForKey:@"retryCount"]);
+    -[PKPaymentBackgroundDownloadRecord setTaskType:](v5, "setTaskType:", [coderCopy decodeIntegerForKey:@"taskType"]);
+    -[PKPaymentBackgroundDownloadRecord setRetryCount:](v5, "setRetryCount:", [coderCopy decodeIntegerForKey:@"retryCount"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[PKPaymentBackgroundDownloadRecord taskType](self forKey:{"taskType"), @"taskType"}];
-  [v4 encodeInteger:-[PKPaymentBackgroundDownloadRecord retryCount](self forKey:{"retryCount"), @"retryCount"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[PKPaymentBackgroundDownloadRecord taskType](self forKey:{"taskType"), @"taskType"}];
+  [coderCopy encodeInteger:-[PKPaymentBackgroundDownloadRecord retryCount](self forKey:{"retryCount"), @"retryCount"}];
 }
 
-+ (id)taskWithType:(int64_t)a3
++ (id)taskWithType:(int64_t)type
 {
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     v4 = 0;
   }
@@ -48,9 +48,9 @@
     v4 = objc_opt_class();
   }
 
-  v5 = [[v4 alloc] _init];
-  [v5 setTaskType:a3];
-  return v5;
+  _init = [[v4 alloc] _init];
+  [_init setTaskType:type];
+  return _init;
 }
 
 @end

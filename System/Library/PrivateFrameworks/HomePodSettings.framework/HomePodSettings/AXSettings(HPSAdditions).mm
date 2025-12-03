@@ -9,9 +9,9 @@
 - (uint64_t)hps_touchAccomodationsTapActivationMethodString
 {
   v1 = MEMORY[0x277CE7E20];
-  v2 = [a1 touchAccommodationsTapActivationMethod];
+  touchAccommodationsTapActivationMethod = [self touchAccommodationsTapActivationMethod];
 
-  return [v1 hps_stringFromTapActivationMethod:v2];
+  return [v1 hps_stringFromTapActivationMethod:touchAccommodationsTapActivationMethod];
 }
 
 + (__CFString)hps_stringFromTapActivationMethod:()HPSAdditions

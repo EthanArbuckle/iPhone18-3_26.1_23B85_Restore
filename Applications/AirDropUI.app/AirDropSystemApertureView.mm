@@ -1,8 +1,8 @@
 @interface AirDropSystemApertureView
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
 - (_TtC9AirDropUI25AirDropSystemApertureView)init;
-- (_TtC9AirDropUI25AirDropSystemApertureView)initWithCoder:(id)a3;
-- (_TtC9AirDropUI25AirDropSystemApertureView)initWithFrame:(CGRect)a3;
+- (_TtC9AirDropUI25AirDropSystemApertureView)initWithCoder:(id)coder;
+- (_TtC9AirDropUI25AirDropSystemApertureView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AirDropSystemApertureView
@@ -15,7 +15,7 @@
   return [(AirDropSystemApertureView *)&v3 initWithFrame:0.0, 0.0, 23.0, 23.0];
 }
 
-- (_TtC9AirDropUI25AirDropSystemApertureView)initWithCoder:(id)a3
+- (_TtC9AirDropUI25AirDropSystemApertureView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9AirDropUI25AirDropSystemApertureView_expanded) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -23,10 +23,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
   v4 = 48.3333;
-  if ((a4 + 1) < 5)
+  if ((mode + 1) < 5)
   {
     v4 = 23.0;
   }
@@ -37,7 +37,7 @@
   return result;
 }
 
-- (_TtC9AirDropUI25AirDropSystemApertureView)initWithFrame:(CGRect)a3
+- (_TtC9AirDropUI25AirDropSystemApertureView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

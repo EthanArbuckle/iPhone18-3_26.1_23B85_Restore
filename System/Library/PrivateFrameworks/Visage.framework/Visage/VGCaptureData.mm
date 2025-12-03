@@ -1,14 +1,14 @@
 @interface VGCaptureData
-+ (__CVBuffer)_createColorFromYCbCr:(__CVBuffer *)a3;
-+ (double)_dataToMatrix33:(void *)a3;
-+ (double)_dataToMatrix44:(void *)a3;
-+ (id)_matrix33ToData:(__n128)a3;
-+ (id)_matrix44ToData:(__n128)a3;
-+ (id)computeYuvHighResChromaticAdaptationReverted:(id)a3 chromaticAdaptationMatrix:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (__CVBuffer)_createColorFromYCbCr:(__CVBuffer *)cr;
++ (double)_dataToMatrix33:(void *)matrix33;
++ (double)_dataToMatrix44:(void *)matrix44;
++ (id)_matrix33ToData:(__n128)data;
++ (id)_matrix44ToData:(__n128)data;
++ (id)computeYuvHighResChromaticAdaptationReverted:(id)reverted chromaticAdaptationMatrix:(id *)matrix;
+- (BOOL)isEqual:(id)equal;
 - (IOSurface)mcamLeftYuvHighResChromaticAdaptationReverted;
 - (IOSurface)yuvHighResChromaticAdaptationReverted;
-- (VGCaptureData)initWithCoder:(id)a3;
+- (VGCaptureData)initWithCoder:(id)coder;
 - (VGFaceMetadata)mcamLeftFaceMetadata;
 - (__CVBuffer)mcamLeftColorRGB;
 - (__CVBuffer)mcamLeftColorRGBChromaticAdaptationReverted;
@@ -21,32 +21,32 @@
 - (__n128)mcamLeftColorIntrinsics;
 - (__n128)mcamLeftDepthIntrinsics;
 - (__n128)mcamLeftToDeviceTransform;
-- (__n128)setCameraToDeviceTransform:(__n128)a3;
-- (__n128)setChromaticAdaptationMatrix:(__n128)a3;
-- (__n128)setDepthIntrinsics:(__n128)a3;
-- (__n128)setMcamLeftChromaticAdaptationMatrix:(__n128)a3;
-- (__n128)setMcamLeftColorIntrinsics:(__n128)a3;
-- (__n128)setMcamLeftDepthIntrinsics:(__n128)a3;
-- (__n128)setMcamLeftToDeviceTransform:(__n128)a3;
-- (__n128)setVideoIntrinsics:(__n128)a3;
+- (__n128)setCameraToDeviceTransform:(__n128)transform;
+- (__n128)setChromaticAdaptationMatrix:(__n128)matrix;
+- (__n128)setDepthIntrinsics:(__n128)intrinsics;
+- (__n128)setMcamLeftChromaticAdaptationMatrix:(__n128)matrix;
+- (__n128)setMcamLeftColorIntrinsics:(__n128)intrinsics;
+- (__n128)setMcamLeftDepthIntrinsics:(__n128)intrinsics;
+- (__n128)setMcamLeftToDeviceTransform:(__n128)transform;
+- (__n128)setVideoIntrinsics:(__n128)intrinsics;
 - (__n128)videoIntrinsics;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)getFaceCaptureData;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)saveAtPath:(id)a3;
-- (void)setDepth:(__CVBuffer *)a3;
-- (void)setMcamLeftColorRGB:(__CVBuffer *)a3;
-- (void)setMcamLeftColorYuv:(__CVBuffer *)a3;
-- (void)setMcamLeftDepth:(__CVBuffer *)a3;
-- (void)setRgbRectified:(__CVBuffer *)a3;
-- (void)setTimestamp:(id *)a3;
-- (void)setYuvRectified:(__CVBuffer *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)saveAtPath:(id)path;
+- (void)setDepth:(__CVBuffer *)depth;
+- (void)setMcamLeftColorRGB:(__CVBuffer *)b;
+- (void)setMcamLeftColorYuv:(__CVBuffer *)yuv;
+- (void)setMcamLeftDepth:(__CVBuffer *)depth;
+- (void)setRgbRectified:(__CVBuffer *)rectified;
+- (void)setTimestamp:(id *)timestamp;
+- (void)setYuvRectified:(__CVBuffer *)rectified;
 @end
 
 @implementation VGCaptureData
 
-+ (__CVBuffer)_createColorFromYCbCr:(__CVBuffer *)a3
++ (__CVBuffer)_createColorFromYCbCr:(__CVBuffer *)cr
 {
   v42 = *MEMORY[0x277D85DE8];
   v4 = VGLogVGCaptureData();
@@ -56,25 +56,25 @@
     _os_signpost_emit_with_name_impl(&dword_270F06000, v4, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "CreateColorFromYCbCr", &unk_270FBF062, buf.opaque, 2u);
   }
 
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
+  CVPixelBufferLockBaseAddress(cr, 1uLL);
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __39__VGCaptureData__createColorFromYCbCr___block_invoke_2;
   v38[3] = &__block_descriptor_40_e5_v8__0l;
-  v38[4] = a3;
+  v38[4] = cr;
   v5 = MEMORY[0x2743B9AA0](v38);
-  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
+  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(cr, 0);
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(cr, 0);
   srcYp.data = BaseAddressOfPlane;
-  srcYp.height = CVPixelBufferGetHeightOfPlane(a3, 0);
+  srcYp.height = CVPixelBufferGetHeightOfPlane(cr, 0);
   srcYp.width = WidthOfPlane;
-  srcYp.rowBytes = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-  v8 = CVPixelBufferGetBaseAddressOfPlane(a3, 1uLL);
-  v9 = CVPixelBufferGetWidthOfPlane(a3, 1uLL);
+  srcYp.rowBytes = CVPixelBufferGetBytesPerRowOfPlane(cr, 0);
+  v8 = CVPixelBufferGetBaseAddressOfPlane(cr, 1uLL);
+  v9 = CVPixelBufferGetWidthOfPlane(cr, 1uLL);
   srcCbCr.data = v8;
-  srcCbCr.height = CVPixelBufferGetHeightOfPlane(a3, 1uLL);
+  srcCbCr.height = CVPixelBufferGetHeightOfPlane(cr, 1uLL);
   srcCbCr.width = v9;
-  srcCbCr.rowBytes = CVPixelBufferGetBytesPerRowOfPlane(a3, 1uLL);
+  srcCbCr.rowBytes = CVPixelBufferGetBytesPerRowOfPlane(cr, 1uLL);
   dest.data = malloc_type_malloc(4 * srcYp.width * srcYp.height, 0x1C5BF92uLL);
   *&dest.height = *&srcYp.height;
   dest.rowBytes = 4 * srcYp.width;
@@ -84,7 +84,7 @@
   v33[3] = &__block_descriptor_64_e5_v8__0l;
   v34 = dest;
   v10 = MEMORY[0x2743B9AA0](v33);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(cr);
   v12.i32[0] = 875704422;
   v13.i32[0] = PixelFormatType;
   v14 = vbsl_s8(vdup_lane_s32(vceq_s32(v13, v12), 0), 0x1000000FFLL, 0x10000000EBLL);
@@ -135,8 +135,8 @@
     {
       [v26 lockWithOptions:0 seed:0];
       v27 = v26;
-      v28 = [v26 baseAddress];
-      memcpy(v28, dest.data, dest.height * dest.rowBytes);
+      baseAddress = [v26 baseAddress];
+      memcpy(baseAddress, dest.data, dest.height * dest.rowBytes);
       [v26 unlockWithOptions:0 seed:0];
       v30 = 0;
       if (CVPixelBufferCreateWithIOSurface(0, v26, 0, &v30))
@@ -181,10 +181,10 @@ void __39__VGCaptureData__createColorFromYCbCr___block_invoke()
   }
 }
 
-+ (id)computeYuvHighResChromaticAdaptationReverted:(id)a3 chromaticAdaptationMatrix:(id *)a4
++ (id)computeYuvHighResChromaticAdaptationReverted:(id)reverted chromaticAdaptationMatrix:(id *)matrix
 {
   v41[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  revertedCopy = reverted;
   v6 = VGLogVGCaptureData();
   if (os_signpost_enabled(v6))
   {
@@ -192,23 +192,23 @@ void __39__VGCaptureData__createColorFromYCbCr___block_invoke()
     _os_signpost_emit_with_name_impl(&dword_270F06000, v6, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "computeYuvHighResChromaticAdaptationReverted", &unk_270FBF062, buf, 2u);
   }
 
-  if (v5)
+  if (revertedCopy)
   {
-    v7 = vandq_s8(vandq_s8(vceqq_f32(*(a4 + 1), *(MEMORY[0x277D860B0] + 16)), vceqq_f32(*a4, *MEMORY[0x277D860B0])), vceqq_f32(*(a4 + 2), *(MEMORY[0x277D860B0] + 32)));
+    v7 = vandq_s8(vandq_s8(vceqq_f32(*(matrix + 1), *(MEMORY[0x277D860B0] + 16)), vceqq_f32(*matrix, *MEMORY[0x277D860B0])), vceqq_f32(*(matrix + 2), *(MEMORY[0x277D860B0] + 32)));
     v7.i32[3] = v7.i32[2];
     if ((vminvq_u32(v7) & 0x80000000) != 0)
     {
-      v24 = v5;
+      v24 = revertedCopy;
     }
 
     else
     {
       v8 = objc_alloc(MEMORY[0x277CD2930]);
       v40[0] = *MEMORY[0x277CD2928];
-      v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "width")}];
+      v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(revertedCopy, "width")}];
       v41[0] = v9;
       v40[1] = *MEMORY[0x277CD28D0];
-      v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "height")}];
+      v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(revertedCopy, "height")}];
       v11 = *MEMORY[0x277CD28B0];
       v41[1] = v10;
       v41[2] = &unk_2880F5F98;
@@ -219,7 +219,7 @@ void __39__VGCaptureData__createColorFromYCbCr___block_invoke()
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:4];
       v14 = [v8 initWithProperties:v13];
 
-      [v5 vg_convert420Yp8_CbCr8ToARGB8888:v14];
+      [revertedCopy vg_convert420Yp8_CbCr8ToARGB8888:v14];
       v15 = __VGLogSharedInstance();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -234,11 +234,11 @@ void __39__VGCaptureData__createColorFromYCbCr___block_invoke()
       v32 = 0u;
       v33 = 0u;
       v31 = 0;
-      v43.columns[1] = *(a4 + 1);
-      v43.columns[2] = *(a4 + 2);
-      v16 = vzip1q_s32(*a4, v43.columns[2]);
+      v43.columns[1] = *(matrix + 1);
+      v43.columns[2] = *(matrix + 2);
+      v16 = vzip1q_s32(*matrix, v43.columns[2]);
       v43.columns[0] = vzip1q_s32(v16, v43.columns[1]);
-      v43.columns[2] = vzip1q_s32(vzip2q_s32(*a4, v43.columns[2]), vdupq_laneq_s32(v43.columns[1], 2));
+      v43.columns[2] = vzip1q_s32(vzip2q_s32(*matrix, v43.columns[2]), vdupq_laneq_s32(v43.columns[1], 2));
       v43.columns[1] = vzip2q_s32(v16, vdupq_lane_s32(*v43.columns[1].f32, 1));
       v44 = __invert_f3(v43);
       v18 = 0;
@@ -277,8 +277,8 @@ void __39__VGCaptureData__createColorFromYCbCr___block_invoke()
         _os_log_impl(&dword_270F06000, v21, OS_LOG_TYPE_INFO, " Finished inverting MCAM chromatic adaptation ", buf, 2u);
       }
 
-      v22 = [v5 allAttachments];
-      v23 = [v22 objectForKeyedSubscript:@"CreationProperties"];
+      allAttachments = [revertedCopy allAttachments];
+      v23 = [allAttachments objectForKeyedSubscript:@"CreationProperties"];
 
       v24 = [objc_alloc(MEMORY[0x277CD2930]) initWithProperties:v23];
       if (v24)
@@ -322,11 +322,11 @@ void __88__VGCaptureData_computeYuvHighResChromaticAdaptationReverted_chromaticA
   [(VGFaceCaptureData *)v3 setDepthIntrinsics:?];
   [(VGCaptureData *)self chromaticAdaptationMatrix];
   [(VGFaceCaptureData *)v3 setChromaticAdaptationMatrix:?];
-  v4 = [(VGCaptureData *)self face];
-  [(VGFaceCaptureData *)v3 setFace:v4];
+  face = [(VGCaptureData *)self face];
+  [(VGFaceCaptureData *)v3 setFace:face];
 
-  v5 = [(VGCaptureData *)self allFaces];
-  [(VGFaceCaptureData *)v3 setAllFaces:v5];
+  allFaces = [(VGCaptureData *)self allFaces];
+  [(VGFaceCaptureData *)v3 setAllFaces:allFaces];
 
   [(VGCaptureData *)self timestamp];
   v7 = v9;
@@ -336,13 +336,13 @@ void __88__VGCaptureData_computeYuvHighResChromaticAdaptationReverted_chromaticA
   return v3;
 }
 
-+ (id)_matrix33ToData:(__n128)a3
++ (id)_matrix33ToData:(__n128)data
 {
-  v10[0] = a1;
+  v10[0] = self;
   v10[1] = a2;
-  v10[2] = a3;
+  v10[2] = data;
   v3 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:36];
-  v4 = [v3 mutableBytes];
+  mutableBytes = [v3 mutableBytes];
   for (i = 0; i != 3; ++i)
   {
     v6 = 0;
@@ -350,25 +350,25 @@ void __88__VGCaptureData_computeYuvHighResChromaticAdaptationReverted_chromaticA
     do
     {
       v9 = v7;
-      *(v4 + 4 * v6) = *(&v9 & 0xFFFFFFFFFFFFFFF3 | (4 * (v6 & 3)));
+      *(mutableBytes + 4 * v6) = *(&v9 & 0xFFFFFFFFFFFFFFF3 | (4 * (v6 & 3)));
       ++v6;
     }
 
     while (v6 != 3);
-    v4 += 12;
+    mutableBytes += 12;
   }
 
   return v3;
 }
 
-+ (id)_matrix44ToData:(__n128)a3
++ (id)_matrix44ToData:(__n128)data
 {
-  v11[0] = a1;
+  v11[0] = self;
   v11[1] = a2;
-  v11[2] = a3;
+  v11[2] = data;
   v11[3] = a4;
   v4 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:64];
-  v5 = [v4 mutableBytes];
+  mutableBytes = [v4 mutableBytes];
   for (i = 0; i != 4; ++i)
   {
     v7 = 0;
@@ -376,20 +376,20 @@ void __88__VGCaptureData_computeYuvHighResChromaticAdaptationReverted_chromaticA
     do
     {
       v10 = v8;
-      *(v5 + 4 * v7) = *(&v10 & 0xFFFFFFFFFFFFFFF3 | (4 * (v7 & 3)));
+      *(mutableBytes + 4 * v7) = *(&v10 & 0xFFFFFFFFFFFFFFF3 | (4 * (v7 & 3)));
       ++v7;
     }
 
     while (v7 != 4);
-    v5 += 16;
+    mutableBytes += 16;
   }
 
   return v4;
 }
 
-+ (double)_dataToMatrix33:(void *)a3
++ (double)_dataToMatrix33:(void *)matrix33
 {
-  v3 = [a3 bytes];
+  bytes = [matrix33 bytes];
   v4 = 0;
   v5 = *(MEMORY[0x277D860B0] + 16);
   v12[0] = *MEMORY[0x277D860B0];
@@ -402,7 +402,7 @@ void __88__VGCaptureData_computeYuvHighResChromaticAdaptationReverted_chromaticA
     v8 = *v7;
     do
     {
-      v9 = *(v3 + 4 * v6);
+      v9 = *(bytes + 4 * v6);
       v11 = v8;
       *(&v11 & 0xFFFFFFFFFFFFFFF3 | (4 * (v6 & 3))) = v9;
       v8 = v11;
@@ -413,16 +413,16 @@ void __88__VGCaptureData_computeYuvHighResChromaticAdaptationReverted_chromaticA
     *(v7 + 2) = DWORD2(v11);
     *v7 = v8;
     ++v4;
-    v3 += 12;
+    bytes += 12;
   }
 
   while (v4 != 3);
   return *v12;
 }
 
-+ (double)_dataToMatrix44:(void *)a3
++ (double)_dataToMatrix44:(void *)matrix44
 {
-  v3 = [a3 bytes];
+  bytes = [matrix44 bytes];
   v4 = 0;
   v5 = *(MEMORY[0x277D860B8] + 16);
   v12[0] = *MEMORY[0x277D860B8];
@@ -436,7 +436,7 @@ void __88__VGCaptureData_computeYuvHighResChromaticAdaptationReverted_chromaticA
     v8 = v12[v4];
     do
     {
-      v9 = *(v3 + 4 * v7);
+      v9 = *(bytes + 4 * v7);
       v11 = v8;
       *(&v11 & 0xFFFFFFFFFFFFFFF3 | (4 * (v7 & 3))) = v9;
       v8 = v11;
@@ -445,16 +445,16 @@ void __88__VGCaptureData_computeYuvHighResChromaticAdaptationReverted_chromaticA
 
     while (v7 != 4);
     v12[v4++] = v11;
-    v3 += 16;
+    bytes += 16;
   }
 
   while (v4 != 4);
   return *v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [v4 setRgbRectified:self->_rgbRectified];
   [v4 setMirrored:self->_mirrored];
   [v4 setVideoIntrinsics:{*self->_anon_d0, *&self->_anon_d0[16], *&self->_anon_d0[32]}];
@@ -486,11 +486,11 @@ void __88__VGCaptureData_computeYuvHighResChromaticAdaptationReverted_chromaticA
   yuvHighRes = self->_yuvHighRes;
   if (yuvHighRes)
   {
-    v13 = [(IOSurface *)yuvHighRes vg_copy];
-    [v4 setYuvHighRes:v13];
+    vg_copy = [(IOSurface *)yuvHighRes vg_copy];
+    [v4 setYuvHighRes:vg_copy];
 
-    v14 = [(IOSurface *)self->_yuvHighResUndistortionLut vg_copy];
-    [v4 setYuvHighResUndistortionLut:v14];
+    vg_copy2 = [(IOSurface *)self->_yuvHighResUndistortionLut vg_copy];
+    [v4 setYuvHighResUndistortionLut:vg_copy2];
   }
 
   v15 = vg::createIOSurfaceBackedPixelBufferCopy(self->_mcamLeftColorYuv, v11);
@@ -513,11 +513,11 @@ void __88__VGCaptureData_computeYuvHighResChromaticAdaptationReverted_chromaticA
   mcamLeftYuvHighRes = self->_mcamLeftYuvHighRes;
   if (mcamLeftYuvHighRes)
   {
-    v21 = [(IOSurface *)mcamLeftYuvHighRes vg_copy];
-    [v4 setMcamLeftYuvHighRes:v21];
+    vg_copy3 = [(IOSurface *)mcamLeftYuvHighRes vg_copy];
+    [v4 setMcamLeftYuvHighRes:vg_copy3];
 
-    v22 = [(IOSurface *)self->_mcamLeftYuvHighResUndistortionLut vg_copy];
-    [v4 setMcamLeftYuvHighResUndistortionLut:v22];
+    vg_copy4 = [(IOSurface *)self->_mcamLeftYuvHighResUndistortionLut vg_copy];
+    [v4 setMcamLeftYuvHighResUndistortionLut:vg_copy4];
   }
 
   [v4 setMcamLeftColorIntrinsics:{*self->_anon_160, *&self->_anon_160[16], *&self->_anon_160[32]}];
@@ -535,18 +535,18 @@ void __88__VGCaptureData_computeYuvHighResChromaticAdaptationReverted_chromaticA
   return v23;
 }
 
-- (void)saveAtPath:(id)a3
+- (void)saveAtPath:(id)path
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v4 isDirectory:0];
+  pathCopy = path;
+  v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:pathCopy isDirectory:0];
   v6 = [MEMORY[0x277CBF758] imageWithCVPixelBuffer:self->_yuvRectified];
   v7 = objc_alloc(MEMORY[0x277CBF740]);
   v8 = [v7 initWithOptions:MEMORY[0x277CBEC10]];
-  v9 = [v6 colorSpace];
+  colorSpace = [v6 colorSpace];
   v10 = *MEMORY[0x277CBF9C8];
   v15 = 0;
-  [v8 writePNGRepresentationOfImage:v6 toURL:v5 format:v10 colorSpace:v9 options:MEMORY[0x277CBEC10] error:&v15];
+  [v8 writePNGRepresentationOfImage:v6 toURL:v5 format:v10 colorSpace:colorSpace options:MEMORY[0x277CBEC10] error:&v15];
   v11 = v15;
   v12 = __VGLogSharedInstance();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -632,8 +632,8 @@ void __88__VGCaptureData_computeYuvHighResChromaticAdaptationReverted_chromaticA
           v20 = v20 + 360.0;
         }
 
-        v21 = [v7 roll];
-        [v21 doubleValue];
+        roll = [v7 roll];
+        [roll doubleValue];
         v23 = v22 * -57.2957795;
 
         if (v23 >= 0.0)
@@ -673,7 +673,7 @@ void __88__VGCaptureData_computeYuvHighResChromaticAdaptationReverted_chromaticA
   return v27;
 }
 
-- (void)setRgbRectified:(__CVBuffer *)a3
+- (void)setRgbRectified:(__CVBuffer *)rectified
 {
   rgbRectified = self->_rgbRectified;
   if (rgbRectified)
@@ -681,11 +681,11 @@ void __88__VGCaptureData_computeYuvHighResChromaticAdaptationReverted_chromaticA
     CVPixelBufferRelease(rgbRectified);
   }
 
-  self->_rgbRectified = a3;
-  if (a3)
+  self->_rgbRectified = rectified;
+  if (rectified)
   {
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(rectified);
   }
 }
 
@@ -727,7 +727,7 @@ void __29__VGCaptureData_rgbRectified__block_invoke()
   }
 }
 
-- (void)setYuvRectified:(__CVBuffer *)a3
+- (void)setYuvRectified:(__CVBuffer *)rectified
 {
   yuvRectified = self->_yuvRectified;
   if (yuvRectified)
@@ -735,15 +735,15 @@ void __29__VGCaptureData_rgbRectified__block_invoke()
     CVPixelBufferRelease(yuvRectified);
   }
 
-  self->_yuvRectified = a3;
-  if (a3)
+  self->_yuvRectified = rectified;
+  if (rectified)
   {
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(rectified);
   }
 }
 
-- (void)setDepth:(__CVBuffer *)a3
+- (void)setDepth:(__CVBuffer *)depth
 {
   depth = self->_depth;
   if (depth)
@@ -751,15 +751,15 @@ void __29__VGCaptureData_rgbRectified__block_invoke()
     CVPixelBufferRelease(depth);
   }
 
-  self->_depth = a3;
-  if (a3)
+  self->_depth = depth;
+  if (depth)
   {
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(depth);
   }
 }
 
-- (void)setMcamLeftColorRGB:(__CVBuffer *)a3
+- (void)setMcamLeftColorRGB:(__CVBuffer *)b
 {
   mcamLeftColorRGB = self->_mcamLeftColorRGB;
   if (mcamLeftColorRGB)
@@ -767,11 +767,11 @@ void __29__VGCaptureData_rgbRectified__block_invoke()
     CVPixelBufferRelease(mcamLeftColorRGB);
   }
 
-  self->_mcamLeftColorRGB = a3;
-  if (a3)
+  self->_mcamLeftColorRGB = b;
+  if (b)
   {
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(b);
   }
 }
 
@@ -813,7 +813,7 @@ void __33__VGCaptureData_mcamLeftColorRGB__block_invoke()
   }
 }
 
-- (void)setMcamLeftColorYuv:(__CVBuffer *)a3
+- (void)setMcamLeftColorYuv:(__CVBuffer *)yuv
 {
   mcamLeftColorYuv = self->_mcamLeftColorYuv;
   if (mcamLeftColorYuv)
@@ -821,11 +821,11 @@ void __33__VGCaptureData_mcamLeftColorRGB__block_invoke()
     CVPixelBufferRelease(mcamLeftColorYuv);
   }
 
-  self->_mcamLeftColorYuv = a3;
-  if (a3)
+  self->_mcamLeftColorYuv = yuv;
+  if (yuv)
   {
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(yuv);
   }
 }
 
@@ -909,7 +909,7 @@ void __60__VGCaptureData_mcamLeftColorRGBChromaticAdaptationReverted__block_invo
   }
 }
 
-- (void)setMcamLeftDepth:(__CVBuffer *)a3
+- (void)setMcamLeftDepth:(__CVBuffer *)depth
 {
   mcamLeftDepth = self->_mcamLeftDepth;
   if (mcamLeftDepth)
@@ -917,11 +917,11 @@ void __60__VGCaptureData_mcamLeftColorRGBChromaticAdaptationReverted__block_invo
     CVPixelBufferRelease(mcamLeftDepth);
   }
 
-  self->_mcamLeftDepth = a3;
-  if (a3)
+  self->_mcamLeftDepth = depth;
+  if (depth)
   {
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(depth);
   }
 }
 
@@ -980,94 +980,94 @@ void __60__VGCaptureData_mcamLeftColorRGBChromaticAdaptationReverted__block_invo
   [(VGCaptureData *)&v11 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v16 = a3;
+  coderCopy = coder;
   [VGCoderUtilities encodePixelBuffer:self->_yuvRectified forKey:@"yuvRectified" encoder:?];
-  [VGCoderUtilities encodePixelBuffer:self->_depth forKey:@"depth" encoder:v16];
-  [v16 encodeBool:self->_mirrored forKey:@"mirrored"];
-  [v16 vg_encodeSurface:self->_yuvHighRes forKey:@"yuvHighRes"];
-  [v16 vg_encodeSurface:self->_yuvHighResUndistortionLut forKey:@"yuvHighResUndistortionLut"];
+  [VGCoderUtilities encodePixelBuffer:self->_depth forKey:@"depth" encoder:coderCopy];
+  [coderCopy encodeBool:self->_mirrored forKey:@"mirrored"];
+  [coderCopy vg_encodeSurface:self->_yuvHighRes forKey:@"yuvHighRes"];
+  [coderCopy vg_encodeSurface:self->_yuvHighResUndistortionLut forKey:@"yuvHighResUndistortionLut"];
   v4 = [VGCaptureData _matrix33ToData:*self->_anon_d0, *&self->_anon_d0[16], *&self->_anon_d0[32]];
-  [v16 encodeObject:v4 forKey:@"videoIntrinsics"];
+  [coderCopy encodeObject:v4 forKey:@"videoIntrinsics"];
 
   v5 = [VGCaptureData _matrix33ToData:*self->_anon_100, *&self->_anon_100[16], *&self->_anon_100[32]];
-  [v16 encodeObject:v5 forKey:@"depthIntrinsics"];
+  [coderCopy encodeObject:v5 forKey:@"depthIntrinsics"];
 
   v6 = [VGCaptureData _matrix33ToData:*self->_anon_130, *&self->_anon_130[16], *&self->_anon_130[32]];
-  [v16 encodeObject:v6 forKey:@"chromaticAdaptationMatrix"];
+  [coderCopy encodeObject:v6 forKey:@"chromaticAdaptationMatrix"];
 
-  [v16 encodeObject:self->_face forKey:@"face"];
-  [v16 encodeObject:self->_allFaces forKey:@"allFaces"];
-  [v16 encodeObject:self->_faceTrackingResult forKey:@"faceTrackingResult"];
-  [v16 encodeObject:self->_skeleton forKey:@"skeleton"];
+  [coderCopy encodeObject:self->_face forKey:@"face"];
+  [coderCopy encodeObject:self->_allFaces forKey:@"allFaces"];
+  [coderCopy encodeObject:self->_faceTrackingResult forKey:@"faceTrackingResult"];
+  [coderCopy encodeObject:self->_skeleton forKey:@"skeleton"];
   v7 = [VGCaptureData _matrix44ToData:*self->_anon_1f0, *&self->_anon_1f0[16], *&self->_anon_1f0[32], *&self->_anon_1f0[48]];
-  [v16 encodeObject:v7 forKey:@"cameraToDeviceTransform"];
+  [coderCopy encodeObject:v7 forKey:@"cameraToDeviceTransform"];
 
-  [v16 encodeInt64:self->_timestamp.value forKey:@"timestampValue"];
-  [v16 encodeInt64:self->_timestamp.epoch forKey:@"timestampEpoch"];
-  [v16 encodeInt32:self->_timestamp.timescale forKey:@"timestampTimeScale"];
-  [v16 encodeInt64:self->_timestamp.flags forKey:@"timestampFlags"];
+  [coderCopy encodeInt64:self->_timestamp.value forKey:@"timestampValue"];
+  [coderCopy encodeInt64:self->_timestamp.epoch forKey:@"timestampEpoch"];
+  [coderCopy encodeInt32:self->_timestamp.timescale forKey:@"timestampTimeScale"];
+  [coderCopy encodeInt64:self->_timestamp.flags forKey:@"timestampFlags"];
   mcamLeftColorYuv = self->_mcamLeftColorYuv;
   if (mcamLeftColorYuv)
   {
-    [VGCoderUtilities encodePixelBuffer:mcamLeftColorYuv forKey:@"mcamLeftColorYuv" encoder:v16];
+    [VGCoderUtilities encodePixelBuffer:mcamLeftColorYuv forKey:@"mcamLeftColorYuv" encoder:coderCopy];
   }
 
   mcamLeftDepth = self->_mcamLeftDepth;
   if (mcamLeftDepth)
   {
-    [VGCoderUtilities encodePixelBuffer:mcamLeftDepth forKey:@"mcamLeftDepth" encoder:v16];
+    [VGCoderUtilities encodePixelBuffer:mcamLeftDepth forKey:@"mcamLeftDepth" encoder:coderCopy];
   }
 
   mcamLeftYuvHighRes = self->_mcamLeftYuvHighRes;
   if (mcamLeftYuvHighRes)
   {
-    [v16 vg_encodeSurface:mcamLeftYuvHighRes forKey:@"mcamLeftYuvHighRes"];
+    [coderCopy vg_encodeSurface:mcamLeftYuvHighRes forKey:@"mcamLeftYuvHighRes"];
   }
 
   mcamLeftYuvHighResUndistortionLut = self->_mcamLeftYuvHighResUndistortionLut;
   if (mcamLeftYuvHighResUndistortionLut)
   {
-    [v16 vg_encodeSurface:mcamLeftYuvHighResUndistortionLut forKey:@"mcamLeftYuvHighResUndistortionLut"];
+    [coderCopy vg_encodeSurface:mcamLeftYuvHighResUndistortionLut forKey:@"mcamLeftYuvHighResUndistortionLut"];
   }
 
   v12 = [VGCaptureData _matrix33ToData:*self->_anon_160, *&self->_anon_160[16], *&self->_anon_160[32]];
-  [v16 encodeObject:v12 forKey:@"mcamLeftColorIntrinsics"];
+  [coderCopy encodeObject:v12 forKey:@"mcamLeftColorIntrinsics"];
 
   v13 = [VGCaptureData _matrix33ToData:*self->_anon_190, *&self->_anon_190[16], *&self->_anon_190[32]];
-  [v16 encodeObject:v13 forKey:@"mcamLeftDepthIntrinsics"];
+  [coderCopy encodeObject:v13 forKey:@"mcamLeftDepthIntrinsics"];
 
   v14 = [VGCaptureData _matrix33ToData:*self->_anon_1c0, *&self->_anon_1c0[16], *&self->_anon_1c0[32]];
-  [v16 encodeObject:v14 forKey:@"mcamLeftChromaticAdaptationMatrix"];
+  [coderCopy encodeObject:v14 forKey:@"mcamLeftChromaticAdaptationMatrix"];
 
   v15 = [VGCaptureData _matrix44ToData:*&self[1].super.isa, *&self[1]._rgbRectified, *&self[1]._mcamLeftColorYuvChromaticAdaptationReverted, *&self[1]._yuvHighResChromaticAdaptationReverted];
-  [v16 encodeObject:v15 forKey:@"mcamLeftToDeviceTransform"];
+  [coderCopy encodeObject:v15 forKey:@"mcamLeftToDeviceTransform"];
 
-  [v16 encodeInteger:self->_enrollmentPhase forKey:@"enrollmentPhase"];
+  [coderCopy encodeInteger:self->_enrollmentPhase forKey:@"enrollmentPhase"];
 }
 
-- (VGCaptureData)initWithCoder:(id)a3
+- (VGCaptureData)initWithCoder:(id)coder
 {
   v110[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v108.receiver = self;
   v108.super_class = VGCaptureData;
   v5 = [(VGCaptureData *)&v108 init];
   if (v5)
   {
-    v5->_yuvRectified = [VGCoderUtilities decodePixelBufferForKey:@"yuvRectified" decoder:v4];
-    v5->_depth = [VGCoderUtilities decodePixelBufferForKey:@"depth" decoder:v4];
-    v5->_mirrored = [v4 decodeBoolForKey:@"mirrored"];
-    v6 = [v4 vg_decodeSurfaceForKey:@"yuvHighRes"];
+    v5->_yuvRectified = [VGCoderUtilities decodePixelBufferForKey:@"yuvRectified" decoder:coderCopy];
+    v5->_depth = [VGCoderUtilities decodePixelBufferForKey:@"depth" decoder:coderCopy];
+    v5->_mirrored = [coderCopy decodeBoolForKey:@"mirrored"];
+    v6 = [coderCopy vg_decodeSurfaceForKey:@"yuvHighRes"];
     yuvHighRes = v5->_yuvHighRes;
     v5->_yuvHighRes = v6;
 
-    v8 = [v4 vg_decodeSurfaceForKey:@"yuvHighResUndistortionLut"];
+    v8 = [coderCopy vg_decodeSurfaceForKey:@"yuvHighResUndistortionLut"];
     yuvHighResUndistortionLut = v5->_yuvHighResUndistortionLut;
     v5->_yuvHighResUndistortionLut = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"videoIntrinsics"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"videoIntrinsics"];
     v11 = v10;
     if (!v10 || [v10 length] <= 0x23)
     {
@@ -1089,7 +1089,7 @@ void __60__VGCaptureData_mcamLeftColorRGBChromaticAdaptationReverted__block_invo
     *&v5->_anon_d0[16] = v17;
     *&v5->_anon_d0[40] = v18;
     *&v5->_anon_d0[32] = v19;
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"depthIntrinsics"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"depthIntrinsics"];
     v12 = v20;
     if (!v20 || [v20 length]<= 0x23)
     {
@@ -1111,7 +1111,7 @@ void __60__VGCaptureData_mcamLeftColorRGBChromaticAdaptationReverted__block_invo
     *&v5->_anon_100[16] = v25;
     *&v5->_anon_100[40] = v26;
     *&v5->_anon_100[32] = v27;
-    v106 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"chromaticAdaptationMatrix"];
+    v106 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"chromaticAdaptationMatrix"];
     if (v106 && [v106 length]>= 0x24)
     {
       [VGCaptureData _dataToMatrix33:v106];
@@ -1132,18 +1132,18 @@ void __60__VGCaptureData_mcamLeftColorRGBChromaticAdaptationReverted__block_invo
       *&v5->_anon_130[32] = *(v34 + 32);
     }
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"face"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"face"];
     face = v5->_face;
     v5->_face = v36;
 
-    if ([v4 containsValueForKey:@"allFaces"])
+    if ([coderCopy containsValueForKey:@"allFaces"])
     {
       v38 = MEMORY[0x277CBEB98];
       v110[0] = objc_opt_class();
       v110[1] = objc_opt_class();
       v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v110 count:2];
       v40 = [v38 setWithArray:v39];
-      v41 = [v4 decodeObjectOfClasses:v40 forKey:@"allFaces"];
+      v41 = [coderCopy decodeObjectOfClasses:v40 forKey:@"allFaces"];
       allFaces = v5->_allFaces;
       v5->_allFaces = v41;
     }
@@ -1157,11 +1157,11 @@ void __60__VGCaptureData_mcamLeftColorRGBChromaticAdaptationReverted__block_invo
     v109[5] = objc_opt_class();
     v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v109 count:6];
     v45 = [v43 setWithArray:v44];
-    v46 = [v4 decodeObjectOfClasses:v45 forKey:@"faceTrackingResult"];
+    v46 = [coderCopy decodeObjectOfClasses:v45 forKey:@"faceTrackingResult"];
     faceTrackingResult = v5->_faceTrackingResult;
     v5->_faceTrackingResult = v46;
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"skeleton"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"skeleton"];
     skeleton = v5->_skeleton;
     v5->_skeleton = v48;
 
@@ -1172,9 +1172,9 @@ void __60__VGCaptureData_mcamLeftColorRGBChromaticAdaptationReverted__block_invo
     v52 = v50[3];
     *&v5->_anon_1f0[32] = v50[2];
     *&v5->_anon_1f0[48] = v52;
-    if ([v4 containsValueForKey:@"cameraToDeviceTransform"])
+    if ([coderCopy containsValueForKey:@"cameraToDeviceTransform"])
     {
-      v53 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cameraToDeviceTransform"];
+      v53 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cameraToDeviceTransform"];
       v54 = v53;
       if (!v53 || [v53 length]<= 0x3F)
       {
@@ -1213,13 +1213,13 @@ LABEL_81:
       }
     }
 
-    v5->_timestamp.value = [v4 decodeInt64ForKey:@"timestampValue"];
-    v5->_timestamp.epoch = [v4 decodeInt64ForKey:@"timestampEpoch"];
-    v5->_timestamp.timescale = [v4 decodeInt32ForKey:@"timestampTimeScale"];
-    v5->_timestamp.flags = [v4 decodeInt64ForKey:@"timestampFlags"];
-    if ([VGCoderUtilities hasPixelBufferForKey:@"mcamLeftColorYuv" decoder:v4])
+    v5->_timestamp.value = [coderCopy decodeInt64ForKey:@"timestampValue"];
+    v5->_timestamp.epoch = [coderCopy decodeInt64ForKey:@"timestampEpoch"];
+    v5->_timestamp.timescale = [coderCopy decodeInt32ForKey:@"timestampTimeScale"];
+    v5->_timestamp.flags = [coderCopy decodeInt64ForKey:@"timestampFlags"];
+    if ([VGCoderUtilities hasPixelBufferForKey:@"mcamLeftColorYuv" decoder:coderCopy])
     {
-      v5->_mcamLeftColorYuv = [VGCoderUtilities decodePixelBufferForKey:@"mcamLeftColorYuv" decoder:v4];
+      v5->_mcamLeftColorYuv = [VGCoderUtilities decodePixelBufferForKey:@"mcamLeftColorYuv" decoder:coderCopy];
     }
 
     else
@@ -1232,9 +1232,9 @@ LABEL_81:
       }
     }
 
-    if ([VGCoderUtilities hasPixelBufferForKey:@"mcamLeftDepth" decoder:v4, v5->_anon_100])
+    if ([VGCoderUtilities hasPixelBufferForKey:@"mcamLeftDepth" decoder:coderCopy, v5->_anon_100])
     {
-      v5->_mcamLeftDepth = [VGCoderUtilities decodePixelBufferForKey:@"mcamLeftDepth" decoder:v4];
+      v5->_mcamLeftDepth = [VGCoderUtilities decodePixelBufferForKey:@"mcamLeftDepth" decoder:coderCopy];
     }
 
     else
@@ -1247,7 +1247,7 @@ LABEL_81:
       }
     }
 
-    v62 = [v4 vg_decodeSurfaceForKey:@"mcamLeftYuvHighRes"];
+    v62 = [coderCopy vg_decodeSurfaceForKey:@"mcamLeftYuvHighRes"];
     mcamLeftYuvHighRes = v5->_mcamLeftYuvHighRes;
     v5->_mcamLeftYuvHighRes = v62;
 
@@ -1261,7 +1261,7 @@ LABEL_81:
       }
     }
 
-    v65 = [v4 vg_decodeSurfaceForKey:@"mcamLeftYuvHighResUndistortionLut"];
+    v65 = [coderCopy vg_decodeSurfaceForKey:@"mcamLeftYuvHighResUndistortionLut"];
     mcamLeftYuvHighResUndistortionLut = v5->_mcamLeftYuvHighResUndistortionLut;
     v5->_mcamLeftYuvHighResUndistortionLut = v65;
 
@@ -1275,9 +1275,9 @@ LABEL_81:
       }
     }
 
-    if ([v4 containsValueForKey:@"mcamLeftColorIntrinsics"])
+    if ([coderCopy containsValueForKey:@"mcamLeftColorIntrinsics"])
     {
-      v68 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mcamLeftColorIntrinsics"];
+      v68 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mcamLeftColorIntrinsics"];
       v54 = v68;
       if (!v68 || [v68 length]<= 0x23)
       {
@@ -1315,9 +1315,9 @@ LABEL_81:
       }
     }
 
-    if ([v4 containsValueForKey:@"mcamLeftDepthIntrinsics"])
+    if ([coderCopy containsValueForKey:@"mcamLeftDepthIntrinsics"])
     {
-      v77 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mcamLeftDepthIntrinsics"];
+      v77 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mcamLeftDepthIntrinsics"];
       v54 = v77;
       if (!v77 || [v77 length]<= 0x23)
       {
@@ -1355,9 +1355,9 @@ LABEL_81:
       }
     }
 
-    if ([v4 containsValueForKey:@"mcamLeftChromaticAdaptationMatrix"])
+    if ([coderCopy containsValueForKey:@"mcamLeftChromaticAdaptationMatrix"])
     {
-      v86 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mcamLeftChromaticAdaptationMatrix"];
+      v86 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mcamLeftChromaticAdaptationMatrix"];
       v54 = v86;
       if (!v86 || [v86 length]<= 0x23)
       {
@@ -1401,9 +1401,9 @@ LABEL_81:
     v96 = v50[3];
     *&v5[1]._mcamLeftColorYuvChromaticAdaptationReverted = v50[2];
     *&v5[1]._yuvHighResChromaticAdaptationReverted = v96;
-    if ([v4 containsValueForKey:@"mcamLeftToDeviceTransform"])
+    if ([coderCopy containsValueForKey:@"mcamLeftToDeviceTransform"])
     {
-      v97 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mcamLeftToDeviceTransform"];
+      v97 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mcamLeftToDeviceTransform"];
       v54 = v97;
       if (!v97 || [v97 length]<= 0x3F)
       {
@@ -1435,9 +1435,9 @@ LABEL_81:
     }
 
     v5->_enrollmentPhase = 0;
-    if ([v4 containsValueForKey:@"enrollmentPhase"])
+    if ([coderCopy containsValueForKey:@"enrollmentPhase"])
     {
-      v5->_enrollmentPhase = [v4 decodeIntegerForKey:@"enrollmentPhase"];
+      v5->_enrollmentPhase = [coderCopy decodeIntegerForKey:@"enrollmentPhase"];
     }
 
     else
@@ -1461,13 +1461,13 @@ LABEL_82:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (!checkEqualPixelBuffers(self->_yuvRectified, *(v5 + 9)))
     {
       goto LABEL_10;
@@ -1569,138 +1569,138 @@ LABEL_10:
 
 - (__n128)videoIntrinsics
 {
-  result = *(a1 + 208);
-  v2 = *(a1 + 224);
-  v3 = *(a1 + 240);
+  result = *(self + 208);
+  v2 = *(self + 224);
+  v3 = *(self + 240);
   return result;
 }
 
-- (__n128)setVideoIntrinsics:(__n128)a3
+- (__n128)setVideoIntrinsics:(__n128)intrinsics
 {
   result[13] = a2;
-  result[14] = a3;
+  result[14] = intrinsics;
   result[15] = a4;
   return result;
 }
 
 - (__n128)depthIntrinsics
 {
-  result = *(a1 + 256);
-  v2 = *(a1 + 272);
-  v3 = *(a1 + 288);
+  result = *(self + 256);
+  v2 = *(self + 272);
+  v3 = *(self + 288);
   return result;
 }
 
-- (__n128)setDepthIntrinsics:(__n128)a3
+- (__n128)setDepthIntrinsics:(__n128)intrinsics
 {
   result[16] = a2;
-  result[17] = a3;
+  result[17] = intrinsics;
   result[18] = a4;
   return result;
 }
 
 - (__n128)chromaticAdaptationMatrix
 {
-  result = *(a1 + 304);
-  v2 = *(a1 + 320);
-  v3 = *(a1 + 336);
+  result = *(self + 304);
+  v2 = *(self + 320);
+  v3 = *(self + 336);
   return result;
 }
 
-- (__n128)setChromaticAdaptationMatrix:(__n128)a3
+- (__n128)setChromaticAdaptationMatrix:(__n128)matrix
 {
   result[19] = a2;
-  result[20] = a3;
+  result[20] = matrix;
   result[21] = a4;
   return result;
 }
 
 - (__n128)cameraToDeviceTransform
 {
-  result = *(a1 + 496);
-  v2 = *(a1 + 512);
-  v3 = *(a1 + 528);
-  v4 = *(a1 + 544);
+  result = *(self + 496);
+  v2 = *(self + 512);
+  v3 = *(self + 528);
+  v4 = *(self + 544);
   return result;
 }
 
-- (__n128)setCameraToDeviceTransform:(__n128)a3
+- (__n128)setCameraToDeviceTransform:(__n128)transform
 {
   result[31] = a2;
-  result[32] = a3;
+  result[32] = transform;
   result[33] = a4;
   result[34] = a5;
   return result;
 }
 
-- (void)setTimestamp:(id *)a3
+- (void)setTimestamp:(id *)timestamp
 {
-  v3 = *&a3->var0;
-  self->_timestamp.epoch = a3->var3;
+  v3 = *&timestamp->var0;
+  self->_timestamp.epoch = timestamp->var3;
   *&self->_timestamp.value = v3;
 }
 
 - (__n128)mcamLeftColorIntrinsics
 {
-  result = *(a1 + 352);
-  v2 = *(a1 + 368);
-  v3 = *(a1 + 384);
+  result = *(self + 352);
+  v2 = *(self + 368);
+  v3 = *(self + 384);
   return result;
 }
 
-- (__n128)setMcamLeftColorIntrinsics:(__n128)a3
+- (__n128)setMcamLeftColorIntrinsics:(__n128)intrinsics
 {
   result[22] = a2;
-  result[23] = a3;
+  result[23] = intrinsics;
   result[24] = a4;
   return result;
 }
 
 - (__n128)mcamLeftDepthIntrinsics
 {
-  result = *(a1 + 400);
-  v2 = *(a1 + 416);
-  v3 = *(a1 + 432);
+  result = *(self + 400);
+  v2 = *(self + 416);
+  v3 = *(self + 432);
   return result;
 }
 
-- (__n128)setMcamLeftDepthIntrinsics:(__n128)a3
+- (__n128)setMcamLeftDepthIntrinsics:(__n128)intrinsics
 {
   result[25] = a2;
-  result[26] = a3;
+  result[26] = intrinsics;
   result[27] = a4;
   return result;
 }
 
 - (__n128)mcamLeftChromaticAdaptationMatrix
 {
-  result = *(a1 + 448);
-  v2 = *(a1 + 464);
-  v3 = *(a1 + 480);
+  result = *(self + 448);
+  v2 = *(self + 464);
+  v3 = *(self + 480);
   return result;
 }
 
-- (__n128)setMcamLeftChromaticAdaptationMatrix:(__n128)a3
+- (__n128)setMcamLeftChromaticAdaptationMatrix:(__n128)matrix
 {
   result[28] = a2;
-  result[29] = a3;
+  result[29] = matrix;
   result[30] = a4;
   return result;
 }
 
 - (__n128)mcamLeftToDeviceTransform
 {
-  result = *(a1 + 560);
-  v2 = *(a1 + 576);
-  v3 = *(a1 + 592);
-  v4 = *(a1 + 608);
+  result = *(self + 560);
+  v2 = *(self + 576);
+  v3 = *(self + 592);
+  v4 = *(self + 608);
   return result;
 }
 
-- (__n128)setMcamLeftToDeviceTransform:(__n128)a3
+- (__n128)setMcamLeftToDeviceTransform:(__n128)transform
 {
   result[35] = a2;
-  result[36] = a3;
+  result[36] = transform;
   result[37] = a4;
   result[38] = a5;
   return result;

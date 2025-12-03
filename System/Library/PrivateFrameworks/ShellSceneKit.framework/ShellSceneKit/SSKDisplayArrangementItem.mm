@@ -1,26 +1,26 @@
 @interface SSKDisplayArrangementItem
-- (BOOL)isEqual:(id)a3;
-- (SSKDisplayArrangementItem)initWithCoder:(id)a3;
-- (SSKDisplayArrangementItem)initWithRelativeDisplayIdentity:(id)a3 edge:(unsigned int)a4 offset:(double)a5;
+- (BOOL)isEqual:(id)equal;
+- (SSKDisplayArrangementItem)initWithCoder:(id)coder;
+- (SSKDisplayArrangementItem)initWithRelativeDisplayIdentity:(id)identity edge:(unsigned int)edge offset:(double)offset;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SSKDisplayArrangementItem
 
-- (SSKDisplayArrangementItem)initWithRelativeDisplayIdentity:(id)a3 edge:(unsigned int)a4 offset:(double)a5
+- (SSKDisplayArrangementItem)initWithRelativeDisplayIdentity:(id)identity edge:(unsigned int)edge offset:(double)offset
 {
-  v9 = a3;
+  identityCopy = identity;
   v14.receiver = self;
   v14.super_class = SSKDisplayArrangementItem;
   v10 = [(SSKDisplayArrangementItem *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_relativeDisplayIdentity, a3);
-    v11->_edge = a4;
-    v11->_offset = a5;
+    objc_storeStrong(&v10->_relativeDisplayIdentity, identity);
+    v11->_edge = edge;
+    v11->_offset = offset;
   }
 
   v12 = [(SSKDisplayArrangementItem *)v11 init];
@@ -30,25 +30,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_relativeDisplayIdentity];
-  v5 = [v3 appendInt64:self->_edge];
-  v6 = [v3 appendCGFloat:self->_offset];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_relativeDisplayIdentity];
+  v5 = [builder appendInt64:self->_edge];
+  v6 = [builder appendCGFloat:self->_offset];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   relativeDisplayIdentity = self->_relativeDisplayIdentity;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __37__SSKDisplayArrangementItem_isEqual___block_invoke;
   v20[3] = &unk_279BC0E90;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
   v8 = [v5 appendObject:relativeDisplayIdentity counterpart:v20];
   edge = self->_edge;
@@ -72,45 +72,45 @@
   return v10;
 }
 
-- (SSKDisplayArrangementItem)initWithCoder:(id)a3
+- (SSKDisplayArrangementItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = SSKDisplayArrangementItem;
   v5 = [(SSKDisplayArrangementItem *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relativeDisplayIdentity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relativeDisplayIdentity"];
     relativeDisplayIdentity = v5->_relativeDisplayIdentity;
     v5->_relativeDisplayIdentity = v6;
 
-    v5->_edge = [v4 decodeInt32ForKey:@"edge"];
-    [v4 decodeDoubleForKey:@"offset"];
+    v5->_edge = [coderCopy decodeInt32ForKey:@"edge"];
+    [coderCopy decodeDoubleForKey:@"offset"];
     v5->_offset = v8;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   relativeDisplayIdentity = self->_relativeDisplayIdentity;
-  v5 = a3;
-  [v5 encodeObject:relativeDisplayIdentity forKey:@"relativeDisplayIdentity"];
-  [v5 encodeInt32:self->_edge forKey:@"edge"];
-  [v5 encodeDouble:@"offset" forKey:self->_offset];
+  coderCopy = coder;
+  [coderCopy encodeObject:relativeDisplayIdentity forKey:@"relativeDisplayIdentity"];
+  [coderCopy encodeInt32:self->_edge forKey:@"edge"];
+  [coderCopy encodeDouble:@"offset" forKey:self->_offset];
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __58__SSKDisplayArrangementItem_appendDescriptionToFormatter___block_invoke;
   v12 = &unk_279BC0F08;
-  v13 = v4;
-  v14 = self;
-  v5 = v4;
+  v13 = formatterCopy;
+  selfCopy = self;
+  v5 = formatterCopy;
   [v5 appendProem:self block:&v9];
   edge = self->_edge;
   if (edge > 3)

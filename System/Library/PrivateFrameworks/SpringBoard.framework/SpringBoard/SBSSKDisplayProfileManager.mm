@@ -1,16 +1,16 @@
 @interface SBSSKDisplayProfileManager
 - (CAContext)rootWindowCAContext;
 - (NSSet)fbScenes;
-- (SBSSKDisplayProfileManager)initWithStartupOrientation:(int64_t)a3;
-- (int64_t)windowingModeForDisplay:(id)a3;
-- (void)_configureCommonInitialSceneParametersForScene:(id)a3;
-- (void)modifyInitialSceneParametersForScene:(id)a3;
-- (void)setSystemRootTransform:(CGAffineTransform *)a3 forDisplayConfiguration:(id)a4;
+- (SBSSKDisplayProfileManager)initWithStartupOrientation:(int64_t)orientation;
+- (int64_t)windowingModeForDisplay:(id)display;
+- (void)_configureCommonInitialSceneParametersForScene:(id)scene;
+- (void)modifyInitialSceneParametersForScene:(id)scene;
+- (void)setSystemRootTransform:(CGAffineTransform *)transform forDisplayConfiguration:(id)configuration;
 @end
 
 @implementation SBSSKDisplayProfileManager
 
-- (SBSSKDisplayProfileManager)initWithStartupOrientation:(int64_t)a3
+- (SBSSKDisplayProfileManager)initWithStartupOrientation:(int64_t)orientation
 {
   v9.receiver = self;
   v9.super_class = SBSSKDisplayProfileManager;
@@ -18,7 +18,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_startupEmbeddedOrientation = a3;
+    v4->_startupEmbeddedOrientation = orientation;
     v6 = objc_alloc_init(MEMORY[0x277D65D90]);
     displayProfileManager = v5->_displayProfileManager;
     v5->_displayProfileManager = v6;
@@ -33,42 +33,42 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(SBDDisplayProfileManager *)self->_displayProfileManager fbScenes];
+    fbScenes = [(SBDDisplayProfileManager *)self->_displayProfileManager fbScenes];
   }
 
   else
   {
-    v3 = objc_alloc_init(MEMORY[0x277CBEB98]);
+    fbScenes = objc_alloc_init(MEMORY[0x277CBEB98]);
   }
 
-  return v3;
+  return fbScenes;
 }
 
 - (CAContext)rootWindowCAContext
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(SBDDisplayProfileManager *)self->_displayProfileManager rootWindowCAContext];
+    rootWindowCAContext = [(SBDDisplayProfileManager *)self->_displayProfileManager rootWindowCAContext];
   }
 
   else
   {
-    v3 = 0;
+    rootWindowCAContext = 0;
   }
 
-  return v3;
+  return rootWindowCAContext;
 }
 
-- (int64_t)windowingModeForDisplay:(id)a3
+- (int64_t)windowingModeForDisplay:(id)display
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  displayCopy = display;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [SBApp connectedScenes];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  connectedScenes = [SBApp connectedScenes];
+  v5 = [connectedScenes countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -80,7 +80,7 @@ LABEL_3:
     {
       if (*v19 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(connectedScenes);
       }
 
       v10 = *(*(&v18 + 1) + 8 * v9);
@@ -100,8 +100,8 @@ LABEL_3:
 
       if (v14)
       {
-        v15 = [v14 _fbsDisplayIdentity];
-        v16 = [v15 isEqual:v3];
+        _fbsDisplayIdentity = [v14 _fbsDisplayIdentity];
+        v16 = [_fbsDisplayIdentity isEqual:displayCopy];
 
         if (v16)
         {
@@ -111,7 +111,7 @@ LABEL_3:
 
       if (v6 == ++v9)
       {
-        v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v6 = [connectedScenes countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -131,40 +131,40 @@ LABEL_15:
   return v8;
 }
 
-- (void)setSystemRootTransform:(CGAffineTransform *)a3 forDisplayConfiguration:(id)a4
+- (void)setSystemRootTransform:(CGAffineTransform *)transform forDisplayConfiguration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   if (objc_opt_respondsToSelector())
   {
     displayProfileManager = self->_displayProfileManager;
-    v8 = *&a3->c;
-    v9[0] = *&a3->a;
+    v8 = *&transform->c;
+    v9[0] = *&transform->a;
     v9[1] = v8;
-    v9[2] = *&a3->tx;
-    [(SBDDisplayProfileManager *)displayProfileManager updateTransform:v9 forDisplayConfiguration:v6];
+    v9[2] = *&transform->tx;
+    [(SBDDisplayProfileManager *)displayProfileManager updateTransform:v9 forDisplayConfiguration:configurationCopy];
   }
 }
 
-- (void)_configureCommonInitialSceneParametersForScene:(id)a3
+- (void)_configureCommonInitialSceneParametersForScene:(id)scene
 {
-  v3 = a3;
+  sceneCopy = scene;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__SBSSKDisplayProfileManager__configureCommonInitialSceneParametersForScene___block_invoke;
   v11[3] = &unk_2783B4630;
-  v12 = v3;
-  v4 = v3;
+  v12 = sceneCopy;
+  v4 = sceneCopy;
   [v4 configureParameters:v11];
-  v5 = [v4 settings];
-  v6 = [v5 displayConfiguration];
+  settings = [v4 settings];
+  displayConfiguration = [settings displayConfiguration];
 
-  v7 = [v4 _keyboardHostComponent];
-  v8 = [v6 hardwareIdentifier];
-  [v7 setHardwareKeyboardExclusivityIdentifier:v8];
+  _keyboardHostComponent = [v4 _keyboardHostComponent];
+  hardwareIdentifier = [displayConfiguration hardwareIdentifier];
+  [_keyboardHostComponent setHardwareKeyboardExclusivityIdentifier:hardwareIdentifier];
 
-  v9 = [v4 systemShellHostingEnvironment];
+  systemShellHostingEnvironment = [v4 systemShellHostingEnvironment];
   v10 = SBUISystemShellHostingSpaceIdentifierForDisplayConfiguration();
-  [v9 setSystemShellHostingSpaceIdentifier:v10];
+  [systemShellHostingEnvironment setSystemShellHostingSpaceIdentifier:v10];
 }
 
 void __77__SBSSKDisplayProfileManager__configureCommonInitialSceneParametersForScene___block_invoke(uint64_t a1, void *a2)
@@ -211,14 +211,14 @@ void __77__SBSSKDisplayProfileManager__configureCommonInitialSceneParametersForS
   }
 }
 
-- (void)modifyInitialSceneParametersForScene:(id)a3
+- (void)modifyInitialSceneParametersForScene:(id)scene
 {
-  v4 = a3;
-  [(SBSSKDisplayProfileManager *)self _configureCommonInitialSceneParametersForScene:v4];
-  v5 = [v4 settings];
-  v6 = [v5 displayIdentity];
+  sceneCopy = scene;
+  [(SBSSKDisplayProfileManager *)self _configureCommonInitialSceneParametersForScene:sceneCopy];
+  settings = [sceneCopy settings];
+  displayIdentity = [settings displayIdentity];
 
-  if ([v6 isMainDisplay])
+  if ([displayIdentity isMainDisplay])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -227,11 +227,11 @@ void __77__SBSSKDisplayProfileManager__configureCommonInitialSceneParametersForS
     v8[4] = self;
     v7 = v8;
 LABEL_5:
-    [v4 configureParameters:v7];
+    [sceneCopy configureParameters:v7];
     goto LABEL_6;
   }
 
-  if ([v6 isExternal])
+  if ([displayIdentity isExternal])
   {
     v7 = &__block_literal_global_17;
     goto LABEL_5;

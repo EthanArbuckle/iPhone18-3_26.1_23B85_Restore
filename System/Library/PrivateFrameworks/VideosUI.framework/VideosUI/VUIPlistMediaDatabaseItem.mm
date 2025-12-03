@@ -1,20 +1,20 @@
 @interface VUIPlistMediaDatabaseItem
-- (BOOL)isEqual:(id)a3;
-- (VUIPlistMediaDatabaseItem)initWithDictionary:(id)a3;
-- (VUIPlistMediaDatabaseItem)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (VUIPlistMediaDatabaseItem)initWithDictionary:(id)dictionary;
+- (VUIPlistMediaDatabaseItem)initWithIdentifier:(id)identifier type:(unint64_t)type;
 - (VUIPlistMediaDatabaseSeason)season;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation VUIPlistMediaDatabaseItem
 
-- (VUIPlistMediaDatabaseItem)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (VUIPlistMediaDatabaseItem)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v9.receiver = self;
   v9.super_class = VUIPlistMediaDatabaseItem;
-  v4 = [(VUIPlistMediaDatabaseEntity *)&v9 initWithIdentifier:a3 type:a4];
+  v4 = [(VUIPlistMediaDatabaseEntity *)&v9 initWithIdentifier:identifier type:type];
   v5 = v4;
   if (v4)
   {
@@ -30,55 +30,55 @@
   return v5;
 }
 
-- (VUIPlistMediaDatabaseItem)initWithDictionary:(id)a3
+- (VUIPlistMediaDatabaseItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v53.receiver = self;
   v53.super_class = VUIPlistMediaDatabaseItem;
-  v5 = [(VUIPlistMediaDatabaseEntity *)&v53 initWithDictionary:v4];
+  v5 = [(VUIPlistMediaDatabaseEntity *)&v53 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 vui_numberForKey:@"Local"];
+    v6 = [dictionaryCopy vui_numberForKey:@"Local"];
     v7 = [v6 copy];
     local = v5->_local;
     v5->_local = v7;
 
-    v9 = [v4 vui_numberForKey:@"Duration"];
+    v9 = [dictionaryCopy vui_numberForKey:@"Duration"];
     v10 = [v9 copy];
     duration = v5->_duration;
     v5->_duration = v10;
 
-    v12 = [v4 vui_dateForKey:@"ReleaseDate"];
+    v12 = [dictionaryCopy vui_dateForKey:@"ReleaseDate"];
     v13 = [v12 copy];
     releaseDate = v5->_releaseDate;
     v5->_releaseDate = v13;
 
-    v15 = [v4 vui_numberForKey:@"EpisodeNumber"];
+    v15 = [dictionaryCopy vui_numberForKey:@"EpisodeNumber"];
     v16 = [v15 copy];
     episodeNumber = v5->_episodeNumber;
     v5->_episodeNumber = v16;
 
-    v18 = [v4 vui_stringForKey:@"Studio"];
+    v18 = [dictionaryCopy vui_stringForKey:@"Studio"];
     v19 = [v18 copy];
     studio = v5->_studio;
     v5->_studio = v19;
 
-    v21 = [v4 vui_numberForKey:@"ColorCapability"];
+    v21 = [dictionaryCopy vui_numberForKey:@"ColorCapability"];
     v22 = [v21 copy];
     colorCapability = v5->_colorCapability;
     v5->_colorCapability = v22;
 
-    v24 = [v4 vui_numberForKey:@"ColorCapability"];
+    v24 = [dictionaryCopy vui_numberForKey:@"ColorCapability"];
     v25 = [v24 copy];
     HLSColorCapability = v5->_HLSColorCapability;
     v5->_HLSColorCapability = v25;
 
-    v27 = [v4 vui_dictionaryForKey:@"OfflineFPSKeys"];
+    v27 = [dictionaryCopy vui_dictionaryForKey:@"OfflineFPSKeys"];
     v28 = [v27 copy];
     offlineFPSKeys = v5->_offlineFPSKeys;
     v5->_offlineFPSKeys = v28;
 
-    v30 = [v4 vui_stringForKey:@"DownloadState"];
+    v30 = [dictionaryCopy vui_stringForKey:@"DownloadState"];
     v31 = [v30 copy];
     downloadState = v5->_downloadState;
     v5->_downloadState = v31;
@@ -98,7 +98,7 @@
       v5->_HLSColorCapability = &unk_1F5E5D9E0;
     }
 
-    v33 = [v4 vui_stringForKey:@"ContentRating"];
+    v33 = [dictionaryCopy vui_stringForKey:@"ContentRating"];
     if (v33)
     {
       v34 = [objc_alloc(MEMORY[0x1E69DF6B8]) initWithStringRepresentation:v33];
@@ -106,7 +106,7 @@
       v5->_contentRating = v34;
     }
 
-    v36 = [v4 vui_stringForKey:@"PreviewFrameURL"];
+    v36 = [dictionaryCopy vui_stringForKey:@"PreviewFrameURL"];
     if (v36)
     {
       v37 = [MEMORY[0x1E695DFF8] URLWithString:v36];
@@ -114,7 +114,7 @@
       v5->_previewFrameURL = v37;
     }
 
-    v39 = [v4 vui_stringForKey:@"Credits"];
+    v39 = [dictionaryCopy vui_stringForKey:@"Credits"];
     if (v39)
     {
       v40 = [[VUIMediaItemCredits alloc] initWithStringRepresentation:v39];
@@ -122,7 +122,7 @@
       v5->_credits = v40;
     }
 
-    v42 = [v4 vui_stringForKey:@"RelativeFilePathString"];
+    v42 = [dictionaryCopy vui_stringForKey:@"RelativeFilePathString"];
     if ([v42 length])
     {
       v43 = MEMORY[0x1E695DFF8];
@@ -133,7 +133,7 @@
       v5->_filePathURL = v46;
     }
 
-    v48 = [v4 vui_stringForKey:@"PlaybackURL"];
+    v48 = [dictionaryCopy vui_stringForKey:@"PlaybackURL"];
     v49 = v48;
     if (v48 && [v48 length])
     {
@@ -150,64 +150,64 @@
 {
   v26.receiver = self;
   v26.super_class = VUIPlistMediaDatabaseItem;
-  v3 = [(VUIPlistMediaDatabaseEntity *)&v26 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
-  v5 = [(VUIPlistMediaDatabaseItem *)self isLocal];
-  [v4 vui_setObjectIfNotNil:v5 forKey:@"Local"];
+  dictionaryRepresentation = [(VUIPlistMediaDatabaseEntity *)&v26 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
+  isLocal = [(VUIPlistMediaDatabaseItem *)self isLocal];
+  [v4 vui_setObjectIfNotNil:isLocal forKey:@"Local"];
 
-  v6 = [(VUIPlistMediaDatabaseItem *)self duration];
-  [v4 vui_setObjectIfNotNil:v6 forKey:@"Duration"];
+  duration = [(VUIPlistMediaDatabaseItem *)self duration];
+  [v4 vui_setObjectIfNotNil:duration forKey:@"Duration"];
 
-  v7 = [(VUIPlistMediaDatabaseItem *)self releaseDate];
-  [v4 vui_setObjectIfNotNil:v7 forKey:@"ReleaseDate"];
+  releaseDate = [(VUIPlistMediaDatabaseItem *)self releaseDate];
+  [v4 vui_setObjectIfNotNil:releaseDate forKey:@"ReleaseDate"];
 
-  v8 = [(VUIPlistMediaDatabaseItem *)self episodeNumber];
-  [v4 vui_setObjectIfNotNil:v8 forKey:@"EpisodeNumber"];
+  episodeNumber = [(VUIPlistMediaDatabaseItem *)self episodeNumber];
+  [v4 vui_setObjectIfNotNil:episodeNumber forKey:@"EpisodeNumber"];
 
-  v9 = [(VUIPlistMediaDatabaseItem *)self studio];
-  [v4 vui_setObjectIfNotNil:v9 forKey:@"Studio"];
+  studio = [(VUIPlistMediaDatabaseItem *)self studio];
+  [v4 vui_setObjectIfNotNil:studio forKey:@"Studio"];
 
-  v10 = [(VUIPlistMediaDatabaseItem *)self credits];
-  v11 = [v10 stringRepresentation];
-  [v4 vui_setObjectIfNotNil:v11 forKey:@"Credits"];
+  credits = [(VUIPlistMediaDatabaseItem *)self credits];
+  stringRepresentation = [credits stringRepresentation];
+  [v4 vui_setObjectIfNotNil:stringRepresentation forKey:@"Credits"];
 
-  v12 = [(VUIPlistMediaDatabaseItem *)self previewFrameURL];
-  v13 = [v12 absoluteString];
-  [v4 vui_setObjectIfNotNil:v13 forKey:@"PreviewFrameURL"];
+  previewFrameURL = [(VUIPlistMediaDatabaseItem *)self previewFrameURL];
+  absoluteString = [previewFrameURL absoluteString];
+  [v4 vui_setObjectIfNotNil:absoluteString forKey:@"PreviewFrameURL"];
 
-  v14 = [(VUIPlistMediaDatabaseItem *)self contentRating];
-  v15 = [v14 stringRepresentation];
-  [v4 vui_setObjectIfNotNil:v15 forKey:@"ContentRating"];
+  contentRating = [(VUIPlistMediaDatabaseItem *)self contentRating];
+  stringRepresentation2 = [contentRating stringRepresentation];
+  [v4 vui_setObjectIfNotNil:stringRepresentation2 forKey:@"ContentRating"];
 
-  v16 = [(VUIPlistMediaDatabaseItem *)self colorCapability];
-  [v4 vui_setObjectIfNotNil:v16 forKey:@"ColorCapability"];
+  colorCapability = [(VUIPlistMediaDatabaseItem *)self colorCapability];
+  [v4 vui_setObjectIfNotNil:colorCapability forKey:@"ColorCapability"];
 
-  v17 = [(VUIPlistMediaDatabaseItem *)self HLSColorCapability];
-  [v4 vui_setObjectIfNotNil:v17 forKey:@"HLSColorCapability"];
+  hLSColorCapability = [(VUIPlistMediaDatabaseItem *)self HLSColorCapability];
+  [v4 vui_setObjectIfNotNil:hLSColorCapability forKey:@"HLSColorCapability"];
 
-  v18 = [(VUIPlistMediaDatabaseItem *)self playbackURL];
-  v19 = [v18 absoluteString];
-  [v4 vui_setObjectIfNotNil:v19 forKey:@"PlaybackURL"];
+  playbackURL = [(VUIPlistMediaDatabaseItem *)self playbackURL];
+  absoluteString2 = [playbackURL absoluteString];
+  [v4 vui_setObjectIfNotNil:absoluteString2 forKey:@"PlaybackURL"];
 
-  v20 = [(VUIPlistMediaDatabaseItem *)self filePathURL];
-  v21 = [v20 relativeString];
-  v22 = [v21 stringByRemovingPercentEncoding];
-  [v4 vui_setObjectIfNotNil:v22 forKey:@"RelativeFilePathString"];
+  filePathURL = [(VUIPlistMediaDatabaseItem *)self filePathURL];
+  relativeString = [filePathURL relativeString];
+  stringByRemovingPercentEncoding = [relativeString stringByRemovingPercentEncoding];
+  [v4 vui_setObjectIfNotNil:stringByRemovingPercentEncoding forKey:@"RelativeFilePathString"];
 
-  v23 = [(VUIPlistMediaDatabaseItem *)self offlineFPSKeys];
-  [v4 vui_setObjectIfNotNil:v23 forKey:@"OfflineFPSKeys"];
+  offlineFPSKeys = [(VUIPlistMediaDatabaseItem *)self offlineFPSKeys];
+  [v4 vui_setObjectIfNotNil:offlineFPSKeys forKey:@"OfflineFPSKeys"];
 
-  v24 = [(VUIPlistMediaDatabaseItem *)self downloadState];
-  [v4 vui_setObjectIfNotNil:v24 forKey:@"DownloadState"];
+  downloadState = [(VUIPlistMediaDatabaseItem *)self downloadState];
+  [v4 vui_setObjectIfNotNil:downloadState forKey:@"DownloadState"];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v34.receiver = self;
   v34.super_class = VUIPlistMediaDatabaseItem;
-  v4 = [(VUIPlistMediaDatabaseEntity *)&v34 copyWithZone:a3];
+  v4 = [(VUIPlistMediaDatabaseEntity *)&v34 copyWithZone:zone];
   v5 = [(NSNumber *)self->_local copy];
   v6 = v4[8];
   v4[8] = v5;
@@ -267,18 +267,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -295,10 +295,10 @@ LABEL_91:
           goto LABEL_92;
         }
 
-        v7 = [(VUIPlistMediaDatabaseItem *)self isPlayable];
-        v8 = [(VUIPlistMediaDatabaseItem *)v6 isPlayable];
-        v9 = v7;
-        v10 = v8;
+        isPlayable = [(VUIPlistMediaDatabaseItem *)self isPlayable];
+        isPlayable2 = [(VUIPlistMediaDatabaseItem *)v6 isPlayable];
+        v9 = isPlayable;
+        v10 = isPlayable2;
         v11 = v10;
         if (v9 == v10)
         {
@@ -320,10 +320,10 @@ LABEL_91:
           }
         }
 
-        v14 = [(VUIPlistMediaDatabaseItem *)self duration];
-        v15 = [(VUIPlistMediaDatabaseItem *)v6 duration];
-        v9 = v14;
-        v16 = v15;
+        duration = [(VUIPlistMediaDatabaseItem *)self duration];
+        duration2 = [(VUIPlistMediaDatabaseItem *)v6 duration];
+        v9 = duration;
+        v16 = duration2;
         v11 = v16;
         if (v9 == v16)
         {
@@ -345,10 +345,10 @@ LABEL_91:
           }
         }
 
-        v18 = [(VUIPlistMediaDatabaseItem *)self releaseDate];
-        v19 = [(VUIPlistMediaDatabaseItem *)v6 releaseDate];
-        v9 = v18;
-        v20 = v19;
+        releaseDate = [(VUIPlistMediaDatabaseItem *)self releaseDate];
+        releaseDate2 = [(VUIPlistMediaDatabaseItem *)v6 releaseDate];
+        v9 = releaseDate;
+        v20 = releaseDate2;
         v11 = v20;
         if (v9 == v20)
         {
@@ -370,10 +370,10 @@ LABEL_91:
           }
         }
 
-        v22 = [(VUIPlistMediaDatabaseItem *)self episodeNumber];
-        v23 = [(VUIPlistMediaDatabaseItem *)v6 episodeNumber];
-        v9 = v22;
-        v24 = v23;
+        episodeNumber = [(VUIPlistMediaDatabaseItem *)self episodeNumber];
+        episodeNumber2 = [(VUIPlistMediaDatabaseItem *)v6 episodeNumber];
+        v9 = episodeNumber;
+        v24 = episodeNumber2;
         v11 = v24;
         if (v9 == v24)
         {
@@ -395,10 +395,10 @@ LABEL_91:
           }
         }
 
-        v26 = [(VUIPlistMediaDatabaseItem *)self studio];
-        v27 = [(VUIPlistMediaDatabaseItem *)v6 studio];
-        v9 = v26;
-        v28 = v27;
+        studio = [(VUIPlistMediaDatabaseItem *)self studio];
+        studio2 = [(VUIPlistMediaDatabaseItem *)v6 studio];
+        v9 = studio;
+        v28 = studio2;
         v11 = v28;
         if (v9 == v28)
         {
@@ -420,10 +420,10 @@ LABEL_91:
           }
         }
 
-        v30 = [(VUIPlistMediaDatabaseItem *)self credits];
-        v31 = [(VUIPlistMediaDatabaseItem *)v6 credits];
-        v9 = v30;
-        v32 = v31;
+        credits = [(VUIPlistMediaDatabaseItem *)self credits];
+        credits2 = [(VUIPlistMediaDatabaseItem *)v6 credits];
+        v9 = credits;
+        v32 = credits2;
         v11 = v32;
         if (v9 == v32)
         {
@@ -445,10 +445,10 @@ LABEL_91:
           }
         }
 
-        v34 = [(VUIPlistMediaDatabaseItem *)self previewFrameURL];
-        v35 = [(VUIPlistMediaDatabaseItem *)v6 previewFrameURL];
-        v9 = v34;
-        v36 = v35;
+        previewFrameURL = [(VUIPlistMediaDatabaseItem *)self previewFrameURL];
+        previewFrameURL2 = [(VUIPlistMediaDatabaseItem *)v6 previewFrameURL];
+        v9 = previewFrameURL;
+        v36 = previewFrameURL2;
         v11 = v36;
         if (v9 == v36)
         {
@@ -470,10 +470,10 @@ LABEL_91:
           }
         }
 
-        v38 = [(VUIPlistMediaDatabaseItem *)self contentRating];
-        v39 = [(VUIPlistMediaDatabaseItem *)v6 contentRating];
-        v9 = v38;
-        v40 = v39;
+        contentRating = [(VUIPlistMediaDatabaseItem *)self contentRating];
+        contentRating2 = [(VUIPlistMediaDatabaseItem *)v6 contentRating];
+        v9 = contentRating;
+        v40 = contentRating2;
         v11 = v40;
         if (v9 == v40)
         {
@@ -495,10 +495,10 @@ LABEL_91:
           }
         }
 
-        v42 = [(VUIPlistMediaDatabaseItem *)self colorCapability];
-        v43 = [(VUIPlistMediaDatabaseItem *)v6 colorCapability];
-        v9 = v42;
-        v44 = v43;
+        colorCapability = [(VUIPlistMediaDatabaseItem *)self colorCapability];
+        colorCapability2 = [(VUIPlistMediaDatabaseItem *)v6 colorCapability];
+        v9 = colorCapability;
+        v44 = colorCapability2;
         v11 = v44;
         if (v9 == v44)
         {
@@ -520,10 +520,10 @@ LABEL_91:
           }
         }
 
-        v46 = [(VUIPlistMediaDatabaseItem *)self HLSColorCapability];
-        v47 = [(VUIPlistMediaDatabaseItem *)v6 HLSColorCapability];
-        v9 = v46;
-        v48 = v47;
+        hLSColorCapability = [(VUIPlistMediaDatabaseItem *)self HLSColorCapability];
+        hLSColorCapability2 = [(VUIPlistMediaDatabaseItem *)v6 HLSColorCapability];
+        v9 = hLSColorCapability;
+        v48 = hLSColorCapability2;
         v11 = v48;
         if (v9 == v48)
         {
@@ -545,10 +545,10 @@ LABEL_91:
           }
         }
 
-        v50 = [(VUIPlistMediaDatabaseItem *)self playbackURL];
-        v51 = [(VUIPlistMediaDatabaseItem *)v6 playbackURL];
-        v9 = v50;
-        v52 = v51;
+        playbackURL = [(VUIPlistMediaDatabaseItem *)self playbackURL];
+        playbackURL2 = [(VUIPlistMediaDatabaseItem *)v6 playbackURL];
+        v9 = playbackURL;
+        v52 = playbackURL2;
         v11 = v52;
         if (v9 == v52)
         {
@@ -570,10 +570,10 @@ LABEL_91:
           }
         }
 
-        v54 = [(VUIPlistMediaDatabaseItem *)self filePathURL];
-        v55 = [(VUIPlistMediaDatabaseItem *)v6 filePathURL];
-        v9 = v54;
-        v56 = v55;
+        filePathURL = [(VUIPlistMediaDatabaseItem *)self filePathURL];
+        filePathURL2 = [(VUIPlistMediaDatabaseItem *)v6 filePathURL];
+        v9 = filePathURL;
+        v56 = filePathURL2;
         v11 = v56;
         if (v9 == v56)
         {
@@ -595,19 +595,19 @@ LABEL_91:
           }
         }
 
-        v58 = [(VUIPlistMediaDatabaseItem *)self offlineFPSKeys];
-        v59 = [(VUIPlistMediaDatabaseItem *)v6 offlineFPSKeys];
-        v9 = v58;
-        v60 = v59;
+        offlineFPSKeys = [(VUIPlistMediaDatabaseItem *)self offlineFPSKeys];
+        offlineFPSKeys2 = [(VUIPlistMediaDatabaseItem *)v6 offlineFPSKeys];
+        v9 = offlineFPSKeys;
+        v60 = offlineFPSKeys2;
         v11 = v60;
         if (v9 == v60)
         {
 
 LABEL_85:
-          v62 = [(VUIPlistMediaDatabaseItem *)self downloadState];
-          v63 = [(VUIPlistMediaDatabaseItem *)v6 downloadState];
-          v9 = v62;
-          v64 = v63;
+          downloadState = [(VUIPlistMediaDatabaseItem *)self downloadState];
+          downloadState2 = [(VUIPlistMediaDatabaseItem *)v6 downloadState];
+          v9 = downloadState;
+          v64 = downloadState2;
           v11 = v64;
           if (v9 == v64)
           {
@@ -662,73 +662,73 @@ LABEL_92:
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIPlistMediaDatabaseItem *)self isPlayable];
-  [v6 BOOLValue];
+  isPlayable = [(VUIPlistMediaDatabaseItem *)self isPlayable];
+  [isPlayable BOOLValue];
   v7 = VUIBoolLogString();
   v8 = [v5 stringWithFormat:@"%@=%@", @"isPlayable", v7];
   [v3 addObject:v8];
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [(VUIPlistMediaDatabaseItem *)self duration];
-  v11 = [v9 stringWithFormat:@"%@=%@", @"duration", v10];
+  duration = [(VUIPlistMediaDatabaseItem *)self duration];
+  v11 = [v9 stringWithFormat:@"%@=%@", @"duration", duration];
   [v3 addObject:v11];
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [(VUIPlistMediaDatabaseItem *)self releaseDate];
-  v14 = [v12 stringWithFormat:@"%@=%@", @"releaseDate", v13];
+  releaseDate = [(VUIPlistMediaDatabaseItem *)self releaseDate];
+  v14 = [v12 stringWithFormat:@"%@=%@", @"releaseDate", releaseDate];
   [v3 addObject:v14];
 
   v15 = MEMORY[0x1E696AEC0];
-  v16 = [(VUIPlistMediaDatabaseItem *)self episodeNumber];
-  v17 = [v15 stringWithFormat:@"%@=%@", @"episodeNumber", v16];
+  episodeNumber = [(VUIPlistMediaDatabaseItem *)self episodeNumber];
+  v17 = [v15 stringWithFormat:@"%@=%@", @"episodeNumber", episodeNumber];
   [v3 addObject:v17];
 
   v18 = MEMORY[0x1E696AEC0];
-  v19 = [(VUIPlistMediaDatabaseItem *)self studio];
-  v20 = [v18 stringWithFormat:@"%@=%@", @"studio", v19];
+  studio = [(VUIPlistMediaDatabaseItem *)self studio];
+  v20 = [v18 stringWithFormat:@"%@=%@", @"studio", studio];
   [v3 addObject:v20];
 
   v21 = MEMORY[0x1E696AEC0];
-  v22 = [(VUIPlistMediaDatabaseItem *)self credits];
-  v23 = [v21 stringWithFormat:@"%@=%@", @"credits", v22];
+  credits = [(VUIPlistMediaDatabaseItem *)self credits];
+  v23 = [v21 stringWithFormat:@"%@=%@", @"credits", credits];
   [v3 addObject:v23];
 
   v24 = MEMORY[0x1E696AEC0];
-  v25 = [(VUIPlistMediaDatabaseItem *)self previewFrameURL];
-  v26 = [v24 stringWithFormat:@"%@=%@", @"previewFrameURL", v25];
+  previewFrameURL = [(VUIPlistMediaDatabaseItem *)self previewFrameURL];
+  v26 = [v24 stringWithFormat:@"%@=%@", @"previewFrameURL", previewFrameURL];
   [v3 addObject:v26];
 
   v27 = MEMORY[0x1E696AEC0];
-  v28 = [(VUIPlistMediaDatabaseItem *)self contentRating];
-  v29 = [v27 stringWithFormat:@"%@=%@", @"contentRating", v28];
+  contentRating = [(VUIPlistMediaDatabaseItem *)self contentRating];
+  v29 = [v27 stringWithFormat:@"%@=%@", @"contentRating", contentRating];
   [v3 addObject:v29];
 
   v30 = MEMORY[0x1E696AEC0];
-  v31 = [(VUIPlistMediaDatabaseItem *)self colorCapability];
-  v32 = [v30 stringWithFormat:@"%@=%@", @"colorCapability", v31];
+  colorCapability = [(VUIPlistMediaDatabaseItem *)self colorCapability];
+  v32 = [v30 stringWithFormat:@"%@=%@", @"colorCapability", colorCapability];
   [v3 addObject:v32];
 
   v33 = MEMORY[0x1E696AEC0];
-  v34 = [(VUIPlistMediaDatabaseItem *)self HLSColorCapability];
-  v35 = [v33 stringWithFormat:@"%@=%@", @"HLSColorCapability", v34];
+  hLSColorCapability = [(VUIPlistMediaDatabaseItem *)self HLSColorCapability];
+  v35 = [v33 stringWithFormat:@"%@=%@", @"HLSColorCapability", hLSColorCapability];
   [v3 addObject:v35];
 
   v36 = MEMORY[0x1E696AEC0];
-  v37 = [(VUIPlistMediaDatabaseItem *)self playbackURL];
-  v38 = [v36 stringWithFormat:@"%@=%@", @"playbackURL", v37];
+  playbackURL = [(VUIPlistMediaDatabaseItem *)self playbackURL];
+  v38 = [v36 stringWithFormat:@"%@=%@", @"playbackURL", playbackURL];
   [v3 addObject:v38];
 
   v39 = MEMORY[0x1E696AEC0];
-  v40 = [(VUIPlistMediaDatabaseItem *)self filePathURL];
-  v41 = [v39 stringWithFormat:@"%@=%@", @"filePathURL", v40];
+  filePathURL = [(VUIPlistMediaDatabaseItem *)self filePathURL];
+  v41 = [v39 stringWithFormat:@"%@=%@", @"filePathURL", filePathURL];
   [v3 addObject:v41];
 
   v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@=%@", @"offlineFPSKeys", @"[omitted]"];
   [v3 addObject:v42];
 
   v43 = MEMORY[0x1E696AEC0];
-  v44 = [(VUIPlistMediaDatabaseItem *)self downloadState];
-  v45 = [v43 stringWithFormat:@"%@=%@", @"downloadState", v44];
+  downloadState = [(VUIPlistMediaDatabaseItem *)self downloadState];
+  v45 = [v43 stringWithFormat:@"%@=%@", @"downloadState", downloadState];
   [v3 addObject:v45];
 
   v46 = MEMORY[0x1E696AEC0];

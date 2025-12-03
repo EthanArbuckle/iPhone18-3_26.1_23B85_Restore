@@ -1,24 +1,24 @@
 @interface FCEditorialOperation
 - (BOOL)validateOperation;
-- (void)enumerateEditorialSectionsByRecencyWithBlock:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)enumerateEditorialSectionsByRecencyWithBlock:(id)block;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
 @implementation FCEditorialOperation
 
-- (void)enumerateEditorialSectionsByRecencyWithBlock:(id)a3
+- (void)enumerateEditorialSectionsByRecencyWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(FCEditorialOperation *)self editorialSectionGroups];
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_175];
+  blockCopy = block;
+  editorialSectionGroups = [(FCEditorialOperation *)self editorialSectionGroups];
+  v6 = [editorialSectionGroups sortedArrayUsingComparator:&__block_literal_global_175];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __69__FCEditorialOperation_enumerateEditorialSectionsByRecencyWithBlock___block_invoke_2;
   v8[3] = &unk_1E7C47100;
-  v9 = v4;
-  v7 = v4;
+  v9 = blockCopy;
+  v7 = blockCopy;
   [v6 enumerateObjectsUsingBlock:v8];
 }
 
@@ -45,9 +45,9 @@ void __69__FCEditorialOperation_enumerateEditorialSectionsByRecencyWithBlock___b
 - (BOOL)validateOperation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(FCEditorialOperation *)self configuration];
+  configuration = [(FCEditorialOperation *)self configuration];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!configuration && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"editorial operation must have a configuration"];
     v12 = 136315906;
@@ -61,9 +61,9 @@ void __69__FCEditorialOperation_enumerateEditorialSectionsByRecencyWithBlock___b
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v12, 0x26u);
   }
 
-  v4 = [(FCEditorialOperation *)self context];
+  context = [(FCEditorialOperation *)self context];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!context && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"editorial catch-up operation must have a context"];
     v12 = 136315906;
@@ -77,11 +77,11 @@ void __69__FCEditorialOperation_enumerateEditorialSectionsByRecencyWithBlock___b
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v12, 0x26u);
   }
 
-  v5 = [(FCEditorialOperation *)self configuration];
-  if (v5)
+  configuration2 = [(FCEditorialOperation *)self configuration];
+  if (configuration2)
   {
-    v6 = [(FCEditorialOperation *)self context];
-    v7 = v6 != 0;
+    context2 = [(FCEditorialOperation *)self context];
+    v7 = context2 != 0;
   }
 
   else
@@ -96,19 +96,19 @@ void __69__FCEditorialOperation_enumerateEditorialSectionsByRecencyWithBlock___b
 - (void)performOperation
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCEditorialOperation *)self configuration];
+  configuration = [(FCEditorialOperation *)self configuration];
   v4 = objc_alloc_init(FCForYouConfigHeadlinesOperation);
-  [(FCForYouConfigHeadlinesOperation *)v4 setConfiguration:v3];
-  v5 = [(FCEditorialOperation *)self context];
-  [(FCForYouConfigHeadlinesOperation *)v4 setContext:v5];
+  [(FCForYouConfigHeadlinesOperation *)v4 setConfiguration:configuration];
+  context = [(FCEditorialOperation *)self context];
+  [(FCForYouConfigHeadlinesOperation *)v4 setContext:context];
 
-  v6 = [(FCEditorialOperation *)self context];
-  v7 = [v6 feedPersonalizer];
-  [(FCForYouConfigHeadlinesOperation *)v4 setPersonalizer:v7];
+  context2 = [(FCEditorialOperation *)self context];
+  feedPersonalizer = [context2 feedPersonalizer];
+  [(FCForYouConfigHeadlinesOperation *)v4 setPersonalizer:feedPersonalizer];
 
-  v8 = [(FCEditorialOperation *)self context];
-  v9 = [v8 bundleSubscriptionManager];
-  [(FCForYouConfigHeadlinesOperation *)v4 setBundleSubscriptionManager:v9];
+  context3 = [(FCEditorialOperation *)self context];
+  bundleSubscriptionManager = [context3 bundleSubscriptionManager];
+  [(FCForYouConfigHeadlinesOperation *)v4 setBundleSubscriptionManager:bundleSubscriptionManager];
 
   [(FCForYouConfigHeadlinesOperation *)v4 setFields:92];
   v10 = [FCCachePolicy cachePolicyWithSoftMaxAge:15.0];
@@ -120,13 +120,13 @@ void __69__FCEditorialOperation_enumerateEditorialSectionsByRecencyWithBlock___b
   v12 = [FCCachePolicy cachePolicyWithSoftMaxAge:15.0];
   [(FCForYouConfigHeadlinesOperation *)v4 setEditorialSectionTagCachePolicy:v12];
 
-  v13 = [v3 editorialChannelID];
+  editorialChannelID = [configuration editorialChannelID];
 
-  if (v13)
+  if (editorialChannelID)
   {
     [(FCForYouConfigHeadlinesOperation *)v4 setShouldFetchEditorialSectionTags:1];
-    v14 = [v3 editorialChannelID];
-    v24[0] = v14;
+    editorialChannelID2 = [configuration editorialChannelID];
+    v24[0] = editorialChannelID2;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
     [(FCForYouConfigHeadlinesOperation *)v4 setAdditionalTagIDs:v15];
   }
@@ -135,11 +135,11 @@ void __69__FCEditorialOperation_enumerateEditorialSectionsByRecencyWithBlock___b
   v19 = 3221225472;
   v20 = __40__FCEditorialOperation_performOperation__block_invoke;
   v21 = &unk_1E7C47150;
-  v22 = self;
-  v23 = v3;
-  v16 = v3;
+  selfCopy = self;
+  v23 = configuration;
+  v16 = configuration;
   [(FCForYouConfigHeadlinesOperation *)v4 setHeadlinesAndTagsCompletionHandler:&v18];
-  [(FCOperation *)self associateChildOperation:v4, v18, v19, v20, v21, v22];
+  [(FCOperation *)self associateChildOperation:v4, v18, v19, v20, v21, selfCopy];
   [(FCOperation *)v4 start];
 
   v17 = *MEMORY[0x1E69E9840];
@@ -330,16 +330,16 @@ void __40__FCEditorialOperation_performOperation__block_invoke_3(uint64_t a1, vo
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   [(FCEditorialOperation *)self setError:?];
-  v4 = [(FCEditorialOperation *)self fetchCompletionHandler];
+  fetchCompletionHandler = [(FCEditorialOperation *)self fetchCompletionHandler];
 
-  if (v4)
+  if (fetchCompletionHandler)
   {
-    v5 = [(FCEditorialOperation *)self fetchCompletionHandler];
-    (v5)[2](v5, v6);
+    fetchCompletionHandler2 = [(FCEditorialOperation *)self fetchCompletionHandler];
+    (fetchCompletionHandler2)[2](fetchCompletionHandler2, errorCopy);
   }
 }
 

@@ -1,7 +1,7 @@
 @interface FindMyAction
 - ($F24F406B2B787EFB06265DBA3D28CBD5)coordinate;
 - (BOOL)isCompatibleWithNavigation;
-- (FindMyAction)initWithFindMyHandleIdentifier:(id)a3 coordinate:(id)a4;
+- (FindMyAction)initWithFindMyHandleIdentifier:(id)identifier coordinate:(id)coordinate;
 @end
 
 @implementation FindMyAction
@@ -25,17 +25,17 @@
   return MapsFeature_IsEnabled_Maps182();
 }
 
-- (FindMyAction)initWithFindMyHandleIdentifier:(id)a3 coordinate:(id)a4
+- (FindMyAction)initWithFindMyHandleIdentifier:(id)identifier coordinate:(id)coordinate
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v7 = a3;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = FindMyAction;
   v8 = [(FindMyAction *)&v12 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [identifierCopy copy];
     findMyHandleIdentifier = v8->_findMyHandleIdentifier;
     v8->_findMyHandleIdentifier = v9;
 

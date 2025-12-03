@@ -1,15 +1,15 @@
 @interface HMDSecureUnarchiveFromDataTransformer
-+ (BOOL)isEncodedNilValue:(id)a3;
++ (BOOL)isEncodedNilValue:(id)value;
 + (id)allowedTopLevelClasses;
-- (id)transformedValue:(id)a3;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation HMDSecureUnarchiveFromDataTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
-  if ([HMDSecureUnarchiveFromDataTransformer isEncodedNilValue:v4])
+  valueCopy = value;
+  if ([HMDSecureUnarchiveFromDataTransformer isEncodedNilValue:valueCopy])
   {
     v5 = 0;
   }
@@ -18,24 +18,24 @@
   {
     v7.receiver = self;
     v7.super_class = HMDSecureUnarchiveFromDataTransformer;
-    v5 = [(HMDSecureUnarchiveFromDataTransformer *)&v7 transformedValue:v4];
+    v5 = [(HMDSecureUnarchiveFromDataTransformer *)&v7 transformedValue:valueCopy];
   }
 
   return v5;
 }
 
-+ (BOOL)isEncodedNilValue:(id)a3
++ (BOOL)isEncodedNilValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   if (qword_10003B260 != -1)
   {
     dispatch_once(&qword_10003B260, &stru_100030B58);
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v4 = [v3 length], v4 == qword_10003B250))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v4 = [valueCopy length], v4 == qword_10003B250))
   {
-    v5 = [NSPropertyListSerialization propertyListWithData:v3 options:0 format:0 error:0];
+    v5 = [NSPropertyListSerialization propertyListWithData:valueCopy options:0 format:0 error:0];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = [v5 count], v6 == objc_msgSend(qword_10003B258, "count")))
     {
@@ -69,7 +69,7 @@
 
 + (id)allowedTopLevelClasses
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (qword_10003B240 != -1)
     {
@@ -81,7 +81,7 @@
 
   else
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &OBJC_METACLASS___HMDSecureUnarchiveFromDataTransformer;
     v3 = objc_msgSendSuper2(&v5, "allowedTopLevelClasses");
   }

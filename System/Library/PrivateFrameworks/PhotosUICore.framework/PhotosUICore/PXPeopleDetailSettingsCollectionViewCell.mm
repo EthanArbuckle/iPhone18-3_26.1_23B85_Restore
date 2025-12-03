@@ -1,7 +1,7 @@
 @interface PXPeopleDetailSettingsCollectionViewCell
-+ (double)preferredHeightForWidth:(double)a3 forAvatarPercentage:(double)a4 withSizeClass:(int64_t)a5 isFavorite:(BOOL)a6;
++ (double)preferredHeightForWidth:(double)width forAvatarPercentage:(double)percentage withSizeClass:(int64_t)class isFavorite:(BOOL)favorite;
 - (BOOL)isActionIndicatorHidden;
-- (PXPeopleDetailSettingsCollectionViewCell)initWithFrame:(CGRect)a3;
+- (PXPeopleDetailSettingsCollectionViewCell)initWithFrame:(CGRect)frame;
 - (UIImage)image;
 - (double)avatarCenterYOffset;
 - (id)_placeHolderColor;
@@ -10,15 +10,15 @@
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setActionIndicatorHidden:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setImage:(id)a3 normalizedFaceRect:(CGRect)a4;
-- (void)setIsFavorite:(BOOL)a3;
-- (void)setName:(id)a3;
-- (void)setPhotoQuantity:(unint64_t)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setTextAlpha:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setActionIndicatorHidden:(BOOL)hidden;
+- (void)setImage:(id)image;
+- (void)setImage:(id)image normalizedFaceRect:(CGRect)rect;
+- (void)setIsFavorite:(BOOL)favorite;
+- (void)setName:(id)name;
+- (void)setPhotoQuantity:(unint64_t)quantity;
+- (void)setSelected:(BOOL)selected;
+- (void)setTextAlpha:(double)alpha;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PXPeopleDetailSettingsCollectionViewCell
@@ -76,19 +76,19 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
   }
 
   v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*v5];
-  v7 = [(PXPeopleDetailSettingsCollectionViewCell *)self nameLabel];
-  [v7 setFont:v9];
+  nameLabel = [(PXPeopleDetailSettingsCollectionViewCell *)self nameLabel];
+  [nameLabel setFont:v9];
 
-  v8 = [(PXPeopleDetailSettingsCollectionViewCell *)self quantityLabel];
-  [v8 setFont:v6];
+  quantityLabel = [(PXPeopleDetailSettingsCollectionViewCell *)self quantityLabel];
+  [quantityLabel setFont:v6];
 }
 
 - (int64_t)_preferredSizeClass
 {
-  v2 = [(PXPeopleDetailSettingsCollectionViewCell *)self traitCollection];
-  if ([v2 horizontalSizeClass] == 2)
+  traitCollection = [(PXPeopleDetailSettingsCollectionViewCell *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 2)
   {
-    if ([v2 userInterfaceIdiom] == 1)
+    if ([traitCollection userInterfaceIdiom] == 1)
     {
       v3 = 2;
     }
@@ -109,8 +109,8 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
 
 - (double)avatarCenterYOffset
 {
-  v3 = [(PXPeopleDetailSettingsCollectionViewCell *)self avatarView];
-  [v3 center];
+  avatarView = [(PXPeopleDetailSettingsCollectionViewCell *)self avatarView];
+  [avatarView center];
   v5 = v4;
   [(PXPeopleDetailSettingsCollectionViewCell *)self bounds];
   v7 = v5 + v6 * -0.5;
@@ -118,102 +118,102 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
   return v7;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v6.receiver = self;
   v6.super_class = PXPeopleDetailSettingsCollectionViewCell;
   [(PXPeopleDetailSettingsCollectionViewCell *)&v6 setSelected:?];
-  v5 = [(PXPeopleDetailSettingsCollectionViewCell *)self selectionView];
-  [v5 setHidden:!v3];
+  selectionView = [(PXPeopleDetailSettingsCollectionViewCell *)self selectionView];
+  [selectionView setHidden:!selectedCopy];
 }
 
-- (void)setTextAlpha:(double)a3
+- (void)setTextAlpha:(double)alpha
 {
-  self->_textAlpha = a3;
-  v4 = [(PXPeopleDetailSettingsCollectionViewCell *)self nameLabel];
-  [v4 setAlpha:self->_textAlpha];
+  self->_textAlpha = alpha;
+  nameLabel = [(PXPeopleDetailSettingsCollectionViewCell *)self nameLabel];
+  [nameLabel setAlpha:self->_textAlpha];
 
-  v5 = [(PXPeopleDetailSettingsCollectionViewCell *)self quantityLabel];
-  [v5 setAlpha:self->_textAlpha];
+  quantityLabel = [(PXPeopleDetailSettingsCollectionViewCell *)self quantityLabel];
+  [quantityLabel setAlpha:self->_textAlpha];
 }
 
 - (BOOL)isActionIndicatorHidden
 {
-  v2 = [(PXPeopleDetailSettingsCollectionViewCell *)self actionIndicatorView];
-  v3 = [v2 isHidden];
+  actionIndicatorView = [(PXPeopleDetailSettingsCollectionViewCell *)self actionIndicatorView];
+  isHidden = [actionIndicatorView isHidden];
 
-  return v3;
+  return isHidden;
 }
 
-- (void)setActionIndicatorHidden:(BOOL)a3
+- (void)setActionIndicatorHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(PXPeopleDetailSettingsCollectionViewCell *)self actionIndicatorView];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  actionIndicatorView = [(PXPeopleDetailSettingsCollectionViewCell *)self actionIndicatorView];
+  [actionIndicatorView setHidden:hiddenCopy];
 }
 
-- (void)setPhotoQuantity:(unint64_t)a3
+- (void)setPhotoQuantity:(unint64_t)quantity
 {
-  self->_photoQuantity = a3;
+  self->_photoQuantity = quantity;
   quantityNumberFormatter = self->_quantityNumberFormatter;
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
   v7 = [(NSNumberFormatter *)quantityNumberFormatter stringFromNumber:v5];
 
-  v6 = [(PXPeopleDetailSettingsCollectionViewCell *)self quantityLabel];
-  [v6 setText:v7];
+  quantityLabel = [(PXPeopleDetailSettingsCollectionViewCell *)self quantityLabel];
+  [quantityLabel setText:v7];
 }
 
 - (UIImage)image
 {
-  v2 = [(PXPeopleDetailSettingsCollectionViewCell *)self avatarView];
-  v3 = [v2 image];
+  avatarView = [(PXPeopleDetailSettingsCollectionViewCell *)self avatarView];
+  image = [avatarView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setImage:(id)a3 normalizedFaceRect:(CGRect)a4
+- (void)setImage:(id)image normalizedFaceRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v11 = [(PXPeopleDetailSettingsCollectionViewCell *)self avatarView];
-  v10 = [v11 layer];
-  [v11 setImage:v9];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  imageCopy = image;
+  avatarView = [(PXPeopleDetailSettingsCollectionViewCell *)self avatarView];
+  layer = [avatarView layer];
+  [avatarView setImage:imageCopy];
 
-  [v11 setContentMode:2];
-  [v10 setContentsRect:{x, y, width, height}];
+  [avatarView setContentMode:2];
+  [layer setContentsRect:{x, y, width, height}];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v6 = [(PXPeopleDetailSettingsCollectionViewCell *)self avatarView];
-  [v6 setImage:v4];
+  imageCopy = image;
+  avatarView = [(PXPeopleDetailSettingsCollectionViewCell *)self avatarView];
+  [avatarView setImage:imageCopy];
 
-  [v6 setContentMode:1];
-  v5 = [v6 layer];
-  [v5 setContentsRect:{self->_unitRect.origin.x, self->_unitRect.origin.y, self->_unitRect.size.width, self->_unitRect.size.height}];
+  [avatarView setContentMode:1];
+  layer = [avatarView layer];
+  [layer setContentsRect:{self->_unitRect.origin.x, self->_unitRect.origin.y, self->_unitRect.size.width, self->_unitRect.size.height}];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   name = self->_name;
-  v11 = v5;
-  if (name != v5 || (v7 = [(NSString *)name isEqualToString:v5], v8 = v11, !v7))
+  v11 = nameCopy;
+  if (name != nameCopy || (v7 = [(NSString *)name isEqualToString:nameCopy], v8 = v11, !v7))
   {
-    objc_storeStrong(&self->_name, a3);
-    v9 = [(PXPeopleDetailSettingsCollectionViewCell *)self nameLabel];
+    objc_storeStrong(&self->_name, name);
+    nameLabel = [(PXPeopleDetailSettingsCollectionViewCell *)self nameLabel];
     v10 = [(NSString *)v11 length];
     if (v10)
     {
-      [v9 setText:v11];
+      [nameLabel setText:v11];
     }
 
-    [v9 setHidden:v10 == 0];
+    [nameLabel setHidden:v10 == 0];
     [(PXPeopleDetailSettingsCollectionViewCell *)self setNeedsLayout];
 
     v8 = v11;
@@ -239,11 +239,11 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
   [(PXPeopleDetailSettingsCollectionViewCell *)self setHidden:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PXPeopleDetailSettingsCollectionViewCell;
-  [(PXPeopleDetailSettingsCollectionViewCell *)&v4 traitCollectionDidChange:a3];
+  [(PXPeopleDetailSettingsCollectionViewCell *)&v4 traitCollectionDidChange:change];
   [(PXPeopleDetailSettingsCollectionViewCell *)self _updateType];
 }
 
@@ -252,23 +252,23 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
   v58.receiver = self;
   v58.super_class = PXPeopleDetailSettingsCollectionViewCell;
   [(PXPeopleDetailSettingsCollectionViewCell *)&v58 layoutSubviews];
-  v3 = [(PXPeopleDetailSettingsCollectionViewCell *)self avatarView];
-  v4 = [(PXPeopleDetailSettingsCollectionViewCell *)self quantityLabel];
-  v5 = [(PXPeopleDetailSettingsCollectionViewCell *)self nameLabel];
-  v6 = [(PXPeopleDetailSettingsCollectionViewCell *)self actionIndicatorView];
-  v7 = [(PXPeopleDetailSettingsCollectionViewCell *)self selectionView];
+  avatarView = [(PXPeopleDetailSettingsCollectionViewCell *)self avatarView];
+  quantityLabel = [(PXPeopleDetailSettingsCollectionViewCell *)self quantityLabel];
+  nameLabel = [(PXPeopleDetailSettingsCollectionViewCell *)self nameLabel];
+  actionIndicatorView = [(PXPeopleDetailSettingsCollectionViewCell *)self actionIndicatorView];
+  selectionView = [(PXPeopleDetailSettingsCollectionViewCell *)self selectionView];
   [(PXPeopleDetailSettingsCollectionViewCell *)self bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v5 isHidden];
-  v17 = [v5 font];
-  v18 = [v4 font];
-  [v5 setFont:v17];
-  [v4 setFont:v18];
-  v19 = [(PXPeopleDetailSettingsCollectionViewCell *)self _preferredSizeClass];
-  if (v19 == 1)
+  isHidden = [nameLabel isHidden];
+  font = [nameLabel font];
+  font2 = [quantityLabel font];
+  [nameLabel setFont:font];
+  [quantityLabel setFont:font2];
+  _preferredSizeClass = [(PXPeopleDetailSettingsCollectionViewCell *)self _preferredSizeClass];
+  if (_preferredSizeClass == 1)
   {
     v20 = 20.0;
   }
@@ -278,7 +278,7 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
     v20 = 30.0;
   }
 
-  if (v19 == 1)
+  if (_preferredSizeClass == 1)
   {
     v21 = 16.0;
   }
@@ -288,11 +288,11 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
     v21 = 20.0;
   }
 
-  [v17 _scaledValueForValue:v20];
+  [font _scaledValueForValue:v20];
   v23 = v22;
-  [v18 _scaledValueForValue:v20];
+  [font2 _scaledValueForValue:v20];
   v55 = v24;
-  [v18 _scaledValueForValue:v21];
+  [font2 _scaledValueForValue:v21];
   v26 = v25;
   v59.origin.x = v9;
   v59.origin.y = v11;
@@ -305,13 +305,13 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
   v28 = v26;
   v60.size.height = v15;
   Height = CGRectGetHeight(v60);
-  [v4 sizeThatFits:{Width, 1.79769313e308}];
+  [quantityLabel sizeThatFits:{Width, 1.79769313e308}];
   v31 = v30;
-  [v4 sizeThatFits:1.79769313e308];
+  [quantityLabel sizeThatFits:1.79769313e308];
   v57 = v32;
-  [v5 sizeThatFits:{Width, 1.79769313e308}];
+  [nameLabel sizeThatFits:{Width, 1.79769313e308}];
   v34 = v33;
-  [v5 sizeThatFits:1.79769313e308];
+  [nameLabel sizeThatFits:1.79769313e308];
   v56 = v35;
   if (Height - (v23 + v26) >= Width)
   {
@@ -323,24 +323,24 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
     v36 = Height - (v23 + v26);
   }
 
-  [v3 setFrame:{(Width - v36) * 0.5, 0.0, v36, v36}];
-  v37 = [v3 layer];
-  [v37 setCornerRadius:v36 * 0.5];
+  [avatarView setFrame:{(Width - v36) * 0.5, 0.0, v36, v36}];
+  layer = [avatarView layer];
+  [layer setCornerRadius:v36 * 0.5];
 
-  [v3 setClipsToBounds:1];
-  [v3 frame];
+  [avatarView setClipsToBounds:1];
+  [avatarView frame];
   v62 = CGRectInset(v61, -2.0, -2.0);
   v38 = v62.size.width;
-  [v7 setFrame:{v62.origin.x, v62.origin.y}];
-  v39 = [v7 layer];
-  [v39 setCornerRadius:v38 * 0.5];
+  [selectionView setFrame:{v62.origin.x, v62.origin.y}];
+  layer2 = [selectionView layer];
+  [layer2 setCornerRadius:v38 * 0.5];
 
-  if (v16)
+  if (isHidden)
   {
-    [v18 ascender];
+    [font2 ascender];
     *&v40 = v55 + v36 - v40;
     v41 = floorf(*&v40);
-    [v3 frame];
+    [avatarView frame];
     MinX = CGRectGetMinX(v63);
     v43 = MinX;
     v44 = v41;
@@ -351,23 +351,23 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
   else
   {
     v46 = v23 + v36;
-    [v17 ascender];
+    [font ascender];
     *&v47 = v23 + v36 - v47;
     v44 = floorf(*&v47);
-    [v3 frame];
+    [avatarView frame];
     v43 = CGRectGetMinX(v64);
-    [v5 setFrame:{v43, v44, Width, v34}];
-    [v18 ascender];
+    [nameLabel setFrame:{v43, v44, Width, v34}];
+    [font2 ascender];
     *&v48 = v28 + v46 - v48;
     v41 = floorf(*&v48);
-    [v3 frame];
+    [avatarView frame];
     MinX = CGRectGetMinX(v65);
     v45 = v56;
   }
 
   v49 = v31 * 0.5;
   v50 = floorf(v49);
-  [v4 setFrame:{MinX, v41, Width}];
+  [quantityLabel setFrame:{MinX, v41, Width}];
   v66.origin.x = v43;
   v66.origin.y = v44;
   v66.size.width = Width;
@@ -379,16 +379,16 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
   v67.size.width = Width;
   v67.size.height = v34;
   v53 = CGRectGetMidY(v67) - v50 * 0.5;
-  [v6 setFrame:{v52, floorf(v53), v50, v50}];
-  v54 = [v6 layer];
-  [v54 setCornerRadius:v50 * 0.5];
+  [actionIndicatorView setFrame:{v52, floorf(v53), v50, v50}];
+  layer3 = [actionIndicatorView layer];
+  [layer3 setCornerRadius:v50 * 0.5];
 }
 
-- (void)setIsFavorite:(BOOL)a3
+- (void)setIsFavorite:(BOOL)favorite
 {
-  if (self->_isFavorite != a3)
+  if (self->_isFavorite != favorite)
   {
-    self->_isFavorite = a3;
+    self->_isFavorite = favorite;
     [(PXPeopleDetailSettingsCollectionViewCell *)self _updateType];
 
     [(PXPeopleDetailSettingsCollectionViewCell *)self setNeedsLayout];
@@ -397,19 +397,19 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = PXPeopleDetailSettingsCollectionViewCell;
   [(PXPeopleDetailSettingsCollectionViewCell *)&v4 dealloc];
 }
 
-- (PXPeopleDetailSettingsCollectionViewCell)initWithFrame:(CGRect)a3
+- (PXPeopleDetailSettingsCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v38.receiver = self;
   v38.super_class = PXPeopleDetailSettingsCollectionViewCell;
-  v3 = [(PXPeopleDetailSettingsCollectionViewCell *)&v38 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXPeopleDetailSettingsCollectionViewCell *)&v38 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -418,35 +418,35 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
     __asm { FMOV            V0.2D, #1.0 }
 
     v3->_unitRect.size = _Q0;
-    v10 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     v11 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     quantityNumberFormatter = v4->_quantityNumberFormatter;
     v4->_quantityNumberFormatter = v11;
 
-    [(NSNumberFormatter *)v4->_quantityNumberFormatter setLocale:v10];
+    [(NSNumberFormatter *)v4->_quantityNumberFormatter setLocale:currentLocale];
     [(NSNumberFormatter *)v4->_quantityNumberFormatter setFormatterBehavior:1040];
     [(NSNumberFormatter *)v4->_quantityNumberFormatter setNumberStyle:1];
-    v13 = [(PXPeopleDetailSettingsCollectionViewCell *)v4 contentView];
+    contentView = [(PXPeopleDetailSettingsCollectionViewCell *)v4 contentView];
     v14 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     avatarView = v4->_avatarView;
     v4->_avatarView = v14;
 
     [(UIImageView *)v4->_avatarView setContentMode:1];
     v16 = v4->_avatarView;
-    v17 = [(PXPeopleDetailSettingsCollectionViewCell *)v4 _placeHolderColor];
-    [(UIImageView *)v16 setBackgroundColor:v17];
+    _placeHolderColor = [(PXPeopleDetailSettingsCollectionViewCell *)v4 _placeHolderColor];
+    [(UIImageView *)v16 setBackgroundColor:_placeHolderColor];
 
-    [v13 addSubview:v4->_avatarView];
+    [contentView addSubview:v4->_avatarView];
     v18 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [(UILabel *)v18 setTextAlignment:0];
-    v19 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v18 setTextColor:v19];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v18 setTextColor:labelColor];
 
     [(UILabel *)v18 setHidden:1];
     [(UILabel *)v18 setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)v18 setText:&stru_1F1741150];
     [(UILabel *)v18 setAdjustsFontSizeToFitWidth:1];
-    [v13 addSubview:v18];
+    [contentView addSubview:v18];
     nameLabel = v4->_nameLabel;
     v4->_nameLabel = v18;
     v21 = v18;
@@ -459,11 +459,11 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
     [(UILabel *)v23 setText:v24];
 
     [(UILabel *)v23 setTextAlignment:0];
-    v25 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v23 setTextColor:v25];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v23 setTextColor:secondaryLabelColor];
 
     [(UILabel *)v23 setAdjustsFontForContentSizeCategory:1];
-    [v13 addSubview:v23];
+    [contentView addSubview:v23];
     quantityLabel = v4->_quantityLabel;
     v4->_quantityLabel = v23;
     v27 = v23;
@@ -473,35 +473,35 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
     v4->_actionIndicatorView = v28;
 
     [(UIView *)v4->_actionIndicatorView setHidden:1];
-    v30 = [(UIView *)v4->_actionIndicatorView layer];
-    v31 = [(PXPeopleDetailSettingsCollectionViewCell *)v4 tintColor];
-    [v30 setBackgroundColor:{objc_msgSend(v31, "CGColor")}];
+    layer = [(UIView *)v4->_actionIndicatorView layer];
+    tintColor = [(PXPeopleDetailSettingsCollectionViewCell *)v4 tintColor];
+    [layer setBackgroundColor:{objc_msgSend(tintColor, "CGColor")}];
 
-    [v13 addSubview:v4->_actionIndicatorView];
+    [contentView addSubview:v4->_actionIndicatorView];
     v32 = objc_alloc_init(MEMORY[0x1E69DD250]);
     selectionView = v4->_selectionView;
     v4->_selectionView = v32;
 
     [(UIView *)v4->_selectionView setHidden:1];
-    v34 = [(UIView *)v4->_selectionView layer];
-    v35 = [(PXPeopleDetailSettingsCollectionViewCell *)v4 tintColor];
-    [v34 setBorderColor:{objc_msgSend(v35, "CGColor")}];
+    layer2 = [(UIView *)v4->_selectionView layer];
+    tintColor2 = [(PXPeopleDetailSettingsCollectionViewCell *)v4 tintColor];
+    [layer2 setBorderColor:{objc_msgSend(tintColor2, "CGColor")}];
 
-    [v34 setBorderWidth:2.0];
-    [v13 addSubview:v4->_selectionView];
+    [layer2 setBorderWidth:2.0];
+    [contentView addSubview:v4->_selectionView];
     [(PXPeopleDetailSettingsCollectionViewCell *)v4 _updateType];
-    v36 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v36 addObserver:v4 selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v4;
 }
 
-+ (double)preferredHeightForWidth:(double)a3 forAvatarPercentage:(double)a4 withSizeClass:(int64_t)a5 isFavorite:(BOOL)a6
++ (double)preferredHeightForWidth:(double)width forAvatarPercentage:(double)percentage withSizeClass:(int64_t)class isFavorite:(BOOL)favorite
 {
   v8 = MEMORY[0x1E69DDCF8];
   v9 = MEMORY[0x1E69DDD28];
-  if (a6)
+  if (favorite)
   {
     v10 = MEMORY[0x1E69DDD80];
   }
@@ -511,12 +511,12 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
     v10 = MEMORY[0x1E69DDD28];
   }
 
-  if (!a6)
+  if (!favorite)
   {
     v9 = MEMORY[0x1E69DDD08];
   }
 
-  if (a5 == 1)
+  if (class == 1)
   {
     v8 = v10;
     v11 = v9;
@@ -527,7 +527,7 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
     v11 = MEMORY[0x1E69DDD80];
   }
 
-  if (a5 == 1)
+  if (class == 1)
   {
     v12 = 36.0;
   }
@@ -537,7 +537,7 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
     v12 = 50.0;
   }
 
-  if (a5 == 1)
+  if (class == 1)
   {
     v13 = 16.0;
   }
@@ -547,7 +547,7 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
     v13 = 20.0;
   }
 
-  if (a5 == 1)
+  if (class == 1)
   {
     v14 = 20.0;
   }
@@ -559,26 +559,26 @@ void __61__PXPeopleDetailSettingsCollectionViewCell__placeHolderColor__block_inv
 
   v15 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:{*v8, 30.0, 20.0, 50.0, 16.0, 36.0}];
   v16 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*v11];
-  if (a4 > 0.0 && a4 < 1.0)
+  if (percentage > 0.0 && percentage < 1.0)
   {
-    v18 = a4;
+    percentageCopy = percentage;
   }
 
   else
   {
-    v18 = 0.65;
+    percentageCopy = 0.65;
   }
 
   [v15 _scaledValueForValue:v14];
   v20 = v19;
   [v16 _scaledValueForValue:v13];
-  v22 = v18 / (1.0 - v18) * v12 + v20 - v14 + v21 - v13;
-  if (v22 >= a3)
+  widthCopy = percentageCopy / (1.0 - percentageCopy) * v12 + v20 - v14 + v21 - v13;
+  if (widthCopy >= width)
   {
-    v22 = a3;
+    widthCopy = width;
   }
 
-  v23 = v12 + v22;
+  v23 = v12 + widthCopy;
   v24 = ceilf(v23);
 
   return v24;

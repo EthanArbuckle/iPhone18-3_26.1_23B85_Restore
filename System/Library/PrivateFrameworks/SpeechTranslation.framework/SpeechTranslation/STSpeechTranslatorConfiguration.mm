@@ -2,12 +2,12 @@
 - (BOOL)omitTranslatedAudio;
 - (NSURL)offlineMTModel;
 - (STSpeechTranslatorConfiguration)init;
-- (STSpeechTranslatorConfiguration)initWithSourceLocale:(id)a3 targetLocale:(id)a4;
-- (STSpeechTranslatorConfiguration)initWithSourceLocale:(id)a3 targetLocale:(id)a4 offlineMTModel:(id)a5 taskHint:(int64_t)a6;
+- (STSpeechTranslatorConfiguration)initWithSourceLocale:(id)locale targetLocale:(id)targetLocale;
+- (STSpeechTranslatorConfiguration)initWithSourceLocale:(id)locale targetLocale:(id)targetLocale offlineMTModel:(id)model taskHint:(int64_t)hint;
 - (int64_t)taskHint;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOmitTranslatedAudio:(BOOL)a3;
-- (void)setTaskHint:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOmitTranslatedAudio:(BOOL)audio;
+- (void)setTaskHint:(int64_t)hint;
 @end
 
 @implementation STSpeechTranslatorConfiguration
@@ -19,11 +19,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setOmitTranslatedAudio:(BOOL)a3
+- (void)setOmitTranslatedAudio:(BOOL)audio
 {
   v5 = OBJC_IVAR___STSpeechTranslatorConfiguration_omitTranslatedAudio;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = audio;
 }
 
 - (NSURL)offlineMTModel
@@ -34,11 +34,11 @@
   v7 = &v19 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v5);
   v9 = &v19 - v8;
-  v10 = self;
-  v11 = [(STSpeechTranslatorConfiguration *)v10 _offlineMTModel];
-  if (v11)
+  selfCopy = self;
+  _offlineMTModel = [(STSpeechTranslatorConfiguration *)selfCopy _offlineMTModel];
+  if (_offlineMTModel)
   {
-    v12 = v11;
+    v12 = _offlineMTModel;
     sub_26B5E153C();
 
     v13 = sub_26B5E154C();
@@ -74,14 +74,14 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setTaskHint:(int64_t)a3
+- (void)setTaskHint:(int64_t)hint
 {
   v5 = OBJC_IVAR___STSpeechTranslatorConfiguration_taskHint;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = hint;
 }
 
-- (STSpeechTranslatorConfiguration)initWithSourceLocale:(id)a3 targetLocale:(id)a4
+- (STSpeechTranslatorConfiguration)initWithSourceLocale:(id)locale targetLocale:(id)targetLocale
 {
   v5 = sub_26B5E161C();
   v6 = *(v5 - 8);
@@ -102,7 +102,7 @@
   return v15;
 }
 
-- (STSpeechTranslatorConfiguration)initWithSourceLocale:(id)a3 targetLocale:(id)a4 offlineMTModel:(id)a5 taskHint:(int64_t)a6
+- (STSpeechTranslatorConfiguration)initWithSourceLocale:(id)locale targetLocale:(id)targetLocale offlineMTModel:(id)model taskHint:(int64_t)hint
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_280408120, &unk_26B5E3C60);
   v9 = *(*(v8 - 8) + 64);
@@ -116,7 +116,7 @@
   v18 = &v22 - v17;
   sub_26B5E160C();
   sub_26B5E160C();
-  if (a5)
+  if (model)
   {
     sub_26B5E153C();
     v19 = 0;
@@ -129,14 +129,14 @@
 
   v20 = sub_26B5E154C();
   (*(*(v20 - 8) + 56))(v11, v19, 1, v20);
-  return STSpeechTranslatorConfiguration.init(source:target:offlineMTModel:taskHint:)(v18, v16, v11, a6);
+  return STSpeechTranslatorConfiguration.init(source:target:offlineMTModel:taskHint:)(v18, v16, v11, hint);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  STSpeechTranslatorConfiguration.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  STSpeechTranslatorConfiguration.encode(with:)(coderCopy);
 }
 
 - (STSpeechTranslatorConfiguration)init

@@ -1,9 +1,9 @@
 @interface ICLaunchConfiguration
 + (ICLaunchConfiguration)currentConfiguration;
 + (ICLaunchConfiguration)userInterfaceTesting;
-+ (id)nonDefaultValueForValue:(id)a3;
-- (ICLaunchConfiguration)initWithDictionary:(id)a3;
-- (ICLaunchConfiguration)initWithEnvironment:(unint64_t)a3 container:(id)a4 resetsContainer:(BOOL)a5 resetsCloud:(BOOL)a6 resetsState:(BOOL)a7 localAccountArchive:(id)a8 cloudAccountArchive:(id)a9;
++ (id)nonDefaultValueForValue:(id)value;
+- (ICLaunchConfiguration)initWithDictionary:(id)dictionary;
+- (ICLaunchConfiguration)initWithEnvironment:(unint64_t)environment container:(id)container resetsContainer:(BOOL)resetsContainer resetsCloud:(BOOL)cloud resetsState:(BOOL)state localAccountArchive:(id)archive cloudAccountArchive:(id)accountArchive;
 - (NSArray)launchArguments;
 @end
 
@@ -31,12 +31,12 @@ void __45__ICLaunchConfiguration_currentConfiguration__block_invoke()
   currentConfiguration_s_currentConfiguration = v2;
 }
 
-- (ICLaunchConfiguration)initWithDictionary:(id)a3
+- (ICLaunchConfiguration)initWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"Environment"];
-  v5 = [v3 allKeys];
-  v6 = [v5 containsObject:@"-PPTLaunchTest"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"Environment"];
+  allKeys = [dictionaryCopy allKeys];
+  v6 = [allKeys containsObject:@"-PPTLaunchTest"];
 
   if (v6)
   {
@@ -48,62 +48,62 @@ void __45__ICLaunchConfiguration_currentConfiguration__block_invoke()
     v7 = ICLaunchConfigurationEnvironmentWithString(v4);
   }
 
-  v8 = [v3 objectForKeyedSubscript:@"Container"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"Container"];
   v9 = [ICLaunchConfiguration nonDefaultValueForValue:v8];
 
-  v10 = [v3 objectForKeyedSubscript:@"ResetContainer"];
-  v11 = [v10 BOOLValue];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"ResetContainer"];
+  bOOLValue = [v10 BOOLValue];
 
-  v12 = [v3 objectForKeyedSubscript:@"ResetCloud"];
-  v13 = [v12 BOOLValue];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"ResetCloud"];
+  bOOLValue2 = [v12 BOOLValue];
 
-  v14 = [v3 objectForKeyedSubscript:@"ResetState"];
-  v15 = [v14 BOOLValue];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"ResetState"];
+  bOOLValue3 = [v14 BOOLValue];
 
-  v16 = [v3 objectForKeyedSubscript:@"LocalAccountArchiveName"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"LocalAccountArchiveName"];
   v17 = [ICLaunchConfiguration nonDefaultValueForValue:v16];
 
-  v18 = [v3 objectForKeyedSubscript:@"CloudAccountArchiveName"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"CloudAccountArchiveName"];
   v19 = [ICLaunchConfiguration nonDefaultValueForValue:v18];
 
-  v20 = [(ICLaunchConfiguration *)self initWithEnvironment:v7 container:v9 resetsContainer:v11 resetsCloud:v13 resetsState:v15 localAccountArchive:v17 cloudAccountArchive:v19];
+  v20 = [(ICLaunchConfiguration *)self initWithEnvironment:v7 container:v9 resetsContainer:bOOLValue resetsCloud:bOOLValue2 resetsState:bOOLValue3 localAccountArchive:v17 cloudAccountArchive:v19];
   return v20;
 }
 
-- (ICLaunchConfiguration)initWithEnvironment:(unint64_t)a3 container:(id)a4 resetsContainer:(BOOL)a5 resetsCloud:(BOOL)a6 resetsState:(BOOL)a7 localAccountArchive:(id)a8 cloudAccountArchive:(id)a9
+- (ICLaunchConfiguration)initWithEnvironment:(unint64_t)environment container:(id)container resetsContainer:(BOOL)resetsContainer resetsCloud:(BOOL)cloud resetsState:(BOOL)state localAccountArchive:(id)archive cloudAccountArchive:(id)accountArchive
 {
-  v15 = a4;
-  v16 = a8;
-  v17 = a9;
+  containerCopy = container;
+  archiveCopy = archive;
+  accountArchiveCopy = accountArchive;
   v22.receiver = self;
   v22.super_class = ICLaunchConfiguration;
   v18 = [(ICLaunchConfiguration *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    v18->_environment = a3;
-    objc_storeStrong(&v18->_container, a4);
-    v19->_resetsContainer = a5;
-    v19->_resetsCloud = a6;
-    v19->_resetsState = a7;
-    objc_storeStrong(&v19->_localAccountArchiveName, a8);
-    objc_storeStrong(&v19->_cloudAccountArchiveName, a9);
+    v18->_environment = environment;
+    objc_storeStrong(&v18->_container, container);
+    v19->_resetsContainer = resetsContainer;
+    v19->_resetsCloud = cloud;
+    v19->_resetsState = state;
+    objc_storeStrong(&v19->_localAccountArchiveName, archive);
+    objc_storeStrong(&v19->_cloudAccountArchiveName, accountArchive);
   }
 
   return v19;
 }
 
-+ (id)nonDefaultValueForValue:(id)a3
++ (id)nonDefaultValueForValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Default"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"Default"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = v3;
+    v4 = valueCopy;
   }
 
   v5 = v4;
@@ -139,12 +139,12 @@ uint64_t __45__ICLaunchConfiguration_userInterfaceTesting__block_invoke()
   v31[1] = v29;
   v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-%@", @"Container"];
   v31[2] = v28;
-  v3 = [(ICLaunchConfiguration *)self container];
-  v27 = v3;
+  container = [(ICLaunchConfiguration *)self container];
+  v27 = container;
   v4 = @"Default";
-  if (v3)
+  if (container)
   {
-    v4 = v3;
+    v4 = container;
   }
 
   v31[3] = v4;
@@ -168,11 +168,11 @@ uint64_t __45__ICLaunchConfiguration_userInterfaceTesting__block_invoke()
   v31[9] = v11;
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-%@", @"LocalAccountArchiveName"];
   v31[10] = v12;
-  v13 = [(ICLaunchConfiguration *)self localAccountArchiveName];
-  v14 = v13;
-  if (v13)
+  localAccountArchiveName = [(ICLaunchConfiguration *)self localAccountArchiveName];
+  v14 = localAccountArchiveName;
+  if (localAccountArchiveName)
   {
-    v15 = v13;
+    v15 = localAccountArchiveName;
   }
 
   else
@@ -183,11 +183,11 @@ uint64_t __45__ICLaunchConfiguration_userInterfaceTesting__block_invoke()
   v31[11] = v15;
   v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-%@", @"CloudAccountArchiveName"];
   v31[12] = v16;
-  v17 = [(ICLaunchConfiguration *)self cloudAccountArchiveName];
-  v18 = v17;
-  if (v17)
+  cloudAccountArchiveName = [(ICLaunchConfiguration *)self cloudAccountArchiveName];
+  v18 = cloudAccountArchiveName;
+  if (cloudAccountArchiveName)
   {
-    v19 = v17;
+    v19 = cloudAccountArchiveName;
   }
 
   else

@@ -1,18 +1,18 @@
 @interface WFShortcutConcerningReport
 + (NSDictionary)properties;
-- (WFShortcutConcerningReport)initWithReason:(id)a3 shortcutContent:(id)a4;
+- (WFShortcutConcerningReport)initWithReason:(id)reason shortcutContent:(id)content;
 @end
 
 @implementation WFShortcutConcerningReport
 
-- (WFShortcutConcerningReport)initWithReason:(id)a3 shortcutContent:(id)a4
+- (WFShortcutConcerningReport)initWithReason:(id)reason shortcutContent:(id)content
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  reasonCopy = reason;
+  contentCopy = content;
+  v9 = contentCopy;
+  if (reasonCopy)
   {
-    if (v8)
+    if (contentCopy)
     {
       goto LABEL_3;
     }
@@ -20,8 +20,8 @@
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFGalleryPage.m" lineNumber:614 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFGalleryPage.m" lineNumber:614 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
 
     if (v9)
     {
@@ -29,8 +29,8 @@
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"WFGalleryPage.m" lineNumber:615 description:{@"Invalid parameter not satisfying: %@", @"shortcutContent"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFGalleryPage.m" lineNumber:615 description:{@"Invalid parameter not satisfying: %@", @"shortcutContent"}];
 
 LABEL_3:
   v18.receiver = self;
@@ -38,11 +38,11 @@ LABEL_3:
   v10 = [(WFShortcutConcerningReport *)&v18 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [reasonCopy copy];
     reportReason = v10->_reportReason;
     v10->_reportReason = v11;
 
-    objc_storeStrong(&v10->_shortcutContent, a4);
+    objc_storeStrong(&v10->_shortcutContent, content);
     status = v10->_status;
     v10->_status = @"screen";
 

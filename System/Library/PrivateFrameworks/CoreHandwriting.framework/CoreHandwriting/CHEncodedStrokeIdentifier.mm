@@ -1,20 +1,20 @@
 @interface CHEncodedStrokeIdentifier
-- (BOOL)isEqual:(id)a3;
-- (CHEncodedStrokeIdentifier)initWithCoder:(id)a3;
-- (CHEncodedStrokeIdentifier)initWithData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CHEncodedStrokeIdentifier)initWithCoder:(id)coder;
+- (CHEncodedStrokeIdentifier)initWithData:(id)data;
 - (unint64_t)hash;
 @end
 
 @implementation CHEncodedStrokeIdentifier
 
-- (CHEncodedStrokeIdentifier)initWithData:(id)a3
+- (CHEncodedStrokeIdentifier)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v11 = objc_msgSend_init(self, v6, v7, v8, v9, v10);
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong((v11 + 16), a3);
+    objc_storeStrong((v11 + 16), data);
     v12->_savedHash = 0;
   }
 
@@ -60,13 +60,13 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v11 = v5;
     if (self)
     {
@@ -102,11 +102,11 @@
   return self;
 }
 
-- (CHEncodedStrokeIdentifier)initWithCoder:(id)a3
+- (CHEncodedStrokeIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"encodedStrokeIdentifier", v7, v8);
+  v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"encodedStrokeIdentifier", v7, v8);
 
   v14 = objc_msgSend_initWithData_(self, v10, v9, v11, v12, v13);
   return v14;

@@ -1,14 +1,14 @@
 @interface AAUIImageControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation AAUIImageControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AAUIImageControl" hasInstanceVariable:@"_label" withType:"AAUILabel"];
-  [v3 validateClass:@"AAUILabel" isKindOfClass:@"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AAUIImageControl" hasInstanceVariable:@"_label" withType:"AAUILabel"];
+  [validationsCopy validateClass:@"AAUILabel" isKindOfClass:@"UILabel"];
 }
 
 @end

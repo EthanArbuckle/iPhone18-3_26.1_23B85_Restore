@@ -6,19 +6,19 @@
 
 - (id)customizeMeterLayerBlock
 {
-  v3 = [MEMORY[0x277CBBAE8] currentDevice];
-  v4 = [objc_opt_class() isXL];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  isXL = [objc_opt_class() isXL];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  ___LayoutConstants_block_invoke_0(v3, &v15);
+  ___LayoutConstants_block_invoke_0(currentDevice, &v15);
   v12 = v15;
   v13 = v16;
   v14 = v17;
-  if (v4)
+  if (isXL)
   {
     v12 = v18;
     v13 = v19;

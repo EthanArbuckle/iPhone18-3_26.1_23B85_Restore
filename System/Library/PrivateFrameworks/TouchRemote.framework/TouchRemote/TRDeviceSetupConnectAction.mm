@@ -3,7 +3,7 @@
 - (NSString)networkPassword;
 - (NSString)networkSSID;
 - (TRDeviceSetupConnectAction)init;
-- (TRDeviceSetupConnectAction)initWithDeviceName:(id)a3 networkSSID:(id)a4 networkPassword:(id)a5;
+- (TRDeviceSetupConnectAction)initWithDeviceName:(id)name networkSSID:(id)d networkPassword:(id)password;
 @end
 
 @implementation TRDeviceSetupConnectAction
@@ -15,26 +15,26 @@
   return [(TRDeviceSetupAction *)&v3 _initWithActionType:@"connect" parameters:0];
 }
 
-- (TRDeviceSetupConnectAction)initWithDeviceName:(id)a3 networkSSID:(id)a4 networkPassword:(id)a5
+- (TRDeviceSetupConnectAction)initWithDeviceName:(id)name networkSSID:(id)d networkPassword:(id)password
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  dCopy = d;
+  passwordCopy = password;
   v11 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
   v12 = v11;
-  if (v8)
+  if (nameCopy)
   {
-    [v11 setObject:v8 forKeyedSubscript:@"d"];
+    [v11 setObject:nameCopy forKeyedSubscript:@"d"];
   }
 
-  if (v9)
+  if (dCopy)
   {
-    [v12 setObject:v9 forKeyedSubscript:@"ns"];
+    [v12 setObject:dCopy forKeyedSubscript:@"ns"];
   }
 
-  if (v10)
+  if (passwordCopy)
   {
-    [v12 setObject:v10 forKeyedSubscript:@"np"];
+    [v12 setObject:passwordCopy forKeyedSubscript:@"np"];
   }
 
   v15.receiver = self;
@@ -46,8 +46,8 @@
 
 - (NSString)deviceName
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"d"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"d"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -67,8 +67,8 @@
 
 - (NSString)networkSSID
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"ns"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"ns"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -88,8 +88,8 @@
 
 - (NSString)networkPassword
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"np"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"np"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

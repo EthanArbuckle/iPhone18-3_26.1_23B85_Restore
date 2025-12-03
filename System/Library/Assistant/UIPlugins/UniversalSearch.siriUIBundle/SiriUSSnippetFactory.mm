@@ -1,6 +1,6 @@
 @interface SiriUSSnippetFactory
 - (SiriUSSnippetFactory)init;
-- (id)viewControllerForSnippet:(id)a3 error:(id *)a4;
+- (id)viewControllerForSnippet:(id)snippet error:(id *)error;
 @end
 
 @implementation SiriUSSnippetFactory
@@ -23,43 +23,43 @@
   return v2;
 }
 
-- (id)viewControllerForSnippet:(id)a3 error:(id *)a4
+- (id)viewControllerForSnippet:(id)snippet error:(id *)error
 {
-  v6 = a3;
+  snippetCopy = snippet;
   translators = self->_translators;
-  v8 = [v6 groupIdentifier];
-  v9 = [(NSDictionary *)translators objectForKey:v8];
+  groupIdentifier = [snippetCopy groupIdentifier];
+  v9 = [(NSDictionary *)translators objectForKey:groupIdentifier];
 
-  v10 = [v9 universalSearchResultsForSnippet:v6 error:a4];
+  v10 = [v9 universalSearchResultsForSnippet:snippetCopy error:error];
   v11 = v10;
-  if (a4)
+  if (error)
   {
-    if (!*a4)
+    if (!*error)
     {
       if (![v10 count])
       {
         [NSError errorWithDomain:SiriUISnippetPluginErrorDomain code:101 userInfo:0];
-        *a4 = v12 = 0;
+        *error = v12 = 0;
         goto LABEL_11;
       }
 
 LABEL_6:
-      v13 = [v11 firstObject];
-      v14 = [v13 results];
-      v15 = [v14 firstObject];
+      firstObject = [v11 firstObject];
+      results = [firstObject results];
+      firstObject2 = [results firstObject];
 
-      v16 = [v15 card];
+      card = [firstObject2 card];
 
-      if (v16)
+      if (card)
       {
         v17 = [SiriUSCardSnippetViewController alloc];
-        v18 = [v15 card];
-        v12 = [(SiriUSCardSnippetViewController *)v17 initWithUniversalSearchCard:v18 snippet:v6];
+        card2 = [firstObject2 card];
+        v12 = [(SiriUSCardSnippetViewController *)v17 initWithUniversalSearchCard:card2 snippet:snippetCopy];
       }
 
       else
       {
-        v12 = [[SiriUSSnippetViewController alloc] initWithUniversalSearchResults:v11 snippet:v6];
+        v12 = [[SiriUSSnippetViewController alloc] initWithUniversalSearchResults:v11 snippet:snippetCopy];
       }
 
       goto LABEL_11;

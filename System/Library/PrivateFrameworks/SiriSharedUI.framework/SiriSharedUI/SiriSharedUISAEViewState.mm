@@ -1,51 +1,51 @@
 @interface SiriSharedUISAEViewState
-- (SiriSharedUISAEViewState)initWithContainerView:(id)a3;
+- (SiriSharedUISAEViewState)initWithContainerView:(id)view;
 - (SiriSharedUISAEViewStateDelegate)delegate;
 - (void)_presentOrTransitionActiveSmartDialogView;
 - (void)_presentPillOrCollapseResult;
-- (void)_setActiveConversationTranscriptItems:(id)a3;
+- (void)_setActiveConversationTranscriptItems:(id)items;
 - (void)_setIsPresentedWithSmartDialogText;
-- (void)_setSmartDialogCard:(id)a3;
-- (void)_setSmartDialogPlugin:(id)a3 attribution:(id)a4;
-- (void)_setSmartDialogServerUtterances:(id)a3;
-- (void)_setSmartDialogUserUtterance:(id)a3;
-- (void)_setState:(int)a3;
+- (void)_setSmartDialogCard:(id)card;
+- (void)_setSmartDialogPlugin:(id)plugin attribution:(id)attribution;
+- (void)_setSmartDialogServerUtterances:(id)utterances;
+- (void)_setSmartDialogUserUtterance:(id)utterance;
+- (void)_setState:(int)state;
 - (void)_smartDialogContentDidChange;
-- (void)removeResponseElements:(unint64_t)a3;
-- (void)saeViewModelDidChange:(id)a3 withDiff:(unint64_t)a4;
-- (void)setIsDisplayingLatency:(BOOL)a3;
-- (void)setSmartDialogAnimationInProgress:(BOOL)a3;
-- (void)updateDoNotReplaceSmartDialogForSiriMail:(id)a3 conversationTranscriptItems:(id)a4 shouldPreserveResultSpace:(BOOL)a5;
+- (void)removeResponseElements:(unint64_t)elements;
+- (void)saeViewModelDidChange:(id)change withDiff:(unint64_t)diff;
+- (void)setIsDisplayingLatency:(BOOL)latency;
+- (void)setSmartDialogAnimationInProgress:(BOOL)progress;
+- (void)updateDoNotReplaceSmartDialogForSiriMail:(id)mail conversationTranscriptItems:(id)items shouldPreserveResultSpace:(BOOL)space;
 @end
 
 @implementation SiriSharedUISAEViewState
 
-- (SiriSharedUISAEViewState)initWithContainerView:(id)a3
+- (SiriSharedUISAEViewState)initWithContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = SiriSharedUISAEViewState;
   v5 = [(SiriSharedUISAEViewState *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SiriSharedUISAEViewState *)v5 setContainerView:v4];
+    [(SiriSharedUISAEViewState *)v5 setContainerView:viewCopy];
     *&v6->_currentViewState = 0;
   }
 
   return v6;
 }
 
-- (void)updateDoNotReplaceSmartDialogForSiriMail:(id)a3 conversationTranscriptItems:(id)a4 shouldPreserveResultSpace:(BOOL)a5
+- (void)updateDoNotReplaceSmartDialogForSiriMail:(id)mail conversationTranscriptItems:(id)items shouldPreserveResultSpace:(BOOL)space
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  mailCopy = mail;
+  itemsCopy = items;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v8 = v6;
+  v8 = mailCopy;
   v9 = [v8 countByEnumeratingWithState:&v42 objects:v51 count:16];
   if (v9)
   {
@@ -60,9 +60,9 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v42 + 1) + 8 * i) dialogIdentifier];
-        v14 = v13;
-        if (v13 && (([v13 hasPrefix:@"ContactResolution#HandleDisambiguation"] & 1) != 0 || objc_msgSend(v14, "hasPrefix:", @"SendMail#PromptForRecipients")))
+        dialogIdentifier = [*(*(&v42 + 1) + 8 * i) dialogIdentifier];
+        v14 = dialogIdentifier;
+        if (dialogIdentifier && (([dialogIdentifier hasPrefix:@"ContactResolution#HandleDisambiguation"] & 1) != 0 || objc_msgSend(v14, "hasPrefix:", @"SendMail#PromptForRecipients")))
         {
           self->_doNotReplaceSmartDialogForSiriMail = 1;
           v31 = *MEMORY[0x277CEF098];
@@ -92,8 +92,8 @@
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v36 = v7;
-  v15 = v7;
+  v36 = itemsCopy;
+  v15 = itemsCopy;
   v16 = [v15 countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (!v16)
   {
@@ -112,22 +112,22 @@
       }
 
       v20 = *(*(&v38 + 1) + 8 * j);
-      v21 = [v20 aceObject];
+      aceObject = [v20 aceObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v23 = [v20 aceObject];
-        v24 = [v23 bundleName];
-        if ([v24 isEqualToString:@"SiriMailUIPlugin"])
+        aceObject2 = [v20 aceObject];
+        bundleName = [aceObject2 bundleName];
+        if ([bundleName isEqualToString:@"SiriMailUIPlugin"])
         {
         }
 
         else
         {
-          v25 = [v23 bundleName];
-          v26 = [v25 isEqualToString:@"SiriInferenceFlowsUIPlugin"];
+          bundleName2 = [aceObject2 bundleName];
+          v26 = [bundleName2 isEqualToString:@"SiriInferenceFlowsUIPlugin"];
 
           if (!v26)
           {
@@ -137,8 +137,8 @@ LABEL_21:
           }
         }
 
-        v27 = [v23 responseViewId];
-        v28 = [v27 hasPrefix:@"contact#"];
+        responseViewId = [aceObject2 responseViewId];
+        v28 = [responseViewId hasPrefix:@"contact#"];
 
         if ((v28 & 1) == 0)
         {
@@ -155,7 +155,7 @@ LABEL_21:
           }
 
           v8 = v35;
-          v7 = v36;
+          itemsCopy = v36;
           goto LABEL_32;
         }
 
@@ -177,7 +177,7 @@ LABEL_24:
   self->_doNotReplaceSmartDialogForSiriMail = 0;
   v29 = *MEMORY[0x277CEF098];
   v8 = v35;
-  v7 = v36;
+  itemsCopy = v36;
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v30 = self->_doNotReplaceSmartDialogForSiriMail;
@@ -191,18 +191,18 @@ LABEL_24:
 LABEL_32:
 }
 
-- (void)saeViewModelDidChange:(id)a3 withDiff:(unint64_t)a4
+- (void)saeViewModelDidChange:(id)change withDiff:(unint64_t)diff
 {
   v163 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  v146 = self;
-  v142 = v6;
-  if (a4 != 8)
+  changeCopy = change;
+  v7 = changeCopy;
+  selfCopy = self;
+  v142 = changeCopy;
+  if (diff != 8)
   {
     if (self->_animatingInActiveSmartDialogView)
     {
-      v141 = [[SAEViewModelUpdates alloc] initWithViewModel:v6 diff:a4];
+      v141 = [[SAEViewModelUpdates alloc] initWithViewModel:changeCopy diff:diff];
       objc_storeStrong(&self->_pendingViewModelUpdate, v141);
       v21 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -220,13 +220,13 @@ LABEL_160:
       goto LABEL_161;
     }
 
-    v138 = a4;
-    v23 = [(SAEViewModelUpdates *)v6 conversationTranscriptItems];
-    v141 = [v23 mutableCopy];
+    diffCopy = diff;
+    conversationTranscriptItems = [(SAEViewModelUpdates *)changeCopy conversationTranscriptItems];
+    v141 = [conversationTranscriptItems mutableCopy];
 
-    v139 = [(SAEViewModelUpdates *)v142 serverUtterances];
-    [(SiriSharedUISAEViewState *)self updateDoNotReplaceSmartDialogForSiriMail:v139 conversationTranscriptItems:v141 shouldPreserveResultSpace:[(SAEViewModelUpdates *)v142 shouldPreserveResultSpace]];
-    v143 = [(SAEViewModelUpdates *)v142 userUtterance];
+    serverUtterances = [(SAEViewModelUpdates *)v142 serverUtterances];
+    [(SiriSharedUISAEViewState *)self updateDoNotReplaceSmartDialogForSiriMail:serverUtterances conversationTranscriptItems:v141 shouldPreserveResultSpace:[(SAEViewModelUpdates *)v142 shouldPreserveResultSpace]];
+    userUtterance = [(SAEViewModelUpdates *)v142 userUtterance];
     if ([(SAEViewModelUpdates *)v142 shouldPreserveResultSpace])
     {
       v24 = [(SAEViewModelUpdates *)v141 count]!= 0;
@@ -261,29 +261,29 @@ LABEL_160:
     v27 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [(SAEViewModelUpdates *)v139 firstObject];
-      v29 = [v28 text];
+      firstObject = [(SAEViewModelUpdates *)serverUtterances firstObject];
+      text = [firstObject text];
       *buf = 136315650;
       v158 = "[SiriSharedUISAEViewState saeViewModelDidChange:withDiff:]";
       v159 = 2112;
-      v160 = v139;
+      v160 = serverUtterances;
       v161 = 2112;
-      v162 = v29;
+      v162 = text;
       _os_log_impl(&dword_21E3EB000, v27, OS_LOG_TYPE_DEFAULT, "%s #sae Setting server utterances to : %@ text: %@", buf, 0x20u);
     }
 
     v30 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [(SAEViewModelUpdates *)v143 speech];
-      v32 = [v31 userUtterance];
-      v33 = [v32 bestTextInterpretation];
+      speech = [(SAEViewModelUpdates *)userUtterance speech];
+      userUtterance2 = [speech userUtterance];
+      bestTextInterpretation = [userUtterance2 bestTextInterpretation];
       *buf = 136315650;
       v158 = "[SiriSharedUISAEViewState saeViewModelDidChange:withDiff:]";
       v159 = 2112;
-      v160 = v143;
+      v160 = userUtterance;
       v161 = 2112;
-      v162 = v33;
+      v162 = bestTextInterpretation;
       _os_log_impl(&dword_21E3EB000, v30, OS_LOG_TYPE_DEFAULT, "%s #sae Setting user utterance to : %@ text: %@", buf, 0x20u);
     }
 
@@ -297,18 +297,18 @@ LABEL_160:
       _os_log_impl(&dword_21E3EB000, v34, OS_LOG_TYPE_DEFAULT, "%s #sae Setting shouldPreserveInResult to %d", buf, 0x12u);
     }
 
-    v35 = [(SAEViewModelUpdates *)v143 latencySummary];
+    latencySummary = [(SAEViewModelUpdates *)userUtterance latencySummary];
 
-    v36 = [(SiriSharedUISAEViewState *)self delegate];
-    v37 = [v36 alwaysShowRecognizedSpeech];
-    if (v35)
+    delegate = [(SiriSharedUISAEViewState *)self delegate];
+    alwaysShowRecognizedSpeech = [delegate alwaysShowRecognizedSpeech];
+    if (latencySummary)
     {
       v38 = 1;
     }
 
     else
     {
-      v38 = v37;
+      v38 = alwaysShowRecognizedSpeech;
     }
 
     if (v38)
@@ -318,66 +318,66 @@ LABEL_160:
 
     else
     {
-      v40 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtterance speech];
-      v39 = ([v40 isFinal] & 1) != 0 || -[SiriSharedUISmartDialogView revealRecognizedSpeech](self->_activeSmartDialogView, "revealRecognizedSpeech");
+      speech2 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtterance speech];
+      v39 = ([speech2 isFinal] & 1) != 0 || -[SiriSharedUISmartDialogView revealRecognizedSpeech](self->_activeSmartDialogView, "revealRecognizedSpeech");
     }
 
-    if ((v138 & 2) != 0)
+    if ((diffCopy & 2) != 0)
     {
       v41 = 1;
     }
 
     else
     {
-      v41 = v138 & 1 | ((v138 & 4) != 0 && v39);
+      v41 = diffCopy & 1 | ((diffCopy & 4) != 0 && v39);
     }
 
     v134 = v41;
-    v42 = [(SiriSharedUISAEViewState *)self requireFinalSpeechHypothesisBeforeAppearance];
-    v43 = [(SAEViewModelUpdates *)v143 speech];
-    v44 = [v43 userUtterance];
+    requireFinalSpeechHypothesisBeforeAppearance = [(SiriSharedUISAEViewState *)self requireFinalSpeechHypothesisBeforeAppearance];
+    speech3 = [(SAEViewModelUpdates *)userUtterance speech];
+    userUtterance3 = [speech3 userUtterance];
 
-    if (v42)
+    if (requireFinalSpeechHypothesisBeforeAppearance)
     {
-      v45 = [(SAEViewModelUpdates *)v143 speech];
-      v46 = [v45 isFinal];
+      speech4 = [(SAEViewModelUpdates *)userUtterance speech];
+      isFinal = [speech4 isFinal];
     }
 
     else
     {
-      v46 = 1;
+      isFinal = 1;
     }
 
-    v132 = 0;
-    if (v44 && v46)
+    shouldShow = 0;
+    if (userUtterance3 && isFinal)
     {
-      v132 = [(SAEViewModelUpdates *)v143 shouldShow];
+      shouldShow = [(SAEViewModelUpdates *)userUtterance shouldShow];
     }
 
-    if ([(SAEViewModelUpdates *)v139 count])
+    if ([(SAEViewModelUpdates *)serverUtterances count])
     {
-      v47 = self;
+      selfCopy2 = self;
       if (!self->_isInAmbient)
       {
         v49 = 0;
 LABEL_57:
-        if (!v47->_activeSmartDialogView)
+        if (!selfCopy2->_activeSmartDialogView)
         {
-          WeakRetained = objc_loadWeakRetained(&v47->_delegate);
-          v56 = [WeakRetained createNewSmartDialog];
-          activeSmartDialogView = v146->_activeSmartDialogView;
-          v146->_activeSmartDialogView = v56;
+          WeakRetained = objc_loadWeakRetained(&selfCopy2->_delegate);
+          createNewSmartDialog = [WeakRetained createNewSmartDialog];
+          activeSmartDialogView = selfCopy->_activeSmartDialogView;
+          selfCopy->_activeSmartDialogView = createNewSmartDialog;
 
-          v146->_upcomingResultHasSnippet = 0;
+          selfCopy->_upcomingResultHasSnippet = 0;
         }
 
-        v58 = [(SAEViewModelUpdates *)v143 speech];
-        if (v58)
+        speech5 = [(SAEViewModelUpdates *)userUtterance speech];
+        if (speech5)
         {
-          v59 = [(SAEViewModelUpdates *)v143 speech];
-          v60 = [v59 isFinal];
+          speech6 = [(SAEViewModelUpdates *)userUtterance speech];
+          isFinal2 = [speech6 isFinal];
 
-          v61 = v60 ^ 1;
+          v61 = isFinal2 ^ 1;
         }
 
         else
@@ -385,21 +385,21 @@ LABEL_57:
           v61 = 0;
         }
 
-        v62 = [(SiriSharedUISAEUserUtteranceViewModel *)v146->_userUtterance speech];
-        v63 = [v62 userUtterance];
-        v137 = [v63 bestTextInterpretation];
+        speech7 = [(SiriSharedUISAEUserUtteranceViewModel *)selfCopy->_userUtterance speech];
+        userUtterance4 = [speech7 userUtterance];
+        bestTextInterpretation2 = [userUtterance4 bestTextInterpretation];
 
-        v64 = [(SAEViewModelUpdates *)v143 speech];
-        v65 = [v64 userUtterance];
-        v136 = [v65 bestTextInterpretation];
+        speech8 = [(SAEViewModelUpdates *)userUtterance speech];
+        userUtterance5 = [speech8 userUtterance];
+        bestTextInterpretation3 = [userUtterance5 bestTextInterpretation];
 
         v66 = 0;
-        if (v137 && v136)
+        if (bestTextInterpretation2 && bestTextInterpretation3)
         {
-          v67 = [(SAEViewModelUpdates *)v143 speech];
-          if ([v67 isFinal])
+          speech9 = [(SAEViewModelUpdates *)userUtterance speech];
+          if ([speech9 isFinal])
           {
-            v66 = [v137 isEqual:v136] ^ 1;
+            v66 = [bestTextInterpretation2 isEqual:bestTextInterpretation3] ^ 1;
           }
 
           else
@@ -408,14 +408,14 @@ LABEL_57:
           }
         }
 
-        if (v137)
+        if (bestTextInterpretation2)
         {
           v68 = 1;
         }
 
         else
         {
-          v68 = v136 == 0;
+          v68 = bestTextInterpretation3 == 0;
         }
 
         v69 = !v68;
@@ -426,14 +426,14 @@ LABEL_57:
 
         else
         {
-          v71 = [(SiriSharedUISmartDialogView *)v146->_activeSmartDialogView activeTranscriptItems];
-          v70 = [v71 count] != 0;
+          activeTranscriptItems = [(SiriSharedUISmartDialogView *)selfCopy->_activeSmartDialogView activeTranscriptItems];
+          v70 = [activeTranscriptItems count] != 0;
         }
 
         v72 = *MEMORY[0x277CEF098];
         if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
         {
-          doNotReplaceSmartDialogForSiriMail = v146->_doNotReplaceSmartDialogForSiriMail;
+          doNotReplaceSmartDialogForSiriMail = selfCopy->_doNotReplaceSmartDialogForSiriMail;
           *buf = 136315394;
           v158 = "[SiriSharedUISAEViewState saeViewModelDidChange:withDiff:]";
           v159 = 1024;
@@ -444,22 +444,22 @@ LABEL_57:
         v74 = *MEMORY[0x277CEF098];
         if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
         {
-          v75 = [(SiriSharedUISmartDialogView *)v146->_activeSmartDialogView hasResult];
+          hasResult = [(SiriSharedUISmartDialogView *)selfCopy->_activeSmartDialogView hasResult];
           *buf = 136315394;
           v158 = "[SiriSharedUISAEViewState saeViewModelDidChange:withDiff:]";
           v159 = 1024;
-          LODWORD(v160) = v75;
+          LODWORD(v160) = hasResult;
           _os_log_impl(&dword_21E3EB000, v74, OS_LOG_TYPE_DEFAULT, "%s #droplet: [_activeSmartDialogView hasResult] = %d", buf, 0x12u);
         }
 
         v76 = *MEMORY[0x277CEF098];
         if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
         {
-          v77 = [(SAEViewModelUpdates *)v143 shouldShow];
+          shouldShow2 = [(SAEViewModelUpdates *)userUtterance shouldShow];
           *buf = 136315394;
           v158 = "[SiriSharedUISAEViewState saeViewModelDidChange:withDiff:]";
           v159 = 1024;
-          LODWORD(v160) = v77;
+          LODWORD(v160) = shouldShow2;
           _os_log_impl(&dword_21E3EB000, v76, OS_LOG_TYPE_DEFAULT, "%s #droplet: [userUtterance shouldShow] = %d", buf, 0x12u);
         }
 
@@ -509,33 +509,33 @@ LABEL_57:
           *buf = 136315394;
           v158 = "[SiriSharedUISAEViewState saeViewModelDidChange:withDiff:]";
           v159 = 1024;
-          LODWORD(v160) = v138 & 1;
+          LODWORD(v160) = diffCopy & 1;
           _os_log_impl(&dword_21E3EB000, v82, OS_LOG_TYPE_DEFAULT, "%s #droplet: smartDialogNeedsToBeRemoved = %d", buf, 0x12u);
         }
 
-        if (!v146->_doNotReplaceSmartDialogForSiriMail && [(SiriSharedUISmartDialogView *)v146->_activeSmartDialogView hasResult]&& v138 & 1 | ([(SAEViewModelUpdates *)v143 shouldShow]| v61 | v66 | v70) & 1 | v69 & 1)
+        if (!selfCopy->_doNotReplaceSmartDialogForSiriMail && [(SiriSharedUISmartDialogView *)selfCopy->_activeSmartDialogView hasResult]&& diffCopy & 1 | ([(SAEViewModelUpdates *)userUtterance shouldShow]| v61 | v66 | v70) & 1 | v69 & 1)
         {
-          objc_storeStrong(&v146->_finalAndDisplayedSmartDialog, v146->_activeSmartDialogView);
-          [(SiriSharedUISmartDialogView *)v146->_activeSmartDialogView setIsActive:0];
-          v83 = [(SiriSharedUISmartDialogView *)v146->_activeSmartDialogView revealRecognizedSpeech];
-          v84 = objc_loadWeakRetained(&v146->_delegate);
-          v85 = [v84 createNewSmartDialog];
-          v86 = v146->_activeSmartDialogView;
-          v146->_activeSmartDialogView = v85;
+          objc_storeStrong(&selfCopy->_finalAndDisplayedSmartDialog, selfCopy->_activeSmartDialogView);
+          [(SiriSharedUISmartDialogView *)selfCopy->_activeSmartDialogView setIsActive:0];
+          revealRecognizedSpeech = [(SiriSharedUISmartDialogView *)selfCopy->_activeSmartDialogView revealRecognizedSpeech];
+          v84 = objc_loadWeakRetained(&selfCopy->_delegate);
+          createNewSmartDialog2 = [v84 createNewSmartDialog];
+          v86 = selfCopy->_activeSmartDialogView;
+          selfCopy->_activeSmartDialogView = createNewSmartDialog2;
 
-          [(SiriSharedUISmartDialogView *)v146->_activeSmartDialogView setRevealRecognizedSpeech:v83];
-          v87 = [(NSArray *)v146->_activeConversationTranscriptItems copy];
-          previousConversationTranscriptItems = v146->_previousConversationTranscriptItems;
-          v146->_previousConversationTranscriptItems = v87;
+          [(SiriSharedUISmartDialogView *)selfCopy->_activeSmartDialogView setRevealRecognizedSpeech:revealRecognizedSpeech];
+          v87 = [(NSArray *)selfCopy->_activeConversationTranscriptItems copy];
+          previousConversationTranscriptItems = selfCopy->_previousConversationTranscriptItems;
+          selfCopy->_previousConversationTranscriptItems = v87;
 
-          v146->_upcomingResultHasSnippet = 0;
+          selfCopy->_upcomingResultHasSnippet = 0;
           v89 = *MEMORY[0x277CEF098];
           if (!os_log_type_enabled(v89, OS_LOG_TYPE_DEFAULT))
           {
             goto LABEL_101;
           }
 
-          v90 = v146->_activeSmartDialogView;
+          v90 = selfCopy->_activeSmartDialogView;
           *buf = 136315394;
           v158 = "[SiriSharedUISAEViewState saeViewModelDidChange:withDiff:]";
           v159 = 2112;
@@ -563,11 +563,11 @@ LABEL_57:
         _os_log_impl(&dword_21E3EB000, v92, OS_LOG_TYPE_DEFAULT, v91, buf, v93);
 LABEL_101:
 
-        [(SiriSharedUISmartDialogView *)v146->_activeSmartDialogView setIsInAmbient:v146->_isInAmbient];
-        v94 = [(SiriSharedUISAEViewState *)v146 delegate];
-        if ([v94 alwaysShowRecognizedSpeech])
+        [(SiriSharedUISmartDialogView *)selfCopy->_activeSmartDialogView setIsInAmbient:selfCopy->_isInAmbient];
+        delegate2 = [(SiriSharedUISAEViewState *)selfCopy delegate];
+        if ([delegate2 alwaysShowRecognizedSpeech])
         {
-          v95 = v146->_inputType == 2;
+          v95 = selfCopy->_inputType == 2;
 
           if (v95)
           {
@@ -579,64 +579,64 @@ LABEL_101:
         {
         }
 
-        v96 = [(SAEViewModelUpdates *)v143 latencySummary];
-        v97 = v96 == 0;
+        latencySummary2 = [(SAEViewModelUpdates *)userUtterance latencySummary];
+        v97 = latencySummary2 == 0;
 
         if (v97)
         {
           v98 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v99 = [v98 localizedStringForKey:@"Working…" value:&stru_282F84AA8 table:@"Localizable"];
 
-          [(SAEViewModelUpdates *)v143 setLatencySummary:v99];
+          [(SAEViewModelUpdates *)userUtterance setLatencySummary:v99];
         }
 
 LABEL_107:
-        [(SiriSharedUISAEViewState *)v146 _setSmartDialogUserUtterance:v143];
-        if ((v138 & 0x10) != 0)
+        [(SiriSharedUISAEViewState *)selfCopy _setSmartDialogUserUtterance:userUtterance];
+        if ((diffCopy & 0x10) != 0)
         {
-          v100 = objc_loadWeakRetained(&v146->_delegate);
+          v100 = objc_loadWeakRetained(&selfCopy->_delegate);
           v101 = objc_opt_respondsToSelector();
 
           if (v101)
           {
-            v102 = objc_loadWeakRetained(&v146->_delegate);
+            v102 = objc_loadWeakRetained(&selfCopy->_delegate);
             [v102 speechRecognitionHypothesisUpdated];
 
-            v103 = [(SAEViewModelUpdates *)v143 speech];
-            v104 = [v103 isFinal];
+            speech10 = [(SAEViewModelUpdates *)userUtterance speech];
+            isFinal3 = [speech10 isFinal];
 
-            if (v104)
+            if (isFinal3)
             {
-              [(SiriSharedUISAEViewState *)v146 setIsDisplayingLatency:1];
+              [(SiriSharedUISAEViewState *)selfCopy setIsDisplayingLatency:1];
             }
           }
         }
 
-        if ((v138 & 1) == 0)
+        if ((diffCopy & 1) == 0)
         {
           v133 = 0;
           v144 = 0;
 LABEL_145:
-          if ([(SAEViewModelUpdates *)v141 count]|| ([(SAEViewModelUpdates *)v139 count]!= 0) & ~v49 | v132 & 1)
+          if ([(SAEViewModelUpdates *)v141 count]|| ([(SAEViewModelUpdates *)serverUtterances count]!= 0) & ~v49 | shouldShow & 1)
           {
-            v126 = objc_loadWeakRetained(&v146->_delegate);
+            v126 = objc_loadWeakRetained(&selfCopy->_delegate);
             v127 = objc_opt_respondsToSelector();
 
             if (v127)
             {
-              v128 = objc_loadWeakRetained(&v146->_delegate);
+              v128 = objc_loadWeakRetained(&selfCopy->_delegate);
               [v128 didPresentContentWithAceObject:v144];
             }
           }
 
-          if ((v138 & 2) != 0)
+          if ((diffCopy & 2) != 0)
           {
-            [(SiriSharedUISAEViewState *)v146 _setSmartDialogServerUtterances:v139];
+            [(SiriSharedUISAEViewState *)selfCopy _setSmartDialogServerUtterances:serverUtterances];
           }
 
-          if ([(SAEViewModelUpdates *)v139 count]!= 0 || v133)
+          if ([(SAEViewModelUpdates *)serverUtterances count]!= 0 || v133)
           {
-            [(SiriSharedUISAEViewState *)v146 _setIsPresentedWithSmartDialogText];
+            [(SiriSharedUISAEViewState *)selfCopy _setIsPresentedWithSmartDialogText];
           }
 
           v129 = *MEMORY[0x277CEF098];
@@ -657,13 +657,13 @@ LABEL_145:
               _os_log_impl(&dword_21E3EB000, v130, OS_LOG_TYPE_DEFAULT, "%s #sae contentDidChange", buf, 0xCu);
             }
 
-            [(SiriSharedUISAEViewState *)v146 _smartDialogContentDidChange];
+            [(SiriSharedUISAEViewState *)selfCopy _smartDialogContentDidChange];
           }
 
           goto LABEL_160;
         }
 
-        v105 = objc_loadWeakRetained(&v146->_delegate);
+        v105 = objc_loadWeakRetained(&selfCopy->_delegate);
         v135 = [v105 filterTranscriptItemsForSAEDialogBoxContent:v141];
 
         v106 = [SiriSharedUIUtilities filterTranscriptItemsForRFPluginContent:v141];
@@ -673,38 +673,38 @@ LABEL_145:
         v133 = v106 != 0;
         if (!v135 && !v106)
         {
-          v109 = v146;
-          if ([(SAEViewModelUpdates *)v139 count])
+          v109 = selfCopy;
+          if ([(SAEViewModelUpdates *)serverUtterances count])
           {
-            v146->_hasSmartDialogSnippet = 1;
+            selfCopy->_hasSmartDialogSnippet = 1;
           }
 
           else
           {
-            v111 = [(SiriSharedUISAEViewState *)v146 activeSmartDialogView];
-            v112 = [v111 serverUtterances];
-            if ([v112 count])
+            activeSmartDialogView = [(SiriSharedUISAEViewState *)selfCopy activeSmartDialogView];
+            serverUtterances2 = [activeSmartDialogView serverUtterances];
+            if ([serverUtterances2 count])
             {
-              v146->_hasSmartDialogSnippet = 1;
+              selfCopy->_hasSmartDialogSnippet = 1;
             }
 
             else
             {
-              v124 = [(SiriSharedUISAEViewState *)v146 delegate];
-              if ([v124 alwaysShowRecognizedSpeech])
+              delegate3 = [(SiriSharedUISAEViewState *)selfCopy delegate];
+              if ([delegate3 alwaysShowRecognizedSpeech])
               {
-                v125 = 1;
+                revealRecognizedSpeech2 = 1;
               }
 
               else
               {
-                v125 = [(SiriSharedUISmartDialogView *)v146->_activeSmartDialogView revealRecognizedSpeech];
+                revealRecognizedSpeech2 = [(SiriSharedUISmartDialogView *)selfCopy->_activeSmartDialogView revealRecognizedSpeech];
               }
 
-              v146->_hasSmartDialogSnippet = v125;
+              selfCopy->_hasSmartDialogSnippet = revealRecognizedSpeech2;
             }
 
-            v109 = v146;
+            v109 = selfCopy;
           }
 
 LABEL_143:
@@ -713,8 +713,8 @@ LABEL_143:
           goto LABEL_144;
         }
 
-        v109 = v146;
-        v146->_hasSmartDialogSnippet = 1;
+        v109 = selfCopy;
+        selfCopy->_hasSmartDialogSnippet = 1;
         if (v135 && v106)
         {
           v110 = *MEMORY[0x277CEF098];
@@ -723,14 +723,14 @@ LABEL_143:
             [SiriSharedUISAEViewState saeViewModelDidChange:v110 withDiff:?];
           }
 
-          v109 = v146;
+          v109 = selfCopy;
         }
 
         else if (!v135)
         {
           if (v106)
           {
-            v113 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
             v149 = 0u;
             v150 = 0u;
             v147 = 0u;
@@ -751,21 +751,21 @@ LABEL_143:
                   }
 
                   v118 = *(*(&v147 + 1) + 8 * i);
-                  v119 = [v118 aceObject];
-                  v120 = [v119 aceId];
-                  v121 = [v145 aceId];
-                  v122 = v120 == v121;
+                  aceObject = [v118 aceObject];
+                  aceId = [aceObject aceId];
+                  aceId2 = [v145 aceId];
+                  v122 = aceId == aceId2;
 
                   if (v122)
                   {
-                    v123 = [v118 aceObject];
+                    aceObject2 = [v118 aceObject];
 
-                    v144 = v123;
+                    v144 = aceObject2;
                   }
 
                   else
                   {
-                    [v113 addObject:v118];
+                    [array addObject:v118];
                   }
                 }
 
@@ -780,8 +780,8 @@ LABEL_143:
               v144 = 0;
             }
 
-            [(SiriSharedUISAEViewState *)v146 _setActiveConversationTranscriptItems:v113];
-            [(SiriSharedUISAEViewState *)v146 _setSmartDialogPlugin:v145 attribution:v131];
+            [(SiriSharedUISAEViewState *)selfCopy _setActiveConversationTranscriptItems:array];
+            [(SiriSharedUISAEViewState *)selfCopy _setSmartDialogPlugin:v145 attribution:v131];
 
             goto LABEL_144;
           }
@@ -801,7 +801,7 @@ LABEL_144:
       v154 = 0u;
       v151 = 0u;
       v152 = 0u;
-      v48 = v139;
+      v48 = serverUtterances;
       v49 = 0;
       v50 = [(SAEViewModelUpdates *)v48 countByEnumeratingWithState:&v151 objects:v156 count:16];
       if (v50)
@@ -816,8 +816,8 @@ LABEL_144:
               objc_enumerationMutation(v48);
             }
 
-            v53 = [*(*(&v151 + 1) + 8 * j) dialogIdentifier];
-            v54 = [v53 isEqual:@"PlaybackControls#SilenceInterstitials"];
+            dialogIdentifier = [*(*(&v151 + 1) + 8 * j) dialogIdentifier];
+            v54 = [dialogIdentifier isEqual:@"PlaybackControls#SilenceInterstitials"];
 
             v49 |= v54;
           }
@@ -834,18 +834,18 @@ LABEL_144:
       v49 = 0;
     }
 
-    v47 = v146;
+    selfCopy2 = selfCopy;
     goto LABEL_57;
   }
 
-  v8 = [(SiriSharedUISAEViewState *)self inputType];
-  v9 = [(SAEViewModelUpdates *)v7 inputType];
+  inputType = [(SiriSharedUISAEViewState *)self inputType];
+  inputType2 = [(SAEViewModelUpdates *)v7 inputType];
   v10 = MEMORY[0x277CEF098];
   v11 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = SiriSharedUIViewModelInputTypeGetDescription(v9);
+    v13 = SiriSharedUIViewModelInputTypeGetDescription(inputType2);
     *buf = 136315394;
     v158 = "[SiriSharedUISAEViewState saeViewModelDidChange:withDiff:]";
     v159 = 2112;
@@ -853,11 +853,11 @@ LABEL_144:
     _os_log_impl(&dword_21E3EB000, v12, OS_LOG_TYPE_DEFAULT, "%s #sae Setting input type to : %@", buf, 0x16u);
   }
 
-  [(SiriSharedUISAEViewState *)self setInputType:v9];
+  [(SiriSharedUISAEViewState *)self setInputType:inputType2];
   v14 = objc_loadWeakRetained(&self->_delegate);
-  [v14 didSetInputType:v9];
+  [v14 didSetInputType:inputType2];
 
-  if (v8 == 1 && v9 == 2)
+  if (inputType == 1 && inputType2 == 2)
   {
     v15 = *v10;
     if (os_log_type_enabled(*v10, OS_LOG_TYPE_DEFAULT))
@@ -899,10 +899,10 @@ LABEL_161:
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = self->_inputType == 2 && [(SiriSharedUISmartDialogView *)self->_activeSmartDialogView ongoingASR];
-  v4 = [(SiriSharedUISmartDialogView *)self->_activeSmartDialogView userUtteranceViewModel];
-  v5 = [v4 shouldShow];
+  userUtteranceViewModel = [(SiriSharedUISmartDialogView *)self->_activeSmartDialogView userUtteranceViewModel];
+  shouldShow = [userUtteranceViewModel shouldShow];
 
-  if (((v5 & 1) != 0 || v3) && ![(SiriSharedUISAEViewState *)self activeSmartDialogIsLatencyPill])
+  if (((shouldShow & 1) != 0 || v3) && ![(SiriSharedUISAEViewState *)self activeSmartDialogIsLatencyPill])
   {
 
     [(SiriSharedUISAEViewState *)self _presentPillOrCollapseResult];
@@ -911,9 +911,9 @@ LABEL_161:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v7 = [WeakRetained hasPendingUpdates];
+    hasPendingUpdates = [WeakRetained hasPendingUpdates];
 
-    if (v7)
+    if (hasPendingUpdates)
     {
       v8 = objc_loadWeakRetained(&self->_delegate);
       [v8 willPresentResult];
@@ -941,27 +941,27 @@ LABEL_161:
   v24 = *MEMORY[0x277D85DE8];
   if ([(NSArray *)self->_previousConversationTranscriptItems count])
   {
-    v3 = [(NSArray *)self->_previousConversationTranscriptItems firstObject];
-    v4 = [v3 taskIdentifier];
-    v21 = [v4 UUIDString];
+    firstObject = [(NSArray *)self->_previousConversationTranscriptItems firstObject];
+    taskIdentifier = [firstObject taskIdentifier];
+    uUIDString = [taskIdentifier UUIDString];
 
-    v5 = [(SiriSharedUISmartDialogView *)self->_activeSmartDialogView userUtteranceViewModel];
-    v6 = [v5 taskIdentifier];
+    userUtteranceViewModel = [(SiriSharedUISmartDialogView *)self->_activeSmartDialogView userUtteranceViewModel];
+    taskIdentifier2 = [userUtteranceViewModel taskIdentifier];
 
-    if (v6 && ([v21 isEqual:v6] & 1) != 0)
+    if (taskIdentifier2 && ([uUIDString isEqual:taskIdentifier2] & 1) != 0)
     {
       self->_upcomingResultHasSnippet = 0;
       [(SiriSharedUISAEViewState *)self _setState:1];
 
-      v7 = v21;
+      superview = uUIDString;
 LABEL_7:
 
       return;
     }
   }
 
-  v7 = [(SiriSharedUISmartDialogView *)self->_activeSmartDialogView superview];
-  if (v7)
+  superview = [(SiriSharedUISmartDialogView *)self->_activeSmartDialogView superview];
+  if (superview)
   {
     goto LABEL_7;
   }
@@ -978,13 +978,13 @@ LABEL_7:
   }
 
   self->_upcomingResultHasSnippet = 0;
-  v9 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtterance latencySummary];
-  v10 = [SiriSharedUIUtilities stringIsBlank:v9];
+  latencySummary = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtterance latencySummary];
+  v10 = [SiriSharedUIUtilities stringIsBlank:latencySummary];
 
-  v11 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtterance speech];
-  v12 = [v11 userUtterance];
-  v13 = [v12 bestTextInterpretation];
-  v14 = [SiriSharedUIUtilities stringIsBlank:v13];
+  speech = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtterance speech];
+  userUtterance = [speech userUtterance];
+  bestTextInterpretation = [userUtterance bestTextInterpretation];
+  v14 = [SiriSharedUIUtilities stringIsBlank:bestTextInterpretation];
 
   v15 = *MEMORY[0x277CEF098];
   v16 = os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT);
@@ -1008,13 +1008,13 @@ LABEL_7:
     }
 
     [(SiriSharedUISAEViewState *)self _setState:v17];
-    v18 = [(SiriSharedUISAEViewState *)self delegate];
-    if (([v18 alwaysShowRecognizedSpeech] & 1) != 0 || -[SiriSharedUISmartDialogView revealRecognizedSpeech](self->_activeSmartDialogView, "revealRecognizedSpeech"))
+    delegate = [(SiriSharedUISAEViewState *)self delegate];
+    if (([delegate alwaysShowRecognizedSpeech] & 1) != 0 || -[SiriSharedUISmartDialogView revealRecognizedSpeech](self->_activeSmartDialogView, "revealRecognizedSpeech"))
     {
-      v19 = [(SiriSharedUISmartDialogView *)self->_activeSmartDialogView userUtteranceViewModel];
-      v20 = [v19 shouldShow];
+      userUtteranceViewModel2 = [(SiriSharedUISmartDialogView *)self->_activeSmartDialogView userUtteranceViewModel];
+      shouldShow = [userUtteranceViewModel2 shouldShow];
 
-      if (!v20)
+      if (!shouldShow)
       {
         return;
       }
@@ -1036,16 +1036,16 @@ LABEL_7:
   }
 }
 
-- (void)_setState:(int)a3
+- (void)_setState:(int)state
 {
   v40 = *MEMORY[0x277D85DE8];
   p_currentViewState = &self->_currentViewState;
   currentViewState = self->_currentViewState;
-  if (currentViewState != a3 || a3 == 3 || a3 == 0)
+  if (currentViewState != state || state == 3 || state == 0)
   {
     self->_previousViewState = currentViewState;
     p_previousViewState = &self->_previousViewState;
-    self->_currentViewState = a3;
+    self->_currentViewState = state;
     v9 = MEMORY[0x277CEF098];
     v10 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -1269,8 +1269,8 @@ LABEL_23:
       }
     }
 
-    v17 = [(SiriSharedUISAEViewState *)self containerView];
-    v18 = [v17 resultContentView];
+    containerView = [(SiriSharedUISAEViewState *)self containerView];
+    resultContentView = [containerView resultContentView];
 
     v19 = *v9;
     if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
@@ -1278,12 +1278,12 @@ LABEL_23:
       v34 = 136315394;
       v35 = "[SiriSharedUISAEViewState _setState:]";
       v36 = 1024;
-      LODWORD(v37) = v18 == 0;
+      LODWORD(v37) = resultContentView == 0;
       _os_log_impl(&dword_21E3EB000, v19, OS_LOG_TYPE_DEFAULT, "%s #viewState: presentResultAnimation(isFirstSnippet: %i)", &v34, 0x12u);
     }
 
-    v20 = [(SiriSharedUISAEViewState *)self delegate];
-    [v20 presentResultAnimation:v18 == 0];
+    delegate = [(SiriSharedUISAEViewState *)self delegate];
+    [delegate presentResultAnimation:resultContentView == 0];
 
     goto LABEL_63;
   }
@@ -1296,8 +1296,8 @@ LABEL_23:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(SiriSharedUISAEViewState *)self activeConversationTranscriptItems];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  activeConversationTranscriptItems = [(SiriSharedUISAEViewState *)self activeConversationTranscriptItems];
+  v3 = [activeConversationTranscriptItems countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1309,32 +1309,32 @@ LABEL_23:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(activeConversationTranscriptItems);
         }
 
-        v7 = [*(*(&v8 + 1) + 8 * v6) viewController];
+        viewController = [*(*(&v8 + 1) + 8 * v6) viewController];
         if (objc_opt_respondsToSelector())
         {
-          [v7 setIsPresentedWithSmartDialogText:1];
+          [viewController setIsPresentedWithSmartDialogText:1];
         }
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [activeConversationTranscriptItems countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)setSmartDialogAnimationInProgress:(BOOL)a3
+- (void)setSmartDialogAnimationInProgress:(BOOL)progress
 {
-  v3 = a3;
+  progressCopy = progress;
   v24 = *MEMORY[0x277D85DE8];
   animatingInActiveSmartDialogView = self->_animatingInActiveSmartDialogView;
-  self->_animatingInActiveSmartDialogView = a3;
+  self->_animatingInActiveSmartDialogView = progress;
   v6 = MEMORY[0x277CEF098];
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -1344,7 +1344,7 @@ LABEL_23:
     v19 = 1024;
     *v20 = animatingInActiveSmartDialogView;
     *&v20[4] = 1024;
-    *&v20[6] = v3;
+    *&v20[6] = progressCopy;
     _os_log_impl(&dword_21E3EB000, v7, OS_LOG_TYPE_DEFAULT, "%s #sae: _animatingInActiveSmartDialogView set from %d to %d", &v17, 0x18u);
   }
 
@@ -1370,23 +1370,23 @@ LABEL_23:
 
       else
       {
-        v12 = [(SAEViewModelUpdates *)v9 viewModel];
-        [(SiriSharedUISAEViewState *)self saeViewModelDidChange:v12 withDiff:[(SAEViewModelUpdates *)v9 diff]];
+        viewModel = [(SAEViewModelUpdates *)v9 viewModel];
+        [(SiriSharedUISAEViewState *)self saeViewModelDidChange:viewModel withDiff:[(SAEViewModelUpdates *)v9 diff]];
 
         v13 = *v6;
         if (os_log_type_enabled(*v6, OS_LOG_TYPE_DEFAULT))
         {
           v14 = v13;
-          v15 = [(SAEViewModelUpdates *)v9 viewModel];
-          v16 = [(SAEViewModelUpdates *)v9 diff];
+          viewModel2 = [(SAEViewModelUpdates *)v9 viewModel];
+          diff = [(SAEViewModelUpdates *)v9 diff];
           v17 = 136315906;
           v18 = "[SiriSharedUISAEViewState setSmartDialogAnimationInProgress:]";
           v19 = 2112;
           *v20 = v9;
           *&v20[8] = 2112;
-          v21 = v15;
+          v21 = viewModel2;
           v22 = 2048;
-          v23 = v16;
+          v23 = diff;
           _os_log_impl(&dword_21E3EB000, v14, OS_LOG_TYPE_DEFAULT, "%s #sae: executing cached pending update: %@, viewModel:%@, diff:%ld", &v17, 0x2Au);
         }
       }
@@ -1394,9 +1394,9 @@ LABEL_23:
   }
 }
 
-- (void)setIsDisplayingLatency:(BOOL)a3
+- (void)setIsDisplayingLatency:(BOOL)latency
 {
-  v3 = a3;
+  latencyCopy = latency;
   v10 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -1404,29 +1404,29 @@ LABEL_23:
     v6 = 136315394;
     v7 = "[SiriSharedUISAEViewState setIsDisplayingLatency:]";
     v8 = 1024;
-    v9 = v3;
+    v9 = latencyCopy;
     _os_log_impl(&dword_21E3EB000, v5, OS_LOG_TYPE_DEFAULT, "%s #sae: isDisplayingLatency = %d", &v6, 0x12u);
   }
 
-  self->_isDisplayingLatency = v3;
+  self->_isDisplayingLatency = latencyCopy;
 }
 
-- (void)_setSmartDialogServerUtterances:(id)a3
+- (void)_setSmartDialogServerUtterances:(id)utterances
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  utterancesCopy = utterances;
+  v5 = [utterancesCopy copy];
   serverUtterances = self->_serverUtterances;
   self->_serverUtterances = v5;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didSetServerUtterance:v4];
+  [WeakRetained didSetServerUtterance:utterancesCopy];
 }
 
-- (void)_setActiveConversationTranscriptItems:(id)a3
+- (void)_setActiveConversationTranscriptItems:(id)items
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(NSArray *)self->_activeConversationTranscriptItems isEqualToArray:v4]|| ![SiriSharedUIUtilities contentDiffersBetweenItems:v4 andItems:self->_activeConversationTranscriptItems])
+  itemsCopy = items;
+  if ([(NSArray *)self->_activeConversationTranscriptItems isEqualToArray:itemsCopy]|| ![SiriSharedUIUtilities contentDiffersBetweenItems:itemsCopy andItems:self->_activeConversationTranscriptItems])
   {
     v5 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -1434,12 +1434,12 @@ LABEL_23:
       *buf = 136315394;
       v22 = "[SiriSharedUISAEViewState _setActiveConversationTranscriptItems:]";
       v23 = 2112;
-      v24 = v4;
+      v24 = itemsCopy;
       _os_log_impl(&dword_21E3EB000, v5, OS_LOG_TYPE_DEFAULT, "%s #sae: Conversation Transcript has the same content, not updating our compact view for items: %@", buf, 0x16u);
     }
   }
 
-  v6 = [v4 copy];
+  v6 = [itemsCopy copy];
   activeConversationTranscriptItems = self->_activeConversationTranscriptItems;
   self->_activeConversationTranscriptItems = v6;
 
@@ -1489,11 +1489,11 @@ LABEL_23:
   [WeakRetained didSetTranscriptItems];
 }
 
-- (void)_setSmartDialogCard:(id)a3
+- (void)_setSmartDialogCard:(id)card
 {
-  v4 = a3;
+  cardCopy = card;
   objc_initWeak(&location, self);
-  if (v4)
+  if (cardCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v6[0] = MEMORY[0x277D85DD0];
@@ -1501,7 +1501,7 @@ LABEL_23:
     v6[2] = __48__SiriSharedUISAEViewState__setSmartDialogCard___block_invoke;
     v6[3] = &unk_2783546B0;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = cardCopy;
     [WeakRetained setSmartDialogCardBlock:v6];
 
     objc_destroyWeak(&v8);
@@ -1517,12 +1517,12 @@ void __48__SiriSharedUISAEViewState__setSmartDialogCard___block_invoke(uint64_t 
   [v2 setSmartDialogCard:*(a1 + 32)];
 }
 
-- (void)_setSmartDialogPlugin:(id)a3 attribution:(id)a4
+- (void)_setSmartDialogPlugin:(id)plugin attribution:(id)attribution
 {
-  v6 = a3;
-  v7 = a4;
+  pluginCopy = plugin;
+  attributionCopy = attribution;
   objc_initWeak(&location, self);
-  if (v6)
+  if (pluginCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v9[0] = MEMORY[0x277D85DD0];
@@ -1530,8 +1530,8 @@ void __48__SiriSharedUISAEViewState__setSmartDialogCard___block_invoke(uint64_t 
     v9[2] = __62__SiriSharedUISAEViewState__setSmartDialogPlugin_attribution___block_invoke;
     v9[3] = &unk_2783546D8;
     objc_copyWeak(&v12, &location);
-    v10 = v6;
-    v11 = v7;
+    v10 = pluginCopy;
+    v11 = attributionCopy;
     [WeakRetained setSmartDialogPluginBlock:v9];
 
     objc_destroyWeak(&v12);
@@ -1547,18 +1547,18 @@ void __62__SiriSharedUISAEViewState__setSmartDialogPlugin_attribution___block_in
   [v2 setSmartDialogPlugin:*(a1 + 32) attribution:*(a1 + 40)];
 }
 
-- (void)_setSmartDialogUserUtterance:(id)a3
+- (void)_setSmartDialogUserUtterance:(id)utterance
 {
-  v4 = a3;
+  utteranceCopy = utterance;
   v5 = [SiriSharedUISAEUserUtteranceViewModel alloc];
-  v6 = [v4 speech];
-  v7 = [v6 copy];
-  v8 = [v4 asrAlternatives];
-  v9 = [v4 latencySummary];
-  v10 = [v4 shouldShow];
-  v11 = [v4 taskIdentifier];
+  speech = [utteranceCopy speech];
+  v7 = [speech copy];
+  asrAlternatives = [utteranceCopy asrAlternatives];
+  latencySummary = [utteranceCopy latencySummary];
+  shouldShow = [utteranceCopy shouldShow];
+  taskIdentifier = [utteranceCopy taskIdentifier];
 
-  v12 = [(SiriSharedUISAEUserUtteranceViewModel *)v5 initWithSpeech:v7 asrAlternatives:v8 latencySummary:v9 shouldShow:v10 taskIdentifier:v11];
+  v12 = [(SiriSharedUISAEUserUtteranceViewModel *)v5 initWithSpeech:v7 asrAlternatives:asrAlternatives latencySummary:latencySummary shouldShow:shouldShow taskIdentifier:taskIdentifier];
   userUtterance = self->_userUtterance;
   self->_userUtterance = v12;
 
@@ -1568,9 +1568,9 @@ void __62__SiriSharedUISAEViewState__setSmartDialogPlugin_attribution___block_in
   [(SiriSharedUISmartDialogView *)activeSmartDialogView setUserUtteranceViewModel:v15];
 }
 
-- (void)removeResponseElements:(unint64_t)a3
+- (void)removeResponseElements:(unint64_t)elements
 {
-  switch(a3)
+  switch(elements)
   {
     case 2uLL:
       currentViewState = self->_currentViewState;

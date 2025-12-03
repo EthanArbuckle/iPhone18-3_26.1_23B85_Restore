@@ -1,21 +1,21 @@
 @interface MNGuidanceSignDescription
-- (BOOL)isEquivalentToSignDescription:(id)a3;
+- (BOOL)isEquivalentToSignDescription:(id)description;
 @end
 
 @implementation MNGuidanceSignDescription
 
-- (BOOL)isEquivalentToSignDescription:(id)a3
+- (BOOL)isEquivalentToSignDescription:(id)description
 {
-  v4 = a3;
-  if (([(MNGuidanceSignDescription *)self isEqual:v4]& 1) != 0)
+  descriptionCopy = description;
+  if (([(MNGuidanceSignDescription *)self isEqual:descriptionCopy]& 1) != 0)
   {
     goto LABEL_2;
   }
 
-  v6 = [(MNGuidanceSignDescription *)self uniqueID];
-  v7 = [v4 uniqueID];
-  v8 = v6;
-  v9 = v7;
+  uniqueID = [(MNGuidanceSignDescription *)self uniqueID];
+  uniqueID2 = [descriptionCopy uniqueID];
+  v8 = uniqueID;
+  v9 = uniqueID2;
   if (v8 | v9)
   {
     v10 = [v8 isEqual:v9];
@@ -26,24 +26,24 @@
     }
   }
 
-  v11 = [(MNGuidanceSignDescription *)self isStaticText];
-  if (v11 != [v4 isStaticText])
+  isStaticText = [(MNGuidanceSignDescription *)self isStaticText];
+  if (isStaticText != [descriptionCopy isStaticText])
   {
     goto LABEL_26;
   }
 
-  v12 = [(MNGuidanceSignDescription *)self distanceDetailLevel];
-  if (v12 != [v4 distanceDetailLevel])
+  distanceDetailLevel = [(MNGuidanceSignDescription *)self distanceDetailLevel];
+  if (distanceDetailLevel != [descriptionCopy distanceDetailLevel])
   {
     goto LABEL_26;
   }
 
-  v13 = [(MNGuidanceSignDescription *)self titles];
-  v14 = [v13 firstObject];
-  v15 = [v4 titles];
-  v16 = [v15 firstObject];
-  v17 = v14;
-  v18 = v16;
+  titles = [(MNGuidanceSignDescription *)self titles];
+  firstObject = [titles firstObject];
+  titles2 = [descriptionCopy titles];
+  firstObject2 = [titles2 firstObject];
+  v17 = firstObject;
+  v18 = firstObject2;
   if (v17 | v18)
   {
     v19 = [v17 isEqual:v18];
@@ -55,14 +55,14 @@
     }
   }
 
-  v82 = v15;
-  v83 = v13;
-  v81 = [(MNGuidanceSignDescription *)self details];
-  v20 = [v81 firstObject];
-  v80 = [v4 details];
-  v21 = [v80 firstObject];
-  v22 = v20;
-  v84 = v21;
+  v82 = titles2;
+  v83 = titles;
+  details = [(MNGuidanceSignDescription *)self details];
+  firstObject3 = [details firstObject];
+  details2 = [descriptionCopy details];
+  firstObject4 = [details2 firstObject];
+  v22 = firstObject3;
+  v84 = firstObject4;
   v85 = v22;
   if (v22 | v84)
   {
@@ -75,10 +75,10 @@
     }
   }
 
-  v24 = [(MNGuidanceSignDescription *)self artworkOverride];
-  v25 = [v4 artworkOverride];
-  v26 = v24;
-  v78 = v25;
+  artworkOverride = [(MNGuidanceSignDescription *)self artworkOverride];
+  artworkOverride2 = [descriptionCopy artworkOverride];
+  v26 = artworkOverride;
+  v78 = artworkOverride2;
   v79 = v26;
   if (v26 | v78 && (v27 = [v26 isEqual:v78], v78, v26, !v27))
   {
@@ -87,10 +87,10 @@
 
   else
   {
-    v28 = [(MNGuidanceSignDescription *)self junction];
-    v29 = [v4 junction];
-    v30 = v28;
-    v76 = v29;
+    junction = [(MNGuidanceSignDescription *)self junction];
+    junction2 = [descriptionCopy junction];
+    v30 = junction;
+    v76 = junction2;
     v77 = v30;
     if (v30 | v76 && (v31 = [v30 isEqual:v76], v76, v77, !v31))
     {
@@ -99,12 +99,12 @@
 
     else
     {
-      v72 = [(MNGuidanceSignDescription *)self primaryStrings];
-      v32 = [v72 firstObject];
-      v73 = [v4 primaryStrings];
-      v33 = [v73 firstObject];
-      v34 = v32;
-      v74 = v33;
+      primaryStrings = [(MNGuidanceSignDescription *)self primaryStrings];
+      firstObject5 = [primaryStrings firstObject];
+      primaryStrings2 = [descriptionCopy primaryStrings];
+      firstObject6 = [primaryStrings2 firstObject];
+      v34 = firstObject5;
+      v74 = firstObject6;
       v75 = v34;
       if (v34 | v74 && (v35 = [v34 isEqual:v74], v74, v75, !v35))
       {
@@ -113,21 +113,21 @@
 
       else
       {
-        v36 = [(MNGuidanceSignDescription *)self secondaryStrings];
-        v37 = [v36 firstObject];
-        v70 = [v4 secondaryStrings];
-        v38 = [v70 firstObject];
-        v39 = v37;
-        v40 = v38;
+        secondaryStrings = [(MNGuidanceSignDescription *)self secondaryStrings];
+        firstObject7 = [secondaryStrings firstObject];
+        secondaryStrings2 = [descriptionCopy secondaryStrings];
+        firstObject8 = [secondaryStrings2 firstObject];
+        v39 = firstObject7;
+        v40 = firstObject8;
         v41 = v39;
         v71 = v40;
-        if ((!(v39 | v40) || (v42 = [v39 isEqual:v40], v71, v41, v42)) && (v43 = -[MNGuidanceSignDescription shieldID](self, "shieldID"), v43 == objc_msgSend(v4, "shieldID")))
+        if ((!(v39 | v40) || (v42 = [v39 isEqual:v40], v71, v41, v42)) && (v43 = -[MNGuidanceSignDescription shieldID](self, "shieldID"), v43 == objc_msgSend(descriptionCopy, "shieldID")))
         {
           v69 = v41;
-          v44 = [(MNGuidanceSignDescription *)self shieldStringID];
-          v45 = [v4 shieldStringID];
-          v46 = v44;
-          v47 = v45;
+          shieldStringID = [(MNGuidanceSignDescription *)self shieldStringID];
+          shieldStringID2 = [descriptionCopy shieldStringID];
+          v46 = shieldStringID;
+          v47 = shieldStringID2;
           v68 = v47;
           if (v46 | v47 && (v48 = v47, v49 = [v46 isEqual:v47], v48, v46, !v49))
           {
@@ -138,12 +138,12 @@
           else
           {
             v50 = [(MNGuidanceSignDescription *)self shieldText:v46];
-            v51 = [v4 shieldText];
-            if (v50 | v51)
+            shieldText = [descriptionCopy shieldText];
+            if (v50 | shieldText)
             {
-              v54 = v51;
-              v55 = [v50 isEqual:v51];
-              v51 = v54;
+              v54 = shieldText;
+              v55 = [v50 isEqual:shieldText];
+              shieldText = v54;
               v52 = v55 ^ 1;
             }
 
@@ -172,17 +172,17 @@
     goto LABEL_28;
   }
 
-  v56 = [(MNGuidanceSignDescription *)self primaryStrings];
-  v57 = [v56 firstObject];
-  if (!v57)
+  primaryStrings3 = [(MNGuidanceSignDescription *)self primaryStrings];
+  firstObject9 = [primaryStrings3 firstObject];
+  if (!firstObject9)
   {
 
 LABEL_46:
-    v61 = [(MNGuidanceSignDescription *)self variableOverrides];
-    v62 = [v61 objectForKeyedSubscript:@"{distance}"];
+    variableOverrides = [(MNGuidanceSignDescription *)self variableOverrides];
+    v62 = [variableOverrides objectForKeyedSubscript:@"{distance}"];
 
-    v63 = [v4 variableOverrides];
-    v64 = [v63 objectForKeyedSubscript:@"{distance}"];
+    variableOverrides2 = [descriptionCopy variableOverrides];
+    v64 = [variableOverrides2 objectForKeyedSubscript:@"{distance}"];
 
     v8 = v62;
     v65 = v64;
@@ -217,11 +217,11 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v58 = v57;
-  v59 = [(MNGuidanceSignDescription *)self secondaryStrings];
-  v60 = [v59 firstObject];
+  v58 = firstObject9;
+  secondaryStrings3 = [(MNGuidanceSignDescription *)self secondaryStrings];
+  firstObject10 = [secondaryStrings3 firstObject];
 
-  if (!v60)
+  if (!firstObject10)
   {
     goto LABEL_46;
   }

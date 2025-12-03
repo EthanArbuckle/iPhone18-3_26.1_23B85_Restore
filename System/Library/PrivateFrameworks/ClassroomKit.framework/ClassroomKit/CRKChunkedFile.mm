@@ -1,29 +1,29 @@
 @interface CRKChunkedFile
-+ (int64_t)preferredChunkSizeForFileDescriptor:(int)a3;
-+ (void)assertFileDescriptorIsValid:(int)a3;
-- (CRKChunkedFile)initWithFileDescriptor:(int)a3;
-- (int64_t)readNextChunkIntoBuffer:(id)a3 error:(id *)a4;
++ (int64_t)preferredChunkSizeForFileDescriptor:(int)descriptor;
++ (void)assertFileDescriptorIsValid:(int)valid;
+- (CRKChunkedFile)initWithFileDescriptor:(int)descriptor;
+- (int64_t)readNextChunkIntoBuffer:(id)buffer error:(id *)error;
 @end
 
 @implementation CRKChunkedFile
 
-+ (void)assertFileDescriptorIsValid:(int)a3
++ (void)assertFileDescriptorIsValid:(int)valid
 {
-  if (a3 <= 0)
+  if (valid <= 0)
   {
-    [(CRKChunkedFile *)a2 assertFileDescriptorIsValid:a1];
+    [(CRKChunkedFile *)a2 assertFileDescriptorIsValid:self];
   }
 }
 
-+ (int64_t)preferredChunkSizeForFileDescriptor:(int)a3
++ (int64_t)preferredChunkSizeForFileDescriptor:(int)descriptor
 {
   v8 = *MEMORY[0x277D85DE8];
-  [a1 assertFileDescriptorIsValid:?];
+  [self assertFileDescriptorIsValid:?];
   memset(&v7, 0, 512);
   memset(&v6, 0, sizeof(v6));
-  if (fstatfs(a3, &v7) == -1)
+  if (fstatfs(descriptor, &v7) == -1)
   {
-    if (fstat(a3, &v6) == -1)
+    if (fstat(descriptor, &v6) == -1)
     {
       return -1;
     }
@@ -44,31 +44,31 @@
   return -1;
 }
 
-- (CRKChunkedFile)initWithFileDescriptor:(int)a3
+- (CRKChunkedFile)initWithFileDescriptor:(int)descriptor
 {
-  [objc_opt_class() assertFileDescriptorIsValid:*&a3];
+  [objc_opt_class() assertFileDescriptorIsValid:*&descriptor];
   v6.receiver = self;
   v6.super_class = CRKChunkedFile;
   result = [(CRKChunkedFile *)&v6 init];
   if (result)
   {
-    result->mFileDescriptor = a3;
+    result->mFileDescriptor = descriptor;
   }
 
   return result;
 }
 
-- (int64_t)readNextChunkIntoBuffer:(id)a3 error:(id *)a4
+- (int64_t)readNextChunkIntoBuffer:(id)buffer error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  bufferCopy = buffer;
+  if (!bufferCopy)
   {
     [CRKChunkedFile readNextChunkIntoBuffer:a2 error:self];
   }
 
-  v8 = [v7 length];
-  v9 = [v7 mutableBytes];
-  v10 = [v7 length];
+  v8 = [bufferCopy length];
+  mutableBytes = [bufferCopy mutableBytes];
+  v10 = [bufferCopy length];
   while (2)
   {
     if (v10)
@@ -95,7 +95,7 @@
 
       while (1)
       {
-        v13 = read(self->mFileDescriptor, v9, v12);
+        v13 = read(self->mFileDescriptor, mutableBytes, v12);
         if ((v13 & 0x8000000000000000) == 0)
         {
           break;
@@ -103,9 +103,9 @@
 
         if (*__error() != 4)
         {
-          if (a4)
+          if (error)
           {
-            *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
+            *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
           }
 
           v14 = -1;
@@ -116,7 +116,7 @@
       if (v13)
       {
         v10 -= v13;
-        v9 += v13;
+        mutableBytes += v13;
         if (v13 >= v12)
         {
           continue;

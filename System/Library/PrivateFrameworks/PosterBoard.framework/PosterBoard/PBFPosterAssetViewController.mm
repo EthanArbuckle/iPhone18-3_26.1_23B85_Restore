@@ -2,55 +2,55 @@
 + (id)defaultExtensionProvider;
 + (id)defaultSnapshotBundleDataSource;
 - (BOOL)_willPresentLive;
-- (BOOL)setSnapshotBundle:(id)a3 forDisplayContext:(id)a4;
+- (BOOL)setSnapshotBundle:(id)bundle forDisplayContext:(id)context;
 - (CGAffineTransform)_affineTransformForDisplayContext;
-- (CGAffineTransform)_sceneViewControllerContainerViewAffineTransformForBounds:(SEL)a3;
+- (CGAffineTransform)_sceneViewControllerContainerViewAffineTransformForBounds:(SEL)bounds;
 - (PBFExtensionProviding)extensionProvider;
 - (PBFPosterAssetViewController)init;
-- (PBFPosterAssetViewController)initWithCoder:(id)a3;
-- (PBFPosterAssetViewController)initWithContents:(id)a3 definition:(id)a4;
-- (PBFPosterAssetViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (PBFPosterAssetViewController)initWithPosterPath:(id)a3 definition:(id)a4 extension:(id)a5 configuredProperties:(id)a6 configurableOptions:(id)a7;
-- (PBFPosterAssetViewController)initWithPosterPath:(id)a3 definition:(id)a4 extensionBundleIdentifier:(id)a5 configuredProperties:(id)a6 configurableOptions:(id)a7;
-- (PBFPosterAssetViewController)initWithPreview:(id)a3 definition:(id)a4;
-- (PBFPosterAssetViewController)initWithServerPosterPath:(id)a3 definition:(id)a4;
+- (PBFPosterAssetViewController)initWithCoder:(id)coder;
+- (PBFPosterAssetViewController)initWithContents:(id)contents definition:(id)definition;
+- (PBFPosterAssetViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (PBFPosterAssetViewController)initWithPosterPath:(id)path definition:(id)definition extension:(id)extension configuredProperties:(id)properties configurableOptions:(id)options;
+- (PBFPosterAssetViewController)initWithPosterPath:(id)path definition:(id)definition extensionBundleIdentifier:(id)identifier configuredProperties:(id)properties configurableOptions:(id)options;
+- (PBFPosterAssetViewController)initWithPreview:(id)preview definition:(id)definition;
+- (PBFPosterAssetViewController)initWithServerPosterPath:(id)path definition:(id)definition;
 - (PFPosterExtension)extension;
 - (id)_extensionInstanceReason;
 - (id)_setupExtensionInstanceIfNeeded;
 - (id)executeDemo;
-- (id)executeLivePresentationWithDuration:(double)a3;
-- (id)executeScript:(id)a3;
+- (id)executeLivePresentationWithDuration:(double)duration;
+- (id)executeScript:(id)script;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_didRemoveSceneViewControllerFromHierarchy;
 - (void)_hideSceneView;
-- (void)_layoutViewsForActiveAsset:(unint64_t)a3 bounds:(CGRect)a4;
+- (void)_layoutViewsForActiveAsset:(unint64_t)asset bounds:(CGRect)bounds;
 - (void)_removeSceneViewControllerFromHierarchy;
 - (void)_revealSceneView;
-- (void)_sceneViewControllerSetupFailedWithError:(id)a3;
-- (void)_setupImageViewForSnapshotBundle:(id)a3 displayContext:(id)a4 orFailure:(id)a5;
-- (void)_setupSceneViewControllerForInstance:(id)a3;
-- (void)_teardownExtensionInstanceIfNeeded:(BOOL)a3;
-- (void)_transitionToActiveAsset:(unint64_t)a3;
-- (void)_transitionToActiveAsset:(unint64_t)a3 bounds:(CGRect)a4;
+- (void)_sceneViewControllerSetupFailedWithError:(id)error;
+- (void)_setupImageViewForSnapshotBundle:(id)bundle displayContext:(id)context orFailure:(id)failure;
+- (void)_setupSceneViewControllerForInstance:(id)instance;
+- (void)_teardownExtensionInstanceIfNeeded:(BOOL)needed;
+- (void)_transitionToActiveAsset:(unint64_t)asset;
+- (void)_transitionToActiveAsset:(unint64_t)asset bounds:(CGRect)bounds;
 - (void)_update;
-- (void)_updateDebugImageViewsWithBounds:(CGRect)a3;
-- (void)_updatePosterLayoutViewForActiveAsset:(unint64_t)a3 bounds:(CGRect)a4;
-- (void)_updateSceneViewForActiveAsset:(unint64_t)a3 bounds:(CGRect)a4;
+- (void)_updateDebugImageViewsWithBounds:(CGRect)bounds;
+- (void)_updatePosterLayoutViewForActiveAsset:(unint64_t)asset bounds:(CGRect)bounds;
+- (void)_updateSceneViewForActiveAsset:(unint64_t)asset bounds:(CGRect)bounds;
 - (void)_updateSnapshotBundleForDisplayContext;
 - (void)dealloc;
 - (void)invalidate;
-- (void)sceneViewController:(id)a3 stateChangedTo:(unint64_t)a4;
-- (void)setComplicationPreviewGenerator:(id)a3;
-- (void)setDisplayContext:(id)a3;
-- (void)setExtensionProvider:(id)a3;
-- (void)setPresentLive:(BOOL)a3;
-- (void)setReusableViewMap:(id)a3;
-- (void)setVisible:(BOOL)a3;
+- (void)sceneViewController:(id)controller stateChangedTo:(unint64_t)to;
+- (void)setComplicationPreviewGenerator:(id)generator;
+- (void)setDisplayContext:(id)context;
+- (void)setExtensionProvider:(id)provider;
+- (void)setPresentLive:(BOOL)live;
+- (void)setReusableViewMap:(id)map;
+- (void)setVisible:(BOOL)visible;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PBFPosterAssetViewController
@@ -96,14 +96,14 @@ void __63__PBFPosterAssetViewController_defaultSnapshotBundleDataSource__block_i
   defaultSnapshotBundleDataSource_defaultSnapshotBundleDataSource = v1;
 }
 
-- (PBFPosterAssetViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PBFPosterAssetViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  [(PBFPosterAssetViewController *)self doesNotRecognizeSelector:a2, a4];
+  [(PBFPosterAssetViewController *)self doesNotRecognizeSelector:a2, bundle];
 
   return 0;
 }
 
-- (PBFPosterAssetViewController)initWithCoder:(id)a3
+- (PBFPosterAssetViewController)initWithCoder:(id)coder
 {
   [(PBFPosterAssetViewController *)self doesNotRecognizeSelector:a2];
 
@@ -117,47 +117,47 @@ void __63__PBFPosterAssetViewController_defaultSnapshotBundleDataSource__block_i
   return 0;
 }
 
-- (PBFPosterAssetViewController)initWithPreview:(id)a3 definition:(id)a4
+- (PBFPosterAssetViewController)initWithPreview:(id)preview definition:(id)definition
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 posterDescriptorLookupInfo];
-  v10 = [v9 posterDescriptorPath];
+  previewCopy = preview;
+  definitionCopy = definition;
+  posterDescriptorLookupInfo = [previewCopy posterDescriptorLookupInfo];
+  posterDescriptorPath = [posterDescriptorLookupInfo posterDescriptorPath];
 
-  v11 = [MEMORY[0x277D3ED60] pbf_configuredPropertiesForPreview:v7];
-  v12 = [MEMORY[0x277D3ED50] pbf_configurableOptionsForPreview:v7];
-  v13 = [v7 posterDescriptorLookupInfo];
-  v14 = [v13 posterDescriptorExtension];
+  v11 = [MEMORY[0x277D3ED60] pbf_configuredPropertiesForPreview:previewCopy];
+  v12 = [MEMORY[0x277D3ED50] pbf_configurableOptionsForPreview:previewCopy];
+  posterDescriptorLookupInfo2 = [previewCopy posterDescriptorLookupInfo];
+  posterDescriptorExtension = [posterDescriptorLookupInfo2 posterDescriptorExtension];
 
-  v15 = [(PBFPosterAssetViewController *)self initWithPosterPath:v10 definition:v8 extension:v14 configuredProperties:v11 configurableOptions:v12];
+  v15 = [(PBFPosterAssetViewController *)self initWithPosterPath:posterDescriptorPath definition:definitionCopy extension:posterDescriptorExtension configuredProperties:v11 configurableOptions:v12];
   if (v15)
   {
-    objc_storeStrong(&v15->_posterPreview, a3);
+    objc_storeStrong(&v15->_posterPreview, preview);
   }
 
   return v15;
 }
 
-- (PBFPosterAssetViewController)initWithContents:(id)a3 definition:(id)a4
+- (PBFPosterAssetViewController)initWithContents:(id)contents definition:(id)definition
 {
-  v6 = a4;
-  v7 = [a3 _path];
-  v8 = [(PBFPosterAssetViewController *)self initWithServerPosterPath:v7 definition:v6];
+  definitionCopy = definition;
+  _path = [contents _path];
+  v8 = [(PBFPosterAssetViewController *)self initWithServerPosterPath:_path definition:definitionCopy];
 
   return v8;
 }
 
-- (PBFPosterAssetViewController)initWithServerPosterPath:(id)a3 definition:(id)a4
+- (PBFPosterAssetViewController)initWithServerPosterPath:(id)path definition:(id)definition
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 serverIdentity];
-  v9 = [v8 provider];
-  v10 = [(PBFPosterAssetViewController *)self initWithPosterPath:v6 definition:v7 extensionBundleIdentifier:v9 configuredProperties:0 configurableOptions:0];
+  pathCopy = path;
+  definitionCopy = definition;
+  serverIdentity = [pathCopy serverIdentity];
+  provider = [serverIdentity provider];
+  v10 = [(PBFPosterAssetViewController *)self initWithPosterPath:pathCopy definition:definitionCopy extensionBundleIdentifier:provider configuredProperties:0 configurableOptions:0];
 
   if (v10)
   {
-    v11 = [PBFGenericPosterPreview posterPreviewForPath:v6];
+    v11 = [PBFGenericPosterPreview posterPreviewForPath:pathCopy];
     posterPreview = v10->_posterPreview;
     v10->_posterPreview = v11;
   }
@@ -165,48 +165,48 @@ void __63__PBFPosterAssetViewController_defaultSnapshotBundleDataSource__block_i
   return v10;
 }
 
-- (PBFPosterAssetViewController)initWithPosterPath:(id)a3 definition:(id)a4 extension:(id)a5 configuredProperties:(id)a6 configurableOptions:(id)a7
+- (PBFPosterAssetViewController)initWithPosterPath:(id)path definition:(id)definition extension:(id)extension configuredProperties:(id)properties configurableOptions:(id)options
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [a5 posterExtensionBundleIdentifier];
-  v17 = [(PBFPosterAssetViewController *)self initWithPosterPath:v15 definition:v14 extensionBundleIdentifier:v16 configuredProperties:v13 configurableOptions:v12];
+  optionsCopy = options;
+  propertiesCopy = properties;
+  definitionCopy = definition;
+  pathCopy = path;
+  posterExtensionBundleIdentifier = [extension posterExtensionBundleIdentifier];
+  v17 = [(PBFPosterAssetViewController *)self initWithPosterPath:pathCopy definition:definitionCopy extensionBundleIdentifier:posterExtensionBundleIdentifier configuredProperties:propertiesCopy configurableOptions:optionsCopy];
 
   return v17;
 }
 
-- (PBFPosterAssetViewController)initWithPosterPath:(id)a3 definition:(id)a4 extensionBundleIdentifier:(id)a5 configuredProperties:(id)a6 configurableOptions:(id)a7
+- (PBFPosterAssetViewController)initWithPosterPath:(id)path definition:(id)definition extensionBundleIdentifier:(id)identifier configuredProperties:(id)properties configurableOptions:(id)options
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (!v15)
+  pathCopy = path;
+  definitionCopy = definition;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
+  optionsCopy = options;
+  if (!definitionCopy)
   {
     [PBFPosterAssetViewController initWithPosterPath:a2 definition:? extensionBundleIdentifier:? configuredProperties:? configurableOptions:?];
   }
 
-  if (!v14)
+  if (!pathCopy)
   {
     [PBFPosterAssetViewController initWithPosterPath:a2 definition:? extensionBundleIdentifier:? configuredProperties:? configurableOptions:?];
   }
 
-  if (!v16)
+  if (!identifierCopy)
   {
     [PBFPosterAssetViewController initWithPosterPath:a2 definition:? extensionBundleIdentifier:? configuredProperties:? configurableOptions:?];
   }
 
-  v19 = v18;
+  v19 = optionsCopy;
   v55.receiver = self;
   v55.super_class = PBFPosterAssetViewController;
   v20 = [(PBFPosterAssetViewController *)&v55 initWithNibName:0 bundle:0];
   v21 = v20;
   if (v20)
   {
-    v54 = v15;
+    v54 = definitionCopy;
     p_x = &v20->_referenceBounds.origin.x;
     v23 = +[PBFGenericDisplayContext mainScreen];
     [v23 pbf_frame];
@@ -215,12 +215,12 @@ void __63__PBFPosterAssetViewController_defaultSnapshotBundleDataSource__block_i
     v21->_referenceBounds.size.width = v26;
     v21->_referenceBounds.size.height = v27;
 
-    objc_storeStrong(&v21->_extensionBundleIdentifier, a5);
-    objc_storeStrong(&v21->_path, a3);
-    objc_storeStrong(&v21->_definition, a4);
+    objc_storeStrong(&v21->_extensionBundleIdentifier, identifier);
+    objc_storeStrong(&v21->_path, path);
+    objc_storeStrong(&v21->_definition, definition);
     v28 = MEMORY[0x277D02CF0];
-    v29 = +[PBFGenericDisplayContext mainScreen];
-    [v28 pr_defaultSalientContentRectForBounds:objc_msgSend(v29 interfaceOrientation:{"pbf_interfaceOrientation"), *p_x, v21->_referenceBounds.origin.y, v21->_referenceBounds.size.width, v21->_referenceBounds.size.height}];
+    role = +[PBFGenericDisplayContext mainScreen];
+    [v28 pr_defaultSalientContentRectForBounds:objc_msgSend(role interfaceOrientation:{"pbf_interfaceOrientation"), *p_x, v21->_referenceBounds.origin.y, v21->_referenceBounds.size.width, v21->_referenceBounds.size.height}];
     v31 = v30;
     v33 = v32;
     v35 = v34;
@@ -230,15 +230,15 @@ void __63__PBFPosterAssetViewController_defaultSnapshotBundleDataSource__block_i
     v21->_salientContentRectangle.origin.y = v33;
     v21->_salientContentRectangle.size.width = v35;
     v21->_salientContentRectangle.size.height = v37;
-    if (v17)
+    if (propertiesCopy)
     {
       v38 = 0;
-      v39 = v17;
+      v39 = propertiesCopy;
     }
 
     else
     {
-      v40 = [MEMORY[0x277D3EDE8] loadConfiguredPropertiesForPath:v14 error:0];
+      v40 = [MEMORY[0x277D3EDE8] loadConfiguredPropertiesForPath:pathCopy error:0];
       if (v40)
       {
         v28 = v40;
@@ -249,8 +249,8 @@ void __63__PBFPosterAssetViewController_defaultSnapshotBundleDataSource__block_i
       else
       {
         v41 = MEMORY[0x277D3ED60];
-        v29 = [v14 role];
-        v39 = [v41 defaultConfiguredPropertiesForRole:v29];
+        role = [pathCopy role];
+        v39 = [v41 defaultConfiguredPropertiesForRole:role];
         v28 = 0;
         v38 = 1;
       }
@@ -261,14 +261,14 @@ void __63__PBFPosterAssetViewController_defaultSnapshotBundleDataSource__block_i
     {
     }
 
-    if (!v17)
+    if (!propertiesCopy)
     {
     }
 
     v42 = v19;
     if (!v19)
     {
-      v42 = [MEMORY[0x277D3EDE8] loadConfigurableOptionsForPath:v14 error:0];
+      v42 = [MEMORY[0x277D3EDE8] loadConfigurableOptionsForPath:pathCopy error:0];
     }
 
     objc_storeStrong(&v21->_configurableOptions, v42);
@@ -293,11 +293,11 @@ void __63__PBFPosterAssetViewController_defaultSnapshotBundleDataSource__block_i
     displayContext = v21->_displayContext;
     v21->_displayContext = v49;
 
-    v51 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     snapshotBundleForDisplayContext = v21->_snapshotBundleForDisplayContext;
-    v21->_snapshotBundleForDisplayContext = v51;
+    v21->_snapshotBundleForDisplayContext = strongToStrongObjectsMapTable;
 
-    v15 = v54;
+    definitionCopy = v54;
   }
 
   return v21;
@@ -316,14 +316,14 @@ void __63__PBFPosterAssetViewController_defaultSnapshotBundleDataSource__block_i
   v23.receiver = self;
   v23.super_class = PBFPosterAssetViewController;
   [(PBFPosterAssetViewController *)&v23 viewDidLoad];
-  v3 = [(PBFPosterAssetViewController *)self view];
-  v4 = [MEMORY[0x277D75348] blackColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PBFPosterAssetViewController *)self view];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [view setBackgroundColor:blackColor];
 
-  [v3 addSubview:self->_posterLayoutView];
-  [v3 addSubview:self->_sceneViewControllerContainerView];
-  v5 = [(PBFPosterAssetViewController *)self view];
-  [v5 bounds];
+  [view addSubview:self->_posterLayoutView];
+  [view addSubview:self->_sceneViewControllerContainerView];
+  view2 = [(PBFPosterAssetViewController *)self view];
+  [view2 bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -331,23 +331,23 @@ void __63__PBFPosterAssetViewController_defaultSnapshotBundleDataSource__block_i
 
   [(PUITransformContainerView *)self->_sceneViewControllerContainerView setFrame:v7, v9, v11, v13];
   [(PUIScalingContainerView *)self->_timeContainerView setFrame:v7, v9, v11, v13];
-  v14 = [(PUIScalingContainerView *)self->_timeContainerView contentView];
+  contentView = [(PUIScalingContainerView *)self->_timeContainerView contentView];
   [(PBFDisplayContext *)self->_displayContext pbf_frame];
-  [v14 setFrame:?];
+  [contentView setFrame:?];
 
   [(PUIPosterSnapshotBundleLayoutView *)self->_posterLayoutView setFrame:v7, v9, v11, v13];
   posterPreview = self->_posterPreview;
   if (posterPreview)
   {
-    v16 = [(PBFPosterPreview *)posterPreview subtitleComplication];
-    if (v16 || (-[PBFPosterPreview suggestedComplications](self->_posterPreview, "suggestedComplications"), v16 = objc_claimAutoreleasedReturnValue(), [v16 count]))
+    subtitleComplication = [(PBFPosterPreview *)posterPreview subtitleComplication];
+    if (subtitleComplication || (-[PBFPosterPreview suggestedComplications](self->_posterPreview, "suggestedComplications"), subtitleComplication = objc_claimAutoreleasedReturnValue(), [subtitleComplication count]))
     {
     }
 
     else
     {
-      v21 = [(PBFPosterPreview *)self->_posterPreview suggestedLandscapeComplications];
-      v22 = [v21 count];
+      suggestedLandscapeComplications = [(PBFPosterPreview *)self->_posterPreview suggestedLandscapeComplications];
+      v22 = [suggestedLandscapeComplications count];
 
       if (!v22)
       {
@@ -360,8 +360,8 @@ void __63__PBFPosterAssetViewController_defaultSnapshotBundleDataSource__block_i
     self->_complicationContentView = v17;
 
     v19 = self->_complicationContentView;
-    v20 = [(PBFPosterAssetViewController *)self reusableViewMap];
-    [(PBFPosterGalleryPreviewComplicationContentView *)v19 setReusableViewMap:v20];
+    reusableViewMap = [(PBFPosterAssetViewController *)self reusableViewMap];
+    [(PBFPosterGalleryPreviewComplicationContentView *)v19 setReusableViewMap:reusableViewMap];
 
     [(PBFPosterGalleryPreviewComplicationContentView *)self->_complicationContentView setPosterPreview:self->_posterPreview];
   }
@@ -402,8 +402,8 @@ LABEL_6:
   v12.receiver = self;
   v12.super_class = PBFPosterAssetViewController;
   [(PBFPosterAssetViewController *)&v12 viewDidLayoutSubviews];
-  v3 = [(PBFPosterAssetViewController *)self view];
-  [v3 bounds];
+  view = [(PBFPosterAssetViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -414,10 +414,10 @@ LABEL_6:
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(PBFPosterAssetViewController *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(PBFPosterAssetViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -428,41 +428,41 @@ LABEL_6:
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = PBFPosterAssetViewController;
-  [(PBFPosterAssetViewController *)&v4 viewIsAppearing:a3];
+  [(PBFPosterAssetViewController *)&v4 viewIsAppearing:appearing];
   [(PBFPosterAssetViewController *)self _update];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v22.receiver = self;
   v22.super_class = PBFPosterAssetViewController;
-  [(PBFPosterAssetViewController *)&v22 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [v7 containerView];
+  [(PBFPosterAssetViewController *)&v22 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  containerView = [coordinatorCopy containerView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    window = containerView;
   }
 
   else
   {
-    v9 = [v8 window];
+    window = [containerView window];
   }
 
-  v10 = v9;
-  v11 = [(PBFPosterAssetViewController *)self view];
-  v12 = [v11 pbf_layoutOrientation];
+  v10 = window;
+  view = [(PBFPosterAssetViewController *)self view];
+  pbf_layoutOrientation = [view pbf_layoutOrientation];
 
-  if (v7 && [v10 _toWindowOrientation])
+  if (coordinatorCopy && [v10 _toWindowOrientation])
   {
-    v12 = [v10 _toWindowOrientation];
+    pbf_layoutOrientation = [v10 _toWindowOrientation];
   }
 
   displayContext = self->_displayContext;
@@ -477,7 +477,7 @@ LABEL_6:
   }
 
   v15 = v14;
-  v16 = [(PBFDisplayContext *)v14 displayContextWithUpdatedInterfaceOrientation:v12];
+  v16 = [(PBFDisplayContext *)v14 displayContextWithUpdatedInterfaceOrientation:pbf_layoutOrientation];
   activeAsset = self->_activeAsset;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -494,7 +494,7 @@ LABEL_6:
   *&v19[6] = width;
   *&v19[7] = height;
   v18 = v16;
-  [v7 animateAlongsideTransition:v20 completion:v19];
+  [coordinatorCopy animateAlongsideTransition:v20 completion:v19];
 }
 
 uint64_t __83__PBFPosterAssetViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2(uint64_t a1)
@@ -511,10 +511,10 @@ uint64_t __83__PBFPosterAssetViewController_viewWillTransitionToSize_withTransit
   extensionInstanceReason = self->_extensionInstanceReason;
   if (!extensionInstanceReason)
   {
-    v4 = [(PFPosterPath *)self->_path serverIdentity];
-    v5 = [v4 provider];
+    serverIdentity = [(PFPosterPath *)self->_path serverIdentity];
+    provider = [serverIdentity provider];
     v6 = self->_extensionInstanceReason;
-    self->_extensionInstanceReason = v5;
+    self->_extensionInstanceReason = provider;
 
     posterPreview = self->_posterPreview;
     extensionInstanceReason = self->_extensionInstanceReason;
@@ -558,18 +558,18 @@ uint64_t __83__PBFPosterAssetViewController_viewWillTransitionToSize_withTransit
   return executeScriptFuture;
 }
 
-- (void)setPresentLive:(BOOL)a3
+- (void)setPresentLive:(BOOL)live
 {
-  if (self->_presentLive != a3)
+  if (self->_presentLive != live)
   {
-    self->_presentLive = a3;
+    self->_presentLive = live;
     [(PBFPosterAssetViewController *)self _update];
   }
 }
 
-- (void)setDisplayContext:(id)a3
+- (void)setDisplayContext:(id)context
 {
-  obj = a3;
+  obj = context;
   if (obj)
   {
     if (([obj conformsToProtocol:&unk_282D481D8] & 1) == 0)
@@ -588,27 +588,27 @@ uint64_t __83__PBFPosterAssetViewController_viewWillTransitionToSize_withTransit
     objc_storeStrong(&self->_displayContext, obj);
     [(PBFPosterAssetViewController *)self _updateSnapshotBundleForDisplayContext];
     [(PBFPosterAssetViewController *)self _update];
-    v5 = [(PBFPosterAssetViewController *)self view];
-    [v5 setNeedsLayout];
+    view = [(PBFPosterAssetViewController *)self view];
+    [view setNeedsLayout];
 
-    v6 = [(PBFPosterAssetViewController *)self view];
-    [v6 layoutIfNeeded];
+    view2 = [(PBFPosterAssetViewController *)self view];
+    [view2 layoutIfNeeded];
   }
 }
 
-- (BOOL)setSnapshotBundle:(id)a3 forDisplayContext:(id)a4
+- (BOOL)setSnapshotBundle:(id)bundle forDisplayContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  bundleCopy = bundle;
+  contextCopy = context;
+  if (contextCopy)
   {
-    if (v6)
+    if (bundleCopy)
     {
-      v8 = [(NSMapTable *)self->_snapshotBundleForDisplayContext objectForKey:v7];
-      v9 = [v8 isEqual:v6];
+      v8 = [(NSMapTable *)self->_snapshotBundleForDisplayContext objectForKey:contextCopy];
+      v9 = [v8 isEqual:bundleCopy];
       if ((v9 & 1) == 0)
       {
-        [(NSMapTable *)self->_snapshotBundleForDisplayContext setObject:v6 forKey:v7];
+        [(NSMapTable *)self->_snapshotBundleForDisplayContext setObject:bundleCopy forKey:contextCopy];
       }
 
       v10 = v9 ^ 1;
@@ -619,7 +619,7 @@ uint64_t __83__PBFPosterAssetViewController_viewWillTransitionToSize_withTransit
       v10 = 0;
     }
 
-    if ([v7 isEqualToDisplayContext:self->_displayContext])
+    if ([contextCopy isEqualToDisplayContext:self->_displayContext])
     {
       [(PBFPosterAssetViewController *)self _updateSnapshotBundleForDisplayContext];
     }
@@ -644,24 +644,24 @@ uint64_t __83__PBFPosterAssetViewController_viewWillTransitionToSize_withTransit
 
 - (PFPosterExtension)extension
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  extension = v2->_extension;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  extension = selfCopy->_extension;
   if (extension)
   {
     v4 = extension;
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v5 = [(PBFPosterAssetViewController *)v2 extensionProvider];
-    v6 = [v5 providerForExtensionIdentifier:v2->_extensionBundleIdentifier];
-    v7 = v2->_extension;
-    v2->_extension = v6;
+    extensionProvider = [(PBFPosterAssetViewController *)selfCopy extensionProvider];
+    v6 = [extensionProvider providerForExtensionIdentifier:selfCopy->_extensionBundleIdentifier];
+    v7 = selfCopy->_extension;
+    selfCopy->_extension = v6;
 
-    objc_sync_exit(v2);
-    v4 = v2->_extension;
+    objc_sync_exit(selfCopy);
+    v4 = selfCopy->_extension;
   }
 
   return v4;
@@ -669,118 +669,118 @@ uint64_t __83__PBFPosterAssetViewController_viewWillTransitionToSize_withTransit
 
 - (PBFExtensionProviding)extensionProvider
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  extensionProvider = v2->_extensionProvider;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  extensionProvider = selfCopy->_extensionProvider;
   if (!extensionProvider)
   {
-    v4 = [objc_opt_class() defaultExtensionProvider];
-    v5 = v2->_extensionProvider;
-    v2->_extensionProvider = v4;
+    defaultExtensionProvider = [objc_opt_class() defaultExtensionProvider];
+    v5 = selfCopy->_extensionProvider;
+    selfCopy->_extensionProvider = defaultExtensionProvider;
 
-    extensionProvider = v2->_extensionProvider;
+    extensionProvider = selfCopy->_extensionProvider;
   }
 
   v6 = extensionProvider;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)setExtensionProvider:(id)a3
+- (void)setExtensionProvider:(id)provider
 {
-  v10 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v10;
-  extensionProvider = v4->_extensionProvider;
-  if (extensionProvider != v10 || extensionProvider == 0)
+  providerCopy = provider;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  defaultExtensionProvider = providerCopy;
+  extensionProvider = selfCopy->_extensionProvider;
+  if (extensionProvider != providerCopy || extensionProvider == 0)
   {
-    if (!v10)
+    if (!providerCopy)
     {
-      if (v4->_isInvalidated)
+      if (selfCopy->_isInvalidated)
       {
-        v5 = 0;
+        defaultExtensionProvider = 0;
       }
 
       else
       {
-        v5 = [objc_opt_class() defaultExtensionProvider];
+        defaultExtensionProvider = [objc_opt_class() defaultExtensionProvider];
       }
     }
 
-    v10 = v5;
-    objc_storeStrong(&v4->_extensionProvider, v5);
-    if (v4->_extensionBundleIdentifier)
+    providerCopy = defaultExtensionProvider;
+    objc_storeStrong(&selfCopy->_extensionProvider, defaultExtensionProvider);
+    if (selfCopy->_extensionBundleIdentifier)
     {
-      extension = v4->_extension;
-      v4->_extension = 0;
+      extension = selfCopy->_extension;
+      selfCopy->_extension = 0;
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
-    [(PBFPosterAssetViewController *)v4 _removeSceneViewControllerFromHierarchy];
-    v9 = [(PBFPosterAssetViewController *)v4 _setupExtensionInstanceIfNeeded];
+    [(PBFPosterAssetViewController *)selfCopy _removeSceneViewControllerFromHierarchy];
+    _setupExtensionInstanceIfNeeded = [(PBFPosterAssetViewController *)selfCopy _setupExtensionInstanceIfNeeded];
   }
 
   else
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)setReusableViewMap:(id)a3
+- (void)setReusableViewMap:(id)map
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_reusableViewMap != v6)
+  mapCopy = map;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_reusableViewMap != mapCopy)
   {
-    objc_storeStrong(&v5->_reusableViewMap, a3);
-    [(PUIPosterSnapshotBundleLayoutView *)v5->_posterLayoutView setReusableViewMap:v6];
-    [(PBFPosterGalleryPreviewComplicationContentView *)v5->_complicationContentView setReusableViewMap:v6];
+    objc_storeStrong(&selfCopy->_reusableViewMap, map);
+    [(PUIPosterSnapshotBundleLayoutView *)selfCopy->_posterLayoutView setReusableViewMap:mapCopy];
+    [(PBFPosterGalleryPreviewComplicationContentView *)selfCopy->_complicationContentView setReusableViewMap:mapCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setComplicationPreviewGenerator:(id)a3
+- (void)setComplicationPreviewGenerator:(id)generator
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_complicationPreviewGenerator != v6)
+  generatorCopy = generator;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_complicationPreviewGenerator != generatorCopy)
   {
-    objc_storeStrong(&v5->_complicationPreviewGenerator, a3);
+    objc_storeStrong(&selfCopy->_complicationPreviewGenerator, generator);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  if (self->_isVisible != a3)
+  if (self->_isVisible != visible)
   {
-    self->_isVisible = a3;
+    self->_isVisible = visible;
     [(PBFPosterAssetViewController *)self _update];
   }
 }
 
 - (id)executeDemo
 {
-  v3 = [(PBFPosterPreview *)self->_posterPreview galleryDisplayStyle];
-  if (v3 == 2)
+  galleryDisplayStyle = [(PBFPosterPreview *)self->_posterPreview galleryDisplayStyle];
+  if (galleryDisplayStyle == 2)
   {
-    v4 = [MEMORY[0x277D3EE00] gyroDemoScript];
+    gyroDemoScript = [MEMORY[0x277D3EE00] gyroDemoScript];
     goto LABEL_5;
   }
 
-  if (v3 == 3)
+  if (galleryDisplayStyle == 3)
   {
-    v4 = [MEMORY[0x277D3EE00] timeDemoScript];
+    gyroDemoScript = [MEMORY[0x277D3EE00] timeDemoScript];
 LABEL_5:
-    v5 = v4;
-    v6 = [(PBFPosterAssetViewController *)self executeScript:v4];
+    v5 = gyroDemoScript;
+    v6 = [(PBFPosterAssetViewController *)self executeScript:gyroDemoScript];
 
     goto LABEL_7;
   }
@@ -791,10 +791,10 @@ LABEL_7:
   return v6;
 }
 
-- (id)executeLivePresentationWithDuration:(double)a3
+- (id)executeLivePresentationWithDuration:(double)duration
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D3EE08] statementWithDuration:a3];
+  v4 = [MEMORY[0x277D3EE08] statementWithDuration:duration];
   v5 = objc_alloc(MEMORY[0x277D3EE00]);
   v10[0] = v4;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
@@ -805,9 +805,9 @@ LABEL_7:
   return v8;
 }
 
-- (id)executeScript:(id)a3
+- (id)executeScript:(id)script
 {
-  v4 = a3;
+  scriptCopy = script;
   BSDispatchQueueAssertMain();
   if (!self->_isInvalidated && [(PBFPosterAssetViewController *)self isActive]&& (([(PFTFuture *)self->_executeScriptFuture isFinished]& 1) != 0 || !self->_executeScriptFuture))
   {
@@ -826,7 +826,7 @@ LABEL_7:
       v19[1] = 3221225472;
       v19[2] = __46__PBFPosterAssetViewController_executeScript___block_invoke;
       v19[3] = &unk_2782C84B0;
-      v20 = v4;
+      v20 = scriptCopy;
       objc_copyWeak(&v22, &location);
       v21 = v12;
       v16[0] = MEMORY[0x277D85DD0];
@@ -926,8 +926,8 @@ void __46__PBFPosterAssetViewController_executeScript___block_invoke_3(uint64_t 
     sceneViewController = self->_sceneViewController;
     if (sceneViewController)
     {
-      v4 = [(_PBFPosterSceneViewController *)sceneViewController displayContext];
-      v5 = [v4 isEqual:self->_displayContext];
+      displayContext = [(_PBFPosterSceneViewController *)sceneViewController displayContext];
+      v5 = [displayContext isEqual:self->_displayContext];
 
       if ((v5 & 1) == 0)
       {
@@ -935,14 +935,14 @@ void __46__PBFPosterAssetViewController_executeScript___block_invoke_3(uint64_t 
       }
     }
 
-    v6 = [(PBFPosterAssetViewController *)self isActive];
-    v7 = [(PBFPosterAssetViewController *)self _willPresentLive];
+    isActive = [(PBFPosterAssetViewController *)self isActive];
+    _willPresentLive = [(PBFPosterAssetViewController *)self _willPresentLive];
     activeAsset = self->_activeAsset;
-    v9 = [(PBFPosterAssetViewController *)self viewIfLoaded];
-    v10 = v9 != 0;
+    viewIfLoaded = [(PBFPosterAssetViewController *)self viewIfLoaded];
+    v10 = viewIfLoaded != 0;
 
-    v11 = v9 != 0;
-    if (v9 && v7 && v6)
+    v11 = viewIfLoaded != 0;
+    if (viewIfLoaded && _willPresentLive && isActive)
     {
       if ([(_PBFPosterSceneViewController *)self->_sceneViewController state]== 1)
       {
@@ -952,7 +952,7 @@ void __46__PBFPosterAssetViewController_executeScript___block_invoke_3(uint64_t 
 
       else
       {
-        v12 = [(PBFPosterAssetViewController *)self _setupExtensionInstanceIfNeeded];
+        _setupExtensionInstanceIfNeeded = [(PBFPosterAssetViewController *)self _setupExtensionInstanceIfNeeded];
         v11 = 1;
         v10 = 1;
       }
@@ -983,23 +983,23 @@ void __46__PBFPosterAssetViewController_executeScript___block_invoke_3(uint64_t 
   }
 }
 
-- (void)_setupImageViewForSnapshotBundle:(id)a3 displayContext:(id)a4 orFailure:(id)a5
+- (void)_setupImageViewForSnapshotBundle:(id)bundle displayContext:(id)context orFailure:(id)failure
 {
-  v25 = a3;
-  v7 = a4;
+  bundleCopy = bundle;
+  contextCopy = context;
   BSDispatchQueueAssertMain();
-  if ([v7 isEqualToDisplayContext:self->_displayContext])
+  if ([contextCopy isEqualToDisplayContext:self->_displayContext])
   {
     v8 = MEMORY[0x277D02CF0];
-    [v7 pbf_frame];
-    [v8 pr_defaultSalientContentRectForBounds:objc_msgSend(v7 interfaceOrientation:{"pbf_interfaceOrientation"), v9, v10, v11, v12}];
+    [contextCopy pbf_frame];
+    [v8 pr_defaultSalientContentRectForBounds:objc_msgSend(contextCopy interfaceOrientation:{"pbf_interfaceOrientation"), v9, v10, v11, v12}];
     self->_salientContentRectangle.origin.x = v13;
     self->_salientContentRectangle.origin.y = v14;
     self->_salientContentRectangle.size.width = v15;
     self->_salientContentRectangle.size.height = v16;
     [(_PBFPosterSceneViewController *)self->_sceneViewController setSalientContentRectangle:?];
-    v17 = [(PUIPosterSnapshotBundleLayoutView *)self->_posterLayoutView snapshotBundle];
-    if (v17)
+    snapshotBundle = [(PUIPosterSnapshotBundleLayoutView *)self->_posterLayoutView snapshotBundle];
+    if (snapshotBundle)
     {
       v18 = !self->_presentLive;
 
@@ -1011,23 +1011,23 @@ void __46__PBFPosterAssetViewController_executeScript___block_invoke_3(uint64_t 
       v19 = 0;
     }
 
-    [(PUIPosterSnapshotBundleLayoutView *)self->_posterLayoutView setSnapshotBundle:v25 animation:v19];
+    [(PUIPosterSnapshotBundleLayoutView *)self->_posterLayoutView setSnapshotBundle:bundleCopy animation:v19];
     if (self->_complicationContentView)
     {
       [(PUIPosterSnapshotBundleLayoutView *)self->_posterLayoutView setContentOverlayView:?];
-      v20 = [(PBFPosterAssetViewController *)self complicationPreviewGenerator];
+      complicationPreviewGenerator = [(PBFPosterAssetViewController *)self complicationPreviewGenerator];
 
-      if (v20)
+      if (complicationPreviewGenerator)
       {
         complicationContentView = self->_complicationContentView;
-        v22 = [(PBFPosterAssetViewController *)self complicationPreviewGenerator];
-        [(PBFPosterGalleryPreviewComplicationContentView *)complicationContentView prepareComplicationPreviewWithGenerator:v22];
+        complicationPreviewGenerator2 = [(PBFPosterAssetViewController *)self complicationPreviewGenerator];
+        [(PBFPosterGalleryPreviewComplicationContentView *)complicationContentView prepareComplicationPreviewWithGenerator:complicationPreviewGenerator2];
       }
     }
 
     activeAsset = self->_activeAsset;
-    v24 = [(PBFPosterAssetViewController *)self viewIfLoaded];
-    [v24 bounds];
+    viewIfLoaded = [(PBFPosterAssetViewController *)self viewIfLoaded];
+    [viewIfLoaded bounds];
     [(PBFPosterAssetViewController *)self _updatePosterLayoutViewForActiveAsset:activeAsset bounds:?];
   }
 }
@@ -1042,13 +1042,13 @@ void __46__PBFPosterAssetViewController_executeScript___block_invoke_3(uint64_t 
     {
       if (!self->_sceneViewController)
       {
-        v6 = [(PBFPosterAssetViewController *)self isActive];
+        isActive = [(PBFPosterAssetViewController *)self isActive];
         extensionInstanceFuture = self->_extensionInstanceFuture;
-        if (v6)
+        if (isActive)
         {
-          v7 = [(PFTFuture *)extensionInstanceFuture isFinished];
+          isFinished = [(PFTFuture *)extensionInstanceFuture isFinished];
           extensionInstanceFuture = self->_extensionInstanceFuture;
-          if (v7)
+          if (isFinished)
           {
             v8 = [(PFTFuture *)extensionInstanceFuture result:0];
             [(PBFPosterAssetViewController *)self _setupSceneViewControllerForInstance:v8];
@@ -1068,18 +1068,18 @@ void __46__PBFPosterAssetViewController_executeScript___block_invoke_3(uint64_t 
     else
     {
       v11 = self->_extensionBundleIdentifier;
-      v12 = [(PBFPosterAssetViewController *)self _extensionInstanceReason];
-      v13 = [(PBFPosterAssetViewController *)self extensionProvider];
+      _extensionInstanceReason = [(PBFPosterAssetViewController *)self _extensionInstanceReason];
+      extensionProvider = [(PBFPosterAssetViewController *)self extensionProvider];
       v14 = MEMORY[0x277D3EC50];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __63__PBFPosterAssetViewController__setupExtensionInstanceIfNeeded__block_invoke;
       v30[3] = &unk_2782C8500;
-      v15 = v13;
+      v15 = extensionProvider;
       v31 = v15;
       v16 = v11;
       v32 = v16;
-      v17 = v12;
+      v17 = _extensionInstanceReason;
       v33 = v17;
       v18 = [v14 futureWithBlock:v30];
       v19 = [v18 flatMap:&__block_literal_global_148];
@@ -1098,8 +1098,8 @@ void __46__PBFPosterAssetViewController_executeScript___block_invoke_3(uint64_t 
       v25[2] = __63__PBFPosterAssetViewController__setupExtensionInstanceIfNeeded__block_invoke_5;
       v25[3] = &unk_2782C8598;
       objc_copyWeak(&v26, &location);
-      v22 = [MEMORY[0x277D3EC60] mainThreadScheduler];
-      [(PFTFuture *)v21 addSuccessBlock:v27 andFailureBlock:v25 scheduler:v22];
+      mainThreadScheduler = [MEMORY[0x277D3EC60] mainThreadScheduler];
+      [(PFTFuture *)v21 addSuccessBlock:v27 andFailureBlock:v25 scheduler:mainThreadScheduler];
 
       v23 = objc_opt_new();
       v24 = self->_sceneViewControllerFuture;
@@ -1167,17 +1167,17 @@ void __63__PBFPosterAssetViewController__setupExtensionInstanceIfNeeded__block_i
   [WeakRetained _sceneViewControllerSetupFailedWithError:v3];
 }
 
-- (void)_teardownExtensionInstanceIfNeeded:(BOOL)a3
+- (void)_teardownExtensionInstanceIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v15 = [(PBFPosterAssetViewController *)self _extensionInstanceReason];
+  neededCopy = needed;
+  _extensionInstanceReason = [(PBFPosterAssetViewController *)self _extensionInstanceReason];
   v5 = self->_extensionInstanceFuture;
-  v6 = [(_PBFPosterSceneViewController *)self->_sceneViewController extensionInstance];
-  if (v6)
+  extensionInstance = [(_PBFPosterSceneViewController *)self->_sceneViewController extensionInstance];
+  if (extensionInstance)
   {
-    v7 = v6;
+    v7 = extensionInstance;
 LABEL_3:
-    if (![(PBFPosterAssetViewController *)self isVisible]|| (self->_activeAsset == 2 ? (v8 = !v3) : (v8 = 0), !v8))
+    if (![(PBFPosterAssetViewController *)self isVisible]|| (self->_activeAsset == 2 ? (v8 = !neededCopy) : (v8 = 0), !v8))
     {
       [(PFTFuture *)v5 cancel];
       extensionInstanceFuture = self->_extensionInstanceFuture;
@@ -1188,10 +1188,10 @@ LABEL_3:
       v11 = sceneViewControllerFuture;
 
       [(PFTFuture *)v11 cancel];
-      v12 = [(PBFPosterAssetViewController *)self extensionProvider];
-      v13 = [v7 extension];
-      v14 = [v13 posterExtensionBundleIdentifier];
-      [v12 relinquishExtensionInstance:v14 reason:v15];
+      extensionProvider = [(PBFPosterAssetViewController *)self extensionProvider];
+      extension = [v7 extension];
+      posterExtensionBundleIdentifier = [extension posterExtensionBundleIdentifier];
+      [extensionProvider relinquishExtensionInstance:posterExtensionBundleIdentifier reason:_extensionInstanceReason];
     }
 
     goto LABEL_13;
@@ -1212,16 +1212,16 @@ LABEL_3:
 LABEL_13:
 }
 
-- (void)_setupSceneViewControllerForInstance:(id)a3
+- (void)_setupSceneViewControllerForInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   BSDispatchQueueAssertMain();
-  if (v4 && !self->_sceneViewController && !self->_isInvalidated && self->_displayContext && [(PBFPosterAssetViewController *)self isActive])
+  if (instanceCopy && !self->_sceneViewController && !self->_isInvalidated && self->_displayContext && [(PBFPosterAssetViewController *)self isActive])
   {
     v5 = self->_configurableOptions;
     v6 = self->_configuredProperties;
-    v7 = [(PBFPosterAssetViewController *)self _extensionInstanceReason];
-    v8 = [[_PBFPosterSceneViewController alloc] initWithPath:self->_path definition:self->_definition extensionInstance:v4 uniqueIdentifier:v7 configurableOptions:v5 configuredProperties:v6 salientContentRectangle:self->_salientContentRectangle.origin.x, self->_salientContentRectangle.origin.y, self->_salientContentRectangle.size.width, self->_salientContentRectangle.size.height];
+    _extensionInstanceReason = [(PBFPosterAssetViewController *)self _extensionInstanceReason];
+    v8 = [[_PBFPosterSceneViewController alloc] initWithPath:self->_path definition:self->_definition extensionInstance:instanceCopy uniqueIdentifier:_extensionInstanceReason configurableOptions:v5 configuredProperties:v6 salientContentRectangle:self->_salientContentRectangle.origin.x, self->_salientContentRectangle.origin.y, self->_salientContentRectangle.size.width, self->_salientContentRectangle.size.height];
     sceneViewController = self->_sceneViewController;
     self->_sceneViewController = v8;
 
@@ -1230,24 +1230,24 @@ LABEL_13:
     posterPreview = self->_posterPreview;
     if (posterPreview)
     {
-      v11 = [(PBFPosterPreview *)posterPreview subtitleComplication];
-      if (v11)
+      subtitleComplication = [(PBFPosterPreview *)posterPreview subtitleComplication];
+      if (subtitleComplication)
       {
         v12 = 1;
       }
 
       else
       {
-        v13 = [(PBFPosterPreview *)self->_posterPreview suggestedComplications];
-        if ([v13 count])
+        suggestedComplications = [(PBFPosterPreview *)self->_posterPreview suggestedComplications];
+        if ([suggestedComplications count])
         {
           v12 = 1;
         }
 
         else
         {
-          v14 = [(PBFPosterPreview *)self->_posterPreview suggestedLandscapeComplications];
-          v12 = [v14 count] != 0;
+          suggestedLandscapeComplications = [(PBFPosterPreview *)self->_posterPreview suggestedLandscapeComplications];
+          v12 = [suggestedLandscapeComplications count] != 0;
         }
       }
 
@@ -1257,12 +1257,12 @@ LABEL_13:
     [(_PBFPosterSceneViewController *)self->_sceneViewController setShowsHeaderElements:1];
     [(PBFPosterAssetViewController *)self bs_addChildViewController:self->_sceneViewController withSuperview:self->_sceneViewControllerContainerView];
     sceneViewControllerContainerView = self->_sceneViewControllerContainerView;
-    v16 = [(_PBFPosterSceneViewController *)self->_sceneViewController view];
-    [(PUITransformContainerView *)sceneViewControllerContainerView setContentView:v16];
+    view = [(_PBFPosterSceneViewController *)self->_sceneViewController view];
+    [(PUITransformContainerView *)sceneViewControllerContainerView setContentView:view];
 
     v17 = self->_sceneViewControllerContainerView;
-    v18 = [(PBFPosterAssetViewController *)self viewIfLoaded];
-    [v18 bounds];
+    viewIfLoaded = [(PBFPosterAssetViewController *)self viewIfLoaded];
+    [viewIfLoaded bounds];
     [(PBFPosterAssetViewController *)self _sceneViewControllerContainerViewAffineTransformForBounds:?];
     [(PUITransformContainerView *)v17 setContentViewTransform:&v19];
 
@@ -1273,21 +1273,21 @@ LABEL_13:
   }
 }
 
-- (void)_sceneViewControllerSetupFailedWithError:(id)a3
+- (void)_sceneViewControllerSetupFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   BSDispatchQueueAssertMain();
-  [(PFTFuture *)self->_sceneViewControllerFuture finishWithError:v4];
+  [(PFTFuture *)self->_sceneViewControllerFuture finishWithError:errorCopy];
 
   [(PBFPosterAssetViewController *)self _teardownExtensionInstanceIfNeeded:1];
   extensionInstanceReason = self->_extensionInstanceReason;
   self->_extensionInstanceReason = 0;
 
   ++self->_extensionFailedToStartCounter;
-  v6 = [(PBFPosterAssetViewController *)self isActive];
-  if (self->_extensionFailedToStartCounter <= 2 && self->_activeAsset == 2 && v6)
+  isActive = [(PBFPosterAssetViewController *)self isActive];
+  if (self->_extensionFailedToStartCounter <= 2 && self->_activeAsset == 2 && isActive)
   {
-    v7 = [(PBFPosterAssetViewController *)self _setupExtensionInstanceIfNeeded];
+    _setupExtensionInstanceIfNeeded = [(PBFPosterAssetViewController *)self _setupExtensionInstanceIfNeeded];
   }
 
   else
@@ -1344,53 +1344,53 @@ LABEL_13:
   [v4 commit];
 }
 
-- (void)sceneViewController:(id)a3 stateChangedTo:(unint64_t)a4
+- (void)sceneViewController:(id)controller stateChangedTo:(unint64_t)to
 {
-  v6 = a3;
-  if (self->_sceneViewController == v6)
+  controllerCopy = controller;
+  if (self->_sceneViewController == controllerCopy)
   {
-    v10 = v6;
+    v10 = controllerCopy;
     [(PBFPosterAssetViewController *)self _update];
     sceneViewControllerFuture = self->_sceneViewControllerFuture;
-    if (a4 == 1)
+    if (to == 1)
     {
       [(PFTFuture *)self->_sceneViewControllerFuture finishWithResult:v10];
-      v8 = [(PBFPosterAssetViewController *)self viewIfLoaded];
-      [v8 bounds];
+      viewIfLoaded = [(PBFPosterAssetViewController *)self viewIfLoaded];
+      [viewIfLoaded bounds];
       [(PBFPosterAssetViewController *)self _updateDebugImageViewsWithBounds:?];
     }
 
     else
     {
-      v8 = PFFunctionNameForAddress();
+      viewIfLoaded = PFFunctionNameForAddress();
       v9 = PFGeneralErrorFromObjectWithLocalizedFailureReason();
       [(PFTFuture *)sceneViewControllerFuture finishWithError:v9, 0];
     }
 
-    v6 = v10;
+    controllerCopy = v10;
   }
 }
 
-- (void)_transitionToActiveAsset:(unint64_t)a3
+- (void)_transitionToActiveAsset:(unint64_t)asset
 {
-  v5 = [(PBFPosterAssetViewController *)self viewIfLoaded];
-  [v5 bounds];
-  [(PBFPosterAssetViewController *)self _transitionToActiveAsset:a3 bounds:?];
+  viewIfLoaded = [(PBFPosterAssetViewController *)self viewIfLoaded];
+  [viewIfLoaded bounds];
+  [(PBFPosterAssetViewController *)self _transitionToActiveAsset:asset bounds:?];
 }
 
-- (void)_transitionToActiveAsset:(unint64_t)a3 bounds:(CGRect)a4
+- (void)_transitionToActiveAsset:(unint64_t)asset bounds:(CGRect)bounds
 {
-  if (self->_activeAsset != a3)
+  if (self->_activeAsset != asset)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    self->_activeAsset = a3;
-    switch(a3)
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
+    self->_activeAsset = asset;
+    switch(asset)
     {
       case 2uLL:
-        v10 = [(PBFPosterAssetViewController *)self _setupExtensionInstanceIfNeeded];
+        _setupExtensionInstanceIfNeeded = [(PBFPosterAssetViewController *)self _setupExtensionInstanceIfNeeded];
         break;
       case 1uLL:
         v9 = [(NSMapTable *)self->_snapshotBundleForDisplayContext objectForKey:self->_displayContext];
@@ -1415,35 +1415,35 @@ LABEL_13:
   }
 }
 
-- (void)_layoutViewsForActiveAsset:(unint64_t)a3 bounds:(CGRect)a4
+- (void)_layoutViewsForActiveAsset:(unint64_t)asset bounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [PBFPosterAssetViewController _updateSceneViewForActiveAsset:"_updateSceneViewForActiveAsset:bounds:" bounds:?];
-  [(PBFPosterAssetViewController *)self _updatePosterLayoutViewForActiveAsset:a3 bounds:x, y, width, height];
+  [(PBFPosterAssetViewController *)self _updatePosterLayoutViewForActiveAsset:asset bounds:x, y, width, height];
 
   [(PBFPosterAssetViewController *)self _updateDebugImageViewsWithBounds:x, y, width, height];
 }
 
-- (void)_updateSceneViewForActiveAsset:(unint64_t)a3 bounds:(CGRect)a4
+- (void)_updateSceneViewForActiveAsset:(unint64_t)asset bounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3 != 2;
-  v10 = [(_PBFPosterSceneViewController *)self->_sceneViewController view];
-  [v10 setFrame:{self->_referenceBounds.origin.x, self->_referenceBounds.origin.y, self->_referenceBounds.size.width, self->_referenceBounds.size.height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v9 = asset != 2;
+  view = [(_PBFPosterSceneViewController *)self->_sceneViewController view];
+  [view setFrame:{self->_referenceBounds.origin.x, self->_referenceBounds.origin.y, self->_referenceBounds.size.width, self->_referenceBounds.size.height}];
   [(PUITransformContainerView *)self->_sceneViewControllerContainerView setFrame:x, y, width, height];
   sceneViewControllerContainerView = self->_sceneViewControllerContainerView;
   [(PBFPosterAssetViewController *)self _sceneViewControllerContainerViewAffineTransformForBounds:x, y, width, height];
   [(PUITransformContainerView *)sceneViewControllerContainerView setContentViewTransform:&v12];
-  [v10 setHidden:v9];
+  [view setHidden:v9];
 }
 
-- (CGAffineTransform)_sceneViewControllerContainerViewAffineTransformForBounds:(SEL)a3
+- (CGAffineTransform)_sceneViewControllerContainerViewAffineTransformForBounds:(SEL)bounds
 {
   v6 = a4.size.height / self->_referenceBounds.size.height;
   v7 = a4.size.width / self->_referenceBounds.size.width;
@@ -1464,9 +1464,9 @@ LABEL_13:
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  v5 = [(PBFDisplayContext *)self->_displayContext pbf_interfaceOrientation];
+  pbf_interfaceOrientation = [(PBFDisplayContext *)self->_displayContext pbf_interfaceOrientation];
   v6 = 0.0;
-  if (v5 != 1)
+  if (pbf_interfaceOrientation != 1)
   {
     if ([(PBFDisplayContext *)self->_displayContext pbf_interfaceOrientation]== 4)
     {
@@ -1480,9 +1480,9 @@ LABEL_13:
 
     else
     {
-      v7 = [(PBFDisplayContext *)self->_displayContext pbf_interfaceOrientation];
+      pbf_interfaceOrientation2 = [(PBFDisplayContext *)self->_displayContext pbf_interfaceOrientation];
       v6 = 3.14159265;
-      if (v7 != 2)
+      if (pbf_interfaceOrientation2 != 2)
       {
         v6 = 0.0;
       }
@@ -1494,25 +1494,25 @@ LABEL_13:
   return CGAffineTransformInvert(retstr, &v10);
 }
 
-- (void)_updatePosterLayoutViewForActiveAsset:(unint64_t)a3 bounds:(CGRect)a4
+- (void)_updatePosterLayoutViewForActiveAsset:(unint64_t)asset bounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [(PUIScalingContainerView *)self->_timeContainerView setFrame:a3];
-  v9 = [(PUIScalingContainerView *)self->_timeContainerView contentView];
-  [v9 setFrame:{self->_referenceBounds.origin.x, self->_referenceBounds.origin.y, self->_referenceBounds.size.width, self->_referenceBounds.size.height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [(PUIScalingContainerView *)self->_timeContainerView setFrame:asset];
+  contentView = [(PUIScalingContainerView *)self->_timeContainerView contentView];
+  [contentView setFrame:{self->_referenceBounds.origin.x, self->_referenceBounds.origin.y, self->_referenceBounds.size.width, self->_referenceBounds.size.height}];
 
   [(PUIPosterSnapshotBundleLayoutView *)self->_posterLayoutView setFrame:x, y, width, height];
-  v10 = [(UIViewController *)self pbf_displayContext];
-  -[PBFPosterGalleryPreviewComplicationContentView setLayoutOrientation:](self->_complicationContentView, "setLayoutOrientation:", [v10 pbf_interfaceOrientation]);
+  pbf_displayContext = [(UIViewController *)self pbf_displayContext];
+  -[PBFPosterGalleryPreviewComplicationContentView setLayoutOrientation:](self->_complicationContentView, "setLayoutOrientation:", [pbf_displayContext pbf_interfaceOrientation]);
 }
 
-- (void)_updateDebugImageViewsWithBounds:(CGRect)a3
+- (void)_updateDebugImageViewsWithBounds:(CGRect)bounds
 {
   activeAsset = self->_activeAsset;
-  v31 = [(PBFPosterAssetViewController *)self view:a3.origin.x];
+  v31 = [(PBFPosterAssetViewController *)self view:bounds.origin.x];
   v5 = self->_posterLayoutView;
   v6 = self->_sceneViewControllerContainerView;
   if (_updateDebugImageViewsWithBounds__onceToken != -1)
@@ -1524,7 +1524,7 @@ LABEL_13:
   {
     if (activeAsset == 2)
     {
-      v7 = [(_PBFPosterSceneViewController *)self->_sceneViewController extensionInstance];
+      extensionInstance = [(_PBFPosterSceneViewController *)self->_sceneViewController extensionInstance];
       pidLabelForDebugging = self->_pidLabelForDebugging;
       if (!pidLabelForDebugging)
       {
@@ -1533,8 +1533,8 @@ LABEL_13:
         self->_pidLabelForDebugging = v9;
 
         v11 = self->_pidLabelForDebugging;
-        v12 = [MEMORY[0x277D75348] whiteColor];
-        [(UILabel *)v11 setTextColor:v12];
+        whiteColor = [MEMORY[0x277D75348] whiteColor];
+        [(UILabel *)v11 setTextColor:whiteColor];
 
         v13 = self->_pidLabelForDebugging;
         v14 = [MEMORY[0x277D74300] boldSystemFontOfSize:200.0];
@@ -1549,19 +1549,19 @@ LABEL_13:
       }
 
       v15 = MEMORY[0x277CCACA8];
-      v16 = [v7 auditToken];
-      v17 = [v15 stringWithFormat:@"%d", objc_msgSend(v16, "pid")];
+      auditToken = [extensionInstance auditToken];
+      v17 = [v15 stringWithFormat:@"%d", objc_msgSend(auditToken, "pid")];
       [(UILabel *)pidLabelForDebugging setText:v17];
 
       v18 = self->_pidLabelForDebugging;
       [v31 bounds];
       [(UILabel *)v18 setFrame:?];
-      v19 = [(PUITransformContainerView *)v6 layer];
-      [v19 setBorderWidth:10.0];
+      layer = [(PUITransformContainerView *)v6 layer];
+      [layer setBorderWidth:10.0];
 
-      v20 = [(PUITransformContainerView *)v6 layer];
-      v21 = [MEMORY[0x277D75348] magentaColor];
-      [v20 setBorderColor:{objc_msgSend(v21, "CGColor")}];
+      layer2 = [(PUITransformContainerView *)v6 layer];
+      magentaColor = [MEMORY[0x277D75348] magentaColor];
+      [layer2 setBorderColor:{objc_msgSend(magentaColor, "CGColor")}];
     }
 
     else
@@ -1570,33 +1570,33 @@ LABEL_13:
       v22 = self->_pidLabelForDebugging;
       self->_pidLabelForDebugging = 0;
 
-      v23 = [(PUITransformContainerView *)v6 layer];
-      [v23 setBorderWidth:0.0];
+      layer3 = [(PUITransformContainerView *)v6 layer];
+      [layer3 setBorderWidth:0.0];
 
       if (activeAsset == 1)
       {
-        v24 = [(PUIPosterSnapshotBundleLayoutView *)v5 layer];
-        [v24 setBorderWidth:10.0];
+        layer4 = [(PUIPosterSnapshotBundleLayoutView *)v5 layer];
+        [layer4 setBorderWidth:10.0];
 
-        v25 = [(PUIPosterSnapshotBundleLayoutView *)v5 layer];
-        v26 = [MEMORY[0x277D75348] redColor];
-        [v25 setBorderColor:{objc_msgSend(v26, "CGColor")}];
+        layer5 = [(PUIPosterSnapshotBundleLayoutView *)v5 layer];
+        redColor = [MEMORY[0x277D75348] redColor];
+        [layer5 setBorderColor:{objc_msgSend(redColor, "CGColor")}];
 
 LABEL_11:
-        v27 = [v31 layer];
-        [v27 setBorderWidth:5.0];
+        layer6 = [v31 layer];
+        [layer6 setBorderWidth:5.0];
 
-        v28 = [v31 layer];
-        v29 = [MEMORY[0x277D75348] blueColor];
-        v30 = [v29 colorWithAlphaComponent:0.5];
-        [v28 setBorderColor:{objc_msgSend(v30, "CGColor")}];
+        layer7 = [v31 layer];
+        blueColor = [MEMORY[0x277D75348] blueColor];
+        v30 = [blueColor colorWithAlphaComponent:0.5];
+        [layer7 setBorderColor:{objc_msgSend(v30, "CGColor")}];
 
         goto LABEL_12;
       }
     }
 
-    v25 = [(PUIPosterSnapshotBundleLayoutView *)v5 layer];
-    [v25 setBorderWidth:0.0];
+    layer5 = [(PUIPosterSnapshotBundleLayoutView *)v5 layer];
+    [layer5 setBorderWidth:0.0];
     goto LABEL_11;
   }
 
@@ -1613,8 +1613,8 @@ void __65__PBFPosterAssetViewController__updateDebugImageViewsWithBounds___block
 {
   v6 = self->_sceneViewController;
   [(_PBFPosterSceneViewController *)v6 setDelegate:0];
-  v3 = [(_PBFPosterSceneViewController *)v6 viewIfLoaded];
-  [v3 removeFromSuperview];
+  viewIfLoaded = [(_PBFPosterSceneViewController *)v6 viewIfLoaded];
+  [viewIfLoaded removeFromSuperview];
 
   [(_PBFPosterSceneViewController *)v6 invalidate];
   sceneViewController = self->_sceneViewController;

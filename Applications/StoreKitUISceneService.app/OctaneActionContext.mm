@@ -1,6 +1,6 @@
 @interface OctaneActionContext
-+ (id)contextWithBundleID:(id)a3;
-+ (id)contextWithBundleID:(id)a3 transactionID:(unint64_t)a4;
++ (id)contextWithBundleID:(id)d;
++ (id)contextWithBundleID:(id)d transactionID:(unint64_t)iD;
 - (OctaneActionContext)init;
 @end
 
@@ -27,11 +27,11 @@
   return v2;
 }
 
-+ (id)contextWithBundleID:(id)a3
++ (id)contextWithBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_opt_new();
-  v5 = [v3 copy];
+  v5 = [dCopy copy];
 
   v6 = v4[1];
   v4[1] = v5;
@@ -39,10 +39,10 @@
   return v4;
 }
 
-+ (id)contextWithBundleID:(id)a3 transactionID:(unint64_t)a4
++ (id)contextWithBundleID:(id)d transactionID:(unint64_t)iD
 {
-  result = [OctaneActionContext contextWithBundleID:a3];
-  *(result + 4) = a4;
+  result = [OctaneActionContext contextWithBundleID:d];
+  *(result + 4) = iD;
   return result;
 }
 

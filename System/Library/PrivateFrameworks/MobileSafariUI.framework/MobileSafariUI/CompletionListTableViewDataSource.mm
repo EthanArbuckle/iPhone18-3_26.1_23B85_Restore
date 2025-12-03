@@ -1,26 +1,26 @@
 @interface CompletionListTableViewDataSource
 - (CompletionItemActionHandler)actionHandler;
-- (CompletionListTableViewDataSource)initWithTableView:(id)a3;
+- (CompletionListTableViewDataSource)initWithTableView:(id)view;
 - (id)buildSnapshot;
-- (id)completionItemAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForItem:(id)a4 atIndexPath:(id)a5;
+- (id)completionItemAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForItem:(id)item atIndexPath:(id)path;
 - (void)reloadVisibleRows;
-- (void)updateTableViewWithCompletionList:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)updateTableViewWithCompletionList:(id)a3 rowAnimation:(int64_t)a4 completion:(id)a5;
+- (void)updateTableViewWithCompletionList:(id)list animated:(BOOL)animated completion:(id)completion;
+- (void)updateTableViewWithCompletionList:(id)list rowAnimation:(int64_t)animation completion:(id)completion;
 @end
 
 @implementation CompletionListTableViewDataSource
 
-- (CompletionListTableViewDataSource)initWithTableView:(id)a3
+- (CompletionListTableViewDataSource)initWithTableView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v16.receiver = self;
   v16.super_class = CompletionListTableViewDataSource;
   v6 = [(CompletionListTableViewDataSource *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tableView, a3);
+    objc_storeStrong(&v6->_tableView, view);
     objc_initWeak(&location, v7);
     v8 = objc_alloc(MEMORY[0x277D75B60]);
     v13[0] = MEMORY[0x277D85DD0];
@@ -28,7 +28,7 @@
     v13[2] = __55__CompletionListTableViewDataSource_initWithTableView___block_invoke;
     v13[3] = &unk_2781D7358;
     objc_copyWeak(&v14, &location);
-    v9 = [v8 initWithTableView:v5 cellProvider:v13];
+    v9 = [v8 initWithTableView:viewCopy cellProvider:v13];
     dataSource = v7->_dataSource;
     v7->_dataSource = v9;
 
@@ -51,73 +51,73 @@ id __55__CompletionListTableViewDataSource_initWithTableView___block_invoke(uint
   return v11;
 }
 
-- (id)completionItemAtIndexPath:(id)a3
+- (id)completionItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  if (v5 >= -[UITableViewDiffableDataSource numberOfSectionsInTableView:](self->_dataSource, "numberOfSectionsInTableView:", self->_tableView) || (v6 = [v4 item], v6 >= -[UITableViewDiffableDataSource tableView:numberOfRowsInSection:](self->_dataSource, "tableView:numberOfRowsInSection:", self->_tableView, objc_msgSend(v4, "section"))))
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section >= -[UITableViewDiffableDataSource numberOfSectionsInTableView:](self->_dataSource, "numberOfSectionsInTableView:", self->_tableView) || (v6 = [pathCopy item], v6 >= -[UITableViewDiffableDataSource tableView:numberOfRowsInSection:](self->_dataSource, "tableView:numberOfRowsInSection:", self->_tableView, objc_msgSend(pathCopy, "section"))))
   {
-    v8 = 0;
+    completionItem = 0;
   }
 
   else
   {
-    v7 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v4];
-    v8 = [v7 completionItem];
+    v7 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
+    completionItem = [v7 completionItem];
   }
 
-  return v8;
+  return completionItem;
 }
 
-- (void)updateTableViewWithCompletionList:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)updateTableViewWithCompletionList:(id)list animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  animatedCopy = animated;
   v18[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  objc_storeStrong(&self->_completionList, a3);
-  v11 = [(UITableViewDiffableDataSource *)self->_dataSource snapshot];
-  v12 = [(CompletionListTableViewDataSource *)self buildSnapshot];
-  if ([v12 isEqual:v11])
+  listCopy = list;
+  completionCopy = completion;
+  objc_storeStrong(&self->_completionList, list);
+  snapshot = [(UITableViewDiffableDataSource *)self->_dataSource snapshot];
+  buildSnapshot = [(CompletionListTableViewDataSource *)self buildSnapshot];
+  if ([buildSnapshot isEqual:snapshot])
   {
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    v13 = [v11 sectionIdentifiers];
-    v14 = [v12 sectionIdentifiers];
-    v15 = [(CompletionList *)self->_completionList indexOfSearchSuggestionsGroup];
-    if ([v14 count] > v15)
+    sectionIdentifiers = [snapshot sectionIdentifiers];
+    sectionIdentifiers2 = [buildSnapshot sectionIdentifiers];
+    indexOfSearchSuggestionsGroup = [(CompletionList *)self->_completionList indexOfSearchSuggestionsGroup];
+    if ([sectionIdentifiers2 count] > indexOfSearchSuggestionsGroup)
     {
-      v16 = [v14 objectAtIndexedSubscript:v15];
-      if (v15 != [v13 indexOfObject:v16])
+      v16 = [sectionIdentifiers2 objectAtIndexedSubscript:indexOfSearchSuggestionsGroup];
+      if (indexOfSearchSuggestionsGroup != [sectionIdentifiers indexOfObject:v16])
       {
         v18[0] = v16;
         v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-        [v12 reloadSectionsWithIdentifiers:v17];
+        [buildSnapshot reloadSectionsWithIdentifiers:v17];
       }
     }
 
-    [(UITableViewDiffableDataSource *)self->_dataSource applySnapshot:v12 animatingDifferences:v6 completion:v10];
+    [(UITableViewDiffableDataSource *)self->_dataSource applySnapshot:buildSnapshot animatingDifferences:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)updateTableViewWithCompletionList:(id)a3 rowAnimation:(int64_t)a4 completion:(id)a5
+- (void)updateTableViewWithCompletionList:(id)list rowAnimation:(int64_t)animation completion:(id)completion
 {
   dataSource = self->_dataSource;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(UITableViewDiffableDataSource *)dataSource defaultRowAnimation];
-  [(UITableViewDiffableDataSource *)self->_dataSource setDefaultRowAnimation:a4];
-  [(CompletionListTableViewDataSource *)self updateTableViewWithCompletionList:v10 animated:1 completion:v9];
+  completionCopy = completion;
+  listCopy = list;
+  defaultRowAnimation = [(UITableViewDiffableDataSource *)dataSource defaultRowAnimation];
+  [(UITableViewDiffableDataSource *)self->_dataSource setDefaultRowAnimation:animation];
+  [(CompletionListTableViewDataSource *)self updateTableViewWithCompletionList:listCopy animated:1 completion:completionCopy];
 
   v12 = self->_dataSource;
 
-  [(UITableViewDiffableDataSource *)v12 setDefaultRowAnimation:v11];
+  [(UITableViewDiffableDataSource *)v12 setDefaultRowAnimation:defaultRowAnimation];
 }
 
 - (id)buildSnapshot
@@ -129,7 +129,7 @@ id __55__CompletionListTableViewDataSource_initWithTableView___block_invoke(uint
     v4 = 0;
     v5 = 0x277CBE000uLL;
     v35 = v3;
-    v36 = self;
+    selfCopy = self;
     do
     {
       v6 = MEMORY[0x277CCACA8];
@@ -145,10 +145,10 @@ id __55__CompletionListTableViewDataSource_initWithTableView___block_invoke(uint
 
       v12 = [v10 safari_mapObjectsUsingBlock:&__block_literal_global_9];
       v40 = [MEMORY[0x277CBEB70] orderedSetWithArray:v12];
-      v13 = [v40 array];
+      array = [v40 array];
       v14 = [v12 count];
-      v41 = v13;
-      if (v14 != [v13 count])
+      v41 = array;
+      if (v14 != [array count])
       {
         v38 = v10;
         v39 = v4;
@@ -176,22 +176,22 @@ id __55__CompletionListTableViewDataSource_initWithTableView___block_invoke(uint
               v21 = *(*(&v43 + 1) + 8 * i);
               if ([v15 containsObject:v21])
               {
-                v22 = [v21 completionItem];
+                completionItem = [v21 completionItem];
                 v23 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
                 {
                   v24 = v23;
                   v25 = objc_opt_class();
                   v26 = NSStringFromClass(v25);
-                  v27 = [v22 tableItemEqualityInfo];
+                  tableItemEqualityInfo = [completionItem tableItemEqualityInfo];
                   *buf = 138544130;
                   v48 = v42;
                   v49 = 2114;
                   v50 = v26;
                   v51 = 2114;
-                  v52 = v27;
+                  v52 = tableItemEqualityInfo;
                   v53 = 2114;
-                  v54 = v22;
+                  v54 = completionItem;
                   _os_log_fault_impl(&dword_215819000, v24, OS_LOG_TYPE_FAULT, "Duplicate completion item found in section '%{public}@': class=%{public}@, tableItemEqualityInfo=%{public}@, completionItem=%{public}@", buf, 0x2Au);
                 }
               }
@@ -228,7 +228,7 @@ id __55__CompletionListTableViewDataSource_initWithTableView___block_invoke(uint
         }
 
         v3 = v35;
-        self = v36;
+        self = selfCopy;
         v10 = v38;
         v4 = v39;
         v5 = 0x277CBE000;
@@ -256,51 +256,51 @@ CompletionListTableItem *__50__CompletionListTableViewDataSource_buildSnapshot__
 
 - (void)reloadVisibleRows
 {
-  v3 = [(UITableView *)self->_tableView indexPathsForVisibleRows];
-  if ([v3 count])
+  indexPathsForVisibleRows = [(UITableView *)self->_tableView indexPathsForVisibleRows];
+  if ([indexPathsForVisibleRows count])
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __54__CompletionListTableViewDataSource_reloadVisibleRows__block_invoke;
     v6[3] = &unk_2781D73A0;
     v6[4] = self;
-    v4 = [v3 safari_mapObjectsUsingBlock:v6];
-    v5 = [(UITableViewDiffableDataSource *)self->_dataSource snapshot];
-    [v5 reloadItemsWithIdentifiers:v4];
-    [(UITableViewDiffableDataSource *)self->_dataSource applySnapshot:v5 animatingDifferences:0];
+    v4 = [indexPathsForVisibleRows safari_mapObjectsUsingBlock:v6];
+    snapshot = [(UITableViewDiffableDataSource *)self->_dataSource snapshot];
+    [snapshot reloadItemsWithIdentifiers:v4];
+    [(UITableViewDiffableDataSource *)self->_dataSource applySnapshot:snapshot animatingDifferences:0];
   }
 }
 
-- (id)tableView:(id)a3 cellForItem:(id)a4 atIndexPath:(id)a5
+- (id)tableView:(id)view cellForItem:(id)item atIndexPath:(id)path
 {
   v65 = *MEMORY[0x277D85DE8];
-  val = a3;
-  v8 = a4;
-  v9 = a5;
-  v48 = v8;
-  v10 = [v8 completionItem];
-  v49 = [v10 completionTableViewCellReuseIdentifier];
+  val = view;
+  itemCopy = item;
+  pathCopy = path;
+  v48 = itemCopy;
+  completionItem = [itemCopy completionItem];
+  completionTableViewCellReuseIdentifier = [completionItem completionTableViewCellReuseIdentifier];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ![v9 section])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ![pathCopy section])
   {
-    v11 = [v10 inlineCard];
-    v12 = [v11 cardSections];
-    v13 = [v12 firstObject];
-    [v13 setSeparatorStyle:1];
+    inlineCard = [completionItem inlineCard];
+    cardSections = [inlineCard cardSections];
+    firstObject = [cardSections firstObject];
+    [firstObject setSeparatorStyle:1];
   }
 
-  v14 = [val dequeueReusableCellWithIdentifier:v49];
+  v14 = [val dequeueReusableCellWithIdentifier:completionTableViewCellReuseIdentifier];
   if (!v14)
   {
-    v14 = [v10 completionTableViewCellForCompletionList:self->_completionList];
+    v14 = [completionItem completionTableViewCellForCompletionList:self->_completionList];
   }
 
-  v15 = [v10 completionTableViewCellReuseIdentifier];
-  [v14 setAccessibilityIdentifier:v15];
+  completionTableViewCellReuseIdentifier2 = [completionItem completionTableViewCellReuseIdentifier];
+  [v14 setAccessibilityIdentifier:completionTableViewCellReuseIdentifier2];
 
-  [v10 configureCompletionTableViewCell:v14 forCompletionList:self->_completionList];
-  v16 = [v9 row] + 1;
-  if (v16 >= -[UITableViewDiffableDataSource tableView:numberOfRowsInSection:](self->_dataSource, "tableView:numberOfRowsInSection:", val, [v9 section]))
+  [completionItem configureCompletionTableViewCell:v14 forCompletionList:self->_completionList];
+  v16 = [pathCopy row] + 1;
+  if (v16 >= -[UITableViewDiffableDataSource tableView:numberOfRowsInSection:](self->_dataSource, "tableView:numberOfRowsInSection:", val, [pathCopy section]))
   {
     v21 = 0;
   }
@@ -308,76 +308,76 @@ CompletionListTableItem *__50__CompletionListTableViewDataSource_buildSnapshot__
   else
   {
     dataSource = self->_dataSource;
-    v18 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(v9 inSection:{"row") + 1, objc_msgSend(v9, "section")}];
+    v18 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(pathCopy inSection:{"row") + 1, objc_msgSend(pathCopy, "section")}];
     v19 = [(UITableViewDiffableDataSource *)dataSource itemIdentifierForIndexPath:v18];
-    v20 = [v19 completionItem];
+    completionItem2 = [v19 completionItem];
 
-    v21 = v20;
+    v21 = completionItem2;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v10 safari_configureBackgroundColorForCompletionList:self->_completionList];
+    [completionItem safari_configureBackgroundColorForCompletionList:self->_completionList];
   }
 
-  v22 = ![v9 section] && (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend(v21, "completionCellBackgroundModeInTopSection") == 1;
-  v23 = 1;
+  v22 = ![pathCopy section] && (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend(v21, "completionCellBackgroundModeInTopSection") == 1;
+  separatorStyle = 1;
   if (([MEMORY[0x277D49A08] isSolariumEnabled] & 1) == 0 && !v22)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v24 = v21;
-      v25 = [v10 inlineCard];
-      v26 = [v25 cardSections];
-      v27 = [v26 firstObject];
-      v23 = [v27 separatorStyle];
+      inlineCard2 = [completionItem inlineCard];
+      cardSections2 = [inlineCard2 cardSections];
+      firstObject2 = [cardSections2 firstObject];
+      separatorStyle = [firstObject2 separatorStyle];
 
       v21 = v24;
     }
 
     else
     {
-      v23 = 2;
+      separatorStyle = 2;
     }
   }
 
-  if ([v9 section] || (objc_opt_respondsToSelector() & 1) == 0)
+  if ([pathCopy section] || (objc_opt_respondsToSelector() & 1) == 0)
   {
-    v28 = 0;
+    completionCellBackgroundModeInTopSection = 0;
   }
 
   else
   {
-    v28 = [v10 completionCellBackgroundModeInTopSection];
+    completionCellBackgroundModeInTopSection = [completionItem completionCellBackgroundModeInTopSection];
   }
 
-  if ([v9 row])
+  if ([pathCopy row])
   {
     v29 = 0;
   }
 
   else
   {
-    v29 = ([v9 section] | v21) == 0;
+    v29 = ([pathCopy section] | v21) == 0;
   }
 
   v47 = v21;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v31 = v28;
+  v31 = completionCellBackgroundModeInTopSection;
   if (isKindOfClass)
   {
-    v32 = v10;
-    v33 = [v32 resultType];
-    if ([v33 isEqualToString:@"web_index"])
+    v32 = completionItem;
+    resultType = [v32 resultType];
+    if ([resultType isEqualToString:@"web_index"])
     {
-      v34 = [v32 topHit];
+      topHit = [v32 topHit];
 
-      if (v34)
+      if (topHit)
       {
-        v31 = v28;
+        v31 = completionCellBackgroundModeInTopSection;
       }
 
       else
@@ -389,7 +389,7 @@ CompletionListTableItem *__50__CompletionListTableViewDataSource_buildSnapshot__
     else
     {
 
-      v31 = v28;
+      v31 = completionCellBackgroundModeInTopSection;
     }
   }
 
@@ -400,25 +400,25 @@ CompletionListTableItem *__50__CompletionListTableViewDataSource_buildSnapshot__
 
   else
   {
-    v35 = v28;
+    v35 = completionCellBackgroundModeInTopSection;
   }
 
-  v36 = v35 == 1 && [v9 row] != 0;
+  v36 = v35 == 1 && [pathCopy row] != 0;
   objc_initWeak(&location, val);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__CompletionListTableViewDataSource_tableView_cellForItem_atIndexPath___block_invoke;
   aBlock[3] = &unk_2781D73C8;
   objc_copyWeak(&v53, &location);
-  v37 = v9;
+  v37 = pathCopy;
   v52 = v37;
   v38 = _Block_copy(aBlock);
-  [CompletionListTableViewController configureCell:v14 backgroundMode:v35 separatorStyle:v23 shouldHaveTopPadding:v36 configurationStateDidChangeCallback:v38];
+  [CompletionListTableViewController configureCell:v14 backgroundMode:v35 separatorStyle:separatorStyle shouldHaveTopPadding:v36 configurationStateDidChangeCallback:v38];
   [v14 setClipsToBounds:0];
   if (objc_opt_respondsToSelector())
   {
     WeakRetained = objc_loadWeakRetained(&self->_actionHandler);
-    [v10 setHandlerForActionItem:WeakRetained];
+    [completionItem setHandlerForActionItem:WeakRetained];
   }
 
   if (!v14)
@@ -437,7 +437,7 @@ CompletionListTableItem *__50__CompletionListTableViewDataSource_buildSnapshot__
       }
 
       v43 = objc_opt_class();
-      v44 = [(CompletionList *)self->_completionList numberOfGroups];
+      numberOfGroups = [(CompletionList *)self->_completionList numberOfGroups];
       v45 = -[CompletionList completionsForGroupAtIndex:](self->_completionList, "completionsForGroupAtIndex:", [v37 section]);
       v46 = [v45 count];
       *buf = 138544386;
@@ -447,7 +447,7 @@ CompletionListTableItem *__50__CompletionListTableViewDataSource_buildSnapshot__
       v59 = 2114;
       v60 = v43;
       v61 = 2048;
-      v62 = v44;
+      v62 = numberOfGroups;
       v63 = 2048;
       v64 = v46;
       _os_log_fault_impl(&dword_215819000, v40, OS_LOG_TYPE_FAULT, "No cell returned for completion item at index path %{public}@; completion list %{public}@ nil; item class: %{public}@; number of groups: %ld; number of completions in group: %ld", buf, 0x34u);

@@ -1,7 +1,7 @@
 @interface PKPaymentRequestShippingContactUpdate
-- (PKPaymentRequestShippingContactUpdate)initWithCoder:(id)a3;
+- (PKPaymentRequestShippingContactUpdate)initWithCoder:(id)coder;
 - (PKPaymentRequestShippingContactUpdate)initWithErrors:(NSArray *)errors paymentSummaryItems:(NSArray *)paymentSummaryItems shippingMethods:(NSArray *)shippingMethods;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setErrors:(NSArray *)errors;
 @end
 
@@ -40,18 +40,18 @@
   return v10;
 }
 
-- (PKPaymentRequestShippingContactUpdate)initWithCoder:(id)a3
+- (PKPaymentRequestShippingContactUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKPaymentRequestShippingContactUpdate;
-  v5 = [(PKPaymentRequestUpdate *)&v12 initWithCoder:v4];
+  v5 = [(PKPaymentRequestUpdate *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"errors"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"errors"];
     errors = v5->_errors;
     v5->_errors = v9;
   }
@@ -59,13 +59,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPaymentRequestShippingContactUpdate;
-  v4 = a3;
-  [(PKPaymentRequestUpdate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_errors forKey:{@"errors", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKPaymentRequestUpdate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_errors forKey:{@"errors", v5.receiver, v5.super_class}];
 }
 
 - (void)setErrors:(NSArray *)errors

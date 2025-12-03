@@ -3,55 +3,55 @@
 - (id)interruptionHandler;
 - (id)invalidationHandler;
 - (id)requestMessageHandler;
-- (void)connectToNearbyDevice:(id)a3 withCompletion:(id)a4;
+- (void)connectToNearbyDevice:(id)device withCompletion:(id)completion;
 - (void)invalidate;
-- (void)sendEvent:(id)a3;
-- (void)sendRequest:(id)a3;
-- (void)sendResponse:(id)a3;
-- (void)setEventMessageHandler:(id)a3;
-- (void)setInterruptionHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
-- (void)setRequestMessageHandler:(id)a3;
+- (void)sendEvent:(id)event;
+- (void)sendRequest:(id)request;
+- (void)sendResponse:(id)response;
+- (void)setEventMessageHandler:(id)handler;
+- (void)setInterruptionHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
+- (void)setRequestMessageHandler:(id)handler;
 @end
 
 @implementation TRClientConnection
 
 - (id)interruptionHandler
 {
-  v2 = [(TRClientConnection *)self session];
-  v3 = [v2 interruptionHandler];
+  session = [(TRClientConnection *)self session];
+  interruptionHandler = [session interruptionHandler];
 
-  return v3;
+  return interruptionHandler;
 }
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TRClientConnection *)self session];
-  [v5 setInterruptionHandler:v4];
+  handlerCopy = handler;
+  session = [(TRClientConnection *)self session];
+  [session setInterruptionHandler:handlerCopy];
 }
 
 - (id)invalidationHandler
 {
-  v2 = [(TRClientConnection *)self session];
-  v3 = [v2 invalidationHandler];
+  session = [(TRClientConnection *)self session];
+  invalidationHandler = [session invalidationHandler];
 
-  return v3;
+  return invalidationHandler;
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v5 = [(TRClientConnection *)self session];
+  session = [(TRClientConnection *)self session];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__TRClientConnection_setInvalidationHandler___block_invoke;
   v7[3] = &unk_279DCEF18;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
-  [v5 setInvalidationHandler:v7];
+  [session setInvalidationHandler:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -70,43 +70,43 @@ void __45__TRClientConnection_setInvalidationHandler___block_invoke(uint64_t a1)
 
 - (id)eventMessageHandler
 {
-  v2 = [(TRClientConnection *)self session];
-  v3 = [v2 eventMessageHandler];
+  session = [(TRClientConnection *)self session];
+  eventMessageHandler = [session eventMessageHandler];
 
-  return v3;
+  return eventMessageHandler;
 }
 
-- (void)setEventMessageHandler:(id)a3
+- (void)setEventMessageHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TRClientConnection *)self session];
-  [v5 setEventMessageHandler:v4];
+  handlerCopy = handler;
+  session = [(TRClientConnection *)self session];
+  [session setEventMessageHandler:handlerCopy];
 }
 
 - (id)requestMessageHandler
 {
-  v2 = [(TRClientConnection *)self session];
-  v3 = [v2 requestMessageHandler];
+  session = [(TRClientConnection *)self session];
+  requestMessageHandler = [session requestMessageHandler];
 
-  return v3;
+  return requestMessageHandler;
 }
 
-- (void)setRequestMessageHandler:(id)a3
+- (void)setRequestMessageHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TRClientConnection *)self session];
-  [v5 setRequestMessageHandler:v4];
+  handlerCopy = handler;
+  session = [(TRClientConnection *)self session];
+  [session setRequestMessageHandler:handlerCopy];
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TRClientConnection *)self session];
-  v6 = v5;
-  if (v5)
+  eventCopy = event;
+  session = [(TRClientConnection *)self session];
+  v6 = session;
+  if (session)
   {
-    [v5 sendEvent:v4];
+    [session sendEvent:eventCopy];
   }
 
   else if (_TRLogEnabled == 1)
@@ -123,15 +123,15 @@ void __45__TRClientConnection_setInvalidationHandler___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendRequest:(id)a3
+- (void)sendRequest:(id)request
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TRClientConnection *)self session];
-  v6 = v5;
-  if (v5)
+  requestCopy = request;
+  session = [(TRClientConnection *)self session];
+  v6 = session;
+  if (session)
   {
-    [v5 sendRequest:v4];
+    [session sendRequest:requestCopy];
   }
 
   else
@@ -154,22 +154,22 @@ void __45__TRClientConnection_setInvalidationHandler___block_invoke(uint64_t a1)
     v14[1] = @"The connection must be connected before sending messages";
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TRNearbyDeviceErrorDomain" code:-9102 userInfo:v9];
-    v11 = [v4 responseHandler];
-    (v11)[2](v11, v10, 0);
+    responseHandler = [requestCopy responseHandler];
+    (responseHandler)[2](responseHandler, v10, 0);
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendResponse:(id)a3
+- (void)sendResponse:(id)response
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TRClientConnection *)self session];
-  v6 = v5;
-  if (v5)
+  responseCopy = response;
+  session = [(TRClientConnection *)self session];
+  v6 = session;
+  if (session)
   {
-    [v5 sendResponse:v4];
+    [session sendResponse:responseCopy];
   }
 
   else if (_TRLogEnabled == 1)
@@ -189,11 +189,11 @@ void __45__TRClientConnection_setInvalidationHandler___block_invoke(uint64_t a1)
 - (void)invalidate
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = [(TRClientConnection *)self session];
-  v3 = v2;
-  if (v2)
+  session = [(TRClientConnection *)self session];
+  v3 = session;
+  if (session)
   {
-    [v2 invalidate];
+    [session invalidate];
   }
 
   else if (_TRLogEnabled == 1)
@@ -210,18 +210,18 @@ void __45__TRClientConnection_setInvalidationHandler___block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectToNearbyDevice:(id)a3 withCompletion:(id)a4
+- (void)connectToNearbyDevice:(id)device withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x277D54CE8]);
-  v9 = [v6 representedDevice];
-  [v8 setPeerDevice:v9];
+  representedDevice = [deviceCopy representedDevice];
+  [v8 setPeerDevice:representedDevice];
 
   v10 = dispatch_queue_create("com.apple.TRClientConnection.session.dispatchQ", 0);
   [v8 setDispatchQueue:v10];
 
-  if ([v6 supportedService] == 1)
+  if ([deviceCopy supportedService] == 1)
   {
     [v8 setServiceIdentifier:*MEMORY[0x277D54D78]];
   }
@@ -231,7 +231,7 @@ void __45__TRClientConnection_setInvalidationHandler___block_invoke(uint64_t a1)
   v13[1] = 3221225472;
   v13[2] = __59__TRClientConnection_connectToNearbyDevice_withCompletion___block_invoke;
   v13[3] = &unk_279DCEF40;
-  v11 = v7;
+  v11 = completionCopy;
   v15 = v11;
   objc_copyWeak(&v16, &location);
   v12 = v8;

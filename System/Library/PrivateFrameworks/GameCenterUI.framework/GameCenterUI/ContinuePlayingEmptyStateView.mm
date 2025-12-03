@@ -1,6 +1,6 @@
 @interface ContinuePlayingEmptyStateView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (void)didTapButton:(id)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (void)didTapButton:(id)button;
 - (void)layoutSubviews;
 @end
 
@@ -8,15 +8,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E2FDDE0();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_24E2FECB8(a4);
+  selfCopy = self;
+  v7 = sub_24E2FECB8(in);
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -33,11 +33,11 @@
   return result;
 }
 
-- (void)didTapButton:(id)a3
+- (void)didTapButton:(id)button
 {
-  if (a3)
+  if (button)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_24E3487A8();
     swift_unknownObjectRelease();
@@ -46,7 +46,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_24E2FEDE8();

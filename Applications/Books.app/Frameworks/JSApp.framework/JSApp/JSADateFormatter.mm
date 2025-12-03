@@ -1,44 +1,44 @@
 @interface JSADateFormatter
-+ (id)stringFromDate:(id)a3 dateFormat:(id)a4;
-+ (id)stringFromDate:(id)a3 dateStyle:(unint64_t)a4 timeStyle:(unint64_t)a5;
-+ (id)stringFromDateValue:(id)a3 dateFormatValue:(id)a4;
-+ (id)stringFromDateValue:(id)a3 dateStyleValue:(id)a4 timeStyleValue:(id)a5;
++ (id)stringFromDate:(id)date dateFormat:(id)format;
++ (id)stringFromDate:(id)date dateStyle:(unint64_t)style timeStyle:(unint64_t)timeStyle;
++ (id)stringFromDateValue:(id)value dateFormatValue:(id)formatValue;
++ (id)stringFromDateValue:(id)value dateStyleValue:(id)styleValue timeStyleValue:(id)timeStyleValue;
 @end
 
 @implementation JSADateFormatter
 
-+ (id)stringFromDateValue:(id)a3 dateStyleValue:(id)a4 timeStyleValue:(id)a5
++ (id)stringFromDateValue:(id)value dateStyleValue:(id)styleValue timeStyleValue:(id)timeStyleValue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isDate])
+  valueCopy = value;
+  styleValueCopy = styleValue;
+  timeStyleValueCopy = timeStyleValue;
+  if ([valueCopy isDate])
   {
-    v11 = [v8 toDate];
-    if (v11)
+    toDate = [valueCopy toDate];
+    if (toDate)
     {
-      if ([v9 isString])
+      if ([styleValueCopy isString])
       {
-        v12 = [v9 toString];
+        toString = [styleValueCopy toString];
       }
 
       else
       {
-        v12 = 0;
+        toString = 0;
       }
 
-      if ([v10 isString])
+      if ([timeStyleValueCopy isString])
       {
-        v14 = [v10 toString];
+        toString2 = [timeStyleValueCopy toString];
       }
 
       else
       {
-        v14 = 0;
+        toString2 = 0;
       }
 
-      v15 = sub_4580(a1, v12);
-      v13 = [a1 stringFromDate:v11 dateStyle:v15 timeStyle:{sub_4580(a1, v14)}];
+      v15 = sub_4580(self, toString);
+      v13 = [self stringFromDate:toDate dateStyle:v15 timeStyle:{sub_4580(self, toString2)}];
 
       goto LABEL_12;
     }
@@ -46,7 +46,7 @@
 
   else
   {
-    v11 = 0;
+    toDate = 0;
   }
 
   v13 = 0;
@@ -55,26 +55,26 @@ LABEL_12:
   return v13;
 }
 
-+ (id)stringFromDateValue:(id)a3 dateFormatValue:(id)a4
++ (id)stringFromDateValue:(id)value dateFormatValue:(id)formatValue
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isDate])
+  valueCopy = value;
+  formatValueCopy = formatValue;
+  if ([valueCopy isDate])
   {
-    v8 = [v6 toDate];
-    if (v8)
+    toDate = [valueCopy toDate];
+    if (toDate)
     {
-      if ([v7 isString])
+      if ([formatValueCopy isString])
       {
-        v9 = [v7 toString];
+        toString = [formatValueCopy toString];
       }
 
       else
       {
-        v9 = 0;
+        toString = 0;
       }
 
-      v10 = [a1 stringFromDate:v8 dateFormat:v9];
+      v10 = [self stringFromDate:toDate dateFormat:toString];
 
       goto LABEL_9;
     }
@@ -82,7 +82,7 @@ LABEL_12:
 
   else
   {
-    v8 = 0;
+    toDate = 0;
   }
 
   v10 = 0;
@@ -91,9 +91,9 @@ LABEL_9:
   return v10;
 }
 
-+ (id)stringFromDate:(id)a3 dateStyle:(unint64_t)a4 timeStyle:(unint64_t)a5
++ (id)stringFromDate:(id)date dateStyle:(unint64_t)style timeStyle:(unint64_t)timeStyle
 {
-  v7 = a3;
+  dateCopy = date;
   if (qword_CC058 != -1)
   {
     sub_7EFDC();
@@ -101,18 +101,18 @@ LABEL_9:
 
   v8 = qword_CC050;
   objc_sync_enter(v8);
-  [qword_CC050 setDateStyle:a4];
-  [qword_CC050 setTimeStyle:a5];
-  v9 = [qword_CC050 stringFromDate:v7];
+  [qword_CC050 setDateStyle:style];
+  [qword_CC050 setTimeStyle:timeStyle];
+  v9 = [qword_CC050 stringFromDate:dateCopy];
   objc_sync_exit(v8);
 
   return v9;
 }
 
-+ (id)stringFromDate:(id)a3 dateFormat:(id)a4
++ (id)stringFromDate:(id)date dateFormat:(id)format
 {
-  v5 = a3;
-  v6 = a4;
+  dateCopy = date;
+  formatCopy = format;
   if (qword_CC068 != -1)
   {
     sub_7EFF0();
@@ -120,29 +120,29 @@ LABEL_9:
 
   v7 = qword_CC060;
   objc_sync_enter(v7);
-  v8 = [qword_CC060 calendar];
-  v9 = [v8 calendarIdentifier];
-  v10 = v9;
-  if (v9 == NSCalendarIdentifierGregorian)
+  calendar = [qword_CC060 calendar];
+  calendarIdentifier = [calendar calendarIdentifier];
+  v10 = calendarIdentifier;
+  if (calendarIdentifier == NSCalendarIdentifierGregorian)
   {
   }
 
   else
   {
-    v11 = [v6 containsString:@"y"];
+    v11 = [formatCopy containsString:@"y"];
 
     if (!v11)
     {
       goto LABEL_8;
     }
 
-    [v6 stringByAppendingString:@"G"];
-    v6 = v8 = v6;
+    [formatCopy stringByAppendingString:@"G"];
+    formatCopy = calendar = formatCopy;
   }
 
 LABEL_8:
-  [qword_CC060 setLocalizedDateFormatFromTemplate:v6];
-  v12 = [qword_CC060 stringFromDate:v5];
+  [qword_CC060 setLocalizedDateFormatFromTemplate:formatCopy];
+  v12 = [qword_CC060 stringFromDate:dateCopy];
   objc_sync_exit(v7);
 
   return v12;

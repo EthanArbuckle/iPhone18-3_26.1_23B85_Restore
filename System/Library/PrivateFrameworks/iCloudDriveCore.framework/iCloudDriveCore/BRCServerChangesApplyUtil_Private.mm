@@ -1,33 +1,33 @@
 @interface BRCServerChangesApplyUtil_Private
-+ (BOOL)_handleApplyingDeletedUnlistedDirectoryIfNecessary:(id)a3 localItem:(id)a4 parent:(id)a5;
-+ (BOOL)appLibraryUndergoingCZM:(id)a3 zone:(id)a4 rank:(int64_t)a5 parentID:(id)a6 scheduler:(id)a7 session:(id)a8;
-+ (BOOL)itemUndergoingCZMToAnotherZone:(id)a3 si:(id)a4 clientZone:(id)a5 rank:(int64_t)a6 scheduler:(id)a7 zone:(id)a8;
-+ (BOOL)localItemHasUnsyncedChanges:(id)a3 si:(id)a4 rank:(int64_t)a5 scheduler:(id)a6 clientZone:(id)a7 zone:(id)a8 isDeleteOfShareRoot:(BOOL)a9 session:(id)a10;
-+ (BOOL)serverItemDeadWithNoLiveLocalItem:(id)a3 si:(id)a4 rank:(int64_t)a5 scheduler:(id)a6 clientZone:(id)a7 zone:(id)a8;
-+ (BOOL)serverItemWouldBeParentedToDeadFolder:(id)a3 si:(id)a4 rank:(int64_t)a5 scheduler:(id)a6 zone:(id)a7 diffs:(unint64_t)a8;
++ (BOOL)_handleApplyingDeletedUnlistedDirectoryIfNecessary:(id)necessary localItem:(id)item parent:(id)parent;
++ (BOOL)appLibraryUndergoingCZM:(id)m zone:(id)zone rank:(int64_t)rank parentID:(id)d scheduler:(id)scheduler session:(id)session;
++ (BOOL)itemUndergoingCZMToAnotherZone:(id)zone si:(id)si clientZone:(id)clientZone rank:(int64_t)rank scheduler:(id)scheduler zone:(id)a8;
++ (BOOL)localItemHasUnsyncedChanges:(id)changes si:(id)si rank:(int64_t)rank scheduler:(id)scheduler clientZone:(id)zone zone:(id)a8 isDeleteOfShareRoot:(BOOL)root session:(id)self0;
++ (BOOL)serverItemDeadWithNoLiveLocalItem:(id)item si:(id)si rank:(int64_t)rank scheduler:(id)scheduler clientZone:(id)zone zone:(id)a8;
++ (BOOL)serverItemWouldBeParentedToDeadFolder:(id)folder si:(id)si rank:(int64_t)rank scheduler:(id)scheduler zone:(id)zone diffs:(unint64_t)diffs;
 @end
 
 @implementation BRCServerChangesApplyUtil_Private
 
-+ (BOOL)itemUndergoingCZMToAnotherZone:(id)a3 si:(id)a4 clientZone:(id)a5 rank:(int64_t)a6 scheduler:(id)a7 zone:(id)a8
++ (BOOL)itemUndergoingCZMToAnotherZone:(id)zone si:(id)si clientZone:(id)clientZone rank:(int64_t)rank scheduler:(id)scheduler zone:(id)a8
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  siCopy = si;
+  clientZoneCopy = clientZone;
+  schedulerCopy = scheduler;
   v16 = a8;
-  v17 = [v13 isDocument];
+  isDocument = [siCopy isDocument];
   v18 = 0;
-  if (!a3 && v17)
+  if (!zone && isDocument)
   {
-    v29 = a6;
-    v19 = [v14 db];
-    v20 = [v13 itemID];
-    v21 = [v13 clientZone];
-    v22 = [v21 dbRowID];
-    v23 = [v19 numberWithSQL:{@"SELECT 1 FROM client_items WHERE version_old_zone_item_id = %@ AND version_old_zone_rowid = %@", v20, v22}];
-    v24 = [v23 BOOLValue];
+    rankCopy = rank;
+    v19 = [clientZoneCopy db];
+    itemID = [siCopy itemID];
+    clientZone = [siCopy clientZone];
+    dbRowID = [clientZone dbRowID];
+    v23 = [v19 numberWithSQL:{@"SELECT 1 FROM client_items WHERE version_old_zone_item_id = %@ AND version_old_zone_rowid = %@", itemID, dbRowID}];
+    bOOLValue = [v23 BOOLValue];
 
-    if (v24)
+    if (bOOLValue)
     {
       v25 = brc_bread_crumbs();
       v26 = brc_default_log();
@@ -36,8 +36,8 @@
         +[BRCServerChangesApplyUtil_Private itemUndergoingCZMToAnotherZone:si:clientZone:rank:scheduler:zone:];
       }
 
-      v27 = [v16 dbRowID];
-      [v15 setState:17 forRank:v29 zoneRowID:v27];
+      dbRowID2 = [v16 dbRowID];
+      [schedulerCopy setState:17 forRank:rankCopy zoneRowID:dbRowID2];
 
       v18 = 1;
     }
@@ -51,41 +51,41 @@
   return v18;
 }
 
-+ (BOOL)appLibraryUndergoingCZM:(id)a3 zone:(id)a4 rank:(int64_t)a5 parentID:(id)a6 scheduler:(id)a7 session:(id)a8
++ (BOOL)appLibraryUndergoingCZM:(id)m zone:(id)zone rank:(int64_t)rank parentID:(id)d scheduler:(id)scheduler session:(id)session
 {
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  if (a3)
+  zoneCopy = zone;
+  dCopy = d;
+  schedulerCopy = scheduler;
+  sessionCopy = session;
+  if (m)
   {
     goto LABEL_10;
   }
 
-  if (![v14 isNonDesktopRoot])
+  if (![dCopy isNonDesktopRoot])
   {
     goto LABEL_10;
   }
 
-  if (![v13 isCloudDocsZone])
+  if (![zoneCopy isCloudDocsZone])
   {
     goto LABEL_10;
   }
 
-  v29 = [v14 appLibraryRowID];
-  v17 = [v13 clientZone];
-  v18 = [v17 asPrivateClientZone];
-  v19 = [v18 defaultAppLibrary];
-  v20 = [v19 dbRowID];
-  v21 = [v29 isEqual:v20];
+  appLibraryRowID = [dCopy appLibraryRowID];
+  clientZone = [zoneCopy clientZone];
+  asPrivateClientZone = [clientZone asPrivateClientZone];
+  defaultAppLibrary = [asPrivateClientZone defaultAppLibrary];
+  dbRowID = [defaultAppLibrary dbRowID];
+  v21 = [appLibraryRowID isEqual:dbRowID];
 
   if (v21)
   {
     goto LABEL_10;
   }
 
-  v22 = [v14 appLibraryRowID];
-  v23 = [v16 appLibraryByRowID:v22];
+  appLibraryRowID2 = [dCopy appLibraryRowID];
+  v23 = [sessionCopy appLibraryByRowID:appLibraryRowID2];
 
   if (([v23 state] & 0x200000) != 0)
   {
@@ -102,8 +102,8 @@ LABEL_10:
     +[BRCServerChangesApplyUtil_Private appLibraryUndergoingCZM:zone:rank:parentID:scheduler:session:];
   }
 
-  v26 = [v13 dbRowID];
-  [v15 setState:27 forRank:a5 zoneRowID:v26];
+  dbRowID2 = [zoneCopy dbRowID];
+  [schedulerCopy setState:27 forRank:rank zoneRowID:dbRowID2];
 
   v27 = 1;
 LABEL_11:
@@ -111,36 +111,36 @@ LABEL_11:
   return v27;
 }
 
-+ (BOOL)_handleApplyingDeletedUnlistedDirectoryIfNecessary:(id)a3 localItem:(id)a4 parent:(id)a5
++ (BOOL)_handleApplyingDeletedUnlistedDirectoryIfNecessary:(id)necessary localItem:(id)item parent:(id)parent
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 isDead];
+  necessaryCopy = necessary;
+  itemCopy = item;
+  parentCopy = parent;
+  isDead = [parentCopy isDead];
   v11 = 0;
-  if (v8 || !v10)
+  if (itemCopy || !isDead)
   {
     goto LABEL_12;
   }
 
-  v12 = [v9 st];
-  v13 = [v12 ckInfo];
-  if (([v13 hasDeletionChangeToken] & 1) == 0)
+  v12 = [parentCopy st];
+  ckInfo = [v12 ckInfo];
+  if (([ckInfo hasDeletionChangeToken] & 1) == 0)
   {
 
     goto LABEL_11;
   }
 
-  v14 = [v7 clientZone];
-  v15 = [v9 clientZone];
-  v16 = [v14 isEqualToClientZone:v15];
+  clientZone = [necessaryCopy clientZone];
+  clientZone2 = [parentCopy clientZone];
+  v16 = [clientZone isEqualToClientZone:clientZone2];
 
   if (!v16)
   {
 LABEL_11:
     v11 = 0;
-    v8 = 0;
+    itemCopy = 0;
     goto LABEL_12;
   }
 
@@ -149,34 +149,34 @@ LABEL_11:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
     v29 = 138412802;
-    v30 = v7;
+    v30 = necessaryCopy;
     v31 = 2112;
-    v32 = v9;
+    v32 = parentCopy;
     v33 = 2112;
     v34 = v17;
     _os_log_debug_impl(&dword_223E7A000, v18, OS_LOG_TYPE_DEBUG, "[DEBUG] New item %@ older than a deleted directory %@ so marking dead%@", &v29, 0x20u);
   }
 
-  v8 = [v7 newLocalItemWithDBRowID:{objc_msgSend(0, "dbRowID")}];
-  [v8 markDead];
-  v19 = [v9 st];
-  v20 = [v19 ckInfo];
-  v21 = [v20 deletionChangeToken];
+  itemCopy = [necessaryCopy newLocalItemWithDBRowID:{objc_msgSend(0, "dbRowID")}];
+  [itemCopy markDead];
+  v19 = [parentCopy st];
+  ckInfo2 = [v19 ckInfo];
+  deletionChangeToken = [ckInfo2 deletionChangeToken];
 
-  if ([v8 isDocument])
+  if ([itemCopy isDocument])
   {
-    v22 = [v8 asDocument];
-    v23 = [v22 currentVersion];
-    v24 = [v23 ckInfo];
-    [v24 setDeletionChangeToken:v21];
+    asDocument = [itemCopy asDocument];
+    currentVersion = [asDocument currentVersion];
+    ckInfo3 = [currentVersion ckInfo];
+    [ckInfo3 setDeletionChangeToken:deletionChangeToken];
   }
 
-  v25 = [v8 st];
-  v26 = [v25 ckInfo];
-  [v26 setDeletionChangeToken:v21];
+  v25 = [itemCopy st];
+  ckInfo4 = [v25 ckInfo];
+  [ckInfo4 setDeletionChangeToken:deletionChangeToken];
 
-  [v8 markNeedsUploadOrSyncingUp];
-  [v8 saveToDB];
+  [itemCopy markNeedsUploadOrSyncingUp];
+  [itemCopy saveToDB];
 
   v11 = 1;
 LABEL_12:
@@ -185,30 +185,30 @@ LABEL_12:
   return v11;
 }
 
-+ (BOOL)serverItemWouldBeParentedToDeadFolder:(id)a3 si:(id)a4 rank:(int64_t)a5 scheduler:(id)a6 zone:(id)a7 diffs:(unint64_t)a8
++ (BOOL)serverItemWouldBeParentedToDeadFolder:(id)folder si:(id)si rank:(int64_t)rank scheduler:(id)scheduler zone:(id)zone diffs:(unint64_t)diffs
 {
-  v8 = a8;
+  diffsCopy = diffs;
   v43 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  if (v14 && (v8 & 0x20) == 0 || ![v15 isLive])
+  folderCopy = folder;
+  siCopy = si;
+  schedulerCopy = scheduler;
+  zoneCopy = zone;
+  if (folderCopy && (diffsCopy & 0x20) == 0 || ![siCopy isLive])
   {
     goto LABEL_8;
   }
 
-  v18 = [v15 parentLocalItemOnFS];
-  v19 = v18;
-  if (!v18)
+  parentLocalItemOnFS = [siCopy parentLocalItemOnFS];
+  v19 = parentLocalItemOnFS;
+  if (!parentLocalItemOnFS)
   {
-    if (([a1 _handleApplyingDeletedUnlistedDirectoryIfNecessary:v15 localItem:v14 parent:0] & 1) == 0)
+    if (([self _handleApplyingDeletedUnlistedDirectoryIfNecessary:siCopy localItem:folderCopy parent:0] & 1) == 0)
     {
-      if ([v15 shouldBeGreedyForApply])
+      if ([siCopy shouldBeGreedyForApply])
       {
-        v22 = [v15 clientZone];
-        v23 = [v15 parentItemIDOnFS];
-        v24 = [v22 serverItemByItemID:v23];
+        clientZone = [siCopy clientZone];
+        parentItemIDOnFS = [siCopy parentItemIDOnFS];
+        v24 = [clientZone serverItemByItemID:parentItemIDOnFS];
 
         if (!v24)
         {
@@ -219,13 +219,13 @@ LABEL_12:
             +[BRCServerChangesApplyUtil_Private serverItemWouldBeParentedToDeadFolder:si:rank:scheduler:zone:diffs:];
           }
 
-          v32 = [v17 dbRowID];
-          [v16 setState:16 forRank:a5 zoneRowID:v32];
+          dbRowID = [zoneCopy dbRowID];
+          [schedulerCopy setState:16 forRank:rank zoneRowID:dbRowID];
 
-          v27 = [v15 parentZoneOnFS];
-          v33 = [v27 clientZone];
-          v34 = [v15 parentItemIDOnFS];
-          v35 = [v33 fetchParentChainIfNecessaryWithParentItemID:v34 isUserWaiting:0];
+          parentZoneOnFS = [siCopy parentZoneOnFS];
+          clientZone2 = [parentZoneOnFS clientZone];
+          parentItemIDOnFS2 = [siCopy parentItemIDOnFS];
+          v35 = [clientZone2 fetchParentChainIfNecessaryWithParentItemID:parentItemIDOnFS2 isUserWaiting:0];
 
           goto LABEL_14;
         }
@@ -247,7 +247,7 @@ LABEL_12:
         }
 
         *buf = 134218498;
-        v38 = a5;
+        rankCopy = rank;
         v39 = 2112;
         v40 = v36;
         v41 = 2112;
@@ -258,8 +258,8 @@ LABEL_12:
         }
       }
 
-      v27 = [v17 dbRowID];
-      [v16 setState:21 forRank:a5 zoneRowID:v27];
+      parentZoneOnFS = [zoneCopy dbRowID];
+      [schedulerCopy setState:21 forRank:rank zoneRowID:parentZoneOnFS];
 LABEL_14:
     }
 
@@ -269,13 +269,13 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v20 = [v18 isDead];
-  if ([a1 _handleApplyingDeletedUnlistedDirectoryIfNecessary:v15 localItem:v14 parent:v19])
+  isDead = [parentLocalItemOnFS isDead];
+  if ([self _handleApplyingDeletedUnlistedDirectoryIfNecessary:siCopy localItem:folderCopy parent:v19])
   {
     goto LABEL_15;
   }
 
-  if (v20)
+  if (isDead)
   {
     goto LABEL_12;
   }
@@ -288,28 +288,28 @@ LABEL_16:
   return v21;
 }
 
-+ (BOOL)serverItemDeadWithNoLiveLocalItem:(id)a3 si:(id)a4 rank:(int64_t)a5 scheduler:(id)a6 clientZone:(id)a7 zone:(id)a8
++ (BOOL)serverItemDeadWithNoLiveLocalItem:(id)item si:(id)si rank:(int64_t)rank scheduler:(id)scheduler clientZone:(id)zone zone:(id)a8
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  itemCopy = item;
+  siCopy = si;
+  schedulerCopy = scheduler;
+  zoneCopy = zone;
   v17 = a8;
-  if (v14 && ![v14 isDead] || v13 && !objc_msgSend(v13, "isDead"))
+  if (siCopy && ![siCopy isDead] || itemCopy && !objc_msgSend(itemCopy, "isDead"))
   {
     v22 = 0;
   }
 
   else
   {
-    [v13 markNeedsDeleteForRescheduleOfItem:0];
-    if ([v13 isSharedToMeTopLevelItem])
+    [itemCopy markNeedsDeleteForRescheduleOfItem:0];
+    if ([itemCopy isSharedToMeTopLevelItem])
     {
-      v18 = [v13 asSharedToMeTopLevelItem];
-      [v18 insertTombstoneAliasRecordInZone:0];
+      asSharedToMeTopLevelItem = [itemCopy asSharedToMeTopLevelItem];
+      [asSharedToMeTopLevelItem insertTombstoneAliasRecordInZone:0];
     }
 
-    [v13 saveToDBForServerEdit:1 keepAliases:0];
+    [itemCopy saveToDBForServerEdit:1 keepAliases:0];
     v19 = brc_bread_crumbs();
     v20 = brc_default_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -317,28 +317,28 @@ LABEL_16:
       +[BRCServerChangesApplyUtil_Private serverItemDeadWithNoLiveLocalItem:si:rank:scheduler:clientZone:zone:];
     }
 
-    v21 = [v17 dbRowID];
-    [v15 setState:0 forRank:a5 zoneRowID:v21];
+    dbRowID = [v17 dbRowID];
+    [schedulerCopy setState:0 forRank:rank zoneRowID:dbRowID];
 
-    [v16 didApplyTombstoneForRank:a5];
+    [zoneCopy didApplyTombstoneForRank:rank];
     v22 = 1;
   }
 
   return v22;
 }
 
-+ (BOOL)localItemHasUnsyncedChanges:(id)a3 si:(id)a4 rank:(int64_t)a5 scheduler:(id)a6 clientZone:(id)a7 zone:(id)a8 isDeleteOfShareRoot:(BOOL)a9 session:(id)a10
++ (BOOL)localItemHasUnsyncedChanges:(id)changes si:(id)si rank:(int64_t)rank scheduler:(id)scheduler clientZone:(id)zone zone:(id)a8 isDeleteOfShareRoot:(BOOL)root session:(id)self0
 {
   v88 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
+  changesCopy = changes;
+  siCopy = si;
+  schedulerCopy = scheduler;
+  zoneCopy = zone;
   v19 = a8;
-  v20 = a10;
-  if (!a9)
+  sessionCopy = session;
+  if (!root)
   {
-    if (([v15 localDiffs] & 0x1000000000000000) != 0)
+    if (([changesCopy localDiffs] & 0x1000000000000000) != 0)
     {
       v24 = brc_bread_crumbs();
       v25 = brc_default_log();
@@ -347,13 +347,13 @@ LABEL_16:
         +[BRCServerChangesApplyUtil_Private localItemHasUnsyncedChanges:si:rank:scheduler:clientZone:zone:isDeleteOfShareRoot:session:];
       }
 
-      v26 = [v19 dbRowID];
-      v27 = v17;
+      dbRowID = [v19 dbRowID];
+      v27 = schedulerCopy;
       v28 = 22;
       goto LABEL_13;
     }
 
-    if ([BRCServerChangesApplyUtil shouldForceApplyContentForItem:v15])
+    if ([BRCServerChangesApplyUtil shouldForceApplyContentForItem:changesCopy])
     {
       v21 = brc_bread_crumbs();
       v22 = brc_default_log();
@@ -365,15 +365,15 @@ LABEL_16:
       goto LABEL_4;
     }
 
-    if (!v15 || ([v15 isIdleOrRejected] & 1) != 0)
+    if (!changesCopy || ([changesCopy isIdleOrRejected] & 1) != 0)
     {
       goto LABEL_5;
     }
 
-    if ([v16 isDead])
+    if ([siCopy isDead])
     {
-      v31 = [v15 isDead];
-      if (([v15 isDirectory] & 1) == 0 && v31)
+      isDead = [changesCopy isDead];
+      if (([changesCopy isDirectory] & 1) == 0 && isDead)
       {
         v32 = brc_bread_crumbs();
         v33 = brc_default_log();
@@ -382,22 +382,22 @@ LABEL_16:
           +[BRCServerChangesApplyUtil_Private localItemHasUnsyncedChanges:si:rank:scheduler:clientZone:zone:isDeleteOfShareRoot:session:];
         }
 
-        [v15 markNeedsDeleteForRescheduleOfItem:0];
-        [v15 saveToDB];
+        [changesCopy markNeedsDeleteForRescheduleOfItem:0];
+        [changesCopy saveToDB];
 LABEL_47:
-        [v18 didApplyTombstoneForRank:a5];
-        v26 = [v19 dbRowID];
-        v27 = v17;
+        [zoneCopy didApplyTombstoneForRank:rank];
+        dbRowID = [v19 dbRowID];
+        v27 = schedulerCopy;
         v28 = 0;
 LABEL_13:
-        [v27 setState:v28 forRank:a5 zoneRowID:v26];
+        [v27 setState:v28 forRank:rank zoneRowID:dbRowID];
 
 LABEL_14:
         v23 = 1;
         goto LABEL_15;
       }
 
-      if (([v16 isBRAlias] & v31) == 1)
+      if (([siCopy isBRAlias] & isDead) == 1)
       {
         v52 = brc_bread_crumbs();
         v53 = brc_default_log();
@@ -412,17 +412,17 @@ LABEL_14:
 
     else
     {
-      [v15 isDirectory];
-      [v16 isBRAlias];
+      [changesCopy isDirectory];
+      [siCopy isBRAlias];
     }
 
-    v34 = [v16 itemID];
-    if ([v34 isDocumentsFolder])
+    itemID = [siCopy itemID];
+    if ([itemID isDocumentsFolder])
     {
-      v35 = [v15 itemID];
-      v36 = [v35 isDocumentsFolder];
+      itemID2 = [changesCopy itemID];
+      isDocumentsFolder = [itemID2 isDocumentsFolder];
 
-      if (v36)
+      if (isDocumentsFolder)
       {
         v37 = brc_bread_crumbs();
         v38 = brc_default_log();
@@ -431,14 +431,14 @@ LABEL_14:
           +[BRCServerChangesApplyUtil_Private localItemHasUnsyncedChanges:si:rank:scheduler:clientZone:zone:isDeleteOfShareRoot:session:];
         }
 
-        v39 = [v15 serverZone];
-        [v15 prepareForSyncUpInZone:v39];
+        serverZone = [changesCopy serverZone];
+        [changesCopy prepareForSyncUpInZone:serverZone];
 
-        v40 = [v15 serverZone];
-        v41 = [v40 dbRowID];
-        [v15 markLatestSyncRequestAcknowledgedInZone:v41];
+        serverZone2 = [changesCopy serverZone];
+        dbRowID2 = [serverZone2 dbRowID];
+        [changesCopy markLatestSyncRequestAcknowledgedInZone:dbRowID2];
 
-        [v15 saveToDB];
+        [changesCopy saveToDB];
         goto LABEL_5;
       }
     }
@@ -451,11 +451,11 @@ LABEL_14:
     v43 = brc_default_log();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
     {
-      v72 = [v16 isDead];
+      isDead2 = [siCopy isDead];
       v73 = "";
       *buf = 138412802;
-      v83 = v15;
-      if (v72)
+      v83 = changesCopy;
+      if (isDead2)
       {
         v73 = "\n(dead in server truth)";
       }
@@ -467,7 +467,7 @@ LABEL_14:
       _os_log_debug_impl(&dword_223E7A000, v43, OS_LOG_TYPE_DEBUG, "[DEBUG] Suspending rank for item with conflicts: %@%s%@", buf, 0x20u);
     }
 
-    if ([v15 isMigratingToFPFS])
+    if ([changesCopy isMigratingToFPFS])
     {
       v44 = 15;
     }
@@ -477,23 +477,23 @@ LABEL_14:
       v44 = 22;
     }
 
-    v45 = [v19 dbRowID];
-    [v17 setState:v44 forRank:a5 zoneRowID:v45];
+    dbRowID3 = [v19 dbRowID];
+    [schedulerCopy setState:v44 forRank:rank zoneRowID:dbRowID3];
 
-    if (!v16)
+    if (!siCopy)
     {
 LABEL_58:
-      if ([v15 isSharedToMeChildItem])
+      if ([changesCopy isSharedToMeChildItem])
       {
-        v57 = [v15 st];
-        v58 = [v57 ckInfo];
+        v57 = [changesCopy st];
+        ckInfo = [v57 ckInfo];
 
-        if (!v58)
+        if (!ckInfo)
         {
-          v59 = [v15 localDiffs];
-          v60 = [v15 clientZone];
-          v61 = [v60 dbRowID];
-          v62 = [v15 inFlightSyncUpDiffsInZoneRowID:v61] | v59;
+          localDiffs = [changesCopy localDiffs];
+          clientZone = [changesCopy clientZone];
+          dbRowID4 = [clientZone dbRowID];
+          v62 = [changesCopy inFlightSyncUpDiffsInZoneRowID:dbRowID4] | localDiffs;
 
           if (v62)
           {
@@ -506,33 +506,33 @@ LABEL_58:
                 +[BRCServerChangesApplyUtil_Private localItemHasUnsyncedChanges:si:rank:scheduler:clientZone:zone:isDeleteOfShareRoot:session:];
               }
 
-              v65 = [v16 st];
-              v66 = [v65 ckInfo];
-              v67 = [v15 st];
-              [v67 setCkInfo:v66];
+              v65 = [siCopy st];
+              ckInfo2 = [v65 ckInfo];
+              v67 = [changesCopy st];
+              [v67 setCkInfo:ckInfo2];
 
-              [v15 saveToDBForServerEdit:1 keepAliases:1];
-              v68 = [v20 containerScheduler];
-              [v68 scheduleSyncUpForSideCar];
+              [changesCopy saveToDBForServerEdit:1 keepAliases:1];
+              containerScheduler = [sessionCopy containerScheduler];
+              [containerScheduler scheduleSyncUpForSideCar];
             }
           }
         }
       }
 
-      v69 = [v15 appLibrary];
-      if (([v69 state] & 4) != 0 || !objc_msgSend(v15, "needsSyncUp"))
+      appLibrary = [changesCopy appLibrary];
+      if (([appLibrary state] & 4) != 0 || !objc_msgSend(changesCopy, "needsSyncUp"))
       {
         goto LABEL_71;
       }
 
-      v70 = [v15 clientZone];
-      if ([v70 isSyncBlocked])
+      clientZone2 = [changesCopy clientZone];
+      if ([clientZone2 isSyncBlocked])
       {
         goto LABEL_70;
       }
 
-      v71 = [v15 clientZone];
-      if (([v71 syncState] & 5) != 0)
+      clientZone3 = [changesCopy clientZone];
+      if (([clientZone3 syncState] & 5) != 0)
       {
 
 LABEL_70:
@@ -541,36 +541,36 @@ LABEL_71:
         goto LABEL_14;
       }
 
-      v74 = [v20 syncUpScheduler];
-      v81 = [v74 jobStateFor:v15];
+      syncUpScheduler = [sessionCopy syncUpScheduler];
+      v81 = [syncUpScheduler jobStateFor:changesCopy];
 
       if (v81 != 50)
       {
         goto LABEL_14;
       }
 
-      v75 = [v15 itemID];
-      if (([v75 isDocumentsFolder] & 1) == 0)
+      itemID3 = [changesCopy itemID];
+      if (([itemID3 isDocumentsFolder] & 1) == 0)
       {
-        v76 = [v15 isSharedToMe];
+        isSharedToMe = [changesCopy isSharedToMe];
 
-        if (v76)
+        if (isSharedToMe)
         {
 LABEL_82:
-          v69 = [v15 clientZone];
-          [v69 scheduleSyncUp];
+          appLibrary = [changesCopy clientZone];
+          [appLibrary scheduleSyncUp];
           goto LABEL_71;
         }
 
-        v75 = brc_bread_crumbs();
+        itemID3 = brc_bread_crumbs();
         v77 = brc_default_log();
         if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
         {
-          v78 = [v15 clientZone];
+          clientZone4 = [changesCopy clientZone];
           *buf = 138412546;
-          v83 = v78;
+          v83 = clientZone4;
           v84 = 2112;
-          v85 = v75;
+          v85 = itemID3;
           _os_log_impl(&dword_223E7A000, v77, OS_LOG_TYPE_DEFAULT, "[WARNING] client zone %@ forgot to sync up!%@", buf, 0x16u);
         }
       }
@@ -578,21 +578,21 @@ LABEL_82:
       goto LABEL_82;
     }
 
-    v46 = [v15 st];
-    v47 = [v46 ckInfo];
-    if (v47 || ([v19 isPrivateZone] & 1) == 0)
+    v46 = [changesCopy st];
+    ckInfo3 = [v46 ckInfo];
+    if (ckInfo3 || ([v19 isPrivateZone] & 1) == 0)
     {
-      if (![v15 isDocument])
+      if (![changesCopy isDocument])
       {
-        if (([v15 sharingOptions] & 0x7C) != 4)
+        if (([changesCopy sharingOptions] & 0x7C) != 4)
         {
 
           goto LABEL_58;
         }
 
-        v54 = [v15 localDiffs];
+        localDiffs2 = [changesCopy localDiffs];
 
-        if ((v54 & 0x1000000000000000) != 0)
+        if ((localDiffs2 & 0x1000000000000000) != 0)
         {
           goto LABEL_58;
         }
@@ -601,21 +601,21 @@ LABEL_82:
       }
 
       v80 = v46;
-      v48 = [v15 asDocument];
-      v49 = [v48 currentVersion];
-      v50 = [v49 ckInfo];
-      if (v50)
+      asDocument = [changesCopy asDocument];
+      currentVersion = [asDocument currentVersion];
+      ckInfo4 = [currentVersion ckInfo];
+      if (ckInfo4)
       {
-        v51 = v50;
-        if (([v15 sharingOptions] & 0x7C) != 4)
+        v51 = ckInfo4;
+        if (([changesCopy sharingOptions] & 0x7C) != 4)
         {
 
           goto LABEL_58;
         }
 
-        v79 = [v15 localDiffs];
+        localDiffs3 = [changesCopy localDiffs];
 
-        if ((v79 & 0x1000000000000000) != 0)
+        if ((localDiffs3 & 0x1000000000000000) != 0)
         {
           goto LABEL_58;
         }
@@ -632,16 +632,16 @@ LABEL_54:
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v83 = v15;
+      v83 = changesCopy;
       v84 = 2112;
-      v85 = v16;
+      v85 = siCopy;
       v86 = 2112;
       v87 = v55;
       _os_log_debug_impl(&dword_223E7A000, v56, OS_LOG_TYPE_DEBUG, "[DEBUG] Learning sharing options on local item %@ from %@%@", buf, 0x20u);
     }
 
-    [v15 setSharingOptions:{objc_msgSend(v16, "sharingOptions")}];
-    [v15 saveToDBForServerEdit:1 keepAliases:1];
+    [changesCopy setSharingOptions:{objc_msgSend(siCopy, "sharingOptions")}];
+    [changesCopy saveToDBForServerEdit:1 keepAliases:1];
     goto LABEL_58;
   }
 

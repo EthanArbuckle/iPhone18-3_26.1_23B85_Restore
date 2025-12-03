@@ -1,22 +1,22 @@
 @interface PGSceneFeatureExtractor
-- (PGSceneFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4;
-- (id)labelsForVersion:(int64_t)a3;
+- (PGSceneFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error;
+- (id)labelsForVersion:(int64_t)version;
 @end
 
 @implementation PGSceneFeatureExtractor
 
-- (id)labelsForVersion:(int64_t)a3
+- (id)labelsForVersion:(int64_t)version
 {
   v7[13] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEBF8];
-  if (a3 > 2)
+  if (version > 2)
   {
-    if (a3 == 3)
+    if (version == 3)
     {
       v3 = &unk_284486378;
     }
 
-    else if (a3 == 4)
+    else if (version == 4)
     {
       v7[0] = @"Snow";
       v7[1] = @"Sunset_Sunrise";
@@ -38,12 +38,12 @@
   else
   {
     v4 = &unk_284486360;
-    if (a3 != 2)
+    if (version != 2)
     {
       v4 = MEMORY[0x277CBEBF8];
     }
 
-    if (a3 == 1)
+    if (version == 1)
     {
       v3 = &unk_284486348;
     }
@@ -59,13 +59,13 @@
   return v3;
 }
 
-- (PGSceneFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4
+- (PGSceneFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error
 {
-  v5 = [(PGSceneFeatureExtractor *)self labelsForVersion:a3, a4];
+  error = [(PGSceneFeatureExtractor *)self labelsForVersion:version, error];
   v6 = +[PGGraphMomentNode sceneOfMoment];
   v9.receiver = self;
   v9.super_class = PGSceneFeatureExtractor;
-  v7 = [(PGGraphFeatureExtractor *)&v9 initWithName:@"Scene" featureNames:v5 relation:v6 labelForTargetBlock:&__block_literal_global_57723];
+  v7 = [(PGGraphFeatureExtractor *)&v9 initWithName:@"Scene" featureNames:error relation:v6 labelForTargetBlock:&__block_literal_global_57723];
 
   return v7;
 }

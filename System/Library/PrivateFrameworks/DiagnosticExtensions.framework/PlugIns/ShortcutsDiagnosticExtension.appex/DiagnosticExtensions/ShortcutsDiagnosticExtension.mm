@@ -1,24 +1,24 @@
 @interface ShortcutsDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 - (id)exportedDatabaseAttachment;
 - (id)exportedSyncEventsAttachment;
 @end
 
 @implementation ShortcutsDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v4 = +[NSMutableArray array];
-  v5 = [(ShortcutsDiagnosticExtension *)self exportedDatabaseAttachment];
-  if (v5)
+  exportedDatabaseAttachment = [(ShortcutsDiagnosticExtension *)self exportedDatabaseAttachment];
+  if (exportedDatabaseAttachment)
   {
-    [v4 addObject:v5];
+    [v4 addObject:exportedDatabaseAttachment];
   }
 
-  v6 = [(ShortcutsDiagnosticExtension *)self exportedSyncEventsAttachment];
-  if (v6)
+  exportedSyncEventsAttachment = [(ShortcutsDiagnosticExtension *)self exportedSyncEventsAttachment];
+  if (exportedSyncEventsAttachment)
   {
-    [v4 addObject:v6];
+    [v4 addObject:exportedSyncEventsAttachment];
   }
 
   return v4;
@@ -71,13 +71,13 @@
   v4 = v24;
   if (v3)
   {
-    v5 = [v3 context];
-    v6 = [v5 persistentStoreCoordinator];
+    context = [v3 context];
+    persistentStoreCoordinator = [context persistentStoreCoordinator];
 
-    v7 = [v6 persistentStores];
-    v8 = [v7 firstObject];
+    persistentStores = [persistentStoreCoordinator persistentStores];
+    firstObject = [persistentStores firstObject];
 
-    if (!v8)
+    if (!firstObject)
     {
       v10 = sub_100000F20();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -144,7 +144,7 @@
     }
 
     v22 = v4;
-    v18 = [v6 migratePersistentStore:v8 toURL:v11 options:v16 withType:NSSQLiteStoreType error:&v22];
+    v18 = [persistentStoreCoordinator migratePersistentStore:firstObject toURL:v11 options:v16 withType:NSSQLiteStoreType error:&v22];
     v15 = v22;
 
     if (v18)
@@ -175,14 +175,14 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v6 = sub_100000F20();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  persistentStoreCoordinator = sub_100000F20();
+  if (os_log_type_enabled(persistentStoreCoordinator, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315394;
     v28 = "[ShortcutsDiagnosticExtension exportedDatabaseAttachment]";
     v29 = 2112;
     v30 = v4;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%s Unable to load database: %@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, persistentStoreCoordinator, OS_LOG_TYPE_ERROR, "%s Unable to load database: %@", buf, 0x16u);
   }
 
   v19 = 0;

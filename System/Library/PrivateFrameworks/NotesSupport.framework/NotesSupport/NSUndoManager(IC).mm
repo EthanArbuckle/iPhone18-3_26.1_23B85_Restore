@@ -19,12 +19,12 @@
 
 - (uint64_t)ic_isUndoingOrRedoing
 {
-  if ([a1 isUndoing])
+  if ([self isUndoing])
   {
     return 1;
   }
 
-  return [a1 isRedoing];
+  return [self isRedoing];
 }
 
 @end

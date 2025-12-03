@@ -1,26 +1,26 @@
 @interface NTKExtragalacticFaceBundle
-- (id)_sortableFacesForDevice:(id)a3;
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (id)galleryRowPrioritiesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
+- (id)_sortableFacesForDevice:(id)device;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (id)galleryRowPrioritiesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
 @end
 
 @implementation NTKExtragalacticFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [(NTKFace *)NTKExtragalacticFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [(NTKFace *)NTKExtragalacticFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
   if (NTKShowGalleryLiteUI())
   {
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:3887189377])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:3887189377])
   {
     v5 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v5 = [(NTKExtragalacticFaceBundle *)self _sortableFacesForDevice:v4];
+    v5 = [(NTKExtragalacticFaceBundle *)self _sortableFacesForDevice:deviceCopy];
   }
 
   return v5;
 }
 
-- (id)galleryRowPrioritiesForDevice:(id)a3
+- (id)galleryRowPrioritiesForDevice:(id)device
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = &unk_284E9B8F0;
@@ -62,14 +62,14 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (NTKShowGalleryLiteUI())
   {
     v7.receiver = self;
     v7.super_class = NTKExtragalacticFaceBundle;
-    v5 = [(NTKFaceBundle *)&v7 galleryFacesForDevice:v4];
+    v5 = [(NTKFaceBundle *)&v7 galleryFacesForDevice:deviceCopy];
     [v5 enumerateObjectsUsingBlock:&unk_284E98D80];
   }
 
@@ -81,9 +81,9 @@
   return v5;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     return &unk_284E9BBE8;
   }
@@ -94,10 +94,10 @@
   }
 }
 
-- (id)_sortableFacesForDevice:(id)a3
+- (id)_sortableFacesForDevice:(id)device
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [(NTKExtragalacticFaceBundle *)self defaultFaceForDevice:a3];
+  v3 = [(NTKExtragalacticFaceBundle *)self defaultFaceForDevice:device];
   v4 = [objc_alloc(MEMORY[0x277D2C018]) initWithFace:v3 priority:1300];
   v5 = v4;
   if (v4)

@@ -1,27 +1,27 @@
 @interface _UIShareableContentSceneComponent
 - (UIScene)_scene;
-- (_UIShareableContentSceneComponent)initWithScene:(id)a3;
-- (id)_actionRespondersForScene:(id)a3;
+- (_UIShareableContentSceneComponent)initWithScene:(id)scene;
+- (id)_actionRespondersForScene:(id)scene;
 @end
 
 @implementation _UIShareableContentSceneComponent
 
-- (_UIShareableContentSceneComponent)initWithScene:(id)a3
+- (_UIShareableContentSceneComponent)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = _UIShareableContentSceneComponent;
   v5 = [(_UIShareableContentSceneComponent *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
+    objc_storeWeak(&v5->_scene, sceneCopy);
   }
 
   return v6;
 }
 
-- (id)_actionRespondersForScene:(id)a3
+- (id)_actionRespondersForScene:(id)scene
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(_UIShareableContentSceneActionHandler);

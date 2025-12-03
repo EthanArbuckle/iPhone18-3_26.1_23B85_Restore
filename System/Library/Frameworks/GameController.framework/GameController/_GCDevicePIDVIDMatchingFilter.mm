@@ -1,34 +1,34 @@
 @interface _GCDevicePIDVIDMatchingFilter
-- (BOOL)match:(id)a3;
-- (_GCDevicePIDVIDMatchingFilter)initWithVendorID:(id)a3 productIDs:(id)a4;
+- (BOOL)match:(id)match;
+- (_GCDevicePIDVIDMatchingFilter)initWithVendorID:(id)d productIDs:(id)ds;
 - (id)identifier;
 @end
 
 @implementation _GCDevicePIDVIDMatchingFilter
 
-- (_GCDevicePIDVIDMatchingFilter)initWithVendorID:(id)a3 productIDs:(id)a4
+- (_GCDevicePIDVIDMatchingFilter)initWithVendorID:(id)d productIDs:(id)ds
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  dsCopy = ds;
   v12.receiver = self;
   v12.super_class = _GCDevicePIDVIDMatchingFilter;
   v9 = [(_GCDevicePIDVIDMatchingFilter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_vendorID, a3);
-    objc_storeStrong(&v10->_productIDs, a4);
+    objc_storeStrong(&v9->_vendorID, d);
+    objc_storeStrong(&v10->_productIDs, ds);
   }
 
   return v10;
 }
 
-- (BOOL)match:(id)a3
+- (BOOL)match:(id)match
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 numberPropertyForKey:@"VendorID"];
-  v6 = [v4 numberPropertyForKey:@"ProductID"];
+  matchCopy = match;
+  v5 = [matchCopy numberPropertyForKey:@"VendorID"];
+  v6 = [matchCopy numberPropertyForKey:@"ProductID"];
   v7 = v6;
   LOBYTE(v8) = 0;
   if (v5 && v6)
@@ -87,8 +87,8 @@ LABEL_15:
 {
   v2 = MEMORY[0x1E696AEC0];
   vendorID = self->_vendorID;
-  v4 = [(NSArray *)self->_productIDs firstObject];
-  v5 = [v2 stringWithFormat:@"vid(%@).pid(%@)", vendorID, v4];
+  firstObject = [(NSArray *)self->_productIDs firstObject];
+  v5 = [v2 stringWithFormat:@"vid(%@).pid(%@)", vendorID, firstObject];
 
   return v5;
 }

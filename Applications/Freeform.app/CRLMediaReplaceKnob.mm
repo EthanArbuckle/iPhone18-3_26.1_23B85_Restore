@@ -1,41 +1,41 @@
 @interface CRLMediaReplaceKnob
-- (BOOL)isHitByUnscaledPoint:(CGPoint)a3 inputType:(int64_t)a4 returningDistance:(double *)a5;
-- (CRLMediaReplaceKnob)initWithImage:(id)a3 radius:(double)a4 backgroundColor:(id)a5 onRep:(id)a6;
-- (CRLMediaReplaceKnob)initWithImage:(id)a3 size:(CGSize)a4 backgroundColor:(id)a5 cornerRadius:(double)a6 onRep:(id)a7;
+- (BOOL)isHitByUnscaledPoint:(CGPoint)point inputType:(int64_t)type returningDistance:(double *)distance;
+- (CRLMediaReplaceKnob)initWithImage:(id)image radius:(double)radius backgroundColor:(id)color onRep:(id)rep;
+- (CRLMediaReplaceKnob)initWithImage:(id)image size:(CGSize)size backgroundColor:(id)color cornerRadius:(double)radius onRep:(id)rep;
 - (id)createKnobRenderable;
-- (void)setBackgroundCircleColor:(id)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)setBackgroundCircleColor:(id)color;
+- (void)setHidden:(BOOL)hidden;
 - (void)updateHitRegionPath;
 @end
 
 @implementation CRLMediaReplaceKnob
 
-- (CRLMediaReplaceKnob)initWithImage:(id)a3 radius:(double)a4 backgroundColor:(id)a5 onRep:(id)a6
+- (CRLMediaReplaceKnob)initWithImage:(id)image radius:(double)radius backgroundColor:(id)color onRep:(id)rep
 {
-  v11 = a5;
-  objc_storeStrong(&self->_backgroundColor, a5);
-  v12 = a6;
-  v13 = a3;
+  colorCopy = color;
+  objc_storeStrong(&self->_backgroundColor, color);
+  repCopy = rep;
+  imageCopy = image;
   v28.receiver = self;
   v28.super_class = CRLMediaReplaceKnob;
-  v14 = [(CRLCanvasButtonKnob *)&v28 initWithImage:0 radius:5 tag:v12 onRep:a4];
+  v14 = [(CRLCanvasButtonKnob *)&v28 initWithImage:0 radius:5 tag:repCopy onRep:radius];
 
   [(CRLCanvasKnob *)v14 setShouldDisplayDirectlyOverRep:1];
-  [(CRLCanvasKnob *)v14 setRadius:a4];
-  [(CRLCanvasButtonKnob *)v14 setImage:v13];
+  [(CRLCanvasKnob *)v14 setRadius:radius];
+  [(CRLCanvasButtonKnob *)v14 setImage:imageCopy];
 
-  v15 = [(CRLCanvasKnob *)v14 renderable];
-  [v15 bounds];
+  renderable = [(CRLCanvasKnob *)v14 renderable];
+  [renderable bounds];
   v17 = v16;
 
   if (v17 != 0.0)
   {
-    v18 = [(CRLCanvasKnob *)v14 renderable];
-    [v18 bounds];
+    renderable2 = [(CRLCanvasKnob *)v14 renderable];
+    [renderable2 bounds];
     v23 = sub_100120414(v19, v20, v21, v22);
     v25 = v24;
-    v26 = [(CRLCanvasButtonKnob *)v14 imageRenderable];
-    [v26 setPosition:{v23, v25}];
+    imageRenderable = [(CRLCanvasButtonKnob *)v14 imageRenderable];
+    [imageRenderable setPosition:{v23, v25}];
   }
 
   [(CRLMediaReplaceKnob *)v14 setHidden:0];
@@ -43,11 +43,11 @@
   return v14;
 }
 
-- (CRLMediaReplaceKnob)initWithImage:(id)a3 size:(CGSize)a4 backgroundColor:(id)a5 cornerRadius:(double)a6 onRep:(id)a7
+- (CRLMediaReplaceKnob)initWithImage:(id)image size:(CGSize)size backgroundColor:(id)color cornerRadius:(double)radius onRep:(id)rep
 {
-  self->_size = a4;
-  self->_cornerRadius = a6;
-  return [(CRLMediaReplaceKnob *)self initWithImage:a3 radius:a5 backgroundColor:a7 onRep:0.0];
+  self->_size = size;
+  self->_cornerRadius = radius;
+  return [(CRLMediaReplaceKnob *)self initWithImage:image radius:color backgroundColor:rep onRep:0.0];
 }
 
 - (void)updateHitRegionPath
@@ -57,15 +57,15 @@
   [(CRLCanvasKnob *)self setHitRegionPath:v4];
 }
 
-- (void)setBackgroundCircleColor:(id)a3
+- (void)setBackgroundCircleColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = objc_opt_class();
-  v6 = [(CRLCanvasKnob *)self renderable];
-  v9 = sub_100014370(v5, v6);
+  renderable = [(CRLCanvasKnob *)self renderable];
+  v9 = sub_100014370(v5, renderable);
 
-  v7 = [v4 CGColor];
-  [v9 setFillColor:v7];
+  cGColor = [colorCopy CGColor];
+  [v9 setFillColor:cGColor];
   v8 = +[CRLColor clearColor];
   [v9 setStrokeColor:{objc_msgSend(v8, "CGColor")}];
 }
@@ -101,33 +101,33 @@
   return v3;
 }
 
-- (BOOL)isHitByUnscaledPoint:(CGPoint)a3 inputType:(int64_t)a4 returningDistance:(double *)a5
+- (BOOL)isHitByUnscaledPoint:(CGPoint)point inputType:(int64_t)type returningDistance:(double *)distance
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v13.receiver = self;
   v13.super_class = CRLMediaReplaceKnob;
-  if (![(CRLCanvasButtonKnob *)&v13 isHitByUnscaledPoint:a4 inputType:a5 returningDistance:?])
+  if (![(CRLCanvasButtonKnob *)&v13 isHitByUnscaledPoint:type inputType:distance returningDistance:?])
   {
     return 0;
   }
 
   v8 = [(CRLCanvasKnob *)self rep];
-  v9 = [v8 interactiveCanvasController];
-  v10 = [v9 hitRep:{x, y}];
+  interactiveCanvasController = [v8 interactiveCanvasController];
+  v10 = [interactiveCanvasController hitRep:{x, y}];
 
   v11 = v10 == v8;
   return v11;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  if (self->_hidden != a3)
+  if (self->_hidden != hidden)
   {
-    v4 = a3;
-    self->_hidden = a3;
-    v5 = [(CRLCanvasKnob *)self renderable];
-    [v5 setHidden:v4];
+    hiddenCopy = hidden;
+    self->_hidden = hidden;
+    renderable = [(CRLCanvasKnob *)self renderable];
+    [renderable setHidden:hiddenCopy];
   }
 }
 

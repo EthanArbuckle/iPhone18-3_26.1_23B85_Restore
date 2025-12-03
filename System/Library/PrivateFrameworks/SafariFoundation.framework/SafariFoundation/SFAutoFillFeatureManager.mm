@@ -9,12 +9,12 @@
 - (BOOL)userIsEligibleForPasskeys;
 - (BOOL)userIsEligibleForPasskeysWithICloudKeychain;
 - (SFAutoFillFeatureManager)init;
-- (id)_getBundleRecordIdentifierWithString:(id)a3;
+- (id)_getBundleRecordIdentifierWithString:(id)string;
 - (id)_getVerificationCodeProviderBundleIdentifier;
 - (void)_refreshCachedAutoFillRestrictionValues;
 - (void)dealloc;
 - (void)reportPasswordAutoFillProviderTelemetry;
-- (void)setShouldAutoFillPasswordsFromKeychain:(BOOL)a3;
+- (void)setShouldAutoFillPasswordsFromKeychain:(BOOL)keychain;
 @end
 
 @implementation SFAutoFillFeatureManager
@@ -45,22 +45,22 @@ uint64_t __48__SFAutoFillFeatureManager_sharedFeatureManager__block_invoke()
   v2 = [(SFAutoFillFeatureManager *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D262A0] sharedConnection];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
     if (objc_opt_respondsToSelector())
     {
-      [v3 registerObserver:v2];
+      [mEMORY[0x277D262A0] registerObserver:v2];
     }
 
     else
     {
-      [v3 addObserver:v2];
+      [mEMORY[0x277D262A0] addObserver:v2];
     }
 
     [(SFAutoFillFeatureManager *)v2 _refreshCachedAutoFillRestrictionValues];
     [(SFAutoFillFeatureManager *)v2 _refreshCachedIsPasswordsAppInstalled];
-    v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v4 addObserver:v2 selector:sel__refreshCachedIsPasswordsAppInstalled name:@"com.apple.LaunchServices.applicationRegistered" object:0];
-    [v4 addObserver:v2 selector:sel__refreshCachedIsPasswordsAppInstalled name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__refreshCachedIsPasswordsAppInstalled name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+    [defaultCenter addObserver:v2 selector:sel__refreshCachedIsPasswordsAppInstalled name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
     v5 = v2;
   }
 
@@ -69,19 +69,19 @@ uint64_t __48__SFAutoFillFeatureManager_sharedFeatureManager__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
   if (objc_opt_respondsToSelector())
   {
-    [v3 unregisterObserver:self];
+    [mEMORY[0x277D262A0] unregisterObserver:self];
   }
 
   else
   {
-    [v3 removeObserver:self];
+    [mEMORY[0x277D262A0] removeObserver:self];
   }
 
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = SFAutoFillFeatureManager;
@@ -123,10 +123,10 @@ uint64_t __48__SFAutoFillFeatureManager_sharedFeatureManager__block_invoke()
 
 + (void)autoFillPreferencesDidChange
 {
-  CFPreferencesAppSynchronize([a1 autoFillPreferencesDomain]);
-  v4 = [a1 _syncManager];
+  CFPreferencesAppSynchronize([self autoFillPreferencesDomain]);
+  _syncManager = [self _syncManager];
   v3 = [MEMORY[0x277CBEB98] setWithObjects:{@"AutoFillPasswords", @"AutoFillFromAddressBook", 0}];
-  [v4 synchronizeUserDefaultsDomain:@"com.apple.WebUI" keys:v3];
+  [_syncManager synchronizeUserDefaultsDomain:@"com.apple.WebUI" keys:v3];
 }
 
 - (BOOL)userIsEligibleForPasskeys
@@ -141,9 +141,9 @@ uint64_t __48__SFAutoFillFeatureManager_sharedFeatureManager__block_invoke()
   else
   {
     v5 = +[SFCredentialProviderExtensionManager sharedManager];
-    v6 = [v5 atLeastOneEnabledExtensionSupportsPasskeys];
+    atLeastOneEnabledExtensionSupportsPasskeys = [v5 atLeastOneEnabledExtensionSupportsPasskeys];
 
-    if (v6)
+    if (atLeastOneEnabledExtensionSupportsPasskeys)
     {
       return 1;
     }
@@ -159,25 +159,25 @@ uint64_t __48__SFAutoFillFeatureManager_sharedFeatureManager__block_invoke()
 - (BOOL)userIsEligibleForPasskeysWithICloudKeychain
 {
   v2 = +[SFAutoFillFeatureManager sharedFeatureManager];
-  v3 = [v2 shouldAutoFillPasswordsFromKeychain];
+  shouldAutoFillPasswordsFromKeychain = [v2 shouldAutoFillPasswordsFromKeychain];
 
-  if (!v3)
+  if (!shouldAutoFillPasswordsFromKeychain)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x277D49A50] sharedMonitor];
-  v5 = [v4 isKeychainSyncEnabled];
+  mEMORY[0x277D49A50] = [MEMORY[0x277D49A50] sharedMonitor];
+  isKeychainSyncEnabled = [mEMORY[0x277D49A50] isKeychainSyncEnabled];
 
-  if (!v5)
+  if (!isKeychainSyncEnabled)
   {
     return 0;
   }
 
-  v6 = [MEMORY[0x277D499F0] currentDevice];
-  v7 = [v6 hasPasscode];
+  currentDevice = [MEMORY[0x277D499F0] currentDevice];
+  hasPasscode = [currentDevice hasPasscode];
 
-  return v7;
+  return hasPasscode;
 }
 
 - (BOOL)shouldAutoFillPasswordsFromKeychain
@@ -193,8 +193,8 @@ uint64_t __48__SFAutoFillFeatureManager_sharedFeatureManager__block_invoke()
     if (self)
     {
       keyExistsAndHasValidFormat = 0;
-      v3 = [objc_opt_class() autoFillPreferencesDomain];
-      LODWORD(self) = CFPreferencesGetAppBooleanValue(@"AutoFillPasswords", v3, &keyExistsAndHasValidFormat);
+      autoFillPreferencesDomain = [objc_opt_class() autoFillPreferencesDomain];
+      LODWORD(self) = CFPreferencesGetAppBooleanValue(@"AutoFillPasswords", autoFillPreferencesDomain, &keyExistsAndHasValidFormat);
       if (keyExistsAndHasValidFormat)
       {
         LOBYTE(self) = self != 0;
@@ -215,10 +215,10 @@ uint64_t __48__SFAutoFillFeatureManager_sharedFeatureManager__block_invoke()
   return self & 1;
 }
 
-- (void)setShouldAutoFillPasswordsFromKeychain:(BOOL)a3
+- (void)setShouldAutoFillPasswordsFromKeychain:(BOOL)keychain
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!keychain)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -230,8 +230,8 @@ uint64_t __48__SFAutoFillFeatureManager_sharedFeatureManager__block_invoke()
 
 - (BOOL)isUserAllowedToTogglePasswordAutoFillEnabledState
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 BOOLRestrictionForFeature:*MEMORY[0x277D26000]] == 0;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] BOOLRestrictionForFeature:*MEMORY[0x277D26000]] == 0;
 
   return v3;
 }
@@ -265,29 +265,29 @@ uint64_t __53__SFAutoFillFeatureManager_autoFillPreferencesDomain__block_invoke(
 
 - (void)_refreshCachedAutoFillRestrictionValues
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  self->_cachedAutoFillRestrictionValue = [v3 BOOLRestrictionForFeature:*MEMORY[0x277D26030]];
-  self->_cachedPasswordAutoFillEffectiveValue = [v3 effectiveBoolValueForSetting:*MEMORY[0x277D26000]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  self->_cachedAutoFillRestrictionValue = [mEMORY[0x277D262A0] BOOLRestrictionForFeature:*MEMORY[0x277D26030]];
+  self->_cachedPasswordAutoFillEffectiveValue = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D26000]];
 }
 
-- (id)_getBundleRecordIdentifierWithString:(id)a3
+- (id)_getBundleRecordIdentifierWithString:(id)string
 {
   v3 = MEMORY[0x277CC1E98];
-  v4 = a3;
+  stringCopy = string;
   v5 = [v3 alloc];
-  v6 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v4];
+  v6 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:stringCopy];
 
   v15 = 0;
   v7 = [v5 initWithURL:v6 error:&v15];
   v8 = v15;
 
-  v9 = [v7 bundleRecord];
-  v10 = [v9 bundleIdentifier];
-  v11 = [v10 length];
+  bundleRecord = [v7 bundleRecord];
+  bundleIdentifier = [bundleRecord bundleIdentifier];
+  v11 = [bundleIdentifier length];
 
   if (v11)
   {
-    v12 = v9;
+    v12 = bundleRecord;
   }
 
   else
@@ -311,9 +311,9 @@ uint64_t __53__SFAutoFillFeatureManager_autoFillPreferencesDomain__block_invoke(
 {
   v3 = [(SFAutoFillFeatureManager *)self _getBundleRecordIdentifierWithString:@"otpauth://abc"];
   v4 = [(SFAutoFillFeatureManager *)self _getBundleRecordIdentifierWithString:@"otpauth-migration://abc"];
-  v5 = [v3 bundleIdentifier];
+  bundleIdentifier = [v3 bundleIdentifier];
   v6 = *MEMORY[0x277D49CC0];
-  if ([v5 isEqualToString:*MEMORY[0x277D49CC0]])
+  if ([bundleIdentifier isEqualToString:*MEMORY[0x277D49CC0]])
   {
     v7 = v4 == 0;
   }
@@ -331,8 +331,8 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v8 = [v4 bundleIdentifier];
-  v9 = [v8 isEqualToString:v6];
+  bundleIdentifier2 = [v4 bundleIdentifier];
+  v9 = [bundleIdentifier2 isEqualToString:v6];
 
   if (v9)
   {
@@ -341,23 +341,23 @@ LABEL_8:
 
   v10 = v4;
 LABEL_10:
-  v11 = [v10 bundleIdentifier];
+  bundleIdentifier3 = [v10 bundleIdentifier];
 
-  return v11;
+  return bundleIdentifier3;
 }
 
 - (void)reportPasswordAutoFillProviderTelemetry
 {
   v3 = +[SFCredentialProviderExtensionManager sharedManager];
-  v4 = [v3 getEnabledExtensionsSynchronously];
-  v5 = [v4 count] != 0;
+  getEnabledExtensionsSynchronously = [v3 getEnabledExtensionsSynchronously];
+  v5 = [getEnabledExtensionsSynchronously count] != 0;
 
-  v6 = [MEMORY[0x277D499B8] sharedLogger];
-  [v6 reportIsUsingPasswordsApp:-[SFAutoFillFeatureManager shouldAutoFillPasswordsFromKeychain](self isUsingCredentialProviderExtension:{"shouldAutoFillPasswordsFromKeychain"), v5}];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] reportIsUsingPasswordsApp:-[SFAutoFillFeatureManager shouldAutoFillPasswordsFromKeychain](self isUsingCredentialProviderExtension:{"shouldAutoFillPasswordsFromKeychain"), v5}];
 
-  v8 = [MEMORY[0x277D499B8] sharedLogger];
-  v7 = [(SFAutoFillFeatureManager *)self _getVerificationCodeProviderBundleIdentifier];
-  [v8 reportVerificationCodeProvider:v7];
+  mEMORY[0x277D499B8]2 = [MEMORY[0x277D499B8] sharedLogger];
+  _getVerificationCodeProviderBundleIdentifier = [(SFAutoFillFeatureManager *)self _getVerificationCodeProviderBundleIdentifier];
+  [mEMORY[0x277D499B8]2 reportVerificationCodeProvider:_getVerificationCodeProviderBundleIdentifier];
 }
 
 - (void)_getBundleRecordIdentifierWithString:(void *)a1 .cold.1(void *a1, void *a2)

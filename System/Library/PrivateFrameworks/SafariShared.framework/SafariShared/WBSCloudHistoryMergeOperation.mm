@@ -1,24 +1,24 @@
 @interface WBSCloudHistoryMergeOperation
-- (WBSCloudHistoryMergeOperation)initWithDatabase:(id)a3 fetchResult:(id)a4 profileServerIdentifier:(id)a5;
+- (WBSCloudHistoryMergeOperation)initWithDatabase:(id)database fetchResult:(id)result profileServerIdentifier:(id)identifier;
 - (void)_buildRedirectChains;
 - (void)_buildVisitsByVisitIdentifiersMap;
 - (void)_filterVisitsByTombstones;
-- (void)_loadTombstonesWithCompletion:(id)a3;
-- (void)_lookUpExistingItemsWithCompletion:(id)a3;
-- (void)_mergeVisitsWithCompletion:(id)a3;
+- (void)_loadTombstonesWithCompletion:(id)completion;
+- (void)_lookUpExistingItemsWithCompletion:(id)completion;
+- (void)_mergeVisitsWithCompletion:(id)completion;
 - (void)_removeDuplicateVisits;
-- (void)_replayAndAddTombstones:(id)a3;
+- (void)_replayAndAddTombstones:(id)tombstones;
 - (void)_updateClientVersions;
-- (void)mergeWithCompletion:(id)a3;
+- (void)mergeWithCompletion:(id)completion;
 @end
 
 @implementation WBSCloudHistoryMergeOperation
 
-- (WBSCloudHistoryMergeOperation)initWithDatabase:(id)a3 fetchResult:(id)a4 profileServerIdentifier:(id)a5
+- (WBSCloudHistoryMergeOperation)initWithDatabase:(id)database fetchResult:(id)result profileServerIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  databaseCopy = database;
+  resultCopy = result;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = WBSCloudHistoryMergeOperation;
   v12 = [(WBSCloudHistoryMergeOperation *)&v17 init];
@@ -28,26 +28,26 @@
     queue = v12->_queue;
     v12->_queue = v13;
 
-    objc_storeStrong(&v12->_fetchResult, a4);
-    objc_storeStrong(&v12->_database, a3);
-    objc_storeStrong(&v12->_profileServerIdentifier, a5);
+    objc_storeStrong(&v12->_fetchResult, result);
+    objc_storeStrong(&v12->_database, database);
+    objc_storeStrong(&v12->_profileServerIdentifier, identifier);
     v15 = v12;
   }
 
   return v12;
 }
 
-- (void)mergeWithCompletion:(id)a3
+- (void)mergeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__WBSCloudHistoryMergeOperation_mergeWithCompletion___block_invoke;
   v7[3] = &unk_1E7FB81B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -103,13 +103,13 @@ uint64_t __53__WBSCloudHistoryMergeOperation_mergeWithCompletion___block_invoke_
 
 - (void)_updateClientVersions
 {
-  v3 = [(WBSCloudHistoryFetchResult *)self->_fetchResult clientVersions];
+  clientVersions = [(WBSCloudHistoryFetchResult *)self->_fetchResult clientVersions];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __54__WBSCloudHistoryMergeOperation__updateClientVersions__block_invoke;
   v4[3] = &unk_1E7FB81E0;
   v4[4] = self;
-  [v3 enumerateKeysAndObjectsUsingBlock:v4];
+  [clientVersions enumerateKeysAndObjectsUsingBlock:v4];
 }
 
 void __54__WBSCloudHistoryMergeOperation__updateClientVersions__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -132,9 +132,9 @@ void __54__WBSCloudHistoryMergeOperation__updateClientVersions__block_invoke_2(u
   }
 }
 
-- (void)_replayAndAddTombstones:(id)a3
+- (void)_replayAndAddTombstones:(id)tombstones
 {
-  v4 = a3;
+  tombstonesCopy = tombstones;
   database = self->_database;
   v6 = [(WBSCloudHistoryFetchResult *)self->_fetchResult tombstonesForProfileWithServerIdentifier:self->_profileServerIdentifier];
   v8[0] = MEMORY[0x1E69E9820];
@@ -142,20 +142,20 @@ void __54__WBSCloudHistoryMergeOperation__updateClientVersions__block_invoke_2(u
   v8[2] = __57__WBSCloudHistoryMergeOperation__replayAndAddTombstones___block_invoke;
   v8[3] = &unk_1E7FB8208;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = tombstonesCopy;
+  v7 = tombstonesCopy;
   [(WBSHistoryServiceDatabaseProtocol *)database replayAndAddTombstones:v6 completionHandler:v8];
 }
 
 - (void)_buildVisitsByVisitIdentifiersMap
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   visitsByVisitIdentifiers = self->_visitsByVisitIdentifiers;
-  self->_visitsByVisitIdentifiers = v3;
+  self->_visitsByVisitIdentifiers = dictionary;
 
   v5 = [MEMORY[0x1E696AB50] set];
-  v25 = self;
+  selfCopy = self;
   v6 = [(WBSCloudHistoryFetchResult *)self->_fetchResult visitsForProfileWithServerIdentifier:self->_profileServerIdentifier];
   v30 = 0u;
   v31 = 0u;
@@ -176,8 +176,8 @@ void __54__WBSCloudHistoryMergeOperation__updateClientVersions__block_invoke_2(u
         }
 
         v11 = MEMORY[0x1E696AD98];
-        v12 = [*(*(&v30 + 1) + 8 * i) visitIdentifier];
-        [v12 visitTime];
+        visitIdentifier = [*(*(&v30 + 1) + 8 * i) visitIdentifier];
+        [visitIdentifier visitTime];
         v14 = [v11 numberWithUnsignedInteger:(v13 / 10.0)];
         [v5 addObject:v14];
       }
@@ -208,14 +208,14 @@ void __54__WBSCloudHistoryMergeOperation__updateClientVersions__block_invoke_2(u
         }
 
         v20 = *(*(&v26 + 1) + 8 * j);
-        v21 = [v20 visitIdentifier];
-        [v21 visitTime];
+        visitIdentifier2 = [v20 visitIdentifier];
+        [visitIdentifier2 visitTime];
         v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:(v22 / 10.0)];
         v24 = [v5 countForObject:v23];
 
         if (v24 <= 0x63)
         {
-          [(NSMutableDictionary *)v25->_visitsByVisitIdentifiers setObject:v20 forKeyedSubscript:v21];
+          [(NSMutableDictionary *)selfCopy->_visitsByVisitIdentifiers setObject:v20 forKeyedSubscript:visitIdentifier2];
         }
       }
 
@@ -226,17 +226,17 @@ void __54__WBSCloudHistoryMergeOperation__updateClientVersions__block_invoke_2(u
   }
 }
 
-- (void)_loadTombstonesWithCompletion:(id)a3
+- (void)_loadTombstonesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   database = self->_database;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__WBSCloudHistoryMergeOperation__loadTombstonesWithCompletion___block_invoke;
   v7[3] = &unk_1E7FB8230;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(WBSHistoryServiceDatabaseProtocol *)database fetchAllTombstonesWithCompletionHandler:v7];
 }
 
@@ -278,8 +278,8 @@ uint64_t __63__WBSCloudHistoryMergeOperation__loadTombstonesWithCompletion___blo
 - (void)_buildRedirectChains
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableDictionary *)self->_visitsByVisitIdentifiers allValues];
-  v4 = [MEMORY[0x1E695DFA8] setWithArray:v3];
+  allValues = [(NSMutableDictionary *)self->_visitsByVisitIdentifiers allValues];
+  v4 = [MEMORY[0x1E695DFA8] setWithArray:allValues];
   redirectChainEarliestVisits = self->_redirectChainEarliestVisits;
   self->_redirectChainEarliestVisits = v4;
 
@@ -287,7 +287,7 @@ uint64_t __63__WBSCloudHistoryMergeOperation__loadTombstonesWithCompletion___blo
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v3;
+  v6 = allValues;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -303,10 +303,10 @@ uint64_t __63__WBSCloudHistoryMergeOperation__loadTombstonesWithCompletion___blo
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 redirectSourceVisitIdentifier];
-        if (v12)
+        redirectSourceVisitIdentifier = [v11 redirectSourceVisitIdentifier];
+        if (redirectSourceVisitIdentifier)
         {
-          v13 = [(NSMutableDictionary *)self->_visitsByVisitIdentifiers objectForKeyedSubscript:v12];
+          v13 = [(NSMutableDictionary *)self->_visitsByVisitIdentifiers objectForKeyedSubscript:redirectSourceVisitIdentifier];
           [v11 setRedirectSourceVisit:v13];
           [v13 setRedirectDestinationVisit:v11];
           if (v13)
@@ -326,13 +326,13 @@ uint64_t __63__WBSCloudHistoryMergeOperation__loadTombstonesWithCompletion___blo
 - (void)_filterVisitsByTombstones
 {
   v56 = *MEMORY[0x1E69E9840];
-  v40 = [MEMORY[0x1E695DF70] array];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v37 = self;
+  selfCopy = self;
   v4 = self->_tombstones;
   v5 = [(NSSet *)v4 countByEnumeratingWithState:&v49 objects:v55 count:16];
   if (v5)
@@ -349,22 +349,22 @@ uint64_t __63__WBSCloudHistoryMergeOperation__loadTombstonesWithCompletion___blo
         }
 
         v9 = *(*(&v49 + 1) + 8 * i);
-        v10 = [v9 urlString];
-        if ([v10 length])
+        urlString = [v9 urlString];
+        if ([urlString length])
         {
-          v11 = [v3 objectForKeyedSubscript:v10];
-          if (!v11)
+          array2 = [dictionary objectForKeyedSubscript:urlString];
+          if (!array2)
           {
-            v11 = [MEMORY[0x1E695DF70] array];
-            [v3 setObject:v11 forKeyedSubscript:v10];
+            array2 = [MEMORY[0x1E695DF70] array];
+            [dictionary setObject:array2 forKeyedSubscript:urlString];
           }
 
-          [v11 addObject:v9];
+          [array2 addObject:v9];
         }
 
         else
         {
-          [v40 addObject:v9];
+          [array addObject:v9];
         }
       }
 
@@ -374,12 +374,12 @@ uint64_t __63__WBSCloudHistoryMergeOperation__loadTombstonesWithCompletion___blo
     while (v6);
   }
 
-  v12 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v37->_visitsByVisitIdentifiers;
+  obj = selfCopy->_visitsByVisitIdentifiers;
   v39 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v45 objects:v54 count:16];
   if (v39)
   {
@@ -398,9 +398,9 @@ uint64_t __63__WBSCloudHistoryMergeOperation__loadTombstonesWithCompletion___blo
         v42 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v15 = [v14 urlString];
-        v16 = [v3 objectForKeyedSubscript:v15];
-        v17 = [v40 arrayByAddingObjectsFromArray:v16];
+        urlString2 = [v14 urlString];
+        v16 = [dictionary objectForKeyedSubscript:urlString2];
+        v17 = [array arrayByAddingObjectsFromArray:v16];
 
         v18 = [v17 countByEnumeratingWithState:&v41 objects:v53 count:16];
         if (v18)
@@ -419,54 +419,54 @@ uint64_t __63__WBSCloudHistoryMergeOperation__loadTombstonesWithCompletion___blo
               v22 = *(*(&v41 + 1) + 8 * k);
               [v14 visitTime];
               v24 = v23;
-              v25 = [v14 urlString];
-              LODWORD(v22) = [v22 matchesVisitTime:v25 urlString:v24];
+              urlString3 = [v14 urlString];
+              LODWORD(v22) = [v22 matchesVisitTime:urlString3 urlString:v24];
 
               if (v22)
               {
-                v26 = [(NSMutableDictionary *)v37->_visitsByVisitIdentifiers objectForKeyedSubscript:v14];
+                v26 = [(NSMutableDictionary *)selfCopy->_visitsByVisitIdentifiers objectForKeyedSubscript:v14];
                 v27 = v26;
                 if (v26)
                 {
-                  v28 = [v26 visitIdentifier];
-                  [v12 addObject:v28];
+                  visitIdentifier = [v26 visitIdentifier];
+                  [array3 addObject:visitIdentifier];
 
-                  v29 = [v27 redirectSourceVisit];
+                  redirectSourceVisit = [v27 redirectSourceVisit];
                   v30 = v27;
-                  if (v29)
+                  if (redirectSourceVisit)
                   {
                     v31 = v27;
                     do
                     {
-                      v30 = v29;
+                      v30 = redirectSourceVisit;
 
-                      v32 = [v30 visitIdentifier];
-                      [v12 addObject:v32];
+                      visitIdentifier2 = [v30 visitIdentifier];
+                      [array3 addObject:visitIdentifier2];
 
-                      v29 = [v30 redirectSourceVisit];
+                      redirectSourceVisit = [v30 redirectSourceVisit];
                       v31 = v30;
                     }
 
-                    while (v29);
+                    while (redirectSourceVisit);
                   }
 
-                  [(NSMutableSet *)v37->_redirectChainEarliestVisits removeObject:v30];
+                  [(NSMutableSet *)selfCopy->_redirectChainEarliestVisits removeObject:v30];
                 }
 
-                v33 = [v27 redirectDestinationVisit];
-                if (v33)
+                redirectDestinationVisit = [v27 redirectDestinationVisit];
+                if (redirectDestinationVisit)
                 {
                   do
                   {
-                    v34 = [v33 visitIdentifier];
-                    [v12 addObject:v34];
+                    visitIdentifier3 = [redirectDestinationVisit visitIdentifier];
+                    [array3 addObject:visitIdentifier3];
 
-                    v35 = [v33 redirectDestinationVisit];
+                    v33RedirectDestinationVisit = [redirectDestinationVisit redirectDestinationVisit];
 
-                    v33 = v35;
+                    redirectDestinationVisit = v33RedirectDestinationVisit;
                   }
 
-                  while (v35);
+                  while (v33RedirectDestinationVisit);
                 }
 
                 goto LABEL_35;
@@ -492,23 +492,23 @@ LABEL_35:
     while (v39);
   }
 
-  [(NSMutableDictionary *)v37->_visitsByVisitIdentifiers removeObjectsForKeys:v12];
+  [(NSMutableDictionary *)selfCopy->_visitsByVisitIdentifiers removeObjectsForKeys:array3];
 }
 
-- (void)_lookUpExistingItemsWithCompletion:(id)a3
+- (void)_lookUpExistingItemsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   database = self->_database;
   v6 = MEMORY[0x1E695DFD8];
-  v7 = [(NSMutableDictionary *)self->_visitsByVisitIdentifiers allKeys];
-  v8 = [v6 setWithArray:v7];
+  allKeys = [(NSMutableDictionary *)self->_visitsByVisitIdentifiers allKeys];
+  v8 = [v6 setWithArray:allKeys];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68__WBSCloudHistoryMergeOperation__lookUpExistingItemsWithCompletion___block_invoke;
   v10[3] = &unk_1E7FB8230;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(WBSHistoryServiceDatabaseProtocol *)database visitIdentifiersMatchingExistingVisits:v8 desiredVisitTimePrecision:0 completionHandler:v10];
 }
 
@@ -582,11 +582,11 @@ uint64_t __68__WBSCloudHistoryMergeOperation__lookUpExistingItemsWithCompletion_
           while (1)
           {
             existingVisits = self->_existingVisits;
-            v12 = [v10 visitIdentifier];
-            v13 = [(NSSet *)existingVisits containsObject:v12];
+            visitIdentifier = [v10 visitIdentifier];
+            v13 = [(NSSet *)existingVisits containsObject:visitIdentifier];
 
-            v14 = [v10 redirectDestinationVisit];
-            v15 = v14;
+            redirectDestinationVisit = [v10 redirectDestinationVisit];
+            v15 = redirectDestinationVisit;
             if (!v13)
             {
               break;
@@ -599,23 +599,23 @@ uint64_t __68__WBSCloudHistoryMergeOperation__lookUpExistingItemsWithCompletion_
             }
           }
 
-          if (v14)
+          if (redirectDestinationVisit)
           {
             while (1)
             {
               v16 = self->_existingVisits;
-              v17 = [v15 visitIdentifier];
-              LOBYTE(v16) = [(NSSet *)v16 containsObject:v17];
+              visitIdentifier2 = [v15 visitIdentifier];
+              LOBYTE(v16) = [(NSSet *)v16 containsObject:visitIdentifier2];
 
               if (v16)
               {
                 break;
               }
 
-              v18 = [v15 redirectDestinationVisit];
+              redirectDestinationVisit2 = [v15 redirectDestinationVisit];
 
-              v15 = v18;
-              if (!v18)
+              v15 = redirectDestinationVisit2;
+              if (!redirectDestinationVisit2)
               {
                 goto LABEL_14;
               }
@@ -652,12 +652,12 @@ LABEL_10:
   }
 }
 
-- (void)_mergeVisitsWithCompletion:(id)a3
+- (void)_mergeVisitsWithCompletion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  block = a3;
-  v4 = [(NSMutableSet *)self->_redirectChainEarliestVisits allObjects];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_14];
+  block = completion;
+  allObjects = [(NSMutableSet *)self->_redirectChainEarliestVisits allObjects];
+  v5 = [allObjects sortedArrayUsingComparator:&__block_literal_global_14];
 
   v6 = dispatch_group_create();
   v23 = 0u;
@@ -685,26 +685,26 @@ LABEL_10:
         {
           do
           {
-            v9 = [v8 visitIdentifier];
+            visitIdentifier = [v8 visitIdentifier];
             dispatch_group_enter(v6);
             database = self->_database;
-            v11 = [v8 redirectSourceVisitIdentifier];
-            v12 = [v8 title];
-            v13 = [v8 wasHTTPNonGet];
-            v14 = [v8 loadWasSuccessful];
+            redirectSourceVisitIdentifier = [v8 redirectSourceVisitIdentifier];
+            title = [v8 title];
+            wasHTTPNonGet = [v8 wasHTTPNonGet];
+            loadWasSuccessful = [v8 loadWasSuccessful];
             v21[0] = MEMORY[0x1E69E9820];
             v21[1] = 3221225472;
             v21[2] = __60__WBSCloudHistoryMergeOperation__mergeVisitsWithCompletion___block_invoke_2;
             v21[3] = &unk_1E7FB8278;
             v22 = v6;
-            [(WBSHistoryServiceDatabaseProtocol *)database recordVisitWithIdentifier:v9 sourceVisit:v11 title:v12 wasHTTPNonGet:v13 loadSuccessful:v14 origin:1 attributes:0 statusCode:0 completionHandler:v21];
+            [(WBSHistoryServiceDatabaseProtocol *)database recordVisitWithIdentifier:visitIdentifier sourceVisit:redirectSourceVisitIdentifier title:title wasHTTPNonGet:wasHTTPNonGet loadSuccessful:loadWasSuccessful origin:1 attributes:0 statusCode:0 completionHandler:v21];
 
-            v15 = [v8 redirectDestinationVisit];
+            redirectDestinationVisit = [v8 redirectDestinationVisit];
 
-            v8 = v15;
+            v8 = redirectDestinationVisit;
           }
 
-          while (v15);
+          while (redirectDestinationVisit);
         }
 
         v7 = v20 + 1;

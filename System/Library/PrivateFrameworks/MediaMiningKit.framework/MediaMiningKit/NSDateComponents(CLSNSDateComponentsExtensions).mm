@@ -6,8 +6,8 @@
 
 - (id)description
 {
-  v1 = [a1 date];
-  v2 = [v1 description];
+  date = [self date];
+  v2 = [date description];
 
   return v2;
 }

@@ -46,9 +46,9 @@
 + (id)sharedSettings
 {
   v2 = +[PHRootSettings sharedSettings];
-  v3 = [v2 imageManagerSettings];
+  imageManagerSettings = [v2 imageManagerSettings];
 
-  return v3;
+  return imageManagerSettings;
 }
 
 @end

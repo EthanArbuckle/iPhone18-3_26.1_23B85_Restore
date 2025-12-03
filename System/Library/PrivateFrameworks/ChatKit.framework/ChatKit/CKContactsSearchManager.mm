@@ -1,34 +1,34 @@
 @interface CKContactsSearchManager
-- (BOOL)shouldIncludeGroupInResults:(id)a3;
+- (BOOL)shouldIncludeGroupInResults:(id)results;
 - (CKContactsSearchManager)init;
 - (CKContactsSearchManagerDelegate)delegate;
 - (NSCharacterSet)emojiCharacterSet;
-- (_NSRange)_rangeForSearchTerm:(id)a3 inTarget:(id)a4 tokenizedByCharacterSet:(id)a5;
-- (id)_cullOldResults:(id)a3;
-- (id)_filterGroupResults:(id)a3;
-- (id)_sortResultsByDate:(id)a3;
-- (id)_sortSearchResultsWithCoreRecentsResults:(id)a3 displayNameMatches:(id)a4 participantNameMatches:(id)a5;
-- (id)createAutocompelteGroupMembersFromParticipants:(id)a3;
-- (id)matchingConversationWithGuid:(id)a3;
+- (_NSRange)_rangeForSearchTerm:(id)term inTarget:(id)target tokenizedByCharacterSet:(id)set;
+- (id)_cullOldResults:(id)results;
+- (id)_filterGroupResults:(id)results;
+- (id)_sortResultsByDate:(id)date;
+- (id)_sortSearchResultsWithCoreRecentsResults:(id)results displayNameMatches:(id)matches participantNameMatches:(id)nameMatches;
+- (id)createAutocompelteGroupMembersFromParticipants:(id)participants;
+- (id)matchingConversationWithGuid:(id)guid;
 - (id)nameGroupSearchResults;
 - (id)participantMatchGroupResults;
-- (id)participantMatchResultsForSearchTerm:(id)a3;
+- (id)participantMatchResultsForSearchTerm:(id)term;
 - (id)zkwGroupSuggestions;
 - (void)cancelSearch;
-- (void)consumeAutocompleteSearchResults:(id)a3 taskID:(id)a4;
+- (void)consumeAutocompleteSearchResults:(id)results taskID:(id)d;
 - (void)dealloc;
-- (void)didSelectRecipient:(id)a3 atIndex:(unint64_t)a4;
+- (void)didSelectRecipient:(id)recipient atIndex:(unint64_t)index;
 - (void)finishedSearchingForAutocompleteResults;
-- (void)removeRecipient:(id)a3;
-- (void)searchWithText:(id)a3;
+- (void)removeRecipient:(id)recipient;
+- (void)searchWithText:(id)text;
 @end
 
 @implementation CKContactsSearchManager
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if (IMOSLoggingEnabled())
   {
@@ -91,10 +91,10 @@ LABEL_10:
   return v2;
 }
 
-- (void)searchWithText:(id)a3
+- (void)searchWithText:(id)text
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  textCopy = text;
   [(CKContactsSearchManager *)self cancelSearch];
   v5 = [MEMORY[0x1E69A6170] globalTimingCollectionForKey:@"CKAutocompleteTimingKey"];
   [v5 startTimingForKey:@"Total"];
@@ -106,8 +106,8 @@ LABEL_10:
   searchResults = self->_searchResults;
   self->_searchResults = v7;
 
-  v9 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  LODWORD(v5) = [v9 stewieEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  LODWORD(v5) = [mEMORY[0x1E69A8070] stewieEnabled];
 
   if (v5)
   {
@@ -119,10 +119,10 @@ LABEL_10:
     v10 = 23;
   }
 
-  v36 = v4;
-  [(CKContactsSearchManager *)self setSearchText:v4];
-  v11 = [(CKContactsSearchManager *)self searchManager];
-  [v11 setSearchTypes:v10];
+  v36 = textCopy;
+  [(CKContactsSearchManager *)self setSearchText:textCopy];
+  searchManager = [(CKContactsSearchManager *)self searchManager];
+  [searchManager setSearchTypes:v10];
 
   v12 = MEMORY[0x193AF5EC0](@"CNAutocompleteFetchContext", @"Contacts");
   if (v12)
@@ -140,7 +140,7 @@ LABEL_10:
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v35 = self;
+  selfCopy = self;
   obj = [(CKContactsSearchManager *)self enteredRecipients];
   v14 = [obj countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v14)
@@ -157,26 +157,26 @@ LABEL_10:
         }
 
         v18 = *(*(&v42 + 1) + 8 * i);
-        v19 = [v18 address];
+        address = [v18 address];
 
-        if (v19)
+        if (address)
         {
-          v20 = [v18 address];
-          [v13 addObject:v20];
+          address2 = [v18 address];
+          [v13 addObject:address2];
         }
 
         if ([v18 isGroup])
         {
-          v21 = [v18 children];
+          children = [v18 children];
 
-          if (v21)
+          if (children)
           {
             v40 = 0u;
             v41 = 0u;
             v38 = 0u;
             v39 = 0u;
-            v22 = [v18 children];
-            v23 = [v22 countByEnumeratingWithState:&v38 objects:v46 count:16];
+            children2 = [v18 children];
+            v23 = [children2 countByEnumeratingWithState:&v38 objects:v46 count:16];
             if (v23)
             {
               v24 = v23;
@@ -187,20 +187,20 @@ LABEL_10:
                 {
                   if (*v39 != v25)
                   {
-                    objc_enumerationMutation(v22);
+                    objc_enumerationMutation(children2);
                   }
 
                   v27 = *(*(&v38 + 1) + 8 * j);
-                  v28 = [v27 address];
+                  address3 = [v27 address];
 
-                  if (v28)
+                  if (address3)
                   {
-                    v29 = [v27 address];
-                    [v13 addObject:v29];
+                    address4 = [v27 address];
+                    [v13 addObject:address4];
                   }
                 }
 
-                v24 = [v22 countByEnumeratingWithState:&v38 objects:v46 count:16];
+                v24 = [children2 countByEnumeratingWithState:&v38 objects:v46 count:16];
               }
 
               while (v24);
@@ -219,27 +219,27 @@ LABEL_10:
   [v34 setOtherAddressesAlreadyChosen:v13];
   if (objc_opt_respondsToSelector())
   {
-    [v34 setPredictsBasedOnOutgoingInteraction:{-[CKContactsSearchManager biasForOutgoingInteraction](v35, "biasForOutgoingInteraction")}];
+    [v34 setPredictsBasedOnOutgoingInteraction:{-[CKContactsSearchManager biasForOutgoingInteraction](selfCopy, "biasForOutgoingInteraction")}];
   }
 
   v31 = [MEMORY[0x1E69A6170] globalTimingCollectionForKey:{@"CKAutocompleteTimingKey", v34}];
   [v31 startTimingForKey:@"RemoteSearch"];
 
-  v32 = [(CKContactsSearchManager *)v35 searchManager];
-  v33 = [v32 searchForText:v36 withAutocompleteFetchContext:v30 consumer:v35];
-  [(CKContactsSearchManager *)v35 setCurrentSearchTaskID:v33];
+  searchManager2 = [(CKContactsSearchManager *)selfCopy searchManager];
+  v33 = [searchManager2 searchForText:v36 withAutocompleteFetchContext:v30 consumer:selfCopy];
+  [(CKContactsSearchManager *)selfCopy setCurrentSearchTaskID:v33];
 }
 
 - (void)cancelSearch
 {
   [MEMORY[0x1E69A6170] invalidateGlobalTimingCollectionForKey:@"CKAutocompleteTimingKey"];
-  v3 = [(CKContactsSearchManager *)self currentSearchTaskID];
+  currentSearchTaskID = [(CKContactsSearchManager *)self currentSearchTaskID];
 
-  if (v3)
+  if (currentSearchTaskID)
   {
-    v4 = [(CKContactsSearchManager *)self searchManager];
-    v5 = [(CKContactsSearchManager *)self currentSearchTaskID];
-    [v4 cancelTaskWithID:v5];
+    searchManager = [(CKContactsSearchManager *)self searchManager];
+    currentSearchTaskID2 = [(CKContactsSearchManager *)self currentSearchTaskID];
+    [searchManager cancelTaskWithID:currentSearchTaskID2];
 
     [(CKContactsSearchManager *)self setCurrentSearchTaskID:0];
     dispatch_async(MEMORY[0x1E69E96A0], &__block_literal_global_130);
@@ -248,31 +248,31 @@ LABEL_10:
   [(CKContactsSearchManager *)self setSearchText:0];
 }
 
-- (void)didSelectRecipient:(id)a3 atIndex:(unint64_t)a4
+- (void)didSelectRecipient:(id)recipient atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(CKContactsSearchManager *)self searchManager];
-  [v7 didSelectRecipient:v6 atIndex:a4];
+  recipientCopy = recipient;
+  searchManager = [(CKContactsSearchManager *)self searchManager];
+  [searchManager didSelectRecipient:recipientCopy atIndex:index];
 }
 
-- (void)removeRecipient:(id)a3
+- (void)removeRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [(CKContactsSearchManager *)self searchManager];
-  [v5 removeRecipientResult:v4];
+  recipientCopy = recipient;
+  searchManager = [(CKContactsSearchManager *)self searchManager];
+  [searchManager removeRecipientResult:recipientCopy];
 }
 
-- (id)_sortSearchResultsWithCoreRecentsResults:(id)a3 displayNameMatches:(id)a4 participantNameMatches:(id)a5
+- (id)_sortSearchResultsWithCoreRecentsResults:(id)results displayNameMatches:(id)matches participantNameMatches:(id)nameMatches
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v31 = a4;
-  v30 = a5;
+  resultsCopy = results;
+  matchesCopy = matches;
+  nameMatchesCopy = nameMatches;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v9 = v8;
+  v9 = resultsCopy;
   v10 = [v9 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v10)
   {
@@ -292,10 +292,10 @@ LABEL_10:
         }
 
         v16 = *(*(&v32 + 1) + 8 * v14);
-        v17 = [v16 sourceType];
-        v18 = [v16 sourceType];
-        v19 = [v16 sourceType];
-        if ((v18 & 1) == 0 && (v17 & 0x10) == 0 && v19 != 0)
+        sourceType = [v16 sourceType];
+        sourceType2 = [v16 sourceType];
+        sourceType3 = [v16 sourceType];
+        if ((sourceType2 & 1) == 0 && (sourceType & 0x10) == 0 && sourceType3 != 0)
         {
           v12 = v15;
           goto LABEL_16;
@@ -319,9 +319,9 @@ LABEL_10:
 
 LABEL_16:
 
-  v21 = [(CKContactsSearchManager *)self _cullOldResults:v31];
-  v22 = v30;
-  v23 = [(CKContactsSearchManager *)self _cullOldResults:v30];
+  v21 = [(CKContactsSearchManager *)self _cullOldResults:matchesCopy];
+  v22 = nameMatchesCopy;
+  v23 = [(CKContactsSearchManager *)self _cullOldResults:nameMatchesCopy];
   v24 = [(CKContactsSearchManager *)self _sortResultsByDate:v21];
   v25 = [(CKContactsSearchManager *)self _sortResultsByDate:v23];
   [v24 addObjectsFromArray:v25];
@@ -334,15 +334,15 @@ LABEL_16:
     v24 = v27;
   }
 
-  v28 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v12, objc_msgSend(v24, "count", v30)}];
+  v28 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v12, objc_msgSend(v24, "count", nameMatchesCopy)}];
   [v9 insertObjects:v24 atIndexes:v28];
 
   return v9;
 }
 
-- (id)_sortResultsByDate:(id)a3
+- (id)_sortResultsByDate:(id)date
 {
-  v3 = [a3 sortedArrayUsingComparator:&__block_literal_global_117];
+  v3 = [date sortedArrayUsingComparator:&__block_literal_global_117];
   v4 = [v3 mutableCopy];
 
   return v4;
@@ -358,16 +358,16 @@ uint64_t __46__CKContactsSearchManager__sortResultsByDate___block_invoke(uint64_
   return v7;
 }
 
-- (id)_cullOldResults:(id)a3
+- (id)_cullOldResults:(id)results
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resultsCopy = results;
   v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = v3;
+  v4 = resultsCopy;
   v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -383,14 +383,14 @@ uint64_t __46__CKContactsSearchManager__sortResultsByDate___block_invoke(uint64_
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 lastMessageDate];
+        lastMessageDate = [v9 lastMessageDate];
 
-        if (v10)
+        if (lastMessageDate)
         {
-          v11 = [MEMORY[0x1E695DEE8] currentCalendar];
-          v12 = [v9 lastMessageDate];
-          v13 = [MEMORY[0x1E695DF00] date];
-          v14 = [v11 components:24 fromDate:v12 toDate:v13 options:0];
+          currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+          lastMessageDate2 = [v9 lastMessageDate];
+          date = [MEMORY[0x1E695DF00] date];
+          v14 = [currentCalendar components:24 fromDate:lastMessageDate2 toDate:date options:0];
 
           if ([v14 month] <= 2)
           {
@@ -408,14 +408,14 @@ uint64_t __46__CKContactsSearchManager__sortResultsByDate___block_invoke(uint64_
   return v16;
 }
 
-- (id)_filterGroupResults:(id)a3
+- (id)_filterGroupResults:(id)results
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __47__CKContactsSearchManager__filterGroupResults___block_invoke;
   v5[3] = &unk_1E72F3B00;
   v5[4] = self;
-  v3 = [a3 __imArrayByFilteringWithBlock:v5];
+  v3 = [results __imArrayByFilteringWithBlock:v5];
 
   return v3;
 }
@@ -461,11 +461,11 @@ uint64_t __47__CKContactsSearchManager__filterGroupResults___block_invoke(uint64
   return emojiCharacterSet;
 }
 
-- (void)consumeAutocompleteSearchResults:(id)a3 taskID:(id)a4
+- (void)consumeAutocompleteSearchResults:(id)results taskID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  dCopy = d;
   v8 = [MEMORY[0x1E69A6170] globalTimingCollectionForKey:@"CKAutocompleteTimingKey"];
   [v8 stopTimingForKey:@"RemoteSearch"];
 
@@ -481,34 +481,34 @@ uint64_t __47__CKContactsSearchManager__filterGroupResults___block_invoke(uint64
     }
   }
 
-  v11 = [(CKContactsSearchManager *)self _filterGroupResults:v6];
-  v12 = [(CKContactsSearchManager *)self searchResults];
-  [v12 addObjectsFromArray:v11];
+  v11 = [(CKContactsSearchManager *)self _filterGroupResults:resultsCopy];
+  searchResults = [(CKContactsSearchManager *)self searchResults];
+  [searchResults addObjectsFromArray:v11];
 }
 
 - (void)finishedSearchingForAutocompleteResults
 {
   v43 = *MEMORY[0x1E69E9840];
-  v2 = [(CKContactsSearchManager *)self searchResults];
-  v3 = self;
+  searchResults = [(CKContactsSearchManager *)self searchResults];
+  selfCopy2 = self;
   if ([(CKContactsSearchManager *)self suppressGroupSuggestions])
   {
-    v4 = [(CKContactsSearchManager *)self searchResults];
-    v5 = [v4 __imArrayByApplyingBlock:&__block_literal_global_123_0];
+    searchResults2 = [(CKContactsSearchManager *)self searchResults];
+    v5 = [searchResults2 __imArrayByApplyingBlock:&__block_literal_global_123_0];
 
     v6 = v5;
-    v3 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v6 = v2;
+    v6 = searchResults;
   }
 
   v27 = v6;
   v25 = [v6 mutableCopy];
-  v7 = [(CKContactsSearchManager *)v3 enteredRecipients];
-  v8 = [v7 copy];
+  enteredRecipients = [(CKContactsSearchManager *)selfCopy2 enteredRecipients];
+  v8 = [enteredRecipients copy];
 
   v37 = 0u;
   v38 = 0u;
@@ -550,9 +550,9 @@ uint64_t __47__CKContactsSearchManager__filterGroupResults___block_invoke(uint64
               v15 = *(*(&v31 + 1) + 8 * j);
               if (([v15 isGroup] & 1) == 0)
               {
-                v16 = [v15 IDSCanonicalAddress];
-                v17 = [v10 IDSCanonicalAddress];
-                v18 = [v16 isEqualToIgnoringCase:v17];
+                iDSCanonicalAddress = [v15 IDSCanonicalAddress];
+                iDSCanonicalAddress2 = [v10 IDSCanonicalAddress];
+                v18 = [iDSCanonicalAddress isEqualToIgnoringCase:iDSCanonicalAddress2];
 
                 if (v18)
                 {
@@ -629,12 +629,12 @@ void __66__CKContactsSearchManager_finishedSearchingForAutocompleteResults__bloc
   [v4 contactsSearchManager:v2 finishedSearchingWithResults:v3];
 }
 
-- (_NSRange)_rangeForSearchTerm:(id)a3 inTarget:(id)a4 tokenizedByCharacterSet:(id)a5
+- (_NSRange)_rangeForSearchTerm:(id)term inTarget:(id)target tokenizedByCharacterSet:(id)set
 {
   v36 = *MEMORY[0x1E69E9840];
-  v30 = a3;
-  v7 = a4;
-  [v7 componentsSeparatedByCharactersInSet:a5];
+  termCopy = term;
+  targetCopy = target;
+  [targetCopy componentsSeparatedByCharactersInSet:set];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -657,19 +657,19 @@ void __66__CKContactsSearchManager_finishedSearchingForAutocompleteResults__bloc
         }
 
         v14 = *(*(&v31 + 1) + 8 * i);
-        v15 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-        v16 = [v14 stringByTrimmingCharactersInSet:v15];
+        whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+        v16 = [v14 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-        v17 = [v7 rangeOfString:v16];
+        v17 = [targetCopy rangeOfString:v16];
         if (v17 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v19 = v17;
-          if (v17 + v18 <= [v7 length])
+          if (v17 + v18 <= [targetCopy length])
           {
-            v20 = [v7 substringWithRange:{v19, objc_msgSend(v7, "length") - v19}];
-            v21 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-            v22 = [v20 stringByTrimmingCharactersInSet:v21];
-            v23 = [v22 rangeOfString:v30 options:393];
+            v20 = [targetCopy substringWithRange:{v19, objc_msgSend(targetCopy, "length") - v19}];
+            whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+            v22 = [v20 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
+            v23 = [v22 rangeOfString:termCopy options:393];
             v29 = v24;
 
             if (v23 != 0x7FFFFFFFFFFFFFFFLL)
@@ -717,10 +717,10 @@ LABEL_14:
   v2 = [MEMORY[0x1E69A6170] globalTimingCollectionForKey:@"CKAutocompleteTimingKey"];
   [v2 startTimingForKey:@"ContactSearchAutocomplete - Group Name Search"];
 
-  v37 = [MEMORY[0x1E695DF70] array];
-  v43 = [(CKContactsSearchManager *)self searchText];
-  v3 = [(CKContactsSearchManager *)self delegate];
-  v4 = [v3 conversationCacheForContactsSearchManager:self];
+  array = [MEMORY[0x1E695DF70] array];
+  searchText = [(CKContactsSearchManager *)self searchText];
+  delegate = [(CKContactsSearchManager *)self delegate];
+  v4 = [delegate conversationCacheForContactsSearchManager:self];
 
   v46 = 0u;
   v47 = 0u;
@@ -742,34 +742,34 @@ LABEL_14:
 
         v6 = *(*(&v44 + 1) + 8 * i);
         v7 = [v6 objectForKey:@"CKConversationDisplayNameKey"];
-        if (v7 != 0 && v43 != 0)
+        if (v7 != 0 && searchText != 0)
         {
-          v8 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-          v9 = [(CKContactsSearchManager *)self _rangeForSearchTerm:v43 inTarget:v7 tokenizedByCharacterSet:v8];
+          whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+          v9 = [(CKContactsSearchManager *)self _rangeForSearchTerm:searchText inTarget:v7 tokenizedByCharacterSet:whitespaceCharacterSet];
 
-          if (v9 != 0x7FFFFFFFFFFFFFFFLL || ([MEMORY[0x1E696AB08] whitespaceCharacterSet], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "mutableCopy"), v10, -[CKContactsSearchManager emojiCharacterSet](self, "emojiCharacterSet"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "formUnionWithCharacterSet:", v12), v12, v13 = -[CKContactsSearchManager _rangeForSearchTerm:inTarget:tokenizedByCharacterSet:](self, "_rangeForSearchTerm:inTarget:tokenizedByCharacterSet:", v43, v7, v11), v11, v13 != 0x7FFFFFFFFFFFFFFFLL) || (objc_msgSend(MEMORY[0x1E696AB08], "whitespaceCharacterSet"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v43, "stringByTrimmingCharactersInSet:", v14), v15 = objc_claimAutoreleasedReturnValue(), -[CKContactsSearchManager emojiCharacterSet](self, "emojiCharacterSet"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "__ck_containsOnlyCharactersFromSet:", v16), v16, v15, v14, v17) && objc_msgSend(v7, "rangeOfString:options:", v43, 385) != 0x7FFFFFFFFFFFFFFFLL)
+          if (v9 != 0x7FFFFFFFFFFFFFFFLL || ([MEMORY[0x1E696AB08] whitespaceCharacterSet], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "mutableCopy"), v10, -[CKContactsSearchManager emojiCharacterSet](self, "emojiCharacterSet"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "formUnionWithCharacterSet:", v12), v12, v13 = -[CKContactsSearchManager _rangeForSearchTerm:inTarget:tokenizedByCharacterSet:](self, "_rangeForSearchTerm:inTarget:tokenizedByCharacterSet:", searchText, v7, v11), v11, v13 != 0x7FFFFFFFFFFFFFFFLL) || (objc_msgSend(MEMORY[0x1E696AB08], "whitespaceCharacterSet"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(searchText, "stringByTrimmingCharactersInSet:", v14), v15 = objc_claimAutoreleasedReturnValue(), -[CKContactsSearchManager emojiCharacterSet](self, "emojiCharacterSet"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "__ck_containsOnlyCharactersFromSet:", v16), v16, v15, v14, v17) && objc_msgSend(v7, "rangeOfString:options:", searchText, 385) != 0x7FFFFFFFFFFFFFFFLL)
           {
             v18 = [v6 objectForKey:@"CKConversationGUIDKey"];
             v19 = [(CKContactsSearchManager *)self matchingConversationWithGuid:v18];
             v20 = v19;
             if (v19)
             {
-              v21 = [v19 chat];
-              v22 = [v21 lastFinishedMessageDate];
-              v23 = [(CKContactsSearchManager *)self shouldIncludeGroupInResults:v22];
+              chat = [v19 chat];
+              lastFinishedMessageDate = [chat lastFinishedMessageDate];
+              v23 = [(CKContactsSearchManager *)self shouldIncludeGroupInResults:lastFinishedMessageDate];
 
               if (v23)
               {
                 v24 = objc_alloc(MEMORY[0x1E69963E0]);
-                v38 = [v20 chat];
-                v25 = [v38 guid];
-                v26 = [v20 displayName];
-                v27 = [v20 chat];
-                v28 = [v27 participants];
-                v29 = [(CKContactsSearchManager *)self createAutocompelteGroupMembersFromParticipants:v28];
-                v30 = [v24 initWithIdentifier:v25 title:v26 members:v29];
+                chat2 = [v20 chat];
+                guid = [chat2 guid];
+                displayName = [v20 displayName];
+                chat3 = [v20 chat];
+                participants = [chat3 participants];
+                v29 = [(CKContactsSearchManager *)self createAutocompelteGroupMembersFromParticipants:participants];
+                v30 = [v24 initWithIdentifier:guid title:displayName members:v29];
 
-                [v37 addObject:v30];
+                [array addObject:v30];
               }
             }
           }
@@ -802,18 +802,18 @@ LABEL_14:
     v34 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
-      v35 = [v37 count];
+      v35 = [array count];
       *buf = 138412802;
-      v49 = v43;
+      v49 = searchText;
       v50 = 2048;
       v51 = v35;
       v52 = 2112;
-      v53 = v37;
+      v53 = array;
       _os_log_impl(&dword_19020E000, v34, OS_LOG_TYPE_INFO, "Group name search for text: %@ found %ld results. Results: %@", buf, 0x20u);
     }
   }
 
-  return v37;
+  return array;
 }
 
 - (id)zkwGroupSuggestions
@@ -822,16 +822,16 @@ LABEL_14:
   v2 = [MEMORY[0x1E69A6170] globalTimingCollectionForKey:@"CKAutocompleteTimingKey"];
   [v2 startTimingForKey:@"ContactSearchAutocomplete - ZKW Group Search"];
 
-  v28 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(CKContactsSearchManager *)self zkwGroupSuggestionsEnabled])
   {
-    v3 = [(CKContactsSearchManager *)self searchText];
-    v4 = [v3 isEqualToString:&stru_1F04268F8];
+    searchText = [(CKContactsSearchManager *)self searchText];
+    v4 = [searchText isEqualToString:&stru_1F04268F8];
 
     if (v4)
     {
-      v5 = [(CKContactsSearchManager *)self delegate];
-      v6 = [v5 conversationCacheForContactsSearchManager:self];
+      delegate = [(CKContactsSearchManager *)self delegate];
+      v6 = [delegate conversationCacheForContactsSearchManager:self];
 
       v35 = 0u;
       v36 = 0u;
@@ -856,22 +856,22 @@ LABEL_14:
             v10 = v9;
             if (v9)
             {
-              v11 = [v9 chat];
-              v12 = [v11 lastFinishedMessageDate];
-              v13 = [(CKContactsSearchManager *)self shouldIncludeGroupInResults:v12];
+              chat = [v9 chat];
+              lastFinishedMessageDate = [chat lastFinishedMessageDate];
+              v13 = [(CKContactsSearchManager *)self shouldIncludeGroupInResults:lastFinishedMessageDate];
 
               if (v13)
               {
                 v14 = objc_alloc(MEMORY[0x1E69963E0]);
-                v15 = [v10 chat];
-                v16 = [v15 guid];
-                v17 = [v10 displayName];
-                v18 = [v10 chat];
-                v19 = [v18 participants];
-                v20 = [(CKContactsSearchManager *)self createAutocompelteGroupMembersFromParticipants:v19];
-                v21 = [v14 initWithIdentifier:v16 title:v17 members:v20];
+                chat2 = [v10 chat];
+                guid = [chat2 guid];
+                displayName = [v10 displayName];
+                chat3 = [v10 chat];
+                participants = [chat3 participants];
+                v20 = [(CKContactsSearchManager *)self createAutocompelteGroupMembersFromParticipants:participants];
+                v21 = [v14 initWithIdentifier:guid title:displayName members:v20];
 
-                [v28 addObject:v21];
+                [array addObject:v21];
               }
             }
           }
@@ -904,37 +904,37 @@ LABEL_14:
     v25 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
-      v26 = [v28 count];
+      v26 = [array count];
       *buf = 134218242;
       v38 = v26;
       v39 = 2112;
-      v40 = v28;
+      v40 = array;
       _os_log_impl(&dword_19020E000, v25, OS_LOG_TYPE_INFO, "Group ZKW search for found %ld results. Results: %@", buf, 0x16u);
     }
   }
 
-  return v28;
+  return array;
 }
 
-- (id)matchingConversationWithGuid:(id)a3
+- (id)matchingConversationWithGuid:(id)guid
 {
-  v3 = a3;
+  guidCopy = guid;
   v4 = +[CKConversationList sharedConversationList];
-  v5 = [v4 conversationForExistingChatWithGUID:v3];
+  v5 = [v4 conversationForExistingChatWithGUID:guidCopy];
 
   return v5;
 }
 
-- (BOOL)shouldIncludeGroupInResults:(id)a3
+- (BOOL)shouldIncludeGroupInResults:(id)results
 {
   v3 = MEMORY[0x1E695DEE8];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v5 components:24 fromDate:v4 toDate:v6 options:0];
+  resultsCopy = results;
+  currentCalendar = [v3 currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [currentCalendar components:24 fromDate:resultsCopy toDate:date options:0];
 
-  LOBYTE(v4) = [v7 month] < 3;
-  return v4;
+  LOBYTE(resultsCopy) = [v7 month] < 3;
+  return resultsCopy;
 }
 
 - (id)participantMatchGroupResults
@@ -943,13 +943,13 @@ LABEL_14:
   v3 = [MEMORY[0x1E69A6170] globalTimingCollectionForKey:@"CKAutocompleteTimingKey"];
   [v3 startTimingForKey:@"ContactSearchAutocomplete - Group Participant Match Group Search"];
 
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [(CKContactsSearchManager *)self searchText];
-  if (v5)
+  array = [MEMORY[0x1E695DF70] array];
+  searchText = [(CKContactsSearchManager *)self searchText];
+  if (searchText)
   {
-    v6 = [(CKContactsSearchManager *)self participantMatchResultsForSearchTerm:v5];
+    v6 = [(CKContactsSearchManager *)self participantMatchResultsForSearchTerm:searchText];
 
-    v4 = v6;
+    array = v6;
   }
 
   v7 = [MEMORY[0x1E69A6170] globalTimingCollectionForKey:@"CKAutocompleteTimingKey"];
@@ -972,28 +972,28 @@ LABEL_14:
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v4 count];
+      v11 = [array count];
       v13 = 138412802;
-      v14 = v5;
+      v14 = searchText;
       v15 = 2048;
       v16 = v11;
       v17 = 2112;
-      v18 = v4;
+      v18 = array;
       _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "Participant Match for search text: %@ found %ld results. Results: %@", &v13, 0x20u);
     }
   }
 
-  return v4;
+  return array;
 }
 
-- (id)participantMatchResultsForSearchTerm:(id)a3
+- (id)participantMatchResultsForSearchTerm:(id)term
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v29 = [MEMORY[0x1E695DF70] array];
-  v5 = [(CKContactsSearchManager *)self delegate];
-  v33 = self;
-  v6 = [v5 conversationCacheForContactsSearchManager:self];
+  termCopy = term;
+  array = [MEMORY[0x1E695DF70] array];
+  delegate = [(CKContactsSearchManager *)self delegate];
+  selfCopy = self;
+  v6 = [delegate conversationCacheForContactsSearchManager:self];
 
   v41 = 0u;
   v42 = 0u;
@@ -1036,26 +1036,26 @@ LABEL_14:
                 objc_enumerationMutation(v34);
               }
 
-              if ([*(*(&v35 + 1) + 8 * i) rangeOfString:v4 options:393] != 0x7FFFFFFFFFFFFFFFLL)
+              if ([*(*(&v35 + 1) + 8 * i) rangeOfString:termCopy options:393] != 0x7FFFFFFFFFFFFFFFLL)
               {
                 v14 = [v8 objectForKey:@"CKConversationGUIDKey"];
-                v15 = [(CKContactsSearchManager *)v33 matchingConversationWithGuid:v14];
-                v16 = [v15 chat];
-                v17 = [v16 lastFinishedMessageDate];
-                v18 = [(CKContactsSearchManager *)v33 shouldIncludeGroupInResults:v17];
+                v15 = [(CKContactsSearchManager *)selfCopy matchingConversationWithGuid:v14];
+                chat = [v15 chat];
+                lastFinishedMessageDate = [chat lastFinishedMessageDate];
+                v18 = [(CKContactsSearchManager *)selfCopy shouldIncludeGroupInResults:lastFinishedMessageDate];
 
                 if (v18)
                 {
                   v19 = objc_alloc(MEMORY[0x1E69963E0]);
-                  v20 = [v15 chat];
-                  v21 = [v20 guid];
-                  v22 = [v15 displayName];
-                  v23 = [v15 chat];
-                  v24 = [v23 participants];
-                  v25 = [(CKContactsSearchManager *)v33 createAutocompelteGroupMembersFromParticipants:v24];
-                  v26 = [v19 initWithIdentifier:v21 title:v22 members:v25];
+                  chat2 = [v15 chat];
+                  guid = [chat2 guid];
+                  displayName = [v15 displayName];
+                  chat3 = [v15 chat];
+                  participants = [chat3 participants];
+                  v25 = [(CKContactsSearchManager *)selfCopy createAutocompelteGroupMembersFromParticipants:participants];
+                  v26 = [v19 initWithIdentifier:guid title:displayName members:v25];
 
-                  [v29 addObject:v26];
+                  [array addObject:v26];
                   goto LABEL_18;
                 }
               }
@@ -1083,19 +1083,19 @@ LABEL_18:
     while (v31);
   }
 
-  return v29;
+  return array;
 }
 
-- (id)createAutocompelteGroupMembersFromParticipants:(id)a3
+- (id)createAutocompelteGroupMembersFromParticipants:(id)participants
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  participantsCopy = participants;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = v3;
+  v5 = participantsCopy;
   v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v6)
   {
@@ -1136,14 +1136,14 @@ LABEL_18:
         }
 
         v16 = objc_opt_new();
-        v17 = [v10 firstName];
-        [v16 setGivenName:v17];
+        firstName = [v10 firstName];
+        [v16 setGivenName:firstName];
 
-        v18 = [v10 lastName];
-        [v16 setFamilyName:v18];
+        lastName = [v10 lastName];
+        [v16 setFamilyName:lastName];
 
-        v19 = [v10 nickname];
-        [v16 setNickname:v19];
+        nickname = [v10 nickname];
+        [v16 setNickname:nickname];
 
         v20 = objc_alloc(MEMORY[0x1E69963E8]);
         v21 = [v10 ID];

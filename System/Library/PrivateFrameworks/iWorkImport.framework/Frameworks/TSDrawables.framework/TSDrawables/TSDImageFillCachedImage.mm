@@ -1,30 +1,30 @@
 @interface TSDImageFillCachedImage
-+ (id)cachedImageWithHandler:(id)a3;
-- (TSDImageFillCachedImage)initWithHandler:(id)a3;
++ (id)cachedImageWithHandler:(id)handler;
+- (TSDImageFillCachedImage)initWithHandler:(id)handler;
 - (TSUImage)image;
 - (void)flush;
 @end
 
 @implementation TSDImageFillCachedImage
 
-+ (id)cachedImageWithHandler:(id)a3
++ (id)cachedImageWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v7 = objc_msgSend_initWithHandler_(v5, v6, v4);
+  handlerCopy = handler;
+  v5 = [self alloc];
+  v7 = objc_msgSend_initWithHandler_(v5, v6, handlerCopy);
 
   return v7;
 }
 
-- (TSDImageFillCachedImage)initWithHandler:(id)a3
+- (TSDImageFillCachedImage)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = TSDImageFillCachedImage;
   v7 = [(TSDImageFillCachedImage *)&v11 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(handlerCopy, v5, v6);
     mHandler = v7->mHandler;
     v7->mHandler = v8;
 

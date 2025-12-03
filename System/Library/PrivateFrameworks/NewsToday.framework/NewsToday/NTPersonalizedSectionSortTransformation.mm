@@ -1,7 +1,7 @@
 @interface NTPersonalizedSectionSortTransformation
 - (NTPersonalizedSectionSortTransformation)init;
-- (NTPersonalizedSectionSortTransformation)initWithMandatoryArticleIDs:(id)a3 personalizedArticleIDs:(id)a4 sortTransformation:(id)a5;
-- (id)transformFeedItems:(id)a3;
+- (NTPersonalizedSectionSortTransformation)initWithMandatoryArticleIDs:(id)ds personalizedArticleIDs:(id)iDs sortTransformation:(id)transformation;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation NTPersonalizedSectionSortTransformation
@@ -32,21 +32,21 @@
   objc_exception_throw(v6);
 }
 
-- (NTPersonalizedSectionSortTransformation)initWithMandatoryArticleIDs:(id)a3 personalizedArticleIDs:(id)a4 sortTransformation:(id)a5
+- (NTPersonalizedSectionSortTransformation)initWithMandatoryArticleIDs:(id)ds personalizedArticleIDs:(id)iDs sortTransformation:(id)transformation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  dsCopy = ds;
+  iDsCopy = iDs;
+  transformationCopy = transformation;
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTPersonalizedSectionSortTransformation initWithMandatoryArticleIDs:personalizedArticleIDs:sortTransformation:];
-    if (v9)
+    if (iDsCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (iDsCopy)
   {
     goto LABEL_6;
   }
@@ -57,16 +57,16 @@
   }
 
 LABEL_6:
-  if ([v8 intersectsOrderedSet:v9] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if ([dsCopy intersectsOrderedSet:iDsCopy] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTPersonalizedSectionSortTransformation initWithMandatoryArticleIDs:personalizedArticleIDs:sortTransformation:];
-    if (v10)
+    if (transformationCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v10)
+  else if (transformationCopy)
   {
     goto LABEL_11;
   }
@@ -82,45 +82,45 @@ LABEL_11:
   v11 = [(NTPersonalizedSectionSortTransformation *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dsCopy copy];
     mandatoryArticleIDs = v11->_mandatoryArticleIDs;
     v11->_mandatoryArticleIDs = v12;
 
-    v14 = [v9 copy];
+    v14 = [iDsCopy copy];
     personalizedArticleIDs = v11->_personalizedArticleIDs;
     v11->_personalizedArticleIDs = v14;
 
-    objc_storeStrong(&v11->_sortTransformation, a5);
+    objc_storeStrong(&v11->_sortTransformation, transformation);
   }
 
   return v11;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  itemsCopy = items;
+  if (!itemsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTPersonalizedSectionSortTransformation transformFeedItems:];
   }
 
-  v5 = [(NTPersonalizedSectionSortTransformation *)self mandatoryArticleIDs];
-  v6 = [(NTPersonalizedSectionSortTransformation *)self personalizedArticleIDs];
+  mandatoryArticleIDs = [(NTPersonalizedSectionSortTransformation *)self mandatoryArticleIDs];
+  personalizedArticleIDs = [(NTPersonalizedSectionSortTransformation *)self personalizedArticleIDs];
   v7 = objc_opt_new();
   v8 = objc_opt_new();
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __62__NTPersonalizedSectionSortTransformation_transformFeedItems___block_invoke;
   v20[3] = &unk_279983850;
-  v9 = v5;
+  v9 = mandatoryArticleIDs;
   v21 = v9;
   v22 = v7;
-  v23 = v6;
+  v23 = personalizedArticleIDs;
   v24 = v8;
   v10 = v8;
-  v11 = v6;
+  v11 = personalizedArticleIDs;
   v12 = v7;
-  [v4 enumerateObjectsUsingBlock:v20];
+  [itemsCopy enumerateObjectsUsingBlock:v20];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __62__NTPersonalizedSectionSortTransformation_transformFeedItems___block_invoke_22;
@@ -128,8 +128,8 @@ LABEL_11:
   v19 = v9;
   v13 = v9;
   [v12 sortUsingComparator:v18];
-  v14 = [(NTPersonalizedSectionSortTransformation *)self sortTransformation];
-  v15 = [v14 transformFeedItems:v10];
+  sortTransformation = [(NTPersonalizedSectionSortTransformation *)self sortTransformation];
+  v15 = [sortTransformation transformFeedItems:v10];
 
   v16 = [MEMORY[0x277CBEA60] fc_arrayByAddingObjectsFromArray:v15 toArray:v12];
 

@@ -1,13 +1,13 @@
 @interface AVCaptureSynchronizedDataCollection
-+ (id)_shortStringForDataDroppedReason:(int64_t)a3;
-+ (id)_shortStringForDataOutput:(id)a3 syncedData:(id)a4;
-+ (id)_shortStringForMetadataObjects:(id)a3;
++ (id)_shortStringForDataDroppedReason:(int64_t)reason;
++ (id)_shortStringForDataOutput:(id)output syncedData:(id)data;
++ (id)_shortStringForMetadataObjects:(id)objects;
 - (AVCaptureSynchronizedData)objectForKeyedSubscript:(AVCaptureOutput *)key;
-- (id)_initWithPossibleDataOutputs:(id)a3;
+- (id)_initWithPossibleDataOutputs:(id)outputs;
 - (id)debugDescription;
 - (id)description;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)_setSynchronizedData:(id)a3 forCaptureOutput:(id)a4;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)_setSynchronizedData:(id)data forCaptureOutput:(id)output;
 - (void)dealloc;
 @end
 
@@ -62,18 +62,18 @@
   return internal->synchronizedData[v5 / 8];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  var0 = a3->var0;
-  a3->var2 = &self->_internal->changeSeed;
+  var0 = state->var0;
+  state->var2 = &self->_internal->changeSeed;
   if (var0)
   {
     return 0;
   }
 
   dataOutputs = self->_internal->dataOutputs;
-  a3->var0 = 1;
-  a3->var1 = dataOutputs;
+  state->var0 = 1;
+  state->var1 = dataOutputs;
   return self->_internal->count;
 }
 
@@ -149,7 +149,7 @@
   return [v3 stringWithFormat:@"<%@: %p %@>", NSStringFromClass(v4), self, -[AVCaptureSynchronizedDataCollection debugDescription](self, "debugDescription")];
 }
 
-- (id)_initWithPossibleDataOutputs:(id)a3
+- (id)_initWithPossibleDataOutputs:(id)outputs
 {
   v11.receiver = self;
   v11.super_class = AVCaptureSynchronizedDataCollection;
@@ -164,8 +164,8 @@
       HostTimeClock = CMClockGetHostTimeClock();
       CMClockGetTime(&v10, HostTimeClock);
       v6->creationTime = v10;
-      v4->_internal->possibleDataOutputs = a3;
-      v4->_internal->maxCount = [a3 count];
+      v4->_internal->possibleDataOutputs = outputs;
+      v4->_internal->maxCount = [outputs count];
       internal = v4->_internal;
       if (internal->maxCount)
       {
@@ -184,7 +184,7 @@
   return v4;
 }
 
-- (void)_setSynchronizedData:(id)a3 forCaptureOutput:(id)a4
+- (void)_setSynchronizedData:(id)data forCaptureOutput:(id)output
 {
   ++self->_internal->changeSeed;
   internal = self->_internal;
@@ -205,15 +205,15 @@ LABEL_5:
 
     else
     {
-      self->_internal->dataOutputs[self->_internal->count] = a4;
-      self->_internal->synchronizedData[self->_internal->count++] = a3;
+      self->_internal->dataOutputs[self->_internal->count] = output;
+      self->_internal->synchronizedData[self->_internal->count++] = data;
     }
   }
 
   else
   {
     v8 = 0;
-    while (internal->dataOutputs[v8] != a4)
+    while (internal->dataOutputs[v8] != output)
     {
       if (count == ++v8)
       {
@@ -221,19 +221,19 @@ LABEL_5:
       }
     }
 
-    self->_internal->synchronizedData[v8] = a3;
+    self->_internal->synchronizedData[v8] = data;
   }
 }
 
-+ (id)_shortStringForDataOutput:(id)a3 syncedData:(id)a4
++ (id)_shortStringForDataOutput:(id)output syncedData:(id)data
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a4)
+    if (data)
     {
       v6 = MEMORY[0x1E696AEC0];
-      if ([a4 sampleBufferWasDropped])
+      if ([data sampleBufferWasDropped])
       {
         v7 = "!";
       }
@@ -243,7 +243,7 @@ LABEL_5:
         v7 = " ";
       }
 
-      return [v6 stringWithFormat:@"VDO[%s%@]:", v7, objc_msgSend(a1, "_shortStringForDataDroppedReason:", objc_msgSend(a4, "droppedReason"))];
+      return [v6 stringWithFormat:@"VDO[%s%@]:", v7, objc_msgSend(self, "_shortStringForDataDroppedReason:", objc_msgSend(data, "droppedReason"))];
     }
 
     else
@@ -257,7 +257,7 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (a4)
+      if (data)
       {
         return @"ADO[  ]:";
       }
@@ -273,9 +273,9 @@ LABEL_5:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (a4)
+        if (data)
         {
-          return [MEMORY[0x1E696AEC0] stringWithFormat:@"MDO[%@]:", objc_msgSend(a1, "_shortStringForMetadataObjects:", objc_msgSend(a4, "metadataObjects")), v17];
+          return [MEMORY[0x1E696AEC0] stringWithFormat:@"MDO[%@]:", objc_msgSend(self, "_shortStringForMetadataObjects:", objc_msgSend(data, "metadataObjects")), v17];
         }
 
         else
@@ -289,10 +289,10 @@ LABEL_5:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if (a4)
+          if (data)
           {
             v9 = MEMORY[0x1E696AEC0];
-            if ([a4 depthDataWasDropped])
+            if ([data depthDataWasDropped])
             {
               v10 = "!";
             }
@@ -302,7 +302,7 @@ LABEL_5:
               v10 = " ";
             }
 
-            return [v9 stringWithFormat:@"DDO[%s%@]:", v10, objc_msgSend(a1, "_shortStringForDataDroppedReason:", objc_msgSend(a4, "droppedReason"))];
+            return [v9 stringWithFormat:@"DDO[%s%@]:", v10, objc_msgSend(self, "_shortStringForDataDroppedReason:", objc_msgSend(data, "droppedReason"))];
           }
 
           else
@@ -316,10 +316,10 @@ LABEL_5:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            if (a4)
+            if (data)
             {
               v11 = MEMORY[0x1E696AEC0];
-              if ([a4 visionDataWasDropped])
+              if ([data visionDataWasDropped])
               {
                 v12 = "!";
               }
@@ -329,7 +329,7 @@ LABEL_5:
                 v12 = " ";
               }
 
-              return [v11 stringWithFormat:@"VSNDO[%s%@]:", v12, objc_msgSend(a1, "_shortStringForDataDroppedReason:", objc_msgSend(a4, "droppedReason"))];
+              return [v11 stringWithFormat:@"VSNDO[%s%@]:", v12, objc_msgSend(self, "_shortStringForDataDroppedReason:", objc_msgSend(data, "droppedReason"))];
             }
 
             else
@@ -343,10 +343,10 @@ LABEL_5:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              if (a4)
+              if (data)
               {
                 v13 = MEMORY[0x1E696AEC0];
-                if ([a4 pointCloudDataWasDropped])
+                if ([data pointCloudDataWasDropped])
                 {
                   v14 = "!";
                 }
@@ -356,7 +356,7 @@ LABEL_5:
                   v14 = " ";
                 }
 
-                return [v13 stringWithFormat:@"PDO[%s%@]:", v14, objc_msgSend(a1, "_shortStringForDataDroppedReason:", objc_msgSend(a4, "droppedReason"))];
+                return [v13 stringWithFormat:@"PDO[%s%@]:", v14, objc_msgSend(self, "_shortStringForDataDroppedReason:", objc_msgSend(data, "droppedReason"))];
               }
 
               else
@@ -370,10 +370,10 @@ LABEL_5:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                if (a4)
+                if (data)
                 {
                   v15 = MEMORY[0x1E696AEC0];
-                  if ([a4 cameraCalibrationDataWasDropped])
+                  if ([data cameraCalibrationDataWasDropped])
                   {
                     v16 = "!";
                   }
@@ -383,7 +383,7 @@ LABEL_5:
                     v16 = " ";
                   }
 
-                  return [v15 stringWithFormat:@"CCDO[%s%@]:", v16, objc_msgSend(a1, "_shortStringForDataDroppedReason:", objc_msgSend(a4, "droppedReason"))];
+                  return [v15 stringWithFormat:@"CCDO[%s%@]:", v16, objc_msgSend(self, "_shortStringForDataDroppedReason:", objc_msgSend(data, "droppedReason"))];
                 }
 
                 else
@@ -404,27 +404,27 @@ LABEL_5:
   }
 }
 
-+ (id)_shortStringForDataDroppedReason:(int64_t)a3
++ (id)_shortStringForDataDroppedReason:(int64_t)reason
 {
-  if ((a3 - 1) > 2)
+  if ((reason - 1) > 2)
   {
     return @" ";
   }
 
   else
   {
-    return off_1E786F750[a3 - 1];
+    return off_1E786F750[reason - 1];
   }
 }
 
-+ (id)_shortStringForMetadataObjects:(id)a3
++ (id)_shortStringForMetadataObjects:(id)objects
 {
-  v4 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  v5 = [objects countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v5)
   {
     v6 = v5;
@@ -435,181 +435,181 @@ LABEL_5:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(objects);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) type];
-        if (v9 == @"face")
+        type = [*(*(&v13 + 1) + 8 * i) type];
+        if (type == @"face")
         {
           v10 = @"FA_";
         }
 
-        else if (v9 == @"humanBody")
+        else if (type == @"humanBody")
         {
           v10 = @"HB_";
         }
 
-        else if (v9 == @"humanFullBody")
+        else if (type == @"humanFullBody")
         {
           v10 = @"HFB_";
         }
 
-        else if (v9 == @"catBody")
+        else if (type == @"catBody")
         {
           v10 = @"CB_";
         }
 
-        else if (v9 == @"dogBody")
+        else if (type == @"dogBody")
         {
           v10 = @"DB_";
         }
 
-        else if (v9 == @"salientObject")
+        else if (type == @"salientObject")
         {
           v10 = @"SO_";
         }
 
-        else if (v9 == @"org.gs1.UPC-E")
+        else if (type == @"org.gs1.UPC-E")
         {
           v10 = @"UE_";
         }
 
-        else if (v9 == @"org.iso.Code39")
+        else if (type == @"org.iso.Code39")
         {
           v10 = @"39_";
         }
 
-        else if (v9 == @"org.iso.Code39Mod43")
+        else if (type == @"org.iso.Code39Mod43")
         {
           v10 = @"43_";
         }
 
-        else if (v9 == @"org.gs1.EAN-13")
+        else if (type == @"org.gs1.EAN-13")
         {
           v10 = @"13_";
         }
 
-        else if (v9 == @"org.gs1.EAN-8")
+        else if (type == @"org.gs1.EAN-8")
         {
           v10 = @"E8_";
         }
 
-        else if (v9 == @"com.intermec.Code93")
+        else if (type == @"com.intermec.Code93")
         {
           v10 = @"93_";
         }
 
-        else if (v9 == @"org.iso.Code128")
+        else if (type == @"org.iso.Code128")
         {
           v10 = @"80_";
         }
 
-        else if (v9 == @"org.iso.PDF417")
+        else if (type == @"org.iso.PDF417")
         {
           v10 = @"PD_";
         }
 
-        else if (v9 == @"org.iso.QRCode")
+        else if (type == @"org.iso.QRCode")
         {
           v10 = @"QR_";
         }
 
-        else if (v9 == @"org.iso.Aztec")
+        else if (type == @"org.iso.Aztec")
         {
           v10 = @"AZ_";
         }
 
-        else if (v9 == @"org.ansi.Interleaved2of5")
+        else if (type == @"org.ansi.Interleaved2of5")
         {
           v10 = @"25_";
         }
 
-        else if (v9 == @"org.gs1.ITF14")
+        else if (type == @"org.gs1.ITF14")
         {
           v10 = @"IT_";
         }
 
-        else if (v9 == @"org.iso.DataMatrix")
+        else if (type == @"org.iso.DataMatrix")
         {
           v10 = @"DM_";
         }
 
-        else if (v9 == @"Codabar")
+        else if (type == @"Codabar")
         {
           v10 = @"CD_";
         }
 
-        else if (v9 == @"org.gs1.GS1DataBar")
+        else if (type == @"org.gs1.GS1DataBar")
         {
           v10 = @"DC_";
         }
 
-        else if (v9 == @"org.gs1.GS1DataBarExpanded")
+        else if (type == @"org.gs1.GS1DataBarExpanded")
         {
           v10 = @"DE_";
         }
 
-        else if (v9 == @"org.gs1.GS1DataBarLimited")
+        else if (type == @"org.gs1.GS1DataBarLimited")
         {
           v10 = @"DL_";
         }
 
-        else if (v9 == @"org.iso.MicroQR")
+        else if (type == @"org.iso.MicroQR")
         {
           v10 = @"MQ_";
         }
 
-        else if (v9 == @"org.iso.MicroPDF417")
+        else if (type == @"org.iso.MicroPDF417")
         {
           v10 = @"MP_";
         }
 
-        else if (v9 == @"trackedFaces")
+        else if (type == @"trackedFaces")
         {
           v10 = @"TF_";
         }
 
-        else if (v9 == @"offlineVideoStabilizationMotion")
+        else if (type == @"offlineVideoStabilizationMotion")
         {
           v10 = @"VS_";
         }
 
-        else if (v9 == @"saliencyHeatMap")
+        else if (type == @"saliencyHeatMap")
         {
           v10 = @"SH_";
         }
 
-        else if (v9 == @"videoPreviewHistogram")
+        else if (type == @"videoPreviewHistogram")
         {
           v10 = @"VP_";
         }
 
-        else if (v9 == @"com.apple.AppClipCode")
+        else if (type == @"com.apple.AppClipCode")
         {
           v10 = @"AC_";
         }
 
-        else if (v9 == @"textRegion")
+        else if (type == @"textRegion")
         {
           v10 = @"TR_";
         }
 
-        else if (v9 == @"sceneClassification")
+        else if (type == @"sceneClassification")
         {
           v10 = @"SC_";
         }
 
-        else if (v9 == @"humanHead")
+        else if (type == @"humanHead")
         {
           v10 = @"HH_";
         }
 
-        else if (v9 == @"catHead")
+        else if (type == @"catHead")
         {
           v10 = @"CH_";
         }
 
-        else if (v9 == @"dogHead")
+        else if (type == @"dogHead")
         {
           v10 = @"DH_";
         }
@@ -619,26 +619,26 @@ LABEL_5:
           v10 = @"??_";
         }
 
-        [v4 appendString:v10];
+        [string appendString:v10];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      v6 = [objects countByEnumeratingWithState:&v13 objects:v12 count:16];
     }
 
     while (v6);
   }
 
-  if ([v4 hasSuffix:@"_"])
+  if ([string hasSuffix:@"_"])
   {
-    [v4 deleteCharactersInRange:{objc_msgSend(v4, "length") - 1, 1}];
+    [string deleteCharactersInRange:{objc_msgSend(string, "length") - 1, 1}];
   }
 
   else
   {
-    [v4 appendString:@"__"];
+    [string appendString:@"__"];
   }
 
-  return v4;
+  return string;
 }
 
 @end

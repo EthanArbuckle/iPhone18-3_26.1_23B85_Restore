@@ -1,30 +1,30 @@
 @interface WFRecordAudioAction
-+ (id)datedFilenameForFormat:(int64_t)a3;
-+ (id)fileTypeForFormat:(int64_t)a3;
++ (id)datedFilenameForFormat:(int64_t)format;
++ (id)fileTypeForFormat:(int64_t)format;
 + (id)userInterfaceXPCInterface;
 - (BOOL)startImmediately;
 - (double)recordingDuration;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
 - (int64_t)outputFormat;
-- (void)runWithRemoteUserInterface:(id)a3 input:(id)a4;
+- (void)runWithRemoteUserInterface:(id)interface input:(id)input;
 @end
 
 @implementation WFRecordAudioAction
 
-+ (id)datedFilenameForFormat:(int64_t)a3
++ (id)datedFilenameForFormat:(int64_t)format
 {
-  v3 = [a1 fileTypeForFormat:a3];
+  v3 = [self fileTypeForFormat:format];
   v4 = MEMORY[0x277CCACA8];
   v5 = WFLocalizedString(@"Audio Recording");
-  v6 = [v3 fileExtension];
-  v7 = [v4 wf_datedFilenameWithTypeString:v5 fileExtension:v6];
+  fileExtension = [v3 fileExtension];
+  v7 = [v4 wf_datedFilenameWithTypeString:v5 fileExtension:fileExtension];
 
   return v7;
 }
 
-+ (id)fileTypeForFormat:(int64_t)a3
++ (id)fileTypeForFormat:(int64_t)format
 {
-  switch(a3)
+  switch(format)
   {
     case 0:
       v4 = MEMORY[0x277D79F68];
@@ -49,7 +49,7 @@ LABEL_7:
 
 + (id)userInterfaceXPCInterface
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___WFRecordAudioAction;
   v2 = objc_msgSendSuper2(&v5, sel_userInterfaceXPCInterface);
   v3 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
@@ -58,15 +58,15 @@ LABEL_7:
   return v2;
 }
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = a5;
-  v8 = a3;
+  nameCopy = name;
+  descriptionCopy = description;
   v9 = WFLocalizedString(@"Allow “%1$@” to access the Microphone?");
-  v10 = [v6 localizedStringWithFormat:v9, v7, v8];
+  descriptionCopy = [v6 localizedStringWithFormat:v9, nameCopy, descriptionCopy];
 
-  return v10;
+  return descriptionCopy;
 }
 
 - (double)recordingDuration
@@ -81,14 +81,14 @@ LABEL_7:
 
   v5 = [(WFRecordAudioAction *)self parameterValueForKey:@"WFRecordingTimeInterval" ofClass:objc_opt_class()];
   v6 = MEMORY[0x277D7C398];
-  v7 = [v5 unitString];
-  v8 = [v6 calendarUnitFromUnitString:v7];
+  unitString = [v5 unitString];
+  v8 = [v6 calendarUnitFromUnitString:unitString];
 
-  v9 = [MEMORY[0x277CBEA80] currentCalendar];
-  v10 = [v5 magnitude];
-  v11 = [v10 integerValue];
-  v12 = [MEMORY[0x277CBEAA8] date];
-  v13 = [v9 dateByAddingUnit:v8 value:v11 toDate:v12 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  magnitude = [v5 magnitude];
+  integerValue = [magnitude integerValue];
+  date = [MEMORY[0x277CBEAA8] date];
+  v13 = [currentCalendar dateByAddingUnit:v8 value:integerValue toDate:date options:0];
 
   [v13 timeIntervalSinceNow];
   v15 = v14;
@@ -120,18 +120,18 @@ LABEL_7:
   return v3;
 }
 
-- (void)runWithRemoteUserInterface:(id)a3 input:(id)a4
+- (void)runWithRemoteUserInterface:(id)interface input:(id)input
 {
-  v5 = a3;
-  v6 = [(WFRecordAudioAction *)self outputFormat];
-  v7 = [(WFRecordAudioAction *)self startImmediately];
+  interfaceCopy = interface;
+  outputFormat = [(WFRecordAudioAction *)self outputFormat];
+  startImmediately = [(WFRecordAudioAction *)self startImmediately];
   [(WFRecordAudioAction *)self recordingDuration];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__WFRecordAudioAction_runWithRemoteUserInterface_input___block_invoke;
   v8[3] = &unk_278C209C0;
   v8[4] = self;
-  [v5 showWithOutputFormat:v6 startImmediately:v7 recordingDuration:v8 completionHandler:?];
+  [interfaceCopy showWithOutputFormat:outputFormat startImmediately:startImmediately recordingDuration:v8 completionHandler:?];
 }
 
 void __56__WFRecordAudioAction_runWithRemoteUserInterface_input___block_invoke(uint64_t a1, void *a2, void *a3)

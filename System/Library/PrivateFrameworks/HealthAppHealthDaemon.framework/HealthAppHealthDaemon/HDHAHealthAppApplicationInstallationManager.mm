@@ -1,39 +1,39 @@
 @interface HDHAHealthAppApplicationInstallationManager
-- (HDHAHealthAppApplicationInstallationManager)initWithProfile:(id)a3;
+- (HDHAHealthAppApplicationInstallationManager)initWithProfile:(id)profile;
 - (void)_cleanupInstallRequest;
 - (void)_queue_cleanupInstallRequest;
 - (void)_queue_installHealthAppIfTinkerProfileExists;
-- (void)_queue_requestHealthAppInstallIfNecessaryWithPairedDeviceSnapshot:(id)a3;
+- (void)_queue_requestHealthAppInstallIfNecessaryWithPairedDeviceSnapshot:(id)snapshot;
 - (void)_queue_startInstalling;
-- (void)_requestHealthAppInstallIfNecessaryWithPairedDeviceSnapshot:(id)a3;
-- (void)daemonReady:(id)a3;
+- (void)_requestHealthAppInstallIfNecessaryWithPairedDeviceSnapshot:(id)snapshot;
+- (void)daemonReady:(id)ready;
 - (void)dealloc;
 @end
 
 @implementation HDHAHealthAppApplicationInstallationManager
 
-- (HDHAHealthAppApplicationInstallationManager)initWithProfile:(id)a3
+- (HDHAHealthAppApplicationInstallationManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v15.receiver = self;
   v15.super_class = HDHAHealthAppApplicationInstallationManager;
   v5 = [(HDHAHealthAppApplicationInstallationManager *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialUtilityDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
 
     WeakRetained = objc_loadWeakRetained(&v6->_profile);
-    v10 = [WeakRetained daemon];
-    [v10 registerDaemonReadyObserver:v6 queue:v6->_queue];
+    daemon = [WeakRetained daemon];
+    [daemon registerDaemonReadyObserver:v6 queue:v6->_queue];
 
     v11 = objc_loadWeakRetained(&v6->_profile);
-    v12 = [v11 daemon];
-    v13 = [v12 profileManager];
-    [v13 addProfileManagerObserver:v6 queue:v6->_queue];
+    daemon2 = [v11 daemon];
+    profileManager = [daemon2 profileManager];
+    [profileManager addProfileManagerObserver:v6 queue:v6->_queue];
   }
 
   return v6;
@@ -42,25 +42,25 @@
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained nanoSyncManager];
-  [v4 removeObserver:self];
+  nanoSyncManager = [WeakRetained nanoSyncManager];
+  [nanoSyncManager removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = HDHAHealthAppApplicationInstallationManager;
   [(HDHAHealthAppApplicationInstallationManager *)&v5 dealloc];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained nanoSyncManager];
-  [v5 addObserver:self];
+  nanoSyncManager = [WeakRetained nanoSyncManager];
+  [nanoSyncManager addObserver:self];
 
   v6 = objc_loadWeakRetained(&self->_profile);
-  v7 = [v6 nanoSyncManager];
-  v8 = [v7 pairedDevicesSnapshot];
+  nanoSyncManager2 = [v6 nanoSyncManager];
+  pairedDevicesSnapshot = [nanoSyncManager2 pairedDevicesSnapshot];
 
-  [(HDHAHealthAppApplicationInstallationManager *)self _queue_requestHealthAppInstallIfNecessaryWithPairedDeviceSnapshot:v8];
+  [(HDHAHealthAppApplicationInstallationManager *)self _queue_requestHealthAppInstallIfNecessaryWithPairedDeviceSnapshot:pairedDevicesSnapshot];
   [(HDHAHealthAppApplicationInstallationManager *)self _queue_installHealthAppIfTinkerProfileExists];
 }
 
@@ -72,11 +72,11 @@
   v23 = 0u;
   v24 = 0u;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained daemon];
-  v5 = [v4 profileManager];
-  v6 = [v5 allProfileIdentifiers];
+  daemon = [WeakRetained daemon];
+  profileManager = [daemon profileManager];
+  allProfileIdentifiers = [profileManager allProfileIdentifiers];
 
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v7 = [allProfileIdentifiers countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -88,21 +88,21 @@
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allProfileIdentifiers);
         }
 
         v11 = *(*(&v21 + 1) + 8 * v10);
         v12 = objc_loadWeakRetained(&self->_profile);
-        v13 = [v12 daemon];
-        v14 = [v13 profileManager];
-        v15 = [v14 profileForIdentifier:v11];
+        daemon2 = [v12 daemon];
+        profileManager2 = [daemon2 profileManager];
+        v15 = [profileManager2 profileForIdentifier:v11];
 
         if ([v15 profileType] == 3)
         {
-          v16 = [MEMORY[0x277CCDD30] sharedBehavior];
-          v17 = [v16 healthAppNotInstalled];
+          mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+          healthAppNotInstalled = [mEMORY[0x277CCDD30] healthAppNotInstalled];
 
-          if (v17)
+          if (healthAppNotInstalled)
           {
             _HKInitializeLogging();
             v18 = *MEMORY[0x277CCC2B0];
@@ -120,7 +120,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [allProfileIdentifiers countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v8);
@@ -129,9 +129,9 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestHealthAppInstallIfNecessaryWithPairedDeviceSnapshot:(id)a3
+- (void)_requestHealthAppInstallIfNecessaryWithPairedDeviceSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -139,8 +139,8 @@
   block[2] = __107__HDHAHealthAppApplicationInstallationManager__requestHealthAppInstallIfNecessaryWithPairedDeviceSnapshot___block_invoke;
   block[3] = &unk_278658470;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = snapshotCopy;
+  v6 = snapshotCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -153,19 +153,19 @@ void __107__HDHAHealthAppApplicationInstallationManager__requestHealthAppInstall
   [WeakRetained _queue_requestHealthAppInstallIfNecessaryWithPairedDeviceSnapshot:*(a1 + 32)];
 }
 
-- (void)_queue_requestHealthAppInstallIfNecessaryWithPairedDeviceSnapshot:(id)a3
+- (void)_queue_requestHealthAppInstallIfNecessaryWithPairedDeviceSnapshot:(id)snapshot
 {
   if (!self->_installationRequestInProgress)
   {
-    v4 = [a3 allDeviceInfos];
-    v5 = [v4 count];
-    v6 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v7 = [v6 healthAppNotInstalled];
+    allDeviceInfos = [snapshot allDeviceInfos];
+    v5 = [allDeviceInfos count];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    healthAppNotInstalled = [mEMORY[0x277CCDD30] healthAppNotInstalled];
 
     _HKInitializeLogging();
     v8 = *MEMORY[0x277CCC2B0];
     v9 = os_log_type_enabled(*MEMORY[0x277CCC2B0], OS_LOG_TYPE_DEFAULT);
-    if (v5 && v7)
+    if (v5 && healthAppNotInstalled)
     {
       if (v9)
       {

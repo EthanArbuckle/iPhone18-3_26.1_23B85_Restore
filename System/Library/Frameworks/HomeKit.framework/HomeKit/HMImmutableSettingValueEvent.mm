@@ -1,29 +1,29 @@
 @interface HMImmutableSettingValueEvent
-+ (id)decodeSettingValueFromEvent:(id)a3 error:(id *)a4;
++ (id)decodeSettingValueFromEvent:(id)event error:(id *)error;
 - (id)encodedData;
-- (id)initSettingValue:(id)a3 eventSource:(id)a4 eventTimestamp:(double)a5;
+- (id)initSettingValue:(id)value eventSource:(id)source eventTimestamp:(double)timestamp;
 @end
 
 @implementation HMImmutableSettingValueEvent
 
-+ (id)decodeSettingValueFromEvent:(id)a3 error:(id *)a4
++ (id)decodeSettingValueFromEvent:(id)event error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  eventCopy = event;
   v6 = [HMImmutableSettingsProtoValueEvent alloc];
-  v7 = [v5 encodedData];
-  v8 = [(HMImmutableSettingsProtoValueEvent *)v6 initWithData:v7];
+  encodedData = [eventCopy encodedData];
+  v8 = [(HMImmutableSettingsProtoValueEvent *)v6 initWithData:encodedData];
 
   if (v8)
   {
     v9 = [[HMImmutableSettingValue alloc] initWithProtoPayload:v8];
     v10 = v9;
-    if (a4 && !v9)
+    if (error && !v9)
     {
       v11 = 3;
 LABEL_9:
       [MEMORY[0x1E696ABC0] hmErrorWithCode:v11];
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
   }
 
@@ -37,12 +37,12 @@ LABEL_9:
       v17 = 138543618;
       v18 = v14;
       v19 = 2112;
-      v20 = v5;
+      v20 = eventCopy;
       _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_ERROR, "%{public}@Unable to decode proto settings value event from event: %@", &v17, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
-    if (a4)
+    if (error)
     {
       v11 = 19;
       goto LABEL_9;
@@ -58,25 +58,25 @@ LABEL_9:
 
 - (id)encodedData
 {
-  v2 = [(HMImmutableSettingValueEvent *)self settingValue];
-  v3 = [v2 protoPayload];
-  v4 = [v3 data];
+  settingValue = [(HMImmutableSettingValueEvent *)self settingValue];
+  protoPayload = [settingValue protoPayload];
+  data = [protoPayload data];
 
-  return v4;
+  return data;
 }
 
-- (id)initSettingValue:(id)a3 eventSource:(id)a4 eventTimestamp:(double)a5
+- (id)initSettingValue:(id)value eventSource:(id)source eventTimestamp:(double)timestamp
 {
-  v9 = a3;
+  valueCopy = value;
   v10 = MEMORY[0x1E69A45F0];
-  v11 = a4;
-  v12 = [[v10 alloc] initWithSource:v11 cachePolicy:1 combineType:2 timestamp:a5];
+  sourceCopy = source;
+  v12 = [[v10 alloc] initWithSource:sourceCopy cachePolicy:1 combineType:2 timestamp:timestamp];
 
   v13 = [(HMEEvent *)self initWithSubclassedEventMetadata:v12];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_settingValue, a3);
+    objc_storeStrong(&v13->_settingValue, value);
   }
 
   return v14;

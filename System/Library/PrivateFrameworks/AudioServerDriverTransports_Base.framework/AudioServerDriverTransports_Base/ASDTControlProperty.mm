@@ -8,11 +8,11 @@
 
 - (BOOL)isSettable
 {
-  v2 = self;
-  v3 = [(ASDTControlProperty *)self control];
-  LOBYTE(v2) = [v3 isPropertySettable:&v2->_controlAddress];
+  selfCopy = self;
+  control = [(ASDTControlProperty *)self control];
+  LOBYTE(selfCopy) = [control isPropertySettable:&selfCopy->_controlAddress];
 
-  return v2;
+  return selfCopy;
 }
 
 - (ASDControl)control

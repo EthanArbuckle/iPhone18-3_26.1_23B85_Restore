@@ -1,24 +1,24 @@
 @interface CLSImageUtils
-+ (CGImage)CGImageFromJPEGData:(id)a3 error:(id *)a4;
-+ (CGSize)sizeOfImageAtURL:(id)a3;
-+ (id)JPEGDataForThumbnailForFileAtURL:(id)a3 maxSize:(CGSize)a4 scaleFactor:(double)a5 error:(id *)a6;
-+ (id)JPEGDataFromCGImage:(CGImage *)a3 desiredMinimumDimension:(unint64_t)a4 desiredMaximumDimension:(unint64_t)a5 error:(id *)a6;
-+ (id)JPEGDataFromCGImage:(CGImage *)a3 error:(id *)a4;
++ (CGImage)CGImageFromJPEGData:(id)data error:(id *)error;
++ (CGSize)sizeOfImageAtURL:(id)l;
++ (id)JPEGDataForThumbnailForFileAtURL:(id)l maxSize:(CGSize)size scaleFactor:(double)factor error:(id *)error;
++ (id)JPEGDataFromCGImage:(CGImage *)image desiredMinimumDimension:(unint64_t)dimension desiredMaximumDimension:(unint64_t)maximumDimension error:(id *)error;
++ (id)JPEGDataFromCGImage:(CGImage *)image error:(id *)error;
 @end
 
 @implementation CLSImageUtils
 
-+ (id)JPEGDataFromCGImage:(CGImage *)a3 error:(id *)a4
++ (id)JPEGDataFromCGImage:(CGImage *)image error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (image)
   {
     v6 = objc_opt_new();
     v7 = CGImageDestinationCreateWithData(v6, @"public.jpeg", 1uLL, 0);
     if (v7)
     {
       v9 = v7;
-      CGImageDestinationAddImage(v7, a3, 0);
+      CGImageDestinationAddImage(v7, image, 0);
       if (CGImageDestinationFinalize(v9) && objc_msgSend_length(v6, v10, v11))
       {
         v12 = 0;
@@ -28,10 +28,10 @@
       {
         v17 = objc_msgSend_cls_createErrorWithCode_description_(MEMORY[0x277CCA9B8], v10, 100, @"CGImageDestinationFinalize failed");
         v12 = v17;
-        if (a4)
+        if (error)
         {
           v18 = v17;
-          *a4 = v12;
+          *error = v12;
         }
 
         if (qword_280B2A720 != -1)
@@ -59,10 +59,10 @@
     {
       v20 = objc_msgSend_cls_createErrorWithCode_description_(MEMORY[0x277CCA9B8], v8, 100, @"CGImageDestinationCreateWithData failed");
       v12 = v20;
-      if (a4)
+      if (error)
       {
         v21 = v20;
-        *a4 = v12;
+        *error = v12;
       }
 
       if (qword_280B2A720 != -1)
@@ -86,10 +86,10 @@
   {
     v13 = objc_msgSend_cls_createErrorWithCode_description_(MEMORY[0x277CCA9B8], a2, 2, @"Input image is NULL");
     v12 = v13;
-    if (a4)
+    if (error)
     {
       v14 = v13;
-      *a4 = v12;
+      *error = v12;
     }
 
     if (qword_280B2A720 != -1)
@@ -113,19 +113,19 @@
   return v16;
 }
 
-+ (CGImage)CGImageFromJPEGData:(id)a3 error:(id *)a4
++ (CGImage)CGImageFromJPEGData:(id)data error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (!dataCopy)
   {
     v17 = objc_msgSend_cls_createErrorWithCode_description_(MEMORY[0x277CCA9B8], v6, 2, @"Input data is NULL");
     v13 = v17;
-    if (a4)
+    if (error)
     {
       v18 = v17;
-      *a4 = v13;
+      *error = v13;
     }
 
     if (qword_280B2A720 != -1)
@@ -144,15 +144,15 @@
     goto LABEL_25;
   }
 
-  v8 = CGImageSourceCreateWithData(v5, 0);
+  v8 = CGImageSourceCreateWithData(dataCopy, 0);
   if (!v8)
   {
     v20 = objc_msgSend_cls_createErrorWithCode_description_(MEMORY[0x277CCA9B8], v9, 100, @"CGImageSourceCreateWithData failed");
     v13 = v20;
-    if (a4)
+    if (error)
     {
       v21 = v20;
-      *a4 = v13;
+      *error = v13;
     }
 
     if (qword_280B2A720 != -1)
@@ -182,10 +182,10 @@ LABEL_22:
   {
     v14 = objc_msgSend_cls_createErrorWithCode_description_(MEMORY[0x277CCA9B8], v11, 100, @"CGImageSourceCreateImageAtIndex failed");
     v13 = v14;
-    if (a4)
+    if (error)
     {
       v15 = v14;
-      *a4 = v13;
+      *error = v13;
     }
 
     if (qword_280B2A720 != -1)
@@ -209,12 +209,12 @@ LABEL_23:
   return ImageAtIndex;
 }
 
-+ (id)JPEGDataFromCGImage:(CGImage *)a3 desiredMinimumDimension:(unint64_t)a4 desiredMaximumDimension:(unint64_t)a5 error:(id *)a6
++ (id)JPEGDataFromCGImage:(CGImage *)image desiredMinimumDimension:(unint64_t)dimension desiredMaximumDimension:(unint64_t)maximumDimension error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!image)
   {
-    v9 = objc_msgSend_cls_createErrorWithCode_description_(MEMORY[0x277CCA9B8], a2, 2, @"Input image is NULL", a5);
+    v9 = objc_msgSend_cls_createErrorWithCode_description_(MEMORY[0x277CCA9B8], a2, 2, @"Input image is NULL", maximumDimension);
     if (qword_280B2A720 != -1)
     {
       dispatch_once(&qword_280B2A720, &unk_284A07B28);
@@ -231,7 +231,7 @@ LABEL_23:
     goto LABEL_27;
   }
 
-  if (a5 < a4)
+  if (maximumDimension < dimension)
   {
     v9 = objc_msgSend_cls_createErrorWithCode_description_(MEMORY[0x277CCA9B8], a2, 2, @"desiredMaxDimension < desiredMinDimension");
     if (qword_280B2A720 != -1)
@@ -250,9 +250,9 @@ LABEL_23:
     goto LABEL_27;
   }
 
-  Height = CGImageGetHeight(a3);
-  Width = CGImageGetWidth(a3);
-  if (Height < a4 && Width < a4)
+  Height = CGImageGetHeight(image);
+  Width = CGImageGetWidth(image);
+  if (Height < dimension && Width < dimension)
   {
     v9 = objc_msgSend_cls_createErrorWithCode_description_(MEMORY[0x277CCA9B8], v15, 2, @"Input image dimension is less than desiredMinDimension");
     if (qword_280B2A720 != -1)
@@ -271,20 +271,20 @@ LABEL_23:
     goto LABEL_27;
   }
 
-  if (Width > a5 || Height > a5)
+  if (Width > maximumDimension || Height > maximumDimension)
   {
     Thumb = CGImageCreateThumb();
   }
 
   else
   {
-    Thumb = CGImageRetain(a3);
+    Thumb = CGImageRetain(image);
   }
 
   v18 = Thumb;
   if (Thumb)
   {
-    v19 = objc_msgSend_JPEGDataFromCGImage_error_(a1, v17, Thumb, a6);
+    v19 = objc_msgSend_JPEGDataFromCGImage_error_(self, v17, Thumb, error);
     CGImageRelease(v18);
     goto LABEL_31;
   }
@@ -305,10 +305,10 @@ LABEL_27:
   }
 
 LABEL_28:
-  if (a6)
+  if (error)
   {
     v20 = v9;
-    *a6 = v9;
+    *error = v9;
   }
 
   v19 = 0;
@@ -318,11 +318,11 @@ LABEL_31:
   return v19;
 }
 
-+ (id)JPEGDataForThumbnailForFileAtURL:(id)a3 maxSize:(CGSize)a4 scaleFactor:(double)a5 error:(id *)a6
++ (id)JPEGDataForThumbnailForFileAtURL:(id)l maxSize:(CGSize)size scaleFactor:(double)factor error:(id *)error
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -336,7 +336,7 @@ LABEL_31:
   v42 = sub_236FCF380;
   v43 = 0;
   v12 = objc_alloc(MEMORY[0x277CDAAD8]);
-  v14 = objc_msgSend_initWithFileAtURL_size_scale_representationTypes_(v12, v13, v11, 4, width, height, a5);
+  v14 = objc_msgSend_initWithFileAtURL_size_scale_representationTypes_(v12, v13, lCopy, 4, width, height, factor);
   objc_msgSend_setBadgeType_(v14, v15, 0);
   v16 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &unk_284A079A8);
   v19 = objc_msgSend_sharedGenerator(MEMORY[0x277CDAAE0], v17, v18);
@@ -348,7 +348,7 @@ LABEL_31:
   v20 = v16;
   v34 = v20;
   v36 = &v44;
-  v37 = a1;
+  selfCopy = self;
   objc_msgSend_generateBestRepresentationForRequest_completionHandler_(v19, v21, v14, &v30);
 
   v22 = dispatch_time(0, 60000000000);
@@ -361,12 +361,12 @@ LABEL_31:
     objc_msgSend_cls_log_(v39[5], v26, CLSLogDefault);
   }
 
-  if (a6)
+  if (error)
   {
     v27 = v39[5];
     if (v27)
     {
-      *a6 = v27;
+      *error = v27;
     }
   }
 
@@ -378,9 +378,9 @@ LABEL_31:
   return v28;
 }
 
-+ (CGSize)sizeOfImageAtURL:(id)a3
++ (CGSize)sizeOfImageAtURL:(id)l
 {
-  v3 = CGImageSourceCreateWithURL(a3, 0);
+  v3 = CGImageSourceCreateWithURL(l, 0);
   if (v3)
   {
     v4 = v3;

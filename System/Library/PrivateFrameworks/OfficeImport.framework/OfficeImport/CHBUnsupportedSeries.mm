@@ -1,13 +1,13 @@
 @interface CHBUnsupportedSeries
-+ (id)chdSeriesWithState:(id)a3;
++ (id)chdSeriesWithState:(id)state;
 @end
 
 @implementation CHBUnsupportedSeries
 
-+ (id)chdSeriesWithState:(id)a3
++ (id)chdSeriesWithState:(id)state
 {
-  v3 = [a3 chart];
-  v4 = [(CHDSeries *)CHDUnsupportedSeries seriesWithChart:v3];
+  chart = [state chart];
+  v4 = [(CHDSeries *)CHDUnsupportedSeries seriesWithChart:chart];
 
   return v4;
 }

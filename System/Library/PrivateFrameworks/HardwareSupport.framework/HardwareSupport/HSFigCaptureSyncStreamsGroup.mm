@@ -1,33 +1,33 @@
 @interface HSFigCaptureSyncStreamsGroup
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStreamsGroup:(id)a3;
-- (BOOL)setValue:(id)a3 forProperty:(__CFString *)a4 error:(id *)a5;
-- (HSFigCaptureSyncStreamsGroup)initWithCaptureSyncStreamsGroup:(OpaqueFigCaptureSynchronizedStreamsGroup *)a3 fromDevice:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStreamsGroup:(id)group;
+- (BOOL)setValue:(id)value forProperty:(__CFString *)property error:(id *)error;
+- (HSFigCaptureSyncStreamsGroup)initWithCaptureSyncStreamsGroup:(OpaqueFigCaptureSynchronizedStreamsGroup *)group fromDevice:(id)device;
 - (id)description;
-- (id)valueForKey:(id)a3;
-- (id)valueForProperty:(__CFString *)a3 error:(id *)a4;
+- (id)valueForKey:(id)key;
+- (id)valueForProperty:(__CFString *)property error:(id *)error;
 @end
 
 @implementation HSFigCaptureSyncStreamsGroup
 
-- (HSFigCaptureSyncStreamsGroup)initWithCaptureSyncStreamsGroup:(OpaqueFigCaptureSynchronizedStreamsGroup *)a3 fromDevice:(id)a4
+- (HSFigCaptureSyncStreamsGroup)initWithCaptureSyncStreamsGroup:(OpaqueFigCaptureSynchronizedStreamsGroup *)group fromDevice:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   FigBaseObject = FigCaptureSynchronizedStreamsGroupGetFigBaseObject();
   v11.receiver = self;
   v11.super_class = HSFigCaptureSyncStreamsGroup;
   v8 = [(HSCMBaseObject *)&v11 initWithBaseObject:FigBaseObject];
-  v8->_underlyingSyncStreamsGroup = a3;
+  v8->_underlyingSyncStreamsGroup = group;
   device = v8->_device;
-  v8->_device = v6;
+  v8->_device = deviceCopy;
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -35,17 +35,17 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HSFigCaptureSyncStreamsGroup *)self isEqualToStreamsGroup:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HSFigCaptureSyncStreamsGroup *)self isEqualToStreamsGroup:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToStreamsGroup:(id)a3
+- (BOOL)isEqualToStreamsGroup:(id)group
 {
-  v5 = a3;
-  v6 = [a3 underlyingSyncStreamsGroup];
-  return v6 == [(HSFigCaptureSyncStreamsGroup *)self underlyingSyncStreamsGroup];
+  groupCopy = group;
+  underlyingSyncStreamsGroup = [group underlyingSyncStreamsGroup];
+  return underlyingSyncStreamsGroup == [(HSFigCaptureSyncStreamsGroup *)self underlyingSyncStreamsGroup];
 }
 
 - (id)description
@@ -55,18 +55,18 @@
   v10.super_class = HSFigCaptureSyncStreamsGroup;
   v4 = [(HSFigCaptureSyncStreamsGroup *)&v10 description];
   underlyingSyncStreamsGroup = self->_underlyingSyncStreamsGroup;
-  v6 = [(HSFigCaptureSyncStreamsGroup *)self device];
-  v7 = [v6 description];
+  device = [(HSFigCaptureSyncStreamsGroup *)self device];
+  v7 = [device description];
   v8 = [v3 stringWithFormat:@"%@ [streamsGroupRef: %p, device: %@]", v4, underlyingSyncStreamsGroup, v7];
 
   return v8;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = NSStringFromSelector(sel_underlyingSyncStreamsGroup);
-  v6 = [v4 isEqualToString:v5];
+  v6 = [keyCopy isEqualToString:v5];
 
   if (v6)
   {
@@ -77,7 +77,7 @@
   {
     v10.receiver = self;
     v10.super_class = HSFigCaptureSyncStreamsGroup;
-    v7 = [(HSFigCaptureSyncStreamsGroup *)&v10 valueForKey:v4];
+    v7 = [(HSFigCaptureSyncStreamsGroup *)&v10 valueForKey:keyCopy];
   }
 
   v8 = v7;
@@ -85,21 +85,21 @@
   return v8;
 }
 
-- (BOOL)setValue:(id)a3 forProperty:(__CFString *)a4 error:(id *)a5
+- (BOOL)setValue:(id)value forProperty:(__CFString *)property error:(id *)error
 {
-  v8 = _unwrapFigCaptureValue(a3);
+  v8 = _unwrapFigCaptureValue(value);
   v10.receiver = self;
   v10.super_class = HSFigCaptureSyncStreamsGroup;
-  LOBYTE(a5) = [(HSCMBaseObject *)&v10 setValue:v8 forProperty:a4 error:a5];
+  LOBYTE(error) = [(HSCMBaseObject *)&v10 setValue:v8 forProperty:property error:error];
 
-  return a5;
+  return error;
 }
 
-- (id)valueForProperty:(__CFString *)a3 error:(id *)a4
+- (id)valueForProperty:(__CFString *)property error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = HSFigCaptureSyncStreamsGroup;
-  v5 = [(HSCMBaseObject *)&v8 valueForProperty:a3 error:a4];
+  v5 = [(HSCMBaseObject *)&v8 valueForProperty:property error:error];
   v6 = _wrapFigCaptureValue(v5, self->_device);
 
   return v6;

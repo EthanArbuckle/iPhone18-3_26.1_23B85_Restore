@@ -1,12 +1,12 @@
 @interface InputPickerAnimationTransition
 - (_TtC5AVKit30InputPickerAnimationTransition)init;
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation InputPickerAnimationTransition
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   result = 0.35;
   if (*(&self->super.isa + OBJC_IVAR____TtC5AVKit30InputPickerAnimationTransition_style))
@@ -17,11 +17,11 @@
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_18B5151F4(a3);
+  selfCopy = self;
+  sub_18B5151F4(transition);
   swift_unknownObjectRelease();
 }
 

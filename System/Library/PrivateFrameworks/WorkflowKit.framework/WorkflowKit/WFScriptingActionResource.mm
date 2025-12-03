@@ -1,8 +1,8 @@
 @interface WFScriptingActionResource
-- (WFScriptingActionResource)initWithDefinition:(id)a3;
+- (WFScriptingActionResource)initWithDefinition:(id)definition;
 - (WFWorkflow)workflow;
 - (void)refreshAvailability;
-- (void)setWorkflow:(id)a3;
+- (void)setWorkflow:(id)workflow;
 @end
 
 @implementation WFScriptingActionResource
@@ -16,10 +16,10 @@
 
 - (void)refreshAvailability
 {
-  v3 = [(WFScriptingActionResource *)self workflow];
-  v4 = [v3 environment];
+  workflow = [(WFScriptingActionResource *)self workflow];
+  environment = [workflow environment];
 
-  if (v4 == 5)
+  if (environment == 5)
   {
 
     [(WFResource *)self updateAvailability:1 withError:0];
@@ -43,20 +43,20 @@
   }
 }
 
-- (WFScriptingActionResource)initWithDefinition:(id)a3
+- (WFScriptingActionResource)initWithDefinition:(id)definition
 {
   v10.receiver = self;
   v10.super_class = WFScriptingActionResource;
-  v3 = [(WFResource *)&v10 initWithDefinition:a3];
+  v3 = [(WFResource *)&v10 initWithDefinition:definition];
   if (v3)
   {
     v4 = +[WFSecuredPreferences standardPreferences];
     securedPreferences = v3->_securedPreferences;
     v3->_securedPreferences = v4;
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    v7 = [(WFScriptingActionResource *)v3 securedPreferences];
-    [v6 addObserver:v3 selector:sel_preferencesUpdated_ name:@"WFSecuredPreferencesDidChangeNotification" object:v7];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    securedPreferences = [(WFScriptingActionResource *)v3 securedPreferences];
+    [defaultCenter addObserver:v3 selector:sel_preferencesUpdated_ name:@"WFSecuredPreferencesDidChangeNotification" object:securedPreferences];
 
     v8 = v3;
   }
@@ -64,9 +64,9 @@
   return v3;
 }
 
-- (void)setWorkflow:(id)a3
+- (void)setWorkflow:(id)workflow
 {
-  objc_storeWeak(&self->_workflow, a3);
+  objc_storeWeak(&self->_workflow, workflow);
 
   [(WFResource *)self invalidateAvailability];
 }

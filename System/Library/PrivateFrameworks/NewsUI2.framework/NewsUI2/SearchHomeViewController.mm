@@ -1,15 +1,15 @@
 @interface SearchHomeViewController
-- (_TtC7NewsUI224SearchHomeViewController)initWithCoder:(id)a3;
-- (_TtC7NewsUI224SearchHomeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7NewsUI224SearchHomeViewController)initWithCoder:(id)coder;
+- (_TtC7NewsUI224SearchHomeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)contentScrollView;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SearchHomeViewController
 
-- (_TtC7NewsUI224SearchHomeViewController)initWithCoder:(id)a3
+- (_TtC7NewsUI224SearchHomeViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super._responderFlags + OBJC_IVAR____TtC7NewsUI224SearchHomeViewController_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (_TtC7NewsUI224SearchHomeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI224SearchHomeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -27,7 +27,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_219A60F54();
 }
 
@@ -37,15 +37,15 @@
   v15.super_class = swift_getObjectType();
   v2 = v15.receiver;
   [(SearchHomeViewController *)&v15 viewWillLayoutSubviews];
-  v3 = [*&v2[OBJC_IVAR____TtC7NewsUI224SearchHomeViewController_blueprintViewController] view];
-  if (v3)
+  view = [*&v2[OBJC_IVAR____TtC7NewsUI224SearchHomeViewController_blueprintViewController] view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [v2 view];
-    if (v5)
+    v4 = view;
+    view2 = [v2 view];
+    if (view2)
     {
-      v6 = v5;
-      [v5 bounds];
+      v6 = view2;
+      [view2 bounds];
       v8 = v7;
       v10 = v9;
       v12 = v11;
@@ -64,20 +64,20 @@
   __break(1u);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(SearchHomeViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
+  [(SearchHomeViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
   sub_219A62974();
 }
 
 - (id)contentScrollView
 {
-  v2 = self;
+  selfCopy = self;
   sub_219BE8664();
   v3 = sub_219BE7BC4();
 

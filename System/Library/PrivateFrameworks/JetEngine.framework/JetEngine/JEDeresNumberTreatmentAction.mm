@@ -1,20 +1,20 @@
 @interface JEDeresNumberTreatmentAction
-- (JEDeresNumberTreatmentAction)initWithField:(id)a3 configuration:(id)a4;
-- (id)performAction:(id)a3 context:(id)a4;
+- (JEDeresNumberTreatmentAction)initWithField:(id)field configuration:(id)configuration;
+- (id)performAction:(id)action context:(id)context;
 @end
 
 @implementation JEDeresNumberTreatmentAction
 
-- (JEDeresNumberTreatmentAction)initWithField:(id)a3 configuration:(id)a4
+- (JEDeresNumberTreatmentAction)initWithField:(id)field configuration:(id)configuration
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  configurationCopy = configuration;
   v28.receiver = self;
   v28.super_class = JEDeresNumberTreatmentAction;
-  v7 = [(JETreatmentAction *)&v28 initWithField:a3 configuration:v6];
+  v7 = [(JETreatmentAction *)&v28 initWithField:field configuration:configurationCopy];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"precision"];
+    v8 = [configurationCopy objectForKeyedSubscript:@"precision"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
 
     [v9 doubleValue];
     v7->_precision = v10;
-    v11 = [v6 objectForKeyedSubscript:@"buckets"];
+    v11 = [configurationCopy objectForKeyedSubscript:@"buckets"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,12 +98,12 @@ LABEL_19:
   return v7;
 }
 
-- (id)performAction:(id)a3 context:(id)a4
+- (id)performAction:(id)action context:(id)context
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = JEDeresNumberTreatmentAction;
-  v5 = [(JETreatmentAction *)&v22 performAction:a3 context:a4];
+  v5 = [(JETreatmentAction *)&v22 performAction:action context:context];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

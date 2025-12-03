@@ -1,36 +1,36 @@
 @interface UIUDetector
-+ (int64_t)convertPlatform:(int64_t)a3;
-- (id)getDetectionsInScreen:(CGImage *)a3 addOCR:(BOOL)a4 addIcons:(BOOL)a5 addClickability:(BOOL)a6 addFocusElements:(BOOL)a7 nmsThreshold:(float)a8 useAccurateOCR:(BOOL)a9 error:(id *)a10;
-- (id)initForPlatform:(int64_t)a3 elementConfidence:(id)a4 clickabilityConfidence:(id)a5 elementConfig:(id)a6 clickabilityConfig:(id)a7;
++ (int64_t)convertPlatform:(int64_t)platform;
+- (id)getDetectionsInScreen:(CGImage *)screen addOCR:(BOOL)r addIcons:(BOOL)icons addClickability:(BOOL)clickability addFocusElements:(BOOL)elements nmsThreshold:(float)threshold useAccurateOCR:(BOOL)cR error:(id *)self0;
+- (id)initForPlatform:(int64_t)platform elementConfidence:(id)confidence clickabilityConfidence:(id)clickabilityConfidence elementConfig:(id)config clickabilityConfig:(id)clickabilityConfig;
 @end
 
 @implementation UIUDetector
 
-+ (int64_t)convertPlatform:(int64_t)a3
++ (int64_t)convertPlatform:(int64_t)platform
 {
-  if (a3 == 2)
+  if (platform == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return platform == 1;
   }
 }
 
-- (id)initForPlatform:(int64_t)a3 elementConfidence:(id)a4 clickabilityConfidence:(id)a5 elementConfig:(id)a6 clickabilityConfig:(id)a7
+- (id)initForPlatform:(int64_t)platform elementConfidence:(id)confidence clickabilityConfidence:(id)clickabilityConfidence elementConfig:(id)config clickabilityConfig:(id)clickabilityConfig
 {
   v26 = *MEMORY[0x277D85DE8];
   v23.receiver = self;
   v23.super_class = UIUDetector;
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
+  clickabilityConfigCopy = clickabilityConfig;
+  configCopy = config;
+  clickabilityConfidenceCopy = clickabilityConfidence;
+  confidenceCopy = confidence;
   v15 = [(UIUDetector *)&v23 init];
   v22 = 0;
-  v16 = [[UIUDetectorCompat alloc] initWithPlatform:[UIUDetector convertPlatform:?]elementConfig:v14 clickabilityConfig:v13 error:v12, v11, &v22];
+  v16 = [[UIUDetectorCompat alloc] initWithPlatform:[UIUDetector convertPlatform:?]elementConfig:confidenceCopy clickabilityConfig:clickabilityConfidenceCopy error:configCopy, clickabilityConfigCopy, &v22];
 
   v17 = v22;
   v18 = v17;
@@ -44,9 +44,9 @@
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v18 localizedDescription];
+      localizedDescription = [v18 localizedDescription];
       *buf = 138412290;
-      v25 = v19;
+      v25 = localizedDescription;
       _os_log_impl(&dword_270253000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Failed to initialize detector with error %@", buf, 0xCu);
     }
 
@@ -56,20 +56,20 @@
   return v20;
 }
 
-- (id)getDetectionsInScreen:(CGImage *)a3 addOCR:(BOOL)a4 addIcons:(BOOL)a5 addClickability:(BOOL)a6 addFocusElements:(BOOL)a7 nmsThreshold:(float)a8 useAccurateOCR:(BOOL)a9 error:(id *)a10
+- (id)getDetectionsInScreen:(CGImage *)screen addOCR:(BOOL)r addIcons:(BOOL)icons addClickability:(BOOL)clickability addFocusElements:(BOOL)elements nmsThreshold:(float)threshold useAccurateOCR:(BOOL)cR error:(id *)self0
 {
-  v10 = a9;
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
+  cRCopy = cR;
+  elementsCopy = elements;
+  clickabilityCopy = clickability;
+  iconsCopy = icons;
+  rCopy = r;
   v35 = *MEMORY[0x277D85DE8];
-  v18 = [MEMORY[0x277CBEB18] array];
-  v19 = [(UIUDetector *)self underlyingObject];
-  *&v20 = a8;
-  v21 = [v19 getUIObjectsInScreen:a3 addOCR:v15 addIconRecognition:v14 addClickability:v13 addFocusElements:v12 nmsThreshold:v10 useAccurateOCR:v20 error:a10];
+  array = [MEMORY[0x277CBEB18] array];
+  underlyingObject = [(UIUDetector *)self underlyingObject];
+  *&v20 = threshold;
+  v21 = [underlyingObject getUIObjectsInScreen:screen addOCR:rCopy addIconRecognition:iconsCopy addClickability:clickabilityCopy addFocusElements:elementsCopy nmsThreshold:cRCopy useAccurateOCR:v20 error:error];
 
-  if (*a10)
+  if (*error)
   {
     v22 = 0;
   }
@@ -96,7 +96,7 @@
           }
 
           v28 = [[UIObject alloc] initWithCompat:*(*(&v30 + 1) + 8 * i)];
-          [v18 addObject:v28];
+          [array addObject:v28];
         }
 
         v25 = [v23 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -105,7 +105,7 @@
       while (v25);
     }
 
-    v22 = v18;
+    v22 = array;
   }
 
   return v22;

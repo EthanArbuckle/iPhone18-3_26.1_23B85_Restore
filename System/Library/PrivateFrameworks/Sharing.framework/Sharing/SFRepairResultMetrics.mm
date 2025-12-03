@@ -14,7 +14,7 @@
   v3 = 0;
   v42 = 0;
   peerProblemFlags = self->_peerProblemFlags;
-  v4 = self;
+  selfCopy = self;
   NSAppendPrintF();
   v5 = 0;
   v47[0] = @"resultType";
@@ -66,16 +66,16 @@
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:10];
   v37 = [v15 mutableCopy];
 
-  if (v4->_error)
+  if (selfCopy->_error)
   {
     v16 = objc_opt_new();
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v34 = v4;
-    v17 = [(NSError *)v4->_error underlyingErrors];
-    v18 = [v17 countByEnumeratingWithState:&v38 objects:v46 count:16];
+    v34 = selfCopy;
+    underlyingErrors = [(NSError *)selfCopy->_error underlyingErrors];
+    v18 = [underlyingErrors countByEnumeratingWithState:&v38 objects:v46 count:16];
     v35 = v5;
     v36 = v3;
     if (v18)
@@ -90,7 +90,7 @@
         {
           if (*v39 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(underlyingErrors);
           }
 
           v23 = *(*(&v38 + 1) + 8 * v21);
@@ -99,9 +99,9 @@
             [v22 appendString:{@", "}];
           }
 
-          v24 = [v23 code];
+          code = [v23 code];
           [v23 domain];
-          v33 = v32 = v24;
+          v33 = v32 = code;
           NSAppendPrintF();
           v16 = v22;
 
@@ -110,7 +110,7 @@
         }
 
         while (v19 != v21);
-        v19 = [v17 countByEnumeratingWithState:&v38 objects:v46 count:{16, v24, v33}];
+        v19 = [underlyingErrors countByEnumeratingWithState:&v38 objects:v46 count:{16, code, v33}];
       }
 
       while (v19);
@@ -120,9 +120,9 @@
     v25 = [MEMORY[0x1E696AD98] numberWithInteger:{-[NSError code](v34->_error, "code")}];
     v45[0] = v25;
     v44[1] = @"errDomain";
-    v26 = [(NSError *)v34->_error domain];
+    domain = [(NSError *)v34->_error domain];
     v44[2] = @"underErr";
-    v45[1] = v26;
+    v45[1] = domain;
     v45[2] = v16;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:3];
     [v37 addEntriesFromDictionary:v27];

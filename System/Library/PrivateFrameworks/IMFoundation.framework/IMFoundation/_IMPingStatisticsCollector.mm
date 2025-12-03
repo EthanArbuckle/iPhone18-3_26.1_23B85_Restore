@@ -1,14 +1,14 @@
 @interface _IMPingStatisticsCollector
-- (BOOL)logStatsToFile:(id)a3 error:(id *)a4;
+- (BOOL)logStatsToFile:(id)file error:(id *)error;
 - (_IMPingStatisticsCollector)init;
-- (double)_computeMedianTime:(id)a3;
-- (double)_computeStandardDeviation:(id)a3 numPings:(int)a4 averageRTT:(double)a5;
+- (double)_computeMedianTime:(id)time;
+- (double)_computeStandardDeviation:(id)deviation numPings:(int)pings averageRTT:(double)t;
 - (id)pingStats;
-- (id)pingStatsForLastNSeconds:(double)a3;
-- (timeval)timeSentForPacket:(int)a3;
-- (void)addEchoReplyPacket:(int)a3;
+- (id)pingStatsForLastNSeconds:(double)seconds;
+- (timeval)timeSentForPacket:(int)packet;
+- (void)addEchoReplyPacket:(int)packet;
 - (void)dealloc;
-- (void)timeoutOldSequenceNumbers:(double)a3;
+- (void)timeoutOldSequenceNumbers:(double)numbers;
 @end
 
 @implementation _IMPingStatisticsCollector
@@ -52,12 +52,12 @@
   [(_IMPingStatisticsCollector *)&v5 dealloc];
 }
 
-- (timeval)timeSentForPacket:(int)a3
+- (timeval)timeSentForPacket:(int)packet
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v4->_timestampArray[a3 % 160];
-  if (objc_msgSend_sequenceNumber(v5, v6, v7) == a3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = selfCopy->_timestampArray[packet % 160];
+  if (objc_msgSend_sequenceNumber(v5, v6, v7) == packet)
   {
     v10 = objc_msgSend_timeSent(v5, v8, v9);
     v12 = v11;
@@ -69,7 +69,7 @@
     v10 = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v13 = v10;
   v14 = v12;
@@ -78,13 +78,13 @@
   return result;
 }
 
-- (void)addEchoReplyPacket:(int)a3
+- (void)addEchoReplyPacket:(int)packet
 {
   obj = self;
   objc_sync_enter(obj);
   timestampArray = obj->_timestampArray;
-  v5 = a3 % 160;
-  v8 = obj->_timestampArray[a3 % 160];
+  v5 = packet % 160;
+  v8 = obj->_timestampArray[packet % 160];
   if (obj->_roundTriptimes)
   {
     if (!v8)
@@ -105,7 +105,7 @@
     }
   }
 
-  if (objc_msgSend_sequenceNumber(v8, v6, v7) == a3)
+  if (objc_msgSend_sequenceNumber(v8, v6, v7) == packet)
   {
     objc_msgSend__returnPacketArrived(v8, v11, v12);
     objc_msgSend_rtt(v8, v13, v14);
@@ -125,7 +125,7 @@ LABEL_8:
   objc_sync_exit(obj);
 }
 
-- (void)timeoutOldSequenceNumbers:(double)a3
+- (void)timeoutOldSequenceNumbers:(double)numbers
 {
   obj = self;
   objc_sync_enter(obj);
@@ -134,24 +134,24 @@ LABEL_8:
     v5 = *(&obj->super.isa + i);
     if ((objc_msgSend_timedOut(v5, v6, v7) & 1) == 0)
     {
-      objc_msgSend__markPacketAsTimedOut_(v5, v8, v9, a3);
+      objc_msgSend__markPacketAsTimedOut_(v5, v8, v9, numbers);
     }
   }
 
   objc_sync_exit(obj);
 }
 
-- (BOOL)logStatsToFile:(id)a3 error:(id *)a4
+- (BOOL)logStatsToFile:(id)file error:(id *)error
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
+  fileCopy = file;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = objc_autoreleasePoolPush();
-  if (v6)
+  if (fileCopy)
   {
-    stringToWriteToFile = v7->_stringToWriteToFile;
+    stringToWriteToFile = selfCopy->_stringToWriteToFile;
     v15 = 0;
-    v11 = objc_msgSend_writeToFile_atomically_encoding_error_(stringToWriteToFile, v8, v6, 1, 4, &v15);
+    v11 = objc_msgSend_writeToFile_atomically_encoding_error_(stringToWriteToFile, v8, fileCopy, 1, 4, &v15);
     v12 = v15;
   }
 
@@ -162,12 +162,12 @@ LABEL_8:
   }
 
   objc_autoreleasePoolPop(v9);
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
-  if (a4 && v12)
+  if (error && v12)
   {
     v13 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   return v11;
@@ -175,37 +175,37 @@ LABEL_8:
 
 - (id)pingStats
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  stats = v2->_stats;
-  objc_msgSend__computeMedianTime_(v2, v4, v2->_roundTriptimes);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  stats = selfCopy->_stats;
+  objc_msgSend__computeMedianTime_(selfCopy, v4, selfCopy->_roundTriptimes);
   objc_msgSend__setMedianRoundtripTime_(stats, v5, v6);
-  v7 = v2->_stats;
-  roundTriptimes = v2->_roundTriptimes;
+  v7 = selfCopy->_stats;
+  roundTriptimes = selfCopy->_roundTriptimes;
   v11 = objc_msgSend_numPingsReceived(v7, v9, v10);
-  objc_msgSend_averageRoundtripTime(v2->_stats, v12, v13);
-  objc_msgSend__computeStandardDeviation_numPings_averageRTT_(v2, v14, roundTriptimes, v11);
+  objc_msgSend_averageRoundtripTime(selfCopy->_stats, v12, v13);
+  objc_msgSend__computeStandardDeviation_numPings_averageRTT_(selfCopy, v14, roundTriptimes, v11);
   objc_msgSend__setStandardDeviationRoundtripTime_(v7, v15, v16);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v19 = objc_msgSend_copy(v2->_stats, v17, v18);
+  v19 = objc_msgSend_copy(selfCopy->_stats, v17, v18);
 
   return v19;
 }
 
-- (id)pingStatsForLastNSeconds:(double)a3
+- (id)pingStatsForLastNSeconds:(double)seconds
 {
   v51 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc(MEMORY[0x1E695DF70]);
-  v7 = objc_msgSend_initWithCapacity_(v5, v6, a3);
+  v7 = objc_msgSend_initWithCapacity_(v5, v6, seconds);
   v8 = objc_alloc_init(IMPingStatistics);
-  v9 = self;
-  objc_sync_enter(v9);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v10 = v9->_roundTriptimes;
+  v10 = selfCopy->_roundTriptimes;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v46, v50, 16);
   if (v14)
   {
@@ -222,7 +222,7 @@ LABEL_8:
         v17 = *(*(&v46 + 1) + 8 * i);
         v18 = objc_msgSend_timeSent(v17, v12, v13);
         objc_msgSend_rtt(v17, v19, v20, v18, v19, v46);
-        if (v21 > 0.0 && sub_1959D0C70(&v45) < a3)
+        if (v21 > 0.0 && sub_1959D0C70(&v45) < seconds)
         {
           v22 = objc_msgSend_error(v17, v12, v13) == 0;
           objc_msgSend__addTransmittedPacket_(v8, v23, v22);
@@ -241,25 +241,25 @@ LABEL_8:
 
   v34 = objc_msgSend_numPingsReceived(v8, v32, v33);
   objc_msgSend_averageRoundtripTime(v8, v35, v36);
-  objc_msgSend__computeStandardDeviation_numPings_averageRTT_(v9, v37, v7, v34);
+  objc_msgSend__computeStandardDeviation_numPings_averageRTT_(selfCopy, v37, v7, v34);
   objc_msgSend__setStandardDeviationRoundtripTime_(v8, v38, v39);
-  objc_msgSend__computeMedianTime_(v9, v40, v7);
+  objc_msgSend__computeMedianTime_(selfCopy, v40, v7);
   objc_msgSend__setMedianRoundtripTime_(v8, v41, v42);
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
   v43 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-- (double)_computeMedianTime:(id)a3
+- (double)_computeMedianTime:(id)time
 {
-  v3 = a3;
-  if (objc_msgSend_count(v3, v4, v5))
+  timeCopy = time;
+  if (objc_msgSend_count(timeCopy, v4, v5))
   {
-    objc_msgSend_sortUsingComparator_(v3, v6, &unk_1F09D3680);
-    v9 = objc_msgSend_count(v3, v7, v8);
-    v11 = objc_msgSend_objectAtIndex_(v3, v10, v9 >> 1);
+    objc_msgSend_sortUsingComparator_(timeCopy, v6, &unk_1F09D3680);
+    v9 = objc_msgSend_count(timeCopy, v7, v8);
+    v11 = objc_msgSend_objectAtIndex_(timeCopy, v10, v9 >> 1);
     objc_msgSend_rtt(v11, v12, v13);
     v15 = v14;
   }
@@ -272,15 +272,15 @@ LABEL_8:
   return v15;
 }
 
-- (double)_computeStandardDeviation:(id)a3 numPings:(int)a4 averageRTT:(double)a5
+- (double)_computeStandardDeviation:(id)deviation numPings:(int)pings averageRTT:(double)t
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  deviationCopy = deviation;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v22, v26, 16);
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(deviationCopy, v8, &v22, v26, 16);
   if (v9)
   {
     v12 = v9;
@@ -292,18 +292,18 @@ LABEL_8:
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(deviationCopy);
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
         if (!objc_msgSend_error(v16, v10, v11))
         {
           objc_msgSend_rtt(v16, v10, v11);
-          v14 = v14 + (v17 - a5) * (v17 - a5);
+          v14 = v14 + (v17 - t) * (v17 - t);
         }
       }
 
-      v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v10, &v22, v26, 16);
+      v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(deviationCopy, v10, &v22, v26, 16);
     }
 
     while (v12);

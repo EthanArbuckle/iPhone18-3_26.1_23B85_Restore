@@ -1,12 +1,12 @@
 @interface FormatAdMetricsView
-- (void)metricsViewCollapsed:(id)a3;
+- (void)metricsViewCollapsed:(id)collapsed;
 @end
 
 @implementation FormatAdMetricsView
 
-- (void)metricsViewCollapsed:(id)a3
+- (void)metricsViewCollapsed:(id)collapsed
 {
-  v3 = self;
+  selfCopy = self;
   MEMORY[0x1DA6F6CF0]();
 }
 

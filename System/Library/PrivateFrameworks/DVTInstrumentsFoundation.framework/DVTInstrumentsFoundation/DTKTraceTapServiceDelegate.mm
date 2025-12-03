@@ -1,39 +1,39 @@
 @interface DTKTraceTapServiceDelegate
-+ (void)registerCapabilities:(id)a3;
-- (BOOL)requiresExpiredPIDCacheForConfig:(id)a3;
-- (DTKTraceTapServiceDelegate)initWithMessageSender:(id)a3;
-- (id)createConfigWithPlist:(id)a3;
-- (id)willStartWithConfig:(id)a3;
++ (void)registerCapabilities:(id)capabilities;
+- (BOOL)requiresExpiredPIDCacheForConfig:(id)config;
+- (DTKTraceTapServiceDelegate)initWithMessageSender:(id)sender;
+- (id)createConfigWithPlist:(id)plist;
+- (id)willStartWithConfig:(id)config;
 @end
 
 @implementation DTKTraceTapServiceDelegate
 
-+ (void)registerCapabilities:(id)a3
++ (void)registerCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   v5 = +[DTDeviceKTraceSupport capabilities];
-  [DTTapService registerCapabilities:v5 forDelegateClass:a1 forConnection:v4];
+  [DTTapService registerCapabilities:v5 forDelegateClass:self forConnection:capabilitiesCopy];
 }
 
-- (DTKTraceTapServiceDelegate)initWithMessageSender:(id)a3
+- (DTKTraceTapServiceDelegate)initWithMessageSender:(id)sender
 {
-  v5 = a3;
+  senderCopy = sender;
   v9.receiver = self;
   v9.super_class = DTKTraceTapServiceDelegate;
   v6 = [(DTKTraceTapServiceDelegate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_messageSender, a3);
+    objc_storeStrong(&v6->_messageSender, sender);
   }
 
   return v7;
 }
 
-- (id)createConfigWithPlist:(id)a3
+- (id)createConfigWithPlist:(id)plist
 {
-  v4 = a3;
-  v5 = [(DTTapConfig *)[DTKTraceTapConfig alloc] initWithPlist:v4];
+  plistCopy = plist;
+  v5 = [(DTTapConfig *)[DTKTraceTapConfig alloc] initWithPlist:plistCopy];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -45,9 +45,9 @@
   return v5;
 }
 
-- (BOOL)requiresExpiredPIDCacheForConfig:(id)a3
+- (BOOL)requiresExpiredPIDCacheForConfig:(id)config
 {
-  v3 = a3;
+  configCopy = config;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -57,21 +57,21 @@
   v6[2] = sub_247FE2D9C;
   v6[3] = &unk_278EF26B0;
   v6[4] = &v7;
-  [v3 enumerateTriggerConfigs:v6];
+  [configCopy enumerateTriggerConfigs:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
   return v4;
 }
 
-- (id)willStartWithConfig:(id)a3
+- (id)willStartWithConfig:(id)config
 {
-  v3 = a3;
+  configCopy = config;
   v4 = objc_opt_new();
   [v4 setKind:0];
-  v5 = [v3 triggerConfigCount];
+  triggerConfigCount = [configCopy triggerConfigCount];
 
-  [v4 setTriggerCount:v5];
+  [v4 setTriggerCount:triggerConfigCount];
   [v4 setCoreCount:DTGetCoreCount()];
   [v4 setTapVersion:0x10000];
 

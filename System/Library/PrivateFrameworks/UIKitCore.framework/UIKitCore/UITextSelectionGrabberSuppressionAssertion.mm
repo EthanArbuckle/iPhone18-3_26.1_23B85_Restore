@@ -1,5 +1,5 @@
 @interface UITextSelectionGrabberSuppressionAssertion
-- (UITextSelectionGrabberSuppressionAssertion)initWithSelectionView:(id)a3;
+- (UITextSelectionGrabberSuppressionAssertion)initWithSelectionView:(id)view;
 - (UITextSelectionView)selectionView;
 - (void)_invalidate;
 - (void)dealloc;
@@ -7,16 +7,16 @@
 
 @implementation UITextSelectionGrabberSuppressionAssertion
 
-- (UITextSelectionGrabberSuppressionAssertion)initWithSelectionView:(id)a3
+- (UITextSelectionGrabberSuppressionAssertion)initWithSelectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = UITextSelectionGrabberSuppressionAssertion;
   v5 = [(UITextSelectionGrabberSuppressionAssertion *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(UITextSelectionGrabberSuppressionAssertion *)v5 setSelectionView:v4];
+    [(UITextSelectionGrabberSuppressionAssertion *)v5 setSelectionView:viewCopy];
   }
 
   return v6;
@@ -26,8 +26,8 @@
 {
   if (![(UITextSelectionGrabberSuppressionAssertion *)self invalidated])
   {
-    v3 = [(UITextSelectionGrabberSuppressionAssertion *)self selectionView];
-    [v3 releaseGrabberHandleSuppressionAssertion:self];
+    selectionView = [(UITextSelectionGrabberSuppressionAssertion *)self selectionView];
+    [selectionView releaseGrabberHandleSuppressionAssertion:self];
   }
 
   v4.receiver = self;
@@ -38,8 +38,8 @@
 - (void)_invalidate
 {
   [(UITextSelectionGrabberSuppressionAssertion *)self setInvalidated:1];
-  v3 = [(UITextSelectionGrabberSuppressionAssertion *)self selectionView];
-  [v3 releaseGrabberHandleSuppressionAssertion:self];
+  selectionView = [(UITextSelectionGrabberSuppressionAssertion *)self selectionView];
+  [selectionView releaseGrabberHandleSuppressionAssertion:self];
 }
 
 - (UITextSelectionView)selectionView

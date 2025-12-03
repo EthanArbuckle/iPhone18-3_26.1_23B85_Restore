@@ -1,19 +1,19 @@
 @interface BLSHBacklightEnvironmentPresentation
-- (BLSHBacklightEnvironmentPresentation)initWithEnvironments:(id)a3 caContext:(id)a4 expirationDate:(id)a5;
-- (BLSHBacklightEnvironmentPresentation)initWithPresentationEntries:(id)a3 caContext:(id)a4 expirationDate:(id)a5;
-- (BLSHBacklightEnvironmentPresentation)initWithPresentationEntries:(id)a3 flipbookContext:(id)a4 expirationDate:(id)a5;
+- (BLSHBacklightEnvironmentPresentation)initWithEnvironments:(id)environments caContext:(id)context expirationDate:(id)date;
+- (BLSHBacklightEnvironmentPresentation)initWithPresentationEntries:(id)entries caContext:(id)context expirationDate:(id)date;
+- (BLSHBacklightEnvironmentPresentation)initWithPresentationEntries:(id)entries flipbookContext:(id)context expirationDate:(id)date;
 - (BLSHPresentationDateSpecifier)currentSpecifier;
 - (BOOL)hasUnrestrictedFramerateUpdates;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHighLuminanceAlwaysOn;
 - (BOOL)isLiveUpdating;
 - (id)bls_loggingString;
 - (id)bls_shortLoggingString;
 - (id)debugDescription;
-- (id)differenceFromPresentation:(id)a3;
+- (id)differenceFromPresentation:(id)presentation;
 - (unint64_t)hash;
-- (void)differenceFromPresentation:(id)a3 forEachRemoval:(id)a4 forEachAddition:(id)a5;
-- (void)invalidateContentForReason:(id)a3;
+- (void)differenceFromPresentation:(id)presentation forEachRemoval:(id)removal forEachAddition:(id)addition;
+- (void)invalidateContentForReason:(id)reason;
 @end
 
 @implementation BLSHBacklightEnvironmentPresentation
@@ -22,12 +22,12 @@
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   [v3 appendArraySection:self->_presentationEntries withName:0 skipIfEmpty:0 objectTransformer:&__block_literal_global_32];
-  v4 = [(NSDate *)self->_expirationDate bls_loggingString];
-  [v3 appendString:v4 withName:@"expirationDate" skipIfEmpty:1];
+  bls_loggingString = [(NSDate *)self->_expirationDate bls_loggingString];
+  [v3 appendString:bls_loggingString withName:@"expirationDate" skipIfEmpty:1];
 
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 id __62__BLSHBacklightEnvironmentPresentation_bls_shortLoggingString__block_invoke(uint64_t a1, void *a2)
@@ -47,18 +47,18 @@ id __62__BLSHBacklightEnvironmentPresentation_bls_shortLoggingString__block_invo
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__9;
   v14 = __Block_byref_object_dispose__9;
-  v15 = [MEMORY[0x277CBEAA8] distantPast];
-  v3 = [(BLSHBacklightEnvironmentPresentation *)self presentationEntries];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  presentationEntries = [(BLSHBacklightEnvironmentPresentation *)self presentationEntries];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__BLSHBacklightEnvironmentPresentation_currentSpecifier__block_invoke;
   v9[3] = &unk_2784201C0;
   v9[4] = &v10;
-  v4 = [v3 bs_mapNoNulls:v9];
+  v4 = [presentationEntries bs_mapNoNulls:v9];
 
   v5 = v11[5];
-  v6 = [MEMORY[0x277CBEAA8] distantPast];
-  LOBYTE(v5) = [v5 isEqualToDate:v6];
+  distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
+  LOBYTE(v5) = [v5 isEqualToDate:distantPast2];
 
   if (v5)
   {
@@ -97,12 +97,12 @@ id __56__BLSHBacklightEnvironmentPresentation_currentSpecifier__block_invoke(uin
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   [v3 appendArraySection:self->_presentationEntries withName:@"presentationEntries" skipIfEmpty:0 objectTransformer:&__block_literal_global_43_0];
   v4 = [v3 appendObject:self->_flipbookContext withName:@"context"];
-  v5 = [(NSDate *)self->_expirationDate bls_loggingString];
-  [v3 appendString:v5 withName:@"expirationDate" skipIfEmpty:1];
+  bls_loggingString = [(NSDate *)self->_expirationDate bls_loggingString];
+  [v3 appendString:bls_loggingString withName:@"expirationDate" skipIfEmpty:1];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 id __57__BLSHBacklightEnvironmentPresentation_bls_loggingString__block_invoke(uint64_t a1, void *a2)
@@ -136,10 +136,10 @@ id __57__BLSHBacklightEnvironmentPresentation_bls_loggingString__block_invoke(ui
           objc_enumerationMutation(v2);
         }
 
-        v6 = [*(*(&v10 + 1) + 8 * i) environment];
-        v7 = [v6 hasUnrestrictedFramerateUpdates];
+        environment = [*(*(&v10 + 1) + 8 * i) environment];
+        hasUnrestrictedFramerateUpdates = [environment hasUnrestrictedFramerateUpdates];
 
-        if (v7)
+        if (hasUnrestrictedFramerateUpdates)
         {
           LOBYTE(v3) = 1;
           goto LABEL_11;
@@ -162,35 +162,35 @@ LABEL_11:
   return v3;
 }
 
-- (BLSHBacklightEnvironmentPresentation)initWithPresentationEntries:(id)a3 flipbookContext:(id)a4 expirationDate:(id)a5
+- (BLSHBacklightEnvironmentPresentation)initWithPresentationEntries:(id)entries flipbookContext:(id)context expirationDate:(id)date
 {
   v87 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v58 = a5;
+  entriesCopy = entries;
+  contextCopy = context;
+  dateCopy = date;
   v78.receiver = self;
   v78.super_class = BLSHBacklightEnvironmentPresentation;
   v59 = [(BLSHBacklightEnvironmentPresentation *)&v78 init];
   if (v59)
   {
-    if (!v9)
+    if (!entriesCopy)
     {
       [BLSHBacklightEnvironmentPresentation initWithPresentationEntries:v59 flipbookContext:a2 expirationDate:?];
     }
 
     v55 = a2;
-    v57 = v10;
-    v11 = [v9 copy];
+    v57 = contextCopy;
+    v11 = [entriesCopy copy];
     presentationEntries = v59->_presentationEntries;
     v59->_presentationEntries = v11;
 
-    v13 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v9, "count")}];
-    v65 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v9, "count")}];
+    v13 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(entriesCopy, "count")}];
+    v65 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(entriesCopy, "count")}];
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
-    v14 = v9;
+    v14 = entriesCopy;
     v15 = [v14 countByEnumeratingWithState:&v74 objects:v86 count:16];
     if (v15)
     {
@@ -205,10 +205,10 @@ LABEL_11:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v74 + 1) + 8 * i) environment];
-          [v13 addObject:v19];
-          v20 = [v19 identifier];
-          [v65 addObject:v20];
+          environment = [*(*(&v74 + 1) + 8 * i) environment];
+          [v13 addObject:environment];
+          identifier = [environment identifier];
+          [v65 addObject:identifier];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v74 objects:v86 count:16];
@@ -221,16 +221,16 @@ LABEL_11:
     environmentsSet = v59->_environmentsSet;
     v59->_environmentsSet = v21;
 
-    objc_storeStrong(&v59->_flipbookContext, a4);
-    objc_storeStrong(&v59->_expirationDate, a5);
+    objc_storeStrong(&v59->_flipbookContext, context);
+    objc_storeStrong(&v59->_expirationDate, date);
     v23 = [v65 count];
     if (v23 != [v14 count] || (v24 = objc_msgSend(v13, "count"), v24 != objc_msgSend(v14, "count")))
     {
-      v56 = v9;
+      v56 = entriesCopy;
       v25 = objc_alloc(MEMORY[0x277CF0C78]);
       v26 = [v13 count];
-      v27 = [MEMORY[0x277CF0C98] sortByInsertionOrder];
-      v28 = [v25 initWithCapacity:v26 keyOrderingStrategy:v27];
+      sortByInsertionOrder = [MEMORY[0x277CF0C98] sortByInsertionOrder];
+      v28 = [v25 initWithCapacity:v26 keyOrderingStrategy:sortByInsertionOrder];
 
       v62 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v14, "count")}];
       v70 = 0u;
@@ -254,15 +254,15 @@ LABEL_11:
             }
 
             v31 = *(*(&v70 + 1) + 8 * j);
-            v32 = [v31 environment];
-            v33 = [v32 identifier];
-            v34 = [v28 objectForKey:v33];
+            environment2 = [v31 environment];
+            identifier2 = [environment2 identifier];
+            v34 = [v28 objectForKey:identifier2];
             v35 = v34;
             if (v34)
             {
               v36 = v13;
-              v37 = [v34 environment];
-              v38 = [v31 environment];
+              environment3 = [v34 environment];
+              environment4 = [v31 environment];
 
               if (v35 == v31)
               {
@@ -285,7 +285,7 @@ LABEL_11:
               {
                 v39 = bls_backlight_log();
                 v40 = os_log_type_enabled(v39, OS_LOG_TYPE_ERROR);
-                if (v37 == v38)
+                if (environment3 == environment4)
                 {
                   if (v40)
                   {
@@ -301,14 +301,14 @@ LABEL_11:
 
                 else if (v40)
                 {
-                  v41 = [v35 environment];
-                  v42 = [v31 environment];
+                  environment5 = [v35 environment];
+                  environment6 = [v31 environment];
                   *buf = 134218498;
                   v82 = v59;
                   v83 = 2114;
-                  *v84 = v41;
+                  *v84 = environment5;
                   *&v84[8] = 2114;
-                  *&v84[10] = v42;
+                  *&v84[10] = environment6;
                   _os_log_error_impl(&dword_21FD11000, v39, OS_LOG_TYPE_ERROR, "%p two environments have the same identifier: %{public}@ %{public}@", buf, 0x20u);
                 }
 
@@ -323,7 +323,7 @@ LABEL_11:
 
             else
             {
-              [v28 setObject:v31 forKey:v33];
+              [v28 setObject:v31 forKey:identifier2];
             }
 
             ++v29;
@@ -370,7 +370,7 @@ LABEL_11:
           dispatch_after(v50, MEMORY[0x277D85CD0], v49);
         }
 
-        v9 = v56;
+        entriesCopy = v56;
       }
 
       else
@@ -382,15 +382,15 @@ LABEL_36:
           [BLSHBacklightEnvironmentPresentation initWithPresentationEntries:v59 flipbookContext:v62 expirationDate:v48];
         }
 
-        v9 = v56;
+        entriesCopy = v56;
       }
 
-      v51 = [v28 allValues];
+      allValues = [v28 allValues];
       v52 = v59->_presentationEntries;
-      v59->_presentationEntries = v51;
+      v59->_presentationEntries = allValues;
     }
 
-    v10 = v57;
+    contextCopy = v57;
   }
 
   v53 = *MEMORY[0x277D85DE8];
@@ -429,23 +429,23 @@ void __99__BLSHBacklightEnvironmentPresentation_initWithPresentationEntries_flip
   __break(0);
 }
 
-- (BLSHBacklightEnvironmentPresentation)initWithPresentationEntries:(id)a3 caContext:(id)a4 expirationDate:(id)a5
+- (BLSHBacklightEnvironmentPresentation)initWithPresentationEntries:(id)entries caContext:(id)context expirationDate:(id)date
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[BLSHFlipbookContext alloc] initWithCAContext:v9 wantsTransform:0 inverted:0];
+  dateCopy = date;
+  contextCopy = context;
+  entriesCopy = entries;
+  v11 = [[BLSHFlipbookContext alloc] initWithCAContext:contextCopy wantsTransform:0 inverted:0];
 
-  v12 = [(BLSHBacklightEnvironmentPresentation *)self initWithPresentationEntries:v10 flipbookContext:v11 expirationDate:v8];
+  v12 = [(BLSHBacklightEnvironmentPresentation *)self initWithPresentationEntries:entriesCopy flipbookContext:v11 expirationDate:dateCopy];
   return v12;
 }
 
-- (BLSHBacklightEnvironmentPresentation)initWithEnvironments:(id)a3 caContext:(id)a4 expirationDate:(id)a5
+- (BLSHBacklightEnvironmentPresentation)initWithEnvironments:(id)environments caContext:(id)context expirationDate:(id)date
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 bs_mapNoNulls:&__block_literal_global_17];
-  v11 = [(BLSHBacklightEnvironmentPresentation *)self initWithPresentationEntries:v10 caContext:v9 expirationDate:v8];
+  dateCopy = date;
+  contextCopy = context;
+  v10 = [environments bs_mapNoNulls:&__block_literal_global_17];
+  v11 = [(BLSHBacklightEnvironmentPresentation *)self initWithPresentationEntries:v10 caContext:contextCopy expirationDate:dateCopy];
 
   return v11;
 }
@@ -479,10 +479,10 @@ BLSHPresentationEntry *__86__BLSHBacklightEnvironmentPresentation_initWithEnviro
           objc_enumerationMutation(v2);
         }
 
-        v6 = [*(*(&v10 + 1) + 8 * i) environment];
-        v7 = [v6 isLiveUpdating];
+        environment = [*(*(&v10 + 1) + 8 * i) environment];
+        isLiveUpdating = [environment isLiveUpdating];
 
-        if (v7)
+        if (isLiveUpdating)
         {
           LOBYTE(v3) = 1;
           goto LABEL_11;
@@ -527,13 +527,13 @@ LABEL_11:
         }
 
         v6 = *(*(&v12 + 1) + 8 * i);
-        v7 = [v6 environment];
+        environment = [v6 environment];
         if (objc_opt_respondsToSelector())
         {
-          v8 = [v6 environment];
-          v9 = [v8 isHighLuminanceAlwaysOn];
+          environment2 = [v6 environment];
+          isHighLuminanceAlwaysOn = [environment2 isHighLuminanceAlwaysOn];
 
-          if (v9)
+          if (isHighLuminanceAlwaysOn)
           {
 
             LOBYTE(v3) = 1;
@@ -563,34 +563,34 @@ LABEL_12:
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   [v3 appendArraySection:self->_presentationEntries withName:@"presentationEntries" skipIfEmpty:0 objectTransformer:&__block_literal_global_49];
   v4 = [v3 appendObject:self->_flipbookContext withName:@"context"];
-  v5 = [(NSDate *)self->_expirationDate bls_loggingString];
-  [v3 appendString:v5 withName:@"expirationDate" skipIfEmpty:1];
+  bls_loggingString = [(NSDate *)self->_expirationDate bls_loggingString];
+  [v3 appendString:bls_loggingString withName:@"expirationDate" skipIfEmpty:1];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_presentationEntries];
-  v5 = [v3 appendObject:self->_flipbookContext];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_presentationEntries];
+  v5 = [builder appendObject:self->_flipbookContext];
+  v6 = [builder hash];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   presentationEntries = self->_presentationEntries;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __48__BLSHBacklightEnvironmentPresentation_isEqual___block_invoke;
   v18[3] = &unk_27841EB40;
-  v7 = v4;
+  v7 = equalCopy;
   v19 = v7;
   v8 = [v5 appendObject:presentationEntries counterpart:v18];
   flipbookContext = self->_flipbookContext;
@@ -606,19 +606,19 @@ LABEL_12:
   return flipbookContext;
 }
 
-- (id)differenceFromPresentation:(id)a3
+- (id)differenceFromPresentation:(id)presentation
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 environmentsSet];
+  presentationCopy = presentation;
+  environmentsSet = [presentationCopy environmentsSet];
   v6 = [(NSSet *)self->_environmentsSet mutableCopy];
   v7 = v6;
-  if (v5)
+  if (environmentsSet)
   {
-    [v6 minusSet:v5];
+    [v6 minusSet:environmentsSet];
   }
 
-  v8 = [v5 mutableCopy];
+  v8 = [environmentsSet mutableCopy];
   [v8 minusSet:self->_environmentsSet];
   if ([v7 count])
   {
@@ -651,10 +651,10 @@ LABEL_12:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v33 + 1) + 8 * i) environment];
-        if ([v7 containsObject:v16])
+        environment = [*(*(&v33 + 1) + 8 * i) environment];
+        if ([v7 containsObject:environment])
         {
-          [v10 addObject:v16];
+          [v10 addObject:environment];
         }
       }
 
@@ -669,9 +669,9 @@ LABEL_12:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v28 = v4;
-  v18 = [v4 presentationEntries];
-  v19 = [v18 countByEnumeratingWithState:&v29 objects:v37 count:16];
+  v28 = presentationCopy;
+  presentationEntries = [presentationCopy presentationEntries];
+  v19 = [presentationEntries countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v19)
   {
     v20 = v19;
@@ -682,17 +682,17 @@ LABEL_12:
       {
         if (*v30 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(presentationEntries);
         }
 
-        v23 = [*(*(&v29 + 1) + 8 * j) environment];
-        if ([v8 containsObject:v23])
+        environment2 = [*(*(&v29 + 1) + 8 * j) environment];
+        if ([v8 containsObject:environment2])
         {
-          [v17 addObject:v23];
+          [v17 addObject:environment2];
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v29 objects:v37 count:16];
+      v20 = [presentationEntries countByEnumeratingWithState:&v29 objects:v37 count:16];
     }
 
     while (v20);
@@ -704,20 +704,20 @@ LABEL_12:
   return v24;
 }
 
-- (void)differenceFromPresentation:(id)a3 forEachRemoval:(id)a4 forEachAddition:(id)a5
+- (void)differenceFromPresentation:(id)presentation forEachRemoval:(id)removal forEachAddition:(id)addition
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(BLSHBacklightEnvironmentPresentation *)self differenceFromPresentation:a3];
+  removalCopy = removal;
+  additionCopy = addition;
+  v10 = [(BLSHBacklightEnvironmentPresentation *)self differenceFromPresentation:presentation];
   if ([v10 hasChanges])
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = [v10 removals];
-    v12 = [v11 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    removals = [v10 removals];
+    v12 = [removals countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v12)
     {
       v13 = v12;
@@ -729,14 +729,14 @@ LABEL_12:
         {
           if (*v27 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(removals);
           }
 
-          v8[2](v8, *(*(&v26 + 1) + 8 * v15++));
+          removalCopy[2](removalCopy, *(*(&v26 + 1) + 8 * v15++));
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v13 = [removals countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v13);
@@ -746,8 +746,8 @@ LABEL_12:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v16 = [v10 insertions];
-    v17 = [v16 countByEnumeratingWithState:&v22 objects:v30 count:16];
+    insertions = [v10 insertions];
+    v17 = [insertions countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v17)
     {
       v18 = v17;
@@ -759,14 +759,14 @@ LABEL_12:
         {
           if (*v23 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(insertions);
           }
 
-          v9[2](v9, *(*(&v22 + 1) + 8 * v20++));
+          additionCopy[2](additionCopy, *(*(&v22 + 1) + 8 * v20++));
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v18 = [insertions countByEnumeratingWithState:&v22 objects:v30 count:16];
       }
 
       while (v18);
@@ -776,10 +776,10 @@ LABEL_12:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidateContentForReason:(id)a3
+- (void)invalidateContentForReason:(id)reason
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -800,8 +800,8 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) environment];
-        [v10 invalidateContentForReason:v4];
+        environment = [*(*(&v12 + 1) + 8 * v9) environment];
+        [environment invalidateContentForReason:reasonCopy];
 
         ++v9;
       }

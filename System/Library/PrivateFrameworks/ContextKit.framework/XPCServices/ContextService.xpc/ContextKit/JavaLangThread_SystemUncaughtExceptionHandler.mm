@@ -1,10 +1,10 @@
 @interface JavaLangThread_SystemUncaughtExceptionHandler
-- (void)uncaughtExceptionWithJavaLangThread:(id)a3 withJavaLangThrowable:(id)a4;
+- (void)uncaughtExceptionWithJavaLangThread:(id)thread withJavaLangThrowable:(id)throwable;
 @end
 
 @implementation JavaLangThread_SystemUncaughtExceptionHandler
 
-- (void)uncaughtExceptionWithJavaLangThread:(id)a3 withJavaLangThrowable:(id)a4
+- (void)uncaughtExceptionWithJavaLangThread:(id)thread withJavaLangThrowable:(id)throwable
 {
   objc_sync_enter(self);
   if ((atomic_load_explicit(JavaLangSystem__initialized, memory_order_acquire) & 1) == 0)
@@ -15,7 +15,7 @@
   v7 = JavaLangSystem_err_;
   if (JavaLangSystem_err_)
   {
-    v8 = a3 == 0;
+    v8 = thread == 0;
   }
 
   else
@@ -23,7 +23,7 @@
     v8 = 1;
   }
 
-  if (v8 || ([a3 getName], objc_msgSend(v7, "printWithNSString:", JreStrcat("$$$", v9, v10, v11, v12, v13, v14, v15, @"Exception in thread ")), !a4))
+  if (v8 || ([thread getName], objc_msgSend(v7, "printWithNSString:", JreStrcat("$$$", v9, v10, v11, v12, v13, v14, v15, @"Exception in thread ")), !throwable))
   {
     JreThrowNullPointerException();
   }
@@ -33,7 +33,7 @@
     objc_opt_class();
   }
 
-  [a4 printStackTraceWithJavaIoPrintStream:JavaLangSystem_err_];
+  [throwable printStackTraceWithJavaIoPrintStream:JavaLangSystem_err_];
 
   objc_sync_exit(self);
 }

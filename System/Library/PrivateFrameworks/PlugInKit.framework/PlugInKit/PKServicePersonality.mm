@@ -1,15 +1,15 @@
 @interface PKServicePersonality
 - (NSString)description;
-- (PKServicePersonality)initWithConnection:(id)a3 service:(id)a4;
+- (PKServicePersonality)initWithConnection:(id)connection service:(id)service;
 - (double)cleanExitTimeout;
 - (id)defaultPrincipalObject;
-- (id)findProtocol:(id)a3;
-- (void)beginUsingPlugIn:(id)a3 ready:(id)a4;
+- (id)findProtocol:(id)protocol;
+- (void)beginUsingPlugIn:(id)in ready:(id)ready;
 - (void)hostHasControl;
-- (void)prefsObjectForKey:(id)a3 inPlugIn:(id)a4 result:(id)a5;
-- (void)prefsSetObject:(id)a3 forKey:(id)a4 inPlugIn:(id)a5 result:(id)a6;
-- (void)prepareUsing:(id)a3 reply:(id)a4;
-- (void)prepareUsingPlugIn:(id)a3 hostProtocol:(id)a4 reply:(id)a5;
+- (void)prefsObjectForKey:(id)key inPlugIn:(id)in result:(id)result;
+- (void)prefsSetObject:(id)object forKey:(id)key inPlugIn:(id)in result:(id)result;
+- (void)prepareUsing:(id)using reply:(id)reply;
+- (void)prepareUsingPlugIn:(id)in hostProtocol:(id)protocol reply:(id)reply;
 - (void)shutdownPlugIn;
 @end
 
@@ -18,8 +18,8 @@
 - (void)shutdownPlugIn
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PKServicePersonality *)self service];
-  v4 = [v3 unregisterPersonality:self];
+  service = [(PKServicePersonality *)self service];
+  v4 = [service unregisterPersonality:self];
 
   if (v4)
   {
@@ -27,10 +27,10 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(PKServicePersonality *)self service];
-    v6 = [v5 subsystems];
+    service2 = [(PKServicePersonality *)self service];
+    subsystems = [service2 subsystems];
 
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v7 = [subsystems countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = *v14;
@@ -51,7 +51,7 @@
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subsystems);
           }
 
           v11 = *(*(&v13 + 1) + 8 * v9);
@@ -64,7 +64,7 @@
         }
 
         while (v10 != v9);
-        v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [subsystems countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
@@ -80,9 +80,9 @@
 
 - (id)defaultPrincipalObject
 {
-  v3 = [(PKPlugInCore *)self principalSpec];
-  v4 = v3;
-  if (!v3)
+  principalSpec = [(PKPlugInCore *)self principalSpec];
+  v4 = principalSpec;
+  if (!principalSpec)
   {
     v7 = pklog_handle_for_category(7);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -93,7 +93,7 @@
     goto LABEL_10;
   }
 
-  Class = objc_getClass([v3 UTF8String]);
+  Class = objc_getClass([principalSpec UTF8String]);
   if (!Class)
   {
     v7 = pklog_handle_for_category(7);
@@ -128,33 +128,33 @@ LABEL_12:
 
 - (void)hostHasControl
 {
-  v3 = [(PKServicePersonality *)self service];
-  [v3 beganUsingServicePersonality:self];
+  service = [(PKServicePersonality *)self service];
+  [service beganUsingServicePersonality:self];
 }
 
-- (PKServicePersonality)initWithConnection:(id)a3 service:(id)a4
+- (PKServicePersonality)initWithConnection:(id)connection service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 external];
+  connectionCopy = connection;
+  serviceCopy = service;
+  external = [serviceCopy external];
   v28.receiver = self;
   v28.super_class = PKServicePersonality;
-  v9 = [(PKPlugInCore *)&v28 initWithExternalProviders:v8];
+  v9 = [(PKPlugInCore *)&v28 initWithExternalProviders:external];
 
   if (v9)
   {
-    objc_storeStrong(&v9->_service, a4);
-    [(PKServicePersonality *)v9 setConnection:v6];
-    v10 = [(PKServicePersonality *)v9 connection];
-    [v10 setExportedObject:v9];
+    objc_storeStrong(&v9->_service, service);
+    [(PKServicePersonality *)v9 setConnection:connectionCopy];
+    connection = [(PKServicePersonality *)v9 connection];
+    [connection setExportedObject:v9];
 
     v11 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F4647D88];
-    v12 = [(PKServicePersonality *)v9 connection];
-    [v12 setExportedInterface:v11];
+    connection2 = [(PKServicePersonality *)v9 connection];
+    [connection2 setExportedInterface:v11];
 
     v13 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F464CEA8];
-    v14 = [(PKServicePersonality *)v9 connection];
-    [v14 setRemoteObjectInterface:v13];
+    connection3 = [(PKServicePersonality *)v9 connection];
+    [connection3 setRemoteObjectInterface:v13];
 
     objc_initWeak(&location, v9);
     objc_initWeak(&from, v9->_connection);
@@ -164,8 +164,8 @@ LABEL_12:
     v23[3] = &unk_1E827F938;
     objc_copyWeak(&v24, &location);
     objc_copyWeak(&v25, &from);
-    v15 = [(PKServicePersonality *)v9 connection];
-    [v15 setInterruptionHandler:v23];
+    connection4 = [(PKServicePersonality *)v9 connection];
+    [connection4 setInterruptionHandler:v23];
 
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -173,12 +173,12 @@ LABEL_12:
     v19[3] = &unk_1E827F960;
     objc_copyWeak(&v21, &location);
     objc_copyWeak(&v22, &from);
-    v20 = v7;
-    v16 = [(PKServicePersonality *)v9 connection];
-    [v16 setInvalidationHandler:v19];
+    v20 = serviceCopy;
+    connection5 = [(PKServicePersonality *)v9 connection];
+    [connection5 setInvalidationHandler:v19];
 
-    v17 = [(PKServicePersonality *)v9 connection];
-    [v17 resume];
+    connection6 = [(PKServicePersonality *)v9 connection];
+    [connection6 resume];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&v21);
@@ -191,13 +191,13 @@ LABEL_12:
   return v9;
 }
 
-- (void)prepareUsing:(id)a3 reply:(id)a4
+- (void)prepareUsing:(id)using reply:(id)reply
 {
   v119 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  usingCopy = using;
+  replyCopy = reply;
   v7 = pklog_handle_for_category(7);
-  v8 = os_signpost_id_make_with_pointer(v7, v5);
+  v8 = os_signpost_id_make_with_pointer(v7, usingCopy);
 
   v9 = pklog_handle_for_category(7);
   v10 = v9;
@@ -209,13 +209,13 @@ LABEL_12:
     _os_signpost_emit_with_name_impl(&dword_1C6892000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "ExtensionPrepareUsing", &unk_1C68BDED5, buf, 2u);
   }
 
-  v12 = [v5 objectForKeyedSubscript:@"identifier"];
-  v13 = [v5 objectForKeyedSubscript:@"hostProtocol"];
-  v70 = [v5 objectForKeyedSubscript:@"epPlatform"];
-  v68 = [v70 unsignedIntValue];
-  v14 = [v5 objectForKeyedSubscript:@"isRBManaged"];
-  v15 = [v14 BOOLValue];
-  v16 = [v5 objectForKeyedSubscript:@"version"];
+  v12 = [usingCopy objectForKeyedSubscript:@"identifier"];
+  v13 = [usingCopy objectForKeyedSubscript:@"hostProtocol"];
+  v70 = [usingCopy objectForKeyedSubscript:@"epPlatform"];
+  unsignedIntValue = [v70 unsignedIntValue];
+  v14 = [usingCopy objectForKeyedSubscript:@"isRBManaged"];
+  bOOLValue = [v14 BOOLValue];
+  v16 = [usingCopy objectForKeyedSubscript:@"version"];
   -[PKPlugInCore setHubProtocolVersion:](self, "setHubProtocolVersion:", [v16 unsignedIntegerValue]);
 
   if (![(PKPlugInCore *)self hubProtocolVersion])
@@ -223,12 +223,12 @@ LABEL_12:
     [(PKPlugInCore *)self setHubProtocolVersion:1];
   }
 
-  [(PKPlugInCore *)self setIsRBManaged:v15];
+  [(PKPlugInCore *)self setIsRBManaged:bOOLValue];
   v17 = pklog_handle_for_category(7);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v18 = "will not";
-    if (v15)
+    if (bOOLValue)
     {
       v18 = "will";
     }
@@ -241,7 +241,7 @@ LABEL_12:
   }
 
   v19 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v20 = [v5 objectForKeyedSubscript:@"uuid"];
+  v20 = [usingCopy objectForKeyedSubscript:@"uuid"];
   v21 = [v19 initWithUUIDString:v20];
 
   if (v21)
@@ -299,15 +299,15 @@ LABEL_12:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     v71 = v21;
-    v25 = [(PKPlugInCore *)self uuid];
+    uuid = [(PKPlugInCore *)self uuid];
     [(PKPlugInCore *)self identifier];
-    v26 = v66 = v6;
+    v26 = v66 = replyCopy;
     [(PKPlugInCore *)self version];
     v27 = v63 = v14;
     v28 = geteuid();
     v29 = getuid();
     *v83 = 138545154;
-    v84 = v25;
+    v84 = uuid;
     v85 = 2112;
     v86 = v26;
     v87 = 2112;
@@ -326,11 +326,11 @@ LABEL_12:
     _os_log_impl(&dword_1C6892000, v24, OS_LOG_TYPE_DEFAULT, "[u %{public}@] [%@(%@)] Prepare received as euid = %d, uid = %d, personaid = %d, type = %s, name = %s", v83, 0x46u);
 
     v14 = v63;
-    v6 = v66;
+    replyCopy = v66;
   }
 
-  v30 = self;
-  v31 = [(PKServicePersonality *)self setupWithIdentifier:v12 extensionPointPlatform:v68];
+  selfCopy2 = self;
+  v31 = [(PKServicePersonality *)self setupWithIdentifier:v12 extensionPointPlatform:unsignedIntValue];
   if (v31)
   {
     v32 = v31;
@@ -338,22 +338,22 @@ LABEL_12:
     v34 = v33;
     if (v11 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v33))
     {
-      v35 = [v32 code];
+      code = [v32 code];
       *buf = 67240448;
       *&buf[8] = 2050;
-      *&buf[10] = v35;
+      *&buf[10] = code;
       _os_signpost_emit_with_name_impl(&dword_1C6892000, v34, OS_SIGNPOST_INTERVAL_END, spid, "ExtensionPrepareUsing", " success=%{public, signpost.description:attribute}d  error=%{public, signpost.description:attribute}llu ", buf, 0x12u);
     }
 
-    v6[2](v6, v32, 0);
+    replyCopy[2](replyCopy, v32, 0);
     v36 = v70;
   }
 
   else
   {
-    v62 = v5;
+    v62 = usingCopy;
     v65 = v12;
-    v67 = v6;
+    v67 = replyCopy;
     v64 = v14;
     v72 = v21;
     if (v13)
@@ -364,21 +364,21 @@ LABEL_12:
       v69 = v38;
       if (v37)
       {
-        v39 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:v37];
-        v40 = [(PKServicePersonality *)self connection];
-        v41 = [v40 exportedInterface];
-        [v41 setInterface:v39 forSelector:sel_beginUsingPlugIn_ready_ argumentIndex:0 ofReply:0];
+        localizedDescription = [MEMORY[0x1E696B0D0] interfaceWithProtocol:v37];
+        connection = [(PKServicePersonality *)self connection];
+        exportedInterface = [connection exportedInterface];
+        [exportedInterface setInterface:localizedDescription forSelector:sel_beginUsingPlugIn_ready_ argumentIndex:0 ofReply:0];
       }
 
       else
       {
         v42 = MEMORY[0x1E695DF30];
         v43 = *MEMORY[0x1E695D930];
-        v39 = [v38 localizedDescription];
-        [v42 raise:v43 format:{@"%@", v39}];
+        localizedDescription = [v38 localizedDescription];
+        [v42 raise:v43 format:{@"%@", localizedDescription}];
       }
 
-      v30 = self;
+      selfCopy2 = self;
     }
 
     else
@@ -390,10 +390,10 @@ LABEL_12:
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v44 = [(PKServicePersonality *)v30 service];
-    v45 = [v44 subsystems];
+    service = [(PKServicePersonality *)selfCopy2 service];
+    subsystems = [service subsystems];
 
-    v46 = [v45 countByEnumeratingWithState:&v75 objects:v82 count:16];
+    v46 = [subsystems countByEnumeratingWithState:&v75 objects:v82 count:16];
     if (v46)
     {
       v47 = *v76;
@@ -414,7 +414,7 @@ LABEL_12:
         {
           if (*v76 != v47)
           {
-            objc_enumerationMutation(v45);
+            objc_enumerationMutation(subsystems);
           }
 
           v50 = *(*(&v75 + 1) + 8 * v48);
@@ -433,7 +433,7 @@ LABEL_12:
               _os_signpost_emit_with_name_impl(&dword_1C6892000, v54, OS_SIGNPOST_INTERVAL_BEGIN, spid, "ExtensionSubsystemBeginUsing", " uuid=%{public, signpost.description:attribute}@  name=%{public, signpost.description:attribute}@ ", buf, 0x16u);
             }
 
-            v55 = [MEMORY[0x1E696AAE8] mainBundle];
+            mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
             __PLUGINKIT_CALLING_OUT_TO_CLIENT_SUBSYSTEM_FOR_BEGINUSING__(v50);
 
             v56 = pklog_handle_for_category(7);
@@ -449,13 +449,13 @@ LABEL_12:
         }
 
         while (v49 != v48);
-        v46 = [v45 countByEnumeratingWithState:&v75 objects:v82 count:16];
+        v46 = [subsystems countByEnumeratingWithState:&v75 objects:v82 count:16];
       }
 
       while (v46);
     }
 
-    v58 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v59 = pklog_handle_for_category(7);
     v60 = v59;
     if (v11 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v59))
@@ -466,10 +466,10 @@ LABEL_12:
       _os_signpost_emit_with_name_impl(&dword_1C6892000, v60, OS_SIGNPOST_INTERVAL_END, spid, "ExtensionPrepareUsing", " success=%{public, signpost.description:attribute}d  error=%{public, signpost.description:attribute}llu ", buf, 0x12u);
     }
 
-    v6 = v67;
-    (v67)[2](v67, 0, v58);
+    replyCopy = v67;
+    (v67)[2](v67, 0, dictionary);
 
-    v5 = v62;
+    usingCopy = v62;
     v14 = v64;
     v12 = v65;
     v36 = v70;
@@ -480,18 +480,18 @@ LABEL_12:
   v61 = *MEMORY[0x1E69E9840];
 }
 
-- (void)prepareUsingPlugIn:(id)a3 hostProtocol:(id)a4 reply:(id)a5
+- (void)prepareUsingPlugIn:(id)in hostProtocol:(id)protocol reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  protocolCopy = protocol;
+  replyCopy = reply;
   v10 = MEMORY[0x1E695DF90];
-  v11 = a3;
-  v12 = [v10 dictionary];
-  [v12 setObject:v11 forKeyedSubscript:@"identifier"];
+  inCopy = in;
+  dictionary = [v10 dictionary];
+  [dictionary setObject:inCopy forKeyedSubscript:@"identifier"];
 
-  if (v8)
+  if (protocolCopy)
   {
-    [v12 setObject:v8 forKeyedSubscript:@"hostProtocol"];
+    [dictionary setObject:protocolCopy forKeyedSubscript:@"hostProtocol"];
   }
 
   v14[0] = MEMORY[0x1E69E9820];
@@ -499,16 +499,16 @@ LABEL_12:
   v14[2] = sub_1C68A9E10;
   v14[3] = &unk_1E827F988;
   v14[4] = self;
-  v15 = v9;
-  v13 = v9;
-  [(PKServicePersonality *)self prepareUsing:v12 reply:v14];
+  v15 = replyCopy;
+  v13 = replyCopy;
+  [(PKServicePersonality *)self prepareUsing:dictionary reply:v14];
 }
 
-- (void)beginUsingPlugIn:(id)a3 ready:(id)a4
+- (void)beginUsingPlugIn:(id)in ready:(id)ready
 {
   v51 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  inCopy = in;
+  readyCopy = ready;
   v32 = 0;
   v33 = 0;
   current_persona = voucher_get_current_persona();
@@ -519,17 +519,17 @@ LABEL_12:
   v13 = pklog_handle_for_category(7);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(PKPlugInCore *)self uuid];
-    v4 = [(PKPlugInCore *)self identifier];
-    v5 = [(PKPlugInCore *)self version];
+    uuid = [(PKPlugInCore *)self uuid];
+    identifier = [(PKPlugInCore *)self identifier];
+    version = [(PKPlugInCore *)self version];
     v15 = geteuid();
     v16 = getuid();
     *buf = 138545154;
-    v35 = v14;
+    v35 = uuid;
     v36 = 2112;
-    v37 = v4;
+    v37 = identifier;
     v38 = 2112;
-    v39 = v5;
+    v39 = version;
     v40 = 1024;
     v41 = v15;
     v42 = 1024;
@@ -543,14 +543,14 @@ LABEL_12:
     _os_log_impl(&dword_1C6892000, v13, OS_LOG_TYPE_DEFAULT, "[u %{public}@] [%@(%@)] Begin using received as euid = %d, uid = %d, personaid = %d, type = %s, name = %s", buf, 0x46u);
   }
 
-  v17 = [(PKServicePersonality *)self service];
-  v18 = [v17 delegate];
-  if (v18)
+  service = [(PKServicePersonality *)self service];
+  delegate = [service delegate];
+  if (delegate)
   {
-    v4 = [(PKServicePersonality *)self service];
-    v5 = [v4 delegate];
-    v6 = [(PKPlugInCore *)self identifier];
-    [v5 rootObjectForPlugIn:v6];
+    identifier = [(PKServicePersonality *)self service];
+    version = [identifier delegate];
+    identifier2 = [(PKPlugInCore *)self identifier];
+    [version rootObjectForPlugIn:identifier2];
   }
 
   else
@@ -559,25 +559,25 @@ LABEL_12:
   }
   v19 = ;
   v20 = v19;
-  if (v18)
+  if (delegate)
   {
 
-    v19 = v4;
+    v19 = identifier;
   }
 
   if (v20)
   {
     [(PKServicePersonality *)self setPlugInPrincipal:v20];
     v21 = MEMORY[0x1E696B0D0];
-    v22 = [(PKPlugInCore *)self protocolSpec];
-    v23 = [(PKServicePersonality *)self findProtocol:v22];
-    v24 = [v21 interfaceWithProtocol:v23];
+    protocolSpec = [(PKPlugInCore *)self protocolSpec];
+    v23 = [(PKServicePersonality *)self findProtocol:protocolSpec];
+    service3 = [v21 interfaceWithProtocol:v23];
 
-    v25 = [(PKServicePersonality *)self connection];
-    v26 = [v25 exportedInterface];
-    [v26 setInterface:v24 forSelector:sel_beginUsingPlugIn_ready_ argumentIndex:1 ofReply:1];
+    connection = [(PKServicePersonality *)self connection];
+    exportedInterface = [connection exportedInterface];
+    [exportedInterface setInterface:service3 forSelector:sel_beginUsingPlugIn_ready_ argumentIndex:1 ofReply:1];
 
-    v27 = [(PKPlugInCore *)self augmentInterface:v24];
+    v27 = [(PKPlugInCore *)self augmentInterface:service3];
     if (v27)
     {
       v28 = pklog_handle_for_category(7);
@@ -586,16 +586,16 @@ LABEL_12:
         sub_1C68B6644();
       }
 
-      (*(v10 + 2))(v10, 0, 0);
-      v29 = [(PKServicePersonality *)self service];
-      [v29 beganUsingServicePersonality:self];
+      (*(readyCopy + 2))(readyCopy, 0, 0);
+      service2 = [(PKServicePersonality *)self service];
+      [service2 beganUsingServicePersonality:self];
     }
 
     else
     {
-      [(PKServicePersonality *)self setHostPrincipal:v9];
-      v29 = [(PKServicePersonality *)self plugInPrincipal];
-      (*(v10 + 2))(v10, 0, v29);
+      [(PKServicePersonality *)self setHostPrincipal:inCopy];
+      service2 = [(PKServicePersonality *)self plugInPrincipal];
+      (*(readyCopy + 2))(readyCopy, 0, service2);
     }
   }
 
@@ -607,50 +607,50 @@ LABEL_12:
       sub_1C68B66FC(self);
     }
 
-    (*(v10 + 2))(v10, 0, 0);
-    v24 = [(PKServicePersonality *)self service];
-    [v24 beganUsingServicePersonality:self];
+    (*(readyCopy + 2))(readyCopy, 0, 0);
+    service3 = [(PKServicePersonality *)self service];
+    [service3 beganUsingServicePersonality:self];
   }
 
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (id)findProtocol:(id)a3
+- (id)findProtocol:(id)protocol
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  protocolCopy = protocol;
+  v5 = protocolCopy;
+  if (protocolCopy)
   {
     v19 = 0;
-    v6 = sub_1C6895D90(v4, &v19);
+    v6 = sub_1C6895D90(protocolCopy, &v19);
     v7 = v19;
     if (!v6)
     {
       v8 = pklog_handle_for_category(7);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v15 = [(PKPlugInCore *)self uuid];
-        v16 = [(PKPlugInCore *)self identifier];
-        v17 = [(PKPlugInCore *)self version];
-        v18 = [v7 localizedDescription];
+        uuid = [(PKPlugInCore *)self uuid];
+        identifier = [(PKPlugInCore *)self identifier];
+        version = [(PKPlugInCore *)self version];
+        localizedDescription = [v7 localizedDescription];
         *buf = 138544386;
-        v21 = v15;
+        v21 = uuid;
         v22 = 2112;
-        v23 = v16;
+        v23 = identifier;
         v24 = 2112;
-        v25 = v17;
+        v25 = version;
         v26 = 2112;
         v27 = v5;
         v28 = 2112;
-        v29 = v18;
+        v29 = localizedDescription;
         _os_log_error_impl(&dword_1C6892000, v8, OS_LOG_TYPE_ERROR, "[u %{public}@] [%@(%@)] failed to find protocol for [%@]: %@", buf, 0x34u);
       }
 
       v9 = MEMORY[0x1E695DF30];
       v10 = *MEMORY[0x1E695D930];
-      v11 = [v7 localizedDescription];
-      [v9 raise:v10 format:{@"unable to start plug-in: %@", v11}];
+      localizedDescription2 = [v7 localizedDescription];
+      [v9 raise:v10 format:{@"unable to start plug-in: %@", localizedDescription2}];
     }
   }
 
@@ -691,15 +691,15 @@ LABEL_12:
   {
     if (v6)
     {
-      v7 = [(PKPlugInCore *)self uuid];
-      v8 = [(PKPlugInCore *)self identifier];
-      v9 = [(PKPlugInCore *)self version];
+      uuid = [(PKPlugInCore *)self uuid];
+      identifier = [(PKPlugInCore *)self identifier];
+      version = [(PKPlugInCore *)self version];
       v16 = 138544130;
-      v17 = v7;
+      v17 = uuid;
       v18 = 2112;
-      v19 = v8;
+      v19 = identifier;
       v20 = 2112;
-      v21 = v9;
+      v21 = version;
       v22 = 2112;
       v23 = *&v4;
       _os_log_impl(&dword_1C6892000, v5, OS_LOG_TYPE_INFO, "[u %{public}@] [%@(%@)] got CleanExit value:%@", &v16, 0x2Au);
@@ -713,15 +713,15 @@ LABEL_12:
   {
     if (v6)
     {
-      v11 = [(PKPlugInCore *)self uuid];
-      v12 = [(PKPlugInCore *)self identifier];
-      v13 = [(PKPlugInCore *)self version];
+      uuid2 = [(PKPlugInCore *)self uuid];
+      identifier2 = [(PKPlugInCore *)self identifier];
+      version2 = [(PKPlugInCore *)self version];
       v16 = 138544130;
-      v17 = v11;
+      v17 = uuid2;
       v18 = 2112;
-      v19 = v12;
+      v19 = identifier2;
       v20 = 2112;
-      v21 = v13;
+      v21 = version2;
       v22 = 2048;
       v23 = v3;
       _os_log_impl(&dword_1C6892000, v5, OS_LOG_TYPE_INFO, "[u %{public}@] [%@(%@)] setting delta:%g", &v16, 0x2Au);
@@ -732,25 +732,25 @@ LABEL_12:
   return v3;
 }
 
-- (void)prefsObjectForKey:(id)a3 inPlugIn:(id)a4 result:(id)a5
+- (void)prefsObjectForKey:(id)key inPlugIn:(id)in result:(id)result
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(PKServicePersonality *)self preferences];
-  v10 = [v9 objectForKey:v8];
+  resultCopy = result;
+  keyCopy = key;
+  preferences = [(PKServicePersonality *)self preferences];
+  v10 = [preferences objectForKey:keyCopy];
 
-  v7[2](v7, v10);
+  resultCopy[2](resultCopy, v10);
 }
 
-- (void)prefsSetObject:(id)a3 forKey:(id)a4 inPlugIn:(id)a5 result:(id)a6
+- (void)prefsSetObject:(id)object forKey:(id)key inPlugIn:(id)in result:(id)result
 {
-  v12 = a6;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKServicePersonality *)self preferences];
-  [v11 setObject:v10 forKey:v9];
+  resultCopy = result;
+  keyCopy = key;
+  objectCopy = object;
+  preferences = [(PKServicePersonality *)self preferences];
+  [preferences setObject:objectCopy forKey:keyCopy];
 
-  v12[2]();
+  resultCopy[2]();
 }
 
 - (NSString)description
@@ -759,8 +759,8 @@ LABEL_12:
   v8.receiver = self;
   v8.super_class = PKServicePersonality;
   v4 = [(PKPlugInCore *)&v8 description];
-  v5 = [(PKServicePersonality *)self connection];
-  v6 = [v3 stringWithFormat:@"<PKServicePersonality: %p core = %@, host pid = %d>", self, v4, objc_msgSend(v5, "processIdentifier")];;
+  connection = [(PKServicePersonality *)self connection];
+  v6 = [v3 stringWithFormat:@"<PKServicePersonality: %p core = %@, host pid = %d>", self, v4, objc_msgSend(connection, "processIdentifier")];;
 
   return v6;
 }

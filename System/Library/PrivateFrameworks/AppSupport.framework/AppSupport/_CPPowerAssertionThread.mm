@@ -1,6 +1,6 @@
 @interface _CPPowerAssertionThread
-- (void)addAssertion:(id)a3;
-- (void)didTimeOut:(id)a3;
+- (void)addAssertion:(id)assertion;
+- (void)didTimeOut:(id)out;
 - (void)main;
 @end
 
@@ -9,36 +9,36 @@
 - (void)main
 {
   self->_earliest = [MEMORY[0x1E695DF00] distantFuture];
-  v3 = [MEMORY[0x1E695DFD0] currentRunLoop];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
   v4 = [objc_alloc(MEMORY[0x1E695DFF0]) initWithFireDate:self->_earliest interval:self target:sel_didTimeOut_ selector:0 userInfo:1 repeats:60.0];
   self->_timer = v4;
-  [v3 addTimer:v4 forMode:*MEMORY[0x1E695D918]];
+  [currentRunLoop addTimer:v4 forMode:*MEMORY[0x1E695D918]];
 
-  [v3 run];
+  [currentRunLoop run];
 }
 
-- (void)addAssertion:(id)a3
+- (void)addAssertion:(id)assertion
 {
   pthread_mutex_lock(&_PowerAssertionsLock);
   v5 = MEMORY[0x1E695DF00];
-  [a3 timeout];
+  [assertion timeout];
   v6 = [v5 dateWithTimeIntervalSinceNow:?];
   if ([v6 earlierDate:self->_earliest] == self->_earliest)
   {
     [v6 timeIntervalSinceDate:?];
-    [a3 setTimeout:?];
+    [assertion setTimeout:?];
     Count = CFArrayGetCount(_PowerAssertions);
     v17.location = 0;
     v17.length = Count;
-    v15 = CFArrayBSearchValues(_PowerAssertions, v17, a3, _CompareAssertionTimeouts, 0);
+    v15 = CFArrayBSearchValues(_PowerAssertions, v17, assertion, _CompareAssertionTimeouts, 0);
     if (v15 <= Count)
     {
-      CFArrayInsertValueAtIndex(_PowerAssertions, v15, a3);
+      CFArrayInsertValueAtIndex(_PowerAssertions, v15, assertion);
     }
 
     else
     {
-      CFArrayAppendValue(_PowerAssertions, a3);
+      CFArrayAppendValue(_PowerAssertions, assertion);
     }
   }
 
@@ -59,15 +59,15 @@
     }
 
     self->_earliest = v6;
-    [a3 setTimeout:0.0];
-    CFArrayInsertValueAtIndex(_PowerAssertions, 0, a3);
+    [assertion setTimeout:0.0];
+    CFArrayInsertValueAtIndex(_PowerAssertions, 0, assertion);
     [(NSTimer *)self->_timer setFireDate:v6];
   }
 
   pthread_mutex_unlock(&_PowerAssertionsLock);
 }
 
-- (void)didTimeOut:(id)a3
+- (void)didTimeOut:(id)out
 {
   pthread_mutex_lock(&_PowerAssertionsLock);
   Count = CFArrayGetCount(_PowerAssertions);

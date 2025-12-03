@@ -1,10 +1,10 @@
 @interface AEPreferences
 + (id)defaultPreferences;
-+ (id)preferencesWithPreferencePrimitives:(id)a3 systemNotificationPrimitives:(id)a4 queue:(id)a5;
++ (id)preferencesWithPreferencePrimitives:(id)primitives systemNotificationPrimitives:(id)notificationPrimitives queue:(id)queue;
 - (AEPreference)expirationTime;
-- (AEPreferences)initWithPreferencePrimitives:(id)a3 systemNotificationPrimitives:(id)a4 queue:(id)a5;
-- (id)preferenceForKey:(id)a3 defaultArrayValue:(id)a4;
-- (id)preferenceForKey:(id)a3 defaultNumberValue:(id)a4;
+- (AEPreferences)initWithPreferencePrimitives:(id)primitives systemNotificationPrimitives:(id)notificationPrimitives queue:(id)queue;
+- (id)preferenceForKey:(id)key defaultArrayValue:(id)value;
+- (id)preferenceForKey:(id)key defaultNumberValue:(id)value;
 - (void)dealloc;
 - (void)preferencesDidUpdate;
 @end
@@ -13,8 +13,8 @@
 
 - (void)dealloc
 {
-  v3 = [(AEPreferences *)self notificationObservation];
-  [v3 invalidate];
+  notificationObservation = [(AEPreferences *)self notificationObservation];
+  [notificationObservation invalidate];
 
   v4.receiver = self;
   v4.super_class = AEPreferences;
@@ -23,41 +23,41 @@
 
 + (id)defaultPreferences
 {
-  v2 = [[a1 alloc] initWithPreferencePrimitives:0 systemNotificationPrimitives:0 queue:0];
+  v2 = [[self alloc] initWithPreferencePrimitives:0 systemNotificationPrimitives:0 queue:0];
 
   return v2;
 }
 
-+ (id)preferencesWithPreferencePrimitives:(id)a3 systemNotificationPrimitives:(id)a4 queue:(id)a5
++ (id)preferencesWithPreferencePrimitives:(id)primitives systemNotificationPrimitives:(id)notificationPrimitives queue:(id)queue
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithPreferencePrimitives:v10 systemNotificationPrimitives:v9 queue:v8];
+  queueCopy = queue;
+  notificationPrimitivesCopy = notificationPrimitives;
+  primitivesCopy = primitives;
+  v11 = [[self alloc] initWithPreferencePrimitives:primitivesCopy systemNotificationPrimitives:notificationPrimitivesCopy queue:queueCopy];
 
   return v11;
 }
 
-- (AEPreferences)initWithPreferencePrimitives:(id)a3 systemNotificationPrimitives:(id)a4 queue:(id)a5
+- (AEPreferences)initWithPreferencePrimitives:(id)primitives systemNotificationPrimitives:(id)notificationPrimitives queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  primitivesCopy = primitives;
+  notificationPrimitivesCopy = notificationPrimitives;
+  queueCopy = queue;
   v22.receiver = self;
   v22.super_class = AEPreferences;
   v12 = [(AEPreferences *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_preferencePrimitives, a3);
-    objc_storeStrong(&v13->_systemNotificationPrimitives, a4);
-    v14 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    objc_storeStrong(&v12->_preferencePrimitives, primitives);
+    objc_storeStrong(&v13->_systemNotificationPrimitives, notificationPrimitives);
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     cachedPreferencesByKey = v13->_cachedPreferencesByKey;
-    v13->_cachedPreferencesByKey = v14;
+    v13->_cachedPreferencesByKey = strongToWeakObjectsMapTable;
 
-    if (v10)
+    if (notificationPrimitivesCopy)
     {
-      if (v11)
+      if (queueCopy)
       {
         objc_initWeak(&location, v13);
         v19[0] = MEMORY[0x277D85DD0];
@@ -65,7 +65,7 @@
         v19[2] = __81__AEPreferences_initWithPreferencePrimitives_systemNotificationPrimitives_queue___block_invoke;
         v19[3] = &unk_278BB6CF0;
         objc_copyWeak(&v20, &location);
-        v16 = [v10 observeSystemNotificationWithName:@"com.apple.assessmentmode.preferencesDidChangeNotification" onQueue:v11 withHandler:v19];
+        v16 = [notificationPrimitivesCopy observeSystemNotificationWithName:@"com.apple.assessmentmode.preferencesDidChangeNotification" onQueue:queueCopy withHandler:v19];
         notificationObservation = v13->_notificationObservation;
         v13->_notificationObservation = v16;
 
@@ -92,12 +92,12 @@ void __81__AEPreferences_initWithPreferencePrimitives_systemNotificationPrimitiv
   return v4;
 }
 
-- (id)preferenceForKey:(id)a3 defaultNumberValue:(id)a4
+- (id)preferenceForKey:(id)key defaultNumberValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AEPreferences *)self cachedPreferencesByKey];
-  v9 = [v8 objectForKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  cachedPreferencesByKey = [(AEPreferences *)self cachedPreferencesByKey];
+  v9 = [cachedPreferencesByKey objectForKey:keyCopy];
 
   if (v9)
   {
@@ -107,23 +107,23 @@ void __81__AEPreferences_initWithPreferencePrimitives_systemNotificationPrimitiv
   else
   {
     v11 = [AEPreference alloc];
-    v12 = [(AEPreferences *)self preferencePrimitives];
-    v13 = [(AEPreferences *)self systemNotificationPrimitives];
-    v10 = [(AEPreference *)v11 initWithKey:v6 preferencesPrimitives:v12 systemNotificationPrimitives:v13 defaultValue:v7];
+    preferencePrimitives = [(AEPreferences *)self preferencePrimitives];
+    systemNotificationPrimitives = [(AEPreferences *)self systemNotificationPrimitives];
+    v10 = [(AEPreference *)v11 initWithKey:keyCopy preferencesPrimitives:preferencePrimitives systemNotificationPrimitives:systemNotificationPrimitives defaultValue:valueCopy];
 
-    v14 = [(AEPreferences *)self cachedPreferencesByKey];
-    [v14 setObject:v10 forKey:v6];
+    cachedPreferencesByKey2 = [(AEPreferences *)self cachedPreferencesByKey];
+    [cachedPreferencesByKey2 setObject:v10 forKey:keyCopy];
   }
 
   return v10;
 }
 
-- (id)preferenceForKey:(id)a3 defaultArrayValue:(id)a4
+- (id)preferenceForKey:(id)key defaultArrayValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AEPreferences *)self cachedPreferencesByKey];
-  v9 = [v8 objectForKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  cachedPreferencesByKey = [(AEPreferences *)self cachedPreferencesByKey];
+  v9 = [cachedPreferencesByKey objectForKey:keyCopy];
 
   if (v9)
   {
@@ -133,12 +133,12 @@ void __81__AEPreferences_initWithPreferencePrimitives_systemNotificationPrimitiv
   else
   {
     v11 = [AEPreference alloc];
-    v12 = [(AEPreferences *)self preferencePrimitives];
-    v13 = [(AEPreferences *)self systemNotificationPrimitives];
-    v10 = [(AEPreference *)v11 initWithKey:v6 preferencesPrimitives:v12 systemNotificationPrimitives:v13 defaultValue:v7];
+    preferencePrimitives = [(AEPreferences *)self preferencePrimitives];
+    systemNotificationPrimitives = [(AEPreferences *)self systemNotificationPrimitives];
+    v10 = [(AEPreference *)v11 initWithKey:keyCopy preferencesPrimitives:preferencePrimitives systemNotificationPrimitives:systemNotificationPrimitives defaultValue:valueCopy];
 
-    v14 = [(AEPreferences *)self cachedPreferencesByKey];
-    [v14 setObject:v10 forKey:v6];
+    cachedPreferencesByKey2 = [(AEPreferences *)self cachedPreferencesByKey];
+    [cachedPreferencesByKey2 setObject:v10 forKey:keyCopy];
   }
 
   return v10;
@@ -151,11 +151,11 @@ void __81__AEPreferences_initWithPreferencePrimitives_systemNotificationPrimitiv
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(AEPreferences *)self cachedPreferencesByKey];
-  v3 = [v2 objectEnumerator];
-  v4 = [v3 allObjects];
+  cachedPreferencesByKey = [(AEPreferences *)self cachedPreferencesByKey];
+  objectEnumerator = [cachedPreferencesByKey objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -167,14 +167,14 @@ void __81__AEPreferences_initWithPreferencePrimitives_systemNotificationPrimitiv
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObjects);
         }
 
         [*(*(&v10 + 1) + 8 * v8++) preferenceDidUpdate];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);

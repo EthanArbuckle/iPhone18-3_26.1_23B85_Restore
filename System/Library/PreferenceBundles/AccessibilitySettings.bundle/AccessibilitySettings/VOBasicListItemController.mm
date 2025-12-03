@@ -1,7 +1,7 @@
 @interface VOBasicListItemController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation VOBasicListItemController
@@ -18,11 +18,11 @@
   else
   {
     v6 = +[NSMutableArray array];
-    v7 = [(VOBasicListItemController *)self specifier];
-    v8 = [v7 propertyForKey:PSValidTitlesKey];
+    specifier = [(VOBasicListItemController *)self specifier];
+    v8 = [specifier propertyForKey:PSValidTitlesKey];
 
-    v9 = [(VOBasicListItemController *)self specifier];
-    v10 = [v9 propertyForKey:PSValidValuesKey];
+    specifier2 = [(VOBasicListItemController *)self specifier];
+    v10 = [specifier2 propertyForKey:PSValidValuesKey];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -60,36 +60,36 @@ void __39__VOBasicListItemController_specifiers__block_invoke(uint64_t a1, void 
   [*(a1 + 48) addObject:v11];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
   v11 = __UIAccessibilitySafeClass();
-  v12 = [v11 specifier];
-  v13 = [(VOBasicListItemController *)self specifier];
-  v14 = [v13 propertyForKey:@"blockGetter"];
+  specifier = [v11 specifier];
+  specifier2 = [(VOBasicListItemController *)self specifier];
+  v14 = [specifier2 propertyForKey:@"blockGetter"];
 
   v15 = v14[2](v14);
-  v16 = [v12 propertyForKey:@"value"];
+  v16 = [specifier propertyForKey:@"value"];
   [v11 setChecked:{objc_msgSend(v15, "isEqual:", v16)}];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v35 = 0;
-  v8 = [v6 cellForRowAtIndexPath:v7];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
   v9 = __UIAccessibilitySafeClass();
 
-  v27 = v7;
-  v10 = [v9 specifier];
-  v11 = [(VOBasicListItemController *)self specifier];
-  v12 = [v11 propertyForKey:@"blockSetter"];
+  v27 = pathCopy;
+  specifier = [v9 specifier];
+  specifier2 = [(VOBasicListItemController *)self specifier];
+  v12 = [specifier2 propertyForKey:@"blockSetter"];
 
-  v26 = v10;
-  v13 = [v10 propertyForKey:@"value"];
+  v26 = specifier;
+  v13 = [specifier propertyForKey:@"value"];
   v25 = v12;
   (*(v12 + 16))(v12, v13);
 
@@ -97,8 +97,8 @@ void __39__VOBasicListItemController_specifiers__block_invoke(uint64_t a1, void 
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v28 = v6;
-  obj = [v6 visibleCells];
+  v28 = viewCopy;
+  obj = [viewCopy visibleCells];
   v14 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v14)
   {
@@ -124,12 +124,12 @@ void __39__VOBasicListItemController_specifiers__block_invoke(uint64_t a1, void 
 
         v9 = v19;
 
-        v20 = [(VOBasicListItemController *)self specifier];
-        v21 = [v20 propertyForKey:@"blockGetter"];
+        specifier3 = [(VOBasicListItemController *)self specifier];
+        v21 = [specifier3 propertyForKey:@"blockGetter"];
 
         v22 = v21[2](v21);
-        v23 = [v9 specifier];
-        v24 = [v23 propertyForKey:@"value"];
+        specifier4 = [v9 specifier];
+        v24 = [specifier4 propertyForKey:@"value"];
         [v9 setChecked:{objc_msgSend(v22, "isEqual:", v24)}];
 
         ++v17;

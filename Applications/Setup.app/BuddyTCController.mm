@@ -4,15 +4,15 @@
 - (BuddyWarrantyTCController)warrantyTermsController;
 - (BuddyiOSTCController)iOSTermsController;
 - (id)multiTermsController;
-- (id)parentViewControllerForObjectModel:(id)a3;
+- (id)parentViewControllerForObjectModel:(id)model;
 - (id)viewController;
 - (void)_executeDeferredPerformExtendedInitCompletion;
-- (void)buddyTCSubController:(id)a3 didFinishWithAgree:(BOOL)a4;
-- (void)loader:(id)a3 didFailWithError:(id)a4;
-- (void)loader:(id)a3 receivedObjectModel:(id)a4 actionSignal:(unint64_t)a5;
-- (void)objectModel:(id)a3 didNavigateBackFromController:(id)a4 withGesture:(BOOL)a5;
-- (void)objectModel:(id)a3 pressedButton:(id)a4 attributes:(id)a5;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)buddyTCSubController:(id)controller didFinishWithAgree:(BOOL)agree;
+- (void)loader:(id)loader didFailWithError:(id)error;
+- (void)loader:(id)loader receivedObjectModel:(id)model actionSignal:(unint64_t)signal;
+- (void)objectModel:(id)model didNavigateBackFromController:(id)controller withGesture:(BOOL)gesture;
+- (void)objectModel:(id)model pressedButton:(id)button attributes:(id)attributes;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 @end
 
 @implementation BuddyTCController
@@ -70,15 +70,15 @@
 
 - (id)multiTermsController
 {
-  v2 = [(BuddyTCController *)self objectModel];
-  v3 = [(RUIObjectModel *)v2 defaultPages];
-  v4 = [v3 count];
+  objectModel = [(BuddyTCController *)self objectModel];
+  defaultPages = [(RUIObjectModel *)objectModel defaultPages];
+  v4 = [defaultPages count];
 
   if (v4)
   {
-    v5 = [(BuddyTCController *)self objectModel];
-    v6 = [(RUIObjectModel *)v5 defaultPages];
-    v9 = [v6 objectAtIndex:0];
+    objectModel2 = [(BuddyTCController *)self objectModel];
+    defaultPages2 = [(RUIObjectModel *)objectModel2 defaultPages];
+    v9 = [defaultPages2 objectAtIndex:0];
   }
 
   else
@@ -89,13 +89,13 @@
   return v9;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(BuddyTCController *)v45 includeWarranty])
+  objc_storeStrong(location, completion);
+  if ([(BuddyTCController *)selfCopy includeWarranty])
   {
     v3 = +[NSBundle mainBundle];
     v43 = [(NSBundle *)v3 pathForResource:@"multiterms" ofType:@"xml"];
@@ -139,9 +139,9 @@
 
         else if (v41)
         {
-          v37 = [v41 domain];
+          domain = [v41 domain];
           v36 = 1;
-          v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v37, [v41 code]);
+          v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v41 code]);
           v35 = v16;
           v34 = 1;
         }
@@ -169,10 +169,10 @@
     if ([v33 length])
     {
       v32 = objc_alloc_init(RUILoader);
-      [v32 setDelegate:v45];
+      [v32 setDelegate:selfCopy];
       v17 = +[NSBundle mainBundle];
-      v18 = [(NSBundle *)v17 resourceURL];
-      [v32 loadXMLUIWithData:v33 baseURL:v18];
+      resourceURL = [(NSBundle *)v17 resourceURL];
+      [v32 loadXMLUIWithData:v33 baseURL:resourceURL];
 
       v26 = _NSConcreteStackBlock;
       v27 = -1073741824;
@@ -180,7 +180,7 @@
       v29 = sub_1001F71CC;
       v30 = &unk_10032B120;
       v31 = location[0];
-      [(BuddyTCController *)v45 setDeferredExtendedInitCompletionBlock:&v26];
+      [(BuddyTCController *)selfCopy setDeferredExtendedInitCompletionBlock:&v26];
       objc_storeStrong(&v31, 0);
       objc_storeStrong(&v32, 0);
     }
@@ -191,9 +191,9 @@
     objc_storeStrong(&v43, 0);
   }
 
-  v19 = [(BuddyTCController *)v45 deferredExtendedInitCompletionBlock];
+  deferredExtendedInitCompletionBlock = [(BuddyTCController *)selfCopy deferredExtendedInitCompletionBlock];
 
-  if (!v19 && location[0])
+  if (!deferredExtendedInitCompletionBlock && location[0])
   {
     (*(location[0] + 2))(location[0], 1);
   }
@@ -203,73 +203,73 @@
 
 - (id)viewController
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(BuddyTCController *)self multiTermsController];
   if (location[0])
   {
-    v6 = location[0];
+    iOSTermsController = location[0];
   }
 
   else
   {
-    v6 = [(BuddyTCController *)v5 iOSTermsController];
+    iOSTermsController = [(BuddyTCController *)selfCopy iOSTermsController];
   }
 
   objc_storeStrong(location, 0);
-  v2 = v6;
+  v2 = iOSTermsController;
 
   return v2;
 }
 
-- (void)loader:(id)a3 receivedObjectModel:(id)a4 actionSignal:(unint64_t)a5
+- (void)loader:(id)loader receivedObjectModel:(id)model actionSignal:(unint64_t)signal
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, loader);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v6 = [v14 defaultPages];
-  v7 = [v6 count];
+  objc_storeStrong(&v14, model);
+  defaultPages = [v14 defaultPages];
+  v7 = [defaultPages count];
 
   if (v7)
   {
-    [(BuddyTCController *)v16 setObjectModel:v14];
-    v8 = v16;
-    v9 = [(BuddyTCController *)v16 objectModel];
-    [(RUIObjectModel *)v9 setDelegate:v8];
+    [(BuddyTCController *)selfCopy setObjectModel:v14];
+    v8 = selfCopy;
+    objectModel = [(BuddyTCController *)selfCopy objectModel];
+    [(RUIObjectModel *)objectModel setDelegate:v8];
 
-    v10 = [v14 defaultPages];
-    v11 = [v10 objectAtIndex:0];
-    v12 = [v11 navigationItem];
-    [v12 setHidesBackButton:1];
+    defaultPages2 = [v14 defaultPages];
+    v11 = [defaultPages2 objectAtIndex:0];
+    navigationItem = [v11 navigationItem];
+    [navigationItem setHidesBackButton:1];
 
     v13 = +[RUIStyle setupAssistantStyle];
     [v13 applyToObjectModel:v14];
   }
 
-  [(BuddyTCController *)v16 _executeDeferredPerformExtendedInitCompletion];
+  [(BuddyTCController *)selfCopy _executeDeferredPerformExtendedInitCompletion];
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)loader:(id)a3 didFailWithError:(id)a4
+- (void)loader:(id)loader didFailWithError:(id)error
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, loader);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(BuddyTCController *)v7 _executeDeferredPerformExtendedInitCompletion];
+  objc_storeStrong(&v5, error);
+  [(BuddyTCController *)selfCopy _executeDeferredPerformExtendedInitCompletion];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)_executeDeferredPerformExtendedInitCompletion
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v2 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
@@ -277,93 +277,93 @@
   v5 = 0;
   v6 = sub_1001F7598;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
+  v8[0] = selfCopy;
   dispatch_async(v2, &block);
 
   objc_storeStrong(v8, 0);
 }
 
-- (id)parentViewControllerForObjectModel:(id)a3
+- (id)parentViewControllerForObjectModel:(id)model
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   objc_storeStrong(location, 0);
   return 0;
 }
 
-- (void)objectModel:(id)a3 didNavigateBackFromController:(id)a4 withGesture:(BOOL)a5
+- (void)objectModel:(id)model didNavigateBackFromController:(id)controller withGesture:(BOOL)gesture
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, controller);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)objectModel:(id)a3 pressedButton:(id)a4 attributes:(id)a5
+- (void)objectModel:(id)model pressedButton:(id)button attributes:(id)attributes
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, button);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
-  v13 = [(BuddyTCController *)v17 multiTermsController];
+  objc_storeStrong(&v14, attributes);
+  multiTermsController = [(BuddyTCController *)selfCopy multiTermsController];
   if ([v15 isEqualToString:@"agree"])
   {
-    [(BuddyTCController *)v17 buddyTCSubController:v13 didFinishWithAgree:1];
+    [(BuddyTCController *)selfCopy buddyTCSubController:multiTermsController didFinishWithAgree:1];
   }
 
   else if ([v15 isEqualToString:@"disagree"])
   {
-    [(BuddyTCController *)v17 buddyTCSubController:v13 didFinishWithAgree:0];
+    [(BuddyTCController *)selfCopy buddyTCSubController:multiTermsController didFinishWithAgree:0];
   }
 
   else if ([v15 isEqualToString:@"iOSTerms"])
   {
-    v12 = [(BuddyTCController *)v17 iOSTermsController];
-    v7 = [v12 navigationItem];
-    [v7 setHidesBackButton:0];
+    iOSTermsController = [(BuddyTCController *)selfCopy iOSTermsController];
+    navigationItem = [iOSTermsController navigationItem];
+    [navigationItem setHidesBackButton:0];
 
-    v8 = [v13 navigationController];
-    [v8 pushViewController:v12 animated:1];
+    navigationController = [multiTermsController navigationController];
+    [navigationController pushViewController:iOSTermsController animated:1];
 
-    objc_storeStrong(&v12, 0);
+    objc_storeStrong(&iOSTermsController, 0);
   }
 
   else if ([v15 isEqualToString:@"iOSWarranty"])
   {
-    v11 = [(BuddyTCController *)v17 warrantyTermsController];
-    v9 = [(BuddyWarrantyTCController *)v11 navigationItem];
-    [v9 setHidesBackButton:0];
+    warrantyTermsController = [(BuddyTCController *)selfCopy warrantyTermsController];
+    navigationItem2 = [(BuddyWarrantyTCController *)warrantyTermsController navigationItem];
+    [navigationItem2 setHidesBackButton:0];
 
-    v10 = [v13 navigationController];
-    [v10 pushViewController:v11 animated:1];
+    navigationController2 = [multiTermsController navigationController];
+    [navigationController2 pushViewController:warrantyTermsController animated:1];
 
-    objc_storeStrong(&v11, 0);
+    objc_storeStrong(&warrantyTermsController, 0);
   }
 
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&multiTermsController, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)buddyTCSubController:(id)a3 didFinishWithAgree:(BOOL)a4
+- (void)buddyTCSubController:(id)controller didFinishWithAgree:(BOOL)agree
 {
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v39 = a4;
-  if (a4)
+  objc_storeStrong(location, controller);
+  agreeCopy = agree;
+  if (agree)
   {
     v5 = +[NSBundle mainBundle];
     v6 = [(NSBundle *)v5 localizedStringForKey:@"AGREE_DIALOG_TITLE" value:&stru_10032F900 table:@"Localizable"];
@@ -384,7 +384,7 @@
     v33 = 0;
     v34 = sub_1001F7E14;
     v35 = &unk_10032B5C0;
-    v36 = v41;
+    v36 = selfCopy;
     v37 = location[0];
     v15 = [UIAlertAction actionWithTitle:v14 style:0 handler:&v31];
     [v12 addAction:v15];
@@ -397,37 +397,37 @@
 
   else
   {
-    v30 = [location[0] navigationController];
-    v29 = [v30 viewControllers];
-    if ([v29 count] == 1)
+    navigationController = [location[0] navigationController];
+    viewControllers = [navigationController viewControllers];
+    if ([viewControllers count] == 1)
     {
-      v16 = [(BuddyTCController *)v41 delegate];
-      [(BFFFlowItemDelegate *)v16 flowItemCancelled:v41];
+      delegate = [(BuddyTCController *)selfCopy delegate];
+      [(BFFFlowItemDelegate *)delegate flowItemCancelled:selfCopy];
     }
 
     else
     {
       v28 = 0;
-      for (i = [v29 count] - 1; i; --i)
+      for (i = [viewControllers count] - 1; i; --i)
       {
-        v17 = [v29 objectAtIndex:i];
+        v17 = [viewControllers objectAtIndex:i];
         v18 = v28;
         v28 = v17;
 
-        v19 = [(BuddyTCController *)v41 warrantyTermsController];
+        warrantyTermsController = [(BuddyTCController *)selfCopy warrantyTermsController];
         v25 = 0;
         v23 = 0;
         v20 = 0;
-        if (v28 != v19)
+        if (v28 != warrantyTermsController)
         {
-          v26 = [(BuddyTCController *)v41 iOSTermsController];
+          iOSTermsController = [(BuddyTCController *)selfCopy iOSTermsController];
           v25 = 1;
           v20 = 0;
-          if (v28 != v26)
+          if (v28 != iOSTermsController)
           {
-            v24 = [(BuddyTCController *)v41 multiTermsController];
+            multiTermsController = [(BuddyTCController *)selfCopy multiTermsController];
             v23 = 1;
-            v20 = v28 != v24;
+            v20 = v28 != multiTermsController;
           }
         }
 
@@ -445,14 +445,14 @@
         }
       }
 
-      v21 = [v29 objectAtIndex:i];
-      v22 = [v30 popToViewController:v21 animated:1];
+      v21 = [viewControllers objectAtIndex:i];
+      v22 = [navigationController popToViewController:v21 animated:1];
 
       objc_storeStrong(&v28, 0);
     }
 
-    objc_storeStrong(&v29, 0);
-    objc_storeStrong(&v30, 0);
+    objc_storeStrong(&viewControllers, 0);
+    objc_storeStrong(&navigationController, 0);
   }
 
   objc_storeStrong(location, 0);

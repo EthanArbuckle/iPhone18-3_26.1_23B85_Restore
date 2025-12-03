@@ -1,22 +1,22 @@
 @interface SXConditionalComponent
-+ (id)valueClassBlockForPropertyWithName:(id)a3;
++ (id)valueClassBlockForPropertyWithName:(id)name;
 @end
 
 @implementation SXConditionalComponent
 
-+ (id)valueClassBlockForPropertyWithName:(id)a3
++ (id)valueClassBlockForPropertyWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"conditions"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"conditions"])
   {
     v5 = &__block_literal_global_69;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SXConditionalComponent;
-    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, nameCopy);
   }
 
   return v5;

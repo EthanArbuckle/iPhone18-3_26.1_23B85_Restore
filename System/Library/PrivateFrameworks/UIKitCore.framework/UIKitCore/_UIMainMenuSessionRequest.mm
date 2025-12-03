@@ -1,11 +1,11 @@
 @interface _UIMainMenuSessionRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIMainMenuSessionRequest)init;
-- (_UIMainMenuSessionRequest)initWithCoder:(id)a3;
+- (_UIMainMenuSessionRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setInitialMenuStateIdentifier:(id)a3;
-- (void)setSessionToEnd:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setInitialMenuStateIdentifier:(id)identifier;
+- (void)setSessionToEnd:(id)end;
 @end
 
 @implementation _UIMainMenuSessionRequest
@@ -17,26 +17,26 @@
   return [(_UIMainMenuSessionRequest *)&v3 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   beginNewSession = self->_beginNewSession;
-  v5 = a3;
-  [v5 encodeBool:beginNewSession forKey:@"BeginNewSession"];
-  [v5 encodeObject:self->_sessionIdentifierToEnd forKey:@"SessionIdentifierToEnd"];
-  [v5 encodeObject:self->_initialMenuStateIdentifiers forKey:@"InitialMenuStateIdentifiers"];
-  [v5 encodeBool:self->_includeUncategorizedMenuState forKey:@"IncludeUncategorizedMenuState"];
-  [v5 encodeBool:self->_requiresHostSideInvokableKeyboardShortcuts forKey:@"RequiresHostSideInvokableKeyboardShortcuts"];
+  coderCopy = coder;
+  [coderCopy encodeBool:beginNewSession forKey:@"BeginNewSession"];
+  [coderCopy encodeObject:self->_sessionIdentifierToEnd forKey:@"SessionIdentifierToEnd"];
+  [coderCopy encodeObject:self->_initialMenuStateIdentifiers forKey:@"InitialMenuStateIdentifiers"];
+  [coderCopy encodeBool:self->_includeUncategorizedMenuState forKey:@"IncludeUncategorizedMenuState"];
+  [coderCopy encodeBool:self->_requiresHostSideInvokableKeyboardShortcuts forKey:@"RequiresHostSideInvokableKeyboardShortcuts"];
 }
 
-- (_UIMainMenuSessionRequest)initWithCoder:(id)a3
+- (_UIMainMenuSessionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIMainMenuSessionRequest *)self init];
   if (v5)
   {
-    v5->_beginNewSession = [v4 decodeBoolForKey:@"BeginNewSession"];
+    v5->_beginNewSession = [coderCopy decodeBoolForKey:@"BeginNewSession"];
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"SessionIdentifierToEnd"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"SessionIdentifierToEnd"];
     sessionIdentifierToEnd = v5->_sessionIdentifierToEnd;
     v5->_sessionIdentifierToEnd = v7;
 
@@ -44,22 +44,22 @@
     v10 = objc_opt_self();
     v11 = objc_opt_self();
     v12 = [v9 setWithObjects:{v10, v11, 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"InitialMenuStateIdentifiers"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"InitialMenuStateIdentifiers"];
     initialMenuStateIdentifiers = v5->_initialMenuStateIdentifiers;
     v5->_initialMenuStateIdentifiers = v13;
 
-    v5->_includeUncategorizedMenuState = [v4 decodeBoolForKey:@"IncludeUncategorizedMenuState"];
-    v5->_requiresHostSideInvokableKeyboardShortcuts = [v4 decodeBoolForKey:@"RequiresHostSideInvokableKeyboardShortcuts"];
+    v5->_includeUncategorizedMenuState = [coderCopy decodeBoolForKey:@"IncludeUncategorizedMenuState"];
+    v5->_requiresHostSideInvokableKeyboardShortcuts = [coderCopy decodeBoolForKey:@"RequiresHostSideInvokableKeyboardShortcuts"];
   }
 
   return v5;
 }
 
-- (void)setSessionToEnd:(id)a3
+- (void)setSessionToEnd:(id)end
 {
-  v5 = a3;
+  endCopy = end;
   sessionIdentifierToEnd = self->_providedSessionToEnd;
-  v7 = v5;
+  v7 = endCopy;
   v11 = v7;
   if (sessionIdentifierToEnd == v7)
   {
@@ -81,19 +81,19 @@ LABEL_9:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_providedSessionToEnd, a3);
-    v10 = [(_UIMainMenuSession *)v11 identifier];
+    objc_storeStrong(&self->_providedSessionToEnd, end);
+    identifier = [(_UIMainMenuSession *)v11 identifier];
     sessionIdentifierToEnd = self->_sessionIdentifierToEnd;
-    self->_sessionIdentifierToEnd = v10;
+    self->_sessionIdentifierToEnd = identifier;
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)setInitialMenuStateIdentifier:(id)a3
+- (void)setInitialMenuStateIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [MEMORY[0x1E695DFD8] setWithObject:?];
   }
@@ -107,10 +107,10 @@ LABEL_10:
   self->_initialMenuStateIdentifiers = v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -122,7 +122,7 @@ LABEL_10:
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = v7;
       if (self->_beginNewSession != v7->_beginNewSession)
       {
@@ -207,9 +207,9 @@ LABEL_23:
   v7 = [v3 appendObject:self->_initialMenuStateIdentifiers withName:@"initialMenuStateIdentifiers" skipIfNil:1];
   v8 = [v3 appendBool:self->_includeUncategorizedMenuState withName:@"_includeUncategorizedMenuState" ifEqualTo:1];
   v9 = [v3 appendBool:self->_requiresHostSideInvokableKeyboardShortcuts withName:@"requiresHostSideInvokableKeyboardShortcuts" ifEqualTo:1];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 @end

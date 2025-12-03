@@ -1,6 +1,6 @@
 @interface LPIndeterminateProgressSpinnerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (LPIndeterminateProgressSpinnerView)initWithHost:(id)a3 style:(id)a4 properties:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (LPIndeterminateProgressSpinnerView)initWithHost:(id)host style:(id)style properties:(id)properties;
 - (void)ensureIndicatorView;
 - (void)ensureURLLabel;
 - (void)layoutComponentView;
@@ -8,18 +8,18 @@
 
 @implementation LPIndeterminateProgressSpinnerView
 
-- (LPIndeterminateProgressSpinnerView)initWithHost:(id)a3 style:(id)a4 properties:(id)a5
+- (LPIndeterminateProgressSpinnerView)initWithHost:(id)host style:(id)style properties:(id)properties
 {
-  v9 = a4;
-  v10 = a5;
+  styleCopy = style;
+  propertiesCopy = properties;
   v15.receiver = self;
   v15.super_class = LPIndeterminateProgressSpinnerView;
-  v11 = [(LPComponentView *)&v15 initWithHost:a3];
+  v11 = [(LPComponentView *)&v15 initWithHost:host];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_style, a4);
-    objc_storeStrong(&v12->_properties, a5);
+    objc_storeStrong(&v11->_style, style);
+    objc_storeStrong(&v12->_properties, properties);
     v13 = v12;
   }
 
@@ -36,12 +36,12 @@
     v6[3] = &unk_1E7A36168;
     v6[4] = self;
     v3 = [[LPUIActivityIndicatorView alloc] initWithActivityIndicatorStyle:__57__LPIndeterminateProgressSpinnerView_ensureIndicatorView__block_invoke(v6)];
-    v4 = [(LPIndeterminateProgressSpinnerStyle *)self->_style indicatorColor];
+    indicatorColor = [(LPIndeterminateProgressSpinnerStyle *)self->_style indicatorColor];
 
-    if (v4)
+    if (indicatorColor)
     {
-      v5 = [(LPIndeterminateProgressSpinnerStyle *)self->_style indicatorColor];
-      [(LPUIActivityIndicatorView *)v3 setColor:v5];
+      indicatorColor2 = [(LPIndeterminateProgressSpinnerStyle *)self->_style indicatorColor];
+      [(LPUIActivityIndicatorView *)v3 setColor:indicatorColor2];
     }
 
     [(LPUIActivityIndicatorView *)v3 startAnimating];
@@ -83,18 +83,18 @@ uint64_t __57__LPIndeterminateProgressSpinnerView_ensureIndicatorView__block_inv
 {
   if (!self->_text)
   {
-    v3 = [(LPIndeterminateProgressSpinnerPresentationProperties *)self->_properties text];
-    v4 = [v3 length];
+    text = [(LPIndeterminateProgressSpinnerPresentationProperties *)self->_properties text];
+    v4 = [text length];
 
     if (v4)
     {
       v5 = [LPTextView alloc];
-      v6 = [(LPComponentView *)self host];
+      host = [(LPComponentView *)self host];
       v7 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v8 = [(LPIndeterminateProgressSpinnerPresentationProperties *)self->_properties text];
-      v9 = [v7 initWithString:v8];
-      v10 = [(LPIndeterminateProgressSpinnerStyle *)self->_style label];
-      v11 = [(LPTextView *)v5 initWithHost:v6 text:v9 style:v10];
+      text2 = [(LPIndeterminateProgressSpinnerPresentationProperties *)self->_properties text];
+      v9 = [v7 initWithString:text2];
+      label = [(LPIndeterminateProgressSpinnerStyle *)self->_style label];
+      v11 = [(LPTextView *)v5 initWithHost:host text:v9 style:label];
       text = self->_text;
       self->_text = v11;
 
@@ -122,8 +122,8 @@ uint64_t __57__LPIndeterminateProgressSpinnerView_ensureIndicatorView__block_inv
   v17 = v16;
   if (self->_text)
   {
-    v18 = [(LPIndeterminateProgressSpinnerStyle *)self->_style spacing];
-    [v18 value];
+    spacing = [(LPIndeterminateProgressSpinnerStyle *)self->_style spacing];
+    [spacing value];
     v20 = v19 * 0.5;
   }
 
@@ -133,8 +133,8 @@ uint64_t __57__LPIndeterminateProgressSpinnerView_ensureIndicatorView__block_inv
   }
 
   v33 = v15;
-  v21 = [(LPIndeterminateProgressSpinnerStyle *)self->_style verticalOffset];
-  [v21 value];
+  verticalOffset = [(LPIndeterminateProgressSpinnerStyle *)self->_style verticalOffset];
+  [verticalOffset value];
   v22 = v6 - v10;
   v23 = v4;
   v24 = (v4 - v8) * 0.5;
@@ -143,8 +143,8 @@ uint64_t __57__LPIndeterminateProgressSpinnerView_ensureIndicatorView__block_inv
   v28 = v22 * 0.5 - v17 * 0.5 + v20 + v27;
 
   [(UIActivityIndicatorView *)self->_indicatorView setFrame:v24, v28, v26, v25];
-  v29 = [(LPIndeterminateProgressSpinnerStyle *)self->_style verticalOffset];
-  [v29 value];
+  verticalOffset2 = [(LPIndeterminateProgressSpinnerStyle *)self->_style verticalOffset];
+  [verticalOffset2 value];
   v31 = v25 * 0.5 + (v6 - v17) * 0.5 + v20 + v30;
 
   v32 = self->_text;
@@ -152,15 +152,15 @@ uint64_t __57__LPIndeterminateProgressSpinnerView_ensureIndicatorView__block_inv
   [(LPTextView *)v32 setFrame:(v23 - v33) * 0.5, v31, v33, v17];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(LPIndeterminateProgressSpinnerView *)self traitCollection];
-  if ([v6 userInterfaceIdiom] == 6)
+  height = fits.height;
+  width = fits.width;
+  traitCollection = [(LPIndeterminateProgressSpinnerView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 6)
   {
-    v7 = [(LPIndeterminateProgressSpinnerPresentationProperties *)self->_properties text];
-    v8 = [v7 length];
+    text = [(LPIndeterminateProgressSpinnerPresentationProperties *)self->_properties text];
+    v8 = [text length];
 
     if (!v8)
     {
@@ -184,8 +184,8 @@ uint64_t __57__LPIndeterminateProgressSpinnerView_ensureIndicatorView__block_inv
   v18 = v17;
   if (self->_text)
   {
-    v19 = [(LPIndeterminateProgressSpinnerStyle *)self->_style spacing];
-    [v19 value];
+    spacing = [(LPIndeterminateProgressSpinnerStyle *)self->_style spacing];
+    [spacing value];
     v21 = v20;
   }
 
@@ -194,22 +194,22 @@ uint64_t __57__LPIndeterminateProgressSpinnerView_ensureIndicatorView__block_inv
     v21 = 0.0;
   }
 
-  v22 = [(LPIndeterminateProgressSpinnerStyle *)self->_style padding];
-  v23 = [v22 leading];
-  [v23 value];
+  padding = [(LPIndeterminateProgressSpinnerStyle *)self->_style padding];
+  leading = [padding leading];
+  [leading value];
   v25 = v24;
-  v26 = [(LPIndeterminateProgressSpinnerStyle *)self->_style padding];
-  v27 = [v26 trailing];
-  [v27 value];
+  padding2 = [(LPIndeterminateProgressSpinnerStyle *)self->_style padding];
+  trailing = [padding2 trailing];
+  [trailing value];
   v29 = v28;
 
-  v30 = [(LPIndeterminateProgressSpinnerStyle *)self->_style padding];
-  v31 = [v30 top];
+  padding3 = [(LPIndeterminateProgressSpinnerStyle *)self->_style padding];
+  v31 = [padding3 top];
   [v31 value];
   v33 = v32;
-  v34 = [(LPIndeterminateProgressSpinnerStyle *)self->_style padding];
-  v35 = [v34 bottom];
-  [v35 value];
+  padding4 = [(LPIndeterminateProgressSpinnerStyle *)self->_style padding];
+  bottom = [padding4 bottom];
+  [bottom value];
   v9 = v12 + v16 + v25 + v29;
   v10 = v14 + v18 + v21 + v33 + v36;
 

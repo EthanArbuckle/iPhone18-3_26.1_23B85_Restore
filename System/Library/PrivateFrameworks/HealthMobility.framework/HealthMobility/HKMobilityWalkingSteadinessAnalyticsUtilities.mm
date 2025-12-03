@@ -1,62 +1,62 @@
 @interface HKMobilityWalkingSteadinessAnalyticsUtilities
-+ (id)payloadStringForWalkingSteadinessClassification:(int64_t)a3;
-+ (id)payloadStringForWalkingSteadinessNotificationClassificationWithValue:(int64_t)a3;
-+ (id)payloadStringForWalkingSteadinessNotificationInteractionWithActionIdentifier:(id)a3;
-+ (id)payloadStringForWalkingSteadinessNotificationTypeWithValue:(int64_t)a3;
++ (id)payloadStringForWalkingSteadinessClassification:(int64_t)classification;
++ (id)payloadStringForWalkingSteadinessNotificationClassificationWithValue:(int64_t)value;
++ (id)payloadStringForWalkingSteadinessNotificationInteractionWithActionIdentifier:(id)identifier;
++ (id)payloadStringForWalkingSteadinessNotificationTypeWithValue:(int64_t)value;
 @end
 
 @implementation HKMobilityWalkingSteadinessAnalyticsUtilities
 
-+ (id)payloadStringForWalkingSteadinessClassification:(int64_t)a3
++ (id)payloadStringForWalkingSteadinessClassification:(int64_t)classification
 {
-  if ((a3 - 1) > 2)
+  if ((classification - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_2796D8338 + a3 - 1);
+    return *(&off_2796D8338 + classification - 1);
   }
 }
 
-+ (id)payloadStringForWalkingSteadinessNotificationClassificationWithValue:(int64_t)a3
++ (id)payloadStringForWalkingSteadinessNotificationClassificationWithValue:(int64_t)value
 {
-  if ((a3 - 1) > 3)
+  if ((value - 1) > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [a1 payloadStringForWalkingSteadinessClassification:{qword_25195B9B8[a3 - 1], v3}];
+    v5 = [self payloadStringForWalkingSteadinessClassification:{qword_25195B9B8[value - 1], v3}];
   }
 
   return v5;
 }
 
-+ (id)payloadStringForWalkingSteadinessNotificationTypeWithValue:(int64_t)a3
++ (id)payloadStringForWalkingSteadinessNotificationTypeWithValue:(int64_t)value
 {
-  if ((a3 - 1) > 3)
+  if ((value - 1) > 3)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_2796D8350 + a3 - 1);
+    return *(&off_2796D8350 + value - 1);
   }
 }
 
-+ (id)payloadStringForWalkingSteadinessNotificationInteractionWithActionIdentifier:(id)a3
++ (id)payloadStringForWalkingSteadinessNotificationInteractionWithActionIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277CE20F0]])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:*MEMORY[0x277CE20F0]])
   {
     v4 = @"dismiss";
   }
 
-  else if ([v3 isEqual:*MEMORY[0x277CE20E8]])
+  else if ([identifierCopy isEqual:*MEMORY[0x277CE20E8]])
   {
     v4 = @"view data";
   }

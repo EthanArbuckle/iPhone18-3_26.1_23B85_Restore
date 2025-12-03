@@ -1,7 +1,7 @@
 @interface PKPaymentTransactionDetailCollectionHeaderView
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPaymentTransactionDetailCollectionHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPaymentTransactionDetailCollectionHeaderView)initWithFrame:(CGRect)frame;
 - (PKPaymentTransactionDetailHeaderView)headerView;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
@@ -9,7 +9,7 @@
 
 @implementation PKPaymentTransactionDetailCollectionHeaderView
 
-- (PKPaymentTransactionDetailCollectionHeaderView)initWithFrame:(CGRect)a3
+- (PKPaymentTransactionDetailCollectionHeaderView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = PKPaymentTransactionDetailCollectionHeaderView;
@@ -26,8 +26,8 @@
     self->_headerView = v4;
 
     [(PKPaymentTransactionDetailHeaderView *)self->_headerView setInBridge:PKBridgeUsesDarkAppearance()];
-    v6 = [(PKPaymentTransactionDetailCollectionHeaderView *)self contentView];
-    [v6 addSubview:self->_headerView];
+    contentView = [(PKPaymentTransactionDetailCollectionHeaderView *)self contentView];
+    [contentView addSubview:self->_headerView];
 
     headerView = self->_headerView;
   }
@@ -40,28 +40,28 @@
   v4.receiver = self;
   v4.super_class = PKPaymentTransactionDetailCollectionHeaderView;
   [(PKPaymentTransactionDetailCollectionHeaderView *)&v4 layoutSubviews];
-  v3 = [(PKPaymentTransactionDetailCollectionHeaderView *)self contentView];
-  [v3 bounds];
+  contentView = [(PKPaymentTransactionDetailCollectionHeaderView *)self contentView];
+  [contentView bounds];
   [(PKPaymentTransactionDetailCollectionHeaderView *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKPaymentTransactionDetailCollectionHeaderView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKPaymentTransactionDetailCollectionHeaderView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(PKPaymentTransactionDetailHeaderView *)self->_headerView sizeThatFits:a3.size.width, 1.79769313e308];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [(PKPaymentTransactionDetailHeaderView *)self->_headerView sizeThatFits:bounds.size.width, 1.79769313e308];
   v11 = v10;
-  if (!a4)
+  if (!layout)
   {
     [(PKPaymentTransactionDetailHeaderView *)self->_headerView setFrame:x, y, width, height];
   }

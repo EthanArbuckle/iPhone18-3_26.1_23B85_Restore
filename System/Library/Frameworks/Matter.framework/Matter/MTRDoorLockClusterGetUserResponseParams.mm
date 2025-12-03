@@ -1,9 +1,9 @@
 @interface MTRDoorLockClusterGetUserResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRDoorLockClusterGetUserResponseParams)init;
-- (MTRDoorLockClusterGetUserResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRDoorLockClusterGetUserResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRDoorLockClusterGetUserResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -54,41 +54,41 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterGetUserResponseParams);
-  v5 = [(MTRDoorLockClusterGetUserResponseParams *)self userIndex];
-  [(MTRDoorLockClusterGetUserResponseParams *)v4 setUserIndex:v5];
+  userIndex = [(MTRDoorLockClusterGetUserResponseParams *)self userIndex];
+  [(MTRDoorLockClusterGetUserResponseParams *)v4 setUserIndex:userIndex];
 
-  v6 = [(MTRDoorLockClusterGetUserResponseParams *)self userName];
-  [(MTRDoorLockClusterGetUserResponseParams *)v4 setUserName:v6];
+  userName = [(MTRDoorLockClusterGetUserResponseParams *)self userName];
+  [(MTRDoorLockClusterGetUserResponseParams *)v4 setUserName:userName];
 
-  v7 = [(MTRDoorLockClusterGetUserResponseParams *)self userUniqueID];
-  [(MTRDoorLockClusterGetUserResponseParams *)v4 setUserUniqueID:v7];
+  userUniqueID = [(MTRDoorLockClusterGetUserResponseParams *)self userUniqueID];
+  [(MTRDoorLockClusterGetUserResponseParams *)v4 setUserUniqueID:userUniqueID];
 
-  v8 = [(MTRDoorLockClusterGetUserResponseParams *)self userStatus];
-  [(MTRDoorLockClusterGetUserResponseParams *)v4 setUserStatus:v8];
+  userStatus = [(MTRDoorLockClusterGetUserResponseParams *)self userStatus];
+  [(MTRDoorLockClusterGetUserResponseParams *)v4 setUserStatus:userStatus];
 
-  v9 = [(MTRDoorLockClusterGetUserResponseParams *)self userType];
-  [(MTRDoorLockClusterGetUserResponseParams *)v4 setUserType:v9];
+  userType = [(MTRDoorLockClusterGetUserResponseParams *)self userType];
+  [(MTRDoorLockClusterGetUserResponseParams *)v4 setUserType:userType];
 
-  v10 = [(MTRDoorLockClusterGetUserResponseParams *)self credentialRule];
-  [(MTRDoorLockClusterGetUserResponseParams *)v4 setCredentialRule:v10];
+  credentialRule = [(MTRDoorLockClusterGetUserResponseParams *)self credentialRule];
+  [(MTRDoorLockClusterGetUserResponseParams *)v4 setCredentialRule:credentialRule];
 
-  v11 = [(MTRDoorLockClusterGetUserResponseParams *)self credentials];
-  [(MTRDoorLockClusterGetUserResponseParams *)v4 setCredentials:v11];
+  credentials = [(MTRDoorLockClusterGetUserResponseParams *)self credentials];
+  [(MTRDoorLockClusterGetUserResponseParams *)v4 setCredentials:credentials];
 
-  v12 = [(MTRDoorLockClusterGetUserResponseParams *)self creatorFabricIndex];
-  [(MTRDoorLockClusterGetUserResponseParams *)v4 setCreatorFabricIndex:v12];
+  creatorFabricIndex = [(MTRDoorLockClusterGetUserResponseParams *)self creatorFabricIndex];
+  [(MTRDoorLockClusterGetUserResponseParams *)v4 setCreatorFabricIndex:creatorFabricIndex];
 
-  v13 = [(MTRDoorLockClusterGetUserResponseParams *)self lastModifiedFabricIndex];
-  [(MTRDoorLockClusterGetUserResponseParams *)v4 setLastModifiedFabricIndex:v13];
+  lastModifiedFabricIndex = [(MTRDoorLockClusterGetUserResponseParams *)self lastModifiedFabricIndex];
+  [(MTRDoorLockClusterGetUserResponseParams *)v4 setLastModifiedFabricIndex:lastModifiedFabricIndex];
 
-  v14 = [(MTRDoorLockClusterGetUserResponseParams *)self nextUserIndex];
-  [(MTRDoorLockClusterGetUserResponseParams *)v4 setNextUserIndex:v14];
+  nextUserIndex = [(MTRDoorLockClusterGetUserResponseParams *)self nextUserIndex];
+  [(MTRDoorLockClusterGetUserResponseParams *)v4 setNextUserIndex:nextUserIndex];
 
-  v15 = [(MTRDoorLockClusterGetUserResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRDoorLockClusterGetUserResponseParams *)v4 setTimedInvokeTimeoutMs:v15];
+  timedInvokeTimeoutMs = [(MTRDoorLockClusterGetUserResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRDoorLockClusterGetUserResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -158,7 +158,7 @@ LABEL_10:
   return v11;
 }
 
-- (MTRDoorLockClusterGetUserResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRDoorLockClusterGetUserResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRDoorLockClusterGetUserResponseParams;
@@ -166,7 +166,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRDoorLockClusterGetUserResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRDoorLockClusterGetUserResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -182,19 +182,19 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*struct];
   [(MTRDoorLockClusterGetUserResponseParams *)self setUserIndex:v5];
 
-  if (*(a3 + 24))
+  if (*(struct + 24))
   {
-    v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*(a3 + 1) length:*(a3 + 2) encoding:4];
+    v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*(struct + 1) length:*(struct + 2) encoding:4];
     [(MTRDoorLockClusterGetUserResponseParams *)self setUserName:v6];
 
-    v7 = [(MTRDoorLockClusterGetUserResponseParams *)self userName];
+    userName = [(MTRDoorLockClusterGetUserResponseParams *)self userName];
 
-    if (!v7)
+    if (!userName)
     {
       v8 = 0x512B00000000;
       v9 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm";
@@ -208,9 +208,9 @@ LABEL_6:
     [(MTRDoorLockClusterGetUserResponseParams *)self setUserName:0];
   }
 
-  if (*(a3 + 36))
+  if (*(struct + 36))
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(a3 + 8)];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(struct + 8)];
     [(MTRDoorLockClusterGetUserResponseParams *)self setUserUniqueID:v11];
   }
 
@@ -219,9 +219,9 @@ LABEL_6:
     [(MTRDoorLockClusterGetUserResponseParams *)self setUserUniqueID:0];
   }
 
-  if (*(a3 + 41))
+  if (*(struct + 41))
   {
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 40)];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 40)];
     [(MTRDoorLockClusterGetUserResponseParams *)self setUserStatus:v12];
   }
 
@@ -230,9 +230,9 @@ LABEL_6:
     [(MTRDoorLockClusterGetUserResponseParams *)self setUserStatus:0];
   }
 
-  if (*(a3 + 43))
+  if (*(struct + 43))
   {
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 42)];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 42)];
     [(MTRDoorLockClusterGetUserResponseParams *)self setUserType:v13];
   }
 
@@ -241,9 +241,9 @@ LABEL_6:
     [(MTRDoorLockClusterGetUserResponseParams *)self setUserType:0];
   }
 
-  if (*(a3 + 45))
+  if (*(struct + 45))
   {
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 44)];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 44)];
     [(MTRDoorLockClusterGetUserResponseParams *)self setCredentialRule:v14];
   }
 
@@ -252,10 +252,10 @@ LABEL_6:
     [(MTRDoorLockClusterGetUserResponseParams *)self setCredentialRule:0];
   }
 
-  if (*(a3 + 120))
+  if (*(struct + 120))
   {
     v15 = objc_opt_new();
-    if ((*(a3 + 120) & 1) == 0)
+    if ((*(struct + 120) & 1) == 0)
     {
       sub_238EA195C();
     }
@@ -263,7 +263,7 @@ LABEL_6:
     sub_2393C5AAC(v29);
     v27 = 0;
     v28 = 0;
-    sub_2393C5BDC(v29, a3 + 48);
+    sub_2393C5BDC(v29, struct + 48);
     LOBYTE(v30) = 0;
     HIWORD(v30) = 0;
     while (1)
@@ -319,9 +319,9 @@ LABEL_6:
     [(MTRDoorLockClusterGetUserResponseParams *)self setCredentials:0];
   }
 
-  if (*(a3 + 129))
+  if (*(struct + 129))
   {
-    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 128)];
+    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 128)];
     [(MTRDoorLockClusterGetUserResponseParams *)self setCreatorFabricIndex:v22];
   }
 
@@ -330,9 +330,9 @@ LABEL_6:
     [(MTRDoorLockClusterGetUserResponseParams *)self setCreatorFabricIndex:0];
   }
 
-  if (*(a3 + 131))
+  if (*(struct + 131))
   {
-    v23 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 130)];
+    v23 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 130)];
     [(MTRDoorLockClusterGetUserResponseParams *)self setLastModifiedFabricIndex:v23];
   }
 
@@ -341,9 +341,9 @@ LABEL_6:
     [(MTRDoorLockClusterGetUserResponseParams *)self setLastModifiedFabricIndex:0];
   }
 
-  if (*(a3 + 134))
+  if (*(struct + 134))
   {
-    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(a3 + 66)];
+    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(struct + 66)];
     [(MTRDoorLockClusterGetUserResponseParams *)self setNextUserIndex:v24];
   }
 

@@ -1,46 +1,46 @@
 @interface RTNotifier
-- (BOOL)observer:(id)a3 observingNotificationName:(id)a4;
+- (BOOL)observer:(id)observer observingNotificationName:(id)name;
 - (RTNotifier)init;
-- (RTNotifier)initWithName:(id)a3;
-- (RTNotifier)initWithQueue:(id)a3;
-- (unint64_t)getNumberOfObservers:(id)a3;
-- (void)addObserver:(id)a3 selector:(SEL)a4 name:(id)a5;
-- (void)postNotification:(id)a3;
-- (void)postNotification:(id)a3 toObserver:(id)a4;
+- (RTNotifier)initWithName:(id)name;
+- (RTNotifier)initWithQueue:(id)queue;
+- (unint64_t)getNumberOfObservers:(id)observers;
+- (void)addObserver:(id)observer selector:(SEL)selector name:(id)name;
+- (void)postNotification:(id)notification;
+- (void)postNotification:(id)notification toObserver:(id)observer;
 - (void)removeAllObservers;
-- (void)removeObserver:(id)a3;
-- (void)removeObserver:(id)a3 fromNotification:(id)a4;
+- (void)removeObserver:(id)observer;
+- (void)removeObserver:(id)observer fromNotification:(id)notification;
 @end
 
 @implementation RTNotifier
 
 - (RTNotifier)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(RTNotifier *)v2 UTF8String];
+    uTF8String = [(RTNotifier *)selfCopy UTF8String];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v2];
-    v4 = [v5 UTF8String];
+    selfCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), selfCopy];
+    uTF8String = [selfCopy UTF8String];
   }
 
-  v6 = dispatch_queue_create(v4, v3);
+  v6 = dispatch_queue_create(uTF8String, v3);
 
-  v7 = [(RTNotifier *)v2 initWithQueue:v6];
+  v7 = [(RTNotifier *)selfCopy initWithQueue:v6];
   return v7;
 }
 
-- (RTNotifier)initWithName:(id)a3
+- (RTNotifier)initWithName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -53,31 +53,31 @@
     }
   }
 
-  v6 = self;
+  selfCopy = self;
   v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(RTNotifier *)v6 UTF8String];
+    uTF8String = [(RTNotifier *)selfCopy UTF8String];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v6];
-    v8 = [v9 UTF8String];
+    selfCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), selfCopy];
+    uTF8String = [selfCopy UTF8String];
   }
 
-  v10 = dispatch_queue_create(v8, v7);
+  v10 = dispatch_queue_create(uTF8String, v7);
 
-  v11 = [(RTNotifier *)v6 initWithQueue:v10];
+  v11 = [(RTNotifier *)selfCopy initWithQueue:v10];
   return v11;
 }
 
-- (RTNotifier)initWithQueue:(id)a3
+- (RTNotifier)initWithQueue:(id)queue
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -99,18 +99,18 @@
     observersMap = v7->_observersMap;
     v7->_observersMap = v8;
 
-    objc_storeStrong(&v7->_queue, a3);
+    objc_storeStrong(&v7->_queue, queue);
   }
 
   return v7;
 }
 
-- (void)addObserver:(id)a3 selector:(SEL)a4 name:(id)a5
+- (void)addObserver:(id)observer selector:(SEL)selector name:(id)name
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  observerCopy = observer;
+  nameCopy = name;
+  if (!nameCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -123,18 +123,18 @@
     }
   }
 
-  v11 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __40__RTNotifier_addObserver_selector_name___block_invoke;
   v14[3] = &unk_2788C4C70;
-  v15 = v8;
-  v16 = self;
-  v17 = v9;
-  v18 = a4;
-  v12 = v9;
-  v13 = v8;
-  dispatch_sync(v11, v14);
+  v15 = observerCopy;
+  selfCopy = self;
+  v17 = nameCopy;
+  selectorCopy = selector;
+  v12 = nameCopy;
+  v13 = observerCopy;
+  dispatch_sync(queue, v14);
 }
 
 void __40__RTNotifier_addObserver_selector_name___block_invoke(uint64_t a1)
@@ -226,11 +226,11 @@ void __40__RTNotifier_addObserver_selector_name___block_invoke_2(void *a1, void 
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -243,15 +243,15 @@ void __40__RTNotifier_addObserver_selector_name___block_invoke_2(void *a1, void 
     }
   }
 
-  v6 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __29__RTNotifier_removeObserver___block_invoke;
   v8[3] = &unk_2788C4A70;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = observerCopy;
+  v7 = observerCopy;
+  dispatch_sync(queue, v8);
 }
 
 void __29__RTNotifier_removeObserver___block_invoke(uint64_t a1)
@@ -323,15 +323,15 @@ void __29__RTNotifier_removeObserver___block_invoke_2(uint64_t a1, void *a2, voi
   }
 }
 
-- (void)removeObserver:(id)a3 fromNotification:(id)a4
+- (void)removeObserver:(id)observer fromNotification:(id)notification
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  observerCopy = observer;
+  notificationCopy = notification;
+  v8 = notificationCopy;
+  if (observerCopy)
   {
-    if (v7)
+    if (notificationCopy)
     {
       goto LABEL_10;
     }
@@ -364,17 +364,17 @@ LABEL_7:
   }
 
 LABEL_10:
-  v11 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__RTNotifier_removeObserver_fromNotification___block_invoke;
   block[3] = &unk_2788C76F8;
   block[4] = self;
   v15 = v8;
-  v16 = v6;
-  v12 = v6;
+  v16 = observerCopy;
+  v12 = observerCopy;
   v13 = v8;
-  dispatch_sync(v11, block);
+  dispatch_sync(queue, block);
 }
 
 void __46__RTNotifier_removeObserver_fromNotification___block_invoke(uint64_t a1)
@@ -439,11 +439,11 @@ void __46__RTNotifier_removeObserver_fromNotification___block_invoke_26(uint64_t
   }
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  notificationCopy = notification;
+  if (!notificationCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -456,9 +456,9 @@ void __46__RTNotifier_removeObserver_fromNotification___block_invoke_26(uint64_t
     }
   }
 
-  v6 = [v4 name];
+  name = [notificationCopy name];
 
-  if (!v6)
+  if (!name)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -471,16 +471,16 @@ void __46__RTNotifier_removeObserver_fromNotification___block_invoke_26(uint64_t
     }
   }
 
-  v8 = [(RTNotifier *)self observersMap];
-  v9 = [v4 name];
-  v10 = [v8 objectForKey:v9];
+  observersMap = [(RTNotifier *)self observersMap];
+  name2 = [notificationCopy name];
+  v10 = [observersMap objectForKey:name2];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __31__RTNotifier_postNotification___block_invoke;
   v12[3] = &unk_2788C9BE8;
-  v13 = v4;
-  v11 = v4;
+  v13 = notificationCopy;
+  v11 = notificationCopy;
   [v10 enumerateObjectsUsingBlock:v12];
 }
 
@@ -493,12 +493,12 @@ void __31__RTNotifier_postNotification___block_invoke(uint64_t a1, void *a2)
   [v5 performSelector:v4 withObject:*(a1 + 32)];
 }
 
-- (void)postNotification:(id)a3 toObserver:(id)a4
+- (void)postNotification:(id)notification toObserver:(id)observer
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  notificationCopy = notification;
+  observerCopy = observer;
+  if (!notificationCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -511,9 +511,9 @@ void __31__RTNotifier_postNotification___block_invoke(uint64_t a1, void *a2)
     }
   }
 
-  v9 = [v6 name];
+  name = [notificationCopy name];
 
-  if (!v9)
+  if (!name)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -526,18 +526,18 @@ void __31__RTNotifier_postNotification___block_invoke(uint64_t a1, void *a2)
     }
   }
 
-  v11 = [(RTNotifier *)self observersMap];
-  v12 = [v6 name];
-  v13 = [v11 objectForKey:v12];
+  observersMap = [(RTNotifier *)self observersMap];
+  name2 = [notificationCopy name];
+  v13 = [observersMap objectForKey:name2];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __42__RTNotifier_postNotification_toObserver___block_invoke;
   v16[3] = &unk_2788C9C10;
-  v17 = v7;
-  v18 = v6;
-  v14 = v6;
-  v15 = v7;
+  v17 = observerCopy;
+  v18 = notificationCopy;
+  v14 = notificationCopy;
+  v15 = observerCopy;
   [v13 enumerateObjectsUsingBlock:v16];
 }
 
@@ -552,11 +552,11 @@ void __42__RTNotifier_postNotification_toObserver___block_invoke(uint64_t a1, vo
   }
 }
 
-- (unint64_t)getNumberOfObservers:(id)a3
+- (unint64_t)getNumberOfObservers:(id)observers
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self observersMap];
-  v6 = [v5 objectForKey:v4];
+  observersCopy = observers;
+  observersMap = [(RTNotifier *)self observersMap];
+  v6 = [observersMap objectForKey:observersCopy];
 
   v7 = [v6 count];
   return v7;
@@ -564,13 +564,13 @@ void __42__RTNotifier_postNotification_toObserver___block_invoke(uint64_t a1, vo
 
 - (void)removeAllObservers
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__RTNotifier_removeAllObservers__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 void __32__RTNotifier_removeAllObservers__block_invoke(uint64_t a1)
@@ -579,13 +579,13 @@ void __32__RTNotifier_removeAllObservers__block_invoke(uint64_t a1)
   [v1 removeAllObjects];
 }
 
-- (BOOL)observer:(id)a3 observingNotificationName:(id)a4
+- (BOOL)observer:(id)observer observingNotificationName:(id)name
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  observerCopy = observer;
+  nameCopy = name;
+  v8 = nameCopy;
+  if (!observerCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -605,7 +605,7 @@ void __32__RTNotifier_removeAllObservers__block_invoke(uint64_t a1)
     goto LABEL_7;
   }
 
-  if (!v7)
+  if (!nameCopy)
   {
 LABEL_7:
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -627,16 +627,16 @@ LABEL_10:
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v19 = 0;
-  v9 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __49__RTNotifier_observer_observingNotificationName___block_invoke;
   v14[3] = &unk_2788C9C38;
   v14[4] = self;
   v15 = v8;
-  v16 = v6;
+  v16 = observerCopy;
   v17 = buf;
-  dispatch_sync(v9, v14);
+  dispatch_sync(queue, v14);
 
   v10 = *(*&buf[8] + 24);
   _Block_object_dispose(buf, 8);

@@ -1,28 +1,28 @@
 @interface AWDWRMULCACoexStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasULCACriCarDLBW:(BOOL)a3;
-- (void)setHasULCACriCarDLFreq:(BOOL)a3;
-- (void)setHasULCACriCarULBW:(BOOL)a3;
-- (void)setHasULCACriCarULFreq:(BOOL)a3;
-- (void)setHasULCAHasCoexBand:(BOOL)a3;
-- (void)setHasULCAPriCarDLBW:(BOOL)a3;
-- (void)setHasULCAPriCarDLFreq:(BOOL)a3;
-- (void)setHasULCAPriCarULBW:(BOOL)a3;
-- (void)setHasULCAPriCarULFreq:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasULCACriCarDLBW:(BOOL)w;
+- (void)setHasULCACriCarDLFreq:(BOOL)freq;
+- (void)setHasULCACriCarULBW:(BOOL)w;
+- (void)setHasULCACriCarULFreq:(BOOL)freq;
+- (void)setHasULCAHasCoexBand:(BOOL)band;
+- (void)setHasULCAPriCarDLBW:(BOOL)w;
+- (void)setHasULCAPriCarDLFreq:(BOOL)freq;
+- (void)setHasULCAPriCarULBW:(BOOL)w;
+- (void)setHasULCAPriCarULFreq:(BOOL)freq;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWRMULCACoexStats
 
-- (void)setHasULCAHasCoexBand:(BOOL)a3
+- (void)setHasULCAHasCoexBand:(BOOL)band
 {
-  if (a3)
+  if (band)
   {
     v3 = 512;
   }
@@ -35,9 +35,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasULCAPriCarULFreq:(BOOL)a3
+- (void)setHasULCAPriCarULFreq:(BOOL)freq
 {
-  if (a3)
+  if (freq)
   {
     v3 = 256;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasULCAPriCarDLFreq:(BOOL)a3
+- (void)setHasULCAPriCarDLFreq:(BOOL)freq
 {
-  if (a3)
+  if (freq)
   {
     v3 = 64;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasULCAPriCarULBW:(BOOL)a3
+- (void)setHasULCAPriCarULBW:(BOOL)w
 {
-  if (a3)
+  if (w)
   {
     v3 = 128;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasULCAPriCarDLBW:(BOOL)a3
+- (void)setHasULCAPriCarDLBW:(BOOL)w
 {
-  if (a3)
+  if (w)
   {
     v3 = 32;
   }
@@ -95,9 +95,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasULCACriCarULFreq:(BOOL)a3
+- (void)setHasULCACriCarULFreq:(BOOL)freq
 {
-  if (a3)
+  if (freq)
   {
     v3 = 16;
   }
@@ -110,9 +110,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasULCACriCarDLFreq:(BOOL)a3
+- (void)setHasULCACriCarDLFreq:(BOOL)freq
 {
-  if (a3)
+  if (freq)
   {
     v3 = 4;
   }
@@ -125,9 +125,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasULCACriCarULBW:(BOOL)a3
+- (void)setHasULCACriCarULBW:(BOOL)w
 {
-  if (a3)
+  if (w)
   {
     v3 = 8;
   }
@@ -140,9 +140,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasULCACriCarDLBW:(BOOL)a3
+- (void)setHasULCACriCarDLBW:(BOOL)w
 {
-  if (a3)
+  if (w)
   {
     v3 = 2;
   }
@@ -164,11 +164,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -187,7 +187,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_uLCAHasCoexBand), @"ULCAHasCoexBand"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_uLCAHasCoexBand), @"ULCAHasCoexBand"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -201,7 +201,7 @@ LABEL_4:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_uLCAPriCarULFreq), @"ULCAPriCarULFreq"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_uLCAPriCarULFreq), @"ULCAPriCarULFreq"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -215,7 +215,7 @@ LABEL_5:
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_uLCAPriCarDLFreq), @"ULCAPriCarDLFreq"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_uLCAPriCarDLFreq), @"ULCAPriCarDLFreq"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -229,7 +229,7 @@ LABEL_6:
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_uLCAPriCarULBW), @"ULCAPriCarULBW"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_uLCAPriCarULBW), @"ULCAPriCarULBW"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -243,7 +243,7 @@ LABEL_7:
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_uLCAPriCarDLBW), @"ULCAPriCarDLBW"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_uLCAPriCarDLBW), @"ULCAPriCarDLBW"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -257,7 +257,7 @@ LABEL_8:
   }
 
 LABEL_19:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_uLCACriCarULFreq), @"ULCACriCarULFreq"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_uLCACriCarULFreq), @"ULCACriCarULFreq"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -268,17 +268,17 @@ LABEL_9:
     }
 
 LABEL_21:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_uLCACriCarULBW), @"ULCACriCarULBW"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_uLCACriCarULBW), @"ULCACriCarULBW"}];
     if ((*&self->_has & 2) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_11;
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_uLCACriCarDLFreq), @"ULCACriCarDLFreq"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_uLCACriCarDLFreq), @"ULCACriCarDLFreq"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -289,13 +289,13 @@ LABEL_10:
   if ((has & 2) != 0)
   {
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_uLCACriCarDLBW), @"ULCACriCarDLBW"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_uLCACriCarDLBW), @"ULCACriCarDLBW"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -438,13 +438,13 @@ LABEL_21:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 26) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 26) |= 1u;
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -463,8 +463,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 48) = self->_uLCAHasCoexBand;
-  *(a3 + 26) |= 0x200u;
+  *(to + 48) = self->_uLCAHasCoexBand;
+  *(to + 26) |= 0x200u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -478,8 +478,8 @@ LABEL_4:
   }
 
 LABEL_14:
-  *(a3 + 11) = self->_uLCAPriCarULFreq;
-  *(a3 + 26) |= 0x100u;
+  *(to + 11) = self->_uLCAPriCarULFreq;
+  *(to + 26) |= 0x100u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -493,8 +493,8 @@ LABEL_5:
   }
 
 LABEL_15:
-  *(a3 + 9) = self->_uLCAPriCarDLFreq;
-  *(a3 + 26) |= 0x40u;
+  *(to + 9) = self->_uLCAPriCarDLFreq;
+  *(to + 26) |= 0x40u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -508,8 +508,8 @@ LABEL_6:
   }
 
 LABEL_16:
-  *(a3 + 10) = self->_uLCAPriCarULBW;
-  *(a3 + 26) |= 0x80u;
+  *(to + 10) = self->_uLCAPriCarULBW;
+  *(to + 26) |= 0x80u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -523,8 +523,8 @@ LABEL_7:
   }
 
 LABEL_17:
-  *(a3 + 8) = self->_uLCAPriCarDLBW;
-  *(a3 + 26) |= 0x20u;
+  *(to + 8) = self->_uLCAPriCarDLBW;
+  *(to + 26) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -538,8 +538,8 @@ LABEL_8:
   }
 
 LABEL_18:
-  *(a3 + 7) = self->_uLCACriCarULFreq;
-  *(a3 + 26) |= 0x10u;
+  *(to + 7) = self->_uLCACriCarULFreq;
+  *(to + 26) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -553,8 +553,8 @@ LABEL_9:
   }
 
 LABEL_19:
-  *(a3 + 5) = self->_uLCACriCarDLFreq;
-  *(a3 + 26) |= 4u;
+  *(to + 5) = self->_uLCACriCarDLFreq;
+  *(to + 26) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -565,23 +565,23 @@ LABEL_10:
     }
 
 LABEL_21:
-    *(a3 + 4) = self->_uLCACriCarDLBW;
-    *(a3 + 26) |= 2u;
+    *(to + 4) = self->_uLCACriCarDLBW;
+    *(to + 26) |= 2u;
     return;
   }
 
 LABEL_20:
-  *(a3 + 6) = self->_uLCACriCarULBW;
-  *(a3 + 26) |= 8u;
+  *(to + 6) = self->_uLCACriCarULBW;
+  *(to + 26) |= 8u;
   if ((*&self->_has & 2) != 0)
   {
     goto LABEL_21;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -723,19 +723,19 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 26);
+  v7 = *(equal + 26);
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_timestamp != *(a3 + 1))
+    if ((v7 & 1) == 0 || self->_timestamp != *(equal + 1))
     {
       goto LABEL_54;
     }
@@ -748,18 +748,18 @@ LABEL_11:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(a3 + 26) & 0x200) != 0)
+    if ((*(equal + 26) & 0x200) != 0)
     {
-      v8 = *(a3 + 48);
+      v8 = *(equal + 48);
       if (self->_uLCAHasCoexBand)
       {
-        if ((*(a3 + 48) & 1) == 0)
+        if ((*(equal + 48) & 1) == 0)
         {
           goto LABEL_54;
         }
       }
 
-      else if (*(a3 + 48))
+      else if (*(equal + 48))
       {
         goto LABEL_54;
       }
@@ -772,7 +772,7 @@ LABEL_54:
     return v5;
   }
 
-  if ((*(a3 + 26) & 0x200) != 0)
+  if ((*(equal + 26) & 0x200) != 0)
   {
     goto LABEL_54;
   }
@@ -780,20 +780,20 @@ LABEL_54:
 LABEL_9:
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(a3 + 26) & 0x100) == 0 || self->_uLCAPriCarULFreq != *(a3 + 11))
+    if ((*(equal + 26) & 0x100) == 0 || self->_uLCAPriCarULFreq != *(equal + 11))
     {
       goto LABEL_54;
     }
   }
 
-  else if ((*(a3 + 26) & 0x100) != 0)
+  else if ((*(equal + 26) & 0x100) != 0)
   {
     goto LABEL_54;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_uLCAPriCarDLFreq != *(a3 + 9))
+    if ((v7 & 0x40) == 0 || self->_uLCAPriCarDLFreq != *(equal + 9))
     {
       goto LABEL_54;
     }
@@ -806,7 +806,7 @@ LABEL_9:
 
   if ((has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_uLCAPriCarULBW != *(a3 + 10))
+    if ((v7 & 0x80) == 0 || self->_uLCAPriCarULBW != *(equal + 10))
     {
       goto LABEL_54;
     }
@@ -819,7 +819,7 @@ LABEL_9:
 
   if ((has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_uLCAPriCarDLBW != *(a3 + 8))
+    if ((v7 & 0x20) == 0 || self->_uLCAPriCarDLBW != *(equal + 8))
     {
       goto LABEL_54;
     }
@@ -832,7 +832,7 @@ LABEL_9:
 
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_uLCACriCarULFreq != *(a3 + 7))
+    if ((v7 & 0x10) == 0 || self->_uLCACriCarULFreq != *(equal + 7))
     {
       goto LABEL_54;
     }
@@ -845,7 +845,7 @@ LABEL_9:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_uLCACriCarDLFreq != *(a3 + 5))
+    if ((v7 & 4) == 0 || self->_uLCACriCarDLFreq != *(equal + 5))
     {
       goto LABEL_54;
     }
@@ -858,7 +858,7 @@ LABEL_9:
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_uLCACriCarULBW != *(a3 + 6))
+    if ((v7 & 8) == 0 || self->_uLCACriCarULBW != *(equal + 6))
     {
       goto LABEL_54;
     }
@@ -872,7 +872,7 @@ LABEL_9:
   LOBYTE(v5) = (v7 & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_uLCACriCarDLBW != *(a3 + 4))
+    if ((v7 & 2) == 0 || self->_uLCACriCarDLBW != *(equal + 4))
     {
       goto LABEL_54;
     }
@@ -1022,14 +1022,14 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 26);
+    v3 = *(from + 26);
     if ((v3 & 0x200) == 0)
     {
 LABEL_3:
@@ -1042,14 +1042,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 26) & 0x200) == 0)
+  else if ((*(from + 26) & 0x200) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_uLCAHasCoexBand = *(a3 + 48);
+  self->_uLCAHasCoexBand = *(from + 48);
   *&self->_has |= 0x200u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x100) == 0)
   {
 LABEL_4:
@@ -1062,9 +1062,9 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_uLCAPriCarULFreq = *(a3 + 11);
+  self->_uLCAPriCarULFreq = *(from + 11);
   *&self->_has |= 0x100u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x40) == 0)
   {
 LABEL_5:
@@ -1077,9 +1077,9 @@ LABEL_5:
   }
 
 LABEL_15:
-  self->_uLCAPriCarDLFreq = *(a3 + 9);
+  self->_uLCAPriCarDLFreq = *(from + 9);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x80) == 0)
   {
 LABEL_6:
@@ -1092,9 +1092,9 @@ LABEL_6:
   }
 
 LABEL_16:
-  self->_uLCAPriCarULBW = *(a3 + 10);
+  self->_uLCAPriCarULBW = *(from + 10);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x20) == 0)
   {
 LABEL_7:
@@ -1107,9 +1107,9 @@ LABEL_7:
   }
 
 LABEL_17:
-  self->_uLCAPriCarDLBW = *(a3 + 8);
+  self->_uLCAPriCarDLBW = *(from + 8);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x10) == 0)
   {
 LABEL_8:
@@ -1122,9 +1122,9 @@ LABEL_8:
   }
 
 LABEL_18:
-  self->_uLCACriCarULFreq = *(a3 + 7);
+  self->_uLCACriCarULFreq = *(from + 7);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 4) == 0)
   {
 LABEL_9:
@@ -1137,9 +1137,9 @@ LABEL_9:
   }
 
 LABEL_19:
-  self->_uLCACriCarDLFreq = *(a3 + 5);
+  self->_uLCACriCarDLFreq = *(from + 5);
   *&self->_has |= 4u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 8) == 0)
   {
 LABEL_10:
@@ -1149,15 +1149,15 @@ LABEL_10:
     }
 
 LABEL_21:
-    self->_uLCACriCarDLBW = *(a3 + 4);
+    self->_uLCACriCarDLBW = *(from + 4);
     *&self->_has |= 2u;
     return;
   }
 
 LABEL_20:
-  self->_uLCACriCarULBW = *(a3 + 6);
+  self->_uLCACriCarULBW = *(from + 6);
   *&self->_has |= 8u;
-  if ((*(a3 + 26) & 2) != 0)
+  if ((*(from + 26) & 2) != 0)
   {
     goto LABEL_21;
   }

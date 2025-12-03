@@ -1,22 +1,22 @@
 @interface KernelEventMonitor
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
-- (int)read:(id)a3 returnedValues:(id)a4;
-- (void)_handleNetworkEvent:(kern_event_msg *)a3;
-- (void)_handleSocket:(int)a3;
+- (int)read:(id)read returnedValues:(id)values;
+- (void)_handleNetworkEvent:(kern_event_msg *)event;
+- (void)_handleSocket:(int)socket;
 - (void)initListening;
 @end
 
 @implementation KernelEventMonitor
 
-- (void)_handleNetworkEvent:(kern_event_msg *)a3
+- (void)_handleNetworkEvent:(kern_event_msg *)event
 {
   v54 = *MEMORY[0x277D85DE8];
   v4 = evaluationLogHandle;
   if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEBUG))
   {
-    kev_subclass = a3->kev_subclass;
-    event_code = a3->event_code;
+    kev_subclass = event->kev_subclass;
+    event_code = event->event_code;
     *buf = 67109376;
     v49 = kev_subclass;
     v50 = 1024;
@@ -24,7 +24,7 @@
     _os_log_impl(&dword_23255B000, v4, OS_LOG_TYPE_DEBUG, "entry with subclass %d  code %d", buf, 0xEu);
   }
 
-  v7 = a3->kev_subclass;
+  v7 = event->kev_subclass;
   if (v7 != 7)
   {
     if (v7 != 1)
@@ -32,8 +32,8 @@
       v14 = evaluationLogHandle;
       if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEBUG))
       {
-        v15 = a3->kev_subclass;
-        v16 = a3->event_code;
+        v15 = event->kev_subclass;
+        v16 = event->event_code;
         *buf = 67109376;
         v49 = v15;
         v50 = 1024;
@@ -50,10 +50,10 @@ LABEL_30:
       goto LABEL_44;
     }
 
-    v8 = a3->event_code;
+    v8 = event->event_code;
     if (v8 == 10)
     {
-      v20 = a3->total_size - 24;
+      v20 = event->total_size - 24;
       v10 = evaluationLogHandle;
       if (v20 <= 0x17)
       {
@@ -70,18 +70,18 @@ LABEL_30:
 
       if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = a3->event_data[0];
-        total_size = a3[1].total_size;
+        v33 = event->event_data[0];
+        total_size = event[1].total_size;
         *buf = 67109634;
         v49 = v33;
         v50 = 1024;
         v51 = total_size;
         v52 = 2080;
-        p_vendor_code = &a3[1].vendor_code;
+        p_vendor_code = &event[1].vendor_code;
         _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEFAULT, "Receive arp alive family %d unit %d name %s", buf, 0x18u);
       }
 
-      v35 = [[EventDescription alloc] initWithType:1 length:a3->total_size data:a3 fromPid:0 named:"kevent" bundleId:0];
+      v35 = [[EventDescription alloc] initWithType:1 length:event->total_size data:event fromPid:0 named:"kevent" bundleId:0];
       [(EventDescription *)v35 setEventKey:@"com.apple.symptoms.kevent.arp-alive"];
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
@@ -96,7 +96,7 @@ LABEL_30:
 
     if (v8 == 9)
     {
-      v9 = a3->total_size - 24;
+      v9 = event->total_size - 24;
       v10 = evaluationLogHandle;
       if (v9 <= 0x17)
       {
@@ -118,18 +118,18 @@ LABEL_29:
 
       if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = a3->event_data[0];
-        v26 = a3[1].total_size;
+        v25 = event->event_data[0];
+        v26 = event[1].total_size;
         *buf = 67109634;
         v49 = v25;
         v50 = 1024;
         v51 = v26;
         v52 = 2080;
-        p_vendor_code = &a3[1].vendor_code;
+        p_vendor_code = &event[1].vendor_code;
         _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEFAULT, "Receive arp failure family %d unit %d name %s", buf, 0x18u);
       }
 
-      v27 = [[EventDescription alloc] initWithType:1 length:a3->total_size data:a3 fromPid:0 named:"kevent" bundleId:0];
+      v27 = [[EventDescription alloc] initWithType:1 length:event->total_size data:event fromPid:0 named:"kevent" bundleId:0];
       [(EventDescription *)v27 setEventKey:@"com.apple.symptoms.kevent.arp-failure"];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -150,7 +150,7 @@ LABEL_43:
       goto LABEL_44;
     }
 
-    v23 = a3->event_code;
+    v23 = event->event_code;
     *buf = 67109120;
     v49 = v23;
     v11 = "Received INET event %d";
@@ -160,10 +160,10 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v12 = a3->event_code;
+  v12 = event->event_code;
   if (v12 == 3)
   {
-    v21 = a3->total_size - 24;
+    v21 = event->total_size - 24;
     v10 = evaluationLogHandle;
     if (v21 <= 0x17)
     {
@@ -180,18 +180,18 @@ LABEL_28:
 
     if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = a3->event_data[0];
-      v37 = a3[1].total_size;
+      v36 = event->event_data[0];
+      v37 = event[1].total_size;
       *buf = 67109634;
       v49 = v36;
       v50 = 1024;
       v51 = v37;
       v52 = 2080;
-      p_vendor_code = &a3[1].vendor_code;
+      p_vendor_code = &event[1].vendor_code;
       _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEFAULT, "Receive nd6 alive family %d unit %d name %s", buf, 0x18u);
     }
 
-    v38 = [[EventDescription alloc] initWithType:1 length:a3->total_size data:a3 fromPid:0 named:"kevent" bundleId:0];
+    v38 = [[EventDescription alloc] initWithType:1 length:event->total_size data:event fromPid:0 named:"kevent" bundleId:0];
     [(EventDescription *)v38 setEventKey:@"com.apple.symptoms.kevent.nd6-alive"];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
@@ -212,31 +212,31 @@ LABEL_28:
       goto LABEL_44;
     }
 
-    v24 = a3->event_code;
+    v24 = event->event_code;
     *buf = 67109120;
     v49 = v24;
     v11 = "Received ND6 event %d";
     goto LABEL_28;
   }
 
-  v13 = a3->total_size - 24;
+  v13 = event->total_size - 24;
   v10 = evaluationLogHandle;
   if (v13 > 0x17)
   {
     if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = a3->event_data[0];
-      v31 = a3[1].total_size;
+      v30 = event->event_data[0];
+      v31 = event[1].total_size;
       *buf = 67109634;
       v49 = v30;
       v50 = 1024;
       v51 = v31;
       v52 = 2080;
-      p_vendor_code = &a3[1].vendor_code;
+      p_vendor_code = &event[1].vendor_code;
       _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEFAULT, "Receive nd6 failure family %d unit %d name %s", buf, 0x18u);
     }
 
-    v32 = [[EventDescription alloc] initWithType:1 length:a3->total_size data:a3 fromPid:0 named:"kevent" bundleId:0];
+    v32 = [[EventDescription alloc] initWithType:1 length:event->total_size data:event fromPid:0 named:"kevent" bundleId:0];
     [(EventDescription *)v32 setEventKey:@"com.apple.symptoms.kevent.nd6-failure"];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
@@ -261,11 +261,11 @@ LABEL_44:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSocket:(int)a3
+- (void)_handleSocket:(int)socket
 {
   v33 = *MEMORY[0x277D85DE8];
   memset(v32, 0, 512);
-  v4 = recv(a3, v32, 0x400uLL, 0);
+  v4 = recv(socket, v32, 0x400uLL, 0);
   if (v4 == -1)
   {
     v13 = evaluationLogHandle;
@@ -274,7 +274,7 @@ LABEL_44:
       v14 = v13;
       v15 = *__error();
       *buf = 67109120;
-      v19 = v15;
+      socketCopy = v15;
       _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_ERROR, "recv() failed: %{errno}d", buf, 8u);
     }
   }
@@ -301,7 +301,7 @@ LABEL_44:
           v11 = v7[3];
           v12 = v7[5];
           *buf = 67110656;
-          v19 = a3;
+          socketCopy = socket;
           v20 = 2048;
           v21 = v6;
           v22 = 2048;
@@ -531,7 +531,7 @@ uint64_t __35__KernelEventMonitor_initListening__block_invoke_2_18(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __36__KernelEventMonitor_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_46 != -1)
   {
     dispatch_once(&sharedInstance_pred_46, block);
@@ -555,21 +555,21 @@ void __36__KernelEventMonitor_sharedInstance__block_invoke(uint64_t a1)
   [ConfigurationHandler setConfigurationObject:v3 forName:v5];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[KernelEventMonitor sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
+  [valuesCopy setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
 
   return 0;
 }

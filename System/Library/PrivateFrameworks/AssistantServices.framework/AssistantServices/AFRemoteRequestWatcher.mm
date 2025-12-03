@@ -1,39 +1,39 @@
 @interface AFRemoteRequestWatcher
 - (AFRemoteRequestWatcher)init;
-- (void)_dispatchSpeechRequestOptions:(id)a3;
+- (void)_dispatchSpeechRequestOptions:(id)options;
 - (void)_setupRequestListener;
 - (void)_setupSpeechRequestListener;
 - (void)dealloc;
-- (void)setActivationHandler:(id)a3;
-- (void)setButtonEventHandler:(id)a3;
-- (void)setDismissalHandler:(id)a3;
-- (void)setIntentForwardingActionHandler:(id)a3;
-- (void)setIntentHandler:(id)a3;
-- (void)setNewRequestHandler:(id)a3;
-- (void)setNewSpeechRequestHandler:(id)a3;
-- (void)setPrewarmHandler:(id)a3;
-- (void)setRequestHandler:(id)a3;
-- (void)siriActivationListener:(id)a3 activateWithRequestInfo:(id)a4 context:(id)a5 completion:(id)a6;
-- (void)siriActivationListener:(id)a3 deactivateForReason:(int64_t)a4 options:(unint64_t)a5 context:(id)a6 completion:(id)a7;
-- (void)siriActivationListener:(id)a3 handleButtonEventFromContext:(id)a4 completion:(id)a5;
-- (void)siriActivationListener:(id)a3 handleIntent:(id)a4 inBackgroundAppWithBundleId:(id)a5 reply:(id)a6;
-- (void)siriActivationListener:(id)a3 handleIntentForwardingAction:(id)a4 inBackgroundApplicationWithBundleIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)siriActivationListener:(id)a3 prewarmWithRequestInfo:(id)a4 context:(id)a5 completion:(id)a6;
+- (void)setActivationHandler:(id)handler;
+- (void)setButtonEventHandler:(id)handler;
+- (void)setDismissalHandler:(id)handler;
+- (void)setIntentForwardingActionHandler:(id)handler;
+- (void)setIntentHandler:(id)handler;
+- (void)setNewRequestHandler:(id)handler;
+- (void)setNewSpeechRequestHandler:(id)handler;
+- (void)setPrewarmHandler:(id)handler;
+- (void)setRequestHandler:(id)handler;
+- (void)siriActivationListener:(id)listener activateWithRequestInfo:(id)info context:(id)context completion:(id)completion;
+- (void)siriActivationListener:(id)listener deactivateForReason:(int64_t)reason options:(unint64_t)options context:(id)context completion:(id)completion;
+- (void)siriActivationListener:(id)listener handleButtonEventFromContext:(id)context completion:(id)completion;
+- (void)siriActivationListener:(id)listener handleIntent:(id)intent inBackgroundAppWithBundleId:(id)id reply:(id)reply;
+- (void)siriActivationListener:(id)listener handleIntentForwardingAction:(id)action inBackgroundApplicationWithBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)siriActivationListener:(id)listener prewarmWithRequestInfo:(id)info context:(id)context completion:(id)completion;
 @end
 
 @implementation AFRemoteRequestWatcher
 
-- (void)setNewSpeechRequestHandler:(id)a3
+- (void)setNewSpeechRequestHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__AFRemoteRequestWatcher_setNewSpeechRequestHandler___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -49,13 +49,13 @@ uint64_t __53__AFRemoteRequestWatcher_setNewSpeechRequestHandler___block_invoke(
   return [v5 _setupSpeechRequestListener];
 }
 
-- (void)_dispatchSpeechRequestOptions:(id)a3
+- (void)_dispatchSpeechRequestOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   speechRequestHandler = self->_speechRequestHandler;
   if (speechRequestHandler)
   {
-    v9 = v4;
+    v9 = optionsCopy;
     speechRequestHandler[2]();
   }
 
@@ -66,20 +66,20 @@ uint64_t __53__AFRemoteRequestWatcher_setNewSpeechRequestHandler___block_invoke(
       goto LABEL_8;
     }
 
-    v9 = v4;
+    v9 = optionsCopy;
     v6 = [AFRequestInfo alloc];
-    v7 = [v9 activationEventMachAbsoluteTime];
-    if (!v7)
+    activationEventMachAbsoluteTime = [v9 activationEventMachAbsoluteTime];
+    if (!activationEventMachAbsoluteTime)
     {
-      v7 = mach_absolute_time();
+      activationEventMachAbsoluteTime = mach_absolute_time();
     }
 
-    v8 = [(AFRequestInfo *)v6 initWithTimestamp:v7];
+    v8 = [(AFRequestInfo *)v6 initWithTimestamp:activationEventMachAbsoluteTime];
     [(AFRequestInfo *)v8 setSpeechRequestOptions:v9];
     (*(self->_requestHandler + 2))();
   }
 
-  v4 = v9;
+  optionsCopy = v9;
 LABEL_8:
 }
 
@@ -156,17 +156,17 @@ void __53__AFRemoteRequestWatcher__setupSpeechRequestListener__block_invoke(uint
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setActivationHandler:(id)a3
+- (void)setActivationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__AFRemoteRequestWatcher_setActivationHandler___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -178,17 +178,17 @@ void __47__AFRemoteRequestWatcher_setActivationHandler___block_invoke(uint64_t a
   *(v3 + 88) = v2;
 }
 
-- (void)setButtonEventHandler:(id)a3
+- (void)setButtonEventHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__AFRemoteRequestWatcher_setButtonEventHandler___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -200,17 +200,17 @@ void __48__AFRemoteRequestWatcher_setButtonEventHandler___block_invoke(uint64_t 
   *(v3 + 80) = v2;
 }
 
-- (void)setIntentForwardingActionHandler:(id)a3
+- (void)setIntentForwardingActionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__AFRemoteRequestWatcher_setIntentForwardingActionHandler___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -222,17 +222,17 @@ void __59__AFRemoteRequestWatcher_setIntentForwardingActionHandler___block_invok
   *(v3 + 56) = v2;
 }
 
-- (void)setIntentHandler:(id)a3
+- (void)setIntentHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__AFRemoteRequestWatcher_setIntentHandler___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -244,17 +244,17 @@ void __43__AFRemoteRequestWatcher_setIntentHandler___block_invoke(uint64_t a1)
   *(v3 + 48) = v2;
 }
 
-- (void)setDismissalHandler:(id)a3
+- (void)setDismissalHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__AFRemoteRequestWatcher_setDismissalHandler___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -266,17 +266,17 @@ void __46__AFRemoteRequestWatcher_setDismissalHandler___block_invoke(uint64_t a1
   *(v3 + 40) = v2;
 }
 
-- (void)setRequestHandler:(id)a3
+- (void)setRequestHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__AFRemoteRequestWatcher_setRequestHandler___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -292,17 +292,17 @@ uint64_t __44__AFRemoteRequestWatcher_setRequestHandler___block_invoke(uint64_t 
   return [v5 _setupRequestListener];
 }
 
-- (void)setNewRequestHandler:(id)a3
+- (void)setNewRequestHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __47__AFRemoteRequestWatcher_setNewRequestHandler___block_invoke;
     v6[3] = &unk_1E7345228;
-    v7 = v4;
+    v7 = handlerCopy;
     [(AFRemoteRequestWatcher *)self setRequestHandler:v6];
   }
 
@@ -324,17 +324,17 @@ void __47__AFRemoteRequestWatcher_setNewRequestHandler___block_invoke(uint64_t a
   }
 }
 
-- (void)setPrewarmHandler:(id)a3
+- (void)setPrewarmHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__AFRemoteRequestWatcher_setPrewarmHandler___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -362,20 +362,20 @@ void __44__AFRemoteRequestWatcher_setPrewarmHandler___block_invoke(uint64_t a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)siriActivationListener:(id)a3 handleButtonEventFromContext:(id)a4 completion:(id)a5
+- (void)siriActivationListener:(id)listener handleButtonEventFromContext:(id)context completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  contextCopy = context;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __89__AFRemoteRequestWatcher_siriActivationListener_handleButtonEventFromContext_completion___block_invoke;
   block[3] = &unk_1E73496E8;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = contextCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = contextCopy;
   dispatch_async(queue, block);
 }
 
@@ -402,23 +402,23 @@ void __89__AFRemoteRequestWatcher_siriActivationListener_handleButtonEventFromCo
   }
 }
 
-- (void)siriActivationListener:(id)a3 handleIntentForwardingAction:(id)a4 inBackgroundApplicationWithBundleIdentifier:(id)a5 completionHandler:(id)a6
+- (void)siriActivationListener:(id)listener handleIntentForwardingAction:(id)action inBackgroundApplicationWithBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  actionCopy = action;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __140__AFRemoteRequestWatcher_siriActivationListener_handleIntentForwardingAction_inBackgroundApplicationWithBundleIdentifier_completionHandler___block_invoke;
   v16[3] = &unk_1E73479F0;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v17 = actionCopy;
+  v18 = identifierCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = identifierCopy;
+  v15 = actionCopy;
   dispatch_async(queue, v16);
 }
 
@@ -439,23 +439,23 @@ uint64_t __140__AFRemoteRequestWatcher_siriActivationListener_handleIntentForwar
   return result;
 }
 
-- (void)siriActivationListener:(id)a3 handleIntent:(id)a4 inBackgroundAppWithBundleId:(id)a5 reply:(id)a6
+- (void)siriActivationListener:(id)listener handleIntent:(id)intent inBackgroundAppWithBundleId:(id)id reply:(id)reply
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  intentCopy = intent;
+  idCopy = id;
+  replyCopy = reply;
   queue = self->_queue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __96__AFRemoteRequestWatcher_siriActivationListener_handleIntent_inBackgroundAppWithBundleId_reply___block_invoke;
   v16[3] = &unk_1E73479F0;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v17 = intentCopy;
+  v18 = idCopy;
+  v19 = replyCopy;
+  v13 = replyCopy;
+  v14 = idCopy;
+  v15 = intentCopy;
   dispatch_async(queue, v16);
 }
 
@@ -481,22 +481,22 @@ void __96__AFRemoteRequestWatcher_siriActivationListener_handleIntent_inBackgrou
   }
 }
 
-- (void)siriActivationListener:(id)a3 deactivateForReason:(int64_t)a4 options:(unint64_t)a5 context:(id)a6 completion:(id)a7
+- (void)siriActivationListener:(id)listener deactivateForReason:(int64_t)reason options:(unint64_t)options context:(id)context completion:(id)completion
 {
-  v11 = a6;
-  v12 = a7;
+  contextCopy = context;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __96__AFRemoteRequestWatcher_siriActivationListener_deactivateForReason_options_context_completion___block_invoke;
   block[3] = &unk_1E7346668;
-  v19 = a4;
-  v20 = a5;
+  reasonCopy = reason;
+  optionsCopy = options;
   block[4] = self;
-  v17 = v11;
-  v18 = v12;
-  v14 = v12;
-  v15 = v11;
+  v17 = contextCopy;
+  v18 = completionCopy;
+  v14 = completionCopy;
+  v15 = contextCopy;
   dispatch_async(queue, block);
 }
 
@@ -528,23 +528,23 @@ void __96__AFRemoteRequestWatcher_siriActivationListener_deactivateForReason_opt
   }
 }
 
-- (void)siriActivationListener:(id)a3 activateWithRequestInfo:(id)a4 context:(id)a5 completion:(id)a6
+- (void)siriActivationListener:(id)listener activateWithRequestInfo:(id)info context:(id)context completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  infoCopy = info;
+  contextCopy = context;
+  completionCopy = completion;
   queue = self->_queue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __92__AFRemoteRequestWatcher_siriActivationListener_activateWithRequestInfo_context_completion___block_invoke;
   v16[3] = &unk_1E73479F0;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v20 = v11;
-  v13 = v10;
-  v14 = v11;
-  v15 = v9;
+  v17 = infoCopy;
+  selfCopy = self;
+  v19 = contextCopy;
+  v20 = completionCopy;
+  v13 = contextCopy;
+  v14 = completionCopy;
+  v15 = infoCopy;
   dispatch_async(queue, v16);
 }
 
@@ -616,20 +616,20 @@ uint64_t __92__AFRemoteRequestWatcher_siriActivationListener_activateWithRequest
   return result;
 }
 
-- (void)siriActivationListener:(id)a3 prewarmWithRequestInfo:(id)a4 context:(id)a5 completion:(id)a6
+- (void)siriActivationListener:(id)listener prewarmWithRequestInfo:(id)info context:(id)context completion:(id)completion
 {
-  v8 = a4;
-  v9 = a6;
+  infoCopy = info;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __91__AFRemoteRequestWatcher_siriActivationListener_prewarmWithRequestInfo_context_completion___block_invoke;
   block[3] = &unk_1E73496E8;
   block[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = infoCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = infoCopy;
   dispatch_async(queue, block);
 }
 

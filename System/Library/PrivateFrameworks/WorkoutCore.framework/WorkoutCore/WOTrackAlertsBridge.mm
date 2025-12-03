@@ -1,19 +1,19 @@
 @interface WOTrackAlertsBridge
-+ (BOOL)lapAlertsEnabledForActivityType:(id)a3;
++ (BOOL)lapAlertsEnabledForActivityType:(id)type;
 - (WOTrackAlertsBridge)init;
 @end
 
 @implementation WOTrackAlertsBridge
 
-+ (BOOL)lapAlertsEnabledForActivityType:(id)a3
++ (BOOL)lapAlertsEnabledForActivityType:(id)type
 {
-  v3 = a3;
-  v4 = specialized static TrackAlertsStore.read(for:)(v3);
+  typeCopy = type;
+  v4 = specialized static TrackAlertsStore.read(for:)(typeCopy);
 
   swift_beginAccess();
-  LOBYTE(v3) = *(v4 + 16);
+  LOBYTE(typeCopy) = *(v4 + 16);
 
-  return v3;
+  return typeCopy;
 }
 
 - (WOTrackAlertsBridge)init

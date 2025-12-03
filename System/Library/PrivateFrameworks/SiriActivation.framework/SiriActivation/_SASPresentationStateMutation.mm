@@ -1,20 +1,20 @@
 @interface _SASPresentationStateMutation
-- (_SASPresentationStateMutation)initWithBaseModel:(id)a3;
+- (_SASPresentationStateMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
 @implementation _SASPresentationStateMutation
 
-- (_SASPresentationStateMutation)initWithBaseModel:(id)a3
+- (_SASPresentationStateMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SASPresentationStateMutation;
   v6 = [(_SASPresentationStateMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;
@@ -29,16 +29,16 @@
     {
       if ((*&self->_mutationFlags & 2) != 0)
       {
-        v6 = self->_presentationIdentifier;
+        presentationIdentifier = self->_presentationIdentifier;
       }
 
       else
       {
-        v6 = [(SASPresentationState *)baseModel presentationIdentifier];
+        presentationIdentifier = [(SASPresentationState *)baseModel presentationIdentifier];
       }
 
-      v7 = v6;
-      v5 = [[SASPresentationState alloc] initWithPresentationIdentifier:v6];
+      v7 = presentationIdentifier;
+      v5 = [[SASPresentationState alloc] initWithPresentationIdentifier:presentationIdentifier];
 
       goto LABEL_10;
     }

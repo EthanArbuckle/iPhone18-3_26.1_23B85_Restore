@@ -1,30 +1,30 @@
 @interface CNContactsDataclassOwnerContactsImplementation
 + (id)os_log;
-+ (void)removeDelegate:(id)a3;
-- (BOOL)areContainersEmptyForParentAccount:(id)a3;
-- (BOOL)createAndExecuteSaveRequest:(id)a3 errorBlock:(id)a4;
-- (BOOL)createContactsAccountForParentAccount:(id)a3 withChildAccounts:(id)a4;
++ (void)removeDelegate:(id)delegate;
+- (BOOL)areContainersEmptyForParentAccount:(id)account;
+- (BOOL)createAndExecuteSaveRequest:(id)request errorBlock:(id)block;
+- (BOOL)createContactsAccountForParentAccount:(id)account withChildAccounts:(id)accounts;
 - (BOOL)emptyLocalContainer;
-- (BOOL)isContainerEmpty:(id)a3;
+- (BOOL)isContainerEmpty:(id)empty;
 - (BOOL)isLocalContainerEmpty;
-- (BOOL)mergeContactsFromLocalContainerToContainer:(id)a3;
-- (BOOL)mergeContactsIntoLocalContainerFromContainersOfContactsAccount:(id)a3;
-- (BOOL)moveContacts:(id)a3 fromContainer:(id)a4 toContainer:(id)a5;
-- (BOOL)removeContactsAccount:(id)a3;
-- (BOOL)removeContactsAccountForParentAccount:(id)a3 delegates:(id)a4 withChildAccounts:(id)a5;
+- (BOOL)mergeContactsFromLocalContainerToContainer:(id)container;
+- (BOOL)mergeContactsIntoLocalContainerFromContainersOfContactsAccount:(id)account;
+- (BOOL)moveContacts:(id)contacts fromContainer:(id)container toContainer:(id)toContainer;
+- (BOOL)removeContactsAccount:(id)account;
+- (BOOL)removeContactsAccountForParentAccount:(id)account delegates:(id)delegates withChildAccounts:(id)accounts;
 - (CNContactsDataclassOwnerContactsImplementation)init;
-- (CNContactsDataclassOwnerContactsImplementation)initWithAccountProvider:(id)a3;
-- (CNContactsDataclassOwnerContactsImplementation)initWithContactStore:(id)a3 accountProvider:(id)a4;
-- (id)accountWithExternalIdentifier:(id)a3;
-- (id)contactsAccountForParentAccount:(id)a3 withChildAccounts:(id)a4;
-- (id)contactsInContainer:(id)a3;
-- (id)containersInAccount:(id)a3;
-- (id)containersInAccountWithExternalIdentifier:(id)a3;
-- (id)defaultContainerForParentAccount:(id)a3 withChildAccounts:(id)a4 createIfNecessary:(BOOL)a5;
-- (id)defaultContainerInContactsAccount:(id)a3;
+- (CNContactsDataclassOwnerContactsImplementation)initWithAccountProvider:(id)provider;
+- (CNContactsDataclassOwnerContactsImplementation)initWithContactStore:(id)store accountProvider:(id)provider;
+- (id)accountWithExternalIdentifier:(id)identifier;
+- (id)contactsAccountForParentAccount:(id)account withChildAccounts:(id)accounts;
+- (id)contactsInContainer:(id)container;
+- (id)containersInAccount:(id)account;
+- (id)containersInAccountWithExternalIdentifier:(id)identifier;
+- (id)defaultContainerForParentAccount:(id)account withChildAccounts:(id)accounts createIfNecessary:(BOOL)necessary;
+- (id)defaultContainerInContactsAccount:(id)account;
 - (id)localContainer;
-- (id)syncingAccountIdentifierForParentAccount:(id)a3 withChildAccounts:(id)a4;
-- (void)setContainersEnabled:(BOOL)a3 forParentAccount:(id)a4 withChildAccounts:(id)a5;
+- (id)syncingAccountIdentifierForParentAccount:(id)account withChildAccounts:(id)accounts;
+- (void)setContainersEnabled:(BOOL)enabled forParentAccount:(id)account withChildAccounts:(id)accounts;
 @end
 
 @implementation CNContactsDataclassOwnerContactsImplementation
@@ -50,40 +50,40 @@
   return v5;
 }
 
-- (CNContactsDataclassOwnerContactsImplementation)initWithAccountProvider:(id)a3
+- (CNContactsDataclassOwnerContactsImplementation)initWithAccountProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = objc_alloc_init(CNContactStore);
-  v6 = [(CNContactsDataclassOwnerContactsImplementation *)self initWithContactStore:v5 accountProvider:v4];
+  v6 = [(CNContactsDataclassOwnerContactsImplementation *)self initWithContactStore:v5 accountProvider:providerCopy];
 
   return v6;
 }
 
-- (CNContactsDataclassOwnerContactsImplementation)initWithContactStore:(id)a3 accountProvider:(id)a4
+- (CNContactsDataclassOwnerContactsImplementation)initWithContactStore:(id)store accountProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = CNContactsDataclassOwnerContactsImplementation;
   v9 = [(CNContactsDataclassOwnerContactsImplementation *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contactStore, a3);
-    objc_storeStrong(&v10->_accountProvider, a4);
+    objc_storeStrong(&v9->_contactStore, store);
+    objc_storeStrong(&v10->_accountProvider, provider);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (void)setContainersEnabled:(BOOL)a3 forParentAccount:(id)a4 withChildAccounts:(id)a5
+- (void)setContainersEnabled:(BOOL)enabled forParentAccount:(id)account withChildAccounts:(id)accounts
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_opt_class() os_log];
-  v11 = [(CNContactsDataclassOwnerContactsImplementation *)self contactsAccountForParentAccount:v8 withChildAccounts:v9];
+  enabledCopy = enabled;
+  accountCopy = account;
+  accountsCopy = accounts;
+  os_log = [objc_opt_class() os_log];
+  v11 = [(CNContactsDataclassOwnerContactsImplementation *)self contactsAccountForParentAccount:accountCopy withChildAccounts:accountsCopy];
   if (v11)
   {
     v12 = [(CNContactsDataclassOwnerContactsImplementation *)self containersInAccount:v11];
@@ -94,25 +94,25 @@
       v15 = [v14 _cn_map:&stru_10690];
 
       [v15 _cn_each:&stru_10710];
-      v16 = v10;
+      v16 = os_log;
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
         v18 = @"NO";
-        if (v6)
+        if (enabledCopy)
         {
           v18 = @"YES";
         }
 
         v22 = v18;
         v21 = [v12 count];
-        v19 = [v8 identifier];
-        v20 = [v9 valueForKey:@"identifier"];
+        identifier = [accountCopy identifier];
+        v20 = [accountsCopy valueForKey:@"identifier"];
         *buf = 138544130;
         v28 = v22;
         v29 = 2048;
         v30 = v21;
         v31 = 2114;
-        v32 = v19;
+        v32 = identifier;
         v33 = 2114;
         v34 = v20;
         _os_log_debug_impl(&dword_0, v16, OS_LOG_TYPE_DEBUG, "setting enabled to %{public}@ for %ld containers associated with account (external identifier = %{public}@ child external identifiers = %{public}@)", buf, 0x2Au);
@@ -135,7 +135,7 @@
 
   else
   {
-    v12 = v10;
+    v12 = os_log;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       sub_71C0();
@@ -145,22 +145,22 @@
 
 - (BOOL)isLocalContainerEmpty
 {
-  v2 = self;
-  v3 = [(CNContactsDataclassOwnerContactsImplementation *)self localContainer];
-  LOBYTE(v2) = [(CNContactsDataclassOwnerContactsImplementation *)v2 isContainerEmpty:v3];
+  selfCopy = self;
+  localContainer = [(CNContactsDataclassOwnerContactsImplementation *)self localContainer];
+  LOBYTE(selfCopy) = [(CNContactsDataclassOwnerContactsImplementation *)selfCopy isContainerEmpty:localContainer];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)areContainersEmptyForParentAccount:(id)a3
+- (BOOL)areContainersEmptyForParentAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = +[NSMutableArray array];
-  v6 = [v4 identifier];
-  [v5 _cn_addNonNilObject:v6];
+  identifier = [accountCopy identifier];
+  [v5 _cn_addNonNilObject:identifier];
 
-  v7 = [(CNContactsDataclassOwnerContactsImplementation *)self accountProvider];
-  v8 = [v7 childAccountsForAccount:v4];
+  accountProvider = [(CNContactsDataclassOwnerContactsImplementation *)self accountProvider];
+  v8 = [accountProvider childAccountsForAccount:accountCopy];
   v9 = [v8 valueForKey:@"identifier"];
   [v5 addObjectsFromArray:v9];
 
@@ -177,8 +177,8 @@
     v18[3] = &unk_104A8;
     v18[4] = self;
     v11 = [v5 _cn_map:v18];
-    v12 = [v11 _cn_flatten];
-    v13 = [v12 _cn_filter:CNIsNotNull];
+    _cn_flatten = [v11 _cn_flatten];
+    v13 = [_cn_flatten _cn_filter:CNIsNotNull];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_3F40;
@@ -186,8 +186,8 @@
     v17[4] = self;
     v14 = [v13 _cn_firstObjectPassingTest:v17];
 
-    v15 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
     {
       sub_734C();
     }
@@ -200,27 +200,27 @@
 
 - (BOOL)emptyLocalContainer
 {
-  v3 = [objc_opt_class() os_log];
-  v4 = [(CNContactsDataclassOwnerContactsImplementation *)self localContainer];
-  if (v4)
+  os_log = [objc_opt_class() os_log];
+  localContainer = [(CNContactsDataclassOwnerContactsImplementation *)self localContainer];
+  if (localContainer)
   {
-    v5 = [(CNContactsDataclassOwnerContactsImplementation *)self contactsInContainer:v4];
+    v5 = [(CNContactsDataclassOwnerContactsImplementation *)self contactsInContainer:localContainer];
     v6 = [v5 _cn_map:&stru_106D0];
 
     if (v6)
     {
       v7 = CNIsArrayEmpty;
-      if ((*(CNIsArrayEmpty + 16))(CNIsArrayEmpty, v6) && os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+      if ((*(CNIsArrayEmpty + 16))(CNIsArrayEmpty, v6) && os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
       {
-        sub_7404(v3);
+        sub_7404(os_log);
       }
     }
 
     else
     {
-      if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
       {
-        sub_7448(v3);
+        sub_7448(os_log);
       }
 
       v7 = CNIsArrayEmpty;
@@ -242,7 +242,7 @@
       v12[1] = 3221225472;
       v12[2] = sub_4248;
       v12[3] = &unk_10520;
-      v9 = v3;
+      v9 = os_log;
       v13 = v9;
       v14 = v16;
       v8 = [(CNContactsDataclassOwnerContactsImplementation *)self createAndExecuteSaveRequest:v15 errorBlock:v12];
@@ -265,20 +265,20 @@
   return v8;
 }
 
-- (id)defaultContainerForParentAccount:(id)a3 withChildAccounts:(id)a4 createIfNecessary:(BOOL)a5
+- (id)defaultContainerForParentAccount:(id)account withChildAccounts:(id)accounts createIfNecessary:(BOOL)necessary
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() os_log];
-  v11 = [(CNContactsDataclassOwnerContactsImplementation *)self contactsAccountForParentAccount:v9 withChildAccounts:v8];
+  necessaryCopy = necessary;
+  accountsCopy = accounts;
+  accountCopy = account;
+  os_log = [objc_opt_class() os_log];
+  v11 = [(CNContactsDataclassOwnerContactsImplementation *)self contactsAccountForParentAccount:accountCopy withChildAccounts:accountsCopy];
 
-  if (!v9)
+  if (!accountCopy)
   {
-    v19 = v10;
+    v19 = os_log;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      sub_75B0(v8);
+      sub_75B0(accountsCopy);
     }
 
     v12 = 0;
@@ -286,7 +286,7 @@
   }
 
   v12 = [(CNContactsDataclassOwnerContactsImplementation *)self defaultContainerInContactsAccount:v11];
-  if (!v12 && v5)
+  if (!v12 && necessaryCopy)
   {
     v13 = objc_alloc_init(CNMutableContainer);
     [v13 setEnabled:1];
@@ -302,7 +302,7 @@
     v27[1] = 3221225472;
     v27[2] = sub_45D8;
     v27[3] = &unk_10480;
-    v16 = v10;
+    v16 = os_log;
     v28 = v16;
     v17 = [(CNContactsDataclassOwnerContactsImplementation *)self createAndExecuteSaveRequest:v29 errorBlock:v27];
     v24[0] = _NSConcreteStackBlock;
@@ -331,9 +331,9 @@ LABEL_11:
   return v12;
 }
 
-- (id)contactsAccountForParentAccount:(id)a3 withChildAccounts:(id)a4
+- (id)contactsAccountForParentAccount:(id)account withChildAccounts:(id)accounts
 {
-  v5 = [(CNContactsDataclassOwnerContactsImplementation *)self syncingAccountIdentifierForParentAccount:a3 withChildAccounts:a4];
+  v5 = [(CNContactsDataclassOwnerContactsImplementation *)self syncingAccountIdentifierForParentAccount:account withChildAccounts:accounts];
   if ((*(CNIsStringEmpty + 16))(CNIsStringEmpty, v5))
   {
     v6 = 0;
@@ -347,12 +347,12 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)createContactsAccountForParentAccount:(id)a3 withChildAccounts:(id)a4
+- (BOOL)createContactsAccountForParentAccount:(id)account withChildAccounts:(id)accounts
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() os_log];
-  v9 = [(CNContactsDataclassOwnerContactsImplementation *)self syncingAccountIdentifierForParentAccount:v6 withChildAccounts:v7];
+  accountCopy = account;
+  accountsCopy = accounts;
+  os_log = [objc_opt_class() os_log];
+  v9 = [(CNContactsDataclassOwnerContactsImplementation *)self syncingAccountIdentifierForParentAccount:accountCopy withChildAccounts:accountsCopy];
   if ((*(CNIsStringEmpty + 16))(CNIsStringEmpty, v9))
   {
     LOBYTE(v10) = 0;
@@ -369,7 +369,7 @@ LABEL_11:
     v26[1] = 3221225472;
     v26[2] = sub_4ACC;
     v26[3] = &unk_10520;
-    v11 = v8;
+    v11 = os_log;
     v27 = v11;
     v12 = v9;
     v28 = v12;
@@ -378,26 +378,26 @@ LABEL_11:
     if (v10)
     {
       v14 = [(CNContactsDataclassOwnerContactsImplementation *)self accountWithExternalIdentifier:v12];
-      v15 = [v7 valueForKey:@"identifier"];
+      v15 = [accountsCopy valueForKey:@"identifier"];
       v16 = v11;
       v17 = v16;
       if (v14)
       {
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
-          v25 = [v14 identifier];
-          v23 = [v14 iOSLegacyIdentifier];
-          v24 = [v14 externalIdentifierString];
-          v18 = [v6 identifier];
+          identifier = [v14 identifier];
+          iOSLegacyIdentifier = [v14 iOSLegacyIdentifier];
+          externalIdentifierString = [v14 externalIdentifierString];
+          identifier2 = [accountCopy identifier];
           *buf = 138544386;
-          v32 = v25;
+          v32 = identifier;
           v33 = 1024;
-          *v34 = v23;
+          *v34 = iOSLegacyIdentifier;
           *&v34[4] = 2114;
-          *&v34[6] = v24;
+          *&v34[6] = externalIdentifierString;
           *&v34[14] = 2114;
-          *&v34[16] = v18;
-          v19 = v18;
+          *&v34[16] = identifier2;
+          v19 = identifier2;
           v35 = 2114;
           v36 = v15;
           _os_log_debug_impl(&dword_0, v17, OS_LOG_TYPE_DEBUG, "Created a local CN account (identifier = %{public}@ legacy id = %d, externalIdentifier = %{public}@) for external account with identifier %{public}@ and child identifiers %{public}@", buf, 0x30u);
@@ -406,12 +406,12 @@ LABEL_11:
 
       else if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v6 identifier];
+        identifier3 = [accountCopy identifier];
         *buf = 138543874;
         v32 = v12;
         v33 = 2114;
-        *v34 = v21;
-        v22 = v21;
+        *v34 = identifier3;
+        v22 = identifier3;
         *&v34[8] = 2114;
         *&v34[10] = v15;
         _os_log_error_impl(&dword_0, v17, OS_LOG_TYPE_ERROR, "Failed to create a CN account (externalIdentifier = %{public}@) for external account with for external account with identifier %{public}@ and child identifiers %{public}@", buf, 0x20u);
@@ -422,13 +422,13 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)removeContactsAccountForParentAccount:(id)a3 delegates:(id)a4 withChildAccounts:(id)a5
+- (BOOL)removeContactsAccountForParentAccount:(id)account delegates:(id)delegates withChildAccounts:(id)accounts
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_opt_class() os_log];
-  v12 = [(CNContactsDataclassOwnerContactsImplementation *)self contactsAccountForParentAccount:v8 withChildAccounts:v10];
+  accountCopy = account;
+  delegatesCopy = delegates;
+  accountsCopy = accounts;
+  os_log = [objc_opt_class() os_log];
+  v12 = [(CNContactsDataclassOwnerContactsImplementation *)self contactsAccountForParentAccount:accountCopy withChildAccounts:accountsCopy];
   if (v12)
   {
     v16[0] = _NSConcreteStackBlock;
@@ -436,14 +436,14 @@ LABEL_11:
     v16[2] = sub_4C70;
     v16[3] = &unk_10570;
     v16[4] = self;
-    [v9 _cn_each:v16];
+    [delegatesCopy _cn_each:v16];
     v13 = [(CNContactsDataclassOwnerContactsImplementation *)self removeContactsAccount:v12];
   }
 
   else
   {
-    v14 = [(CNContactsDataclassOwnerContactsImplementation *)self syncingAccountIdentifierForParentAccount:v8 withChildAccounts:v10];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    v14 = [(CNContactsDataclassOwnerContactsImplementation *)self syncingAccountIdentifierForParentAccount:accountCopy withChildAccounts:accountsCopy];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       sub_77E4();
     }
@@ -454,14 +454,14 @@ LABEL_11:
   return v13;
 }
 
-+ (void)removeDelegate:(id)a3
++ (void)removeDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [v3 first];
-  v5 = [v3 second];
+  delegateCopy = delegate;
+  first = [delegateCopy first];
+  second = [delegateCopy second];
 
-  v6 = [[CNAccount alloc] initWithExternalIdentifier:v4];
-  v7 = [[CNCoreDelegateInfo alloc] initWithDSID:0 altDSID:v5 appleID:0 principalPath:0 nameComponents:0 isMe:0];
+  v6 = [[CNAccount alloc] initWithExternalIdentifier:first];
+  v7 = [[CNCoreDelegateInfo alloc] initWithDSID:0 altDSID:second appleID:0 principalPath:0 nameComponents:0 isMe:0];
   v8 = [CNContactStore storeWithDelegateInfo:v7];
   v9 = objc_alloc_init(CNSaveRequest);
   [v9 removeAccount:v6];
@@ -470,57 +470,57 @@ LABEL_11:
   v11 = v13;
   if ((v10 & 1) == 0)
   {
-    v12 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       sub_784C();
     }
   }
 }
 
-- (BOOL)removeContactsAccount:(id)a3
+- (BOOL)removeContactsAccount:(id)account
 {
-  v4 = a3;
-  v5 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  accountCopy = account;
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
-    sub_78B8(v4);
+    sub_78B8(accountCopy);
   }
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_4F68;
   v13[3] = &unk_10458;
-  v14 = v4;
+  v14 = accountCopy;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_4FC0;
   v10[3] = &unk_10520;
-  v11 = v5;
+  v11 = os_log;
   v12 = v14;
   v6 = v14;
-  v7 = v5;
+  v7 = os_log;
   v8 = [(CNContactsDataclassOwnerContactsImplementation *)self createAndExecuteSaveRequest:v13 errorBlock:v10];
 
   return v8;
 }
 
-- (BOOL)mergeContactsFromLocalContainerToContainer:(id)a3
+- (BOOL)mergeContactsFromLocalContainerToContainer:(id)container
 {
-  v4 = a3;
-  v5 = [objc_opt_class() os_log];
-  v6 = [(CNContactsDataclassOwnerContactsImplementation *)self localContainer];
-  if (v6)
+  containerCopy = container;
+  os_log = [objc_opt_class() os_log];
+  localContainer = [(CNContactsDataclassOwnerContactsImplementation *)self localContainer];
+  if (localContainer)
   {
-    v7 = [(CNContactsDataclassOwnerContactsImplementation *)self contactsInContainer:v6];
+    v7 = [(CNContactsDataclassOwnerContactsImplementation *)self contactsInContainer:localContainer];
     v8 = [v7 _cn_map:&stru_106D0];
 
     if (![v8 count])
     {
-      v9 = v5;
+      v9 = os_log;
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        sub_7A28(v4);
+        sub_7A28(containerCopy);
       }
     }
 
@@ -531,34 +531,34 @@ LABEL_11:
 
     else
     {
-      v11 = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
+      contactStore = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
       v22 = 0;
-      v10 = [v11 moveContacts:v8 fromContainer:v6 toContainer:v4 error:&v22];
+      v10 = [contactStore moveContacts:v8 fromContainer:localContainer toContainer:containerCopy error:&v22];
       v12 = v22;
 
-      v13 = v5;
+      v13 = os_log;
       v14 = v13;
       if (v10)
       {
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
         {
           v21 = [v8 count];
-          v15 = [v6 identifier];
-          v16 = [v6 iOSLegacyIdentifier];
-          v17 = [v4 identifier];
-          v18 = [v4 iOSLegacyIdentifier];
+          identifier = [localContainer identifier];
+          iOSLegacyIdentifier = [localContainer iOSLegacyIdentifier];
+          identifier2 = [containerCopy identifier];
+          iOSLegacyIdentifier2 = [containerCopy iOSLegacyIdentifier];
           *buf = 134219522;
           v24 = v21;
           v25 = 2114;
-          v26 = v15;
+          v26 = identifier;
           v27 = 1024;
-          *v28 = v16;
+          *v28 = iOSLegacyIdentifier;
           *&v28[4] = 2112;
-          *&v28[6] = v4;
+          *&v28[6] = containerCopy;
           v29 = 2114;
-          v30 = v17;
+          v30 = identifier2;
           v31 = 1024;
-          v32 = v18;
+          v32 = iOSLegacyIdentifier2;
           v33 = 2112;
           v34 = v12;
           _os_log_debug_impl(&dword_0, v14, OS_LOG_TYPE_DEBUG, "Migrated %ld contacts to from local container (identifier = %{public}@ legacy id: %d) to container %@ (identifier = %{public}@ legacy id %d): %@", buf, 0x40u);
@@ -571,7 +571,7 @@ LABEL_11:
         *buf = 134218498;
         v24 = v20;
         v25 = 2112;
-        v26 = v4;
+        v26 = containerCopy;
         v27 = 2112;
         *v28 = v12;
         _os_log_error_impl(&dword_0, v14, OS_LOG_TYPE_ERROR, "did not migrate %ld contacts to from local container to container %@: %@", buf, 0x20u);
@@ -587,32 +587,32 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)mergeContactsIntoLocalContainerFromContainersOfContactsAccount:(id)a3
+- (BOOL)mergeContactsIntoLocalContainerFromContainersOfContactsAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(CNContactsDataclassOwnerContactsImplementation *)self localContainer];
-  if (v5)
+  accountCopy = account;
+  localContainer = [(CNContactsDataclassOwnerContactsImplementation *)self localContainer];
+  if (localContainer)
   {
-    v6 = [(CNContactsDataclassOwnerContactsImplementation *)self containersInAccount:v4];
+    v6 = [(CNContactsDataclassOwnerContactsImplementation *)self containersInAccount:accountCopy];
     if (v6)
     {
       v18 = 0;
       v19 = &v18;
       v20 = 0x2020000000;
       v21 = 1;
-      v7 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+      os_log = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
       {
-        v11 = [v4 identifier];
-        v12 = [v4 externalIdentifierString];
-        v13 = [v4 iOSLegacyIdentifier];
+        identifier = [accountCopy identifier];
+        externalIdentifierString = [accountCopy externalIdentifierString];
+        iOSLegacyIdentifier = [accountCopy iOSLegacyIdentifier];
         *buf = 138543874;
-        v23 = v11;
+        v23 = identifier;
         v24 = 2114;
-        v25 = v12;
+        v25 = externalIdentifierString;
         v26 = 1024;
-        v27 = v13;
-        _os_log_debug_impl(&dword_0, v7, OS_LOG_TYPE_DEBUG, "Merging contacts into local container from account with CN identifier: %{public}@ external identifier: %{public}@ legacy id = %d", buf, 0x1Cu);
+        v27 = iOSLegacyIdentifier;
+        _os_log_debug_impl(&dword_0, os_log, OS_LOG_TYPE_DEBUG, "Merging contacts into local container from account with CN identifier: %{public}@ external identifier: %{public}@ legacy id = %d", buf, 0x1Cu);
       }
 
       v17[0] = _NSConcreteStackBlock;
@@ -626,7 +626,7 @@ LABEL_11:
       v14[2] = sub_5600;
       v14[3] = &unk_105C0;
       v14[4] = self;
-      v15 = v5;
+      v15 = localContainer;
       v16 = &v18;
       [v8 _cn_each:v14];
 
@@ -648,42 +648,42 @@ LABEL_11:
   return v9 & 1;
 }
 
-- (BOOL)moveContacts:(id)a3 fromContainer:(id)a4 toContainer:(id)a5
+- (BOOL)moveContacts:(id)contacts fromContainer:(id)container toContainer:(id)toContainer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_opt_class() os_log];
-  v12 = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
+  contactsCopy = contacts;
+  containerCopy = container;
+  toContainerCopy = toContainer;
+  os_log = [objc_opt_class() os_log];
+  contactStore = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
   v22 = 0;
-  v13 = [v12 moveContacts:v8 fromContainer:v9 toContainer:v10 error:&v22];
+  v13 = [contactStore moveContacts:contactsCopy fromContainer:containerCopy toContainer:toContainerCopy error:&v22];
   v14 = v22;
 
   if (v13)
   {
-    v15 = v11;
+    v15 = os_log;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [v8 count];
-      v17 = [v10 identifier];
-      v18 = [v10 iOSLegacyIdentifier];
-      v19 = [v9 identifier];
-      v20 = [v9 iOSLegacyIdentifier];
+      v21 = [contactsCopy count];
+      identifier = [toContainerCopy identifier];
+      iOSLegacyIdentifier = [toContainerCopy iOSLegacyIdentifier];
+      identifier2 = [containerCopy identifier];
+      iOSLegacyIdentifier2 = [containerCopy iOSLegacyIdentifier];
       *buf = 134219010;
       v24 = v21;
       v25 = 2114;
-      v26 = v17;
+      v26 = identifier;
       v27 = 1024;
-      v28 = v18;
+      v28 = iOSLegacyIdentifier;
       v29 = 2114;
-      v30 = v19;
+      v30 = identifier2;
       v31 = 1024;
-      v32 = v20;
+      v32 = iOSLegacyIdentifier2;
       _os_log_debug_impl(&dword_0, v15, OS_LOG_TYPE_DEBUG, "Moved %ld contacts into container (CN identifier: %{public}@ legacy id = %d) from container (CN identifier: %{public}@ legacy id = %d)", buf, 0x2Cu);
     }
   }
 
-  else if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  else if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
   {
     sub_7AC4();
   }
@@ -691,16 +691,16 @@ LABEL_11:
   return v13;
 }
 
-- (id)syncingAccountIdentifierForParentAccount:(id)a3 withChildAccounts:(id)a4
+- (id)syncingAccountIdentifierForParentAccount:(id)account withChildAccounts:(id)accounts
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNContactsDataclassOwnerContactsImplementation *)self accountProvider];
-  v9 = [v8 isAccountSyncable:v6];
+  accountCopy = account;
+  accountsCopy = accounts;
+  accountProvider = [(CNContactsDataclassOwnerContactsImplementation *)self accountProvider];
+  v9 = [accountProvider isAccountSyncable:accountCopy];
 
   if (v9)
   {
-    v10 = [v6 identifier];
+    identifier = [accountCopy identifier];
   }
 
   else
@@ -709,7 +709,7 @@ LABEL_11:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = v7;
+    v11 = accountsCopy;
     v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v12)
     {
@@ -725,12 +725,12 @@ LABEL_11:
           }
 
           v16 = *(*(&v21 + 1) + 8 * i);
-          v17 = [(CNContactsDataclassOwnerContactsImplementation *)self accountProvider];
-          v18 = [v17 isAccountSyncable:v16];
+          accountProvider2 = [(CNContactsDataclassOwnerContactsImplementation *)self accountProvider];
+          v18 = [accountProvider2 isAccountSyncable:v16];
 
           if (v18)
           {
-            v10 = [v16 identifier];
+            identifier = [v16 identifier];
 
             goto LABEL_15;
           }
@@ -746,105 +746,105 @@ LABEL_11:
       }
     }
 
-    v19 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      sub_7B30(v6);
+      sub_7B30(accountCopy);
     }
 
-    v10 = 0;
+    identifier = 0;
   }
 
 LABEL_15:
 
-  return v10;
+  return identifier;
 }
 
-- (BOOL)isContainerEmpty:(id)a3
+- (BOOL)isContainerEmpty:(id)empty
 {
-  v4 = a3;
+  emptyCopy = empty;
   v5 = [CNContactFetchRequest alloc];
   v19 = CNContactIdentifierKey;
   v6 = [NSArray arrayWithObjects:&v19 count:1];
   v7 = [v5 initWithKeysToFetch:v6];
 
   [v7 setUnifyResults:0];
-  v8 = [v4 identifier];
-  v9 = [CNContact predicateForContactsInContainerWithIdentifier:v8];
+  identifier = [emptyCopy identifier];
+  v9 = [CNContact predicateForContactsInContainerWithIdentifier:identifier];
   [v7 setPredicate:v9];
 
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v10 = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
+  contactStore = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
   v13[4] = &v15;
   v14 = 0;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_5C60;
   v13[3] = &unk_105E8;
-  [v10 enumerateContactsWithFetchRequest:v7 error:&v14 usingBlock:v13];
+  [contactStore enumerateContactsWithFetchRequest:v7 error:&v14 usingBlock:v13];
   v11 = v14;
 
-  LODWORD(v10) = *(v16 + 24);
+  LODWORD(contactStore) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
 
-  return v10 == 0;
+  return contactStore == 0;
 }
 
 - (id)localContainer
 {
-  v3 = [objc_opt_class() os_log];
-  v4 = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
+  os_log = [objc_opt_class() os_log];
+  contactStore = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
   v5 = [CNContainer predicateForLocalContainerIncludingDisabled:1];
   v12 = 0;
-  v6 = [v4 containersMatchingPredicate:v5 error:&v12];
+  v6 = [contactStore containersMatchingPredicate:v5 error:&v12];
   v7 = v12;
-  v8 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  if (v8)
+  if (firstObject)
   {
-    v9 = v3;
+    v9 = os_log;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      sub_7BBC(v8);
+      sub_7BBC(firstObject);
     }
 
-    v10 = v8;
+    v10 = firstObject;
   }
 
-  else if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+  else if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
   {
     sub_7C58();
   }
 
-  return v8;
+  return firstObject;
 }
 
-- (id)defaultContainerInContactsAccount:(id)a3
+- (id)defaultContainerInContactsAccount:(id)account
 {
-  v4 = a3;
-  v5 = [objc_opt_class() os_log];
-  v6 = [v4 identifier];
-  v7 = [CNContainer predicateForDefaultContainerForAccountWithIdentifier:v6];
+  accountCopy = account;
+  os_log = [objc_opt_class() os_log];
+  identifier = [accountCopy identifier];
+  v7 = [CNContainer predicateForDefaultContainerForAccountWithIdentifier:identifier];
 
-  v8 = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
+  contactStore = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
   v16 = 0;
-  v9 = [v8 containersMatchingPredicate:v7 error:&v16];
+  v9 = [contactStore containersMatchingPredicate:v7 error:&v16];
   v10 = v16;
-  v11 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  v12 = v5;
+  v12 = os_log;
   v13 = v12;
-  if (v11)
+  if (firstObject)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      sub_7CC0(v11, v4, v13);
+      sub_7CC0(firstObject, accountCopy, v13);
     }
 
-    v14 = v11;
+    v14 = firstObject;
   }
 
   else
@@ -855,12 +855,12 @@ LABEL_15:
     }
   }
 
-  return v11;
+  return firstObject;
 }
 
-- (id)containersInAccountWithExternalIdentifier:(id)a3
+- (id)containersInAccountWithExternalIdentifier:(id)identifier
 {
-  v4 = [(CNContactsDataclassOwnerContactsImplementation *)self accountWithExternalIdentifier:a3];
+  v4 = [(CNContactsDataclassOwnerContactsImplementation *)self accountWithExternalIdentifier:identifier];
   if (v4)
   {
     v5 = [(CNContactsDataclassOwnerContactsImplementation *)self containersInAccount:v4];
@@ -874,49 +874,49 @@ LABEL_15:
   return v5;
 }
 
-- (id)accountWithExternalIdentifier:(id)a3
+- (id)accountWithExternalIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() os_log];
-  v6 = [CNAccount predicateForAccountWithExternalIdentifier:v4];
-  v7 = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
+  identifierCopy = identifier;
+  os_log = [objc_opt_class() os_log];
+  v6 = [CNAccount predicateForAccountWithExternalIdentifier:identifierCopy];
+  contactStore = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
   v14 = 0;
-  v8 = [v7 accountsMatchingPredicate:v6 error:&v14];
+  v8 = [contactStore accountsMatchingPredicate:v6 error:&v14];
   v9 = v14;
-  v10 = [v8 firstObject];
+  firstObject = [v8 firstObject];
 
-  if (v10)
+  if (firstObject)
   {
-    v11 = v5;
+    v11 = os_log;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       sub_7E94();
     }
 
-    v12 = v10;
+    v12 = firstObject;
   }
 
-  else if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  else if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
   {
     sub_7F70();
   }
 
-  return v10;
+  return firstObject;
 }
 
-- (id)containersInAccount:(id)a3
+- (id)containersInAccount:(id)account
 {
-  v4 = a3;
-  v5 = [objc_opt_class() os_log];
-  v6 = [v4 identifier];
-  v7 = [CNContainer predicateForContainersInAccountWithIdentifier:v6 includingDisabledContainers:1];
+  accountCopy = account;
+  os_log = [objc_opt_class() os_log];
+  identifier = [accountCopy identifier];
+  v7 = [CNContainer predicateForContainersInAccountWithIdentifier:identifier includingDisabledContainers:1];
 
-  v8 = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
+  contactStore = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
   v15 = 0;
-  v9 = [v8 containersMatchingPredicate:v7 error:&v15];
+  v9 = [contactStore containersMatchingPredicate:v7 error:&v15];
   v10 = v15;
 
-  v11 = v5;
+  v11 = os_log;
   v12 = v11;
   if (v9)
   {
@@ -939,22 +939,22 @@ LABEL_15:
   return v9;
 }
 
-- (id)contactsInContainer:(id)a3
+- (id)contactsInContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v5 = [CNContactFetchRequest alloc];
   v18 = CNContactIdentifierKey;
   v6 = [NSArray arrayWithObjects:&v18 count:1];
   v7 = [v5 initWithKeysToFetch:v6];
 
   [v7 setUnifyResults:0];
-  v8 = [v4 identifier];
+  identifier = [containerCopy identifier];
 
-  v9 = [CNContact predicateForContactsInContainerWithIdentifier:v8];
+  v9 = [CNContact predicateForContactsInContainerWithIdentifier:identifier];
   [v7 setPredicate:v9];
 
   v10 = +[NSMutableArray array];
-  v11 = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
+  contactStore = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
   v17 = 0;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -962,30 +962,30 @@ LABEL_15:
   v15[3] = &unk_10610;
   v12 = v10;
   v16 = v12;
-  [v11 enumerateContactsWithFetchRequest:v7 error:&v17 usingBlock:v15];
+  [contactStore enumerateContactsWithFetchRequest:v7 error:&v17 usingBlock:v15];
   v13 = v17;
 
   return v12;
 }
 
-- (BOOL)createAndExecuteSaveRequest:(id)a3 errorBlock:(id)a4
+- (BOOL)createAndExecuteSaveRequest:(id)request errorBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  blockCopy = block;
   v8 = objc_alloc_init(CNSaveRequest);
-  if (v6)
+  if (requestCopy)
   {
-    v6[2](v6, v8);
+    requestCopy[2](requestCopy, v8);
   }
 
-  v9 = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
+  contactStore = [(CNContactsDataclassOwnerContactsImplementation *)self contactStore];
   v13 = 0;
-  v10 = [v9 executeSaveRequest:v8 error:&v13];
+  v10 = [contactStore executeSaveRequest:v8 error:&v13];
   v11 = v13;
 
-  if (v7 && (v10 & 1) == 0)
+  if (blockCopy && (v10 & 1) == 0)
   {
-    v7[2](v7, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   return v10;

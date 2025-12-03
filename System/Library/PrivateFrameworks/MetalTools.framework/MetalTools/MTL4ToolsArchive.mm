@@ -1,55 +1,55 @@
 @interface MTL4ToolsArchive
-- (MTL4ToolsArchive)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTL4ToolsArchive)initWithBaseObject:(id)object parent:(id)parent;
 - (NSString)label;
-- (id)newArchiveReplyForPipelineFunctionWithDescriptor:(id)a3 functionType:(unint64_t)a4 functionId:(id *)a5;
-- (id)newBinaryFunctionWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newComputePipelineStateWithName:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5;
-- (id)newComputePipelineStateWithName:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithName:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5;
-- (id)newRenderPipelineStateWithName:(id)a3 error:(id *)a4;
-- (void)setLabel:(id)a3;
+- (id)newArchiveReplyForPipelineFunctionWithDescriptor:(id)descriptor functionType:(unint64_t)type functionId:(id *)id;
+- (id)newBinaryFunctionWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor error:(id *)error;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newComputePipelineStateWithName:(id)name dynamicLinkingDescriptor:(id)descriptor error:(id *)error;
+- (id)newComputePipelineStateWithName:(id)name error:(id *)error;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor error:(id *)error;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newRenderPipelineStateWithName:(id)name dynamicLinkingDescriptor:(id)descriptor error:(id *)error;
+- (id)newRenderPipelineStateWithName:(id)name error:(id *)error;
+- (void)setLabel:(id)label;
 @end
 
 @implementation MTL4ToolsArchive
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setLabel:a3];
+  [baseObject setLabel:label];
 }
 
-- (MTL4ToolsArchive)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTL4ToolsArchive)initWithBaseObject:(id)object parent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = MTL4ToolsArchive;
-  return [(MTLToolsObject *)&v5 initWithBaseObject:a3 parent:a4];
+  return [(MTLToolsObject *)&v5 initWithBaseObject:object parent:parent];
 }
 
-- (id)newArchiveReplyForPipelineFunctionWithDescriptor:(id)a3 functionType:(unint64_t)a4 functionId:(id *)a5
+- (id)newArchiveReplyForPipelineFunctionWithDescriptor:(id)descriptor functionType:(unint64_t)type functionId:(id *)id
 {
   v9 = objc_autoreleasePoolPush();
   v13.receiver = self;
   v13.super_class = MTL4ToolsArchive;
-  v10 = [(MTLDevice *)[(MTLToolsObject *)&v13 device] newUnwrappedMTL4PipelineDescriptor:a3];
+  v10 = [(MTLDevice *)[(MTLToolsObject *)&v13 device] newUnwrappedMTL4PipelineDescriptor:descriptor];
   v11 = [-[MTLToolsObject baseObject](self "baseObject")];
 
   objc_autoreleasePoolPop(v9);
   return v11;
 }
 
-- (id)newComputePipelineStateWithName:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithName:(id)name error:(id *)error
 {
   v7 = objc_autoreleasePoolPush();
   v11.receiver = self;
@@ -70,12 +70,12 @@
   return v9;
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor error:(id *)error
 {
   v7 = objc_autoreleasePoolPush();
   v12.receiver = self;
   v12.super_class = MTL4ToolsArchive;
-  v8 = [(MTLDevice *)[(MTLToolsObject *)&v12 device] newUnwrappedMTL4PipelineDescriptor:a3];
+  v8 = [(MTLDevice *)[(MTLToolsObject *)&v12 device] newUnwrappedMTL4PipelineDescriptor:descriptor];
   v9 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v9)
   {
@@ -91,7 +91,7 @@
   return v10;
 }
 
-- (id)newRenderPipelineStateWithName:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithName:(id)name error:(id *)error
 {
   v7 = objc_autoreleasePoolPush();
   v11.receiver = self;
@@ -112,12 +112,12 @@
   return v9;
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor error:(id *)error
 {
   v7 = objc_autoreleasePoolPush();
   v12.receiver = self;
   v12.super_class = MTL4ToolsArchive;
-  v8 = [(MTLDevice *)[(MTLToolsObject *)&v12 device] newUnwrappedMTL4PipelineDescriptor:a3];
+  v8 = [(MTLDevice *)[(MTLToolsObject *)&v12 device] newUnwrappedMTL4PipelineDescriptor:descriptor];
   v9 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v9)
   {
@@ -133,16 +133,16 @@
   return v10;
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor error:(id *)error
 {
   v9 = objc_autoreleasePoolPush();
   v15.receiver = self;
   v15.super_class = MTL4ToolsArchive;
-  v10 = [(MTLToolsObject *)&v15 device];
-  v11 = [(MTLDevice *)v10 newUnwrappedMTL4PipelineDescriptor:a3];
-  if (a4)
+  device = [(MTLToolsObject *)&v15 device];
+  v11 = [(MTLDevice *)device newUnwrappedMTL4PipelineDescriptor:descriptor];
+  if (linkingDescriptor)
   {
-    a4 = [(MTLDevice *)v10 newUnwrappedMTL4PipelineStageDynamicLinkingDescriptor:a4];
+    linkingDescriptor = [(MTLDevice *)device newUnwrappedMTL4PipelineStageDynamicLinkingDescriptor:linkingDescriptor];
   }
 
   v12 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -160,15 +160,15 @@
   return v13;
 }
 
-- (id)newComputePipelineStateWithName:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5
+- (id)newComputePipelineStateWithName:(id)name dynamicLinkingDescriptor:(id)descriptor error:(id *)error
 {
   v9 = objc_autoreleasePoolPush();
   v14.receiver = self;
   v14.super_class = MTL4ToolsArchive;
-  v10 = [(MTLToolsObject *)&v14 device];
-  if (a4)
+  device = [(MTLToolsObject *)&v14 device];
+  if (descriptor)
   {
-    a4 = [(MTLDevice *)v10 newUnwrappedMTL4PipelineStageDynamicLinkingDescriptor:a4];
+    descriptor = [(MTLDevice *)device newUnwrappedMTL4PipelineStageDynamicLinkingDescriptor:descriptor];
   }
 
   v11 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -186,16 +186,16 @@
   return v12;
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor error:(id *)error
 {
   v9 = objc_autoreleasePoolPush();
   v15.receiver = self;
   v15.super_class = MTL4ToolsArchive;
-  v10 = [(MTLToolsObject *)&v15 device];
-  v11 = [(MTLDevice *)v10 newUnwrappedMTL4PipelineDescriptor:a3];
-  if (a4)
+  device = [(MTLToolsObject *)&v15 device];
+  v11 = [(MTLDevice *)device newUnwrappedMTL4PipelineDescriptor:descriptor];
+  if (linkingDescriptor)
   {
-    a4 = [(MTLDevice *)v10 newUnwrappedMTL4RenderPipelineDynamicLinkingDescriptor:a4];
+    linkingDescriptor = [(MTLDevice *)device newUnwrappedMTL4RenderPipelineDynamicLinkingDescriptor:linkingDescriptor];
   }
 
   v12 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -209,7 +209,7 @@
     v13 = 0;
   }
 
-  if (a4)
+  if (linkingDescriptor)
   {
   }
 
@@ -217,15 +217,15 @@
   return v13;
 }
 
-- (id)newRenderPipelineStateWithName:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5
+- (id)newRenderPipelineStateWithName:(id)name dynamicLinkingDescriptor:(id)descriptor error:(id *)error
 {
   v9 = objc_autoreleasePoolPush();
   v14.receiver = self;
   v14.super_class = MTL4ToolsArchive;
-  v10 = [(MTLToolsObject *)&v14 device];
-  if (a4)
+  device = [(MTLToolsObject *)&v14 device];
+  if (descriptor)
   {
-    a4 = [(MTLDevice *)v10 newUnwrappedMTL4RenderPipelineDynamicLinkingDescriptor:a4];
+    descriptor = [(MTLDevice *)device newUnwrappedMTL4RenderPipelineDynamicLinkingDescriptor:descriptor];
   }
 
   v11 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -243,12 +243,12 @@
   return v12;
 }
 
-- (id)newBinaryFunctionWithDescriptor:(id)a3 error:(id *)a4
+- (id)newBinaryFunctionWithDescriptor:(id)descriptor error:(id *)error
 {
   v7 = objc_autoreleasePoolPush();
   v12.receiver = self;
   v12.super_class = MTL4ToolsArchive;
-  v8 = [(MTLDevice *)[(MTLToolsObject *)&v12 device] newUnwrappedMTL4BinaryFunctionDescriptor:a3];
+  v8 = [(MTLDevice *)[(MTLToolsObject *)&v12 device] newUnwrappedMTL4BinaryFunctionDescriptor:descriptor];
   v9 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v9)
   {

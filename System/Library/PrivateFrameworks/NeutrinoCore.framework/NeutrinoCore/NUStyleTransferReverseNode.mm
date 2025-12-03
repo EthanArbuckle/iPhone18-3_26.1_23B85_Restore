@@ -1,20 +1,20 @@
 @interface NUStyleTransferReverseNode
-+ (id)reverseSettingsForSemanticStyleProperties:(id)a3 size:(id)a4;
-- (NUStyleTransferReverseNode)initWithInput:(id)a3 settings:(id)a4;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateVideo:(id *)a3;
-- (id)_evaluateVideoComposition:(id *)a3;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
++ (id)reverseSettingsForSemanticStyleProperties:(id)properties size:(id)size;
+- (NUStyleTransferReverseNode)initWithInput:(id)input settings:(id)settings;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateVideo:(id *)video;
+- (id)_evaluateVideoComposition:(id *)composition;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 - (id)styleData;
 @end
 
 @implementation NUStyleTransferReverseNode
 
-- (id)_evaluateVideoComposition:(id *)a3
+- (id)_evaluateVideoComposition:(id *)composition
 {
   v52 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!composition)
   {
     v31 = NUAssertLogger_30110();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -35,8 +35,8 @@
         v38 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
-        v41 = [v39 callStackSymbols];
-        v42 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v39 callStackSymbols];
+        v42 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v49 = v38;
         v50 = 2114;
@@ -47,8 +47,8 @@
 
     else if (v35)
     {
-      v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v37 = [v36 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v37 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v49 = v37;
       _os_log_error_impl(&dword_1C0184000, v34, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -64,33 +64,33 @@
     goto LABEL_21;
   }
 
-  v6 = [(NUStyleTransferReverseNode *)self inputNode];
-  v7 = [v6 outputVideoComposition:a3];
+  inputNode = [(NUStyleTransferReverseNode *)self inputNode];
+  v7 = [inputNode outputVideoComposition:composition];
 
   if (v7)
   {
-    v8 = [v7 instructions];
-    v9 = [v8 count];
+    instructions = [v7 instructions];
+    v9 = [instructions count];
 
     if (v9 == 1)
     {
-      v10 = [(NUStyleTransferReverseNode *)self inputNode];
-      v11 = [v10 videoProperties:a3];
+      inputNode2 = [(NUStyleTransferReverseNode *)self inputNode];
+      v11 = [inputNode2 videoProperties:composition];
 
       if (v11)
       {
-        v12 = [v7 instructions];
-        v13 = [v12 firstObject];
+        instructions2 = [v7 instructions];
+        firstObject = [instructions2 firstObject];
 
-        v14 = [v13 copy];
-        v15 = [v11 auxiliaryVideoTrackProperties];
-        v16 = [v15 objectForKeyedSubscript:@"DeltaImage"];
+        v14 = [firstObject copy];
+        auxiliaryVideoTrackProperties = [v11 auxiliaryVideoTrackProperties];
+        v16 = [auxiliaryVideoTrackProperties objectForKeyedSubscript:@"DeltaImage"];
 
         if (v16)
         {
-          v17 = [v14 requiredSourceTrackIDs];
+          requiredSourceTrackIDs = [v14 requiredSourceTrackIDs];
           v18 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v16, "trackID")}];
-          v19 = [v17 arrayByAddingObject:v18];
+          v19 = [requiredSourceTrackIDs arrayByAddingObject:v18];
           [v14 setRequiredSourceTrackIDs:v19];
 
           v20 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v16, "trackID")}];
@@ -126,8 +126,8 @@
         v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
         [v21 setInstructions:v28];
 
-        v29 = [v14 requiredSourceSampleDataTrackIDs];
-        [v21 setSourceSampleDataTrackIDs:v29];
+        requiredSourceSampleDataTrackIDs = [v14 requiredSourceSampleDataTrackIDs];
+        [v21 setSourceSampleDataTrackIDs:requiredSourceSampleDataTrackIDs];
       }
 
       else
@@ -138,8 +138,8 @@
       goto LABEL_20;
     }
 
-    v22 = [v7 instructions];
-    *a3 = [NUError unsupportedError:@"Unsupported video configuration" object:v22];
+    instructions3 = [v7 instructions];
+    *composition = [NUError unsupportedError:@"Unsupported video configuration" object:instructions3];
   }
 
   v21 = 0;
@@ -150,29 +150,29 @@ LABEL_21:
   return v21;
 }
 
-- (id)_evaluateVideo:(id *)a3
+- (id)_evaluateVideo:(id *)video
 {
   v5.receiver = self;
   v5.super_class = NUStyleTransferReverseNode;
-  v3 = [(NURenderNode *)&v5 _evaluateVideo:a3];
+  v3 = [(NURenderNode *)&v5 _evaluateVideo:video];
 
   return v3;
 }
 
 - (id)styleData
 {
-  v2 = [(NURenderNode *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"styleData"];
+  settings = [(NURenderNode *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"styleData"];
 
   return v3;
 }
 
-- (NUStyleTransferReverseNode)initWithInput:(id)a3 settings:(id)a4
+- (NUStyleTransferReverseNode)initWithInput:(id)input settings:(id)settings
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  inputCopy = input;
+  settingsCopy = settings;
+  if (!inputCopy)
   {
     v13 = NUAssertLogger_30110();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -193,8 +193,8 @@ LABEL_21:
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v20;
         v34 = 2114;
@@ -205,8 +205,8 @@ LABEL_21:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -215,11 +215,11 @@ LABEL_21:
     _NUAssertFailHandler("[NUStyleTransferReverseNode initWithInput:settings:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 979, @"Invalid parameter not satisfying: %s", v25, v26, v27, v28, "input != nil");
   }
 
-  v8 = v7;
-  v9 = [v7 mutableCopy];
+  v8 = settingsCopy;
+  v9 = [settingsCopy mutableCopy];
   [v9 setObject:@"input" forKeyedSubscript:@"__dominantInputSettingsKey"];
   v30 = @"input";
-  v31 = v6;
+  v31 = inputCopy;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
   v29.receiver = self;
   v29.super_class = NUStyleTransferReverseNode;
@@ -228,30 +228,30 @@ LABEL_21:
   return v11;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = NUStyleTransferReverseNode;
-  v6 = [(NUStyleTransferNode *)&v8 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v6 = [(NUStyleTransferNode *)&v8 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
 
   return v6;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v80[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (![v9 evaluationMode])
+  cacheCopy = cache;
+  stateCopy = state;
+  if (![stateCopy evaluationMode])
   {
     v77.receiver = self;
     v77.super_class = NUStyleTransferReverseNode;
-    v13 = [(NUStyleTransferNode *)&v77 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+    v13 = [(NUStyleTransferNode *)&v77 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
     goto LABEL_47;
   }
 
-  v10 = [(NUStyleTransferReverseNode *)self inputNode];
-  v11 = [v10 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+  inputNode = [(NUStyleTransferReverseNode *)self inputNode];
+  v11 = [inputNode nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
 
   if (!v11)
   {
@@ -259,38 +259,38 @@ LABEL_21:
     goto LABEL_46;
   }
 
-  if ([v9 auxiliaryImageType] != 1)
+  if ([stateCopy auxiliaryImageType] != 1)
   {
     v13 = v11;
     goto LABEL_46;
   }
 
-  if ([v9 evaluationMode] != 2)
+  if ([stateCopy evaluationMode] != 2)
   {
     v14 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:3];
     [v14 setObject:v11 forKeyedSubscript:@"input"];
-    v15 = [v9 copy];
+    v15 = [stateCopy copy];
     [v15 setAuxiliaryImageType:11];
     [v15 setSampleMode:2];
-    v16 = [(NUStyleTransferReverseNode *)self inputNode];
-    v17 = [v16 nodeByReplayingAgainstCache:v8 pipelineState:v15 error:a5];
+    inputNode2 = [(NUStyleTransferReverseNode *)self inputNode];
+    v17 = [inputNode2 nodeByReplayingAgainstCache:cacheCopy pipelineState:v15 error:error];
 
     if (v17)
     {
       goto LABEL_20;
     }
 
-    if (v9)
+    if (stateCopy)
     {
-      [v9 time];
+      [stateCopy time];
       if ((v75 & 0x100000000) != 0)
       {
         v18 = NULogger_30639();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          [v9 time];
+          [stateCopy time];
           v19 = NUStringFromTime(&buf);
-          v20 = *a5;
+          v20 = *error;
           LODWORD(buf.value) = 138543618;
           *(&buf.value + 4) = v19;
           LOWORD(buf.flags) = 2114;
@@ -302,7 +302,7 @@ LABEL_19:
 
 LABEL_20:
         [v14 setObject:v17 forKeyedSubscript:@"delta"];
-        v21 = [v11 outputImageGeometry:a5];
+        v21 = [v11 outputImageGeometry:error];
         if (!v21)
         {
           v13 = 0;
@@ -312,23 +312,23 @@ LABEL_45:
         }
 
         v72 = v21;
-        if ([v9 evaluationMode] == 3)
+        if ([stateCopy evaluationMode] == 3)
         {
           v70 = v14;
-          v22 = [v9 videoMetadataSamples];
-          v23 = [v22 objectForKeyedSubscript:NUSourceIdentifierSmartStyleVideoMetadata];
+          videoMetadataSamples = [stateCopy videoMetadataSamples];
+          v23 = [videoMetadataSamples objectForKeyedSubscript:NUSourceIdentifierSmartStyleVideoMetadata];
 
-          v24 = [v23 metadataGroup];
+          metadataGroup = [v23 metadataGroup];
 
-          if (!v24)
+          if (!metadataGroup)
           {
             v47 = NULogger_30639();
             v14 = v70;
             if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
             {
-              if (v9)
+              if (stateCopy)
               {
-                [v9 time];
+                [stateCopy time];
               }
 
               else
@@ -348,10 +348,10 @@ LABEL_45:
           }
 
           v71 = v17;
-          v25 = [v23 metadataGroup];
+          metadataGroup2 = [v23 metadataGroup];
           v74[0] = 0;
           buf = **&MEMORY[0x1E6960C70];
-          v26 = [NUVideoUtilities semanticStylePropertiesFromMetadataGroup:v25 keyTime:&buf error:v74];
+          v26 = [NUVideoUtilities semanticStylePropertiesFromMetadataGroup:metadataGroup2 keyTime:&buf error:v74];
           v27 = v74[0];
 
           if (v26)
@@ -364,7 +364,7 @@ LABEL_45:
           }
 
           [NUError errorWithCode:1 reason:@"Failed to obtain semantic style properties from metadata sample" object:v23 underlyingError:v27];
-          *a5 = v13 = 0;
+          *error = v13 = 0;
           v14 = v70;
           v17 = v71;
         }
@@ -372,14 +372,14 @@ LABEL_45:
         else
         {
           v71 = v17;
-          if ([v9 evaluationMode] != 1)
+          if ([stateCopy evaluationMode] != 1)
           {
             v51 = NUAssertLogger_30110();
             if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
             {
-              v52 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported pipelineState evaluation mode: %@", v9];
+              stateCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported pipelineState evaluation mode: %@", stateCopy];
               LODWORD(buf.value) = 138543362;
-              *(&buf.value + 4) = v52;
+              *(&buf.value + 4) = stateCopy;
               _os_log_error_impl(&dword_1C0184000, v51, OS_LOG_TYPE_ERROR, "Fail: %{public}@", &buf, 0xCu);
             }
 
@@ -393,8 +393,8 @@ LABEL_45:
                 v58 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
                 v59 = MEMORY[0x1E696AF00];
                 v60 = v58;
-                v61 = [v59 callStackSymbols];
-                v62 = [v61 componentsJoinedByString:@"\n"];
+                callStackSymbols = [v59 callStackSymbols];
+                v62 = [callStackSymbols componentsJoinedByString:@"\n"];
                 LODWORD(buf.value) = 138543618;
                 *(&buf.value + 4) = v58;
                 LOWORD(buf.flags) = 2114;
@@ -405,14 +405,14 @@ LABEL_45:
 
             else if (v55)
             {
-              v56 = [MEMORY[0x1E696AF00] callStackSymbols];
-              v57 = [v56 componentsJoinedByString:@"\n"];
+              callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+              v57 = [callStackSymbols2 componentsJoinedByString:@"\n"];
               LODWORD(buf.value) = 138543362;
               *(&buf.value + 4) = v57;
               _os_log_error_impl(&dword_1C0184000, v54, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &buf, 0xCu);
             }
 
-            _NUAssertFailHandler("[NUStyleTransferReverseNode nodeByReplayingAgainstCache:pipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 933, @"Unsupported pipelineState evaluation mode: %@", v63, v64, v65, v66, v9);
+            _NUAssertFailHandler("[NUStyleTransferReverseNode nodeByReplayingAgainstCache:pipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 933, @"Unsupported pipelineState evaluation mode: %@", v63, v64, v65, v66, stateCopy);
           }
 
           v73 = 0;
@@ -420,20 +420,20 @@ LABEL_45:
           v69 = v73;
           if (v23)
           {
-            v29 = [v23 semanticStyleProperties];
+            semanticStyleProperties = [v23 semanticStyleProperties];
 
-            if (v29)
+            if (semanticStyleProperties)
             {
               v70 = v14;
-              v30 = [v23 semanticStyleProperties];
+              semanticStyleProperties2 = [v23 semanticStyleProperties];
               v28 = v23;
-              v23 = v30;
+              v23 = semanticStyleProperties2;
 LABEL_30:
 
-              v31 = [v23 version];
-              v32 = [v31 major];
+              version = [v23 version];
+              major = [version major];
 
-              if (v32 < 3)
+              if (major < 3)
               {
                 v34 = [v21 size];
                 v36 = [NUStyleTransferReverseNode reverseSettingsForSemanticStyleProperties:v23 size:v34, v35];
@@ -450,17 +450,17 @@ LABEL_30:
 
                 v68 = v37;
                 v41 = [[NUStyleTransferThumbnailNode alloc] initWithInput:v11 settings:v37];
-                v42 = [(NURenderNode *)v41 inputs];
-                v43 = [(NURenderNode *)v41 resolvedNodeWithCachedInputs:v42 cache:v8 pipelineState:v9 error:a5];
+                inputs = [(NURenderNode *)v41 inputs];
+                v43 = [(NURenderNode *)v41 resolvedNodeWithCachedInputs:inputs cache:cacheCopy pipelineState:stateCopy error:error];
 
                 if (v43)
                 {
                   v14 = v70;
                   [v70 setObject:v43 forKeyedSubscript:@"thumbnail"];
-                  v44 = [(NUStyleTransferReverseNode *)self resolvedNodeWithCachedInputs:v70 settings:v67 pipelineState:v9 error:a5];
-                  v13 = [NURenderNode nodeFromCache:v44 cache:v8];
+                  v44 = [(NUStyleTransferReverseNode *)self resolvedNodeWithCachedInputs:v70 settings:v67 pipelineState:stateCopy error:error];
+                  v13 = [NURenderNode nodeFromCache:v44 cache:cacheCopy];
 
-                  [v13 setEvaluatedForMode:{objc_msgSend(v9, "evaluationMode")}];
+                  [v13 setEvaluatedForMode:{objc_msgSend(stateCopy, "evaluationMode")}];
                   v45 = v43;
                   v17 = v71;
                   v46 = v67;
@@ -480,8 +480,8 @@ LABEL_30:
 
               else
               {
-                v33 = [v23 version];
-                *a5 = [NUError unsupportedError:@"Incompatible style metadata version" object:v33];
+                version2 = [v23 version];
+                *error = [NUError unsupportedError:@"Incompatible style metadata version" object:version2];
 
                 v13 = 0;
                 v14 = v70;
@@ -495,7 +495,7 @@ LABEL_30:
 
           v27 = v69;
           [NUError errorWithCode:1 reason:@"Failed to obtain semantic style properties from image properties" object:v23 underlyingError:v69];
-          *a5 = v13 = 0;
+          *error = v13 = 0;
           v17 = v71;
         }
 
@@ -521,7 +521,7 @@ LABEL_44:
     v18 = _NULogger;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v50 = *a5;
+      v50 = *error;
       LODWORD(buf.value) = 138543362;
       *(&buf.value + 4) = v50;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Failed to obtain delta, ignoring. Error: %{public}@", &buf, 0xCu);
@@ -533,7 +533,7 @@ LABEL_44:
   v79 = @"input";
   v80[0] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v80 forKeys:&v79 count:1];
-  v13 = [(NURenderNode *)self resolvedNodeWithCachedInputs:v12 cache:v8 pipelineState:v9 error:a5];
+  v13 = [(NURenderNode *)self resolvedNodeWithCachedInputs:v12 cache:cacheCopy pipelineState:stateCopy error:error];
 
 LABEL_46:
 LABEL_47:
@@ -541,21 +541,21 @@ LABEL_47:
   return v13;
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v50[2] = *MEMORY[0x1E69E9840];
-  v5 = [(NUStyleTransferReverseNode *)self inputNode];
-  v6 = [v5 outputImage:a3];
+  inputNode = [(NUStyleTransferReverseNode *)self inputNode];
+  v6 = [inputNode outputImage:image];
 
   if (v6)
   {
-    v7 = [(NUStyleTransferReverseNode *)self thumbnailNode];
-    v8 = [v7 outputImage:a3];
+    thumbnailNode = [(NUStyleTransferReverseNode *)self thumbnailNode];
+    v8 = [thumbnailNode outputImage:image];
 
     if (v8)
     {
-      v9 = [(NUStyleTransferReverseNode *)self deltaNode];
-      v10 = [v9 outputImage:a3];
+      deltaNode = [(NUStyleTransferReverseNode *)self deltaNode];
+      v10 = [deltaNode outputImage:image];
 
       if (!v10)
       {
@@ -588,54 +588,54 @@ LABEL_47:
       v52.size.height = v19;
       if (!CGRectEqualToRect(v52, v53))
       {
-        v24 = [v10 imageByClampingToExtent];
+        imageByClampingToExtent = [v10 imageByClampingToExtent];
         [v6 extent];
-        v25 = [v24 imageByCroppingToRect:?];
+        v25 = [imageByClampingToExtent imageByCroppingToRect:?];
 
         v10 = v25;
       }
 
-      v47 = [(NUStyleTransferNode *)self tuningParameters];
-      v26 = [(NUStyleTransferReverseNode *)self styleData];
-      v27 = [(NURenderNode *)self settings];
-      v28 = [v27 objectForKeyedSubscript:@"useFloat16"];
-      v29 = [v28 BOOLValue];
+      tuningParameters = [(NUStyleTransferNode *)self tuningParameters];
+      styleData = [(NUStyleTransferReverseNode *)self styleData];
+      settings = [(NURenderNode *)self settings];
+      v28 = [settings objectForKeyedSubscript:@"useFloat16"];
+      bOOLValue = [v28 BOOLValue];
 
-      v30 = [(NUStyleTransferNode *)self configuration];
-      v31 = [v30 mutableCopy];
+      configuration = [(NUStyleTransferNode *)self configuration];
+      v31 = [configuration mutableCopy];
 
-      v32 = [MEMORY[0x1E696AD98] numberWithBool:v29];
+      v32 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
       [v31 setObject:v32 forKeyedSubscript:@"useFloat16"];
 
       [_NUStyleEngineConfiguration coefficientTextureSizeForConfigurationDictionary:v31];
       v35 = v33;
       v36 = v34;
       v37 = 1;
-      if (!v29)
+      if (!bOOLValue)
       {
         v37 = 2;
       }
 
       v38 = v33 << v37;
       v39 = v38 * v34;
-      if ([v26 length] == v39)
+      if ([styleData length] == v39)
       {
         v40 = MEMORY[0x1E695F930];
-        if (!v29)
+        if (!bOOLValue)
         {
           v40 = MEMORY[0x1E695F928];
         }
 
-        v41 = [MEMORY[0x1E695F658] imageWithBitmapData:v26 bytesPerRow:v38 size:*v40 format:0 colorSpace:{v35, v36}];
+        v41 = [MEMORY[0x1E695F658] imageWithBitmapData:styleData bytesPerRow:v38 size:*v40 format:0 colorSpace:{v35, v36}];
         if (+[NUGlobalSettings semanticStyleDisableDeltaMap])
         {
 
           v10 = 0;
         }
 
-        v42 = v47;
-        v43 = [(NUStyleTransferNode *)self targetColorSpace];
-        v44 = [_NUStyleTransferApplyProcessor applyStyle:v41 toImage:v6 thumbnail:v8 target:0 deltaMap:v10 colorSpace:v43 configuration:v31 tuningParameters:v47 noiseModel:0 error:a3];
+        v42 = tuningParameters;
+        targetColorSpace = [(NUStyleTransferNode *)self targetColorSpace];
+        v44 = [_NUStyleTransferApplyProcessor applyStyle:v41 toImage:v6 thumbnail:v8 target:0 deltaMap:v10 colorSpace:targetColorSpace configuration:v31 tuningParameters:tuningParameters noiseModel:0 error:image];
       }
 
       else
@@ -644,13 +644,13 @@ LABEL_47:
         v41 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v39];
         v49[1] = @"actual";
         v50[0] = v41;
-        v43 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v26, "length")}];
-        v50[1] = v43;
+        targetColorSpace = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(styleData, "length")}];
+        v50[1] = targetColorSpace;
         v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:v49 count:2];
-        *a3 = [NUError invalidError:@"Unexpected style data length" object:v45];
+        *image = [NUError invalidError:@"Unexpected style data length" object:v45];
 
         v44 = 0;
-        v42 = v47;
+        v42 = tuningParameters;
       }
     }
 
@@ -668,65 +668,65 @@ LABEL_47:
   return v44;
 }
 
-+ (id)reverseSettingsForSemanticStyleProperties:(id)a3 size:(id)a4
++ (id)reverseSettingsForSemanticStyleProperties:(id)properties size:(id)size
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v7 = a3;
+  var1 = size.var1;
+  var0 = size.var0;
+  propertiesCopy = properties;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (![v7 isVideo])
+  if (![propertiesCopy isVideo])
   {
     if (var1 <= var0)
     {
-      [a1 _reverseImageConfiguration_0];
+      [self _reverseImageConfiguration_0];
     }
 
     else
     {
-      [a1 _reverseImageConfiguration_0_1_alt];
+      [self _reverseImageConfiguration_0_1_alt];
     }
-    v11 = ;
-    v12 = [a1 _reverseImageTuningParameters_0];
+    _reverseVideoConfiguration_0 = ;
+    _reverseImageTuningParameters_0 = [self _reverseImageTuningParameters_0];
     goto LABEL_13;
   }
 
   if (var1 > var0)
   {
-    v9 = [a1 _reverseVideoConfiguration_0_10_alt];
+    _reverseVideoConfiguration_0_10_alt = [self _reverseVideoConfiguration_0_10_alt];
 LABEL_12:
-    v11 = v9;
-    v12 = [a1 _reverseVideoTuningParameters_0];
+    _reverseVideoConfiguration_0 = _reverseVideoConfiguration_0_10_alt;
+    _reverseImageTuningParameters_0 = [self _reverseVideoTuningParameters_0];
     goto LABEL_13;
   }
 
-  v10 = [v7 version];
-  if ([v10 atLeastMajor:0 minor:10])
+  version = [propertiesCopy version];
+  if ([version atLeastMajor:0 minor:10])
   {
 
 LABEL_11:
-    v9 = [a1 _reverseVideoConfiguration_0];
+    _reverseVideoConfiguration_0_10_alt = [self _reverseVideoConfiguration_0];
     goto LABEL_12;
   }
 
-  v13 = [v7 styleData];
-  v14 = [v13 length];
+  styleData = [propertiesCopy styleData];
+  v14 = [styleData length];
 
   if (v14 == 1152)
   {
     goto LABEL_11;
   }
 
-  v11 = [a1 _reverseVideoConfiguration_0];
-  v12 = [a1 _reverseVideoTuningParameters_0];
+  _reverseVideoConfiguration_0 = [self _reverseVideoConfiguration_0];
+  _reverseImageTuningParameters_0 = [self _reverseVideoTuningParameters_0];
 LABEL_13:
-  v15 = v12;
-  v16 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "styleDataIsFloat16")}];
+  v15 = _reverseImageTuningParameters_0;
+  v16 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(propertiesCopy, "styleDataIsFloat16")}];
   [v8 setObject:v16 forKeyedSubscript:@"useFloat16"];
 
-  v17 = [v7 styleData];
-  [v8 setObject:v17 forKeyedSubscript:@"styleData"];
+  styleData2 = [propertiesCopy styleData];
+  [v8 setObject:styleData2 forKeyedSubscript:@"styleData"];
 
-  [v8 setObject:v11 forKeyedSubscript:NUStyleTransferNodeConfigurationKey];
+  [v8 setObject:_reverseVideoConfiguration_0 forKeyedSubscript:NUStyleTransferNodeConfigurationKey];
   [v8 setObject:v15 forKeyedSubscript:NUStyleTransferNodeTuningParametersKey];
 
   return v8;

@@ -22,7 +22,7 @@
   v15 = [PUActivityViewController photosApplicationActivities:?];
   v27[0] = *MEMORY[0x1E69C3CF0];
   v0 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
-  v1 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -62,12 +62,12 @@
               }
 
               v9 = *(*(&v17 + 1) + 8 * j);
-              v10 = [v9 activityType];
-              v11 = [v10 isEqualToString:v3];
+              activityType = [v9 activityType];
+              v11 = [activityType isEqualToString:v3];
 
               if (v11)
               {
-                [v1 addObject:v9];
+                [array addObject:v9];
               }
             }
 
@@ -84,7 +84,7 @@
     while (v16);
   }
 
-  return v1;
+  return array;
 }
 
 @end

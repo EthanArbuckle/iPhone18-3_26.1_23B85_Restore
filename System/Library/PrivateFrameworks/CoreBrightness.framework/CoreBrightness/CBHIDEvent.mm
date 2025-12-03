@@ -1,8 +1,8 @@
 @interface CBHIDEvent
-+ (id)newEvent:(__IOHIDEvent *)a3 andService:(__IOHIDServiceClient *)a4;
-- (CBHIDEvent)initWithHIDEvent:(__IOHIDEvent *)a3 andService:(__IOHIDServiceClient *)a4;
++ (id)newEvent:(__IOHIDEvent *)event andService:(__IOHIDServiceClient *)service;
+- (CBHIDEvent)initWithHIDEvent:(__IOHIDEvent *)event andService:(__IOHIDServiceClient *)service;
 - (NSArray)copyChildren;
-- (float)floatValueForKey:(unsigned int)a3;
+- (float)floatValueForKey:(unsigned int)key;
 - (float)timestamp;
 - (void)dealloc;
 @end
@@ -18,26 +18,26 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (self->_event)
   {
-    CFRelease(v5->_event);
+    CFRelease(selfCopy->_event);
   }
 
-  if (v5->_service)
+  if (selfCopy->_service)
   {
-    CFRelease(v5->_service);
+    CFRelease(selfCopy->_service);
   }
 
-  v2 = MEMORY[0x1E69E5920](v5->_serviceRegistryID).n128_u64[0];
-  if (v5->_logHandle)
+  v2 = MEMORY[0x1E69E5920](selfCopy->_serviceRegistryID).n128_u64[0];
+  if (selfCopy->_logHandle)
   {
-    v2 = MEMORY[0x1E69E5920](v5->_logHandle).n128_u64[0];
-    v5->_logHandle = 0;
+    v2 = MEMORY[0x1E69E5920](selfCopy->_logHandle).n128_u64[0];
+    selfCopy->_logHandle = 0;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBHIDEvent;
   [(CBHIDEvent *)&v3 dealloc];
 }
@@ -60,27 +60,27 @@
   return v7;
 }
 
-- (CBHIDEvent)initWithHIDEvent:(__IOHIDEvent *)a3 andService:(__IOHIDServiceClient *)a4
+- (CBHIDEvent)initWithHIDEvent:(__IOHIDEvent *)event andService:(__IOHIDServiceClient *)service
 {
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
-  v32 = a3;
-  v31 = a4;
+  eventCopy = event;
+  serviceCopy = service;
   v30.receiver = self;
   v30.super_class = CBHIDEvent;
-  v34 = [(CBHIDEvent *)&v30 init];
-  if (!v34)
+  selfCopy = [(CBHIDEvent *)&v30 init];
+  if (!selfCopy)
   {
-    return v34;
+    return selfCopy;
   }
 
   v4 = os_log_create("com.apple.CoreBrightness.CBHIDEvent", "default");
-  v34->_logHandle = v4;
-  if (!v32)
+  selfCopy->_logHandle = v4;
+  if (!eventCopy)
   {
-    if (v34->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v34->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -111,13 +111,13 @@
     goto LABEL_36;
   }
 
-  CFRetain(v32);
-  v34->_event = v32;
-  if (!v31)
+  CFRetain(eventCopy);
+  selfCopy->_event = eventCopy;
+  if (!serviceCopy)
   {
-    if (v34->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v15 = v34->_logHandle;
+      v15 = selfCopy->_logHandle;
     }
 
     else
@@ -148,16 +148,16 @@
     goto LABEL_36;
   }
 
-  CFRetain(v31);
-  v34->_service = v31;
-  RegistryID = IOHIDServiceClientGetRegistryID(v31);
+  CFRetain(serviceCopy);
+  selfCopy->_service = serviceCopy;
+  RegistryID = IOHIDServiceClientGetRegistryID(serviceCopy);
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if ((isKindOfClass & 1) == 0)
   {
-    if (v34->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v11 = v34->_logHandle;
+      v11 = selfCopy->_logHandle;
     }
 
     else
@@ -186,30 +186,30 @@
     }
 
 LABEL_36:
-    MEMORY[0x1E69E5920](v34);
-    v34 = 0;
+    MEMORY[0x1E69E5920](selfCopy);
+    selfCopy = 0;
     return 0;
   }
 
   v6 = [RegistryID copy];
-  v34->_serviceRegistryID = v6;
-  return v34;
+  selfCopy->_serviceRegistryID = v6;
+  return selfCopy;
 }
 
-+ (id)newEvent:(__IOHIDEvent *)a3 andService:(__IOHIDServiceClient *)a4
++ (id)newEvent:(__IOHIDEvent *)event andService:(__IOHIDServiceClient *)service
 {
   if (IOHIDEventGetType() == 12)
   {
-    return [[CBALSEvent alloc] initWithHIDEvent:a3 andService:a4];
+    return [[CBALSEvent alloc] initWithHIDEvent:event andService:service];
   }
 
   else
   {
-    return [[CBHIDEvent alloc] initWithHIDEvent:a3 andService:a4];
+    return [[CBHIDEvent alloc] initWithHIDEvent:event andService:service];
   }
 }
 
-- (float)floatValueForKey:(unsigned int)a3
+- (float)floatValueForKey:(unsigned int)key
 {
   event = self->_event;
   IOHIDEventGetFloatValue();

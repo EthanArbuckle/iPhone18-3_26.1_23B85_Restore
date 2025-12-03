@@ -1,26 +1,26 @@
 @interface VMTelephonyRequestController
 - (VMTelephonyRequest)pendingRequest;
 - (VMTelephonyRequestController)init;
-- (VMTelephonyRequestController)initWithQueue:(id)a3;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)addRequest:(id)a3;
+- (VMTelephonyRequestController)initWithQueue:(id)queue;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)addRequest:(id)request;
 - (void)execute;
-- (void)executeRequest:(id)a3;
-- (void)performAtomicAccessorBlock:(id)a3;
-- (void)performAtomicDelegateBlock:(id)a3;
-- (void)postResponse:(id)a3 forRequest:(id)a4;
-- (void)removeDelegate:(id)a3;
-- (void)removeRequest:(id)a3;
-- (void)setPendingRequest:(id)a3;
+- (void)executeRequest:(id)request;
+- (void)performAtomicAccessorBlock:(id)block;
+- (void)performAtomicDelegateBlock:(id)block;
+- (void)postResponse:(id)response forRequest:(id)request;
+- (void)removeDelegate:(id)delegate;
+- (void)removeRequest:(id)request;
+- (void)setPendingRequest:(id)request;
 @end
 
 @implementation VMTelephonyRequestController
 
 - (VMTelephonyRequestController)init
 {
-  v3 = [objc_opt_class() vm_classIdentifier];
+  vm_classIdentifier = [objc_opt_class() vm_classIdentifier];
   v4 = NSStringFromSelector("queue");
-  v5 = [NSString stringWithFormat:@"%@.%@", v3, v4];
+  v5 = [NSString stringWithFormat:@"%@.%@", vm_classIdentifier, v4];
 
   v6 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
   v7 = dispatch_queue_create([v5 UTF8String], v6);
@@ -29,9 +29,9 @@
   return v8;
 }
 
-- (VMTelephonyRequestController)initWithQueue:(id)a3
+- (VMTelephonyRequestController)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = VMTelephonyRequestController;
   v6 = [(VMTelephonyRequestController *)&v13 init];
@@ -43,7 +43,7 @@
     delegateToQueue = v7->_delegateToQueue;
     v7->_delegateToQueue = v8;
 
-    objc_storeStrong(&v7->_queue, a3);
+    objc_storeStrong(&v7->_queue, queue);
     v10 = objc_alloc_init(NSMutableOrderedSet);
     requests = v7->_requests;
     v7->_requests = v10;
@@ -73,46 +73,46 @@
   return v2;
 }
 
-- (void)setPendingRequest:(id)a3
+- (void)setPendingRequest:(id)request
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100004F64;
   v4[3] = &unk_1000ED450;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(VMTelephonyRequestController *)v5 performAtomicAccessorBlock:v4];
+  selfCopy = self;
+  requestCopy = request;
+  v3 = requestCopy;
+  [(VMTelephonyRequestController *)selfCopy performAtomicAccessorBlock:v4];
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100005048;
   v9[3] = &unk_1000ED478;
   v9[4] = self;
-  v10 = a4;
-  v11 = v6;
-  v7 = v6;
-  v8 = v10;
+  queueCopy = queue;
+  v11 = delegateCopy;
+  v7 = delegateCopy;
+  v8 = queueCopy;
   [(VMTelephonyRequestController *)self performAtomicDelegateBlock:v9];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100005140;
   v4[3] = &unk_1000ED450;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(VMTelephonyRequestController *)v5 performAtomicDelegateBlock:v4];
+  selfCopy = self;
+  delegateCopy = delegate;
+  v3 = delegateCopy;
+  [(VMTelephonyRequestController *)selfCopy performAtomicDelegateBlock:v4];
 }
 
-- (void)addRequest:(id)a3
+- (void)addRequest:(id)request
 {
   v9 = 0;
   v10 = &v9;
@@ -122,11 +122,11 @@
   v5[1] = 3221225472;
   v5[2] = sub_100005288;
   v5[3] = &unk_1000ED4A0;
-  v6 = self;
-  v4 = a3;
-  v7 = v4;
+  selfCopy = self;
+  requestCopy = request;
+  v7 = requestCopy;
   v8 = &v9;
-  [(VMTelephonyRequestController *)v6 performAtomicAccessorBlock:v5];
+  [(VMTelephonyRequestController *)selfCopy performAtomicAccessorBlock:v5];
   if (*(v10 + 24) == 1)
   {
     [(VMTelephonyRequestController *)self execute];
@@ -135,16 +135,16 @@
   _Block_object_dispose(&v9, 8);
 }
 
-- (void)removeRequest:(id)a3
+- (void)removeRequest:(id)request
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100005368;
   v4[3] = &unk_1000ED450;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(VMTelephonyRequestController *)v5 performAtomicAccessorBlock:v4];
+  selfCopy = self;
+  requestCopy = request;
+  v3 = requestCopy;
+  [(VMTelephonyRequestController *)selfCopy performAtomicAccessorBlock:v4];
 }
 
 - (void)execute
@@ -170,47 +170,47 @@
   _Block_object_dispose(&v4, 8);
 }
 
-- (void)executeRequest:(id)a3
+- (void)executeRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [VMTelephonyResponse alloc];
-  v6 = [v4 subscription];
-  v7 = [(VMTelephonyResponse *)v5 initWithSubscription:v6 error:0];
+  subscription = [requestCopy subscription];
+  v7 = [(VMTelephonyResponse *)v5 initWithSubscription:subscription error:0];
 
-  [(VMTelephonyRequestController *)self postResponse:v7 forRequest:v4];
+  [(VMTelephonyRequestController *)self postResponse:v7 forRequest:requestCopy];
 }
 
-- (void)postResponse:(id)a3 forRequest:(id)a4
+- (void)postResponse:(id)response forRequest:(id)request
 {
-  v6 = a3;
+  responseCopy = response;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000056C8;
   v13[3] = &unk_1000ED450;
   v13[4] = self;
-  v7 = a4;
-  v14 = v7;
+  requestCopy = request;
+  v14 = requestCopy;
   [(VMTelephonyRequestController *)self performAtomicAccessorBlock:v13];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100005720;
   v10[3] = &unk_1000ED478;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = responseCopy;
+  v12 = requestCopy;
+  v8 = requestCopy;
+  v9 = responseCopy;
   [(VMTelephonyRequestController *)self performAtomicDelegateBlock:v10];
   [(VMTelephonyRequestController *)self execute];
 }
 
-- (void)performAtomicAccessorBlock:(id)a3
+- (void)performAtomicAccessorBlock:(id)block
 {
-  v5 = a3;
-  if (v5)
+  blockCopy = block;
+  if (blockCopy)
   {
     os_unfair_lock_lock_with_options();
-    v5[2]();
+    blockCopy[2]();
     os_unfair_lock_unlock(&self->_accessorLock);
   }
 
@@ -220,13 +220,13 @@
   }
 }
 
-- (void)performAtomicDelegateBlock:(id)a3
+- (void)performAtomicDelegateBlock:(id)block
 {
-  v5 = a3;
-  if (v5)
+  blockCopy = block;
+  if (blockCopy)
   {
     os_unfair_lock_lock_with_options();
-    v5[2]();
+    blockCopy[2]();
     os_unfair_lock_unlock(&self->_delegateLock);
   }
 

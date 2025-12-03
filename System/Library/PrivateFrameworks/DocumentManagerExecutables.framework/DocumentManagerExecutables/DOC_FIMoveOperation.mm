@@ -42,7 +42,7 @@
 
 - (id)operationForUndoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOC_FIMoveOperation.operationForUndoing()();
 
   return v3;

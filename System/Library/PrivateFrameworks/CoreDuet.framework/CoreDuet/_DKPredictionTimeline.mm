@@ -1,19 +1,19 @@
 @interface _DKPredictionTimeline
 + (id)predictionUnavailable;
-+ (id)timelineWithValues:(id)a3 eachWithDuration:(double)a4 startingAt:(id)a5;
-+ (id)timelineWithValues:(id)a3 forDurations:(id)a4 startingAt:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)timelineWithValues:(id)values eachWithDuration:(double)duration startingAt:(id)at;
++ (id)timelineWithValues:(id)values forDurations:(id)durations startingAt:(id)at;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)endDate;
-- (_DKPredictionTimeline)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_DKPredictionTimeline)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initWithValues:(void *)a3 eachWithDuration:(double)a4 startingAt:;
-- (id)largestDateRangeWithValuesBetween:(double)a3 and:(double)a4 ofMinimumDuration:(double)a5;
-- (id)nextDateRangeWithValuesBetween:(double)a3 and:(double)a4 ofMinimumDuration:(double)a5;
-- (id)valueAtDate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithValues:(void *)a3 forDurations:(void *)a4 startingAt:;
-- (void)setStartDate:(uint64_t)a1;
+- (id)initWithValues:(void *)values eachWithDuration:(double)duration startingAt:;
+- (id)largestDateRangeWithValuesBetween:(double)between and:(double)and ofMinimumDuration:(double)duration;
+- (id)nextDateRangeWithValuesBetween:(double)between and:(double)and ofMinimumDuration:(double)duration;
+- (id)valueAtDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithValues:(void *)values forDurations:(void *)durations startingAt:;
+- (void)setStartDate:(uint64_t)date;
 @end
 
 @implementation _DKPredictionTimeline
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __46___DKPredictionTimeline_predictionUnavailable__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (predictionUnavailable_onceToken != -1)
   {
     dispatch_once(&predictionUnavailable_onceToken, block);
@@ -37,28 +37,28 @@
 
 - (NSDate)endDate
 {
-  v2 = [(NSArray *)self->_transitionDates lastObject];
-  v3 = v2;
-  if (v2)
+  lastObject = [(NSArray *)self->_transitionDates lastObject];
+  v3 = lastObject;
+  if (lastObject)
   {
-    v4 = v2;
+    date = lastObject;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  v5 = v4;
+  v5 = date;
 
   return v5;
 }
 
-- (id)valueAtDate:(id)a3
+- (id)valueAtDate:(id)date
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(NSDate *)self->_startDate timeIntervalSinceDate:v4];
+  dateCopy = date;
+  [(NSDate *)self->_startDate timeIntervalSinceDate:dateCopy];
   if (v5 <= 0.0)
   {
     v19 = 0u;
@@ -84,7 +84,7 @@
             objc_enumerationMutation(v7);
           }
 
-          [*(*(&v17 + 1) + 8 * v12) timeIntervalSinceDate:{v4, v17}];
+          [*(*(&v17 + 1) + 8 * v12) timeIntervalSinceDate:{dateCopy, v17}];
           if (v14 > 0.0)
           {
             v6 = [(NSArray *)self->_values objectAtIndexedSubscript:v13];
@@ -120,7 +120,7 @@ LABEL_13:
   return v6;
 }
 
-- (id)largestDateRangeWithValuesBetween:(double)a3 and:(double)a4 ofMinimumDuration:(double)a5
+- (id)largestDateRangeWithValuesBetween:(double)between and:(double)and ofMinimumDuration:(double)duration
 {
   v52 = *MEMORY[0x1E69E9840];
   if ([(_DKPredictionTimeline *)self isUnavailable])
@@ -133,37 +133,37 @@ LABEL_13:
 
 LABEL_12:
 
-    v21 = [MEMORY[0x1E695DF00] distantFuture];
-    v18 = [MEMORY[0x1E695DF00] distantFuture];
-    v23 = [_CDDateRange periodWithStart:v21 end:v18];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    distantFuture2 = [MEMORY[0x1E695DF00] distantFuture];
+    v23 = [_CDDateRange periodWithStart:distantFuture end:distantFuture2];
     goto LABEL_13;
   }
 
-  v10 = [(NSArray *)self->_transitionDates lastObject];
-  [v10 timeIntervalSinceDate:self->_startDate];
+  lastObject = [(NSArray *)self->_transitionDates lastObject];
+  [lastObject timeIntervalSinceDate:self->_startDate];
   v12 = v11;
 
-  if (v12 < a5)
+  if (v12 < duration)
   {
     v9 = +[_CDLogging knowledgeChannel];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+      v13 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
       startDate = self->_startDate;
-      v15 = [(NSArray *)self->_transitionDates lastObject];
+      lastObject2 = [(NSArray *)self->_transitionDates lastObject];
       *buf = 138412802;
       v47 = v13;
       v48 = 2112;
       v49 = startDate;
       v50 = 2112;
-      v51 = v15;
+      v51 = lastObject2;
       _os_log_error_impl(&dword_191750000, v9, OS_LOG_TYPE_ERROR, "Unable to satisfy minimum duration %@ between %@ and %@", buf, 0x20u);
     }
 
     goto LABEL_12;
   }
 
-  v16 = [(NSArray *)self->_values firstObject];
+  firstObject = [(NSArray *)self->_values firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -178,13 +178,13 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v18 = [MEMORY[0x1E695DF70] arrayWithObject:self->_startDate];
-  [v18 addObjectsFromArray:self->_transitionDates];
-  if ([v18 count] == 1)
+  distantFuture2 = [MEMORY[0x1E695DF70] arrayWithObject:self->_startDate];
+  [distantFuture2 addObjectsFromArray:self->_transitionDates];
+  if ([distantFuture2 count] == 1)
   {
     v19 = 0;
     v20 = 0;
-    v21 = 0;
+    distantFuture = 0;
     v22 = 0.0;
     goto LABEL_40;
   }
@@ -197,11 +197,11 @@ LABEL_12:
   v28 = 0.0;
   do
   {
-    v29 = [v18 objectAtIndexedSubscript:v27];
-    v30 = [v18 objectAtIndexedSubscript:v27 + 1];
+    v29 = [distantFuture2 objectAtIndexedSubscript:v27];
+    v30 = [distantFuture2 objectAtIndexedSubscript:v27 + 1];
     v31 = [(NSArray *)self->_values objectAtIndexedSubscript:v27];
     [v31 doubleValue];
-    if (v32 < a3 || v32 > a4)
+    if (v32 < between || v32 > and)
     {
       if (v19)
       {
@@ -246,7 +246,7 @@ LABEL_29:
     ++v27;
   }
 
-  while (v27 < [v18 count] - 1);
+  while (v27 < [distantFuture2 count] - 1);
   if (v28 <= 0.0 || v26 == 0)
   {
     v41 = v28 <= 0.0;
@@ -259,20 +259,20 @@ LABEL_29:
     v41 = v28 <= v22;
   }
 
-  v21 = v45;
+  distantFuture = v45;
   if (!v41)
   {
     v19 = v19;
 
-    v21 = v19;
+    distantFuture = v19;
     v22 = v28;
   }
 
   v20 = v26;
 LABEL_40:
-  if (v22 >= a5)
+  if (v22 >= duration)
   {
-    v23 = [_CDDateRange periodWithStart:v21 duration:v22];
+    v23 = [_CDDateRange periodWithStart:distantFuture duration:v22];
   }
 
   else
@@ -283,9 +283,9 @@ LABEL_40:
       [_DKPredictionTimeline largestDateRangeWithValuesBetween:and:ofMinimumDuration:];
     }
 
-    v43 = [MEMORY[0x1E695DF00] distantFuture];
-    v44 = [MEMORY[0x1E695DF00] distantFuture];
-    v23 = [_CDDateRange periodWithStart:v43 end:v44];
+    distantFuture3 = [MEMORY[0x1E695DF00] distantFuture];
+    distantFuture4 = [MEMORY[0x1E695DF00] distantFuture];
+    v23 = [_CDDateRange periodWithStart:distantFuture3 end:distantFuture4];
   }
 
 LABEL_13:
@@ -294,7 +294,7 @@ LABEL_13:
   return v23;
 }
 
-- (id)nextDateRangeWithValuesBetween:(double)a3 and:(double)a4 ofMinimumDuration:(double)a5
+- (id)nextDateRangeWithValuesBetween:(double)between and:(double)and ofMinimumDuration:(double)duration
 {
   v49 = *MEMORY[0x1E69E9840];
   if ([(_DKPredictionTimeline *)self isUnavailable])
@@ -307,30 +307,30 @@ LABEL_13:
 
 LABEL_12:
 
-    v18 = [MEMORY[0x1E695DF00] distantFuture];
-    v19 = [MEMORY[0x1E695DF00] distantFuture];
-    v22 = [_CDDateRange periodWithStart:v18 end:v19];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    distantFuture2 = [MEMORY[0x1E695DF00] distantFuture];
+    v22 = [_CDDateRange periodWithStart:distantFuture end:distantFuture2];
     goto LABEL_13;
   }
 
-  v10 = [(NSArray *)self->_transitionDates lastObject];
-  [v10 timeIntervalSinceDate:self->_startDate];
+  lastObject = [(NSArray *)self->_transitionDates lastObject];
+  [lastObject timeIntervalSinceDate:self->_startDate];
   v12 = v11;
 
-  if (v12 < a5)
+  if (v12 < duration)
   {
     v9 = +[_CDLogging knowledgeChannel];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+      v13 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
       startDate = self->_startDate;
-      v15 = [(NSArray *)self->_transitionDates lastObject];
+      lastObject2 = [(NSArray *)self->_transitionDates lastObject];
       *buf = 138412802;
       v44 = v13;
       v45 = 2112;
       v46 = startDate;
       v47 = 2112;
-      v48 = v15;
+      v48 = lastObject2;
       _os_log_error_impl(&dword_191750000, v9, OS_LOG_TYPE_ERROR, "Unable to satisfy minimum duration %@ between %@ and %@", buf, 0x20u);
     }
 
@@ -338,7 +338,7 @@ LABEL_12:
   }
 
   p_values = &self->_values;
-  v16 = [(NSArray *)self->_values firstObject];
+  firstObject = [(NSArray *)self->_values firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -353,33 +353,33 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v18 = [MEMORY[0x1E695DF70] arrayWithObject:self->_startDate];
-  [v18 addObjectsFromArray:self->_transitionDates];
-  if ([v18 count] == 1)
+  distantFuture = [MEMORY[0x1E695DF70] arrayWithObject:self->_startDate];
+  [distantFuture addObjectsFromArray:self->_transitionDates];
+  if ([distantFuture count] == 1)
   {
-    v19 = 0;
+    distantFuture2 = 0;
     v20 = 0;
     v21 = 0.0;
     goto LABEL_35;
   }
 
-  v19 = 0;
+  distantFuture2 = 0;
   v25 = 0;
   v26 = 0;
   v21 = 0.0;
   do
   {
-    v27 = [v18 objectAtIndexedSubscript:v26];
-    v28 = [v18 objectAtIndexedSubscript:v26 + 1];
+    distantFuture3 = [distantFuture objectAtIndexedSubscript:v26];
+    v28 = [distantFuture objectAtIndexedSubscript:v26 + 1];
     v29 = [*p_values objectAtIndexedSubscript:v26];
     [v29 doubleValue];
-    if (v30 < a3 || v30 > a4)
+    if (v30 < between || v30 > and)
     {
-      if (v19)
+      if (distantFuture2)
       {
-        if (v21 >= a5)
+        if (v21 >= duration)
         {
-          v22 = [_CDDateRange periodWithStart:v19 duration:v21];
+          v22 = [_CDDateRange periodWithStart:distantFuture2 duration:v21];
 
           goto LABEL_42;
         }
@@ -388,24 +388,24 @@ LABEL_12:
       }
 
       v32 = 0;
-      v19 = 0;
-      v33 = v27;
+      distantFuture2 = 0;
+      v33 = distantFuture3;
       if (!v25)
       {
 LABEL_28:
-        v35 = v27;
+        v35 = distantFuture3;
         v25 = v33;
-        v19 = v32;
+        distantFuture2 = v32;
       }
     }
 
     else
     {
-      [v28 timeIntervalSinceDate:v27];
+      [v28 timeIntervalSinceDate:distantFuture3];
       v21 = v21 + v34;
       v33 = v25;
-      v32 = v27;
-      if (!v19)
+      v32 = distantFuture3;
+      if (!distantFuture2)
       {
         goto LABEL_28;
       }
@@ -414,18 +414,18 @@ LABEL_28:
     ++v26;
   }
 
-  while (v26 < [v18 count] - 1);
+  while (v26 < [distantFuture count] - 1);
   v20 = v25;
   if (v21 > 0.0 && v25 != 0)
   {
     [v25 timeIntervalSinceDate:self->_startDate];
     v38 = v21 + v39;
-    if (v38 < a5)
+    if (v38 < duration)
     {
       goto LABEL_38;
     }
 
-    v37 = v19;
+    v37 = distantFuture2;
 LABEL_44:
     v22 = [_CDDateRange periodWithStart:v37 duration:v38];
     goto LABEL_45;
@@ -433,9 +433,9 @@ LABEL_44:
 
 LABEL_35:
   v25 = v20;
-  if (v21 >= a5)
+  if (v21 >= duration)
   {
-    v37 = v19;
+    v37 = distantFuture2;
     v38 = v21;
     goto LABEL_44;
   }
@@ -447,9 +447,9 @@ LABEL_38:
     [_DKPredictionTimeline largestDateRangeWithValuesBetween:and:ofMinimumDuration:];
   }
 
-  v27 = [MEMORY[0x1E695DF00] distantFuture];
-  v41 = [MEMORY[0x1E695DF00] distantFuture];
-  v22 = [_CDDateRange periodWithStart:v27 end:v41];
+  distantFuture3 = [MEMORY[0x1E695DF00] distantFuture];
+  distantFuture4 = [MEMORY[0x1E695DF00] distantFuture];
+  v22 = [_CDDateRange periodWithStart:distantFuture3 end:distantFuture4];
 
 LABEL_42:
 LABEL_45:
@@ -460,22 +460,22 @@ LABEL_13:
   return v22;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startDate = self->_startDate;
-  v5 = a3;
-  [v5 encodeObject:startDate forKey:@"start"];
-  [v5 encodeObject:self->_values forKey:@"values"];
-  [v5 encodeObject:self->_transitionDates forKey:@"transitions"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startDate forKey:@"start"];
+  [coderCopy encodeObject:self->_values forKey:@"values"];
+  [coderCopy encodeObject:self->_transitionDates forKey:@"transitions"];
 }
 
-- (_DKPredictionTimeline)initWithCoder:(id)a3
+- (_DKPredictionTimeline)initWithCoder:(id)coder
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v58 = objc_autoreleasePoolPush();
   v57 = objc_alloc_init(objc_opt_class());
-  v56 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"start"];
+  v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"start"];
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
@@ -483,21 +483,21 @@ LABEL_13:
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = [v5 setWithObjects:{v6, v7, v8, v9, v10, objc_opt_class(), 0}];
-  v12 = [v4 decodeObjectOfClasses:v11 forKey:@"values"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"values"];
   if ([v12 count])
   {
-    v13 = [v12 firstObject];
+    firstObject = [v12 firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
       v54 = v11;
-      v55 = v4;
-      v53 = self;
-      v15 = [MEMORY[0x1E695DF70] array];
-      v16 = [v12 firstObject];
-      v17 = [v16 mutableCopy];
+      v55 = coderCopy;
+      selfCopy = self;
+      array = [MEMORY[0x1E695DF70] array];
+      firstObject2 = [v12 firstObject];
+      v17 = [firstObject2 mutableCopy];
 
       v68 = 0u;
       v69 = 0u;
@@ -528,7 +528,7 @@ LABEL_13:
             v65 = v24;
             [v22 enumerateKeysAndObjectsUsingBlock:v64];
             v25 = [v24 copy];
-            [v15 addObject:v25];
+            [array addObject:v25];
 
             objc_autoreleasePoolPop(v23);
           }
@@ -539,8 +539,8 @@ LABEL_13:
         while (v19);
       }
 
-      v12 = [v15 copy];
-      self = v53;
+      v12 = [array copy];
+      self = selfCopy;
       v26 = v57;
       v27 = 0x1E695D000;
 LABEL_21:
@@ -548,12 +548,12 @@ LABEL_21:
       v39 = 0x1E695D000;
 
       v11 = v54;
-      v4 = v55;
+      coderCopy = v55;
       v28 = v58;
       goto LABEL_24;
     }
 
-    v29 = [v12 firstObject];
+    firstObject3 = [v12 firstObject];
     objc_opt_class();
     v30 = objc_opt_isKindOfClass();
 
@@ -562,8 +562,8 @@ LABEL_21:
     if (v30)
     {
       v54 = v11;
-      v55 = v4;
-      v15 = [MEMORY[0x1E695DF70] array];
+      v55 = coderCopy;
+      array = [MEMORY[0x1E695DF70] array];
       v60 = 0u;
       v61 = 0u;
       v62 = 0u;
@@ -585,8 +585,8 @@ LABEL_21:
 
             v35 = *(*(&v60 + 1) + 8 * j);
             v36 = objc_autoreleasePoolPush();
-            v37 = [v35 dk_dedup];
-            [v15 addObject:v37];
+            dk_dedup = [v35 dk_dedup];
+            [array addObject:dk_dedup];
 
             objc_autoreleasePoolPop(v36);
           }
@@ -597,7 +597,7 @@ LABEL_21:
         while (v32);
       }
 
-      v12 = [v15 copy];
+      v12 = [array copy];
       goto LABEL_21;
     }
 
@@ -620,7 +620,7 @@ LABEL_24:
   v43 = *(v27 + 3840);
   v44 = [v40 setWithObjects:{v42, objc_opt_class(), 0}];
 
-  v45 = [v4 decodeObjectOfClasses:v44 forKey:@"transitions"];
+  v45 = [coderCopy decodeObjectOfClasses:v44 forKey:@"transitions"];
   v46 = [v45 mutableCopy];
 
   if ([v46 count])
@@ -629,8 +629,8 @@ LABEL_24:
     do
     {
       v48 = [v46 objectAtIndexedSubscript:v47];
-      v49 = [v48 dk_dedup];
-      [v46 setObject:v49 atIndexedSubscript:v47];
+      dk_dedup2 = [v48 dk_dedup];
+      [v46 setObject:dk_dedup2 atIndexedSubscript:v47];
 
       ++v47;
     }
@@ -650,10 +650,10 @@ LABEL_24:
   return v50;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -663,19 +663,19 @@ LABEL_24:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(_DKPredictionTimeline *)self isUnavailable];
-      v7 = [(_DKPredictionTimeline *)v5 isUnavailable];
-      if (v6 && (v7 & 1) != 0)
+      v5 = equalCopy;
+      isUnavailable = [(_DKPredictionTimeline *)self isUnavailable];
+      isUnavailable2 = [(_DKPredictionTimeline *)v5 isUnavailable];
+      if (isUnavailable && (isUnavailable2 & 1) != 0)
       {
         v8 = 1;
       }
 
-      else if (v6 == v7)
+      else if (isUnavailable == isUnavailable2)
       {
         startDate = self->_startDate;
-        v10 = [(_DKPredictionTimeline *)v5 startDate];
-        if ([(NSDate *)startDate isEqual:v10])
+        startDate = [(_DKPredictionTimeline *)v5 startDate];
+        if ([(NSDate *)startDate isEqual:startDate])
         {
           [(_DKPredictionTimeline *)self isEqual:v5, &v12];
           v8 = v12;
@@ -728,7 +728,7 @@ LABEL_24:
     if (v4)
     {
       v5 = v4;
-      v18 = self;
+      selfCopy = self;
       v6 = 0;
       v7 = *v21;
       do
@@ -747,7 +747,7 @@ LABEL_24:
           v12 = [description_formatter stringFromDate:v9];
           v13 = [description_formatter stringFromDate:v11];
           v6 = v10 + 1;
-          v14 = [(NSArray *)v18->_values objectAtIndexedSubscript:v10];
+          v14 = [(NSArray *)selfCopy->_values objectAtIndexedSubscript:v10];
           [(__CFString *)v19 appendFormat:@"\t(%@ - %@): %@\n", v12, v13, v14];
 
           v3 = v11;
@@ -771,32 +771,32 @@ LABEL_24:
   return v19;
 }
 
-- (void)initWithValues:(void *)a3 forDurations:(void *)a4 startingAt:
+- (void)initWithValues:(void *)values forDurations:(void *)durations startingAt:
 {
   v34 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  valuesCopy = values;
+  durationsCopy = durations;
+  if (self)
   {
-    v32.receiver = a1;
+    v32.receiver = self;
     v32.super_class = _DKPredictionTimeline;
     v10 = objc_msgSendSuper2(&v32, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
-      objc_storeStrong(v10 + 1, a4);
+      objc_storeStrong(v10 + 1, durations);
       v27 = v7;
       v11 = [v7 copy];
-      v12 = a1[5];
-      a1[5] = v11;
+      v12 = self[5];
+      self[5] = v11;
 
-      v13 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v14 = v8;
+      v14 = valuesCopy;
       v15 = [v14 countByEnumeratingWithState:&v28 objects:v33 count:16];
       if (v15)
       {
@@ -815,9 +815,9 @@ LABEL_24:
 
             [*(*(&v28 + 1) + 8 * v19) doubleValue];
             v18 = v18 + v20;
-            v21 = [v9 dateByAddingTimeInterval:v18];
-            v22 = [v21 dk_dedup];
-            [v13 addObject:v22];
+            v21 = [durationsCopy dateByAddingTimeInterval:v18];
+            dk_dedup = [v21 dk_dedup];
+            [array addObject:dk_dedup];
 
             ++v19;
           }
@@ -829,45 +829,45 @@ LABEL_24:
         while (v16);
       }
 
-      v23 = [v13 copy];
-      v24 = a1[2];
-      a1[2] = v23;
+      v23 = [array copy];
+      v24 = self[2];
+      self[2] = v23;
 
       v7 = v27;
     }
   }
 
   v25 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
-- (id)initWithValues:(void *)a3 eachWithDuration:(double)a4 startingAt:
+- (id)initWithValues:(void *)values eachWithDuration:(double)duration startingAt:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  valuesCopy = values;
+  if (self)
   {
-    v28.receiver = a1;
+    v28.receiver = self;
     v28.super_class = _DKPredictionTimeline;
-    a1 = objc_msgSendSuper2(&v28, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v28, sel_init);
+    if (self)
     {
-      v9 = [v8 dk_dedup];
-      v10 = a1[1];
-      a1[1] = v9;
+      dk_dedup = [valuesCopy dk_dedup];
+      v10 = self[1];
+      self[1] = dk_dedup;
 
       v11 = [v7 mutableCopy];
-      v12 = [MEMORY[0x1E695DF70] array];
-      v13 = a1[1];
+      array = [MEMORY[0x1E695DF70] array];
+      v13 = self[1];
       if ([v11 count] < 2)
       {
-        v15 = a4;
+        durationCopy3 = duration;
       }
 
       else
       {
         v14 = 1;
-        v15 = a4;
+        durationCopy3 = duration;
         do
         {
           v16 = [v11 objectAtIndexedSubscript:v14];
@@ -876,72 +876,72 @@ LABEL_24:
 
           if (v18)
           {
-            v15 = v15 + a4;
+            durationCopy3 = durationCopy3 + duration;
             [v11 removeObjectAtIndex:v14];
           }
 
           else
           {
-            v19 = [v13 dateByAddingTimeInterval:v15];
-            v20 = [v19 dk_dedup];
+            v19 = [v13 dateByAddingTimeInterval:durationCopy3];
+            dk_dedup2 = [v19 dk_dedup];
 
-            [v12 addObject:v20];
+            [array addObject:dk_dedup2];
             ++v14;
-            v15 = a4;
-            v13 = v20;
+            durationCopy3 = duration;
+            v13 = dk_dedup2;
           }
         }
 
         while (v14 < [v11 count]);
       }
 
-      v21 = [v13 dateByAddingTimeInterval:v15];
-      v22 = [v21 dk_dedup];
-      [v12 addObject:v22];
+      v21 = [v13 dateByAddingTimeInterval:durationCopy3];
+      dk_dedup3 = [v21 dk_dedup];
+      [array addObject:dk_dedup3];
 
-      v23 = [v12 copy];
-      v24 = a1[2];
-      a1[2] = v23;
+      v23 = [array copy];
+      v24 = self[2];
+      self[2] = v23;
 
       v25 = [v11 copy];
-      v26 = a1[5];
-      a1[5] = v25;
+      v26 = self[5];
+      self[5] = v25;
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)timelineWithValues:(id)a3 forDurations:(id)a4 startingAt:(id)a5
++ (id)timelineWithValues:(id)values forDurations:(id)durations startingAt:(id)at
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_DKPredictionTimeline *)[a1 alloc] initWithValues:v10 forDurations:v9 startingAt:v8];
+  atCopy = at;
+  durationsCopy = durations;
+  valuesCopy = values;
+  v11 = [(_DKPredictionTimeline *)[self alloc] initWithValues:valuesCopy forDurations:durationsCopy startingAt:atCopy];
 
   return v11;
 }
 
-+ (id)timelineWithValues:(id)a3 eachWithDuration:(double)a4 startingAt:(id)a5
++ (id)timelineWithValues:(id)values eachWithDuration:(double)duration startingAt:(id)at
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(_DKPredictionTimeline *)[a1 alloc] initWithValues:v9 eachWithDuration:v8 startingAt:a4];
+  atCopy = at;
+  valuesCopy = values;
+  v10 = [(_DKPredictionTimeline *)[self alloc] initWithValues:valuesCopy eachWithDuration:atCopy startingAt:duration];
 
   return v10;
 }
 
-- (void)setStartDate:(uint64_t)a1
+- (void)setStartDate:(uint64_t)date
 {
-  if (a1)
+  if (date)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((date + 8), a2);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(_DKPredictionTimeline *)v4 setStartDate:?];
   v5 = [(NSArray *)self->_values copy];
   [(_DKSyncType *)v4 setXpcActivity:v5];

@@ -1,6 +1,6 @@
 @interface SHFUPlugin
-- (BOOL)abortRegistryEntryID:(id)a3;
-- (BOOL)deviceNeedsUpdate:(id)a3;
+- (BOOL)abortRegistryEntryID:(id)d;
+- (BOOL)deviceNeedsUpdate:(id)update;
 - (BOOL)hostBatteryOnACPower;
 - (BOOL)hostConnectedToNetwork;
 - (BOOL)reconnectDeviceToHost;
@@ -9,45 +9,45 @@
 - (NSString)description;
 - (NSString)errorDomain;
 - (SHFUPlugin)init;
-- (SHFUPlugin)initWithCoder:(id)a3;
-- (SHFUPlugin)initWithDeviceClass:(id)a3 delegate:(id)a4 info:(id *)a5 options:(id)a6;
-- (SHFUPlugin)initWithDeviceClass:(id)a3 delegate:(id)a4 info:(id *)a5 options:(id)a6 deviceProperties:(id)a7;
-- (id)getParsersForHWRevID:(id)a3;
-- (id)getPreloadedFWVersions:(id *)a3;
+- (SHFUPlugin)initWithCoder:(id)coder;
+- (SHFUPlugin)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options;
+- (SHFUPlugin)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options deviceProperties:(id)properties;
+- (id)getParsersForHWRevID:(id)d;
+- (id)getPreloadedFWVersions:(id *)versions;
 - (id)sendPersonalizedFirmwareToDevice;
 - (id)verifyDeviceBattery;
 - (id)verifyLatestFWVersions;
 - (int)hostBatteryCapacity;
-- (unint64_t)getTotalPrepareBytes:(id)a3;
-- (void)applyFirmwareWithOptions:(id)a3;
-- (void)bootstrapWithOptions:(id)a3;
+- (unint64_t)getTotalPrepareBytes:(id)bytes;
+- (void)applyFirmwareWithOptions:(id)options;
+- (void)bootstrapWithOptions:(id)options;
 - (void)btSessionArrived;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)checkNetworkReachability:(unsigned int)a3;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)checkNetworkReachability:(unsigned int)reachability;
 - (void)clearNotification;
 - (void)clearOldRegistryEntryIDs;
-- (void)commitFirmwareWithOptions:(id)a3;
+- (void)commitFirmwareWithOptions:(id)options;
 - (void)createPowerAssertion;
 - (void)dealloc;
 - (void)delayBootstrap;
 - (void)executeNextBootstrapAction;
-- (void)finishWithOptions:(id)a3;
-- (void)logIORegistryEntry:(id)a3;
-- (void)personalizationResponse:(id)a3 response:(id)a4 status:(id)a5;
-- (void)prepareFirmwareWithOptions:(id)a3;
+- (void)finishWithOptions:(id)options;
+- (void)logIORegistryEntry:(id)entry;
+- (void)personalizationResponse:(id)response response:(id)a4 status:(id)status;
+- (void)prepareFirmwareWithOptions:(id)options;
 - (void)registerForMatchNotification;
 - (void)releasePowerAssertion;
-- (void)sendFirmwareToDeviceWithOptions:(id)a3;
+- (void)sendFirmwareToDeviceWithOptions:(id)options;
 - (void)sendPersonalizedManifestsToDevice;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)setupBTSession;
-- (void)storeRegistryEntryID:(id)a3;
+- (void)storeRegistryEntryID:(id)d;
 - (void)tagForBluetoothGATTServicesDiscovery;
 - (void)verifyHostBattery;
 - (void)waitForBTSession;
-- (void)waitForDeviceEnumerationWithProgressUpdates:(BOOL)a3;
+- (void)waitForDeviceEnumerationWithProgressUpdates:(BOOL)updates;
 - (void)waitForNetwork;
-- (void)waitForUserInactivity:(int)a3 withOptions:(id)a4;
+- (void)waitForUserInactivity:(int)inactivity withOptions:(id)options;
 @end
 
 @implementation SHFUPlugin
@@ -82,22 +82,22 @@
   [(SHFUPlugin *)self setMatchSemaphore:v4];
 
   notificationPort = self->_notificationPort;
-  v6 = [(SHFUPlugin *)self serialQueue];
-  IONotificationPortSetDispatchQueue(notificationPort, v6);
+  serialQueue = [(SHFUPlugin *)self serialQueue];
+  IONotificationPortSetDispatchQueue(notificationPort, serialQueue);
 
   matching = IOServiceMatching("IOHIDDevice");
-  v7 = [(SHFUPlugin *)self vendorID];
-  [(__CFDictionary *)matching setObject:v7 forKeyedSubscript:@"VendorID"];
+  vendorID = [(SHFUPlugin *)self vendorID];
+  [(__CFDictionary *)matching setObject:vendorID forKeyedSubscript:@"VendorID"];
 
-  v8 = [(SHFUPlugin *)self productID];
-  [(__CFDictionary *)matching setObject:v8 forKeyedSubscript:@"ProductID"];
+  productID = [(SHFUPlugin *)self productID];
+  [(__CFDictionary *)matching setObject:productID forKeyedSubscript:@"ProductID"];
 
-  v9 = [(SHFUPlugin *)self productID];
-  v10 = [v9 intValue];
+  productID2 = [(SHFUPlugin *)self productID];
+  intValue = [productID2 intValue];
 
-  if (v10 > 612)
+  if (intValue > 612)
   {
-    if (((v10 - 613) > 0x3A || ((1 << (v10 - 101)) & 0x4A06000001F01FFLL) == 0) && v10 != 786)
+    if (((intValue - 613) > 0x3A || ((1 << (intValue - 101)) & 0x4A06000001F01FFLL) == 0) && intValue != 786)
     {
       goto LABEL_17;
     }
@@ -109,7 +109,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v10 == 332 || v10 == 546)
+  if (intValue == 332 || intValue == 546)
   {
     goto LABEL_5;
   }
@@ -126,7 +126,7 @@ LABEL_6:
   }
 }
 
-- (SHFUPlugin)initWithCoder:(id)a3
+- (SHFUPlugin)initWithCoder:(id)coder
 {
   [NSException raise:NSInternalInconsistencyException format:@"NSCoding protocol unused by fud"];
 
@@ -140,31 +140,31 @@ LABEL_6:
   return [(SHFUPlugin *)self initWithDeviceClass:&stru_1000249B8 delegate:0 info:0 options:0 deviceProperties:0];
 }
 
-- (SHFUPlugin)initWithDeviceClass:(id)a3 delegate:(id)a4 info:(id *)a5 options:(id)a6
+- (SHFUPlugin)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options
 {
-  [NSException raise:NSInternalInconsistencyException format:@"use -initWithDeviceClass:delegate:info:options:deviceProperties:", a5, a6];
+  [NSException raise:NSInternalInconsistencyException format:@"use -initWithDeviceClass:delegate:info:options:deviceProperties:", info, options];
 
   return [(SHFUPlugin *)self initWithDeviceClass:&stru_1000249B8 delegate:0 info:0 options:0 deviceProperties:0];
 }
 
-- (SHFUPlugin)initWithDeviceClass:(id)a3 delegate:(id)a4 info:(id *)a5 options:(id)a6 deviceProperties:(id)a7
+- (SHFUPlugin)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options deviceProperties:(id)properties
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v15 objectForKeyedSubscript:@"Policy"];
-  v17 = [v15 objectForKeyedSubscript:@"MatchingDictionary"];
+  classCopy = class;
+  delegateCopy = delegate;
+  optionsCopy = options;
+  propertiesCopy = properties;
+  v16 = [propertiesCopy objectForKeyedSubscript:@"Policy"];
+  v17 = [propertiesCopy objectForKeyedSubscript:@"MatchingDictionary"];
   v18 = v17;
-  v19 = 0;
-  if (v15 && v16 && v17)
+  selfCopy = 0;
+  if (propertiesCopy && v16 && v17)
   {
     v131.receiver = self;
     v131.super_class = SHFUPlugin;
     v20 = [(SHFUPlugin *)&v131 init];
     if (v20)
     {
-      v128 = a5;
+      infoCopy = info;
       v21 = dispatch_queue_create("com.apple.StandaloneHIDFudPlugins.SHFUPlugin", 0);
       serialQueue = v20->_serialQueue;
       v20->_serialQueue = v21;
@@ -192,12 +192,12 @@ LABEL_6:
       versionCheckDelay = v20->_versionCheckDelay;
       v20->_versionCheckDelay = v31;
 
-      v130 = v12;
-      v33 = [[NSString alloc] initWithString:v12];
+      v130 = classCopy;
+      v33 = [[NSString alloc] initWithString:classCopy];
       deviceClass = v20->_deviceClass;
       v20->_deviceClass = v33;
 
-      v35 = [[NSDictionary alloc] initWithDictionary:v14];
+      v35 = [[NSDictionary alloc] initWithDictionary:optionsCopy];
       options = v20->_options;
       v20->_options = v35;
 
@@ -205,8 +205,8 @@ LABEL_6:
       pluginInfo = v20->_pluginInfo;
       v20->_pluginInfo = v37;
 
-      v129 = v13;
-      objc_storeWeak(&v20->_delegate, v13);
+      v129 = delegateCopy;
+      objc_storeWeak(&v20->_delegate, delegateCopy);
       v39 = objc_alloc_init(NSMutableDictionary);
       parsers = v20->_parsers;
       v20->_parsers = v39;
@@ -217,8 +217,8 @@ LABEL_6:
 
       v43 = [NSURL alloc];
       v44 = [v16 objectForKeyedSubscript:@"FirmwareDirectory"];
-      v45 = [v44 stringByStandardizingPath];
-      v46 = [v43 initFileURLWithPath:v45 isDirectory:1];
+      stringByStandardizingPath = [v44 stringByStandardizingPath];
+      v46 = [v43 initFileURLWithPath:stringByStandardizingPath isDirectory:1];
       firmwareDirectory = v20->_firmwareDirectory;
       v20->_firmwareDirectory = v46;
 
@@ -377,8 +377,8 @@ LABEL_6:
       v111 = [v88 stringForKey:@"TargetDevice"];
       if (v111)
       {
-        v112 = [(NSURL *)v20->_firmwareDirectory path];
-        v113 = [v112 hasSuffix:v111];
+        path = [(NSURL *)v20->_firmwareDirectory path];
+        v113 = [path hasSuffix:v111];
 
         if (v113)
         {
@@ -401,8 +401,8 @@ LABEL_6:
       if (v117)
       {
         v118 = [NSURL alloc];
-        v119 = [v117 stringByStandardizingPath];
-        v120 = [v118 initFileURLWithPath:v119 isDirectory:1];
+        stringByStandardizingPath2 = [v117 stringByStandardizingPath];
+        v120 = [v118 initFileURLWithPath:stringByStandardizingPath2 isDirectory:1];
         v121 = v20->_firmwareDirectory;
         v20->_firmwareDirectory = v120;
       }
@@ -415,29 +415,29 @@ LABEL_6:
       transaction = v20->_transaction;
       v20->_transaction = v124;
 
-      v126 = [v15 objectForKeyedSubscript:@"DeviceClassName"];
+      v126 = [propertiesCopy objectForKeyedSubscript:@"DeviceClassName"];
       [(NSMutableDictionary *)v20->_pluginInfo setObject:v126 forKeyedSubscript:@"DeviceClassName"];
 
       [(NSMutableDictionary *)v20->_pluginInfo setObject:&off_100026B58 forKeyedSubscript:@"PrepareWeight"];
       [(NSMutableDictionary *)v20->_pluginInfo setObject:&off_100026B68 forKeyedSubscript:@"ApplyWeight"];
       [(NSMutableDictionary *)v20->_pluginInfo setObject:&off_100026B78 forKeyedSubscript:@"FinishWeight"];
-      *v128 = v20->_pluginInfo;
+      *infoCopy = v20->_pluginInfo;
 
-      v13 = v129;
-      v12 = v130;
+      delegateCopy = v129;
+      classCopy = v130;
     }
 
     self = v20;
-    v19 = self;
+    selfCopy = self;
   }
 
-  return v19;
+  return selfCopy;
 }
 
 - (NSString)errorDomain
 {
-  v2 = [(SHFUPlugin *)self loggingIdentifier];
-  v3 = [NSString stringWithFormat:@"%@.%@", @"com.apple.MobileAccessoryUpdater.StandaloneHIDFudPlugins", v2];
+  loggingIdentifier = [(SHFUPlugin *)self loggingIdentifier];
+  v3 = [NSString stringWithFormat:@"%@.%@", @"com.apple.MobileAccessoryUpdater.StandaloneHIDFudPlugins", loggingIdentifier];
 
   return v3;
 }
@@ -501,41 +501,41 @@ LABEL_6:
 
 - (NSString)description
 {
-  v23 = [(SHFUPlugin *)self versionCheckDelay];
-  v22 = [(SHFUPlugin *)self inactivityDelayPreflight];
-  v21 = [(SHFUPlugin *)self allowDowngrade];
-  v20 = [(SHFUPlugin *)self bootstrapDelay];
-  v16 = [(SHFUPlugin *)self inactivityDelay];
-  v19 = [(SHFUPlugin *)self networkDelay];
-  v15 = [(SHFUPlugin *)self featureReportDelay];
-  v18 = [(SHFUPlugin *)self compatibilityVersion];
-  v17 = [(SHFUPlugin *)self batteryCheckHost];
-  v3 = [(SHFUPlugin *)self batteryCheckDevice];
-  v4 = [(SHFUPlugin *)self minBatteryHost];
-  v5 = [(SHFUPlugin *)self minBatteryDevice];
-  v14 = [(SHFUPlugin *)self STFWFirst];
-  v6 = [(SHFUPlugin *)self resetEveryFWPayload];
-  v7 = [(SHFUPlugin *)self deviceNeedsBTReconnect];
-  v13 = [(SHFUPlugin *)self sendSDPQueryNotification];
-  v8 = [(SHFUPlugin *)self btReconnectDelay];
-  v12 = [(SHFUPlugin *)self targetDevice];
-  v9 = [(SHFUPlugin *)self abortUpdate];
-  v10 = [NSString stringWithFormat:@"FW update policy: %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@", @"VersionCheckDelay", v23, @"InactivityDelayPreflight", v22, @"AllowDowngrade", v21, @"BootstrapDelay", v20, @"InactivityDelay", v16, @"NetworkDelay", v19, @"FeatureReportDelay", v15, @"CompatibilityVersion", v18, @"BatteryCheckHost", v17, @"BatteryCheckDevice", v3, @"MinBatteryHost", v4, @"MinBatteryDevice", v5, @"STFWFirst", v14, @"ResetEveryFWPayload", v6, @"NeedsBluetoothReconnect", v7, @"SendSDPQueryNotification", v13, @"BluetoothReconnectDelay", v8, @"TargetDevice", v12, @"AbortUpdate", v9];
+  versionCheckDelay = [(SHFUPlugin *)self versionCheckDelay];
+  inactivityDelayPreflight = [(SHFUPlugin *)self inactivityDelayPreflight];
+  allowDowngrade = [(SHFUPlugin *)self allowDowngrade];
+  bootstrapDelay = [(SHFUPlugin *)self bootstrapDelay];
+  inactivityDelay = [(SHFUPlugin *)self inactivityDelay];
+  networkDelay = [(SHFUPlugin *)self networkDelay];
+  featureReportDelay = [(SHFUPlugin *)self featureReportDelay];
+  compatibilityVersion = [(SHFUPlugin *)self compatibilityVersion];
+  batteryCheckHost = [(SHFUPlugin *)self batteryCheckHost];
+  batteryCheckDevice = [(SHFUPlugin *)self batteryCheckDevice];
+  minBatteryHost = [(SHFUPlugin *)self minBatteryHost];
+  minBatteryDevice = [(SHFUPlugin *)self minBatteryDevice];
+  sTFWFirst = [(SHFUPlugin *)self STFWFirst];
+  resetEveryFWPayload = [(SHFUPlugin *)self resetEveryFWPayload];
+  deviceNeedsBTReconnect = [(SHFUPlugin *)self deviceNeedsBTReconnect];
+  sendSDPQueryNotification = [(SHFUPlugin *)self sendSDPQueryNotification];
+  btReconnectDelay = [(SHFUPlugin *)self btReconnectDelay];
+  targetDevice = [(SHFUPlugin *)self targetDevice];
+  abortUpdate = [(SHFUPlugin *)self abortUpdate];
+  v10 = [NSString stringWithFormat:@"FW update policy: %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@", @"VersionCheckDelay", versionCheckDelay, @"InactivityDelayPreflight", inactivityDelayPreflight, @"AllowDowngrade", allowDowngrade, @"BootstrapDelay", bootstrapDelay, @"InactivityDelay", inactivityDelay, @"NetworkDelay", networkDelay, @"FeatureReportDelay", featureReportDelay, @"CompatibilityVersion", compatibilityVersion, @"BatteryCheckHost", batteryCheckHost, @"BatteryCheckDevice", batteryCheckDevice, @"MinBatteryHost", minBatteryHost, @"MinBatteryDevice", minBatteryDevice, @"STFWFirst", sTFWFirst, @"ResetEveryFWPayload", resetEveryFWPayload, @"NeedsBluetoothReconnect", deviceNeedsBTReconnect, @"SendSDPQueryNotification", sendSDPQueryNotification, @"BluetoothReconnectDelay", btReconnectDelay, @"TargetDevice", targetDevice, @"AbortUpdate", abortUpdate];
 
   return v10;
 }
 
-- (void)logIORegistryEntry:(id)a3
+- (void)logIORegistryEntry:(id)entry
 {
-  v4 = a3;
-  if (v4)
+  entryCopy = entry;
+  if (entryCopy)
   {
-    v5 = [(SHFUPlugin *)self logHandle];
-    v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
+    logHandle = [(SHFUPlugin *)self logHandle];
+    v6 = os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG);
 
     if (v6)
     {
-      v7 = IORegistryEntryIDMatching([v4 unsignedLongLongValue]);
+      v7 = IORegistryEntryIDMatching([entryCopy unsignedLongLongValue]);
       existing = 0;
       if (!IOServiceGetMatchingServices(kIOMasterPortDefault, v7, &existing))
       {
@@ -553,15 +553,15 @@ LABEL_6:
               if (properties)
               {
                 [(__CFDictionary *)properties removeObjectForKey:@"Elements"];
-                v12 = [(SHFUPlugin *)self logHandle];
-                if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+                logHandle2 = [(SHFUPlugin *)self logHandle];
+                if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
                 {
-                  v13 = [v4 unsignedLongLongValue];
+                  unsignedLongLongValue = [entryCopy unsignedLongLongValue];
                   *buf = 134218242;
-                  v17 = v13;
+                  v17 = unsignedLongLongValue;
                   v18 = 2112;
                   v19 = v11;
-                  _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "IORegistryEntry ID 0x%016llX properties: %@", buf, 0x16u);
+                  _os_log_debug_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEBUG, "IORegistryEntry ID 0x%016llX properties: %@", buf, 0x16u);
                 }
               }
             }
@@ -579,34 +579,34 @@ LABEL_6:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  delegateCopy = delegate;
+  logHandle = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     sub_100014638();
   }
 
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 }
 
 - (BOOL)hostBatteryOnACPower
 {
-  v2 = [(SHFUPlugin *)self hostPowerSource];
-  v3 = [v2 objectForKeyedSubscript:@"Power Source State"];
+  hostPowerSource = [(SHFUPlugin *)self hostPowerSource];
+  v3 = [hostPowerSource objectForKeyedSubscript:@"Power Source State"];
 
-  LOBYTE(v2) = [v3 isEqualToString:@"AC Power"];
-  return v2;
+  LOBYTE(hostPowerSource) = [v3 isEqualToString:@"AC Power"];
+  return hostPowerSource;
 }
 
 - (int)hostBatteryCapacity
 {
-  v2 = [(SHFUPlugin *)self hostPowerSource];
-  v3 = [v2 objectForKeyedSubscript:@"Current Capacity"];
+  hostPowerSource = [(SHFUPlugin *)self hostPowerSource];
+  v3 = [hostPowerSource objectForKeyedSubscript:@"Current Capacity"];
 
-  LODWORD(v2) = [v3 intValue];
-  return v2;
+  LODWORD(hostPowerSource) = [v3 intValue];
+  return hostPowerSource;
 }
 
 - (NSDictionary)hostPowerSource
@@ -658,25 +658,25 @@ LABEL_6:
 
 - (void)verifyHostBattery
 {
-  v3 = [(SHFUPlugin *)self batteryCheckHost];
-  if ([v3 BOOLValue])
+  batteryCheckHost = [(SHFUPlugin *)self batteryCheckHost];
+  if ([batteryCheckHost BOOLValue])
   {
-    v4 = [(SHFUPlugin *)self hostBatteryCapacity];
-    v5 = [(SHFUPlugin *)self minBatteryHost];
-    v6 = [v5 intValue];
+    hostBatteryCapacity = [(SHFUPlugin *)self hostBatteryCapacity];
+    minBatteryHost = [(SHFUPlugin *)self minBatteryHost];
+    intValue = [minBatteryHost intValue];
 
-    if (v4 < v6)
+    if (hostBatteryCapacity < intValue)
     {
-      v7 = [(SHFUPlugin *)self logHandle];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      logHandle = [(SHFUPlugin *)self logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(SHFUPlugin *)self hostBatteryCapacity];
-        v9 = [(SHFUPlugin *)self minBatteryHost];
+        hostBatteryCapacity2 = [(SHFUPlugin *)self hostBatteryCapacity];
+        minBatteryHost2 = [(SHFUPlugin *)self minBatteryHost];
         *buf = 67109376;
-        *v40 = v8;
+        *v40 = hostBatteryCapacity2;
         *&v40[4] = 1024;
-        *&v40[6] = [v9 intValue];
-        _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Host battery %d%% is below minimum %d%%", buf, 0xEu);
+        *&v40[6] = [minBatteryHost2 intValue];
+        _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Host battery %d%% is below minimum %d%%", buf, 0xEu);
       }
 
       objc_initWeak(&location, self);
@@ -695,12 +695,12 @@ LABEL_6:
       v11 = objc_retainBlock(v34);
       if ([(SHFUPlugin *)self hostBatteryOnACPower])
       {
-        v12 = [(SHFUPlugin *)self logHandle];
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+        logHandle2 = [(SHFUPlugin *)self logHandle];
+        if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
           *v40 = 3600;
-          _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Host battery on AC power. Wait %llu seconds for battery level to reach minimum.", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Host battery on AC power. Wait %llu seconds for battery level to reach minimum.", buf, 0xCu);
         }
 
         v30[0] = _NSConcreteStackBlock;
@@ -713,19 +713,19 @@ LABEL_6:
         v14 = v10;
         v32 = v14;
         v15 = objc_retainBlock(v30);
-        v16 = [(SHFUPlugin *)self serialQueue];
-        v17 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v16);
+        serialQueue = [(SHFUPlugin *)self serialQueue];
+        v17 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, serialQueue);
         [(SHFUPlugin *)self setBatteryTimer:v17];
 
-        v18 = [(SHFUPlugin *)self batteryTimer];
+        batteryTimer = [(SHFUPlugin *)self batteryTimer];
 
-        if (v18)
+        if (batteryTimer)
         {
-          v19 = [(SHFUPlugin *)self batteryTimer];
+          batteryTimer2 = [(SHFUPlugin *)self batteryTimer];
           v20 = dispatch_time(0, 3600000000000);
-          dispatch_source_set_timer(v19, v20, 0x34630B8A000uLL, 0x12A05F200uLL);
+          dispatch_source_set_timer(batteryTimer2, v20, 0x34630B8A000uLL, 0x12A05F200uLL);
 
-          v21 = [(SHFUPlugin *)self batteryTimer];
+          batteryTimer3 = [(SHFUPlugin *)self batteryTimer];
           handler[0] = _NSConcreteStackBlock;
           handler[1] = 3221225472;
           handler[2] = sub_1000030BC;
@@ -734,16 +734,16 @@ LABEL_6:
           v26 = v15;
           v27 = v13;
           v28 = v14;
-          dispatch_source_set_event_handler(v21, handler);
+          dispatch_source_set_event_handler(batteryTimer3, handler);
 
-          v22 = [(SHFUPlugin *)self batteryTimer];
-          dispatch_activate(v22);
+          batteryTimer4 = [(SHFUPlugin *)self batteryTimer];
+          dispatch_activate(batteryTimer4);
 
           objc_destroyWeak(&v29);
         }
 
-        v23 = [(SHFUPlugin *)self serialQueue];
-        v24 = notify_register_dispatch("com.apple.system.powersources.percent", &self->_batteryToken, v23, v15);
+        serialQueue2 = [(SHFUPlugin *)self serialQueue];
+        v24 = notify_register_dispatch("com.apple.system.powersources.percent", &self->_batteryToken, serialQueue2, v15);
 
         if (v24)
         {
@@ -780,24 +780,24 @@ LABEL_6:
 
 - (id)verifyDeviceBattery
 {
-  v3 = [(SHFUPlugin *)self batteryCheckDevice];
-  v4 = [v3 BOOLValue];
+  batteryCheckDevice = [(SHFUPlugin *)self batteryCheckDevice];
+  bOOLValue = [batteryCheckDevice BOOLValue];
 
-  if (!v4)
+  if (!bOOLValue)
   {
     v13 = 0;
     goto LABEL_22;
   }
 
-  v5 = [(SHFUPlugin *)self delegate];
-  v6 = [(SHFUPlugin *)self batteryCheckDevice];
-  v7 = [v6 BOOLValue];
-  v8 = [(SHFUPlugin *)self logHandle];
-  v9 = [(SHFUPlugin *)self options];
-  v10 = [v9 objectForKeyedSubscript:@"IOMatchLaunchServiceID"];
-  v11 = [(SHFUPlugin *)self errorDomain];
+  delegate = [(SHFUPlugin *)self delegate];
+  batteryCheckDevice2 = [(SHFUPlugin *)self batteryCheckDevice];
+  bOOLValue2 = [batteryCheckDevice2 BOOLValue];
+  logHandle = [(SHFUPlugin *)self logHandle];
+  options = [(SHFUPlugin *)self options];
+  v10 = [options objectForKeyedSubscript:@"IOMatchLaunchServiceID"];
+  errorDomain = [(SHFUPlugin *)self errorDomain];
   v40 = 0;
-  v12 = [SHFUDevice getDevices:v5 hasPowerSource:v7 logHandle:v8 registryEntryID:v10 errorDomain:v11 error:&v40];
+  v12 = [SHFUDevice getDevices:delegate hasPowerSource:bOOLValue2 logHandle:logHandle registryEntryID:v10 errorDomain:errorDomain error:&v40];
   v13 = v40;
 
   if (v13)
@@ -833,37 +833,37 @@ LABEL_6:
       }
 
       v19 = *(*(&v36 + 1) + 8 * i);
-      v20 = [v19 powerSource];
+      powerSource = [v19 powerSource];
 
-      if (!v20)
+      if (!powerSource)
       {
         v26 = [NSString stringWithFormat:@"No power source for device %@", v19];
         v30 = [NSError alloc];
-        v28 = [(SHFUPlugin *)self errorDomain];
+        errorDomain2 = [(SHFUPlugin *)self errorDomain];
         v43 = NSLocalizedDescriptionKey;
         v44 = v26;
         v31 = [NSDictionary dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-        v29 = [v30 initWithDomain:v28 code:58 userInfo:v31];
+        v29 = [v30 initWithDomain:errorDomain2 code:58 userInfo:v31];
 
         v13 = v31;
         goto LABEL_12;
       }
 
-      v21 = [v19 batteryCapacity];
-      v22 = [(SHFUPlugin *)self minBatteryDevice];
-      v23 = [v22 intValue];
+      batteryCapacity = [v19 batteryCapacity];
+      minBatteryDevice = [(SHFUPlugin *)self minBatteryDevice];
+      intValue = [minBatteryDevice intValue];
 
-      if (v21 < v23)
+      if (batteryCapacity < intValue)
       {
-        v24 = [v19 batteryCapacity];
-        v25 = [(SHFUPlugin *)self minBatteryDevice];
-        v26 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Low battery %d%% below minimum %d%% for device %@", v24, [v25 intValue], v19);
+        batteryCapacity2 = [v19 batteryCapacity];
+        minBatteryDevice2 = [(SHFUPlugin *)self minBatteryDevice];
+        v26 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Low battery %d%% below minimum %d%% for device %@", batteryCapacity2, [minBatteryDevice2 intValue], v19);
 
         v27 = [NSError alloc];
         v41 = NSLocalizedDescriptionKey;
         v42 = v26;
-        v28 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
-        v29 = [v27 initWithDomain:@"com.apple.MobileAccessoryUpdater.ErrorDomain" code:-1 userInfo:v28];
+        errorDomain2 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
+        v29 = [v27 initWithDomain:@"com.apple.MobileAccessoryUpdater.ErrorDomain" code:-1 userInfo:errorDomain2];
 LABEL_12:
 
         v13 = v29;
@@ -895,19 +895,19 @@ LABEL_22:
 
 - (void)btSessionArrived
 {
-  v2 = [(SHFUPlugin *)self btSessionSemaphore];
-  dispatch_semaphore_signal(v2);
+  btSessionSemaphore = [(SHFUPlugin *)self btSessionSemaphore];
+  dispatch_semaphore_signal(btSessionSemaphore);
 }
 
 - (void)setupBTSession
 {
-  v3 = [(SHFUPlugin *)self serialQueue];
+  serialQueue = [(SHFUPlugin *)self serialQueue];
   v4 = BTSessionAttachWithQueue();
 
   if (v4)
   {
-    v5 = [(SHFUPlugin *)self logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    logHandle = [(SHFUPlugin *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_1000146A8();
     }
@@ -921,13 +921,13 @@ LABEL_22:
 
   [(SHFUPlugin *)self setupBTSession];
   v4 = dispatch_time(0, 10000000000);
-  v5 = [(SHFUPlugin *)self btSessionSemaphore];
-  v6 = dispatch_semaphore_wait(v5, v4);
+  btSessionSemaphore = [(SHFUPlugin *)self btSessionSemaphore];
+  v6 = dispatch_semaphore_wait(btSessionSemaphore, v4);
 
   if (v6)
   {
-    v7 = [(SHFUPlugin *)self logHandle];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    logHandle = [(SHFUPlugin *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_100014718();
     }
@@ -937,49 +937,49 @@ LABEL_22:
 - (BOOL)reconnectDeviceToHost
 {
   objc_initWeak(&location, self);
-  v3 = [(SHFUPlugin *)self deviceNeedsBTReconnect];
-  if (![v3 BOOLValue])
+  deviceNeedsBTReconnect = [(SHFUPlugin *)self deviceNeedsBTReconnect];
+  if (![deviceNeedsBTReconnect BOOLValue])
   {
     goto LABEL_10;
   }
 
-  v4 = [(SHFUPlugin *)self btAddress];
-  v5 = [v4 length] == 0;
+  btAddress = [(SHFUPlugin *)self btAddress];
+  v5 = [btAddress length] == 0;
 
   if (!v5)
   {
     if ([(SHFUPlugin *)self btSession])
     {
-      v6 = [(SHFUPlugin *)self btReconnectDelay];
-      [v6 doubleValue];
-      v3 = [NSDate dateWithTimeIntervalSinceNow:?];
+      btReconnectDelay = [(SHFUPlugin *)self btReconnectDelay];
+      [btReconnectDelay doubleValue];
+      deviceNeedsBTReconnect = [NSDate dateWithTimeIntervalSinceNow:?];
 
-      v7 = [(SHFUPlugin *)self logHandle];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      logHandle = [(SHFUPlugin *)self logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v18 = v3;
-        _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Reconnect device at %@", buf, 0xCu);
+        v18 = deviceNeedsBTReconnect;
+        _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Reconnect device at %@", buf, 0xCu);
       }
 
-      v8 = [(SHFUPlugin *)self btReconnectDelay];
-      [v8 doubleValue];
+      btReconnectDelay2 = [(SHFUPlugin *)self btReconnectDelay];
+      [btReconnectDelay2 doubleValue];
       v10 = dispatch_time(0, (v9 * 1000000000.0));
-      v11 = [(SHFUPlugin *)self serialQueue];
+      serialQueue = [(SHFUPlugin *)self serialQueue];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_1000039A8;
       v14[3] = &unk_1000245D0;
       objc_copyWeak(&v15, &location);
-      dispatch_after(v10, v11, v14);
+      dispatch_after(v10, serialQueue, v14);
 
       objc_destroyWeak(&v15);
       v12 = 1;
       goto LABEL_11;
     }
 
-    v3 = [(SHFUPlugin *)self logHandle];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    deviceNeedsBTReconnect = [(SHFUPlugin *)self logHandle];
+    if (os_log_type_enabled(deviceNeedsBTReconnect, OS_LOG_TYPE_ERROR))
     {
       sub_100014754();
     }
@@ -999,10 +999,10 @@ LABEL_12:
 
 - (void)delayBootstrap
 {
-  v3 = [(SHFUPlugin *)self bootstrapDelay];
-  v4 = [v3 intValue];
+  bootstrapDelay = [(SHFUPlugin *)self bootstrapDelay];
+  intValue = [bootstrapDelay intValue];
 
-  if (v4 < 1)
+  if (intValue < 1)
   {
 
     [(SHFUPlugin *)self executeNextBootstrapAction];
@@ -1010,40 +1010,40 @@ LABEL_12:
 
   else
   {
-    v5 = [(SHFUPlugin *)self serialQueue];
-    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v5);
+    serialQueue = [(SHFUPlugin *)self serialQueue];
+    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, serialQueue);
     [(SHFUPlugin *)self setDelayBootstrapSource:v6];
 
-    v7 = [(SHFUPlugin *)self delayBootstrapSource];
+    delayBootstrapSource = [(SHFUPlugin *)self delayBootstrapSource];
 
-    if (v7)
+    if (delayBootstrapSource)
     {
-      v8 = [(SHFUPlugin *)self delayBootstrapSource];
-      v9 = [(SHFUPlugin *)self bootstrapDelay];
-      v10 = dispatch_time(0, 1000000000 * [v9 intValue]);
-      v11 = [(SHFUPlugin *)self bootstrapDelay];
-      dispatch_source_set_timer(v8, v10, 1000000000 * [v11 intValue], 0xEE6B280uLL);
+      delayBootstrapSource2 = [(SHFUPlugin *)self delayBootstrapSource];
+      bootstrapDelay2 = [(SHFUPlugin *)self bootstrapDelay];
+      v10 = dispatch_time(0, 1000000000 * [bootstrapDelay2 intValue]);
+      bootstrapDelay3 = [(SHFUPlugin *)self bootstrapDelay];
+      dispatch_source_set_timer(delayBootstrapSource2, v10, 1000000000 * [bootstrapDelay3 intValue], 0xEE6B280uLL);
 
       objc_initWeak(&location, self);
-      v12 = [(SHFUPlugin *)self delayBootstrapSource];
+      delayBootstrapSource3 = [(SHFUPlugin *)self delayBootstrapSource];
       v17 = _NSConcreteStackBlock;
       v18 = 3221225472;
       v19 = sub_100003DCC;
       v20 = &unk_1000245D0;
       objc_copyWeak(&v21, &location);
-      dispatch_source_set_event_handler(v12, &v17);
+      dispatch_source_set_event_handler(delayBootstrapSource3, &v17);
 
       v13 = [(SHFUPlugin *)self delayBootstrapSource:v17];
       dispatch_activate(v13);
 
-      v14 = [(SHFUPlugin *)self logHandle];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+      logHandle = [(SHFUPlugin *)self logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
       {
-        v15 = [(SHFUPlugin *)self bootstrapDelay];
-        v16 = [v15 intValue];
+        bootstrapDelay4 = [(SHFUPlugin *)self bootstrapDelay];
+        intValue2 = [bootstrapDelay4 intValue];
         *buf = 67109120;
-        v24 = v16;
-        _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Delay bootstrap for %d seconds", buf, 8u);
+        v24 = intValue2;
+        _os_log_debug_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEBUG, "Delay bootstrap for %d seconds", buf, 8u);
       }
 
       objc_destroyWeak(&v21);
@@ -1078,8 +1078,8 @@ LABEL_12:
     v5 = 0;
   }
 
-  v6 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  logHandle = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
   {
     v7 = "NOT ";
     if (v5)
@@ -1089,31 +1089,31 @@ LABEL_12:
 
     v9 = 136315138;
     v10 = v7;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%sconnected to the network", &v9, 0xCu);
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_INFO, "%sconnected to the network", &v9, 0xCu);
   }
 
   return v5;
 }
 
-- (void)checkNetworkReachability:(unsigned int)a3
+- (void)checkNetworkReachability:(unsigned int)reachability
 {
-  v3 = a3;
-  v5 = [(SHFUPlugin *)self networkReachability];
-  if ((v3 & 2) != 0 && v5)
+  reachabilityCopy = reachability;
+  networkReachability = [(SHFUPlugin *)self networkReachability];
+  if ((reachabilityCopy & 2) != 0 && networkReachability)
   {
-    v6 = [(SHFUPlugin *)self logHandle];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(SHFUPlugin *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(buf[0]) = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Network connection established", buf, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Network connection established", buf, 2u);
     }
 
-    v7 = [(SHFUPlugin *)self networkStatus];
+    networkStatus = [(SHFUPlugin *)self networkStatus];
 
-    if (v7)
+    if (networkStatus)
     {
-      v8 = [(SHFUPlugin *)self networkStatus];
-      dispatch_source_cancel(v8);
+      networkStatus2 = [(SHFUPlugin *)self networkStatus];
+      dispatch_source_cancel(networkStatus2);
 
       [(SHFUPlugin *)self setNetworkStatus:0];
     }
@@ -1124,13 +1124,13 @@ LABEL_12:
     [(SHFUPlugin *)self setNetworkReachability:0];
     objc_initWeak(buf, self);
     v9 = dispatch_time(0, 10000000000);
-    v10 = [(SHFUPlugin *)self serialQueue];
+    serialQueue = [(SHFUPlugin *)self serialQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100004138;
     block[3] = &unk_1000245D0;
     objc_copyWeak(&v12, buf);
-    dispatch_after(v9, v10, block);
+    dispatch_after(v9, serialQueue, block);
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(buf);
@@ -1143,43 +1143,43 @@ LABEL_12:
   [(SHFUPlugin *)self setNetworkReachability:SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, &address)];
   if ([(SHFUPlugin *)self networkReachability])
   {
-    v3 = [(SHFUPlugin *)self networkReachability];
-    v4 = [(SHFUPlugin *)self serialQueue];
-    LODWORD(v3) = SCNetworkReachabilitySetDispatchQueue(v3, v4);
+    networkReachability = [(SHFUPlugin *)self networkReachability];
+    serialQueue = [(SHFUPlugin *)self serialQueue];
+    LODWORD(networkReachability) = SCNetworkReachabilitySetDispatchQueue(networkReachability, serialQueue);
 
-    if (v3)
+    if (networkReachability)
     {
-      v5 = [(SHFUPlugin *)self logHandle];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+      logHandle = [(SHFUPlugin *)self logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
       {
-        v6 = [(SHFUPlugin *)self networkDelay];
+        networkDelay = [(SHFUPlugin *)self networkDelay];
         LODWORD(buf.version) = 67109120;
-        HIDWORD(buf.version) = [v6 intValue];
-        _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Will wait %d seconds for a network connection", &buf, 8u);
+        HIDWORD(buf.version) = [networkDelay intValue];
+        _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_INFO, "Will wait %d seconds for a network connection", &buf, 8u);
       }
 
-      v7 = [(SHFUPlugin *)self serialQueue];
-      v8 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v7);
+      serialQueue2 = [(SHFUPlugin *)self serialQueue];
+      v8 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, serialQueue2);
       [(SHFUPlugin *)self setNetworkStatus:v8];
 
-      v9 = [(SHFUPlugin *)self networkStatus];
+      networkStatus = [(SHFUPlugin *)self networkStatus];
 
-      if (v9)
+      if (networkStatus)
       {
-        v10 = [(SHFUPlugin *)self networkStatus];
-        v11 = [(SHFUPlugin *)self networkDelay];
-        v12 = dispatch_time(0, 1000000000 * [v11 intValue]);
-        v13 = [(SHFUPlugin *)self networkDelay];
-        dispatch_source_set_timer(v10, v12, 1000000000 * [v13 intValue], 0x12A05F200uLL);
+        networkStatus2 = [(SHFUPlugin *)self networkStatus];
+        networkDelay2 = [(SHFUPlugin *)self networkDelay];
+        v12 = dispatch_time(0, 1000000000 * [networkDelay2 intValue]);
+        networkDelay3 = [(SHFUPlugin *)self networkDelay];
+        dispatch_source_set_timer(networkStatus2, v12, 1000000000 * [networkDelay3 intValue], 0x12A05F200uLL);
 
         objc_initWeak(&location, self);
-        v14 = [(SHFUPlugin *)self networkStatus];
+        networkStatus3 = [(SHFUPlugin *)self networkStatus];
         v16 = _NSConcreteStackBlock;
         v17 = 3221225472;
         v18 = sub_100004490;
         v19 = &unk_1000245D0;
         objc_copyWeak(&v20, &location);
-        dispatch_source_set_event_handler(v14, &v16);
+        dispatch_source_set_event_handler(networkStatus3, &v16);
 
         v15 = [(SHFUPlugin *)self networkStatus:v16];
         dispatch_activate(v15);
@@ -1197,28 +1197,28 @@ LABEL_12:
 
 - (void)executeNextBootstrapAction
 {
-  v3 = [(SHFUPlugin *)self error];
+  error = [(SHFUPlugin *)self error];
 
-  if (v3)
+  if (error)
   {
-    v4 = [(SHFUPlugin *)self logHandle];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(SHFUPlugin *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(SHFUPlugin *)self targetDevice];
-      v6 = [(SHFUPlugin *)self error];
+      targetDevice = [(SHFUPlugin *)self targetDevice];
+      error2 = [(SHFUPlugin *)self error];
       *buf = 138412802;
-      v16 = v5;
+      v16 = targetDevice;
       v17 = 1024;
       v18 = 0;
       v19 = 2112;
-      v20 = v6;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "bootstrap: target device %@ successful %d error %@", buf, 0x1Cu);
+      v20 = error2;
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "bootstrap: target device %@ successful %d error %@", buf, 0x1Cu);
     }
 
-    v7 = [(SHFUPlugin *)self delegate];
-    v8 = [(SHFUPlugin *)self pluginInfo];
-    v9 = [(SHFUPlugin *)self error];
-    [v7 didBootstrap:0 info:v8 error:v9];
+    delegate = [(SHFUPlugin *)self delegate];
+    pluginInfo = [(SHFUPlugin *)self pluginInfo];
+    error3 = [(SHFUPlugin *)self error];
+    [delegate didBootstrap:0 info:pluginInfo error:error3];
 
     [(SHFUPlugin *)self setSerialQueue:0];
     [(SHFUPlugin *)self setTransaction:0];
@@ -1233,31 +1233,31 @@ LABEL_12:
 
   else
   {
-    v10 = [(SHFUPlugin *)self logHandle];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(SHFUPlugin *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SHFUPlugin *)self targetDevice];
+      targetDevice2 = [(SHFUPlugin *)self targetDevice];
       *buf = 138412802;
-      v16 = v11;
+      v16 = targetDevice2;
       v17 = 1024;
       v18 = 1;
       v19 = 2112;
       v20 = 0;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "bootstrap: target device %@ successful %d error %@", buf, 0x1Cu);
+      _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "bootstrap: target device %@ successful %d error %@", buf, 0x1Cu);
     }
 
-    v12 = [(SHFUPlugin *)self delegate];
-    v13 = [(SHFUPlugin *)self pluginInfo];
-    [v12 didBootstrap:1 info:v13 error:0];
+    delegate2 = [(SHFUPlugin *)self delegate];
+    pluginInfo2 = [(SHFUPlugin *)self pluginInfo];
+    [delegate2 didBootstrap:1 info:pluginInfo2 error:0];
   }
 }
 
-- (void)bootstrapWithOptions:(id)a3
+- (void)bootstrapWithOptions:(id)options
 {
-  v17 = a3;
+  optionsCopy = options;
   val = self;
-  v4 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  logHandle = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     sub_1000149AC();
   }
@@ -1349,19 +1349,19 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  stateCopy = state;
+  logHandle = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    sub_100014A1C(v4);
+    sub_100014A1C(stateCopy);
   }
 
-  if ([v4 state] == 5)
+  if ([stateCopy state] == 5)
   {
-    v6 = [(SHFUPlugin *)self logHandle];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    logHandle2 = [(SHFUPlugin *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
     {
       sub_100014A9C();
     }
@@ -1372,8 +1372,8 @@ LABEL_12:
 
 - (void)tagForBluetoothGATTServicesDiscovery
 {
-  v3 = [(SHFUPlugin *)self centralManager];
-  v4 = [v3 retrieveConnectedPeripheralsWithServices:0 allowAll:1];
+  centralManager = [(SHFUPlugin *)self centralManager];
+  v4 = [centralManager retrieveConnectedPeripheralsWithServices:0 allowAll:1];
 
   v17 = 0u;
   v18 = 0u;
@@ -1397,24 +1397,24 @@ LABEL_12:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [(SHFUPlugin *)self logHandle];
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+        logHandle = [(SHFUPlugin *)self logHandle];
+        if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
           v20 = v11;
-          _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Found Bluetooth peripheral %@", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Found Bluetooth peripheral %@", buf, 0xCu);
         }
 
         if ([(__CFString *)v11 hasTag:@"BluetoothTVRemote"])
         {
-          v13 = [(SHFUPlugin *)self logHandle];
-          if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+          logHandle2 = [(SHFUPlugin *)self logHandle];
+          if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v14;
             v20 = @"BluetoothTVRemote";
             v21 = 2112;
             v22 = @"_FORCE_GATT_SERVICES_DISCOVERY_";
-            _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Found Bluetooth peripheral with tag %@. Setting tag %@", buf, 0x16u);
+            _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Found Bluetooth peripheral with tag %@. Setting tag %@", buf, 0x16u);
           }
 
           [(__CFString *)v11 tag:@"_FORCE_GATT_SERVICES_DISCOVERY_"];
@@ -1428,16 +1428,16 @@ LABEL_12:
   }
 }
 
-- (BOOL)deviceNeedsUpdate:(id)a3
+- (BOOL)deviceNeedsUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(SHFUPlugin *)self latestFirmwareVersions];
-  v6 = [v4 hardwareVersionSupportedBy:v5];
+  updateCopy = update;
+  latestFirmwareVersions = [(SHFUPlugin *)self latestFirmwareVersions];
+  v6 = [updateCopy hardwareVersionSupportedBy:latestFirmwareVersions];
 
   if (!v6)
   {
-    v11 = [(SHFUPlugin *)self logHandle];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    logHandle = [(SHFUPlugin *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_100014AD8();
     }
@@ -1447,13 +1447,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [(SHFUPlugin *)self allowDowngrade];
-  v8 = [v7 BOOLValue];
+  allowDowngrade = [(SHFUPlugin *)self allowDowngrade];
+  bOOLValue = [allowDowngrade BOOLValue];
 
-  v9 = [(SHFUPlugin *)self latestFirmwareVersions];
-  if (!v8)
+  latestFirmwareVersions2 = [(SHFUPlugin *)self latestFirmwareVersions];
+  if (!bOOLValue)
   {
-    v13 = [v4 firmwareVersionsOlderThan:v9];
+    v13 = [updateCopy firmwareVersionsOlderThan:latestFirmwareVersions2];
 
     if (v13)
     {
@@ -1463,7 +1463,7 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v10 = [v4 firmwareVersionsEqualTo:v9];
+  v10 = [updateCopy firmwareVersionsEqualTo:latestFirmwareVersions2];
 
   if (v10)
   {
@@ -1474,11 +1474,11 @@ LABEL_10:
       goto LABEL_8;
     }
 
-    v11 = [(SHFUPlugin *)self logHandle];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(SHFUPlugin *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v14 = 0;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Updating firmware due to preference telling us to ignore the FW version check.", v14, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Updating firmware due to preference telling us to ignore the FW version check.", v14, 2u);
     }
 
     goto LABEL_7;
@@ -1491,29 +1491,29 @@ LABEL_8:
   return v6;
 }
 
-- (id)getParsersForHWRevID:(id)a3
+- (id)getParsersForHWRevID:(id)d
 {
-  v4 = a3;
-  v5 = [(SHFUPlugin *)self parsers];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  parsers = [(SHFUPlugin *)self parsers];
+  v6 = [parsers objectForKeyedSubscript:dCopy];
 
   if (!v6)
   {
-    v7 = [(SHFUPlugin *)self parsers];
-    v6 = [v7 objectForKeyedSubscript:&off_1000269A0];
+    parsers2 = [(SHFUPlugin *)self parsers];
+    v6 = [parsers2 objectForKeyedSubscript:&off_1000269A0];
   }
 
   return v6;
 }
 
-- (unint64_t)getTotalPrepareBytes:(id)a3
+- (unint64_t)getTotalPrepareBytes:(id)bytes
 {
-  v4 = a3;
+  bytesCopy = bytes;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [bytesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1525,7 +1525,7 @@ LABEL_8:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(bytesCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -1538,7 +1538,7 @@ LABEL_8:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [bytesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -1555,17 +1555,17 @@ LABEL_8:
 - (void)createPowerAssertion
 {
   v3 = IOPMAssertionCreateWithName(@"PreventUserIdleSystemSleep", 0xFFu, @"com.apple.StandaloneHIDFudPlugins.FirmwareUpdate", &self->_powerAssertionID);
-  v4 = [(SHFUPlugin *)self logHandle];
-  v5 = v4;
+  logHandle = [(SHFUPlugin *)self logHandle];
+  v5 = logHandle;
   if (v3)
   {
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_100014B14();
     }
   }
 
-  else if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  else if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     sub_100014B84();
   }
@@ -1576,17 +1576,17 @@ LABEL_8:
   if ([(SHFUPlugin *)self powerAssertionID])
   {
     v3 = IOPMAssertionRelease([(SHFUPlugin *)self powerAssertionID]);
-    v4 = [(SHFUPlugin *)self logHandle];
-    v5 = v4;
+    logHandle = [(SHFUPlugin *)self logHandle];
+    v5 = logHandle;
     if (v3)
     {
-      if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
         sub_100014BC0();
       }
     }
 
-    else if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+    else if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
       sub_100014C30();
     }
@@ -1595,32 +1595,32 @@ LABEL_8:
   }
 }
 
-- (void)waitForUserInactivity:(int)a3 withOptions:(id)a4
+- (void)waitForUserInactivity:(int)inactivity withOptions:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   objc_initWeak(&location, self);
-  v7 = [(SHFUPlugin *)self serialQueue];
-  v8 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v7);
+  serialQueue = [(SHFUPlugin *)self serialQueue];
+  v8 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, serialQueue);
   [(SHFUPlugin *)self setUserInactivityStatus:v8];
 
-  v9 = [(SHFUPlugin *)self userInactivityStatus];
+  userInactivityStatus = [(SHFUPlugin *)self userInactivityStatus];
 
-  if (v9)
+  if (userInactivityStatus)
   {
-    v10 = [(SHFUPlugin *)self userInactivityStatus];
+    userInactivityStatus2 = [(SHFUPlugin *)self userInactivityStatus];
     v11 = dispatch_time(0, 60000000000);
-    dispatch_source_set_timer(v10, v11, 0xDF8475800uLL, 0x1DCD6500uLL);
+    dispatch_source_set_timer(userInactivityStatus2, v11, 0xDF8475800uLL, 0x1DCD6500uLL);
 
-    v12 = [(SHFUPlugin *)self userInactivityStatus];
+    userInactivityStatus3 = [(SHFUPlugin *)self userInactivityStatus];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100006370;
     handler[3] = &unk_1000245D0;
     objc_copyWeak(&v25, &location);
-    dispatch_source_set_event_handler(v12, handler);
+    dispatch_source_set_event_handler(userInactivityStatus3, handler);
 
-    v13 = [(SHFUPlugin *)self userInactivityStatus];
-    dispatch_activate(v13);
+    userInactivityStatus4 = [(SHFUPlugin *)self userInactivityStatus];
+    dispatch_activate(userInactivityStatus4);
 
     objc_destroyWeak(&v25);
   }
@@ -1635,13 +1635,13 @@ LABEL_8:
   v18[2] = sub_10000647C;
   v18[3] = &unk_100024648;
   objc_copyWeak(&v20, &location);
-  v21 = a3;
-  v14 = v6;
+  inactivityCopy = inactivity;
+  v14 = optionsCopy;
   v19 = v14;
   v23 = objc_retainBlock(v18);
-  v15 = [(SHFUPlugin *)self serialQueue];
-  v16 = [(SHFUPlugin *)self inactivityDelay];
-  [v16 intValue];
+  serialQueue2 = [(SHFUPlugin *)self serialQueue];
+  inactivityDelay = [(SHFUPlugin *)self inactivityDelay];
+  [inactivityDelay intValue];
   objc_copyWeak(&v17, &location);
   [(SHFUPlugin *)self setPmNotificationHandle:IOPMScheduleUserActivityLevelNotificationWithTimeout()];
 
@@ -1652,76 +1652,76 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-- (void)prepareFirmwareWithOptions:(id)a3
+- (void)prepareFirmwareWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  optionsCopy = options;
+  logHandle = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     sub_1000149AC();
   }
 
   [(SHFUPlugin *)self createPowerAssertion];
-  v6 = [(SHFUPlugin *)self inactivityDelayPreflight];
-  if (([v6 BOOLValue] & 1) == 0)
+  inactivityDelayPreflight = [(SHFUPlugin *)self inactivityDelayPreflight];
+  if (([inactivityDelayPreflight BOOLValue] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v7 = [(SHFUPlugin *)self inactivityDelay];
-  v8 = [v7 intValue];
+  inactivityDelay = [(SHFUPlugin *)self inactivityDelay];
+  intValue = [inactivityDelay intValue];
 
-  if (v8 < 1)
+  if (intValue < 1)
   {
 LABEL_7:
-    [(SHFUPlugin *)self sendFirmwareToDeviceWithOptions:v4];
+    [(SHFUPlugin *)self sendFirmwareToDeviceWithOptions:optionsCopy];
     goto LABEL_8;
   }
 
-  [(SHFUPlugin *)self waitForUserInactivity:0 withOptions:v4];
+  [(SHFUPlugin *)self waitForUserInactivity:0 withOptions:optionsCopy];
 LABEL_8:
 }
 
-- (void)sendFirmwareToDeviceWithOptions:(id)a3
+- (void)sendFirmwareToDeviceWithOptions:(id)options
 {
-  v60 = a3;
-  v4 = [(SHFUPlugin *)self firmwareDirectory];
-  v5 = [(SHFUPlugin *)self logHandle];
-  v6 = [(SHFUPlugin *)self productID];
-  v7 = [(SHFUPlugin *)self equivalentPIDs];
-  v8 = [(SHFUPlugin *)self errorDomain];
-  v9 = [(SHFUPlugin *)self STFWFirst];
-  v10 = [(SHFUPlugin *)self parsers];
-  v11 = [AUFileParser loadParsersFromFWDirectory:v4 logHandle:v5 productID:v6 equivalentPIDs:v7 errorDomain:v8 STFWFirst:v9 parsers:v10];
+  optionsCopy = options;
+  firmwareDirectory = [(SHFUPlugin *)self firmwareDirectory];
+  logHandle = [(SHFUPlugin *)self logHandle];
+  productID = [(SHFUPlugin *)self productID];
+  equivalentPIDs = [(SHFUPlugin *)self equivalentPIDs];
+  errorDomain = [(SHFUPlugin *)self errorDomain];
+  sTFWFirst = [(SHFUPlugin *)self STFWFirst];
+  parsers = [(SHFUPlugin *)self parsers];
+  v11 = [AUFileParser loadParsersFromFWDirectory:firmwareDirectory logHandle:logHandle productID:productID equivalentPIDs:equivalentPIDs errorDomain:errorDomain STFWFirst:sTFWFirst parsers:parsers];
 
   if (v11)
   {
     v12 = 0;
-    v13 = self;
+    selfCopy3 = self;
 LABEL_5:
-    [(SHFUPlugin *)v13 setTransaction:0];
-    [(SHFUPlugin *)v13 setSerialQueue:0];
-    [(SHFUPlugin *)v13 setError:v11];
-    [(SHFUPlugin *)v13 releasePowerAssertion];
+    [(SHFUPlugin *)selfCopy3 setTransaction:0];
+    [(SHFUPlugin *)selfCopy3 setSerialQueue:0];
+    [(SHFUPlugin *)selfCopy3 setError:v11];
+    [(SHFUPlugin *)selfCopy3 releasePowerAssertion];
     v22 = 0;
     goto LABEL_6;
   }
 
-  v14 = [(SHFUPlugin *)self delegate];
-  v15 = [(SHFUPlugin *)self batteryCheckDevice];
-  v16 = [v15 BOOLValue];
-  v17 = [(SHFUPlugin *)self logHandle];
-  v18 = [(SHFUPlugin *)self options];
-  v19 = [v18 objectForKeyedSubscript:@"IOMatchLaunchServiceID"];
-  v20 = [(SHFUPlugin *)self errorDomain];
+  delegate = [(SHFUPlugin *)self delegate];
+  batteryCheckDevice = [(SHFUPlugin *)self batteryCheckDevice];
+  bOOLValue = [batteryCheckDevice BOOLValue];
+  logHandle2 = [(SHFUPlugin *)self logHandle];
+  options = [(SHFUPlugin *)self options];
+  v19 = [options objectForKeyedSubscript:@"IOMatchLaunchServiceID"];
+  errorDomain2 = [(SHFUPlugin *)self errorDomain];
   v73 = 0;
-  v21 = [SHFUDevice getDevices:v14 hasPowerSource:v16 logHandle:v17 registryEntryID:v19 errorDomain:v20 error:&v73];
+  v21 = [SHFUDevice getDevices:delegate hasPowerSource:bOOLValue logHandle:logHandle2 registryEntryID:v19 errorDomain:errorDomain2 error:&v73];
   v11 = v73;
 
   if (v11)
   {
-    v13 = self;
+    selfCopy3 = self;
     v12 = v21;
     goto LABEL_5;
   }
@@ -1734,7 +1734,7 @@ LABEL_5:
   v72 = 0u;
   v12 = v21;
   v27 = [v12 countByEnumeratingWithState:&v69 objects:v83 count:16];
-  v13 = self;
+  selfCopy3 = self;
   if (!v27)
   {
 
@@ -1761,29 +1761,29 @@ LABEL_5:
       }
 
       v32 = *(*(&v69 + 1) + 8 * v31);
-      if ([(SHFUPlugin *)v13 deviceNeedsUpdate:v32])
+      if ([(SHFUPlugin *)selfCopy3 deviceNeedsUpdate:v32])
       {
-        v33 = [(SHFUPlugin *)v13 deviceNeedsBTReconnect];
-        v34 = [v33 BOOLValue];
+        deviceNeedsBTReconnect = [(SHFUPlugin *)selfCopy3 deviceNeedsBTReconnect];
+        bOOLValue2 = [deviceNeedsBTReconnect BOOLValue];
 
-        if (!v34)
+        if (!bOOLValue2)
         {
           goto LABEL_41;
         }
 
-        [(SHFUPlugin *)v13 waitForBTSession];
-        if ([(SHFUPlugin *)v13 btSession])
+        [(SHFUPlugin *)selfCopy3 waitForBTSession];
+        if ([(SHFUPlugin *)selfCopy3 btSession])
         {
           goto LABEL_41;
         }
 
         v51 = [NSString stringWithFormat:@"Bluetooth Session not found for device %@", v32];
         v52 = [NSError alloc];
-        v53 = [(SHFUPlugin *)v13 errorDomain];
+        errorDomain3 = [(SHFUPlugin *)selfCopy3 errorDomain];
         v81 = NSLocalizedDescriptionKey;
         v82 = v51;
         v54 = [NSDictionary dictionaryWithObjects:&v82 forKeys:&v81 count:1];
-        v46 = [v52 initWithDomain:v53 code:34 userInfo:v54];
+        v46 = [v52 initWithDomain:errorDomain3 code:34 userInfo:v54];
 
         v62 = 0;
         if (!v46)
@@ -1796,34 +1796,34 @@ LABEL_41:
 
           v47 = [NSString stringWithFormat:@"No hardware revision ID for device %@", v32];
           v48 = [NSError alloc];
-          v49 = [(SHFUPlugin *)v13 errorDomain];
+          errorDomain4 = [(SHFUPlugin *)selfCopy3 errorDomain];
           v79 = NSLocalizedDescriptionKey;
           v80 = v47;
           v50 = [NSDictionary dictionaryWithObjects:&v80 forKeys:&v79 count:1];
-          v46 = [v48 initWithDomain:v49 code:9 userInfo:v50];
+          v46 = [v48 initWithDomain:errorDomain4 code:9 userInfo:v50];
 
           if (!v46)
           {
 LABEL_42:
             v35 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [v32 hardwareVersion]);
-            v36 = [(SHFUPlugin *)v13 getParsersForHWRevID:v35];
+            v36 = [(SHFUPlugin *)selfCopy3 getParsersForHWRevID:v35];
 
-            v37 = [(SHFUPlugin *)v13 resetEveryFWPayload];
-            v38 = [v37 BOOLValue];
+            resetEveryFWPayload = [(SHFUPlugin *)selfCopy3 resetEveryFWPayload];
+            bOOLValue3 = [resetEveryFWPayload BOOLValue];
 
-            if (v38)
+            if (bOOLValue3)
             {
               v63 = v30 + 371;
-              v39 = [(SHFUPlugin *)v13 vendorID];
-              v40 = [(SHFUPlugin *)v13 productID];
-              v64 = [(SHFUPlugin *)v13 batteryCheckDevice];
+              vendorID = [(SHFUPlugin *)selfCopy3 vendorID];
+              productID2 = [(SHFUPlugin *)selfCopy3 productID];
+              batteryCheckDevice2 = [(SHFUPlugin *)selfCopy3 batteryCheckDevice];
               v65 = v11;
-              v41 = [v64 BOOLValue];
-              v42 = [(SHFUPlugin *)v13 featureReportDelay];
-              v43 = [(SHFUPlugin *)v13 logHandle];
-              v44 = [(SHFUPlugin *)v13 delegate];
-              v45 = [(SHFUPlugin *)v13 errorDomain];
-              v46 = [v63 sendAllFirmwaresToDeviceWithVendorID:v39 productID:v40 hasPowerSource:v41 parsers:v36 totalPrepareBytes:v66 bytesSent:buf featureReportDelay:v42 logHandle:v43 pluginDelegate:v44 errorDomain:v45];
+              bOOLValue4 = [batteryCheckDevice2 BOOLValue];
+              featureReportDelay = [(SHFUPlugin *)selfCopy3 featureReportDelay];
+              logHandle3 = [(SHFUPlugin *)selfCopy3 logHandle];
+              delegate2 = [(SHFUPlugin *)selfCopy3 delegate];
+              errorDomain5 = [(SHFUPlugin *)selfCopy3 errorDomain];
+              v46 = [v63 sendAllFirmwaresToDeviceWithVendorID:vendorID productID:productID2 hasPowerSource:bOOLValue4 parsers:v36 totalPrepareBytes:v66 bytesSent:buf featureReportDelay:featureReportDelay logHandle:logHandle3 pluginDelegate:delegate2 errorDomain:errorDomain5];
 
               v30 = &selRef_errorDomain;
               v11 = v65;
@@ -1833,8 +1833,8 @@ LABEL_42:
 
             else
             {
-              v39 = [(SHFUPlugin *)v13 featureReportDelay];
-              v46 = [v32 sendAllFirmwaresToDevice:v36 totalPrepareBytes:v66 bytesSent:buf featureReportDelay:v39];
+              vendorID = [(SHFUPlugin *)selfCopy3 featureReportDelay];
+              v46 = [v32 sendAllFirmwaresToDevice:v36 totalPrepareBytes:v66 bytesSent:buf featureReportDelay:vendorID];
             }
 
             if (!v46)
@@ -1848,22 +1848,22 @@ LABEL_33:
           }
         }
 
-        v55 = [(SHFUPlugin *)v13 verifyDeviceBattery];
-        v56 = v55;
-        if (v55)
+        verifyDeviceBattery = [(SHFUPlugin *)selfCopy3 verifyDeviceBattery];
+        v56 = verifyDeviceBattery;
+        if (verifyDeviceBattery)
         {
-          v57 = [v55 domain];
-          if ([v57 isEqualToString:@"com.apple.MobileAccessoryUpdater.ErrorDomain"])
+          domain = [verifyDeviceBattery domain];
+          if ([domain isEqualToString:@"com.apple.MobileAccessoryUpdater.ErrorDomain"])
           {
-            v58 = [v56 code];
+            code = [v56 code];
 
-            if (v58 != -1)
+            if (code != -1)
             {
               v30 = &selRef_errorDomain;
               goto LABEL_32;
             }
 
-            v57 = v46;
+            domain = v46;
             v46 = v56;
             v30 = &selRef_errorDomain;
           }
@@ -1894,101 +1894,101 @@ LABEL_34:
   v11 = 0;
   v22 = 1;
 LABEL_6:
-  v23 = [(SHFUPlugin *)v13 logHandle];
-  if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+  logHandle4 = [(SHFUPlugin *)selfCopy3 logHandle];
+  if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [(SHFUPlugin *)v13 targetDevice];
+    targetDevice = [(SHFUPlugin *)selfCopy3 targetDevice];
     *buf = 138412802;
-    *&buf[4] = v24;
+    *&buf[4] = targetDevice;
     v75 = 1024;
     v76 = v22;
     v77 = 2112;
     v78 = v11;
-    _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "prepareFirmware: target device %@ successful %d error %@", buf, 0x1Cu);
+    _os_log_impl(&_mh_execute_header, logHandle4, OS_LOG_TYPE_DEFAULT, "prepareFirmware: target device %@ successful %d error %@", buf, 0x1Cu);
   }
 
-  v25 = [(SHFUPlugin *)v13 delegate];
-  v26 = [(SHFUPlugin *)v13 pluginInfo];
-  [v25 didPrepare:v22 info:v26 error:v11];
+  delegate3 = [(SHFUPlugin *)selfCopy3 delegate];
+  pluginInfo = [(SHFUPlugin *)selfCopy3 pluginInfo];
+  [delegate3 didPrepare:v22 info:pluginInfo error:v11];
 }
 
-- (void)applyFirmwareWithOptions:(id)a3
+- (void)applyFirmwareWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  optionsCopy = options;
+  logHandle = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     sub_1000149AC();
   }
 
-  v6 = [(SHFUPlugin *)self resetEveryFWPayload];
-  v7 = [v6 BOOLValue];
+  resetEveryFWPayload = [(SHFUPlugin *)self resetEveryFWPayload];
+  bOOLValue = [resetEveryFWPayload BOOLValue];
 
-  if (!v7)
+  if (!bOOLValue)
   {
-    v13 = [(SHFUPlugin *)self inactivityDelayPreflight];
-    if ([v13 BOOLValue])
+    inactivityDelayPreflight = [(SHFUPlugin *)self inactivityDelayPreflight];
+    if ([inactivityDelayPreflight BOOLValue])
     {
     }
 
     else
     {
-      v14 = [(SHFUPlugin *)self inactivityDelay];
-      v15 = [v14 intValue];
+      inactivityDelay = [(SHFUPlugin *)self inactivityDelay];
+      intValue = [inactivityDelay intValue];
 
-      if (v15 >= 1)
+      if (intValue >= 1)
       {
-        [(SHFUPlugin *)self waitForUserInactivity:1 withOptions:v4];
+        [(SHFUPlugin *)self waitForUserInactivity:1 withOptions:optionsCopy];
         goto LABEL_12;
       }
     }
 
-    [(SHFUPlugin *)self commitFirmwareWithOptions:v4];
+    [(SHFUPlugin *)self commitFirmwareWithOptions:optionsCopy];
     goto LABEL_12;
   }
 
   [(SHFUPlugin *)self reconnectDeviceToHost];
-  v8 = [(SHFUPlugin *)self delegate];
-  [v8 progress:100.0];
+  delegate = [(SHFUPlugin *)self delegate];
+  [delegate progress:100.0];
 
-  v9 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  logHandle2 = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(SHFUPlugin *)self targetDevice];
+    targetDevice = [(SHFUPlugin *)self targetDevice];
     v16 = 138412802;
-    v17 = v10;
+    v17 = targetDevice;
     v18 = 1024;
     v19 = 1;
     v20 = 2112;
     v21 = 0;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "applyFirmware: target device %@ successful %d error %@", &v16, 0x1Cu);
+    _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "applyFirmware: target device %@ successful %d error %@", &v16, 0x1Cu);
   }
 
-  v11 = [(SHFUPlugin *)self delegate];
-  v12 = [(SHFUPlugin *)self pluginInfo];
-  [v11 didApply:1 info:v12 error:0];
+  delegate2 = [(SHFUPlugin *)self delegate];
+  pluginInfo = [(SHFUPlugin *)self pluginInfo];
+  [delegate2 didApply:1 info:pluginInfo error:0];
 
 LABEL_12:
 }
 
-- (void)commitFirmwareWithOptions:(id)a3
+- (void)commitFirmwareWithOptions:(id)options
 {
-  v40 = a3;
-  v4 = [(SHFUPlugin *)self delegate];
-  v5 = [(SHFUPlugin *)self batteryCheckDevice];
-  v6 = [v5 BOOLValue];
-  v7 = [(SHFUPlugin *)self logHandle];
-  v8 = [(SHFUPlugin *)self options];
-  v9 = [v8 objectForKeyedSubscript:@"IOMatchLaunchServiceID"];
-  v10 = [(SHFUPlugin *)self errorDomain];
+  optionsCopy = options;
+  delegate = [(SHFUPlugin *)self delegate];
+  batteryCheckDevice = [(SHFUPlugin *)self batteryCheckDevice];
+  bOOLValue = [batteryCheckDevice BOOLValue];
+  logHandle = [(SHFUPlugin *)self logHandle];
+  options = [(SHFUPlugin *)self options];
+  v9 = [options objectForKeyedSubscript:@"IOMatchLaunchServiceID"];
+  errorDomain = [(SHFUPlugin *)self errorDomain];
   v46 = 0;
-  v11 = [SHFUDevice getDevices:v4 hasPowerSource:v6 logHandle:v7 registryEntryID:v9 errorDomain:v10 error:&v46];
+  v11 = [SHFUDevice getDevices:delegate hasPowerSource:bOOLValue logHandle:logHandle registryEntryID:v9 errorDomain:errorDomain error:&v46];
   v12 = v46;
 
   if (v12)
   {
     v13 = 0;
-    v14 = v40;
+    v14 = optionsCopy;
     v15 = v11;
     goto LABEL_25;
   }
@@ -2026,13 +2026,13 @@ LABEL_12:
       v22 = *(*(&v42 + 1) + 8 * v21);
       if ([(SHFUPlugin *)self deviceNeedsUpdate:v22])
       {
-        v23 = [(SHFUPlugin *)self sendSDPQueryNotification];
-        v24 = [v23 BOOLValue];
+        sendSDPQueryNotification = [(SHFUPlugin *)self sendSDPQueryNotification];
+        bOOLValue2 = [sendSDPQueryNotification BOOLValue];
 
-        if (v24)
+        if (bOOLValue2)
         {
-          v25 = [(SHFUPlugin *)self productID];
-          -[SHFUPlugin sendUpdateSDPQueryNotificationForPID:](self, "sendUpdateSDPQueryNotificationForPID:", [v25 intValue]);
+          productID = [(SHFUPlugin *)self productID];
+          -[SHFUPlugin sendUpdateSDPQueryNotificationForPID:](self, "sendUpdateSDPQueryNotificationForPID:", [productID intValue]);
         }
 
         if ([v22 GATTServicesDiscoveryNeeded] && -[SHFUPlugin bluetoothPoweredOn](self, "bluetoothPoweredOn"))
@@ -2040,12 +2040,12 @@ LABEL_12:
           [(SHFUPlugin *)self tagForBluetoothGATTServicesDiscovery];
         }
 
-        v26 = [v22 commitAllFirmwares];
-        v19 |= v26 == 0;
-        if (v26)
+        commitAllFirmwares = [v22 commitAllFirmwares];
+        v19 |= commitAllFirmwares == 0;
+        if (commitAllFirmwares)
         {
 LABEL_15:
-          v27 = v26;
+          v27 = commitAllFirmwares;
 
           v12 = v27;
         }
@@ -2055,13 +2055,13 @@ LABEL_15:
       {
         v28 = [NSString stringWithFormat:@"Update not needed for device %@", v22];
         v29 = [NSError alloc];
-        v30 = [(SHFUPlugin *)self errorDomain];
+        errorDomain2 = [(SHFUPlugin *)self errorDomain];
         v53 = NSLocalizedDescriptionKey;
         v54 = v28;
         v31 = [NSDictionary dictionaryWithObjects:&v54 forKeys:&v53 count:1];
-        v26 = [v29 initWithDomain:v30 code:17 userInfo:v31];
+        commitAllFirmwares = [v29 initWithDomain:errorDomain2 code:17 userInfo:v31];
 
-        if (v26)
+        if (commitAllFirmwares)
         {
           goto LABEL_15;
         }
@@ -2085,37 +2085,37 @@ LABEL_15:
 LABEL_23:
 
     v12 = 0;
-    v14 = v40;
+    v14 = optionsCopy;
   }
 
   else
   {
     v13 = 0;
     v15 = v39;
-    v14 = v40;
+    v14 = optionsCopy;
   }
 
 LABEL_25:
   [(SHFUPlugin *)self reconnectDeviceToHost];
-  v33 = [(SHFUPlugin *)self delegate];
-  [v33 progress:100.0];
+  delegate2 = [(SHFUPlugin *)self delegate];
+  [delegate2 progress:100.0];
 
-  v34 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+  logHandle2 = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
   {
-    v35 = [(SHFUPlugin *)self targetDevice];
+    targetDevice = [(SHFUPlugin *)self targetDevice];
     *buf = 138412802;
-    v48 = v35;
+    v48 = targetDevice;
     v49 = 1024;
     v50 = v13;
     v51 = 2112;
     v52 = v12;
-    _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "applyFirmware: target device %@ successful %d error %@", buf, 0x1Cu);
+    _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "applyFirmware: target device %@ successful %d error %@", buf, 0x1Cu);
   }
 
-  v36 = [(SHFUPlugin *)self delegate];
-  v37 = [(SHFUPlugin *)self pluginInfo];
-  [v36 didApply:v13 info:v37 error:v12];
+  delegate3 = [(SHFUPlugin *)self delegate];
+  pluginInfo = [(SHFUPlugin *)self pluginInfo];
+  [delegate3 didApply:v13 info:pluginInfo error:v12];
 
   if ((v13 & 1) == 0)
   {
@@ -2132,8 +2132,8 @@ LABEL_25:
   v3 = [v15 arrayForKey:@"RegistryEntryIDs"];
   v4 = [v3 mutableCopy];
 
-  v5 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  logHandle = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     sub_100014E24();
   }
@@ -2181,9 +2181,9 @@ LABEL_25:
   [v15 setObject:v16 forKey:@"RegistryEntryIDs"];
 }
 
-- (BOOL)abortRegistryEntryID:(id)a3
+- (BOOL)abortRegistryEntryID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 arrayForKey:@"RegistryEntryIDs"];
   v7 = [v6 mutableCopy];
@@ -2195,7 +2195,7 @@ LABEL_25:
     {
       v9 = [v7 objectAtIndexedSubscript:v8];
       v10 = [v9 objectForKeyedSubscript:@"EntryID"];
-      if ([v10 isEqualToNumber:v4])
+      if ([v10 isEqualToNumber:dCopy])
       {
         break;
       }
@@ -2207,8 +2207,8 @@ LABEL_25:
     }
 
     [v7 removeObjectAtIndex:v8];
-    v12 = [(SHFUPlugin *)self logHandle];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    logHandle = [(SHFUPlugin *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
       sub_100014E94();
     }
@@ -2227,9 +2227,9 @@ LABEL_5:
   return v11;
 }
 
-- (void)storeRegistryEntryID:(id)a3
+- (void)storeRegistryEntryID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 arrayForKey:@"RegistryEntryIDs"];
   v7 = [v6 mutableCopy];
@@ -2241,7 +2241,7 @@ LABEL_5:
 
   v17[0] = @"EntryID";
   v17[1] = @"Timestamp";
-  v18[0] = v4;
+  v18[0] = dCopy;
   v8 = +[NSDate date];
   [v8 timeIntervalSince1970];
   v9 = [NSNumber numberWithDouble:?];
@@ -2250,35 +2250,35 @@ LABEL_5:
   [v7 addObject:v10];
 
   [v5 setObject:v7 forKey:@"RegistryEntryIDs"];
-  v11 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     v12 = +[NSDate date];
     v13 = 138412546;
-    v14 = v4;
+    v14 = dCopy;
     v15 = 2112;
     v16 = v12;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Store registry entry ID %@ at %@", &v13, 0x16u);
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Store registry entry ID %@ at %@", &v13, 0x16u);
   }
 }
 
 - (id)sendPersonalizedFirmwareToDevice
 {
   v48 = 0;
-  v35 = [(SHFUPlugin *)self delegate];
+  delegate = [(SHFUPlugin *)self delegate];
   obja = [(SHFUPlugin *)self batteryCheckDevice];
-  v3 = [obja BOOLValue];
-  v4 = [(SHFUPlugin *)self logHandle];
-  v5 = [(SHFUPlugin *)self vendorID];
-  v6 = [v5 intValue];
-  v7 = [(SHFUPlugin *)self productID];
-  v8 = [v7 intValue];
+  bOOLValue = [obja BOOLValue];
+  logHandle = [(SHFUPlugin *)self logHandle];
+  vendorID = [(SHFUPlugin *)self vendorID];
+  intValue = [vendorID intValue];
+  productID = [(SHFUPlugin *)self productID];
+  intValue2 = [productID intValue];
   v9 = SHFU_UNKNOWN_LOCATION_ID;
   v10 = SHFU_UNKNOWN_INTERFACE_NUMBER;
-  v11 = [(SHFUPlugin *)self errorDomain];
+  errorDomain = [(SHFUPlugin *)self errorDomain];
   v47 = 0;
   LODWORD(v34) = v10;
-  v12 = [SHFUDevice getDevices:v35 hasPowerSource:v3 logHandle:v4 withVendorID:v6 productID:v8 locationID:v9 interfaceNumber:v34 errorDomain:v11 error:&v47];
+  v12 = [SHFUDevice getDevices:delegate hasPowerSource:bOOLValue logHandle:logHandle withVendorID:intValue productID:intValue2 locationID:v9 interfaceNumber:v34 errorDomain:errorDomain error:&v47];
   v13 = v47;
 
   if (!v13)
@@ -2346,13 +2346,13 @@ LABEL_10:
                 }
               }
 
-              v27 = [v18 registryEntryID];
-              [(SHFUPlugin *)self storeRegistryEntryID:v27];
+              registryEntryID = [v18 registryEntryID];
+              [(SHFUPlugin *)self storeRegistryEntryID:registryEntryID];
 
               [(SHFUPlugin *)self setPersonalizationParser:v26];
-              v28 = [(SHFUPlugin *)self personalizationParser];
-              v29 = [(SHFUPlugin *)self featureReportDelay];
-              v13 = [v18 sendUnsignedFWToDevice:v28 featureReportDelay:v29 sendPersonalizedManifests:&v48];
+              personalizationParser = [(SHFUPlugin *)self personalizationParser];
+              featureReportDelay = [(SHFUPlugin *)self featureReportDelay];
+              v13 = [v18 sendUnsignedFWToDevice:personalizationParser featureReportDelay:featureReportDelay sendPersonalizedManifests:&v48];
 
               if (!v13)
               {
@@ -2406,20 +2406,20 @@ LABEL_25:
 
 - (void)sendPersonalizedManifestsToDevice
 {
-  v26 = [(SHFUPlugin *)self delegate];
-  v27 = [(SHFUPlugin *)self batteryCheckDevice];
-  v3 = [v27 BOOLValue];
-  v4 = [(SHFUPlugin *)self logHandle];
-  v5 = [(SHFUPlugin *)self vendorID];
-  v6 = [v5 intValue];
-  v7 = [(SHFUPlugin *)self productID];
-  v8 = [v7 intValue];
+  delegate = [(SHFUPlugin *)self delegate];
+  batteryCheckDevice = [(SHFUPlugin *)self batteryCheckDevice];
+  bOOLValue = [batteryCheckDevice BOOLValue];
+  logHandle = [(SHFUPlugin *)self logHandle];
+  vendorID = [(SHFUPlugin *)self vendorID];
+  intValue = [vendorID intValue];
+  productID = [(SHFUPlugin *)self productID];
+  intValue2 = [productID intValue];
   v9 = SHFU_UNKNOWN_LOCATION_ID;
   v10 = SHFU_UNKNOWN_INTERFACE_NUMBER;
-  v11 = [(SHFUPlugin *)self errorDomain];
+  errorDomain = [(SHFUPlugin *)self errorDomain];
   v32 = 0;
   LODWORD(v25) = v10;
-  v12 = [SHFUDevice getDevices:v26 hasPowerSource:v3 logHandle:v4 withVendorID:v6 productID:v8 locationID:v9 interfaceNumber:v25 errorDomain:v11 error:&v32];
+  v12 = [SHFUDevice getDevices:delegate hasPowerSource:bOOLValue logHandle:logHandle withVendorID:intValue productID:intValue2 locationID:v9 interfaceNumber:v25 errorDomain:errorDomain error:&v32];
   v13 = v32;
 
   if (v13)
@@ -2451,10 +2451,10 @@ LABEL_25:
           v19 = *(*(&v28 + 1) + 8 * i);
           if ([(SHFUPlugin *)self deviceNeedsUpdate:v19])
           {
-            v20 = [(SHFUPlugin *)self personalizationParser];
-            v21 = [(SHFUPlugin *)self featureReportDelay];
-            v22 = [(SHFUPlugin *)self manifestCount];
-            v23 = [v19 sendPersonalizedManifestsToDevice:v20 featureReportDelay:v21 manifestCount:v22];
+            personalizationParser = [(SHFUPlugin *)self personalizationParser];
+            featureReportDelay = [(SHFUPlugin *)self featureReportDelay];
+            manifestCount = [(SHFUPlugin *)self manifestCount];
+            v23 = [v19 sendPersonalizedManifestsToDevice:personalizationParser featureReportDelay:featureReportDelay manifestCount:manifestCount];
             [(SHFUPlugin *)self setError:v23];
 
             goto LABEL_13;
@@ -2473,49 +2473,49 @@ LABEL_25:
 
 LABEL_13:
 
-    v24 = [(SHFUPlugin *)self personalizationSemaphore];
-    dispatch_semaphore_signal(v24);
+    personalizationSemaphore = [(SHFUPlugin *)self personalizationSemaphore];
+    dispatch_semaphore_signal(personalizationSemaphore);
   }
 }
 
-- (void)waitForDeviceEnumerationWithProgressUpdates:(BOOL)a3
+- (void)waitForDeviceEnumerationWithProgressUpdates:(BOOL)updates
 {
-  v3 = a3;
-  v5 = [(SHFUPlugin *)self resetEveryFWPayload];
-  v6 = [v5 BOOLValue];
+  updatesCopy = updates;
+  resetEveryFWPayload = [(SHFUPlugin *)self resetEveryFWPayload];
+  bOOLValue = [resetEveryFWPayload BOOLValue];
 
-  if ((v6 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     [(SHFUPlugin *)self registerForMatchNotification];
-    v7 = [(SHFUPlugin *)self versionCheckDelay];
-    [v7 doubleValue];
+    versionCheckDelay = [(SHFUPlugin *)self versionCheckDelay];
+    [versionCheckDelay doubleValue];
     v9 = v8 + 300.0;
 
     for (i = 1; i != 301; ++i)
     {
       v11 = dispatch_time(0, 1000000000);
-      v12 = [(SHFUPlugin *)self matchSemaphore];
-      v13 = dispatch_semaphore_wait(v12, v11);
+      matchSemaphore = [(SHFUPlugin *)self matchSemaphore];
+      v13 = dispatch_semaphore_wait(matchSemaphore, v11);
 
       if (!v13)
       {
         break;
       }
 
-      if (v3)
+      if (updatesCopy)
       {
-        v14 = [(SHFUPlugin *)self delegate];
-        [v14 progress:i / v9 * 100.0];
+        delegate = [(SHFUPlugin *)self delegate];
+        [delegate progress:i / v9 * 100.0];
       }
     }
 
-    v15 = [(SHFUPlugin *)self versionCheckDelay];
-    v16 = [v15 isEqualToNumber:&off_1000269B8];
+    versionCheckDelay2 = [(SHFUPlugin *)self versionCheckDelay];
+    v16 = [versionCheckDelay2 isEqualToNumber:&off_1000269B8];
 
     if ((v16 & 1) == 0)
     {
-      v17 = [(SHFUPlugin *)self versionCheckDelay];
-      [v17 doubleValue];
+      versionCheckDelay3 = [(SHFUPlugin *)self versionCheckDelay];
+      [versionCheckDelay3 doubleValue];
       v19 = v18;
 
       if (v19 > 0.0)
@@ -2525,14 +2525,14 @@ LABEL_13:
         {
           [NSThread sleepForTimeInterval:1.0];
           v20 = v20 + 1.0;
-          if (v3)
+          if (updatesCopy)
           {
-            v21 = [(SHFUPlugin *)self delegate];
-            [v21 progress:(v20 + 300.0) / v9 * 100.0];
+            delegate2 = [(SHFUPlugin *)self delegate];
+            [delegate2 progress:(v20 + 300.0) / v9 * 100.0];
           }
 
-          v22 = [(SHFUPlugin *)self versionCheckDelay];
-          [v22 doubleValue];
+          versionCheckDelay4 = [(SHFUPlugin *)self versionCheckDelay];
+          [versionCheckDelay4 doubleValue];
           v24 = v23;
         }
 
@@ -2542,60 +2542,60 @@ LABEL_13:
   }
 }
 
-- (void)finishWithOptions:(id)a3
+- (void)finishWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  optionsCopy = options;
+  logHandle = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     sub_1000149AC();
   }
 
-  v6 = [(SHFUPlugin *)self error];
-  if (v6)
+  error = [(SHFUPlugin *)self error];
+  if (error)
   {
 
 LABEL_5:
     v7 = [NSString stringWithFormat:@"Previous FudPlugin method failed"];
     v8 = [NSError alloc];
-    v9 = [(SHFUPlugin *)self errorDomain];
+    errorDomain = [(SHFUPlugin *)self errorDomain];
     v30 = NSLocalizedDescriptionKey;
     v31 = v7;
     v10 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-    v11 = [v8 initWithDomain:v9 code:55 userInfo:v10];
+    v11 = [v8 initWithDomain:errorDomain code:55 userInfo:v10];
 
     [(SHFUPlugin *)self releasePowerAssertion];
     [(SHFUPlugin *)self setTransaction:0];
-    v12 = [(SHFUPlugin *)self logHandle];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(SHFUPlugin *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(SHFUPlugin *)self targetDevice];
+      targetDevice = [(SHFUPlugin *)self targetDevice];
       *buf = 138412802;
-      v25 = v13;
+      v25 = targetDevice;
       v26 = 1024;
       v27 = 0;
       v28 = 2112;
       v29 = v11;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "finish: target device %@ successful %d error %@", buf, 0x1Cu);
+      _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "finish: target device %@ successful %d error %@", buf, 0x1Cu);
     }
 
-    v14 = [(SHFUPlugin *)self delegate];
-    v15 = [(SHFUPlugin *)self pluginInfo];
-    [v14 didFinish:0 info:v15 error:v11];
+    delegate = [(SHFUPlugin *)self delegate];
+    pluginInfo = [(SHFUPlugin *)self pluginInfo];
+    [delegate didFinish:0 info:pluginInfo error:v11];
 
     goto LABEL_8;
   }
 
-  v16 = [(SHFUPlugin *)self serialQueue];
+  serialQueue = [(SHFUPlugin *)self serialQueue];
 
-  if (!v16)
+  if (!serialQueue)
   {
     goto LABEL_5;
   }
 
   [(SHFUPlugin *)self waitForDeviceEnumerationWithProgressUpdates:1];
-  v17 = [(SHFUPlugin *)self sendPersonalizedFirmwareToDevice];
-  [(SHFUPlugin *)self setError:v17];
+  sendPersonalizedFirmwareToDevice = [(SHFUPlugin *)self sendPersonalizedFirmwareToDevice];
+  [(SHFUPlugin *)self setError:sendPersonalizedFirmwareToDevice];
 
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
@@ -2603,16 +2603,16 @@ LABEL_5:
   v23[3] = &unk_100024698;
   v23[4] = self;
   v7 = objc_retainBlock(v23);
-  v18 = [(SHFUPlugin *)self error];
-  if (v18)
+  error2 = [(SHFUPlugin *)self error];
+  if (error2)
   {
   }
 
   else
   {
-    v19 = [(SHFUPlugin *)self personalizationSemaphore];
+    personalizationSemaphore = [(SHFUPlugin *)self personalizationSemaphore];
 
-    if (v19)
+    if (personalizationSemaphore)
     {
       v20 = dispatch_get_global_queue(17, 0);
       block[0] = _NSConcreteStackBlock;
@@ -2633,20 +2633,20 @@ LABEL_8:
 
 - (id)verifyLatestFWVersions
 {
-  v30 = [(SHFUPlugin *)self delegate];
-  v32 = [(SHFUPlugin *)self batteryCheckDevice];
-  v3 = [v32 BOOLValue];
-  v4 = [(SHFUPlugin *)self logHandle];
-  v5 = [(SHFUPlugin *)self vendorID];
-  v6 = [v5 intValue];
-  v7 = [(SHFUPlugin *)self productID];
-  v8 = [v7 intValue];
+  delegate = [(SHFUPlugin *)self delegate];
+  batteryCheckDevice = [(SHFUPlugin *)self batteryCheckDevice];
+  bOOLValue = [batteryCheckDevice BOOLValue];
+  logHandle = [(SHFUPlugin *)self logHandle];
+  vendorID = [(SHFUPlugin *)self vendorID];
+  intValue = [vendorID intValue];
+  productID = [(SHFUPlugin *)self productID];
+  intValue2 = [productID intValue];
   v9 = SHFU_UNKNOWN_LOCATION_ID;
   v10 = SHFU_UNKNOWN_INTERFACE_NUMBER;
-  v11 = [(SHFUPlugin *)self errorDomain];
+  errorDomain = [(SHFUPlugin *)self errorDomain];
   v37 = 0;
   LODWORD(v29) = v10;
-  v12 = [SHFUDevice getDevices:v30 hasPowerSource:v3 logHandle:v4 withVendorID:v6 productID:v8 locationID:v9 interfaceNumber:v29 errorDomain:v11 error:&v37];
+  v12 = [SHFUDevice getDevices:delegate hasPowerSource:bOOLValue logHandle:logHandle withVendorID:intValue productID:intValue2 locationID:v9 interfaceNumber:v29 errorDomain:errorDomain error:&v37];
   v13 = v37;
 
   if (!v13)
@@ -2672,31 +2672,31 @@ LABEL_8:
           }
 
           v19 = *(*(&v33 + 1) + 8 * i);
-          v20 = [(SHFUPlugin *)self loggingIdentifier];
-          [v19 logVersions:v20];
+          loggingIdentifier = [(SHFUPlugin *)self loggingIdentifier];
+          [v19 logVersions:loggingIdentifier];
 
-          v21 = [(SHFUPlugin *)self latestFirmwareVersions];
-          v22 = [v19 firmwareVersionsEqualTo:v21];
+          latestFirmwareVersions = [(SHFUPlugin *)self latestFirmwareVersions];
+          v22 = [v19 firmwareVersionsEqualTo:latestFirmwareVersions];
 
           if (!v22)
           {
             v24 = [NSString stringWithFormat:@"%@ does not have latest FW versions", v19];
             v25 = [NSError alloc];
-            v26 = [(SHFUPlugin *)self errorDomain];
+            errorDomain2 = [(SHFUPlugin *)self errorDomain];
             v40 = NSLocalizedDescriptionKey;
             v41 = v24;
             v27 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-            v13 = [v25 initWithDomain:v26 code:14 userInfo:v27];
+            v13 = [v25 initWithDomain:errorDomain2 code:14 userInfo:v27];
 
             goto LABEL_14;
           }
 
-          v23 = [(SHFUPlugin *)self logHandle];
-          if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+          logHandle2 = [(SHFUPlugin *)self logHandle];
+          if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
             v39 = v19;
-            _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "successfully updated %@", buf, 0xCu);
+            _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "successfully updated %@", buf, 0xCu);
           }
         }
 
@@ -2723,16 +2723,16 @@ LABEL_14:
   return v13;
 }
 
-- (id)getPreloadedFWVersions:(id *)a3
+- (id)getPreloadedFWVersions:(id *)versions
 {
   v37 = objc_alloc_init(NSMutableDictionary);
   v5 = +[NSFileManager defaultManager];
-  v6 = [(SHFUPlugin *)self firmwareDirectory];
+  firmwareDirectory = [(SHFUPlugin *)self firmwareDirectory];
   v45 = NSURLPathKey;
   v7 = [NSArray arrayWithObjects:&v45 count:1];
-  v8 = [v5 contentsOfDirectoryAtURL:v6 includingPropertiesForKeys:v7 options:4 error:a3];
+  v8 = [v5 contentsOfDirectoryAtURL:firmwareDirectory includingPropertiesForKeys:v7 options:4 error:versions];
 
-  if (!*a3)
+  if (!*versions)
   {
     if ([v8 count])
     {
@@ -2758,34 +2758,34 @@ LABEL_14:
 
             v12 = *(*(&v38 + 1) + 8 * i);
             v13 = [AUFileParser alloc];
-            v14 = [v12 path];
-            v15 = [(SHFUPlugin *)self productID];
-            v16 = [(SHFUPlugin *)self equivalentPIDs];
-            v17 = [(SHFUPlugin *)self logHandle];
-            v18 = [(SHFUPlugin *)self errorDomain];
-            v19 = [(AUFileParser *)v13 initWithFilePath:v14 productID:v15 equivalentPIDs:v16 logHandle:v17 errorDomain:v18 error:a3];
+            path = [v12 path];
+            productID = [(SHFUPlugin *)self productID];
+            equivalentPIDs = [(SHFUPlugin *)self equivalentPIDs];
+            logHandle = [(SHFUPlugin *)self logHandle];
+            errorDomain = [(SHFUPlugin *)self errorDomain];
+            errorDomain2 = [(AUFileParser *)v13 initWithFilePath:path productID:productID equivalentPIDs:equivalentPIDs logHandle:logHandle errorDomain:errorDomain error:versions];
 
-            if (*a3)
+            if (*versions)
             {
               v8 = v34;
               goto LABEL_16;
             }
 
-            v20 = [(AUFileParser *)v19 getFirmwareType];
-            v21 = [(AUFileParser *)v19 getFirmwareVersion];
-            v22 = [(AUFileParser *)v19 getHardwareRevisionID];
-            v23 = [v22 stringValue];
-            v24 = [v37 objectForKeyedSubscript:v23];
+            getFirmwareType = [(AUFileParser *)errorDomain2 getFirmwareType];
+            getFirmwareVersion = [(AUFileParser *)errorDomain2 getFirmwareVersion];
+            getHardwareRevisionID = [(AUFileParser *)errorDomain2 getHardwareRevisionID];
+            stringValue = [getHardwareRevisionID stringValue];
+            v24 = [v37 objectForKeyedSubscript:stringValue];
 
             if (!v24)
             {
               v24 = objc_alloc_init(NSMutableDictionary);
-              v25 = [v22 stringValue];
-              [v37 setObject:v24 forKeyedSubscript:v25];
+              stringValue2 = [getHardwareRevisionID stringValue];
+              [v37 setObject:v24 forKeyedSubscript:stringValue2];
             }
 
-            v26 = [v20 stringValue];
-            [v24 setObject:v21 forKeyedSubscript:v26];
+            stringValue3 = [getFirmwareType stringValue];
+            [v24 setObject:getFirmwareVersion forKeyedSubscript:stringValue3];
           }
 
           v10 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -2803,25 +2803,25 @@ LABEL_14:
 
     else
     {
-      v27 = [(SHFUPlugin *)self firmwareDirectory];
-      v28 = [v27 path];
-      v29 = [NSString stringWithFormat:@"No firmware files found at %@", v28];
+      firmwareDirectory2 = [(SHFUPlugin *)self firmwareDirectory];
+      path2 = [firmwareDirectory2 path];
+      v29 = [NSString stringWithFormat:@"No firmware files found at %@", path2];
 
       v30 = [NSError alloc];
-      v19 = [(SHFUPlugin *)self errorDomain];
+      errorDomain2 = [(SHFUPlugin *)self errorDomain];
       v43 = NSLocalizedDescriptionKey;
       v44 = v29;
       obj = v29;
       v31 = [NSDictionary dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-      *a3 = [v30 initWithDomain:v19 code:3 userInfo:v31];
+      *versions = [v30 initWithDomain:errorDomain2 code:3 userInfo:v31];
 
 LABEL_16:
     }
 
-    if (!*a3)
+    if (!*versions)
     {
-      v32 = [(SHFUPlugin *)self logHandle];
-      if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
+      logHandle2 = [(SHFUPlugin *)self logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
       {
         sub_100014F04(self);
       }
@@ -2831,16 +2831,16 @@ LABEL_16:
   return v37;
 }
 
-- (void)personalizationResponse:(id)a3 response:(id)a4 status:(id)a5
+- (void)personalizationResponse:(id)response response:(id)a4 status:(id)status
 {
-  v8 = a3;
+  responseCopy = response;
   v9 = a4;
-  v10 = a5;
-  v11 = [(SHFUPlugin *)self logHandle];
-  v12 = v11;
-  if (v8)
+  statusCopy = status;
+  logHandle = [(SHFUPlugin *)self logHandle];
+  v12 = logHandle;
+  if (responseCopy)
   {
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
       sub_100014FA8();
     }
@@ -2849,15 +2849,15 @@ LABEL_16:
     block[1] = 3221225472;
     block[2] = sub_1000093C0;
     block[3] = &unk_1000246E8;
-    v14 = v10;
-    v15 = v8;
+    v14 = statusCopy;
+    v15 = responseCopy;
     v16 = v9;
     dispatch_async(&_dispatch_main_q, block);
 
     v12 = v14;
   }
 
-  else if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  else if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
   {
     sub_100014FE4();
   }

@@ -1,66 +1,66 @@
 @interface TIKeyboardInputManagerWubi
-- (BOOL)acceptInputString:(id)a3;
-- (BOOL)isWubi:(id)a3;
+- (BOOL)acceptInputString:(id)string;
+- (BOOL)isWubi:(id)wubi;
 - (BOOL)supportsPairedPunctutationInput;
-- (id)deleteFromInput:(unint64_t *)a3;
+- (id)deleteFromInput:(unint64_t *)input;
 - (id)formattedSearchString;
 - (id)inputsToReject;
-- (void)addInput:(id)a3 withContext:(id)a4;
-- (void)notifyUpdateCandidates:(id)a3 forOperation:(id)a4;
-- (void)openCandidateGenerationContextWithCandidateHandler:(id)a3;
-- (void)pushCandidateGenerationContextWithResults:(id)a3;
+- (void)addInput:(id)input withContext:(id)context;
+- (void)notifyUpdateCandidates:(id)candidates forOperation:(id)operation;
+- (void)openCandidateGenerationContextWithCandidateHandler:(id)handler;
+- (void)pushCandidateGenerationContextWithResults:(id)results;
 @end
 
 @implementation TIKeyboardInputManagerWubi
 
 - (BOOL)supportsPairedPunctutationInput
 {
-  v3 = [(TIKeyboardInputManagerWubi *)self keyboardState];
-  if ([v3 hardwareKeyboardMode])
+  keyboardState = [(TIKeyboardInputManagerWubi *)self keyboardState];
+  if ([keyboardState hardwareKeyboardMode])
   {
-    v4 = 0;
+    hasCandidateKey = 0;
   }
 
   else
   {
-    v5 = [(TIKeyboardInputManagerWubi *)self keyboardState];
-    v6 = [v5 layoutState];
-    if ([v6 userInterfaceIdiom] == 1)
+    keyboardState2 = [(TIKeyboardInputManagerWubi *)self keyboardState];
+    layoutState = [keyboardState2 layoutState];
+    if ([layoutState userInterfaceIdiom] == 1)
     {
-      v7 = [(TIKeyboardInputManagerWubi *)self keyboardState];
-      v8 = [v7 layoutState];
-      v4 = [v8 hasCandidateKey];
+      keyboardState3 = [(TIKeyboardInputManagerWubi *)self keyboardState];
+      layoutState2 = [keyboardState3 layoutState];
+      hasCandidateKey = [layoutState2 hasCandidateKey];
     }
 
     else
     {
-      v4 = 1;
+      hasCandidateKey = 1;
     }
   }
 
-  return v4;
+  return hasCandidateKey;
 }
 
-- (BOOL)isWubi:(id)a3
+- (BOOL)isWubi:(id)wubi
 {
-  v3 = a3;
+  wubiCopy = wubi;
   if (![TIKeyboardInputManagerWubi isWubi:]::notWubiSet)
   {
     v4 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"⼀⼁⼃⼂乛問匹"];
-    v5 = [v4 invertedSet];
+    invertedSet = [v4 invertedSet];
     v6 = [TIKeyboardInputManagerWubi isWubi:]::notWubiSet;
-    [TIKeyboardInputManagerWubi isWubi:]::notWubiSet = v5;
+    [TIKeyboardInputManagerWubi isWubi:]::notWubiSet = invertedSet;
   }
 
-  v7 = [v3 rangeOfCharacterFromSet:?] == 0x7FFFFFFFFFFFFFFFLL;
+  v7 = [wubiCopy rangeOfCharacterFromSet:?] == 0x7FFFFFFFFFFFFFFFLL;
 
   return v7;
 }
 
 - (id)inputsToReject
 {
-  v3 = [(TIKeyboardInputManagerShapeBased *)self hasCandidates];
-  if (v3)
+  hasCandidates = [(TIKeyboardInputManagerShapeBased *)self hasCandidates];
+  if (hasCandidates)
   {
     v4 = 0;
   }
@@ -72,18 +72,18 @@
 
   v10.receiver = self;
   v10.super_class = TIKeyboardInputManagerWubi;
-  v5 = [(TIKeyboardInputManagerMecabra *)&v10 inputsToReject];
-  v6 = v5;
-  if (v3)
+  inputsToReject = [(TIKeyboardInputManagerMecabra *)&v10 inputsToReject];
+  v6 = inputsToReject;
+  if (hasCandidates)
   {
-    v7 = v5;
+    v7 = inputsToReject;
   }
 
   else
   {
-    if (v5)
+    if (inputsToReject)
     {
-      v8 = [v5 mutableCopy];
+      v8 = [inputsToReject mutableCopy];
       [v8 addCharactersInString:v4];
       goto LABEL_10;
     }
@@ -97,14 +97,14 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)acceptInputString:(id)a3
+- (BOOL)acceptInputString:(id)string
 {
-  v4 = a3;
-  if ([(TIKeyboardInputManagerWubi *)self isWubi:v4])
+  stringCopy = string;
+  if ([(TIKeyboardInputManagerWubi *)self isWubi:stringCopy])
   {
     v7.receiver = self;
     v7.super_class = TIKeyboardInputManagerWubi;
-    v5 = [(TIKeyboardInputManagerShapeBased *)&v7 acceptInputString:v4];
+    v5 = [(TIKeyboardInputManagerShapeBased *)&v7 acceptInputString:stringCopy];
   }
 
   else
@@ -115,29 +115,29 @@ LABEL_10:
   return v5;
 }
 
-- (void)pushCandidateGenerationContextWithResults:(id)a3
+- (void)pushCandidateGenerationContextWithResults:(id)results
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManagerWubi *)self autoConfirmationCandidate];
-  [v4 setAcceptedCandidate:v5];
+  resultsCopy = results;
+  autoConfirmationCandidate = [(TIKeyboardInputManagerWubi *)self autoConfirmationCandidate];
+  [resultsCopy setAcceptedCandidate:autoConfirmationCandidate];
 
   [(TIKeyboardInputManagerWubi *)self setAutoConfirmationCandidate:0];
   v6.receiver = self;
   v6.super_class = TIKeyboardInputManagerWubi;
-  [(TIKeyboardInputManagerWubi *)&v6 pushCandidateGenerationContextWithResults:v4];
+  [(TIKeyboardInputManagerWubi *)&v6 pushCandidateGenerationContextWithResults:resultsCopy];
 }
 
-- (void)openCandidateGenerationContextWithCandidateHandler:(id)a3
+- (void)openCandidateGenerationContextWithCandidateHandler:(id)handler
 {
   v4.receiver = self;
   v4.super_class = TIKeyboardInputManagerWubi;
-  [(TIKeyboardInputManagerWubi *)&v4 openCandidateGenerationContextWithCandidateHandler:a3];
+  [(TIKeyboardInputManagerWubi *)&v4 openCandidateGenerationContextWithCandidateHandler:handler];
   [(TIKeyboardInputManagerWubi *)self setAutoConfirmationCandidate:0];
 }
 
-- (void)notifyUpdateCandidates:(id)a3 forOperation:(id)a4
+- (void)notifyUpdateCandidates:(id)candidates forOperation:(id)operation
 {
-  v5 = a3;
+  candidatesCopy = candidates;
   if ([(TIKeyboardInputManagerWubi *)self shouldSkipCandidateSelection])
   {
     [(TIKeyboardInputManagerWubi *)self closeCandidateGenerationContextWithResults:0];
@@ -145,8 +145,8 @@ LABEL_10:
 
   else
   {
-    v6 = [v5 candidates];
-    if ([v6 count])
+    candidates = [candidatesCopy candidates];
+    if ([candidates count])
     {
       objc_initWeak(&location, self);
       v25[0] = MEMORY[0x277D85DD0];
@@ -154,8 +154,8 @@ LABEL_10:
       v25[2] = __66__TIKeyboardInputManagerWubi_notifyUpdateCandidates_forOperation___block_invoke;
       v25[3] = &unk_279D9D620;
       objc_copyWeak(&v27, &location);
-      v26 = v6;
-      [(TIKeyboardInputManagerMecabra *)self addStickers:v5 withCompletionHandler:v25];
+      v26 = candidates;
+      [(TIKeyboardInputManagerMecabra *)self addStickers:candidatesCopy withCompletionHandler:v25];
 
       objc_destroyWeak(&v27);
       objc_destroyWeak(&location);
@@ -163,52 +163,52 @@ LABEL_10:
 
     else
     {
-      v7 = [(TIKeyboardInputManagerShapeBased *)self inputCount];
-      if (v7 < 2)
+      inputCount = [(TIKeyboardInputManagerShapeBased *)self inputCount];
+      if (inputCount < 2)
       {
         v12 = 0;
       }
 
       else
       {
-        v8 = v7;
+        v8 = inputCount;
         v9 = MEMORY[0x277CCACA8];
-        v10 = [(TIKeyboardInputManagerWubi *)self inputString];
-        v11 = [v10 substringFromIndex:v8 - 1];
+        inputString = [(TIKeyboardInputManagerWubi *)self inputString];
+        v11 = [inputString substringFromIndex:v8 - 1];
         v12 = [v9 stringWithString:v11];
       }
 
       [(TIKeyboardInputManagerMecabra *)self setRemainingInput:v12];
       self->super._keepRemainingInput = 1;
       v13 = objc_alloc(MEMORY[0x277D6FE70]);
-      v14 = [(TIKeyboardInputManagerWubi *)self keyboardState];
-      v15 = [v13 initWithKeyboardState:v14];
+      keyboardState = [(TIKeyboardInputManagerWubi *)self keyboardState];
+      v15 = [v13 initWithKeyboardState:keyboardState];
 
       [(TIKeyboardInputManagerWubi *)self acceptCurrentCandidateWithContext:v15];
-      v16 = [v15 output];
-      v17 = [v16 acceptedCandidate];
-      [(TIKeyboardInputManagerWubi *)self setAutoConfirmationCandidate:v17];
+      output = [v15 output];
+      acceptedCandidate = [output acceptedCandidate];
+      [(TIKeyboardInputManagerWubi *)self setAutoConfirmationCandidate:acceptedCandidate];
 
       [(TIKeyboardInputManagerMecabra *)self setRemainingInput:0];
       self->super._keepRemainingInput = 0;
-      v18 = [(TIKeyboardInputManagerWubi *)self keyboardState];
-      v19 = [v18 currentCandidate];
+      keyboardState2 = [(TIKeyboardInputManagerWubi *)self keyboardState];
+      currentCandidate = [keyboardState2 currentCandidate];
 
-      if (v19)
+      if (currentCandidate)
       {
         [(TIKeyboardInputManagerShapeBased *)self setPreviousActionWasAutoConfirmation:1];
         v20 = *MEMORY[0x277D6FB00];
-        v21 = [(TIKeyboardInputManagerWubi *)self keyboardState];
-        v22 = [v21 inputMode];
+        keyboardState3 = [(TIKeyboardInputManagerWubi *)self keyboardState];
+        inputMode = [keyboardState3 inputMode];
         v23 = TIStatisticGetKeyForCandidateAccepted();
         TIStatisticScalarIncrement();
       }
 
-      v24 = [(TIKeyboardInputManagerShapeBased *)self candidateResultSet];
-      if (([v24 isDummySet] & 1) == 0)
+      candidateResultSet = [(TIKeyboardInputManagerShapeBased *)self candidateResultSet];
+      if (([candidateResultSet isDummySet] & 1) == 0)
       {
         [(TIKeyboardInputManagerWubi *)self setMarkedText];
-        [(TIKeyboardInputManagerWubi *)self closeCandidateGenerationContextWithResults:v24];
+        [(TIKeyboardInputManagerWubi *)self closeCandidateGenerationContextWithResults:candidateResultSet];
       }
     }
   }
@@ -234,54 +234,54 @@ void __66__TIKeyboardInputManagerWubi_notifyUpdateCandidates_forOperation___bloc
 - (id)formattedSearchString
 {
   [(TIKeyboardInputManagerWubi *)self inputMethodType];
-  v3 = [(TIKeyboardInputManagerShapeBased *)self searchString];
+  searchString = [(TIKeyboardInputManagerShapeBased *)self searchString];
   InputKeyFromASCIIString = MecabraInputKeyPropertiesCreateInputKeyFromASCIIString();
 
   return InputKeyFromASCIIString;
 }
 
-- (id)deleteFromInput:(unint64_t *)a3
+- (id)deleteFromInput:(unint64_t *)input
 {
   v7.receiver = self;
   v7.super_class = TIKeyboardInputManagerWubi;
-  v4 = [(TIKeyboardInputManagerShapeBased *)&v7 deleteFromInput:a3];
-  v5 = [(TIKeyboardInputManagerShapeBased *)self markedTextWithAutoconvertedCandidates];
-  [(TIKeyboardInputManagerChinese *)self setInput:v5];
+  v4 = [(TIKeyboardInputManagerShapeBased *)&v7 deleteFromInput:input];
+  markedTextWithAutoconvertedCandidates = [(TIKeyboardInputManagerShapeBased *)self markedTextWithAutoconvertedCandidates];
+  [(TIKeyboardInputManagerChinese *)self setInput:markedTextWithAutoconvertedCandidates];
 
   return 0;
 }
 
-- (void)addInput:(id)a3 withContext:(id)a4
+- (void)addInput:(id)input withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  inputCopy = input;
+  contextCopy = context;
   [(TIKeyboardInputManagerChinese *)self setCurrentKeyHint:0];
-  if (![(TIKeyboardInputManagerChinese *)self handlePairedPunctuationInput:v6 context:v7])
+  if (![(TIKeyboardInputManagerChinese *)self handlePairedPunctuationInput:inputCopy context:contextCopy])
   {
-    v8 = [v6 string];
-    if ([v8 length])
+    string = [inputCopy string];
+    if ([string length])
     {
-      if ([v8 isEqualToString:@"☻"])
+      if ([string isEqualToString:@"☻"])
       {
         v9 = *MEMORY[0x277D6FF50];
       }
 
       else
       {
-        v9 = [(TIKeyboardInputManagerChinese *)self outputByConvertingDecimalPointForInput:v8];
+        v9 = [(TIKeyboardInputManagerChinese *)self outputByConvertingDecimalPointForInput:string];
       }
 
       v10 = v9;
 
       [(TIKeyboardInputManagerShapeBased *)self cancelCandidatesThread];
       [(TIKeyboardInputManagerShapeBased *)self setPreviousActionWasAutoConfirmation:0];
-      if ([v6 isMultitap])
+      if ([inputCopy isMultitap])
       {
         v22 = 0;
         v11 = [(TIKeyboardInputManagerWubi *)self deleteFromInput:&v22];
         if (v22)
         {
-          [v7 deleteBackward:?];
+          [contextCopy deleteBackward:?];
         }
       }
 
@@ -289,65 +289,65 @@ void __66__TIKeyboardInputManagerWubi_notifyUpdateCandidates_forOperation___bloc
       {
         v21.receiver = self;
         v21.super_class = TIKeyboardInputManagerWubi;
-        [(TIKeyboardInputManagerWubi *)&v21 addInput:v6 withContext:v7];
+        [(TIKeyboardInputManagerWubi *)&v21 addInput:inputCopy withContext:contextCopy];
       }
 
       else
       {
         if ([v10 length] && (-[TIKeyboardInputManagerWubi isWubi:](self, "isWubi:", v10) || -[TIKeyboardInputManagerMecabra stringContainsActiveSupplementalLexiconSearchPrefix:](self, "stringContainsActiveSupplementalLexiconSearchPrefix:", v10)))
         {
-          v12 = [(TIKeyboardInputManagerShapeBased *)self searchString];
-          v13 = [v12 isEqualToString:*MEMORY[0x277D6FF50]];
+          searchString = [(TIKeyboardInputManagerShapeBased *)self searchString];
+          v13 = [searchString isEqualToString:*MEMORY[0x277D6FF50]];
 
           if (v13)
           {
             [(TIKeyboardInputManagerMecabra *)self setRemainingInput:0];
-            [(TIKeyboardInputManagerWubi *)self acceptCurrentCandidateWithContext:v7];
+            [(TIKeyboardInputManagerWubi *)self acceptCurrentCandidateWithContext:contextCopy];
           }
 
           v14 = [v10 stringByReplacingOccurrencesOfString:@"問" withString:@"＊"];
           [(TIKeyboardInputManagerWubi *)self inputMethodType];
           ASCIIFromInputKeyString = MecabraInputKeyPropertiesCreateASCIIFromInputKeyString();
-          v16 = [(TIKeyboardInputManagerShapeBased *)self searchString];
-          [v16 appendString:ASCIIFromInputKeyString];
+          searchString2 = [(TIKeyboardInputManagerShapeBased *)self searchString];
+          [searchString2 appendString:ASCIIFromInputKeyString];
 
-          [v6 setString:v14];
-          v17 = [(TIKeyboardInputManagerShapeBased *)self markedTextWithAutoconvertedCandidates];
-          [(TIKeyboardInputManagerChinese *)self setInput:v17];
+          [inputCopy setString:v14];
+          markedTextWithAutoconvertedCandidates = [(TIKeyboardInputManagerShapeBased *)self markedTextWithAutoconvertedCandidates];
+          [(TIKeyboardInputManagerChinese *)self setInput:markedTextWithAutoconvertedCandidates];
 
           [(TIKeyboardInputManagerWubi *)self setMarkedText];
         }
 
         else if ([v10 isEqualToString:*MEMORY[0x277D6FF50]])
         {
-          [(TIKeyboardInputManagerWubi *)self acceptCurrentCandidateWithContext:v7];
-          v18 = [(TIKeyboardInputManagerShapeBased *)self searchString];
-          [v18 appendString:v10];
+          [(TIKeyboardInputManagerWubi *)self acceptCurrentCandidateWithContext:contextCopy];
+          searchString3 = [(TIKeyboardInputManagerShapeBased *)self searchString];
+          [searchString3 appendString:v10];
 
-          [v6 setString:v10];
+          [inputCopy setString:v10];
           v20.receiver = self;
           v20.super_class = TIKeyboardInputManagerWubi;
-          [(TIKeyboardInputManagerWubi *)&v20 addInput:v6 withContext:v7];
+          [(TIKeyboardInputManagerWubi *)&v20 addInput:inputCopy withContext:contextCopy];
         }
 
         else
         {
           [(TIKeyboardInputManagerMecabra *)self setRemainingInput:0];
-          [(TIKeyboardInputManagerWubi *)self acceptCurrentCandidateWithContext:v7];
-          [v7 insertText:v10];
+          [(TIKeyboardInputManagerWubi *)self acceptCurrentCandidateWithContext:contextCopy];
+          [contextCopy insertText:v10];
         }
 
-        if (([v6 isFlick] & 1) == 0 && (objc_msgSend(v6, "isMultitap") & 1) == 0)
+        if (([inputCopy isFlick] & 1) == 0 && (objc_msgSend(inputCopy, "isMultitap") & 1) == 0)
         {
-          v19 = [v6 inputManagerHint];
-          [(TIKeyboardInputManagerChinese *)self setCurrentKeyHint:v19];
+          inputManagerHint = [inputCopy inputManagerHint];
+          [(TIKeyboardInputManagerChinese *)self setCurrentKeyHint:inputManagerHint];
         }
       }
     }
 
     else
     {
-      v10 = v8;
+      v10 = string;
     }
   }
 }

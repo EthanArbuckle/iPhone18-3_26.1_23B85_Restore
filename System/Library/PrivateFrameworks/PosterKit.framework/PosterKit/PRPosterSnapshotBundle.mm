@@ -1,27 +1,27 @@
 @interface PRPosterSnapshotBundle
-+ (id)snapshotBundleAtURL:(id)a3 error:(id *)a4;
-+ (id)snapshotBundleWithPUIPosterSnapshotBundle:(id)a3;
++ (id)snapshotBundleAtURL:(id)l error:(id *)error;
++ (id)snapshotBundleWithPUIPosterSnapshotBundle:(id)bundle;
 - (CGSize)assetSize;
 - (NSArray)snapshotLevelSets;
-- (PRPosterSnapshotBundle)initWithURL:(id)a3;
-- (PRPosterSnapshotBundle)initWithUnderlyingSnapshotBundle:(id)a3;
-- (id)snapshotForLevelSet:(id)a3;
+- (PRPosterSnapshotBundle)initWithURL:(id)l;
+- (PRPosterSnapshotBundle)initWithUnderlyingSnapshotBundle:(id)bundle;
+- (id)snapshotForLevelSet:(id)set;
 @end
 
 @implementation PRPosterSnapshotBundle
 
-+ (id)snapshotBundleWithPUIPosterSnapshotBundle:(id)a3
++ (id)snapshotBundleWithPUIPosterSnapshotBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithUnderlyingSnapshotBundle:v4];
+  bundleCopy = bundle;
+  v5 = [[self alloc] initWithUnderlyingSnapshotBundle:bundleCopy];
 
   return v5;
 }
 
-- (PRPosterSnapshotBundle)initWithUnderlyingSnapshotBundle:(id)a3
+- (PRPosterSnapshotBundle)initWithUnderlyingSnapshotBundle:(id)bundle
 {
-  v5 = a3;
-  if (v5)
+  bundleCopy = bundle;
+  if (bundleCopy)
   {
     v10.receiver = self;
     v10.super_class = PRPosterSnapshotBundle;
@@ -29,37 +29,37 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_underlyingSnapshotBundle, a3);
+      objc_storeStrong(&v6->_underlyingSnapshotBundle, bundle);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (PRPosterSnapshotBundle)initWithURL:(id)a3
+- (PRPosterSnapshotBundle)initWithURL:(id)l
 {
   v4 = MEMORY[0x1E69C55B8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithURL:v5];
+  lCopy = l;
+  v6 = [[v4 alloc] initWithURL:lCopy];
 
   v7 = [(PRPosterSnapshotBundle *)self initWithUnderlyingSnapshotBundle:v6];
   return v7;
 }
 
-+ (id)snapshotBundleAtURL:(id)a3 error:(id *)a4
++ (id)snapshotBundleAtURL:(id)l error:(id *)error
 {
-  v5 = [MEMORY[0x1E69C55B8] snapshotBundleAtURL:a3 error:a4];
+  v5 = [MEMORY[0x1E69C55B8] snapshotBundleAtURL:l error:error];
   if (v5)
   {
-    v6 = [[a1 alloc] initWithUnderlyingSnapshotBundle:v5];
+    v6 = [[self alloc] initWithUnderlyingSnapshotBundle:v5];
   }
 
   else
@@ -72,8 +72,8 @@
 
 - (NSArray)snapshotLevelSets
 {
-  v2 = [(PUIPosterSnapshotBundle *)self->_underlyingSnapshotBundle snapshotLevelSets];
-  v3 = [v2 bs_mapNoNulls:&__block_literal_global_8];
+  snapshotLevelSets = [(PUIPosterSnapshotBundle *)self->_underlyingSnapshotBundle snapshotLevelSets];
+  v3 = [snapshotLevelSets bs_mapNoNulls:&__block_literal_global_8];
 
   return v3;
 }
@@ -97,15 +97,15 @@ PRPosterLevelSet *__43__PRPosterSnapshotBundle_snapshotLevelSets__block_invoke(u
   return result;
 }
 
-- (id)snapshotForLevelSet:(id)a3
+- (id)snapshotForLevelSet:(id)set
 {
   underlyingSnapshotBundle = self->_underlyingSnapshotBundle;
   v4 = MEMORY[0x1E69C5590];
-  v5 = a3;
+  setCopy = set;
   v6 = [v4 alloc];
-  v7 = [v5 levels];
+  levels = [setCopy levels];
 
-  v8 = [v6 initWithSet:v7];
+  v8 = [v6 initWithSet:levels];
   v9 = [(PUIPosterSnapshotBundle *)underlyingSnapshotBundle snapshotForLevelSet:v8];
 
   return v9;

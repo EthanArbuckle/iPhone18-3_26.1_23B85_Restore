@@ -1,15 +1,15 @@
 @interface CrossFadeAnimator
 - (_TtC23ShelfKitCollectionViews17CrossFadeAnimator)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation CrossFadeAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1D7D58(a3);
+  selfCopy = self;
+  sub_1D7D58(transition);
   swift_unknownObjectRelease();
 }
 

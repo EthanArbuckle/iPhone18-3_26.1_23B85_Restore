@@ -1,16 +1,16 @@
 @interface W5WiFiScanResult
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isAirPortBaseStation:(id *)a3 modelID:(char *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToScanResult:(id)a3;
-- (BOOL)supportsSecurity:(int64_t)a3;
-- (W5WiFiScanResult)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isAirPortBaseStation:(id *)station modelID:(char *)d;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToScanResult:(id)result;
+- (BOOL)supportsSecurity:(int64_t)security;
+- (W5WiFiScanResult)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int)fastestSupportedPHYMode;
 - (int64_t)strongestSupportedSecurity;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation W5WiFiScanResult
@@ -22,7 +22,7 @@
   [(W5WiFiScanResult *)&v3 dealloc];
 }
 
-- (BOOL)supportsSecurity:(int64_t)a3
+- (BOOL)supportsSecurity:(int64_t)security
 {
   v5 = [(NSArray *)self->_supportedSecurityTypes containsObject:&unk_288342168];
   v6 = [(NSArray *)self->_supportedSecurityTypes containsObject:&unk_288342180];
@@ -34,7 +34,7 @@
   v12 = [(NSArray *)self->_supportedSecurityTypes containsObject:&unk_288342210];
   v13 = [(NSArray *)self->_supportedSecurityTypes containsObject:&unk_288342228];
   v14 = 0;
-  switch(a3)
+  switch(security)
   {
     case 0:
       v14 = !v5 && !v13 && !v12 && !v6 && !v8 && !v10 && !v7 && !v9;
@@ -85,38 +85,38 @@
 
 - (int64_t)strongestSupportedSecurity
 {
-  v2 = [(W5WiFiScanResult *)self supportedSecurityTypes];
-  if ([(NSArray *)v2 containsObject:&unk_2883421F8])
+  supportedSecurityTypes = [(W5WiFiScanResult *)self supportedSecurityTypes];
+  if ([(NSArray *)supportedSecurityTypes containsObject:&unk_2883421F8])
   {
     return 12;
   }
 
-  if ([(NSArray *)v2 containsObject:&unk_2883421C8])
+  if ([(NSArray *)supportedSecurityTypes containsObject:&unk_2883421C8])
   {
     return 11;
   }
 
-  if ([(NSArray *)v2 containsObject:&unk_288342198])
+  if ([(NSArray *)supportedSecurityTypes containsObject:&unk_288342198])
   {
     return 9;
   }
 
-  if ([(NSArray *)v2 containsObject:&unk_2883421E0])
+  if ([(NSArray *)supportedSecurityTypes containsObject:&unk_2883421E0])
   {
     return 5;
   }
 
-  if ([(NSArray *)v2 containsObject:&unk_2883421B0])
+  if ([(NSArray *)supportedSecurityTypes containsObject:&unk_2883421B0])
   {
     return 4;
   }
 
-  if ([(NSArray *)v2 containsObject:&unk_288342180])
+  if ([(NSArray *)supportedSecurityTypes containsObject:&unk_288342180])
   {
     return 2;
   }
 
-  return [(NSArray *)v2 containsObject:&unk_288342168];
+  return [(NSArray *)supportedSecurityTypes containsObject:&unk_288342168];
 }
 
 - (int)fastestSupportedPHYMode
@@ -154,54 +154,54 @@
   return v3;
 }
 
-- (BOOL)isAirPortBaseStation:(id *)a3 modelID:(char *)a4
+- (BOOL)isAirPortBaseStation:(id *)station modelID:(char *)d
 {
-  v5 = [(W5WiFiScanResult *)self airPortBaseStationModelName:a3];
-  if (a3 && v5)
+  v5 = [(W5WiFiScanResult *)self airPortBaseStationModelName:station];
+  if (station && v5)
   {
-    *a3 = v5;
+    *station = v5;
   }
 
-  return a3 != 0;
+  return station != 0;
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x277CCAB68] stringWithCapacity:0];
-  v4 = [(NSString *)[(W5WiFiScanResult *)self ssidString] redactedForWiFi];
+  redactedForWiFi = [(NSString *)[(W5WiFiScanResult *)self ssidString] redactedForWiFi];
   [(W5WiFiScanResult *)self ssid];
-  [v3 appendFormat:@"SSID: %@ (%@)\n", v4, objc_msgSend(CWFHexadecimalStringFromData(), "redactedForWiFi")];
+  [v3 appendFormat:@"SSID: %@ (%@)\n", redactedForWiFi, objc_msgSend(CWFHexadecimalStringFromData(), "redactedForWiFi")];
   [v3 appendFormat:@"BSSID %@\n", -[NSString redactedForWiFi](-[W5WiFiScanResult bssid](self, "bssid"), "redactedForWiFi")];
   v5 = [v3 copy];
 
   return v5;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v5.receiver = self;
   v5.super_class = W5WiFiScanResult;
-  if (-[W5WiFiScanResult conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([a3 isEqual:&unk_288343878] & 1) != 0)
+  if (-[W5WiFiScanResult conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([protocol isEqual:&unk_288343878] & 1) != 0)
   {
     return 1;
   }
 
   else
   {
-    return [a3 isEqual:&unk_2883436F0];
+    return [protocol isEqual:&unk_2883436F0];
   }
 }
 
-- (BOOL)isEqualToScanResult:(id)a3
+- (BOOL)isEqualToScanResult:(id)result
 {
-  if (!-[W5WiFiScanResult ssid](self, "ssid") && ![a3 ssid] || (v5 = -[NSData isEqualToData:](-[W5WiFiScanResult ssid](self, "ssid"), "isEqualToData:", objc_msgSend(a3, "ssid"))))
+  if (!-[W5WiFiScanResult ssid](self, "ssid") && ![result ssid] || (v5 = -[NSData isEqualToData:](-[W5WiFiScanResult ssid](self, "ssid"), "isEqualToData:", objc_msgSend(result, "ssid"))))
   {
-    if (-[W5WiFiScanResult bssid](self, "bssid") || [a3 bssid])
+    if (-[W5WiFiScanResult bssid](self, "bssid") || [result bssid])
     {
-      v6 = [(W5WiFiScanResult *)self bssid];
-      v7 = [a3 bssid];
+      bssid = [(W5WiFiScanResult *)self bssid];
+      bssid2 = [result bssid];
 
-      LOBYTE(v5) = [(NSString *)v6 isEqualToString:v7];
+      LOBYTE(v5) = [(NSString *)bssid isEqualToString:bssid2];
     }
 
     else
@@ -213,14 +213,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -231,10 +231,10 @@
     return 0;
   }
 
-  return [(W5WiFiScanResult *)self isEqualToScanResult:a3];
+  return [(W5WiFiScanResult *)self isEqualToScanResult:equal];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5WiFiScanResult allocWithZone:?]];
   [(W5WiFiScanResult *)v4 setScanRecord:[(W5WiFiScanResult *)self scanRecord]];
@@ -258,57 +258,57 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_scanRecord forKey:@"_scanRecord"];
-  [a3 encodeObject:self->_ssid forKey:@"_ssid"];
-  [a3 encodeObject:self->_ssidString forKey:@"_ssidString"];
-  [a3 encodeObject:self->_bssid forKey:@"_bssid"];
-  [a3 encodeObject:self->_channel forKey:@"_channel"];
-  [a3 encodeObject:self->_countryCode forKey:@"_countryCode"];
-  [a3 encodeObject:self->_airPortBaseStationModelName forKey:@"_airPortBaseStationModelName"];
-  [a3 encodeObject:self->_supportedSecurityTypes forKey:@"_supportedSecurityTypes"];
-  [a3 encodeInteger:self->_rssi forKey:@"_rssi"];
-  [a3 encodeInteger:self->_noise forKey:@"_noise"];
-  [a3 encodeInteger:self->_beaconInterval forKey:@"_beaconInterval"];
-  [a3 encodeBool:self->_isIBSS forKey:@"_isIBSS"];
-  [a3 encodeBool:self->_isPasspoint forKey:@"_isPasspoint"];
-  [a3 encodeBool:self->_isPersonalHotspot forKey:@"_isPersonalHotspot"];
-  [a3 encodeBool:self->_isAppleSWAP forKey:@"_isAppleSWAP"];
-  [a3 encodeInt:self->_supportedPHYModes forKey:@"_supportedPHYModes"];
-  [a3 encodeBool:self->_supportsWEPCipher forKey:@"_supportsWEPCipher"];
+  [coder encodeObject:self->_scanRecord forKey:@"_scanRecord"];
+  [coder encodeObject:self->_ssid forKey:@"_ssid"];
+  [coder encodeObject:self->_ssidString forKey:@"_ssidString"];
+  [coder encodeObject:self->_bssid forKey:@"_bssid"];
+  [coder encodeObject:self->_channel forKey:@"_channel"];
+  [coder encodeObject:self->_countryCode forKey:@"_countryCode"];
+  [coder encodeObject:self->_airPortBaseStationModelName forKey:@"_airPortBaseStationModelName"];
+  [coder encodeObject:self->_supportedSecurityTypes forKey:@"_supportedSecurityTypes"];
+  [coder encodeInteger:self->_rssi forKey:@"_rssi"];
+  [coder encodeInteger:self->_noise forKey:@"_noise"];
+  [coder encodeInteger:self->_beaconInterval forKey:@"_beaconInterval"];
+  [coder encodeBool:self->_isIBSS forKey:@"_isIBSS"];
+  [coder encodeBool:self->_isPasspoint forKey:@"_isPasspoint"];
+  [coder encodeBool:self->_isPersonalHotspot forKey:@"_isPersonalHotspot"];
+  [coder encodeBool:self->_isAppleSWAP forKey:@"_isAppleSWAP"];
+  [coder encodeInt:self->_supportedPHYModes forKey:@"_supportedPHYModes"];
+  [coder encodeBool:self->_supportsWEPCipher forKey:@"_supportsWEPCipher"];
   supportsTKIPCipher = self->_supportsTKIPCipher;
 
-  [a3 encodeBool:supportsTKIPCipher forKey:@"_supportsTKIPCipher"];
+  [coder encodeBool:supportsTKIPCipher forKey:@"_supportsTKIPCipher"];
 }
 
-- (W5WiFiScanResult)initWithCoder:(id)a3
+- (W5WiFiScanResult)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = W5WiFiScanResult;
   v4 = [(W5WiFiScanResult *)&v8 init];
   if (v4)
   {
-    v4->_scanRecord = [a3 decodePropertyListForKey:@"_scanRecord"];
-    v4->_ssid = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"_ssid"];
-    v4->_ssidString = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"_ssidString"];
-    v4->_bssid = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"_bssid"];
-    v4->_airPortBaseStationModelName = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"_airPortBaseStationModelName"];
-    v4->_countryCode = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"_countryCode"];
-    v4->_channel = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"_channel"];
-    v4->_rssi = [a3 decodeIntegerForKey:@"_rssi"];
-    v4->_noise = [a3 decodeIntegerForKey:@"_noise"];
-    v4->_beaconInterval = [a3 decodeIntegerForKey:@"_beaconInterval"];
-    v4->_isIBSS = [a3 decodeBoolForKey:@"_isIBSS"];
-    v4->_isPersonalHotspot = [a3 decodeBoolForKey:@"_isPersonalHotspot"];
-    v4->_isPasspoint = [a3 decodeBoolForKey:@"_isPasspoint"];
-    v4->_isAppleSWAP = [a3 decodeBoolForKey:@"_isAppleSWAP"];
-    v4->_supportedPHYModes = [a3 decodeIntForKey:@"_supportedPHYModes"];
+    v4->_scanRecord = [coder decodePropertyListForKey:@"_scanRecord"];
+    v4->_ssid = [coder decodeObjectOfClass:objc_opt_class() forKey:@"_ssid"];
+    v4->_ssidString = [coder decodeObjectOfClass:objc_opt_class() forKey:@"_ssidString"];
+    v4->_bssid = [coder decodeObjectOfClass:objc_opt_class() forKey:@"_bssid"];
+    v4->_airPortBaseStationModelName = [coder decodeObjectOfClass:objc_opt_class() forKey:@"_airPortBaseStationModelName"];
+    v4->_countryCode = [coder decodeObjectOfClass:objc_opt_class() forKey:@"_countryCode"];
+    v4->_channel = [coder decodeObjectOfClass:objc_opt_class() forKey:@"_channel"];
+    v4->_rssi = [coder decodeIntegerForKey:@"_rssi"];
+    v4->_noise = [coder decodeIntegerForKey:@"_noise"];
+    v4->_beaconInterval = [coder decodeIntegerForKey:@"_beaconInterval"];
+    v4->_isIBSS = [coder decodeBoolForKey:@"_isIBSS"];
+    v4->_isPersonalHotspot = [coder decodeBoolForKey:@"_isPersonalHotspot"];
+    v4->_isPasspoint = [coder decodeBoolForKey:@"_isPasspoint"];
+    v4->_isAppleSWAP = [coder decodeBoolForKey:@"_isAppleSWAP"];
+    v4->_supportedPHYModes = [coder decodeIntForKey:@"_supportedPHYModes"];
     v5 = MEMORY[0x277CBEB98];
     v6 = objc_opt_class();
-    v4->_supportedSecurityTypes = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"_supportedSecurityTypes"}];
-    v4->_supportsWEPCipher = [a3 decodeBoolForKey:@"_supportsWEPCipher"];
-    v4->_supportsTKIPCipher = [a3 decodeBoolForKey:@"_supportsTKIPCipher"];
+    v4->_supportedSecurityTypes = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"_supportedSecurityTypes"}];
+    v4->_supportsWEPCipher = [coder decodeBoolForKey:@"_supportsWEPCipher"];
+    v4->_supportsTKIPCipher = [coder decodeBoolForKey:@"_supportsTKIPCipher"];
   }
 
   return v4;

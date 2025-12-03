@@ -1,21 +1,21 @@
 @interface TPNullChildHint
-- (TPNullChildHint)initWithContext:(id)a3 hint:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setHint:(id)a3;
+- (TPNullChildHint)initWithContext:(id)context hint:(id)hint;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setHint:(id)hint;
 @end
 
 @implementation TPNullChildHint
 
-- (TPNullChildHint)initWithContext:(id)a3 hint:(id)a4
+- (TPNullChildHint)initWithContext:(id)context hint:(id)hint
 {
-  v6 = a3;
-  v8 = a4;
-  if (v8)
+  contextCopy = context;
+  hintCopy = hint;
+  if (hintCopy)
   {
     v13 = objc_msgSend_null(MEMORY[0x277CBEB68], v7, v9, v10, v11, v12);
 
-    if (v13 != v8)
+    if (v13 != hintCopy)
     {
       v19 = MEMORY[0x277D81150];
       v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, v18, "[TPNullChildHint initWithContext:hint:]");
@@ -28,31 +28,31 @@
 
   v39.receiver = self;
   v39.super_class = TPNullChildHint;
-  v37 = [(TPNullChildHint *)&v39 initWithContext:v6];
+  v37 = [(TPNullChildHint *)&v39 initWithContext:contextCopy];
 
   return v37;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v8 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  objc_msgSend_messageWithDescriptor_(v8, v3, v4, v5, v6, v7, off_2812F85B8[38]);
+  objc_msgSend_messageWithDescriptor_(unarchiverCopy, v3, v4, v5, v6, v7, off_2812F85B8[38]);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v8 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  objc_msgSend_messageWithNewFunction_descriptor_(v8, v3, v4, v5, v6, v7, sub_275FE7008, off_2812F85B8[38]);
+  objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v3, v4, v5, v6, v7, sub_275FE7008, off_2812F85B8[38]);
 }
 
-- (void)setHint:(id)a3
+- (void)setHint:(id)hint
 {
-  v32 = a3;
+  hintCopy = hint;
   v8 = objc_msgSend_null(MEMORY[0x277CBEB68], v3, v4, v5, v6, v7);
 
-  if (v8 != v32)
+  if (v8 != hintCopy)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v10, v11, v12, v13, "[TPNullChildHint setHint:]");

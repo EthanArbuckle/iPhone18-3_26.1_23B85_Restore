@@ -1,17 +1,17 @@
 @interface VCPSearchContext
 - (VCPSearchContext)init;
-- (VCPSearchContext)initWithCoder:(id)a3;
-- (VCPSearchContext)initWithEntities:(id)a3;
-- (void)addIdentifiers:(id)a3 forType:(int64_t)a4;
-- (void)setIdentifiers:(id)a3 forType:(int64_t)a4;
+- (VCPSearchContext)initWithCoder:(id)coder;
+- (VCPSearchContext)initWithEntities:(id)entities;
+- (void)addIdentifiers:(id)identifiers forType:(int64_t)type;
+- (void)setIdentifiers:(id)identifiers forType:(int64_t)type;
 @end
 
 @implementation VCPSearchContext
 
-- (VCPSearchContext)initWithCoder:(id)a3
+- (VCPSearchContext)initWithCoder:(id)coder
 {
   v13[8] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = VCPSearchContext;
   v5 = [(VCPSearchContext *)&v12 init];
@@ -29,7 +29,7 @@
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:8];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"Entities"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"Entities"];
     entities = v5->_entities;
     v5->_entities = v9;
   }
@@ -44,9 +44,9 @@
   v2 = [(VCPSearchContext *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     entities = v2->_entities;
-    v2->_entities = v3;
+    v2->_entities = dictionary;
 
     v5 = v2;
   }
@@ -54,15 +54,15 @@
   return v2;
 }
 
-- (VCPSearchContext)initWithEntities:(id)a3
+- (VCPSearchContext)initWithEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   v5 = [(VCPSearchContext *)self init];
   if (v5)
   {
-    if ([v4 count])
+    if ([entitiesCopy count])
     {
-      [(NSMutableDictionary *)v5->_entities addEntriesFromDictionary:v4];
+      [(NSMutableDictionary *)v5->_entities addEntriesFromDictionary:entitiesCopy];
     }
 
     v6 = v5;
@@ -71,13 +71,13 @@
   return v5;
 }
 
-- (void)addIdentifiers:(id)a3 forType:(int64_t)a4
+- (void)addIdentifiers:(id)identifiers forType:(int64_t)type
 {
-  v10 = a3;
-  if ([v10 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    v7 = [MEMORY[0x1E695DF70] arrayWithArray:v10];
+    v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+    v7 = [MEMORY[0x1E695DF70] arrayWithArray:identifiersCopy];
     v8 = [(NSMutableDictionary *)self->_entities objectForKeyedSubscript:v6];
 
     if (v8)
@@ -90,13 +90,13 @@
   }
 }
 
-- (void)setIdentifiers:(id)a3 forType:(int64_t)a4
+- (void)setIdentifiers:(id)identifiers forType:(int64_t)type
 {
-  v8 = a3;
-  if ([v8 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    v7 = [MEMORY[0x1E695DF70] arrayWithArray:v8];
+    v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+    v7 = [MEMORY[0x1E695DF70] arrayWithArray:identifiersCopy];
     [(NSMutableDictionary *)self->_entities setObject:v7 forKey:v6];
   }
 }

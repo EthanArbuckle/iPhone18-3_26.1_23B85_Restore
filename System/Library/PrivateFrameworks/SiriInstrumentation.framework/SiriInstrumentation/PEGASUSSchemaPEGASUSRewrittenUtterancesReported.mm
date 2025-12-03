@@ -1,28 +1,28 @@
 @interface PEGASUSSchemaPEGASUSRewrittenUtterancesReported
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSRewrittenUtterancesReported)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSRewrittenUtterancesReported)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSRewrittenUtterancesReported)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSRewrittenUtterancesReported)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addRewrittenUtterancesMetadata:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRewrittenUtterancesMetadata:(id)metadata;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSRewrittenUtterancesReported
 
-- (PEGASUSSchemaPEGASUSRewrittenUtterancesReported)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSRewrittenUtterancesReported)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = PEGASUSSchemaPEGASUSRewrittenUtterancesReported;
   v5 = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,14 +30,14 @@
       [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"wasRewrittenUtteranceUsed"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"wasRewrittenUtteranceUsed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSRewrittenUtterancesReported setWasRewrittenUtteranceUsed:](v5, "setWasRewrittenUtteranceUsed:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"rewrittenUtterancesMetadata"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"rewrittenUtterancesMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,30 +85,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSRewrittenUtterancesReported)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSRewrittenUtterancesReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -122,26 +122,26 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_linkId)
   {
-    v4 = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self linkId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    linkId = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
   if ([(NSArray *)self->_rewrittenUtterancesMetadatas count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -161,16 +161,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -180,18 +180,18 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"rewrittenUtterancesMetadata"];
+    [dictionary setObject:array forKeyedSubscript:@"rewrittenUtterancesMetadata"];
   }
 
   if (*&self->_has)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[PEGASUSSchemaPEGASUSRewrittenUtterancesReported wasRewrittenUtteranceUsed](self, "wasRewrittenUtteranceUsed")}];
-    [v3 setObject:v15 forKeyedSubscript:@"wasRewrittenUtteranceUsed"];
+    [dictionary setObject:v15 forKeyedSubscript:@"wasRewrittenUtteranceUsed"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v17];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v17];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -210,28 +210,28 @@
   return v4 ^ v3 ^ [(NSArray *)self->_rewrittenUtterancesMetadatas hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_14;
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self linkId];
-  if (v7)
+  linkId3 = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self linkId];
+  if (linkId3)
   {
-    v8 = v7;
-    v9 = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self linkId];
-    v10 = [v4 linkId];
-    v11 = [v9 isEqual:v10];
+    v8 = linkId3;
+    linkId4 = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v11 = [linkId4 isEqual:linkId5];
 
     if (!v11)
     {
@@ -243,7 +243,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -251,18 +251,18 @@
   if (*&self->_has)
   {
     wasRewrittenUtteranceUsed = self->_wasRewrittenUtteranceUsed;
-    if (wasRewrittenUtteranceUsed != [v4 wasRewrittenUtteranceUsed])
+    if (wasRewrittenUtteranceUsed != [equalCopy wasRewrittenUtteranceUsed])
     {
       goto LABEL_15;
     }
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self rewrittenUtterancesMetadatas];
-  v6 = [v4 rewrittenUtterancesMetadatas];
-  if ((v5 != 0) != (v6 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self rewrittenUtterancesMetadatas];
+  linkId2 = [equalCopy rewrittenUtterancesMetadatas];
+  if ((linkId != 0) != (linkId2 == 0))
   {
-    v13 = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self rewrittenUtterancesMetadatas];
-    if (!v13)
+    rewrittenUtterancesMetadatas = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self rewrittenUtterancesMetadatas];
+    if (!rewrittenUtterancesMetadatas)
     {
 
 LABEL_18:
@@ -270,10 +270,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self rewrittenUtterancesMetadatas];
-    v16 = [v4 rewrittenUtterancesMetadatas];
-    v17 = [v15 isEqual:v16];
+    v14 = rewrittenUtterancesMetadatas;
+    rewrittenUtterancesMetadatas2 = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self rewrittenUtterancesMetadatas];
+    rewrittenUtterancesMetadatas3 = [equalCopy rewrittenUtterancesMetadatas];
+    v17 = [rewrittenUtterancesMetadatas2 isEqual:rewrittenUtterancesMetadatas3];
 
     if (v17)
     {
@@ -293,15 +293,15 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self linkId];
+  toCopy = to;
+  linkId = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self linkId];
 
-  if (v5)
+  if (linkId)
   {
-    v6 = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self linkId];
+    linkId2 = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -342,41 +342,41 @@ LABEL_16:
   }
 }
 
-- (void)addRewrittenUtterancesMetadata:(id)a3
+- (void)addRewrittenUtterancesMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   rewrittenUtterancesMetadatas = self->_rewrittenUtterancesMetadatas;
-  v8 = v4;
+  v8 = metadataCopy;
   if (!rewrittenUtterancesMetadatas)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_rewrittenUtterancesMetadatas;
-    self->_rewrittenUtterancesMetadatas = v6;
+    self->_rewrittenUtterancesMetadatas = array;
 
-    v4 = v8;
+    metadataCopy = v8;
     rewrittenUtterancesMetadatas = self->_rewrittenUtterancesMetadatas;
   }
 
-  [(NSArray *)rewrittenUtterancesMetadatas addObject:v4];
+  [(NSArray *)rewrittenUtterancesMetadatas addObject:metadataCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = PEGASUSSchemaPEGASUSRewrittenUtterancesReported;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  linkId = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self deleteLinkId];
   }
 
-  v9 = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self rewrittenUtterancesMetadatas];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  rewrittenUtterancesMetadatas = [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self rewrittenUtterancesMetadatas];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:rewrittenUtterancesMetadatas underConditions:policyCopy];
   [(PEGASUSSchemaPEGASUSRewrittenUtterancesReported *)self setRewrittenUtterancesMetadatas:v10];
 
   return v5;

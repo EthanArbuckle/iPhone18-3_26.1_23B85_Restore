@@ -1,30 +1,30 @@
 @interface SFRSA_OAEPEncryptionOperation
 - (SFMaskGenerationFunction)maskGenerationFunction;
-- (SFRSA_OAEPEncryptionOperation)initWithCoder:(id)a3;
-- (SFRSA_OAEPEncryptionOperation)initWithKeySpecifier:(id)a3;
-- (SFRSA_OAEPEncryptionOperation)initWithKeySpecifier:(id)a3 maskGenerationFunction:(id)a4;
-- (void)setMaskGenerationFunction:(id)a3;
+- (SFRSA_OAEPEncryptionOperation)initWithCoder:(id)coder;
+- (SFRSA_OAEPEncryptionOperation)initWithKeySpecifier:(id)specifier;
+- (SFRSA_OAEPEncryptionOperation)initWithKeySpecifier:(id)specifier maskGenerationFunction:(id)function;
+- (void)setMaskGenerationFunction:(id)function;
 @end
 
 @implementation SFRSA_OAEPEncryptionOperation
 
-- (SFRSA_OAEPEncryptionOperation)initWithKeySpecifier:(id)a3
+- (SFRSA_OAEPEncryptionOperation)initWithKeySpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = _defaultMaskGenerationFunction();
-  v6 = [(SFRSA_OAEPEncryptionOperation *)self initWithKeySpecifier:v4 maskGenerationFunction:v5];
+  v6 = [(SFRSA_OAEPEncryptionOperation *)self initWithKeySpecifier:specifierCopy maskGenerationFunction:v5];
 
   return v6;
 }
 
-- (SFRSA_OAEPEncryptionOperation)initWithKeySpecifier:(id)a3 maskGenerationFunction:(id)a4
+- (SFRSA_OAEPEncryptionOperation)initWithKeySpecifier:(id)specifier maskGenerationFunction:(id)function
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  specifierCopy = specifier;
+  functionCopy = function;
+  v8 = functionCopy;
+  if (specifierCopy)
   {
-    if (v7)
+    if (functionCopy)
     {
       goto LABEL_3;
     }
@@ -43,21 +43,21 @@
 LABEL_3:
   v12.receiver = self;
   v12.super_class = SFRSA_OAEPEncryptionOperation;
-  v9 = [(SFRSAEncryptionOperation *)&v12 initWithKeySpecifier:v6];
+  v9 = [(SFRSAEncryptionOperation *)&v12 initWithKeySpecifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(v9->_oaepEncryptionOperationInternal + 1, a4);
+    objc_storeStrong(v9->_oaepEncryptionOperationInternal + 1, function);
   }
 
   return v10;
 }
 
-- (SFRSA_OAEPEncryptionOperation)initWithCoder:(id)a3
+- (SFRSA_OAEPEncryptionOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFRSA_OAEPEncryptionOperation;
-  return [(SFRSAEncryptionOperation *)&v4 initWithCoder:a3];
+  return [(SFRSAEncryptionOperation *)&v4 initWithCoder:coder];
 }
 
 - (SFMaskGenerationFunction)maskGenerationFunction
@@ -67,9 +67,9 @@ LABEL_3:
   return v2;
 }
 
-- (void)setMaskGenerationFunction:(id)a3
+- (void)setMaskGenerationFunction:(id)function
 {
-  v4 = [a3 copyWithZone:0];
+  v4 = [function copyWithZone:0];
   oaepEncryptionOperationInternal = self->_oaepEncryptionOperationInternal;
   v6 = oaepEncryptionOperationInternal[1];
   oaepEncryptionOperationInternal[1] = v4;

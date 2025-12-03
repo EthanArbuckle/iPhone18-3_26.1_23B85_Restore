@@ -1,20 +1,20 @@
 @interface SecureTaskDelegate
 - (_TtC20AttributionKitDaemon18SecureTaskDelegate)init;
-- (void)URLSession:(NSURLSession *)a3 didReceiveChallenge:(NSURLAuthenticationChallenge *)a4 completionHandler:(id)a5;
+- (void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(id)handler;
 @end
 
 @implementation SecureTaskDelegate
 
-- (void)URLSession:(NSURLSession *)a3 didReceiveChallenge:(NSURLAuthenticationChallenge *)a4 completionHandler:(id)a5
+- (void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(id)handler
 {
   v9 = sub_10000CDE0(&qword_100239EE0, &qword_1001B3640);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = session;
+  v14[3] = challenge;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -29,9 +29,9 @@
   v17[3] = 0;
   v17[4] = &unk_1001BAFE8;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  sessionCopy = session;
+  challengeCopy = challenge;
+  selfCopy = self;
   sub_1000A226C(0, 0, v12, &unk_1001BAFF8, v17);
 }
 

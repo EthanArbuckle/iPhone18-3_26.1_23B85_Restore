@@ -1,44 +1,44 @@
 @interface WFiTunesObjectContentItem
-+ (BOOL)parseiTunesURL:(id)a3 itemIdentifier:(id *)a4 countryCode:(id *)a5;
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3;
-+ (BOOL)urlItem_canCoerceFromURL:(id)a3;
++ (BOOL)parseiTunesURL:(id)l itemIdentifier:(id *)identifier countryCode:(id *)code;
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance;
++ (BOOL)urlItem_canCoerceFromURL:(id)l;
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)propertyBuilders;
 + (id)urlItem_outputClasses;
 + (id)urlItem_sharingItemClassesByBundleIdentifier;
-+ (void)urlItem_generateObjectRepresentations:(id)a3 fromURL:(id)a4 forClass:(Class)a5;
-+ (void)urlItem_generateObjectRepresentations:(id)a3 fromiTunesURL:(id)a4 forClass:(Class)a5;
-- (BOOL)canGenerateRepresentationForType:(id)a3;
++ (void)urlItem_generateObjectRepresentations:(id)representations fromURL:(id)l forClass:(Class)class;
++ (void)urlItem_generateObjectRepresentations:(id)representations fromiTunesURL:(id)l forClass:(Class)class;
+- (BOOL)canGenerateRepresentationForType:(id)type;
 - (WFiTunesObject)object;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
 - (id)possibleArtworkURLs;
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5;
-- (void)getArtworkDataWithURLs:(id)a3 completionHandler:(id)a4;
-- (void)getArtworkForSize:(CGSize)a3 completionHandler:(id)a4;
-- (void)getPreferredArtworkURL:(id)a3;
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type;
+- (void)getArtworkDataWithURLs:(id)ls completionHandler:(id)handler;
+- (void)getArtworkForSize:(CGSize)size completionHandler:(id)handler;
+- (void)getPreferredArtworkURL:(id)l;
 @end
 
 @implementation WFiTunesObjectContentItem
 
-- (BOOL)canGenerateRepresentationForType:(id)a3
+- (BOOL)canGenerateRepresentationForType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = [MEMORY[0x1E69E0AF8] typeWithUTType:*MEMORY[0x1E6982E30]];
-  v6 = [v4 conformsToType:v5];
+  v6 = [typeCopy conformsToType:v5];
 
   if (v6)
   {
-    v7 = [(WFiTunesObjectContentItem *)self object];
-    v8 = [v7 artworkURLs];
-    isKindOfClass = [v8 count] != 0;
+    object = [(WFiTunesObjectContentItem *)self object];
+    artworkURLs = [object artworkURLs];
+    isKindOfClass = [artworkURLs count] != 0;
   }
 
   else
   {
-    v10 = v4;
+    v10 = typeCopy;
     if (v10)
     {
       objc_opt_class();
@@ -60,9 +60,9 @@
 
     v12 = v11;
 
-    v13 = [v12 string];
+    string = [v12 string];
 
-    LODWORD(v12) = [v13 isEqualToString:@"MPMediaItem"];
+    LODWORD(v12) = [string isEqualToString:@"MPMediaItem"];
     if (!v12)
     {
       v15.receiver = self;
@@ -71,7 +71,7 @@
       goto LABEL_12;
     }
 
-    v7 = [(WFiTunesObjectContentItem *)self object];
+    object = [(WFiTunesObjectContentItem *)self object];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -80,19 +80,19 @@ LABEL_12:
   return isKindOfClass & 1;
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  v8 = a4;
-  if (objc_opt_class() == a3)
+  optionsCopy = options;
+  if (objc_opt_class() == class)
   {
-    v24 = [(WFiTunesObjectContentItem *)self object];
-    v25 = [v24 viewURL];
+    object = [(WFiTunesObjectContentItem *)self object];
+    viewURL = [object viewURL];
 
-    if (v25)
+    if (viewURL)
     {
       v26 = MEMORY[0x1E6996EC8];
-      v27 = [(WFiTunesObjectContentItem *)self name];
-      v23 = [v26 object:v25 named:v27];
+      name = [(WFiTunesObjectContentItem *)self name];
+      v23 = [v26 object:viewURL named:name];
     }
 
     else
@@ -105,53 +105,53 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v9 = NSStringFromClass(a3);
+  v9 = NSStringFromClass(class);
   v10 = [@"MPMediaItem" isEqualToString:v9];
 
   if (!v10)
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != class)
     {
       v46.receiver = self;
       v46.super_class = WFiTunesObjectContentItem;
-      v23 = [(WFiTunesObjectContentItem *)&v46 generateObjectRepresentationForClass:a3 options:v8 error:a5];
+      v23 = [(WFiTunesObjectContentItem *)&v46 generateObjectRepresentationForClass:class options:optionsCopy error:error];
       goto LABEL_31;
     }
 
-    v25 = [(WFiTunesObjectContentItem *)self object];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v25 artistName], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
+    viewURL = [(WFiTunesObjectContentItem *)self object];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([viewURL artistName], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v29 = v28;
       v30 = MEMORY[0x1E696AEC0];
       v31 = WFLocalizedString(@"%1$@ by %2$@");
-      v32 = [v25 name];
-      v33 = [v30 localizedStringWithFormat:v31, v32, v29];
+      name2 = [viewURL name];
+      name3 = [v30 localizedStringWithFormat:v31, name2, v29];
     }
 
     else
     {
-      v33 = [v25 name];
+      name3 = [viewURL name];
     }
 
-    v34 = [v33 length];
-    v35 = [v25 viewURL];
-    v36 = v35;
+    v34 = [name3 length];
+    v25ViewURL = [viewURL viewURL];
+    v36 = v25ViewURL;
     if (v34)
     {
-      if (v35)
+      if (v25ViewURL)
       {
         v37 = MEMORY[0x1E696AEC0];
         v38 = WFLocalizedString(@"%1$@ (%2$@)");
-        v39 = [v25 viewURL];
-        v40 = [v39 absoluteString];
-        v41 = [v37 localizedStringWithFormat:v38, v33, v40];
+        v25ViewURL2 = [viewURL viewURL];
+        absoluteString = [v25ViewURL2 absoluteString];
+        v41 = [v37 localizedStringWithFormat:v38, name3, absoluteString];
 
 LABEL_26:
         if ([v41 length])
         {
           v43 = MEMORY[0x1E6996EC8];
-          v44 = [(WFiTunesObjectContentItem *)self name];
-          v23 = [v43 object:v41 named:v44];
+          name4 = [(WFiTunesObjectContentItem *)self name];
+          v23 = [v43 object:v41 named:name4];
         }
 
         else
@@ -162,15 +162,15 @@ LABEL_26:
         goto LABEL_30;
       }
 
-      v42 = v33;
+      absoluteString2 = name3;
     }
 
     else
     {
-      v42 = [v35 absoluteString];
+      absoluteString2 = [v25ViewURL absoluteString];
     }
 
-    v41 = v42;
+    v41 = absoluteString2;
     goto LABEL_26;
   }
 
@@ -192,9 +192,9 @@ LABEL_26:
 
   v12 = v11;
   _Block_object_dispose(&v52, 8);
-  v13 = [(WFiTunesObjectContentItem *)self object];
-  v14 = [v13 identifier];
-  v15 = [v11 predicateWithValue:v14 forProperty:@"storeItemAdamID"];
+  object2 = [(WFiTunesObjectContentItem *)self object];
+  identifier = [object2 identifier];
+  v15 = [v11 predicateWithValue:identifier forProperty:@"storeItemAdamID"];
 
   v52 = 0;
   v53 = &v52;
@@ -218,12 +218,12 @@ LABEL_26:
   v19 = [MEMORY[0x1E695DFD8] setWithObject:v15];
   v20 = [v18 initWithFilterPredicates:v19];
 
-  v21 = [v20 items];
-  v22 = [v21 firstObject];
+  items = [v20 items];
+  firstObject = [items firstObject];
 
-  if (v22)
+  if (firstObject)
   {
-    v23 = [MEMORY[0x1E6996EC8] object:v22];
+    v23 = [MEMORY[0x1E6996EC8] object:firstObject];
   }
 
   else
@@ -236,16 +236,16 @@ LABEL_31:
   return v23;
 }
 
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 conformsToUTType:*MEMORY[0x1E6982E30]])
+  representationCopy = representation;
+  optionsCopy = options;
+  typeCopy = type;
+  if ([typeCopy conformsToUTType:*MEMORY[0x1E6982E30]])
   {
-    v11 = [(WFiTunesObjectContentItem *)self object];
-    v12 = [v11 artworkURLs];
-    v13 = [v12 count];
+    object = [(WFiTunesObjectContentItem *)self object];
+    artworkURLs = [object artworkURLs];
+    v13 = [artworkURLs count];
 
     if (v13)
     {
@@ -255,7 +255,7 @@ LABEL_31:
       v20[3] = __Block_byref_object_copy__37235;
       v20[4] = __Block_byref_object_dispose__37236;
       v21 = 0;
-      v14 = [(WFiTunesObjectContentItem *)self possibleArtworkURLs];
+      possibleArtworkURLs = [(WFiTunesObjectContentItem *)self possibleArtworkURLs];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __72__WFiTunesObjectContentItem_generateFileRepresentation_options_forType___block_invoke;
@@ -266,16 +266,16 @@ LABEL_31:
       v16[1] = 3221225472;
       v16[2] = __72__WFiTunesObjectContentItem_generateFileRepresentation_options_forType___block_invoke_3;
       v16[3] = &unk_1E8379020;
-      v17 = v8;
+      v17 = representationCopy;
       v18 = v20;
-      [v14 if_enumerateAsynchronouslyInSequence:v19 completionHandler:v16];
+      [possibleArtworkURLs if_enumerateAsynchronouslyInSequence:v19 completionHandler:v16];
 
       _Block_object_dispose(v20, 8);
     }
 
     else
     {
-      (*(v8 + 2))(v8, 0, 0);
+      (*(representationCopy + 2))(representationCopy, 0, 0);
     }
   }
 
@@ -283,7 +283,7 @@ LABEL_31:
   {
     v15.receiver = self;
     v15.super_class = WFiTunesObjectContentItem;
-    [(WFiTunesObjectContentItem *)&v15 generateFileRepresentation:v8 options:v9 forType:v10];
+    [(WFiTunesObjectContentItem *)&v15 generateFileRepresentation:representationCopy options:optionsCopy forType:typeCopy];
   }
 }
 
@@ -348,33 +348,33 @@ void __72__WFiTunesObjectContentItem_generateFileRepresentation_options_forType_
   }
 }
 
-- (void)getPreferredArtworkURL:(id)a3
+- (void)getPreferredArtworkURL:(id)l
 {
-  v4 = a3;
-  v5 = [(WFiTunesObjectContentItem *)self possibleArtworkURLs];
+  lCopy = l;
+  possibleArtworkURLs = [(WFiTunesObjectContentItem *)self possibleArtworkURLs];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__WFiTunesObjectContentItem_getPreferredArtworkURL___block_invoke;
   v7[3] = &unk_1E8378FA8;
-  v8 = v4;
-  v6 = v4;
-  [(WFiTunesObjectContentItem *)self getArtworkDataWithURLs:v5 completionHandler:v7];
+  v8 = lCopy;
+  v6 = lCopy;
+  [(WFiTunesObjectContentItem *)self getArtworkDataWithURLs:possibleArtworkURLs completionHandler:v7];
 }
 
-- (void)getArtworkForSize:(CGSize)a3 completionHandler:(id)a4
+- (void)getArtworkForSize:(CGSize)size completionHandler:(id)handler
 {
-  width = a3.width;
+  width = size.width;
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(WFiTunesObjectContentItem *)self object];
-  v8 = [v7 artworkURLs];
+  handlerCopy = handler;
+  object = [(WFiTunesObjectContentItem *)self object];
+  artworkURLs = [object artworkURLs];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = [v8 allKeys];
-  v10 = [v9 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [artworkURLs allKeys];
+  v10 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v11)
@@ -391,12 +391,12 @@ LABEL_3:
       }
 
       v15 = *(*(&v27 + 1) + 8 * v14);
-      v16 = [v15 integerValue];
-      v17 = [MEMORY[0x1E69E0A90] currentDevice];
-      [v17 screenScale];
+      integerValue = [v15 integerValue];
+      currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+      [currentDevice screenScale];
       v19 = width * v18;
 
-      if (v19 <= v16)
+      if (v19 <= integerValue)
       {
         break;
       }
@@ -417,7 +417,7 @@ LABEL_3:
 
     if (v20)
     {
-      v21 = [v8 objectForKey:v20];
+      v21 = [artworkURLs objectForKey:v20];
       if (v21)
       {
         v22 = v21;
@@ -426,7 +426,7 @@ LABEL_3:
         v25[1] = 3221225472;
         v25[2] = __65__WFiTunesObjectContentItem_getArtworkForSize_completionHandler___block_invoke;
         v25[3] = &unk_1E8378FA8;
-        v26 = v6;
+        v26 = handlerCopy;
         [(WFiTunesObjectContentItem *)self getArtworkDataWithURLs:v23 completionHandler:v25];
 
         goto LABEL_14;
@@ -441,7 +441,7 @@ LABEL_9:
     v20 = 0;
   }
 
-  (*(v6 + 2))(v6, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 LABEL_14:
 
   v24 = *MEMORY[0x1E69E9840];
@@ -466,10 +466,10 @@ void __65__WFiTunesObjectContentItem_getArtworkForSize_completionHandler___block
   }
 }
 
-- (void)getArtworkDataWithURLs:(id)a3 completionHandler:(id)a4
+- (void)getArtworkDataWithURLs:(id)ls completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  lsCopy = ls;
+  handlerCopy = handler;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
@@ -499,12 +499,12 @@ void __65__WFiTunesObjectContentItem_getArtworkForSize_completionHandler___block
   v8[1] = 3221225472;
   v8[2] = __70__WFiTunesObjectContentItem_getArtworkDataWithURLs_completionHandler___block_invoke_3;
   v8[3] = &unk_1E8379318;
-  v7 = v6;
+  v7 = handlerCopy;
   v9 = v7;
   v10 = v18;
   v11 = v14;
   v12 = v16;
-  [v5 if_enumerateAsynchronouslyInSequence:v13 completionHandler:v8];
+  [lsCopy if_enumerateAsynchronouslyInSequence:v13 completionHandler:v8];
 
   _Block_object_dispose(v14, 8);
   _Block_object_dispose(v16, 8);
@@ -554,19 +554,19 @@ void __70__WFiTunesObjectContentItem_getArtworkDataWithURLs_completionHandler___
 - (id)possibleArtworkURLs
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(WFiTunesObjectContentItem *)self object];
-  v4 = [v3 artworkURLs];
-  v5 = [v4 allKeys];
-  v6 = [v5 sortedArrayUsingSelector:sel_compare_];
-  v7 = [v6 reverseObjectEnumerator];
-  v8 = [v7 allObjects];
+  object = [(WFiTunesObjectContentItem *)self object];
+  artworkURLs = [object artworkURLs];
+  allKeys = [artworkURLs allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:sel_compare_];
+  reverseObjectEnumerator = [v6 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v9 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v8;
+  v10 = allObjects;
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
@@ -582,9 +582,9 @@ void __70__WFiTunesObjectContentItem_getArtworkDataWithURLs_completionHandler___
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        v16 = [(WFiTunesObjectContentItem *)self object];
-        v17 = [v16 artworkURLs];
-        v18 = [v17 objectForKeyedSubscript:v15];
+        object2 = [(WFiTunesObjectContentItem *)self object];
+        artworkURLs2 = [object2 artworkURLs];
+        v18 = [artworkURLs2 objectForKeyedSubscript:v15];
 
         if (v18)
         {
@@ -611,20 +611,20 @@ void __70__WFiTunesObjectContentItem_getArtworkDataWithURLs_completionHandler___
   return [(WFiTunesObjectContentItem *)self objectForClass:v3];
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"iTunes Products", @"iTunes Products");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"iTunes Product", @"iTunes Product");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -650,18 +650,18 @@ void __70__WFiTunesObjectContentItem_getArtworkDataWithURLs_completionHandler___
   return v6;
 }
 
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   v5 = [MEMORY[0x1E69E0AF8] typeWithUTType:*MEMORY[0x1E6982E30]];
-  v6 = [v4 conformsToType:v5];
+  v6 = [instanceCopy conformsToType:v5];
 
   if (v6)
   {
     goto LABEL_8;
   }
 
-  v7 = v4;
+  v7 = instanceCopy;
   if (v7)
   {
     objc_opt_class();
@@ -675,9 +675,9 @@ void __70__WFiTunesObjectContentItem_getArtworkDataWithURLs_completionHandler___
 
   v9 = v8;
 
-  v10 = [v9 string];
+  string = [v9 string];
 
-  LOBYTE(v9) = [v10 isEqualToString:@"MPMediaItem"];
+  LOBYTE(v9) = [string isEqualToString:@"MPMediaItem"];
   if (v9)
   {
 LABEL_8:
@@ -686,7 +686,7 @@ LABEL_8:
 
   else
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = &OBJC_METACLASS___WFiTunesObjectContentItem;
     v11 = objc_msgSendSuper2(&v13, sel_supportedTypeMustBeDeterminedByInstance_, v7);
   }
@@ -697,7 +697,7 @@ LABEL_8:
 + (id)propertyBuilders
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = MEMORY[0x1E6996D90];
     v4 = WFLocalizedContentPropertyNameMarker(@"Store ID");
@@ -753,13 +753,13 @@ void __45__WFiTunesObjectContentItem_propertyBuilders__block_invoke(uint64_t a1,
   [v7 getObjectRepresentation:v8 forClass:objc_opt_class()];
 }
 
-+ (void)urlItem_generateObjectRepresentations:(id)a3 fromiTunesURL:(id)a4 forClass:(Class)a5
++ (void)urlItem_generateObjectRepresentations:(id)representations fromiTunesURL:(id)l forClass:(Class)class
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  representationsCopy = representations;
   v23 = 0;
   v24 = 0;
-  v9 = [a1 parseiTunesURL:a4 itemIdentifier:&v24 countryCode:&v23];
+  v9 = [self parseiTunesURL:l itemIdentifier:&v24 countryCode:&v23];
   v10 = v24;
   v11 = v23;
   if (v9)
@@ -771,8 +771,8 @@ void __45__WFiTunesObjectContentItem_propertyBuilders__block_invoke(uint64_t a1,
     v20[1] = 3221225472;
     v20[2] = __90__WFiTunesObjectContentItem_urlItem_generateObjectRepresentations_fromiTunesURL_forClass___block_invoke;
     v20[3] = &unk_1E8378EC0;
-    v22 = a5;
-    v21 = v8;
+    classCopy = class;
+    v21 = representationsCopy;
     [v12 lookupMediaWithIdentifiers:v13 countryCode:v11 completion:v20];
 
     v14 = v21;
@@ -787,7 +787,7 @@ void __45__WFiTunesObjectContentItem_propertyBuilders__block_invoke(uint64_t a1,
     v27[0] = v14;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
     v18 = [v15 errorWithDomain:v16 code:-1000 userInfo:v17];
-    (*(v8 + 2))(v8, 0, v18);
+    (*(representationsCopy + 2))(representationsCopy, 0, v18);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -817,16 +817,16 @@ void __90__WFiTunesObjectContentItem_urlItem_generateObjectRepresentations_fromi
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)urlItem_generateObjectRepresentations:(id)a3 fromURL:(id)a4 forClass:(Class)a5
++ (void)urlItem_generateObjectRepresentations:(id)representations fromURL:(id)l forClass:(Class)class
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 host];
-  v11 = [v10 hasSuffix:@"itunes.apple.com"];
+  representationsCopy = representations;
+  lCopy = l;
+  host = [lCopy host];
+  v11 = [host hasSuffix:@"itunes.apple.com"];
 
   if (v11)
   {
-    [a1 urlItem_generateObjectRepresentations:v8 fromiTunesURL:v9 forClass:a5];
+    [self urlItem_generateObjectRepresentations:representationsCopy fromiTunesURL:lCopy forClass:class];
   }
 
   else
@@ -835,27 +835,27 @@ void __90__WFiTunesObjectContentItem_urlItem_generateObjectRepresentations_fromi
     v12[1] = 3221225472;
     v12[2] = __84__WFiTunesObjectContentItem_urlItem_generateObjectRepresentations_fromURL_forClass___block_invoke;
     v12[3] = &unk_1E8378E98;
-    v14 = a1;
-    v13 = v8;
-    v15 = a5;
-    [WFURLExpander expandURL:v9 completionHandler:v12];
+    selfCopy = self;
+    v13 = representationsCopy;
+    classCopy = class;
+    [WFURLExpander expandURL:lCopy completionHandler:v12];
 
-    v9 = v13;
+    lCopy = v13;
   }
 }
 
-+ (BOOL)urlItem_canCoerceFromURL:(id)a3
++ (BOOL)urlItem_canCoerceFromURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 host];
-  if ([v5 isEqualToString:@"appsto.re"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"itun.es"))
+  lCopy = l;
+  host = [lCopy host];
+  if ([host isEqualToString:@"appsto.re"] & 1) != 0 || (objc_msgSend(host, "isEqualToString:", @"itun.es"))
   {
     v6 = 1;
   }
 
-  else if (([v5 hasSuffix:@"itunes.apple.com"] & 1) != 0 || (objc_msgSend(v5, "hasSuffix:", @"music.apple.com") & 1) != 0 || (objc_msgSend(v5, "hasSuffix:", @"books.apple.com") & 1) != 0 || (objc_msgSend(v5, "hasSuffix:", @"podcasts.apple.com") & 1) != 0 || objc_msgSend(v5, "hasSuffix:", @"apps.apple.com"))
+  else if (([host hasSuffix:@"itunes.apple.com"] & 1) != 0 || (objc_msgSend(host, "hasSuffix:", @"music.apple.com") & 1) != 0 || (objc_msgSend(host, "hasSuffix:", @"books.apple.com") & 1) != 0 || (objc_msgSend(host, "hasSuffix:", @"podcasts.apple.com") & 1) != 0 || objc_msgSend(host, "hasSuffix:", @"apps.apple.com"))
   {
-    v6 = [a1 parseiTunesURL:v4 itemIdentifier:0 countryCode:0];
+    v6 = [self parseiTunesURL:lCopy itemIdentifier:0 countryCode:0];
   }
 
   else
@@ -866,11 +866,11 @@ void __90__WFiTunesObjectContentItem_urlItem_generateObjectRepresentations_fromi
   return v6;
 }
 
-+ (BOOL)parseiTunesURL:(id)a3 itemIdentifier:(id *)a4 countryCode:(id *)a5
++ (BOOL)parseiTunesURL:(id)l itemIdentifier:(id *)identifier countryCode:(id *)code
 {
-  v7 = a3;
-  v8 = [v7 dc_queryDictionary];
-  v9 = [v8 objectForKey:@"i"];
+  lCopy = l;
+  dc_queryDictionary = [lCopy dc_queryDictionary];
+  v9 = [dc_queryDictionary objectForKey:@"i"];
 
   if ([v9 integerValue])
   {
@@ -879,33 +879,33 @@ void __90__WFiTunesObjectContentItem_urlItem_generateObjectRepresentations_fromi
 
   else
   {
-    v11 = [v7 lastPathComponent];
-    if ([v11 hasPrefix:@"id"])
+    lastPathComponent = [lCopy lastPathComponent];
+    if ([lastPathComponent hasPrefix:@"id"])
     {
-      v12 = [v11 substringFromIndex:2];
+      v12 = [lastPathComponent substringFromIndex:2];
     }
 
     else
     {
-      v12 = v11;
+      v12 = lastPathComponent;
     }
 
     v10 = v12;
   }
 
-  v13 = [v10 integerValue];
-  if (v13)
+  integerValue = [v10 integerValue];
+  if (integerValue)
   {
-    v14 = [v7 pathComponents];
-    if ([v14 count] < 2)
+    pathComponents = [lCopy pathComponents];
+    if ([pathComponents count] < 2)
     {
       v16 = 0;
     }
 
     else
     {
-      v15 = [v7 pathComponents];
-      v16 = [v15 objectAtIndex:1];
+      pathComponents2 = [lCopy pathComponents];
+      v16 = [pathComponents2 objectAtIndex:1];
     }
 
     if ([v16 length] != 2)
@@ -914,20 +914,20 @@ void __90__WFiTunesObjectContentItem_urlItem_generateObjectRepresentations_fromi
       v16 = 0;
     }
 
-    if (a4)
+    if (identifier)
     {
       v17 = v10;
-      *a4 = v10;
+      *identifier = v10;
     }
 
-    if (a5)
+    if (code)
     {
       v18 = v16;
-      *a5 = v16;
+      *code = v16;
     }
   }
 
-  return v13 != 0;
+  return integerValue != 0;
 }
 
 + (id)urlItem_sharingItemClassesByBundleIdentifier

@@ -1,10 +1,10 @@
 @interface BuddyNonInteractiveDeviceActivator
 + (id)activatorUsingWiFi;
 - (BOOL)isActivated;
-- (BuddyNonInteractiveDeviceActivator)initWithActivationConfiguration:(id)a3 activationEngine:(id)a4;
-- (void)activateWithCompletion:(id)a3;
-- (void)activateWithData:(id)a3 headers:(id)a4 completion:(id)a5;
-- (void)activationFinishedWithData:(id)a3 responseHeaders:(id)a4 error:(id)a5 completionHandler:(id)a6;
+- (BuddyNonInteractiveDeviceActivator)initWithActivationConfiguration:(id)configuration activationEngine:(id)engine;
+- (void)activateWithCompletion:(id)completion;
+- (void)activateWithData:(id)data headers:(id)headers completion:(id)completion;
+- (void)activationFinishedWithData:(id)data responseHeaders:(id)headers error:(id)error completionHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -12,48 +12,48 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
-  v2 = [(BuddyNonInteractiveDeviceActivator *)self activationEngine];
-  [(BuddyActivationEngine *)v2 cancel];
+  activationEngine = [(BuddyNonInteractiveDeviceActivator *)self activationEngine];
+  [(BuddyActivationEngine *)activationEngine cancel];
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = BuddyNonInteractiveDeviceActivator;
   [(BuddyNonInteractiveDeviceActivator *)&v3 dealloc];
 }
 
-- (BuddyNonInteractiveDeviceActivator)initWithActivationConfiguration:(id)a3 activationEngine:(id)a4
+- (BuddyNonInteractiveDeviceActivator)initWithActivationConfiguration:(id)configuration activationEngine:(id)engine
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   obj = 0;
-  objc_storeStrong(&obj, a4);
-  v5 = v11;
-  v11 = 0;
+  objc_storeStrong(&obj, engine);
+  v5 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v5;
   v8.super_class = BuddyNonInteractiveDeviceActivator;
-  v11 = [(BuddyNonInteractiveDeviceActivator *)&v8 init];
-  objc_storeStrong(&v11, v11);
-  if (v11)
+  selfCopy = [(BuddyNonInteractiveDeviceActivator *)&v8 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(v11 + 2, location[0]);
-    objc_storeStrong(v11 + 3, obj);
+    objc_storeStrong(selfCopy + 2, location[0]);
+    objc_storeStrong(selfCopy + 3, obj);
   }
 
-  v6 = v11;
+  v6 = selfCopy;
   objc_storeStrong(&obj, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
 + (id)activatorUsingWiFi
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = objc_alloc_init(BuddyActivationConfiguration);
-  v4 = [BuddyActivationEngine wifiActivationEngineWithOverrideActivationURL:0 sessionURL:0, a2, a1];
+  v4 = [BuddyActivationEngine wifiActivationEngineWithOverrideActivationURL:0 sessionURL:0, a2, self];
   v5 = [v2 initWithActivationConfiguration:v3 activationEngine:v4];
 
   return v5;
@@ -62,24 +62,24 @@
 - (BOOL)isActivated
 {
   v2 = [(BuddyNonInteractiveDeviceActivator *)self activationConfiguration:a2];
-  v3 = [(BuddyActivationConfiguration *)v2 isActivated];
+  isActivated = [(BuddyActivationConfiguration *)v2 isActivated];
 
-  return v3 & 1;
+  return isActivated & 1;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001545A0;
   v8 = &unk_10032AFD0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(v3, &block);
 
@@ -88,18 +88,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)activationFinishedWithData:(id)a3 responseHeaders:(id)a4 error:(id)a5 completionHandler:(id)a6
+- (void)activationFinishedWithData:(id)data responseHeaders:(id)headers error:(id)error completionHandler:(id)handler
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, headers);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
+  objc_storeStrong(&v21, error);
   v20 = 0;
-  objc_storeStrong(&v20, a6);
+  objc_storeStrong(&v20, handler);
   v9 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
   v11 = -1073741824;
@@ -109,7 +109,7 @@
   v15 = v21;
   v19 = v20;
   v16 = v22;
-  v17 = v24;
+  v17 = selfCopy;
   v18 = location[0];
   dispatch_async(v9, &block);
 
@@ -124,16 +124,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)activateWithData:(id)a3 headers:(id)a4 completion:(id)a5
+- (void)activateWithData:(id)data headers:(id)headers completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, headers);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, completion);
   v7 = dispatch_get_global_queue(25, 0);
   block = _NSConcreteStackBlock;
   v9 = -1073741824;
@@ -142,7 +142,7 @@
   v12 = &unk_10032D150;
   v13 = v18;
   v14 = location[0];
-  v15 = v20;
+  v15 = selfCopy;
   v16 = v17;
   dispatch_async(v7, &block);
 

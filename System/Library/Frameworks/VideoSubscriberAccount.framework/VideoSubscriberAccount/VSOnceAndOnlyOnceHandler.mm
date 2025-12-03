@@ -35,8 +35,8 @@
 
   else
   {
-    v4 = [(VSOnceAndOnlyOnceHandler *)self block];
-    v4[2]();
+    block = [(VSOnceAndOnlyOnceHandler *)self block];
+    block[2]();
   }
 }
 

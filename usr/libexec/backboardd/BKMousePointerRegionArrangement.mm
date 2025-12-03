@@ -1,24 +1,24 @@
 @interface BKMousePointerRegionArrangement
-- (BKMousePointerRegionArrangement)initWithCoalitionIdentifier:(id)a3;
-- (CGPoint)convertFromGlobalPoint:(CGPoint)a3 toRegion:(id)a4;
-- (CGPoint)convertToGlobalPoint:(CGPoint)a3 fromRegion:(id)a4;
-- (CGPoint)normalizedGlobalPosition:(CGPoint)a3;
-- (CGRect)_frameForRegion:(id)a3;
+- (BKMousePointerRegionArrangement)initWithCoalitionIdentifier:(id)identifier;
+- (CGPoint)convertFromGlobalPoint:(CGPoint)point toRegion:(id)region;
+- (CGPoint)convertToGlobalPoint:(CGPoint)point fromRegion:(id)region;
+- (CGPoint)normalizedGlobalPosition:(CGPoint)position;
+- (CGRect)_frameForRegion:(id)region;
 - (NSArray)regions;
-- (id)_initWithCopyOf:(id)a3;
-- (id)_layoutDescriptorForRegion:(id)a3;
-- (id)closestRegionForGlobalPoint:(CGPoint)a3 returningClosestContainingPoint:(CGPoint *)a4 returningEdgeMask:(unsigned __int8 *)a5;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)regionForDisplayUUID:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
+- (id)_initWithCopyOf:(id)of;
+- (id)_layoutDescriptorForRegion:(id)region;
+- (id)closestRegionForGlobalPoint:(CGPoint)point returningClosestContainingPoint:(CGPoint *)containingPoint returningEdgeMask:(unsigned __int8 *)mask;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)regionForDisplayUUID:(id)d;
+- (void)appendDescriptionToStream:(id)stream;
 @end
 
 @implementation BKMousePointerRegionArrangement
 
-- (id)_layoutDescriptorForRegion:(id)a3
+- (id)_layoutDescriptorForRegion:(id)region
 {
-  v5 = a3;
-  v6 = [(NSMutableDictionary *)self->_regionToLayoutDescriptor objectForKey:v5];
+  regionCopy = region;
+  v6 = [(NSMutableDictionary *)self->_regionToLayoutDescriptor objectForKey:regionCopy];
   if (!v6)
   {
     v9 = [NSString stringWithFormat:@"Layout descriptors and regions must always be paired"];
@@ -32,7 +32,7 @@
       v15 = 2114;
       v16 = v12;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = @"BKMousePointerRegionArrangement.m";
       v21 = 1024;
@@ -53,10 +53,10 @@
   return v7;
 }
 
-- (CGRect)_frameForRegion:(id)a3
+- (CGRect)_frameForRegion:(id)region
 {
-  v5 = a3;
-  if (!v5)
+  regionCopy = region;
+  if (!regionCopy)
   {
     v23 = [NSString stringWithFormat:@"Requesting frame for a nil region"];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -69,7 +69,7 @@
       v33 = 2114;
       v34 = v26;
       v35 = 2048;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 2114;
       v38 = @"BKMousePointerRegionArrangement.m";
       v39 = 1024;
@@ -85,8 +85,8 @@
     JUMPOUT(0x10009ACBCLL);
   }
 
-  v6 = v5;
-  v7 = [(NSDictionary *)self->_regionToComputedFrame objectForKey:v5];
+  v6 = regionCopy;
+  v7 = [(NSDictionary *)self->_regionToComputedFrame objectForKey:regionCopy];
   if (!v7)
   {
     v27 = [NSString stringWithFormat:@"Requesting frame for a region not part of this arrangement"];
@@ -100,7 +100,7 @@
       v33 = 2114;
       v34 = v30;
       v35 = 2048;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 2114;
       v38 = @"BKMousePointerRegionArrangement.m";
       v39 = 1024;
@@ -136,31 +136,31 @@
   return result;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10009AEA8;
   v9[3] = &unk_1000FD128;
-  v4 = a3;
-  v10 = v4;
-  v11 = self;
-  [v4 appendProem:self block:v9];
+  streamCopy = stream;
+  v10 = streamCopy;
+  selfCopy = self;
+  [streamCopy appendProem:self block:v9];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10009AF20;
   v6[3] = &unk_1000FD128;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = streamCopy;
+  selfCopy2 = self;
+  v5 = streamCopy;
   [v5 appendBodySectionWithName:0 block:v6];
 }
 
-- (CGPoint)convertFromGlobalPoint:(CGPoint)a3 toRegion:(id)a4
+- (CGPoint)convertFromGlobalPoint:(CGPoint)point toRegion:(id)region
 {
-  y = a3.y;
-  x = a3.x;
-  [(BKMousePointerRegionArrangement *)self _frameForRegion:a4];
+  y = point.y;
+  x = point.x;
+  [(BKMousePointerRegionArrangement *)self _frameForRegion:region];
   v7 = x - v6;
   v9 = y - v8;
   result.y = v9;
@@ -168,11 +168,11 @@
   return result;
 }
 
-- (CGPoint)convertToGlobalPoint:(CGPoint)a3 fromRegion:(id)a4
+- (CGPoint)convertToGlobalPoint:(CGPoint)point fromRegion:(id)region
 {
-  y = a3.y;
-  x = a3.x;
-  [(BKMousePointerRegionArrangement *)self _frameForRegion:a4];
+  y = point.y;
+  x = point.x;
+  [(BKMousePointerRegionArrangement *)self _frameForRegion:region];
   v7 = x + v6;
   v9 = y + v8;
   result.y = v9;
@@ -180,10 +180,10 @@
   return result;
 }
 
-- (CGPoint)normalizedGlobalPosition:(CGPoint)a3
+- (CGPoint)normalizedGlobalPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   MaxX = CGRectGetMaxX(self->_globalBounds);
   MinX = CGRectGetMinX(self->_globalBounds);
   if (MinX < x)
@@ -230,10 +230,10 @@
   return result;
 }
 
-- (id)closestRegionForGlobalPoint:(CGPoint)a3 returningClosestContainingPoint:(CGPoint *)a4 returningEdgeMask:(unsigned __int8 *)a5
+- (id)closestRegionForGlobalPoint:(CGPoint)point returningClosestContainingPoint:(CGPoint *)containingPoint returningEdgeMask:(unsigned __int8 *)mask
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v56 = CGPointZero.x;
   v57 = CGPointZero.y;
   v58 = 0u;
@@ -245,8 +245,8 @@
   if (v11)
   {
     v12 = v11;
-    v53 = a4;
-    v54 = a5;
+    containingPointCopy = containingPoint;
+    maskCopy = mask;
     v13 = 0;
     v14 = 0;
     v15 = *v59;
@@ -472,26 +472,26 @@ LABEL_46:
       if (!v49)
       {
 
-        a4 = v53;
-        if (v53)
+        containingPoint = containingPointCopy;
+        if (containingPointCopy)
         {
-          a5 = v54;
+          mask = maskCopy;
           if (v14)
           {
             [(BKMousePointerRegionArrangement *)self convertFromGlobalPoint:v14 toRegion:v56, v57];
-            v53->x = v50;
-            v53->y = v51;
+            containingPointCopy->x = v50;
+            containingPointCopy->y = v51;
             goto LABEL_57;
           }
 
 LABEL_56:
           v14 = 0;
-          *a4 = CGPointZero;
+          *containingPoint = CGPointZero;
         }
 
         else
         {
-          a5 = v54;
+          mask = maskCopy;
         }
 
         goto LABEL_57;
@@ -500,24 +500,24 @@ LABEL_56:
   }
 
   v13 = 0;
-  if (a4)
+  if (containingPoint)
   {
     goto LABEL_56;
   }
 
   v14 = 0;
 LABEL_57:
-  if (a5)
+  if (mask)
   {
-    *a5 = v13;
+    *mask = v13;
   }
 
   return v14;
 }
 
-- (id)regionForDisplayUUID:(id)a3
+- (id)regionForDisplayUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -537,7 +537,7 @@ LABEL_57:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 displayUUID];
+        displayUUID = [v9 displayUUID];
         v11 = BSEqualObjects();
 
         if (v11)
@@ -564,11 +564,11 @@ LABEL_11:
 
 - (NSArray)regions
 {
-  v2 = [(NSMutableDictionary *)self->_regionToLayoutDescriptor allKeys];
-  v3 = v2;
-  if (v2)
+  allKeys = [(NSMutableDictionary *)self->_regionToLayoutDescriptor allKeys];
+  v3 = allKeys;
+  if (allKeys)
   {
-    v4 = v2;
+    v4 = allKeys;
   }
 
   else
@@ -581,32 +581,32 @@ LABEL_11:
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [BKMutableMousePointerRegionArrangement alloc];
 
   return [(BKMousePointerRegionArrangement *)v4 _initWithCopyOf:self];
 }
 
-- (id)_initWithCopyOf:(id)a3
+- (id)_initWithCopyOf:(id)of
 {
-  v4 = a3;
+  ofCopy = of;
   v13.receiver = self;
   v13.super_class = BKMousePointerRegionArrangement;
   v5 = [(BKMousePointerRegionArrangement *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_coalitionIdentifier, v4[1]);
-    v6->_baseTranslation = *(v4 + 1);
-    v7 = *(v4 + 3);
-    v6->_globalBounds.origin = *(v4 + 2);
+    objc_storeStrong(&v5->_coalitionIdentifier, ofCopy[1]);
+    v6->_baseTranslation = *(ofCopy + 1);
+    v7 = *(ofCopy + 3);
+    v6->_globalBounds.origin = *(ofCopy + 2);
     v6->_globalBounds.size = v7;
-    v8 = [v4[8] copy];
+    v8 = [ofCopy[8] copy];
     regionToComputedFrame = v6->_regionToComputedFrame;
     v6->_regionToComputedFrame = v8;
 
-    v10 = [v4[9] copy];
+    v10 = [ofCopy[9] copy];
     regionToLayoutDescriptor = v6->_regionToLayoutDescriptor;
     v6->_regionToLayoutDescriptor = v10;
   }
@@ -614,15 +614,15 @@ LABEL_11:
   return v6;
 }
 
-- (BKMousePointerRegionArrangement)initWithCoalitionIdentifier:(id)a3
+- (BKMousePointerRegionArrangement)initWithCoalitionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = BKMousePointerRegionArrangement;
   v5 = [(BKMousePointerRegionArrangement *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     coalitionIdentifier = v5->_coalitionIdentifier;
     v5->_coalitionIdentifier = v6;
   }

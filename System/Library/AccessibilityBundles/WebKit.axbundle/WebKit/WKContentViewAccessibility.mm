@@ -1,11 +1,11 @@
 @interface WKContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityBeginUndoableTextInsertion;
 - (BOOL)_accessibilityEndUndoableTextInsertion;
 - (BOOL)accessibilityParentDiscardsChildrenContainerGroupingBehavior;
 - (BOOL)canBecomeFocused;
 - (CGRect)accessibilityFrame;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilityResponderElement;
 - (id)_systemDefaultFocusGroupIdentifier;
 - (id)accessibilityDragSourceDescriptors;
@@ -19,60 +19,60 @@
 - (void)_hideKeyboard;
 - (void)_processDidExit;
 - (void)_registerForNotificationsIfNecessary;
-- (void)_setAccessibilityWebProcessToken:(id)a3;
+- (void)_setAccessibilityWebProcessToken:(id)token;
 - (void)_zoomToRevealFocusedElement;
-- (void)accessibilityRelayNotification:(id)a3 notificationData:(id)a4;
-- (void)copy:(id)a3;
-- (void)cut:(id)a3;
+- (void)accessibilityRelayNotification:(id)notification notificationData:(id)data;
+- (void)copy:(id)copy;
+- (void)cut:(id)cut;
 - (void)dealloc;
-- (void)decreaseSizeForWebView:(id)a3;
-- (void)handleKeyEntry:(id)a3 withCompletionHandler:(id)a4;
-- (void)handleKeyWebEvent:(id)a3 withCompletionHandler:(id)a4;
-- (void)increaseSizeForWebView:(id)a3;
-- (void)paste:(id)a3;
-- (void)selectAll:(id)a3;
-- (void)toggleBoldface:(id)a3;
-- (void)toggleItalics:(id)a3;
-- (void)toggleUnderline:(id)a3;
+- (void)decreaseSizeForWebView:(id)view;
+- (void)handleKeyEntry:(id)entry withCompletionHandler:(id)handler;
+- (void)handleKeyWebEvent:(id)event withCompletionHandler:(id)handler;
+- (void)increaseSizeForWebView:(id)view;
+- (void)paste:(id)paste;
+- (void)selectAll:(id)all;
+- (void)toggleBoldface:(id)boldface;
+- (void)toggleItalics:(id)italics;
+- (void)toggleUnderline:(id)underline;
 @end
 
 @implementation WKContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WebEvent" hasInstanceVariable:@"_characters" withType:"NSString"];
-  [v3 validateClass:@"WebEvent" hasInstanceVariable:@"_charactersIgnoringModifiers" withType:"NSString"];
-  [v3 validateClass:@"WebEvent" hasInstanceVariable:@"_modifierFlags" withType:"I"];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"webView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"_setAccessibilityWebProcessToken:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"_accessibilityRegisterUIProcessTokens" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"_processDidExit" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"_didRelaunchProcess" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"_selectionChanged" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"_updateChangedSelection" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"_requiresKeyboardWhenFirstResponder" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"_zoomToRevealFocusedElement" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"_hideKeyboard" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"shareForWebView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"handleKeyWebEvent:withCompletionHandler:" withFullSignature:{"v", "@", "@?", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"copy:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"paste:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"selectAll:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"toggleBoldface:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"toggleItalics:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"increaseSizeForWebView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"decreaseSizeForWebView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"toggleUnderline:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UIResponder" hasInstanceMethod:@"_handleKeyUIEvent:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"undoManagerForWebView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WKContentView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"WKContentView" isKindOfClass:@"UIResponder"];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"_systemDefaultFocusGroupIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WKWebView"];
-  [v3 validateClass:@"WKWebView" hasInstanceMethod:@"URL" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WKContentView" hasInstanceMethod:@"handleKeyEntry:withCompletionHandler:" withFullSignature:{"v", "@", "@?", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WebEvent" hasInstanceVariable:@"_characters" withType:"NSString"];
+  [validationsCopy validateClass:@"WebEvent" hasInstanceVariable:@"_charactersIgnoringModifiers" withType:"NSString"];
+  [validationsCopy validateClass:@"WebEvent" hasInstanceVariable:@"_modifierFlags" withType:"I"];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"webView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"_setAccessibilityWebProcessToken:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"_accessibilityRegisterUIProcessTokens" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"_processDidExit" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"_didRelaunchProcess" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"_selectionChanged" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"_updateChangedSelection" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"_requiresKeyboardWhenFirstResponder" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"_zoomToRevealFocusedElement" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"_hideKeyboard" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"shareForWebView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"handleKeyWebEvent:withCompletionHandler:" withFullSignature:{"v", "@", "@?", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"copy:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"paste:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"selectAll:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"toggleBoldface:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"toggleItalics:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"increaseSizeForWebView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"decreaseSizeForWebView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"toggleUnderline:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UIResponder" hasInstanceMethod:@"_handleKeyUIEvent:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"undoManagerForWebView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WKContentView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"WKContentView" isKindOfClass:@"UIResponder"];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"_systemDefaultFocusGroupIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WKWebView"];
+  [validationsCopy validateClass:@"WKWebView" hasInstanceMethod:@"URL" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WKContentView" hasInstanceMethod:@"handleKeyEntry:withCompletionHandler:" withFullSignature:{"v", "@", "@?", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -89,27 +89,27 @@
 {
   if (([(WKContentViewAccessibility *)self _accessibilityBoolValueForKey:@"registerdForPBNotifications"]& 1) == 0)
   {
-    v3 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v3 addObserver:self selector:sel__pasteboardChanged_ name:*MEMORY[0x29EDC8200] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__pasteboardChanged_ name:*MEMORY[0x29EDC8200] object:0];
 
     [(WKContentViewAccessibility *)self _accessibilitySetBoolValue:1 forKey:@"registerdForPBNotifications"];
   }
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  if ([(WKContentViewAccessibility *)self pointInside:a4 withEvent:a3.x, a3.y])
+  if ([(WKContentViewAccessibility *)self pointInside:event withEvent:test.x, test.y])
   {
-    v5 = [(WKContentViewAccessibility *)self accessibilityElements];
-    v6 = [v5 firstObject];
+    accessibilityElements = [(WKContentViewAccessibility *)self accessibilityElements];
+    firstObject = [accessibilityElements firstObject];
   }
 
   else
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
-  return v6;
+  return firstObject;
 }
 
 - (void)_axClearRemoteElements
@@ -158,11 +158,11 @@
   [(WKContentViewAccessibility *)self _axCleanupAfterTermination];
 }
 
-- (void)_setAccessibilityWebProcessToken:(id)a3
+- (void)_setAccessibilityWebProcessToken:(id)token
 {
   v5.receiver = self;
   v5.super_class = WKContentViewAccessibility;
-  [(WKContentViewAccessibility *)&v5 _setAccessibilityWebProcessToken:a3];
+  [(WKContentViewAccessibility *)&v5 _setAccessibilityWebProcessToken:token];
   v4 = [(WKContentViewAccessibility *)self _accessibilityBoolValueForKey:@"postedWebPageLoadedNotification"];
   [(WKContentViewAccessibility *)self _axClearRemoteElements];
   if ((v4 & 1) == 0)
@@ -175,11 +175,11 @@
 - (BOOL)accessibilityParentDiscardsChildrenContainerGroupingBehavior
 {
   v2 = [(WKContentViewAccessibility *)self safeValueForKey:@"webView"];
-  v3 = [v2 storedAccessibilityContainerType];
-  if (v3)
+  storedAccessibilityContainerType = [v2 storedAccessibilityContainerType];
+  if (storedAccessibilityContainerType)
   {
-    v4 = [v2 storedAccessibilityContainerType];
-    v5 = [v4 integerValue] == 0;
+    storedAccessibilityContainerType2 = [v2 storedAccessibilityContainerType];
+    v5 = [storedAccessibilityContainerType2 integerValue] == 0;
   }
 
   else
@@ -190,18 +190,18 @@
   return v5;
 }
 
-- (void)handleKeyWebEvent:(id)a3 withCompletionHandler:(id)a4
+- (void)handleKeyWebEvent:(id)event withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x29EDCA5F8];
   v9[1] = 3221225472;
   v9[2] = __70__WKContentViewAccessibility_handleKeyWebEvent_withCompletionHandler___block_invoke;
   v9[3] = &unk_29F320E98;
-  v10 = v6;
+  v10 = handlerCopy;
   v8.receiver = self;
   v8.super_class = WKContentViewAccessibility;
-  v7 = v6;
-  [(WKContentViewAccessibility *)&v8 handleKeyWebEvent:a3 withCompletionHandler:v9];
+  v7 = handlerCopy;
+  [(WKContentViewAccessibility *)&v8 handleKeyWebEvent:event withCompletionHandler:v9];
 }
 
 uint64_t __70__WKContentViewAccessibility_handleKeyWebEvent_withCompletionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -260,18 +260,18 @@ uint64_t __70__WKContentViewAccessibility_handleKeyWebEvent_withCompletionHandle
   return MEMORY[0x2A1C71028]();
 }
 
-- (void)handleKeyEntry:(id)a3 withCompletionHandler:(id)a4
+- (void)handleKeyEntry:(id)entry withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x29EDCA5F8];
   v9[1] = 3221225472;
   v9[2] = __67__WKContentViewAccessibility_handleKeyEntry_withCompletionHandler___block_invoke;
   v9[3] = &unk_29F320EC0;
-  v10 = v6;
+  v10 = handlerCopy;
   v8.receiver = self;
   v8.super_class = WKContentViewAccessibility;
-  v7 = v6;
-  [(WKContentViewAccessibility *)&v8 handleKeyEntry:a3 withCompletionHandler:v9];
+  v7 = handlerCopy;
+  [(WKContentViewAccessibility *)&v8 handleKeyEntry:entry withCompletionHandler:v9];
 }
 
 uint64_t __67__WKContentViewAccessibility_handleKeyEntry_withCompletionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -310,12 +310,12 @@ uint64_t __49__WKContentViewAccessibility__pasteboardChanged___block_invoke(uint
   return result;
 }
 
-- (void)accessibilityRelayNotification:(id)a3 notificationData:(id)a4
+- (void)accessibilityRelayNotification:(id)notification notificationData:(id)data
 {
   v21[7] = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 length])
+  notificationCopy = notification;
+  dataCopy = data;
+  if ([dataCopy length])
   {
     v7 = MEMORY[0x29EDBA000];
     v8 = MEMORY[0x29EDB8E50];
@@ -329,7 +329,7 @@ uint64_t __49__WKContentViewAccessibility__pasteboardChanged___block_invoke(uint
     v9 = [MEMORY[0x29EDB8D80] arrayWithObjects:v21 count:7];
     v10 = [v8 setWithArray:v9];
     v20 = 0;
-    v11 = [v7 unarchivedObjectOfClasses:v10 fromData:v6 error:&v20];
+    v11 = [v7 unarchivedObjectOfClasses:v10 fromData:dataCopy error:&v20];
     v12 = v20;
 
     if (v12)
@@ -389,60 +389,60 @@ uint64_t __49__WKContentViewAccessibility__pasteboardChanged___block_invoke(uint
 LABEL_10:
 
 LABEL_11:
-  v16 = AXWebNotificationWithName(v5);
+  v16 = AXWebNotificationWithName(notificationCopy);
   UIAccessibilityPostNotification([v16 unsignedIntValue], v11);
 
   v17 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = a3;
+  copyCopy = copy;
   [(WKContentViewAccessibility *)self _registerForNotificationsIfNecessary];
   [(WKContentViewAccessibility *)self _accessibilitySetBoolValue:1 forKey:@"needToAnnounceCopy"];
   v5.receiver = self;
   v5.super_class = WKContentViewAccessibility;
-  [(WKContentViewAccessibility *)&v5 copy:v4];
+  [(WKContentViewAccessibility *)&v5 copy:copyCopy];
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
   v4 = *MEMORY[0x29EDBDC18];
-  v5 = a3;
+  cutCopy = cut;
   [(WKContentViewAccessibility *)self _accessibilityIgnoreNextPostPasteboardTextOperation:v4];
   v6.receiver = self;
   v6.super_class = WKContentViewAccessibility;
-  [(WKContentViewAccessibility *)&v6 cut:v5];
+  [(WKContentViewAccessibility *)&v6 cut:cutCopy];
 
   [(WKContentViewAccessibility *)self _accessibilityPostPasteboardTextForOperation:*MEMORY[0x29EDBDC20]];
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
   v4 = *MEMORY[0x29EDBDC50];
-  v5 = a3;
+  pasteCopy = paste;
   [(WKContentViewAccessibility *)self _accessibilityPostPasteboardTextForOperation:v4];
   v6.receiver = self;
   v6.super_class = WKContentViewAccessibility;
-  [(WKContentViewAccessibility *)&v6 paste:v5];
+  [(WKContentViewAccessibility *)&v6 paste:pasteCopy];
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
   v6.receiver = self;
   v6.super_class = WKContentViewAccessibility;
-  [(WKContentViewAccessibility *)&v6 selectAll:a3];
+  [(WKContentViewAccessibility *)&v6 selectAll:all];
   v3 = *MEMORY[0x29EDC7EA8];
   v4 = *MEMORY[0x29EDBDC78];
   v5 = UIKitAccessibilityLocalizedString();
   UIAccessibilityPostNotification(v3, v5);
 }
 
-- (void)toggleBoldface:(id)a3
+- (void)toggleBoldface:(id)boldface
 {
   v7.receiver = self;
   v7.super_class = WKContentViewAccessibility;
-  [(WKContentViewAccessibility *)&v7 toggleBoldface:a3];
+  [(WKContentViewAccessibility *)&v7 toggleBoldface:boldface];
   v3 = MEMORY[0x29EDBD7E8];
   v4 = *MEMORY[0x29EDBDC10];
   v5 = UIKitAccessibilityLocalizedString();
@@ -452,11 +452,11 @@ LABEL_11:
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v6);
 }
 
-- (void)increaseSizeForWebView:(id)a3
+- (void)increaseSizeForWebView:(id)view
 {
   v7.receiver = self;
   v7.super_class = WKContentViewAccessibility;
-  [(WKContentViewAccessibility *)&v7 toggleBoldface:a3];
+  [(WKContentViewAccessibility *)&v7 toggleBoldface:view];
   v3 = MEMORY[0x29EDBD7E8];
   v4 = *MEMORY[0x29EDBDC40];
   v5 = UIKitAccessibilityLocalizedString();
@@ -466,11 +466,11 @@ LABEL_11:
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v6);
 }
 
-- (void)decreaseSizeForWebView:(id)a3
+- (void)decreaseSizeForWebView:(id)view
 {
   v7.receiver = self;
   v7.super_class = WKContentViewAccessibility;
-  [(WKContentViewAccessibility *)&v7 toggleBoldface:a3];
+  [(WKContentViewAccessibility *)&v7 toggleBoldface:view];
   v3 = MEMORY[0x29EDBD7E8];
   v4 = *MEMORY[0x29EDBDC28];
   v5 = UIKitAccessibilityLocalizedString();
@@ -480,11 +480,11 @@ LABEL_11:
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v6);
 }
 
-- (void)toggleItalics:(id)a3
+- (void)toggleItalics:(id)italics
 {
   v7.receiver = self;
   v7.super_class = WKContentViewAccessibility;
-  [(WKContentViewAccessibility *)&v7 toggleItalics:a3];
+  [(WKContentViewAccessibility *)&v7 toggleItalics:italics];
   v3 = MEMORY[0x29EDBD7E8];
   v4 = *MEMORY[0x29EDBDC48];
   v5 = UIKitAccessibilityLocalizedString();
@@ -494,11 +494,11 @@ LABEL_11:
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v6);
 }
 
-- (void)toggleUnderline:(id)a3
+- (void)toggleUnderline:(id)underline
 {
   v7.receiver = self;
   v7.super_class = WKContentViewAccessibility;
-  [(WKContentViewAccessibility *)&v7 toggleUnderline:a3];
+  [(WKContentViewAccessibility *)&v7 toggleUnderline:underline];
   v3 = MEMORY[0x29EDBD7E8];
   v4 = *MEMORY[0x29EDBDCA0];
   v5 = UIKitAccessibilityLocalizedString();
@@ -539,16 +539,16 @@ LABEL_11:
   if ([(WKContentViewAccessibility *)self safeBoolForKey:@"_requiresKeyboardWhenFirstResponder"])
   {
     v3 = [(WKContentViewAccessibility *)self _accessibilityValueForKey:@"RemoteElements"];
-    v4 = [v3 lastObject];
-    v5 = [v4 _accessibilityResponderElement];
+    lastObject = [v3 lastObject];
+    _accessibilityResponderElement = [lastObject _accessibilityResponderElement];
   }
 
   else
   {
-    v5 = 0;
+    _accessibilityResponderElement = 0;
   }
 
-  return v5;
+  return _accessibilityResponderElement;
 }
 
 - (void)dealloc
@@ -584,8 +584,8 @@ LABEL_11:
     while (v5);
   }
 
-  v8 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v8 removeObserver:self name:*MEMORY[0x29EDC8200] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x29EDC8200] object:0];
 
   v10.receiver = self;
   v10.super_class = WKContentViewAccessibility;
@@ -603,20 +603,20 @@ LABEL_11:
     if (v4)
     {
       v5 = v4;
-      v6 = [v4 UUIDString];
+      uUIDString = [v4 UUIDString];
       v7 = objc_getAssociatedObject(self, [@"ax-pid" hash]);
-      v8 = [v7 intValue];
+      intValue = [v7 intValue];
 
-      if (v8)
+      if (intValue)
       {
         v9 = objc_getAssociatedObject(self, [@"ax-machport" hash]);
-        v10 = [v9 intValue];
+        intValue2 = [v9 intValue];
 
         v15 = objc_getAssociatedObject(self, [@"ax-pid" hash]);
         LOBYTE(v14) = 1;
         _AXLogWithFacility();
 
-        v11 = [objc_alloc(MEMORY[0x29EDBD800]) initWithUUID:v6 andRemotePid:v8 andContextId:{-[WKContentViewAccessibility _accessibilityContextId](self, "_accessibilityContextId", v14, @"WKContentView[%@] set up: %@ pid: %@ MACH_PORT %d", self, v6, v15, v10)}];
+        v11 = [objc_alloc(MEMORY[0x29EDBD800]) initWithUUID:uUIDString andRemotePid:intValue andContextId:{-[WKContentViewAccessibility _accessibilityContextId](self, "_accessibilityContextId", v14, @"WKContentView[%@] set up: %@ pid: %@ MACH_PORT %d", self, uUIDString, v15, intValue2)}];
         [v11 setOnClientSide:1];
         [v11 setAccessibilityContainer:self];
         [v11 setMachPort:0];
@@ -647,8 +647,8 @@ LABEL_8:
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(WKContentViewAccessibility *)self accessibilityContainer];
-  [v2 accessibilityFrame];
+  accessibilityContainer = [(WKContentViewAccessibility *)self accessibilityContainer];
+  [accessibilityContainer accessibilityFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -722,9 +722,9 @@ void __57__WKContentViewAccessibility__zoomToRevealFocusedElement__block_invoke(
 
     else
     {
-      v8 = [(WKContentViewAccessibility *)self _accessibilityResponderElement];
+      _accessibilityResponderElement = [(WKContentViewAccessibility *)self _accessibilityResponderElement];
 
-      if (v8)
+      if (_accessibilityResponderElement)
       {
         v7 = 0;
 LABEL_11:
@@ -735,11 +735,11 @@ LABEL_11:
 
     objc_opt_class();
     v5 = __UIAccessibilityCastAsClass();
-    v6 = [v5 UIDelegate];
+    uIDelegate = [v5 UIDelegate];
 
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 _webViewCanBecomeFocused:v3];
+      v7 = [uIDelegate _webViewCanBecomeFocused:v3];
     }
 
     else
@@ -759,25 +759,25 @@ LABEL_11:
 {
   if ([(WKContentViewAccessibility *)self _accessibilityIsFKARunningForFocusItem])
   {
-    v3 = [(WKContentViewAccessibility *)self _accessibilityDefaultFocusGroupIdentifier];
+    _accessibilityDefaultFocusGroupIdentifier = [(WKContentViewAccessibility *)self _accessibilityDefaultFocusGroupIdentifier];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = WKContentViewAccessibility;
-    v3 = [(WKContentViewAccessibility *)&v5 _systemDefaultFocusGroupIdentifier];
+    _accessibilityDefaultFocusGroupIdentifier = [(WKContentViewAccessibility *)&v5 _systemDefaultFocusGroupIdentifier];
   }
 
-  return v3;
+  return _accessibilityDefaultFocusGroupIdentifier;
 }
 
 - (int)_accessibilityRemotePid
 {
   v2 = objc_getAssociatedObject(self, [@"ax-pid" hash]);
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (void)accessibilityRelayNotification:(uint64_t)a1 notificationData:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

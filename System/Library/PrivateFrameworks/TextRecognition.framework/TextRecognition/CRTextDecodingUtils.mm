@@ -1,32 +1,32 @@
 @interface CRTextDecodingUtils
-+ (id)adjustedBeamSearchDecodedString:(id)a3 greedyDecodedString:(id)a4 decodingLocale:(id)a5;
-+ (id)characterRangesForTokens:(id)a3 fromActivation:(id)a4 usingCharacterTokens:(BOOL)a5;
-+ (id)filteredTokensFromTokens:(id)a3 falsePositiveFiltering:(BOOL)a4 keepWhitespaceToken:(BOOL)a5;
-+ (id)getTokenPermutationByApplyingReorderingPermutation:(id)a3 toRanges:(id)a4;
-+ (id)graphemeClusterTokensFromTokens:(id)a3;
-+ (id)halfWidthToFullWidthNormalizationForTextString:(id)a3;
-+ (id)invertedPermutation:(id)a3;
-+ (id)reversedPermutation:(id)a3 numTimeSteps:(unint64_t)a4;
-+ (id)reversedTokens:(id)a3 numTimeSteps:(unint64_t)a4;
-+ (id)tokenDelimiterRangesForTokens:(id)a3 usingCharacterTokens:(BOOL)a4;
-+ (id)tokenSequenceStringForTokens:(id)a3 usingCharacterTokens:(BOOL)a4;
-+ (id)wordTokensFromCharacterTokens:(id)a3;
-+ (uint64_t)getTokenPermutationByApplyingReorderingPermutation:(uint64_t *)a3 toRanges:(uint64_t)a4;
-+ (void)getBoundariesForRanges:(void *)a3 topPoints:(void *)a4 bottomPoints:(void *)a5 imageSize:(void *)a6 scale:(int)a7 featureImageSize:(int)a8 rect:(float64_t)a9 rotatedRoi:(float64_t)a10 radians:(float)a11 model:(double)a12 configuration:(double)a13 paddingLeft:(double)a14 paddingRight:(double)a15 rangeOffset:(double)a16;
++ (id)adjustedBeamSearchDecodedString:(id)string greedyDecodedString:(id)decodedString decodingLocale:(id)locale;
++ (id)characterRangesForTokens:(id)tokens fromActivation:(id)activation usingCharacterTokens:(BOOL)characterTokens;
++ (id)filteredTokensFromTokens:(id)tokens falsePositiveFiltering:(BOOL)filtering keepWhitespaceToken:(BOOL)token;
++ (id)getTokenPermutationByApplyingReorderingPermutation:(id)permutation toRanges:(id)ranges;
++ (id)graphemeClusterTokensFromTokens:(id)tokens;
++ (id)halfWidthToFullWidthNormalizationForTextString:(id)string;
++ (id)invertedPermutation:(id)permutation;
++ (id)reversedPermutation:(id)permutation numTimeSteps:(unint64_t)steps;
++ (id)reversedTokens:(id)tokens numTimeSteps:(unint64_t)steps;
++ (id)tokenDelimiterRangesForTokens:(id)tokens usingCharacterTokens:(BOOL)characterTokens;
++ (id)tokenSequenceStringForTokens:(id)tokens usingCharacterTokens:(BOOL)characterTokens;
++ (id)wordTokensFromCharacterTokens:(id)tokens;
++ (uint64_t)getTokenPermutationByApplyingReorderingPermutation:(uint64_t *)permutation toRanges:(uint64_t)ranges;
++ (void)getBoundariesForRanges:(void *)ranges topPoints:(void *)points bottomPoints:(void *)bottomPoints imageSize:(void *)size scale:(int)scale featureImageSize:(int)imageSize rect:(float64_t)rect rotatedRoi:(float64_t)self0 radians:(float)self1 model:(double)self2 configuration:(double)self3 paddingLeft:(double)self4 paddingRight:(double)self5 rangeOffset:(double)self6;
 @end
 
 @implementation CRTextDecodingUtils
 
-+ (id)adjustedBeamSearchDecodedString:(id)a3 greedyDecodedString:(id)a4 decodingLocale:(id)a5
++ (id)adjustedBeamSearchDecodedString:(id)string greedyDecodedString:(id)decodedString decodingLocale:(id)locale
 {
   v6 = sub_1B429FB98();
   v8 = v7;
   v9 = sub_1B429FB98();
   v11 = v10;
-  if (a5)
+  if (locale)
   {
     v12 = sub_1B429FB98();
-    a5 = v13;
+    locale = v13;
   }
 
   else
@@ -35,16 +35,16 @@
   }
 
   swift_getObjCClassMetadata();
-  sub_1B41257F0(v6, v8, v9, v11, v12, a5);
+  sub_1B41257F0(v6, v8, v9, v11, v12, locale);
 
   v14 = sub_1B429FB88();
 
   return v14;
 }
 
-+ (id)halfWidthToFullWidthNormalizationForTextString:(id)a3
++ (id)halfWidthToFullWidthNormalizationForTextString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -58,14 +58,14 @@
   v25 = __Block_byref_object_copy__6;
   v26 = __Block_byref_object_dispose__6;
   v27 = 0;
-  if ([v3 length] >= 3)
+  if ([stringCopy length] >= 3)
   {
     v5 = customRegexToIgnoreHalfWidthToFullWidthMapping();
     v6 = v23[5];
     v23[5] = v5;
   }
 
-  v7 = [v3 length];
+  v7 = [stringCopy length];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __70__CRTextDecodingUtils_halfWidthToFullWidthNormalizationForTextString___block_invoke;
@@ -73,7 +73,7 @@
   v8 = v4;
   v18 = v8;
   v20 = &v22;
-  v9 = v3;
+  v9 = stringCopy;
   v19 = v9;
   v21 = &v28;
   [v9 enumerateSubstringsInRange:0 options:v7 usingBlock:{2, &v14}];
@@ -173,12 +173,12 @@ LABEL_20:
   }
 }
 
-+ (void)getBoundariesForRanges:(void *)a3 topPoints:(void *)a4 bottomPoints:(void *)a5 imageSize:(void *)a6 scale:(int)a7 featureImageSize:(int)a8 rect:(float64_t)a9 rotatedRoi:(float64_t)a10 radians:(float)a11 model:(double)a12 configuration:(double)a13 paddingLeft:(double)a14 paddingRight:(double)a15 rangeOffset:(double)a16
++ (void)getBoundariesForRanges:(void *)ranges topPoints:(void *)points bottomPoints:(void *)bottomPoints imageSize:(void *)size scale:(int)scale featureImageSize:(int)imageSize rect:(float64_t)rect rotatedRoi:(float64_t)self0 radians:(float)self1 model:(double)self2 configuration:(double)self3 paddingLeft:(double)self4 paddingRight:(double)self5 rangeOffset:(double)self6
 {
   v94 = *MEMORY[0x1E69E9840];
   v73 = a2;
-  v29 = a5;
-  v30 = a6;
+  bottomPointsCopy = bottomPoints;
+  sizeCopy = size;
   objc_opt_self();
   v31 = a23;
   v90 = 0;
@@ -206,8 +206,8 @@ LABEL_20:
   }
 
   v76 = *&v31;
-  v34 = [v29 outputWidthDownscale];
-  [v34 floatValue];
+  outputWidthDownscale = [bottomPointsCopy outputWidthDownscale];
+  [outputWidthDownscale floatValue];
   v36 = v35;
 
   v88 = 0u;
@@ -219,7 +219,7 @@ LABEL_20:
   if (v38)
   {
     v39 = *&v33;
-    v40 = v36 / (a12 * a11 / v39);
+    v40 = v36 / (model * radians / v39);
     v41 = *v87;
     v42 = v40;
     v43 = MEMORY[0x1E695EFF8];
@@ -232,14 +232,14 @@ LABEL_20:
           objc_enumerationMutation(v37);
         }
 
-        v45 = [*(*(&v86 + 1) + 8 * i) rangeValue];
+        rangeValue = [*(*(&v86 + 1) + 8 * i) rangeValue];
         *v84 = *v43;
         *__p = *v84;
-        v46 = *&a25 + (v45 + a27) * v42;
-        v48 = *&a26 + ((v45 + v47) + a27) * v42;
+        v46 = *&a25 + (rangeValue + a27) * v42;
+        v48 = *&a26 + ((rangeValue + v47) + a27) * v42;
         if (v47 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v46 = (v40 * v45);
+          v46 = (v40 * rangeValue);
           v48 = v46;
         }
 
@@ -261,7 +261,7 @@ LABEL_20:
   __p[0] = 0;
   __p[1] = 0;
   v83 = 0;
-  [v30 angleThresholdForRotatedCrops];
+  [sizeCopy angleThresholdForRotatedCrops];
   if (v49 >= fabsf(*&a24))
   {
     v62 = v90;
@@ -271,15 +271,15 @@ LABEL_20:
       v64.f64[0] = a17;
       v64.f64[1] = *&a18 + *&a20;
       v77 = v64;
-      v64.f64[0] = a9;
-      v64.f64[1] = a10;
+      v64.f64[0] = rect;
+      v64.f64[1] = roi;
       v75 = v64;
       do
       {
         v81 = *v62;
         v80 = *v62;
-        v81.f64[0] = (a17 + v81.f64[0]) / a9;
-        v81.f64[1] = *&a18 / a10;
+        v81.f64[0] = (a17 + v81.f64[0]) / rect;
+        v81.f64[1] = *&a18 / roi;
         v80 = vdivq_f64(vaddq_f64(v77, v80), v75);
         std::vector<CGPoint>::push_back[abi:ne200100](v84, &v81);
         std::vector<CGPoint>::push_back[abi:ne200100](__p, &v80);
@@ -312,10 +312,10 @@ LABEL_20:
         v80 = a21;
         v60 = v81.f64[0] - v53;
         v61 = a21.f64[0] + *v50 - v53;
-        v81.f64[0] = (a17 + v53 + (v81.f64[0] - v53) * cosval - (a21.f64[1] - *&a20 * 0.5) * v55.__sinval) / a9;
-        v81.f64[1] = (*&a18 + v54 + (a21.f64[1] - *&a20 * 0.5) * v55.__cosval + v60 * sinval) / a10;
-        v80.f64[0] = (a17 + v53 + v74 + v61 * cosval) / a9;
-        v80.f64[1] = (*&a18 + v54 + v59 + v61 * sinval) / a10;
+        v81.f64[0] = (a17 + v53 + (v81.f64[0] - v53) * cosval - (a21.f64[1] - *&a20 * 0.5) * v55.__sinval) / rect;
+        v81.f64[1] = (*&a18 + v54 + (a21.f64[1] - *&a20 * 0.5) * v55.__cosval + v60 * sinval) / roi;
+        v80.f64[0] = (a17 + v53 + v74 + v61 * cosval) / rect;
+        v80.f64[1] = (*&a18 + v54 + v59 + v61 * sinval) / roi;
         std::vector<CGPoint>::push_back[abi:ne200100](v84, &v81);
         std::vector<CGPoint>::push_back[abi:ne200100](__p, &v80);
         v50 += 2;
@@ -325,30 +325,30 @@ LABEL_20:
     }
   }
 
-  v65 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v66 = v84[0];
   for (j = v84[1]; v66 != j; v66 += 2)
   {
     v68 = [MEMORY[0x1E696B098] valueWithPoint:{*v66, v66[1]}];
-    [v65 addObject:v68];
+    [array addObject:v68];
   }
 
-  v69 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v70 = __p[0];
   for (k = __p[1]; v70 != k; v70 += 2)
   {
     v72 = [MEMORY[0x1E696B098] valueWithPoint:{*v70, v70[1]}];
-    [v69 addObject:v72];
+    [array2 addObject:v72];
   }
 
-  if (a3)
+  if (ranges)
   {
-    *a3 = [MEMORY[0x1E695DEC8] arrayWithArray:v65];
+    *ranges = [MEMORY[0x1E695DEC8] arrayWithArray:array];
   }
 
-  if (a4)
+  if (points)
   {
-    *a4 = [MEMORY[0x1E695DEC8] arrayWithArray:v69];
+    *points = [MEMORY[0x1E695DEC8] arrayWithArray:array2];
   }
 
   if (__p[0])
@@ -370,17 +370,17 @@ LABEL_20:
   }
 }
 
-+ (id)tokenSequenceStringForTokens:(id)a3 usingCharacterTokens:(BOOL)a4
++ (id)tokenSequenceStringForTokens:(id)tokens usingCharacterTokens:(BOOL)characterTokens
 {
-  v4 = a4;
+  characterTokensCopy = characterTokens;
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AD60] string];
+  tokensCopy = tokens;
+  string = [MEMORY[0x1E696AD60] string];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = tokensCopy;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -395,18 +395,18 @@ LABEL_20:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        if (v4 && ([*(*(&v18 + 1) + 8 * i) fullString], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @" "), v12, v13))
+        if (characterTokensCopy && ([*(*(&v18 + 1) + 8 * i) fullString], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @" "), v12, v13))
         {
-          [v6 appendString:@"\uFFFC"];
+          [string appendString:@"\uFFFC"];
         }
 
         else
         {
-          v14 = [v11 string];
-          [v6 appendString:v14];
+          string2 = [v11 string];
+          [string appendString:string2];
         }
 
-        [v6 appendString:@" "];
+        [string appendString:@" "];
       }
 
       v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -415,36 +415,36 @@ LABEL_20:
     while (v8);
   }
 
-  v15 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v16 = [v6 stringByTrimmingCharactersInSet:v15];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v16 = [string stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v16;
 }
 
-+ (id)tokenDelimiterRangesForTokens:(id)a3 usingCharacterTokens:(BOOL)a4
++ (id)tokenDelimiterRangesForTokens:(id)tokens usingCharacterTokens:(BOOL)characterTokens
 {
-  v43 = a4;
+  characterTokensCopy = characterTokens;
   v50 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  if ([v40 count])
+  tokensCopy = tokens;
+  if ([tokensCopy count])
   {
-    v44 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v40, "count") + 1}];
-    v4 = [v40 firstObject];
-    v5 = [v4 activationRange];
+    v44 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(tokensCopy, "count") + 1}];
+    firstObject = [tokensCopy firstObject];
+    activationRange = [firstObject activationRange];
 
-    v6 = [v40 lastObject];
-    v7 = [v6 activationRange];
+    lastObject = [tokensCopy lastObject];
+    activationRange2 = [lastObject activationRange];
     v38 = v8;
-    v39 = v7;
+    v39 = activationRange2;
 
-    v9 = [v40 lastObject];
-    v10 = [v9 activationRange];
+    lastObject2 = [tokensCopy lastObject];
+    activationRange3 = [lastObject2 activationRange];
     v36 = v11;
-    v37 = v10;
+    v37 = activationRange3;
 
-    if (v5)
+    if (activationRange)
     {
-      [MEMORY[0x1E696B098] valueWithRange:{0, v5}];
+      [MEMORY[0x1E696B098] valueWithRange:{0, activationRange}];
     }
 
     else
@@ -454,13 +454,13 @@ LABEL_20:
     v12 = ;
     [v44 addObject:v12];
 
-    if ([v40 count] >= 2)
+    if ([tokensCopy count] >= 2)
     {
       v47 = 0u;
       v48 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v14 = v40;
+      v14 = tokensCopy;
       v42 = [v14 countByEnumeratingWithState:&v45 objects:v49 count:16];
       if (v42)
       {
@@ -482,32 +482,32 @@ LABEL_9:
           }
 
           v18 = [v14 objectAtIndexedSubscript:++v15];
-          v19 = [v17 activationRange];
+          activationRange4 = [v17 activationRange];
           v21 = v20;
-          v22 = [v18 activationRange];
-          v23 = v19 + v21;
-          if (v22 - v23 <= !v43)
+          activationRange5 = [v18 activationRange];
+          v23 = activationRange4 + v21;
+          if (activationRange5 - v23 <= !characterTokensCopy)
           {
-            v24 = !v43;
+            v24 = !characterTokensCopy;
           }
 
           else
           {
-            v24 = v22 - v23;
+            v24 = activationRange5 - v23;
           }
 
-          if (v43)
+          if (characterTokensCopy)
           {
-            v25 = [v17 fullString];
-            v26 = [v25 isEqualToString:@" "];
+            fullString = [v17 fullString];
+            v26 = [fullString isEqualToString:@" "];
 
             if (v26)
             {
-              v23 = v19 + 1;
+              v23 = activationRange4 + 1;
             }
 
-            v27 = [v18 fullString];
-            v28 = [v27 isEqualToString:@" "];
+            fullString2 = [v18 fullString];
+            v28 = [fullString2 isEqualToString:@" "];
 
             if (v28)
             {
@@ -539,11 +539,11 @@ LABEL_9:
 
     else
     {
-      v31 = [v40 lastObject];
-      v32 = [v31 activationRange];
+      lastObject3 = [tokensCopy lastObject];
+      activationRange6 = [lastObject3 activationRange];
       v34 = v33;
 
-      [MEMORY[0x1E696B098] valueWithRange:{v39 + v38, v34 - (v39 + v38) + v32}];
+      [MEMORY[0x1E696B098] valueWithRange:{v39 + v38, v34 - (v39 + v38) + activationRange6}];
     }
     v30 = ;
     [v44 addObject:v30];
@@ -559,23 +559,23 @@ LABEL_9:
   return v13;
 }
 
-+ (id)wordTokensFromCharacterTokens:(id)a3
++ (id)wordTokensFromCharacterTokens:(id)tokens
 {
   v43 = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  if ([v35 count])
+  tokensCopy = tokens;
+  if ([tokensCopy count])
   {
-    v36 = [MEMORY[0x1E695DF70] array];
-    v3 = [MEMORY[0x1E696AD60] string];
-    v4 = [v35 firstObject];
-    location = [v4 activationRange];
+    array = [MEMORY[0x1E695DF70] array];
+    string = [MEMORY[0x1E696AD60] string];
+    firstObject = [tokensCopy firstObject];
+    location = [firstObject activationRange];
     length = v6;
 
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    obj = v35;
+    obj = tokensCopy;
     v8 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v8)
     {
@@ -600,29 +600,29 @@ LABEL_9:
           v16 = NSUnionRange(v45, v46);
           location = v16.location;
           length = v16.length;
-          v17 = [v14 fullString];
-          v18 = [v17 isEqualToString:@" "];
+          fullString = [v14 fullString];
+          v18 = [fullString isEqualToString:@" "];
 
           if ((v18 & 1) == 0)
           {
-            v19 = [v14 string];
-            [v3 appendString:v19];
+            string2 = [v14 string];
+            [string appendString:string2];
 
-            v20 = [v14 alignmentScore];
-            [v20 doubleValue];
+            alignmentScore = [v14 alignmentScore];
+            [alignmentScore doubleValue];
             v22 = v21;
 
-            v23 = [v14 score];
-            [v23 doubleValue];
+            score = [v14 score];
+            [score doubleValue];
             v25 = v24;
 
-            v26 = [obj lastObject];
-            LODWORD(v23) = v14 == v26;
+            lastObject = [obj lastObject];
+            LODWORD(score) = v14 == lastObject;
 
             ++v9;
             v12 = v12 + v22;
             v11 = v11 + v25;
-            if (!v23)
+            if (!score)
             {
               continue;
             }
@@ -651,11 +651,11 @@ LABEL_9:
 
           v30 = [MEMORY[0x1E696AD98] numberWithDouble:v29];
           v31 = objc_alloc(MEMORY[0x1E6992028]);
-          v32 = [v3 copy];
+          v32 = [string copy];
           v33 = [v31 initWithString:v32 score:v28 alignmentScore:v30 activationRange:v16.location terminatingCharacter:{v16.length, &stru_1F2BB4348}];
 
-          [v36 addObject:v33];
-          [v3 setString:&stru_1F2BB4348];
+          [array addObject:v33];
+          [string setString:&stru_1F2BB4348];
 
           v9 = 0;
           location = v16.location + v16.length;
@@ -673,33 +673,33 @@ LABEL_9:
 
   else
   {
-    v36 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v36;
+  return array;
 }
 
-+ (id)graphemeClusterTokensFromTokens:(id)a3
++ (id)graphemeClusterTokensFromTokens:(id)tokens
 {
   v61 = *MEMORY[0x1E69E9840];
-  v49 = a3;
-  if (![v49 count])
+  tokensCopy = tokens;
+  if (![tokensCopy count])
   {
-    v51 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
     goto LABEL_35;
   }
 
-  v51 = [MEMORY[0x1E695DF70] array];
-  v55 = [MEMORY[0x1E696AD60] string];
-  v3 = [v49 firstObject];
-  v54.location = [v3 activationRange];
+  array = [MEMORY[0x1E695DF70] array];
+  string = [MEMORY[0x1E696AD60] string];
+  firstObject = [tokensCopy firstObject];
+  v54.location = [firstObject activationRange];
   v54.length = v4;
 
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v49;
+  obj = tokensCopy;
   v5 = [obj countByEnumeratingWithState:&v56 objects:v60 count:16];
   v6 = 0;
   if (!v5)
@@ -723,19 +723,19 @@ LABEL_9:
       }
 
       v10 = *(*(&v56 + 1) + 8 * i);
-      v11 = [v10 string];
-      v12 = [(NSString *)v55 stringByAppendingString:v11];
+      string2 = [v10 string];
+      v12 = [(NSString *)string stringByAppendingString:string2];
 
-      v13 = [v10 fullString];
-      v14 = [v13 isEqualToString:@" "];
+      fullString = [v10 fullString];
+      v14 = [fullString isEqualToString:@" "];
 
-      v15 = [v10 string];
-      v16 = characterCount(v15);
+      string3 = [v10 string];
+      v16 = characterCount(string3);
 
-      if ([(NSString *)v55 length])
+      if ([(NSString *)string length])
       {
         v17 = characterCount(v12);
-        if (!((v17 >= characterCount(v55) + v16) | v14 & 1))
+        if (!((v17 >= characterCount(string) + v16) | v14 & 1))
         {
           goto LABEL_12;
         }
@@ -744,21 +744,21 @@ LABEL_9:
       else if ((v14 & 1) == 0)
       {
 LABEL_12:
-        v19 = [v10 string];
-        v20 = characterCount(v19);
+        string4 = [v10 string];
+        v20 = characterCount(string4);
 
-        v21 = [v10 string];
-        [(NSString *)v55 appendString:v21];
+        string5 = [v10 string];
+        [(NSString *)string appendString:string5];
 
         v64.location = [v10 activationRange];
         v64.length = v22;
         v54 = NSUnionRange(v54, v64);
-        v23 = [v10 alignmentScore];
-        [v23 doubleValue];
+        alignmentScore = [v10 alignmentScore];
+        [alignmentScore doubleValue];
         v25 = v24;
 
-        v26 = [v10 score];
-        [v26 doubleValue];
+        score = [v10 score];
+        [score doubleValue];
         v6 += v20;
         v8 = v8 + v25;
         v7 = v7 + v27;
@@ -775,7 +775,7 @@ LABEL_12:
         v18 = 0.0;
       }
 
-      v26 = [MEMORY[0x1E696AD98] numberWithDouble:v18];
+      score = [MEMORY[0x1E696AD98] numberWithDouble:v18];
       if (v6)
       {
         v28 = v8 / v6;
@@ -788,37 +788,37 @@ LABEL_12:
 
       v29 = [MEMORY[0x1E696AD98] numberWithDouble:v28];
       v30 = objc_alloc(MEMORY[0x1E6992028]);
-      v31 = [(NSString *)v55 copy];
-      v32 = [v30 initWithString:v31 score:v26 alignmentScore:v29 activationRange:v54 terminatingCharacter:&stru_1F2BB4348];
+      v31 = [(NSString *)string copy];
+      v32 = [v30 initWithString:v31 score:score alignmentScore:v29 activationRange:v54 terminatingCharacter:&stru_1F2BB4348];
 
-      [v51 addObject:v32];
+      [array addObject:v32];
       if (v14)
       {
-        [v51 addObject:v10];
-        [(NSString *)v55 setString:&stru_1F2BB4348];
-        v33 = [v10 activationRange];
+        [array addObject:v10];
+        [(NSString *)string setString:&stru_1F2BB4348];
+        activationRange = [v10 activationRange];
         v6 = 0;
-        v54 = (v33 + v34);
+        v54 = (activationRange + v34);
         v7 = 0.0;
         v8 = 0.0;
       }
 
       else
       {
-        v35 = [v10 string];
-        [(NSString *)v55 setString:v35];
+        string6 = [v10 string];
+        [(NSString *)string setString:string6];
 
         v65.location = [v10 activationRange];
         v65.length = v36;
         v63.location = v54.location + v54.length;
         v63.length = 0;
         v54 = NSUnionRange(v63, v65);
-        v37 = [v10 alignmentScore];
-        [v37 doubleValue];
+        alignmentScore2 = [v10 alignmentScore];
+        [alignmentScore2 doubleValue];
         v8 = v38;
 
-        v39 = [v10 score];
-        [v39 doubleValue];
+        score2 = [v10 score];
+        [score2 doubleValue];
         v7 = v40;
 
         v6 = v16;
@@ -833,7 +833,7 @@ LABEL_21:
   while (v5);
 LABEL_26:
 
-  if ([(NSString *)v55 length])
+  if ([(NSString *)string length])
   {
     if (v6)
     {
@@ -858,52 +858,52 @@ LABEL_26:
 
     v44 = [MEMORY[0x1E696AD98] numberWithDouble:v43];
     v45 = objc_alloc(MEMORY[0x1E6992028]);
-    v46 = [(NSString *)v55 copy];
+    v46 = [(NSString *)string copy];
     v47 = [v45 initWithString:v46 score:v42 alignmentScore:v44 activationRange:v54 terminatingCharacter:&stru_1F2BB4348];
 
-    [v51 addObject:v47];
+    [array addObject:v47];
   }
 
 LABEL_35:
 
-  return v51;
+  return array;
 }
 
-+ (id)characterRangesForTokens:(id)a3 fromActivation:(id)a4 usingCharacterTokens:(BOOL)a5
++ (id)characterRangesForTokens:(id)tokens fromActivation:(id)activation usingCharacterTokens:(BOOL)characterTokens
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v46 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v9 = [v7 count];
+  characterTokensCopy = characterTokens;
+  tokensCopy = tokens;
+  activationCopy = activation;
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v9 = [tokensCopy count];
   v10 = MEMORY[0x1E695E0F0];
-  if (v8 && v9)
+  if (activationCopy && v9)
   {
     v11 = 0x1E695D000uLL;
-    v41 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
-    v12 = [v8 characterObservations];
-    v48 = [v12 objectAtIndexedSubscript:{objc_msgSend(v8, "blankIndex")}];
+    v41 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(tokensCopy, "count")}];
+    characterObservations = [activationCopy characterObservations];
+    v48 = [characterObservations objectAtIndexedSubscript:{objc_msgSend(activationCopy, "blankIndex")}];
 
     v45 = 0;
-    v40 = !v5;
-    v42 = v7;
-    v49 = v8;
-    while (v45 < [v7 count])
+    v40 = !characterTokensCopy;
+    v42 = tokensCopy;
+    v49 = activationCopy;
+    while (v45 < [tokensCopy count])
     {
-      v13 = [v7 objectAtIndexedSubscript:?];
-      v14 = [v13 activationRange];
+      v13 = [tokensCopy objectAtIndexedSubscript:?];
+      activationRange = [v13 activationRange];
       v16 = v15;
 
-      v17 = [v7 objectAtIndexedSubscript:v45];
-      v18 = [v17 fullString];
-      v19 = [v18 componentsSeparatedByCharactersInSet:v46];
+      v17 = [tokensCopy objectAtIndexedSubscript:v45];
+      fullString = [v17 fullString];
+      v19 = [fullString componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
       v20 = [v19 componentsJoinedByString:&stru_1F2BB4348];
 
       v43 = characterCount(v20);
       v44 = v20;
-      v50 = [*(v11 + 3952) array];
-      v21 = [*(v11 + 3952) array];
-      if (v14 >= v14 + v16)
+      array = [*(v11 + 3952) array];
+      array2 = [*(v11 + 3952) array];
+      if (activationRange >= activationRange + v16)
       {
         v22 = 0;
         v47 = -1;
@@ -921,8 +921,8 @@ LABEL_35:
         {
           v26 = v22;
           v51 = 0.0;
-          v22 = [v49 topCandidateForTimestep:v14 outputLogProbability:&v51];
-          v27 = ([v22 isEqualToString:v48] & 1) != 0 || objc_msgSend(v22, "rangeOfCharacterFromSet:", v46) != 0x7FFFFFFFFFFFFFFFLL;
+          v22 = [v49 topCandidateForTimestep:activationRange outputLogProbability:&v51];
+          v27 = ([v22 isEqualToString:v48] & 1) != 0 || objc_msgSend(v22, "rangeOfCharacterFromSet:", whitespaceCharacterSet) != 0x7FFFFFFFFFFFFFFFLL;
           if (((v27 | [v22 isEqualToString:v26]) & 1) == 0)
           {
             v28 = [(__CFString *)v25 length];
@@ -942,7 +942,7 @@ LABEL_35:
                 if (v51 > v24)
                 {
                   v24 = v51;
-                  v47 = v14;
+                  v47 = activationRange;
                 }
               }
 
@@ -964,18 +964,18 @@ LABEL_35:
             if (!v27)
             {
               v30 = [MEMORY[0x1E696AD98] numberWithInteger:v47];
-              [v21 addObject:v30];
+              [array2 addObject:v30];
 
               v24 = v51;
               v31 = v22;
 
               v23 = 1;
-              v47 = v14;
+              v47 = activationRange;
               v25 = v31;
             }
           }
 
-          ++v14;
+          ++activationRange;
           --v16;
         }
 
@@ -985,28 +985,28 @@ LABEL_35:
       if ([(__CFString *)v25 length])
       {
         v32 = [MEMORY[0x1E696AD98] numberWithInteger:v47];
-        [v21 addObject:v32];
+        [array2 addObject:v32];
       }
 
-      v33 = [v21 count];
+      v33 = [array2 count];
       if (v33 == v43)
       {
-        for (i = v40; i < [v21 count]; ++i)
+        for (i = v40; i < [array2 count]; ++i)
         {
-          v35 = [v21 objectAtIndexedSubscript:i];
-          v36 = [v35 integerValue];
+          v35 = [array2 objectAtIndexedSubscript:i];
+          integerValue = [v35 integerValue];
 
-          v37 = [MEMORY[0x1E696B098] valueWithRange:{v36, 0}];
-          [v50 addObject:v37];
+          v37 = [MEMORY[0x1E696B098] valueWithRange:{integerValue, 0}];
+          [array addObject:v37];
         }
 
-        v38 = [MEMORY[0x1E695DEC8] arrayWithArray:v50];
+        v38 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
         [v41 addObject:v38];
       }
 
       ++v45;
-      v7 = v42;
-      v8 = v49;
+      tokensCopy = v42;
+      activationCopy = v49;
       v11 = 0x1E695D000;
       if (v33 != v43)
       {
@@ -1022,31 +1022,31 @@ LABEL_35:
   return v10;
 }
 
-+ (id)reversedTokens:(id)a3 numTimeSteps:(unint64_t)a4
++ (id)reversedTokens:(id)tokens numTimeSteps:(unint64_t)steps
 {
-  v25 = a3;
-  v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v25, "count")}];
-  v4 = [v25 count] - 1;
+  tokensCopy = tokens;
+  v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(tokensCopy, "count")}];
+  v4 = [tokensCopy count] - 1;
   if (v4 >= 0)
   {
     do
     {
-      v5 = [v25 objectAtIndexedSubscript:v4];
-      v6 = [v5 activationRange];
+      v5 = [tokensCopy objectAtIndexedSubscript:v4];
+      activationRange = [v5 activationRange];
       v8 = v7;
 
       v9 = objc_alloc(MEMORY[0x1E6992028]);
-      v10 = [v25 objectAtIndexedSubscript:v4];
-      v11 = [v10 string];
-      v12 = [v25 objectAtIndexedSubscript:v4];
-      v13 = [v12 score];
-      v14 = [v25 objectAtIndexedSubscript:v4];
-      v15 = [v14 alignmentScore];
+      v10 = [tokensCopy objectAtIndexedSubscript:v4];
+      string = [v10 string];
+      v12 = [tokensCopy objectAtIndexedSubscript:v4];
+      score = [v12 score];
+      v14 = [tokensCopy objectAtIndexedSubscript:v4];
+      alignmentScore = [v14 alignmentScore];
       if (v4)
       {
-        v24 = [v25 objectAtIndexedSubscript:v4 - 1];
-        v23 = [v24 terminatingCharacter];
-        v16 = v23;
+        v24 = [tokensCopy objectAtIndexedSubscript:v4 - 1];
+        terminatingCharacter = [v24 terminatingCharacter];
+        v16 = terminatingCharacter;
       }
 
       else
@@ -1054,7 +1054,7 @@ LABEL_35:
         v16 = 0;
       }
 
-      v17 = [v9 initWithString:v11 score:v13 alignmentScore:v15 activationRange:a4 - (v6 + v8) terminatingCharacter:{v8, v16}];
+      v17 = [v9 initWithString:string score:score alignmentScore:alignmentScore activationRange:steps - (activationRange + v8) terminatingCharacter:{v8, v16}];
       if (v4)
       {
       }
@@ -1070,20 +1070,20 @@ LABEL_35:
   return v19;
 }
 
-+ (id)getTokenPermutationByApplyingReorderingPermutation:(id)a3 toRanges:(id)a4
++ (id)getTokenPermutationByApplyingReorderingPermutation:(id)permutation toRanges:(id)ranges
 {
-  v5 = a3;
-  v6 = a4;
-  std::vector<unsigned long>::vector[abi:ne200100](&v31, [v6 count]);
-  for (i = 0; i < [v6 count]; ++i)
+  permutationCopy = permutation;
+  rangesCopy = ranges;
+  std::vector<unsigned long>::vector[abi:ne200100](&v31, [rangesCopy count]);
+  for (i = 0; i < [rangesCopy count]; ++i)
   {
-    v8 = [v6 objectAtIndexedSubscript:i];
-    v9 = [v8 rangeValue];
+    v8 = [rangesCopy objectAtIndexedSubscript:i];
+    rangeValue = [v8 rangeValue];
 
-    v10 = [v5 objectAtIndexedSubscript:v9];
-    v11 = [v10 unsignedIntegerValue];
+    v10 = [permutationCopy objectAtIndexedSubscript:rangeValue];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-    *(v31 + i) = v11;
+    *(v31 + i) = unsignedIntegerValue;
   }
 
   std::vector<unsigned long>::vector[abi:ne200100](&__p, (v32 - v31) >> 3);
@@ -1130,7 +1130,7 @@ LABEL_35:
   }
 
   std::__introsort<std::_ClassicAlgPolicy,+[CRTextDecodingUtils getTokenPermutationByApplyingReorderingPermutation:toRanges:]::$_0 &,unsigned long *,false>(v12, v13, &v33, v22, 1);
-  v23 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v23 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(rangesCopy, "count")}];
   v24 = __p;
   v25 = v30;
   if (__p != v30)
@@ -1163,19 +1163,19 @@ LABEL_35:
   return v27;
 }
 
-+ (id)invertedPermutation:(id)a3
++ (id)invertedPermutation:(id)permutation
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
-  for (i = 0; i < [v3 count]; ++i)
+  permutationCopy = permutation;
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(permutationCopy, "count")}];
+  for (i = 0; i < [permutationCopy count]; ++i)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
-    v7 = [v3 objectAtIndexedSubscript:i];
+    v7 = [permutationCopy objectAtIndexedSubscript:i];
     [v4 setObject:v6 forKeyedSubscript:v7];
   }
 
-  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
-  for (j = 0; j < [v3 count]; ++j)
+  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(permutationCopy, "count")}];
+  for (j = 0; j < [permutationCopy count]; ++j)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:j];
     v11 = [v4 objectForKeyedSubscript:v10];
@@ -1187,29 +1187,29 @@ LABEL_35:
   return v12;
 }
 
-+ (id)reversedPermutation:(id)a3 numTimeSteps:(unint64_t)a4
++ (id)reversedPermutation:(id)permutation numTimeSteps:(unint64_t)steps
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-  v7 = [v5 count];
+  permutationCopy = permutation;
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(permutationCopy, "count")}];
+  v7 = [permutationCopy count];
   if (v7 - 1 >= 0)
   {
     do
     {
-      v8 = [v5 objectAtIndexedSubscript:--v7];
+      v8 = [permutationCopy objectAtIndexedSubscript:--v7];
       v9 = ~[v8 unsignedIntegerValue];
 
-      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v9 + a4];
-      [v6 addObject:v10];
+      steps = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v9 + steps];
+      [v6 addObject:steps];
     }
 
     while (v7 > 0);
   }
 
-  v11 = [v6 reverseObjectEnumerator];
-  v12 = [v11 allObjects];
+  reverseObjectEnumerator = [v6 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  return v12;
+  return allObjects;
 }
 
 BOOL __87__CRTextDecodingUtils__tokenFilterPredicateFalsePositiveFiltering_keepWhitespaceToken___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1254,31 +1254,31 @@ BOOL __87__CRTextDecodingUtils__tokenFilterPredicateFalsePositiveFiltering_keepW
   return v9;
 }
 
-+ (id)filteredTokensFromTokens:(id)a3 falsePositiveFiltering:(BOOL)a4 keepWhitespaceToken:(BOOL)a5
++ (id)filteredTokensFromTokens:(id)tokens falsePositiveFiltering:(BOOL)filtering keepWhitespaceToken:(BOOL)token
 {
-  v7 = a3;
+  tokensCopy = tokens;
   objc_opt_self();
-  v8 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v9 = [MEMORY[0x1E696AB08] _crUnknownScriptCharacterSet];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  _crUnknownScriptCharacterSet = [MEMORY[0x1E696AB08] _crUnknownScriptCharacterSet];
   v10 = MEMORY[0x1E696AE18];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __87__CRTextDecodingUtils__tokenFilterPredicateFalsePositiveFiltering_keepWhitespaceToken___block_invoke;
   v16[3] = &unk_1E7BC2A18;
-  v19 = a5;
-  v11 = v8;
-  v20 = a4;
+  tokenCopy = token;
+  v11 = whitespaceCharacterSet;
+  filteringCopy = filtering;
   v17 = v11;
-  v18 = v9;
-  v12 = v9;
+  v18 = _crUnknownScriptCharacterSet;
+  v12 = _crUnknownScriptCharacterSet;
   v13 = [v10 predicateWithBlock:v16];
 
-  v14 = [v7 filteredArrayUsingPredicate:v13];
+  v14 = [tokensCopy filteredArrayUsingPredicate:v13];
 
   return v14;
 }
 
-+ (uint64_t)getTokenPermutationByApplyingReorderingPermutation:(uint64_t *)a3 toRanges:(uint64_t)a4
++ (uint64_t)getTokenPermutationByApplyingReorderingPermutation:(uint64_t *)permutation toRanges:(uint64_t)ranges
 {
   v9 = result;
 LABEL_2:
@@ -1298,7 +1298,7 @@ LABEL_2:
       {
         v77 = *(a2 - 1);
         v78 = *v10;
-        if (*(**a3 + 8 * v77) < *(**a3 + 8 * *v10))
+        if (*(**permutation + 8 * v77) < *(**permutation + 8 * *v10))
         {
           *v10 = v77;
           *(a2 - 1) = v78;
@@ -1321,7 +1321,7 @@ LABEL_2:
       v86 = v10[1];
       v87 = v10 + 2;
       v88 = v10[2];
-      v89 = **a3;
+      v89 = **permutation;
       v90 = *(v89 + 8 * v86);
       v91 = *v10;
       v92 = *(v89 + 8 * v88);
@@ -1395,7 +1395,7 @@ LABEL_176:
 
     if (v11 == 5)
     {
-      v76 = **a3;
+      v76 = **permutation;
 
       return std::__sort5[abi:ne200100]<std::_ClassicAlgPolicy,+[CRTextDecodingUtils getTokenPermutationByApplyingReorderingPermutation:toRanges:]::$_0 &,unsigned long *,0>(v10, v10 + 1, v10 + 2, v10 + 3, a2 - 1, v76);
     }
@@ -1410,7 +1410,7 @@ LABEL_10:
           v95 = v10 + 1;
           if (v10 + 1 != a2)
           {
-            v96 = **a3;
+            v96 = **permutation;
             v97 = 8;
             v98 = v10;
             do
@@ -1458,7 +1458,7 @@ LABEL_125:
         v138 = v10 + 1;
         if (v10 + 1 != a2)
         {
-          v139 = **a3;
+          v139 = **permutation;
           do
           {
             v141 = *v9;
@@ -1487,12 +1487,12 @@ LABEL_125:
       return result;
     }
 
-    if (!a4)
+    if (!ranges)
     {
       if (v10 != a2)
       {
         v104 = (v11 - 2) >> 1;
-        v105 = *a3;
+        v105 = *permutation;
         v106 = v104;
         do
         {
@@ -1559,7 +1559,7 @@ LABEL_125:
         {
           v117 = 0;
           v118 = *v10;
-          v119 = *a3;
+          v119 = *permutation;
           v120 = v10;
           do
           {
@@ -1649,7 +1649,7 @@ LABEL_125:
 
     v12 = &v10[v11 >> 1];
     v13 = v12;
-    v14 = **a3;
+    v14 = **permutation;
     v15 = *(a2 - 1);
     v16 = *(v14 + 8 * v15);
     if (v11 >= 0x81)
@@ -1855,7 +1855,7 @@ LABEL_36:
     }
 
 LABEL_57:
-    --a4;
+    --ranges;
     v50 = *v10;
     if (a5)
     {
@@ -1943,9 +1943,9 @@ LABEL_60:
         goto LABEL_81;
       }
 
-      v65 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,+[CRTextDecodingUtils getTokenPermutationByApplyingReorderingPermutation:toRanges:]::$_0 &,unsigned long *>(v10, v64, *a3);
+      v65 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,+[CRTextDecodingUtils getTokenPermutationByApplyingReorderingPermutation:toRanges:]::$_0 &,unsigned long *>(v10, v64, *permutation);
       v10 = v64 + 1;
-      result = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,+[CRTextDecodingUtils getTokenPermutationByApplyingReorderingPermutation:toRanges:]::$_0 &,unsigned long *>(v64 + 1, a2, *a3);
+      result = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,+[CRTextDecodingUtils getTokenPermutationByApplyingReorderingPermutation:toRanges:]::$_0 &,unsigned long *>(v64 + 1, a2, *permutation);
       if (result)
       {
         a2 = v64;
@@ -1960,7 +1960,7 @@ LABEL_60:
       if (!v65)
       {
 LABEL_81:
-        result = std::__introsort<std::_ClassicAlgPolicy,+[CRTextDecodingUtils getTokenPermutationByApplyingReorderingPermutation:toRanges:]::$_0 &,unsigned long *,false>(v9, v64, a3, a4, a5 & 1);
+        result = std::__introsort<std::_ClassicAlgPolicy,+[CRTextDecodingUtils getTokenPermutationByApplyingReorderingPermutation:toRanges:]::$_0 &,unsigned long *,false>(v9, v64, permutation, ranges, a5 & 1);
         a5 = 0;
         v10 = v64 + 1;
       }
@@ -2056,7 +2056,7 @@ LABEL_81:
 
   v79 = *v10;
   v80 = v10[1];
-  v81 = **a3;
+  v81 = **permutation;
   v82 = *(v81 + 8 * v80);
   v83 = *(a2 - 1);
   v84 = *(v81 + 8 * v83);

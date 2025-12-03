@@ -1,18 +1,18 @@
 @interface ACSettingsSnippetViewControllerFactory
-- (id)viewControllerForSnippet:(id)a3 error:(id *)a4;
+- (id)viewControllerForSnippet:(id)snippet error:(id *)error;
 @end
 
 @implementation ACSettingsSnippetViewControllerFactory
 
-- (id)viewControllerForSnippet:(id)a3 error:(id *)a4
+- (id)viewControllerForSnippet:(id)snippet error:(id *)error
 {
-  v5 = a3;
+  snippetCopy = snippet;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = ACSettingsSwitchUIController;
 LABEL_5:
-    v7 = [(__objc2_class *)v6 snippetViewController];
+    snippetViewController = [(__objc2_class *)v6 snippetViewController];
     goto LABEL_6;
   }
 
@@ -23,20 +23,20 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if (a4)
+  if (error)
   {
     [NSError errorWithDomain:SiriUISnippetPluginErrorDomain code:100 userInfo:0];
-    *a4 = v7 = 0;
+    *error = snippetViewController = 0;
   }
 
   else
   {
-    v7 = 0;
+    snippetViewController = 0;
   }
 
 LABEL_6:
 
-  return v7;
+  return snippetViewController;
 }
 
 @end

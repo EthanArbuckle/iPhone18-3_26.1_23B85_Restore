@@ -1,9 +1,9 @@
 @interface EQKitMathMLMToken
-- (EQKitMathMLMToken)initWithContent:(id)a3;
-- (EQKitMathMLMToken)initWithString:(id)a3 environment:(id)a4;
+- (EQKitMathMLMToken)initWithContent:(id)content;
+- (EQKitMathMLMToken)initWithString:(id)string environment:(id)environment;
 - (NSString)description;
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (id)schemataTokenString;
 - (unsigned)schemataUnicharOrNul;
 - (void)dealloc;
@@ -11,14 +11,14 @@
 
 @implementation EQKitMathMLMToken
 
-- (EQKitMathMLMToken)initWithString:(id)a3 environment:(id)a4
+- (EQKitMathMLMToken)initWithString:(id)string environment:(id)environment
 {
   v9.receiver = self;
   v9.super_class = EQKitMathMLMToken;
-  v5 = [(EQKitMathMLMToken *)&v9 init:a3];
+  v5 = [(EQKitMathMLMToken *)&v9 init:string];
   if (v5)
   {
-    v6 = EQKitUtilUTF32CharFromString(a3);
+    v6 = EQKitUtilUTF32CharFromString(string);
     v7 = *&v5->mFlags & 0xFC;
     if (v6)
     {
@@ -29,16 +29,16 @@
     else
     {
       *&v5->mFlags = v7 | 1;
-      v5->mContent.mString = a3;
+      v5->mContent.mString = string;
     }
   }
 
   return v5;
 }
 
-- (EQKitMathMLMToken)initWithContent:(id)a3
+- (EQKitMathMLMToken)initWithContent:(id)content
 {
-  if (a3)
+  if (content)
   {
     v7.receiver = self;
     v7.super_class = EQKitMathMLMToken;
@@ -47,7 +47,7 @@
     if (v4)
     {
       *&v4->mFlags = *&v4->mFlags & 0xFC | 2;
-      v4->mContent.mString = a3;
+      v4->mContent.mString = content;
     }
   }
 
@@ -60,11 +60,11 @@
   return v5;
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  if (EQKitXMLIsTextContentOnly(a3))
+  if (EQKitXMLIsTextContentOnly(node))
   {
-    EQKitXMLTextContentAsString(a3, 1, &__p);
+    EQKitXMLTextContentAsString(node, 1, &__p);
     v7 = objc_alloc(MEMORY[0x277CCACA8]);
     if ((__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
     {
@@ -77,7 +77,7 @@
     }
 
     v9 = [v7 initWithUTF8String:p_p];
-    v10 = -[EQKitMathMLMToken initWithString:environment:](self, "initWithString:environment:", v9, [a4 environment]);
+    v10 = -[EQKitMathMLMToken initWithString:environment:](self, "initWithString:environment:", v9, [parser environment]);
 
     if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -89,7 +89,7 @@
 
   else
   {
-    v12 = [a4 parseChildrenAsTokenContentFromXMLNode:a3];
+    v12 = [parser parseChildrenAsTokenContentFromXMLNode:node];
 
     return [(EQKitMathMLMToken *)self initWithContent:v12];
   }

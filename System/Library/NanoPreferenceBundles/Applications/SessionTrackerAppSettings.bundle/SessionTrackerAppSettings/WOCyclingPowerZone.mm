@@ -14,7 +14,7 @@
 - (HKQuantity)lowerBound
 {
   v2 = *(&self->super.isa + OBJC_IVAR___WOCyclingPowerZone_zone);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_223F4();
 
   return v4;
@@ -23,7 +23,7 @@
 - (HKQuantity)upperBound
 {
   v2 = *(&self->super.isa + OBJC_IVAR___WOCyclingPowerZone_zone);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_22404();
 
   return v4;
@@ -33,7 +33,7 @@
 {
   sub_22714();
   v3 = *(&self->super.isa + OBJC_IVAR___WOCyclingPowerZone_zone);
-  v4 = self;
+  selfCopy = self;
   sub_22414();
   sub_22704();
   v6 = v5;
@@ -45,7 +45,7 @@
 {
   sub_22714();
   v3 = *(&self->super.isa + OBJC_IVAR___WOCyclingPowerZone_zone);
-  v4 = self;
+  selfCopy = self;
   sub_22414();
   sub_22704();
   v6 = v5;
@@ -56,7 +56,7 @@
 - (int64_t)index
 {
   v2 = *(&self->super.isa + OBJC_IVAR___WOCyclingPowerZone_zone);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_22734();
 
   return v4;
@@ -65,7 +65,7 @@
 - (BOOL)isEmpty
 {
   v2 = *(&self->super.isa + OBJC_IVAR___WOCyclingPowerZone_zone);
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = sub_22424();
 
   return v2 & 1;
@@ -74,7 +74,7 @@
 - (BOOL)isFTPRange
 {
   v2 = *(&self->super.isa + OBJC_IVAR___WOCyclingPowerZone_zone);
-  v3 = self;
+  selfCopy = self;
   sub_22414();
   v5 = v4;
   v7 = v6;

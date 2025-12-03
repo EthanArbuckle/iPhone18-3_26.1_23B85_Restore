@@ -1,20 +1,20 @@
 @interface PXPlacesThumbnailManager
-+ (id)_filePathForHash:(id)a3;
++ (id)_filePathForHash:(id)hash;
 + (id)_filePathForMetadataPlist;
-+ (id)_hashStringForBoundingRegion:(id *)a3 size:(CGSize)a4 interfaceStyle:(int64_t)a5;
++ (id)_hashStringForBoundingRegion:(id *)region size:(CGSize)size interfaceStyle:(int64_t)style;
 + (id)_thumbnailFilePath;
-+ (id)hashStringForBoundingRegion:(id *)a3 size:(CGSize)a4 interfaceStyle:(int64_t)a5 displayScale:(double)a6;
++ (id)hashStringForBoundingRegion:(id *)region size:(CGSize)size interfaceStyle:(int64_t)style displayScale:(double)scale;
 - (NSMutableDictionary)metadataPlist;
 - (PXPlacesThumbnailManager)init;
-- (id)_hashStringForKey:(id)a3 size:(CGSize)a4 interfaceStyle:(int64_t)a5 displayScale:(double)a6;
-- (id)fetchPlacesThumbnailForBoundingRegion:(id *)a3 size:(CGSize)a4 interfaceStyle:(int64_t)a5;
+- (id)_hashStringForKey:(id)key size:(CGSize)size interfaceStyle:(int64_t)style displayScale:(double)scale;
+- (id)fetchPlacesThumbnailForBoundingRegion:(id *)region size:(CGSize)size interfaceStyle:(int64_t)style;
 - (void)_createThumbnailDirectoryIfNeeded;
-- (void)_fetchDiskOrMemoryPlacesThumbnailForHashString:(id)a3 synchronous:(BOOL)a4 completion:(id)a5;
-- (void)_setInMemoryAndPersistToDiskThumbnail:(id)a3 forHashString:(id)a4;
-- (void)_setInMemoryThumbnail:(id)a3 forHashString:(id)a4;
-- (void)_setMetadataDate:(id)a3 forKey:(id)a4;
+- (void)_fetchDiskOrMemoryPlacesThumbnailForHashString:(id)string synchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_setInMemoryAndPersistToDiskThumbnail:(id)thumbnail forHashString:(id)string;
+- (void)_setInMemoryThumbnail:(id)thumbnail forHashString:(id)string;
+- (void)_setMetadataDate:(id)date forKey:(id)key;
 - (void)_writeMetadataPlistToDisk;
-- (void)cachePlacesThumbnailForBoundingRegion:(id *)a3 size:(CGSize)a4 snapshot:(id)a5 interfaceStyle:(int64_t)a6;
+- (void)cachePlacesThumbnailForBoundingRegion:(id *)region size:(CGSize)size snapshot:(id)snapshot interfaceStyle:(int64_t)style;
 @end
 
 @implementation PXPlacesThumbnailManager
@@ -22,36 +22,36 @@
 - (void)_writeMetadataPlistToDisk
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(PXPlacesThumbnailManager *)self metadataPlist];
+  metadataPlist = [(PXPlacesThumbnailManager *)self metadataPlist];
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
   v48[2] = __53__PXPlacesThumbnailManager__writeMetadataPlistToDisk__block_invoke;
   v48[3] = &unk_1E772F690;
-  v36 = v3;
+  v36 = date;
   v49 = v36;
   v6 = v4;
   v50 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v48];
+  [metadataPlist enumerateKeysAndObjectsUsingBlock:v48];
   v34 = +[PXPlacesThumbnailManager _thumbnailFilePath];
   v7 = [MEMORY[0x1E695DFF8] URLWithString:?];
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v55[0] = *MEMORY[0x1E695DC30];
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:1];
   v33 = v7;
-  v10 = [v8 enumeratorAtURL:v7 includingPropertiesForKeys:v9 options:4 errorHandler:0];
+  v10 = [defaultManager enumeratorAtURL:v7 includingPropertiesForKeys:v9 options:4 errorHandler:0];
 
-  v35 = v5;
-  v38 = [v5 allKeys];
+  v35 = metadataPlist;
+  allKeys = [metadataPlist allKeys];
   v37 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v32 = v10;
-  v11 = [v10 allObjects];
+  allObjects = [v10 allObjects];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v44 objects:v54 count:16];
+  v12 = [allObjects countByEnumeratingWithState:&v44 objects:v54 count:16];
   if (v12)
   {
     v13 = v12;
@@ -62,24 +62,24 @@
       {
         if (*v45 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allObjects);
         }
 
-        v16 = [*(*(&v44 + 1) + 8 * i) lastPathComponent];
-        v17 = [v16 pathExtension];
-        v18 = [v17 isEqualToString:@"jpg"];
+        lastPathComponent = [*(*(&v44 + 1) + 8 * i) lastPathComponent];
+        pathExtension = [lastPathComponent pathExtension];
+        v18 = [pathExtension isEqualToString:@"jpg"];
 
         if (v18)
         {
-          v19 = [v16 stringByDeletingPathExtension];
-          if (([v38 containsObject:v19] & 1) == 0)
+          stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+          if (([allKeys containsObject:stringByDeletingPathExtension] & 1) == 0)
           {
-            [v37 setObject:v36 forKey:v19];
+            [v37 setObject:v36 forKey:stringByDeletingPathExtension];
           }
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v44 objects:v54 count:16];
+      v13 = [allObjects countByEnumeratingWithState:&v44 objects:v54 count:16];
     }
 
     while (v13);
@@ -116,16 +116,16 @@
 
         v27 = [(__objc2_class *)v20[128] _filePathForHash:*(*(&v40 + 1) + 8 * j)];
         v39 = 0;
-        [v8 removeItemAtPath:v27 error:&v39];
+        [defaultManager removeItemAtPath:v27 error:&v39];
         v28 = v39;
         if (v28)
         {
           v29 = v28;
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
-            v30 = [v29 localizedDescription];
+            localizedDescription = [v29 localizedDescription];
             *buf = 138412290;
-            v53 = v30;
+            v53 = localizedDescription;
             _os_log_impl(&dword_1A3C1C000, v25, OS_LOG_TYPE_DEFAULT, "Could not delete thumbnail with error: %@", buf, 0xCu);
 
             v20 = off_1E771F000;
@@ -150,22 +150,22 @@ void __53__PXPlacesThumbnailManager__writeMetadataPlistToDisk__block_invoke(uint
   }
 }
 
-- (void)_setMetadataDate:(id)a3 forKey:(id)a4
+- (void)_setMetadataDate:(id)date forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  keyCopy = key;
   objc_initWeak(&location, self);
-  v8 = [(PXPlacesThumbnailManager *)self metadataQueue];
+  metadataQueue = [(PXPlacesThumbnailManager *)self metadataQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __52__PXPlacesThumbnailManager__setMetadataDate_forKey___block_invoke;
   v11[3] = &unk_1E774B708;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = dateCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = dateCopy;
+  dispatch_async(metadataQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -178,30 +178,30 @@ void __52__PXPlacesThumbnailManager__setMetadataDate_forKey___block_invoke(uint6
   [v2 setObject:*(a1 + 32) forKey:*(a1 + 40)];
 }
 
-- (id)_hashStringForKey:(id)a3 size:(CGSize)a4 interfaceStyle:(int64_t)a5 displayScale:(double)a6
+- (id)_hashStringForKey:(id)key size:(CGSize)size interfaceStyle:(int64_t)style displayScale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v10 = MEMORY[0x1E696AEC0];
-  v11 = a3;
+  keyCopy = key;
   v18.width = width;
   v18.height = height;
   v12 = NSStringFromCGSize(v18);
-  v13 = [v10 stringWithFormat:@"%@%@%ld%f", v11, v12, a5, *&a6];
+  v13 = [v10 stringWithFormat:@"%@%@%ld%f", keyCopy, v12, style, *&scale];
 
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v13, "hash")}];
-  v15 = [v14 stringValue];
+  stringValue = [v14 stringValue];
 
-  return v15;
+  return stringValue;
 }
 
 - (void)_createThumbnailDirectoryIfNeeded
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v3 = +[PXPlacesThumbnailManager _thumbnailFilePath];
   v6 = 0;
-  v4 = [v2 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v6];
+  v4 = [defaultManager createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v6];
   v5 = v6;
   if ((v4 & 1) == 0)
   {
@@ -209,23 +209,23 @@ void __52__PXPlacesThumbnailManager__setMetadataDate_forKey___block_invoke(uint6
   }
 }
 
-- (void)_setInMemoryAndPersistToDiskThumbnail:(id)a3 forHashString:(id)a4
+- (void)_setInMemoryAndPersistToDiskThumbnail:(id)thumbnail forHashString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  [(PXPlacesThumbnailManager *)self _setInMemoryThumbnail:v6 forHashString:v7];
+  thumbnailCopy = thumbnail;
+  stringCopy = string;
+  [(PXPlacesThumbnailManager *)self _setInMemoryThumbnail:thumbnailCopy forHashString:stringCopy];
   objc_initWeak(&location, self);
-  v8 = [(PXPlacesThumbnailManager *)self metadataQueue];
+  metadataQueue = [(PXPlacesThumbnailManager *)self metadataQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __80__PXPlacesThumbnailManager__setInMemoryAndPersistToDiskThumbnail_forHashString___block_invoke;
   v11[3] = &unk_1E774B708;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = thumbnailCopy;
+  v13 = stringCopy;
+  v9 = stringCopy;
+  v10 = thumbnailCopy;
+  dispatch_async(metadataQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -283,41 +283,41 @@ void __80__PXPlacesThumbnailManager__setInMemoryAndPersistToDiskThumbnail_forHas
   }
 }
 
-- (void)_setInMemoryThumbnail:(id)a3 forHashString:(id)a4
+- (void)_setInMemoryThumbnail:(id)thumbnail forHashString:(id)string
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10[0] = a3;
+  stringCopy = string;
+  v10[0] = thumbnail;
   v6 = MEMORY[0x1E695DF20];
-  v7 = a4;
-  v8 = a3;
-  [v6 dictionaryWithObjects:v10 forKeys:&v9 count:1];
+  stringCopy2 = string;
+  thumbnailCopy = thumbnail;
+  [v6 dictionaryWithObjects:v10 forKeys:&stringCopy count:1];
   objc_claimAutoreleasedReturnValue();
   [(PXPlacesThumbnailManager *)self cache];
   objc_claimAutoreleasedReturnValue();
-  [v8 px_pixelSize];
+  [thumbnailCopy px_pixelSize];
   PXSizeGetArea();
 }
 
-- (void)_fetchDiskOrMemoryPlacesThumbnailForHashString:(id)a3 synchronous:(BOOL)a4 completion:(id)a5
+- (void)_fetchDiskOrMemoryPlacesThumbnailForHashString:(id)string synchronous:(BOOL)synchronous completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PXPlacesThumbnailManager *)self cache];
-  v11 = [v10 objectForKey:v8];
+  synchronousCopy = synchronous;
+  stringCopy = string;
+  completionCopy = completion;
+  cache = [(PXPlacesThumbnailManager *)self cache];
+  v11 = [cache objectForKey:stringCopy];
 
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__21025;
   v26 = __Block_byref_object_dispose__21026;
-  v27 = [v11 objectForKey:v8];
+  v27 = [v11 objectForKey:stringCopy];
   if (v23[5])
   {
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -328,12 +328,12 @@ void __80__PXPlacesThumbnailManager__setInMemoryAndPersistToDiskThumbnail_forHas
     aBlock[2] = __98__PXPlacesThumbnailManager__fetchDiskOrMemoryPlacesThumbnailForHashString_synchronous_completion___block_invoke;
     aBlock[3] = &unk_1E7742618;
     v21 = &v22;
-    v18 = v8;
-    v19 = self;
-    v20 = v9;
+    v18 = stringCopy;
+    selfCopy = self;
+    v20 = completionCopy;
     v12 = _Block_copy(aBlock);
     v13 = v12;
-    if (v6)
+    if (synchronousCopy)
     {
       (*(v12 + 2))(v12);
     }
@@ -394,18 +394,18 @@ void __98__PXPlacesThumbnailManager__fetchDiskOrMemoryPlacesThumbnailForHashStri
   }
 }
 
-- (id)fetchPlacesThumbnailForBoundingRegion:(id *)a3 size:(CGSize)a4 interfaceStyle:(int64_t)a5
+- (id)fetchPlacesThumbnailForBoundingRegion:(id *)region size:(CGSize)size interfaceStyle:(int64_t)style
 {
   v10 = v8;
   v11 = v7;
   v12 = v6;
   v13 = v5;
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXPlacesThumbnailManager.m" lineNumber:82 description:@"This should not be called on main"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesThumbnailManager.m" lineNumber:82 description:@"This should not be called on main"];
   }
 
   if (fabs(height) > 180.0 || fabs(width) > 90.0 || v13 < 0.0 || v13 > 180.0 || v12 < 0.0 || v12 > 360.0)
@@ -413,7 +413,7 @@ void __98__PXPlacesThumbnailManager__fetchDiskOrMemoryPlacesThumbnailForHashStri
     PXAssertGetLog();
   }
 
-  v18 = [objc_opt_class() _hashStringForBoundingRegion:a3 size:width interfaceStyle:{height, v13, v12, v11, v10}];
+  v18 = [objc_opt_class() _hashStringForBoundingRegion:region size:width interfaceStyle:{height, v13, v12, v11, v10}];
   *buf = 0;
   v24 = buf;
   v25 = 0x3032000000;
@@ -432,29 +432,29 @@ void __98__PXPlacesThumbnailManager__fetchDiskOrMemoryPlacesThumbnailForHashStri
   return v19;
 }
 
-- (void)cachePlacesThumbnailForBoundingRegion:(id *)a3 size:(CGSize)a4 snapshot:(id)a5 interfaceStyle:(int64_t)a6
+- (void)cachePlacesThumbnailForBoundingRegion:(id *)region size:(CGSize)size snapshot:(id)snapshot interfaceStyle:(int64_t)style
 {
   v11 = v9;
   v12 = v8;
   v13 = v7;
   v14 = v6;
-  height = a4.height;
-  width = a4.width;
-  v18 = a3;
+  height = size.height;
+  width = size.width;
+  regionCopy = region;
   if (fabs(height) > 180.0 || fabs(width) > 90.0 || v14 < 0.0 || v14 > 180.0 || v13 < 0.0 || v13 > 360.0)
   {
     PXAssertGetLog();
   }
 
-  v19 = [objc_opt_class() _hashStringForBoundingRegion:a5 size:width interfaceStyle:{height, v14, v13, v12, v11}];
-  [(PXPlacesThumbnailManager *)self _setInMemoryAndPersistToDiskThumbnail:v18 forHashString:v19];
+  v19 = [objc_opt_class() _hashStringForBoundingRegion:snapshot size:width interfaceStyle:{height, v14, v13, v12, v11}];
+  [(PXPlacesThumbnailManager *)self _setInMemoryAndPersistToDiskThumbnail:regionCopy forHashString:v19];
 }
 
 - (NSMutableDictionary)metadataPlist
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_metadataPlist)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_metadataPlist)
   {
     v3 = +[PXPlacesThumbnailManager _filePathForMetadataPlist];
     v4 = [MEMORY[0x1E695DF90] dictionaryWithContentsOfFile:v3];
@@ -469,13 +469,13 @@ void __98__PXPlacesThumbnailManager__fetchDiskOrMemoryPlacesThumbnailForHashStri
       v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    metadataPlist = v2->_metadataPlist;
-    v2->_metadataPlist = v6;
+    metadataPlist = selfCopy->_metadataPlist;
+    selfCopy->_metadataPlist = v6;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v8 = v2->_metadataPlist;
+  v8 = selfCopy->_metadataPlist;
 
   return v8;
 }
@@ -500,39 +500,39 @@ void __98__PXPlacesThumbnailManager__fetchDiskOrMemoryPlacesThumbnailForHashStri
   return v2;
 }
 
-+ (id)_hashStringForBoundingRegion:(id *)a3 size:(CGSize)a4 interfaceStyle:(int64_t)a5
++ (id)_hashStringForBoundingRegion:(id *)region size:(CGSize)size interfaceStyle:(int64_t)style
 {
   v8 = v6;
   v9 = v5;
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [a1 _descriptionForBoundingRegion:{a3, a5, a4.width, a4.height}];
+  v11 = [self _descriptionForBoundingRegion:{region, style, size.width, size.height}];
   v18.width = v9;
   v18.height = v8;
   v12 = NSStringFromCGSize(v18);
-  v13 = [v10 stringWithFormat:@"%@_%@_%ld", v11, v12, a3];
+  region = [v10 stringWithFormat:@"%@_%@_%ld", v11, v12, region];
 
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v13, "hash")}];
-  v15 = [v14 stringValue];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(region, "hash")}];
+  stringValue = [v14 stringValue];
 
-  return v15;
+  return stringValue;
 }
 
-+ (id)hashStringForBoundingRegion:(id *)a3 size:(CGSize)a4 interfaceStyle:(int64_t)a5 displayScale:(double)a6
++ (id)hashStringForBoundingRegion:(id *)region size:(CGSize)size interfaceStyle:(int64_t)style displayScale:(double)scale
 {
   v9 = v8;
   v11 = v7;
   v12 = v6;
   v13 = MEMORY[0x1E696AEC0];
-  v14 = [a1 _descriptionForBoundingRegion:{a3, a5, a4.width, a4.height, a6}];
+  v14 = [self _descriptionForBoundingRegion:{region, style, size.width, size.height, scale}];
   v21.width = v12;
   v21.height = v11;
   v15 = NSStringFromCGSize(v21);
-  v16 = [v13 stringWithFormat:@"%@_%@_%ld_%f", v14, v15, a3, v9];
+  v16 = [v13 stringWithFormat:@"%@_%@_%ld_%f", v14, v15, region, v9];
 
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v16, "hash")}];
-  v18 = [v17 stringValue];
+  stringValue = [v17 stringValue];
 
-  return v18;
+  return stringValue;
 }
 
 + (id)_filePathForMetadataPlist
@@ -543,11 +543,11 @@ void __98__PXPlacesThumbnailManager__fetchDiskOrMemoryPlacesThumbnailForHashStri
   return v3;
 }
 
-+ (id)_filePathForHash:(id)a3
++ (id)_filePathForHash:(id)hash
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.jpg", a3];
-  v5 = [a1 _thumbnailFilePath];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.jpg", hash];
+  _thumbnailFilePath = [self _thumbnailFilePath];
+  v6 = [_thumbnailFilePath stringByAppendingPathComponent:v4];
 
   return v6;
 }

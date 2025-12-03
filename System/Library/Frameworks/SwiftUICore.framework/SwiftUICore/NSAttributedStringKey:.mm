@@ -8,7 +8,7 @@
 
 - (uint64_t)Any
 {
-  v8 = *(a1 + 32);
+  v8 = *(self + 32);
   type metadata accessor for NSAttributedStringKey(0);
   lazy protocol witness table accessor for type NSAttributedStringKey and conformance NSAttributedStringKey();
   v9 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
@@ -33,7 +33,7 @@
 - (Class)Any
 {
   v4 = a2;
-  v5 = *(a1 + 32);
+  v5 = *(self + 32);
   if (a2)
   {
     type metadata accessor for NSAttributedStringKey(0);

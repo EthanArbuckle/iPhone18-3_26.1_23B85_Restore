@@ -1,5 +1,5 @@
 @interface IDSDeviceConnectionDurationEventMetric
-- (IDSDeviceConnectionDurationEventMetric)initWithService:(id)a3 wasSuccessful:(BOOL)a4 clientInitTime:(id)a5 clientOpenSocketCompletionTime:(id)a6 daemonOpenSocketTime:(id)a7 daemonOpenSocketCompletionTime:(id)a8 firstPacketReceiveTime:(id)a9 connectionInitTime:(id)a10;
+- (IDSDeviceConnectionDurationEventMetric)initWithService:(id)service wasSuccessful:(BOOL)successful clientInitTime:(id)time clientOpenSocketCompletionTime:(id)completionTime daemonOpenSocketTime:(id)socketTime daemonOpenSocketCompletionTime:(id)socketCompletionTime firstPacketReceiveTime:(id)receiveTime connectionInitTime:(id)self0;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -12,29 +12,29 @@
   return v2;
 }
 
-- (IDSDeviceConnectionDurationEventMetric)initWithService:(id)a3 wasSuccessful:(BOOL)a4 clientInitTime:(id)a5 clientOpenSocketCompletionTime:(id)a6 daemonOpenSocketTime:(id)a7 daemonOpenSocketCompletionTime:(id)a8 firstPacketReceiveTime:(id)a9 connectionInitTime:(id)a10
+- (IDSDeviceConnectionDurationEventMetric)initWithService:(id)service wasSuccessful:(BOOL)successful clientInitTime:(id)time clientOpenSocketCompletionTime:(id)completionTime daemonOpenSocketTime:(id)socketTime daemonOpenSocketCompletionTime:(id)socketCompletionTime firstPacketReceiveTime:(id)receiveTime connectionInitTime:(id)self0
 {
-  v26 = a3;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v16 = a9;
-  v17 = a10;
+  serviceCopy = service;
+  timeCopy = time;
+  completionTimeCopy = completionTime;
+  socketTimeCopy = socketTime;
+  socketCompletionTimeCopy = socketCompletionTime;
+  receiveTimeCopy = receiveTime;
+  initTimeCopy = initTime;
   v27.receiver = self;
   v27.super_class = IDSDeviceConnectionDurationEventMetric;
   v18 = [(IDSDeviceConnectionDurationEventMetric *)&v27 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_serviceName, a3);
-    v19->_wasSuccessful = a4;
-    objc_storeStrong(&v19->_clientInitTime, a5);
-    objc_storeStrong(&v19->_clientOpenSocketCompletionTime, a6);
-    objc_storeStrong(&v19->_daemonOpenSocketTime, a7);
-    objc_storeStrong(&v19->_daemonOpenSocketCompletionTime, a8);
-    objc_storeStrong(&v19->_firstPacketReceiveTime, a9);
-    objc_storeStrong(&v19->_connectionInitTime, a10);
+    objc_storeStrong(&v18->_serviceName, service);
+    v19->_wasSuccessful = successful;
+    objc_storeStrong(&v19->_clientInitTime, time);
+    objc_storeStrong(&v19->_clientOpenSocketCompletionTime, completionTime);
+    objc_storeStrong(&v19->_daemonOpenSocketTime, socketTime);
+    objc_storeStrong(&v19->_daemonOpenSocketCompletionTime, socketCompletionTime);
+    objc_storeStrong(&v19->_firstPacketReceiveTime, receiveTime);
+    objc_storeStrong(&v19->_connectionInitTime, initTime);
   }
 
   return v19;

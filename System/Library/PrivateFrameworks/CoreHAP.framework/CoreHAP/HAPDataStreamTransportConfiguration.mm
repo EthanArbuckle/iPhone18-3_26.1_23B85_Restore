@@ -1,12 +1,12 @@
 @interface HAPDataStreamTransportConfiguration
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPDataStreamTransportConfiguration)init;
-- (HAPDataStreamTransportConfiguration)initWithTransport:(id)a3 maximumControllerTransportMTU:(id)a4;
+- (HAPDataStreamTransportConfiguration)initWithTransport:(id)transport maximumControllerTransportMTU:(id)u;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPDataStreamTransportConfiguration
@@ -14,17 +14,17 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPDataStreamTransportConfiguration *)self transport];
-  v5 = [(HAPDataStreamTransportConfiguration *)self maximumControllerTransportMTU];
-  v6 = [v3 stringWithFormat:@"<HAPDataStreamTransportConfiguration transport=%@, maximumControllerTransportMTU=%@>", v4, v5];
+  transport = [(HAPDataStreamTransportConfiguration *)self transport];
+  maximumControllerTransportMTU = [(HAPDataStreamTransportConfiguration *)self maximumControllerTransportMTU];
+  v6 = [v3 stringWithFormat:@"<HAPDataStreamTransportConfiguration transport=%@, maximumControllerTransportMTU=%@>", transport, maximumControllerTransportMTU];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -34,14 +34,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPDataStreamTransportConfiguration *)self transport];
-      v8 = [(HAPDataStreamTransportConfiguration *)v6 transport];
-      if (v7 != v8)
+      v6 = equalCopy;
+      transport = [(HAPDataStreamTransportConfiguration *)self transport];
+      transport2 = [(HAPDataStreamTransportConfiguration *)v6 transport];
+      if (transport != transport2)
       {
-        v9 = [(HAPDataStreamTransportConfiguration *)self transport];
-        v3 = [(HAPDataStreamTransportConfiguration *)v6 transport];
-        if (![v9 isEqual:v3])
+        transport3 = [(HAPDataStreamTransportConfiguration *)self transport];
+        transport4 = [(HAPDataStreamTransportConfiguration *)v6 transport];
+        if (![transport3 isEqual:transport4])
         {
           v10 = 0;
 LABEL_13:
@@ -50,25 +50,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = transport3;
       }
 
-      v11 = [(HAPDataStreamTransportConfiguration *)self maximumControllerTransportMTU];
-      v12 = [(HAPDataStreamTransportConfiguration *)v6 maximumControllerTransportMTU];
-      if (v11 == v12)
+      maximumControllerTransportMTU = [(HAPDataStreamTransportConfiguration *)self maximumControllerTransportMTU];
+      maximumControllerTransportMTU2 = [(HAPDataStreamTransportConfiguration *)v6 maximumControllerTransportMTU];
+      if (maximumControllerTransportMTU == maximumControllerTransportMTU2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HAPDataStreamTransportConfiguration *)self maximumControllerTransportMTU];
-        v14 = [(HAPDataStreamTransportConfiguration *)v6 maximumControllerTransportMTU];
-        v10 = [v13 isEqual:v14];
+        maximumControllerTransportMTU3 = [(HAPDataStreamTransportConfiguration *)self maximumControllerTransportMTU];
+        maximumControllerTransportMTU4 = [(HAPDataStreamTransportConfiguration *)v6 maximumControllerTransportMTU];
+        v10 = [maximumControllerTransportMTU3 isEqual:maximumControllerTransportMTU4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      transport3 = v16;
+      if (transport == transport2)
       {
         goto LABEL_14;
       }
@@ -84,17 +84,17 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPDataStreamTransportConfiguration allocWithZone:a3];
-  v5 = [(HAPDataStreamTransportConfiguration *)self transport];
-  v6 = [(HAPDataStreamTransportConfiguration *)self maximumControllerTransportMTU];
-  v7 = [(HAPDataStreamTransportConfiguration *)v4 initWithTransport:v5 maximumControllerTransportMTU:v6];
+  v4 = [HAPDataStreamTransportConfiguration allocWithZone:zone];
+  transport = [(HAPDataStreamTransportConfiguration *)self transport];
+  maximumControllerTransportMTU = [(HAPDataStreamTransportConfiguration *)self maximumControllerTransportMTU];
+  v7 = [(HAPDataStreamTransportConfiguration *)v4 initWithTransport:transport maximumControllerTransportMTU:maximumControllerTransportMTU];
 
   return v7;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
   v37 = 0u;
@@ -119,13 +119,13 @@ LABEL_15:
   v20 = 0u;
   v18 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPDataStreamTransportConfiguration *)self transport];
+  transport = [(HAPDataStreamTransportConfiguration *)self transport];
 
-  if (v5)
+  if (transport)
   {
-    v6 = [(HAPDataStreamTransportConfiguration *)self transport];
+    transport2 = [(HAPDataStreamTransportConfiguration *)self transport];
     v17 = 0;
-    v7 = [v6 serializeWithError:&v17];
+    v7 = [transport2 serializeWithError:&v17];
     v8 = v17;
 
     if (v8)
@@ -140,11 +140,11 @@ LABEL_15:
     if (v9)
     {
 LABEL_9:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus(v9);
         v8 = 0;
-        *a3 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_14;
       }
 
@@ -153,9 +153,9 @@ LABEL_9:
     }
   }
 
-  v10 = [(HAPDataStreamTransportConfiguration *)self maximumControllerTransportMTU];
+  maximumControllerTransportMTU = [(HAPDataStreamTransportConfiguration *)self maximumControllerTransportMTU];
 
-  if (!v10)
+  if (!maximumControllerTransportMTU)
   {
 LABEL_11:
     v13 = [MEMORY[0x277CBEA90] dataWithBytes:v18 length:?];
@@ -163,9 +163,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v11 = [(HAPDataStreamTransportConfiguration *)self maximumControllerTransportMTU];
+  maximumControllerTransportMTU2 = [(HAPDataStreamTransportConfiguration *)self maximumControllerTransportMTU];
   v16 = 0;
-  v7 = [v11 serializeWithError:&v16];
+  v7 = [maximumControllerTransportMTU2 serializeWithError:&v16];
   v8 = v16;
 
   if (!v8)
@@ -184,11 +184,11 @@ LABEL_11:
 
 LABEL_6:
 
-  if (a3)
+  if (error)
   {
     v12 = v8;
     v13 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_14;
   }
 
@@ -202,11 +202,11 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v9 = 0;
@@ -219,11 +219,11 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  v22 = a4;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  v12 = v7 + v8;
+  v12 = bytes + v8;
   while (1)
   {
     v28 = 0;
@@ -233,10 +233,10 @@ LABEL_14:
     Next = TLV8GetNext();
     if (Next)
     {
-      if (v22)
+      if (errorCopy)
       {
         HMErrorFromOSStatus(Next);
-        *v22 = v18 = 0;
+        *errorCopy = v18 = 0;
         goto LABEL_21;
       }
 
@@ -291,11 +291,11 @@ LABEL_9:
   }
 
 LABEL_18:
-  if (v22)
+  if (errorCopy)
   {
     v20 = v11;
     v18 = 0;
-    *v22 = v11;
+    *errorCopy = v11;
     goto LABEL_21;
   }
 
@@ -306,18 +306,18 @@ LABEL_21:
   return v18;
 }
 
-- (HAPDataStreamTransportConfiguration)initWithTransport:(id)a3 maximumControllerTransportMTU:(id)a4
+- (HAPDataStreamTransportConfiguration)initWithTransport:(id)transport maximumControllerTransportMTU:(id)u
 {
-  v7 = a3;
-  v8 = a4;
+  transportCopy = transport;
+  uCopy = u;
   v12.receiver = self;
   v12.super_class = HAPDataStreamTransportConfiguration;
   v9 = [(HAPDataStreamTransportConfiguration *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_transport, a3);
-    objc_storeStrong(&v10->_maximumControllerTransportMTU, a4);
+    objc_storeStrong(&v9->_transport, transport);
+    objc_storeStrong(&v10->_maximumControllerTransportMTU, u);
   }
 
   return v10;
@@ -330,24 +330,24 @@ LABEL_21:
   return [(HAPDataStreamTransportConfiguration *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPDataStreamTransportConfiguration);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPDataStreamTransportConfiguration *)v6 parseFromData:v5 error:&v11];
+    [(HAPDataStreamTransportConfiguration *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

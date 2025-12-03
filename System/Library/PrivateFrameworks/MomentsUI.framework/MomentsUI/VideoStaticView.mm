@@ -1,6 +1,6 @@
 @interface VideoStaticView
 - (_TtC9MomentsUI15VideoStaticView)init;
-- (_TtC9MomentsUI15VideoStaticView)initWithFrame:(CGRect)a3;
+- (_TtC9MomentsUI15VideoStaticView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation VideoStaticView
@@ -13,12 +13,12 @@
   return v2;
 }
 
-- (_TtC9MomentsUI15VideoStaticView)initWithFrame:(CGRect)a3
+- (_TtC9MomentsUI15VideoStaticView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC9MomentsUI15VideoStaticView_staticImageView;
   v9 = [objc_allocWithZone(MEMORY[0x277D755E8]) init];
   [v9 setContentMode_];

@@ -1,13 +1,13 @@
 @interface AppleAccountSettingsModel
-- (id)accountsForAccountManager:(id)a3;
+- (id)accountsForAccountManager:(id)manager;
 @end
 
 @implementation AppleAccountSettingsModel
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
+  managerCopy = manager;
+  selfCopy = self;
   _s19AppleAccountIntents0aB13SettingsModelC8accounts3forSDySo15AIDAServiceTypeaSo9ACAccountCGSo18AIDAAccountManagerC_tF_0();
 
   type metadata accessor for AIDAServiceType(0);

@@ -1,29 +1,29 @@
 @interface _CSCompressionEngine
-+ (id)processDataWithFunction:(int64_t)a3 algorithm:(int64_t)a4 content:(id)a5 progressBlock:(id)a6;
++ (id)processDataWithFunction:(int64_t)function algorithm:(int64_t)algorithm content:(id)content progressBlock:(id)block;
 - (BOOL)_initializeStream;
-- (BOOL)_processIncomingData:(const void *)a3 length:(unint64_t)a4 flags:(int)a5;
-- (_CSCompressionEngine)initWithFunction:(int64_t)a3 algorithm:(int64_t)a4 destination:(id)a5;
+- (BOOL)_processIncomingData:(const void *)data length:(unint64_t)length flags:(int)flags;
+- (_CSCompressionEngine)initWithFunction:(int64_t)function algorithm:(int64_t)algorithm destination:(id)destination;
 - (_CSStreamingDestination)destination;
 - (unint64_t)_deliverDestinationContent;
-- (void)_decodeEngineFunction:(int64_t)a3 algorithm:(int64_t)a4;
-- (void)_gatherReadSinkContent:(id)a3;
+- (void)_decodeEngineFunction:(int64_t)function algorithm:(int64_t)algorithm;
+- (void)_gatherReadSinkContent:(id)content;
 - (void)dealloc;
 - (void)sourceContentFinished;
-- (void)writeSourceContent:(id)a3;
+- (void)writeSourceContent:(id)content;
 @end
 
 @implementation _CSCompressionEngine
 
-+ (id)processDataWithFunction:(int64_t)a3 algorithm:(int64_t)a4 content:(id)a5 progressBlock:(id)a6
++ (id)processDataWithFunction:(int64_t)function algorithm:(int64_t)algorithm content:(id)content progressBlock:(id)block
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [[_CSCompressionEngine alloc] initWithFunction:a3 algorithm:a4 destination:0];
-  v12 = [v9 length];
-  v13 = [v9 bytes];
+  contentCopy = content;
+  blockCopy = block;
+  v11 = [[_CSCompressionEngine alloc] initWithFunction:function algorithm:algorithm destination:0];
+  v12 = [contentCopy length];
+  bytes = [contentCopy bytes];
   if (v12)
   {
-    v14 = v13;
+    v14 = bytes;
     v15 = 0;
     while (1)
     {
@@ -34,9 +34,9 @@
       }
 
       v15 += v16;
-      if (v10)
+      if (blockCopy)
       {
-        v10[2](v10, v15);
+        blockCopy[2](blockCopy, v15);
       }
 
       if (v15 >= v12)
@@ -45,22 +45,22 @@
       }
     }
 
-    v17 = 0;
+    sinkContent = 0;
   }
 
   else
   {
 LABEL_10:
     [(_CSCompressionEngine *)v11 sourceContentFinished];
-    v17 = [(_CSCompressionEngine *)v11 sinkContent];
+    sinkContent = [(_CSCompressionEngine *)v11 sinkContent];
   }
 
-  return v17;
+  return sinkContent;
 }
 
-- (_CSCompressionEngine)initWithFunction:(int64_t)a3 algorithm:(int64_t)a4 destination:(id)a5
+- (_CSCompressionEngine)initWithFunction:(int64_t)function algorithm:(int64_t)algorithm destination:(id)destination
 {
-  v8 = a5;
+  destinationCopy = destination;
   v15.receiver = self;
   v15.super_class = _CSCompressionEngine;
   v9 = [(_CSCompressionEngine *)&v15 init];
@@ -70,8 +70,8 @@ LABEL_10:
     sinkContent = v9->_sinkContent;
     v9->_sinkContent = 0;
 
-    [(_CSCompressionEngine *)v10 _decodeEngineFunction:a3 algorithm:a4];
-    objc_storeWeak(&v10->_destination, v8);
+    [(_CSCompressionEngine *)v10 _decodeEngineFunction:function algorithm:algorithm];
+    objc_storeWeak(&v10->_destination, destinationCopy);
     v12 = [[NSMutableData alloc] initWithLength:0x10000];
     destinationBuffer = v10->_destinationBuffer;
     v10->_destinationBuffer = v12;
@@ -86,14 +86,14 @@ LABEL_10:
   return v10;
 }
 
-- (void)writeSourceContent:(id)a3
+- (void)writeSourceContent:(id)content
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  contentCopy = content;
+  contentCopy2 = content;
+  bytes = [contentCopy2 bytes];
+  v8 = [contentCopy2 length];
 
-  [(_CSCompressionEngine *)self _processIncomingData:v7 length:v8 flags:0];
+  [(_CSCompressionEngine *)self _processIncomingData:bytes length:v8 flags:0];
 }
 
 - (void)sourceContentFinished
@@ -118,11 +118,11 @@ LABEL_10:
   [(_CSCompressionEngine *)&v3 dealloc];
 }
 
-- (void)_decodeEngineFunction:(int64_t)a3 algorithm:(int64_t)a4
+- (void)_decodeEngineFunction:(int64_t)function algorithm:(int64_t)algorithm
 {
-  if (a3)
+  if (function)
   {
-    if (a3 != 1)
+    if (function != 1)
     {
       goto LABEL_6;
     }
@@ -137,28 +137,28 @@ LABEL_10:
 
   self->_operation = v4;
 LABEL_6:
-  if (a4 <= 3)
+  if (algorithm <= 3)
   {
-    self->_algorithm = dword_10037D170[a4];
+    self->_algorithm = dword_10037D170[algorithm];
   }
 }
 
-- (void)_gatherReadSinkContent:(id)a3
+- (void)_gatherReadSinkContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   sinkContent = self->_sinkContent;
-  v8 = v4;
+  v8 = contentCopy;
   if (!sinkContent)
   {
     v6 = [[NSMutableData alloc] initWithCapacity:0x10000];
     v7 = self->_sinkContent;
     self->_sinkContent = v6;
 
-    v4 = v8;
+    contentCopy = v8;
     sinkContent = self->_sinkContent;
   }
 
-  [(NSMutableData *)sinkContent appendData:v4];
+  [(NSMutableData *)sinkContent appendData:contentCopy];
 }
 
 - (unint64_t)_deliverDestinationContent
@@ -207,14 +207,14 @@ LABEL_6:
   return compression_stream_init(v5, self->_operation, self->_algorithm) == COMPRESSION_STATUS_OK;
 }
 
-- (BOOL)_processIncomingData:(const void *)a3 length:(unint64_t)a4 flags:(int)a5
+- (BOOL)_processIncomingData:(const void *)data length:(unint64_t)length flags:(int)flags
 {
   self->_stream->var0 = [(NSMutableData *)self->_destinationBuffer mutableBytes];
   stream = self->_stream;
   stream->var1 = 0x10000;
-  stream->var2 = a3;
-  self->_stream->var3 = a4;
-  if (!a4 && (a5 & 1) == 0)
+  stream->var2 = data;
+  self->_stream->var3 = length;
+  if (!length && (flags & 1) == 0)
   {
     return 1;
   }
@@ -223,7 +223,7 @@ LABEL_6:
   {
     while (1)
     {
-      v12 = compression_stream_process(self->_stream, a5);
+      v12 = compression_stream_process(self->_stream, flags);
       WeakRetained = objc_loadWeakRetained(&self->_destination);
       v14 = WeakRetained;
       if (v12)

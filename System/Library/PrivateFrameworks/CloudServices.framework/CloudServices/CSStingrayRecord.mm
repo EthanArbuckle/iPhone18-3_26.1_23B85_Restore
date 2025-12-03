@@ -1,37 +1,37 @@
 @interface CSStingrayRecord
-+ (id)parseFromAccountInfoPlist:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)parseFromAccountInfoPlist:(id)plist error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)expandMetadataHash:(id *)a3;
+- (id)expandMetadataHash:(id *)hash;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTriggerUpdate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTriggerUpdate:(BOOL)update;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSStingrayRecord
 
-+ (id)parseFromAccountInfoPlist:(id)a3 error:(id *)a4
++ (id)parseFromAccountInfoPlist:(id)plist error:(id *)error
 {
   v191 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v7 = objc_msgSend_objectForKeyedSubscript_(v5, v6, @"label");
+  plistCopy = plist;
+  v7 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v6, @"label");
   isEqualToString = objc_msgSend_isEqualToString_(@"com.apple.protectedcloudstorage.record", v8, v7);
   if (objc_msgSend_isEqualToString_(@"com.apple.protectedcloudstorage.guitarfish.record", v10, v7) & 1) != 0 || (isEqualToString)
   {
     v186 = v7;
-    v13 = objc_msgSend_objectForKeyedSubscript_(v5, v11, @"metadata");
+    v13 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v11, @"metadata");
     v15 = objc_msgSend_objectForKeyedSubscript_(v13, v14, @"ClientMetadata");
     v16 = objc_alloc_init(CSStingrayRecord);
     v17 = objc_alloc_init(CSStingrayRecordClientMetadata);
     objc_msgSend_setClientMetadata_(v16, v18, v17);
 
-    v19 = sub_22E9DFEA8(v5, @"SecureBackupTriggerUpdate");
+    v19 = sub_22E9DFEA8(plistCopy, @"SecureBackupTriggerUpdate");
     objc_msgSend_setTriggerUpdate_(v16, v20, v19);
-    v22 = objc_msgSend_objectForKeyedSubscript_(v5, v21, @"recordStatus");
+    v22 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v21, @"recordStatus");
     v24 = objc_msgSend_isEqualToString_(v22, v23, @"valid");
     objc_msgSend_setContainsiCloudIdentity_(v16, v25, v24);
 
@@ -45,7 +45,7 @@
     if (v13)
     {
       v34 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v36 = objc_msgSend_objectForKeyedSubscript_(v5, v35, @"encodedMetadata");
+      v36 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v35, @"encodedMetadata");
       objc_msgSend_setObject_forKeyedSubscript_(v34, v37, v36, @"encodedMetadata");
 
       v39 = objc_msgSend_objectForKeyedSubscript_(v13, v38, @"BackupKeybagSHA256");
@@ -60,7 +60,7 @@
       v48 = objc_msgSend_objectForKeyedSubscript_(v13, v47, @"com.apple.securebackup.timestamp");
       objc_msgSend_setObject_forKeyedSubscript_(v34, v49, v48, @"com.apple.securebackup.timestamp");
 
-      v51 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x277CCAAB0], v50, v34, 1, a4);
+      v51 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x277CCAAB0], v50, v34, 1, error);
       if (!v51)
       {
         v183 = CloudServicesLog();
@@ -196,10 +196,10 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (a4)
+  if (error)
   {
     objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v11, @"SecureBackupErrorDomain", 24, 0);
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -214,19 +214,19 @@ LABEL_28:
   return v12;
 }
 
-- (id)expandMetadataHash:(id *)a3
+- (id)expandMetadataHash:(id *)hash
 {
   v5 = MEMORY[0x277CCAAC8];
   v6 = objc_opt_class();
   v9 = objc_msgSend_metadataHash(self, v7, v8);
-  v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v5, v10, v6, v9, a3);
+  v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v5, v10, v6, v9, hash);
 
   return v11;
 }
 
-- (void)setHasTriggerUpdate:(BOOL)a3
+- (void)setHasTriggerUpdate:(BOOL)update
 {
-  if (a3)
+  if (update)
   {
     v3 = 2;
   }
@@ -303,14 +303,14 @@ LABEL_28:
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_clientMetadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -318,7 +318,7 @@ LABEL_28:
   {
     triggerUpdate = self->_triggerUpdate;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -326,94 +326,94 @@ LABEL_28:
   {
     containsiCloudIdentity = self->_containsiCloudIdentity;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_backupKeybagDigest)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_metadataHash)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_timestamp)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_backupKeybagSHA256)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   clientMetadata = self->_clientMetadata;
-  v12 = v4;
+  v12 = toCopy;
   if (clientMetadata)
   {
-    objc_msgSend_setClientMetadata_(v4, v5, clientMetadata);
-    v4 = v12;
+    objc_msgSend_setClientMetadata_(toCopy, v5, clientMetadata);
+    toCopy = v12;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[49] = self->_triggerUpdate;
-    v4[52] |= 2u;
+    toCopy[49] = self->_triggerUpdate;
+    toCopy[52] |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[48] = self->_containsiCloudIdentity;
-    v4[52] |= 1u;
+    toCopy[48] = self->_containsiCloudIdentity;
+    toCopy[52] |= 1u;
   }
 
   backupKeybagDigest = self->_backupKeybagDigest;
   if (backupKeybagDigest)
   {
     objc_msgSend_setBackupKeybagDigest_(v12, v5, backupKeybagDigest);
-    v4 = v12;
+    toCopy = v12;
   }
 
   metadataHash = self->_metadataHash;
   if (metadataHash)
   {
     objc_msgSend_setMetadataHash_(v12, v5, metadataHash);
-    v4 = v12;
+    toCopy = v12;
   }
 
   timestamp = self->_timestamp;
   if (timestamp)
   {
     objc_msgSend_setTimestamp_(v12, v5, timestamp);
-    v4 = v12;
+    toCopy = v12;
   }
 
   backupKeybagSHA256 = self->_backupKeybagSHA256;
   if (backupKeybagSHA256)
   {
     objc_msgSend_setBackupKeybagSHA256_(v12, v5, backupKeybagSHA256);
-    v4 = v12;
+    toCopy = v12;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_clientMetadata, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_clientMetadata, v11, zone);
   v13 = *(v10 + 24);
   *(v10 + 24) = v12;
 
@@ -431,36 +431,36 @@ LABEL_28:
     *(v10 + 52) |= 1u;
   }
 
-  v16 = objc_msgSend_copyWithZone_(self->_backupKeybagDigest, v14, a3);
+  v16 = objc_msgSend_copyWithZone_(self->_backupKeybagDigest, v14, zone);
   v17 = *(v10 + 8);
   *(v10 + 8) = v16;
 
-  v19 = objc_msgSend_copyWithZone_(self->_metadataHash, v18, a3);
+  v19 = objc_msgSend_copyWithZone_(self->_metadataHash, v18, zone);
   v20 = *(v10 + 32);
   *(v10 + 32) = v19;
 
-  v22 = objc_msgSend_copyWithZone_(self->_timestamp, v21, a3);
+  v22 = objc_msgSend_copyWithZone_(self->_timestamp, v21, zone);
   v23 = *(v10 + 40);
   *(v10 + 40) = v22;
 
-  v25 = objc_msgSend_copyWithZone_(self->_backupKeybagSHA256, v24, a3);
+  v25 = objc_msgSend_copyWithZone_(self->_backupKeybagSHA256, v24, zone);
   v26 = *(v10 + 16);
   *(v10 + 16) = v25;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_25;
   }
 
   clientMetadata = self->_clientMetadata;
-  v9 = v4[3];
+  v9 = equalCopy[3];
   if (clientMetadata | v9)
   {
     if (!objc_msgSend_isEqual_(clientMetadata, v7, v9))
@@ -469,30 +469,30 @@ LABEL_28:
     }
   }
 
-  v10 = *(v4 + 52);
+  v10 = *(equalCopy + 52);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0)
+    if ((*(equalCopy + 52) & 2) == 0)
     {
       goto LABEL_25;
     }
 
-    v20 = *(v4 + 49);
+    v20 = *(equalCopy + 49);
     if (self->_triggerUpdate)
     {
-      if ((*(v4 + 49) & 1) == 0)
+      if ((*(equalCopy + 49) & 1) == 0)
       {
         goto LABEL_25;
       }
     }
 
-    else if (*(v4 + 49))
+    else if (*(equalCopy + 49))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_25;
   }
@@ -502,12 +502,12 @@ LABEL_28:
     goto LABEL_7;
   }
 
-  if ((*(v4 + 52) & 1) == 0)
+  if ((*(equalCopy + 52) & 1) == 0)
   {
     goto LABEL_25;
   }
 
-  v10 = *(v4 + 48);
+  v10 = *(equalCopy + 48);
   if (!self->_containsiCloudIdentity)
   {
 LABEL_7:
@@ -521,21 +521,21 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if ((v4[6] & 1) == 0)
+  if ((equalCopy[6] & 1) == 0)
   {
     goto LABEL_25;
   }
 
 LABEL_8:
   backupKeybagDigest = self->_backupKeybagDigest;
-  v12 = v4[1];
+  v12 = equalCopy[1];
   if (backupKeybagDigest | v12 && !objc_msgSend_isEqual_(backupKeybagDigest, v7, v12))
   {
     goto LABEL_25;
   }
 
   metadataHash = self->_metadataHash;
-  v14 = v4[4];
+  v14 = equalCopy[4];
   if (metadataHash | v14)
   {
     if (!objc_msgSend_isEqual_(metadataHash, v7, v14))
@@ -545,7 +545,7 @@ LABEL_8:
   }
 
   timestamp = self->_timestamp;
-  v16 = v4[5];
+  v16 = equalCopy[5];
   if (timestamp | v16)
   {
     if (!objc_msgSend_isEqual_(timestamp, v7, v16))
@@ -555,7 +555,7 @@ LABEL_8:
   }
 
   backupKeybagSHA256 = self->_backupKeybagSHA256;
-  v18 = v4[2];
+  v18 = equalCopy[2];
   if (backupKeybagSHA256 | v18)
   {
     isEqual = objc_msgSend_isEqual_(backupKeybagSHA256, v7, v18);
@@ -602,12 +602,12 @@ LABEL_6:
   return v9 ^ v15 ^ objc_msgSend_hash(self->_backupKeybagSHA256, v16, v17);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   clientMetadata = self->_clientMetadata;
-  v6 = *(v4 + 3);
-  v12 = v4;
+  v6 = *(fromCopy + 3);
+  v12 = fromCopy;
   if (clientMetadata)
   {
     if (!v6)
@@ -615,7 +615,7 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(clientMetadata, v4, v6);
+    objc_msgSend_mergeFrom_(clientMetadata, fromCopy, v6);
   }
 
   else
@@ -625,50 +625,50 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    objc_msgSend_setClientMetadata_(self, v4, v6);
+    objc_msgSend_setClientMetadata_(self, fromCopy, v6);
   }
 
-  v4 = v12;
+  fromCopy = v12;
 LABEL_7:
-  v7 = *(v4 + 52);
+  v7 = *(fromCopy + 52);
   if ((v7 & 2) != 0)
   {
-    self->_triggerUpdate = *(v4 + 49);
+    self->_triggerUpdate = *(fromCopy + 49);
     *&self->_has |= 2u;
-    v7 = *(v4 + 52);
+    v7 = *(fromCopy + 52);
   }
 
   if (v7)
   {
-    self->_containsiCloudIdentity = *(v4 + 48);
+    self->_containsiCloudIdentity = *(fromCopy + 48);
     *&self->_has |= 1u;
   }
 
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (v8)
   {
-    objc_msgSend_setBackupKeybagDigest_(self, v4, v8);
-    v4 = v12;
+    objc_msgSend_setBackupKeybagDigest_(self, fromCopy, v8);
+    fromCopy = v12;
   }
 
-  v9 = *(v4 + 4);
+  v9 = *(fromCopy + 4);
   if (v9)
   {
-    objc_msgSend_setMetadataHash_(self, v4, v9);
-    v4 = v12;
+    objc_msgSend_setMetadataHash_(self, fromCopy, v9);
+    fromCopy = v12;
   }
 
-  v10 = *(v4 + 5);
+  v10 = *(fromCopy + 5);
   if (v10)
   {
-    objc_msgSend_setTimestamp_(self, v4, v10);
-    v4 = v12;
+    objc_msgSend_setTimestamp_(self, fromCopy, v10);
+    fromCopy = v12;
   }
 
-  v11 = *(v4 + 2);
+  v11 = *(fromCopy + 2);
   if (v11)
   {
-    objc_msgSend_setBackupKeybagSHA256_(self, v4, v11);
+    objc_msgSend_setBackupKeybagSHA256_(self, fromCopy, v11);
   }
 
   MEMORY[0x2821F96F8]();

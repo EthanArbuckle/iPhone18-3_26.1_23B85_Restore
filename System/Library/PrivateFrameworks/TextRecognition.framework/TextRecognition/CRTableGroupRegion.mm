@@ -1,23 +1,23 @@
 @interface CRTableGroupRegion
-- (CRTableGroupRegion)initWithBoundingQuad:(id)a3 layoutDirection:(unint64_t)a4 cells:(id)a5 lineRegions:(id)a6 rowQuads:(id)a7 columnQuads:(id)a8;
+- (CRTableGroupRegion)initWithBoundingQuad:(id)quad layoutDirection:(unint64_t)direction cells:(id)cells lineRegions:(id)regions rowQuads:(id)quads columnQuads:(id)columnQuads;
 @end
 
 @implementation CRTableGroupRegion
 
-- (CRTableGroupRegion)initWithBoundingQuad:(id)a3 layoutDirection:(unint64_t)a4 cells:(id)a5 lineRegions:(id)a6 rowQuads:(id)a7 columnQuads:(id)a8
+- (CRTableGroupRegion)initWithBoundingQuad:(id)quad layoutDirection:(unint64_t)direction cells:(id)cells lineRegions:(id)regions rowQuads:(id)quads columnQuads:(id)columnQuads
 {
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  cellsCopy = cells;
+  quadsCopy = quads;
+  columnQuadsCopy = columnQuads;
   v21.receiver = self;
   v21.super_class = CRTableGroupRegion;
-  v18 = [(CRGroupRegion *)&v21 initWithBoundingQuad:a3 layoutDirection:a4 subregions:a6];
+  v18 = [(CRGroupRegion *)&v21 initWithBoundingQuad:quad layoutDirection:direction subregions:regions];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_rowQuads, a7);
-    objc_storeStrong(&v19->_columnQuads, a8);
-    objc_storeStrong(&v19->_cells, a5);
+    objc_storeStrong(&v18->_rowQuads, quads);
+    objc_storeStrong(&v19->_columnQuads, columnQuads);
+    objc_storeStrong(&v19->_cells, cells);
   }
 
   return v19;

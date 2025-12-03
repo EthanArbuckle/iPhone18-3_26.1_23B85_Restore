@@ -1,12 +1,12 @@
 @interface WLKAppLibraryCore
 + (id)sharedInstance;
-- (BOOL)containsAppOfInterest:(id)a3;
+- (BOOL)containsAppOfInterest:(id)interest;
 - (WLKAppLibraryCore)init;
 - (id)_connection;
 - (id)_nonConformingBundleList;
 - (id)_otherBundlesOfInterest;
-- (void)_fetchApplicationsInProcess:(id)a3;
-- (void)fetchApplications:(id)a3;
+- (void)_fetchApplicationsInProcess:(id)process;
+- (void)fetchApplications:(id)applications;
 @end
 
 @implementation WLKAppLibraryCore
@@ -90,9 +90,9 @@ uint64_t __35__WLKAppLibraryCore_sharedInstance__block_invoke()
   return v10;
 }
 
-- (void)fetchApplications:(id)a3
+- (void)fetchApplications:(id)applications
 {
-  v4 = a3;
+  applicationsCopy = applications;
   if ((WLKIsDaemon() & 1) != 0 || WLKIsRunningTest())
   {
     v5 = WLKStartupSignpostLogObject();
@@ -111,34 +111,34 @@ uint64_t __35__WLKAppLibraryCore_sharedInstance__block_invoke()
     v22[2] = __39__WLKAppLibraryCore_fetchApplications___block_invoke;
     v22[3] = &unk_279E5EED8;
     v9 = v23;
-    v23[0] = v4;
+    v23[0] = applicationsCopy;
     v23[1] = v6;
-    v10 = v4;
+    v10 = applicationsCopy;
     [(WLKAppLibraryCore *)self _fetchApplicationsInProcess:v22];
   }
 
   else
   {
-    v11 = [(WLKAppLibraryCore *)self _connection];
+    _connection = [(WLKAppLibraryCore *)self _connection];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __39__WLKAppLibraryCore_fetchApplications___block_invoke_5;
     v20[3] = &unk_279E5EB38;
     v9 = &v21;
-    v12 = v4;
+    v12 = applicationsCopy;
     v21 = v12;
-    v13 = [v11 remoteObjectProxyWithErrorHandler:v20];
+    v13 = [_connection remoteObjectProxyWithErrorHandler:v20];
 
-    v14 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     NSLog(&cfstr_Wlkapplibraryc_0.isa);
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __39__WLKAppLibraryCore_fetchApplications___block_invoke_2;
     v17[3] = &unk_279E5EF00;
-    v18 = v14;
+    v18 = date;
     v19 = v12;
     v15 = v12;
-    v16 = v14;
+    v16 = date;
     [v13 fetchApplications:v17];
   }
 }
@@ -186,15 +186,15 @@ void __39__WLKAppLibraryCore_fetchApplications___block_invoke_2(uint64_t a1, voi
   }
 }
 
-- (BOOL)containsAppOfInterest:(id)a3
+- (BOOL)containsAppOfInterest:(id)interest
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  interestCopy = interest;
+  v5 = [interestCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -205,15 +205,15 @@ LABEL_3:
     {
       if (*v18 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(interestCopy);
       }
 
       v9 = *(*(&v17 + 1) + 8 * v8);
       v10 = [v9 entitlementValueForKey:@"com.apple.smoot.subscriptionservice" ofClass:{objc_opt_class(), v17}];
 
-      v11 = [(WLKAppLibraryCore *)self _otherBundlesOfInterest];
-      v12 = [v9 bundleIdentifier];
-      v13 = [v11 containsObject:v12];
+      _otherBundlesOfInterest = [(WLKAppLibraryCore *)self _otherBundlesOfInterest];
+      bundleIdentifier = [v9 bundleIdentifier];
+      v13 = [_otherBundlesOfInterest containsObject:bundleIdentifier];
 
       v14 = 1;
       if (v10 || (v13 & 1) != 0)
@@ -223,7 +223,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v6 = [interestCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -291,17 +291,17 @@ void __44__WLKAppLibraryCore__otherBundlesOfInterest__block_invoke(uint64_t a1)
   _otherBundlesOfInterest___bundlesOfInterest = v4;
 }
 
-- (void)_fetchApplicationsInProcess:(id)a3
+- (void)_fetchApplicationsInProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__WLKAppLibraryCore__fetchApplicationsInProcess___block_invoke;
   v7[3] = &unk_279E5EFC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = processCopy;
+  v6 = processCopy;
   dispatch_async(queue, v7);
 }
 

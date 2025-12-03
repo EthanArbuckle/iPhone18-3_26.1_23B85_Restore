@@ -1,42 +1,42 @@
 @interface AEMinimalTemplate
-+ (AEMinimalTemplate)templateWithString:(id)a3 error:(id *)a4;
-+ (AEMinimalTemplate)templateWithURL:(id)a3 error:(id *)a4;
-+ (id)evaluateTemplateWithString:(id)a3 data:(id)a4 error:(id *)a5;
-+ (id)evaluateTemplateWithURL:(id)a3 data:(id)a4 error:(id *)a5;
-- (AEMinimalTemplate)initWithString:(id)a3 error:(id *)a4;
-- (AEMinimalTemplate)initWithURL:(id)a3 error:(id *)a4;
-- (BOOL)parseTemplate:(id)a3 error:(id *)a4;
-- (id)evaluateWithData:(id)a3 error:(id *)a4;
-- (id)evaluateWithData:(id)a3 templateSet:(id)a4 cycleContext:(id)a5 error:(id *)a6;
++ (AEMinimalTemplate)templateWithString:(id)string error:(id *)error;
++ (AEMinimalTemplate)templateWithURL:(id)l error:(id *)error;
++ (id)evaluateTemplateWithString:(id)string data:(id)data error:(id *)error;
++ (id)evaluateTemplateWithURL:(id)l data:(id)data error:(id *)error;
+- (AEMinimalTemplate)initWithString:(id)string error:(id *)error;
+- (AEMinimalTemplate)initWithURL:(id)l error:(id *)error;
+- (BOOL)parseTemplate:(id)template error:(id *)error;
+- (id)evaluateWithData:(id)data error:(id *)error;
+- (id)evaluateWithData:(id)data templateSet:(id)set cycleContext:(id)context error:(id *)error;
 @end
 
 @implementation AEMinimalTemplate
 
-+ (AEMinimalTemplate)templateWithString:(id)a3 error:(id *)a4
++ (AEMinimalTemplate)templateWithString:(id)string error:(id *)error
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithString:v6 error:a4];
+  stringCopy = string;
+  v7 = [[self alloc] initWithString:stringCopy error:error];
 
   return v7;
 }
 
-+ (AEMinimalTemplate)templateWithURL:(id)a3 error:(id *)a4
++ (AEMinimalTemplate)templateWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithURL:v6 error:a4];
+  lCopy = l;
+  v7 = [[self alloc] initWithURL:lCopy error:error];
 
   return v7;
 }
 
-+ (id)evaluateTemplateWithString:(id)a3 data:(id)a4 error:(id *)a5
++ (id)evaluateTemplateWithString:(id)string data:(id)data error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithString:v8 error:a5];
+  stringCopy = string;
+  dataCopy = data;
+  v10 = [[self alloc] initWithString:stringCopy error:error];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 evaluateWithData:v9 error:a5];
+    v12 = [v10 evaluateWithData:dataCopy error:error];
   }
 
   else
@@ -47,15 +47,15 @@
   return v12;
 }
 
-+ (id)evaluateTemplateWithURL:(id)a3 data:(id)a4 error:(id *)a5
++ (id)evaluateTemplateWithURL:(id)l data:(id)data error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithURL:v8 error:a5];
+  lCopy = l;
+  dataCopy = data;
+  v10 = [[self alloc] initWithURL:lCopy error:error];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 evaluateWithData:v9 error:a5];
+    v12 = [v10 evaluateWithData:dataCopy error:error];
   }
 
   else
@@ -66,14 +66,14 @@
   return v12;
 }
 
-- (AEMinimalTemplate)initWithString:(id)a3 error:(id *)a4
+- (AEMinimalTemplate)initWithString:(id)string error:(id *)error
 {
-  v6 = a3;
+  stringCopy = string;
   v11.receiver = self;
   v11.super_class = AEMinimalTemplate;
   v7 = [(AEMinimalTemplate *)&v11 init];
   v8 = v7;
-  if (v7 && ![(AEMinimalTemplate *)v7 parseTemplate:v6 error:a4])
+  if (v7 && ![(AEMinimalTemplate *)v7 parseTemplate:stringCopy error:error])
   {
     v9 = 0;
   }
@@ -86,16 +86,16 @@
   return v9;
 }
 
-- (AEMinimalTemplate)initWithURL:(id)a3 error:(id *)a4
+- (AEMinimalTemplate)initWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = AEMinimalTemplate;
   v7 = [(AEMinimalTemplate *)&v11 init];
   if (v7)
   {
-    v8 = [NSString stringWithContentsOfURL:v6 usedEncoding:0 error:a4];
-    if (!v8 || ![(AEMinimalTemplate *)v7 parseTemplate:v8 error:a4])
+    v8 = [NSString stringWithContentsOfURL:lCopy usedEncoding:0 error:error];
+    if (!v8 || ![(AEMinimalTemplate *)v7 parseTemplate:v8 error:error])
     {
 
       v9 = 0;
@@ -109,18 +109,18 @@ LABEL_7:
   return v9;
 }
 
-- (id)evaluateWithData:(id)a3 error:(id *)a4
+- (id)evaluateWithData:(id)data error:(id *)error
 {
-  v4 = [(AEMinimalTemplate *)self evaluateWithData:a3 templateSet:0 cycleContext:0 error:a4];
+  v4 = [(AEMinimalTemplate *)self evaluateWithData:data templateSet:0 cycleContext:0 error:error];
 
   return v4;
 }
 
-- (id)evaluateWithData:(id)a3 templateSet:(id)a4 cycleContext:(id)a5 error:(id *)a6
+- (id)evaluateWithData:(id)data templateSet:(id)set cycleContext:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dataCopy = data;
+  setCopy = set;
+  contextCopy = context;
   +[NSMutableString string];
   v30 = 0;
   v31 = &v30;
@@ -132,21 +132,21 @@ LABEL_7:
   v23[1] = 3221225472;
   v23[2] = sub_10A7AC;
   v23[3] = &unk_1E60D0;
-  v13 = v29 = a6;
+  v13 = v29 = error;
   v24 = v13;
   v28 = &v30;
-  v14 = v11;
+  v14 = setCopy;
   v25 = v14;
-  v15 = v12;
+  v15 = contextCopy;
   v26 = v15;
-  v16 = v10;
+  v16 = dataCopy;
   v27 = v16;
   v17 = objc_retainBlock(v23);
   objc_storeWeak(v31 + 5, v17);
   memset(v22, 0, sizeof(v22));
-  v18 = [(AEMinimalTemplate *)self steps];
+  steps = [(AEMinimalTemplate *)self steps];
   v19 = v16;
-  LOBYTE(v16) = (v17[2])(v17, v18, v19, 0, v22);
+  LOBYTE(v16) = (v17[2])(v17, steps, v19, 0, v22);
 
   if (v16)
   {
@@ -166,9 +166,9 @@ LABEL_7:
   return v20;
 }
 
-- (BOOL)parseTemplate:(id)a3 error:(id *)a4
+- (BOOL)parseTemplate:(id)template error:(id *)error
 {
-  v48 = a3;
+  templateCopy = template;
   v5 = [NSScanner scannerWithString:?];
   v71 = 0;
   v72 = &v71;
@@ -188,7 +188,7 @@ LABEL_7:
   [v5 setCharactersToBeSkipped:0];
   v8 = +[NSMutableArray array];
   v44 = +[NSMutableArray array];
-  v39 = self;
+  selfCopy = self;
   v65 = 0;
   v66 = &v65;
   v67 = 0x3032000000;
@@ -236,7 +236,7 @@ LABEL_7:
       goto LABEL_72;
     }
 
-    v14 = [v48 characterAtIndex:{objc_msgSend(v5, "scanLocation")}];
+    v14 = [templateCopy characterAtIndex:{objc_msgSend(v5, "scanLocation")}];
     if (v14 == 39)
     {
       [v5 scanString:@"'" intoString:0];
@@ -355,9 +355,9 @@ LABEL_14:
         }
 
         v17 = v24;
-        v25 = [v44 lastObject];
+        lastObject = [v44 lastObject];
         v26 = v66[5];
-        v66[5] = v25;
+        v66[5] = lastObject;
 
         if (v66[5])
         {
@@ -489,18 +489,18 @@ LABEL_16:
   if (!v66[5])
   {
     v45 = 0;
-    [(AEMinimalTemplate *)v39 setSteps:v41];
+    [(AEMinimalTemplate *)selfCopy setSteps:v41];
     v35 = 1;
     goto LABEL_76;
   }
 
   v45 = @"EOF encountered with unbalanced commands";
 LABEL_73:
-  if (a4)
+  if (error)
   {
     v36 = [NSNumber numberWithUnsignedInteger:v72[3]];
     v37 = [NSDictionary dictionaryWithObjectsAndKeys:@"Parse error", NSLocalizedDescriptionKey, v36, @"line", v45, NSLocalizedFailureReasonErrorKey, 0, v8];
-    *a4 = [NSError errorWithDomain:@"AEMinimalTemplateErrorDomain" code:1 userInfo:v37];
+    *error = [NSError errorWithDomain:@"AEMinimalTemplateErrorDomain" code:1 userInfo:v37];
   }
 
   v35 = 0;

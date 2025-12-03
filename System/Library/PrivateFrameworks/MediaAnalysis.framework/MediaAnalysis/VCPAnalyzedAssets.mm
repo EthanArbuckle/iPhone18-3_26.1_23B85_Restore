@@ -1,17 +1,17 @@
 @interface VCPAnalyzedAssets
-+ (id)assetsFromPhotoLibrary:(id)a3;
-+ (id)assetsWithoutFingerprintsFromPhotoLibrary:(id)a3;
-- (VCPAnalyzedAssets)initWithPhotoLibrary:(id)a3 andCondition:(id)a4;
-- (int)next:(id *)a3;
++ (id)assetsFromPhotoLibrary:(id)library;
++ (id)assetsWithoutFingerprintsFromPhotoLibrary:(id)library;
+- (VCPAnalyzedAssets)initWithPhotoLibrary:(id)library andCondition:(id)condition;
+- (int)next:(id *)next;
 - (void)dealloc;
 @end
 
 @implementation VCPAnalyzedAssets
 
-- (VCPAnalyzedAssets)initWithPhotoLibrary:(id)a3 andCondition:(id)a4
+- (VCPAnalyzedAssets)initWithPhotoLibrary:(id)library andCondition:(id)condition
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  conditionCopy = condition;
   v36.receiver = self;
   v36.super_class = VCPAnalyzedAssets;
   v8 = [(VCPAnalyzedAssets *)&v36 init];
@@ -27,16 +27,16 @@
   v8->_statement = 0;
   v11 = [NSMutableString stringWithString:@"SELECT count(*) FROM Assets"];
   v12 = [NSMutableString stringWithString:@"SELECT localIdentifier, version, dateModified, dateAnalyzed, analysisTypes, flags, quality, statsFlags, masterFingerprint, adjustedFingerprint FROM Assets"];
-  if (v7)
+  if (conditionCopy)
   {
-    [v11 appendFormat:@" WHERE %@", v7];
-    [v12 appendFormat:@" WHERE %@", v7];
+    [v11 appendFormat:@" WHERE %@", conditionCopy];
+    [v12 appendFormat:@" WHERE %@", conditionCopy];
   }
 
   pStmt = 0;
-  v13 = [v6 vcp_mediaAnalysisDatabaseFilepath];
+  vcp_mediaAnalysisDatabaseFilepath = [libraryCopy vcp_mediaAnalysisDatabaseFilepath];
   v14 = +[NSFileManager defaultManager];
-  v15 = [v14 fileExistsAtPath:v13];
+  v15 = [v14 fileExistsAtPath:vcp_mediaAnalysisDatabaseFilepath];
 
   if ((v15 & 1) == 0)
   {
@@ -54,8 +54,8 @@
     goto LABEL_15;
   }
 
-  v16 = v13;
-  v17 = sqlite3_open([v13 UTF8String], &v9->_database);
+  v16 = vcp_mediaAnalysisDatabaseFilepath;
+  v17 = sqlite3_open([vcp_mediaAnalysisDatabaseFilepath UTF8String], &v9->_database);
   if (v17)
   {
     if (MediaAnalysisLogLevel() < 3)
@@ -216,18 +216,18 @@ LABEL_21:
   return v20;
 }
 
-+ (id)assetsFromPhotoLibrary:(id)a3
++ (id)assetsFromPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [[VCPAnalyzedAssets alloc] initWithPhotoLibrary:v3 andCondition:0];
+  libraryCopy = library;
+  v4 = [[VCPAnalyzedAssets alloc] initWithPhotoLibrary:libraryCopy andCondition:0];
 
   return v4;
 }
 
-+ (id)assetsWithoutFingerprintsFromPhotoLibrary:(id)a3
++ (id)assetsWithoutFingerprintsFromPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [[VCPAnalyzedAssets alloc] initWithPhotoLibrary:v3 andCondition:@"masterFingerprint is NULL"];
+  libraryCopy = library;
+  v4 = [[VCPAnalyzedAssets alloc] initWithPhotoLibrary:libraryCopy andCondition:@"masterFingerprint is NULL"];
 
   return v4;
 }
@@ -241,7 +241,7 @@ LABEL_21:
   [(VCPAnalyzedAssets *)&v3 dealloc];
 }
 
-- (int)next:(id *)a3
+- (int)next:(id *)next
 {
   v5 = sqlite3_step(self->_statement);
   if (v5 == 100)
@@ -308,13 +308,13 @@ LABEL_21:
       v23 = [NSString stringWithUTF8String:sqlite3_column_text(v22, 9)];
     }
 
-    *a3 = [VCPAnalyzedAsset assetWithLocalIdentifier:v7 version:v14 dateModified:v24 dateAnalyzed:v15 types:v16 flags:v17 quality:v18 statsFlags:v19 masterFingerprint:v21 adjustedFingerprint:v23];
+    *next = [VCPAnalyzedAsset assetWithLocalIdentifier:v7 version:v14 dateModified:v24 dateAnalyzed:v15 types:v16 flags:v17 quality:v18 statsFlags:v19 masterFingerprint:v21 adjustedFingerprint:v23];
 
     return 0;
   }
 
   v8 = v5;
-  *a3 = 0;
+  *next = 0;
   if (v5 == 101)
   {
     return 0;

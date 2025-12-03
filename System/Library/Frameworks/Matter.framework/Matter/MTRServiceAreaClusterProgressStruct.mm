@@ -1,6 +1,6 @@
 @interface MTRServiceAreaClusterProgressStruct
 - (MTRServiceAreaClusterProgressStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRServiceAreaClusterProgressStruct);
-  v5 = [(MTRServiceAreaClusterProgressStruct *)self areaID];
-  [(MTRServiceAreaClusterProgressStruct *)v4 setAreaID:v5];
+  areaID = [(MTRServiceAreaClusterProgressStruct *)self areaID];
+  [(MTRServiceAreaClusterProgressStruct *)v4 setAreaID:areaID];
 
-  v6 = [(MTRServiceAreaClusterProgressStruct *)self status];
-  [(MTRServiceAreaClusterProgressStruct *)v4 setStatus:v6];
+  status = [(MTRServiceAreaClusterProgressStruct *)self status];
+  [(MTRServiceAreaClusterProgressStruct *)v4 setStatus:status];
 
-  v7 = [(MTRServiceAreaClusterProgressStruct *)self totalOperationalTime];
-  [(MTRServiceAreaClusterProgressStruct *)v4 setTotalOperationalTime:v7];
+  totalOperationalTime = [(MTRServiceAreaClusterProgressStruct *)self totalOperationalTime];
+  [(MTRServiceAreaClusterProgressStruct *)v4 setTotalOperationalTime:totalOperationalTime];
 
-  v8 = [(MTRServiceAreaClusterProgressStruct *)self estimatedTime];
-  [(MTRServiceAreaClusterProgressStruct *)v4 setEstimatedTime:v8];
+  estimatedTime = [(MTRServiceAreaClusterProgressStruct *)self estimatedTime];
+  [(MTRServiceAreaClusterProgressStruct *)v4 setEstimatedTime:estimatedTime];
 
   return v4;
 }

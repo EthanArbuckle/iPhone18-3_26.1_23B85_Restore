@@ -2,7 +2,7 @@
 - (APSUserCourierInterfaceState)init;
 - (id)aps_prettyDescription;
 - (id)description;
-- (void)setUserState:(unint64_t)a3;
+- (void)setUserState:(unint64_t)state;
 @end
 
 @implementation APSUserCourierInterfaceState
@@ -57,9 +57,9 @@
   return result;
 }
 
-- (void)setUserState:(unint64_t)a3
+- (void)setUserState:(unint64_t)state
 {
-  if (self->_userState != a3)
+  if (self->_userState != state)
   {
     v5 = +[APSLog courier];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -69,15 +69,15 @@
       v8 = 138413058;
       v9 = v6;
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       v12 = 2048;
       v13 = userState;
       v14 = 2048;
-      v15 = a3;
+      stateCopy = state;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "<%@: %p> Setting user state from: %llu to: %llu", &v8, 0x2Au);
     }
 
-    self->_userState = a3;
+    self->_userState = state;
   }
 }
 

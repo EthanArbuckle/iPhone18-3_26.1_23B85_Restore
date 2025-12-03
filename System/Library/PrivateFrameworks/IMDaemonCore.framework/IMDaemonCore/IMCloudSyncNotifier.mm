@@ -1,24 +1,24 @@
 @interface IMCloudSyncNotifier
-- (void)notifyClientsOfProgress:(id)a3;
-- (void)notifyClientsOfState:(id)a3;
+- (void)notifyClientsOfProgress:(id)progress;
+- (void)notifyClientsOfState:(id)state;
 @end
 
 @implementation IMCloudSyncNotifier
 
-- (void)notifyClientsOfState:(id)a3
+- (void)notifyClientsOfState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = +[IMDBroadcastController sharedProvider];
-  v4 = [v5 broadcasterForCloudSyncListeners];
-  [v4 updateCloudKitStateWithDictionary:v3];
+  broadcasterForCloudSyncListeners = [v5 broadcasterForCloudSyncListeners];
+  [broadcasterForCloudSyncListeners updateCloudKitStateWithDictionary:stateCopy];
 }
 
-- (void)notifyClientsOfProgress:(id)a3
+- (void)notifyClientsOfProgress:(id)progress
 {
-  v3 = a3;
+  progressCopy = progress;
   v5 = +[IMDBroadcastController sharedProvider];
-  v4 = [v5 broadcasterForCloudSyncListeners];
-  [v4 updateCloudKitProgressWithDictionary:v3];
+  broadcasterForCloudSyncListeners = [v5 broadcasterForCloudSyncListeners];
+  [broadcasterForCloudSyncListeners updateCloudKitProgressWithDictionary:progressCopy];
 }
 
 @end

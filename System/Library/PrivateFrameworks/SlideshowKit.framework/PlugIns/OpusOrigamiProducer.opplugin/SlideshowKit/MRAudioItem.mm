@@ -1,30 +1,30 @@
 @interface MRAudioItem
-- (MRAudioItem)initWithURL:(id)a3 startTime:(double)a4 andDuration:(double)a5;
-- (float)volumeAtTime:(double)a3;
+- (MRAudioItem)initWithURL:(id)l startTime:(double)time andDuration:(double)duration;
+- (float)volumeAtTime:(double)time;
 - (void)dealloc;
-- (void)gotoTime:(double)a3;
-- (void)syncVolumeToSong:(id)a3;
+- (void)gotoTime:(double)time;
+- (void)syncVolumeToSong:(id)song;
 @end
 
 @implementation MRAudioItem
 
-- (MRAudioItem)initWithURL:(id)a3 startTime:(double)a4 andDuration:(double)a5
+- (MRAudioItem)initWithURL:(id)l startTime:(double)time andDuration:(double)duration
 {
   v8 = [(MRAudioItem *)self init];
   if (v8)
   {
-    v9 = [AVPlayerItem playerItemWithURL:a3];
+    v9 = [AVPlayerItem playerItemWithURL:l];
     v8->_avPlayerItem = v9;
-    v8->_startTime = a4;
-    v8->_duration = a5;
+    v8->_startTime = time;
+    v8->_duration = duration;
     if (v9)
     {
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v10 = [(AVPlayerItem *)v9 tracks];
-      v11 = [(NSArray *)v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      tracks = [(AVPlayerItem *)v9 tracks];
+      v11 = [(NSArray *)tracks countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v11)
       {
         v12 = v11;
@@ -35,7 +35,7 @@
           {
             if (*v18 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(tracks);
             }
 
             v15 = *(*(&v17 + 1) + 8 * i);
@@ -45,7 +45,7 @@
             }
           }
 
-          v12 = [(NSArray *)v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v12 = [(NSArray *)tracks countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v12);
@@ -66,20 +66,20 @@
   [(MRAudioItem *)&v3 dealloc];
 }
 
-- (float)volumeAtTime:(double)a3
+- (float)volumeAtTime:(double)time
 {
   fadeInDuration = self->_fadeInDuration;
   v4 = 1.0;
   v5 = 1.0;
   if (fadeInDuration > 0.0)
   {
-    v5 = a3 / fadeInDuration;
+    v5 = time / fadeInDuration;
   }
 
   fadeOutDuration = self->_fadeOutDuration;
   if (fadeOutDuration > 0.0)
   {
-    v4 = (self->_duration - a3) / fadeOutDuration;
+    v4 = (self->_duration - time) / fadeOutDuration;
   }
 
   if (v5 >= self->_volume)
@@ -100,10 +100,10 @@
   return result;
 }
 
-- (void)gotoTime:(double)a3
+- (void)gotoTime:(double)time
 {
   avPlayerItem = self->_avPlayerItem;
-  CMTimeMake(&v8, (a3 * 1000000.0), 1000000);
+  CMTimeMake(&v8, (time * 1000000.0), 1000000);
   v6 = *&kCMTimeZero.value;
   epoch = kCMTimeZero.epoch;
   v4 = v6;
@@ -111,13 +111,13 @@
   [(AVPlayerItem *)avPlayerItem seekToTime:&v8 toleranceBefore:&v6 toleranceAfter:&v4];
 }
 
-- (void)syncVolumeToSong:(id)a3
+- (void)syncVolumeToSong:(id)song
 {
-  [a3 volume];
+  [song volume];
   self->_volume = v5;
-  [a3 fadeInDuration];
+  [song fadeInDuration];
   self->_fadeInDuration = v6;
-  [a3 fadeOutDuration];
+  [song fadeOutDuration];
   self->_fadeOutDuration = v7;
 }
 

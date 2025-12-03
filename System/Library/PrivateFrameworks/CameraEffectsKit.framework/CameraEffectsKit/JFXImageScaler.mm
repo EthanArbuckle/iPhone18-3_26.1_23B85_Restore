@@ -1,12 +1,12 @@
 @interface JFXImageScaler
-- (id)initForCPU:(BOOL)a3;
+- (id)initForCPU:(BOOL)u;
 - (void)dealloc;
-- (void)scaleImage:(__CVBuffer *)a3 destinationImage:(__CVBuffer *)a4;
+- (void)scaleImage:(__CVBuffer *)image destinationImage:(__CVBuffer *)destinationImage;
 @end
 
 @implementation JFXImageScaler
 
-- (id)initForCPU:(BOOL)a3
+- (id)initForCPU:(BOOL)u
 {
   v13 = *MEMORY[0x277D85DE8];
   v10.receiver = self;
@@ -15,8 +15,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_useCPU = a3;
-    if (!a3)
+    v4->_useCPU = u;
+    if (!u)
     {
       v6 = VTPixelTransferSessionCreate(0, &v4->_vtPixelTransferSession);
       if (v6)
@@ -36,40 +36,40 @@
   return v5;
 }
 
-- (void)scaleImage:(__CVBuffer *)a3 destinationImage:(__CVBuffer *)a4
+- (void)scaleImage:(__CVBuffer *)image destinationImage:(__CVBuffer *)destinationImage
 {
   v21 = *MEMORY[0x277D85DE8];
   if (self->_useCPU)
   {
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
-    CVPixelBufferLockBaseAddress(a4, 0);
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-    v7 = CVPixelBufferGetPixelFormatType(a4);
+    CVPixelBufferLockBaseAddress(image, 1uLL);
+    CVPixelBufferLockBaseAddress(destinationImage, 0);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(image);
+    v7 = CVPixelBufferGetPixelFormatType(destinationImage);
     v8 = v7;
     if (PixelFormatType == 1278226488 && v7 == 1278226488)
     {
       memset(&src, 0, sizeof(src));
-      JFXToVImage(a3, &src.data);
+      JFXToVImage(image, &src.data);
       memset(&v13, 0, sizeof(v13));
-      JFXToVImage(a4, &v13.data);
+      JFXToVImage(destinationImage, &v13.data);
       v9 = vImageScale_Planar8(&src, &v13, 0, 0x28u);
     }
 
     else if ((PixelFormatType & 0xFFFFFFEF) == 0x34323066 && (v7 & 0xFFFFFFEF) == 0x34323066)
     {
       memset(&src, 0, sizeof(src));
-      JFXPlanarToVImage(a3, 0, &src.data);
+      JFXPlanarToVImage(image, 0, &src.data);
       memset(&v13, 0, sizeof(v13));
-      JFXPlanarToVImage(a4, 0, &v13.data);
+      JFXPlanarToVImage(destinationImage, 0, &v13.data);
       if (vImageScale_Planar8(&src, &v13, 0, 0x28u))
       {
         goto LABEL_21;
       }
 
       memset(&src, 0, sizeof(src));
-      JFXPlanarToVImage(a3, 1uLL, &src.data);
+      JFXPlanarToVImage(image, 1uLL, &src.data);
       memset(&v13, 0, sizeof(v13));
-      JFXPlanarToVImage(a4, 1uLL, &v13.data);
+      JFXPlanarToVImage(destinationImage, 1uLL, &v13.data);
       v9 = vImageScale_CbCr8(&src, &v13, 0, 0x28u);
     }
 
@@ -88,17 +88,17 @@
       }
 
       memset(&src, 0, sizeof(src));
-      JFXToVImage(a3, &src.data);
+      JFXToVImage(image, &src.data);
       memset(&v13, 0, sizeof(v13));
-      JFXToVImage(a4, &v13.data);
+      JFXToVImage(destinationImage, &v13.data);
       v9 = vImageScale_PlanarF(&src, &v13, 0, 0x28u);
     }
 
     if (!v9)
     {
 LABEL_24:
-      CVPixelBufferUnlockBaseAddress(a4, 0);
-      CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+      CVPixelBufferUnlockBaseAddress(destinationImage, 0);
+      CVPixelBufferUnlockBaseAddress(image, 1uLL);
       return;
     }
 
@@ -132,7 +132,7 @@ LABEL_21:
   if (vtPixelTransferSession)
   {
 
-    VTPixelTransferSessionTransferImage(vtPixelTransferSession, a3, a4);
+    VTPixelTransferSessionTransferImage(vtPixelTransferSession, image, destinationImage);
   }
 }
 

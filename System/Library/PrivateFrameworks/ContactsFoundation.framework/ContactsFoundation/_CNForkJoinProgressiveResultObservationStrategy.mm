@@ -1,12 +1,12 @@
 @interface _CNForkJoinProgressiveResultObservationStrategy
-- (_CNForkJoinProgressiveResultObservationStrategy)initWithCapacity:(unint64_t)a3;
-- (void)observableAtIndex:(unint64_t)a3 didCompleteForObserver:(id)a4;
-- (void)receiveResult:(id)a3 fromObservableAtIndex:(unint64_t)a4 observer:(id)a5;
+- (_CNForkJoinProgressiveResultObservationStrategy)initWithCapacity:(unint64_t)capacity;
+- (void)observableAtIndex:(unint64_t)index didCompleteForObserver:(id)observer;
+- (void)receiveResult:(id)result fromObservableAtIndex:(unint64_t)index observer:(id)observer;
 @end
 
 @implementation _CNForkJoinProgressiveResultObservationStrategy
 
-- (_CNForkJoinProgressiveResultObservationStrategy)initWithCapacity:(unint64_t)a3
+- (_CNForkJoinProgressiveResultObservationStrategy)initWithCapacity:(unint64_t)capacity
 {
   v13.receiver = self;
   v13.super_class = _CNForkJoinProgressiveResultObservationStrategy;
@@ -15,8 +15,8 @@
   {
     for (i = [MEMORY[0x1E695DF70] array];
     {
-      v6 = [MEMORY[0x1E695DF70] array];
-      [i addObject:v6];
+      array = [MEMORY[0x1E695DF70] array];
+      [i addObject:array];
     }
 
     v7 = [i copy];
@@ -34,64 +34,64 @@
   return v4;
 }
 
-- (void)receiveResult:(id)a3 fromObservableAtIndex:(unint64_t)a4 observer:(id)a5
+- (void)receiveResult:(id)result fromObservableAtIndex:(unint64_t)index observer:(id)observer
 {
-  v11 = a3;
-  v8 = a5;
-  v9 = self;
-  objc_sync_enter(v9);
-  if (v9->_activeObservableIdx == a4)
+  resultCopy = result;
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activeObservableIdx == index)
   {
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
 
-    [v8 observerDidReceiveResult:v11];
+    [observerCopy observerDidReceiveResult:resultCopy];
   }
 
   else
   {
-    v10 = [(NSArray *)v9->_results objectAtIndex:a4];
-    [v10 addObject:v11];
+    v10 = [(NSArray *)selfCopy->_results objectAtIndex:index];
+    [v10 addObject:resultCopy];
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)observableAtIndex:(unint64_t)a3 didCompleteForObserver:(id)a4
+- (void)observableAtIndex:(unint64_t)index didCompleteForObserver:(id)observer
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = self;
-  objc_sync_enter(v8);
-  [(NSMutableIndexSet *)v8->_finishedObservables addIndex:a3];
-  for (i = v8->_activeObservableIdx; [(NSMutableIndexSet *)v8->_finishedObservables containsIndex:i]; ++i)
+  observerCopy = observer;
+  array = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableIndexSet *)selfCopy->_finishedObservables addIndex:index];
+  for (i = selfCopy->_activeObservableIdx; [(NSMutableIndexSet *)selfCopy->_finishedObservables containsIndex:i]; ++i)
   {
-    v10 = [(NSArray *)v8->_results objectAtIndexedSubscript:i];
-    [v7 addObjectsFromArray:v10];
+    v10 = [(NSArray *)selfCopy->_results objectAtIndexedSubscript:i];
+    [array addObjectsFromArray:v10];
 
-    v11 = [(NSArray *)v8->_results objectAtIndexedSubscript:i];
+    v11 = [(NSArray *)selfCopy->_results objectAtIndexedSubscript:i];
     [v11 removeAllObjects];
   }
 
-  v8->_activeObservableIdx = i;
-  if (i < [(NSArray *)v8->_results count])
+  selfCopy->_activeObservableIdx = i;
+  if (i < [(NSArray *)selfCopy->_results count])
   {
-    v12 = [(NSArray *)v8->_results objectAtIndexedSubscript:v8->_activeObservableIdx];
-    [v7 addObjectsFromArray:v12];
+    v12 = [(NSArray *)selfCopy->_results objectAtIndexedSubscript:selfCopy->_activeObservableIdx];
+    [array addObjectsFromArray:v12];
 
-    v13 = [(NSArray *)v8->_results objectAtIndexedSubscript:v8->_activeObservableIdx];
+    v13 = [(NSArray *)selfCopy->_results objectAtIndexedSubscript:selfCopy->_activeObservableIdx];
     [v13 removeAllObjects];
   }
 
-  v14 = [(NSMutableIndexSet *)v8->_finishedObservables count];
-  v15 = [(NSArray *)v8->_results count];
-  objc_sync_exit(v8);
+  v14 = [(NSMutableIndexSet *)selfCopy->_finishedObservables count];
+  v15 = [(NSArray *)selfCopy->_results count];
+  objc_sync_exit(selfCopy);
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v16 = v7;
+  v16 = array;
   v17 = [v16 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v17)
   {
@@ -106,7 +106,7 @@
           objc_enumerationMutation(v16);
         }
 
-        [v6 observerDidReceiveResult:{*(*(&v21 + 1) + 8 * v19++), v21}];
+        [observerCopy observerDidReceiveResult:{*(*(&v21 + 1) + 8 * v19++), v21}];
       }
 
       while (v17 != v19);
@@ -118,7 +118,7 @@
 
   if (v14 == v15)
   {
-    [v6 observerDidComplete];
+    [observerCopy observerDidComplete];
   }
 
   v20 = *MEMORY[0x1E69E9840];

@@ -1,9 +1,9 @@
 @interface AMSMediaTokenServiceThrottler
-- (AMSMediaTokenServiceThrottler)initWithBaseSleepInterval:(double)a3 maxSleepInterval:(double)a4;
+- (AMSMediaTokenServiceThrottler)initWithBaseSleepInterval:(double)interval maxSleepInterval:(double)sleepInterval;
 - (BOOL)shouldThrottle;
 - (double)_calculateThrottleInterval;
 - (void)reset;
-- (void)setBaseSleepInterval:(double)a3 maxSleepInterval:(double)a4;
+- (void)setBaseSleepInterval:(double)interval maxSleepInterval:(double)sleepInterval;
 - (void)throttle;
 @end
 
@@ -16,7 +16,7 @@
   [(AMSMediaTokenServiceThrottler *)self setAttemptNumber:0];
 }
 
-- (AMSMediaTokenServiceThrottler)initWithBaseSleepInterval:(double)a3 maxSleepInterval:(double)a4
+- (AMSMediaTokenServiceThrottler)initWithBaseSleepInterval:(double)interval maxSleepInterval:(double)sleepInterval
 {
   v9.receiver = self;
   v9.super_class = AMSMediaTokenServiceThrottler;
@@ -24,8 +24,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_baseSleepInterval = a3;
-    v6->_maxSleepInterval = a4;
+    v6->_baseSleepInterval = interval;
+    v6->_maxSleepInterval = sleepInterval;
     v6->_accessLock._os_unfair_lock_opaque = 0;
     [(AMSMediaTokenServiceThrottler *)v6 reset];
   }
@@ -35,8 +35,8 @@
 
 - (BOOL)shouldThrottle
 {
-  v2 = [(AMSMediaTokenServiceThrottler *)self throttleDate];
-  [v2 timeIntervalSinceNow];
+  throttleDate = [(AMSMediaTokenServiceThrottler *)self throttleDate];
+  [throttleDate timeIntervalSinceNow];
   v4 = v3 > 0.0;
 
   return v4;
@@ -53,11 +53,11 @@
   [(AMSMediaTokenServiceThrottler *)self setAttemptNumber:v5];
 }
 
-- (void)setBaseSleepInterval:(double)a3 maxSleepInterval:(double)a4
+- (void)setBaseSleepInterval:(double)interval maxSleepInterval:(double)sleepInterval
 {
   os_unfair_lock_lock(&self->_accessLock);
-  self->_baseSleepInterval = a3;
-  self->_maxSleepInterval = a4;
+  self->_baseSleepInterval = interval;
+  self->_maxSleepInterval = sleepInterval;
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
@@ -65,9 +65,9 @@
 - (double)_calculateThrottleInterval
 {
   os_unfair_lock_lock(&self->_accessLock);
-  v3 = [(AMSMediaTokenServiceThrottler *)self attemptNumber];
+  attemptNumber = [(AMSMediaTokenServiceThrottler *)self attemptNumber];
   [(AMSMediaTokenServiceThrottler *)self baseSleepInterval];
-  v5 = exp2(v4 * v3);
+  v5 = exp2(v4 * attemptNumber);
   [(AMSMediaTokenServiceThrottler *)self maxSleepInterval];
   if (v5 < v6)
   {

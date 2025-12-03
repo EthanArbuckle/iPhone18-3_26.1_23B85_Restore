@@ -1,13 +1,13 @@
 @interface CEMLegacyRestrictionsAppsDeclaration
-- (id)dmf_installRequestWithContext:(id)a3 error:(id *)a4;
+- (id)dmf_installRequestWithContext:(id)context error:(id *)error;
 @end
 
 @implementation CEMLegacyRestrictionsAppsDeclaration
 
-- (id)dmf_installRequestWithContext:(id)a3 error:(id *)a4
+- (id)dmf_installRequestWithContext:(id)context error:(id *)error
 {
-  v6 = [a3 assetProvidersByPayloadIdentifier];
-  v7 = [(CEMLegacyRestrictionsAppsDeclaration *)self dmf_installSynthesizedProfileRequestWithAssetProviders:v6 error:a4];
+  assetProvidersByPayloadIdentifier = [context assetProvidersByPayloadIdentifier];
+  v7 = [(CEMLegacyRestrictionsAppsDeclaration *)self dmf_installSynthesizedProfileRequestWithAssetProviders:assetProvidersByPayloadIdentifier error:error];
 
   return v7;
 }

@@ -1,19 +1,19 @@
 @interface CBRemoteSetupAuthenticationViewController
-- (CBRemoteSetupAuthenticationViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5;
+- (CBRemoteSetupAuthenticationViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon;
 - (void)didTapFallbackButton;
 - (void)setupView;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CBRemoteSetupAuthenticationViewController
 
-- (CBRemoteSetupAuthenticationViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5
+- (CBRemoteSetupAuthenticationViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon
 {
   v9.receiver = self;
   v9.super_class = CBRemoteSetupAuthenticationViewController;
-  v5 = [(CBRemoteSetupAuthenticationViewController *)&v9 initWithTitle:a3 detailText:a4 icon:a5];
+  v5 = [(CBRemoteSetupAuthenticationViewController *)&v9 initWithTitle:title detailText:text icon:icon];
   if (v5)
   {
     v6 = +[CBRemoteSetupManager sharedInstance];
@@ -32,45 +32,45 @@
   [(CBRemoteSetupAuthenticationViewController *)self setupView];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = CBRemoteSetupAuthenticationViewController;
-  [(CBRemoteSetupAuthenticationViewController *)&v8 viewDidDisappear:a3];
+  [(CBRemoteSetupAuthenticationViewController *)&v8 viewDidDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
 
-  v5 = [(CBRemoteSetupAuthenticationViewController *)self remoteSetupManager];
-  v6 = [v5 setupState];
+  remoteSetupManager = [(CBRemoteSetupAuthenticationViewController *)self remoteSetupManager];
+  setupState = [remoteSetupManager setupState];
 
-  if (v6 == 3)
+  if (setupState == 3)
   {
-    v7 = [(CBRemoteSetupAuthenticationViewController *)self remoteSetupManager];
-    [v7 restartRemoteSetupBroadcast];
+    remoteSetupManager2 = [(CBRemoteSetupAuthenticationViewController *)self remoteSetupManager];
+    [remoteSetupManager2 restartRemoteSetupBroadcast];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CBRemoteSetupAuthenticationViewController;
-  [(CBRemoteSetupAuthenticationViewController *)&v5 viewWillAppear:a3];
+  [(CBRemoteSetupAuthenticationViewController *)&v5 viewWillAppear:appear];
   if ([(CBRemoteSetupAuthenticationViewController *)self passwordType]!= 2 && [(CBRemoteSetupAuthenticationViewController *)self passwordType]!= 8)
   {
     [(CBRemoteSetupAuthenticationViewController *)self dismissViewControllerAnimated:1 completion:0];
-    v4 = [(CBRemoteSetupAuthenticationViewController *)self remoteSetupManager];
-    [v4 setupFailed];
+    remoteSetupManager = [(CBRemoteSetupAuthenticationViewController *)self remoteSetupManager];
+    [remoteSetupManager setupFailed];
   }
 }
 
 - (void)setupView
 {
   [(CBRemoteSetupAuthenticationViewController *)self setModalPresentationStyle:1];
-  v3 = [(CBRemoteSetupAuthenticationViewController *)self view];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(CBRemoteSetupAuthenticationViewController *)self view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(CBRemoteSetupAuthenticationViewController *)self headerView];
-  [v4 setTitleHyphenationFactor:0.0];
+  headerView = [(CBRemoteSetupAuthenticationViewController *)self headerView];
+  [headerView setTitleHyphenationFactor:0.0];
 
   v5 = objc_alloc_init(UIView);
   [(CBRemoteSetupAuthenticationViewController *)self setContainerView:v5];
@@ -80,26 +80,26 @@
     v6 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [(CBRemoteSetupAuthenticationViewController *)self setPinCodeLabel:v6];
 
-    v7 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
-    [v7 setNumberOfLines:0];
+    pinCodeLabel = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
+    [pinCodeLabel setNumberOfLines:0];
 
     v8 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle0];
-    v9 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
-    [v9 setFont:v8];
+    pinCodeLabel2 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
+    [pinCodeLabel2 setFont:v8];
 
-    v10 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
-    [v10 setTextAlignment:1];
+    pinCodeLabel3 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
+    [pinCodeLabel3 setTextAlignment:1];
 
-    v11 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    pinCodeLabel4 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
+    [pinCodeLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v12 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
+    pinCodeLabel5 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
     LODWORD(v13) = 1148846080;
-    [v12 setContentHuggingPriority:1 forAxis:v13];
+    [pinCodeLabel5 setContentHuggingPriority:1 forAxis:v13];
 
-    v14 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
-    v15 = [(CBRemoteSetupAuthenticationViewController *)self pairingCode];
-    [v14 setText:v15];
+    pinCodeLabel6 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
+    pairingCode = [(CBRemoteSetupAuthenticationViewController *)self pairingCode];
+    [pinCodeLabel6 setText:pairingCode];
   }
 
   else if ([(CBRemoteSetupAuthenticationViewController *)self passwordType]== 8)
@@ -107,60 +107,60 @@
     v16 = [[OBButtonTray alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [(CBRemoteSetupAuthenticationViewController *)self setButtonTray:v16];
 
-    v17 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
-    [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+    buttonTray = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
+    [buttonTray setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v18 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
-    [v18 setHidden:1];
+    buttonTray2 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
+    [buttonTray2 setHidden:1];
 
-    v19 = [(CBRemoteSetupAuthenticationViewController *)self view];
-    v20 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
-    [v19 addSubview:v20];
+    view2 = [(CBRemoteSetupAuthenticationViewController *)self view];
+    buttonTray3 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
+    [view2 addSubview:buttonTray3];
 
     v21 = +[OBLinkTrayButton linkButton];
     [(CBRemoteSetupAuthenticationViewController *)self setFallbackButton:v21];
 
-    v22 = [(CBRemoteSetupAuthenticationViewController *)self fallbackButton];
+    fallbackButton = [(CBRemoteSetupAuthenticationViewController *)self fallbackButton];
     v23 = +[NSBundle mainBundle];
     v24 = [v23 localizedStringForKey:@"REMOTE_SETUP_AUTH_FALLBACK_PIN" value:&stru_10007EAB0 table:0];
-    [v22 setTitle:v24 forState:0];
+    [fallbackButton setTitle:v24 forState:0];
 
-    v25 = [(CBRemoteSetupAuthenticationViewController *)self fallbackButton];
-    [v25 addTarget:self action:"didTapFallbackButton" forControlEvents:64];
+    fallbackButton2 = [(CBRemoteSetupAuthenticationViewController *)self fallbackButton];
+    [fallbackButton2 addTarget:self action:"didTapFallbackButton" forControlEvents:64];
 
-    v26 = [(CBRemoteSetupAuthenticationViewController *)self fallbackButton];
-    [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
+    fallbackButton3 = [(CBRemoteSetupAuthenticationViewController *)self fallbackButton];
+    [fallbackButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v27 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
-    v28 = [(CBRemoteSetupAuthenticationViewController *)self fallbackButton];
-    [v27 addButton:v28];
+    buttonTray4 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
+    fallbackButton4 = [(CBRemoteSetupAuthenticationViewController *)self fallbackButton];
+    [buttonTray4 addButton:fallbackButton4];
 
-    v29 = [(CBRemoteSetupAuthenticationViewController *)self pairingCode];
-    v30 = [v29 dataUsingEncoding:1];
+    pairingCode2 = [(CBRemoteSetupAuthenticationViewController *)self pairingCode];
+    v30 = [pairingCode2 dataUsingEncoding:1];
 
     v31 = [CIFilter filterWithName:@"CIQRCodeGenerator"];
     [v31 setValue:v30 forKey:@"inputMessage"];
     memset(&v119, 0, sizeof(v119));
     CGAffineTransformMakeScale(&v119, 10.0, 10.0);
-    v32 = [v31 outputImage];
+    outputImage = [v31 outputImage];
     v118 = v119;
-    v33 = [v32 imageByApplyingTransform:&v118];
+    v33 = [outputImage imageByApplyingTransform:&v118];
 
     v34 = [[UIImage alloc] initWithCIImage:v33];
     v35 = [[UIImageView alloc] initWithImage:v34];
     [(CBRemoteSetupAuthenticationViewController *)self setQrCodeView:v35];
 
-    v36 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
-    [v36 setTag:1];
+    qrCodeView = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
+    [qrCodeView setTag:1];
 
-    v37 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
-    [v37 setUserInteractionEnabled:0];
+    qrCodeView2 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
+    [qrCodeView2 setUserInteractionEnabled:0];
 
-    v38 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
-    [v38 setContentMode:1];
+    qrCodeView3 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
+    [qrCodeView3 setContentMode:1];
 
-    v39 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
-    [v39 setTranslatesAutoresizingMaskIntoConstraints:0];
+    qrCodeView4 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
+    [qrCodeView4 setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
   else
@@ -173,142 +173,142 @@
   }
 
   objc_initWeak(&v119, self);
-  v41 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
+  containerView = [(CBRemoteSetupAuthenticationViewController *)self containerView];
   v116[0] = _NSConcreteStackBlock;
   v116[1] = 3221225472;
   v116[2] = sub_100018260;
   v116[3] = &unk_10007DCE8;
   objc_copyWeak(&v117, &v119);
   v116[4] = self;
-  [(CBRemoteSetupAuthenticationViewController *)self addContentSubView:v41 heightConstraintForLayout:v116];
+  [(CBRemoteSetupAuthenticationViewController *)self addContentSubView:containerView heightConstraintForLayout:v116];
 
   v42 = +[UIDevice currentDevice];
-  v43 = [v42 userInterfaceIdiom];
+  userInterfaceIdiom = [v42 userInterfaceIdiom];
 
   if ([(CBRemoteSetupAuthenticationViewController *)self passwordType]== 2)
   {
-    v44 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
-    v45 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
-    [v44 addSubview:v45];
+    containerView2 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
+    pinCodeLabel7 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
+    [containerView2 addSubview:pinCodeLabel7];
 
-    v115 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
-    v113 = [v115 leadingAnchor];
-    v114 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
-    v112 = [v114 leadingAnchor];
-    v111 = [v113 constraintEqualToAnchor:v112];
+    pinCodeLabel8 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
+    leadingAnchor = [pinCodeLabel8 leadingAnchor];
+    containerView3 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
+    leadingAnchor2 = [containerView3 leadingAnchor];
+    v111 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v121[0] = v111;
-    v110 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
-    v108 = [v110 trailingAnchor];
-    v109 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
-    v107 = [v109 trailingAnchor];
-    v106 = [v108 constraintEqualToAnchor:v107];
+    pinCodeLabel9 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
+    trailingAnchor = [pinCodeLabel9 trailingAnchor];
+    containerView4 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
+    trailingAnchor2 = [containerView4 trailingAnchor];
+    v106 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v121[1] = v106;
-    v105 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
-    v103 = [v105 lastBaselineAnchor];
-    v104 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
-    v102 = [v104 topAnchor];
+    pinCodeLabel10 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
+    lastBaselineAnchor = [pinCodeLabel10 lastBaselineAnchor];
+    containerView5 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
+    topAnchor = [containerView5 topAnchor];
     v46 = 96.0;
-    if (v43 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v46 = 106.0;
     }
 
-    v101 = [v103 constraintEqualToAnchor:v102 constant:v46];
+    v101 = [lastBaselineAnchor constraintEqualToAnchor:topAnchor constant:v46];
     v121[2] = v101;
-    v100 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
-    v98 = [v100 bottomAnchor];
-    v99 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
-    v97 = [v99 bottomAnchor];
-    v96 = [v98 constraintGreaterThanOrEqualToAnchor:v97];
+    containerView6 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
+    bottomAnchor = [containerView6 bottomAnchor];
+    pinCodeLabel11 = [(CBRemoteSetupAuthenticationViewController *)self pinCodeLabel];
+    bottomAnchor2 = [pinCodeLabel11 bottomAnchor];
+    v96 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
     v121[3] = v96;
-    v95 = [NSArray arrayWithObjects:v121 count:4];
-    [NSLayoutConstraint activateConstraints:v95];
+    fallbackButton5 = [NSArray arrayWithObjects:v121 count:4];
+    [NSLayoutConstraint activateConstraints:fallbackButton5];
     goto LABEL_14;
   }
 
   if ([(CBRemoteSetupAuthenticationViewController *)self passwordType]== 8)
   {
-    v47 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
-    v48 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
-    [v47 addSubview:v48];
+    containerView7 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
+    qrCodeView5 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
+    [containerView7 addSubview:qrCodeView5];
 
-    v115 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
-    v113 = [v115 bottomAnchor];
-    v114 = [(CBRemoteSetupAuthenticationViewController *)self view];
-    v112 = [v114 bottomAnchor];
-    v111 = [v113 constraintEqualToAnchor:v112 constant:0.0];
+    pinCodeLabel8 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
+    leadingAnchor = [pinCodeLabel8 bottomAnchor];
+    containerView3 = [(CBRemoteSetupAuthenticationViewController *)self view];
+    leadingAnchor2 = [containerView3 bottomAnchor];
+    v111 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
     v120[0] = v111;
-    v110 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
-    v108 = [v110 leadingAnchor];
-    v109 = [(CBRemoteSetupAuthenticationViewController *)self view];
-    v107 = [v109 leadingAnchor];
-    v106 = [v108 constraintEqualToAnchor:v107 constant:0.0];
+    pinCodeLabel9 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
+    trailingAnchor = [pinCodeLabel9 leadingAnchor];
+    containerView4 = [(CBRemoteSetupAuthenticationViewController *)self view];
+    trailingAnchor2 = [containerView4 leadingAnchor];
+    v106 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
     v120[1] = v106;
-    v105 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
-    v103 = [v105 trailingAnchor];
-    v104 = [(CBRemoteSetupAuthenticationViewController *)self view];
-    v102 = [v104 trailingAnchor];
-    v101 = [v103 constraintEqualToAnchor:v102 constant:0.0];
+    pinCodeLabel10 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
+    lastBaselineAnchor = [pinCodeLabel10 trailingAnchor];
+    containerView5 = [(CBRemoteSetupAuthenticationViewController *)self view];
+    topAnchor = [containerView5 trailingAnchor];
+    v101 = [lastBaselineAnchor constraintEqualToAnchor:topAnchor constant:0.0];
     v120[2] = v101;
-    v100 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
-    v98 = [v100 centerXAnchor];
-    v99 = [(CBRemoteSetupAuthenticationViewController *)self view];
-    v97 = [v99 centerXAnchor];
-    v96 = [v98 constraintEqualToAnchor:v97];
+    containerView6 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
+    bottomAnchor = [containerView6 centerXAnchor];
+    pinCodeLabel11 = [(CBRemoteSetupAuthenticationViewController *)self view];
+    bottomAnchor2 = [pinCodeLabel11 centerXAnchor];
+    v96 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v120[3] = v96;
-    v95 = [(CBRemoteSetupAuthenticationViewController *)self fallbackButton];
-    v93 = [v95 centerXAnchor];
-    v94 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
-    v92 = [v94 centerXAnchor];
-    v91 = [v93 constraintEqualToAnchor:v92];
+    fallbackButton5 = [(CBRemoteSetupAuthenticationViewController *)self fallbackButton];
+    centerXAnchor = [fallbackButton5 centerXAnchor];
+    buttonTray5 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
+    centerXAnchor2 = [buttonTray5 centerXAnchor];
+    v91 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v120[4] = v91;
-    v90 = [(CBRemoteSetupAuthenticationViewController *)self fallbackButton];
-    v88 = [v90 bottomAnchor];
-    v89 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
-    v87 = [v89 bottomAnchor];
-    v86 = [v88 constraintEqualToAnchor:v87];
+    fallbackButton6 = [(CBRemoteSetupAuthenticationViewController *)self fallbackButton];
+    bottomAnchor3 = [fallbackButton6 bottomAnchor];
+    buttonTray6 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
+    bottomAnchor4 = [buttonTray6 bottomAnchor];
+    v86 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v120[5] = v86;
-    v85 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
-    v83 = [v85 leadingAnchor];
-    v84 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
-    v82 = [v84 leadingAnchor];
-    v81 = [v83 constraintEqualToAnchor:v82];
+    qrCodeView6 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
+    leadingAnchor3 = [qrCodeView6 leadingAnchor];
+    containerView8 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
+    leadingAnchor4 = [containerView8 leadingAnchor];
+    v81 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v120[6] = v81;
-    v80 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
-    v78 = [v80 trailingAnchor];
-    v79 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
-    v77 = [v79 trailingAnchor];
-    v76 = [v78 constraintEqualToAnchor:v77];
+    qrCodeView7 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
+    trailingAnchor3 = [qrCodeView7 trailingAnchor];
+    containerView9 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
+    trailingAnchor4 = [containerView9 trailingAnchor];
+    v76 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v120[7] = v76;
-    v75 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
-    v73 = [v75 topAnchor];
-    v74 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
-    v72 = [v74 topAnchor];
-    v71 = [v73 constraintEqualToAnchor:v72];
+    qrCodeView8 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
+    topAnchor2 = [qrCodeView8 topAnchor];
+    containerView10 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
+    topAnchor3 = [containerView10 topAnchor];
+    v71 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v120[8] = v71;
-    v70 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
-    v68 = [v70 centerXAnchor];
-    v69 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
-    v67 = [v69 centerXAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67];
+    qrCodeView9 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
+    centerXAnchor3 = [qrCodeView9 centerXAnchor];
+    containerView11 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
+    centerXAnchor4 = [containerView11 centerXAnchor];
+    v66 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v120[9] = v66;
-    v65 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
-    v63 = [v65 widthAnchor];
-    v64 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
-    v62 = [v64 widthAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62];
+    qrCodeView10 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
+    widthAnchor = [qrCodeView10 widthAnchor];
+    containerView12 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
+    widthAnchor2 = [containerView12 widthAnchor];
+    v61 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v120[10] = v61;
-    v60 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
-    v59 = [v60 bottomAnchor];
-    v49 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
-    v50 = [v49 topAnchor];
-    v51 = [v59 constraintEqualToAnchor:v50];
+    qrCodeView11 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
+    bottomAnchor5 = [qrCodeView11 bottomAnchor];
+    buttonTray7 = [(CBRemoteSetupAuthenticationViewController *)self buttonTray];
+    topAnchor4 = [buttonTray7 topAnchor];
+    v51 = [bottomAnchor5 constraintEqualToAnchor:topAnchor4];
     v120[11] = v51;
-    v52 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
-    v53 = [v52 heightAnchor];
-    v54 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
-    v55 = [v54 heightAnchor];
-    v56 = [v53 constraintEqualToAnchor:v55];
+    qrCodeView12 = [(CBRemoteSetupAuthenticationViewController *)self qrCodeView];
+    heightAnchor = [qrCodeView12 heightAnchor];
+    containerView13 = [(CBRemoteSetupAuthenticationViewController *)self containerView];
+    heightAnchor2 = [containerView13 heightAnchor];
+    v56 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v120[12] = v56;
     v57 = [NSArray arrayWithObjects:v120 count:13];
     [NSLayoutConstraint activateConstraints:v57];
@@ -316,8 +316,8 @@
 LABEL_14:
   }
 
-  v58 = [(CBRemoteSetupAuthenticationViewController *)self view];
-  [v58 layoutIfNeeded];
+  view3 = [(CBRemoteSetupAuthenticationViewController *)self view];
+  [view3 layoutIfNeeded];
 
   objc_destroyWeak(&v117);
   objc_destroyWeak(&v119);
@@ -326,8 +326,8 @@ LABEL_14:
 - (void)didTapFallbackButton
 {
   [(CBRemoteSetupAuthenticationViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v3 = [(CBRemoteSetupAuthenticationViewController *)self remoteSetupManager];
-  [v3 changeDesiredAuthType:2];
+  remoteSetupManager = [(CBRemoteSetupAuthenticationViewController *)self remoteSetupManager];
+  [remoteSetupManager changeDesiredAuthType:2];
 }
 
 @end

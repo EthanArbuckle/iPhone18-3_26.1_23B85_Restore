@@ -1,15 +1,15 @@
 @interface HMAccessoryAllowedHost
-- (HMAccessoryAllowedHost)initWithCoder:(id)a3;
+- (HMAccessoryAllowedHost)initWithCoder:(id)coder;
 - (NSString)address;
 - (NSString)name;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMAccessoryAllowedHost
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = MEMORY[0x1E696AEC0];
@@ -23,10 +23,10 @@
 
 - (NSString)address
 {
-  v2 = [(HMAccessoryAllowedHost *)self addresses];
-  v3 = [v2 anyObject];
+  addresses = [(HMAccessoryAllowedHost *)self addresses];
+  anyObject = [addresses anyObject];
 
-  return v3;
+  return anyObject;
 }
 
 - (NSString)name
@@ -45,31 +45,31 @@
   return v4;
 }
 
-- (HMAccessoryAllowedHost)initWithCoder:(id)a3
+- (HMAccessoryAllowedHost)initWithCoder:(id)coder
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = HMAccessoryAllowedHost;
   v5 = [(HMAccessoryAllowedHost *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAAH.name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAAH.name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAAH.purpose"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAAH.purpose"];
     v5->_purpose = [v8 unsignedIntegerValue];
     v9 = MEMORY[0x1E695DFD8];
     v17[0] = objc_opt_class();
     v17[1] = objc_opt_class();
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
     v11 = [v9 setWithArray:v10];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"HMAAH.hostAddresses"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"HMAAH.hostAddresses"];
     addresses = v5->_addresses;
     v5->_addresses = v12;
 
-    v5->_unrestricted = [v4 decodeBoolForKey:@"HMAAH.unrestricted"];
+    v5->_unrestricted = [coderCopy decodeBoolForKey:@"HMAAH.unrestricted"];
   }
 
   v14 = *MEMORY[0x1E69E9840];

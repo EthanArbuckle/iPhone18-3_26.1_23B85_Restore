@@ -1,28 +1,28 @@
 @interface ICSettingsGesturesViewController
 - (BOOL)allowFingerToSwipeFromCornerOrDefaultFallback;
 - (BOOL)chamoisWindowingEnabled;
-- (ICSettingsGesturesViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ICSettingsGesturesViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NSBundle)settingsBundle;
 - (PSSpecifier)fingerSwipeSpecifier;
-- (id)allowFingerToSwipeFromCorner:(id)a3;
-- (id)bottomLeftCornerGestureFeature:(id)a3;
-- (id)bottomRightCornerGestureFeature:(id)a3;
+- (id)allowFingerToSwipeFromCorner:(id)corner;
+- (id)bottomLeftCornerGestureFeature:(id)feature;
+- (id)bottomRightCornerGestureFeature:(id)feature;
 - (id)fingerAndPencilSectionFooter;
 - (id)specifiers;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setAllowFingerToSwipeFromCorner:(id)a3 specifier:(id)a4;
-- (void)setBottomLeftCornerGestureFeature:(id)a3 specifier:(id)a4;
-- (void)setBottomRightCornerGestureFeature:(id)a3 specifier:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setAllowFingerToSwipeFromCorner:(id)corner specifier:(id)specifier;
+- (void)setBottomLeftCornerGestureFeature:(id)feature specifier:(id)specifier;
+- (void)setBottomRightCornerGestureFeature:(id)feature specifier:(id)specifier;
 @end
 
 @implementation ICSettingsGesturesViewController
 
-- (ICSettingsGesturesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICSettingsGesturesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = ICSettingsGesturesViewController;
-  v4 = [(ICSettingsGesturesViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(ICSettingsGesturesViewController *)&v10 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(ICSettingsGesturesDefaults);
@@ -48,23 +48,23 @@
   [(ICSettingsGesturesViewController *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  if (([(ICSettingsGesturesViewController *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/SettingsBundle/ICSettingsGesturesViewController.m"]& 1) != 0)
+  changeCopy = change;
+  objectCopy = object;
+  pathCopy = path;
+  if (([(ICSettingsGesturesViewController *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/SettingsBundle/ICSettingsGesturesViewController.m"]& 1) != 0)
   {
-    v13 = [(ICSettingsGesturesViewController *)self ic_shouldIgnoreObserveValue:v10 ofObject:v11 forKeyPath:v12];
+    v13 = [(ICSettingsGesturesViewController *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
-    if (a6 == &off_22918 && (v13 & 1) == 0)
+    if (context == &off_22918 && (v13 & 1) == 0)
     {
-      v14 = [(ICSettingsGesturesViewController *)self fingerSwipeSpecifier];
+      fingerSwipeSpecifier = [(ICSettingsGesturesViewController *)self fingerSwipeSpecifier];
       v15 = [NSNumber numberWithInt:[(ICSettingsGesturesViewController *)self chamoisWindowingEnabled]^ 1];
-      [v14 setProperty:v15 forKey:PSEnabledKey];
+      [fingerSwipeSpecifier setProperty:v15 forKey:PSEnabledKey];
 
-      v16 = [(ICSettingsGesturesViewController *)self fingerSwipeSpecifier];
-      [(ICSettingsGesturesViewController *)self reloadSpecifier:v16 animated:1];
+      fingerSwipeSpecifier2 = [(ICSettingsGesturesViewController *)self fingerSwipeSpecifier];
+      [(ICSettingsGesturesViewController *)self reloadSpecifier:fingerSwipeSpecifier2 animated:1];
     }
   }
 
@@ -72,7 +72,7 @@
   {
     v17.receiver = self;
     v17.super_class = ICSettingsGesturesViewController;
-    [(ICSettingsGesturesViewController *)&v17 observeValueForKeyPath:v12 ofObject:v11 change:v10 context:a6];
+    [(ICSettingsGesturesViewController *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -85,10 +85,10 @@
 
 - (id)fingerAndPencilSectionFooter
 {
-  v3 = [(ICSettingsGesturesViewController *)self allowFingerToSwipeFromCornerOrDefaultFallback];
-  v4 = [(ICSettingsGesturesViewController *)self settingsBundle];
-  v5 = v4;
-  if (v3)
+  allowFingerToSwipeFromCornerOrDefaultFallback = [(ICSettingsGesturesViewController *)self allowFingerToSwipeFromCornerOrDefaultFallback];
+  settingsBundle = [(ICSettingsGesturesViewController *)self settingsBundle];
+  v5 = settingsBundle;
+  if (allowFingerToSwipeFromCornerOrDefaultFallback)
   {
     v6 = @"FINGER_AND_PENCIL_GESTURES";
     v7 = @"Actions when you swipe your finger or pencil from a bottom corner.";
@@ -100,7 +100,7 @@
     v7 = @"Actions when you swipe your pencil from a bottom corner.";
   }
 
-  v8 = [v4 localizedStringForKey:v6 value:v7 table:@"Settings"];
+  v8 = [settingsBundle localizedStringForKey:v6 value:v7 table:@"Settings"];
 
   return v8;
 }
@@ -117,14 +117,14 @@
   else
   {
     v6 = +[NSMutableArray array];
-    v7 = [(ICSettingsGesturesViewController *)self settingsBundle];
-    v8 = [v7 localizedStringForKey:@"CORNER_GESTURES" value:@"Corner Gestures" table:@"Settings"];
+    settingsBundle = [(ICSettingsGesturesViewController *)self settingsBundle];
+    v8 = [settingsBundle localizedStringForKey:@"CORNER_GESTURES" value:@"Corner Gestures" table:@"Settings"];
     v9 = [PSSpecifier groupSpecifierWithName:v8];
 
     v40 = v9;
     [v6 addObject:v9];
-    v10 = [(ICSettingsGesturesViewController *)self settingsBundle];
-    v11 = [v10 localizedStringForKey:@"ALLOW_FINGER_TO_SWIPE_FROM_CORNER" value:@"Allow Finger to Swipe From Corner" table:@"Settings"];
+    settingsBundle2 = [(ICSettingsGesturesViewController *)self settingsBundle];
+    v11 = [settingsBundle2 localizedStringForKey:@"ALLOW_FINGER_TO_SWIPE_FROM_CORNER" value:@"Allow Finger to Swipe From Corner" table:@"Settings"];
 
     v39 = v11;
     v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:"setAllowFingerToSwipeFromCorner:specifier:" get:"allowFingerToSwipeFromCorner:" detail:0 cell:6 edit:0];
@@ -138,14 +138,14 @@
     [PSSpecifier groupSpecifierWithID:@"GESTURES"];
     v37 = v32 = v6;
     [v6 addObject:?];
-    v14 = [(ICSettingsGesturesViewController *)self settingsBundle];
-    v15 = [v14 localizedStringForKey:@"OFF" value:@"Off" table:@"Settings"];
+    settingsBundle3 = [(ICSettingsGesturesViewController *)self settingsBundle];
+    v15 = [settingsBundle3 localizedStringForKey:@"OFF" value:@"Off" table:@"Settings"];
 
-    v16 = [(ICSettingsGesturesViewController *)self settingsBundle];
-    v17 = [v16 localizedStringForKey:@"QUICK_NOTE" value:@"Quick Note" table:@"Settings"];
+    settingsBundle4 = [(ICSettingsGesturesViewController *)self settingsBundle];
+    v17 = [settingsBundle4 localizedStringForKey:@"QUICK_NOTE" value:@"Quick Note" table:@"Settings"];
 
-    v18 = [(ICSettingsGesturesViewController *)self settingsBundle];
-    v19 = [v18 localizedStringForKey:@"SCREENSHOT" value:@"Screenshot" table:@"Settings"];
+    settingsBundle5 = [(ICSettingsGesturesViewController *)self settingsBundle];
+    v19 = [settingsBundle5 localizedStringForKey:@"SCREENSHOT" value:@"Screenshot" table:@"Settings"];
 
     v20 = +[NSMutableArray array];
     [v20 addObject:&off_1EF98];
@@ -165,8 +165,8 @@
 
     v35 = v19;
     [v21 setObject:v19 forKeyedSubscript:&off_1EFC8];
-    v22 = [(ICSettingsGesturesViewController *)self settingsBundle];
-    v33 = [v22 localizedStringForKey:@"BOTTOM_LEFT_CORNER_SWIPE" value:@"Left Corner Swipe" table:@"Settings"];
+    settingsBundle6 = [(ICSettingsGesturesViewController *)self settingsBundle];
+    v33 = [settingsBundle6 localizedStringForKey:@"BOTTOM_LEFT_CORNER_SWIPE" value:@"Left Corner Swipe" table:@"Settings"];
 
     v34 = v17;
     v23 = [PSSpecifier preferenceSpecifierNamed:v33 target:self set:"setBottomLeftCornerGestureFeature:specifier:" get:"bottomLeftCornerGestureFeature:" detail:objc_opt_class() cell:2 edit:0];
@@ -174,16 +174,16 @@
     [v23 setValues:v20];
     [v23 setTitleDictionary:v21];
     [v32 addObject:v23];
-    v24 = [(ICSettingsGesturesViewController *)self settingsBundle];
-    v25 = [v24 localizedStringForKey:@"BOTTOM_RIGHT_CORNER_SWIPE" value:@"Right Corner Swipe" table:@"Settings"];
+    settingsBundle7 = [(ICSettingsGesturesViewController *)self settingsBundle];
+    v25 = [settingsBundle7 localizedStringForKey:@"BOTTOM_RIGHT_CORNER_SWIPE" value:@"Right Corner Swipe" table:@"Settings"];
 
     v26 = [PSSpecifier preferenceSpecifierNamed:v25 target:self set:"setBottomRightCornerGestureFeature:specifier:" get:"bottomRightCornerGestureFeature:" detail:objc_opt_class() cell:2 edit:0];
     [v26 setIdentifier:ICBottomRightCornerSwipePrefIdentifier];
     [v26 setValues:v20];
     [v26 setTitleDictionary:v21];
     [v32 addObject:v26];
-    v27 = [(ICSettingsGesturesViewController *)self settingsBundle];
-    v28 = [v27 localizedStringForKey:@"CORNER_GESTURES_FOOTER" value:@"Select the action that occurs when you swipe diagonally from the bottom corner." table:@"Settings"];
+    settingsBundle8 = [(ICSettingsGesturesViewController *)self settingsBundle];
+    v28 = [settingsBundle8 localizedStringForKey:@"CORNER_GESTURES_FOOTER" value:@"Select the action that occurs when you swipe diagonally from the bottom corner." table:@"Settings"];
 
     [v37 setProperty:v28 forKey:PSFooterTextGroupKey];
     v29 = [v32 copy];
@@ -196,132 +196,132 @@
   return v4;
 }
 
-- (id)allowFingerToSwipeFromCorner:(id)a3
+- (id)allowFingerToSwipeFromCorner:(id)corner
 {
   v4 = ![(ICSettingsGesturesViewController *)self chamoisWindowingEnabled]&& [(ICSettingsGesturesViewController *)self allowFingerToSwipeFromCornerOrDefaultFallback];
 
   return [NSNumber numberWithInt:v4];
 }
 
-- (void)setAllowFingerToSwipeFromCorner:(id)a3 specifier:(id)a4
+- (void)setAllowFingerToSwipeFromCorner:(id)corner specifier:(id)specifier
 {
-  -[ICSettingsGesturesViewController setBackingStoreForAllowFingerToSwipeFromCorner:](self, "setBackingStoreForAllowFingerToSwipeFromCorner:", [a3 BOOLValue]);
-  v5 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
-  v6 = [v5 bottomLeftTouchTypes];
+  -[ICSettingsGesturesViewController setBackingStoreForAllowFingerToSwipeFromCorner:](self, "setBackingStoreForAllowFingerToSwipeFromCorner:", [corner BOOLValue]);
+  cornerGestureDefaults = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
+  bottomLeftTouchTypes = [cornerGestureDefaults bottomLeftTouchTypes];
 
-  v7 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
-  v8 = [v7 bottomRightTouchTypes];
+  cornerGestureDefaults2 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
+  bottomRightTouchTypes = [cornerGestureDefaults2 bottomRightTouchTypes];
 
-  v9 = [(ICSettingsGesturesViewController *)self backingStoreForAllowFingerToSwipeFromCorner];
-  v10 = v6 | 1;
-  if (!v6)
+  backingStoreForAllowFingerToSwipeFromCorner = [(ICSettingsGesturesViewController *)self backingStoreForAllowFingerToSwipeFromCorner];
+  v10 = bottomLeftTouchTypes | 1;
+  if (!bottomLeftTouchTypes)
   {
     v10 = 0;
   }
 
-  v11 = v8 | 1;
-  if (!v8)
+  v11 = bottomRightTouchTypes | 1;
+  if (!bottomRightTouchTypes)
   {
     v11 = 0;
   }
 
-  if (v9)
+  if (backingStoreForAllowFingerToSwipeFromCorner)
   {
     v12 = v10;
   }
 
   else
   {
-    v12 = v6 & 0xFFFFFFFFFFFFFFFELL;
+    v12 = bottomLeftTouchTypes & 0xFFFFFFFFFFFFFFFELL;
   }
 
-  if (v9)
+  if (backingStoreForAllowFingerToSwipeFromCorner)
   {
     v13 = v11;
   }
 
   else
   {
-    v13 = v8 & 0xFFFFFFFFFFFFFFFELL;
+    v13 = bottomRightTouchTypes & 0xFFFFFFFFFFFFFFFELL;
   }
 
-  v14 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
-  [v14 setBottomLeftTouchTypes:v12];
+  cornerGestureDefaults3 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
+  [cornerGestureDefaults3 setBottomLeftTouchTypes:v12];
 
-  v15 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
-  [v15 setBottomRightTouchTypes:v13];
+  cornerGestureDefaults4 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
+  [cornerGestureDefaults4 setBottomRightTouchTypes:v13];
 }
 
-- (id)bottomLeftCornerGestureFeature:(id)a3
+- (id)bottomLeftCornerGestureFeature:(id)feature
 {
-  v3 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
-  v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 bottomLeftFeature]);
+  cornerGestureDefaults = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
+  v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [cornerGestureDefaults bottomLeftFeature]);
 
   return v4;
 }
 
-- (void)setBottomLeftCornerGestureFeature:(id)a3 specifier:(id)a4
+- (void)setBottomLeftCornerGestureFeature:(id)feature specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
-  v7 = [v6 bottomLeftTouchTypes];
+  featureCopy = feature;
+  cornerGestureDefaults = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
+  bottomLeftTouchTypes = [cornerGestureDefaults bottomLeftTouchTypes];
 
-  if ([(ICSettingsGesturesViewController *)self allowFingerToSwipeFromCornerOrDefaultFallback]&& (v7 & 1) == 0)
+  if ([(ICSettingsGesturesViewController *)self allowFingerToSwipeFromCornerOrDefaultFallback]&& (bottomLeftTouchTypes & 1) == 0)
   {
-    v8 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
-    [v8 setBottomLeftTouchTypes:v7 | 1];
+    cornerGestureDefaults2 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
+    [cornerGestureDefaults2 setBottomLeftTouchTypes:bottomLeftTouchTypes | 1];
   }
 
-  v9 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
-  v10 = [v5 integerValue];
+  cornerGestureDefaults3 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
+  integerValue = [featureCopy integerValue];
 
-  [v9 setBottomLeftFeature:v10];
-  v11 = [(ICSettingsGesturesViewController *)self fingerSwipeSpecifier];
-  [(ICSettingsGesturesViewController *)self reloadSpecifier:v11 animated:1];
+  [cornerGestureDefaults3 setBottomLeftFeature:integerValue];
+  fingerSwipeSpecifier = [(ICSettingsGesturesViewController *)self fingerSwipeSpecifier];
+  [(ICSettingsGesturesViewController *)self reloadSpecifier:fingerSwipeSpecifier animated:1];
 }
 
-- (id)bottomRightCornerGestureFeature:(id)a3
+- (id)bottomRightCornerGestureFeature:(id)feature
 {
-  v3 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
-  v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 bottomRightFeature]);
+  cornerGestureDefaults = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
+  v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [cornerGestureDefaults bottomRightFeature]);
 
   return v4;
 }
 
-- (void)setBottomRightCornerGestureFeature:(id)a3 specifier:(id)a4
+- (void)setBottomRightCornerGestureFeature:(id)feature specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
-  v7 = [v6 bottomRightTouchTypes];
+  featureCopy = feature;
+  cornerGestureDefaults = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
+  bottomRightTouchTypes = [cornerGestureDefaults bottomRightTouchTypes];
 
-  if ([(ICSettingsGesturesViewController *)self allowFingerToSwipeFromCornerOrDefaultFallback]&& (v7 & 1) == 0)
+  if ([(ICSettingsGesturesViewController *)self allowFingerToSwipeFromCornerOrDefaultFallback]&& (bottomRightTouchTypes & 1) == 0)
   {
-    v8 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
-    [v8 setBottomRightTouchTypes:v7 | 1];
+    cornerGestureDefaults2 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
+    [cornerGestureDefaults2 setBottomRightTouchTypes:bottomRightTouchTypes | 1];
   }
 
-  v9 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
-  v10 = [v5 integerValue];
+  cornerGestureDefaults3 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
+  integerValue = [featureCopy integerValue];
 
-  [v9 setBottomRightFeature:v10];
-  v11 = [(ICSettingsGesturesViewController *)self fingerSwipeSpecifier];
-  [(ICSettingsGesturesViewController *)self reloadSpecifier:v11 animated:1];
+  [cornerGestureDefaults3 setBottomRightFeature:integerValue];
+  fingerSwipeSpecifier = [(ICSettingsGesturesViewController *)self fingerSwipeSpecifier];
+  [(ICSettingsGesturesViewController *)self reloadSpecifier:fingerSwipeSpecifier animated:1];
 }
 
 - (BOOL)allowFingerToSwipeFromCornerOrDefaultFallback
 {
-  v3 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
-  v4 = [v3 bottomLeftTouchTypes];
+  cornerGestureDefaults = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
+  bottomLeftTouchTypes = [cornerGestureDefaults bottomLeftTouchTypes];
 
-  v5 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
-  v6 = [v5 bottomRightTouchTypes];
+  cornerGestureDefaults2 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
+  bottomRightTouchTypes = [cornerGestureDefaults2 bottomRightTouchTypes];
 
-  if (v6 | v4)
+  if (bottomRightTouchTypes | bottomLeftTouchTypes)
   {
-    v7 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
-    v8 = [v7 anyCornerGestureAllowsDirectTouches];
+    cornerGestureDefaults3 = [(ICSettingsGesturesViewController *)self cornerGestureDefaults];
+    anyCornerGestureAllowsDirectTouches = [cornerGestureDefaults3 anyCornerGestureAllowsDirectTouches];
 
-    return v8;
+    return anyCornerGestureAllowsDirectTouches;
   }
 
   else
@@ -333,8 +333,8 @@
 
 - (BOOL)chamoisWindowingEnabled
 {
-  v2 = [(ICSettingsGesturesViewController *)self springBoardDefaults];
-  v3 = [v2 BOOLForKey:@"SBChamoisWindowingEnabled"];
+  springBoardDefaults = [(ICSettingsGesturesViewController *)self springBoardDefaults];
+  v3 = [springBoardDefaults BOOLForKey:@"SBChamoisWindowingEnabled"];
 
   return v3;
 }

@@ -1,14 +1,14 @@
 @interface JetAnalytics
-+ (void)preloadWithAccount:(id)a3;
++ (void)preloadWithAccount:(id)account;
 - (_TtC21CloudRecommendationUI12JetAnalytics)init;
 @end
 
 @implementation JetAnalytics
 
-+ (void)preloadWithAccount:(id)a3
++ (void)preloadWithAccount:(id)account
 {
-  v3 = a3;
-  _s21CloudRecommendationUI12JetAnalyticsC7preload7accountySo9ACAccountC_tFZ_0(v3);
+  accountCopy = account;
+  _s21CloudRecommendationUI12JetAnalyticsC7preload7accountySo9ACAccountC_tFZ_0(accountCopy);
 }
 
 - (_TtC21CloudRecommendationUI12JetAnalytics)init

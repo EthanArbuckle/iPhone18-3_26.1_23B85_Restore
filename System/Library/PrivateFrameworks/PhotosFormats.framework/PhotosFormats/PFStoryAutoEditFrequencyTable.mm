@@ -1,13 +1,13 @@
 @interface PFStoryAutoEditFrequencyTable
-- (PFStoryAutoEditFrequencyTable)initWithValueCounts:(id)a3 randomNumberGenerator:(id)a4 fallbackValue:(id)a5;
-- (id)nextValuePassingTest:(id)a3;
+- (PFStoryAutoEditFrequencyTable)initWithValueCounts:(id)counts randomNumberGenerator:(id)generator fallbackValue:(id)value;
+- (id)nextValuePassingTest:(id)test;
 @end
 
 @implementation PFStoryAutoEditFrequencyTable
 
-- (id)nextValuePassingTest:(id)a3
+- (id)nextValuePassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = 2 * [(NSArray *)self->_baseTable count]+ 2;
   if ([(NSMutableArray *)self->_workingElements count]< v5)
   {
@@ -15,10 +15,10 @@
     [(NSMutableArray *)self->_workingElements addObjectsFromArray:v6];
   }
 
-  v7 = [(NSMutableArray *)self->_workingElements firstObject];
+  firstObject = [(NSMutableArray *)self->_workingElements firstObject];
   [(NSMutableArray *)self->_workingElements removeObjectAtIndex:0];
-  v8 = v4[2](v4, v7);
-  fallbackValue = v7;
+  v8 = testCopy[2](testCopy, firstObject);
+  fallbackValue = firstObject;
   if (v8)
   {
     goto LABEL_4;
@@ -33,9 +33,9 @@
   do
   {
     v12 = [(NSMutableArray *)self->_workingElements objectAtIndexedSubscript:v11 - 1];
-    if (v4[2](v4, v12))
+    if (testCopy[2](testCopy, v12))
     {
-      [(NSMutableArray *)self->_workingElements replaceObjectAtIndex:v11 - 1 withObject:v7];
+      [(NSMutableArray *)self->_workingElements replaceObjectAtIndex:v11 - 1 withObject:firstObject];
       v10 = v12;
     }
 
@@ -64,7 +64,7 @@ LABEL_14:
       do
       {
         v17 = [v15 objectAtIndexedSubscript:v16 - 1];
-        if (v4[2](v4, v17))
+        if (testCopy[2](testCopy, v17))
         {
           v10 = v17;
         }
@@ -95,9 +95,9 @@ LABEL_14:
     {
     }
 
-    [(NSMutableArray *)self->_workingElements insertObject:v7 atIndex:0];
+    [(NSMutableArray *)self->_workingElements insertObject:firstObject atIndex:0];
     v10 = 0;
-    if (v4[2](v4, self->_fallbackValue))
+    if (testCopy[2](testCopy, self->_fallbackValue))
     {
       fallbackValue = self->_fallbackValue;
 LABEL_4:
@@ -110,43 +110,43 @@ LABEL_27:
   return v10;
 }
 
-- (PFStoryAutoEditFrequencyTable)initWithValueCounts:(id)a3 randomNumberGenerator:(id)a4 fallbackValue:(id)a5
+- (PFStoryAutoEditFrequencyTable)initWithValueCounts:(id)counts randomNumberGenerator:(id)generator fallbackValue:(id)value
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  countsCopy = counts;
+  generatorCopy = generator;
+  valueCopy = value;
   v22.receiver = self;
   v22.super_class = PFStoryAutoEditFrequencyTable;
   v11 = [(PFStoryAutoEditFrequencyTable *)&v22 init];
   if (v11)
   {
-    v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
-    if ([v8 count])
+    v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(countsCopy, "count")}];
+    if ([countsCopy count])
     {
       v13 = 0;
       do
       {
-        v14 = [v8 objectAtIndexedSubscript:v13];
-        v15 = [v14 intValue];
+        v14 = [countsCopy objectAtIndexedSubscript:v13];
+        intValue = [v14 intValue];
 
-        if (v15 >= 1)
+        if (intValue >= 1)
         {
           do
           {
             v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v13];
             [v12 addObject:v16];
 
-            --v15;
+            --intValue;
           }
 
-          while (v15);
+          while (intValue);
         }
 
         ++v13;
       }
 
-      while (v13 < [v8 count]);
+      while (v13 < [countsCopy count]);
     }
 
     if (![v12 count])
@@ -154,11 +154,11 @@ LABEL_27:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543362;
-        v24 = v10;
+        v24 = valueCopy;
         _os_log_debug_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Empty frequency table. Inserting a default value of %{public}@ for safety.", buf, 0xCu);
       }
 
-      [v12 addObject:v10];
+      [v12 addObject:valueCopy];
     }
 
     v17 = [v12 copy];
@@ -169,8 +169,8 @@ LABEL_27:
     workingElements = v11->_workingElements;
     v11->_workingElements = v19;
 
-    objc_storeStrong(&v11->_randomNumberGenerator, a4);
-    objc_storeStrong(&v11->_fallbackValue, a5);
+    objc_storeStrong(&v11->_randomNumberGenerator, generator);
+    objc_storeStrong(&v11->_fallbackValue, value);
   }
 
   return v11;

@@ -3,19 +3,19 @@
 + (id)_subscriptionSourceKindPredicateTemplateValues;
 + (id)_subscriptionSourcePredicateTemplateValues;
 - (VSAppInstallationInfoCenter)appInstallationInfoCenter;
-- (id)_expressionByConvertingSubscriptionKeyPathInExpression:(id)a3 toAttributeKeysInEntity:(id)a4;
-- (id)_predicateTemplateForAppPredicate:(id)a3 withTask:(id)a4;
-- (id)_predicateTemplateForRequestKind:(int64_t)a3 fromTask:(id)a4;
-- (id)_predicateTemplateForSourceIdentifier:(id)a3;
-- (id)_predicateTemplateForSourceKind:(int64_t)a3;
-- (id)_predicateTemplateForSourceOfTask:(id)a3;
-- (id)_topLevelAccessPredicateForRequestKind:(int64_t)a3 fromTask:(id)a4;
-- (id)allowedSubscriptionSourceKindsPredicateForRequestKind:(int64_t)a3 fromTask:(id)a4;
-- (id)allowedSubscriptionSourcesPredicateForRequestKind:(int64_t)a3 fromTask:(id)a4;
-- (id)allowedSubscriptionsPredicateForRequestKind:(int64_t)a3 fromTask:(id)a4;
-- (id)allowedSubscriptionsPredicateForTask:(id)a3;
-- (id)predicateByConvertingSubscriptionKeyPathsInPredicate:(id)a3 toAttributeKeysInEntity:(id)a4;
-- (id)subscriptionFetchPredicateForTask:(id)a3 withOptions:(id)a4;
+- (id)_expressionByConvertingSubscriptionKeyPathInExpression:(id)expression toAttributeKeysInEntity:(id)entity;
+- (id)_predicateTemplateForAppPredicate:(id)predicate withTask:(id)task;
+- (id)_predicateTemplateForRequestKind:(int64_t)kind fromTask:(id)task;
+- (id)_predicateTemplateForSourceIdentifier:(id)identifier;
+- (id)_predicateTemplateForSourceKind:(int64_t)kind;
+- (id)_predicateTemplateForSourceOfTask:(id)task;
+- (id)_topLevelAccessPredicateForRequestKind:(int64_t)kind fromTask:(id)task;
+- (id)allowedSubscriptionSourceKindsPredicateForRequestKind:(int64_t)kind fromTask:(id)task;
+- (id)allowedSubscriptionSourcesPredicateForRequestKind:(int64_t)kind fromTask:(id)task;
+- (id)allowedSubscriptionsPredicateForRequestKind:(int64_t)kind fromTask:(id)task;
+- (id)allowedSubscriptionsPredicateForTask:(id)task;
+- (id)predicateByConvertingSubscriptionKeyPathsInPredicate:(id)predicate toAttributeKeysInEntity:(id)entity;
+- (id)subscriptionFetchPredicateForTask:(id)task withOptions:(id)options;
 @end
 
 @implementation VSSubscriptionPredicateFactory
@@ -89,7 +89,7 @@ id __76__VSSubscriptionPredicateFactory__subscriptionSourcePredicateTemplateValu
   block[1] = 3221225472;
   block[2] = __70__VSSubscriptionPredicateFactory__subscriptionPredicateTemplateValues__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_subscriptionPredicateTemplateValues___vs_lazy_init_predicate != -1)
   {
     dispatch_once(&_subscriptionPredicateTemplateValues___vs_lazy_init_predicate, block);
@@ -148,11 +148,11 @@ void __70__VSSubscriptionPredicateFactory__subscriptionPredicateTemplateValues__
   objc_autoreleasePoolPop(v7);
 }
 
-- (id)_predicateTemplateForSourceKind:(int64_t)a3
+- (id)_predicateTemplateForSourceKind:(int64_t)kind
 {
   v4 = [MEMORY[0x277CCA9C0] expressionForVariable:@"VSSubscriptionSourceKindVariableName"];
   v5 = MEMORY[0x277CCA9C0];
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:kind];
   v7 = [v5 expressionForConstantValue:v6];
 
   v8 = [objc_alloc(MEMORY[0x277CCA918]) initWithLeftExpression:v4 rightExpression:v7 modifier:0 type:4 options:0];
@@ -160,22 +160,22 @@ void __70__VSSubscriptionPredicateFactory__subscriptionPredicateTemplateValues__
   return v8;
 }
 
-- (id)_predicateTemplateForSourceIdentifier:(id)a3
+- (id)_predicateTemplateForSourceIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCA9C0];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [v3 expressionForVariable:@"VSSubscriptionSourceIdentifierVariableName"];
-  v6 = [MEMORY[0x277CCA9C0] expressionForConstantValue:v4];
+  v6 = [MEMORY[0x277CCA9C0] expressionForConstantValue:identifierCopy];
 
   v7 = [objc_alloc(MEMORY[0x277CCA918]) initWithLeftExpression:v5 rightExpression:v6 modifier:0 type:4 options:0];
 
   return v7;
 }
 
-- (id)_topLevelAccessPredicateForRequestKind:(int64_t)a3 fromTask:(id)a4
+- (id)_topLevelAccessPredicateForRequestKind:(int64_t)kind fromTask:(id)task
 {
-  v5 = a4;
-  if (([v5 shouldAllowAccessForBooleanEntitlement:@"com.apple.private.subscriptionservice.internal"] & 1) != 0 || (v6 = objc_msgSend(v5, "shouldAllowAccessForBooleanEntitlement:", @"com.apple.private.subscriptionservice.all-sources.read-only"), v7 = 0, !a3) && v6)
+  taskCopy = task;
+  if (([taskCopy shouldAllowAccessForBooleanEntitlement:@"com.apple.private.subscriptionservice.internal"] & 1) != 0 || (v6 = objc_msgSend(taskCopy, "shouldAllowAccessForBooleanEntitlement:", @"com.apple.private.subscriptionservice.all-sources.read-only"), v7 = 0, !kind) && v6)
   {
     v7 = [MEMORY[0x277CCAC30] predicateWithValue:1];
   }
@@ -183,31 +183,31 @@ void __70__VSSubscriptionPredicateFactory__subscriptionPredicateTemplateValues__
   return v7;
 }
 
-- (id)_predicateTemplateForAppPredicate:(id)a3 withTask:(id)a4
+- (id)_predicateTemplateForAppPredicate:(id)predicate withTask:(id)task
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  taskCopy = task;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v7 shouldAllowAccessForBooleanEntitlement:@"com.apple.smoot.subscriptionservice"])
+  if ([taskCopy shouldAllowAccessForBooleanEntitlement:@"com.apple.smoot.subscriptionservice"])
   {
-    if (!v6)
+    if (!predicateCopy)
     {
       goto LABEL_7;
     }
 
 LABEL_6:
-    [v8 addObject:v6];
+    [v8 addObject:predicateCopy];
     goto LABEL_7;
   }
 
-  v9 = [v7 shouldAllowAccessForBooleanEntitlement:@"com.apple.developer.video-subscription-registration"];
-  if (v6 && (v9 & 1) != 0)
+  v9 = [taskCopy shouldAllowAccessForBooleanEntitlement:@"com.apple.developer.video-subscription-registration"];
+  if (predicateCopy && (v9 & 1) != 0)
   {
     goto LABEL_6;
   }
 
 LABEL_7:
-  if ([v7 shouldAllowAccessForBooleanEntitlement:@"com.apple.private.subscriptionservice.web-sources.read-write"])
+  if ([taskCopy shouldAllowAccessForBooleanEntitlement:@"com.apple.private.subscriptionservice.web-sources.read-write"])
   {
     v10 = [(VSSubscriptionPredicateFactory *)self _predicateTemplateForSourceKind:1];
     [v8 addObject:v10];
@@ -238,14 +238,14 @@ LABEL_7:
   return v13;
 }
 
-- (id)_predicateTemplateForSourceOfTask:(id)a3
+- (id)_predicateTemplateForSourceOfTask:(id)task
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v4 = [a3 signingIdentifier];
-  if (v4)
+  signingIdentifier = [task signingIdentifier];
+  if (signingIdentifier)
   {
     v5 = [(VSSubscriptionPredicateFactory *)self _predicateTemplateForSourceKind:0];
-    v6 = [(VSSubscriptionPredicateFactory *)self _predicateTemplateForSourceIdentifier:v4];
+    v6 = [(VSSubscriptionPredicateFactory *)self _predicateTemplateForSourceIdentifier:signingIdentifier];
     v7 = MEMORY[0x277CCA920];
     v11[0] = v5;
     v11[1] = v6;
@@ -267,14 +267,14 @@ LABEL_7:
   return v9;
 }
 
-- (id)_predicateTemplateForRequestKind:(int64_t)a3 fromTask:(id)a4
+- (id)_predicateTemplateForRequestKind:(int64_t)kind fromTask:(id)task
 {
-  v6 = a4;
-  v7 = [(VSSubscriptionPredicateFactory *)self _topLevelAccessPredicateForRequestKind:a3 fromTask:v6];
+  taskCopy = task;
+  v7 = [(VSSubscriptionPredicateFactory *)self _topLevelAccessPredicateForRequestKind:kind fromTask:taskCopy];
   if (!v7)
   {
-    v8 = [(VSSubscriptionPredicateFactory *)self _predicateTemplateForSourceOfTask:v6];
-    v7 = [(VSSubscriptionPredicateFactory *)self _predicateTemplateForAppPredicate:v8 withTask:v6];
+    v8 = [(VSSubscriptionPredicateFactory *)self _predicateTemplateForSourceOfTask:taskCopy];
+    v7 = [(VSSubscriptionPredicateFactory *)self _predicateTemplateForAppPredicate:v8 withTask:taskCopy];
   }
 
   return v7;
@@ -291,18 +291,18 @@ LABEL_7:
   return v2;
 }
 
-- (id)allowedSubscriptionSourceKindsPredicateForRequestKind:(int64_t)a3 fromTask:(id)a4
+- (id)allowedSubscriptionSourceKindsPredicateForRequestKind:(int64_t)kind fromTask:(id)task
 {
-  v6 = a4;
-  v7 = [(VSSubscriptionPredicateFactory *)self _topLevelAccessPredicateForRequestKind:a3 fromTask:v6];
+  taskCopy = task;
+  v7 = [(VSSubscriptionPredicateFactory *)self _topLevelAccessPredicateForRequestKind:kind fromTask:taskCopy];
   if (!v7)
   {
     v8 = [(VSSubscriptionPredicateFactory *)self _predicateTemplateForSourceKind:0];
-    v7 = [(VSSubscriptionPredicateFactory *)self _predicateTemplateForAppPredicate:v8 withTask:v6];
+    v7 = [(VSSubscriptionPredicateFactory *)self _predicateTemplateForAppPredicate:v8 withTask:taskCopy];
   }
 
-  v9 = [objc_opt_class() _subscriptionSourceKindPredicateTemplateValues];
-  v10 = [v7 predicateWithSubstitutionVariables:v9];
+  _subscriptionSourceKindPredicateTemplateValues = [objc_opt_class() _subscriptionSourceKindPredicateTemplateValues];
+  v10 = [v7 predicateWithSubstitutionVariables:_subscriptionSourceKindPredicateTemplateValues];
 
   v11 = [VSOptional optionalWithObject:v10];
   v12 = [MEMORY[0x277CCAC30] predicateWithValue:0];
@@ -311,11 +311,11 @@ LABEL_7:
   return v13;
 }
 
-- (id)allowedSubscriptionSourcesPredicateForRequestKind:(int64_t)a3 fromTask:(id)a4
+- (id)allowedSubscriptionSourcesPredicateForRequestKind:(int64_t)kind fromTask:(id)task
 {
-  v4 = [(VSSubscriptionPredicateFactory *)self _predicateTemplateForRequestKind:a3 fromTask:a4];
-  v5 = [objc_opt_class() _subscriptionSourcePredicateTemplateValues];
-  v6 = [v4 predicateWithSubstitutionVariables:v5];
+  v4 = [(VSSubscriptionPredicateFactory *)self _predicateTemplateForRequestKind:kind fromTask:task];
+  _subscriptionSourcePredicateTemplateValues = [objc_opt_class() _subscriptionSourcePredicateTemplateValues];
+  v6 = [v4 predicateWithSubstitutionVariables:_subscriptionSourcePredicateTemplateValues];
 
   v7 = [VSOptional optionalWithObject:v6];
   v8 = [MEMORY[0x277CCAC30] predicateWithValue:0];
@@ -324,11 +324,11 @@ LABEL_7:
   return v9;
 }
 
-- (id)allowedSubscriptionsPredicateForTask:(id)a3
+- (id)allowedSubscriptionsPredicateForTask:(id)task
 {
-  v3 = [(VSSubscriptionPredicateFactory *)self _predicateTemplateForSourceOfTask:a3];
-  v4 = [objc_opt_class() _subscriptionPredicateTemplateValues];
-  v5 = [v3 predicateWithSubstitutionVariables:v4];
+  v3 = [(VSSubscriptionPredicateFactory *)self _predicateTemplateForSourceOfTask:task];
+  _subscriptionPredicateTemplateValues = [objc_opt_class() _subscriptionPredicateTemplateValues];
+  v5 = [v3 predicateWithSubstitutionVariables:_subscriptionPredicateTemplateValues];
 
   v6 = [VSOptional optionalWithObject:v5];
   v7 = [MEMORY[0x277CCAC30] predicateWithValue:0];
@@ -337,11 +337,11 @@ LABEL_7:
   return v8;
 }
 
-- (id)allowedSubscriptionsPredicateForRequestKind:(int64_t)a3 fromTask:(id)a4
+- (id)allowedSubscriptionsPredicateForRequestKind:(int64_t)kind fromTask:(id)task
 {
-  v4 = [(VSSubscriptionPredicateFactory *)self _predicateTemplateForRequestKind:a3 fromTask:a4];
-  v5 = [objc_opt_class() _subscriptionPredicateTemplateValues];
-  v6 = [v4 predicateWithSubstitutionVariables:v5];
+  v4 = [(VSSubscriptionPredicateFactory *)self _predicateTemplateForRequestKind:kind fromTask:task];
+  _subscriptionPredicateTemplateValues = [objc_opt_class() _subscriptionPredicateTemplateValues];
+  v6 = [v4 predicateWithSubstitutionVariables:_subscriptionPredicateTemplateValues];
 
   v7 = [VSOptional optionalWithObject:v6];
   v8 = [MEMORY[0x277CCAC30] predicateWithValue:0];
@@ -350,11 +350,11 @@ LABEL_7:
   return v9;
 }
 
-- (id)subscriptionFetchPredicateForTask:(id)a3 withOptions:(id)a4
+- (id)subscriptionFetchPredicateForTask:(id)task withOptions:(id)options
 {
   v79[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  optionsCopy = options;
   context = objc_autoreleasePoolPush();
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v9 = +[VSFeatureManager sharedFeatureManager];
@@ -362,44 +362,44 @@ LABEL_7:
 
   if ((v10 & 1) == 0)
   {
-    if (!v6)
+    if (!taskCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Security task is required when %@ feature is disabled.", VSFederatedTwoFeatureName}];
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The taskOrNil parameter must not be nil."];
     }
 
-    v11 = [(VSSubscriptionPredicateFactory *)self allowedSubscriptionsPredicateForRequestKind:0 fromTask:v6];
+    v11 = [(VSSubscriptionPredicateFactory *)self allowedSubscriptionsPredicateForRequestKind:0 fromTask:taskCopy];
     if (v11)
     {
       [v8 addObject:v11];
     }
   }
 
-  v70 = v6;
-  v12 = [v7 objectForKey:@"VSSubscriptionFetchOptionEarliestExpirationDate"];
-  if (!v12)
+  v70 = taskCopy;
+  date = [optionsCopy objectForKey:@"VSSubscriptionFetchOptionEarliestExpirationDate"];
+  if (!date)
   {
-    v12 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
   v13 = 0x277CCA000uLL;
-  v68 = v12;
-  v67 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %@", @"expirationDate", v12];
+  v68 = date;
+  v67 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %@", @"expirationDate", date];
   [v8 addObject:?];
-  v14 = [v7 objectForKey:@"VSSubscriptionFetchOptionExcludeUninstalledApps"];
-  v15 = [v14 BOOLValue];
+  v14 = [optionsCopy objectForKey:@"VSSubscriptionFetchOptionExcludeUninstalledApps"];
+  bOOLValue = [v14 BOOLValue];
 
-  if (v15)
+  if (bOOLValue)
   {
-    v65 = [(VSSubscriptionPredicateFactory *)self appInstallationInfoCenter];
-    v16 = [v65 installedAppBundleIDs];
-    v63 = [v16 forceUnwrapObject];
+    appInstallationInfoCenter = [(VSSubscriptionPredicateFactory *)self appInstallationInfoCenter];
+    installedAppBundleIDs = [appInstallationInfoCenter installedAppBundleIDs];
+    forceUnwrapObject = [installedAppBundleIDs forceUnwrapObject];
 
     v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != %@", @"source.kind", &unk_284DF32B0];
     [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"source.kind", &unk_284DF32B0];
     v19 = v18 = v8;
-    [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"source.identifier", v63];
-    v21 = v20 = v7;
+    [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"source.identifier", forceUnwrapObject];
+    v21 = v20 = optionsCopy;
     v22 = MEMORY[0x277CCA920];
     v79[0] = v19;
     v79[1] = v21;
@@ -414,33 +414,33 @@ LABEL_7:
     v27 = [v25 orPredicateWithSubpredicates:v26];
 
     [v18 addObject:v27];
-    v7 = v20;
+    optionsCopy = v20;
 
     v8 = v18;
   }
 
-  v28 = [v7 objectForKey:@"VSSubscriptionFetchOptionCreationDateInterval"];
+  v28 = [optionsCopy objectForKey:@"VSSubscriptionFetchOptionCreationDateInterval"];
   if (!v28)
   {
     v29 = objc_alloc(MEMORY[0x277CCA970]);
-    v30 = [MEMORY[0x277CBEAA8] distantPast];
-    v31 = [MEMORY[0x277CBEAA8] distantFuture];
-    v28 = [v29 initWithStartDate:v30 endDate:v31];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    v28 = [v29 initWithStartDate:distantPast endDate:distantFuture];
   }
 
   v32 = MEMORY[0x277CCAC30];
-  v33 = [v28 startDate];
-  v34 = [v28 endDate];
-  v35 = [v32 predicateWithFormat:@"%K BETWEEN {%@, %@}", @"creationDate", v33, v34];
+  startDate = [v28 startDate];
+  endDate = [v28 endDate];
+  v35 = [v32 predicateWithFormat:@"%K BETWEEN {%@, %@}", @"creationDate", startDate, endDate];
 
   [v8 addObject:v35];
-  v36 = [v7 objectForKey:@"VSSubscriptionFetchOptionSources"];
+  v36 = [optionsCopy objectForKey:@"VSSubscriptionFetchOptionSources"];
   if (v36)
   {
     v61 = v35;
     v62 = v28;
     v64 = v8;
-    v66 = v7;
+    v66 = optionsCopy;
     v37 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v73 = 0u;
     v74 = 0u;
@@ -474,8 +474,8 @@ LABEL_7:
           }
 
           v48 = [v37 objectForKeyedSubscript:v45];
-          v49 = [v43 identifier];
-          [v48 addObject:v49];
+          identifier = [v43 identifier];
+          [v48 addObject:identifier];
 
           objc_autoreleasePoolPop(v44);
         }
@@ -500,7 +500,7 @@ LABEL_7:
       v8 = v64;
       [v64 addObject:v52];
 
-      v7 = v66;
+      optionsCopy = v66;
       v13 = 0x277CCA000;
     }
 
@@ -510,7 +510,7 @@ LABEL_7:
       v51 = [MEMORY[0x277CCAC30] predicateWithValue:0];
       v8 = v64;
       [v64 addObject:v51];
-      v7 = v66;
+      optionsCopy = v66;
     }
 
     v35 = v61;
@@ -518,14 +518,14 @@ LABEL_7:
     v36 = v60;
   }
 
-  v53 = [v7 objectForKey:@"VSSubscriptionFetchOptionSourceKind"];
+  v53 = [optionsCopy objectForKey:@"VSSubscriptionFetchOptionSourceKind"];
   if (v53)
   {
     v54 = [*(v13 + 3120) predicateWithFormat:@"%K == %@", @"source.kind", v53];
     [v8 addObject:v54];
   }
 
-  v55 = [v7 objectForKey:@"VSSubscriptionFetchOptionSubscriptionInfo"];
+  v55 = [optionsCopy objectForKey:@"VSSubscriptionFetchOptionSubscriptionInfo"];
   if (v55)
   {
     [*(v13 + 3120) predicateWithFormat:@"%K == %@", @"providedSubscriptionInfo", v55];
@@ -565,28 +565,28 @@ void __80__VSSubscriptionPredicateFactory_subscriptionFetchPredicateForTask_with
   [*(a1 + 32) addObject:v8];
 }
 
-- (id)_expressionByConvertingSubscriptionKeyPathInExpression:(id)a3 toAttributeKeysInEntity:(id)a4
+- (id)_expressionByConvertingSubscriptionKeyPathInExpression:(id)expression toAttributeKeysInEntity:(id)entity
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v39 = v5;
-  v7 = [v5 expressionType];
-  if (v7)
+  expressionCopy = expression;
+  entityCopy = entity;
+  v39 = expressionCopy;
+  expressionType = [expressionCopy expressionType];
+  if (expressionType)
   {
-    v36 = v6;
-    if (v7 == 14)
+    v36 = entityCopy;
+    if (expressionType == 14)
     {
       v37 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v17 = [v5 constantValue];
-      if ([v17 conformsToProtocol:&unk_284E09B08])
+      constantValue = [expressionCopy constantValue];
+      if ([constantValue conformsToProtocol:&unk_284E09B08])
       {
         v42 = 0u;
         v43 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v35 = v17;
-        v18 = v17;
+        v35 = constantValue;
+        v18 = constantValue;
         v19 = [v18 countByEnumeratingWithState:&v40 objects:v48 count:16];
         if (v19)
         {
@@ -615,16 +615,16 @@ void __80__VSSubscriptionPredicateFactory_subscriptionFetchPredicateForTask_with
                   v28 = NSStringFromClass(v27);
                   [v26 raise:v22 format:{@"Unexpectedly, object was %@, instead of NSExpression.", v28}];
 
-                  v6 = v36;
+                  entityCopy = v36;
                 }
 
-                v29 = [(VSSubscriptionPredicateFactory *)self _expressionByConvertingSubscriptionKeyPathInExpression:v24 toAttributeKeysInEntity:v6];
+                v29 = [(VSSubscriptionPredicateFactory *)self _expressionByConvertingSubscriptionKeyPathInExpression:v24 toAttributeKeysInEntity:entityCopy];
                 [v37 addObject:v29];
               }
 
               else
               {
-                [MEMORY[0x277CBEAD8] raise:v22 format:{@"Object (%@) in constant value is not an expression: %@", v24, v5}];
+                [MEMORY[0x277CBEAD8] raise:v22 format:{@"Object (%@) in constant value is not an expression: %@", v24, expressionCopy}];
               }
 
               objc_autoreleasePoolPop(v25);
@@ -636,7 +636,7 @@ void __80__VSSubscriptionPredicateFactory_subscriptionFetchPredicateForTask_with
           while (v20);
         }
 
-        v17 = v35;
+        constantValue = v35;
       }
 
       else
@@ -649,17 +649,17 @@ void __80__VSSubscriptionPredicateFactory_subscriptionFetchPredicateForTask_with
       v39 = v33;
     }
 
-    else if (v7 == 3)
+    else if (expressionType == 3)
     {
-      v8 = [v5 keyPath];
+      keyPath = [expressionCopy keyPath];
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v9 = [v6 attributesByName];
-      v10 = [v9 allValues];
+      attributesByName = [entityCopy attributesByName];
+      allValues = [attributesByName allValues];
 
-      v11 = [v10 countByEnumeratingWithState:&v44 objects:v49 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v44 objects:v49 count:16];
       if (v11)
       {
         v12 = v11;
@@ -670,18 +670,18 @@ void __80__VSSubscriptionPredicateFactory_subscriptionFetchPredicateForTask_with
           {
             if (*v45 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(allValues);
             }
 
             v15 = *(*(&v44 + 1) + 8 * j);
             if ([v15 vs_isSuitableForPurpose:1])
             {
-              v16 = [v15 vs_subscriptionKeyPath];
-              if ([v16 isEqual:v8])
+              vs_subscriptionKeyPath = [v15 vs_subscriptionKeyPath];
+              if ([vs_subscriptionKeyPath isEqual:keyPath])
               {
                 v30 = MEMORY[0x277CCA9C0];
-                v31 = [v15 name];
-                v32 = [v30 expressionForKeyPath:v31];
+                name = [v15 name];
+                v32 = [v30 expressionForKeyPath:name];
 
                 v39 = v32;
                 goto LABEL_31;
@@ -689,7 +689,7 @@ void __80__VSSubscriptionPredicateFactory_subscriptionFetchPredicateForTask_with
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v44 objects:v49 count:16];
+          v12 = [allValues countByEnumeratingWithState:&v44 objects:v49 count:16];
           if (v12)
           {
             continue;
@@ -699,27 +699,27 @@ void __80__VSSubscriptionPredicateFactory_subscriptionFetchPredicateForTask_with
         }
       }
 
-      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"No suitable replacement found for key path %@ in expression %@", v8, v39}];
+      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"No suitable replacement found for key path %@ in expression %@", keyPath, v39}];
 LABEL_31:
 
-      v6 = v36;
+      entityCopy = v36;
     }
 
     else
     {
-      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unexpected type of expression: %@", v5}];
+      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unexpected type of expression: %@", expressionCopy}];
     }
   }
 
   return v39;
 }
 
-- (id)predicateByConvertingSubscriptionKeyPathsInPredicate:(id)a3 toAttributeKeysInEntity:(id)a4
+- (id)predicateByConvertingSubscriptionKeyPathsInPredicate:(id)predicate toAttributeKeysInEntity:(id)entity
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  predicateCopy = predicate;
+  entityCopy = entity;
+  v8 = predicateCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -734,18 +734,18 @@ LABEL_31:
     }
 
     v13 = v8;
-    v14 = [v13 leftExpression];
-    v15 = [(VSSubscriptionPredicateFactory *)self _expressionByConvertingSubscriptionKeyPathInExpression:v14 toAttributeKeysInEntity:v7];
+    leftExpression = [v13 leftExpression];
+    v15 = [(VSSubscriptionPredicateFactory *)self _expressionByConvertingSubscriptionKeyPathInExpression:leftExpression toAttributeKeysInEntity:entityCopy];
 
-    v16 = [v13 rightExpression];
-    v17 = [(VSSubscriptionPredicateFactory *)self _expressionByConvertingSubscriptionKeyPathInExpression:v16 toAttributeKeysInEntity:v7];
+    rightExpression = [v13 rightExpression];
+    v17 = [(VSSubscriptionPredicateFactory *)self _expressionByConvertingSubscriptionKeyPathInExpression:rightExpression toAttributeKeysInEntity:entityCopy];
 
     v18 = objc_alloc(MEMORY[0x277CCA918]);
-    v19 = [v13 comparisonPredicateModifier];
-    v20 = [v13 predicateOperatorType];
-    v21 = [v13 options];
+    comparisonPredicateModifier = [v13 comparisonPredicateModifier];
+    predicateOperatorType = [v13 predicateOperatorType];
+    options = [v13 options];
 
-    v22 = [v18 initWithLeftExpression:v15 rightExpression:v17 modifier:v19 type:v20 options:v21];
+    v22 = [v18 initWithLeftExpression:v15 rightExpression:v17 modifier:comparisonPredicateModifier type:predicateOperatorType options:options];
 LABEL_16:
 
     goto LABEL_17;
@@ -771,8 +771,8 @@ LABEL_16:
     v43 = 0u;
     v44 = 0u;
     v40 = v27;
-    v28 = [v27 subpredicates];
-    v29 = [v28 countByEnumeratingWithState:&v41 objects:v45 count:16];
+    subpredicates = [v27 subpredicates];
+    v29 = [subpredicates countByEnumeratingWithState:&v41 objects:v45 count:16];
     if (v29)
     {
       v30 = v29;
@@ -783,18 +783,18 @@ LABEL_16:
         {
           if (*v42 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(subpredicates);
           }
 
           v33 = *(*(&v41 + 1) + 8 * i);
           v34 = objc_autoreleasePoolPush();
-          v35 = [(VSSubscriptionPredicateFactory *)self predicateByConvertingSubscriptionKeyPathsInPredicate:v33 toAttributeKeysInEntity:v7];
+          v35 = [(VSSubscriptionPredicateFactory *)self predicateByConvertingSubscriptionKeyPathsInPredicate:v33 toAttributeKeysInEntity:entityCopy];
           [v15 addObject:v35];
 
           objc_autoreleasePoolPop(v34);
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v41 objects:v45 count:16];
+        v30 = [subpredicates countByEnumeratingWithState:&v41 objects:v45 count:16];
       }
 
       while (v30);

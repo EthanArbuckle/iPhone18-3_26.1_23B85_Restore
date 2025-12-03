@@ -1,25 +1,25 @@
 @interface ExtensionViewController
-- (_TtC8PaperKit23ExtensionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8PaperKit23ExtensionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
 - (void)endSearch;
-- (void)handleLink:(id)a3;
-- (void)loadBookmark:(id)a3 readOnly:(BOOL)a4;
-- (void)loadPaper:(id)a3 paperBookmark:(id)a4 coherenceContextBookmark:(id)a5 encrypted:(BOOL)a6 userInterfaceState:(int64_t)a7;
-- (void)loadPaper:(id)a3 paperURL:(id)a4 coherenceContextURL:(id)a5 encrypted:(BOOL)a6 userInterfaceState:(int64_t)a7;
-- (void)reportSafeAreaInsetsWithTop:(double)a3 left:(double)a4 bottom:(double)a5 right:(double)a6;
+- (void)handleLink:(id)link;
+- (void)loadBookmark:(id)bookmark readOnly:(BOOL)only;
+- (void)loadPaper:(id)paper paperBookmark:(id)bookmark coherenceContextBookmark:(id)contextBookmark encrypted:(BOOL)encrypted userInterfaceState:(int64_t)state;
+- (void)loadPaper:(id)paper paperURL:(id)l coherenceContextURL:(id)rL encrypted:(BOOL)encrypted userInterfaceState:(int64_t)state;
+- (void)reportSafeAreaInsetsWithTop:(double)top left:(double)left bottom:(double)bottom right:(double)right;
 - (void)revertAllChanges;
-- (void)searchFor:(id)a3 ignoreCase:(BOOL)a4 wholeWords:(BOOL)a5 reply:(id)a6;
-- (void)searchScrollToVisible:(int64_t)a3;
-- (void)setHasLiveStreamMessenger:(BOOL)a3;
-- (void)setLinedPaperWithHorizontalLineSpacing:(double)a3 verticalLineSpacing:(double)a4 horizontalInset:(double)a5;
-- (void)setMathDocument:(id)a3;
-- (void)setMathEnabled:(BOOL)a3;
-- (void)setMathResult:(id)a3 expressionUUID:(id)a4;
-- (void)setPaperDocumentInlineThumbnailsVisible:(BOOL)a3;
-- (void)setScreenPotentialHeadroom:(double)a3;
-- (void)setTool:(id)a3;
-- (void)setUserInterfaceStyle:(int64_t)a3;
-- (void)setupWithData:(id)a3 transparentBackground:(BOOL)a4;
+- (void)searchFor:(id)for ignoreCase:(BOOL)case wholeWords:(BOOL)words reply:(id)reply;
+- (void)searchScrollToVisible:(int64_t)visible;
+- (void)setHasLiveStreamMessenger:(BOOL)messenger;
+- (void)setLinedPaperWithHorizontalLineSpacing:(double)spacing verticalLineSpacing:(double)lineSpacing horizontalInset:(double)inset;
+- (void)setMathDocument:(id)document;
+- (void)setMathEnabled:(BOOL)enabled;
+- (void)setMathResult:(id)result expressionUUID:(id)d;
+- (void)setPaperDocumentInlineThumbnailsVisible:(BOOL)visible;
+- (void)setScreenPotentialHeadroom:(double)headroom;
+- (void)setTool:(id)tool;
+- (void)setUserInterfaceStyle:(int64_t)style;
+- (void)setupWithData:(id)data transparentBackground:(BOOL)background;
 @end
 
 @implementation ExtensionViewController
@@ -29,13 +29,13 @@
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit23ExtensionViewController_hostRequestQueueSuspended) == 1)
   {
     v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit23ExtensionViewController_hostRequestQueue);
-    v4 = self;
+    selfCopy = self;
     dispatch_resume(v3);
   }
 
   else
   {
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6.receiver = self;
@@ -43,10 +43,10 @@
   [(ExtensionViewController *)&v6 dealloc];
 }
 
-- (void)loadPaper:(id)a3 paperURL:(id)a4 coherenceContextURL:(id)a5 encrypted:(BOOL)a6 userInterfaceState:(int64_t)a7
+- (void)loadPaper:(id)paper paperURL:(id)l coherenceContextURL:(id)rL encrypted:(BOOL)encrypted userInterfaceState:(int64_t)state
 {
-  v23 = a7;
-  v7 = a6;
+  stateCopy = state;
+  encryptedCopy = encrypted;
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation3URLVSgMd);
   MEMORY[0x1EEE9AC00](v10 - 8);
   v12 = &v22 - v11;
@@ -57,7 +57,7 @@
   v17 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v19 = v18;
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a5)
+  if (rL)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v20 = 0;
@@ -69,25 +69,25 @@
   }
 
   (*(v14 + 56))(v12, v20, 1, v13);
-  v21 = self;
-  ExtensionViewController.loadPaper(_:paperURL:coherenceContextURL:encrypted:userInterfaceState:)(v17, v19, v16, v12, v7, v23);
+  selfCopy = self;
+  ExtensionViewController.loadPaper(_:paperURL:coherenceContextURL:encrypted:userInterfaceState:)(v17, v19, v16, v12, encryptedCopy, stateCopy);
 
   outlined destroy of StocksKitCurrencyCache.Provider?(v12, &_s10Foundation3URLVSgMd);
   (*(v14 + 8))(v16, v13);
 }
 
-- (void)loadPaper:(id)a3 paperBookmark:(id)a4 coherenceContextBookmark:(id)a5 encrypted:(BOOL)a6 userInterfaceState:(int64_t)a7
+- (void)loadPaper:(id)paper paperBookmark:(id)bookmark coherenceContextBookmark:(id)contextBookmark encrypted:(BOOL)encrypted userInterfaceState:(int64_t)state
 {
-  v8 = a6;
+  encryptedCopy = encrypted;
   v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
-  v15 = a4;
-  v16 = self;
-  v17 = a5;
+  bookmarkCopy = bookmark;
+  selfCopy = self;
+  contextBookmarkCopy = contextBookmark;
   v18 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v20 = v19;
 
-  if (v17)
+  if (contextBookmarkCopy)
   {
     v21 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v23 = v22;
@@ -99,37 +99,37 @@
     v23 = 0xF000000000000000;
   }
 
-  ExtensionViewController.loadPaper(_:paperBookmark:coherenceContextBookmark:encrypted:userInterfaceState:)(v12, v14, v18, v20, v21, v23, v8, a7);
+  ExtensionViewController.loadPaper(_:paperBookmark:coherenceContextBookmark:encrypted:userInterfaceState:)(v12, v14, v18, v20, v21, v23, encryptedCopy, state);
   outlined consume of Data?(v21, v23);
   outlined consume of Data._Representation(v18, v20);
 }
 
-- (void)loadBookmark:(id)a3 readOnly:(BOOL)a4
+- (void)loadBookmark:(id)bookmark readOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
-  v10 = self;
+  onlyCopy = only;
+  bookmarkCopy = bookmark;
+  selfCopy = self;
   v7 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
 
-  ExtensionViewController.loadBookmark(_:readOnly:)(v7, v9, v4);
+  ExtensionViewController.loadBookmark(_:readOnly:)(v7, v9, onlyCopy);
   outlined consume of Data._Representation(v7, v9);
 }
 
-- (void)setupWithData:(id)a3 transparentBackground:(BOOL)a4
+- (void)setupWithData:(id)data transparentBackground:(BOOL)background
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v20 - v8;
-  v10 = a3;
-  v11 = self;
+  dataCopy = data;
+  selfCopy = self;
   v12 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
 
   v15 = type metadata accessor for TaskPriority();
   (*(*(v15 - 8) + 56))(v9, 1, 1, v15);
   type metadata accessor for MainActor();
-  v16 = v11;
+  v16 = selfCopy;
   outlined copy of Data._Representation(v12, v14);
   v17 = static MainActor.shared.getter();
   v18 = swift_allocObject();
@@ -137,7 +137,7 @@
   *(v18 + 16) = v17;
   *(v18 + 24) = v19;
   *(v18 + 32) = v16;
-  *(v18 + 40) = a4;
+  *(v18 + 40) = background;
   *(v18 + 48) = v12;
   *(v18 + 56) = v14;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v9, &async function pointer to partial apply for closure #1 in ExtensionViewController.setupWithData(_:transparentBackground:), v18);
@@ -145,14 +145,14 @@
   outlined consume of Data._Representation(v12, v14);
 }
 
-- (void)setTool:(id)a3
+- (void)setTool:(id)tool
 {
-  v4 = a3;
-  v5 = self;
-  ExtensionViewController.setTool(_:)(v4);
+  toolCopy = tool;
+  selfCopy = self;
+  ExtensionViewController.setTool(_:)(toolCopy);
 }
 
-- (void)setLinedPaperWithHorizontalLineSpacing:(double)a3 verticalLineSpacing:(double)a4 horizontalInset:(double)a5
+- (void)setLinedPaperWithHorizontalLineSpacing:(double)spacing verticalLineSpacing:(double)lineSpacing horizontalInset:(double)inset
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   MEMORY[0x1EEE9AC00](v9 - 8);
@@ -162,7 +162,7 @@
   v13 = swift_allocObject();
   swift_unknownObjectWeakInit();
   type metadata accessor for MainActor();
-  v14 = self;
+  selfCopy = self;
 
   v15 = static MainActor.shared.getter();
   v16 = swift_allocObject();
@@ -170,14 +170,14 @@
   *(v16 + 16) = v15;
   *(v16 + 24) = v17;
   *(v16 + 32) = v13;
-  *(v16 + 40) = a3;
-  *(v16 + 48) = a4;
-  *(v16 + 56) = a5;
+  *(v16 + 40) = spacing;
+  *(v16 + 48) = lineSpacing;
+  *(v16 + 56) = inset;
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v11, &async function pointer to partial apply for closure #1 in ExtensionViewController.setLinedPaper(horizontalLineSpacing:verticalLineSpacing:horizontalInset:), v16);
 }
 
-- (void)setHasLiveStreamMessenger:(BOOL)a3
+- (void)setHasLiveStreamMessenger:(BOOL)messenger
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -185,18 +185,18 @@
   v8 = type metadata accessor for TaskPriority();
   (*(*(v8 - 8) + 56))(v7, 1, 1, v8);
   type metadata accessor for MainActor();
-  v9 = self;
+  selfCopy = self;
   v10 = static MainActor.shared.getter();
   v11 = swift_allocObject();
   v12 = MEMORY[0x1E69E85E0];
   *(v11 + 16) = v10;
   *(v11 + 24) = v12;
-  *(v11 + 32) = a3;
-  *(v11 + 40) = v9;
+  *(v11 + 32) = messenger;
+  *(v11 + 40) = selfCopy;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v7, &async function pointer to partial apply for closure #1 in ExtensionViewController.setHasLiveStreamMessenger(_:), v11);
 }
 
-- (void)setUserInterfaceStyle:(int64_t)a3
+- (void)setUserInterfaceStyle:(int64_t)style
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -206,20 +206,20 @@
   v9 = swift_allocObject();
   swift_unknownObjectWeakInit();
   type metadata accessor for MainActor();
-  v10 = self;
+  selfCopy = self;
 
   v11 = static MainActor.shared.getter();
   v12 = swift_allocObject();
   v13 = MEMORY[0x1E69E85E0];
   v12[2] = v11;
   v12[3] = v13;
-  v12[4] = a3;
+  v12[4] = style;
   v12[5] = v9;
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v7, &async function pointer to partial apply for closure #1 in ExtensionViewController.setUserInterfaceStyle(_:), v12);
 }
 
-- (void)setScreenPotentialHeadroom:(double)a3
+- (void)setScreenPotentialHeadroom:(double)headroom
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -229,20 +229,20 @@
   v9 = swift_allocObject();
   swift_unknownObjectWeakInit();
   type metadata accessor for MainActor();
-  v10 = self;
+  selfCopy = self;
 
   v11 = static MainActor.shared.getter();
   v12 = swift_allocObject();
   v13 = MEMORY[0x1E69E85E0];
   *(v12 + 16) = v11;
   *(v12 + 24) = v13;
-  *(v12 + 32) = a3;
+  *(v12 + 32) = headroom;
   *(v12 + 40) = v9;
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v7, &async function pointer to partial apply for closure #1 in ExtensionViewController.setScreenPotentialHeadroom(_:), v12);
 }
 
-- (void)setPaperDocumentInlineThumbnailsVisible:(BOOL)a3
+- (void)setPaperDocumentInlineThumbnailsVisible:(BOOL)visible
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -252,7 +252,7 @@
   v9 = swift_allocObject();
   swift_unknownObjectWeakInit();
   type metadata accessor for MainActor();
-  v10 = self;
+  selfCopy = self;
 
   v11 = static MainActor.shared.getter();
   v12 = swift_allocObject();
@@ -260,12 +260,12 @@
   *(v12 + 16) = v11;
   *(v12 + 24) = v13;
   *(v12 + 32) = v9;
-  *(v12 + 40) = a3;
+  *(v12 + 40) = visible;
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCytSg_Tt2g5(0, 0, v7, &async function pointer to partial apply for closure #1 in ExtensionViewController.setPaperDocumentInlineThumbnailsVisible(_:), v12);
 }
 
-- (void)reportSafeAreaInsetsWithTop:(double)a3 left:(double)a4 bottom:(double)a5 right:(double)a6
+- (void)reportSafeAreaInsetsWithTop:(double)top left:(double)left bottom:(double)bottom right:(double)right
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   MEMORY[0x1EEE9AC00](v11 - 8);
@@ -275,17 +275,17 @@
   v15 = swift_allocObject();
   swift_unknownObjectWeakInit();
   type metadata accessor for MainActor();
-  v16 = self;
+  selfCopy = self;
 
   v17 = static MainActor.shared.getter();
   v18 = swift_allocObject();
   v19 = MEMORY[0x1E69E85E0];
   *(v18 + 16) = v17;
   *(v18 + 24) = v19;
-  *(v18 + 32) = a3;
-  *(v18 + 40) = a4;
-  *(v18 + 48) = a5;
-  *(v18 + 56) = a6;
+  *(v18 + 32) = top;
+  *(v18 + 40) = left;
+  *(v18 + 48) = bottom;
+  *(v18 + 56) = right;
   *(v18 + 64) = v15;
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v13, &async function pointer to partial apply for closure #1 in ExtensionViewController.reportSafeAreaInsets(top:left:bottom:right:), v18);
@@ -301,7 +301,7 @@
   v7 = swift_allocObject();
   swift_unknownObjectWeakInit();
   type metadata accessor for MainActor();
-  v8 = self;
+  selfCopy = self;
 
   v9 = static MainActor.shared.getter();
   v10 = swift_allocObject();
@@ -313,10 +313,10 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v5, &closure #1 in ExtensionViewController.revertAllChanges()partial apply, v10);
 }
 
-- (void)setMathDocument:(id)a3
+- (void)setMathDocument:(id)document
 {
-  v4 = a3;
-  v8 = self;
+  documentCopy = document;
+  selfCopy = self;
   v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
 
@@ -324,7 +324,7 @@
   outlined consume of Data._Representation(v5, v7);
 }
 
-- (void)setMathResult:(id)a3 expressionUUID:(id)a4
+- (void)setMathResult:(id)result expressionUUID:(id)d
 {
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
@@ -333,60 +333,60 @@
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = self;
+  selfCopy = self;
   ExtensionViewController.setMathResult(_:expressionUUID:)(v9, v11, v8);
 
   (*(v6 + 8))(v8, v5);
 }
 
-- (void)setMathEnabled:(BOOL)a3
+- (void)setMathEnabled:(BOOL)enabled
 {
-  v4 = self;
-  ExtensionViewController.setMathEnabled(_:)(a3);
+  selfCopy = self;
+  ExtensionViewController.setMathEnabled(_:)(enabled);
 }
 
-- (void)searchFor:(id)a3 ignoreCase:(BOOL)a4 wholeWords:(BOOL)a5 reply:(id)a6
+- (void)searchFor:(id)for ignoreCase:(BOOL)case wholeWords:(BOOL)words reply:(id)reply
 {
-  v6 = a5;
-  v7 = a4;
-  v9 = _Block_copy(a6);
+  wordsCopy = words;
+  caseCopy = case;
+  v9 = _Block_copy(reply);
   v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
   _Block_copy(v9);
-  v13 = self;
-  specialized ExtensionViewController.search(for:ignoreCase:wholeWords:reply:)(v10, v12, v7, v6, v13, v9);
+  selfCopy = self;
+  specialized ExtensionViewController.search(for:ignoreCase:wholeWords:reply:)(v10, v12, caseCopy, wordsCopy, selfCopy, v9);
   _Block_release(v9);
   _Block_release(v9);
 }
 
 - (void)endSearch
 {
-  v2 = self;
+  selfCopy = self;
   ExtensionViewController.endSearch()();
 }
 
-- (void)searchScrollToVisible:(int64_t)a3
+- (void)searchScrollToVisible:(int64_t)visible
 {
-  v4 = self;
-  ExtensionViewController.searchScrollToVisible(_:)(a3);
+  selfCopy = self;
+  ExtensionViewController.searchScrollToVisible(_:)(visible);
 }
 
-- (void)handleLink:(id)a3
+- (void)handleLink:(id)link
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   ExtensionViewController.handleLink(_:)();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (_TtC8PaperKit23ExtensionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8PaperKit23ExtensionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -398,8 +398,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return ExtensionViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return ExtensionViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

@@ -1,30 +1,30 @@
 @interface WLLockScreenCardsViewController
-- (BOOL)pluginHandleEvent:(int64_t)a3;
+- (BOOL)pluginHandleEvent:(int64_t)event;
 - (SBLockScreenPluginAgent)pluginAgent;
 - (SBLockScreenPluginAppearance)pluginAppearance;
 - (WLLockScreenCardsViewController)init;
-- (double)_animateViewBackgroundColor:(id)a3 from:(id)a4 to:(id)a5 delay:(double)a6 completion:(id)a7;
-- (double)dismissAnimated:(BOOL)a3 withCompletion:(id)a4;
-- (id)cardAtIndex:(unint64_t)a3;
-- (id)diffForCardAtIndex:(unint64_t)a3;
-- (id)pluginAnimateAppearanceTransition:(BOOL)a3 withCompletion:(id)a4;
+- (double)_animateViewBackgroundColor:(id)color from:(id)from to:(id)to delay:(double)delay completion:(id)completion;
+- (double)dismissAnimated:(BOOL)animated withCompletion:(id)completion;
+- (id)cardAtIndex:(unint64_t)index;
+- (id)diffForCardAtIndex:(unint64_t)index;
+- (id)pluginAnimateAppearanceTransition:(BOOL)transition withCompletion:(id)completion;
 - (int64_t)_overlayStyle;
 - (void)_createCoverSheetViewController;
 - (void)_createPassesView;
-- (void)_insertViewControllerIfNeeded:(id)a3;
+- (void)_insertViewControllerIfNeeded:(id)needed;
 - (void)_passViewNotificationTimerFired;
-- (void)_presentPassesAnimated:(BOOL)a3 completion:(id)a4;
+- (void)_presentPassesAnimated:(BOOL)animated completion:(id)completion;
 - (void)_updateViewState;
-- (void)authorizationCoverSheetViewControllerDidCompleteWithSuccess:(BOOL)a3;
+- (void)authorizationCoverSheetViewControllerDidCompleteWithSuccess:(BOOL)success;
 - (void)dealloc;
 - (void)disableIdleTimer;
 - (void)enableIdleTimer;
 - (void)loadView;
-- (void)openApplication:(id)a3;
-- (void)passLibrary:(id)a3 receivedUpdatedCatalog:(id)a4 passes:(id)a5 states:(id)a6;
-- (void)pluginDidDeactivateWithContext:(id)a3;
-- (void)pluginWillActivateWithContext:(id)a3;
-- (void)updateBacklightWithProgress:(double)a3;
+- (void)openApplication:(id)application;
+- (void)passLibrary:(id)library receivedUpdatedCatalog:(id)catalog passes:(id)passes states:(id)states;
+- (void)pluginDidDeactivateWithContext:(id)context;
+- (void)pluginWillActivateWithContext:(id)context;
+- (void)updateBacklightWithProgress:(double)progress;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -33,9 +33,9 @@
 - (WLLockScreenCardsViewController)init
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
     v5 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -43,7 +43,7 @@
       sub_6FA0(v5);
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -96,10 +96,10 @@
     }
 
     self = v7;
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -120,19 +120,19 @@
   [(WLLockScreenCardsViewController *)&v5 dealloc];
 }
 
-- (void)pluginWillActivateWithContext:(id)a3
+- (void)pluginWillActivateWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   self->_startIndex = 0;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"seedIndex"];
+  userInfo = [contextCopy userInfo];
+  v6 = [userInfo objectForKey:@"seedIndex"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     self->_startIndex = [v6 unsignedIntegerValue];
   }
 
-  v7 = [v5 PKArrayContaining:objc_opt_class() forKey:@"uniqueIDs"];
+  v7 = [userInfo PKArrayContaining:objc_opt_class() forKey:@"uniqueIDs"];
   if (v7)
   {
     objc_storeStrong(&self->_cardUniqueIDs, v7);
@@ -143,7 +143,7 @@
     [v9 loadContentSync];
   }
 
-  v10 = [v5 objectForKey:@"recordID"];
+  v10 = [userInfo objectForKey:@"recordID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -177,7 +177,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)pluginDidDeactivateWithContext:(id)a3
+- (void)pluginDidDeactivateWithContext:(id)context
 {
   self->_lockscreenActive = 0;
   [(WLLockScreenCardsViewController *)self _updateViewState];
@@ -218,15 +218,15 @@
 
   [(WLLockScreenView *)self->_lockScreenView setDelegate:self];
   [(WLLockScreenView *)self->_lockScreenView setAnimatingPresentation:1];
-  v5 = [(WLLockScreenCardsViewController *)self view];
-  [v5 addSubview:self->_lockScreenView];
+  view = [(WLLockScreenCardsViewController *)self view];
+  [view addSubview:self->_lockScreenView];
 
   if (self->_showCoverSheet)
   {
     [(WLLockScreenView *)self->_lockScreenView setDataSource:self];
-    v6 = [(WLLockScreenCardsViewController *)self viewIfLoaded];
-    [v6 setNeedsLayout];
-    [v6 layoutIfNeeded];
+    viewIfLoaded = [(WLLockScreenCardsViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
+    [viewIfLoaded layoutIfNeeded];
   }
 }
 
@@ -254,8 +254,8 @@
   v15.receiver = self;
   v15.super_class = WLLockScreenCardsViewController;
   [(WLLockScreenCardsViewController *)&v15 viewWillLayoutSubviews];
-  v3 = [(WLLockScreenCardsViewController *)self view];
-  [v3 bounds];
+  view = [(WLLockScreenCardsViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -271,9 +271,9 @@
   coverSheetViewController = self->_coverSheetViewController;
   if (coverSheetViewController)
   {
-    v14 = [(PKAuthorizationCoverSheetViewController *)coverSheetViewController view];
-    [v14 setFrame:{v5, v7, v9, v11}];
-    [v14 layoutIfNeeded];
+    view2 = [(PKAuthorizationCoverSheetViewController *)coverSheetViewController view];
+    [view2 setFrame:{v5, v7, v9, v11}];
+    [view2 layoutIfNeeded];
   }
 }
 
@@ -309,17 +309,17 @@
   if (v6)
   {
     passLibrary = self->_passLibrary;
-    v4 = [v6 uniqueID];
-    [(PKPassLibrary *)passLibrary notifyPassUsedWithIdentifier:v4 fromSource:2];
+    uniqueID = [v6 uniqueID];
+    [(PKPassLibrary *)passLibrary notifyPassUsedWithIdentifier:uniqueID fromSource:2];
   }
 
   notifyPassViewedTimer = self->_notifyPassViewedTimer;
   self->_notifyPassViewedTimer = 0;
 }
 
-- (void)authorizationCoverSheetViewControllerDidCompleteWithSuccess:(BOOL)a3
+- (void)authorizationCoverSheetViewControllerDidCompleteWithSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     [(WLLockScreenCardsViewController *)self _createPassesView];
     objc_initWeak(&location, self);
@@ -337,27 +337,27 @@
 
   else
   {
-    v5 = [(WLLockScreenCardsViewController *)self pluginAgent];
-    [v5 deactivatePluginController:self];
+    pluginAgent = [(WLLockScreenCardsViewController *)self pluginAgent];
+    [pluginAgent deactivatePluginController:self];
   }
 }
 
-- (void)passLibrary:(id)a3 receivedUpdatedCatalog:(id)a4 passes:(id)a5 states:(id)a6
+- (void)passLibrary:(id)library receivedUpdatedCatalog:(id)catalog passes:(id)passes states:(id)states
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_21FC;
   v8[3] = &unk_10520;
-  v9 = a5;
-  v10 = self;
-  v7 = v9;
+  passesCopy = passes;
+  selfCopy = self;
+  v7 = passesCopy;
   dispatch_async(&_dispatch_main_q, v8);
 }
 
-- (void)_presentPassesAnimated:(BOOL)a3 completion:(id)a4
+- (void)_presentPassesAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   v7 = [(NSArray *)self->_cardUniqueIDs count];
   if (v7)
   {
@@ -382,11 +382,11 @@
 
     v21 = [CLLocationManager alloc];
     v22 = PKPassKitCoreBundle();
-    v23 = [v22 bundlePath];
-    v24 = [v21 initWithEffectiveBundlePath:v23 delegate:self onQueue:&_dispatch_main_q];
+    bundlePath = [v22 bundlePath];
+    v24 = [v21 initWithEffectiveBundlePath:bundlePath delegate:self onQueue:&_dispatch_main_q];
 
     [v24 markAsHavingReceivedLocation];
-    if (!v4)
+    if (!animatedCopy)
     {
       goto LABEL_9;
     }
@@ -405,17 +405,17 @@ LABEL_7:
     v13 = v12;
     v34 = v13;
     [v11 pkui_setCompletionHandler:v33];
-    v14 = [(WLLockScreenView *)self->_lockScreenView translatedView];
-    v15 = [v14 layer];
-    v16 = [v15 valueForKeyPath:@"transform.translation.y"];
+    translatedView = [(WLLockScreenView *)self->_lockScreenView translatedView];
+    layer = [translatedView layer];
+    v16 = [layer valueForKeyPath:@"transform.translation.y"];
     [v11 setFromValue:v16];
 
-    v17 = [v14 layer];
+    layer2 = [translatedView layer];
     v18 = [NSNumber numberWithFloat:0.0];
-    [v17 setValue:v18 forKeyPath:@"transform.translation.y"];
+    [layer2 setValue:v18 forKeyPath:@"transform.translation.y"];
 
-    v19 = [v14 layer];
-    [v19 addAnimation:v11 forKey:@"transform.translation.y"];
+    layer3 = [translatedView layer];
+    [layer3 addAnimation:v11 forKey:@"transform.translation.y"];
 
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
@@ -426,7 +426,7 @@ LABEL_7:
     v27[1] = 3221225472;
     v27[2] = sub_2800;
     v27[3] = &unk_10598;
-    v29 = v6;
+    v29 = completionCopy;
     v30 = 0x3FD99999A0000000;
     v28 = v32;
     v20 = v32;
@@ -436,16 +436,16 @@ LABEL_7:
   }
 
 LABEL_6:
-  if (v4)
+  if (animatedCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_9:
   [(WLLockScreenView *)self->_lockScreenView setOffscreen:0];
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_11:
@@ -455,16 +455,16 @@ LABEL_11:
   self->_notifyPassViewedTimer = v25;
 }
 
-- (id)cardAtIndex:(unint64_t)a3
+- (id)cardAtIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_cardUniqueIDs count]<= a3)
+  if ([(NSArray *)self->_cardUniqueIDs count]<= index)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_cardUniqueIDs objectAtIndex:a3];
+    v5 = [(NSArray *)self->_cardUniqueIDs objectAtIndex:index];
     v6 = [(NSMutableDictionary *)self->_cardsByUniqueID objectForKey:v5];
     if (!v6)
     {
@@ -479,18 +479,18 @@ LABEL_11:
   return v6;
 }
 
-- (id)diffForCardAtIndex:(unint64_t)a3
+- (id)diffForCardAtIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_cardUniqueIDs count]<= a3)
+  if ([(NSArray *)self->_cardUniqueIDs count]<= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_cardUniqueIDs objectAtIndex:a3];
-    v6 = [(PKDiff *)self->_diff passUniqueID];
-    v7 = [v6 isEqualToString:v5];
+    v5 = [(NSArray *)self->_cardUniqueIDs objectAtIndex:index];
+    passUniqueID = [(PKDiff *)self->_diff passUniqueID];
+    v7 = [passUniqueID isEqualToString:v5];
 
     if (v7)
     {
@@ -506,15 +506,15 @@ LABEL_11:
   return v8;
 }
 
-- (double)dismissAnimated:(BOOL)a3 withCompletion:(id)a4
+- (double)dismissAnimated:(BOOL)animated withCompletion:(id)completion
 {
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_2E50;
   v28[3] = &unk_105C0;
   v28[4] = self;
-  v6 = a4;
-  v29 = v6;
+  completionCopy = completion;
+  v29 = completionCopy;
   v7 = objc_retainBlock(v28);
   staticGlyphResources = self->_staticGlyphResources;
   self->_staticGlyphResources = 0;
@@ -522,7 +522,7 @@ LABEL_11:
   [PKAuthenticator resetSharedRootContextWithCompletion:0];
   if (!self->_showCoverSheet)
   {
-    if (a3)
+    if (animated)
     {
       goto LABEL_6;
     }
@@ -533,7 +533,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!a3)
+  if (!animated)
   {
     goto LABEL_8;
   }
@@ -541,26 +541,26 @@ LABEL_8:
   if (self->_lockScreenView)
   {
 LABEL_6:
-    v9 = [(PKUISpringAnimationFactory *)self->_springAnimationFactory highFrameRateSpringAnimationWithKeyPath:@"transform.translation.y" reason:1];
-    [v9 setRemovedOnCompletion:1];
-    [v9 setFillMode:kCAFillModeBackwards];
-    [v9 setAdditive:0];
-    v10 = [(WLLockScreenView *)self->_lockScreenView translatedView];
-    v14 = [v10 layer];
-    v15 = [v14 valueForKeyPath:@"transform.translation.y"];
-    [v9 setFromValue:v15];
+    view = [(PKUISpringAnimationFactory *)self->_springAnimationFactory highFrameRateSpringAnimationWithKeyPath:@"transform.translation.y" reason:1];
+    [view setRemovedOnCompletion:1];
+    [view setFillMode:kCAFillModeBackwards];
+    [view setAdditive:0];
+    translatedView = [(WLLockScreenView *)self->_lockScreenView translatedView];
+    layer = [translatedView layer];
+    v15 = [layer valueForKeyPath:@"transform.translation.y"];
+    [view setFromValue:v15];
 
     v16 = +[UIScreen mainScreen];
     [v16 bounds];
     v18 = v17;
 
-    v19 = [v10 layer];
+    layer2 = [translatedView layer];
     *&v20 = v18;
     v21 = [NSNumber numberWithFloat:v20];
-    [v19 setValue:v21 forKeyPath:@"transform.translation.y"];
+    [layer2 setValue:v21 forKeyPath:@"transform.translation.y"];
 
-    v22 = [v10 layer];
-    [v22 addAnimation:v9 forKey:@"transform.translation.y"];
+    layer3 = [translatedView layer];
+    [layer3 addAnimation:view forKey:@"transform.translation.y"];
 
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
@@ -587,10 +587,10 @@ LABEL_6:
   [(PKAuthorizationCoverSheetViewController *)self->_coverSheetViewController fadeOutUIWithCompletion:0];
   [(PKAuthorizationCoverSheetViewController *)self->_coverSheetViewController invalidate];
   [(PKAuthenticator *)self->_coverSheetAuthenticator invalidate];
-  v9 = [(PKAuthorizationCoverSheetViewController *)self->_coverSheetViewController view];
-  v10 = +[UIColor systemGroupedBackgroundColor];
+  view = [(PKAuthorizationCoverSheetViewController *)self->_coverSheetViewController view];
+  translatedView = +[UIColor systemGroupedBackgroundColor];
   v11 = +[UIColor clearColor];
-  [(WLLockScreenCardsViewController *)self _animateViewBackgroundColor:v9 from:v10 to:v11 delay:v7 completion:0.0];
+  [(WLLockScreenCardsViewController *)self _animateViewBackgroundColor:view from:translatedView to:v11 delay:v7 completion:0.0];
   v13 = v12;
 
 LABEL_7:
@@ -616,8 +616,8 @@ LABEL_9:
     return 0;
   }
 
-  v4 = [(WLLockScreenCardsViewController *)self traitCollection];
-  if ([v4 userInterfaceStyle] == &dword_0 + 2)
+  traitCollection = [(WLLockScreenCardsViewController *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == &dword_0 + 2)
   {
     v3 = 1;
   }
@@ -630,33 +630,33 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)pluginHandleEvent:(int64_t)a3
+- (BOOL)pluginHandleEvent:(int64_t)event
 {
-  if ((a3 - 1) > 2)
+  if ((event - 1) > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = (a3 - 1) ^ 1;
+    v3 = (event - 1) ^ 1;
     [(WLLockScreenCardsViewController *)self dismissAnimated:1];
   }
 
   return v3 & 1;
 }
 
-- (id)pluginAnimateAppearanceTransition:(BOOL)a3 withCompletion:(id)a4
+- (id)pluginAnimateAppearanceTransition:(BOOL)transition withCompletion:(id)completion
 {
-  v4 = a3;
+  transitionCopy = transition;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_324C;
   v16[3] = &unk_10610;
-  v6 = a4;
-  v17 = v6;
+  completionCopy = completion;
+  v17 = completionCopy;
   v7 = objc_retainBlock(v16);
-  if (!v4)
+  if (!transitionCopy)
   {
     [(WLLockScreenCardsViewController *)self dismissAnimated:1 withCompletion:v7];
     v8 = [BSAnimationSettings settingsWithDuration:?];
@@ -673,10 +673,10 @@ LABEL_6:
   }
 
   v11 = objc_initWeak(&v15, self);
-  v12 = [(PKAuthorizationCoverSheetViewController *)self->_coverSheetViewController view];
+  view = [(PKAuthorizationCoverSheetViewController *)self->_coverSheetViewController view];
   v13 = +[UIColor clearColor];
   v14 = +[UIColor systemGroupedBackgroundColor];
-  [(WLLockScreenCardsViewController *)self _animateViewBackgroundColor:v12 from:v13 to:v14 delay:v7 completion:0.150000006];
+  [(WLLockScreenCardsViewController *)self _animateViewBackgroundColor:view from:v13 to:v14 delay:v7 completion:0.150000006];
 
   [(PKAuthorizationCoverSheetViewController *)self->_coverSheetViewController fadeInUIAnimated:1 performSynchronizedAnimation:0];
   +[PKSpringAnimationFactory defaultDuration];
@@ -710,9 +710,9 @@ LABEL_7:
   [v4 setIdleTimerDisabled:0 forReason:@"PassBookPluginShowPass"];
 }
 
-- (void)updateBacklightWithProgress:(double)a3
+- (void)updateBacklightWithProgress:(double)progress
 {
-  v4 = (1.0 - a3) * 177.219;
+  v4 = (1.0 - progress) * 177.219;
   v5 = SBUIGetUserAgent();
   *&v6 = v4;
   [v5 setMinimumBacklightLevel:0 animated:v6];
@@ -720,47 +720,47 @@ LABEL_7:
   [(WLLockScreenCardsViewController *)self enableIdleTimer];
 }
 
-- (void)openApplication:(id)a3
+- (void)openApplication:(id)application
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = self;
-  if (v6)
+  applicationCopy = application;
+  object = [applicationCopy object];
+  selfCopy = self;
+  if (selfCopy)
   {
-    v7 = v6;
-    v8 = v6;
+    v7 = selfCopy;
+    v8 = selfCopy;
     while (1)
     {
-      v9 = [(WLLockScreenCardsViewController *)v8 viewIfLoaded];
-      v10 = [v9 window];
+      viewIfLoaded = [(WLLockScreenCardsViewController *)v8 viewIfLoaded];
+      window = [viewIfLoaded window];
 
-      if (v10)
+      if (window)
       {
         break;
       }
 
-      v11 = [(WLLockScreenCardsViewController *)v7 presentedViewController];
-      v10 = v11;
-      if (v8 == v11)
+      presentedViewController = [(WLLockScreenCardsViewController *)v7 presentedViewController];
+      window = presentedViewController;
+      if (v8 == presentedViewController)
       {
 
-        v10 = 0;
+        window = 0;
       }
 
-      v8 = v10;
-      if (!v10)
+      v8 = window;
+      if (!window)
       {
         goto LABEL_11;
       }
     }
 
-    if (v10 == v5)
+    if (window == object)
     {
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_3524;
       v12[3] = &unk_10570;
-      v13 = v4;
+      v13 = applicationCopy;
       [(WLLockScreenCardsViewController *)v7 dismissAnimated:1 withCompletion:v12];
     }
   }
@@ -768,74 +768,74 @@ LABEL_7:
   else
   {
     v8 = 0;
-    v10 = 0;
+    window = 0;
   }
 
 LABEL_11:
 }
 
-- (void)_insertViewControllerIfNeeded:(id)a3
+- (void)_insertViewControllerIfNeeded:(id)needed
 {
-  v7 = a3;
-  v4 = [(WLLockScreenCardsViewController *)self viewIfLoaded];
-  if (v4)
+  neededCopy = needed;
+  viewIfLoaded = [(WLLockScreenCardsViewController *)self viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v5 = [v7 parentViewController];
+    parentViewController = [neededCopy parentViewController];
 
-    if (!v5)
+    if (!parentViewController)
     {
-      v6 = [v7 view];
-      [(WLLockScreenCardsViewController *)self addChildViewController:v7];
-      [v4 addSubview:v6];
-      [v7 didMoveToParentViewController:self];
+      view = [neededCopy view];
+      [(WLLockScreenCardsViewController *)self addChildViewController:neededCopy];
+      [viewIfLoaded addSubview:view];
+      [neededCopy didMoveToParentViewController:self];
       [(WLLockScreenCardsViewController *)self setNeedsStatusBarAppearanceUpdate];
-      [v4 setNeedsLayout];
-      [v4 layoutIfNeeded];
+      [viewIfLoaded setNeedsLayout];
+      [viewIfLoaded layoutIfNeeded];
     }
   }
 }
 
-- (double)_animateViewBackgroundColor:(id)a3 from:(id)a4 to:(id)a5 delay:(double)a6 completion:(id)a7
+- (double)_animateViewBackgroundColor:(id)color from:(id)from to:(id)to delay:(double)delay completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = [v11 layer];
+  colorCopy = color;
+  fromCopy = from;
+  toCopy = to;
+  completionCopy = completion;
+  layer = [colorCopy layer];
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 0;
-  v16 = [v11 traitCollection];
+  traitCollection = [colorCopy traitCollection];
   v25 = _NSConcreteStackBlock;
   v26 = 3221225472;
   v27 = sub_385C;
   v28 = &unk_10638;
   v30 = &v31;
-  v17 = v13;
+  v17 = toCopy;
   v29 = v17;
   PKUIPerformWithEffectiveTraitCollection();
 
   v18 = [PKSpringAnimationFactory springAnimationWithKeyPath:@"backgroundColor"];
   [v18 setAdditive:0];
-  [v18 setFromValue:{objc_msgSend(v12, "CGColor")}];
+  [v18 setFromValue:{objc_msgSend(fromCopy, "CGColor")}];
   [v18 setToValue:v32[3]];
   [v18 setBeginTimeMode:kCAAnimationRelative];
-  if (a6 != 0.0)
+  if (delay != 0.0)
   {
-    [v18 setBeginTime:a6];
+    [v18 setBeginTime:delay];
   }
 
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_3898;
   v23[3] = &unk_105E8;
-  v19 = v14;
+  v19 = completionCopy;
   v24 = v19;
   [v18 pkui_setCompletionHandler:v23];
-  [v15 addAnimation:v18 forKey:@"backgroundColor"];
+  [layer addAnimation:v18 forKey:@"backgroundColor"];
   CGColorRelease(v32[3]);
-  [v11 setBackgroundColor:v17];
+  [colorCopy setBackgroundColor:v17];
   [v18 duration];
   v21 = v20;
 

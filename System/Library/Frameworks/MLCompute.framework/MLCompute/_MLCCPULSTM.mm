@@ -1,13 +1,13 @@
 @interface _MLCCPULSTM
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6;
-+ (BOOL)setOptimizerDataForDevice:(id)a3 deviceOps:(id)a4 dataForInputWeights:(id)a5 dataForHiddenWeights:(id)a6 dataForPeepholeWeights:(id)a7 dataForBias:(id)a8;
-+ (id)layerWithDevice:(id)a3 lstmDescriptor:(id)a4 inputWeights:(id)a5 hiddenWeights:(id)a6 peepholeWeights:(id)a7 biasTerms:(id)a8 gateActivations:(id)a9 ouputResultActivation:(id)a10 inferenceOnly:(BOOL)a11;
-- (_MLCCPULSTM)initWithDevice:(id)a3 lstmDescriptor:(id)a4 inputWeights:(id)a5 hiddenWeights:(id)a6 peepholeWeights:(id)a7 biasTerms:(id)a8 gateActivations:(id)a9 outputResultActivation:(id)a10 inferenceOnly:(BOOL)a11;
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor;
++ (BOOL)setOptimizerDataForDevice:(id)device deviceOps:(id)ops dataForInputWeights:(id)weights dataForHiddenWeights:(id)hiddenWeights dataForPeepholeWeights:(id)peepholeWeights dataForBias:(id)bias;
++ (id)layerWithDevice:(id)device lstmDescriptor:(id)descriptor inputWeights:(id)weights hiddenWeights:(id)hiddenWeights peepholeWeights:(id)peepholeWeights biasTerms:(id)terms gateActivations:(id)activations ouputResultActivation:(id)self0 inferenceOnly:(BOOL)self1;
+- (_MLCCPULSTM)initWithDevice:(id)device lstmDescriptor:(id)descriptor inputWeights:(id)weights hiddenWeights:(id)hiddenWeights peepholeWeights:(id)peepholeWeights biasTerms:(id)terms gateActivations:(id)activations outputResultActivation:(id)self0 inferenceOnly:(BOOL)self1;
 @end
 
 @implementation _MLCCPULSTM
 
-- (_MLCCPULSTM)initWithDevice:(id)a3 lstmDescriptor:(id)a4 inputWeights:(id)a5 hiddenWeights:(id)a6 peepholeWeights:(id)a7 biasTerms:(id)a8 gateActivations:(id)a9 outputResultActivation:(id)a10 inferenceOnly:(BOOL)a11
+- (_MLCCPULSTM)initWithDevice:(id)device lstmDescriptor:(id)descriptor inputWeights:(id)weights hiddenWeights:(id)hiddenWeights peepholeWeights:(id)peepholeWeights biasTerms:(id)terms gateActivations:(id)activations outputResultActivation:(id)self0 inferenceOnly:(BOOL)self1
 {
   v11 = MEMORY[0x28223BE20](self);
   v13 = v12;
@@ -22,8 +22,8 @@
   v23 = v18;
   v24 = v16;
   v25 = v13;
-  v26 = a9;
-  v27 = a10;
+  activationsCopy = activations;
+  activationCopy = activation;
   v28 = MEMORY[0x277CBEBF8];
   v125 = [MEMORY[0x277CBEBF8] mutableCopy];
   bzero(v157, 0x13A0uLL);
@@ -38,15 +38,15 @@
   v34 = v31;
   v139 = v33;
   v35 = v24;
-  v138 = v26;
-  v136 = v27;
+  v138 = activationsCopy;
+  v136 = activationCopy;
   v156[0] = [v31 inputSize];
   v156[1] = [v31 hiddenSize];
-  v36 = [v31 hiddenSize];
-  v37 = [v31 layerCount];
-  v38 = [v31 isBidirectional];
+  hiddenSize = [v31 hiddenSize];
+  layerCount = [v31 layerCount];
+  isBidirectional = [v31 isBidirectional];
   v39 = 1;
-  if (v38)
+  if (isBidirectional)
   {
     v159 = 1;
     v39 = 2;
@@ -73,35 +73,35 @@
   setBNNSLSTMGateDesc(v164, v34);
   setBNNSLSTMGateDesc(v168, v34);
   setBNNSLSTMGateDesc(v172, v34);
-  addInputWeightPointersToGate(v160, v32, v38, v37, 0, v137, 1);
-  addInputWeightPointersToGate(v164, v32, v38, v37, 1, v137, 1);
-  addInputWeightPointersToGate(v168, v32, v38, v37, 2, v137, 1);
-  addInputWeightPointersToGate(v172, v32, v38, v37, 3, v137, 1);
-  if (v37 >= 2)
+  addInputWeightPointersToGate(v160, v32, isBidirectional, layerCount, 0, v137, 1);
+  addInputWeightPointersToGate(v164, v32, isBidirectional, layerCount, 1, v137, 1);
+  addInputWeightPointersToGate(v168, v32, isBidirectional, layerCount, 2, v137, 1);
+  addInputWeightPointersToGate(v172, v32, isBidirectional, layerCount, 3, v137, 1);
+  if (layerCount >= 2)
   {
-    addInputWeightPointersToGate(v160, v32, v38, v37, 0, v137, 0);
-    addInputWeightPointersToGate(v164, v32, v38, v37, 1, v137, 0);
-    addInputWeightPointersToGate(v168, v32, v38, v37, 2, v137, 0);
-    addInputWeightPointersToGate(v172, v32, v38, v37, 3, v137, 0);
+    addInputWeightPointersToGate(v160, v32, isBidirectional, layerCount, 0, v137, 0);
+    addInputWeightPointersToGate(v164, v32, isBidirectional, layerCount, 1, v137, 0);
+    addInputWeightPointersToGate(v168, v32, isBidirectional, layerCount, 2, v137, 0);
+    addInputWeightPointersToGate(v172, v32, isBidirectional, layerCount, 3, v137, 0);
   }
 
-  v45 = createParameterPointersForGate(v35, 0, v37, v38, v137);
+  v45 = createParameterPointersForGate(v35, 0, layerCount, isBidirectional, v137);
   v160[61] = [v45 bytes];
 
-  v46 = createParameterPointersForGate(v35, 1, v37, v38, v137);
+  v46 = createParameterPointersForGate(v35, 1, layerCount, isBidirectional, v137);
   v164[61] = [v46 bytes];
 
-  v47 = createParameterPointersForGate(v35, 2, v37, v38, v137);
+  v47 = createParameterPointersForGate(v35, 2, layerCount, isBidirectional, v137);
   v168[61] = [v47 bytes];
 
-  v48 = createParameterPointersForGate(v35, 3, v37, v38, v137);
+  v48 = createParameterPointersForGate(v35, 3, layerCount, isBidirectional, v137);
 
   v172[61] = [v48 bytes];
   if (v129)
   {
-    if (v37 == 1)
+    if (layerCount == 1)
     {
-      v49 = v38;
+      v49 = isBidirectional;
     }
 
     else
@@ -111,43 +111,43 @@
 
     if (v49)
     {
-      v50 = 4 * v36 * v37 * v39;
-      v51 = createBiDirectionalAndStackedGateWeightData(v50, v129, [v34 isBidirectional], v37, 0, v36, v139);
-      v162 = [v51 bytes];
+      v50 = 4 * hiddenSize * layerCount * v39;
+      v51 = createBiDirectionalAndStackedGateWeightData(v50, v129, [v34 isBidirectional], layerCount, 0, hiddenSize, v139);
+      bytes = [v51 bytes];
 
-      v52 = createBiDirectionalAndStackedGateWeightData(v50, v129, [v34 isBidirectional], v37, 1, v36, v139);
-      v166 = [v52 bytes];
+      v52 = createBiDirectionalAndStackedGateWeightData(v50, v129, [v34 isBidirectional], layerCount, 1, hiddenSize, v139);
+      bytes2 = [v52 bytes];
 
-      v53 = createBiDirectionalAndStackedGateWeightData(v50, v129, [v34 isBidirectional], v37, 2, v36, v139);
-      v170 = [v53 bytes];
+      v53 = createBiDirectionalAndStackedGateWeightData(v50, v129, [v34 isBidirectional], layerCount, 2, hiddenSize, v139);
+      bytes3 = [v53 bytes];
 
-      v54 = createBiDirectionalAndStackedGateWeightData(v50, v129, [v34 isBidirectional], v37, 3, v36, v139);
-      v174 = [v54 bytes];
+      v54 = createBiDirectionalAndStackedGateWeightData(v50, v129, [v34 isBidirectional], layerCount, 3, hiddenSize, v139);
+      bytes4 = [v54 bytes];
     }
 
     else
     {
       v55 = [v129 objectAtIndexedSubscript:0];
-      v56 = [v55 data];
-      v162 = [v56 bytes];
+      data = [v55 data];
+      bytes = [data bytes];
 
       v57 = [v129 objectAtIndexedSubscript:1];
-      v58 = [v57 data];
-      v166 = [v58 bytes];
+      data2 = [v57 data];
+      bytes2 = [data2 bytes];
 
       v59 = [v129 objectAtIndexedSubscript:2];
-      v60 = [v59 data];
-      v170 = [v60 bytes];
+      data3 = [v59 data];
+      bytes3 = [data3 bytes];
 
       v54 = [v129 objectAtIndexedSubscript:3];
-      v61 = [v54 data];
-      v174 = [v61 bytes];
+      data4 = [v54 data];
+      bytes4 = [data4 bytes];
     }
   }
 
   v122 = v35;
 
-  if (a11)
+  if (only)
   {
     v158 = 0;
   }
@@ -160,13 +160,13 @@
   v132 = [MEMORY[0x277CBEA90] dataWithBytes:v142 length:176];
   v62 = MEMORY[0x23EE75B70](v156);
   v127 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:malloc_type_valloc(v62 length:0x457F4D2EuLL) freeWhenDone:{v62, 1}];
-  v63 = [v34 inputSize];
-  v64 = [v34 hiddenSize];
-  v65 = [v34 layerCount];
-  v66 = [v34 isBidirectional];
-  v67 = [v34 usesBiases];
+  inputSize = [v34 inputSize];
+  hiddenSize2 = [v34 hiddenSize];
+  layerCount2 = [v34 layerCount];
+  isBidirectional2 = [v34 isBidirectional];
+  usesBiases = [v34 usesBiases];
   v68 = 8;
-  if (v67)
+  if (usesBiases)
   {
     v68 = 12;
   }
@@ -176,7 +176,7 @@
     v68 += 4;
   }
 
-  if (v65 > 1)
+  if (layerCount2 > 1)
   {
     v68 += 4;
   }
@@ -189,37 +189,37 @@
   v130 = [v69 mutableCopy];
   v70 = v34;
   v71 = 3;
-  v72 = [v34 isBidirectional];
+  isBidirectional3 = [v34 isBidirectional];
   v120 = v70;
   v73 = 0;
-  v74 = (v65 << v66) * v64;
+  v74 = (layerCount2 << isBidirectional2) * hiddenSize2;
   do
   {
     v75 = [v69 mutableCopy];
-    v76 = buildBNNSDescInputWeightMomentumForOneGate(v63, v64, v65, v72, 1);
+    v76 = buildBNNSDescInputWeightMomentumForOneGate(inputSize, hiddenSize2, layerCount2, isBidirectional3, 1);
     [v75 setObject:v76 atIndexedSubscript:0];
 
-    v77 = buildBNNSDescInputWeightMomentumForOneGate(v63, v64, v65, v72, 1);
+    v77 = buildBNNSDescInputWeightMomentumForOneGate(inputSize, hiddenSize2, layerCount2, isBidirectional3, 1);
     [v75 setObject:v77 atIndexedSubscript:1];
 
-    v78 = buildBNNSDescInputWeightMomentumForOneGate(v63, v64, v65, v72, 1);
+    v78 = buildBNNSDescInputWeightMomentumForOneGate(inputSize, hiddenSize2, layerCount2, isBidirectional3, 1);
     [v75 setObject:v78 atIndexedSubscript:2];
 
-    v79 = buildBNNSDescInputWeightMomentumForOneGate(v63, v64, v65, v72, 1);
+    v79 = buildBNNSDescInputWeightMomentumForOneGate(inputSize, hiddenSize2, layerCount2, isBidirectional3, 1);
     [v75 setObject:v79 atIndexedSubscript:3];
 
-    if (v65 >= 2)
+    if (layerCount2 >= 2)
     {
-      v80 = buildBNNSDescInputWeightMomentumForOneGate(v63, v64, v65, v72, 0);
+      v80 = buildBNNSDescInputWeightMomentumForOneGate(inputSize, hiddenSize2, layerCount2, isBidirectional3, 0);
       [v75 setObject:v80 atIndexedSubscript:4];
 
-      v81 = buildBNNSDescInputWeightMomentumForOneGate(v63, v64, v65, v72, 0);
+      v81 = buildBNNSDescInputWeightMomentumForOneGate(inputSize, hiddenSize2, layerCount2, isBidirectional3, 0);
       [v75 setObject:v81 atIndexedSubscript:5];
 
-      v82 = buildBNNSDescInputWeightMomentumForOneGate(v63, v64, v65, v72, 0);
+      v82 = buildBNNSDescInputWeightMomentumForOneGate(inputSize, hiddenSize2, layerCount2, isBidirectional3, 0);
       [v75 setObject:v82 atIndexedSubscript:6];
 
-      v83 = buildBNNSDescInputWeightMomentumForOneGate(v63, v64, v65, v72, 0);
+      v83 = buildBNNSDescInputWeightMomentumForOneGate(inputSize, hiddenSize2, layerCount2, isBidirectional3, 0);
       [v75 setObject:v83 atIndexedSubscript:7];
     }
 
@@ -234,16 +234,16 @@
   do
   {
     v86 = [v85 mutableCopy];
-    v87 = buildBNNSDescHiddenWeightMomentumForOneGate(v64, v65, v72);
+    v87 = buildBNNSDescHiddenWeightMomentumForOneGate(hiddenSize2, layerCount2, isBidirectional3);
     [v86 setObject:v87 atIndexedSubscript:0];
 
-    v88 = buildBNNSDescHiddenWeightMomentumForOneGate(v64, v65, v72);
+    v88 = buildBNNSDescHiddenWeightMomentumForOneGate(hiddenSize2, layerCount2, isBidirectional3);
     [v86 setObject:v88 atIndexedSubscript:1];
 
-    v89 = buildBNNSDescHiddenWeightMomentumForOneGate(v64, v65, v72);
+    v89 = buildBNNSDescHiddenWeightMomentumForOneGate(hiddenSize2, layerCount2, isBidirectional3);
     [v86 setObject:v89 atIndexedSubscript:2];
 
-    v90 = buildBNNSDescHiddenWeightMomentumForOneGate(v64, v65, v72);
+    v90 = buildBNNSDescHiddenWeightMomentumForOneGate(hiddenSize2, layerCount2, isBidirectional3);
     [v86 setObject:v90 atIndexedSubscript:3];
 
     [v135 setObject:v86 atIndexedSubscript:v84];
@@ -291,10 +291,10 @@
     v100 = v120;
     v101 = v138;
     v102 = v136;
-    v103 = [v100 layerCount];
+    layerCount3 = [v100 layerCount];
     v144[0] = [v100 inputSize];
     v144[1] = [v100 hiddenSize];
-    v144[3] = v103;
+    v144[3] = layerCount3;
     if ([v100 isBidirectional])
     {
       v146 = 1;
@@ -342,7 +342,7 @@
 
     [v98 setInputWeightsMomentumDescData:v140];
     [v98 setHiddenWeightsMomentumDescData:v135];
-    if (!a11)
+    if (!only)
     {
       v113 = MEMORY[0x277CBEBF8];
       v114 = [MEMORY[0x277CBEBF8] mutableCopy];
@@ -362,91 +362,91 @@
   return v117;
 }
 
-+ (id)layerWithDevice:(id)a3 lstmDescriptor:(id)a4 inputWeights:(id)a5 hiddenWeights:(id)a6 peepholeWeights:(id)a7 biasTerms:(id)a8 gateActivations:(id)a9 ouputResultActivation:(id)a10 inferenceOnly:(BOOL)a11
++ (id)layerWithDevice:(id)device lstmDescriptor:(id)descriptor inputWeights:(id)weights hiddenWeights:(id)hiddenWeights peepholeWeights:(id)peepholeWeights biasTerms:(id)terms gateActivations:(id)activations ouputResultActivation:(id)self0 inferenceOnly:(BOOL)self1
 {
-  v18 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
-  LOBYTE(v28) = a11;
-  v26 = [[a1 alloc] initWithDevice:v25 lstmDescriptor:v24 inputWeights:v23 hiddenWeights:v22 peepholeWeights:v21 biasTerms:v20 gateActivations:v19 outputResultActivation:v18 inferenceOnly:v28];
+  activationCopy = activation;
+  activationsCopy = activations;
+  termsCopy = terms;
+  peepholeWeightsCopy = peepholeWeights;
+  hiddenWeightsCopy = hiddenWeights;
+  weightsCopy = weights;
+  descriptorCopy = descriptor;
+  deviceCopy = device;
+  LOBYTE(v28) = only;
+  v26 = [[self alloc] initWithDevice:deviceCopy lstmDescriptor:descriptorCopy inputWeights:weightsCopy hiddenWeights:hiddenWeightsCopy peepholeWeights:peepholeWeightsCopy biasTerms:termsCopy gateActivations:activationsCopy outputResultActivation:activationCopy inferenceOnly:v28];
 
   return v26;
 }
 
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor
 {
-  v7 = a5;
-  v8 = [a4 objectAtIndexedSubscript:0];
-  v9 = [v8 params];
-  v10 = [v9 bytes];
-  v11 = [v8 lstmDeltaParams];
-  v12 = [v11 bytes];
-  v13 = [v7 objectAtIndexedSubscript:0];
+  tensorsCopy = tensors;
+  v8 = [ops objectAtIndexedSubscript:0];
+  params = [v8 params];
+  bytes = [params bytes];
+  lstmDeltaParams = [v8 lstmDeltaParams];
+  bytes2 = [lstmDeltaParams bytes];
+  v13 = [tensorsCopy objectAtIndexedSubscript:0];
 
-  v14 = [v13 descriptor];
-  v15 = [v14 shape];
+  descriptor = [v13 descriptor];
+  shape = [descriptor shape];
 
-  v16 = [v15 objectAtIndexedSubscript:{objc_msgSend(v8, "batchFirst") ^ 1}];
-  v17 = [v16 unsignedIntegerValue];
+  v16 = [shape objectAtIndexedSubscript:{objc_msgSend(v8, "batchFirst") ^ 1}];
+  unsignedIntegerValue = [v16 unsignedIntegerValue];
 
-  if ([v8 batchFirst] && objc_msgSend(v15, "count") == 4)
+  if ([v8 batchFirst] && objc_msgSend(shape, "count") == 4)
   {
-    v28 = v9;
-    v18 = v12;
+    v28 = params;
+    v18 = bytes2;
     v19 = 1;
-    v20 = 3;
+    unsignedIntegerValue2 = 3;
 LABEL_11:
-    v22 = [v15 objectAtIndexedSubscript:v20];
-    v20 = [v22 unsignedIntegerValue];
+    v22 = [shape objectAtIndexedSubscript:unsignedIntegerValue2];
+    unsignedIntegerValue2 = [v22 unsignedIntegerValue];
 
-    v23 = [v15 objectAtIndexedSubscript:v19];
-    v21 = [v23 unsignedIntegerValue];
+    v23 = [shape objectAtIndexedSubscript:v19];
+    unsignedIntegerValue3 = [v23 unsignedIntegerValue];
 
-    v12 = v18;
-    v9 = v28;
+    bytes2 = v18;
+    params = v28;
     goto LABEL_12;
   }
 
-  if ([v8 batchFirst] && objc_msgSend(v15, "count") == 3)
+  if ([v8 batchFirst] && objc_msgSend(shape, "count") == 3)
   {
-    v28 = v9;
-    v18 = v12;
+    v28 = params;
+    v18 = bytes2;
     v19 = 2;
-    v20 = 1;
+    unsignedIntegerValue2 = 1;
     goto LABEL_11;
   }
 
   if (([v8 batchFirst] & 1) == 0)
   {
-    v20 = 0;
-    if ([v15 count] != 3)
+    unsignedIntegerValue2 = 0;
+    if ([shape count] != 3)
     {
-      v21 = 0;
+      unsignedIntegerValue3 = 0;
       goto LABEL_12;
     }
 
-    v28 = v9;
-    v18 = v12;
+    v28 = params;
+    v18 = bytes2;
     v19 = 2;
     goto LABEL_11;
   }
 
-  v20 = 0;
-  v21 = 0;
+  unsignedIntegerValue2 = 0;
+  unsignedIntegerValue3 = 0;
 LABEL_12:
-  if (CPU_BuildBNNSLSTMInputAndOutput(v10, v17, v20, v21, v8) && CPU_BuildBNNSLSTMInputAndOutput(v12, v17, v20, v21, v8))
+  if (CPU_BuildBNNSLSTMInputAndOutput(bytes, unsignedIntegerValue, unsignedIntegerValue2, unsignedIntegerValue3, v8) && CPU_BuildBNNSLSTMInputAndOutput(bytes2, unsignedIntegerValue, unsignedIntegerValue2, unsignedIntegerValue3, v8))
   {
     objc_opt_class();
     v24 = objc_opt_new();
     [v8 setLayer:v24];
 
-    v25 = [v8 layer];
-    [v25 setFilter:0];
+    layer = [v8 layer];
+    [layer setFilter:0];
 
     v26 = 1;
   }
@@ -459,38 +459,38 @@ LABEL_12:
   return v26;
 }
 
-+ (BOOL)setOptimizerDataForDevice:(id)a3 deviceOps:(id)a4 dataForInputWeights:(id)a5 dataForHiddenWeights:(id)a6 dataForPeepholeWeights:(id)a7 dataForBias:(id)a8
++ (BOOL)setOptimizerDataForDevice:(id)device deviceOps:(id)ops dataForInputWeights:(id)weights dataForHiddenWeights:(id)hiddenWeights dataForPeepholeWeights:(id)peepholeWeights dataForBias:(id)bias
 {
-  v94 = a5;
-  v95 = a6;
-  v11 = a8;
-  v12 = [a4 objectAtIndexedSubscript:0];
+  weightsCopy = weights;
+  hiddenWeightsCopy = hiddenWeights;
+  biasCopy = bias;
+  v12 = [ops objectAtIndexedSubscript:0];
   if (([v12 inferenceOnly] & 1) == 0)
   {
-    v13 = [v94 objectAtIndexedSubscript:0];
-    v14 = [v13 optimizerData];
-    v15 = [v14 count];
+    v13 = [weightsCopy objectAtIndexedSubscript:0];
+    optimizerData = [v13 optimizerData];
+    v15 = [optimizerData count];
 
     [v12 setNumAccumulatorsPerParameter:v15];
-    v16 = [v12 numLayers];
-    v17 = [v12 biDirectional];
+    numLayers = [v12 numLayers];
+    biDirectional = [v12 biDirectional];
     if (v15)
     {
       v18 = 0;
       v19 = 8;
-      if (v17)
+      if (biDirectional)
       {
         v19 = 16;
       }
 
       size = v19;
-      v91 = v16 - 1;
-      v93 = v16;
-      v20 = 8 * ((v16 - 1) << v17);
-      v83 = 4 * v16;
-      v78 = v11;
-      v79 = 4 * v16 + 4;
-      v96 = v17;
+      v91 = numLayers - 1;
+      v93 = numLayers;
+      v20 = 8 * ((numLayers - 1) << biDirectional);
+      v83 = 4 * numLayers;
+      v78 = biasCopy;
+      v79 = 4 * numLayers + 4;
+      v96 = biDirectional;
       v21 = v12;
       v81 = v15;
       v82 = v20;
@@ -500,27 +500,27 @@ LABEL_12:
         for (i = 0; i != 4; ++i)
         {
           v23 = malloc_type_malloc(size, 0x80040B8603338uLL);
-          v24 = [v94 objectAtIndexedSubscript:i];
-          v25 = [v24 optimizerData];
-          v26 = [v25 objectAtIndexedSubscript:v18];
+          v24 = [weightsCopy objectAtIndexedSubscript:i];
+          optimizerData2 = [v24 optimizerData];
+          v26 = [optimizerData2 objectAtIndexedSubscript:v18];
           *v23 = [v26 bytes];
 
           if ([v12 biDirectional])
           {
-            v27 = [v94 objectAtIndexedSubscript:v83 + i];
-            v28 = [v27 optimizerData];
-            v29 = [v28 objectAtIndexedSubscript:v18];
+            v27 = [weightsCopy objectAtIndexedSubscript:v83 + i];
+            optimizerData3 = [v27 optimizerData];
+            v29 = [optimizerData3 objectAtIndexedSubscript:v18];
             v23[1] = [v29 bytes];
           }
 
           v30 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v23 length:size freeWhenDone:0];
           [v89 addObject:v30];
-          v31 = [v12 inputWeightsMomentumDescData];
-          v32 = [v31 objectAtIndexedSubscript:v18];
+          inputWeightsMomentumDescData = [v12 inputWeightsMomentumDescData];
+          v32 = [inputWeightsMomentumDescData objectAtIndexedSubscript:v18];
           v33 = [v32 objectAtIndexedSubscript:i];
-          v34 = [v33 bytes];
+          bytes = [v33 bytes];
 
-          *(v34 + 136) = [v30 bytes];
+          *(bytes + 136) = [v30 bytes];
         }
 
         v35 = v82;
@@ -538,17 +538,17 @@ LABEL_12:
             v86 = v37;
             do
             {
-              v41 = [v94 objectAtIndexedSubscript:v37];
-              v42 = [v41 optimizerData];
-              v43 = [v42 objectAtIndexedSubscript:v18];
+              v41 = [weightsCopy objectAtIndexedSubscript:v37];
+              optimizerData4 = [v41 optimizerData];
+              v43 = [optimizerData4 objectAtIndexedSubscript:v18];
               v44 = &v39[8 * (v40 << v96)];
               *v44 = [v43 bytes];
 
               if ([v21 biDirectional])
               {
-                v45 = [v94 objectAtIndexedSubscript:v38];
-                v46 = [v45 optimizerData];
-                v47 = [v46 objectAtIndexedSubscript:v18];
+                v45 = [weightsCopy objectAtIndexedSubscript:v38];
+                optimizerData5 = [v45 optimizerData];
+                v47 = [optimizerData5 objectAtIndexedSubscript:v18];
                 *(v44 + 1) = [v47 bytes];
               }
 
@@ -562,13 +562,13 @@ LABEL_12:
             v48 = v87;
             [v89 setObject:v84 atIndexedSubscript:v87 | 4];
             v36 = v21;
-            v49 = [v21 inputWeightsMomentumDescData];
-            v50 = [v49 objectAtIndexedSubscript:v18];
+            inputWeightsMomentumDescData2 = [v21 inputWeightsMomentumDescData];
+            v50 = [inputWeightsMomentumDescData2 objectAtIndexedSubscript:v18];
             v51 = [v50 objectAtIndexedSubscript:v87 | 4];
-            v52 = [v51 bytes];
+            bytes2 = [v51 bytes];
 
             v35 = v82;
-            *(v52 + 136) = v39;
+            *(bytes2 + 136) = v39;
 
             v38 = v85 + 1;
             v37 = v86 + 1;
@@ -578,8 +578,8 @@ LABEL_12:
           while (v48 != 3);
         }
 
-        v53 = [v36 bnnsInputWeightsMomentumPointers];
-        [v53 setObject:v89 atIndexedSubscript:v18];
+        bnnsInputWeightsMomentumPointers = [v36 bnnsInputWeightsMomentumPointers];
+        [bnnsInputWeightsMomentumPointers setObject:v89 atIndexedSubscript:v18];
 
         ++v18;
         v12 = v36;
@@ -604,17 +604,17 @@ LABEL_12:
             v59 = v92;
             do
             {
-              v61 = [v95 objectAtIndexedSubscript:v59];
-              v62 = [v61 optimizerData];
-              v63 = [v62 objectAtIndexedSubscript:v54];
+              v61 = [hiddenWeightsCopy objectAtIndexedSubscript:v59];
+              optimizerData6 = [v61 optimizerData];
+              v63 = [optimizerData6 objectAtIndexedSubscript:v54];
               v64 = &v57[8 * (v58 << v96)];
               *v64 = [v63 bytes];
 
               if ([v21 biDirectional])
               {
-                v65 = [v95 objectAtIndexedSubscript:v60];
-                v66 = [v65 optimizerData];
-                v67 = [v66 objectAtIndexedSubscript:v54];
+                v65 = [hiddenWeightsCopy objectAtIndexedSubscript:v60];
+                optimizerData7 = [v65 optimizerData];
+                v67 = [optimizerData7 objectAtIndexedSubscript:v54];
                 *(v64 + 1) = [v67 bytes];
               }
 
@@ -630,12 +630,12 @@ LABEL_12:
           v68 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v57 length:v56 freeWhenDone:0];
           v69 = v92;
           [v88 setObject:v68 atIndexedSubscript:v92];
-          v70 = [v21 hiddenWeightsMomentumDescData];
-          v71 = [v70 objectAtIndexedSubscript:v54];
+          hiddenWeightsMomentumDescData = [v21 hiddenWeightsMomentumDescData];
+          v71 = [hiddenWeightsMomentumDescData objectAtIndexedSubscript:v54];
           v72 = [v71 objectAtIndexedSubscript:v92];
-          v73 = [v72 bytes];
+          bytes3 = [v72 bytes];
 
-          *(v73 + 136) = v57;
+          *(bytes3 + 136) = v57;
           ++v90;
           ++v92;
           v55 = v93;
@@ -643,14 +643,14 @@ LABEL_12:
 
         while (v69 != 3);
         v12 = v21;
-        v74 = [v21 bnnsHiddenWeightsMomentumPointers];
-        [v74 setObject:v88 atIndexedSubscript:v54];
+        bnnsHiddenWeightsMomentumPointers = [v21 bnnsHiddenWeightsMomentumPointers];
+        [bnnsHiddenWeightsMomentumPointers setObject:v88 atIndexedSubscript:v54];
 
         ++v54;
       }
 
       while (v54 != v81);
-      v11 = v78;
+      biasCopy = v78;
       if (v78)
       {
         v75 = 0;

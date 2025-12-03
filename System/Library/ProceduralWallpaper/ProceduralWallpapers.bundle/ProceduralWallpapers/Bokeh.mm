@@ -47,9 +47,9 @@
 
 + (id)thumbnailImageName
 {
-  v2 = [a1 presetWallpaperOptions];
-  v3 = [v2 firstObject];
-  v4 = [v3 objectForKey:@"thumbnailImageName"];
+  presetWallpaperOptions = [self presetWallpaperOptions];
+  firstObject = [presetWallpaperOptions firstObject];
+  v4 = [firstObject objectForKey:@"thumbnailImageName"];
 
   return v4;
 }

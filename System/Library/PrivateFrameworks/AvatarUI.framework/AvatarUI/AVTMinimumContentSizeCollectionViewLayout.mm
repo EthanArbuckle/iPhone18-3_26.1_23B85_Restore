@@ -16,13 +16,13 @@
   v8 = v7;
   [(AVTMinimumContentSizeCollectionViewLayout *)self minimumContentSize];
   v10 = v9;
-  v11 = [(AVTMinimumContentSizeCollectionViewLayout *)self collectionView];
-  v12 = [v11 contentInsetAdjustmentBehavior];
+  collectionView = [(AVTMinimumContentSizeCollectionViewLayout *)self collectionView];
+  contentInsetAdjustmentBehavior = [collectionView contentInsetAdjustmentBehavior];
 
-  if (v12 != 2)
+  if (contentInsetAdjustmentBehavior != 2)
   {
-    v13 = [(AVTMinimumContentSizeCollectionViewLayout *)self collectionView];
-    [v13 adjustedContentInset];
+    collectionView2 = [(AVTMinimumContentSizeCollectionViewLayout *)self collectionView];
+    [collectionView2 adjustedContentInset];
     v15 = v14;
     v17 = v16;
     v19 = v18;

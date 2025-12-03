@@ -1,10 +1,10 @@
 @interface WFCalendarPickerParameter
-- (WFCalendarPickerParameter)initWithDefinition:(id)a3;
-- (id)enumeration:(id)a3 accessoryColorForPossibleState:(id)a4;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
+- (WFCalendarPickerParameter)initWithDefinition:(id)definition;
+- (id)enumeration:(id)enumeration accessoryColorForPossibleState:(id)state;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
 - (void)clearPossibleStates;
-- (void)loadDefaultSerializedRepresentationForEnumeration:(id)a3 completionHandler:(id)a4;
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5;
+- (void)loadDefaultSerializedRepresentationForEnumeration:(id)enumeration completionHandler:(id)handler;
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler;
 - (void)possibleStatesDidChange;
 - (void)wasAddedToWorkflow;
 - (void)wasRemovedFromWorkflow;
@@ -12,19 +12,19 @@
 
 @implementation WFCalendarPickerParameter
 
-- (id)enumeration:(id)a3 accessoryColorForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration accessoryColorForPossibleState:(id)state
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a4;
-  v5 = [v4 value];
-  v6 = [v5 calendarRGBAValue];
+  stateCopy = state;
+  value = [stateCopy value];
+  calendarRGBAValue = [value calendarRGBAValue];
 
-  if (v6)
+  if (calendarRGBAValue)
   {
     v7 = MEMORY[0x1E69E09E0];
-    v8 = [v4 value];
-    v9 = [v8 calendarRGBAValue];
-    v10 = [v7 colorWithRGBAValue:{objc_msgSend(v9, "unsignedIntValue")}];
+    value2 = [stateCopy value];
+    calendarRGBAValue2 = [value2 calendarRGBAValue];
+    v10 = [v7 colorWithRGBAValue:{objc_msgSend(calendarRGBAValue2, "unsignedIntValue")}];
   }
 
   else
@@ -51,10 +51,10 @@
           }
 
           v16 = *(*(&v25 + 1) + 8 * i);
-          v17 = [v16 title];
-          v18 = [v4 value];
-          v19 = [v18 calendarTitle];
-          v20 = [v17 isEqualToString:v19];
+          title = [v16 title];
+          value3 = [stateCopy value];
+          calendarTitle = [value3 calendarTitle];
+          v20 = [title isEqualToString:calendarTitle];
 
           if (v20)
           {
@@ -84,23 +84,23 @@ LABEL_13:
   return v10;
 }
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  v4 = a4;
-  v5 = [v4 value];
-  v6 = [v5 allCalendars];
+  stateCopy = state;
+  value = [stateCopy value];
+  allCalendars = [value allCalendars];
 
-  if (v6)
+  if (allCalendars)
   {
     v7 = @"All Calendars";
 LABEL_7:
-    v14 = WFLocalizedString(v7);
+    calendarTitle3 = WFLocalizedString(v7);
     goto LABEL_8;
   }
 
-  v8 = [v4 value];
-  v9 = [v8 calendarTitle];
-  v10 = [v9 isEqualToString:@"Found in Mail"];
+  value2 = [stateCopy value];
+  calendarTitle = [value2 calendarTitle];
+  v10 = [calendarTitle isEqualToString:@"Found in Mail"];
 
   if (v10)
   {
@@ -108,9 +108,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v11 = [v4 value];
-  v12 = [v11 calendarTitle];
-  v13 = [v12 isEqualToString:@"Birthdays"];
+  value3 = [stateCopy value];
+  calendarTitle2 = [value3 calendarTitle];
+  v13 = [calendarTitle2 isEqualToString:@"Birthdays"];
 
   if (v13)
   {
@@ -118,12 +118,12 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v16 = [v4 value];
-  v14 = [v16 calendarTitle];
+  value4 = [stateCopy value];
+  calendarTitle3 = [value4 calendarTitle];
 
 LABEL_8:
 
-  return v14;
+  return calendarTitle3;
 }
 
 - (void)possibleStatesDidChange
@@ -134,16 +134,16 @@ LABEL_8:
   [(WFDynamicEnumerationParameter *)self defaultSerializedRepresentationDidChange];
 }
 
-- (void)loadDefaultSerializedRepresentationForEnumeration:(id)a3 completionHandler:(id)a4
+- (void)loadDefaultSerializedRepresentationForEnumeration:(id)enumeration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFCalendarPickerParameter *)self defaultSerializedCalendarRepresentation];
+  enumerationCopy = enumeration;
+  handlerCopy = handler;
+  defaultSerializedCalendarRepresentation = [(WFCalendarPickerParameter *)self defaultSerializedCalendarRepresentation];
 
-  if (v8)
+  if (defaultSerializedCalendarRepresentation)
   {
-    v9 = [(WFCalendarPickerParameter *)self defaultSerializedCalendarRepresentation];
-    v7[2](v7, v9, 0);
+    defaultSerializedCalendarRepresentation2 = [(WFCalendarPickerParameter *)self defaultSerializedCalendarRepresentation];
+    handlerCopy[2](handlerCopy, defaultSerializedCalendarRepresentation2, 0);
   }
 
   else
@@ -153,8 +153,8 @@ LABEL_8:
     v10[2] = __97__WFCalendarPickerParameter_loadDefaultSerializedRepresentationForEnumeration_completionHandler___block_invoke;
     v10[3] = &unk_1E837D448;
     v10[4] = self;
-    v11 = v7;
-    [(WFCalendarPickerParameter *)self loadPossibleStatesForEnumeration:v6 searchTerm:0 completionHandler:v10];
+    v11 = handlerCopy;
+    [(WFCalendarPickerParameter *)self loadPossibleStatesForEnumeration:enumerationCopy searchTerm:0 completionHandler:v10];
   }
 }
 
@@ -167,21 +167,21 @@ void __97__WFCalendarPickerParameter_loadDefaultSerializedRepresentationForEnume
   (*(v3 + 16))(v3, v6, v5);
 }
 
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(WFCalendarPickerParameter *)self stateQueue];
+  enumerationCopy = enumeration;
+  handlerCopy = handler;
+  stateQueue = [(WFCalendarPickerParameter *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __91__WFCalendarPickerParameter_loadPossibleStatesForEnumeration_searchTerm_completionHandler___block_invoke;
   block[3] = &unk_1E837ECE0;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = enumerationCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = enumerationCopy;
+  dispatch_async(stateQueue, block);
 }
 
 void __91__WFCalendarPickerParameter_loadPossibleStatesForEnumeration_searchTerm_completionHandler___block_invoke(id *a1)
@@ -346,13 +346,13 @@ WFCalendarSubstitutableState *__91__WFCalendarPickerParameter_loadPossibleStates
 
 - (void)clearPossibleStates
 {
-  v3 = [(WFCalendarPickerParameter *)self stateQueue];
+  stateQueue = [(WFCalendarPickerParameter *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__WFCalendarPickerParameter_clearPossibleStates__block_invoke;
   block[3] = &unk_1E837FA70;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(stateQueue, block);
 
   v4.receiver = self;
   v4.super_class = WFCalendarPickerParameter;
@@ -372,9 +372,9 @@ uint64_t __48__WFCalendarPickerParameter_clearPossibleStates__block_invoke(uint6
   v5.receiver = self;
   v5.super_class = WFCalendarPickerParameter;
   [(WFParameter *)&v5 wasRemovedFromWorkflow];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = getEKEventStoreChangedNotification();
-  [v3 removeObserver:self name:v4 object:0];
+  [defaultCenter removeObserver:self name:v4 object:0];
 }
 
 - (void)wasAddedToWorkflow
@@ -382,35 +382,35 @@ uint64_t __48__WFCalendarPickerParameter_clearPossibleStates__block_invoke(uint6
   v5.receiver = self;
   v5.super_class = WFCalendarPickerParameter;
   [(WFParameter *)&v5 wasAddedToWorkflow];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = getEKEventStoreChangedNotification();
-  [v3 addObserver:self selector:sel_reloadPossibleStates name:v4 object:0];
+  [defaultCenter addObserver:self selector:sel_reloadPossibleStates name:v4 object:0];
 }
 
-- (WFCalendarPickerParameter)initWithDefinition:(id)a3
+- (WFCalendarPickerParameter)initWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v21.receiver = self;
   v21.super_class = WFCalendarPickerParameter;
-  v5 = [(WFDynamicEnumerationParameter *)&v21 initWithDefinition:v4];
+  v5 = [(WFDynamicEnumerationParameter *)&v21 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"AllowsAllCalendars"];
+    v6 = [definitionCopy objectForKey:@"AllowsAllCalendars"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass_1501(v6, v7);
     v5->_allowsAllCalendars = [v8 BOOLValue];
 
-    v9 = [v4 objectForKey:@"HidesReadOnlyCalendars"];
+    v9 = [definitionCopy objectForKey:@"HidesReadOnlyCalendars"];
     v10 = objc_opt_class();
     v11 = WFEnforceClass_1501(v9, v10);
     v5->_hidesReadOnlyCalendars = [v11 BOOLValue];
 
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v14 = [v13 UTF8String];
+    uTF8String = [v13 UTF8String];
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v16 = dispatch_queue_attr_make_with_qos_class(v15, QOS_CLASS_UTILITY, 0);
-    v17 = dispatch_queue_create(v14, v16);
+    v17 = dispatch_queue_create(uTF8String, v16);
     stateQueue = v5->_stateQueue;
     v5->_stateQueue = v17;
 

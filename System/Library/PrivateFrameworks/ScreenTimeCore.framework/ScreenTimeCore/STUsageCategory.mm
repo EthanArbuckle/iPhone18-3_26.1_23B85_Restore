@@ -1,15 +1,15 @@
 @interface STUsageCategory
-+ (id)applicationAndWebItemsExcludingSystemHiddenApplications:(id)a3;
-+ (id)categoryItemsExcludingSystemCategories:(id)a3;
++ (id)applicationAndWebItemsExcludingSystemHiddenApplications:(id)applications;
++ (id)categoryItemsExcludingSystemCategories:(id)categories;
 @end
 
 @implementation STUsageCategory
 
-+ (id)categoryItemsExcludingSystemCategories:(id)a3
++ (id)categoryItemsExcludingSystemCategories:(id)categories
 {
   v27 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v3 = [v21 valueForKeyPath:@"@distinctUnionOfObjects.identifier"];
+  categoriesCopy = categories;
+  v3 = [categoriesCopy valueForKeyPath:@"@distinctUnionOfObjects.identifier"];
   v20 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
   v22 = 0u;
   v23 = 0u;
@@ -38,7 +38,7 @@
         {
           v13 = [[STUsageDetailItem alloc] initWithType:3 identifier:v12 usageTrusted:1];
           v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"identifier", v12];
-          v15 = [v21 filteredArrayUsingPredicate:v14];
+          v15 = [categoriesCopy filteredArrayUsingPredicate:v14];
 
           v16 = [v15 valueForKeyPath:@"@sum.totalTimeInSeconds"];
           [v16 floatValue];
@@ -60,10 +60,10 @@
   return v17;
 }
 
-+ (id)applicationAndWebItemsExcludingSystemHiddenApplications:(id)a3
++ (id)applicationAndWebItemsExcludingSystemHiddenApplications:(id)applications
 {
   v62 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  applicationsCopy = applications;
   v49 = objc_opt_new();
   v4 = objc_opt_new();
   v5 = [MEMORY[0x1E6993B98] systemHiddenBundleIdentifiersForDeviceFamily:102];
@@ -71,7 +71,7 @@
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  obj = v3;
+  obj = applicationsCopy;
   v46 = [obj countByEnumeratingWithState:&v56 objects:v61 count:16];
   if (v46)
   {
@@ -93,28 +93,28 @@
         v53 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v9 = [v8 timedItems];
-        v51 = [v9 countByEnumeratingWithState:&v52 objects:v60 count:16];
+        timedItems = [v8 timedItems];
+        v51 = [timedItems countByEnumeratingWithState:&v52 objects:v60 count:16];
         if (v51)
         {
           v50 = *v53;
-          v48 = v9;
+          v48 = timedItems;
           do
           {
             for (i = 0; i != v51; ++i)
             {
               if (*v53 != v50)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(timedItems);
               }
 
               v11 = *(*(&v52 + 1) + 8 * i);
-              v12 = [v11 bundleIdentifier];
-              v13 = [v11 usageTrusted];
-              if (v12 && ([v5 containsObject:v12] & 1) == 0)
+              bundleIdentifier = [v11 bundleIdentifier];
+              usageTrusted = [v11 usageTrusted];
+              if (bundleIdentifier && ([v5 containsObject:bundleIdentifier] & 1) == 0)
               {
-                v23 = [objc_alloc(*(v6 + 4064)) initWithIdentifier:v12 usageTrusted:v13];
-                v24 = [v11 totalTimeInSeconds];
+                v23 = [objc_alloc(*(v6 + 4064)) initWithIdentifier:bundleIdentifier usageTrusted:usageTrusted];
+                totalTimeInSeconds = [v11 totalTimeInSeconds];
                 v25 = v23;
                 v17 = v49;
                 v26 = [v17 objectForKeyedSubscript:v25];
@@ -122,34 +122,34 @@
                 {
                   v18 = v26;
                   [(STUsageDetailItem *)v26 quantity];
-                  *&v28 = v27 + v24;
+                  *&v28 = v27 + totalTimeInSeconds;
                   [(STUsageDetailItem *)v18 setQuantity:v28];
                 }
 
                 else
                 {
                   v35 = [STUsageDetailItem alloc];
-                  v36 = [v25 identifier];
-                  v18 = -[STUsageDetailItem initWithType:identifier:usageTrusted:](v35, "initWithType:identifier:usageTrusted:", 1, v36, [v25 usageTrusted]);
+                  identifier = [v25 identifier];
+                  v18 = -[STUsageDetailItem initWithType:identifier:usageTrusted:](v35, "initWithType:identifier:usageTrusted:", 1, identifier, [v25 usageTrusted]);
 
-                  *&v37 = v24;
+                  *&v37 = totalTimeInSeconds;
                   [(STUsageDetailItem *)v18 setQuantity:v37];
                   [v17 setObject:v18 forKeyedSubscript:v25];
                 }
 
-                v14 = v25;
+                domain = v25;
               }
 
               else
               {
-                v14 = [v11 domain];
-                if (!v14)
+                domain = [v11 domain];
+                if (!domain)
                 {
                   goto LABEL_23;
                 }
 
-                v15 = [objc_alloc(*(v6 + 4064)) initWithIdentifier:v14 usageTrusted:v13];
-                v16 = [v11 totalTimeInSeconds];
+                v15 = [objc_alloc(*(v6 + 4064)) initWithIdentifier:domain usageTrusted:usageTrusted];
+                totalTimeInSeconds2 = [v11 totalTimeInSeconds];
                 v17 = v15;
                 v18 = v4;
                 v19 = [(STUsageDetailItem *)v18 objectForKeyedSubscript:v17];
@@ -157,7 +157,7 @@
                 {
                   v20 = v19;
                   [(STUsageDetailItem *)v19 quantity];
-                  *&v22 = v21 + v16;
+                  *&v22 = v21 + totalTimeInSeconds2;
                   [(STUsageDetailItem *)v20 setQuantity:v22];
                 }
 
@@ -173,8 +173,8 @@
                   v4 = v32;
                   v5 = v31;
                   v6 = v30;
-                  v9 = v48;
-                  *&v34 = v16;
+                  timedItems = v48;
+                  *&v34 = totalTimeInSeconds2;
                   [(STUsageDetailItem *)v20 setQuantity:v34];
                   [(STUsageDetailItem *)v18 setObject:v20 forKeyedSubscript:v17];
                 }
@@ -185,7 +185,7 @@
 LABEL_23:
             }
 
-            v51 = [v9 countByEnumeratingWithState:&v52 objects:v60 count:16];
+            v51 = [timedItems countByEnumeratingWithState:&v52 objects:v60 count:16];
           }
 
           while (v51);
@@ -203,8 +203,8 @@ LABEL_23:
 
   [v49 allValues];
   v39 = v38 = v4;
-  v40 = [v38 allValues];
-  v41 = [v39 arrayByAddingObjectsFromArray:v40];
+  allValues = [v38 allValues];
+  v41 = [v39 arrayByAddingObjectsFromArray:allValues];
 
   v42 = *MEMORY[0x1E69E9840];
 

@@ -1,31 +1,31 @@
 @interface AMSServerDataCacheMigrator
-+ (void)_primeCachedServerDataCacheUsingAccount:(id)a3;
-+ (void)migrateDataCacheWithOptions:(id)a3;
++ (void)_primeCachedServerDataCacheUsingAccount:(id)account;
++ (void)migrateDataCacheWithOptions:(id)options;
 @end
 
 @implementation AMSServerDataCacheMigrator
 
-+ (void)migrateDataCacheWithOptions:(id)a3
++ (void)migrateDataCacheWithOptions:(id)options
 {
   v22 = *MEMORY[0x1E69E9840];
-  if ([a3 scenario] == 4)
+  if ([options scenario] == 4)
   {
-    v5 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-    v6 = [v5 ams_activeiTunesAccount];
-    v7 = [v6 ams_DSID];
-    if (v7)
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
+    ams_DSID = [ams_activeiTunesAccount ams_DSID];
+    if (ams_DSID)
     {
       v8 = objc_alloc_init(AMSServerDataCacheService);
-      v9 = [(AMSServerDataCacheService *)v8 setUpCacheForAccountDSID:v7];
+      v9 = [(AMSServerDataCacheService *)v8 setUpCacheForAccountDSID:ams_DSID];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __58__AMSServerDataCacheMigrator_migrateDataCacheWithOptions___block_invoke;
       v15[3] = &__block_descriptor_48_e20_v20__0B8__NSError_12l;
-      v15[4] = a1;
+      v15[4] = self;
       v15[5] = a2;
       [v9 addFinishBlock:v15];
 
-      [a1 _primeCachedServerDataCacheUsingAccount:v6];
+      [self _primeCachedServerDataCacheUsingAccount:ams_activeiTunesAccount];
 LABEL_14:
 
       goto LABEL_15;
@@ -37,8 +37,8 @@ LABEL_14:
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    oSLogObject = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v13 = objc_opt_class();
       v14 = AMSLogKey();
@@ -46,32 +46,32 @@ LABEL_14:
       v17 = v13;
       v18 = 2114;
       v19 = v14;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] skipping. No active itunes account with dsid to use for update.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] skipping. No active itunes account with dsid to use for update.", buf, 0x16u);
     }
 
 LABEL_13:
     goto LABEL_14;
   }
 
-  v5 = +[AMSLogConfig sharedDataMigrationConfig];
-  if (!v5)
+  ams_sharedAccountStore = +[AMSLogConfig sharedDataMigrationConfig];
+  if (!ams_sharedAccountStore)
   {
-    v5 = +[AMSLogConfig sharedConfig];
+    ams_sharedAccountStore = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  ams_activeiTunesAccount = [ams_sharedAccountStore OSLogObject];
+  if (os_log_type_enabled(ams_activeiTunesAccount, OS_LOG_TYPE_INFO))
   {
     v10 = objc_opt_class();
-    v7 = AMSLogKey();
+    ams_DSID = AMSLogKey();
     v11 = NSStringFromSelector(a2);
     *buf = 138543874;
     v17 = v10;
     v18 = 2114;
-    v19 = v7;
+    v19 = ams_DSID;
     v20 = 2114;
     v21 = v11;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] %{public}@ skipping. Not valid for erase installs.", buf, 0x20u);
+    _os_log_impl(&dword_192869000, ams_activeiTunesAccount, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] %{public}@ skipping. Not valid for erase installs.", buf, 0x20u);
     goto LABEL_13;
   }
 
@@ -141,23 +141,23 @@ void __58__AMSServerDataCacheMigrator_migrateDataCacheWithOptions___block_invoke
   }
 }
 
-+ (void)_primeCachedServerDataCacheUsingAccount:(id)a3
++ (void)_primeCachedServerDataCacheUsingAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = +[AMSProcessInfo currentProcess];
-  v6 = [v5 isAMSAccountsDaemon];
+  isAMSAccountsDaemon = [v5 isAMSAccountsDaemon];
 
-  if ((v6 & 1) == 0)
+  if ((isAMSAccountsDaemon & 1) == 0)
   {
     v7 = +[AMSAccountCachedServerData sharedInstance];
-    v8 = [v4 ams_accountID];
-    v9 = [v7 stringForKey:0 accountID:v8 updateBlock:&__block_literal_global_126];
+    ams_accountID = [accountCopy ams_accountID];
+    v9 = [v7 stringForKey:0 accountID:ams_accountID updateBlock:&__block_literal_global_126];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __70__AMSServerDataCacheMigrator__primeCachedServerDataCacheUsingAccount___block_invoke_2;
     v10[3] = &__block_descriptor_40_e52_v24__0___AMSAccountCachedServerString__8__NSError_16l;
-    v10[4] = a1;
+    v10[4] = self;
     [v9 addFinishBlock:v10];
   }
 }

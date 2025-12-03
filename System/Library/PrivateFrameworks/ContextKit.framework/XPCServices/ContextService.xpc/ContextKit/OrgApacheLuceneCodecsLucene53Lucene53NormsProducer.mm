@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneCodecsLucene53Lucene53NormsProducer
 - (id)description;
-- (id)getNormsWithOrgApacheLuceneIndexFieldInfo:(id)a3;
+- (id)getNormsWithOrgApacheLuceneIndexFieldInfo:(id)info;
 - (int64_t)ramBytesUsed;
 - (void)close;
 - (void)dealloc;
@@ -8,10 +8,10 @@
 
 @implementation OrgApacheLuceneCodecsLucene53Lucene53NormsProducer
 
-- (id)getNormsWithOrgApacheLuceneIndexFieldInfo:(id)a3
+- (id)getNormsWithOrgApacheLuceneIndexFieldInfo:(id)info
 {
   norms = self->norms_;
-  if (!norms || !a3 || (v5 = [(JavaUtilMap *)norms getWithId:JavaLangInteger_valueOfWithInt_(*(a3 + 4))]) == 0)
+  if (!norms || !info || (v5 = [(JavaUtilMap *)norms getWithId:JavaLangInteger_valueOfWithInt_(*(info + 4))]) == 0)
   {
     JreThrowNullPointerException();
   }

@@ -1,7 +1,7 @@
 @interface CRLiOSFolderGridViewController.Item.ViewController.SelectionStateBadge
 - (CGSize)intrinsicContentSize;
-- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController19SelectionStateBadge)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController19SelectionStateBadge)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 - (void)updateConstraints;
 @end
 
@@ -9,7 +9,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100EE4A2C();
   v5 = v4;
 
@@ -20,13 +20,13 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_100EE4B60(x, y, width, height);
 }
 
@@ -39,7 +39,7 @@
   sub_100EE52BC();
 }
 
-- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController19SelectionStateBadge)initWithFrame:(CGRect)a3
+- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController19SelectionStateBadge)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

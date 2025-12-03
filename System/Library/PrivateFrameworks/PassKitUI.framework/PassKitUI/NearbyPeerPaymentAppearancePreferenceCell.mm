@@ -1,17 +1,17 @@
 @interface NearbyPeerPaymentAppearancePreferenceCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC9PassKitUI41NearbyPeerPaymentAppearancePreferenceCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC9PassKitUI41NearbyPeerPaymentAppearancePreferenceCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation NearbyPeerPaymentAppearancePreferenceCell
 
-- (_TtC9PassKitUI41NearbyPeerPaymentAppearancePreferenceCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC9PassKitUI41NearbyPeerPaymentAppearancePreferenceCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1BE052434();
+    identifier = sub_1BE052434();
     v6 = v5;
   }
 
@@ -20,20 +20,20 @@
     v6 = 0;
   }
 
-  return NearbyPeerPaymentAppearancePreferenceCell.init(style:reuseIdentifier:)(a3, a4, v6);
+  return NearbyPeerPaymentAppearancePreferenceCell.init(style:reuseIdentifier:)(style, identifier, v6);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD89AD14();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_1BD89B130(width, height);
   v8 = v7;
 
@@ -46,7 +46,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD89B7B8();
 }
 

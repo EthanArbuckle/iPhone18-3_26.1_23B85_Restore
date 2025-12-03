@@ -1,13 +1,13 @@
 @interface ChooseExistingContactViewControllerRepresentable.ContactViewCoordinator
 - (_TtCV7ChatKit48ChooseExistingContactViewControllerRepresentable22ContactViewCoordinator)init;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPickerDidCancel:(id)cancel;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
 @end
 
 @implementation ChooseExistingContactViewControllerRepresentable.ContactViewCoordinator
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtCV7ChatKit48ChooseExistingContactViewControllerRepresentable22ContactViewCoordinator_viewController);
   if (v3)
@@ -16,7 +16,7 @@
   }
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtCV7ChatKit48ChooseExistingContactViewControllerRepresentable22ContactViewCoordinator_viewController);
   if (v4)
@@ -25,12 +25,12 @@
   }
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_19095D840(v7);
+  pickerCopy = picker;
+  contactCopy = contact;
+  selfCopy = self;
+  sub_19095D840(contactCopy);
 }
 
 - (_TtCV7ChatKit48ChooseExistingContactViewControllerRepresentable22ContactViewCoordinator)init

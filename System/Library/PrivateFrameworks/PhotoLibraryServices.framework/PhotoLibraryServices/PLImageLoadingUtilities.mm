@@ -1,37 +1,37 @@
 @interface PLImageLoadingUtilities
-+ (BOOL)canAccessImageForAsset:(id)a3;
-+ (id)newSynchronousImageForAsset:(id)a3 withFormat:(unsigned __int16)a4 allowPlaceholder:(BOOL)a5 outImageProperties:(const __CFDictionary *)a6 outDeliveredPlaceholder:(BOOL *)a7;
-+ (id)synchronousImageForAsset:(id)a3 withFormat:(unsigned __int16)a4 allowPlaceholder:(BOOL)a5 optimalSourcePixelSize:(CGSize)a6 networkAccessAllowed:(BOOL)a7 networkAccessForced:(BOOL)a8 trackCPLDownload:(BOOL)a9 outImageProperties:(const __CFDictionary *)a10 outImageDataInfo:(id *)a11 outCPLDownloadContext:(id *)a12;
-+ (void)_assetsdImageForAsset:(id)a3 withFormat:(id)a4 allowPlaceholder:(BOOL)a5 optimalSourcePixelSize:(CGSize)a6 networkAccessAllowed:(BOOL)a7 trackCPLDownload:(BOOL)a8 sync:(BOOL)a9 isCanceledHandler:(id)a10 completion:(id)a11;
-+ (void)_imageForAsset:(id)a3 withFormat:(unsigned __int16)a4 allowPlaceholder:(BOOL)a5 optimalSourcePixelSize:(CGSize)a6 networkAccessAllowed:(BOOL)a7 networkAccessForced:(BOOL)a8 trackCPLDownload:(BOOL)a9 isCanceledHandler:(id)a10 completion:(id)a11 sync:(BOOL)a12;
++ (BOOL)canAccessImageForAsset:(id)asset;
++ (id)newSynchronousImageForAsset:(id)asset withFormat:(unsigned __int16)format allowPlaceholder:(BOOL)placeholder outImageProperties:(const __CFDictionary *)properties outDeliveredPlaceholder:(BOOL *)deliveredPlaceholder;
++ (id)synchronousImageForAsset:(id)asset withFormat:(unsigned __int16)format allowPlaceholder:(BOOL)placeholder optimalSourcePixelSize:(CGSize)size networkAccessAllowed:(BOOL)allowed networkAccessForced:(BOOL)forced trackCPLDownload:(BOOL)download outImageProperties:(const __CFDictionary *)self0 outImageDataInfo:(id *)self1 outCPLDownloadContext:(id *)self2;
++ (void)_assetsdImageForAsset:(id)asset withFormat:(id)format allowPlaceholder:(BOOL)placeholder optimalSourcePixelSize:(CGSize)size networkAccessAllowed:(BOOL)allowed trackCPLDownload:(BOOL)download sync:(BOOL)sync isCanceledHandler:(id)self0 completion:(id)self1;
++ (void)_imageForAsset:(id)asset withFormat:(unsigned __int16)format allowPlaceholder:(BOOL)placeholder optimalSourcePixelSize:(CGSize)size networkAccessAllowed:(BOOL)allowed networkAccessForced:(BOOL)forced trackCPLDownload:(BOOL)download isCanceledHandler:(id)self0 completion:(id)self1 sync:(BOOL)self2;
 @end
 
 @implementation PLImageLoadingUtilities
 
-+ (id)newSynchronousImageForAsset:(id)a3 withFormat:(unsigned __int16)a4 allowPlaceholder:(BOOL)a5 outImageProperties:(const __CFDictionary *)a6 outDeliveredPlaceholder:(BOOL *)a7
++ (id)newSynchronousImageForAsset:(id)asset withFormat:(unsigned __int16)format allowPlaceholder:(BOOL)placeholder outImageProperties:(const __CFDictionary *)properties outDeliveredPlaceholder:(BOOL *)deliveredPlaceholder
 {
   v12 = 0;
-  v8 = [a1 synchronousImageForAsset:a3 withFormat:a4 allowPlaceholder:a5 optimalSourcePixelSize:0 networkAccessAllowed:0 networkAccessForced:0 trackCPLDownload:0.0 outImageProperties:0.0 outImageDataInfo:a6 outCPLDownloadContext:&v12, 0];
+  v8 = [self synchronousImageForAsset:asset withFormat:format allowPlaceholder:placeholder optimalSourcePixelSize:0 networkAccessAllowed:0 networkAccessForced:0 trackCPLDownload:0.0 outImageProperties:0.0 outImageDataInfo:properties outCPLDownloadContext:&v12, 0];
   v9 = v12;
   v10 = v9;
-  if (a7)
+  if (deliveredPlaceholder)
   {
-    *a7 = [v9 deliveredPlaceholder];
+    *deliveredPlaceholder = [v9 deliveredPlaceholder];
   }
 
   return v8;
 }
 
-+ (id)synchronousImageForAsset:(id)a3 withFormat:(unsigned __int16)a4 allowPlaceholder:(BOOL)a5 optimalSourcePixelSize:(CGSize)a6 networkAccessAllowed:(BOOL)a7 networkAccessForced:(BOOL)a8 trackCPLDownload:(BOOL)a9 outImageProperties:(const __CFDictionary *)a10 outImageDataInfo:(id *)a11 outCPLDownloadContext:(id *)a12
++ (id)synchronousImageForAsset:(id)asset withFormat:(unsigned __int16)format allowPlaceholder:(BOOL)placeholder optimalSourcePixelSize:(CGSize)size networkAccessAllowed:(BOOL)allowed networkAccessForced:(BOOL)forced trackCPLDownload:(BOOL)download outImageProperties:(const __CFDictionary *)self0 outImageDataInfo:(id *)self1 outCPLDownloadContext:(id *)self2
 {
-  v12 = a9;
-  v13 = a8;
-  v14 = a7;
-  height = a6.height;
-  width = a6.width;
-  v17 = a5;
-  v18 = a4;
-  v20 = a3;
+  downloadCopy = download;
+  forcedCopy = forced;
+  allowedCopy = allowed;
+  height = size.height;
+  width = size.width;
+  placeholderCopy = placeholder;
+  formatCopy = format;
+  assetCopy = asset;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -63,20 +63,20 @@
   v24[6] = &v31;
   v24[7] = &v25;
   LOBYTE(v23) = 1;
-  [a1 _imageForAsset:v20 withFormat:v18 allowPlaceholder:v17 optimalSourcePixelSize:v14 networkAccessAllowed:v13 networkAccessForced:v12 trackCPLDownload:width isCanceledHandler:height completion:0 sync:v24, v23];
-  if (a10)
+  [self _imageForAsset:assetCopy withFormat:formatCopy allowPlaceholder:placeholderCopy optimalSourcePixelSize:allowedCopy networkAccessAllowed:forcedCopy networkAccessForced:downloadCopy trackCPLDownload:width isCanceledHandler:height completion:0 sync:v24, v23];
+  if (properties)
   {
-    *a10 = v38[3];
+    *properties = v38[3];
   }
 
-  if (a11)
+  if (info)
   {
-    *a11 = v32[5];
+    *info = v32[5];
   }
 
-  if (a12)
+  if (context)
   {
-    *a12 = v26[5];
+    *context = v26[5];
   }
 
   v21 = v42[5];
@@ -131,28 +131,28 @@ void __219__PLImageLoadingUtilities_synchronousImageForAsset_withFormat_allowPla
   objc_storeStrong((*(a1[7] + 8) + 40), v15);
 }
 
-+ (void)_imageForAsset:(id)a3 withFormat:(unsigned __int16)a4 allowPlaceholder:(BOOL)a5 optimalSourcePixelSize:(CGSize)a6 networkAccessAllowed:(BOOL)a7 networkAccessForced:(BOOL)a8 trackCPLDownload:(BOOL)a9 isCanceledHandler:(id)a10 completion:(id)a11 sync:(BOOL)a12
++ (void)_imageForAsset:(id)asset withFormat:(unsigned __int16)format allowPlaceholder:(BOOL)placeholder optimalSourcePixelSize:(CGSize)size networkAccessAllowed:(BOOL)allowed networkAccessForced:(BOOL)forced trackCPLDownload:(BOOL)download isCanceledHandler:(id)self0 completion:(id)self1 sync:(BOOL)self2
 {
-  v12 = a9;
-  v13 = a8;
-  v14 = a7;
-  height = a6.height;
-  width = a6.width;
-  v17 = a5;
-  v18 = a4;
-  v20 = a3;
-  v21 = a10;
-  v22 = a11;
-  if ([a1 canAccessImageForAsset:v20])
+  downloadCopy = download;
+  forcedCopy = forced;
+  allowedCopy = allowed;
+  height = size.height;
+  width = size.width;
+  placeholderCopy = placeholder;
+  formatCopy = format;
+  assetCopy = asset;
+  handlerCopy = handler;
+  completionCopy = completion;
+  if ([self canAccessImageForAsset:assetCopy])
   {
-    v51 = v21;
-    v52 = [MEMORY[0x1E69BF260] formatWithID:v18];
-    v23 = [v52 isThumbnail];
+    v51 = handlerCopy;
+    v52 = [MEMORY[0x1E69BF260] formatWithID:formatCopy];
+    isThumbnail = [v52 isThumbnail];
     v24 = PLIsAssetsd();
-    if ((v24 & 1) == 0 && (v14 && v13 || v23 != 1))
+    if ((v24 & 1) == 0 && (allowedCopy && forcedCopy || isThumbnail != 1))
     {
-      v21 = v51;
-      [a1 _assetsdImageForAsset:v20 withFormat:v52 allowPlaceholder:v17 optimalSourcePixelSize:v14 networkAccessAllowed:v12 trackCPLDownload:a12 sync:width isCanceledHandler:height completion:v51, v22];
+      handlerCopy = v51;
+      [self _assetsdImageForAsset:assetCopy withFormat:v52 allowPlaceholder:placeholderCopy optimalSourcePixelSize:allowedCopy networkAccessAllowed:downloadCopy trackCPLDownload:sync sync:width isCanceledHandler:height completion:v51, completionCopy];
 LABEL_49:
 
       goto LABEL_50;
@@ -160,18 +160,18 @@ LABEL_49:
 
     cf = 0;
     v25 = objc_autoreleasePoolPush();
-    if (v18 == 3039)
+    if (formatCopy == 3039)
     {
       IsIPad = PLPhysicalDeviceIsIPad();
-      v27 = [v20 isVideo];
-      v28 = v23 ^ 1u;
-      if (((v23 ^ 1) & 1) == 0 && (v27 & 1) == 0)
+      isVideo = [assetCopy isVideo];
+      v28 = isThumbnail ^ 1u;
+      if (((isThumbnail ^ 1) & 1) == 0 && (isVideo & 1) == 0)
       {
-        if (((IsIPad | v24 ^ 1) & 1) == 0 && [v20 isJPEG] && (objc_msgSend(v20, "isVideo") & 1) == 0)
+        if (((IsIPad | v24 ^ 1) & 1) == 0 && [assetCopy isJPEG] && (objc_msgSend(assetCopy, "isVideo") & 1) == 0)
         {
-          v29 = [v20 pathForOriginalFile];
+          pathForOriginalFile = [assetCopy pathForOriginalFile];
 LABEL_19:
-          v33 = v29;
+          v33 = pathForOriginalFile;
           goto LABEL_27;
         }
 
@@ -181,14 +181,14 @@ LABEL_19:
 
     else
     {
-      if (v23)
+      if (isThumbnail)
       {
         goto LABEL_26;
       }
 
-      if (v18 == 9997)
+      if (formatCopy == 9997)
       {
-        v29 = [v20 pathForPenultimateFullsizeRenderImageFile];
+        pathForOriginalFile = [assetCopy pathForPenultimateFullsizeRenderImageFile];
         goto LABEL_19;
       }
 
@@ -197,28 +197,28 @@ LABEL_19:
 
     v53 = 0;
     v54 = 0;
-    v34 = [PLResourceChooser fileReservationForLargeDisplayableImageFileForAsset:v20 format:v52 allowMetadataSnapshot:0 forceLarge:v28 outFilePath:&v53 outImageType:&v54];
+    v34 = [PLResourceChooser fileReservationForLargeDisplayableImageFileForAsset:assetCopy format:v52 allowMetadataSnapshot:0 forceLarge:v28 outFilePath:&v53 outImageType:&v54];
     v35 = v53;
     v33 = v35;
-    if ((v23 & 1) != 0 || v54 != 9 && v54 != 7)
+    if ((isThumbnail & 1) != 0 || v54 != 9 && v54 != 7)
     {
 LABEL_27:
       if ([v33 length])
       {
-        v36 = PLCreateImageFromFileWithFormat(v33, 0, 0, v18, 0, &cf, 0);
-        if (!((v36 == 0) | v23 & 1))
+        v36 = PLCreateImageFromFileWithFormat(v33, 0, 0, formatCopy, 0, &cf, 0);
+        if (!((v36 == 0) | isThumbnail & 1))
         {
-          v37 = [v20 pathForOriginalFile];
-          v21 = v51;
-          if (([v33 isEqualToString:v37] & 1) == 0)
+          pathForOriginalFile2 = [assetCopy pathForOriginalFile];
+          handlerCopy = v51;
+          if (([v33 isEqualToString:pathForOriginalFile2] & 1) == 0)
           {
 
             goto LABEL_36;
           }
 
-          v38 = [v20 isPrimaryImageFormat];
+          isPrimaryImageFormat = [assetCopy isPrimaryImageFormat];
 
-          if (v38)
+          if (isPrimaryImageFormat)
           {
 LABEL_36:
             if (cf)
@@ -228,9 +228,9 @@ LABEL_36:
 
             objc_autoreleasePoolPop(v25);
             v45 = 0;
-            if (v17 && !v36)
+            if (placeholderCopy && !v36)
             {
-              if ([v20 hasAllThumbs])
+              if ([assetCopy hasAllThumbs])
               {
                 v36 = 0;
                 v45 = 0;
@@ -241,8 +241,8 @@ LABEL_36:
                 v45 = objc_alloc_init(MEMORY[0x1E69BF258]);
                 [v45 setDeliveredPlaceholder:1];
                 v46 = +[PLPlaceholderThumbnailManager sharedManager];
-                [v20 imageSize];
-                v36 = [v46 newPlaceholderImageForFormat:v18 photoImageSize:?];
+                [assetCopy imageSize];
+                v36 = [v46 newPlaceholderImageForFormat:formatCopy photoImageSize:?];
               }
             }
 
@@ -256,7 +256,7 @@ LABEL_36:
               v47 = 0;
             }
 
-            v22[2](v22, v36, v47, v45, 0);
+            completionCopy[2](completionCopy, v36, v47, v45, 0);
             if (cf)
             {
               CFRelease(cf);
@@ -265,7 +265,7 @@ LABEL_36:
             goto LABEL_49;
           }
 
-          [v20 orientation];
+          [assetCopy orientation];
           v39 = PLImageOrientationFromExifOrientation();
           if (v39 != MEMORY[0x19EAED900](v36))
           {
@@ -304,16 +304,16 @@ LABEL_55:
 
       else
       {
-        v42 = [v20 pl_photoLibrary];
-        v43 = [v42 thumbnailManager];
-        v44 = [v43 newImageForAsset:v20 format:v52];
+        pl_photoLibrary = [assetCopy pl_photoLibrary];
+        thumbnailManager = [pl_photoLibrary thumbnailManager];
+        v44 = [thumbnailManager newImageForAsset:assetCopy format:v52];
 
         v36 = DCIM_newPLImageWithCGImage();
         CGImageRelease(v44);
       }
 
 LABEL_35:
-      v21 = v51;
+      handlerCopy = v51;
       goto LABEL_36;
     }
 
@@ -322,13 +322,13 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (v17)
+  if (placeholderCopy)
   {
     v30 = objc_alloc_init(MEMORY[0x1E69BF258]);
     [v30 setDeliveredPlaceholder:1];
     v31 = +[PLPlaceholderThumbnailManager sharedManager];
-    [v20 imageSize];
-    v32 = [v31 newPlaceholderImageForFormat:v18 photoImageSize:?];
+    [assetCopy imageSize];
+    v32 = [v31 newPlaceholderImageForFormat:formatCopy photoImageSize:?];
   }
 
   else
@@ -337,23 +337,23 @@ LABEL_26:
     v32 = 0;
   }
 
-  v22[2](v22, v32, 0, v30, 0);
+  completionCopy[2](completionCopy, v32, 0, v30, 0);
 
 LABEL_50:
 }
 
-+ (void)_assetsdImageForAsset:(id)a3 withFormat:(id)a4 allowPlaceholder:(BOOL)a5 optimalSourcePixelSize:(CGSize)a6 networkAccessAllowed:(BOOL)a7 trackCPLDownload:(BOOL)a8 sync:(BOOL)a9 isCanceledHandler:(id)a10 completion:(id)a11
++ (void)_assetsdImageForAsset:(id)asset withFormat:(id)format allowPlaceholder:(BOOL)placeholder optimalSourcePixelSize:(CGSize)size networkAccessAllowed:(BOOL)allowed trackCPLDownload:(BOOL)download sync:(BOOL)sync isCanceledHandler:(id)self0 completion:(id)self1
 {
-  v11 = a9;
-  v40 = a7;
-  v41 = a8;
-  height = a6.height;
-  width = a6.width;
-  v14 = a5;
-  v16 = a3;
-  v17 = a4;
-  v18 = a10;
-  v19 = a11;
+  syncCopy = sync;
+  allowedCopy = allowed;
+  downloadCopy = download;
+  height = size.height;
+  width = size.width;
+  placeholderCopy = placeholder;
+  assetCopy = asset;
+  formatCopy = format;
+  handlerCopy = handler;
+  completionCopy = completion;
   v75 = 0;
   v76 = &v75;
   v77 = 0x3010000000;
@@ -366,7 +366,7 @@ LABEL_50:
   v72 = __Block_byref_object_copy__24891;
   v73 = __Block_byref_object_dispose__24892;
   v74 = 0;
-  v20 = [v16 pl_photoLibrary];
+  pl_photoLibrary = [assetCopy pl_photoLibrary];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -375,51 +375,51 @@ LABEL_50:
     v65[2] = __172__PLImageLoadingUtilities__assetsdImageForAsset_withFormat_allowPlaceholder_optimalSourcePixelSize_networkAccessAllowed_trackCPLDownload_sync_isCanceledHandler_completion___block_invoke;
     v65[3] = &unk_1E7578870;
     v67 = &v69;
-    v66 = v16;
+    v66 = assetCopy;
     v68 = &v75;
-    [v20 performBlockAndWait:v65 completionHandler:0];
+    [pl_photoLibrary performBlockAndWait:v65 completionHandler:0];
   }
 
   else
   {
-    v21 = [v16 objectID];
+    objectID = [assetCopy objectID];
     v22 = v70[5];
-    v70[5] = v21;
+    v70[5] = objectID;
 
-    [v16 imageSize];
+    [assetCopy imageSize];
     v23 = v76;
     v76[4] = v24;
     v23[5] = v25;
   }
 
-  v26 = [v17 formatID];
+  formatID = [formatCopy formatID];
   v42 = v70[5];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __172__PLImageLoadingUtilities__assetsdImageForAsset_withFormat_allowPlaceholder_optimalSourcePixelSize_networkAccessAllowed_trackCPLDownload_sync_isCanceledHandler_completion___block_invoke_2;
   aBlock[3] = &unk_1E7569E28;
-  v27 = v18;
+  v27 = handlerCopy;
   v58 = v27;
-  v28 = v19;
+  v28 = completionCopy;
   v59 = v28;
-  v29 = v20;
+  v29 = pl_photoLibrary;
   v55 = v29;
-  v30 = v16;
+  v30 = assetCopy;
   v56 = v30;
-  v63 = v26;
+  v63 = formatID;
   v61 = width;
   v62 = height;
-  v64 = v14;
-  v31 = v17;
+  v64 = placeholderCopy;
+  v31 = formatCopy;
   v57 = v31;
   v60 = &v75;
   v32 = _Block_copy(aBlock);
-  if (v11)
+  if (syncCopy)
   {
     v33 = +[PLAssetsSaver sharedAssetsSaver];
     v52 = 0;
     v53 = 0;
-    v34 = [v33 requestSynchronousImageForAssetOID:v42 withFormat:v26 allowPlaceholder:v14 wantURLOnly:0 networkAccessAllowed:v40 trackCPLDownload:v41 outImageDataInfo:&v53 outCPLDownloadContext:&v52];
+    v34 = [v33 requestSynchronousImageForAssetOID:v42 withFormat:formatID allowPlaceholder:placeholderCopy wantURLOnly:0 networkAccessAllowed:allowedCopy trackCPLDownload:downloadCopy outImageDataInfo:&v53 outCPLDownloadContext:&v52];
     v35 = v53;
     v36 = v52;
 
@@ -437,25 +437,25 @@ LABEL_50:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v37 = [v30 pl_photoLibrary];
+      pl_photoLibrary2 = [v30 pl_photoLibrary];
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __172__PLImageLoadingUtilities__assetsdImageForAsset_withFormat_allowPlaceholder_optimalSourcePixelSize_networkAccessAllowed_trackCPLDownload_sync_isCanceledHandler_completion___block_invoke_31;
       v43[3] = &unk_1E7578910;
       v45 = &v46;
       v44 = v30;
-      [v37 performBlockAndWait:v43 completionHandler:0];
+      [pl_photoLibrary2 performBlockAndWait:v43 completionHandler:0];
     }
 
     else
     {
-      v38 = [v30 objectID];
-      v37 = v47[5];
-      v47[5] = v38;
+      objectID2 = [v30 objectID];
+      pl_photoLibrary2 = v47[5];
+      v47[5] = objectID2;
     }
 
     v39 = +[PLAssetsSaver sharedAssetsSaver];
-    [v39 requestAsynchronousImageForAssetOID:v47[5] withFormat:v26 allowPlaceholder:v14 wantURLOnly:0 networkAccessAllowed:v40 trackCPLDownload:v41 completionBlock:v32];
+    [v39 requestAsynchronousImageForAssetOID:v47[5] withFormat:formatID allowPlaceholder:placeholderCopy wantURLOnly:0 networkAccessAllowed:allowedCopy trackCPLDownload:downloadCopy completionBlock:v32];
 
     _Block_object_dispose(&v46, 8);
   }
@@ -608,9 +608,9 @@ void __172__PLImageLoadingUtilities__assetsdImageForAsset_withFormat_allowPlaceh
   }
 }
 
-+ (BOOL)canAccessImageForAsset:(id)a3
++ (BOOL)canAccessImageForAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -618,27 +618,27 @@ void __172__PLImageLoadingUtilities__assetsdImageForAsset_withFormat_allowPlaceh
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 pl_photoLibrary];
+    pl_photoLibrary = [assetCopy pl_photoLibrary];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __50__PLImageLoadingUtilities_canAccessImageForAsset___block_invoke;
     v7[3] = &unk_1E7578910;
     v9 = &v10;
-    v8 = v3;
-    [v4 performBlockAndWait:v7];
+    v8 = assetCopy;
+    [pl_photoLibrary performBlockAndWait:v7];
 
-    v5 = *(v11 + 24);
+    complete = *(v11 + 24);
   }
 
   else
   {
-    v5 = [v3 complete];
-    *(v11 + 24) = v5;
+    complete = [assetCopy complete];
+    *(v11 + 24) = complete;
   }
 
   _Block_object_dispose(&v10, 8);
 
-  return v5 & 1;
+  return complete & 1;
 }
 
 uint64_t __50__PLImageLoadingUtilities_canAccessImageForAsset___block_invoke(uint64_t a1)

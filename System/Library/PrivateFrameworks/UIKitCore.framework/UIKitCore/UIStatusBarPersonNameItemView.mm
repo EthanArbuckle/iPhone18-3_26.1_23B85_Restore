@@ -1,7 +1,7 @@
 @interface UIStatusBarPersonNameItemView
-- (BOOL)_updateWithPersonName:(id)a3 maxWidth:(double)a4;
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
-- (double)addContentOverlap:(double)a3;
+- (BOOL)_updateWithPersonName:(id)name maxWidth:(double)width;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
+- (double)addContentOverlap:(double)overlap;
 - (double)extraRightPadding;
 - (double)resetContentOverlap;
 - (double)standardPadding;
@@ -19,22 +19,22 @@
   return v2 + -1.0;
 }
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
-  v5 = [a3 rawData];
-  v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:v5 + 3049 encoding:4];
+  rawData = [data rawData];
+  v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:rawData + 3049 encoding:4];
   LOBYTE(self) = [(UIStatusBarPersonNameItemView *)self _updateWithPersonName:v6 maxWidth:1.79769313e308];
 
   return self;
 }
 
-- (BOOL)_updateWithPersonName:(id)a3 maxWidth:(double)a4
+- (BOOL)_updateWithPersonName:(id)name maxWidth:(double)width
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([(NSString *)self->_personNameString isEqualToString:v6])
+  nameCopy = name;
+  if ([(NSString *)self->_personNameString isEqualToString:nameCopy])
   {
-    if (self->_maxWidth == a4)
+    if (self->_maxWidth == width)
     {
       v7 = 0;
       goto LABEL_13;
@@ -43,21 +43,21 @@
 
   else
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     personNameString = self->_personNameString;
     self->_personNameString = v8;
   }
 
-  v25 = v6;
-  self->_maxWidth = a4;
+  v25 = nameCopy;
+  self->_maxWidth = width;
   self->_letterSpacing = 0.0;
   [(UIView *)self setClipsToBounds:0];
   v10 = [(UIStatusBarItemView *)self cachedImageWithText:self->_personNameString truncatedWithEllipsesAtMaxWidth:1.79769313e308 letterSpacing:self->_letterSpacing];
-  v11 = [v10 image];
+  image = [v10 image];
 
-  v24 = v11;
-  [v11 size];
-  if (v12 <= a4)
+  v24 = image;
+  [image size];
+  if (v12 <= width)
   {
     [(UIView *)self setClipsToBounds:0];
   }
@@ -76,11 +76,11 @@
       }
 
       self->_letterSpacing = letterSpacing + -0.25;
-      v16 = [(UIStatusBarItemView *)self textFont];
+      textFont = [(UIStatusBarItemView *)self textFont];
       v17 = objc_alloc_init(off_1E70ECB98);
       v18 = self->_personNameString;
       v26[1] = v14;
-      v27[0] = v16;
+      v27[0] = textFont;
       v26[0] = v13;
       v19 = [MEMORY[0x1E696AD98] numberWithDouble:self->_letterSpacing];
       v27[1] = v19;
@@ -88,7 +88,7 @@
       [(NSString *)v18 boundingRectWithSize:33 options:v20 attributes:v17 context:1.79769313e308, 1.79769313e308];
       v22 = v21;
 
-      if (v22 <= a4)
+      if (v22 <= width)
       {
         goto LABEL_12;
       }
@@ -100,7 +100,7 @@
 LABEL_12:
 
   v7 = 1;
-  v6 = v25;
+  nameCopy = v25;
 LABEL_13:
 
   return v7;
@@ -116,11 +116,11 @@ LABEL_13:
   return result;
 }
 
-- (double)addContentOverlap:(double)a3
+- (double)addContentOverlap:(double)overlap
 {
   [(UIView *)self frame];
-  v6 = v5 - a3;
-  if (v5 - a3 < 20.0)
+  v6 = v5 - overlap;
+  if (v5 - overlap < 20.0)
   {
     v6 = 20.0;
   }

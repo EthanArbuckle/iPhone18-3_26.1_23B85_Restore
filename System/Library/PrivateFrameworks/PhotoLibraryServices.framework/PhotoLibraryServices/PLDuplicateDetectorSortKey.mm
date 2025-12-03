@@ -1,22 +1,22 @@
 @interface PLDuplicateDetectorSortKey
-+ (id)sortKey:(id)a3 reverse:(BOOL)a4;
++ (id)sortKey:(id)key reverse:(BOOL)reverse;
 @end
 
 @implementation PLDuplicateDetectorSortKey
 
-+ (id)sortKey:(id)a3 reverse:(BOOL)a4
++ (id)sortKey:(id)key reverse:(BOOL)reverse
 {
-  v4 = a4;
-  v7 = a3;
-  if (!v7)
+  reverseCopy = reverse;
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PLDuplicateDetectorPostProcessing.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDuplicateDetectorPostProcessing.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"key"}];
   }
 
   v8 = objc_alloc_init(PLDuplicateDetectorSortKey);
-  [(PLDuplicateDetectorSortKey *)v8 setKey:v7];
-  [(PLDuplicateDetectorSortKey *)v8 setReverse:v4];
+  [(PLDuplicateDetectorSortKey *)v8 setKey:keyCopy];
+  [(PLDuplicateDetectorSortKey *)v8 setReverse:reverseCopy];
 
   return v8;
 }

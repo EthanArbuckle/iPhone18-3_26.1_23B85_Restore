@@ -1,7 +1,7 @@
 @interface VideoMessagePlayerViewController
-- (_TtC15ConversationKit32VideoMessagePlayerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit32VideoMessagePlayerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)save;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -10,36 +10,36 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   VideoMessagePlayerViewController.viewDidLoad()();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   VideoMessagePlayerViewController.viewDidLayoutSubviews()();
 }
 
 - (void)save
 {
-  v2 = self;
+  selfCopy = self;
   VideoMessagePlayerViewController.save()();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  VideoMessagePlayerViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  VideoMessagePlayerViewController.viewDidDisappear(_:)(disappear);
 }
 
-- (_TtC15ConversationKit32VideoMessagePlayerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit32VideoMessagePlayerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   VideoMessagePlayerViewController.init(nibName:bundle:)();
 }
 

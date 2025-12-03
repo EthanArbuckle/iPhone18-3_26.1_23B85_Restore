@@ -1,44 +1,44 @@
 @interface AVCMediaAnalyzer
-- (AVCMediaAnalyzer)initWithDelegate:(id)a3 delegateQueue:(id)a4 analysisType:(int64_t)a5 streamToken:(int64_t)a6;
+- (AVCMediaAnalyzer)initWithDelegate:(id)delegate delegateQueue:(id)queue analysisType:(int64_t)type streamToken:(int64_t)token;
 - (BOOL)connect;
-- (BOOL)setUpDelegateQueue:(id)a3;
-- (id)mediaAnalyzerResultsWithInternalResult:(id)a3;
+- (BOOL)setUpDelegateQueue:(id)queue;
+- (id)mediaAnalyzerResultsWithInternalResult:(id)result;
 - (void)dealloc;
 - (void)deregisterBlocksForNotifications;
-- (void)didEnableHandlerWithResult:(id)a3 error:(id)a4;
-- (void)didProduceMediaAnalysisHandlerWithResult:(id)a3 error:(id)a4;
+- (void)didEnableHandlerWithResult:(id)result error:(id)error;
+- (void)didProduceMediaAnalysisHandlerWithResult:(id)result error:(id)error;
 - (void)disconnect;
-- (void)enableMediaAnalyzer:(BOOL)a3;
+- (void)enableMediaAnalyzer:(BOOL)analyzer;
 - (void)registerBlocksForNotifications;
 @end
 
 @implementation AVCMediaAnalyzer
 
-- (BOOL)setUpDelegateQueue:(id)a3
+- (BOOL)setUpDelegateQueue:(id)queue
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (queue)
   {
-    v4 = a3;
-    dispatch_retain(a3);
+    queueCopy = queue;
+    dispatch_retain(queue);
   }
 
   else
   {
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
-    v4 = dispatch_queue_create_with_target_V2("com.apple.AVConference.AVCMediaAnalyzer.delegateQueue", 0, CustomRootQueue);
-    if (!v4)
+    queueCopy = dispatch_queue_create_with_target_V2("com.apple.AVConference.AVCMediaAnalyzer.delegateQueue", 0, CustomRootQueue);
+    if (!queueCopy)
     {
       [(AVCMediaAnalyzer *)self setUpDelegateQueue:?];
       return v7;
     }
   }
 
-  self->_delegateQueue = v4;
+  self->_delegateQueue = queueCopy;
   return 1;
 }
 
-- (AVCMediaAnalyzer)initWithDelegate:(id)a3 delegateQueue:(id)a4 analysisType:(int64_t)a5 streamToken:(int64_t)a6
+- (AVCMediaAnalyzer)initWithDelegate:(id)delegate delegateQueue:(id)queue analysisType:(int64_t)type streamToken:(int64_t)token
 {
   v30 = *MEMORY[0x1E69E9840];
   VRTraceReset();
@@ -52,15 +52,15 @@
     goto LABEL_16;
   }
 
-  if (!a3)
+  if (!delegate)
   {
     [AVCMediaAnalyzer initWithDelegate:v11 delegateQueue:? analysisType:? streamToken:?];
     goto LABEL_16;
   }
 
-  v11->_streamToken = a6;
-  v11->_analysisType = a5;
-  objc_storeWeak(&v11->_delegate, a3);
+  v11->_streamToken = token;
+  v11->_analysisType = type;
+  objc_storeWeak(&v11->_delegate, delegate);
   v13 = objc_alloc_init(AVConferenceXPCClient);
   v12->_connection = v13;
   if (!v13)
@@ -78,7 +78,7 @@
     goto LABEL_16;
   }
 
-  if (![(AVCMediaAnalyzer *)v12 setUpDelegateQueue:a4])
+  if (![(AVCMediaAnalyzer *)v12 setUpDelegateQueue:queue])
   {
 LABEL_16:
 
@@ -108,7 +108,7 @@ LABEL_16:
       v26 = 2048;
       v27 = v12;
       v28 = 1024;
-      v29 = a6;
+      tokenCopy = token;
       _os_log_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCMediaAnalyzer-initWithDelegate (%p) Succeeded with streamToken=%u", buf, 0x2Cu);
     }
   }
@@ -150,7 +150,7 @@ LABEL_16:
       v12 = 1024;
       v13 = 117;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCMediaAnalyzer-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -373,7 +373,7 @@ LABEL_11:
         WORD2(v14) = 2112;
         *(&v14 + 6) = v3;
         HIWORD(v14) = 2048;
-        v15 = self;
+        selfCopy = self;
         LOWORD(v16) = 1024;
         *(&v16 + 2) = v12;
         v7 = " [%s] %s:%d %@(%p) disconnect for streamToken=%u";
@@ -384,7 +384,7 @@ LABEL_11:
     }
   }
 
-  [(AVConferenceXPCClient *)self->_connection sendMessageSync:"vcMediaAnalyzerUnInitialize", *v13, *&v13[16], v14, v15, v16, v17];
+  [(AVConferenceXPCClient *)self->_connection sendMessageSync:"vcMediaAnalyzerUnInitialize", *v13, *&v13[16], v14, selfCopy, v16, v17];
 }
 
 - (void)registerBlocksForNotifications
@@ -477,28 +477,28 @@ void __50__AVCMediaAnalyzer_registerBlocksForNotifications__block_invoke_3(uint6
   [(AVConferenceXPCClient *)connection deregisterFromService:"conferenceDidServerDie"];
 }
 
-- (id)mediaAnalyzerResultsWithInternalResult:(id)a3
+- (id)mediaAnalyzerResultsWithInternalResult:(id)result
 {
-  v3 = [[AVCMediaAnalyzerResult alloc] initWithInternalResult:a3 analysisType:self->_analysisType];
+  v3 = [[AVCMediaAnalyzerResult alloc] initWithInternalResult:result analysisType:self->_analysisType];
 
   return v3;
 }
 
-- (void)didEnableHandlerWithResult:(id)a3 error:(id)a4
+- (void)didEnableHandlerWithResult:(id)result error:(id)error
 {
   block[8] = *MEMORY[0x1E69E9840];
-  v6 = [a3 objectForKey:@"vcMediaAnalyzerEnable"];
-  v7 = [(AVCMediaAnalyzer *)self delegate];
-  v8 = [(AVCMediaAnalyzer *)self delegateQueue];
+  v6 = [result objectForKey:@"vcMediaAnalyzerEnable"];
+  delegate = [(AVCMediaAnalyzer *)self delegate];
+  delegateQueue = [(AVCMediaAnalyzer *)self delegateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__AVCMediaAnalyzer_didEnableHandlerWithResult_error___block_invoke;
   block[3] = &unk_1E85F3B00;
   block[4] = v6;
   block[5] = self;
-  block[6] = a4;
-  block[7] = v7;
-  dispatch_async(v8, block);
+  block[6] = error;
+  block[7] = delegate;
+  dispatch_async(delegateQueue, block);
 }
 
 uint64_t __53__AVCMediaAnalyzer_didEnableHandlerWithResult_error___block_invoke(uint64_t a1)
@@ -533,32 +533,32 @@ uint64_t __53__AVCMediaAnalyzer_didEnableHandlerWithResult_error___block_invoke(
   return [*(a1 + 56) mediaAnalyzer:*(a1 + 40) didEnable:v2 error:*(a1 + 48)];
 }
 
-- (void)didProduceMediaAnalysisHandlerWithResult:(id)a3 error:(id)a4
+- (void)didProduceMediaAnalysisHandlerWithResult:(id)result error:(id)error
 {
   v14[9] = *MEMORY[0x1E69E9840];
-  v7 = [(AVCMediaAnalyzer *)self delegate];
-  if (v7)
+  delegate = [(AVCMediaAnalyzer *)self delegate];
+  if (delegate)
   {
-    v8 = v7;
-    v9 = [a3 objectForKeyedSubscript:@"vcMediaAnalyzerAnalysisResults"];
-    v10 = [(AVCMediaAnalyzer *)self streamToken];
+    v8 = delegate;
+    v9 = [result objectForKeyedSubscript:@"vcMediaAnalyzerAnalysisResults"];
+    streamToken = [(AVCMediaAnalyzer *)self streamToken];
     v11 = [(AVCMediaAnalyzer *)self mediaAnalyzerResultsWithInternalResult:v9];
     if (v11)
     {
       v12 = v11;
       if (objc_opt_respondsToSelector())
       {
-        v13 = [(AVCMediaAnalyzer *)self delegateQueue];
+        delegateQueue = [(AVCMediaAnalyzer *)self delegateQueue];
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __67__AVCMediaAnalyzer_didProduceMediaAnalysisHandlerWithResult_error___block_invoke;
         v14[3] = &unk_1E85F3B28;
         v14[4] = self;
-        v14[5] = a4;
+        v14[5] = error;
         v14[6] = v8;
         v14[7] = v12;
-        v14[8] = v10;
-        dispatch_async(v13, v14);
+        v14[8] = streamToken;
+        dispatch_async(delegateQueue, v14);
       }
     }
   }
@@ -596,7 +596,7 @@ uint64_t __67__AVCMediaAnalyzer_didProduceMediaAnalysisHandlerWithResult_error__
   return [*(a1 + 48) mediaAnalyzer:*(a1 + 32) didProduceMediaAnalysisResult:*(a1 + 56) streamToken:*(a1 + 64)];
 }
 
-- (void)enableMediaAnalyzer:(BOOL)a3
+- (void)enableMediaAnalyzer:(BOOL)analyzer
 {
   v6 = *MEMORY[0x1E69E9840];
   callbackQueue = self->_callbackQueue;
@@ -605,7 +605,7 @@ uint64_t __67__AVCMediaAnalyzer_didProduceMediaAnalysisHandlerWithResult_error__
   block[2] = __40__AVCMediaAnalyzer_enableMediaAnalyzer___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  analyzerCopy = analyzer;
   dispatch_async(callbackQueue, block);
 }
 

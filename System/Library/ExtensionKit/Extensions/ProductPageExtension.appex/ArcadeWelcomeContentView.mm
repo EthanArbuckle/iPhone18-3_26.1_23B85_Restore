@@ -1,13 +1,13 @@
 @interface ArcadeWelcomeContentView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC20ProductPageExtension24ArcadeWelcomeContentView)initWithCoder:(id)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC20ProductPageExtension24ArcadeWelcomeContentView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ArcadeWelcomeContentView
 
-- (_TtC20ProductPageExtension24ArcadeWelcomeContentView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension24ArcadeWelcomeContentView)initWithCoder:(id)coder
 {
   result = sub_10077156C();
   __break(1u);
@@ -16,14 +16,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10013F260();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_10013F5F0();
   v8 = v7;
   v10 = v9;
@@ -41,11 +41,11 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_10013F944(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10013F944(change);
 }
 
 @end

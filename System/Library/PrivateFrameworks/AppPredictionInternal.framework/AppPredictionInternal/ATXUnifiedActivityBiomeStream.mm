@@ -1,30 +1,30 @@
 @interface ATXUnifiedActivityBiomeStream
 - (ATXUnifiedActivityBiomeStream)init;
-- (id)_mergeTransitionPublishers:(id)a3;
+- (id)_mergeTransitionPublishers:(id)publishers;
 - (id)efficientCurrentMode;
-- (id)initFromTimeBasedTransitionStream:(id)a3 appLaunchBasedTransitionStream:(id)a4 heuristicTransitionStream:(id)a5 userFocusTransitionStream:(id)a6;
-- (id)sessionPublisherFromStartTime:(double)a3;
-- (id)transitionPublisherFromStartTime:(double)a3;
+- (id)initFromTimeBasedTransitionStream:(id)stream appLaunchBasedTransitionStream:(id)transitionStream heuristicTransitionStream:(id)heuristicTransitionStream userFocusTransitionStream:(id)focusTransitionStream;
+- (id)sessionPublisherFromStartTime:(double)time;
+- (id)transitionPublisherFromStartTime:(double)time;
 @end
 
 @implementation ATXUnifiedActivityBiomeStream
 
-- (id)initFromTimeBasedTransitionStream:(id)a3 appLaunchBasedTransitionStream:(id)a4 heuristicTransitionStream:(id)a5 userFocusTransitionStream:(id)a6
+- (id)initFromTimeBasedTransitionStream:(id)stream appLaunchBasedTransitionStream:(id)transitionStream heuristicTransitionStream:(id)heuristicTransitionStream userFocusTransitionStream:(id)focusTransitionStream
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  streamCopy = stream;
+  transitionStreamCopy = transitionStream;
+  heuristicTransitionStreamCopy = heuristicTransitionStream;
+  focusTransitionStreamCopy = focusTransitionStream;
   v18.receiver = self;
   v18.super_class = ATXUnifiedActivityBiomeStream;
   v15 = [(ATXUnifiedActivityBiomeStream *)&v18 init];
   p_isa = &v15->super.isa;
   if (v15)
   {
-    objc_storeStrong(&v15->_timeBasedInferredActivityStream, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
+    objc_storeStrong(&v15->_timeBasedInferredActivityStream, stream);
+    objc_storeStrong(p_isa + 2, transitionStream);
+    objc_storeStrong(p_isa + 3, heuristicTransitionStream);
+    objc_storeStrong(p_isa + 4, focusTransitionStream);
   }
 
   return p_isa;
@@ -65,7 +65,7 @@
   v5 = v22[5];
   if (v5 && [v5 isEntryEvent])
   {
-    v6 = [v22[5] mode];
+    mode = [v22[5] mode];
   }
 
   else
@@ -92,12 +92,12 @@
     v9 = v14[5];
     if (v9 && [v9 isEntryEvent])
     {
-      v6 = [v14[5] mode];
+      mode = [v14[5] mode];
     }
 
     else
     {
-      v6 = 0;
+      mode = 0;
     }
 
     _Block_object_dispose(&v13, 8);
@@ -105,7 +105,7 @@
 
   _Block_object_dispose(&v21, 8);
 
-  return v6;
+  return mode;
 }
 
 void __53__ATXUnifiedActivityBiomeStream_efficientCurrentMode__block_invoke(uint64_t a1, void *a2)
@@ -138,41 +138,41 @@ void __53__ATXUnifiedActivityBiomeStream_efficientCurrentMode__block_invoke_2(ui
   }
 }
 
-- (id)transitionPublisherFromStartTime:(double)a3
+- (id)transitionPublisherFromStartTime:(double)time
 {
   v19[4] = *MEMORY[0x277D85DE8];
   v5 = [(ATXTimeBasedInferredActivityBiomeStream *)self->_timeBasedInferredActivityStream transitionPublisherFromStartTime:?];
-  v6 = v5;
+  bpsPublisher = v5;
   if (!v5)
   {
-    v6 = [MEMORY[0x277CBEBF8] bpsPublisher];
+    bpsPublisher = [MEMORY[0x277CBEBF8] bpsPublisher];
   }
 
-  v19[0] = v6;
-  v7 = [(ATXAppLaunchBasedInferredActivityBiomeStream *)self->_appLaunchInferredActivityStream transitionPublisherFromStartTime:a3];
-  v8 = v7;
+  v19[0] = bpsPublisher;
+  v7 = [(ATXAppLaunchBasedInferredActivityBiomeStream *)self->_appLaunchInferredActivityStream transitionPublisherFromStartTime:time];
+  bpsPublisher2 = v7;
   if (!v7)
   {
-    v8 = [MEMORY[0x277CBEBF8] bpsPublisher];
+    bpsPublisher2 = [MEMORY[0x277CBEBF8] bpsPublisher];
   }
 
-  v19[1] = v8;
-  v9 = [(ATXHeuristicInferredActivityBiomeStream *)self->_heuristicInferredActivityStream transitionPublisherFromStartTime:a3];
-  v10 = v9;
+  v19[1] = bpsPublisher2;
+  v9 = [(ATXHeuristicInferredActivityBiomeStream *)self->_heuristicInferredActivityStream transitionPublisherFromStartTime:time];
+  bpsPublisher3 = v9;
   if (!v9)
   {
-    v10 = [MEMORY[0x277CBEBF8] bpsPublisher];
+    bpsPublisher3 = [MEMORY[0x277CBEBF8] bpsPublisher];
   }
 
-  v19[2] = v10;
-  v11 = [(ATXUserFocusComputedActivityBiomeStream *)self->_userFocusComputedActivityStream transitionPublisherFromStartTime:a3];
-  v12 = v11;
+  v19[2] = bpsPublisher3;
+  v11 = [(ATXUserFocusComputedActivityBiomeStream *)self->_userFocusComputedActivityStream transitionPublisherFromStartTime:time];
+  bpsPublisher4 = v11;
   if (!v11)
   {
-    v12 = [MEMORY[0x277CBEBF8] bpsPublisher];
+    bpsPublisher4 = [MEMORY[0x277CBEBF8] bpsPublisher];
   }
 
-  v19[3] = v12;
+  v19[3] = bpsPublisher4;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:4];
   if (!v11)
   {
@@ -199,30 +199,30 @@ void __53__ATXUnifiedActivityBiomeStream_efficientCurrentMode__block_invoke_2(ui
   return v16;
 }
 
-- (id)_mergeTransitionPublishers:(id)a3
+- (id)_mergeTransitionPublishers:(id)publishers
 {
-  v4 = a3;
-  if ([v4 count])
+  publishersCopy = publishers;
+  if ([publishersCopy count])
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    if ([v4 count] == 1)
+    v5 = [publishersCopy objectAtIndexedSubscript:0];
+    if ([publishersCopy count] == 1)
     {
-      v6 = v5;
+      bpsPublisher = v5;
     }
 
     else
     {
-      v7 = [v4 subarrayWithRange:{1, objc_msgSend(v4, "count") - 1}];
-      v6 = [(ATXUnifiedActivityBiomeStream *)self _mergeTransitionPublisher:v5 withOthers:v7];
+      v7 = [publishersCopy subarrayWithRange:{1, objc_msgSend(publishersCopy, "count") - 1}];
+      bpsPublisher = [(ATXUnifiedActivityBiomeStream *)self _mergeTransitionPublisher:v5 withOthers:v7];
     }
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEBF8] bpsPublisher];
+    bpsPublisher = [MEMORY[0x277CBEBF8] bpsPublisher];
   }
 
-  return v6;
+  return bpsPublisher;
 }
 
 uint64_t __70__ATXUnifiedActivityBiomeStream__mergeTransitionPublisher_withOthers___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -247,9 +247,9 @@ uint64_t __70__ATXUnifiedActivityBiomeStream__mergeTransitionPublisher_withOther
   return v10;
 }
 
-- (id)sessionPublisherFromStartTime:(double)a3
+- (id)sessionPublisherFromStartTime:(double)time
 {
-  v3 = [(ATXUnifiedActivityBiomeStream *)self transitionPublisherFromStartTime:a3];
+  v3 = [(ATXUnifiedActivityBiomeStream *)self transitionPublisherFromStartTime:time];
   v4 = [_ATXUnifiedActivityStreamConversions sessionPublisherFromTransitionPublisher:v3];
 
   return v4;

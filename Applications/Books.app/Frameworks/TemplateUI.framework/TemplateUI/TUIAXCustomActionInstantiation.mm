@@ -1,25 +1,25 @@
 @interface TUIAXCustomActionInstantiation
 - (BOOL)invoke;
-- (TUIAXCustomActionInstantiation)initWithCustomAction:(id)a3 arguments:(id)a4 axElement:(id)a5;
+- (TUIAXCustomActionInstantiation)initWithCustomAction:(id)action arguments:(id)arguments axElement:(id)element;
 - (TUIAXElement)triggerAXElement;
 @end
 
 @implementation TUIAXCustomActionInstantiation
 
-- (TUIAXCustomActionInstantiation)initWithCustomAction:(id)a3 arguments:(id)a4 axElement:(id)a5
+- (TUIAXCustomActionInstantiation)initWithCustomAction:(id)action arguments:(id)arguments axElement:(id)element
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  actionCopy = action;
+  argumentsCopy = arguments;
+  elementCopy = element;
   v15.receiver = self;
   v15.super_class = TUIAXCustomActionInstantiation;
   v12 = [(TUIAXCustomActionInstantiation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_customAction, a3);
-    objc_storeStrong(&v13->_additionalArguments, a4);
-    objc_storeWeak(&v13->_triggerAXElement, v11);
+    objc_storeStrong(&v12->_customAction, action);
+    objc_storeStrong(&v13->_additionalArguments, arguments);
+    objc_storeWeak(&v13->_triggerAXElement, elementCopy);
   }
 
   return v13;
@@ -27,18 +27,18 @@
 
 - (BOOL)invoke
 {
-  v3 = [(TUIElementBehaviorArgumentsMap *)self->_additionalArguments arguments];
+  arguments = [(TUIElementBehaviorArgumentsMap *)self->_additionalArguments arguments];
   WeakRetained = objc_loadWeakRetained(&self->_triggerAXElement);
   if (WeakRetained)
   {
     v5 = WeakRetained;
-    v6 = [v3 objectForKeyedSubscript:@"sourceView"];
+    v6 = [arguments objectForKeyedSubscript:@"sourceView"];
 
     if (!v6)
     {
       v7 = objc_loadWeakRetained(&self->_triggerAXElement);
-      v8 = [(TUIAXCustomAction *)self->_customAction controlIdentifier];
-      v9 = [v7 controlViewForOverrideIdentifier:v8];
+      controlIdentifier = [(TUIAXCustomAction *)self->_customAction controlIdentifier];
+      v9 = [v7 controlViewForOverrideIdentifier:controlIdentifier];
 
       if (v9)
       {
@@ -57,12 +57,12 @@
         v13 = v12;
 
         [v13 setObject:v9 forKeyedSubscript:@"sourceView"];
-        v3 = v13;
+        arguments = v13;
       }
     }
   }
 
-  [(TUIAXCustomAction *)self->_customAction invokeWithArguments:v3];
+  [(TUIAXCustomAction *)self->_customAction invokeWithArguments:arguments];
 
   return 1;
 }

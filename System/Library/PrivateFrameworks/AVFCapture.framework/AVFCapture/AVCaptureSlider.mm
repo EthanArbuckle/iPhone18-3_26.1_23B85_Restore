@@ -1,57 +1,57 @@
 @interface AVCaptureSlider
-- (AVCaptureSlider)initWithLocalizedTitle:(id)a3 symbolName:(id)a4 minValue:(float)a5 maxValue:(float)a6;
-- (AVCaptureSlider)initWithLocalizedTitle:(id)a3 symbolName:(id)a4 minValue:(float)a5 maxValue:(float)a6 step:(float)a7;
-- (AVCaptureSlider)initWithLocalizedTitle:(id)a3 symbolName:(id)a4 values:(id)a5;
+- (AVCaptureSlider)initWithLocalizedTitle:(id)title symbolName:(id)name minValue:(float)value maxValue:(float)maxValue;
+- (AVCaptureSlider)initWithLocalizedTitle:(id)title symbolName:(id)name minValue:(float)value maxValue:(float)maxValue step:(float)step;
+- (AVCaptureSlider)initWithLocalizedTitle:(id)title symbolName:(id)name values:(id)values;
 - (OS_dispatch_queue)actionQueue;
 - (id)description;
 - (id)overlayControl;
 - (id)overlayUpdate;
 - (void)dealloc;
-- (void)enqueueActionWithUpdate:(id)a3;
-- (void)setActionQueue:(id)a3 action:(id)a4;
-- (void)setLocalizedValueValueFormat:(id)a3;
-- (void)setProminentValues:(id)a3;
-- (void)setValue:(float)a3;
+- (void)enqueueActionWithUpdate:(id)update;
+- (void)setActionQueue:(id)queue action:(id)action;
+- (void)setLocalizedValueValueFormat:(id)format;
+- (void)setProminentValues:(id)values;
+- (void)setValue:(float)value;
 @end
 
 @implementation AVCaptureSlider
 
-- (AVCaptureSlider)initWithLocalizedTitle:(id)a3 symbolName:(id)a4 values:(id)a5
+- (AVCaptureSlider)initWithLocalizedTitle:(id)title symbolName:(id)name values:(id)values
 {
   v14.receiver = self;
   v14.super_class = AVCaptureSlider;
-  v8 = [(AVCaptureControl *)&v14 initSubclass];
-  if (v8)
+  initSubclass = [(AVCaptureControl *)&v14 initSubclass];
+  if (initSubclass)
   {
-    v9 = [a5 sortedArrayUsingSelector:sel_compare_];
+    v9 = [values sortedArrayUsingSelector:sel_compare_];
     [objc_msgSend(v9 "firstObject")];
-    v8->_minValue = v10;
+    initSubclass->_minValue = v10;
     [objc_msgSend(v9 "lastObject")];
-    v8->_maxValue = v11;
-    v8->_value = v8->_minValue;
-    v8->_prominentValues = objc_alloc_init(MEMORY[0x1E695DEC8]);
-    v8->_localizedTitle = [a3 copy];
-    v8->_symbolName = [a4 copy];
-    v12 = [a5 copy];
-    v8->_discreteRange = [objc_alloc(MEMORY[0x1E69938F8]) initWithValues:v12];
+    initSubclass->_maxValue = v11;
+    initSubclass->_value = initSubclass->_minValue;
+    initSubclass->_prominentValues = objc_alloc_init(MEMORY[0x1E695DEC8]);
+    initSubclass->_localizedTitle = [title copy];
+    initSubclass->_symbolName = [name copy];
+    v12 = [values copy];
+    initSubclass->_discreteRange = [objc_alloc(MEMORY[0x1E69938F8]) initWithValues:v12];
 
-    v8->_actionLock._os_unfair_lock_opaque = 0;
+    initSubclass->_actionLock._os_unfair_lock_opaque = 0;
   }
 
-  return v8;
+  return initSubclass;
 }
 
-- (AVCaptureSlider)initWithLocalizedTitle:(id)a3 symbolName:(id)a4 minValue:(float)a5 maxValue:(float)a6
+- (AVCaptureSlider)initWithLocalizedTitle:(id)title symbolName:(id)name minValue:(float)value maxValue:(float)maxValue
 {
   v14.receiver = self;
   v14.super_class = AVCaptureSlider;
-  v10 = [(AVCaptureControl *)&v14 initSubclass];
-  v11 = v10;
-  if (v10)
+  initSubclass = [(AVCaptureControl *)&v14 initSubclass];
+  v11 = initSubclass;
+  if (initSubclass)
   {
-    if (a5 >= a6)
+    if (value >= maxValue)
     {
-      v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, a5, a6}];
+      v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, value, maxValue}];
 
       if (AVCaptureShouldThrowForAPIViolations())
       {
@@ -64,13 +64,13 @@
 
     else
     {
-      v10->_value = a5;
-      v10->_prominentValues = objc_alloc_init(MEMORY[0x1E695DEC8]);
-      v11->_minValue = a5;
-      v11->_maxValue = a6;
-      v11->_localizedTitle = [a3 copy];
-      v11->_symbolName = [a4 copy];
-      v11->_continuousRange = [objc_alloc(MEMORY[0x1E69938F0]) initWithMinimum:a5 maximum:a6];
+      initSubclass->_value = value;
+      initSubclass->_prominentValues = objc_alloc_init(MEMORY[0x1E695DEC8]);
+      v11->_minValue = value;
+      v11->_maxValue = maxValue;
+      v11->_localizedTitle = [title copy];
+      v11->_symbolName = [name copy];
+      v11->_continuousRange = [objc_alloc(MEMORY[0x1E69938F0]) initWithMinimum:value maximum:maxValue];
       v11->_actionLock._os_unfair_lock_opaque = 0;
     }
   }
@@ -78,42 +78,42 @@
   return v11;
 }
 
-- (AVCaptureSlider)initWithLocalizedTitle:(id)a3 symbolName:(id)a4 minValue:(float)a5 maxValue:(float)a6 step:(float)a7
+- (AVCaptureSlider)initWithLocalizedTitle:(id)title symbolName:(id)name minValue:(float)value maxValue:(float)maxValue step:(float)step
 {
   v19.receiver = self;
   v19.super_class = AVCaptureSlider;
-  v12 = [(AVCaptureControl *)&v19 initSubclass];
-  v13 = v12;
-  if (v12)
+  initSubclass = [(AVCaptureControl *)&v19 initSubclass];
+  v13 = initSubclass;
+  if (initSubclass)
   {
-    if (a5 >= a6)
+    if (value >= maxValue)
     {
       v14 = MEMORY[0x1E695DF30];
       v15 = *MEMORY[0x1E695D940];
-      v18 = a5;
+      stepCopy = value;
     }
 
     else
     {
-      if (a7 > 0.0)
+      if (step > 0.0)
       {
-        v12->_value = a5;
-        v12->_prominentValues = objc_alloc_init(MEMORY[0x1E695DEC8]);
-        v13->_minValue = a5;
-        v13->_maxValue = a6;
-        v13->_localizedTitle = [a3 copy];
-        v13->_symbolName = [a4 copy];
-        v13->_discreteRange = [objc_alloc(MEMORY[0x1E69938F8]) initWithMinimum:a5 maximum:a6 step:a7];
+        initSubclass->_value = value;
+        initSubclass->_prominentValues = objc_alloc_init(MEMORY[0x1E695DEC8]);
+        v13->_minValue = value;
+        v13->_maxValue = maxValue;
+        v13->_localizedTitle = [title copy];
+        v13->_symbolName = [name copy];
+        v13->_discreteRange = [objc_alloc(MEMORY[0x1E69938F8]) initWithMinimum:value maximum:maxValue step:step];
         v13->_actionLock._os_unfair_lock_opaque = 0;
         return v13;
       }
 
       v14 = MEMORY[0x1E695DF30];
       v15 = *MEMORY[0x1E695D940];
-      v18 = a7;
+      stepCopy = step;
     }
 
-    v16 = [v14 exceptionWithName:v15 reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, *&v18}];
+    v16 = [v14 exceptionWithName:v15 reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, *&stepCopy}];
 
     if (AVCaptureShouldThrowForAPIViolations())
     {
@@ -142,25 +142,25 @@
   accessibilityIdentifier = self->_accessibilityIdentifier;
   if (accessibilityIdentifier)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@]", accessibilityIdentifier];
+    accessibilityIdentifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@]", accessibilityIdentifier];
   }
 
   else
   {
-    v4 = &stru_1F1CBCFE8;
+    accessibilityIdentifier = &stru_1F1CBCFE8;
   }
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
-  return [v5 stringWithFormat:@"<%@: %p [%@]%@>", NSStringFromClass(v6), self, self->_localizedTitle, v4];
+  return [v5 stringWithFormat:@"<%@: %p [%@]%@>", NSStringFromClass(v6), self, self->_localizedTitle, accessibilityIdentifier];
 }
 
 - (id)overlayUpdate
 {
-  v3 = [(AVCaptureSlider *)self overlayControl];
+  overlayControl = [(AVCaptureSlider *)self overlayControl];
   [(AVCaptureSlider *)self value];
 
-  return [v3 updateWithFloatValue:?];
+  return [overlayControl updateWithFloatValue:?];
 }
 
 - (id)overlayControl
@@ -185,22 +185,22 @@
   return self->_overlayControl;
 }
 
-- (void)setValue:(float)a3
+- (void)setValue:(float)value
 {
-  v5 = [(AVCaptureSlider *)self actionQueue];
-  if (v5)
+  actionQueue = [(AVCaptureSlider *)self actionQueue];
+  if (actionQueue)
   {
-    dispatch_assert_queue_V2(v5);
+    dispatch_assert_queue_V2(actionQueue);
   }
 
-  if (self->_value != a3)
+  if (self->_value != value)
   {
     minValue = self->_minValue;
-    if (minValue > a3)
+    if (minValue > value)
     {
       v7 = @"Value %.2f is less than the slider's minimum value %.2f";
 LABEL_8:
-      [MEMORY[0x1E696AEC0] stringWithFormat:v7, a3, minValue];
+      [MEMORY[0x1E696AEC0] stringWithFormat:v7, value, minValue];
       v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
       if (AVCaptureShouldThrowForAPIViolations())
       {
@@ -212,62 +212,62 @@ LABEL_8:
     }
 
     minValue = self->_maxValue;
-    if (minValue < a3)
+    if (minValue < value)
     {
       v7 = @"Value %.2f is greater than the slider's maximum value %.2f";
       goto LABEL_8;
     }
 
-    self->_value = a3;
-    v9 = [(AVCaptureControl *)self overlay];
-    v10 = [(AVCaptureSlider *)self overlayUpdate];
+    self->_value = value;
+    overlay = [(AVCaptureControl *)self overlay];
+    overlayUpdate = [(AVCaptureSlider *)self overlayUpdate];
 
-    [(AVCaptureControlsOverlay *)v9 updateControl:v10];
+    [(AVCaptureControlsOverlay *)overlay updateControl:overlayUpdate];
   }
 }
 
-- (void)setLocalizedValueValueFormat:(id)a3
+- (void)setLocalizedValueValueFormat:(id)format
 {
   localizedValueFormat = self->_localizedValueFormat;
-  if (localizedValueFormat != a3 && ![(NSString *)localizedValueFormat isEqualToString:?])
+  if (localizedValueFormat != format && ![(NSString *)localizedValueFormat isEqualToString:?])
   {
 
-    self->_localizedValueFormat = [a3 copy];
+    self->_localizedValueFormat = [format copy];
     os_unfair_lock_lock(&self->_actionLock);
 
     self->_overlayControl = 0;
     os_unfair_lock_unlock(&self->_actionLock);
-    v6 = [(AVCaptureControl *)self session];
-    if (v6)
+    session = [(AVCaptureControl *)self session];
+    if (session)
     {
-      if (![(AVCaptureSession *)v6 isBeingConfigured])
+      if (![(AVCaptureSession *)session isBeingConfigured])
       {
-        v7 = [(AVCaptureControl *)self overlay];
+        overlay = [(AVCaptureControl *)self overlay];
 
-        [(AVCaptureControlsOverlay *)v7 rebuildControls];
+        [(AVCaptureControlsOverlay *)overlay rebuildControls];
       }
     }
   }
 }
 
-- (void)setProminentValues:(id)a3
+- (void)setProminentValues:(id)values
 {
   if (![(NSArray *)self->_prominentValues isEqualToArray:?])
   {
 
-    self->_prominentValues = [a3 copy];
+    self->_prominentValues = [values copy];
     os_unfair_lock_lock(&self->_actionLock);
 
     self->_overlayControl = 0;
     os_unfair_lock_unlock(&self->_actionLock);
-    v5 = [(AVCaptureControl *)self session];
-    if (v5)
+    session = [(AVCaptureControl *)self session];
+    if (session)
     {
-      if (![(AVCaptureSession *)v5 isBeingConfigured])
+      if (![(AVCaptureSession *)session isBeingConfigured])
       {
-        v6 = [(AVCaptureControl *)self overlay];
+        overlay = [(AVCaptureControl *)self overlay];
 
-        [(AVCaptureControlsOverlay *)v6 rebuildControls];
+        [(AVCaptureControlsOverlay *)overlay rebuildControls];
       }
     }
   }
@@ -281,26 +281,26 @@ LABEL_8:
   return v3;
 }
 
-- (void)setActionQueue:(id)a3 action:(id)a4
+- (void)setActionQueue:(id)queue action:(id)action
 {
   os_unfair_lock_lock(&self->_actionLock);
 
-  self->_actionQueue = a3;
-  self->_action = [a4 copy];
+  self->_actionQueue = queue;
+  self->_action = [action copy];
 
   os_unfair_lock_unlock(&self->_actionLock);
 }
 
-- (void)enqueueActionWithUpdate:(id)a3
+- (void)enqueueActionWithUpdate:(id)update
 {
-  v5 = [(AVCaptureSlider *)self actionQueue];
+  actionQueue = [(AVCaptureSlider *)self actionQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__AVCaptureSlider_enqueueActionWithUpdate___block_invoke;
   v6[3] = &unk_1E786EAA8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = update;
+  dispatch_async(actionQueue, v6);
 }
 
 uint64_t __43__AVCaptureSlider_enqueueActionWithUpdate___block_invoke(uint64_t a1)

@@ -1,10 +1,10 @@
 @interface ICCircleLayer
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation ICCircleLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   [(ICCircleLayer *)self bounds];
   v6 = v5;
@@ -28,24 +28,24 @@
   if (v21 > 0.0 && [(ICCircleLayer *)self strokeColor])
   {
     [(ICCircleLayer *)self strokeWidth];
-    CGContextSetLineWidth(a3, v22);
-    CGContextSetStrokeColorWithColor(a3, [(ICCircleLayer *)self strokeColor]);
+    CGContextSetLineWidth(context, v22);
+    CGContextSetStrokeColorWithColor(context, [(ICCircleLayer *)self strokeColor]);
     v30.origin.x = x;
     v30.origin.y = y;
     v30.size.width = width;
     v30.size.height = height;
-    CGContextStrokeEllipseInRect(a3, v30);
+    CGContextStrokeEllipseInRect(context, v30);
   }
 
   if ([(ICCircleLayer *)self fillColor])
   {
-    CGContextSetFillColorWithColor(a3, [(ICCircleLayer *)self fillColor]);
+    CGContextSetFillColorWithColor(context, [(ICCircleLayer *)self fillColor]);
     v23 = x;
     v24 = y;
     v25 = width;
     v26 = height;
 
-    CGContextFillEllipseInRect(a3, *&v23);
+    CGContextFillEllipseInRect(context, *&v23);
   }
 }
 

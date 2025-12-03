@@ -7,10 +7,10 @@
 
 - (BOOL)isSignedIntoiCloud
 {
-  v2 = [(CSDAppleIDUtilities *)self accountStore];
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [v3 username];
-  v5 = [v4 length] != 0;
+  accountStore = [(CSDAppleIDUtilities *)self accountStore];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
+  username = [aa_primaryAppleAccount username];
+  v5 = [username length] != 0;
 
   return v5;
 }

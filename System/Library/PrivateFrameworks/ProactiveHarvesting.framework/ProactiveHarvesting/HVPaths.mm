@@ -1,17 +1,17 @@
 @interface HVPaths
-+ (id)topDirectoryCreateIfNeeded:(BOOL)a3;
++ (id)topDirectoryCreateIfNeeded:(BOOL)needed;
 @end
 
 @implementation HVPaths
 
-+ (id)topDirectoryCreateIfNeeded:(BOOL)a3
++ (id)topDirectoryCreateIfNeeded:(BOOL)needed
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __38__HVPaths_topDirectoryCreateIfNeeded___block_invoke;
   v5[3] = &__block_descriptor_41_e5_v8__0l;
-  v5[4] = a1;
-  v6 = a3;
+  v5[4] = self;
+  neededCopy = needed;
   if (topDirectoryCreateIfNeeded___pasOnceToken17 != -1)
   {
     dispatch_once(&topDirectoryCreateIfNeeded___pasOnceToken17, v5);

@@ -1,7 +1,7 @@
 @interface ConversationControlsShareMenuButtonProvider
-- (void)capturedDidChangeNotification:(id)a3;
+- (void)capturedDidChangeNotification:(id)notification;
 - (void)screenSharingButtonPressed;
-- (void)setAutomaticShareState:(BOOL)a3;
+- (void)setAutomaticShareState:(BOOL)state;
 @end
 
 @implementation ConversationControlsShareMenuButtonProvider
@@ -12,13 +12,13 @@
   ConversationControlsShareMenuButtonProvider.screenSharingButtonPressed()();
 }
 
-- (void)setAutomaticShareState:(BOOL)a3
+- (void)setAutomaticShareState:(BOOL)state
 {
 
-  ConversationControlsShareMenuButtonProvider.setAutomaticShareState(_:)(a3);
+  ConversationControlsShareMenuButtonProvider.setAutomaticShareState(_:)(state);
 }
 
-- (void)capturedDidChangeNotification:(id)a3
+- (void)capturedDidChangeNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

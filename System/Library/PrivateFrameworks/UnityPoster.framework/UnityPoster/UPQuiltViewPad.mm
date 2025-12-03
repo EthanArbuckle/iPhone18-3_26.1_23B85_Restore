@@ -1,34 +1,34 @@
 @interface UPQuiltViewPad
-- (UPQuiltViewPad)initWithFrame:(CGRect)a3 identifier:(id)a4;
-- (double)getOffsetForDeviceInterfaceOrientation:(double *)a1;
+- (UPQuiltViewPad)initWithFrame:(CGRect)frame identifier:(id)identifier;
+- (double)getOffsetForDeviceInterfaceOrientation:(double *)orientation;
 - (double)originTranslationValueForLandscapeMode;
 - (double)originTranslationValueForPortraitMode;
 - (double)scaleValueForLandscapeMode;
-- (id)setupLayerForIdentifier:(void *)a1;
-- (void)setIdentifier:(id)a3;
-- (void)updateQuiltsWithIdentifier:(id)a3 deviceInterfaceOrientation:(int64_t)a4 unlockProgress:(double)a5;
+- (id)setupLayerForIdentifier:(void *)identifier;
+- (void)setIdentifier:(id)identifier;
+- (void)updateQuiltsWithIdentifier:(id)identifier deviceInterfaceOrientation:(int64_t)orientation unlockProgress:(double)progress;
 @end
 
 @implementation UPQuiltViewPad
 
-- (UPQuiltViewPad)initWithFrame:(CGRect)a3 identifier:(id)a4
+- (UPQuiltViewPad)initWithFrame:(CGRect)frame identifier:(id)identifier
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = UPQuiltViewPad;
-  v10 = [(UPQuiltViewPad *)&v19 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(UPQuiltViewPad *)&v19 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    v10->_originalFrame.origin.x = x;
-    v10->_originalFrame.origin.y = y;
-    v10->_originalFrame.size.width = width;
-    v10->_originalFrame.size.height = height;
-    v13 = [v9 copy];
+    height->_originalFrame.origin.x = x;
+    height->_originalFrame.origin.y = y;
+    height->_originalFrame.size.width = width;
+    height->_originalFrame.size.height = height;
+    v13 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v13;
 
@@ -38,22 +38,22 @@
     quiltImageLayer = v11->_quiltImageLayer;
     v11->_quiltImageLayer = v15;
 
-    v17 = [(UPQuiltViewPad *)v11 layer];
-    [v17 addSublayer:v11->_quiltImageLayer];
+    layer = [(UPQuiltViewPad *)v11 layer];
+    [layer addSublayer:v11->_quiltImageLayer];
 
-    v18 = [(UPQuiltViewPad *)v11 layer];
-    [v18 setNeedsDisplay];
+    layer2 = [(UPQuiltViewPad *)v11 layer];
+    [layer2 setNeedsDisplay];
   }
 
   return v11;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (![(NSString *)self->_identifier isEqualToString:?]|| !self->_quiltImageLayer)
   {
-    [(UPQuiltViewPad *)v4 setIdentifier:&self->super.super.super.super.isa];
+    [(UPQuiltViewPad *)identifierCopy setIdentifier:&self->super.super.super.super.isa];
   }
 }
 
@@ -74,10 +74,10 @@ id __42__UPQuiltViewPad_setupLayerForIdentifier___block_invoke_2(uint64_t a1, vo
   return v4;
 }
 
-- (id)setupLayerForIdentifier:(void *)a1
+- (id)setupLayerForIdentifier:(void *)identifier
 {
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
     if (qword_28081C728 != -1)
     {
@@ -91,14 +91,14 @@ id __42__UPQuiltViewPad_setupLayerForIdentifier___block_invoke_2(uint64_t a1, vo
     v12[3] = &unk_279E05D60;
     v13 = v3;
     v5 = [v4 imageForKey:v13 generatingIfNecessaryWithBlock:v12];
-    v6 = [v5 CGImage];
+    cGImage = [v5 CGImage];
     v7 = objc_alloc_init(MEMORY[0x277CD9ED0]);
     [v5 size];
     v9 = v8;
     [v5 size];
     [v7 setFrame:{0.0, 0.0, v9, v10}];
-    [v7 setContents:v6];
-    [a1 setClipsToBounds:0];
+    [v7 setContents:cGImage];
+    [identifier setClipsToBounds:0];
     [v7 setMasksToBounds:0];
   }
 
@@ -110,9 +110,9 @@ id __42__UPQuiltViewPad_setupLayerForIdentifier___block_invoke_2(uint64_t a1, vo
   return v7;
 }
 
-- (double)getOffsetForDeviceInterfaceOrientation:(double *)a1
+- (double)getOffsetForDeviceInterfaceOrientation:(double *)orientation
 {
-  if (!a1)
+  if (!orientation)
   {
     return 0.0;
   }
@@ -127,10 +127,10 @@ id __42__UPQuiltViewPad_setupLayerForIdentifier___block_invoke_2(uint64_t a1, vo
     v2 = dbl_27067CE30[a2 - 2];
   }
 
-  v3 = a1[70];
-  v4 = a1[71];
-  v5 = a1[72];
-  v6 = a1[73];
+  v3 = orientation[70];
+  v4 = orientation[71];
+  v5 = orientation[72];
+  v6 = orientation[73];
   v7 = *(MEMORY[0x277CBF2C0] + 16);
   *&v31.a = *MEMORY[0x277CBF2C0];
   *&v31.c = v7;
@@ -160,7 +160,7 @@ id __42__UPQuiltViewPad_setupLayerForIdentifier___block_invoke_2(uint64_t a1, vo
 
 - (double)originTranslationValueForPortraitMode
 {
-  if (a1)
+  if (self)
   {
     if (MGGetSInt32Answer() > 0x1C)
     {
@@ -193,9 +193,9 @@ LABEL_9:
     }
 
 LABEL_10:
-    [a1 timeRect];
-    [a1 timeRect];
-    return v2 * a1[72] * 3414.0;
+    [self timeRect];
+    [self timeRect];
+    return v2 * self[72] * 3414.0;
   }
 
   return 0.0;
@@ -203,7 +203,7 @@ LABEL_10:
 
 - (double)scaleValueForLandscapeMode
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -222,7 +222,7 @@ LABEL_10:
 
 - (double)originTranslationValueForLandscapeMode
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -256,34 +256,34 @@ LABEL_9:
 
   v4 = 0.15112;
 LABEL_10:
-  [a1 timeRect];
+  [self timeRect];
   v7 = v6;
-  [a1 timeRect];
-  v9 = -(v4 * a1[72] * 3414.0 - (v7 + v8 * 0.5));
-  [a1 landscapeWidgetRect];
+  [self timeRect];
+  v9 = -(v4 * self[72] * 3414.0 - (v7 + v8 * 0.5));
+  [self landscapeWidgetRect];
   return v9;
 }
 
-- (void)updateQuiltsWithIdentifier:(id)a3 deviceInterfaceOrientation:(int64_t)a4 unlockProgress:(double)a5
+- (void)updateQuiltsWithIdentifier:(id)identifier deviceInterfaceOrientation:(int64_t)orientation unlockProgress:(double)progress
 {
-  v8 = a3;
-  if (![(NSString *)self->_identifier isEqualToString:v8])
+  identifierCopy = identifier;
+  if (![(NSString *)self->_identifier isEqualToString:identifierCopy])
   {
-    [(UPQuiltViewPad *)self setIdentifier:v8];
+    [(UPQuiltViewPad *)self setIdentifier:identifierCopy];
   }
 
-  v9 = a5 * -0.2 + 1.0;
-  if ((a4 - 3) >= 2)
+  v9 = progress * -0.2 + 1.0;
+  if ((orientation - 3) >= 2)
   {
-    v10 = a5 * -0.2 + 1.0;
+    v10 = progress * -0.2 + 1.0;
   }
 
   else
   {
-    v10 = a5 * -0.1 + 1.0;
+    v10 = progress * -0.1 + 1.0;
   }
 
-  v11 = [(UPQuiltViewPad *)self getOffsetForDeviceInterfaceOrientation:a4];
+  v11 = [(UPQuiltViewPad *)self getOffsetForDeviceInterfaceOrientation:orientation];
   v13 = v12;
   v14 = *(MEMORY[0x277CBF2C0] + 16);
   *&v170.a = *MEMORY[0x277CBF2C0];
@@ -293,7 +293,7 @@ LABEL_10:
   *&v169.c = v14;
   *&v169.tx = *&v170.tx;
   CGAffineTransformScale(&v170, &v169, v9, v10);
-  if (a4 == 2)
+  if (orientation == 2)
   {
     [(UPQuiltViewPad *)self originTranslationValueForPortraitMode];
     OUTLINED_FUNCTION_1();
@@ -310,11 +310,11 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  if (a4 != 3)
+  if (orientation != 3)
   {
-    if (a4 == 4)
+    if (orientation == 4)
     {
-      v15 = [(UPQuiltViewPad *)self originTranslationValueForLandscapeMode];
+      originTranslationValueForLandscapeMode = [(UPQuiltViewPad *)self originTranslationValueForLandscapeMode];
       v17 = v16;
       v18 = MGGetSInt32Answer();
       if (v18 <= 0x1C)
@@ -324,7 +324,7 @@ LABEL_10:
       }
 
       v113 = OUTLINED_FUNCTION_3(v18, v19, v20, v21, v22, v23, v24, v25, *&v170.a);
-      v115 = CGAffineTransformTranslate(v114, v113, v15, v17);
+      v115 = CGAffineTransformTranslate(v114, v113, originTranslationValueForLandscapeMode, v17);
       v170 = v169;
       v159 = *&v169.b;
       v163 = *&v169.c;

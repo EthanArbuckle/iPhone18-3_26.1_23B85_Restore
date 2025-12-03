@@ -1,25 +1,25 @@
 @interface TTRComplicationReminder
-- (TTRComplicationReminder)initWithCreationDate:(id)a3 dueDate:(id)a4 title:(id)a5;
+- (TTRComplicationReminder)initWithCreationDate:(id)date dueDate:(id)dueDate title:(id)title;
 - (id)debugDescription;
-- (id)makeDueTimeTextProviderUsingCalendar:(id)a3 dropMinutesForRoundHours:(BOOL)a4;
+- (id)makeDueTimeTextProviderUsingCalendar:(id)calendar dropMinutesForRoundHours:(BOOL)hours;
 - (id)makeTitleTextProvider;
 @end
 
 @implementation TTRComplicationReminder
 
-- (id)makeDueTimeTextProviderUsingCalendar:(id)a3 dropMinutesForRoundHours:(BOOL)a4
+- (id)makeDueTimeTextProviderUsingCalendar:(id)calendar dropMinutesForRoundHours:(BOOL)hours
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(TTRComplicationReminder *)self dueDate];
-  v8 = [v7 date];
-  v9 = [CLKTimeTextProvider textProviderWithDate:v8];
+  hoursCopy = hours;
+  calendarCopy = calendar;
+  dueDate = [(TTRComplicationReminder *)self dueDate];
+  date = [dueDate date];
+  v9 = [CLKTimeTextProvider textProviderWithDate:date];
 
   [v9 setPrefersDesignatorToMinutes:1];
-  if (v4)
+  if (hoursCopy)
   {
-    v10 = [v9 date];
-    [v9 setDisallowBothMinutesAndDesignator:{objc_msgSend(v6, "ttr_isDateAtARoundHour:", v10)}];
+    date2 = [v9 date];
+    [v9 setDisallowBothMinutesAndDesignator:{objc_msgSend(calendarCopy, "ttr_isDateAtARoundHour:", date2)}];
   }
 
   return v9;
@@ -27,11 +27,11 @@
 
 - (id)makeTitleTextProvider
 {
-  v2 = [(TTRComplicationReminder *)self title];
-  v3 = v2;
-  if (v2)
+  title = [(TTRComplicationReminder *)self title];
+  v3 = title;
+  if (title)
   {
-    v4 = v2;
+    v4 = title;
   }
 
   else
@@ -44,22 +44,22 @@
   return v5;
 }
 
-- (TTRComplicationReminder)initWithCreationDate:(id)a3 dueDate:(id)a4 title:(id)a5
+- (TTRComplicationReminder)initWithCreationDate:(id)date dueDate:(id)dueDate title:(id)title
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  dueDateCopy = dueDate;
+  titleCopy = title;
   v17.receiver = self;
   v17.super_class = TTRComplicationReminder;
   v11 = [(TTRComplicationReminder *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dateCopy copy];
     creationDate = v11->_creationDate;
     v11->_creationDate = v12;
 
-    objc_storeStrong(&v11->_dueDate, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_dueDate, dueDate);
+    v14 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v14;
   }
@@ -70,10 +70,10 @@
 - (id)debugDescription
 {
   v3 = objc_opt_class();
-  v4 = [(TTRComplicationReminder *)self title];
-  v5 = [(TTRComplicationReminder *)self creationDate];
-  v6 = [(TTRComplicationReminder *)self dueDate];
-  v7 = [NSString stringWithFormat:@"<%@ %p: title=%@, creationDate=%@, dueDate=%@>", v3, self, v4, v5, v6];
+  title = [(TTRComplicationReminder *)self title];
+  creationDate = [(TTRComplicationReminder *)self creationDate];
+  dueDate = [(TTRComplicationReminder *)self dueDate];
+  v7 = [NSString stringWithFormat:@"<%@ %p: title=%@, creationDate=%@, dueDate=%@>", v3, self, title, creationDate, dueDate];
 
   return v7;
 }

@@ -1,33 +1,33 @@
 @interface MOTopicManager
-+ (id)endOfDayBefore:(id)a3;
-+ (id)startOfDayBefore:(id)a3;
-- (MOTopicManager)initWithTopicStore:(id)a3 momentStore:(id)a4;
-- (MOTopicManager)initWithUniverse:(id)a3;
-- (id)createEventFromTopicQuery:(id)a3;
-- (id)rehydratedScoredTopicsEvent:(id)a3;
-- (id)rehydratedScoredTopicsEvents:(id)a3;
-- (void)fetchAndSaveScoredTopicsBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5;
++ (id)endOfDayBefore:(id)before;
++ (id)startOfDayBefore:(id)before;
+- (MOTopicManager)initWithTopicStore:(id)store momentStore:(id)momentStore;
+- (MOTopicManager)initWithUniverse:(id)universe;
+- (id)createEventFromTopicQuery:(id)query;
+- (id)rehydratedScoredTopicsEvent:(id)event;
+- (id)rehydratedScoredTopicsEvents:(id)events;
+- (void)fetchAndSaveScoredTopicsBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler;
 @end
 
 @implementation MOTopicManager
 
-- (MOTopicManager)initWithUniverse:(id)a3
+- (MOTopicManager)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v5 = objc_alloc_init(PPTopicStore);
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v4 getService:v7];
+  v8 = [universeCopy getService:v7];
 
   v9 = [(MOTopicManager *)self initWithTopicStore:v5 momentStore:v8];
   return v9;
 }
 
-- (MOTopicManager)initWithTopicStore:(id)a3 momentStore:(id)a4
+- (MOTopicManager)initWithTopicStore:(id)store momentStore:(id)momentStore
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  storeCopy = store;
+  momentStoreCopy = momentStore;
+  if (!momentStoreCopy)
   {
     v15 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -41,10 +41,10 @@
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!storeCopy)
   {
 LABEL_9:
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -58,76 +58,76 @@ LABEL_9:
     queue = v10->_queue;
     v10->_queue = v12;
 
-    objc_storeStrong(&v10->_topicStore, a3);
-    objc_storeStrong(&v10->_momentStore, a4);
+    objc_storeStrong(&v10->_topicStore, store);
+    objc_storeStrong(&v10->_momentStore, momentStore);
   }
 
   self = v10;
-  v14 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v14;
+  return selfCopy;
 }
 
-+ (id)startOfDayBefore:(id)a3
++ (id)startOfDayBefore:(id)before
 {
-  v3 = a3;
+  beforeCopy = before;
   v4 = +[NSCalendar currentCalendar];
-  v5 = [[NSDate alloc] initWithTimeInterval:v3 sinceDate:-86400.0];
+  v5 = [[NSDate alloc] initWithTimeInterval:beforeCopy sinceDate:-86400.0];
 
   v6 = [v4 startOfDayForDate:v5];
 
   return v6;
 }
 
-+ (id)endOfDayBefore:(id)a3
++ (id)endOfDayBefore:(id)before
 {
-  v3 = a3;
+  beforeCopy = before;
   v4 = [NSDate alloc];
   v5 = +[NSCalendar currentCalendar];
-  v6 = [v5 startOfDayForDate:v3];
+  v6 = [v5 startOfDayForDate:beforeCopy];
 
   v7 = [v4 initWithTimeInterval:v6 sinceDate:-1.0];
 
   return v7;
 }
 
-- (id)createEventFromTopicQuery:(id)a3
+- (id)createEventFromTopicQuery:(id)query
 {
-  v3 = a3;
+  queryCopy = query;
   v4 = [MOEvent alloc];
   v5 = +[NSUUID UUID];
-  v6 = [v3 fromDate];
-  v7 = [v3 toDate];
+  fromDate = [queryCopy fromDate];
+  toDate = [queryCopy toDate];
   v8 = +[NSDate date];
-  v9 = [(MOEvent *)v4 initWithEventIdentifier:v5 startDate:v6 endDate:v7 creationDate:v8 provider:3 category:7];
+  v9 = [(MOEvent *)v4 initWithEventIdentifier:v5 startDate:fromDate endDate:toDate creationDate:v8 provider:3 category:7];
 
-  v10 = [v3 toDate];
+  toDate2 = [queryCopy toDate];
 
-  v11 = [v10 dateByAddingTimeInterval:2419200.0];
+  v11 = [toDate2 dateByAddingTimeInterval:2419200.0];
   [(MOEvent *)v9 setExpirationDate:v11];
 
   return v9;
 }
 
-- (void)fetchAndSaveScoredTopicsBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5
+- (void)fetchAndSaveScoredTopicsBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MOTopicManager *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(MOTopicManager *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __75__MOTopicManager_fetchAndSaveScoredTopicsBetweenStartDate_EndDate_handler___block_invoke;
   v15[3] = &unk_1003361C0;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dateCopy;
+  v17 = endDateCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = endDateCopy;
+  v14 = dateCopy;
+  dispatch_async(queue, v15);
 }
 
 void __75__MOTopicManager_fetchAndSaveScoredTopicsBetweenStartDate_EndDate_handler___block_invoke(uint64_t a1)
@@ -340,31 +340,31 @@ void __75__MOTopicManager_fetchAndSaveScoredTopicsBetweenStartDate_EndDate_handl
   }
 }
 
-- (id)rehydratedScoredTopicsEvent:(id)a3
+- (id)rehydratedScoredTopicsEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityPortraitTopics);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v24 = v4;
+    v24 = eventCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "rehydratedScoredTopicsEvent:%@", buf, 0xCu);
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 startDate];
-  [v6 setFromDate:v7];
+  startDate = [eventCopy startDate];
+  [v6 setFromDate:startDate];
 
-  v8 = [v4 endDate];
-  [v6 setToDate:v8];
+  endDate = [eventCopy endDate];
+  [v6 setToDate:endDate];
 
-  v9 = [v4 endDate];
-  [v6 setScoringDate:v9];
+  endDate2 = [eventCopy endDate];
+  [v6 setScoringDate:endDate2];
 
   [v6 setDecayRate:0.000001];
   [v6 setScoreWithBiases:0];
   v10 = objc_opt_new();
-  v11 = [(MOTopicManager *)self topicStore];
+  topicStore = [(MOTopicManager *)self topicStore];
   v21 = 0;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -372,19 +372,19 @@ void __75__MOTopicManager_fetchAndSaveScoredTopicsBetweenStartDate_EndDate_handl
   v19[3] = &unk_1003361E8;
   v12 = v10;
   v20 = v12;
-  [v11 iterScoresForTopicMapping:@"moments-topics" query:v6 error:&v21 block:v19];
+  [topicStore iterScoresForTopicMapping:@"moments-topics" query:v6 error:&v21 block:v19];
   v13 = v21;
 
   if ([v12 count])
   {
-    v14 = [v4 copy];
+    v14 = [eventCopy copy];
     [v14 setScoredTopics:v12];
-    v15 = _mo_log_facility_get_os_log(&MOLogFacilityPortraitTopics);
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+    momentStore = _mo_log_facility_get_os_log(&MOLogFacilityPortraitTopics);
+    if (os_log_type_enabled(momentStore, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
       v24 = v14;
-      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "event enriched:%@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, momentStore, OS_LOG_TYPE_INFO, "event enriched:%@", buf, 0xCu);
     }
   }
 
@@ -397,10 +397,10 @@ void __75__MOTopicManager_fetchAndSaveScoredTopicsBetweenStartDate_EndDate_handl
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "No topics scores higher than threshold is found, therefore deleting this event.", buf, 2u);
     }
 
-    v15 = [(MOTopicManager *)self momentStore];
-    v22 = v4;
+    momentStore = [(MOTopicManager *)self momentStore];
+    v22 = eventCopy;
     v17 = [NSArray arrayWithObjects:&v22 count:1];
-    [v15 removeEvents:v17 CompletionHandler:&__block_literal_global_1];
+    [momentStore removeEvents:v17 CompletionHandler:&__block_literal_global_1];
 
     v14 = 0;
   }
@@ -439,14 +439,14 @@ void __46__MOTopicManager_rehydratedScoredTopicsEvent___block_invoke_133(id a1, 
   }
 }
 
-- (id)rehydratedScoredTopicsEvents:(id)a3
+- (id)rehydratedScoredTopicsEvents:(id)events
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __47__MOTopicManager_rehydratedScoredTopicsEvents___block_invoke;
   v5[3] = &unk_100336250;
   v5[4] = self;
-  v3 = [a3 _pas_mappedArrayWithTransform:v5];
+  v3 = [events _pas_mappedArrayWithTransform:v5];
 
   return v3;
 }

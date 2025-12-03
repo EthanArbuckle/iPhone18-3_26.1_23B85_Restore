@@ -2,7 +2,7 @@
 - (HKWorkoutSessionDelegate)mirroredDelegate;
 - (HKWorkoutSessionDelegate)stingDelegate;
 - (HKWorkoutSessionPrivateDelegate)mirroringDelegate;
-- (NLSessionController)initWithWorkoutSession:(id)a3;
+- (NLSessionController)initWithWorkoutSession:(id)session;
 - (NLSessionControllerDelegate)delegate;
 - (void)_configureStateActions;
 - (void)_configureStateMachine;
@@ -10,59 +10,59 @@
 - (void)_onRecovery;
 - (void)_onSessionError;
 - (void)_prepareSession;
-- (void)_setState:(unint64_t)a3;
+- (void)_setState:(unint64_t)state;
 - (void)_startSession;
 - (void)_stopSession;
-- (void)addSessionControllerStateObserver:(id)a3;
-- (void)removeSessionControllerStateObserver:(id)a3;
-- (void)sessionActivity:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)workoutSession:(id)a3 didChangeToState:(int64_t)a4 fromState:(int64_t)a5 date:(id)a6;
-- (void)workoutSession:(id)a3 didDisconnectFromRemoteDeviceWithError:(id)a4;
-- (void)workoutSession:(id)a3 didFailWithError:(id)a4;
-- (void)workoutSession:(id)a3 didGenerateEvent:(id)a4;
-- (void)workoutSession:(id)a3 didReceiveDataFromRemoteDevice:(id)a4;
-- (void)workoutSession:(id)a3 didReceiveDataFromRemoteWorkoutSession:(id)a4;
-- (void)workoutSession:(id)a3 didSuggestWorkoutConfiguration:(id)a4 date:(id)a5;
-- (void)workoutSession:(id)a3 didUpdateWorkoutConfiguration:(id)a4;
+- (void)addSessionControllerStateObserver:(id)observer;
+- (void)removeSessionControllerStateObserver:(id)observer;
+- (void)sessionActivity:(id)activity didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)workoutSession:(id)session didChangeToState:(int64_t)state fromState:(int64_t)fromState date:(id)date;
+- (void)workoutSession:(id)session didDisconnectFromRemoteDeviceWithError:(id)error;
+- (void)workoutSession:(id)session didFailWithError:(id)error;
+- (void)workoutSession:(id)session didGenerateEvent:(id)event;
+- (void)workoutSession:(id)session didReceiveDataFromRemoteDevice:(id)device;
+- (void)workoutSession:(id)session didReceiveDataFromRemoteWorkoutSession:(id)workoutSession;
+- (void)workoutSession:(id)session didSuggestWorkoutConfiguration:(id)configuration date:(id)date;
+- (void)workoutSession:(id)session didUpdateWorkoutConfiguration:(id)configuration;
 @end
 
 @implementation NLSessionController
 
-- (NLSessionController)initWithWorkoutSession:(id)a3
+- (NLSessionController)initWithWorkoutSession:(id)session
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
-  v11 = 0;
+  objc_storeStrong(location, session);
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = NLSessionController;
   v8 = [(NLSessionController *)&v9 init];
-  v11 = v8;
-  objc_storeStrong(&v11, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    v11->_sessionState = 0;
-    objc_storeStrong(&v11->_workoutSession, location[0]);
-    [(HKWorkoutSession *)v11->_workoutSession setDelegate:v11];
-    [(NLSessionController *)v11 _configureStateMachine];
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    stateObservers = v11->_stateObservers;
-    v11->_stateObservers = v4;
+    selfCopy->_sessionState = 0;
+    objc_storeStrong(&selfCopy->_workoutSession, location[0]);
+    [(HKWorkoutSession *)selfCopy->_workoutSession setDelegate:selfCopy];
+    [(NLSessionController *)selfCopy _configureStateMachine];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    stateObservers = selfCopy->_stateObservers;
+    selfCopy->_stateObservers = weakObjectsHashTable;
     MEMORY[0x277D82BD8](stateObservers);
   }
 
-  v7 = MEMORY[0x277D82BE0](v11);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
 - (void)_configureStateMachine
 {
   v252[14] = *MEMORY[0x277D85DE8];
-  v250 = self;
+  selfCopy = self;
   __b[14] = a2;
   memset(__b, 0, 0x70uLL);
   NLSessionStateIdentifierShortHandStruct(__b);
@@ -110,19 +110,19 @@
   MEMORY[0x277D82BD8](v229);
   MEMORY[0x277D82BD8](v230);
   v232 = objc_alloc(MEMORY[0x277D0A800]);
-  v235 = [(NLSessionController *)v250 UUID];
+  uUID = [(NLSessionController *)selfCopy UUID];
   v234 = FIUIStateMachineLabel();
   v231 = MEMORY[0x277D85CD0];
   v2 = MEMORY[0x277D85CD0];
   v233 = v231;
   v3 = [v232 initWithLabel:v234 queue:?];
-  stateMachine = v250->_stateMachine;
-  v250->_stateMachine = v3;
+  stateMachine = selfCopy->_stateMachine;
+  selfCopy->_stateMachine = v3;
   MEMORY[0x277D82BD8](stateMachine);
   MEMORY[0x277D82BD8](v233);
   MEMORY[0x277D82BD8](v234);
-  MEMORY[0x277D82BD8](v235);
-  v5 = v250->_stateMachine;
+  MEMORY[0x277D82BD8](uUID);
+  v5 = selfCopy->_stateMachine;
   FIUIStateMachineSetDiagnosticAndErrorHandler();
   v247 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v248, "count")}];
   memset(v245, 0, sizeof(v245));
@@ -142,13 +142,13 @@
       }
 
       v246 = *(v245[1] + 8 * v215);
-      v244 = [v246 unsignedIntegerValue];
+      unsignedIntegerValue = [v246 unsignedIntegerValue];
       v211 = objc_alloc(MEMORY[0x277D0A7F8]);
-      v212 = NLSessionStateIdentifierDescription(v244);
+      v212 = NLSessionStateIdentifierDescription(unsignedIntegerValue);
       v243 = [v211 initWithLabel:?];
       MEMORY[0x277D82BD8](v212);
       [v247 setObject:v243 forKeyedSubscript:v246];
-      [(FIUIStateMachine *)v250->_stateMachine addState:v243];
+      [(FIUIStateMachine *)selfCopy->_stateMachine addState:v243];
       objc_storeStrong(&v243, 0);
       ++v215;
       if (v213 + 1 >= v216)
@@ -164,10 +164,10 @@
   }
 
   MEMORY[0x277D82BD8](obj);
-  objc_storeStrong(&v250->_stateMap, v247);
-  v242 = [MEMORY[0x277CBEB38] dictionary];
+  objc_storeStrong(&selfCopy->_stateMap, v247);
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v241 = [objc_alloc(MEMORY[0x277D0A7F8]) initWithLabel:@"Preparing"];
-  v11 = v250->_stateMachine;
+  v11 = selfCopy->_stateMachine;
   v8 = MEMORY[0x277CBEB98];
   v6 = v247;
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[1]];
@@ -189,12 +189,12 @@
   MEMORY[0x277D82BD8](v17);
   MEMORY[0x277D82BD8](v18);
   v19 = v241;
-  v20 = v242;
-  v21 = [v241 label];
+  v20 = dictionary;
+  label = [v241 label];
   [v20 setObject:v19 forKeyedSubscript:?];
-  MEMORY[0x277D82BD8](v21);
+  MEMORY[0x277D82BD8](label);
   v240 = [objc_alloc(MEMORY[0x277D0A7F8]) initWithLabel:@"InSession"];
-  v29 = v250->_stateMachine;
+  v29 = selfCopy->_stateMachine;
   v26 = MEMORY[0x277CBEB98];
   v22 = v247;
   v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[6]];
@@ -226,12 +226,12 @@
   MEMORY[0x277D82BD8](v39);
   MEMORY[0x277D82BD8](v40);
   v41 = v240;
-  v42 = v242;
-  v43 = [v240 label];
+  v42 = dictionary;
+  label2 = [v240 label];
   [v42 setObject:v41 forKeyedSubscript:?];
-  MEMORY[0x277D82BD8](v43);
+  MEMORY[0x277D82BD8](label2);
   v239 = [objc_alloc(MEMORY[0x277D0A7F8]) initWithLabel:@"Stopping"];
-  v49 = v250->_stateMachine;
+  v49 = selfCopy->_stateMachine;
   v46 = MEMORY[0x277CBEB98];
   v44 = v247;
   v56 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[8]];
@@ -253,12 +253,12 @@
   MEMORY[0x277D82BD8](v55);
   MEMORY[0x277D82BD8](v56);
   v57 = v239;
-  v58 = v242;
-  v59 = [v239 label];
+  v58 = dictionary;
+  label3 = [v239 label];
   [v58 setObject:v57 forKeyedSubscript:?];
-  MEMORY[0x277D82BD8](v59);
+  MEMORY[0x277D82BD8](label3);
   v238 = [objc_alloc(MEMORY[0x277D0A7F8]) initWithLabel:@"Ending"];
-  v65 = v250->_stateMachine;
+  v65 = selfCopy->_stateMachine;
   v62 = MEMORY[0x277CBEB98];
   v60 = v247;
   v72 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[11]];
@@ -280,21 +280,21 @@
   MEMORY[0x277D82BD8](v71);
   MEMORY[0x277D82BD8](v72);
   v73 = v238;
-  v74 = v242;
-  v75 = [v238 label];
+  v74 = dictionary;
+  label4 = [v238 label];
   [v74 setObject:v73 forKeyedSubscript:?];
-  MEMORY[0x277D82BD8](v75);
-  objc_storeStrong(&v250->_parentStateMap, v242);
-  stateMap = v250->_stateMap;
+  MEMORY[0x277D82BD8](label4);
+  objc_storeStrong(&selfCopy->_parentStateMap, dictionary);
+  stateMap = selfCopy->_stateMap;
   v78 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[0]];
   v77 = [(NSDictionary *)stateMap objectForKeyedSubscript:?];
   _RegisterTransition(v77, v241, 1);
   MEMORY[0x277D82BD8](v77);
   MEMORY[0x277D82BD8](v78);
-  v79 = v250->_stateMap;
+  v79 = selfCopy->_stateMap;
   v84 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[0]];
   v83 = [(NSDictionary *)v79 objectForKeyedSubscript:?];
-  v80 = v250->_stateMap;
+  v80 = selfCopy->_stateMap;
   v82 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[2]];
   v81 = [(NSDictionary *)v80 objectForKeyedSubscript:?];
   _RegisterTransition(v83, v81, 3);
@@ -302,10 +302,10 @@
   MEMORY[0x277D82BD8](v82);
   MEMORY[0x277D82BD8](v83);
   MEMORY[0x277D82BD8](v84);
-  v85 = v250->_stateMap;
+  v85 = selfCopy->_stateMap;
   v90 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[2]];
   v89 = [(NSDictionary *)v85 objectForKeyedSubscript:?];
-  v86 = v250->_stateMap;
+  v86 = selfCopy->_stateMap;
   v88 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[4]];
   v87 = [(NSDictionary *)v86 objectForKeyedSubscript:?];
   _RegisterTransition(v89, v87, 8);
@@ -313,10 +313,10 @@
   MEMORY[0x277D82BD8](v88);
   MEMORY[0x277D82BD8](v89);
   MEMORY[0x277D82BD8](v90);
-  v91 = v250->_stateMap;
+  v91 = selfCopy->_stateMap;
   v96 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[2]];
   v95 = [(NSDictionary *)v91 objectForKeyedSubscript:?];
-  v92 = v250->_stateMap;
+  v92 = selfCopy->_stateMap;
   v94 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[6]];
   v93 = [(NSDictionary *)v92 objectForKeyedSubscript:?];
   _RegisterTransition(v95, v93, 7);
@@ -324,10 +324,10 @@
   MEMORY[0x277D82BD8](v94);
   MEMORY[0x277D82BD8](v95);
   MEMORY[0x277D82BD8](v96);
-  v97 = v250->_stateMap;
+  v97 = selfCopy->_stateMap;
   v102 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[2]];
   v101 = [(NSDictionary *)v97 objectForKeyedSubscript:?];
-  v98 = v250->_stateMap;
+  v98 = selfCopy->_stateMap;
   v100 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[7]];
   v99 = [(NSDictionary *)v98 objectForKeyedSubscript:?];
   _RegisterTransition(v101, v99, 6);
@@ -335,10 +335,10 @@
   MEMORY[0x277D82BD8](v100);
   MEMORY[0x277D82BD8](v101);
   MEMORY[0x277D82BD8](v102);
-  v103 = v250->_stateMap;
+  v103 = selfCopy->_stateMap;
   v108 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[1]];
   v107 = [(NSDictionary *)v103 objectForKeyedSubscript:?];
-  v104 = v250->_stateMap;
+  v104 = selfCopy->_stateMap;
   v106 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[3]];
   v105 = [(NSDictionary *)v104 objectForKeyedSubscript:?];
   _RegisterTransition(v107, v105, 2);
@@ -346,10 +346,10 @@
   MEMORY[0x277D82BD8](v106);
   MEMORY[0x277D82BD8](v107);
   MEMORY[0x277D82BD8](v108);
-  v109 = v250->_stateMap;
+  v109 = selfCopy->_stateMap;
   v114 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[3]];
   v113 = [(NSDictionary *)v109 objectForKeyedSubscript:?];
-  v110 = v250->_stateMap;
+  v110 = selfCopy->_stateMap;
   v112 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[4]];
   v111 = [(NSDictionary *)v110 objectForKeyedSubscript:?];
   _RegisterTransition(v113, v111, 4);
@@ -359,10 +359,10 @@
   MEMORY[0x277D82BD8](v114);
   _RegisterTransition(v241, v238, 13);
   _RegisterTransition(v241, v239, 9);
-  v115 = v250->_stateMap;
+  v115 = selfCopy->_stateMap;
   v120 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[4]];
   v119 = [(NSDictionary *)v115 objectForKeyedSubscript:?];
-  v116 = v250->_stateMap;
+  v116 = selfCopy->_stateMap;
   v118 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[5]];
   v117 = [(NSDictionary *)v116 objectForKeyedSubscript:?];
   _RegisterTransition(v119, v117, 5);
@@ -370,10 +370,10 @@
   MEMORY[0x277D82BD8](v118);
   MEMORY[0x277D82BD8](v119);
   MEMORY[0x277D82BD8](v120);
-  v121 = v250->_stateMap;
+  v121 = selfCopy->_stateMap;
   v126 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[5]];
   v125 = [(NSDictionary *)v121 objectForKeyedSubscript:?];
-  v122 = v250->_stateMap;
+  v122 = selfCopy->_stateMap;
   v124 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[7]];
   v123 = [(NSDictionary *)v122 objectForKeyedSubscript:?];
   _RegisterTransition(v125, v123, 6);
@@ -381,10 +381,10 @@
   MEMORY[0x277D82BD8](v124);
   MEMORY[0x277D82BD8](v125);
   MEMORY[0x277D82BD8](v126);
-  v127 = v250->_stateMap;
+  v127 = selfCopy->_stateMap;
   v132 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[7]];
   v131 = [(NSDictionary *)v127 objectForKeyedSubscript:?];
-  v128 = v250->_stateMap;
+  v128 = selfCopy->_stateMap;
   v130 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[6]];
   v129 = [(NSDictionary *)v128 objectForKeyedSubscript:?];
   _RegisterTransition(v131, v129, 7);
@@ -392,10 +392,10 @@
   MEMORY[0x277D82BD8](v130);
   MEMORY[0x277D82BD8](v131);
   MEMORY[0x277D82BD8](v132);
-  v133 = v250->_stateMap;
+  v133 = selfCopy->_stateMap;
   v138 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[6]];
   v137 = [(NSDictionary *)v133 objectForKeyedSubscript:?];
-  v134 = v250->_stateMap;
+  v134 = selfCopy->_stateMap;
   v136 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[4]];
   v135 = [(NSDictionary *)v134 objectForKeyedSubscript:?];
   _RegisterTransition(v137, v135, 8);
@@ -403,10 +403,10 @@
   MEMORY[0x277D82BD8](v136);
   MEMORY[0x277D82BD8](v137);
   MEMORY[0x277D82BD8](v138);
-  v139 = v250->_stateMap;
+  v139 = selfCopy->_stateMap;
   v144 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[5]];
   v143 = [(NSDictionary *)v139 objectForKeyedSubscript:?];
-  v140 = v250->_stateMap;
+  v140 = selfCopy->_stateMap;
   v142 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[6]];
   v141 = [(NSDictionary *)v140 objectForKeyedSubscript:?];
   _RegisterTransition(v143, v141, 7);
@@ -414,10 +414,10 @@
   MEMORY[0x277D82BD8](v142);
   MEMORY[0x277D82BD8](v143);
   MEMORY[0x277D82BD8](v144);
-  v145 = v250->_stateMap;
+  v145 = selfCopy->_stateMap;
   v150 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[6]];
   v149 = [(NSDictionary *)v145 objectForKeyedSubscript:?];
-  v146 = v250->_stateMap;
+  v146 = selfCopy->_stateMap;
   v148 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[5]];
   v147 = [(NSDictionary *)v146 objectForKeyedSubscript:?];
   _RegisterTransition(v149, v147, 5);
@@ -427,16 +427,16 @@
   MEMORY[0x277D82BD8](v150);
   _RegisterTransition(v240, v239, 9);
   v152 = v240;
-  v151 = v250->_stateMap;
+  v151 = selfCopy->_stateMap;
   v154 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[12]];
   v153 = [(NSDictionary *)v151 objectForKeyedSubscript:?];
   _RegisterTransition(v152, v153, 10);
   MEMORY[0x277D82BD8](v153);
   MEMORY[0x277D82BD8](v154);
-  v155 = v250->_stateMap;
+  v155 = selfCopy->_stateMap;
   v160 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[8]];
   v159 = [(NSDictionary *)v155 objectForKeyedSubscript:?];
-  v156 = v250->_stateMap;
+  v156 = selfCopy->_stateMap;
   v158 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[9]];
   v157 = [(NSDictionary *)v156 objectForKeyedSubscript:?];
   _RegisterTransition(v159, v157, 11);
@@ -444,29 +444,29 @@
   MEMORY[0x277D82BD8](v158);
   MEMORY[0x277D82BD8](v159);
   MEMORY[0x277D82BD8](v160);
-  v161 = v250->_stateMap;
+  v161 = selfCopy->_stateMap;
   v163 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[9]];
   v162 = [(NSDictionary *)v161 objectForKeyedSubscript:?];
   _RegisterTransition(v162, v238, 13);
   MEMORY[0x277D82BD8](v162);
   MEMORY[0x277D82BD8](v163);
-  v164 = v250->_stateMap;
+  v164 = selfCopy->_stateMap;
   v166 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[8]];
   v165 = [(NSDictionary *)v164 objectForKeyedSubscript:?];
   _RegisterTransition(v165, v238, 13);
   MEMORY[0x277D82BD8](v165);
   MEMORY[0x277D82BD8](v166);
   v168 = v239;
-  v167 = v250->_stateMap;
+  v167 = selfCopy->_stateMap;
   v170 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[12]];
   v169 = [(NSDictionary *)v167 objectForKeyedSubscript:?];
   _RegisterTransition(v168, v169, 10);
   MEMORY[0x277D82BD8](v169);
   MEMORY[0x277D82BD8](v170);
-  v171 = v250->_stateMap;
+  v171 = selfCopy->_stateMap;
   v176 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[11]];
   v175 = [(NSDictionary *)v171 objectForKeyedSubscript:?];
-  v172 = v250->_stateMap;
+  v172 = selfCopy->_stateMap;
   v174 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[12]];
   v173 = [(NSDictionary *)v172 objectForKeyedSubscript:?];
   _RegisterTransition(v175, v173, 10);
@@ -474,10 +474,10 @@
   MEMORY[0x277D82BD8](v174);
   MEMORY[0x277D82BD8](v175);
   MEMORY[0x277D82BD8](v176);
-  v177 = v250->_stateMap;
+  v177 = selfCopy->_stateMap;
   v182 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[12]];
   v181 = [(NSDictionary *)v177 objectForKeyedSubscript:?];
-  v178 = v250->_stateMap;
+  v178 = selfCopy->_stateMap;
   v180 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[13]];
   v179 = [(NSDictionary *)v178 objectForKeyedSubscript:?];
   _RegisterTransition(v181, v179, 14);
@@ -485,25 +485,25 @@
   MEMORY[0x277D82BD8](v180);
   MEMORY[0x277D82BD8](v181);
   MEMORY[0x277D82BD8](v182);
-  [(NLSessionController *)v250 _configureStateActions];
+  [(NLSessionController *)selfCopy _configureStateActions];
   v184 = v241;
-  v183 = v250->_stateMap;
+  v183 = selfCopy->_stateMap;
   v186 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[10]];
   v185 = [(NSDictionary *)v183 objectForKeyedSubscript:?];
   _RegisterTransition(v184, v185, 12);
   MEMORY[0x277D82BD8](v185);
   MEMORY[0x277D82BD8](v186);
   v188 = v240;
-  v187 = v250->_stateMap;
+  v187 = selfCopy->_stateMap;
   v190 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[10]];
   v189 = [(NSDictionary *)v187 objectForKeyedSubscript:?];
   _RegisterTransition(v188, v189, 12);
   MEMORY[0x277D82BD8](v189);
   MEMORY[0x277D82BD8](v190);
-  v191 = v250->_stateMap;
+  v191 = selfCopy->_stateMap;
   v196 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[2]];
   v195 = [(NSDictionary *)v191 objectForKeyedSubscript:?];
-  v192 = v250->_stateMap;
+  v192 = selfCopy->_stateMap;
   v194 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[10]];
   v193 = [(NSDictionary *)v192 objectForKeyedSubscript:?];
   _RegisterTransition(v195, v193, 12);
@@ -512,23 +512,23 @@
   MEMORY[0x277D82BD8](v195);
   MEMORY[0x277D82BD8](v196);
   v198 = v239;
-  v197 = v250->_stateMap;
+  v197 = selfCopy->_stateMap;
   v200 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[10]];
   v199 = [(NSDictionary *)v197 objectForKeyedSubscript:?];
   _RegisterTransition(v198, v199, 12);
   MEMORY[0x277D82BD8](v199);
   MEMORY[0x277D82BD8](v200);
   v202 = v238;
-  v201 = v250->_stateMap;
+  v201 = selfCopy->_stateMap;
   v204 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[10]];
   v203 = [(NSDictionary *)v201 objectForKeyedSubscript:?];
   _RegisterTransition(v202, v203, 12);
   MEMORY[0x277D82BD8](v203);
   MEMORY[0x277D82BD8](v204);
-  v205 = v250->_stateMap;
+  v205 = selfCopy->_stateMap;
   v210 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[10]];
   v209 = [(NSDictionary *)v205 objectForKeyedSubscript:?];
-  v206 = v250->_stateMap;
+  v206 = selfCopy->_stateMap;
   v208 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[13]];
   v207 = [(NSDictionary *)v206 objectForKeyedSubscript:?];
   _RegisterTransition(v209, v207, 14);
@@ -536,12 +536,12 @@
   MEMORY[0x277D82BD8](v208);
   MEMORY[0x277D82BD8](v209);
   MEMORY[0x277D82BD8](v210);
-  [(FIUIStateMachine *)v250->_stateMachine export];
+  [(FIUIStateMachine *)selfCopy->_stateMachine export];
   objc_storeStrong(&v238, 0);
   objc_storeStrong(&v239, 0);
   objc_storeStrong(&v240, 0);
   objc_storeStrong(&v241, 0);
-  objc_storeStrong(&v242, 0);
+  objc_storeStrong(&dictionary, 0);
   objc_storeStrong(&v247, 0);
   objc_storeStrong(&v248, 0);
   *MEMORY[0x277D85DE8];
@@ -549,12 +549,12 @@
 
 - (void)_configureStateActions
 {
-  v121 = self;
+  selfCopy = self;
   __b[14] = a2;
   memset(__b, 0, 0x70uLL);
   NLSessionStateIdentifierShortHandStruct(__b);
-  objc_initWeak(&location, v121);
-  stateMap = v121->_stateMap;
+  objc_initWeak(&location, selfCopy);
+  stateMap = selfCopy->_stateMap;
   v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[1]];
   v38 = [(NSDictionary *)stateMap objectForKeyedSubscript:?];
   v113 = MEMORY[0x277D85DD0];
@@ -566,7 +566,7 @@
   [v38 setEntry:&v113];
   MEMORY[0x277D82BD8](v38);
   MEMORY[0x277D82BD8](v39);
-  v37 = v121->_stateMap;
+  v37 = selfCopy->_stateMap;
   v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[3]];
   v35 = [(NSDictionary *)v37 objectForKeyedSubscript:?];
   v107 = MEMORY[0x277D85DD0];
@@ -578,7 +578,7 @@
   [v35 setEntry:&v107];
   MEMORY[0x277D82BD8](v35);
   MEMORY[0x277D82BD8](v36);
-  v34 = v121->_stateMap;
+  v34 = selfCopy->_stateMap;
   v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[2]];
   v32 = [(NSDictionary *)v34 objectForKeyedSubscript:?];
   v101 = MEMORY[0x277D85DD0];
@@ -590,7 +590,7 @@
   [v32 setEntry:&v101];
   MEMORY[0x277D82BD8](v32);
   MEMORY[0x277D82BD8](v33);
-  v31 = v121->_stateMap;
+  v31 = selfCopy->_stateMap;
   v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[5]];
   v29 = [(NSDictionary *)v31 objectForKeyedSubscript:?];
   v95 = MEMORY[0x277D85DD0];
@@ -602,7 +602,7 @@
   [v29 setEntry:&v95];
   MEMORY[0x277D82BD8](v29);
   MEMORY[0x277D82BD8](v30);
-  v28 = v121->_stateMap;
+  v28 = selfCopy->_stateMap;
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[6]];
   v26 = [(NSDictionary *)v28 objectForKeyedSubscript:?];
   v89 = MEMORY[0x277D85DD0];
@@ -614,7 +614,7 @@
   [v26 setEntry:&v89];
   MEMORY[0x277D82BD8](v26);
   MEMORY[0x277D82BD8](v27);
-  v25 = v121->_stateMap;
+  v25 = selfCopy->_stateMap;
   v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[7]];
   v23 = [(NSDictionary *)v25 objectForKeyedSubscript:?];
   v83 = MEMORY[0x277D85DD0];
@@ -626,7 +626,7 @@
   [v23 setEntry:&v83];
   MEMORY[0x277D82BD8](v23);
   MEMORY[0x277D82BD8](v24);
-  v22 = v121->_stateMap;
+  v22 = selfCopy->_stateMap;
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[4]];
   v20 = [(NSDictionary *)v22 objectForKeyedSubscript:?];
   v77 = MEMORY[0x277D85DD0];
@@ -638,7 +638,7 @@
   [v20 setEntry:&v77];
   MEMORY[0x277D82BD8](v20);
   MEMORY[0x277D82BD8](v21);
-  v19 = v121->_stateMap;
+  v19 = selfCopy->_stateMap;
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[8]];
   v17 = [(NSDictionary *)v19 objectForKeyedSubscript:?];
   v71 = MEMORY[0x277D85DD0];
@@ -650,7 +650,7 @@
   [v17 setEntry:&v71];
   MEMORY[0x277D82BD8](v17);
   MEMORY[0x277D82BD8](v18);
-  v16 = v121->_stateMap;
+  v16 = selfCopy->_stateMap;
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[9]];
   v14 = [(NSDictionary *)v16 objectForKeyedSubscript:?];
   v65 = MEMORY[0x277D85DD0];
@@ -662,7 +662,7 @@
   [v14 setEntry:&v65];
   MEMORY[0x277D82BD8](v14);
   MEMORY[0x277D82BD8](v15);
-  v13 = v121->_stateMap;
+  v13 = selfCopy->_stateMap;
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[11]];
   v11 = [(NSDictionary *)v13 objectForKeyedSubscript:?];
   v59 = MEMORY[0x277D85DD0];
@@ -674,7 +674,7 @@
   [v11 setEntry:&v59];
   MEMORY[0x277D82BD8](v11);
   MEMORY[0x277D82BD8](v12);
-  v10 = v121->_stateMap;
+  v10 = selfCopy->_stateMap;
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[12]];
   v8 = [(NSDictionary *)v10 objectForKeyedSubscript:?];
   v53 = MEMORY[0x277D85DD0];
@@ -686,7 +686,7 @@
   [v8 setEntry:&v53];
   MEMORY[0x277D82BD8](v8);
   MEMORY[0x277D82BD8](v9);
-  v7 = v121->_stateMap;
+  v7 = selfCopy->_stateMap;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[10]];
   v5 = [(NSDictionary *)v7 objectForKeyedSubscript:?];
   v47 = MEMORY[0x277D85DD0];
@@ -698,7 +698,7 @@
   [v5 setEntry:&v47];
   MEMORY[0x277D82BD8](v5);
   MEMORY[0x277D82BD8](v6);
-  v4 = v121->_stateMap;
+  v4 = selfCopy->_stateMap;
   v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[13]];
   v2 = [(NSDictionary *)v4 objectForKeyedSubscript:?];
   v41 = MEMORY[0x277D85DD0];
@@ -949,7 +949,7 @@ void __45__NLSessionController__configureStateActions__block_invoke_13(id *a1, v
 
 - (void)_prepareSession
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   [(NLSessionController *)self _setState:1];
   _HKInitializeLogging();
@@ -964,18 +964,18 @@ void __45__NLSessionController__configureStateActions__block_invoke_13(id *a1, v
   }
 
   objc_storeStrong(location, 0);
-  [(HKWorkoutSession *)v7->_workoutSession prepare];
+  [(HKWorkoutSession *)selfCopy->_workoutSession prepare];
 }
 
 - (void)_startSession
 {
   v10 = *MEMORY[0x277D85DE8];
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   [(NLSessionController *)self _setState:3];
-  v5 = [(NLSessionController *)v8 delegate];
-  v7[0] = [(NLSessionControllerDelegate *)v5 activityBeginDate];
-  MEMORY[0x277D82BD8](v5);
+  delegate = [(NLSessionController *)selfCopy delegate];
+  v7[0] = [(NLSessionControllerDelegate *)delegate activityBeginDate];
+  MEMORY[0x277D82BD8](delegate);
   _HKInitializeLogging();
   oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -988,7 +988,7 @@ void __45__NLSessionController__configureStateActions__block_invoke_13(id *a1, v
   }
 
   objc_storeStrong(&oslog, 0);
-  [(HKWorkoutSession *)v8->_workoutSession startActivityWithDate:v7[0]];
+  [(HKWorkoutSession *)selfCopy->_workoutSession startActivityWithDate:v7[0]];
   objc_storeStrong(v7, 0);
   *MEMORY[0x277D85DE8];
 }
@@ -996,12 +996,12 @@ void __45__NLSessionController__configureStateActions__block_invoke_13(id *a1, v
 - (void)_stopSession
 {
   v7 = *MEMORY[0x277D85DE8];
-  v5 = self;
+  selfCopy = self;
   v4[1] = a2;
   [(NLSessionController *)self _setState:8];
-  v2 = [(NLSessionController *)v5 delegate];
-  v4[0] = [(NLSessionControllerDelegate *)v2 activityEndDate];
-  MEMORY[0x277D82BD8](v2);
+  delegate = [(NLSessionController *)selfCopy delegate];
+  v4[0] = [(NLSessionControllerDelegate *)delegate activityEndDate];
+  MEMORY[0x277D82BD8](delegate);
   _HKInitializeLogging();
   oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -1011,7 +1011,7 @@ void __45__NLSessionController__configureStateActions__block_invoke_13(id *a1, v
   }
 
   objc_storeStrong(&oslog, 0);
-  [(HKWorkoutSession *)v5->_workoutSession stopActivityWithDate:v4[0]];
+  [(HKWorkoutSession *)selfCopy->_workoutSession stopActivityWithDate:v4[0]];
   objc_storeStrong(v4, 0);
   *MEMORY[0x277D85DE8];
 }
@@ -1019,12 +1019,12 @@ void __45__NLSessionController__configureStateActions__block_invoke_13(id *a1, v
 - (void)_onRecovery
 {
   v13 = *MEMORY[0x277D85DE8];
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   [(NLSessionController *)self _setState:2];
   v9 = 0;
-  v5 = [(HKWorkoutSession *)v11->_workoutSession state];
-  switch(v5)
+  state = [(HKWorkoutSession *)selfCopy->_workoutSession state];
+  switch(state)
   {
     case 1:
       goto LABEL_9;
@@ -1038,7 +1038,7 @@ void __45__NLSessionController__configureStateActions__block_invoke_13(id *a1, v
       goto LABEL_12;
   }
 
-  if ((v5 - 5) <= 1)
+  if ((state - 5) <= 1)
   {
 LABEL_9:
     _HKInitializeLogging();
@@ -1048,7 +1048,7 @@ LABEL_9:
     {
       log = v8;
       type = v7;
-      [(HKWorkoutSession *)v11->_workoutSession state];
+      [(HKWorkoutSession *)selfCopy->_workoutSession state];
       v4 = HKWorkoutSessionStateToString();
       v6 = MEMORY[0x277D82BE0](v4);
       __os_log_helper_16_2_1_8_66(v12, v6);
@@ -1063,7 +1063,7 @@ LABEL_9:
 LABEL_12:
   if (v9)
   {
-    [(FIUIStateMachine *)v11->_stateMachine event:v9];
+    [(FIUIStateMachine *)selfCopy->_stateMachine event:v9];
   }
 
   *MEMORY[0x277D85DE8];
@@ -1072,9 +1072,9 @@ LABEL_12:
 - (void)_onSessionError
 {
   [(NLSessionController *)self _setState:10];
-  v2 = [(NLSessionController *)self delegate];
-  [(NLSessionControllerDelegate *)v2 sessionEncounteredSessionError:self->_sessionError];
-  MEMORY[0x277D82BD8](v2);
+  delegate = [(NLSessionController *)self delegate];
+  [(NLSessionControllerDelegate *)delegate sessionEncounteredSessionError:self->_sessionError];
+  MEMORY[0x277D82BD8](delegate);
   [(FIUIStateMachine *)self->_stateMachine event:14];
 }
 
@@ -1082,20 +1082,20 @@ LABEL_12:
 {
   [(NLSessionController *)self _setState:13];
   objc_storeStrong(&self->_workoutSession, 0);
-  v2 = [(NLSessionController *)self delegate];
-  [(NLSessionControllerDelegate *)v2 sessionControllerDidComplete];
-  MEMORY[0x277D82BD8](v2);
+  delegate = [(NLSessionController *)self delegate];
+  [(NLSessionControllerDelegate *)delegate sessionControllerDidComplete];
+  MEMORY[0x277D82BD8](delegate);
 }
 
-- (void)sessionActivity:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)sessionActivity:(id)activity didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   v22 = *MEMORY[0x277D85DE8];
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18 = a4;
-  v17 = a5;
+  objc_storeStrong(location, activity);
+  stateCopy = state;
+  toStateCopy = toState;
   _HKInitializeLogging();
   v16 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v15 = OS_LOG_TYPE_DEFAULT;
@@ -1103,10 +1103,10 @@ LABEL_12:
   {
     log = v16;
     type = v15;
-    v9 = NLSessionActivityStateDescription(v18);
+    v9 = NLSessionActivityStateDescription(stateCopy);
     v5 = MEMORY[0x277D82BE0](v9);
     v14 = v5;
-    v8 = NLSessionActivityStateDescription(v17);
+    v8 = NLSessionActivityStateDescription(toStateCopy);
     v13 = MEMORY[0x277D82BE0](v8);
     __os_log_helper_16_2_2_8_64_8_64(v21, v5, v13);
     _os_log_impl(&dword_20AEA4000, log, type, "[SessionController] sessionActivity changed state from:%@ to:%@", v21, 0x16u);
@@ -1118,7 +1118,7 @@ LABEL_12:
 
   objc_storeStrong(&v16, 0);
   v12 = 0;
-  switch(v17)
+  switch(toStateCopy)
   {
     case 0uLL:
       goto LABEL_27;
@@ -1128,7 +1128,7 @@ LABEL_12:
     case 2uLL:
       goto LABEL_27;
     case 3uLL:
-      if (v18 != 4)
+      if (stateCopy != 4)
       {
         v12 = 5;
       }
@@ -1140,19 +1140,19 @@ LABEL_12:
       v12 = 5;
       break;
     case 6uLL:
-      v12 = _StateForEnteringSessionActiveFromState(v18);
+      v12 = _StateForEnteringSessionActiveFromState(stateCopy);
       break;
     case 7uLL:
-      if ([(NLSessionController *)v20 sessionState]!= 12 && [(NLSessionController *)v20 sessionState]!= 11 && [(NLSessionController *)v20 sessionState]!= 13 && [(NLSessionController *)v20 sessionState])
+      if ([(NLSessionController *)selfCopy sessionState]!= 12 && [(NLSessionController *)selfCopy sessionState]!= 11 && [(NLSessionController *)selfCopy sessionState]!= 13 && [(NLSessionController *)selfCopy sessionState])
       {
         v12 = 13;
       }
 
       break;
     default:
-      if (v17 - 8 > 1)
+      if (toStateCopy - 8 > 1)
       {
-        if (v17 == 10)
+        if (toStateCopy == 10)
         {
           v12 = 9;
         }
@@ -1167,24 +1167,24 @@ LABEL_27:
 
   if (v12)
   {
-    [(FIUIStateMachine *)v20->_stateMachine event:v12];
+    [(FIUIStateMachine *)selfCopy->_stateMachine event:v12];
   }
 
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutSession:(id)a3 didChangeToState:(int64_t)a4 fromState:(int64_t)a5 date:(id)a6
+- (void)workoutSession:(id)session didChangeToState:(int64_t)state fromState:(int64_t)fromState date:(id)date
 {
   v29 = *MEMORY[0x277D85DE8];
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
-  v24 = a5;
+  objc_storeStrong(location, session);
+  stateCopy = state;
+  fromStateCopy = fromState;
   v23 = 0;
-  objc_storeStrong(&v23, a6);
+  objc_storeStrong(&v23, date);
   _HKInitializeLogging();
   v22 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v21 = OS_LOG_TYPE_DEFAULT;
@@ -1207,60 +1207,60 @@ LABEL_27:
   }
 
   objc_storeStrong(&v22, 0);
-  if ((v24 == 1 || v24 == 5) && v25 == 2)
+  if ((fromStateCopy == 1 || fromStateCopy == 5) && stateCopy == 2)
   {
     v9 = +[WOCoreWorkoutSignposter shared];
     [(WOCoreWorkoutSignposter *)v9 emitWithSignpost:5];
     MEMORY[0x277D82BD8](v9);
-    [(FIUIStateMachine *)v27->_stateMachine eventAsync:4];
+    [(FIUIStateMachine *)selfCopy->_stateMachine eventAsync:4];
   }
 
-  else if (v25 != 1)
+  else if (stateCopy != 1)
   {
-    switch(v25)
+    switch(stateCopy)
     {
       case 2:
-        [(FIUIStateMachine *)v27->_stateMachine eventAsync:8];
+        [(FIUIStateMachine *)selfCopy->_stateMachine eventAsync:8];
         break;
       case 3:
-        if (!v27->_sessionError)
+        if (!selfCopy->_sessionError)
         {
-          [(FIUIStateMachine *)v27->_stateMachine eventAsync:10];
+          [(FIUIStateMachine *)selfCopy->_stateMachine eventAsync:10];
         }
 
         break;
       case 4:
-        [(FIUIStateMachine *)v27->_stateMachine eventAsync:6];
+        [(FIUIStateMachine *)selfCopy->_stateMachine eventAsync:6];
         break;
       case 6:
-        [(FIUIStateMachine *)v27->_stateMachine eventAsync:11];
+        [(FIUIStateMachine *)selfCopy->_stateMachine eventAsync:11];
         break;
     }
   }
 
-  v6 = [(NLSessionController *)v27 mirroringDelegate];
-  [(HKWorkoutSessionPrivateDelegate *)v6 workoutSession:location[0] didChangeToState:v25 fromState:v24 date:v23];
-  MEMORY[0x277D82BD8](v6);
-  v7 = [(NLSessionController *)v27 stingDelegate];
-  [(HKWorkoutSessionDelegate *)v7 workoutSession:location[0] didChangeToState:v25 fromState:v24 date:v23];
-  MEMORY[0x277D82BD8](v7);
-  v8 = [(NLSessionController *)v27 mirroredDelegate];
-  [(HKWorkoutSessionDelegate *)v8 workoutSession:location[0] didChangeToState:v25 fromState:v24 date:v23];
-  MEMORY[0x277D82BD8](v8);
+  mirroringDelegate = [(NLSessionController *)selfCopy mirroringDelegate];
+  [(HKWorkoutSessionPrivateDelegate *)mirroringDelegate workoutSession:location[0] didChangeToState:stateCopy fromState:fromStateCopy date:v23];
+  MEMORY[0x277D82BD8](mirroringDelegate);
+  stingDelegate = [(NLSessionController *)selfCopy stingDelegate];
+  [(HKWorkoutSessionDelegate *)stingDelegate workoutSession:location[0] didChangeToState:stateCopy fromState:fromStateCopy date:v23];
+  MEMORY[0x277D82BD8](stingDelegate);
+  mirroredDelegate = [(NLSessionController *)selfCopy mirroredDelegate];
+  [(HKWorkoutSessionDelegate *)mirroredDelegate workoutSession:location[0] didChangeToState:stateCopy fromState:fromStateCopy date:v23];
+  MEMORY[0x277D82BD8](mirroredDelegate);
   objc_storeStrong(&v23, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutSession:(id)a3 didFailWithError:(id)a4
+- (void)workoutSession:(id)session didFailWithError:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, error);
   _HKInitializeLogging();
   v19 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v18 = OS_LOG_TYPE_ERROR;
@@ -1271,15 +1271,15 @@ LABEL_27:
   }
 
   objc_storeStrong(&v19, 0);
-  v5 = [(NLSessionController *)v22 mirroringDelegate];
-  [(HKWorkoutSessionPrivateDelegate *)v5 workoutSession:location[0] didFailWithError:v20];
-  MEMORY[0x277D82BD8](v5);
-  v6 = [(NLSessionController *)v22 stingDelegate];
-  [(HKWorkoutSessionDelegate *)v6 workoutSession:location[0] didFailWithError:v20];
-  MEMORY[0x277D82BD8](v6);
-  v7 = [(NLSessionController *)v22 mirroredDelegate];
-  [(HKWorkoutSessionDelegate *)v7 workoutSession:location[0] didFailWithError:v20];
-  MEMORY[0x277D82BD8](v7);
+  mirroringDelegate = [(NLSessionController *)selfCopy mirroringDelegate];
+  [(HKWorkoutSessionPrivateDelegate *)mirroringDelegate workoutSession:location[0] didFailWithError:v20];
+  MEMORY[0x277D82BD8](mirroringDelegate);
+  stingDelegate = [(NLSessionController *)selfCopy stingDelegate];
+  [(HKWorkoutSessionDelegate *)stingDelegate workoutSession:location[0] didFailWithError:v20];
+  MEMORY[0x277D82BD8](stingDelegate);
+  mirroredDelegate = [(NLSessionController *)selfCopy mirroredDelegate];
+  [(HKWorkoutSessionDelegate *)mirroredDelegate workoutSession:location[0] didFailWithError:v20];
+  MEMORY[0x277D82BD8](mirroredDelegate);
   v8 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v8;
@@ -1288,7 +1288,7 @@ LABEL_27:
   v13 = 0;
   v14 = __55__NLSessionController_workoutSession_didFailWithError___block_invoke;
   v15 = &unk_277D88998;
-  v16 = MEMORY[0x277D82BE0](v22);
+  v16 = MEMORY[0x277D82BE0](selfCopy);
   v17 = MEMORY[0x277D82BE0](v20);
   dispatch_async(queue, &v11);
   MEMORY[0x277D82BD8](queue);
@@ -1299,15 +1299,15 @@ LABEL_27:
   *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutSession:(id)a3 didUpdateWorkoutConfiguration:(id)a4
+- (void)workoutSession:(id)session didUpdateWorkoutConfiguration:(id)configuration
 {
   v12 = *MEMORY[0x277D85DE8];
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, configuration);
   _HKInitializeLogging();
   v7 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1317,44 +1317,44 @@ LABEL_27:
   }
 
   objc_storeStrong(&v7, 0);
-  v4 = [(NLSessionController *)v10 delegate];
-  -[NLSessionControllerDelegate didUpdateWorkoutLocationType:](v4, "didUpdateWorkoutLocationType:", [v8 locationType]);
-  MEMORY[0x277D82BD8](v4);
-  v5 = [(NLSessionController *)v10 mirroringDelegate];
-  [(HKWorkoutSessionPrivateDelegate *)v5 workoutSession:location[0] didUpdateWorkoutConfiguration:v8];
-  MEMORY[0x277D82BD8](v5);
+  delegate = [(NLSessionController *)selfCopy delegate];
+  -[NLSessionControllerDelegate didUpdateWorkoutLocationType:](delegate, "didUpdateWorkoutLocationType:", [v8 locationType]);
+  MEMORY[0x277D82BD8](delegate);
+  mirroringDelegate = [(NLSessionController *)selfCopy mirroringDelegate];
+  [(HKWorkoutSessionPrivateDelegate *)mirroringDelegate workoutSession:location[0] didUpdateWorkoutConfiguration:v8];
+  MEMORY[0x277D82BD8](mirroringDelegate);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutSession:(id)a3 didSuggestWorkoutConfiguration:(id)a4 date:(id)a5
+- (void)workoutSession:(id)session didSuggestWorkoutConfiguration:(id)configuration date:(id)date
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, configuration);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  v7 = [(NLSessionController *)v11 delegate];
-  [(NLSessionControllerDelegate *)v7 sessionController:v11 didSuggestWorkoutConfiguration:v9 date:v8];
-  MEMORY[0x277D82BD8](v7);
+  objc_storeStrong(&v8, date);
+  delegate = [(NLSessionController *)selfCopy delegate];
+  [(NLSessionControllerDelegate *)delegate sessionController:selfCopy didSuggestWorkoutConfiguration:v9 date:v8];
+  MEMORY[0x277D82BD8](delegate);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)workoutSession:(id)a3 didGenerateEvent:(id)a4
+- (void)workoutSession:(id)session didGenerateEvent:(id)event
 {
   v11 = *MEMORY[0x277D85DE8];
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, event);
   _HKInitializeLogging();
   oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -1364,73 +1364,73 @@ LABEL_27:
   }
 
   objc_storeStrong(&oslog, 0);
-  v4 = [(NLSessionController *)v9 delegate];
-  [(NLSessionControllerDelegate *)v4 sessionController:v9 didRecieveWorkoutEvent:v7];
-  MEMORY[0x277D82BD8](v4);
+  delegate = [(NLSessionController *)selfCopy delegate];
+  [(NLSessionControllerDelegate *)delegate sessionController:selfCopy didRecieveWorkoutEvent:v7];
+  MEMORY[0x277D82BD8](delegate);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutSession:(id)a3 didReceiveDataFromRemoteDevice:(id)a4
+- (void)workoutSession:(id)session didReceiveDataFromRemoteDevice:(id)device
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v7 = [(NLSessionController *)v10 mirroringDelegate];
+  objc_storeStrong(&v8, device);
+  mirroringDelegate = [(NLSessionController *)selfCopy mirroringDelegate];
   v5 = location[0];
   v11[0] = v8;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  [(HKWorkoutSessionPrivateDelegate *)v7 workoutSession:v5 didReceiveDataFromRemoteWorkoutSession:?];
+  [(HKWorkoutSessionPrivateDelegate *)mirroringDelegate workoutSession:v5 didReceiveDataFromRemoteWorkoutSession:?];
   MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](mirroringDelegate);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutSession:(id)a3 didReceiveDataFromRemoteWorkoutSession:(id)a4
+- (void)workoutSession:(id)session didReceiveDataFromRemoteWorkoutSession:(id)workoutSession
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(NLSessionController *)v8 mirroringDelegate];
-  [(HKWorkoutSessionPrivateDelegate *)v5 workoutSession:location[0] didReceiveDataFromRemoteWorkoutSession:v6];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(&v6, workoutSession);
+  mirroringDelegate = [(NLSessionController *)selfCopy mirroringDelegate];
+  [(HKWorkoutSessionPrivateDelegate *)mirroringDelegate workoutSession:location[0] didReceiveDataFromRemoteWorkoutSession:v6];
+  MEMORY[0x277D82BD8](mirroringDelegate);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)workoutSession:(id)a3 didDisconnectFromRemoteDeviceWithError:(id)a4
+- (void)workoutSession:(id)session didDisconnectFromRemoteDeviceWithError:(id)error
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(NLSessionController *)v8 mirroringDelegate];
-  [(HKWorkoutSessionPrivateDelegate *)v5 workoutSession:location[0] didDisconnectFromRemoteDeviceWithError:v6];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(&v6, error);
+  mirroringDelegate = [(NLSessionController *)selfCopy mirroringDelegate];
+  [(HKWorkoutSessionPrivateDelegate *)mirroringDelegate workoutSession:location[0] didDisconnectFromRemoteDeviceWithError:v6];
+  MEMORY[0x277D82BD8](mirroringDelegate);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_setState:(unint64_t)a3
+- (void)_setState:(unint64_t)state
 {
   v16 = *MEMORY[0x277D85DE8];
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  stateCopy = state;
   memset(__b, 0, sizeof(__b));
-  obj = [(NSHashTable *)v14->_stateObservers allObjects];
+  obj = [(NSHashTable *)selfCopy->_stateObservers allObjects];
   v9 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v15 count:16];
   if (v9)
   {
@@ -1446,7 +1446,7 @@ LABEL_27:
       }
 
       v11 = *(__b[1] + 8 * v6);
-      [v11 sessionController:v14 didChangeFromState:v14->_sessionState toState:{v12, v7}];
+      [v11 sessionController:selfCopy didChangeFromState:selfCopy->_sessionState toState:{stateCopy, v7}];
       ++v6;
       v7 = v3;
       if (v4 + 1 >= v3)
@@ -1462,27 +1462,27 @@ LABEL_27:
   }
 
   MEMORY[0x277D82BD8](obj);
-  v14->_sessionState = v12;
+  selfCopy->_sessionState = stateCopy;
   *MEMORY[0x277D85DE8];
 }
 
-- (void)addSessionControllerStateObserver:(id)a3
+- (void)addSessionControllerStateObserver:(id)observer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSHashTable *)v4->_stateObservers addObject:location[0]];
+  objc_storeStrong(location, observer);
+  [(NSHashTable *)selfCopy->_stateObservers addObject:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)removeSessionControllerStateObserver:(id)a3
+- (void)removeSessionControllerStateObserver:(id)observer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSHashTable *)v4->_stateObservers removeObject:location[0]];
+  objc_storeStrong(location, observer);
+  [(NSHashTable *)selfCopy->_stateObservers removeObject:location[0]];
   objc_storeStrong(location, 0);
 }
 

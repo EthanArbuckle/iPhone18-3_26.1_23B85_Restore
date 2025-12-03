@@ -1,20 +1,20 @@
 @interface VIACacheHitEvent
-- (VIACacheHitEvent)initWithContext:(id)a3;
+- (VIACacheHitEvent)initWithContext:(id)context;
 - (id)feedback;
 @end
 
 @implementation VIACacheHitEvent
 
-- (VIACacheHitEvent)initWithContext:(id)a3
+- (VIACacheHitEvent)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = VIACacheHitEvent;
   v6 = [(VIACacheHitEvent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;

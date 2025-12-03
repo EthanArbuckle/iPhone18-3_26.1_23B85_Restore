@@ -1,5 +1,5 @@
 @interface GQDRStroke
-- (int)readAttributesFromReader:(_xmlTextReader *)a3;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader;
 - (void)dealloc;
 @end
 
@@ -12,29 +12,29 @@
   [(GQDRStroke *)&v3 dealloc];
 }
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3
+- (int)readAttributesFromReader:(_xmlTextReader *)reader
 {
   v13 = 0.0;
-  if (!sub_426B0(a3, qword_A35E8, "width", &v13))
+  if (!sub_426B0(reader, qword_A35E8, "width", &v13))
   {
     return 3;
   }
 
   v5 = v13;
   self->mWidth = v5;
-  if (!sub_426B0(a3, qword_A35E8, "miter-limit", &v13))
+  if (!sub_426B0(reader, qword_A35E8, "miter-limit", &v13))
   {
     return 3;
   }
 
   v6 = v13;
   self->mMiterLimit = v6;
-  AttributeNs = xmlTextReaderGetAttributeNs(a3, "cap", *(qword_A35E8 + 16));
+  AttributeNs = xmlTextReaderGetAttributeNs(reader, "cap", *(qword_A35E8 + 16));
   if (!AttributeNs)
   {
     self->mCap = 0;
 LABEL_12:
-    AttributeNs = xmlTextReaderGetAttributeNs(a3, "join", *(qword_A35E8 + 16));
+    AttributeNs = xmlTextReaderGetAttributeNs(reader, "join", *(qword_A35E8 + 16));
     if (!AttributeNs)
     {
       self->mJoin = 0;

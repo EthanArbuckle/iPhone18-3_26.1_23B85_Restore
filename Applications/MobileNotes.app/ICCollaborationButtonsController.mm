@@ -7,27 +7,27 @@
 - (id)didPressManageShareButton;
 - (void)dealloc;
 - (void)hideContactCard;
-- (void)setActiveParticipants:(id)a3;
-- (void)setActivityStreamWithVisible:(BOOL)a3;
-- (void)setAttributionSidebarWithVisible:(BOOL)a3;
-- (void)setButtonItem:(id)a3;
-- (void)setCloudObject:(id)a3;
-- (void)setDidPressManageShareButton:(id)a3;
-- (void)setShowsCollaboratorCursorsWithVisible:(BOOL)a3;
+- (void)setActiveParticipants:(id)participants;
+- (void)setActivityStreamWithVisible:(BOOL)visible;
+- (void)setAttributionSidebarWithVisible:(BOOL)visible;
+- (void)setButtonItem:(id)item;
+- (void)setCloudObject:(id)object;
+- (void)setDidPressManageShareButton:(id)button;
+- (void)setShowsCollaboratorCursorsWithVisible:(BOOL)visible;
 - (void)showAccountDeviceToDeviceEncryptionAlert;
-- (void)showContactCardFor:(id)a3 from:(id)a4;
+- (void)showContactCardFor:(id)for from:(id)from;
 - (void)showEnableKeychainAlert;
 - (void)showRecentUpdates;
-- (void)showSelectionFor:(id)a3;
+- (void)showSelectionFor:(id)for;
 - (void)showShare;
 - (void)updateState;
 @end
 
 @implementation ICCollaborationButtonsController
 
-- (void)setDidPressManageShareButton:(id)a3
+- (void)setDidPressManageShareButton:(id)button
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(button);
   if (v4)
   {
     v5 = v4;
@@ -45,7 +45,7 @@
   v8 = *(self + OBJC_IVAR___ICCollaborationButtonsController_didPressManageShareButton);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_10000C840(v8);
 }
 
@@ -53,19 +53,19 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   return v5;
 }
 
-- (void)setCloudObject:(id)a3
+- (void)setCloudObject:(id)object
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = a3;
-  v6 = self;
-  v7 = v5;
+  objectCopy = object;
+  selfCopy = self;
+  v7 = objectCopy;
   static Published.subscript.setter();
   sub_10039C704();
 }
@@ -74,7 +74,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   sub_1000054A4(0, &qword_1006C5F80);
@@ -83,41 +83,41 @@
   return v4.super.isa;
 }
 
-- (void)setActiveParticipants:(id)a3
+- (void)setActiveParticipants:(id)participants
 {
   sub_1000054A4(0, &qword_1006C5F80);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   static Published.subscript.setter();
 }
 
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   sub_10039D018();
-  *(v4 + OBJC_IVAR___ICCollaborationButtonsController_collaboratorDataSourceObservation) = 0;
+  *(selfCopy + OBJC_IVAR___ICCollaborationButtonsController_collaboratorDataSourceObservation) = 0;
 
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(ICCollaborationButtonsController *)&v5 dealloc];
 }
 
 - (UIBarButtonItem)buttonItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10039E01C();
 
   return v3;
 }
 
-- (void)setButtonItem:(id)a3
+- (void)setButtonItem:(id)item
 {
   v4 = *(self + OBJC_IVAR___ICCollaborationButtonsController____lazy_storage___buttonItem);
-  *(self + OBJC_IVAR___ICCollaborationButtonsController____lazy_storage___buttonItem) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___ICCollaborationButtonsController____lazy_storage___buttonItem) = item;
+  itemCopy = item;
 }
 
 - (id)didPressManageShareButton
@@ -151,13 +151,13 @@
 
 - (void)updateState
 {
-  v2 = self;
+  selfCopy = self;
   sub_10039E438();
 }
 
 - (NSArray)activityDigestSummaryParticipants
 {
-  v2 = self;
+  selfCopy = self;
   sub_10039E8F8();
 
   sub_1000054A4(0, &qword_1006C5F80);
@@ -168,71 +168,71 @@
 
 - (void)showRecentUpdates
 {
-  v2 = self;
+  selfCopy = self;
   sub_10039EC3C();
 }
 
 - (void)showAccountDeviceToDeviceEncryptionAlert
 {
-  v2 = self;
+  selfCopy = self;
   sub_10039F2FC();
 }
 
 - (void)showEnableKeychainAlert
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003A08AC(&unk_10065A1D8, sub_1003A11AC, &unk_10065A1F0);
 }
 
-- (void)showSelectionFor:(id)a3
+- (void)showSelectionFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  sub_10039FFB8(v4);
+  forCopy = for;
+  selfCopy = self;
+  sub_10039FFB8(forCopy);
 }
 
-- (void)showContactCardFor:(id)a3 from:(id)a4
+- (void)showContactCardFor:(id)for from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1003A0EDC(v6);
+  forCopy = for;
+  fromCopy = from;
+  selfCopy = self;
+  sub_1003A0EDC(forCopy);
 }
 
 - (void)hideContactCard
 {
   Strong = swift_unknownObjectUnownedLoadStrong();
-  v6 = self;
-  v4 = [Strong activeEditorController];
+  selfCopy = self;
+  activeEditorController = [Strong activeEditorController];
 
-  v5 = [v4 presentedViewController];
-  if (v5)
+  presentedViewController = [activeEditorController presentedViewController];
+  if (presentedViewController)
   {
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    [presentedViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)setShowsCollaboratorCursorsWithVisible:(BOOL)a3
+- (void)setShowsCollaboratorCursorsWithVisible:(BOOL)visible
 {
-  v4 = self;
-  sub_10039DE14(a3);
+  selfCopy = self;
+  sub_10039DE14(visible);
 }
 
-- (void)setActivityStreamWithVisible:(BOOL)a3
+- (void)setActivityStreamWithVisible:(BOOL)visible
 {
-  v4 = self;
-  sub_1003A03C8(a3);
+  selfCopy = self;
+  sub_1003A03C8(visible);
 }
 
-- (void)setAttributionSidebarWithVisible:(BOOL)a3
+- (void)setAttributionSidebarWithVisible:(BOOL)visible
 {
-  v4 = self;
-  sub_1003A063C(a3);
+  selfCopy = self;
+  sub_1003A063C(visible);
 }
 
 - (void)showShare
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003A08AC(&unk_10065A070, sub_1003A0D3C, &unk_10065A088);
 }
 

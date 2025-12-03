@@ -1,27 +1,27 @@
 @interface AMRedModeTriggerManager
-- (AMRedModeTriggerManager)initWithContext:(id)a3;
+- (AMRedModeTriggerManager)initWithContext:(id)context;
 - (id)_getNewAmbientIlluminationTrigger;
-- (void)_setRedModeTriggered:(BOOL)a3;
+- (void)_setRedModeTriggered:(BOOL)triggered;
 - (void)_updateTriggerState;
-- (void)setRedModeDetectionEnabled:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)setRedModeDetectionEnabled:(BOOL)enabled;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation AMRedModeTriggerManager
 
-- (AMRedModeTriggerManager)initWithContext:(id)a3
+- (AMRedModeTriggerManager)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = AMRedModeTriggerManager;
   v6 = [(AMRedModeTriggerManager *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_initializationContext, a3);
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v6->_initializationContext, context);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v8;
+    v7->_observers = weakObjectsHashTable;
 
     v10 = +[AMRedModeDomain rootSettings];
     redModeSettings = v7->_redModeSettings;
@@ -33,16 +33,16 @@
   return v7;
 }
 
-- (void)setRedModeDetectionEnabled:(BOOL)a3
+- (void)setRedModeDetectionEnabled:(BOOL)enabled
 {
-  if (self->_redModeDetectionEnabled != a3)
+  if (self->_redModeDetectionEnabled != enabled)
   {
-    self->_redModeDetectionEnabled = a3;
-    if (a3)
+    self->_redModeDetectionEnabled = enabled;
+    if (enabled)
     {
-      v4 = [(AMRedModeTriggerManager *)self _getNewAmbientIlluminationTrigger];
+      _getNewAmbientIlluminationTrigger = [(AMRedModeTriggerManager *)self _getNewAmbientIlluminationTrigger];
       ambientIlluminationTrigger = self->_ambientIlluminationTrigger;
-      self->_ambientIlluminationTrigger = v4;
+      self->_ambientIlluminationTrigger = _getNewAmbientIlluminationTrigger;
 
       [(AMAmbientIlluminationTrigger *)self->_ambientIlluminationTrigger setDelegate:self];
       v6 = self->_ambientIlluminationTrigger;
@@ -66,12 +66,12 @@
   }
 }
 
-- (void)_setRedModeTriggered:(BOOL)a3
+- (void)_setRedModeTriggered:(BOOL)triggered
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_redModeTriggered != a3)
+  if (self->_redModeTriggered != triggered)
   {
-    self->_redModeTriggered = a3;
+    self->_redModeTriggered = triggered;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -106,32 +106,32 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_redModeSettings == a3)
+  keyCopy = key;
+  v7 = keyCopy;
+  if (self->_redModeSettings == settings)
   {
-    v10 = v6;
-    if ([v6 isEqualToString:@"onLuxThreshold"])
+    v10 = keyCopy;
+    if ([keyCopy isEqualToString:@"onLuxThreshold"])
     {
       ambientIlluminationTrigger = self->_ambientIlluminationTrigger;
       [(AMRedModeSettings *)self->_redModeSettings onLuxThreshold];
-      v6 = [(AMAmbientIlluminationTrigger *)ambientIlluminationTrigger setActivationThresholdLux:?];
+      keyCopy = [(AMAmbientIlluminationTrigger *)ambientIlluminationTrigger setActivationThresholdLux:?];
     }
 
     else
     {
-      v6 = [v10 isEqualToString:@"offLuxThreshold"];
+      keyCopy = [v10 isEqualToString:@"offLuxThreshold"];
       v7 = v10;
-      if (!v6)
+      if (!keyCopy)
       {
         goto LABEL_7;
       }
 
       v9 = self->_ambientIlluminationTrigger;
       [(AMRedModeSettings *)self->_redModeSettings offLuxThreshold];
-      v6 = [(AMAmbientIlluminationTrigger *)v9 setDeactivationThresholdLux:?];
+      keyCopy = [(AMAmbientIlluminationTrigger *)v9 setDeactivationThresholdLux:?];
     }
 
     v7 = v10;
@@ -139,36 +139,36 @@
 
 LABEL_7:
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](keyCopy, v7);
 }
 
 - (void)_updateTriggerState
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(AMAmbientIlluminationTrigger *)self->_ambientIlluminationTrigger isTriggered];
+  isTriggered = [(AMAmbientIlluminationTrigger *)self->_ambientIlluminationTrigger isTriggered];
   v4 = AMLogRedMode();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109376;
-    v6[1] = v3;
+    v6[1] = isTriggered;
     v7 = 1024;
-    v8 = v3;
+    v8 = isTriggered;
     _os_log_impl(&dword_23EE48000, v4, OS_LOG_TYPE_DEFAULT, "Red mode should trigger: %{BOOL}u [ isDarkEnvironment : %{BOOL}u ]", v6, 0xEu);
   }
 
-  [(AMRedModeTriggerManager *)self _setRedModeTriggered:v3];
+  [(AMRedModeTriggerManager *)self _setRedModeTriggered:isTriggered];
   v5 = *MEMORY[0x277D85DE8];
 }
 
 - (id)_getNewAmbientIlluminationTrigger
 {
-  v2 = [(AMRedModeTriggerManagerContext *)self->_initializationContext ambientIlluminationTrigger];
-  if (!v2)
+  ambientIlluminationTrigger = [(AMRedModeTriggerManagerContext *)self->_initializationContext ambientIlluminationTrigger];
+  if (!ambientIlluminationTrigger)
   {
-    v2 = objc_alloc_init(AMAmbientIlluminationTrigger);
+    ambientIlluminationTrigger = objc_alloc_init(AMAmbientIlluminationTrigger);
   }
 
-  return v2;
+  return ambientIlluminationTrigger;
 }
 
 @end

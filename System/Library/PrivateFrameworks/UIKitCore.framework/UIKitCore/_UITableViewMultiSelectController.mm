@@ -1,48 +1,48 @@
 @interface _UITableViewMultiSelectController
-- (BOOL)_isPointInsideEditControl:(CGPoint)a3;
-- (BOOL)_shouldBeginInteractionAtIndexPath:(id)a3;
-- (BOOL)_shouldBeginInteractionAtPoint:(CGPoint)a3;
+- (BOOL)_isPointInsideEditControl:(CGPoint)control;
+- (BOOL)_shouldBeginInteractionAtIndexPath:(id)path;
+- (BOOL)_shouldBeginInteractionAtPoint:(CGPoint)point;
 - (BOOL)isInMultiSelectMode;
 - (BOOL)isInMultiselectInteraction;
-- (BOOL)shouldAllowSelectionAppendageAtPoint:(CGPoint)a3;
-- (BOOL)shouldAllowSelectionExtensionAtIndexPath:(id)a3;
-- (BOOL)shouldAllowSelectionExtensionAtPoint:(CGPoint)a3;
-- (BOOL)shouldBeginMultiSelectInteraction:(id)a3 ofType:(int64_t)a4 atPoint:(CGPoint)a5 withVelocity:(CGPoint)a6;
-- (BOOL)supportsMultiSelectInteraction:(id)a3;
+- (BOOL)shouldAllowSelectionAppendageAtPoint:(CGPoint)point;
+- (BOOL)shouldAllowSelectionExtensionAtIndexPath:(id)path;
+- (BOOL)shouldAllowSelectionExtensionAtPoint:(CGPoint)point;
+- (BOOL)shouldBeginMultiSelectInteraction:(id)interaction ofType:(int64_t)type atPoint:(CGPoint)point withVelocity:(CGPoint)velocity;
+- (BOOL)supportsMultiSelectInteraction:(id)interaction;
 - (UITableView)tableView;
-- (_UITableViewMultiSelectController)initWithTableView:(id)a3;
+- (_UITableViewMultiSelectController)initWithTableView:(id)view;
 - (id)_tableViewDelegate;
-- (void)_adjustSelectionRangeToIndexPath:(id)a3 isDeselecting:(BOOL)a4;
-- (void)_deselectIndexPaths:(id)a3;
+- (void)_adjustSelectionRangeToIndexPath:(id)path isDeselecting:(BOOL)deselecting;
+- (void)_deselectIndexPaths:(id)paths;
 - (void)_endAutoScroll;
-- (void)_handleAutoScrollFromPoint:(CGPoint)a3;
-- (void)_selectIndexPaths:(id)a3;
-- (void)_updateSelectedIndexPaths:(id)a3;
+- (void)_handleAutoScrollFromPoint:(CGPoint)point;
+- (void)_selectIndexPaths:(id)paths;
+- (void)_updateSelectedIndexPaths:(id)paths;
 - (void)_updateSelectedIndexPathsForCurrentSelection;
-- (void)automaticallyTransitionToMultiSelectModeKeepingCurrentSelection:(BOOL)a3;
-- (void)didCancelMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4;
-- (void)didEndMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4;
-- (void)multiSelectInteraction:(id)a3 appendSelectionAtPoint:(CGPoint)a4;
-- (void)multiSelectInteraction:(id)a3 extendSelectionInDirection:(unint64_t)a4;
-- (void)multiSelectInteraction:(id)a3 toggleSelectionStateUpToPoint:(CGPoint)a4;
-- (void)selectedIndexPathsChanged:(id)a3;
+- (void)automaticallyTransitionToMultiSelectModeKeepingCurrentSelection:(BOOL)selection;
+- (void)didCancelMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point;
+- (void)didEndMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point;
+- (void)multiSelectInteraction:(id)interaction appendSelectionAtPoint:(CGPoint)point;
+- (void)multiSelectInteraction:(id)interaction extendSelectionInDirection:(unint64_t)direction;
+- (void)multiSelectInteraction:(id)interaction toggleSelectionStateUpToPoint:(CGPoint)point;
+- (void)selectedIndexPathsChanged:(id)changed;
 - (void)uninstallFromTableView;
-- (void)willBeginExtendingSelectionAtIndexPath:(id)a3 keepingSelection:(BOOL)a4;
-- (void)willBeginMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4 keepCurrentSelection:(BOOL)a5;
+- (void)willBeginExtendingSelectionAtIndexPath:(id)path keepingSelection:(BOOL)selection;
+- (void)willBeginMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point keepCurrentSelection:(BOOL)selection;
 @end
 
 @implementation _UITableViewMultiSelectController
 
-- (_UITableViewMultiSelectController)initWithTableView:(id)a3
+- (_UITableViewMultiSelectController)initWithTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = _UITableViewMultiSelectController;
   v5 = [(_UITableViewMultiSelectController *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_tableView, v4);
+    objc_storeWeak(&v5->_tableView, viewCopy);
     v7 = objc_alloc_init(UIMultiSelectInteraction);
     multiSelectInteraction = v6->_multiSelectInteraction;
     v6->_multiSelectInteraction = v7;
@@ -61,63 +61,63 @@
   [WeakRetained removeInteraction:self->_multiSelectInteraction];
 }
 
-- (void)selectedIndexPathsChanged:(id)a3
+- (void)selectedIndexPathsChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(_UITableViewMultiSelectController *)self currentSelectionState];
+  changedCopy = changed;
+  currentSelectionState = [(_UITableViewMultiSelectController *)self currentSelectionState];
 
-  if (v5)
+  if (currentSelectionState)
   {
-    v6 = [(_UITableViewMultiSelectController *)self currentSelectionState];
-    [(UIMultiSelectInteractionState *)v6 updateStateWithDifferenceFromCurrentSelection:v4];
+    currentSelectionState2 = [(_UITableViewMultiSelectController *)self currentSelectionState];
+    [(UIMultiSelectInteractionState *)currentSelectionState2 updateStateWithDifferenceFromCurrentSelection:changedCopy];
   }
 
   else
   {
-    v6 = [[UIMultiSelectInteractionState alloc] initWithCurrentSelection:v4];
+    currentSelectionState2 = [[UIMultiSelectInteractionState alloc] initWithCurrentSelection:changedCopy];
 
-    [(_UITableViewMultiSelectController *)self setCurrentSelectionState:v6];
+    [(_UITableViewMultiSelectController *)self setCurrentSelectionState:currentSelectionState2];
   }
 }
 
-- (void)_handleAutoScrollFromPoint:(CGPoint)a3
+- (void)_handleAutoScrollFromPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UITableViewMultiSelectController *)self tableView];
-  v8 = [v6 _autoScrollAssistant];
+  y = point.y;
+  x = point.x;
+  tableView = [(_UITableViewMultiSelectController *)self tableView];
+  _autoScrollAssistant = [tableView _autoScrollAssistant];
 
-  v7 = [(_UITableViewMultiSelectController *)self tableView];
-  LODWORD(v6) = [v7 _shouldAutoScroll];
+  tableView2 = [(_UITableViewMultiSelectController *)self tableView];
+  LODWORD(tableView) = [tableView2 _shouldAutoScroll];
 
-  if (v6)
+  if (tableView)
   {
-    [v8 autoScrollFromPoint:{x, y}];
+    [_autoScrollAssistant autoScrollFromPoint:{x, y}];
   }
 
   else
   {
-    [v8 stop];
+    [_autoScrollAssistant stop];
   }
 }
 
 - (void)_endAutoScroll
 {
-  v3 = [(_UITableViewMultiSelectController *)self tableView];
-  v2 = [v3 _autoScrollAssistant];
-  [v2 stop];
+  tableView = [(_UITableViewMultiSelectController *)self tableView];
+  _autoScrollAssistant = [tableView _autoScrollAssistant];
+  [_autoScrollAssistant stop];
 }
 
-- (void)_selectIndexPaths:(id)a3
+- (void)_selectIndexPaths:(id)paths
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
-  v6 = [(_UITableViewMultiSelectController *)self tableView];
-  v7 = [v6 indexPathsForSelectedRows];
-  v8 = v7;
-  if (v7)
+  pathsCopy = paths;
+  tableView = [(_UITableViewMultiSelectController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+  v8 = indexPathsForSelectedRows;
+  if (indexPathsForSelectedRows)
   {
-    v9 = v7;
+    v9 = indexPathsForSelectedRows;
   }
 
   else
@@ -127,47 +127,47 @@
 
   v10 = [v4 setWithArray:v9];
 
-  v11 = [v5 mutableCopy];
+  v11 = [pathsCopy mutableCopy];
   [v11 minusSet:v10];
-  v12 = [(_UITableViewMultiSelectController *)self currentSelectionState];
+  currentSelectionState = [(_UITableViewMultiSelectController *)self currentSelectionState];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __55___UITableViewMultiSelectController__selectIndexPaths___block_invoke;
   v14[3] = &unk_1E70F35B8;
   v15 = v11;
-  v16 = self;
+  selfCopy = self;
   v13 = v11;
-  [v12 ignoreSelectionChangedNotificationsWithBlock:v14];
+  [currentSelectionState ignoreSelectionChangedNotificationsWithBlock:v14];
 }
 
-- (void)_deselectIndexPaths:(id)a3
+- (void)_deselectIndexPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [(_UITableViewMultiSelectController *)self currentSelectionState];
+  pathsCopy = paths;
+  currentSelectionState = [(_UITableViewMultiSelectController *)self currentSelectionState];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57___UITableViewMultiSelectController__deselectIndexPaths___block_invoke;
   v7[3] = &unk_1E70F35B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 ignoreSelectionChangedNotificationsWithBlock:v7];
+  v8 = pathsCopy;
+  v6 = pathsCopy;
+  [currentSelectionState ignoreSelectionChangedNotificationsWithBlock:v7];
 }
 
 - (void)_updateSelectedIndexPathsForCurrentSelection
 {
-  v3 = [(_UITableViewMultiSelectController *)self currentSelectionState];
-  v12 = [v3 startIndexPath];
+  currentSelectionState = [(_UITableViewMultiSelectController *)self currentSelectionState];
+  startIndexPath = [currentSelectionState startIndexPath];
 
-  v4 = [(_UITableViewMultiSelectController *)self currentSelectionState];
-  v5 = [v4 endIndexPath];
+  currentSelectionState2 = [(_UITableViewMultiSelectController *)self currentSelectionState];
+  endIndexPath = [currentSelectionState2 endIndexPath];
 
-  if (v12 && v5)
+  if (startIndexPath && endIndexPath)
   {
-    v6 = [v12 section];
-    v7 = [MEMORY[0x1E695DFA8] setWithObject:v5];
-    v8 = [v5 row];
-    if (v8 > [v12 row])
+    section = [startIndexPath section];
+    v7 = [MEMORY[0x1E695DFA8] setWithObject:endIndexPath];
+    v8 = [endIndexPath row];
+    if (v8 > [startIndexPath row])
     {
       v9 = 1;
     }
@@ -177,9 +177,9 @@
       v9 = -1;
     }
 
-    for (i = [v12 row]; i != objc_msgSend(v5, "row"); i += v9)
+    for (i = [startIndexPath row]; i != objc_msgSend(endIndexPath, "row"); i += v9)
     {
-      v11 = [MEMORY[0x1E696AC88] indexPathForRow:i inSection:v6];
+      v11 = [MEMORY[0x1E696AC88] indexPathForRow:i inSection:section];
       [v7 addObject:v11];
     }
 
@@ -187,22 +187,22 @@
   }
 }
 
-- (void)_updateSelectedIndexPaths:(id)a3
+- (void)_updateSelectedIndexPaths:(id)paths
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathsCopy = paths;
   v5 = MEMORY[0x1E695DFD8];
-  v6 = [(_UITableViewMultiSelectController *)self tableView];
-  v7 = [v6 indexPathsForSelectedRows];
-  v8 = [v5 setWithArray:v7];
+  tableView = [(_UITableViewMultiSelectController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+  v8 = [v5 setWithArray:indexPathsForSelectedRows];
 
-  v9 = [(_UITableViewMultiSelectController *)self currentSelectionState];
-  v10 = [v9 pathsToSelectForInterpolatedIndexPaths:v4];
+  currentSelectionState = [(_UITableViewMultiSelectController *)self currentSelectionState];
+  v10 = [currentSelectionState pathsToSelectForInterpolatedIndexPaths:pathsCopy];
 
-  v11 = [(_UITableViewMultiSelectController *)self currentSelectionState];
+  currentSelectionState2 = [(_UITableViewMultiSelectController *)self currentSelectionState];
   v22 = v8;
-  v23 = v4;
-  v12 = [v11 pathsToDeselectForInterpolatedIndexPaths:v4 currentlySelectedIndexPaths:v8];
+  v23 = pathsCopy;
+  v12 = [currentSelectionState2 pathsToDeselectForInterpolatedIndexPaths:pathsCopy currentlySelectedIndexPaths:v8];
 
   v13 = [MEMORY[0x1E695DFA8] set];
   v24 = 0u;
@@ -226,8 +226,8 @@
         }
 
         v19 = *(*(&v24 + 1) + 8 * v18);
-        v20 = [(_UITableViewMultiSelectController *)self tableView];
-        v21 = [v20 _canRowBeIncludedInMultipleSelection:v19];
+        tableView2 = [(_UITableViewMultiSelectController *)self tableView];
+        v21 = [tableView2 _canRowBeIncludedInMultipleSelection:v19];
 
         if (v21)
         {
@@ -248,34 +248,34 @@
   [(_UITableViewMultiSelectController *)self _deselectIndexPaths:v12];
 }
 
-- (void)_adjustSelectionRangeToIndexPath:(id)a3 isDeselecting:(BOOL)a4
+- (void)_adjustSelectionRangeToIndexPath:(id)path isDeselecting:(BOOL)deselecting
 {
-  v9 = a3;
-  v5 = [(_UITableViewMultiSelectController *)self currentSelectionState];
-  v6 = [v5 startIndexPath];
+  pathCopy = path;
+  currentSelectionState = [(_UITableViewMultiSelectController *)self currentSelectionState];
+  startIndexPath = [currentSelectionState startIndexPath];
 
-  if (v6)
+  if (startIndexPath)
   {
-    v7 = [v9 section];
-    if (v7 == [v6 section])
+    section = [pathCopy section];
+    if (section == [startIndexPath section])
     {
-      v8 = [(_UITableViewMultiSelectController *)self currentSelectionState];
-      [v8 setEndIndexPath:v9];
+      currentSelectionState2 = [(_UITableViewMultiSelectController *)self currentSelectionState];
+      [currentSelectionState2 setEndIndexPath:pathCopy];
 
       [(_UITableViewMultiSelectController *)self _updateSelectedIndexPathsForCurrentSelection];
     }
   }
 }
 
-- (BOOL)_isPointInsideEditControl:(CGPoint)a3
+- (BOOL)_isPointInsideEditControl:(CGPoint)control
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UITableViewMultiSelectController *)self tableView];
-  v7 = [v6 indexPathForRowAtPoint:{x, y}];
+  y = control.y;
+  x = control.x;
+  tableView = [(_UITableViewMultiSelectController *)self tableView];
+  v7 = [tableView indexPathForRowAtPoint:{x, y}];
 
-  v8 = [(_UITableViewMultiSelectController *)self tableView];
-  v9 = [v8 cellForRowAtIndexPath:v7];
+  tableView2 = [(_UITableViewMultiSelectController *)self tableView];
+  v9 = [tableView2 cellForRowAtIndexPath:v7];
 
   v10 = [v9 editingData:0];
   v11 = [v10 editControl:0];
@@ -283,8 +283,8 @@
   v21 = 0;
   if (v11)
   {
-    v12 = [(_UITableViewMultiSelectController *)self tableView];
-    [v11 convertPoint:v12 fromView:{x, y}];
+    tableView3 = [(_UITableViewMultiSelectController *)self tableView];
+    [v11 convertPoint:tableView3 fromView:{x, y}];
     v14 = v13;
     v16 = v15;
 
@@ -300,34 +300,34 @@
 
 - (id)_tableViewDelegate
 {
-  v3 = [(_UITableViewMultiSelectController *)self tableView];
-  v4 = [v3 delegate];
+  tableView = [(_UITableViewMultiSelectController *)self tableView];
+  delegate = [tableView delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(_UITableViewMultiSelectController *)self tableView];
-    v7 = [v6 delegate];
+    tableView2 = [(_UITableViewMultiSelectController *)self tableView];
+    delegate2 = [tableView2 delegate];
   }
 
   else
   {
-    v7 = 0;
+    delegate2 = 0;
   }
 
-  return v7;
+  return delegate2;
 }
 
-- (void)multiSelectInteraction:(id)a3 extendSelectionInDirection:(unint64_t)a4
+- (void)multiSelectInteraction:(id)interaction extendSelectionInDirection:(unint64_t)direction
 {
   WeakRetained = objc_loadWeakRetained(&self->_tableView);
-  v18 = [WeakRetained indexPathsForSelectedRows];
+  indexPathsForSelectedRows = [WeakRetained indexPathsForSelectedRows];
 
-  v7 = [v18 lastObject];
+  lastObject = [indexPathsForSelectedRows lastObject];
   v8 = objc_loadWeakRetained(&self->_tableView);
-  v9 = [v8 globalRowForRowAtIndexPath:v7];
+  v9 = [v8 globalRowForRowAtIndexPath:lastObject];
 
-  if (a4 == 1)
+  if (direction == 1)
   {
     v10 = v9 + 1;
   }
@@ -337,7 +337,7 @@
     v10 = v9;
   }
 
-  if (a4 == 2)
+  if (direction == 2)
   {
     v11 = v9 - 1;
   }
@@ -350,16 +350,16 @@
   v12 = objc_loadWeakRetained(&self->_tableView);
   v13 = [v12 indexPathForRowAtGlobalRow:v11];
 
-  v14 = [(_UITableViewMultiSelectController *)self currentSelectionState];
-  v15 = [v14 startIndexPath];
+  currentSelectionState = [(_UITableViewMultiSelectController *)self currentSelectionState];
+  startIndexPath = [currentSelectionState startIndexPath];
 
-  if (v15)
+  if (startIndexPath)
   {
-    v16 = [v13 section];
-    if (v16 == [v15 section])
+    section = [v13 section];
+    if (section == [startIndexPath section])
     {
-      v17 = [(_UITableViewMultiSelectController *)self currentSelectionState];
-      [v17 setEndIndexPath:v13];
+      currentSelectionState2 = [(_UITableViewMultiSelectController *)self currentSelectionState];
+      [currentSelectionState2 setEndIndexPath:v13];
 
       [(_UITableViewMultiSelectController *)self _updateSelectedIndexPathsForCurrentSelection];
     }
@@ -368,104 +368,104 @@
 
 - (BOOL)isInMultiSelectMode
 {
-  v2 = [(_UITableViewMultiSelectController *)self tableView];
+  tableView = [(_UITableViewMultiSelectController *)self tableView];
   if (dyld_program_sdk_at_least())
   {
-    v3 = [v2 _allowsEffectiveMultipleSelection];
+    _allowsEffectiveMultipleSelection = [tableView _allowsEffectiveMultipleSelection];
   }
 
   else
   {
-    v3 = [v2 isEditing] && (objc_msgSend(v2, "allowsMultipleSelectionDuringEditing") & 1) != 0;
+    _allowsEffectiveMultipleSelection = [tableView isEditing] && (objc_msgSend(tableView, "allowsMultipleSelectionDuringEditing") & 1) != 0;
   }
 
-  return v3;
+  return _allowsEffectiveMultipleSelection;
 }
 
-- (void)automaticallyTransitionToMultiSelectModeKeepingCurrentSelection:(BOOL)a3
+- (void)automaticallyTransitionToMultiSelectModeKeepingCurrentSelection:(BOOL)selection
 {
-  v3 = a3;
-  v5 = [(_UITableViewMultiSelectController *)self multiSelectInteraction];
-  v6 = [v5 activeGestureType];
+  selectionCopy = selection;
+  multiSelectInteraction = [(_UITableViewMultiSelectController *)self multiSelectInteraction];
+  activeGestureType = [multiSelectInteraction activeGestureType];
 
   if ([(_UITableViewMultiSelectController *)self isInMultiSelectMode])
   {
-    if (!dyld_program_sdk_at_least() || (v6 - 1) > 1)
+    if (!dyld_program_sdk_at_least() || (activeGestureType - 1) > 1)
     {
       return;
     }
 
-    v16 = [(_UITableViewMultiSelectController *)self tableView];
-    if (([v16 _isEditingWithNoSwipedCell] & 1) == 0)
+    tableView = [(_UITableViewMultiSelectController *)self tableView];
+    if (([tableView _isEditingWithNoSwipedCell] & 1) == 0)
     {
-      v7 = [(_UITableViewMultiSelectController *)self tableView];
-      v8 = [v7 allowsMultipleSelectionDuringEditing];
+      tableView2 = [(_UITableViewMultiSelectController *)self tableView];
+      allowsMultipleSelectionDuringEditing = [tableView2 allowsMultipleSelectionDuringEditing];
 
-      if (!v8)
+      if (!allowsMultipleSelectionDuringEditing)
       {
         return;
       }
 
-      v9 = [(_UITableViewMultiSelectController *)self tableView];
-      v16 = v9;
+      tableView3 = [(_UITableViewMultiSelectController *)self tableView];
+      tableView = tableView3;
       goto LABEL_10;
     }
   }
 
   else
   {
-    v9 = [(_UITableViewMultiSelectController *)self tableView];
-    v16 = v9;
-    if (!v3)
+    tableView3 = [(_UITableViewMultiSelectController *)self tableView];
+    tableView = tableView3;
+    if (!selectionCopy)
     {
 LABEL_10:
-      [v9 setEditing:1 animated:1];
+      [tableView3 setEditing:1 animated:1];
       goto LABEL_11;
     }
 
-    v10 = [v9 indexPathsForSelectedRows];
+    indexPathsForSelectedRows = [tableView3 indexPathsForSelectedRows];
 
-    v11 = [[UIMultiSelectInteractionState alloc] initWithCurrentSelection:v10];
+    v11 = [[UIMultiSelectInteractionState alloc] initWithCurrentSelection:indexPathsForSelectedRows];
     [(_UITableViewMultiSelectController *)self setCurrentSelectionState:v11];
 
-    v12 = [(_UITableViewMultiSelectController *)self tableView];
-    [v12 setEditing:1 animated:1];
+    tableView4 = [(_UITableViewMultiSelectController *)self tableView];
+    [tableView4 setEditing:1 animated:1];
 
     v13 = MEMORY[0x1E695DFD8];
-    v16 = [(_UITableViewMultiSelectController *)self currentSelectionState];
-    v14 = [v16 originallySelectedIndexPaths];
-    v15 = [v13 setWithArray:v14];
+    tableView = [(_UITableViewMultiSelectController *)self currentSelectionState];
+    originallySelectedIndexPaths = [tableView originallySelectedIndexPaths];
+    v15 = [v13 setWithArray:originallySelectedIndexPaths];
     [(_UITableViewMultiSelectController *)self _selectIndexPaths:v15];
   }
 
 LABEL_11:
 }
 
-- (BOOL)_shouldBeginInteractionAtPoint:(CGPoint)a3
+- (BOOL)_shouldBeginInteractionAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
-  v6 = [(_UITableViewMultiSelectController *)self tableView];
-  v7 = [v6 indexPathForRowAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
+  tableView = [(_UITableViewMultiSelectController *)self tableView];
+  v7 = [tableView indexPathForRowAtPoint:{x, y}];
 
-  LOBYTE(v5) = [(_UITableViewMultiSelectController *)v5 _shouldBeginInteractionAtIndexPath:v7];
-  return v5;
+  LOBYTE(selfCopy) = [(_UITableViewMultiSelectController *)selfCopy _shouldBeginInteractionAtIndexPath:v7];
+  return selfCopy;
 }
 
-- (BOOL)_shouldBeginInteractionAtIndexPath:(id)a3
+- (BOOL)_shouldBeginInteractionAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(_UITableViewMultiSelectController *)self isInMultiSelectMode])
   {
     v5 = 1;
   }
 
-  else if (v4 || (-[_UITableViewMultiSelectController tableView](self, "tableView"), v6 = objc_claimAutoreleasedReturnValue(), [v6 indexPathsForSelectedRows], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "lastObject"), v4 = objc_claimAutoreleasedReturnValue(), v7, v6, v4))
+  else if (pathCopy || (-[_UITableViewMultiSelectController tableView](self, "tableView"), v6 = objc_claimAutoreleasedReturnValue(), [v6 indexPathsForSelectedRows], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "lastObject"), pathCopy = objc_claimAutoreleasedReturnValue(), v7, v6, pathCopy))
   {
-    v8 = [(_UITableViewMultiSelectController *)self _tableViewDelegate];
-    v9 = [(_UITableViewMultiSelectController *)self tableView];
-    v5 = [v8 tableView:v9 shouldBeginMultipleSelectionInteractionAtIndexPath:v4];
+    _tableViewDelegate = [(_UITableViewMultiSelectController *)self _tableViewDelegate];
+    tableView = [(_UITableViewMultiSelectController *)self tableView];
+    v5 = [_tableViewDelegate tableView:tableView shouldBeginMultipleSelectionInteractionAtIndexPath:pathCopy];
   }
 
   else
@@ -476,39 +476,39 @@ LABEL_11:
   return v5;
 }
 
-- (void)willBeginMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4 keepCurrentSelection:(BOOL)a5
+- (void)willBeginMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point keepCurrentSelection:(BOOL)selection
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
-  if (a4.x == *MEMORY[0x1E695F050] && a4.y == *(MEMORY[0x1E695F050] + 8))
+  selectionCopy = selection;
+  y = point.y;
+  x = point.x;
+  if (point.x == *MEMORY[0x1E695F050] && point.y == *(MEMORY[0x1E695F050] + 8))
   {
     v11 = 0;
   }
 
   else
   {
-    v10 = [(_UITableViewMultiSelectController *)self tableView];
-    v11 = [v10 indexPathForRowAtPoint:{x, y}];
+    tableView = [(_UITableViewMultiSelectController *)self tableView];
+    v11 = [tableView indexPathForRowAtPoint:{x, y}];
   }
 
-  [(_UITableViewMultiSelectController *)self willBeginExtendingSelectionAtIndexPath:v11 keepingSelection:v5];
+  [(_UITableViewMultiSelectController *)self willBeginExtendingSelectionAtIndexPath:v11 keepingSelection:selectionCopy];
 }
 
-- (void)willBeginExtendingSelectionAtIndexPath:(id)a3 keepingSelection:(BOOL)a4
+- (void)willBeginExtendingSelectionAtIndexPath:(id)path keepingSelection:(BOOL)selection
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(_UITableViewMultiSelectController *)self tableView];
-  v8 = [v7 indexPathsForSelectedRows];
+  selectionCopy = selection;
+  pathCopy = path;
+  tableView = [(_UITableViewMultiSelectController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
-  v9 = [(_UITableViewMultiSelectController *)self currentSelectionState];
+  currentSelectionState = [(_UITableViewMultiSelectController *)self currentSelectionState];
 
-  if (!v9)
+  if (!currentSelectionState)
   {
-    if (v4)
+    if (selectionCopy)
     {
-      v10 = [[UIMultiSelectInteractionState alloc] initWithCurrentSelection:v8];
+      v10 = [[UIMultiSelectInteractionState alloc] initWithCurrentSelection:indexPathsForSelectedRows];
     }
 
     else
@@ -520,72 +520,72 @@ LABEL_11:
     [(_UITableViewMultiSelectController *)self setCurrentSelectionState:v10];
   }
 
-  v12 = [(_UITableViewMultiSelectController *)self currentSelectionState];
-  [v12 beginMultiselectInteraction];
+  currentSelectionState2 = [(_UITableViewMultiSelectController *)self currentSelectionState];
+  [currentSelectionState2 beginMultiselectInteraction];
 
-  v13 = [(_UITableViewMultiSelectController *)self currentSelectionState];
-  [v13 updateStateWithStartingIndexPath:v6 otherSelectedIndexPaths:v8];
+  currentSelectionState3 = [(_UITableViewMultiSelectController *)self currentSelectionState];
+  [currentSelectionState3 updateStateWithStartingIndexPath:pathCopy otherSelectedIndexPaths:indexPathsForSelectedRows];
 
-  v14 = [(_UITableViewMultiSelectController *)self currentSelectionState];
-  v15 = [v14 startIndexPath];
+  currentSelectionState4 = [(_UITableViewMultiSelectController *)self currentSelectionState];
+  startIndexPath = [currentSelectionState4 startIndexPath];
 
-  if (v15)
+  if (startIndexPath)
   {
-    v16 = [(_UITableViewMultiSelectController *)self currentSelectionState];
-    v22 = [v16 startIndexPath];
+    currentSelectionState5 = [(_UITableViewMultiSelectController *)self currentSelectionState];
+    startIndexPath2 = [currentSelectionState5 startIndexPath];
 
-    v17 = [(_UITableViewMultiSelectController *)self tableView];
-    v18 = [v17 delegate];
+    tableView2 = [(_UITableViewMultiSelectController *)self tableView];
+    delegate = [tableView2 delegate];
 
     if (objc_opt_respondsToSelector())
     {
-      v19 = [(_UITableViewMultiSelectController *)self tableView];
-      [v18 tableView:v19 didBeginMultipleSelectionInteractionAtIndexPath:v22];
+      tableView3 = [(_UITableViewMultiSelectController *)self tableView];
+      [delegate tableView:tableView3 didBeginMultipleSelectionInteractionAtIndexPath:startIndexPath2];
     }
 
-    v20 = [(_UITableViewMultiSelectController *)self tableView];
-    [v20 _forciblyCancelPendingSelection];
+    tableView4 = [(_UITableViewMultiSelectController *)self tableView];
+    [tableView4 _forciblyCancelPendingSelection];
 
-    v21 = [(_UITableViewMultiSelectController *)self tableView];
-    [v21 unhighlightRowAtIndexPath:v22 animated:0];
+    tableView5 = [(_UITableViewMultiSelectController *)self tableView];
+    [tableView5 unhighlightRowAtIndexPath:startIndexPath2 animated:0];
   }
 
   else
   {
-    v22 = v6;
+    startIndexPath2 = pathCopy;
   }
 }
 
-- (BOOL)supportsMultiSelectInteraction:(id)a3
+- (BOOL)supportsMultiSelectInteraction:(id)interaction
 {
-  v4 = [(_UITableViewMultiSelectController *)self _tableViewDelegate];
-  if (v4)
+  _tableViewDelegate = [(_UITableViewMultiSelectController *)self _tableViewDelegate];
+  if (_tableViewDelegate)
   {
-    v5 = [(_UITableViewMultiSelectController *)self tableView];
-    v6 = [v5 allowsMultipleSelectionDuringEditing];
+    tableView = [(_UITableViewMultiSelectController *)self tableView];
+    allowsMultipleSelectionDuringEditing = [tableView allowsMultipleSelectionDuringEditing];
   }
 
   else
   {
-    v6 = 0;
+    allowsMultipleSelectionDuringEditing = 0;
   }
 
-  return v6;
+  return allowsMultipleSelectionDuringEditing;
 }
 
-- (BOOL)shouldBeginMultiSelectInteraction:(id)a3 ofType:(int64_t)a4 atPoint:(CGPoint)a5 withVelocity:(CGPoint)a6
+- (BOOL)shouldBeginMultiSelectInteraction:(id)interaction ofType:(int64_t)type atPoint:(CGPoint)point withVelocity:(CGPoint)velocity
 {
-  y = a5.y;
-  x = a5.x;
-  if (a4)
+  y = point.y;
+  x = point.x;
+  if (type)
   {
 
-    LOBYTE(v9) = [(_UITableViewMultiSelectController *)self _shouldBeginInteractionAtPoint:a3, a5.x, a5.y, a6.x, a6.y];
+    LOBYTE(v9) = [(_UITableViewMultiSelectController *)self _shouldBeginInteractionAtPoint:interaction, point.x, point.y, velocity.x, velocity.y];
   }
 
   else
   {
-    v9 = [(_UITableViewMultiSelectController *)self isInMultiSelectMode:a3];
+    v9 = [(_UITableViewMultiSelectController *)self isInMultiSelectMode:interaction];
     if (v9)
     {
 
@@ -596,39 +596,39 @@ LABEL_11:
   return v9;
 }
 
-- (void)didEndMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4
+- (void)didEndMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point
 {
-  [(_UITableViewMultiSelectController *)self _endAutoScroll:a3];
-  v5 = [(_UITableViewMultiSelectController *)self _tableViewDelegate];
+  [(_UITableViewMultiSelectController *)self _endAutoScroll:interaction];
+  _tableViewDelegate = [(_UITableViewMultiSelectController *)self _tableViewDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(_UITableViewMultiSelectController *)self _tableViewDelegate];
-    v8 = [(_UITableViewMultiSelectController *)self tableView];
-    [v7 tableViewDidEndMultipleSelectionInteraction:v8];
+    _tableViewDelegate2 = [(_UITableViewMultiSelectController *)self _tableViewDelegate];
+    tableView = [(_UITableViewMultiSelectController *)self tableView];
+    [_tableViewDelegate2 tableViewDidEndMultipleSelectionInteraction:tableView];
   }
 
-  v9 = [(_UITableViewMultiSelectController *)self currentSelectionState];
-  [v9 endMultiselectInteraction];
+  currentSelectionState = [(_UITableViewMultiSelectController *)self currentSelectionState];
+  [currentSelectionState endMultiselectInteraction];
 }
 
-- (BOOL)shouldAllowSelectionExtensionAtPoint:(CGPoint)a3
+- (BOOL)shouldAllowSelectionExtensionAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
-  v6 = [(_UITableViewMultiSelectController *)self tableView];
-  v7 = [v6 indexPathForRowAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
+  tableView = [(_UITableViewMultiSelectController *)self tableView];
+  v7 = [tableView indexPathForRowAtPoint:{x, y}];
 
-  LOBYTE(v5) = [(_UITableViewMultiSelectController *)v5 shouldAllowSelectionExtensionAtIndexPath:v7];
-  return v5;
+  LOBYTE(selfCopy) = [(_UITableViewMultiSelectController *)selfCopy shouldAllowSelectionExtensionAtIndexPath:v7];
+  return selfCopy;
 }
 
-- (BOOL)shouldAllowSelectionAppendageAtPoint:(CGPoint)a3
+- (BOOL)shouldAllowSelectionAppendageAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (dyld_program_sdk_at_least())
   {
 
@@ -642,14 +642,14 @@ LABEL_11:
   }
 }
 
-- (BOOL)shouldAllowSelectionExtensionAtIndexPath:(id)a3
+- (BOOL)shouldAllowSelectionExtensionAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_UITableViewMultiSelectController *)self tableView];
-  v6 = [v5 indexPathsForSelectedRows];
-  if ([v6 count])
+  pathCopy = path;
+  tableView = [(_UITableViewMultiSelectController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+  if ([indexPathsForSelectedRows count])
   {
-    v7 = [(_UITableViewMultiSelectController *)self _shouldBeginInteractionAtIndexPath:v4];
+    v7 = [(_UITableViewMultiSelectController *)self _shouldBeginInteractionAtIndexPath:pathCopy];
   }
 
   else
@@ -660,35 +660,35 @@ LABEL_11:
   return v7;
 }
 
-- (void)multiSelectInteraction:(id)a3 toggleSelectionStateUpToPoint:(CGPoint)a4
+- (void)multiSelectInteraction:(id)interaction toggleSelectionStateUpToPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(_UITableViewMultiSelectController *)self tableView];
-  v10 = [v7 _nearestCellToPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  tableView = [(_UITableViewMultiSelectController *)self tableView];
+  v10 = [tableView _nearestCellToPoint:{x, y}];
 
-  v8 = [(_UITableViewMultiSelectController *)self tableView];
-  v9 = [v8 indexPathForCell:v10];
+  tableView2 = [(_UITableViewMultiSelectController *)self tableView];
+  v9 = [tableView2 indexPathForCell:v10];
 
   [(_UITableViewMultiSelectController *)self toggleSelectionStateUpToIndexPath:v9];
   [(_UITableViewMultiSelectController *)self _handleAutoScrollFromPoint:x, y];
 }
 
-- (void)multiSelectInteraction:(id)a3 appendSelectionAtPoint:(CGPoint)a4
+- (void)multiSelectInteraction:(id)interaction appendSelectionAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(_UITableViewMultiSelectController *)self tableView];
-  v13 = [v7 indexPathForRowAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  tableView = [(_UITableViewMultiSelectController *)self tableView];
+  v13 = [tableView indexPathForRowAtPoint:{x, y}];
 
   v8 = v13;
   if (v13)
   {
-    v9 = [(_UITableViewMultiSelectController *)self currentSelectionState];
-    v10 = [v9 isSelecting];
+    currentSelectionState = [(_UITableViewMultiSelectController *)self currentSelectionState];
+    isSelecting = [currentSelectionState isSelecting];
 
     v11 = [MEMORY[0x1E695DFD8] setWithObject:v13];
-    if (v10)
+    if (isSelecting)
     {
       [(_UITableViewMultiSelectController *)self _selectIndexPaths:v11];
     }
@@ -698,31 +698,31 @@ LABEL_11:
       [(_UITableViewMultiSelectController *)self _deselectIndexPaths:v11];
     }
 
-    v12 = [(_UITableViewMultiSelectController *)self currentSelectionState];
-    [v12 setStartIndexPath:v13];
+    currentSelectionState2 = [(_UITableViewMultiSelectController *)self currentSelectionState];
+    [currentSelectionState2 setStartIndexPath:v13];
 
     v8 = v13;
   }
 }
 
-- (void)didCancelMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4
+- (void)didCancelMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v7 = MEMORY[0x1E695DFD8];
-  v9 = a3;
+  interactionCopy = interaction;
   v8 = [v7 set];
   [(_UITableViewMultiSelectController *)self _updateSelectedIndexPaths:v8];
 
-  [(_UITableViewMultiSelectController *)self didEndMultiSelectInteraction:v9 atPoint:x, y];
+  [(_UITableViewMultiSelectController *)self didEndMultiSelectInteraction:interactionCopy atPoint:x, y];
 }
 
 - (BOOL)isInMultiselectInteraction
 {
-  v2 = [(_UITableViewMultiSelectController *)self currentSelectionState];
-  v3 = [v2 isInMultiselectInteraction];
+  currentSelectionState = [(_UITableViewMultiSelectController *)self currentSelectionState];
+  isInMultiselectInteraction = [currentSelectionState isInMultiselectInteraction];
 
-  return v3;
+  return isInMultiselectInteraction;
 }
 
 - (UITableView)tableView

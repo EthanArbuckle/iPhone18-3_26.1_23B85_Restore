@@ -1,7 +1,7 @@
 @interface MPCSharedListeningQueueEventPlaybackModeChanged
-- (MPCSharedListeningQueueEventPlaybackModeChanged)initWithUpdatedAutoPlayEnabled:(BOOL)a3;
-- (MPCSharedListeningQueueEventPlaybackModeChanged)initWithUpdatedRepeatType:(int64_t)a3;
-- (MPCSharedListeningQueueEventPlaybackModeChanged)initWithUpdatedShuffleType:(int64_t)a3;
+- (MPCSharedListeningQueueEventPlaybackModeChanged)initWithUpdatedAutoPlayEnabled:(BOOL)enabled;
+- (MPCSharedListeningQueueEventPlaybackModeChanged)initWithUpdatedRepeatType:(int64_t)type;
+- (MPCSharedListeningQueueEventPlaybackModeChanged)initWithUpdatedShuffleType:(int64_t)type;
 - (id)description;
 @end
 
@@ -61,7 +61,7 @@ LABEL_15:
   return v8;
 }
 
-- (MPCSharedListeningQueueEventPlaybackModeChanged)initWithUpdatedAutoPlayEnabled:(BOOL)a3
+- (MPCSharedListeningQueueEventPlaybackModeChanged)initWithUpdatedAutoPlayEnabled:(BOOL)enabled
 {
   v11.receiver = self;
   v11.super_class = MPCSharedListeningQueueEventPlaybackModeChanged;
@@ -74,7 +74,7 @@ LABEL_15:
     v9[1] = 3221225472;
     v9[2] = __82__MPCSharedListeningQueueEventPlaybackModeChanged_initWithUpdatedAutoPlayEnabled___block_invoke;
     v9[3] = &__block_descriptor_33_e5_B8__0l;
-    v10 = a3;
+    enabledCopy = enabled;
     v6 = [v9 copy];
     autoPlayEnabled = v5->_autoPlayEnabled;
     v5->_autoPlayEnabled = v6;
@@ -83,7 +83,7 @@ LABEL_15:
   return v5;
 }
 
-- (MPCSharedListeningQueueEventPlaybackModeChanged)initWithUpdatedRepeatType:(int64_t)a3
+- (MPCSharedListeningQueueEventPlaybackModeChanged)initWithUpdatedRepeatType:(int64_t)type
 {
   v10.receiver = self;
   v10.super_class = MPCSharedListeningQueueEventPlaybackModeChanged;
@@ -96,7 +96,7 @@ LABEL_15:
     v9[1] = 3221225472;
     v9[2] = __77__MPCSharedListeningQueueEventPlaybackModeChanged_initWithUpdatedRepeatType___block_invoke;
     v9[3] = &__block_descriptor_40_e5_q8__0l;
-    v9[4] = a3;
+    v9[4] = type;
     v6 = [v9 copy];
     repeatType = v5->_repeatType;
     v5->_repeatType = v6;
@@ -105,7 +105,7 @@ LABEL_15:
   return v5;
 }
 
-- (MPCSharedListeningQueueEventPlaybackModeChanged)initWithUpdatedShuffleType:(int64_t)a3
+- (MPCSharedListeningQueueEventPlaybackModeChanged)initWithUpdatedShuffleType:(int64_t)type
 {
   v10.receiver = self;
   v10.super_class = MPCSharedListeningQueueEventPlaybackModeChanged;
@@ -118,7 +118,7 @@ LABEL_15:
     v9[1] = 3221225472;
     v9[2] = __78__MPCSharedListeningQueueEventPlaybackModeChanged_initWithUpdatedShuffleType___block_invoke;
     v9[3] = &__block_descriptor_40_e5_q8__0l;
-    v9[4] = a3;
+    v9[4] = type;
     v6 = [v9 copy];
     shuffleType = v5->_shuffleType;
     v5->_shuffleType = v6;

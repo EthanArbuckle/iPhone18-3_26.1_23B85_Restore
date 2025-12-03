@@ -1,21 +1,21 @@
 @interface HKCodableSummaryAudioExposureValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLastUpdatedDateData:(BOOL)a3;
-- (void)setHasSecondsListened:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLastUpdatedDateData:(BOOL)data;
+- (void)setHasSecondsListened:(BOOL)listened;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSummaryAudioExposureValue
 
-- (void)setHasSecondsListened:(BOOL)a3
+- (void)setHasSecondsListened:(BOOL)listened
 {
-  if (a3)
+  if (listened)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasLastUpdatedDateData:(BOOL)a3
+- (void)setHasLastUpdatedDateData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
     v3 = 2;
   }
@@ -49,27 +49,27 @@
   v8.receiver = self;
   v8.super_class = HKCodableSummaryAudioExposureValue;
   v4 = [(HKCodableSummaryAudioExposureValue *)&v8 description];
-  v5 = [(HKCodableSummaryAudioExposureValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSummaryAudioExposureValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   leqQuantity = self->_leqQuantity;
   if (leqQuantity)
   {
-    v5 = [(HKCodableQuantity *)leqQuantity dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"leqQuantity"];
+    dictionaryRepresentation = [(HKCodableQuantity *)leqQuantity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"leqQuantity"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_secondsListened];
-    [v3 setObject:v9 forKey:@"secondsListened"];
+    [dictionary setObject:v9 forKey:@"secondsListened"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -90,35 +90,35 @@ LABEL_5:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_daysAggregated];
-  [v3 setObject:v10 forKey:@"daysAggregated"];
+  [dictionary setObject:v10 forKey:@"daysAggregated"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_lastUpdatedDateData];
-    [v3 setObject:v7 forKey:@"lastUpdatedDateData"];
+    [dictionary setObject:v7 forKey:@"lastUpdatedDateData"];
   }
 
 LABEL_7:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_leqQuantity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -138,32 +138,32 @@ LABEL_5:
   }
 
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_leqQuantity)
   {
-    v6 = v4;
-    [v4 setLeqQuantity:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setLeqQuantity:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = *&self->_secondsListened;
-    *(v4 + 40) |= 4u;
+    *(toCopy + 3) = *&self->_secondsListened;
+    *(toCopy + 40) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -182,22 +182,22 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 1) = self->_daysAggregated;
-  *(v4 + 40) |= 1u;
+  *(toCopy + 1) = self->_daysAggregated;
+  *(toCopy + 40) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
-    *(v4 + 2) = *&self->_lastUpdatedDateData;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 2) = *&self->_lastUpdatedDateData;
+    *(toCopy + 40) |= 2u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HKCodableQuantity *)self->_leqQuantity copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HKCodableQuantity *)self->_leqQuantity copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -239,16 +239,16 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   leqQuantity = self->_leqQuantity;
-  if (leqQuantity | *(v4 + 4))
+  if (leqQuantity | *(equalCopy + 4))
   {
     if (![(HKCodableQuantity *)leqQuantity isEqual:?])
     {
@@ -258,13 +258,13 @@ LABEL_4:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_secondsListened != *(v4 + 3))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_secondsListened != *(equalCopy + 3))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
 LABEL_18:
     v6 = 0;
@@ -273,21 +273,21 @@ LABEL_18:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_daysAggregated != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_daysAggregated != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_18;
   }
 
-  v6 = (*(v4 + 40) & 2) == 0;
+  v6 = (*(equalCopy + 40) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_lastUpdatedDateData != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_lastUpdatedDateData != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
@@ -385,11 +385,11 @@ LABEL_11:
   return v6 ^ v3 ^ v10 ^ v14;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   leqQuantity = self->_leqQuantity;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (leqQuantity)
   {
     if (!v6)
@@ -397,7 +397,7 @@ LABEL_11:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     leqQuantity = [(HKCodableQuantity *)leqQuantity mergeFrom:?];
   }
 
@@ -408,18 +408,18 @@ LABEL_11:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     leqQuantity = [(HKCodableSummaryAudioExposureValue *)self setLeqQuantity:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  v7 = *(v4 + 40);
+  v7 = *(fromCopy + 40);
   if ((v7 & 4) != 0)
   {
-    self->_secondsListened = *(v4 + 3);
+    self->_secondsListened = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v7 = *(v4 + 40);
+    v7 = *(fromCopy + 40);
     if ((v7 & 1) == 0)
     {
 LABEL_9:
@@ -432,23 +432,23 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 40) & 1) == 0)
+  else if ((*(fromCopy + 40) & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_daysAggregated = *(v4 + 1);
+  self->_daysAggregated = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 40) & 2) != 0)
+  if ((*(fromCopy + 40) & 2) != 0)
   {
 LABEL_10:
-    self->_lastUpdatedDateData = *(v4 + 2);
+    self->_lastUpdatedDateData = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_11:
 
-  MEMORY[0x1EEE66BB8](leqQuantity, v4);
+  MEMORY[0x1EEE66BB8](leqQuantity, fromCopy);
 }
 
 @end

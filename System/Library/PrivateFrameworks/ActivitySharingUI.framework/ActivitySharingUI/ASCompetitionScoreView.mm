@@ -1,19 +1,19 @@
 @interface ASCompetitionScoreView
-+ (double)preferredHeightForConfiguration:(id)a3 friend:(id)a4;
-- (ASCompetitionScoreView)initWithConfiguration:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (double)preferredHeightForConfiguration:(id)configuration friend:(id)friend;
+- (ASCompetitionScoreView)initWithConfiguration:(id)configuration;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)lastBaselineY;
-- (double)participantScoreViewWidthForParticipant:(int64_t)a3 maximumWidth:(double)a4;
-- (void)layoutForWidth:(double)a3;
+- (double)participantScoreViewWidthForParticipant:(int64_t)participant maximumWidth:(double)width;
+- (void)layoutForWidth:(double)width;
 - (void)layoutSubviews;
-- (void)setFriend:(id)a3 competition:(id)a4;
+- (void)setFriend:(id)friend competition:(id)competition;
 @end
 
 @implementation ASCompetitionScoreView
 
-- (ASCompetitionScoreView)initWithConfiguration:(id)a3
+- (ASCompetitionScoreView)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v29.receiver = self;
   v29.super_class = ASCompetitionScoreView;
   v6 = *MEMORY[0x277CBF3A0];
@@ -24,46 +24,46 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_configuration, a3);
+    objc_storeStrong(&v10->_configuration, configuration);
     v11->_isRTLLayout = [MEMORY[0x277D75D18] userInterfaceLayoutDirectionForSemanticContentAttribute:0] == 1;
-    v12 = [[ASCompetitionParticipantScoreView alloc] initWithConfiguration:v5];
+    v12 = [[ASCompetitionParticipantScoreView alloc] initWithConfiguration:configurationCopy];
     myScoreView = v11->_myScoreView;
     v11->_myScoreView = v12;
 
     [(ASCompetitionScoreView *)v11 addSubview:v11->_myScoreView];
-    v14 = [[ASCompetitionParticipantScoreView alloc] initWithConfiguration:v5];
+    v14 = [[ASCompetitionParticipantScoreView alloc] initWithConfiguration:configurationCopy];
     opponentScoreView = v11->_opponentScoreView;
     v11->_opponentScoreView = v14;
 
     [(ASCompetitionScoreView *)v11 addSubview:v11->_opponentScoreView];
-    if ([v5 showsScoreTypeHeader])
+    if ([configurationCopy showsScoreTypeHeader])
     {
       v16 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v6, v7, v8, v9}];
       scoreTypeHeaderLabel = v11->_scoreTypeHeaderLabel;
       v11->_scoreTypeHeaderLabel = v16;
 
-      v18 = [v5 headerFont];
-      [(UILabel *)v11->_scoreTypeHeaderLabel setFont:v18];
+      headerFont = [configurationCopy headerFont];
+      [(UILabel *)v11->_scoreTypeHeaderLabel setFont:headerFont];
 
-      v19 = [v5 primaryScoreSource];
-      if (v19 <= 2)
+      primaryScoreSource = [configurationCopy primaryScoreSource];
+      if (primaryScoreSource <= 2)
       {
-        v20 = off_278C532D0[v19];
+        v20 = off_278C532D0[primaryScoreSource];
         v21 = ActivitySharingBundle();
-        v18 = [v21 localizedStringForKey:v20 value:&stru_2850F6650 table:@"Localizable"];
+        headerFont = [v21 localizedStringForKey:v20 value:&stru_2850F6650 table:@"Localizable"];
       }
 
-      v22 = [v18 localizedUppercaseString];
-      [(UILabel *)v11->_scoreTypeHeaderLabel setText:v22];
+      localizedUppercaseString = [headerFont localizedUppercaseString];
+      [(UILabel *)v11->_scoreTypeHeaderLabel setText:localizedUppercaseString];
 
-      v23 = [MEMORY[0x277D75348] whiteColor];
-      [(UILabel *)v11->_scoreTypeHeaderLabel setTextColor:v23];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [(UILabel *)v11->_scoreTypeHeaderLabel setTextColor:whiteColor];
 
       [(UILabel *)v11->_scoreTypeHeaderLabel setTextAlignment:1];
       [(ASCompetitionScoreView *)v11 addSubview:v11->_scoreTypeHeaderLabel];
     }
 
-    if ([v5 showsAchievementThumbnail])
+    if ([configurationCopy showsAchievementThumbnail])
     {
       v24 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v6, v7, v8, v9}];
       achievementThumbnailView = v11->_achievementThumbnailView;
@@ -72,9 +72,9 @@
       [(UIImageView *)v11->_achievementThumbnailView setContentMode:2];
       [(UIImageView *)v11->_achievementThumbnailView setClipsToBounds:0];
       [(ASCompetitionScoreView *)v11 addSubview:v11->_achievementThumbnailView];
-      if (![v5 achievementThumbnailAlignment])
+      if (![configurationCopy achievementThumbnailAlignment])
       {
-        [v5 achievementThumbnailSize];
+        [configurationCopy achievementThumbnailSize];
         v27 = v26 * 0.5;
         [(ASCompetitionParticipantScoreView *)v11->_myScoreView setScoreLeftMargin:v26 * 0.5];
         [(ASCompetitionParticipantScoreView *)v11->_opponentScoreView setScoreRightMargin:v27];
@@ -85,22 +85,22 @@
   return v11;
 }
 
-- (double)participantScoreViewWidthForParticipant:(int64_t)a3 maximumWidth:(double)a4
+- (double)participantScoreViewWidthForParticipant:(int64_t)participant maximumWidth:(double)width
 {
   [(ASCompetitionScoreViewConfiguration *)self->_configuration sideMargin];
-  v8 = a4 + v7 * -2.0;
+  v8 = width + v7 * -2.0;
   [(ASCompetitionScoreViewConfiguration *)self->_configuration minimumMiddleMargin];
   v10 = v8 - v9;
-  v11 = [(ASCompetitionScoreViewConfiguration *)self->_configuration division];
-  if (v11)
+  division = [(ASCompetitionScoreViewConfiguration *)self->_configuration division];
+  if (division)
   {
-    if (v11 == 2)
+    if (division == 2)
     {
       [(ASCompetitionScoreViewConfiguration *)self->_configuration minimumMiddleMargin];
       v14 = (v10 + v13) * 0.5;
       [(ASCompetitionScoreViewConfiguration *)self->_configuration minimumMiddleMargin];
       result = (v10 - v15) * 0.5;
-      if (a3)
+      if (participant)
       {
         if (self->_isRTLLayout)
         {
@@ -114,7 +114,7 @@
       }
     }
 
-    else if (v11 == 1)
+    else if (division == 1)
     {
       return v10 * 0.5;
     }
@@ -124,7 +124,7 @@
   {
     isRTLLayout = self->_isRTLLayout;
     [(ASCompetitionScoreViewConfiguration *)self->_configuration opponentScoreViewWidth];
-    if (a3)
+    if (participant)
     {
       if (isRTLLayout)
       {
@@ -141,10 +141,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(ASCompetitionScoreView *)self layoutForWidth:?];
   [(ASCompetitionParticipantScoreView *)self->_myScoreView sizeThatFits:width, height];
   v7 = v6;
@@ -172,14 +172,14 @@
   [(ASCompetitionScoreView *)self layoutForWidth:v3];
 }
 
-- (void)layoutForWidth:(double)a3
+- (void)layoutForWidth:(double)width
 {
   scoreTypeHeaderLabel = self->_scoreTypeHeaderLabel;
   if (scoreTypeHeaderLabel)
   {
     [(UILabel *)scoreTypeHeaderLabel sizeToFit];
     [(UILabel *)self->_scoreTypeHeaderLabel bounds];
-    [(UILabel *)self->_scoreTypeHeaderLabel setFrame:0.0, 0.0, a3, CGRectGetHeight(v51)];
+    [(UILabel *)self->_scoreTypeHeaderLabel setFrame:0.0, 0.0, width, CGRectGetHeight(v51)];
     [(ASCompetitionScoreViewConfiguration *)self->_configuration headerBaselineOffset];
     [(UILabel *)self->_scoreTypeHeaderLabel _setFirstLineBaselineFrameOriginY:?];
   }
@@ -188,11 +188,11 @@
   v7 = v6;
   [(UILabel *)self->_scoreTypeHeaderLabel _lastLineBaselineFrameOriginY];
   v9 = v8;
-  [(ASCompetitionScoreView *)self participantScoreViewWidthForParticipant:1 maximumWidth:a3];
+  [(ASCompetitionScoreView *)self participantScoreViewWidthForParticipant:1 maximumWidth:width];
   v11 = v10;
-  [(ASCompetitionScoreView *)self participantScoreViewWidthForParticipant:0 maximumWidth:a3];
+  [(ASCompetitionScoreView *)self participantScoreViewWidthForParticipant:0 maximumWidth:width];
   v13 = v12;
-  [(ASCompetitionParticipantScoreView *)self->_opponentScoreView sizeThatFits:a3, 1.79769313e308];
+  [(ASCompetitionParticipantScoreView *)self->_opponentScoreView sizeThatFits:width, 1.79769313e308];
   v15 = v14;
   [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setFrame:v7, v9, v11, v14];
   [(ASCompetitionParticipantScoreView *)self->_opponentScoreView frame];
@@ -217,8 +217,8 @@
     v27 = v26;
     [(ASCompetitionScoreViewConfiguration *)self->_configuration achievementThumbnailSize];
     v29 = v28;
-    v30 = [(ASCompetitionScoreViewConfiguration *)self->_configuration achievementThumbnailAlignment];
-    if (v30 == 1)
+    achievementThumbnailAlignment = [(ASCompetitionScoreViewConfiguration *)self->_configuration achievementThumbnailAlignment];
+    if (achievementThumbnailAlignment == 1)
     {
       [(ASCompetitionParticipantScoreView *)self->_myScoreView frame];
       v34 = CGRectGetMaxY(v53) - v29 + 2.5;
@@ -226,13 +226,13 @@
       if (!self->_isRTLLayout)
       {
         [(ASCompetitionScoreViewConfiguration *)self->_configuration achievementThumbnailSize];
-        v37 = a3 - v38;
+        v37 = width - v38;
       }
     }
 
     else
     {
-      if (v30)
+      if (achievementThumbnailAlignment)
       {
         goto LABEL_14;
       }
@@ -248,7 +248,7 @@
       }
 
       [(ASCompetitionScoreViewConfiguration *)self->_configuration achievementThumbnailSize];
-      v37 = (a3 - v36) * 0.5;
+      v37 = (width - v36) * 0.5;
     }
 
     [(UIImageView *)self->_achievementThumbnailView setFrame:v37, v34, v27, v29];
@@ -282,37 +282,37 @@ LABEL_14:
   return CGRectGetMaxY(*&v2);
 }
 
-- (void)setFriend:(id)a3 competition:(id)a4
+- (void)setFriend:(id)friend competition:(id)competition
 {
-  v37 = a3;
-  v6 = a4;
-  if (v6)
+  friendCopy = friend;
+  competitionCopy = competition;
+  if (competitionCopy)
   {
-    v7 = [MEMORY[0x277D75348] as_colorForParticipant:1 competition:v6];
+    v7 = [MEMORY[0x277D75348] as_colorForParticipant:1 competition:competitionCopy];
     [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setScoreColor:v7];
 
-    v8 = [MEMORY[0x277D75348] as_colorForParticipant:0 competition:v6];
+    as_lightCompetitionGold = [MEMORY[0x277D75348] as_colorForParticipant:0 competition:competitionCopy];
 LABEL_5:
-    v12 = v8;
+    v12 = as_lightCompetitionGold;
     goto LABEL_6;
   }
 
-  v9 = [v37 numberOfCompetitionWinsByMe];
-  v10 = [v37 numberOfCompetitionWinsAgainstMe];
-  if (v9 > v10)
+  numberOfCompetitionWinsByMe = [friendCopy numberOfCompetitionWinsByMe];
+  numberOfCompetitionWinsAgainstMe = [friendCopy numberOfCompetitionWinsAgainstMe];
+  if (numberOfCompetitionWinsByMe > numberOfCompetitionWinsAgainstMe)
   {
-    v11 = [MEMORY[0x277D75348] as_darkCompetitionGold];
-    [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setScoreColor:v11];
+    as_darkCompetitionGold = [MEMORY[0x277D75348] as_darkCompetitionGold];
+    [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setScoreColor:as_darkCompetitionGold];
 
-    v8 = [MEMORY[0x277D75348] as_lightCompetitionGold];
+    as_lightCompetitionGold = [MEMORY[0x277D75348] as_lightCompetitionGold];
     goto LABEL_5;
   }
 
-  v35 = v10;
-  v36 = [MEMORY[0x277D75348] as_lightCompetitionGold];
-  [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setScoreColor:v36];
+  v35 = numberOfCompetitionWinsAgainstMe;
+  as_lightCompetitionGold2 = [MEMORY[0x277D75348] as_lightCompetitionGold];
+  [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setScoreColor:as_lightCompetitionGold2];
 
-  if (v35 <= v9)
+  if (v35 <= numberOfCompetitionWinsByMe)
   {
     [MEMORY[0x277D75348] as_lightCompetitionGold];
   }
@@ -325,20 +325,20 @@ LABEL_5:
 LABEL_6:
   [(ASCompetitionParticipantScoreView *)self->_myScoreView setScoreColor:v12];
 
-  v13 = [(ASCompetitionScoreViewConfiguration *)self->_configuration uppercaseNames];
-  v14 = [v37 displayName];
-  v15 = v14;
-  if (v13)
+  uppercaseNames = [(ASCompetitionScoreViewConfiguration *)self->_configuration uppercaseNames];
+  displayName = [friendCopy displayName];
+  v15 = displayName;
+  if (uppercaseNames)
   {
-    v16 = [v14 uppercaseString];
+    uppercaseString = [displayName uppercaseString];
 
-    v15 = v16;
+    v15 = uppercaseString;
   }
 
-  v17 = [(ASCompetitionScoreViewConfiguration *)self->_configuration uppercaseNames];
+  uppercaseNames2 = [(ASCompetitionScoreViewConfiguration *)self->_configuration uppercaseNames];
   v18 = ActivitySharingBundle();
   v19 = v18;
-  if (v17)
+  if (uppercaseNames2)
   {
     v20 = @"UPPERCASE_ME";
   }
@@ -352,34 +352,34 @@ LABEL_6:
 
   [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setName:v15];
   [(ASCompetitionParticipantScoreView *)self->_myScoreView setName:v21];
-  v22 = [MEMORY[0x277CBEAA8] date];
-  v23 = [v6 dailyScoreForParticipant:0 onDate:v22];
+  date = [MEMORY[0x277CBEAA8] date];
+  v23 = [competitionCopy dailyScoreForParticipant:0 onDate:date];
 
-  v24 = [MEMORY[0x277CBEAA8] date];
-  v25 = [v6 dailyScoreForParticipant:1 onDate:v24];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  v25 = [competitionCopy dailyScoreForParticipant:1 onDate:date2];
 
-  v26 = [(ASCompetitionScoreViewConfiguration *)self->_configuration primaryScoreSource];
-  switch(v26)
+  primaryScoreSource = [(ASCompetitionScoreViewConfiguration *)self->_configuration primaryScoreSource];
+  switch(primaryScoreSource)
   {
     case 2:
-      -[ASCompetitionParticipantScoreView setPrimaryScore:](self->_opponentScoreView, "setPrimaryScore:", [v37 numberOfCompetitionWinsAgainstMe]);
-      v28 = [v37 numberOfCompetitionWinsByMe];
+      -[ASCompetitionParticipantScoreView setPrimaryScore:](self->_opponentScoreView, "setPrimaryScore:", [friendCopy numberOfCompetitionWinsAgainstMe]);
+      numberOfCompetitionWinsByMe2 = [friendCopy numberOfCompetitionWinsByMe];
       myScoreView = self->_myScoreView;
       goto LABEL_18;
     case 1:
       [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setPrimaryScore:v25];
       myScoreView = self->_myScoreView;
-      v28 = v23;
+      numberOfCompetitionWinsByMe2 = v23;
 LABEL_18:
-      [(ASCompetitionParticipantScoreView *)myScoreView setPrimaryScore:v28];
+      [(ASCompetitionParticipantScoreView *)myScoreView setPrimaryScore:numberOfCompetitionWinsByMe2];
       break;
     case 0:
-      -[ASCompetitionParticipantScoreView setPrimaryScore:](self->_opponentScoreView, "setPrimaryScore:", [v6 opponentTotalScore]);
-      -[ASCompetitionParticipantScoreView setPrimaryScore:](self->_myScoreView, "setPrimaryScore:", [v6 myTotalScore]);
+      -[ASCompetitionParticipantScoreView setPrimaryScore:](self->_opponentScoreView, "setPrimaryScore:", [competitionCopy opponentTotalScore]);
+      -[ASCompetitionParticipantScoreView setPrimaryScore:](self->_myScoreView, "setPrimaryScore:", [competitionCopy myTotalScore]);
       if ([(ASCompetitionScoreViewConfiguration *)self->_configuration showsTodaySecondaryScore])
       {
-        -[ASCompetitionParticipantScoreView setSecondaryScoreEnabled:](self->_opponentScoreView, "setSecondaryScoreEnabled:", [v37 hasCompletedFirstDayOfCurrentCompetition]);
-        -[ASCompetitionParticipantScoreView setSecondaryScoreEnabled:](self->_myScoreView, "setSecondaryScoreEnabled:", [v37 hasCompletedFirstDayOfCurrentCompetition]);
+        -[ASCompetitionParticipantScoreView setSecondaryScoreEnabled:](self->_opponentScoreView, "setSecondaryScoreEnabled:", [friendCopy hasCompletedFirstDayOfCurrentCompetition]);
+        -[ASCompetitionParticipantScoreView setSecondaryScoreEnabled:](self->_myScoreView, "setSecondaryScoreEnabled:", [friendCopy hasCompletedFirstDayOfCurrentCompetition]);
         [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setSecondaryScore:v25];
         [(ASCompetitionParticipantScoreView *)self->_myScoreView setSecondaryScore:v23];
       }
@@ -387,17 +387,17 @@ LABEL_18:
       break;
   }
 
-  if (v6)
+  if (competitionCopy)
   {
-    v29 = v6;
+    currentOrMostRecentCompetition = competitionCopy;
   }
 
   else
   {
-    v29 = [v37 currentOrMostRecentCompetition];
+    currentOrMostRecentCompetition = [friendCopy currentOrMostRecentCompetition];
   }
 
-  v30 = v29;
+  v30 = currentOrMostRecentCompetition;
   achievementThumbnailView = self->_achievementThumbnailView;
   if (achievementThumbnailView && v30)
   {
@@ -417,49 +417,49 @@ LABEL_18:
   [(ASCompetitionScoreView *)self setNeedsLayout];
 }
 
-+ (double)preferredHeightForConfiguration:(id)a3 friend:(id)a4
++ (double)preferredHeightForConfiguration:(id)configuration friend:(id)friend
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 bottomMargin];
+  configurationCopy = configuration;
+  friendCopy = friend;
+  [configurationCopy bottomMargin];
   v8 = v7;
-  if ([v5 wantsScaledBaselineAlignment])
+  if ([configurationCopy wantsScaledBaselineAlignment])
   {
-    v9 = [v5 primaryScoreFont];
-    [v5 primaryScoreBaselineOffset];
-    [v9 _scaledValueForValue:?];
+    primaryScoreFont = [configurationCopy primaryScoreFont];
+    [configurationCopy primaryScoreBaselineOffset];
+    [primaryScoreFont _scaledValueForValue:?];
     v11 = v10;
   }
 
   else
   {
-    [v5 primaryScoreBaselineOffset];
+    [configurationCopy primaryScoreBaselineOffset];
     v11 = v12;
   }
 
   v13 = v8 + v11;
-  if ([v5 showsNames])
+  if ([configurationCopy showsNames])
   {
-    if ([v5 wantsScaledBaselineAlignment])
+    if ([configurationCopy wantsScaledBaselineAlignment])
     {
-      v14 = [v5 nameFont];
-      [v5 nameBaselineOffset];
-      [v14 _scaledValueForValue:?];
+      nameFont = [configurationCopy nameFont];
+      [configurationCopy nameBaselineOffset];
+      [nameFont _scaledValueForValue:?];
       v13 = v13 + v15;
     }
 
     else
     {
-      [v5 nameBaselineOffset];
+      [configurationCopy nameBaselineOffset];
       v13 = v13 + v16;
     }
   }
 
-  if ([v5 showsTodaySecondaryScore] && objc_msgSend(v6, "hasCompletedFirstDayOfCurrentCompetition"))
+  if ([configurationCopy showsTodaySecondaryScore] && objc_msgSend(friendCopy, "hasCompletedFirstDayOfCurrentCompetition"))
   {
-    v17 = [v5 secondaryScoreFont];
-    [v5 secondaryScoreBaselineOffset];
-    [v17 _scaledValueForValue:?];
+    secondaryScoreFont = [configurationCopy secondaryScoreFont];
+    [configurationCopy secondaryScoreBaselineOffset];
+    [secondaryScoreFont _scaledValueForValue:?];
     v13 = v13 + v18;
   }
 

@@ -1,27 +1,27 @@
 @interface KNGaussianBlurEffect
 - (CATransform3D)MVPMatrix;
-- (KNGaussianBlurEffect)initWithContext:(id)a3;
-- (double)p_scaleFactorForTextureToFitWithinMaxSizeWithSize:(CGSize)a3 scaleFactor:(double)a4 maxTextureSize:(CGSize)a5;
-- (void)createBlurTexturesUsingShadersWithBlurSteps:(unint64_t)a3 maxBlurRadius:(double)a4 stepsToDecreaseRadius:(double)a5 commandBuffer:(id)a6 capabilities:(id)a7;
-- (void)renderEffectAtPercent:(double)a3 withContext:(id)a4;
-- (void)setMVPMatrix:(CATransform3D *)a3;
+- (KNGaussianBlurEffect)initWithContext:(id)context;
+- (double)p_scaleFactorForTextureToFitWithinMaxSizeWithSize:(CGSize)size scaleFactor:(double)factor maxTextureSize:(CGSize)textureSize;
+- (void)createBlurTexturesUsingShadersWithBlurSteps:(unint64_t)steps maxBlurRadius:(double)radius stepsToDecreaseRadius:(double)decreaseRadius commandBuffer:(id)buffer capabilities:(id)capabilities;
+- (void)renderEffectAtPercent:(double)percent withContext:(id)context;
+- (void)setMVPMatrix:(CATransform3D *)matrix;
 - (void)setupEffectIfNecessary;
 - (void)teardown;
 @end
 
 @implementation KNGaussianBlurEffect
 
-- (KNGaussianBlurEffect)initWithContext:(id)a3
+- (KNGaussianBlurEffect)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = KNGaussianBlurEffect;
   v5 = [(KNGaussianBlurEffect *)&v13 init];
   if (v5)
   {
-    v6 = [v4 metalContext];
+    metalContext = [contextCopy metalContext];
     v7 = *(v5 + 2);
-    *(v5 + 2) = v6;
+    *(v5 + 2) = metalContext;
 
     v8 = *&CATransform3DIdentity.m33;
     *(v5 + 264) = *&CATransform3DIdentity.m31;
@@ -42,11 +42,11 @@
   return v5;
 }
 
-- (double)p_scaleFactorForTextureToFitWithinMaxSizeWithSize:(CGSize)a3 scaleFactor:(double)a4 maxTextureSize:(CGSize)a5
+- (double)p_scaleFactorForTextureToFitWithinMaxSizeWithSize:(CGSize)size scaleFactor:(double)factor maxTextureSize:(CGSize)textureSize
 {
-  if (a4 == 0.0)
+  if (factor == 0.0)
   {
-    v5 = [TSUAssertionHandler currentHandler:a3.width];
+    v5 = [TSUAssertionHandler currentHandler:size.width];
     v6 = [NSString stringWithUTF8String:"[KNGaussianBlurEffect p_scaleFactorForTextureToFitWithinMaxSizeWithSize:scaleFactor:maxTextureSize:]"];
     v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/KNGaussianBlurEffect.m"];
     v8 = @"Scale factor cannot be zero.";
@@ -60,9 +60,9 @@ LABEL_10:
     return 1.0;
   }
 
-  height = a5.height;
-  width = a5.width;
-  v15 = a4;
+  height = textureSize.height;
+  width = textureSize.width;
+  factorCopy = factor;
   if (![(KNGaussianBlurEffect *)self p_textureSizeIsValid:?]|| ![(KNGaussianBlurEffect *)self p_textureSizeIsValid:width, height])
   {
     v5 = +[TSUAssertionHandler currentHandler];
@@ -79,30 +79,30 @@ LABEL_10:
   TSDMultiplySizeScalar();
   if (v17 >= width)
   {
-    v15 = v15 / (width / v17);
+    factorCopy = factorCopy / (width / v17);
     TSDMultiplySizeScalar();
   }
 
   if (v18 >= height)
   {
-    return v15 / (height / v18);
+    return factorCopy / (height / v18);
   }
 
-  return v15;
+  return factorCopy;
 }
 
-- (void)createBlurTexturesUsingShadersWithBlurSteps:(unint64_t)a3 maxBlurRadius:(double)a4 stepsToDecreaseRadius:(double)a5 commandBuffer:(id)a6 capabilities:(id)a7
+- (void)createBlurTexturesUsingShadersWithBlurSteps:(unint64_t)steps maxBlurRadius:(double)radius stepsToDecreaseRadius:(double)decreaseRadius commandBuffer:(id)buffer capabilities:(id)capabilities
 {
-  v119 = a6;
-  v12 = a7;
-  v13 = [(TSDMetalContext *)self->_metalContext device];
-  [v12 maximumMetalTextureSizeForDevice:v13];
+  bufferCopy = buffer;
+  capabilitiesCopy = capabilities;
+  device = [(TSDMetalContext *)self->_metalContext device];
+  [capabilitiesCopy maximumMetalTextureSizeForDevice:device];
   v108 = v15;
   v109 = v14;
   v16 = objc_alloc_init(MTLRenderPipelineColorAttachmentDescriptor);
   [v16 setPixelFormat:-[TSDMetalContext pixelFormat](self->_metalContext, "pixelFormat")];
-  v118 = [[TSDMetalShader alloc] initDefaultTextureShaderWithDevice:v13 colorAttachment:v16];
-  v117 = [[TSDMetalShader alloc] initDefaultGaussianBlurShaderWithDevice:v13 colorAttachment:v16 halfSizedRadius:1];
+  v118 = [[TSDMetalShader alloc] initDefaultTextureShaderWithDevice:device colorAttachment:v16];
+  v117 = [[TSDMetalShader alloc] initDefaultGaussianBlurShaderWithDevice:device colorAttachment:v16 halfSizedRadius:1];
   v17 = +[NSMutableArray array];
   v116 = +[NSMutableArray array];
   Width = CGImageGetWidth([(TSDTexturedRectangle *)self->_texture image]);
@@ -120,48 +120,48 @@ LABEL_10:
   v112 = TSDRectUnit[0];
   v110 = TSDRectUnit[2];
   v113 = TSDRectUnit[3];
-  v114 = self;
-  v115 = [TSDGPUDataBuffer newDataBufferWithVertexRect:"newDataBufferWithVertexRect:textureRect:device:" textureRect:v13 device:?];
+  selfCopy = self;
+  v115 = [TSDGPUDataBuffer newDataBufferWithVertexRect:"newDataBufferWithVertexRect:textureRect:device:" textureRect:device device:?];
   v28 = [(TSDTexturedRectangle *)self->_texture metalTextureWithContext:self->_metalContext];
   v29 = v28;
   if (v28)
   {
     v96 = v16;
-    v97 = v12;
+    v97 = capabilitiesCopy;
     v30 = 0;
     v99 = Width / v21;
     v100 = Height;
     x = CGRectNull.origin.x;
     y = CGRectNull.origin.y;
-    v124 = a3;
+    stepsCopy = steps;
     v125 = Width;
     v33 = CGRectNull.size.width;
     v34 = CGRectNull.size.height;
     v35 = 1.0;
     v98 = Height / v23;
     v103 = v17;
-    v104 = v13;
-    v126 = a4;
-    v127 = a5;
-    v101 = a3;
+    v104 = device;
+    radiusCopy = radius;
+    decreaseRadiusCopy = decreaseRadius;
+    stepsCopy2 = steps;
     v102 = v28;
     do
     {
-      v36 = v30 / v124 * (v30 / v124) * a4;
-      if (a5 == 0.0)
+      v36 = v30 / stepsCopy * (v30 / stepsCopy) * radius;
+      if (decreaseRadius == 0.0)
       {
         v38 = 2.0;
       }
 
       else
       {
-        v37 = fmax(floor(v36 / a5), v35);
+        v37 = fmax(floor(v36 / decreaseRadius), v35);
         v38 = v37 + v37;
       }
 
       if (v36 <= 0.0)
       {
-        v41 = [[KNGaussianBlurTexture alloc] initWithMetalTexture:v29 frame:v107 blurAmount:v106, v105, r2, v36];
+        v123 = [[KNGaussianBlurTexture alloc] initWithMetalTexture:v29 frame:v107 blurAmount:v106, v105, r2, v36];
         v148.origin.x = x;
         v148.origin.y = y;
         v148.size.width = v33;
@@ -169,8 +169,8 @@ LABEL_10:
         v154.origin.x = v107;
         v154.origin.y = v106;
         v154.size.width = v105;
-        a4 = v126;
-        a5 = v127;
+        radius = radiusCopy;
+        decreaseRadius = decreaseRadiusCopy;
         v154.size.height = r2;
         v149 = CGRectUnion(v148, v154);
         x = v149.origin.x;
@@ -195,14 +195,14 @@ LABEL_10:
           }
         }
 
-        [(KNGaussianBlurEffect *)v114 p_scaleFactorForTextureToFitWithinMaxSizeWithSize:v39 scaleFactor:v40 maxTextureSize:v38, v109, v108];
+        [(KNGaussianBlurEffect *)selfCopy p_scaleFactorForTextureToFitWithinMaxSizeWithSize:v39 scaleFactor:v40 maxTextureSize:v38, v109, v108];
         v43 = v42;
         TSDMultiplySizeScalar();
         v120 = v44;
         v121 = v45;
-        [(TSDTexturedRectangle *)v114->_texture offset];
+        [(TSDTexturedRectangle *)selfCopy->_texture offset];
         v47 = fabs(v46) * v99 + 10.0;
-        [(TSDTexturedRectangle *)v114->_texture offset];
+        [(TSDTexturedRectangle *)selfCopy->_texture offset];
         v49 = v43;
         v50 = v43 * (v47 + 5.0);
         v51 = v43 * (fabs(v48) * v98 + 10.0 + 5.0);
@@ -240,9 +240,9 @@ LABEL_10:
         v53 = v120 + v50 / v49;
         memset(&v137, 0, sizeof(v137));
         TSDTransform3DMakeOrtho();
-        v54 = [[TSDMetalRenderTarget alloc] initWithSize:v114->_metalContext metalContext:{v53, v121 + v52}];
-        v55 = [v54 passDescriptor];
-        v56 = [v119 renderCommandEncoderWithDescriptor:v55];
+        v54 = [[TSDMetalRenderTarget alloc] initWithSize:selfCopy->_metalContext metalContext:{v53, v121 + v52}];
+        passDescriptor = [v54 passDescriptor];
+        v56 = [bufferCopy renderCommandEncoderWithDescriptor:passDescriptor];
 
         *&a.m11 = vcvt_hight_f32_f64(vcvt_f32_f64(v139), v140);
         *&a.m13 = vcvt_hight_f32_f64(vcvt_f32_f64(v141), v142);
@@ -253,10 +253,10 @@ LABEL_10:
         [v115 drawWithEncoder:v56 atIndex:{objc_msgSend(v118, "bufferIndex")}];
         [v56 endEncoding];
         TSDRectWithSize();
-        v57 = [TSDGPUDataBuffer newDataBufferWithVertexRect:"newDataBufferWithVertexRect:textureRect:device:" textureRect:v13 device:?];
-        v58 = [[TSDMetalRenderTarget alloc] initWithSize:v114->_metalContext metalContext:{v53, v121 + v52}];
-        v59 = [v58 passDescriptor];
-        v60 = [v119 renderCommandEncoderWithDescriptor:v59];
+        v57 = [TSDGPUDataBuffer newDataBufferWithVertexRect:"newDataBufferWithVertexRect:textureRect:device:" textureRect:device device:?];
+        v58 = [[TSDMetalRenderTarget alloc] initWithSize:selfCopy->_metalContext metalContext:{v53, v121 + v52}];
+        passDescriptor2 = [v58 passDescriptor];
+        v60 = [bufferCopy renderCommandEncoderWithDescriptor:passDescriptor2];
 
         *&a.m11 = vcvt_hight_f32_f64(vcvt_f32_f64(*&v137.m11), *&v137.m13);
         *&a.m13 = vcvt_hight_f32_f64(vcvt_f32_f64(*&v137.m21), *&v137.m23);
@@ -268,19 +268,19 @@ LABEL_10:
         v133 = v61;
         v134 = 1;
         [v117 setPipelineStateWithEncoder:v60 vertexBytes:&a fragmentBytes:&v133];
-        v63 = [v54 texture];
-        [v60 setFragmentTexture:v63 atIndex:0];
+        texture = [v54 texture];
+        [v60 setFragmentTexture:texture atIndex:0];
 
         [v57 drawWithEncoder:v60 atIndex:{objc_msgSend(v117, "bufferIndex")}];
         [v60 endEncoding];
-        v64 = [[TSDMetalRenderTarget alloc] initWithSize:v114->_metalContext metalContext:{v53, v121 + v52}];
-        v65 = [v64 passDescriptor];
-        v66 = [v119 renderCommandEncoderWithDescriptor:v65];
+        v64 = [[TSDMetalRenderTarget alloc] initWithSize:selfCopy->_metalContext metalContext:{v53, v121 + v52}];
+        passDescriptor3 = [v64 passDescriptor];
+        v66 = [bufferCopy renderCommandEncoderWithDescriptor:passDescriptor3];
 
         LOBYTE(v134) = 0;
         [v117 setPipelineStateWithEncoder:v66 vertexBytes:&a fragmentBytes:&v133];
-        v67 = [v58 texture];
-        [v66 setFragmentTexture:v67 atIndex:0];
+        texture2 = [v58 texture];
+        [v66 setFragmentTexture:texture2 atIndex:0];
 
         [v57 drawWithEncoder:v66 atIndex:{objc_msgSend(v117, "bufferIndex")}];
         [v66 endEncoding];
@@ -300,11 +300,11 @@ LABEL_10:
         v78 = v151.size.width;
         v79 = v151.size.height;
         v80 = [KNGaussianBlurTexture alloc];
-        v81 = [v64 texture];
-        v41 = [(KNGaussianBlurTexture *)v80 initWithMetalTexture:v81 frame:v76 blurAmount:v77, v78, v79, v123];
+        texture3 = [v64 texture];
+        v123 = [(KNGaussianBlurTexture *)v80 initWithMetalTexture:texture3 frame:v76 blurAmount:v77, v78, v79, v123];
 
-        v82 = [v64 texture];
-        [v116 addObject:v82];
+        texture4 = [v64 texture];
+        [v116 addObject:texture4];
 
         v152.origin.x = x;
         v152.origin.y = y;
@@ -321,21 +321,21 @@ LABEL_10:
         v34 = v153.size.height;
 
         v29 = v102;
-        v13 = v104;
+        device = v104;
 
         v17 = v103;
-        a4 = v126;
-        a5 = v127;
-        a3 = v101;
+        radius = radiusCopy;
+        decreaseRadius = decreaseRadiusCopy;
+        steps = stepsCopy2;
       }
 
-      [v17 addObject:v41];
+      [v17 addObject:v123];
 
       ++v30;
       v35 = 1.0;
     }
 
-    while (v30 <= a3);
+    while (v30 <= steps);
     v131 = 0u;
     v132 = 0u;
     v129 = 0u;
@@ -370,18 +370,18 @@ LABEL_10:
       while (v85);
     }
 
-    objc_storeStrong(&v114->_blurTextures, v17);
-    [(TSDTexturedRectangle *)v114->_texture size];
-    v90 = v89 / CGImageGetWidth([(TSDTexturedRectangle *)v114->_texture image]);
-    [(TSDTexturedRectangle *)v114->_texture size];
+    objc_storeStrong(&selfCopy->_blurTextures, v17);
+    [(TSDTexturedRectangle *)selfCopy->_texture size];
+    v90 = v89 / CGImageGetWidth([(TSDTexturedRectangle *)selfCopy->_texture image]);
+    [(TSDTexturedRectangle *)selfCopy->_texture size];
     v92 = v91;
-    v93 = CGImageGetHeight([(TSDTexturedRectangle *)v114->_texture image]);
-    v94 = [TSDGPUDataBuffer newDataBufferWithVertexRect:v13 textureRect:x * v90 device:y * (v92 / v93), v33 * v90, v34 * (v92 / v93), v112, v111, v110, v113];
-    metalDataBuffer = v114->_metalDataBuffer;
-    v114->_metalDataBuffer = v94;
+    v93 = CGImageGetHeight([(TSDTexturedRectangle *)selfCopy->_texture image]);
+    v113 = [TSDGPUDataBuffer newDataBufferWithVertexRect:device textureRect:x * v90 device:y * (v92 / v93), v33 * v90, v34 * (v92 / v93), v112, v111, v110, v113];
+    metalDataBuffer = selfCopy->_metalDataBuffer;
+    selfCopy->_metalDataBuffer = v113;
 
     v16 = v96;
-    v12 = v97;
+    capabilitiesCopy = v97;
   }
 }
 
@@ -414,8 +414,8 @@ LABEL_10:
 
     v7 = v6;
     v8 = [TSDMetalShader alloc];
-    v9 = [(TSDMetalContext *)self->_metalContext device];
-    v10 = [v8 initCustomShaderWithVertexShader:@"KNBuildBlurVertexShader" fragmentShader:v7 device:v9 library:@"KeynoteMetalLibrary" colorAttachment:v15];
+    device = [(TSDMetalContext *)self->_metalContext device];
+    v10 = [v8 initCustomShaderWithVertexShader:@"KNBuildBlurVertexShader" fragmentShader:v7 device:device library:@"KeynoteMetalLibrary" colorAttachment:v15];
 
     metalShader = self->_metalShader;
     self->_metalShader = v10;
@@ -430,12 +430,12 @@ LABEL_10:
   }
 }
 
-- (void)renderEffectAtPercent:(double)a3 withContext:(id)a4
+- (void)renderEffectAtPercent:(double)percent withContext:(id)context
 {
   if (self->_metalDataBuffer)
   {
-    v28 = [a4 renderEncoder];
-    *v6.i64 = ([(NSArray *)self->_blurTextures count]- 1) * a3;
+    renderEncoder = [context renderEncoder];
+    *v6.i64 = ([(NSArray *)self->_blurTextures count]- 1) * percent;
     v26 = v6;
     v7 = vcvtmd_u64_f64(*v6.i64);
     v8 = v7 + 1;
@@ -469,14 +469,14 @@ LABEL_10:
     *&p_fragmentUniforms[-2].Opacity = vcvt_hight_f32_f64(vcvt_f32_f64(v23), v21);
     *v23.f64 = v27;
     p_fragmentUniforms->Percent = *v23.f64;
-    [*&p_fragmentUniforms[-15] setPipelineStateWithEncoder:v28 vertexBytes:&p_fragmentUniforms[-12] fragmentBytes:p_fragmentUniforms];
-    v24 = [v12 texture];
-    [v28 setFragmentTexture:v24 atIndex:0];
+    [*&p_fragmentUniforms[-15] setPipelineStateWithEncoder:renderEncoder vertexBytes:&p_fragmentUniforms[-12] fragmentBytes:p_fragmentUniforms];
+    texture = [v12 texture];
+    [renderEncoder setFragmentTexture:texture atIndex:0];
 
-    v25 = [v13 texture];
-    [v28 setFragmentTexture:v25 atIndex:1];
+    texture2 = [v13 texture];
+    [renderEncoder setFragmentTexture:texture2 atIndex:1];
 
-    [*&p_fragmentUniforms[-14] drawWithEncoder:v28 atIndex:{objc_msgSend(*&p_fragmentUniforms[-15], "bufferIndex")}];
+    [*&p_fragmentUniforms[-14] drawWithEncoder:renderEncoder atIndex:{objc_msgSend(*&p_fragmentUniforms[-15], "bufferIndex")}];
   }
 }
 
@@ -540,19 +540,19 @@ LABEL_10:
   return self;
 }
 
-- (void)setMVPMatrix:(CATransform3D *)a3
+- (void)setMVPMatrix:(CATransform3D *)matrix
 {
-  v3 = *&a3->m11;
-  v4 = *&a3->m13;
-  v5 = *&a3->m21;
-  *&self->_MVPMatrix.m23 = *&a3->m23;
+  v3 = *&matrix->m11;
+  v4 = *&matrix->m13;
+  v5 = *&matrix->m21;
+  *&self->_MVPMatrix.m23 = *&matrix->m23;
   *&self->_MVPMatrix.m21 = v5;
   *&self->_MVPMatrix.m13 = v4;
   *&self->_MVPMatrix.m11 = v3;
-  v6 = *&a3->m31;
-  v7 = *&a3->m33;
-  v8 = *&a3->m43;
-  *&self->_MVPMatrix.m41 = *&a3->m41;
+  v6 = *&matrix->m31;
+  v7 = *&matrix->m33;
+  v8 = *&matrix->m43;
+  *&self->_MVPMatrix.m41 = *&matrix->m41;
   *&self->_MVPMatrix.m43 = v8;
   *&self->_MVPMatrix.m31 = v6;
   *&self->_MVPMatrix.m33 = v7;

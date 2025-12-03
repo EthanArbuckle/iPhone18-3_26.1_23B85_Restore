@@ -1,5 +1,5 @@
 @interface InitialCaptureOrphanHandler
-+ (void)handleOrphanedInitalCapturesWithCompletionHandler:(id)a3;
++ (void)handleOrphanedInitalCapturesWithCompletionHandler:(id)handler;
 - (_TtC10voicememod27InitialCaptureOrphanHandler)init;
 @end
 
@@ -12,15 +12,15 @@
   return [(InitialCaptureOrphanHandler *)&v3 init];
 }
 
-+ (void)handleOrphanedInitalCapturesWithCompletionHandler:(id)a3
++ (void)handleOrphanedInitalCapturesWithCompletionHandler:(id)handler
 {
   v5 = (*(*(sub_100024720(&qword_10005CB50, &qword_10003F510) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  *(v9 + 24) = a1;
+  *(v9 + 24) = self;
   v10 = type metadata accessor for TaskPriority();
   (*(*(v10 - 8) + 56))(v7, 1, 1, v10);
   v11 = swift_allocObject();

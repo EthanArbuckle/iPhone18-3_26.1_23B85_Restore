@@ -1,17 +1,17 @@
 @interface NSArray
-- (id)bds_arrayByRemovingNSNullsInvokingBlockForNulls:(id)a3;
-- (id)bds_dictionaryUsingPropertyAsKey:(id)a3 uniquingKeysWith:(id)a4;
-- (void)bds_chainSuccessAndErrorCompletionSelectorCallsForSelector:(SEL)a3 completion:(id)a4;
-- (void)bds_chainUntilNoErrorCompletionSelectorCallsForSelector:(SEL)a3 completion:(id)a4;
-- (void)bds_traverseBatchesOfSize:(unint64_t)a3 block:(id)a4;
+- (id)bds_arrayByRemovingNSNullsInvokingBlockForNulls:(id)nulls;
+- (id)bds_dictionaryUsingPropertyAsKey:(id)key uniquingKeysWith:(id)with;
+- (void)bds_chainSuccessAndErrorCompletionSelectorCallsForSelector:(SEL)selector completion:(id)completion;
+- (void)bds_chainUntilNoErrorCompletionSelectorCallsForSelector:(SEL)selector completion:(id)completion;
+- (void)bds_traverseBatchesOfSize:(unint64_t)size block:(id)block;
 @end
 
 @implementation NSArray
 
-- (id)bds_dictionaryUsingPropertyAsKey:(id)a3 uniquingKeysWith:(id)a4
+- (id)bds_dictionaryUsingPropertyAsKey:(id)key uniquingKeysWith:(id)with
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  withCopy = with;
   v8 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
@@ -33,7 +33,7 @@
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v13 valueForKey:{v6, v21}];
+        v14 = [v13 valueForKey:{keyCopy, v21}];
         objc_opt_class();
         v21 = &OBJC_PROTOCOL___NSCopying;
         v15 = BUClassAndProtocolCast();
@@ -44,7 +44,7 @@
           if (v16)
           {
             v17 = [v8 objectForKeyedSubscript:v15];
-            v18 = v7[2](v7, v17, v13);
+            v18 = withCopy[2](withCopy, v17, v13);
             [v8 setObject:v18 forKeyedSubscript:v15];
           }
 
@@ -66,9 +66,9 @@
   return v19;
 }
 
-- (id)bds_arrayByRemovingNSNullsInvokingBlockForNulls:(id)a3
+- (id)bds_arrayByRemovingNSNullsInvokingBlockForNulls:(id)nulls
 {
-  v4 = a3;
+  nullsCopy = nulls;
   v5 = objc_opt_new();
   v6 = [(NSArray *)self count];
   if (v6)
@@ -81,7 +81,7 @@
 
       if (v9 == v10)
       {
-        v11 = objc_retainBlock(v4);
+        v11 = objc_retainBlock(nullsCopy);
         v12 = v11;
         if (v11)
         {
@@ -101,48 +101,48 @@
   return v13;
 }
 
-- (void)bds_traverseBatchesOfSize:(unint64_t)a3 block:(id)a4
+- (void)bds_traverseBatchesOfSize:(unint64_t)size block:(id)block
 {
-  v16 = a4;
-  if (v16)
+  blockCopy = block;
+  if (blockCopy)
   {
     v6 = [(NSArray *)self count];
     if (v6)
     {
       v7 = 0;
-      v8 = v6 + a3;
-      v9 = -a3;
+      v8 = v6 + size;
+      v9 = -size;
       v10 = v6;
       do
       {
-        v11 = v10 - a3;
-        if (v10 >= a3)
+        v11 = v10 - size;
+        if (v10 >= size)
         {
-          v12 = a3;
+          sizeCopy = size;
         }
 
         else
         {
-          v12 = v10;
+          sizeCopy = v10;
         }
 
-        v13 = [(NSArray *)self subarrayWithRange:v7, v12];
-        v16[2](v16, v13, v7, v12);
+        sizeCopy = [(NSArray *)self subarrayWithRange:v7, sizeCopy];
+        blockCopy[2](blockCopy, sizeCopy, v7, sizeCopy);
 
-        v8 -= a3;
-        if (a3 >= v8)
+        v8 -= size;
+        if (size >= v8)
         {
-          v14 = v8;
+          sizeCopy2 = v8;
         }
 
         else
         {
-          v14 = a3;
+          sizeCopy2 = size;
         }
 
-        v9 += a3;
-        v15 = v14 + v9;
-        v7 += a3;
+        v9 += size;
+        v15 = sizeCopy2 + v9;
+        v7 += size;
         v10 = v11;
       }
 
@@ -151,21 +151,21 @@
 
     else
     {
-      (v16[2])();
+      (blockCopy[2])();
     }
   }
 }
 
-- (void)bds_chainSuccessAndErrorCompletionSelectorCallsForSelector:(SEL)a3 completion:(id)a4
+- (void)bds_chainSuccessAndErrorCompletionSelectorCallsForSelector:(SEL)selector completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = [[NSPointerArray alloc] initWithOptions:5];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = self;
-  v9 = [(NSArray *)v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v9 = [(NSArray *)selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -177,7 +177,7 @@
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(selfCopy);
         }
 
         [v7 addPointer:{*(*(&v13 + 1) + 8 * v12), v13}];
@@ -185,25 +185,25 @@
       }
 
       while (v10 != v12);
-      v10 = [(NSArray *)v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [(NSArray *)selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 
-  [v7 bds_chainSuccessAndErrorCompletionSelectorCallsForSelector:a3 successSoFar:1 errorSoFar:0 completion:v6];
+  [v7 bds_chainSuccessAndErrorCompletionSelectorCallsForSelector:selector successSoFar:1 errorSoFar:0 completion:completionCopy];
 }
 
-- (void)bds_chainUntilNoErrorCompletionSelectorCallsForSelector:(SEL)a3 completion:(id)a4
+- (void)bds_chainUntilNoErrorCompletionSelectorCallsForSelector:(SEL)selector completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = [[NSPointerArray alloc] initWithOptions:5];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = self;
-  v9 = [(NSArray *)v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v9 = [(NSArray *)selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -215,7 +215,7 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(selfCopy);
         }
 
         [v7 addPointer:{*(*(&v14 + 1) + 8 * v12), v14}];
@@ -223,14 +223,14 @@
       }
 
       while (v10 != v12);
-      v10 = [(NSArray *)v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [(NSArray *)selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 
   v13 = [NSError errorWithDomain:@"BDSArrayAdditionsErrorDomain" code:0 userInfo:0];
-  [v7 bds_chainUntilNoErrorCompletionSelectorCallsForSelector:a3 successSoFar:1 errorSoFar:v13 completion:v6];
+  [v7 bds_chainUntilNoErrorCompletionSelectorCallsForSelector:selector successSoFar:1 errorSoFar:v13 completion:completionCopy];
 }
 
 @end

@@ -7,9 +7,9 @@
 
 - (BOOL)isVintageColor
 {
-  v2 = [(NTKCharacterColorPalette *)self configuration];
-  v3 = [v2 colorOption];
-  v4 = [v3 isEqual:@"vintage"];
+  configuration = [(NTKCharacterColorPalette *)self configuration];
+  colorOption = [configuration colorOption];
+  v4 = [colorOption isEqual:@"vintage"];
 
   return v4;
 }

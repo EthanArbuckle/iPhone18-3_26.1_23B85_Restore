@@ -1,8 +1,8 @@
 @interface FMItemsListDataSource
 - (_TtC6FindMy21FMItemsListDataSource)init;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)handleSecondaryTabAction;
 - (void)handleTabAction;
 - (void)handleTertiaryTabAction;
@@ -10,37 +10,37 @@
 
 @implementation FMItemsListDataSource
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_10044AB00(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10044AB00(section);
   v9 = v8;
 
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_10043D7D8(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_10043D7D8(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_10044AC24(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10044AC24(section);
   v9 = v8;
 
   if (v9)
@@ -58,19 +58,19 @@
 
 - (void)handleTabAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_100442E1C();
 }
 
 - (void)handleSecondaryTabAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_100442FBC();
 }
 
 - (void)handleTertiaryTabAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_10044300C();
 }
 

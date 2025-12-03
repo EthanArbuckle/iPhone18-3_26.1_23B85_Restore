@@ -3,27 +3,27 @@
 - (SBHIconImageAppearance)imageAppearance;
 - (SBIconGridImage)gridImage;
 - (unint64_t)firstVisibleMiniIconIndex;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
 @end
 
 @implementation _SBFolderPageElement
 
 - (unint64_t)firstVisibleMiniIconIndex
 {
-  v3 = [(_SBFolderPageElement *)self gridImage];
-  v4 = [(_SBFolderPageElement *)self visibleRow];
-  v5 = [v3 numberOfColumns] * v4;
+  gridImage = [(_SBFolderPageElement *)self gridImage];
+  visibleRow = [(_SBFolderPageElement *)self visibleRow];
+  v5 = [gridImage numberOfColumns] * visibleRow;
 
   return v5;
 }
 
 - (SBIconGridImage)gridImage
 {
-  v2 = [(_SBFolderPageElement *)self image];
+  image = [(_SBFolderPageElement *)self image];
   v3 = objc_opt_self();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v2;
+    v4 = image;
   }
 
   else
@@ -38,20 +38,20 @@
 
 - (SBHIconImageAppearance)imageAppearance
 {
-  v3 = [(_SBFolderPageElement *)self gridImage];
-  v4 = v3;
-  if (v3)
+  gridImage = [(_SBFolderPageElement *)self gridImage];
+  v4 = gridImage;
+  if (gridImage)
   {
-    v5 = [v3 imageAppearance];
+    imageAppearance = [gridImage imageAppearance];
   }
 
   else
   {
-    v6 = [(_SBFolderPageElement *)self gridView];
-    v5 = [v6 imageAppearance];
+    gridView = [(_SBFolderPageElement *)self gridView];
+    imageAppearance = [gridView imageAppearance];
   }
 
-  return v5;
+  return imageAppearance;
 }
 
 - (SBFolderIcon)folderIcon
@@ -61,7 +61,7 @@
   return WeakRetained;
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   self->_iconImageInfo.size.width = v3;
   self->_iconImageInfo.size.height = v4;

@@ -7,7 +7,7 @@
 
 - (id)waiterID
 {
-  v2 = self;
+  selfCopy = self;
   _StringGuts.grow(_:)(79);
   v3._object = 0x80000001007F7030;
   v3._countAndFlagsBits = 0xD00000000000004DLL;

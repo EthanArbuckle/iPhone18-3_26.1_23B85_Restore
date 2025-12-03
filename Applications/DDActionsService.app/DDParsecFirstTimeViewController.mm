@@ -1,47 +1,47 @@
 @interface DDParsecFirstTimeViewController
-- (DDParsecFirstTimeViewController)initWithNibName:(id)a3 bundle:(id)a4 bag:(id)a5 sceneAwareVariant:(BOOL)a6 solarium:(BOOL)a7;
+- (DDParsecFirstTimeViewController)initWithNibName:(id)name bundle:(id)bundle bag:(id)bag sceneAwareVariant:(BOOL)variant solarium:(BOOL)solarium;
 - (void)updateForCurrentTraitCollection;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation DDParsecFirstTimeViewController
 
-- (DDParsecFirstTimeViewController)initWithNibName:(id)a3 bundle:(id)a4 bag:(id)a5 sceneAwareVariant:(BOOL)a6 solarium:(BOOL)a7
+- (DDParsecFirstTimeViewController)initWithNibName:(id)name bundle:(id)bundle bag:(id)bag sceneAwareVariant:(BOOL)variant solarium:(BOOL)solarium
 {
-  v8 = a6;
-  v12 = a5;
+  variantCopy = variant;
+  bagCopy = bag;
   v37.receiver = self;
   v37.super_class = DDParsecFirstTimeViewController;
-  v13 = [(DDParsecFirstTimeViewController *)&v37 initWithNibName:a3 bundle:a4];
+  v13 = [(DDParsecFirstTimeViewController *)&v37 initWithNibName:name bundle:bundle];
   v14 = v13;
   if (v13)
   {
-    v13->_solarium = a7;
+    v13->_solarium = solarium;
     v15 = objc_opt_new();
     [(DDParsecFirstTimeViewController *)v14 setView:v15];
 
-    v16 = [(DDParsecFirstTimeViewController *)v14 view];
-    [v16 setAlwaysBounceVertical:1];
+    view = [(DDParsecFirstTimeViewController *)v14 view];
+    [view setAlwaysBounceVertical:1];
 
     v17 = +[NSCharacterSet whitespaceCharacterSet];
-    if (v8)
+    if (variantCopy)
     {
-      [v12 sceneAwareLookupFirstUseDescriptionText];
+      [bagCopy sceneAwareLookupFirstUseDescriptionText];
     }
 
     else
     {
-      [v12 firstUseDescriptionText];
+      [bagCopy firstUseDescriptionText];
     }
     v18 = ;
     v19 = [v18 stringByTrimmingCharactersInSet:v17];
     v20 = [NSString stringWithFormat:@"%@ ", v19];
 
-    v21 = [v12 firstUseLearnMoreText];
-    v22 = v21;
-    if (v21)
+    firstUseLearnMoreText = [bagCopy firstUseLearnMoreText];
+    v22 = firstUseLearnMoreText;
+    if (firstUseLearnMoreText)
     {
-      v23 = v21;
+      v23 = firstUseLearnMoreText;
     }
 
     else
@@ -55,14 +55,14 @@
     v26 = [NSString stringWithFormat:@"%@ ", v25];
 
     v27 = [SearchUIFirstTimeExperienceViewController alloc];
-    if (v8)
+    if (variantCopy)
     {
-      [v12 sceneAwareLookupEnabledDomains];
+      [bagCopy sceneAwareLookupEnabledDomains];
     }
 
     else
     {
-      [v12 enabledDomains];
+      [bagCopy enabledDomains];
     }
     v28 = ;
     v29 = DDLocalizedString();
@@ -71,12 +71,12 @@
     v14->_firstExperienceViewController = v30;
 
     [(DDParsecFirstTimeViewController *)v14 addChildViewController:v14->_firstExperienceViewController];
-    v32 = [(DDParsecFirstTimeViewController *)v14 view];
-    v33 = [(SearchUIFirstTimeExperienceViewController *)v14->_firstExperienceViewController view];
-    [v32 addSubview:v33];
+    view2 = [(DDParsecFirstTimeViewController *)v14 view];
+    view3 = [(SearchUIFirstTimeExperienceViewController *)v14->_firstExperienceViewController view];
+    [view2 addSubview:view3];
 
-    v34 = [(SearchUIFirstTimeExperienceViewController *)v14->_firstExperienceViewController view];
-    [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view4 = [(SearchUIFirstTimeExperienceViewController *)v14->_firstExperienceViewController view];
+    [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v35 = v14;
   }
@@ -84,30 +84,30 @@
   return v14;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000043B0;
   v4[3] = &unk_100018918;
   v4[4] = self;
-  [a4 animateAlongsideTransition:v4 completion:0];
+  [coordinator animateAlongsideTransition:v4 completion:0];
 }
 
 - (void)updateForCurrentTraitCollection
 {
-  v3 = [(SearchUIFirstTimeExperienceViewController *)self->_firstExperienceViewController delegate];
-  v4 = [v3 presentsWithMargins];
+  delegate = [(SearchUIFirstTimeExperienceViewController *)self->_firstExperienceViewController delegate];
+  presentsWithMargins = [delegate presentsWithMargins];
 
-  v5 = [(DDParsecFirstTimeViewController *)self traitCollection];
-  [v5 displayScale];
+  traitCollection = [(DDParsecFirstTimeViewController *)self traitCollection];
+  [traitCollection displayScale];
   v7 = v6;
-  v8 = [(SearchUIFirstTimeExperienceViewController *)self->_firstExperienceViewController delegate];
-  [v8 setDDViewScale:v7];
+  delegate2 = [(SearchUIFirstTimeExperienceViewController *)self->_firstExperienceViewController delegate];
+  [delegate2 setDDViewScale:v7];
 
-  v39 = [(SearchUIFirstTimeExperienceViewController *)self->_firstExperienceViewController view];
-  v9 = [(DDParsecFirstTimeViewController *)self view];
-  if (v4)
+  view = [(SearchUIFirstTimeExperienceViewController *)self->_firstExperienceViewController view];
+  view2 = [(DDParsecFirstTimeViewController *)self view];
+  if (presentsWithMargins)
   {
     v10 = 0.0;
   }
@@ -117,20 +117,20 @@
     v10 = 8.0;
   }
 
-  v11 = [v39 layer];
-  [v11 cornerRadius];
+  layer = [view layer];
+  [layer cornerRadius];
   v13 = v12;
 
   if (v13 != v10)
   {
-    v14 = [v39 layer];
-    [v14 setCornerRadius:v10];
+    layer2 = [view layer];
+    [layer2 setCornerRadius:v10];
   }
 
-  if ((self->_solarium | v4))
+  if ((self->_solarium | presentsWithMargins))
   {
     v15 = 0;
-    v16 = v39;
+    v16 = view;
     v17 = 0;
     if (self->_solarium)
     {
@@ -141,7 +141,7 @@
   else
   {
     v15 = +[UIColor systemGroupedBackgroundColor];
-    v16 = v39;
+    v16 = view;
     v17 = 0;
     if (self->_solarium)
     {
@@ -149,25 +149,25 @@
     }
   }
 
-  if (((v4 ^ 1) & 1) == 0)
+  if (((presentsWithMargins ^ 1) & 1) == 0)
   {
     v17 = +[UIColor systemGroupedBackgroundColor];
-    v16 = v39;
+    v16 = view;
   }
 
 LABEL_12:
-  v18 = [v16 backgroundColor];
+  backgroundColor = [v16 backgroundColor];
 
-  if (v18 != v15)
+  if (backgroundColor != v15)
   {
-    [v39 setBackgroundColor:v15];
+    [view setBackgroundColor:v15];
   }
 
-  v19 = [v9 backgroundColor];
+  backgroundColor2 = [view2 backgroundColor];
 
-  if (v19 != v17)
+  if (backgroundColor2 != v17)
   {
-    [v9 setBackgroundColor:v17];
+    [view2 setBackgroundColor:v17];
   }
 
   leadingConstraint = self->_leadingConstraint;
@@ -188,32 +188,32 @@ LABEL_12:
 
   else
   {
-    v23 = [v39 leadingAnchor];
-    v24 = [v9 safeAreaLayoutGuide];
-    v25 = [v24 leadingAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25 constant:v10];
+    leadingAnchor = [view leadingAnchor];
+    safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v10];
     v27 = self->_leadingConstraint;
     self->_leadingConstraint = v26;
 
     [(NSLayoutConstraint *)self->_leadingConstraint setActive:1];
-    v28 = [v9 safeAreaLayoutGuide];
-    v29 = [v28 trailingAnchor];
-    v30 = [v39 trailingAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30 constant:v10];
+    safeAreaLayoutGuide2 = [view2 safeAreaLayoutGuide];
+    trailingAnchor = [safeAreaLayoutGuide2 trailingAnchor];
+    trailingAnchor2 = [view trailingAnchor];
+    v31 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v10];
     trailingConstraint = self->_trailingConstraint;
     self->_trailingConstraint = v31;
 
     [(NSLayoutConstraint *)self->_trailingConstraint setActive:1];
   }
 
-  v33 = [(DDParsecFirstTimeViewController *)self view];
-  [v33 layoutIfNeeded];
+  view3 = [(DDParsecFirstTimeViewController *)self view];
+  [view3 layoutIfNeeded];
 
-  [v39 frame];
+  [view frame];
   v35 = v34;
   v37 = v36;
-  v38 = [(DDParsecFirstTimeViewController *)self view];
-  [v38 setContentSize:{v35, v37}];
+  view4 = [(DDParsecFirstTimeViewController *)self view];
+  [view4 setContentSize:{v35, v37}];
 }
 
 @end

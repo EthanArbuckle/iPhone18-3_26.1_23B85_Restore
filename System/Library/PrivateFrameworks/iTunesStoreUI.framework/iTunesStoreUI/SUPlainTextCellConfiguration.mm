@@ -1,24 +1,24 @@
 @interface SUPlainTextCellConfiguration
-+ (double)rowHeightForContext:(id)a3 representedObject:(id)a4;
-- (BOOL)getShadowColor:(id *)a3 offset:(CGSize *)a4 forLabelAtIndex:(unint64_t)a5 withModifiers:(unint64_t)a6;
++ (double)rowHeightForContext:(id)context representedObject:(id)object;
+- (BOOL)getShadowColor:(id *)color offset:(CGSize *)offset forLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers;
 - (void)reloadLayoutInformation;
 - (void)reloadStrings;
 @end
 
 @implementation SUPlainTextCellConfiguration
 
-+ (double)rowHeightForContext:(id)a3 representedObject:(id)a4
++ (double)rowHeightForContext:(id)context representedObject:(id)object
 {
-  v5 = [a4 humanReadableDescription];
+  humanReadableDescription = [object humanReadableDescription];
   [objc_msgSend(MEMORY[0x1E69DCEB0] "mainScreen")];
-  [a3 sizeForString:v5 font:objc_msgSend(MEMORY[0x1E69DB878] constrainedToSize:{"systemFontOfSize:", 15.0), v6 + -20.0, 3.40282347e38}];
+  [context sizeForString:humanReadableDescription font:objc_msgSend(MEMORY[0x1E69DB878] constrainedToSize:{"systemFontOfSize:", 15.0), v6 + -20.0, 3.40282347e38}];
   return v7;
 }
 
-- (BOOL)getShadowColor:(id *)a3 offset:(CGSize *)a4 forLabelAtIndex:(unint64_t)a5 withModifiers:(unint64_t)a6
+- (BOOL)getShadowColor:(id *)color offset:(CGSize *)offset forLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers
 {
-  *a3 = [MEMORY[0x1E69DC888] whiteColor];
-  *a4 = xmmword_1C2339F90;
+  *color = [MEMORY[0x1E69DC888] whiteColor];
+  *offset = xmmword_1C2339F90;
   return 1;
 }
 
@@ -33,12 +33,12 @@
 
 - (void)reloadStrings
 {
-  v3 = [self->super.super.super.super._representedObject humanReadableDescription];
+  humanReadableDescription = [self->super.super.super.super._representedObject humanReadableDescription];
 
-  v4 = [v3 length];
+  v4 = [humanReadableDescription length];
   if (v4)
   {
-    v4 = v3;
+    v4 = humanReadableDescription;
   }
 
   *self->super.super.super._strings = v4;

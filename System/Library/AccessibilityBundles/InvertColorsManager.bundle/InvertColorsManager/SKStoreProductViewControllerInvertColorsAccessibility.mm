@@ -9,8 +9,8 @@
   if (AXProcessIsSpringBoard())
   {
     v4 = [(SKStoreProductViewControllerInvertColorsAccessibility *)self safeUIViewForKey:@"view"];
-    v3 = [v4 layer];
-    [AXInvertColorsAppHelper toggleInvertColors:v3];
+    layer = [v4 layer];
+    [AXInvertColorsAppHelper toggleInvertColors:layer];
   }
 }
 

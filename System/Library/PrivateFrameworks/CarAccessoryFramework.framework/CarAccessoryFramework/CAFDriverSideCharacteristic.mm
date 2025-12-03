@@ -7,16 +7,16 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFDriverSideCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFDriverSideCharacteristic *)self driverSideValue];
+  driverSideValue = [(CAFDriverSideCharacteristic *)self driverSideValue];
 
-  return NSStringFromDriverSide(v2);
+  return NSStringFromDriverSide(driverSideValue);
 }
 
 @end

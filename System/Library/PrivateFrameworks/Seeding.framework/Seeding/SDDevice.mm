@@ -1,11 +1,11 @@
 @interface SDDevice
 + (id)_currentDevice;
-+ (id)_devicesMatchingPlatforms:(unint64_t)a3;
-+ (id)blankDeviceWithErrorMessage:(id)a3;
++ (id)_devicesMatchingPlatforms:(unint64_t)platforms;
++ (id)blankDeviceWithErrorMessage:(id)message;
 + (id)currentDevice;
-+ (id)deriveMacDeviceClassForProductType:(id)a3;
++ (id)deriveMacDeviceClassForProductType:(id)type;
 + (id)deviceClass;
-+ (id)deviceClassForProductType:(id)a3;
++ (id)deviceClassForProductType:(id)type;
 + (id)deviceIdentifier;
 + (id)deviceName;
 + (id)deviceProductType;
@@ -13,93 +13,93 @@
 + (id)osBuild;
 + (id)productVersion;
 + (unint64_t)devicePlatform;
-+ (void)getCurrentDevice:(id)a3;
-+ (void)getDevicesMatchingPlatforms:(unint64_t)a3 completion:(id)a4;
++ (void)getCurrentDevice:(id)device;
++ (void)getDevicesMatchingPlatforms:(unint64_t)platforms completion:(id)completion;
 - (BOOL)_canFileFeedback;
 - (BOOL)_isEnrolled;
-- (BOOL)_unenrollWithUserIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_unenrollWithUserIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isErrorDevice;
 - (NSDictionary)dictionaryRepresentation;
-- (SDDevice)initWithCoder:(id)a3;
-- (SDDevice)initWithDictionaryRepresentation:(id)a3;
+- (SDDevice)initWithCoder:(id)coder;
+- (SDDevice)initWithDictionaryRepresentation:(id)representation;
 - (id)description;
-- (void)_configureDeviceWithExpectedConfigurationWithUserIdentifier:(id)a3;
-- (void)_enrollInBetaProgram:(id)a3 userIdentifier:(id)a4;
-- (void)_verifyEnrollmentWithUserIdentifier:(id)a3 completion:(id)a4;
+- (void)_configureDeviceWithExpectedConfigurationWithUserIdentifier:(id)identifier;
+- (void)_enrollInBetaProgram:(id)program userIdentifier:(id)identifier;
+- (void)_verifyEnrollmentWithUserIdentifier:(id)identifier completion:(id)completion;
 - (void)checkIn;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)updateCurrentConfiguration;
 @end
 
 @implementation SDDevice
 
-- (SDDevice)initWithDictionaryRepresentation:(id)a3
+- (SDDevice)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v22.receiver = self;
   v22.super_class = SDDevice;
   v5 = [(SDDevice *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"name"];
+    v6 = [representationCopy objectForKeyedSubscript:@"name"];
     [(SDDevice *)v5 setName:v6];
 
-    v7 = [v4 objectForKeyedSubscript:@"identifier"];
+    v7 = [representationCopy objectForKeyedSubscript:@"identifier"];
     [(SDDevice *)v5 setIdentifier:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"platform"];
+    v8 = [representationCopy objectForKeyedSubscript:@"platform"];
     -[SDDevice setPlatform:](v5, "setPlatform:", [v8 integerValue]);
 
-    v9 = [v4 objectForKeyedSubscript:@"deviceClass"];
+    v9 = [representationCopy objectForKeyedSubscript:@"deviceClass"];
     [(SDDevice *)v5 setDeviceClass:v9];
 
-    v10 = [v4 objectForKeyedSubscript:@"build"];
+    v10 = [representationCopy objectForKeyedSubscript:@"build"];
     [(SDDevice *)v5 setBuild:v10];
 
-    v11 = [v4 objectForKeyedSubscript:@"updatedAt"];
+    v11 = [representationCopy objectForKeyedSubscript:@"updatedAt"];
     [(SDDevice *)v5 setUpdatedAt:v11];
 
     v12 = [SDSeedingConfiguration alloc];
-    v13 = [v4 objectForKeyedSubscript:@"currentConfiguration"];
+    v13 = [representationCopy objectForKeyedSubscript:@"currentConfiguration"];
     v14 = [(SDSeedingConfiguration *)v12 initWithDictionaryRepresentation:v13];
     [(SDDevice *)v5 setCurrentConfiguration:v14];
 
     v15 = [SDSeedingConfiguration alloc];
-    v16 = [v4 objectForKeyedSubscript:@"expectedConfiguration"];
+    v16 = [representationCopy objectForKeyedSubscript:@"expectedConfiguration"];
     v17 = [(SDSeedingConfiguration *)v15 initWithDictionaryRepresentation:v16];
     [(SDDevice *)v5 setExpectedConfiguration:v17];
 
-    v18 = [v4 objectForKeyedSubscript:@"isFeedbackAssistantAvailable"];
+    v18 = [representationCopy objectForKeyedSubscript:@"isFeedbackAssistantAvailable"];
     -[SDDevice setIsFeedbackAssistantAvailable:](v5, "setIsFeedbackAssistantAvailable:", [v18 BOOLValue]);
 
-    v19 = [v4 objectForKeyedSubscript:@"isRunningSeedBuild"];
+    v19 = [representationCopy objectForKeyedSubscript:@"isRunningSeedBuild"];
     -[SDDevice setIsRunningSeedBuild:](v5, "setIsRunningSeedBuild:", [v19 BOOLValue]);
 
-    v20 = [v4 objectForKeyedSubscript:@"hasDeviceManagementRestriction"];
+    v20 = [representationCopy objectForKeyedSubscript:@"hasDeviceManagementRestriction"];
     -[SDDevice setHasDeviceManagementRestriction:](v5, "setHasDeviceManagementRestriction:", [v20 BOOLValue]);
   }
 
   return v5;
 }
 
-- (SDDevice)initWithCoder:(id)a3
+- (SDDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = SDDevice;
   v5 = [(SDDevice *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     [(SDDevice *)v5 setName:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(SDDevice *)v5 setIdentifier:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platform"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platform"];
     -[SDDevice setPlatform:](v5, "setPlatform:", [v8 integerValue]);
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceClass"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceClass"];
     v10 = v9;
     if (v9)
     {
@@ -113,100 +113,100 @@
 
     [(SDDevice *)v5 setDeviceClass:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"build"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"build"];
     [(SDDevice *)v5 setBuild:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"updatedAt"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"updatedAt"];
     [(SDDevice *)v5 setUpdatedAt:v13];
 
-    -[SDDevice setIsFeedbackAssistantAvailable:](v5, "setIsFeedbackAssistantAvailable:", [v4 decodeBoolForKey:@"isFeedbackAssistantAvailable"]);
-    -[SDDevice setIsRunningSeedBuild:](v5, "setIsRunningSeedBuild:", [v4 decodeBoolForKey:@"isRunningSeedBuild"]);
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentConfiguration"];
+    -[SDDevice setIsFeedbackAssistantAvailable:](v5, "setIsFeedbackAssistantAvailable:", [coderCopy decodeBoolForKey:@"isFeedbackAssistantAvailable"]);
+    -[SDDevice setIsRunningSeedBuild:](v5, "setIsRunningSeedBuild:", [coderCopy decodeBoolForKey:@"isRunningSeedBuild"]);
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentConfiguration"];
     [(SDDevice *)v5 setCurrentConfiguration:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expectedConfiguration"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expectedConfiguration"];
     [(SDDevice *)v5 setExpectedConfiguration:v15];
 
-    -[SDDevice setHasDeviceManagementRestriction:](v5, "setHasDeviceManagementRestriction:", [v4 decodeBoolForKey:@"hasDeviceManagementRestriction"]);
+    -[SDDevice setHasDeviceManagementRestriction:](v5, "setHasDeviceManagementRestriction:", [coderCopy decodeBoolForKey:@"hasDeviceManagementRestriction"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v16 = a3;
-  v4 = [(SDDevice *)self name];
-  [v16 encodeObject:v4 forKey:@"name"];
+  coderCopy = coder;
+  name = [(SDDevice *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v5 = [(SDDevice *)self identifier];
-  [v16 encodeObject:v5 forKey:@"identifier"];
+  identifier = [(SDDevice *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SDDevice platform](self, "platform")}];
-  [v16 encodeObject:v6 forKey:@"platform"];
+  [coderCopy encodeObject:v6 forKey:@"platform"];
 
-  v7 = [(SDDevice *)self deviceClass];
-  if (v7)
+  deviceClass = [(SDDevice *)self deviceClass];
+  if (deviceClass)
   {
-    v8 = v7;
-    v9 = [(SDDevice *)self deviceClass];
+    v8 = deviceClass;
+    deviceClass2 = [(SDDevice *)self deviceClass];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v11 = [(SDDevice *)self deviceClass];
-      [v16 encodeObject:v11 forKey:@"deviceClass"];
+      deviceClass3 = [(SDDevice *)self deviceClass];
+      [coderCopy encodeObject:deviceClass3 forKey:@"deviceClass"];
     }
   }
 
-  v12 = [(SDDevice *)self build];
-  [v16 encodeObject:v12 forKey:@"build"];
+  build = [(SDDevice *)self build];
+  [coderCopy encodeObject:build forKey:@"build"];
 
-  v13 = [(SDDevice *)self updatedAt];
-  [v16 encodeObject:v13 forKey:@"updatedAt"];
+  updatedAt = [(SDDevice *)self updatedAt];
+  [coderCopy encodeObject:updatedAt forKey:@"updatedAt"];
 
-  v14 = [(SDDevice *)self currentConfiguration];
-  [v16 encodeObject:v14 forKey:@"currentConfiguration"];
+  currentConfiguration = [(SDDevice *)self currentConfiguration];
+  [coderCopy encodeObject:currentConfiguration forKey:@"currentConfiguration"];
 
-  v15 = [(SDDevice *)self expectedConfiguration];
-  [v16 encodeObject:v15 forKey:@"expectedConfiguration"];
+  expectedConfiguration = [(SDDevice *)self expectedConfiguration];
+  [coderCopy encodeObject:expectedConfiguration forKey:@"expectedConfiguration"];
 
-  [v16 encodeBool:-[SDDevice isFeedbackAssistantAvailable](self forKey:{"isFeedbackAssistantAvailable"), @"isFeedbackAssistantAvailable"}];
-  [v16 encodeBool:-[SDDevice isRunningSeedBuild](self forKey:{"isRunningSeedBuild"), @"isRunningSeedBuild"}];
-  [v16 encodeBool:-[SDDevice hasDeviceManagementRestriction](self forKey:{"hasDeviceManagementRestriction"), @"hasDeviceManagementRestriction"}];
+  [coderCopy encodeBool:-[SDDevice isFeedbackAssistantAvailable](self forKey:{"isFeedbackAssistantAvailable"), @"isFeedbackAssistantAvailable"}];
+  [coderCopy encodeBool:-[SDDevice isRunningSeedBuild](self forKey:{"isRunningSeedBuild"), @"isRunningSeedBuild"}];
+  [coderCopy encodeBool:-[SDDevice hasDeviceManagementRestriction](self forKey:{"hasDeviceManagementRestriction"), @"hasDeviceManagementRestriction"}];
 }
 
-+ (void)getCurrentDevice:(id)a3
++ (void)getCurrentDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = +[SDBetaEnrollmentServiceProxy sharedInstance];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __29__SDDevice_getCurrentDevice___block_invoke;
   v6[3] = &unk_2787CBA60;
-  v7 = v3;
-  v5 = v3;
+  v7 = deviceCopy;
+  v5 = deviceCopy;
   [v4 getCurrentDevice:v6];
 }
 
 + (id)currentDevice
 {
   v2 = +[SDBetaEnrollmentServiceProxy sharedInstance];
-  v3 = [v2 getCurrentDeviceSynchronously];
+  getCurrentDeviceSynchronously = [v2 getCurrentDeviceSynchronously];
 
-  return v3;
+  return getCurrentDeviceSynchronously;
 }
 
-+ (id)blankDeviceWithErrorMessage:(id)a3
++ (id)blankDeviceWithErrorMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_alloc_init(SDDevice);
   [(SDDevice *)v4 setName:&stru_28424D460];
   [(SDDevice *)v4 setIdentifier:@"__BLANK_ERROR_DEVICE__"];
   [(SDDevice *)v4 setPlatform:1];
-  [(SDDevice *)v4 setDeviceClass:v3];
-  [(SDDevice *)v4 setBuild:v3];
+  [(SDDevice *)v4 setDeviceClass:messageCopy];
+  [(SDDevice *)v4 setBuild:messageCopy];
 
   v5 = [MEMORY[0x277CBEAA8] now];
   [(SDDevice *)v4 setUpdatedAt:v5];
@@ -225,8 +225,8 @@
 
 - (BOOL)isErrorDevice
 {
-  v2 = [(SDDevice *)self identifier];
-  v3 = [v2 isEqualToString:@"__BLANK_ERROR_DEVICE__"];
+  identifier = [(SDDevice *)self identifier];
+  v3 = [identifier isEqualToString:@"__BLANK_ERROR_DEVICE__"];
 
   return v3;
 }
@@ -237,15 +237,15 @@
   block[1] = 3221225472;
   block[2] = __26__SDDevice__currentDevice__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_currentDevice_onceToken != -1)
   {
     dispatch_once(&_currentDevice_onceToken, block);
   }
 
   v2 = +[SDBetaManager sharedManager];
-  v3 = [v2 _isEnrollmentAllowedByDeviceManagement_legacy];
-  [_currentDevice_currentDevice setHasDeviceManagementRestriction:v3 ^ 1u];
+  _isEnrollmentAllowedByDeviceManagement_legacy = [v2 _isEnrollmentAllowedByDeviceManagement_legacy];
+  [_currentDevice_currentDevice setHasDeviceManagementRestriction:_isEnrollmentAllowedByDeviceManagement_legacy ^ 1u];
 
   [_currentDevice_currentDevice checkIn];
   v4 = _currentDevice_currentDevice;
@@ -301,20 +301,20 @@ void __26__SDDevice__currentDevice__block_invoke(uint64_t a1)
   [SDKeyValueStore insertOrUpdateDevice:self];
 }
 
-+ (void)getDevicesMatchingPlatforms:(unint64_t)a3 completion:(id)a4
++ (void)getDevicesMatchingPlatforms:(unint64_t)platforms completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = +[SDBetaEnrollmentServiceProxy sharedInstance];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__SDDevice_getDevicesMatchingPlatforms_completion___block_invoke;
   v8[3] = &unk_2787CBAA8;
-  v9 = v5;
-  v7 = v5;
-  [v6 getDevicesForPlatforms:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [v6 getDevicesForPlatforms:platforms completion:v8];
 }
 
-+ (id)_devicesMatchingPlatforms:(unint64_t)a3
++ (id)_devicesMatchingPlatforms:(unint64_t)platforms
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = +[SDKeyValueStore devicesDictionary];
@@ -341,7 +341,7 @@ void __26__SDDevice__currentDevice__block_invoke(uint64_t a1)
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [SDDevice alloc];
         v13 = [(SDDevice *)v12 initWithDictionaryRepresentation:v11, v16];
-        if (([(SDDevice *)v13 platform]& a3) != 0)
+        if (([(SDDevice *)v13 platform]& platforms) != 0)
         {
           [v5 addObject:v13];
         }
@@ -360,8 +360,8 @@ void __26__SDDevice__currentDevice__block_invoke(uint64_t a1)
 
 - (void)checkIn
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(SDDevice *)self setUpdatedAt:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(SDDevice *)self setUpdatedAt:date];
 
   [(SDDevice *)self updateCurrentConfiguration];
 }
@@ -370,23 +370,23 @@ void __26__SDDevice__currentDevice__block_invoke(uint64_t a1)
 {
   v25[11] = *MEMORY[0x277D85DE8];
   v24[0] = @"name";
-  v23 = [(SDDevice *)self name];
-  v25[0] = v23;
+  name = [(SDDevice *)self name];
+  v25[0] = name;
   v24[1] = @"identifier";
-  v22 = [(SDDevice *)self identifier];
-  v25[1] = v22;
+  identifier = [(SDDevice *)self identifier];
+  v25[1] = identifier;
   v24[2] = @"platform";
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SDDevice platform](self, "platform")}];
   v25[2] = v21;
   v24[3] = @"deviceClass";
-  v20 = [(SDDevice *)self deviceClass];
-  v25[3] = v20;
+  deviceClass = [(SDDevice *)self deviceClass];
+  v25[3] = deviceClass;
   v24[4] = @"build";
-  v19 = [(SDDevice *)self build];
-  v25[4] = v19;
+  build = [(SDDevice *)self build];
+  v25[4] = build;
   v24[5] = @"updatedAt";
-  v3 = [(SDDevice *)self updatedAt];
-  v25[5] = v3;
+  updatedAt = [(SDDevice *)self updatedAt];
+  v25[5] = updatedAt;
   v24[6] = @"isFeedbackAssistantAvailable";
   v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[SDDevice isFeedbackAssistantAvailable](self, "isFeedbackAssistantAvailable")}];
   v25[6] = v4;
@@ -397,13 +397,13 @@ void __26__SDDevice__currentDevice__block_invoke(uint64_t a1)
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[SDDevice isRunningSeedBuild](self, "isRunningSeedBuild")}];
   v25[8] = v6;
   v24[9] = @"currentConfiguration";
-  v7 = [(SDDevice *)self currentConfiguration];
-  v8 = [v7 dictionaryRepresentation];
-  v9 = v8;
+  currentConfiguration = [(SDDevice *)self currentConfiguration];
+  dictionaryRepresentation = [currentConfiguration dictionaryRepresentation];
+  v9 = dictionaryRepresentation;
   v10 = MEMORY[0x277CBEC10];
-  if (v8)
+  if (dictionaryRepresentation)
   {
-    v11 = v8;
+    v11 = dictionaryRepresentation;
   }
 
   else
@@ -413,12 +413,12 @@ void __26__SDDevice__currentDevice__block_invoke(uint64_t a1)
 
   v25[9] = v11;
   v24[10] = @"expectedConfiguration";
-  v12 = [(SDDevice *)self expectedConfiguration];
-  v13 = [v12 dictionaryRepresentation];
-  v14 = v13;
-  if (v13)
+  expectedConfiguration = [(SDDevice *)self expectedConfiguration];
+  dictionaryRepresentation2 = [expectedConfiguration dictionaryRepresentation];
+  v14 = dictionaryRepresentation2;
+  if (dictionaryRepresentation2)
   {
-    v15 = v13;
+    v15 = dictionaryRepresentation2;
   }
 
   else
@@ -437,23 +437,23 @@ void __26__SDDevice__currentDevice__block_invoke(uint64_t a1)
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SDDevice *)self dictionaryRepresentation];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  dictionaryRepresentation = [(SDDevice *)self dictionaryRepresentation];
+  v4 = [v2 stringWithFormat:@"%@", dictionaryRepresentation];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SDDevice *)self identifier];
-    v7 = [v5 identifier];
+    v5 = equalCopy;
+    identifier = [(SDDevice *)self identifier];
+    identifier2 = [v5 identifier];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -464,11 +464,11 @@ void __26__SDDevice__currentDevice__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)_enrollInBetaProgram:(id)a3 userIdentifier:(id)a4
+- (void)_enrollInBetaProgram:(id)program userIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  programCopy = program;
+  identifierCopy = identifier;
+  if (!programCopy)
   {
     v14 = Log_0();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -480,8 +480,8 @@ void __26__SDDevice__currentDevice__block_invoke(uint64_t a1)
     goto LABEL_13;
   }
 
-  v8 = [(SDDevice *)self platform];
-  if (v8 != [v6 platform])
+  platform = [(SDDevice *)self platform];
+  if (platform != [programCopy platform])
   {
     v14 = Log_0();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -492,13 +492,13 @@ void __26__SDDevice__currentDevice__block_invoke(uint64_t a1)
     goto LABEL_13;
   }
 
-  v9 = [[SDSeedingConfiguration alloc] initWithBetaProgram:v6];
+  v9 = [[SDSeedingConfiguration alloc] initWithBetaProgram:programCopy];
   [(SDDevice *)self setExpectedConfiguration:v9];
 
   [(SDDevice *)self updateCurrentConfiguration];
-  v10 = [(SDDevice *)self currentConfiguration];
-  v11 = [(SDDevice *)self expectedConfiguration];
-  v12 = [v10 isEqual:v11];
+  currentConfiguration = [(SDDevice *)self currentConfiguration];
+  expectedConfiguration = [(SDDevice *)self expectedConfiguration];
+  v12 = [currentConfiguration isEqual:expectedConfiguration];
 
   if (!v12)
   {
@@ -510,9 +510,9 @@ void __26__SDDevice__currentDevice__block_invoke(uint64_t a1)
       goto LABEL_14;
     }
 
-    [(SDDevice *)self _configureDeviceWithExpectedConfigurationWithUserIdentifier:v7];
+    [(SDDevice *)self _configureDeviceWithExpectedConfigurationWithUserIdentifier:identifierCopy];
     v14 = +[SDBetaManager sharedManager];
-    [v14 _saveBetaProgram:v6];
+    [v14 _saveBetaProgram:programCopy];
 LABEL_13:
 
     goto LABEL_14;
@@ -525,13 +525,13 @@ LABEL_13:
     _os_log_impl(&dword_22E41E000, v13, OS_LOG_TYPE_DEFAULT, "Seeding configuration matches expected configuration.", v17, 2u);
   }
 
-  [(SDDevice *)self _configureDeviceWithExpectedConfigurationWithUserIdentifier:v7];
+  [(SDDevice *)self _configureDeviceWithExpectedConfigurationWithUserIdentifier:identifierCopy];
 LABEL_14:
 }
 
-- (void)_configureDeviceWithExpectedConfigurationWithUserIdentifier:(id)a3
+- (void)_configureDeviceWithExpectedConfigurationWithUserIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = Log_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -540,15 +540,15 @@ LABEL_14:
   }
 
   v6 = +[SDBetaManager sharedManager];
-  v7 = [(SDDevice *)self expectedConfiguration];
-  [v6 _enrollUsingSeedingConfiguration:v7 userIdentifier:v4];
+  expectedConfiguration = [(SDDevice *)self expectedConfiguration];
+  [v6 _enrollUsingSeedingConfiguration:expectedConfiguration userIdentifier:identifierCopy];
 
   [(SDDevice *)self updateCurrentConfiguration];
 }
 
-- (BOOL)_unenrollWithUserIdentifier:(id)a3
+- (BOOL)_unenrollWithUserIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[SDSeedingConfiguration nullConfiguration];
   [(SDDevice *)self setExpectedConfiguration:v5];
 
@@ -558,7 +558,7 @@ LABEL_14:
   if (v7)
   {
     v8 = +[SDBetaManager sharedManager];
-    v9 = [v8 _unenrollFromBetaProgramWithUserIdentifier:v4];
+    v9 = [v8 _unenrollFromBetaProgramWithUserIdentifier:identifierCopy];
 
     [(SDDevice *)self updateCurrentConfiguration];
   }
@@ -578,49 +578,49 @@ LABEL_14:
 
   if (v4)
   {
-    v5 = +[SDBetaManager sharedManager];
-    v6 = [v5 _isEnrolledInBetaProgram];
+    currentConfiguration = +[SDBetaManager sharedManager];
+    _isEnrolledInBetaProgram = [currentConfiguration _isEnrolledInBetaProgram];
   }
 
   else
   {
-    v5 = [(SDDevice *)self currentConfiguration];
-    v6 = [v5 seedProgram] != 0;
+    currentConfiguration = [(SDDevice *)self currentConfiguration];
+    _isEnrolledInBetaProgram = [currentConfiguration seedProgram] != 0;
   }
 
-  return v6;
+  return _isEnrolledInBetaProgram;
 }
 
-- (void)_verifyEnrollmentWithUserIdentifier:(id)a3 completion:(id)a4
+- (void)_verifyEnrollmentWithUserIdentifier:(id)identifier completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = +[SDDevice _currentDevice];
   v9 = [(SDDevice *)self isEqual:v8];
 
   if (v9)
   {
     [(SDDevice *)self updateCurrentConfiguration];
-    v10 = [(SDDevice *)self currentConfiguration];
-    v11 = [v10 assetAudience];
+    currentConfiguration = [(SDDevice *)self currentConfiguration];
+    assetAudience = [currentConfiguration assetAudience];
 
-    v12 = [(SDDevice *)self currentConfiguration];
-    v13 = [v12 seedProgramID];
-    v14 = [v13 integerValue];
+    currentConfiguration2 = [(SDDevice *)self currentConfiguration];
+    seedProgramID = [currentConfiguration2 seedProgramID];
+    integerValue = [seedProgramID integerValue];
 
-    v15 = [(SDDevice *)self currentConfiguration];
-    v16 = [v15 accountID];
+    currentConfiguration3 = [(SDDevice *)self currentConfiguration];
+    accountID = [currentConfiguration3 accountID];
 
     v17 = Log_0();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v24 = v11;
+      v24 = assetAudience;
       v25 = 2048;
-      v26 = v14;
+      v26 = integerValue;
       v27 = 2114;
-      v28 = v16;
+      v28 = accountID;
       _os_log_impl(&dword_22E41E000, v17, OS_LOG_TYPE_DEFAULT, "Verifying with assetAudience [%{public}@], programID [%lu], accountID [%{public}@]", buf, 0x20u);
     }
 
@@ -630,9 +630,9 @@ LABEL_14:
     v20[2] = __59__SDDevice__verifyEnrollmentWithUserIdentifier_completion___block_invoke;
     v20[3] = &unk_2787CBAD0;
     v20[4] = self;
-    v21 = v6;
-    v22 = v7;
-    [v18 verifyAssetAudience:v11 programID:v14 accountID:v16 withCompletion:v20];
+    v21 = identifierCopy;
+    v22 = completionCopy;
+    [v18 verifyAssetAudience:assetAudience programID:integerValue accountID:accountID withCompletion:v20];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -680,20 +680,20 @@ void __59__SDDevice__verifyEnrollmentWithUserIdentifier_completion___block_invok
   {
     if ([(SDDevice *)self platform]== 1 || [(SDDevice *)self platform]== 2 || [(SDDevice *)self platform]== 32)
     {
-      v6 = [(SDDevice *)self _isEnrolled];
-      v7 = [(SDDevice *)self isRunningSeedBuild];
-      v8 = [(SDDevice *)self isFeedbackAssistantAvailable];
-      v5 = (v6 || v7) && v8;
+      _isEnrolled = [(SDDevice *)self _isEnrolled];
+      isRunningSeedBuild = [(SDDevice *)self isRunningSeedBuild];
+      isFeedbackAssistantAvailable = [(SDDevice *)self isFeedbackAssistantAvailable];
+      v5 = (_isEnrolled || isRunningSeedBuild) && isFeedbackAssistantAvailable;
       v9 = Log_0();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 67109888;
-        *v13 = v6;
+        *v13 = _isEnrolled;
         *&v13[4] = 1024;
-        *&v13[6] = v7;
-        LOWORD(v14) = 1024;
-        *(&v14 + 2) = v8;
-        HIWORD(v14) = 1024;
+        *&v13[6] = isRunningSeedBuild;
+        LOWORD(platform) = 1024;
+        *(&platform + 2) = isFeedbackAssistantAvailable;
+        HIWORD(platform) = 1024;
         v15 = v5;
         _os_log_impl(&dword_22E41E000, v9, OS_LOG_TYPE_DEFAULT, "canFileFeedback: enrolledInSeed: %d, onSeedBuild: %d, isFBAAvailable %d, -> result: %d", &v12, 0x1Au);
       }
@@ -707,7 +707,7 @@ void __59__SDDevice__verifyEnrollmentWithUserIdentifier_completion___block_invok
         v12 = 136315394;
         *v13 = "[SDDevice _canFileFeedback]";
         *&v13[8] = 2048;
-        v14 = [(SDDevice *)self platform];
+        platform = [(SDDevice *)self platform];
         _os_log_impl(&dword_22E41E000, v9, OS_LOG_TYPE_DEFAULT, "%s is not supported on platform [%lu]", &v12, 0x16u);
       }
 
@@ -728,7 +728,7 @@ void __59__SDDevice__verifyEnrollmentWithUserIdentifier_completion___block_invok
 
 + (unint64_t)devicePlatform
 {
-  if ([a1 deviceIsHomePod])
+  if ([self deviceIsHomePod])
   {
     return 16;
   }
@@ -741,7 +741,7 @@ void __59__SDDevice__verifyEnrollmentWithUserIdentifier_completion___block_invok
 
 + (id)deviceClass
 {
-  if ([a1 deviceIsHomePod])
+  if ([self deviceIsHomePod])
   {
     v2 = @"HomePod";
   }
@@ -761,14 +761,14 @@ void __59__SDDevice__verifyEnrollmentWithUserIdentifier_completion___block_invok
   return v2;
 }
 
-+ (id)deviceClassForProductType:(id)a3
++ (id)deviceClassForProductType:(id)type
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  typeCopy = type;
+  v5 = typeCopy;
+  if (typeCopy)
   {
     v6 = @"AppleTV";
-    if (([v4 containsString:@"AppleTV"] & 1) == 0)
+    if (([typeCopy containsString:@"AppleTV"] & 1) == 0)
     {
       v6 = @"iPhone";
       if (([v5 containsString:@"iPhone"] & 1) == 0)
@@ -786,7 +786,7 @@ void __59__SDDevice__verifyEnrollmentWithUserIdentifier_completion___block_invok
 
             else if ([v5 containsString:@"Mac"])
             {
-              v6 = [a1 deriveMacDeviceClassForProductType:v5];
+              v6 = [self deriveMacDeviceClassForProductType:v5];
             }
 
             else
@@ -815,45 +815,45 @@ void __59__SDDevice__verifyEnrollmentWithUserIdentifier_completion___block_invok
   return v7;
 }
 
-+ (id)deriveMacDeviceClassForProductType:(id)a3
++ (id)deriveMacDeviceClassForProductType:(id)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CE1CB8] _typeWithDeviceModelCode:a3];
-  v4 = [v3 identifier];
-  v5 = [v4 stringByReplacingOccurrencesOfString:@"com.apple." withString:&stru_28424D460];
-  v6 = [v5 lowercaseString];
+  v3 = [MEMORY[0x277CE1CB8] _typeWithDeviceModelCode:type];
+  identifier = [v3 identifier];
+  v5 = [identifier stringByReplacingOccurrencesOfString:@"com.apple." withString:&stru_28424D460];
+  lowercaseString = [v5 lowercaseString];
 
-  if ([v6 containsString:@"macbookpro"])
+  if ([lowercaseString containsString:@"macbookpro"])
   {
     v7 = @"MacBookPro";
   }
 
-  else if ([v6 containsString:@"macbookair"])
+  else if ([lowercaseString containsString:@"macbookair"])
   {
     v7 = @"MacBookAir";
   }
 
-  else if ([v6 containsString:@"macbook"])
+  else if ([lowercaseString containsString:@"macbook"])
   {
     v7 = @"MacBook";
   }
 
-  else if ([v6 containsString:@"imac"])
+  else if ([lowercaseString containsString:@"imac"])
   {
     v7 = @"iMac";
   }
 
-  else if ([v6 containsString:@"macmini"])
+  else if ([lowercaseString containsString:@"macmini"])
   {
     v7 = @"Macmini";
   }
 
-  else if ([v6 containsString:@"macpro"])
+  else if ([lowercaseString containsString:@"macpro"])
   {
     v7 = @"MacPro";
   }
 
-  else if ([v6 containsString:@"macstudio"])
+  else if ([lowercaseString containsString:@"macstudio"])
   {
     v7 = @"MacStudio";
   }
@@ -864,7 +864,7 @@ void __59__SDDevice__verifyEnrollmentWithUserIdentifier_completion___block_invok
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
-      v12 = v6;
+      v12 = lowercaseString;
       _os_log_impl(&dword_22E41E000, v8, OS_LOG_TYPE_DEFAULT, "No Mac product mapping for [%{public}@]", &v11, 0xCu);
     }
 

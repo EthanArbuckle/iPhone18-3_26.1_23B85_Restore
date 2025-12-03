@@ -1,28 +1,28 @@
 @interface CCUISteppedSliderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsButtonModuleWhenCollapsed;
 - (BOOL)accessibilityActivate;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityCustomActions;
 - (id)accessibilityValue;
-- (void)_accessibilityAdjustSliderValueInForwardDirection:(BOOL)a3;
-- (void)setNumberOfSteps:(unint64_t)a3;
+- (void)_accessibilityAdjustSliderValueInForwardDirection:(BOOL)direction;
+- (void)setNumberOfSteps:(unint64_t)steps;
 @end
 
 @implementation CCUISteppedSliderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUISteppedSliderView" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"CCUISteppedSliderView" hasInstanceMethod:@"step" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CCUISteppedSliderView" hasInstanceMethod:@"numberOfSteps" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CCUISteppedSliderView" hasInstanceMethod:@"setNumberOfSteps:" withFullSignature:{"v", "Q", 0}];
-  [v3 validateClass:@"CCUIBaseSliderView" hasInstanceVariable:@"_expanded" withType:"BOOL"];
-  [v3 validateClass:@"CCUISteppedSliderView" isKindOfClass:@"CCUIBaseSliderView"];
-  [v3 validateClass:@"CCUIButtonModuleViewController"];
-  [v3 validateClass:@"CCUISliderModuleViewController"];
-  [v3 validateClass:@"CCUISliderModuleViewController" isKindOfClass:@"CCUIButtonModuleViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUISteppedSliderView" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"CCUISteppedSliderView" hasInstanceMethod:@"step" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CCUISteppedSliderView" hasInstanceMethod:@"numberOfSteps" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CCUISteppedSliderView" hasInstanceMethod:@"setNumberOfSteps:" withFullSignature:{"v", "Q", 0}];
+  [validationsCopy validateClass:@"CCUIBaseSliderView" hasInstanceVariable:@"_expanded" withType:"BOOL"];
+  [validationsCopy validateClass:@"CCUISteppedSliderView" isKindOfClass:@"CCUIBaseSliderView"];
+  [validationsCopy validateClass:@"CCUIButtonModuleViewController"];
+  [validationsCopy validateClass:@"CCUISliderModuleViewController"];
+  [validationsCopy validateClass:@"CCUISliderModuleViewController" isKindOfClass:@"CCUIButtonModuleViewController"];
 }
 
 - (BOOL)isAccessibilityElement
@@ -89,7 +89,7 @@ void __59__CCUISteppedSliderViewAccessibility_accessibilityActivate__block_invok
   [v1 expandModule];
 }
 
-- (void)_accessibilityAdjustSliderValueInForwardDirection:(BOOL)a3
+- (void)_accessibilityAdjustSliderValueInForwardDirection:(BOOL)direction
 {
   [(CCUISteppedSliderViewAccessibility *)self safeUnsignedIntegerForKey:@"step"];
   [(CCUISteppedSliderViewAccessibility *)self safeUnsignedIntegerForKey:@"numberOfSteps"];
@@ -110,7 +110,7 @@ uint64_t __88__CCUISteppedSliderViewAccessibility__accessibilityAdjustSliderValu
 {
   v5.receiver = self;
   v5.super_class = CCUISteppedSliderViewAccessibility;
-  v2 = [(CCUISteppedSliderViewAccessibility *)&v5 accessibilityCustomActions];
+  accessibilityCustomActions = [(CCUISteppedSliderViewAccessibility *)&v5 accessibilityCustomActions];
   v3 = AXGuaranteedMutableArray();
 
   UIAccessibilityControlCenterAttachOpenCloseCustomActionsIfNeeded();
@@ -118,18 +118,18 @@ uint64_t __88__CCUISteppedSliderViewAccessibility__accessibilityAdjustSliderValu
   return v3;
 }
 
-- (void)setNumberOfSteps:(unint64_t)a3
+- (void)setNumberOfSteps:(unint64_t)steps
 {
   v6.receiver = self;
   v6.super_class = CCUISteppedSliderViewAccessibility;
-  [(CCUISteppedSliderViewAccessibility *)&v6 setNumberOfSteps:a3];
+  [(CCUISteppedSliderViewAccessibility *)&v6 setNumberOfSteps:steps];
   if (UIAccessibilityControlCenterModuleIsExpanded())
   {
     if (CFAbsoluteTimeGetCurrent() - *&setNumberOfSteps__LastOutput > 1.0)
     {
       v4 = *MEMORY[0x29EDC7EA8];
-      v5 = [(CCUISteppedSliderViewAccessibility *)self _accessibilityAXAttributedValue];
-      UIAccessibilityPostNotification(v4, v5);
+      _accessibilityAXAttributedValue = [(CCUISteppedSliderViewAccessibility *)self _accessibilityAXAttributedValue];
+      UIAccessibilityPostNotification(v4, _accessibilityAXAttributedValue);
 
       setNumberOfSteps__LastOutput = CFAbsoluteTimeGetCurrent();
     }

@@ -1,35 +1,35 @@
 @interface KmlVersions
-- (KmlVersions)initWithEndpoint:(id)a3 downgradeFrameworkSetting:(id)a4;
-- (_DAVersionUpgrade)hasUpgradeForVersionType:(SEL)a3 versions:(unint64_t)a4 isOwnerPairedKey:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (KmlVersions)initWithEndpoint:(id)endpoint downgradeFrameworkSetting:(id)setting;
+- (_DAVersionUpgrade)hasUpgradeForVersionType:(SEL)type versions:(unint64_t)versions isOwnerPairedKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)generateKmlSupportedVehicleServerVersionsData;
 - (id)getAgreedBluetoothVersionsTlv;
 - (id)getVehicleSupportedVersionsData;
 - (id)ourSupportedFrameworkVersionsAsCAString;
-- (id)updateSupportedFrameworkVersionsForSharing:(id)a3;
-- (id)updateVehicleServerSupportedVersions:(id)a3;
-- (id)updateVehicleSupportedAppletVersions:(id)a3;
-- (id)updateVehicleSupportedBluetoothVersions:(id)a3;
-- (id)updateVehicleSupportedFrameworkVersions:(id)a3;
+- (id)updateSupportedFrameworkVersionsForSharing:(id)sharing;
+- (id)updateVehicleServerSupportedVersions:(id)versions;
+- (id)updateVehicleSupportedAppletVersions:(id)versions;
+- (id)updateVehicleSupportedBluetoothVersions:(id)versions;
+- (id)updateVehicleSupportedFrameworkVersions:(id)versions;
 - (uint64_t)generateFrameworkSupportedSharingVersions;
-- (uint64_t)getAppletSupportedVersionForValue:(uint64_t)a1;
-- (uint64_t)getKmlSupportedVersionForValue:(uint64_t)a1;
-- (uint64_t)getVehicleServerSupportedVersionForValue:(uint64_t)a1;
+- (uint64_t)getAppletSupportedVersionForValue:(uint64_t)value;
+- (uint64_t)getKmlSupportedVersionForValue:(uint64_t)value;
+- (uint64_t)getVehicleServerSupportedVersionForValue:(uint64_t)value;
 - (void)downgradePreferredVersion;
 - (void)downgradePreferredVersion_internal;
 - (void)generateAllData;
 - (void)generateAppletSupportedVersions;
 - (void)generateFrameworkSupportedPairingVersions;
 - (void)parseVehicleSupportedVersions;
-- (void)upgradeForVersionType:(unint64_t)a3 version:(unint64_t)a4;
+- (void)upgradeForVersionType:(unint64_t)type version:(unint64_t)version;
 @end
 
 @implementation KmlVersions
 
-- (KmlVersions)initWithEndpoint:(id)a3 downgradeFrameworkSetting:(id)a4
+- (KmlVersions)initWithEndpoint:(id)endpoint downgradeFrameworkSetting:(id)setting
 {
-  v7 = a3;
+  endpointCopy = endpoint;
   v32.receiver = self;
   v32.super_class = KmlVersions;
   v8 = [(KmlVersions *)&v32 init];
@@ -39,38 +39,38 @@
     v8->_downgradeFrameworkVersion = [v10 defaultBoolValueForSetting:2];
     v8->_upgradeEnabledForFriendKey = [v10 defaultBoolValueForSetting:5];
     v8->_upgradeEnabledForOwnerKey = [v10 defaultBoolValueForSetting:6];
-    objc_storeStrong(&v8->_endpoint, a3);
+    objc_storeStrong(&v8->_endpoint, endpoint);
     endpoint = v8->_endpoint;
     if (endpoint)
     {
-      v12 = [(SEEndPoint *)endpoint readerInfo];
-      v13 = [objc_alloc(MEMORY[0x277D82418]) initWithReaderInformation:v12];
+      readerInfo = [(SEEndPoint *)endpoint readerInfo];
+      v13 = [objc_alloc(MEMORY[0x277D82418]) initWithReaderInformation:readerInfo];
       v14 = v13;
-      if (!a4)
+      if (!setting)
       {
-        v15 = [v13 manufacturer];
-        v16 = [v14 brand];
-        v17 = [(SEEndPoint *)v8->_endpoint readerConfigID];
-        v8->_downgradeFrameworkVersion = [v10 BOOLValueForSetting:2 manufacturer:v15 brand:v16 uuid:v17 error:0];
+        manufacturer = [v13 manufacturer];
+        brand = [v14 brand];
+        readerConfigID = [(SEEndPoint *)v8->_endpoint readerConfigID];
+        v8->_downgradeFrameworkVersion = [v10 BOOLValueForSetting:2 manufacturer:manufacturer brand:brand uuid:readerConfigID error:0];
       }
 
-      v18 = [v14 manufacturer];
-      v19 = [v14 brand];
-      v20 = [(SEEndPoint *)v8->_endpoint readerConfigID];
-      v8->_upgradeEnabledForFriendKey = [v10 BOOLValueForSetting:5 manufacturer:v18 brand:v19 uuid:v20 error:0];
+      manufacturer2 = [v14 manufacturer];
+      brand2 = [v14 brand];
+      readerConfigID2 = [(SEEndPoint *)v8->_endpoint readerConfigID];
+      v8->_upgradeEnabledForFriendKey = [v10 BOOLValueForSetting:5 manufacturer:manufacturer2 brand:brand2 uuid:readerConfigID2 error:0];
 
-      v21 = [v14 manufacturer];
-      v22 = [v14 brand];
-      v23 = [(SEEndPoint *)v8->_endpoint readerConfigID];
-      v8->_upgradeEnabledForOwnerKey = [v10 BOOLValueForSetting:6 manufacturer:v21 brand:v22 uuid:v23 error:0];
+      manufacturer3 = [v14 manufacturer];
+      brand3 = [v14 brand];
+      readerConfigID3 = [(SEEndPoint *)v8->_endpoint readerConfigID];
+      v8->_upgradeEnabledForOwnerKey = [v10 BOOLValueForSetting:6 manufacturer:manufacturer3 brand:brand3 uuid:readerConfigID3 error:0];
     }
 
     v24 = +[KmlVersionOverride sharedVersionsOverrides];
     v8->_keyRoleToShare = [v24 keyRoleToShare];
-    v25 = [v10 useAppletVersionsForCertificationTesting];
+    useAppletVersionsForCertificationTesting = [v10 useAppletVersionsForCertificationTesting];
     v26 = &unk_285B9CDF0;
     appletSupportedVersionsList = v8->_appletSupportedVersionsList;
-    if (v25)
+    if (useAppletVersionsForCertificationTesting)
     {
       v26 = &unk_285B9CDD8;
     }
@@ -109,41 +109,41 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"VehicleSupportedFrameworkVersions   : %@\n", self->_vehicleSupportedFrameworkVersionsTlvAsData];
-  [v3 appendString:v4];
+  [string appendString:v4];
 
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"VehicleSupportedAppletVersions      : %@\n", self->_vehicleSupportedAppletVersionsTlvAsData];
-  [v3 appendString:v5];
+  [string appendString:v5];
 
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"VehicleSupportedBTVersions          : %@\n", self->_vehicleSupportedBluetoothVersionsTlvAsData];
-  [v3 appendString:v6];
+  [string appendString:v6];
 
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"PreferredFrameworkVersion           : 0x%02X\n", self->_ourPreferredKmlVersion];
-  [v3 appendString:v7];
+  [string appendString:v7];
 
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"AgreedFrameworkVersion              : 0x%02X\n", self->_agreedKmlVehicleVersion];
-  [v3 appendString:v8];
+  [string appendString:v8];
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"AgreedAppletVersion                 : 0x%02X\n", self->_agreedAppletVehicleVersion];
-  [v3 appendString:v9];
+  [string appendString:v9];
 
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"AgreedSharingFrameworkVersion       : 0x%02X\n", self->_agreedKmlSharingVersion];
-  [v3 appendString:v10];
+  [string appendString:v10];
 
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"AgreedVehicleServerVersion          : 0x%02X\n", self->_agreedKmlVehicleServerVersion];
-  [v3 appendString:v11];
+  [string appendString:v11];
 
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"AgreedBluetoothVersion              : 0x%02X\n", self->_agreedKmlBluetoothVersion];
-  [v3 appendString:v12];
+  [string appendString:v12];
 
-  return v3;
+  return string;
 }
 
 - (void)downgradePreferredVersion
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_1();
     OUTLINED_FUNCTION_6(&dword_248BF3000, v5, v6, "%s : %i : Let's downgrade to v1", v7, v8, v9, v10, v12);
@@ -155,24 +155,24 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)updateVehicleServerSupportedVersions:(id)a3
+- (id)updateVehicleServerSupportedVersions:(id)versions
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  versionsCopy = versions;
+  if ([versionsCopy length])
   {
-    [KmlTlv TLVsWithData:v4];
+    [KmlTlv TLVsWithData:versionsCopy];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v5 = v22 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
-    if (v6)
+    value = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+    if (value)
     {
       v7 = *v20;
       while (2)
       {
-        for (i = 0; i != v6; i = i + 1)
+        for (i = 0; i != value; i = i + 1)
         {
           if (*v20 != v7)
           {
@@ -182,13 +182,13 @@
           v9 = *(*(&v19 + 1) + 8 * i);
           if ([v9 tag] == 93)
           {
-            v6 = [v9 value];
+            value = [v9 value];
             goto LABEL_12;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
-        if (v6)
+        value = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+        if (value)
         {
           continue;
         }
@@ -199,9 +199,9 @@
 
 LABEL_12:
 
-    if ([v6 length] > 1)
+    if ([value length] > 1)
     {
-      bswap32(*[v6 bytes]);
+      bswap32(*[value bytes]);
       v14 = 0;
       self->_agreedKmlVehicleServerVersion = [KmlVersions getVehicleServerSupportedVersionForValue:?];
     }
@@ -223,8 +223,8 @@ LABEL_12:
     v15 = MEMORY[0x277CCA9B8];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"com.apple.sesd.kml.pairing"];
     v26 = *MEMORY[0x277CCA450];
-    v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:KmlErrorString(22)];
-    v27[0] = v6;
+    value = [MEMORY[0x277CCACA8] stringWithUTF8String:KmlErrorString(22)];
+    v27[0] = value;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
     v14 = [v15 errorWithDomain:v5 code:22 userInfo:v16];
   }
@@ -234,34 +234,34 @@ LABEL_12:
   return v14;
 }
 
-- (id)updateVehicleSupportedAppletVersions:(id)a3
+- (id)updateVehicleSupportedAppletVersions:(id)versions
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 length])
+  versionsCopy = versions;
+  if (![versionsCopy length])
   {
     v18 = MEMORY[0x277CCA9B8];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"com.apple.sesd.kml.pairing"];
     v35 = *MEMORY[0x277CCA450];
-    v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:KmlErrorString(22)];
-    v36[0] = v6;
+    value = [MEMORY[0x277CCACA8] stringWithUTF8String:KmlErrorString(22)];
+    v36[0] = value;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
     v17 = [v18 errorWithDomain:v5 code:22 userInfo:v14];
     goto LABEL_16;
   }
 
-  [KmlTlv TLVsWithData:v4];
+  [KmlTlv TLVsWithData:versionsCopy];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v5 = v27 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v34 count:16];
-  if (v6)
+  value = [v5 countByEnumeratingWithState:&v24 objects:v34 count:16];
+  if (value)
   {
     v7 = *v25;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != value; i = i + 1)
       {
         if (*v25 != v7)
         {
@@ -271,17 +271,17 @@ LABEL_12:
         v9 = *(*(&v24 + 1) + 8 * i);
         if ([v9 tag] == 92)
         {
-          v6 = [v9 value];
-          v10 = [v9 asData];
+          value = [v9 value];
+          asData = [v9 asData];
           vehicleSupportedAppletVersionsTlvAsData = self->_vehicleSupportedAppletVersionsTlvAsData;
-          self->_vehicleSupportedAppletVersionsTlvAsData = v10;
+          self->_vehicleSupportedAppletVersionsTlvAsData = asData;
 
           goto LABEL_12;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v24 objects:v34 count:16];
-      if (v6)
+      value = [v5 countByEnumeratingWithState:&v24 objects:v34 count:16];
+      if (value)
       {
         continue;
       }
@@ -292,7 +292,7 @@ LABEL_12:
 
 LABEL_12:
 
-  if ([v6 length] <= 1)
+  if ([value length] <= 1)
   {
     v12 = self->_vehicleSupportedAppletVersionsTlvAsData;
     self->_vehicleSupportedAppletVersionsTlvAsData = 0;
@@ -311,7 +311,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  bswap32(*[v6 bytes]);
+  bswap32(*[value bytes]);
   v21 = [KmlVersions getAppletSupportedVersionForValue:?];
   self->_agreedAppletVehicleVersion = v21;
   if (!v21)
@@ -328,10 +328,10 @@ LABEL_16:
 
     self->_agreedAppletVehicleVersion = 256;
     v14 = [KmlTlv TLVWithTag:92 unsignedShort:256];
-    v23 = [v14 asData];
+    asData2 = [v14 asData];
     v17 = 0;
     v15 = self->_vehicleSupportedAppletVersionsTlvAsData;
-    self->_vehicleSupportedAppletVersionsTlvAsData = v23;
+    self->_vehicleSupportedAppletVersionsTlvAsData = asData2;
     goto LABEL_14;
   }
 
@@ -343,24 +343,24 @@ LABEL_17:
   return v17;
 }
 
-- (id)updateVehicleSupportedFrameworkVersions:(id)a3
+- (id)updateVehicleSupportedFrameworkVersions:(id)versions
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  versionsCopy = versions;
+  if ([versionsCopy length])
   {
-    [KmlTlv TLVsWithData:v4];
+    [KmlTlv TLVsWithData:versionsCopy];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v5 = v35 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v32 objects:v42 count:16];
-    if (v6)
+    value = [v5 countByEnumeratingWithState:&v32 objects:v42 count:16];
+    if (value)
     {
       v7 = *v33;
       while (2)
       {
-        for (i = 0; i != v6; i = i + 1)
+        for (i = 0; i != value; i = i + 1)
         {
           if (*v33 != v7)
           {
@@ -370,17 +370,17 @@ LABEL_17:
           v9 = *(*(&v32 + 1) + 8 * i);
           if ([v9 tag] == 91)
           {
-            v6 = [v9 value];
-            v10 = [v9 asData];
+            value = [v9 value];
+            asData = [v9 asData];
             vehicleSupportedFrameworkVersionsTlvAsData = self->_vehicleSupportedFrameworkVersionsTlvAsData;
-            self->_vehicleSupportedFrameworkVersionsTlvAsData = v10;
+            self->_vehicleSupportedFrameworkVersionsTlvAsData = asData;
 
             goto LABEL_12;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v32 objects:v42 count:16];
-        if (v6)
+        value = [v5 countByEnumeratingWithState:&v32 objects:v42 count:16];
+        if (value)
         {
           continue;
         }
@@ -391,11 +391,11 @@ LABEL_17:
 
 LABEL_12:
 
-    if ([v6 length] > 1)
+    if ([value length] > 1)
     {
-      v22 = [MEMORY[0x277CCAB68] string];
-      v23 = [v6 bytes];
-      v24 = bswap32(*v23);
+      string = [MEMORY[0x277CCAB68] string];
+      bytes = [value bytes];
+      v24 = bswap32(*bytes);
       agreedKmlVehicleVersion = [KmlVersions getKmlSupportedVersionForValue:?];
       self->_agreedKmlVehicleVersion = agreedKmlVehicleVersion;
       if (!agreedKmlVehicleVersion)
@@ -412,22 +412,22 @@ LABEL_12:
 
         self->_agreedKmlVehicleVersion = 256;
         v27 = [KmlTlv TLVWithTag:91 unsignedShort:256];
-        v28 = [v27 asData];
+        asData2 = [v27 asData];
         v29 = self->_vehicleSupportedFrameworkVersionsTlvAsData;
-        self->_vehicleSupportedFrameworkVersionsTlvAsData = v28;
+        self->_vehicleSupportedFrameworkVersionsTlvAsData = asData2;
 
         agreedKmlVehicleVersion = self->_agreedKmlVehicleVersion;
       }
 
-      [v22 appendFormat:@"%04X", agreedKmlVehicleVersion];
-      if ([v6 length] >= 4)
+      [string appendFormat:@"%04X", agreedKmlVehicleVersion];
+      if ([value length] >= 4)
       {
-        [v22 appendFormat:@", %04X", __rev16(v23[1])];
+        [string appendFormat:@", %04X", __rev16(bytes[1])];
       }
 
       vehicleSupportedFrameworkVersionsForCA = self->_vehicleSupportedFrameworkVersionsForCA;
-      self->_vehicleSupportedFrameworkVersionsForCA = v22;
-      v31 = v22;
+      self->_vehicleSupportedFrameworkVersionsForCA = string;
+      v31 = string;
 
       LODWORD(vehicleSupportedFrameworkVersionsForCA) = [KmlVersions doesVersion:self->_agreedKmlVehicleVersion support:768];
       if (vehicleSupportedFrameworkVersionsForCA)
@@ -459,8 +459,8 @@ LABEL_12:
     v18 = MEMORY[0x277CCA9B8];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"com.apple.sesd.kml.pairing"];
     v43 = *MEMORY[0x277CCA450];
-    v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:KmlErrorString(22)];
-    v44[0] = v6;
+    value = [MEMORY[0x277CCACA8] stringWithUTF8String:KmlErrorString(22)];
+    v44[0] = value;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:&v43 count:1];
     v17 = [v18 errorWithDomain:v5 code:22 userInfo:v19];
   }
@@ -470,11 +470,11 @@ LABEL_12:
   return v17;
 }
 
-- (id)updateSupportedFrameworkVersionsForSharing:(id)a3
+- (id)updateSupportedFrameworkVersionsForSharing:(id)sharing
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  sharingCopy = sharing;
+  if ([sharingCopy length])
   {
     v5 = KmlLogger();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -484,11 +484,11 @@ LABEL_12:
       v34 = 1024;
       v35 = 339;
       v36 = 2112;
-      v37 = v4;
+      v37 = sharingCopy;
       _os_log_impl(&dword_248BF3000, v5, OS_LOG_TYPE_INFO, "%s : %i : versionData: %@", buf, 0x1Cu);
     }
 
-    [KmlTlv TLVsWithData:v4];
+    [KmlTlv TLVsWithData:sharingCopy];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -510,13 +510,13 @@ LABEL_12:
           v11 = *(*(&v25 + 1) + 8 * i);
           if ([v11 tag] == 84 || objc_msgSend(v11, "tag") == 85)
           {
-            v12 = [v11 value];
+            value = [v11 value];
             goto LABEL_17;
           }
         }
 
         v8 = [v6 countByEnumeratingWithState:&v25 objects:v31 count:16];
-        v12 = 0;
+        value = 0;
         if (v8)
         {
           continue;
@@ -528,14 +528,14 @@ LABEL_12:
 
     else
     {
-      v12 = 0;
+      value = 0;
     }
 
 LABEL_17:
 
-    if ([v12 length] > 1)
+    if ([value length] > 1)
     {
-      bswap32(*[v12 bytes]);
+      bswap32(*[value bytes]);
       v22 = [KmlVersions getKmlSupportedVersionForValue:?];
       self->_agreedKmlSharingVersion = v22;
       if (v22)
@@ -594,8 +594,8 @@ LABEL_26:
     v13 = MEMORY[0x277CCA9B8];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"com.apple.sesd.kml.pairing"];
     v38 = *MEMORY[0x277CCA450];
-    v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:KmlErrorString(22)];
-    v39[0] = v12;
+    value = [MEMORY[0x277CCACA8] stringWithUTF8String:KmlErrorString(22)];
+    v39[0] = value;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:&v38 count:1];
     v15 = [v13 errorWithDomain:v6 code:22 userInfo:v14];
   }
@@ -605,24 +605,24 @@ LABEL_26:
   return v15;
 }
 
-- (id)updateVehicleSupportedBluetoothVersions:(id)a3
+- (id)updateVehicleSupportedBluetoothVersions:(id)versions
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  versionsCopy = versions;
+  if ([versionsCopy length])
   {
-    [KmlTlv TLVsWithData:v4];
+    [KmlTlv TLVsWithData:versionsCopy];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v5 = v25 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v22 objects:v28 count:16];
-    if (v6)
+    value = [v5 countByEnumeratingWithState:&v22 objects:v28 count:16];
+    if (value)
     {
       v7 = *v23;
       while (2)
       {
-        for (i = 0; i != v6; i = i + 1)
+        for (i = 0; i != value; i = i + 1)
         {
           if (*v23 != v7)
           {
@@ -632,17 +632,17 @@ LABEL_26:
           v9 = *(*(&v22 + 1) + 8 * i);
           if ([v9 tag] == 94)
           {
-            v6 = [v9 value];
-            v10 = [v9 asData];
+            value = [v9 value];
+            asData = [v9 asData];
             vehicleSupportedBluetoothVersionsTlvAsData = self->_vehicleSupportedBluetoothVersionsTlvAsData;
-            self->_vehicleSupportedBluetoothVersionsTlvAsData = v10;
+            self->_vehicleSupportedBluetoothVersionsTlvAsData = asData;
 
             goto LABEL_12;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v22 objects:v28 count:16];
-        if (v6)
+        value = [v5 countByEnumeratingWithState:&v22 objects:v28 count:16];
+        if (value)
         {
           continue;
         }
@@ -653,7 +653,7 @@ LABEL_26:
 
 LABEL_12:
 
-    if ([v6 length] > 1)
+    if ([value length] > 1)
     {
       v17 = 0;
       self->_agreedKmlBluetoothVersion = 256;
@@ -679,8 +679,8 @@ LABEL_12:
     v18 = MEMORY[0x277CCA9B8];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"com.apple.sesd.kml.pairing"];
     v29 = *MEMORY[0x277CCA450];
-    v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:KmlErrorString(22)];
-    v30[0] = v6;
+    value = [MEMORY[0x277CCACA8] stringWithUTF8String:KmlErrorString(22)];
+    v30[0] = value;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
     v17 = [v18 errorWithDomain:v5 code:22 userInfo:v19];
   }
@@ -692,11 +692,11 @@ LABEL_12:
 
 - (id)getVehicleSupportedVersionsData
 {
-  v3 = [MEMORY[0x277CBEB28] data];
-  v4 = v3;
+  data = [MEMORY[0x277CBEB28] data];
+  v4 = data;
   if (self->_vehicleSupportedFrameworkVersionsTlvAsData)
   {
-    [v3 appendData:?];
+    [data appendData:?];
   }
 
   if (self->_vehicleSupportedAppletVersionsTlvAsData)
@@ -704,8 +704,8 @@ LABEL_12:
     [v4 appendData:?];
   }
 
-  v5 = [(KmlVersions *)self generateKmlSupportedVehicleServerVersionsData];
-  [v4 appendData:v5];
+  generateKmlSupportedVehicleServerVersionsData = [(KmlVersions *)self generateKmlSupportedVehicleServerVersionsData];
+  [v4 appendData:generateKmlSupportedVehicleServerVersionsData];
 
   if ([(NSData *)self->_vehicleSupportedBluetoothVersionsTlvAsData length])
   {
@@ -756,7 +756,7 @@ LABEL_12:
 - (id)ourSupportedFrameworkVersionsAsCAString
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -776,7 +776,7 @@ LABEL_12:
           objc_enumerationMutation(v4);
         }
 
-        [v3 appendFormat:@"%04X, ", objc_msgSend(*(*(&v11 + 1) + 8 * i), "unsignedShortValue")];
+        [string appendFormat:@"%04X, ", objc_msgSend(*(*(&v11 + 1) + 8 * i), "unsignedShortValue")];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -787,20 +787,20 @@ LABEL_12:
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return string;
 }
 
-- (_DAVersionUpgrade)hasUpgradeForVersionType:(SEL)a3 versions:(unint64_t)a4 isOwnerPairedKey:(id)a5
+- (_DAVersionUpgrade)hasUpgradeForVersionType:(SEL)type versions:(unint64_t)versions isOwnerPairedKey:(id)key
 {
   v6 = a6;
   v62 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = [MEMORY[0x277CCAB68] string];
+  keyCopy = key;
+  string = [MEMORY[0x277CCAB68] string];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v11 = v9;
+  v11 = keyCopy;
   v12 = [v11 countByEnumeratingWithState:&v49 objects:v61 count:16];
   if (v12)
   {
@@ -815,7 +815,7 @@ LABEL_12:
           objc_enumerationMutation(v11);
         }
 
-        [v10 appendFormat:@"0x%04lx, ", objc_msgSend(*(*(&v49 + 1) + 8 * i), "longValue")];
+        [string appendFormat:@"0x%04lx, ", objc_msgSend(*(*(&v49 + 1) + 8 * i), "longValue")];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v49 objects:v61 count:16];
@@ -832,13 +832,13 @@ LABEL_12:
     v56 = 1024;
     v57 = 471;
     v58 = 2112;
-    *v59 = v10;
+    *v59 = string;
     _os_log_impl(&dword_248BF3000, v16, OS_LOG_TYPE_INFO, "%s : %i : Requested Versions = { %@ }", buf, 0x1Cu);
   }
 
   retstr->var2 = 0;
   p_var2 = &retstr->var2;
-  retstr->var0 = a4;
+  retstr->var0 = versions;
   *&retstr->var1 = 0;
   retstr->var3 = 0;
   if (v6)
@@ -880,7 +880,7 @@ LABEL_54:
     goto LABEL_55;
   }
 
-  if (a4 == 2)
+  if (versions == 2)
   {
     *p_var2 = self->_agreedKmlVehicleServerVersion;
     v29 = KmlLogger();
@@ -922,7 +922,7 @@ LABEL_39:
         if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
         {
           agreedKmlVehicleServerVersion = self->_agreedKmlVehicleServerVersion;
-          v36 = [v25 longValue];
+          longValue = [v25 longValue];
           *buf = 136315906;
           v55 = "[KmlVersions hasUpgradeForVersionType:versions:isOwnerPairedKey:]";
           v56 = 1024;
@@ -930,7 +930,7 @@ LABEL_39:
           v58 = 1024;
           *v59 = agreedKmlVehicleServerVersion;
           *&v59[4] = 2048;
-          *&v59[6] = v36;
+          *&v59[6] = longValue;
           _os_log_impl(&dword_248BF3000, v34, OS_LOG_TYPE_INFO, "%s : %i : Checking availability: VehicleServer upgrade from : 0x%04hx, to : 0x%04lx", buf, 0x22u);
         }
 
@@ -965,7 +965,7 @@ LABEL_39:
     }
   }
 
-  else if (!a4)
+  else if (!versions)
   {
     *p_var2 = self->_agreedKmlVehicleVersion;
     v20 = KmlLogger();
@@ -1007,7 +1007,7 @@ LABEL_22:
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
           agreedKmlVehicleVersion = self->_agreedKmlVehicleVersion;
-          v28 = [v25 longValue];
+          longValue2 = [v25 longValue];
           *buf = 136315906;
           v55 = "[KmlVersions hasUpgradeForVersionType:versions:isOwnerPairedKey:]";
           v56 = 1024;
@@ -1015,7 +1015,7 @@ LABEL_22:
           v58 = 1024;
           *v59 = agreedKmlVehicleVersion;
           *&v59[4] = 2048;
-          *&v59[6] = v28;
+          *&v59[6] = longValue2;
           _os_log_impl(&dword_248BF3000, v26, OS_LOG_TYPE_INFO, "%s : %i : Checking availability: Framework upgrade from : 0x%04hx, to : 0x%04lx", buf, 0x22u);
         }
 
@@ -1062,28 +1062,28 @@ LABEL_55:
   return result;
 }
 
-- (void)upgradeForVersionType:(unint64_t)a3 version:(unint64_t)a4
+- (void)upgradeForVersionType:(unint64_t)type version:(unint64_t)version
 {
   v7 = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (type == 2)
   {
     self->_agreedKmlVehicleServerVersion = [KmlVersions getVehicleServerSupportedVersionForValue:?];
   }
 
-  else if (!a3)
+  else if (!type)
   {
-    [(KmlVersions *)a4 upgradeForVersionType:v5 version:v6];
+    [(KmlVersions *)version upgradeForVersionType:v5 version:v6];
   }
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[KmlVersions allocWithZone:](KmlVersions init];
   if (v5)
   {
-    [(KmlVersions *)self copyWithZone:a3, v5];
+    [(KmlVersions *)self copyWithZone:zone, v5];
   }
 
   return v5;
@@ -1091,41 +1091,41 @@ LABEL_55:
 
 - (void)downgradePreferredVersion_internal
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 96);
-    *(a1 + 96) = &unk_285B9CE68;
+    v2 = *(self + 96);
+    *(self + 96) = &unk_285B9CE68;
 
-    v3 = *(a1 + 104);
-    *(a1 + 104) = &unk_285B9CE80;
+    v3 = *(self + 104);
+    *(self + 104) = &unk_285B9CE80;
 
-    *(a1 + 20) = 256;
-    v4 = *(a1 + 120);
-    *(a1 + 120) = &unk_285B9CE98;
+    *(self + 20) = 256;
+    v4 = *(self + 120);
+    *(self + 120) = &unk_285B9CE98;
 
-    v5 = *(a1 + 128);
-    *(a1 + 128) = &unk_285B9CEB0;
+    v5 = *(self + 128);
+    *(self + 128) = &unk_285B9CEB0;
 
-    *(a1 + 28) = 256;
+    *(self + 28) = 256;
   }
 }
 
 - (void)generateAllData
 {
-  if (a1)
+  if (self)
   {
-    [(KmlVersions *)a1 generateFrameworkSupportedPairingVersions];
-    [(KmlVersions *)a1 generateFrameworkSupportedSharingVersions];
-    [(KmlVersions *)a1 generateAppletSupportedVersions];
+    [(KmlVersions *)self generateFrameworkSupportedPairingVersions];
+    [(KmlVersions *)self generateFrameworkSupportedSharingVersions];
+    [(KmlVersions *)self generateAppletSupportedVersions];
 
-    [(KmlVersions *)a1 parseVehicleSupportedVersions];
+    [(KmlVersions *)self parseVehicleSupportedVersions];
   }
 }
 
-- (uint64_t)getVehicleServerSupportedVersionForValue:(uint64_t)a1
+- (uint64_t)getVehicleServerSupportedVersionForValue:(uint64_t)value
 {
   v32 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (value)
   {
     OUTLINED_FUNCTION_2();
     v4 = *(v3 + 120);
@@ -1138,14 +1138,14 @@ LABEL_4:
       v22 = 0;
       while (1)
       {
-        OUTLINED_FUNCTION_3(v14, v15, v16, v17, v18, v19, v20, v21, v27, v29, v31);
+        OUTLINED_FUNCTION_3(unsignedShortValue, v15, v16, v17, v18, v19, v20, v21, v27, v29, v31);
         if (!v23)
         {
           objc_enumerationMutation(v4);
         }
 
-        v14 = [*(v29 + 8 * v22) unsignedShortValue];
-        if (v14 == v1)
+        unsignedShortValue = [*(v29 + 8 * v22) unsignedShortValue];
+        if (unsignedShortValue == v1)
         {
           break;
         }
@@ -1153,9 +1153,9 @@ LABEL_4:
         if (v2 == ++v22)
         {
           OUTLINED_FUNCTION_0();
-          v14 = [v4 countByEnumeratingWithState:? objects:? count:?];
-          v2 = v14;
-          if (v14)
+          unsignedShortValue = [v4 countByEnumeratingWithState:? objects:? count:?];
+          v2 = unsignedShortValue;
+          if (unsignedShortValue)
           {
             goto LABEL_4;
           }
@@ -1181,10 +1181,10 @@ LABEL_10:
   return v1;
 }
 
-- (uint64_t)getAppletSupportedVersionForValue:(uint64_t)a1
+- (uint64_t)getAppletSupportedVersionForValue:(uint64_t)value
 {
   v32 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (value)
   {
     OUTLINED_FUNCTION_2();
     v4 = *(v3 + 112);
@@ -1197,14 +1197,14 @@ LABEL_4:
       v22 = 0;
       while (1)
       {
-        OUTLINED_FUNCTION_3(v14, v15, v16, v17, v18, v19, v20, v21, v27, v29, v31);
+        OUTLINED_FUNCTION_3(unsignedShortValue, v15, v16, v17, v18, v19, v20, v21, v27, v29, v31);
         if (!v23)
         {
           objc_enumerationMutation(v4);
         }
 
-        v14 = [*(v29 + 8 * v22) unsignedShortValue];
-        if (v14 == v1)
+        unsignedShortValue = [*(v29 + 8 * v22) unsignedShortValue];
+        if (unsignedShortValue == v1)
         {
           break;
         }
@@ -1212,9 +1212,9 @@ LABEL_4:
         if (v2 == ++v22)
         {
           OUTLINED_FUNCTION_0();
-          v14 = [v4 countByEnumeratingWithState:? objects:? count:?];
-          v2 = v14;
-          if (v14)
+          unsignedShortValue = [v4 countByEnumeratingWithState:? objects:? count:?];
+          v2 = unsignedShortValue;
+          if (unsignedShortValue)
           {
             goto LABEL_4;
           }
@@ -1240,10 +1240,10 @@ LABEL_10:
   return v1;
 }
 
-- (uint64_t)getKmlSupportedVersionForValue:(uint64_t)a1
+- (uint64_t)getKmlSupportedVersionForValue:(uint64_t)value
 {
   v32 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (value)
   {
     OUTLINED_FUNCTION_2();
     v4 = *(v3 + 96);
@@ -1256,14 +1256,14 @@ LABEL_4:
       v22 = 0;
       while (1)
       {
-        OUTLINED_FUNCTION_3(v14, v15, v16, v17, v18, v19, v20, v21, v27, v29, v31);
+        OUTLINED_FUNCTION_3(unsignedShortValue, v15, v16, v17, v18, v19, v20, v21, v27, v29, v31);
         if (!v23)
         {
           objc_enumerationMutation(v4);
         }
 
-        v14 = [*(v29 + 8 * v22) unsignedShortValue];
-        if (v14 == v1)
+        unsignedShortValue = [*(v29 + 8 * v22) unsignedShortValue];
+        if (unsignedShortValue == v1)
         {
           break;
         }
@@ -1271,9 +1271,9 @@ LABEL_4:
         if (v2 == ++v22)
         {
           OUTLINED_FUNCTION_0();
-          v14 = [v4 countByEnumeratingWithState:? objects:? count:?];
-          v2 = v14;
-          if (v14)
+          unsignedShortValue = [v4 countByEnumeratingWithState:? objects:? count:?];
+          v2 = unsignedShortValue;
+          if (unsignedShortValue)
           {
             goto LABEL_4;
           }
@@ -1316,47 +1316,47 @@ LABEL_10:
 
 - (id)generateKmlSupportedVehicleServerVersionsData
 {
-  if (a1)
+  if (self)
   {
-    v1 = [KmlTlv TLVWithTag:93 unsignedShort:*(a1 + 30)];
-    v2 = [v1 asData];
+    v1 = [KmlTlv TLVWithTag:93 unsignedShort:*(self + 30)];
+    asData = [v1 asData];
   }
 
   else
   {
-    v2 = 0;
+    asData = 0;
   }
 
-  return v2;
+  return asData;
 }
 
 - (void)parseVehicleSupportedVersions
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    *(a1 + 22) = 256;
-    *(a1 + 26) = 256;
-    *(a1 + 30) = 256;
-    v2 = *(a1 + 80);
-    *(a1 + 80) = 0;
+    *(self + 22) = 256;
+    *(self + 26) = 256;
+    *(self + 30) = 256;
+    v2 = *(self + 80);
+    *(self + 80) = 0;
 
-    v3 = *(a1 + 64);
-    *(a1 + 64) = 0;
+    v3 = *(self + 64);
+    *(self + 64) = 0;
 
-    v4 = *(a1 + 88);
-    *(a1 + 88) = 0;
+    v4 = *(self + 88);
+    *(self + 88) = 0;
 
-    v5 = *(a1 + 8);
+    v5 = *(self + 8);
     if (v5)
     {
-      v6 = [v5 vehicleSupportedVersionsData];
-      v7 = v6;
-      if (v6 && [v6 length])
+      vehicleSupportedVersionsData = [v5 vehicleSupportedVersionsData];
+      v7 = vehicleSupportedVersionsData;
+      if (vehicleSupportedVersionsData && [vehicleSupportedVersionsData length])
       {
-        v8 = [a1 updateVehicleSupportedFrameworkVersions:v7];
-        v9 = [a1 updateVehicleSupportedAppletVersions:v7];
-        v10 = [a1 updateVehicleServerSupportedVersions:v7];
+        v8 = [self updateVehicleSupportedFrameworkVersions:v7];
+        v9 = [self updateVehicleSupportedAppletVersions:v7];
+        v10 = [self updateVehicleServerSupportedVersions:v7];
       }
 
       else
@@ -1389,12 +1389,12 @@ LABEL_10:
 - (void)generateFrameworkSupportedPairingVersions
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     [MEMORY[0x277CBEB28] data];
     objc_claimAutoreleasedReturnValue();
     OUTLINED_FUNCTION_5();
-    v3 = *(a1 + 96);
+    v3 = *(self + 96);
     OUTLINED_FUNCTION_0();
     v5 = [v4 countByEnumeratingWithState:? objects:? count:?];
     if (v5)
@@ -1425,8 +1425,8 @@ LABEL_10:
     }
 
     v10 = [KmlTlv TLVWithTag:90 value:v1];
-    v11 = *(a1 + 40);
-    *(a1 + 40) = v10;
+    v11 = *(self + 40);
+    *(self + 40) = v10;
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -1435,12 +1435,12 @@ LABEL_10:
 - (void)generateAppletSupportedVersions
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     [MEMORY[0x277CBEB28] data];
     objc_claimAutoreleasedReturnValue();
     OUTLINED_FUNCTION_5();
-    v3 = *(a1 + 112);
+    v3 = *(self + 112);
     OUTLINED_FUNCTION_0();
     v5 = [v4 countByEnumeratingWithState:? objects:? count:?];
     if (v5)
@@ -1469,8 +1469,8 @@ LABEL_10:
     }
 
     v9 = [KmlTlv TLVWithTag:92 value:v1];
-    v10 = *(a1 + 56);
-    *(a1 + 56) = v9;
+    v10 = *(self + 56);
+    *(self + 56) = v9;
   }
 
   v11 = *MEMORY[0x277D85DE8];

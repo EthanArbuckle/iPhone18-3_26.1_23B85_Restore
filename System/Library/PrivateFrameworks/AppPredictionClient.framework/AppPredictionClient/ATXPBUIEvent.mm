@@ -1,17 +1,17 @@
 @interface ATXPBUIEvent
 - (BOOL)hasConsumerSubType;
 - (BOOL)hasEvent;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)consumerSubType;
 - (uint64_t)event;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setConsumerSubType:(uint64_t)a1;
-- (void)setEvent:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setConsumerSubType:(uint64_t)type;
+- (void)setEvent:(uint64_t)event;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBUIEvent
@@ -22,20 +22,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBUIEvent;
   v4 = [(ATXPBUIEvent *)&v8 description];
-  v5 = [(ATXPBUIEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBUIEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   consumerSubType = self->_consumerSubType;
   if (consumerSubType)
   {
-    [v3 setObject:consumerSubType forKey:@"consumerSubType"];
+    [dictionary setObject:consumerSubType forKey:@"consumerSubType"];
   }
 
   event = self->_event;
@@ -47,44 +47,44 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_consumerSubType)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_event)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_consumerSubType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_consumerSubType copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_event copyWithZone:a3];
+  v8 = [(NSData *)self->_event copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((consumerSubType = self->_consumerSubType, !(consumerSubType | v4[1])) || -[NSString isEqual:](consumerSubType, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((consumerSubType = self->_consumerSubType, !(consumerSubType | equalCopy[1])) || -[NSString isEqual:](consumerSubType, "isEqual:")))
   {
     event = self->_event;
-    if (event | v4[2])
+    if (event | equalCopy[2])
     {
       v7 = [(NSData *)event isEqual:?];
     }
@@ -123,12 +123,12 @@
   return result;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v3 = a2;
-  if (a1)
+  if (to)
   {
-    v4 = *(a1 + 8);
+    v4 = *(to + 8);
     if (v4)
     {
       v6 = v3;
@@ -136,7 +136,7 @@
       v3 = v6;
     }
 
-    v5 = *(a1 + 16);
+    v5 = *(to + 16);
     if (v5)
     {
       v7 = v3;
@@ -146,39 +146,39 @@
   }
 }
 
-- (void)setConsumerSubType:(uint64_t)a1
+- (void)setConsumerSubType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 8);
+    OUTLINED_FUNCTION_2(type, a2, 8);
   }
 }
 
-- (void)setEvent:(uint64_t)a1
+- (void)setEvent:(uint64_t)event
 {
-  if (a1)
+  if (event)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 16);
+    OUTLINED_FUNCTION_2(event, a2, 16);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v3 = a2;
-  if (a1)
+  if (from)
   {
     v4 = v3[1];
     v6 = v3;
     if (v4)
     {
-      objc_storeStrong((a1 + 8), v4);
+      objc_storeStrong((from + 8), v4);
       v3 = v6;
     }
 
     v5 = v3[2];
     if (v5)
     {
-      objc_storeStrong((a1 + 16), v5);
+      objc_storeStrong((from + 16), v5);
       v3 = v6;
     }
   }

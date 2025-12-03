@@ -1,41 +1,41 @@
 @interface PKPaymentMethodSelectionViewController
-- (PKPaymentMethodSelectionViewController)initWithPaymentRequest:(id)a3 selectedPass:(id)a4 paymentMethodName:(id)a5 paymentMethodIdentifier:(id)a6 allowAppleCashToggle:(BOOL)a7 useAppleCashBalance:(BOOL)a8 viewStyle:(int64_t)a9 delegate:(id)a10;
-- (void)_handlePassUpdate:(id)a3;
-- (void)_openPaymentSetupWithNetworkWhitelist:(id)a3 completion:(id)a4;
-- (void)requestOpenURL:(id)a3;
-- (void)selectedPass:(id)a3;
-- (void)toggledUseAppleCashBalance:(BOOL)a3;
+- (PKPaymentMethodSelectionViewController)initWithPaymentRequest:(id)request selectedPass:(id)pass paymentMethodName:(id)name paymentMethodIdentifier:(id)identifier allowAppleCashToggle:(BOOL)toggle useAppleCashBalance:(BOOL)balance viewStyle:(int64_t)style delegate:(id)self0;
+- (void)_handlePassUpdate:(id)update;
+- (void)_openPaymentSetupWithNetworkWhitelist:(id)whitelist completion:(id)completion;
+- (void)requestOpenURL:(id)l;
+- (void)selectedPass:(id)pass;
+- (void)toggledUseAppleCashBalance:(BOOL)balance;
 @end
 
 @implementation PKPaymentMethodSelectionViewController
 
-- (PKPaymentMethodSelectionViewController)initWithPaymentRequest:(id)a3 selectedPass:(id)a4 paymentMethodName:(id)a5 paymentMethodIdentifier:(id)a6 allowAppleCashToggle:(BOOL)a7 useAppleCashBalance:(BOOL)a8 viewStyle:(int64_t)a9 delegate:(id)a10
+- (PKPaymentMethodSelectionViewController)initWithPaymentRequest:(id)request selectedPass:(id)pass paymentMethodName:(id)name paymentMethodIdentifier:(id)identifier allowAppleCashToggle:(BOOL)toggle useAppleCashBalance:(BOOL)balance viewStyle:(int64_t)style delegate:(id)self0
 {
-  v10 = a8;
-  v11 = a7;
-  v17 = a3;
-  v39 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a10;
+  balanceCopy = balance;
+  toggleCopy = toggle;
+  requestCopy = request;
+  passCopy = pass;
+  nameCopy = name;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v40.receiver = self;
   v40.super_class = PKPaymentMethodSelectionViewController;
   v21 = [(PKDynamicCollectionViewController *)&v40 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_paymentRequest, a3);
-    objc_storeStrong(&v22->_selectedPass, a4);
-    objc_storeWeak(&v22->_delegate, v20);
-    v23 = [(PKPaymentMethodSelectionViewController *)v22 navigationItem];
+    objc_storeStrong(&v21->_paymentRequest, request);
+    objc_storeStrong(&v22->_selectedPass, pass);
+    objc_storeWeak(&v22->_delegate, delegateCopy);
+    navigationItem = [(PKPaymentMethodSelectionViewController *)v22 navigationItem];
     v24 = PKLocalizedPaymentString(&cfstr_AutoReloadPaym.isa);
-    [v23 setTitle:v24];
+    [navigationItem setTitle:v24];
 
-    [v23 setLargeTitleDisplayMode:2];
+    [navigationItem setLargeTitleDisplayMode:2];
     v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (v11)
+    if (toggleCopy)
     {
-      v26 = [[PKPaymentMethodPeerPaymentSectionController alloc] initWithDelegate:v22 request:v22->_paymentRequest useAppleCashBalance:v10];
+      v26 = [[PKPaymentMethodPeerPaymentSectionController alloc] initWithDelegate:v22 request:v22->_paymentRequest useAppleCashBalance:balanceCopy];
       peerPaymentController = v22->_peerPaymentController;
       v22->_peerPaymentController = v26;
 
@@ -47,16 +47,16 @@
     v22->_passesController = v28;
 
     [v25 addObject:v22->_passesController];
-    if (v18)
+    if (nameCopy)
     {
-      if (v19)
+      if (identifierCopy)
       {
-        v30 = [MEMORY[0x1E69B8A58] sharedInstance];
-        v31 = [v30 passWithFPANIdentifier:v19];
+        mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+        v31 = [mEMORY[0x1E69B8A58] passWithFPANIdentifier:identifierCopy];
 
         if (!v31)
         {
-          v32 = [[PKPaymentMethodRemovedSectionController alloc] initWithPaymentMethodName:v18 paymentMethodIdentifier:v19];
+          v32 = [[PKPaymentMethodRemovedSectionController alloc] initWithPaymentMethodName:nameCopy paymentMethodIdentifier:identifierCopy];
           [v25 addObject:v32];
         }
       }
@@ -66,8 +66,8 @@
     actionsController = v22->_actionsController;
     v22->_actionsController = v33;
 
-    v35 = [MEMORY[0x1E69DC888] linkColor];
-    if (a9 == 2)
+    linkColor = [MEMORY[0x1E69DC888] linkColor];
+    if (style == 2)
     {
       PKBridgeButtonTextColor();
     }
@@ -81,47 +81,47 @@
     [(PKPaymentMethodActionSectionController *)v22->_actionsController setLinkTextColor:v36];
     [v25 addObject:v22->_actionsController];
     [(PKDynamicCollectionViewController *)v22 setSections:v25 animated:0];
-    v37 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v37 addObserver:v22 selector:sel__handlePassUpdate_ name:*MEMORY[0x1E69BBBD8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v22 selector:sel__handlePassUpdate_ name:*MEMORY[0x1E69BBBD8] object:0];
   }
 
   return v22;
 }
 
-- (void)selectedPass:(id)a3
+- (void)selectedPass:(id)pass
 {
-  v4 = a3;
+  passCopy = pass;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained paymentMethodSelectionViewController:self didSelectPaymentMethod:v4];
+  [WeakRetained paymentMethodSelectionViewController:self didSelectPaymentMethod:passCopy];
 }
 
-- (void)requestOpenURL:(id)a3
+- (void)requestOpenURL:(id)l
 {
   v4 = MEMORY[0x1E697A838];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithURL:v5];
+  lCopy = l;
+  v6 = [[v4 alloc] initWithURL:lCopy];
 
   [v6 setModalPresentationStyle:2];
   [(PKPaymentMethodSelectionViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)toggledUseAppleCashBalance:(BOOL)a3
+- (void)toggledUseAppleCashBalance:(BOOL)balance
 {
-  v3 = a3;
+  balanceCopy = balance;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained paymentMethodSelectionViewController:self didToggleUseAppleCashBalance:v3];
+  [WeakRetained paymentMethodSelectionViewController:self didToggleUseAppleCashBalance:balanceCopy];
 }
 
-- (void)_openPaymentSetupWithNetworkWhitelist:(id)a3 completion:(id)a4
+- (void)_openPaymentSetupWithNetworkWhitelist:(id)whitelist completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  whitelistCopy = whitelist;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8 = objc_alloc(MEMORY[0x1E69B8D48]);
-  v9 = [MEMORY[0x1E69B8EF8] sharedService];
-  v10 = [v8 initWithWebService:v9];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+  v10 = [v8 initWithWebService:mEMORY[0x1E69B8EF8]];
 
-  [v10 setAllowedPaymentNetworks:v6];
+  [v10 setAllowedPaymentNetworks:whitelistCopy];
   [v10 setAllowedCardTypes:&unk_1F3CC8468];
   v11 = objc_alloc_init(MEMORY[0x1E695DFD8]);
   [v10 setAllowedFeatureIdentifiers:v11];
@@ -130,11 +130,11 @@
   v14[2] = __91__PKPaymentMethodSelectionViewController__openPaymentSetupWithNetworkWhitelist_completion___block_invoke;
   v14[3] = &unk_1E801AA28;
   objc_copyWeak(&v18, &location);
-  v12 = v7;
+  v12 = completionCopy;
   v17 = v12;
   v13 = v10;
   v15 = v13;
-  v16 = self;
+  selfCopy = self;
   [v13 preflightWithCompletion:v14];
 
   objc_destroyWeak(&v18);
@@ -234,7 +234,7 @@ void __91__PKPaymentMethodSelectionViewController__openPaymentSetupWithNetworkWh
   [v1 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_handlePassUpdate:(id)a3
+- (void)_handlePassUpdate:(id)update
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

@@ -1,22 +1,22 @@
 @interface _EQKitInspectableBox
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (EQKitInspectable)inspectableChildren;
 - (NSString)inspectableName;
 - (NSString)inspectableNameForIcon;
-- (_EQKitInspectableBox)initWithBox:(id)a3;
+- (_EQKitInspectableBox)initWithBox:(id)box;
 - (_NSRange)inspectableNameRange;
 @end
 
 @implementation _EQKitInspectableBox
 
-- (_EQKitInspectableBox)initWithBox:(id)a3
+- (_EQKitInspectableBox)initWithBox:(id)box
 {
   v5.receiver = self;
   v5.super_class = _EQKitInspectableBox;
   result = [(_EQKitInspectableBox *)&v5 init];
   if (result)
   {
-    result->_box = a3;
+    result->_box = box;
   }
 
   return result;
@@ -34,9 +34,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(EQKitBox *)self->_box attribution];
+    attribution = [(EQKitBox *)self->_box attribution];
 
-    return [v3 source];
+    return [attribution source];
   }
 
   else
@@ -52,19 +52,19 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(EQKitBox *)self->_box attribution];
+    attribution = [(EQKitBox *)self->_box attribution];
 
-    v4 = [v3 range];
+    range = [attribution range];
   }
 
   else
   {
-    v4 = 0x7FFFFFFFFFFFFFFFLL;
+    range = 0x7FFFFFFFFFFFFFFFLL;
     v5 = 0;
   }
 
   result.length = v5;
-  result.location = v4;
+  result.location = range;
   return result;
 }
 
@@ -81,8 +81,8 @@
       v11 = 0u;
       v12 = 0u;
       v13 = 0u;
-      v5 = [(EQKitBox *)self->_box containedBoxes];
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      containedBoxes = [(EQKitBox *)self->_box containedBoxes];
+      v6 = [containedBoxes countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         v7 = v6;
@@ -94,14 +94,14 @@
           {
             if (*v11 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(containedBoxes);
             }
 
             [v4 addObject:{-[_EQKitInspectableBox initWithBox:]([_EQKitInspectableBox alloc], "initWithBox:", *(*(&v10 + 1) + 8 * v9++))}];
           }
 
           while (v7 != v9);
-          v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+          v7 = [containedBoxes countByEnumeratingWithState:&v10 objects:v14 count:16];
         }
 
         while (v7);
@@ -120,7 +120,7 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -129,7 +129,7 @@
   }
 
   v5 = [(_EQKitInspectableBox *)self box];
-  v6 = [a3 box];
+  v6 = [equal box];
 
   return [(EQKitBox *)v5 isEqual:v6];
 }

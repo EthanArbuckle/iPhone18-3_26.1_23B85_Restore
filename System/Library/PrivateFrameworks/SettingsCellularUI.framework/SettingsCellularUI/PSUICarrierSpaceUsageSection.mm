@@ -7,11 +7,11 @@
 
 - (BOOL)isSharedPlan
 {
-  v3 = [(PSUICarrierSpaceUsageSection *)self primaryMetrics];
-  if (v3)
+  primaryMetrics = [(PSUICarrierSpaceUsageSection *)self primaryMetrics];
+  if (primaryMetrics)
   {
-    v4 = [(PSUICarrierSpaceUsageSection *)self otherMetrics];
-    v5 = [v4 count] != 0;
+    otherMetrics = [(PSUICarrierSpaceUsageSection *)self otherMetrics];
+    v5 = [otherMetrics count] != 0;
   }
 
   else
@@ -25,22 +25,22 @@
 - (id)description
 {
   v18 = MEMORY[0x277CCACA8];
-  v3 = [(PSUICarrierSpaceUsageSection *)self sharedPlanIdentifier];
-  v4 = v3;
+  sharedPlanIdentifier = [(PSUICarrierSpaceUsageSection *)self sharedPlanIdentifier];
+  v4 = sharedPlanIdentifier;
   v5 = @"Single Plan";
-  if (v3)
+  if (sharedPlanIdentifier)
   {
-    v5 = v3;
+    v5 = sharedPlanIdentifier;
   }
 
   v17 = v5;
-  v6 = [(PSUICarrierSpaceUsageSection *)self primaryMetrics];
-  v7 = [(PSUICarrierSpaceUsageSection *)self accountMetrics];
-  v8 = [v7 networkUsageLabel];
-  v9 = [(PSUICarrierSpaceUsageSection *)self accountMetrics];
-  v10 = [v9 deviceType];
-  v11 = [(PSUICarrierSpaceUsageSection *)self accountMetrics];
-  if ([v11 localDevice])
+  primaryMetrics = [(PSUICarrierSpaceUsageSection *)self primaryMetrics];
+  accountMetrics = [(PSUICarrierSpaceUsageSection *)self accountMetrics];
+  networkUsageLabel = [accountMetrics networkUsageLabel];
+  accountMetrics2 = [(PSUICarrierSpaceUsageSection *)self accountMetrics];
+  deviceType = [accountMetrics2 deviceType];
+  accountMetrics3 = [(PSUICarrierSpaceUsageSection *)self accountMetrics];
+  if ([accountMetrics3 localDevice])
   {
     v12 = @"YES";
   }
@@ -50,9 +50,9 @@
     v12 = @"NO";
   }
 
-  v13 = [(PSUICarrierSpaceUsageSection *)self otherMetrics];
-  v14 = [(PSUICarrierSpaceUsageSection *)self barCategories];
-  v15 = [v18 stringWithFormat:@"Shared ID: %@\nPrimary Metrics: %@\nAccount Metrics=<Network Usage Label: %@\nDevice Type: %d\nIs Local Device: %@>\nOther Metrics: %@\nBar Categories: %@", v17, v6, v8, v10, v12, v13, v14];
+  otherMetrics = [(PSUICarrierSpaceUsageSection *)self otherMetrics];
+  barCategories = [(PSUICarrierSpaceUsageSection *)self barCategories];
+  v15 = [v18 stringWithFormat:@"Shared ID: %@\nPrimary Metrics: %@\nAccount Metrics=<Network Usage Label: %@\nDevice Type: %d\nIs Local Device: %@>\nOther Metrics: %@\nBar Categories: %@", v17, primaryMetrics, networkUsageLabel, deviceType, v12, otherMetrics, barCategories];
 
   return v15;
 }

@@ -594,16 +594,16 @@ LABEL_45:
     goto LABEL_44;
   }
 
-  v60 = [(NSNull *)sub_100039FB4(@"BDC_Pruning_Period" intValue];
+  intValue = [(NSNull *)sub_100039FB4(@"BDC_Pruning_Period" intValue];
   dispatch_source_set_event_handler(v68->_pruningTimer, handler);
   pruningTimer = v68->_pruningTimer;
   v62 = dispatch_time(0x8000000000000000, 1000);
-  dispatch_source_set_timer(pruningTimer, v62, 1000000000 * v60, 0xF4240uLL);
+  dispatch_source_set_timer(pruningTimer, v62, 1000000000 * intValue, 0xF4240uLL);
   v63 = qword_1000AB7E8;
   if (os_log_type_enabled(qword_1000AB7E8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *&buf[4] = v60;
+    *&buf[4] = intValue;
     _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "Pruning timer %d s", buf, 8u);
   }
 

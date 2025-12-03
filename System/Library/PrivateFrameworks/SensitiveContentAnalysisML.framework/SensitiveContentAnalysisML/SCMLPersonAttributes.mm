@@ -7,13 +7,13 @@
 - (BOOL)specific;
 - (NSArray)gender;
 - (_TtC26SensitiveContentAnalysisML20SCMLPersonAttributes)init;
-- (void)setGender:(id)a3;
-- (void)setHasAge:(BOOL)a3;
-- (void)setHasEthnicity:(BOOL)a3;
-- (void)setHasGender:(BOOL)a3;
-- (void)setHasImplicitCategoryRequiringPersonalization:(BOOL)a3;
-- (void)setIsGroup:(BOOL)a3;
-- (void)setSpecific:(BOOL)a3;
+- (void)setGender:(id)gender;
+- (void)setHasAge:(BOOL)age;
+- (void)setHasEthnicity:(BOOL)ethnicity;
+- (void)setHasGender:(BOOL)gender;
+- (void)setHasImplicitCategoryRequiringPersonalization:(BOOL)personalization;
+- (void)setIsGroup:(BOOL)group;
+- (void)setSpecific:(BOOL)specific;
 @end
 
 @implementation SCMLPersonAttributes
@@ -25,11 +25,11 @@
   return *(self + v3);
 }
 
-- (void)setSpecific:(BOOL)a3
+- (void)setSpecific:(BOOL)specific
 {
   v5 = OBJC_IVAR____TtC26SensitiveContentAnalysisML20SCMLPersonAttributes_specific;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = specific;
 }
 
 - (BOOL)isGroup
@@ -39,11 +39,11 @@
   return *(self + v3);
 }
 
-- (void)setIsGroup:(BOOL)a3
+- (void)setIsGroup:(BOOL)group
 {
   v5 = OBJC_IVAR____TtC26SensitiveContentAnalysisML20SCMLPersonAttributes_isGroup;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = group;
 }
 
 - (BOOL)hasAge
@@ -53,11 +53,11 @@
   return *(self + v3);
 }
 
-- (void)setHasAge:(BOOL)a3
+- (void)setHasAge:(BOOL)age
 {
   v5 = OBJC_IVAR____TtC26SensitiveContentAnalysisML20SCMLPersonAttributes_hasAge;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = age;
 }
 
 - (BOOL)hasGender
@@ -67,11 +67,11 @@
   return *(self + v3);
 }
 
-- (void)setHasGender:(BOOL)a3
+- (void)setHasGender:(BOOL)gender
 {
   v5 = OBJC_IVAR____TtC26SensitiveContentAnalysisML20SCMLPersonAttributes_hasGender;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = gender;
 }
 
 - (BOOL)hasEthnicity
@@ -81,11 +81,11 @@
   return *(self + v3);
 }
 
-- (void)setHasEthnicity:(BOOL)a3
+- (void)setHasEthnicity:(BOOL)ethnicity
 {
   v5 = OBJC_IVAR____TtC26SensitiveContentAnalysisML20SCMLPersonAttributes_hasEthnicity;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ethnicity;
 }
 
 - (NSArray)gender
@@ -107,19 +107,19 @@
   return v4;
 }
 
-- (void)setGender:(id)a3
+- (void)setGender:(id)gender
 {
-  v3 = a3;
-  if (a3)
+  genderCopy = gender;
+  if (gender)
   {
     type metadata accessor for SCMLPeopleDetectionAttribute();
-    v3 = sub_1B8AF0818();
+    genderCopy = sub_1B8AF0818();
   }
 
   v5 = OBJC_IVAR____TtC26SensitiveContentAnalysisML20SCMLPersonAttributes_gender;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
+  *(self + v5) = genderCopy;
 }
 
 - (BOOL)hasImplicitCategoryRequiringPersonalization
@@ -129,11 +129,11 @@
   return *(self + v3);
 }
 
-- (void)setHasImplicitCategoryRequiringPersonalization:(BOOL)a3
+- (void)setHasImplicitCategoryRequiringPersonalization:(BOOL)personalization
 {
   v5 = OBJC_IVAR____TtC26SensitiveContentAnalysisML20SCMLPersonAttributes_hasImplicitCategoryRequiringPersonalization;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = personalization;
 }
 
 - (_TtC26SensitiveContentAnalysisML20SCMLPersonAttributes)init

@@ -1,17 +1,17 @@
 @interface SUUIStorePageSectionsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
 @end
 
 @implementation SUUIStorePageSectionsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIStorePageSectionsViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SUUIStorePageSectionsViewController" hasInstanceVariable:@"_collectionView" withType:"SUUICollectionView"];
-  [v3 validateClass:@"UIViewController" hasInstanceVariable:@"_title" withType:"NSString"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIStorePageSectionsViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SUUIStorePageSectionsViewController" hasInstanceVariable:@"_collectionView" withType:"SUUICollectionView"];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceVariable:@"_title" withType:"NSString"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

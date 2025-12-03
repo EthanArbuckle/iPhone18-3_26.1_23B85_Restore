@@ -1,23 +1,23 @@
 @interface SKDCSItemRecord
-- (SKDCSItemRecord)initWithUniqueID:(id)a3 bundleID:(id)a4 attributes:(id)a5;
+- (SKDCSItemRecord)initWithUniqueID:(id)d bundleID:(id)iD attributes:(id)attributes;
 - (uint64_t)bundleID;
 - (uint64_t)uniqueID;
 @end
 
 @implementation SKDCSItemRecord
 
-- (SKDCSItemRecord)initWithUniqueID:(id)a3 bundleID:(id)a4 attributes:(id)a5
+- (SKDCSItemRecord)initWithUniqueID:(id)d bundleID:(id)iD attributes:(id)attributes
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = SKDCSItemRecord;
-  v11 = [(SKDBaseRecord *)&v14 initWithAttributes:a5];
+  v11 = [(SKDBaseRecord *)&v14 initWithAttributes:attributes];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_uniqueID, a3);
-    objc_storeStrong(&v12->_bundleID, a4);
+    objc_storeStrong(&v11->_uniqueID, d);
+    objc_storeStrong(&v12->_bundleID, iD);
   }
 
   return v12;

@@ -1,13 +1,13 @@
 @interface CHIntegrationTestClient
 - (CHIntegrationTestClient)init;
-- (void)populateSampleAppLaunchEmbeddingWithCompletion:(id)a3;
+- (void)populateSampleAppLaunchEmbeddingWithCompletion:(id)completion;
 @end
 
 @implementation CHIntegrationTestClient
 
-- (void)populateSampleAppLaunchEmbeddingWithCompletion:(id)a3
+- (void)populateSampleAppLaunchEmbeddingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = ch_test_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -20,8 +20,8 @@
   v9[1] = 3221225472;
   v9[2] = __74__CHIntegrationTestClient_populateSampleAppLaunchEmbeddingWithCompletion___block_invoke;
   v9[3] = &unk_278DE5008;
-  v10 = v4;
-  v7 = v4;
+  v10 = completionCopy;
+  v7 = completionCopy;
   v8 = [(CHXPCClientHelper *)clientHelper remoteObjectProxyWithErrorHandler:v9];
   [v8 populateSampleAppLaunchEmbeddingWithCompletion:v7];
 }

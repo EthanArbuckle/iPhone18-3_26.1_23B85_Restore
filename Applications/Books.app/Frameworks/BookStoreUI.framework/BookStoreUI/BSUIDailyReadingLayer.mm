@@ -15,29 +15,29 @@
 - (id)titleLayer;
 - (int64_t)dynamicStreakDayGoal;
 - (int64_t)dynamicTimeReadToday;
-- (void)_animateArcLayer:(id)a3;
-- (void)_animateProgressTodayIfNeededHonoringDelay:(BOOL)a3;
+- (void)_animateArcLayer:(id)layer;
+- (void)_animateProgressTodayIfNeededHonoringDelay:(BOOL)delay;
 - (void)_animateTimeTextFade;
 - (void)_backgroundArc;
 - (void)_checkEnvironment;
 - (void)_progressArc;
 - (void)_setInitialTimeTextAnimate;
-- (void)_setupBackgroundWithDebugBounds:(BOOL)a3;
+- (void)_setupBackgroundWithDebugBounds:(BOOL)bounds;
 - (void)_setupDailyReading;
-- (void)_setupDynamicTimeLayerWithDebugBounds:(BOOL)a3;
+- (void)_setupDynamicTimeLayerWithDebugBounds:(BOOL)bounds;
 - (void)_setupGoalArtwork;
 - (void)_startMicaPlayer;
-- (void)_updateArcLayer:(id)a3 color:(id)a4 percent:(double)a5;
+- (void)_updateArcLayer:(id)layer color:(id)color percent:(double)percent;
 - (void)_updateProgressNoAnimation;
-- (void)_updateTimeTextAnimate:(BOOL)a3;
-- (void)configureWithMetrics:(id)a3 timeTextYOffset:(double)a4 micaFileProvider:(id)a5;
-- (void)configureWithSublayers:(id)a3;
+- (void)_updateTimeTextAnimate:(BOOL)animate;
+- (void)configureWithMetrics:(id)metrics timeTextYOffset:(double)offset micaFileProvider:(id)provider;
+- (void)configureWithSublayers:(id)sublayers;
 - (void)dealloc;
-- (void)didAddLayerWithFeedControllerHost:(id)a3;
-- (void)dynamicProgressChanged:(id)a3;
-- (void)handleTrigger:(id)a3 didChangeState:(unint64_t)a4 updateEvent:(unint64_t)a5;
-- (void)setVisibleProgressToday:(double)a3;
-- (void)willRemoveLayerWithFeedControllerHost:(id)a3;
+- (void)didAddLayerWithFeedControllerHost:(id)host;
+- (void)dynamicProgressChanged:(id)changed;
+- (void)handleTrigger:(id)trigger didChangeState:(unint64_t)state updateEvent:(unint64_t)event;
+- (void)setVisibleProgressToday:(double)today;
+- (void)willRemoveLayerWithFeedControllerHost:(id)host;
 @end
 
 @implementation BSUIDailyReadingLayer
@@ -50,18 +50,18 @@
   [(BSUIDailyReadingLayer *)&v3 dealloc];
 }
 
-- (void)configureWithMetrics:(id)a3 timeTextYOffset:(double)a4 micaFileProvider:(id)a5
+- (void)configureWithMetrics:(id)metrics timeTextYOffset:(double)offset micaFileProvider:(id)provider
 {
-  v23 = a3;
-  objc_storeStrong(&self->_metrics, a3);
-  self->_timeTextYOffset = a4;
+  metricsCopy = metrics;
+  objc_storeStrong(&self->_metrics, metrics);
+  self->_timeTextYOffset = offset;
   size = CGRectZero.size;
   self->_workingRect.origin = CGRectZero.origin;
   self->_workingRect.size = size;
-  v9 = [(BSUIDailyReadingLayer *)self metrics];
-  v10 = [v9 triggerName];
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  triggerName = [metrics triggerName];
 
-  if (!v10)
+  if (!triggerName)
   {
     self->_lastTriggerState = 2;
     [(BSUIDailyReadingLayer *)self _updateProgressNoAnimation];
@@ -70,28 +70,28 @@
   if ([(BSUIDailyReadingMetrics *)self->_metrics clockTicks])
   {
     v11 = +[BSUITemplate manager];
-    v12 = [v11 dynamicRegistry];
+    dynamicRegistry = [v11 dynamicRegistry];
 
     v13 = +[BCReadingTimeToday kind];
-    v14 = [v12 progressProviderForKind:v13];
+    v14 = [dynamicRegistry progressProviderForKind:v13];
     v15 = [v14 dynamicProgressForKind:v13 instance:0 parameters:0];
     [v15 registerProgressObserver:self];
     dynamicProgress = self->_dynamicProgress;
     self->_dynamicProgress = v15;
     v17 = v15;
 
-    v18 = [v17 progress];
-    v19 = [v18 integerValue];
+    progress = [v17 progress];
+    integerValue = [progress integerValue];
 
-    v20 = [(BSUIDailyReadingLayer *)self dynamicTimeReadToday];
-    if (v19 <= v20)
+    dynamicTimeReadToday = [(BSUIDailyReadingLayer *)self dynamicTimeReadToday];
+    if (integerValue <= dynamicTimeReadToday)
     {
-      v21 = v20;
+      v21 = dynamicTimeReadToday;
     }
 
     else
     {
-      v21 = v19;
+      v21 = integerValue;
     }
 
     v22 = [NSNumber numberWithInteger:v21];
@@ -100,9 +100,9 @@
   }
 }
 
-- (void)configureWithSublayers:(id)a3
+- (void)configureWithSublayers:(id)sublayers
 {
-  v4 = a3;
+  sublayersCopy = sublayers;
   textSublayers = self->_textSublayers;
   if (textSublayers)
   {
@@ -125,7 +125,7 @@
   v18 = v9;
   v10 = v8;
   v19 = v10;
-  [v4 enumerateObjectsUsingBlock:v17];
+  [sublayersCopy enumerateObjectsUsingBlock:v17];
   objc_storeStrong(&self->_textSublayers, v7);
   v11 = self->_symbolImageSublayers;
   self->_symbolImageSublayers = v10;
@@ -155,19 +155,19 @@
 
 - (double)_actualReadingTimeSeconds
 {
-  v3 = [(BSUIDailyReadingLayer *)self overrideReadingTimeToday];
-  v4 = v3;
-  if (v3)
+  overrideReadingTimeToday = [(BSUIDailyReadingLayer *)self overrideReadingTimeToday];
+  v4 = overrideReadingTimeToday;
+  if (overrideReadingTimeToday)
   {
-    [v3 floatValue];
+    [overrideReadingTimeToday floatValue];
     v6 = v5;
   }
 
   else
   {
-    v7 = [(BSUIDailyReadingLayer *)self metrics];
-    v8 = [v7 actualReadingTimeSeconds];
-    [v8 floatValue];
+    metrics = [(BSUIDailyReadingLayer *)self metrics];
+    actualReadingTimeSeconds = [metrics actualReadingTimeSeconds];
+    [actualReadingTimeSeconds floatValue];
     v6 = v9;
   }
 
@@ -176,23 +176,23 @@
 
 - (double)_calculatedProgress
 {
-  v3 = [(BSUIDailyReadingLayer *)self dynamicStreakDayGoal];
-  if (v3 < 1)
+  dynamicStreakDayGoal = [(BSUIDailyReadingLayer *)self dynamicStreakDayGoal];
+  if (dynamicStreakDayGoal < 1)
   {
     return 0.0;
   }
 
-  v4 = v3;
+  v4 = dynamicStreakDayGoal;
   [(BSUIDailyReadingLayer *)self _actualReadingTimeSeconds];
   return v5 / v4;
 }
 
 - (double)_visibleOrActualProgress
 {
-  v3 = [(BSUIDailyReadingLayer *)self metrics];
-  v4 = [v3 lastVisibleProgressToday];
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  lastVisibleProgressToday = [metrics lastVisibleProgressToday];
 
-  if (v4)
+  if (lastVisibleProgressToday)
   {
 
     [(BSUIDailyReadingLayer *)self visibleProgressToday];
@@ -241,14 +241,14 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BSUIDailyReadingLayer *)self metrics];
-  v12 = [v11 progressBarWidth];
-  [v12 floatValue];
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  progressBarWidth = [metrics progressBarWidth];
+  [progressBarWidth floatValue];
   v14 = v13;
 
-  v15 = [(BSUIDailyReadingLayer *)self metrics];
-  v16 = [v15 arcWidth];
-  [v16 floatValue];
+  metrics2 = [(BSUIDailyReadingLayer *)self metrics];
+  arcWidth = [metrics2 arcWidth];
+  [arcWidth floatValue];
   v18 = v17;
 
   if (v18 > 0.0)
@@ -273,14 +273,14 @@
   y = v42.origin.y;
   width = v42.size.width;
   height = v42.size.height;
-  v24 = [(BSUIDailyReadingLayer *)self metrics];
-  v25 = [v24 iconMode];
+  metrics3 = [(BSUIDailyReadingLayer *)self metrics];
+  iconMode = [metrics3 iconMode];
 
   v26 = x;
   v27 = y;
   v28 = width;
   v29 = height;
-  if (v25)
+  if (iconMode)
   {
     v30 = CGRectGetWidth(*&v26);
     v43.origin.x = x;
@@ -311,7 +311,7 @@
   v34 = CGRectGetWidth(v45);
   v35 = v34;
   v36 = 0.0;
-  if (v25)
+  if (iconMode)
   {
     [(BSUIDailyReadingLayer *)self frame:v34];
     v36 = (CGRectGetHeight(v46) - v31) * 0.5;
@@ -329,40 +329,40 @@
 
 - (double)_endCapHeight
 {
-  v2 = [(BSUIDailyReadingLayer *)self metrics];
-  v3 = [v2 progressBarWidth];
-  [v3 floatValue];
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  progressBarWidth = [metrics progressBarWidth];
+  [progressBarWidth floatValue];
   v5 = v4 * 0.5;
 
   return v5;
 }
 
-- (void)_updateArcLayer:(id)a3 color:(id)a4 percent:(double)a5
+- (void)_updateArcLayer:(id)layer color:(id)color percent:(double)percent
 {
-  v8 = a4;
-  v9 = a3;
+  colorCopy = color;
+  layerCopy = layer;
   [(BSUIDailyReadingLayer *)self workingRect];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(BSUIDailyReadingLayer *)self metrics];
-  v19 = [v18 progressBarWidth];
-  [v19 floatValue];
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  progressBarWidth = [metrics progressBarWidth];
+  [progressBarWidth floatValue];
   v21 = v20;
 
-  v22 = [(BSUIDailyReadingLayer *)self metrics];
-  v23 = [v22 iconMode];
+  metrics2 = [(BSUIDailyReadingLayer *)self metrics];
+  iconMode = [metrics2 iconMode];
 
-  v24 = [(BSUIDailyReadingLayer *)self metrics];
-  v25 = [v24 rightToLeft];
-  v26 = [v25 BOOLValue];
+  metrics3 = [(BSUIDailyReadingLayer *)self metrics];
+  rightToLeft = [metrics3 rightToLeft];
+  bOOLValue = [rightToLeft BOOLValue];
 
   v27 = v11;
   v28 = v13;
   v29 = v15;
   v30 = v17;
-  if (v23)
+  if (iconMode)
   {
     MidY = CGRectGetMidY(*&v27);
   }
@@ -380,7 +380,7 @@
   v46.size.height = v17;
   MidX = CGRectGetMidX(v46);
   v35 = -1.57079633;
-  if (v26)
+  if (bOOLValue)
   {
     v36 = 4.71238898;
   }
@@ -390,13 +390,13 @@
     v36 = -1.57079633;
   }
 
-  if (!v26)
+  if (!bOOLValue)
   {
     v35 = 4.71238898;
   }
 
   v37 = -3.14159265;
-  if (v26)
+  if (bOOLValue)
   {
     v38 = -6.28318531;
   }
@@ -406,12 +406,12 @@
     v38 = -3.14159265;
   }
 
-  if (!v26)
+  if (!bOOLValue)
   {
     v37 = 0.0;
   }
 
-  if (v23)
+  if (iconMode)
   {
     v39 = v35;
   }
@@ -421,39 +421,39 @@
     v39 = v37;
   }
 
-  if (!v23)
+  if (!iconMode)
   {
     v36 = v38;
   }
 
   v40 = v21;
-  v44 = [UIBezierPath bezierPathWithArcCenter:v26 ^ 1 radius:MidX startAngle:MidY endAngle:(v15 - v40) * 0.5 clockwise:v36, v39, v38];
-  v41 = [v8 CGColor];
+  v44 = [UIBezierPath bezierPathWithArcCenter:bOOLValue ^ 1 radius:MidX startAngle:MidY endAngle:(v15 - v40) * 0.5 clockwise:v36, v39, v38];
+  cGColor = [colorCopy CGColor];
 
-  [v9 setStrokeColor:v41];
+  [layerCopy setStrokeColor:cGColor];
   v42 = +[UIColor clearColor];
-  [v9 setFillColor:{objc_msgSend(v42, "CGColor")}];
+  [layerCopy setFillColor:{objc_msgSend(v42, "CGColor")}];
 
-  [v9 setBounds:{v11, v13, v15, v17}];
-  [v9 setFrame:{v11, v13, v15, v17}];
-  [v9 setLineWidth:v40];
-  [v9 setLineCap:kCALineCapRound];
-  [v9 setStrokeStart:0.0];
-  [v9 setStrokeEnd:a5];
-  [v9 setZPosition:1.0];
+  [layerCopy setBounds:{v11, v13, v15, v17}];
+  [layerCopy setFrame:{v11, v13, v15, v17}];
+  [layerCopy setLineWidth:v40];
+  [layerCopy setLineCap:kCALineCapRound];
+  [layerCopy setStrokeStart:0.0];
+  [layerCopy setStrokeEnd:percent];
+  [layerCopy setZPosition:1.0];
   v43 = v44;
-  [v9 setPath:{objc_msgSend(v44, "CGPath")}];
+  [layerCopy setPath:{objc_msgSend(v44, "CGPath")}];
 }
 
-- (void)_animateArcLayer:(id)a3
+- (void)_animateArcLayer:(id)layer
 {
-  if (a3)
+  if (layer)
   {
-    v4 = a3;
+    layerCopy = layer;
     [(BSUIDailyReadingLayer *)self _calculatedProgress];
     v6 = v5;
-    v7 = [(BSUIDailyReadingLayer *)self progressArcLayer];
-    [v7 setStrokeEnd:v6];
+    progressArcLayer = [(BSUIDailyReadingLayer *)self progressArcLayer];
+    [progressArcLayer setStrokeEnd:v6];
 
     v10 = [CASpringAnimation animationWithKeyPath:@"strokeEnd"];
     [v10 setMass:1.0];
@@ -469,7 +469,7 @@
 
     [v10 settlingDuration];
     [v10 setDuration:?];
-    [v4 addAnimation:v10 forKey:@"strokeEnd"];
+    [layerCopy addAnimation:v10 forKey:@"strokeEnd"];
 
     [(BSUIDailyReadingLayer *)self setVisibleProgressToday:v6];
   }
@@ -478,9 +478,9 @@
 - (void)_backgroundArc
 {
   v11 = +[UITraitCollection _currentTraitCollection];
-  v3 = [(BSUIDailyReadingLayer *)self metrics];
-  v4 = [v3 controlColor];
-  v5 = [v4 resolvedColorWithTraitCollection:v11];
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  controlColor = [metrics controlColor];
+  v5 = [controlColor resolvedColorWithTraitCollection:v11];
 
   backgroundArcLayer = self->_backgroundArcLayer;
   if (backgroundArcLayer)
@@ -498,18 +498,18 @@
     self->_backgroundArcLayer = v7;
 
     [(BSUIDailyReadingLayer *)self _updateArcLayer:self->_backgroundArcLayer color:v5 percent:1.0];
-    v9 = [(BSUIDailyReadingLayer *)self backgroundLayer];
-    v10 = [(BSUIDailyReadingLayer *)self backgroundArcLayer];
-    [v9 addSublayer:v10];
+    backgroundLayer = [(BSUIDailyReadingLayer *)self backgroundLayer];
+    backgroundArcLayer = [(BSUIDailyReadingLayer *)self backgroundArcLayer];
+    [backgroundLayer addSublayer:backgroundArcLayer];
   }
 }
 
 - (void)_progressArc
 {
   v13 = +[UITraitCollection _currentTraitCollection];
-  v3 = [(BSUIDailyReadingLayer *)self metrics];
-  v4 = [v3 progressColor];
-  v5 = [v4 resolvedColorWithTraitCollection:v13];
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  progressColor = [metrics progressColor];
+  v5 = [progressColor resolvedColorWithTraitCollection:v13];
 
   [(BSUIDailyReadingLayer *)self _visibleOrActualProgress];
   progressArcLayer = self->_progressArcLayer;
@@ -529,9 +529,9 @@
     self->_progressArcLayer = v9;
 
     [(BSUIDailyReadingLayer *)self _updateArcLayer:self->_progressArcLayer color:v5 percent:v8];
-    v11 = [(BSUIDailyReadingLayer *)self backgroundArcLayer];
-    v12 = [(BSUIDailyReadingLayer *)self progressArcLayer];
-    [v11 addSublayer:v12];
+    backgroundArcLayer = [(BSUIDailyReadingLayer *)self backgroundArcLayer];
+    progressArcLayer = [(BSUIDailyReadingLayer *)self progressArcLayer];
+    [backgroundArcLayer addSublayer:progressArcLayer];
   }
 }
 
@@ -539,8 +539,8 @@
 {
   [(BSUIDailyReadingLayer *)self _calculatedProgress];
   v4 = v3;
-  v5 = [(BSUIDailyReadingLayer *)self progressArcLayer];
-  [v5 setStrokeEnd:v4];
+  progressArcLayer = [(BSUIDailyReadingLayer *)self progressArcLayer];
+  [progressArcLayer setStrokeEnd:v4];
 }
 
 - (id)titleLayer
@@ -590,8 +590,8 @@
 
 - (void)_setupGoalArtwork
 {
-  v3 = [(BSUIDailyReadingLayer *)self awardImageLayer];
-  [v3 removeFromSuperlayer];
+  awardImageLayer = [(BSUIDailyReadingLayer *)self awardImageLayer];
+  [awardImageLayer removeFromSuperlayer];
 
   [(BSUIDailyReadingLayer *)self setAwardImageLayer:0];
   [(BSUIDailyReadingLayer *)self workingRect];
@@ -599,7 +599,7 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
+  dynamicTimeLayer = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
   v12 = *&CATransform3DIdentity.m33;
   rect_8[4] = *&CATransform3DIdentity.m31;
   rect_8[5] = v12;
@@ -612,10 +612,10 @@
   v15 = *&CATransform3DIdentity.m23;
   rect_8[2] = *&CATransform3DIdentity.m21;
   rect_8[3] = v15;
-  [v11 setTransform:rect_8];
+  [dynamicTimeLayer setTransform:rect_8];
 
-  v16 = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
-  [v16 frame];
+  dynamicTimeLayer2 = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
+  [dynamicTimeLayer2 frame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -631,8 +631,8 @@
   v60.size.width = v22;
   v60.size.height = v24;
   Height = CGRectGetHeight(v60);
-  v27 = [(BSUIDailyReadingLayer *)self metrics];
-  if ([v27 isAX])
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  if ([metrics isAX])
   {
     v28 = 22.0;
   }
@@ -643,8 +643,8 @@
   }
 
   v29 = Height - v28;
-  v30 = [(BSUIDailyReadingLayer *)self metrics];
-  if ([v30 isAX])
+  metrics2 = [(BSUIDailyReadingLayer *)self metrics];
+  if ([metrics2 isAX])
   {
     v31 = 4.0;
   }
@@ -662,40 +662,40 @@
   v33 = objc_alloc_init(CALayer);
   [v33 setFrame:{v32, MidY - v29 * 0.5 - v31, v29, v29}];
   [(BSUIDailyReadingLayer *)self setAwardImageLayer:v33];
-  v34 = [(BSUIDailyReadingLayer *)self backgroundLayer];
-  [v34 addSublayer:v33];
+  backgroundLayer = [(BSUIDailyReadingLayer *)self backgroundLayer];
+  [backgroundLayer addSublayer:v33];
 
   v35 = objc_alloc_init(BSUIMicaFileProvider);
-  v36 = [(BSUIDailyReadingLayer *)self micaPlayer];
-  if (v36)
+  micaPlayer = [(BSUIDailyReadingLayer *)self micaPlayer];
+  if (micaPlayer)
   {
 
 LABEL_10:
-    v40 = [(BSUIDailyReadingLayer *)self micaPlayer];
-    [v40 removeFromSuperlayer];
+    micaPlayer2 = [(BSUIDailyReadingLayer *)self micaPlayer];
+    [micaPlayer2 removeFromSuperlayer];
 
     v41 = [[TUIMicaPlayer alloc] initWithPath:@"/mica/ic_ReadingMeter-Checkmark_58_v4~AMH.caar" retinaScale:v35 fileProvider:1.0];
     [(BSUIDailyReadingLayer *)self setMicaPlayer:v41];
 
-    v42 = [(BSUIDailyReadingLayer *)self metrics];
-    v43 = [v42 opacity];
-    [v43 floatValue];
+    metrics3 = [(BSUIDailyReadingLayer *)self metrics];
+    opacity = [metrics3 opacity];
+    [opacity floatValue];
     v45 = v44;
-    v46 = [(BSUIDailyReadingLayer *)self micaPlayer];
-    v47 = [v46 rootLayer];
+    micaPlayer3 = [(BSUIDailyReadingLayer *)self micaPlayer];
+    rootLayer = [micaPlayer3 rootLayer];
     LODWORD(v48) = v45;
-    [v47 setOpacity:v48];
+    [rootLayer setOpacity:v48];
 
-    v49 = [(BSUIDailyReadingLayer *)self micaPlayer];
-    v50 = [(BSUIDailyReadingLayer *)self awardImageLayer];
-    [v49 addToLayer:v50 onTop:1 gravity:@"resize"];
+    micaPlayer4 = [(BSUIDailyReadingLayer *)self micaPlayer];
+    awardImageLayer2 = [(BSUIDailyReadingLayer *)self awardImageLayer];
+    [micaPlayer4 addToLayer:awardImageLayer2 onTop:1 gravity:@"resize"];
 
     goto LABEL_11;
   }
 
-  v37 = [(BSUIDailyReadingLayer *)self micaPlayer];
-  v38 = [v37 path];
-  v39 = [v38 isEqualToString:@"/mica/ic_ReadingMeter-Checkmark_58_v4~AMH.caar"];
+  micaPlayer5 = [(BSUIDailyReadingLayer *)self micaPlayer];
+  path = [micaPlayer5 path];
+  v39 = [path isEqualToString:@"/mica/ic_ReadingMeter-Checkmark_58_v4~AMH.caar"];
 
   if ((v39 & 1) == 0)
   {
@@ -708,26 +708,26 @@ LABEL_11:
     [(BSUIDailyReadingLayer *)self _visibleOrActualProgress];
     if (v51 >= 1.0)
     {
-      v52 = [(BSUIDailyReadingLayer *)self micaPlayer];
-      [v52 documentDuration];
+      micaPlayer6 = [(BSUIDailyReadingLayer *)self micaPlayer];
+      [micaPlayer6 documentDuration];
       v54 = v53;
-      v55 = [(BSUIDailyReadingLayer *)self micaPlayer];
-      [v55 setPlaybackTime:v54];
+      micaPlayer7 = [(BSUIDailyReadingLayer *)self micaPlayer];
+      [micaPlayer7 setPlaybackTime:v54];
 
-      v56 = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
-      [v56 setOpacity:0.0];
+      dynamicTimeLayer3 = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
+      [dynamicTimeLayer3 setOpacity:0.0];
 
       [(BSUIDailyReadingLayer *)self setGoalCompletedAnimationRequested:1];
     }
   }
 }
 
-- (void)_setupBackgroundWithDebugBounds:(BOOL)a3
+- (void)_setupBackgroundWithDebugBounds:(BOOL)bounds
 {
-  v3 = a3;
-  v5 = [(BSUIDailyReadingLayer *)self backgroundLayer];
+  boundsCopy = bounds;
+  backgroundLayer = [(BSUIDailyReadingLayer *)self backgroundLayer];
 
-  if (!v5)
+  if (!backgroundLayer)
   {
     v6 = +[CALayer layer];
     backgroundLayer = self->_backgroundLayer;
@@ -741,11 +741,11 @@ LABEL_11:
   v15 = v14;
   [(CALayer *)self->_backgroundLayer setBounds:?];
   [(CALayer *)self->_backgroundLayer setFrame:v9, v11, v13, v15];
-  v16 = [(BSUIDailyReadingLayer *)self metrics];
-  v17 = [v16 backgroundColor];
-  -[CALayer setBackgroundColor:](self->_backgroundLayer, "setBackgroundColor:", [v17 CGColor]);
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  backgroundColor = [metrics backgroundColor];
+  -[CALayer setBackgroundColor:](self->_backgroundLayer, "setBackgroundColor:", [backgroundColor CGColor]);
 
-  if (v3)
+  if (boundsCopy)
   {
     v18 = +[UIColor blueColor];
     -[CALayer setBorderColor:](self->_backgroundLayer, "setBorderColor:", [v18 CGColor]);
@@ -762,29 +762,29 @@ LABEL_11:
 
 - (void)_checkEnvironment
 {
-  v3 = [(BSUIDailyReadingLayer *)self backgroundLayer];
+  backgroundLayer = [(BSUIDailyReadingLayer *)self backgroundLayer];
 
-  if (v3)
+  if (backgroundLayer)
   {
-    v4 = [(BSUIDailyReadingLayer *)self metrics];
-    v5 = [v4 axValue];
-    v6 = [v5 integerValue];
+    metrics = [(BSUIDailyReadingLayer *)self metrics];
+    axValue = [metrics axValue];
+    integerValue = [axValue integerValue];
 
-    v7 = [(BSUIDailyReadingLayer *)self lastAXValue];
-    v8 = v7 != v6;
-    if (v7 != v6)
+    lastAXValue = [(BSUIDailyReadingLayer *)self lastAXValue];
+    v8 = lastAXValue != integerValue;
+    if (lastAXValue != integerValue)
     {
-      [(BSUIDailyReadingLayer *)self setLastAXValue:v6];
+      [(BSUIDailyReadingLayer *)self setLastAXValue:integerValue];
     }
 
-    v9 = [(BSUIDailyReadingLayer *)self dynamicStreakDayGoal];
-    if ([(BSUIDailyReadingLayer *)self lastGoals]!= v9)
+    dynamicStreakDayGoal = [(BSUIDailyReadingLayer *)self dynamicStreakDayGoal];
+    if ([(BSUIDailyReadingLayer *)self lastGoals]!= dynamicStreakDayGoal)
     {
-      if (v9 >= 1)
+      if (dynamicStreakDayGoal >= 1)
       {
-        v10 = [(BSUIDailyReadingLayer *)self dynamicProgress];
-        v11 = [v10 progress];
-        [v11 floatValue];
+        dynamicProgress = [(BSUIDailyReadingLayer *)self dynamicProgress];
+        progress = [dynamicProgress progress];
+        [progress floatValue];
         v13 = v12;
 
         [(BSUIDailyReadingLayer *)self _actualReadingTimeSeconds];
@@ -793,10 +793,10 @@ LABEL_11:
           v14 = v13;
         }
 
-        [(BSUIDailyReadingLayer *)self setVisibleProgressToday:v14 / v9];
+        [(BSUIDailyReadingLayer *)self setVisibleProgressToday:v14 / dynamicStreakDayGoal];
       }
 
-      [(BSUIDailyReadingLayer *)self setLastGoals:v9];
+      [(BSUIDailyReadingLayer *)self setLastGoals:dynamicStreakDayGoal];
       v8 = 1;
     }
 
@@ -828,8 +828,8 @@ LABEL_11:
       [(BSUIDailyReadingLayer *)self setLastWorkingRect:?];
     }
 
-    v27 = [(BSUIDailyReadingLayer *)self backgroundLayer];
-    [v27 removeFromSuperlayer];
+    backgroundLayer2 = [(BSUIDailyReadingLayer *)self backgroundLayer];
+    [backgroundLayer2 removeFromSuperlayer];
 
     [(BSUIDailyReadingLayer *)self setAwardImageLayer:0];
     [(BSUIDailyReadingLayer *)self setProgressArcLayer:0];
@@ -847,13 +847,13 @@ LABEL_11:
   [(BSUIDailyReadingLayer *)self _backgroundArc];
   [(BSUIDailyReadingLayer *)self _progressArc];
   [(BSUIDailyReadingLayer *)self _setupDynamicTimeLayerWithDebugBounds:0];
-  v3 = [(BSUIDailyReadingLayer *)self hiddenTimeLayer];
-  [v3 setHidden:1];
+  hiddenTimeLayer = [(BSUIDailyReadingLayer *)self hiddenTimeLayer];
+  [hiddenTimeLayer setHidden:1];
 
-  v4 = [(BSUIDailyReadingLayer *)self metrics];
-  v5 = [v4 iconMode];
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  iconMode = [metrics iconMode];
 
-  if ((v5 & 1) == 0)
+  if ((iconMode & 1) == 0)
   {
 
     [(BSUIDailyReadingLayer *)self _setupGoalArtwork];
@@ -870,27 +870,27 @@ LABEL_11:
 
   else
   {
-    v5 = [(BSUIDailyReadingLayer *)self superlayer];
-    v4 = [v5 isHidden] ^ 1;
+    superlayer = [(BSUIDailyReadingLayer *)self superlayer];
+    v4 = [superlayer isHidden] ^ 1;
   }
 
   return (lastTriggerState == 2) & v4;
 }
 
-- (void)setVisibleProgressToday:(double)a3
+- (void)setVisibleProgressToday:(double)today
 {
-  v6 = [(BSUIDailyReadingLayer *)self metrics];
-  v4 = [v6 lastVisibleProgressToday];
-  v5 = [NSNumber numberWithDouble:a3];
-  [v4 updateWithValueIfChanged:v5];
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  lastVisibleProgressToday = [metrics lastVisibleProgressToday];
+  v5 = [NSNumber numberWithDouble:today];
+  [lastVisibleProgressToday updateWithValueIfChanged:v5];
 }
 
 - (double)visibleProgressToday
 {
   objc_opt_class();
-  v3 = [(BSUIDailyReadingLayer *)self metrics];
-  v4 = [v3 lastVisibleProgressToday];
-  v5 = [v4 value];
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  lastVisibleProgressToday = [metrics lastVisibleProgressToday];
+  value = [lastVisibleProgressToday value];
   v6 = BUDynamicCast();
   v7 = v6;
   v8 = &off_39B4A0;
@@ -910,32 +910,32 @@ LABEL_11:
 - (int64_t)dynamicStreakDayGoal
 {
   objc_opt_class();
-  v3 = [(BSUIDailyReadingLayer *)self metrics];
-  v4 = [v3 dynamicStreakDayGoal];
-  v5 = [v4 value];
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  dynamicStreakDayGoal = [metrics dynamicStreakDayGoal];
+  value = [dynamicStreakDayGoal value];
   v6 = BUDynamicCast();
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    readingGoalSeconds = v6;
   }
 
   else
   {
-    v9 = [(BSUIDailyReadingLayer *)self metrics];
-    v8 = [v9 readingGoalSeconds];
+    metrics2 = [(BSUIDailyReadingLayer *)self metrics];
+    readingGoalSeconds = [metrics2 readingGoalSeconds];
   }
 
-  v10 = [v8 integerValue];
-  return v10;
+  integerValue = [readingGoalSeconds integerValue];
+  return integerValue;
 }
 
 - (int64_t)dynamicTimeReadToday
 {
   objc_opt_class();
-  v3 = [(BSUIDailyReadingLayer *)self metrics];
-  v4 = [v3 dynamicTimeReadToday];
-  v5 = [v4 value];
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  dynamicTimeReadToday = [metrics dynamicTimeReadToday];
+  value = [dynamicTimeReadToday value];
   v6 = BUDynamicCast();
   v7 = v6;
   v8 = &off_39B4A0;
@@ -946,16 +946,16 @@ LABEL_11:
 
   v9 = v8;
 
-  v10 = [v9 integerValue];
-  return v10;
+  integerValue = [v9 integerValue];
+  return integerValue;
 }
 
 - (BOOL)dynamicCompletedReadingGoal
 {
   objc_opt_class();
-  v3 = [(BSUIDailyReadingLayer *)self metrics];
-  v4 = [v3 dynamicCompletedReadingGoal];
-  v5 = [v4 value];
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  dynamicCompletedReadingGoal = [metrics dynamicCompletedReadingGoal];
+  value = [dynamicCompletedReadingGoal value];
   v6 = BUDynamicCast();
   v7 = v6;
   v8 = &off_39B4A0;
@@ -966,38 +966,38 @@ LABEL_11:
 
   v9 = v8;
 
-  v10 = [v9 BOOLValue];
-  return v10;
+  bOOLValue = [v9 BOOLValue];
+  return bOOLValue;
 }
 
-- (void)_setupDynamicTimeLayerWithDebugBounds:(BOOL)a3
+- (void)_setupDynamicTimeLayerWithDebugBounds:(BOOL)bounds
 {
-  v3 = a3;
-  v5 = [(BSUIDailyReadingLayer *)self metrics];
-  v6 = [v5 iconMode];
+  boundsCopy = bounds;
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  iconMode = [metrics iconMode];
 
-  if ((v6 & 1) == 0)
+  if ((iconMode & 1) == 0)
   {
-    v7 = [(BSUIDailyReadingLayer *)self metrics];
-    v8 = [v7 timeFontSpec];
-    v44 = [v8 font];
+    metrics2 = [(BSUIDailyReadingLayer *)self metrics];
+    timeFontSpec = [metrics2 timeFontSpec];
+    font = [timeFontSpec font];
 
     timeTextYOffset = self->_timeTextYOffset;
-    [v44 capHeight];
+    [font capHeight];
     v11 = timeTextYOffset + v10;
-    [v44 ascender];
+    [font ascender];
     v13 = v11 - v12;
-    [v44 ascender];
+    [font ascender];
     v15 = v14;
-    [v44 capHeight];
+    [font capHeight];
     v17 = (v15 - v16) * 0.5;
-    [v44 ascender];
+    [font ascender];
     v19 = v18;
     [(CALayer *)self->_backgroundLayer frame];
     v21 = v20;
-    v22 = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
+    dynamicTimeLayer = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
 
-    if (!v22)
+    if (!dynamicTimeLayer)
     {
       v23 = objc_opt_new();
       [(BSUIDailyReadingLayer *)self setDynamicTimeLayer:v23];
@@ -1006,50 +1006,50 @@ LABEL_11:
     v24 = v19 + v17 * 0.5;
     v25 = v13 + v17;
     v26 = +[UITraitCollection _currentTraitCollection];
-    v27 = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
-    [v27 setMasksToBounds:1];
-    if (v3)
+    dynamicTimeLayer2 = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
+    [dynamicTimeLayer2 setMasksToBounds:1];
+    if (boundsCopy)
     {
       v28 = +[UIColor redColor];
-      [v27 setBorderColor:{objc_msgSend(v28, "CGColor")}];
+      [dynamicTimeLayer2 setBorderColor:{objc_msgSend(v28, "CGColor")}];
 
-      [v27 setBorderWidth:0.5];
+      [dynamicTimeLayer2 setBorderWidth:0.5];
     }
 
-    v29 = [(BSUIDailyReadingLayer *)self metrics];
-    v30 = [v29 useFontFallback];
+    metrics3 = [(BSUIDailyReadingLayer *)self metrics];
+    useFontFallback = [metrics3 useFontFallback];
 
-    [v27 setFrame:{0.0, v25, v21, v24}];
-    [v27 setBounds:{0.0, v17, v21, v24}];
-    v31 = [(BSUIDailyReadingLayer *)self metrics];
-    v32 = [v31 timeFontSpec];
-    v33 = [v32 font];
-    [v27 setFont:v33 useFontFallback:v30];
+    [dynamicTimeLayer2 setFrame:{0.0, v25, v21, v24}];
+    [dynamicTimeLayer2 setBounds:{0.0, v17, v21, v24}];
+    metrics4 = [(BSUIDailyReadingLayer *)self metrics];
+    timeFontSpec2 = [metrics4 timeFontSpec];
+    font2 = [timeFontSpec2 font];
+    [dynamicTimeLayer2 setFont:font2 useFontFallback:useFontFallback];
 
-    v34 = [(BSUIDailyReadingLayer *)self metrics];
-    v35 = [v34 textColor];
-    v36 = [v35 resolvedColorWithTraitCollection:v26];
-    [v27 setColor:v36];
+    metrics5 = [(BSUIDailyReadingLayer *)self metrics];
+    textColor = [metrics5 textColor];
+    v36 = [textColor resolvedColorWithTraitCollection:v26];
+    [dynamicTimeLayer2 setColor:v36];
 
-    [v27 setHeight:v24];
-    [v27 setUseFontFallback:v30];
-    v37 = [(BSUIDailyReadingLayer *)self metrics];
-    v38 = [v37 timeSeparator];
-    [v27 setTimeSeparator:v38];
+    [dynamicTimeLayer2 setHeight:v24];
+    [dynamicTimeLayer2 setUseFontFallback:useFontFallback];
+    metrics6 = [(BSUIDailyReadingLayer *)self metrics];
+    timeSeparator = [metrics6 timeSeparator];
+    [dynamicTimeLayer2 setTimeSeparator:timeSeparator];
 
-    v39 = [(BSUIDailyReadingLayer *)self metrics];
-    v40 = [v39 contentsScale];
-    v41 = v40;
-    if (!v40)
+    metrics7 = [(BSUIDailyReadingLayer *)self metrics];
+    contentsScale = [metrics7 contentsScale];
+    v41 = contentsScale;
+    if (!contentsScale)
     {
-      v40 = &off_39B4B8;
+      contentsScale = &off_39B4B8;
     }
 
-    [v40 floatValue];
-    [v27 setContentsScale:v42];
+    [contentsScale floatValue];
+    [dynamicTimeLayer2 setContentsScale:v42];
 
-    v43 = [(BSUIDailyReadingLayer *)self backgroundLayer];
-    [v43 addSublayer:v27];
+    backgroundLayer = [(BSUIDailyReadingLayer *)self backgroundLayer];
+    [backgroundLayer addSublayer:dynamicTimeLayer2];
 
     [(BSUIDailyReadingLayer *)self _setInitialTimeTextAnimate];
   }
@@ -1059,9 +1059,9 @@ LABEL_11:
 {
   if ([(BSUIDailyReadingLayer *)self _goalCompleted])
   {
-    v3 = [(BSUIDailyReadingLayer *)self dynamicProgress];
-    v4 = [v3 progress];
-    [v4 floatValue];
+    dynamicProgress = [(BSUIDailyReadingLayer *)self dynamicProgress];
+    progress = [dynamicProgress progress];
+    [progress floatValue];
     v6 = v5;
 
     [(BSUIDailyReadingLayer *)self _actualReadingTimeSeconds];
@@ -1075,39 +1075,39 @@ LABEL_11:
       v8 = v7;
     }
 
-    v9 = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
+    dynamicTimeLayer = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
     v10 = v8;
-    v12 = v9;
+    v12 = dynamicTimeLayer;
   }
 
   else
   {
-    v11 = [(BSUIDailyReadingLayer *)self _readingTimeForVisibleOrActualProgress];
-    v9 = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
-    v12 = v9;
-    v10 = v11;
+    _readingTimeForVisibleOrActualProgress = [(BSUIDailyReadingLayer *)self _readingTimeForVisibleOrActualProgress];
+    dynamicTimeLayer = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
+    v12 = dynamicTimeLayer;
+    v10 = _readingTimeForVisibleOrActualProgress;
   }
 
-  [v9 setReadingTime:v10 animate:0];
+  [dynamicTimeLayer setReadingTime:v10 animate:0];
 }
 
-- (void)_updateTimeTextAnimate:(BOOL)a3
+- (void)_updateTimeTextAnimate:(BOOL)animate
 {
-  v3 = a3;
-  v5 = [(BSUIDailyReadingLayer *)self overrideReadingTimeToday];
+  animateCopy = animate;
+  overrideReadingTimeToday = [(BSUIDailyReadingLayer *)self overrideReadingTimeToday];
 
-  if (v5)
+  if (overrideReadingTimeToday)
   {
-    v6 = [(BSUIDailyReadingLayer *)self overrideReadingTimeToday];
-    v7 = [v6 integerValue];
+    overrideReadingTimeToday2 = [(BSUIDailyReadingLayer *)self overrideReadingTimeToday];
+    integerValue = [overrideReadingTimeToday2 integerValue];
 
     if (![(BSUIDailyReadingLayer *)self goalCompletedAnimationRequested])
     {
       if ([(BSUIDailyReadingLayer *)self _goalCompleted])
       {
-        v8 = [(BSUIDailyReadingLayer *)self dynamicProgress];
-        v9 = [v8 progress];
-        [v9 floatValue];
+        dynamicProgress = [(BSUIDailyReadingLayer *)self dynamicProgress];
+        progress = [dynamicProgress progress];
+        [progress floatValue];
         v11 = v10;
 
         [(BSUIDailyReadingLayer *)self _actualReadingTimeSeconds];
@@ -1121,21 +1121,21 @@ LABEL_11:
           v13 = v12;
         }
 
-        v14 = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
+        dynamicTimeLayer = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
         v15 = v13;
-        v17 = v14;
+        v17 = dynamicTimeLayer;
         v16 = 0;
       }
 
       else
       {
-        v14 = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
-        v17 = v14;
-        v15 = v7;
-        v16 = v3;
+        dynamicTimeLayer = [(BSUIDailyReadingLayer *)self dynamicTimeLayer];
+        v17 = dynamicTimeLayer;
+        v15 = integerValue;
+        v16 = animateCopy;
       }
 
-      [v14 setReadingTime:v15 animate:v16];
+      [dynamicTimeLayer setReadingTime:v15 animate:v16];
     }
   }
 }
@@ -1153,9 +1153,9 @@ LABEL_11:
 
 - (void)_startMicaPlayer
 {
-  v3 = [(BSUIDailyReadingLayer *)self micaPlayer];
+  micaPlayer = [(BSUIDailyReadingLayer *)self micaPlayer];
 
-  if (v3)
+  if (micaPlayer)
   {
     v4 = dispatch_time(0, 300000000);
     block[0] = _NSConcreteStackBlock;
@@ -1167,9 +1167,9 @@ LABEL_11:
   }
 }
 
-- (void)_animateProgressTodayIfNeededHonoringDelay:(BOOL)a3
+- (void)_animateProgressTodayIfNeededHonoringDelay:(BOOL)delay
 {
-  v3 = a3;
+  delayCopy = delay;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_43A1C;
@@ -1181,12 +1181,12 @@ LABEL_11:
   [(BSUIDailyReadingLayer *)self _calculatedProgress];
   if (v7 != v8)
   {
-    v9 = [(BSUIDailyReadingLayer *)self metrics];
-    v10 = [v9 triggerDelay];
-    [v10 doubleValue];
+    metrics = [(BSUIDailyReadingLayer *)self metrics];
+    triggerDelay = [metrics triggerDelay];
+    [triggerDelay doubleValue];
     v12 = v11;
 
-    if (v3 && v12 > 0.0)
+    if (delayCopy && v12 > 0.0)
     {
       v13 = dispatch_time(0, (v12 * 1000000000.0));
       block[0] = _NSConcreteStackBlock;
@@ -1223,52 +1223,52 @@ LABEL_11:
   }
 }
 
-- (void)didAddLayerWithFeedControllerHost:(id)a3
+- (void)didAddLayerWithFeedControllerHost:(id)host
 {
-  v10 = a3;
+  hostCopy = host;
   [(BSUIDailyReadingLayer *)self setFeedControllerHost:?];
-  v4 = [(BSUIDailyReadingLayer *)self metrics];
-  v5 = [v4 triggerName];
-  v6 = [v5 length];
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  triggerName = [metrics triggerName];
+  v6 = [triggerName length];
 
   if (v6)
   {
-    v7 = [v10 triggerStateManager];
-    v8 = [(BSUIDailyReadingLayer *)self metrics];
-    v9 = [v8 triggerName];
-    [v7 addObserver:self forTrigger:v9];
+    triggerStateManager = [hostCopy triggerStateManager];
+    metrics2 = [(BSUIDailyReadingLayer *)self metrics];
+    triggerName2 = [metrics2 triggerName];
+    [triggerStateManager addObserver:self forTrigger:triggerName2];
   }
 }
 
-- (void)willRemoveLayerWithFeedControllerHost:(id)a3
+- (void)willRemoveLayerWithFeedControllerHost:(id)host
 {
-  v10 = a3;
-  v4 = [(BSUIDailyReadingLayer *)self metrics];
-  v5 = [v4 triggerName];
-  v6 = [v5 length];
+  hostCopy = host;
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  triggerName = [metrics triggerName];
+  v6 = [triggerName length];
 
   if (v6)
   {
-    v7 = [v10 triggerStateManager];
-    v8 = [(BSUIDailyReadingLayer *)self metrics];
-    v9 = [v8 triggerName];
-    [v7 removeObserver:self forTrigger:v9];
+    triggerStateManager = [hostCopy triggerStateManager];
+    metrics2 = [(BSUIDailyReadingLayer *)self metrics];
+    triggerName2 = [metrics2 triggerName];
+    [triggerStateManager removeObserver:self forTrigger:triggerName2];
   }
 
   [(BSUIDailyReadingLayer *)self setFeedControllerHost:0];
 }
 
-- (void)handleTrigger:(id)a3 didChangeState:(unint64_t)a4 updateEvent:(unint64_t)a5
+- (void)handleTrigger:(id)trigger didChangeState:(unint64_t)state updateEvent:(unint64_t)event
 {
-  v12 = a3;
-  self->_lastTriggerState = a4;
-  v7 = [(BSUIDailyReadingLayer *)self metrics];
-  v8 = [v7 targetTriggerState];
-  if (a4 && v8 == a4)
+  triggerCopy = trigger;
+  self->_lastTriggerState = state;
+  metrics = [(BSUIDailyReadingLayer *)self metrics];
+  targetTriggerState = [metrics targetTriggerState];
+  if (state && targetTriggerState == state)
   {
-    v9 = [(BSUIDailyReadingLayer *)self metrics];
-    v10 = [v9 triggerName];
-    v11 = [v10 isEqualToString:v12];
+    metrics2 = [(BSUIDailyReadingLayer *)self metrics];
+    triggerName = [metrics2 triggerName];
+    v11 = [triggerName isEqualToString:triggerCopy];
 
     if (v11)
     {
@@ -1281,15 +1281,15 @@ LABEL_11:
   }
 }
 
-- (void)dynamicProgressChanged:(id)a3
+- (void)dynamicProgressChanged:(id)changed
 {
-  v6 = a3;
-  v4 = [v6 progress];
+  changedCopy = changed;
+  progress = [changedCopy progress];
 
-  if (v4)
+  if (progress)
   {
-    v5 = [v6 progress];
-    [(BSUIDailyReadingLayer *)self setOverrideReadingTimeToday:v5];
+    progress2 = [changedCopy progress];
+    [(BSUIDailyReadingLayer *)self setOverrideReadingTimeToday:progress2];
 
     if ([(BSUIDailyReadingLayer *)self _isVisible])
     {

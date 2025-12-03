@@ -1,18 +1,18 @@
 @interface HDVerifiableClinicalRecordEntity
-+ (BOOL)insertRecords:(id)a3 gatewayExternalID:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)issuerToRecordsMappedRecords:(id)a3;
++ (BOOL)insertRecords:(id)records gatewayExternalID:(id)d profile:(id)profile error:(id *)error;
++ (id)issuerToRecordsMappedRecords:(id)records;
 @end
 
 @implementation HDVerifiableClinicalRecordEntity
 
-+ (BOOL)insertRecords:(id)a3 gatewayExternalID:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)insertRecords:(id)records gatewayExternalID:(id)d profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v33 = a4;
-  v11 = a5;
-  if ([v10 count])
+  recordsCopy = records;
+  dCopy = d;
+  profileCopy = profile;
+  if ([recordsCopy count])
   {
-    [a1 issuerToRecordsMappedRecords:v10];
+    [self issuerToRecordsMappedRecords:recordsCopy];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
@@ -21,8 +21,8 @@
     v35 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v35)
     {
-      v30 = v10;
-      v31 = a6;
+      v30 = recordsCopy;
+      errorCopy = error;
       v34 = *v39;
       while (2)
       {
@@ -37,26 +37,26 @@
           v14 = [v36 objectForKeyedSubscript:v13];
           if ([v14 count])
           {
-            v15 = v33;
-            if (!v33)
+            v15 = dCopy;
+            if (!dCopy)
             {
               v15 = v13;
             }
 
             v16 = v15;
-            v17 = [v11 sourceManager];
+            sourceManager = [profileCopy sourceManager];
             v37 = 0;
-            v18 = [v17 publicSourceForClinicalExternalIdentifier:v16 provenance:0 createOrUpdateIfNecessary:0 nameOnCreateOrUpdate:0 error:&v37];
+            v18 = [sourceManager publicSourceForClinicalExternalIdentifier:v16 provenance:0 createOrUpdateIfNecessary:0 nameOnCreateOrUpdate:0 error:&v37];
             v19 = v37;
 
             if (!v18)
             {
               if (v19)
               {
-                if (v31)
+                if (errorCopy)
                 {
                   v27 = v19;
-                  *v31 = v19;
+                  *errorCopy = v19;
                 }
 
                 else
@@ -68,51 +68,51 @@
               else
               {
                 v29 = @"gateway external ID";
-                if (!v33)
+                if (!dCopy)
                 {
                   v29 = @"issuer";
                 }
 
-                [NSError hk_assignError:v31 code:100 format:@"unable to insert verifiable records for %@ %@: no matching public source entity is present", v29, v16];
+                [NSError hk_assignError:errorCopy code:100 format:@"unable to insert verifiable records for %@ %@: no matching public source entity is present", v29, v16];
               }
 
               goto LABEL_24;
             }
 
-            v20 = [v11 dataProvenanceManager];
-            v21 = [v20 localDataProvenanceForSourceEntity:v18 version:0 deviceEntity:0];
+            dataProvenanceManager = [profileCopy dataProvenanceManager];
+            v21 = [dataProvenanceManager localDataProvenanceForSourceEntity:v18 version:0 deviceEntity:0];
 
             if (!v21)
             {
-              v22 = v11;
-              [NSError hk_assignError:v31 code:100 description:@"Failed to get provenance for public source entity"];
+              v22 = profileCopy;
+              [NSError hk_assignError:errorCopy code:100 description:@"Failed to get provenance for public source entity"];
 LABEL_23:
 
-              v11 = v22;
+              profileCopy = v22;
 LABEL_24:
 
               v26 = 0;
-              v10 = v30;
+              recordsCopy = v30;
               goto LABEL_25;
             }
 
-            v22 = v11;
-            v23 = [v11 dataManager];
-            v24 = [v14 firstObject];
-            [v24 _creationTimestamp];
-            v25 = [v23 insertDataObjects:v14 withProvenance:v21 creationDate:v31 error:?];
+            v22 = profileCopy;
+            dataManager = [profileCopy dataManager];
+            firstObject = [v14 firstObject];
+            [firstObject _creationTimestamp];
+            v25 = [dataManager insertDataObjects:v14 withProvenance:v21 creationDate:errorCopy error:?];
 
             if ((v25 & 1) == 0)
             {
               goto LABEL_23;
             }
 
-            v11 = v22;
+            profileCopy = v22;
           }
         }
 
         v26 = 1;
-        v10 = v30;
+        recordsCopy = v30;
         v35 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
         if (v35)
         {
@@ -133,22 +133,22 @@ LABEL_25:
 
   else
   {
-    [NSError hk_assignError:a6 code:3 description:@"No verifiable records given"];
+    [NSError hk_assignError:error code:3 description:@"No verifiable records given"];
     v26 = 0;
   }
 
   return v26;
 }
 
-+ (id)issuerToRecordsMappedRecords:(id)a3
++ (id)issuerToRecordsMappedRecords:(id)records
 {
-  v3 = a3;
+  recordsCopy = records;
   v4 = objc_alloc_init(NSMutableDictionary);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = recordsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -164,14 +164,14 @@ LABEL_25:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 issuerIdentifier];
-        v12 = [v4 objectForKeyedSubscript:v11];
+        issuerIdentifier = [v10 issuerIdentifier];
+        v12 = [v4 objectForKeyedSubscript:issuerIdentifier];
 
         if (!v12)
         {
           v12 = objc_alloc_init(NSMutableArray);
-          v13 = [v10 issuerIdentifier];
-          [v4 setObject:v12 forKeyedSubscript:v13];
+          issuerIdentifier2 = [v10 issuerIdentifier];
+          [v4 setObject:v12 forKeyedSubscript:issuerIdentifier2];
         }
 
         [v12 addObject:v10];

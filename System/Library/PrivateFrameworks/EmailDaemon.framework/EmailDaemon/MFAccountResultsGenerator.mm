@@ -1,123 +1,123 @@
 @interface MFAccountResultsGenerator
-+ (id)resultsDictionaryFromAccount:(id)a3 forKeys:(id)a4;
-- (id)_accountReference:(id)a3;
-- (id)_canFetch:(id)a3;
-- (id)_defaultAddress:(id)a3;
-- (id)_displayName:(id)a3;
-- (id)_emailAddresses:(id)a3;
-- (id)_emailAddressesAndAliases:(id)a3;
-- (id)_fromEmailAddresses:(id)a3;
-- (id)_fromEmailAddressesIncludingDisabled:(id)a3;
-- (id)_fullUserName:(id)a3;
-- (id)_isActive:(id)a3;
-- (id)_isDefaultSendingAccount:(id)a3;
-- (id)_isManaged:(id)a3;
-- (id)_pcStyle:(id)a3;
-- (id)_restrictedFromMailDrop:(id)a3;
-- (id)_restrictedFromSendingExternally:(id)a3;
-- (id)_restrictedFromSyncingRecents:(id)a3;
-- (id)_restrictsRepliesAndForwards:(id)a3;
-- (id)_supportsMailDrop:(id)a3;
-- (id)_supportsThreadOperations:(id)a3;
-- (id)_syncsReadState:(id)a3;
-- (id)_username:(id)a3;
-- (id)blockForKey:(id)a3;
++ (id)resultsDictionaryFromAccount:(id)account forKeys:(id)keys;
+- (id)_accountReference:(id)reference;
+- (id)_canFetch:(id)fetch;
+- (id)_defaultAddress:(id)address;
+- (id)_displayName:(id)name;
+- (id)_emailAddresses:(id)addresses;
+- (id)_emailAddressesAndAliases:(id)aliases;
+- (id)_fromEmailAddresses:(id)addresses;
+- (id)_fromEmailAddressesIncludingDisabled:(id)disabled;
+- (id)_fullUserName:(id)name;
+- (id)_isActive:(id)active;
+- (id)_isDefaultSendingAccount:(id)account;
+- (id)_isManaged:(id)managed;
+- (id)_pcStyle:(id)style;
+- (id)_restrictedFromMailDrop:(id)drop;
+- (id)_restrictedFromSendingExternally:(id)externally;
+- (id)_restrictedFromSyncingRecents:(id)recents;
+- (id)_restrictsRepliesAndForwards:(id)forwards;
+- (id)_supportsMailDrop:(id)drop;
+- (id)_supportsThreadOperations:(id)operations;
+- (id)_syncsReadState:(id)state;
+- (id)_username:(id)_username;
+- (id)blockForKey:(id)key;
 @end
 
 @implementation MFAccountResultsGenerator
 
-+ (id)resultsDictionaryFromAccount:(id)a3 forKeys:(id)a4
++ (id)resultsDictionaryFromAccount:(id)account forKeys:(id)keys
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [(_MFResultsGenerator *)[MFAccountResultsGenerator alloc] initWithKeys:v6];
-  [(MFAccountResultsGenerator *)v7 setAccount:v5];
-  v8 = [(_MFResultsGenerator *)v7 results];
+  accountCopy = account;
+  keysCopy = keys;
+  v7 = [(_MFResultsGenerator *)[MFAccountResultsGenerator alloc] initWithKeys:keysCopy];
+  [(MFAccountResultsGenerator *)v7 setAccount:accountCopy];
+  results = [(_MFResultsGenerator *)v7 results];
 
-  return v8;
+  return results;
 }
 
-- (id)blockForKey:(id)a3
+- (id)blockForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (qword_100185778 != -1)
   {
     sub_1000D3B74();
   }
 
-  v4 = [qword_100185770 objectForKeyedSubscript:v3];
+  v4 = [qword_100185770 objectForKeyedSubscript:keyCopy];
 
   return v4;
 }
 
-- (id)_accountReference:(id)a3
+- (id)_accountReference:(id)reference
 {
-  v3 = [(MailAccount *)self->_account uniqueID];
+  uniqueID = [(MailAccount *)self->_account uniqueID];
 
-  return v3;
+  return uniqueID;
 }
 
-- (id)_displayName:(id)a3
+- (id)_displayName:(id)name
 {
-  v3 = [(MailAccount *)self->_account displayName];
+  displayName = [(MailAccount *)self->_account displayName];
 
-  return v3;
+  return displayName;
 }
 
-- (id)_fullUserName:(id)a3
+- (id)_fullUserName:(id)name
 {
-  v3 = [(MailAccount *)self->_account fullUserName];
+  fullUserName = [(MailAccount *)self->_account fullUserName];
 
-  return v3;
+  return fullUserName;
 }
 
-- (id)_username:(id)a3
+- (id)_username:(id)_username
 {
-  v3 = [(MailAccount *)self->_account username];
+  username = [(MailAccount *)self->_account username];
 
-  return v3;
+  return username;
 }
 
-- (id)_emailAddresses:(id)a3
+- (id)_emailAddresses:(id)addresses
 {
-  v3 = [(MailAccount *)self->_account emailAddressStrings];
+  emailAddressStrings = [(MailAccount *)self->_account emailAddressStrings];
 
-  return v3;
+  return emailAddressStrings;
 }
 
-- (id)_emailAddressesAndAliases:(id)a3
+- (id)_emailAddressesAndAliases:(id)aliases
 {
-  v3 = [(MailAccount *)self->_account emailAddressesAndAliasesList];
+  emailAddressesAndAliasesList = [(MailAccount *)self->_account emailAddressesAndAliasesList];
 
-  return v3;
+  return emailAddressesAndAliasesList;
 }
 
-- (id)_fromEmailAddresses:(id)a3
+- (id)_fromEmailAddresses:(id)addresses
 {
-  v3 = [(MailAccount *)self->_account fromEmailAddresses];
+  fromEmailAddresses = [(MailAccount *)self->_account fromEmailAddresses];
 
-  return v3;
+  return fromEmailAddresses;
 }
 
-- (id)_fromEmailAddressesIncludingDisabled:(id)a3
+- (id)_fromEmailAddressesIncludingDisabled:(id)disabled
 {
-  v3 = [(MailAccount *)self->_account fromEmailAddressesIncludingDisabled];
+  fromEmailAddressesIncludingDisabled = [(MailAccount *)self->_account fromEmailAddressesIncludingDisabled];
 
-  return v3;
+  return fromEmailAddressesIncludingDisabled;
 }
 
-- (id)_defaultAddress:(id)a3
+- (id)_defaultAddress:(id)address
 {
-  v3 = [(MailAccount *)self->_account defaultEmailAddress];
+  defaultEmailAddress = [(MailAccount *)self->_account defaultEmailAddress];
 
-  return v3;
+  return defaultEmailAddress;
 }
 
-- (id)_isActive:(id)a3
+- (id)_isActive:(id)active
 {
-  v3 = [(MailAccount *)self->_account isActive];
+  isActive = [(MailAccount *)self->_account isActive];
   v4 = &kCFBooleanTrue;
-  if (!v3)
+  if (!isActive)
   {
     v4 = &kCFBooleanFalse;
   }
@@ -127,7 +127,7 @@
   return v5;
 }
 
-- (id)_isDefaultSendingAccount:(id)a3
+- (id)_isDefaultSendingAccount:(id)account
 {
   v4 = +[MailAccount defaultMailAccountForDelivery];
   if (v4 == self->_account)
@@ -146,11 +146,11 @@
   return v6;
 }
 
-- (id)_restrictsRepliesAndForwards:(id)a3
+- (id)_restrictsRepliesAndForwards:(id)forwards
 {
-  v3 = [(MailAccount *)self->_account restrictedFromTransferingMessagesToOtherAccounts];
+  restrictedFromTransferingMessagesToOtherAccounts = [(MailAccount *)self->_account restrictedFromTransferingMessagesToOtherAccounts];
   v4 = &kCFBooleanTrue;
-  if (!v3)
+  if (!restrictedFromTransferingMessagesToOtherAccounts)
   {
     v4 = &kCFBooleanFalse;
   }
@@ -160,11 +160,11 @@
   return v5;
 }
 
-- (id)_restrictedFromSendingExternally:(id)a3
+- (id)_restrictedFromSendingExternally:(id)externally
 {
-  v3 = [(MailAccount *)self->_account restrictedFromSendingExternally];
+  restrictedFromSendingExternally = [(MailAccount *)self->_account restrictedFromSendingExternally];
   v4 = &kCFBooleanTrue;
-  if (!v3)
+  if (!restrictedFromSendingExternally)
   {
     v4 = &kCFBooleanFalse;
   }
@@ -174,28 +174,28 @@
   return v5;
 }
 
-- (id)_supportsMailDrop:(id)a3
+- (id)_supportsMailDrop:(id)drop
 {
   v3 = [NSNumber numberWithBool:[(MailAccount *)self->_account supportsMailDrop]];
 
   return v3;
 }
 
-- (id)_isManaged:(id)a3
+- (id)_isManaged:(id)managed
 {
   v3 = [NSNumber numberWithBool:[(MailAccount *)self->_account isManaged]];
 
   return v3;
 }
 
-- (id)_canFetch:(id)a3
+- (id)_canFetch:(id)fetch
 {
   v3 = [NSNumber numberWithBool:[(MailAccount *)self->_account canFetch]];
 
   return v3;
 }
 
-- (id)_pcStyle:(id)a3
+- (id)_pcStyle:(id)style
 {
   [(MailAccount *)self->_account uniqueIdForPersistentConnection];
   v3 = [NSNumber numberWithUnsignedInt:PCSettingsGetStyle()];
@@ -203,18 +203,18 @@
   return v3;
 }
 
-- (id)_restrictedFromMailDrop:(id)a3
+- (id)_restrictedFromMailDrop:(id)drop
 {
   v3 = [NSNumber numberWithInt:[(MailAccount *)self->_account supportsMailDrop]^ 1];
 
   return v3;
 }
 
-- (id)_supportsThreadOperations:(id)a3
+- (id)_supportsThreadOperations:(id)operations
 {
-  v3 = [(MailAccount *)self->_account supportsThreadOperations];
+  supportsThreadOperations = [(MailAccount *)self->_account supportsThreadOperations];
   v4 = &kCFBooleanTrue;
-  if (!v3)
+  if (!supportsThreadOperations)
   {
     v4 = &kCFBooleanFalse;
   }
@@ -224,14 +224,14 @@
   return v5;
 }
 
-- (id)_syncsReadState:(id)a3
+- (id)_syncsReadState:(id)state
 {
   v3 = [NSNumber numberWithBool:[(MailAccount *)self->_account supportsSyncingReadState]];
 
   return v3;
 }
 
-- (id)_restrictedFromSyncingRecents:(id)a3
+- (id)_restrictedFromSyncingRecents:(id)recents
 {
   v3 = [NSNumber numberWithBool:[(MailAccount *)self->_account restrictedFromSyncingRecents]];
 

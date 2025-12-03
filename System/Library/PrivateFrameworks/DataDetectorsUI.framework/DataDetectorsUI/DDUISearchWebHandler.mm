@@ -1,21 +1,21 @@
 @interface DDUISearchWebHandler
-+ (id)webSearchURLForQueryString:(id)a3;
++ (id)webSearchURLForQueryString:(id)string;
 @end
 
 @implementation DDUISearchWebHandler
 
-+ (id)webSearchURLForQueryString:(id)a3
++ (id)webSearchURLForQueryString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v3 = MEMORY[0x277CDB8A8];
-    v4 = a3;
-    v5 = [v3 sharedInstance];
-    [v5 reloadSearchEngines];
+    stringCopy = string;
+    sharedInstance = [v3 sharedInstance];
+    [sharedInstance reloadSearchEngines];
 
-    v6 = [MEMORY[0x277CDB8A8] sharedInstance];
-    v7 = [v6 defaultSearchEngine];
-    v8 = [v7 searchURLForUserTypedString:v4];
+    mEMORY[0x277CDB8A8] = [MEMORY[0x277CDB8A8] sharedInstance];
+    defaultSearchEngine = [mEMORY[0x277CDB8A8] defaultSearchEngine];
+    v8 = [defaultSearchEngine searchURLForUserTypedString:stringCopy];
 
     v9 = v8;
   }

@@ -1,16 +1,16 @@
 @interface PXStoryScrollContentLayout
-- (CGPoint)_scrollOffsetForVisibleRectOrigin:(CGPoint)a3;
+- (CGPoint)_scrollOffsetForVisibleRectOrigin:(CGPoint)origin;
 - (CGPoint)_scrollOffsetFromVisibleRect;
-- (CGPoint)_visibleRectOriginForScrollOffset:(CGPoint)a3;
+- (CGPoint)_visibleRectOriginForScrollOffset:(CGPoint)offset;
 - (CGPoint)scrollOffset;
 - (PXStoryScrollContentLayout)init;
 - (PXStoryScrollContentLayoutDelegate)delegate;
 - (UIEdgeInsets)scrollableOutsets;
 - (void)_invalidateContentSize;
-- (void)_setScrollOffset:(CGPoint)a3 updateScrollPosition:(BOOL)a4;
+- (void)_setScrollOffset:(CGPoint)offset updateScrollPosition:(BOOL)position;
 - (void)_updateContentSize;
 - (void)referenceSizeDidChange;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)update;
 - (void)visibleRectDidChange;
 @end
@@ -73,9 +73,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollContentLayout _invalidateContentSize]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrollContentLayout.m" lineNumber:128 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrollContentLayout.m" lineNumber:128 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -106,9 +106,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollContentLayout update]"];
-      [v5 handleFailureInFunction:v6 file:@"PXStoryScrollContentLayout.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v6 file:@"PXStoryScrollContentLayout.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -125,9 +125,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (needsUpdate)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollContentLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXStoryScrollContentLayout.m" lineNumber:123 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXStoryScrollContentLayout.m" lineNumber:123 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -136,10 +136,10 @@ LABEL_5:
   [(PXStoryScrollContentLayout *)&v9 update];
 }
 
-- (CGPoint)_scrollOffsetForVisibleRectOrigin:(CGPoint)a3
+- (CGPoint)_scrollOffsetForVisibleRectOrigin:(CGPoint)origin
 {
-  y = a3.y;
-  x = a3.x;
+  y = origin.y;
+  x = origin.x;
   [(PXStoryScrollContentLayout *)self scrollableOutsets];
   v6 = x - v5;
   v7 = y - v5;
@@ -148,10 +148,10 @@ LABEL_5:
   return result;
 }
 
-- (CGPoint)_visibleRectOriginForScrollOffset:(CGPoint)a3
+- (CGPoint)_visibleRectOriginForScrollOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   [(PXStoryScrollContentLayout *)self scrollableOutsets];
   v6 = x + v5;
   v7 = y + v5;
@@ -160,22 +160,22 @@ LABEL_5:
   return result;
 }
 
-- (void)_setScrollOffset:(CGPoint)a3 updateScrollPosition:(BOOL)a4
+- (void)_setScrollOffset:(CGPoint)offset updateScrollPosition:(BOOL)position
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != self->_scrollOffset.x || a3.y != self->_scrollOffset.y)
+  positionCopy = position;
+  y = offset.y;
+  x = offset.x;
+  if (offset.x != self->_scrollOffset.x || offset.y != self->_scrollOffset.y)
   {
-    self->_scrollOffset = a3;
+    self->_scrollOffset = offset;
     if (self->_delegateRespondsTo.scrollOffsetDidChange)
     {
-      v9 = [(PXStoryScrollContentLayout *)self delegate];
-      [v9 scrollContentLayoutScrollOffsetDidChange:self];
+      delegate = [(PXStoryScrollContentLayout *)self delegate];
+      [delegate scrollContentLayoutScrollOffsetDidChange:self];
     }
   }
 
-  if (v4)
+  if (positionCopy)
   {
     [(PXStoryScrollContentLayout *)self _scrollOffsetFromVisibleRect];
     if (x != v11 || y != v10)
@@ -190,7 +190,7 @@ LABEL_5:
       [(PXStoryScrollContentLayout *)self modifySpritesInRange:0x100000000 fullState:v19];
       [(PXStoryScrollContentLayout *)self scrollableOutsets];
       v17 = [(PXStoryScrollContentLayout *)self createAnchorForScrollingSpriteAtIndex:0 toScrollPosition:(fmax(v15 padding:v16) > 0.0) | (8 * (fmax(v13, v14) > 0.0)), *off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)];
-      v18 = [v17 autoInvalidate];
+      autoInvalidate = [v17 autoInvalidate];
     }
   }
 }
@@ -222,9 +222,9 @@ LABEL_5:
   [(PXStoryScrollContentLayout *)self _invalidateContentSize];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)

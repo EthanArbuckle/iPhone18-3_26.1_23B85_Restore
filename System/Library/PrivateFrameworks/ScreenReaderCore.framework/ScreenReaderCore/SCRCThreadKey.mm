@@ -1,13 +1,13 @@
 @interface SCRCThreadKey
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)threadDescription;
 - (SCRCThreadKey)init;
-- (SCRCThreadKey)initWithDescription:(id)a3;
-- (SCRCThreadKey)initWithObject:(id)a3;
+- (SCRCThreadKey)initWithDescription:(id)description;
+- (SCRCThreadKey)initWithObject:(id)object;
 - (id)_allCurrentThreadIDs;
-- (id)_initWithThreadID:(unint64_t)a3 description:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithThreadID:(unint64_t)d description:(id)description;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
@@ -23,17 +23,17 @@
   _ThreadIDs = CFArrayCreateMutable(0, 0, 0);
 }
 
-- (id)_initWithThreadID:(unint64_t)a3 description:(id)a4
+- (id)_initWithThreadID:(unint64_t)d description:(id)description
 {
-  v6 = a4;
+  descriptionCopy = description;
   v12.receiver = self;
   v12.super_class = SCRCThreadKey;
   v7 = [(SCRCThreadKey *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_threadID = a3;
-    v9 = [v6 copy];
+    v7->_threadID = d;
+    v9 = [descriptionCopy copy];
     threadDescription = v8->_threadDescription;
     v8->_threadDescription = v9;
 
@@ -79,13 +79,13 @@ LABEL_7:
   return v2;
 }
 
-- (SCRCThreadKey)initWithDescription:(id)a3
+- (SCRCThreadKey)initWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v5 = [(SCRCThreadKey *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [descriptionCopy copy];
     threadDescription = v5->_threadDescription;
     v5->_threadDescription = v6;
   }
@@ -93,7 +93,7 @@ LABEL_7:
   return v5;
 }
 
-- (SCRCThreadKey)initWithObject:(id)a3
+- (SCRCThreadKey)initWithObject:(id)object
 {
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
@@ -161,23 +161,23 @@ LABEL_7:
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   threadID = self->_threadID;
-  v7 = [(SCRCThreadKey *)self threadDescription];
-  v8 = [v3 stringWithFormat:@"<%@: %p> ThreadKeyID:%lu  Description:%@", v5, self, threadID, v7];
+  threadDescription = [(SCRCThreadKey *)self threadDescription];
+  v8 = [v3 stringWithFormat:@"<%@: %p> ThreadKeyID:%lu  Description:%@", v5, self, threadID, threadDescription];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [v4 threadID], v5 == -[SCRCThreadKey threadID](self, "threadID")))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [equalCopy threadID], v5 == -[SCRCThreadKey threadID](self, "threadID")))
   {
-    v6 = [(SCRCThreadKey *)self threadDescription];
-    v7 = [v4 threadDescription];
-    if (v6 | v7)
+    threadDescription = [(SCRCThreadKey *)self threadDescription];
+    threadDescription2 = [equalCopy threadDescription];
+    if (threadDescription | threadDescription2)
     {
-      v8 = [v6 isEqualToString:v7];
+      v8 = [threadDescription isEqualToString:threadDescription2];
     }
 
     else
@@ -190,13 +190,13 @@ LABEL_7:
   {
     v10.receiver = self;
     v10.super_class = SCRCThreadKey;
-    v8 = [(SCRCThreadKey *)&v10 isEqual:v4];
+    v8 = [(SCRCThreadKey *)&v10 isEqual:equalCopy];
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SCRCThreadKey alloc];
   threadID = self->_threadID;

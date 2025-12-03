@@ -1,15 +1,15 @@
 @interface PBUIWallpaperParallaxSettings
 + (CGSize)_requiredOverhangSizeForCurrentDevice;
-+ (CGSize)_requiredOverhangSizeForDeviceType:(int64_t)a3;
-+ (CGSize)bestWallpaperSizeForParallaxFactor:(double)a3;
-+ (CGSize)bestWallpaperSizeForParallaxFactor:(double)a3 portrait:(BOOL)a4;
-+ (CGSize)bestWallpaperSizeForWallpaperSize:(CGSize)a3 deviceType:(int64_t)a4 parallaxFactor:(double)a5 portrait:(BOOL)a6;
++ (CGSize)_requiredOverhangSizeForDeviceType:(int64_t)type;
++ (CGSize)bestWallpaperSizeForParallaxFactor:(double)factor;
++ (CGSize)bestWallpaperSizeForParallaxFactor:(double)factor portrait:(BOOL)portrait;
++ (CGSize)bestWallpaperSizeForWallpaperSize:(CGSize)size deviceType:(int64_t)type parallaxFactor:(double)factor portrait:(BOOL)portrait;
 + (CGSize)minimumWallpaperSizeForCurrentDevice;
-+ (CGSize)minimumWallpaperSizeForWallpaperSize:(CGSize)a3 deviceType:(int64_t)a4;
++ (CGSize)minimumWallpaperSizeForWallpaperSize:(CGSize)size deviceType:(int64_t)type;
 + (CGSize)overhangSizeForCurrentDevice;
-+ (CGSize)overhangSizeForDeviceType:(int64_t)a3;
-+ (double)minimumZoomScaleForCurrentDeviceForWallpaperSize:(CGSize)a3 parallaxFactor:(double)a4;
-+ (double)minimumZoomScaleForWallpaperSize:(CGSize)a3 parallaxFactor:(double)a4 deviceType:(int64_t)a5;
++ (CGSize)overhangSizeForDeviceType:(int64_t)type;
++ (double)minimumZoomScaleForCurrentDeviceForWallpaperSize:(CGSize)size parallaxFactor:(double)factor;
++ (double)minimumZoomScaleForWallpaperSize:(CGSize)size parallaxFactor:(double)factor deviceType:(int64_t)type;
 + (id)settingsControllerModule;
 + (int64_t)_currentDeviceType;
 - (void)setDefaultValues;
@@ -19,27 +19,27 @@
 
 + (int64_t)_currentDeviceType
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 1;
 
   return v3;
 }
 
 + (CGSize)_requiredOverhangSizeForCurrentDevice
 {
-  v3 = [a1 _currentDeviceType];
+  _currentDeviceType = [self _currentDeviceType];
 
-  [a1 _requiredOverhangSizeForDeviceType:v3];
+  [self _requiredOverhangSizeForDeviceType:_currentDeviceType];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-+ (CGSize)_requiredOverhangSizeForDeviceType:(int64_t)a3
++ (CGSize)_requiredOverhangSizeForDeviceType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v3 = 78.0;
       v4 = 119.0;
@@ -75,47 +75,47 @@
   [(PBUIWallpaperParallaxSettings *)self setPerspectiveTransform:0.2];
 }
 
-+ (CGSize)bestWallpaperSizeForParallaxFactor:(double)a3
++ (CGSize)bestWallpaperSizeForParallaxFactor:(double)factor
 {
   v5 = [*MEMORY[0x277D76620] activeInterfaceOrientation] != 0;
 
-  [a1 bestWallpaperSizeForParallaxFactor:v5 portrait:a3];
+  [self bestWallpaperSizeForParallaxFactor:v5 portrait:factor];
   result.height = v7;
   result.width = v6;
   return result;
 }
 
-+ (CGSize)bestWallpaperSizeForParallaxFactor:(double)a3 portrait:(BOOL)a4
++ (CGSize)bestWallpaperSizeForParallaxFactor:(double)factor portrait:(BOOL)portrait
 {
-  v4 = a4;
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 _referenceBounds];
+  portraitCopy = portrait;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   v9 = v8;
   v11 = v10;
 
-  v12 = [a1 _currentDeviceType];
+  _currentDeviceType = [self _currentDeviceType];
 
-  [a1 bestWallpaperSizeForWallpaperSize:v12 deviceType:v4 parallaxFactor:v9 portrait:{v11, a3}];
+  [self bestWallpaperSizeForWallpaperSize:_currentDeviceType deviceType:portraitCopy parallaxFactor:v9 portrait:{v11, factor}];
   result.height = v14;
   result.width = v13;
   return result;
 }
 
-+ (CGSize)bestWallpaperSizeForWallpaperSize:(CGSize)a3 deviceType:(int64_t)a4 parallaxFactor:(double)a5 portrait:(BOOL)a6
++ (CGSize)bestWallpaperSizeForWallpaperSize:(CGSize)size deviceType:(int64_t)type parallaxFactor:(double)factor portrait:(BOOL)portrait
 {
-  if (a3.width >= a3.height)
+  if (size.width >= size.height)
   {
-    width = a3.width;
+    width = size.width;
   }
 
   else
   {
-    width = a3.height;
+    width = size.height;
   }
 
-  [a1 _requiredOverhangSizeForDeviceType:{a4, a6}];
-  v9 = width + (v8 + v8) * a5;
-  v11 = width + (v10 + v10) * a5;
+  [self _requiredOverhangSizeForDeviceType:{type, portrait}];
+  v9 = width + (v8 + v8) * factor;
+  v11 = width + (v10 + v10) * factor;
   result.height = v11;
   result.width = v9;
   return result;
@@ -123,14 +123,14 @@
 
 + (CGSize)minimumWallpaperSizeForCurrentDevice
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
   v7 = v6;
 
   if ([MEMORY[0x277D75D18] _motionEffectsEnabled])
   {
-    [a1 _requiredOverhangSizeForCurrentDevice];
+    [self _requiredOverhangSizeForCurrentDevice];
   }
 
   else
@@ -146,13 +146,13 @@
   return result;
 }
 
-+ (CGSize)minimumWallpaperSizeForWallpaperSize:(CGSize)a3 deviceType:(int64_t)a4
++ (CGSize)minimumWallpaperSizeForWallpaperSize:(CGSize)size deviceType:(int64_t)type
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([MEMORY[0x277D75D18] _motionEffectsEnabled])
   {
-    [a1 _requiredOverhangSizeForDeviceType:a4];
+    [self _requiredOverhangSizeForDeviceType:type];
   }
 
   else
@@ -172,7 +172,7 @@
 {
   if ([MEMORY[0x277D75D18] _motionEffectsEnabled])
   {
-    [a1 _requiredOverhangSizeForCurrentDevice];
+    [self _requiredOverhangSizeForCurrentDevice];
   }
 
   else
@@ -186,11 +186,11 @@
   return result;
 }
 
-+ (CGSize)overhangSizeForDeviceType:(int64_t)a3
++ (CGSize)overhangSizeForDeviceType:(int64_t)type
 {
   if ([MEMORY[0x277D75D18] _motionEffectsEnabled])
   {
-    [a1 _requiredOverhangSizeForDeviceType:a3];
+    [self _requiredOverhangSizeForDeviceType:type];
   }
 
   else
@@ -204,26 +204,26 @@
   return result;
 }
 
-+ (double)minimumZoomScaleForWallpaperSize:(CGSize)a3 parallaxFactor:(double)a4 deviceType:(int64_t)a5
++ (double)minimumZoomScaleForWallpaperSize:(CGSize)size parallaxFactor:(double)factor deviceType:(int64_t)type
 {
-  width = a3.width;
+  width = size.width;
   result = 1.0;
-  if (a4 != 0.0)
+  if (factor != 0.0)
   {
-    [a1 overhangSizeForDeviceType:{a5, 1.0, a3.height}];
+    [self overhangSizeForDeviceType:{type, 1.0, size.height}];
     return 1.0 / ((width - v7 - v7) / width);
   }
 
   return result;
 }
 
-+ (double)minimumZoomScaleForCurrentDeviceForWallpaperSize:(CGSize)a3 parallaxFactor:(double)a4
++ (double)minimumZoomScaleForCurrentDeviceForWallpaperSize:(CGSize)size parallaxFactor:(double)factor
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [a1 _currentDeviceType];
+  height = size.height;
+  width = size.width;
+  _currentDeviceType = [self _currentDeviceType];
 
-  [a1 minimumZoomScaleForWallpaperSize:v8 parallaxFactor:width deviceType:{height, a4}];
+  [self minimumZoomScaleForWallpaperSize:_currentDeviceType parallaxFactor:width deviceType:{height, factor}];
   return result;
 }
 
@@ -242,7 +242,7 @@
 
   v9 = [MEMORY[0x277D43218] sectionWithRows:v8];
   v10 = MEMORY[0x277D43218];
-  v17.receiver = a1;
+  v17.receiver = self;
   v17.super_class = &OBJC_METACLASS___PBUIWallpaperParallaxSettings;
   v11 = objc_msgSendSuper2(&v17, sel_settingsControllerModule);
   v12 = [v10 submoduleWithModule:v11 childSettingsKeyPath:0];

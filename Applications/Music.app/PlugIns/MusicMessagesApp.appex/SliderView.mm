@@ -1,8 +1,8 @@
 @interface SliderView
 - (int64_t)semanticContentAttribute;
 - (void)layoutSubviews;
-- (void)panGestureRecognized:(id)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
+- (void)panGestureRecognized:(id)recognized;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
 @end
 
 @implementation SliderView
@@ -14,26 +14,26 @@
   return [(SliderView *)&v3 semanticContentAttribute];
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for SliderView();
   v4 = v5.receiver;
-  [(SliderView *)&v5 setSemanticContentAttribute:a3];
+  [(SliderView *)&v5 setSemanticContentAttribute:attribute];
   [*&v4[OBJC_IVAR____TtC11MusicCoreUI10SliderView_stackView] setSemanticContentAttribute:{objc_msgSend(v4, "semanticContentAttribute", v5.receiver, v5.super_class)}];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SliderView.layoutSubviews()();
 }
 
-- (void)panGestureRecognized:(id)a3
+- (void)panGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003C7BE0(v4);
+  recognizedCopy = recognized;
+  selfCopy = self;
+  sub_1003C7BE0(recognizedCopy);
 }
 
 @end

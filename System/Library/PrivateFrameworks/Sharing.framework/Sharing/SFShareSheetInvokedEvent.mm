@@ -10,11 +10,11 @@
   v24[9] = *MEMORY[0x1E69E9840];
   v20 = objc_alloc(MEMORY[0x1E695DF90]);
   v23[0] = @"sourceApplicationBundleID";
-  v3 = [(SFShareSheetInvokedEvent *)self appBundleId];
-  v22 = v3;
-  if (v3)
+  appBundleId = [(SFShareSheetInvokedEvent *)self appBundleId];
+  v22 = appBundleId;
+  if (appBundleId)
   {
-    v4 = v3;
+    v4 = appBundleId;
   }
 
   else
@@ -27,11 +27,11 @@
   v21 = [MEMORY[0x1E696AD98] numberWithInteger:{-[SFShareSheetInvokedEvent numberOfSuggestions](self, "numberOfSuggestions")}];
   v24[1] = v21;
   v23[2] = @"suggestionsHash";
-  v5 = [(SFShareSheetInvokedEvent *)self suggestionsHash];
-  v6 = v5;
-  if (v5)
+  suggestionsHash = [(SFShareSheetInvokedEvent *)self suggestionsHash];
+  v6 = suggestionsHash;
+  if (suggestionsHash)
   {
-    v7 = v5;
+    v7 = suggestionsHash;
   }
 
   else
@@ -61,8 +61,8 @@
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:9];
   v15 = [v20 initWithDictionary:v14];
 
-  v16 = [(SFShareSheetInvokedEvent *)self cacheAccessInfo];
-  [v15 addEntriesFromDictionary:v16];
+  cacheAccessInfo = [(SFShareSheetInvokedEvent *)self cacheAccessInfo];
+  [v15 addEntriesFromDictionary:cacheAccessInfo];
 
   v17 = [v15 copy];
   v18 = *MEMORY[0x1E69E9840];
@@ -73,8 +73,8 @@
 - (void)submitEvent
 {
   v4 = +[SFShareSheetInvokedEvent eventName];
-  v3 = [(SFShareSheetInvokedEvent *)self eventPayload];
-  SFMetricsLog(v4, v3);
+  eventPayload = [(SFShareSheetInvokedEvent *)self eventPayload];
+  SFMetricsLog(v4, eventPayload);
 }
 
 @end

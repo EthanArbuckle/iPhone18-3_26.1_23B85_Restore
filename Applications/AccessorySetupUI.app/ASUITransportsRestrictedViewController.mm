@@ -1,5 +1,5 @@
 @interface ASUITransportsRestrictedViewController
-- (_TtC16AccessorySetupUI38ASUITransportsRestrictedViewController)initWithContentView:(id)a3;
+- (_TtC16AccessorySetupUI38ASUITransportsRestrictedViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -14,7 +14,7 @@
   [v2 setDismissalType:{1, v3.receiver, v3.super_class}];
 }
 
-- (_TtC16AccessorySetupUI38ASUITransportsRestrictedViewController)initWithContentView:(id)a3
+- (_TtC16AccessorySetupUI38ASUITransportsRestrictedViewController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC16AccessorySetupUI38ASUITransportsRestrictedViewController_type] = 1;
@@ -30,7 +30,7 @@
   *&self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC16AccessorySetupUI38ASUITransportsRestrictedViewController_restrictedCapabilities] = 0;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  return [(ASUITransportsRestrictedViewController *)&v8 initWithContentView:a3];
+  return [(ASUITransportsRestrictedViewController *)&v8 initWithContentView:view];
 }
 
 @end

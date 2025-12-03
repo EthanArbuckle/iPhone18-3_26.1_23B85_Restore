@@ -1,13 +1,13 @@
 @interface AccountStoreFMF
-- (id)_accountFromACAccount:(id)a3;
+- (id)_accountFromACAccount:(id)account;
 - (id)accounts;
-- (void)_fetchAppAuthToken:(id)a3;
-- (void)_fetchInternalAuthToken:(id)a3;
-- (void)_tokensForAccount:(id)a3;
-- (void)addAccount:(id)a3;
+- (void)_fetchAppAuthToken:(id)token;
+- (void)_fetchInternalAuthToken:(id)token;
+- (void)_tokensForAccount:(id)account;
+- (void)addAccount:(id)account;
 - (void)dealloc;
 - (void)loadExistingAccounts;
-- (void)removeAccount:(id)a3;
+- (void)removeAccount:(id)account;
 @end
 
 @implementation AccountStoreFMF
@@ -22,21 +22,21 @@
 
 - (void)loadExistingAccounts
 {
-  v3 = [(AccountStoreFMF *)self accountsList];
+  accountsList = [(AccountStoreFMF *)self accountsList];
 
-  if (!v3)
+  if (!accountsList)
   {
     v4 = +[NSMutableArray array];
     [(AccountStoreFMF *)self setAccountsList:v4];
 
     v5 = +[AppleAccountManager sharedInstance];
-    v6 = [v5 fmfACAccount];
+    fmfACAccount = [v5 fmfACAccount];
 
-    v7 = [(AccountStoreFMF *)self _accountFromACAccount:v6];
+    v7 = [(AccountStoreFMF *)self _accountFromACAccount:fmfACAccount];
     if (v7)
     {
-      v8 = [(AccountStoreFMF *)self accountsList];
-      [v8 addObject:v7];
+      accountsList2 = [(AccountStoreFMF *)self accountsList];
+      [accountsList2 addObject:v7];
 
       [(AccountStoreFMF *)self setCurrentActiveAccount:v7];
     }
@@ -44,27 +44,27 @@
     v9 = sub_100002830();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [(AccountStoreFMF *)self accountsList];
+      accountsList3 = [(AccountStoreFMF *)self accountsList];
       v14 = 134217984;
-      v15 = [v10 count];
+      v15 = [accountsList3 count];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Found %ld FMF accounts in store", &v14, 0xCu);
     }
 
-    v11 = [(AccountStoreFMF *)self currentActiveAccount];
-    v12 = v11 == 0;
+    currentActiveAccount = [(AccountStoreFMF *)self currentActiveAccount];
+    v12 = currentActiveAccount == 0;
 
     if (!v12)
     {
-      v13 = [(AccountStoreFMF *)self currentActiveAccount];
-      [(AccountStoreFMF *)self _tokensForAccount:v13];
+      currentActiveAccount2 = [(AccountStoreFMF *)self currentActiveAccount];
+      [(AccountStoreFMF *)self _tokensForAccount:currentActiveAccount2];
     }
   }
 }
 
 - (id)accounts
 {
-  v3 = [(AccountStoreFMF *)self accountsList];
-  v4 = [v3 copy];
+  accountsList = [(AccountStoreFMF *)self accountsList];
+  v4 = [accountsList copy];
 
   if ([(AccountStoreFMF *)self refreshAuthTokens])
   {
@@ -87,47 +87,47 @@
   return v4;
 }
 
-- (void)addAccount:(id)a3
+- (void)addAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(AccountStoreFMF *)self accountsList];
-  [v5 addObject:v4];
+  accountCopy = account;
+  accountsList = [(AccountStoreFMF *)self accountsList];
+  [accountsList addObject:accountCopy];
 
   [(AccountStoreFMF *)self saveChanges];
 }
 
-- (void)removeAccount:(id)a3
+- (void)removeAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(AccountStoreFMF *)self accountsList];
-  [v5 removeObject:v4];
+  accountCopy = account;
+  accountsList = [(AccountStoreFMF *)self accountsList];
+  [accountsList removeObject:accountCopy];
 
   [(AccountStoreFMF *)self saveChanges];
 }
 
-- (void)_tokensForAccount:(id)a3
+- (void)_tokensForAccount:(id)account
 {
-  v4 = a3;
-  [(AccountStoreFMF *)self _fetchAppAuthToken:v4];
-  [(AccountStoreFMF *)self _fetchInternalAuthToken:v4];
+  accountCopy = account;
+  [(AccountStoreFMF *)self _fetchAppAuthToken:accountCopy];
+  [(AccountStoreFMF *)self _fetchInternalAuthToken:accountCopy];
 }
 
-- (void)_fetchAppAuthToken:(id)a3
+- (void)_fetchAppAuthToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = objc_alloc_init(ACAccountStore);
   v6 = +[AppleAccountManager sharedInstance];
-  v7 = [v6 fmfACAccount];
+  fmfACAccount = [v6 fmfACAccount];
 
   v16 = 0;
-  v8 = [v5 credentialForAccount:v7 error:&v16];
+  v8 = [v5 credentialForAccount:fmfACAccount error:&v16];
   v9 = v16;
   if (!v8)
   {
     v10 = sub_100002830();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_100037014(v7, v10);
+      sub_100037014(fmfACAccount, v10);
     }
   }
 
@@ -138,37 +138,37 @@
     v13 = sub_100002830();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v4 username];
-      v15 = [v4 appAuthTokenStatus];
+      username = [tokenCopy username];
+      appAuthTokenStatus = [tokenCopy appAuthTokenStatus];
       *buf = 138412802;
-      v18 = v14;
+      v18 = username;
       v19 = 2048;
-      v20 = v15;
+      v20 = appAuthTokenStatus;
       v21 = 2112;
       v22 = v9;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Could not retrieve app token for FMF account %@(%ld). Error : %@", buf, 0x20u);
     }
 
-    [v4 setAppAuthTokenStatus:1];
+    [tokenCopy setAppAuthTokenStatus:1];
     [(AccountStoreFMF *)self setRefreshAuthTokens:1];
   }
 
   else
   {
-    [v4 setAppAuthToken:v11];
-    [v4 setAppAuthTokenStatus:0];
+    [tokenCopy setAppAuthToken:v11];
+    [tokenCopy setAppAuthTokenStatus:0];
   }
 }
 
-- (void)_fetchInternalAuthToken:(id)a3
+- (void)_fetchInternalAuthToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = objc_alloc_init(ACAccountStore);
   v6 = +[AppleAccountManager sharedInstance];
-  v7 = [v6 fmfACAccount];
+  fmfACAccount = [v6 fmfACAccount];
 
   v15 = 0;
-  v8 = [v5 credentialForAccount:v7 error:&v15];
+  v8 = [v5 credentialForAccount:fmfACAccount error:&v15];
   v9 = v15;
   v10 = [v8 credentialItemForKey:ACFindMyFriendsTokenKey];
   v11 = v10;
@@ -177,37 +177,37 @@
     v12 = sub_100002830();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v4 username];
-      v14 = [v4 appAuthTokenStatus];
+      username = [tokenCopy username];
+      appAuthTokenStatus = [tokenCopy appAuthTokenStatus];
       *buf = 138412802;
-      v17 = v13;
+      v17 = username;
       v18 = 2048;
-      v19 = v14;
+      v19 = appAuthTokenStatus;
       v20 = 2112;
       v21 = v9;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Could not retrieve internal token for FMF account %@ (%ld) Error : %@", buf, 0x20u);
     }
 
-    [v4 setInternalAuthTokenStatus:2];
+    [tokenCopy setInternalAuthTokenStatus:2];
     [(AccountStoreFMF *)self setRefreshAuthTokens:1];
   }
 
   else
   {
-    [v4 setInternalAuthToken:v10];
-    [v4 setInternalAuthTokenStatus:0];
+    [tokenCopy setInternalAuthToken:v10];
+    [tokenCopy setInternalAuthTokenStatus:0];
   }
 }
 
-- (id)_accountFromACAccount:(id)a3
+- (id)_accountFromACAccount:(id)account
 {
-  if (a3)
+  if (account)
   {
-    v3 = a3;
+    accountCopy = account;
     v4 = objc_alloc_init(FMFAccount);
-    v5 = [v3 parentAccount];
+    parentAccount = [accountCopy parentAccount];
 
-    [(FMFAccount *)v4 applyPropertiesFromACAccount:v5 includingTokens:0];
+    [(FMFAccount *)v4 applyPropertiesFromACAccount:parentAccount includingTokens:0];
     [(Account *)v4 setIsActive:1];
   }
 

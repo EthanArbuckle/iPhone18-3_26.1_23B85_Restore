@@ -1,18 +1,18 @@
 @interface SBMainWorkspaceTransitionRequest
-+ (id)ancillaryTransitionRequestsForTransitionRequest:(id)a3;
-- (SBMainWorkspaceTransitionRequest)initWithDisplayConfiguration:(id)a3;
-- (id)_initWithWorkspace:(id)a3 displayConfiguration:(id)a4;
-- (id)addCompletionHandler:(id)a3;
++ (id)ancillaryTransitionRequestsForTransitionRequest:(id)request;
+- (SBMainWorkspaceTransitionRequest)initWithDisplayConfiguration:(id)configuration;
+- (id)_initWithWorkspace:(id)workspace displayConfiguration:(id)configuration;
+- (id)addCompletionHandler:(id)handler;
 - (id)compactDescriptionBuilder;
 - (id)completionBlock;
 - (id)copyMainWorkspaceTransitionRequest;
 - (id)succinctDescriptionBuilder;
 - (void)_invalidateCompletionTasks;
 - (void)dealloc;
-- (void)declineWithReason:(id)a3;
+- (void)declineWithReason:(id)reason;
 - (void)finalize;
-- (void)modifyTransientOverlayContext:(id)a3;
-- (void)setTransientOverlayContext:(id)a3;
+- (void)modifyTransientOverlayContext:(id)context;
+- (void)setTransientOverlayContext:(id)context;
 @end
 
 @implementation SBMainWorkspaceTransitionRequest
@@ -20,39 +20,39 @@
 - (id)copyMainWorkspaceTransitionRequest
 {
   v61 = *MEMORY[0x277D85DE8];
-  v3 = [(SBWorkspaceTransitionRequest *)self workspace];
-  v4 = [(SBWorkspaceTransitionRequest *)self displayConfiguration];
-  v53 = v3;
-  v5 = [v3 createRequestWithOptions:0 displayConfiguration:v4];
+  workspace = [(SBWorkspaceTransitionRequest *)self workspace];
+  displayConfiguration = [(SBWorkspaceTransitionRequest *)self displayConfiguration];
+  v53 = workspace;
+  v5 = [workspace createRequestWithOptions:0 displayConfiguration:displayConfiguration];
 
   [v5 setSource:{-[SBMainWorkspaceTransitionRequest source](self, "source")}];
-  v6 = [(SBWorkspaceTransitionRequest *)self eventLabel];
-  [v5 setEventLabel:v6];
+  eventLabel = [(SBWorkspaceTransitionRequest *)self eventLabel];
+  [v5 setEventLabel:eventLabel];
 
-  v7 = [(SBMainWorkspaceTransitionRequest *)self bannerUnfurlSourceContextProvider];
-  [v5 setBannerUnfurlSourceContextProvider:v7];
+  bannerUnfurlSourceContextProvider = [(SBMainWorkspaceTransitionRequest *)self bannerUnfurlSourceContextProvider];
+  [v5 setBannerUnfurlSourceContextProvider:bannerUnfurlSourceContextProvider];
 
   [v5 setShouldPreventEmergencyNotificationBannerDismissal:{-[SBMainWorkspaceTransitionRequest shouldPreventEmergencyNotificationBannerDismissal](self, "shouldPreventEmergencyNotificationBannerDismissal")}];
   [v5 setShouldPreventDismissalOfUnrelatedTransientOverlays:{-[SBMainWorkspaceTransitionRequest shouldPreventDismissalOfUnrelatedTransientOverlays](self, "shouldPreventDismissalOfUnrelatedTransientOverlays")}];
   [v5 setCenterConfiguration:{-[SBMainWorkspaceTransitionRequest centerConfiguration](self, "centerConfiguration")}];
   v8 = objc_alloc_init(SBWorkspaceApplicationSceneTransitionContext);
-  v9 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  applicationContext = [(SBWorkspaceTransitionRequest *)self applicationContext];
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
   v58[2] = __70__SBMainWorkspaceTransitionRequest_copyMainWorkspaceTransitionRequest__block_invoke;
   v58[3] = &unk_2783BA1B8;
   v10 = v8;
   v59 = v10;
-  [v9 enumerateEntitiesUsingBlock:v58];
+  [applicationContext enumerateEntitiesUsingBlock:v58];
 
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v11 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  v12 = [v11 entitiesWithRemovalContexts];
+  applicationContext2 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  entitiesWithRemovalContexts = [applicationContext2 entitiesWithRemovalContexts];
 
-  v13 = [v12 countByEnumeratingWithState:&v54 objects:v60 count:16];
+  v13 = [entitiesWithRemovalContexts countByEnumeratingWithState:&v54 objects:v60 count:16];
   if (v13)
   {
     v14 = v13;
@@ -63,40 +63,40 @@
       {
         if (*v55 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(entitiesWithRemovalContexts);
         }
 
         v17 = *(*(&v54 + 1) + 8 * i);
-        v18 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-        v19 = [v18 removalContextForEntity:v17];
+        applicationContext3 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+        v19 = [applicationContext3 removalContextForEntity:v17];
         [(SBWorkspaceApplicationSceneTransitionContext *)v10 setRemovalContext:v19 forEntity:v17];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v54 objects:v60 count:16];
+      v14 = [entitiesWithRemovalContexts countByEnumeratingWithState:&v54 objects:v60 count:16];
     }
 
     while (v14);
   }
 
-  v20 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  v21 = [v20 activatingEntity];
-  [(SBWorkspaceApplicationSceneTransitionContext *)v10 setActivatingEntity:v21];
+  applicationContext4 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  activatingEntity = [applicationContext4 activatingEntity];
+  [(SBWorkspaceApplicationSceneTransitionContext *)v10 setActivatingEntity:activatingEntity];
 
-  v22 = [(SBWorkspaceTransitionRequest *)self transientOverlayContext];
-  if (v22)
+  transientOverlayContext = [(SBWorkspaceTransitionRequest *)self transientOverlayContext];
+  if (transientOverlayContext)
   {
     v23 = objc_alloc_init(SBWorkspaceTransientOverlayTransitionContext);
-    -[SBWorkspaceTransientOverlayTransitionContext setAnimated:](v23, "setAnimated:", [v22 isAnimated]);
-    v24 = [v22 scenePresenter];
-    [(SBWorkspaceTransientOverlayTransitionContext *)v23 setScenePresenter:v24];
+    -[SBWorkspaceTransientOverlayTransitionContext setAnimated:](v23, "setAnimated:", [transientOverlayContext isAnimated]);
+    scenePresenter = [transientOverlayContext scenePresenter];
+    [(SBWorkspaceTransientOverlayTransitionContext *)v23 setScenePresenter:scenePresenter];
 
-    v25 = [v22 presentationManager];
-    [(SBWorkspaceTransientOverlayTransitionContext *)v23 setPresentationManager:v25];
+    presentationManager = [transientOverlayContext presentationManager];
+    [(SBWorkspaceTransientOverlayTransitionContext *)v23 setPresentationManager:presentationManager];
 
-    v26 = [v22 transientOverlay];
-    [(SBWorkspaceTransientOverlayTransitionContext *)v23 setTransientOverlay:v26];
+    transientOverlay = [transientOverlayContext transientOverlay];
+    [(SBWorkspaceTransientOverlayTransitionContext *)v23 setTransientOverlay:transientOverlay];
 
-    -[SBWorkspaceTransientOverlayTransitionContext setTransitionType:](v23, "setTransitionType:", [v22 transitionType]);
+    -[SBWorkspaceTransientOverlayTransitionContext setTransitionType:](v23, "setTransitionType:", [transientOverlayContext transitionType]);
   }
 
   else
@@ -104,70 +104,70 @@
     v23 = 0;
   }
 
-  v27 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  -[SBWorkspaceApplicationSceneTransitionContext setRequestedUnlockedEnvironmentMode:](v10, "setRequestedUnlockedEnvironmentMode:", [v27 requestedUnlockedEnvironmentMode]);
+  applicationContext5 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  -[SBWorkspaceApplicationSceneTransitionContext setRequestedUnlockedEnvironmentMode:](v10, "setRequestedUnlockedEnvironmentMode:", [applicationContext5 requestedUnlockedEnvironmentMode]);
 
-  v28 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  -[SBWorkspaceApplicationSceneTransitionContext setRequestedFloatingConfiguration:](v10, "setRequestedFloatingConfiguration:", [v28 requestedFloatingConfiguration]);
+  applicationContext6 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  -[SBWorkspaceApplicationSceneTransitionContext setRequestedFloatingConfiguration:](v10, "setRequestedFloatingConfiguration:", [applicationContext6 requestedFloatingConfiguration]);
 
-  v29 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  -[SBWorkspaceApplicationSceneTransitionContext setRequestedCenterConfiguration:](v10, "setRequestedCenterConfiguration:", [v29 requestedCenterConfiguration]);
+  applicationContext7 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  -[SBWorkspaceApplicationSceneTransitionContext setRequestedCenterConfiguration:](v10, "setRequestedCenterConfiguration:", [applicationContext7 requestedCenterConfiguration]);
 
-  v30 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  -[SBWorkspaceApplicationSceneTransitionContext setRequestedPeekConfiguration:](v10, "setRequestedPeekConfiguration:", [v30 requestedPeekConfiguration]);
+  applicationContext8 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  -[SBWorkspaceApplicationSceneTransitionContext setRequestedPeekConfiguration:](v10, "setRequestedPeekConfiguration:", [applicationContext8 requestedPeekConfiguration]);
 
-  v31 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  -[SBWorkspaceApplicationSceneTransitionContext setRequestedFloatingSwitcherVisible:](v10, "setRequestedFloatingSwitcherVisible:", [v31 requestedFloatingSwitcherVisible]);
+  applicationContext9 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  -[SBWorkspaceApplicationSceneTransitionContext setRequestedFloatingSwitcherVisible:](v10, "setRequestedFloatingSwitcherVisible:", [applicationContext9 requestedFloatingSwitcherVisible]);
 
-  v32 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  -[SBWorkspaceApplicationSceneTransitionContext setRequestedCenterEntityModal:](v10, "setRequestedCenterEntityModal:", [v32 requestedCenterEntityModal]);
+  applicationContext10 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  -[SBWorkspaceApplicationSceneTransitionContext setRequestedCenterEntityModal:](v10, "setRequestedCenterEntityModal:", [applicationContext10 requestedCenterEntityModal]);
 
-  v33 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  -[SBWorkspaceApplicationSceneTransitionContext setWaitsForSceneUpdates:](v10, "setWaitsForSceneUpdates:", [v33 waitsForSceneUpdates]);
+  applicationContext11 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  -[SBWorkspaceApplicationSceneTransitionContext setWaitsForSceneUpdates:](v10, "setWaitsForSceneUpdates:", [applicationContext11 waitsForSceneUpdates]);
 
-  v34 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  -[SBWorkspaceApplicationSceneTransitionContext setPreferredInterfaceOrientation:](v10, "setPreferredInterfaceOrientation:", [v34 preferredInterfaceOrientation]);
+  applicationContext12 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  -[SBWorkspaceApplicationSceneTransitionContext setPreferredInterfaceOrientation:](v10, "setPreferredInterfaceOrientation:", [applicationContext12 preferredInterfaceOrientation]);
 
-  v35 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  -[SBWorkspaceTransitionContext setAnimationDisabled:](v10, "setAnimationDisabled:", [v35 animationDisabled]);
+  applicationContext13 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  -[SBWorkspaceTransitionContext setAnimationDisabled:](v10, "setAnimationDisabled:", [applicationContext13 animationDisabled]);
 
-  v36 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  -[SBWorkspaceApplicationSceneTransitionContext setPrefersCrossfadeTransition:](v10, "setPrefersCrossfadeTransition:", [v36 prefersCrossfadeTransition]);
+  applicationContext14 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  -[SBWorkspaceApplicationSceneTransitionContext setPrefersCrossfadeTransition:](v10, "setPrefersCrossfadeTransition:", [applicationContext14 prefersCrossfadeTransition]);
 
-  v37 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  -[SBWorkspaceApplicationSceneTransitionContext setPrefersCenterZoomTransition:](v10, "setPrefersCenterZoomTransition:", [v37 prefersCenterZoomTransition]);
+  applicationContext15 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  -[SBWorkspaceApplicationSceneTransitionContext setPrefersCenterZoomTransition:](v10, "setPrefersCenterZoomTransition:", [applicationContext15 prefersCenterZoomTransition]);
 
-  v38 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  -[SBWorkspaceApplicationSceneTransitionContext setPrefersZoomDownAnimation:](v10, "setPrefersZoomDownAnimation:", [v38 prefersZoomDownAnimation]);
+  applicationContext16 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  -[SBWorkspaceApplicationSceneTransitionContext setPrefersZoomDownAnimation:](v10, "setPrefersZoomDownAnimation:", [applicationContext16 prefersZoomDownAnimation]);
 
-  v39 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  -[SBWorkspaceApplicationSceneTransitionContext setTransitioningToLessRecentSpace:](v10, "setTransitioningToLessRecentSpace:", [v39 isTransitioningToLessRecentSpace]);
+  applicationContext17 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  -[SBWorkspaceApplicationSceneTransitionContext setTransitioningToLessRecentSpace:](v10, "setTransitioningToLessRecentSpace:", [applicationContext17 isTransitioningToLessRecentSpace]);
 
-  v40 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  v41 = [v40 requestedAppExposeBundleID];
-  [(SBWorkspaceApplicationSceneTransitionContext *)v10 setRequestedAppExposeBundleID:v41];
+  applicationContext18 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  requestedAppExposeBundleID = [applicationContext18 requestedAppExposeBundleID];
+  [(SBWorkspaceApplicationSceneTransitionContext *)v10 setRequestedAppExposeBundleID:requestedAppExposeBundleID];
 
-  v42 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  -[SBWorkspaceApplicationSceneTransitionContext setDisablesAutoPIP:](v10, "setDisablesAutoPIP:", [v42 disablesAutoPIP]);
+  applicationContext19 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  -[SBWorkspaceApplicationSceneTransitionContext setDisablesAutoPIP:](v10, "setDisablesAutoPIP:", [applicationContext19 disablesAutoPIP]);
 
-  v43 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  v44 = [v43 requestedEntityIdentifierToLayoutAttributes];
-  [(SBWorkspaceApplicationSceneTransitionContext *)v10 setRequestedEntityIdentifierToLayoutAttributes:v44];
+  applicationContext20 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  requestedEntityIdentifierToLayoutAttributes = [applicationContext20 requestedEntityIdentifierToLayoutAttributes];
+  [(SBWorkspaceApplicationSceneTransitionContext *)v10 setRequestedEntityIdentifierToLayoutAttributes:requestedEntityIdentifierToLayoutAttributes];
 
-  v45 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  -[SBWorkspaceApplicationSceneTransitionContext setRetainsSiri:](v10, "setRetainsSiri:", [v45 retainsSiri]);
+  applicationContext21 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  -[SBWorkspaceApplicationSceneTransitionContext setRetainsSiri:](v10, "setRetainsSiri:", [applicationContext21 retainsSiri]);
 
-  v46 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  v47 = [v46 minimizingDisplayItem];
-  [(SBWorkspaceApplicationSceneTransitionContext *)v10 setMinimizingDisplayItem:v47];
+  applicationContext22 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  minimizingDisplayItem = [applicationContext22 minimizingDisplayItem];
+  [(SBWorkspaceApplicationSceneTransitionContext *)v10 setMinimizingDisplayItem:minimizingDisplayItem];
 
-  v48 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  v49 = [v48 itemsCrossingToOtherDisplay];
-  [(SBWorkspaceApplicationSceneTransitionContext *)v10 setItemsCrossingToOtherDisplay:v49];
+  applicationContext23 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  itemsCrossingToOtherDisplay = [applicationContext23 itemsCrossingToOtherDisplay];
+  [(SBWorkspaceApplicationSceneTransitionContext *)v10 setItemsCrossingToOtherDisplay:itemsCrossingToOtherDisplay];
 
-  v50 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  v51 = [v50 delegate];
-  [(SBWorkspaceApplicationSceneTransitionContext *)v10 setDelegate:v51];
+  applicationContext24 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  delegate = [applicationContext24 delegate];
+  [(SBWorkspaceApplicationSceneTransitionContext *)v10 setDelegate:delegate];
 
   [v5 setApplicationContext:v10];
   [v5 setTransientOverlayContext:v23];
@@ -234,30 +234,30 @@ void __70__SBMainWorkspaceTransitionRequest_copyMainWorkspaceTransitionRequest__
 
 - (void)finalize
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBMainWorkspaceTransitionRequest.m" lineNumber:222 description:@"Entity for a device request must be a SBDeviceApplicationSceneEntity."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBMainWorkspaceTransitionRequest.m" lineNumber:222 description:@"Entity for a device request must be a SBDeviceApplicationSceneEntity."];
 }
 
 - (id)compactDescriptionBuilder
 {
   v7.receiver = self;
   v7.super_class = SBMainWorkspaceTransitionRequest;
-  v3 = [(SBWorkspaceTransitionRequest *)&v7 compactDescriptionBuilder];
+  compactDescriptionBuilder = [(SBWorkspaceTransitionRequest *)&v7 compactDescriptionBuilder];
   v4 = SBMainWorkspaceTransitionSourceDescription(self->_source);
-  v5 = [v3 appendObject:v4 withName:@"source"];
+  v5 = [compactDescriptionBuilder appendObject:v4 withName:@"source"];
 
-  return v3;
+  return compactDescriptionBuilder;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v7.receiver = self;
   v7.super_class = SBMainWorkspaceTransitionRequest;
-  v3 = [(SBWorkspaceTransitionRequest *)&v7 succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBWorkspaceTransitionRequest *)&v7 succinctDescriptionBuilder];
   v4 = SBMainWorkspaceTransitionSourceDescription(self->_source);
-  v5 = [v3 appendObject:v4 withName:@"source"];
+  v5 = [succinctDescriptionBuilder appendObject:v4 withName:@"source"];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
 - (id)completionBlock
@@ -283,18 +283,18 @@ void __70__SBMainWorkspaceTransitionRequest_copyMainWorkspaceTransitionRequest__
   return v2;
 }
 
-+ (id)ancillaryTransitionRequestsForTransitionRequest:(id)a3
++ (id)ancillaryTransitionRequestsForTransitionRequest:(id)request
 {
-  v3 = a3;
-  v4 = [SBApp windowSceneManager];
-  v5 = [v4 connectedWindowScenes];
+  requestCopy = request;
+  windowSceneManager = [SBApp windowSceneManager];
+  connectedWindowScenes = [windowSceneManager connectedWindowScenes];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __84__SBMainWorkspaceTransitionRequest_ancillaryTransitionRequestsForTransitionRequest___block_invoke;
   v9[3] = &unk_2783C0958;
-  v10 = v3;
-  v6 = v3;
-  v7 = [v5 bs_compactMap:v9];
+  v10 = requestCopy;
+  v6 = requestCopy;
+  v7 = [connectedWindowScenes bs_compactMap:v9];
 
   return v7;
 }
@@ -307,38 +307,38 @@ id __84__SBMainWorkspaceTransitionRequest_ancillaryTransitionRequestsForTransiti
   return v4;
 }
 
-- (SBMainWorkspaceTransitionRequest)initWithDisplayConfiguration:(id)a3
+- (SBMainWorkspaceTransitionRequest)initWithDisplayConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = +[SBWorkspace mainWorkspace];
   v8.receiver = self;
   v8.super_class = SBMainWorkspaceTransitionRequest;
-  v6 = [(SBWorkspaceTransitionRequest *)&v8 _initWithWorkspace:v5 displayConfiguration:v4];
+  v6 = [(SBWorkspaceTransitionRequest *)&v8 _initWithWorkspace:v5 displayConfiguration:configurationCopy];
 
   return v6;
 }
 
-- (id)_initWithWorkspace:(id)a3 displayConfiguration:(id)a4
+- (id)_initWithWorkspace:(id)workspace displayConfiguration:(id)configuration
 {
   v6 = MEMORY[0x277CCA890];
-  v7 = a4;
-  v8 = [v6 currentHandler];
-  [v8 handleFailureInMethod:a2 object:self file:@"SBMainWorkspaceTransitionRequest.m" lineNumber:66 description:@"call init instead"];
+  configurationCopy = configuration;
+  currentHandler = [v6 currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBMainWorkspaceTransitionRequest.m" lineNumber:66 description:@"call init instead"];
 
-  v9 = [(SBMainWorkspaceTransitionRequest *)self initWithDisplayConfiguration:v7];
+  v9 = [(SBMainWorkspaceTransitionRequest *)self initWithDisplayConfiguration:configurationCopy];
   return v9;
 }
 
-- (id)addCompletionHandler:(id)a3
+- (id)addCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (!self->_completionTasks)
     {
-      v5 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       completionTasks = self->_completionTasks;
-      self->_completionTasks = v5;
+      self->_completionTasks = array;
     }
 
     objc_initWeak(&location, self);
@@ -349,7 +349,7 @@ id __84__SBMainWorkspaceTransitionRequest_ancillaryTransitionRequestsForTransiti
     v13 = &unk_2783A9070;
     objc_copyWeak(&v14, &location);
     v8 = [(BSSimpleAssertion *)v7 initWithIdentifier:@"SBMainWorkspaceTransitionRequest" forReason:@"Completion" invalidationBlock:&v10];
-    [(SBMainWorkspaceTransitionRequestCompletionTask *)v8 setTask:v4, v10, v11, v12, v13];
+    [(SBMainWorkspaceTransitionRequestCompletionTask *)v8 setTask:handlerCopy, v10, v11, v12, v13];
     [(NSMutableArray *)self->_completionTasks addObject:v8];
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -420,12 +420,12 @@ void __51__SBMainWorkspaceTransitionRequest_completionBlock__block_invoke_2(uint
   }
 }
 
-- (void)declineWithReason:(id)a3
+- (void)declineWithReason:(id)reason
 {
   v17 = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = SBMainWorkspaceTransitionRequest;
-  [(SBWorkspaceTransitionRequest *)&v15 declineWithReason:a3];
+  [(SBWorkspaceTransitionRequest *)&v15 declineWithReason:reason];
   if (![(SBWorkspaceTransitionRequest *)self isFinalized])
   {
     [(SBMainWorkspaceTransitionRequest *)self setTransactionProvider:0];
@@ -453,8 +453,8 @@ void __51__SBMainWorkspaceTransitionRequest_completionBlock__block_invoke_2(uint
               objc_enumerationMutation(v5);
             }
 
-            v10 = [*(*(&v11 + 1) + 8 * v9) task];
-            v10[2](v10, 0);
+            task = [*(*(&v11 + 1) + 8 * v9) task];
+            task[2](task, 0);
 
             ++v9;
           }
@@ -471,19 +471,19 @@ void __51__SBMainWorkspaceTransitionRequest_completionBlock__block_invoke_2(uint
   }
 }
 
-- (void)setTransientOverlayContext:(id)a3
+- (void)setTransientOverlayContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  contextCopy = context;
+  v5 = contextCopy;
+  if (contextCopy)
   {
-    v6 = [v4 presentationManager];
+    presentationManager = [contextCopy presentationManager];
 
-    if (!v6)
+    if (!presentationManager)
     {
-      v7 = [(SBWorkspaceTransitionRequest *)self workspace];
-      v8 = [v7 transientOverlayPresentationManager];
-      [v5 setPresentationManager:v8];
+      workspace = [(SBWorkspaceTransitionRequest *)self workspace];
+      transientOverlayPresentationManager = [workspace transientOverlayPresentationManager];
+      [v5 setPresentationManager:transientOverlayPresentationManager];
     }
   }
 
@@ -492,30 +492,30 @@ void __51__SBMainWorkspaceTransitionRequest_completionBlock__block_invoke_2(uint
   [(SBWorkspaceTransitionRequest *)&v9 setTransientOverlayContext:v5];
 }
 
-- (void)modifyTransientOverlayContext:(id)a3
+- (void)modifyTransientOverlayContext:(id)context
 {
   v11.receiver = self;
   v11.super_class = SBMainWorkspaceTransitionRequest;
-  [(SBWorkspaceTransitionRequest *)&v11 modifyTransientOverlayContext:a3];
-  v4 = [(SBWorkspaceTransitionRequest *)self transientOverlayContext];
-  v5 = [v4 transientOverlay];
-  v6 = [v5 viewController];
+  [(SBWorkspaceTransitionRequest *)&v11 modifyTransientOverlayContext:context];
+  transientOverlayContext = [(SBWorkspaceTransitionRequest *)self transientOverlayContext];
+  transientOverlay = [transientOverlayContext transientOverlay];
+  viewController = [transientOverlay viewController];
 
-  if (![v4 transitionType])
+  if (![transientOverlayContext transitionType])
   {
-    if ([v6 prefersContinuityDisplayPresentation] && +[SBContinuitySessionManager areContinuitySessionsAllowed](SBContinuitySessionManager, "areContinuitySessionsAllowed"))
+    if ([viewController prefersContinuityDisplayPresentation] && +[SBContinuitySessionManager areContinuitySessionsAllowed](SBContinuitySessionManager, "areContinuitySessionsAllowed"))
     {
       v7 = +[SBContinuitySessionManager sharedInstance];
-      v8 = [v7 currentSession];
+      currentSession = [v7 currentSession];
 
-      if ([v8 state] == 11)
+      if ([currentSession state] == 11)
       {
-        v9 = [v8 mainWindowScene];
+        mainWindowScene = [currentSession mainWindowScene];
 
-        if (v9)
+        if (mainWindowScene)
         {
 LABEL_10:
-          [v4 setWindowScene:v9];
+          [transientOverlayContext setWindowScene:mainWindowScene];
 
           goto LABEL_11;
         }
@@ -526,12 +526,12 @@ LABEL_10:
       }
     }
 
-    if ([v6 prefersEmbeddedDisplayPresentation])
+    if ([viewController prefersEmbeddedDisplayPresentation])
     {
-      v10 = [(SBWorkspaceTransitionRequest *)self workspace];
-      v9 = [v10 mainWindowScene];
+      workspace = [(SBWorkspaceTransitionRequest *)self workspace];
+      mainWindowScene = [workspace mainWindowScene];
 
-      if (v9)
+      if (mainWindowScene)
       {
         goto LABEL_10;
       }

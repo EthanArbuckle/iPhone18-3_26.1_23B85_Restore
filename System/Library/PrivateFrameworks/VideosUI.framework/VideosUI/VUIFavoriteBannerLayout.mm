@@ -1,30 +1,30 @@
 @interface VUIFavoriteBannerLayout
 - (UIEdgeInsets)margin;
 - (_VUICornerRadii)borderRadii;
-- (unint64_t)bannerStyleForSizeClass:(int64_t)a3;
+- (unint64_t)bannerStyleForSizeClass:(int64_t)class;
 @end
 
 @implementation VUIFavoriteBannerLayout
 
-- (unint64_t)bannerStyleForSizeClass:(int64_t)a3
+- (unint64_t)bannerStyleForSizeClass:(int64_t)class
 {
   if (self->_isPreModeBanner)
   {
-    return a3 > 1;
+    return class > 1;
   }
 
-  if (a3 < 2)
+  if (class < 2)
   {
     return 0;
   }
 
-  if (a3 != 2)
+  if (class != 2)
   {
     return 2;
   }
 
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom] != 1;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v5 = [currentDevice userInterfaceIdiom] != 1;
 
   return 2 * v5;
 }

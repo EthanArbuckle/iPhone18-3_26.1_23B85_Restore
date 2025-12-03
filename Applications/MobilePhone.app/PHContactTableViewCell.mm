@@ -1,10 +1,10 @@
 @interface PHContactTableViewCell
-+ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)a3;
++ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)category;
 + (UIEdgeInsets)tableViewContentInset;
-+ (double)avatarLayoutGuideWidthAnchorLayoutConstraintConstant:(id)a3;
-+ (double)titleLabelLeadingAnchorLayoutConstraintConstantForContentCategorySize:(id)a3;
-+ (id)actionButtonImageForActionType:(id)a3;
-+ (id)imageForActionType:(id)a3;
++ (double)avatarLayoutGuideWidthAnchorLayoutConstraintConstant:(id)constant;
++ (double)titleLabelLeadingAnchorLayoutConstraintConstantForContentCategorySize:(id)size;
++ (id)actionButtonImageForActionType:(id)type;
++ (id)imageForActionType:(id)type;
 - (NSDirectionalEdgeInsets)rootViewLayoutMargins;
 - (TUFeatureFlags)featureFlags;
 - (double)avatarLayoutGuideLeadingAnchorLayoutConstraintConstant;
@@ -12,21 +12,21 @@
 - (double)subtitleLabelLeadingLayoutConstraintConstant;
 - (id)loadRootViewAndContentViews;
 - (void)_updateLayout;
-- (void)actionButtonTapped:(id)a3;
+- (void)actionButtonTapped:(id)tapped;
 - (void)commonInit;
-- (void)setActionButtonTappedHandler:(id)a3;
-- (void)setActionType:(id)a3;
-- (void)setAvatarViewController:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)setActionButtonTappedHandler:(id)handler;
+- (void)setActionType:(id)type;
+- (void)setAvatarViewController:(id)controller;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)updateFontsAndLayoutMetrics;
 - (void)updateRootView;
 @end
 
 @implementation PHContactTableViewCell
 
-+ (double)avatarLayoutGuideWidthAnchorLayoutConstraintConstant:(id)a3
++ (double)avatarLayoutGuideWidthAnchorLayoutConstraintConstant:(id)constant
 {
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(a3);
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(constant);
   result = 45.0;
   if (IsAccessibilityCategory)
   {
@@ -36,9 +36,9 @@
   return result;
 }
 
-+ (double)titleLabelLeadingAnchorLayoutConstraintConstantForContentCategorySize:(id)a3
++ (double)titleLabelLeadingAnchorLayoutConstraintConstantForContentCategorySize:(id)size
 {
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(a3);
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(size);
   result = 10.0;
   if (IsAccessibilityCategory)
   {
@@ -48,20 +48,20 @@
   return result;
 }
 
-+ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)a3
++ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   v5 = objc_alloc_init(TUFeatureFlags);
   v6 = 0.0;
   if (([v5 phoneRecentsAvatarsEnabled] & 1) == 0)
   {
-    [a1 avatarLayoutGuideLeadingAnchorLayoutConstraintConstantForContentCategorySize:v4];
+    [self avatarLayoutGuideLeadingAnchorLayoutConstraintConstantForContentCategorySize:categoryCopy];
     v6 = v7 + 0.0;
   }
 
-  [a1 avatarLayoutGuideWidthAnchorLayoutConstraintConstant:v4];
+  [self avatarLayoutGuideWidthAnchorLayoutConstraintConstant:categoryCopy];
   v9 = v8;
-  [a1 titleLabelLeadingAnchorLayoutConstraintConstantForContentCategorySize:v4];
+  [self titleLabelLeadingAnchorLayoutConstraintConstantForContentCategorySize:categoryCopy];
   v11 = v6 + v9 + v10;
 
   v12 = 0.0;
@@ -99,10 +99,10 @@
   return result;
 }
 
-+ (id)imageForActionType:(id)a3
++ (id)imageForActionType:(id)type
 {
-  v3 = a3;
-  if ([CNActionTypeAudioCall isEqualToString:v3])
+  typeCopy = type;
+  if ([CNActionTypeAudioCall isEqualToString:typeCopy])
   {
     v4 = +[UIImage favoritesAudioGlyphImage];
 LABEL_13:
@@ -110,31 +110,31 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([CNActionTypeMail isEqualToString:v3])
+  if ([CNActionTypeMail isEqualToString:typeCopy])
   {
     v4 = +[UIImage favoritesMailGlyphImage];
     goto LABEL_13;
   }
 
-  if ([CNActionTypeMessage isEqualToString:v3])
+  if ([CNActionTypeMessage isEqualToString:typeCopy])
   {
     v4 = +[UIImage favoritesMessageGlyphImage];
     goto LABEL_13;
   }
 
-  if ([CNActionTypeTTYCall isEqualToString:v3])
+  if ([CNActionTypeTTYCall isEqualToString:typeCopy])
   {
     v4 = +[UIImage favoritesTTYDirectGlyphImage];
     goto LABEL_13;
   }
 
-  if ([CNActionTypeTTYRelayCall isEqualToString:v3])
+  if ([CNActionTypeTTYRelayCall isEqualToString:typeCopy])
   {
     v4 = +[UIImage favoritesTTYRelayGlyphImage];
     goto LABEL_13;
   }
 
-  if ([CNActionTypeVideoCall isEqualToString:v3])
+  if ([CNActionTypeVideoCall isEqualToString:typeCopy])
   {
     v4 = +[UIImage favoritesVideoGlyphImage];
     goto LABEL_13;
@@ -146,10 +146,10 @@ LABEL_14:
   return v5;
 }
 
-+ (id)actionButtonImageForActionType:(id)a3
++ (id)actionButtonImageForActionType:(id)type
 {
-  v3 = a3;
-  if ([CNActionTypeAudioCall isEqualToString:v3])
+  typeCopy = type;
+  if ([CNActionTypeAudioCall isEqualToString:typeCopy])
   {
     v4 = +[UIImage recentsAudioCallImage];
 LABEL_10:
@@ -157,25 +157,25 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([CNActionTypeMail isEqualToString:v3])
+  if ([CNActionTypeMail isEqualToString:typeCopy])
   {
     v4 = +[UIImage mailActionImage];
     goto LABEL_10;
   }
 
-  if ([CNActionTypeMessage isEqualToString:v3])
+  if ([CNActionTypeMessage isEqualToString:typeCopy])
   {
     v4 = +[UIImage messagesActionImage];
     goto LABEL_10;
   }
 
-  if ([CNActionTypeTTYCall isEqualToString:v3] || objc_msgSend(CNActionTypeTTYRelayCall, "isEqualToString:", v3))
+  if ([CNActionTypeTTYCall isEqualToString:typeCopy] || objc_msgSend(CNActionTypeTTYRelayCall, "isEqualToString:", typeCopy))
   {
     v4 = +[UIImage TTYActionImage];
     goto LABEL_10;
   }
 
-  if ([CNActionTypeVideoCall isEqualToString:v3])
+  if ([CNActionTypeVideoCall isEqualToString:typeCopy])
   {
     v4 = +[UIImage recentsVideoCallImage];
     goto LABEL_10;
@@ -207,8 +207,8 @@ LABEL_11:
   actionType = self->_actionType;
   self->_actionType = 0;
 
-  v4 = [(PHContactTableViewCell *)self featureFlags];
-  self->_tapTargets = [v4 recentsCallTapTargetsEnabled];
+  featureFlags = [(PHContactTableViewCell *)self featureFlags];
+  self->_tapTargets = [featureFlags recentsCallTapTargetsEnabled];
 
   v5.receiver = self;
   v5.super_class = PHContactTableViewCell;
@@ -219,7 +219,7 @@ LABEL_11:
 {
   v24.receiver = self;
   v24.super_class = PHContactTableViewCell;
-  v3 = [(PHDoubleLineTableViewCell *)&v24 loadRootViewAndContentViews];
+  loadRootViewAndContentViews = [(PHDoubleLineTableViewCell *)&v24 loadRootViewAndContentViews];
   [(PHContactTableViewCell *)self setAccessoryType:4];
   v4 = objc_alloc_init(UIImageView);
   subtitleImageView = self->_subtitleImageView;
@@ -231,10 +231,10 @@ LABEL_11:
   [(UIImageView *)self->_subtitleImageView setUserInteractionEnabled:0];
   [(UIImageView *)self->_subtitleImageView setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
   v7 = [NUIContainerStackView alloc];
-  v8 = [(PHContactTableViewCell *)self subtitleImageView];
-  v28[0] = v8;
-  v9 = [(PHTableViewCell *)self subtitleLabel];
-  v28[1] = v9;
+  subtitleImageView = [(PHContactTableViewCell *)self subtitleImageView];
+  v28[0] = subtitleImageView;
+  subtitleLabel = [(PHTableViewCell *)self subtitleLabel];
+  v28[1] = subtitleLabel;
   v10 = [NSArray arrayWithObjects:v28 count:2];
   v11 = [v7 initWithArrangedSubviews:v10];
   subtitleStackView = self->_subtitleStackView;
@@ -242,8 +242,8 @@ LABEL_11:
 
   [(NUIContainerStackView *)self->_subtitleStackView setAlignment:3];
   v13 = [NUIContainerGridView alloc];
-  v14 = [(PHTableViewCell *)self titleLabel];
-  v26 = v14;
+  titleLabel = [(PHTableViewCell *)self titleLabel];
+  v26 = titleLabel;
   v15 = [NSArray arrayWithObjects:&v26 count:1];
   v27[0] = v15;
   v25 = self->_subtitleStackView;
@@ -262,8 +262,8 @@ LABEL_11:
     v20 = objc_alloc_init(TPAccessoryButton);
     [(PHContactTableViewCell *)self setActionButton:v20];
 
-    v21 = [(PHContactTableViewCell *)self actionButton];
-    [v21 addTarget:self action:"actionButtonTapped:" forControlEvents:64];
+    actionButton = [(PHContactTableViewCell *)self actionButton];
+    [actionButton addTarget:self action:"actionButtonTapped:" forControlEvents:64];
   }
 
   v22 = self->_gridView;
@@ -283,12 +283,12 @@ LABEL_11:
     v3 = 0;
   }
 
-  v4 = [(CNAvatarViewController *)self->_avatarViewController view];
-  v6 = v4;
-  if (v4)
+  view = [(CNAvatarViewController *)self->_avatarViewController view];
+  v6 = view;
+  if (view)
   {
     LODWORD(v5) = 1148846080;
-    [v4 setContentCompressionResistancePriority:0 forAxis:v5];
+    [view setContentCompressionResistancePriority:0 forAxis:v5];
     LODWORD(v7) = 1148846080;
     [v6 setContentCompressionResistancePriority:1 forAxis:v7];
     LODWORD(v8) = 1148846080;
@@ -325,24 +325,24 @@ LABEL_11:
 
   [v3 removeFromSuperview];
   [(PHContactTableViewCell *)self setPreservesSuperviewLayoutMargins:1];
-  v14 = [(PHContactTableViewCell *)self gridView];
-  [v14 setPreservesSuperviewLayoutMargins:1];
+  gridView = [(PHContactTableViewCell *)self gridView];
+  [gridView setPreservesSuperviewLayoutMargins:1];
 }
 
-- (void)actionButtonTapped:(id)a3
+- (void)actionButtonTapped:(id)tapped
 {
-  v4 = [(PHContactTableViewCell *)self actionButtonTappedHandler];
+  actionButtonTappedHandler = [(PHContactTableViewCell *)self actionButtonTappedHandler];
 
-  if (v4)
+  if (actionButtonTappedHandler)
   {
-    v5 = [(PHContactTableViewCell *)self actionButtonTappedHandler];
-    v5[2]();
+    actionButtonTappedHandler2 = [(PHContactTableViewCell *)self actionButtonTappedHandler];
+    actionButtonTappedHandler2[2]();
   }
 }
 
-- (void)setActionButtonTappedHandler:(id)a3
+- (void)setActionButtonTappedHandler:(id)handler
 {
-  self->_actionButtonTappedHandler = objc_retainBlock(a3);
+  self->_actionButtonTappedHandler = objc_retainBlock(handler);
 
   _objc_release_x1();
 }
@@ -357,17 +357,17 @@ LABEL_11:
 
 - (void)_updateLayout
 {
-  v3 = [(PHTableViewCell *)self subtitleLabel];
-  [v3 effectiveFirstBaselineOffsetFromTop];
+  subtitleLabel = [(PHTableViewCell *)self subtitleLabel];
+  [subtitleLabel effectiveFirstBaselineOffsetFromTop];
   [(NUIContainerStackView *)self->_subtitleStackView setCustomFirstBaselineOffsetFromTop:?];
 
   [(PHDoubleLineTableViewCell *)self subtitleLabelFirstBaselineLayoutConstraintConstant];
   [(NUIContainerGridView *)self->_gridView setRowSpacing:?];
-  v4 = [(PHContactTableViewCell *)self featureFlags];
-  v5 = [v4 phoneRecentsAvatarsEnabled];
+  featureFlags = [(PHContactTableViewCell *)self featureFlags];
+  phoneRecentsAvatarsEnabled = [featureFlags phoneRecentsAvatarsEnabled];
 
   v6 = 10.0;
-  if ((v5 & 1) == 0)
+  if ((phoneRecentsAvatarsEnabled & 1) == 0)
   {
     [(PHTableViewCell *)self titleLabelLeadingLayoutConstraintConstant];
   }
@@ -377,16 +377,16 @@ LABEL_11:
   [(NUIContainerStackView *)self->_subtitleStackView setSpacing:?];
   if ([(NUIContainerGridView *)self->_gridView numberOfColumns]>= 2)
   {
-    v7 = [(CNAvatarViewController *)self->_avatarViewController view];
-    [v7 setMinimumLayoutSize:{45.0, 45.0}];
+    view = [(CNAvatarViewController *)self->_avatarViewController view];
+    [view setMinimumLayoutSize:{45.0, 45.0}];
 
-    v8 = [(CNAvatarViewController *)self->_avatarViewController view];
-    [v8 setMaximumLayoutSize:{45.0, 45.0}];
+    view2 = [(CNAvatarViewController *)self->_avatarViewController view];
+    [view2 setMaximumLayoutSize:{45.0, 45.0}];
 
-    v11 = [(PHContactTableViewCell *)self traitCollection];
-    v9 = [v11 isPreferredContentSizeCategoryAccessible];
+    traitCollection = [(PHContactTableViewCell *)self traitCollection];
+    isPreferredContentSizeCategoryAccessible = [traitCollection isPreferredContentSizeCategoryAccessible];
     v10 = [(NUIContainerGridView *)self->_gridView columnAtIndex:0];
-    [v10 setHidden:v9];
+    [v10 setHidden:isPreferredContentSizeCategoryAccessible];
   }
 }
 
@@ -400,10 +400,10 @@ LABEL_11:
   v8 = v7;
   [(PHContactTableViewCell *)self avatarLayoutGuideLeadingAnchorLayoutConstraintConstant];
   v10 = v9;
-  v11 = [(PHContactTableViewCell *)self featureFlags];
-  v12 = [v11 phoneRecentsAvatarsEnabled];
+  featureFlags = [(PHContactTableViewCell *)self featureFlags];
+  phoneRecentsAvatarsEnabled = [featureFlags phoneRecentsAvatarsEnabled];
 
-  if (v12)
+  if (phoneRecentsAvatarsEnabled)
   {
     [(PHContactTableViewCell *)self avatarLayoutGuideLeadingAnchorLayoutConstraintConstant];
     v14 = v13;
@@ -414,9 +414,9 @@ LABEL_11:
   else
   {
     v15 = +[UITraitCollection _currentTraitCollection];
-    v16 = [v15 isPreferredContentSizeCategoryAccessible];
+    isPreferredContentSizeCategoryAccessible = [v15 isPreferredContentSizeCategoryAccessible];
 
-    if (v16)
+    if (isPreferredContentSizeCategoryAccessible)
     {
       v14 = 0.0;
     }
@@ -437,15 +437,15 @@ LABEL_11:
   return result;
 }
 
-- (void)setActionType:(id)a3
+- (void)setActionType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   actionType = self->_actionType;
-  v16 = v4;
-  if (v4)
+  v16 = typeCopy;
+  if (typeCopy)
   {
-    v6 = [(NSString *)actionType isEqualToString:v4];
-    v4 = v16;
+    v6 = [(NSString *)actionType isEqualToString:typeCopy];
+    typeCopy = v16;
     if (v6)
     {
       goto LABEL_7;
@@ -457,28 +457,28 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  v7 = [v4 copy];
+  v7 = [typeCopy copy];
   v8 = self->_actionType;
   self->_actionType = v7;
 
   v9 = [objc_opt_class() imageForActionType:v16];
-  v10 = [(PHContactTableViewCell *)self subtitleImageView];
-  [v10 setImage:v9];
+  subtitleImageView = [(PHContactTableViewCell *)self subtitleImageView];
+  [subtitleImageView setImage:v9];
 
   if ([(PHContactTableViewCell *)self tapTargets])
   {
     v11 = [objc_opt_class() actionButtonImageForActionType:v16];
     [(PHContactTableViewCell *)self setActionButtonImage:v11];
 
-    v12 = [(PHContactTableViewCell *)self actionButton];
-    v13 = [(PHContactTableViewCell *)self actionButtonImage];
-    [v12 configureForImage:v13];
+    actionButton = [(PHContactTableViewCell *)self actionButton];
+    actionButtonImage = [(PHContactTableViewCell *)self actionButtonImage];
+    [actionButton configureForImage:actionButtonImage];
 
-    v14 = [(PHContactTableViewCell *)self actionButton];
-    [v14 sizeToFit];
+    actionButton2 = [(PHContactTableViewCell *)self actionButton];
+    [actionButton2 sizeToFit];
 
-    v15 = [(PHContactTableViewCell *)self actionButton];
-    [(PHContactTableViewCell *)self setAccessoryView:v15];
+    actionButton3 = [(PHContactTableViewCell *)self actionButton];
+    [(PHContactTableViewCell *)self setAccessoryView:actionButton3];
   }
 
 LABEL_7:
@@ -486,35 +486,35 @@ LABEL_7:
   _objc_release_x1();
 }
 
-- (void)setAvatarViewController:(id)a3
+- (void)setAvatarViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_avatarViewController != v5)
+  controllerCopy = controller;
+  if (self->_avatarViewController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_avatarViewController, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_avatarViewController, controller);
     [(PHContactTableViewCell *)self updateRootView];
     [(PHContactTableViewCell *)self updateFontsAndLayoutMetrics];
-    v5 = v6;
+    controllerCopy = v6;
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a3;
+  editingCopy = editing;
   v7.receiver = self;
   v7.super_class = PHContactTableViewCell;
-  [(PHContactTableViewCell *)&v7 setEditing:a3 animated:a4];
-  v6 = [(PHContactTableViewCell *)self avatarViewController];
-  [v6 setThreeDTouchEnabled:!v4];
+  [(PHContactTableViewCell *)&v7 setEditing:editing animated:animated];
+  avatarViewController = [(PHContactTableViewCell *)self avatarViewController];
+  [avatarViewController setThreeDTouchEnabled:!editingCopy];
 }
 
 - (double)avatarLayoutGuideLeadingAnchorLayoutConstraintConstant
 {
   v3 = objc_opt_class();
-  v4 = [(PHContactTableViewCell *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  [v3 avatarLayoutGuideLeadingAnchorLayoutConstraintConstantForContentCategorySize:v5];
+  traitCollection = [(PHContactTableViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [v3 avatarLayoutGuideLeadingAnchorLayoutConstraintConstantForContentCategorySize:preferredContentSizeCategory];
   v7 = v6;
 
   return v7;
@@ -523,9 +523,9 @@ LABEL_7:
 - (double)avatarLayoutGuideWidthAnchorLayoutConstraintConstant
 {
   v3 = objc_opt_class();
-  v4 = [(PHContactTableViewCell *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  [v3 avatarLayoutGuideWidthAnchorLayoutConstraintConstant:v5];
+  traitCollection = [(PHContactTableViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [v3 avatarLayoutGuideWidthAnchorLayoutConstraintConstant:preferredContentSizeCategory];
   v7 = v6;
 
   return v7;
@@ -533,10 +533,10 @@ LABEL_7:
 
 - (double)subtitleLabelLeadingLayoutConstraintConstant
 {
-  v2 = [(PHTableViewCell *)self subtitleLabel];
-  v3 = [v2 font];
-  v4 = [v3 fontDescriptor];
-  v5 = [v4 objectForKey:UIFontDescriptorTextStyleAttribute];
+  subtitleLabel = [(PHTableViewCell *)self subtitleLabel];
+  font = [subtitleLabel font];
+  fontDescriptor = [font fontDescriptor];
+  v5 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v5)
   {

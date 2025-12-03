@@ -1,18 +1,18 @@
 @interface WFDaemonApplicationContextProvider
-- (WFDaemonApplicationContextProvider)initWithUserInterfaceType:(id)a3;
+- (WFDaemonApplicationContextProvider)initWithUserInterfaceType:(id)type;
 @end
 
 @implementation WFDaemonApplicationContextProvider
 
-- (WFDaemonApplicationContextProvider)initWithUserInterfaceType:(id)a3
+- (WFDaemonApplicationContextProvider)initWithUserInterfaceType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v10.receiver = self;
   v10.super_class = WFDaemonApplicationContextProvider;
   v5 = [(WFDaemonApplicationContextProvider *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [typeCopy copy];
     userInterfaceType = v5->_userInterfaceType;
     v5->_userInterfaceType = v6;
 

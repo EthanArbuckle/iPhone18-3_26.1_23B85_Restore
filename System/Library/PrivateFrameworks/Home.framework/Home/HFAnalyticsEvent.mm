@@ -1,6 +1,6 @@
 @interface HFAnalyticsEvent
-- (HFAnalyticsEvent)initWithData:(id)a3;
-- (HFAnalyticsEvent)initWithEventType:(unint64_t)a3;
+- (HFAnalyticsEvent)initWithData:(id)data;
+- (HFAnalyticsEvent)initWithEventType:(unint64_t)type;
 - (NSDictionary)payload;
 - (NSString)name;
 - (id)description;
@@ -8,15 +8,15 @@
 
 @implementation HFAnalyticsEvent
 
-- (HFAnalyticsEvent)initWithData:(id)a3
+- (HFAnalyticsEvent)initWithData:(id)data
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HFAnalyticsEvent.m" lineNumber:22 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAnalyticsEvent initWithData:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAnalyticsEvent.m" lineNumber:22 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAnalyticsEvent initWithData:]", objc_opt_class()}];
 
   return 0;
 }
 
-- (HFAnalyticsEvent)initWithEventType:(unint64_t)a3
+- (HFAnalyticsEvent)initWithEventType:(unint64_t)type
 {
   if ([(HFAnalyticsEvent *)self isMemberOfClass:objc_opt_class()])
   {
@@ -29,10 +29,10 @@
   v6 = v5;
   if (v5)
   {
-    v5->_type = a3;
-    v7 = [MEMORY[0x277CBEAA8] date];
+    v5->_type = type;
+    date = [MEMORY[0x277CBEAA8] date];
     timestamp = v6->_timestamp;
-    v6->_timestamp = v7;
+    v6->_timestamp = date;
   }
 
   return v6;
@@ -42,15 +42,15 @@
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFAnalyticsEvent *)self name];
-  v5 = [v3 appendObject:v4 withName:@"name"];
+  name = [(HFAnalyticsEvent *)self name];
+  v5 = [v3 appendObject:name withName:@"name"];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(HFAnalyticsEvent *)self payload];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  payload = [(HFAnalyticsEvent *)self payload];
+  v7 = [payload countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -61,42 +61,42 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(payload);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [(HFAnalyticsEvent *)self payload];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        payload2 = [(HFAnalyticsEvent *)self payload];
+        v13 = [payload2 objectForKeyedSubscript:v11];
         v14 = [v3 appendObject:v13 withName:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [payload countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
   }
 
-  v15 = [v3 build];
+  build = [v3 build];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return build;
 }
 
 - (NSString)name
 {
-  v2 = [(HFAnalyticsEvent *)self type];
+  type = [(HFAnalyticsEvent *)self type];
 
-  return [HFAnalytics eventNameForEventType:v2];
+  return [HFAnalytics eventNameForEventType:type];
 }
 
 - (NSDictionary)payload
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"timestamp";
-  v2 = [(HFAnalyticsEvent *)self timestamp];
-  v3 = [v2 hf_analyticsTimestamp];
-  v8[0] = v3;
+  timestamp = [(HFAnalyticsEvent *)self timestamp];
+  hf_analyticsTimestamp = [timestamp hf_analyticsTimestamp];
+  v8[0] = hf_analyticsTimestamp;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   v5 = *MEMORY[0x277D85DE8];

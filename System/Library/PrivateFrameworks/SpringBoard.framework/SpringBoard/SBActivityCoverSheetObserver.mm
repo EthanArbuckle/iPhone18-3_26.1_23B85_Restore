@@ -1,16 +1,16 @@
 @interface SBActivityCoverSheetObserver
-- (BOOL)shouldHandleActivityItem:(id)a3;
+- (BOOL)shouldHandleActivityItem:(id)item;
 - (SBActivityCoverSheetObserver)init;
-- (void)_dismissAlertForItem:(id)a3;
-- (void)activityDidDismiss:(id)a3;
-- (void)activityDidExceedReducedPushBudget:(id)a3;
-- (void)activityDidStart:(id)a3;
-- (void)activityDidUpdate:(id)a3;
-- (void)activityEnvironmentChanged:(int64_t)a3;
-- (void)activityWasBlocked:(id)a3;
-- (void)activityWasUnblocked:(id)a3;
-- (void)dismissAlert:(id)a3;
-- (void)presentAlert:(id)a3;
+- (void)_dismissAlertForItem:(id)item;
+- (void)activityDidDismiss:(id)dismiss;
+- (void)activityDidExceedReducedPushBudget:(id)budget;
+- (void)activityDidStart:(id)start;
+- (void)activityDidUpdate:(id)update;
+- (void)activityEnvironmentChanged:(int64_t)changed;
+- (void)activityWasBlocked:(id)blocked;
+- (void)activityWasUnblocked:(id)unblocked;
+- (void)dismissAlert:(id)alert;
+- (void)presentAlert:(id)alert;
 @end
 
 @implementation SBActivityCoverSheetObserver
@@ -22,9 +22,9 @@
   v2 = [(SBActivityCoverSheetObserver *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D02B90] sharedInstance];
+    mEMORY[0x277D02B90] = [MEMORY[0x277D02B90] sharedInstance];
     activityManager = v2->_activityManager;
-    v2->_activityManager = v3;
+    v2->_activityManager = mEMORY[0x277D02B90];
 
     v5 = objc_alloc_init(SBActivityModalPresentationController);
     modalPresentationController = v2->_modalPresentationController;
@@ -37,18 +37,18 @@
   return v2;
 }
 
-- (void)_dismissAlertForItem:(id)a3
+- (void)_dismissAlertForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SBActivityAlert *)self->_activeAlert item];
-  v6 = [v5 identifier];
+  itemCopy = item;
+  item = [(SBActivityAlert *)self->_activeAlert item];
+  identifier = [item identifier];
 
-  v7 = [v4 identifier];
-  v8 = [v7 isEqualToString:v6];
+  identifier2 = [itemCopy identifier];
+  v8 = [identifier2 isEqualToString:identifier];
 
   if (v8)
   {
-    [(SBActivityModalPresentationController *)self->_modalPresentationController dismissModalForActivityItem:v4];
+    [(SBActivityModalPresentationController *)self->_modalPresentationController dismissModalForActivityItem:itemCopy];
     [(SBActivityAlert *)self->_activeAlert stopAlerting];
     activeAlert = self->_activeAlert;
     self->_activeAlert = 0;
@@ -59,112 +59,112 @@
     v10 = SBLogActivity();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(SBActivityCoverSheetObserver *)v4 _dismissAlertForItem:v10];
+      [(SBActivityCoverSheetObserver *)itemCopy _dismissAlertForItem:v10];
     }
   }
 }
 
-- (void)activityDidStart:(id)a3
+- (void)activityDidStart:(id)start
 {
   activityManager = self->_activityManager;
-  v4 = [a3 contentUpdate];
-  [(CSActivityManager *)activityManager addActivityWithContentUpdate:v4];
+  contentUpdate = [start contentUpdate];
+  [(CSActivityManager *)activityManager addActivityWithContentUpdate:contentUpdate];
 }
 
-- (void)activityDidUpdate:(id)a3
+- (void)activityDidUpdate:(id)update
 {
   activityManager = self->_activityManager;
-  v4 = [a3 contentUpdate];
-  [(CSActivityManager *)activityManager updateActivityWithContentUpdate:v4];
+  contentUpdate = [update contentUpdate];
+  [(CSActivityManager *)activityManager updateActivityWithContentUpdate:contentUpdate];
 }
 
-- (void)activityDidDismiss:(id)a3
+- (void)activityDidDismiss:(id)dismiss
 {
   activityManager = self->_activityManager;
-  v6 = a3;
-  v5 = [v6 contentUpdate];
-  [(CSActivityManager *)activityManager removeActivityWithContentUpdate:v5];
+  dismissCopy = dismiss;
+  contentUpdate = [dismissCopy contentUpdate];
+  [(CSActivityManager *)activityManager removeActivityWithContentUpdate:contentUpdate];
 
-  [(SBActivityCoverSheetObserver *)self _dismissAlertForItem:v6];
+  [(SBActivityCoverSheetObserver *)self _dismissAlertForItem:dismissCopy];
 }
 
-- (BOOL)shouldHandleActivityItem:(id)a3
+- (BOOL)shouldHandleActivityItem:(id)item
 {
-  if (!a3)
+  if (!item)
   {
     return 0;
   }
 
-  v3 = [a3 descriptor];
-  v4 = [v3 presentationOptions];
-  v5 = [v4 destinations];
-  v6 = [v5 bs_containsObjectPassingTest:&__block_literal_global_113];
+  descriptor = [item descriptor];
+  presentationOptions = [descriptor presentationOptions];
+  destinations = [presentationOptions destinations];
+  v6 = [destinations bs_containsObjectPassingTest:&__block_literal_global_113];
 
   v7 = +[SBLiveActivityDomain rootSettings];
-  v8 = [v7 hideActivitiesInLockScreen];
+  hideActivitiesInLockScreen = [v7 hideActivitiesInLockScreen];
 
-  v9 = (v8 ^ 1) & v6;
+  v9 = (hideActivitiesInLockScreen ^ 1) & v6;
   return v9;
 }
 
-- (void)activityWasBlocked:(id)a3
+- (void)activityWasBlocked:(id)blocked
 {
   activityManager = self->_activityManager;
-  v4 = [a3 identifier];
-  [(CSActivityManager *)activityManager setActivityHidden:1 forIdentifier:v4];
+  identifier = [blocked identifier];
+  [(CSActivityManager *)activityManager setActivityHidden:1 forIdentifier:identifier];
 }
 
-- (void)activityWasUnblocked:(id)a3
+- (void)activityWasUnblocked:(id)unblocked
 {
   activityManager = self->_activityManager;
-  v4 = [a3 identifier];
-  [(CSActivityManager *)activityManager setActivityHidden:0 forIdentifier:v4];
+  identifier = [unblocked identifier];
+  [(CSActivityManager *)activityManager setActivityHidden:0 forIdentifier:identifier];
 }
 
-- (void)activityDidExceedReducedPushBudget:(id)a3
+- (void)activityDidExceedReducedPushBudget:(id)budget
 {
   activityManager = self->_activityManager;
-  v4 = [a3 identifier];
-  [(CSActivityManager *)activityManager handleActivityExceedingReducedPushBudgetForIdentifier:v4];
+  identifier = [budget identifier];
+  [(CSActivityManager *)activityManager handleActivityExceedingReducedPushBudgetForIdentifier:identifier];
 }
 
-- (void)presentAlert:(id)a3
+- (void)presentAlert:(id)alert
 {
-  v10 = a3;
-  if ([v10 canPresentInEnvironment:self->_environment alertType:4])
+  alertCopy = alert;
+  if ([alertCopy canPresentInEnvironment:self->_environment alertType:4])
   {
     v5 = +[SBWorkspace mainWorkspace];
-    v6 = [v5 transientOverlayPresentationManager];
-    v7 = [v6 hasActivePresentation];
+    transientOverlayPresentationManager = [v5 transientOverlayPresentationManager];
+    hasActivePresentation = [transientOverlayPresentationManager hasActivePresentation];
 
-    if (v7)
+    if (hasActivePresentation)
     {
-      v8 = +[SBActivityManager sharedInstance];
-      [v8 alertPresentationFailed:v10];
+      item = +[SBActivityManager sharedInstance];
+      [item alertPresentationFailed:alertCopy];
     }
 
     else
     {
-      [v10 alertWithScreenOn:1 playSound:1];
-      objc_storeStrong(&self->_activeAlert, a3);
+      [alertCopy alertWithScreenOn:1 playSound:1];
+      objc_storeStrong(&self->_activeAlert, alert);
       modalPresentationController = self->_modalPresentationController;
-      v8 = [v10 item];
-      [(SBActivityModalPresentationController *)modalPresentationController presentModalForActivityItem:v8 completion:0];
+      item = [alertCopy item];
+      [(SBActivityModalPresentationController *)modalPresentationController presentModalForActivityItem:item completion:0];
     }
   }
 }
 
-- (void)dismissAlert:(id)a3
+- (void)dismissAlert:(id)alert
 {
-  v4 = [a3 item];
-  [(SBActivityCoverSheetObserver *)self _dismissAlertForItem:v4];
+  item = [alert item];
+  [(SBActivityCoverSheetObserver *)self _dismissAlertForItem:item];
 }
 
-- (void)activityEnvironmentChanged:(int64_t)a3
+- (void)activityEnvironmentChanged:(int64_t)changed
 {
-  if (self->_environment != a3)
+  if (self->_environment != changed)
   {
-    self->_environment = a3;
+    self->_environment = changed;
   }
 }
 

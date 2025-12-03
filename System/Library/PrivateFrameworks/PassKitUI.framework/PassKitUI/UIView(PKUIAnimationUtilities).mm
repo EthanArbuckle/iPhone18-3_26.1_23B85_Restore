@@ -54,14 +54,14 @@
 {
   if (a7)
   {
-    v12 = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
-    [a1 pkui_setFrame:v12 withAdditiveAnimationFactory:0 completion:{a2, a3, a4, a5}];
+    mEMORY[0x1E69B92B0] = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
+    [self pkui_setFrame:mEMORY[0x1E69B92B0] withAdditiveAnimationFactory:0 completion:{a2, a3, a4, a5}];
     v14 = v13;
   }
 
   else
   {
-    [a1 pkui_setFrame:0 withAdditiveAnimationFactory:0 completion:{a2, a3, a4, a5}];
+    [self pkui_setFrame:0 withAdditiveAnimationFactory:0 completion:{a2, a3, a4, a5}];
     return v15;
   }
 
@@ -74,15 +74,15 @@
   {
     v13 = MEMORY[0x1E69B92B0];
     v14 = a8;
-    v15 = [v13 sharedDefaultFactory];
-    [a1 pkui_setFrame:v15 withAdditiveAnimationFactory:v14 completion:{a2, a3, a4, a5}];
+    sharedDefaultFactory = [v13 sharedDefaultFactory];
+    [self pkui_setFrame:sharedDefaultFactory withAdditiveAnimationFactory:v14 completion:{a2, a3, a4, a5}];
     v17 = v16;
   }
 
   else
   {
-    v15 = a8;
-    [a1 pkui_setFrame:0 withAdditiveAnimationFactory:v15 completion:{a2, a3, a4, a5}];
+    sharedDefaultFactory = a8;
+    [self pkui_setFrame:0 withAdditiveAnimationFactory:sharedDefaultFactory completion:{a2, a3, a4, a5}];
     v17 = v18;
   }
 
@@ -103,7 +103,7 @@
     v15 = 0;
   }
 
-  [a1 pkui_setFrame:a7 withAdditiveAnimationFactory:v15 animation:{a2, a3, a4, a5}];
+  [self pkui_setFrame:a7 withAdditiveAnimationFactory:v15 animation:{a2, a3, a4, a5}];
   v17 = v16;
   v18 = v27;
   if (v27)
@@ -118,8 +118,8 @@
       [v18 pkui_setCompletionHandler:&v22];
     }
 
-    v19 = [a1 layer];
-    v20 = [v19 pkui_addAdditiveAnimation:v27];
+    layer = [self layer];
+    v20 = [layer pkui_addAdditiveAnimation:v27];
   }
 
   else if (v14)
@@ -134,14 +134,14 @@
 {
   if (a7)
   {
-    v12 = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
-    [a1 pkui_setBounds:v12 withAdditiveAnimationFactory:0 completion:{a2, a3, a4, a5}];
+    mEMORY[0x1E69B92B0] = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
+    [self pkui_setBounds:mEMORY[0x1E69B92B0] withAdditiveAnimationFactory:0 completion:{a2, a3, a4, a5}];
     v14 = v13;
   }
 
   else
   {
-    [a1 pkui_setBounds:0 withAdditiveAnimationFactory:0 completion:{a2, a3, a4, a5}];
+    [self pkui_setBounds:0 withAdditiveAnimationFactory:0 completion:{a2, a3, a4, a5}];
     return v15;
   }
 
@@ -154,15 +154,15 @@
   {
     v13 = MEMORY[0x1E69B92B0];
     v14 = a8;
-    v15 = [v13 sharedDefaultFactory];
-    [a1 pkui_setBounds:v15 withAdditiveAnimationFactory:v14 completion:{a2, a3, a4, a5}];
+    sharedDefaultFactory = [v13 sharedDefaultFactory];
+    [self pkui_setBounds:sharedDefaultFactory withAdditiveAnimationFactory:v14 completion:{a2, a3, a4, a5}];
     v17 = v16;
   }
 
   else
   {
-    v15 = a8;
-    [a1 pkui_setBounds:0 withAdditiveAnimationFactory:v15 completion:{a2, a3, a4, a5}];
+    sharedDefaultFactory = a8;
+    [self pkui_setBounds:0 withAdditiveAnimationFactory:sharedDefaultFactory completion:{a2, a3, a4, a5}];
     v17 = v18;
   }
 
@@ -183,7 +183,7 @@
     v15 = 0;
   }
 
-  [a1 pkui_setBounds:a7 withAdditiveAnimationFactory:v15 animation:{a2, a3, a4, a5}];
+  [self pkui_setBounds:a7 withAdditiveAnimationFactory:v15 animation:{a2, a3, a4, a5}];
   v17 = v16;
   v18 = v27;
   if (v27)
@@ -198,8 +198,8 @@
       [v18 pkui_setCompletionHandler:&v22];
     }
 
-    v19 = [a1 layer];
-    v20 = [v19 pkui_addAdditiveAnimation:v27];
+    layer = [self layer];
+    v20 = [layer pkui_addAdditiveAnimation:v27];
   }
 
   else if (v14)
@@ -214,14 +214,14 @@
 {
   if (a5)
   {
-    v8 = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
-    [a1 pkui_setPosition:v8 withAdditiveAnimationFactory:0 completion:{a2, a3}];
+    mEMORY[0x1E69B92B0] = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
+    [self pkui_setPosition:mEMORY[0x1E69B92B0] withAdditiveAnimationFactory:0 completion:{a2, a3}];
   }
 
   else
   {
 
-    [a1 pkui_setPosition:0 withAdditiveAnimationFactory:0 completion:?];
+    [self pkui_setPosition:0 withAdditiveAnimationFactory:0 completion:?];
   }
 }
 
@@ -231,15 +231,15 @@
   {
     v9 = MEMORY[0x1E69B92B0];
     v10 = a6;
-    v11 = [v9 sharedDefaultFactory];
-    [a1 pkui_setPosition:v11 withAdditiveAnimationFactory:v10 completion:{a2, a3}];
+    sharedDefaultFactory = [v9 sharedDefaultFactory];
+    [self pkui_setPosition:sharedDefaultFactory withAdditiveAnimationFactory:v10 completion:{a2, a3}];
     v13 = v12;
   }
 
   else
   {
-    v11 = a6;
-    [a1 pkui_setPosition:0 withAdditiveAnimationFactory:v11 completion:{a2, a3}];
+    sharedDefaultFactory = a6;
+    [self pkui_setPosition:0 withAdditiveAnimationFactory:sharedDefaultFactory completion:{a2, a3}];
     v13 = v14;
   }
 
@@ -260,7 +260,7 @@
     v11 = 0;
   }
 
-  [a1 pkui_setPosition:a5 withAdditiveAnimationFactory:v11 animation:{a2, a3}];
+  [self pkui_setPosition:a5 withAdditiveAnimationFactory:v11 animation:{a2, a3}];
   v13 = v12;
   v14 = v23;
   if (v23)
@@ -275,8 +275,8 @@
       [v14 pkui_setCompletionHandler:&v18];
     }
 
-    v15 = [a1 layer];
-    v16 = [v15 pkui_addAdditiveAnimation:v23];
+    layer = [self layer];
+    v16 = [layer pkui_addAdditiveAnimation:v23];
   }
 
   else if (v10)
@@ -291,7 +291,7 @@
 {
   if (a4)
   {
-    v6 = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
+    mEMORY[0x1E69B92B0] = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
     v7 = a3[5];
     v19 = a3[4];
     v20 = v7;
@@ -304,7 +304,7 @@
     v10 = a3[3];
     v17 = a3[2];
     v18 = v10;
-    [a1 pkui_setTransform:&v15 withAdditiveAnimationFactory:v6 completion:0];
+    [self pkui_setTransform:&v15 withAdditiveAnimationFactory:mEMORY[0x1E69B92B0] completion:0];
   }
 
   else
@@ -321,7 +321,7 @@
     v14 = a3[3];
     v17 = a3[2];
     v18 = v14;
-    [a1 pkui_setTransform:&v15 withAdditiveAnimationFactory:0 completion:0];
+    [self pkui_setTransform:&v15 withAdditiveAnimationFactory:0 completion:0];
   }
 }
 
@@ -331,7 +331,7 @@
   {
     v7 = MEMORY[0x1E69B92B0];
     v8 = a5;
-    v9 = [v7 sharedDefaultFactory];
+    sharedDefaultFactory = [v7 sharedDefaultFactory];
     v10 = a3[5];
     v23 = a3[4];
     v24 = v10;
@@ -344,7 +344,7 @@
     v13 = a3[3];
     v21 = a3[2];
     v22 = v13;
-    [a1 pkui_setTransform:&v19 withAdditiveAnimationFactory:v9 completion:v8];
+    [self pkui_setTransform:&v19 withAdditiveAnimationFactory:sharedDefaultFactory completion:v8];
   }
 
   else
@@ -362,7 +362,7 @@
     v21 = a3[2];
     v22 = v17;
     v18 = a5;
-    [a1 pkui_setTransform:&v19 withAdditiveAnimationFactory:0 completion:v18];
+    [self pkui_setTransform:&v19 withAdditiveAnimationFactory:0 completion:v18];
   }
 }
 
@@ -400,7 +400,7 @@
   v14 = a2[3];
   v20[2] = a2[2];
   v20[3] = v14;
-  [a1 pkui_setTransform:v20 withAdditiveAnimationFactory:a3 animation:v10];
+  [self pkui_setTransform:v20 withAdditiveAnimationFactory:a3 animation:v10];
   v15 = v21;
   if (v21)
   {
@@ -414,8 +414,8 @@
       [v15 pkui_setCompletionHandler:v18];
     }
 
-    v16 = [a1 layer];
-    v17 = [v16 pkui_addAdditiveAnimation:v21];
+    layer = [self layer];
+    v17 = [layer pkui_addAdditiveAnimation:v21];
   }
 
   else if (v9)
@@ -428,14 +428,14 @@
 {
   if (a4)
   {
-    v6 = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
-    [a1 pkui_setAlpha:v6 withAnimationFactory:0 completion:a2];
+    mEMORY[0x1E69B92B0] = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
+    [self pkui_setAlpha:mEMORY[0x1E69B92B0] withAnimationFactory:0 completion:a2];
   }
 
   else
   {
 
-    [a1 pkui_setAlpha:0 withAnimationFactory:0 completion:?];
+    [self pkui_setAlpha:0 withAnimationFactory:0 completion:?];
   }
 }
 
@@ -445,15 +445,15 @@
   {
     v7 = MEMORY[0x1E69B92B0];
     v8 = a5;
-    v9 = [v7 sharedDefaultFactory];
-    [a1 pkui_setAlpha:v9 withAnimationFactory:v8 completion:a2];
+    sharedDefaultFactory = [v7 sharedDefaultFactory];
+    [self pkui_setAlpha:sharedDefaultFactory withAnimationFactory:v8 completion:a2];
     v11 = v10;
   }
 
   else
   {
-    v9 = a5;
-    [a1 pkui_setAlpha:0 withAnimationFactory:v9 completion:a2];
+    sharedDefaultFactory = a5;
+    [self pkui_setAlpha:0 withAnimationFactory:sharedDefaultFactory completion:a2];
     v11 = v12;
   }
 
@@ -475,13 +475,13 @@
     v9 = 0;
   }
 
-  [a1 pkui_setAlpha:a4 withAnimationFactory:v9 animation:&v18 removePriorAnimation:a2];
+  [self pkui_setAlpha:a4 withAnimationFactory:v9 animation:&v18 removePriorAnimation:a2];
   v11 = v10;
-  v12 = [a1 layer];
-  v13 = v12;
+  layer = [self layer];
+  v13 = layer;
   if (v18 == 1)
   {
-    [v12 removeAnimationForKey:@"opacity"];
+    [layer removeAnimationForKey:@"opacity"];
   }
 
   v14 = v19;
@@ -516,14 +516,14 @@
   {
     v5 = MEMORY[0x1E69B92B0];
     v6 = a3;
-    v7 = [v5 sharedDefaultFactory];
-    v8 = [a1 pkui_setBackgroundColor:v6 withAnimationFactory:v7 completion:0];
+    sharedDefaultFactory = [v5 sharedDefaultFactory];
+    v8 = [self pkui_setBackgroundColor:v6 withAnimationFactory:sharedDefaultFactory completion:0];
   }
 
   else
   {
-    v7 = a3;
-    v8 = [a1 pkui_setBackgroundColor:v7 withAnimationFactory:0 completion:0];
+    sharedDefaultFactory = a3;
+    v8 = [self pkui_setBackgroundColor:sharedDefaultFactory withAnimationFactory:0 completion:0];
   }
 
   return v8;
@@ -536,15 +536,15 @@
     v7 = MEMORY[0x1E69B92B0];
     v8 = a5;
     v9 = a3;
-    v10 = [v7 sharedDefaultFactory];
-    v11 = [a1 pkui_setBackgroundColor:v9 withAnimationFactory:v10 completion:v8];
+    sharedDefaultFactory = [v7 sharedDefaultFactory];
+    v11 = [self pkui_setBackgroundColor:v9 withAnimationFactory:sharedDefaultFactory completion:v8];
   }
 
   else
   {
     v9 = a5;
-    v10 = a3;
-    v11 = [a1 pkui_setBackgroundColor:v10 withAnimationFactory:0 completion:v9];
+    sharedDefaultFactory = a3;
+    v11 = [self pkui_setBackgroundColor:sharedDefaultFactory withAnimationFactory:0 completion:v9];
   }
 
   return v11;
@@ -564,7 +564,7 @@
     v9 = 0;
   }
 
-  v10 = [a1 pkui_setBackgroundColor:a3 withAnimationFactory:a4 animation:v9];
+  v10 = [self pkui_setBackgroundColor:a3 withAnimationFactory:a4 animation:v9];
   v11 = v19;
   if (v19)
   {
@@ -578,9 +578,9 @@
       [v11 pkui_setCompletionHandler:&v14];
     }
 
-    v12 = [a1 layer];
-    [v12 removeAnimationForKey:@"backgroundColor"];
-    [v12 addAnimation:v19 forKey:@"backgroundColor"];
+    layer = [self layer];
+    [layer removeAnimationForKey:@"backgroundColor"];
+    [layer addAnimation:v19 forKey:@"backgroundColor"];
   }
 
   else if (v8)
@@ -595,14 +595,14 @@
 {
   if (a4)
   {
-    v6 = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
-    [a1 pkui_setCornerRadius:v6 withAdditiveAnimationFactory:0 completion:a2];
+    mEMORY[0x1E69B92B0] = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
+    [self pkui_setCornerRadius:mEMORY[0x1E69B92B0] withAdditiveAnimationFactory:0 completion:a2];
   }
 
   else
   {
 
-    [a1 pkui_setCornerRadius:0 withAdditiveAnimationFactory:0 completion:?];
+    [self pkui_setCornerRadius:0 withAdditiveAnimationFactory:0 completion:?];
   }
 }
 
@@ -612,15 +612,15 @@
   {
     v7 = MEMORY[0x1E69B92B0];
     v8 = a5;
-    v9 = [v7 sharedDefaultFactory];
-    [a1 pkui_setCornerRadius:v9 withAdditiveAnimationFactory:v8 completion:a2];
+    sharedDefaultFactory = [v7 sharedDefaultFactory];
+    [self pkui_setCornerRadius:sharedDefaultFactory withAdditiveAnimationFactory:v8 completion:a2];
     v11 = v10;
   }
 
   else
   {
-    v9 = a5;
-    [a1 pkui_setCornerRadius:0 withAdditiveAnimationFactory:v9 completion:a2];
+    sharedDefaultFactory = a5;
+    [self pkui_setCornerRadius:0 withAdditiveAnimationFactory:sharedDefaultFactory completion:a2];
     v11 = v12;
   }
 
@@ -641,7 +641,7 @@
     v9 = 0;
   }
 
-  [a1 pkui_setCornerRadius:a4 withAdditiveAnimationFactory:v9 animation:a2];
+  [self pkui_setCornerRadius:a4 withAdditiveAnimationFactory:v9 animation:a2];
   v11 = v10;
   v12 = v21;
   if (v21)
@@ -656,8 +656,8 @@
       [v12 pkui_setCompletionHandler:&v16];
     }
 
-    v13 = [a1 layer];
-    v14 = [v13 pkui_addAdditiveAnimation:v21];
+    layer = [self layer];
+    v14 = [layer pkui_addAdditiveAnimation:v21];
   }
 
   else if (v8)
@@ -672,14 +672,14 @@
 {
   if (a4)
   {
-    v6 = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
-    [a1 pkui_setShadowOpacity:v6 withAnimationFactory:0 completion:a2];
+    mEMORY[0x1E69B92B0] = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
+    [self pkui_setShadowOpacity:mEMORY[0x1E69B92B0] withAnimationFactory:0 completion:a2];
   }
 
   else
   {
 
-    [a1 pkui_setShadowOpacity:0 withAnimationFactory:0 completion:?];
+    [self pkui_setShadowOpacity:0 withAnimationFactory:0 completion:?];
   }
 }
 
@@ -689,15 +689,15 @@
   {
     v7 = MEMORY[0x1E69B92B0];
     v8 = a5;
-    v9 = [v7 sharedDefaultFactory];
-    [a1 pkui_setShadowOpacity:v9 withAnimationFactory:v8 completion:a2];
+    sharedDefaultFactory = [v7 sharedDefaultFactory];
+    [self pkui_setShadowOpacity:sharedDefaultFactory withAnimationFactory:v8 completion:a2];
     v11 = v10;
   }
 
   else
   {
-    v9 = a5;
-    [a1 pkui_setShadowOpacity:0 withAnimationFactory:v9 completion:a2];
+    sharedDefaultFactory = a5;
+    [self pkui_setShadowOpacity:0 withAnimationFactory:sharedDefaultFactory completion:a2];
     v11 = v12;
   }
 
@@ -718,7 +718,7 @@
     v9 = 0;
   }
 
-  [a1 pkui_setShadowOpacity:a4 withAnimationFactory:v9 animation:a2];
+  [self pkui_setShadowOpacity:a4 withAnimationFactory:v9 animation:a2];
   v11 = v10;
   v12 = v20;
   if (v20)
@@ -733,9 +733,9 @@
       [v12 pkui_setCompletionHandler:&v15];
     }
 
-    v13 = [a1 layer];
-    [v13 removeAnimationForKey:@"shadowOpacity"];
-    [v13 addAnimation:v20 forKey:@"shadowOpacity"];
+    layer = [self layer];
+    [layer removeAnimationForKey:@"shadowOpacity"];
+    [layer addAnimation:v20 forKey:@"shadowOpacity"];
   }
 
   else if (v8)
@@ -750,14 +750,14 @@
 {
   if (a5)
   {
-    v8 = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
-    [a1 pkui_setShadowOffset:v8 withAdditiveAnimationFactory:0 completion:{a2, a3}];
+    mEMORY[0x1E69B92B0] = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
+    [self pkui_setShadowOffset:mEMORY[0x1E69B92B0] withAdditiveAnimationFactory:0 completion:{a2, a3}];
   }
 
   else
   {
 
-    [a1 pkui_setShadowOffset:0 withAdditiveAnimationFactory:0 completion:?];
+    [self pkui_setShadowOffset:0 withAdditiveAnimationFactory:0 completion:?];
   }
 }
 
@@ -767,15 +767,15 @@
   {
     v9 = MEMORY[0x1E69B92B0];
     v10 = a6;
-    v11 = [v9 sharedDefaultFactory];
-    [a1 pkui_setShadowOffset:v11 withAdditiveAnimationFactory:v10 completion:{a2, a3}];
+    sharedDefaultFactory = [v9 sharedDefaultFactory];
+    [self pkui_setShadowOffset:sharedDefaultFactory withAdditiveAnimationFactory:v10 completion:{a2, a3}];
     v13 = v12;
   }
 
   else
   {
-    v11 = a6;
-    [a1 pkui_setShadowOffset:0 withAdditiveAnimationFactory:v11 completion:{a2, a3}];
+    sharedDefaultFactory = a6;
+    [self pkui_setShadowOffset:0 withAdditiveAnimationFactory:sharedDefaultFactory completion:{a2, a3}];
     v13 = v14;
   }
 
@@ -796,7 +796,7 @@
     v11 = 0;
   }
 
-  [a1 pkui_setShadowOffset:a5 withAdditiveAnimationFactory:v11 animation:{a2, a3}];
+  [self pkui_setShadowOffset:a5 withAdditiveAnimationFactory:v11 animation:{a2, a3}];
   v13 = v12;
   v14 = v23;
   if (v23)
@@ -811,8 +811,8 @@
       [v14 pkui_setCompletionHandler:&v18];
     }
 
-    v15 = [a1 layer];
-    v16 = [v15 pkui_addAdditiveAnimation:v23];
+    layer = [self layer];
+    v16 = [layer pkui_addAdditiveAnimation:v23];
   }
 
   else if (v10)
@@ -827,14 +827,14 @@
 {
   if (a4)
   {
-    v6 = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
-    [a1 pkui_setShadowRadius:v6 withAdditiveAnimationFactory:0 completion:a2];
+    mEMORY[0x1E69B92B0] = [MEMORY[0x1E69B92B0] sharedDefaultFactory];
+    [self pkui_setShadowRadius:mEMORY[0x1E69B92B0] withAdditiveAnimationFactory:0 completion:a2];
   }
 
   else
   {
 
-    [a1 pkui_setShadowRadius:0 withAdditiveAnimationFactory:0 completion:?];
+    [self pkui_setShadowRadius:0 withAdditiveAnimationFactory:0 completion:?];
   }
 }
 
@@ -844,15 +844,15 @@
   {
     v7 = MEMORY[0x1E69B92B0];
     v8 = a5;
-    v9 = [v7 sharedDefaultFactory];
-    [a1 pkui_setShadowRadius:v9 withAdditiveAnimationFactory:v8 completion:a2];
+    sharedDefaultFactory = [v7 sharedDefaultFactory];
+    [self pkui_setShadowRadius:sharedDefaultFactory withAdditiveAnimationFactory:v8 completion:a2];
     v11 = v10;
   }
 
   else
   {
-    v9 = a5;
-    [a1 pkui_setShadowRadius:0 withAdditiveAnimationFactory:v9 completion:a2];
+    sharedDefaultFactory = a5;
+    [self pkui_setShadowRadius:0 withAdditiveAnimationFactory:sharedDefaultFactory completion:a2];
     v11 = v12;
   }
 
@@ -873,7 +873,7 @@
     v9 = 0;
   }
 
-  [a1 pkui_setShadowRadius:a4 withAdditiveAnimationFactory:v9 animation:a2];
+  [self pkui_setShadowRadius:a4 withAdditiveAnimationFactory:v9 animation:a2];
   v11 = v10;
   v12 = v21;
   if (v21)
@@ -888,8 +888,8 @@
       [v12 pkui_setCompletionHandler:&v16];
     }
 
-    v13 = [a1 layer];
-    v14 = [v13 pkui_addAdditiveAnimation:v21];
+    layer = [self layer];
+    v14 = [layer pkui_addAdditiveAnimation:v21];
   }
 
   else if (v8)
@@ -913,7 +913,7 @@
     v15 = 0;
   }
 
-  [a1 pkui_setFrame:v14 withAdditiveAnimationFactory:v15 accumulator:{a2, a3, a4, a5}];
+  [self pkui_setFrame:v14 withAdditiveAnimationFactory:v15 accumulator:{a2, a3, a4, a5}];
   v17 = v16;
   v18 = PKGroupAnimations(v15);
   if (a8)
@@ -928,7 +928,7 @@
 {
   v14 = a7;
   v15 = a8;
-  [a1 frame];
+  [self frame];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -952,14 +952,14 @@
   v39.size.height = height;
   if (!CGRectEqualToRect(v38, v39))
   {
-    [a1 bounds];
+    [self bounds];
     v35 = v29;
     v36 = v28;
-    [a1 anchorPoint];
+    [self anchorPoint];
     v31 = x + v30 * width;
     v33 = y + v32 * height;
-    [a1 pkui_setBounds:v14 withAdditiveAnimationFactory:v15 accumulator:{v36, v35, width, height}];
-    [a1 pkui_setPosition:v14 withAdditiveAnimationFactory:v15 accumulator:{v31, v33}];
+    [self pkui_setBounds:v14 withAdditiveAnimationFactory:v15 accumulator:{v36, v35, width, height}];
+    [self pkui_setPosition:v14 withAdditiveAnimationFactory:v15 accumulator:{v31, v33}];
   }
 
   return v17;
@@ -978,7 +978,7 @@
     v15 = 0;
   }
 
-  [a1 pkui_setBounds:v14 withAdditiveAnimationFactory:v15 accumulator:{a2, a3, a4, a5}];
+  [self pkui_setBounds:v14 withAdditiveAnimationFactory:v15 accumulator:{a2, a3, a4, a5}];
   v17 = v16;
   v18 = PKGroupAnimations(v15);
   if (a8)
@@ -993,7 +993,7 @@
 {
   v14 = a7;
   v15 = a8;
-  [a1 bounds];
+  [self bounds];
   x = v24.origin.x;
   y = v24.origin.y;
   width = v24.size.width;
@@ -1008,7 +1008,7 @@
     v23[1] = 3221225472;
     v23[2] = __90__UIView_PKUIAnimationUtilities__pkui_setBounds_withAdditiveAnimationFactory_accumulator___block_invoke;
     v23[3] = &unk_1E8012160;
-    v23[4] = a1;
+    v23[4] = self;
     *&v23[5] = a2;
     *&v23[6] = a3;
     *&v23[7] = a4;
@@ -1038,7 +1038,7 @@
 - (double)pkui_setPosition:()PKUIAnimationUtilities withAdditiveAnimationFactory:animation:
 {
   v10 = a5;
-  [a1 center];
+  [self center];
   v13 = v12;
   v14 = v11;
   if (v12 != a2 || v11 != a3)
@@ -1047,7 +1047,7 @@
     v18[1] = 3221225472;
     v18[2] = __90__UIView_PKUIAnimationUtilities__pkui_setPosition_withAdditiveAnimationFactory_animation___block_invoke;
     v18[3] = &unk_1E8012188;
-    v18[4] = a1;
+    v18[4] = self;
     *&v18[5] = a2;
     *&v18[6] = a3;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v18];
@@ -1090,7 +1090,7 @@ LABEL_10:
     v11 = 0;
   }
 
-  [a1 pkui_setPosition:a5 withAdditiveAnimationFactory:v11 animation:{a2, a3}];
+  [self pkui_setPosition:a5 withAdditiveAnimationFactory:v11 animation:{a2, a3}];
   v13 = v12;
   if (v15)
   {
@@ -1111,7 +1111,7 @@ LABEL_10:
   a5[5] = 0u;
   a5[6] = 0u;
   a5[7] = 0u;
-  [a1 transform3D];
+  [self transform3D];
   v10 = a5[5];
   *&a.m31 = a5[4];
   *&a.m33 = v10;
@@ -1154,7 +1154,7 @@ LABEL_10:
     v35 = v21;
     v31[2] = __91__UIView_PKUIAnimationUtilities__pkui_setTransform_withAdditiveAnimationFactory_animation___block_invoke;
     v31[3] = &unk_1E80121B0;
-    v31[4] = a1;
+    v31[4] = self;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v31];
     if (v9)
     {
@@ -1237,7 +1237,7 @@ LABEL_7:
   v14 = a2[3];
   v15[2] = a2[2];
   v15[3] = v14;
-  [a1 pkui_setTransform:v15 withAdditiveAnimationFactory:a3 animation:v10];
+  [self pkui_setTransform:v15 withAdditiveAnimationFactory:a3 animation:v10];
   if (v16)
   {
     [v9 addObject:?];
@@ -1247,7 +1247,7 @@ LABEL_7:
 - (double)pkui_setAlpha:()PKUIAnimationUtilities withAnimationFactory:animation:removePriorAnimation:
 {
   v10 = a4;
-  [a1 alpha];
+  [self alpha];
   v12 = v11;
   if (v11 == a2)
   {
@@ -1266,7 +1266,7 @@ LABEL_8:
     v25[1] = 3221225472;
     v25[2] = __100__UIView_PKUIAnimationUtilities__pkui_setAlpha_withAnimationFactory_animation_removePriorAnimation___block_invoke;
     v25[3] = &unk_1E80119C8;
-    v25[4] = a1;
+    v25[4] = self;
     *&v25[5] = a2;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v25];
     v13 = 0;
@@ -1276,14 +1276,14 @@ LABEL_8:
     {
       v13 = [v10 springAnimationWithKeyPath:@"opacity"];
       [v13 setAdditive:0];
-      v16 = [a1 layer];
-      v17 = [v16 presentationLayer];
-      v18 = v17;
+      layer = [self layer];
+      presentationLayer = [layer presentationLayer];
+      v18 = presentationLayer;
       v19 = MEMORY[0x1E696AD98];
       v20 = v12;
-      if (v17)
+      if (presentationLayer)
       {
-        [v17 opacity];
+        [presentationLayer opacity];
         v20 = v21;
       }
 
@@ -1312,34 +1312,34 @@ LABEL_8:
 {
   v8 = a3;
   v9 = a4;
-  v10 = [a1 backgroundColor];
-  if (v10 != v8)
+  backgroundColor = [self backgroundColor];
+  if (backgroundColor != v8)
   {
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __89__UIView_PKUIAnimationUtilities__pkui_setBackgroundColor_withAnimationFactory_animation___block_invoke;
     v23[3] = &unk_1E8010A10;
-    v23[4] = a1;
+    v23[4] = self;
     v23[5] = v8;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v23];
     if (v9)
     {
       v11 = [v9 springAnimationWithKeyPath:@"backgroundColor"];
       [v11 setAdditive:0];
-      v12 = [a1 layer];
-      v13 = [v12 presentationLayer];
-      v14 = [a1 traitCollection];
+      layer = [self layer];
+      presentationLayer = [layer presentationLayer];
+      traitCollection = [self traitCollection];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __89__UIView_PKUIAnimationUtilities__pkui_setBackgroundColor_withAnimationFactory_animation___block_invoke_2;
       v18[3] = &unk_1E8011C98;
       v15 = v11;
       v19 = v15;
-      v20 = v13;
-      v21 = v10;
+      v20 = presentationLayer;
+      v21 = backgroundColor;
       v22 = v8;
-      v16 = v13;
-      PKUIPerformWithEffectiveTraitCollection(v14, v18);
+      v16 = presentationLayer;
+      PKUIPerformWithEffectiveTraitCollection(traitCollection, v18);
 
       if (!a5)
       {
@@ -1359,18 +1359,18 @@ LABEL_6:
 
 LABEL_7:
 
-  return v10;
+  return backgroundColor;
 }
 
 - (double)pkui_setCornerRadius:()PKUIAnimationUtilities withAdditiveAnimationFactory:animation:
 {
   v8 = a4;
-  v9 = [a1 layer];
-  [v9 cornerRadius];
+  layer = [self layer];
+  [layer cornerRadius];
   v11 = v10;
   if (v10 != a2)
   {
-    [v9 setCornerRadius:a2];
+    [layer setCornerRadius:a2];
     if (v8)
     {
       v12 = [v8 springAnimationWithKeyPath:@"cornerRadius"];
@@ -1410,7 +1410,7 @@ LABEL_7:
     v9 = 0;
   }
 
-  [a1 pkui_setCornerRadius:a4 withAdditiveAnimationFactory:v9 animation:a2];
+  [self pkui_setCornerRadius:a4 withAdditiveAnimationFactory:v9 animation:a2];
   v11 = v10;
   if (v13)
   {
@@ -1423,10 +1423,10 @@ LABEL_7:
 - (double)pkui_setShadowOpacity:()PKUIAnimationUtilities withAnimationFactory:animation:
 {
   v8 = a4;
-  v9 = [a1 layer];
-  [v9 shadowOpacity];
+  layer = [self layer];
+  [layer shadowOpacity];
   v11 = *&v10;
-  if (*&v10 == a2 || (*&v10 = a2, [v9 setShadowOpacity:v10], !v8))
+  if (*&v10 == a2 || (*&v10 = a2, [layer setShadowOpacity:v10], !v8))
   {
     v12 = 0;
     if (!a5)
@@ -1441,14 +1441,14 @@ LABEL_8:
 
   v12 = [v8 springAnimationWithKeyPath:@"shadowOpacity"];
   [v12 setAdditive:0];
-  v13 = [a1 layer];
-  v14 = [v13 presentationLayer];
-  v15 = v14;
+  layer2 = [self layer];
+  presentationLayer = [layer2 presentationLayer];
+  v15 = presentationLayer;
   v16 = MEMORY[0x1E696AD98];
   v17 = v11;
-  if (v14)
+  if (presentationLayer)
   {
-    [v14 shadowOpacity];
+    [presentationLayer shadowOpacity];
     v17 = v18;
   }
 
@@ -1471,13 +1471,13 @@ LABEL_9:
 - (double)pkui_setShadowOffset:()PKUIAnimationUtilities withAdditiveAnimationFactory:animation:
 {
   v10 = a5;
-  v11 = [a1 layer];
-  [v11 shadowOffset];
+  layer = [self layer];
+  [layer shadowOffset];
   v14 = v13;
   v15 = v12;
   if (v13 != a2 || v12 != a3)
   {
-    [v11 setShadowOffset:{a2, a3}];
+    [layer setShadowOffset:{a2, a3}];
     if (v10)
     {
       v17 = [v10 springAnimationWithKeyPath:@"shadowOffset"];
@@ -1517,7 +1517,7 @@ LABEL_10:
     v11 = 0;
   }
 
-  [a1 pkui_setShadowOffset:a5 withAdditiveAnimationFactory:v11 animation:{a2, a3}];
+  [self pkui_setShadowOffset:a5 withAdditiveAnimationFactory:v11 animation:{a2, a3}];
   v13 = v12;
   if (v15)
   {
@@ -1530,12 +1530,12 @@ LABEL_10:
 - (double)pkui_setShadowRadius:()PKUIAnimationUtilities withAdditiveAnimationFactory:animation:
 {
   v8 = a4;
-  v9 = [a1 layer];
-  [v9 shadowRadius];
+  layer = [self layer];
+  [layer shadowRadius];
   v11 = v10;
   if (v10 != a2)
   {
-    [v9 setShadowRadius:a2];
+    [layer setShadowRadius:a2];
     if (v8)
     {
       v12 = [v8 springAnimationWithKeyPath:@"shadowRadius"];
@@ -1575,7 +1575,7 @@ LABEL_7:
     v9 = 0;
   }
 
-  [a1 pkui_setShadowRadius:a4 withAdditiveAnimationFactory:v9 animation:a2];
+  [self pkui_setShadowRadius:a4 withAdditiveAnimationFactory:v9 animation:a2];
   v11 = v10;
   if (v13)
   {

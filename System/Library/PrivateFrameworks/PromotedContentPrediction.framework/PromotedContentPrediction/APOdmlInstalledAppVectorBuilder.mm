@@ -1,18 +1,18 @@
 @interface APOdmlInstalledAppVectorBuilder
-- (APOdmlInstalledAppVectorBuilder)initWithVersion:(id)a3 lookbackPeriod:(id)a4 maxQueryElements:(id)a5 task:(id)a6 exponentialDecayConstant:(id)a7 weightByDuration:(id)a8 isCounterfactual:(BOOL)a9;
+- (APOdmlInstalledAppVectorBuilder)initWithVersion:(id)version lookbackPeriod:(id)period maxQueryElements:(id)elements task:(id)task exponentialDecayConstant:(id)constant weightByDuration:(id)duration isCounterfactual:(BOOL)counterfactual;
 - (id)_installedStoreAppEnumerator;
-- (id)eventsBetween:(id)a3 and:(id)a4;
-- (id)retrieveFilteredEvents:(id)a3;
-- (void)buildBundleIDtoAdamIDCache:(id)a3;
+- (id)eventsBetween:(id)between and:(id)and;
+- (id)retrieveFilteredEvents:(id)events;
+- (void)buildBundleIDtoAdamIDCache:(id)cache;
 @end
 
 @implementation APOdmlInstalledAppVectorBuilder
 
-- (APOdmlInstalledAppVectorBuilder)initWithVersion:(id)a3 lookbackPeriod:(id)a4 maxQueryElements:(id)a5 task:(id)a6 exponentialDecayConstant:(id)a7 weightByDuration:(id)a8 isCounterfactual:(BOOL)a9
+- (APOdmlInstalledAppVectorBuilder)initWithVersion:(id)version lookbackPeriod:(id)period maxQueryElements:(id)elements task:(id)task exponentialDecayConstant:(id)constant weightByDuration:(id)duration isCounterfactual:(BOOL)counterfactual
 {
   v16.receiver = self;
   v16.super_class = APOdmlInstalledAppVectorBuilder;
-  v11 = [(APOdmlVectorBuilder *)&v16 initWithVersion:a3 lookbackPeriod:a4 maxQueryElements:a5 task:a6 exponentialDecayConstant:a7 weightByDuration:a8 isCounterfactual:a9];
+  v11 = [(APOdmlVectorBuilder *)&v16 initWithVersion:version lookbackPeriod:period maxQueryElements:elements task:task exponentialDecayConstant:constant weightByDuration:duration isCounterfactual:counterfactual];
   if (v11)
   {
     v12 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v9, v10);
@@ -23,11 +23,11 @@
   return v11;
 }
 
-- (id)eventsBetween:(id)a3 and:(id)a4
+- (id)eventsBetween:(id)between and:(id)and
 {
   v52 = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  v45 = a4;
+  betweenCopy = between;
+  andCopy = and;
   v8 = objc_msgSend_set(MEMORY[0x277CBEB58], v6, v7);
   context = objc_autoreleasePoolPush();
   v47 = 0u;
@@ -82,15 +82,15 @@
   return v41;
 }
 
-- (void)buildBundleIDtoAdamIDCache:(id)a3
+- (void)buildBundleIDtoAdamIDCache:(id)cache
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cacheCopy = cache;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v25, v29, 16);
+  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(cacheCopy, v5, &v25, v29, 16);
   if (v6)
   {
     v9 = v6;
@@ -101,7 +101,7 @@
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(cacheCopy);
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
@@ -113,7 +113,7 @@
         objc_msgSend_setObject_forKeyedSubscript_(v16, v23, v13, v22);
       }
 
-      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v7, &v25, v29, 16);
+      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(cacheCopy, v7, &v25, v29, 16);
     }
 
     while (v9);
@@ -122,12 +122,12 @@
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)retrieveFilteredEvents:(id)a3
+- (id)retrieveFilteredEvents:(id)events
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventsCopy = events;
   v7 = objc_msgSend_bundleIDtoAppInfo(self, v5, v6);
-  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v4);
+  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, eventsCopy);
 
   if (v9)
   {
@@ -158,7 +158,7 @@
 
           v21 = *(*(&v27 + 1) + 8 * i);
           v22 = objc_msgSend_bundleID(v21, v16, v17);
-          isEqualToString = objc_msgSend_isEqualToString_(v22, v23, v4);
+          isEqualToString = objc_msgSend_isEqualToString_(v22, v23, eventsCopy);
 
           if (isEqualToString)
           {

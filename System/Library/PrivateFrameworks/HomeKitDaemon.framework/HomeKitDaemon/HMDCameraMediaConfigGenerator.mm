@@ -1,12 +1,12 @@
 @interface HMDCameraMediaConfigGenerator
 + (id)logCategory;
-- (BOOL)_loadAVCAudioStreamConfig:(id)a3 protocolParameters:(id)a4;
-- (BOOL)_loadAVCVideoStreamConfig:(id)a3 protocolParameters:(id)a4;
-- (BOOL)_loadConfig:(id)a3 cipherCuite:(id)a4;
-- (BOOL)extractReselectedConfigFromVideoTier:(id)a3 videoStreamConfig:(id *)a4;
-- (BOOL)extractSelectedConfigFromProtocolParameters:(id)a3 videoStreamConfig:(id *)a4 audioStreamConfig:(id *)a5;
-- (void)_loadConfig:(id)a3 sendSrtpParameters:(id)a4 receiveSrtpParameters:(id)a5;
-- (void)_loadMiscConfig:(id)a3;
+- (BOOL)_loadAVCAudioStreamConfig:(id)config protocolParameters:(id)parameters;
+- (BOOL)_loadAVCVideoStreamConfig:(id)config protocolParameters:(id)parameters;
+- (BOOL)_loadConfig:(id)config cipherCuite:(id)cuite;
+- (BOOL)extractReselectedConfigFromVideoTier:(id)tier videoStreamConfig:(id *)config;
+- (BOOL)extractSelectedConfigFromProtocolParameters:(id)parameters videoStreamConfig:(id *)config audioStreamConfig:(id *)streamConfig;
+- (void)_loadConfig:(id)config sendSrtpParameters:(id)parameters receiveSrtpParameters:(id)srtpParameters;
+- (void)_loadMiscConfig:(id)config;
 @end
 
 @implementation HMDCameraMediaConfigGenerator
@@ -31,23 +31,23 @@ void __44__HMDCameraMediaConfigGenerator_logCategory__block_invoke()
   logCategory__hmf_once_v9_73450 = v1;
 }
 
-- (void)_loadMiscConfig:(id)a3
+- (void)_loadMiscConfig:(id)config
 {
-  v3 = a3;
-  [v3 setRtcpEnabled:1];
-  [v3 setRtcpTimeOutEnabled:1];
-  [v3 setRtcpTimeOutInterval:30.0];
-  [v3 setRtpTimeOutEnabled:1];
-  [v3 setRtpTimeOutInterval:30.0];
-  [v3 setRateAdaptationEnabled:1];
+  configCopy = config;
+  [configCopy setRtcpEnabled:1];
+  [configCopy setRtcpTimeOutEnabled:1];
+  [configCopy setRtcpTimeOutInterval:30.0];
+  [configCopy setRtpTimeOutEnabled:1];
+  [configCopy setRtpTimeOutInterval:30.0];
+  [configCopy setRateAdaptationEnabled:1];
 }
 
-- (BOOL)_loadConfig:(id)a3 cipherCuite:(id)a4
+- (BOOL)_loadConfig:(id)config cipherCuite:(id)cuite
 {
-  v5 = a3;
-  v6 = [a4 srtpCryptoSuite];
-  v7 = (&unk_22A5878E0 + 8 * v6);
-  if (v6 >= 3)
+  configCopy = config;
+  srtpCryptoSuite = [cuite srtpCryptoSuite];
+  v7 = (&unk_22A5878E0 + 8 * srtpCryptoSuite);
+  if (srtpCryptoSuite >= 3)
   {
     v7 = &kIPCameraUnknownParameter;
   }
@@ -55,49 +55,49 @@ void __44__HMDCameraMediaConfigGenerator_logCategory__block_invoke()
   v8 = *v7;
   if (*v7 != -1)
   {
-    [v5 setSRTPCipherSuite:*v7];
-    [v5 setSRTCPCipherSuite:v8];
+    [configCopy setSRTPCipherSuite:*v7];
+    [configCopy setSRTCPCipherSuite:v8];
   }
 
   return v8 != -1;
 }
 
-- (void)_loadConfig:(id)a3 sendSrtpParameters:(id)a4 receiveSrtpParameters:(id)a5
+- (void)_loadConfig:(id)config sendSrtpParameters:(id)parameters receiveSrtpParameters:(id)srtpParameters
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v8 srtpMasterKey];
-  v11 = [v10 mutableCopy];
+  srtpParametersCopy = srtpParameters;
+  parametersCopy = parameters;
+  configCopy = config;
+  srtpMasterKey = [parametersCopy srtpMasterKey];
+  v11 = [srtpMasterKey mutableCopy];
 
-  v12 = [v8 srtpMasterSalt];
+  srtpMasterSalt = [parametersCopy srtpMasterSalt];
 
-  [v11 appendData:v12];
-  [v9 setSendMasterKey:v11];
-  v13 = [v7 srtpMasterKey];
-  v15 = [v13 mutableCopy];
+  [v11 appendData:srtpMasterSalt];
+  [configCopy setSendMasterKey:v11];
+  srtpMasterKey2 = [srtpParametersCopy srtpMasterKey];
+  v15 = [srtpMasterKey2 mutableCopy];
 
-  v14 = [v7 srtpMasterSalt];
+  srtpMasterSalt2 = [srtpParametersCopy srtpMasterSalt];
 
-  [v15 appendData:v14];
-  [v9 setReceiveMasterKey:v15];
+  [v15 appendData:srtpMasterSalt2];
+  [configCopy setReceiveMasterKey:v15];
 }
 
-- (BOOL)extractReselectedConfigFromVideoTier:(id)a3 videoStreamConfig:(id *)a4
+- (BOOL)extractReselectedConfigFromVideoTier:(id)tier videoStreamConfig:(id *)config
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  tierCopy = tier;
   v6 = objc_alloc_init(HMDVideoStreamConfig);
-  v7 = [v5 videoResolution];
-  v8 = [v7 resolutionType];
-  if ((v8 - 1) >= 0x1D)
+  videoResolution = [tierCopy videoResolution];
+  resolutionType = [videoResolution resolutionType];
+  if ((resolutionType - 1) >= 0x1D)
   {
     v9 = &kIPCameraUnknownParameter;
   }
 
   else
   {
-    v9 = (&unk_22A5877F8 + 8 * v8 - 8);
+    v9 = (&unk_22A5877F8 + 8 * resolutionType - 8);
   }
 
   v10 = *v9;
@@ -119,56 +119,56 @@ void __44__HMDCameraMediaConfigGenerator_logCategory__block_invoke()
 
   else
   {
-    v11 = [(AVCMediaStreamConfig *)v6 video];
-    [v11 setVideoResolution:v10];
+    video = [(AVCMediaStreamConfig *)v6 video];
+    [video setVideoResolution:v10];
 
-    v12 = [v5 framerate];
-    v13 = [v12 unsignedIntegerValue];
-    v14 = [(AVCMediaStreamConfig *)v6 video];
-    [v14 setFramerate:v13];
+    framerate = [tierCopy framerate];
+    unsignedIntegerValue = [framerate unsignedIntegerValue];
+    video2 = [(AVCMediaStreamConfig *)v6 video];
+    [video2 setFramerate:unsignedIntegerValue];
 
-    v15 = [v5 maxBitRate];
-    v16 = [v15 unsignedIntegerValue];
-    v17 = [(AVCMediaStreamConfig *)v6 video];
-    [v17 setRxMaxBitrate:v16];
+    maxBitRate = [tierCopy maxBitRate];
+    unsignedIntegerValue2 = [maxBitRate unsignedIntegerValue];
+    video3 = [(AVCMediaStreamConfig *)v6 video];
+    [video3 setRxMaxBitrate:unsignedIntegerValue2];
 
-    v18 = [v5 minBitRate];
-    v19 = [v18 unsignedIntegerValue];
-    v20 = [(AVCMediaStreamConfig *)v6 video];
-    [v20 setRxMinBitrate:v19];
+    minBitRate = [tierCopy minBitRate];
+    unsignedIntegerValue3 = [minBitRate unsignedIntegerValue];
+    video4 = [(AVCMediaStreamConfig *)v6 video];
+    [video4 setRxMinBitrate:unsignedIntegerValue3];
 
     v21 = v6;
-    *a4 = v6;
+    *config = v6;
   }
 
   v25 = *MEMORY[0x277D85DE8];
   return v10 != -1;
 }
 
-- (BOOL)_loadAVCVideoStreamConfig:(id)a3 protocolParameters:(id)a4
+- (BOOL)_loadAVCVideoStreamConfig:(id)config protocolParameters:(id)parameters
 {
   v105 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 selectedStreamConfigurationWrite];
-  v9 = [v8 videoParameters];
-  v10 = [v9 codec];
-  v11 = [v10 codecType];
+  configCopy = config;
+  parametersCopy = parameters;
+  selectedStreamConfigurationWrite = [parametersCopy selectedStreamConfigurationWrite];
+  videoParameters = [selectedStreamConfigurationWrite videoParameters];
+  codec = [videoParameters codec];
+  codecType = [codec codecType];
 
-  if (v11)
+  if (codecType)
   {
     v12 = objc_autoreleasePoolPush();
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [v7 selectedStreamConfigurationWrite];
-      v16 = [v15 videoParameters];
-      v17 = [v16 codec];
+      selectedStreamConfigurationWrite2 = [parametersCopy selectedStreamConfigurationWrite];
+      videoParameters2 = [selectedStreamConfigurationWrite2 videoParameters];
+      codec2 = [videoParameters2 codec];
       v101 = 138543618;
       v102 = v14;
       v103 = 2048;
-      v104 = [v17 decodedNumber];
+      decodedNumber = [codec2 decodedNumber];
       v18 = "%{public}@Failed to translate to video codec type from %lu";
 LABEL_4:
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_ERROR, v18, &v101, 0x16u);
@@ -179,38 +179,38 @@ LABEL_5:
 
   else
   {
-    v22 = [v6 video];
-    [v22 setTxCodecType:0];
+    video = [configCopy video];
+    [video setTxCodecType:0];
 
-    v23 = [v6 video];
-    [v23 setRxCodecType:0];
+    video2 = [configCopy video];
+    [video2 setRxCodecType:0];
 
-    v24 = [v7 selectedStreamConfigurationWrite];
-    v25 = [v24 videoParameters];
-    v26 = [v25 rtpParameters];
-    v27 = [v26 payloadType];
-    [v6 setTxPayloadType:{objc_msgSend(v27, "unsignedIntegerValue")}];
+    selectedStreamConfigurationWrite3 = [parametersCopy selectedStreamConfigurationWrite];
+    videoParameters3 = [selectedStreamConfigurationWrite3 videoParameters];
+    rtpParameters = [videoParameters3 rtpParameters];
+    payloadType = [rtpParameters payloadType];
+    [configCopy setTxPayloadType:{objc_msgSend(payloadType, "unsignedIntegerValue")}];
 
-    v28 = [v7 selectedStreamConfigurationWrite];
-    v29 = [v28 videoParameters];
-    v30 = [v29 rtpParameters];
-    v31 = [v30 payloadType];
-    [v6 setRxPayloadType:{objc_msgSend(v31, "unsignedIntegerValue")}];
+    selectedStreamConfigurationWrite4 = [parametersCopy selectedStreamConfigurationWrite];
+    videoParameters4 = [selectedStreamConfigurationWrite4 videoParameters];
+    rtpParameters2 = [videoParameters4 rtpParameters];
+    payloadType2 = [rtpParameters2 payloadType];
+    [configCopy setRxPayloadType:{objc_msgSend(payloadType2, "unsignedIntegerValue")}];
 
-    [v6 setDirection:2];
-    v32 = [v7 selectedStreamConfigurationWrite];
-    v33 = [v32 videoParameters];
-    v34 = [v33 videoAttributes];
-    v35 = [v34 videoResolution];
-    v36 = [v35 resolutionType];
-    if ((v36 - 1) >= 0x1D)
+    [configCopy setDirection:2];
+    selectedStreamConfigurationWrite5 = [parametersCopy selectedStreamConfigurationWrite];
+    videoParameters5 = [selectedStreamConfigurationWrite5 videoParameters];
+    videoAttributes = [videoParameters5 videoAttributes];
+    videoResolution = [videoAttributes videoResolution];
+    resolutionType = [videoResolution resolutionType];
+    if ((resolutionType - 1) >= 0x1D)
     {
       v37 = &kIPCameraUnknownParameter;
     }
 
     else
     {
-      v37 = (&unk_22A5877F8 + 8 * v36 - 8);
+      v37 = (&unk_22A5877F8 + 8 * resolutionType - 8);
     }
 
     v38 = *v37;
@@ -231,100 +231,100 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    v39 = [v6 video];
-    [v39 setVideoResolution:v38];
+    video3 = [configCopy video];
+    [video3 setVideoResolution:v38];
 
-    v40 = [v7 selectedStreamConfigurationWrite];
-    v41 = [v40 videoParameters];
-    v42 = [v41 videoAttributes];
-    v43 = [v42 framerate];
-    v44 = [v43 unsignedIntegerValue];
-    v45 = [v6 video];
-    [v45 setFramerate:v44];
+    selectedStreamConfigurationWrite6 = [parametersCopy selectedStreamConfigurationWrite];
+    videoParameters6 = [selectedStreamConfigurationWrite6 videoParameters];
+    videoAttributes2 = [videoParameters6 videoAttributes];
+    framerate = [videoAttributes2 framerate];
+    unsignedIntegerValue = [framerate unsignedIntegerValue];
+    video4 = [configCopy video];
+    [video4 setFramerate:unsignedIntegerValue];
 
-    v46 = [v7 selectedStreamConfigurationWrite];
-    v47 = [v46 videoParameters];
-    v48 = [v47 rtpParameters];
-    v49 = [v48 maximumBitrate];
-    v50 = [v49 unsignedIntegerValue];
-    v51 = [v6 video];
-    [v51 setRxMaxBitrate:v50];
+    selectedStreamConfigurationWrite7 = [parametersCopy selectedStreamConfigurationWrite];
+    videoParameters7 = [selectedStreamConfigurationWrite7 videoParameters];
+    rtpParameters3 = [videoParameters7 rtpParameters];
+    maximumBitrate = [rtpParameters3 maximumBitrate];
+    unsignedIntegerValue2 = [maximumBitrate unsignedIntegerValue];
+    video5 = [configCopy video];
+    [video5 setRxMaxBitrate:unsignedIntegerValue2];
 
-    v52 = [v7 selectedStreamConfigurationWrite];
-    v53 = [v52 videoParameters];
-    v54 = [v53 rtpParameters];
-    v55 = [v54 minimumBitrate];
-    v56 = [v55 unsignedIntegerValue];
-    v57 = [v6 video];
-    [v57 setRxMinBitrate:v56];
+    selectedStreamConfigurationWrite8 = [parametersCopy selectedStreamConfigurationWrite];
+    videoParameters8 = [selectedStreamConfigurationWrite8 videoParameters];
+    rtpParameters4 = [videoParameters8 rtpParameters];
+    minimumBitrate = [rtpParameters4 minimumBitrate];
+    unsignedIntegerValue3 = [minimumBitrate unsignedIntegerValue];
+    video6 = [configCopy video];
+    [video6 setRxMinBitrate:unsignedIntegerValue3];
 
-    v58 = [v7 selectedStreamConfigurationWrite];
-    v59 = [v58 videoParameters];
-    v60 = [v59 rtpParameters];
-    v61 = [v60 rtcpInterval];
-    [v61 floatValue];
-    [v6 setRtcpSendInterval:v62];
+    selectedStreamConfigurationWrite9 = [parametersCopy selectedStreamConfigurationWrite];
+    videoParameters9 = [selectedStreamConfigurationWrite9 videoParameters];
+    rtpParameters5 = [videoParameters9 rtpParameters];
+    rtcpInterval = [rtpParameters5 rtcpInterval];
+    [rtcpInterval floatValue];
+    [configCopy setRtcpSendInterval:v62];
 
-    v63 = [v7 setupEndPointWrite];
-    v64 = [v63 address];
-    v65 = [v64 ipAddress];
-    v66 = [v6 localAddress];
-    [v66 setIp:v65];
+    setupEndPointWrite = [parametersCopy setupEndPointWrite];
+    address = [setupEndPointWrite address];
+    ipAddress = [address ipAddress];
+    localAddress = [configCopy localAddress];
+    [localAddress setIp:ipAddress];
 
-    v67 = [v7 setupEndPointWrite];
-    v68 = [v67 address];
-    v69 = [v68 videoRTPPort];
-    v70 = [v69 unsignedShortValue];
-    v71 = [v6 localAddress];
-    [v71 setPort:v70];
+    setupEndPointWrite2 = [parametersCopy setupEndPointWrite];
+    address2 = [setupEndPointWrite2 address];
+    videoRTPPort = [address2 videoRTPPort];
+    unsignedShortValue = [videoRTPPort unsignedShortValue];
+    localAddress2 = [configCopy localAddress];
+    [localAddress2 setPort:unsignedShortValue];
 
-    v72 = [v7 setupEndPointWrite];
-    v73 = [v72 address];
-    v74 = [v73 isIPv6Address];
-    v75 = [v6 localAddress];
-    [v75 setIsIPv6:v74];
+    setupEndPointWrite3 = [parametersCopy setupEndPointWrite];
+    address3 = [setupEndPointWrite3 address];
+    isIPv6Address = [address3 isIPv6Address];
+    localAddress3 = [configCopy localAddress];
+    [localAddress3 setIsIPv6:isIPv6Address];
 
-    v76 = [v7 setupEndPointRead];
-    v77 = [v76 address];
-    v78 = [v77 ipAddress];
-    v79 = [v6 remoteAddress];
-    [v79 setIp:v78];
+    setupEndPointRead = [parametersCopy setupEndPointRead];
+    address4 = [setupEndPointRead address];
+    ipAddress2 = [address4 ipAddress];
+    remoteAddress = [configCopy remoteAddress];
+    [remoteAddress setIp:ipAddress2];
 
-    v80 = [v7 setupEndPointRead];
-    v81 = [v80 address];
-    v82 = [v81 videoRTPPort];
-    v83 = [v82 unsignedShortValue];
-    v84 = [v6 remoteAddress];
-    [v84 setPort:v83];
+    setupEndPointRead2 = [parametersCopy setupEndPointRead];
+    address5 = [setupEndPointRead2 address];
+    videoRTPPort2 = [address5 videoRTPPort];
+    unsignedShortValue2 = [videoRTPPort2 unsignedShortValue];
+    remoteAddress2 = [configCopy remoteAddress];
+    [remoteAddress2 setPort:unsignedShortValue2];
 
-    v85 = [v7 setupEndPointRead];
-    v86 = [v85 address];
-    v87 = [v86 isIPv6Address];
-    v88 = [v6 remoteAddress];
-    [v88 setIsIPv6:v87];
+    setupEndPointRead3 = [parametersCopy setupEndPointRead];
+    address6 = [setupEndPointRead3 address];
+    isIPv6Address2 = [address6 isIPv6Address];
+    remoteAddress3 = [configCopy remoteAddress];
+    [remoteAddress3 setIsIPv6:isIPv6Address2];
 
-    v89 = [v7 setupEndPointRead];
-    v90 = [v89 address];
-    v91 = [v90 videoRTPPort];
-    [v6 setRtcpRemotePort:{objc_msgSend(v91, "unsignedShortValue")}];
+    setupEndPointRead4 = [parametersCopy setupEndPointRead];
+    address7 = [setupEndPointRead4 address];
+    videoRTPPort3 = [address7 videoRTPPort];
+    [configCopy setRtcpRemotePort:{objc_msgSend(videoRTPPort3, "unsignedShortValue")}];
 
-    v92 = [v7 setupEndPointRead];
-    v93 = [v92 videoSrtpParameters];
-    v94 = [v93 srtpCryptoSuite];
-    LOBYTE(v88) = [(HMDCameraMediaConfigGenerator *)self _loadConfig:v6 cipherCuite:v94];
+    setupEndPointRead5 = [parametersCopy setupEndPointRead];
+    videoSrtpParameters = [setupEndPointRead5 videoSrtpParameters];
+    srtpCryptoSuite = [videoSrtpParameters srtpCryptoSuite];
+    LOBYTE(remoteAddress3) = [(HMDCameraMediaConfigGenerator *)self _loadConfig:configCopy cipherCuite:srtpCryptoSuite];
 
-    if (v88)
+    if (remoteAddress3)
     {
-      v95 = [v7 setupEndPointWrite];
-      v96 = [v95 videoSrtpParameters];
-      v97 = [v7 setupEndPointRead];
-      v98 = [v97 videoSrtpParameters];
-      [(HMDCameraMediaConfigGenerator *)self _loadConfig:v6 sendSrtpParameters:v96 receiveSrtpParameters:v98];
+      setupEndPointWrite4 = [parametersCopy setupEndPointWrite];
+      videoSrtpParameters2 = [setupEndPointWrite4 videoSrtpParameters];
+      setupEndPointRead6 = [parametersCopy setupEndPointRead];
+      videoSrtpParameters3 = [setupEndPointRead6 videoSrtpParameters];
+      [(HMDCameraMediaConfigGenerator *)self _loadConfig:configCopy sendSrtpParameters:videoSrtpParameters2 receiveSrtpParameters:videoSrtpParameters3];
 
-      [(HMDCameraMediaConfigGenerator *)self _loadMiscConfig:v6];
-      v99 = [v7 setupEndPointRead];
-      v100 = [v99 videoSSRC];
-      [v6 setRemoteSSRC:{objc_msgSend(v100, "unsignedIntegerValue")}];
+      [(HMDCameraMediaConfigGenerator *)self _loadMiscConfig:configCopy];
+      setupEndPointRead7 = [parametersCopy setupEndPointRead];
+      videoSSRC = [setupEndPointRead7 videoSSRC];
+      [configCopy setRemoteSSRC:{objc_msgSend(videoSSRC, "unsignedIntegerValue")}];
 
       v19 = 1;
       goto LABEL_7;
@@ -335,13 +335,13 @@ LABEL_5:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [v7 setupEndPointRead];
-      v16 = [v15 videoSrtpParameters];
-      v17 = [v16 srtpCryptoSuite];
+      selectedStreamConfigurationWrite2 = [parametersCopy setupEndPointRead];
+      videoParameters2 = [selectedStreamConfigurationWrite2 videoSrtpParameters];
+      codec2 = [videoParameters2 srtpCryptoSuite];
       v101 = 138543618;
       v102 = v14;
       v103 = 2048;
-      v104 = [v17 decodedNumber];
+      decodedNumber = [codec2 decodedNumber];
       v18 = "%{public}@Failed to translate to crypto suite for video from %lu";
       goto LABEL_4;
     }
@@ -357,36 +357,36 @@ LABEL_7:
   return v19;
 }
 
-- (BOOL)_loadAVCAudioStreamConfig:(id)a3 protocolParameters:(id)a4
+- (BOOL)_loadAVCAudioStreamConfig:(id)config protocolParameters:(id)parameters
 {
   v118 = *MEMORY[0x277D85DE8];
-  v111 = a3;
-  v5 = a4;
-  v6 = [v5 selectedStreamConfigurationWrite];
-  v7 = [v6 audioParameters];
-  v8 = [v7 codecGroup];
-  v9 = [v8 codec];
-  v110 = v5;
-  v10 = [v5 selectedStreamConfigurationWrite];
-  v11 = [v10 audioParameters];
-  v12 = [v11 codecParameters];
-  v13 = [v12 audioSampleRates];
-  v14 = [v13 objectAtIndexedSubscript:0];
-  v15 = [v14 sampleRate];
-  v16 = v15;
-  if (v9 > 2)
+  configCopy = config;
+  parametersCopy = parameters;
+  selectedStreamConfigurationWrite = [parametersCopy selectedStreamConfigurationWrite];
+  audioParameters = [selectedStreamConfigurationWrite audioParameters];
+  codecGroup = [audioParameters codecGroup];
+  codec = [codecGroup codec];
+  v110 = parametersCopy;
+  selectedStreamConfigurationWrite2 = [parametersCopy selectedStreamConfigurationWrite];
+  audioParameters2 = [selectedStreamConfigurationWrite2 audioParameters];
+  codecParameters = [audioParameters2 codecParameters];
+  audioSampleRates = [codecParameters audioSampleRates];
+  v14 = [audioSampleRates objectAtIndexedSubscript:0];
+  sampleRate = [v14 sampleRate];
+  v16 = sampleRate;
+  if (codec > 2)
   {
-    switch(v9)
+    switch(codec)
     {
       case 3:
-        if (v15 == 1)
+        if (sampleRate == 1)
         {
           v17 = 0;
           v18 = 10;
           goto LABEL_23;
         }
 
-        if (v15 == 2)
+        if (sampleRate == 2)
         {
           v17 = 0;
           v18 = 9;
@@ -407,7 +407,7 @@ LABEL_7:
 
   else
   {
-    switch(v9)
+    switch(codec)
     {
       case 0:
         v17 = 0;
@@ -418,14 +418,14 @@ LABEL_7:
         v18 = 3;
         goto LABEL_23;
       case 2:
-        if (v15 == 1)
+        if (sampleRate == 1)
         {
           v17 = 0;
           v18 = 4;
           goto LABEL_23;
         }
 
-        if (v15 == 2)
+        if (sampleRate == 2)
         {
           v17 = 0;
           v18 = 5;
@@ -436,7 +436,7 @@ LABEL_7:
     }
   }
 
-  v108 = v6;
+  v108 = selectedStreamConfigurationWrite;
   context = objc_autoreleasePoolPush();
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -445,7 +445,7 @@ LABEL_7:
     *buf = 138543874;
     v113 = v106;
     v114 = 2048;
-    v115 = v9;
+    v115 = codec;
     v116 = 2048;
     v117 = v16;
     _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@Failed to translate the HMD audio codec type: %tu, sample rate: %tu", buf, 0x20u);
@@ -454,7 +454,7 @@ LABEL_7:
   objc_autoreleasePoolPop(context);
   v18 = -1;
   v17 = 1;
-  v6 = v108;
+  selectedStreamConfigurationWrite = v108;
 LABEL_23:
 
   if (v17)
@@ -462,18 +462,18 @@ LABEL_23:
     v20 = objc_autoreleasePoolPush();
     v21 = HMFGetOSLogHandle();
     v23 = v110;
-    v22 = v111;
+    v22 = configCopy;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v24 = HMFGetLogIdentifier();
-      v25 = [v110 selectedStreamConfigurationWrite];
-      v26 = [v25 audioParameters];
-      v27 = [v26 codecGroup];
-      v28 = [v27 decodedNumber];
+      selectedStreamConfigurationWrite3 = [v110 selectedStreamConfigurationWrite];
+      audioParameters3 = [selectedStreamConfigurationWrite3 audioParameters];
+      codecGroup2 = [audioParameters3 codecGroup];
+      decodedNumber = [codecGroup2 decodedNumber];
       *buf = 138543618;
       v113 = v24;
       v114 = 2048;
-      v115 = v28;
+      v115 = decodedNumber;
       v29 = "%{public}@Failed to translate to audio codec type from %lu";
 LABEL_30:
       _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_ERROR, v29, buf, 0x16u);
@@ -484,126 +484,126 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v22 = v111;
-  v30 = [v111 audio];
-  [v30 setCodecType:v18];
+  v22 = configCopy;
+  audio = [configCopy audio];
+  [audio setCodecType:v18];
 
-  v31 = [v111 audio];
-  [v31 setOctetAligned:1];
+  audio2 = [configCopy audio];
+  [audio2 setOctetAligned:1];
 
-  v32 = [v111 audio];
-  [v32 setDtxEnabled:1];
+  audio3 = [configCopy audio];
+  [audio3 setDtxEnabled:1];
 
   v23 = v110;
-  v33 = [v110 selectedStreamConfigurationWrite];
-  v34 = [v33 audioParameters];
-  v35 = [v34 rtpParameters];
-  v36 = [v35 payloadType];
-  [v111 setTxPayloadType:{objc_msgSend(v36, "unsignedIntegerValue")}];
+  selectedStreamConfigurationWrite4 = [v110 selectedStreamConfigurationWrite];
+  audioParameters4 = [selectedStreamConfigurationWrite4 audioParameters];
+  rtpParameters = [audioParameters4 rtpParameters];
+  payloadType = [rtpParameters payloadType];
+  [configCopy setTxPayloadType:{objc_msgSend(payloadType, "unsignedIntegerValue")}];
 
-  v37 = [v110 selectedStreamConfigurationWrite];
-  v38 = [v37 audioParameters];
-  v39 = [v38 rtpParameters];
-  v40 = [v39 payloadType];
-  [v111 setRxPayloadType:{objc_msgSend(v40, "unsignedIntegerValue")}];
+  selectedStreamConfigurationWrite5 = [v110 selectedStreamConfigurationWrite];
+  audioParameters5 = [selectedStreamConfigurationWrite5 audioParameters];
+  rtpParameters2 = [audioParameters5 rtpParameters];
+  payloadType2 = [rtpParameters2 payloadType];
+  [configCopy setRxPayloadType:{objc_msgSend(payloadType2, "unsignedIntegerValue")}];
 
-  [v111 setDirection:3];
-  v41 = [v110 selectedStreamConfigurationWrite];
-  v42 = [v41 audioParameters];
-  v43 = [v42 rtpParameters];
-  v44 = [v43 rtcpInterval];
-  [v44 floatValue];
-  [v111 setRtcpSendInterval:v45];
+  [configCopy setDirection:3];
+  selectedStreamConfigurationWrite6 = [v110 selectedStreamConfigurationWrite];
+  audioParameters6 = [selectedStreamConfigurationWrite6 audioParameters];
+  rtpParameters3 = [audioParameters6 rtpParameters];
+  rtcpInterval = [rtpParameters3 rtcpInterval];
+  [rtcpInterval floatValue];
+  [configCopy setRtcpSendInterval:v45];
 
-  v46 = [v110 setupEndPointWrite];
-  v47 = [v46 address];
-  v48 = [v47 ipAddress];
-  v49 = [v111 localAddress];
-  [v49 setIp:v48];
+  setupEndPointWrite = [v110 setupEndPointWrite];
+  address = [setupEndPointWrite address];
+  ipAddress = [address ipAddress];
+  localAddress = [configCopy localAddress];
+  [localAddress setIp:ipAddress];
 
-  v50 = [v110 setupEndPointWrite];
-  v51 = [v50 address];
-  v52 = [v51 audioRTPPort];
-  v53 = [v52 unsignedShortValue];
-  v54 = [v111 localAddress];
-  [v54 setPort:v53];
+  setupEndPointWrite2 = [v110 setupEndPointWrite];
+  address2 = [setupEndPointWrite2 address];
+  audioRTPPort = [address2 audioRTPPort];
+  unsignedShortValue = [audioRTPPort unsignedShortValue];
+  localAddress2 = [configCopy localAddress];
+  [localAddress2 setPort:unsignedShortValue];
 
-  v55 = [v110 setupEndPointWrite];
-  v56 = [v55 address];
-  v57 = [v56 isIPv6Address];
-  v58 = [v111 localAddress];
-  [v58 setIsIPv6:v57];
+  setupEndPointWrite3 = [v110 setupEndPointWrite];
+  address3 = [setupEndPointWrite3 address];
+  isIPv6Address = [address3 isIPv6Address];
+  localAddress3 = [configCopy localAddress];
+  [localAddress3 setIsIPv6:isIPv6Address];
 
-  v59 = [v110 setupEndPointRead];
-  v60 = [v59 address];
-  v61 = [v60 ipAddress];
-  v62 = [v111 remoteAddress];
-  [v62 setIp:v61];
+  setupEndPointRead = [v110 setupEndPointRead];
+  address4 = [setupEndPointRead address];
+  ipAddress2 = [address4 ipAddress];
+  remoteAddress = [configCopy remoteAddress];
+  [remoteAddress setIp:ipAddress2];
 
-  v63 = [v110 setupEndPointRead];
-  v64 = [v63 address];
-  v65 = [v64 audioRTPPort];
-  v66 = [v65 unsignedShortValue];
-  v67 = [v111 remoteAddress];
-  [v67 setPort:v66];
+  setupEndPointRead2 = [v110 setupEndPointRead];
+  address5 = [setupEndPointRead2 address];
+  audioRTPPort2 = [address5 audioRTPPort];
+  unsignedShortValue2 = [audioRTPPort2 unsignedShortValue];
+  remoteAddress2 = [configCopy remoteAddress];
+  [remoteAddress2 setPort:unsignedShortValue2];
 
-  v68 = [v110 setupEndPointRead];
-  v69 = [v68 address];
-  v70 = [v69 isIPv6Address];
-  v71 = [v111 remoteAddress];
-  [v71 setIsIPv6:v70];
+  setupEndPointRead3 = [v110 setupEndPointRead];
+  address6 = [setupEndPointRead3 address];
+  isIPv6Address2 = [address6 isIPv6Address];
+  remoteAddress3 = [configCopy remoteAddress];
+  [remoteAddress3 setIsIPv6:isIPv6Address2];
 
-  v72 = [v110 setupEndPointRead];
-  v73 = [v72 address];
-  v74 = [v73 audioRTPPort];
-  [v111 setRtcpRemotePort:{objc_msgSend(v74, "unsignedShortValue")}];
+  setupEndPointRead4 = [v110 setupEndPointRead];
+  address7 = [setupEndPointRead4 address];
+  audioRTPPort3 = [address7 audioRTPPort];
+  [configCopy setRtcpRemotePort:{objc_msgSend(audioRTPPort3, "unsignedShortValue")}];
 
-  v75 = [v111 audio];
-  [v75 setAudioStreamMode:3];
+  audio4 = [configCopy audio];
+  [audio4 setAudioStreamMode:3];
 
-  v76 = [v110 selectedStreamConfigurationWrite];
-  v77 = [v76 audioParameters];
-  v78 = [v77 comfortNoiseEnabled];
-  v79 = [v78 BOOLValue];
-  v80 = [v111 audio];
-  [v80 setCnEnabled:v79];
+  selectedStreamConfigurationWrite7 = [v110 selectedStreamConfigurationWrite];
+  audioParameters7 = [selectedStreamConfigurationWrite7 audioParameters];
+  comfortNoiseEnabled = [audioParameters7 comfortNoiseEnabled];
+  bOOLValue = [comfortNoiseEnabled BOOLValue];
+  audio5 = [configCopy audio];
+  [audio5 setCnEnabled:bOOLValue];
 
-  v81 = [v110 selectedStreamConfigurationWrite];
-  v82 = [v81 audioParameters];
-  v83 = [v82 rtpParameters];
-  v84 = [v83 comfortNoisePayloadType];
-  v85 = [v84 unsignedIntegerValue];
-  v86 = [v111 audio];
-  [v86 setCnPayloadType:v85];
+  selectedStreamConfigurationWrite8 = [v110 selectedStreamConfigurationWrite];
+  audioParameters8 = [selectedStreamConfigurationWrite8 audioParameters];
+  rtpParameters4 = [audioParameters8 rtpParameters];
+  comfortNoisePayloadType = [rtpParameters4 comfortNoisePayloadType];
+  unsignedIntegerValue = [comfortNoisePayloadType unsignedIntegerValue];
+  audio6 = [configCopy audio];
+  [audio6 setCnPayloadType:unsignedIntegerValue];
 
-  v87 = [v110 selectedStreamConfigurationWrite];
-  v88 = [v87 audioParameters];
-  v89 = [v88 codecParameters];
-  v90 = [v89 rtpPtime];
-  v91 = [v90 unsignedIntegerValue];
-  v92 = [v111 audio];
-  [v92 setPtime:v91];
+  selectedStreamConfigurationWrite9 = [v110 selectedStreamConfigurationWrite];
+  audioParameters9 = [selectedStreamConfigurationWrite9 audioParameters];
+  codecParameters2 = [audioParameters9 codecParameters];
+  rtpPtime = [codecParameters2 rtpPtime];
+  unsignedIntegerValue2 = [rtpPtime unsignedIntegerValue];
+  audio7 = [configCopy audio];
+  [audio7 setPtime:unsignedIntegerValue2];
 
-  v93 = [v110 setupEndPointRead];
-  v94 = [v93 audioSrtpParameters];
-  v95 = [v94 srtpCryptoSuite];
-  LOBYTE(v90) = [(HMDCameraMediaConfigGenerator *)self _loadConfig:v111 cipherCuite:v95];
+  setupEndPointRead5 = [v110 setupEndPointRead];
+  audioSrtpParameters = [setupEndPointRead5 audioSrtpParameters];
+  srtpCryptoSuite = [audioSrtpParameters srtpCryptoSuite];
+  LOBYTE(rtpPtime) = [(HMDCameraMediaConfigGenerator *)self _loadConfig:configCopy cipherCuite:srtpCryptoSuite];
 
-  if ((v90 & 1) == 0)
+  if ((rtpPtime & 1) == 0)
   {
     v20 = objc_autoreleasePoolPush();
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v24 = HMFGetLogIdentifier();
-      v25 = [v110 setupEndPointRead];
-      v26 = [v25 audioSrtpParameters];
-      v27 = [v26 srtpCryptoSuite];
-      v103 = [v27 decodedNumber];
+      selectedStreamConfigurationWrite3 = [v110 setupEndPointRead];
+      audioParameters3 = [selectedStreamConfigurationWrite3 audioSrtpParameters];
+      codecGroup2 = [audioParameters3 srtpCryptoSuite];
+      decodedNumber2 = [codecGroup2 decodedNumber];
       *buf = 138543618;
       v113 = v24;
       v114 = 2048;
-      v115 = v103;
+      v115 = decodedNumber2;
       v29 = "%{public}@Failed to translate to crypto suite for audio from %lu";
       goto LABEL_30;
     }
@@ -615,16 +615,16 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v96 = [v110 setupEndPointWrite];
-  v97 = [v96 audioSrtpParameters];
-  v98 = [v110 setupEndPointRead];
-  v99 = [v98 audioSrtpParameters];
-  [(HMDCameraMediaConfigGenerator *)self _loadConfig:v111 sendSrtpParameters:v97 receiveSrtpParameters:v99];
+  setupEndPointWrite4 = [v110 setupEndPointWrite];
+  audioSrtpParameters2 = [setupEndPointWrite4 audioSrtpParameters];
+  setupEndPointRead6 = [v110 setupEndPointRead];
+  audioSrtpParameters3 = [setupEndPointRead6 audioSrtpParameters];
+  [(HMDCameraMediaConfigGenerator *)self _loadConfig:configCopy sendSrtpParameters:audioSrtpParameters2 receiveSrtpParameters:audioSrtpParameters3];
 
-  [(HMDCameraMediaConfigGenerator *)self _loadMiscConfig:v111];
-  v100 = [v110 setupEndPointRead];
-  v101 = [v100 audioSSRC];
-  [v111 setRemoteSSRC:{objc_msgSend(v101, "unsignedIntegerValue")}];
+  [(HMDCameraMediaConfigGenerator *)self _loadMiscConfig:configCopy];
+  setupEndPointRead7 = [v110 setupEndPointRead];
+  audioSSRC = [setupEndPointRead7 audioSSRC];
+  [configCopy setRemoteSSRC:{objc_msgSend(audioSSRC, "unsignedIntegerValue")}];
 
   v102 = 1;
 LABEL_32:
@@ -633,27 +633,27 @@ LABEL_32:
   return v102;
 }
 
-- (BOOL)extractSelectedConfigFromProtocolParameters:(id)a3 videoStreamConfig:(id *)a4 audioStreamConfig:(id *)a5
+- (BOOL)extractSelectedConfigFromProtocolParameters:(id)parameters videoStreamConfig:(id *)config audioStreamConfig:(id *)streamConfig
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  parametersCopy = parameters;
   v9 = objc_alloc_init(HMDVideoStreamConfig);
-  if ([(HMDCameraMediaConfigGenerator *)self _loadAVCVideoStreamConfig:v9 protocolParameters:v8])
+  if ([(HMDCameraMediaConfigGenerator *)self _loadAVCVideoStreamConfig:v9 protocolParameters:parametersCopy])
   {
     v10 = objc_alloc_init(HMDAudioStreamConfig);
-    v11 = [(HMDCameraMediaConfigGenerator *)self _loadAVCAudioStreamConfig:v10 protocolParameters:v8];
+    v11 = [(HMDCameraMediaConfigGenerator *)self _loadAVCAudioStreamConfig:v10 protocolParameters:parametersCopy];
     if (v11)
     {
-      if (a4)
+      if (config)
       {
         v12 = v9;
-        *a4 = v9;
+        *config = v9;
       }
 
-      if (a5)
+      if (streamConfig)
       {
         v13 = v10;
-        *a5 = v10;
+        *streamConfig = v10;
       }
     }
 

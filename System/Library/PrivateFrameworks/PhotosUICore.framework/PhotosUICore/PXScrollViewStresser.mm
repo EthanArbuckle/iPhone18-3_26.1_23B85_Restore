@@ -1,8 +1,8 @@
 @interface PXScrollViewStresser
 + (PXScrollViewStresser)sharedInstance;
 - (BOOL)isScrolling;
-- (void)_handleDisplayLink:(id)a3;
-- (void)startScrollingScrollView:(id)a3 axis:(int64_t)a4;
+- (void)_handleDisplayLink:(id)link;
+- (void)startScrollingScrollView:(id)view axis:(int64_t)axis;
 - (void)stopScrolling;
 @end
 
@@ -10,8 +10,8 @@
 
 - (void)stopScrolling
 {
-  v3 = [(PXScrollViewStresser *)self displayLink];
-  [v3 invalidate];
+  displayLink = [(PXScrollViewStresser *)self displayLink];
+  [displayLink invalidate];
 
   [(PXScrollViewStresser *)self setDisplayLink:0];
 
@@ -20,34 +20,34 @@
 
 - (BOOL)isScrolling
 {
-  v2 = [(PXScrollViewStresser *)self displayLink];
-  v3 = v2 != 0;
+  displayLink = [(PXScrollViewStresser *)self displayLink];
+  v3 = displayLink != 0;
 
   return v3;
 }
 
-- (void)_handleDisplayLink:(id)a3
+- (void)_handleDisplayLink:(id)link
 {
-  v13 = [(PXScrollViewStresser *)self scrollView];
-  v4 = [(PXScrollViewStresser *)self scrollDirection];
-  if ([v13 px_isScrolledAtEdge:v4])
+  scrollView = [(PXScrollViewStresser *)self scrollView];
+  scrollDirection = [(PXScrollViewStresser *)self scrollDirection];
+  if ([scrollView px_isScrolledAtEdge:scrollDirection])
   {
     PXRectEdgeOpposite();
   }
 
-  [v13 contentOffset];
+  [scrollView contentOffset];
   v6 = v5;
   v8 = v7;
   v9 = +[PXDiagnosticsSettings sharedInstance];
   [v9 scrollSpeed];
   v11 = v10;
 
-  if (v4 <= 1)
+  if (scrollDirection <= 1)
   {
-    if (v4)
+    if (scrollDirection)
     {
-      v12 = v13;
-      if (v4 == 1)
+      v12 = scrollView;
+      if (scrollDirection == 1)
       {
         v8 = v8 - v11;
       }
@@ -57,18 +57,18 @@
 
     v6 = v6 - v11;
 LABEL_12:
-    v12 = v13;
+    v12 = scrollView;
     goto LABEL_13;
   }
 
-  if (v4 == 2)
+  if (scrollDirection == 2)
   {
     v6 = v6 + v11;
     goto LABEL_12;
   }
 
-  v12 = v13;
-  if (v4 == 3)
+  v12 = scrollView;
+  if (scrollDirection == 3)
   {
     v8 = v8 + v11;
   }
@@ -77,12 +77,12 @@ LABEL_13:
   [v12 px_scrollToContentOffset:0 animated:{v6, v8}];
 }
 
-- (void)startScrollingScrollView:(id)a3 axis:(int64_t)a4
+- (void)startScrollingScrollView:(id)view axis:(int64_t)axis
 {
-  v9 = a3;
+  viewCopy = view;
   if (![(PXScrollViewStresser *)self isScrolling])
   {
-    if (a4 == 2)
+    if (axis == 2)
     {
       v6 = 2;
     }
@@ -92,17 +92,17 @@ LABEL_13:
       v6 = 3;
     }
 
-    if ([v9 px_isScrolledAtEdge:v6])
+    if ([viewCopy px_isScrolledAtEdge:v6])
     {
       PXRectEdgeOpposite();
     }
 
     v7 = [MEMORY[0x1E6979330] displayLinkWithTarget:self selector:sel__handleDisplayLink_];
-    v8 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [v7 addToRunLoop:v8 forMode:*MEMORY[0x1E695DA28]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [v7 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     [(PXScrollViewStresser *)self setDisplayLink:v7];
-    [(PXScrollViewStresser *)self setScrollView:v9];
+    [(PXScrollViewStresser *)self setScrollView:viewCopy];
     [(PXScrollViewStresser *)self setScrollDirection:v6];
     [(PXScrollViewStresser *)self setScrollCount:0];
   }

@@ -6,7 +6,7 @@
 
 - (void)getTextWritingDirection:()UIWebFormExtensions override:
 {
-  result = [objc_msgSend(a1 "ownerDocument")];
+  result = [objc_msgSend(self "ownerDocument")];
   v7 = result;
   if (a3)
   {

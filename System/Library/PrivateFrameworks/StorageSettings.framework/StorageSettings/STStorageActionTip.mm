@@ -1,7 +1,7 @@
 @interface STStorageActionTip
 - (Class)detailControllerClass;
 - (STStorageActionTip)init;
-- (void)setDetailControllerClass:(Class)a3;
+- (void)setDetailControllerClass:(Class)class;
 @end
 
 @implementation STStorageActionTip
@@ -22,18 +22,18 @@
   return v2;
 }
 
-- (void)setDetailControllerClass:(Class)a3
+- (void)setDetailControllerClass:(Class)class
 {
-  v4 = [(STStorageTip *)self specifier];
-  [v4 setDetailControllerClass:a3];
+  specifier = [(STStorageTip *)self specifier];
+  [specifier setDetailControllerClass:class];
 }
 
 - (Class)detailControllerClass
 {
-  v2 = [(STStorageTip *)self specifier];
-  v3 = [v2 detailControllerClass];
+  specifier = [(STStorageTip *)self specifier];
+  detailControllerClass = [specifier detailControllerClass];
 
-  return v3;
+  return detailControllerClass;
 }
 
 @end

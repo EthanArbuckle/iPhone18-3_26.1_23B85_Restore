@@ -3,7 +3,7 @@
 - (AVFragmentedAssetMinder)init;
 - (AVFragmentedAssetMinder)initWithAsset:(AVAsset *)asset mindingInterval:(NSTimeInterval)mindingInterval;
 - (NSArray)assets;
-- (void)_setMindingInterval:(double)a3 removeAllAssets:(BOOL)a4;
+- (void)_setMindingInterval:(double)interval removeAllAssets:(BOOL)assets;
 - (void)addFragmentedAsset:(AVAsset *)asset;
 - (void)dealloc;
 - (void)removeFragmentedAsset:(AVAsset *)asset;
@@ -99,21 +99,21 @@ uint64_t __33__AVFragmentedAssetMinder_assets__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_setMindingInterval:(double)a3 removeAllAssets:(BOOL)a4
+- (void)_setMindingInterval:(double)interval removeAllAssets:(BOOL)assets
 {
-  v4 = a4;
+  assetsCopy = assets;
   v31 = *MEMORY[0x1E69E9840];
-  if (a3 >= 0.0)
+  if (interval >= 0.0)
   {
-    v6 = a3;
+    intervalCopy = interval;
   }
 
   else
   {
-    v6 = 0.0;
+    intervalCopy = 0.0;
   }
 
-  if (v6 > 0.0 && v6 < 0.001)
+  if (intervalCopy > 0.0 && intervalCopy < 0.001)
   {
     v16 = MEMORY[0x1E695DF30];
     v17 = *MEMORY[0x1E695D940];
@@ -124,15 +124,15 @@ uint64_t __33__AVFragmentedAssetMinder_assets__block_invoke(uint64_t a1)
   }
 
   fragmentedAssetMinder = self->_fragmentedAssetMinder;
-  if (v6 != fragmentedAssetMinder->mindingInterval || a4)
+  if (intervalCopy != fragmentedAssetMinder->mindingInterval || assets)
   {
-    fragmentedAssetMinder->mindingInterval = v6;
-    v9 = [(AVFragmentedAssetMinder *)self assets];
+    fragmentedAssetMinder->mindingInterval = intervalCopy;
+    assets = [(AVFragmentedAssetMinder *)self assets];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v10 = [(NSArray *)v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v10 = [(NSArray *)assets countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v10)
     {
       v11 = v10;
@@ -143,18 +143,18 @@ uint64_t __33__AVFragmentedAssetMinder_assets__block_invoke(uint64_t a1)
         {
           if (*v27 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(assets);
           }
 
           v14 = *(*(&v26 + 1) + 8 * i);
-          [v14 _setFragmentMindingInterval:v6];
-          if (v4)
+          [v14 _setFragmentMindingInterval:intervalCopy];
+          if (assetsCopy)
           {
             [v14 _setIsAssociatedWithFragmentMinder:0];
           }
         }
 
-        v11 = [(NSArray *)v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v11 = [(NSArray *)assets countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v11);
@@ -179,7 +179,7 @@ uint64_t __33__AVFragmentedAssetMinder_assets__block_invoke(uint64_t a1)
     goto LABEL_10;
   }
 
-  v6 = [(AVAsset *)asset isAssociatedWithFragmentMinder];
+  isAssociatedWithFragmentMinder = [(AVAsset *)asset isAssociatedWithFragmentMinder];
   accessSerializer = self->_fragmentedAssetMinder->accessSerializer;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -188,9 +188,9 @@ uint64_t __33__AVFragmentedAssetMinder_assets__block_invoke(uint64_t a1)
   block[5] = asset;
   block[6] = &v30;
   block[4] = self;
-  v29 = v6;
+  v29 = isAssociatedWithFragmentMinder;
   dispatch_sync(accessSerializer, block);
-  if (v6)
+  if (isAssociatedWithFragmentMinder)
   {
     if ((v31[3] & 1) == 0)
     {

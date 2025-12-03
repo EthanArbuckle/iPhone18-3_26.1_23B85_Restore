@@ -1,19 +1,19 @@
 @interface PHACurareShadowEvaluationRunner
 + (id)runnerLog;
-- (BOOL)runWithError:(id *)a3;
-- (PHACurareShadowEvaluationRunner)initWithRecipeOptions:(id)a3;
-- (id)evaluateModel:(id)a3 datasetDictionary:(id)a4 error:(id *)a5;
-- (id)getDatasetWithError:(id *)a3;
-- (void)generateCAEventForResults:(id)a3;
+- (BOOL)runWithError:(id *)error;
+- (PHACurareShadowEvaluationRunner)initWithRecipeOptions:(id)options;
+- (id)evaluateModel:(id)model datasetDictionary:(id)dictionary error:(id *)error;
+- (id)getDatasetWithError:(id *)error;
+- (void)generateCAEventForResults:(id)results;
 @end
 
 @implementation PHACurareShadowEvaluationRunner
 
-- (id)getDatasetWithError:(id *)a3
+- (id)getDatasetWithError:(id *)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [(PHACurareShadowEvaluationRunner *)self options];
-  v5 = [PHACurareShadowEvaluationDataset prepareDatasetForEvaluationTaskWithRecipeOptions:v4 error:a3];
+  options = [(PHACurareShadowEvaluationRunner *)self options];
+  v5 = [PHACurareShadowEvaluationDataset prepareDatasetForEvaluationTaskWithRecipeOptions:options error:error];
 
   if (v5)
   {
@@ -31,42 +31,42 @@
     }
 
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to generate dataset for all data"];
-    [PHACurareShadowEvaluationUtilities generateError:a3 errorCode:5 errorDomain:@"com.apple.PhotoAnalysis.PHACurareShadowEvaluationRunner" message:v8 underlyingError:0];
+    [PHACurareShadowEvaluationUtilities generateError:error errorCode:5 errorDomain:@"com.apple.PhotoAnalysis.PHACurareShadowEvaluationRunner" message:v8 underlyingError:0];
   }
 
   return v5;
 }
 
-- (id)evaluateModel:(id)a3 datasetDictionary:(id)a4 error:(id *)a5
+- (id)evaluateModel:(id)model datasetDictionary:(id)dictionary error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  dictionaryCopy = dictionary;
   v9 = [PHACurareShadowEvaluationEvaluator alloc];
-  v10 = [(PHACurareShadowEvaluationRunner *)self options];
-  v11 = [v10 modelInputName];
-  v12 = [(PHACurareShadowEvaluationRunner *)self options];
-  v13 = [v12 modelOutputName];
-  v14 = [(PHACurareShadowEvaluationRunner *)self options];
-  v15 = [v14 lossName];
-  v16 = [(PHACurareShadowEvaluationEvaluator *)v9 initWithModelInputName:v11 modelOutputName:v13 lossName:v15];
+  options = [(PHACurareShadowEvaluationRunner *)self options];
+  modelInputName = [options modelInputName];
+  options2 = [(PHACurareShadowEvaluationRunner *)self options];
+  modelOutputName = [options2 modelOutputName];
+  options3 = [(PHACurareShadowEvaluationRunner *)self options];
+  lossName = [options3 lossName];
+  v16 = [(PHACurareShadowEvaluationEvaluator *)v9 initWithModelInputName:modelInputName modelOutputName:modelOutputName lossName:lossName];
 
-  v17 = [v7 objectForKeyedSubscript:@"modelPath"];
+  v17 = [modelCopy objectForKeyedSubscript:@"modelPath"];
   v18 = v17;
   if (v17 && [v17 length])
   {
-    v19 = [v7 objectForKeyedSubscript:@"labelIndex"];
-    v20 = [v19 intValue];
+    v19 = [modelCopy objectForKeyedSubscript:@"labelIndex"];
+    intValue = [v19 intValue];
 
-    v21 = [v7 objectForKeyedSubscript:@"labelOperatingPoint"];
+    v21 = [modelCopy objectForKeyedSubscript:@"labelOperatingPoint"];
     [v21 floatValue];
     v23 = v22;
 
-    v24 = [v8 objectForKeyedSubscript:@"kPositive"];
-    v25 = [v8 objectForKeyedSubscript:@"kNegative"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"kPositive"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"kNegative"];
     v35 = 0;
     LODWORD(v26) = v23;
-    v27 = [(PHACurareShadowEvaluationEvaluator *)v16 evaluateModelAtPath:v18 labelIndex:v20 labelOperatingPoint:v24 positiveEvaluationData:v25 negativeEvaluationData:&v35 error:v26];
+    v27 = [(PHACurareShadowEvaluationEvaluator *)v16 evaluateModelAtPath:v18 labelIndex:intValue labelOperatingPoint:v24 positiveEvaluationData:v25 negativeEvaluationData:&v35 error:v26];
     v28 = v35;
 
     v29 = +[PHACurareShadowEvaluationRunner runnerLog];
@@ -81,7 +81,7 @@
       }
 
       v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to evaluate model: %@ on dataset", v18];
-      [PHACurareShadowEvaluationUtilities generateError:a5 errorCode:6 errorDomain:@"com.apple.PhotoAnalysis.PHACurareShadowEvaluationRunner" message:v32 underlyingError:v28];
+      [PHACurareShadowEvaluationUtilities generateError:error errorCode:6 errorDomain:@"com.apple.PhotoAnalysis.PHACurareShadowEvaluationRunner" message:v32 underlyingError:v28];
 
       v31 = 0;
     }
@@ -114,10 +114,10 @@
   return v31;
 }
 
-- (void)generateCAEventForResults:(id)a3
+- (void)generateCAEventForResults:(id)results
 {
   v58[23] = *MEMORY[0x277D85DE8];
-  v39 = a3;
+  resultsCopy = results;
   v4 = +[PHACurareShadowEvaluationRunner runnerLog];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -166,22 +166,22 @@
   v58[18] = @"nil";
   v58[19] = @"nil";
   v57[20] = @"trial_deplyomentID";
-  v5 = [(PHACurareShadowEvaluationRunner *)self options];
-  v6 = [v5 trialDeploymentID];
-  v58[20] = v6;
+  options = [(PHACurareShadowEvaluationRunner *)self options];
+  trialDeploymentID = [options trialDeploymentID];
+  v58[20] = trialDeploymentID;
   v57[21] = @"trial_experimentID";
-  v7 = [(PHACurareShadowEvaluationRunner *)self options];
-  v8 = [v7 trialExperimentID];
-  v58[21] = v8;
+  options2 = [(PHACurareShadowEvaluationRunner *)self options];
+  trialExperimentID = [options2 trialExperimentID];
+  v58[21] = trialExperimentID;
   v57[22] = @"trial_treatmentID";
-  v9 = [(PHACurareShadowEvaluationRunner *)self options];
-  v10 = [v9 trialTreatmentID];
-  v58[22] = v10;
+  options3 = [(PHACurareShadowEvaluationRunner *)self options];
+  trialTreatmentID = [options3 trialTreatmentID];
+  v58[22] = trialTreatmentID;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:v57 count:23];
   v12 = [v11 mutableCopy];
 
-  v13 = [v39 allKeys];
-  v14 = [v13 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+  allKeys = [resultsCopy allKeys];
+  v14 = [allKeys sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
   v49 = 0u;
   v50 = 0u;
@@ -204,7 +204,7 @@
         }
 
         v41 = v16;
-        v17 = [v39 objectForKeyedSubscript:*(*(&v47 + 1) + 8 * v16)];
+        v17 = [resultsCopy objectForKeyedSubscript:*(*(&v47 + 1) + 8 * v16)];
         v43 = 0u;
         v44 = 0u;
         v45 = 0u;
@@ -225,34 +225,34 @@
               }
 
               v22 = *(*(&v43 + 1) + 8 * i);
-              v23 = [v22 isPositiveData];
+              isPositiveData = [v22 isPositiveData];
               v24 = @"negative";
-              if (v23)
+              if (isPositiveData)
               {
                 v24 = @"positive";
               }
 
               v25 = v24;
-              v26 = [v22 modelName];
+              modelName = [v22 modelName];
               v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"model%d_name", v15];
-              [v12 setObject:v26 forKeyedSubscript:v27];
+              [v12 setObject:modelName forKeyedSubscript:v27];
 
-              v28 = [v22 numberOfCorrectSamples];
+              numberOfCorrectSamples = [v22 numberOfCorrectSamples];
               v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"model%d_%@_numberOfCorrectSamples", v15, v25];
-              [v12 setObject:v28 forKeyedSubscript:v29];
+              [v12 setObject:numberOfCorrectSamples forKeyedSubscript:v29];
 
-              v30 = [v22 meanPredictionValue];
+              meanPredictionValue = [v22 meanPredictionValue];
               v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"model%d_%@_prediction_mean", v15, v25];
-              [v12 setObject:v30 forKeyedSubscript:v31];
+              [v12 setObject:meanPredictionValue forKeyedSubscript:v31];
 
-              v32 = [v22 stddevPredictionValue];
+              stddevPredictionValue = [v22 stddevPredictionValue];
               v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"model%d_%@_prediction_stddev", v15, v25];
-              [v12 setObject:v32 forKeyedSubscript:v33];
+              [v12 setObject:stddevPredictionValue forKeyedSubscript:v33];
 
-              v34 = [v22 numberOfTotalSamples];
+              numberOfTotalSamples = [v22 numberOfTotalSamples];
               v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_numberOfSamples", v25];
 
-              [v12 setObject:v34 forKeyedSubscript:v35];
+              [v12 setObject:numberOfTotalSamples forKeyedSubscript:v35];
             }
 
             v19 = [v42 countByEnumeratingWithState:&v43 objects:v55 count:16];
@@ -286,7 +286,7 @@
   AnalyticsSendEvent();
 }
 
-- (BOOL)runWithError:(id *)a3
+- (BOOL)runWithError:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
   v5 = +[PHACurareShadowEvaluationRunner runnerLog];
@@ -296,14 +296,14 @@
     _os_log_impl(&dword_22FA28000, v5, OS_LOG_TYPE_INFO, "Begin runWithError", buf, 2u);
   }
 
-  v6 = [(PHACurareShadowEvaluationRunner *)self getDatasetWithError:a3];
+  v6 = [(PHACurareShadowEvaluationRunner *)self getDatasetWithError:error];
   v7 = v6;
-  if (*a3 || !v6)
+  if (*error || !v6)
   {
     v8 = +[PHACurareShadowEvaluationRunner runnerLog];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v22 = *a3;
+      v22 = *error;
       *buf = 138412290;
       v33 = v22;
       _os_log_error_impl(&dword_22FA28000, v8, OS_LOG_TYPE_ERROR, "getDatasetWithError failed with error: %@", buf, 0xCu);
@@ -320,11 +320,11 @@ LABEL_24:
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v9 = [(PHACurareShadowEvaluationRunner *)self options];
-    v10 = [v9 modelInfoArray];
+    options = [(PHACurareShadowEvaluationRunner *)self options];
+    modelInfoArray = [options modelInfoArray];
 
-    obj = v10;
-    v11 = [v10 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    obj = modelInfoArray;
+    v11 = [modelInfoArray countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v11)
     {
       v13 = v11;
@@ -350,13 +350,13 @@ LABEL_24:
             _os_log_impl(&dword_22FA28000, v18, OS_LOG_TYPE_INFO, "Model path at runWithError: %@", buf, 0xCu);
           }
 
-          v19 = [(PHACurareShadowEvaluationRunner *)self evaluateModel:v16 datasetDictionary:v7 error:a3];
-          if (!v19 || *a3)
+          v19 = [(PHACurareShadowEvaluationRunner *)self evaluateModel:v16 datasetDictionary:v7 error:error];
+          if (!v19 || *error)
           {
             v23 = +[PHACurareShadowEvaluationRunner runnerLog];
             if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
             {
-              v25 = *a3;
+              v25 = *error;
               *buf = 138412546;
               v33 = v17;
               v34 = 2112;
@@ -394,16 +394,16 @@ LABEL_24:
   return v21;
 }
 
-- (PHACurareShadowEvaluationRunner)initWithRecipeOptions:(id)a3
+- (PHACurareShadowEvaluationRunner)initWithRecipeOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = PHACurareShadowEvaluationRunner;
   v6 = [(PHACurareShadowEvaluationRunner *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
   }
 
   return v7;

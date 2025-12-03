@@ -1,12 +1,12 @@
 @interface OperationQueueInvocationTrampoline
-- (OperationQueueInvocationTrampoline)initWithTarget:(id)a3 operationQueue:(id)a4 priority:(int64_t)a5;
+- (OperationQueueInvocationTrampoline)initWithTarget:(id)target operationQueue:(id)queue priority:(int64_t)priority;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation OperationQueueInvocationTrampoline
 
-- (OperationQueueInvocationTrampoline)initWithTarget:(id)a3 operationQueue:(id)a4 priority:(int64_t)a5
+- (OperationQueueInvocationTrampoline)initWithTarget:(id)target operationQueue:(id)queue priority:(int64_t)priority
 {
   v11.receiver = self;
   v11.super_class = OperationQueueInvocationTrampoline;
@@ -14,9 +14,9 @@
   v9 = v8;
   if (v8)
   {
-    [(InvocationTrampoline *)v8 setTarget:a3];
-    v9->_queue = a4;
-    v9->_priority = a5;
+    [(InvocationTrampoline *)v8 setTarget:target];
+    v9->_queue = queue;
+    v9->_priority = priority;
   }
 
   return v9;
@@ -29,11 +29,11 @@
   [(InvocationTrampoline *)&v3 dealloc];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  [a3 retainArguments];
-  [a3 setTarget:{-[InvocationTrampoline target](self, "target")}];
-  v5 = [objc_alloc(MEMORY[0x1E696AC98]) initWithInvocation:a3];
+  [invocation retainArguments];
+  [invocation setTarget:{-[InvocationTrampoline target](self, "target")}];
+  v5 = [objc_alloc(MEMORY[0x1E696AC98]) initWithInvocation:invocation];
   [v5 setQueuePriority:self->_priority];
   [(NSOperationQueue *)self->_queue addOperation:v5];
 
